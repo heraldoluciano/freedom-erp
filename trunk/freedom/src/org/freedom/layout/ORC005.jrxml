@@ -28,29 +28,45 @@
 
 	</subDataset>
 
-	<parameter name="LOGOEMP" isForPrompting="false" class="java.lang.Object">
-		<parameterDescription><![CDATA[Logo da Empresa]]></parameterDescription>
-		<defaultValueExpression ><![CDATA[null]]></defaultValueExpression>
+	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
+		<parameterDescription><![CDATA[Código da empresa.]]></parameterDescription>
+		<defaultValueExpression ><![CDATA[new Integer(5)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="RAZAOEMP" isForPrompting="false" class="java.lang.String">
-		<parameterDescription><![CDATA[Razão social da empresa]]></parameterDescription>
-		<defaultValueExpression ><![CDATA["Setpoint Informática Ltda (Razão Social não carregada)"]]></defaultValueExpression>
+	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer">
+		<parameterDescription><![CDATA[CODFILIAL]]></parameterDescription>
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="USUARIO" isForPrompting="false" class="java.lang.String">
-		<parameterDescription><![CDATA[Usuário conectado]]></parameterDescription>
-		<defaultValueExpression ><![CDATA["Anderson Sanchez"]]></defaultValueExpression>
+	<parameter name="CODORC" isForPrompting="true" class="java.lang.Integer">
+		<parameterDescription><![CDATA[Código do Orçamento.]]></parameterDescription>
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="TITULO" isForPrompting="false" class="java.lang.String">
-		<parameterDescription><![CDATA[Titulo do relatório]]></parameterDescription>
-		<defaultValueExpression ><![CDATA["RELATÓRIO"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String">
-		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
-	</parameter>
-	<queryString><![CDATA[SELECT CODRECP,DESCRECP FROM PPRECURSO;]]></queryString>
+	<queryString><![CDATA[SELECT FL.RAZFILIAL,
+ATC.NOMECONV, ATC.CNSCONV, ATC.DTNASCCONV, ATC.sexoconv, ATC.maeconv, ATC.foneconv,ATC.DDDCONV,
+ATC.endconv,ATC.numconv, ATC.bairconv,ATC.cidconv,ATC.ufconv,ATC.cepconv,
+VEND.nomevend,VEND.cpfvend
+FROM vdorcamento ORC, SGFILIAL FL, ATCONVENIADO ATC, vdvendedor VEND
+WHERE
+ORC.codemp = $P{CODEMP} AND ORC.CODFILIAL = $P{CODFILIAL} AND ORC.codorc = $P{CODORC} AND
+FL.CODEMP = ORC.CODEMP AND FL.codfilial = ORC.CODFILIAL AND
+ATC.codemp = ORC.CODEMPCV AND ATC.CODFILIAL = ORC.codfilialcv AND ATC.codconv = orc.codconv and
+vend.codemp = orc.codempvd and vend.codfilial=orc.codfilialvd and vend.codvend=orc.codvend]]></queryString>
 
-	<field name="CODRECP" class="java.lang.Integer"/>
-	<field name="DESCRECP" class="java.lang.String"/>
+	<field name="RAZFILIAL" class="java.lang.String"/>
+	<field name="NOMECONV" class="java.lang.String"/>
+	<field name="CNSCONV" class="java.lang.String"/>
+	<field name="DTNASCCONV" class="java.sql.Date"/>
+	<field name="SEXOCONV" class="java.lang.String"/>
+	<field name="MAECONV" class="java.lang.String"/>
+	<field name="FONECONV" class="java.lang.String"/>
+	<field name="DDDCONV" class="java.lang.String"/>
+	<field name="ENDCONV" class="java.lang.String"/>
+	<field name="NUMCONV" class="java.lang.Long"/>
+	<field name="BAIRCONV" class="java.lang.String"/>
+	<field name="CIDCONV" class="java.lang.String"/>
+	<field name="UFCONV" class="java.lang.String"/>
+	<field name="CEPCONV" class="java.lang.String"/>
+	<field name="NOMEVEND" class="java.lang.String"/>
+	<field name="CPFVEND" class="java.lang.String"/>
 
 
 		<group  name="orcamento" >
@@ -240,7 +256,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="514"
+						x="512"
 						y="24"
 						width="0"
 						height="13"
@@ -315,34 +331,16 @@
 					<reportElement
 						x="10"
 						y="83"
-						width="266"
+						width="274"
 						height="18"
 						key="rectangle-11"/>
 					<graphicElement stretchType="NoStretch" pen="Thin"/>
 				</rectangle>
-				<line direction="TopDown">
-					<reportElement
-						x="28"
-						y="88"
-						width="0"
-						height="13"
-						key="line-16"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="47"
-						y="88"
-						width="0"
-						height="13"
-						key="line-17"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
 				<staticText>
 					<reportElement
 						mode="Opaque"
 						x="42"
-						y="80"
+						y="81"
 						width="125"
 						height="7"
 						key="staticText-9"/>
@@ -352,114 +350,6 @@
 					</textElement>
 				<text><![CDATA[5 - CARTÃO NACIONAL DE SAÚDE (CNS)]]></text>
 				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="66"
-						y="88"
-						width="0"
-						height="13"
-						key="line-18"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="85"
-						y="88"
-						width="0"
-						height="13"
-						key="line-19"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="104"
-						y="88"
-						width="0"
-						height="13"
-						key="line-20"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="123"
-						y="88"
-						width="0"
-						height="13"
-						key="line-21"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="142"
-						y="88"
-						width="0"
-						height="13"
-						key="line-22"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="161"
-						y="88"
-						width="0"
-						height="13"
-						key="line-23"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="180"
-						y="88"
-						width="0"
-						height="13"
-						key="line-24"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="199"
-						y="88"
-						width="0"
-						height="13"
-						key="line-25"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="218"
-						y="88"
-						width="0"
-						height="13"
-						key="line-26"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="237"
-						y="88"
-						width="0"
-						height="13"
-						key="line-27"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="256"
-						y="88"
-						width="0"
-						height="13"
-						key="line-28"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="270"
-						y="88"
-						width="0"
-						height="13"
-						key="line-29"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
 				<rectangle>
 					<reportElement
 						x="295"
@@ -483,24 +373,6 @@
 					</textElement>
 				<text><![CDATA[6 - DATA DE NASCIMENTO]]></text>
 				</staticText>
-				<line direction="BottomUp">
-					<reportElement
-						x="316"
-						y="88"
-						width="8"
-						height="12"
-						key="line-30"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="BottomUp">
-					<reportElement
-						x="340"
-						y="89"
-						width="8"
-						height="12"
-						key="line-31"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 				<rectangle>
 					<reportElement
 						x="399"
@@ -604,65 +476,11 @@
 				</rectangle>
 				<line direction="TopDown">
 					<reportElement
-						x="390"
-						y="115"
-						width="0"
-						height="9"
-						key="line-32"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
 						x="406"
 						y="107"
 						width="0"
 						height="17"
 						key="line-33"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="421"
-						y="115"
-						width="0"
-						height="9"
-						key="line-34"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="436"
-						y="115"
-						width="0"
-						height="9"
-						key="line-35"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="451"
-						y="115"
-						width="0"
-						height="9"
-						key="line-36"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="466"
-						y="115"
-						width="0"
-						height="9"
-						key="line-37"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="481"
-						y="115"
-						width="0"
-						height="9"
-						key="line-38"/>
 					<graphicElement stretchType="NoStretch" pen="Thin"/>
 				</line>
 				<staticText>
@@ -679,24 +497,6 @@
 					</textElement>
 				<text><![CDATA[9 - TELEFONE DE CONTATO]]></text>
 				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="496"
-						y="115"
-						width="0"
-						height="9"
-						key="line-39"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="511"
-						y="115"
-						width="0"
-						height="9"
-						key="line-40"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
 				<staticText>
 					<reportElement
 						mode="Opaque"
@@ -812,15 +612,6 @@
 						key="line-43"/>
 					<graphicElement stretchType="NoStretch" pen="Thin"/>
 				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="423"
-						y="160"
-						width="0"
-						height="10"
-						key="line-44"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
 				<staticText>
 					<reportElement
 						mode="Opaque"
@@ -835,69 +626,6 @@
 					</textElement>
 				<text><![CDATA[13 - UF]]></text>
 				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="449"
-						y="160"
-						width="0"
-						height="10"
-						key="line-45"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="461"
-						y="160"
-						width="0"
-						height="10"
-						key="line-46"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="472"
-						y="160"
-						width="0"
-						height="10"
-						key="line-47"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="484"
-						y="160"
-						width="0"
-						height="10"
-						key="line-48"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="495"
-						y="160"
-						width="0"
-						height="10"
-						key="line-49"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="506"
-						y="160"
-						width="0"
-						height="10"
-						key="line-50"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="517"
-						y="160"
-						width="0"
-						height="10"
-						key="line-51"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
 				<staticText>
 					<reportElement
 						mode="Opaque"
@@ -912,6 +640,192 @@
 					</textElement>
 				<text><![CDATA[14 - CEP]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="23"
+						width="408"
+						height="15"
+						key="TXTRAZFILIAL"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZFILIAL}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="430"
+						y="23"
+						width="97"
+						height="16"
+						key="staticText-70"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[0 0 1 5 9 7 0]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="64"
+						width="424"
+						height="15"
+						key="TXTNOMECONV"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMECONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="87"
+						width="269"
+						height="17"
+						key="TXTCNSCONV"
+						stretchType="RelativeToTallestObject"
+						isPrintRepeatedValues="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified" lineSpacing="Single">
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CNSCONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="297"
+						y="87"
+						width="84"
+						height="15"
+						key="TXTCNSCONV-1"
+						stretchType="RelativeToTallestObject"
+						isPrintRepeatedValues="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified" lineSpacing="Single">
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTNASCCONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="437"
+						y="89"
+						width="18"
+						height="11"
+						key="TXTSEXOMASC"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{SEXOCONV}.equals("M")?"X":"")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="504"
+						y="89"
+						width="17"
+						height="11"
+						key="TXTSEXOFEM"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{SEXOCONV}.equals("F")?"X":"")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="110"
+						width="354"
+						height="15"
+						key="TXTMAECONV"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{MAECONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="410"
+						y="111"
+						width="114"
+						height="15"
+						key="TXTFONECONV"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{FONECONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="134"
+						width="511"
+						height="15"
+						key="TXTENDERECOCONV"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCONV}.trim()+", "+$F{NUMCONV}+", "+$F{BAIRCONV}.trim()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="157"
+						width="308"
+						height="15"
+						key="TXTCIDADECONV"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CIDCONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="380"
+						y="111"
+						width="23"
+						height="15"
+						key="TXTDDDCONV"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DDDCONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="412"
+						y="157"
+						width="23"
+						height="15"
+						key="TXTDDDCONV-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{UFCONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="441"
+						y="157"
+						width="88"
+						height="15"
+						key="TXTDDDCONV-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CEPCONV}]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -2263,114 +2177,6 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						key="line-109"/>
 					<graphicElement stretchType="NoStretch" pen="Thin"/>
 				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="141"
-						y="366"
-						width="0"
-						height="13"
-						key="line-110"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="159"
-						y="366"
-						width="0"
-						height="13"
-						key="line-111"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="177"
-						y="366"
-						width="0"
-						height="13"
-						key="line-112"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="195"
-						y="366"
-						width="0"
-						height="13"
-						key="line-113"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="213"
-						y="366"
-						width="0"
-						height="13"
-						key="line-114"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="231"
-						y="366"
-						width="0"
-						height="13"
-						key="line-115"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="303"
-						y="366"
-						width="0"
-						height="13"
-						key="line-116"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="321"
-						y="366"
-						width="0"
-						height="13"
-						key="line-117"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="339"
-						y="366"
-						width="0"
-						height="13"
-						key="line-118"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="285"
-						y="366"
-						width="0"
-						height="13"
-						key="line-119"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="267"
-						y="366"
-						width="0"
-						height="13"
-						key="line-120"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="249"
-						y="366"
-						width="0"
-						height="13"
-						key="line-121"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
 				<staticText>
 					<reportElement
 						mode="Opaque"
@@ -2800,6 +2606,32 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						key="line-142"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="341"
+						width="253"
+						height="15"
+						key="TXTMAECONV-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMEVEND}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="129"
+						y="365"
+						width="220"
+						height="15"
+						key="TXTMAECONV-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CPFVEND}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
@@ -2885,7 +2717,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						mode="Opaque"
 						x="40"
 						y="22"
-						width="206"
+						width="221"
 						height="9"
 						key="staticText-68"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -2989,6 +2821,32 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						key="line-154"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<staticText>
+					<reportElement
+						x="429"
+						y="30"
+						width="99"
+						height="16"
+						key="staticText-71"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[0 0 1 5 9 7 0]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="11"
+						y="29"
+						width="404"
+						height="15"
+						key="TXTRAZFILIAL-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZFILIAL}]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageFooter>
 		<summary>
