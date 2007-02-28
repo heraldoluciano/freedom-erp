@@ -89,8 +89,11 @@ public class FreedomFNC extends AplicativoPD {
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de cobrança", "TipoCob", 'T', 100104000, 2, true, FTipoCob.class );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Plano de pagamento", "PlanoPag", 'P', 100105000, 2, true, FPlanoPag.class );
 				addSeparador( 100100000 );
-				addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de fornecedor", "TipoFor", 'F', 100107000, 2, true, FTipoFor.class );
-				addOpcao( 100100000, TP_OPCAO_ITEM, "Fornecedor", "Fornecedor", 'F', 100108000, 2, true, FFornecedor.class );	
+				addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de fornecedor", "TipoFor", 'i', 100107000, 2, true, FTipoFor.class );
+				addOpcao( 100100000, TP_OPCAO_ITEM, "Fornecedor", "Fornecedor", 'F', 100108000, 2, true, FFornecedor.class );
+				addSeparador( 100100000 );
+				addOpcao( 100100000, TP_OPCAO_MENU, "Febraban", "", 'b', 100109000, 2, false, null );
+					addOpcao( 100109000, TP_OPCAO_ITEM, "Códigos de retorno", "Códigos de retorno", 'r', 100109010, 3, true, FCodRetorno.class );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'F', 100200000, 1, false, null );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100300000, 1, false, null );
 				addOpcao( 100300000, TP_OPCAO_ITEM, "Preferências gerais", "Preferência Gerais", 'G', 100310000, 2, true, FPrefereFNC.class );
