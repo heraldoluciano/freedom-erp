@@ -237,20 +237,20 @@ public class NFApr extends Leiaute {
 					   
 					sTipoTran = rs.getString("TipoTran");					    
 					
-					if ( sTipoTran.equals("C") )
+					if ( sTipoTran.equals("C") ){
 						imp.say(115, Funcoes.setMascara(rs.getString("CnpjCli") != null ? rs.getString("CnpjCli") : "","##.###.###/####-##"));
-					else
-						imp.say(115, Funcoes.setMascara(rs.getString("CnpjTran") != null ? rs.getString("CnpjTran") : "","##.###.###/####-##")); 
-
+						imp.pulaLinha(2, imp.comprimido());
+						imp.say(115, rs.getString("InscCli"));
+					}
+					else { 
+					imp.say(115, Funcoes.setMascara(rs.getString("CnpjTran") != null ? rs.getString("CnpjTran") : "","##.###.###/####-##")); 
 					imp.pulaLinha(2, imp.comprimido());
 					imp.say(  2, Funcoes.copy(rs.getString("EndTran"),0,42)+", "+Funcoes.copy(rs.getString("NumTran"),0,6));
+					imp.say(115, rs.getString("InscTran"));
 					imp.say( 76, rs.getString("CidTran"));
 					imp.say(108, rs.getString("UfTran"));
-					   
-					if (sTipoTran.equals("C") )
-						imp.say(115, rs.getString("InscCli"));
-					else 
-						imp.say(115, rs.getString("InscTran"));
+					}   
+					 
 					   
 					imp.pulaLinha(2, imp.comprimido());
 					imp.say(  2, rs.getString("QtdFreteVD"));
