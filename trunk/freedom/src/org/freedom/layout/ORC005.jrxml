@@ -38,7 +38,7 @@
 	<queryString><![CDATA[SELECT FL.RAZFILIAL,
 ATC.NOMECONV, ATC.CNSCONV, ATC.DTNASCCONV, ATC.sexoconv, ATC.maeconv, ATC.foneconv,ATC.DDDCONV,
 ATC.endconv,ATC.numconv, ATC.bairconv,ATC.cidconv,ATC.ufconv,ATC.cepconv,
-VEND.nomevend,VEND.cpfvend,P.DESCPROD,P.CODBARPROD,IT.QTDITORC,orc.dtorc
+VEND.nomevend,VEND.cpfvend,P.DESCPROD,P.CODBARPROD,IT.QTDITORC,orc.dtorc,ATC.CODCONV 
 FROM vdorcamento ORC, SGFILIAL FL, ATCONVENIADO ATC, vdvendedor VEND,VDITORCAMENTO IT,EQPRODUTO P
 WHERE
 ORC.codemp = $P{CODEMP} AND ORC.CODFILIAL = $P{CODFILIAL} AND ORC.codorc = $P{CODORC} AND
@@ -68,6 +68,7 @@ IT.TIPOORC = 'O' AND IT.CODORC=orc.codorc AND IT.CODEMP=orc.codemp AND IT.CODFIL
 	<field name="CODBARPROD" class="java.lang.String"/>
 	<field name="QTDITORC" class="java.math.BigDecimal"/>
 	<field name="DTORC" class="java.sql.Date"/>
+	<field name="CODCONV" class="java.lang.Integer"/>
 
 
 		<group  name="orcamento" >
@@ -986,6 +987,21 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{UFCONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="443"
+						y="109"
+						width="84"
+						height="15"
+						key="TXTCNSCONV-4"
+						stretchType="RelativeToTallestObject"
+						isPrintRepeatedValues="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified" lineSpacing="Single">
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{CODCONV}]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
