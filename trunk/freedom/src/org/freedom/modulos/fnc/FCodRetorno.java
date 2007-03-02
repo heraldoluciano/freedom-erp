@@ -57,7 +57,7 @@ public class FCodRetorno extends FDados {
 	public FCodRetorno() {
 
 		setTitulo( "Códigos de retorno" );
-		setAtribos( 200, 60, 400, 235 );
+		setAtribos( 200, 60, 430, 180 );
 		
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
@@ -65,14 +65,15 @@ public class FCodRetorno extends FDados {
 		vLabs.add( "CNAB" );
 		vVals.add( "01" );
 		vVals.add( "02" );
-		rgTipoFebraban = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgTipoFebraban = new JRadioGroup( 2, 1, vLabs, vVals );
 		
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
-		txtCodBanco.setTabelaExterna( lcBanco );
+		
+		txtCodBanco.setTabelaExterna( lcCampos );
 		
 		montaTela();
 		
@@ -80,12 +81,13 @@ public class FCodRetorno extends FDados {
 	}
 	
 	private void montaTela() {
+
+		adicDB( rgTipoFebraban, 300, 30, 100, 60, "TipoFebraban", "Tipo", false );		
 		
-		adicCampo( txtCodRet, 7, 30, 80, 20, "CodRet", "Cód.retorno", ListaCampos.DB_PK, true );	
-		adicCampo( txtCodBanco, 90, 30, 80, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true );
-		adicDescFK( txtNomeBanco, 173, 30, 200, 20, "NomeBanco", "Nome do banco" );
-		adicCampo( txtDescRet, 7, 70, 364, 20, "DescRet", "Descrição do retorno", ListaCampos.DB_SI, true );	
-		adicDB( rgTipoFebraban, 7, 120, 364, 30, "TipoFebraban", "Tipo", false );		
+		adicCampo( txtCodBanco, 7, 30, 80, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true );
+		adicDescFK( txtNomeBanco, 90, 30, 200, 20, "NomeBanco", "Nome do banco" );
+		adicCampo( txtCodRet, 7, 70, 80, 20, "CodRet", "Cód.retorno", ListaCampos.DB_SI, true );
+		adicCampo( txtDescRet, 90, 70, 200, 20, "DescRet", "Descrição do retorno", ListaCampos.DB_SI, true );	
 	}
 
 	public void setConexao( Connection cn ) {

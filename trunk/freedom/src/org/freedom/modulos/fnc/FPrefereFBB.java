@@ -29,8 +29,9 @@ import java.awt.Dimension;
 import java.sql.Connection;
 import java.util.Vector;
 
-import org.freedom.acao.CarregaEvent;
-import org.freedom.acao.CarregaListener;
+import javax.swing.BorderFactory;
+import javax.swing.JScrollPane;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
@@ -41,7 +42,7 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.telas.FTabDados;
 
-public class FPrefereFBB extends FTabDados implements CarregaListener {
+public class FPrefereFBB extends FTabDados {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -49,11 +50,15 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	
 	private final JPanelPad panelSiacc = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
+	private final JPanelPad panelTabSiacc = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
 	private final JPanelPad panelCamposSiacc = new JPanelPad();
 	
 	private final JPanelPad panelNavSiacc = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private final JPanelPad panelCnab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private final JPanelPad panelTabCnab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private final JPanelPad panelCamposCnab = new JPanelPad();
 	
@@ -109,9 +114,9 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 
 	private final ListaCampos lcBancoCnab = new ListaCampos( this, "BO" );
 	
-	private final Navegador nvSiacc = new Navegador( false );
+	private final Navegador nvSiacc = new Navegador( true );
 	
-	private final Navegador nvCnab = new Navegador( false );
+	private final Navegador nvCnab = new Navegador( true );
 	
 	private final Tabela tabSiacc = new Tabela();
 	
@@ -124,7 +129,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	public FPrefereFBB() {
 
 		setTitulo( "Preferências Gerais" );
-		setAtribos( 50, 50, 400, 400 );
+		setAtribos( 50, 50, 400, 470 );
 		
 		Vector<String> vLabs0 = new Vector<String>();
 		Vector<String> vVals0 = new Vector<String>();
@@ -174,18 +179,21 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		lcBancoCnab.setReadOnly( true );
 		txtCodBancoCnab.setTabelaExterna( lcBancoCnab );
 		
+		montaTela();
+		
 		lcSiacc.setMaster( lcCampos );
 		lcSiacc.setTabela( tabSiacc );
+		lcSiacc.montaTab();
+		
 		lcCnab.setMaster( lcCampos );
 		lcCnab.setTabela( tabCnab );
+		lcCnab.montaTab();
 		
 		lcCampos.adicDetalhe( lcSiacc );
 		lcCampos.adicDetalhe( lcCnab );
 		
-		lcSiacc.addCarregaListener( this );
-		lcCnab.addCarregaListener( this );
-		
-		montaTela();
+		txtTipoSiacc.setVlrString( TP_SIACC );
+		txtTipoCnab.setVlrString( TP_CNAB );
 
 	}
 	
@@ -194,12 +202,13 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		/*****************
 		 *     GERAL     *
 		 *****************/
+		
+		lcCampos.setMensInserir( false );
 
 		setPainel( panelGeral );
 		adicTab( "Geral", panelGeral );
-		adicCampo( txtNomeEmp, 7, 30, 250, 20, "NomeEmp", "Nome da empresa", ListaCampos.DB_SI, true );
+		adicCampo( txtNomeEmp, 7, 30, 250, 20, "NomeEmp", "Nome da empresa", ListaCampos.DB_SI, true );		
 		
-		lcCampos.setMensInserir( false );
 		nav.setAtivo( 0, false );
 		lcCampos.setPodeExc( false );
 
@@ -215,8 +224,13 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		adicTab( "SIACC", panelSiacc );
 		setPainel( panelCamposSiacc, panelSiacc );
 		
+		panelSiacc.add( panelTabSiacc, BorderLayout.NORTH );
 		panelSiacc.add( panelCamposSiacc, BorderLayout.CENTER );
 		panelSiacc.add( panelNavSiacc, BorderLayout.SOUTH );
+		
+		panelTabSiacc.setPreferredSize( new Dimension( 300, 100 ) );
+		panelTabSiacc.setBorder( BorderFactory.createEtchedBorder() );
+		panelTabSiacc.add( new JScrollPane( tabSiacc ), BorderLayout.CENTER );
 
 		adicCampo( txtCodBancoSiacc, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBancoSiacc, true );
 		adicDescFK( txtNomeBancoSiacc, 110, 30, 260, 20, "NomeBanco", "Nome do banco" );
@@ -231,7 +245,8 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		adicDB( rgIdentAmbBcoSiacc, 193, 160, 178, 60, "IdentAmbBco", "Ambiente do banco", false );
 		setListaCampos( false, "ITPREFERE6", "SG" );
 		
-		panelNavSiacc.setPreferredSize( new Dimension( 300, 28 ) );
+		panelNavSiacc.setPreferredSize( new Dimension( 300, 30 ) );
+		panelNavSiacc.setBorder( BorderFactory.createEtchedBorder() );
 		panelNavSiacc.add( nvSiacc, BorderLayout.WEST );
 		
 		/*****************
@@ -240,10 +255,15 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		
 		setListaCampos( lcCnab );
 		setNavegador( nvCnab );
+		
+		panelTabCnab.setPreferredSize( new Dimension( 300, 100 ) );
+		panelTabCnab.setBorder( BorderFactory.createEtchedBorder() );
+		panelTabCnab.add( new JScrollPane( tabCnab ), BorderLayout.CENTER );
 
 		adicTab( "CNAB", panelCnab );
 		setPainel( panelCamposCnab, panelCnab );
 		
+		panelCnab.add( panelTabCnab, BorderLayout.NORTH );
 		panelCnab.add( panelCamposCnab, BorderLayout.CENTER );
 		panelCnab.add( panelNavCnab, BorderLayout.SOUTH );
 
@@ -260,20 +280,10 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		adicDB( rgIdentAmbBcoCnab, 193, 160, 178, 60, "IdentAmbBco", "Ambiente do banco", false );
 		setListaCampos( false, "ITPREFERE6", "SG" );
 		
-		panelNavCnab.setPreferredSize( new Dimension( 300, 28 ) );
+		panelNavCnab.setPreferredSize( new Dimension( 300, 30 ) );
+		panelNavCnab.setBorder( BorderFactory.createEtchedBorder() );
 		panelNavCnab.add( nvCnab, BorderLayout.WEST );
 		
-	}
-
-	public void afterCarrega( CarregaEvent cevt ) { }
-
-	public void beforeCarrega( CarregaEvent cevt ) {
-		
-		if ( cevt.getListaCampos() == lcBancoSiacc || cevt.getListaCampos() == lcBancoCnab ) {
-
-			txtTipoSiacc.setVlrString( TP_SIACC );
-			txtTipoCnab.setVlrString( TP_CNAB );
-		}
 	}
 
 	public void setConexao( Connection cn ) {
