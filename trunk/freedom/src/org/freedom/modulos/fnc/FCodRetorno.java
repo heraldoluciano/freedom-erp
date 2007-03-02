@@ -28,6 +28,8 @@ import java.util.Vector;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
@@ -40,11 +42,13 @@ import org.freedom.telas.FDados;
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class FCodRetorno extends FDados implements CarregaListener {
+public class FCodRetorno extends FDados implements RadioGroupListener {
 
 	private static final long serialVersionUID = 1L;
 
 	private final JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
+
+	private final JTextFieldPad txtTipoFebraban = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private final JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -56,18 +60,20 @@ public class FCodRetorno extends FDados implements CarregaListener {
 
 	private final ListaCampos lcBanco = new ListaCampos( this, "BO" );
 
+	private Vector<String> vLabs = new Vector<String>();
+	
+	private Vector<String> vVals = new Vector<String>();
+	
 	public FCodRetorno() {
 
 		setTitulo( "Códigos de retorno" );
-		setAtribos( 200, 60, 430, 180 );
+		setAtribos( 200, 60, 430, 230 );
 		
-		Vector<String> vLabs = new Vector<String>();
-		Vector<String> vVals = new Vector<String>();
 		vLabs.add( "SIACC" );
 		vLabs.add( "CNAB" );
 		vVals.add( "01" );
 		vVals.add( "02" );
-		rgTipoFebraban = new JRadioGroup( 2, 1, vLabs, vVals );
+		rgTipoFebraban = new JRadioGroup( 1, 2, vLabs, vVals );
 		
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
@@ -80,32 +86,33 @@ public class FCodRetorno extends FDados implements CarregaListener {
 		
 		setListaCampos( false, "FBNCODRET", "FN" );
 		
-		lcCampos.addCarregaListener( this );
+		rgTipoFebraban.addRadioGroupListener(this);
+		
+		//lcCampos.addCarregaListener( this );
 	}
 	
 	private void montaTela() {
 
-		adicDB( rgTipoFebraban, 300, 30, 100, 60, "TipoFebraban", "Tipo", false );		
-		
-		adicCampo( txtCodBanco, 7, 30, 80, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true );
-		adicDescFK( txtNomeBanco, 90, 30, 200, 20, "NomeBanco", "Nome do banco" );
-		adicCampo( txtCodRet, 7, 70, 80, 20, "CodRet", "Cód.retorno", ListaCampos.DB_SI, true );
-		adicCampo( txtDescRet, 90, 70, 200, 20, "DescRet", "Descrição do retorno", ListaCampos.DB_SI, true );	
-	}
-
-	public void afterCarrega( CarregaEvent cevt ) { }
-
-	public void beforeCarrega( CarregaEvent cevt ) {
-		
-		if( cevt.getListaCampos() == lcCampos ) {
-		//	lcBanco.carregaDados();
-		}
+		adic( rgTipoFebraban, 7, 20, 300, 30);		
+		txtTipoFebraban.setVlrString("01");
+		lcCampos.add( new GuardaCampo(txtTipoFebraban, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true) );
+		adicCampo( txtCodBanco, 7, 70, 80, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true );
+		adicDescFK( txtNomeBanco, 90, 70, 220, 20, "NomeBanco", "Nome do banco" );
+		adicCampo( txtCodRet, 7, 110, 80, 20, "CodRet", "Cód.retorno", ListaCampos.DB_PK, true );
+		adicCampo( txtDescRet, 90, 110, 220, 20, "DescRet", "Descrição do retorno", ListaCampos.DB_SI, true );	
 	}
 
 	public void setConexao( Connection cn ) {
 
 		super.setConexao( cn );
 		lcBanco.setConexao( cn );
+	}
+	
+	public void valorAlterado(RadioGroupEvent evt) {
+		if (evt.getIndice()>=0) {
+			lcCampos.limpaCampos(true);
+			txtTipoFebraban.setVlrString((String) vVals.elementAt(evt.getIndice())); 
+		}
 	}
 
 }
