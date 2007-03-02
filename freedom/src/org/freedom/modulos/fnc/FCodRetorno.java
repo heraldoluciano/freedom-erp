@@ -26,6 +26,8 @@ package org.freedom.modulos.fnc;
 import java.sql.Connection;
 import java.util.Vector;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
@@ -38,7 +40,7 @@ import org.freedom.telas.FDados;
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class FCodRetorno extends FDados {
+public class FCodRetorno extends FDados implements CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -71,13 +73,14 @@ public class FCodRetorno extends FDados {
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setQueryCommit( false );
-		lcBanco.setReadOnly( true );
-		
-		txtCodBanco.setTabelaExterna( lcCampos );
+		lcBanco.setReadOnly( true );		
+		txtCodBanco.setTabelaExterna( lcBanco );
 		
 		montaTela();
 		
 		setListaCampos( false, "FBNCODRET", "FN" );
+		
+		lcCampos.addCarregaListener( this );
 	}
 	
 	private void montaTela() {
@@ -88,6 +91,15 @@ public class FCodRetorno extends FDados {
 		adicDescFK( txtNomeBanco, 90, 30, 200, 20, "NomeBanco", "Nome do banco" );
 		adicCampo( txtCodRet, 7, 70, 80, 20, "CodRet", "Cód.retorno", ListaCampos.DB_SI, true );
 		adicCampo( txtDescRet, 90, 70, 200, 20, "DescRet", "Descrição do retorno", ListaCampos.DB_SI, true );	
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) { }
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+		
+		if( cevt.getListaCampos() == lcCampos ) {
+		//	lcBanco.carregaDados();
+		}
 	}
 
 	public void setConexao( Connection cn ) {
