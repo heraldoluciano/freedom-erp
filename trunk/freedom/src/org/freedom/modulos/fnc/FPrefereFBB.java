@@ -231,10 +231,15 @@ public class FPrefereFBB extends FTabDados {
 		panelTabSiacc.setPreferredSize( new Dimension( 300, 100 ) );
 		panelTabSiacc.setBorder( BorderFactory.createEtchedBorder() );
 		panelTabSiacc.add( new JScrollPane( tabSiacc ), BorderLayout.CENTER );
+		
+		tabSiacc.setTamColuna( 50, 0 );
+		tabSiacc.setTamColuna( 80, 0 );
+		tabSiacc.setTamColuna( 150, 0 );
+		tabSiacc.setTamColuna( 50, 0 );
 
+		adicCampoInvisivel( txtTipoSiacc, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true );
 		adicCampo( txtCodBancoSiacc, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBancoSiacc, true );
 		adicDescFK( txtNomeBancoSiacc, 110, 30, 260, 20, "NomeBanco", "Nome do banco" );
-		adicCampoInvisivel( txtTipoSiacc, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true );
 		
 		adicCampo( txtCodConvSiacc, 7, 70, 140, 20, "CodConv", "Convênio", ListaCampos.DB_SI, false );
 		adicCampo( txtVersaoSiacc, 150, 70, 100, 20, "VerLayout", "Versão ", ListaCampos.DB_SI, false );
@@ -267,9 +272,9 @@ public class FPrefereFBB extends FTabDados {
 		panelCnab.add( panelCamposCnab, BorderLayout.CENTER );
 		panelCnab.add( panelNavCnab, BorderLayout.SOUTH );
 
+		adicCampoInvisivel( txtTipoCnab, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true );
 		adicCampo( txtCodBancoCnab, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBancoSiacc, true );
 		adicDescFK( txtNomeBancoCnab, 110, 30, 260, 20, "NomeBanco", "Nome do banco" );
-		adicCampoInvisivel( txtTipoCnab, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true );
 		
 		adicCampo( txtCodConvCnab, 7, 70, 140, 20, "CodConv", "Convênio", ListaCampos.DB_SI, false );
 		adicCampo( txtVersaoCnab, 150, 70, 100, 20, "VerLayout", "Versão ", ListaCampos.DB_SI, false );
