@@ -403,8 +403,8 @@ public class NF020 extends Layout {
 
 					// Imprime canhoto
 
-					imp.pulaLinha( 5, imp.comprimido() );
-					imp.say( 125, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
+					//imp.pulaLinha( 5, imp.comprimido() );
+					//imp.say( 125, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido() );
 					imp.setPrc( 0, 0 );
