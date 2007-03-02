@@ -42,7 +42,7 @@ public class FCodRetorno extends FDados {
 
 	private static final long serialVersionUID = 1L;
 
-	private final JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
+	private final JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private final JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -57,7 +57,7 @@ public class FCodRetorno extends FDados {
 	public FCodRetorno() {
 
 		setTitulo( "Códigos de retorno" );
-		setAtribos( 200, 60, 345, 235 );
+		setAtribos( 200, 60, 400, 235 );
 		
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
@@ -81,11 +81,11 @@ public class FCodRetorno extends FDados {
 	
 	private void montaTela() {
 		
-		adicCampo( txtCodRet, 7, 30, 100, 20, "CodRet", "Cód.retorno", ListaCampos.DB_PK, true );
-		adicCampo( txtDescRet, 110, 30, 210, 20, "DescRet", "Descrição do retorno", ListaCampos.DB_SI, true );		
-		adicCampo( txtCodBanco, 7, 70, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true );
-		adicDescFK( txtNomeBanco, 110, 70, 210, 20, "NomeBanco", "Nome do banco" );
-		adicDB( rgTipoFebraban, 7, 120, 313, 30, "TipoFebraban", "Tipo", false );		
+		adicCampo( txtCodRet, 7, 30, 80, 20, "CodRet", "Cód.retorno", ListaCampos.DB_PK, true );	
+		adicCampo( txtCodBanco, 90, 30, 80, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true );
+		adicDescFK( txtNomeBanco, 173, 30, 200, 20, "NomeBanco", "Nome do banco" );
+		adicCampo( txtDescRet, 7, 70, 364, 20, "DescRet", "Descrição do retorno", ListaCampos.DB_SI, true );	
+		adicDB( rgTipoFebraban, 7, 120, 364, 30, "TipoFebraban", "Tipo", false );		
 	}
 
 	public void setConexao( Connection cn ) {
