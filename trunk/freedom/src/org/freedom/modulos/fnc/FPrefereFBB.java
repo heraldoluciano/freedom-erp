@@ -32,6 +32,10 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
+import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
@@ -42,7 +46,7 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.telas.FTabDados;
 
-public class FPrefereFBB extends FTabDados {
+public class FPrefereFBB extends FTabDados implements InsertListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -194,7 +198,9 @@ public class FPrefereFBB extends FTabDados {
 		
 		txtTipoSiacc.setVlrString( TP_SIACC );
 		txtTipoCnab.setVlrString( TP_CNAB );
-
+		
+		lcCnab.addInsertListener(this);
+		lcSiacc.addInsertListener(this);
 	}
 	
 	private void montaTela() {
@@ -237,7 +243,10 @@ public class FPrefereFBB extends FTabDados {
 		tabSiacc.setTamColuna( 150, 0 );
 		tabSiacc.setTamColuna( 50, 0 );
 
-		adicCampoInvisivel( txtTipoSiacc, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true );
+		//adicCampoInvisivel( txtTipoSiacc, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true );
+		lcSiacc.add( new GuardaCampo( txtTipoSiacc, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true ) );
+
+		//lcSiacc.add
 		adicCampo( txtCodBancoSiacc, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBancoSiacc, true );
 		adicDescFK( txtNomeBancoSiacc, 110, 30, 260, 20, "NomeBanco", "Nome do banco" );
 		
@@ -272,7 +281,9 @@ public class FPrefereFBB extends FTabDados {
 		panelCnab.add( panelCamposCnab, BorderLayout.CENTER );
 		panelCnab.add( panelNavCnab, BorderLayout.SOUTH );
 
-		adicCampoInvisivel( txtTipoCnab, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true );
+		//adicCampoInvisivel( txtTipoCnab, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true );
+		lcCnab.add( new GuardaCampo( txtTipoCnab, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true ) );
+
 		adicCampo( txtCodBancoCnab, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBancoSiacc, true );
 		adicDescFK( txtNomeBancoCnab, 110, 30, 260, 20, "NomeBanco", "Nome do banco" );
 		
@@ -290,7 +301,21 @@ public class FPrefereFBB extends FTabDados {
 		panelNavCnab.add( nvCnab, BorderLayout.WEST );
 		
 	}
-
+	
+	public void beforeInsert(InsertEvent ievt) {
+		if (ievt.getListaCampos()==lcSiacc) {
+			txtTipoSiacc.setText(TP_SIACC);
+		}
+		else if (ievt.getListaCampos()==lcCnab) {
+			txtTipoCnab.setText(TP_CNAB);
+		} 
+		
+	}
+	
+	public void afterInsert(InsertEvent ievt) {
+		
+	}
+	
 	public void setConexao( Connection cn ) {
 
 		super.setConexao( cn );
