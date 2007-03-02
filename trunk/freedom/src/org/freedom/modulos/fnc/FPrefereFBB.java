@@ -160,6 +160,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		
 		lcBancoSiacc.add( new GuardaCampo( txtCodBancoSiacc, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBancoSiacc.add( new GuardaCampo( txtNomeBancoSiacc, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
+		lcBancoSiacc.setDinWhereAdic( " CODBANCO=#N ", txtCodBancoSiacc );
 		lcBancoSiacc.montaSql( false, "BANCO", "FN" );
 		lcBancoSiacc.setQueryCommit( false );
 		lcBancoSiacc.setReadOnly( true );
@@ -167,6 +168,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		
 		lcBancoCnab.add( new GuardaCampo( txtCodBancoCnab, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBancoCnab.add( new GuardaCampo( txtNomeBancoCnab, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
+		lcBancoCnab.setDinWhereAdic( " CODBANCO=#N ", txtCodBancoCnab );
 		lcBancoCnab.montaSql( false, "BANCO", "FN" );
 		lcBancoCnab.setQueryCommit( false );
 		lcBancoCnab.setReadOnly( true );
@@ -267,8 +269,11 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 		
-		txtTipoSiacc.setVlrString( TP_SIACC );
-		txtTipoCnab.setVlrString( TP_CNAB );
+		if ( cevt.getListaCampos() == lcBancoSiacc || cevt.getListaCampos() == lcBancoCnab ) {
+
+			txtTipoSiacc.setVlrString( TP_SIACC );
+			txtTipoCnab.setVlrString( TP_CNAB );
+		}
 	}
 
 	public void setConexao( Connection cn ) {
