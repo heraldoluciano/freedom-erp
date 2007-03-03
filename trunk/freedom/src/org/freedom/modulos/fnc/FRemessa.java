@@ -61,6 +61,8 @@ public class FRemessa extends FFilho implements ActionListener {
 	
 	private final JPanelPad panelTabela = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
+	private final JPanelPad panelFuncoes = new JPanelPad();
+	
 	private final Tabela tab = new Tabela();
 
 	private final JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
@@ -73,6 +75,10 @@ public class FRemessa extends FFilho implements ActionListener {
 	
 	private final JButton btCarrega = new JButton( "Buscar", Icone.novo( "btExecuta.gif" ) );
 
+	private final JButton btSelTudo = new JButton( Icone.novo( "btTudo.gif" ) );
+
+	private final JButton btSelNada = new JButton( Icone.novo( "btNada.gif" ) );
+
 	private final JRadioGroup rgData;
 
 	private final ListaCampos lcBanco = new ListaCampos( this );
@@ -82,7 +88,7 @@ public class FRemessa extends FFilho implements ActionListener {
 
 		super( false );
 		setTitulo( "Manutenção de contas a receber" );
-		setAtribos( 20, 20, 545, 400 );
+		setAtribos( 20, 20, 610, 400 );
 		
 		Vector<String> vVals = new Vector<String>();
 		Vector<String> vLabs = new Vector<String>();
@@ -106,6 +112,7 @@ public class FRemessa extends FFilho implements ActionListener {
 		
 		montaTela();
 
+		tab.adicColuna( "" );
 		tab.adicColuna( "Cliente" );
 		tab.adicColuna( "Razão social do cliente" );
 		tab.adicColuna( "Doc" );
@@ -113,13 +120,22 @@ public class FRemessa extends FFilho implements ActionListener {
 		tab.adicColuna( "Emissão" );
 		tab.adicColuna( "Vencimento" );
 
-		tab.setTamColuna( 80, 0 );
-		tab.setTamColuna( 150, 1 );
-		tab.setTamColuna( 80, 2 );
-		tab.setTamColuna( 100, 3 );
-		tab.setTamColuna( 100, 4 );
+		tab.setTamColuna( 20, 0 );
+		tab.setTamColuna( 67, 1 );
+		tab.setTamColuna( 160, 2 );
+		tab.setTamColuna( 80, 3 );
+		tab.setTamColuna( 70, 4 );
+		tab.setTamColuna( 70, 5 );
+		tab.setTamColuna( 70, 6 );
+		
+		tab.setColunaEditavel( 0, true );
 		
 		btCarrega.addActionListener( this );
+		btSelTudo.addActionListener( this );
+		btSelNada.addActionListener( this );
+
+		btSelTudo.setToolTipText( "Selecionar tudo" );
+		btSelNada.setToolTipText( "Limpar seleção" );
 		
 		txtDtIni.setVlrDate( Calendar.getInstance().getTime() );
 		txtDtFim.setVlrDate( Calendar.getInstance().getTime() );
@@ -157,9 +173,14 @@ public class FRemessa extends FFilho implements ActionListener {
 		panelFiltros.adic( filtro, 280, 50, 60, 15 );
 		panelFiltros.adic( rgData, 270, 60, 120, 50 );
 		
-		panelFiltros.adic( btCarrega, 400, 70, 120, 30 );
+		panelFiltros.adic( btCarrega, 410, 70, 160, 30 );
 		
 		panelTabela.add( new JScrollPane( tab ), BorderLayout.CENTER );
+		panelTabela.add( panelFuncoes, BorderLayout.EAST );
+		
+		panelFuncoes.setPreferredSize( new Dimension( 45, 100 ) );
+		panelFuncoes.adic( btSelTudo, 5, 5, 30, 30 );
+		panelFuncoes.adic( btSelNada, 5, 40, 30, 30 );
 		
 		adicBotaoSair();
 				
@@ -177,24 +198,26 @@ public class FRemessa extends FFilho implements ActionListener {
 			
 			sSQL.append( "" );
 			
-			ps = con.prepareStatement( sSQL.toString() );
-			rs = ps.executeQuery();
+			//ps = con.prepareStatement( sSQL.toString() );
+			//rs = ps.executeQuery();
 			
-			for ( int i = 0; rs.next(); i++ ) {
+			for ( int i = 0; i < 10; i++ ) {
 				
 				tab.adicLinha();
-				tab.setValor( rs.getString( "" ), i, 0 );
-				tab.setValor( rs.getString( "" ), i, 1 );
-				tab.setValor( rs.getString( "" ), i, 2 );
-				tab.setValor( rs.getString( "" ), i, 3 );
-				tab.setValor( rs.getString( "" ), i, 4 );
+				tab.setValor( new Boolean( false ), i, 0 );
+				tab.setValor( "rs.getString( \"1\" )", i, 1 );
+				tab.setValor( "rs.getString( \"2\" )", i, 2 );
+				tab.setValor( "rs.getString( \"3\" )", i, 3 );
+				tab.setValor( "rs.getString( \"4\" )", i, 4 );
+				tab.setValor( "rs.getString( \"5\" )", i, 5 );
+				tab.setValor( "rs.getString( \"6\" )", i, 6 );
 			}
 			
-			rs.close();
-			ps.close();
+			//rs.close();
+			//ps.close();
 			
 			if ( ! con.getAutoCommit() ) {
-				con.commit();
+				//con.commit();
 			}
 			
 		} catch ( Exception e ) {
@@ -206,10 +229,30 @@ public class FRemessa extends FFilho implements ActionListener {
 		
 	}
 
+	private void selecionaTudo() {
+
+		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+			tab.setValor( new Boolean( true ), i, 0 );
+		}
+	}
+
+	private void selecionaNada() {
+
+		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+			tab.setValor( new Boolean( false ), i, 0 );
+		}
+	}
+
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btCarrega ) {
 			carregaTab();
+		}
+		else if ( evt.getSource() == btSelTudo ) {
+			selecionaTudo();
+		}
+		else if ( evt.getSource() == btSelNada ) {
+			selecionaNada();
 		}
 	}
 
