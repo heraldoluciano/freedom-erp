@@ -78,7 +78,7 @@ public class RPProduto extends FDados implements ActionListener {
 
 	public RPProduto() {
 
-		super();
+		super( false );
 		setTitulo( "Cadastro de produtos" );		
 		setAtribos( 50, 50, 500, 420 );
 		
