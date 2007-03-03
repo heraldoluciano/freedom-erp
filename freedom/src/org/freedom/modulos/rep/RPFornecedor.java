@@ -72,13 +72,14 @@ public class RPFornecedor extends FDados implements ActionListener {
 
 	public RPFornecedor() {
 
-		super();
+		super( false );
 		setTitulo( "Cadastro de fornecedores" );		
 		setAtribos( 50, 50, 435, 380 );
 		
 		montaTela();
 		setListaCampos( true, "FORNECEDOR", "RP" );
 		
+		txtCnpjFor.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepFor.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneFor.setMascara( JTextFieldPad.MC_FONE );
 		txtFaxFor.setMascara( JTextFieldPad.MC_FONE );
@@ -88,10 +89,10 @@ public class RPFornecedor extends FDados implements ActionListener {
 		
 		adicCampo( txtCodFor, 7, 30, 100, 20, "CodFor", "Cód.For.", ListaCampos.DB_PK, true );
 		adicCampo( txtRazFor, 110, 30, 200, 20, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, true );
-		adicDB( cbAtivo, 325, 30, 80, 20, "AtivoCli", "", true );
+		adicDB( cbAtivo, 325, 30, 80, 20, "AtivFor", "", true );
 		
 		adicCampo( txtNomeFor, 7, 70, 300, 20, "NomeFor", "Nome do fantazia", ListaCampos.DB_SI, true );
-		adicCampo( txtCodRepFor, 310, 70, 100, 20, "CorRepFor", "Cód.rep.for.", ListaCampos.DB_SI, false );
+		adicCampo( txtCodRepFor, 310, 70, 100, 20, "CodRepFor", "Cód.rep.for.", ListaCampos.DB_SI, false );
 		
 		adicCampo( txtCnpjFor, 7, 110, 200, 20, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false );
 		adicCampo( txtInscFor, 210, 110, 200, 20, "InscFor", "Inscrição", ListaCampos.DB_SI, false );

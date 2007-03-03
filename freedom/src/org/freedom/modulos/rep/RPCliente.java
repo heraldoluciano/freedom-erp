@@ -27,6 +27,7 @@ package org.freedom.modulos.rep;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -34,6 +35,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -95,6 +97,10 @@ public class RPCliente extends FTabDados implements ActionListener {
 
 	private final JTextFieldPad txtUFEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
+	private final JTextFieldPad txtCnpjEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
+
+	private final JTextFieldPad txtInscEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
+
 	private final JTextFieldPad txtEndCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 45, 0 );
 
 	//private final JTextFieldPad txtNumCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -106,10 +112,6 @@ public class RPCliente extends FTabDados implements ActionListener {
 	private final JTextFieldPad txtCepCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private final JTextFieldPad txtUFCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-
-	private final JTextFieldPad txtCnpjCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
-
-	private final JTextFieldPad txtInscCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 
 	private final JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -129,12 +131,20 @@ public class RPCliente extends FTabDados implements ActionListener {
 	
 	private final JButton btCopiarCob = new JButton( "copiar endereço", Icone.novo( "btReset.gif" ) );
 	
+	private final ListaCampos lcTipoCli = new ListaCampos( this, "TC" );
+
+	private final ListaCampos lcVend = new ListaCampos( this, "VO" );
+
+	private final ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
+	
 
 	public RPCliente() {
 
-		super();
+		super( false );
 		setTitulo( "Cadastro de tipos de clientes" );		
 		setAtribos( 50, 50, 440, 400 );
+		
+		montaListaCampos();
 		
 		montaTela();
 		setListaCampos( true, "CLIENTE", "RP" );
@@ -145,10 +155,46 @@ public class RPCliente extends FTabDados implements ActionListener {
 		txtFaxCli.setMascara( JTextFieldPad.MC_FONE );
 		txtCepEnt.setMascara( JTextFieldPad.MC_CEP );	
 		txtCepCob.setMascara( JTextFieldPad.MC_CEP );		
-		txtCnpjCob.setMascara( JTextFieldPad.MC_CNPJ );
+		txtCnpjEnt.setMascara( JTextFieldPad.MC_CNPJ );
 		
 		btCopiarEnt.addActionListener( this );
 		btCopiarCob.addActionListener( this );
+	}
+	
+	private void montaListaCampos() {
+		
+		/********************
+		 *   TIPO CLIENTE   *
+		 ********************/
+		
+		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, true ) );
+		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false ) );
+		lcTipoCli.montaSql( false, "TIPOCLI", "RP" );
+		lcTipoCli.setQueryCommit( false );
+		lcTipoCli.setReadOnly( true );
+		txtCodTipoCli.setTabelaExterna( lcTipoCli );
+		
+		/********************
+		 *     VENDEDOR     *
+		 ********************/
+		
+		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.vend.", ListaCampos.DB_PK, false ) );
+		lcVend.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do vendedor", ListaCampos.DB_SI, false ) );
+		lcVend.montaSql( false, "VENDEDOR", "RP" );
+		lcVend.setQueryCommit( false );
+		lcVend.setReadOnly( true );
+		txtCodVend.setTabelaExterna( lcVend );
+		
+		/**********************
+		 * PLANO DE PAGAMENTO *
+		 **********************/
+		
+		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
+		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
+		lcPlanoPag.montaSql( false, "PLANOPAG", "RP" );
+		lcPlanoPag.setQueryCommit( false );
+		lcPlanoPag.setReadOnly( true );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
 	}
 	
 	private void montaTela() {
@@ -193,7 +239,10 @@ public class RPCliente extends FTabDados implements ActionListener {
 		adicCampo( txtCidEnt, 7, 70, 132, 20, "CidEntCli", "Cidade", ListaCampos.DB_SI, false );
 		adicCampo( txtBairEnt, 142, 70, 132, 20, "BairEntCli", "Bairro", ListaCampos.DB_SI, false );		
 		adicCampo( txtCepEnt, 277, 70, 80, 20, "CepEntCli", "Cep", ListaCampos.DB_SI, false );
-		adicCampo( txtUFEnt, 360, 70, 50, 20, "EstEntCli", "UF", ListaCampos.DB_SI, false );
+		adicCampo( txtUFEnt, 360, 70, 50, 20, "EstEntCli", "UF", ListaCampos.DB_SI, false );	
+		
+		adicCampo( txtCnpjEnt, 7, 110, 200, 20, "CnpjEntCli", "CNPJ", ListaCampos.DB_SI, false );
+		adicCampo( txtInscEnt, 210, 110, 200, 20, "InscEntCli", "Inscrição", ListaCampos.DB_SI, false );
 		
 		adic( btCopiarEnt, 7, 150, 200, 30 );
 		
@@ -209,10 +258,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 		adicCampo( txtCidCob, 7, 70, 132, 20, "CidCobCli", "Cidade", ListaCampos.DB_SI, false );
 		adicCampo( txtBairCob, 142, 70, 132, 20, "BairCobCli", "Bairro", ListaCampos.DB_SI, false );		
 		adicCampo( txtCepCob, 277, 70, 80, 20, "CepCobCli", "Cep", ListaCampos.DB_SI, false );
-		adicCampo( txtUFCob, 360, 70, 50, 20, "EstCobCli", "UF", ListaCampos.DB_SI, false );		
-		
-		adicCampo( txtCnpjCob, 7, 110, 200, 20, "CnpjCobCli", "CNPJ", ListaCampos.DB_SI, false );
-		adicCampo( txtInscCob, 210, 110, 200, 20, "InscCobCli", "Inscrição", ListaCampos.DB_SI, false );
+		adicCampo( txtUFCob, 360, 70, 50, 20, "EstCobCli", "UF", ListaCampos.DB_SI, false );	
 		
 		adic( btCopiarCob, 7, 150, 200, 30 );
 		
@@ -235,19 +281,19 @@ public class RPCliente extends FTabDados implements ActionListener {
 		adic( comercial, 27, 10, 80, 20 );
 		adic( linha1, 7, 20, 403, 160 );
 		
-		adicCampo( txtCodTipoCli, 17, 60, 90, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescTipoCli, 110, 60, 290, 20, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false );
+		adicCampo( txtCodTipoCli, 17, 60, 90, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_FK, txtDescTipoCli, true );
+		adicDescFK( txtDescTipoCli, 110, 60, 290, 20, "DescTipoCli", "Descrição do tipo de cliente" );
 		
-		adicCampo( txtCodVend, 17, 100, 90, 20, "CodVend", "Cód.vend.", ListaCampos.DB_PK, true );
-		adicCampo( txtNomeVend, 110, 100, 290, 20, "NomeVend", "Nome do vendedor", ListaCampos.DB_SI, false );
+		adicCampo( txtCodVend, 17, 100, 90, 20, "CodVend", "Cód.vend.", ListaCampos.DB_FK, txtNomeVend, true );
+		adicDescFK( txtNomeVend, 110, 100, 290, 20, "NomeVend", "Nome do vendedor" );
 		
-		adicCampo( txtCodPlanoPag, 17, 140, 90, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false );
-		adicCampo( txtDescPlanoPag, 110, 140, 290, 20, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false );
+		adicCampo( txtCodPlanoPag, 17, 140, 90, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, false );
+		adicDescFK( txtDescPlanoPag, 110, 140, 290, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
 		
 		adic( atividade, 27, 190, 80, 20 );
 		adic( linha2, 7, 200, 403, 50 );
 		
-		adicDB( cbAtivo, 15, 215, 300, 20, "AtivoCli", "", true );
+		adicDB( cbAtivo, 15, 215, 300, 20, "AtivCli", "", true );
 	}
 	
 	private void copiarEndereco( final String arg ) {
@@ -257,6 +303,8 @@ public class RPCliente extends FTabDados implements ActionListener {
 		String bairro = txtBairCli.getVlrString();
 		String cep = txtCepCli.getVlrString();
 		String estado = txtUFCli.getVlrString();
+		String cnpj = txtCnpjCli.getVlrString();
+		String insc = txtInscCli.getVlrString();
 		
 		if ( "entrega".equalsIgnoreCase( arg ) ) {
 			
@@ -265,6 +313,8 @@ public class RPCliente extends FTabDados implements ActionListener {
 			txtBairEnt.setVlrString( bairro );
 			txtCepEnt.setVlrString( cep );
 			txtUFEnt.setVlrString( estado );
+			txtCnpjEnt.setVlrString( cnpj );
+			txtInscEnt.setVlrString( insc );
 		}
 		else if ( "cobrança".equalsIgnoreCase( arg ) ) {
 			
@@ -286,5 +336,14 @@ public class RPCliente extends FTabDados implements ActionListener {
 		}
 		
 		super.actionPerformed( e );
+	}
+
+	public void setConexao( Connection cn ) {
+
+		super.setConexao( cn );
+
+		lcTipoCli.setConexao( cn );
+		lcVend.setConexao( cn );
+		lcPlanoPag.setConexao( cn );
 	}
 }

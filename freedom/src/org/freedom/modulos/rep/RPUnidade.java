@@ -41,12 +41,12 @@ public class RPUnidade extends FDados implements ActionListener {
 
 	public RPUnidade() {
 
-		super();
+		super( false );
 		setTitulo( "Cadastro de unidades" );		
 		setAtribos( 50, 50, 410, 140 );
 		
 		montaTela();
-		setListaCampos( true, "UNIDADE", "RP" );
+		setListaCampos( false, "UNIDADE", "RP" );
 	}
 	
 	private void montaTela() {
