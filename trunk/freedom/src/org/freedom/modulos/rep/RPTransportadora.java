@@ -67,13 +67,14 @@ public class RPTransportadora extends FDados implements ActionListener {
 
 	public RPTransportadora() {
 
-		super();
+		super( false );
 		setTitulo( "Cadastro de Trannecedores" );		
 		setAtribos( 50, 50, 435, 380 );
 		
 		montaTela();
 		setListaCampos( true, "TRANSP", "RP" );
 		
+		txtCnpjTran.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepTran.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneTran.setMascara( JTextFieldPad.MC_FONE );
 		txtFaxTran.setMascara( JTextFieldPad.MC_FONE );
@@ -81,8 +82,8 @@ public class RPTransportadora extends FDados implements ActionListener {
 	
 	private void montaTela() {
 		
-		adicCampo( txtCodTran, 7, 30, 100, 20, "CodTran", "Cód.Tran.", ListaCampos.DB_PK, true );
-		adicCampo( txtRazTran, 110, 30, 300, 20, "RazTran", "Razão social do Trannecedor", ListaCampos.DB_SI, true );
+		adicCampo( txtCodTran, 7, 30, 100, 20, "CodTran", "Cód.transp.", ListaCampos.DB_PK, true );
+		adicCampo( txtRazTran, 110, 30, 300, 20, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, true );
 		
 		adicCampo( txtNomeTran, 7, 70, 403, 20, "NomeTran", "Nome do fantazia", ListaCampos.DB_SI, true );
 		

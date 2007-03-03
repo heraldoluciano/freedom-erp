@@ -63,7 +63,7 @@ public class RPVendedor extends FDados implements ActionListener {
 
 	public RPVendedor() {
 
-		super();
+		super( false );
 		setTitulo( "Cadastro de vendedor" );		
 		setAtribos( 50, 50, 435, 300 );
 		

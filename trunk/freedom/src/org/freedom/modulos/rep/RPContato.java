@@ -63,7 +63,7 @@ public class RPContato extends FDados implements ActionListener {
 
 	public RPContato() {
 
-		super();
+		super( false );
 		setTitulo( "Cadastro de contato" );		
 		setAtribos( 50, 50, 435, 300 );
 		

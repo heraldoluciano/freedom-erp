@@ -50,17 +50,17 @@ public class RPMoeda extends FDados {
 
 	public RPMoeda() {
 
-		super();
+		super( false );
 		setTitulo( "Cadastro de Moedas" );
 		setAtribos( 50, 50, 425, 270 );
 
 		Vector<String> vValsTipo = new Vector<String>();
 		Vector<String> vLabsTipo = new Vector<String>();
-		
-		vValsTipo.addElement( "I" );
+
 		vValsTipo.addElement( "C" );
-		vLabsTipo.addElement( "Indice de valores" );
+		vValsTipo.addElement( "I" );
 		vLabsTipo.addElement( "Moeda corrente" );
+		vLabsTipo.addElement( "Indice de valores" );
 		rgTipo = new JRadioGroup( 2, 1, vLabsTipo, vValsTipo );
 		rgTipo.setVlrString( "C" );
 		
