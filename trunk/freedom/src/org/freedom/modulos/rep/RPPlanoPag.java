@@ -57,6 +57,7 @@ public class RPPlanoPag extends FDetalhe {
 	
 	public RPPlanoPag() {
 
+		super( false );
 		setTitulo( "Cadastro de Planos de Pagamento" );
 		setAtribos( 50, 50, 405, 350 );
 		
