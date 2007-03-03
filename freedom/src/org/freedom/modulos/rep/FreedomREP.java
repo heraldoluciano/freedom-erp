@@ -29,15 +29,15 @@ import java.awt.event.ActionListener;
 
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrincipalPD;
 import org.freedom.telas.LoginPD;
 
-public class FreedomREP extends AplicativoPD implements ActionListener {
+public class FreedomREP extends AplicativoRep implements ActionListener {
 
 	public FreedomREP() {
 
 		super( "iconAtendimento32.gif", "splashREP.jpg", 1, "Freedom", 5, "Controle de representações", null, new FPrincipalPD( null, "bgFreedomSTD.jpg" ), LoginPD.class );
+		
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Cliente", "Cliente", 'C', 100101000, 2, true, RPCliente.class );
