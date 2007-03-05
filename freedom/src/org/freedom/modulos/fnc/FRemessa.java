@@ -198,26 +198,26 @@ public class FRemessa extends FFilho implements ActionListener {
 			
 			sSQL.append( "" );
 			
-			//ps = con.prepareStatement( sSQL.toString() );
-			//rs = ps.executeQuery();
+			ps = con.prepareStatement( sSQL.toString() );
+			rs = ps.executeQuery();
 			
-			for ( int i = 0; i < 10; i++ ) {
+			for ( int i = 0; rs.next(); i++ ) {
 				
 				tab.adicLinha();
 				tab.setValor( new Boolean( false ), i, 0 );
-				tab.setValor( "rs.getString( \"1\" )", i, 1 );
-				tab.setValor( "rs.getString( \"2\" )", i, 2 );
-				tab.setValor( "rs.getString( \"3\" )", i, 3 );
-				tab.setValor( "rs.getString( \"4\" )", i, 4 );
-				tab.setValor( "rs.getString( \"5\" )", i, 5 );
-				tab.setValor( "rs.getString( \"6\" )", i, 6 );
+				tab.setValor( rs.getString( 1 ), i, 1 );
+				tab.setValor( rs.getString( 2 ), i, 2 );
+				tab.setValor( rs.getString( 3 ), i, 3 );
+				tab.setValor( rs.getString( 4 ), i, 4 );
+				tab.setValor( rs.getString( 5 ), i, 5 );
+				tab.setValor( rs.getString( 6 ), i, 6 );
 			}
 			
-			//rs.close();
-			//ps.close();
+			rs.close();
+			ps.close();
 			
 			if ( ! con.getAutoCommit() ) {
-				//con.commit();
+				con.commit();
 			}
 			
 		} catch ( Exception e ) {
