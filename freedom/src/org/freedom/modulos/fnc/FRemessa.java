@@ -50,6 +50,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FRemessa extends FFilho implements ActionListener {
@@ -122,20 +123,32 @@ public class FRemessa extends FFilho implements ActionListener {
 		montaTela();
 
 		tab.adicColuna( "" );
+		tab.adicColuna( "Cód.rec." );
+		tab.adicColuna( "Parcela" );
 		tab.adicColuna( "Cliente" );
 		tab.adicColuna( "Razão social do cliente" );
 		tab.adicColuna( "Doc" );
 		tab.adicColuna( "Valor" );
 		tab.adicColuna( "Emissão" );
 		tab.adicColuna( "Vencimento" );
+		tab.adicColuna( "Agência" );
+		tab.adicColuna( "Indentificação" );
+		tab.adicColuna( "Sit. rem." );
+		tab.adicColuna( "Sit. ret." );
 
 		tab.setTamColuna( 20, 0 );
-		tab.setTamColuna( 67, 1 );
-		tab.setTamColuna( 160, 2 );
-		tab.setTamColuna( 80, 3 );
-		tab.setTamColuna( 70, 4 );
-		tab.setTamColuna( 70, 5 );
+		tab.setTamColuna( 70, 1 );
+		tab.setTamColuna( 70, 2 );
+		tab.setTamColuna( 70, 3 );
+		tab.setTamColuna( 150, 4 );
+		tab.setTamColuna( 80, 5 );
 		tab.setTamColuna( 70, 6 );
+		tab.setTamColuna( 70, 7 );
+		tab.setTamColuna( 70, 8 );
+		tab.setTamColuna( 100, 9 );
+		tab.setTamColuna( 100, 10 );
+		tab.setTamColuna( 50, 11 );
+		tab.setTamColuna( 50, 12 );
 		
 		tab.setColunaEditavel( 0, true );
 		
@@ -207,41 +220,78 @@ public class FRemessa extends FFilho implements ActionListener {
 	
 	private void carregaTab() {
 		
+		if ( txtCodBanco.getVlrString().trim().length() < 1 ) {
+			Funcoes.mensagemErro( this, "O código do banco é obrigatorio!" );
+			return;
+		}
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sSQL = new StringBuilder();
-		
-		lbStatus.setText( "carregando tabela ..." );
+		String sDtFiltro = "E".equals( rgData.getVlrString() ) ? "IR.DTITREC" : "IR.DTVENCITREC";
 		
 		try {
 			
 			tab.limpa();
 			
-			sSQL.append( "" );
+			sSQL.append( "SELECT IR.CODREC, IR.NPARCITREC, R.DOCREC, R.CODCLI, C.RAZCLI, IR.DTITREC, IR.DTVENCITREC," );
+			sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, FR.SITREMESSA, FR.SITRETORNO " );
+			sSQL.append( "FROM VDCLIENTE C," );
+			sSQL.append( "FNRECEBER R LEFT OUTER JOIN FNFBNCLI FC ON " );
+			sSQL.append( "FC.CODEMP=R.CODEMPCL AND FC.CODFILIAL=R.CODFILIALCL AND FC.CODCLI=R.CODCLI ," );
+			sSQL.append( "FNITRECEBER IR LEFT OUTER JOIN FNFBNREC FR ON " );
+			sSQL.append( "FR.CODEMP=IR.CODEMP AND FR.CODFILIAL=IR.CODFILIAL AND " );
+			sSQL.append( "FR.CODREC=IR.CODREC AND FR.NPARCITREC=IR.NPARCITREC AND " );
+			sSQL.append( "FR.CODEMPBO=IR.CODEMPBO AND FR.CODFILIALBO=IR.CODFILIALBO AND FR.CODBANCO=IR.CODBANCO " );
+			sSQL.append( "WHERE R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC AND " );
+			sSQL.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND " );
+			sSQL.append( sDtFiltro );
+			sSQL.append( " BETWEEN ? AND ? AND IR.STATUSITREC IN ('R1','RL') AND "  );
+			sSQL.append( "IR.CODEMPBO=? AND IR.CODFILIALBO=? AND IR.CODBANCO=? " );
+
 			
-			//ps = con.prepareStatement( sSQL.toString() );
-			//rs = ps.executeQuery();
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setDate( 1, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
+			ps.setDate( 2, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+			ps.setInt( 5, txtCodBanco.getVlrInteger() );
 			
-			for ( int i = 0; i < 10; i++ ) {
-				
+			rs = ps.executeQuery();
+			
+			int i = 0;
+			for ( i = 0; rs.next(); i++ ) {
+								
 				tab.adicLinha();
 				tab.setValor( new Boolean( false ), i, 0 );
-				tab.setValor( "rs.getString( 1 )", i, 1 );
-				tab.setValor( "rs.getString( 2 )", i, 2 );
-				tab.setValor( "rs.getString( 3 )", i, 3 );
-				tab.setValor( "rs.getString( 4 )", i, 4 );
-				tab.setValor( "rs.getString( 5 )", i, 5 );
-				tab.setValor( "rs.getString( 6 )", i, 6 );
+				tab.setValor( rs.getString( "CODREC" ), i, 1 );
+				tab.setValor( rs.getInt( "NPARCITREC" ), i, 2 );
+				tab.setValor( rs.getInt( "CODCLI" ), i, 3 );
+				tab.setValor( rs.getString( "RAZCLI" ), i, 4 );
+				tab.setValor( rs.getString( "DOCREC" ), i, 5 );
+				tab.setValor( rs.getBigDecimal( "VLRAPAGITREC" ), i, 6 );
+				tab.setValor( rs.getDate( "DTITREC" ), i, 7 );
+				tab.setValor( rs.getDate( "DTVENCITREC" ), i, 8 );
+				
+				tab.setValor( rs.getString( "AGENCIACLI" ), i, 9 );
+				tab.setValor( rs.getString( "IDENTCLI" ), i, 10 );
+				tab.setValor( rs.getString( "SITREMESSA" ), i, 11 );
+				tab.setValor( rs.getString( "SITRETORNO" ), i, 12 );
 			}
 			
-			//rs.close();
-			//ps.close();
+			rs.close();
+			ps.close();
 			
 			if ( ! con.getAutoCommit() ) {
 				con.commit();
 			}
 			
-			lbStatus.setText( "tabela carregada ..." );
+			if ( i > 0 ) {
+				lbStatus.setText( "     tabela carregada com " + i + " itens..." );	
+			}
+			else {
+				lbStatus.setText( "" );				
+			}
 			
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao busca dados!\n" +  e.getMessage() );
@@ -269,7 +319,8 @@ public class FRemessa extends FFilho implements ActionListener {
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btCarrega ) {
+		if ( evt.getSource() == btCarrega ) {			
+			lbStatus.setText( "      carregando tabela ..." );
 			carregaTab();
 		}
 		else if ( evt.getSource() == btSelTudo ) {
