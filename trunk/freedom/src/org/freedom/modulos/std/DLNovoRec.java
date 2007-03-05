@@ -164,7 +164,7 @@ public class DLNovoRec extends FFDialogo implements PostListener{
         public void mouseClicked(MouseEvent mevt) {
           if ((mevt.getClickCount() == 2) & (tabRec.getLinhaSel() >= 0)) {
              lcItReceber.edit();
-             DLFechaParcela dl = new DLFechaParcela(DLNovoRec.this,txtVlrParcItRec.getVlrBigDecimal(),txtDtVencItRec.getVlrDate(),txtVlrDescItRec.getVlrBigDecimal());
+             DLFechaParcela dl = new DLFechaParcela(DLNovoRec.this, con, txtVlrParcItRec.getVlrBigDecimal(),txtDtVencItRec.getVlrDate(),txtVlrDescItRec.getVlrBigDecimal());
              dl.setVisible(true);
             if (dl.OK) {
               txtVlrParcItRec.setVlrBigDecimal((BigDecimal)dl.getValores()[0]);
