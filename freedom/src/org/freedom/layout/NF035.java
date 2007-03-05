@@ -302,7 +302,8 @@ public class NF035 extends Layout {
 								if ( contaLinha == 6 ) {
 									imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( bdVlrIssServ ) ) );
 								}
-							}indexServ++;
+							}
+							indexServ++;
 						}
 						imp.pulaLinha( 10 - contaLinha, imp.comprimido() );
 						imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( bdVlrTotServ ) ) );
