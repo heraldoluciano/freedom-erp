@@ -53,13 +53,15 @@ public class DLNovoRec extends FFDialogo implements PostListener{
 	private static final long serialVersionUID = 1L;
 
   private JPanelPad pnRec = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-  private JPanelPad pinCab = new JPanelPad(580,130);
+  private JPanelPad pinCab = new JPanelPad(580,127);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
   private JTextFieldFK txtDescBanco = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtCodTipCob = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
+  private JTextFieldFK txtDescTipoCob = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtNParcRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtVlrParcItRec = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
@@ -77,12 +79,13 @@ public class DLNovoRec extends FFDialogo implements PostListener{
   private ListaCampos lcCli = new ListaCampos(this,"CL");
   private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
   private ListaCampos lcBanco = new ListaCampos(this,"BO");
+  private ListaCampos lcCob = new ListaCampos(this,"CO");
   private Navegador navRec = new Navegador(false);
   private Navegador navItRec = new Navegador(false);
   public DLNovoRec(Component cOrig) {
   	super(cOrig);
     setTitulo("Novo");
-    setAtribos(600,320);
+    setAtribos(600,350);
     
     lcItReceber.setMaster(lcReceber);
     lcReceber.adicDetalhe(lcItReceber);
@@ -119,20 +122,30 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     txtCodBanco.setTabelaExterna(lcBanco);
     txtCodBanco.setFK(true);
     txtCodBanco.setNomeCampo("CodBanco");
-
+    
+    //cobrança
+    lcCob.add( new GuardaCampo( txtCodTipCob, "CodTipoCob", "Cód.Tip.Cob",ListaCampos.DB_PK, false ));
+    lcCob.add( new GuardaCampo( txtDescTipoCob,"DescTipoCob", "Descrição Tipo de Cobrança", ListaCampos.DB_SI, false));
+    lcCob.montaSql(false, "TIPOCOB", "FN");
+    lcCob.setQueryCommit(false);
+    lcCob.setReadOnly(true);
+    txtCodTipCob.setTabelaExterna(lcCob);
+    txtCodTipCob.setFK(true);
+    txtCodTipCob.setNomeCampo("CodTipoCob");
+   
     lcReceber.add(new GuardaCampo( txtCodRec, "CodRec", "Cód.rec.", ListaCampos.DB_PK, true));
     lcReceber.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.",  ListaCampos.DB_FK,true));
     lcReceber.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.",  ListaCampos.DB_FK,true));
     lcReceber.add(new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco",  ListaCampos.DB_FK, false));
-    lcReceber.add(new GuardaCampo( txtVlrParcRec, "VlrParcRec", "Valor parc.",  ListaCampos.DB_SI,false));
-    lcReceber.add(new GuardaCampo( txtVlrParcRec, "VlrAPagRec", "Valor a rec.",  ListaCampos.DB_SI,false));
-    lcReceber.add(new GuardaCampo( txtVlrParcRec, "VlrRec", "Valor tot.",  ListaCampos.DB_SI,false));
+    lcReceber.add(new GuardaCampo( txtVlrParcRec, "VlrParcRec", "Valor parc.",  ListaCampos.DB_SI,true));
+    lcReceber.add(new GuardaCampo( txtVlrParcRec, "VlrAPagRec", "Valor a rec.",  ListaCampos.DB_SI,true));
+    lcReceber.add(new GuardaCampo( txtVlrParcRec, "VlrRec", "Valor tot.",  ListaCampos.DB_SI,true));
     lcReceber.add(new GuardaCampo( txtDtEmisRec, "DataRec", "Dt.emissão",  ListaCampos.DB_SI,true));
     lcReceber.add(new GuardaCampo( txtDocRec, "DocRec", "N.doc.",  ListaCampos.DB_SI,true));
     lcReceber.add(new GuardaCampo( txtObs, "ObsRec", "Obs.",  ListaCampos.DB_SI,false));
     lcReceber.add(new GuardaCampo( txtStatus, "StatusRec", "Status",  ListaCampos.DB_SI, false));
     lcReceber.montaSql(true,"RECEBER", "FN");
-
+    
     txtNParcRec.setNomeCampo("NParcRec");
     lcItReceber.add(new GuardaCampo( txtNParcRec, "NParcItRec", "N.parc.",  ListaCampos.DB_PK, false));
     lcItReceber.add(new GuardaCampo( txtVlrParcItRec, "VlrParcItRec", "Valor tot.",  ListaCampos.DB_SI,false));
@@ -187,18 +200,22 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     adic(txtCodPlanoPag,290,20,77,20);
     adic(new JLabelPad("Descrição do plano de pagto."),370,0,250,20);
     adic(txtDescPlanoPag,370,20,200,20);
-    adic(new JLabelPad("Cód.banco"),7,40,250,20);
-    adic(txtCodBanco,7,60,80,20);
-    adic(new JLabelPad("Descriçao do banco"),90,40,250,20);
-    adic(txtDescBanco,90,60,197,20);
-    adic(new JLabelPad("Valor"),290,40,107,20);
-    adic(txtVlrParcRec,290,60,107,20);
-    adic(new JLabelPad("Data de Emissão"),400,40,100,20);
-    adic(txtDtEmisRec,400,60,100,20);
-    adic(new JLabelPad("Doc."),7,80,80,20);
-    adic(txtDocRec,7,100,80,20);
-    adic(new JLabelPad("Observações"),90,80,300,20);
-    adic(txtObs,90,100,300,20);
+    adic(new JLabelPad("Cod.Tip.Cob."),7,40,250,20);
+    adic(txtCodTipCob,7,60,80,20);
+    adic(new JLabelPad("Descrição Tipo Cobrança"),90,40,200,20);
+    adic(txtDescTipoCob,90,60,197,20);
+    adic(new JLabelPad("Cód.banco"),290,40,250,20);
+    adic(txtCodBanco,290,60,80,20);
+    adic(new JLabelPad("Descriçao do banco"),370,40,250,20);
+    adic(txtDescBanco,370,60,200,20);
+    adic(new JLabelPad("Valor"),7,80,107,20);
+    adic(txtVlrParcRec,7,100,90,20);
+    adic(new JLabelPad("Data de Emissão"),100,80,100,20);
+    adic(txtDtEmisRec,100,100,100,20);
+    adic(new JLabelPad("Doc."),203,80,80,20);
+    adic(txtDocRec,203,100,85,20);
+    adic(new JLabelPad("Observações"),290,80,300,20);
+    adic(txtObs,290,100,282,20);
     
     lcReceber.addPostListener(this);
   }
@@ -254,6 +271,7 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     lcReceber.setConexao(cn);
     lcItReceber.setConexao(cn);
     lcBanco.setConexao(cn);
+    lcCob.setConexao( cn );
     lcReceber.insert(true);
   }
 }

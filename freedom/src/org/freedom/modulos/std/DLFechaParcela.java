@@ -25,9 +25,13 @@ package org.freedom.modulos.std;
 
 import java.awt.Component;
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.util.Date;
 
+import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JTextFieldFK;
+import org.freedom.componentes.ListaCampos;
 
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
@@ -41,12 +45,18 @@ public class DLFechaParcela extends FFDialogo {
 	private JTextFieldPad txtDtVencItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtVlrDescItRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	
+	private JTextFieldPad txtCodTipCob = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
+	  
+	private JTextFieldFK txtDescTipoCob = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	
+	 private ListaCampos lcCob = new ListaCampos(this,"CO");
 
 	public DLFechaParcela( Component cOrig, BigDecimal bigParcItRec, Date dDtVencItRec, BigDecimal bigDescItRec ) {
 
 		super( cOrig );
 		setTitulo( "Parcela" );
-		setAtribos( 100, 100, 250, 220 );
+		setAtribos( 100, 100, 350, 180 );
 		
 		if ( bigDescItRec == null ) {
 			txtVlrDescItRec.setAtivo( false );
@@ -58,12 +68,31 @@ public class DLFechaParcela extends FFDialogo {
 
 		adic( new JLabelPad( "Valor" ), 7, 0, 100, 20 );
 		adic( new JLabelPad( "Vencimento" ), 110, 0, 100, 20 );
-		adic( new JLabelPad( "Desconto" ), 7, 40, 100, 20 );
+		adic( new JLabelPad( "Desconto" ), 220, 0, 100, 20 );
+		adic( new JLabelPad("COd.Tip.Cob"),7,40,80,20);
+		adic( new JLabelPad("Descrição Tipo Cobrança"),90, 40, 230, 20);
 		adic( txtParcItRec, 7, 20, 100, 20 );
 		adic( txtDtVencItRec, 110, 20, 100, 20 );
-		adic( txtVlrDescItRec, 7, 60, 100, 20 );
+		adic( txtVlrDescItRec, 220, 20, 100, 20 );
+		adic(txtCodTipCob, 7, 60, 80, 20);
+		adic(txtDescTipoCob, 90, 60, 230, 20);
+		
+		lcCob.add( new GuardaCampo( txtCodTipCob, "CodTipoCob", "Cód.Tip.Cob",ListaCampos.DB_PK, false ));
+		lcCob.add( new GuardaCampo( txtDescTipoCob,"DescTipoCob", "Descrição Tipo de Cobrança", ListaCampos.DB_SI, false));
+		lcCob.montaSql(false, "TIPOCOB", "FN");
+		lcCob.setQueryCommit(false);
+		lcCob.setReadOnly(true);
+		txtCodTipCob.setTabelaExterna(lcCob);
+		txtCodTipCob.setFK(true);
+		txtCodTipCob.setNomeCampo("CodTipoCob");
+		
 	}
-
+	 public void setConexao(Connection cn) {
+		   
+		 super.setConexao(cn);
+		 lcCob.setConexao( cn );
+	 }
+	 
 	public Object[] getValores() {
 
 		Object[] oRetorno = new Object[ 3 ];
