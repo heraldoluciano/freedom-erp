@@ -62,6 +62,8 @@ public class DLNovoRec extends FFDialogo implements PostListener{
   private JTextFieldFK txtDescBanco = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodTipCob = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
   private JTextFieldFK txtDescTipoCob = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtItCodTipCob = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
+ // private JTextFieldFK txtItDescTipoCob = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtNParcRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtVlrParcItRec = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
@@ -144,6 +146,7 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     lcReceber.add(new GuardaCampo( txtDocRec, "DocRec", "N.doc.",  ListaCampos.DB_SI,true));
     lcReceber.add(new GuardaCampo( txtObs, "ObsRec", "Obs.",  ListaCampos.DB_SI,false));
     lcReceber.add(new GuardaCampo( txtStatus, "StatusRec", "Status",  ListaCampos.DB_SI, false));
+    lcReceber.add(new GuardaCampo( txtCodTipCob, "CodTipoCob", "Cód.banco",  ListaCampos.DB_PK, false));
     lcReceber.montaSql(true,"RECEBER", "FN");
     
     txtNParcRec.setNomeCampo("NParcRec");
@@ -151,12 +154,15 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     lcItReceber.add(new GuardaCampo( txtVlrParcItRec, "VlrParcItRec", "Valor tot.",  ListaCampos.DB_SI,false));
     lcItReceber.add(new GuardaCampo( txtDtVencItRec, "DtVencItRec", "Dt.vencto.",  ListaCampos.DB_SI,false));
     lcItReceber.add(new GuardaCampo( txtVlrDescItRec, "VlrDescItRec", "Valor desc.",  ListaCampos.DB_SI,false));
+    lcItReceber.add(new GuardaCampo(txtItCodTipCob,"CodTipoCob", "Cod.Tipo.Cob", ListaCampos.DB_PK, false));
+   
     lcItReceber.montaSql(false, "ITRECEBER", "FN");
     lcItReceber.setQueryCommit(false);
     txtNParcRec.setListaCampos(lcItReceber);
     txtVlrParcItRec.setListaCampos(lcItReceber);
     txtVlrDescItRec.setListaCampos(lcItReceber);
     txtDtVencItRec.setListaCampos(lcItReceber);
+    txtItCodTipCob.setListaCampos(lcItReceber);
     
     lcItReceber.montaTab();
     tabRec.addMouseListener( //Adiciona o mouse listener para que possa editar os itens.
