@@ -25,6 +25,7 @@
 package org.freedom.modulos.fnc;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,6 +56,8 @@ public class FRemessa extends FFilho implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	
+	private JPanelPad panelRodape = null;
+	
 	private final JPanelPad panelRemessa = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private final JPanelPad panelFiltros = new JPanelPad();
@@ -62,6 +65,8 @@ public class FRemessa extends FFilho implements ActionListener {
 	private final JPanelPad panelTabela = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private final JPanelPad panelFuncoes = new JPanelPad();
+	
+	private final JPanelPad panelStatus = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private final Tabela tab = new Tabela();
 
@@ -72,14 +77,18 @@ public class FRemessa extends FFilho implements ActionListener {
 	private final JTextFieldPad txtDtIni = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
 	private final JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private final JRadioGroup rgData;
 	
 	private final JButton btCarrega = new JButton( "Buscar", Icone.novo( "btExecuta.gif" ) );
+	
+	private final JButton btExporta = new JButton( "Exportar", Icone.novo( "btSalvar.gif" ) );
 
 	private final JButton btSelTudo = new JButton( Icone.novo( "btTudo.gif" ) );
 
 	private final JButton btSelNada = new JButton( Icone.novo( "btNada.gif" ) );
-
-	private final JRadioGroup rgData;
+	
+	private final JLabel lbStatus = new JLabel();
 
 	private final ListaCampos lcBanco = new ListaCampos( this );
 
@@ -148,12 +157,13 @@ public class FRemessa extends FFilho implements ActionListener {
 		
 		panelRemessa.add( panelFiltros, BorderLayout.NORTH );
 		panelRemessa.add( panelTabela, BorderLayout.CENTER );
+		panelRemessa.add( panelStatus, BorderLayout.SOUTH );
 		
 		panelFiltros.setPreferredSize( new Dimension( 300, 120 ) );
-		panelFiltros.adic( new JLabel( "Cód.banco" ), 7, 10, 100, 20 );
-		panelFiltros.adic( txtCodBanco, 7, 30, 100, 20 );
-		panelFiltros.adic( new JLabel( "Nome do banco" ), 110, 10, 250, 20 );
-		panelFiltros.adic( txtNomeBanco, 110, 30, 280, 20 );
+		panelFiltros.adic( new JLabel( "Cód.banco" ), 7, 0, 100, 20 );
+		panelFiltros.adic( txtCodBanco, 7, 20, 100, 20 );
+		panelFiltros.adic( new JLabel( "Nome do banco" ), 110, 0, 250, 20 );
+		panelFiltros.adic( txtNomeBanco, 110, 20, 280, 20 );
 		
 		JLabel bordaData = new JLabel();
 		bordaData.setBorder( BorderFactory.createEtchedBorder() );
@@ -164,16 +174,16 @@ public class FRemessa extends FFilho implements ActionListener {
 		JLabel filtro = new JLabel( "filtro", SwingConstants.CENTER  );
 		filtro.setOpaque( true );
 
-		panelFiltros.adic( periodo, 15, 50, 80, 20 );
-		panelFiltros.adic( txtDtIni, 15, 80, 100, 20 );
-		panelFiltros.adic( new JLabel( "até", SwingConstants.CENTER ), 115, 80, 40, 20 );
-		panelFiltros.adic( txtDtFim, 155, 80, 100, 20 );
-		panelFiltros.adic( bordaData, 7, 60, 256, 50 );
+		panelFiltros.adic( periodo, 15, 40, 80, 20 );
+		panelFiltros.adic( txtDtIni, 15, 75, 100, 20 );
+		panelFiltros.adic( new JLabel( "até", SwingConstants.CENTER ), 115, 75, 40, 20 );
+		panelFiltros.adic( txtDtFim, 155, 75, 100, 20 );
+		panelFiltros.adic( bordaData, 7, 50, 256, 60 );
+
+		panelFiltros.adic( filtro, 280, 42, 60, 16 );
+		panelFiltros.adic( rgData, 270, 50, 120, 60 );
 		
-		panelFiltros.adic( filtro, 280, 50, 60, 15 );
-		panelFiltros.adic( rgData, 270, 60, 120, 50 );
-		
-		panelFiltros.adic( btCarrega, 410, 70, 160, 30 );
+		panelFiltros.adic( btCarrega, 413, 65, 160, 30 );
 		
 		panelTabela.add( new JScrollPane( tab ), BorderLayout.CENTER );
 		panelTabela.add( panelFuncoes, BorderLayout.EAST );
@@ -182,7 +192,16 @@ public class FRemessa extends FFilho implements ActionListener {
 		panelFuncoes.adic( btSelTudo, 5, 5, 30, 30 );
 		panelFuncoes.adic( btSelNada, 5, 40, 30, 30 );
 		
-		adicBotaoSair();
+		lbStatus.setForeground( Color.BLUE );
+		
+		panelStatus.setPreferredSize( new Dimension( 600, 30 ) );
+		panelStatus.add( lbStatus, BorderLayout.WEST );
+		
+		panelRodape = adicBotaoSair();
+		panelRodape.setBorder( BorderFactory.createEtchedBorder() );
+		panelRodape.setPreferredSize( new Dimension( 600, 32 ) );
+		btExporta.setPreferredSize( new Dimension( 160, 30 ) );
+		panelRodape.add( btExporta, BorderLayout.WEST );
 				
 	}
 	
@@ -192,37 +211,42 @@ public class FRemessa extends FFilho implements ActionListener {
 		ResultSet rs = null;
 		StringBuilder sSQL = new StringBuilder();
 		
+		lbStatus.setText( "carregando tabela ..." );
+		
 		try {
 			
 			tab.limpa();
 			
 			sSQL.append( "" );
 			
-			ps = con.prepareStatement( sSQL.toString() );
-			rs = ps.executeQuery();
+			//ps = con.prepareStatement( sSQL.toString() );
+			//rs = ps.executeQuery();
 			
-			for ( int i = 0; rs.next(); i++ ) {
+			for ( int i = 0; i < 10; i++ ) {
 				
 				tab.adicLinha();
 				tab.setValor( new Boolean( false ), i, 0 );
-				tab.setValor( rs.getString( 1 ), i, 1 );
-				tab.setValor( rs.getString( 2 ), i, 2 );
-				tab.setValor( rs.getString( 3 ), i, 3 );
-				tab.setValor( rs.getString( 4 ), i, 4 );
-				tab.setValor( rs.getString( 5 ), i, 5 );
-				tab.setValor( rs.getString( 6 ), i, 6 );
+				tab.setValor( "rs.getString( 1 )", i, 1 );
+				tab.setValor( "rs.getString( 2 )", i, 2 );
+				tab.setValor( "rs.getString( 3 )", i, 3 );
+				tab.setValor( "rs.getString( 4 )", i, 4 );
+				tab.setValor( "rs.getString( 5 )", i, 5 );
+				tab.setValor( "rs.getString( 6 )", i, 6 );
 			}
 			
-			rs.close();
-			ps.close();
+			//rs.close();
+			//ps.close();
 			
 			if ( ! con.getAutoCommit() ) {
 				con.commit();
 			}
 			
+			lbStatus.setText( "tabela carregada ..." );
+			
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao busca dados!\n" +  e.getMessage() );
 			e.printStackTrace();
+			lbStatus.setText( "" );
 		} finally {
 			System.gc();
 		}
