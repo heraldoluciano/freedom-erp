@@ -77,6 +77,8 @@ public class DLFechaParcela extends FFDialogo {
 		adic(txtCodTipCob, 7, 60, 80, 20);
 		adic(txtDescTipoCob, 90, 60, 230, 20);
 		
+	}
+	private void montaTela() {
 		lcCob.add( new GuardaCampo( txtCodTipCob, "CodTipoCob", "Cód.Tip.Cob",ListaCampos.DB_PK, false ));
 		lcCob.add( new GuardaCampo( txtDescTipoCob,"DescTipoCob", "Descrição Tipo de Cobrança", ListaCampos.DB_SI, false));
 		lcCob.montaSql(false, "TIPOCOB", "FN");
@@ -85,12 +87,12 @@ public class DLFechaParcela extends FFDialogo {
 		txtCodTipCob.setTabelaExterna(lcCob);
 		txtCodTipCob.setFK(true);
 		txtCodTipCob.setNomeCampo("CodTipoCob");
-		
 	}
-	 public void setConexao(Connection cn) {
-		   
+
+	public void setConexao(Connection cn) {
 		 super.setConexao(cn);
 		 lcCob.setConexao( cn );
+		 montaTela();
 	 }
 	 
 	public Object[] getValores() {
