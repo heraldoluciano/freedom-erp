@@ -94,7 +94,6 @@ public class FreedomFNC extends AplicativoPD {
 				addSeparador( 100100000 );
 				addOpcao( 100100000, TP_OPCAO_MENU, "Febraban", "", 'b', 100109000, 2, false, null );
 					addOpcao( 100109000, TP_OPCAO_ITEM, "Códigos de retorno", "Códigos de retorno", 'C', 100109010, 3, true, FCodRetorno.class );
-					addOpcao( 100109000, TP_OPCAO_ITEM, "Remessa", "Remessa", 'r', 100109010, 3, true, FRemessa.class );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'F', 100200000, 1, false, null );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100300000, 1, false, null );
 				addOpcao( 100300000, TP_OPCAO_ITEM, "Preferências gerais", "Preferência Gerais", 'G', 100310000, 2, true, FPrefereFNC.class );
@@ -114,7 +113,8 @@ public class FreedomFNC extends AplicativoPD {
 
 		addOpcao( -1, TP_OPCAO_MENU, "Receber", "", 'R', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Manutenção", "Manutenção de contas a receber", 'M', 300100000, 1, true, FManutRec.class );
-		addOpcao( 300000000, TP_OPCAO_ITEM, "CNAB", "", 'N', 300200000, 1, true, null );
+		addOpcao( 300000000, TP_OPCAO_MENU, "Febraban", "", 'b', 300200000, 1, false, null );
+			addOpcao( 300200000, TP_OPCAO_ITEM, "Remessa", "Remessa", 'r', 300201000, 2, true, FRemessa.class );
 		addOpcao( 300000000, TP_OPCAO_MENU, "Listagens", "", 'L', 300300000, 1, false, null );
 			addOpcao( 300300000, TP_OPCAO_ITEM, "Receber/Recebidas", "Receber/Recebidas", 'R', 300301000, 2, true, FRReceber.class );
 			addOpcao( 300300000, TP_OPCAO_ITEM, "Inadimplentes", "Inadimplentes", 'I', 300302000, 2, true, FRInadimplentes.class );
