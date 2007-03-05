@@ -46,40 +46,34 @@ public class DLFechaParcela extends FFDialogo {
 
 	private JTextFieldPad txtVlrDescItRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 	
-	private JTextFieldPad txtCodTipCob = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
+	private JTextFieldPad txtCodTipoCob = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	  
 	private JTextFieldFK txtDescTipoCob = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	
 	private ListaCampos lcCob = new ListaCampos(this,"CO");
 	
-	private BigDecimal bgParcItRec;
-	private Date dDtVencItRec;
-	private BigDecimal bgDescItRec;
-
-	public DLFechaParcela( Component cOrig, Connection cn, BigDecimal bgParcItRec, Date dDtVencItRec, BigDecimal bgDescItRec ) {
+	public DLFechaParcela( Component cOrig, Connection cn, BigDecimal bgParcItRec, Date dDtVencItRec, BigDecimal bgDescItRec, Integer iCodTipoCob ) {
 
 		super( cOrig );
 		this.con = cn;
 		setTitulo( "Parcela" );
 		setAtribos( 100, 100, 350, 180 );
-		this.bgParcItRec = bgParcItRec;
-		this.dDtVencItRec = dDtVencItRec;
-		this.bgDescItRec = bgDescItRec;
 		txtParcItRec.setVlrBigDecimal( bgParcItRec );
 		txtDtVencItRec.setVlrDate( dDtVencItRec );
 		txtVlrDescItRec.setVlrBigDecimal( bgDescItRec );
+		txtCodTipoCob.setVlrInteger( iCodTipoCob );
 		if ( bgDescItRec == null ) {
 			txtVlrDescItRec.setAtivo( false );
 		}
-		lcCob.add( new GuardaCampo( txtCodTipCob, "CodTipoCob", "Cód.Tip.Cob",ListaCampos.DB_PK, false ));
+		lcCob.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.Tip.Cob",ListaCampos.DB_PK, false ));
 		lcCob.add( new GuardaCampo( txtDescTipoCob,"DescTipoCob", "Descrição Tipo de Cobrança", ListaCampos.DB_SI, false));
 		lcCob.setQueryCommit(false);
 		lcCob.setReadOnly(true);
         lcCob.setConexao( cn );
   		lcCob.montaSql(false, "TIPOCOB", "FN");
-		txtCodTipCob.setTabelaExterna(lcCob);
-		txtCodTipCob.setFK(true);
-		txtCodTipCob.setNomeCampo("CodTipoCob");
+		txtCodTipoCob.setTabelaExterna(lcCob);
+		txtCodTipoCob.setFK(true);
+		txtCodTipoCob.setNomeCampo("CodTipoCob");
 		adic( new JLabelPad( "Valor" ), 7, 0, 100, 20 );
 		adic( new JLabelPad( "Vencimento" ), 110, 0, 100, 20 );
 		adic( new JLabelPad( "Desconto" ), 220, 0, 100, 20 );
@@ -88,17 +82,19 @@ public class DLFechaParcela extends FFDialogo {
 		adic( txtParcItRec, 7, 20, 100, 20 );
 		adic( txtDtVencItRec, 110, 20, 100, 20 );
 		adic( txtVlrDescItRec, 220, 20, 100, 20 );
-		adic(txtCodTipCob, 7, 60, 80, 20);
+		adic(txtCodTipoCob, 7, 60, 80, 20);
 		adic(txtDescTipoCob, 90, 60, 230, 20);
+		lcCob.carregaDados();
 		
 	}
 	 
 	public Object[] getValores() {
 
-		Object[] oRetorno = new Object[ 3 ];
+		Object[] oRetorno = new Object[ 4 ];
 		oRetorno[ 0 ] = txtParcItRec.getVlrBigDecimal();
 		oRetorno[ 1 ] = txtDtVencItRec.getVlrDate();
 		oRetorno[ 2 ] = txtVlrDescItRec.getVlrBigDecimal();
+		oRetorno[ 3 ] = txtCodTipoCob.getVlrInteger();
 
 		return oRetorno;
 	}
