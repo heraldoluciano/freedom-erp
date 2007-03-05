@@ -64,6 +64,8 @@ public class DLNovoRec extends FFDialogo implements PostListener{
   private JTextFieldFK txtDescTipoCob = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodTipoCobItRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescTipoCobItRec = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtCodBancoItRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescBancoItRec = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtNParcRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtVlrParcItRec = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
@@ -81,6 +83,7 @@ public class DLNovoRec extends FFDialogo implements PostListener{
   private ListaCampos lcCli = new ListaCampos(this,"CL");
   private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
   private ListaCampos lcBanco = new ListaCampos(this,"BO");
+  private ListaCampos lcBancoItRec = new ListaCampos(this,"BO");
   private ListaCampos lcCob = new ListaCampos(this,"TC");
   private ListaCampos lcCobItRec = new ListaCampos(this,"TC");
   private Navegador navRec = new Navegador(false);
@@ -149,6 +152,18 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     txtDescTipoCobItRec.setLabel( "Descrição do tipo de cobrança" );
     //txtDescTipoCobItRec.set
     
+    // banco
+    lcBancoItRec.add( new GuardaCampo( txtCodBancoItRec, "CodBanco", "Cód.Tip.Cob",ListaCampos.DB_PK, false ));
+    lcBancoItRec.add( new GuardaCampo( txtDescBancoItRec,"NomeBanco", "Descrição tipo de cobrança", ListaCampos.DB_SI, false));
+    lcBancoItRec.montaSql(false, "Banco", "FN");
+    lcBancoItRec.setQueryCommit(false);
+    lcBancoItRec.setReadOnly(true);
+    txtCodBancoItRec.setTabelaExterna(lcBancoItRec);
+    txtCodBancoItRec.setFK(true);
+    txtCodBancoItRec.setNomeCampo("CodBanco");
+    txtDescBancoItRec.setTabelaExterna( lcBancoItRec );
+    txtDescBancoItRec.setLabel( "Descrição do Banco" );
+    
     lcReceber.add(new GuardaCampo( txtCodRec, "CodRec", "Cód.rec.", ListaCampos.DB_PK, true));
     lcReceber.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.",  ListaCampos.DB_FK,true));
     lcReceber.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.",  ListaCampos.DB_FK,true));
@@ -170,6 +185,7 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     lcItReceber.add(new GuardaCampo( txtDtVencItRec, "DtVencItRec", "Dt.vencto.",  ListaCampos.DB_SI,false));
     lcItReceber.add(new GuardaCampo( txtVlrDescItRec, "VlrDescItRec", "Valor desc.",  ListaCampos.DB_SI,false));
     lcItReceber.add(new GuardaCampo( txtCodTipoCobItRec,"CodTipoCob", "Cod.Tipo.Cob", ListaCampos.DB_FK, txtDescTipoCobItRec, false));
+    lcItReceber.add(new GuardaCampo( txtCodBancoItRec,"CodBanco", "Cod.Banco", ListaCampos.DB_FK, txtDescBancoItRec, false));
    
     lcItReceber.montaSql(false, "ITRECEBER", "FN");
     lcItReceber.setQueryCommit(false);
@@ -178,24 +194,29 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     txtVlrDescItRec.setListaCampos(lcItReceber);
     txtDtVencItRec.setListaCampos(lcItReceber);
     txtCodTipoCobItRec.setListaCampos(lcItReceber);
+    txtCodBancoItRec.setListaCampos( lcItReceber );
     
     lcItReceber.montaTab();
     tabRec.setTamColuna( 70, 4 );
     tabRec.setTamColuna( 200, 5 );
-    
+    tabRec.setTamColuna( 70, 6 );
+    tabRec.setTamColuna( 250, 7 );
+  
     tabRec.addMouseListener( //Adiciona o mouse listener para que possa editar os itens.
       new MouseAdapter() {
         public void mouseClicked(MouseEvent mevt) {
           if ((mevt.getClickCount() == 2) & (tabRec.getLinhaSel() >= 0)) {
              lcItReceber.edit();
              DLFechaParcela dl = new DLFechaParcela(DLNovoRec.this, con, txtVlrParcItRec.getVlrBigDecimal(),
-            		 txtDtVencItRec.getVlrDate(), txtVlrDescItRec.getVlrBigDecimal(), txtCodTipoCobItRec.getVlrInteger());
+            		 txtDtVencItRec.getVlrDate(), txtVlrDescItRec.getVlrBigDecimal(), txtCodTipoCobItRec.getVlrInteger(),
+            		 txtCodBancoItRec.getVlrInteger());
              dl.setVisible(true);
             if (dl.OK) {
               txtVlrParcItRec.setVlrBigDecimal((BigDecimal)dl.getValores()[0]);
               txtDtVencItRec.setVlrDate((Date)dl.getValores()[1]);
               txtVlrDescItRec.setVlrBigDecimal((BigDecimal)dl.getValores()[2]);
               txtCodTipoCobItRec.setVlrInteger( (Integer) dl.getValores()[3] );
+              txtCodBancoItRec.setVlrInteger( (Integer) dl.getValores()[4]);
               lcItReceber.post();
               //Atualiza lcReceber              
               if (lcReceber.getStatus() == ListaCampos.LCS_EDIT) 
@@ -299,6 +320,7 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     lcBanco.setConexao(cn);
     lcCob.setConexao( cn );
     lcCobItRec.setConexao( cn );
+    lcBancoItRec.setConexao( cn );
     lcReceber.insert(true);
   }
 }
