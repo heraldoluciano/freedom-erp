@@ -707,7 +707,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 									txtDtVencComi.getVlrDate(), 
 									txtVlrDescItRec.getVlrBigDecimal(), 
 									txtCodTipoCob.getVlrInteger(),
-									txtCodBanco.getVlrInteger());
+									txtCodBanco.getVlrString());
 		
 		dl.setVisible( true );
 		
@@ -750,7 +750,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 									txtDtVencComi.getVlrDate(), 
 									txtVlrDescItRec.getVlrBigDecimal(), 
 									txtCodTipoCob.getVlrInteger(),
-									txtCodBanco.getVlrInteger());
+									txtCodBanco.getVlrString());
 		
 		dl.setVisible( true );
 		

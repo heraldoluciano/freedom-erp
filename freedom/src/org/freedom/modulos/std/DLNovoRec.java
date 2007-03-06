@@ -202,21 +202,22 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     tabRec.setTamColuna( 70, 6 );
     tabRec.setTamColuna( 250, 7 );
   
-    tabRec.addMouseListener( //Adiciona o mouse listener para que possa editar os itens.
+    // Adiciona o mouse listener para que possa editar os itens.
+    tabRec.addMouseListener( 
       new MouseAdapter() {
         public void mouseClicked(MouseEvent mevt) {
           if ((mevt.getClickCount() == 2) & (tabRec.getLinhaSel() >= 0)) {
              lcItReceber.edit();
              DLFechaParcela dl = new DLFechaParcela(DLNovoRec.this, con, txtVlrParcItRec.getVlrBigDecimal(),
             		 txtDtVencItRec.getVlrDate(), txtVlrDescItRec.getVlrBigDecimal(), txtCodTipoCobItRec.getVlrInteger(),
-            		 txtCodBancoItRec.getVlrInteger());
+            		 txtCodBancoItRec.getVlrString());
              dl.setVisible(true);
             if (dl.OK) {
               txtVlrParcItRec.setVlrBigDecimal((BigDecimal)dl.getValores()[0]);
               txtDtVencItRec.setVlrDate((Date)dl.getValores()[1]);
               txtVlrDescItRec.setVlrBigDecimal((BigDecimal)dl.getValores()[2]);
               txtCodTipoCobItRec.setVlrInteger( (Integer) dl.getValores()[3] );
-              txtCodBancoItRec.setVlrInteger( (Integer) dl.getValores()[4]);
+              txtCodBancoItRec.setVlrString( (String) dl.getValores()[4]);
               lcItReceber.post();
               //Atualiza lcReceber              
               if (lcReceber.getStatus() == ListaCampos.LCS_EDIT) 
