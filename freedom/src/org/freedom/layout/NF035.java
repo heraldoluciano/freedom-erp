@@ -37,6 +37,7 @@ public class NF035 extends Layout {
 		boolean bFat = true;
 		boolean bNat = true;
 		boolean bjatem = false;
+		boolean bvlriss = true;
 		final int MAXLINE = 43;
 		final int MAXPROD = 12;
 		int iNumNota = 0;
@@ -257,7 +258,7 @@ public class NF035 extends Layout {
 					vServico.addElement( new Object[] { 
 							"".equals( itens.getString( NF.C_OBSITPED ).trim() ) ? itens.getString( NF.C_DESCPROD ) : itens.getString( NF.C_OBSITPED ).trim(), 
 							new BigDecimal( itens.getFloat( NF.C_QTDITPED ) ), 
-							new BigDecimal( itens.getFloat( NF.C_VLRPRODITPED ) ),
+							new BigDecimal( itens.getFloat( NF.C_VLRPRODITPED ) / itens.getFloat( NF.C_QTDITPED )  ),
 							new BigDecimal( itens.getFloat( NF.C_VLRISSPED ) ) } );
 				}
 
@@ -281,8 +282,58 @@ public class NF035 extends Layout {
 						}
 					}
 
+
+					// Imprime serviço
+					
 					if ( vServico.size() > 0 ) {
-						// Imprime serviço
+						
+						for ( int i = 0; i < vServico.size(); i++ ) {							
+							bdVlrTotServ = bdVlrTotServ.add( (BigDecimal) vServico.get( i )[ 2 ] ).setScale( 2, BigDecimal.ROUND_HALF_UP );
+							bdVlrIssServ = bdVlrIssServ.add( (BigDecimal) vServico.get( i )[ 3 ] ).setScale( 2, BigDecimal.ROUND_HALF_UP );
+						}
+ 
+						for ( int row = 0; row < 10; row++ ) {
+
+							imp.pulaLinha( 1, imp.comprimido() );
+							
+							if ( indexServ < vServico.size() ) {
+								
+								vDescServ = Funcoes.strToVectorSilabas( (String) vServico.get( indexServ )[ 0 ], 80 );
+								
+								for ( int i = 0; i < vDescServ.size(); i++ ) {
+									
+									imp.say( 4, (String) vDescServ.elementAt( i ) );
+									if ( i == 0 ) {
+										imp.say( 87, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( (BigDecimal) vServico.get( indexServ )[ 1 ] ) ) );
+										imp.say( 100, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( (BigDecimal) vServico.get( indexServ )[ 2 ] ) ) );
+									}
+									
+									if ( bvlriss && row == 6 ) {
+										imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( bdVlrIssServ ) ) );
+										bvlriss = false;
+									}
+
+									if ( i < ( vDescServ.size() - 1 ) ) {
+										imp.pulaLinha( 1, imp.comprimido() );
+									}
+									
+									row++;
+								}
+								
+								indexServ++;
+							}
+							
+							if ( bvlriss && row == 6 ) {
+								imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( bdVlrIssServ ) ) );
+								bvlriss = false;
+							}
+						}
+
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( bdVlrTotServ ) ) );
+					}
+					/*
+					if ( vServico.size() > 0 ) {
 						iProdImp = 0;
 						int contaLinha = 0;
 						for ( int i = 0; i < vServico.size(); i++ ) {							
@@ -307,7 +358,7 @@ public class NF035 extends Layout {
 						}
 						imp.pulaLinha( 10 - contaLinha, imp.comprimido() );
 						imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( bdVlrTotServ ) ) );
-					}
+					}*/
 
 					// Imprime totais
 
