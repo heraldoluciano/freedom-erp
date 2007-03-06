@@ -40,12 +40,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
-
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import org.freedom.componentes.JTabbedPanePad;
 
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
@@ -53,7 +49,10 @@ import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
+import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -156,11 +155,15 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private final JTextFieldPad txtAltUsuRec = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
+	private final JTextFieldPad txtCodTipoCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
 	private final JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private final JTextFieldFK txtDescTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
+	private final JTextFieldFK txtDescTipoCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private final JCheckBoxPad cbImpPed = new JCheckBoxPad( "Imprime Pedido?", "S", "N" );
 
@@ -187,6 +190,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private final ListaCampos lcReceber = new ListaCampos( this );
 
 	private final ListaCampos lcBanco = new ListaCampos( this, "BO" );
+
+	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
 
 	private final ListaCampos lcItReceber = new ListaCampos( this );
 
@@ -283,6 +288,18 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtCodBanco.setListaCampos( lcBanco );
 		txtDescBanco.setListaCampos( lcBanco );
 		txtCodBanco.setFK( true );
+		
+		txtCodTipoCob.setNomeCampo( "CodTipoCob" );
+		lcTipoCob.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK, false ) );
+		lcTipoCob.add( new GuardaCampo( txtDescTipoCob, "DescTipoCob", "Descrição do tipo de cobrança.", ListaCampos.DB_SI, false ) );
+		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
+		lcTipoCob.setQueryCommit( false );
+		lcTipoCob.setReadOnly( true );
+		lcTipoCob.setConexao( cn );
+		txtCodTipoCob.setTabelaExterna( lcTipoCob );
+		txtCodTipoCob.setListaCampos( lcTipoCob );
+		txtDescTipoCob.setListaCampos( lcTipoCob );
+		txtCodTipoCob.setFK( true );
 
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
 		lcVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.venda", ListaCampos.DB_PK, false ) );
@@ -434,26 +451,35 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		cbReImpNot.addCheckBoxListener( this );
 		
 		setPainel( pinFecha );
-		adic( new JLabelPad( "Cód.p.pg." ), 7, 0, 80, 20 );
-		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 0, 270, 20 );
-		adic( txtCodPlanoPag, 7, 20, 80, 20 );
-		adic( txtDescPlanoPag, 90, 20, 270, 20 );
-		adic( new JLabel( "% Desc." ), 7, 40, 80, 20 );
-		adic( txtPercDescVenda, 7, 60, 80, 20 );
-		adic( new JLabelPad( "V Desc." ), 90, 40, 97, 20 );
-		adic( txtVlrDescVenda, 90, 60, 97, 20 );
-		adic( new JLabelPad( "% Adic." ), 190, 40, 77, 20 );
-		adic( txtPercAdicVenda, 190, 60, 77, 20 );
-		adic( new JLabelPad( "V Adic." ), 270, 40, 90, 20 );
-		adic( txtVlrAdicVenda, 270, 60, 90, 20 );
+		adic( new JLabelPad( "Cód.p.pg." ), 7, 0, 100, 20 );
+		adic( txtCodPlanoPag, 7, 20, 100, 20 );
+		adic( new JLabelPad( "Descrição do plano de pagamento" ), 110, 0, 270, 20 );
+		adic( txtDescPlanoPag, 110, 20, 250, 20 );
+
+		adic( new JLabelPad( "Cód.tp.cob." ), 7, 40, 100, 20 );
+		adic( txtCodTipoCob, 7, 60, 100, 20 );
+		adic( new JLabelPad( "Descrição do Tipo de cobrança" ), 90, 40, 250, 20 );
+		adic( txtDescTipoCob, 110, 60, 250, 20 );
+		
 		adic( new JLabelPad( "Cód.banco" ), 7, 80, 100, 20 );
-		adic( txtCodBanco, 7, 100, 80, 20 );
-		adic( new JLabelPad( "Descrição do Banco" ), 90, 80, 250, 20 );
-		adic( txtDescBanco, 90, 100, 270, 20 );
-		adic( cbImpPed, 7, 130, 150, 20 );
-		adic( cbImpNot, 7, 150, 150, 20 );
-		adic( cbImpBol, 7, 170, 150, 20 );
-		adic( cbReImpNot, 7, 190, 150, 20 );
+		adic( txtCodBanco, 7, 100, 100, 20 );
+		adic( new JLabelPad( "Descrição do Banco" ), 110, 80, 250, 20 );
+		adic( txtDescBanco, 110, 100, 250, 20 );
+
+		adic( new JLabel( "% Desc." ), 7, 120, 100, 20 );
+		adic( txtPercDescVenda, 7, 140, 100, 20 );
+		adic( new JLabelPad( "V Desc." ), 110, 120, 100, 20 );
+		adic( txtVlrDescVenda, 110, 140, 100, 20 );
+		adic( new JLabelPad( "% Adic." ), 7, 160, 100, 20 );
+		adic( txtPercAdicVenda, 7, 180, 100, 20 );
+		adic( new JLabelPad( "V Adic." ), 110, 160, 100, 20 );
+		adic( txtVlrAdicVenda, 110, 180, 100, 20 );
+		
+		adic( cbImpPed, 230, 130, 150, 20 );
+		adic( cbImpNot, 230, 150, 150, 20 );
+		adic( cbImpBol, 230, 170, 150, 20 );
+		adic( cbReImpNot, 230, 190, 150, 20 );		
+		
 
 		setPainel( pinFrete );
 		adic( new JLabelPad( "Cód.tran." ), 7, 0, 80, 20 );
@@ -676,8 +702,12 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		lcItReceber.edit();
 		
-		DLFechaParcela dl = new DLFechaParcela( DLFechaVenda.this, con, txtVlrParcItRec.getVlrBigDecimal(),
-				txtDtVencItRec.getVlrDate(), txtVlrDescItRec.getVlrBigDecimal(), null );
+		DLFechaParcela dl = new DLFechaParcela( DLFechaVenda.this, con, 
+									txtVlrComi.getVlrBigDecimal(), 
+									txtDtVencComi.getVlrDate(), 
+									txtVlrDescItRec.getVlrBigDecimal(), 
+									txtCodTipoCob.getVlrInteger(),
+									txtCodBanco.getVlrInteger());
 		
 		dl.setVisible( true );
 		
@@ -715,7 +745,12 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		lcComis.edit();
 		
-		DLFechaParcela dl = new DLFechaParcela( DLFechaVenda.this, con, txtVlrComi.getVlrBigDecimal(), txtDtVencComi.getVlrDate(), txtVlrDescItRec.getVlrBigDecimal(), null );
+		DLFechaParcela dl = new DLFechaParcela( DLFechaVenda.this, con, 
+									txtVlrComi.getVlrBigDecimal(), 
+									txtDtVencComi.getVlrDate(), 
+									txtVlrDescItRec.getVlrBigDecimal(), 
+									txtCodTipoCob.getVlrInteger(),
+									txtCodBanco.getVlrInteger());
 		
 		dl.setVisible( true );
 		
