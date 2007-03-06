@@ -58,7 +58,7 @@ public class DLFechaParcela extends FFDialogo {
 
 	private ListaCampos lcBanco = new ListaCampos( this, "BO" );
 
-	public DLFechaParcela( Component cOrig, Connection cn, BigDecimal bgParcItRec, Date dDtVencItRec, BigDecimal bgDescItRec, Integer iCodTipoCob, Integer iCodBanco ) {
+	public DLFechaParcela( Component cOrig, Connection cn, BigDecimal bgParcItRec, Date dDtVencItRec, BigDecimal bgDescItRec, Integer iCodTipoCob, String iCodBanco ) {
 
 		super( cOrig );
 		setTitulo( "Parcela" );
@@ -69,7 +69,7 @@ public class DLFechaParcela extends FFDialogo {
 		txtDtVencItRec.setVlrDate( dDtVencItRec );
 		txtVlrDescItRec.setVlrBigDecimal( bgDescItRec );
 		txtCodTipoCob.setVlrInteger( iCodTipoCob );
-		txtCodBanco.setVlrInteger( iCodBanco );
+		txtCodBanco.setVlrString( iCodBanco );
 
 		if ( bgDescItRec == null ) {
 			txtVlrDescItRec.setAtivo( false );
