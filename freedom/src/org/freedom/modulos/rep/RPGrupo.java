@@ -35,6 +35,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -42,19 +45,22 @@ import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class RPGrupo extends FFilho implements ActionListener, MouseListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private final JPanelPad panelGrupos = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	
+
 	private final JPanelPad panelRodape = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	
+
 	private final JPanelPad panelBotoes = new JPanelPad( JPanelPad.TP_JPANEL, new FlowLayout( FlowLayout.CENTER, 6, 4 ) );
-	
+
 	private final JPanelPad panelSair = new JPanelPad( JPanelPad.TP_JPANEL, new FlowLayout( FlowLayout.CENTER, 6, 4 ) );
 
 	private final JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
@@ -88,88 +94,317 @@ public class RPGrupo extends FFilho implements ActionListener, MouseListener, Ke
 		tab.addKeyListener( this );
 
 	}
-	
+
 	private void montaTela() {
 
 		getContentPane().setLayout( new BorderLayout() );
 
-		
 		panelGrupos.setBorder( BorderFactory.createEtchedBorder() );
-		
+
 		panelGrupos.add( new JScrollPane( tab ), BorderLayout.CENTER );
-		
-		
+
 		btGrupo.setPreferredSize( new Dimension( 150, 30 ) );
 		btSubGrupo.setPreferredSize( new Dimension( 150, 30 ) );
 		btSair.setPreferredSize( new Dimension( 100, 30 ) );
-		
+
 		panelRodape.setPreferredSize( new Dimension( 100, 44 ) );
 		panelRodape.setBorder( BorderFactory.createEtchedBorder() );
-		
+
 		panelBotoes.add( btGrupo );
 		panelBotoes.add( btSubGrupo );
-		
+
 		panelSair.add( btSair );
-		
+
 		panelRodape.add( panelBotoes, BorderLayout.WEST );
 		panelRodape.add( panelSair, BorderLayout.EAST );
-		
+
 		getContentPane().add( panelGrupos, BorderLayout.CENTER );
 		getContentPane().add( panelRodape, BorderLayout.SOUTH );
 	}
 
 	private void montaTab() {
 
-		/*String sSQL = "SELECT CODGRUP,DESCGRUP,SIGLAGRUP,ESTNEGGRUP,ESTLOTNEGGRUP FROM EQGRUPO WHERE " + "CODEMP=? AND CODFILIAL =? ORDER BY CODGRUP";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		tab.limpa();
+		StringBuilder sql = new StringBuilder();
+
 		try {
-			ps = con.prepareStatement( sSQL );
+
+			tab.limpa();
+
+			sql.append( "SELECT CODGRUP, DESCGRUP, SIGLAGRUP " );
+			sql.append( "FROM RPGRUPO " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL =? " );
+			sql.append( "ORDER BY CODGRUP" );
+
+			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQGRUPO" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "RPGRUPO" ) );
 			rs = ps.executeQuery();
 
 			for ( int i = 0; rs.next(); i++ ) {
 				tab.adicLinha();
-				tab.setValor( rs.getString( "CodGrup" ), i, 0 );
-				tab.setValor( rs.getString( "DescGrup" ), i, 1 );
-				tab.setValor( rs.getString( "SiglaGrup" ), i, 2 );
-				tab.setValor( rs.getString( "ESTNEGGRUP" ), i, 3 );
-				tab.setValor( rs.getString( "ESTLOTNEGGRUP" ), i, 4 );
+				tab.setValor( rs.getString( "CODGRUP" ), i, 0 );
+				tab.setValor( rs.getString( "DESCGRUP" ), i, 1 );
+				tab.setValor( rs.getString( "SIGLAGRUP" ), i, 2 );
 			}
 
-			if ( !con.getAutoCommit() )
+			rs.close();
+			ps.close();
+
+			if ( !con.getAutoCommit() ) {
 				con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao consultar a tabela EQGRUPO! ! !\n" + err.getMessage(), true, con, err );
-		}*/
+			}
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro ao consultar a tabela EQGRUPO! ! !\n" + e.getMessage() );
+		}
+	}
+
+	private void gravaGrupo( String[] grupo ) {
+		
+		boolean update = grupo != null;
+
+		DLGrupo dlgrupo = new DLGrupo( this );
+		dlgrupo.setConexao( con );
+		dlgrupo.setParams( grupo, null, DLGrupo.GRUPO );
+		dlgrupo.setVisible( true );
+
+		if ( dlgrupo.OK ) {
+			
+			PreparedStatement ps = null;
+			String sql = null;
+
+			try {
+				
+				grupo = dlgrupo.getGrupo();
+				
+				sql = update ? "UPDATE RPGRUPO SET DESCGRUP=?,SIGLAGRUP=? WHERE CODEMP=? AND CODFILIAL=? AND CODGRUP=?" : 
+							   "INSERT INTO RPGRUPO ( CODEMP,CODFILIAL,CODGRUP,DESCGRUP,NIVELGRUP,SIGLAGRUP ) VALUES ( ?,?,?,?,?,? )";
+	
+				ps = con.prepareStatement( sql );
+				
+				if ( update ) {
+					ps.setString( 1, grupo[ 1 ].trim() );
+					ps.setString( 2, grupo[ 2 ].trim() );
+					ps.setInt( 3, Aplicativo.iCodEmp );
+					ps.setInt( 4, ListaCampos.getMasterFilial( "RPGRUPO" ) );
+					ps.setString( 5, grupo[ 0 ].trim() );
+				}
+				else {
+					ps.setInt( 1, Aplicativo.iCodEmp );
+					ps.setInt( 2, ListaCampos.getMasterFilial( "RPGRUPO" ) );
+					ps.setString( 3, grupo[ 0 ].trim() + Funcoes.replicate( "0", 4 - grupo[ 0 ].trim().length() ) );
+					ps.setString( 4, grupo[ 1 ].trim() );
+					ps.setInt( 5, 1 );
+					ps.setString( 6, grupo[ 2 ].trim() );	
+				}
+
+				if ( ps.executeUpdate() == 0 ) {
+
+					Funcoes.mensagemInforma( this, "Não foi possível inserir na tabela de grupos." );
+				}
+
+				ps.close();
+
+				if ( !con.getAutoCommit() ) {
+					con.commit();
+				}				
+
+				montaTab();
+
+			} catch ( Exception e ) {
+				Funcoes.mensagemErro( this, "Erro ao gravar grupo\n" + e.getMessage() );
+				e.printStackTrace();
+			}
+
+		}
+
+		dlgrupo.dispose();
+	}
+
+	private void gravaSubGrupo( final String[] grupo, String[] subgrupo ) {
+		
+		boolean update = subgrupo != null;
+
+		DLGrupo dlgrupo = new DLGrupo( this );
+		dlgrupo.setConexao( con );
+		dlgrupo.setParams( grupo, subgrupo, DLGrupo.SUB_GRUPO );
+		dlgrupo.setVisible( true );
+
+		if ( dlgrupo.OK ) {
+			
+			subgrupo = dlgrupo.getSubGrupo();
+			
+			PreparedStatement ps = null;
+			String sql = null;
+
+			try {
+				
+				sql = update ? "UPDATE RPGRUPO SET DESCGRUP=?,SIGLAGRUP=? WHERE CODEMP=? AND CODFILIAL=? AND CODGRUP=?" : 
+							   "INSERT INTO RPGRUPO ( CODEMP,CODFILIAL,CODGRUP,DESCGRUP,NIVELGRUP,SIGLAGRUP,CODEMPSG,CODFILIALSG,CODSUBGRUP ) VALUES ( ?,?,?,?,?,?,?,?,? )";
+	
+				ps = con.prepareStatement( sql );
+				
+				if ( update ) {
+					ps.setString( 1, subgrupo[ 1 ].trim() );
+					ps.setString( 2, subgrupo[ 2 ].trim() );
+					ps.setInt( 3, Aplicativo.iCodEmp );
+					ps.setInt( 4, ListaCampos.getMasterFilial( "RPGRUPO" ) );
+					ps.setString( 5, subgrupo[ 0 ].trim() );
+				}
+				else {
+					ps.setInt( 1, Aplicativo.iCodEmp );
+					ps.setInt( 2, ListaCampos.getMasterFilial( "RPGRUPO" ) );
+					ps.setString( 3, subgrupo[ 0 ].trim() );
+					ps.setString( 4, subgrupo[ 1 ].trim() );
+					ps.setInt( 5, ( subgrupo[ 0 ].trim().length() - 4 / 2 ) );
+					ps.setString( 6, subgrupo[ 2 ].trim() );
+					ps.setInt( 7, Aplicativo.iCodEmp );
+					ps.setInt( 8, ListaCampos.getMasterFilial( "RPGRUPO" ) );
+					ps.setString( 9, grupo[ 0 ].trim() );		
+				}
+
+				if ( ps.executeUpdate() == 0 ) {
+
+					Funcoes.mensagemInforma( this, "Não foi possível inserir na tabela de grupos." );
+				}
+
+				ps.close();
+
+				if ( !con.getAutoCommit() ) {
+					con.commit();
+				}				
+
+				montaTab();
+
+			} catch ( Exception e ) {
+				Funcoes.mensagemErro( this, "Erro ao gravar sub-grupo\n" + e.getMessage() );
+				e.printStackTrace();
+			}
+
+		}
+
+		dlgrupo.dispose();
+	}
+	
+	private void deletarGrupo() {
+		
+		PreparedStatement ps = null;
+		String sql = null;
+
+		try {
+						
+			sql = "DELETE FROM RPGRUPO WHERE CODEMP=? AND CODFILIAL=? AND CODGRUP=?";
+
+			ps = con.prepareStatement( sql );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "RPGRUPO" ) );
+			ps.setString( 3, ( (String) tab.getValor( tab.getLinhaSel(), 0 ) ).trim() );
+
+			if ( ps.executeUpdate() == 0 ) {
+
+				Funcoes.mensagemInforma( this, "Não foi possível excluir da tabela de grupos." );
+			}
+
+			ps.close();
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}				
+
+			montaTab();
+
+		} catch ( Exception e ) {
+			
+			if ( e instanceof SQLException && ( (SQLException) e ).getErrorCode()  == 335544466) {
+				Funcoes.mensagemErro( this ,"O registro possui vínculos, não pode ser deletado!" );
+			} 
+			else {
+				Funcoes.mensagemErro( this, "Erro ao excluir grupo\n" + e.getMessage() );
+			}
+			e.printStackTrace();
+		}
+	}
+
+	private String[] getGrupo( final String codgrupo ) {
+		
+		String[] retorno = new String[ 3 ];
+		try {
+	
+			String sql = "SELECT DESCGRUP, SIGLAGRUP FROM RPGRUPO WHERE CODEMP=? AND CODFILIAL=? AND CODGRUP=?";
+			PreparedStatement ps = con.prepareStatement( sql );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "RPGRUPO" ) );
+			ps.setString( 3, codgrupo );
+			ResultSet rs = ps.executeQuery();
+	
+			if ( rs.next() ) {
+	
+				retorno[ 0 ] = codgrupo;
+				retorno[ 1 ] = rs.getString( "DESCGRUP" );
+				retorno[ 2 ] = rs.getString( "SIGLAGRUP" );
+			}
+	
+			ps.close();
+	
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}			
+	
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( this, "Erro ao gravar grupo\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		
+		return retorno;
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btSair ) {
 			dispose();
-		}/*
+		}
 		else if ( evt.getSource() == btGrupo ) {
-			gravaNovoGrup();
-			montaTab();
+			if ( tab.getLinhaSel() > -1 ) {
+				gravaGrupo( new String[] { 
+						(String) tab.getValor( tab.getLinhaSel(), 0 ), 
+						(String) tab.getValor( tab.getLinhaSel(), 1 ), 
+						(String) tab.getValor( tab.getLinhaSel(), 2 ) }
+					);	
+			} 
+			else {
+				gravaGrupo( null );
+			}
 		}
 		else if ( evt.getSource() == btSubGrupo ) {
-			gravaNovoSubGrup();
-			montaTab();
-		}*/
+			if ( tab.getLinhaSel() > -1 ) {
+				gravaSubGrupo( new String[] { 
+						(String) tab.getValor( tab.getLinhaSel(), 0 ), 
+						(String) tab.getValor( tab.getLinhaSel(), 1 ), 
+						(String) tab.getValor( tab.getLinhaSel(), 2 ) }
+					, null );	
+			} 
+			else {
+				Funcoes.mensagemInforma( this, "Selecione um grupo!" );
+			}
+		}
 	}
 
-	public void keyPressed( KeyEvent kevt ) {
+	public void keyPressed( KeyEvent e ) {
 
-		/*if ( ( kevt.getKeyCode() == KeyEvent.VK_DELETE ) & ( kevt.getSource() == tab ) ) {
-			deletar();
-			montaTab();
-		}*/
+		 if ( e.getKeyCode() == KeyEvent.VK_DELETE && e.getSource() == tab ) {
+			 if ( tab.getLinhaSel() > -1 ) {
+				 deletarGrupo();
+			 }
+			 else {
+				 Funcoes.mensagemInforma( this, "Selecione um grupo para excluir!" ); 
+			 }
+		 }
 	}
 
-	public void keyTyped( KeyEvent kevt ) { }
+	public void keyTyped( KeyEvent kevt ) {
+
+	}
 
 	public void keyReleased( KeyEvent kevt ) { }
 
@@ -179,24 +414,41 @@ public class RPGrupo extends FFilho implements ActionListener, MouseListener, Ke
 
 	public void mouseClicked( MouseEvent mevt ) {
 
-		/*if ( ( mevt.getSource() == tab ) & ( mevt.getClickCount() == 2 ) & ( tab.getLinhaSel() >= 0 ) ) {
-			if ( ( "" + tab.getValor( tab.getLinhaSel(), 0 ) ).trim().length() > 4 ) {
-				editaSubGrup();
-				montaTab();
+		if ( mevt.getSource() == tab && 
+				mevt.getClickCount() == 2 && 
+					tab.getLinhaSel() >= 0 ) {
+			if ( ( (String) tab.getValor( tab.getLinhaSel(), 0 ) ).trim().length() == 4 ) {
+				if ( tab.getLinhaSel() > -1 ) {
+
+					gravaGrupo( new String[] { 
+							(String) tab.getValor( tab.getLinhaSel(), 0 ), 
+							(String) tab.getValor( tab.getLinhaSel(), 1 ), 
+							(String) tab.getValor( tab.getLinhaSel(), 2 ) }
+						);	
+				}
 			}
 			else {
-				editaGrup();
-				montaTab();
+				
+				gravaSubGrupo( getGrupo( (String) tab.getValor( tab.getLinhaSel(), 0 ) ),
+						new String[] { 
+						(String) tab.getValor( tab.getLinhaSel(), 0 ), 
+						(String) tab.getValor( tab.getLinhaSel(), 1 ), 
+						(String) tab.getValor( tab.getLinhaSel(), 2 ) } );
 			}
-		}*/
+		}
+
+	}
+	
+	public void mouseExited( MouseEvent mevt ) {
+
 	}
 
-	public void mouseExited( MouseEvent mevt ) { }
+	public void mouseReleased( MouseEvent mevt ) {
 
-	public void mouseReleased( MouseEvent mevt ) { }
+	}
 
 	public void setConexao( Connection cn ) {
-	
+
 		super.setConexao( cn );
 		montaTab();
 	}
