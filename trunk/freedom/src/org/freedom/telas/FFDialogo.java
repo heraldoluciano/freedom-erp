@@ -81,6 +81,8 @@ public class FFDialogo extends JDialog implements ActionListener,
     protected JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL, new FlowLayout(FlowLayout.CENTER, 3, 3));
 
     private JPanelPad pnGrid = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 2));
+    
+    private boolean fechaJanela = true;
 
     protected JPanelPad pnBordRodape = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 
@@ -193,8 +195,10 @@ public class FFDialogo extends JDialog implements ActionListener,
     }
 
     public void ok() {
-        OK = true;
-        setVisible(false);
+    	if (fechaJanela) { 
+           OK = true;
+           setVisible(false);
+    	}
     }
 
     public void cancel() {
@@ -202,6 +206,14 @@ public class FFDialogo extends JDialog implements ActionListener,
         setVisible(false);
     }
 
+    public void setFechaJanela(boolean fecha) {
+    	this.fechaJanela = fecha;
+    }
+    
+    public boolean getFechaJanela() {
+    	return this.fechaJanela;
+    }
+    
     public void setTitulo(String tit) {
         if (getName() == null)
             setName(tit);
