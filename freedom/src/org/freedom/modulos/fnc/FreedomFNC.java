@@ -114,7 +114,8 @@ public class FreedomFNC extends AplicativoPD {
 		addOpcao( -1, TP_OPCAO_MENU, "Receber", "", 'R', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Manutenção", "Manutenção de contas a receber", 'M', 300100000, 1, true, FManutRec.class );
 		addOpcao( 300000000, TP_OPCAO_MENU, "Febraban", "", 'b', 300200000, 1, false, null );
-			addOpcao( 300200000, TP_OPCAO_ITEM, "Remessa", "Remessa", 'r', 300201000, 2, true, FRemessa.class );
+  		    addOpcao( 300200000, TP_OPCAO_MENU, "SIACC", "SIACC", 'S', 300201000, 2, false, null );
+			    addOpcao( 300201000, TP_OPCAO_ITEM, "Remessa", "Remessa", 'r', 300201010, 2, true, FRemSiacc.class );
 		addOpcao( 300000000, TP_OPCAO_MENU, "Listagens", "", 'L', 300300000, 1, false, null );
 			addOpcao( 300300000, TP_OPCAO_ITEM, "Receber/Recebidas", "Receber/Recebidas", 'R', 300301000, 2, true, FRReceber.class );
 			addOpcao( 300300000, TP_OPCAO_ITEM, "Inadimplentes", "Inadimplentes", 'I', 300302000, 2, true, FRInadimplentes.class );

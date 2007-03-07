@@ -53,7 +53,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
-public class FRemessa extends FFilho implements ActionListener {
+public class FRemSiacc extends FFilho implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -93,12 +93,25 @@ public class FRemessa extends FFilho implements ActionListener {
 
 	private final ListaCampos lcBanco = new ListaCampos( this );
 
-
-	public FRemessa() {
+	private static final int COL_SEL = 0;
+    private static final int COL_RAZCLI = 1;
+    private static final int COL_CODCLI = 2;
+    private static final int COL_CODREC = 3;
+    private static final int COL_DOCREC = 4;
+    private static final int COL_NRPARC = 5;
+    private static final int COL_VLRAPAG = 6;
+    private static final int COL_DTREC = 7;
+    private static final int COL_DTVENC = 8;
+    private static final int COL_AGENCIACLI = 9;
+    private static final int COL_IDENTCLI = 10;
+    private static final int COL_SITREM = 11;
+    private static final int COL_SITRET = 12;
+    
+	public FRemSiacc() {
 
 		super( false );
 		setTitulo( "Manutenção de contas a receber" );
-		setAtribos( 20, 20, 610, 400 );
+		setAtribos( 10, 10, 780, 540 );
 		
 		Vector<String> vVals = new Vector<String>();
 		Vector<String> vLabs = new Vector<String>();
@@ -123,11 +136,11 @@ public class FRemessa extends FFilho implements ActionListener {
 		montaTela();
 
 		tab.adicColuna( "" );
-		tab.adicColuna( "Cód.rec." );
-		tab.adicColuna( "Parcela" );
-		tab.adicColuna( "Cliente" );
 		tab.adicColuna( "Razão social do cliente" );
+		tab.adicColuna( "Cód.cli." );
+		tab.adicColuna( "Cód.rec." );
 		tab.adicColuna( "Doc" );
+		tab.adicColuna( "Nro.Parc." );
 		tab.adicColuna( "Valor" );
 		tab.adicColuna( "Emissão" );
 		tab.adicColuna( "Vencimento" );
@@ -136,25 +149,26 @@ public class FRemessa extends FFilho implements ActionListener {
 		tab.adicColuna( "Sit. rem." );
 		tab.adicColuna( "Sit. ret." );
 
-		tab.setTamColuna( 20, 0 );
-		tab.setTamColuna( 70, 1 );
-		tab.setTamColuna( 70, 2 );
-		tab.setTamColuna( 70, 3 );
-		tab.setTamColuna( 150, 4 );
-		tab.setTamColuna( 80, 5 );
-		tab.setTamColuna( 70, 6 );
-		tab.setTamColuna( 70, 7 );
-		tab.setTamColuna( 70, 8 );
-		tab.setTamColuna( 100, 9 );
-		tab.setTamColuna( 100, 10 );
-		tab.setTamColuna( 50, 11 );
-		tab.setTamColuna( 50, 12 );
+		tab.setTamColuna( 20, COL_SEL );
+		tab.setTamColuna( 150, COL_RAZCLI );
+		tab.setTamColuna( 70, COL_CODCLI );
+		tab.setTamColuna( 70, COL_CODREC );
+		tab.setTamColuna( 80, COL_DOCREC );
+		tab.setTamColuna( 70, COL_NRPARC );
+		tab.setTamColuna( 70, COL_VLRAPAG );
+		tab.setTamColuna( 70, COL_DTREC );
+		tab.setTamColuna( 70, COL_DTVENC );
+		tab.setTamColuna( 100, COL_AGENCIACLI );
+		tab.setTamColuna( 100, COL_IDENTCLI );
+		tab.setTamColuna( 50, COL_SITREM );
+		tab.setTamColuna( 50, COL_SITRET );
 		
-		tab.setColunaEditavel( 0, true );
+		tab.setColunaEditavel( COL_SEL, true );
 		
 		btCarrega.addActionListener( this );
 		btSelTudo.addActionListener( this );
 		btSelNada.addActionListener( this );
+		btExporta.addActionListener( this );
 
 		btSelTudo.setToolTipText( "Selecionar tudo" );
 		btSelNada.setToolTipText( "Limpar seleção" );
@@ -174,9 +188,9 @@ public class FRemessa extends FFilho implements ActionListener {
 		
 		panelFiltros.setPreferredSize( new Dimension( 300, 120 ) );
 		panelFiltros.adic( new JLabel( "Cód.banco" ), 7, 0, 100, 20 );
-		panelFiltros.adic( txtCodBanco, 7, 20, 100, 20 );
-		panelFiltros.adic( new JLabel( "Nome do banco" ), 110, 0, 250, 20 );
-		panelFiltros.adic( txtNomeBanco, 110, 20, 280, 20 );
+		panelFiltros.adic( txtCodBanco, 7, 20, 70, 20 );
+		panelFiltros.adic( new JLabel( "Nome do banco" ), 80, 0, 310, 20 );
+		panelFiltros.adic( txtNomeBanco, 80, 20, 310, 20 );
 		
 		JLabel bordaData = new JLabel();
 		bordaData.setBorder( BorderFactory.createEtchedBorder() );
@@ -194,7 +208,7 @@ public class FRemessa extends FFilho implements ActionListener {
 		panelFiltros.adic( bordaData, 7, 50, 256, 60 );
 
 		panelFiltros.adic( filtro, 280, 42, 60, 16 );
-		panelFiltros.adic( rgData, 270, 50, 120, 60 );
+		panelFiltros.adic( rgData, 270, 60, 120, 50 );
 		
 		panelFiltros.adic( btCarrega, 413, 65, 160, 30 );
 		
@@ -263,20 +277,20 @@ public class FRemessa extends FFilho implements ActionListener {
 			for ( i = 0; rs.next(); i++ ) {
 								
 				tab.adicLinha();
-				tab.setValor( new Boolean( false ), i, 0 );
-				tab.setValor( rs.getString( "CODREC" ), i, 1 );
-				tab.setValor( rs.getInt( "NPARCITREC" ), i, 2 );
-				tab.setValor( rs.getInt( "CODCLI" ), i, 3 );
-				tab.setValor( rs.getString( "RAZCLI" ), i, 4 );
-				tab.setValor( rs.getString( "DOCREC" ), i, 5 );
-				tab.setValor( rs.getBigDecimal( "VLRAPAGITREC" ), i, 6 );
-				tab.setValor( rs.getDate( "DTITREC" ), i, 7 );
-				tab.setValor( rs.getDate( "DTVENCITREC" ), i, 8 );
+				tab.setValor( new Boolean( true ), i, COL_SEL );
+				tab.setValor( rs.getString( "RAZCLI" ), i, COL_RAZCLI );
+				tab.setValor( new Integer(rs.getInt( "CODCLI" )), i, COL_CODCLI );
+				tab.setValor( new Integer(rs.getInt( "CODREC" )), i, COL_CODREC );
+				tab.setValor( rs.getString( "DOCREC" ), i, COL_DOCREC );
+				tab.setValor( new Integer(rs.getInt( "NPARCITREC" )), i, COL_NRPARC );
+				tab.setValor( rs.getBigDecimal( "VLRAPAGITREC" ), i, COL_VLRAPAG );
+				tab.setValor( rs.getDate( "DTITREC" ), i, COL_DTREC );
+				tab.setValor( rs.getDate( "DTVENCITREC" ), i, COL_DTVENC );
 				
-				tab.setValor( rs.getString( "AGENCIACLI" ), i, 9 );
-				tab.setValor( rs.getString( "IDENTCLI" ), i, 10 );
-				tab.setValor( rs.getString( "SITREMESSA" ), i, 11 );
-				tab.setValor( rs.getString( "SITRETORNO" ), i, 12 );
+				tab.setValor( rs.getString( "AGENCIACLI" ), i, COL_AGENCIACLI );
+				tab.setValor( rs.getString( "IDENTCLI" ), i, COL_IDENTCLI );
+				tab.setValor( rs.getString( "SITREMESSA" ), i, COL_SITREM );
+				tab.setValor( rs.getString( "SITRETORNO" ), i, COL_SITRET );
 			}
 			
 			rs.close();
@@ -329,8 +343,58 @@ public class FRemessa extends FFilho implements ActionListener {
 		else if ( evt.getSource() == btSelNada ) {
 			selecionaNada();
 		}
+		else if ( evt.getSource() == btExporta ) {
+			execExporta();
+		}
 	}
 
+	private void execExporta() {
+		if (consisteExporta()) {
+			
+		}
+	}
+	
+	private boolean consisteExporta() {
+		boolean retorno = true;
+		Vector vLinha = null;
+		for (int i=0; i<tab.getNumLinhas(); i++) {
+			vLinha = tab.getLinha(i);
+			if ( (((Boolean) vLinha.elementAt(COL_SEL)).booleanValue()) &&  
+				 (("".equals((String) vLinha.elementAt(COL_AGENCIACLI))) || 
+				  ("".equals((String) vLinha.elementAt(COL_IDENTCLI))))) {
+			   if (!completaTabela(i, (Integer) vLinha.elementAt(COL_CODCLI),
+					   (String) vLinha.elementAt(COL_RAZCLI),
+					   (String) vLinha.elementAt(COL_AGENCIACLI),
+					   (String) vLinha.elementAt(COL_IDENTCLI) )) {
+				   break;
+			   }
+			}
+		}
+		return retorno;
+	}
+	
+	private boolean completaTabela(int linha, Integer codCli, String razCli, String agenciaCli, String identCli) {
+		boolean retorno = true;
+		Object[] valores = DLIdentCli.execIdentCli( this, codCli, razCli, agenciaCli, identCli );
+		retorno = ((Boolean) valores[0]).booleanValue(); 
+		if ( retorno ) {
+			ajustaClientes(codCli,(String) valores[1], (String) valores[2] );
+		} else {
+			tab.setValor( new Boolean(false), linha, COL_SEL );
+		}
+		return retorno;
+	}
+	
+	public void ajustaClientes(Integer codCli, String agenciaCli, String identCli) {
+		for (int i=0; i<tab.getNumLinhas(); i++) {
+		   if ( (((Boolean) tab.getValor( i, COL_SEL )).booleanValue()) && 
+				(codCli.equals( (Integer) tab.getValor( i, COL_CODCLI ))) ) {
+			   tab.setValor( agenciaCli, i, COL_AGENCIACLI );
+			   tab.setValor( identCli, i, COL_IDENTCLI );
+		   }
+		}
+	}
+	
 	public void setConexao( Connection cn ) {
 
 		super.setConexao( cn );
