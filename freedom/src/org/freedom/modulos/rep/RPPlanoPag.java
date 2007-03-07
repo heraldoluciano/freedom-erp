@@ -25,12 +25,18 @@
 
 package org.freedom.modulos.rep;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
+import org.freedom.acao.DeleteEvent;
+import org.freedom.acao.DeleteListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDetalhe;
 
-public class RPPlanoPag extends FDetalhe {
+public class RPPlanoPag extends FDetalhe implements CarregaListener, InsertListener, DeleteListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -71,18 +77,23 @@ public class RPPlanoPag extends FDetalhe {
 
 		montaDetale();
 
-		setListaCampos( true, "PARCPAG", "RP" );
+		setListaCampos( true, "PARCPLANOPAG", "RP" );
 		lcDet.setQueryInsert( false );
 
 		navRod.setAtivo( 4, false );
 		navRod.setAtivo( 5, false );
 		
 		montaTab();
+		
 		tab.setTamColuna( 40, 0 );
 		tab.setTamColuna( 40, 1 );
 		tab.setTamColuna( 60, 2 );
 		tab.setTamColuna( 60, 3 );
 		tab.setTamColuna( 189, 4 );
+		
+		lcCampos.addCarregaListener( this );
+		lcCampos.addInsertListener( this );
+		lcCampos.addDeleteListener( this );
 	}
 	
 	private void montaMaster() {
@@ -116,5 +127,29 @@ public class RPPlanoPag extends FDetalhe {
 		adicCampo( txtDescItemPag, 7, 60, 369, 20, "DescParcPag", "Descrição", ListaCampos.DB_SI, false );
 		
 	}
+
+	public void beforeCarrega( CarregaEvent e ) { }
+
+	public void afterCarrega( CarregaEvent e ) {
+
+		if ( e.getListaCampos() == lcCampos && e.ok ) {
+			txtNumParc.setEditable( false );
+		}
+	}
+
+	public void afterInsert( InsertEvent e ) {
+
+		txtNumParc.setEditable( true );
+	}
+
+	public void beforeInsert( InsertEvent e ) { }
+
+	public void afterDelete( DeleteEvent e ) {
+
+		lcDet.getTab().limpa();
+		lcDet.limpaCampos( true );
+	}
+
+	public void beforeDelete( DeleteEvent e ) { }
 
 }
