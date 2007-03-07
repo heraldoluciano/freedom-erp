@@ -26,7 +26,9 @@
 package org.freedom.modulos.rep;
 
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 
+import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -63,17 +65,27 @@ public class RPProduto extends FDados implements ActionListener {
 
 	private final JTextFieldPad txtComiss = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, Aplicativo.casasDec );
 	
+	private final JTextFieldPad txtCubagem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, Aplicativo.casasDec );
+	
 	private final JTextFieldFK txtDescGrupo = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private final JTextFieldPad txtSgGrupo = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 	
 	private final JTextFieldFK txtDescUnid = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private final JTextFieldFK txtDescFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldPad txtPreco1 = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtPreco2 = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtPreco3 = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
+	private final ListaCampos lcGrupo = new ListaCampos( this, "GP" );
+	
+	private final ListaCampos lcUnidade = new ListaCampos( this, "UD" );
+	
+	private final ListaCampos lcFornecedor = new ListaCampos( this, "FO" );
 	
 
 	public RPProduto() {
@@ -82,8 +94,49 @@ public class RPProduto extends FDados implements ActionListener {
 		setTitulo( "Cadastro de produtos" );		
 		setAtribos( 50, 50, 500, 420 );
 		
+		montaListaCampos();
+		
 		montaTela();
+		
 		setListaCampos( true, "PRODUTO", "RP" );
+	}
+	
+	private void montaListaCampos() {
+		
+		/*******************
+		 *      GRUPO      *
+		 *******************/
+		
+		lcGrupo.add( new GuardaCampo( txtCodGrupo, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, true ) );
+		lcGrupo.add( new GuardaCampo( txtDescGrupo, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
+		lcGrupo.add( new GuardaCampo( txtSgGrupo, "SiglaGrup", "Sigla", ListaCampos.DB_SI, false ) );
+		lcGrupo.montaSql( false, "GRUPO", "RP" );
+		lcGrupo.setQueryCommit( false );
+		lcGrupo.setReadOnly( true );
+		txtCodGrupo.setTabelaExterna( lcGrupo );
+		
+		/*******************
+		 *     UNIDADE     *
+		 *******************/
+		
+		lcUnidade.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cód.unid.", ListaCampos.DB_PK, true ) );
+		lcUnidade.add( new GuardaCampo( txtDescUnid, "DescUnid", "Descrição da unidade", ListaCampos.DB_SI, false ) );
+		lcUnidade.montaSql( false, "UNIDADE", "RP" );
+		lcUnidade.setQueryCommit( false );
+		lcUnidade.setReadOnly( true );
+		txtCodUnid.setTabelaExterna( lcUnidade );
+		
+		/*******************
+		 *    FORNECEDOR   *
+		 *******************/
+		
+		lcFornecedor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, true ) );
+		lcFornecedor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcFornecedor.montaSql( false, "FORNECEDOR", "RP" );
+		lcFornecedor.setQueryCommit( false );
+		lcFornecedor.setReadOnly( true );
+		txtCodFor.setTabelaExterna( lcFornecedor );
+		
 	}
 	
 	private void montaTela() {
@@ -102,17 +155,27 @@ public class RPProduto extends FDados implements ActionListener {
 		adicCampo( txtPreco3, 213, 110, 100, 20, "PrecoProd3", "Preço 3", ListaCampos.DB_SI, false );
 		
 		adicCampo( txtPercIPI, 7, 150, 100, 20, "PercIPIProd", "% IPI", ListaCampos.DB_SI, false );
-		adicCampo( txtComiss, 110, 150, 100, 20, "ComissProd", "% Comissão", ListaCampos.DB_SI, false );
+		adicCampo( txtComiss, 110, 150, 100, 20, "ComisProd", "% Comissão", ListaCampos.DB_SI, false );
+		adicCampo( txtCubagem, 213, 150, 100, 20, "CubagemProd", "Cubagem", ListaCampos.DB_SI, false );
 		
 		adicCampo( txtCodGrupo, 7, 190, 100, 20, "CodGrup", "Cód.grupo", ListaCampos.DB_FK, txtDescGrupo, true );
-		adicCampo( txtDescGrupo, 110, 190, 363, 20, "DescGrupo", "Descrição do grupo", ListaCampos.DB_SI, false );
+		adicDescFK( txtDescGrupo, 110, 190, 363, 20, "DescGrupo", "Descrição do grupo" );
 		
 		adicCampo( txtCodUnid, 7, 230, 100, 20, "CodUnid", "Cód.unidade", ListaCampos.DB_FK, txtDescUnid, true );
-		adicCampo( txtDescUnid, 110, 230, 363, 20, "DescUnid", "Descrição da unidade", ListaCampos.DB_SI, false );
+		adicDescFK( txtDescUnid, 110, 230, 363, 20, "DescUnid", "Descrição da unidade" );
 		
-		adicCampo( txtCodFor, 7, 270, 100, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtDescFor, false );
-		adicCampo( txtDescFor, 110, 270, 363, 20, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false );
+		adicCampo( txtCodFor, 7, 270, 100, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtRazFor, false );
+		adicDescFK( txtRazFor, 110, 270, 363, 20, "RazFor", "Razão social do fornecedor" );
 		
 		adicCampo( txtRefProdFor, 7, 310, 203, 20, "RefProdFor", "Refêrencia no fornecedor", ListaCampos.DB_SI, false );
+	}
+
+	public void setConexao( Connection cn ) {
+
+		super.setConexao( cn );
+
+		lcGrupo.setConexao( cn );
+		lcUnidade.setConexao( cn );
+		lcFornecedor.setConexao( cn );
 	}
 }
