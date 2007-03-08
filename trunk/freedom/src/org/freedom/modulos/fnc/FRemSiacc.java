@@ -280,7 +280,7 @@ public class FRemSiacc extends FFilho implements ActionListener {
 			sSQL.append( sDtFiltro );
 			sSQL.append( " BETWEEN ? AND ? AND IR.STATUSITREC IN ('R1','RL') AND " );
 			sSQL.append( "IR.CODEMPBO=? AND IR.CODFILIALBO=? AND IR.CODBANCO=? " );
-			sSQL.append( "ORDER BY R.CODCLI " );
+			sSQL.append( "ORDER BY C.RAZCLI, R.CODREC, IR.NPARCITREC " );
 
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setDate( 1, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
@@ -419,7 +419,7 @@ public class FRemSiacc extends FFilho implements ActionListener {
 
 	private boolean consisteExporta() {
 
-		boolean retorno = false;
+		boolean retorno = true;
 		Vector vLinha = null;
 
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
@@ -428,6 +428,7 @@ public class FRemSiacc extends FFilho implements ActionListener {
 
 			if ( ( (Boolean) vLinha.elementAt( COL_SEL ) ).booleanValue() && ( "".equals( (String) vLinha.elementAt( COL_AGENCIACLI ) ) ) || ( "".equals( (String) vLinha.elementAt( COL_IDENTCLI ) ) ) ) {
 				if ( !completaTabela( i, (Integer) vLinha.elementAt( COL_CODCLI ), (String) vLinha.elementAt( COL_RAZCLI ), (String) vLinha.elementAt( COL_AGENCIACLI ), (String) vLinha.elementAt( COL_IDENTCLI ) ) ) {
+					retorno = false;
 					break;
 				}
 			}
@@ -447,7 +448,7 @@ public class FRemSiacc extends FFilho implements ActionListener {
 			ajustaClientes( codCli, (String) valores[ 1 ], (String) valores[ 2 ] );
 		}
 		else {
-			desmarcaClientes( codCli );
+			tab.setValor(false, linha, COL_SEL);
 		}
 
 		return retorno;
