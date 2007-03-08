@@ -205,30 +205,23 @@ public class FRemSiacc extends FFilho implements ActionListener {
 		panelRemessa.add( panelStatus, BorderLayout.SOUTH );
 
 		panelFiltros.setPreferredSize( new Dimension( 300, 120 ) );
-		panelFiltros.adic( new JLabel( "Cód.banco" ), 7, 0, 100, 20 );
-		panelFiltros.adic( txtCodBanco, 7, 20, 70, 20 );
-		panelFiltros.adic( new JLabel( "Nome do banco" ), 80, 0, 310, 20 );
-		panelFiltros.adic( txtNomeBanco, 80, 20, 310, 20 );
+		panelFiltros.adic( new JLabel( "Cód.banco" ), 7, 0, 90, 20 );
+		panelFiltros.adic( txtCodBanco, 7, 20, 90, 20 );
+		panelFiltros.adic( new JLabel( "Nome do banco" ), 100, 0, 300, 20 );
+		panelFiltros.adic( txtNomeBanco, 100, 20, 300, 20 );
 
 		JLabel bordaData = new JLabel();
 		bordaData.setBorder( BorderFactory.createEtchedBorder() );
 
-		JLabel periodo = new JLabel( "Periodo", SwingConstants.CENTER );
-		periodo.setOpaque( true );
+		panelFiltros.adic( new JLabel( "filtro:" ), 7, 40, 60, 20 );
+		panelFiltros.adic( rgData, 7, 60, 120, 50 );
+		panelFiltros.adic( new JLabel( "Periodo:" ), 130, 40, 80, 20 );
+		panelFiltros.adic( txtDtIni, 145, 75, 100, 20 );
+		panelFiltros.adic( new JLabel( "até", SwingConstants.CENTER ), 245, 75, 40, 20 );
+		panelFiltros.adic( txtDtFim, 285, 75, 100, 20 );
+		panelFiltros.adic( bordaData, 130, 60, 270, 50 );
 
-		JLabel filtro = new JLabel( "filtro", SwingConstants.CENTER );
-		filtro.setOpaque( true );
-
-		panelFiltros.adic( periodo, 15, 40, 80, 20 );
-		panelFiltros.adic( txtDtIni, 15, 75, 100, 20 );
-		panelFiltros.adic( new JLabel( "até", SwingConstants.CENTER ), 115, 75, 40, 20 );
-		panelFiltros.adic( txtDtFim, 155, 75, 100, 20 );
-		panelFiltros.adic( bordaData, 7, 50, 256, 60 );
-
-		panelFiltros.adic( filtro, 280, 42, 60, 16 );
-		panelFiltros.adic( rgData, 270, 60, 120, 50 );
-
-		panelFiltros.adic( btCarrega, 413, 65, 160, 30 );
+		panelFiltros.adic( btCarrega, 500, 70, 150, 30 );
 
 		panelTabela.add( new JScrollPane( tab ), BorderLayout.CENTER );
 		panelTabela.add( panelFuncoes, BorderLayout.EAST );
@@ -245,7 +238,7 @@ public class FRemSiacc extends FFilho implements ActionListener {
 		panelRodape = adicBotaoSair();
 		panelRodape.setBorder( BorderFactory.createEtchedBorder() );
 		panelRodape.setPreferredSize( new Dimension( 600, 32 ) );
-		btExporta.setPreferredSize( new Dimension( 160, 30 ) );
+		btExporta.setPreferredSize( new Dimension( 150, 30 ) );
 		panelRodape.add( btExporta, BorderLayout.WEST );
 
 	}
