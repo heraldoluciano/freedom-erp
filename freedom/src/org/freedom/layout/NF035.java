@@ -332,33 +332,6 @@ public class NF035 extends Layout {
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( bdVlrTotServ ) ) );
 					}
-					/*
-					if ( vServico.size() > 0 ) {
-						iProdImp = 0;
-						int contaLinha = 0;
-						for ( int i = 0; i < vServico.size(); i++ ) {							
-							bdVlrTotServ = bdVlrTotServ.add( (BigDecimal) vServico.get( i )[ 2 ] ).setScale( 2, BigDecimal.ROUND_HALF_UP );
-							bdVlrIssServ = bdVlrIssServ.add( (BigDecimal) vServico.get( i )[ 3 ] ).setScale( 2, BigDecimal.ROUND_HALF_UP );
-						}
-						for ( int i = 0; i < vServico.size(); i++ ) {
-							vDescServ = Funcoes.strToVectorSilabas( (String) vServico.get( indexServ )[ 0 ], 80 );
-							for ( int j = 0; j < vDescServ.size() && contaLinha < 10; j++ ) {
-								contaLinha++;
-								imp.pulaLinha( 1, imp.comprimido() );
-								imp.say( 4, (String) vDescServ.elementAt( j ) );
-								if ( j == 0 ) {
-									imp.say( 87, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( (BigDecimal) vServico.get( indexServ )[ 1 ] ) ) );
-									imp.say( 100, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( (BigDecimal) vServico.get( indexServ )[ 2 ] ) ) );
-								}
-								if ( contaLinha == 6 ) {
-									imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( bdVlrIssServ ) ) );
-								}
-							}
-							indexServ++;
-						}
-						imp.pulaLinha( 10 - contaLinha, imp.comprimido() );
-						imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( bdVlrTotServ ) ) );
-					}*/
 
 					// Imprime totais
 
@@ -371,7 +344,7 @@ public class NF035 extends Layout {
 						imp.pulaLinha( 46 - imp.pRow(), imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
 						imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRICMSPED ) ) ) );
-						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODPED ) ) ) );
+						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODPED ) - bdVlrTotServ.floatValue() ) ) );
 						imp.pulaLinha( 2, imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( frete.getFloat( NF.C_VLRFRETEPED ) ) ) );
 						imp.say( 58, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRADICPED ) ) ) );

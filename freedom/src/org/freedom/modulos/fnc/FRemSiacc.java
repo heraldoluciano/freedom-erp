@@ -18,7 +18,7 @@
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de remessa de arquivo, contendo os dados dos clientes e recebimentos, para o banco selecionado. 
+ * Tela de remessa de arquivo, contendo os dados dos clientes e recebimentos, para o banco selecionado.
  * 
  */
 
@@ -27,8 +27,12 @@ package org.freedom.modulos.fnc;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,63 +60,77 @@ import org.freedom.telas.FFilho;
 public class FRemSiacc extends FFilho implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
-	
+
+	private static final int COL_SEL = 0;
+
+	private static final int COL_RAZCLI = 1;
+
+	private static final int COL_CODCLI = 2;
+
+	private static final int COL_CODREC = 3;
+
+	private static final int COL_DOCREC = 4;
+
+	private static final int COL_NRPARC = 5;
+
+	private static final int COL_VLRAPAG = 6;
+
+	private static final int COL_DTREC = 7;
+
+	private static final int COL_DTVENC = 8;
+
+	private static final int COL_AGENCIACLI = 9;
+
+	private static final int COL_IDENTCLI = 10;
+
+	private static final int COL_SITREM = 11;
+
+	private static final int COL_SITRET = 12;
+
 	private JPanelPad panelRodape = null;
-	
+
 	private final JPanelPad panelRemessa = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	
+
 	private final JPanelPad panelFiltros = new JPanelPad();
-	
+
 	private final JPanelPad panelTabela = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	
+
 	private final JPanelPad panelFuncoes = new JPanelPad();
-	
+
 	private final JPanelPad panelStatus = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	
+
 	private final Tabela tab = new Tabela();
 
 	private final JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private final JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private final JTextFieldPad txtDtIni = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-	
+
 	private final JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private final JRadioGroup rgData;
-	
+
 	private final JButton btCarrega = new JButton( "Buscar", Icone.novo( "btExecuta.gif" ) );
-	
+
 	private final JButton btExporta = new JButton( "Exportar", Icone.novo( "btSalvar.gif" ) );
 
 	private final JButton btSelTudo = new JButton( Icone.novo( "btTudo.gif" ) );
 
 	private final JButton btSelNada = new JButton( Icone.novo( "btNada.gif" ) );
-	
+
 	private final JLabel lbStatus = new JLabel();
 
 	private final ListaCampos lcBanco = new ListaCampos( this );
 
-	private static final int COL_SEL = 0;
-    private static final int COL_RAZCLI = 1;
-    private static final int COL_CODCLI = 2;
-    private static final int COL_CODREC = 3;
-    private static final int COL_DOCREC = 4;
-    private static final int COL_NRPARC = 5;
-    private static final int COL_VLRAPAG = 6;
-    private static final int COL_DTREC = 7;
-    private static final int COL_DTVENC = 8;
-    private static final int COL_AGENCIACLI = 9;
-    private static final int COL_IDENTCLI = 10;
-    private static final int COL_SITREM = 11;
-    private static final int COL_SITRET = 12;
-    
+	private FileWriter fileWriterSiacc = null;
+
 	public FRemSiacc() {
 
 		super( false );
 		setTitulo( "Manutenção de contas a receber" );
 		setAtribos( 10, 10, 780, 540 );
-		
+
 		Vector<String> vVals = new Vector<String>();
 		Vector<String> vLabs = new Vector<String>();
 		vVals.addElement( "E" );
@@ -120,19 +138,19 @@ public class FRemSiacc extends FFilho implements ActionListener {
 		vLabs.addElement( "Emissão" );
 		vLabs.addElement( "Vencimento" );
 		rgData = new JRadioGroup( 2, 1, vLabs, vVals );
-		
+
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setQueryCommit( false );
-		lcBanco.setReadOnly( true );		
+		lcBanco.setReadOnly( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );
 		txtCodBanco.setTabelaExterna( lcBanco );
 		txtCodBanco.setListaCampos( lcBanco );
 		txtCodBanco.setFK( true );
 		txtCodBanco.setRequerido( true );
 		txtNomeBanco.setListaCampos( lcBanco );
-		
+
 		montaTela();
 
 		tab.adicColuna( "" );
@@ -162,9 +180,9 @@ public class FRemSiacc extends FFilho implements ActionListener {
 		tab.setTamColuna( 100, COL_IDENTCLI );
 		tab.setTamColuna( 50, COL_SITREM );
 		tab.setTamColuna( 50, COL_SITRET );
-		
+
 		tab.setColunaEditavel( COL_SEL, true );
-		
+
 		btCarrega.addActionListener( this );
 		btSelTudo.addActionListener( this );
 		btSelNada.addActionListener( this );
@@ -172,33 +190,33 @@ public class FRemSiacc extends FFilho implements ActionListener {
 
 		btSelTudo.setToolTipText( "Selecionar tudo" );
 		btSelNada.setToolTipText( "Limpar seleção" );
-		
+
 		txtDtIni.setVlrDate( Calendar.getInstance().getTime() );
 		txtDtFim.setVlrDate( Calendar.getInstance().getTime() );
-		
+
 	}
-	
+
 	private void montaTela() {
-		
+
 		pnCliente.add( panelRemessa, BorderLayout.CENTER );
-		
+
 		panelRemessa.add( panelFiltros, BorderLayout.NORTH );
 		panelRemessa.add( panelTabela, BorderLayout.CENTER );
 		panelRemessa.add( panelStatus, BorderLayout.SOUTH );
-		
+
 		panelFiltros.setPreferredSize( new Dimension( 300, 120 ) );
 		panelFiltros.adic( new JLabel( "Cód.banco" ), 7, 0, 100, 20 );
 		panelFiltros.adic( txtCodBanco, 7, 20, 70, 20 );
 		panelFiltros.adic( new JLabel( "Nome do banco" ), 80, 0, 310, 20 );
 		panelFiltros.adic( txtNomeBanco, 80, 20, 310, 20 );
-		
+
 		JLabel bordaData = new JLabel();
 		bordaData.setBorder( BorderFactory.createEtchedBorder() );
-		
-		JLabel periodo = new JLabel( "Periodo", SwingConstants.CENTER  );
+
+		JLabel periodo = new JLabel( "Periodo", SwingConstants.CENTER );
 		periodo.setOpaque( true );
-		
-		JLabel filtro = new JLabel( "filtro", SwingConstants.CENTER  );
+
+		JLabel filtro = new JLabel( "filtro", SwingConstants.CENTER );
 		filtro.setOpaque( true );
 
 		panelFiltros.adic( periodo, 15, 40, 80, 20 );
@@ -209,45 +227,45 @@ public class FRemSiacc extends FFilho implements ActionListener {
 
 		panelFiltros.adic( filtro, 280, 42, 60, 16 );
 		panelFiltros.adic( rgData, 270, 60, 120, 50 );
-		
+
 		panelFiltros.adic( btCarrega, 413, 65, 160, 30 );
-		
+
 		panelTabela.add( new JScrollPane( tab ), BorderLayout.CENTER );
 		panelTabela.add( panelFuncoes, BorderLayout.EAST );
-		
+
 		panelFuncoes.setPreferredSize( new Dimension( 45, 100 ) );
 		panelFuncoes.adic( btSelTudo, 5, 5, 30, 30 );
 		panelFuncoes.adic( btSelNada, 5, 40, 30, 30 );
-		
+
 		lbStatus.setForeground( Color.BLUE );
-		
+
 		panelStatus.setPreferredSize( new Dimension( 600, 30 ) );
 		panelStatus.add( lbStatus, BorderLayout.WEST );
-		
+
 		panelRodape = adicBotaoSair();
 		panelRodape.setBorder( BorderFactory.createEtchedBorder() );
 		panelRodape.setPreferredSize( new Dimension( 600, 32 ) );
 		btExporta.setPreferredSize( new Dimension( 160, 30 ) );
 		panelRodape.add( btExporta, BorderLayout.WEST );
-				
+
 	}
-	
+
 	private void carregaTab() {
-		
+
 		if ( txtCodBanco.getVlrString().trim().length() < 1 ) {
 			Funcoes.mensagemErro( this, "O código do banco é obrigatorio!" );
 			return;
 		}
-		
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sSQL = new StringBuilder();
 		String sDtFiltro = "E".equals( rgData.getVlrString() ) ? "IR.DTITREC" : "IR.DTVENCITREC";
-		
+
 		try {
-			
+
 			tab.limpa();
-			
+
 			sSQL.append( "SELECT IR.CODREC, IR.NPARCITREC, R.DOCREC, R.CODCLI, C.RAZCLI, IR.DTITREC, IR.DTVENCITREC," );
 			sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, FR.SITREMESSA, FR.SITRETORNO " );
 			sSQL.append( "FROM VDCLIENTE C," );
@@ -260,61 +278,60 @@ public class FRemSiacc extends FFilho implements ActionListener {
 			sSQL.append( "WHERE R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC AND " );
 			sSQL.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND " );
 			sSQL.append( sDtFiltro );
-			sSQL.append( " BETWEEN ? AND ? AND IR.STATUSITREC IN ('R1','RL') AND "  );
+			sSQL.append( " BETWEEN ? AND ? AND IR.STATUSITREC IN ('R1','RL') AND " );
 			sSQL.append( "IR.CODEMPBO=? AND IR.CODFILIALBO=? AND IR.CODBANCO=? " );
+			sSQL.append( "ORDER BY R.CODCLI " );
 
-			
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setDate( 1, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
 			ps.setDate( 2, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
 			ps.setInt( 3, Aplicativo.iCodEmp );
 			ps.setInt( 4, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 			ps.setInt( 5, txtCodBanco.getVlrInteger() );
-			
+
 			rs = ps.executeQuery();
-			
+
 			int i = 0;
 			for ( i = 0; rs.next(); i++ ) {
-								
+
 				tab.adicLinha();
 				tab.setValor( new Boolean( true ), i, COL_SEL );
 				tab.setValor( rs.getString( "RAZCLI" ), i, COL_RAZCLI );
-				tab.setValor( new Integer(rs.getInt( "CODCLI" )), i, COL_CODCLI );
-				tab.setValor( new Integer(rs.getInt( "CODREC" )), i, COL_CODREC );
+				tab.setValor( new Integer( rs.getInt( "CODCLI" ) ), i, COL_CODCLI );
+				tab.setValor( new Integer( rs.getInt( "CODREC" ) ), i, COL_CODREC );
 				tab.setValor( rs.getString( "DOCREC" ), i, COL_DOCREC );
-				tab.setValor( new Integer(rs.getInt( "NPARCITREC" )), i, COL_NRPARC );
+				tab.setValor( new Integer( rs.getInt( "NPARCITREC" ) ), i, COL_NRPARC );
 				tab.setValor( rs.getBigDecimal( "VLRAPAGITREC" ), i, COL_VLRAPAG );
 				tab.setValor( rs.getDate( "DTITREC" ), i, COL_DTREC );
 				tab.setValor( rs.getDate( "DTVENCITREC" ), i, COL_DTVENC );
-				
 				tab.setValor( rs.getString( "AGENCIACLI" ), i, COL_AGENCIACLI );
 				tab.setValor( rs.getString( "IDENTCLI" ), i, COL_IDENTCLI );
 				tab.setValor( rs.getString( "SITREMESSA" ), i, COL_SITREM );
 				tab.setValor( rs.getString( "SITRETORNO" ), i, COL_SITRET );
 			}
-			
+
 			rs.close();
 			ps.close();
-			
-			if ( ! con.getAutoCommit() ) {
+
+			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
-			
+
 			if ( i > 0 ) {
-				lbStatus.setText( "     tabela carregada com " + i + " itens..." );	
+				lbStatus.setText( "     tabela carregada com " + i + " itens..." );
 			}
 			else {
-				lbStatus.setText( "" );				
+				lbStatus.setText( "" );
 			}
-			
+
 		} catch ( Exception e ) {
-			Funcoes.mensagemErro( this, "Erro ao busca dados!\n" +  e.getMessage() );
+			Funcoes.mensagemErro( this, "Erro ao busca dados!\n" + e.getMessage() );
 			e.printStackTrace();
 			lbStatus.setText( "" );
 		} finally {
 			System.gc();
 		}
-		
+
 	}
 
 	private void selecionaTudo() {
@@ -333,7 +350,7 @@ public class FRemSiacc extends FFilho implements ActionListener {
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btCarrega ) {			
+		if ( evt.getSource() == btCarrega ) {
 			lbStatus.setText( "      carregando tabela ..." );
 			carregaTab();
 		}
@@ -349,52 +366,112 @@ public class FRemSiacc extends FFilho implements ActionListener {
 	}
 
 	private void execExporta() {
-		if (consisteExporta()) {
+
+		if ( consisteExporta() ) {
+
+			FileDialog fileDialogSiacc = null;
+			fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
+			fileDialogSiacc.setFile( "remessasiacc.txt" );
+			fileDialogSiacc.setVisible( true );
+
+			if ( fileDialogSiacc.getFile() == null ) {
+				return;
+			}
+
+			String sFileName = fileDialogSiacc.getDirectory() + fileDialogSiacc.getFile();
+
+			File fileSiacc = new File( sFileName );
+
+			if ( fileSiacc.exists() ) {
+				if ( Funcoes.mensagemConfirma( this, "Arquivo: '" + sFileName + "' já existe! Deseja sobrescrever?" ) != 0 ) {
+					return;
+				}
+			}
+
+			try {
+				fileSiacc.createNewFile();
+			} catch ( IOException err ) {
+				Funcoes.mensagemErro( this, "Erro limpando arquivo: " + sFileName + "\n" + err.getMessage(), true, con, err );
+				return;
+			}
+
+			try {
+				fileWriterSiacc = new FileWriter( fileSiacc );
+			} catch ( IOException ioError ) {
+				Funcoes.mensagemErro( this, "Erro Criando o arquivo: " + sFileName + "\n" + ioError.getMessage() );
+				return;
+			}
 			
+			// motar layout...
+
 		}
 	}
-	
+
+	private void gravaNoArquivo() {
+
+		try {
+			fileWriterSiacc.write( "dados" );
+			fileWriterSiacc.flush();
+		} catch ( IOException err ) {
+			Funcoes.mensagemErro( this, "Erro grando no arquivo!\n" + err.getMessage(), true, con, err );
+		}
+	}
+
 	private boolean consisteExporta() {
-		boolean retorno = true;
+
+		boolean retorno = false;
 		Vector vLinha = null;
-		for (int i=0; i<tab.getNumLinhas(); i++) {
-			vLinha = tab.getLinha(i);
-			if ( (((Boolean) vLinha.elementAt(COL_SEL)).booleanValue()) &&  
-				 (("".equals((String) vLinha.elementAt(COL_AGENCIACLI))) || 
-				  ("".equals((String) vLinha.elementAt(COL_IDENTCLI))))) {
-			   if (!completaTabela(i, (Integer) vLinha.elementAt(COL_CODCLI),
-					   (String) vLinha.elementAt(COL_RAZCLI),
-					   (String) vLinha.elementAt(COL_AGENCIACLI),
-					   (String) vLinha.elementAt(COL_IDENTCLI) )) {
-				   break;
-			   }
+
+		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+
+			vLinha = tab.getLinha( i );
+
+			if ( ( (Boolean) vLinha.elementAt( COL_SEL ) ).booleanValue() && ( "".equals( (String) vLinha.elementAt( COL_AGENCIACLI ) ) ) || ( "".equals( (String) vLinha.elementAt( COL_IDENTCLI ) ) ) ) {
+				if ( !completaTabela( i, (Integer) vLinha.elementAt( COL_CODCLI ), (String) vLinha.elementAt( COL_RAZCLI ), (String) vLinha.elementAt( COL_AGENCIACLI ), (String) vLinha.elementAt( COL_IDENTCLI ) ) ) {
+					break;
+				}
 			}
 		}
+
 		return retorno;
 	}
-	
-	private boolean completaTabela(int linha, Integer codCli, String razCli, String agenciaCli, String identCli) {
+
+	private boolean completaTabela( final int linha, final Integer codCli, final String razCli, final String agenciaCli, final String identCli ) {
+
 		boolean retorno = true;
+
 		Object[] valores = DLIdentCli.execIdentCli( this, codCli, razCli, agenciaCli, identCli );
-		retorno = ((Boolean) valores[0]).booleanValue(); 
+		retorno = ( (Boolean) valores[ 0 ] ).booleanValue();
+
 		if ( retorno ) {
-			ajustaClientes(codCli,(String) valores[1], (String) valores[2] );
-		} else {
-			tab.setValor( new Boolean(false), linha, COL_SEL );
+			ajustaClientes( codCli, (String) valores[ 1 ], (String) valores[ 2 ] );
 		}
+		else {
+			desmarcaClientes( codCli );
+		}
+
 		return retorno;
 	}
-	
-	public void ajustaClientes(Integer codCli, String agenciaCli, String identCli) {
-		for (int i=0; i<tab.getNumLinhas(); i++) {
-		   if ( (((Boolean) tab.getValor( i, COL_SEL )).booleanValue()) && 
-				(codCli.equals( (Integer) tab.getValor( i, COL_CODCLI ))) ) {
-			   tab.setValor( agenciaCli, i, COL_AGENCIACLI );
-			   tab.setValor( identCli, i, COL_IDENTCLI );
-		   }
+
+	private void ajustaClientes( final Integer codCli, final String agenciaCli, final String identCli ) {
+
+		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+			if ( ( (Boolean) tab.getValor( i, COL_SEL ) ).booleanValue() && codCli.equals( (Integer) tab.getValor( i, COL_CODCLI ) ) ) {
+				tab.setValor( agenciaCli, i, COL_AGENCIACLI );
+				tab.setValor( identCli, i, COL_IDENTCLI );
+			}
 		}
 	}
-	
+
+	private void desmarcaClientes( final Integer codCli ) {
+
+		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+			if ( ( (Boolean) tab.getValor( i, COL_SEL ) ).booleanValue() && codCli.equals( (Integer) tab.getValor( i, COL_CODCLI ) ) ) {
+				tab.setValor( false, i, COL_SEL );
+			}
+		}
+	}
+
 	public void setConexao( Connection cn ) {
 
 		super.setConexao( cn );

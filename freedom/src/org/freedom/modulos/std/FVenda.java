@@ -1664,54 +1664,54 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						if ( imp.pRow() == 0 ) {
 							
 							imp.impCab( 136, false );
-							imp.say( imp.pRow(), 0, imp.comprimido() );
-							imp.say( imp.pRow(), 1, "CLIENTE" );
-							imp.say( imp.pRow(), 70, "PEDIDO N.: " + rs.getString( "CodVenda" ).trim() );
-							imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-							imp.say( imp.pRow(), 1, ( rs.getString( "RazCli" ) != null ? rs.getString( "RazCli" ).trim() : "" ) + " - " + rs.getString( "CodCli" ).trim() );// nome cliente
-							imp.say( imp.pRow(), 70, "PEDIDO CLIENTE: " + ( rs.getString( "PEDCLIVENDA" ) == null ? "" : rs.getString( "PEDCLIVENDA" ) ) );
-							imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-							imp.say( imp.pRow(), 1, rs.getString( "CpfCli" ) != null ? "CPF    : " + Funcoes.setMascara( rs.getString( "CpfCli" ), "###.###.###-##" ) : "CNPJ   : " + Funcoes.setMascara( rs.getString( "CnpjCli" ), "##.###.###/####-##" ) );// CNJP cliente
-							imp.say( imp.pRow(), 70, "CONTATO: " + ( rs.getString( "ContCli" ) != null ? rs.getString( "ContCli" ).trim() : "" ) );
-							imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-							imp.say( imp.pRow(), 1, ( rs.getString( "RgCli" ) != null ? "R.G.   : " + rs.getString( "RgCli" ) : "I.E.   : " + ( rs.getString( "InscCli" ) != null ? rs.getString( "InscCli" ) : "" ) ) );// IE cliente
-							imp.say( imp.pRow(), 70, ( rs.getString( "EndCli" ) != null ? rs.getString( "EndCli" ).trim() + " N°:" + ( rs.getString( "NumCli" ) != null ? rs.getString( "NumCli" ) : "" ) : "" ) );// rua e número do cliente
-							imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-							imp.say( imp.pRow(), 1, "SITE   : " + ( rs.getString( "SiteCli" ) != null ? rs.getString( "SiteCli" ).trim() : "" ) );
-							imp.say( imp.pRow(), 70, ( rs.getString( "BairCli" ) != null ? rs.getString( "BairCli" ).trim() : "" ) + ( rs.getString( "CidCli" ) != null ? " - " + rs.getString( "CidCli" ).trim() : "" ) + ( rs.getString( "UFCli" ) != null ? " - " + rs.getString( "UFCli" ).trim() : "" )
+							imp.say( 0, imp.comprimido() );
+							imp.say( 1, "CLIENTE" );
+							imp.say( 70, "PEDIDO N.: " + rs.getString( "CodVenda" ).trim() );
+							imp.pulaLinha( 1, imp.comprimido() );
+							imp.say( 1, ( rs.getString( "RazCli" ) != null ? rs.getString( "RazCli" ).trim() : "" ) + " - " + rs.getString( "CodCli" ).trim() );// nome cliente
+							imp.say( 70, "PEDIDO CLIENTE: " + ( rs.getString( "PEDCLIVENDA" ) == null ? "" : rs.getString( "PEDCLIVENDA" ) ) );
+							imp.pulaLinha( 1, imp.comprimido() );
+							imp.say( 1, rs.getString( "CpfCli" ) != null ? "CPF    : " + Funcoes.setMascara( rs.getString( "CpfCli" ), "###.###.###-##" ) : "CNPJ   : " + Funcoes.setMascara( rs.getString( "CnpjCli" ), "##.###.###/####-##" ) );// CNJP cliente
+							imp.say( 70, "CONTATO: " + ( rs.getString( "ContCli" ) != null ? rs.getString( "ContCli" ).trim() : "" ) );
+							imp.pulaLinha( 1, imp.comprimido() );
+							imp.say( 1, ( rs.getString( "RgCli" ) != null ? "R.G.   : " + rs.getString( "RgCli" ) : "I.E.   : " + ( rs.getString( "InscCli" ) != null ? rs.getString( "InscCli" ) : "" ) ) );// IE cliente
+							imp.say( 70, ( rs.getString( "EndCli" ) != null ? rs.getString( "EndCli" ).trim() + " N°:" + ( rs.getString( "NumCli" ) != null ? rs.getString( "NumCli" ) : "" ) : "" ) );// rua e número do cliente
+							imp.pulaLinha( 1, imp.comprimido() );
+							imp.say( 1, "SITE   : " + ( rs.getString( "SiteCli" ) != null ? rs.getString( "SiteCli" ).trim() : "" ) );
+							imp.say( 70, ( rs.getString( "BairCli" ) != null ? rs.getString( "BairCli" ).trim() : "" ) + ( rs.getString( "CidCli" ) != null ? " - " + rs.getString( "CidCli" ).trim() : "" ) + ( rs.getString( "UFCli" ) != null ? " - " + rs.getString( "UFCli" ).trim() : "" )
 									+ ( rs.getString( "CEPCli" ) != null ? " - " + rs.getString( "CEPCli" ).trim() : "" ) );// complemento do endereço do cliente
-							imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-							imp.say( imp.pRow(), 1, "E-MAIl : " + ( rs.getString( "EmailCli" ) != null ? rs.getString( "EmailCli" ).trim() : "" ) );
-							imp.say( imp.pRow(), 70, "TEL: " + ( rs.getString( "DDDCli" ) != null ? Funcoes.setMascara( rs.getString( "DDDCli" ), "(####)" ) : "" ) + ( rs.getString( "FoneCli" ) != null ? Funcoes.setMascara( rs.getString( "FoneCli" ).trim(), "####-####" ) : "" ) + " - FAX:"
+							imp.pulaLinha( 1, imp.comprimido() );
+							imp.say( 1, "E-MAIl : " + ( rs.getString( "EmailCli" ) != null ? rs.getString( "EmailCli" ).trim() : "" ) );
+							imp.say( 70, "TEL: " + ( rs.getString( "DDDCli" ) != null ? Funcoes.setMascara( rs.getString( "DDDCli" ), "(####)" ) : "" ) + ( rs.getString( "FoneCli" ) != null ? Funcoes.setMascara( rs.getString( "FoneCli" ).trim(), "####-####" ) : "" ) + " - FAX:"
 									+ ( rs.getString( "FaxCli" ) != null ? Funcoes.setMascara( rs.getString( "FaxCli" ), "####-####" ) : "" ) );
-							imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-							imp.say( imp.pRow(), 0, Funcoes.replicate( "-", 135 ) );
-							imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-							imp.say( imp.pRow(), 55, "DADO(S) DO(S) PRODUTO(S)" );
-							imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-							imp.say( imp.pRow(), 0, Funcoes.replicate( "-", 135 ) );
-							imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-							imp.say( imp.pRow(), 1, "IT.|  CÓDIGO  |                 DESCRIÇÃO               |     LOTE     |UN|   QUANT.   |    V.UNIT.  |    V.TOTAL    |  IPI%  |  ICMS% " );
+							imp.pulaLinha( 1, imp.comprimido() );
+							imp.say( 0, Funcoes.replicate( "-", 135 ) );
+							imp.pulaLinha( 1, imp.comprimido() );
+							imp.say( 55, "DADO(S) DO(S) PRODUTO(S)" );
+							imp.pulaLinha( 1, imp.comprimido() );
+							imp.say( 0, Funcoes.replicate( "-", 135 ) );
+							imp.pulaLinha( 1, imp.comprimido() );
+							imp.say( 1, "ITEM|  CÓDIGO  |                 DESCRIÇÃO               |     LOTE     |UN|   QUANT.   |    V.UNIT.  |    V.TOTAL    |  IPI%  |  ICMS% " );
 					
 						}
 						
-						imp.say( imp.pRow() + 1, 0, imp.comprimido() );
+						imp.pulaLinha( 1, imp.comprimido() );
 						
 						if ( i == 0 ) {
-							imp.say( imp.pRow() + 0, 1, rs.getString( "CodItVenda" ).trim() );
-							imp.say( imp.pRow(), 6, rs.getString( "RefProd" ).trim() );
+							imp.say( 1, Funcoes.copy( rs.getString( "CodItVenda" ).trim(), 4 ) );
+							imp.say( 6, Funcoes.copy( rs.getString( "RefProd" ).trim(), 10 ) );
 						}
 						
-						imp.say( imp.pRow(), 17, "" + vDesc.elementAt( i ).toString() );
+						imp.say( 17, "" + vDesc.elementAt( i ).toString() );
 						
 						if ( i == 0 ) {
-							imp.say( imp.pRow(), 59, ( rs.getString( 2 ) != null ? rs.getString( 2 ).trim() : "" ) );
-							imp.say( imp.pRow(), 74, rs.getString( "CodUnid" ).trim() );
-							imp.say( imp.pRow(), 79, rs.getString( "QtdItVenda" ) );
-							imp.say( imp.pRow(), 87, Funcoes.strDecimalToStrCurrency( 13, 2, "" + ( new BigDecimal( rs.getString( "VlrLiqItVenda" ) ) ).divide( new BigDecimal( rs.getDouble( "QtdItVenda" ) ), 2, BigDecimal.ROUND_HALF_UP ) ) );
-							imp.say( imp.pRow(), 106, rs.getString( "VlrLiqItVenda" ) );
-							imp.say( imp.pRow(), 122, rs.getString( "PercIPIItVenda" ) );
-							imp.say( imp.pRow(), 130, rs.getString( "PercICMSItVenda" ) );
+							imp.say( 59, ( rs.getString( 2 ) != null ? rs.getString( 2 ).trim() : "" ) );
+							imp.say( 74, rs.getString( "CodUnid" ).trim() );
+							imp.say( 79, rs.getString( "QtdItVenda" ) );
+							imp.say( 87, Funcoes.strDecimalToStrCurrency( 13, 2, "" + ( new BigDecimal( rs.getString( "VlrLiqItVenda" ) ) ).divide( new BigDecimal( rs.getDouble( "QtdItVenda" ) ), 2, BigDecimal.ROUND_HALF_UP ) ) );
+							imp.say( 106, rs.getString( "VlrLiqItVenda" ) );
+							imp.say( 122, rs.getString( "PercIPIItVenda" ) );
+							imp.say( 130, rs.getString( "PercICMSItVenda" ) );
 						}
 						
 					}
@@ -1722,25 +1722,25 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					
 				}
 				
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 0, Funcoes.replicate( "-", 135 ) );
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 4, "TOTAL IPI: " + rs.getString( "VlrIPIVenda" ) );
-				imp.say( imp.pRow(), 44, "|    TOTAL ICMS: " + rs.getString( "VlrICMSVenda" ) );
-				imp.say( imp.pRow(), 84, "|    TOTAL PRODUTOS: " + rs.getString( "VlrLiqVenda" ) );
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 0, Funcoes.replicate( "-", 135 ) );
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 55, "INFORMAÇÕES COMPLEMENTARES" );
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 0, Funcoes.replicate( "-", 135 ) );
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 0, "PAGAMENTO.........:    " + rs.getString( "CODPLANOPAG" ) + " - " + rs.getString( "DESCPLANOPAG" ) );
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 0, "FRETE.............:    " + ( rs.getString( 51 ) != null ? ( rs.getString( 51 ).equals( "C" ) ? "POR CONTA DA EMPRESA " : "POR CONTA DO CLIENTE " ) : "" ) );
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 0, "TRANSPORTADORA....:    " + ( rs.getString( 50 ) != null ? rs.getString( 50 ) : "" ) );
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, Funcoes.replicate( "-", 135 ) );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 4, "TOTAL IPI: " + rs.getString( "VlrIPIVenda" ) );
+				imp.say( 44, "|    TOTAL ICMS: " + rs.getString( "VlrICMSVenda" ) );
+				imp.say( 84, "|    TOTAL PRODUTOS: " + rs.getString( "VlrLiqVenda" ) );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, Funcoes.replicate( "-", 135 ) );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 55, "INFORMAÇÕES COMPLEMENTARES" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, Funcoes.replicate( "-", 135 ) );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "PAGAMENTO.........:    " + rs.getString( "CODPLANOPAG" ) + " - " + rs.getString( "DESCPLANOPAG" ) );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "FRETE.............:    " + ( rs.getString( 51 ) != null ? ( rs.getString( 51 ).equals( "C" ) ? "POR CONTA DA EMPRESA " : "POR CONTA DO CLIENTE " ) : "" ) );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "TRANSPORTADORA....:    " + ( rs.getString( 50 ) != null ? rs.getString( 50 ) : "" ) );
+				imp.pulaLinha( 1, imp.comprimido() );
 
 				if ( bPrefs[ 14 ] ) {
 					
@@ -1756,26 +1756,26 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						sDiasPE = "";
 					}
 					
-					imp.say( imp.pRow(), 0, "DATA DE ENTREGA...:    " + sDiasPE );
+					imp.say( 0, "DATA DE ENTREGA...:    " + sDiasPE );
 					
 				}
 				else {
 					sDiasPE = ( iDiasPE > 0 ? iDiasPE + " dias" : "" );
-					imp.say( imp.pRow(), 0, "PRAZO DE ENTREGA..:    " + sDiasPE );
+					imp.say( 0, "PRAZO DE ENTREGA..:    " + sDiasPE );
 				}
 
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 0, Funcoes.replicate( "-", 135 ) );
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 62, "OBSERVACÃO" );
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, Funcoes.replicate( "-", 135 ) );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 62, "OBSERVACÃO" );
+				imp.pulaLinha( 1, imp.comprimido() );
 				
 				vObs = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "ObsVenda" ) ), 115 );
 				
 				for ( int i = 0; i < vObs.size(); i++ ) {
 				
-					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow(), 20, vObs.elementAt( i ).toString() );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 20, vObs.elementAt( i ).toString() );
 					
 					if ( imp.pRow() >= linPag ) {
 						imp.incPags();
@@ -1784,16 +1784,16 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					
 				}
 				
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 0, Funcoes.replicate( "-", 135 ) );
-				imp.say( imp.pRow() + 2, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 5, Funcoes.replicate( "-", 40 ) );
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 5, ( rs.getString( "NomeVend" ) != null ? rs.getString( "NomeVend" ) : "" ) );
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 5, ( rs.getString( 61 ) != null ? rs.getString( 61 ) : "" ) );
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 5, ( rs.getString( "EmailVend" ) != null ? rs.getString( "EmailVend" ) : "" ) );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, Funcoes.replicate( "-", 135 ) );
+				imp.pulaLinha( 2, imp.comprimido() );
+				imp.say( 5, Funcoes.replicate( "-", 40 ) );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 5, ( rs.getString( "NomeVend" ) != null ? rs.getString( "NomeVend" ) : "" ) );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 5, ( rs.getString( 61 ) != null ? rs.getString( 61 ) : "" ) );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 5, ( rs.getString( "EmailVend" ) != null ? rs.getString( "EmailVend" ) : "" ) );
 
 				imp.eject();
 				imp.fechaGravacao();
