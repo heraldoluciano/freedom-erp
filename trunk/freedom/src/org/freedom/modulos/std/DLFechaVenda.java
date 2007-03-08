@@ -458,7 +458,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		adic( new JLabelPad( "Cód.tp.cob." ), 7, 40, 100, 20 );
 		adic( txtCodTipoCob, 7, 60, 100, 20 );
-		adic( new JLabelPad( "Descrição do Tipo de cobrança" ), 90, 40, 250, 20 );
+		adic( new JLabelPad( "Descrição do Tipo de cobrança" ), 110, 40, 250, 20 );
 		adic( txtDescTipoCob, 110, 60, 250, 20 );
 		
 		adic( new JLabelPad( "Cód.banco" ), 7, 80, 100, 20 );

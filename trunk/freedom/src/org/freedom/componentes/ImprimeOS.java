@@ -1086,7 +1086,7 @@ public class ImprimeOS implements ActionListener {
 				sClassNota = rs.getString("ClassNotaPapel") != null ? rs.getString("ClassNotaPapel").trim() : "";
 			} 
 			else if(sTipo.equals("PD")){
-				verifLinPag("TO");				
+				iRetorno = verifLinPag("TO");				
 			}
 			else {
 				Funcoes.mensagemInforma(cOwner,"Não foi encontrada nenhuma impressora do tipo '" + sTipo + "!");
