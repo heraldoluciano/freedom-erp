@@ -361,6 +361,8 @@ public class FRemSiacc extends FFilho implements ActionListener {
 	private void execExporta() {
 
 		if ( consisteExporta() ) {
+			
+			lbStatus.setText( "     criando arquivo ..." );
 
 			FileDialog fileDialogSiacc = null;
 			fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
@@ -368,6 +370,7 @@ public class FRemSiacc extends FFilho implements ActionListener {
 			fileDialogSiacc.setVisible( true );
 
 			if ( fileDialogSiacc.getFile() == null ) {
+				lbStatus.setText( "" );
 				return;
 			}
 
@@ -385,6 +388,7 @@ public class FRemSiacc extends FFilho implements ActionListener {
 				fileSiacc.createNewFile();
 			} catch ( IOException err ) {
 				Funcoes.mensagemErro( this, "Erro limpando arquivo: " + sFileName + "\n" + err.getMessage(), true, con, err );
+				lbStatus.setText( "" );
 				return;
 			}
 
@@ -392,9 +396,11 @@ public class FRemSiacc extends FFilho implements ActionListener {
 				fileWriterSiacc = new FileWriter( fileSiacc );
 			} catch ( IOException ioError ) {
 				Funcoes.mensagemErro( this, "Erro Criando o arquivo: " + sFileName + "\n" + ioError.getMessage() );
+				lbStatus.setText( "" );
 				return;
 			}
 			
+			lbStatus.setText( "     gravando arquivo ..." );
 			// motar layout...
 
 		}
