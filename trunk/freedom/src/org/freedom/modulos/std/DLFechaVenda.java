@@ -702,9 +702,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		lcItReceber.edit();
 		
-		DLFechaParcela dl = new DLFechaParcela( DLFechaVenda.this, con, 
-									txtVlrComi.getVlrBigDecimal(), 
-									txtDtVencComi.getVlrDate(), 
+		DLFechaParcela dl = new DLFechaParcela( this, con, 
+									txtVlrParcItRec.getVlrBigDecimal(), 
+									txtDtVencItRec.getVlrDate(), 
 									txtVlrDescItRec.getVlrBigDecimal(), 
 									txtCodTipoCob.getVlrInteger(),
 									txtCodBanco.getVlrString());
