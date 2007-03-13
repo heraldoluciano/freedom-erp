@@ -341,7 +341,7 @@ public class NF035 extends Layout {
 					}
 
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
-						imp.pulaLinha( 46 - imp.pRow(), imp.comprimido() );
+						imp.pulaLinha( 47 - imp.pRow(), imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
 						imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRICMSPED ) ) ) );
 						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODPED ) - bdVlrTotServ.floatValue() ) ) );
@@ -353,7 +353,7 @@ public class NF035 extends Layout {
 						iItImp = 0;
 					}
 					else {
-						imp.pulaLinha( 46 - imp.pRow(), imp.comprimido() );
+						imp.pulaLinha( 47 - imp.pRow(), imp.comprimido() );
 						imp.say( 4, "********************" );
 						imp.say( 32, "********************" );
 						imp.say( 114, "********************" );
@@ -398,15 +398,15 @@ public class NF035 extends Layout {
 					imp.say( 20, Funcoes.copy( frete.getString( NF.C_ESPFRETE ), 27 ) );
 					imp.say( 49, Funcoes.copy( frete.getString( NF.C_MARCAFRETE ), 22 ) );
 					imp.say( 76, Funcoes.copy( frete.getString( NF.C_CONHECFRETEPED ), 20 ) );
-					imp.say( 108, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( frete.getFloat( NF.C_PESOBRUTO ) ) ) );
-					imp.say( 124, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( frete.getString( NF.C_PESOLIQ ) ) ) );
-					imp.pulaLinha( 2, imp.comprimido() );
+					imp.say( 108, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getFloat( NF.C_PESOBRUTO ) ) ) );
+					imp.say( 124, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getFloat( NF.C_PESOLIQ ) ) ) );
+					imp.pulaLinha( 1, imp.comprimido() );
 
 					// Fim da impressão do frete
 
 					// Imprime observação e classificações fiscais
 
-					vObsVenda = Funcoes.strToVectorSilabas( sDescFisc + "\n" + sObsVenda, 40 );
+					vObsVenda = Funcoes.strToVectorSilabas( ( sDescFisc.length() > 0 ? sDescFisc + "\n" : "" ) + sObsVenda, 40 );
 
 					sizeObs = vSigla.size();
 					sizeObs = vObsVenda.size() > sizeObs ? vObsVenda.size() : sizeObs;
@@ -431,7 +431,7 @@ public class NF035 extends Layout {
 
 					// Imprime canhoto
 
-					imp.pulaLinha( 3, imp.comprimido() );
+					imp.pulaLinha( 4, imp.comprimido() );
 					imp.say( 128, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido() );
