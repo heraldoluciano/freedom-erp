@@ -28,6 +28,7 @@ package org.freedom.modulos.rep;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -44,6 +45,7 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.PainelImagem;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
 public class RPEmpresa extends FTabDados {
@@ -68,7 +70,7 @@ public class RPEmpresa extends FTabDados {
 
 	private JTextFieldPad txtEndEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 45, 0 );
 
-	//private JTextFieldPad txtNumEmp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtNumEmp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCnpjEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
@@ -90,13 +92,13 @@ public class RPEmpresa extends FTabDados {
 
 	private JTextFieldPad txtEmailEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtCodMoeda = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+	//private JTextFieldPad txtCodMoeda = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 	
-	private JTextFieldFK txtDescMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 45, 0 );
+	//private JTextFieldFK txtDescMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 45, 0 );
 
     private PainelImagem imLogoEmp = new PainelImagem( 65000 );	
 
-    private JTextFieldPad txtCodFilial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+    private JTextFieldPad txtCodFilial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtRazFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -104,7 +106,7 @@ public class RPEmpresa extends FTabDados {
 
 	private JTextFieldPad txtEndFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	//private JTextFieldPad txtNumFilial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtNumFilial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCnpjFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
@@ -140,7 +142,7 @@ public class RPEmpresa extends FTabDados {
 
 	public RPEmpresa() {
 
-		super();
+		super( false );
 		setTitulo( "Cadastro da Empresa" );
 		setAtribos( 50, 50, 550, 480 );
 		
@@ -154,7 +156,7 @@ public class RPEmpresa extends FTabDados {
 
 
 		montaAbaEmpresa();
-		setListaCampos( false, "EMPRESA", "RP" );
+		setListaCampos( false, "EMPRESA", "SG" );
 		
 		txtCnpjEmp.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepEmp.setMascara( JTextFieldPad.MC_CEP );
@@ -166,7 +168,7 @@ public class RPEmpresa extends FTabDados {
         setNavegador( navFilial );
 		
 		montaAbaFilial();
-		setListaCampos( false, "FILIAL", "RP" );
+		setListaCampos( true, "FILIAL", "SG" );
 		lcFilial.setOrdem( "RazFilial" );
 		lcFilial.montaTab();
 		
@@ -209,14 +211,15 @@ public class RPEmpresa extends FTabDados {
 		adicCampo( txtCodEmp, 7, 30, 100, 20, "CodEmp", "Cód.emp.", ListaCampos.DB_PK, true );
 		adicCampo( txtRazEmp, 110, 30, 260, 20, "RazEmp", "Razão social da empresa", ListaCampos.DB_SI, true );
 		
-		adicDB( imLogoEmp, 380, 30, 140, 140, "LogoEmp", "Logomarca", true );
+		adicDB( imLogoEmp, 380, 30, 140, 140, "FotoEmp", "Logomarca", true );
 		
 		adicCampo( txtNomeEmp, 7, 70, 363, 20, "NomeEmp", "Nome fantasia", ListaCampos.DB_SI, false );
 		
 		adicCampo( txtCnpjEmp, 7, 110, 180, 20, "CnpjEmp", "Cnpj", ListaCampos.DB_SI, true );
 		adicCampo( txtInscEmp, 190, 110, 180, 20, "InscEmp", "Inscrição Estadual", ListaCampos.DB_SI, true );
 		
-		adicCampo( txtEndEmp, 7, 150, 363, 20, "EndEmp", "Endereço", ListaCampos.DB_SI, false );
+		adicCampo( txtEndEmp, 7, 150, 280, 20, "EndEmp", "Endereço", ListaCampos.DB_SI, false );
+		adicCampo( txtNumEmp, 290, 150, 80, 20, "NumEmp", "Número", ListaCampos.DB_SI, false );
 	
 		adicCampo( txtCidEmp, 7, 190, 112, 20, "CidEmp", "Cidade", ListaCampos.DB_SI, false );
 		adicCampo( txtBairEmp, 122, 190, 112, 20, "BairEmp", "Bairro", ListaCampos.DB_SI, false );
@@ -229,8 +232,8 @@ public class RPEmpresa extends FTabDados {
 		
 		adicCampo( txtEmailEmp, 7, 270, 363, 20, "EmailEmp", "E-Mail", ListaCampos.DB_SI, false );
 		
-		adicCampo( txtCodMoeda, 7, 310, 100, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_PK, false );
-		adicCampo( txtDescMoeda, 110, 310, 260, 20, "DescMoeda", "Descrição da moeda", ListaCampos.DB_SI, false );
+		//adicCampo( txtCodMoeda, 7, 310, 100, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_PK, txtDescMoeda, false );
+		//adicDescFK( txtDescMoeda, 110, 310, 260, 20, "DescMoeda", "Descrição da moeda" );
 	}
 
 	private void montaAbaFilial() {
@@ -262,7 +265,8 @@ public class RPEmpresa extends FTabDados {
 		
 		adicCampo( txtInscFilial, 373, 110, 147, 20, "InscFilial", "Inscrição Estadual", ListaCampos.DB_SI, true );
 
-		adicCampo( txtEndFilial, 7, 110, 363, 20, "EndFilial", "Endereço", ListaCampos.DB_SI, false );
+		adicCampo( txtEndFilial, 7, 110, 280, 20, "EndFilial", "Endereço", ListaCampos.DB_SI, false );
+		adicCampo( txtNumFilial, 290, 110, 80, 20, "NumFilial", "Número", ListaCampos.DB_SI, false );
 		
 		adicCampo( txtCidFilial, 7, 150, 112, 20, "CidFilial", "Cidade", ListaCampos.DB_SI, false );
 		adicCampo( txtBairFilial, 122, 150, 112, 20, "BairFilial", "Bairro", ListaCampos.DB_SI, false );
@@ -286,14 +290,14 @@ public class RPEmpresa extends FTabDados {
 		
 		if ( Funcoes.mensagemConfirma( this, "Confirma a cópia dos dados da empresa?" ) == JOptionPane.YES_OPTION ) {
 			
-			//if ( lcFilial.getStatus() != ListaCampos.LCS_INSERT ) {
-			//	lcFilial.insert( true );
-			//}
+			if ( lcFilial.getStatus() != ListaCampos.LCS_INSERT ) {
+				lcFilial.insert( true );
+			}
 			
 			txtRazFilial.setVlrString( txtRazEmp.getVlrString() );
 			txtNomeFilial.setVlrString( txtNomeEmp.getVlrString() );
 			txtEndFilial.setVlrString( txtEndEmp.getVlrString() );
-			//txtNumFilial.setVlrString( txtNumEmp.getVlrString() );
+			txtNumFilial.setVlrString( txtNumEmp.getVlrString() );
 			txtCnpjFilial.setVlrString( txtCnpjEmp.getVlrString() );
 			txtInscFilial.setVlrString( txtInscEmp.getVlrString() );
 			txtCidFilial.setVlrString( txtCidEmp.getVlrString() );
@@ -314,5 +318,14 @@ public class RPEmpresa extends FTabDados {
 		}
 		
 		super.actionPerformed( e );
+	}
+
+	@ Override
+	public synchronized void setConexao( Connection cn ) {
+
+		super.setConexao( cn );
+		
+		txtCodEmp.setVlrInteger( new Integer( Aplicativo.iCodEmp ) );
+		lcCampos.carregaDados();
 	}
 }
