@@ -1230,20 +1230,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 			else
 				txtDocCompra.setAtivo(true);
 		}
-		/*
 		if (txtStatusCompra.getVlrString().trim().length()>0 && 
-				txtStatusCompra.getVlrString().substring(0,1).equals("C")){
-			lbStatus.setText("  CANCELADA");
-			lbStatus.setBackground(Color.RED);
-			lbStatus.setVisible(true);
-		}
-		else 
-			*/
-			if (txtStatusCompra.getVlrString().trim().length()>0 && 
 				(txtStatusCompra.getVlrString().trim().equals("C2")
 						|| txtStatusCompra.getVlrString().trim().equals("C3"))){
 			lbStatus.setText("NOTA RECEBIDA");
-			lbStatus.setBackground(Color.GREEN);
+			lbStatus.setBackground( new Color( 45, 190, 60 ) );
 			lbStatus.setVisible(true);
 		}
 		else if (verificaBloq()){

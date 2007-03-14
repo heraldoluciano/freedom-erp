@@ -18,7 +18,7 @@
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de cadastros de códigos de retorno.
+ * Tela de manutenção dos dados dos clientes referentes ao esquema Febraban.
  * 
  */
 package org.freedom.modulos.fnc;
@@ -28,6 +28,8 @@ import java.util.Vector;
 
 import javax.swing.JLabel;
 
+import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
@@ -35,35 +37,47 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
-public class FCodRetorno extends FDados implements RadioGroupListener {
+public class FManutCli extends FDados implements RadioGroupListener, PostListener {
 
 	private static final long serialVersionUID = 1L;
+	
+	private final JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+
+	private final JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private final JTextFieldPad txtCodEmpPF = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	
+	private final JTextFieldPad txtCodFilialPF = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private final JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
-	private final JTextFieldPad txtTipoFebraban = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-
 	private final JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtCodRet = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+	private final JTextFieldPad txtAgencia = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
-	private final JTextFieldPad txtDescRet = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtIdentificacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private final JTextFieldPad txtTipoFebraban = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private final JRadioGroup rgTipoFebraban;
 
 	private final ListaCampos lcBanco = new ListaCampos( this, "BO" );
+	
+	private final ListaCampos lcCliente = new ListaCampos( this, "" );
 
 	private Vector<String> vLabs = new Vector<String>();
 
 	private Vector<String> vVals = new Vector<String>();
 
-	public FCodRetorno() {
+	public FManutCli() {
 
 		setTitulo( "Códigos de retorno" );
-		setAtribos( 200, 60, 367, 210 );
-
+		setAtribos( 200, 60, 367, 250 );
+		
+		
 		vLabs.add( "SIACC" );
 		vLabs.add( "CNAB" );
 		vVals.add( "01" );
@@ -76,26 +90,48 @@ public class FCodRetorno extends FDados implements RadioGroupListener {
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
 		txtCodBanco.setTabelaExterna( lcBanco );
+		
+		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true ) );
+		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
+		lcCliente.montaSql( false, "CLIENTE", "VD" );
+		lcCliente.setQueryCommit( false );
+		lcCliente.setReadOnly( true );
+		txtCodCli.setTabelaExterna( lcCliente );
 
 		montaTela();
 
-		setListaCampos( false, "FBNCODRET", "FN" );
-
 		rgTipoFebraban.addRadioGroupListener( this );
+		
+		lcCampos.addPostListener( this );
 	}
 
 	private void montaTela() {
-
+		
 		adic( new JLabel( "Tipo:"), 7, 0, 333, 20  );
 		adic( rgTipoFebraban, 7, 20, 333, 30  );	
 		
 		txtTipoFebraban.setVlrString( "01" );		
 		lcCampos.add( new GuardaCampo( txtTipoFebraban, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true ) );
 		
-		adicCampo( txtCodBanco, 7, 70, 90, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true );
-		adicDescFK( txtNomeBanco, 100, 70, 240, 20, "NomeBanco", "Nome do banco" );
-		adicCampo( txtCodRet, 7, 110, 90, 20, "CodRet", "Cód.retorno", ListaCampos.DB_PK, true );
-		adicCampo( txtDescRet, 100, 110, 240, 20, "DescRet", "Descrição do retorno", ListaCampos.DB_SI, true );
+		adicCampo( txtCodCli, 7, 70, 90, 20, "CodCli", "Cód.cli.", ListaCampos.DB_PF, txtRazCli, true );
+		adicDescFK( txtRazCli, 100, 70, 240, 20, "RazCli", "Razão social do cliente" );
+		adicCampo( txtCodBanco, 7, 110, 90, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true );
+		adicDescFK( txtNomeBanco, 100, 110, 240, 20, "NomeBanco", "Nome do banco" );
+		adicCampo( txtAgencia, 7, 150, 165, 20, "AgenciaCli", "Agência", ListaCampos.DB_SI, true );
+		adicCampo( txtIdentificacao, 175, 150, 165, 20, "IdentCli", "Identificação", ListaCampos.DB_SI, true );
+		adicCampoInvisivel( txtCodEmpPF, "CodEmpPF", "Cód.emp.pf.", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtCodFilialPF, "CodFilialPF", "Cód.filial.pf.", ListaCampos.DB_SI, false );
+
+		setListaCampos( false, "FBNCLI", "FN" );
+	}
+
+	@ Override
+	public void beforePost( PostEvent e ) {
+
+		super.beforePost( e );
+		
+		txtCodEmpPF.setVlrInteger( Aplicativo.iCodEmp );
+		txtCodFilialPF.setVlrInteger( ListaCampos.getMasterFilial( "SGPREFERE6" ) );
 	}
 
 	public void valorAlterado( RadioGroupEvent evt ) {
@@ -110,6 +146,7 @@ public class FCodRetorno extends FDados implements RadioGroupListener {
 
 		super.setConexao( cn );
 		lcBanco.setConexao( cn );
+		lcCliente.setConexao( cn );
 	}
 
 }
