@@ -1,6 +1,6 @@
 /**
  * @version 01/03/2007 <BR>
- * @author Setpoint Informática Ltda./Alex Rodrigues<BR>
+ * @author Setpoint Informática Ltda./RobsonSanchez/Alex Rodrigues<BR>
  * 
  * Projeto: Freedom <BR>
  * 
@@ -36,7 +36,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -153,7 +155,7 @@ public class FRemSiacc extends FFilho implements ActionListener {
 
 		montaTela();
 
-		tab.adicColuna( "" );
+		tab.adicColuna( "Sel." );
 		tab.adicColuna( "Razão social do cliente" );
 		tab.adicColuna( "Cód.cli." );
 		tab.adicColuna( "Cód.rec." );
@@ -215,7 +217,7 @@ public class FRemSiacc extends FFilho implements ActionListener {
 
 		panelFiltros.adic( new JLabel( "filtro:" ), 7, 40, 60, 20 );
 		panelFiltros.adic( rgData, 7, 60, 120, 50 );
-		panelFiltros.adic( new JLabel( "Periodo:" ), 130, 40, 80, 20 );
+		panelFiltros.adic( new JLabel( "Período:" ), 130, 40, 80, 20 );
 		panelFiltros.adic( txtDtIni, 145, 75, 100, 20 );
 		panelFiltros.adic( new JLabel( "até", SwingConstants.CENTER ), 245, 75, 40, 20 );
 		panelFiltros.adic( txtDtFim, 285, 75, 100, 20 );
@@ -243,46 +245,50 @@ public class FRemSiacc extends FFilho implements ActionListener {
 
 	}
 
+	private ResultSet executeQuery() throws SQLException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sDtFiltro = "E".equals( rgData.getVlrString() ) ? "IR.DTITREC" : "IR.DTVENCITREC";
+		StringBuilder sSQL = new StringBuilder();
+		sSQL.append( "SELECT IR.CODREC, IR.NPARCITREC, R.DOCREC, R.CODCLI, C.RAZCLI, IR.DTITREC, IR.DTVENCITREC," );
+		sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, COALESCE(FR.SITREMESSA,'00') SITREMESSA, FR.SITRETORNO " );
+		sSQL.append( "FROM VDCLIENTE C," );
+		sSQL.append( "FNRECEBER R LEFT OUTER JOIN FNFBNCLI FC ON " );
+		sSQL.append( "FC.CODEMP=R.CODEMPCL AND FC.CODFILIAL=R.CODFILIALCL AND FC.CODCLI=R.CODCLI ," );
+		sSQL.append( "FNITRECEBER IR LEFT OUTER JOIN FNFBNREC FR ON " );
+		sSQL.append( "FR.CODEMP=IR.CODEMP AND FR.CODFILIAL=IR.CODFILIAL AND " );
+		sSQL.append( "FR.CODREC=IR.CODREC AND FR.NPARCITREC=IR.NPARCITREC AND " );
+		sSQL.append( "FR.CODEMPBO=IR.CODEMPBO AND FR.CODFILIALBO=IR.CODFILIALBO AND FR.CODBANCO=IR.CODBANCO " );
+		sSQL.append( "WHERE R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC AND " );
+		sSQL.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND " );
+		sSQL.append( sDtFiltro );
+		sSQL.append( " BETWEEN ? AND ? AND IR.STATUSITREC IN ('R1','RL') AND " );
+		sSQL.append( "IR.CODEMPBO=? AND IR.CODFILIALBO=? AND IR.CODBANCO=? " );
+		sSQL.append( "ORDER BY C.RAZCLI, R.CODREC, IR.NPARCITREC " );
+		ps = con.prepareStatement( sSQL.toString() );
+		ps.setDate( 1, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
+		ps.setDate( 2, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
+		ps.setInt( 3, Aplicativo.iCodEmp );
+		ps.setInt( 4, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+		ps.setInt( 5, txtCodBanco.getVlrInteger() );
+		rs = ps.executeQuery();
+		return rs;
+	}
+	
 	private void carregaTab() {
-
+		
+		ResultSet rs;
+		
 		if ( txtCodBanco.getVlrString().trim().length() < 1 ) {
 			Funcoes.mensagemErro( this, "O código do banco é obrigatorio!" );
 			return;
 		}
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuilder sSQL = new StringBuilder();
-		String sDtFiltro = "E".equals( rgData.getVlrString() ) ? "IR.DTITREC" : "IR.DTVENCITREC";
-
 		try {
 
 			tab.limpa();
 
-			sSQL.append( "SELECT IR.CODREC, IR.NPARCITREC, R.DOCREC, R.CODCLI, C.RAZCLI, IR.DTITREC, IR.DTVENCITREC," );
-			sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, FR.SITREMESSA, FR.SITRETORNO " );
-			sSQL.append( "FROM VDCLIENTE C," );
-			sSQL.append( "FNRECEBER R LEFT OUTER JOIN FNFBNCLI FC ON " );
-			sSQL.append( "FC.CODEMP=R.CODEMPCL AND FC.CODFILIAL=R.CODFILIALCL AND FC.CODCLI=R.CODCLI ," );
-			sSQL.append( "FNITRECEBER IR LEFT OUTER JOIN FNFBNREC FR ON " );
-			sSQL.append( "FR.CODEMP=IR.CODEMP AND FR.CODFILIAL=IR.CODFILIAL AND " );
-			sSQL.append( "FR.CODREC=IR.CODREC AND FR.NPARCITREC=IR.NPARCITREC AND " );
-			sSQL.append( "FR.CODEMPBO=IR.CODEMPBO AND FR.CODFILIALBO=IR.CODFILIALBO AND FR.CODBANCO=IR.CODBANCO " );
-			sSQL.append( "WHERE R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC AND " );
-			sSQL.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND " );
-			sSQL.append( sDtFiltro );
-			sSQL.append( " BETWEEN ? AND ? AND IR.STATUSITREC IN ('R1','RL') AND " );
-			sSQL.append( "IR.CODEMPBO=? AND IR.CODFILIALBO=? AND IR.CODBANCO=? " );
-			sSQL.append( "ORDER BY C.RAZCLI, R.CODREC, IR.NPARCITREC " );
-
-			ps = con.prepareStatement( sSQL.toString() );
-			ps.setDate( 1, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
-			ps.setDate( 2, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-			ps.setInt( 5, txtCodBanco.getVlrInteger() );
-
-			rs = ps.executeQuery();
+			rs = executeQuery();
 
 			int i = 0;
 			for ( i = 0; rs.next(); i++ ) {
@@ -304,7 +310,6 @@ public class FRemSiacc extends FFilho implements ActionListener {
 			}
 
 			rs.close();
-			ps.close();
 
 			if ( !con.getAutoCommit() ) {
 				con.commit();
@@ -405,6 +410,128 @@ public class FRemSiacc extends FFilho implements ActionListener {
 
 		}
 	}
+	
+	private boolean updateCliente(int codCli, String codBanco, String tipoFebraban, String agenciaCli, String identCli) {
+		boolean retorno = false;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement("SELECT AGENCIACLI, IDENTCLI FROM FNFBNCLI WHERE CODEMP=? AND CODFILIAL=? AND " +
+					"CODCLI=? AND CODEMPPF=? AND CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND " +
+					"CODBANCO=? AND TIPOFEBRABAN=?");
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("VDCLIENTE"));
+			ps.setInt(3, codCli);
+			ps.setInt(4, Aplicativo.iCodEmp);
+			ps.setInt(5, ListaCampos.getMasterFilial("SGITPREFERE6"));
+			ps.setInt(6, Aplicativo.iCodEmp);
+			ps.setInt(7, ListaCampos.getMasterFilial("FNBANCO"));
+			ps.setString(8, codBanco);
+			ps.setString(9, tipoFebraban);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				if ( (!agenciaCli.equals(rs.getString("AGENCIACLI"))) || (!identCli.equals(rs.getString("IDENTCLI")))) {
+					ps = con.prepareStatement("UPDATE FNFBNCLI SET AGENCIACLI=?, IDENTCLI=? WHERE CODEMP=? AND CODFILIAL=? AND " +
+							"CODCLI=? AND CODEMPPF=? AND CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND " +
+							"CODBANCO=? AND TIPOFEBRABAN=?");
+					ps.setString(1, agenciaCli);
+					ps.setString(2, identCli);
+					ps.setInt(3, Aplicativo.iCodEmp);
+					ps.setInt(4, ListaCampos.getMasterFilial("VDCLIENTE"));
+					ps.setInt(5, codCli);
+					ps.setInt(6, Aplicativo.iCodEmp);
+					ps.setInt(7, ListaCampos.getMasterFilial("SGITPREFERE6"));
+					ps.setInt(8, Aplicativo.iCodEmp);
+					ps.setInt(9, ListaCampos.getMasterFilial("FNBANCO"));
+					ps.setString(10, codBanco);
+					ps.setString(11, tipoFebraban);
+				}
+			} else {
+				ps = con.prepareStatement("INSERT INTO FNFBNCLI (AGENCIACLI, IDENTCLI, CODEMP, CODFILIAL, " +
+						"CODCLI, CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, TIPOFEBRABAN) " +
+						"VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+				ps.setString(1, agenciaCli);
+				ps.setString(2, identCli);
+				ps.setInt(3, Aplicativo.iCodEmp);
+				ps.setInt(4, ListaCampos.getMasterFilial("VDCLIENTE"));
+				ps.setInt(5, codCli);
+				ps.setInt(6, Aplicativo.iCodEmp);
+				ps.setInt(7, ListaCampos.getMasterFilial("SGITPREFERE6"));
+				ps.setInt(8, Aplicativo.iCodEmp);
+				ps.setInt(9, ListaCampos.getMasterFilial("FNBANCO"));
+				ps.setString(10, codBanco);
+				ps.setString(11, tipoFebraban);
+				ps.executeUpdate();
+			}
+			if (!con.getAutoCommit()) 
+				con.commit();
+			//rs.close();
+			
+		} catch (SQLException e) {
+			Funcoes.mensagemErro(this, "Erro atualizando cliente!\n" + e.getMessage());
+		}
+		
+		return retorno;
+	}
+
+	private boolean updateReceber(int codRec, int nParcitrec, String codBanco, String tipoFebraban, 
+			String stipoFebraban, String sitRemessa) {
+		boolean retorno = false;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement("SELECT CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN, SITREMESSA " +
+					"FROM FNFBNREC WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?");
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("FNITRECEBER"));
+			ps.setInt(3, codRec);
+			ps.setInt(4, nParcitrec);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				if ( (!codBanco.equals(rs.getString("CODBANCO"))) || (!tipoFebraban.equals(rs.getString("TIPOFEBRABAN"))) ||
+				     (!stipoFebraban.equals(rs.getString("STIPOFEBRABAN"))) || (!sitRemessa.equals(rs.getString("SITREMESSA")))) {
+					ps = con.prepareStatement("UPDATE FNFBNREC SET CODBANCO=?, TIPOFEBRABAN=?, STIPOFEBRABAN=?, " +
+							"STIPOFEBRABAN=?, SITREMESSA=? " +
+							"FROM FNFBNREC WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?");
+ 					ps.setString(1, codBanco);
+					ps.setString(2, tipoFebraban);
+					ps.setString(3, stipoFebraban);
+					ps.setString(4, sitRemessa);
+					ps.setInt(5, Aplicativo.iCodEmp);
+					ps.setInt(6, ListaCampos.getMasterFilial("FNITRECEBER"));
+					ps.setInt(7, codRec);
+					ps.setInt(8, nParcitrec);
+					ps.executeUpdate();
+				}
+			} else {
+				ps = con.prepareStatement("INSERT INTO FNFBNREC (CODEMP, CODFILIAL, CODREC, NPARCITREC, " +
+						"CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN, " +
+						"SITREMESSA) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+						"FROM FNFBNREC WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?");
+				ps.setInt(1, Aplicativo.iCodEmp);
+				ps.setInt(2, ListaCampos.getMasterFilial("FNFBNREC"));
+				ps.setInt(3,codRec);
+				ps.setInt(4, nParcitrec);
+				ps.setInt(5, Aplicativo.iCodEmp);
+				ps.setInt(6, ListaCampos.getMasterFilial("SGITPREFERE6"));
+				ps.setInt(7, Aplicativo.iCodEmp);
+				ps.setInt(8, ListaCampos.getMasterFilial("FNBANCO"));
+				ps.setString(9, codBanco);
+				ps.setString(10, tipoFebraban);
+				ps.setString(11, stipoFebraban);
+				ps.setString(12, sitRemessa);
+				ps.executeUpdate();
+			}
+			if (!con.getAutoCommit()) 
+				con.commit();
+			//rs.close();
+			
+		} catch (SQLException e) {
+			Funcoes.mensagemErro(this, "Erro situação do contas a receber!\n" + e.getMessage());
+		}
+		
+		return retorno;
+	}
 
 	private void gravaNoArquivo() {
 
@@ -416,26 +543,120 @@ public class FRemSiacc extends FFilho implements ActionListener {
 		}
 	}
 
+	private class StuffCli {
+		private String[] stfArgs = null;
+		private Integer codigo = null;
+		private StuffCli(Integer codCli, String[] args) {
+			//System.out.println(args.length);
+			this.codigo = codCli;
+			this.stfArgs = args;
+		}
+		public String[] getArgs() {
+			return this.stfArgs;
+		}
+		public Integer getCodigo() {
+			return this.codigo;
+		}
+		public boolean equals(Object obj) {
+			if (obj instanceof StuffCli)
+			   return codigo.equals( ((StuffCli) obj).getCodigo());
+			else
+			   return false;
+		}
+	}
+
+	private class StuffRec {
+		private String[] stfArgs = null;
+		private Integer chave1 = null;
+		private Integer chave2 = null;
+		private StuffRec(Integer codRec, Integer nParcItRec, String[] args) {
+			//System.out.println(args.length);
+			this.chave1 = codRec;
+			this.chave2 = nParcItRec;
+			this.stfArgs = args;
+		}
+		public String[] getArgs() {
+			return this.stfArgs;
+		}
+		public Integer getCodrec() {
+			return this.chave1;
+		}
+		public Integer getNParcitrec() {
+			return this.chave2;
+		}
+		public boolean equals(Object obj) {
+			if (obj instanceof StuffRec)
+			   return ( (chave1.equals( ((StuffRec) obj).getCodrec())) && 
+					    (chave2.equals( ((StuffRec) obj).getNParcitrec())) );
+			else
+			   return false;
+		}
+	}
+	
 	private boolean consisteExporta() {
 
 		boolean retorno = true;
 		Vector vLinha = null;
+		
+		HashSet<StuffCli> hsCli = new HashSet<StuffCli>();
+		HashSet<StuffRec> hsRec = new HashSet<StuffRec>();
 
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 
 			vLinha = tab.getLinha( i );
 
-			if ( ( (Boolean) vLinha.elementAt( COL_SEL ) ).booleanValue() && ( "".equals( (String) vLinha.elementAt( COL_AGENCIACLI ) ) ) || ( "".equals( (String) vLinha.elementAt( COL_IDENTCLI ) ) ) ) {
-				if ( !completaTabela( i, (Integer) vLinha.elementAt( COL_CODCLI ), (String) vLinha.elementAt( COL_RAZCLI ), (String) vLinha.elementAt( COL_AGENCIACLI ), (String) vLinha.elementAt( COL_IDENTCLI ) ) ) {
-					retorno = false;
-					break;
+			if ( (Boolean) vLinha.elementAt( COL_SEL ) ) { 
+				if ( ( "".equals( (String) vLinha.elementAt( COL_AGENCIACLI ) ) ) || ( "".equals( (String) vLinha.elementAt( COL_IDENTCLI ) ) ) ) {
+					if ( !completaTabela( i, (Integer) vLinha.elementAt( COL_CODCLI ), (String) vLinha.elementAt( COL_RAZCLI ), (String) vLinha.elementAt( COL_AGENCIACLI ), (String) vLinha.elementAt( COL_IDENTCLI ) ) ) {
+						retorno = false;
+						break;
+					}
 				}
+				hsCli.add( new StuffCli( (Integer) vLinha.elementAt( COL_CODCLI ), 
+						 new String[] {
+						  txtCodBanco.getVlrString(), "01" ,
+						  (String) vLinha.elementAt( COL_AGENCIACLI ),
+						  (String) vLinha.elementAt( COL_IDENTCLI )
+						  }));
+				hsRec.add( new StuffRec( (Integer) vLinha.elementAt( COL_CODREC ),
+						(Integer) vLinha.elementAt( COL_NRPARC ), /*String codBanco, String tipoFebraban, 
+			String stipoFebraban, String sitRemessa*/
+						 new String[] {
+						  txtCodBanco.getVlrString(), "01" , "01", 
+						  (String) vLinha.elementAt( COL_SITREM)
+						  }));
 			}
+		}
+		if (retorno) {
+			retorno = persisteDados(hsCli, hsRec);
 		}
 
 		return retorno;
 	}
 
+	private boolean persisteDados(final HashSet<StuffCli> hsCli, final HashSet<StuffRec> hsRec) {
+		boolean retorno = true;
+		for (StuffCli stfCli: hsCli) {
+			retorno = updateCliente(stfCli.getCodigo(), stfCli.getArgs()[0], 
+					stfCli.getArgs()[1], stfCli.getArgs()[2], stfCli.getArgs()[3]);
+			if (!retorno) {
+				retorno = false;
+				break;
+			}
+		}
+		if (retorno) {
+			for (StuffRec stfRec: hsRec) {
+				retorno = updateReceber(stfRec.getCodrec(), stfRec.getNParcitrec(), stfRec.getArgs()[0], 
+						stfRec.getArgs()[1], stfRec.getArgs()[2], stfRec.getArgs()[3]);
+				if (!retorno) {
+					retorno = false;
+					break;
+				}
+			}
+		}
+		return retorno;
+	}
+	
 	private boolean completaTabela( final int linha, final Integer codCli, final String razCli, final String agenciaCli, final String identCli ) {
 
 		boolean retorno = true;
