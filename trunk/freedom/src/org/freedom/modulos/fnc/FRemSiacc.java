@@ -30,6 +30,8 @@ import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -59,7 +61,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
-public class FRemSiacc extends FFilho implements ActionListener {
+public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -188,6 +190,8 @@ public class FRemSiacc extends FFilho implements ActionListener {
 		tab.setTamColuna( 30, COL_STIPOFEBRABAN );
 
 		tab.setColunaEditavel( COL_SEL, true );
+		
+		tab.addMouseListener( this );
 
 		btCarrega.addActionListener( this );
 		btSelTudo.addActionListener( this );
@@ -417,7 +421,8 @@ public class FRemSiacc extends FFilho implements ActionListener {
 		}
 	}
 	
-	private boolean updateCliente(int codCli, String codBanco, String tipoFebraban, String stipoFebraban, String agenciaCli, String identCli) {
+	private boolean updateCliente(int codCli, String codBanco, String tipoFebraban, String stipoFebraban, 
+			String agenciaCli, String identCli) {
 		boolean retorno = false;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -438,7 +443,8 @@ public class FRemSiacc extends FFilho implements ActionListener {
 			if (rs.next()) {
 				if ( (!agenciaCli.equals(rs.getString("AGENCIACLI"))) || (!identCli.equals(rs.getString("IDENTCLI"))) || 
 					 (!stipoFebraban.equals(rs.getString("STIPOFEBRABAN")))) {
-					ps = con.prepareStatement("UPDATE FNFBNCLI SET AGENCIACLI=?, IDENTCLI=?, STIPOFEBRABAN=? WHERE CODEMP=? AND CODFILIAL=? AND " +
+					ps = con.prepareStatement("UPDATE FNFBNCLI SET AGENCIACLI=?, IDENTCLI=?, STIPOFEBRABAN=? " +
+							"WHERE CODEMP=? AND CODFILIAL=? AND " +
 							"CODCLI=? AND CODEMPPF=? AND CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND " +
 							"CODBANCO=? AND TIPOFEBRABAN=?");
 					ps.setString(1, agenciaCli);
@@ -453,6 +459,7 @@ public class FRemSiacc extends FFilho implements ActionListener {
 					ps.setInt(10, ListaCampos.getMasterFilial("FNBANCO"));
 					ps.setString(11, codBanco);
 					ps.setString(12, tipoFebraban);
+					ps.executeUpdate();
 				}
 			} else {
 				ps = con.prepareStatement("INSERT INTO FNFBNCLI (AGENCIACLI, IDENTCLI, CODEMP, CODFILIAL, " +
@@ -616,18 +623,24 @@ public class FRemSiacc extends FFilho implements ActionListener {
 
 			if ( (Boolean) vLinha.elementAt( COL_SEL ) ) { 
 				if ( ( "".equals( (String) vLinha.elementAt( COL_AGENCIACLI ) ) ) || ( "".equals( (String) vLinha.elementAt( COL_IDENTCLI ) ) ) ) {
-					if ( !completaTabela( i, (Integer) vLinha.elementAt( COL_CODCLI ), (String) vLinha.elementAt( COL_RAZCLI ), (String) vLinha.elementAt( COL_AGENCIACLI ), (String) vLinha.elementAt( COL_IDENTCLI ) ) ) {
+					if ( !completaTabela( 
+							i, 
+							(Integer) vLinha.elementAt( COL_CODCLI ), 
+							(String) vLinha.elementAt( COL_RAZCLI ), 
+							(String) vLinha.elementAt( COL_AGENCIACLI ), 
+							(String) vLinha.elementAt( COL_IDENTCLI ),
+							(String) vLinha.elementAt( COL_STIPOFEBRABAN ) 
+						) ) {
 						retorno = false;
 						break;
 					}
 				}
 				hsCli.add( new StuffCli( (Integer) vLinha.elementAt( COL_CODCLI ), 
 						 new String[] {
-						  txtCodBanco.getVlrString(), "01" ,
-						  (String) vLinha.elementAt( COL_AGENCIACLI ),
-						  (String) vLinha.elementAt( COL_IDENTCLI ), 
-						  (String) vLinha.elementAt( COL_STIPOFEBRABAN )
-						  }));
+						   txtCodBanco.getVlrString(), "01" , (String) vLinha.elementAt( COL_STIPOFEBRABAN) ,
+						   (String) vLinha.elementAt( COL_AGENCIACLI ),
+						   (String) vLinha.elementAt( COL_IDENTCLI ) 
+						 }));
 				hsRec.add( new StuffRec( (Integer) vLinha.elementAt( COL_CODREC ),
 						(Integer) vLinha.elementAt( COL_NRPARC ), 
 						/*String codBanco, String tipoFebraban,	String stipoFebraban, String sitRemessa*/
@@ -668,41 +681,54 @@ public class FRemSiacc extends FFilho implements ActionListener {
 		return retorno;
 	}
 	
-	private boolean completaTabela( final int linha, final Integer codCli, final String razCli, final String agenciaCli, final String identCli ) {
+	private boolean completaTabela( final int linha, final Integer codCli, final String razCli, final String agenciaCli, final String identCli, final String subTipo ) {
 
 		boolean retorno = true;
 
-		Object[] valores = DLIdentCli.execIdentCli( this, codCli, razCli, agenciaCli, identCli );
+		Object[] valores = DLIdentCli.execIdentCli( this, codCli, razCli, agenciaCli, identCli, subTipo );
 		retorno = ( (Boolean) valores[ 0 ] ).booleanValue();
 
 		if ( retorno ) {
-			ajustaClientes( codCli, (String) valores[ 1 ], (String) valores[ 2 ] );
+			ajustaClientes( codCli, (String) valores[ 1 ], (String) valores[ 2 ], (String) valores[ 3 ] );
 		}
 		else {
-			tab.setValor(false, linha, COL_SEL);
+			tab.setValor( false, linha, COL_SEL );
 		}
 
 		return retorno;
 	}
 
-	private void ajustaClientes( final Integer codCli, final String agenciaCli, final String identCli ) {
+	private void ajustaClientes( final Integer codCli, final String agenciaCli, final String identCli, final String subTipo ) {
 
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 			if ( ( (Boolean) tab.getValor( i, COL_SEL ) ).booleanValue() && codCli.equals( (Integer) tab.getValor( i, COL_CODCLI ) ) ) {
 				tab.setValor( agenciaCli, i, COL_AGENCIACLI );
 				tab.setValor( identCli, i, COL_IDENTCLI );
+				tab.setValor( subTipo, i, COL_STIPOFEBRABAN );
 			}
 		}
 	}
 
-	private void desmarcaClientes( final Integer codCli ) {
+	public void mouseClicked( MouseEvent e ) {
 
-		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-			if ( ( (Boolean) tab.getValor( i, COL_SEL ) ).booleanValue() && codCli.equals( (Integer) tab.getValor( i, COL_CODCLI ) ) ) {
-				tab.setValor( false, i, COL_SEL );
-			}
+		if ( e.getClickCount() == 2 && e.getSource() == tab && tab.getLinhaSel() > -1 ) {
+			completaTabela( 
+					tab.getLinhaSel(),
+					(Integer) tab.getValor( tab.getLinhaSel(), COL_CODCLI ),
+					(String) tab.getValor( tab.getLinhaSel(), COL_RAZCLI ),
+					(String) tab.getValor( tab.getLinhaSel(), COL_AGENCIACLI ),
+					(String) tab.getValor( tab.getLinhaSel(), COL_IDENTCLI ),
+					(String) tab.getValor( tab.getLinhaSel(), COL_STIPOFEBRABAN ) );
 		}
 	}
+
+	public void mouseEntered( MouseEvent e ) {}
+
+	public void mouseExited( MouseEvent e ) {}
+
+	public void mousePressed( MouseEvent e ) {}
+
+	public void mouseReleased( MouseEvent e ) {}
 
 	public void setConexao( Connection cn ) {
 
