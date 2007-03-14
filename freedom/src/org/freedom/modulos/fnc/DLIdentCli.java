@@ -23,8 +23,10 @@
 package org.freedom.modulos.fnc;
 
 import java.awt.Component;
+import java.util.Vector;
 
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
@@ -41,13 +43,24 @@ public class DLIdentCli extends FFDialogo {
 
 	private final JTextFieldPad txtIdentCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
+	private final JRadioGroup rgSubTipoFebraban;
+
 	private static boolean MRET = false;
 
 	public DLIdentCli( final Component cOrig ) {
 
 		super( cOrig );
 		setTitulo( "Identificação do cliente" );
-		setAtribos( 420, 200 );
+		setAtribos( 395, 230 );
+		
+		Vector<String> vVals = new Vector<String>();
+		Vector<String> vLabs = new Vector<String>();
+		vLabs.add( "Débito em folha" );
+		vLabs.add( "Débito em conta" );
+		vVals.add( "01" );
+		vVals.add( "02" );
+		rgSubTipoFebraban = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgSubTipoFebraban.setVlrString( "02" );
 		
 		txtCodCli.setAtivo( false );
 		txtRazCli.setAtivo( false );
@@ -69,23 +82,27 @@ public class DLIdentCli extends FFDialogo {
 		adic( txtAgenciaCli, 7, 70, 80, 20 );
 		adic( new JLabelPad( "Identificação" ), 90, 50, 100, 20 );
 		adic( txtIdentCli, 90, 70, 100, 20 );
+		
+		adic( rgSubTipoFebraban, 7, 100, 363, 30 );
 	}
 
-	public static Object[] execIdentCli( final Component cOrig, final Integer codCli, final String razCli, final String agenciaCli, final String identCli ) {
+	public static Object[] execIdentCli( final Component cOrig, final Integer codCli, final String razCli, final String agenciaCli, final String identCli, final String subTipo ) {
 
-		Object[] retorno = { new Boolean( false ), "", "" };
+		Object[] retorno = { new Boolean( false ), "", "", "" };
 		DLIdentCli dl = new DLIdentCli( cOrig );
 		
 		dl.txtCodCli.setVlrInteger( codCli );
 		dl.txtRazCli.setVlrString( razCli );
 		dl.txtAgenciaCli.setVlrString( agenciaCli );
 		dl.txtIdentCli.setVlrString( identCli );
+		dl.rgSubTipoFebraban.setVlrString( subTipo );
 		dl.execShow();
 		
 		if ( MRET ) {
 			retorno[ 0 ] = new Boolean( MRET );
 			retorno[ 1 ] = dl.txtAgenciaCli.getVlrString();
 			retorno[ 2 ] = dl.txtIdentCli.getVlrString();
+			retorno[ 3 ] = dl.rgSubTipoFebraban.getVlrString();
 		}
 		
 		return retorno;
