@@ -417,12 +417,12 @@ public class FRemSiacc extends FFilho implements ActionListener {
 		}
 	}
 	
-	private boolean updateCliente(int codCli, String codBanco, String tipoFebraban, String agenciaCli, String identCli) {
+	private boolean updateCliente(int codCli, String codBanco, String tipoFebraban, String stipoFebraban, String agenciaCli, String identCli) {
 		boolean retorno = false;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = con.prepareStatement("SELECT AGENCIACLI, IDENTCLI FROM FNFBNCLI WHERE CODEMP=? AND CODFILIAL=? AND " +
+			ps = con.prepareStatement("SELECT AGENCIACLI, IDENTCLI, STIPOFEBRABAN FROM FNFBNCLI WHERE CODEMP=? AND CODFILIAL=? AND " +
 					"CODCLI=? AND CODEMPPF=? AND CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND " +
 					"CODBANCO=? AND TIPOFEBRABAN=?");
 			ps.setInt(1, Aplicativo.iCodEmp);
@@ -436,26 +436,28 @@ public class FRemSiacc extends FFilho implements ActionListener {
 			ps.setString(9, tipoFebraban);
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				if ( (!agenciaCli.equals(rs.getString("AGENCIACLI"))) || (!identCli.equals(rs.getString("IDENTCLI")))) {
-					ps = con.prepareStatement("UPDATE FNFBNCLI SET AGENCIACLI=?, IDENTCLI=? WHERE CODEMP=? AND CODFILIAL=? AND " +
+				if ( (!agenciaCli.equals(rs.getString("AGENCIACLI"))) || (!identCli.equals(rs.getString("IDENTCLI"))) || 
+					 (!stipoFebraban.equals(rs.getString("STIPOFEBRABAN")))) {
+					ps = con.prepareStatement("UPDATE FNFBNCLI SET AGENCIACLI=?, IDENTCLI=?, STIPOFEBRABAN=? WHERE CODEMP=? AND CODFILIAL=? AND " +
 							"CODCLI=? AND CODEMPPF=? AND CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND " +
 							"CODBANCO=? AND TIPOFEBRABAN=?");
 					ps.setString(1, agenciaCli);
 					ps.setString(2, identCli);
-					ps.setInt(3, Aplicativo.iCodEmp);
-					ps.setInt(4, ListaCampos.getMasterFilial("VDCLIENTE"));
-					ps.setInt(5, codCli);
-					ps.setInt(6, Aplicativo.iCodEmp);
-					ps.setInt(7, ListaCampos.getMasterFilial("SGITPREFERE6"));
-					ps.setInt(8, Aplicativo.iCodEmp);
-					ps.setInt(9, ListaCampos.getMasterFilial("FNBANCO"));
-					ps.setString(10, codBanco);
-					ps.setString(11, tipoFebraban);
+					ps.setString(3, stipoFebraban);
+					ps.setInt(4, Aplicativo.iCodEmp);
+					ps.setInt(5, ListaCampos.getMasterFilial("VDCLIENTE"));
+					ps.setInt(6, codCli);
+					ps.setInt(7, Aplicativo.iCodEmp);
+					ps.setInt(8, ListaCampos.getMasterFilial("SGITPREFERE6"));
+					ps.setInt(9, Aplicativo.iCodEmp);
+					ps.setInt(10, ListaCampos.getMasterFilial("FNBANCO"));
+					ps.setString(11, codBanco);
+					ps.setString(12, tipoFebraban);
 				}
 			} else {
 				ps = con.prepareStatement("INSERT INTO FNFBNCLI (AGENCIACLI, IDENTCLI, CODEMP, CODFILIAL, " +
-						"CODCLI, CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, TIPOFEBRABAN) " +
-						"VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+						"CODCLI, CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN) " +
+						"VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
 				ps.setString(1, agenciaCli);
 				ps.setString(2, identCli);
 				ps.setInt(3, Aplicativo.iCodEmp);
@@ -467,6 +469,7 @@ public class FRemSiacc extends FFilho implements ActionListener {
 				ps.setInt(9, ListaCampos.getMasterFilial("FNBANCO"));
 				ps.setString(10, codBanco);
 				ps.setString(11, tipoFebraban);
+				ps.setString(12, stipoFebraban);
 				ps.executeUpdate();
 			}
 			if (!con.getAutoCommit()) 
@@ -622,13 +625,14 @@ public class FRemSiacc extends FFilho implements ActionListener {
 						 new String[] {
 						  txtCodBanco.getVlrString(), "01" ,
 						  (String) vLinha.elementAt( COL_AGENCIACLI ),
-						  (String) vLinha.elementAt( COL_IDENTCLI )
+						  (String) vLinha.elementAt( COL_IDENTCLI ), 
+						  (String) vLinha.elementAt( COL_STIPOFEBRABAN )
 						  }));
 				hsRec.add( new StuffRec( (Integer) vLinha.elementAt( COL_CODREC ),
-						(Integer) vLinha.elementAt( COL_NRPARC ), /*String codBanco, String tipoFebraban, 
-			String stipoFebraban, String sitRemessa*/
+						(Integer) vLinha.elementAt( COL_NRPARC ), 
+						/*String codBanco, String tipoFebraban,	String stipoFebraban, String sitRemessa*/
 						 new String[] {
-						  txtCodBanco.getVlrString(), "01" , "01", 
+						  txtCodBanco.getVlrString(), "01" , (String) vLinha.elementAt(COL_STIPOFEBRABAN), 
 						  (String) vLinha.elementAt( COL_SITREM)
 						  }));
 			}
@@ -644,7 +648,8 @@ public class FRemSiacc extends FFilho implements ActionListener {
 		boolean retorno = true;
 		for (StuffCli stfCli: hsCli) {
 			retorno = updateCliente(stfCli.getCodigo(), stfCli.getArgs()[0], 
-					stfCli.getArgs()[1], stfCli.getArgs()[2], stfCli.getArgs()[3]);
+					stfCli.getArgs()[1], stfCli.getArgs()[2], 
+					stfCli.getArgs()[3], stfCli.getArgs()[4]);
 			if (!retorno) {
 				retorno = false;
 				break;
