@@ -88,6 +88,8 @@ public class FRemSiacc extends FFilho implements ActionListener {
 	private static final int COL_SITREM = 11;
 
 	private static final int COL_SITRET = 12;
+	
+	private static final int COL_STIPOFEBRABAN = 13;
 
 	private JPanelPad panelRodape = null;
 
@@ -168,6 +170,7 @@ public class FRemSiacc extends FFilho implements ActionListener {
 		tab.adicColuna( "Indentificação" );
 		tab.adicColuna( "Sit. rem." );
 		tab.adicColuna( "Sit. ret." );
+		tab.adicColuna( "Subtipo" );
 
 		tab.setTamColuna( 20, COL_SEL );
 		tab.setTamColuna( 150, COL_RAZCLI );
@@ -182,6 +185,7 @@ public class FRemSiacc extends FFilho implements ActionListener {
 		tab.setTamColuna( 100, COL_IDENTCLI );
 		tab.setTamColuna( 50, COL_SITREM );
 		tab.setTamColuna( 50, COL_SITRET );
+		tab.setTamColuna( 30, COL_STIPOFEBRABAN );
 
 		tab.setColunaEditavel( COL_SEL, true );
 
@@ -251,7 +255,8 @@ public class FRemSiacc extends FFilho implements ActionListener {
 		String sDtFiltro = "E".equals( rgData.getVlrString() ) ? "IR.DTITREC" : "IR.DTVENCITREC";
 		StringBuilder sSQL = new StringBuilder();
 		sSQL.append( "SELECT IR.CODREC, IR.NPARCITREC, R.DOCREC, R.CODCLI, C.RAZCLI, IR.DTITREC, IR.DTVENCITREC," );
-		sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, COALESCE(FR.SITREMESSA,'00') SITREMESSA, FR.SITRETORNO " );
+		sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, COALESCE(FR.SITREMESSA,'00') SITREMESSA, ");
+		sSQL.append( "FR.SITRETORNO, COALESCE(COALESCE(FR.STIPOFEBRABAN,FC.STIPOFEBRABAN),'02') STIPOFEBRABAN " );
 		sSQL.append( "FROM VDCLIENTE C," );
 		sSQL.append( "FNRECEBER R LEFT OUTER JOIN FNFBNCLI FC ON " );
 		sSQL.append( "FC.CODEMP=R.CODEMPCL AND FC.CODFILIAL=R.CODFILIALCL AND FC.CODCLI=R.CODCLI ," );
@@ -307,6 +312,7 @@ public class FRemSiacc extends FFilho implements ActionListener {
 				tab.setValor( rs.getString( "IDENTCLI" ), i, COL_IDENTCLI );
 				tab.setValor( rs.getString( "SITREMESSA" ), i, COL_SITREM );
 				tab.setValor( rs.getString( "SITRETORNO" ), i, COL_SITRET );
+				tab.setValor( rs.getString( "STIPOFEBRABAN") , i, COL_STIPOFEBRABAN );
 			}
 
 			rs.close();
