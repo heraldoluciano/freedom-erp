@@ -63,7 +63,7 @@ public class FRemSiacc extends FFilho implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final int COL_SEL = 0;
+	private static final int COL_SEL = 0; 
 
 	private static final int COL_RAZCLI = 1;
 
