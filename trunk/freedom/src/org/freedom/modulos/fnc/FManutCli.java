@@ -64,6 +64,8 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 
 	private final JRadioGroup rgTipoFebraban;
 
+	private final JRadioGroup rgSubTipoFebraban;
+
 	private final ListaCampos lcBanco = new ListaCampos( this, "BO" );
 	
 	private final ListaCampos lcCliente = new ListaCampos( this, "" );
@@ -72,10 +74,14 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 
 	private Vector<String> vVals = new Vector<String>();
 
+	private Vector<String> vLabs1 = new Vector<String>();
+
+	private Vector<String> vVals1 = new Vector<String>();
+
 	public FManutCli() {
 
 		setTitulo( "Códigos de retorno" );
-		setAtribos( 200, 60, 367, 250 );
+		setAtribos( 200, 60, 367, 290 );
 		
 		
 		vLabs.add( "SIACC" );
@@ -83,6 +89,13 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		vVals.add( "01" );
 		vVals.add( "02" );
 		rgTipoFebraban = new JRadioGroup( 1, 2, vLabs, vVals );
+
+		vLabs1.add( "Débito em folha" );
+		vLabs1.add( "Débito em conta" );
+		vVals1.add( "01" );
+		vVals1.add( "02" );
+		rgSubTipoFebraban = new JRadioGroup( 2, 1, vLabs1, vVals1 );
+		rgSubTipoFebraban.setVlrString( "02" );
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
@@ -117,8 +130,9 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		adicDescFK( txtRazCli, 100, 70, 240, 20, "RazCli", "Razão social do cliente" );
 		adicCampo( txtCodBanco, 7, 110, 90, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true );
 		adicDescFK( txtNomeBanco, 100, 110, 240, 20, "NomeBanco", "Nome do banco" );
-		adicCampo( txtAgencia, 7, 150, 165, 20, "AgenciaCli", "Agência", ListaCampos.DB_SI, true );
-		adicCampo( txtIdentificacao, 175, 150, 165, 20, "IdentCli", "Identificação", ListaCampos.DB_SI, true );
+		adicCampo( txtAgencia, 7, 150, 150, 20, "AgenciaCli", "Agência", ListaCampos.DB_SI, true );
+		adicCampo( txtIdentificacao, 7, 190, 150, 20, "IdentCli", "Identificação", ListaCampos.DB_SI, true );
+		adicDB( rgSubTipoFebraban, 170, 150, 170, 60, "STipoFebraban", "", false );
 		adicCampoInvisivel( txtCodEmpPF, "CodEmpPF", "Cód.emp.pf.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodFilialPF, "CodFilialPF", "Cód.filial.pf.", ListaCampos.DB_SI, false );
 
