@@ -36,9 +36,9 @@
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT FL.RAZFILIAL,
-ATC.NOMECONV, ATC.CNSCONV, ATC.DTNASCCONV, ATC.sexoconv, ATC.maeconv, ATC.foneconv,ATC.DDDCONV,
+ATC.NOMECONV, ATC.CNSCONV, ATC.IDENTIFICCONV, ATC.DTNASCCONV, ATC.sexoconv, ATC.maeconv, ATC.foneconv,ATC.DDDCONV,
 ATC.endconv,ATC.numconv, ATC.bairconv,ATC.cidconv,ATC.ufconv,ATC.cepconv,
-VEND.nomevend,VEND.cpfvend,P.DESCPROD,P.CODBARPROD,IT.QTDITORC,orc.dtorc,ATC.CODCONV 
+VEND.nomevend,VEND.cpfvend,P.DESCPROD,P.CODBARPROD,IT.QTDITORC,orc.dtorc,ATC.CODCONV,ATC.CPFCONV,ORC.TXT01  
 FROM vdorcamento ORC, SGFILIAL FL, ATCONVENIADO ATC, vdvendedor VEND,VDITORCAMENTO IT,EQPRODUTO P
 WHERE
 ORC.codemp = $P{CODEMP} AND ORC.CODFILIAL = $P{CODFILIAL} AND ORC.codorc = $P{CODORC} AND
@@ -51,6 +51,7 @@ IT.TIPOORC = 'O' AND IT.CODORC=orc.codorc AND IT.CODEMP=orc.codemp AND IT.CODFIL
 	<field name="RAZFILIAL" class="java.lang.String"/>
 	<field name="NOMECONV" class="java.lang.String"/>
 	<field name="CNSCONV" class="java.lang.String"/>
+	<field name="IDENTIFICCONV" class="java.lang.String"/>
 	<field name="DTNASCCONV" class="java.sql.Date"/>
 	<field name="SEXOCONV" class="java.lang.String"/>
 	<field name="MAECONV" class="java.lang.String"/>
@@ -68,7 +69,9 @@ IT.TIPOORC = 'O' AND IT.CODORC=orc.codorc AND IT.CODEMP=orc.codemp AND IT.CODFIL
 	<field name="CODBARPROD" class="java.lang.String"/>
 	<field name="QTDITORC" class="java.math.BigDecimal"/>
 	<field name="DTORC" class="java.sql.Date"/>
-	<field name="CODCONV" class="java.lang.Integer"/>
+	<field name="CODCONV" class="java.lang.Long"/>
+	<field name="CPFCONV" class="java.lang.String"/>
+	<field name="TXT01" class="java.lang.String"/>
 
 
 		<group  name="orcamento" >
@@ -91,7 +94,7 @@ IT.TIPOORC = 'O' AND IT.CODORC=orc.codorc AND IT.CODEMP=orc.codemp AND IT.CODFIL
 			</band>
 		</title>
 		<pageHeader>
-			<band height="217"  isSplitAllowed="true" >
+			<band height="45"  isSplitAllowed="true" >
 				<rectangle>
 					<reportElement
 						x="4"
@@ -115,7 +118,7 @@ IT.TIPOORC = 'O' AND IT.CODORC=orc.codorc AND IT.CODEMP=orc.codemp AND IT.CODFIL
 						x="0"
 						y="1"
 						width="0"
-						height="43"
+						height="44"
 						key="line-1"/>
 					<graphicElement stretchType="NoStretch" pen="1Point"/>
 				</line>
@@ -130,10 +133,10 @@ IT.TIPOORC = 'O' AND IT.CODORC=orc.codorc AND IT.CODEMP=orc.codemp AND IT.CODFIL
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="535"
+						x="536"
 						y="1"
 						width="0"
-						height="43"
+						height="44"
 						key="line-3"/>
 					<graphicElement stretchType="NoStretch" pen="1Point"/>
 				</line>
@@ -248,761 +251,6 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						key="rectangle-10"/>
 					<graphicElement stretchType="NoStretch" pen="None"/>
 				</rectangle>
-				<rectangle>
-					<reportElement
-						x="4"
-						y="44"
-						width="527"
-						height="15"
-						forecolor="#000000"
-						backcolor="#000000"
-						key="rectangle-51"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="5"
-						y="46"
-						width="523"
-						height="11"
-						forecolor="#FFFFFF"
-						backcolor="#000000"
-						key="staticText-72"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font fontName="Bitstream Vera Sans" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[IDENTIFICAÇÃO DO ESTABELECIMENTO DE SAÚDE (SOLICITANTE)]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="44"
-						width="0"
-						height="173"
-						key="line-155"/>
-					<graphicElement stretchType="NoStretch" pen="1Point"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="535"
-						y="44"
-						width="0"
-						height="173"
-						key="line-156"/>
-					<graphicElement stretchType="NoStretch" pen="1Point"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="4"
-						y="59"
-						width="0"
-						height="25"
-						key="line-157"/>
-					<graphicElement stretchType="NoStretch" pen="1Point"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="530"
-						y="59"
-						width="0"
-						height="25"
-						key="line-158"/>
-					<graphicElement stretchType="NoStretch" pen="1Point"/>
-				</line>
-				<rectangle>
-					<reportElement
-						x="4"
-						y="84"
-						width="527"
-						height="15"
-						forecolor="#000000"
-						backcolor="#000000"
-						key="rectangle-52"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="5"
-						y="86"
-						width="523"
-						height="11"
-						forecolor="#FFFFFF"
-						backcolor="#000000"
-						key="staticText-73"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font fontName="Bitstream Vera Sans" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[IDENTIFICAÇÃO DO PACIENTE]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="10"
-						y="63"
-						width="412"
-						height="18"
-						key="rectangle-53"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="42"
-						y="60"
-						width="176"
-						height="9"
-						key="staticText-74"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[1 - NOME DO ESTABELECIMENTO DE SAÚDE SOLICITANTE]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="425"
-						y="63"
-						width="102"
-						height="18"
-						key="rectangle-54"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="460"
-						y="60"
-						width="31"
-						height="7"
-						key="staticText-75"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[2 - CNES]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="439"
-						y="68"
-						width="0"
-						height="13"
-						key="line-159"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="454"
-						y="68"
-						width="0"
-						height="13"
-						key="line-160"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="469"
-						y="68"
-						width="0"
-						height="13"
-						key="line-161"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="484"
-						y="68"
-						width="0"
-						height="13"
-						key="line-162"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="499"
-						y="68"
-						width="0"
-						height="13"
-						key="line-163"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="512"
-						y="68"
-						width="0"
-						height="13"
-						key="line-164"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<rectangle>
-					<reportElement
-						x="10"
-						y="104"
-						width="430"
-						height="18"
-						key="rectangle-55"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="42"
-						y="101"
-						width="73"
-						height="9"
-						key="staticText-76"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[3 - NOME DO PACIENTE]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="4"
-						y="99"
-						width="0"
-						height="118"
-						key="line-165"/>
-					<graphicElement stretchType="NoStretch" pen="1Point"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="530"
-						y="100"
-						width="0"
-						height="117"
-						key="line-166"/>
-					<graphicElement stretchType="NoStretch" pen="1Point"/>
-				</line>
-				<rectangle>
-					<reportElement
-						x="444"
-						y="104"
-						width="83"
-						height="18"
-						key="rectangle-56"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="450"
-						y="101"
-						width="72"
-						height="7"
-						key="staticText-77"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[4 - N° DO PRONTUARIO]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="10"
-						y="127"
-						width="274"
-						height="18"
-						key="rectangle-57"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="42"
-						y="125"
-						width="125"
-						height="7"
-						key="staticText-78"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[5 - CARTÃO NACIONAL DE SAÚDE (CNS)]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="295"
-						y="127"
-						width="88"
-						height="18"
-						key="rectangle-58"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="300"
-						y="124"
-						width="79"
-						height="7"
-						key="staticText-79"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[6 - DATA DE NASCIMENTO]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="399"
-						y="127"
-						width="128"
-						height="18"
-						key="rectangle-59"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="457"
-						y="124"
-						width="30"
-						height="7"
-						key="staticText-80"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[7 - SEXO]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="413"
-						y="135"
-						width="17"
-						height="8"
-						key="staticText-81"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="5"/>
-					</textElement>
-				<text><![CDATA[Masc.]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="434"
-						y="133"
-						width="12"
-						height="10"
-						key="rectangle-60"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="480"
-						y="135"
-						width="17"
-						height="8"
-						key="staticText-82"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="5"/>
-					</textElement>
-				<text><![CDATA[Fem.]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="501"
-						y="133"
-						width="12"
-						height="10"
-						key="rectangle-61"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<rectangle>
-					<reportElement
-						x="10"
-						y="150"
-						width="359"
-						height="18"
-						key="rectangle-62"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="42"
-						y="147"
-						width="115"
-						height="9"
-						key="staticText-83"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[8 - NOME DA MÃE OU RESPONSÁVEL]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="374"
-						y="150"
-						width="153"
-						height="18"
-						key="rectangle-63"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<line direction="TopDown">
-					<reportElement
-						x="406"
-						y="151"
-						width="0"
-						height="17"
-						key="line-167"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="422"
-						y="147"
-						width="84"
-						height="7"
-						key="staticText-84"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[9 - TELEFONE DE CONTATO]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="385"
-						y="152"
-						width="12"
-						height="6"
-						key="staticText-85"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="5"/>
-					</textElement>
-				<text><![CDATA[DDD]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="450"
-						y="153"
-						width="50"
-						height="6"
-						key="staticText-86"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="5"/>
-					</textElement>
-				<text><![CDATA[N° DO TELEFONE]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="10"
-						y="173"
-						width="517"
-						height="18"
-						key="rectangle-64"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="42"
-						y="170"
-						width="107"
-						height="9"
-						key="staticText-87"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[10 - ENDEREÇO (RUA, N°, BAIRRO) RESPONSÁVEL]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="10"
-						y="196"
-						width="517"
-						height="18"
-						key="rectangle-65"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="42"
-						y="193"
-						width="97"
-						height="9"
-						key="staticText-88"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[11 - MUNICÍPIO DE RESIDÊNCIA BAIRRO) RESPONSÁVEL]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="323"
-						y="197"
-						width="0"
-						height="17"
-						key="line-168"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="326"
-						y="193"
-						width="79"
-						height="7"
-						key="staticText-89"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[12 - CÓD.IBGE MUNICÍPIO CONTATO]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="407"
-						y="197"
-						width="0"
-						height="17"
-						key="line-169"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="438"
-						y="197"
-						width="0"
-						height="17"
-						key="line-170"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="420"
-						y="193"
-						width="23"
-						height="7"
-						key="staticText-90"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[13 - UF]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="470"
-						y="193"
-						width="27"
-						height="7"
-						key="staticText-91"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[14 - CEP]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="12"
-						y="67"
-						width="408"
-						height="15"
-						key="TXTRAZFILIAL-2"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" size="12"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZFILIAL}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						x="430"
-						y="67"
-						width="97"
-						height="16"
-						key="staticText-92"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" size="12"/>
-					</textElement>
-				<text><![CDATA[0 0 1 5 9 7 0]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="12"
-						y="108"
-						width="424"
-						height="15"
-						key="TXTNOMECONV-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" size="12"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMECONV}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="12"
-						y="131"
-						width="269"
-						height="17"
-						key="TXTCNSCONV-1"
-						stretchType="RelativeToTallestObject"
-						isPrintRepeatedValues="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Justified" lineSpacing="Single">
-						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CNSCONV}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="297"
-						y="131"
-						width="84"
-						height="15"
-						key="TXTCNSCONV-2"
-						stretchType="RelativeToTallestObject"
-						isPrintRepeatedValues="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Justified" lineSpacing="Single">
-						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTNASCCONV}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="437"
-						y="133"
-						width="18"
-						height="11"
-						key="TXTSEXOMASC-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[($F{SEXOCONV}.equals("M")?"X":"")]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="504"
-						y="133"
-						width="17"
-						height="11"
-						key="TXTSEXOFEM-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[($F{SEXOCONV}.equals("F")?"X":"")]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="12"
-						y="154"
-						width="354"
-						height="15"
-						key="TXTMAECONV-3"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" size="12"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{MAECONV}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="410"
-						y="155"
-						width="114"
-						height="15"
-						key="TXTFONECONV-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{FONECONV}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="12"
-						y="178"
-						width="511"
-						height="15"
-						key="TXTENDERECOCONV-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" size="12"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCONV}.trim()+", "+$F{NUMCONV}+", "+$F{BAIRCONV}.trim()]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="12"
-						y="201"
-						width="308"
-						height="15"
-						key="TXTCIDADECONV-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" size="12"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CIDCONV}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="380"
-						y="155"
-						width="23"
-						height="15"
-						key="TXTDDDCONV-4"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DDDCONV}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="412"
-						y="201"
-						width="23"
-						height="15"
-						key="TXTDDDCONV-5"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{UFCONV}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="443"
-						y="109"
-						width="84"
-						height="15"
-						key="TXTCNSCONV-4"
-						stretchType="RelativeToTallestObject"
-						isPrintRepeatedValues="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Justified" lineSpacing="Single">
-						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{CODCONV}]]></textFieldExpression>
-				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -1010,11 +258,11 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="512"  isSplitAllowed="true" >
+			<band height="684"  isSplitAllowed="true" >
 				<rectangle>
 					<reportElement
 						x="4"
-						y="0"
+						y="172"
 						width="527"
 						height="15"
 						forecolor="#000000"
@@ -1026,7 +274,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="5"
-						y="2"
+						y="174"
 						width="523"
 						height="11"
 						forecolor="#FFFFFF"
@@ -1041,7 +289,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="4"
-						y="16"
+						y="188"
 						width="0"
 						height="496"
 						key="line-52"/>
@@ -1050,7 +298,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="10"
-						y="21"
+						y="193"
 						width="466"
 						height="18"
 						key="rectangle-21"/>
@@ -1060,7 +308,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="19"
-						y="18"
+						y="190"
 						width="135"
 						height="7"
 						key="staticText-24"/>
@@ -1073,7 +321,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="161"
-						y="22"
+						y="194"
 						width="0"
 						height="17"
 						key="line-60"/>
@@ -1082,7 +330,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="480"
-						y="21"
+						y="193"
 						width="47"
 						height="18"
 						key="rectangle-22"/>
@@ -1092,7 +340,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="487"
-						y="18"
+						y="190"
 						width="28"
 						height="7"
 						key="staticText-25"/>
@@ -1105,7 +353,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="4"
-						y="44"
+						y="216"
 						width="527"
 						height="15"
 						forecolor="#000000"
@@ -1117,7 +365,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="5"
-						y="46"
+						y="218"
 						width="523"
 						height="11"
 						forecolor="#FFFFFF"
@@ -1132,7 +380,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="10"
-						y="65"
+						y="237"
 						width="466"
 						height="18"
 						key="rectangle-24"/>
@@ -1141,7 +389,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="28"
-						y="70"
+						y="242"
 						width="0"
 						height="13"
 						key="line-61"/>
@@ -1150,7 +398,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="47"
-						y="70"
+						y="242"
 						width="0"
 						height="13"
 						key="line-62"/>
@@ -1160,7 +408,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="19"
-						y="62"
+						y="234"
 						width="126"
 						height="7"
 						key="staticText-27"/>
@@ -1173,7 +421,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="66"
-						y="70"
+						y="242"
 						width="0"
 						height="13"
 						key="line-63"/>
@@ -1182,7 +430,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="85"
-						y="70"
+						y="242"
 						width="0"
 						height="13"
 						key="line-64"/>
@@ -1191,7 +439,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="104"
-						y="70"
+						y="242"
 						width="0"
 						height="13"
 						key="line-65"/>
@@ -1200,7 +448,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="123"
-						y="70"
+						y="242"
 						width="0"
 						height="13"
 						key="line-66"/>
@@ -1209,7 +457,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="142"
-						y="70"
+						y="242"
 						width="0"
 						height="13"
 						key="line-67"/>
@@ -1218,7 +466,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="161"
-						y="66"
+						y="238"
 						width="0"
 						height="17"
 						key="line-68"/>
@@ -1227,7 +475,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="480"
-						y="65"
+						y="237"
 						width="47"
 						height="18"
 						key="rectangle-25"/>
@@ -1237,7 +485,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="490"
-						y="62"
+						y="234"
 						width="28"
 						height="7"
 						key="staticText-28"/>
@@ -1251,7 +499,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="172"
-						y="18"
+						y="190"
 						width="135"
 						height="7"
 						key="staticText-29"/>
@@ -1265,7 +513,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="172"
-						y="62"
+						y="234"
 						width="118"
 						height="7"
 						key="staticText-30"/>
@@ -1278,7 +526,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="10"
-						y="89"
+						y="261"
 						width="466"
 						height="18"
 						key="rectangle-26"/>
@@ -1287,7 +535,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="28"
-						y="94"
+						y="266"
 						width="0"
 						height="13"
 						key="line-69"/>
@@ -1296,7 +544,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="47"
-						y="94"
+						y="266"
 						width="0"
 						height="13"
 						key="line-70"/>
@@ -1306,7 +554,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="19"
-						y="86"
+						y="258"
 						width="126"
 						height="7"
 						key="staticText-31"/>
@@ -1319,7 +567,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="66"
-						y="94"
+						y="266"
 						width="0"
 						height="13"
 						key="line-71"/>
@@ -1328,7 +576,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="85"
-						y="94"
+						y="266"
 						width="0"
 						height="13"
 						key="line-72"/>
@@ -1337,7 +585,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="104"
-						y="94"
+						y="266"
 						width="0"
 						height="13"
 						key="line-73"/>
@@ -1346,7 +594,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="123"
-						y="94"
+						y="266"
 						width="0"
 						height="13"
 						key="line-74"/>
@@ -1355,7 +603,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="142"
-						y="94"
+						y="266"
 						width="0"
 						height="13"
 						key="line-75"/>
@@ -1364,7 +612,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="161"
-						y="90"
+						y="262"
 						width="0"
 						height="17"
 						key="line-76"/>
@@ -1373,7 +621,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="480"
-						y="89"
+						y="261"
 						width="47"
 						height="18"
 						key="rectangle-27"/>
@@ -1383,7 +631,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="490"
-						y="86"
+						y="258"
 						width="28"
 						height="7"
 						key="staticText-32"/>
@@ -1397,7 +645,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="172"
-						y="86"
+						y="258"
 						width="118"
 						height="7"
 						key="staticText-33"/>
@@ -1410,7 +658,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="10"
-						y="114"
+						y="286"
 						width="466"
 						height="18"
 						key="rectangle-28"/>
@@ -1419,7 +667,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="28"
-						y="119"
+						y="291"
 						width="0"
 						height="13"
 						key="line-77"/>
@@ -1428,7 +676,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="47"
-						y="119"
+						y="291"
 						width="0"
 						height="13"
 						key="line-78"/>
@@ -1438,7 +686,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="19"
-						y="111"
+						y="283"
 						width="126"
 						height="7"
 						key="staticText-34"/>
@@ -1451,7 +699,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="66"
-						y="119"
+						y="291"
 						width="0"
 						height="13"
 						key="line-79"/>
@@ -1460,7 +708,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="85"
-						y="119"
+						y="291"
 						width="0"
 						height="13"
 						key="line-80"/>
@@ -1469,7 +717,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="104"
-						y="119"
+						y="291"
 						width="0"
 						height="13"
 						key="line-81"/>
@@ -1478,7 +726,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="123"
-						y="119"
+						y="291"
 						width="0"
 						height="13"
 						key="line-82"/>
@@ -1487,7 +735,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="142"
-						y="119"
+						y="291"
 						width="0"
 						height="13"
 						key="line-83"/>
@@ -1496,7 +744,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="161"
-						y="115"
+						y="287"
 						width="0"
 						height="17"
 						key="line-84"/>
@@ -1505,7 +753,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="480"
-						y="114"
+						y="286"
 						width="47"
 						height="18"
 						key="rectangle-29"/>
@@ -1515,7 +763,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="490"
-						y="111"
+						y="283"
 						width="28"
 						height="7"
 						key="staticText-35"/>
@@ -1529,7 +777,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="172"
-						y="111"
+						y="283"
 						width="118"
 						height="7"
 						key="staticText-36"/>
@@ -1542,7 +790,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="10"
-						y="139"
+						y="311"
 						width="466"
 						height="18"
 						key="rectangle-30"/>
@@ -1551,7 +799,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="28"
-						y="144"
+						y="316"
 						width="0"
 						height="13"
 						key="line-85"/>
@@ -1560,7 +808,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="47"
-						y="144"
+						y="316"
 						width="0"
 						height="13"
 						key="line-86"/>
@@ -1570,7 +818,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="19"
-						y="136"
+						y="308"
 						width="126"
 						height="7"
 						key="staticText-37"/>
@@ -1583,7 +831,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="66"
-						y="144"
+						y="316"
 						width="0"
 						height="13"
 						key="line-87"/>
@@ -1592,7 +840,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="85"
-						y="144"
+						y="316"
 						width="0"
 						height="13"
 						key="line-88"/>
@@ -1601,7 +849,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="104"
-						y="144"
+						y="316"
 						width="0"
 						height="13"
 						key="line-89"/>
@@ -1610,7 +858,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="123"
-						y="144"
+						y="316"
 						width="0"
 						height="13"
 						key="line-90"/>
@@ -1619,7 +867,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="142"
-						y="144"
+						y="316"
 						width="0"
 						height="13"
 						key="line-91"/>
@@ -1628,7 +876,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="161"
-						y="140"
+						y="312"
 						width="0"
 						height="17"
 						key="line-92"/>
@@ -1637,7 +885,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="480"
-						y="139"
+						y="311"
 						width="47"
 						height="18"
 						key="rectangle-31"/>
@@ -1647,7 +895,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="490"
-						y="136"
+						y="308"
 						width="28"
 						height="7"
 						key="staticText-38"/>
@@ -1661,7 +909,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="172"
-						y="136"
+						y="308"
 						width="118"
 						height="7"
 						key="staticText-39"/>
@@ -1674,7 +922,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="10"
-						y="164"
+						y="336"
 						width="466"
 						height="18"
 						key="rectangle-32"/>
@@ -1683,7 +931,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="28"
-						y="169"
+						y="341"
 						width="0"
 						height="13"
 						key="line-93"/>
@@ -1692,7 +940,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="47"
-						y="169"
+						y="341"
 						width="0"
 						height="13"
 						key="line-94"/>
@@ -1702,7 +950,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="19"
-						y="161"
+						y="333"
 						width="126"
 						height="7"
 						key="staticText-40"/>
@@ -1715,7 +963,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="66"
-						y="169"
+						y="341"
 						width="0"
 						height="13"
 						key="line-95"/>
@@ -1724,7 +972,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="85"
-						y="169"
+						y="341"
 						width="0"
 						height="13"
 						key="line-96"/>
@@ -1733,7 +981,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="104"
-						y="169"
+						y="341"
 						width="0"
 						height="13"
 						key="line-97"/>
@@ -1742,7 +990,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="123"
-						y="169"
+						y="341"
 						width="0"
 						height="13"
 						key="line-98"/>
@@ -1751,7 +999,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="142"
-						y="169"
+						y="341"
 						width="0"
 						height="13"
 						key="line-99"/>
@@ -1760,7 +1008,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="161"
-						y="165"
+						y="337"
 						width="0"
 						height="17"
 						key="line-100"/>
@@ -1769,7 +1017,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="480"
-						y="164"
+						y="336"
 						width="47"
 						height="18"
 						key="rectangle-33"/>
@@ -1779,7 +1027,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="490"
-						y="161"
+						y="333"
 						width="28"
 						height="7"
 						key="staticText-41"/>
@@ -1792,7 +1040,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="0"
+						y="172"
 						width="0"
 						height="512"
 						key="line-101"/>
@@ -1801,7 +1049,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="530"
-						y="0"
+						y="172"
 						width="0"
 						height="512"
 						key="line-102"/>
@@ -1810,7 +1058,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="536"
-						y="0"
+						y="172"
 						width="0"
 						height="512"
 						key="line-103"/>
@@ -1820,7 +1068,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="172"
-						y="161"
+						y="333"
 						width="118"
 						height="7"
 						key="staticText-42"/>
@@ -1833,7 +1081,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="4"
-						y="187"
+						y="359"
 						width="527"
 						height="15"
 						forecolor="#000000"
@@ -1845,7 +1093,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="5"
-						y="189"
+						y="361"
 						width="523"
 						height="11"
 						forecolor="#FFFFFF"
@@ -1860,7 +1108,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="10"
-						y="209"
+						y="381"
 						width="517"
 						height="18"
 						key="rectangle-35"/>
@@ -1870,7 +1118,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="42"
-						y="206"
+						y="378"
 						width="105"
 						height="9"
 						key="staticText-44"/>
@@ -1883,7 +1131,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="305"
-						y="210"
+						y="382"
 						width="0"
 						height="17"
 						key="line-104"/>
@@ -1892,7 +1140,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="366"
-						y="209"
+						y="381"
 						width="0"
 						height="19"
 						key="line-105"/>
@@ -1901,7 +1149,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="432"
-						y="209"
+						y="381"
 						width="0"
 						height="18"
 						key="line-106"/>
@@ -1911,7 +1159,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="309"
-						y="206"
+						y="378"
 						width="52"
 						height="6"
 						key="staticText-45"/>
@@ -1925,7 +1173,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="369"
-						y="206"
+						y="378"
 						width="59"
 						height="7"
 						key="staticText-46"/>
@@ -1939,7 +1187,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="437"
-						y="206"
+						y="378"
 						width="81"
 						height="7"
 						key="staticText-47"/>
@@ -1952,7 +1200,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="10"
-						y="232"
+						y="404"
 						width="517"
 						height="79"
 						key="rectangle-36"/>
@@ -1962,7 +1210,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="42"
-						y="229"
+						y="401"
 						width="62"
 						height="9"
 						key="staticText-48"/>
@@ -1975,7 +1223,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="4"
-						y="314"
+						y="486"
 						width="527"
 						height="15"
 						forecolor="#000000"
@@ -1987,7 +1235,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="5"
-						y="316"
+						y="488"
 						width="523"
 						height="11"
 						forecolor="#FFFFFF"
@@ -2002,7 +1250,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="9"
-						y="336"
+						y="508"
 						width="261"
 						height="18"
 						key="rectangle-38"/>
@@ -2012,7 +1260,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="18"
-						y="333"
+						y="505"
 						width="132"
 						height="9"
 						key="staticText-50"/>
@@ -2025,7 +1273,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="274"
-						y="336"
+						y="508"
 						width="85"
 						height="18"
 						key="rectangle-39"/>
@@ -2035,7 +1283,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="277"
-						y="333"
+						y="505"
 						width="79"
 						height="7"
 						key="staticText-51"/>
@@ -2048,7 +1296,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="363"
-						y="336"
+						y="508"
 						width="164"
 						height="43"
 						key="rectangle-40"/>
@@ -2058,7 +1306,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="367"
-						y="333"
+						y="505"
 						width="148"
 						height="7"
 						key="staticText-52"/>
@@ -2071,7 +1319,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="9"
-						y="361"
+						y="533"
 						width="350"
 						height="18"
 						key="rectangle-41"/>
@@ -2081,7 +1329,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="36"
-						y="358"
+						y="530"
 						width="55"
 						height="9"
 						key="staticText-53"/>
@@ -2094,7 +1342,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="123"
-						y="362"
+						y="534"
 						width="0"
 						height="17"
 						key="line-109"/>
@@ -2104,7 +1352,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="144"
-						y="358"
+						y="530"
 						width="194"
 						height="9"
 						key="staticText-54"/>
@@ -2117,7 +1365,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="4"
-						y="383"
+						y="555"
 						width="527"
 						height="15"
 						forecolor="#000000"
@@ -2129,7 +1377,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="5"
-						y="385"
+						y="557"
 						width="523"
 						height="11"
 						forecolor="#FFFFFF"
@@ -2144,7 +1392,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="9"
-						y="411"
+						y="583"
 						width="350"
 						height="18"
 						key="rectangle-43"/>
@@ -2154,7 +1402,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="266"
-						y="408"
+						y="580"
 						width="83"
 						height="7"
 						key="staticText-57"/>
@@ -2168,7 +1416,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="18"
-						y="408"
+						y="580"
 						width="138"
 						height="9"
 						key="staticText-56"/>
@@ -2181,7 +1429,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="259"
-						y="412"
+						y="584"
 						width="0"
 						height="17"
 						key="line-122"/>
@@ -2190,7 +1438,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="8"
-						y="444"
+						y="616"
 						width="350"
 						height="18"
 						key="rectangle-44"/>
@@ -2200,7 +1448,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="35"
-						y="441"
+						y="613"
 						width="55"
 						height="9"
 						key="staticText-58"/>
@@ -2213,7 +1461,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="122"
-						y="445"
+						y="617"
 						width="0"
 						height="17"
 						key="line-123"/>
@@ -2222,7 +1470,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="140"
-						y="449"
+						y="621"
 						width="0"
 						height="13"
 						key="line-124"/>
@@ -2231,7 +1479,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="158"
-						y="449"
+						y="621"
 						width="0"
 						height="13"
 						key="line-125"/>
@@ -2240,7 +1488,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="176"
-						y="449"
+						y="621"
 						width="0"
 						height="13"
 						key="line-126"/>
@@ -2249,7 +1497,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="194"
-						y="449"
+						y="621"
 						width="0"
 						height="13"
 						key="line-127"/>
@@ -2258,7 +1506,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="212"
-						y="449"
+						y="621"
 						width="0"
 						height="13"
 						key="line-128"/>
@@ -2267,7 +1515,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="230"
-						y="449"
+						y="621"
 						width="0"
 						height="13"
 						key="line-129"/>
@@ -2276,7 +1524,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="302"
-						y="449"
+						y="621"
 						width="0"
 						height="13"
 						key="line-130"/>
@@ -2285,7 +1533,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="320"
-						y="449"
+						y="621"
 						width="0"
 						height="13"
 						key="line-131"/>
@@ -2294,7 +1542,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="338"
-						y="449"
+						y="621"
 						width="0"
 						height="13"
 						key="line-132"/>
@@ -2303,7 +1551,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="284"
-						y="449"
+						y="621"
 						width="0"
 						height="13"
 						key="line-133"/>
@@ -2312,7 +1560,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="266"
-						y="449"
+						y="621"
 						width="0"
 						height="13"
 						key="line-134"/>
@@ -2321,7 +1569,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="248"
-						y="449"
+						y="621"
 						width="0"
 						height="13"
 						key="line-135"/>
@@ -2331,7 +1579,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="143"
-						y="441"
+						y="613"
 						width="198"
 						height="9"
 						key="staticText-59"/>
@@ -2344,7 +1592,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="363"
-						y="405"
+						y="577"
 						width="164"
 						height="68"
 						key="rectangle-45"/>
@@ -2354,7 +1602,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="399"
-						y="402"
+						y="574"
 						width="86"
 						height="7"
 						key="staticText-60"/>
@@ -2367,7 +1615,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="8"
-						y="477"
+						y="649"
 						width="350"
 						height="18"
 						key="rectangle-46"/>
@@ -2377,7 +1625,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="17"
-						y="474"
+						y="646"
 						width="70"
 						height="8"
 						key="staticText-61"/>
@@ -2391,7 +1639,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="17"
-						y="369"
+						y="541"
 						width="99"
 						height="9"
 						key="staticText-62"/>
@@ -2405,7 +1653,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="17"
-						y="452"
+						y="624"
 						width="99"
 						height="9"
 						key="staticText-63"/>
@@ -2418,7 +1666,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="96"
-						y="478"
+						y="650"
 						width="0"
 						height="17"
 						key="line-136"/>
@@ -2428,7 +1676,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="133"
-						y="475"
+						y="647"
 						width="192"
 						height="9"
 						key="staticText-64"/>
@@ -2441,7 +1689,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="BottomUp">
 					<reportElement
 						x="138"
-						y="487"
+						y="659"
 						width="5"
 						height="7"
 						key="line-137"/>
@@ -2450,7 +1698,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="BottomUp">
 					<reportElement
 						x="162"
-						y="487"
+						y="659"
 						width="5"
 						height="7"
 						key="line-138"/>
@@ -2459,7 +1707,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="363"
-						y="477"
+						y="649"
 						width="164"
 						height="18"
 						key="rectangle-47"/>
@@ -2469,7 +1717,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="396"
-						y="475"
+						y="647"
 						width="100"
 						height="6"
 						key="staticText-65"/>
@@ -2482,7 +1730,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="BottomUp">
 					<reportElement
 						x="386"
-						y="487"
+						y="659"
 						width="5"
 						height="7"
 						key="line-139"/>
@@ -2491,7 +1739,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="BottomUp">
 					<reportElement
 						x="413"
-						y="487"
+						y="659"
 						width="5"
 						height="7"
 						key="line-140"/>
@@ -2501,7 +1749,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="442"
-						y="487"
+						y="659"
 						width="5"
 						height="6"
 						key="staticText-66"/>
@@ -2514,7 +1762,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="BottomUp">
 					<reportElement
 						x="500"
-						y="487"
+						y="659"
 						width="5"
 						height="7"
 						key="line-141"/>
@@ -2523,7 +1771,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<line direction="BottomUp">
 					<reportElement
 						x="473"
-						y="487"
+						y="659"
 						width="5"
 						height="7"
 						key="line-142"/>
@@ -2532,7 +1780,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="12"
-						y="341"
+						y="513"
 						width="253"
 						height="15"
 						key="TXTMAECONV-1"/>
@@ -2545,7 +1793,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="129"
-						y="365"
+						y="537"
 						width="220"
 						height="15"
 						key="TXTMAECONV-2"/>
@@ -2555,10 +1803,10 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CPFVEND}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="12"
-						y="26"
+						y="198"
 						width="145"
 						height="15"
 						key="TXTCODBARPROD"/>
@@ -2568,10 +1816,10 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODBARPROD}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="163"
-						y="26"
+						y="198"
 						width="312"
 						height="15"
 						key="TXTCODBARPROD-1"/>
@@ -2584,7 +1832,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<textField isStretchWithOverflow="false" pattern="###0;-###0" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="482"
-						y="25"
+						y="197"
 						width="42"
 						height="15"
 						key="TXTDDDCONV-3"/>
@@ -2597,7 +1845,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="277"
-						y="341"
+						y="513"
 						width="83"
 						height="15"
 						key="TXTCNSCONV-3"
@@ -2608,6 +1856,822 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTORC}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement
+						x="4"
+						y="0"
+						width="527"
+						height="15"
+						forecolor="#000000"
+						backcolor="#000000"
+						key="rectangle-51"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="5"
+						y="2"
+						width="523"
+						height="11"
+						forecolor="#FFFFFF"
+						backcolor="#000000"
+						key="staticText-72"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font fontName="Bitstream Vera Sans" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[IDENTIFICAÇÃO DO ESTABELECIMENTO DE SAÚDE (SOLICITANTE)]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="0"
+						height="173"
+						key="line-155"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="536"
+						y="0"
+						width="0"
+						height="173"
+						key="line-156"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="4"
+						y="15"
+						width="0"
+						height="25"
+						key="line-157"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="530"
+						y="15"
+						width="0"
+						height="25"
+						key="line-158"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<rectangle>
+					<reportElement
+						x="4"
+						y="40"
+						width="527"
+						height="15"
+						forecolor="#000000"
+						backcolor="#000000"
+						key="rectangle-52"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="5"
+						y="42"
+						width="523"
+						height="11"
+						forecolor="#FFFFFF"
+						backcolor="#000000"
+						key="staticText-73"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font fontName="Bitstream Vera Sans" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[IDENTIFICAÇÃO DO PACIENTE]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="10"
+						y="19"
+						width="412"
+						height="18"
+						key="rectangle-53"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="42"
+						y="16"
+						width="176"
+						height="9"
+						key="staticText-74"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[1 - NOME DO ESTABELECIMENTO DE SAÚDE SOLICITANTE]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="425"
+						y="19"
+						width="102"
+						height="18"
+						key="rectangle-54"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="460"
+						y="16"
+						width="31"
+						height="7"
+						key="staticText-75"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[2 - CNES]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="439"
+						y="24"
+						width="0"
+						height="13"
+						key="line-159"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="454"
+						y="24"
+						width="0"
+						height="13"
+						key="line-160"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="469"
+						y="24"
+						width="0"
+						height="13"
+						key="line-161"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="484"
+						y="24"
+						width="0"
+						height="13"
+						key="line-162"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="499"
+						y="24"
+						width="0"
+						height="13"
+						key="line-163"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="512"
+						y="24"
+						width="0"
+						height="13"
+						key="line-164"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<rectangle>
+					<reportElement
+						x="10"
+						y="60"
+						width="430"
+						height="18"
+						key="rectangle-55"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="42"
+						y="57"
+						width="73"
+						height="9"
+						key="staticText-76"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[3 - NOME DO PACIENTE]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="4"
+						y="55"
+						width="0"
+						height="118"
+						key="line-165"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="530"
+						y="56"
+						width="0"
+						height="117"
+						key="line-166"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<rectangle>
+					<reportElement
+						x="444"
+						y="60"
+						width="83"
+						height="18"
+						key="rectangle-56"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="450"
+						y="57"
+						width="72"
+						height="7"
+						key="staticText-77"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[4 - N° DO PRONTUARIO]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="10"
+						y="83"
+						width="274"
+						height="18"
+						key="rectangle-57"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="42"
+						y="81"
+						width="125"
+						height="7"
+						key="staticText-78"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[5 - CARTÃO NACIONAL DE SAÚDE (CNS)]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="295"
+						y="83"
+						width="88"
+						height="18"
+						key="rectangle-58"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="300"
+						y="80"
+						width="79"
+						height="7"
+						key="staticText-79"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[6 - DATA DE NASCIMENTO]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="399"
+						y="83"
+						width="128"
+						height="18"
+						key="rectangle-59"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="457"
+						y="80"
+						width="30"
+						height="7"
+						key="staticText-80"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[7 - SEXO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="413"
+						y="91"
+						width="17"
+						height="8"
+						key="staticText-81"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="5"/>
+					</textElement>
+				<text><![CDATA[Masc.]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="434"
+						y="89"
+						width="12"
+						height="10"
+						key="rectangle-60"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="480"
+						y="91"
+						width="17"
+						height="8"
+						key="staticText-82"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="5"/>
+					</textElement>
+				<text><![CDATA[Fem.]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="501"
+						y="89"
+						width="12"
+						height="10"
+						key="rectangle-61"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						x="10"
+						y="106"
+						width="359"
+						height="18"
+						key="rectangle-62"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="42"
+						y="103"
+						width="115"
+						height="9"
+						key="staticText-83"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[8 - NOME DA MÃE OU RESPONSÁVEL]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="374"
+						y="106"
+						width="153"
+						height="18"
+						key="rectangle-63"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<line direction="TopDown">
+					<reportElement
+						x="406"
+						y="107"
+						width="0"
+						height="17"
+						key="line-167"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="422"
+						y="103"
+						width="84"
+						height="7"
+						key="staticText-84"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[9 - TELEFONE DE CONTATO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="385"
+						y="108"
+						width="12"
+						height="6"
+						key="staticText-85"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="5"/>
+					</textElement>
+				<text><![CDATA[DDD]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="450"
+						y="109"
+						width="50"
+						height="6"
+						key="staticText-86"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="5"/>
+					</textElement>
+				<text><![CDATA[N° DO TELEFONE]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="10"
+						y="129"
+						width="517"
+						height="18"
+						key="rectangle-64"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="42"
+						y="126"
+						width="107"
+						height="9"
+						key="staticText-87"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[10 - ENDEREÇO (RUA, N°, BAIRRO) RESPONSÁVEL]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="10"
+						y="152"
+						width="517"
+						height="18"
+						key="rectangle-65"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="42"
+						y="149"
+						width="97"
+						height="9"
+						key="staticText-88"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[11 - MUNICÍPIO DE RESIDÊNCIA BAIRRO) RESPONSÁVEL]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="323"
+						y="153"
+						width="0"
+						height="17"
+						key="line-168"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="326"
+						y="149"
+						width="79"
+						height="7"
+						key="staticText-89"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[12 - CÓD.IBGE MUNICÍPIO CONTATO]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="407"
+						y="153"
+						width="0"
+						height="17"
+						key="line-169"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="438"
+						y="153"
+						width="0"
+						height="17"
+						key="line-170"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="420"
+						y="149"
+						width="23"
+						height="7"
+						key="staticText-90"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[13 - UF]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="470"
+						y="149"
+						width="27"
+						height="7"
+						key="staticText-91"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[14 - CEP]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="23"
+						width="408"
+						height="15"
+						key="TXTRAZFILIAL-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZFILIAL}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="430"
+						y="23"
+						width="97"
+						height="16"
+						key="staticText-92"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[0 0 1 5 9 7 0]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="64"
+						width="424"
+						height="15"
+						key="TXTNOMECONV-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMECONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="87"
+						width="269"
+						height="17"
+						key="TXTCNSCONV-4"
+						stretchType="RelativeToTallestObject"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified" lineSpacing="Single">
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CNSCONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="297"
+						y="87"
+						width="84"
+						height="15"
+						key="TXTCNSCONV-5"
+						stretchType="RelativeToTallestObject"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified" lineSpacing="Single">
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTNASCCONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="437"
+						y="89"
+						width="18"
+						height="11"
+						key="TXTSEXOMASC-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{SEXOCONV}.equals("M")?"X":"")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="504"
+						y="89"
+						width="17"
+						height="11"
+						key="TXTSEXOFEM-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{SEXOCONV}.equals("F")?"X":"")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="110"
+						width="354"
+						height="15"
+						key="TXTMAECONV-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{MAECONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="410"
+						y="111"
+						width="114"
+						height="15"
+						key="TXTFONECONV-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{FONECONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="134"
+						width="511"
+						height="15"
+						key="TXTENDERECOCONV-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCONV}.trim()+", "+ ($F{NUMCONV}==null?"":$F{NUMCONV}.toString()) +", "+$F{BAIRCONV}.trim()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="157"
+						width="308"
+						height="15"
+						key="TXTCIDADECONV-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CIDCONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="380"
+						y="111"
+						width="23"
+						height="15"
+						key="TXTDDDCONV-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DDDCONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="412"
+						y="157"
+						width="23"
+						height="15"
+						key="TXTDDDCONV-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{UFCONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="443"
+						y="65"
+						width="84"
+						height="15"
+						key="TXTCNSCONV-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified" lineSpacing="Single">
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODCONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="331"
+						y="157"
+						width="80"
+						height="15"
+						key="TXTIDENTIFICCONV-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{IDENTIFICCONV}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="16"
+						y="413"
+						width="64"
+						height="10"
+						key="staticText-93"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="7"/>
+					</textElement>
+				<text><![CDATA[CPF do paciente:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="81"
+						y="413"
+						width="161"
+						height="10"
+						key="textField-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CPFCONV}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="16"
+						y="425"
+						width="64"
+						height="10"
+						key="staticText-94"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="7"/>
+					</textElement>
+				<text><![CDATA[Cód. Transação:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="81"
+						y="425"
+						width="161"
+						height="10"
+						key="textField-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TXT01}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

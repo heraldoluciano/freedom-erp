@@ -57,7 +57,7 @@ public class FichaMedida extends LeiauteGR {
 						"EC.CODEMP=C.CODEMP AND EC.CODFILIAL=C.CODFILIAL AND EC.CODENC=C.CODENC ),"+
 						"(SELECT EC.CIDENC FROM ATENCAMINHADOR EC WHERE "+
 						"EC.CODEMP=C.CODEMP AND EC.CODFILIAL=C.CODFILIAL AND EC.CODENC=C.CODENC ),"+
-						"C.FONECONV,CL.RAZCLI, CL.CIDCLI"+
+						"C.DDDCONV,C.FONECONV,CL.RAZCLI, CL.CIDCLI"+
 		                " FROM ATCONVENIADO C, ATTIPOCONV T,VDCLIENTE CL"+
 		                " WHERE T.CODEMP=C.CODEMPTC AND T.CODFILIAL=C.CODFILIALTC AND T.CODTPCONV=C.CODTPCONV"+
 		                " AND CL.CODCLI=C.CODCLI AND CL.CODEMP=C.CODEMPCL AND CL.CODFILIAL=C.CODFILIALCL"+
@@ -158,7 +158,9 @@ public class FichaMedida extends LeiauteGR {
 			setFonte(new Font("Arial",Font.BOLD,10));
 			drawTexto("Telefone:",5,iY);
 			setFonte(new Font("Arial",Font.PLAIN,10));
-			drawTexto(rs.getString("FoneConv") != null ? Funcoes.setMascara(rs.getString("FoneConv"),"(####)####-####") : "",60,iY);
+			drawTexto(rs.getString("dddconv"), 60,iY);
+			drawTexto(" - ",73,iY);
+			drawTexto(rs.getString("FoneConv"),80,iY);
 
 			setFonte(new Font("Arial",Font.BOLD,10));
 			drawTexto("Tecnico: _______________, Ass.:_______________",285,iY);
