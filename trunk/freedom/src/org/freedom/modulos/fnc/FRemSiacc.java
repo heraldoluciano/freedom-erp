@@ -32,15 +32,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -92,6 +98,10 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 	private static final int COL_SITRET = 12;
 	
 	private static final int COL_STIPOFEBRABAN = 13;
+	
+	private static final int COL_TIPOREMCLI = 14;
+	
+	private static final String TIPO_FEBRABAN = "01";
 
 	private JPanelPad panelRodape = null;
 
@@ -129,7 +139,13 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 
 	private final ListaCampos lcBanco = new ListaCampos( this );
 
-	private FileWriter fileWriterSiacc = null;
+	private Map<EPrefs, Object> prefs = new HashMap<EPrefs, Object>(); 
+
+	private enum EPrefs {CODBANCO, NOMEBANCO, CODCONV, NOMEEMP, VERLAYOUT, IDENTSERV, CONTACOMPR, IDENTAMBCLI, IDENTAMBBCO, NROSEQ}
+	 
+	private enum EColcli {CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN, AGENCIACLI, IDENTCLI, TIPOREMCLI}
+	
+    private enum EColrec {CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN, SITREMESSA, CODCLI, AGENCIACLI, IDENTCLI, DTVENC, VLRAPAG}
 
 	public FRemSiacc() {
 
@@ -173,6 +189,8 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		tab.adicColuna( "Sit. rem." );
 		tab.adicColuna( "Sit. ret." );
 		tab.adicColuna( "Subtipo" );
+		tab.adicColuna( "Tp.r.cli." );
+
 
 		tab.setTamColuna( 20, COL_SEL );
 		tab.setTamColuna( 150, COL_RAZCLI );
@@ -188,6 +206,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		tab.setTamColuna( 50, COL_SITREM );
 		tab.setTamColuna( 50, COL_SITRET );
 		tab.setTamColuna( 30, COL_STIPOFEBRABAN );
+		tab.setTamColuna( 30, COL_TIPOREMCLI );
 
 		tab.setColunaEditavel( COL_SEL, true );
 		
@@ -252,7 +271,46 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		panelRodape.add( btExporta, BorderLayout.WEST );
 
 	}
-
+	
+    private boolean setPrefs() {
+    	boolean retorno = false;
+    	try {
+       		PreparedStatement ps = con.prepareStatement( "SELECT I.CODCONV, P.NOMEEMP, I.VERLAYOUT, I.IDENTSERV, I.CONTACOMPR, " +
+       				"I.IDENTAMBCLI, I.IDENTAMBBCO, I.NROSEQ FROM SGITPREFERE6 I, SGPREFERE6 P WHERE I.CODEMP=? AND " +
+       				"I.CODFILIAL=? AND I.CODEMPBO=? AND I.CODFILIALBO=? AND I.CODBANCO=? AND I.TIPOFEBRABAN=? AND " +
+       				"P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL" );
+       		ps.setInt( 1, Aplicativo.iCodEmp );
+       		ps.setInt( 2, ListaCampos.getMasterFilial( "SGITPREFERE6" ));
+       		ps.setInt( 3, Aplicativo.iCodEmp );
+       		ps.setInt( 4, ListaCampos.getMasterFilial( "FNBANCO" ));
+       		ps.setString( 5, txtCodBanco.getVlrString());
+       		ps.setString( 6, TIPO_FEBRABAN );
+       		ResultSet rs = ps.executeQuery();
+       		if (rs.next()) {
+       			prefs.put( EPrefs.CODCONV, rs.getString(EPrefs.CODCONV.toString()) );
+       			prefs.put( EPrefs.NOMEEMP, rs.getString(EPrefs.NOMEEMP.toString()) );
+       			prefs.put( EPrefs.VERLAYOUT, rs.getString(EPrefs.VERLAYOUT.toString()) );
+       			prefs.put( EPrefs.CODBANCO, txtCodBanco.getVlrString() );
+       			prefs.put( EPrefs.NOMEBANCO, txtNomeBanco.getVlrString() );
+       			prefs.put( EPrefs.IDENTSERV, rs.getString(EPrefs.IDENTSERV.toString()) );
+       			prefs.put( EPrefs.CONTACOMPR, rs.getString(EPrefs.CONTACOMPR.toString()) );
+       			prefs.put( EPrefs.IDENTAMBCLI, rs.getString(EPrefs.IDENTAMBCLI.toString()));
+       			prefs.put( EPrefs.IDENTAMBBCO, rs.getString(EPrefs.IDENTAMBBCO.toString()));
+       			prefs.put( EPrefs.NROSEQ, rs.getInt(EPrefs.NROSEQ.toString()));
+       		}
+       		rs.close();
+       		ps.close();
+       		if (!con.getAutoCommit()) {
+       			con.commit();
+       		}
+       		retorno = true;
+    	} catch (SQLException sqlError) {
+    		Funcoes.mensagemErro( this, "Carregando parâmetros!\n" + sqlError.getMessage() );
+    		lbStatus.setText( "" );
+    	}
+		return retorno;
+    }
+    
 	private ResultSet executeQuery() throws SQLException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -260,7 +318,8 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		StringBuilder sSQL = new StringBuilder();
 		sSQL.append( "SELECT IR.CODREC, IR.NPARCITREC, R.DOCREC, R.CODCLI, C.RAZCLI, IR.DTITREC, IR.DTVENCITREC," );
 		sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, COALESCE(FR.SITREMESSA,'00') SITREMESSA, ");
-		sSQL.append( "FR.SITRETORNO, COALESCE(COALESCE(FR.STIPOFEBRABAN,FC.STIPOFEBRABAN),'02') STIPOFEBRABAN " );
+		sSQL.append( "FR.SITRETORNO, COALESCE(COALESCE(FR.STIPOFEBRABAN,FC.STIPOFEBRABAN),'02') STIPOFEBRABAN, " );
+		sSQL.append( "COALESCE(FC.TIPOREMCLI,'B') TIPOREMCLI ");
 		sSQL.append( "FROM VDCLIENTE C," );
 		sSQL.append( "FNRECEBER R LEFT OUTER JOIN FNFBNCLI FC ON " );
 		sSQL.append( "FC.CODEMP=R.CODEMPCL AND FC.CODFILIAL=R.CODFILIALCL AND FC.CODCLI=R.CODCLI ," );
@@ -317,6 +376,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 				tab.setValor( rs.getString( "SITREMESSA" ), i, COL_SITREM );
 				tab.setValor( rs.getString( "SITRETORNO" ), i, COL_SITRET );
 				tab.setValor( rs.getString( "STIPOFEBRABAN") , i, COL_STIPOFEBRABAN );
+				tab.setValor( rs.getString( "TIPOREMCLI"), i, COL_TIPOREMCLI );
 			}
 
 			rs.close();
@@ -373,62 +433,251 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		}
 	}
 
-	private void execExporta() {
+	private boolean execExporta() {
+		
+		boolean retorno = false;
+		String sFileName = null;
+		File fileSiacc = null;
+		FileWriter fw = null;
+		BufferedWriter bw = null;
+		HashSet<StuffCli> hsCli = new HashSet<StuffCli>();
+		HashSet<StuffRec> hsRec = new HashSet<StuffRec>();
 
-		if ( consisteExporta() ) {
+
+		if ( consisteExporta(hsCli, hsRec) ) {
 			
 			lbStatus.setText( "     criando arquivo ..." );
 
 			FileDialog fileDialogSiacc = null;
 			fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
-			fileDialogSiacc.setFile( "remessasiacc.txt" );
+			fileDialogSiacc.setFile( "remessa.txt" );
 			fileDialogSiacc.setVisible( true );
 
 			if ( fileDialogSiacc.getFile() == null ) {
 				lbStatus.setText( "" );
-				return;
+				return retorno;
 			}
 
-			String sFileName = fileDialogSiacc.getDirectory() + fileDialogSiacc.getFile();
+			sFileName = fileDialogSiacc.getDirectory() + fileDialogSiacc.getFile();
 
-			File fileSiacc = new File( sFileName );
-
-			if ( fileSiacc.exists() ) {
-				if ( Funcoes.mensagemConfirma( this, "Arquivo: '" + sFileName + "' já existe! Deseja sobrescrever?" ) != 0 ) {
-					return;
-				}
-			}
+			fileSiacc = new File( sFileName );
 
 			try {
 				fileSiacc.createNewFile();
-			} catch ( IOException err ) {
-				Funcoes.mensagemErro( this, "Erro limpando arquivo: " + sFileName + "\n" + err.getMessage(), true, con, err );
-				lbStatus.setText( "" );
-				return;
-			}
+				fw = new FileWriter(fileSiacc);
+				bw = new BufferedWriter(fw);
 
-			try {
-				fileWriterSiacc = new FileWriter( fileSiacc );
+				lbStatus.setText( "     gravando arquivo ..." );
+				retorno = setPrefs();
+				retorno = gravaRemessa(bw, hsCli, hsRec);
 			} catch ( IOException ioError ) {
-				Funcoes.mensagemErro( this, "Erro Criando o arquivo: " + sFileName + "\n" + ioError.getMessage() );
+				Funcoes.mensagemErro( this, "Erro Criando o arquivo!\n " + sFileName + "\n" + ioError.getMessage() );
 				lbStatus.setText( "" );
-				return;
+				return retorno;
 			}
 			
-			lbStatus.setText( "     gravando arquivo ..." );
 			// motar layout...
+
+		}
+		return retorno;
+	}
+	
+	private enum ETipo {X, $9}
+	
+	private class Reg {
+		protected StringBuilder sbreg = new StringBuilder();
+		private Reg(char codreg ) {
+			this.sbreg.append( codreg );
+		}
+		String format(Object obj, ETipo tipo, int tam, int dec ) {
+			String retorno = null;
+			String str = null;
+			//String formato = null;
+			if (obj==null) {
+				str = "";
+			}
+			else {
+				str = obj.toString();
+			}
+			if (tipo==ETipo.$9) {
+			   retorno = Funcoes.transValor( str, tam, dec, true ) ;
+			}
+			else {
+			   retorno = Funcoes.adicionaEspacos( str, tam );
+			}
+			return retorno;
+		}
+		public String toString() {
+			return sbreg.toString();
+		}
+	}
+	
+	
+	private class RegA extends Reg {
+		
+		private RegA( char codrem, Map map ) {
+			super('A');
+			this.sbreg.append( codrem );
+			this.sbreg.append( format(map.get( EPrefs.CODCONV ), ETipo.X, 20, 0) );
+			this.sbreg.append( format(map.get( EPrefs.NOMEEMP ), ETipo.X, 20, 0) );
+			this.sbreg.append( format(map.get( EPrefs.CODBANCO ), ETipo.$9, 3, 0) );
+			this.sbreg.append( format(map.get( EPrefs.NOMEBANCO ), ETipo.X, 20, 0) );
+			this.sbreg.append( Funcoes.dataAAAAMMDD( new Date() ));
+			this.sbreg.append( format(map.get( EPrefs.NROSEQ ), ETipo.$9, 6, 0) );
+			this.sbreg.append( format(map.get( EPrefs.VERLAYOUT ), ETipo.$9, 2, 0) );
+			this.sbreg.append( format(map.get( EPrefs.IDENTSERV ), ETipo.X, 17, 0) );
+			this.sbreg.append( format(map.get( EPrefs.CONTACOMPR ), ETipo.$9, 16, 0) );
+			this.sbreg.append( format(map.get( EPrefs.IDENTAMBCLI ), ETipo.X, 1, 0) );
+			this.sbreg.append( format(map.get( EPrefs.IDENTAMBBCO ), ETipo.X, 1, 0) );
+			this.sbreg.append( format("", ETipo.X, 27, 0) ); // Reservado para o futuro
+			this.sbreg.append( format("1", ETipo.$9, 6, 0) ); // Número sequencial do registro
+			this.sbreg.append( format("", ETipo.X, 1, 0) ); // Reservado para o futuro
+			this.sbreg.append( (char) 13 );  
+			this.sbreg.append( (char) 10 );
+			//this.sbreg.append( "\n");
 
 		}
 	}
 	
+	private class RegB extends Reg {
+		private final char COD_MOV = '2'; 
+		private RegB( char codreg, StuffCli stfCli) {
+			super(codreg);
+			this.sbreg.append( format(stfCli.getCodigo(), ETipo.$9, 10, 0) );
+			this.sbreg.append( format("", ETipo.X, 15, 0 )); // Completar a identificação do cliente na empresa
+			this.sbreg.append( format(stfCli.getArgs()[EColcli.AGENCIACLI.ordinal()], ETipo.$9, 4 , 0) );
+			this.sbreg.append( format(stfCli.getArgs()[EColcli.IDENTCLI.ordinal()], ETipo.X, 14, 0) );
+			this.sbreg.append( Funcoes.dataAAAAMMDD( new Date() ) );
+			this.sbreg.append( format("", ETipo.X, 96, 0 )); // Reservado para o futuro
+			this.sbreg.append( COD_MOV);
+			this.sbreg.append( format("", ETipo.X, 1, 0 )); // Reservado para o futuro
+		//	this.sbreg.append( "\n");
+
+			this.sbreg.append( (char) 13 );  
+			this.sbreg.append( (char) 10 );  
+		}
+	}
+	
+	private class RegC extends Reg {
+		private final char COD_MOV = '2'; 
+		private RegC( char codreg, StuffCli stfCli, int numSeq) {
+			super(codreg);
+			this.sbreg.append( format(stfCli.getCodigo(), ETipo.$9, 10, 0) );
+			this.sbreg.append( format("", ETipo.X, 15, 0 )); // Completar a identificação do cliente na empresa
+			this.sbreg.append( format(stfCli.getArgs()[EColcli.AGENCIACLI.ordinal()], ETipo.$9, 4 , 0) );
+			this.sbreg.append( format(stfCli.getArgs()[EColcli.IDENTCLI.ordinal()], ETipo.X, 14, 0) );
+			this.sbreg.append( format("", ETipo.X, 40, 0 )); // Ocorrencia 1
+			this.sbreg.append( format("", ETipo.X, 40, 0 )); // Ocorrencia 2
+			this.sbreg.append( format("", ETipo.X, 19, 0 )); // Reservado para o futuro
+			this.sbreg.append( format(numSeq, ETipo.$9, 6, 0 )); // Reservado para o futuro
+			this.sbreg.append( COD_MOV);
+			//this.sbreg.append( "\n");
+			this.sbreg.append( (char) 13 );  
+			this.sbreg.append( (char) 10 );  
+		}
+	}
+
+	private class RegD extends Reg {
+		private final char COD_MOV = '0'; 
+		private RegD( char codreg, StuffCli stfCli, int numSeq) {
+			super(codreg);
+			this.sbreg.append( format(stfCli.getCodigo(), ETipo.$9, 10, 0) );
+			this.sbreg.append( format("", ETipo.X, 15, 0 )); // Completar a identificação do cliente na empresa
+			this.sbreg.append( format(stfCli.getArgs()[EColcli.AGENCIACLI.ordinal()], ETipo.$9, 4 , 0) );
+			this.sbreg.append( format(stfCli.getArgs()[EColcli.IDENTCLI.ordinal()], ETipo.X, 14, 0) );
+			this.sbreg.append( format(stfCli.getCodigo(), ETipo.$9, 10, 0) );
+			this.sbreg.append( format("", ETipo.X, 15, 0 )); // Completar a identificação do cliente na empresa
+			this.sbreg.append( format("", ETipo.X, 60, 0 )); // Ocorrencia
+			this.sbreg.append( format("", ETipo.X, 14, 0 )); // Reservado para o futuro
+			this.sbreg.append( format(numSeq, ETipo.$9, 6, 0 )); // Reservado para o futuro
+			this.sbreg.append( COD_MOV );
+			//this.sbreg.append( "\n");
+			this.sbreg.append( (char) 13 );  
+			this.sbreg.append( (char) 10 );  
+		}
+	}
+	
+	private class RegE extends Reg {
+		private final char COD_MOV = '0';
+		private final String COD_MOEDA = "03";
+		private RegE( char codreg, StuffRec stfRec, int numSeq, int numAgenda) {
+			super(codreg);
+			this.sbreg.append( format(stfRec.getArgs()[EColrec.CODCLI.ordinal()], ETipo.$9, 10, 0) );
+			this.sbreg.append( format("", ETipo.X, 15, 0 )); // Completar a identificação do cliente na empresa
+			this.sbreg.append( format(stfRec.getArgs()[EColrec.AGENCIACLI.ordinal()], ETipo.$9, 4 , 0) );
+			this.sbreg.append( format(stfRec.getArgs()[EColrec.IDENTCLI.ordinal()], ETipo.X, 14, 0) );
+			this.sbreg.append( format(stfRec.getArgs()[EColrec.DTVENC.ordinal()], ETipo.$9, 8, 0) );
+			this.sbreg.append( format(stfRec.getArgs()[EColrec.VLRAPAG.ordinal()], ETipo.$9, 15, 0) );
+			this.sbreg.append( COD_MOEDA );
+			this.sbreg.append( format("", ETipo.X, 60, 0 )); // Uso da empresa
+			this.sbreg.append( format(numAgenda, ETipo.$9, 6, 0) );
+			this.sbreg.append( format("", ETipo.X, 8, 0 )); // Reservado para o futuro
+			this.sbreg.append( format(numSeq, ETipo.$9, 6, 0 )); // Reservado para o futuro
+			this.sbreg.append( COD_MOV );
+			//this.sbreg.append( "\n");
+			this.sbreg.append( (char) 13 );  
+			this.sbreg.append( (char) 10 );  
+		}
+	}
+	
+	
+	private boolean gravaRemessa(final BufferedWriter bw, HashSet<StuffCli> hsCli, 	
+			HashSet<StuffRec> hsRec) { 
+		boolean retorno = false;
+		try {
+			ArrayList<Reg> list = new ArrayList<Reg>();
+			list.add( new RegA('1', prefs) );
+			int i = 2;
+			int numAgenda = 1;
+			
+			for (StuffCli c: hsCli) {
+				if ("B".equals(c.getArgs()[EColcli.TIPOREMCLI.ordinal()])) {
+					list.add( new RegB('B', c) );
+					i++;
+				}
+			}
+			for (StuffCli c: hsCli) {
+				if ("C".equals(c.getArgs()[EColcli.TIPOREMCLI.ordinal()])) {
+					list.add( new RegC('C', c, i) );
+					i++;
+				}
+			}
+			for (StuffCli c: hsCli) {
+				if ("D".equals(c.getArgs()[EColcli.TIPOREMCLI.ordinal()])) {
+					list.add( new RegD('D', c, i) );
+					i++;
+				}
+			}
+			for (StuffRec r: hsRec) {
+				if ("00".equals(r.getArgs()[EColrec.SITREMESSA.ordinal()])) {
+					list.add( new RegE('E', r, i, numAgenda) );
+					i++;
+					numAgenda++;
+				}
+			}
+			for ( Reg reg : list) {
+				bw.write( reg.toString() );
+			}
+			bw.flush();
+			bw.close();
+		} catch ( IOException ioError ) {
+			Funcoes.mensagemErro( this, "Erro gravando no arquivo!\n" + ioError.getMessage() );
+			lbStatus.setText( "" );
+			retorno = false;
+		}
+		
+		return retorno;
+	}
+	
 	private boolean updateCliente(int codCli, String codBanco, String tipoFebraban, String stipoFebraban, 
-			String agenciaCli, String identCli) {
+			String agenciaCli, String identCli, String tipoRemCli) {
 		boolean retorno = false;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = con.prepareStatement("SELECT AGENCIACLI, IDENTCLI, STIPOFEBRABAN FROM FNFBNCLI WHERE CODEMP=? AND CODFILIAL=? AND " +
-					"CODCLI=? AND CODEMPPF=? AND CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND " +
+			ps = con.prepareStatement("SELECT AGENCIACLI, IDENTCLI, STIPOFEBRABAN, TIPOREMCLI FROM FNFBNCLI " +
+					"WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? AND CODEMPPF=? AND " +
+					"CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND " +
 					"CODBANCO=? AND TIPOFEBRABAN=?");
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("VDCLIENTE"));
@@ -442,29 +691,31 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				if ( (!agenciaCli.equals(rs.getString("AGENCIACLI"))) || (!identCli.equals(rs.getString("IDENTCLI"))) || 
-					 (!stipoFebraban.equals(rs.getString("STIPOFEBRABAN")))) {
-					ps = con.prepareStatement("UPDATE FNFBNCLI SET AGENCIACLI=?, IDENTCLI=?, STIPOFEBRABAN=? " +
+					 (!stipoFebraban.equals(rs.getString("STIPOFEBRABAN"))) || (!tipoRemCli.equals(rs.getString("TIPOREMCLI")))) {
+					ps = con.prepareStatement("UPDATE FNFBNCLI SET AGENCIACLI=?, IDENTCLI=?, STIPOFEBRABAN=?, TIPOREMCLI=? " +
 							"WHERE CODEMP=? AND CODFILIAL=? AND " +
 							"CODCLI=? AND CODEMPPF=? AND CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND " +
 							"CODBANCO=? AND TIPOFEBRABAN=?");
 					ps.setString(1, agenciaCli);
 					ps.setString(2, identCli);
 					ps.setString(3, stipoFebraban);
-					ps.setInt(4, Aplicativo.iCodEmp);
-					ps.setInt(5, ListaCampos.getMasterFilial("VDCLIENTE"));
-					ps.setInt(6, codCli);
-					ps.setInt(7, Aplicativo.iCodEmp);
-					ps.setInt(8, ListaCampos.getMasterFilial("SGITPREFERE6"));
-					ps.setInt(9, Aplicativo.iCodEmp);
-					ps.setInt(10, ListaCampos.getMasterFilial("FNBANCO"));
-					ps.setString(11, codBanco);
-					ps.setString(12, tipoFebraban);
+					ps.setString(4, tipoRemCli);
+					ps.setInt(5, Aplicativo.iCodEmp);
+					ps.setInt(6, ListaCampos.getMasterFilial("VDCLIENTE"));
+					ps.setInt(7, codCli);
+					ps.setInt(8, Aplicativo.iCodEmp);
+					ps.setInt(9, ListaCampos.getMasterFilial("SGITPREFERE6"));
+					ps.setInt(10, Aplicativo.iCodEmp);
+					ps.setInt(11, ListaCampos.getMasterFilial("FNBANCO"));
+					ps.setString(12, codBanco);
+					ps.setString(13, tipoFebraban);
 					ps.executeUpdate();
 				}
 			} else {
 				ps = con.prepareStatement("INSERT INTO FNFBNCLI (AGENCIACLI, IDENTCLI, CODEMP, CODFILIAL, " +
-						"CODCLI, CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN) " +
-						"VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+						"CODCLI, CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, " +
+						"TIPOFEBRABAN, STIPOFEBRABAN, TIPOREMCLI) " +
+						"VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
 				ps.setString(1, agenciaCli);
 				ps.setString(2, identCli);
 				ps.setInt(3, Aplicativo.iCodEmp);
@@ -477,12 +728,14 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 				ps.setString(10, codBanco);
 				ps.setString(11, tipoFebraban);
 				ps.setString(12, stipoFebraban);
+				ps.setString(13, tipoRemCli);
+				
 				ps.executeUpdate();
 			}
 			if (!con.getAutoCommit()) 
 				con.commit();
 			//rs.close();
-			
+			retorno = true;
 		} catch (SQLException e) {
 			Funcoes.mensagemErro(this, "Erro atualizando cliente!\n" + e.getMessage());
 		}
@@ -508,7 +761,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 				     (!stipoFebraban.equals(rs.getString("STIPOFEBRABAN"))) || (!sitRemessa.equals(rs.getString("SITREMESSA")))) {
 					ps = con.prepareStatement("UPDATE FNFBNREC SET CODBANCO=?, TIPOFEBRABAN=?, STIPOFEBRABAN=?, " +
 							"STIPOFEBRABAN=?, SITREMESSA=? " +
-							"FROM FNFBNREC WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?");
+							"WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?");
  					ps.setString(1, codBanco);
 					ps.setString(2, tipoFebraban);
 					ps.setString(3, stipoFebraban);
@@ -522,8 +775,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 			} else {
 				ps = con.prepareStatement("INSERT INTO FNFBNREC (CODEMP, CODFILIAL, CODREC, NPARCITREC, " +
 						"CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN, " +
-						"SITREMESSA) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-						"FROM FNFBNREC WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?");
+						"SITREMESSA) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 				ps.setInt(1, Aplicativo.iCodEmp);
 				ps.setInt(2, ListaCampos.getMasterFilial("FNFBNREC"));
 				ps.setInt(3,codRec);
@@ -541,22 +793,13 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 			if (!con.getAutoCommit()) 
 				con.commit();
 			//rs.close();
+			retorno = true;
 			
 		} catch (SQLException e) {
-			Funcoes.mensagemErro(this, "Erro situação do contas a receber!\n" + e.getMessage());
+			Funcoes.mensagemErro(this, "Erro atualizando situação do contas a receber!\n" + e.getMessage());
 		}
 		
 		return retorno;
-	}
-
-	private void gravaNoArquivo() {
-
-		try {
-			fileWriterSiacc.write( "dados" );
-			fileWriterSiacc.flush();
-		} catch ( IOException err ) {
-			Funcoes.mensagemErro( this, "Erro grando no arquivo!\n" + err.getMessage(), true, con, err );
-		}
 	}
 
 	private class StuffCli {
@@ -579,16 +822,22 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 			else
 			   return false;
 		}
+		public int hashCode() {
+			return this.codigo.hashCode();
+		}
 	}
 
 	private class StuffRec {
 		private String[] stfArgs = null;
 		private Integer chave1 = null;
 		private Integer chave2 = null;
+		private Integer[] chaveComp = new Integer[2];
 		private StuffRec(Integer codRec, Integer nParcItRec, String[] args) {
 			//System.out.println(args.length);
 			this.chave1 = codRec;
 			this.chave2 = nParcItRec;
+			this.chaveComp[0] = codRec;
+			this.chaveComp[1] = nParcItRec;
 			this.stfArgs = args;
 		}
 		public String[] getArgs() {
@@ -607,15 +856,16 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 			else
 			   return false;
 		}
+		public int hashCode() {
+			return chaveComp.hashCode();
+		}
 	}
 	
-	private boolean consisteExporta() {
+	private boolean consisteExporta( HashSet<StuffCli> hsCli, 	HashSet<StuffRec> hsRec) {
 
 		boolean retorno = true;
 		Vector vLinha = null;
 		
-		HashSet<StuffCli> hsCli = new HashSet<StuffCli>();
-		HashSet<StuffRec> hsRec = new HashSet<StuffRec>();
 
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 
@@ -637,16 +887,25 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 				}
 				hsCli.add( new StuffCli( (Integer) vLinha.elementAt( COL_CODCLI ), 
 						 new String[] {
-						   txtCodBanco.getVlrString(), "01" , (String) vLinha.elementAt( COL_STIPOFEBRABAN) ,
+						   txtCodBanco.getVlrString(), TIPO_FEBRABAN , 
+						   (String) vLinha.elementAt( COL_STIPOFEBRABAN) ,
 						   (String) vLinha.elementAt( COL_AGENCIACLI ),
-						   (String) vLinha.elementAt( COL_IDENTCLI ) 
+						   (String) vLinha.elementAt( COL_IDENTCLI ), 
+						   (String) vLinha.elementAt( COL_TIPOREMCLI )
 						 }));
 				hsRec.add( new StuffRec( (Integer) vLinha.elementAt( COL_CODREC ),
 						(Integer) vLinha.elementAt( COL_NRPARC ), 
-						/*String codBanco, String tipoFebraban,	String stipoFebraban, String sitRemessa*/
+						/*String codBanco, String tipoFebraban,	String stipoFebraban, String sitRemessa
+						 * {CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN, SITREMESSA, CODCLI, AGENCIACLI, IDENTCLI, DTVENC, VLRPARC}*/
 						 new String[] {
-						  txtCodBanco.getVlrString(), "01" , (String) vLinha.elementAt(COL_STIPOFEBRABAN), 
-						  (String) vLinha.elementAt( COL_SITREM)
+						  txtCodBanco.getVlrString(), TIPO_FEBRABAN , 
+						  (String) vLinha.elementAt( COL_STIPOFEBRABAN ), 
+						  (String) vLinha.elementAt( COL_SITREM ), 
+						  String.valueOf( (Integer) vLinha.elementAt( COL_CODCLI )) ,
+						  (String) vLinha.elementAt( COL_AGENCIACLI ),
+						  (String) vLinha.elementAt( COL_IDENTCLI ),
+						  Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( COL_DTVENC)),
+						  Funcoes.transValor( (BigDecimal) vLinha.elementAt( COL_VLRAPAG ), 15, 2, true)
 						  }));
 			}
 		}
@@ -660,9 +919,12 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 	private boolean persisteDados(final HashSet<StuffCli> hsCli, final HashSet<StuffRec> hsRec) {
 		boolean retorno = true;
 		for (StuffCli stfCli: hsCli) {
-			retorno = updateCliente(stfCli.getCodigo(), stfCli.getArgs()[0], 
-					stfCli.getArgs()[1], stfCli.getArgs()[2], 
-					stfCli.getArgs()[3], stfCli.getArgs()[4]);
+			retorno = updateCliente(stfCli.getCodigo(), stfCli.getArgs()[EColcli.CODBANCO.ordinal()], 
+					stfCli.getArgs()[EColcli.TIPOFEBRABAN.ordinal()], 
+					stfCli.getArgs()[EColcli.STIPOFEBRABAN.ordinal()], 
+					stfCli.getArgs()[EColcli.AGENCIACLI.ordinal()], 
+					stfCli.getArgs()[EColcli.IDENTCLI.ordinal()],
+					stfCli.getArgs()[EColcli.TIPOREMCLI.ordinal()]);
 			if (!retorno) {
 				retorno = false;
 				break;
@@ -670,8 +932,11 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		}
 		if (retorno) {
 			for (StuffRec stfRec: hsRec) {
-				retorno = updateReceber(stfRec.getCodrec(), stfRec.getNParcitrec(), stfRec.getArgs()[0], 
-						stfRec.getArgs()[1], stfRec.getArgs()[2], stfRec.getArgs()[3]);
+				retorno = updateReceber(stfRec.getCodrec(), stfRec.getNParcitrec(), 
+						stfRec.getArgs()[EColrec.CODBANCO.ordinal()], 
+						stfRec.getArgs()[EColrec.TIPOFEBRABAN.ordinal()], 
+						stfRec.getArgs()[EColrec.STIPOFEBRABAN.ordinal()],
+						stfRec.getArgs()[EColrec.SITREMESSA.ordinal()]);
 				if (!retorno) {
 					retorno = false;
 					break;
