@@ -236,7 +236,7 @@ public class FConveniado extends FTabDados implements PostListener {
 		adicCampo( txtDtNascConv, 7, 60, 120, 20, "DtNascConv", "Data de nascimento", ListaCampos.DB_SI, true );
 		adicCampo( txtRgConv, 130, 60, 117, 20, "RgConv", "RG", ListaCampos.DB_SI, true );
 		adicCampo( txtCPFConv, 250, 60, 117, 20, "CPFConv", "CPF", ListaCampos.DB_SI, true );
-		adicCampo( txtIdentificConv, 370, 60, 130, 20, "IdentificConv", "Nº. identificação", ListaCampos.DB_SI, false );
+		adicCampo( txtIdentificConv, 370, 60, 130, 20, "IdentificConv", " Nº.Identificação", ListaCampos.DB_SI, false );
 		adicCampo( txtEndConv, 7, 100, 250, 20, "EndConv", "Endereço", ListaCampos.DB_SI, false );
 		adicCampo( txtNumConv, 260, 100, 57, 20, "NumConv", "Num.", ListaCampos.DB_SI, false );
 		adicCampo( txtComplConv, 320, 100, 47, 20, "ComplConv", "Compl.", ListaCampos.DB_SI, false );
@@ -362,7 +362,7 @@ public class FConveniado extends FTabDados implements PostListener {
 				tela.setConveniado( this );
 				tela.lcCampos.cancel( false );
 				tela.lcCampos.insert( true );
-				tela.setVlrConveniado( txtNomeConv.getVlrString(), txtNomeConv.getVlrString(), txtEndConv.getVlrString(), txtNumConv.getVlrInteger(), txtComplConv.getVlrString(), txtBairConv.getVlrString(), txtCidConv.getVlrString(), txtCepConv.getVlrString(), txtUFConv.getVlrString(), txtRgConv
+				tela.setVlrConveniado( txtNomeConv.getVlrString(), txtNomeConv.getVlrString(), txtEndConv.getVlrString(), txtNumConv.getVlrInteger(), txtComplConv.getVlrString(), txtBairConv.getVlrString(), txtCidConv.getVlrString(),txtCepConv.getVlrString(), txtUFConv.getVlrString(), txtRgConv
 						.getVlrString(), txtCPFConv.getVlrString(), txtFoneConv.getVlrString(), txtFaxConv.getVlrString(), txtEmailConv.getVlrString(), iCodTipoCli, iCodClasCli );
 
 			}

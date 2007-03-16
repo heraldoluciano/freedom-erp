@@ -18,5 +18,17 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="/freedom-ecf"/>
 	<classpathentry kind="lib" path="/freedom-ecf/lib/comm.jar"/>
+	<classpathentry kind="lib" path="lib/comm.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections.jar"/>
+	<classpathentry kind="lib" path="lib/freedomatd.jar"/>
+	<classpathentry kind="lib" path="lib/freedomcfg.jar"/>
+	<classpathentry kind="lib" path="lib/freedomfnc.jar"/>
+	<classpathentry kind="lib" path="lib/freedomgms.jar"/>
+	<classpathentry kind="lib" path="lib/freedompcp.jar"/>
+	<classpathentry kind="lib" path="lib/freedompdv.jar"/>
+	<classpathentry kind="lib" path="lib/freedomstd.jar"/>
+	<classpathentry kind="lib" path="lib/freedomtmk.jar"/>
+	<classpathentry kind="lib" path="lib/PgsLookAndFeel.jar"/>
+	<classpathentry kind="lib" path="lib/sosoriopdv.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
