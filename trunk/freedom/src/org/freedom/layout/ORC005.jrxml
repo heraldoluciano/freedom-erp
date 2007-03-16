@@ -2416,7 +2416,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						x="470"
 						y="149"
 						width="27"
-						height="7"
+						height="9"
 						key="staticText-91"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
@@ -2547,7 +2547,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						x="12"
 						y="134"
-						width="511"
+						width="299"
 						height="15"
 						key="TXTENDERECOCONV-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -2623,8 +2623,8 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				</textField>
 				<staticText>
 					<reportElement
-						x="16"
-						y="413"
+						x="311"
+						y="66"
 						width="64"
 						height="10"
 						key="staticText-93"/>
@@ -2636,9 +2636,9 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="81"
-						y="413"
-						width="161"
+						x="381"
+						y="66"
+						width="50"
 						height="10"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -2649,9 +2649,9 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				</textField>
 				<staticText>
 					<reportElement
-						x="16"
-						y="425"
-						width="64"
+						x="391"
+						y="136"
+						width="60"
 						height="10"
 						key="staticText-94"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -2662,9 +2662,9 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="81"
-						y="425"
-						width="161"
+						x="461"
+						y="136"
+						width="60"
 						height="10"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -2672,6 +2672,20 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						<font fontName="Bitstream Vera Sans" size="7"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TXT01}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="441"
+						y="156"
+						width="80"
+						height="15"
+						key="cepconv"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CEPCONV}==null ? "" : (($F{CEPCONV}.length()>5)? ($F{CEPCONV}.substring( 0,5 ) + "-" + $F{CEPCONV}.substring(5)) : $F{CEPCONV})
+]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
