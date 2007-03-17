@@ -39,7 +39,7 @@ public class RPTipoCli extends FDados implements ActionListener {
 
 	private JTextFieldPad txtDescTipoCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldPad txtTipo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	private JTextFieldPad txtTipo = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	public RPTipoCli() {
 
