@@ -88,15 +88,15 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 				addOpcao( 500100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 500109000, 2, true, null );
 			addOpcao( 500000000, TP_OPCAO_MENU, "Clientes", "", 'C', 500200000, 1, false, null );
 				addOpcao( 500200000, TP_OPCAO_ITEM, "Clientes", "Clientes", 'C', 500201000, 2, true, null );
-				addOpcao( 500200000, TP_OPCAO_ITEM, "Tipos de cliente", "Tipos de cliente", 'T', 500202000, 2, true, null );
-				addOpcao( 500200000, TP_OPCAO_ITEM, "Contatos", "Contatos", 'o', 500203000, 2, true, null );
+				addOpcao( 500200000, TP_OPCAO_ITEM, "Tipos de cliente", "Tipos de cliente", 'T', 500202000, 2, true, RelTipoCli.class );
+				addOpcao( 500200000, TP_OPCAO_ITEM, "Contatos", "Contatos", 'o', 500203000, 2, true, RelContato.class );
 				addOpcao( 500200000, TP_OPCAO_ITEM, "Etiquetas", "Etiquetas", 'E', 500204000, 2, true, null );
 			addOpcao( 500000000, TP_OPCAO_MENU, "Pagar", "", 'P', 500300000, 1, false, null );
 				addOpcao( 500300000, TP_OPCAO_ITEM, "Pagar / Pagas", "Pagar / Pagas", 'C', 500301000, 2, true, null );
 			addOpcao( 500000000, TP_OPCAO_MENU, "Receber", "", 'R', 500400000, 1, false, null );
 				addOpcao( 500400000, TP_OPCAO_ITEM, "Receber / Recebidas", "Receber / Recebidas", 'C', 500401000, 2, true, null );
 			addSeparador( 500000000 );
-			addOpcao( 500000000, TP_OPCAO_ITEM, "Vendedores", "Vendedores", 'V', 500500000, 1, true, null );
+			addOpcao( 500000000, TP_OPCAO_ITEM, "Vendedores", "Vendedores", 'V', 500500000, 1, true, RelVendedor.class );
 			addOpcao( 500000000, TP_OPCAO_ITEM, "Fornecedores", "Fornecedores", 'F', 500600000, 1, true, null );
 			addOpcao( 500000000, TP_OPCAO_ITEM, "Grupos", "Grupos", 'G', 500700000, 1, true, null );
 			addOpcao( 500000000, TP_OPCAO_ITEM, "Produtos", "Produtos", 'P', 500800000, 1, true, null );
