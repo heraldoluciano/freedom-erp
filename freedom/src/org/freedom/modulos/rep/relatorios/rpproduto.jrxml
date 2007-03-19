@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="rptipocli"
+		 name="rpproduto"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
@@ -48,13 +48,17 @@
 	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["C:\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\modulos\\rep\\relatorios\\"]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT TP.CODTIPOCLI AS CODIGO,TP.DESCTIPOCLI AS DESCRICAO, TP.TIPOCLI AS TIPO, 0 as QTD
-FROM RPTIPOCLI TP]]></queryString>
+	<queryString><![CDATA[SELECT P.CODPROD, P.DESCPROD, G.DESCGRUP, F.RAZFOR, P.REFPRODFOR
+FROM RPPRODUTO P, RPGRUPO G, RPFORNECEDOR F
+WHERE P.CODEMP=$P{CODEMP}
+AND P.CODEMPGP=G.CODEMP AND P.CODFILIALGP=G.CODFILIAL AND P.CODGRUP=G.CODGRUP
+AND P.CODEMPFO=F.CODEMP AND P.CODFILIALFO=F.CODFILIAL AND P.CODFOR=F.CODFOR]]></queryString>
 
-	<field name="CODIGO" class="java.lang.Long"/>
-	<field name="DESCRICAO" class="java.lang.String"/>
-	<field name="TIPO" class="java.lang.String"/>
-	<field name="QTD" class="java.lang.Long"/>
+	<field name="CODPROD" class="java.lang.Long"/>
+	<field name="DESCPROD" class="java.lang.String"/>
+	<field name="DESCGRUP" class="java.lang.String"/>
+	<field name="RAZFOR" class="java.lang.String"/>
+	<field name="REFPRODFOR" class="java.lang.String"/>
 
 
 		<group  name="GERAL" >
@@ -88,7 +92,27 @@ FROM RPTIPOCLI TP]]></queryString>
 			</band>
 		</title>
 		<pageHeader>
-			<band height="105"  isSplitAllowed="true" >
+			<band height="120"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="534"
+						y="87"
+						width="0"
+						height="18"
+						forecolor="#CCCCFF"
+						key="line-5"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="87"
+						width="0"
+						height="18"
+						forecolor="#CCCCFF"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 				<subreport  isUsingCache="true">
 					<reportElement
 						x="0"
@@ -114,7 +138,7 @@ FROM RPTIPOCLI TP]]></queryString>
 				<rectangle>
 					<reportElement
 						x="0"
-						y="89"
+						y="104"
 						width="535"
 						height="16"
 						forecolor="#CCCCFF"
@@ -126,8 +150,8 @@ FROM RPTIPOCLI TP]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="10"
-						y="91"
-						width="70"
+						y="106"
+						width="45"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -142,9 +166,9 @@ FROM RPTIPOCLI TP]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="90"
-						y="91"
-						width="275"
+						x="60"
+						y="106"
+						width="130"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -159,9 +183,9 @@ FROM RPTIPOCLI TP]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="455"
-						y="91"
-						width="70"
+						x="445"
+						y="106"
+						width="80"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -171,25 +195,55 @@ FROM RPTIPOCLI TP]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Courier-Bold" size="9" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Tipo]]></text>
+				<text><![CDATA[Ref. Fornecedor]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="375"
-						y="91"
-						width="70"
+						x="195"
+						y="106"
+						width="120"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-4"
 						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="" pdfFontName="Courier-Bold" size="9" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="" pdfFontName="Courier" size="9" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Nº de Clientes]]></text>
+				<text><![CDATA[Grupo]]></text>
 				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="320"
+						y="106"
+						width="120"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-5"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="" pdfFontName="Courier" size="9" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Fornecedor]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="91"
+						width="535"
+						height="12"
+						key="textField-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{FILTROS}!=null?$P{FILTROS}:""]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -235,53 +289,66 @@ FROM RPTIPOCLI TP]]></queryString>
 					<reportElement
 						x="10"
 						y="2"
-						width="70"
+						width="45"
 						height="12"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODIGO}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODPROD}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="90"
+						x="60"
 						y="2"
-						width="275"
+						width="130"
 						height="12"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRICAO}!=null?$F{DESCRICAO}:""]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCPROD}!=null?$F{DESCPROD}:""]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="455"
+						x="445"
 						y="2"
-						width="70"
+						width="80"
 						height="12"
 						key="textField-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TIPO}!=null?$F{TIPO}:""]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{REFPRODFOR}!=null?$F{REFPRODFOR}.trim():""]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="375"
+						x="195"
 						y="2"
-						width="70"
+						width="120"
 						height="12"
-						key="textField-6"/>
+						key="textField-9"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
+					<textElement>
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{QTD}.intValue()==0?"-":String.valueOf($F{QTD})]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCGRUP}!=null?$F{DESCGRUP}:""]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="320"
+						y="2"
+						width="120"
+						height="12"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZFOR}!=null?$F{RAZFOR}:""]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
