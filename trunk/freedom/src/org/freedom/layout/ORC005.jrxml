@@ -2295,20 +2295,6 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					</textElement>
 				<text><![CDATA[DDD]]></text>
 				</staticText>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="450"
-						y="109"
-						width="50"
-						height="6"
-						key="staticText-86"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="5"/>
-					</textElement>
-				<text><![CDATA[N° DO TELEFONE]]></text>
-				</staticText>
 				<rectangle>
 					<reportElement
 						x="10"
@@ -2684,8 +2670,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<textElement>
 						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CEPCONV}==null ? "" : (($F{CEPCONV}.length()>5)? ($F{CEPCONV}.substring( 0,5 ) + "-" + $F{CEPCONV}.substring(5)) : $F{CEPCONV})
-]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CEPCONV}==null ? "" : (($F{CEPCONV}.length()>5)? ($F{CEPCONV}.substring( 0,5 ) + "-" + $F{CEPCONV}.substring(5)) : $F{CEPCONV})]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
