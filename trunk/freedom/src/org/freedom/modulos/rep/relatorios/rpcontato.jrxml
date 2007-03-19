@@ -372,7 +372,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMECONT}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMECONT}!=null?$F{NOMECONT}:""]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -380,7 +380,9 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 						y="2"
 						width="60"
 						height="12"
-						key="textField-5"/>
+						key="textField-5">
+							<printWhenExpression><![CDATA[new Boolean($F{NASCCONT}!=null)]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="9"/>
@@ -413,7 +415,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CIDCONT}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CIDCONT}!=null?$F{CIDCONT}:""]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -426,7 +428,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCONT}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCONT}!=null?$F{ENDCONT}:""]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -454,7 +456,7 @@ $F{CEPCONT}.trim().substring(0,4) + "-" + $F{CEPCONT}.trim().substring(5)
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ESTCONT}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ESTCONT}!=null?$F{ESTCONT}:""]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -467,7 +469,7 @@ $F{CEPCONT}.trim().substring(0,4) + "-" + $F{CEPCONT}.trim().substring(5)
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{EMAILCONT}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{EMAILCONT}!=null?$F{EMAILCONT}:""]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
@@ -521,22 +523,6 @@ $F{CEPCONT}.trim().substring(0,4) + "-" + $F{CEPCONT}.trim().substring(5)
 						key="ellipse-2"/>
 					<graphicElement stretchType="NoStretch"/>
 				</ellipse>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="346"
-						y="4"
-						width="174"
-						height="11"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField-12"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Helvetica" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de " + $V{PAGE_COUNT}]]></textFieldExpression>
-				</textField>
 				<rectangle>
 					<reportElement
 						x="0"
@@ -548,6 +534,38 @@ $F{CEPCONT}.trim().substring(0,4) + "-" + $F{CEPCONT}.trim().substring(5)
 						key="rectangle-5"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="315"
+						y="4"
+						width="174"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Helvetica" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="489"
+						y="4"
+						width="36"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Helvetica" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageFooter>
 		<summary>

@@ -30,10 +30,12 @@ import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -185,7 +187,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		panelFiltros.adic( new JLabel( "Cód.banco" ), 7, 0, 90, 20 );
 		panelFiltros.adic( txtCodBanco, 7, 20, 90, 20 );
 		panelFiltros.adic( new JLabel( "Nome do banco" ), 100, 0, 300, 20 );
-		panelFiltros.adic( txtNomeBanco, 100, 20, 300, 20 );		
+		panelFiltros.adic( txtNomeBanco, 100, 20, 300, 20 );
 		panelFiltros.adic( btImporta, 500, 20, 150, 30 );
 		panelFiltros.adic( btCarrega, 500, 60, 150, 30 );
 
@@ -226,6 +228,179 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		}
 	}
 
+	private void execImportar() {
+
+		lbStatus.setText( "     lendo do arquivo ..." );
+
+		FileDialog fileDialogSiacc = null;
+		fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Impportar arquivo." );
+		fileDialogSiacc.setVisible( true );
+
+		if ( fileDialogSiacc.getFile() == null ) {
+			lbStatus.setText( "" );
+			return;
+		}
+
+		String sFileName = fileDialogSiacc.getDirectory() + fileDialogSiacc.getFile();
+
+		File fileSiacc = new File( sFileName );
+
+		try {
+
+			fileReadesSiacc = new FileReader( fileSiacc );
+			if ( fileReadesSiacc == null ) {
+				Funcoes.mensagemInforma( this, "Arquivo não encontrado" );
+			}
+			else {
+				leArquivo();
+			}
+
+		} catch ( IOException ioError ) {
+			Funcoes.mensagemErro( this, "Erro ao ler o arquivo: " + sFileName + "\n" + ioError.getMessage() );
+			lbStatus.setText( "" );
+			return;
+		}
+	}
+
+	private void leArquivo() throws IOException {
+
+		ArrayList<Object> list = new ArrayList<Object>();
+		String row = null;
+		String log = "";
+		char tipo;
+		BufferedReader in = new BufferedReader( fileReadesSiacc );
+
+		while ( ( row = in.readLine() ) != null ) {
+
+			tipo = row.charAt( 0 );
+			switch ( tipo ) {
+				case 'A' :
+					list.add( getRegistroA( row ) );
+					break;
+				case 'B' :
+					list.add( getRegistroB( row ) );
+					break;
+				case 'C' :
+					list.add( getRegistroC( row ) );
+					break;
+				default :
+					break;
+			}
+			
+			log += row+"\n";
+		}
+
+		in.close();
+	}
+	
+	private RegA getRegistroA( final String arg ) {
+		
+		RegA rega = new RegA();
+		
+		rega.A01 = arg.substring( 0, 1 );
+		rega.A02 = arg.substring( 1, 2 ).trim().length() > 0 ? new Integer( arg.substring( 1, 2 ).trim() ) : null;
+		rega.A03 = arg.substring( 2, 22 );
+		rega.A04 = arg.substring( 22, 42 );
+		rega.A05 = arg.substring( 42, 45 ).trim().length() > 0 ? new Integer( arg.substring( 42, 45 ).trim() ) : null;
+		rega.A06 = arg.substring( 45, 65 );
+		rega.A07 = arg.substring( 65, 73 ).trim().length() > 0 ? new Integer( arg.substring( 65, 73 ).trim() ) : null;
+		rega.A08 = arg.substring( 73, 79 ).trim().length() > 0 ? new Integer( arg.substring( 73, 79 ).trim() ) : null;
+		rega.A09 = arg.substring( 79, 81 ).trim().length() > 0 ? new Integer( arg.substring( 79, 81 ).trim() ) : null;
+		rega.A10 = arg.substring( 81, 98 );
+		rega.A11 = arg.substring( 98, 114 );
+		rega.A12 = arg.substring( 114, 115 );
+		rega.A13 = arg.substring( 115, 116 );
+		rega.A14 = arg.substring( 116, 143 );
+		rega.A15 = arg.substring( 143, 149 ).trim().length() > 0 ?  new Integer( arg.substring( 143, 149 ).trim() ) : null;
+		rega.A16 = arg.substring( 149 );
+		
+		return rega;
+	}
+	
+	private RegB getRegistroB( final String arg ) {
+		
+		RegB regb = new RegB();
+		
+		regb.B01 = arg.substring( 0, 1 );
+		regb.B02 = arg.substring( 1, 26 );
+		regb.B03 = arg.substring( 26, 30 ).trim().length() > 0 ? new Integer( arg.substring( 26, 30 ).trim() ) : null;
+		regb.B04 = arg.substring( 30, 44 );
+		regb.B05 = arg.substring(  44, 52  ).trim().length() > 0 ? new Integer( arg.substring( 44, 52 ).trim() ) : null;
+		regb.B06 = arg.substring( 52, 148 );
+		regb.B07 = arg.substring( 148, 149 ).trim().length() > 0 ? new Integer( arg.substring( 148, 149 ).trim() ) : null;
+		regb.B08 = arg.substring( 149 ).trim().length() > 0 ? new Integer( arg.substring( 149 ).trim() ) : null;
+		
+		return regb;
+	}
+	
+	private RegC getRegistroC( final String arg ) {
+		
+		RegC regc = new RegC();
+		
+		regc.C01 = arg.substring( 0, 1 );
+		regc.C02 = arg.substring( 1, 26 );
+		regc.C03 = arg.substring( 26, 30 ).trim().length() > 0 ? new Integer( arg.substring( 26, 30 ) ) : null;
+		regc.C04 = arg.substring( 30, 44 );
+		regc.C05 = arg.substring( 44, 84 );
+		regc.C06 = arg.substring( 84, 124 );
+		regc.C07 = arg.substring( 124, 143 );
+		regc.C08 = arg.substring( 143, 149 ).trim().length() > 0 ? new Integer( arg.substring( 143, 149 ) ) : null;
+		regc.C09 = arg.substring( 149 ).trim().length() > 0 ? new Integer( arg.substring( 149 ) ) : null;
+		
+		return regc;
+	}
+	
+	private class RegA {
+		
+		String A01 = null;
+		Integer A02 = null;
+		String A03 = null;
+		String A04 = null;
+		Integer A05 = null;
+		String A06 = null;
+		Integer A07 = null;
+		Integer A08 = null;
+		Integer A09 = null;
+		String A10 = null;
+		String A11 = null;
+		String A12 = null;
+		String A13 = null;
+		String A14 = null;
+		Integer A15 = null;
+		String A16 = null;		
+		
+		public RegA(){ }
+	}
+	
+	private class RegB {
+		
+		String B01 = null;
+		String B02 = null;
+		Integer B03 = null;
+		String B04 = null;
+		Integer B05 = null;
+		String B06 = null;
+		Integer B07 = null;
+		Integer B08 = null;	
+		
+		public RegB(){ }
+	}
+	
+	private class RegC {
+		
+		String C01 = null;
+		String C02 = null;
+		Integer C03 = null;
+		String C04 = null;
+		String C05 = null;
+		String C06 = null;
+		String C07 = null;
+		Integer C08 = null;
+		Integer C09 = null;	
+		
+		public RegC(){ }
+	}
+
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btCarrega ) {
@@ -241,38 +416,6 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		else if ( evt.getSource() == btImporta ) {
 			execImportar();
 		}
-	}
-
-	private void execImportar() {
-
-		lbStatus.setText( "     lendo do arquivo ..." );
-
-		FileDialog fileDialogSiacc = null;
-		fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Impportar arquivo." );
-		fileDialogSiacc.setFile( "remessasiacc.txt" );
-		fileDialogSiacc.setVisible( true );
-
-		if ( fileDialogSiacc.getFile() == null ) {
-			lbStatus.setText( "" );
-			return;
-		}
-
-		String sFileName = fileDialogSiacc.getDirectory() + fileDialogSiacc.getFile();
-
-		File fileSiacc = new File( sFileName );
-
-		try {
-			fileReadesSiacc = new FileReader( fileSiacc );
-		} catch ( IOException ioError ) {
-			Funcoes.mensagemErro( this, "Erro ao ler o arquivo: " + sFileName + "\n" + ioError.getMessage() );
-			lbStatus.setText( "" );
-			return;
-		}
-	}
-
-	private void completaTabela() {
-
-		// carregar tabela
 	}
 
 	public void setConexao( Connection cn ) {

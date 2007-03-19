@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="rptipocli"
+		 name="rpgrupo"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
@@ -48,13 +48,13 @@
 	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["C:\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\modulos\\rep\\relatorios\\"]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT TP.CODTIPOCLI AS CODIGO,TP.DESCTIPOCLI AS DESCRICAO, TP.TIPOCLI AS TIPO, 0 as QTD
-FROM RPTIPOCLI TP]]></queryString>
+	<queryString><![CDATA[select CODGRUP,DESCGRUP,SIGLAGRUP
+from RPGRUPO
+order by CODGRUP]]></queryString>
 
-	<field name="CODIGO" class="java.lang.Long"/>
-	<field name="DESCRICAO" class="java.lang.String"/>
-	<field name="TIPO" class="java.lang.String"/>
-	<field name="QTD" class="java.lang.Long"/>
+	<field name="CODGRUP" class="java.lang.String"/>
+	<field name="DESCGRUP" class="java.lang.String"/>
+	<field name="SIGLAGRUP" class="java.lang.String"/>
 
 
 		<group  name="GERAL" >
@@ -171,24 +171,7 @@ FROM RPTIPOCLI TP]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Courier-Bold" size="9" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Tipo]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="375"
-						y="91"
-						width="70"
-						height="12"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-4"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="" pdfFontName="Courier-Bold" size="9" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[Nº de Clientes]]></text>
+				<text><![CDATA[Sigla]]></text>
 				</staticText>
 			</band>
 		</pageHeader>
@@ -242,7 +225,7 @@ FROM RPTIPOCLI TP]]></queryString>
 					<textElement>
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODIGO}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODGRUP}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -255,7 +238,7 @@ FROM RPTIPOCLI TP]]></queryString>
 					<textElement>
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRICAO}!=null?$F{DESCRICAO}:""]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCGRUP}!=null?$F{DESCGRUP}:""]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -268,20 +251,7 @@ FROM RPTIPOCLI TP]]></queryString>
 					<textElement textAlignment="Center">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TIPO}!=null?$F{TIPO}:""]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="375"
-						y="2"
-						width="70"
-						height="12"
-						key="textField-6"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{QTD}.intValue()==0?"-":String.valueOf($F{QTD})]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{SIGLAGRUP}!=null?$F{SIGLAGRUP}:""]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
