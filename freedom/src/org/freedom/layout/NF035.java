@@ -285,6 +285,7 @@ public class NF035 extends Layout {
 
 					// Imprime serviço
 					
+					//System.out.println("Tam vServico" +vServico.size());
 					if ( vServico.size() > 0 ) {
 						
 						for ( int i = 0; i < vServico.size(); i++ ) {							
@@ -298,7 +299,7 @@ public class NF035 extends Layout {
 							
 							if ( indexServ < vServico.size() ) {
 								
-								vDescServ = Funcoes.strToVectorSilabas( (String) vServico.get( indexServ )[ 0 ], 80 );
+								vDescServ = Funcoes.strToVectorSilabas( ((String) vServico.get( indexServ )[ 0 ]).trim(), 80 );
 								
 								for ( int i = 0; i < vDescServ.size(); i++ ) {
 									
@@ -316,8 +317,9 @@ public class NF035 extends Layout {
 									if ( i < ( vDescServ.size() - 1 ) ) {
 										imp.pulaLinha( 1, imp.comprimido() );
 									}
-									
-									row++;
+									if ( (i>0) && (i==vDescServ.size()-1)) {  
+									  row+=vDescServ.size()-1;
+									}
 								}
 								
 								indexServ++;
