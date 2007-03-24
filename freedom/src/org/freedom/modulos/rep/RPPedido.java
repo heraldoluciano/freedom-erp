@@ -27,11 +27,13 @@ package org.freedom.modulos.rep;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.sql.Connection;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
+import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
@@ -54,7 +56,7 @@ public class RPPedido extends FDetalhe {
 
 	private final JTextFieldPad txtCodPed = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private final JTextFieldPad txtDataPed = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldPad txtDataPed = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
 	private final JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
@@ -76,9 +78,9 @@ public class RPPedido extends FDetalhe {
 	
 	private final JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
-	private final JTextFieldPad txtCodTransp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
-	private final JTextFieldFK txtRazTransp = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldFK txtRazTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
 	private final JTextFieldPad txtCodPedFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
@@ -135,6 +137,18 @@ public class RPPedido extends FDetalhe {
 	private JRadioGroup rgFrete;
 	
 	private JRadioGroup rgRemessa;
+
+	private final ListaCampos lcCliente = new ListaCampos( this, "CL" );
+
+	private final ListaCampos lcVendedor = new ListaCampos( this, "VD" );
+
+	private final ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
+
+	private final ListaCampos lcMoeda = new ListaCampos( this, "MO" );
+
+	private final ListaCampos lcFornecedor = new ListaCampos( this, "FO" );
+
+	private final ListaCampos lcTransportadora = new ListaCampos( this, "TP" );
 	
 	
 	public RPPedido() {
@@ -144,11 +158,12 @@ public class RPPedido extends FDetalhe {
 		setAtribos( 50, 50, 700, 500 );
 		
 		montaRadioGrups();
+		montaListaCampos();
 		
 		montaMaster();	
 
-		//setListaCampos( true, "PLANOPAG", "RP" );
-		//lcCampos.setQueryInsert( true );
+		setListaCampos( true, "PEDIDO", "RP" );
+		lcCampos.setQueryInsert( true );
 
 		setListaCampos( lcDet );
 		setNavegador( navRod );
@@ -156,12 +171,10 @@ public class RPPedido extends FDetalhe {
 		montaDetale();
 
 		//setListaCampos( true, "PARCPLANOPAG", "RP" );
-		//lcDet.setQueryInsert( false );
+		lcDet.setQueryInsert( false );
 
 		navRod.setAtivo( 4, false );
 		navRod.setAtivo( 5, false );
-		
-		montaTab();
 	}
 	
 	private void montaRadioGrups() {
@@ -189,6 +202,76 @@ public class RPPedido extends FDetalhe {
 		rgRemessa = new JRadioGroup( 5, 1, labs1, vals1 );
 	}
 	
+	private void montaListaCampos() {
+		
+		/********************
+		 *     CLIENTE      *
+		 ********************/
+		
+		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
+		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
+		lcCliente.montaSql( false, "CLIENTE", "RP" );
+		lcCliente.setQueryCommit( false );
+		lcCliente.setReadOnly( true );
+		txtCodCli.setTabelaExterna( lcCliente );
+		
+		/********************
+		 *     VENDEDOR     *
+		 ********************/
+		
+		lcVendedor.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.vend.", ListaCampos.DB_PK, false ) );
+		lcVendedor.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do vendedor", ListaCampos.DB_SI, false ) );
+		lcVendedor.montaSql( false, "VENDEDOR", "RP" );
+		lcVendedor.setQueryCommit( false );
+		lcVendedor.setReadOnly( true );
+		txtCodVend.setTabelaExterna( lcVendedor );
+		
+		/**********************
+		 * PLANO DE PAGAMENTO *
+		 **********************/
+		
+		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
+		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
+		lcPlanoPag.montaSql( false, "PLANOPAG", "RP" );
+		lcPlanoPag.setQueryCommit( false );
+		lcPlanoPag.setReadOnly( true );
+		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		
+		/**********************
+		 *       MOEDA        *
+		 **********************/
+		
+		lcMoeda.add( new GuardaCampo( txtCodMoeda, "CodMoeda", "Cód.moeda", ListaCampos.DB_PK, false ) );
+		lcMoeda.add( new GuardaCampo( txtDescMoeda, "SingMoeda", "Descrição da moeda", ListaCampos.DB_SI, false ) );
+		lcMoeda.montaSql( false, "MOEDA", "RP" );
+		lcMoeda.setQueryCommit( false );
+		lcMoeda.setReadOnly( true );
+		txtCodMoeda.setTabelaExterna( lcMoeda );
+		
+		/**********************
+		 *     FORNECEDOR     *
+		 **********************/
+		
+		lcFornecedor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
+		lcFornecedor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcFornecedor.montaSql( false, "FORNECEDOR", "RP" );
+		lcFornecedor.setQueryCommit( false );
+		lcFornecedor.setReadOnly( true );
+		txtCodFor.setTabelaExterna( lcFornecedor );
+		
+		/**********************
+		 *   TRANSPORTADORA   *
+		 **********************/
+		
+		lcTransportadora.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.transp.", ListaCampos.DB_PK, false ) );
+		lcTransportadora.add( new GuardaCampo( txtRazTran, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, false ) );
+		lcTransportadora.montaSql( false, "TRANSP", "RP" );
+		lcTransportadora.setQueryCommit( false );
+		lcTransportadora.setReadOnly( true );
+		txtCodTran.setTabelaExterna( lcTransportadora );
+		
+	}
+	
 	private void montaMaster() {
 		
 		/*********************
@@ -198,27 +281,27 @@ public class RPPedido extends FDetalhe {
 		setAltCab( 175 );
 		setPainel( panelPedido, pnCliCab );
 		
-		adicCampo( txtCodPed, 7, 20, 70, 20, "CodPlanoPag", "Pedido", ListaCampos.DB_PK, true );
-		adicCampo( txtDataPed, 80, 20, 70, 20, "DescPlanoPag", "Data", ListaCampos.DB_SI, true );
+		adicCampo( txtCodPed, 7, 20, 70, 20, "CodPed", "Pedido", ListaCampos.DB_PK, true );
+		adicCampo( txtDataPed, 80, 20, 70, 20, "DataPed", "Data", ListaCampos.DB_SI, true );
 		
-		adicCampo( txtCodCli, 153, 20, 70, 20, "CodCli", "Cód.cli.", ListaCampos.DB_SI, txtRazCli, true );
+		adicCampo( txtCodCli, 153, 20, 70, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, txtRazCli, true );
 		adicDescFK( txtRazCli, 226, 20, 187, 20, "RazCli", "Razão social do cliente" );
-		adicCampo( txtCodPedFor, 416, 20, 80, 20, "CodPedFor", "Pedido X For.", ListaCampos.DB_SI, false );
-		adicCampo( txtCodPedCli, 499, 20, 80, 20, "CodPedCli", "Pedido X Cli.", ListaCampos.DB_SI, false );
+		adicCampo( txtCodPedFor, 416, 20, 80, 20, "NumPedFor", "Pedido X For.", ListaCampos.DB_SI, false );
+		adicCampo( txtCodPedCli, 499, 20, 80, 20, "NumPedCli", "Pedido X Cli.", ListaCampos.DB_SI, false );
 		
-		adicCampo( txtCodVend, 7, 60, 70, 20, "CodVend", "Cód.vend.", ListaCampos.DB_SI, txtRazCli, true );
+		adicCampo( txtCodVend, 7, 60, 70, 20, "CodVend", "Cód.vend.", ListaCampos.DB_FK, txtRazCli, true );
 		adicDescFK( txtNomeVend, 80, 60, 155, 20, "NomeVend", "Nome do vendedor" );		
-		adicCampo( txtCodPlanoPag, 238, 60, 70, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_SI, txtRazCli, true );
+		adicCampo( txtCodPlanoPag, 238, 60, 70, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtRazCli, true );
 		adicDescFK( txtDescPlanoPag, 311, 60, 155, 20, "DescPlanoPag", "Plano de pagamento" );		
-		adicCampo( txtCodMoeda, 469, 60, 110, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_SI, txtRazCli, true );
+		adicCampo( txtCodMoeda, 469, 60, 110, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, txtRazCli, true );
 		
-		adicCampo( txtCodFor, 7, 100, 70, 20, "CodFor", "Cód.for.", ListaCampos.DB_SI, txtRazCli, true );
+		adicCampo( txtCodFor, 7, 100, 70, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtRazCli, true );
 		adicDescFK( txtRazFor, 80, 100, 155, 20, "RazFor", "Razão social do fornecedor" );
-		adicCampo( txtCodTransp, 238, 100, 70, 20, "CodTran", "Cód.transp.", ListaCampos.DB_SI, txtRazCli, true );
-		adicDescFK( txtRazTransp, 311, 100, 155, 20, "RazTran", "Razão social da transportadora" );
+		adicCampo( txtCodTran, 238, 100, 70, 20, "CodTran", "Cód.transp.", ListaCampos.DB_FK, txtRazCli, false );
+		adicDescFK( txtRazTran, 311, 100, 155, 20, "RazTran", "Razão social da transportadora" );
 
-		adicDB( rgRemessa, 584, 20, 90, 110, "remessa", "Remessa", false );
-		adicDB( rgFrete, 469, 100, 110, 30, "frete", "Frete", false );
+		adicDB( rgRemessa, 584, 20, 90, 110, "TipoRemPed", "Remessa", false );
+		adicDB( rgFrete, 469, 100, 110, 30, "TipoFretePed", "Frete", false );
 		
 	}
 	
@@ -268,17 +351,32 @@ public class RPPedido extends FDetalhe {
 		adicCampo( txtPercIPIItem, 594, 20, 80, 20, "PercIPIItVenda", "% IPI", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrIPIItem, "VlrIPIItVenda", "Valor IPI", ListaCampos.DB_SI, false );
 		
-		adicCampo( txtPercDescItem, 7, 60, 80, 20, "PercDescItVenda", "% Desconto", ListaCampos.DB_SI, false );
+		adicCampo( txtPercDescItem, 7, 60, 90, 20, "PercDescItVenda", "% Desconto", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrDescItem, "VlrDescItVenda", "Vlr. Desconto", ListaCampos.DB_SI, false );
-		adicCampo( txtPercAdicItem, 90, 60, 80, 20, "PercAdicVenda", "% Acrecimo", ListaCampos.DB_SI, false );
+		adicCampo( txtPercAdicItem, 100, 60, 90, 20, "PercAdicVenda", "% Acrecimo", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrAdicItem, "VlrAdicItVenda", "Vlr. Adicional", ListaCampos.DB_SI, false );
-		adicCampo( txtPercRedItem, 173, 60, 80, 20, "PercRecItVenda", "% Recebimento", ListaCampos.DB_SI, false );
+		adicCampo( txtPercRedItem, 193, 60, 90, 20, "PercRecItVenda", "% Recebimento", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrRecItem, "VlrRecItVenda", "Vlr. Receber", ListaCampos.DB_SI, false );
-		adicCampo( txtPercPagItem, 256, 60, 80, 20, "PercPagItVenda", "% Pagamento", ListaCampos.DB_SI, false );
+		adicCampo( txtPercPagItem, 286, 60, 90, 20, "PercPagItVenda", "% Pagamento", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrPagItem, "VlrPagItVenda", "Vlr. Pagar", ListaCampos.DB_SI, false );
-		adicCampo( txtCodForItem, 339, 60, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_SI, txtDescProd, true );
-		adicDescFK( txtRazForItem, 422, 60, 252, 20, "RazFor", "Razão social do fornecedor" );
+		adicCampo( txtCodForItem, 379, 60, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_SI, txtDescProd, true );
+		adicDescFK( txtRazForItem, 462, 60, 212, 20, "RazFor", "Razão social do fornecedor" );
 		
+
+		
+		montaTab();		
+	}
+
+	public void setConexao( Connection cn ) {
+
+		super.setConexao( cn );
+		
+		lcCliente.setConexao( cn );
+		lcVendedor.setConexao( cn );
+		lcPlanoPag.setConexao( cn );
+		lcMoeda.setConexao( cn );
+		lcFornecedor.setConexao( cn );
+		lcTransportadora.setConexao( cn );
 	}
 
 }
