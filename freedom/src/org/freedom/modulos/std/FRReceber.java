@@ -60,9 +60,12 @@ public class FRReceber extends FRelatorio {
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JCheckBoxPad cbObs = new JCheckBoxPad("Imprimir observações?","S","N");
 	private JCheckBoxPad cbImpTotDia = new JCheckBoxPad("Imprimir totalizador diário?","S","N");  
-	private JRadioGroup cbTipoRel = null;
+	private JRadioGroup rgTipoRel = null;
+	private JRadioGroup rgOrdem = null;
 	private Vector vVals = new Vector();
 	private Vector vLabs = new Vector();
+	private Vector vVals1 = new Vector();
+	private Vector vLabs1 = new Vector();
 	private ListaCampos lcCli = new ListaCampos(this);
 	private ListaCampos lcSetor = new ListaCampos(this);
 	private ListaCampos lcVendedor = new ListaCampos(this);
@@ -123,8 +126,19 @@ public class FRReceber extends FRelatorio {
 		vVals.addElement("R");
 		vVals.addElement("P");
 		vVals.addElement("A");
+
+		rgTipoRel = new JRadioGroup(3,1,vLabs,vVals);
+
+		vLabs1.addElement( "Emissão" );
+		vLabs1.addElement( "Vencimento" );
+		vLabs1.addElement( "Pagamento" );
+		vVals1.addElement( "E" );
+		vVals1.addElement( "V" );
+		vVals1.addElement( "P" );
+
+		rgOrdem = new JRadioGroup(3,1,vLabs1,vVals1);
+		rgOrdem.setVlrString( "V" );
 		
-		cbTipoRel = new JRadioGroup(3,1,vLabs,vVals);
 		cbObs.setVlrString("S");
 		cbImpTotDia.setVlrString("S");
 		
@@ -133,13 +147,14 @@ public class FRReceber extends FRelatorio {
 		JLabelPad lbPeriodo = new JLabelPad("   Periodo:");
 		lbPeriodo.setOpaque(true);
 
-		adic(lbPeriodo,17,0,80,20);
-		adic(lbLinha,7,10,353,40);
-		adic(new JLabelPad("De:"),17,25,30,20);
-		adic(txtDataini,50,25,97,20);
-		adic(new JLabelPad("Até:"),157,25,30,20);
-		adic(txtDatafim,190,25,100,20);
-		adic(cbTipoRel,7,58,353,70);
+		adic(lbPeriodo,17,80,80,20);
+		adic(lbLinha,7,90,353,40);
+		adic(new JLabelPad("De:"),17,100,30,20);
+		adic(txtDataini,50,100,97,20);
+		adic(new JLabelPad("Até:"),157,100,30,20);
+		adic(txtDatafim,190,100,100,20);
+		adic(rgTipoRel,7,05,170,70);
+		adic(rgOrdem,190,05,170,70);
 		adic(new JLabelPad("Cód.cli."),7,130,200,20);
 		adic(txtCodCli,7,150,80,20);
 		adic(new JLabelPad("Razão social do cliente"),90,130,200,20);
@@ -173,13 +188,16 @@ public class FRReceber extends FRelatorio {
 		String sFrom = " ";
 		String sFiltro = "";
 		String sTipoRel = null;
+		String sOrdem = null;
 		String sTitRel = null;
+		String sTitRel1 = null;
 		String sDtVencItRec = "";
 		String sDtPago = "";
 		String sObs = "";
 		String sImpTotDia = "";
 		String sCodBanco = null;
 		String sCodPlanoPag = null;
+		String sCampoOrdem = null;
 		Vector vObs = null;
 		ImprimeOS imp = null;
 		int linPag = 0;
@@ -202,7 +220,7 @@ public class FRReceber extends FRelatorio {
 			}
 			imp = new ImprimeOS("",con);
 			linPag = imp.verifLinPag()-1;
-			sTipoRel = cbTipoRel.getVlrString();
+			sTipoRel = rgTipoRel.getVlrString();
 			
 			if (sTipoRel.equals("R"))
 				sTitRel = "A RECEBER";
@@ -210,6 +228,21 @@ public class FRReceber extends FRelatorio {
 				sTitRel = "RECEBIDAS";
 			else if (sTipoRel.equals("A"))
 				sTitRel = "A RECEBER/RECEBIDAS";
+			
+			sOrdem = rgOrdem.getVlrString();
+			
+			if (sOrdem.equals("P")) {
+				sTitRel1 = "PAGAMENTO";
+				sCampoOrdem = "IT.DTPAGOITREC";
+			}
+			else if (sOrdem.equals("E")) {
+				sTitRel1 = "EMISSÂO";
+				sCampoOrdem = "IT.DTITREC";
+			}
+			else {
+				sTitRel1 = "VENCIMENTO";
+				sCampoOrdem = "IT.DTVENCITREC";
+			}
 			
 			iCodCli = txtCodCli.getVlrInteger().intValue();
 			iCodSetor = txtCodSetor.getVlrInteger().intValue();
@@ -254,12 +287,12 @@ public class FRReceber extends FRelatorio {
 						" AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND V.CODVENDA=R.CODVENDA AND V.TIPOVENDA=R.TIPOVENDA) " +
 					"FROM FNITRECEBER IT,FNRECEBER R,VDCLIENTE C" + sFrom +
 					"WHERE R.FLAG IN "+ AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
-					"AND R.CODEMP=? AND R.CODFILIAL=? AND IT.DTVENCITREC BETWEEN ? AND ? "+
+					"AND R.CODEMP=? AND R.CODFILIAL=? AND "+sCampoOrdem+" BETWEEN ? AND ? "+
 					"AND IT.STATUSITREC IN (?,?,?) AND R.CODREC = IT.CODREC " +
 					"AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL " +
 					"AND C.CODEMP = R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI "+
 					sWhere +
-					" ORDER BY IT.DTVENCITREC,C.RAZCLI";
+					" ORDER BY "+sCampoOrdem+",C.RAZCLI";
 			          
 			try {
 				iParans = 1;
@@ -313,7 +346,7 @@ public class FRReceber extends FRelatorio {
 				imp.limpaPags();
 				imp.montaCab();
 				imp.setTitulo("Relatório de contas "+sTitRel);
-				imp.addSubTitulo("RELATORIO DE CONTAS "+sTitRel+" - PERIODO DE :"+txtDataini.getVlrString()+" ATE: "+txtDatafim.getVlrString());  				
+				imp.addSubTitulo("RELATORIO DE CONTAS "+sTitRel+" - PERIODO DE :"+txtDataini.getVlrString()+" ATE: "+txtDatafim.getVlrString()+" POR: "+sTitRel1 );  				
 				while ( rs.next() ) {
 					if (imp.pRow()>=(linPag-1)) {
 						imp.pulaLinha( 1, imp.comprimido() );
