@@ -237,7 +237,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 
 	}
 
-	private class Reg {
+	private abstract class Reg {
 
 		protected StringBuilder sbreg = new StringBuilder();
 
@@ -270,6 +270,8 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 
 			return sbreg.toString();
 		}
+		
+		protected abstract void parseLine(String line);
 	}
 
 	private class RegA extends Reg {
@@ -297,6 +299,8 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 			// this.sbreg.append( "\n");
 
 		}
+		
+		protected void parseLine(String line) {};
 	}
 
 	private class RegB extends Reg {
@@ -319,6 +323,9 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 			this.sbreg.append( (char) 13 );
 			this.sbreg.append( (char) 10 );
 		}
+
+		protected void parseLine(String line) {};
+		
 	}
 
 	private class RegC extends Reg {
@@ -341,6 +348,9 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 			this.sbreg.append( (char) 13 );
 			this.sbreg.append( (char) 10 );
 		}
+
+		protected void parseLine(String line) {};
+
 	}
 
 	private class RegD extends Reg {
@@ -364,6 +374,9 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 			this.sbreg.append( (char) 13 );
 			this.sbreg.append( (char) 10 );
 		}
+
+		protected void parseLine(String line) {};
+		
 	}
 
 	private class RegE extends Reg {
@@ -371,16 +384,19 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		private final char COD_MOV = '0';
 
 		private final String COD_MOEDA = "03";
+		
+		private float vlrParc = 0;
 
 		private RegE( char codreg, StuffRec stfRec, int numSeq, int numAgenda ) {
 
 			super( codreg );
+			this.vlrParc =  Float.valueOf(stfRec.getArgs()[ EColrec.VLRAPAG.ordinal() ]);
 			this.sbreg.append( format( stfRec.getArgs()[ EColrec.CODCLI.ordinal() ], ETipo.$9, 10, 0 ) );
 			this.sbreg.append( format( "", ETipo.X, 15, 0 ) ); // Completar a identificação do cliente na empresa
 			this.sbreg.append( format( stfRec.getArgs()[ EColrec.AGENCIACLI.ordinal() ], ETipo.$9, 4, 0 ) );
 			this.sbreg.append( format( stfRec.getArgs()[ EColrec.IDENTCLI.ordinal() ], ETipo.X, 14, 0 ) );
 			this.sbreg.append( format( stfRec.getArgs()[ EColrec.DTVENC.ordinal() ], ETipo.$9, 8, 0 ) );
-			this.sbreg.append( format( stfRec.getArgs()[ EColrec.VLRAPAG.ordinal() ], ETipo.$9, 15, 0 ) );
+			this.sbreg.append( format( Funcoes.transValor(new BigDecimal(vlrParc), 15, 2, true), ETipo.$9, 15, 0 ) );
 			this.sbreg.append( COD_MOEDA );
 			this.sbreg.append( format( "", ETipo.X, 60, 0 ) ); // Uso da empresa
 			this.sbreg.append( format( numAgenda, ETipo.$9, 6, 0 ) );
@@ -391,9 +407,31 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 			this.sbreg.append( (char) 13 );
 			this.sbreg.append( (char) 10 );
 		}
+		
+		private float getVlrparc() {
+			return this.vlrParc;
+		}
+		
+		protected void parseLine(String line) {};
+		
 	}
 
+	private class RegZ extends Reg {
+		private RegZ( int totreg, float vlrtotal, int nroseq ) {
+			super('Z');
+			this.sbreg.append( format( totreg, ETipo.$9, 6, 0) );
+			this.sbreg.append( format( vlrtotal, ETipo.$9, 17, 2) );
+			this.sbreg.append( format( "", ETipo.X, 119, 0)); // Reservado para o futuro
+			this.sbreg.append( format( nroseq, ETipo.$9, 6, 0 ));
+			this.sbreg.append( format( "", ETipo.$9, 1, 0));
+		}
+
+		protected void parseLine(String line) {};
+
+	}
+	
 	private class StuffCli {
+		
 	
 		private String[] stfArgs = null;
 	
@@ -609,7 +647,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		sSQL.append( sDtFiltro );
 		sSQL.append( " BETWEEN ? AND ? AND IR.STATUSITREC IN ('R1','RL') AND " );
 		sSQL.append( "IR.CODEMPBO=? AND IR.CODFILIALBO=? AND IR.CODBANCO=? AND " );
-		sSQL.append( "FR.SITREMESSA IN ("+tipoRem+")" );
+		sSQL.append( "( FR.SITREMESSA IS NULL OR FR.SITREMESSA IN ("+tipoRem+")) " );
 		sSQL.append( "ORDER BY C.RAZCLI, R.CODREC, IR.NPARCITREC " );
 		ps = con.prepareStatement( sSQL.toString() );
 		ps.setDate( 1, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
@@ -729,7 +767,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 	
 				lbStatus.setText( "     gravando arquivo ..." );
 				retorno = setPrefs();
-				retorno = gravaRemessa( bw, hsCli, hsRec );
+				retorno = gravaRemessa( bw, hsCli, hsRec, rgSitRemessa.getVlrString() );
 			} catch ( IOException ioError ) {
 				Funcoes.mensagemErro( this, "Erro Criando o arquivo!\n " + sFileName + "\n" + ioError.getMessage() );
 				lbStatus.setText( "" );
@@ -754,7 +792,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		}
 	}
 	
-	private boolean gravaRemessa( final BufferedWriter bw, HashSet<StuffCli> hsCli, HashSet<StuffRec> hsRec ) {
+	private boolean gravaRemessa( final BufferedWriter bw, HashSet<StuffCli> hsCli, HashSet<StuffRec> hsRec, String sitRemessa ) {
 
 		boolean retorno = false;
 		try {
@@ -762,6 +800,8 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 			list.add( new RegA( '1', prefs ) );
 			int i = 2;
 			int numAgenda = 1;
+			float vlrtotal = 0;
+			RegE e = null;
 
 			for ( StuffCli c : hsCli ) {
 				if ( "B".equals( c.getArgs()[ EColcli.TIPOREMCLI.ordinal() ] ) ) {
@@ -771,23 +811,25 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 			}
 			for ( StuffCli c : hsCli ) {
 				if ( "C".equals( c.getArgs()[ EColcli.TIPOREMCLI.ordinal() ] ) ) {
-					list.add( new RegC( 'C', c, i ) );
-					i++;
+					list.add( new RegC( 'C', c, i++ ) );
 				}
 			}
 			for ( StuffCli c : hsCli ) {
 				if ( "D".equals( c.getArgs()[ EColcli.TIPOREMCLI.ordinal() ] ) ) {
-					list.add( new RegD( 'D', c, i ) );
-					i++;
+					list.add( new RegD( 'D', c, i++ ) );
 				}
 			}
 			for ( StuffRec r : hsRec ) {
-				if ( "00".equals( r.getArgs()[ EColrec.SITREMESSA.ordinal() ] ) ) {
-					list.add( new RegE( 'E', r, i, numAgenda ) );
-					i++;
+				if ( sitRemessa.indexOf(( r.getArgs()[ EColrec.SITREMESSA.ordinal() ] ))>-1 ) {
+					e = new RegE( 'E', r, i++, numAgenda );
+					list.add( e );
+					vlrtotal += e.getVlrparc();
 					numAgenda++;
 				}
 			}
+			
+			list.add(new RegZ(i, vlrtotal, i++));
+			
 			for ( Reg reg : list ) {
 				bw.write( reg.toString() );
 			}
@@ -949,8 +991,13 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 				/*
 				 * String codBanco, String tipoFebraban, String stipoFebraban, String sitRemessa {CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN, SITREMESSA, CODCLI, AGENCIACLI, IDENTCLI, DTVENC, VLRPARC}
 				 */
-				new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, (String) vLinha.elementAt( COL_STIPOFEBRABAN ), (String) vLinha.elementAt( COL_SITREM ), String.valueOf( (Integer) vLinha.elementAt( COL_CODCLI ) ), (String) vLinha.elementAt( COL_AGENCIACLI ),
-						(String) vLinha.elementAt( COL_IDENTCLI ), Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( COL_DTVENC ) ), Funcoes.transValor( (BigDecimal) vLinha.elementAt( COL_VLRAPAG ), 15, 2, true ) } ) );
+				new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, (String) vLinha.elementAt( COL_STIPOFEBRABAN ), 
+						(String) vLinha.elementAt( COL_SITREM ), 
+						String.valueOf( (Integer) vLinha.elementAt( COL_CODCLI ) ), 
+						(String) vLinha.elementAt( COL_AGENCIACLI ),
+						(String) vLinha.elementAt( COL_IDENTCLI ), 
+						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( COL_DTVENC ) ), 
+						((BigDecimal) vLinha.elementAt( COL_VLRAPAG )).toString() } ) );
 			}
 		}
 		if ( retorno ) {
