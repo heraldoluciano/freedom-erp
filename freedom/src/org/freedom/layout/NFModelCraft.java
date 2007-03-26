@@ -106,7 +106,7 @@ public class NFModelCraft extends Leiaute {
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,91,"X");
-           imp.say(imp.pRow()+0,130,sNumNota);
+           //imp.say(imp.pRow()+0,130,sNumNota);
 		   imp.say(imp.pRow()+1,0,""+imp.comprimido());
 		   imp.say(imp.pRow()+1,0,""+imp.comprimido());
     //       imp.say(imp.pRow()+1,0,"");
@@ -238,7 +238,7 @@ public class NFModelCraft extends Leiaute {
 				imp.say(imp.pRow()+1,0,"");
 			}
 //             System.out.println(imp.pRow()+" = iItImp - 2 : "+iItImp);
-             imp.say(imp.pRow()+1,0,"");
+//             imp.say(imp.pRow()+1,0,"");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+0,5,Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrBaseICMSVenda")));
              imp.say(imp.pRow()+0,33,Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrICMSVenda")));
@@ -272,7 +272,7 @@ public class NFModelCraft extends Leiaute {
            imp.say(imp.pRow()+0,6,rs.getString("RazTran"));
            imp.say(imp.pRow()+0,86,rs.getString("TipoFreteVD").equals("C") ? "1" : "2");
            imp.say(imp.pRow()+0,93,rs.getString("PlacaFreteVD"));
-           imp.say(imp.pRow()+0,108,rs.getString("UfFreteVD"));
+           imp.say(imp.pRow()+0,107,rs.getString("UfFreteVD"));
            
 		   sTipoTran = rs.getString("TipoTran");
 					 if (sTipoTran==null) sTipoTran = "T";
@@ -289,7 +289,7 @@ public class NFModelCraft extends Leiaute {
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,6,Funcoes.copy(rs.getString("EndTran"),0,42)+"   "+Funcoes.copy(rs.getString("NumTran"),0,6));
            imp.say(imp.pRow()+0,77,Funcoes.copy(rs.getString("CidTran"),0,30));
-           imp.say(imp.pRow()+0,108,rs.getString("UfTran"));
+           imp.say(imp.pRow()+0,107,rs.getString("UfTran"));
 
 		   sTipoTran = rs.getString("TipoTran");
 					 if (sTipoTran==null)
