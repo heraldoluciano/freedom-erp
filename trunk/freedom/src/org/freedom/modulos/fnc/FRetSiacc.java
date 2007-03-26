@@ -229,39 +229,48 @@ public class FRetSiacc extends FFilho implements ActionListener {
 	}
 
 	private void execImportar() {
-
-		lbStatus.setText( "     lendo do arquivo ..." );
-
-		FileDialog fileDialogSiacc = null;
-		fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Impportar arquivo." );
-		fileDialogSiacc.setVisible( true );
-
-		if ( fileDialogSiacc.getFile() == null ) {
-			lbStatus.setText( "" );
-			return;
+		
+		if ("".equals( txtCodBanco.getVlrString())){
+			Funcoes.mensagemInforma( this, "Selecione o Banco!!" );
+			txtCodBanco.requestFocus();
+			
 		}
+		else{
+			
+			lbStatus.setText( "     lendo do arquivo ..." );
 
-		String sFileName = fileDialogSiacc.getDirectory() + fileDialogSiacc.getFile();
+			FileDialog fileDialogSiacc = null;
+			fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Impportar arquivo." );
+			fileDialogSiacc.setVisible( true );
 
-		File fileSiacc = new File( sFileName );
-
-		try {
-
-			fileReadesSiacc = new FileReader( fileSiacc );
-			if ( fileReadesSiacc == null ) {
-				Funcoes.mensagemInforma( this, "Arquivo não encontrado" );
+			if ( fileDialogSiacc.getFile() == null ) {
+				lbStatus.setText( "" );
+				return;
 			}
-			else {
-				leArquivo();
-			}
+			
+			String sFileName = fileDialogSiacc.getDirectory() + fileDialogSiacc.getFile();
 
-		} catch ( IOException ioError ) {
-			Funcoes.mensagemErro( this, "Erro ao ler o arquivo: " + sFileName + "\n" + ioError.getMessage() );
-			lbStatus.setText( "" );
-			return;
+			File fileSiacc = new File( sFileName );
+
+			try {
+
+				fileReadesSiacc = new FileReader( fileSiacc );
+				if ( fileReadesSiacc == null ) {
+					Funcoes.mensagemInforma( this, "Arquivo não encontrado" );
+				}
+				else {
+					leArquivo();
+				}
+
+			} catch ( IOException ioError ) {
+				Funcoes.mensagemErro( this, "Erro ao ler o arquivo: " + sFileName + "\n" + ioError.getMessage() );
+				lbStatus.setText( "" );
+				return;
+			
+			}
 		}
 	}
-
+		
 	private void leArquivo() throws IOException {
 
 		ArrayList<Object> list = new ArrayList<Object>();
