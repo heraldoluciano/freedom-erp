@@ -21,6 +21,8 @@
  */
 
 package org.freedom.modulos.std;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,6 +32,8 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
@@ -44,7 +48,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
-public class FRReceber extends FRelatorio {
+public class FRReceber extends FRelatorio implements RadioGroupListener {
 	private static final long serialVersionUID = 1L;
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
 	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
@@ -128,7 +132,8 @@ public class FRReceber extends FRelatorio {
 		vVals.addElement("A");
 
 		rgTipoRel = new JRadioGroup(3,1,vLabs,vVals);
-
+		rgTipoRel.addRadioGroupListener( this );
+		
 		vLabs1.addElement( "Emissão" );
 		vLabs1.addElement( "Vencimento" );
 		vLabs1.addElement( "Pagamento" );
@@ -137,6 +142,7 @@ public class FRReceber extends FRelatorio {
 		vVals1.addElement( "P" );
 
 		rgOrdem = new JRadioGroup(3,1,vLabs1,vVals1);
+		//rgOrdem.addRadioGroupListener( this );
 		rgOrdem.setVlrString( "V" );
 		
 		cbObs.setVlrString("S");
@@ -146,37 +152,39 @@ public class FRReceber extends FRelatorio {
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		JLabelPad lbPeriodo = new JLabelPad("   Periodo:");
 		lbPeriodo.setOpaque(true);
-
-		adic(lbPeriodo,17,80,80,20);
-		adic(lbLinha,7,90,353,40);
-		adic(new JLabelPad("De:"),17,100,30,20);
-		adic(txtDataini,50,100,97,20);
-		adic(new JLabelPad("Até:"),157,100,30,20);
-		adic(txtDatafim,190,100,100,20);
-		adic(rgTipoRel,7,05,170,70);
-		adic(rgOrdem,190,05,170,70);
-		adic(new JLabelPad("Cód.cli."),7,130,200,20);
-		adic(txtCodCli,7,150,80,20);
-		adic(new JLabelPad("Razão social do cliente"),90,130,200,20);
-		adic(txtRazCli,90,150,270,20);
-		adic(new JLabelPad("Cód.setor"),7,170,250,20);
-		adic(txtCodSetor,7,190,80,20);
-		adic(new JLabelPad("Descrição do setor"),90,170,250,20);
-		adic(txtDescSetor,90,190,270,20);
-		adic(new JLabelPad("Cód.comis."),7,210,250,20);
-		adic(txtCodVend,7,230,80,20);
-		adic(new JLabelPad("Nome do comissionado"),90,210,250,20);
-		adic(txtNomeVend,90,230,270,20);
-		adic(new JLabelPad("Cód.banco"),7,250,250,20);
-		adic(txtCodBanco,7,270,80,20);
-		adic(new JLabelPad("Descrição do banco"),90,250,250,20);
-		adic(txtDescBanco,90,270,270,20);
-		adic(new JLabelPad("Cód.pl.pag."),7,290,80,20);
-		adic(txtCodPlanoPag,7,310,80,20);
-		adic(new JLabelPad("Descrição do plano de pagamento"),90,290,300,20);
-		adic(txtDescPlanoPag,90,310,270,20);
-		adic(cbObs,7,335,180,20);
-		adic(cbImpTotDia,188,335,180,20);    
+		
+		adic(lbPeriodo,17,90,80,20);
+		adic(lbLinha,7,100,353,40);
+		adic(new JLabelPad("De:"),17,110,30,20);
+		adic(txtDataini,50,110,97,20);
+		adic(new JLabelPad("Até:"),157,110,30,20);
+		adic(txtDatafim,190,110,100,20);
+		adic(rgTipoRel,7,20,170,70);
+		adic(new JLabelPad ("Filtrar:"),7,0,80,20);
+		adic(rgOrdem,190,20,170,70);
+		adic(new JLabelPad("Ordenar/Filtro:"),190,0,100,20);
+		adic(new JLabelPad("Cód.cli."),7,140,200,20);
+		adic(txtCodCli,7,160,80,20);
+		adic(new JLabelPad("Razão social do cliente"),90,140,200,20);
+		adic(txtRazCli,90,160,270,20);
+		adic(new JLabelPad("Cód.setor"),7,180,250,20);
+		adic(txtCodSetor,7,200,80,20);
+		adic(new JLabelPad("Descrição do setor"),90,180,250,20);
+		adic(txtDescSetor,90,200,270,20);
+		adic(new JLabelPad("Cód.comis."),7,220,250,20);
+		adic(txtCodVend,7,240,80,20);
+		adic(new JLabelPad("Nome do comissionado"),90,220,250,20);
+		adic(txtNomeVend,90,240,270,20);
+		adic(new JLabelPad("Cód.banco"),7,260,250,20);
+		adic(txtCodBanco,7,280,80,20);
+		adic(new JLabelPad("Descrição do banco"),90,260,250,20);
+		adic(txtDescBanco,90,280,270,20);
+		adic(new JLabelPad("Cód.pl.pag."),7,300,80,20);
+		adic(txtCodPlanoPag,7,320,80,20);
+		adic(new JLabelPad("Descrição do plano de pagamento"),90,300,300,20);
+		adic(txtDescPlanoPag,90,320,270,20);
+		adic(cbObs,7,345,180,20);
+		adic(cbImpTotDia,188,345,180,20);    
 	
 	}
 	
@@ -216,6 +224,11 @@ public class FRReceber extends FRelatorio {
 		try {
 			if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
 				Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
+				return;
+			}
+			if ( ((rgTipoRel.getVlrString().equals( "R" )) || (rgTipoRel.getVlrString().equals( "A" ))) && 
+				 (rgOrdem.getVlrString().equals( "P" ))) {
+				Funcoes.mensagemInforma( this, "Não pode ser ordenado por data de pagamento!" );
 				return;
 			}
 			imp = new ImprimeOS("",con);
@@ -585,6 +598,14 @@ public class FRReceber extends FRelatorio {
 		lcBanco.setConexao(cn);
 		lcPlanoPag.setConexao(cn);
 		bPref = getPrefere();
-	}  
+	}
 
+	public void valorAlterado( RadioGroupEvent evt ) {
+	   if (evt.getIndice()==1) {
+		  rgOrdem.setVlrString( "P" );
+	   }
+	   else {
+		  rgOrdem.setVlrString( "V" );
+	   }
+	}
 }
