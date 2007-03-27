@@ -128,7 +128,7 @@ public class DLFechaParcela extends FFDialogo {
 		oRetorno[ 1 ] = txtDtVencItRec.getVlrDate();
 		oRetorno[ 2 ] = txtVlrDescItRec.getVlrBigDecimal();
 		oRetorno[ 3 ] = txtCodTipoCob.getVlrInteger();
-		oRetorno[ 4 ] = txtCodBanco.getVlrInteger();
+		oRetorno[ 4 ] = txtCodBanco.getVlrString();
 
 		return oRetorno;
 	}
