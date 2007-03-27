@@ -735,7 +735,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		}
 		else {
 			
-			lcItReceber.cancel( false );
+			lcItReceber.cancel( true );
 		}
 		
 		dl.dispose();
@@ -914,8 +914,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			
 			rs = ps.executeQuery();
 			
-			if ( rs.next() ) {
-			
+			if ( rs.next() ) {			
 				iRetorno = rs.getInt( "CodRec" );
 			}
 			
@@ -950,8 +949,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			
 			rs = ps.executeQuery();
 			
-			if ( rs.next() ) {
-				
+			if ( rs.next() ) {				
 				iRet = rs.getInt( "CodAuxV" );
 			}
 			
@@ -993,8 +991,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			
 			rs = ps.executeQuery();
 			
-			if ( rs.next() ) {
-			
+			if ( rs.next() ) {			
 				iRetorno = rs.getInt( "CodTran" );
 			}
 			
@@ -1008,8 +1005,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				
 				rs = ps.executeQuery();
 				
-				if ( rs.next() ) {
-				
+				if ( rs.next() ) {				
 					iRetorno = rs.getInt( "CodTran" );
 				}
 			}
@@ -1092,13 +1088,11 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		if ( evt.getSource() == btOK ) {
 			
-			if ( prox() ) {
-				
+			if ( prox() ) {				
 				super.actionPerformed( evt );				
 			}
 		}
 		else {
-
 			super.actionPerformed( evt );
 		}
 	}
@@ -1131,9 +1125,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		}
 	}
 
-	public void focusGained( FocusEvent fevt ) {
-
-	}
+	public void focusGained( FocusEvent fevt ) { }
 
 	public void mouseClicked( MouseEvent mevt ) {
 
@@ -1146,40 +1138,28 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 					FPassword fpw = new FPassword( this, FPassword.ALT_PARC_VENDA, null, con );
 					fpw.execShow();
 					
-					if ( fpw.OK ) {
-					
+					if ( fpw.OK ) {					
 						alteraRec();
-					}
-					
+					}					
 					fpw.dispose();
 				}
-				else {
-				
+				else {				
 					alteraRec();
 				}
 			}
-			else if ( mevt.getSource() == tabComis && tabComis.getLinhaSel() >= 0 ) {
-			
+			else if ( mevt.getSource() == tabComis && tabComis.getLinhaSel() >= 0 ) {			
 				alteraComis();
 			}
 		}
 	}
 
-	public void mouseEntered( MouseEvent e ) {
+	public void mouseEntered( MouseEvent e ) { }
 
-	}
+	public void mouseExited( MouseEvent e ) { }
 
-	public void mouseExited( MouseEvent e ) {
+	public void mousePressed( MouseEvent e ) { }
 
-	}
-
-	public void mousePressed( MouseEvent e ) {
-
-	}
-
-	public void mouseReleased( MouseEvent e ) {
-
-	}
+	public void mouseReleased( MouseEvent e ) { }
 
 	public void valorAlterado( CheckBoxEvent evt ) {
 
