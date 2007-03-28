@@ -59,8 +59,6 @@ public class NF035 extends Layout {
 		String[] sVencs = new String[ 9 ];
 		String[] sVals = new String[ 9 ];
 		String[] sDuplics = new String[ 9 ];
-		BigDecimal bdVlrIssServ = new BigDecimal( "0" );
-		BigDecimal bdVlrTotServ = new BigDecimal( "0" );
 		Vector vObsVenda = new Vector();
 		Vector<String> vClfisc = new Vector<String>();
 		Vector<String> vSigla = new Vector<String>();
@@ -287,12 +285,7 @@ public class NF035 extends Layout {
 					
 					//System.out.println("Tam vServico" +vServico.size());
 					if ( vServico.size() > 0 ) {
-						
-						for ( int i = 0; i < vServico.size(); i++ ) {							
-							bdVlrTotServ = bdVlrTotServ.add( (BigDecimal) vServico.get( i )[ 2 ] ).setScale( 2, BigDecimal.ROUND_HALF_UP );
-							bdVlrIssServ = bdVlrIssServ.add( (BigDecimal) vServico.get( i )[ 3 ] ).setScale( 2, BigDecimal.ROUND_HALF_UP );
-						}
- 
+						 
 						for ( int row = 0; row < 10; row++ ) {
 
 							imp.pulaLinha( 1, imp.comprimido() );
@@ -310,7 +303,7 @@ public class NF035 extends Layout {
 									}
 									
 									if ( bvlriss && row == 6 ) {
-										imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_VLRISS ) ) ) );
+										imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_BASEISS ) ) ) );
 										bvlriss = false;
 									}
 
@@ -326,13 +319,13 @@ public class NF035 extends Layout {
 							}
 							
 							if ( bvlriss && row == 6 ) {
-								imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_VLRISS ) ) ) );
+								imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_BASEISS ) ) ) );
 								bvlriss = false;
 							}
 						}
 
 						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( bdVlrTotServ ) ) );
+						imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_VLRISS ) ) ) );
 					}
 
 					// Imprime totais
