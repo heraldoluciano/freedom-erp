@@ -53,23 +53,29 @@ public class NFEntrada extends NF {
 		boolean retorno = true;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = null;
+		StringBuffer sql = new StringBuffer();
 		int cont = 0;
 		try {
 
 			setConexao( con );
 
-			sql = "SELECT C.CODCOMPRA, C.CODFOR, F.RAZFOR,  F.CNPJFOR, F.CPFFOR, F.ENDFOR, F.NUMFOR, F.COMPLFOR," + "F.BAIRFOR, F.CEPFOR, F.CIDFOR, F.UFFOR, F.FONEFOR, F.FAXFOR, F.DDDFONEFOR, F.INSCFOR, F.RGFOR, C.VLRDESCITCOMPRA,"
-					+ "F.EMAILFOR, F.SITEFOR, F.CONTFOR, C.DTEMITCOMPRA, C.DOCCOMPRA, C.DTENTCOMPRA, C.CODPLANOPAG, PG.DESCPLANOPAG, C.CODBANCO, " + "(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODEMP=C.CODEMPBO AND B.CODFILIAL=C.CODFILIALBO AND B.CODBANCO=C.CODBANCO) "
-					+ "FROM CPCOMPRA C, CPFORNECED F, FNPLANOPAG PG  " + "WHERE F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR " + "AND PG.CODEMP=C.CODEMPPG AND PG.CODFILIAL=C.CODFILIALPG AND PG.CODPLANOPAG=C.CODPLANOPAG "
-					+ "AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=?";
-			ps = con.prepareStatement( sql );
+			sql.append( "SELECT C.CODCOMPRA, C.CODFOR, F.RAZFOR,  F.CNPJFOR, F.CPFFOR, F.ENDFOR, F.NUMFOR, F.COMPLFOR," ); 
+			sql.append( "F.BAIRFOR, F.CEPFOR, F.CIDFOR, F.UFFOR, F.FONEFOR, F.FAXFOR, F.DDDFONEFOR, F.INSCFOR, F.RGFOR, " );
+			sql.append( "C.VLRDESCITCOMPRA, F.EMAILFOR, F.SITEFOR, F.CONTFOR, C.DTEMITCOMPRA, C.DOCCOMPRA, C.DTENTCOMPRA, " );
+			sql.append( "C.CODPLANOPAG, PG.DESCPLANOPAG, C.CODBANCO, " );
+			sql.append( "(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODEMP=C.CODEMPBO AND B.CODFILIAL=C.CODFILIALBO AND B.CODBANCO=C.CODBANCO), " );
+			sql.append( "C.VLRLIQCOMPRA,C.VLRPRODCOMPRA,C.VLRADICCOMPRA,C.VLRICMSCOMPRA,C.VLRBASEICMSCOMPRA,C.VLRIPICOMPRA " );
+			sql.append( "FROM CPCOMPRA C, CPFORNECED F, FNPLANOPAG PG " );
+			sql.append( "WHERE F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR " );
+			sql.append( "AND PG.CODEMP=C.CODEMPPG AND PG.CODFILIAL=C.CODFILIALPG AND PG.CODPLANOPAG=C.CODPLANOPAG " );
+			sql.append( "AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=?" );
+			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, ( (Integer) parans.elementAt( 0 ) ).intValue() );
 			ps.setInt( 2, ( (Integer) parans.elementAt( 1 ) ).intValue() );
 			ps.setInt( 3, ( (Integer) parans.elementAt( 2 ) ).intValue() );
 			rs = ps.executeQuery();
 			cont++;
-			cab = new TabVector( 52 );
+			cab = new TabVector( 59 );
 			while ( rs.next() ) {
 				cab.addRow();
 				cab.setInt( C_CODPED, rs.getInt( "CODCOMPRA" ) );
@@ -124,6 +130,14 @@ public class NFEntrada extends NF {
 				cab.setFloat( C_VLRDESCITPED, rs.getFloat( "VLRDESCITCOMPRA" ) );
 				cab.setInt( C_DIASPAG, 0 );
 				cab.setString( C_PEDEMIT, "" );
+				cab.setFloat( C_VLRLIQPED, rs.getFloat( "VLRLIQCOMPRA" ) );
+				cab.setFloat( C_VLRPRODPED, rs.getFloat( "VLRPRODCOMPRA" ) );
+				cab.setFloat( C_VLRADICPED, rs.getFloat( "VLRADICCOMPRA" ) );
+				cab.setFloat( C_VLRICMSPED, rs.getFloat( "VLRICMSCOMPRA" ) );
+				cab.setFloat( C_VLRBASEICMSPED, rs.getFloat( "VLRBASEICMSCOMPRA" ) );
+				cab.setFloat( C_VLRIPIPED, rs.getFloat( "VLRIPICOMPRA" ) );				
+				cab.setFloat( C_BASEISS, 0 );
+				cab.setFloat( C_VLRISS, 0 );
 			}
 			rs.close();
 			ps.close();
@@ -131,19 +145,25 @@ public class NFEntrada extends NF {
 				con.commit();
 			cab.setRow( -1 );
 
-			sql = "SELECT I.CODITCOMPRA, I.CODPROD, I.QTDITCOMPRA, I.VLRLIQITCOMPRA, I.PERCIPIITCOMPRA, I.VLRIPIITCOMPRA, " + "I.PERCICMSITCOMPRA, I.VLRPRODITCOMPRA, C.VLRICMSCOMPRA, C.VLRIPICOMPRA, C.VLRADICCOMPRA, "
-					+ "C.VLRLIQCOMPRA, C.VLRBASEICMSCOMPRA, C.VLRBASEIPICOMPRA, C.VLRPRODCOMPRA, P.REFPROD, P.DESCPROD, " + "P.CODUNID, I.CODNAT, N.DESCNAT, N.IMPDTSAIDANAT, I.CODLOTE, P.CODFISC, P.TIPOPROD, I.VLRDESCITCOMPRA, "
-					+ "(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODEMP=I.CODEMPLE AND L.CODFILIAL=I.CODFILIALLE AND L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE), "
-					+ "(SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC WHERE IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL), " + "(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=CL.CODMENS AND M.CODFILIAL=CL.CODFILIALME AND M.CODEMP=CL.CODEMPME) "
-					+ "FROM CPITCOMPRA I, CPCOMPRA C, EQPRODUTO P, LFNATOPER N, LFCLFISCAL CL " + "WHERE I.CODEMP=C.CODEMP AND I.CODFILIAL=C.CODFILIAL AND I.CODCOMPRA=C.CODCOMPRA " + "AND I.CODNAT=N.codnat AND I.CODEMPNT=N.CODEMP AND I.CODFILIALNT=N.CODFILIAL "
-					+ "AND I.CODPROD=P.CODPROD AND I.CODEMPPD=P.CODEMP AND I.CODFILIALPD=P.CODFILIAL " + "AND CL.CODFISC=P.CODFISC AND CL.CODEMP=P.CODEMPFC AND CL.CODFILIAL=P.CODFILIALFC " + "AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=?";
-			ps = con.prepareStatement( sql );
+			sql = new StringBuffer();
+			sql.append( "SELECT I.CODITCOMPRA, I.CODPROD, I.QTDITCOMPRA, I.VLRLIQITCOMPRA, I.PERCIPIITCOMPRA, I.VLRIPIITCOMPRA, " );
+			sql.append( "I.PERCICMSITCOMPRA, I.VLRPRODITCOMPRA, C.VLRBASEIPICOMPRA, P.REFPROD, P.DESCPROD, P.CODUNID, " );
+			sql.append( "I.CODNAT, N.DESCNAT, N.IMPDTSAIDANAT, I.CODLOTE, P.CODFISC, P.TIPOPROD, I.VLRDESCITCOMPRA, " );
+			sql.append( "(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODEMP=I.CODEMPLE AND L.CODFILIAL=I.CODFILIALLE AND L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE), " );
+			sql.append( "(SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC WHERE IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL), " + "(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=CL.CODMENS AND M.CODFILIAL=CL.CODFILIALME AND M.CODEMP=CL.CODEMPME) " );
+			sql.append( "FROM CPITCOMPRA I, CPCOMPRA C, EQPRODUTO P, LFNATOPER N, LFCLFISCAL CL " ); 
+			sql.append( "WHERE I.CODEMP=C.CODEMP AND I.CODFILIAL=C.CODFILIAL AND I.CODCOMPRA=C.CODCOMPRA " );
+			sql.append( "AND I.CODNAT=N.codnat AND I.CODEMPNT=N.CODEMP AND I.CODFILIALNT=N.CODFILIAL " );
+			sql.append( "AND I.CODPROD=P.CODPROD AND I.CODEMPPD=P.CODEMP AND I.CODFILIALPD=P.CODFILIAL " );
+			sql.append( "AND CL.CODFISC=P.CODFISC AND CL.CODEMP=P.CODEMPFC AND CL.CODFILIAL=P.CODFILIALFC " );
+			sql.append( "AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=?" );
+			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, ( (Integer) parans.elementAt( 0 ) ).intValue() );
 			ps.setInt( 2, ( (Integer) parans.elementAt( 1 ) ).intValue() );
 			ps.setInt( 3, ( (Integer) parans.elementAt( 2 ) ).intValue() );
 			rs = ps.executeQuery();
 			cont++;
-			itens = new TabVector( 32 );
+			itens = new TabVector( 26 );
 			while ( rs.next() ) {
 				itens.addRow();
 				itens.setInt( C_CODITPED, rs.getInt( "CODITCOMPRA" ) );
@@ -156,10 +176,7 @@ public class NFEntrada extends NF {
 				itens.setFloat( C_VLRLIQITPED, rs.getFloat( "VLRLIQITCOMPRA" ) );
 				itens.setFloat( C_PERCIPIITPED, rs.getFloat( "PERCIPIITCOMPRA" ) );
 				itens.setFloat( C_PERCICMSITPED, rs.getFloat( "PERCICMSITCOMPRA" ) );
-				cab.setFloat( C_VLRICMSPED, rs.getFloat( "VLRICMSCOMPRA" ) );
-				cab.setFloat( C_VLRIPIPED, rs.getFloat( "VLRIPICOMPRA" ) );
 				itens.setFloat( C_VLRIPIITPED, rs.getFloat( "VLRIPIITCOMPRA" ) );
-				cab.setFloat( C_VLRLIQPED, rs.getFloat( "VLRLIQCOMPRA" ) );
 				itens.setString( C_IMPDTSAIDA, rs.getString( "IMPDTSAIDANAT" ) != null ? rs.getString( "IMPDTSAIDANAT" ) : "" );
 				itens.setFloat( C_VLRPRODITPED, rs.getFloat( "VLRPRODITCOMPRA" ) );
 				itens.setString( C_DESCNAT, rs.getString( "DESCNAT" ) != null ? rs.getString( "DESCNAT" ) : "" );
@@ -168,7 +185,6 @@ public class NFEntrada extends NF {
 				itens.setDate( C_VENCLOTE, rs.getDate( 26 ) );
 				itens.setString( C_ORIGFISC, "" );
 				itens.setString( C_CODTRATTRIB, "" );
-				cab.setFloat( C_VLRBASEICMSPED, rs.getFloat( "VLRBASEICMSCOMPRA" ) );
 				itens.setFloat( C_VLRADICITPED, rs.getFloat( "VLRADICCOMPRA" ) );
 				itens.setInt( C_CONTAITENS, rs.getInt( 27 ) );
 				itens.setString( C_DESCFISC, ( rs.getString( 28 ) != null ? rs.getString( 28 ) : "" ) );
@@ -176,7 +192,6 @@ public class NFEntrada extends NF {
 				itens.setString( C_CODFISC, rs.getString( "CODFISC" ) != null ? rs.getString( "CODFISC" ) : "" );
 				itens.setString( C_TIPOPROD, rs.getString( "TIPOPROD" ) != null ? rs.getString( "TIPOPROD" ) : "" );
 				itens.setFloat( C_VLRISSITPED, 0f );
-				itens.setFloat( C_VLRPRODITPED, rs.getFloat( "VLRPRODCOMPRA" ) );
 				itens.setFloat( C_VLRDESCITPROD, rs.getFloat( "VLRDESCITCOMPRA" ) );
 			}
 			rs.close();
