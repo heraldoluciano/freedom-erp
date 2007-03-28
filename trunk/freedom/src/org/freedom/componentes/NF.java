@@ -97,6 +97,12 @@ public class NF {
 	public static final int C_VLRDESCITPED = 49;
 	public static final int C_DIASPAG = 50;	
 	public static final int C_PEDEMIT = 51;	
+	public static final int C_BASEISS = 52;
+	public static final int C_VLRISS = 53;
+	public static final int C_VLRPRODPED = 54;
+	public static final int C_VLRADICPED = 55;
+	public static final int C_VLRBASEICMSPED = 56;
+	public static final int C_VLRICMSPED = 57;
 	
 	//itens
 	public static final int C_CODITPED = 0;
@@ -109,7 +115,6 @@ public class NF {
 	public static final int C_VLRLIQITPED = 7;
 	public static final int C_PERCIPIITPED = 8;
 	public static final int C_PERCICMSITPED = 9;
-	public static final int C_VLRICMSPED = 10;
 	public static final int C_VLRIPIPED = 11;
 	public static final int C_VLRIPIITPED = 12;
 	public static final int C_VLRLIQPED = 13;	
@@ -121,16 +126,14 @@ public class NF {
 	public static final int C_VENCLOTE = 19;
 	public static final int C_ORIGFISC = 20;
 	public static final int C_CODTRATTRIB = 21;
-	public static final int C_VLRBASEICMSPED = 22;
-	public static final int C_VLRADICPED = 23;
+	public static final int C_VLRADICITPED = 23;
 	public static final int C_CONTAITENS = 24;
 	public static final int C_DESCFISC = 25;
 	public static final int C_DESCFISC2 = 26;
 	public static final int C_CODFISC = 27;
 	public static final int C_TIPOPROD = 28;
-	public static final int C_VLRISSPED = 29;
-	public static final int C_VLRPRODPED = 30;	
-	public static final int C_VLRDESCITPROD = 31;	
+	public static final int C_VLRISSITPED = 29;
+	public static final int C_VLRDESCITPROD = 30;
 	
 	//adic
 	public static final int C_CODAUXV = 0;

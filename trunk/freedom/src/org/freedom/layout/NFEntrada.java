@@ -169,14 +169,14 @@ public class NFEntrada extends NF {
 				itens.setString( C_ORIGFISC, "" );
 				itens.setString( C_CODTRATTRIB, "" );
 				itens.setFloat( C_VLRBASEICMSPED, rs.getFloat( "VLRBASEICMSCOMPRA" ) );
-				itens.setFloat( C_VLRADICPED, rs.getFloat( "VLRADICCOMPRA" ) );
+				itens.setFloat( C_VLRADICITPED, rs.getFloat( "VLRADICCOMPRA" ) );
 				itens.setInt( C_CONTAITENS, rs.getInt( 27 ) );
 				itens.setString( C_DESCFISC, ( rs.getString( 28 ) != null ? rs.getString( 28 ) : "" ) );
 				itens.setString( C_DESCFISC2, "" );
 				itens.setString( C_CODFISC, rs.getString( "CODFISC" ) != null ? rs.getString( "CODFISC" ) : "" );
 				itens.setString( C_TIPOPROD, rs.getString( "TIPOPROD" ) != null ? rs.getString( "TIPOPROD" ) : "" );
-				itens.setFloat( C_VLRISSPED, 0f );
-				itens.setFloat( C_VLRPRODPED, rs.getFloat( "VLRPRODCOMPRA" ) );
+				itens.setFloat( C_VLRISSITPED, 0f );
+				itens.setFloat( C_VLRPRODITPED, rs.getFloat( "VLRPRODCOMPRA" ) );
 				itens.setFloat( C_VLRDESCITPROD, rs.getFloat( "VLRDESCITCOMPRA" ) );
 			}
 			rs.close();

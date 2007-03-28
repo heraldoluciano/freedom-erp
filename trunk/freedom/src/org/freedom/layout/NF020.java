@@ -255,7 +255,7 @@ public class NF020 extends Layout {
 							"".equals( itens.getString( NF.C_OBSITPED ).trim() ) ? itens.getString( NF.C_DESCPROD ) : itens.getString( NF.C_OBSITPED ).trim(), 
 							new BigDecimal( itens.getFloat( NF.C_QTDITPED ) ), 
 							new BigDecimal( itens.getFloat( NF.C_VLRPRODITPED ) ),
-							new BigDecimal( itens.getFloat( NF.C_VLRISSPED ) ) } );
+							new BigDecimal( itens.getFloat( NF.C_VLRISSITPED ) ) } );
 				}
 
 				iItImp++;
@@ -311,10 +311,10 @@ public class NF020 extends Layout {
 						imp.pulaLinha( 41 - imp.pRow(), imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
 						imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRICMSPED ) ) ) );
-						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODPED ) ) ) );
+						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) ) ) );
 						imp.pulaLinha( 2, imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( frete.getFloat( NF.C_VLRFRETEPED ) ) ) );
-						imp.say( 58, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRADICPED ) ) ) );
+						imp.say( 58, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRADICITPED ) ) ) );
 						imp.say( 87, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRIPIPED ) ) ) );
 						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRLIQPED ) ) ) );
 						iItImp = 0;
