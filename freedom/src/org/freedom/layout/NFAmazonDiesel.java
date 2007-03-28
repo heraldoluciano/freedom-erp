@@ -194,7 +194,7 @@ public class NFAmazonDiesel extends Leiaute {
 						imp.say(  4, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrFreteVenda")));
 						imp.say( 57, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrAdicVenda")));
 						imp.say( 85, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrIPIVenda")));
-						imp.say(114, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrLiqVenda")));
+						imp.say(114, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrLiqVenda"))); 
 						iItImp = 0;
 						 
 					} else if ( imp.pRow() == 35 ) {

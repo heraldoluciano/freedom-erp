@@ -156,10 +156,10 @@ public class NFEntrada extends NF {
 				itens.setFloat( C_VLRLIQITPED, rs.getFloat( "VLRLIQITCOMPRA" ) );
 				itens.setFloat( C_PERCIPIITPED, rs.getFloat( "PERCIPIITCOMPRA" ) );
 				itens.setFloat( C_PERCICMSITPED, rs.getFloat( "PERCICMSITCOMPRA" ) );
-				itens.setFloat( C_VLRICMSPED, rs.getFloat( "VLRICMSCOMPRA" ) );
-				itens.setFloat( C_VLRIPIPED, rs.getFloat( "VLRIPICOMPRA" ) );
+				cab.setFloat( C_VLRICMSPED, rs.getFloat( "VLRICMSCOMPRA" ) );
+				cab.setFloat( C_VLRIPIPED, rs.getFloat( "VLRIPICOMPRA" ) );
 				itens.setFloat( C_VLRIPIITPED, rs.getFloat( "VLRIPIITCOMPRA" ) );
-				itens.setFloat( C_VLRLIQPED, rs.getFloat( "VLRLIQCOMPRA" ) );
+				cab.setFloat( C_VLRLIQPED, rs.getFloat( "VLRLIQCOMPRA" ) );
 				itens.setString( C_IMPDTSAIDA, rs.getString( "IMPDTSAIDANAT" ) != null ? rs.getString( "IMPDTSAIDANAT" ) : "" );
 				itens.setFloat( C_VLRPRODITPED, rs.getFloat( "VLRPRODITCOMPRA" ) );
 				itens.setString( C_DESCNAT, rs.getString( "DESCNAT" ) != null ? rs.getString( "DESCNAT" ) : "" );
@@ -168,7 +168,7 @@ public class NFEntrada extends NF {
 				itens.setDate( C_VENCLOTE, rs.getDate( 26 ) );
 				itens.setString( C_ORIGFISC, "" );
 				itens.setString( C_CODTRATTRIB, "" );
-				itens.setFloat( C_VLRBASEICMSPED, rs.getFloat( "VLRBASEICMSCOMPRA" ) );
+				cab.setFloat( C_VLRBASEICMSPED, rs.getFloat( "VLRBASEICMSCOMPRA" ) );
 				itens.setFloat( C_VLRADICITPED, rs.getFloat( "VLRADICCOMPRA" ) );
 				itens.setInt( C_CONTAITENS, rs.getInt( 27 ) );
 				itens.setString( C_DESCFISC, ( rs.getString( 28 ) != null ? rs.getString( 28 ) : "" ) );

@@ -118,14 +118,14 @@ public class NF099a extends Layout {
 							
 						frete.next();
 						imp.pulaLinha(3, imp.comprimido());
-						imp.say(  6, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRBASEICMSPED))));
-						imp.say( 32, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRICMSPED))));
-						imp.say(116, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRLIQPED))));
+						imp.say(  6, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(cab.getFloat(NF.C_VLRBASEICMSPED))));
+						imp.say( 32, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(cab.getFloat(NF.C_VLRICMSPED))));
+						imp.say(116, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(cab.getFloat(NF.C_VLRLIQPED))));
 						imp.pulaLinha(2, imp.comprimido());
 						imp.say(  6, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(frete.getFloat(NF.C_VLRFRETEPED))));
 						imp.say( 60, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRADICITPED))));
-						imp.say( 87, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRIPIPED))));
-						imp.say(116, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRLIQPED))));
+						imp.say( 87, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(cab.getFloat(NF.C_VLRIPIPED))));
+						imp.say(116, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(cab.getFloat(NF.C_VLRLIQPED))));
 						iItImp = 0;
 					}
 					else if (imp.pRow() == numMax) {
