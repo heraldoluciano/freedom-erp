@@ -217,9 +217,9 @@ public class NFBuzzi2 extends Layout {
 
 					vValores.addElement( String.valueOf( itens.getFloat( NF.C_VLRBASEICMSPED ) ) );// 0
 					vValores.addElement( String.valueOf( itens.getFloat( NF.C_VLRICMSPED ) ) );// 1
-					vValores.addElement( String.valueOf( ( itens.getFloat( NF.C_VLRLIQPED ) - frete.getFloat( NF.C_VLRFRETEPED ) - itens.getFloat( NF.C_VLRADICPED ) ) ) );// 2
+					vValores.addElement( String.valueOf( ( itens.getFloat( NF.C_VLRLIQPED ) - frete.getFloat( NF.C_VLRFRETEPED ) - itens.getFloat( NF.C_VLRADICITPED ) ) ) );// 2
 					vValores.addElement( String.valueOf( frete.getFloat( NF.C_VLRFRETEPED ) ) );// 3
-					vValores.addElement( String.valueOf( itens.getFloat( NF.C_VLRADICPED ) ) );// 4
+					vValores.addElement( String.valueOf( itens.getFloat( NF.C_VLRADICITPED ) ) );// 4
 					vValores.addElement( String.valueOf( itens.getFloat( NF.C_VLRIPIPED ) ) );// 5
 					vValores.addElement( String.valueOf( itens.getFloat( NF.C_VLRLIQPED ) ) );// 6
 					vValores.addElement( frete.getString( NF.C_RAZTRANSP ) );// 7
@@ -251,7 +251,7 @@ public class NFBuzzi2 extends Layout {
 					vValores.addElement( frete.getString( NF.C_MARCAFRETE ) );// 21
 					vValores.addElement( String.valueOf( frete.getFloat( NF.C_PESOBRUTO ) ) );// 22
 					vValores.addElement( String.valueOf( frete.getFloat( NF.C_PESOLIQ ) ) );// 23
-					vValores.addElement( String.valueOf( itens.getFloat( NF.C_VLRISSPED ) ) );// 24
+					vValores.addElement( String.valueOf( itens.getFloat( NF.C_VLRISSITPED ) ) );// 24
 					vValores.addElement( String.valueOf( cab.getInt( NF.C_CODVEND ) ) );// 25
 
 					if ( cab.getString( NF.C_NOMEVEND ) == null ) {
