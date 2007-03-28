@@ -156,13 +156,13 @@ public class NF021 extends Layout {
 				if (!bTotalizou) {
 					frete.next();
 						
-					vValores.addElement(String.valueOf(itens.getFloat(NF.C_VLRBASEICMSPED))); //0
-					vValores.addElement(String.valueOf(itens.getFloat(NF.C_VLRICMSPED))); //1
-					vValores.addElement(String.valueOf(itens.getFloat(NF.C_VLRLIQPED))); // 2
+					vValores.addElement(String.valueOf(cab.getFloat(NF.C_VLRBASEICMSPED))); //0
+					vValores.addElement(String.valueOf(cab.getFloat(NF.C_VLRICMSPED))); //1
+					vValores.addElement(String.valueOf(cab.getFloat(NF.C_VLRLIQPED))); // 2
 					vValores.addElement(String.valueOf(frete.getFloat(NF.C_VLRFRETEPED)));//3
 					vValores.addElement(String.valueOf(itens.getFloat(NF.C_VLRADICITPED)));//4
-					vValores.addElement(String.valueOf(itens.getFloat(NF.C_VLRIPIPED)));//5
-					vValores.addElement(String.valueOf((itens.getFloat(NF.C_VLRLIQPED) - frete.getFloat(NF.C_VLRFRETEPED) + itens.getFloat(NF.C_VLRADICITPED) - itens.getFloat(NF.C_VLRIPIPED))));//6
+					vValores.addElement(String.valueOf(cab.getFloat(NF.C_VLRIPIPED)));//5
+					vValores.addElement(String.valueOf((cab.getFloat(NF.C_VLRLIQPED) - frete.getFloat(NF.C_VLRFRETEPED) + itens.getFloat(NF.C_VLRADICITPED) - itens.getFloat(NF.C_VLRIPIPED))));//6
 					vValores.addElement(frete.getString(NF.C_RAZTRANSP));//7
 					vValores.addElement(frete.getString(NF.C_TIPOFRETE));//8
 					vValores.addElement(frete.getString(NF.C_PLACAFRETE));//9

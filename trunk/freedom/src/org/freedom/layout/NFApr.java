@@ -217,7 +217,7 @@ public class NFApr extends Leiaute {
 					} 
 					else if (iRow == 32) {
 						
-						imp.pulaLinha(3, imp.comprimido());
+						imp.pulaLinha(3, imp.comprimido()); 
 						imp.say(  2, "***************");
 						imp.say( 32, "***************");
 						imp.say(116, "***************");
