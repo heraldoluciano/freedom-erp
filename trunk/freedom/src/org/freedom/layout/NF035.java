@@ -286,7 +286,7 @@ public class NF035 extends Layout {
 					//System.out.println("Tam vServico" +vServico.size());
 					if ( vServico.size() > 0 ) {
 						 
-						for ( int row = 0; row < 10; row++ ) {
+						for ( int row = 0; row < 11; row++ ) {
 
 							imp.pulaLinha( 1, imp.comprimido() );
 							
@@ -303,7 +303,7 @@ public class NF035 extends Layout {
 									}
 									
 									if ( bvlriss && row == 6 ) {
-										imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_BASEISS ) ) ) );
+										imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_VLRISS ) ) ) );
 										bvlriss = false;
 									}
 
@@ -319,13 +319,12 @@ public class NF035 extends Layout {
 							}
 							
 							if ( bvlriss && row == 6 ) {
-								imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_BASEISS ) ) ) );
+								imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_VLRISS ) ) ) );
 								bvlriss = false;
 							}
 						}
 
-						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_VLRISS ) ) ) );
+						imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_BASEISS ) ) ) );
 					}
 
 					// Imprime totais
