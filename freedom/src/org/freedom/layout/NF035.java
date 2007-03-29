@@ -364,11 +364,11 @@ public class NF035 extends Layout {
 
 					imp.pulaLinha( 3, imp.comprimido() );
 					imp.say( 2, frete.getString( NF.C_RAZTRANSP ) );
-					imp.say( 89, frete.getString( NF.C_TIPOFRETE ).equals( "C" ) ? "1" : "2" );
+					imp.say( 89, "C".equals(frete.getString( NF.C_TIPOFRETE ) ) ? "1" : "2" );
 					imp.say( 93, frete.getString( NF.C_PLACAFRETE ) );
 					imp.say( 111, frete.getString( NF.C_UFFRETE ) );
 
-					if ( frete.getString( NF.C_TIPOTRANSP ).equals( "C" ) ) {
+					if ( "C".equals(frete.getString( NF.C_TIPOTRANSP ) ) ) {
 						imp.say( 116, Funcoes.setMascara( cab.getString( NF.C_CNPJEMIT ), "##.###.###/####-##" ) );
 					}
 					else {
