@@ -151,7 +151,7 @@ public class NF014 extends Layout {
 					imp.pulaLinha(2, imp.comprimido());
 					imp.say(  9, cab.getString(NF.C_CIDCOBEMIT)+" / "+cab.getString(NF.C_UFCOBEMIT)+" - "+cab.getString(NF.C_ENDCOBEMIT)+" , "+cab.getString(NF.C_NUMCOBEMIT)+ " - "+cab.getString(NF.C_BAIRCOBEMIT));
 					imp.pulaLinha(2, imp.comprimido());
-					imp.say(  9, Funcoes.doubleToStrCurExtenso(Double.parseDouble(""+itens.getFloat(NF.C_VLRLIQPED)),moeda));
+					imp.say(  9, Funcoes.doubleToStrCurExtenso(Double.parseDouble(""+cab.getFloat(NF.C_VLRLIQPED)),moeda));
 					imp.pulaLinha(3, imp.comprimido());
 				}
 				
