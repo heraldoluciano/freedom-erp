@@ -32,27 +32,55 @@ public class DLRClComis extends FFDialogo {
 	private static final long serialVersionUID = 1L;
 
   private JRadioGroup rgOrdem = null;
+  private JRadioGroup rgTipo = null;
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
-  private Vector vLabs = new Vector();
-  private Vector vVals = new Vector();
+ 
+  
   public DLRClComis() {
-    setTitulo("Ordem do Relatório");
-    setAtribos(300,140);
-    vLabs.addElement("Código");
-    vLabs.addElement("Descrição");
-    vVals.addElement("C");
-    vVals.addElement("D");
-    rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
-    rgOrdem.setVlrString("D");
-    adic(lbOrdem,7,0,80,15);
-    adic(rgOrdem,7,20,280,30);
+   
+	  
+	  setTitulo("Ordem do Relatório");
+	  setAtribos(300,190);
+	  
+	  Vector vLabs = new Vector();
+	  Vector vVals = new Vector();
+	  
+	  vLabs.addElement("Código");
+	  vLabs.addElement("Descrição");
+	  vVals.addElement("C");
+	  vVals.addElement("D");
+	  
+	  rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+	  rgOrdem.setVlrString("D");
+	  adic(lbOrdem,7,0,80,15);
+	  adic(rgOrdem,7,20,280,30);
+	  
+	  Vector vLabs1 = new Vector();
+	  Vector vVals1 = new Vector();
+	  
+	  vLabs1.addElement("Grafico");
+	  vLabs1.addElement("Texto");
+	  vVals1.addElement("G");
+	  vVals1.addElement("T");
+	  
+	  rgTipo = new JRadioGroup(1,2,vLabs1,vVals1);
+	  rgOrdem.setVlrString("T");
+	  adic(rgTipo,7,60,280,30);
+	  
   }
   public String getValor() {
-    String sRetorno = "";
-    if (rgOrdem.getVlrString().compareTo("C") == 0 )
-      sRetorno = "CODCLCOMIS";
-    else if (rgOrdem.getVlrString().compareTo("D") == 0 )
-      sRetorno = "DESCCLCOMIS";
-    return sRetorno;
+  
+    String sRetorno = "DESCCLCOMIS";
+
+	if ( rgOrdem.getVlrString().compareTo( "C" ) == 0 ) {
+		sRetorno = "CODCLCOMIS";
+	}
+	
+	return sRetorno;
   }
+  
+  public String getTipo(){
+		
+		return rgTipo.getVlrString();
+	}
 }

@@ -152,9 +152,11 @@ public class FTrocaDoc extends FFilho implements ActionListener {
   public void actionPerformed(ActionEvent evt) { 
     if (evt.getSource() == btSair)
       dispose();
+    
     else if (evt.getSource() == btTrocaDoc)
       trocar();
-  
+      
+     
   }
   public void setConexao(Connection cn) {
     super.setConexao(cn);
