@@ -26,12 +26,17 @@ class SiaccUtil {
 	abstract class Reg {
 
 		protected StringBuilder sbreg = new StringBuilder();
-
-		Reg( char codreg ) {
-
-			this.sbreg.append( codreg );
+		private char codreg; 
+		
+		Reg( char cdreg ) {
+            this.codreg = cdreg;  
+			this.sbreg.append( cdreg );
 		}
-
+		
+		char getCodreg() {
+			return this.codreg;
+		}
+		
 		String format( Object obj, ETipo tipo, int tam, int dec ) {
 
 			String retorno = null;
@@ -62,6 +67,11 @@ class SiaccUtil {
 
 	class RegA extends Reg {
 
+		RegA(char codreg, String line) {
+			super(codreg);
+			parseLine(line);
+		}
+		
 		RegA( char codrem, Map map, int numReg ) {
 
 			super( 'A' );
@@ -200,6 +210,22 @@ class SiaccUtil {
 		
 		protected void parseLine(String line) {};
 		
+	}
+
+	class RegH extends Reg {
+
+		private String identCli = null;
+		private String agenciaCli = null;
+		
+		RegH(char codreg) {
+			super(codreg);
+		}
+		
+		protected void parseLine(String line) {
+			identCli = line.substring(1, 26);
+			agenciaCli = line.substring(26, 30);
+			
+		}
 	}
 
 	class RegZ extends Reg {

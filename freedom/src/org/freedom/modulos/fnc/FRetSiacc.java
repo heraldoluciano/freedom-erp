@@ -284,7 +284,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 			tipo = row.charAt( 0 );
 			switch ( tipo ) {
 				case 'A' :
-					list.add( getRegistroA( row ) );
+					list.add( (new SiaccUtil().new RegA('A', row)) );
 					break;
 				case 'B' :
 					list.add( getRegistroB( row ) );
