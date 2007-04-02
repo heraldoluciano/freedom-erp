@@ -50,6 +50,11 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.fnc.SiaccUtil.RegA;
+import org.freedom.modulos.fnc.SiaccUtil.RegB;
+import org.freedom.modulos.fnc.SiaccUtil.RegC;
+import org.freedom.modulos.fnc.SiaccUtil.RegE;
+import org.freedom.modulos.fnc.SiaccUtil.RegZ;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -284,13 +289,19 @@ public class FRetSiacc extends FFilho implements ActionListener {
 			tipo = row.charAt( 0 );
 			switch ( tipo ) {
 				case 'A' :
-					list.add( (new SiaccUtil().new RegA('A', row)) );
+					list.add( getRegistroA( row ) );
 					break;
 				case 'B' :
 					list.add( getRegistroB( row ) );
 					break;
 				case 'C' :
 					list.add( getRegistroC( row ) );
+					break;
+				case 'E' :
+					list.add( getRegistroE( row ) );
+					break;
+				case 'Z' :
+					list.add( getRegistroZ( row ) );
 					break;
 				default :
 					break;
@@ -304,110 +315,27 @@ public class FRetSiacc extends FFilho implements ActionListener {
 	
 	private RegA getRegistroA( final String arg ) {
 		
-		RegA rega = new RegA();
-		
-		rega.A01 = arg.substring( 0, 1 );
-		rega.A02 = arg.substring( 1, 2 ).trim().length() > 0 ? new Integer( arg.substring( 1, 2 ).trim() ) : null;
-		rega.A03 = arg.substring( 2, 22 );
-		rega.A04 = arg.substring( 22, 42 );
-		rega.A05 = arg.substring( 42, 45 ).trim().length() > 0 ? new Integer( arg.substring( 42, 45 ).trim() ) : null;
-		rega.A06 = arg.substring( 45, 65 );
-		rega.A07 = arg.substring( 65, 73 ).trim().length() > 0 ? new Integer( arg.substring( 65, 73 ).trim() ) : null;
-		rega.A08 = arg.substring( 73, 79 ).trim().length() > 0 ? new Integer( arg.substring( 73, 79 ).trim() ) : null;
-		rega.A09 = arg.substring( 79, 81 ).trim().length() > 0 ? new Integer( arg.substring( 79, 81 ).trim() ) : null;
-		rega.A10 = arg.substring( 81, 98 );
-		rega.A11 = arg.substring( 98, 114 );
-		rega.A12 = arg.substring( 114, 115 );
-		rega.A13 = arg.substring( 115, 116 );
-		rega.A14 = arg.substring( 116, 143 );
-		rega.A15 = arg.substring( 143, 149 ).trim().length() > 0 ?  new Integer( arg.substring( 143, 149 ).trim() ) : null;
-		rega.A16 = arg.substring( 149 );
-		
-		return rega;
+		return new SiaccUtil().new RegA( arg );
 	}
 	
 	private RegB getRegistroB( final String arg ) {
-		
-		RegB regb = new RegB();
-		
-		regb.B01 = arg.substring( 0, 1 );
-		regb.B02 = arg.substring( 1, 26 );
-		regb.B03 = arg.substring( 26, 30 ).trim().length() > 0 ? new Integer( arg.substring( 26, 30 ).trim() ) : null;
-		regb.B04 = arg.substring( 30, 44 );
-		regb.B05 = arg.substring(  44, 52  ).trim().length() > 0 ? new Integer( arg.substring( 44, 52 ).trim() ) : null;
-		regb.B06 = arg.substring( 52, 148 );
-		regb.B07 = arg.substring( 148, 149 ).trim().length() > 0 ? new Integer( arg.substring( 148, 149 ).trim() ) : null;
-		regb.B08 = arg.substring( 149 ).trim().length() > 0 ? new Integer( arg.substring( 149 ).trim() ) : null;
-		
-		return regb;
+
+		return new SiaccUtil().new RegB( arg );
 	}
 	
 	private RegC getRegistroC( final String arg ) {
 		
-		RegC regc = new RegC();
-		
-		regc.C01 = arg.substring( 0, 1 );
-		regc.C02 = arg.substring( 1, 26 );
-		regc.C03 = arg.substring( 26, 30 ).trim().length() > 0 ? new Integer( arg.substring( 26, 30 ) ) : null;
-		regc.C04 = arg.substring( 30, 44 );
-		regc.C05 = arg.substring( 44, 84 );
-		regc.C06 = arg.substring( 84, 124 );
-		regc.C07 = arg.substring( 124, 143 );
-		regc.C08 = arg.substring( 143, 149 ).trim().length() > 0 ? new Integer( arg.substring( 143, 149 ) ) : null;
-		regc.C09 = arg.substring( 149 ).trim().length() > 0 ? new Integer( arg.substring( 149 ) ) : null;
-		
-		return regc;
+		return new SiaccUtil().new RegC( arg );
 	}
 	
-	private class RegA {
+	private RegE getRegistroE( final String arg ) {
 		
-		String A01 = null;
-		Integer A02 = null;
-		String A03 = null;
-		String A04 = null;
-		Integer A05 = null;
-		String A06 = null;
-		Integer A07 = null;
-		Integer A08 = null;
-		Integer A09 = null;
-		String A10 = null;
-		String A11 = null;
-		String A12 = null;
-		String A13 = null;
-		String A14 = null;
-		Integer A15 = null;
-		String A16 = null;		
-		
-		public RegA(){ }
+		return new SiaccUtil().new RegE( arg );
 	}
 	
-	private class RegB {
+	private RegZ getRegistroZ( final String arg ) {
 		
-		String B01 = null;
-		String B02 = null;
-		Integer B03 = null;
-		String B04 = null;
-		Integer B05 = null;
-		String B06 = null;
-		Integer B07 = null;
-		Integer B08 = null;	
-		
-		public RegB(){ }
-	}
-	
-	private class RegC {
-		
-		String C01 = null;
-		String C02 = null;
-		Integer C03 = null;
-		String C04 = null;
-		String C05 = null;
-		String C06 = null;
-		String C07 = null;
-		Integer C08 = null;
-		Integer C09 = null;	
-		
-		public RegC(){ }
+		return new SiaccUtil().new RegZ( arg );
 	}
 
 	public void actionPerformed( ActionEvent evt ) {

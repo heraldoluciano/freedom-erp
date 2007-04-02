@@ -543,7 +543,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 				if ( sitRemessa.indexOf(( r.getArgs()[ SiaccUtil.EColrec.SITREMESSA.ordinal() ] ))>-1 ) {
 					e = new SiaccUtil().new RegE( 'E', r, numReg++, numAgenda );
 					list.add( e );
-					vlrtotal += e.getVlrparc();
+					vlrtotal += e.getVlrParc();
 					numAgenda++;
 				}
 			}
