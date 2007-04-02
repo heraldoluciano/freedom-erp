@@ -292,8 +292,12 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 	
 		boolean retorno = false;
 		try {
-			PreparedStatement ps = con.prepareStatement( "SELECT I.CODCONV, P.NOMEEMP, I.VERLAYOUT, I.IDENTSERV, I.CONTACOMPR, " + "I.IDENTAMBCLI, I.IDENTAMBBCO, I.NROSEQ FROM SGITPREFERE6 I, SGPREFERE6 P WHERE I.CODEMP=? AND "
-					+ "I.CODFILIAL=? AND I.CODEMPBO=? AND I.CODFILIALBO=? AND I.CODBANCO=? AND I.TIPOFEBRABAN=? AND " + "P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL" );
+			PreparedStatement ps = con.prepareStatement( "SELECT I.CODCONV, P.NOMEEMP, I.VERLAYOUT, " +
+					"I.IDENTSERV, I.CONTACOMPR, " + "I.IDENTAMBCLI, I.IDENTAMBBCO, " +
+					"I.NROSEQ FROM SGITPREFERE6 I, SGPREFERE6 P WHERE I.CODEMP=? AND " +
+					"I.CODFILIAL=? AND I.CODEMPBO=? AND " +
+					"I.CODFILIALBO=? AND I.CODBANCO=? AND I.TIPOFEBRABAN=? AND " + 
+					"P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
 			ps.setInt( 3, Aplicativo.iCodEmp );
@@ -311,15 +315,20 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 				prefs.put( SiaccUtil.EPrefs.CONTACOMPR, rs.getString( SiaccUtil.EPrefs.CONTACOMPR.toString() ) );
 				prefs.put( SiaccUtil.EPrefs.IDENTAMBCLI, rs.getString( SiaccUtil.EPrefs.IDENTAMBCLI.toString() ) );
 				prefs.put( SiaccUtil.EPrefs.IDENTAMBBCO, rs.getString( SiaccUtil.EPrefs.IDENTAMBBCO.toString() ) );
-				prefs.put( SiaccUtil.EPrefs.NROSEQ, rs.getInt( SiaccUtil.EPrefs.NROSEQ.toString() ) );
+				prefs.put( SiaccUtil.EPrefs.NROSEQ, new Integer(rs.getInt( SiaccUtil.EPrefs.NROSEQ.toString() )) );
+				retorno = true;
+			}
+			else {
+				retorno = false;
+				Funcoes.mensagemInforma( null, "Ajuste os parâmetros antes de executar!" );
 			}
 			rs.close();
 			ps.close();
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
-			retorno = true;
 		} catch ( SQLException sqlError ) {
+			retorno = false;
 			Funcoes.mensagemErro( this, "Carregando parâmetros!\n" + sqlError.getMessage() );
 			lbStatus.setText( "" );
 		}
@@ -445,39 +454,43 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		HashSet<SiaccUtil.StuffRec> hsRec = new HashSet<SiaccUtil.StuffRec>();
 	
 		if ( consisteExporta( hsCli, hsRec ) ) {
-	
-			lbStatus.setText( "     criando arquivo ..." );
-	
-			FileDialog fileDialogSiacc = null;
-			fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
-			fileDialogSiacc.setFile( "remessa.txt" );
-			fileDialogSiacc.setVisible( true );
-	
-			if ( fileDialogSiacc.getFile() == null ) {
-				lbStatus.setText( "" );
-				return retorno;
-			}
-	
-			sFileName = fileDialogSiacc.getDirectory() + fileDialogSiacc.getFile();
-	
-			fileSiacc = new File( sFileName );
-	
-			try {
-				fileSiacc.createNewFile();
-				fw = new FileWriter( fileSiacc );
-				bw = new BufferedWriter( fw );
-	
-				lbStatus.setText( "     gravando arquivo ..." );
-				retorno = setPrefs();
-				retorno = gravaRemessa( bw, hsCli, hsRec, rgSitRemessa.getVlrString() );
-			} catch ( IOException ioError ) {
-				Funcoes.mensagemErro( this, "Erro Criando o arquivo!\n " + sFileName + "\n" + ioError.getMessage() );
-				lbStatus.setText( "" );
-				return retorno;
-			}
 			
-			lbStatus.setText( "     pronto ..." );
-			atualizaSitremessaExp(hsCli, hsRec);
+			retorno = setPrefs();
+			
+			if (retorno) {
+				lbStatus.setText( "     criando arquivo ..." );
+		
+				FileDialog fileDialogSiacc = null;
+				fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
+				sFileName = "remessa"+prefs.get( SiaccUtil.EPrefs.NROSEQ )+".txt";
+				fileDialogSiacc.setFile( sFileName );
+				fileDialogSiacc.setVisible( true );
+		
+				if ( fileDialogSiacc.getFile() == null ) {
+					lbStatus.setText( "" );
+					return retorno;
+				}
+		
+				sFileName = fileDialogSiacc.getDirectory() + fileDialogSiacc.getFile();
+		
+				fileSiacc = new File( sFileName );
+		
+				try {
+					fileSiacc.createNewFile();
+					fw = new FileWriter( fileSiacc );
+					bw = new BufferedWriter( fw );
+		
+					lbStatus.setText( "     gravando arquivo ..." );
+					retorno = gravaRemessa( bw, hsCli, hsRec, rgSitRemessa.getVlrString() );
+				} catch ( IOException ioError ) {
+					Funcoes.mensagemErro( this, "Erro Criando o arquivo!\n " + sFileName + "\n" + ioError.getMessage() );
+					lbStatus.setText( "" );
+					return retorno;
+				}
+				
+				lbStatus.setText( "     pronto ..." );
+				atualizaSitremessaExp(hsCli, hsRec);
+			}
 			
 		}
 		return retorno;
@@ -486,6 +499,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 	private void atualizaSitremessaExp(HashSet<SiaccUtil.StuffCli> hsCli, HashSet<SiaccUtil.StuffRec> hsRec) {
 		setSitremessa(hsRec, "01");
 		persisteDados( hsCli, hsRec );
+		updatePrefere();
 	}
 	
 	private void setSitremessa(HashSet<SiaccUtil.StuffRec> hsRec, final String sit) {
@@ -494,13 +508,17 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		}
 	}
 	
-	private boolean gravaRemessa( final BufferedWriter bw, HashSet<SiaccUtil.StuffCli> hsCli, HashSet<SiaccUtil.StuffRec> hsRec, String sitRemessa ) {
+	private boolean gravaRemessa( final BufferedWriter bw, HashSet<SiaccUtil.StuffCli> hsCli, 
+			HashSet<SiaccUtil.StuffRec> hsRec, String sitRemessa ) {
 
 		boolean retorno = false;
+		Integer numReg = new Integer(1);
+		Integer nroSeq = (Integer) prefs.get(SiaccUtil.EPrefs.NROSEQ); 
+	
 		try {
+			
 			ArrayList<SiaccUtil.Reg> list = new ArrayList<SiaccUtil.Reg>();
-			list.add( new SiaccUtil().new RegA( '1', prefs ) );
-			int i = 2;
+			list.add( new SiaccUtil().new RegA( '1', prefs, numReg++ ) );
 			int numAgenda = 1;
 			float vlrtotal = 0;
 			SiaccUtil.RegE e = null;
@@ -508,35 +526,37 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 			for ( SiaccUtil.StuffCli c : hsCli ) {
 				if ( "B".equals( c.getArgs()[ SiaccUtil.EColcli.TIPOREMCLI.ordinal() ] ) ) {
 					list.add(  new  SiaccUtil().new RegB( 'B', c ) ) ;
-					i++;
+					numReg++;
 				}
 			}
 			for ( SiaccUtil.StuffCli c : hsCli ) {
 				if ( "C".equals( c.getArgs()[ SiaccUtil.EColcli.TIPOREMCLI.ordinal() ] ) ) {
-					list.add( new SiaccUtil().new RegC( 'C', c, i++ ) );
+					list.add( new SiaccUtil().new RegC( 'C', c, numReg++ ) );
 				}
 			}
 			for ( SiaccUtil.StuffCli c : hsCli ) {
 				if ( "D".equals( c.getArgs()[ SiaccUtil.EColcli.TIPOREMCLI.ordinal() ] ) ) {
-					list.add( new SiaccUtil().new RegD( 'D', c, i++ ) );
+					list.add( new SiaccUtil().new RegD( 'D', c, numReg++ ) );
 				}
 			}
 			for ( SiaccUtil.StuffRec r : hsRec ) {
 				if ( sitRemessa.indexOf(( r.getArgs()[ SiaccUtil.EColrec.SITREMESSA.ordinal() ] ))>-1 ) {
-					e = new SiaccUtil().new RegE( 'E', r, i++, numAgenda );
+					e = new SiaccUtil().new RegE( 'E', r, numReg++, numAgenda );
 					list.add( e );
 					vlrtotal += e.getVlrparc();
 					numAgenda++;
 				}
 			}
 			
-			list.add(new SiaccUtil().new RegZ(i, vlrtotal, i++));
+			list.add(new SiaccUtil().new RegZ(numReg, vlrtotal, numReg++));
 			
 			for ( SiaccUtil.Reg reg : list ) {
 				bw.write( reg.toString() );
 			}
 			bw.flush();
 			bw.close();
+			prefs.put( SiaccUtil.EPrefs.NROSEQ, ++nroSeq ) ;
+			
 		} catch ( IOException ioError ) {
 			Funcoes.mensagemErro( this, "Erro gravando no arquivo!\n" + ioError.getMessage() );
 			lbStatus.setText( "" );
@@ -709,7 +729,8 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		return retorno;
 	}
 
-	private boolean persisteDados( final HashSet<SiaccUtil.StuffCli> hsCli, final HashSet<SiaccUtil.StuffRec> hsRec ) {
+	private boolean persisteDados( final HashSet<SiaccUtil.StuffCli> hsCli, 
+			final HashSet<SiaccUtil.StuffRec> hsRec ) {
 
 		boolean retorno = true;
 		for ( SiaccUtil.StuffCli stfCli : hsCli ) {
@@ -738,7 +759,36 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		return retorno;
 	}
 
-	private boolean completaTabela( final int linha, final Integer codCli, final String razCli, final String agenciaCli, final String identCli, final String subTipo ) {
+	private boolean updatePrefere() {
+		boolean retorno = true;
+		
+		try {
+			PreparedStatement ps = con.prepareStatement( "UPDATE SGITPREFERE6 I SET NROSEQ=? " +
+					"WHERE I.CODEMP=? AND I.CODFILIAL=? AND I.CODEMPBO=? AND " +
+					"I.CODFILIALBO=? AND I.CODBANCO=? AND I.TIPOFEBRABAN=?");
+			ps.setInt( 1, (Integer) prefs.get(SiaccUtil.EPrefs.NROSEQ) );
+			ps.setInt( 2, Aplicativo.iCodEmp);
+			ps.setInt( 3, ListaCampos.getMasterFilial( "SGITPREFERE6" ));
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, ListaCampos.getMasterFilial( "FNBANCO" ) );
+			ps.setString( 6, (String) prefs.get( SiaccUtil.EPrefs.CODBANCO ) );
+			ps.setString( 7, TIPO_FEBRABAN );
+			ps.executeUpdate();
+			ps.close();
+			if (!con.getAutoCommit()) {
+				con.commit();
+			}
+		}
+		catch (SQLException e) {
+			retorno = false;
+			Funcoes.mensagemErro( this, "Erro atualizando parâmetros!\n" + e.getMessage() );
+		}
+
+		return retorno;
+	}
+	
+	private boolean completaTabela( final int linha, final Integer codCli, final String razCli, 
+			final String agenciaCli, final String identCli, final String subTipo ) {
 
 		boolean retorno = true;
 

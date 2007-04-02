@@ -6,8 +6,6 @@ import java.util.Map;
 
 import org.freedom.funcoes.Funcoes;
 
-
-
 class SiaccUtil {
 	enum EColcli {
 		CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN, AGENCIACLI, IDENTCLI, TIPOREMCLI
@@ -64,7 +62,7 @@ class SiaccUtil {
 
 	class RegA extends Reg {
 
-		RegA( char codrem, Map map ) {
+		RegA( char codrem, Map map, int numReg ) {
 
 			super( 'A' );
 			this.sbreg.append( codrem );
@@ -80,7 +78,7 @@ class SiaccUtil {
 			this.sbreg.append( format( map.get( EPrefs.IDENTAMBCLI ), ETipo.X, 1, 0 ) );
 			this.sbreg.append( format( map.get( EPrefs.IDENTAMBBCO ), ETipo.X, 1, 0 ) );
 			this.sbreg.append( format( "", ETipo.X, 27, 0 ) ); // Reservado para o futuro
-			this.sbreg.append( format( "1", ETipo.$9, 6, 0 ) ); // Número sequencial do registro
+			this.sbreg.append( format( numReg, ETipo.$9, 6, 0 ) ); // Número sequencial do registro
 			this.sbreg.append( format( "", ETipo.X, 1, 0 ) ); // Reservado para o futuro
 			this.sbreg.append( (char) 13 );
 			this.sbreg.append( (char) 10 );
