@@ -1849,8 +1849,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						width="83"
 						height="15"
 						key="TXTCNSCONV-3"
-						stretchType="RelativeToTallestObject"
-						isPrintRepeatedValues="false"/>
+						stretchType="RelativeToTallestObject"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Justified" lineSpacing="Single">
 						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false" isStrikeThrough="false" />
