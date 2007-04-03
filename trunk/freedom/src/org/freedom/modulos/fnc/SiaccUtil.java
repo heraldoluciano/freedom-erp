@@ -74,7 +74,7 @@ class SiaccUtil {
 		private String identServ = null;		// registro A.10
 		private String contaComp = null;		// registro A.11
 		private String identAmbCli = null;		// registro A.12
-		private String identAmbCaixa = null;	// registro A.13
+		private String identAmbBco = null;		// registro A.13
 		//private String A14 = null;			// registro A.14
 		private Integer seqRegistro = null;		// registro A.15
 		//private String A16 = null;			// registro A.16
@@ -120,7 +120,7 @@ class SiaccUtil {
 			setIdentServ( line.substring( 81, 98 ) );
 			setContaComp( line.substring( 98, 114 ) );
 			setIdentAmbCli( line.substring( 114, 115 ) );
-			setIdentAmbCaixa( line.substring( 115, 116 ) );
+			setIdentAmbBco( line.substring( 115, 116 ) );
 			//A14 = line.substring( 116, 143 );
 			setSeqRegistro( line.substring( 143, 149 ).trim().length() > 0 ?  new Integer( line.substring( 143, 149 ).trim() ) : null );
 			//A16 = line.substring( 149 );
@@ -167,11 +167,11 @@ class SiaccUtil {
 		}
 		
 		public String getIdentAmbCaixa() {		
-			return identAmbCaixa;
+			return identAmbBco;
 		}
 		
-		public void setIdentAmbCaixa( final String identAmbCaixa ) {		
-			this.identAmbCaixa = identAmbCaixa;
+		public void setIdentAmbBco( final String identAmbCaixa ) {		
+			this.identAmbBco = identAmbCaixa;
 		}
 		
 		public String getIdentAmbCli() {		
@@ -237,7 +237,7 @@ class SiaccUtil {
 		private static final char CODREG = 'B'; // registro B.01
 		private String identCliEmp = null;		// registro B.02
 		private Integer agenciaDebt = null;		// registro B.03
-		private String identCliBanco = null;	// registro B.04
+		private String identCliBco = null;		// registro B.04
 		private Integer dataOpcao = null;		// registro B.05				
 		//private String B06 = null;			// registro B.06
 		private Integer codMovimento = null;	// registro B.07
@@ -299,12 +299,12 @@ class SiaccUtil {
 			this.dataOpcao = dataOpcao;
 		}
 		
-		public String getIdentCliBanco() {		
-			return identCliBanco;
+		public String getIdentCliBco() {		
+			return identCliBco;
 		}
 		
 		public void setIdentCliBanco( final String identCliBanco ) {		
-			this.identCliBanco = identCliBanco;
+			this.identCliBco = identCliBanco;
 		}
 		
 		public String getIdentCliEmp() {		

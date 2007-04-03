@@ -118,8 +118,6 @@ public class FRetSiacc extends FFilho implements ActionListener {
 
 	private final ListaCampos lcBanco = new ListaCampos( this );
 
-	private FileReader fileReadesSiacc = null;
-
 	public FRetSiacc() {
 
 		super( false );
@@ -234,6 +232,9 @@ public class FRetSiacc extends FFilho implements ActionListener {
 	}
 
 	private void execImportar() {
+
+		FileReader fileReaderSiacc = null;
+		ArrayList<SiaccUtil.Reg> list = null;
 		
 		if ("".equals( txtCodBanco.getVlrString())){
 			Funcoes.mensagemInforma( this, "Selecione o Banco!!" );
@@ -259,12 +260,12 @@ public class FRetSiacc extends FFilho implements ActionListener {
 
 			try {
 
-				fileReadesSiacc = new FileReader( fileSiacc );
-				if ( fileReadesSiacc == null ) {
+				fileReaderSiacc = new FileReader( fileSiacc );
+				if ( fileReaderSiacc == null ) {
 					Funcoes.mensagemInforma( this, "Arquivo não encontrado" );
 				}
 				else {
-					leArquivo();
+					leArquivo( fileReaderSiacc, list );
 				}
 
 			} catch ( IOException ioError ) {
@@ -276,68 +277,41 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		}
 	}
 		
-	private void leArquivo() throws IOException {
+	private void leArquivo( FileReader fileReaderSiacc, ArrayList<SiaccUtil.Reg> list ) throws IOException {
 
-		ArrayList<Object> list = new ArrayList<Object>();
-		String row = null;
-		String log = "";
+		list = new ArrayList<SiaccUtil.Reg>();
+		String line = null;
 		char tipo;
-		BufferedReader in = new BufferedReader( fileReadesSiacc );
+		BufferedReader in = new BufferedReader( fileReaderSiacc );
 
-		while ( ( row = in.readLine() ) != null ) {
+		while ( ( line = in.readLine() ) != null ) {
 
-			tipo = row.charAt( 0 );
+			tipo = line.charAt( 0 );
 			switch ( tipo ) {
 				case 'A' :
-					list.add( getRegistroA( row ) );
+					list.add( new SiaccUtil().new RegA( line ) );
 					break;
 				case 'B' :
-					list.add( getRegistroB( row ) );
+					list.add( new SiaccUtil().new RegB( line ) );
 					break;
 				case 'C' :
-					list.add( getRegistroC( row ) );
+					list.add( new SiaccUtil().new RegC( line ) );
 					break;
 				case 'E' :
-					list.add( getRegistroE( row ) );
+					list.add( new SiaccUtil().new RegE( line ) );
 					break;
 				case 'Z' :
-					list.add( getRegistroZ( row ) );
+					list.add( new SiaccUtil().new RegZ( line ) );
 					break;
 				default :
 					break;
 			}
-			
-			log += row+"\n";
+
 		}
 
 		in.close();
 	}
 	
-	private RegA getRegistroA( final String arg ) {
-		
-		return new SiaccUtil().new RegA( arg );
-	}
-	
-	private RegB getRegistroB( final String arg ) {
-
-		return new SiaccUtil().new RegB( arg );
-	}
-	
-	private RegC getRegistroC( final String arg ) {
-		
-		return new SiaccUtil().new RegC( arg );
-	}
-	
-	private RegE getRegistroE( final String arg ) {
-		
-		return new SiaccUtil().new RegE( arg );
-	}
-	
-	private RegZ getRegistroZ( final String arg ) {
-		
-		return new SiaccUtil().new RegZ( arg );
-	}
-
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btCarrega ) {
