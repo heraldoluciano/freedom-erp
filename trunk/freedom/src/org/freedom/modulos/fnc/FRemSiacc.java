@@ -512,7 +512,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 			HashSet<SiaccUtil.StuffRec> hsRec, String sitRemessa ) {
 
 		boolean retorno = false;
-		Integer numReg = new Integer(1);
+		Integer numReg = new Integer(0);
 		Integer nroSeq = (Integer) prefs.get(SiaccUtil.EPrefs.NROSEQ); 
 	
 		try {
