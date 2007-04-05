@@ -278,7 +278,7 @@ public class NFIswara extends Layout {
 						imp.say( 32, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(cab.getFloat(NF.C_VLRICMSPED))));
 						imp.say(114, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRPRODITPED))));
 						imp.pulaLinha( 2, imp.comprimido());
-						imp.say(  4, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(cab.getFloat(NF.C_VLRFRETEPED))));
+						imp.say(  4, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(frete.getFloat(NF.C_VLRFRETEPED))));
 						imp.say( 58, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRADICITPED))));
 						imp.say( 87, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(cab.getFloat(NF.C_VLRIPIPED))));
 						imp.say(114, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(cab.getFloat(NF.C_VLRLIQPED))));
