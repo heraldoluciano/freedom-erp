@@ -417,7 +417,7 @@ public class FRVendasDet extends FRelatorio {
 				imp.say( 124, "| " + ( rs.getString( 1 ) != null ? rs.getString( 1 ) : "" ) );
 				imp.say( 135, "|" );
 
-				bVlrDesc = bVlrDesc.add( rs.getBigDecimal( "VlrDescItVenda" ) );
+				bVlrDesc = bVlrDesc.add( new BigDecimal( rs.getFloat( "VlrDescItVenda" ) ) );
 
 				iCodVendaAnt = rs.getInt( "CodVenda" );
 			}
