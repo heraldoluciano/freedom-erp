@@ -551,7 +551,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 				}
 			}
 			
-			list.add(new SiaccUtil().new RegZ(numReg, vlrtotal, numReg++));
+			list.add(new SiaccUtil().new RegZ(numReg+1, vlrtotal, numReg++));
 			
 			for ( SiaccUtil.Reg reg : list ) {
 				bw.write( reg.toString() );
