@@ -522,7 +522,10 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 			int numAgenda = 1;
 			float vlrtotal = 0;
 			SiaccUtil.RegE e = null;
-
+			
+			// Implementar no futuro (Registro de clientes não podem ser enviados com Registro E)
+			
+			/*
 			for ( SiaccUtil.StuffCli c : hsCli ) {
 				if ( "B".equals( c.getArgs()[ SiaccUtil.EColcli.TIPOREMCLI.ordinal() ] ) ) {
 					list.add(  new  SiaccUtil().new RegB( 'B', c ) ) ;
@@ -538,7 +541,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 				if ( "D".equals( c.getArgs()[ SiaccUtil.EColcli.TIPOREMCLI.ordinal() ] ) ) {
 					list.add( new SiaccUtil().new RegD( 'D', c, numReg++ ) );
 				}
-			}
+			} */
 			for ( SiaccUtil.StuffRec r : hsRec ) {
 				if ( sitRemessa.indexOf(( r.getArgs()[ SiaccUtil.EColrec.SITREMESSA.ordinal() ] ))>-1 ) {
 					e = new SiaccUtil().new RegE( 'E', r, numReg++, numAgenda );
