@@ -314,6 +314,7 @@ public class FRListaPreco extends FRelatorio {
 		String sPrecopag5 = space+"|";
 		String sPrecopag6 = space+"|";
 		String sPrecopag7 = space+"|";
+		String sCodgrup = "";
 		ImprimeOS imp = new ImprimeOS("",con);
 		int linPag = imp.verifLinPag()-1;
 		int iContaItem = 0;
@@ -363,9 +364,15 @@ public class FRListaPreco extends FRelatorio {
 			sSQL  = "SELECT G.DESCGRUP,P.CODGRUP,P.CODPROD,P.REFPROD,P.DESCPROD,P.CODUNID,"+
 					"PP.CODPLANOPAG,PG.DESCPLANOPAG,PP.PRECOPROD "+
 					"FROM EQPRODUTO P, VDPRECOPROD PP, FNPLANOPAG PG, EQGRUPO G "+ 
-					"WHERE P.CODPROD=PP.CODPROD "+
-					"AND G.CODGRUP = P.CODGRUP "+
-					"AND P.CODGRUP LIKE ? AND P.ATIVOPROD='S' "+
+					"WHERE P.CODPROD=PP.CODPROD " +
+					"AND P.CODEMP=PP.CODEMP " +
+					"AND P.CODFILIAL=PP.CODFILIAL "+
+					"AND G.CODGRUP = P.CODGRUP " +
+					"AND G.CODEMP=P.CODEMPGP " +
+					"AND G.CODFILIAL=P.CODFILIALGP "+
+					"AND P.CODGRUP LIKE ? AND P.ATIVOPROD='S' " +
+					"AND PG.CODEMP=PP.CODEMPPG " +
+					"AND PG.CODFILIAL=PP.CODFILIALPG "+
 					"AND PG.CODPLANOPAG = PP.CODPLANOPAG "+
 					"AND PP.CODPLANOPAG IN (?,?,?,?,?,?,?)"+sWhere+
 					" ORDER BY "+sOrdem; 
@@ -396,18 +403,6 @@ public class FRListaPreco extends FRelatorio {
 					imp.say(  0, imp.comprimido() );	
 					imp.say(  0, "|" + linhaFina + "|" );
 					
-                   	if (sAgrupar.equals("S")) {
-
-    					sSubGrupo = "SUBGRUPO: "+rs.getString("DescGrup").trim();
-    					sSubGrupo = "|" + Funcoes.replicate(" ",68-(sSubGrupo.length()/2)) + sSubGrupo;
-    					sSubGrupo += Funcoes.replicate(" ", 133-sSubGrupo.length()) + " |";
-    					
-                   		imp.pulaLinha( 1, imp.comprimido() );
-				   		imp.say(  0, sSubGrupo);
-				   		imp.pulaLinha( 1, imp.comprimido() );
-				   		imp.say(  0, "|" + linhaFina + "|" );
-                    }
-                   	
                    	imp.pulaLinha( 1, imp.comprimido() );
 					imp.say(  0, "| Codigo");
 					imp.say( 14, "| Desc.");
@@ -424,6 +419,19 @@ public class FRListaPreco extends FRelatorio {
 					imp.say(  0, "|" + linhaFina + "|" );
 					
 				}
+
+               	if ( (sAgrupar.equals("S")) && (!sCodgrup.equals(rs.getString( "CODGRUP" ))) ) {
+
+					sSubGrupo = "SUBGRUPO: "+rs.getString("DescGrup").trim();
+					sSubGrupo = "|" + Funcoes.replicate(" ",68-(sSubGrupo.length()/2)) + sSubGrupo;
+					sSubGrupo += Funcoes.replicate(" ", 133-sSubGrupo.length()) + " |";
+					
+               		imp.pulaLinha( 1, imp.comprimido() );
+			   		imp.say(  0, sSubGrupo);
+			   		imp.pulaLinha( 1, imp.comprimido() );
+			   		imp.say(  0, "|" + linhaFina + "|" );
+			   		sCodgrup = rs.getString( "CODGRUP" );
+                }
 				
             	if ((sCodprod.length() > 0) && (!sCodprod.equals(rs.getString("codprod")))) {
             		
