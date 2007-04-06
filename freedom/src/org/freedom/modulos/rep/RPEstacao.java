@@ -36,6 +36,7 @@ public class RPEstacao extends FDados {
 	private final JTextFieldPad txtCodEst = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtDescEst = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
 
 	public RPEstacao() {
 
@@ -43,11 +44,8 @@ public class RPEstacao extends FDados {
 		setTitulo( "Estação de trabalho" );
 		setAtribos( 50, 50, 420, 140 );
 		
-		montaTela();
-		
-		setListaCampos( false, "ESTACAO", "SG" );
-		lcCampos.setQueryInsert( false );
-
+		montaTela();		
+		setListaCampos( true, "ESTACAO", "SG" );
 	}
 	
 	private void montaTela() {
