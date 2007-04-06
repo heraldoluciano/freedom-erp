@@ -33,6 +33,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
+import org.freedom.acao.PostEvent;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
@@ -96,6 +97,8 @@ public class RPPedido extends FDetalhe {
 	
 	private final JTextFieldPad txtPrecoItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 	
+	private final JTextFieldPad txtVlrItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
 	private final JTextFieldPad txtPercIPIItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 8, Aplicativo.casasDec );
 	
 	private final JTextFieldPad txtVlrIPIItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
@@ -149,6 +152,10 @@ public class RPPedido extends FDetalhe {
 	private final ListaCampos lcFornecedor = new ListaCampos( this, "FO" );
 
 	private final ListaCampos lcTransportadora = new ListaCampos( this, "TP" );
+
+	private final ListaCampos lcProduto = new ListaCampos( this, "PD" );
+
+	private final ListaCampos lcFornecedorItem = new ListaCampos( this, "FO" );
 	
 	
 	public RPPedido() {
@@ -160,21 +167,23 @@ public class RPPedido extends FDetalhe {
 		montaRadioGrups();
 		montaListaCampos();
 		
-		montaMaster();	
-
+		montaMaster();			
 		setListaCampos( true, "PEDIDO", "RP" );
-		lcCampos.setQueryInsert( true );
 
 		setListaCampos( lcDet );
-		setNavegador( navRod );
-
+		setNavegador( navRod );		
 		montaDetale();
-
-		//setListaCampos( true, "PARCPLANOPAG", "RP" );
-		lcDet.setQueryInsert( false );
-
-		navRod.setAtivo( 4, false );
-		navRod.setAtivo( 5, false );
+		setListaCampos( true, "ITPEDIDO", "RP" );		
+		montaTab();	
+		
+		tab.setTamColuna( 50, 0 );
+		tab.setTamColuna( 100, 1 );
+		tab.setTamColuna( 235, 2 );
+		tab.setTamColuna( 100, 3 );
+		tab.setTamColuna( 100, 4 );
+		tab.setTamColuna( 100, 5 );
+		
+		lcDet.addPostListener( this );
 	}
 	
 	private void montaRadioGrups() {
@@ -270,6 +279,28 @@ public class RPPedido extends FDetalhe {
 		lcTransportadora.setReadOnly( true );
 		txtCodTran.setTabelaExterna( lcTransportadora );
 		
+		/**********************
+		 *      PRODUTO       *
+		 **********************/
+		
+		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
+		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProduto.montaSql( false, "PRODUTO", "RP" );
+		lcProduto.setQueryCommit( false );
+		lcProduto.setReadOnly( true );
+		txtCodProd.setTabelaExterna( lcProduto );	
+		
+		/**********************
+		 *    FORNECEDOR 2    *
+		 **********************/
+		
+		lcFornecedorItem.add( new GuardaCampo( txtCodForItem, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
+		lcFornecedorItem.add( new GuardaCampo( txtRazForItem, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcFornecedorItem.montaSql( false, "FORNECEDOR", "RP" );
+		lcFornecedorItem.setQueryCommit( false );
+		lcFornecedorItem.setReadOnly( true );
+		txtCodForItem.setTabelaExterna( lcFornecedorItem );	
+		
 	}
 	
 	private void montaMaster() {
@@ -315,22 +346,22 @@ public class RPPedido extends FDetalhe {
 		
 		panelItens.add( panelTotaisItens, BorderLayout.NORTH );
 		
-		panelTotaisItens.setPreferredSize( new Dimension( 300, 70 ) );
+		panelTotaisItens.setPreferredSize( new Dimension( 300, 65 ) );
 		panelTotaisItens.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(), "Totais" ) );
-		panelTotaisItens.adic( new JLabel( "Pedido" ), 7, 0, 91, 20 );		
-		panelTotaisItens.adic( txtVlrTotPed, 7, 20, 91, 20 );
-		panelTotaisItens.adic( new JLabel( "Itens" ), 101, 0, 91, 20 );
-		panelTotaisItens.adic( txtQdtTotPed, 101, 20, 91, 20 );
-		panelTotaisItens.adic( new JLabel( "IPI" ), 195, 0, 91, 20 );
-		panelTotaisItens.adic( txtIPITotPed, 195, 20, 91, 20 );
-		panelTotaisItens.adic( new JLabel( "Desconto" ), 289, 0, 91, 20 );
-		panelTotaisItens.adic( txtDescTotPed, 289, 20, 91, 20 );
-		panelTotaisItens.adic( new JLabel( "Adicional" ), 383, 0, 91, 20 );
-		panelTotaisItens.adic( txtAdicTotPed, 383, 20, 91, 20 );
-		panelTotaisItens.adic( new JLabel( "Receber" ), 477, 0, 91, 20 );
-		panelTotaisItens.adic( txtRecTotPed, 477, 20, 91, 20 );
-		panelTotaisItens.adic( new JLabel( "Pagar" ), 571, 0, 91, 20 );
-		panelTotaisItens.adic( txtPagTotPed, 571, 20, 97, 20 );
+		panelTotaisItens.adic( new JLabel( "Pedido" ), 7, 0, 91, 15 );		
+		panelTotaisItens.adic( txtVlrTotPed, 7, 15, 91, 20 );
+		panelTotaisItens.adic( new JLabel( "Itens" ), 101, 0, 91, 15 );
+		panelTotaisItens.adic( txtQdtTotPed, 101, 15, 91, 20 );
+		panelTotaisItens.adic( new JLabel( "IPI" ), 195, 0, 91, 15 );
+		panelTotaisItens.adic( txtIPITotPed, 195, 15, 91, 20 );
+		panelTotaisItens.adic( new JLabel( "Desconto" ), 289, 0, 91, 15 );
+		panelTotaisItens.adic( txtDescTotPed, 289, 15, 91, 20 );
+		panelTotaisItens.adic( new JLabel( "Adicional" ), 383, 0, 91, 15 );
+		panelTotaisItens.adic( txtAdicTotPed, 383, 15, 91, 20 );
+		panelTotaisItens.adic( new JLabel( "Receber" ), 477, 0, 91, 15 );
+		panelTotaisItens.adic( txtRecTotPed, 477, 15, 91, 20 );
+		panelTotaisItens.adic( new JLabel( "Pagar" ), 571, 0, 91, 15 );
+		panelTotaisItens.adic( txtPagTotPed, 571, 15, 97, 20 );
 			
 		txtVlrTotPed.setAtivo( false );
 		txtQdtTotPed.setAtivo( false );
@@ -340,31 +371,52 @@ public class RPPedido extends FDetalhe {
 		txtRecTotPed.setAtivo( false );
 		txtPagTotPed.setAtivo( false );
 		
-		setAltDet( 165 );
+		setAltDet( 175 );
 		setPainel( panelCamposItens, panelItens );
 		
-		adicCampo( txtCodItem, 7, 20, 70, 20, "CodItVenda", "Item", ListaCampos.DB_SI, true );		
-		adicCampo( txtCodProd, 80, 20, 80, 20, "CodProd", "Cód.prod.", ListaCampos.DB_SI, txtDescProd, true );
-		adicDescFK( txtDescProd, 163, 20, 262, 20, "DescProd", "Descrição do produto" );
-		adicCampo( txtQtdItem, 428, 20, 80, 20, "QtdItVenda", "Quantidade", ListaCampos.DB_SI, false );
-		adicCampo( txtPrecoItem, 511, 20, 80, 20, "PrecoItVenda", "Preço", ListaCampos.DB_SI, false );
-		adicCampo( txtPercIPIItem, 594, 20, 80, 20, "PercIPIItVenda", "% IPI", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtVlrIPIItem, "VlrIPIItVenda", "Valor IPI", ListaCampos.DB_SI, false );
+		panelCamposItens.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(), "Itens" ) );
 		
-		adicCampo( txtPercDescItem, 7, 60, 90, 20, "PercDescItVenda", "% Desconto", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtVlrDescItem, "VlrDescItVenda", "Vlr. Desconto", ListaCampos.DB_SI, false );
-		adicCampo( txtPercAdicItem, 100, 60, 90, 20, "PercAdicVenda", "% Acrecimo", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtVlrAdicItem, "VlrAdicItVenda", "Vlr. Adicional", ListaCampos.DB_SI, false );
-		adicCampo( txtPercRedItem, 193, 60, 90, 20, "PercRecItVenda", "% Recebimento", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtVlrRecItem, "VlrRecItVenda", "Vlr. Receber", ListaCampos.DB_SI, false );
-		adicCampo( txtPercPagItem, 286, 60, 90, 20, "PercPagItVenda", "% Pagamento", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtVlrPagItem, "VlrPagItVenda", "Vlr. Pagar", ListaCampos.DB_SI, false );
-		adicCampo( txtCodForItem, 379, 60, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_SI, txtDescProd, true );
-		adicDescFK( txtRazForItem, 462, 60, 212, 20, "RazFor", "Razão social do fornecedor" );
+		adicCampo( txtCodItem, 7, 15, 70, 20, "CodItPed", "Item", ListaCampos.DB_PK, true );		
+		adicCampo( txtCodProd, 80, 15, 80, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
+		adicDescFK( txtDescProd, 163, 15, 262, 20, "DescProd", "Descrição do produto" );
+		adicCampo( txtQtdItem, 428, 15, 80, 20, "QtdItPed", "Qtd.", ListaCampos.DB_SI, true );
+		adicCampo( txtPrecoItem, 511, 15, 80, 20, "PrecoItPed", "Preço", ListaCampos.DB_SI, true );
+		adicCampoInvisivel( txtVlrItem, "VlrItPed", "Valor item", ListaCampos.DB_SI, false );
+		adicCampo( txtPercIPIItem, 594, 15, 72, 20, "PercIPIItPed", "% IPI", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtVlrIPIItem, "VlrIPIItPed", "Valor IPI", ListaCampos.DB_SI, false );
 		
+		adicCampo( txtPercDescItem, 7, 55, 90, 20, "PercDescItPed", "% Desconto", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtVlrDescItem, "VlrDescItPed", "Vlr. Desconto", ListaCampos.DB_SI, false );
+		adicCampo( txtPercAdicItem, 100, 55, 90, 20, "PercAdicItPed", "% Acrecimo", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtVlrAdicItem, "VlrAdicItPed", "Vlr. Adicional", ListaCampos.DB_SI, false );
+		adicCampo( txtPercRedItem, 193, 55, 90, 20, "PercRecItPed", "% Recebimento", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtVlrRecItem, "VlrRecItPed", "Vlr. Receber", ListaCampos.DB_SI, false );
+		adicCampo( txtPercPagItem, 286, 55, 90, 20, "PercPagItPed", "% Pagamento", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtVlrPagItem, "VlrPagItPed", "Vlr. Pagar", ListaCampos.DB_SI, false );
+		adicCampo( txtCodForItem, 379, 55, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtDescProd, true );
+		adicDescFK( txtRazForItem, 462, 55, 205, 20, "RazFor", "Razão social do fornecedor" );
+	}
+	
+	private void calculaValorItem() {
+		
+		if ( txtQtdItem.getVlrBigDecimal() != null ) {
+		
+			txtVlrItem.setVlrBigDecimal( txtQtdItem.getVlrBigDecimal().multiply( txtPrecoItem.getVlrBigDecimal() ) );
+		}
+	}
 
+	@ Override
+	public void afterPost( PostEvent e ) {
+		super.afterPost( e );
+	}
+
+	@ Override
+	public void beforePost( PostEvent e ) {
 		
-		montaTab();		
+		if ( e.getListaCampos() == lcDet ) {
+			calculaValorItem();
+		}		
+		super.beforePost( e );
 	}
 
 	public void setConexao( Connection cn ) {
@@ -377,6 +429,8 @@ public class RPPedido extends FDetalhe {
 		lcMoeda.setConexao( cn );
 		lcFornecedor.setConexao( cn );
 		lcTransportadora.setConexao( cn );
+		lcProduto.setConexao( cn );
+		lcFornecedorItem.setConexao( cn );
 	}
 
 }

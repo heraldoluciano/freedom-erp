@@ -26,6 +26,7 @@
 package org.freedom.modulos.rep;
 
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -50,9 +51,9 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	
 	private final JCheckBoxPad cbOrdemPed = new JCheckBoxPad( "Ordena pedido por ordem alfabetíca?", "S", "N" );
 
-	private final JTextFieldPad txtServidoSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtServidorSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtUsuarioSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );	
+	private final JTextFieldPad txtUsuarioSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );	
 
 	private final JTextFieldPad txtCasasDesc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -66,7 +67,10 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		setAtribos( 50, 50, 430, 430 );
 		
 		montaTela();
-		setListaCampos( true, "PREFERE1", "SG" );
+		setListaCampos( false, "PREFERE1", "SG" );
+		
+		lcCampos.setPodeIns( false );
+		lcCampos.setPodeExc( false );
 	}
 	
 	private void montaTela() {
@@ -93,7 +97,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		adic( email, 27, 130, 80, 20 );
 		adic( linha2, 7, 140, 400, 100 );
 		
-		adicCampo( txtServidoSMTP, 17, 170, 377, 20, "ServidoSMTP", "Servidor de SMTP", ListaCampos.DB_PK, false );
+		adicCampo( txtServidorSMTP, 17, 170, 377, 20, "ServidorSMTP", "Servidor de SMTP", ListaCampos.DB_SI, false );
 		adicCampo( txtUsuarioSMTP, 17, 210, 377, 20, "UsuarioSMTP", "Id do usuario", ListaCampos.DB_SI, false );
 		
 		JLabel campos = new JLabel( "Campos", SwingConstants.CENTER );
@@ -104,8 +108,15 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		adic( campos, 27, 240, 80, 20 );
 		adic( linha3, 7, 250, 400, 100 );
 		
-		adicCampo( txtCasasDesc, 17, 280, 160, 20, "CasasDesc", "Casas decimais", ListaCampos.DB_PK, false );
-		adicCampo( txtCasasDescFin, 17, 320, 160, 20, "CasasDescFin", "Casas decimais ( financeiro )", ListaCampos.DB_SI, false );
+		adicCampo( txtCasasDesc, 17, 280, 160, 20, "CasasDec", "Casas decimais", ListaCampos.DB_SI, false );
+		adicCampo( txtCasasDescFin, 17, 320, 160, 20, "CasasDecFin", "Casas decimais ( financeiro )", ListaCampos.DB_SI, false );
 		
+	}
+
+	@ Override
+	public synchronized void setConexao( Connection cn ) {
+
+		super.setConexao( cn );
+		lcCampos.carregaDados();
 	}
 }

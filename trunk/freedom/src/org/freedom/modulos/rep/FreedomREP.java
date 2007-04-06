@@ -57,6 +57,7 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Cotação", "Cotação", 'a', 100112000, 2, true, RPCotMoeda.class );
 			addSeparador( 100000000 );
 			addOpcao( 100000000, TP_OPCAO_ITEM, "Preferências", "Preferências", 'P', 100200000, 1, true, RPPrefereGeral.class );
+			addSeparador( 100000000 );
 			addOpcao( 100000000, TP_OPCAO_ITEM, "Estação de trabalho", "Estação de trabalho", 't', 100300000, 1, true, RPEstacao.class );
 			addOpcao( 100000000, TP_OPCAO_ITEM, "Empresa", "Empresa", 'E', 100400000, 1, true, RPEmpresa.class );
 
@@ -91,7 +92,7 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 				addOpcao( 500200000, TP_OPCAO_ITEM, "Clientes", "Clientes", 'C', 500201000, 2, true, RelCliente.class );
 				addOpcao( 500200000, TP_OPCAO_ITEM, "Tipos de cliente", "Tipos de cliente", 'T', 500202000, 2, true, RelTipoCli.class );
 				addOpcao( 500200000, TP_OPCAO_ITEM, "Contatos", "Contatos", 'o', 500203000, 2, true, RelContato.class );
-				addOpcao( 500200000, TP_OPCAO_ITEM, "Etiquetas", "Etiquetas", 'E', 500204000, 2, true, null );
+				//addOpcao( 500200000, TP_OPCAO_ITEM, "Etiquetas", "Etiquetas", 'E', 500204000, 2, true, null );
 			addOpcao( 500000000, TP_OPCAO_MENU, "Pagar", "", 'P', 500300000, 1, false, null );
 				addOpcao( 500300000, TP_OPCAO_ITEM, "Pagar / Pagas", "Pagar / Pagas", 'C', 500301000, 2, true, null );
 			addOpcao( 500000000, TP_OPCAO_MENU, "Receber", "", 'R', 500400000, 1, false, null );
