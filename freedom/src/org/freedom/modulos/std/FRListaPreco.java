@@ -315,6 +315,7 @@ public class FRListaPreco extends FRelatorio {
 		String sPrecopag6 = space+"|";
 		String sPrecopag7 = space+"|";
 		String sCodgrup = "";
+		String sCodgrupAnt = "X";
 		ImprimeOS imp = new ImprimeOS("",con);
 		int linPag = imp.verifLinPag()-1;
 		int iContaItem = 0;
@@ -389,7 +390,9 @@ public class FRListaPreco extends FRelatorio {
 			rs = ps.executeQuery();
 						
 			while ( rs.next() ) {
-            	
+
+				sCodprod = rs.getString(sCodRel);
+				
 				if (imp.pRow()>=(linPag-1)) {	
                    	imp.pulaLinha( 1, imp.comprimido() );
 					imp.say(  0, "|" + linhaFina + "|" );
@@ -420,7 +423,7 @@ public class FRListaPreco extends FRelatorio {
 					
 				}
 
-               	if ( (sAgrupar.equals("S")) && (!sCodgrup.equals(rs.getString( "CODGRUP" ))) ) {
+               	if ( (sAgrupar.equals("S")) && (!sCodgrup.equals(sCodgrupAnt)) ) {
 
 					sSubGrupo = "SUBGRUPO: "+rs.getString("DescGrup").trim();
 					sSubGrupo = "|" + Funcoes.replicate(" ",68-(sSubGrupo.length()/2)) + sSubGrupo;
@@ -433,7 +436,7 @@ public class FRListaPreco extends FRelatorio {
 			   		sCodgrup = rs.getString( "CODGRUP" );
                 }
 				
-            	if ((sCodprod.length() > 0) && (!sCodprod.equals(rs.getString("codprod")))) {
+            	if ((sCodprod.length() > 0) && (!sCodprod.equals(sCodProdPrint))) {
             		
 					sTextoImp = sPrecopag1 + sPrecopag2 + sPrecopag3 + sPrecopag4 +
 								sPrecopag5 + sPrecopag6 + sPrecopag7 + " " + Funcoes.copy(sCodunid,0,7)+"|";					
@@ -462,7 +465,7 @@ public class FRListaPreco extends FRelatorio {
 				//sCodgrup = rs.getString("codgrup");
 				sCodProdPrint = rs.getString(sCodRel);
 				sDescProd = rs.getString("descprod");
-				sCodprod = rs.getString("codprod");
+				sCodgrupAnt = rs.getString("codgrup");
 				
 				if (rs.getString("Codplanopag").equals(txtCodPlanoPag1.getVlrString()))
 					sPrecopag1 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd")) + "|";
