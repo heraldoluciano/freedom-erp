@@ -438,7 +438,7 @@ public class FRListaPreco extends FRelatorio {
 			   		imp.say(  0, sSubGrupo);
 			   		imp.pulaLinha( 1, imp.comprimido() );
 			   		imp.say(  0, "|" + linhaFina + "|" );
-			   		sCodgrup = rs.getString( "CODGRUP" );
+			   		sCodgrup = sCodgrupAnt;
                 }
 				
             	if ((sCodprod.length() > 0) && (!sCodprod.equals(sCodProdPrint))) {
