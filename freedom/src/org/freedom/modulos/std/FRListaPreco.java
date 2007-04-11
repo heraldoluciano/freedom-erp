@@ -302,6 +302,7 @@ public class FRListaPreco extends FRelatorio {
 		String sCodprod = "";
 		String sCodProdPrint = Funcoes.replicate(" ",12)+"|";
 		String sDescProd = Funcoes.replicate(" ",39)+"|";
+		String sGrupoPrint = "";
 		String sCodunid = "";
 		//String sCodgrup = "";
 		String sTextoImp = "";
@@ -392,6 +393,10 @@ public class FRListaPreco extends FRelatorio {
 			while ( rs.next() ) {
 
 				sCodprod = rs.getString(sCodRel);
+				if (sGrupoPrint.equals("")) {
+					sCodgrupAnt = rs.getString("codgrup");
+					sGrupoPrint = rs.getString("DescGrup").trim()+"/"+sCodgrupAnt;
+				}
 				
 				if (imp.pRow()>=(linPag-1)) {	
                    	imp.pulaLinha( 1, imp.comprimido() );
@@ -425,7 +430,7 @@ public class FRListaPreco extends FRelatorio {
 
                	if ( (sAgrupar.equals("S")) && (!sCodgrup.equals(sCodgrupAnt)) ) {
 
-					sSubGrupo = "SUBGRUPO: "+rs.getString("DescGrup").trim();
+					sSubGrupo = "SUBGRUPO: "+sGrupoPrint;
 					sSubGrupo = "|" + Funcoes.replicate(" ",68-(sSubGrupo.length()/2)) + sSubGrupo;
 					sSubGrupo += Funcoes.replicate(" ", 133-sSubGrupo.length()) + " |";
 					
@@ -466,6 +471,7 @@ public class FRListaPreco extends FRelatorio {
 				sCodProdPrint = rs.getString(sCodRel);
 				sDescProd = rs.getString("descprod");
 				sCodgrupAnt = rs.getString("codgrup");
+				sGrupoPrint = rs.getString("DescGrup").trim()+"/"+sCodgrupAnt;
 				
 				if (rs.getString("Codplanopag").equals(txtCodPlanoPag1.getVlrString()))
 					sPrecopag1 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd")) + "|";
