@@ -50,11 +50,6 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.modulos.fnc.SiaccUtil.RegA;
-import org.freedom.modulos.fnc.SiaccUtil.RegB;
-import org.freedom.modulos.fnc.SiaccUtil.RegC;
-import org.freedom.modulos.fnc.SiaccUtil.RegE;
-import org.freedom.modulos.fnc.SiaccUtil.RegZ;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -79,14 +74,6 @@ public class FRetSiacc extends FFilho implements ActionListener {
 	private static final int COL_DTREC = 7;
 
 	private static final int COL_DTVENC = 8;
-
-	private static final int COL_AGENCIACLI = 9;
-
-	private static final int COL_IDENTCLI = 10;
-
-	private static final int COL_SITREM = 11;
-
-	private static final int COL_SITRET = 12;
 
 	private JPanelPad panelRodape = null;
 
@@ -147,10 +134,6 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		tab.adicColuna( "Valor" );
 		tab.adicColuna( "Emissão" );
 		tab.adicColuna( "Vencimento" );
-		tab.adicColuna( "Agência" );
-		tab.adicColuna( "Indentificação" );
-		tab.adicColuna( "Sit. rem." );
-		tab.adicColuna( "Sit. ret." );
 
 		tab.setTamColuna( 20, COL_SEL );
 		tab.setTamColuna( 150, COL_RAZCLI );
@@ -161,10 +144,6 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		tab.setTamColuna( 70, COL_VLRAPAG );
 		tab.setTamColuna( 70, COL_DTREC );
 		tab.setTamColuna( 70, COL_DTVENC );
-		tab.setTamColuna( 100, COL_AGENCIACLI );
-		tab.setTamColuna( 100, COL_IDENTCLI );
-		tab.setTamColuna( 50, COL_SITREM );
-		tab.setTamColuna( 50, COL_SITRET );
 
 		tab.setColunaEditavel( COL_SEL, true );
 
@@ -246,7 +225,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 			lbStatus.setText( "     lendo do arquivo ..." );
 
 			FileDialog fileDialogSiacc = null;
-			fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Impportar arquivo." );
+			fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Importar arquivo." );
 			fileDialogSiacc.setVisible( true );
 
 			if ( fileDialogSiacc.getFile() == null ) {
