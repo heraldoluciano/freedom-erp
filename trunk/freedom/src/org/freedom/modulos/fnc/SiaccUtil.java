@@ -675,12 +675,16 @@ class SiaccUtil {
 
 	class RegF extends Reg {
 		
-		private static final char CODREG = 'Z'; // registro Z.01
-		private String identCliEmp = null;	// registro Z.02
-		private Long valorTotal = null;			// registro Z.03
-		//private String E04 = null;			// registro Z.04
-		private Integer seqRegistro = null;		// registro Z.05
-		private Integer codMovimento = null;	// registro Z.06
+		private static final char CODREG = 'F'; // registro F.01
+		private String identCliEmp = null;		// registro F.02
+		private Integer agencia = null;			// registro F.03
+		private String identCliBanco = null;	// registro F.04
+		private Integer dataVenc = null;		// registro F.05
+		private Long valorDebCred = null;		// registro F.06
+		private String codRetorno = null;		// registro F.07
+		private String usoEmp = null;			// registro F.08
+		//private String F09 = null;			// registro F.09
+		private Integer codMovimento = null;	// registro F.10
 		
 		RegF( final String line ) {
 			
@@ -690,6 +694,298 @@ class SiaccUtil {
 		
 		protected void parseLine( final String line ) {
 			
+			setIdentCliEmp( line.substring( 1, 26 ) );
+			setAgencia( line.substring( 26, 30 ).trim().length() > 0 ? new Integer( line.substring( 26, 30 ) ) : null );
+			setIdentCliBanco( line.substring( 30, 44 ) );
+			setDataVenc( line.substring( 44, 52 ).trim().length() > 0 ? new Integer( line.substring( 44, 52 ) ) : null );
+			setValorDebCred( line.substring( 52, 67 ).trim().length() > 0 ? new Long( line.substring( 52, 67 ) ) : null );
+			setCodRetorno( line.substring( 67, 69 ) );
+			setUsoEmp( line.substring( 69, 129 ) );
+			//F09 line.substring( 129, 149 ) );
+			setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
+		}
+		
+		public Integer getAgencia() {		
+			return agencia;
+		}
+		
+		public void setAgencia( final Integer agencia ) {		
+			this.agencia = agencia;
+		}
+		
+		public Integer getCodMovimento() {		
+			return codMovimento;
+		}
+		
+		public void setCodMovimento( final Integer codMovimento ) {		
+			this.codMovimento = codMovimento;
+		}
+		
+		public String getCodRetorno() {		
+			return codRetorno;
+		}
+		
+		public void setCodRetorno( final String codRet ) {		
+			this.codRetorno = codRet;
+		}
+		
+		public Integer getDataVenc() {		
+			return dataVenc;
+		}
+		
+		public void setDataVenc( final Integer dataVenc ) {		
+			this.dataVenc = dataVenc;
+		}
+		
+		public String getIdentCliBanco() {		
+			return identCliBanco;
+		}
+		
+		public void setIdentCliBanco( final String identCliBanco ) {		
+			this.identCliBanco = identCliBanco;
+		}
+		
+		public String getIdentCliEmp() {		
+			return identCliEmp;
+		}
+		
+		public void setIdentCliEmp( final String identCliEmp ) {		
+			this.identCliEmp = identCliEmp;
+		}
+		
+		public String getUsoEmp() {		
+			return usoEmp;
+		}
+		
+		public void setUsoEmp( final String usoEmp ) {		
+			this.usoEmp = usoEmp;
+		}
+		
+		public Long getValorDebCred() {		
+			return valorDebCred;
+		}
+		
+		public void setValorDebCred( final Long valor ) {		
+			this.valorDebCred = valor;
+		}
+	}
+
+	class RegH extends Reg {
+		
+		private static final char CODREG = 'H'; // registro H.01
+		private String identCliEmpAnt = null;	// registro H.02
+		private Integer agencia = null;			// registro H.03
+		private String identCliBanco = null;	// registro H.04
+		private String identCliEmpAtual = null;	// registro H.05
+		private String ocorrencia = null;		// registro H.06
+		//private String H07 = null;			// registro H.07
+		private Integer codMovimento = null;	// registro H.08
+		
+		RegH( final String line ) {
+			
+			super( CODREG );
+			parseLine( line );
+		}
+		
+		protected void parseLine( final String line ) {
+			
+			setIdentCliEmpAnt( line.substring( 1, 26 ) );
+			setAgencia( line.substring( 26, 30 ).trim().length() > 0 ? new Integer( line.substring( 26, 30 ) ) : null );
+			setIdentCliBanco( line.substring( 30, 44 ) );
+			setIdentCliEmpAtual( line.substring( 44, 69 ) );
+			setOcorrencia( line.substring( 69, 127 ) );
+			//H07( line.substring( 127, 149 ) );
+			setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
+		}
+		
+		public Integer getAgencia() {		
+			return agencia;
+		}
+		
+		public void setAgencia( final Integer agencia ) {		
+			this.agencia = agencia;
+		}
+		
+		public Integer getCodMovimento() {		
+			return codMovimento;
+		}
+		
+		public void setCodMovimento( final Integer codMovimento ) {		
+			this.codMovimento = codMovimento;
+		}
+		
+		public String getIdentCliBanco() {		
+			return identCliBanco;
+		}
+		
+		public void setIdentCliBanco( final String identCliBanco ) {		
+			this.identCliBanco = identCliBanco;
+		}
+		
+		public String getIdentCliEmpAnt() {		
+			return identCliEmpAnt;
+		}
+		
+		public void setIdentCliEmpAnt( final String identCliEmpAnt ) {		
+			this.identCliEmpAnt = identCliEmpAnt;
+		}
+		
+		public String getIdentCliEmpAtual() {		
+			return identCliEmpAtual;
+		}
+		
+		public void setIdentCliEmpAtual( final String identCliEmpAtual ) {		
+			this.identCliEmpAtual = identCliEmpAtual;
+		}
+		
+		public String getOcorrencia() {		
+			return ocorrencia;
+		}
+		
+		public void setOcorrencia( final String ocorrencia ) {		
+			this.ocorrencia = ocorrencia;
+		}
+	}
+
+	class RegJ extends Reg {
+		
+		private static final char CODREG = 'J'; // registro J.01
+		private Integer menssagemInfo = null;	// registro J.02
+		private String filler = null;			// registro J.03
+		
+		RegJ( final String line ) {
+			
+			super( CODREG );
+			parseLine( line );
+		}
+		
+		protected void parseLine( final String line ) {
+			
+			setMenssagemInfo( line.substring( 1, 27 ).trim().length() > 0 ? new Integer( line.substring( 1, 27 ) ) : null );
+			setFiller( line.substring( 27 ) );
+		}
+		
+		public String getFiller() {		
+			return filler;
+		}
+		
+		public void setFiller( final String filler ) {		
+			this.filler = filler;
+		}
+		
+		public Integer getMenssagemInfo() {		
+			return menssagemInfo;
+		}
+		
+		public void setMenssagemInfo( final Integer menssagemInfo ) {		
+			this.menssagemInfo = menssagemInfo;
+		}
+	}
+
+	class RegX extends Reg {
+	
+		private static final char CODREG = 'X'; // registro X.01
+		private String codAgencia = null;		// registro X.02
+		private String nomeAgencia = null;		// registro X.03
+		private String endAgencia = null;		// registro X.04
+		private String numAgencia = null;		// registro X.05
+		private String cepAgencia = null;		// registro X.06
+		private String sufixoCepAgencia = null;	// registro X.07
+		private String cidadeAgencia = null;	// registro X.08
+		private String ufAgencia = null;		// registro X.09
+		private String sitAgencia = null;		// registro X.10
+		//private String X11 = null;			// registro X.11
+		
+		RegX( final String line ) {
+			
+			super( CODREG );
+			parseLine( line );
+		}
+		
+		protected void parseLine( final String line ) {
+			
+			setCodAgencia( line.substring( 1, 5 ) );
+			setNomeAgencia( line.substring( 5, 35 ) );
+			setEndAgencia( line.substring( 35, 65 ) );
+			setNumAgencia( line.substring( 65, 70 ) );
+			setCepAgencia( line.substring( 70, 75 ) );
+			setSufixoCepAgencia( line.substring( 75, 78 ) );
+			setCidadeAgencia( line.substring( 78, 98 ) );
+			setUfAgencia( line.substring( 98, 100 ) );
+			setSitAgencia( line.substring( 100, 101 ) );
+			//X11( line.substring( 101 ) );
+		}
+		
+		public String getCodAgencia() {		
+			return codAgencia;
+		}
+		
+		public void setCodAgencia( final String agencia ) {		
+			this.codAgencia = agencia;
+		}
+		
+		public String getCepAgencia() {		
+			return cepAgencia;
+		}
+		
+		public void setCepAgencia( final String cepAgencia ) {		
+			this.cepAgencia = cepAgencia;
+		}
+		
+		public String getCidadeAgencia() {		
+			return cidadeAgencia;
+		}
+		
+		public void setCidadeAgencia( final String cidadeAgencia ) {		
+			this.cidadeAgencia = cidadeAgencia;
+		}
+		
+		public String getEndAgencia() {		
+			return endAgencia;
+		}
+		
+		public void setEndAgencia( final String endAgencia ) {		
+			this.endAgencia = endAgencia;
+		}
+		
+		public String getNomeAgencia() {		
+			return nomeAgencia;
+		}
+		
+		public void setNomeAgencia( final String nomeAgencia ) {		
+			this.nomeAgencia = nomeAgencia;
+		}
+		
+		public String getNumAgencia() {		
+			return numAgencia;
+		}
+		
+		public void setNumAgencia( final String numAgencia ) {		
+			this.numAgencia = numAgencia;
+		}
+		
+		public String getSitAgencia() {		
+			return sitAgencia;
+		}
+		
+		public void setSitAgencia( final String sitAgencia ) {		
+			this.sitAgencia = sitAgencia;
+		}
+		
+		public String getSufixoCepAgencia() {		
+			return sufixoCepAgencia;
+		}
+		
+		public void setSufixoCepAgencia( final String sufixoCepAgencia ) {		
+			this.sufixoCepAgencia = sufixoCepAgencia;
+		}
+		
+		public String getUfAgencia() {		
+			return ufAgencia;
+		}
+		
+		public void setUfAgencia( final String ufAgencia ) {		
+			this.ufAgencia = ufAgencia;
 		}
 	}
 	
@@ -698,7 +994,7 @@ class SiaccUtil {
 		private static final char CODREG = 'Z'; // registro Z.01
 		private Integer totalRegistros = null;	// registro Z.02
 		private Long valorTotal = null;			// registro Z.03
-		//private String E04 = null;			// registro Z.04
+		//private String Z04 = null;			// registro Z.04
 		private Integer seqRegistro = null;		// registro Z.05
 		private Integer codMovimento = null;	// registro Z.06
 		
