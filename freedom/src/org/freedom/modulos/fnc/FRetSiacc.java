@@ -57,24 +57,11 @@ public class FRetSiacc extends FFilho implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final int COL_SEL = 0;
-
-	private static final int COL_RAZCLI = 1;
-
-	private static final int COL_CODCLI = 2;
-
-	private static final int COL_CODREC = 3;
-
-	private static final int COL_DOCREC = 4;
-
-	private static final int COL_NRPARC = 5;
-
-	private static final int COL_VLRAPAG = 6;
-
-	private static final int COL_DTREC = 7;
-
-	private static final int COL_DTVENC = 8;
-
+	private enum EColTab {
+		SEL, RAZCLI, CODCLI, CODREC, DOCREC, NRPARC, VLRAPAG, 
+		DTREC, DTVENC, VLRPAG, DTPAG, CODCON, CODPLAN  
+	};
+	
 	private JPanelPad panelRodape = null;
 
 	private final JPanelPad panelRemessa = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -134,18 +121,26 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		tab.adicColuna( "Valor" );
 		tab.adicColuna( "Emissão" );
 		tab.adicColuna( "Vencimento" );
+		tab.adicColuna( "Valor pago" );
+		tab.adicColuna( "Data pgto." );
+		tab.adicColuna( "Conta" );
+		tab.adicColuna( "Categoria" );
 
-		tab.setTamColuna( 20, COL_SEL );
-		tab.setTamColuna( 150, COL_RAZCLI );
-		tab.setTamColuna( 70, COL_CODCLI );
-		tab.setTamColuna( 70, COL_CODREC );
-		tab.setTamColuna( 80, COL_DOCREC );
-		tab.setTamColuna( 70, COL_NRPARC );
-		tab.setTamColuna( 70, COL_VLRAPAG );
-		tab.setTamColuna( 70, COL_DTREC );
-		tab.setTamColuna( 70, COL_DTVENC );
+		tab.setTamColuna( 20, EColTab.SEL.ordinal() );
+		tab.setTamColuna( 150, EColTab.RAZCLI.ordinal() );
+		tab.setTamColuna( 70, EColTab.CODCLI.ordinal() );
+		tab.setTamColuna( 70, EColTab.CODREC.ordinal() );
+		tab.setTamColuna( 80, EColTab.DOCREC.ordinal() );
+		tab.setTamColuna( 70, EColTab.NRPARC.ordinal() );
+		tab.setTamColuna( 70, EColTab.VLRAPAG.ordinal() );
+		tab.setTamColuna( 70, EColTab.DTREC.ordinal() );
+		tab.setTamColuna( 70, EColTab.DTVENC.ordinal() );
+		tab.setTamColuna( 70, EColTab.VLRPAG.ordinal() );
+		tab.setTamColuna( 70, EColTab.DTPAG.ordinal() );
+		tab.setTamColuna( 70, EColTab.CODCON.ordinal() );
+		tab.setTamColuna( 70, EColTab.CODPLAN.ordinal() );
 
-		tab.setColunaEditavel( COL_SEL, true );
+		tab.setColunaEditavel( EColTab.SEL.ordinal() , true );
 
 		btCarrega.addActionListener( this );
 		btSelTudo.addActionListener( this );
