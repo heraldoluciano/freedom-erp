@@ -1,6 +1,7 @@
 package org.freedom.modulos.fnc;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
@@ -24,12 +25,15 @@ class SiaccUtil {
 	}
 	
 	abstract class Reg {
+		
+		private char tiporeg;
 
 		protected StringBuilder sbreg = new StringBuilder();
 
 		Reg( char codreg ) {
 
 			this.sbreg.append( codreg );
+			this.tiporeg = codreg;
 		}
 
 		String format( Object obj, ETipo tipo, int tam, int dec ) {
@@ -58,6 +62,10 @@ class SiaccUtil {
 		}
 		
 		protected abstract void parseLine(String line);
+		
+		public char getTiporeg() {
+			return this.tiporeg;
+		}
 	}
 
 	class RegA extends Reg {
@@ -680,7 +688,7 @@ class SiaccUtil {
 		private Integer agencia = null;			// registro F.03
 		private String identCliBanco = null;	// registro F.04
 		private Integer dataVenc = null;		// registro F.05
-		private Long valorDebCred = null;		// registro F.06
+		private String valorDebCred = null;		// registro F.06
 		private String codRetorno = null;		// registro F.07
 		private String usoEmp = null;			// registro F.08
 		//private String F09 = null;			// registro F.09
@@ -698,7 +706,7 @@ class SiaccUtil {
 			setAgencia( line.substring( 26, 30 ).trim().length() > 0 ? new Integer( line.substring( 26, 30 ) ) : null );
 			setIdentCliBanco( line.substring( 30, 44 ) );
 			setDataVenc( line.substring( 44, 52 ).trim().length() > 0 ? new Integer( line.substring( 44, 52 ) ) : null );
-			setValorDebCred( line.substring( 52, 67 ).trim().length() > 0 ? new Long( line.substring( 52, 67 ) ) : null );
+			setValorDebCred( line.substring( 52, 67 ) );
 			setCodRetorno( line.substring( 67, 69 ) );
 			setUsoEmp( line.substring( 69, 129 ) );
 			//F09 line.substring( 129, 149 ) );
@@ -729,8 +737,8 @@ class SiaccUtil {
 			this.codRetorno = codRet;
 		}
 		
-		public Integer getDataVenc() {		
-			return dataVenc;
+		public java.util.Date getDataVenc() throws Exception {		
+			return strToDate( String.valueOf( dataVenc ) );
 		}
 		
 		public void setDataVenc( final Integer dataVenc ) {		
@@ -761,11 +769,11 @@ class SiaccUtil {
 			this.usoEmp = usoEmp;
 		}
 		
-		public Long getValorDebCred() {		
-			return valorDebCred;
+		public BigDecimal getValorDebCred() {
+			return strToBigDecimal( valorDebCred );
 		}
 		
-		public void setValorDebCred( final Long valor ) {		
+		public void setValorDebCred( final String valor ) {		
 			this.valorDebCred = valor;
 		}
 	}
@@ -1147,4 +1155,45 @@ class SiaccUtil {
 		}
 	}
 
+	/**
+	 * Converte para java.math.BigDecimal um String de inteiros sem ponto ou virgula.
+	 * @param arg String de inteiros sem ponto ou virgula.
+	 * @return java.math.BigDecimal com escala de 2.
+	 * @throws NumberFormatException
+	 */
+	public static BigDecimal strToBigDecimal( final String arg ) throws NumberFormatException {
+		String value = null;
+		if ( arg != null ) {
+			char chars[] = arg.toCharArray();
+			for ( int i=0; i < chars.length; i++ ) {
+				if ( '0' != chars[ i ] ) {
+					value = arg.substring( i );
+					break;
+				}
+			}
+			if ( value != null ) {
+				value = value.substring( 0, value.length() - 2 ) + "." + value.substring( value.length() - 2 ); 
+			}
+		}	
+		return new BigDecimal( value );
+	}
+	
+	/**
+	 * Converte para java.util.Date um String em formato AAAAMMDD.
+	 * @param arg String de data no formato AAAAMMDD.
+	 * @return java.util.Date.
+	 * @throws Exception
+	 */
+	public static java.util.Date strToDate( final String arg ) throws Exception {
+		Date retorno = null;
+		if ( arg != null ) {
+			Integer ano = Integer.parseInt( arg.substring( 0, 4 ) );
+			Integer mes = Integer.parseInt( arg.substring( 4, 6 ) );
+			Integer dia = Integer.parseInt( arg.substring( 6 ) );
+			Calendar cal = Calendar.getInstance();
+			cal.set( ano, mes - 1, dia );
+			retorno = cal.getTime();
+		}		
+		return retorno;
+	}
 }
