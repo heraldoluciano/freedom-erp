@@ -35,7 +35,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -50,6 +53,8 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.fnc.SiaccUtil.Reg;
+import org.freedom.modulos.fnc.SiaccUtil.RegF;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -124,7 +129,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		tab.adicColuna( "Valor pago" );
 		tab.adicColuna( "Data pgto." );
 		tab.adicColuna( "Conta" );
-		tab.adicColuna( "Categoria" );
+		tab.adicColuna( "Planejamento" );
 
 		tab.setTamColuna( 20, EColTab.SEL.ordinal() );
 		tab.setTamColuna( 150, EColTab.RAZCLI.ordinal() );
@@ -208,16 +213,15 @@ public class FRetSiacc extends FFilho implements ActionListener {
 	private void execImportar() {
 
 		FileReader fileReaderSiacc = null;
-		ArrayList<SiaccUtil.Reg> list = null;
+		ArrayList<SiaccUtil.Reg> list = new ArrayList<SiaccUtil.Reg>();
 		
 		if ("".equals( txtCodBanco.getVlrString())){
 			Funcoes.mensagemInforma( this, "Selecione o Banco!!" );
-			txtCodBanco.requestFocus();
-			
+			txtCodBanco.requestFocus();			
 		}
 		else{
 			
-			lbStatus.setText( "     lendo do arquivo ..." );
+			lbStatus.setText( "     Lendo do arquivo ..." );
 
 			FileDialog fileDialogSiacc = null;
 			fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Importar arquivo." );
@@ -240,20 +244,20 @@ public class FRetSiacc extends FFilho implements ActionListener {
 				}
 				else {
 					leArquivo( fileReaderSiacc, list );
+					montaGrid( list );
+					lbStatus.setText( "     Arquivo lido ..." );
 				}
 
 			} catch ( IOException ioError ) {
 				Funcoes.mensagemErro( this, "Erro ao ler o arquivo: " + sFileName + "\n" + ioError.getMessage() );
 				lbStatus.setText( "" );
-				return;
-			
+				return;			
 			}
 		}
 	}
 		
-	private void leArquivo( FileReader fileReaderSiacc, ArrayList<SiaccUtil.Reg> list ) throws IOException {
+	private void leArquivo( final FileReader fileReaderSiacc, final ArrayList<SiaccUtil.Reg> list ) throws IOException {
 
-		list = new ArrayList<SiaccUtil.Reg>();
 		String line = null;
 		char tipo;
 		BufferedReader in = new BufferedReader( fileReaderSiacc );
@@ -272,7 +276,19 @@ public class FRetSiacc extends FFilho implements ActionListener {
 					list.add( new SiaccUtil().new RegC( line ) );
 					break;
 				case 'E' :
-					list.add( new SiaccUtil().new RegE( line ) );
+					list.add( new SiaccUtil().new RegF( line ) );
+					break;
+				case 'F' :
+					list.add( new SiaccUtil().new RegF( line ) );
+					break;
+				case 'J' :
+					list.add( new SiaccUtil().new RegJ( line ) );
+					break;
+				case 'H' :
+					list.add( new SiaccUtil().new RegH( line ) );
+					break;
+				case 'X' :
+					list.add( new SiaccUtil().new RegX( line ) );
 					break;
 				case 'Z' :
 					list.add( new SiaccUtil().new RegZ( line ) );
@@ -280,10 +296,98 @@ public class FRetSiacc extends FFilho implements ActionListener {
 				default :
 					break;
 			}
-
 		}
-
 		in.close();
+	}
+
+	private void montaGrid( ArrayList<SiaccUtil.Reg> list ) {
+		
+		if ( list != null ) {
+			
+			Vector<Object> row = new Vector<Object>();
+			Object[] infocli = new Object[4];
+
+			//lbStatus.setText( "     Arquivo lido ..." );		
+			try {
+				for( Reg reg : list ) {
+					
+					if ( reg.getTiporeg() == 'F' ) {
+						
+						if ( ! getInfoCli( Integer.parseInt( ((RegF) reg).getIdentCliEmp().trim() ), infocli ) ) {
+							return;
+						}			
+	
+						row.add( Boolean.FALSE );
+						row.add( "" ); // Razão social do cliente
+						row.add( new Integer( ((RegF) reg).getIdentCliEmp().trim() ) ); // Cód.cli.
+						row.add( infocli[ 0 ] ); // Cód.rec.
+						row.add( "" ); // Doc
+						row.add( infocli[ 1 ] ); // Nro.Parc.
+						row.add( "" ); // Valor
+						row.add( "" ); // Emissão
+						row.add( "" ); // Vencimento
+						row.add( ((RegF) reg).getValorDebCred() ); // Valor pago
+						row.add( ((RegF) reg).getDataVenc() ); // Data pgto.
+						row.add( infocli[ 2 ] ); // Conta
+						row.add( infocli[ 3 ] ); // Planejamento
+						
+						tab.adicLinha( row );
+					}
+				}
+			} catch ( Exception e ) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private Boolean getInfoCli( final Integer codcli, final Object[] info ) {
+		
+		Boolean retorno = Boolean.TRUE;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sSQL = new StringBuilder();
+		
+		if ( codcli != null && info != null ) {
+			
+			try {
+				
+				sSQL.append( "SELECT R.CODREC, IR.NPARCITREC," ); 
+				sSQL.append( "COALESCE(IR.NUMCONTA, FC.NUMCONTA) NUMCONTA," );
+				sSQL.append( "COALESCE(IR.CODPLAN, FC.CODPLAN) CODPLAN " );
+				sSQL.append( "FROM FNITRECEBER IR, VDCLIENTE C, FNRECEBER R " );
+				sSQL.append( "LEFT OUTER JOIN FNFBNCLI FC ON " );
+				sSQL.append( "FC.CODEMP=R.CODEMPCL AND FC.CODFILIAL=R.CODFILIALCL AND FC.CODCLI=R.CODCLI AND " );
+				sSQL.append( "FC.CODEMPBO=? AND FC.CODFILIALBO=? AND FC.CODBANCO=? AND " );
+				sSQL.append( "FC.TIPOFEBRABAN='1' " );
+				sSQL.append( "WHERE IR.CODEMP=? AND IR.CODFILIAL=? AND IR.CODREC=20 AND IR.NPARCITREC=1 AND " );
+				sSQL.append( "R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC AND " );
+				sSQL.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI" );
+				
+				ps = con.prepareStatement( sSQL.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "FNFBNCLI" ) );
+				ps.setInt( 3, Aplicativo.iCodEmp );
+				ps.setInt( 4, Aplicativo.iCodEmp );
+				ps.setInt( 5, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+				//ps.setInt( 6, Aplicativo.iCodEmp );
+				rs = ps.executeQuery();
+				
+				if( rs.next() ) {
+					
+					info[ 0 ] = rs.getObject( 1 );
+					info[ 1 ] = rs.getObject( 2 );
+					info[ 2 ] = rs.getObject( 3 );
+					info[ 3 ] = rs.getObject( 4 );
+				}
+				
+			} catch ( Exception e ) {
+				Funcoes.mensagemErro( this, "Erro ao buscar informações do cliente!\n" + e.getMessage(), true, con, e );
+				e.printStackTrace();
+				retorno = Boolean.TRUE;
+			}
+		}
+		
+		return retorno;
 	}
 	
 	public void actionPerformed( ActionEvent evt ) {
