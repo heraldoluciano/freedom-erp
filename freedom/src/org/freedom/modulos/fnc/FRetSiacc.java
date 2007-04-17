@@ -55,6 +55,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.fnc.SiaccUtil.Reg;
 import org.freedom.modulos.fnc.SiaccUtil.RegF;
+import org.freedom.modulos.std.DLEditaRec;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -92,9 +93,23 @@ public class FRetSiacc extends FFilho implements ActionListener {
 	private final JButton btSelTudo = new JButton( Icone.novo( "btTudo.gif" ) );
 
 	private final JButton btSelNada = new JButton( Icone.novo( "btNada.gif" ) );
+	
+	private final JButton btEdita = new JButton( Icone.novo( "btEditar.gif" ) );
+	
+	private final JButton btGerar = new JButton( Icone.novo( "btGerar.gif" ) );
 
 	private final JLabel lbStatus = new JLabel();
-
+	
+	private Vector vNumContas = new Vector();
+	
+	private Vector vCodPlans = new Vector();
+	
+	private Vector vDtEmiss = new Vector();
+	
+	private Vector vCodBOs = new Vector();
+	
+	private Vector vCodCCs = new Vector();
+	
 	private final ListaCampos lcBanco = new ListaCampos( this );
 
 	public FRetSiacc() {
@@ -151,9 +166,13 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		btSelTudo.addActionListener( this );
 		btSelNada.addActionListener( this );
 		btImporta.addActionListener( this );
+		btEdita.addActionListener( this );
+		btGerar.addActionListener( this );
 
 		btSelTudo.setToolTipText( "Selecionar tudo" );
 		btSelNada.setToolTipText( "Limpar seleção" );
+		btEdita.setToolTipText( "Editar" );
+		btGerar.setToolTipText( "Gerar" );
 
 	}
 
@@ -172,6 +191,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		panelFiltros.adic( txtNomeBanco, 100, 20, 300, 20 );
 		panelFiltros.adic( btImporta, 500, 20, 150, 30 );
 		panelFiltros.adic( btCarrega, 500, 60, 150, 30 );
+		
 
 		panelTabela.add( new JScrollPane( tab ), BorderLayout.CENTER );
 		panelTabela.add( panelFuncoes, BorderLayout.EAST );
@@ -179,6 +199,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		panelFuncoes.setPreferredSize( new Dimension( 45, 100 ) );
 		panelFuncoes.adic( btSelTudo, 5, 5, 30, 30 );
 		panelFuncoes.adic( btSelNada, 5, 40, 30, 30 );
+		panelFuncoes.adic( btEdita, 5, 75, 30, 30 );
 
 		lbStatus.setForeground( Color.BLUE );
 
@@ -188,6 +209,8 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		panelRodape = adicBotaoSair();
 		panelRodape.setBorder( BorderFactory.createEtchedBorder() );
 		panelRodape.setPreferredSize( new Dimension( 600, 32 ) );
+		panelFuncoes.adic( btGerar, 5, 110, 30, 30 );
+		
 	}
 
 	private void carregaTab() {
@@ -390,6 +413,17 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		return retorno;
 	}
 	
+	private void edit(){
+		
+		DLEditaRec dl = null; 
+		
+		if( tab.getLinhaSel() > -1 ){
+			
+			dl = new DLEditaRec(this);
+			dl.setVisible( true );	
+		}
+	}
+	
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btCarrega ) {
@@ -405,12 +439,16 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		else if ( evt.getSource() == btImporta ) {
 			execImportar();
 		}
+		else if ( evt.getSource() == btEdita ){
+			edit();
+		}
 	}
 
 	public void setConexao( Connection cn ) {
 
 		super.setConexao( cn );
 		lcBanco.setConexao( cn );
+		
 	}
 
 }
