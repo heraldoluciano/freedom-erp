@@ -238,8 +238,9 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		}
 	}
 
-	private void execImportar() {
-
+	private boolean execImportar() {
+		
+		boolean retorno = true;
 		FileReader fileReaderSiacc = null;
 		ArrayList<SiaccUtil.Reg> list = new ArrayList<SiaccUtil.Reg>();
 		
@@ -257,31 +258,37 @@ public class FRetSiacc extends FFilho implements ActionListener {
 
 			if ( fileDialogSiacc.getFile() == null ) {
 				lbStatus.setText( "" );
-				return;
+				retorno = false;
 			}
-			
-			String sFileName = fileDialogSiacc.getDirectory() + fileDialogSiacc.getFile();
-
-			File fileSiacc = new File( sFileName );
-
-			try {
-
-				fileReaderSiacc = new FileReader( fileSiacc );
-				if ( fileReaderSiacc == null ) {
-					Funcoes.mensagemInforma( this, "Arquivo não encontrado" );
+			else {
+				String sFileName = fileDialogSiacc.getDirectory() + fileDialogSiacc.getFile();
+	
+				File fileSiacc = new File( sFileName );
+	
+				try {
+	
+					fileReaderSiacc = new FileReader( fileSiacc );
+					if ( fileReaderSiacc == null ) {
+						Funcoes.mensagemInforma( this, "Arquivo não encontrado" );
+					}
+					else {
+						leArquivo( fileReaderSiacc, list );
+						if (montaGrid( list )) {
+							lbStatus.setText( "     Arquivo lido ..." );
+						}
+						else {
+							retorno = false;
+						}
+					}
+	
+				} catch ( IOException ioError ) {
+					Funcoes.mensagemErro( this, "Erro ao ler o arquivo: " + sFileName + "\n" + ioError.getMessage() );
+					lbStatus.setText( "" );
+					retorno = false;
 				}
-				else {
-					leArquivo( fileReaderSiacc, list );
-					montaGrid( list );
-					lbStatus.setText( "     Arquivo lido ..." );
-				}
-
-			} catch ( IOException ioError ) {
-				Funcoes.mensagemErro( this, "Erro ao ler o arquivo: " + sFileName + "\n" + ioError.getMessage() );
-				lbStatus.setText( "" );
-				return;			
 			}
 		}
+		return retorno;
 	}
 		
 	private void leArquivo( final FileReader fileReaderSiacc, final ArrayList<SiaccUtil.Reg> list ) throws IOException {
@@ -328,8 +335,9 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		in.close();
 	}
 
-	private void montaGrid( ArrayList<SiaccUtil.Reg> list ) {
+	private boolean montaGrid( ArrayList<SiaccUtil.Reg> list ) {
 		
+		boolean retorno = true;
 		if ( list != null ) {
 			
 			Vector<Object> row = null;
@@ -342,7 +350,8 @@ public class FRetSiacc extends FFilho implements ActionListener {
 					if ( reg.getTiporeg() == 'F' ) {
 						
 						if ( ! setInfoCli( Integer.parseInt( ((RegF) reg).getIdentCliEmp().trim() ), infocli ) ) {
-							return;
+							retorno = false;
+							break;
 						}			
 						row = new Vector<Object>();
 						row.add( Boolean.FALSE );
@@ -362,9 +371,12 @@ public class FRetSiacc extends FFilho implements ActionListener {
 					}
 				}
 			} catch ( Exception e ) {
-				e.printStackTrace();
+				retorno = false;
+				Funcoes.mensagemErro(this, "Erro na montagem da lista!\n"+e.getMessage());
+				//e.printStackTrace();
 			}
 		}
+		return retorno;
 	}
 	
 	private Boolean setInfoCli( final Integer codcli, final Object[] info ) {
