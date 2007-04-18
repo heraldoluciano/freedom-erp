@@ -287,7 +287,7 @@ class SiaccUtil {
 				//B08 = line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ).trim() ) : null;
 			}
 			catch (Exception e) {
-				throw new ExceptionSiacc(e);
+				throw new ExceptionSiacc("Erro na leitura do registro B!\n" + e.getMessage());
 			}
 		}
 		
@@ -378,7 +378,7 @@ class SiaccUtil {
 				seqRegistro = line.substring( 143, 149 ).trim().length() > 0 ? new Integer( line.substring( 143, 149 ) ) : null;
 				codMovimento = line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null;
 			} catch (Exception e) {
-				throw new ExceptionSiacc(e);
+				throw new ExceptionSiacc("Erro na leitura do registro C!\n" + e.getMessage());
 			}
 			
 		}
@@ -489,7 +489,7 @@ class SiaccUtil {
 				setSeqRegistro( line.substring( 143, 149 ).trim().length() > 0 ? new Integer( line.substring( 143, 149 ) ) : null );
 				setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
 			} catch (Exception e) {
-				throw new ExceptionSiacc(e);
+				throw new ExceptionSiacc("Erro na leitura do registro D!\n " + e.getMessage());
 			}
 
 		}
@@ -610,7 +610,7 @@ class SiaccUtil {
 				setSeqRegistro( line.substring( 143, 149 ).trim().length() > 0 ? new Integer( line.substring( 143, 149 ) ) : null );
 				setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
 			} catch (Exception e) {
-				throw new ExceptionSiacc(e);
+				throw new ExceptionSiacc("Erro na leitura do registro E!\n" + e.getMessage());
 			}
 
 		}
@@ -736,7 +736,7 @@ class SiaccUtil {
 				//	F09 line.substring( 129, 149 ) );
 				setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
 			} catch (Exception e) {
-				throw new ExceptionSiacc(e);
+				throw new ExceptionSiacc("Erro na leitura do registro F!\n" + e.getMessage());
 			}
 		}
 		
@@ -832,7 +832,7 @@ class SiaccUtil {
 				//H07( line.substring( 127, 149 ) );
 				setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
 			} catch (Exception e) {
-				throw new ExceptionSiacc(e);
+				throw new ExceptionSiacc("Erro na leitura do registro H!/n" + e.getMessage());
 			}
 
 		}
@@ -903,7 +903,7 @@ class SiaccUtil {
 				setMenssagemInfo( line.substring( 1, 27 ).trim().length() > 0 ? new Integer( line.substring( 1, 27 ) ) : null );
 				setFiller( line.substring( 27 ) );
 			} catch (Exception e) {
-				throw new ExceptionSiacc(e);
+				throw new ExceptionSiacc("Erro na leitura do registro J!" + e.getMessage());
 			}
 		}
 		
@@ -957,7 +957,7 @@ class SiaccUtil {
 				setSitAgencia( line.substring( 100, 101 ) );
 				//X11( line.substring( 101 ) );
 			} catch (Exception e) {
-				throw new ExceptionSiacc(e);
+				throw new ExceptionSiacc("Erro na leitura do registro X!\n" + e.getMessage());
 			}
 		}
 		
@@ -1067,7 +1067,7 @@ class SiaccUtil {
 				setSeqRegistro( line.substring( 143, 149 ).trim().length() > 0 ? new Integer( line.substring( 143, 149 ) ) : null );
 				setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
 			} catch (Exception e) {
-				throw new ExceptionSiacc(e);
+				throw new ExceptionSiacc("Erro na leitura do registro Z!\n" + e.getMessage());
 			}
 		}
 		
