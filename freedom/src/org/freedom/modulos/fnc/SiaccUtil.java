@@ -30,7 +30,7 @@ class SiaccUtil {
 
 		protected StringBuilder sbreg = new StringBuilder();
 
-		Reg( char codreg ) {
+		Reg( char codreg )  {
 
 			this.sbreg.append( codreg );
 			this.tiporeg = codreg;
@@ -61,7 +61,7 @@ class SiaccUtil {
 			return sbreg.toString();
 		}
 		
-		protected abstract void parseLine(String line);
+		protected abstract void parseLine(String line) throws ExceptionSiacc;
 		
 		public char getTiporeg() {
 			return this.tiporeg;
@@ -87,7 +87,7 @@ class SiaccUtil {
 		private Integer seqRegistro = null;		// registro A.15
 		//private String A16 = null;			// registro A.16
 		
-		RegA( final String line ) {
+		RegA( final String line ) throws ExceptionSiacc {
 			
 			super( CODREG );
 			parseLine( line );
@@ -115,23 +115,27 @@ class SiaccUtil {
 			this.sbreg.append( (char) 10 );
 		}
 		
-		protected void parseLine( final String line ) {
+		protected void parseLine( final String line ) throws ExceptionSiacc {
 			
-			setCodRemessa( line.substring( 1, 2 ).trim().length() > 0 ? new Integer( line.substring( 1, 2 ).trim() ) : null );
-			setCodConvenio( line.substring( 2, 22 ) );
-			setNomeEmpresa( line.substring( 22, 42 ) );
-			setCodBanco( line.substring( 42, 45 ).trim().length() > 0 ? new Integer( line.substring( 42, 45 ).trim() ) : null );
-			setNomeBanco( line.substring( 45, 65 ) );
-			setDataMovimento( line.substring( 65, 73 ).trim().length() > 0 ? new Integer( line.substring( 65, 73 ).trim() ) : null );
-			setSeqArquivo( line.substring( 73, 79 ).trim().length() > 0 ? new Integer( line.substring( 73, 79 ).trim() ) : null );
-			setVersao( line.substring( 79, 81 ).trim().length() > 0 ? new Integer( line.substring( 79, 81 ).trim() ) : null );
-			setIdentServ( line.substring( 81, 98 ) );
-			setContaComp( line.substring( 98, 114 ) );
-			setIdentAmbCli( line.substring( 114, 115 ) );
-			setIdentAmbBco( line.substring( 115, 116 ) );
-			//A14 = line.substring( 116, 143 );
-			setSeqRegistro( line.substring( 143, 149 ).trim().length() > 0 ?  new Integer( line.substring( 143, 149 ).trim() ) : null );
-			//A16 = line.substring( 149 );
+			try {
+				setCodRemessa( line.substring( 1, 2 ).trim().length() > 0 ? new Integer( line.substring( 1, 2 ).trim() ) : null );
+				setCodConvenio( line.substring( 2, 22 ) );
+				setNomeEmpresa( line.substring( 22, 42 ) );
+				setCodBanco( line.substring( 42, 45 ).trim().length() > 0 ? new Integer( line.substring( 42, 45 ).trim() ) : null );
+				setNomeBanco( line.substring( 45, 65 ) );
+				setDataMovimento( line.substring( 65, 73 ).trim().length() > 0 ? new Integer( line.substring( 65, 73 ).trim() ) : null );
+				setSeqArquivo( line.substring( 73, 79 ).trim().length() > 0 ? new Integer( line.substring( 73, 79 ).trim() ) : null );
+				setVersao( line.substring( 79, 81 ).trim().length() > 0 ? new Integer( line.substring( 79, 81 ).trim() ) : null );
+				setIdentServ( line.substring( 81, 98 ) );
+				setContaComp( line.substring( 98, 114 ) );
+				setIdentAmbCli( line.substring( 114, 115 ) );
+				setIdentAmbBco( line.substring( 115, 116 ) );
+				//A14 = line.substring( 116, 143 );
+				setSeqRegistro( line.substring( 143, 149 ).trim().length() > 0 ?  new Integer( line.substring( 143, 149 ).trim() ) : null );
+				//A16 = line.substring( 149 );
+			} catch (Exception e) {
+				throw new ExceptionSiacc("Erro no registro tipo A!\n"+e.getMessage());
+			}
 		}
 		
 		public Integer getCodBanco() {		
@@ -251,7 +255,7 @@ class SiaccUtil {
 		private Integer codMovimento = null;	// registro B.07
 		//private Integer B08 = null;			// registro B.08
 
-		RegB( final String line ) {
+		RegB( final String line ) throws ExceptionSiacc {
 			
 			super( CODREG );
 			parseLine( line );
@@ -272,15 +276,19 @@ class SiaccUtil {
 			this.sbreg.append( (char) 10 );
 		}
 
-		protected void parseLine( final String line ) {
-
-			setIdentCliEmp( line.substring( 1, 26 ) );
-			setAgenciaDebt( line.substring( 26, 30 ).trim().length() > 0 ? new Integer( line.substring( 26, 30 ).trim() ) : null );
-			setIdentCliBanco( line.substring( 30, 44 ) );
-			setDataOpcao( line.substring(  44, 52  ).trim().length() > 0 ? new Integer( line.substring( 44, 52 ).trim() ) : null );
-			//B06 = line.substring( 52, 148 );
-			setCodMovimento( line.substring( 148, 149 ).trim().length() > 0 ? new Integer( line.substring( 148, 149 ).trim() ) : null );
-			//B08 = line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ).trim() ) : null;
+		protected void parseLine( final String line ) throws ExceptionSiacc {
+			try {
+				setIdentCliEmp( line.substring( 1, 26 ) );
+				setAgenciaDebt( line.substring( 26, 30 ).trim().length() > 0 ? new Integer( line.substring( 26, 30 ).trim() ) : null );
+				setIdentCliBanco( line.substring( 30, 44 ) );
+				setDataOpcao( line.substring(  44, 52  ).trim().length() > 0 ? new Integer( line.substring( 44, 52 ).trim() ) : null );
+				//B06 = line.substring( 52, 148 );
+				setCodMovimento( line.substring( 148, 149 ).trim().length() > 0 ? new Integer( line.substring( 148, 149 ).trim() ) : null );
+				//B08 = line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ).trim() ) : null;
+			}
+			catch (Exception e) {
+				throw new ExceptionSiacc(e);
+			}
 		}
 		
 		public Integer getAgenciaDebt() {		
@@ -337,7 +345,7 @@ class SiaccUtil {
 		private Integer seqRegistro = null;		// registro C.08
 		private Integer codMovimento = null;	// registro C.09
 		
-		RegC( final String line ) {
+		RegC( final String line ) throws ExceptionSiacc {
 			
 			super( CODREG );
 			parseLine( line );
@@ -359,16 +367,20 @@ class SiaccUtil {
 			this.sbreg.append( (char) 10 );
 		}
 
-		protected void parseLine( final String line ) {
+		protected void parseLine( final String line ) throws ExceptionSiacc {
+			try {
+				identCliEmp = line.substring( 1, 26 );
+				agenciaDeb = line.substring( 26, 30 ).trim().length() > 0 ? new Integer( line.substring( 26, 30 ) ) : null;
+				identCliBanco = line.substring( 30, 44 );
+				ocorrencia1 = line.substring( 44, 84 );
+				ocorrencia2 = line.substring( 84, 124 );
+				//C07 = line.substring( 124, 143 );
+				seqRegistro = line.substring( 143, 149 ).trim().length() > 0 ? new Integer( line.substring( 143, 149 ) ) : null;
+				codMovimento = line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null;
+			} catch (Exception e) {
+				throw new ExceptionSiacc(e);
+			}
 			
-			identCliEmp = line.substring( 1, 26 );
-			agenciaDeb = line.substring( 26, 30 ).trim().length() > 0 ? new Integer( line.substring( 26, 30 ) ) : null;
-			identCliBanco = line.substring( 30, 44 );
-			ocorrencia1 = line.substring( 44, 84 );
-			ocorrencia2 = line.substring( 84, 124 );
-			//C07 = line.substring( 124, 143 );
-			seqRegistro = line.substring( 143, 149 ).trim().length() > 0 ? new Integer( line.substring( 143, 149 ) ) : null;
-			codMovimento = line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null;
 		}
 		
 		public Integer getAgenciaDeb() {		
@@ -441,7 +453,7 @@ class SiaccUtil {
 		private Integer seqRegistro = null;		// registro D.08
 		private Integer codMovimento = null;	// registro D.09
 		
-		RegD( final String line ) {
+		RegD( final String line ) throws ExceptionSiacc {
 			
 			super( CODREG );
 			parseLine( line );
@@ -464,16 +476,22 @@ class SiaccUtil {
 			this.sbreg.append( (char) 10 );
 		}
 
-		protected void parseLine( final String line ) {
-			
-			setIdentCliEmpAnt( line.substring( 1, 26 ) );
-			setAgenciaDeb( line.substring( 26, 30 ).trim().length() > 0 ? new Integer( line.substring( 26, 30 ) ) : null );
-			setIdentCliBanco( line.substring( 30, 44 ) );
-			setIdetCliEmpAtual( line.substring( 44, 69 ) );
-			setOcorrencia( line.substring( 69, 129 ) );
-			//C07 = line.substring( 124, 143 );
-			setSeqRegistro( line.substring( 143, 149 ).trim().length() > 0 ? new Integer( line.substring( 143, 149 ) ) : null );
-			setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
+		protected void parseLine( final String line ) throws ExceptionSiacc {
+
+
+			try {
+				setIdentCliEmpAnt( line.substring( 1, 26 ) );
+				setAgenciaDeb( line.substring( 26, 30 ).trim().length() > 0 ? new Integer( line.substring( 26, 30 ) ) : null );
+				setIdentCliBanco( line.substring( 30, 44 ) );
+				setIdetCliEmpAtual( line.substring( 44, 69 ) );
+				setOcorrencia( line.substring( 69, 129 ) );
+				//C07 = line.substring( 124, 143 );
+				setSeqRegistro( line.substring( 143, 149 ).trim().length() > 0 ? new Integer( line.substring( 143, 149 ) ) : null );
+				setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
+			} catch (Exception e) {
+				throw new ExceptionSiacc(e);
+			}
+
 		}
 		
 		public Integer getAgenciaDeb() {		
@@ -551,7 +569,7 @@ class SiaccUtil {
 		private Integer codMovimento = null;	// registro E.12
 		private float vlrParc = 0;
 		
-		RegE( final String line ) {
+		RegE( final String line ) throws ExceptionSiacc {
 			
 			super( CODREG );
 			parseLine( line );
@@ -577,19 +595,24 @@ class SiaccUtil {
 			this.sbreg.append( (char) 10 );
 		}
 		
-		protected void parseLine( final String line ) {
+		protected void parseLine( final String line ) throws ExceptionSiacc {
 			
-			setIdentCliEmp( line.substring( 1, 26 ) );
-			setAgenciaDebCred( line.substring( 26, 30 ).trim().length() > 0 ? new Integer( line.substring( 26, 30 ) ) : null );
-			setIdentCliBanco( line.substring( 30, 44 ) );
-			setDataVenc( line.substring( 44, 52 ).trim().length() > 0 ? new Integer( line.substring( 44, 52 ) ) : null );
-			setValorDebCred( line.substring( 52, 67 ).trim().length() > 0 ? new Long( line.substring( 52, 67 ) ) : null );
-			setCodMoeda( line.substring( 67, 69 ) );
-			setUsoEmp( line.substring( 69, 129 ) );
-			setNumAgendCli( line.substring( 129, 135 ).trim().length() > 0 ? new Integer( line.substring( 129, 135 ) ) : null );
-			//E10( line.substring( 135, 143 ) );
-			setSeqRegistro( line.substring( 143, 149 ).trim().length() > 0 ? new Integer( line.substring( 143, 149 ) ) : null );
-			setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
+			try {
+				setIdentCliEmp( line.substring( 1, 26 ) );
+				setAgenciaDebCred( line.substring( 26, 30 ).trim().length() > 0 ? new Integer( line.substring( 26, 30 ) ) : null );
+				setIdentCliBanco( line.substring( 30, 44 ) );
+				setDataVenc( line.substring( 44, 52 ).trim().length() > 0 ? new Integer( line.substring( 44, 52 ) ) : null );
+				setValorDebCred( line.substring( 52, 67 ).trim().length() > 0 ? new Long( line.substring( 52, 67 ) ) : null );
+				setCodMoeda( line.substring( 67, 69 ) );
+				setUsoEmp( line.substring( 69, 129 ) );
+				setNumAgendCli( line.substring( 129, 135 ).trim().length() > 0 ? new Integer( line.substring( 129, 135 ) ) : null );
+				//E10( line.substring( 135, 143 ) );
+				setSeqRegistro( line.substring( 143, 149 ).trim().length() > 0 ? new Integer( line.substring( 143, 149 ) ) : null );
+				setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
+			} catch (Exception e) {
+				throw new ExceptionSiacc(e);
+			}
+
 		}
 		
 		public Integer getAgenciaDebCred() {		
@@ -694,23 +717,27 @@ class SiaccUtil {
 		//private String F09 = null;			// registro F.09
 		private Integer codMovimento = null;	// registro F.10
 		
-		RegF( final String line ) {
+		RegF( final String line ) throws ExceptionSiacc {
 			
 			super( CODREG );
 			parseLine( line );
 		}
 		
-		protected void parseLine( final String line ) {
+		protected void parseLine( final String line ) throws ExceptionSiacc {
 			
-			setIdentCliEmp( line.substring( 1, 26 ) );
-			setAgencia( line.substring( 26, 30 ).trim().length() > 0 ? new Integer( line.substring( 26, 30 ) ) : null );
-			setIdentCliBanco( line.substring( 30, 44 ) );
-			setDataVenc( line.substring( 44, 52 ).trim().length() > 0 ? new Integer( line.substring( 44, 52 ) ) : null );
-			setValorDebCred( line.substring( 52, 67 ) );
-			setCodRetorno( line.substring( 67, 69 ) );
-			setUsoEmp( line.substring( 69, 129 ) );
-			//F09 line.substring( 129, 149 ) );
-			setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
+			try {
+				setIdentCliEmp( line.substring( 1, 26 ) );
+				setAgencia( line.substring( 26, 30 ).trim().length() > 0 ? new Integer( line.substring( 26, 30 ) ) : null );
+				setIdentCliBanco( line.substring( 30, 44 ) );
+				setDataVenc( line.substring( 44, 52 ).trim().length() > 0 ? new Integer( line.substring( 44, 52 ) ) : null );
+				setValorDebCred( line.substring( 52, 67 ) );
+				setCodRetorno( line.substring( 67, 69 ) );
+				setUsoEmp( line.substring( 69, 129 ) );
+				//	F09 line.substring( 129, 149 ) );
+				setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
+			} catch (Exception e) {
+				throw new ExceptionSiacc(e);
+			}
 		}
 		
 		public Integer getAgencia() {		
@@ -789,21 +816,25 @@ class SiaccUtil {
 		//private String H07 = null;			// registro H.07
 		private Integer codMovimento = null;	// registro H.08
 		
-		RegH( final String line ) {
+		RegH( final String line ) throws ExceptionSiacc {
 			
 			super( CODREG );
 			parseLine( line );
 		}
 		
-		protected void parseLine( final String line ) {
-			
-			setIdentCliEmpAnt( line.substring( 1, 26 ) );
-			setAgencia( line.substring( 26, 30 ).trim().length() > 0 ? new Integer( line.substring( 26, 30 ) ) : null );
-			setIdentCliBanco( line.substring( 30, 44 ) );
-			setIdentCliEmpAtual( line.substring( 44, 69 ) );
-			setOcorrencia( line.substring( 69, 127 ) );
-			//H07( line.substring( 127, 149 ) );
-			setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
+		protected void parseLine( final String line ) throws ExceptionSiacc {
+			try {
+				setIdentCliEmpAnt( line.substring( 1, 26 ) );
+				setAgencia( line.substring( 26, 30 ).trim().length() > 0 ? new Integer( line.substring( 26, 30 ) ) : null );
+				setIdentCliBanco( line.substring( 30, 44 ) );
+				setIdentCliEmpAtual( line.substring( 44, 69 ) );
+				setOcorrencia( line.substring( 69, 127 ) );
+				//H07( line.substring( 127, 149 ) );
+				setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
+			} catch (Exception e) {
+				throw new ExceptionSiacc(e);
+			}
+
 		}
 		
 		public Integer getAgencia() {		
@@ -861,16 +892,19 @@ class SiaccUtil {
 		private Integer menssagemInfo = null;	// registro J.02
 		private String filler = null;			// registro J.03
 		
-		RegJ( final String line ) {
+		RegJ( final String line ) throws ExceptionSiacc {
 			
 			super( CODREG );
 			parseLine( line );
 		}
 		
-		protected void parseLine( final String line ) {
-			
-			setMenssagemInfo( line.substring( 1, 27 ).trim().length() > 0 ? new Integer( line.substring( 1, 27 ) ) : null );
-			setFiller( line.substring( 27 ) );
+		protected void parseLine( final String line ) throws ExceptionSiacc {
+			try {
+				setMenssagemInfo( line.substring( 1, 27 ).trim().length() > 0 ? new Integer( line.substring( 1, 27 ) ) : null );
+				setFiller( line.substring( 27 ) );
+			} catch (Exception e) {
+				throw new ExceptionSiacc(e);
+			}
 		}
 		
 		public String getFiller() {		
@@ -904,24 +938,27 @@ class SiaccUtil {
 		private String sitAgencia = null;		// registro X.10
 		//private String X11 = null;			// registro X.11
 		
-		RegX( final String line ) {
+		RegX( final String line ) throws ExceptionSiacc {
 			
 			super( CODREG );
 			parseLine( line );
 		}
 		
-		protected void parseLine( final String line ) {
-			
-			setCodAgencia( line.substring( 1, 5 ) );
-			setNomeAgencia( line.substring( 5, 35 ) );
-			setEndAgencia( line.substring( 35, 65 ) );
-			setNumAgencia( line.substring( 65, 70 ) );
-			setCepAgencia( line.substring( 70, 75 ) );
-			setSufixoCepAgencia( line.substring( 75, 78 ) );
-			setCidadeAgencia( line.substring( 78, 98 ) );
-			setUfAgencia( line.substring( 98, 100 ) );
-			setSitAgencia( line.substring( 100, 101 ) );
-			//X11( line.substring( 101 ) );
+		protected void parseLine( final String line ) throws ExceptionSiacc {
+			try {
+				setCodAgencia( line.substring( 1, 5 ) );
+				setNomeAgencia( line.substring( 5, 35 ) );
+				setEndAgencia( line.substring( 35, 65 ) );
+				setNumAgencia( line.substring( 65, 70 ) );
+				setCepAgencia( line.substring( 70, 75 ) );
+				setSufixoCepAgencia( line.substring( 75, 78 ) );
+				setCidadeAgencia( line.substring( 78, 98 ) );
+				setUfAgencia( line.substring( 98, 100 ) );
+				setSitAgencia( line.substring( 100, 101 ) );
+				//X11( line.substring( 101 ) );
+			} catch (Exception e) {
+				throw new ExceptionSiacc(e);
+			}
 		}
 		
 		public String getCodAgencia() {		
@@ -1006,7 +1043,7 @@ class SiaccUtil {
 		private Integer seqRegistro = null;		// registro Z.05
 		private Integer codMovimento = null;	// registro Z.06
 		
-		RegZ( final String line ) {
+		RegZ( final String line ) throws ExceptionSiacc {
 			
 			super( CODREG );
 			parseLine( line );
@@ -1022,13 +1059,16 @@ class SiaccUtil {
 			this.sbreg.append( format( "", ETipo.$9, 1, 0));
 		}
 
-		protected void parseLine( final String line ) {
-			
-			setTotalRegistros( line.substring( 1, 7 ).trim().length() > 0 ? new Integer( line.substring( 1, 7 ) ) : null );
-			setValorTotal( line.substring( 7, 24 ).trim().length() > 0 ? new Long( line.substring( 7, 24 ) ) : null );
-			//Z04( line.substring( 24, 143 ) );
-			setSeqRegistro( line.substring( 143, 149 ).trim().length() > 0 ? new Integer( line.substring( 143, 149 ) ) : null );
-			setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
+		protected void parseLine( final String line ) throws ExceptionSiacc {
+			try {
+				setTotalRegistros( line.substring( 1, 7 ).trim().length() > 0 ? new Integer( line.substring( 1, 7 ) ) : null );
+				setValorTotal( line.substring( 7, 24 ).trim().length() > 0 ? new Long( line.substring( 7, 24 ) ) : null );
+				//Z04( line.substring( 24, 143 ) );
+				setSeqRegistro( line.substring( 143, 149 ).trim().length() > 0 ? new Integer( line.substring( 143, 149 ) ) : null );
+				setCodMovimento( line.substring( 149 ).trim().length() > 0 ? new Integer( line.substring( 149 ) ) : null );
+			} catch (Exception e) {
+				throw new ExceptionSiacc(e);
+			}
 		}
 		
 		public Integer getCodMovimento() {		
