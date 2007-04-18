@@ -69,7 +69,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 	};
 	
 	private enum EColInfoCli {
-	    CODREC, NPARCITREC, NUMCONTA, CODPLAN;	
+	    CODREC, NPARCITREC, NUMCONTA, CODPLAN, RAZCLI;	
 	}
 	
 	private JPanelPad panelRodape = null;
@@ -399,7 +399,8 @@ public class FRetSiacc extends FFilho implements ActionListener {
 				
 				sSQL.append( "SELECT R.CODREC, IR.NPARCITREC," ); 
 				sSQL.append( "COALESCE(IR.NUMCONTA, FC.NUMCONTA) NUMCONTA," );
-				sSQL.append( "COALESCE(IR.CODPLAN, FC.CODPLAN) CODPLAN " );
+				sSQL.append( "COALESCE(IR.CODPLAN, FC.CODPLAN) CODPLAN, " );
+				sSQL.append( "C.RAZCLI ");
 				sSQL.append( "FROM FNITRECEBER IR, VDCLIENTE C, FNRECEBER R " );
 				sSQL.append( "LEFT OUTER JOIN FNFBNCLI FC ON " );
 				sSQL.append( "FC.CODEMP=R.CODEMPCL AND FC.CODFILIAL=R.CODFILIALCL AND FC.CODCLI=R.CODCLI AND " );
@@ -423,6 +424,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 					info[ EColInfoCli.NPARCITREC.ordinal() ] = rs.getInt( EColInfoCli.NPARCITREC.toString() );
 					info[ EColInfoCli.NUMCONTA.ordinal() ] = rs.getString( EColInfoCli.NUMCONTA .toString());
 					info[ EColInfoCli.CODPLAN.ordinal()] = rs.getString( EColInfoCli.CODPLAN.toString() );
+					info[ EColInfoCli.RAZCLI.ordinal()] = rs.getString( EColInfoCli.RAZCLI.toString() );
 				}
 				
 			} catch ( Exception e ) {
