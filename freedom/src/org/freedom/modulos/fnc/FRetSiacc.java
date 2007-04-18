@@ -38,6 +38,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -67,6 +68,10 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		SEL, RAZCLI, CODCLI, CODREC, DOCREC, NRPARC, VLRAPAG, 
 		DTREC, DTVENC, VLRPAG, DTPAG, CODCON, CODPLAN  
 	};
+	
+	private enum EColInfoCli {
+	    CODREC, NPARCITREC, NUMCONTA, CODPLAN;	
+	}
 	
 	private JPanelPad panelRodape = null;
 
@@ -327,7 +332,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		
 		if ( list != null ) {
 			
-			Vector<Object> row = new Vector<Object>();
+			Vector<Object> row = null;
 			Object[] infocli = new Object[4];
 
 			//lbStatus.setText( "     Arquivo lido ..." );		
@@ -336,24 +341,23 @@ public class FRetSiacc extends FFilho implements ActionListener {
 					
 					if ( reg.getTiporeg() == 'F' ) {
 						
-						if ( ! getInfoCli( Integer.parseInt( ((RegF) reg).getIdentCliEmp().trim() ), infocli ) ) {
+						if ( ! setInfoCli( Integer.parseInt( ((RegF) reg).getIdentCliEmp().trim() ), infocli ) ) {
 							return;
 						}			
-	
+						row = new Vector<Object>();
 						row.add( Boolean.FALSE );
 						row.add( "" ); // Razão social do cliente
 						row.add( new Integer( ((RegF) reg).getIdentCliEmp().trim() ) ); // Cód.cli.
-						row.add( infocli[ 0 ] ); // Cód.rec.
+						row.add( infocli[ EColInfoCli.CODREC.ordinal() ] ); // Cód.rec.
 						row.add( "" ); // Doc
-						row.add( infocli[ 1 ] ); // Nro.Parc.
+						row.add( infocli[ EColInfoCli.NPARCITREC.ordinal() ] ); // Nro.Parc.
 						row.add( "" ); // Valor
 						row.add( "" ); // Emissão
 						row.add( "" ); // Vencimento
 						row.add( ((RegF) reg).getValorDebCred() ); // Valor pago
 						row.add( ((RegF) reg).getDataVenc() ); // Data pgto.
-						row.add( infocli[ 2 ] ); // Conta
-						row.add( infocli[ 3 ] ); // Planejamento
-						
+						row.add( infocli[ EColInfoCli.NUMCONTA.ordinal() ] ); // Conta
+						row.add( infocli[ EColInfoCli.CODPLAN.ordinal() ] ); // Planejamento
 						tab.adicLinha( row );
 					}
 				}
@@ -363,7 +367,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		}
 	}
 	
-	private Boolean getInfoCli( final Integer codcli, final Object[] info ) {
+	private Boolean setInfoCli( final Integer codcli, final Object[] info ) {
 		
 		Boolean retorno = Boolean.TRUE;
 		PreparedStatement ps = null;
@@ -396,11 +400,10 @@ public class FRetSiacc extends FFilho implements ActionListener {
 				rs = ps.executeQuery();
 				
 				if( rs.next() ) {
-					
-					info[ 0 ] = rs.getObject( 1 );
-					info[ 1 ] = rs.getObject( 2 );
-					info[ 2 ] = rs.getObject( 3 );
-					info[ 3 ] = rs.getObject( 4 );
+					info[ EColInfoCli.CODREC.ordinal() ] = rs.getInt( EColInfoCli.CODREC.toString() );
+					info[ EColInfoCli.NPARCITREC.ordinal() ] = rs.getInt( EColInfoCli.NPARCITREC.toString() );
+					info[ EColInfoCli.NUMCONTA.ordinal() ] = rs.getString( EColInfoCli.NUMCONTA .toString());
+					info[ EColInfoCli.CODPLAN.ordinal()] = rs.getString( EColInfoCli.CODPLAN.toString() );
 				}
 				
 			} catch ( Exception e ) {
