@@ -38,7 +38,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -105,7 +104,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 
 	private final JLabel lbStatus = new JLabel();
 	
-	private Vector vNumContas = new Vector();
+/*	private Vector vNumContas = new Vector();
 	
 	private Vector vCodPlans = new Vector();
 	
@@ -113,7 +112,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 	
 	private Vector vCodBOs = new Vector();
 	
-	private Vector vCodCCs = new Vector();
+	private Vector vCodCCs = new Vector(); */
 	
 	private final ListaCampos lcBanco = new ListaCampos( this );
 
@@ -272,12 +271,13 @@ public class FRetSiacc extends FFilho implements ActionListener {
 						Funcoes.mensagemInforma( this, "Arquivo não encontrado" );
 					}
 					else {
-						leArquivo( fileReaderSiacc, list );
-						if (montaGrid( list )) {
-							lbStatus.setText( "     Arquivo lido ..." );
-						}
-						else {
-							retorno = false;
+						if (leArquivo( fileReaderSiacc, list )) {
+							if (montaGrid( list )) {
+								lbStatus.setText( "     Arquivo lido ..." );
+							}
+							else {
+								retorno = false;
+							}
 						}
 					}
 	
@@ -291,48 +291,55 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		return retorno;
 	}
 		
-	private void leArquivo( final FileReader fileReaderSiacc, final ArrayList<SiaccUtil.Reg> list ) throws IOException {
+	private boolean leArquivo( final FileReader fileReaderSiacc, final ArrayList<SiaccUtil.Reg> list ) throws IOException {
 
+		boolean retorno = true;
 		String line = null;
 		char tipo;
 		BufferedReader in = new BufferedReader( fileReaderSiacc );
 
-		while ( ( line = in.readLine() ) != null ) {
-
-			tipo = line.charAt( 0 );
-			switch ( tipo ) {
-				case 'A' :
-					list.add( new SiaccUtil().new RegA( line ) );
-					break;
-				case 'B' :
-					list.add( new SiaccUtil().new RegB( line ) );
-					break;
-				case 'C' :
-					list.add( new SiaccUtil().new RegC( line ) );
-					break;
-				case 'E' :
-					list.add( new SiaccUtil().new RegF( line ) );
-					break;
-				case 'F' :
-					list.add( new SiaccUtil().new RegF( line ) );
-					break;
-				case 'J' :
-					list.add( new SiaccUtil().new RegJ( line ) );
-					break;
-				case 'H' :
-					list.add( new SiaccUtil().new RegH( line ) );
-					break;
-				case 'X' :
-					list.add( new SiaccUtil().new RegX( line ) );
-					break;
-				case 'Z' :
-					list.add( new SiaccUtil().new RegZ( line ) );
-					break;
-				default :
-					break;
+		try {
+			while ( ( line = in.readLine() ) != null ) {
+	
+				tipo = line.charAt( 0 );
+				switch ( tipo ) {
+					case 'A' :
+						list.add( new SiaccUtil().new RegA( line ) );
+						break;
+					case 'B' :
+						list.add( new SiaccUtil().new RegB( line ) );
+						break;
+					case 'C' :
+						list.add( new SiaccUtil().new RegC( line ) );
+						break;
+					case 'E' :
+						list.add( new SiaccUtil().new RegF( line ) );
+						break;
+					case 'F' :
+						list.add( new SiaccUtil().new RegF( line ) );
+						break;
+					case 'J' :
+						list.add( new SiaccUtil().new RegJ( line ) );
+						break;
+					case 'H' :
+						list.add( new SiaccUtil().new RegH( line ) );
+						break;
+					case 'X' :
+						list.add( new SiaccUtil().new RegX( line ) );
+						break;
+					case 'Z' :
+						list.add( new SiaccUtil().new RegZ( line ) );
+						break;
+					default :
+						break;
+				}
 			}
+		} catch (ExceptionSiacc e) {
+			Funcoes.mensagemErro(this, "Erro lendo o arquivo!\n"+e.getMessage());
+			retorno = false;
 		}
 		in.close();
+		return retorno;
 	}
 
 	private boolean montaGrid( ArrayList<SiaccUtil.Reg> list ) {
@@ -354,19 +361,19 @@ public class FRetSiacc extends FFilho implements ActionListener {
 							break;
 						}			
 						row = new Vector<Object>();
-						row.add( Boolean.FALSE );
+						row.add( new Boolean(Boolean.FALSE) );
 						row.add( "" ); // Razão social do cliente
 						row.add( new Integer( ((RegF) reg).getIdentCliEmp().trim() ) ); // Cód.cli.
-						row.add( infocli[ EColInfoCli.CODREC.ordinal() ] ); // Cód.rec.
+						row.add( (Integer) infocli[ EColInfoCli.CODREC.ordinal() ] ); // Cód.rec.
 						row.add( "" ); // Doc
-						row.add( infocli[ EColInfoCli.NPARCITREC.ordinal() ] ); // Nro.Parc.
+						row.add( (Integer) infocli[ EColInfoCli.NPARCITREC.ordinal() ] ); // Nro.Parc.
 						row.add( "" ); // Valor
 						row.add( "" ); // Emissão
 						row.add( "" ); // Vencimento
 						row.add( ((RegF) reg).getValorDebCred() ); // Valor pago
 						row.add( ((RegF) reg).getDataVenc() ); // Data pgto.
-						row.add( infocli[ EColInfoCli.NUMCONTA.ordinal() ] ); // Conta
-						row.add( infocli[ EColInfoCli.CODPLAN.ordinal() ] ); // Planejamento
+						row.add( new String((String) infocli[ EColInfoCli.NUMCONTA.ordinal() ]) ); // Conta
+						row.add( new String((String) infocli[ EColInfoCli.CODPLAN.ordinal() ] ) ); // Planejamento
 						tab.adicLinha( row );
 					}
 				}
