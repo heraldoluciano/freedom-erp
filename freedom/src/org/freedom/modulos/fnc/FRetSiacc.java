@@ -38,6 +38,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -69,7 +70,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 	};
 	
 	private enum EColInfoCli {
-	    CODREC, NPARCITREC, NUMCONTA, CODPLAN, RAZCLI;	
+	    CODREC, NPARCITREC, NUMCONTA, CODPLAN, RAZCLI, VLRAPAGITREC, DOCREC, DTVENCITREC, DTITREC;	
 	}
 	
 	private JPanelPad panelRodape = null;
@@ -362,14 +363,14 @@ public class FRetSiacc extends FFilho implements ActionListener {
 						}			
 						row = new Vector<Object>();
 						row.add( new Boolean(Boolean.FALSE) );
-						row.add( "" ); // Razão social do cliente
+						row.add( (String) infocli[ EColInfoCli.RAZCLI.ordinal()]); // Razão social do cliente
 						row.add( new Integer( ((RegF) reg).getIdentCliEmp().trim() ) ); // Cód.cli.
 						row.add( (Integer) infocli[ EColInfoCli.CODREC.ordinal() ] ); // Cód.rec.
-						row.add( "" ); // Doc
+						row.add( (Integer) infocli[ EColInfoCli.DOCREC.ordinal() ] ); // Doc
 						row.add( (Integer) infocli[ EColInfoCli.NPARCITREC.ordinal() ] ); // Nro.Parc.
-						row.add( "" ); // Valor
-						row.add( "" ); // Emissão
-						row.add( "" ); // Vencimento
+						row.add( (Integer) infocli[ EColInfoCli.VLRAPAGITREC.ordinal()] ); // Valor
+						row.add( (Date) infocli[ EColInfoCli.DTITREC.ordinal()] ); // Emissão
+						row.add( (Date) infocli[ EColInfoCli.DTVENCITREC.ordinal()]  ); // Vencimento
 						row.add( ((RegF) reg).getValorDebCred() ); // Valor pago
 						row.add( ((RegF) reg).getDataVenc() ); // Data pgto.
 						row.add( new String((String) infocli[ EColInfoCli.NUMCONTA.ordinal() ]) ); // Conta
@@ -400,7 +401,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 				sSQL.append( "SELECT R.CODREC, IR.NPARCITREC," ); 
 				sSQL.append( "COALESCE(IR.NUMCONTA, FC.NUMCONTA) NUMCONTA," );
 				sSQL.append( "COALESCE(IR.CODPLAN, FC.CODPLAN) CODPLAN, " );
-				sSQL.append( "C.RAZCLI ");
+				sSQL.append( "C.RAZCLI, IR.VLRAPAGITREC, R.DOCREC, IR.DTVENCITREC, IR.DTITREC ");
 				sSQL.append( "FROM FNITRECEBER IR, VDCLIENTE C, FNRECEBER R " );
 				sSQL.append( "LEFT OUTER JOIN FNFBNCLI FC ON " );
 				sSQL.append( "FC.CODEMP=R.CODEMPCL AND FC.CODFILIAL=R.CODFILIALCL AND FC.CODCLI=R.CODCLI AND " );
@@ -425,6 +426,10 @@ public class FRetSiacc extends FFilho implements ActionListener {
 					info[ EColInfoCli.NUMCONTA.ordinal() ] = rs.getString( EColInfoCli.NUMCONTA .toString());
 					info[ EColInfoCli.CODPLAN.ordinal()] = rs.getString( EColInfoCli.CODPLAN.toString() );
 					info[ EColInfoCli.RAZCLI.ordinal()] = rs.getString( EColInfoCli.RAZCLI.toString() );
+					info[ EColInfoCli.VLRAPAGITREC.ordinal()] = rs.getString( EColInfoCli.VLRAPAGITREC.toString() );
+					info[ EColInfoCli.DOCREC.ordinal()] = rs.getString( EColInfoCli.DOCREC.toString() );
+					info[ EColInfoCli.DTVENCITREC.ordinal()] = rs.getString( EColInfoCli.DTVENCITREC.toString() );
+					info[ EColInfoCli.DTITREC.ordinal()] = rs.getString( EColInfoCli.DTITREC.toString() );
 				}
 				
 			} catch ( Exception e ) {
