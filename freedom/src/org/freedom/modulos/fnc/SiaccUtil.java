@@ -568,6 +568,8 @@ class SiaccUtil {
 		private Integer seqRegistro = null;		// registro E.11
 		private Integer codMovimento = null;	// registro E.12
 		private float vlrParc = 0;
+		private Integer codRec = null;
+		private Integer nparcItRec = null;
 		
 		RegE( final String line ) throws ExceptionSiacc {
 			
@@ -578,6 +580,9 @@ class SiaccUtil {
 		RegE( final char codreg, final StuffRec stfRec, final int numSeq, final int numAgenda ) {
 
 			super( codreg );
+			setCodRec(stfRec.getCodrec());
+			setNparcItRec(stfRec.getNParcitrec());
+			setUsoEmp(format(getCodRec(),ETipo.$9,6,0)+format(getCodRec(),ETipo.$9,4,0));
 			this.vlrParc =  Float.valueOf(stfRec.getArgs()[ EColrec.VLRAPAG.ordinal() ]);
 			this.sbreg.append( format( stfRec.getArgs()[ EColrec.CODCLI.ordinal() ], ETipo.$9, 10, 0 ) );
 			this.sbreg.append( format( "", ETipo.X, 15, 0 ) ); // Completar a identificação do cliente na empresa
@@ -683,7 +688,7 @@ class SiaccUtil {
 			return usoEmp;
 		}
 		
-		public void setUsoEmp( final String usoEmp ) {		
+		public void setUsoEmp( final String usoEmp ) {			
 			this.usoEmp = usoEmp;
 		}
 		
@@ -701,6 +706,22 @@ class SiaccUtil {
 		
 		public void setVlrParc( float vlrParc ) {		
 			this.vlrParc = vlrParc;
+		}
+		
+		public Integer getCodRec() {		
+			return codRec;
+		}
+		
+		public void setCodRec( final Integer codRec ) {		
+			this.codRec = codRec;
+		}
+		
+		public Integer getNparcItRec() {		
+			return nparcItRec;
+		}
+		
+		public void setNparcItRec( final Integer nparcItRec ) {		
+			this.nparcItRec = nparcItRec;
 		}		
 	}
 
