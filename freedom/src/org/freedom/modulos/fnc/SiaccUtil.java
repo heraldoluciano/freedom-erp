@@ -591,7 +591,7 @@ class SiaccUtil {
 			this.sbreg.append( format( stfRec.getArgs()[ EColrec.DTVENC.ordinal() ], ETipo.$9, 8, 0 ) );
 			this.sbreg.append( format( Funcoes.transValor(new BigDecimal(vlrParc), 15, 2, true), ETipo.$9, 15, 0 ) );
 			this.sbreg.append( COD_MOEDA );
-			this.sbreg.append( format( "", ETipo.X, 60, 0 ) ); // Uso da empresa
+			this.sbreg.append( format( getUsoEmp(), ETipo.X, 60, 0 ) ); // Uso da empresa
 			this.sbreg.append( format( numAgenda, ETipo.$9, 6, 0 ) );
 			this.sbreg.append( format( "", ETipo.X, 8, 0 ) ); // Reservado para o futuro
 			this.sbreg.append( format( numSeq, ETipo.$9, 6, 0 ) ); // Reservado para o futuro
