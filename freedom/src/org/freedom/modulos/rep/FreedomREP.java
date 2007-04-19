@@ -71,7 +71,7 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Pagar", "Pagar", 'P', 300100000, 1, true, RPPagar.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Receber", "Receber", 'R', 400000000, 0, false, null );
-			addOpcao( 400000000, TP_OPCAO_ITEM, "Receber", "Receber", 'R', 400100000, 1, true, null );
+			addOpcao( 400000000, TP_OPCAO_ITEM, "Receber", "Receber", 'R', 400100000, 1, true, RPReceber.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Relatorios", "", 'l', 500000000, 0, false, null );
 			addOpcao( 500000000, TP_OPCAO_MENU, "Vendas", "", 'V', 500100000, 1, false, null );
@@ -110,7 +110,7 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 			addBotao( "btOP.gif", "Pedidos", "Pedidos", 200100000, RPPedido.class );
 			addBotao( "btSaida.gif", "Notas", "Notas", 200200000, null );
 			addBotao( "btContaPagar.gif", "Pagar", "Pagar", 300100000, RPPagar.class );
-			addBotao( "btContaReceber.gif", "Receber", "Receber", 400100000, null );
+			addBotao( "btContaReceber.gif", "Receber", "Receber", 400100000, RPReceber.class );
 		
 		ajustaMenu();
 

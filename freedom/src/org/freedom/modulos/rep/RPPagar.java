@@ -67,7 +67,7 @@ public class RPPagar extends FDados implements ActionListener {
 
 	private final JTextFieldPad txtDtVenc = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private final JTextFieldPad txtDtPgto = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private final JTextFieldPad txtDtPagamento = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	public RPPagar() {
 
@@ -110,7 +110,7 @@ public class RPPagar extends FDados implements ActionListener {
 		adicCampo( txtDtEmiss, 213, 200, 100, 20, "DtEmiss", "Emissão", ListaCampos.DB_SI, false );
 		adicCampo( txtDtVenc, 316, 200, 95, 20, "DtVenc", "Vencimento", ListaCampos.DB_SI, false );
 		
-		adicCampo( txtVlrPago, 7, 240, 120, 20, "VlrPago", "Valor pago", ListaCampos.DB_SI, false );
-		adicCampo( txtDtPgto, 130, 240, 120, 20, "DtPgto", "Data pagamento", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrPago, 7, 240, 120, 20, "VlrPago", "Valor recebido", ListaCampos.DB_SI, false );
+		adicCampo( txtDtPagamento, 130, 240, 120, 20, "DtPgto", "Data recebimento", ListaCampos.DB_SI, false );
 	}
 }
