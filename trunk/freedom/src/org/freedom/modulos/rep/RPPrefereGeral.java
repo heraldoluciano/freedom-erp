@@ -27,14 +27,22 @@ package org.freedom.modulos.rep;
 
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
 public class RPPrefereGeral extends FDados implements ActionListener {
@@ -57,20 +65,41 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 
 	private final JTextFieldPad txtCasasDesc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
-	private final JTextFieldPad txtCasasDescFin = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );	
+	private final JTextFieldPad txtCasasDescFin = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private final JTextFieldPad txtCodMoeda = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+	
+	private final JTextFieldFK txtNomeMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private final ListaCampos lcMoeda = new ListaCampos( this, "MO" );
 	
 
 	public RPPrefereGeral() {
 
 		super( false );
 		setTitulo( "Preferências gerais" );		
-		setAtribos( 50, 50, 430, 430 );
+		setAtribos( 50, 50, 430, 470 );
 		
+		montaListaCampos();		
 		montaTela();
 		setListaCampos( false, "PREFERE1", "SG" );
 		
 		lcCampos.setPodeIns( false );
 		lcCampos.setPodeExc( false );
+	}
+	
+	private void montaListaCampos() {
+		
+		/*********
+		 * MOEDA *
+		 *********/
+
+		lcMoeda.add( new GuardaCampo( txtCodMoeda, "CodMoeda", "Cód.moeda", ListaCampos.DB_PK, false ) );
+		lcMoeda.add( new GuardaCampo( txtNomeMoeda, "SingMoeda", "Descrição da moeda", ListaCampos.DB_SI, false ) );
+		lcMoeda.montaSql( false, "MOEDA", "RP" );
+		lcMoeda.setQueryCommit( false );
+		lcMoeda.setReadOnly( true );
+		txtCodMoeda.setTabelaExterna( lcMoeda );
 	}
 	
 	private void montaTela() {
@@ -106,10 +135,12 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		linha3.setBorder( BorderFactory.createEtchedBorder() );
 		
 		adic( campos, 27, 240, 80, 20 );
-		adic( linha3, 7, 250, 400, 100 );
+		adic( linha3, 7, 250, 400, 140 );
 		
-		adicCampo( txtCasasDesc, 17, 280, 160, 20, "CasasDec", "Casas decimais", ListaCampos.DB_SI, false );
-		adicCampo( txtCasasDescFin, 17, 320, 160, 20, "CasasDecFin", "Casas decimais ( financeiro )", ListaCampos.DB_SI, false );
+		adicCampo( txtCasasDesc, 17, 280, 150, 20, "CasasDec", "Casas decimais", ListaCampos.DB_SI, false );
+		adicCampo( txtCasasDescFin, 17, 320, 150, 20, "CasasDecFin", "Casas decimais ( financeiro )", ListaCampos.DB_SI, false );
+		adicCampo( txtCodMoeda, 17, 360, 100, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, txtNomeMoeda, false );
+		adicDescFK( txtNomeMoeda, 120, 360, 270, 20, "SingMoeda", "Descrição da moeda" );
 		
 	}
 
@@ -117,6 +148,66 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	public synchronized void setConexao( Connection cn ) {
 
 		super.setConexao( cn );
+		lcMoeda.setConexao( cn );
 		lcCampos.carregaDados();
+	}
+	
+	public static List<Object> getPrefere( final Connection con ) {
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sSQL = new StringBuilder();
+		List<Object> prefere = new ArrayList<Object>( EPrefere.values().length );
+		
+		try {
+			
+			sSQL.append( "SELECT IPICOMIS,IPIPED,CODBARPROD,ENDCLIPED,ORDEMPED," );
+			sSQL.append( "SERVIDORSMTP,USUARIOSMTP,CASASDEC,CASASDECFIN,CODMOEDA " );
+			sSQL.append( "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				prefere.add( EPrefere.IPICOMIS.ordinal(), rs.getString( "IPICOMIS" ) );
+				prefere.add( EPrefere.IPIPED.ordinal(), rs.getString( "IPIPED" ) );
+				prefere.add( EPrefere.CODBARPROD.ordinal(), rs.getString( "CODBARPROD" ) );
+				prefere.add( EPrefere.ENDCLIPED.ordinal(), rs.getString( "ENDCLIPED" ) );
+				prefere.add( EPrefere.ORDEMPED.ordinal(), rs.getString( "ORDEMPED" ) );
+				prefere.add( EPrefere.SERVIDORSMTP.ordinal(), rs.getString( "SERVIDORSMTP" ) );
+				prefere.add( EPrefere.USUARIOSMTP.ordinal(), rs.getString( "USUARIOSMTP" ) );
+				prefere.add( EPrefere.CASASDEC.ordinal(), rs.getInt( "CASASDEC" ) );
+				prefere.add( EPrefere.CASASDECFIN.ordinal(), rs.getInt( "CASASDECFIN" ) );
+				prefere.add( EPrefere.CODMOEDA.ordinal(), rs.getString( "CODMOEDA" ) );
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( null, "Erro ao buscar preferências!\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		
+		return prefere;
+	}
+	
+	public enum EPrefere {
+		IPICOMIS,
+	    IPIPED,
+	    CODBARPROD,
+	    ENDCLIPED,
+	    ORDEMPED,
+	    SERVIDORSMTP,
+	    USUARIOSMTP,
+	    CASASDEC,
+	    CASASDECFIN,
+	    CODMOEDA;
 	}
 }
