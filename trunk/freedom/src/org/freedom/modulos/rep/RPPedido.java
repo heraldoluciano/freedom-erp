@@ -27,28 +27,44 @@ package org.freedom.modulos.rep;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
 import org.freedom.acao.DeleteListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
+import org.freedom.telas.FObservacao;
 
-public class RPPedido extends FDetalhe implements CarregaListener, DeleteListener {
+public class RPPedido extends FDetalhe implements CarregaListener, InsertListener, DeleteListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -148,9 +164,13 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 
 	private final JTextFieldPad txtPagTotPed = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
+	private final JTextFieldPad txtObsPed = new JTextFieldPad( JTextFieldPad.TP_STRING, 500, 0 );
+
 	private JRadioGroup rgFrete;
 
 	private JRadioGroup rgRemessa;
+	
+	private final JButton btObsPed = new JButton( "Obs.", Icone.novo( "btObs.gif" ) );
 
 	private final ListaCampos lcCliente = new ListaCampos( this, "CL" );
 
@@ -169,6 +189,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 	private final ListaCampos lcFornecedorItem = new ListaCampos( this, "FO" );
 
 	private final ListaCampos lcPedido = new ListaCampos( this, "" );
+	
+	private List<Object> prefere = new ArrayList<Object>();
 
 	public RPPedido() {
 
@@ -196,9 +218,19 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		tab.setTamColuna( 100, 5 );
 
 		lcCampos.addCarregaListener( this );
-		lcDet.addPostListener( this );
-		lcDet.addDeleteListener( this );
 		lcDet.addCarregaListener( this );
+		lcCliente.addCarregaListener( this );
+		
+		lcCampos.addInsertListener( this );
+		lcDet.addInsertListener( this );
+		
+		lcDet.addPostListener( this );
+		
+		lcDet.addDeleteListener( this );
+		
+		btObsPed.addActionListener( this );
+		
+		txtCodForItem.addFocusListener( this );
 	}
 
 	private void montaRadioGrups() {
@@ -228,9 +260,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 
 	private void montaListaCampos() {
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/**********
 		 * PEDIDO *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 **********/
 
 		lcPedido.add( new GuardaCampo( txtCodPed, "CODPED", "Cód.ped.", ListaCampos.DB_PK, false ) );
 		lcPedido.add( new GuardaCampo( txtVlrTotPed, "VLRTOTPED", "Pedido", ListaCampos.DB_SI, false ) );
@@ -245,20 +277,22 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		lcPedido.setQueryCommit( false );
 		lcPedido.setReadOnly( true );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/***********
 		 * CLIENTE *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 ***********/
 
 		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
+		lcCliente.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.vend.", ListaCampos.DB_SI, false ) );
+		lcCliente.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_SI, false ) );
 		lcCliente.montaSql( false, "CLIENTE", "RP" );
 		lcCliente.setQueryCommit( false );
 		lcCliente.setReadOnly( true );
 		txtCodCli.setTabelaExterna( lcCliente );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/************
 		 * VENDEDOR *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 ************/
 
 		lcVendedor.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.vend.", ListaCampos.DB_PK, false ) );
 		lcVendedor.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do vendedor", ListaCampos.DB_SI, false ) );
@@ -267,9 +301,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		lcVendedor.setReadOnly( true );
 		txtCodVend.setTabelaExterna( lcVendedor );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/**********************
 		 * PLANO DE PAGAMENTO *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 **********************/
 
 		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
@@ -278,9 +312,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		lcPlanoPag.setReadOnly( true );
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/*********
 		 * MOEDA *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 *********/
 
 		lcMoeda.add( new GuardaCampo( txtCodMoeda, "CodMoeda", "Cód.moeda", ListaCampos.DB_PK, false ) );
 		lcMoeda.add( new GuardaCampo( txtDescMoeda, "SingMoeda", "Descrição da moeda", ListaCampos.DB_SI, false ) );
@@ -289,9 +323,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		lcMoeda.setReadOnly( true );
 		txtCodMoeda.setTabelaExterna( lcMoeda );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/**************
 		 * FORNECEDOR *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 **************/
 
 		lcFornecedor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFornecedor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
@@ -300,9 +334,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		lcFornecedor.setReadOnly( true );
 		txtCodFor.setTabelaExterna( lcFornecedor );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/******************
 		 * TRANSPORTADORA *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 ******************/
 
 		lcTransportadora.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.transp.", ListaCampos.DB_PK, false ) );
 		lcTransportadora.add( new GuardaCampo( txtRazTran, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, false ) );
@@ -311,9 +345,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		lcTransportadora.setReadOnly( true );
 		txtCodTran.setTabelaExterna( lcTransportadora );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/***********
 		 * PRODUTO *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 ***********/
 
 		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
@@ -322,9 +356,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		lcProduto.setReadOnly( true );
 		txtCodProd.setTabelaExterna( lcProduto );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/****************
 		 * FORNECEDOR 2 *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 ****************/
 
 		lcFornecedorItem.add( new GuardaCampo( txtCodForItem, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFornecedorItem.add( new GuardaCampo( txtRazForItem, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
@@ -337,9 +371,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 
 	private void montaMaster() {
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/***********
 		 * PEDIDOS *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 ***********/
 
 		setAltCab( 175 );
 		setPainel( panelPedido, pnCliCab );
@@ -370,9 +404,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 
 	private void montaDetale() {
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/*********
 		 * ITENS *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 *********/
 
 		pnDet.add( panelItens, BorderLayout.CENTER );
 
@@ -395,7 +429,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		panelTotaisItens.adic( new JLabel( "Pagar" ), 571, 0, 91, 15 );
 		panelTotaisItens.adic( txtPagTotPed, 571, 15, 97, 20 );
 
-		txtVlrLiqItem.setAtivo( false );
+		txtVlrLiqPed.setAtivo( false );
 		txtVlrTotPed.setAtivo( false );
 		txtQdtTotPed.setAtivo( false );
 		txtIPITotPed.setAtivo( false );
@@ -410,27 +444,29 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		panelCamposItens.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(), "Itens" ) );
 
 		adicCampo( txtCodItem, 7, 15, 70, 20, "CodItPed", "Item", ListaCampos.DB_PK, true );
-		adicCampo( txtCodProd, 80, 15, 80, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
-		adicDescFK( txtDescProd, 163, 15, 262, 20, "DescProd", "Descrição do produto" );
-		adicCampo( txtQtdItem, 428, 15, 80, 20, "QtdItPed", "Qtd.", ListaCampos.DB_SI, true );
-		adicCampo( txtPrecoItem, 511, 15, 80, 20, "PrecoItPed", "Preço", ListaCampos.DB_SI, true );
+		adicCampo( txtCodProd, 80, 15, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
+		adicDescFK( txtDescProd, 153, 15, 246, 20, "DescProd", "Descrição do produto" );
+		adicCampo( txtQtdItem, 402, 15, 92, 20, "QtdItPed", "Qtd.", ListaCampos.DB_SI, true );
+		adicCampo( txtPrecoItem, 497, 15, 94, 20, "PrecoItPed", "Preço", ListaCampos.DB_SI, true );
 		adicCampoInvisivel( txtVlrItem, "VlrItPed", "Valor item", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrLiqItem, "VlrLiqItPed", "Liquido", ListaCampos.DB_SI, false );
 		adicCampo( txtPercIPIItem, 594, 15, 72, 20, "PercIPIItPed", "% IPI", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrIPIItem, "VlrIPIItPed", "Valor IPI", ListaCampos.DB_SI, false );
 
-		adicCampo( txtPercDescItem, 7, 55, 90, 20, "PercDescItPed", "% Desconto", ListaCampos.DB_SI, false );
+		adicCampo( txtPercDescItem, 7, 55, 70, 20, "PercDescItPed", "% Desconto", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrDescItem, "VlrDescItPed", "Vlr. Desconto", ListaCampos.DB_SI, false );
-		adicCampo( txtPercAdicItem, 100, 55, 90, 20, "PercAdicItPed", "% Acrecimo", ListaCampos.DB_SI, false );
+		adicCampo( txtPercAdicItem, 80, 55, 70, 20, "PercAdicItPed", "% Acrecimo", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrAdicItem, "VlrAdicItPed", "Vlr. Adicional", ListaCampos.DB_SI, false );
-		adicCampo( txtPercRedItem, 193, 55, 90, 20, "PercRecItPed", "% Recebimento", ListaCampos.DB_SI, false );
+		adicCampo( txtPercRedItem, 153, 55, 80, 20, "PercRecItPed", "% Recebimento", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrRecItem, "VlrRecItPed", "Vlr. Receber", ListaCampos.DB_SI, false );
-		adicCampo( txtPercPagItem, 286, 55, 90, 20, "PercPagItPed", "% Pagamento", ListaCampos.DB_SI, false );
+		adicCampo( txtPercPagItem, 236, 55, 80, 20, "PercPagItPed", "% Pagamento", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrPagItem, "VlrPagItPed", "Vlr. Pagar", ListaCampos.DB_SI, false );
-		adicCampo( txtCodForItem, 379, 55, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtRazForItem, true );
-		adicDescFK( txtRazForItem, 462, 55, 205, 20, "RazFor", "Razão social do fornecedor" );
+		adicCampo( txtCodForItem, 319, 55, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtRazForItem, true );
+		adicDescFK( txtRazForItem, 402, 55, 189, 20, "RazFor", "Razão social do fornecedor" );
+		
+		panelCamposItens.adic( btObsPed, 595, 50, 70, 30 );
 	}
-
+	
 	private void calculaValorItem() {
 
 		if ( txtQtdItem.getVlrBigDecimal() != null ) {
@@ -438,6 +474,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		}
 	}
 
+	
 	private void calculaValorLiquido() {
 
 		if ( txtVlrItem.getVlrBigDecimal() != null ) {
@@ -456,6 +493,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		}
 	}
 
+	
 	private void calculaValorIpi() {
 
 		if ( txtPercIPIItem.getVlrBigDecimal() != null && txtVlrItem.getVlrBigDecimal() != null ) {
@@ -463,6 +501,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		}
 	}
 
+	
 	private void calculaValorDesconto() {
 
 		if ( txtPercDescItem.getVlrBigDecimal() != null && txtVlrItem.getVlrBigDecimal() != null ) {
@@ -470,6 +509,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		}
 	}
 
+	
 	private void calculaValorAdicional() {
 
 		if ( txtPercAdicItem.getVlrBigDecimal() != null && txtVlrItem.getVlrBigDecimal() != null ) {
@@ -477,6 +517,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		}
 	}
 
+	
 	private void calculaValorRecebimento() {
 
 		if ( txtPercRedItem.getVlrBigDecimal() != null && txtVlrItem.getVlrBigDecimal() != null ) {
@@ -484,22 +525,136 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		}
 	}
 
+	
 	private void calculaValorPagamento() {
 
 		if ( txtPercPagItem.getVlrBigDecimal() != null && txtVlrItem.getVlrBigDecimal() != null ) {
 			txtVlrPagItem.setVlrBigDecimal( ( txtVlrItem.getVlrBigDecimal().divide( bdCem ) ).multiply( txtPercPagItem.getVlrBigDecimal() ) );
 		}
 	}
+	
+	private void getObservacao() {
+		
+		if ( txtCodPed.getVlrInteger() != null && txtCodPed.getVlrInteger() > 0 ) {
+			
+			FObservacao obs = null;
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			String sSQLSelect = null;
+			String sSQLUpdate = null;
+			
+			try {
+			
+				sSQLSelect = "SELECT OBSPED FROM RPPEDIDO WHERE CODEMP=? AND CODFILIAL=? AND CODPED=?";
+				sSQLUpdate = "UPDATE RPPEDIDO SET OBSPED=? WHERE CODEMP=? AND CODFILIAL=? AND CODPED=?";
+				
+				ps = con.prepareStatement( sSQLSelect );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "PRPEDIDO" ) );
+				ps.setInt( 3, txtCodPed.getVlrInteger() );
+				rs = ps.executeQuery();
+					
+				if ( rs.next() ) {
+					obs = new FObservacao( ( rs.getString( "OBSPED" ) != null ? rs.getString( "OBSPED" ) : "" ) );
+				}
+				else {
+					obs = new FObservacao( "" );
+				}
 
+				rs.close();
+				ps.close();
+
+				if ( !con.getAutoCommit() ) {
+					con.commit();
+				}
+				
+				if ( obs != null ) {
+					
+					obs.setVisible( true );
+					
+					if ( obs.OK ) {
+						
+						try {
+							ps = con.prepareStatement( sSQLUpdate );
+							ps.setString( 1, obs.getTexto() );
+							ps.setInt( 2, Aplicativo.iCodEmp );
+							ps.setInt( 3, ListaCampos.getMasterFilial( "PRPEDIDO" ) );
+							ps.setInt( 4, txtCodPed.getVlrInteger() );
+							ps.executeUpdate();
+
+							ps.close();
+
+							if ( !con.getAutoCommit() ) {
+								con.commit();
+							}
+							
+						} catch ( SQLException e ) {
+							Funcoes.mensagemErro( this, "Erro ao alterar observação!\n" + e.getMessage() );
+							e.printStackTrace();
+						}
+					}
+					
+					obs.dispose();					
+				}
+
+			} catch ( Exception e ) {
+				Funcoes.mensagemErro( this, "Erro ao carregar a observação!\n" + e.getMessage() );
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void afterCarrega( CarregaEvent e ) {
+
+		if ( e.getListaCampos() == lcDet ) {
+			lcPedido.carregaDados();
+		}
+		else if ( e.getListaCampos() == lcCampos ) {
+			String s = txtCodPed.getVlrString();
+			lcPedido.carregaDados();
+			txtCodPed.setVlrString( s );
+		}
+		else if ( e.getListaCampos() == lcCliente ) {
+			lcVendedor.carregaDados();
+			lcPlanoPag.carregaDados();
+		}
+	}
+
+	public void beforeCarrega( CarregaEvent e ) { }
+
+	
+	public void afterInsert( InsertEvent e ) {
+
+		if ( e.getListaCampos() == lcCampos ) {
+			
+			txtCodMoeda.setVlrString( (String) prefere.get( EPrefere.CODMOEDA.ordinal() ) );
+			lcMoeda.carregaDados();
+			
+			txtDataPed.setVlrDate( Calendar.getInstance().getTime() );
+			txtDataPed.requestFocus();
+		}
+		else if ( e.getListaCampos() == lcDet ) {
+			
+			txtCodProd.requestFocus();
+		}
+	}
+
+	public void beforeInsert( InsertEvent e ) { }
+
+	
 	@ Override
 	public void afterPost( PostEvent e ) {
-
+	
+		if ( e.getListaCampos() == lcCampos ) {
+			
+			lcDet.insert( true );
+		}
 		super.afterPost( e );
 	}
 
 	@ Override
 	public void beforePost( PostEvent e ) {
-
+	
 		if ( e.getListaCampos() == lcDet ) {
 			calculaValorItem();
 			calculaValorIpi();
@@ -512,31 +667,33 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		super.beforePost( e );
 	}
 
-	public void afterCarrega( CarregaEvent e ) {
-
+	public void afterDelete( DeleteEvent e ) {
+	
 		if ( e.getListaCampos() == lcDet ) {
 			lcPedido.carregaDados();
 		}
-		else if ( e.getListaCampos() == lcCampos ) {
-			String s = txtCodPed.getVlrString();
-			lcPedido.carregaDados();
-			txtCodPed.setVlrString( s );
+	}
+
+	public void beforeDelete( DeleteEvent e ) { }
+
+	@ Override
+	public void actionPerformed( ActionEvent e ) {
+
+		if ( e.getSource() == btObsPed ) {
+			getObservacao();
 		}
+		super.actionPerformed( e );
 	}
 
-	public void beforeCarrega( CarregaEvent e ) {
+	public void focusGained( FocusEvent e ) { }
 
-	}
+	public void focusLost( FocusEvent e ) {
 
-	public void afterDelete( DeleteEvent E ) {
-
-		if ( E.getListaCampos() == lcDet ) {
-			lcPedido.carregaDados();
-		}
-	}
-
-	public void beforeDelete( DeleteEvent devt ) {
-
+		if ( e.getSource() == txtCodForItem && 
+				( lcDet.getStatus() == ListaCampos.LCS_EDIT || lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
+			lcDet.post();
+			lcDet.insert( true );
+		}		
 	}
 
 	public void setConexao( Connection cn ) {
@@ -552,6 +709,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, DeleteListene
 		lcProduto.setConexao( cn );
 		lcFornecedorItem.setConexao( cn );
 		lcPedido.setConexao( cn );
+		
+		prefere = RPPrefereGeral.getPrefere( cn );
 	}
 
 }
