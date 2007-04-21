@@ -37,12 +37,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -63,6 +66,7 @@ import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FObservacao;
+import org.freedom.telas.FPrinterJob;
 
 public class RPPedido extends FDetalhe implements CarregaListener, InsertListener, DeleteListener, FocusListener {
 
@@ -216,6 +220,10 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		tab.setTamColuna( 100, 3 );
 		tab.setTamColuna( 100, 4 );
 		tab.setTamColuna( 100, 5 );
+		
+		setImprimir( true );
+		btPrevimp.addActionListener( this );
+		btImp.addActionListener( this );
 
 		lcCampos.addCarregaListener( this );
 		lcDet.addCarregaListener( this );
@@ -566,14 +574,10 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 				if ( !con.getAutoCommit() ) {
 					con.commit();
-				}
-				
-				if ( obs != null ) {
-					
-					obs.setVisible( true );
-					
-					if ( obs.OK ) {
-						
+				}				
+				if ( obs != null ) {					
+					obs.setVisible( true );					
+					if ( obs.OK ) {						
 						try {
 							ps = con.prepareStatement( sSQLUpdate );
 							ps.setString( 1, obs.getTexto() );
@@ -581,24 +585,49 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 							ps.setInt( 3, ListaCampos.getMasterFilial( "PRPEDIDO" ) );
 							ps.setInt( 4, txtCodPed.getVlrInteger() );
 							ps.executeUpdate();
-
 							ps.close();
-
 							if ( !con.getAutoCommit() ) {
 								con.commit();
-							}
-							
+							}							
 						} catch ( SQLException e ) {
 							Funcoes.mensagemErro( this, "Erro ao alterar observação!\n" + e.getMessage() );
 							e.printStackTrace();
 						}
-					}
-					
+					}					
 					obs.dispose();					
 				}
-
 			} catch ( Exception e ) {
 				Funcoes.mensagemErro( this, "Erro ao carregar a observação!\n" + e.getMessage() );
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void imprimir( final boolean visualizar ) {
+		
+		if ( txtCodPed.getVlrInteger() != null && txtCodPed.getVlrInteger() > 0 ) {
+			try {
+				
+				HashMap<String,Object> hParam = new HashMap<String, Object>();
+	
+				hParam.put( "CODEMP", Aplicativo.iCodEmp );
+				hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RPPEDIDO" ) );
+				hParam.put( "CODPED", txtCodPed.getVlrInteger() );
+				hParam.put( "SUBREPORT_DIR", RelTipoCli.class.getResource( "relatorios/" ).getPath() );
+				hParam.put( "REPORT_CONNECTION", con );
+				
+				FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/pedido.jasper", "PEDIDO Nº " + txtCodPed.getVlrInteger(), null, this, hParam, con );
+	
+				if ( visualizar ) {
+					dlGr.setVisible( true );
+				}
+				else {
+					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				}
+				
+				dispose();
+			} catch ( Exception e ) {
+				Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
 				e.printStackTrace();
 			}
 		}
@@ -645,7 +674,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	@ Override
 	public void afterPost( PostEvent e ) {
 	
-		if ( e.getListaCampos() == lcCampos ) {
+		if ( e.getListaCampos() == lcCampos && lcCampos.getStatusAnt() == ListaCampos.LCS_INSERT ) {
 			
 			lcDet.insert( true );
 		}
@@ -681,6 +710,12 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 		if ( e.getSource() == btObsPed ) {
 			getObservacao();
+		}
+		else if ( e.getSource() == btPrevimp ) {
+			imprimir( true );
+		}
+		else if ( e.getSource() == btImp ) {
+			imprimir( false );
 		}
 		super.actionPerformed( e );
 	}
