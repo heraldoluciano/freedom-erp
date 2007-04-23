@@ -582,7 +582,7 @@ class SiaccUtil {
 			super( codreg );
 			setCodRec(stfRec.getCodrec());
 			setNparcItRec(stfRec.getNParcitrec());
-			setUsoEmp(format(getCodRec(),ETipo.$9,6,0)+format(getCodRec(),ETipo.$9,4,0));
+			setUsoEmp(format(getCodRec(),ETipo.$9,6,0)+format(getNparcItRec(),ETipo.$9,4,0));
 			this.vlrParc =  Float.valueOf(stfRec.getArgs()[ EColrec.VLRAPAG.ordinal() ]);
 			this.sbreg.append( format( stfRec.getArgs()[ EColrec.CODCLI.ordinal() ], ETipo.$9, 10, 0 ) );
 			this.sbreg.append( format( "", ETipo.X, 15, 0 ) ); // Completar a identificação do cliente na empresa
@@ -617,7 +617,6 @@ class SiaccUtil {
 			} catch (Exception e) {
 				throw new ExceptionSiacc("Erro na leitura do registro E!\n" + e.getMessage());
 			}
-
 		}
 		
 		public Integer getAgenciaDebCred() {		
@@ -688,8 +687,16 @@ class SiaccUtil {
 			return usoEmp;
 		}
 		
-		public void setUsoEmp( final String usoEmp ) {			
+		public void setUsoEmp( final String usoEmp ) {
 			this.usoEmp = usoEmp;
+			String codrec = this.usoEmp.substring( 0, 6 );
+			String numparcrec = this.usoEmp.substring( 6, 10 );
+			if ( codrec != null && codrec.trim().length() > 0 ) {
+				setCodRec( Integer.parseInt( codrec.trim() ) );
+			}
+			if ( numparcrec != null && numparcrec.trim().length() > 0 ) {			
+				setNparcItRec( Integer.parseInt( numparcrec.trim() ) );
+			}
 		}
 		
 		public Long getValorDebCred() {		
@@ -737,6 +744,8 @@ class SiaccUtil {
 		private String usoEmp = null;			// registro F.08
 		//private String F09 = null;			// registro F.09
 		private Integer codMovimento = null;	// registro F.10
+		private Integer codRec = null;
+		private Integer nparcItRec = null;
 		
 		RegF( final String line ) throws ExceptionSiacc {
 			
@@ -814,7 +823,15 @@ class SiaccUtil {
 		}
 		
 		public void setUsoEmp( final String usoEmp ) {		
-			this.usoEmp = usoEmp;
+			this.usoEmp = usoEmp;		
+			String codrec = this.usoEmp.substring( 0, 6 );
+			String numparcrec = this.usoEmp.substring( 6, 10 );
+			if ( codrec != null && codrec.trim().length() > 0 ) {
+				setCodRec( Integer.parseInt( codrec.trim() ) );
+			}
+			if ( numparcrec != null && numparcrec.trim().length() > 0 ) {			
+				setNparcItRec( Integer.parseInt( numparcrec.trim() ) );
+			}
 		}
 		
 		public BigDecimal getValorDebCred() {
@@ -824,6 +841,22 @@ class SiaccUtil {
 		public void setValorDebCred( final String valor ) {		
 			this.valorDebCred = valor;
 		}
+		
+		public Integer getCodRec() {		
+			return codRec;
+		}
+		
+		public void setCodRec( final Integer codRec ) {		
+			this.codRec = codRec;
+		}
+		
+		public Integer getNparcItRec() {		
+			return nparcItRec;
+		}
+		
+		public void setNparcItRec( final Integer nparcItRec ) {		
+			this.nparcItRec = nparcItRec;
+		}		
 	}
 
 	class RegH extends Reg {

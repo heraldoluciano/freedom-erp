@@ -34,12 +34,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -254,6 +255,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 
 			FileDialog fileDialogSiacc = null;
 			fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Importar arquivo." );
+			fileDialogSiacc.setFile( "*.txt" );
 			fileDialogSiacc.setVisible( true );
 
 			if ( fileDialogSiacc.getFile() == null ) {
@@ -261,30 +263,43 @@ public class FRetSiacc extends FFilho implements ActionListener {
 				retorno = false;
 			}
 			else {
-				String sFileName = fileDialogSiacc.getDirectory() + fileDialogSiacc.getFile();
-	
+				
+				String sFileName = fileDialogSiacc.getDirectory() + fileDialogSiacc.getFile();	
 				File fileSiacc = new File( sFileName );
 	
-				try {
-	
-					fileReaderSiacc = new FileReader( fileSiacc );
-					if ( fileReaderSiacc == null ) {
-						Funcoes.mensagemInforma( this, "Arquivo não encontrado" );
-					}
-					else {
-						if (leArquivo( fileReaderSiacc, list )) {
-							if (montaGrid( list )) {
-								lbStatus.setText( "     Arquivo lido ..." );
-							}
-							else {
-								retorno = false;
-							}
+				if ( fileSiacc.exists() ) {
+		
+					try {
+		
+						fileReaderSiacc = new FileReader( fileSiacc );
+						
+						if ( fileReaderSiacc == null ) {
+							Funcoes.mensagemInforma( this, "Arquivo não encontrado" );
 						}
+						else {
+							if ( leArquivo( fileReaderSiacc, list ) ) {
+								
+								lbStatus.setText( "     Arquivo lido ..." );
+								
+								if ( montaGrid( list ) ) {
+
+									lbStatus.setText( "     Tabela carregada ..." );
+								}
+								else {
+									Funcoes.mensagemInforma( this, "Nenhum registro de retorno encontrado." );
+									lbStatus.setText( "" );
+									retorno = false;
+								}
+							}
+						}	
+					} catch ( IOException ioError ) {
+						Funcoes.mensagemErro( this, "Erro ao ler o arquivo: " + sFileName + "\n" + ioError.getMessage() );
+						lbStatus.setText( "" );
+						retorno = false;
 					}
-	
-				} catch ( IOException ioError ) {
-					Funcoes.mensagemErro( this, "Erro ao ler o arquivo: " + sFileName + "\n" + ioError.getMessage() );
-					lbStatus.setText( "" );
+				}
+				else {
+					Funcoes.mensagemErro( this, "Arquivo " + sFileName + " não existe!" );
 					retorno = false;
 				}
 			}
@@ -300,6 +315,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		BufferedReader in = new BufferedReader( fileReaderSiacc );
 
 		try {
+			learquivo :
 			while ( ( line = in.readLine() ) != null ) {
 	
 				tipo = line.charAt( 0 );
@@ -314,7 +330,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 						list.add( new SiaccUtil().new RegC( line ) );
 						break;
 					case 'E' :
-						list.add( new SiaccUtil().new RegF( line ) );
+						list.add( new SiaccUtil().new RegE( line ) );
 						break;
 					case 'F' :
 						list.add( new SiaccUtil().new RegF( line ) );
@@ -332,24 +348,31 @@ public class FRetSiacc extends FFilho implements ActionListener {
 						list.add( new SiaccUtil().new RegZ( line ) );
 						break;
 					default :
-						break;
+						break learquivo;
 				}
 			}
-		} catch (ExceptionSiacc e) {
-			Funcoes.mensagemErro(this, "Erro lendo o arquivo!\n"+e.getMessage());
+		} catch ( ExceptionSiacc e ) {
+			Funcoes.mensagemErro( this, "Erro lendo o arquivo!\n" + e.getMessage() );
+			e.printStackTrace();
 			retorno = false;
 		}
+		
 		in.close();
+		
 		return retorno;
 	}
 
 	private boolean montaGrid( ArrayList<SiaccUtil.Reg> list ) {
 		
 		boolean retorno = true;
-		if ( list != null ) {
+		Integer count = new Integer( 0 );
+		
+		if ( list != null ) {			
+
+			lbStatus.setText( "     Carregando tabela ..." );
 			
-			Vector<Object> row = null;
-			Object[] infocli = new Object[4];
+			Object[] row = null;
+			List<Object> infocli = new ArrayList<Object>();
 
 			//lbStatus.setText( "     Arquivo lido ..." );		
 			try {
@@ -357,44 +380,50 @@ public class FRetSiacc extends FFilho implements ActionListener {
 					
 					if ( reg.getTiporeg() == 'F' ) {
 						
-						if ( ! setInfoCli( Integer.parseInt( ((RegF) reg).getIdentCliEmp().trim() ), infocli ) ) {
+						if ( ! setInfoCli( ((RegF) reg).getCodRec(), ((RegF) reg).getNparcItRec(), infocli ) ) {
 							retorno = false;
 							break;
-						}			
-						row = new Vector<Object>();
-						row.add( new Boolean(Boolean.FALSE) );
-						row.add( (String) infocli[ EColInfoCli.RAZCLI.ordinal()]); // Razão social do cliente
-						row.add( new Integer( ((RegF) reg).getIdentCliEmp().trim() ) ); // Cód.cli.
-						row.add( (Integer) infocli[ EColInfoCli.CODREC.ordinal() ] ); // Cód.rec.
-						row.add( (Integer) infocli[ EColInfoCli.DOCREC.ordinal() ] ); // Doc
-						row.add( (Integer) infocli[ EColInfoCli.NPARCITREC.ordinal() ] ); // Nro.Parc.
-						row.add( (Integer) infocli[ EColInfoCli.VLRAPAGITREC.ordinal()] ); // Valor
-						row.add( (Date) infocli[ EColInfoCli.DTITREC.ordinal()] ); // Emissão
-						row.add( (Date) infocli[ EColInfoCli.DTVENCITREC.ordinal()]  ); // Vencimento
-						row.add( ((RegF) reg).getValorDebCred() ); // Valor pago
-						row.add( ((RegF) reg).getDataVenc() ); // Data pgto.
-						row.add( new String((String) infocli[ EColInfoCli.NUMCONTA.ordinal() ]) ); // Conta
-						row.add( new String((String) infocli[ EColInfoCli.CODPLAN.ordinal() ] ) ); // Planejamento
-						tab.adicLinha( row );
+						}
+						if ( infocli.size() == EColInfoCli.values().length ) {
+							tab.adicLinha();
+							tab.setValor( new Boolean( Boolean.FALSE ), count, 0 );
+							tab.setValor( (String) infocli.get( EColInfoCli.RAZCLI.ordinal() ), count, EColTab.CODCLI.ordinal() ); // Razão social do cliente
+							tab.setValor( new Integer( ((RegF) reg).getIdentCliEmp().trim() ), count, EColTab.CODCLI.ordinal() ); // Cód.cli.
+							tab.setValor( (Integer) infocli.get( EColInfoCli.CODREC.ordinal() ), count, EColTab.CODREC.ordinal() ); // Cód.rec.
+							tab.setValor( (String) infocli.get( EColInfoCli.DOCREC.ordinal() ), count, EColTab.DOCREC.ordinal() ); // Doc
+							tab.setValor( (Integer) infocli.get( EColInfoCli.NPARCITREC.ordinal() ), count, EColTab.NRPARC.ordinal() ); // Nro.Parc.
+							tab.setValor( (BigDecimal) infocli.get( EColInfoCli.VLRAPAGITREC.ordinal() ), count, EColTab.VLRPAG.ordinal() ); // Valor
+							tab.setValor( (Date) infocli.get( EColInfoCli.DTITREC.ordinal() ), count, EColTab.DTREC.ordinal() ); // Emissão
+							tab.setValor( (Date) infocli.get( EColInfoCli.DTVENCITREC.ordinal() ), count, EColTab.DTVENC.ordinal() ); // Vencimento
+							tab.setValor( (BigDecimal) ((RegF) reg).getValorDebCred(), count, EColTab.VLRPAG.ordinal() ); // Valor pago
+							tab.setValor( (Date) ((RegF) reg).getDataVenc(), count, EColTab.DTVENC.ordinal() ); // Data pgto.
+							tab.setValor( (String) infocli.get( EColInfoCli.NUMCONTA.ordinal() ), count, EColTab.CODCON.ordinal() ); // Conta
+							tab.setValor( (String) infocli.get( EColInfoCli.CODPLAN.ordinal() ), count, EColTab.CODPLAN.ordinal() ); // Planejamento
+							count++;
+						}
 					}
 				}
 			} catch ( Exception e ) {
 				retorno = false;
-				Funcoes.mensagemErro(this, "Erro na montagem da lista!\n"+e.getMessage());
-				//e.printStackTrace();
+				Funcoes.mensagemErro(this, "Erro no carregamento da tabela!\n" + e.getMessage());
+				e.printStackTrace();
 			}
 		}
+		else {
+			retorno = false;
+		}
+		
 		return retorno;
 	}
 	
-	private Boolean setInfoCli( final Integer codcli, final Object[] info ) {
+	private Boolean setInfoCli( final Integer codrec, final Integer numparcrec, final List<Object> info ) {
 		
 		Boolean retorno = Boolean.TRUE;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sSQL = new StringBuilder();
 		
-		if ( codcli != null && info != null ) {
+		if ( codrec != null && numparcrec != null && info != null ) {
 			
 			try {
 				
@@ -414,22 +443,23 @@ public class FRetSiacc extends FFilho implements ActionListener {
 				ps = con.prepareStatement( sSQL.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "FNFBNCLI" ) );
-				ps.setInt( 3, Aplicativo.iCodEmp );
+				ps.setInt( 3, txtCodBanco.getVlrInteger() );
 				ps.setInt( 4, Aplicativo.iCodEmp );
 				ps.setInt( 5, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-				//ps.setInt( 6, Aplicativo.iCodEmp );
+				ps.setInt( 6, codrec);
+				ps.setInt( 7, numparcrec);
 				rs = ps.executeQuery();
 				
 				if( rs.next() ) {
-					info[ EColInfoCli.CODREC.ordinal() ] = rs.getInt( EColInfoCli.CODREC.toString() );
-					info[ EColInfoCli.NPARCITREC.ordinal() ] = rs.getInt( EColInfoCli.NPARCITREC.toString() );
-					info[ EColInfoCli.NUMCONTA.ordinal() ] = rs.getString( EColInfoCli.NUMCONTA .toString());
-					info[ EColInfoCli.CODPLAN.ordinal()] = rs.getString( EColInfoCli.CODPLAN.toString() );
-					info[ EColInfoCli.RAZCLI.ordinal()] = rs.getString( EColInfoCli.RAZCLI.toString() );
-					info[ EColInfoCli.VLRAPAGITREC.ordinal()] = rs.getString( EColInfoCli.VLRAPAGITREC.toString() );
-					info[ EColInfoCli.DOCREC.ordinal()] = rs.getString( EColInfoCli.DOCREC.toString() );
-					info[ EColInfoCli.DTVENCITREC.ordinal()] = rs.getString( EColInfoCli.DTVENCITREC.toString() );
-					info[ EColInfoCli.DTITREC.ordinal()] = rs.getString( EColInfoCli.DTITREC.toString() );
+					info.add( EColInfoCli.CODREC.ordinal(), rs.getInt( EColInfoCli.CODREC.toString() ) );
+					info.add( EColInfoCli.NPARCITREC.ordinal(), rs.getInt( EColInfoCli.NPARCITREC.toString() ) );
+					info.add( EColInfoCli.NUMCONTA.ordinal(), rs.getString( EColInfoCli.NUMCONTA .toString() ) );
+					info.add( EColInfoCli.CODPLAN.ordinal(), rs.getString( EColInfoCli.CODPLAN.toString() ) );
+					info.add( EColInfoCli.RAZCLI.ordinal(), rs.getString( EColInfoCli.RAZCLI.toString() ) );
+					info.add( EColInfoCli.VLRAPAGITREC.ordinal(), rs.getBigDecimal( EColInfoCli.VLRAPAGITREC.toString() ) );
+					info.add( EColInfoCli.DOCREC.ordinal(), rs.getString( EColInfoCli.DOCREC.toString() ) );
+					info.add( EColInfoCli.DTVENCITREC.ordinal(), rs.getDate( EColInfoCli.DTVENCITREC.toString() ) );
+					info.add( EColInfoCli.DTITREC.ordinal(), rs.getDate( EColInfoCli.DTITREC.toString() ) );
 				}
 				
 			} catch ( Exception e ) {
