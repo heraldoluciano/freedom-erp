@@ -1,6 +1,7 @@
 /**
  * @version 29/12/2003 <BR>
- * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
+ * @author Setpoint Informática Ltda.
+ * @author Reginaldo Garcia Heua. <BR>
  * 
  * Projeto: Freedom <BR>
  * 
