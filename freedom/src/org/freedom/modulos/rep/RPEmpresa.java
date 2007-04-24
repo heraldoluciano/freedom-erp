@@ -38,7 +38,6 @@ import javax.swing.JScrollPane;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
