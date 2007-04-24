@@ -25,10 +25,12 @@ package org.freedom.modulos.std;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import org.freedom.componentes.JLabelPad;
 
@@ -91,6 +93,9 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 	private ListaCampos lcPlan = new ListaCampos( this );
 
 	private ListaCampos lcCC = new ListaCampos( this );
+	
+	public enum EColEdit{CODCLI, RAZCLI, CODCONTA, CODPLANO, CODCC, DOC, DTEMIS, DTVENC,
+		VLRJUROS, VLRDESC, VLRPARC, OBS, CODBANCO};
 
 	public DLEditaRec( Component cOrig ) {
 
@@ -183,21 +188,21 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		lcCC.addCarregaListener( this );
 	}
 
-	public void setValores( String[] sVals ) {
+	public void setValores( Object[] sVals ) {
 
-		txtCodCli.setVlrString( sVals[ 0 ] );
-		txtRazCli.setVlrString( sVals[ 1 ] );
-		txtCodConta.setVlrString( sVals[ 2 ] );
-		txtCodPlan.setVlrString( sVals[ 3 ] );
-		txtCodCC.setVlrString( sVals[ 4 ] );
-		txtDoc.setVlrString( sVals[ 5 ] );
-		txtDtEmis.setVlrString( sVals[ 6 ] );
-		txtDtVenc.setVlrString( sVals[ 7 ] );
-		txtVlrJuros.setVlrString( sVals[ 8 ] );
-		txtVlrDesc.setVlrString( sVals[ 9 ] );
-		txtVlrParc.setVlrString( sVals[ 10 ] );
-		txtObs.setVlrString( sVals[ 11 ] );
-		txtCodBanco.setVlrString( sVals[ 12 ] );
+		txtCodCli.setVlrInteger( (Integer) sVals[ EColEdit.CODCLI.ordinal() ] );
+		txtRazCli.setVlrString( (String) sVals[ EColEdit.RAZCLI.ordinal() ] );
+		txtCodConta.setVlrString( (String) sVals[ EColEdit.CODCONTA.ordinal() ] );
+		txtCodPlan.setVlrString( (String) sVals[ EColEdit.CODPLANO.ordinal() ] );
+		txtCodCC.setVlrString( (String) sVals[ EColEdit.CODCC.ordinal() ] );
+		txtDoc.setVlrString( (String) sVals[ EColEdit.DOC.ordinal() ] );
+		txtDtEmis.setVlrDate( (Date)sVals[ EColEdit.DTEMIS.ordinal() ] );
+		txtDtVenc.setVlrDate( (Date) sVals[ EColEdit.DTVENC.ordinal() ] );
+		txtVlrJuros.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRJUROS.ordinal() ] );
+		txtVlrDesc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRDESC.ordinal() ] );
+		txtVlrParc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRPARC.ordinal() ] );
+		txtObs.setVlrString( (String) sVals[ EColEdit.OBS.ordinal() ] );
+		txtCodBanco.setVlrString((String) sVals[ EColEdit.CODBANCO.ordinal() ] );
 	}
 
 	public String[] getValores() {

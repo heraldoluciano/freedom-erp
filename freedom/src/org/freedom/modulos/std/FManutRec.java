@@ -64,6 +64,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.std.DLEditaRec.EColEdit;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -1550,7 +1551,7 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 
 		PreparedStatement ps = null;
 		StringBuffer sSQL = new StringBuffer();
-		String[] sVals = new String[ 13 ];
+		Object[] sVals = new Object[ 13 ];
 		String[] sRets = null;
 		DLEditaRec dl = null;
 		ImageIcon imgStatusAt = null;
@@ -1569,7 +1570,7 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 					
 					dl = new DLEditaRec( this );
 
-					sVals[ 0 ] = String.valueOf( tabManut.getValor( iLin, 2 ) );
+					sVals[ EColEdit.CODCLI.ordinal() ] = String.valueOf( tabManut.getValor( iLin, 2 ) );
 					sVals[ 1 ] = String.valueOf( tabManut.getValor( iLin, 3 ) );
 					sVals[ 2 ] = String.valueOf( vNumContas.elementAt( iLin ) );
 					sVals[ 3 ] = String.valueOf( vCodPlans.elementAt( iLin ) );
