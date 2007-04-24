@@ -815,7 +815,18 @@ AND FI.CODEMP=IT.CODEMPFO AND FI.CODFILIAL=IT.CODFILIALFO AND FI.CODFOR=IT.CODFO
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="65"  isSplitAllowed="true" >
+			<band height="130"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="88"
+						width="535"
+						height="0"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
+						key="line-19"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -894,7 +905,7 @@ AND FI.CODEMP=IT.CODEMPFO AND FI.CODFILIAL=IT.CODFILIALFO AND FI.CODFOR=IT.CODFO
 				</rectangle>
 				<line direction="TopDown">
 					<reportElement
-						x="2"
+						x="0"
 						y="24"
 						width="535"
 						height="0"
@@ -923,7 +934,7 @@ AND FI.CODEMP=IT.CODEMPFO AND FI.CODFILIAL=IT.CODFILIALFO AND FI.CODFOR=IT.CODFO
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="135"
+						x="265"
 						y="31"
 						width="40"
 						height="12"
@@ -939,7 +950,7 @@ AND FI.CODEMP=IT.CODEMPFO AND FI.CODFILIAL=IT.CODFILIALFO AND FI.CODFOR=IT.CODFO
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="180"
+						x="310"
 						y="31"
 						width="80"
 						height="12"
@@ -1091,6 +1102,152 @@ AND FI.CODEMP=IT.CODEMPFO AND FI.CODFILIAL=IT.CODFILIALFO AND FI.CODFOR=IT.CODFO
 						key="line-17"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<ellipse>
+					<reportElement
+						x="0"
+						y="75"
+						width="14"
+						height="14"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
+						key="ellipse-9"/>
+					<graphicElement stretchType="NoStretch"/>
+				</ellipse>
+				<rectangle>
+					<reportElement
+						x="7"
+						y="75"
+						width="120"
+						height="14"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
+						key="rectangle-17"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="88"
+						width="0"
+						height="41"
+						forecolor="#CCCCFF"
+						key="line-18"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<rectangle>
+					<reportElement
+						x="0"
+						y="82"
+						width="7"
+						height="7"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
+						key="rectangle-18"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<ellipse>
+					<reportElement
+						x="120"
+						y="75"
+						width="14"
+						height="14"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
+						key="ellipse-10"/>
+					<graphicElement stretchType="NoStretch"/>
+				</ellipse>
+				<rectangle>
+					<reportElement
+						x="127"
+						y="82"
+						width="7"
+						height="7"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
+						key="rectangle-19"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="34"
+						y="76"
+						width="66"
+						height="12"
+						forecolor="#6666FF"
+						backcolor="#FFFFFF"
+						key="staticText-31"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="" pdfFontName="Courier-Bold" size="9" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Observações]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="128"
+						width="535"
+						height="0"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
+						key="line-20"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="535"
+						y="88"
+						width="0"
+						height="41"
+						forecolor="#CCCCFF"
+						key="line-21"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="135"
+						y="31"
+						width="40"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-32"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Produtos]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="180"
+						y="31"
+						width="80"
+						height="12"
+						key="textField-33"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRTOTPED}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="5"
+						y="92"
+						width="525"
+						height="34"
+						key="textField-34"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{OBSPED}!=null ? $F{OBSPED} : ""]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>
