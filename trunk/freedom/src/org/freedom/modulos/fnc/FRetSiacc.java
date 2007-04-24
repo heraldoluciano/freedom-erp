@@ -30,6 +30,8 @@ import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -41,6 +43,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -61,7 +64,7 @@ import org.freedom.modulos.std.DLEditaRec;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
-public class FRetSiacc extends FFilho implements ActionListener {
+public class FRetSiacc extends FFilho implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -105,6 +108,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 	private final JButton btGerar = new JButton( Icone.novo( "btGerar.gif" ) );
 
 	private final JLabel lbStatus = new JLabel();
+	
 	
 /*	private Vector vNumContas = new Vector();
 	
@@ -174,6 +178,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		btImporta.addActionListener( this );
 		btEdita.addActionListener( this );
 		btGerar.addActionListener( this );
+		tab.addMouseListener( this ); 
 
 		btSelTudo.setToolTipText( "Selecionar tudo" );
 		btSelNada.setToolTipText( "Limpar seleção" );
@@ -387,7 +392,7 @@ public class FRetSiacc extends FFilho implements ActionListener {
 						if ( infocli.size() == EColInfoCli.values().length ) {
 							tab.adicLinha();
 							tab.setValor( new Boolean( Boolean.FALSE ), count, 0 );
-							tab.setValor( (String) infocli.get( EColInfoCli.RAZCLI.ordinal() ), count, EColTab.CODCLI.ordinal() ); // Razão social do cliente
+							tab.setValor( (String) infocli.get( EColInfoCli.RAZCLI.ordinal() ), count, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
 							tab.setValor( new Integer( ((RegF) reg).getIdentCliEmp().trim() ), count, EColTab.CODCLI.ordinal() ); // Cód.cli.
 							tab.setValor( (Integer) infocli.get( EColInfoCli.CODREC.ordinal() ), count, EColTab.CODREC.ordinal() ); // Cód.rec.
 							tab.setValor( (String) infocli.get( EColInfoCli.DOCREC.ordinal() ), count, EColTab.DOCREC.ordinal() ); // Doc
@@ -458,8 +463,8 @@ public class FRetSiacc extends FFilho implements ActionListener {
 					info.add( EColInfoCli.RAZCLI.ordinal(), rs.getString( EColInfoCli.RAZCLI.toString() ) );
 					info.add( EColInfoCli.VLRAPAGITREC.ordinal(), rs.getBigDecimal( EColInfoCli.VLRAPAGITREC.toString() ) );
 					info.add( EColInfoCli.DOCREC.ordinal(), rs.getString( EColInfoCli.DOCREC.toString() ) );
-					info.add( EColInfoCli.DTVENCITREC.ordinal(), rs.getDate( EColInfoCli.DTVENCITREC.toString() ) );
-					info.add( EColInfoCli.DTITREC.ordinal(), rs.getDate( EColInfoCli.DTITREC.toString() ) );
+					info.add( EColInfoCli.DTVENCITREC.ordinal(), Funcoes.sqlDateToDate( rs.getDate( EColInfoCli.DTVENCITREC.toString() )) );
+					info.add( EColInfoCli.DTITREC.ordinal(), Funcoes.sqlDateToDate( rs.getDate( EColInfoCli.DTITREC.toString() ) ));
 				}
 				
 			} catch ( Exception e ) {
@@ -475,11 +480,53 @@ public class FRetSiacc extends FFilho implements ActionListener {
 	private void edit(){
 		
 		DLEditaRec dl = null; 
+		Object[] sVals = new Object[ 13 ];
+		String[] sRets = null;
+		StringBuffer sSQL = new StringBuffer();
+		PreparedStatement ps = null;
+		float vlrdesc = 0;
+		float vlrjuros = 0;
 		
+		
+
 		if( tab.getLinhaSel() > -1 ){
 			
 			dl = new DLEditaRec(this);
+			dl.setConexao( con );
+			int iLin = tab.getLinhaSel();
+			
+			
+			sVals [ DLEditaRec.EColEdit.CODCLI.ordinal() ] = tab.getValor( iLin, EColTab.CODCLI.ordinal()  );
+			sVals [ DLEditaRec.EColEdit.RAZCLI.ordinal() ] = tab.getValor( iLin, EColTab.RAZCLI.ordinal() );
+			sVals [ DLEditaRec.EColEdit.CODCONTA.ordinal() ] = tab.getValor( iLin, EColTab.CODCON.ordinal() );
+			sVals [ DLEditaRec.EColEdit.CODPLANO.ordinal() ] =  tab.getValor( iLin, EColTab.CODPLAN.ordinal());
+			sVals [ DLEditaRec.EColEdit.CODCC.ordinal() ] = "";
+			sVals [ DLEditaRec.EColEdit.DOC.ordinal() ] = tab.getValor( iLin, EColTab.DOCREC.ordinal() );
+			sVals [ DLEditaRec.EColEdit.DTEMIS.ordinal() ] = tab.getValor( iLin, EColTab.DTREC.ordinal() );
+			sVals [ DLEditaRec.EColEdit.DTVENC.ordinal() ] = tab.getValor( iLin, EColTab.DTVENC.ordinal()  );
+			sVals [ DLEditaRec.EColEdit.VLRJUROS.ordinal() ] = new BigDecimal(0);
+			sVals [ DLEditaRec.EColEdit.VLRDESC.ordinal() ] = new BigDecimal(0);
+			sVals [ DLEditaRec.EColEdit.VLRPARC.ordinal() ] = tab.getValor( iLin, EColTab.VLRPAG.ordinal() );
+			sVals [ DLEditaRec.EColEdit.OBS.ordinal() ] = String.valueOf( tab.getValor( iLin, EColTab.RAZCLI.ordinal() ) );
+			sVals [ DLEditaRec.EColEdit.CODBANCO.ordinal() ] = txtCodBanco.getVlrString();
+			
+			dl.setValores( sVals );
 			dl.setVisible( true );	
+		}
+		
+		else{
+			Funcoes.mensagemInforma( this, "Selecione uma linha na lista!" );
+		}
+		
+		if(dl.OK){
+			
+			sRets = dl.getValores();
+			
+			sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
+			sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC =?,VLRJUROSITREC=?," );
+			sSQL.append( "VLRDESCITREC=?,DTVENCITREC=?,OBSITREC=?,CODEMPBO=?,CODFILIALBO=?,CODBANCO=?" );
+			sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
+			
 		}
 	}
 	
@@ -509,5 +556,25 @@ public class FRetSiacc extends FFilho implements ActionListener {
 		lcBanco.setConexao( cn );
 		
 	}
+
+	public void mouseClicked( MouseEvent e ) {
+		
+		if(e.getComponent() == tab ){
+			
+			if( e.getClickCount() == 2 ){
+			
+				edit();
+				
+			}
+		}
+	}
+
+	public void mouseEntered( MouseEvent e ) {}
+
+	public void mouseExited( MouseEvent e ) {}
+
+	public void mousePressed( MouseEvent e ) {}
+
+	public void mouseReleased( MouseEvent e ) {}
 
 }
