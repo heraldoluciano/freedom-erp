@@ -44,6 +44,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.std.DLEditaRec.EColEdit;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
@@ -364,23 +365,26 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		return sRetorno;
 	}
 
-	public void setValores(String[] sVals) {
-		txtCodCli.setVlrString(sVals[0]);
-		txtRazCli.setVlrString(sVals[1]);
-		txtCodConta.setVlrString(sVals[2]);
-		txtCodPlan.setVlrString(sVals[3]);
-		txtDoc.setVlrString(sVals[4]);
-		txtDtEmis.setVlrString(sVals[5]);
-		txtDtVenc.setVlrString(sVals[6]);
-		txtVlrParc.setVlrString(sVals[7]);
+	public void setValores(Object[] sVals) {
+		
+		txtCodCli.setVlrInteger( (Integer) sVals[ EColEdit.CODCLI.ordinal() ] );
+		txtRazCli.setVlrString( (String) sVals[ EColEdit.RAZCLI.ordinal() ] );
+		txtCodConta.setVlrString( (String) sVals[ EColEdit.NUMCONTA.ordinal() ] );
+		txtCodPlan.setVlrString( (String) sVals[ EColEdit.CODPLANO.ordinal() ] );
+		txtDoc.setVlrString( (String) sVals[ EColEdit.DOC.ordinal() ] );
+		txtDtEmis.setVlrDate( (Date)sVals[ EColEdit.DTEMIS.ordinal() ] );
+		txtDtVenc.setVlrDate( (Date) sVals[ EColEdit.DTVENC.ordinal() ] );
+		txtVlrParc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRPARC.ordinal() ] );
 		txtVlr.setVlrString(sVals[10]);
-		txtVlrDesc.setVlrString(sVals[8]);
-		txtVlrJuros.setVlrString(sVals[9]);
+		txtVlrDesc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRDESC.ordinal() ] );
+		txtVlrJuros.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRJUROS.ordinal() ] );
 		txtVlrAberto.setVlrString(sVals[10]);
 		txtDtPagto.setVlrString(sVals[11].equals("") ? Funcoes.dateToStrDate(new Date()) : sVals[11]);
 		txtVlrPago.setVlrString(sVals[12]);
 		txtCodCC.setVlrString(sVals[13]);
-		txtObs.setVlrString(sVals[14]);
+		txtObs.setVlrString( (String) sVals[ EColEdit.OBS.ordinal() ] );
+		
+		
 	}
 
 	public void setConexao(Connection cn) {
