@@ -1616,7 +1616,7 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 						try {
 							ps = con.prepareStatement( sSQL.toString() );
 							
-							if ( "".equals( sRets[ 0 ].trim() ) ) {
+							if ( "".equals( sRets[ EColRet.NUMCONTA.ordinal() ] ) ) {
 								ps.setNull( 1, Types.CHAR );
 								ps.setNull( 2, Types.INTEGER );
 								ps.setNull( 3, Types.INTEGER );
@@ -1654,31 +1654,31 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 							else {
 								ps.setString( 11, (String) sRets[ EColRet.DOC.ordinal() ] );
 							}
-							if ( "".equals( sRets[ 4 ].trim() ) ) {
+							if ( "".equals( sRets[ EColRet.VLRJUROS.ordinal() ] ) ) {
 								ps.setNull( 12, Types.DECIMAL );
 							}
 							else {
-								ps.setBigDecimal( 12, Funcoes.strCurrencyToBigDecimal( sRets[ 4 ] ) );
+								ps.setBigDecimal( 12, (BigDecimal) sRets[ EColRet.VLRJUROS.ordinal() ] );
 							}
-							if ( "".equals( sRets[ 5 ].trim() ) ) {
+							if ( "".equals( sRets[ EColRet.VLRDESC.ordinal() ] ) ) {
 								ps.setNull( 13, Types.DECIMAL );
 							}
 							else {
-								ps.setBigDecimal( 13, Funcoes.strCurrencyToBigDecimal( sRets[ 5 ] ) );
+								ps.setBigDecimal( 13, (BigDecimal)( sRets[ EColRet.VLRDESC.ordinal() ] ) );
 							}
-							if ( "".equals( sRets[ 6 ].trim() ) ) {
+							if ( "".equals( sRets[ EColRet.DTVENC.ordinal() ] ) ) {
 								ps.setNull( 14, Types.DECIMAL );
 							}
 							else {
-								ps.setDate( 14, Funcoes.strDateToSqlDate( sRets[ 6 ] ) );
+								ps.setDate( 14, Funcoes.dateToSQLDate( (java.util.Date)  sRets[ EColRet.DTVENC.ordinal() ] ) );
 							}
-							if ( "".equals( sRets[ 7 ].trim() ) ) {
+							if ( "".equals( sRets[ EColRet.OBS.ordinal() ]) ) {
 								ps.setNull( 15, Types.CHAR );
 							}
 							else {
-								ps.setString( 15, sRets[ 7 ] );
+								ps.setString( 15, (String) sRets[ EColRet.OBS.ordinal() ] );
 							}
-							if ( "".equals( sRets[ 8 ].trim() ) ) {
+							if ( "".equals( sRets[ EColRet.CODBANCO.ordinal() ] ) ) {
 								ps.setNull( 16, Types.INTEGER );
 								ps.setNull( 17, Types.INTEGER );
 								ps.setNull( 18, Types.CHAR );
@@ -1686,7 +1686,7 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 							else {
 								ps.setInt( 16, Aplicativo.iCodEmp );
 								ps.setInt( 17, ListaCampos.getMasterFilial( "FNBANCO" ) );
-								ps.setString( 18, sRets[ 8 ] );
+								ps.setString( 18, (String) sRets[ EColRet.CODBANCO.ordinal() ] );
 							}
 							
 							ps.setInt( 19, iCodRec );
