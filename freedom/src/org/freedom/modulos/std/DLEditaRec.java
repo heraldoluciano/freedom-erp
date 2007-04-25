@@ -94,7 +94,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 
 	private ListaCampos lcCC = new ListaCampos( this );
 	
-	public enum EColEdit{CODCLI, RAZCLI, CODCONTA, CODPLANO, CODCC, DOC, DTEMIS, DTVENC,
+	public enum EColEdit{CODCLI, RAZCLI, NUMCONTA, CODPLANO, CODCC, DOC, DTEMIS, DTVENC,
 		VLRJUROS, VLRDESC, VLRPARC, OBS, CODBANCO};
 
 	public DLEditaRec( Component cOrig ) {
@@ -192,7 +192,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 
 		txtCodCli.setVlrInteger( (Integer) sVals[ EColEdit.CODCLI.ordinal() ] );
 		txtRazCli.setVlrString( (String) sVals[ EColEdit.RAZCLI.ordinal() ] );
-		txtCodConta.setVlrString( (String) sVals[ EColEdit.CODCONTA.ordinal() ] );
+		txtCodConta.setVlrString( (String) sVals[ EColEdit.NUMCONTA.ordinal() ] );
 		txtCodPlan.setVlrString( (String) sVals[ EColEdit.CODPLANO.ordinal() ] );
 		txtCodCC.setVlrString( (String) sVals[ EColEdit.CODCC.ordinal() ] );
 		txtDoc.setVlrString( (String) sVals[ EColEdit.DOC.ordinal() ] );
