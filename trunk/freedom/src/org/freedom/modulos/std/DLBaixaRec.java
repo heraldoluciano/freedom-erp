@@ -375,13 +375,13 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtDtEmis.setVlrDate( (Date)sVals[ EColEdit.DTEMIS.ordinal() ] );
 		txtDtVenc.setVlrDate( (Date) sVals[ EColEdit.DTVENC.ordinal() ] );
 		txtVlrParc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRPARC.ordinal() ] );
-		txtVlr.setVlrString(sVals[10]);
+		txtVlr.setVlrBigDecimal( (BigDecimal) sVals[10]);
 		txtVlrDesc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRDESC.ordinal() ] );
 		txtVlrJuros.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRJUROS.ordinal() ] );
-		txtVlrAberto.setVlrString(sVals[10]);
-		txtDtPagto.setVlrString(sVals[11].equals("") ? Funcoes.dateToStrDate(new Date()) : sVals[11]);
-		txtVlrPago.setVlrString(sVals[12]);
-		txtCodCC.setVlrString(sVals[13]);
+		txtVlrAberto.setVlrBigDecimal( (BigDecimal) sVals[10]);
+		txtDtPagto.setVlrDate(sVals[11].equals("") ? new Date() : (Date) sVals[11]);
+		txtVlrPago.setVlrBigDecimal((BigDecimal) sVals[12]);
+		txtCodCC.setVlrString( (String) sVals[13]);
 		txtObs.setVlrString( (String) sVals[ EColEdit.OBS.ordinal() ] );
 		
 		
