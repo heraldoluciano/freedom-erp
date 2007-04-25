@@ -65,6 +65,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.DLEditaRec.EColEdit;
+import org.freedom.modulos.std.DLEditaRec.EColRet;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -1553,7 +1554,7 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 		PreparedStatement ps = null;
 		StringBuffer sSQL = new StringBuffer();
 		Object[] sVals = new Object[ 13 ];
-		String[] sRets = null;
+		Object[] sRets = null;
 		DLEditaRec dl = null;
 		ImageIcon imgStatusAt = null;
 		
@@ -1621,21 +1622,21 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 								ps.setNull( 3, Types.INTEGER );
 							}
 							else {
-								ps.setString( 1, sRets[ 0 ] );
+								ps.setString( 1, (String) sRets[ EColRet.NUMCONTA.ordinal() ] );
 								ps.setInt( 2, Aplicativo.iCodEmp );
 								ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
 							}
-							if ( "".equals( sRets[ 1 ].trim() ) ) {
+							if ( "".equals( String.valueOf( sRets[ EColRet.CODPLAN.ordinal() ] ).trim() ) ) {
 								ps.setNull( 4, Types.CHAR );
 								ps.setNull( 5, Types.INTEGER );
 								ps.setNull( 6, Types.INTEGER );
 							}
 							else {
-								ps.setString( 4, sRets[ 1 ] );
+								ps.setString( 4, (String) sRets[ EColRet.CODPLAN.ordinal() ] );
 								ps.setInt( 5, Aplicativo.iCodEmp );
 								ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 							}
-							if ( "".equals( sRets[ 2 ].trim() ) ) {
+							if ( "".equals( String.valueOf(sRets[ EColRet.CODCC.ordinal() ]).trim() ) ) {
 								ps.setNull( 7, Types.INTEGER );
 								ps.setNull( 8, Types.CHAR );
 								ps.setNull( 9, Types.INTEGER );
@@ -1643,15 +1644,15 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 							}
 							else {
 								ps.setInt( 7, iAnoCC );
-								ps.setString( 8, sRets[ 2 ] );
+								ps.setString( 8, (String) sRets[ EColRet.CODCC.ordinal() ] );
 								ps.setInt( 9, Aplicativo.iCodEmp );
 								ps.setInt( 10, ListaCampos.getMasterFilial( "FNCC" ) );
 							}
-							if ( "".equals( sRets[ 3 ].trim() ) ) {
+							if ( "".equals( String.valueOf(sRets[ EColRet.DOC.ordinal() ]).trim() ) ) {
 								ps.setNull( 11, Types.CHAR );
 							}
 							else {
-								ps.setString( 11, sRets[ 3 ] );
+								ps.setString( 11, (String) sRets[ EColRet.DOC.ordinal() ] );
 							}
 							if ( "".equals( sRets[ 4 ].trim() ) ) {
 								ps.setNull( 12, Types.DECIMAL );
