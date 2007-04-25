@@ -60,6 +60,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.fnc.SiaccUtil.Reg;
 import org.freedom.modulos.fnc.SiaccUtil.RegF;
+import org.freedom.modulos.std.DLBaixaRec;
 import org.freedom.modulos.std.DLEditaRec;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -479,7 +480,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener {
 	
 	private void edit(){
 		
-		DLEditaRec dl = null; 
+		DLBaixaRec dl = null; 
 		Object[] sVals = new Object[ 13 ];
 		String[] sRets = null;
 		StringBuffer sSQL = new StringBuffer();
@@ -491,14 +492,14 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener {
 
 		if( tab.getLinhaSel() > -1 ){
 			
-			dl = new DLEditaRec(this);
+			dl = new DLBaixaRec(this);
 			dl.setConexao( con );
 			int iLin = tab.getLinhaSel();
 			
 			
 			sVals [ DLEditaRec.EColEdit.CODCLI.ordinal() ] = tab.getValor( iLin, EColTab.CODCLI.ordinal()  );
 			sVals [ DLEditaRec.EColEdit.RAZCLI.ordinal() ] = tab.getValor( iLin, EColTab.RAZCLI.ordinal() );
-			sVals [ DLEditaRec.EColEdit.CODCONTA.ordinal() ] = tab.getValor( iLin, EColTab.CODCON.ordinal() );
+			sVals [ DLEditaRec.EColEdit.NUMCONTA.ordinal() ] = tab.getValor( iLin, EColTab.CODCON.ordinal() );
 			sVals [ DLEditaRec.EColEdit.CODPLANO.ordinal() ] =  tab.getValor( iLin, EColTab.CODPLAN.ordinal());
 			sVals [ DLEditaRec.EColEdit.CODCC.ordinal() ] = "";
 			sVals [ DLEditaRec.EColEdit.DOC.ordinal() ] = tab.getValor( iLin, EColTab.DOCREC.ordinal() );
