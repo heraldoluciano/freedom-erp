@@ -500,7 +500,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener {
 			sVals [ DLEditaRec.EColEdit.CODCLI.ordinal() ] = tab.getValor( iLin, EColTab.CODCLI.ordinal()  );
 			sVals [ DLEditaRec.EColEdit.RAZCLI.ordinal() ] = tab.getValor( iLin, EColTab.RAZCLI.ordinal() );
 			sVals [ DLEditaRec.EColEdit.NUMCONTA.ordinal() ] = tab.getValor( iLin, EColTab.CODCON.ordinal() );
-			sVals [ DLEditaRec.EColEdit.CODPLANO.ordinal() ] =  tab.getValor( iLin, EColTab.CODPLAN.ordinal());
+			sVals [ DLEditaRec.EColEdit.CODPLAN.ordinal() ] =  tab.getValor( iLin, EColTab.CODPLAN.ordinal());
 			sVals [ DLEditaRec.EColEdit.CODCC.ordinal() ] = "";
 			sVals [ DLEditaRec.EColEdit.DOC.ordinal() ] = tab.getValor( iLin, EColTab.DOCREC.ordinal() );
 			sVals [ DLEditaRec.EColEdit.DTEMIS.ordinal() ] = tab.getValor( iLin, EColTab.DTREC.ordinal() );
