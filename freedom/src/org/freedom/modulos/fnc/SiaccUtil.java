@@ -13,7 +13,8 @@ class SiaccUtil {
 	}
 
 	enum EColrec {
-		CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN, SITREMESSA, CODCLI, AGENCIACLI, IDENTCLI, DTVENC, VLRAPAG
+		CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN, SITREMESSA, CODCLI, AGENCIACLI, 
+		IDENTCLI, DTVENC, VLRAPAG, PESSOACLI, CPFCLI, CNPJCLI
 	}
 
 	enum EPrefs {
@@ -583,9 +584,11 @@ class SiaccUtil {
 			setCodRec(stfRec.getCodrec());
 			setNparcItRec(stfRec.getNParcitrec());
 			setUsoEmp(format(getCodRec(),ETipo.$9,6,0)+format(getNparcItRec(),ETipo.$9,4,0));
-			this.vlrParc =  Float.valueOf(stfRec.getArgs()[ EColrec.VLRAPAG.ordinal() ]);
-			this.sbreg.append( format( stfRec.getArgs()[ EColrec.CODCLI.ordinal() ], ETipo.$9, 10, 0 ) );
-			this.sbreg.append( format( "", ETipo.X, 15, 0 ) ); // Completar a identificação do cliente na empresa
+			setVlrParc( Float.valueOf(stfRec.getArgs()[ EColrec.VLRAPAG.ordinal() ]) );
+			setIdentCliEmp( stfRec.getArgs()[ EColrec.PESSOACLI.ordinal() ], 
+					stfRec.getArgs()[ EColrec.CPFCLI.ordinal() ],
+					stfRec.getArgs()[ EColrec.CNPJCLI.ordinal() ]);
+			this.sbreg.append( getIdentCliEmp() );
 			this.sbreg.append( format( stfRec.getArgs()[ EColrec.AGENCIACLI.ordinal() ], ETipo.$9, 4, 0 ) );
 			this.sbreg.append( format( stfRec.getArgs()[ EColrec.IDENTCLI.ordinal() ], ETipo.X, 14, 0 ) );
 			this.sbreg.append( format( stfRec.getArgs()[ EColrec.DTVENC.ordinal() ], ETipo.$9, 8, 0 ) );
@@ -662,6 +665,17 @@ class SiaccUtil {
 		public String getIdentCliEmp() {		
 			return identCliEmp;
 		}
+		
+	    public void setIdentCliEmp(final String pessoaCli, final String cpfCli, final String cnpjCli) {
+	    	String tmpIdent = null;
+	    	if ("F".equals( pessoaCli )) {
+	    		tmpIdent = format( cpfCli, ETipo.$9, 11, 0 );
+	    	} else {
+	    		tmpIdent = format( cnpjCli, ETipo.$9, 14, 0 );
+	    	}
+	    	tmpIdent += format("0", ETipo.$9, 25 - tmpIdent.length(), 0);
+	    	setIdentCliEmp( tmpIdent );
+	    }
 		
 		public void setIdentCliEmp( final String identCliEmp ) {		
 			this.identCliEmp = identCliEmp;
