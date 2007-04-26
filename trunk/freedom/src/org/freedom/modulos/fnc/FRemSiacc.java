@@ -101,6 +101,12 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 
 	private static final int COL_TIPOREMCLI = 14;
 
+	private static final int COL_PESSOACLI = 15;
+
+	private static final int COL_CPFCLI = 16;
+	
+	private static final int COL_CNPJCLI = 17;
+	
 	private static final String TIPO_FEBRABAN = "01";
 
 	private JPanelPad panelRodape = null;
@@ -203,6 +209,9 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		tab.adicColuna( "Sit. ret." );
 		tab.adicColuna( "Subtipo" );
 		tab.adicColuna( "Tp.r.cli." );
+		tab.adicColuna( "Pessoa" );
+		tab.adicColuna( "C.P.F." );
+		tab.adicColuna( "C.N.P.J." );
 
 		tab.setTamColuna( 20, COL_SEL );
 		tab.setTamColuna( 150, COL_RAZCLI );
@@ -219,6 +228,10 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		tab.setTamColuna( 50, COL_SITRET );
 		tab.setTamColuna( 30, COL_STIPOFEBRABAN );
 		tab.setTamColuna( 30, COL_TIPOREMCLI );
+		tab.setTamColuna( 30, COL_PESSOACLI );
+		tab.setTamColuna( 80, COL_CPFCLI );
+		tab.setTamColuna( 80, COL_CNPJCLI );
+		
 
 		tab.setColunaEditavel( COL_SEL, true );
 
@@ -345,7 +358,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		sSQL.append( "SELECT IR.CODREC, IR.NPARCITREC, R.DOCREC, R.CODCLI, C.RAZCLI, IR.DTITREC, IR.DTVENCITREC," );
 		sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, COALESCE(FR.SITREMESSA,'00') SITREMESSA, " );
 		sSQL.append( "FR.SITRETORNO, COALESCE(COALESCE(FR.STIPOFEBRABAN,FC.STIPOFEBRABAN),'02') STIPOFEBRABAN, " );
-		sSQL.append( "COALESCE(FC.TIPOREMCLI,'B') TIPOREMCLI " );
+		sSQL.append( "COALESCE(FC.TIPOREMCLI,'B') TIPOREMCLI, C.PESSOACLI, C.CPFCLI, C.CNPJCLI " );
 		sSQL.append( "FROM VDCLIENTE C," );
 		sSQL.append( "FNRECEBER R LEFT OUTER JOIN FNFBNCLI FC ON " );
 		sSQL.append( "FC.CODEMP=R.CODEMPCL AND FC.CODFILIAL=R.CODFILIALCL AND FC.CODCLI=R.CODCLI ," );
@@ -404,6 +417,9 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 				tab.setValor( rs.getString( "SITRETORNO" ), i, COL_SITRET );
 				tab.setValor( rs.getString( "STIPOFEBRABAN" ), i, COL_STIPOFEBRABAN );
 				tab.setValor( rs.getString( "TIPOREMCLI" ), i, COL_TIPOREMCLI );
+				tab.setValor( rs.getString( "PESSOACLI" ), i, COL_PESSOACLI );
+				tab.setValor( rs.getString( "CPFCLI" ), i, COL_CPFCLI);
+				tab.setValor( rs.getString( "CNPJCLI" ), i, COL_CNPJCLI );
 			}
 	
 			rs.close();
@@ -710,20 +726,32 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 						break;
 					}
 				}
-				hsCli.add( new SiaccUtil().new StuffCli( (Integer) vLinha.elementAt( COL_CODCLI ), new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, (String) vLinha.elementAt( COL_STIPOFEBRABAN ), (String) vLinha.elementAt( COL_AGENCIACLI ), (String) vLinha.elementAt( COL_IDENTCLI ),
+				hsCli.add( new SiaccUtil().new StuffCli( (Integer) vLinha.elementAt( COL_CODCLI ), 
+						new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, 
+						(String) vLinha.elementAt( COL_STIPOFEBRABAN ),
+						(String) vLinha.elementAt( COL_AGENCIACLI ), 
+						(String) vLinha.elementAt( COL_IDENTCLI ),
 						(String) vLinha.elementAt( COL_TIPOREMCLI ) } ) );
-				hsRec.add( new SiaccUtil().new StuffRec( (Integer) vLinha.elementAt( COL_CODREC ), (Integer) vLinha.elementAt( COL_NRPARC ),
+				hsRec.add( new SiaccUtil().new StuffRec( (Integer) vLinha.elementAt( COL_CODREC ), 
+						(Integer) vLinha.elementAt( COL_NRPARC ),
 				/*
-				 * String codBanco, String tipoFebraban, String stipoFebraban, String sitRemessa {CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN, SITREMESSA, CODCLI, AGENCIACLI, IDENTCLI, DTVENC, VLRPARC}
+				 * String codBanco, String tipoFebraban, String stipoFebraban, 
+				 * String sitRemessa {CODBANCO, TIPOFEBRABAN, 
+				 * STIPOFEBRABAN, SITREMESSA, CODCLI, AGENCIACLI, 
+				 * IDENTCLI, DTVENC, VLRPARC, PESSOACLI, CPJCLI, CNPJCLI}
 				 */
-				new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, (String) vLinha.elementAt( COL_STIPOFEBRABAN ), 
+				new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, 
+						(String) vLinha.elementAt( COL_STIPOFEBRABAN ), 
 						(String) vLinha.elementAt( COL_SITREM ), 
 						String.valueOf( (Integer) vLinha.elementAt( COL_CODCLI ) ), 
 						(String) vLinha.elementAt( COL_AGENCIACLI ),
 						(String) vLinha.elementAt( COL_IDENTCLI ), 
 						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( COL_DTVENC ) ), 
-						((BigDecimal) vLinha.elementAt( COL_VLRAPAG )).toString() } ) );
-			}
+						((BigDecimal) vLinha.elementAt( COL_VLRAPAG )).toString(),
+						(String) vLinha.elementAt(COL_PESSOACLI),
+						(String) vLinha.elementAt( COL_CPFCLI ),
+						(String) vLinha.elementAt( COL_CNPJCLI ) } ) ); 
+		   }
 		}
 		if ( retorno ) {
 			retorno = persisteDados( hsCli, hsRec );
