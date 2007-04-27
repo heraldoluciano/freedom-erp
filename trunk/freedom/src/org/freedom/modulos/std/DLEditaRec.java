@@ -198,7 +198,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		txtCodConta.setVlrString( (String) sVals[ EColEdit.NUMCONTA.ordinal() ] );
 		txtCodPlan.setVlrString( (String) sVals[ EColEdit.CODPLAN.ordinal() ] );
 		txtCodCC.setVlrString( (String) sVals[ EColEdit.CODCC.ordinal() ] );
-		txtDoc.setVlrInteger( (Integer) sVals[ EColEdit.DOC.ordinal() ] );
+		txtDoc.setVlrString( (String) sVals[ EColEdit.DOC.ordinal() ] );
 		txtDtEmis.setVlrDate( (Date) sVals[ EColEdit.DTEMIS.ordinal() ] );
 		txtDtVenc.setVlrDate( (Date) sVals[ EColEdit.DTVENC.ordinal() ] );
 		txtVlrJuros.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRJUROS.ordinal() ] );
