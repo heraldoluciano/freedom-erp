@@ -501,6 +501,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		if ((pontoDecMask == ',') & (sRetorno.indexOf(',') != -1))
 			ret[sRetorno.indexOf(',')] = '.';
 		sRetorno = new String(ret);
+		if ("".equals( sRetorno )) {
+			sRetorno = "0";
+		}
 		try {
 			dRetorno = new Double(sRetorno);
 		} 
