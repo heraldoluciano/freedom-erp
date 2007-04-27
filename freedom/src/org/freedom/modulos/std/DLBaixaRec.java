@@ -82,25 +82,6 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	enum EColBaixa{ CODCLI, RAZCLI, NUMCONTA, CODPLAN, DOC, DTEMIT, DTVENC,
 		VLRPARC, VLRAPAG, VLRDESC, VLRJUROS, DTPGTO, VLRPAGO, CODCC, OBS };
 	
-	/*
-	 * 		txtCodCli.setVlrInteger( (Integer) sVals[ EColEdit.CODCLI.ordinal() ] );
-		txtRazCli.setVlrString( (String) sVals[ EColEdit.RAZCLI.ordinal() ] );
-		txtCodConta.setVlrString( (String) sVals[ EColEdit.NUMCONTA.ordinal() ] );
-		txtCodPlan.setVlrString( (String) sVals[ EColEdit.CODPLAN.ordinal() ] );
-		txtDoc.setVlrString( (String) sVals[ EColEdit.DOC.ordinal() ] );
-		txtDtEmis.setVlrDate( (Date)sVals[ EColEdit.DTEMIS.ordinal() ] );
-		txtDtVenc.setVlrDate( (Date) sVals[ EColEdit.DTVENC.ordinal() ] );
-		txtVlrParc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRPARC.ordinal() ] );
-		txtVlr.setVlrBigDecimal( (BigDecimal) sVals[10]);
-		txtVlrDesc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRDESC.ordinal() ] );
-		txtVlrJuros.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRJUROS.ordinal() ] );
-		txtVlrAberto.setVlrBigDecimal( (BigDecimal) sVals[10]);
-		txtDtPagto.setVlrDate(sVals[11].equals("") ? new Date() : (Date) sVals[11]);
-		txtVlrPago.setVlrBigDecimal((BigDecimal) sVals[12]);
-		txtCodCC.setVlrString( (String) sVals[13]);
-		txtObs.setVlrString( (String) sVals[ EColEdit.OBS.ordinal() ] );
-	 * */
-
 	public DLBaixaRec(Component cOrig) {
 		super(cOrig);
 		setTitulo("Baixa");
@@ -371,15 +352,15 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		return iRet;
 	}
 	
-	public String[] getValores() {
-		String[] sRetorno = new String[9];
+	public Object[] getValores() {
+		Object[] sRetorno = new Object[9];
 		sRetorno[0] = txtCodConta.getVlrString();
 		sRetorno[1] = txtCodPlan.getVlrString();
 		sRetorno[2] = txtDoc.getVlrString();
-		sRetorno[3] = txtDtPagto.getVlrString();
-		sRetorno[4] = txtVlr.getVlrString();
-		sRetorno[5] = txtVlrDesc.getVlrString();
-		sRetorno[6] = txtVlrJuros.getVlrString();
+		sRetorno[3] = txtDtPagto.getVlrDate();
+		sRetorno[4] = txtVlr.getVlrBigDecimal();
+		sRetorno[5] = txtVlrDesc.getVlrBigDecimal();
+		sRetorno[6] = txtVlrJuros.getVlrBigDecimal();
 		sRetorno[7] = txtCodCC.getVlrString();
 		sRetorno[8] = txtObs.getVlrString();
 		return sRetorno;
@@ -392,16 +373,17 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtCodConta.setVlrString( (String) sVals[ EColBaixa.NUMCONTA.ordinal() ] );
 		txtCodPlan.setVlrString( (String) sVals[ EColBaixa.CODPLAN.ordinal() ] );
 		txtDoc.setVlrString( (String) sVals[ EColBaixa.DOC.ordinal() ] );
-		txtDtEmis.setVlrDate( (Date)sVals[ EColBaixa.DTEMIT.ordinal() ] );
+		txtDtEmis.setVlrDate( (Date) sVals[ EColBaixa.DTEMIT.ordinal() ] );
 		txtDtVenc.setVlrDate( (Date) sVals[ EColBaixa.DTVENC.ordinal() ] );
 		txtVlrParc.setVlrBigDecimal( (BigDecimal) sVals[ EColBaixa.VLRPARC.ordinal() ] );
-		txtVlr.setVlrBigDecimal( (BigDecimal) sVals[10]);
+		txtVlr.setVlrBigDecimal( (BigDecimal) sVals[EColBaixa.VLRAPAG.ordinal()]);
 		txtVlrDesc.setVlrBigDecimal( (BigDecimal) sVals[ EColBaixa.VLRDESC.ordinal() ] );
 		txtVlrJuros.setVlrBigDecimal( (BigDecimal) sVals[ EColBaixa.VLRJUROS.ordinal() ] );
 		txtVlrAberto.setVlrBigDecimal( (BigDecimal) sVals[EColBaixa.VLRAPAG.ordinal()]);
-		txtDtPagto.setVlrDate(sVals[EColBaixa.DTPGTO.ordinal()].equals("") ? new Date() : (Date) sVals[11]);
+		txtDtPagto.setVlrDate("".equals( sVals[EColBaixa.DTPGTO.ordinal()]) ? new Date() : 
+			(Date) sVals[EColBaixa.DTPGTO.ordinal()]);
 		txtVlrPago.setVlrBigDecimal((BigDecimal) sVals[EColBaixa.VLRPAGO.ordinal()]);
-		txtCodCC.setVlrString( (String) sVals[13]);
+		txtCodCC.setVlrString( (String) sVals[EColBaixa.CODCC.ordinal() ] );
 		txtObs.setVlrString( (String) sVals[ EColBaixa.OBS.ordinal() ] );
 		
 	}
@@ -465,9 +447,9 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 	public void edit(EditEvent eevt) {
 		if (eevt.getSource() == txtVlrDesc)
-			txtPercDesc.setVlrString("");
+			txtPercDesc.setVlrBigDecimal( new BigDecimal(0) );
 		else if (eevt.getSource() == txtVlrJuros)
-			txtPercJuros.setVlrString("");
+			txtPercJuros.setVlrBigDecimal( new BigDecimal(0) );
 	}
 	
 	public void beforeEdit(EditEvent eevt) { }

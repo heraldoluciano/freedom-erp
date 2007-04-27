@@ -482,7 +482,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener {
 		
 		DLBaixaRec dl = null; 
 		Object[] sVals = new Object[ 13 ];
-		String[] sRets = null;
+		Object[] sRets = null;
 		StringBuffer sSQL = new StringBuffer();
 		PreparedStatement ps = null;
 		float vlrdesc = 0;
