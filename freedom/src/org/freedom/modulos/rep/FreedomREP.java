@@ -65,7 +65,7 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Pedidos", "Pedidos", 'P', 200100000, 1, true, RPPedido.class );
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Notas", "Notas", 'N', 200200000, 1, true, null );
 			addSeparador( 200000000 );
-			addOpcao( 200000000, TP_OPCAO_ITEM, "Consuta de pedidos", "Consuta de pedidos", 'C', 200300000, 1, true, null );
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Consuta de pedidos", "Consuta de pedidos", 'C', 200300000, 1, true, RPConsPedido.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Pagar", "Pagar", 'P', 300000000, 0, false, null );
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Pagar", "Pagar", 'P', 300100000, 1, true, RPPagar.class );
@@ -75,19 +75,15 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Relatorios", "", 'l', 500000000, 0, false, null );
 			addOpcao( 500000000, TP_OPCAO_MENU, "Vendas", "", 'V', 500100000, 1, false, null );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Pedidos por Fornecedor", "Pedidos por Fornecedor", 'F', 500101000, 2, true, null );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Pedidos por Vendedor", "Pedidos por Vendedor", 'V', 500102000, 2, true, null );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Pedidos / Faturamento", "Pedidos / Faturamento", 'a', 500103000, 2, true, null );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Pedidos pendentes", "Pedidos pendentes", 'p', 500104000, 2, true, null );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Conferência de pedidos", "Conferência de pedidos", 'r', 500105000, 2, true, null );
+				addOpcao( 500100000, TP_OPCAO_ITEM, "Resumo Diario", "Resumo Diario", 'R', 500101000, 2, true, null );
+				addOpcao( 500100000, TP_OPCAO_ITEM, "Detalhado", "Detalhado", 'D', 500102000, 2, true, null );
+				addOpcao( 500100000, TP_OPCAO_ITEM, "Resumido", "Resumido", 'm', 500103000, 2, true, null );
+				addOpcao( 500100000, TP_OPCAO_ITEM, "Histórico de clientes", "Histórico de clientes", 'H', 500104000, 2, true, null );
 				addSeparador( 500100000 );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Histórico de clientes", "Histórico de clientes", 'H', 500106000, 2, true, null );
+				addOpcao( 500100000, TP_OPCAO_ITEM, "Pedidos pendentes", "Pedidos pendentes", 'p', 500105000, 2, true, null );
+				addOpcao( 500100000, TP_OPCAO_ITEM, "Relação de Notas", "Relação de Notas", 'N', 500106000, 2, true, null );
 				addSeparador( 500100000 );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Resumo Diário", "Resumo Diário", 'R', 500107000, 2, true, null );
-				addSeparador( 500100000 );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Relação de Notas", "Relação de Notas", 'N', 500108000, 2, true, null );
-				addSeparador( 500100000 );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 500109000, 2, true, null );
+				addOpcao( 500100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 500107000, 2, true, null );
 			addOpcao( 500000000, TP_OPCAO_MENU, "Clientes", "", 'C', 500200000, 1, false, null );
 				addOpcao( 500200000, TP_OPCAO_ITEM, "Clientes", "Clientes", 'C', 500201000, 2, true, RelCliente.class );
 				addOpcao( 500200000, TP_OPCAO_ITEM, "Tipos de cliente", "Tipos de cliente", 'T', 500202000, 2, true, RelTipoCli.class );
