@@ -152,9 +152,9 @@ public class RPCotMoeda extends FDados implements InsertListener, CarregaListene
 			for ( int i=0; rs.next(); i++ ) {
 				
 				tabCotacao.adicLinha();
-				tabCotacao.setValor( rs.getDate( "DATACOT" ), i, 0 );
-				tabCotacao.setValor( rs.getBigDecimal( "VALORCOT" ), i, 1 );
-				tabCotacao.setValor( rs.getString( "CODMOEDA" ), i, 2 );				
+				tabCotacao.setValor( rs.getDate( "DATACOT" ), i, ECotacao.DATA.ordinal() );
+				tabCotacao.setValor( rs.getBigDecimal( "VALORCOT" ), i, ECotacao.VALOR.ordinal() );
+				tabCotacao.setValor( rs.getString( "CODMOEDA" ), i, ECotacao.MOEDA.ordinal() );				
 			}
 			
 			rs.close();
@@ -192,5 +192,11 @@ public class RPCotMoeda extends FDados implements InsertListener, CarregaListene
 		lcMoeda.setConexao( cn );
 		
 		carregaTabela();
+	}
+	
+	private enum ECotacao {
+		DATA,
+		VALOR,
+		MOEDA
 	}
 }
