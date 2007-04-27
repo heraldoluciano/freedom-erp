@@ -44,7 +44,6 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.modulos.std.DLEditaRec.EColEdit;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
@@ -80,6 +79,27 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	private ListaCampos lcPlan = new ListaCampos(this);
 	private ListaCampos lcCC = new ListaCampos(this);
 	boolean bJurosPosCalc = false;
+	enum EColBaixa{ CODCLI, RAZCLI, NUMCONTA, CODPLAN, DOC, DTEMIT, DTVENC,
+		VLRPARC, VLRAPAG, VLRDESC, VLRJUROS, DTPGTO, VLRPAGO, CODCC, OBS };
+	
+	/*
+	 * 		txtCodCli.setVlrInteger( (Integer) sVals[ EColEdit.CODCLI.ordinal() ] );
+		txtRazCli.setVlrString( (String) sVals[ EColEdit.RAZCLI.ordinal() ] );
+		txtCodConta.setVlrString( (String) sVals[ EColEdit.NUMCONTA.ordinal() ] );
+		txtCodPlan.setVlrString( (String) sVals[ EColEdit.CODPLAN.ordinal() ] );
+		txtDoc.setVlrString( (String) sVals[ EColEdit.DOC.ordinal() ] );
+		txtDtEmis.setVlrDate( (Date)sVals[ EColEdit.DTEMIS.ordinal() ] );
+		txtDtVenc.setVlrDate( (Date) sVals[ EColEdit.DTVENC.ordinal() ] );
+		txtVlrParc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRPARC.ordinal() ] );
+		txtVlr.setVlrBigDecimal( (BigDecimal) sVals[10]);
+		txtVlrDesc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRDESC.ordinal() ] );
+		txtVlrJuros.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRJUROS.ordinal() ] );
+		txtVlrAberto.setVlrBigDecimal( (BigDecimal) sVals[10]);
+		txtDtPagto.setVlrDate(sVals[11].equals("") ? new Date() : (Date) sVals[11]);
+		txtVlrPago.setVlrBigDecimal((BigDecimal) sVals[12]);
+		txtCodCC.setVlrString( (String) sVals[13]);
+		txtObs.setVlrString( (String) sVals[ EColEdit.OBS.ordinal() ] );
+	 * */
 
 	public DLBaixaRec(Component cOrig) {
 		super(cOrig);
@@ -367,23 +387,22 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 	public void setValores(Object[] sVals) {
 		
-		txtCodCli.setVlrInteger( (Integer) sVals[ EColEdit.CODCLI.ordinal() ] );
-		txtRazCli.setVlrString( (String) sVals[ EColEdit.RAZCLI.ordinal() ] );
-		txtCodConta.setVlrString( (String) sVals[ EColEdit.NUMCONTA.ordinal() ] );
-		txtCodPlan.setVlrString( (String) sVals[ EColEdit.CODPLAN.ordinal() ] );
-		txtDoc.setVlrString( (String) sVals[ EColEdit.DOC.ordinal() ] );
-		txtDtEmis.setVlrDate( (Date)sVals[ EColEdit.DTEMIS.ordinal() ] );
-		txtDtVenc.setVlrDate( (Date) sVals[ EColEdit.DTVENC.ordinal() ] );
-		txtVlrParc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRPARC.ordinal() ] );
+		txtCodCli.setVlrInteger( (Integer) sVals[ EColBaixa.CODCLI.ordinal() ] );
+		txtRazCli.setVlrString( (String) sVals[ EColBaixa.RAZCLI.ordinal() ] );
+		txtCodConta.setVlrString( (String) sVals[ EColBaixa.NUMCONTA.ordinal() ] );
+		txtCodPlan.setVlrString( (String) sVals[ EColBaixa.CODPLAN.ordinal() ] );
+		txtDoc.setVlrString( (String) sVals[ EColBaixa.DOC.ordinal() ] );
+		txtDtEmis.setVlrDate( (Date)sVals[ EColBaixa.DTEMIT.ordinal() ] );
+		txtDtVenc.setVlrDate( (Date) sVals[ EColBaixa.DTVENC.ordinal() ] );
+		txtVlrParc.setVlrBigDecimal( (BigDecimal) sVals[ EColBaixa.VLRPARC.ordinal() ] );
 		txtVlr.setVlrBigDecimal( (BigDecimal) sVals[10]);
-		txtVlrDesc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRDESC.ordinal() ] );
-		txtVlrJuros.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRJUROS.ordinal() ] );
-		txtVlrAberto.setVlrBigDecimal( (BigDecimal) sVals[10]);
-		txtDtPagto.setVlrDate(sVals[11].equals("") ? new Date() : (Date) sVals[11]);
-		txtVlrPago.setVlrBigDecimal((BigDecimal) sVals[12]);
+		txtVlrDesc.setVlrBigDecimal( (BigDecimal) sVals[ EColBaixa.VLRDESC.ordinal() ] );
+		txtVlrJuros.setVlrBigDecimal( (BigDecimal) sVals[ EColBaixa.VLRJUROS.ordinal() ] );
+		txtVlrAberto.setVlrBigDecimal( (BigDecimal) sVals[EColBaixa.VLRAPAG.ordinal()]);
+		txtDtPagto.setVlrDate(sVals[EColBaixa.DTPGTO.ordinal()].equals("") ? new Date() : (Date) sVals[11]);
+		txtVlrPago.setVlrBigDecimal((BigDecimal) sVals[EColBaixa.VLRPAGO.ordinal()]);
 		txtCodCC.setVlrString( (String) sVals[13]);
-		txtObs.setVlrString( (String) sVals[ EColEdit.OBS.ordinal() ] );
-		
+		txtObs.setVlrString( (String) sVals[ EColBaixa.OBS.ordinal() ] );
 		
 	}
 
