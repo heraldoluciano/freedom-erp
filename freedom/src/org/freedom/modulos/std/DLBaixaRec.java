@@ -359,7 +359,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		sRetorno[EColRetBaixa.NUMCONTA.ordinal()] = txtCodConta.getVlrString();
 		sRetorno[EColRetBaixa.CODPLAN.ordinal()] = txtCodPlan.getVlrString();
 		sRetorno[EColRetBaixa.DOC.ordinal()] = txtDoc.getVlrString();
-		sRetorno[EColRetBaixa.DTPAGTO.ordinal()] = txtDtPagto.getVlrDate();
+		sRetorno[EColRetBaixa.DTPAGTO.ordinal()] = (java.util.Date) txtDtPagto.getVlrDate();
 		sRetorno[EColRetBaixa.VLRPAGO.ordinal()] = txtVlr.getVlrBigDecimal();
 		sRetorno[EColRetBaixa.VLRDESC.ordinal()] = txtVlrDesc.getVlrBigDecimal();
 		sRetorno[EColRetBaixa.VLRJUROS.ordinal()] = txtVlrJuros.getVlrBigDecimal();
