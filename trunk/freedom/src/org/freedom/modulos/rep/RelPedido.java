@@ -28,9 +28,11 @@ package org.freedom.modulos.rep;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -45,6 +47,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
@@ -64,6 +67,10 @@ public class RelPedido extends FRelatorio {
 	private final JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private final JTextFieldPad txtCodMoeda = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+
+	private final JTextFieldFK txtNomeMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private final JTextFieldPad txtDtIni = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
@@ -73,17 +80,21 @@ public class RelPedido extends FRelatorio {
 	
 	private JRadioGroup rgOrdem;
 	
-	private final ListaCampos lcCliente = new ListaCampos( this, "" );
+	private final ListaCampos lcCliente = new ListaCampos( this );
 	
 	private final ListaCampos lcFornecedor = new ListaCampos( this );
 	
 	private final ListaCampos lcVendedor = new ListaCampos( this );
+	
+	private final ListaCampos lcMoeda = new ListaCampos( this );
+	
+	private List<Object> prefere = new ArrayList<Object>();
 
 	public RelPedido() {
 
 		super();
 		setTitulo( "Relatorio de pedidos" );		
-		setAtribos( 50, 50, 325, 390 );
+		setAtribos( 50, 50, 325, 430 );
 		
 		montaRadioGrupos();
 		montaListaCampos();
@@ -92,7 +103,7 @@ public class RelPedido extends FRelatorio {
 		Calendar cal = Calendar.getInstance();		
 		txtDtIni.setVlrDate( cal.getTime() );
 		cal.set( cal.get( Calendar.YEAR ), cal.get( Calendar.MONTH ) + 1, cal.get( Calendar.DATE ) );		
-		txtDtFim.setVlrDate( cal.getTime() );
+		txtDtFim.setVlrDate( cal.getTime() );		
 	}
 	
 	private void montaRadioGrupos() {
@@ -157,6 +168,20 @@ public class RelPedido extends FRelatorio {
 		txtCodVend.setTabelaExterna( lcVendedor );
 		txtCodVend.setPK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
+		
+		/*********
+		 * MOEDA *
+		 *********/
+		
+		lcMoeda.add( new GuardaCampo( txtCodMoeda, "CodMoeda", "Cód.moeda", ListaCampos.DB_PK, true ) );
+		lcMoeda.add( new GuardaCampo( txtNomeMoeda, "SingMoeda", "Descrição da moeda", ListaCampos.DB_SI, false ) );
+		lcMoeda.montaSql( false, "MOEDA", "RP" );
+		lcMoeda.setQueryCommit( false );
+		lcMoeda.setReadOnly( true );
+		txtCodMoeda.setListaCampos( lcMoeda );
+		txtCodMoeda.setTabelaExterna( lcMoeda );
+		txtCodMoeda.setPK( true );
+		txtCodMoeda.setNomeCampo( "CodMoeda" );
 	}
 	
 	private void montaTela() {
@@ -192,10 +217,20 @@ public class RelPedido extends FRelatorio {
 		adic( txtCodCli, 10, 290, 77, 20 );
 		adic( new JLabel( "Razão social do cliente" ), 90, 270, 210, 20 );
 		adic( txtRazCli, 90, 290, 210, 20 );
+		
+		adic( new JLabel( "Cód.moeda" ), 10, 310, 77, 20 );
+		adic( txtCodMoeda, 10, 330, 77, 20 );
+		adic( new JLabel( "Descrição da moeda" ), 90, 310, 210, 20 );
+		adic( txtNomeMoeda, 90, 330, 210, 20 );
 	}
 
 	@ Override
 	public void imprimir( boolean visualizar ) {
+		
+		if ( txtCodMoeda.getVlrString().trim().length() < 1 ) {
+			Funcoes.mensagemInforma( this, "O campo \"Cód.moeda\" é requerido!" );
+			return;
+		}
 		
 		if ( txtDtIni.getVlrDate() != null && txtDtFim.getVlrDate() != null ) {
 			if ( txtDtFim.getVlrDate().before( txtDtIni.getVlrDate() ) ) {
@@ -209,6 +244,7 @@ public class RelPedido extends FRelatorio {
 			String relatorio = "C".equals( rgModo.getVlrString() ) ? "rppedidocomp.jasper" : "rppedidoresum.jasper";
 			String modo = "C".equals( rgModo.getVlrString() ) ? "( completo )" : " ( resumido )";
 			String nomevend = null;
+			String nomemoeda = null;
 			String razcli = null;
 			String razfor = null;
 			Date dtini = txtDtIni.getVlrDate();
@@ -239,6 +275,10 @@ public class RelPedido extends FRelatorio {
 			sql.append( "AND PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND PD.CODPROD=IT.CODPROD " );
 			sql.append( "AND FI.CODEMP=IT.CODEMPFO AND FI.CODFILIAL=IT.CODFILIALFO AND FI.CODFOR=IT.CODFOR " );
 			
+			if ( txtCodMoeda.getVlrString().trim().length() > 0 ) {
+				sql.append( "AND M.CODMOEDA='" + txtCodMoeda.getVlrString() + "'" );
+				nomemoeda = txtNomeMoeda.getVlrString();
+			}
 			if ( txtCodCli.getVlrString().trim().length() > 0 ) {
 				sql.append( "AND C.CODCLI=" + txtCodCli.getVlrInteger() );
 				razcli = txtRazCli.getVlrString();
@@ -252,7 +292,7 @@ public class RelPedido extends FRelatorio {
 				nomevend = txtNomeVend.getVlrString();
 			}
 
-			sql.append( "ORDER BY P.CODPED, " + rgOrdem.getVlrString() );
+			sql.append( " ORDER BY P.CODPED, " + rgOrdem.getVlrString() );
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -269,6 +309,7 @@ public class RelPedido extends FRelatorio {
 			hParam.put( "DTINI", dtini );
 			hParam.put( "DTFIM", dtfim );
 			hParam.put( "NOMEVEND", nomevend );
+			hParam.put( "NOMEMOEDA", nomemoeda );
 			hParam.put( "RAZFOR", razfor );
 			hParam.put( "RAZCLI", razcli );
 			
@@ -295,6 +336,12 @@ public class RelPedido extends FRelatorio {
 		lcCliente.setConexao( cn );
 		lcFornecedor.setConexao( cn );
 		lcVendedor.setConexao( cn );
+		lcMoeda.setConexao( cn );
+		
+		prefere = RPPrefereGeral.getPrefere( cn );
+		
+		txtCodMoeda.setVlrString( (String) prefere.get( EPrefere.CODMOEDA.ordinal() ) );
+		lcMoeda.carregaDados();
 	}
 
 }
