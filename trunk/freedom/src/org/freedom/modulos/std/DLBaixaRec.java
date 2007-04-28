@@ -79,8 +79,10 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	private ListaCampos lcPlan = new ListaCampos(this);
 	private ListaCampos lcCC = new ListaCampos(this);
 	boolean bJurosPosCalc = false;
-	enum EColBaixa{ CODCLI, RAZCLI, NUMCONTA, CODPLAN, DOC, DTEMIT, DTVENC,
+	public enum EColBaixa{ CODCLI, RAZCLI, NUMCONTA, CODPLAN, DOC, DTEMIT, DTVENC,
 		VLRPARC, VLRAPAG, VLRDESC, VLRJUROS, DTPGTO, VLRPAGO, CODCC, OBS };
+	public enum EColRetBaixa{ NUMCONTA, CODPLAN, DOC, DTPAGTO, VLRPAGO, 
+		VLRDESC, VLRJUROS, CODCC, OBS };
 	
 	public DLBaixaRec(Component cOrig) {
 		super(cOrig);
@@ -354,15 +356,15 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	
 	public Object[] getValores() {
 		Object[] sRetorno = new Object[9];
-		sRetorno[0] = txtCodConta.getVlrString();
-		sRetorno[1] = txtCodPlan.getVlrString();
-		sRetorno[2] = txtDoc.getVlrString();
-		sRetorno[3] = txtDtPagto.getVlrDate();
-		sRetorno[4] = txtVlr.getVlrBigDecimal();
-		sRetorno[5] = txtVlrDesc.getVlrBigDecimal();
-		sRetorno[6] = txtVlrJuros.getVlrBigDecimal();
-		sRetorno[7] = txtCodCC.getVlrString();
-		sRetorno[8] = txtObs.getVlrString();
+		sRetorno[EColRetBaixa.NUMCONTA.ordinal()] = txtCodConta.getVlrString();
+		sRetorno[EColRetBaixa.CODPLAN.ordinal()] = txtCodPlan.getVlrString();
+		sRetorno[EColRetBaixa.DOC.ordinal()] = txtDoc.getVlrString();
+		sRetorno[EColRetBaixa.DTPAGTO.ordinal()] = txtDtPagto.getVlrDate();
+		sRetorno[EColRetBaixa.VLRPAGO.ordinal()] = txtVlr.getVlrBigDecimal();
+		sRetorno[EColRetBaixa.VLRDESC.ordinal()] = txtVlrDesc.getVlrBigDecimal();
+		sRetorno[EColRetBaixa.VLRJUROS.ordinal()] = txtVlrJuros.getVlrBigDecimal();
+		sRetorno[EColRetBaixa.CODCC.ordinal()] = txtCodCC.getVlrString();
+		sRetorno[EColRetBaixa.OBS.ordinal()] = txtObs.getVlrString();
 		return sRetorno;
 	}
 

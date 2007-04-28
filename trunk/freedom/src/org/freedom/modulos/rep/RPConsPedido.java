@@ -1,5 +1,5 @@
 /**
- * @version 02/2007 <BR>
+ * @version 04/2007 <BR>
  * @author Setpoint Informática Ltda.<BR>
  * @author Alex Rodrigues<BR>
  * 
@@ -104,7 +104,7 @@ public class RPConsPedido extends FFilho implements ActionListener {
 		
 		/***********
 		 * CLIENTE *
-		 **********/
+		 ***********/
 		
 		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );

@@ -472,7 +472,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		adicCampo( txtCodForItem, 319, 55, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtRazForItem, true );
 		adicDescFK( txtRazForItem, 402, 55, 189, 20, "RazFor", "Razão social do fornecedor" );
 		
-		panelCamposItens.adic( btObsPed, 595, 50, 70, 30 );
+		panelCamposItens.adic( btObsPed, 595, 45, 70, 30 );
 	}
 	
 	private void calculaValorItem() {

@@ -75,13 +75,12 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Relatorios", "", 'l', 500000000, 0, false, null );
 			addOpcao( 500000000, TP_OPCAO_MENU, "Vendas", "", 'V', 500100000, 1, false, null );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Resumo Diario", "Resumo Diario", 'R', 500101000, 2, true, null );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Detalhado", "Detalhado", 'D', 500102000, 2, true, null );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Resumido", "Resumido", 'm', 500103000, 2, true, null );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Histórico de clientes", "Histórico de clientes", 'H', 500104000, 2, true, null );
+			addOpcao( 500100000, TP_OPCAO_ITEM, "Pedidos", "Pedidos", 'P', 500101000, 2, true, RelPedido.class );
+				addOpcao( 500100000, TP_OPCAO_ITEM, "Resumo Diario", "Resumo Diario", 'R', 500102000, 2, true, null );
+				addOpcao( 500100000, TP_OPCAO_ITEM, "Histórico de clientes", "Histórico de clientes", 'H', 500103000, 2, true, null );
 				addSeparador( 500100000 );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Pedidos pendentes", "Pedidos pendentes", 'p', 500105000, 2, true, null );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Relação de Notas", "Relação de Notas", 'N', 500106000, 2, true, null );
+				addOpcao( 500100000, TP_OPCAO_ITEM, "Pedidos pendentes", "Pedidos pendentes", 'p', 500104000, 2, true, null );
+				addOpcao( 500100000, TP_OPCAO_ITEM, "Relação de Notas", "Relação de Notas", 'N', 500105000, 2, true, null );
 				addSeparador( 500100000 );
 				addOpcao( 500100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 500107000, 2, true, null );
 			addOpcao( 500000000, TP_OPCAO_MENU, "Clientes", "", 'C', 500200000, 1, false, null );

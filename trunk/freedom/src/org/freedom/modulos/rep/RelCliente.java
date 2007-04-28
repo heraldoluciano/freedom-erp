@@ -49,9 +49,9 @@ public class RelCliente extends FRelatorio {
 
 	private static final long serialVersionUID = 1;
 
-	private final JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodTpCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private final JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldFK txtDescTpCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -61,7 +61,7 @@ public class RelCliente extends FRelatorio {
 	
 	private JRadioGroup rgOrdem;
 	
-	private final ListaCampos lcCli = new ListaCampos( this );
+	private final ListaCampos lcTipoCli = new ListaCampos( this );
 	
 	private final ListaCampos lcVend = new ListaCampos( this );
 
@@ -70,27 +70,14 @@ public class RelCliente extends FRelatorio {
 		super();
 		setTitulo( "Relatorio de clientes" );		
 		setAtribos( 50, 50, 325, 290 );
-		
-		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
-		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		lcCli.montaSql( false, "CLIENTE", "RP" );
-		lcCli.setQueryCommit( false );
-		lcCli.setReadOnly( true );
-		txtCodCli.setListaCampos( lcCli );
-		txtCodCli.setTabelaExterna( lcCli );
-		txtCodCli.setPK( true );
-		txtCodCli.setNomeCampo( "CodCli" );
-		
-		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.vend.", ListaCampos.DB_PK, false ) );
-		lcVend.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do vendedor", ListaCampos.DB_SI, false ) );
-		lcVend.montaSql( false, "VENDEDOR", "RP" );
-		lcVend.setQueryCommit( false );
-		lcVend.setReadOnly( true );
-		txtCodVend.setListaCampos( lcVend );
-		txtCodVend.setTabelaExterna( lcVend );
-		txtCodVend.setPK( true );
-		txtCodVend.setNomeCampo( "CodVend" );
-		
+
+		montaRadioGrupos();
+		montaListaCampos();
+		montaTela();
+	}
+	
+	private void montaRadioGrupos() {
+
 		Vector<String> labs = new Vector<String>();
 		labs.add( "completo" );
 		labs.add( "resumido" );
@@ -105,17 +92,43 @@ public class RelCliente extends FRelatorio {
 		Vector<String> vals1 = new Vector<String>();
 		vals1.add( "CODVEND" );
 		vals1.add( "NOMEVEND" );
-		rgOrdem = new JRadioGroup( 1, 2, labs1, vals1 );
+		rgOrdem = new JRadioGroup( 1, 2, labs1, vals1 );		
+	}
+	
+	private void montaListaCampos() {
+		
+		lcTipoCli.add( new GuardaCampo( txtCodTpCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, false ) );
+		lcTipoCli.add( new GuardaCampo( txtDescTpCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false ) );
+		lcTipoCli.montaSql( false, "TIPOCLI", "RP" );
+		lcTipoCli.setQueryCommit( false );
+		lcTipoCli.setReadOnly( true );
+		txtCodTpCli.setListaCampos( lcTipoCli );
+		txtCodTpCli.setTabelaExterna( lcTipoCli );
+		txtCodTpCli.setPK( true );
+		txtCodTpCli.setNomeCampo( "CodTipoCli" );
+		
+		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.vend.", ListaCampos.DB_PK, false ) );
+		lcVend.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do vendedor", ListaCampos.DB_SI, false ) );
+		lcVend.montaSql( false, "VENDEDOR", "RP" );
+		lcVend.setQueryCommit( false );
+		lcVend.setReadOnly( true );
+		txtCodVend.setListaCampos( lcVend );
+		txtCodVend.setTabelaExterna( lcVend );
+		txtCodVend.setPK( true );
+		txtCodVend.setNomeCampo( "CodVend" );
+	}
+	
+	private void montaTela() {
 		
 		adic( new JLabel( "Modo :" ), 10, 10, 200, 20 );
 		adic( rgModo, 10, 35, 290, 30 );
 		adic( new JLabel( "Ordem do relatorio :" ), 10, 70, 200, 20 );
 		adic( rgOrdem, 10, 95, 290, 30 );
 		
-		adic( new JLabel( "Cód.cli." ), 10, 130, 77, 20 );
-		adic( txtCodCli, 10, 150, 77, 20 );
-		adic( new JLabel( "Razão social do cliente" ), 90, 130, 210, 20 );
-		adic( txtRazCli, 90, 150, 210, 20 );
+		adic( new JLabel( "Cód.tp.cli." ), 10, 130, 77, 20 );
+		adic( txtCodTpCli, 10, 150, 77, 20 );
+		adic( new JLabel( "Descrição do tipo de cliente" ), 90, 130, 210, 20 );
+		adic( txtDescTpCli, 90, 150, 210, 20 );
 		
 		adic( new JLabel( "Cód.vend." ), 10, 170, 77, 20 );
 		adic( txtCodVend, 10, 190, 77, 20 );
@@ -139,19 +152,19 @@ public class RelCliente extends FRelatorio {
 			sql.append( "FONECLI,FAXCLI,EMAILCLI " );
 			sql.append( "FROM RPCLIENTE " );
 			sql.append( "WHERE CODEMP=? AND CODFILIAL=? " );
-			if ( txtNomeVend.getVlrString().trim().length() > 0 ) {
-				sql.append( "AND CODVEND=" + txtCodVend.getVlrInteger().intValue() );
-				filtro = "Vendedor : " + txtNomeVend.getVlrString().trim();
+			if ( txtCodTpCli.getVlrString().trim().length() > 0 ) {
+				sql.append( "AND CODCLI=" + txtCodTpCli.getVlrInteger().intValue() );
+				filtro = "Tipo de cliente : " + txtDescTpCli.getVlrString().trim();
 			}
 			if ( txtNomeVend.getVlrString().trim().length() > 0 ) {
 				sql.append( "AND CODVEND=" + txtCodVend.getVlrInteger().intValue() );
-				filtro = "Fornecedor : " + txtNomeVend.getVlrString().trim();
+				filtro = "Vendedor : " + txtNomeVend.getVlrString().trim();
 			}
 			sql.append( "ORDER BY " + rgOrdem.getVlrString() );
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "RPPRODUTO" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "RPCLIENTE" ) );
 			ResultSet rs = ps.executeQuery();
 			
 			HashMap<String,Object> hParam = new HashMap<String, Object>();
@@ -169,7 +182,6 @@ public class RelCliente extends FRelatorio {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			}
 			
-			dispose();
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
 			e.printStackTrace();
@@ -181,7 +193,7 @@ public class RelCliente extends FRelatorio {
 
 		super.setConexao( cn );
 
-		lcCli.setConexao( cn );
+		lcTipoCli.setConexao( cn );
 		lcVend.setConexao( cn );
 	}
 

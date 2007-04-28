@@ -247,8 +247,8 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 						<font size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[($F{DDDCLI} != null ? "(" + $F{DDDCLI}.trim() + ")" : "")
-+ ($F{FONECLI} != null ? $F{FONECLI}.trim().substring(0,4) + "-" + $F{FONECLI}.trim().substring(4) : "")
-+ ($F{FAXCLI} != null ? $F{FAXCLI}.trim().substring(0,4) + "-" + $F{FAXCLI}.trim().substring(4) : "")]]></textFieldExpression>
++ ($F{FONECLI} != null ? " " + $F{FONECLI}.trim().substring(0,4) + "-" + $F{FONECLI}.trim().substring(4) : "")
++ ($F{FAXCLI} != null ? " " + $F{FAXCLI}.trim().substring(0,4) + "-" + $F{FAXCLI}.trim().substring(4) : "")]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
