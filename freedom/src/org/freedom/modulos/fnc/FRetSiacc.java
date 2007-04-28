@@ -43,7 +43,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
+
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -60,6 +60,8 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.fnc.SiaccUtil.Reg;
 import org.freedom.modulos.fnc.SiaccUtil.RegF;
+import org.freedom.modulos.std.DLBaixaRec.EColBaixa;
+import org.freedom.modulos.std.DLBaixaRec.EColRetBaixa;
 import org.freedom.modulos.std.DLBaixaRec;
 import org.freedom.modulos.std.DLEditaRec;
 import org.freedom.telas.Aplicativo;
@@ -71,7 +73,8 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener {
 
 	private enum EColTab {
 		SEL, RAZCLI, CODCLI, CODREC, DOCREC, NRPARC, VLRAPAG, 
-		DTREC, DTVENC, VLRPAG, DTPAG, CODCON, CODPLAN  
+		DTREC, DTVENC, VLRPAG, DTPAG, NUMCONTA, CODPLAN, VLRDESC, 
+		VLRJUROS , CODCC, OBS
 	};
 	
 	private enum EColInfoCli {
@@ -143,6 +146,10 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener {
 
 		montaTela();
 
+		/*		SEL, RAZCLI, CODCLI, CODREC, DOCREC, NRPARC, VLRAPAG, 
+		DTREC, DTVENC, VLRPAG, DTPAG, CODCON, CODPLAN, VLRDESC, VLRJUROS , CODCC,
+		OBS
+*/
 		tab.adicColuna( "" );
 		tab.adicColuna( "Razão social do cliente" );
 		tab.adicColuna( "Cód.cli." );
@@ -154,8 +161,13 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener {
 		tab.adicColuna( "Vencimento" );
 		tab.adicColuna( "Valor pago" );
 		tab.adicColuna( "Data pgto." );
-		tab.adicColuna( "Conta" );
-		tab.adicColuna( "Planejamento" );
+		tab.adicColuna( "Nro.conta" );
+		tab.adicColuna( "Cód.planej." );
+		tab.adicColuna( "Valor desc." );
+		tab.adicColuna( "Valor juros" );
+		tab.adicColuna( "Cód.c.c." );
+		tab.adicColuna( "Histórico" );
+		
 
 		tab.setTamColuna( 20, EColTab.SEL.ordinal() );
 		tab.setTamColuna( 150, EColTab.RAZCLI.ordinal() );
@@ -168,8 +180,13 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener {
 		tab.setTamColuna( 70, EColTab.DTVENC.ordinal() );
 		tab.setTamColuna( 70, EColTab.VLRPAG.ordinal() );
 		tab.setTamColuna( 70, EColTab.DTPAG.ordinal() );
-		tab.setTamColuna( 70, EColTab.CODCON.ordinal() );
+		tab.setTamColuna( 70, EColTab.NUMCONTA.ordinal() );
 		tab.setTamColuna( 70, EColTab.CODPLAN.ordinal() );
+		tab.setTamColuna( 70, EColTab.VLRDESC.ordinal() );
+		tab.setTamColuna( 70, EColTab.VLRJUROS.ordinal() );
+		tab.setTamColuna( 70, EColTab.CODCC.ordinal() );
+		tab.setTamColuna( 70, EColTab.OBS.ordinal() );
+		
 
 		tab.setColunaEditavel( EColTab.SEL.ordinal() , true );
 
@@ -398,13 +415,17 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener {
 							tab.setValor( (Integer) infocli.get( EColInfoCli.CODREC.ordinal() ), count, EColTab.CODREC.ordinal() ); // Cód.rec.
 							tab.setValor( (String) infocli.get( EColInfoCli.DOCREC.ordinal() ), count, EColTab.DOCREC.ordinal() ); // Doc
 							tab.setValor( (Integer) infocli.get( EColInfoCli.NPARCITREC.ordinal() ), count, EColTab.NRPARC.ordinal() ); // Nro.Parc.
-							tab.setValor( (BigDecimal) infocli.get( EColInfoCli.VLRAPAGITREC.ordinal() ), count, EColTab.VLRPAG.ordinal() ); // Valor
+							tab.setValor( (BigDecimal) infocli.get( EColInfoCli.VLRAPAGITREC.ordinal() ), count, EColTab.VLRAPAG.ordinal() ); // Valor
 							tab.setValor( (Date) infocli.get( EColInfoCli.DTITREC.ordinal() ), count, EColTab.DTREC.ordinal() ); // Emissão
 							tab.setValor( (Date) infocli.get( EColInfoCli.DTVENCITREC.ordinal() ), count, EColTab.DTVENC.ordinal() ); // Vencimento
 							tab.setValor( (BigDecimal) ((RegF) reg).getValorDebCred(), count, EColTab.VLRPAG.ordinal() ); // Valor pago
 							tab.setValor( (Date) ((RegF) reg).getDataVenc(), count, EColTab.DTVENC.ordinal() ); // Data pgto.
-							tab.setValor( (String) infocli.get( EColInfoCli.NUMCONTA.ordinal() ), count, EColTab.CODCON.ordinal() ); // Conta
+							tab.setValor( (String) infocli.get( EColInfoCli.NUMCONTA.ordinal() ), count, EColTab.NUMCONTA.ordinal() ); // Conta
 							tab.setValor( (String) infocli.get( EColInfoCli.CODPLAN.ordinal() ), count, EColTab.CODPLAN.ordinal() ); // Planejamento
+							tab.setValor( new BigDecimal(0), count, EColTab.VLRDESC.ordinal() ); // VLRDESC
+							tab.setValor( new BigDecimal(0), count, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
+							tab.setValor( "BAIXA AUTOMÁTICA SIACC", count, EColTab.OBS.ordinal() ); // HISTÓRICO
+							
 							count++;
 						}
 					}
@@ -481,54 +502,69 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener {
 	private void edit(){
 		
 		DLBaixaRec dl = null; 
-		Object[] sVals = new Object[ 13 ];
+		Object[] sVals = new Object[ 15 ];
 		Object[] sRets = null;
 		StringBuffer sSQL = new StringBuffer();
 		PreparedStatement ps = null;
 		float vlrdesc = 0;
 		float vlrjuros = 0;
-		
+		int iLin = tab.getLinhaSel();	
 		
 
-		if( tab.getLinhaSel() > -1 ){
-			
+		if( iLin  > -1 ){
+			iLin = tab.getLinhaSel();
 			dl = new DLBaixaRec(this);
 			dl.setConexao( con );
-			int iLin = tab.getLinhaSel();
 			
-			
-			sVals [ DLEditaRec.EColEdit.CODCLI.ordinal() ] = tab.getValor( iLin, EColTab.CODCLI.ordinal()  );
-			sVals [ DLEditaRec.EColEdit.RAZCLI.ordinal() ] = tab.getValor( iLin, EColTab.RAZCLI.ordinal() );
-			sVals [ DLEditaRec.EColEdit.NUMCONTA.ordinal() ] = tab.getValor( iLin, EColTab.CODCON.ordinal() );
-			sVals [ DLEditaRec.EColEdit.CODPLAN.ordinal() ] =  tab.getValor( iLin, EColTab.CODPLAN.ordinal());
-			sVals [ DLEditaRec.EColEdit.CODCC.ordinal() ] = "";
-			sVals [ DLEditaRec.EColEdit.DOC.ordinal() ] = tab.getValor( iLin, EColTab.DOCREC.ordinal() );
-			sVals [ DLEditaRec.EColEdit.DTEMIS.ordinal() ] = tab.getValor( iLin, EColTab.DTREC.ordinal() );
-			sVals [ DLEditaRec.EColEdit.DTVENC.ordinal() ] = tab.getValor( iLin, EColTab.DTVENC.ordinal()  );
-			sVals [ DLEditaRec.EColEdit.VLRJUROS.ordinal() ] = new BigDecimal(0);
-			sVals [ DLEditaRec.EColEdit.VLRDESC.ordinal() ] = new BigDecimal(0);
-			sVals [ DLEditaRec.EColEdit.VLRPARC.ordinal() ] = tab.getValor( iLin, EColTab.VLRPAG.ordinal() );
-			sVals [ DLEditaRec.EColEdit.OBS.ordinal() ] = String.valueOf( tab.getValor( iLin, EColTab.RAZCLI.ordinal() ) );
-			sVals [ DLEditaRec.EColEdit.CODBANCO.ordinal() ] = txtCodBanco.getVlrString();
+		
+			sVals [ DLBaixaRec.EColBaixa.CODCLI.ordinal() ] = tab.getValor( iLin, EColTab.CODCLI.ordinal()  );
+			sVals [ DLBaixaRec.EColBaixa.RAZCLI.ordinal() ] = tab.getValor( iLin, EColTab.RAZCLI.ordinal() );
+			sVals [ DLBaixaRec.EColBaixa.NUMCONTA.ordinal() ] = tab.getValor( iLin, EColTab.NUMCONTA.ordinal() ); //*
+			sVals [ DLBaixaRec.EColBaixa.CODPLAN.ordinal() ] =  tab.getValor( iLin, EColTab.CODPLAN.ordinal()); //*
+			sVals [ DLBaixaRec.EColBaixa.DOC.ordinal() ] = tab.getValor( iLin, EColTab.DOCREC.ordinal() ); //*
+			sVals [ DLBaixaRec.EColBaixa.DTEMIT.ordinal() ] = tab.getValor( iLin, EColTab.DTREC.ordinal() ); 
+			sVals [ DLBaixaRec.EColBaixa.DTVENC.ordinal() ] = tab.getValor( iLin, EColTab.DTVENC.ordinal()  ); 
+			sVals [ DLBaixaRec.EColBaixa.VLRPARC.ordinal() ] = tab.getValor( iLin, EColTab.VLRPAG.ordinal() ); 
+			sVals [ DLBaixaRec.EColBaixa.VLRAPAG.ordinal()] = tab.getValor( iLin, EColTab.VLRAPAG.ordinal() ); //*
+			sVals [ DLBaixaRec.EColBaixa.VLRDESC.ordinal()] = tab.getValor( iLin, EColTab.VLRDESC.ordinal() ); //*
+			sVals [ DLBaixaRec.EColBaixa.VLRJUROS.ordinal() ] = tab.getValor( iLin, EColTab.VLRJUROS.ordinal() ); //*
+			sVals [ DLBaixaRec.EColBaixa.VLRAPAG.ordinal()] = tab.getValor( iLin, EColTab.VLRAPAG.ordinal() ); 
+			sVals [ DLBaixaRec.EColBaixa.DTPGTO.ordinal()] = tab.getValor( iLin, EColTab.DTPAG.ordinal() ); //* 
+			sVals [ DLBaixaRec.EColBaixa.VLRPAGO.ordinal()] = tab.getValor( iLin, EColTab.VLRPAG.ordinal() ); //*
+			sVals [ DLBaixaRec.EColBaixa.CODCC.ordinal()] = tab.getValor( iLin, EColTab.CODCC.ordinal() ); //*
+			sVals [ DLBaixaRec.EColBaixa.OBS.ordinal() ] = String.valueOf( tab.getValor( iLin, EColTab.OBS.ordinal() ) ); //*
 			
 			dl.setValores( sVals );
 			dl.setVisible( true );	
+			if(dl.OK){
+				
+				sRets = dl.getValores();
+				
+				tab.setValor( sRets[EColRetBaixa.NUMCONTA.ordinal()] , iLin, EColTab.NUMCONTA.ordinal() );
+				tab.setValor( sRets[EColRetBaixa.CODPLAN.ordinal()] , iLin, EColTab.CODPLAN.ordinal() );
+				tab.setValor( sRets[EColRetBaixa.DOC.ordinal()] , iLin, EColTab.DOCREC.ordinal() );
+				tab.setValor( sRets[EColRetBaixa.VLRPAGO.ordinal()] , iLin, EColTab.VLRAPAG.ordinal() );
+				tab.setValor( sRets[EColRetBaixa.VLRDESC.ordinal()] , iLin, EColTab.VLRDESC.ordinal() );
+				tab.setValor( sRets[EColRetBaixa.VLRJUROS.ordinal()] , iLin, EColTab.VLRJUROS.ordinal() );
+				tab.setValor( sRets[EColRetBaixa.DTPAGTO.ordinal()] , iLin, EColTab.DTPAG.ordinal() );
+				tab.setValor( sRets[EColRetBaixa.VLRPAGO.ordinal()] , iLin, EColTab.VLRPAG.ordinal() );
+				tab.setValor( sRets[EColRetBaixa.CODCC.ordinal()] , iLin, EColTab.CODCC.ordinal() );
+				tab.setValor( sRets[EColRetBaixa.OBS.ordinal()] , iLin, EColTab.OBS.ordinal() );
+				
+				
+				
+				/*sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
+				sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC =?,VLRJUROSITREC=?," );
+				sSQL.append( "VLRDESCITREC=?,DTVENCITREC=?,OBSITREC=?,CODEMPBO=?,CODFILIALBO=?,CODBANCO=?" );
+				sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" ); */
+				
+			}
 		}
 		
 		else{
 			Funcoes.mensagemInforma( this, "Selecione uma linha na lista!" );
 		}
 		
-		if(dl.OK){
-			
-			sRets = dl.getValores();
-			
-			sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
-			sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC =?,VLRJUROSITREC=?," );
-			sSQL.append( "VLRDESCITREC=?,DTVENCITREC=?,OBSITREC=?,CODEMPBO=?,CODFILIALBO=?,CODBANCO=?" );
-			sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
-			
-		}
 	}
 	
 	public void actionPerformed( ActionEvent evt ) {

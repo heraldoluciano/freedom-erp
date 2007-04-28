@@ -266,7 +266,7 @@ AND FI.CODEMP=IT.CODEMPFO AND FI.CODFILIAL=IT.CODFILIALFO AND FI.CODFOR=IT.CODFO
 						y="1"
 						width="31"
 						height="12"
-						forecolor="#6666FF"
+						forecolor="#6464C8"
 						backcolor="#FFFFFF"
 						key="staticText-5"
 						positionType="Float"/>
@@ -639,7 +639,7 @@ AND FI.CODEMP=IT.CODEMPFO AND FI.CODFILIAL=IT.CODFILIALFO AND FI.CODFOR=IT.CODFO
 						y="76"
 						width="31"
 						height="12"
-						forecolor="#6666FF"
+						forecolor="#6464C8"
 						backcolor="#FFFFFF"
 						key="staticText-15"
 						positionType="Float"/>
@@ -921,7 +921,7 @@ AND FI.CODEMP=IT.CODEMPFO AND FI.CODFILIAL=IT.CODFILIALFO AND FI.CODFOR=IT.CODFO
 						y="11"
 						width="31"
 						height="12"
-						forecolor="#6666FF"
+						forecolor="#6464C8"
 						backcolor="#FFFFFF"
 						key="staticText-25"
 						positionType="Float"/>
@@ -1174,7 +1174,7 @@ AND FI.CODEMP=IT.CODEMPFO AND FI.CODFILIAL=IT.CODFILIALFO AND FI.CODFOR=IT.CODFO
 						y="76"
 						width="66"
 						height="12"
-						forecolor="#6666FF"
+						forecolor="#6464C8"
 						backcolor="#FFFFFF"
 						key="staticText-31"
 						positionType="Float"/>
