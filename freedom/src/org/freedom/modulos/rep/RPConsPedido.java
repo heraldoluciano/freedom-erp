@@ -92,10 +92,10 @@ public class RPConsPedido extends FFilho implements ActionListener {
 		montaTela();
 		adicBotaoSair();
 		
-		Calendar cal = Calendar.getInstance();		
-		txtDtIni.setVlrDate( cal.getTime() );
-		cal.set( cal.get( Calendar.YEAR ), cal.get( Calendar.MONTH ) + 1, cal.get( Calendar.DATE ) );		
-		txtDtFim.setVlrDate( cal.getTime() );	
+		Calendar cal = Calendar.getInstance();			
+		txtDtFim.setVlrDate( cal.getTime() );		
+		cal.set( cal.get( Calendar.YEAR ), cal.get( Calendar.MONTH ) - 1, cal.get( Calendar.DATE ) );
+		txtDtIni.setVlrDate( cal.getTime() );	
 		
 		btPesquisar.addActionListener( this );
 	}

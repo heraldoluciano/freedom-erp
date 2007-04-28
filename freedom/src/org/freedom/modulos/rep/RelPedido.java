@@ -41,6 +41,8 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
@@ -52,7 +54,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
-public class RelPedido extends FRelatorio {
+public class RelPedido extends FRelatorio implements RadioGroupListener {
 
 	private static final long serialVersionUID = 1;
 
@@ -78,7 +80,9 @@ public class RelPedido extends FRelatorio {
 	
 	private JRadioGroup rgModo;
 	
-	private JRadioGroup rgOrdem;
+	private JRadioGroup rgOrdem1;
+	
+	private JRadioGroup rgOrdem2;
 	
 	private final ListaCampos lcCliente = new ListaCampos( this );
 	
@@ -94,16 +98,18 @@ public class RelPedido extends FRelatorio {
 
 		super();
 		setTitulo( "Relatorio de pedidos" );		
-		setAtribos( 50, 50, 325, 430 );
+		setAtribos( 100, 50, 325, 430 );
 		
 		montaRadioGrupos();
 		montaListaCampos();
 		montaTela();
 		
-		Calendar cal = Calendar.getInstance();		
-		txtDtIni.setVlrDate( cal.getTime() );
-		cal.set( cal.get( Calendar.YEAR ), cal.get( Calendar.MONTH ) + 1, cal.get( Calendar.DATE ) );		
+		Calendar cal = Calendar.getInstance();			
 		txtDtFim.setVlrDate( cal.getTime() );		
+		cal.set( cal.get( Calendar.YEAR ), cal.get( Calendar.MONTH ) - 1, cal.get( Calendar.DATE ) );
+		txtDtIni.setVlrDate( cal.getTime() );	
+		
+		rgModo.addRadioGroupListener( this );
 	}
 	
 	private void montaRadioGrupos() {
@@ -120,9 +126,17 @@ public class RelPedido extends FRelatorio {
 		labs1.add( "Item" );
 		labs1.add( "Descrição" );
 		Vector<String> vals1 = new Vector<String>();
-		vals1.add( "CODITPED" );
-		vals1.add( "DESCPROD" );
-		rgOrdem = new JRadioGroup( 1, 2, labs1, vals1 );
+		vals1.add( "IT.CODITPED" );
+		vals1.add( "P.DESCPROD" );
+		rgOrdem1 = new JRadioGroup( 1, 2, labs1, vals1 );
+		
+		Vector<String> labs2 = new Vector<String>();
+		labs2.add( "Pedido" );
+		labs2.add( "Cliente" );
+		Vector<String> vals2 = new Vector<String>();
+		vals2.add( "P.CODPED" );
+		vals2.add( "C.RAZCLI" );
+		rgOrdem2 = new JRadioGroup( 1, 2, labs2, vals2 );
 	}
 	
 	private void montaListaCampos() {
@@ -189,7 +203,10 @@ public class RelPedido extends FRelatorio {
 		adic( new JLabel( "Modo :" ), 10, 10, 200, 20 );
 		adic( rgModo, 10, 35, 290, 30 );
 		adic( new JLabel( "Ordem do relatorio :" ), 10, 70, 200, 20 );
-		adic( rgOrdem, 10, 95, 290, 30 );
+		adic( rgOrdem1, 10, 95, 290, 30 );
+		adic( rgOrdem2, 10, 95, 290, 30 );
+		
+		rgOrdem2.setVisible( false );
 		
 		JLabel periodo = new JLabel( "Periodo", SwingConstants.CENTER );
 		periodo.setOpaque( true );
@@ -244,7 +261,7 @@ public class RelPedido extends FRelatorio {
 			String relatorio = "C".equals( rgModo.getVlrString() ) ? "rppedidocomp.jasper" : "rppedidoresum.jasper";
 			String modo = "C".equals( rgModo.getVlrString() ) ? "( completo )" : " ( resumido )";
 			String nomevend = null;
-			String nomemoeda = null;
+			String moeda = null;
 			String razcli = null;
 			String razfor = null;
 			Date dtini = txtDtIni.getVlrDate();
@@ -277,7 +294,7 @@ public class RelPedido extends FRelatorio {
 			
 			if ( txtCodMoeda.getVlrString().trim().length() > 0 ) {
 				sql.append( "AND M.CODMOEDA='" + txtCodMoeda.getVlrString() + "'" );
-				nomemoeda = txtNomeMoeda.getVlrString();
+				moeda = txtNomeMoeda.getVlrString();
 			}
 			if ( txtCodCli.getVlrString().trim().length() > 0 ) {
 				sql.append( "AND C.CODCLI=" + txtCodCli.getVlrInteger() );
@@ -292,7 +309,14 @@ public class RelPedido extends FRelatorio {
 				nomevend = txtNomeVend.getVlrString();
 			}
 
-			sql.append( " ORDER BY P.CODPED, " + rgOrdem.getVlrString() );
+			if ( "C".equals( rgModo.getVlrString() ) ) {
+			
+				sql.append( " ORDER BY P.CODPED, " + rgOrdem1.getVlrString() );
+			}
+			else if ( "R".equals( rgModo.getVlrString() ) ) {
+			
+				sql.append( " ORDER BY " + rgOrdem2.getVlrString() );
+			}
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -309,7 +333,7 @@ public class RelPedido extends FRelatorio {
 			hParam.put( "DTINI", dtini );
 			hParam.put( "DTFIM", dtfim );
 			hParam.put( "NOMEVEND", nomevend );
-			hParam.put( "NOMEMOEDA", nomemoeda );
+			hParam.put( "MOEDA", moeda );
 			hParam.put( "RAZFOR", razfor );
 			hParam.put( "RAZCLI", razcli );
 			
@@ -327,6 +351,20 @@ public class RelPedido extends FRelatorio {
 			e.printStackTrace();
 		}
 
+	}
+
+	public void valorAlterado( RadioGroupEvent e ) {
+
+		if ( "C".equals( rgModo.getVlrString() ) ) {
+			
+			rgOrdem1.setVisible( true );
+			rgOrdem2.setVisible( false );
+		}
+		else if ( "R".equals( rgModo.getVlrString() ) ) {
+			
+			rgOrdem1.setVisible( false );
+			rgOrdem2.setVisible( true );
+		}
 	}
 
 	public void setConexao( Connection cn ) {

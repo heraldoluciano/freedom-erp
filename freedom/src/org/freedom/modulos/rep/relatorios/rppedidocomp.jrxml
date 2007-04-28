@@ -542,17 +542,6 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 			<groupExpression><![CDATA[$F{CODPED}]]></groupExpression>
 			<groupHeader>
 			<band height="107"  isSplitAllowed="true" >
-				<rectangle>
-					<reportElement
-						x="0"
-						y="85"
-						width="535"
-						height="22"
-						forecolor="#F4F4FF"
-						backcolor="#F4F4FF"
-						key="rectangle-12"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -793,14 +782,12 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 						y="62"
 						width="40"
 						height="12"
-						key="textField-17">
-							<printWhenExpression><![CDATA[new Boolean($F{NUMPEDCLI}!=null)]]></printWhenExpression>
-						</reportElement>
+						key="textField-17"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NUMPEDCLI}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NUMPEDCLI} != null ? $F{NUMPEDCLI} : ""]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -808,14 +795,12 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 						y="62"
 						width="40"
 						height="12"
-						key="textField-18">
-							<printWhenExpression><![CDATA[new Boolean($F{NUMPEDFOR}!=null)]]></printWhenExpression>
-						</reportElement>
+						key="textField-18"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NUMPEDFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NUMPEDFOR} != null ? $F{NUMPEDFOR} : ""]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -1094,7 +1079,7 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCLI}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCLI} != null ? $F{ENDCLI} : ""]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -1141,7 +1126,7 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CIDCLI}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CIDCLI} != null ? $F{CIDCLI} : ""]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1154,7 +1139,7 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ESTCLI}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ESTCLI} != null ? $F{ESTCLI} : ""]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -1184,7 +1169,7 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{BAIRCLI}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{BAIRCLI} != null ? $F{BAIRCLI} : ""]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1300,6 +1285,21 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 					</textElement>
 				<text><![CDATA[CEP]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="230"
+						y="1"
+						width="300"
+						height="12"
+						key="textField-60">
+							<printWhenExpression><![CDATA[new Boolean( $P{NOMEVEND} == null )]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMEVEND} != null ? ( "Vendedor : " + $F{NOMEVEND}.trim() ) : ""]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -1837,7 +1837,7 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Courier-Bold" size="9" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Filtrado por :]]></text>
+				<text><![CDATA[Filtrado por]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -2048,7 +2048,7 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{MOEDA} != null ? $P{MOEDA} : "Todos"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{MOEDA} != null ? $P{MOEDA} : "Todas"]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
@@ -2057,13 +2057,13 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="18"  isSplitAllowed="true" >
+			<band height="16"  isSplitAllowed="true" >
 				<rectangle>
 					<reportElement
 						x="0"
 						y="0"
 						width="535"
-						height="17"
+						height="15"
 						forecolor="#F4F4FF"
 						backcolor="#F4F4FF"
 						key="rectangle-1">
@@ -2076,7 +2076,7 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 						x="535"
 						y="0"
 						width="0"
-						height="18"
+						height="16"
 						forecolor="#CCCCFF"
 						key="line-2"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -2086,7 +2086,7 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 						x="0"
 						y="0"
 						width="0"
-						height="18"
+						height="16"
 						forecolor="#CCCCFF"
 						key="line-1"/>
 					<graphicElement stretchType="NoStretch"/>
