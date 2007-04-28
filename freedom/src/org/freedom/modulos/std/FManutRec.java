@@ -65,6 +65,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.DLBaixaRec.EColBaixa;
+import org.freedom.modulos.std.DLBaixaRec.EColRetBaixa;
 import org.freedom.modulos.std.DLEditaRec.EColEdit;
 import org.freedom.modulos.std.DLEditaRec.EColRet;
 import org.freedom.telas.Aplicativo;
@@ -1497,25 +1498,14 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 
 	private void baixaConsulta() {
 
-		//int iCodRec = 0;
-		//int iNParcItRec = 0;
 		if ( tabConsulta.getLinhaSel() != -1 ) {
 			
 			txtCodRecBaixa.setVlrInteger( (Integer) tabConsulta.getValor( tabConsulta.getLinhaSel(), EColTabConsulta.CODREC.ordinal() ) );
-			//iNParcItRec = ( (Integer) tabConsulta.getValor( tabConsulta.getLinhaSel(), EColTabConsulta.NPARCITREC.ordinal() ) );
 			
 			lcRecBaixa.carregaDados();
 			tpn.setSelectedIndex( 1 );
 			btBaixa.requestFocus();
 			
-/*			for ( int i = 0; i < vNParcBaixa.size(); i++ ) {
-			
-				if ( iNParc == ( new Integer( (String) vNParcBaixa.elementAt( i ) ) ).intValue() ) {
-					
-					tabBaixa.setLinhaSel( i );
-					break;
-				}
-			} */
 		}
 	}
 
@@ -1602,18 +1592,18 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 					try {
 						
 						ps = con.prepareStatement( sSQL.toString() );
-						ps.setString( 1, (String) sRets[ 0 ] );
+						ps.setString( 1, (String) sRets[ EColRetBaixa.NUMCONTA.ordinal() ] );
 						ps.setInt( 2, Aplicativo.iCodEmp );
 						ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
-						ps.setString( 4, (String) sRets[ 1 ] );
+						ps.setString( 4, (String) sRets[ EColRetBaixa.CODPLAN.ordinal() ] );
 						ps.setInt( 5, Aplicativo.iCodEmp );
 						ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-						ps.setString( 7, (String) sRets[ 2 ] );
-						ps.setDate( 8, Funcoes.dateToSQLDate( (java.util.Date) sRets[ 3 ] ) );
-						ps.setBigDecimal( 9,  (BigDecimal) sRets[ 4 ] );
-						ps.setBigDecimal( 10, (BigDecimal) sRets[ 5 ] );
-						ps.setBigDecimal( 11, (BigDecimal) sRets[ 6 ] );
-						if ( "".equals( ((String) sRets[ 7 ]).trim() ) ) {
+						ps.setString( 7, (String) sRets[ EColRetBaixa.DOC.ordinal() ] );
+						ps.setDate( 8, Funcoes.dateToSQLDate( (java.util.Date) sRets[ EColRetBaixa.DTPAGTO.ordinal() ] ) );
+						ps.setBigDecimal( 9,  (BigDecimal) sRets[ EColRetBaixa.VLRPAGO.ordinal() ] );
+						ps.setBigDecimal( 10, (BigDecimal) sRets[ EColRetBaixa.VLRDESC.ordinal() ] );
+						ps.setBigDecimal( 11, (BigDecimal) sRets[ EColRetBaixa.VLRJUROS.ordinal() ] );
+						if ( "".equals( ((String) sRets[ EColRetBaixa.CODCC.ordinal() ]).trim() ) ) {
 							ps.setNull( 12, Types.INTEGER );
 							ps.setNull( 13, Types.CHAR );
 							ps.setNull( 14, Types.INTEGER );
@@ -1621,12 +1611,12 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 						}
 						else {
 							ps.setInt( 12, iAnoCC );
-							ps.setString( 13, (String) sRets[ 7 ] );
+							ps.setString( 13, (String) sRets[ EColRetBaixa.CODCC.ordinal() ] );
 							ps.setInt( 14, Aplicativo.iCodEmp );
 							ps.setInt( 15, ListaCampos.getMasterFilial( "FNCC" ) );
 						}
 
-						ps.setString( 16, (String) sRets[ 8 ] );
+						ps.setString( 16, (String) sRets[ EColRetBaixa.CODCC.ordinal() ] );
 						ps.setInt( 17, iCodRec );
 						ps.setInt( 18, iNParcItRec );
 						ps.setInt( 19, Aplicativo.iCodEmp );
@@ -1660,7 +1650,8 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 				iCodRec = (Integer) tabBaixa.getValor( iLin, EColTabBaixa.CODREC.ordinal() );
 				iNParcItRec = (Integer) tabBaixa.getValor( iLin, EColTabBaixa.NPARCITREC.ordinal() );
 						
-				sVals = new Object[ 15 ];
+				sVals = new Object[ EColBaixa.values().length ];
+				//DLBaixaRec.EColBaixa.values().length
 				dl = new DLBaixaRec( this );
 
 				sVals[ EColBaixa.CODCLI.ordinal() ] = txtCodCliBaixa.getVlrInteger(); // Codcli
