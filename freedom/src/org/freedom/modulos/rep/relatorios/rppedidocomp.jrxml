@@ -825,8 +825,8 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 						y="77"
 						width="14"
 						height="14"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
+						forecolor="#DCDCFF"
+						backcolor="#DCDCFF"
 						key="ellipse-5"/>
 					<graphicElement stretchType="NoStretch"/>
 				</ellipse>
@@ -836,8 +836,8 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 						y="77"
 						width="120"
 						height="14"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
+						forecolor="#DCDCFF"
+						backcolor="#DCDCFF"
 						key="rectangle-9"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
@@ -847,8 +847,8 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 						y="77"
 						width="14"
 						height="14"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
+						forecolor="#DCDCFF"
+						backcolor="#DCDCFF"
 						key="ellipse-6"/>
 					<graphicElement stretchType="NoStretch"/>
 				</ellipse>
@@ -1355,8 +1355,8 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 						y="2"
 						width="14"
 						height="14"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
+						forecolor="#DCDCFF"
+						backcolor="#DCDCFF"
 						key="ellipse-7"/>
 					<graphicElement stretchType="NoStretch"/>
 				</ellipse>
@@ -1366,8 +1366,8 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 						y="2"
 						width="120"
 						height="14"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
+						forecolor="#DCDCFF"
+						backcolor="#DCDCFF"
 						key="rectangle-14"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
@@ -1377,8 +1377,8 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 						y="2"
 						width="14"
 						height="14"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
+						forecolor="#DCDCFF"
+						backcolor="#DCDCFF"
 						key="ellipse-8"/>
 					<graphicElement stretchType="NoStretch"/>
 				</ellipse>
@@ -1565,8 +1565,8 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 						y="47"
 						width="14"
 						height="14"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
+						forecolor="#DCDCFF"
+						backcolor="#DCDCFF"
 						key="ellipse-9"/>
 					<graphicElement stretchType="NoStretch"/>
 				</ellipse>
@@ -1576,8 +1576,8 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 						y="47"
 						width="120"
 						height="14"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
+						forecolor="#DCDCFF"
+						backcolor="#DCDCFF"
 						key="rectangle-17"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
@@ -1587,8 +1587,8 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 						y="47"
 						width="14"
 						height="14"
-						forecolor="#CCCCFF"
-						backcolor="#CCCCFF"
+						forecolor="#DCDCFF"
+						backcolor="#DCDCFF"
 						key="ellipse-10"/>
 					<graphicElement stretchType="NoStretch"/>
 				</ellipse>
@@ -1875,7 +1875,7 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 						mode="Transparent"
 						x="5"
 						y="128"
-						width="45"
+						width="50"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1889,7 +1889,7 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="55"
+						x="60"
 						y="128"
 						width="210"
 						height="12"
@@ -1905,7 +1905,7 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 						mode="Transparent"
 						x="5"
 						y="114"
-						width="45"
+						width="50"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1919,7 +1919,7 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="55"
+						x="60"
 						y="114"
 						width="210"
 						height="12"
@@ -1993,9 +1993,9 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="285"
+						x="280"
 						y="114"
-						width="30"
+						width="35"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -2023,9 +2023,9 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="285"
+						x="280"
 						y="128"
-						width="30"
+						width="35"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"

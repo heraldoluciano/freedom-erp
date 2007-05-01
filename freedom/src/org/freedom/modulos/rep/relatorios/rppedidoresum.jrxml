@@ -707,7 +707,7 @@ ORDER BY P.CODPED]]></queryString>
 						mode="Transparent"
 						x="5"
 						y="124"
-						width="45"
+						width="50"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -721,7 +721,7 @@ ORDER BY P.CODPED]]></queryString>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="55"
+						x="60"
 						y="124"
 						width="210"
 						height="12"
@@ -737,7 +737,7 @@ ORDER BY P.CODPED]]></queryString>
 						mode="Transparent"
 						x="5"
 						y="110"
-						width="45"
+						width="50"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -751,7 +751,7 @@ ORDER BY P.CODPED]]></queryString>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="55"
+						x="60"
 						y="110"
 						width="210"
 						height="12"
@@ -825,9 +825,9 @@ ORDER BY P.CODPED]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="285"
+						x="280"
 						y="110"
-						width="30"
+						width="35"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -855,9 +855,9 @@ ORDER BY P.CODPED]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="285"
+						x="280"
 						y="124"
-						width="30"
+						width="35"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
