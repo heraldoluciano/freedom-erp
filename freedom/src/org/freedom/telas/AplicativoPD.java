@@ -76,6 +76,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		setSplashName(sSplash);
 		iniConexao();
 		carregaCasasDec();
+		carregaBuscaProd();
 		getMultiAlmox();
 		buscaInfoUsuAtual();
 		setaInfoTela();
@@ -347,11 +348,10 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 
 	protected void carregaCasasDec() {
 		String sSQL = null;
-		String sBusca = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			sSQL = "SELECT CASASDEC,CASASDECFIN,BUSCAPRODSIMILAR,BUSCACODPRODGEN FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			sSQL = "SELECT CASASDEC,CASASDECFIN FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
@@ -359,10 +359,6 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			if (rs.next()) {
 				casasDec = rs.getInt("CASASDEC");
 				casasDecFin = rs.getInt("CASASDECFIN");
-				sBusca = (rs.getString("BUSCAPRODSIMILAR") == null ? "N" : rs.getString("BUSCAPRODSIMILAR"));
-				bBuscaProdSimilar = sBusca.equals("S") ? true : false;
-				sBusca = (rs.getString("BUSCACODPRODGEN") == null ? "N" : rs.getString("BUSCACODPRODGEN"));
-				bBuscaCodProdGen = sBusca.equals("S") ? true : false;
 			}
 			rs.close();
 			ps.close();
@@ -374,7 +370,33 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 							+ err.getMessage(),true,con,err);
 		} finally {
 			sSQL = null;
-			sBusca = null;
+			ps = null;
+			rs = null;
+		}
+	}
+
+	protected void carregaBuscaProd() {
+		String sSQL = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			sSQL = "SELECT BUSCAPRODSIMILAR,BUSCACODPRODGEN FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				bBuscaProdSimilar = "S".equals(rs.getString("BUSCAPRODSIMILAR"));
+				bBuscaCodProdGen = "S".equals(rs.getString("BUSCACODPRODGEN"));
+			}
+			rs.close();
+			ps.close();
+			if (!con.getAutoCommit())
+				con.commit();
+		} catch (SQLException err) {
+			err.printStackTrace();
+		} finally {
+			sSQL = null;
 			ps = null;
 			rs = null;
 		}
