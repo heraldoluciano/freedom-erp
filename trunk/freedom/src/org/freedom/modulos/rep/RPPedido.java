@@ -239,6 +239,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		btObsPed.addActionListener( this );
 		
 		txtCodForItem.addFocusListener( this );
+		txtPercIPIItem.addFocusListener( this );
 	}
 
 	private void montaRadioGrups() {
@@ -729,6 +730,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			lcDet.post();
 			lcDet.insert( true );
 		}		
+		else if ( e.getSource() == txtPercIPIItem ) {
+			txtPercDescItem.requestFocus();
+		}
 	}
 
 	public void setConexao( Connection cn ) {

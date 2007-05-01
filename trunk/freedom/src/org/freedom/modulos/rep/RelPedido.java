@@ -97,7 +97,7 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 	public RelPedido() {
 
 		super();
-		setTitulo( "Relatorio de pedidos" );		
+		setTitulo( "Relatorio de Pedidos" );		
 		setAtribos( 100, 50, 325, 430 );
 		
 		montaRadioGrupos();
@@ -320,7 +320,7 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "RPPRODUTO" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "RPITPEDIDO" ) );
 			ps.setDate( 3, Funcoes.dateToSQLDate( dtini ) );
 			ps.setDate( 4, Funcoes.dateToSQLDate( dtfim ) );
 			ResultSet rs = ps.executeQuery();

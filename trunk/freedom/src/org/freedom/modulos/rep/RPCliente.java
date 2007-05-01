@@ -19,7 +19,7 @@
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela para cadastro de tipos de clientes.
+ * Tela para cadastro de clientes.
  * 
  */
 
