@@ -42,19 +42,11 @@ public class AplicativoRep extends AplicativoPD {
 			Funcoes.mensagemErro( null, "Não foi possível obter o número de casas decimais!\n" + err.getMessage(), true, con, err );
 		} 
 	}
-/*
-	@ Override
-	public String getDescEst() {
-
-		// Sobreposto por ter sido definido a estação de trabalho para FreedoRep
-		return "Estação de trabalho - Freedom-ERP";
-	}
 
 	@ Override
-	public boolean getModoDemo() {
-
-		// Sobreposto por ter sido definido a estação de trabalho para FreedoRep
-		return true;
+	protected void carregaBuscaProd() {
+		
+		bBuscaProdSimilar = false;
+		bBuscaCodProdGen = false;
 	}
-*/
 }

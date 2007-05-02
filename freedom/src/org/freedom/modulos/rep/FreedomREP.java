@@ -82,7 +82,7 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 				addOpcao( 500100000, TP_OPCAO_ITEM, "Pedidos pendentes", "Pedidos pendentes", 'p', 500104000, 2, true, null );
 				addOpcao( 500100000, TP_OPCAO_ITEM, "Relação de Notas", "Relação de Notas", 'N', 500105000, 2, true, null );
 				addSeparador( 500100000 );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 500107000, 2, true, null );
+				addOpcao( 500100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 500107000, 2, true, RelEvolucaoVendas.class );
 			addOpcao( 500000000, TP_OPCAO_MENU, "Clientes", "", 'C', 500200000, 1, false, null );
 				addOpcao( 500200000, TP_OPCAO_ITEM, "Clientes", "Clientes", 'C', 500201000, 2, true, RelCliente.class );
 				addOpcao( 500200000, TP_OPCAO_ITEM, "Tipos de cliente", "Tipos de cliente", 'T', 500202000, 2, true, RelTipoCli.class );
