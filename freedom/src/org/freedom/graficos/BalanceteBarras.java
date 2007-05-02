@@ -29,15 +29,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.LeiauteGR;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.CategoryDataset;
-import org.jfree.data.DefaultCategoryDataset;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 
 public class BalanceteBarras extends LeiauteGR {
