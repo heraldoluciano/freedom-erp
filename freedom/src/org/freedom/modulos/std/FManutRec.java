@@ -62,6 +62,7 @@ import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.DLBaixaRec.EColBaixa;
@@ -935,12 +936,12 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 				tabConsulta.setValor( rs.getInt( "NPARCITREC" ), i, EColTabConsulta.NPARCITREC.ordinal() );
 				tabConsulta.setValor( ( rs.getString( "DOCREC" ) != null ? rs.getString( "DOCREC" ) : "" ), i, EColTabConsulta.DOC.ordinal() );
 				tabConsulta.setValor( ( rs.getDate( "DATAREC" ) != null ? Funcoes.sqlDateToDate( rs.getDate( "DATAREC" ) ) : "" ), i, EColTabConsulta.DTVENDA.ordinal() );
-				tabConsulta.setValor( rs.getBigDecimal( "VLRPARCITREC" ), i, EColTabConsulta.VLRPARC.ordinal() );
-				tabConsulta.setValor( rs.getBigDecimal( "VLRDESCITREC" ), i, EColTabConsulta.VLRDESC.ordinal() );
-				tabConsulta.setValor( rs.getString( "VLRPAGOITREC" ), i, EColTabConsulta.VLRPAGO.ordinal() );
+				tabConsulta.setValor( Funcoes.bdToStr(rs.getBigDecimal( "VLRPARCITREC" )), i, EColTabConsulta.VLRPARC.ordinal() );
+				tabConsulta.setValor( Funcoes.bdToStr(rs.getBigDecimal( "VLRDESCITREC" )), i, EColTabConsulta.VLRDESC.ordinal() );
+				tabConsulta.setValor( Funcoes.bdToStr(rs.getBigDecimal( "VLRPAGOITREC" )), i, EColTabConsulta.VLRPAGO.ordinal() );
 				tabConsulta.setValor( ( rs.getDate( "DTPAGOITREC" ) != null ? Funcoes.sqlDateToDate( rs.getDate( "DTPAGOITREC" ) ) : "" ), i, EColTabConsulta.DTPAGTO.ordinal() );
 				tabConsulta.setValor( rs.getInt( "DIASATRASO" ) , i, EColTabConsulta.DIASATRASO.ordinal() );
-				tabConsulta.setValor( rs.getString( "VLRJUROSITREC" ) , i, EColTabConsulta.VLRJUROS.ordinal() );
+				tabConsulta.setValor( Funcoes.bdToStr(rs.getBigDecimal( "VLRJUROSITREC" )) , i, EColTabConsulta.VLRJUROS.ordinal() );
 				tabConsulta.setValor( ( rs.getString( "SERIE" ) != null ? rs.getString( "SERIE" ) : "" ), i, EColTabConsulta.SERIE.ordinal() );
 				tabConsulta.setValor( rs.getInt( "CODVENDA" ), i, EColTabConsulta.CODVENDA.ordinal() );
 				tabConsulta.setValor( rs.getString( "CODBANCO" ) != null ? rs.getString( "CODBANCO" ) : "", i, EColTabConsulta.CODBANCO.ordinal() );
@@ -1040,13 +1041,13 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 						rs.getString( "DOCLANCAITREC" ) : 
 						String.valueOf( rs.getInt( "DOCVENDA" ) ) ), i, EColTabBaixa.DOC.ordinal() );
 				tabBaixa.setValor( rs.getInt( "CODVENDA" ), i, EColTabBaixa.CODVENDA.ordinal() );
-				tabBaixa.setValor( rs.getBigDecimal( "VLRPARCITREC" ), i, EColTabBaixa.VLRPARC.ordinal() );
+				tabBaixa.setValor( Funcoes.bdToStr(rs.getBigDecimal( "VLRPARCITREC" )), i, EColTabBaixa.VLRPARC.ordinal() );
 				tabBaixa.setValor( ( rs.getDate( "DTPAGOITREC" ) != null ? 
 						Funcoes.sqlDateToDate( rs.getDate( "DTPAGOITREC" ) ) : "" ), i, EColTabBaixa.DTPAGTO.ordinal() );
-				tabBaixa.setValor( rs.getBigDecimal( "VLRPAGOITREC" ), i, EColTabBaixa.VLRPAGO.ordinal() );
-				tabBaixa.setValor( rs.getBigDecimal( "VLRDESCITREC" ), i, EColTabBaixa.VLRDESC.ordinal() );
-				tabBaixa.setValor( rs.getBigDecimal( "VLRJUROSITREC" ), i, EColTabBaixa.VLRJUROS.ordinal() );
-				tabBaixa.setValor( rs.getBigDecimal( "VLRAPAGITREC" ), i, EColTabBaixa.VLRAPAG.ordinal() );
+				tabBaixa.setValor( Funcoes.bdToStr(rs.getBigDecimal( "VLRPAGOITREC" )), i, EColTabBaixa.VLRPAGO.ordinal() );
+				tabBaixa.setValor( Funcoes.bdToStr(rs.getBigDecimal( "VLRDESCITREC" )), i, EColTabBaixa.VLRDESC.ordinal() );
+				tabBaixa.setValor( Funcoes.bdToStr(rs.getBigDecimal( "VLRJUROSITREC" )), i, EColTabBaixa.VLRJUROS.ordinal() );
+				tabBaixa.setValor( Funcoes.bdToStr(rs.getBigDecimal( "VLRAPAGITREC" )), i, EColTabBaixa.VLRAPAG.ordinal() );
 				tabBaixa.setValor( rs.getString( "NUMCONTA" ) != null ? rs.getString( "NUMCONTA" ) : "", i, EColTabBaixa.NUMCONTA.ordinal() );
 				tabBaixa.setValor( rs.getString( "DESCCONTA" ) != null ? rs.getString( "DESCCONTA" ) : "", i, EColTabBaixa.DESCCONTA.ordinal() );
 				tabBaixa.setValor( rs.getString( "CODCC" ) != null ? rs.getString( "CODCC" ) : "", i, EColTabBaixa.CODCC.ordinal() );
@@ -1232,12 +1233,12 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 				tabManut.setValor( rs.getInt( "NPARCITREC" ), i, EColTabManut.NPARCITREC.ordinal() );
 				tabManut.setValor( ( rs.getString( "DOCLANCAITREC" ) != null ? rs.getString( "DocLancaItRec" ) : "" ), i, EColTabManut.DOCLANCA.ordinal() );
 				tabManut.setValor( rs.getInt( "DOCVENDA" ), i, EColTabManut.DOCVENDA.ordinal() );// DOCVENDA
-				tabManut.setValor( rs.getBigDecimal(  "VLRPARCITREC" ) , i, EColTabManut.VLRPARC.ordinal() );
+				tabManut.setValor( Funcoes.bdToStr(rs.getBigDecimal(  "VLRPARCITREC" )) , i, EColTabManut.VLRPARC.ordinal() );
 				tabManut.setValor( ( rs.getDate( "DTPAGOITREC" ) != null ? Funcoes.sqlDateToStrDate( rs.getDate( "DtPagoItRec" ) ) : "" ), i, EColTabManut.DTPAGTO.ordinal() );
-				tabManut.setValor( rs.getBigDecimal( "VLRPAGOITREC" ), i, EColTabManut.VLRPAGO.ordinal() );
-				tabManut.setValor( rs.getBigDecimal( "VLRDESCITREC" ), i, EColTabManut.VLRDESC.ordinal() );
-				tabManut.setValor( rs.getBigDecimal( "VLRJUROSITREC"  ), i, EColTabManut.VLRJUROS.ordinal() );
-				tabManut.setValor( rs.getBigDecimal( "VLRAPAGITREC" ), i, EColTabManut.VLRAPAG.ordinal() );
+				tabManut.setValor( Funcoes.bdToStr(rs.getBigDecimal( "VLRPAGOITREC" )), i, EColTabManut.VLRPAGO.ordinal() );
+				tabManut.setValor( Funcoes.bdToStr(rs.getBigDecimal( "VLRDESCITREC" )), i, EColTabManut.VLRDESC.ordinal() );
+				tabManut.setValor( Funcoes.bdToStr(rs.getBigDecimal( "VLRJUROSITREC"  )), i, EColTabManut.VLRJUROS.ordinal() );
+				tabManut.setValor( Funcoes.bdToStr(rs.getBigDecimal( "VLRAPAGITREC" )), i, EColTabManut.VLRAPAG.ordinal() );
 				tabManut.setValor( rs.getString( "NUMCONTA" ) != null ? rs.getString( "NUMCONTA" ) : "", i, EColTabManut.NUMCONTA.ordinal() );// NUMCONTA
 				tabManut.setValor( rs.getString( "DESCCONTA" ) != null ? rs.getString( "DESCCONTA" ) : "", i, EColTabManut.DESCCONTA.ordinal() );// DESCCONTA
 				tabManut.setValor( rs.getString( "CODPLAN" ) != null ? rs.getString( "CODPLAN" ) : "", i, EColTabManut.CODPLAN.ordinal() );// CODPLAN
@@ -1314,9 +1315,9 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 					sVals[ EColEdit.DOC.ordinal() ] = (String) tabManut.getValor( iLin, EColTabManut.DOCLANCA.ordinal() );
 					sVals[ EColEdit.DTEMIS.ordinal() ] = tabManut.getValor( iLin, EColTabManut.DTEMIT.ordinal() );
 					sVals[ EColEdit.DTVENC.ordinal() ] =  tabManut.getValor( iLin, EColTabManut.DTVENC.ordinal() ) ;
-					sVals[ EColEdit.VLRJUROS.ordinal() ] = (BigDecimal) tabManut.getValor( iLin, EColTabManut.VLRJUROS.ordinal() ) ;
-					sVals[ EColEdit.VLRDESC.ordinal() ] = (BigDecimal) tabManut.getValor( iLin, EColTabManut.VLRDESC.ordinal() ) ;
-					sVals[ EColEdit.VLRPARC.ordinal() ] = (BigDecimal) tabManut.getValor( iLin, EColTabManut.VLRPARC.ordinal() ) ;
+					sVals[ EColEdit.VLRJUROS.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRJUROS.ordinal() ) ) ;
+					sVals[ EColEdit.VLRDESC.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRDESC.ordinal() ) );
+					sVals[ EColEdit.VLRPARC.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPARC.ordinal() ) );
 
 					if ( "".equals( String.valueOf( tabManut.getValor( iLin, EColTabManut.OBS.ordinal() ) ).trim() ) ) {
 						sVals[ EColEdit.OBS.ordinal() ] = "PAGAMENTO REF. A VENDA: " + tabManut.getValor( iLin, EColTabManut.DOCVENDA.ordinal() );
@@ -1484,12 +1485,12 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 					con, 
 					txtCodRecBaixa.getVlrInteger().intValue(), 
 					Integer.parseInt( tabBaixa.getValor( iLin, 2 ).toString() ) );
-		
-		dl.setValores( new BigDecimal[] { Funcoes.strCurrencyToBigDecimal( tabBaixa.getValor( iLin, 5 ).toString() ), 
-				Funcoes.strCurrencyToBigDecimal( tabBaixa.getValor( iLin, 7 ).toString() ), 
-				Funcoes.strCurrencyToBigDecimal( tabBaixa.getValor( iLin, 8 ).toString() ),
-				Funcoes.strCurrencyToBigDecimal( tabBaixa.getValor( iLin, 9 ).toString() ), 
-				Funcoes.strCurrencyToBigDecimal( tabBaixa.getValor( iLin, 10 ).toString() ) } 
+
+		dl.setValores( new BigDecimal[] { Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPARC.ordinal() ) ), 
+				Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal()  ) ), 
+				Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRDESC.ordinal() ) ),
+				Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRJUROS.ordinal() ) ), 
+				Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRAPAG.ordinal() ) ) } 
 		);
 		
 		dl.setVisible( true );
@@ -1556,18 +1557,18 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 							   tabManut.getValor( iLin, EColTabManut.DOCLANCA.ordinal() ) );
 				sVals[ EColBaixa.DTEMIT.ordinal() ] = tabManut.getValor( iLin, EColTabManut.DTEMIT.ordinal() );
 				sVals[ EColBaixa.DTVENC.ordinal() ] = tabManut.getValor( iLin, EColTabManut.DTVENC.ordinal() );
-				sVals[ EColBaixa.VLRPARC.ordinal() ] = tabManut.getValor( iLin, EColTabManut.VLRPARC.ordinal() );
-				sVals[ EColBaixa.VLRAPAG.ordinal() ] = tabManut.getValor( iLin, EColTabManut.VLRAPAG.ordinal() );
-				sVals[ EColBaixa.VLRDESC.ordinal() ] = tabManut.getValor( iLin, EColTabManut.VLRDESC.ordinal() );
-				sVals[ EColBaixa.VLRJUROS.ordinal() ] = tabManut.getValor( iLin, EColTabManut.VLRJUROS.ordinal() );
+				sVals[ EColBaixa.VLRPARC.ordinal() ] = Funcoes.strToBd(tabManut.getValor( iLin, EColTabManut.VLRPARC.ordinal() ));
+				sVals[ EColBaixa.VLRAPAG.ordinal() ] = Funcoes.strToBd(tabManut.getValor( iLin, EColTabManut.VLRAPAG.ordinal() ));
+				sVals[ EColBaixa.VLRDESC.ordinal() ] = Funcoes.strToBd(tabManut.getValor( iLin, EColTabManut.VLRDESC.ordinal() ));
+				sVals[ EColBaixa.VLRJUROS.ordinal() ] = Funcoes.strToBd(tabManut.getValor( iLin, EColTabManut.VLRJUROS.ordinal() ));
 				sVals[ EColBaixa.CODCC.ordinal() ] = tabManut.getValor( iLin, EColTabManut.CODCC.ordinal() );
 				if (  "".trim().equals( tabManut.getValor( iLin, EColTabManut.DTPAGTO.ordinal() ) ) ) {
 					sVals[ EColBaixa.DTPGTO.ordinal() ] = new Date();
-					sVals[ EColBaixa.VLRPAGO.ordinal() ] = tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() );
+					sVals[ EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd(tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() ));
 				}
 				else {
 					sVals[ EColBaixa.DTPGTO.ordinal() ] = tabManut.getValor( iLin, EColTabManut.DTPAGTO.ordinal() );
-					sVals[ EColBaixa.VLRPAGO.ordinal() ] = tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() );
+					sVals[ EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd(tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() ));
 				}
 				if ( "".trim().equals( tabManut.getValor( iLin, EColTabManut.OBS.ordinal() ) ) ) {
 					sVals[ EColBaixa.OBS.ordinal() ] = "RECEBIMENTO REF. AO PED.: " + tabManut.getValor( iLin, EColTabManut.DOCVENDA.ordinal() );
@@ -1661,19 +1662,19 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 				sVals[ EColBaixa.DOC.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.DOC.ordinal() ); // Doc
 				sVals[ EColBaixa.DTEMIT.ordinal() ] = txtDtEmisBaixa.getVlrDate(); // Data emissão
 				sVals[ EColBaixa.DTVENC.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.DTVENC.ordinal() ); // Vencimento
-				sVals[ EColBaixa.VLRPARC.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.VLRPARC.ordinal() ); // Vlrparc
-				sVals[ EColBaixa.VLRDESC.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.VLRDESC.ordinal() ); // Vlrdesc
-				sVals[ EColBaixa.VLRJUROS.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.VLRJUROS.ordinal() ); // Vlrjuros
-				sVals[ EColBaixa.VLRAPAG.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.VLRAPAG.ordinal() ); // Vlraberto
+				sVals[ EColBaixa.VLRPARC.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPARC.ordinal() ) ); // Vlrparc
+				sVals[ EColBaixa.VLRDESC.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRDESC.ordinal() )); // Vlrdesc
+				sVals[ EColBaixa.VLRJUROS.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRJUROS.ordinal() )); // Vlrjuros
+				sVals[ EColBaixa.VLRAPAG.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRAPAG.ordinal() )); // Vlraberto
 				sVals[ EColBaixa.CODCC.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.CODCC.ordinal() ); // Codcc
 
 				if ( "".equals( tabBaixa.getValor( iLin, EColBaixa.DTPGTO.ordinal() ) ) ) { // Data de pagamento branco
 					sVals[ EColBaixa.DTPGTO.ordinal() ] = new Date(); // Data pagto
-					sVals[ EColBaixa.VLRPAGO.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ); // valor pago
+					sVals[ EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() )); // valor pago
 				}
 				else {
 					sVals[ EColBaixa.DTPGTO.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ); // Data pagto
-					sVals[ EColBaixa.VLRPAGO.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ); // valor pago
+					sVals[ EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() )); // valor pago
 				}
 				if ( "".equals( ( (String) tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) ).trim() ) ) {
 					sVals[ EColBaixa.OBS.ordinal() ] = "RECEBIMENTO REF. AO PED.: " + txtCodVendaBaixa.getVlrString(); // histórico
@@ -1902,6 +1903,7 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 		return bRetorno;
 	}
 
+	
 /*	private String[] buscaRelPlanPag( int iCodRec ) {
 
 		String[] retorno = new String[ 4 ];
