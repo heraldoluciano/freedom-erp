@@ -50,6 +50,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
+import org.freedom.componentes.PainelImagem;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FTabDados;
 
@@ -318,6 +319,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private JCheckBoxPad cbBuscaVlrUltCompra = null;
 
 	private JCheckBoxPad cbUsaPrecoZero = null;
+
+	private JCheckBoxPad cbUsaImgOrc = null;
+
+	private JCheckBoxPad cbConsIECli= null;
+
+	private JCheckBoxPad cbConsIEFor= null;
+
+	private PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
 	private ListaCampos lcMoeda = new ListaCampos( this, "MO" );
 
@@ -626,6 +635,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbBuscaVlrUltCompra.setVlrString( "N" );
 		cbUsaPrecoZero = new JCheckBoxPad( "Permite preço de produto Zero?", "S", "N" );
 		cbUsaPrecoZero.setVlrString( "N" );
+		cbUsaImgOrc = new JCheckBoxPad( "Usar imagem de assinatura no orçamento?", "S", "N" );
+		cbUsaImgOrc.setVlrString( "N" );
+		cbConsIECli = new JCheckBoxPad( "Validar IE no cliente?", "S", "N" );
+		cbConsIECli.setVlrString( "S" );
+		cbConsIEFor = new JCheckBoxPad( "Validar IE do fornecedor?", "S", "N" );
+		cbConsIEFor.setVlrString( "S" );
 
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
@@ -698,13 +713,15 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicCampo( txtCasasDec, 7, 140, 100, 20, "CasasDec", "Demais", ListaCampos.DB_SI, true );
 		lbGeralOpcoes.setOpaque( true );
 		adic( lbGeralOpcoes, 170, 5, 90, 20 );
-		adic( pinOpcoesGeral, 160, 15, 560, 145 );
+		adic( pinOpcoesGeral, 160, 15, 560, 185 );
 		setPainel( pinOpcoesGeral );
 		adicDB( cbRgCliObrig, 7, 20, 180, 20, "RgCliObrig", "", true );
 		adicDB( cbCliMesmoCnpj, 7, 40, 250, 20, "CliMesmoCnpj", "", true );
 		adicDB( cbCnpjCliObrig, 7, 60, 300, 20, "CnpjObrigCli", "", true );
 		adicDB( cbCnpjForObrig, 7, 80, 400, 20, "CnpjForObrig", "", true );
 		adicDB( cbInscEstForObrig, 7, 100, 400, 20, "InscEstForObrig", "", true );
+		adicDB( cbConsIECli, 7, 120, 400, 20, "ConsisteIECli", "", true );
+		adicDB( cbConsIEFor, 7, 140, 400, 20, "ConsisteIEFor", "", true );
 
 		// Venda
 
@@ -782,9 +799,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDescFK( txtDescTipoMov2, 90, 25, 230, 20, "DescTipoMov", "Tipo de movimento para orçamentos." );
 		adicCampo( txtDescClassOrc, 330, 25, 250, 20, "ClassOrc", "Classe padrão para orçamento.", ListaCampos.DB_SI, false );
 		adicCampo( txtTitOrcTxt01, 330, 65, 250, 20, "TitOrcTxt01", "Título para campo TXT01", ListaCampos.DB_SI, false );
-		adicDB( rgTipoValidOrc, 460, 230, 250, 30, "tipovalidorc", "Validade na impressão", true );
-		adicDB( cbUsaOrcSeq, 10, 235, 160, 20, "UsaOrcSeq", "", true );
-		adicDB( cbReCalcOrc, 10, 255, 250, 20, "ReCalcPCOrc", "", true );
+		
+		adicDB( rgTipoValidOrc, 460, 200, 250, 30, "tipovalidorc", "Validade na impressão", true );
+		adicDB( cbUsaOrcSeq, 10, 215, 160, 20, "UsaOrcSeq", "", true );
+		adicDB( cbReCalcOrc, 10, 235, 250, 20, "ReCalcPCOrc", "", true );
+		adicDB( cbUsaImgOrc, 10, 295, 300, 20, "UsaImgAssOrc", "", true );
+		adicDB( imgAssOrc, 510, 250, 200, 95, "ImgAssOrc", "Assinatura", true );
 
 		// Financeiro
 
@@ -896,7 +916,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		setListaCampos( lcPDV );
 		setNavegador( new Navegador( false ) );
 
-		// Orï¿½amento e PDV
+		// Orçamento e PDV
 
 		setPainel( pinOrc );
 
@@ -911,11 +931,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDescFK( txtDescCli, 90, 145, 230, 20, "NomeCli", "Nome do cliente" );
 		adicCampo( txtPrazo, 330, 105, 250, 20, "Prazo", "Prazo de Entrega do Orçamento", ListaCampos.DB_SI, false );
 		adicCampo( txtDiasVencOrc, 330, 145, 250, 20, "DiasVencOrc", "Dias p/ vencimento do orçamento", ListaCampos.DB_SI, false );
-		adic( lbOrcOpcoes, 17, 190, 70, 20 );
-		adic( lbOrcCont, 7, 200, 720, 120 );
-		adicDB( cbAprovOrc, 10, 215, 350, 20, "AprovOrc", "", true );
-		adicDB( cbUsaBuscGenProdORC, 10, 275, 350, 20, "USABUSCAGENPROD", "", false );
-		adicDB( cbUsaLoteOrc, 10, 295, 300, 20, "USALOTEORC", "", false );
+		
+		adic( lbOrcOpcoes, 17, 170, 70, 20 );
+		adic( lbOrcCont, 7, 180, 720, 175 );		
+		adicDB( cbAprovOrc, 10, 195, 350, 20, "AprovOrc", "", true );
+		adicDB( cbUsaBuscGenProdORC, 10, 255, 350, 20, "USABUSCAGENPROD", "", false );
+		adicDB( cbUsaLoteOrc, 10, 275, 300, 20, "USALOTEORC", "", false );
 		setListaCampos( false, "PREFERE4", "SG" );
 
 		// Email
