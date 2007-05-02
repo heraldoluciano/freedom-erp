@@ -482,7 +482,6 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			txtVlrItem.setVlrBigDecimal( txtQtdItem.getVlrBigDecimal().multiply( txtPrecoItem.getVlrBigDecimal() ) );
 		}
 	}
-
 	
 	private void calculaValorLiquido() {
 
