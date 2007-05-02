@@ -43,6 +43,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -105,7 +106,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 
 	private final JButton btEdita = new JButton( Icone.novo( "btEditar.gif" ) );
 
-	private final JButton btGerar = new JButton( "Aplicar baixa", Icone.novo( "btSalvar.gif" ) );
+	private final JButton btBaixar = new JButton( "Aplicar baixa", Icone.novo( "btSalvar.gif" ) );
 
 	private final JLabel lbStatus = new JLabel();
 
@@ -174,14 +175,14 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		btSelNada.addActionListener( this );
 		btImporta.addActionListener( this );
 		btEdita.addActionListener( this );
-		btGerar.addActionListener( this );
+		btBaixar.addActionListener( this );
 		btImporta.addKeyListener( this );
 		tab.addMouseListener( this );
 
 		btSelTudo.setToolTipText( "Selecionar tudo" );
 		btSelNada.setToolTipText( "Limpar seleção" );
 		btEdita.setToolTipText( "Editar" );
-		btGerar.setToolTipText( "Aplicar baixa" );
+		btBaixar.setToolTipText( "Aplicar baixa" );
 	}
 
 	private void montaTela() {
@@ -216,8 +217,8 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		panelRodape.setBorder( BorderFactory.createEtchedBorder() );
 		panelRodape.setPreferredSize( new Dimension( 600, 32 ) );
 		
-		btGerar.setPreferredSize( new Dimension( 150, 32 ) );
-		panelRodape.add( btGerar, BorderLayout.WEST );
+		btBaixar.setPreferredSize( new Dimension( 150, 32 ) );
+		panelRodape.add( btBaixar, BorderLayout.WEST );
 
 	}
 
@@ -486,8 +487,6 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		DLBaixaRec dl = null;
 		Object[] sVals = new Object[ 15 ];
 		Object[] sRets = null;
-		float vlrdesc = 0;
-		float vlrjuros = 0;
 		int iLin = tab.getLinhaSel();
 
 		if ( iLin > -1 ) {
@@ -520,7 +519,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 
 				sRets = dl.getValores();
 				
-				loadAllRowsOfCli( (Integer) sVals[ DLBaixaRec.EColBaixa.CODCLI.ordinal() ], sRets );
+				atualizaTabCli( (Integer) sVals[ DLBaixaRec.EColBaixa.CODCLI.ordinal() ], sRets );
 				
 				tab.setValor( new Boolean( Boolean.TRUE ), iLin, EColTab.SEL.ordinal() );
 				tab.setValor( sRets[ EColRetBaixa.NUMCONTA.ordinal() ], iLin, EColTab.NUMCONTA.ordinal() );
@@ -532,22 +531,15 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 				tab.setValor( sRets[ EColRetBaixa.VLRJUROS.ordinal() ], iLin, EColTab.VLRJUROS.ordinal() );
 				tab.setValor( sRets[ EColRetBaixa.CODCC.ordinal() ], iLin, EColTab.CODCC.ordinal() );
 				tab.setValor( sRets[ EColRetBaixa.OBS.ordinal() ], iLin, EColTab.OBS.ordinal() );
-
-				/*
-				 * sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," ); 
-				 * sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC =?,VLRJUROSITREC=?," ); 
-				 * sSQL.append( "VLRDESCITREC=?,DTVENCITREC=?,OBSITREC=?,CODEMPBO=?,CODFILIALBO=?,CODBANCO=?" ); 
-				 * sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
-				 */
-
+				
 			}
 		}
 		else {
 			Funcoes.mensagemInforma( this, "Selecione uma linha na lista!" );
 		}
 	}
-	
-	private void loadAllRowsOfCli( final int codcli, final Object[] vals ) {
+
+	private void atualizaTabCli( final int codcli, final Object[] vals ) {
 		
 		BigDecimal vlrpago = new BigDecimal(0);
 		BigDecimal vlrdescjuros = new BigDecimal(0);
@@ -577,6 +569,81 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 			}
 		}
 	}
+	
+	private boolean updateCliente( int codCli, String codBanco, String tipoFebraban, String stipoFebraban, String numconta, String codplan, String codcc ) {
+
+		boolean retorno = false;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement( "SELECT NUMCONTA, CODPLAN, CODCC FROM FNFBNCLI " + "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? AND CODEMPPF=? AND " + "CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND " + "CODBANCO=? AND TIPOFEBRABAN=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setInt( 3, codCli );
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
+			ps.setInt( 6, Aplicativo.iCodEmp );
+			ps.setInt( 7, ListaCampos.getMasterFilial( "FNBANCO" ) );
+			ps.setString( 8, codBanco );
+			ps.setString( 9, tipoFebraban );
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				if ( ( !numconta.equals( rs.getString( "NUMCONTA" ) ) ) || ( !codplan.equals( rs.getString( "CODPLAN" ) ) ) || ( !stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) ) ) || ( !codcc.equals( rs.getString( "CODCC" ) ) ) ) {
+					ps = con.prepareStatement( "UPDATE FNFBNCLI SET NUMCONTA=?, CODPLAN=?, CODCC=? " + 
+							"WHERE CODEMP=? AND CODFILIAL=? AND " +
+							"CODCLI=? AND CODEMPPF=? AND CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND " +
+							"CODBANCO=? AND TIPOFEBRABAN=?" );
+					ps.setString( 1, numconta );
+					ps.setString( 2, codplan );
+					ps.setString( 3, codcc  );
+					ps.setInt( 4, Aplicativo.iCodEmp );
+					ps.setInt( 5, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+					ps.setInt( 6, codCli );
+					ps.setInt( 7, Aplicativo.iCodEmp );
+					ps.setInt( 8, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
+					ps.setInt( 9, Aplicativo.iCodEmp );
+					ps.setInt( 10, ListaCampos.getMasterFilial( "FNBANCO" ) );
+					ps.setString( 11, codBanco );
+					ps.setString( 12, tipoFebraban );
+			}
+			else {
+				ps = con.prepareStatement( "INSERT INTO FNFBNCLI (NUMCONTA, CODPLAN, CODCC, CODEMP, CODFILIAL, " + 
+						"CODCLI, CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, " + 
+						"TIPOFEBRABAN, STIPOFEBRABAN, TIPOREMCLI) " + 
+						"VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+				ps.setString( 1, numconta );
+				ps.setString( 2, codplan );
+				ps.setString( 3, codcc  );
+				ps.setInt( 4, Aplicativo.iCodEmp );
+				ps.setInt( 5, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+				ps.setInt( 6, codCli );
+				ps.setInt( 7, Aplicativo.iCodEmp );
+				ps.setInt( 8, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
+				ps.setInt( 9, Aplicativo.iCodEmp );
+				ps.setInt( 10, ListaCampos.getMasterFilial( "FNBANCO" ) );
+				ps.setString( 11, codBanco );
+				ps.setString( 12, tipoFebraban );
+				ps.setString( 13, stipoFebraban );
+				ps.setString( 14, codcc );
+
+				ps.executeUpdate();
+			}
+			if ( !con.getAutoCommit() )
+				con.commit();
+			// rs.close();
+			retorno = true;
+			
+			}}catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro atualizando cliente!\n" + e.getMessage() );
+		}
+		
+		return retorno;
+	}
+	
+	private void baixar() {
+		
+		
+	}
 
 	public void actionPerformed( ActionEvent e ) {
 
@@ -591,6 +658,10 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		}
 		else if ( e.getSource() == btEdita ) {
 			edit();
+		}
+		else if ( e.getSource() == btBaixar) {
+			//updateCliente( null, null, null, null, null, null, null );
+			baixar();
 		}
 	}
 
