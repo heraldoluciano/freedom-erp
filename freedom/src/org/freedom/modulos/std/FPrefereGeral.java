@@ -804,7 +804,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDB( cbUsaOrcSeq, 10, 215, 160, 20, "UsaOrcSeq", "", true );
 		adicDB( cbReCalcOrc, 10, 235, 250, 20, "ReCalcPCOrc", "", true );
 		adicDB( cbUsaImgOrc, 10, 295, 300, 20, "UsaImgAssOrc", "", true );
-		adicDB( imgAssOrc, 510, 250, 200, 95, "ImgAssOrc", "Assinatura", true );
+		adicDB( imgAssOrc, 510, 250, 200, 95, "ImgAssOrc", "Assinatura", false );
 
 		// Financeiro
 
