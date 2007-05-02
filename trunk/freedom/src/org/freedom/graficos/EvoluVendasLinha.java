@@ -36,8 +36,8 @@ import org.freedom.layout.LeiauteGR;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.XYSeries;
-import org.jfree.data.XYSeriesCollection;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 public class EvoluVendasLinha extends LeiauteGR {
 

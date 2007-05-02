@@ -32,14 +32,12 @@ import java.util.Vector;
 
 import javax.swing.Timer;
 
-
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.LeiauteGR;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.Pie3DPlot;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.data.DefaultPieDataset;
+import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.util.Rotation;
 
 public class BalancetePizza extends LeiauteGR {
@@ -63,10 +61,10 @@ public class BalancetePizza extends LeiauteGR {
 	}	
 	private JFreeChart createChart(DefaultPieDataset dataset) {    
 	  	  
-	  JFreeChart chart = ChartFactory.createPie3DChart("",dataset,true,false,false);		
+	  JFreeChart chart = ChartFactory.createPieChart3D("",dataset,true,false,false);		
 	  
 	  chart.setBackgroundPaint(new Color(255, 255, 255));
-	  Pie3DPlot plot = (Pie3DPlot) chart.getPlot();		
+	  PiePlot3D plot = (PiePlot3D) chart.getPlot();		
 	  plot.setForegroundAlpha(0.60f);
 	  if (bGirar) {
 		plot.setStartAngle(270);
@@ -75,8 +73,8 @@ public class BalancetePizza extends LeiauteGR {
 		Rotator rotator = new Rotator(plot);
 		rotator.start();
 	  }	  
-	  plot.setSectionLabelFont(fnLabel);
-	  plot.setSectionLabelType(PiePlot.PERCENT_LABELS);
+	  plot.setLabelFont(fnLabel);
+	  //plot.setSectionLabelType(PiePlot.PERCENT_LABELS);
       plot.setOutlineStroke(null);
 
       return chart;
@@ -187,9 +185,9 @@ public class BalancetePizza extends LeiauteGR {
 	}	
 	class Rotator extends Timer implements ActionListener {
 		private static final long serialVersionUID = 1L;
-		private Pie3DPlot plot;
+		private PiePlot3D plot;
 		private int angle = 270;
-		Rotator(Pie3DPlot plot) {
+		Rotator(PiePlot3D plot) {
 			super(100, null);
 			this.plot = plot;
 			addActionListener(this);
