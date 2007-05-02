@@ -119,6 +119,30 @@ public class Funcoes {
     	}
     	return retorno;
     }
+	public static StringDireita bdToStr(BigDecimal vlr) {
+		StringDireita retorno = null;
+		if (vlr==null) {
+			retorno = new StringDireita(Funcoes.strDecimalToStrCurrency( 
+					Aplicativo.casasDecFin, "0" ).trim());
+		}
+		else {
+			retorno = new StringDireita(Funcoes.strDecimalToStrCurrency( 
+					Aplicativo.casasDecFin, String.valueOf( vlr ) ).trim() );
+		}
+		return retorno;
+	}
+	
+	public static BigDecimal strToBd(Object vlr) {
+		BigDecimal retorno = null;
+		if (vlr==null) {
+			retorno = new BigDecimal(0);
+		}
+		else {
+			retorno = Funcoes.strCurrencyToBigDecimal( vlr.toString() );
+		}
+		return retorno;
+	}
+
 	public static String getTimeString(Date data) {
 		String bRetorno	= "";
 		if (data!=null) {
