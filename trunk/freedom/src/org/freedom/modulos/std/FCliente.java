@@ -294,9 +294,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 
-	private Vector vPessoaLab = new Vector();
+	private Vector<String> vPessoaLab = new Vector<String>();
 
-	private Vector vPessoaVal = new Vector();
+	private Vector<String> vPessoaVal = new Vector<String>();
 
 	private JRadioGroup rgPessoa = null;
 
@@ -1515,19 +1515,19 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		if ( iCodAtende.compareTo( new Integer( 0 ) ) > 0 ) {
 			
-			HashMap hmMeses = new HashMap();
-			HashMap hmJan = new HashMap();
-			HashMap hmFev = new HashMap();
-			HashMap hmMar = new HashMap();
-			HashMap hmAbr = new HashMap();
-			HashMap hmMai = new HashMap();
-			HashMap hmJun = new HashMap();
-			HashMap hmJul = new HashMap();
-			HashMap hmAgo = new HashMap();
-			HashMap hmSet = new HashMap();
-			HashMap hmOut = new HashMap();
-			HashMap hmNov = new HashMap();
-			HashMap hmDez = new HashMap();
+			HashMap<String,HashMap> hmMeses = new HashMap<String,HashMap>();
+			HashMap<String,Integer> hmJan = new HashMap<String,Integer>();
+			HashMap<String,Integer> hmFev = new HashMap<String,Integer>();
+			HashMap<String,Integer> hmMar = new HashMap<String,Integer>();
+			HashMap<String,Integer> hmAbr = new HashMap<String,Integer>();
+			HashMap<String,Integer> hmMai = new HashMap<String,Integer>();
+			HashMap<String,Integer> hmJun = new HashMap<String,Integer>();
+			HashMap<String,Integer> hmJul = new HashMap<String,Integer>();
+			HashMap<String,Integer> hmAgo = new HashMap<String,Integer>();
+			HashMap<String,Integer> hmSet = new HashMap<String,Integer>();
+			HashMap<String,Integer> hmOut = new HashMap<String,Integer>();
+			HashMap<String,Integer> hmNov = new HashMap<String,Integer>();
+			HashMap<String,Integer> hmDez = new HashMap<String,Integer>();
 
 			hmJan.put( "ANT", txtAntQtdContJan.getVlrInteger() );
 			hmJan.put( "NOVO", txtNovaQtdContJan.getVlrInteger() );
@@ -1811,20 +1811,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private boolean[] getPrefere() {
 
-		boolean[] bRet = new boolean[ 4 ];
+		boolean[] bRet = new boolean[ 5 ];
 		String sSQL = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sVal = null;
 		
 		try {
 			
-			bRet[ 0 ] = false;
-			bRet[ 1 ] = true;
-			bRet[ 2 ] = false;
-			bRet[ 3 ] = true;
-			
-			sSQL = "SELECT SETORVENDA,RGCLIOBRIG,CLIMESMOCNPJ,CNPJOBRIGCLI FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			sSQL = "SELECT SETORVENDA,RGCLIOBRIG,CLIMESMOCNPJ,CNPJOBRIGCLI,CONSISTEIECLI FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 
 			try {
 				ps = con.prepareStatement( sSQL );
@@ -1834,32 +1828,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				
 				if ( rs.next() ) {
 					
-					sVal = rs.getString( "SetorVenda" );
-					
-					if ( sVal != null ) {
-						if ( "CA".indexOf( sVal ) >= 0 ) { // Se tiver C ou A no sVal!
-							bRet[ 0 ] = true;
-						}
-					}
-					sVal = rs.getString( "RGCLIOBRIG" );
-					if ( sVal != null ) {
-						if ( sVal.equals( "N" ) ) {
-							bRet[ 1 ] = false;
-						}
-					}
-					sVal = rs.getString( "CLIMESMOCNPJ" );
-					if ( sVal != null ) {
-						if ( sVal.equals( "S" ) ) {
-							bRet[ 2 ] = true;
-						}
-					}
-					sVal = rs.getString( "CNPJOBRIGCLI" );
-					if ( sVal != null ) {
-						if ( sVal.equals( "N" ) ) {
-							bRet[ 3 ] = false;
-						}
-					}
-					
+					bRet[ 0 ] = "CA".indexOf( rs.getString( "SetorVenda" ) ) >= 0;
+					bRet[ 1 ] = "S".equals( rs.getString( "RGCLIOBRIG" ) );
+					bRet[ 2 ] = "S".equals( rs.getString( "CLIMESMOCNPJ" ) );
+					bRet[ 3 ] = "S".equals( rs.getString( "CLIMESMOCNPJ" ) );
+					bRet[ 4 ] = "S".equals( rs.getString( "CONSISTEIECLI" ) );
 				}
 				
 				rs.close();
@@ -1876,7 +1849,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			sSQL = null;
 			ps = null;
 			rs = null;
-			sVal = null;
 		}
 		return bRet;
 	}
@@ -3543,17 +3515,19 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			return;
 		}
 
-		if ( !Funcoes.vIE( txtInscCli.getText(), txtUFCli.getText() ) ) {
-			if ( !txtInscCli.getText().trim().equals( "" ) ) {
-				pevt.cancela();
-				Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
-				txtInscCli.requestFocus();
-				return;
+		if ( bPref[ 4 ] ) {
+			if ( ! Funcoes.vIE( txtInscCli.getText(), txtUFCli.getText() ) ) {
+				if ( ! txtInscCli.getText().trim().equals( "" ) ) {
+					pevt.cancela();
+					Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
+					txtInscCli.requestFocus();
+					return;
+				}
 			}
-		}
 
-		if ( !txtInscCli.getText().trim().equals( "" ) ) {
-			txtInscCli.setVlrString( Funcoes.sIEValida );
+			if ( ! txtInscCli.getText().trim().equals( "" ) ) {
+				txtInscCli.setVlrString( Funcoes.sIEValida );
+			}
 		}
 	}
 
