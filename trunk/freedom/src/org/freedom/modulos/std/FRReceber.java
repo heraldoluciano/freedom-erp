@@ -66,10 +66,13 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 	private JCheckBoxPad cbImpTotDia = new JCheckBoxPad("Imprimir totalizador diário?","S","N");  
 	private JRadioGroup rgTipoRel = null;
 	private JRadioGroup rgOrdem = null;
+	private JRadioGroup rgOrdem2 = null;
 	private Vector vVals = new Vector();
 	private Vector vLabs = new Vector();
 	private Vector vVals1 = new Vector();
 	private Vector vLabs1 = new Vector();
+	private Vector vVals2 = new Vector();
+	private Vector vLabs2 = new Vector();
 	private ListaCampos lcCli = new ListaCampos(this);
 	private ListaCampos lcSetor = new ListaCampos(this);
 	private ListaCampos lcVendedor = new ListaCampos(this);
@@ -79,7 +82,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 	  
 	public FRReceber() {
 		setTitulo("Contas a Receber");
-		setAtribos(80,80,387,440);
+		setAtribos(80,20,387,500);
 		   
 		txtDataini.setVlrDate(new Date());
 		txtDatafim.setVlrDate(new Date());
@@ -142,8 +145,15 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		vVals1.addElement( "P" );
 
 		rgOrdem = new JRadioGroup(3,1,vLabs1,vVals1);
-		//rgOrdem.addRadioGroupListener( this );
 		rgOrdem.setVlrString( "V" );
+
+		vLabs2.addElement( "Razão Social" );
+		vLabs2.addElement( "Documento" );
+		vVals2.addElement( "R" );
+		vVals2.addElement( "D" );
+
+		rgOrdem2 = new JRadioGroup(1,2,vLabs2,vVals2);
+		rgOrdem2.setVlrString( "R" );
 		
 		cbObs.setVlrString("S");
 		cbImpTotDia.setVlrString("S");
@@ -153,38 +163,43 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		JLabelPad lbPeriodo = new JLabelPad("   Periodo:");
 		lbPeriodo.setOpaque(true);
 		
-		adic(lbPeriodo,17,90,80,20);
-		adic(lbLinha,7,100,353,40);
-		adic(new JLabelPad("De:"),17,110,30,20);
-		adic(txtDataini,50,110,97,20);
-		adic(new JLabelPad("Até:"),157,110,30,20);
-		adic(txtDatafim,190,110,100,20);
-		adic(rgTipoRel,7,20,170,70);
 		adic(new JLabelPad ("Filtrar:"),7,0,80,20);
-		adic(rgOrdem,190,20,170,70);
+		adic(rgTipoRel,7,20,170,70);
 		adic(new JLabelPad("Ordenar/Filtro:"),190,0,100,20);
-		adic(new JLabelPad("Cód.cli."),7,140,200,20);
-		adic(txtCodCli,7,160,80,20);
-		adic(new JLabelPad("Razão social do cliente"),90,140,200,20);
-		adic(txtRazCli,90,160,270,20);
-		adic(new JLabelPad("Cód.setor"),7,180,250,20);
-		adic(txtCodSetor,7,200,80,20);
-		adic(new JLabelPad("Descrição do setor"),90,180,250,20);
-		adic(txtDescSetor,90,200,270,20);
-		adic(new JLabelPad("Cód.comis."),7,220,250,20);
-		adic(txtCodVend,7,240,80,20);
-		adic(new JLabelPad("Nome do comissionado"),90,220,250,20);
-		adic(txtNomeVend,90,240,270,20);
-		adic(new JLabelPad("Cód.banco"),7,260,250,20);
-		adic(txtCodBanco,7,280,80,20);
-		adic(new JLabelPad("Descrição do banco"),90,260,250,20);
-		adic(txtDescBanco,90,280,270,20);
-		adic(new JLabelPad("Cód.pl.pag."),7,300,80,20);
-		adic(txtCodPlanoPag,7,320,80,20);
-		adic(new JLabelPad("Descrição do plano de pagamento"),90,300,300,20);
-		adic(txtDescPlanoPag,90,320,270,20);
-		adic(cbObs,7,345,180,20);
-		adic(cbImpTotDia,188,345,180,20);    
+		adic(rgOrdem,190,20,170,70);
+		
+		adic(new JLabelPad ("Segunda ordem:"),7,90,200,20);
+		adic(rgOrdem2,7,110,350,25);
+
+		adic(lbPeriodo,17,130,80,20);
+		adic(lbLinha,7,140,353,40);
+		adic(new JLabelPad("De:"),17,150,30,20);
+		adic(txtDataini,50,150,97,20);
+		adic(new JLabelPad("Até:"),157,150,30,20);
+		adic(txtDatafim,190,150,100,20);
+		
+		adic(new JLabelPad("Cód.cli."),7,180,200,20);
+		adic(txtCodCli,7,200,80,20);
+		adic(new JLabelPad("Razão social do cliente"),90,180,200,20);
+		adic(txtRazCli,90,200,270,20);
+		adic(new JLabelPad("Cód.setor"),7,220,250,20);
+		adic(txtCodSetor,7,240,80,20);
+		adic(new JLabelPad("Descrição do setor"),90,220,250,20);
+		adic(txtDescSetor,90,240,270,20);
+		adic(new JLabelPad("Cód.comis."),7,260,250,20);
+		adic(txtCodVend,7,280,80,20);
+		adic(new JLabelPad("Nome do comissionado"),90,260,250,20);
+		adic(txtNomeVend,90,280,270,20);
+		adic(new JLabelPad("Cód.banco"),7,300,250,20);
+		adic(txtCodBanco,7,320,80,20);
+		adic(new JLabelPad("Descrição do banco"),90,300,250,20);
+		adic(txtDescBanco,90,320,270,20);
+		adic(new JLabelPad("Cód.pl.pag."),7,340,80,20);
+		adic(txtCodPlanoPag,7,360,80,20);
+		adic(new JLabelPad("Descrição do plano de pagamento"),90,340,300,20);
+		adic(txtDescPlanoPag,90,360,270,20);
+		adic(cbObs,7,385,180,20);
+		adic(cbImpTotDia,188,385,180,20);    
 	
 	}
 	
@@ -197,6 +212,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		String sFiltro = "";
 		String sTipoRel = null;
 		String sOrdem = null;
+		String sOrdem2 = null;
 		String sTitRel = null;
 		String sTitRel1 = null;
 		String sDtVencItRec = "";
@@ -206,6 +222,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		String sCodBanco = null;
 		String sCodPlanoPag = null;
 		String sCampoOrdem = null;
+		String sCampoOrdem2 = null;
 		Vector vObs = null;
 		ImprimeOS imp = null;
 		int linPag = 0;
@@ -243,6 +260,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 				sTitRel = "A RECEBER/RECEBIDAS";
 			
 			sOrdem = rgOrdem.getVlrString();
+			sOrdem2 = rgOrdem2.getVlrString();
 			
 			if (sOrdem.equals("P")) {
 				sTitRel1 = "PAGAMENTO";
@@ -255,6 +273,13 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			else {
 				sTitRel1 = "VENCIMENTO";
 				sCampoOrdem = "IT.DTVENCITREC";
+			}
+
+			if (sOrdem2.equals("R")) {
+				sCampoOrdem2 = "C.RAZCLI";
+			}
+			else {
+				sCampoOrdem2 = "R.DOCREC";
 			}
 			
 			iCodCli = txtCodCli.getVlrInteger().intValue();
@@ -305,7 +330,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 					"AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL " +
 					"AND C.CODEMP = R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI "+
 					sWhere +
-					" ORDER BY "+sCampoOrdem+",C.RAZCLI";
+					" ORDER BY "+sCampoOrdem+" ,"+sCampoOrdem2;
 			          
 			try {
 				iParans = 1;
