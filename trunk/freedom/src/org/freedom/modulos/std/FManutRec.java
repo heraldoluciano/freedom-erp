@@ -1840,8 +1840,8 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 						
 						int iLin = tabManut.getLinhaSel();
 						
-						iCodRec = Integer.parseInt( (String) tabManut.getValor( iLin, 4 ) );
-						iNParcItRec = Integer.parseInt( String.valueOf( tabManut.getValor( iLin, 5 ) ) );
+						iCodRec = (Integer) tabManut.getValor( iLin, EColTabManut.CODREC.ordinal() );
+						iNParcItRec = (Integer) tabManut.getValor( iLin, EColTabManut.NPARCITREC.ordinal() );
 												
 						try {
 							

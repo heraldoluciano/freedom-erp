@@ -639,18 +639,6 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		Object[] sVals = new Object[15];
 		int iLin = tab.getLinhaSel();
 		
-		//sVals[ EColBaixa.CODCLI.ordinal() ] = txtCodCliBaixa.getVlrInteger(); // Codcli
-		//sVals[ EColBaixa.RAZCLI.ordinal() ] = txtRazCliBaixa.getVlrString(); // Razcli
-		sVals[ EColBaixa.NUMCONTA.ordinal() ] = tab.getValor( iLin, EColTab.NUMCONTA.ordinal() ); // NumConta
-		sVals[ EColBaixa.CODPLAN.ordinal() ] = tab.getValor( iLin, EColTab.CODPLAN.ordinal() ); // Codplan
-		sVals[ EColBaixa.DOC.ordinal() ] = tab.getValor( iLin, EColTab.DOCREC.ordinal() ); // Doc
-		//sVals[ EColBaixa.DTEMIT.ordinal() ] = txtDtEmisBaixa.getVlrDate(); // Data emissão
-		sVals[ EColBaixa.DTVENC.ordinal() ] = tab.getValor( iLin, EColTab.DTVENC.ordinal() ); // Vencimento
-		sVals[ EColBaixa.VLRPARC.ordinal() ] = Funcoes.strToBd( tab.getValor( iLin, EColTab.VLRPAG.ordinal() ) ); // Vlrparc
-		sVals[ EColBaixa.VLRDESC.ordinal() ] = Funcoes.strToBd( tab.getValor( iLin, EColTab.VLRDESC.ordinal() )); // Vlrdesc
-		sVals[ EColBaixa.VLRJUROS.ordinal() ] = Funcoes.strToBd( tab.getValor( iLin, EColTab.VLRJUROS.ordinal() )); // Vlrjuros
-		sVals[ EColBaixa.VLRAPAG.ordinal() ] = Funcoes.strToBd( tab.getValor( iLin, EColTab.VLRAPAG.ordinal() )); // Vlraberto
-		
 		StringBuffer sSQL = new StringBuffer();
 		
 		sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," ); 
