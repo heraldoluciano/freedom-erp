@@ -44,11 +44,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -64,6 +66,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.fnc.SiaccUtil.Reg;
 import org.freedom.modulos.fnc.SiaccUtil.RegF;
 import org.freedom.modulos.std.DLBaixaRec;
+import org.freedom.modulos.std.DLBaixaRec.EColBaixa;
 import org.freedom.modulos.std.DLBaixaRec.EColRetBaixa;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -111,7 +114,6 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 	private final JLabel lbStatus = new JLabel();
 
 	private final ListaCampos lcBanco = new ListaCampos( this );
-	
 
 	public FRetSiacc() {
 
@@ -152,7 +154,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		tab.adicColuna( "Histórico" );
 
 		tab.setTamColuna( 20, EColTab.SEL.ordinal() );
-		tab.setTamColuna( 150, EColTab.RAZCLI.ordinal() );
+		tab.setTamColuna( 250, EColTab.RAZCLI.ordinal() );
 		tab.setTamColuna( 70, EColTab.CODCLI.ordinal() );
 		tab.setTamColuna( 70, EColTab.CODREC.ordinal() );
 		tab.setTamColuna( 80, EColTab.DOCREC.ordinal() );
@@ -163,7 +165,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		tab.setTamColuna( 70, EColTab.VLRPAG.ordinal() );
 		tab.setTamColuna( 70, EColTab.DTPAG.ordinal() );
 		tab.setTamColuna( 70, EColTab.NUMCONTA.ordinal() );
-		tab.setTamColuna( 70, EColTab.CODPLAN.ordinal() );
+		tab.setTamColuna( 100, EColTab.CODPLAN.ordinal() );
 		tab.setTamColuna( 70, EColTab.VLRDESC.ordinal() );
 		tab.setTamColuna( 70, EColTab.VLRJUROS.ordinal() );
 		tab.setTamColuna( 70, EColTab.CODCC.ordinal() );
@@ -216,7 +218,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		panelRodape = adicBotaoSair();
 		panelRodape.setBorder( BorderFactory.createEtchedBorder() );
 		panelRodape.setPreferredSize( new Dimension( 600, 32 ) );
-		
+
 		btBaixar.setPreferredSize( new Dimension( 150, 32 ) );
 		panelRodape.add( btBaixar, BorderLayout.WEST );
 
@@ -241,7 +243,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		boolean retorno = true;
 		FileReader fileReaderSiacc = null;
 		ArrayList<SiaccUtil.Reg> list = new ArrayList<SiaccUtil.Reg>();
-		
+
 		setCursor( Cursor.getPredefinedCursor( Cursor.WAIT_CURSOR ) );
 
 		if ( "".equals( txtCodBanco.getVlrString() ) ) {
@@ -278,7 +280,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 						else {
 							if ( leArquivo( fileReaderSiacc, list ) ) {
 
-								if ( ! montaGrid( list ) ) {
+								if ( !montaGrid( list ) ) {
 									Funcoes.mensagemInforma( this, "Nenhum registro de retorno encontrado." );
 									lbStatus.setText( "" );
 									retorno = false;
@@ -297,9 +299,9 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 				}
 			}
 		}
-		
+
 		setCursor( Cursor.getPredefinedCursor( Cursor.DEFAULT_CURSOR ) );
-		
+
 		return retorno;
 	}
 
@@ -311,8 +313,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		BufferedReader in = new BufferedReader( fileReaderSiacc );
 
 		try {
-			learquivo : 
-			while ( ( line = in.readLine() ) != null ) {
+			learquivo : while ( ( line = in.readLine() ) != null ) {
 
 				tipo = line.charAt( 0 );
 				switch ( tipo ) {
@@ -372,20 +373,20 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 
 			Object[] row = null;
 			List<Object> infocli = new ArrayList<Object>();
-			
+
 			try {
 				for ( Reg reg : list ) {
 
 					if ( reg.getTiporeg() == 'F' ) {
 
 						infocli.clear();
-						
-						if ( ! setInfoCli( ( (RegF) reg ).getCodRec(), ( (RegF) reg ).getNparcItRec(), infocli ) ) {
+
+						if ( !setInfoCli( ( (RegF) reg ).getCodRec(), ( (RegF) reg ).getNparcItRec(), infocli ) ) {
 							retorno = false;
 							break;
 						}
 						if ( infocli.size() == EColInfoCli.values().length ) {
-							
+
 							tab.adicLinha();
 							tab.setValor( new Boolean( Boolean.FALSE ), count, 0 );
 							tab.setValor( (String) infocli.get( EColInfoCli.RAZCLI.ordinal() ), count, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
@@ -408,7 +409,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 						}
 					}
 				}
-				
+
 				if ( count > 0 ) {
 					lbStatus.setText( "     Tabela carregada ..." );
 				}
@@ -461,7 +462,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 				rs = ps.executeQuery();
 
 				if ( rs.next() ) {
-					
+
 					info.add( EColInfoCli.CODREC.ordinal(), rs.getInt( EColInfoCli.CODREC.toString() ) );
 					info.add( EColInfoCli.NPARCITREC.ordinal(), rs.getInt( EColInfoCli.NPARCITREC.toString() ) );
 					info.add( EColInfoCli.NUMCONTA.ordinal(), rs.getString( EColInfoCli.NUMCONTA.toString() ) );
@@ -478,7 +479,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 				retorno = false;
 			}
 		}
-		
+
 		return retorno;
 	}
 
@@ -490,37 +491,37 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		int iLin = tab.getLinhaSel();
 
 		if ( iLin > -1 ) {
-			
+
 			iLin = tab.getLinhaSel();
 			dl = new DLBaixaRec( this );
 			dl.setConexao( con );
 
 			sVals[ DLBaixaRec.EColBaixa.CODCLI.ordinal() ] = tab.getValor( iLin, EColTab.CODCLI.ordinal() );
 			sVals[ DLBaixaRec.EColBaixa.RAZCLI.ordinal() ] = tab.getValor( iLin, EColTab.RAZCLI.ordinal() );
-			sVals[ DLBaixaRec.EColBaixa.NUMCONTA.ordinal() ] = tab.getValor( iLin, EColTab.NUMCONTA.ordinal() ); 
-			sVals[ DLBaixaRec.EColBaixa.CODPLAN.ordinal() ] = tab.getValor( iLin, EColTab.CODPLAN.ordinal() ); 
-			sVals[ DLBaixaRec.EColBaixa.DOC.ordinal() ] = tab.getValor( iLin, EColTab.DOCREC.ordinal() ); 
+			sVals[ DLBaixaRec.EColBaixa.NUMCONTA.ordinal() ] = tab.getValor( iLin, EColTab.NUMCONTA.ordinal() );
+			sVals[ DLBaixaRec.EColBaixa.CODPLAN.ordinal() ] = tab.getValor( iLin, EColTab.CODPLAN.ordinal() );
+			sVals[ DLBaixaRec.EColBaixa.DOC.ordinal() ] = tab.getValor( iLin, EColTab.DOCREC.ordinal() );
 			sVals[ DLBaixaRec.EColBaixa.DTEMIT.ordinal() ] = tab.getValor( iLin, EColTab.DTREC.ordinal() );
 			sVals[ DLBaixaRec.EColBaixa.DTVENC.ordinal() ] = tab.getValor( iLin, EColTab.DTVENC.ordinal() );
 			sVals[ DLBaixaRec.EColBaixa.VLRPARC.ordinal() ] = tab.getValor( iLin, EColTab.VLRPAG.ordinal() );
-			sVals[ DLBaixaRec.EColBaixa.VLRAPAG.ordinal() ] = tab.getValor( iLin, EColTab.VLRAPAG.ordinal() ); 
-			sVals[ DLBaixaRec.EColBaixa.VLRDESC.ordinal() ] = tab.getValor( iLin, EColTab.VLRDESC.ordinal() ); 
-			sVals[ DLBaixaRec.EColBaixa.VLRJUROS.ordinal() ] = tab.getValor( iLin, EColTab.VLRJUROS.ordinal() ); 
 			sVals[ DLBaixaRec.EColBaixa.VLRAPAG.ordinal() ] = tab.getValor( iLin, EColTab.VLRAPAG.ordinal() );
-			sVals[ DLBaixaRec.EColBaixa.DTPGTO.ordinal() ] = tab.getValor( iLin, EColTab.DTPAG.ordinal() ); 
-			sVals[ DLBaixaRec.EColBaixa.VLRPAGO.ordinal() ] = tab.getValor( iLin, EColTab.VLRPAG.ordinal() ); 
-			sVals[ DLBaixaRec.EColBaixa.CODCC.ordinal() ] = tab.getValor( iLin, EColTab.CODCC.ordinal() ); 
-			sVals[ DLBaixaRec.EColBaixa.OBS.ordinal() ] = String.valueOf( tab.getValor( iLin, EColTab.OBS.ordinal() ) ); 
+			sVals[ DLBaixaRec.EColBaixa.VLRDESC.ordinal() ] = tab.getValor( iLin, EColTab.VLRDESC.ordinal() );
+			sVals[ DLBaixaRec.EColBaixa.VLRJUROS.ordinal() ] = tab.getValor( iLin, EColTab.VLRJUROS.ordinal() );
+			sVals[ DLBaixaRec.EColBaixa.VLRAPAG.ordinal() ] = tab.getValor( iLin, EColTab.VLRAPAG.ordinal() );
+			sVals[ DLBaixaRec.EColBaixa.DTPGTO.ordinal() ] = tab.getValor( iLin, EColTab.DTPAG.ordinal() );
+			sVals[ DLBaixaRec.EColBaixa.VLRPAGO.ordinal() ] = tab.getValor( iLin, EColTab.VLRPAG.ordinal() );
+			sVals[ DLBaixaRec.EColBaixa.CODCC.ordinal() ] = tab.getValor( iLin, EColTab.CODCC.ordinal() );
+			sVals[ DLBaixaRec.EColBaixa.OBS.ordinal() ] = String.valueOf( tab.getValor( iLin, EColTab.OBS.ordinal() ) );
 
 			dl.setValores( sVals );
 			dl.setVisible( true );
-			
+
 			if ( dl.OK ) {
 
 				sRets = dl.getValores();
-				
+
 				atualizaTabCli( (Integer) sVals[ DLBaixaRec.EColBaixa.CODCLI.ordinal() ], sRets );
-				
+
 				tab.setValor( new Boolean( Boolean.TRUE ), iLin, EColTab.SEL.ordinal() );
 				tab.setValor( sRets[ EColRetBaixa.NUMCONTA.ordinal() ], iLin, EColTab.NUMCONTA.ordinal() );
 				tab.setValor( sRets[ EColRetBaixa.CODPLAN.ordinal() ], iLin, EColTab.CODPLAN.ordinal() );
@@ -531,7 +532,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 				tab.setValor( sRets[ EColRetBaixa.VLRJUROS.ordinal() ], iLin, EColTab.VLRJUROS.ordinal() );
 				tab.setValor( sRets[ EColRetBaixa.CODCC.ordinal() ], iLin, EColTab.CODCC.ordinal() );
 				tab.setValor( sRets[ EColRetBaixa.OBS.ordinal() ], iLin, EColTab.OBS.ordinal() );
-				
+
 			}
 		}
 		else {
@@ -540,25 +541,24 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 	}
 
 	private void atualizaTabCli( final int codcli, final Object[] vals ) {
-		
-		BigDecimal vlrpago = new BigDecimal(0);
-		BigDecimal vlrdescjuros = new BigDecimal(0);
-	
+
+		BigDecimal vlrpago = new BigDecimal( 0 );
+		BigDecimal vlrdescjuros = new BigDecimal( 0 );
+
 		if ( vals != null ) {
-			
-			for ( int row=0; row < tab.getRowCount(); row++ ) {
-								
+
+			for ( int row = 0; row < tab.getRowCount(); row++ ) {
+
 				if ( codcli == ( (Integer) tab.getValor( row, EColTab.CODCLI.ordinal() ) ) ) {
 
 					vlrpago = (BigDecimal) tab.getValor( row, EColTab.VLRPAG.ordinal() );
-					vlrdescjuros = vlrpago.subtract( 
-							(BigDecimal) tab.getValor( row, EColTab.VLRAPAG.ordinal() ) ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
-					
+					vlrdescjuros = vlrpago.subtract( (BigDecimal) tab.getValor( row, EColTab.VLRAPAG.ordinal() ) ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
+
 					tab.setValor( vals[ EColRetBaixa.NUMCONTA.ordinal() ], row, EColTab.NUMCONTA.ordinal() );
 					tab.setValor( vals[ EColRetBaixa.CODPLAN.ordinal() ], row, EColTab.CODPLAN.ordinal() );
 					tab.setValor( vals[ EColRetBaixa.DOC.ordinal() ], row, EColTab.DOCREC.ordinal() );
 					tab.setValor( vals[ EColRetBaixa.CODCC.ordinal() ], row, EColTab.CODCC.ordinal() );
-					
+
 					if ( vlrdescjuros.floatValue() > 0 ) {
 						tab.setValor( vlrdescjuros, row, EColTab.VLRJUROS.ordinal() );
 					}
@@ -569,7 +569,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 			}
 		}
 	}
-	
+
 	private boolean updateCliente( int codCli, String codBanco, String tipoFebraban, String stipoFebraban, String numconta, String codplan, String codcc ) {
 
 		boolean retorno = false;
@@ -589,13 +589,10 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
 				if ( ( !numconta.equals( rs.getString( "NUMCONTA" ) ) ) || ( !codplan.equals( rs.getString( "CODPLAN" ) ) ) || ( !stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) ) ) || ( !codcc.equals( rs.getString( "CODCC" ) ) ) ) {
-					ps = con.prepareStatement( "UPDATE FNFBNCLI SET NUMCONTA=?, CODPLAN=?, CODCC=? " + 
-							"WHERE CODEMP=? AND CODFILIAL=? AND " +
-							"CODCLI=? AND CODEMPPF=? AND CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND " +
-							"CODBANCO=? AND TIPOFEBRABAN=?" );
+					ps = con.prepareStatement( "UPDATE FNFBNCLI SET NUMCONTA=?, CODPLAN=?, CODCC=? " + "WHERE CODEMP=? AND CODFILIAL=? AND " + "CODCLI=? AND CODEMPPF=? AND CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND " + "CODBANCO=? AND TIPOFEBRABAN=?" );
 					ps.setString( 1, numconta );
 					ps.setString( 2, codplan );
-					ps.setString( 3, codcc  );
+					ps.setString( 3, codcc );
 					ps.setInt( 4, Aplicativo.iCodEmp );
 					ps.setInt( 5, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 					ps.setInt( 6, codCli );
@@ -605,43 +602,61 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 					ps.setInt( 10, ListaCampos.getMasterFilial( "FNBANCO" ) );
 					ps.setString( 11, codBanco );
 					ps.setString( 12, tipoFebraban );
-			}
-			else {
-				ps = con.prepareStatement( "INSERT INTO FNFBNCLI (NUMCONTA, CODPLAN, CODCC, CODEMP, CODFILIAL, " + 
-						"CODCLI, CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, " + 
-						"TIPOFEBRABAN, STIPOFEBRABAN, TIPOREMCLI) " + 
-						"VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)" );
-				ps.setString( 1, numconta );
-				ps.setString( 2, codplan );
-				ps.setString( 3, codcc  );
-				ps.setInt( 4, Aplicativo.iCodEmp );
-				ps.setInt( 5, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-				ps.setInt( 6, codCli );
-				ps.setInt( 7, Aplicativo.iCodEmp );
-				ps.setInt( 8, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
-				ps.setInt( 9, Aplicativo.iCodEmp );
-				ps.setInt( 10, ListaCampos.getMasterFilial( "FNBANCO" ) );
-				ps.setString( 11, codBanco );
-				ps.setString( 12, tipoFebraban );
-				ps.setString( 13, stipoFebraban );
-				ps.setString( 14, codcc );
+				}
+				else {
+					ps = con.prepareStatement( "INSERT INTO FNFBNCLI (NUMCONTA, CODPLAN, CODCC, CODEMP, CODFILIAL, " + "CODCLI, CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, " + "TIPOFEBRABAN, STIPOFEBRABAN, TIPOREMCLI) " + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+					ps.setString( 1, numconta );
+					ps.setString( 2, codplan );
+					ps.setString( 3, codcc );
+					ps.setInt( 4, Aplicativo.iCodEmp );
+					ps.setInt( 5, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+					ps.setInt( 6, codCli );
+					ps.setInt( 7, Aplicativo.iCodEmp );
+					ps.setInt( 8, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
+					ps.setInt( 9, Aplicativo.iCodEmp );
+					ps.setInt( 10, ListaCampos.getMasterFilial( "FNBANCO" ) );
+					ps.setString( 11, codBanco );
+					ps.setString( 12, tipoFebraban );
+					ps.setString( 13, stipoFebraban );
+					ps.setString( 14, codcc );
 
-				ps.executeUpdate();
+					ps.executeUpdate();
+				}
+				if ( !con.getAutoCommit() )
+					con.commit();
+				retorno = true;
+
 			}
-			if ( !con.getAutoCommit() )
-				con.commit();
-			// rs.close();
-			retorno = true;
-			
-			}}catch ( SQLException e ) {
+		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro atualizando cliente!\n" + e.getMessage() );
 		}
-		
+
 		return retorno;
 	}
-	
-	private void baixar() {
+
+	private void baixar(){
 		
+		Object[] sVals = new Object[15];
+		int iLin = tab.getLinhaSel();
+		
+		//sVals[ EColBaixa.CODCLI.ordinal() ] = txtCodCliBaixa.getVlrInteger(); // Codcli
+		//sVals[ EColBaixa.RAZCLI.ordinal() ] = txtRazCliBaixa.getVlrString(); // Razcli
+		sVals[ EColBaixa.NUMCONTA.ordinal() ] = tab.getValor( iLin, EColTab.NUMCONTA.ordinal() ); // NumConta
+		sVals[ EColBaixa.CODPLAN.ordinal() ] = tab.getValor( iLin, EColTab.CODPLAN.ordinal() ); // Codplan
+		sVals[ EColBaixa.DOC.ordinal() ] = tab.getValor( iLin, EColTab.DOCREC.ordinal() ); // Doc
+		//sVals[ EColBaixa.DTEMIT.ordinal() ] = txtDtEmisBaixa.getVlrDate(); // Data emissão
+		sVals[ EColBaixa.DTVENC.ordinal() ] = tab.getValor( iLin, EColTab.DTVENC.ordinal() ); // Vencimento
+		sVals[ EColBaixa.VLRPARC.ordinal() ] = Funcoes.strToBd( tab.getValor( iLin, EColTab.VLRPAG.ordinal() ) ); // Vlrparc
+		sVals[ EColBaixa.VLRDESC.ordinal() ] = Funcoes.strToBd( tab.getValor( iLin, EColTab.VLRDESC.ordinal() )); // Vlrdesc
+		sVals[ EColBaixa.VLRJUROS.ordinal() ] = Funcoes.strToBd( tab.getValor( iLin, EColTab.VLRJUROS.ordinal() )); // Vlrjuros
+		sVals[ EColBaixa.VLRAPAG.ordinal() ] = Funcoes.strToBd( tab.getValor( iLin, EColTab.VLRAPAG.ordinal() )); // Vlraberto
+		
+		StringBuffer sSQL = new StringBuffer();
+		
+		sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," ); 
+		sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?,VLRDESCITREC=?,VLRJUROSITREC=?,ANOCC=?," ); 
+		sSQL.append( "CODCC=?,CODEMPCC=?,CODFILIALCC=?,OBSITREC=?,STATUSITREC='RP' " );
+		sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
 		
 	}
 
@@ -659,8 +674,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		else if ( e.getSource() == btEdita ) {
 			edit();
 		}
-		else if ( e.getSource() == btBaixar) {
-			//updateCliente( null, null, null, null, null, null, null );
+		else if ( e.getSource() == btBaixar ) {
 			baixar();
 		}
 	}
@@ -671,10 +685,9 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 			execImportar();
 		}
 	}
+	public void keyReleased( KeyEvent e ) {}
 
-	public void keyReleased( KeyEvent e ) { }
-
-	public void keyTyped( KeyEvent e ) { }
+	public void keyTyped( KeyEvent e ) {}
 
 	public void mouseClicked( MouseEvent e ) {
 
@@ -685,13 +698,13 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		}
 	}
 
-	public void mouseEntered( MouseEvent e ) { }
+	public void mouseEntered( MouseEvent e ) {}
 
-	public void mouseExited( MouseEvent e ) { }
+	public void mouseExited( MouseEvent e ) {}
 
-	public void mousePressed( MouseEvent e ) { }
+	public void mousePressed( MouseEvent e ) {}
 
-	public void mouseReleased( MouseEvent e ) { }
+	public void mouseReleased( MouseEvent e ) {}
 
 	public void setConexao( Connection cn ) {
 
