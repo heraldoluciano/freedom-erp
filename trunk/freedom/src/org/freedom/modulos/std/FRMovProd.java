@@ -305,7 +305,7 @@ public class FRMovProd extends FRelatorio {
 	}
 	
 	else if (sValores[8].equals("C")) {
-		sWhere = sWhere+sAnd+"TIPOPROD='C'";
+		sWhere += sAnd+"TIPOPROD='C'";
 		vFiltros.add("CONSUMO");
 		sAnd = " AND ";	   
 	}
@@ -321,7 +321,7 @@ public class FRMovProd extends FRelatorio {
 	  }    
 	if (!(txtCodGrupo.getVlrString().equals(""))){
         vFiltros.add("PRODUTOS DO GRUPO "+txtDescGrupo.getVlrString());
-        sWhere = " AND PD.CODGRUP LIKE '"+txtCodGrupo.getVlrString()+"%'";    	
+        sWhere += " AND PD.CODGRUP LIKE '"+txtCodGrupo.getVlrString()+"%'";    	
         System.out.println("Filtrou por grupo:"+sWhere);
     }
 		
