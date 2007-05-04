@@ -1547,7 +1547,7 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 				sVals = new Object[ 15 ];
 				
 				dl = new DLBaixaRec( this );
-				
+				 
 				sVals[ EColBaixa.CODCLI.ordinal() ] = tabManut.getValor( iLin, EColTabManut.CODCLI.ordinal() );
 				sVals[ EColBaixa.RAZCLI.ordinal() ] = tabManut.getValor( iLin, EColTabManut.RAZCLI.ordinal() );
 				sVals[ EColBaixa.NUMCONTA.ordinal() ] = tabManut.getValor( iLin, EColTabManut.NUMCONTA.ordinal() );
