@@ -1234,7 +1234,7 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 				tabManut.setValor( ( rs.getString( "DOCLANCAITREC" ) != null ? rs.getString( "DocLancaItRec" ) : "" ), i, EColTabManut.DOCLANCA.ordinal() );
 				tabManut.setValor( rs.getInt( "DOCVENDA" ), i, EColTabManut.DOCVENDA.ordinal() );// DOCVENDA
 				tabManut.setValor( Funcoes.bdToStr(rs.getBigDecimal(  "VLRPARCITREC" )) , i, EColTabManut.VLRPARC.ordinal() );
-				tabManut.setValor( ( rs.getDate( "DTPAGOITREC" ) != null ? Funcoes.sqlDateToStrDate( rs.getDate( "DtPagoItRec" ) ) : "" ), i, EColTabManut.DTPAGTO.ordinal() );
+				tabManut.setValor( ( rs.getDate( "DTPAGOITREC" ) != null ? Funcoes.sqlDateToDate( rs.getDate( "DtPagoItRec" ) ) : "" ), i, EColTabManut.DTPAGTO.ordinal() );
 				tabManut.setValor( Funcoes.bdToStr(rs.getBigDecimal( "VLRPAGOITREC" )), i, EColTabManut.VLRPAGO.ordinal() );
 				tabManut.setValor( Funcoes.bdToStr(rs.getBigDecimal( "VLRDESCITREC" )), i, EColTabManut.VLRDESC.ordinal() );
 				tabManut.setValor( Funcoes.bdToStr(rs.getBigDecimal( "VLRJUROSITREC"  )), i, EColTabManut.VLRJUROS.ordinal() );
