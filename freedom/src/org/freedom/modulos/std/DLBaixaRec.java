@@ -382,8 +382,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtVlrDesc.setVlrBigDecimal( (BigDecimal) sVals[ EColBaixa.VLRDESC.ordinal() ] );
 		txtVlrJuros.setVlrBigDecimal( (BigDecimal) sVals[ EColBaixa.VLRJUROS.ordinal() ] );
 		txtVlrAberto.setVlrBigDecimal( (BigDecimal) sVals[EColBaixa.VLRAPAG.ordinal()]);
-		txtDtPagto.setVlrDate("".equals( sVals[EColBaixa.DTPGTO.ordinal()]) ? new Date() : 
-			(Date) sVals[EColBaixa.DTPGTO.ordinal()]);
+		txtDtPagto.setVlrDate( (Date) sVals[EColBaixa.DTPGTO.ordinal()]);
 		txtVlrPago.setVlrBigDecimal((BigDecimal) sVals[EColBaixa.VLRPAGO.ordinal()]);
 		txtCodCC.setVlrString( (String) sVals[EColBaixa.CODCC.ordinal() ] );
 		txtObs.setVlrString( (String) sVals[ EColBaixa.OBS.ordinal() ] );
