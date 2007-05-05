@@ -43,14 +43,12 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -63,10 +61,11 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.fnc.SiaccUtil.EColcli;
 import org.freedom.modulos.fnc.SiaccUtil.Reg;
 import org.freedom.modulos.fnc.SiaccUtil.RegF;
+import org.freedom.modulos.fnc.SiaccUtil.StuffCli;
 import org.freedom.modulos.std.DLBaixaRec;
-import org.freedom.modulos.std.DLBaixaRec.EColBaixa;
 import org.freedom.modulos.std.DLBaixaRec.EColRetBaixa;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -74,14 +73,6 @@ import org.freedom.telas.FFilho;
 public class FRetSiacc extends FFilho implements ActionListener, MouseListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
-
-	private enum EColTab {
-		SEL, RAZCLI, CODCLI, CODREC, DOCREC, NRPARC, VLRAPAG, DTREC, DTVENC, VLRPAG, DTPAG, NUMCONTA, CODPLAN, VLRDESC, VLRJUROS, CODCC, OBS
-	};
-
-	private enum EColInfoCli {
-		CODREC, NPARCITREC, NUMCONTA, CODPLAN, RAZCLI, VLRAPAGITREC, DOCREC, DTVENCITREC, DTITREC;
-	}
 
 	private JPanelPad panelRodape = null;
 
@@ -109,7 +100,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 
 	private final JButton btEdita = new JButton( Icone.novo( "btEditar.gif" ) );
 
-	private final JButton btBaixar = new JButton( "Aplicar baixa", Icone.novo( "btSalvar.gif" ) );
+	private final JButton btBaixar = new JButton( "Aplicar baixa", Icone.novo( "btGerar.gif" ) );
 
 	private final JLabel lbStatus = new JLabel();
 
@@ -152,6 +143,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		tab.adicColuna( "Valor juros" );
 		tab.adicColuna( "Cód.c.c." );
 		tab.adicColuna( "Histórico" );
+		tab.adicColuna( "Tipo" );
 
 		tab.setTamColuna( 20, EColTab.SEL.ordinal() );
 		tab.setTamColuna( 250, EColTab.RAZCLI.ordinal() );
@@ -170,6 +162,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		tab.setTamColuna( 70, EColTab.VLRJUROS.ordinal() );
 		tab.setTamColuna( 70, EColTab.CODCC.ordinal() );
 		tab.setTamColuna( 200, EColTab.OBS.ordinal() );
+		tab.setTamColuna( 20, EColTab.TIPOFEBRABAN.ordinal() );
 
 		tab.setColunaEditavel( EColTab.SEL.ordinal(), true );
 
@@ -365,13 +358,12 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 	private boolean montaGrid( ArrayList<SiaccUtil.Reg> list ) {
 
 		boolean retorno = true;
-		int count = 0;
+		int row = 0;
 
 		if ( list != null ) {
 
 			lbStatus.setText( "     Carregando tabela ..." );
 
-			Object[] row = null;
 			List<Object> infocli = new ArrayList<Object>();
 
 			try {
@@ -388,30 +380,34 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 						if ( infocli.size() == EColInfoCli.values().length ) {
 
 							tab.adicLinha();
-							tab.setValor( new Boolean( Boolean.FALSE ), count, 0 );
-							tab.setValor( (String) infocli.get( EColInfoCli.RAZCLI.ordinal() ), count, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
-							tab.setValor( new Integer( ( (RegF) reg ).getIdentCliEmp().trim() ), count, EColTab.CODCLI.ordinal() ); // Cód.cli.
-							tab.setValor( (Integer) infocli.get( EColInfoCli.CODREC.ordinal() ), count, EColTab.CODREC.ordinal() ); // Cód.rec.
-							tab.setValor( (String) infocli.get( EColInfoCli.DOCREC.ordinal() ), count, EColTab.DOCREC.ordinal() ); // Doc
-							tab.setValor( (Integer) infocli.get( EColInfoCli.NPARCITREC.ordinal() ), count, EColTab.NRPARC.ordinal() ); // Nro.Parc.
-							tab.setValor( (BigDecimal) infocli.get( EColInfoCli.VLRAPAGITREC.ordinal() ), count, EColTab.VLRAPAG.ordinal() ); // Valor
-							tab.setValor( (Date) infocli.get( EColInfoCli.DTITREC.ordinal() ), count, EColTab.DTREC.ordinal() ); // Emissão
-							tab.setValor( (Date) infocli.get( EColInfoCli.DTVENCITREC.ordinal() ), count, EColTab.DTVENC.ordinal() ); // Vencimento
-							tab.setValor( (BigDecimal) ( (RegF) reg ).getValorDebCred(), count, EColTab.VLRPAG.ordinal() ); // Valor pago
-							tab.setValor( (Date) ( (RegF) reg ).getDataVenc(), count, EColTab.DTPAG.ordinal() ); // Data pgto.
-							tab.setValor( (String) infocli.get( EColInfoCli.NUMCONTA.ordinal() ), count, EColTab.NUMCONTA.ordinal() ); // Conta
-							tab.setValor( (String) infocli.get( EColInfoCli.CODPLAN.ordinal() ), count, EColTab.CODPLAN.ordinal() ); // Planejamento
-							tab.setValor( new BigDecimal( 0 ), count, EColTab.VLRDESC.ordinal() ); // VLRDESC
-							tab.setValor( new BigDecimal( 0 ), count, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
-							tab.setValor( "BAIXA AUTOMÁTICA SIACC", count, EColTab.OBS.ordinal() ); // HISTÓRICO
+							tab.setValor( new Boolean( Boolean.FALSE ), row, 0 );
+							tab.setValor( (String) infocli.get( EColInfoCli.RAZCLI.ordinal() ), row, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
+							tab.setValor( new Integer( ( (RegF) reg ).getIdentCliEmp().trim() ), row, EColTab.CODCLI.ordinal() ); // Cód.cli.
+							tab.setValor( (Integer) infocli.get( EColInfoCli.CODREC.ordinal() ), row, EColTab.CODREC.ordinal() ); // Cód.rec.
+							tab.setValor( (String) infocli.get( EColInfoCli.DOCREC.ordinal() ), row, EColTab.DOCREC.ordinal() ); // Doc
+							tab.setValor( (Integer) infocli.get( EColInfoCli.NPARCITREC.ordinal() ), row, EColTab.NRPARC.ordinal() ); // Nro.Parc.
+							tab.setValor( (BigDecimal) infocli.get( EColInfoCli.VLRAPAGITREC.ordinal() ), row, EColTab.VLRAPAG.ordinal() ); // Valor
+							tab.setValor( (Date) infocli.get( EColInfoCli.DTITREC.ordinal() ), row, EColTab.DTREC.ordinal() ); // Emissão
+							tab.setValor( (Date) infocli.get( EColInfoCli.DTVENCITREC.ordinal() ), row, EColTab.DTVENC.ordinal() ); // Vencimento
+							tab.setValor( (BigDecimal) ( (RegF) reg ).getValorDebCred(), row, EColTab.VLRPAG.ordinal() ); // Valor pago
+							tab.setValor( (Date) ( (RegF) reg ).getDataVenc(), row, EColTab.DTPAG.ordinal() ); // Data pgto.
+							tab.setValor( (String) infocli.get( EColInfoCli.NUMCONTA.ordinal() ), row, EColTab.NUMCONTA.ordinal() ); // Conta
+							tab.setValor( (String) infocli.get( EColInfoCli.CODPLAN.ordinal() ), row, EColTab.CODPLAN.ordinal() ); // Planejamento
+							tab.setValor( new BigDecimal( 0 ), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
+							tab.setValor( new BigDecimal( 0 ), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
+							tab.setValor( "BAIXA AUTOMÁTICA SIACC", row, EColTab.OBS.ordinal() ); // HISTÓRICO
+							tab.setValor( (String) infocli.get( EColInfoCli.TIPOFEBRABAN.ordinal() ), row, EColTab.TIPOFEBRABAN.ordinal() ); // HISTÓRICO
 
-							count++;
+							row++;
 						}
 					}
 				}
 
-				if ( count > 0 ) {
+				if ( row > 0 ) {
 					lbStatus.setText( "     Tabela carregada ..." );
+				}
+				else {
+					lbStatus.setText( "     Informações do cliente não encontradas ..." );
 				}
 			} catch ( Exception e ) {
 				retorno = false;
@@ -441,12 +437,12 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 				sSQL.append( "SELECT R.CODREC, IR.NPARCITREC," );
 				sSQL.append( "COALESCE(IR.NUMCONTA, FC.NUMCONTA) NUMCONTA," );
 				sSQL.append( "COALESCE(IR.CODPLAN, FC.CODPLAN) CODPLAN, " );
-				sSQL.append( "C.RAZCLI, IR.VLRAPAGITREC, R.DOCREC, IR.DTVENCITREC, IR.DTITREC " );
+				sSQL.append( "C.RAZCLI, IR.VLRAPAGITREC, R.DOCREC, IR.DTVENCITREC, IR.DTITREC, FC.TIPOFEBRABAN " );
 				sSQL.append( "FROM FNITRECEBER IR, VDCLIENTE C, FNRECEBER R " );
 				sSQL.append( "LEFT OUTER JOIN FNFBNCLI FC ON " );
 				sSQL.append( "FC.CODEMP=R.CODEMPCL AND FC.CODFILIAL=R.CODFILIALCL AND FC.CODCLI=R.CODCLI AND " );
 				sSQL.append( "FC.CODEMPBO=? AND FC.CODFILIALBO=? AND FC.CODBANCO=? AND " );
-				sSQL.append( "FC.TIPOFEBRABAN='1' " );
+				sSQL.append( "FC.TIPOFEBRABAN='01' " );
 				sSQL.append( "WHERE IR.CODEMP=? AND IR.CODFILIAL=? AND IR.CODREC=? AND IR.NPARCITREC=? AND " );
 				sSQL.append( "R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC AND " );
 				sSQL.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI" );
@@ -472,6 +468,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 					info.add( EColInfoCli.DOCREC.ordinal(), rs.getString( EColInfoCli.DOCREC.toString() ) );
 					info.add( EColInfoCli.DTVENCITREC.ordinal(), Funcoes.sqlDateToDate( rs.getDate( EColInfoCli.DTVENCITREC.toString() ) ) );
 					info.add( EColInfoCli.DTITREC.ordinal(), Funcoes.sqlDateToDate( rs.getDate( EColInfoCli.DTITREC.toString() ) ) );
+					info.add( EColInfoCli.TIPOFEBRABAN.ordinal(), rs.getString( EColInfoCli.TIPOFEBRABAN.toString() ) );
 				}
 			} catch ( Exception e ) {
 				Funcoes.mensagemErro( this, "Erro ao buscar informações do cliente!\n" + e.getMessage(), true, con, e );
@@ -569,83 +566,222 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 			}
 		}
 	}
+	
+	private HashSet<StuffCli> getClientes() {
+		
+		HashSet<StuffCli> clientes = null;
+		StuffCli cliente = null;
+		Integer codcli = null;
+		String[] args = new String[ EColcli.values().length ];
+		
+		if ( tab.getNumLinhas() > 0 ) {
+			
+			lbStatus.setText( "     Verificando clientes ..." );
+			
+			clientes = new HashSet<SiaccUtil.StuffCli>();
+			
+			for ( int row=0; row < tab.getNumLinhas(); row++ ) {
+				
+				codcli = (Integer) tab.getValor( row, EColTab.CODCLI.ordinal() );
+			
+				args[ EColcli.CODBANCO.ordinal() ] = txtCodBanco.getVlrString();
+				args[ EColcli.TIPOFEBRABAN.ordinal() ] = (String) tab.getValor( row, EColTab.TIPOFEBRABAN.ordinal() );
+				args[ EColcli.STIPOFEBRABAN.ordinal() ] = null;
+				args[ EColcli.AGENCIACLI.ordinal() ] = null;
+				args[ EColcli.IDENTCLI.ordinal() ] = null;
+				args[ EColcli.TIPOREMCLI.ordinal() ] = null;
+				args[ EColcli.CODEMPPF.ordinal() ] = null;
+				args[ EColcli.CODFILIALPF.ordinal() ] = null;
+				args[ EColcli.NUMCONTA.ordinal() ] = (String) tab.getValor( row, EColTab.NUMCONTA.ordinal() );
+				args[ EColcli.CODPLAN.ordinal() ] = (String) tab.getValor( row, EColTab.CODPLAN.ordinal() );
+				
+				cliente = new SiaccUtil().new StuffCli( codcli, args );
+				clientes.add( cliente );
+			}
+		}
+		
+		lbStatus.setText( "" );
+		
+		return clientes;
+	}
 
-	private boolean updateCliente( int codCli, String codBanco, String tipoFebraban, String stipoFebraban, String numconta, String codplan, String codcc ) {
+	private boolean updateClientes() {
 
 		boolean retorno = false;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement( "SELECT NUMCONTA, CODPLAN, CODCC FROM FNFBNCLI " + "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? AND CODEMPPF=? AND " + "CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND " + "CODBANCO=? AND TIPOFEBRABAN=?" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setInt( 3, codCli );
-			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
-			ps.setInt( 6, Aplicativo.iCodEmp );
-			ps.setInt( 7, ListaCampos.getMasterFilial( "FNBANCO" ) );
-			ps.setString( 8, codBanco );
-			ps.setString( 9, tipoFebraban );
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				if ( ( !numconta.equals( rs.getString( "NUMCONTA" ) ) ) || ( !codplan.equals( rs.getString( "CODPLAN" ) ) ) || ( !stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) ) ) || ( !codcc.equals( rs.getString( "CODCC" ) ) ) ) {
-					ps = con.prepareStatement( "UPDATE FNFBNCLI SET NUMCONTA=?, CODPLAN=?, CODCC=? " + "WHERE CODEMP=? AND CODFILIAL=? AND " + "CODCLI=? AND CODEMPPF=? AND CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND " + "CODBANCO=? AND TIPOFEBRABAN=?" );
-					ps.setString( 1, numconta );
-					ps.setString( 2, codplan );
-					ps.setString( 3, codcc );
+		HashSet<StuffCli> clientes = getClientes();
+		
+		if ( clientes != null ) {
+			
+			try {
+								
+				for ( StuffCli cliente : clientes ) {
+					
+					StringBuilder sSQL = new StringBuilder();
+					
+					sSQL.append( "SELECT NUMCONTA, CODPLAN " );
+					sSQL.append( "FROM FNFBNCLI " ); 
+					sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );			
+					sSQL.append( "AND CODEMPPF=? AND CODFILIALPF=? " );	
+					sSQL.append( "AND CODEMPBO=? AND CODFILIALBO=? AND CODBANCO=? AND TIPOFEBRABAN=?" );
+								
+					PreparedStatement ps = con.prepareStatement( sSQL.toString() );
+					ps.setInt( 1, Aplicativo.iCodEmp );
+					ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+					ps.setInt( 3, cliente.getCodigo() );
 					ps.setInt( 4, Aplicativo.iCodEmp );
-					ps.setInt( 5, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-					ps.setInt( 6, codCli );
-					ps.setInt( 7, Aplicativo.iCodEmp );
-					ps.setInt( 8, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
-					ps.setInt( 9, Aplicativo.iCodEmp );
-					ps.setInt( 10, ListaCampos.getMasterFilial( "FNBANCO" ) );
-					ps.setString( 11, codBanco );
-					ps.setString( 12, tipoFebraban );
+					ps.setInt( 5, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
+					ps.setInt( 6, Aplicativo.iCodEmp );
+					ps.setInt( 7, ListaCampos.getMasterFilial( "FNBANCO" ) );
+					ps.setString( 8, cliente.getArgs()[ EColcli.CODBANCO.ordinal() ] );
+					ps.setString( 9, cliente.getArgs()[ EColcli.TIPOFEBRABAN.ordinal() ] );
+					ResultSet rs = ps.executeQuery();
+					
+					if ( rs.next() ) {
+						
+						if ( ! cliente.getArgs()[ EColcli.NUMCONTA.ordinal() ].equals( rs.getString( "NUMCONTA" ) ) || 
+								! cliente.getArgs()[ EColcli.CODPLAN.ordinal() ].equals( rs.getString( "CODPLAN" ) ) ) {
+														
+							lbStatus.setText( "     Atualizando cliente [código " + cliente.getCodigo()  + "] ..." );
+							
+							sSQL.delete( 0, sSQL.length() );
+							sSQL.append( "UPDATE FNFBNCLI SET " );
+							sSQL.append( "CODEMPCA=?, CODFILIALCA=?, NUMCONTA=?, " ); 
+							sSQL.append( "CODEMPPN=?, CODFILIALPN=?, CODPLAN=? " );
+							sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );			
+							sSQL.append( "AND CODEMPPF=? AND CODFILIALPF=? " );	
+							sSQL.append( "AND CODEMPBO=? AND CODFILIALBO=? AND CODBANCO=? AND TIPOFEBRABAN=?" );
+							
+							PreparedStatement ps2 = con.prepareStatement( sSQL.toString() );
+							ps2.setInt( 1, Aplicativo.iCodEmp );
+							ps2.setInt( 2, ListaCampos.getMasterFilial( "FNCONTA" ) );
+							ps2.setString( 3, cliente.getArgs()[ EColcli.NUMCONTA.ordinal() ] );
+							ps2.setInt( 4, Aplicativo.iCodEmp );
+							ps2.setInt( 5, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+							ps2.setString( 6, cliente.getArgs()[ EColcli.CODPLAN.ordinal() ] );
+							ps2.setInt( 7, Aplicativo.iCodEmp );
+							ps2.setInt( 8, Aplicativo.iCodFilial );
+							ps2.setInt( 9, cliente.getCodigo() );
+							ps2.setInt( 10, Aplicativo.iCodEmp );
+							ps2.setInt( 11, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
+							ps2.setInt( 12, Aplicativo.iCodEmp );
+							ps2.setInt( 13, ListaCampos.getMasterFilial( "FNBANCO" ) );
+							ps2.setString( 14, cliente.getArgs()[ EColcli.CODBANCO.ordinal() ] );
+							ps2.setString( 15, cliente.getArgs()[ EColcli.TIPOFEBRABAN.ordinal() ] );
+							ps2.executeUpdate();
+							
+							lbStatus.setText( "     Cliente [código " + cliente.getCodigo()  + "] atualizado ..." );
+						}
+						
+						retorno = true;
+					}
+					/*else {
+						
+						sSQL.delete( 0, sSQL.length() );
+						sSQL.append( "INSERT INTO FNFBNCLI ( " );
+						sSQL.append( "CODEMP, CODFILIAL, CODCLI, " ); 
+						sSQL.append( "CODEMPPF, CODFILIALPF, " );			
+						sSQL.append( "CODEMPBO, CODFILIALBO, CODBANCO, TIPOFEBRABAN, " );	
+						sSQL.append( "AGENCIACLI, IDENTCLI, STIPOFEBRABAN, TIPOREMCLI, " );
+						sSQL.append( "CODEMPCA, CODFILIALCA, NUMCONTA, " );
+						sSQL.append( "CODEMPPN, CODFILIALPN, CODPLAN " );
+						sSQL.append( ") VALUES " );
+						sSQL.append( "( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) " );
+						
+						PreparedStatement ps2 = con.prepareStatement( sSQL.toString() );
+						ps2.setInt( 1, Aplicativo.iCodEmp );
+						ps2.setInt( 2, Aplicativo.iCodFilial );
+						ps2.setInt( 3, cliente.getCodigo() );
+						ps2.setInt( 4, Aplicativo.iCodEmp );
+						ps2.setInt( 5, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
+						ps2.setInt( 6, Aplicativo.iCodEmp );
+						ps2.setInt( 7, ListaCampos.getMasterFilial( "FNBANCO" ) );
+						ps2.setString( 8, cliente.getArgs()[ EColcli.CODBANCO.ordinal() ] );
+						ps2.setString( 9, cliente.getArgs()[ EColcli.TIPOFEBRABAN.ordinal() ] );
+						ps2.setNull( 10, Types.CHAR );
+						ps2.setNull( 11, Types.CHAR );
+						ps2.setNull( 12, Types.CHAR );
+						ps2.setNull( 13, Types.CHAR );					
+						ps2.setInt( 14, Aplicativo.iCodEmp );
+						ps2.setInt( 15, ListaCampos.getMasterFilial( "FNCONTA" ) );
+						ps2.setString( 16, cliente.getArgs()[ EColcli.NUMCONTA.ordinal() ] );	
+						ps2.setInt( 17, Aplicativo.iCodEmp );
+						ps2.setInt( 18, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+						ps2.setString( 19, cliente.getArgs()[ EColcli.CODPLAN.ordinal() ] );
+						ps2.executeUpdate();
+					}*/
+					
+					if ( ! con.getAutoCommit() ) {
+						con.commit();
+					}
 				}
-				else {
-					ps = con.prepareStatement( "INSERT INTO FNFBNCLI (NUMCONTA, CODPLAN, CODCC, CODEMP, CODFILIAL, " + "CODCLI, CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, " + "TIPOFEBRABAN, STIPOFEBRABAN, TIPOREMCLI) " + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)" );
-					ps.setString( 1, numconta );
-					ps.setString( 2, codplan );
-					ps.setString( 3, codcc );
-					ps.setInt( 4, Aplicativo.iCodEmp );
-					ps.setInt( 5, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-					ps.setInt( 6, codCli );
-					ps.setInt( 7, Aplicativo.iCodEmp );
-					ps.setInt( 8, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
-					ps.setInt( 9, Aplicativo.iCodEmp );
-					ps.setInt( 10, ListaCampos.getMasterFilial( "FNBANCO" ) );
-					ps.setString( 11, codBanco );
-					ps.setString( 12, tipoFebraban );
-					ps.setString( 13, stipoFebraban );
-					ps.setString( 14, codcc );
-
-					ps.executeUpdate();
-				}
-				if ( !con.getAutoCommit() )
-					con.commit();
-				retorno = true;
-
+			} catch ( Exception e ) {
+				Funcoes.mensagemErro( this, "Erro atualizando cliente!\n" + e.getMessage() );
+				e.printStackTrace();
+				lbStatus.setText( "" );
 			}
-		} catch ( SQLException e ) {
-			Funcoes.mensagemErro( this, "Erro atualizando cliente!\n" + e.getMessage() );
 		}
 
 		return retorno;
 	}
 
 	private void baixar(){
+
+		updateClientes();
 		
-		Object[] sVals = new Object[15];
+		/*Object[] sVals = new Object[15];
 		int iLin = tab.getLinhaSel();
+		PreparedStatement ps = null;
+		Object[] sRets = null;
 		
-		StringBuffer sSQL = new StringBuffer();
-		
-		sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," ); 
-		sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?,VLRDESCITREC=?,VLRJUROSITREC=?,ANOCC=?," ); 
-		sSQL.append( "CODCC=?,CODEMPCC=?,CODFILIALCC=?,OBSITREC=?,STATUSITREC='RP' " );
-		sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
-		
+		try {
+			
+			StringBuffer sSQL = new StringBuffer();
+			
+			sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," ); 
+			sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?,VLRDESCITREC=?,VLRJUROSITREC=?,ANOCC=?," ); 
+			sSQL.append( "CODCC=?,CODEMPCC=?,CODFILIALCC=?,OBSITREC=?,STATUSITREC='RP' " );
+			sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
+			
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setString( 1, (String) sRets[ EColRetBaixa.NUMCONTA.ordinal() ] );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
+			ps.setString( 4, (String) sRets[ EColRetBaixa.CODPLAN.ordinal() ] );
+			ps.setInt( 5, Aplicativo.iCodEmp );
+			ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+			ps.setString( 7, (String) sRets[ EColRetBaixa.DOC.ordinal() ] );
+			ps.setDate( 8, Funcoes.dateToSQLDate( (java.util.Date) sRets[ EColRetBaixa.DTPAGTO.ordinal() ] ) );
+			ps.setBigDecimal( 9,  (BigDecimal) sRets[ EColRetBaixa.VLRPAGO.ordinal() ] );
+			ps.setBigDecimal( 10, (BigDecimal) sRets[ EColRetBaixa.VLRDESC.ordinal() ] );
+			ps.setBigDecimal( 11, (BigDecimal) sRets[ EColRetBaixa.VLRJUROS.ordinal() ] );
+			if ( "".equals( ((String) sRets[ EColRetBaixa.CODCC.ordinal() ]).trim() ) ) {
+				ps.setNull( 12, Types.INTEGER );
+				ps.setNull( 13, Types.CHAR );
+				ps.setNull( 14, Types.INTEGER );
+				ps.setNull( 15, Types.INTEGER );
+			}
+			else {
+				//ps.setInt( 12, iAnoCC );
+				ps.setString( 13, (String) sRets[ EColRetBaixa.CODCC.ordinal() ] );
+				ps.setInt( 14, Aplicativo.iCodEmp );
+				ps.setInt( 15, ListaCampos.getMasterFilial( "FNCC" ) );
+			}
+
+			ps.setString( 16, (String) sRets[ EColRetBaixa.CODCC.ordinal() ] );
+			//ps.setInt( 17, iCodRec );
+			//ps.setInt( 18, iNParcItRec );
+			ps.setInt( 19, Aplicativo.iCodEmp );
+			ps.setInt( 20, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+			
+			ps.executeUpdate();
+			
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao baixar parcela!\n" + err.getMessage(), true, con, err );
+		}
+		*/
 	}
 
 	public void actionPerformed( ActionEvent e ) {
@@ -685,7 +821,6 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 			}
 		}
 	}
-
 	public void mouseEntered( MouseEvent e ) {}
 
 	public void mouseExited( MouseEvent e ) {}
@@ -699,5 +834,14 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		super.setConexao( cn );
 		lcBanco.setConexao( cn );
 	}
+
+	private enum EColTab {
+		SEL, RAZCLI, CODCLI, CODREC, DOCREC, NRPARC, VLRAPAG, DTREC, DTVENC, 
+		VLRPAG, DTPAG, NUMCONTA, CODPLAN, VLRDESC, VLRJUROS, CODCC, OBS, TIPOFEBRABAN
+	};
+
+	private enum EColInfoCli {
+		CODREC, NPARCITREC, NUMCONTA, CODPLAN, RAZCLI, VLRAPAGITREC, DOCREC, DTVENCITREC, DTITREC, TIPOFEBRABAN;
+	};
 
 }
