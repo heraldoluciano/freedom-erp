@@ -606,17 +606,59 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	private void imprimir( final boolean visualizar ) {
 		
 		if ( txtCodPed.getVlrInteger() != null && txtCodPed.getVlrInteger() > 0 ) {
+			
 			try {
+				
+				String classLayout = "pedido";
+				
+				if ( prefere.get(  EPrefere.LAYOUTPED.ordinal() ) != null &&
+						( (String) prefere.get(  EPrefere.LAYOUTPED.ordinal() ) ).trim().length() > 0 ) {
+					classLayout = (String) prefere.get(  EPrefere.LAYOUTPED.ordinal() );
+				}
+				
+				StringBuilder sql = new StringBuilder();
+				
+				sql.append( "SELECT IT.CODPED,P.DATAPED,P.CODCLI,C.RAZCLI,P.CODVEND,V.NOMEVEND,P.CODPLANOPAG,PG.DESCPLANOPAG, " );
+				sql.append( "P.CODMOEDA,M.SINGMOEDA,P.CODFOR,F.RAZFOR,P.CODTRAN, " );
+				sql.append( "(SELECT T.RAZTRAN FROM RPTRANSP T WHERE T.CODEMP=P.CODEMPTP AND T.CODFILIAL=P.CODFILIALTP AND T.CODTRAN=P.CODTRAN) AS RAZTRAN, " );
+				sql.append( "P.TIPOFRETEPED,P.TIPOREMPED,P.NUMPEDCLI,P.NUMPEDFOR,P.VLRTOTPED, " );
+				sql.append( "P.QTDTOTPED,P.VLRLIQPED,P.VLRIPIPED,P.VLRDESCPED,P.VLRADICPED,P.VLRRECPED, " );
+				sql.append( "P.VLRPAGPED,P.OBSPED,IT.CODITPED,IT.CODPROD,PD.DESCPROD,IT.CODFOR,FI.RAZFOR, " );
+				sql.append( "IT.QTDITPED,IT.PRECOITPED,IT.VLRITPED,IT.VLRLIQITPED,IT.PERCIPIITPED, " );
+				sql.append( "IT.VLRIPIITPED,IT.PERCDESCITPED,IT.VLRDESCITPED,IT.PERCADICITPED, " );
+				sql.append( "IT.VLRADICITPED,IT.PERCRECITPED,IT.VLRRECITPED,IT.PERCPAGITPED,IT.VLRPAGITPED,PD.CUBAGEMPROD " );
+				sql.append( "FROM RPPEDIDO P, RPITPEDIDO IT, RPPRODUTO PD, RPFORNECEDOR FI, " );
+				sql.append( "RPCLIENTE C,RPVENDEDOR V, RPPLANOPAG PG, RPMOEDA M, RPFORNECEDOR F " );
+				sql.append( "WHERE IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODPED=? " );
+				sql.append( "AND P.CODEMP=IT.CODEMP AND P.CODFILIAL=IT.CODFILIAL AND P.CODPED=IT.CODPED " );
+				sql.append( "AND C.CODEMP=P.CODEMPCL AND C.CODFILIAL=P.CODFILIALCL AND C.CODCLI=P.CODCLI " );
+				sql.append( "AND V.CODEMP=P.CODEMPVD AND V.CODFILIAL=P.CODFILIALVD AND V.CODVEND=P.CODVEND " );
+				sql.append( "AND PG.CODEMP=P.CODEMPPG AND PG.CODFILIAL=P.CODFILIALPG AND PG.CODPLANOPAG=P.CODPLANOPAG " );
+				sql.append( "AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA " );
+				sql.append( "AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR " );
+				sql.append( "AND PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND PD.CODPROD=IT.CODPROD " );
+				sql.append( "AND FI.CODEMP=IT.CODEMPFO AND FI.CODFILIAL=IT.CODFILIALFO AND FI.CODFOR=IT.CODFOR " );
+				
+				if ( "S".equals( (String) prefere.get(  EPrefere.ORDEMPED.ordinal() ) ) ) {
+					sql.append( "ORDER BY PD.DESCPROD " );
+				}
+				else {
+					sql.append( "ORDER BY IT.CODITPED " );
+				}
+				
+				PreparedStatement ps = con.prepareStatement( sql.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "RPPEDIDO" ) );
+				ps.setInt( 3, txtCodPed.getVlrInteger() );
+				ResultSet rs = ps.executeQuery();
 				
 				HashMap<String,Object> hParam = new HashMap<String, Object>();
 	
 				hParam.put( "CODEMP", Aplicativo.iCodEmp );
-				hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RPPEDIDO" ) );
-				hParam.put( "CODPED", txtCodPed.getVlrInteger() );
 				hParam.put( "SUBREPORT_DIR", RelTipoCli.class.getResource( "relatorios/" ).getPath() );
 				hParam.put( "REPORT_CONNECTION", con );
 				
-				FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/pedido.jasper", "PEDIDO Nº " + txtCodPed.getVlrInteger(), null, this, hParam, con );
+				FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/" + classLayout +".jasper", "PEDIDO Nº " + txtCodPed.getVlrInteger(), null, rs, hParam, this );
 	
 				if ( visualizar ) {
 					dlGr.setVisible( true );
