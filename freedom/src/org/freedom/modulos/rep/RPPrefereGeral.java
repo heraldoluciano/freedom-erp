@@ -62,6 +62,8 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	private final JTextFieldPad txtServidorSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldPad txtUsuarioSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );	
+	
+	private final JTextFieldPad txtSenhaSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
 	private final JTextFieldPad txtCasasDesc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -71,6 +73,8 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	
 	private final JTextFieldFK txtNomeMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
+	private final JTextFieldPad txtLayoutPed = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
+	
 	private final ListaCampos lcMoeda = new ListaCampos( this, "MO" );
 	
 
@@ -78,7 +82,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 
 		super( false );
 		setTitulo( "Preferências gerais" );		
-		setAtribos( 50, 50, 430, 470 );
+		setAtribos( 50, 50, 425, 470 );
 		
 		montaListaCampos();		
 		montaTela();
@@ -110,7 +114,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		linha1.setBorder( BorderFactory.createEtchedBorder() );
 		
 		adic( vendas, 27, 0, 80, 20 );
-		adic( linha1, 7, 10, 400, 120 );
+		adic( linha1, 7, 10, 397, 120 );
 		
 		adicDB( cbIpiComis, 17, 20, 300, 20, "IpiComis", null, true );
 		adicDB( cbIPIPed, 17, 40, 300, 20, "IPIPed", null, true );
@@ -124,10 +128,11 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		linha2.setBorder( BorderFactory.createEtchedBorder() );
 		
 		adic( email, 27, 130, 80, 20 );
-		adic( linha2, 7, 140, 400, 100 );
+		adic( linha2, 7, 140, 397, 100 );
 		
 		adicCampo( txtServidorSMTP, 17, 170, 377, 20, "ServidorSMTP", "Servidor de SMTP", ListaCampos.DB_SI, false );
 		adicCampo( txtUsuarioSMTP, 17, 210, 377, 20, "UsuarioSMTP", "Id do usuario", ListaCampos.DB_SI, false );
+		//adicCampo( txtSenhaSMTP, 17, 210, 377, 20, "UsuarioSMTP", "Id do usuario", ListaCampos.DB_SI, false );
 		
 		JLabel campos = new JLabel( "Campos", SwingConstants.CENTER );
 		campos.setOpaque( true );
@@ -135,12 +140,13 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		linha3.setBorder( BorderFactory.createEtchedBorder() );
 		
 		adic( campos, 27, 240, 80, 20 );
-		adic( linha3, 7, 250, 400, 140 );
+		adic( linha3, 7, 250, 397, 140 );
 		
-		adicCampo( txtCasasDesc, 17, 280, 150, 20, "CasasDec", "Casas decimais", ListaCampos.DB_SI, false );
-		adicCampo( txtCasasDescFin, 17, 320, 150, 20, "CasasDecFin", "Casas decimais ( financeiro )", ListaCampos.DB_SI, false );
+		adicCampo( txtCasasDesc, 17, 280, 150, 20, "CasasDec", "Decimais", ListaCampos.DB_SI, false );
+		adicCampo( txtLayoutPed, 240, 280, 154, 20, "LayoutPed", "Classe para pedido", ListaCampos.DB_SI, false );
+		adicCampo( txtCasasDescFin, 17, 320, 150, 20, "CasasDecFin", "Decimais ( financeiro )", ListaCampos.DB_SI, false );
 		adicCampo( txtCodMoeda, 17, 360, 100, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, txtNomeMoeda, false );
-		adicDescFK( txtNomeMoeda, 120, 360, 270, 20, "SingMoeda", "Descrição da moeda" );
+		adicDescFK( txtNomeMoeda, 120, 360, 274, 20, "SingMoeda", "Descrição da moeda" );
 		
 	}
 
@@ -162,7 +168,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		try {
 			
 			sSQL.append( "SELECT IPICOMIS,IPIPED,CODBARPROD,ENDCLIPED,ORDEMPED," );
-			sSQL.append( "SERVIDORSMTP,USUARIOSMTP,CASASDEC,CASASDECFIN,CODMOEDA " );
+			sSQL.append( "SERVIDORSMTP,USUARIOSMTP,CASASDEC,CASASDECFIN,CODMOEDA,LAYOUTPED " );
 			sSQL.append( "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -181,6 +187,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 				prefere.add( EPrefere.CASASDEC.ordinal(), rs.getInt( "CASASDEC" ) );
 				prefere.add( EPrefere.CASASDECFIN.ordinal(), rs.getInt( "CASASDECFIN" ) );
 				prefere.add( EPrefere.CODMOEDA.ordinal(), rs.getString( "CODMOEDA" ) );
+				prefere.add( EPrefere.LAYOUTPED.ordinal(), rs.getString( "LAYOUTPED" ) );
 			}
 			
 			rs.close();
@@ -208,6 +215,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	    USUARIOSMTP,
 	    CASASDEC,
 	    CASASDECFIN,
-	    CODMOEDA;
+	    CODMOEDA,
+	    LAYOUTPED;
 	}
 }

@@ -51,11 +51,8 @@
 	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="DTINI" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["2007-01-01"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="DTFIM" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["2007-12-01"]]></defaultValueExpression>
+	<parameter name="GRAFICO" isForPrompting="false" class="java.lang.Object">
+		<defaultValueExpression ><![CDATA[null]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT SUM(P.VLRLIQPED) AS VALOR,
 ( CASE EXTRACT(MONTH FROM P.DATAPED)
@@ -76,7 +73,6 @@
 EXTRACT(MONTH FROM P.DATAPED) AS IMES
 FROM RPPEDIDO P
 WHERE P.CODEMP=$P{CODEMP} AND P.CODFILIAL=$P{CODFILIAL}
-AND P.DATAPED BETWEEN $P{DTINI} AND $P{DTFIM}
 GROUP BY 2,3]]></queryString>
 
 	<field name="VALOR" class="java.math.BigDecimal"/>
@@ -150,42 +146,20 @@ GROUP BY 2,3]]></queryString>
 						key="line-3"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<bar3DChart>
-					<chart  hyperlinkTarget="Self" >
+				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
+						mode="Transparent"
 						x="6"
-						y="3"
+						y="6"
 						width="770"
-						height="440"
-						key="element-1"/>
+						height="432"
+						forecolor="#FFFFFF"
+						backcolor="#FFFFFF"
+						key="image-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-						<chartLegend textColor="#6464C8" backgroundColor="#DCDCFF" >
-					</chartLegend>
-					</chart>
-					<categoryDataset>
-						<dataset >
-						</dataset>
-						<categorySeries>
-							<seriesExpression><![CDATA[$F{VALOR}]]></seriesExpression>
-							<categoryExpression><![CDATA[$F{VALOR}]]></categoryExpression>
-							<valueExpression><![CDATA[$F{VALOR}]]></valueExpression>
-							<labelExpression><![CDATA[String.valueOf( $F{VALOR}.setScale( 2, BigDecimal.ROUND_HALF_UP ) ).replace( '.', ',' )]]></labelExpression>
-				<itemHyperlink >
-				</itemHyperlink>
-						</categorySeries>
-					</categoryDataset>
-					<bar3DPlot >
-						<plot />
-						<categoryAxisFormat>
-							<axisFormat >
-							</axisFormat>
-						</categoryAxisFormat>
-						<valueAxisFormat>
-							<axisFormat >
-							</axisFormat>
-						</valueAxisFormat>
-					</bar3DPlot>
-				</bar3DChart>
+					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
+					<imageExpression class="java.awt.Image"><![CDATA[$P{GRAFICO}]]></imageExpression>
+				</image>
 			</band>
 		</columnHeader>
 		<detail>
