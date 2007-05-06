@@ -88,7 +88,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		montaTela();
 		setListaCampos( false, "PREFERE1", "SG" );
 		
-		lcCampos.setPodeIns( false );
+		nav.setAtivo( 0, false );
 		lcCampos.setPodeExc( false );
 	}
 	
