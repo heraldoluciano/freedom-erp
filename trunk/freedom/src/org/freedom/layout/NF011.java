@@ -29,7 +29,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
 
-public class NFBuzzi2 extends Layout {
+public class NF011 extends Layout {
 
 	private String sMensAdic = "";
 
@@ -348,7 +348,7 @@ public class NFBuzzi2 extends Layout {
 
 		try {
 
-			imp.pulaLinha( 48 - imp.pRow(), imp.comprimido() );
+			imp.pulaLinha( 47 - imp.pRow(), imp.comprimido() );
 			imp.say( 6, Funcoes.strDecimalToStrCurrency( 20, 2, vValores.elementAt( 0 ).toString() ) );
 			imp.say( 35, Funcoes.strDecimalToStrCurrency( 20, 2, vValores.elementAt( 1 ).toString() ) );
 			imp.say( 117, Funcoes.strDecimalToStrCurrency( 20, 2, vValores.elementAt( 2 ).toString() ) );
