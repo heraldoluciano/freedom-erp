@@ -56,6 +56,8 @@ import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 public class RelEvolucaoVendas extends FRelatorio {
 
@@ -71,7 +73,7 @@ public class RelEvolucaoVendas extends FRelatorio {
 
 		super();
 		setTitulo( "Relatorio de Evolução de Vendas" );
-		setAtribos( 100, 50, 325, 260 );
+		setAtribos( 100, 50, 325, 290 );
 
 		montaRadioGrupos();
 		montaTela();
@@ -84,13 +86,15 @@ public class RelEvolucaoVendas extends FRelatorio {
 
 	private void montaRadioGrupos() {
 
-		Vector<String> labs2 = new Vector<String>();
-		labs2.add( "Pizza" );
-		labs2.add( "Barras" );
-		Vector<String> vals2 = new Vector<String>();
-		vals2.add( "P" );
-		vals2.add( "B" );
-		rgModo = new JRadioGroup( 2, 1, labs2, vals2 );
+		Vector<String> labs = new Vector<String>();
+		labs.add( "Pizza" );
+		labs.add( "Barras" );
+		labs.add( "Linha" );
+		Vector<String> vals = new Vector<String>();
+		vals.add( "P" );
+		vals.add( "B" );
+		vals.add( "L" );
+		rgModo = new JRadioGroup( 3, 1, labs, vals );
 	}
 
 	private void montaTela() {
@@ -98,19 +102,20 @@ public class RelEvolucaoVendas extends FRelatorio {
 		adic( new JLabel( "Modo do relatório :" ), 10, 10, 200, 20 );
 		adic( new JLabel( Icone.novo( "graficoPizza.gif" ) ), 10, 40, 30, 30 );
 		adic( new JLabel( Icone.novo( "graficoBarra.gif" ) ), 10, 70, 30, 30 );
-		adic( rgModo, 25, 35, 275, 70 );
+		adic( new JLabel( Icone.novo( "graficoLinha.gif" ) ), 10, 100, 30, 30 );
+		adic( rgModo, 25, 35, 275, 100 );
 
 		JLabel periodo = new JLabel( "Periodo", SwingConstants.CENTER );
 		periodo.setOpaque( true );
-		adic( periodo, 25, 110, 60, 20 );
+		adic( periodo, 25, 140, 60, 20 );
 
 		JLabel borda = new JLabel();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
-		adic( borda, 10, 130, 290, 45 );
+		adic( borda, 10, 160, 290, 45 );
 
-		adic( txtDtIni, 25, 145, 110, 20 );
-		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 145, 40, 20 );
-		adic( txtDtFim, 175, 145, 110, 20 );
+		adic( txtDtIni, 25, 175, 110, 20 );
+		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 175, 40, 20 );
+		adic( txtDtFim, 175, 175, 110, 20 );
 	}
 
 	@ Override
@@ -132,7 +137,7 @@ public class RelEvolucaoVendas extends FRelatorio {
 
 			StringBuilder sql = new StringBuilder();
 
-			sql.append( "SELECT SUM(P.VLRLIQPED) AS VALOR, " );
+			sql.append( "SELECT SUM(P.VLRLIQPED) AS VALOR, EXTRACT(MONTH FROM P.DATAPED) AS IMES, " );
 			sql.append( "( CASE EXTRACT(MONTH FROM P.DATAPED) " );
 			sql.append( "WHEN 1 THEN 'Janeiro' " );
 			sql.append( "WHEN 2 THEN 'Fevereiro' " );
@@ -189,11 +194,11 @@ public class RelEvolucaoVendas extends FRelatorio {
 		try {
 
 			BufferedImage bufferedimage = null;
-			DefaultPieDataset pizza = new DefaultPieDataset();
-			DefaultCategoryDataset barra = new DefaultCategoryDataset();
 			JFreeChart jfreechart = null;
 
 			if ( "P".equals( modo ) ) {
+				
+				DefaultPieDataset pizza = new DefaultPieDataset();
 
 				while ( rs.next() ) {
 
@@ -203,6 +208,8 @@ public class RelEvolucaoVendas extends FRelatorio {
 				jfreechart = ChartFactory.createPieChart3D( "", pizza, true, false, false );
 			}
 			else if ( "B".equals( modo ) ) {
+				
+				DefaultCategoryDataset barra = new DefaultCategoryDataset();
 
 				while ( rs.next() ) {
 
@@ -213,6 +220,19 @@ public class RelEvolucaoVendas extends FRelatorio {
 				}
 
 				jfreechart = ChartFactory.createBarChart3D( "", "Meses", "Valores", barra, PlotOrientation.VERTICAL, true, false, false );
+			}
+			else if ( "L".equals( modo ) ) {
+
+				XYSeriesCollection linha = new XYSeriesCollection();
+				XYSeries serie = new XYSeries( "Evolução de vendas" );
+
+				while ( rs.next() ) {
+
+					serie.add( rs.getInt( "IMES" ), rs.getDouble( "VALOR" ) );
+				}
+
+				linha.addSeries( serie );
+				jfreechart = ChartFactory.createXYLineChart( "", "Meses", "Valores", linha, PlotOrientation.VERTICAL, false, false, false );
 			}
 
 			jfreechart.setBackgroundPaint( new Color( 255, 255, 255 ) );
