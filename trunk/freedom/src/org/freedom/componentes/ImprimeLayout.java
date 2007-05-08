@@ -896,7 +896,7 @@ public class ImprimeLayout extends JPanelPad implements Printable, VetoableChang
 		  setFonte(new Font("Arial",Font.PLAIN,8));
 		  
 		  drawTexto("C.N.P.J.:   "+sCGCEmp,iX,25);
-		  drawTexto("Telefone.:   "+Funcoes.setMascara(rs.getString("FoneEmp").trim(),"####-####"),185+iLargLogo,25);
+		  drawTexto("Telefone.:   "+Funcoes.setMascara(rs.getString("FoneEmp"),"####-####"),185+iLargLogo,25);
 		  drawTexto("Fax.:   "+Funcoes.setMascara(rs.getString("FaxEmp"),"####-####"),330+iLargLogo,25);
         }
       rs.close();
