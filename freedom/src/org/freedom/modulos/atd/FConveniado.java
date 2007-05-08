@@ -53,7 +53,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
 public class FConveniado extends FTabDados implements PostListener {
-
+ 
 	private static final long serialVersionUID = 1L;
 
 	private JPanelPad pinGeral = new JPanelPad( 650, 520 );
@@ -118,6 +118,10 @@ public class FConveniado extends FTabDados implements PostListener {
 
 	private JTextFieldFK txtNomeEnc = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldPad txtCodFunc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescFunc = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
 	private JTextFieldPad txtCodGrauInst = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescGrauInst = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -161,6 +165,8 @@ public class FConveniado extends FTabDados implements PostListener {
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
 
 	private ListaCampos lcEnc = new ListaCampos( this, "EC" );
+	
+	private ListaCampos lcFunc = new ListaCampos( this, "FC" );
 
 	private Vector vVals = new Vector();
 
@@ -219,6 +225,13 @@ public class FConveniado extends FTabDados implements PostListener {
 		lcEnc.setReadOnly( true );
 		txtCodEnc.setTabelaExterna( lcEnc );
 
+		lcFunc.add( new GuardaCampo( txtCodFunc, "CodFunc", "Cód.funç.", ListaCampos.DB_PK, false ) );
+		lcFunc.add( new GuardaCampo( txtDescFunc, "DescFunc", "Descrição da função", ListaCampos.DB_SI, false ) );
+		lcFunc.montaSql( false, "FUNCAO", "RH" );
+		lcFunc.setQueryCommit( false );
+		lcFunc.setReadOnly( true );
+		txtCodFunc.setTabelaExterna( lcFunc );
+		
 		vVals.add( "" );
 		vVals.add( "M" );
 		vVals.add( "F" );
@@ -278,6 +291,8 @@ public class FConveniado extends FTabDados implements PostListener {
 		adicCampo( txtMaeConv, 250, 100, 250, 20, "MaeConv", "Mãe", ListaCampos.DB_SI, false );
 		adicCampo( txtRGPaiConv, 7, 140, 150, 20, "RGPaiConv", "RG Pai", ListaCampos.DB_SI, false );
 		adicCampo( txtRGMaeConv, 160, 140, 147, 20, "RGMaeConv", "RG Mãe", ListaCampos.DB_SI, false );
+		adicCampo( txtCodFunc, 7, 180, 100, 20, "CodFunc", "Cód.função", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescFunc, 110, 180, 390, 20, "DescFunc", "Descrição da função" );
 
 		setListaCampos( true, "CONVENIADO", "AT" );
 
@@ -327,6 +342,7 @@ public class FConveniado extends FTabDados implements PostListener {
 		lcGrauInst.setConexao( cn );
 		lcAtend.setConexao( cn );
 		lcEnc.setConexao( cn );
+		lcFunc.setConexao( cn );
 
 		gfCamp.setCampos( "ATCONVATRIBTB", "CodConv", "SeqConvAtrib", lcConvAtrib, cn );
 
