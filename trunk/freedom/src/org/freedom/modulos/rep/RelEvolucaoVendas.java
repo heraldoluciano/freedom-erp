@@ -162,7 +162,7 @@ public class RelEvolucaoVendas extends FRelatorio {
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
 			hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RPPEDIDO" ) );
-			hParam.put( "SUBREPORT_DIR", RelEvolucaoVendas.class.getResource( "relatorios/" ).getPath() );
+			//hParam.put( "SUBREPORT_DIR", RelEvolucaoVendas.class.getResource( "relatorios/" ).getPath() );
 			hParam.put( "REPORT_CONNECTION", con );
 			hParam.put( "GRAFICO", getGrafico( rs, rgModo.getVlrString() ) );
 

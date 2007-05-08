@@ -655,7 +655,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 				HashMap<String,Object> hParam = new HashMap<String, Object>();
 	
 				hParam.put( "CODEMP", Aplicativo.iCodEmp );
-				hParam.put( "SUBREPORT_DIR", RelTipoCli.class.getResource( "relatorios/" ).getPath() );
+				//hParam.put( "SUBREPORT_DIR", RelTipoCli.class.getResource( "relatorios/" ).getPath() );
 				hParam.put( "REPORT_CONNECTION", con );
 				
 				FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/" + classLayout +".jasper", "PEDIDO Nº " + txtCodPed.getVlrInteger(), null, rs, hParam, this );

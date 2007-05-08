@@ -58,6 +58,7 @@ import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.rep.RelCliente;
 
 public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
@@ -236,26 +237,30 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	 * @param rs
 	 * @param ifOrig
 	 */
-	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, ResultSet rs, HashMap hParamRel, JInternalFrame ifOrig ) {
+	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, ResultSet rs, HashMap<String, Object> hParamRel, JInternalFrame ifOrig ) {
 
 		super( false );
-
 		setTitulo( sTituloRel );
-
 		setBounds( 50, 50, 500, 400 );
 
 		ifOrig.getDesktopPane().add( this );
 
-		JRResultSetDataSource jrRS = new JRResultSetDataSource( rs );
 		try {
-			HashMap hParam = Aplicativo.empresa.getAll();
+			
+			HashMap<String, Object> hParam = Aplicativo.empresa.getAll();
 
 			hParam.put( "USUARIO", Aplicativo.strUsuario );
 			hParam.put( "FILTROS", sFiltros );
 			hParam.put( "TITULO", sTituloRel );
 
-			if ( hParamRel != null )
+			if ( hParamRel != null ) {
 				hParam.putAll( hParamRel );
+			}
+			
+			JRResultSetDataSource jrRS = new JRResultSetDataSource( rs );
+			
+
+			System.out.println( FPrinterJob.class.getResourceAsStream( "/org/freedom/" + sLayout ) );
 
 			relJasper = JasperFillManager.fillReport( FPrinterJob.class.getResourceAsStream( "/org/freedom/" + sLayout ), hParam, jrRS );
 
@@ -281,18 +286,16 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	 * @param rs
 	 * @param ifOrig
 	 */
-	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap hParamRel, Connection con ) {
+	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, Connection con ) {
 
 		super( false );
-
 		setTitulo( sTituloRel );
-
 		setBounds( 50, 50, 500, 400 );
 
 		ifOrig.getDesktopPane().add( this );
 
 		try {
-			HashMap hParam = Aplicativo.empresa.getAll();
+			HashMap<String, Object> hParam = Aplicativo.empresa.getAll();
 
 			hParam.put( "USUARIO", Aplicativo.strUsuario );
 			hParam.put( "FILTROS", sFiltros );
