@@ -31,6 +31,7 @@ package org.freedom.modulos.atd;
 import java.awt.event.ActionListener;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.grh.FFuncao;
 import org.freedom.modulos.std.FCliente;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
@@ -40,7 +41,7 @@ import org.freedom.telas.LoginPD;
 public class FreedomATD extends AplicativoPD implements ActionListener {
 	public FreedomATD() {
 		super("iconAtendimento32.gif", "splashATD.jpg",  1, "Freedom" , 4, "Atendimento",  null,new FPrincipalPD(null, "bgFreedomSTD.jpg"),LoginPD.class);
-
+ 
 		//Arquivo:
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,null);
 		addOpcao(100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1,false, null);
@@ -48,7 +49,8 @@ public class FreedomATD extends AplicativoPD implements ActionListener {
 		addOpcao(100101000, TP_OPCAO_ITEM, "Tipo de Conveniado","Tipo de conveniados", 'T', 100101010, 3, true, FTipoConv.class);
 		addOpcao(100101000, TP_OPCAO_ITEM, "Atribuições", "Abribuições", 'A', 100101020, 3, true, FAtribuicao.class);
 		addOpcao(100101000, TP_OPCAO_ITEM, "Encaminhador", "Encaminhador", 'E', 100101030, 3, true, FEncaminhador.class);
-		addOpcao(100101000, TP_OPCAO_ITEM, "Conveniados", "Conveniados", 'C', 100101040, 3, true, FConveniado.class);
+		addOpcao(100101000, TP_OPCAO_ITEM, "Funções", "Funções", 'F', 100101040, 3, true, FFuncao.class );
+		addOpcao(100101000, TP_OPCAO_ITEM, "Conveniados", "Conveniados", 'C', 100101050, 3, true, FConveniado.class);
 		addOpcao(101000000, TP_OPCAO_MENU, "Atendente", "", 'A', 100102000, 2, false, null);
 		addOpcao(100102000, TP_OPCAO_ITEM, "Tipo de Atendente", "Tipo de atendentes", 'T', 100102010, 3, true, FTipoAtend.class);
 		addOpcao(100102000, TP_OPCAO_ITEM, "Atendentes", "Atendentes", 'A', 100102020, 3, true, FAtendente.class);
