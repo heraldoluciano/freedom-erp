@@ -1,26 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jardesc>
-<jar path="freedom/lib/freedomatd.jar"/>
-<options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomatd.jardesc" exportErrors="false" exportWarnings="true" overwrite="false" saveDescription="true" useSourceFolders="false"/>
-<manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
-<sealing sealJar="false">
-<packagesToSeal/>
-<packagesToUnSeal/>
-</sealing>
-</manifest>
-<selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBuscaProd.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRCliente.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoCli.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBuscaEstoq.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FCliente.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
-</selectedElements>
+    <jar path="freedom/lib/freedomatd.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomatd.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FCliente.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBuscaProd.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh{DLRFuncao.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoCli.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRCliente.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh{FFuncao.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBuscaEstoq.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
+    </selectedElements>
 </jardesc>
