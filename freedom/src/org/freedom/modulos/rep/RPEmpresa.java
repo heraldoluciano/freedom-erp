@@ -256,7 +256,7 @@ public class RPEmpresa extends FTabDados {
 		adicCampo( txtCodFilial, 7, 30, 100, 20, "CodFilial", "Cód.filial.", ListaCampos.DB_PK, true );
 		adicCampo( txtRazFilial, 110, 30, 260, 20, "RazFilial", "Razão social da Filial", ListaCampos.DB_SI, true );
 
-		adicCampo( txtNomeFilial, 7, 70, 363, 20, "NomeFilial", "Nome fantasia", ListaCampos.DB_SI, false );		
+		adicCampo( txtNomeFilial, 7, 70, 363, 20, "NomeFilial", "Nome fantasia", ListaCampos.DB_SI, true );		
 
 		adicDB( cbMatriz, 400, 30, 120, 20, "MzFilial", "", false );
 		
@@ -289,9 +289,7 @@ public class RPEmpresa extends FTabDados {
 		
 		if ( Funcoes.mensagemConfirma( this, "Confirma a cópia dos dados da empresa?" ) == JOptionPane.YES_OPTION ) {
 			
-			if ( lcFilial.getStatus() != ListaCampos.LCS_INSERT ) {
-				lcFilial.insert( true );
-			}
+			lcFilial.edit();
 			
 			txtRazFilial.setVlrString( txtRazEmp.getVlrString() );
 			txtNomeFilial.setVlrString( txtNomeEmp.getVlrString() );

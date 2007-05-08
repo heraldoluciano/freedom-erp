@@ -133,7 +133,7 @@ public class RelProduto extends FRelatorio {
 			HashMap<String,Object> hParam = new HashMap<String, Object>();
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
-			hParam.put( "SUBREPORT_DIR", RelProduto.class.getResource( "relatorios/" ).getPath() );
+			//hParam.put( "SUBREPORT_DIR", RelProduto.class.getResource( "relatorios/" ).getPath() );
 			hParam.put( "REPORT_CONNECTION", con );
 			
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/"+relatorio, "PRODUTOS" + modo, filtro, rs, hParam, this );
