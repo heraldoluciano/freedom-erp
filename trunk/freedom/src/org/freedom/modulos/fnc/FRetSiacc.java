@@ -43,6 +43,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,6 +51,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -106,8 +108,13 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 	private final JButton btBaixar = new JButton( "Aplicar baixa", Icone.novo( "btGerar.gif" ) );
 
 	private final JLabel lbStatus = new JLabel();
+	
+	private final ImageIcon imgcancel = Icone.novo( "cancel.gif" );
+	
+	private final ImageIcon imgok = Icone.novo( "ok.gif" );
 
 	private final ListaCampos lcBanco = new ListaCampos( this );
+	
 
 	public FRetSiacc() {
 
@@ -130,6 +137,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		montaTela();
 
 		tab.adicColuna( "" );
+		tab.adicColuna( "" );
 		tab.adicColuna( "Razão social do cliente" );
 		tab.adicColuna( "Cód.cli." );
 		tab.adicColuna( "Cód.rec." );
@@ -146,8 +154,12 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		tab.adicColuna( "Valor juros" );
 		tab.adicColuna( "Cód.c.c." );
 		tab.adicColuna( "Histórico" );
-		tab.adicColuna( "Tipo" );
-
+		tab.adicColuna( "Tp" );
+		tab.adicColuna( "Cód.Retorno" );
+		tab.adicColuna( "Menssagem de retorno" );
+		
+			
+		tab.setTamColuna( 22, EColTab.STATUS.ordinal() );
 		tab.setTamColuna( 20, EColTab.SEL.ordinal() );
 		tab.setTamColuna( 250, EColTab.RAZCLI.ordinal() );
 		tab.setTamColuna( 70, EColTab.CODCLI.ordinal() );
@@ -165,7 +177,9 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		tab.setTamColuna( 70, EColTab.VLRJUROS.ordinal() );
 		tab.setTamColuna( 70, EColTab.CODCC.ordinal() );
 		tab.setTamColuna( 200, EColTab.OBS.ordinal() );
-		tab.setTamColuna( 20, EColTab.TIPOFEBRABAN.ordinal() );
+		tab.setTamColuna( 200, EColTab.TIPOFEBRABAN.ordinal() );
+		tab.setTamColuna( 100, EColTab.CODRET.ordinal() );
+		tab.setTamColuna( 250, EColTab.MENSSAGEM.ordinal() );
 
 		tab.setColunaEditavel( EColTab.SEL.ordinal(), true );
 
@@ -224,6 +238,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 			tab.setValor( new Boolean( true ), i, 0 );
+			
 		}
 	}
 
@@ -383,7 +398,15 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 						if ( infocli.size() == EColInfoCli.values().length ) {
 
 							tab.adicLinha();
-							tab.setValor( new Boolean( Boolean.FALSE ), row, 0 );
+							
+							if ( "00".equals( ( (RegF) reg ).getCodRetorno() ) ) {
+								tab.setValor( imgok, row, EColTab.STATUS.ordinal() );
+							}
+							else {
+								tab.setValor( imgcancel, row, EColTab.STATUS.ordinal() );
+							}
+							
+							tab.setValor( new Boolean( Boolean.FALSE ), row, EColTab.SEL.ordinal() );
 							tab.setValor( (String) infocli.get( EColInfoCli.RAZCLI.ordinal() ), row, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
 							tab.setValor( new Integer( ( (RegF) reg ).getIdentCliEmp().trim() ), row, EColTab.CODCLI.ordinal() ); // Cód.cli.
 							tab.setValor( (Integer) infocli.get( EColInfoCli.CODREC.ordinal() ), row, EColTab.CODREC.ordinal() ); // Cód.rec.
@@ -399,7 +422,10 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 							tab.setValor( new BigDecimal( 0 ), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
 							tab.setValor( new BigDecimal( 0 ), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
 							tab.setValor( "BAIXA AUTOMÁTICA SIACC", row, EColTab.OBS.ordinal() ); // HISTÓRICO
-							tab.setValor( (String) infocli.get( EColInfoCli.TIPOFEBRABAN.ordinal() ), row, EColTab.TIPOFEBRABAN.ordinal() ); // HISTÓRICO
+							tab.setValor( (String) infocli.get( EColInfoCli.TIPOFEBRABAN.ordinal() ), row, EColTab.TIPOFEBRABAN.ordinal() );
+							tab.setValor( getCodRet( ( (RegF) reg ).getCodRetorno() ), row, EColTab.CODRET.ordinal() ); // código retorno
+							tab.setValor( getMenssagem( ( (RegF) reg ).getCodRetorno() ), row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
+							
 
 							row++;
 						}
@@ -570,6 +596,44 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		}
 	}
 	
+	private String getCodRet(final String codRet){
+		
+		return codRet;
+	}
+	
+	private String getMenssagem( final String codretorno ) {
+		
+		String msg = null; 
+		StringBuilder sSQL = new StringBuilder();
+		PreparedStatement ps = null;
+		
+		try {
+			
+			sSQL.append( " SELECT DESCRET " );
+			sSQL.append( " FROM FNFBNCODRET " );
+			sSQL.append( " WHERE CODEMP=? AND CODFILIAL=?  AND CODEMPBO=? " );
+			sSQL.append( " AND CODFILIALBO=?  AND CODRET=? "  );
+			
+			ps = con.prepareStatement( sSQL.toString() );
+			
+			ps.setInt( 1,  Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "FNBANCO" ) );
+			ps.setString( 5, codretorno );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()){
+				
+				msg = rs.getString( 1 );
+			}
+		} catch ( Exception e ) {
+			Funcoes.mensagemInforma( this, "Erro ao montar grid. \n" + e.getMessage());
+			e.printStackTrace();
+		}
+		return msg;		
+	}
 	private HashSet<StuffCli> getClientes() {
 		
 		HashSet<StuffCli> clientes = null;
@@ -915,8 +979,10 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 	}
 
 	private enum EColTab {
-		SEL, RAZCLI, CODCLI, CODREC, DOCREC, NRPARC, VLRAPAG, DTREC, DTVENC, 
-		VLRPAG, DTPAG, NUMCONTA, CODPLAN, VLRDESC, VLRJUROS, CODCC, OBS, TIPOFEBRABAN
+		STATUS, SEL, RAZCLI, CODCLI, CODREC, DOCREC, NRPARC, VLRAPAG, DTREC, DTVENC, 
+		VLRPAG, DTPAG, NUMCONTA, CODPLAN, VLRDESC, VLRJUROS, CODCC, OBS, TIPOFEBRABAN,
+		CODRET,  MENSSAGEM;
+		
 	};
 
 	private enum EColInfoCli {
