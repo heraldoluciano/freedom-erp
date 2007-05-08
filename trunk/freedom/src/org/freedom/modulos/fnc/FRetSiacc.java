@@ -43,6 +43,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -62,9 +63,11 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.fnc.SiaccUtil.EColcli;
+import org.freedom.modulos.fnc.SiaccUtil.EParcela;
 import org.freedom.modulos.fnc.SiaccUtil.Reg;
 import org.freedom.modulos.fnc.SiaccUtil.RegF;
 import org.freedom.modulos.fnc.SiaccUtil.StuffCli;
+import org.freedom.modulos.fnc.SiaccUtil.StuffParcela;
 import org.freedom.modulos.std.DLBaixaRec;
 import org.freedom.modulos.std.DLBaixaRec.EColRetBaixa;
 import org.freedom.telas.Aplicativo;
@@ -578,7 +581,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 			
 			lbStatus.setText( "     Verificando clientes ..." );
 			
-			clientes = new HashSet<SiaccUtil.StuffCli>();
+			clientes = new HashSet<StuffCli>();
 			
 			for ( int row=0; row < tab.getNumLinhas(); row++ ) {
 				
@@ -604,6 +607,48 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		
 		return clientes;
 	}
+	
+	private HashSet<StuffParcela> getParcelas() {
+		
+		HashSet<StuffParcela> parcelas = null;
+		StuffParcela parcela = null;
+		Integer codrec = null;
+		Integer numparcrec = null;
+		Object[] args = new Object[ EParcela.values().length ];
+		
+		if ( tab.getNumLinhas() > 0 ) {
+			
+			lbStatus.setText( "     Verificando parcelas ..." );
+			
+			parcelas = new HashSet<StuffParcela>();
+			
+			for ( int row=0; row < tab.getNumLinhas(); row++ ) {
+				
+				if ( (Boolean) tab.getValor( row, EColTab.SEL.ordinal() ) ) {
+					
+					codrec = (Integer) tab.getValor( row, EColTab.CODREC.ordinal() );
+					numparcrec = (Integer) tab.getValor( row, EColTab.NRPARC.ordinal() );
+				
+					args[ EParcela.NUMCONTA.ordinal() ] = (String) tab.getValor( row, EColTab.NUMCONTA.ordinal() );
+					args[ EParcela.CODPLAN.ordinal() ] = (String) tab.getValor( row, EColTab.CODPLAN.ordinal() );
+					args[ EParcela.CODCC.ordinal() ] = (String) tab.getValor( row, EColTab.CODCC.ordinal() );
+					args[ EParcela.DOCLANCAITREC.ordinal() ] = (String) tab.getValor( row, EColTab.DOCREC.ordinal() );
+					args[ EParcela.DTPAGOITREC.ordinal() ] = (Date) tab.getValor( row, EColTab.DTPAG.ordinal() );
+					args[ EParcela.VLRPAGOITREC.ordinal() ] = (BigDecimal) tab.getValor( row, EColTab.VLRPAG.ordinal() );
+					args[ EParcela.VLRDESCITREC.ordinal() ] = (BigDecimal) tab.getValor( row, EColTab.VLRDESC.ordinal() );
+					args[ EParcela.VLRJUROSITREC.ordinal() ] = (BigDecimal) tab.getValor( row, EColTab.VLRJUROS.ordinal() );
+					args[ EParcela.OBSITREC.ordinal() ] = (String) tab.getValor( row, EColTab.OBS.ordinal() );
+					
+					parcela = new SiaccUtil().new StuffParcela( codrec, numparcrec, args );
+					parcelas.add( parcela );
+				}
+			}
+		}
+		
+		lbStatus.setText( "" );
+		
+		return parcelas;
+	}
 
 	private boolean updateClientes() {
 
@@ -613,6 +658,8 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		if ( clientes != null ) {
 			
 			try {
+				
+				int count = 0;
 								
 				for ( StuffCli cliente : clientes ) {
 					
@@ -670,9 +717,8 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 							ps2.executeUpdate();
 							
 							lbStatus.setText( "     Cliente [código " + cliente.getCodigo()  + "] atualizado ..." );
+							count++;
 						}
-						
-						retorno = true;
 					}
 					/*else {
 						
@@ -713,6 +759,10 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 					if ( ! con.getAutoCommit() ) {
 						con.commit();
 					}
+					
+					retorno = true;
+					
+					lbStatus.setText( "     Atualizado [ " + count + " ] clientes." );
 				}
 			} catch ( Exception e ) {
 				Funcoes.mensagemErro( this, "Erro atualizando cliente!\n" + e.getMessage() );
@@ -723,67 +773,96 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 
 		return retorno;
 	}
-
-	private void baixar(){
-
-		updateClientes();
-		
-		/*Object[] sVals = new Object[15];
-		int iLin = tab.getLinhaSel();
-		PreparedStatement ps = null;
-		Object[] sRets = null;
+	
+	private void baixaReceber() {
 		
 		try {
 			
 			StringBuffer sSQL = new StringBuffer();
-			
-			sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," ); 
-			sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?,VLRDESCITREC=?,VLRJUROSITREC=?,ANOCC=?," ); 
-			sSQL.append( "CODCC=?,CODEMPCC=?,CODFILIALCC=?,OBSITREC=?,STATUSITREC='RP' " );
-			sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
-			
-			ps = con.prepareStatement( sSQL.toString() );
-			ps.setString( 1, (String) sRets[ EColRetBaixa.NUMCONTA.ordinal() ] );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
-			ps.setString( 4, (String) sRets[ EColRetBaixa.CODPLAN.ordinal() ] );
-			ps.setInt( 5, Aplicativo.iCodEmp );
-			ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-			ps.setString( 7, (String) sRets[ EColRetBaixa.DOC.ordinal() ] );
-			ps.setDate( 8, Funcoes.dateToSQLDate( (java.util.Date) sRets[ EColRetBaixa.DTPAGTO.ordinal() ] ) );
-			ps.setBigDecimal( 9,  (BigDecimal) sRets[ EColRetBaixa.VLRPAGO.ordinal() ] );
-			ps.setBigDecimal( 10, (BigDecimal) sRets[ EColRetBaixa.VLRDESC.ordinal() ] );
-			ps.setBigDecimal( 11, (BigDecimal) sRets[ EColRetBaixa.VLRJUROS.ordinal() ] );
-			if ( "".equals( ((String) sRets[ EColRetBaixa.CODCC.ordinal() ]).trim() ) ) {
-				ps.setNull( 12, Types.INTEGER );
-				ps.setNull( 13, Types.CHAR );
-				ps.setNull( 14, Types.INTEGER );
-				ps.setNull( 15, Types.INTEGER );
-			}
-			else {
-				//ps.setInt( 12, iAnoCC );
-				ps.setString( 13, (String) sRets[ EColRetBaixa.CODCC.ordinal() ] );
-				ps.setInt( 14, Aplicativo.iCodEmp );
-				ps.setInt( 15, ListaCampos.getMasterFilial( "FNCC" ) );
-			}
 
-			ps.setString( 16, (String) sRets[ EColRetBaixa.CODCC.ordinal() ] );
-			//ps.setInt( 17, iCodRec );
-			//ps.setInt( 18, iNParcItRec );
-			ps.setInt( 19, Aplicativo.iCodEmp );
-			ps.setInt( 20, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+			sSQL.append( "UPDATE FNITRECEBER SET " );
+			sSQL.append( "CODEMPCA=?,CODFILIALCA=?,NUMCONTA=?," );
+			sSQL.append( "CODEMPPN=?,CODFILIALPN=?,CODPLAN=?," );
+			sSQL.append( "CODEMPCC=?,CODFILIALCC=?,ANOCC=?,CODCC=?," );
+			sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?," );
+			sSQL.append( "VLRPAGOITREC=VLRPAGOITREC+?,VLRDESCITREC=?,VLRJUROSITREC=?," );
+			sSQL.append( "OBSITREC=?,STATUSITREC='RP' " );
+			sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?" );
 			
-			ps.executeUpdate();
+			PreparedStatement ps = null;
 			
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
+			HashSet<StuffParcela> parcelas = getParcelas();
+
+			if ( parcelas != null ) {
+				
+				lbStatus.setText( "     Aplicando a baixa ..." );
+				
+				int count = 0;
+				
+				for( StuffParcela parcela : parcelas ) {
+					
+					ps = con.prepareStatement( sSQL.toString() );
+					ps.setInt( 1, Aplicativo.iCodEmp );
+					ps.setInt( 2, ListaCampos.getMasterFilial( "FNCONTA" ) );
+					ps.setString( 3, (String) parcela.getArgs()[ EParcela.NUMCONTA.ordinal() ] );
+					ps.setInt( 4, Aplicativo.iCodEmp );
+					ps.setInt( 5, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+					ps.setString( 6, (String) parcela.getArgs()[ EParcela.CODPLAN.ordinal() ] );
+					if ( parcela.getArgs()[ EParcela.ANOCC.ordinal() ] != null ) {
+						ps.setInt( 7, Aplicativo.iCodEmp );
+						ps.setInt( 8, ListaCampos.getMasterFilial( "FNCC" ) );
+						ps.setInt( 9, (Integer) parcela.getArgs()[ EParcela.ANOCC.ordinal() ] );
+						ps.setString( 10, (String) parcela.getArgs()[ EParcela.CODCC.ordinal() ] );
+					}
+					else {
+						ps.setNull( 7, Types.INTEGER );
+						ps.setNull( 8, Types.INTEGER );
+						ps.setNull( 9, Types.SMALLINT );
+						ps.setNull( 10, Types.INTEGER );
+					}
+					ps.setString( 11, (String) parcela.getArgs()[ EParcela.DOCLANCAITREC.ordinal() ] );
+					ps.setDate( 12, Funcoes.dateToSQLDate( (Date) parcela.getArgs()[ EParcela.DTPAGOITREC.ordinal() ] ) );
+					ps.setBigDecimal( 13, (BigDecimal) parcela.getArgs()[ EParcela.VLRPAGOITREC.ordinal() ] );
+					ps.setBigDecimal( 14, (BigDecimal) parcela.getArgs()[ EParcela.VLRDESCITREC.ordinal() ] );
+					ps.setBigDecimal( 15, (BigDecimal) parcela.getArgs()[ EParcela.VLRJUROSITREC.ordinal() ] );
+					if ( parcela.getArgs()[ EParcela.OBSITREC.ordinal() ] != null ) {
+						ps.setString( 16, (String) parcela.getArgs()[ EParcela.OBSITREC.ordinal() ] );
+					}
+					else {
+						ps.setNull( 16, Types.CHAR );
+					}
+					ps.setInt( 17, Aplicativo.iCodEmp );
+					ps.setInt( 18, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+					ps.setInt( 19, parcela.getCodrec() );
+					ps.setInt( 20, parcela.getNumparcrec() );
+					ps.executeUpdate();
+					ps.close();
+					
+					if ( ! con.getAutoCommit() ) {
+						con.commit();
+					}
+					
+					count++;
+				}
+				
+				lbStatus.setText( "     Aplicada a baixa em [ " + count + " ] parcela(s)." );
 			}
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao baixar parcela!\n" + err.getMessage(), true, con, err );
 		}
-		*/
+		catch ( Exception e ) {
+			Funcoes.mensagemErro( this, "Erro ao fazer a baixa da parcela!", true, con, e );
+			e.printStackTrace();
+			lbStatus.setText( "" );
+		}
 	}
+		
+	private void baixar(){
 
+		if ( updateClientes() ) {
+
+			baixaReceber();	
+		}
+	}
+	
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btSelTudo ) {
