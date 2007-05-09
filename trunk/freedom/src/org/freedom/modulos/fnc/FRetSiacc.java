@@ -43,7 +43,6 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
@@ -412,15 +411,15 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 							tab.setValor( (Integer) infocli.get( EColInfoCli.CODREC.ordinal() ), row, EColTab.CODREC.ordinal() ); // Cód.rec.
 							tab.setValor( (String) infocli.get( EColInfoCli.DOCREC.ordinal() ), row, EColTab.DOCREC.ordinal() ); // Doc
 							tab.setValor( (Integer) infocli.get( EColInfoCli.NPARCITREC.ordinal() ), row, EColTab.NRPARC.ordinal() ); // Nro.Parc.
-							tab.setValor( (BigDecimal) infocli.get( EColInfoCli.VLRAPAGITREC.ordinal() ), row, EColTab.VLRAPAG.ordinal() ); // Valor
+							tab.setValor( Funcoes.bdToStr( (BigDecimal) infocli.get( EColInfoCli.VLRAPAGITREC.ordinal() ) ), row, EColTab.VLRAPAG.ordinal() ); // Valor
 							tab.setValor( (Date) infocli.get( EColInfoCli.DTITREC.ordinal() ), row, EColTab.DTREC.ordinal() ); // Emissão
 							tab.setValor( (Date) infocli.get( EColInfoCli.DTVENCITREC.ordinal() ), row, EColTab.DTVENC.ordinal() ); // Vencimento
-							tab.setValor( (BigDecimal) ( (RegF) reg ).getValorDebCred(), row, EColTab.VLRPAG.ordinal() ); // Valor pago
+							tab.setValor( Funcoes.bdToStr( (BigDecimal) ( (RegF) reg ).getValorDebCred() ), row, EColTab.VLRPAG.ordinal() ); // Valor pago
 							tab.setValor( (Date) ( (RegF) reg ).getDataVenc(), row, EColTab.DTPAG.ordinal() ); // Data pgto.
 							tab.setValor( (String) infocli.get( EColInfoCli.NUMCONTA.ordinal() ), row, EColTab.NUMCONTA.ordinal() ); // Conta
 							tab.setValor( (String) infocli.get( EColInfoCli.CODPLAN.ordinal() ), row, EColTab.CODPLAN.ordinal() ); // Planejamento
-							tab.setValor( new BigDecimal( 0 ), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
-							tab.setValor( new BigDecimal( 0 ), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
+							tab.setValor( Funcoes.bdToStr( new BigDecimal( 0 ) ), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
+							tab.setValor( Funcoes.bdToStr( new BigDecimal( 0 ) ), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
 							tab.setValor( "BAIXA AUTOMÁTICA SIACC", row, EColTab.OBS.ordinal() ); // HISTÓRICO
 							tab.setValor( (String) infocli.get( EColInfoCli.TIPOFEBRABAN.ordinal() ), row, EColTab.TIPOFEBRABAN.ordinal() );
 							tab.setValor( getCodRet( ( (RegF) reg ).getCodRetorno() ), row, EColTab.CODRET.ordinal() ); // código retorno
@@ -529,13 +528,13 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 			sVals[ DLBaixaRec.EColBaixa.DOC.ordinal() ] = tab.getValor( iLin, EColTab.DOCREC.ordinal() );
 			sVals[ DLBaixaRec.EColBaixa.DTEMIT.ordinal() ] = tab.getValor( iLin, EColTab.DTREC.ordinal() );
 			sVals[ DLBaixaRec.EColBaixa.DTVENC.ordinal() ] = tab.getValor( iLin, EColTab.DTVENC.ordinal() );
-			sVals[ DLBaixaRec.EColBaixa.VLRPARC.ordinal() ] = tab.getValor( iLin, EColTab.VLRPAG.ordinal() );
-			sVals[ DLBaixaRec.EColBaixa.VLRAPAG.ordinal() ] = tab.getValor( iLin, EColTab.VLRAPAG.ordinal() );
-			sVals[ DLBaixaRec.EColBaixa.VLRDESC.ordinal() ] = tab.getValor( iLin, EColTab.VLRDESC.ordinal() );
-			sVals[ DLBaixaRec.EColBaixa.VLRJUROS.ordinal() ] = tab.getValor( iLin, EColTab.VLRJUROS.ordinal() );
-			sVals[ DLBaixaRec.EColBaixa.VLRAPAG.ordinal() ] = tab.getValor( iLin, EColTab.VLRAPAG.ordinal() );
+			sVals[ DLBaixaRec.EColBaixa.VLRPARC.ordinal() ] = Funcoes.strToBd(tab.getValor( iLin, EColTab.VLRPAG.ordinal() ) );
+			sVals[ DLBaixaRec.EColBaixa.VLRAPAG.ordinal() ] = Funcoes.strToBd(tab.getValor( iLin, EColTab.VLRAPAG.ordinal() ));
+			sVals[ DLBaixaRec.EColBaixa.VLRDESC.ordinal() ] = Funcoes.strToBd(tab.getValor( iLin, EColTab.VLRDESC.ordinal() ));
+			sVals[ DLBaixaRec.EColBaixa.VLRJUROS.ordinal() ] = Funcoes.strToBd(tab.getValor( iLin, EColTab.VLRJUROS.ordinal() ));
+			sVals[ DLBaixaRec.EColBaixa.VLRAPAG.ordinal() ] = Funcoes.strToBd(tab.getValor( iLin, EColTab.VLRAPAG.ordinal() ));
 			sVals[ DLBaixaRec.EColBaixa.DTPGTO.ordinal() ] = tab.getValor( iLin, EColTab.DTPAG.ordinal() );
-			sVals[ DLBaixaRec.EColBaixa.VLRPAGO.ordinal() ] = tab.getValor( iLin, EColTab.VLRPAG.ordinal() );
+			sVals[ DLBaixaRec.EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd(tab.getValor( iLin, EColTab.VLRPAG.ordinal() ));
 			sVals[ DLBaixaRec.EColBaixa.CODCC.ordinal() ] = tab.getValor( iLin, EColTab.CODCC.ordinal() );
 			sVals[ DLBaixaRec.EColBaixa.OBS.ordinal() ] = String.valueOf( tab.getValor( iLin, EColTab.OBS.ordinal() ) );
 
@@ -553,9 +552,9 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 				tab.setValor( sRets[ EColRetBaixa.CODPLAN.ordinal() ], iLin, EColTab.CODPLAN.ordinal() );
 				tab.setValor( sRets[ EColRetBaixa.DOC.ordinal() ], iLin, EColTab.DOCREC.ordinal() );
 				tab.setValor( sRets[ EColRetBaixa.DTPAGTO.ordinal() ], iLin, EColTab.DTPAG.ordinal() );
-				tab.setValor( sRets[ EColRetBaixa.VLRPAGO.ordinal() ], iLin, EColTab.VLRPAG.ordinal() );
-				tab.setValor( sRets[ EColRetBaixa.VLRDESC.ordinal() ], iLin, EColTab.VLRDESC.ordinal() );
-				tab.setValor( sRets[ EColRetBaixa.VLRJUROS.ordinal() ], iLin, EColTab.VLRJUROS.ordinal() );
+				tab.setValor( Funcoes.bdToStr( (BigDecimal) sRets[ EColRetBaixa.VLRPAGO.ordinal() ] ), iLin, EColTab.VLRPAG.ordinal() );
+				tab.setValor( Funcoes.bdToStr( (BigDecimal) sRets[ EColRetBaixa.VLRDESC.ordinal() ] ), iLin, EColTab.VLRDESC.ordinal() );
+				tab.setValor( Funcoes.bdToStr( (BigDecimal) sRets[ EColRetBaixa.VLRJUROS.ordinal() ] ), iLin, EColTab.VLRJUROS.ordinal() );
 				tab.setValor( sRets[ EColRetBaixa.CODCC.ordinal() ], iLin, EColTab.CODCC.ordinal() );
 				tab.setValor( sRets[ EColRetBaixa.OBS.ordinal() ], iLin, EColTab.OBS.ordinal() );
 
@@ -586,10 +585,10 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 					tab.setValor( vals[ EColRetBaixa.CODCC.ordinal() ], row, EColTab.CODCC.ordinal() );
 
 					if ( vlrdescjuros.floatValue() > 0 ) {
-						tab.setValor( vlrdescjuros, row, EColTab.VLRJUROS.ordinal() );
+						tab.setValor( Funcoes.bdToStr( vlrdescjuros ), row, EColTab.VLRJUROS.ordinal() );
 					}
 					else {
-						tab.setValor( vlrdescjuros, row, EColTab.VLRDESC.ordinal() );
+						tab.setValor( Funcoes.bdToStr( vlrdescjuros ), row, EColTab.VLRDESC.ordinal() );
 					}
 				}
 			}
@@ -698,9 +697,9 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 					args[ EParcela.CODCC.ordinal() ] = (String) tab.getValor( row, EColTab.CODCC.ordinal() );
 					args[ EParcela.DOCLANCAITREC.ordinal() ] = (String) tab.getValor( row, EColTab.DOCREC.ordinal() );
 					args[ EParcela.DTPAGOITREC.ordinal() ] = (Date) tab.getValor( row, EColTab.DTPAG.ordinal() );
-					args[ EParcela.VLRPAGOITREC.ordinal() ] = (BigDecimal) tab.getValor( row, EColTab.VLRPAG.ordinal() );
-					args[ EParcela.VLRDESCITREC.ordinal() ] = (BigDecimal) tab.getValor( row, EColTab.VLRDESC.ordinal() );
-					args[ EParcela.VLRJUROSITREC.ordinal() ] = (BigDecimal) tab.getValor( row, EColTab.VLRJUROS.ordinal() );
+					args[ EParcela.VLRPAGOITREC.ordinal() ] = Funcoes.strToBd( tab.getValor( row, EColTab.VLRPAG.ordinal() ) );
+					args[ EParcela.VLRDESCITREC.ordinal() ] = Funcoes.strToBd(  tab.getValor( row, EColTab.VLRDESC.ordinal() ) );
+					args[ EParcela.VLRJUROSITREC.ordinal() ] = Funcoes.strToBd( tab.getValor( row, EColTab.VLRJUROS.ordinal() ) );
 					args[ EParcela.OBSITREC.ordinal() ] = (String) tab.getValor( row, EColTab.OBS.ordinal() );
 					
 					parcela = new SiaccUtil().new StuffParcela( codrec, numparcrec, args );
