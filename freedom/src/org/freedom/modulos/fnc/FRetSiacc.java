@@ -236,7 +236,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 	private void selecionaTudo() {
 
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-			tab.setValor( new Boolean( true ), i, 0 );
+			tab.setValor( new Boolean( true ), i, EColTab.SEL.ordinal() );
 			
 		}
 	}
@@ -244,7 +244,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 	private void selecionaNada() {
 
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-			tab.setValor( new Boolean( false ), i, 0 );
+			tab.setValor( new Boolean( false ), i, EColTab.SEL.ordinal() );
 		}
 	}
 
