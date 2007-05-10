@@ -228,6 +228,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcCampos.addCarregaListener( this );
 		lcDet.addCarregaListener( this );
 		lcCliente.addCarregaListener( this );
+		lcProduto.addCarregaListener( this );
 		
 		lcCampos.addInsertListener( this );
 		lcDet.addInsertListener( this );
@@ -238,7 +239,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		
 		btObsPed.addActionListener( this );
 		
-		txtCodForItem.addFocusListener( this );
+		txtPercPagItem.addFocusListener( this );
 		txtPercIPIItem.addFocusListener( this );
 	}
 
@@ -360,6 +361,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProduto.add( new GuardaCampo( txtCodForItem, "CodFor", "Cód.for.", ListaCampos.DB_SI, false ) );
 		lcProduto.montaSql( false, "PRODUTO", "RP" );
 		lcProduto.setQueryCommit( false );
 		lcProduto.setReadOnly( true );
@@ -464,14 +466,18 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 		adicCampo( txtPercDescItem, 7, 55, 70, 20, "PercDescItPed", "% Desconto", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrDescItem, "VlrDescItPed", "Vlr. Desconto", ListaCampos.DB_SI, false );
-		adicCampo( txtPercAdicItem, 80, 55, 70, 20, "PercAdicItPed", "% Acrecimo", ListaCampos.DB_SI, false );
+		adicCampo( txtPercAdicItem, 80, 55, 70, 20, "PercAdicItPed", "% Acrécimo", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrAdicItem, "VlrAdicItPed", "Vlr. Adicional", ListaCampos.DB_SI, false );
-		adicCampo( txtPercRedItem, 153, 55, 80, 20, "PercRecItPed", "% Recebimento", ListaCampos.DB_SI, false );
+		adicCampo( txtPercRedItem, 153, 55, 80, 20, "PercRecItPed", "% Receber", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrRecItem, "VlrRecItPed", "Vlr. Receber", ListaCampos.DB_SI, false );
-		adicCampo( txtPercPagItem, 236, 55, 80, 20, "PercPagItPed", "% Pagamento", ListaCampos.DB_SI, false );
+		adicCampo( txtPercPagItem, 236, 55, 80, 20, "PercPagItPed", "% Pagar", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrPagItem, "VlrPagItPed", "Vlr. Pagar", ListaCampos.DB_SI, false );
-		adicCampo( txtCodForItem, 319, 55, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtRazForItem, true );
-		adicDescFK( txtRazForItem, 402, 55, 189, 20, "RazFor", "Razão social do fornecedor" );
+		adic( new JLabel( "Cód.for." ), 319, 35, 80, 20 );
+		adic( txtCodForItem, 319, 55, 80, 20 );
+		adic( new JLabel( "Razão social do fornecedor" ), 402, 35, 189, 20 );
+		adic( txtRazForItem, 402, 55, 189, 20 );
+		
+		txtCodForItem.setAtivo( false );
 		
 		panelCamposItens.adic( btObsPed, 595, 45, 70, 30 );
 	}
@@ -678,6 +684,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	public void afterCarrega( CarregaEvent e ) {
 
 		if ( e.getListaCampos() == lcDet ) {
+			lcProduto.carregaDados();
 			lcPedido.carregaDados();
 		}
 		else if ( e.getListaCampos() == lcCampos ) {
@@ -688,6 +695,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		else if ( e.getListaCampos() == lcCliente ) {
 			lcVendedor.carregaDados();
 			lcPlanoPag.carregaDados();
+		}
+		else if ( e.getListaCampos() == lcProduto ) {
+			lcFornecedorItem.carregaDados();
 		}
 	}
 
@@ -766,7 +776,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	public void focusLost( FocusEvent e ) {
 
-		if ( e.getSource() == txtCodForItem && 
+		if ( e.getSource() == txtPercPagItem && 
 				( lcDet.getStatus() == ListaCampos.LCS_EDIT || lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
 			lcDet.post();
 			lcDet.insert( true );
