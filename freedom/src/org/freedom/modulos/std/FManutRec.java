@@ -1783,7 +1783,7 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 						try {
 							
 							ps = con.prepareStatement( "DELETE FROM FNRECEBER WHERE CODREC=? AND CODEMP=? AND CODFILIAL=?" );
-							ps.setInt( 1, Integer.parseInt( String.valueOf( tabManut.getValor( tabManut.getLinhaSel(), 4 ) ) ) );
+							ps.setInt( 1, (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal())  );
 							ps.setInt( 2, Aplicativo.iCodEmp );
 							ps.setInt( 3, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 							
