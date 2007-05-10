@@ -292,6 +292,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JTextFieldPad txtCodContCred = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldPad txtCodCliContab = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 
 	private Vector<String> vPessoaLab = new Vector<String>();
@@ -695,8 +697,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicDescFK( txtDescPesq, 90, 220, 240, 20, "RazCli", "Razão social do cliente principal" );
 		adicCampo( txtCodFiscCli, 7, 260, 80, 20, "CodFiscCli", "Cód.tp.fisc.", ListaCampos.DB_FK, txtDescFiscCli, false );
 		adicDescFK( txtDescFiscCli, 90, 260, 240, 20, "DescFiscCli", "Descrição do tipo fiscal" );
-		adicCampo( txtCodContDeb, 7, 300, 160, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
-		adicCampo( txtCodContCred, 170, 300, 160, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
+		adicCampo( txtCodCliContab, 7, 300, 180, 20, "CodCliContab", "Cód.cli.contábil", ListaCampos.DB_SI, false );
+		adicCampo( txtCodContDeb, 7, 340, 180, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
+		adicCampo( txtCodContCred, 7, 380, 180, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
 		// Adicionar botão para agrupamento de clientes
 
 		btGrpCli.setToolTipText( "Clientes agrupados" );
