@@ -59,7 +59,9 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	private static final long serialVersionUID = 1L;
 
-	private JPanelPad pinFor = new JPanelPad();
+	private JPanelPad panelDados = new JPanelPad();
+
+	private JPanelPad panelObservacao = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -111,6 +113,12 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	private JTextFieldPad txtSiteFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldPad txtCodContDeb = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldPad txtCodContCred = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldPad txtCodForContab = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 
 	private Vector<String> vPessoaLab = new Vector<String>();
@@ -118,8 +126,6 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	private Vector<String> vPessoaVal = new Vector<String>();
 
 	private JRadioGroup rgPessoa = null;
-
-	private JPanelPad pnObs = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	private JTextAreaPad txaObs = new JTextAreaPad();
 
@@ -133,7 +139,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 		super();
 		setTitulo( "Cadastro de Fornecedores" );
-		setAtribos( 50, 20, 480, 470 );
+		setAtribos( 50, 20, 480, 590 );
 		setImprimir( true );
 	}
 
@@ -156,9 +162,9 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		rgPessoa = new JRadioGroup( 2, 1, vPessoaLab, vPessoaVal );
 		rgPessoa.addRadioGroupListener( this );
 
-		pinFor = new JPanelPad( 470, 300 );
-		setPainel( pinFor );
-		adicTab( "Fornecedor", pinFor );
+		panelDados = new JPanelPad( 470, 300 );
+		setPainel( panelDados );
+		adicTab( "Fornecedor", panelDados );
 		adicCampo( txtCodFor, 7, 20, 70, 20, "CodFor", "Cód.for.", ListaCampos.DB_PK, true );
 		adicCampo( txtRazFor, 80, 20, 267, 20, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, true );
 		adicDB( rgPessoa, 350, 20, 100, 60, "PessoaFor", "Pessoa", true );
@@ -177,29 +183,34 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		adicCampo( txtCidFor, 170, 220, 157, 20, "CidFor", "Cidade", ListaCampos.DB_SI, false );
 		adicCampo( txtCepFor, 330, 220, 87, 20, "CepFor", "Cep", ListaCampos.DB_SI, false );
 		adicCampo( txtUFFor, 420, 220, 30, 20, "UFFor", "UF", ListaCampos.DB_SI, false );
-
 		adicCampo( txtDDDFoneFor, 7, 260, 47, 20, "DDDFoneFor", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtFoneFor, 57, 260, 90, 20, "FoneFor", "Telefone", ListaCampos.DB_SI, false );
 		adicCampo( txtDDDFaxFor, 150, 260, 47, 20, "DDDFaxFor", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtFaxFor, 200, 260, 90, 20, "FaxFor", "Fax", ListaCampos.DB_SI, false );
 		adicCampo( txtDDDCelFor, 293, 260, 47, 20, "DDDCelFor", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtCelFor, 343, 260, 107, 20, "CelFor", "Celular", ListaCampos.DB_SI, false );
-
 		adicCampo( txtEmailFor, 7, 300, 220, 20, "EmailFor", "E-Mail", ListaCampos.DB_SI, false );
 		adicCampo( txtSiteFor, 230, 300, 220, 20, "SiteFor", "Site", ListaCampos.DB_SI, false );
 		adicCampo( txtContFor, 7, 340, 443, 20, "ContFor", "Contato", ListaCampos.DB_SI, false );
-		txtCnpjFor.setMascara( JTextFieldPad.MC_CNPJ );
-		txtCepFor.setMascara( JTextFieldPad.MC_CEP );
-		txtFoneFor.setMascara( JTextFieldPad.MC_FONE );
-		txtFaxFor.setMascara( JTextFieldPad.MC_FONE );
-		adicTab( "Observações", pnObs );
+		adicCampo( txtCodForContab, 7, 380, 180, 20, "CodForContab", "Cód.for.contábil", ListaCampos.DB_SI, false );
+		adicCampo( txtCodContDeb, 7, 420, 180, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
+		adicCampo( txtCodContCred, 7, 460, 180, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
+		
+		
+		adicTab( "Observações", panelObservacao );
 		adicDBLiv( txaObs, "ObsFor", "Observações", false );
-		pnObs.add( spnObs );
+		panelObservacao.add( spnObs );
+		
 		setListaCampos( true, "FORNECED", "CP" );
 		lcCampos.setQueryInsert( false );
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
+		
+		txtCnpjFor.setMascara( JTextFieldPad.MC_CNPJ );
+		txtCepFor.setMascara( JTextFieldPad.MC_CEP );
+		txtFoneFor.setMascara( JTextFieldPad.MC_FONE );
+		txtFaxFor.setMascara( JTextFieldPad.MC_FONE );
 
 	}
 
