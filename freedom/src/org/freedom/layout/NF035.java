@@ -370,9 +370,12 @@ public class NF035 extends Layout {
 
 					if ( "C".equals(frete.getString( NF.C_TIPOTRANSP ) ) ) {
 						imp.say( 116, Funcoes.setMascara( cab.getString( NF.C_CNPJEMIT ), "##.###.###/####-##" ) );
-					}
-					else {
-						imp.say( 116, Funcoes.setMascara( frete.getString( NF.C_CNPJTRANSP ), "##.###.###/####-##" ) );
+					} else {
+						if ("".equals( NF.C_CNPJTRANSP )) {
+							imp.say( 116, Funcoes.setMascara( frete.getString( NF.C_CPFTRANSP ), "###.###.###-##" ) );
+						} else {
+							imp.say( 116, Funcoes.setMascara( frete.getString( NF.C_CNPJTRANSP ), "##.###.###/####-##" ) );
+						}
 					}
 
 					imp.pulaLinha( 2, imp.comprimido() );
