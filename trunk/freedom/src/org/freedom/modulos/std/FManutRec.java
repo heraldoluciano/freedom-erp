@@ -1458,9 +1458,9 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 			return;
 		}
 			
-		int iCodVenda = Integer.parseInt( (String) tabConsulta.getValor( iLin, 11 ) );
+		int iCodVenda = (Integer) tabConsulta.getValor( iLin, EColTabConsulta.CODVENDA.ordinal());
 		
-		String sTipoVenda = (String) tabConsulta.getValor( iLin, 14 );
+		String sTipoVenda = (String) tabConsulta.getValor( iLin, EColTabConsulta.TV.ordinal() );
 		
 		if ( iCodVenda > 0 ) {
 			

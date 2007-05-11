@@ -167,7 +167,8 @@ public class NF {
 	public static final int C_PESOBRUTO = 16;
 	public static final int C_PESOLIQ = 17;
 	public static final int C_VLRFRETEPED = 18;	
-	public static final int C_CONHECFRETEPED = 19;	
+	public static final int C_CONHECFRETEPED = 19;
+	public static final int C_CPFTRANSP = 20;
 
 	protected TabVector cab = null;
 	protected TabVector itens = null;
