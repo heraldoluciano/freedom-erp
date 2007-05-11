@@ -26,5 +26,6 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBuscaEstoq.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLCodProd.java"/>
     </selectedElements>
 </jardesc>
