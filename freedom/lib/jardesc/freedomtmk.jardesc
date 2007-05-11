@@ -1,22 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jardesc>
     <jar path="freedom/lib/freedomtmk.jar"/>
-    <options overwrite="false" compress="true" exportErrors="false" exportWarnings="true" saveDescription="true" descriptionLocation="/freedom/lib/jardesc/freedomtmk.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
-    <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="false" generateManifest="true" manifestLocation="">
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomtmk.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
         <sealing sealJar="false">
             <packagesToSeal/>
             <packagesToUnSeal/>
         </sealing>
     </manifest>
-    <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes{Funcoes.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes{Funcoes.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.tmk"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.tmk"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
     </selectedElements>
 </jardesc>
