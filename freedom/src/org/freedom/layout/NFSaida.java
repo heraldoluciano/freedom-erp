@@ -274,7 +274,7 @@ public class NFSaida extends NF {
 			ps.setInt( 3, ( (Integer) parans.elementAt( 2 ) ).intValue() );
 			rs = ps.executeQuery();
 			sql.delete( 0, sql.length() );
-			frete = new TabVector( 20 );
+			frete = new TabVector( 21 );
 			while ( rs.next() ) {
 				frete.addRow();
 				frete.setInt( C_CODTRAN, rs.getInt( "CODTRAN" ) );
