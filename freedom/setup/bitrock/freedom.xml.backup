@@ -1,7 +1,7 @@
 <project>
     <shortName>freedom</shortName>
     <fullName>Freedom-ERP</fullName>
-    <version>1.2</version>
+    <version>1.2.0.0</version>
     <installerFilename></installerFilename>
     <componentList>
         <component>
