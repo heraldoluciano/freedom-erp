@@ -66,6 +66,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.fnc.SiaccUtil.EColcli;
 import org.freedom.modulos.fnc.SiaccUtil.EParcela;
 import org.freedom.modulos.fnc.SiaccUtil.Reg;
+import org.freedom.modulos.fnc.SiaccUtil.RegB;
 import org.freedom.modulos.fnc.SiaccUtil.RegF;
 import org.freedom.modulos.fnc.SiaccUtil.StuffCli;
 import org.freedom.modulos.fnc.SiaccUtil.StuffParcela;
@@ -384,8 +385,10 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 			tab.limpa();
 
 			List<Object> infocli = new ArrayList<Object>();
+			List<RegB> regsB = null;
 
 			try {
+				
 				for ( Reg reg : list ) {
 
 					if ( reg.getTiporeg() == 'F' ) {
@@ -425,12 +428,20 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 							tab.setValor( Funcoes.bdToStr( new BigDecimal( 0 ) ), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
 							tab.setValor( "BAIXA AUTOMÁTICA SIACC", row, EColTab.OBS.ordinal() ); // HISTÓRICO
 							tab.setValor( (String) infocli.get( EColInfoCli.TIPOFEBRABAN.ordinal() ), row, EColTab.TIPOFEBRABAN.ordinal() );
-							tab.setValor( getCodRet( ( (RegF) reg ).getCodRetorno() ), row, EColTab.CODRET.ordinal() ); // código retorno
+							tab.setValor( ( (RegF) reg ).getCodRetorno(), row, EColTab.CODRET.ordinal() ); // código retorno
 							tab.setValor( getMenssagem( ( (RegF) reg ).getCodRetorno() ), row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
 							
 
 							row++;
 						}
+					}
+					else if ( reg.getTiporeg() == 'B' ) {
+						
+						if ( regsB == null ) {
+							regsB = new ArrayList<RegB>();
+						}
+						
+						regsB.add( (RegB) reg );
 					}
 				}
 
@@ -440,6 +451,9 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 				else {
 					lbStatus.setText( "     Informações do cliente não encontradas ..." );
 				}
+				
+				montaDlRegB( regsB );
+				
 			} catch ( Exception e ) {
 				retorno = false;
 				Funcoes.mensagemErro( this, "Erro no carregamento da tabela!\n" + e.getMessage() );
@@ -512,6 +526,19 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		}
 
 		return retorno;
+	}
+
+	private void montaDlRegB( final List<RegB> regs ) {
+
+		if ( regs != null ) {
+
+			DLRegB dl = new DLRegB( this );
+			
+			if ( dl.montaGrid( regs, con ) ) {
+			
+				dl.setVisible( true );
+			}
+		}
 	}
 
 	private void edit() {
@@ -605,11 +632,6 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		}
 	}
 	
-	private String getCodRet(final String codRet){
-		
-		return codRet;
-	}
-	
 	private String getMenssagem( final String codretorno ) {
 		
 		String msg = null; 
@@ -643,6 +665,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		}
 		return msg;		
 	}
+	
 	private HashSet<StuffCli> getClientes() {
 		
 		HashSet<StuffCli> clientes = null;
@@ -756,9 +779,10 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 								
 				for ( StuffCli cliente : clientes ) {
 					
-					if (!validaCliente( cliente )) {
+					if ( ! validaCliente( cliente ) ) {
 						break;
 					}
+					
 					StringBuilder sSQL = new StringBuilder();
 					
 					sSQL.append( "SELECT NUMCONTA, CODPLAN " );
@@ -923,12 +947,9 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 	private void baixar(){
 
 		if ( updateClientes() ) {
-
-			if (baixaReceber()) {
+			if ( baixaReceber() ) {
 				tab.limpa();
 			}
-			
-			
 		}
 	}
 	
@@ -942,6 +963,8 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		}
 		else if ( e.getSource() == btImporta ) {
 			execImportar();
+			//DLRegB dl = new DLRegB( this );
+			//dl.setVisible( true );
 		}
 		else if ( e.getSource() == btEdita ) {
 			edit();
