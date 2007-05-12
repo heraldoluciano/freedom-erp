@@ -1,5 +1,3 @@
-
-
 Licença Pública Geral do GNU (GPL) [General Public License] 
 This is an unofficial translation of the GNU General Public License into Portuguese. It was not published by the Free Software Foundation, and does not legally state the distribution terms for software that uses the GNU GPL--only the original English text of the GNU GPL does that. However, we hope that this translation will help Portuguese speakers understand the GNU GPL better.
 Esta é uma tradução não-oficial da GNU General Public License para o Português. Ela não é publicada pela Free Software Foundation e não traz os termos de distribuição legal do software que usa a GNU GPL -- estes termos estão contidos apenas no texto da GNU GPL original em inglês. No entanto, esperamos que esta tradução ajudará no melhor entendimento da GNU GPL em Português.
