@@ -316,8 +316,8 @@ class SiaccUtil {
 			this.codMovimento = codMovimento;
 		}
 		
-		public Integer getDataOpcao() {		
-			return dataOpcao;
+		public java.util.Date getDataOpcao() throws Exception {		
+			return strToDate( String.valueOf( dataOpcao ) );
 		}
 		
 		public void setDataOpcao( final Integer dataOpcao ) {		
@@ -965,7 +965,7 @@ class SiaccUtil {
 	class RegJ extends Reg {
 		
 		private static final char CODREG = 'J'; // registro J.01
-		private Integer menssagemInfo = null;	// registro J.02
+		private String menssagemInfo = null;	// registro J.02
 		private String filler = null;			// registro J.03
 		
 		RegJ( final String line ) throws ExceptionSiacc {
@@ -976,7 +976,7 @@ class SiaccUtil {
 		
 		protected void parseLine( final String line ) throws ExceptionSiacc {
 			try {
-				setMenssagemInfo( line.substring( 1, 27 ).trim().length() > 0 ? new Integer( line.substring( 1, 27 ) ) : null );
+				setMenssagemInfo( line.substring( 1, 27 ) );
 				setFiller( line.substring( 27 ) );
 			} catch (Exception e) {
 				throw new ExceptionSiacc("Erro na leitura do registro J!" + e.getMessage());
@@ -991,11 +991,11 @@ class SiaccUtil {
 			this.filler = filler;
 		}
 		
-		public Integer getMenssagemInfo() {		
+		public String getMenssagemInfo() {		
 			return menssagemInfo;
 		}
 		
-		public void setMenssagemInfo( final Integer menssagemInfo ) {		
+		public void setMenssagemInfo( final String menssagemInfo ) {		
 			this.menssagemInfo = menssagemInfo;
 		}
 	}
