@@ -68,6 +68,9 @@ public class DLRegB extends FFDialogo{
 	public boolean montaGrid( final List<RegB> regs, final Connection con ) {
 		
 		boolean retorno = false;
+		Object[] cliente = new Object[2];
+		String cpfcli = null;
+		int row = 0;
 		
 		if ( regs != null && con != null ) {
 			
@@ -75,18 +78,18 @@ public class DLRegB extends FFDialogo{
 				setConexao( con );
 				
 				tab.limpa();
-				int row = 0;
-				int codcli = 0;
 				
 				for ( RegB reg : regs ) {
 					
 					try {
 						tab.adicLinha();
 						
-						codcli = Integer.parseInt( reg.getIdentCliEmp().trim() );
+						cpfcli = reg.getIdentCliEmp();
 						
-						tab.setValor( codcli, row, COL_CODCLI );
-						tab.setValor( getRazCli( codcli ), row, COL_RAZCLI );
+						cliente = getCliente(cpfcli);
+						
+						tab.setValor( cliente[0], row, COL_CODCLI );
+						tab.setValor( cliente[1], row, COL_RAZCLI );
 						tab.setValor( reg.getDataOpcao(), row, COL_DATA );
 						tab.setValor( reg.getAgenciaDebt(), row, COL_AGENCIA );
 						tab.setValor( reg.getIdentCliBco(), row, COL_IDENT );
@@ -107,25 +110,51 @@ public class DLRegB extends FFDialogo{
 		return retorno;
 	}
 	
-	private String getRazCli( final int codcli ) throws Exception {
+	private Object[] getCliente( final String cpfcnpj ) throws Exception {
 		
-		String razcli = null;
+		Object[] retorno = new Object[2];
+		String sql = null;
+		String cpf = null;
+		String cnpj = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		
-		if ( codcli > 0 ) {
+		if ( cpfcnpj != null ) {
 			
-			String sql = "SELECT RAZCLI FROM VDCLIENTE WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?";
+			cpf = Funcoes.copy( cpfcnpj, 11 );
+			cnpj = Funcoes.copy( cpfcnpj, 14 );
+			sql = "SELECT CODCLI, RAZCLI FROM VDCLIENTE " +
+					"WHERE PESSOACLI='F' AND CODEMP=? AND CODFILIAL=? AND CPFCLI=?";
 			
-			PreparedStatement ps = con.prepareStatement( sql );
+			ps = con.prepareStatement( sql );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setInt( 3, codcli );
-			ResultSet rs = ps.executeQuery();
+			ps.setString( 3, cpf );
+			rs = ps.executeQuery();
 			
 			if ( rs.next() ) {
-				razcli = rs.getString( "RAZCLI" );
+				retorno[0] = rs.getInt( "CODCLI" );
+				retorno[1] = rs.getString( "RAZCLI" );
+			} else {
+				sql = "SELECT CODCLI, RAZCLI FROM VDCLIENTE " +
+					"WHERE PESSOACLI='J' AND CODEMP=? AND CODFILIAL=? AND CNPJCLI=?";
+				ps = con.prepareStatement( sql );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+				ps.setString( 3, cpf );
+				rs = ps.executeQuery();
+				if ( rs.next() ) {
+					retorno[0] = rs.getInt( "CODCLI" );
+					retorno[1] = rs.getString( "RAZCLI" );
+				}
+			}
+			rs.close();
+			ps.close();
+			if (!con.getAutoCommit()) {
+				con.commit();
 			}
 		}
 		
-		return razcli;
+		return retorno;
 	}
 }
