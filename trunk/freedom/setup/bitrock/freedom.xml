@@ -5,7 +5,6 @@
     <readmeFile>C:\opt\eclipse\workspace\freedom\doc\leiame.txt</readmeFile>
     <licenseFile>C:\opt\eclipse\workspace\freedom\doc\licenca\GPL-pt_BR.txt</licenseFile>
     <defaultLanguage>pt_BR</defaultLanguage>
-    <postInstallationScript>${installdir}/../firebird/UDF/udfinstall.bat</postInstallationScript>
     <componentList>
         <component>
             <name>default</name>
