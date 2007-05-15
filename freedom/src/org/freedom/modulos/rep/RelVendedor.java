@@ -86,7 +86,7 @@ public class RelVendedor extends FRelatorio {
 			HashMap<String,Object> hParam = new HashMap<String, Object>();
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
-			//hParam.put( "SUBREPORT_DIR", RelVendedor.class.getResource( "relatorios/" ).getPath() );
+			hParam.put( "SUBREPORT_DIR", "/opt/freedom/reports/" );
 			hParam.put( "REPORT_CONNECTION", con );
 			
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpvendedor.jasper", "VENDEDORES", null, rs, hParam, this );

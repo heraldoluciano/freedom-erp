@@ -87,7 +87,7 @@ public class RelTipoCli extends FRelatorio {
 			HashMap<String,Object> hParam = new HashMap<String, Object>();
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
-			//hParam.put( "SUBREPORT_DIR", RelTipoCli.class.getResource( "relatorios/" ).getPath() );
+			hParam.put( "SUBREPORT_DIR", "/opt/freedom/reports/" );
 			hParam.put( "REPORT_CONNECTION", con );
 			
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rptipocli.jasper", "TIPOS DE CLIENTE", null, rs, hParam, this );
