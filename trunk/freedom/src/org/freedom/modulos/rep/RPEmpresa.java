@@ -212,7 +212,7 @@ public class RPEmpresa extends FTabDados {
 		
 		adicDB( imLogoEmp, 380, 30, 140, 140, "FotoEmp", "Logomarca", true );
 		
-		adicCampo( txtNomeEmp, 7, 70, 363, 20, "NomeEmp", "Nome fantasia", ListaCampos.DB_SI, false );
+		adicCampo( txtNomeEmp, 7, 70, 363, 20, "NomeEmp", "Nome fantasia", ListaCampos.DB_SI, true );
 		
 		adicCampo( txtCnpjEmp, 7, 110, 180, 20, "CnpjEmp", "Cnpj", ListaCampos.DB_SI, true );
 		adicCampo( txtInscEmp, 190, 110, 180, 20, "InscEmp", "Inscrição Estadual", ListaCampos.DB_SI, true );

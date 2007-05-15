@@ -328,7 +328,7 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 			HashMap<String,Object> hParam = new HashMap<String, Object>();
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
-			//hParam.put( "SUBREPORT_DIR", RelPedido.class.getResource( "relatorios/" ).getPath() );
+			hParam.put( "SUBREPORT_DIR", "/opt/freedom/reports/" );
 			hParam.put( "REPORT_CONNECTION", con );
 			hParam.put( "DTINI", dtini );
 			hParam.put( "DTFIM", dtfim );
