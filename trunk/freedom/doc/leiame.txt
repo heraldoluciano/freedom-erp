@@ -1,4 +1,4 @@
-Freedom-ERP Versão 1.1.3.4
+Freedom-ERP Versão 1.1.3.5
 1999-2007 / Setpoint Informática Ltda (R).
 Licença GPL
 
@@ -19,7 +19,8 @@ Licença GPL
 	Também requer a instalação prévia dos seguintes softwares: 
 	Máquina virtual Java da Sun versão 1.5 ou superior, e o gerenciador
 	de banco de dados Firebird versão 1.5.x.
-	
+
+	Obs.: O Firebird deve ser instalado na pasta \opt\firebird .	
 	
 *** Documentação
 	

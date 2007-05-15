@@ -2,8 +2,9 @@
     <shortName>freedom</shortName>
     <fullName>Freedom-ERP</fullName>
     <version>1.1.3.4</version>
-    <readmeFile>C:\opt\eclipse\workspace\freedom\doc\leiame.txt</readmeFile>
-    <licenseFile>C:\opt\eclipse\workspace\freedom\doc\licenca\GPL-pt_BR.txt</licenseFile>
+    <installerFilename></installerFilename>
+    <readmeFile>C:/opt/eclipse/workspace/freedom/doc/leiame.txt</readmeFile>
+    <licenseFile>C:/opt/eclipse/workspace/freedom/doc/licenca/GPL-pt_BR.txt</licenseFile>
     <defaultLanguage>pt_BR</defaultLanguage>
     <componentList>
         <component>
@@ -140,6 +141,98 @@
                         </distributionFile>
                         <distributionFile>
                             <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/firebird/UDF/stp_udf_win.sql</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>lib</description>
+                    <destination>${installdir}/lib</destination>
+                    <name>lib</name>
+                    <platforms>all</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/squareness.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/activation.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/bizcal.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/comm.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/commons-beanutils.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/commons-collections.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/commons-logging.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/firebirdsql-full.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedomatd.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedomcfg.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedomfnc.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedomgms.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedompcp.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedompdv.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedomrep.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedomstd.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedomtmk.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/itext.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/jasperreports.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/jcommon.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/jdt-compiler.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/jfreechart.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/liquidlnf.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/mail.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/metouia.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/nachocalendar.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/PgsLookAndFeel.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/sosoriopdv.jar</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
