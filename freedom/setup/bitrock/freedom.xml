@@ -1,7 +1,7 @@
 <project>
     <shortName>freedom</shortName>
     <fullName>Freedom-ERP</fullName>
-    <version>1.1.3.5</version>
+    <version>1.1.3.6</version>
     <installerFilename></installerFilename>
     <readmeFile>C:/opt/eclipse/workspace/freedom/doc/leiame.txt</readmeFile>
     <licenseFile>C:/opt/eclipse/workspace/freedom/doc/licenca/GPL-pt_BR.txt</licenseFile>
@@ -228,12 +228,6 @@
                         <distributionFile>
                             <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/nachocalendar.jar</origin>
                         </distributionFile>
-                        <distributionFile>
-                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/PgsLookAndFeel.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/sosoriopdv.jar</origin>
-                        </distributionFile>
                     </distributionFileList>
                 </folder>
             </folderList>
@@ -281,6 +275,42 @@
                     <windowsExec>${installdir}/bin/freedomatd.bat</windowsExec>
                     <windowsExecArgs></windowsExecArgs>
                     <windowsIcon>${installdir}/icones/freedomatd.ico</windowsIcon>
+                    <windowsPath>${installdir}</windowsPath>
+                </startMenuShortcut>
+                <startMenuShortcut>
+                    <comment>Freedom Ponto de Venda</comment>
+                    <name>FreedomPDV</name>
+                    <runInTerminal>0</runInTerminal>
+                    <windowsExec>${installdir}/bin/freedompdv.bat</windowsExec>
+                    <windowsExecArgs></windowsExecArgs>
+                    <windowsIcon>${installdir}/icones/freedompdv.ico</windowsIcon>
+                    <windowsPath>${installdir}</windowsPath>
+                </startMenuShortcut>
+                <startMenuShortcut>
+                    <comment>Freedom Telemarketing</comment>
+                    <name>FreedomTMK</name>
+                    <runInTerminal>0</runInTerminal>
+                    <windowsExec>{$installdir}/bin/freedomstd.bat</windowsExec>
+                    <windowsExecArgs></windowsExecArgs>
+                    <windowsIcon>{$installdir}/icones/freedomstd.ico</windowsIcon>
+                    <windowsPath>{$installdir}</windowsPath>
+                </startMenuShortcut>
+                <startMenuShortcut>
+                    <comment>Freedom Financeiro</comment>
+                    <name>FreedomFNC</name>
+                    <runInTerminal>0</runInTerminal>
+                    <windowsExec>${installdir}/bin/freedomfnc.bat</windowsExec>
+                    <windowsExecArgs></windowsExecArgs>
+                    <windowsIcon>${installdir}/icones/freedomstd.ico</windowsIcon>
+                    <windowsPath>${installdir}</windowsPath>
+                </startMenuShortcut>
+                <startMenuShortcut>
+                    <comment>Freedom Gestão de Materiais e Serviços</comment>
+                    <name>FreedomGMS</name>
+                    <runInTerminal>0</runInTerminal>
+                    <windowsExec>${installdir}/bin/freedomgms</windowsExec>
+                    <windowsExecArgs></windowsExecArgs>
+                    <windowsIcon>${installdir}/icones/freedomstd.ico</windowsIcon>
                     <windowsPath>${installdir}</windowsPath>
                 </startMenuShortcut>
             </startMenuShortcutList>
