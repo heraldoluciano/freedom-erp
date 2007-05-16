@@ -290,10 +290,10 @@
                     <comment>Freedom Telemarketing</comment>
                     <name>FreedomTMK</name>
                     <runInTerminal>0</runInTerminal>
-                    <windowsExec>{$installdir}/bin/freedomstd.bat</windowsExec>
+                    <windowsExec>${$installdir}/bin/freedomtmk.bat</windowsExec>
                     <windowsExecArgs></windowsExecArgs>
-                    <windowsIcon>{$installdir}/icones/freedomstd.ico</windowsIcon>
-                    <windowsPath>{$installdir}</windowsPath>
+                    <windowsIcon>${installdir}/icones/freedomstd.ico</windowsIcon>
+                    <windowsPath>${installdir}</windowsPath>
                 </startMenuShortcut>
                 <startMenuShortcut>
                     <comment>Freedom Financeiro</comment>
