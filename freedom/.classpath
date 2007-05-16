@@ -19,5 +19,6 @@
 	<classpathentry kind="lib" path="lib/jfreechart.jar"/>
 	<classpathentry kind="lib" path="lib/bizcal.jar"/>
 	<classpathentry kind="lib" path="lib/nachocalendar.jar"/>
+	<classpathentry kind="lib" path="lib/commons-beanutils.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
