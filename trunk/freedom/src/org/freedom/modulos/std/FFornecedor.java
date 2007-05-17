@@ -118,6 +118,10 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	private JTextFieldPad txtCodContCred = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodForContab = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private JTextFieldPad txtCodHistPad = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescHistPad = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 
@@ -133,13 +137,15 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	private ListaCampos lcTipoFor = new ListaCampos( this, "TF" );
 
+	private ListaCampos lcHistorico = new ListaCampos( this, "HP" );
+
 	private boolean[] prefs = null;
 
 	public FFornecedor() {
 
 		super();
 		setTitulo( "Cadastro de Fornecedores" );
-		setAtribos( 50, 20, 480, 590 );
+		setAtribos( 50, 20, 480, 550 );
 		setImprimir( true );
 	}
 
@@ -154,6 +160,13 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		lcTipoFor.setQueryCommit( false );
 		lcTipoFor.setReadOnly( true );
 		txtCodTipoFor.setTabelaExterna( lcTipoFor );
+		
+		lcHistorico.add( new GuardaCampo( txtCodHistPad, "CodHist", "Cód.hist.", ListaCampos.DB_PK, false ) );
+		lcHistorico.add( new GuardaCampo( txtDescHistPad, "DescHist", "Descrição do historico padrão", ListaCampos.DB_SI, false ) );
+		lcHistorico.montaSql( false, "HISTPAD", "FN" );
+		lcHistorico.setQueryCommit( false );
+		lcHistorico.setReadOnly( true );
+		txtCodHistPad.setTabelaExterna( lcHistorico );
 
 		vPessoaLab.addElement( "Física" );
 		vPessoaLab.addElement( "Jurídica" );
@@ -192,10 +205,11 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		adicCampo( txtEmailFor, 7, 300, 220, 20, "EmailFor", "E-Mail", ListaCampos.DB_SI, false );
 		adicCampo( txtSiteFor, 230, 300, 220, 20, "SiteFor", "Site", ListaCampos.DB_SI, false );
 		adicCampo( txtContFor, 7, 340, 443, 20, "ContFor", "Contato", ListaCampos.DB_SI, false );
-		adicCampo( txtCodForContab, 7, 380, 180, 20, "CodForContab", "Cód.for.contábil", ListaCampos.DB_SI, false );
-		adicCampo( txtCodContDeb, 7, 420, 180, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
-		adicCampo( txtCodContCred, 7, 460, 180, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
-		
+		adicCampo( txtCodForContab, 7, 380, 145, 20, "CodForContab", "Cód.cli.contábil", ListaCampos.DB_SI, false );
+		adicCampo( txtCodContDeb, 155, 380, 145, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
+		adicCampo( txtCodContCred, 303, 380, 147, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
+		adicCampo( txtCodHistPad, 7, 420, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
+		adicDescFK( txtDescHistPad, 90, 420, 356, 20, "DescHist", "Descrição do historico padrão" );
 		
 		adicTab( "Observações", panelObservacao );
 		adicDBLiv( txaObs, "ObsFor", "Observações", false );
@@ -576,6 +590,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 		super.setConexao( cn );
 		lcTipoFor.setConexao( cn );
+		lcHistorico.setConexao( cn );
 		prefs = getPrefs();
 		montaTela();
 	}
