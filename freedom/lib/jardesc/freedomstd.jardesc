@@ -1,44 +1,45 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jardesc>
-<jar path="freedom/lib/freedomstd.jar"/>
-<options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomstd.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
-<storedRefactorings deprecationInfo="true" structuralOnly="false"/>
-<selectedProjects/>
-<manifest generateManifest="true" mainClassHandleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FreedomSTD.java[FreedomSTD" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
-<sealing sealJar="true">
-<packagesToSeal/>
-<packagesToUnSeal/>
-</sealing>
-</manifest>
-<selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLCompOrc.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAtendente.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoConv.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAgenda.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConsOrc.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLNovoAgen.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh{FFuncao.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh{DLRFuncao.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLRTipoAtendo.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAprovaOrc.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.tmk{FPrefere.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConsAutoriz.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FOrcamento.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.tmk{DLNovoAgen.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoAgenda.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLDescontItOrc.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.tmk{DLNovoHist.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoAtend.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConveniado.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.graficos"/>
-</selectedElements>
+    <jar path="freedom/lib/freedomstd.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomstd.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" mainClassHandleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FreedomSTD.java[FreedomSTD" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="true">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FHistPad.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoConv.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.tmk{FPrefere.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoAtend.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAgenda.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh{DLRFuncao.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoAgenda.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLRTipoAtendo.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh{FFuncao.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConveniado.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.graficos"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConsOrc.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLCompOrc.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConsAutoriz.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLDescontItOrc.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLNovoAgen.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.tmk{DLNovoAgen.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAprovaOrc.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.tmk{DLNovoHist.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FOrcamento.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAtendente.java"/>
+    </selectedElements>
 </jardesc>
