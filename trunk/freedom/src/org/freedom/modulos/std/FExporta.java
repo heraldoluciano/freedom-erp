@@ -3,6 +3,9 @@ package org.freedom.modulos.std;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -16,14 +19,12 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 
-import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -31,6 +32,8 @@ import org.freedom.telas.FFilho;
 public class FExporta extends FFilho implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final String RETURN = String.valueOf( (char) 13 ) + String.valueOf( (char) 10 );
 
 	private final JPanelPad panelExporta = new JPanelPad();
 
@@ -54,6 +57,7 @@ public class FExporta extends FFilho implements ActionListener {
 		setTitulo( "Exportar Arquivo" );
 		setAtribos( 50, 50, 470, 220 );
 
+		montaRadioGrupos();
 		montaTela();
 
 		Calendar cal = Calendar.getInstance();
@@ -69,6 +73,8 @@ public class FExporta extends FFilho implements ActionListener {
 
 		btGerar.addActionListener( this );
 		btFile.addActionListener( this );
+		
+		progress.setStringPainted( true );
 	}
 	
 	private void montaRadioGrupos() {
@@ -106,7 +112,7 @@ public class FExporta extends FFilho implements ActionListener {
 		panelExporta.adic( btGerar, 310, 65, 130, 25 );
 
 		panelExporta.adic( progress, 10, 120, 430, 20 );
-
+		
 		adicBotaoSair();
 	}
 
@@ -119,19 +125,14 @@ public class FExporta extends FFilho implements ActionListener {
 			txtFile.setVlrString( fileChooser.getSelectedFile().getPath() );
 		}
 	}
-
-	private void gerar() {
-
-		if ( "C".equals( rgModo.getVlrString() ) ) {
-			gerarContabil();
-		}
-		if ( "L".equals( rgModo.getVlrString() ) ) {
-			//gerarLivrosFicais();
-		}
-	}
 	
-	private void gerarContabil() {
+	private void gerar() {
 		
+		if ( txtFile.getVlrString() == null || txtFile.getVlrString().trim().length() < 1 ) {
+			Funcoes.mensagemInforma( this, "Selecione o arquivo!" );
+			txtFile.requestFocus();
+			return;
+		}
 		if ( txtDtFim.getVlrDate().before( txtDtIni.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final inferior a inicial!" );
 			return;
@@ -141,66 +142,180 @@ public class FExporta extends FFilho implements ActionListener {
 			
 			List<String> readrows = getReadRows();
 			
+			if ( readrows.size() > 0 ) {
+				
+				String filename = txtFile.getVlrString().trim();
+				File filecontabil = new File( filename );
+				
+				if ( filecontabil.exists() ) {
+					int opt = Funcoes.mensagemConfirma( null, "Arquivo: '" + filename + "' já existe! Deseja sobrescrever?" );
+					if ( opt != 0 ) {						
+						return;
+					}
+				}
+				
+				filecontabil.createNewFile();
+				
+				FileWriter filewritercontabil = new FileWriter( filecontabil );
+				
+				int countprogress = 1;
+				progress.setMaximum( readrows.size() );
+				
+				for ( String row : readrows ) {
+					
+					filewritercontabil.write( row );
+					filewritercontabil.write( RETURN );
+					filewritercontabil.flush();
+					progress.setValue( countprogress++ );
+				}			
+				
+				filewritercontabil.close();
+				
+				Funcoes.mensagemInforma( this, "Arquivo exportado para '" + filename + "' com sucesso!" );
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Nenhum registro encontrado para exportação!" );
+			}
 		}
 		catch ( Exception e ) {
-			Funcoes.mensagemErro( this, "Erro ao montar arquivo contábil!\n" + e.getMessage(), true, con, e );
+			Funcoes.mensagemErro( this, "Erro ao montar arquivo!\n" + e.getMessage(), true, con, e );
 			e.printStackTrace();
 		}
+		
+		progress.setValue( 0 );
 	}
 	
 	private List<String> getReadRows() throws Exception {
 		
 		List<String> readrows = new ArrayList<String>();
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuilder sql = new StringBuilder();
-		
 		// implementar seleção de formato de arquivo.
-		//if ( opção de formato ) 
-		
-		sql.append( "" );
-		ps = con.prepareStatement( sql.toString() );
-		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, ListaCampos.getMasterFilial( "" ) );
-		rs = ps.executeQuery();
-		
-		while( rs.next() ) {
-			
-		}
-		
-		rs.close();
-		ps.close();
-		
-		if ( ! con.getAutoCommit() ) {
-			con.commit();
-		}
-		
+		//if ( "C".equals( rgModo.getVlrString() ) ) {
+		//	if ( opção de formato ) {						
+			getLayoutContabil( readrows );
+		//	}
+		//}
+		//if ( "L".equals( rgModo.getVlrString() ) ) {
+		//	if ( opção de formato ) {	
+		//	}
+		//}
+				
 		return readrows;
+	}
+	
+	private void getLayoutContabil( final List<String> readrows ) {
+		
+		try {
+			
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			StringBuilder sql = new StringBuilder();
+			StringBuilder row = new StringBuilder();
+						
+			sql.append( "SELECT L.TIPOLF,L.CODEMP,L.CODFILIAL,L.CODEMITLF, " );
+			sql.append( "(CASE WHEN L.TIPOLF='S' THEN" );
+			sql.append( "	COALESCE(C.CNPJCLI,C.CPFCLI)" );
+			sql.append( "	ELSE" );
+			sql.append( "	COALESCE(F.CNPJFOR, F.CPFFOR)" );
+			sql.append( "	END) CNPJEMIT," );
+			sql.append( "L.DTEMITLF, L.ESPECIELF, L.SERIELF," );
+			sql.append( "L.DOCINILF, L.DOCFIMLF, L.CODNAT," );
+			sql.append( "L.ALIQICMSLF," );      
+			sql.append( "L.ALIQIPILF," );         
+			sql.append( "L.OBSLF," );
+			sql.append( "SUM(L.VLRBASEICMSLF) VLRBASECIMSLF," );
+			sql.append( "SUM(L.VLRICMSLF) VLRICMSLF," );
+			sql.append( "SUM(L.VLRISENTASICMSLF) VLRISENTASICMSLF," );
+			sql.append( "SUM(L.VLROUTRASICMSLF) VLROUTRASICMSLF," );
+			sql.append( "SUM(L.VLRBASEIPILF) VLRBASEIPILF," );
+			sql.append( "SUM(L.VLRIPILF) VLRIPILF," );
+			sql.append( "SUM(L.VLRISENTASIPILF) VLRISENTASIPILF," );
+			sql.append( "SUM(L.VLROUTRASIPILF) VLROUTRASIPILF " );
+			sql.append( "FROM  LFLIVROFISCAL L " );
+			sql.append( "LEFT OUTER JOIN VDCLIENTE C ON " );
+			sql.append( "	C.CODEMP=L.CODEMP AND" );
+			sql.append( "	C.CODFILIAL=L.CODFILIAL AND" );
+			sql.append( "	C.CODCLI=L.CODEMITLF AND" );
+			sql.append( "	L.TIPOLF='S' " );
+			sql.append( "LEFT OUTER JOIN CPFORNECED F ON" );
+			sql.append( "	F.CODEMP=L.CODEMP AND" );
+			sql.append( "	F.CODFILIAL=L.CODFILIAL AND" );
+			sql.append( "	F.CODFOR=L.CODEMITLF AND" );
+			sql.append( "	L.TIPOLF='E' " );
+			sql.append( "WHERE L.CODEMP=? AND L.CODFILIAL=? AND L.DTEMITLF BETWEEN ? AND ? " );
+			sql.append( "GROUP BY L.TIPOLF,L.CODEMP,L.CODFILIAL,L.CODEMITLF," );
+			sql.append( "5,L.DTEMITLF,L.ESPECIELF,L.SERIELF," );
+			sql.append( "L.DOCINILF,L.DOCFIMLF,L.CODNAT," );
+			sql.append( "L.ALIQICMSLF,L.ALIQIPILF,L.OBSLF " );
+			sql.append( "ORDER BY L.DTEMITLF" );
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "LFLIVROFISCAL" ) );
+			ps.setDate( 3, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
+			ps.setDate( 4, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
+			rs = ps.executeQuery();
+			
+			while( rs.next() ) {
+				
+				row.delete( 0, row.length() );
+
+				row.append( rs.getString( "CODEMITLF" ) );
+				row.append( rs.getString( "CNPJEMIT" ) );
+				row.append( rs.getString( "DTEMITLF" ) );
+				row.append( rs.getString( "ESPECIELF" ) );
+				row.append( rs.getString( "SERIELF" ) );
+				row.append( rs.getString( "DOCINILF" ) );
+				row.append( rs.getString( "DOCFIMLF" ) );
+				row.append( rs.getString( "CODNAT" ) );
+				row.append( rs.getString( "ALIQICMSLF" ) );
+				row.append( rs.getString( "ALIQIPILF" ) );
+				row.append( rs.getString( "OBSLF" ) );
+				row.append( rs.getString( "VLRBASECIMSLF" ) );
+				row.append( rs.getString( "VLRICMSLF" ) );
+				row.append( rs.getString( "VLRISENTASICMSLF" ) );
+				row.append( rs.getString( "VLROUTRASICMSLF" ) );
+				row.append( rs.getString( "VLROUTRASICMSLF" ) );
+				row.append( rs.getString( "VLRBASEIPILF" ) );
+				row.append( rs.getString( "VLRIPILF" ) );
+				row.append( rs.getString( "VLRISENTASIPILF" ) );
+				row.append( rs.getString( "VLROUTRASIPILF" ) );
+						
+				readrows.add( row.toString() );
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+		}
+		catch ( Exception e ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar dados!" );
+			e.printStackTrace();
+		}
 	}
 
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btGerar ) {
 
-			ProcessoSec pSec = new ProcessoSec( 500, 
-				new Processo() {
-					public void run() {
-						progress.updateUI();
-					}
-				}, 
-				new Processo() {
-					public void run() {
-						gerar();
-					}
-				} 
-			);
-			
-			pSec.iniciar();
+			Thread tdg = new Thread() {
+				public void run() {
+					gerar();
+				}
+			};			
+			tdg.start();
 		}
 		else if ( e.getSource() == btFile ) {
 
 			getFile();
 		}
+	}
+
+	@ Override
+	public void setConexao( Connection cn ) {
+
+		super.setConexao( cn );
 	}
 }
