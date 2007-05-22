@@ -80,9 +80,9 @@ public class FreedomFNC extends AplicativoPD {
 				addOpcao( 100100000, TP_OPCAO_MENU, "Cliente", "", 'C', 100101000, 2, false, null );
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Setor", "Setor", 'S', 100101010, 3, true, FSetor.class );
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Comissionado", "Comissionado", 's', 100101020, 3, true, FVendedor.class );
-					addOpcao( 100101000, TP_OPCAO_ITEM, "Tipo de cliente...", "TipoCli", 'T', 100101030, 3, true, FTipoCli.class );
-					addOpcao( 100101000, TP_OPCAO_ITEM, "Classificação de cliente...", "Classifição de Clientes", 'f', 100101040, 3, true, FClasCli.class );
-					addOpcao( 100101000, TP_OPCAO_ITEM, "Cliente...", "Clientes", 'C', 100101050, 3, true, FCliente.class );
+					addOpcao( 100101000, TP_OPCAO_ITEM, "Tipos de clientes", "TipoCli", 'T', 100101030, 3, true, FTipoCli.class );
+					addOpcao( 100101000, TP_OPCAO_ITEM, "Classificação de clientes", "Classifição de Clientes", 'f', 100101040, 3, true, FClasCli.class );
+					addOpcao( 100101000, TP_OPCAO_ITEM, "Clientes", "Clientes", 'C', 100101050, 3, true, FCliente.class );
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Crédito por cliente", "Crédito por cliente", 'r', 100101060, 3, true, FCredCli.class );
 				addSeparador( 100100000 );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Moeda", "Moeda", 'M', 100102000, 2, true, FMoeda.class );
