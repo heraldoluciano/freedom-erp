@@ -106,7 +106,7 @@ public class NF011 extends Layout {
 					}
 					else {
 					
-						imp.say( 90, "X" );
+						imp.say( 88, "X" );
 					}
 
 					imp.say( 124, sNumNota );
@@ -200,13 +200,13 @@ public class NF011 extends Layout {
 
 					if ( iProd < MAXPROD ) {
 						
-						imp.say( 69, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 0, 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 0, 2 ) );
+						imp.say( 66, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 0, 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 0, 2 ) );
 						imp.say( 73, sSigla );
-						imp.say( 79, itens.getString( NF.C_CODUNID ).substring( 0, 4 ) );
-						imp.say( 82, String.valueOf( itens.getFloat( NF.C_QTDITPED ) ) );
-						imp.say( 92, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( ( ( new BigDecimal( itens.getFloat( NF.C_VLRLIQITPED ) ) ).divide( new BigDecimal( itens.getFloat( NF.C_QTDITPED ) ), 2, BigDecimal.ROUND_HALF_UP ) ) ) ) );
-						imp.say( 106, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( itens.getFloat( NF.C_VLRLIQITPED ) ) ) );
-						imp.say( 122, String.valueOf( itens.getFloat( NF.C_PERCICMSITPED ) ) );
+						imp.say( 76, itens.getString( NF.C_CODUNID ).substring( 0, 4 ) );
+						imp.say( 79, String.valueOf( itens.getFloat( NF.C_QTDITPED ) ) );
+						imp.say( 89, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( ( ( new BigDecimal( itens.getFloat( NF.C_VLRLIQITPED ) ) ).divide( new BigDecimal( itens.getFloat( NF.C_QTDITPED ) ), 2, BigDecimal.ROUND_HALF_UP ) ) ) ) );
+						imp.say( 103, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( itens.getFloat( NF.C_VLRLIQITPED ) ) ) );
+						imp.say( 118, String.valueOf( itens.getFloat( NF.C_PERCICMSITPED ) ) );
 						iProd++;
 					}
 				}
