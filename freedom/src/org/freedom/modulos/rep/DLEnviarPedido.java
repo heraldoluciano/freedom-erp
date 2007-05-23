@@ -27,7 +27,6 @@ package org.freedom.modulos.rep;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -40,8 +39,10 @@ import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
+import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -59,6 +60,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -74,13 +76,17 @@ public class DLEnviarPedido extends FFDialogo {
 
 	private JPanelPad panelRodape = null;
 
+	private final JTextFieldPad txtHost = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private final JTextFieldPad txtPort = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+
 	private final JTextFieldPad txtFrom = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldPad txtTo = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtHost = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
-
 	private final JTextFieldPad txtUser = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private final JPasswordFieldPad txtPassword = new JPasswordFieldPad( 20 );
 
 	private final JTextAreaPad txtMessage = new JTextAreaPad( 1000 );
 
@@ -107,17 +113,22 @@ public class DLEnviarPedido extends FFDialogo {
 
 		progress.setMaximum( 10 );
 		progress.setStringPainted( true );
+		
 		btEnviar.addActionListener( this );
+		
+		txtUser.setAtivo( false );
 	}
 
 	private void montaTela() {
 
 		adic( new JLabel( "Para:" ), 10, 10, 370, 20 );
-		adic( txtFrom, 10, 30, 370, 20 );
+		adic( txtTo, 10, 30, 370, 20 );
 		adic( new JLabel( "Menssagem:" ), 10, 50, 370, 20 );
 		adic( new JScrollPane( txtMessage ), 10, 70, 370, 100 );
-		adic( new JLabel( "Usuario" ), 10, 170, 370, 20 );
-		adic( txtUser, 10, 190, 370, 20 );
+		adic( new JLabel( "Usuario" ), 10, 170, 185, 20 );
+		adic( txtUser, 10, 190, 185, 20 );
+		adic( new JLabel( "Senha" ), 200, 170, 180, 20 );
+		adic( txtPassword, 200, 190, 180, 20 );
 		adic( progress, 10, 220, 370, 20 );
 		adic( status, 10, 240, 370, 20 );
 
@@ -143,9 +154,11 @@ public class DLEnviarPedido extends FFDialogo {
 
 		this.titulo = titulo;
 		txtHost.setVlrString( (String) prefere.get( EPrefere.SERVIDORSMTP.ordinal() ) );
+		txtPort.setVlrInteger( (Integer) prefere.get( EPrefere.PORTASMTP.ordinal() ) );
 		txtUser.setVlrString( (String) prefere.get( EPrefere.USUARIOSMTP.ordinal() ) );
-		txtTo.setVlrString( getEmailEmp() );
-		txtFrom.setVlrString( getEmailCli( codcli ) );
+		txtPassword.setVlrString( ( (String) prefere.get( EPrefere.SENHASMTP.ordinal() ) ).trim() );
+		txtFrom.setVlrString( getEmailEmp() );
+		txtTo.setVlrString( getEmailCli( codcli ) );
 	}
 
 	private String getEmailEmp() {
@@ -243,6 +256,10 @@ public class DLEnviarPedido extends FFDialogo {
 				Funcoes.mensagemErro( this, "Usuário não informado!" );
 				break validar;
 			}
+			if ( txtPassword.getVlrString() == null || txtPassword.getVlrString().trim().length() == 0 ) {
+				Funcoes.mensagemErro( this, "Senha não informada!" );
+				break validar;
+			}
 
 			retorno = true;
 		}
@@ -254,89 +271,155 @@ public class DLEnviarPedido extends FFDialogo {
 
 		if ( validaEnviar() ) {
 
-			int progresso = 0;
-			
 			try {
-
-				setCursor( Cursor.getPredefinedCursor( Cursor.WAIT_CURSOR ) );
-
-				progress.setValue( progresso++ );
-				setStatus( "Preparando o e-mail..." );
-
-				Properties props = new Properties();
-				props.put( "mail.smtp.host", txtHost.getVlrString() );
-
-				progress.setValue( progresso++ );
-				Session session = Session.getDefaultInstance( props );
-
-				// cria a mensagem
-				progress.setValue( progresso++ );
-				MimeMessage msg = new MimeMessage( session );
-				msg.setFrom( new InternetAddress( txtFrom.getVlrString() ) );
-
-				progress.setValue( progresso++ );
-				InternetAddress[] address = { new InternetAddress( txtTo.getVlrString() ) };
-				msg.setRecipients( Message.RecipientType.TO, address );
-				msg.setSubject( titulo );
-
-				// cria a primeira parte da mensagem
-				progress.setValue( progresso++ );
-				MimeBodyPart mbp1 = new MimeBodyPart();
-				mbp1.setText( txtMessage.getVlrString() );
-
-				// cria a segunda parte da mensage
-				progress.setValue( progresso++ );
-				MimeBodyPart mbp2 = new MimeBodyPart();
-
-				// cria o arquivo
-				progress.setValue( progresso++ );
-				setStatus( "Criando arquivo de anexo em " + Aplicativo.strTemp );
-
-				String filename = Aplicativo.strTemp + "pedido" + Calendar.getInstance().getTimeInMillis() + ".pdf";
-				JasperExportManager.exportReportToPdfFile( pedido, filename );
-				File file = new File( filename );
-
-				if ( !file.exists() ) {
-					return;
+				
+				if ( "S".equals( prefere.get( EPrefere.AUTENTICASMTP.ordinal() ) ) ) {
+					enviarAutenticado();
+				}
+				else {
+					enviarNaoAutenticado();
 				}
 
-				// anexa o arquivo na mensagem
-				progress.setValue( progresso++ );
-				setStatus( "Anexando arquivo..." );
-
-				FileDataSource fds = new FileDataSource( filename );
-				mbp2.setDataHandler( new DataHandler( fds ) );
-				mbp2.setFileName( fds.getName() );
-
-				// cria a Multipart
-				progress.setValue( progresso++ );
-				Multipart mp = new MimeMultipart();
-				mp.addBodyPart( mbp1 );
-				mp.addBodyPart( mbp2 );
-
-				// adiciona a Multipart na mensagem
-				msg.setContent( mp );
-
-				// configura a data: cabecalho
-				msg.setSentDate( Calendar.getInstance().getTime() );
-
-				// envia a mensagem
-				progress.setValue( progresso++ );
-				setStatus( "Enviando e-mail..." );
-				Transport.send( msg );
-
-				setCursor( Cursor.getDefaultCursor() );
-
-				progress.setValue( progresso++ );
-				Funcoes.mensagemInforma( this, "E-mail enviado com sucesso." );
-				
 			} catch ( Exception e ) {
 				Funcoes.mensagemErro( this, "Erro ao enviar pedido!\n" + e.getMessage(), true, con, e );
 				e.printStackTrace();
+				progress.setValue( 0 );
 			}
-			
+
 			setStatus( null );
 		}
+	}
+
+	private void enviarAutenticado() throws Exception {
+		
+		int progresso = 0;
+		
+		progress.setValue( progresso++ );
+
+		Properties props = new Properties();
+				
+		props.put( "mail.transport.protocol", "smtp" );
+		props.put( "mail.smtp.host", txtHost.getVlrString() );	
+		props.put( "mail.smtp.port", txtPort.getVlrString() );		
+		props.put( "mail.smtp.auth", "true" );
+		props.put( "mail.smtp.starttls.enable", "true" );
+		props.put( "mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory" );
+
+		Authenticator authenticator = new SMTPAuthenticator( txtUser.getVlrString(), txtPassword.getVlrString().trim() );
+		
+		progress.setValue( progresso++ );
+		Session session = Session.getInstance( props, authenticator );
+
+		progress.setValue( progresso++ );
+		MimeMessage msg = new MimeMessage( session );
+		msg.setFrom( new InternetAddress( txtFrom.getVlrString() ) );
+
+		progress.setValue( progresso++ );
+		InternetAddress[] address = { new InternetAddress( txtTo.getVlrString() ) };
+		msg.setRecipients( Message.RecipientType.TO, address );
+		msg.setSubject( titulo );
+
+		progress.setValue( progresso++ );
+		MimeBodyPart mbp1 = new MimeBodyPart();
+		mbp1.setText( txtMessage.getVlrString() );
+
+		progress.setValue( progresso++ );
+		MimeBodyPart mbp2 = new MimeBodyPart();
+
+		progress.setValue( progresso++ );
+		setStatus( "Criando arquivo de anexo em " + Aplicativo.strTemp );
+
+		String filename = Aplicativo.strTemp + "pedido" + Calendar.getInstance().getTimeInMillis() + ".pdf";
+		JasperExportManager.exportReportToPdfFile( pedido, filename );
+		File file = new File( filename );
+		if ( !file.exists() ) {
+			return;
+		}
+
+		progress.setValue( progresso++ );
+		setStatus( "Anexando arquivo..." );
+
+		FileDataSource fds = new FileDataSource( filename );
+		mbp2.setDataHandler( new DataHandler( fds ) );
+		mbp2.setFileName( fds.getName() );
+
+		progress.setValue( progresso++ );
+		Multipart mp = new MimeMultipart();
+		mp.addBodyPart( mbp1 );
+		mp.addBodyPart( mbp2 );
+
+		msg.setContent( mp );
+		msg.setSentDate( Calendar.getInstance().getTime() );
+
+		progress.setValue( progresso++ );
+		setStatus( "Enviando e-mail..." );
+		Transport.send( msg );
+
+		progress.setValue( progresso++ );
+		Funcoes.mensagemInforma( this, "E-mail enviado com sucesso." );
+	}
+
+	private void enviarNaoAutenticado() throws Exception {
+
+		int progresso = 0;
+
+		progress.setMaximum( 10 );
+		progress.setValue( progresso++ );
+
+		Properties props = new Properties();
+		props.put( "mail.transport.protocol", "smtp" );
+		props.put( "mail.smtp.host", txtHost.getVlrString() );
+
+		progress.setValue( progresso++ );
+		Session session = Session.getInstance( props, null );
+
+		progress.setValue( progresso++ );
+		MimeMessage msg = new MimeMessage( session );
+		msg.setFrom( new InternetAddress( txtFrom.getVlrString() ) );
+
+		progress.setValue( progresso++ );
+		InternetAddress[] address = { new InternetAddress( txtTo.getVlrString() ) };
+		msg.setRecipients( Message.RecipientType.TO, address );
+		msg.setSubject( titulo );
+
+		progress.setValue( progresso++ );
+		MimeBodyPart mbp1 = new MimeBodyPart();
+		mbp1.setText( txtMessage.getVlrString() );
+
+		progress.setValue( progresso++ );
+		MimeBodyPart mbp2 = new MimeBodyPart();
+
+		progress.setValue( progresso++ );
+		setStatus( "Criando arquivo de anexo em " + Aplicativo.strTemp );
+
+		String filename = Aplicativo.strTemp + "pedido" + Calendar.getInstance().getTimeInMillis() + ".pdf";
+		JasperExportManager.exportReportToPdfFile( pedido, filename );
+		File file = new File( filename );
+		if ( !file.exists() ) {
+			return;
+		}
+
+		progress.setValue( progresso++ );
+		setStatus( "Anexando arquivo..." );
+
+		FileDataSource fds = new FileDataSource( filename );
+		mbp2.setDataHandler( new DataHandler( fds ) );
+		mbp2.setFileName( fds.getName() );
+
+		progress.setValue( progresso++ );
+		Multipart mp = new MimeMultipart();
+		mp.addBodyPart( mbp1 );
+		mp.addBodyPart( mbp2 );
+
+		msg.setContent( mp );
+		msg.setSentDate( Calendar.getInstance().getTime() );
+
+		progress.setValue( progresso++ );
+		setStatus( "Enviando e-mail..." );
+		Transport.send( msg );
+
+		progress.setValue( progresso++ );
+		Funcoes.mensagemInforma( this, "E-mail enviado com sucesso." );
 	}
 
 	@ Override
@@ -346,20 +429,21 @@ public class DLEnviarPedido extends FFDialogo {
 
 		if ( e.getSource() == btEnviar ) {
 
-			ProcessoSec pSec = new ProcessoSec( 500, 
-				new Processo() {
-					public void run() {
-						status.updateUI();
-						progress.updateUI();
-					}
-				}, 
-				new Processo() {
-					public void run() {
-						enviar();
-					}
-				} 
-			);
-			
+			ProcessoSec pSec = new ProcessoSec( 500, new Processo() {
+
+				public void run() {
+
+					status.updateUI();
+					progress.updateUI();
+				}
+			}, new Processo() {
+
+				public void run() {
+
+					enviar();
+				}
+			} );
+
 			pSec.iniciar();
 		}
 	}
@@ -370,5 +454,23 @@ public class DLEnviarPedido extends FFDialogo {
 		super.setConexao( cn );
 
 		prefere = RPPrefereGeral.getPrefere( cn );
+	}
+
+	class SMTPAuthenticator extends Authenticator {
+
+		private final String username;
+
+		private final String password;
+
+		SMTPAuthenticator( String username, String password ) {
+
+			this.username = username;
+			this.password = password;
+		}
+
+		public PasswordAuthentication getPasswordAuthentication() {
+
+			return new PasswordAuthentication( username, password );
+		}
 	}
 }
