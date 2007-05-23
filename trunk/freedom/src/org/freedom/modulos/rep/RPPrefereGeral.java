@@ -38,6 +38,7 @@ import javax.swing.SwingConstants;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -61,9 +62,13 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 
 	private final JTextFieldPad txtServidorSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private final JTextFieldPad txtPortaSMTP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
 	private final JTextFieldPad txtUsuarioSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );	
 	
-	private final JTextFieldPad txtSenhaSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+	private final JPasswordFieldPad txtSenhaSMTP = new JPasswordFieldPad( 30 );
+	
+	private final JCheckBoxPad cbAutenticaSMTP = new JCheckBoxPad( "Autenticar ?", "S", "N" );
 
 	private final JTextFieldPad txtCasasDesc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -130,9 +135,11 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		adic( email, 27, 130, 80, 20 );
 		adic( linha2, 7, 140, 397, 100 );
 		
-		adicCampo( txtServidorSMTP, 17, 170, 377, 20, "ServidorSMTP", "Servidor de SMTP", ListaCampos.DB_SI, false );
-		adicCampo( txtUsuarioSMTP, 17, 210, 377, 20, "UsuarioSMTP", "Id do usuario", ListaCampos.DB_SI, false );
-		//adicCampo( txtSenhaSMTP, 17, 210, 377, 20, "UsuarioSMTP", "Id do usuario", ListaCampos.DB_SI, false );
+		adicCampo( txtServidorSMTP, 17, 170, 230, 20, "ServidorSMTP", "Servidor de SMTP", ListaCampos.DB_SI, false );
+		adicCampo( txtPortaSMTP, 250, 170, 41, 20, "PortaSMTP", "Porta", ListaCampos.DB_SI, false );
+		adicDB( cbAutenticaSMTP, 294, 170, 100, 20, "AutenticaSMTP", "", false );
+		adicCampo( txtUsuarioSMTP, 17, 210, 190, 20, "UsuarioSMTP", "Id do usuario", ListaCampos.DB_SI, false );
+		adicCampo( txtSenhaSMTP, 210, 210, 184, 20, "SenhaSMTP", "Senha do usuario", ListaCampos.DB_SI, false );
 		
 		JLabel campos = new JLabel( "Campos", SwingConstants.CENTER );
 		campos.setOpaque( true );
@@ -168,7 +175,8 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		try {
 			
 			sSQL.append( "SELECT IPICOMIS,IPIPED,CODBARPROD,ENDCLIPED,ORDEMPED," );
-			sSQL.append( "SERVIDORSMTP,USUARIOSMTP,CASASDEC,CASASDECFIN,CODMOEDA,LAYOUTPED " );
+			sSQL.append( "SERVIDORSMTP,PORTASMTP,USUARIOSMTP,SENHASMTP,AUTENTICASMTP," );
+			sSQL.append( "CASASDEC,CASASDECFIN,CODMOEDA,LAYOUTPED " );
 			sSQL.append( "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -183,7 +191,10 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 				prefere.add( EPrefere.ENDCLIPED.ordinal(), rs.getString( "ENDCLIPED" ) );
 				prefere.add( EPrefere.ORDEMPED.ordinal(), rs.getString( "ORDEMPED" ) );
 				prefere.add( EPrefere.SERVIDORSMTP.ordinal(), rs.getString( "SERVIDORSMTP" ) );
+				prefere.add( EPrefere.PORTASMTP.ordinal(), rs.getInt( "PORTASMTP" ) );
 				prefere.add( EPrefere.USUARIOSMTP.ordinal(), rs.getString( "USUARIOSMTP" ) );
+				prefere.add( EPrefere.SENHASMTP.ordinal(), rs.getString( "SENHASMTP" ) );
+				prefere.add( EPrefere.AUTENTICASMTP.ordinal(), rs.getString( "AUTENTICASMTP" ) );
 				prefere.add( EPrefere.CASASDEC.ordinal(), rs.getInt( "CASASDEC" ) );
 				prefere.add( EPrefere.CASASDECFIN.ordinal(), rs.getInt( "CASASDECFIN" ) );
 				prefere.add( EPrefere.CODMOEDA.ordinal(), rs.getString( "CODMOEDA" ) );
@@ -212,7 +223,10 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	    ENDCLIPED,
 	    ORDEMPED,
 	    SERVIDORSMTP,
+	    PORTASMTP,
 	    USUARIOSMTP,
+	    SENHASMTP,
+	    AUTENTICASMTP,
 	    CASASDEC,
 	    CASASDECFIN,
 	    CODMOEDA,
