@@ -22,21 +22,25 @@
 package org.freedom.modulos.std;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
-public class FBanco extends FDados implements ActionListener {
+public class FBanco extends FDados implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -45,7 +49,9 @@ public class FBanco extends FDados implements ActionListener {
   private JTextFieldPad txtCodModBol = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtSiteBanco = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
   private JTextFieldFK txtDescModBol = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JButtonPad btFirefox = new JButtonPad( Icone.novo( "firefox.gif" ));
   private ListaCampos lcModBol = new ListaCampos(this,"MB");
+  private String sURLBanco = null;
   public FBanco () {
   	super();
     setTitulo("Cadastro de Banco");
@@ -61,23 +67,37 @@ public class FBanco extends FDados implements ActionListener {
     adicCampo(txtCodBanco, 7, 20, 70, 20,"CodBanco","Cód.banco",ListaCampos.DB_PK,null,true);
     adicCampo(txtNomeBanco, 80, 20, 250, 20,"NomeBanco","Nome do banco",ListaCampos.DB_SI,null,true);
     adicCampo(txtCodModBol, 7, 60, 70, 20, "CodModBol", "Cód.mod.", ListaCampos.DB_FK, txtDescModBol,false);
-    adicCampo(txtSiteBanco, 7, 100, 325, 20, "SiteBanco", "Site ", ListaCampos.DB_SI, null,false);
+    adicCampo(txtSiteBanco, 7, 100, 300, 20, "SiteBanco", "Site ", ListaCampos.DB_SI, null,false);
     adicDescFK(txtDescModBol, 80, 60, 250, 20, "DescModBol", "Descrição do modelo de boleto");
+    adic(btFirefox, 310, 100, 20, 20 );
     setListaCampos( false, "BANCO", "FN");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
+    btFirefox.addActionListener( this );
     lcCampos.setQueryInsert(false);  
     setImprimir(true);
+    btFirefox.setToolTipText( "Acessar Site" );
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btPrevimp) {
         imprimir(true);
     }
-    else if (evt.getSource() == btImp) 
+    else if (evt.getSource() == btImp) {
       imprimir(false);
     super.actionPerformed(evt);
+    }
+    if(evt.getSource() == btFirefox ){
+    	
+    	if(!txtSiteBanco.getVlrString().equals( "" )){
+    		
+    		sURLBanco = txtSiteBanco.getVlrString();
+        	Funcoes.executeURL( Aplicativo.strOS, Aplicativo.strBrowser, sURLBanco );
+    	}
+    	else
+    		Funcoes.mensagemInforma( this, "Informe o Site do banco! " );
+    }
   }
-
+  
   private void imprimir(boolean bVisualizar) {
     ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
