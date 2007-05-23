@@ -211,14 +211,14 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		adicCampo( txtDDDCelFor, 293, 260, 47, 20, "DDDCelFor", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtCelFor, 343, 260, 107, 20, "CelFor", "Celular", ListaCampos.DB_SI, false );
 		adicCampo( txtEmailFor, 7, 300, 220, 20, "EmailFor", "E-Mail", ListaCampos.DB_SI, false );
-		adicCampo( txtSiteFor, 230, 300, 200, 20, "SiteFor", "Site", ListaCampos.DB_SI, false );
+		adicCampo( txtSiteFor, 230, 300, 190, 20, "SiteFor", "Site", ListaCampos.DB_SI, false );
 		adicCampo( txtContFor, 7, 340, 443, 20, "ContFor", "Contato", ListaCampos.DB_SI, false );
 		adicCampo( txtCodForContab, 7, 380, 145, 20, "CodForContab", "Cód.cli.contábil", ListaCampos.DB_SI, false );
 		adicCampo( txtCodContDeb, 155, 380, 145, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
 		adicCampo( txtCodContCred, 303, 380, 147, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
 		adicCampo( txtCodHistPad, 7, 420, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
 		adicDescFK( txtDescHistPad, 90, 420, 356, 20, "DescHist", "Descrição do historico padrão" );
-		adic(btFirefox, 435, 300, 20, 20 );
+		adic(btFirefox, 430, 300, 20, 20 );
 		btFirefox.setToolTipText( "Acessar Site" );
 		
 		adicTab( "Observações", panelObservacao );
