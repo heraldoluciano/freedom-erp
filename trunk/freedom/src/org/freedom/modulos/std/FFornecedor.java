@@ -26,11 +26,14 @@ package org.freedom.modulos.std;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JPanelPad;
 
 import javax.swing.JOptionPane;
@@ -44,6 +47,7 @@ import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
@@ -55,7 +59,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
 
-public class FFornecedor extends FTabDados implements RadioGroupListener, PostListener, InsertListener {
+public class FFornecedor extends FTabDados implements RadioGroupListener, PostListener, InsertListener, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -138,8 +142,12 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	private ListaCampos lcTipoFor = new ListaCampos( this, "TF" );
 
 	private ListaCampos lcHistorico = new ListaCampos( this, "HP" );
+	
+	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "firefox.gif" ));
 
 	private boolean[] prefs = null;
+	
+	private String sURLBanco = null;
 
 	public FFornecedor() {
 
@@ -203,13 +211,15 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		adicCampo( txtDDDCelFor, 293, 260, 47, 20, "DDDCelFor", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtCelFor, 343, 260, 107, 20, "CelFor", "Celular", ListaCampos.DB_SI, false );
 		adicCampo( txtEmailFor, 7, 300, 220, 20, "EmailFor", "E-Mail", ListaCampos.DB_SI, false );
-		adicCampo( txtSiteFor, 230, 300, 220, 20, "SiteFor", "Site", ListaCampos.DB_SI, false );
+		adicCampo( txtSiteFor, 230, 300, 200, 20, "SiteFor", "Site", ListaCampos.DB_SI, false );
 		adicCampo( txtContFor, 7, 340, 443, 20, "ContFor", "Contato", ListaCampos.DB_SI, false );
 		adicCampo( txtCodForContab, 7, 380, 145, 20, "CodForContab", "Cód.cli.contábil", ListaCampos.DB_SI, false );
 		adicCampo( txtCodContDeb, 155, 380, 145, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
 		adicCampo( txtCodContCred, 303, 380, 147, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
 		adicCampo( txtCodHistPad, 7, 420, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
 		adicDescFK( txtDescHistPad, 90, 420, 356, 20, "DescHist", "Descrição do historico padrão" );
+		adic(btFirefox, 435, 300, 20, 20 );
+		btFirefox.setToolTipText( "Acessar Site" );
 		
 		adicTab( "Observações", panelObservacao );
 		adicDBLiv( txaObs, "ObsFor", "Observações", false );
@@ -220,6 +230,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
+		btFirefox.addActionListener( this );
 		
 		txtCnpjFor.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepFor.setMascara( JTextFieldPad.MC_CEP );
@@ -227,6 +238,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		txtFaxFor.setMascara( JTextFieldPad.MC_FONE );
 
 	}
+	
 
 	private void imprimir( boolean bVisualizar ) {
 
@@ -541,9 +553,22 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 				System.out.println( i + " : " + vVal.elementAt( i ) );
 			}
 		}
-		else if ( evt.getSource() == btImp )
+		else if ( evt.getSource() == btImp ){
 			imprimir( false );
+			
+		}
 		super.actionPerformed( evt );
+		
+		 if(evt.getSource() == btFirefox ){
+		    	
+		    	if(!txtSiteFor.getVlrString().equals( "" )){
+		    		
+		    		sURLBanco = txtSiteFor.getVlrString();
+		        	Funcoes.executeURL( Aplicativo.strOS, Aplicativo.strBrowser, sURLBanco );
+		    	}
+		    	else
+		    		Funcoes.mensagemInforma( this, "Informe o Site do Fornecedor! " );
+		    }
 	}
 
 	public void beforePost( PostEvent pevt ) {
@@ -594,6 +619,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		prefs = getPrefs();
 		montaTela();
 	}
+	
 
 	public void afterPost( PostEvent pevt ) {
 
@@ -607,7 +633,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	public void beforeInsert( InsertEvent ievt ) {
 
 	}
-
+	
 	private boolean[] getPrefs() {
 
 		boolean[] bRet = new boolean[ 3 ];

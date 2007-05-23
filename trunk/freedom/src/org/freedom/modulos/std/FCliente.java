@@ -473,6 +473,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JButton btNovoHist = new JButton( Icone.novo( "btNovo.gif" ) );
 
 	private JButton btExcluiHist = new JButton( Icone.novo( "btExcluir.gif" ) );
+	
+	private JButton btFirefox = new JButton( Icone.novo( "firefox.gif" ) );
 
 	private Navegador navFor = new Navegador( true );
 
@@ -485,6 +487,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private boolean[] bPref = null;
 
 	private boolean bExecCargaObs = false;
+	
+	private String sURLBanco = null;
 
 	public FCliente() {
 
@@ -634,7 +638,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtCelCli, 203, 340, 107, 20, "CelCli", "Celular", ListaCampos.DB_SI, false );
 		adicCampo( txtIncraCli, 313, 340, 187, 20, "IncraCli", "Incra", ListaCampos.DB_SI, false );
 		adicCampo( txtEmailCli, 7, 380, 245, 20, "EmailCli", "E-Mail", ListaCampos.DB_SI, false );
-		adicCampo( txtSiteCli, 255, 380, 245, 20, "SiteCli", "Site", ListaCampos.DB_SI, false );
+		adicCampo( txtSiteCli, 255, 380, 220, 20, "SiteCli", "Site", ListaCampos.DB_SI, false );
+		adic(btFirefox, 480, 380, 20, 20 );
 		txtCpfCli.setMascara( JTextFieldPad.MC_CPF );
 		txtCnpjCli.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepCli.setMascara( JTextFieldPad.MC_CEP );
@@ -650,6 +655,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		btAtEntrega.setPreferredSize( new Dimension( 30, 30 ) );
 		btAtEntrega.setToolTipText( "Atualiza endereço de entrega." );
 		btAtEntrega.addActionListener( this );
+		btFirefox.addActionListener( this );
+		btFirefox.setToolTipText( "Acessar Site" );
 
 		adicCampo( txtEndEnt, 7, 20, 260, 20, "EndEnt", "Endereço", ListaCampos.DB_SI, false );
 		adicCampo( txtNumEnt, 270, 20, 50, 20, "NumEnt", "Num.", ListaCampos.DB_SI, false );
@@ -3347,8 +3354,18 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		else if ( evt.getSource() == btExcluiHist ) {
 			excluiHist();
 		}
-
 		super.actionPerformed( evt );
+		
+		if(evt.getSource() == btFirefox ){
+	    	
+	    	if(!txtSiteCli.getVlrString().equals( "" )){
+	    		
+	    		sURLBanco = txtSiteCli.getVlrString();
+	        	Funcoes.executeURL( Aplicativo.strOS, Aplicativo.strBrowser, sURLBanco );
+	    	}
+	    	else
+	    		Funcoes.mensagemInforma( this, "Informe o Site do Cliente! " );
+	    }
 	}
 
 	public void focusGained( FocusEvent fevt ) {
