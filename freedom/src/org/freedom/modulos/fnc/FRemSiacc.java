@@ -36,6 +36,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -170,8 +171,8 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		
 		vValsRem.addElement( "00" );
 		vValsRem.addElement( "01" );
-		vValsRem.addElement( "REJ" );
-		vValsRem.addElement( "TODOS" );
+		vValsRem.addElement( "02" );
+		vValsRem.addElement( "99" );
 		vLabsRem.addElement( "Não exportados" );
 		vLabsRem.addElement( "Exportados" );
 		vLabsRem.addElement( "Rejeitados" );
@@ -359,7 +360,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		else if ( "01".equals( rgSitRemessa.getVlrString() ) ) {
 			where = "AND ( FR.SITREMESSA IS NULL OR FR.SITREMESSA='01' ) ";
 		}
-		else if ( "REJ".equals( rgSitRemessa.getVlrString() ) ) {
+		else if ( "02".equals( rgSitRemessa.getVlrString() ) ) {
 			where = "AND ( FR.SITRETORNO IS NOT NULL AND FR.SITRETORNO<>'00' ) ";
 		}
 		
@@ -506,7 +507,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 					bw = new BufferedWriter( fw );
 		
 					lbStatus.setText( "     gravando arquivo ..." );
-					retorno = gravaRemessa( bw, hsCli, hsRec, rgSitRemessa.getVlrString() );
+					retorno = gravaRemessa( bw, hsCli, hsRec );
 				} catch ( IOException ioError ) {
 					Funcoes.mensagemErro( this, "Erro Criando o arquivo!\n " + sFileName + "\n" + ioError.getMessage() );
 					lbStatus.setText( "" );
@@ -534,7 +535,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 	}
 	
 	private boolean gravaRemessa( final BufferedWriter bw, HashSet<SiaccUtil.StuffCli> hsCli, 
-			HashSet<SiaccUtil.StuffRec> hsRec, String sitRemessa ) {
+			HashSet<SiaccUtil.StuffRec> hsRec ) {
 
 		boolean retorno = false;
 		Integer numReg = new Integer(0);
@@ -545,7 +546,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 			ArrayList<SiaccUtil.Reg> list = new ArrayList<SiaccUtil.Reg>();
 			list.add( new SiaccUtil().new RegA( '1', prefs, numReg++ ) );
 			int numAgenda = 1;
-			float vlrtotal = 0;
+			BigDecimal vlrtotal = new BigDecimal(0);
 			SiaccUtil.RegE e = null;
 			
 			// Implementar no futuro (Registro de clientes não podem ser enviados com Registro E)
@@ -568,15 +569,15 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 				}
 			} */
 			for ( SiaccUtil.StuffRec r : hsRec ) {
-				if ( sitRemessa.indexOf(( r.getArgs()[ SiaccUtil.EColrec.SITREMESSA.ordinal() ] ))>-1 ) {
+				//if ( sitRemessa.indexOf(( r.getArgs()[ SiaccUtil.EColrec.SITREMESSA.ordinal() ] ))>-1 ) {
 					e = new SiaccUtil().new RegE( 'E', r, numReg++, numAgenda );
 					list.add( e );
-					vlrtotal += e.getVlrParc();
+					vlrtotal = vlrtotal.add(e.getVlrParc());
 					numAgenda++;
-				}
+				//}
 			}
 			
-			list.add(new SiaccUtil().new RegZ(numReg+1, vlrtotal, numReg++));
+			list.add(new SiaccUtil().new RegZ(numReg+1, vlrtotal.floatValue(), numReg++));
 			
 			for ( SiaccUtil.Reg reg : list ) {
 				bw.write( reg.toString() );
