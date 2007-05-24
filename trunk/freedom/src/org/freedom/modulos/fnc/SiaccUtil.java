@@ -576,7 +576,7 @@ class SiaccUtil {
 		//private Integer E10 = null;			// registro E.10
 		private Integer seqRegistro = null;		// registro E.11
 		private Integer codMovimento = null;	// registro E.12
-		private float vlrParc = 0;
+		private BigDecimal vlrParc = null;
 		private Integer codRec = null;
 		private Integer nparcItRec = null;
 		
@@ -592,7 +592,7 @@ class SiaccUtil {
 			setCodRec(stfRec.getCodrec());
 			setNparcItRec(stfRec.getNParcitrec());
 			setUsoEmp(format(getCodRec(),ETipo.$9,6,0)+format(getNparcItRec(),ETipo.$9,4,0));
-			setVlrParc( Float.valueOf(stfRec.getArgs()[ EColrec.VLRAPAG.ordinal() ]) );
+			setVlrParc( new BigDecimal( stfRec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ));
 			setIdentCliEmp( stfRec.getArgs()[ EColrec.PESSOACLI.ordinal() ], 
 					stfRec.getArgs()[ EColrec.CPFCLI.ordinal() ],
 					stfRec.getArgs()[ EColrec.CNPJCLI.ordinal() ]);
@@ -600,7 +600,7 @@ class SiaccUtil {
 			this.sbreg.append( format( stfRec.getArgs()[ EColrec.AGENCIACLI.ordinal() ], ETipo.$9, 4, 0 ) );
 			this.sbreg.append( format( stfRec.getArgs()[ EColrec.IDENTCLI.ordinal() ], ETipo.X, 14, 0 ) );
 			this.sbreg.append( format( stfRec.getArgs()[ EColrec.DTVENC.ordinal() ], ETipo.$9, 8, 0 ) );
-			this.sbreg.append( format( Funcoes.transValor(new BigDecimal(vlrParc), 15, 2, true), ETipo.$9, 15, 0 ) );
+			this.sbreg.append( format( Funcoes.transValor(vlrParc, 15, 2, true), ETipo.$9, 15, 0 ) );
 			this.sbreg.append( COD_MOEDA );
 			this.sbreg.append( format( getUsoEmp(), ETipo.X, 60, 0 ) ); // Uso da empresa
 			this.sbreg.append( format( numAgenda, ETipo.$9, 6, 0 ) );
@@ -729,11 +729,11 @@ class SiaccUtil {
 			this.valorDebCred = valorDebCred;
 		}
 		
-		public float getVlrParc() {		
+		public BigDecimal getVlrParc() {		
 			return vlrParc;
 		}
 		
-		public void setVlrParc( float vlrParc ) {		
+		public void setVlrParc( BigDecimal vlrParc ) {		
 			this.vlrParc = vlrParc;
 		}
 		
