@@ -36,7 +36,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -418,7 +417,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 				tab.setValor( new Integer( rs.getInt( "CODREC" ) ), i, COL_CODREC );
 				tab.setValor( rs.getString( "DOCREC" ), i, COL_DOCREC );
 				tab.setValor( new Integer( rs.getInt( "NPARCITREC" ) ), i, COL_NRPARC );
-				tab.setValor( rs.getBigDecimal( "VLRAPAGITREC" ), i, COL_VLRAPAG );
+				tab.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRAPAGITREC" ) ), i, COL_VLRAPAG );
 				tab.setValor( rs.getDate( "DTITREC" ), i, COL_DTREC );
 				tab.setValor( rs.getDate( "DTVENCITREC" ), i, COL_DTVENC );
 				tab.setValor( rs.getString( "AGENCIACLI" ), i, COL_AGENCIACLI );
@@ -757,7 +756,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 						(String) vLinha.elementAt( COL_AGENCIACLI ),
 						(String) vLinha.elementAt( COL_IDENTCLI ), 
 						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( COL_DTVENC ) ), 
-						((BigDecimal) vLinha.elementAt( COL_VLRAPAG )).toString(),
+						Funcoes.strToBd( vLinha.elementAt( COL_VLRAPAG )).toString(),
 						(String) vLinha.elementAt(COL_PESSOACLI),
 						(String) vLinha.elementAt( COL_CPFCLI ),
 						(String) vLinha.elementAt( COL_CNPJCLI ) } ) ); 
