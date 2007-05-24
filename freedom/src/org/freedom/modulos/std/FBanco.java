@@ -84,8 +84,10 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
     }
     else if (evt.getSource() == btImp) {
       imprimir(false);
-    super.actionPerformed(evt);
+    
     }
+    super.actionPerformed(evt);
+    
     if(evt.getSource() == btFirefox ){
     	
     	if(!txtSiteBanco.getVlrString().equals( "" )){
