@@ -211,7 +211,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		adicCampo( txtDDDCelFor, 293, 260, 47, 20, "DDDCelFor", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtCelFor, 343, 260, 107, 20, "CelFor", "Celular", ListaCampos.DB_SI, false );
 		adicCampo( txtEmailFor, 7, 300, 220, 20, "EmailFor", "E-Mail", ListaCampos.DB_SI, false );
-		adicCampo( txtSiteFor, 230, 300, 190, 20, "SiteFor", "Site", ListaCampos.DB_SI, false );
+		adicCampo( txtSiteFor, 235, 300, 190, 20, "SiteFor", "Site", ListaCampos.DB_SI, false );
 		adicCampo( txtContFor, 7, 340, 443, 20, "ContFor", "Contato", ListaCampos.DB_SI, false );
 		adicCampo( txtCodForContab, 7, 380, 145, 20, "CodForContab", "Cód.cli.contábil", ListaCampos.DB_SI, false );
 		adicCampo( txtCodContDeb, 155, 380, 145, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
