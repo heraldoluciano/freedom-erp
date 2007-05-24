@@ -146,8 +146,6 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 	private final JLabel lbStatus = new JLabel();
 
 	private final ListaCampos lcBanco = new ListaCampos( this );
-	
-	private String tipoRem = "00";
 
 	private Map<SiaccUtil.EPrefs, Object> prefs = new HashMap<SiaccUtil.EPrefs, Object>();
 	
@@ -171,14 +169,16 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		vLabs.addElement( "Vencimento" );
 		rgData = new JRadioGroup( 2, 1, vLabs, vVals );
 		
-		vValsRem.addElement( "'00'" );
-		vValsRem.addElement( "'01'" );
-		vValsRem.addElement( "'00','01'" );
+		vValsRem.addElement( "00" );
+		vValsRem.addElement( "01" );
+		vValsRem.addElement( "REJ" );
+		vValsRem.addElement( "TODOS" );
 		vLabsRem.addElement( "Não exportados" );
 		vLabsRem.addElement( "Exportados" );
-		vLabsRem.addElement( "Ambos" );
+		vLabsRem.addElement( "Rejeitados" );
+		vLabsRem.addElement( "Todos" );
 		
-		rgSitRemessa = new JRadioGroup(3, 1, vLabsRem, vValsRem);
+		rgSitRemessa = new JRadioGroup( 2, 2, vLabsRem, vValsRem );
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
@@ -250,8 +250,6 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 
 	}
 
-	
-
 	private void montaTela() {
 	
 		pnCliente.add( panelRemessa, BorderLayout.CENTER );
@@ -260,7 +258,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		panelRemessa.add( panelTabela, BorderLayout.CENTER );
 		panelRemessa.add( panelStatus, BorderLayout.SOUTH );
 	
-		panelFiltros.setPreferredSize( new Dimension( 300, 150 ) );
+		panelFiltros.setPreferredSize( new Dimension( 300, 145 ) );
 		panelFiltros.adic( new JLabel( "Cód.banco" ), 7, 0, 90, 20 );
 		panelFiltros.adic( txtCodBanco, 7, 20, 90, 20 );
 		panelFiltros.adic( new JLabel( "Nome do banco" ), 100, 0, 300, 20 );
@@ -270,16 +268,16 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		bordaData.setBorder( BorderFactory.createEtchedBorder() );
 	
 		panelFiltros.adic( new JLabel( "filtro:" ), 7, 40, 60, 20 );
-		panelFiltros.adic( rgSitRemessa, 7, 60, 140, 70 );
-		panelFiltros.adic( new JLabel( "filtro:" ), 150, 40, 60, 20 );
-		panelFiltros.adic( rgData, 150, 60, 120, 70 );
-		panelFiltros.adic( new JLabel( "Período:" ), 273, 40, 80, 20 );
-		panelFiltros.adic( txtDtIni, 280, 85, 100, 20 );
-		panelFiltros.adic( new JLabel( "até", SwingConstants.CENTER ), 378, 85, 40, 20 );
-		panelFiltros.adic( txtDtFim, 415, 85, 100, 20 );
-		panelFiltros.adic( bordaData, 273, 60, 250, 70 );
+		panelFiltros.adic( rgSitRemessa, 7, 60, 250, 70 );
+		panelFiltros.adic( new JLabel( "filtro:" ), 260, 40, 60, 20 );
+		panelFiltros.adic( rgData, 260, 60, 120, 70 );
+		panelFiltros.adic( new JLabel( "Período:" ), 383, 40, 80, 20 );
+		panelFiltros.adic( txtDtIni, 395, 85, 75, 20 );
+		panelFiltros.adic( new JLabel( "até", SwingConstants.CENTER ), 468, 85, 40, 20 );
+		panelFiltros.adic( txtDtFim, 505, 85, 75, 20 );
+		panelFiltros.adic( bordaData, 383, 60, 210, 70 );
 	
-		panelFiltros.adic( btCarrega, 540, 80, 150, 30 );
+		panelFiltros.adic( btCarrega, 605, 80, 150, 30 );
 	
 		panelTabela.add( new JScrollPane( tab ), BorderLayout.CENTER );
 		panelTabela.add( panelFuncoes, BorderLayout.EAST );
@@ -352,9 +350,20 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 	
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sDtFiltro = "E".equals( rgData.getVlrString() ) ? "IR.DTITREC" : "IR.DTVENCITREC";
 		StringBuilder sSQL = new StringBuilder();
-		tipoRem = rgSitRemessa.getVlrString();
+		String sDtFiltro = "E".equals( rgData.getVlrString() ) ? "IR.DTITREC" : "IR.DTVENCITREC";
+		String where = "";
+		
+		if ( "00".equals( rgSitRemessa.getVlrString() ) ) {
+			where = "AND ( FR.SITREMESSA IS NULL OR FR.SITREMESSA='00' ) AND ( FR.SITRETORNO IS NULL OR FR.SITRETORNO='00' ) ";
+		}
+		else if ( "01".equals( rgSitRemessa.getVlrString() ) ) {
+			where = "AND ( FR.SITREMESSA IS NULL OR FR.SITREMESSA='01' ) ";
+		}
+		else if ( "REJ".equals( rgSitRemessa.getVlrString() ) ) {
+			where = "AND ( FR.SITRETORNO IS NOT NULL AND FR.SITRETORNO<>'00' ) ";
+		}
+		
 		sSQL.append( "SELECT IR.CODREC, IR.NPARCITREC, R.DOCREC, R.CODCLI, C.RAZCLI, IR.DTITREC, IR.DTVENCITREC," );
 		sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, COALESCE(FR.SITREMESSA,'00') SITREMESSA, " );
 		sSQL.append( "FR.SITRETORNO, COALESCE(COALESCE(FR.STIPOFEBRABAN,FC.STIPOFEBRABAN),'02') STIPOFEBRABAN, " );
@@ -370,9 +379,10 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		sSQL.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND " );
 		sSQL.append( sDtFiltro );
 		sSQL.append( " BETWEEN ? AND ? AND IR.STATUSITREC IN ('R1','RL') AND " );
-		sSQL.append( "IR.CODEMPBO=? AND IR.CODFILIALBO=? AND IR.CODBANCO=? AND " );
-		sSQL.append( "( FR.SITREMESSA IS NULL OR FR.SITREMESSA IN ("+tipoRem+")) " );
+		sSQL.append( "IR.CODEMPBO=? AND IR.CODFILIALBO=? AND IR.CODBANCO=? " );
+		sSQL.append( where );
 		sSQL.append( "ORDER BY C.RAZCLI, R.CODREC, IR.NPARCITREC " );
+		
 		ps = con.prepareStatement( sSQL.toString() );
 		ps.setDate( 1, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
 		ps.setDate( 2, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
@@ -845,7 +855,42 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 				tab.setValor( subTipo, i, COL_STIPOFEBRABAN );
 			}
 		}
+	}	
+	
+	private String getMenssagemRet( final String codretorno ) {
+		
+		String msg = null; 
+		StringBuilder sSQL = new StringBuilder();
+		PreparedStatement ps = null;
+		
+		try {
+			
+			sSQL.append( " SELECT DESCRET " );
+			sSQL.append( " FROM FNFBNCODRET " );
+			sSQL.append( " WHERE CODEMP=? AND CODFILIAL=?  AND CODEMPBO=? " );
+			sSQL.append( " AND CODFILIALBO=?  AND CODRET=? "  );
+			
+			ps = con.prepareStatement( sSQL.toString() );
+			
+			ps.setInt( 1,  Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "FNBANCO" ) );
+			ps.setString( 5, codretorno );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if( rs.next() ){
+				
+				msg = rs.getString( "DESCRET" );
+			}
+		} catch ( Exception e ) {
+			Funcoes.mensagemInforma( this, "Erro ao montar grid. \n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		return msg;		
 	}
+
 
 	public void actionPerformed( ActionEvent evt ) {
 	
@@ -867,8 +912,19 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 	public void mouseClicked( MouseEvent e ) {
 
 		if ( e.getClickCount() == 2 && e.getSource() == tab && tab.getLinhaSel() > -1 ) {
-			completaTabela( tab.getLinhaSel(), (Integer) tab.getValor( tab.getLinhaSel(), COL_CODCLI ), (String) tab.getValor( tab.getLinhaSel(), COL_RAZCLI ), (String) tab.getValor( tab.getLinhaSel(), COL_AGENCIACLI ), (String) tab.getValor( tab.getLinhaSel(), COL_IDENTCLI ), (String) tab
-					.getValor( tab.getLinhaSel(), COL_STIPOFEBRABAN ) );
+			
+			if ( ! "00".equals( tab.getValor( tab.getLinhaSel(), COL_SITRET ) ) ) {
+				
+				Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + getMenssagemRet( (String) tab.getValor( tab.getLinhaSel(), COL_SITRET ) )  );
+				//return;
+			}
+			completaTabela( 
+					tab.getLinhaSel(), 
+					(Integer) tab.getValor( tab.getLinhaSel(), COL_CODCLI ), 
+					(String) tab.getValor( tab.getLinhaSel(), COL_RAZCLI ), 
+					(String) tab.getValor( tab.getLinhaSel(), COL_AGENCIACLI ), 
+					(String) tab.getValor( tab.getLinhaSel(), COL_IDENTCLI ), 
+					(String) tab.getValor( tab.getLinhaSel(), COL_STIPOFEBRABAN ) );
 		}
 	}
 
