@@ -68,6 +68,7 @@ import org.freedom.modulos.fnc.SiaccUtil.EParcela;
 import org.freedom.modulos.fnc.SiaccUtil.Reg;
 import org.freedom.modulos.fnc.SiaccUtil.RegB;
 import org.freedom.modulos.fnc.SiaccUtil.RegF;
+import org.freedom.modulos.fnc.SiaccUtil.RegJ;
 import org.freedom.modulos.fnc.SiaccUtil.StuffCli;
 import org.freedom.modulos.fnc.SiaccUtil.StuffParcela;
 import org.freedom.modulos.std.DLBaixaRec;
@@ -386,6 +387,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 
 			List<Object> infocli = new ArrayList<Object>();
 			List<RegB> regsB = null;
+			String regJ = null;
 
 			try {
 				
@@ -404,10 +406,14 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 							tab.adicLinha();
 							
 							if ( "00".equals( ( (RegF) reg ).getCodRetorno() ) ) {
+								
 								tab.setValor( imgok, row, EColTab.STATUS.ordinal() );
 								tab.setValor( new Boolean( Boolean.TRUE ), row, EColTab.SEL.ordinal() );
 							}
 							else {
+								
+								updateStatusRetorno( (RegF) reg );
+								
 								tab.setValor( imgcancel, row, EColTab.STATUS.ordinal() );
 								tab.setValor( new Boolean( Boolean.FALSE ), row, EColTab.SEL.ordinal() );
 							}
@@ -429,9 +435,8 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 							tab.setValor( "BAIXA AUTOMÁTICA SIACC", row, EColTab.OBS.ordinal() ); // HISTÓRICO
 							tab.setValor( (String) infocli.get( EColInfoCli.TIPOFEBRABAN.ordinal() ), row, EColTab.TIPOFEBRABAN.ordinal() );
 							tab.setValor( ( (RegF) reg ).getCodRetorno(), row, EColTab.CODRET.ordinal() ); // código retorno
-							tab.setValor( getMenssagem( ( (RegF) reg ).getCodRetorno() ), row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
+							tab.setValor( getMenssagemRet( ( (RegF) reg ).getCodRetorno() ), row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
 							
-
 							row++;
 						}
 					}
@@ -443,6 +448,10 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 						
 						regsB.add( (RegB) reg );
 					}
+					else if ( reg.getTiporeg() == 'J' ) {
+						
+						regJ = ( (RegJ) reg ).getMenssagemInfo();
+					}
 				}
 
 				if ( row > 0 ) {
@@ -453,6 +462,11 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 				}
 				
 				montaDlRegB( regsB );
+				
+				if ( regJ != null && regJ.trim().length() > 0 ) {
+					
+					Funcoes.mensagemInforma( this, regJ );
+				}
 				
 			} catch ( Exception e ) {
 				retorno = false;
@@ -551,7 +565,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		if ( iLin > -1 ) {
 
 			iLin = tab.getLinhaSel();
-			if (!"00".equals(tab.getValor(iLin, EColTab.CODRET.ordinal()))) {
+			if ( ! "00".equals( tab.getValor( iLin, EColTab.CODRET.ordinal() ) ) ) {
 				Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + tab.getValor( iLin, EColTab.MENSSAGEM.ordinal() ) );
 				return;
 			}
@@ -632,7 +646,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		}
 	}
 	
-	private String getMenssagem( final String codretorno ) {
+	private String getMenssagemRet( final String codretorno ) {
 		
 		String msg = null; 
 		StringBuilder sSQL = new StringBuilder();
@@ -856,6 +870,32 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		}
 
 		return retorno;
+	}
+	
+	private void updateStatusRetorno( final RegF registro ) {
+		
+		try {
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append( "UPDATE FNFBNREC SET SITRETORNO=?" );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=? " );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setString( 1, registro.getCodRetorno() );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "FNFBNREC" ) );
+			ps.setInt( 4, registro.getCodRec() );
+			ps.setInt( 5, registro.getNparcItRec() );
+			ps.executeUpdate();			
+			ps.close();
+			
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+		}
+		catch ( Exception e ) {
+			Funcoes.mensagemErro( this, "Erro ao atualizar status do registro!\n" + e.getMessage(), true, con, e );
+		}
 	}
 	
 	private boolean baixaReceber() {
