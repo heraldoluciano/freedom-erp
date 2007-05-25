@@ -26,11 +26,8 @@
 package org.freedom.modulos.lvf;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.modulos.std.FBanco;
-import org.freedom.modulos.std.FCentroCusto;
 import org.freedom.modulos.std.FClasCli;
 import org.freedom.modulos.std.FCliente;
-import org.freedom.modulos.std.FConta;
 import org.freedom.modulos.std.FCredCli;
 import org.freedom.modulos.std.FEmpresa;
 import org.freedom.modulos.std.FEstacao;
@@ -38,42 +35,21 @@ import org.freedom.modulos.std.FFornecedor;
 import org.freedom.modulos.std.FGeraFiscal;
 import org.freedom.modulos.std.FImpressora;
 import org.freedom.modulos.std.FLanca;
-import org.freedom.modulos.std.FLiberaCredito;
 import org.freedom.modulos.std.FManutPag;
 import org.freedom.modulos.std.FManutRec;
 import org.freedom.modulos.std.FMensagem;
-import org.freedom.modulos.std.FModBoleto;
 import org.freedom.modulos.std.FMoeda;
 import org.freedom.modulos.std.FPapel;
-import org.freedom.modulos.std.FPlanejamento;
-import org.freedom.modulos.std.FPlanoPag;
-import org.freedom.modulos.std.FProcessaSL;
-import org.freedom.modulos.std.FRBalancete;
-import org.freedom.modulos.std.FRBalanceteGrafico;
-import org.freedom.modulos.std.FRBoleto;
-import org.freedom.modulos.std.FRBordero;
-import org.freedom.modulos.std.FRCentroCusto;
-import org.freedom.modulos.std.FRExtrato;
-import org.freedom.modulos.std.FRFluxoCaixa;
-import org.freedom.modulos.std.FRGraficoCC;
 import org.freedom.modulos.std.FRImpServ;
-import org.freedom.modulos.std.FRInadimplentes;
-import org.freedom.modulos.std.FRPagar;
 import org.freedom.modulos.std.FRPisCofins;
-import org.freedom.modulos.std.FRRazaoFin;
-import org.freedom.modulos.std.FRReceber;
-import org.freedom.modulos.std.FRReceberSetor;
 import org.freedom.modulos.std.FRVendasIcms;
 import org.freedom.modulos.std.FRegraFiscal;
 import org.freedom.modulos.std.FSetor;
 import org.freedom.modulos.std.FSintegra;
 import org.freedom.modulos.std.FTabICMS;
 import org.freedom.modulos.std.FTipoCli;
-import org.freedom.modulos.std.FTipoCob;
-import org.freedom.modulos.std.FTipoCred;
 import org.freedom.modulos.std.FTipoFor;
 import org.freedom.modulos.std.FVendedor;
-import org.freedom.modulos.std.FCredCli;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrincipalPD;
@@ -121,10 +97,10 @@ public class FreedomLVF extends AplicativoPD {
 			addOpcao( 200600000, TP_OPCAO_ITEM, "Pis e cofins", "Pis e cofins", 'P', 200603000, 2, true, FRPisCofins.class );
 			
 		addOpcao( -1, TP_OPCAO_MENU, "Entrada", "", 'E', 300000000, 0, false, null );
-			addOpcao( 300000000, TP_OPCAO_ITEM, "Registro de Entrada", "Registro Entrada", 'E', 300100000, 1, true, null );
+			addOpcao( 300000000, TP_OPCAO_ITEM, "Registro de Entrada", "Registro de Entrada", 'E', 300100000, 1, true, FRRegitroEntrada.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Saida", "", 'S', 400000000, 0, false, null );
-			addOpcao( 400000000, TP_OPCAO_ITEM, "Registro de Saida", "Registro Saida", 'S', 400100000, 1, true, null );
+			addOpcao( 400000000, TP_OPCAO_ITEM, "Registro de Saida", "Registro de Saida", 'S', 400100000, 1, true, null );
 		
 		addBotao( "barraUsuario.gif", "Cliente", "Clientes", 100101050, FCliente.class );
 		addBotao( "btContaPagar.gif", "Contas a pagar", "Manutenção de contas a pagar", 200100000, FManutPag.class );
@@ -155,7 +131,7 @@ public class FreedomLVF extends AplicativoPD {
 			FreedomLVF freedom = new FreedomLVF();
 			freedom.show();
 		} catch ( Throwable e ) {
-			Funcoes.criaTelaErro( "Erro de execução" );
+			Funcoes.criaTelaErro( "Erro de execução\n\n\n" + e.getMessage() );
 			e.printStackTrace();
 		}
 	}
