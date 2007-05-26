@@ -60,12 +60,12 @@ public class FPrincipal2 extends FPrincipal implements ActionListener, MouseList
 	}
 
 	public void remConFilial(){ 	
-		String sSQL = "EXECUTE PROCEDURE SGFIMCONSP(?,?,?)";
+		String sSQL = "EXECUTE PROCEDURE SGFIMCONSP";
 		try {
 			PreparedStatement ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilialPad );
-			ps.setString( 3, Aplicativo.strUsuario );
+//			ps.setInt( 1, Aplicativo.iCodEmp );
+//			ps.setInt( 2, Aplicativo.iCodFilialPad );
+//			ps.setString( 3, Aplicativo.strUsuario );
 			ps.execute();
 			ps.close();
 			if ( !con.getAutoCommit() )
