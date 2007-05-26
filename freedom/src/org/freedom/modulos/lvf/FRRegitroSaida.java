@@ -7,7 +7,7 @@
  * 
  * Pacote: org.freedom.modulos.lvf <BR>
  * Classe:
- * @(#)FRRegistroEntrada.java <BR>
+ * @(#)FRRegistroSaida.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -43,7 +43,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
-public class FRRegitroEntrada extends FRelatorio {
+public class FRRegitroSaida extends FRelatorio {
 
 	private static final long serialVersionUID = 1;
 
@@ -53,10 +53,10 @@ public class FRRegitroEntrada extends FRelatorio {
 
 	private final JTextFieldPad txtPaginaIncial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	public FRRegitroEntrada() {
+	public FRRegitroSaida() {
 
 		super();
-		setTitulo( "Registro de Entrada" );		
+		setTitulo( "Registro de Saida" );		
 		setAtribos( 50, 50, 295, 170 );
 		
 		montaTela();
@@ -105,8 +105,6 @@ public class FRRegitroEntrada extends FRelatorio {
 		
 		try {
 			
-			String[] empresa = getEmpresa();
-			
 			StringBuilder sql = new StringBuilder();
 			
 			sql.append( "SELECT L.CODLF, L.TIPOLF, L.ANOMESLF, L.ESPECIELF, L.DOCINILF, L.SERIELF," );
@@ -129,13 +127,10 @@ public class FRRegitroEntrada extends FRelatorio {
 			HashMap<String,Object> hParam = new HashMap<String, Object>();
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
-			hParam.put( "FOLHA", txtPaginaIncial.getVlrInteger() );
-			hParam.put( "CNPJ", empresa[ 0 ] );
-			hParam.put( "INSC", empresa[ 1 ] );
-			hParam.put( "PERIODO", txtDtIni.getVlrString() + " até " + txtDtFim.getVlrString() );
+			//hParam.put( "SUBREPORT_DIR", "/opt/freedom/reports/" );
 			hParam.put( "REPORT_CONNECTION", con );
 			
-			FPrinterJob dlGr = new FPrinterJob( "relatorios/RegistroEntrada.jasper", "REGISTRO DE ENTRADAS", null, rs, hParam, this );
+			FPrinterJob dlGr = new FPrinterJob( "relatorios/RegistroSaida.jasper", "REGISTRO DE SAIDAS", null, rs, hParam, this );
 
 			if ( visualizar ) {
 				dlGr.setVisible( true );
@@ -144,52 +139,12 @@ public class FRRegitroEntrada extends FRelatorio {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			}
 			
-			rs.close();
-			ps.close();
-			
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
+			dispose();
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
 			e.printStackTrace();
 		}
 
-	}
-	
-	private String[] getEmpresa() {
-		
-		String[] empresa = { "", "" };
-		
-		try {
-			
-			StringBuilder sql = new StringBuilder();			
-			sql.append( "SELECT CNPJFILIAL, INSCFILIAL FROM SGFILIAL WHERE CODEMP=? AND CODFILIAL=? " );
-			
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGFILIAL" ) );
-			
-			ResultSet rs = ps.executeQuery();
-			
-			if ( rs.next() ) {
-				
-				empresa[ 0 ] = rs.getString( "CNPJFILIAL" );
-				empresa[ 1 ] = rs.getString( "INSCFILIAL" );
-			}
-			
-			rs.close();
-			ps.close();
-			
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
-		} catch ( Exception e ) {
-			Funcoes.mensagemErro( this, "Erro ao busca dados da filial!\n" + e.getMessage() );
-			e.printStackTrace();
-		}
-		
-		return empresa;
 	}
 
 }
