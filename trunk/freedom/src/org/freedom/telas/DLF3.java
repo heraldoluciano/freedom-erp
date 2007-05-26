@@ -64,9 +64,7 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
        }
     );
   }
-  public boolean setValor(Object oVal,String sTipo) {
-  	return false;
-  }
+  public abstract boolean setValor(Object oVal,String sTipo);
   public Object getValor() {
     return oRetVal;
   }
