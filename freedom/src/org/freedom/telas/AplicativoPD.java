@@ -191,15 +191,15 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 	public static int[] gravaLog(String sIDUSU, String sClas, String sTipo,
 			String sDesc, String sObs, Connection con) {
 		int iRet[] = new int[2];
-		String sSQL = "SELECT CODFILIAL,CODLOG FROM SGLOGSP01(?,?,?,?,?,?)";
+		String sSQL = "SELECT CODFILIAL,CODLOG FROM SGLOGSP01(?,?,?,?)";
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1, iCodEmp);
-			ps.setString(2, sIDUSU);
-			ps.setString(3, sClas);
-			ps.setString(4, sTipo);
-			ps.setString(5, sDesc);
-			ps.setString(6, sObs);
+			//ps.setInt(1, iCodEmp);
+			//ps.setString(2, sIDUSU);
+			ps.setString(1, sClas);
+			ps.setString(2, sTipo);
+			ps.setString(3, sDesc);
+			ps.setString(4, sObs);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				iRet[0] = rs.getInt("CodFilial");

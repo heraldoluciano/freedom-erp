@@ -56,13 +56,13 @@ public class FPrincipalPD extends FPrincipal implements ActionListener, MouseLis
 
 	public void remConFilial() {
 
-		String sSQL = "EXECUTE PROCEDURE SGFIMCONSP(?,?,?)";
+		String sSQL = "EXECUTE PROCEDURE SGFIMCONSP";
 		System.out.println( "vingou 1" );
 		try {
 			PreparedStatement ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilialPad );
-			ps.setString( 3, Aplicativo.strUsuario );
+//			ps.setInt( 1, Aplicativo.iCodEmp );
+//			ps.setInt( 2, Aplicativo.iCodFilialPad );
+//			ps.setString( 3, Aplicativo.strUsuario );
 			ps.execute();
 			ps.close();
 			if ( !con.getAutoCommit() )
