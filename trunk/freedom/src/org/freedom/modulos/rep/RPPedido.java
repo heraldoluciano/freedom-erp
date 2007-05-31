@@ -272,9 +272,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private void montaListaCampos() {
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/**********
 		 * PEDIDO *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 **********/
 
 		lcPedido.add( new GuardaCampo( txtCodPed, "CODPED", "Cód.ped.", ListaCampos.DB_PK, false ) );
 		lcPedido.add( new GuardaCampo( txtVlrTotPed, "VLRTOTPED", "Pedido", ListaCampos.DB_SI, false ) );
@@ -289,9 +289,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcPedido.setQueryCommit( false );
 		lcPedido.setReadOnly( true );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/***********
 		 * CLIENTE *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 ***********/
 
 		lcCliente.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
@@ -302,9 +302,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcCliente.setReadOnly( true );
 		txtCodCli.setTabelaExterna( lcCliente );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/************
 		 * VENDEDOR *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 ************/
 
 		lcVendedor.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.vend.", ListaCampos.DB_PK, false ) );
 		lcVendedor.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do vendedor", ListaCampos.DB_SI, false ) );
@@ -313,9 +313,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcVendedor.setReadOnly( true );
 		txtCodVend.setTabelaExterna( lcVendedor );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/**********************
 		 * PLANO DE PAGAMENTO *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 **********************/
 
 		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
@@ -324,9 +324,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcPlanoPag.setReadOnly( true );
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/*********
 		 * MOEDA *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 *********/
 
 		lcMoeda.add( new GuardaCampo( txtCodMoeda, "CodMoeda", "Cód.moeda", ListaCampos.DB_PK, false ) );
 		lcMoeda.add( new GuardaCampo( txtDescMoeda, "SingMoeda", "Descrição da moeda", ListaCampos.DB_SI, false ) );
@@ -335,9 +335,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcMoeda.setReadOnly( true );
 		txtCodMoeda.setTabelaExterna( lcMoeda );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/**************
 		 * FORNECEDOR *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 **************/
 
 		lcFornecedor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFornecedor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
@@ -346,9 +346,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcFornecedor.setReadOnly( true );
 		txtCodFor.setTabelaExterna( lcFornecedor );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/******************
 		 * TRANSPORTADORA *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 ******************/
 
 		lcTransportadora.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.transp.", ListaCampos.DB_PK, false ) );
 		lcTransportadora.add( new GuardaCampo( txtRazTran, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, false ) );
@@ -357,9 +357,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcTransportadora.setReadOnly( true );
 		txtCodTran.setTabelaExterna( lcTransportadora );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/***********
 		 * PRODUTO *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 ***********/
 
 		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
@@ -369,9 +369,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcProduto.setReadOnly( true );
 		txtCodProd.setTabelaExterna( lcProduto );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/****************
 		 * FORNECEDOR 2 *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 ****************/
 
 		lcFornecedorItem.add( new GuardaCampo( txtCodForItem, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFornecedorItem.add( new GuardaCampo( txtRazForItem, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
@@ -384,11 +384,11 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private void montaMaster() {
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/***********
 		 * PEDIDOS *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 ***********/
 
-		setAltCab( 175 );
+		setAltCab( 170 );
 		setPainel( panelPedido, pnCliCab );
 
 		adicCampo( txtCodPed, 7, 20, 70, 20, "CodPed", "Pedido", ListaCampos.DB_PK, true );
@@ -417,9 +417,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private void montaDetale() {
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/*********
 		 * ITENS *
-		 **************************************************************************************************************************************************************************************************************************************************************************************************/
+		 *********/
 
 		pnDet.add( panelItens, BorderLayout.CENTER );
 
@@ -757,9 +757,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		}
 	}
 
-	public void beforeInsert( InsertEvent e ) {
-
-	}
+	public void beforeInsert( InsertEvent e ) { }
 
 	@ Override
 	public void afterPost( PostEvent e ) {
@@ -793,9 +791,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		}
 	}
 
-	public void beforeDelete( DeleteEvent e ) {
-
-	}
+	public void beforeDelete( DeleteEvent e ) { }
 
 	@ Override
 	public void actionPerformed( ActionEvent e ) {
@@ -815,9 +811,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		super.actionPerformed( e );
 	}
 
-	public void focusGained( FocusEvent e ) {
-
-	}
+	public void focusGained( FocusEvent e ) { }
 
 	public void focusLost( FocusEvent e ) {
 
