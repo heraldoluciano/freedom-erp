@@ -174,9 +174,9 @@ ORDER BY L.DTEMITLF, L.DOCINILF, L.SERIELF, L.CODEMITLF, L.CODNAT]]></queryStrin
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="227"
+						x="249"
 						y="1"
-						width="57"
+						width="55"
 						height="13"
 						key="textField-25"/>
 					<box topBorder="None" topBorderColor="#FFFFFF" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="1Point" rightBorderColor="#000000" rightPadding="2" bottomBorder="1Point" bottomBorderColor="#000000"/>
@@ -187,7 +187,7 @@ ORDER BY L.DTEMITLF, L.DOCINILF, L.SERIELF, L.CODEMITLF, L.CODNAT]]></queryStrin
 				</textField>
 				<staticText>
 					<reportElement
-						x="283"
+						x="304"
 						y="1"
 						width="32"
 						height="13"
@@ -236,6 +236,19 @@ ORDER BY L.DTEMITLF, L.DOCINILF, L.SERIELF, L.CODEMITLF, L.CODNAT]]></queryStrin
 						<font fontName="Arial" size="7"/>
 					</textElement>
 				<text><![CDATA[Observações:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="226"
+						y="0"
+						width="23"
+						height="14"
+						key="staticText-36"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" size="7"/>
+					</textElement>
+				<text><![CDATA[]]></text>
 				</staticText>
 			</band>
 			</groupFooter>
@@ -505,9 +518,9 @@ Série]]></text>
 				</line>
 				<staticText>
 					<reportElement
-						x="226"
+						x="250"
 						y="86"
-						width="172"
+						width="148"
 						height="21"
 						key="staticText-22"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
@@ -518,9 +531,9 @@ Série]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="226"
+						x="247"
 						y="106"
-						width="56"
+						width="55"
 						height="14"
 						key="staticText-23"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
@@ -531,7 +544,7 @@ Série]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="283"
+						x="303"
 						y="107"
 						width="31"
 						height="13"
@@ -544,9 +557,9 @@ Série]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="314"
+						x="335"
 						y="107"
-						width="84"
+						width="63"
 						height="13"
 						key="staticText-25"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="1Point" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
@@ -606,6 +619,20 @@ Série]]></text>
 						<font fontName="Arial" size="7"/>
 					</textElement>
 				<text><![CDATA[Esp.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="227"
+						y="86"
+						width="22"
+						height="34"
+						key="staticText-34"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="1Point" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+				<text><![CDATA[ICMS
+IPI]]></text>
 				</staticText>
 			</band>
 		</pageHeader>
@@ -785,7 +812,7 @@ Série]]></text>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="283"
+						x="303"
 						y="0"
 						width="0"
 						height="14"
@@ -794,7 +821,7 @@ Série]]></text>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="314"
+						x="335"
 						y="0"
 						width="0"
 						height="14"
@@ -821,7 +848,7 @@ Série]]></text>
 				</line>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="227"
+						x="249"
 						y="1"
 						width="54"
 						height="13"
@@ -860,8 +887,8 @@ Série]]></text>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="284"
-						y="1"
+						x="305"
+						y="0"
 						width="29"
 						height="13"
 						key="textField-21"/>
@@ -884,6 +911,19 @@ Série]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODNAT}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement
+						x="226"
+						y="0"
+						width="23"
+						height="14"
+						key="staticText-35"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="1Point" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+				<text><![CDATA[ICMS]]></text>
+				</staticText>
 			</band>
 		</detail>
 		<columnFooter>
