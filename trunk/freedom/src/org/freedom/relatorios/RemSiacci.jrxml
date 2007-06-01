@@ -706,8 +706,8 @@ ORDER BY C.RAZCLI, R.CODREC, IR.NPARCITREC]]></queryString>
 				</ellipse>
 				<rectangle>
 					<reportElement
-						x="772"
-						y="0"
+						x="771"
+						y="1"
 						width="9"
 						height="11"
 						forecolor="#CCCCFF"
