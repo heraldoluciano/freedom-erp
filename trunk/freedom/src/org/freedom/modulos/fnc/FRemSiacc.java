@@ -28,6 +28,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FileDialog;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -55,6 +57,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JPanelPad;
@@ -66,6 +70,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
+import org.freedom.telas.FPrinterJob;
 
 public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 
@@ -120,6 +125,10 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 	private final JPanelPad panelFuncoes = new JPanelPad();
 
 	private final JPanelPad panelStatus = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private final JPanelPad panelImp = new JPanelPad( JPanelPad.TP_JPANEL, new FlowLayout( FlowLayout.CENTER, 0, 0 ) );
+
+	private final JPanelPad pnImp = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
 
 	private final Tabela tab = new Tabela();
 
@@ -142,6 +151,10 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 	private final JButton btSelTudo = new JButton( Icone.novo( "btTudo.gif" ) );
 
 	private final JButton btSelNada = new JButton( Icone.novo( "btNada.gif" ) );
+	
+	private final JButton btImprime = new JButton( Icone.novo( "btImprime.gif" ) );
+	
+	private final JButton btVisImp = new JButton( Icone.novo( "btPrevimp.gif" ) );
 
 	private final JLabel lbStatus = new JLabel();
 
@@ -156,6 +169,8 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 	private final Vector<String> vValsRem = new Vector<String>();
 	
 	private final Vector<String> vLabsRem = new Vector<String>();
+	
+	String where = "";
 	
 	public FRemSiacc() {
 
@@ -241,7 +256,10 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		btSelTudo.addActionListener( this );
 		btSelNada.addActionListener( this );
 		btExporta.addActionListener( this );
-
+		btImprime.addActionListener( this );
+		btVisImp.addActionListener( this );
+		
+		
 		btSelTudo.setToolTipText( "Selecionar tudo" );
 		btSelNada.setToolTipText( "Limpar seleção" );
 
@@ -285,7 +303,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		panelFuncoes.setPreferredSize( new Dimension( 45, 100 ) );
 		panelFuncoes.adic( btSelTudo, 5, 5, 30, 30 );
 		panelFuncoes.adic( btSelNada, 5, 40, 30, 30 );
-	
+		
 		lbStatus.setForeground( Color.BLUE );
 	
 		panelStatus.setPreferredSize( new Dimension( 600, 30 ) );
@@ -296,7 +314,13 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		panelRodape.setPreferredSize( new Dimension( 600, 32 ) );
 		btExporta.setPreferredSize( new Dimension( 150, 30 ) );
 		panelRodape.add( btExporta, BorderLayout.WEST );
-	
+		
+		panelRodape.add( panelImp, BorderLayout.CENTER );
+		panelImp.add( pnImp, BorderLayout.NORTH );
+		pnImp.setPreferredSize( new Dimension( 60, 30 ) );
+		pnImp.add( btImprime );
+		pnImp.add( btVisImp );
+		
 	}
 
 	private boolean setPrefs() {
@@ -352,7 +376,7 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		ResultSet rs = null;
 		StringBuilder sSQL = new StringBuilder();
 		String sDtFiltro = "E".equals( rgData.getVlrString() ) ? "IR.DTITREC" : "IR.DTVENCITREC";
-		String where = "";
+		
 		
 		if ( "00".equals( rgSitRemessa.getVlrString() ) ) {
 			where = "AND ( FR.SITREMESSA IS NULL OR FR.SITREMESSA='00' ) AND ( FR.SITRETORNO IS NULL OR FR.SITRETORNO='00' ) ";
@@ -891,7 +915,75 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		return msg;		
 	}
 
+	public void imprimir( boolean visualizar ) {
 
+		ResultSet rs = null;
+		String sDtFiltro = "E".equals( rgData.getVlrString() ) ? "IR.DTITREC" : "IR.DTVENCITREC";
+		PreparedStatement ps = null;
+		
+		if(txtCodBanco.getVlrString().equals( "" )){
+			Funcoes.mensagemInforma( this, "Código do banco é requerido!" );
+			return;
+		}
+		
+		try {
+			
+			StringBuilder sSQL = new StringBuilder();
+			
+			sSQL.append( "SELECT IR.CODREC, IR.NPARCITREC, R.DOCREC, R.CODCLI, C.RAZCLI, IR.DTITREC, IR.DTVENCITREC," );
+			sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, COALESCE(FR.SITREMESSA,'00') SITREMESSA, " );
+			sSQL.append( "FR.SITRETORNO, COALESCE(COALESCE(FR.STIPOFEBRABAN,FC.STIPOFEBRABAN),'02') STIPOFEBRABAN, " );
+			sSQL.append( "COALESCE(FC.TIPOREMCLI,'B') TIPOREMCLI, C.PESSOACLI, C.CPFCLI, C.CNPJCLI " );
+			sSQL.append( "FROM VDCLIENTE C," );
+			sSQL.append( "FNRECEBER R LEFT OUTER JOIN FNFBNCLI FC ON " );
+			sSQL.append( "FC.CODEMP=R.CODEMPCL AND FC.CODFILIAL=R.CODFILIALCL AND FC.CODCLI=R.CODCLI ," );
+			sSQL.append( "FNITRECEBER IR LEFT OUTER JOIN FNFBNREC FR ON " );
+			sSQL.append( "FR.CODEMP=IR.CODEMP AND FR.CODFILIAL=IR.CODFILIAL AND " );
+			sSQL.append( "FR.CODREC=IR.CODREC AND FR.NPARCITREC=IR.NPARCITREC AND " );
+			sSQL.append( "FR.CODEMPBO=IR.CODEMPBO AND FR.CODFILIALBO=IR.CODFILIALBO AND FR.CODBANCO=IR.CODBANCO " );
+			sSQL.append( "WHERE R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC AND " );
+			sSQL.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND " );
+			sSQL.append( sDtFiltro );
+			sSQL.append( " BETWEEN ? AND ? AND IR.STATUSITREC IN ('R1','RL') AND " );
+			sSQL.append( "IR.CODEMPBO=? AND IR.CODFILIALBO=? AND IR.CODBANCO=? " );
+			sSQL.append( where );
+			sSQL.append( "ORDER BY C.RAZCLI, R.CODREC, IR.NPARCITREC " );
+			ps = con.prepareStatement( sSQL.toString() );
+			
+			ps.setDate( 1, Funcoes.dateToSQLDate(txtDtIni.getVlrDate()));
+			ps.setDate( 2, Funcoes.dateToSQLDate(txtDtFim.getVlrDate()));
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, Aplicativo.iCodFilial );
+			ps.setInt( 5, txtCodBanco.getVlrInteger());
+			
+			rs = ps.executeQuery();
+			
+			HashMap<String,Object> hParam = new HashMap<String, Object>();
+			
+			hParam.put( "CODEMP", Aplicativo.iCodEmp );
+			hParam.put( "REPORT_CONNECTION", con );
+		
+			FPrinterJob dlGr = new FPrinterJob( "relatorios/RemSiacci.jasper", "RELATÓRIO DE REMESSA", null, rs, hParam, this );
+
+			if ( visualizar ) {
+				dlGr.setVisible( true );
+			}
+			else {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+	}
+	
 	public void actionPerformed( ActionEvent evt ) {
 	
 		if ( evt.getSource() == btCarrega ) {
@@ -906,6 +998,9 @@ public class FRemSiacc extends FFilho implements ActionListener, MouseListener {
 		}
 		else if ( evt.getSource() == btExporta ) {
 			execExporta();
+		}
+		else if( evt.getSource() == btVisImp ){
+			imprimir( true );
 		}
 	}
 
