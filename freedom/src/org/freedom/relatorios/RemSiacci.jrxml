@@ -686,7 +686,7 @@ ORDER BY C.RAZCLI, R.CODREC, IR.NPARCITREC]]></queryString>
 					<reportElement
 						x="6"
 						y="1"
-						width="763"
+						width="766"
 						height="16"
 						forecolor="#CCCCFF"
 						backcolor="#CCCCFF"
@@ -695,7 +695,7 @@ ORDER BY C.RAZCLI, R.CODREC, IR.NPARCITREC]]></queryString>
 				</rectangle>
 				<ellipse>
 					<reportElement
-						x="762"
+						x="764"
 						y="1"
 						width="18"
 						height="16"
@@ -706,7 +706,7 @@ ORDER BY C.RAZCLI, R.CODREC, IR.NPARCITREC]]></queryString>
 				</ellipse>
 				<rectangle>
 					<reportElement
-						x="771"
+						x="773"
 						y="1"
 						width="9"
 						height="11"
