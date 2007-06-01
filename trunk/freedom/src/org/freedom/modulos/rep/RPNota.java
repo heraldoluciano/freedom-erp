@@ -27,17 +27,21 @@ package org.freedom.modulos.rep;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.Navegador;
+import org.freedom.componentes.Tabela;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
@@ -49,9 +53,13 @@ public class RPNota extends FDados {
 	
 	private final JPanelPad panelPedido = new JPanelPad();
 
-	private final JPanelPad panelItens = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private final JPanelPad panelTabItens = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private final JPanelPad panelTotais = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private final JPanelPad panelTotaisItens = new JPanelPad();
+
+	private final JPanelPad panelTotaisNota = new JPanelPad();
 
 	private final JPanelPad panelCamposItens = new JPanelPad();
 
@@ -101,33 +109,13 @@ public class RPNota extends FDados {
 
 	private final JTextFieldPad txtPrecoItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
-	private final JTextFieldPad txtVlrItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
-
-	private final JTextFieldPad txtPercIPIItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 8, Aplicativo.casasDec );
-
-	private final JTextFieldPad txtVlrIPIItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
-
-	private final JTextFieldPad txtPercDescItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 8, Aplicativo.casasDec );
-
-	private final JTextFieldPad txtVlrDescItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
-
-	private final JTextFieldPad txtPercAdicItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 8, Aplicativo.casasDec );
-
-	private final JTextFieldPad txtVlrAdicItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
-
-	private final JTextFieldPad txtPercRedItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 8, Aplicativo.casasDec );
-
-	private final JTextFieldPad txtVlrRecItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private final JTextFieldPad txtPercRecItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 8, Aplicativo.casasDec );
 
 	private final JTextFieldPad txtPercPagItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 8, Aplicativo.casasDec );
-
-	private final JTextFieldPad txtVlrPagItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtCodForItem = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldFK txtRazForItem = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-
-	private final JTextFieldPad txtVlrLiqItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtVlrTotPed = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
@@ -144,8 +132,30 @@ public class RPNota extends FDados {
 	private final JTextFieldPad txtRecTotPed = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtPagTotPed = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
+	private final JTextFieldPad txtVlrTotNota = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
-	private final JTextFieldPad txtObsPed = new JTextFieldPad( JTextFieldPad.TP_STRING, 500, 0 );
+	private final JTextFieldPad txtVlrLiqNota = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+
+	private final JTextFieldPad txtQdtTotNota = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
+
+	private final JTextFieldPad txtIPITotNota = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+
+	private final JTextFieldPad txtDescTotNota = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+
+	private final JTextFieldPad txtAdicTotNota = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+
+	private final JTextFieldPad txtRecTotNota = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+
+	private final JTextFieldPad txtPagTotNota = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
+	private final JTextFieldPad txtQtdNota = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
+	
+	private final JTextFieldPad txtPrecoNota = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
+	private final JTextFieldPad txtEmitNota = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private final Tabela tab = new Tabela(); 
 
 	private final ListaCampos lcCliente = new ListaCampos( this, "CL" );
 
@@ -164,6 +174,8 @@ public class RPNota extends FDados {
 	private final ListaCampos lcFornecedorItem = new ListaCampos( this, "FO" );
 
 	private final ListaCampos lcPedido = new ListaCampos( this, "" );
+	
+	private final Navegador navegador = nav;
 
 	private List<Object> prefere = null;
 
@@ -174,9 +186,20 @@ public class RPNota extends FDados {
 		setAtribos( 50, 50, 700, 500 );
 
 		montaListaCampos();
+		montaTabela();
 
 		montaTela();
 		
+		navegador.setNavigation( true );
+		navegador.btPrim.addActionListener( this );
+		navegador.btAnt.addActionListener( this );
+		navegador.btProx.addActionListener( this );
+		navegador.btUlt.addActionListener( this );
+		navegador.btNovo.addActionListener( this );
+		navegador.btExcluir.addActionListener( this );
+		navegador.btEditar.addActionListener( this );
+		navegador.btSalvar.addActionListener( this );
+		navegador.btCancelar.addActionListener( this );
 	}
 
 	private void montaListaCampos() {
@@ -187,12 +210,12 @@ public class RPNota extends FDados {
 
 		lcPedido.add( new GuardaCampo( txtCodPed, "CODPED", "Cód.ped.", ListaCampos.DB_PK, false ) );		
 		lcPedido.add( new GuardaCampo( txtDataPed, "DATAPED", "Data ped.", ListaCampos.DB_SI, false ) );	
-		lcPedido.add( new GuardaCampo( txtCodCli, "CODCLI", "Cód.cli.", ListaCampos.DB_FK, false ) );
-		lcPedido.add( new GuardaCampo( txtCodVend, "CODVEND", "Cód.vend.", ListaCampos.DB_FK, false ) );
-		lcPedido.add( new GuardaCampo( txtCodPlanoPag, "CODPLANOPAG", "Cód.p.pag.", ListaCampos.DB_FK, false ) );
-		lcPedido.add( new GuardaCampo( txtCodFor, "CODFOR", "Cód.for.", ListaCampos.DB_FK, false ) );
-		lcPedido.add( new GuardaCampo( txtCodTran, "CODTRAN", "Cód.tran.", ListaCampos.DB_FK, false ) );
-		lcPedido.add( new GuardaCampo( txtCodMoeda, "CODMOEDA", "Moeda", ListaCampos.DB_FK, false ) );
+		lcPedido.add( new GuardaCampo( txtCodCli, "CODCLI", "Cód.cli.", ListaCampos.DB_FK, txtRazCli, false ) );
+		lcPedido.add( new GuardaCampo( txtCodVend, "CODVEND", "Cód.vend.", ListaCampos.DB_FK, txtNomeVend, false ) );
+		lcPedido.add( new GuardaCampo( txtCodPlanoPag, "CODPLANOPAG", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, false ) );
+		lcPedido.add( new GuardaCampo( txtCodFor, "CODFOR", "Cód.for.", ListaCampos.DB_FK, txtRazFor, false ) );
+		lcPedido.add( new GuardaCampo( txtCodTran, "CODTRAN", "Cód.tran.", ListaCampos.DB_FK, txtRazTran, false ) );
+		lcPedido.add( new GuardaCampo( txtCodMoeda, "CODMOEDA", "Moeda", ListaCampos.DB_FK, txtDescMoeda, false ) );
 		lcPedido.add( new GuardaCampo( txtCodPedFor, "NUMPEDCLI", "Cód.ped.cli.", ListaCampos.DB_SI, false ) );
 		lcPedido.add( new GuardaCampo( txtCodPedCli, "NUMPEDFOR", "Cód.ped.for.", ListaCampos.DB_SI, false ) );
 		lcPedido.add( new GuardaCampo( txtFrete, "TIPOFRETEPED", "Frete", ListaCampos.DB_SI, false ) );
@@ -224,6 +247,8 @@ public class RPNota extends FDados {
 		lcCliente.setQueryCommit( false );
 		lcCliente.setReadOnly( true );
 		txtCodCli.setTabelaExterna( lcCliente );
+		txtCodCli.setFK( true );
+		txtCodCli.setNomeCampo( "CODCLI" );
 
 		/************
 		 * VENDEDOR *
@@ -235,6 +260,8 @@ public class RPNota extends FDados {
 		lcVendedor.setQueryCommit( false );
 		lcVendedor.setReadOnly( true );
 		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setFK( true );
+		txtCodVend.setNomeCampo( "CODVEND" );
 
 		/**********************
 		 * PLANO DE PAGAMENTO *
@@ -246,6 +273,8 @@ public class RPNota extends FDados {
 		lcPlanoPag.setQueryCommit( false );
 		lcPlanoPag.setReadOnly( true );
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		txtCodPlanoPag.setFK( true );
+		txtCodPlanoPag.setNomeCampo( "CODPLANOPAG" );
 
 		/*********
 		 * MOEDA *
@@ -257,6 +286,8 @@ public class RPNota extends FDados {
 		lcMoeda.setQueryCommit( false );
 		lcMoeda.setReadOnly( true );
 		txtCodMoeda.setTabelaExterna( lcMoeda );
+		txtCodMoeda.setFK( true );
+		txtCodMoeda.setNomeCampo( "CODMOEDA" );
 
 		/**************
 		 * FORNECEDOR *
@@ -268,6 +299,8 @@ public class RPNota extends FDados {
 		lcFornecedor.setQueryCommit( false );
 		lcFornecedor.setReadOnly( true );
 		txtCodFor.setTabelaExterna( lcFornecedor );
+		txtCodFor.setFK( true );
+		txtCodFor.setNomeCampo( "CODFOR" );
 
 		/******************
 		 * TRANSPORTADORA *
@@ -279,6 +312,8 @@ public class RPNota extends FDados {
 		lcTransportadora.setQueryCommit( false );
 		lcTransportadora.setReadOnly( true );
 		txtCodTran.setTabelaExterna( lcTransportadora );
+		txtCodTran.setFK( true );
+		txtCodTran.setNomeCampo( "CODTRAN" );
 
 		/***********
 		 * PRODUTO *
@@ -304,15 +339,54 @@ public class RPNota extends FDados {
 		txtCodForItem.setTabelaExterna( lcFornecedorItem );
 
 	}
+	
+	private void montaTabela() {
+		
+		tab.adicColuna( "Item" );
+		tab.adicColuna( "Qtd." );
+		tab.adicColuna( "Qtd. Fat." );
+		tab.adicColuna( "Cód.prod." );
+		tab.adicColuna( "Descrição do produto" );
+		tab.adicColuna( "Preço" );
+		tab.adicColuna( "% Rec." );
+		tab.adicColuna( "Vlr. Rec." );
+		tab.adicColuna( "% Pag." );
+		tab.adicColuna( "Vlr. Pag." );
+		tab.adicColuna( "% IPI" );
+		tab.adicColuna( "Vlr. IPI" );
+		tab.adicColuna( "Vlr. Desc." );
+		tab.adicColuna( "Vlr. Adic." );
+		tab.adicColuna( "Vlr. Liquido" );
+		tab.adicColuna( "Vlr. Liq. Fat." );
+		
+		tab.setTamColuna( 40, ETabNota.ITEM.ordinal() );
+		tab.setTamColuna( 50, ETabNota.QTD.ordinal() );
+		tab.setTamColuna( 50, ETabNota.QTD_FAT.ordinal() );
+		tab.setTamColuna( 70, ETabNota.CODPROD.ordinal() );
+		tab.setTamColuna( 150, ETabNota.DESCPROD.ordinal() );
+		tab.setTamColuna( 80, ETabNota.PRECO.ordinal() );
+		tab.setTamColuna( 50, ETabNota.PERC_REC.ordinal() );
+		tab.setTamColuna( 80, ETabNota.VLR_REC.ordinal() );
+		tab.setTamColuna( 50, ETabNota.PERC_PAG.ordinal() );
+		tab.setTamColuna( 80, ETabNota.VLR_PAG.ordinal() );
+		tab.setTamColuna( 50, ETabNota.PERC_IPI.ordinal() );
+		tab.setTamColuna( 80, ETabNota.VLR_IPI.ordinal() );
+		tab.setTamColuna( 80, ETabNota.VLR_DESC.ordinal() );
+		tab.setTamColuna( 80, ETabNota.VLR_ADIC.ordinal() );
+		tab.setTamColuna( 80, ETabNota.VLR_LIQ.ordinal() );
+		tab.setTamColuna( 80, ETabNota.VLR_LIQ_FAT.ordinal() );
+	}
 
 	private void montaTela() {
+		
+		panelNota.setPreferredSize( new Dimension( 500, 345 ) );
 
 		/***********
 		 * PEDIDOS *
 		 ***********/
 
-		panelPedido.setPreferredSize( new Dimension( 500, 150 ) );
-		panelPedido.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(), "Pedido" ) );
+		panelPedido.setPreferredSize( new Dimension( 500, 130 ) );
+		panelPedido.setBorder( BorderFactory.createEtchedBorder() );
 
 		panelPedido.adic( new JLabel( "Pedido" ), 7, 0, 70, 20 );
 		panelPedido.adic( txtCodPed, 7, 20, 70, 20 );
@@ -364,15 +438,20 @@ public class RPNota extends FDados {
 		txtCodFor.setAtivo( false );
 		txtCodTran.setAtivo( false );
 		txtRemessa.setAtivo( false );
+		
+		/*******************
+		 * TABELA DE ITENS *
+		 *******************/
+		
+		panelNota.add( panelTabItens, BorderLayout.CENTER );
+		panelTabItens.setBorder( BorderFactory.createEtchedBorder() );
+		panelTabItens.add( new JScrollPane( tab ), BorderLayout.CENTER );
 
-		/*********
-		 * ITENS *
-		 *********/
+		/****************
+		 * TOTAIS ITENS *
+		 ****************/
 
-		panelNota.add( panelTotaisItens, BorderLayout.SOUTH );
-
-		panelTotaisItens.setPreferredSize( new Dimension( 300, 65 ) );
-		panelTotaisItens.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(), "Totais do pedido" ) );
+		panelTotaisItens.setPreferredSize( new Dimension( 300, 45 ) );
 		panelTotaisItens.adic( new JLabel( "Pedido" ), 7, 0, 91, 15 );
 		panelTotaisItens.adic( txtVlrLiqPed, 7, 15, 91, 20 );
 		panelTotaisItens.adic( new JLabel( "Itens" ), 101, 0, 91, 15 );
@@ -386,7 +465,9 @@ public class RPNota extends FDados {
 		panelTotaisItens.adic( new JLabel( "Receber" ), 477, 0, 91, 15 );
 		panelTotaisItens.adic( txtRecTotPed, 477, 15, 91, 20 );
 		panelTotaisItens.adic( new JLabel( "Pagar" ), 571, 0, 91, 15 );
-		panelTotaisItens.adic( txtPagTotPed, 571, 15, 97, 20 );
+		panelTotaisItens.adic( txtPagTotPed, 571, 15, 91, 20 );
+
+		panelTotais.add( panelTotaisItens, BorderLayout.NORTH );
 
 		txtVlrLiqPed.setAtivo( false );
 		txtVlrTotPed.setAtivo( false );
@@ -397,34 +478,91 @@ public class RPNota extends FDados {
 		txtRecTotPed.setAtivo( false );
 		txtPagTotPed.setAtivo( false );
 		
-		pnCliente.add( panelNota, BorderLayout.NORTH );
-	
-		adicCampo( txtCodItem, 7, 15, 70, 20, "CodItPed", "Item", ListaCampos.DB_PK, true );
-		adicCampo( txtCodProd, 80, 15, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
-		adicDescFK( txtDescProd, 153, 15, 246, 20, "DescProd", "Descrição do produto" );
-		adicCampo( txtQtdItem, 402, 15, 92, 20, "QtdItPed", "Qtd.", ListaCampos.DB_SI, true );
-		adicCampo( txtPrecoItem, 497, 15, 94, 20, "PrecoItPed", "Preço", ListaCampos.DB_SI, true );
-		adicCampoInvisivel( txtVlrItem, "VlrItPed", "Valor item", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtVlrLiqItem, "VlrLiqItPed", "Liquido", ListaCampos.DB_SI, false );
-		adicCampo( txtPercIPIItem, 594, 15, 72, 20, "PercIPIItPed", "% IPI", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtVlrIPIItem, "VlrIPIItPed", "Valor IPI", ListaCampos.DB_SI, false );
-
-		adicCampo( txtPercDescItem, 7, 55, 70, 20, "PercDescItPed", "% Desconto", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtVlrDescItem, "VlrDescItPed", "Vlr. Desconto", ListaCampos.DB_SI, false );
-		adicCampo( txtPercAdicItem, 80, 55, 70, 20, "PercAdicItPed", "% Acrécimo", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtVlrAdicItem, "VlrAdicItPed", "Vlr. Adicional", ListaCampos.DB_SI, false );
-		adicCampo( txtPercRedItem, 153, 55, 80, 20, "PercRecItPed", "% Receber", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtVlrRecItem, "VlrRecItPed", "Vlr. Receber", ListaCampos.DB_SI, false );
-		adicCampo( txtPercPagItem, 236, 55, 80, 20, "PercPagItPed", "% Pagar", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtVlrPagItem, "VlrPagItPed", "Vlr. Pagar", ListaCampos.DB_SI, false );
-		adic( new JLabel( "Cód.for." ), 319, 35, 80, 20 );
-		adic( txtCodForItem, 319, 55, 80, 20 );
-		adic( new JLabel( "Razão social do fornecedor" ), 402, 35, 189, 20 );
-		adic( txtRazForItem, 402, 55, 189, 20 );
-
-		pinDados.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(), "Itens" ) );
 		
+		/***************
+		 * TOTAIS NOTA *
+		 ***************/
+
+		panelTotaisNota.setPreferredSize( new Dimension( 300, 45 ) );
+		panelTotaisNota.adic( new JLabel( "Nota" ), 7, 0, 91, 15 );
+		panelTotaisNota.adic( txtVlrLiqNota, 7, 15, 91, 20 );
+		panelTotaisNota.adic( new JLabel( "Itens" ), 101, 0, 91, 15 );
+		panelTotaisNota.adic( txtQdtTotNota, 101, 15, 91, 20 );
+		panelTotaisNota.adic( new JLabel( "IPI" ), 195, 0, 91, 15 );
+		panelTotaisNota.adic( txtIPITotNota, 195, 15, 91, 20 );
+		panelTotaisNota.adic( new JLabel( "Desconto" ), 289, 0, 91, 15 );
+		panelTotaisNota.adic( txtDescTotNota, 289, 15, 91, 20 );
+		panelTotaisNota.adic( new JLabel( "Adicional" ), 383, 0, 91, 15 );
+		panelTotaisNota.adic( txtAdicTotNota, 383, 15, 91, 20 );
+		panelTotaisNota.adic( new JLabel( "Receber" ), 477, 0, 91, 15 );
+		panelTotaisNota.adic( txtRecTotNota, 477, 15, 91, 20 );
+		panelTotaisNota.adic( new JLabel( "Pagar" ), 571, 0, 91, 15 );
+		panelTotaisNota.adic( txtPagTotNota, 571, 15, 91, 20 );
+
+		panelTotais.add( panelTotaisNota, BorderLayout.SOUTH );
+
+		txtVlrLiqNota.setAtivo( false );
+		txtVlrTotNota.setAtivo( false );
+		txtQdtTotNota.setAtivo( false );
+		txtIPITotNota.setAtivo( false );
+		txtDescTotNota.setAtivo( false );
+		txtAdicTotNota.setAtivo( false );
+		txtRecTotNota.setAtivo( false );
+		txtPagTotNota.setAtivo( false );
+		
+		panelTotais.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(), "Totais" ) );
+		panelNota.add( panelTotais, BorderLayout.SOUTH );
+		
+		pnCliente.add( panelNota, BorderLayout.NORTH );
+		
+		
+		/*********
+		 * ITENS *
+		 *********/
+
+		adic( new JLabel( "Item" ), 7, 0, 50, 20 );
+		adic( txtCodItem, 7, 20, 50, 20 );
+		adic( new JLabel( "Cód.prod." ), 60, 0, 70, 20 );
+		adic( txtCodProd, 60, 20, 70, 20 );
+		adic( new JLabel( "Descrição do produto" ), 133, 0, 213, 20 );
+		adic( txtDescProd, 133, 20, 213, 20 );
+		adic( new JLabel( "Qtd." ), 349, 0, 87, 20 );
+		adic( txtQtdItem, 349, 20, 87, 20 );
+		adic( new JLabel( "Preço" ), 439, 0, 87, 20 );
+		adic( txtPrecoItem, 439, 20, 87, 20 );
+		adic( new JLabel( "% Receber" ), 529, 0, 70, 20 );
+		adic( txtPercRecItem, 529, 20, 70, 20 );
+		adic( new JLabel( "% Pagar" ), 602, 0, 70, 20 );
+		adic( txtPercPagItem, 602, 20, 70, 20 );
+		adic( new JLabel( "Cód.for." ), 7, 40, 70, 20 );
+		adic( txtCodForItem, 7, 60, 70, 20 );
+		adic( new JLabel( "Razão sodial do fornecedor" ), 80, 40, 266, 20 );
+		adic( txtRazForItem, 80, 60, 266, 20 );
+
+		adic( new JLabel( "Quantidade" ), 349, 40, 105, 20 );
+		adic( txtQtdNota, 349, 60, 105, 20 );
+		adic( new JLabel( "Preço" ), 457, 40, 105, 20 );
+		adic( txtPrecoNota, 457, 60, 105, 20 );
+		adic( new JLabel( "Emissão" ), 565, 40, 107, 20 );
+		adic( txtEmitNota, 565, 60, 107, 20 );
+		
+		txtCodItem.setAtivo( false );
+		txtCodProd.setAtivo( false );
+		txtQtdItem.setAtivo( false );
+		txtPrecoItem.setAtivo( false );
+		txtPercRecItem.setAtivo( false );
+		txtPercPagItem.setAtivo( false );
 		txtCodForItem.setAtivo( false );
+	}
+
+	@ Override
+	public void actionPerformed( ActionEvent e ) {
+		
+		if ( e.getSource() == navegador.btNovo ) {
+			lcCampos.setState( ListaCampos.LCS_INSERT );
+		}
+
+		super.actionPerformed( e );
 	}
 
 	public void setConexao( Connection cn ) {
@@ -442,6 +580,25 @@ public class RPNota extends FDados {
 		lcPedido.setConexao( cn );
 
 		prefere = RPPrefereGeral.getPrefere( cn );
+	}
+	
+	private enum ETabNota {
+		ITEM,
+		QTD,
+		QTD_FAT,
+		CODPROD,
+		DESCPROD,
+		PRECO,
+		PERC_REC,
+		VLR_REC,
+		PERC_PAG,
+		VLR_PAG,
+		PERC_IPI,
+		VLR_IPI,
+		VLR_DESC,
+		VLR_ADIC,
+		VLR_LIQ,
+		VLR_LIQ_FAT;
 	}
 
 }
