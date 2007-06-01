@@ -727,7 +727,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 		StuffParcela parcela = null;
 		Integer codrec = null;
 		Integer numparcrec = null;
-		Object[] args = new Object[ EParcela.values().length ];
+		Object[] args = null;
 		
 		if ( tab.getNumLinhas() > 0 ) {
 			
@@ -739,6 +739,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 				
 				if ( (Boolean) tab.getValor( row, EColTab.SEL.ordinal() ) ) {
 					
+					args = new Object[ EParcela.values().length ];
 					codrec = (Integer) tab.getValor( row, EColTab.CODREC.ordinal() );
 					numparcrec = (Integer) tab.getValor( row, EColTab.NRPARC.ordinal() );
 				
@@ -911,7 +912,7 @@ public class FRetSiacc extends FFilho implements ActionListener, MouseListener, 
 			sSQL.append( "CODEMPPN=?,CODFILIALPN=?,CODPLAN=?," );
 			sSQL.append( "CODEMPCC=?,CODFILIALCC=?,ANOCC=?,CODCC=?," );
 			sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?," );
-			sSQL.append( "VLRPAGOITREC=VLRPAGOITREC+?,VLRDESCITREC=?,VLRJUROSITREC=?," );
+			sSQL.append( "VLRPAGOITREC=VLRPAGOITREC + ?,VLRDESCITREC=?,VLRJUROSITREC=?," );
 			sSQL.append( "OBSITREC=?,STATUSITREC='RP' " );
 			sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?" );
 			
