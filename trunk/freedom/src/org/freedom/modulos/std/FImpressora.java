@@ -65,7 +65,8 @@ public class FImpressora extends FDados {
     vLabsTipo.addElement("Epson Stylus");           
     vLabsTipo.addElement("Epson Laser");           
     vLabsTipo.addElement("Fiscal MP20");           
-    vLabsTipo.addElement("Fiscal MP40");           
+    vLabsTipo.addElement("Fiscal MP40");     
+    vLabsTipo.addElement("OKI ML/320/420/421");
                
     vValsTipo.addElement(new Integer(0));           
     vValsTipo.addElement(new Integer(1));           
@@ -75,6 +76,7 @@ public class FImpressora extends FDados {
     vValsTipo.addElement(new Integer(5));
     vValsTipo.addElement(new Integer(6));
     vValsTipo.addElement(new Integer(7));
+    vValsTipo.addElement(new Integer(8));
     
     cbTipoImp = new JComboBoxPad(vLabsTipo, vValsTipo, JComboBoxPad.TP_INTEGER, 8, 0); 
     
