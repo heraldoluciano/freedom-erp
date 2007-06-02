@@ -203,6 +203,9 @@ public class GuardaCampo extends Component {
       if (((JTextAreaPad) comp).getText().trim().length() == 0) 
         return true;
     }
+    else if (comp instanceof PainelImagem) {
+    	return (((PainelImagem) comp).ehNulo());    		
+    }
     return false;
   }        
   private void setRequerido( boolean bReq ) {
