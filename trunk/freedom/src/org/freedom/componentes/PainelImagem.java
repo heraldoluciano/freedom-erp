@@ -62,6 +62,7 @@ public class PainelImagem extends JPanelPad implements ActionListener, MouseList
   public int iTipo = -1;
   public int iTam = 0;
   private boolean bAlt = false;
+  private boolean bNulo = true;
   private JPopupMenu pm = new JPopupMenu();
   private JMenuItem selecMI = new JMenuItem();
   private JMenuItem excluirMI = new JMenuItem();
@@ -77,6 +78,9 @@ public class PainelImagem extends JPanelPad implements ActionListener, MouseList
   private boolean bMudaTamanho = false;
   private int L = 0;
   private int A = 0;
+  public boolean ehNulo() {
+	  return bNulo;
+  }
   public PainelImagem(int iTam) {
   	this(null,iTam);
   }
@@ -341,8 +345,10 @@ public class PainelImagem extends JPanelPad implements ActionListener, MouseList
                                                "Tamanho máximo permitido: "+iMaxSize+" bytes.\n"+
                                                "Tamanho do arquivo: "+fImagem.length()+" bytes.");
             bCancel = true;
+            bNulo = true;
           }
           else {
+        	bNulo = false;  
             fisImagem = new FileInputStream(fImagem);
             imImagem = (new ImageIcon(sFileName)).getImage();
             diImagem = new DadosImagem(fisImagem,(int) fImagem.length(),null);

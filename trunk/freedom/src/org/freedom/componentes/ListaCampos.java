@@ -2146,19 +2146,19 @@ public class ListaCampos extends Container implements PostListener,
 									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
 										sqlLC.setTime(iParamPost,Funcoes.dateToSQLTime(((GuardaCampo) comp).getVlrTime()));
 									} 
-									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_BYTES) {
-										//if (((GuardaCampo) comp).getVlrBytes()!=null) {
+									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_BYTES) {										
+										if (!((PainelImagem) ((GuardaCampo) comp).getComponente()).ehNulo()) {											
 											if (((PainelImagem) ((GuardaCampo) comp).getComponente()).foiAlterado()) {
 												sqlLC.setBinaryStream(iParamPost,((GuardaCampo) comp).getVlrBytes().getInputStream(),((GuardaCampo) comp).getVlrBytes().getTamanho());
 											} 
 											else {
 												sqlLC.setBytes(iParamPost,((GuardaCampo) comp).getVlrBytes().getBytes());
 											}
-										//}
-										//else {
-										//	sqlLC.setNull(iParamPost,Types.BLOB);
-										//}
+										}
 									}
+									else {
+										sqlLC.setNull(iParamPost,Types.BLOB);
+									}								
 								}
 								iParamPost++;
 								if (((GuardaCampo) comp).ehFK()) {
