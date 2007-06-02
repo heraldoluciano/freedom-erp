@@ -230,12 +230,12 @@ public class PainelImagem extends JPanelPad implements ActionListener, MouseList
         paintZoom(Screen);
       }
       else {
-        if (bStretch) {
+        if (getStretch()) {
           bZoom = false;
           Screen.drawImage(imImagem,iDescBordL,iDescBordA,((int)cOrigem.getSize().getWidth())-(iDescBordL+1),((int)cOrigem.getSize().getHeight())-(iDescBordA+1),this);
         }
         else {
-          if (bEncaixa) {
+          if (getEncaixa()) {
             setZoom(getPercEncaixa());
 //            System.out.println(getPercEncaixa());
             if ((L > A) | (L == A))
@@ -258,8 +258,9 @@ public class PainelImagem extends JPanelPad implements ActionListener, MouseList
   public void setZoom(int iZ) {
     bZoom = true;
     iPercAtual = iZ;
-    L = (imImagem.getWidth(this)/100)*iZ;
-    A = (imImagem.getHeight(this)/100)*iZ;
+    L = (imImagem.getWidth(this)*iZ)/100;
+    A = (imImagem.getHeight(this)*iZ)/100;
+    
   }
   public void showZoom(Graphics Screen) {
     Screen.drawImage(imImagem,iDescBordA,iDescBordA,L-(iDescBordL+1),A-(iDescBordA+1),this);
