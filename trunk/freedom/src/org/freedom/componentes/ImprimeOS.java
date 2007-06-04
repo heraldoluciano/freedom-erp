@@ -607,7 +607,7 @@ public class ImprimeOS implements ActionListener {
 		else if (iTipoImp == IMP_LASERJET)
 			sRetorno = ((char) 27) + "(s10H";
 		else if (iTipoImp == IMP_OKI)
-			sRetorno = "" ; //+((char) 29);
+			sRetorno = ""  + ((char) 27) + ((char) 116) + ((char) 18);
 		return sRetorno;
 	}
 
@@ -624,7 +624,7 @@ public class ImprimeOS implements ActionListener {
 		else if (iTipoImp == IMP_LASERJET)
 			sRetorno = ((char) 27) + "(s20H";
 		else if (iTipoImp == IMP_OKI)
-			sRetorno = ""+ ((char) 30) ;
+			sRetorno = ""  + ((char) 27) + ((char) 116) + ((char) 15);
 		return sRetorno;
 	}
 
@@ -640,7 +640,7 @@ public class ImprimeOS implements ActionListener {
 		else if (iTipoImp == IMP_LASERJET)
 			sRetorno = ((char) 27) + "(s5H";
 		else if (iTipoImp == IMP_OKI)
-			sRetorno = "";// + ((char) 27) + ((char) 35) +((char) 51);
+			sRetorno = ""  + ((char) 27) + ((char) 116) + ((char) 14);
 		return sRetorno;
 
 	}
@@ -657,7 +657,7 @@ public class ImprimeOS implements ActionListener {
 		else if (iTipoImp == IMP_LASERJET)
 			sRetorno = ((char) 27) + "E" + ((char) 27) + "&l2a&l0o&l6d(s4099t(s0p&k0s(s0s&l12D";
 		else if (iTipoImp == IMP_OKI)
-			sRetorno = ""; // +((char) 29);
+			sRetorno = ""  + ((char) 27) + ((char) 116) + ((char) 20);
 		return sRetorno;
 	}
 
