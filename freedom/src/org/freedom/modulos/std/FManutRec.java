@@ -1668,7 +1668,7 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 				sVals[ EColBaixa.VLRAPAG.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRAPAG.ordinal() )); // Vlraberto
 				sVals[ EColBaixa.CODCC.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.CODCC.ordinal() ); // Codcc
 
-				if ( "".equals( tabBaixa.getValor( iLin, EColBaixa.DTPGTO.ordinal() ) ) ) { // Data de pagamento branco
+				if ( "".equals( tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) ) { // Data de pagamento branco
 					sVals[ EColBaixa.DTPGTO.ordinal() ] = new Date(); // Data pagto
 					sVals[ EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() )); // valor pago
 				}
