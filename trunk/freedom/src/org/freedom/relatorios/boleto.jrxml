@@ -23,18 +23,70 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<queryString><![CDATA[select * from cptipofor]]></queryString>
+	<parameter name="RAZEMP" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="LOCALPAG" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["QUALQUER BANCO ATÉ O VENCIMENTO"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="INSTRUCOES" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["JUROS DE MORA DE 5.0% MENSAL(0,08 AO DIA)"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="AGENCIA" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["0001-1/CONTA X"]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[SELECT
+( SELECT COUNT(*) FROM FNITRECEBER ITR2
+  WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP
+  AND ITR2.CODFILIAL=R.CODFILIAL ) AS PARC,
+V.DTEMITVENDA,V.DOCVENDA,
+ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,
+ITR.VLRDESCITREC,ITR.VLRMULTAITREC,ITR.DOCLANCAITREC,
+C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,
+C.RGCLI,C.INSCCLI,C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,
+C.CIDCLI,C.UFCLI,C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,
+C.CIDCOB,C.UFCOB,C.FONECLI,C.DDDCLI,R.CODREC
+FROM FNITRECEBER ITR,VDVENDA V,VDCLIENTE C, FNRECEBER R
+WHERE ITR.CODREC=R.CODREC
+AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL
+AND V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA
+AND V.CODFILIAL=R.CODFILIALVA AND C.CODCLI=V.CODCLI
+AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL
+AND R.CODEMPVA=4 AND R.CODFILIALVA=1 AND R.CODVENDA=100
+AND ITR.NPARCITREC=1]]></queryString>
 
-	<field name="CODEMP" class="java.lang.Long"/>
-	<field name="CODFILIAL" class="java.lang.Short"/>
-	<field name="CODTIPOFOR" class="java.lang.Long"/>
-	<field name="DESCTIPOFOR" class="java.lang.String"/>
-	<field name="DTINS" class="java.sql.Date"/>
-	<field name="IDUSUINS" class="java.lang.String"/>
-	<field name="DTALT" class="java.sql.Date"/>
-	<field name="IDUSUALT" class="java.lang.String"/>
-	<field name="HINS" class="java.sql.Time"/>
-	<field name="HALT" class="java.sql.Time"/>
+	<field name="PARC" class="java.lang.Long"/>
+	<field name="DTEMITVENDA" class="java.sql.Date"/>
+	<field name="DOCVENDA" class="java.lang.Long"/>
+	<field name="DTVENCITREC" class="java.sql.Date"/>
+	<field name="NPARCITREC" class="java.lang.Long"/>
+	<field name="VLRAPAGITREC" class="java.math.BigDecimal"/>
+	<field name="VLRPARCITREC" class="java.math.BigDecimal"/>
+	<field name="VLRDESCITREC" class="java.math.BigDecimal"/>
+	<field name="VLRMULTAITREC" class="java.math.BigDecimal"/>
+	<field name="DOCLANCAITREC" class="java.lang.String"/>
+	<field name="CODCLI" class="java.lang.Long"/>
+	<field name="RAZCLI" class="java.lang.String"/>
+	<field name="NOMECLI" class="java.lang.String"/>
+	<field name="CPFCLI" class="java.lang.String"/>
+	<field name="CNPJCLI" class="java.lang.String"/>
+	<field name="RGCLI" class="java.lang.String"/>
+	<field name="INSCCLI" class="java.lang.String"/>
+	<field name="ENDCLI" class="java.lang.String"/>
+	<field name="NUMCLI" class="java.lang.Long"/>
+	<field name="COMPLCLI" class="java.lang.String"/>
+	<field name="CEPCLI" class="java.lang.String"/>
+	<field name="BAIRCLI" class="java.lang.String"/>
+	<field name="CIDCLI" class="java.lang.String"/>
+	<field name="UFCLI" class="java.lang.String"/>
+	<field name="ENDCOB" class="java.lang.String"/>
+	<field name="NUMCOB" class="java.lang.Long"/>
+	<field name="COMPLCOB" class="java.lang.String"/>
+	<field name="CEPCOB" class="java.lang.String"/>
+	<field name="BAIRCOB" class="java.lang.String"/>
+	<field name="CIDCOB" class="java.lang.String"/>
+	<field name="UFCOB" class="java.lang.String"/>
+	<field name="FONECLI" class="java.lang.String"/>
+	<field name="DDDCLI" class="java.lang.String"/>
+	<field name="CODREC" class="java.lang.Long"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -56,8 +108,17 @@
 			<band height="269"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
+						x="0"
+						y="0"
+						width="524"
+						height="0"
+						key="line-20"/>
+					<graphicElement stretchType="NoStretch" pen="Dotted"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
 						x="1"
-						y="22"
+						y="23"
 						width="522"
 						height="0"
 						key="line-1"/>
@@ -66,7 +127,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="120"
-						y="5"
+						y="6"
 						width="0"
 						height="17"
 						key="line-2"/>
@@ -75,7 +136,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="154"
-						y="5"
+						y="6"
 						width="0"
 						height="17"
 						key="line-3"/>
@@ -84,7 +145,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="39"
+						y="40"
 						width="524"
 						height="0"
 						key="line-4"/>
@@ -93,7 +154,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="56"
+						y="57"
 						width="524"
 						height="0"
 						key="line-5"/>
@@ -102,7 +163,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="73"
+						y="74"
 						width="524"
 						height="0"
 						key="line-6"/>
@@ -111,7 +172,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="90"
+						y="91"
 						width="524"
 						height="0"
 						key="line-7"/>
@@ -120,7 +181,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="354"
-						y="22"
+						y="23"
 						width="0"
 						height="153"
 						key="line-8"/>
@@ -129,7 +190,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="175"
+						y="176"
 						width="524"
 						height="0"
 						key="line-9"/>
@@ -138,7 +199,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="354"
-						y="107"
+						y="108"
 						width="170"
 						height="0"
 						key="line-10"/>
@@ -147,7 +208,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="354"
-						y="124"
+						y="125"
 						width="170"
 						height="0"
 						key="line-11"/>
@@ -156,7 +217,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="354"
-						y="141"
+						y="142"
 						width="170"
 						height="0"
 						key="line-12"/>
@@ -165,7 +226,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="354"
-						y="158"
+						y="159"
 						width="170"
 						height="0"
 						key="line-13"/>
@@ -174,7 +235,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="76"
-						y="56"
+						y="57"
 						width="0"
 						height="34"
 						key="line-14"/>
@@ -183,7 +244,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="152"
-						y="56"
+						y="57"
 						width="0"
 						height="34"
 						key="line-15"/>
@@ -192,7 +253,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="124"
-						y="73"
+						y="74"
 						width="0"
 						height="17"
 						key="line-16"/>
@@ -201,7 +262,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="237"
-						y="56"
+						y="57"
 						width="0"
 						height="34"
 						key="line-17"/>
@@ -210,7 +271,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="209"
-						y="56"
+						y="57"
 						width="0"
 						height="17"
 						key="line-18"/>
@@ -219,7 +280,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="226"
+						y="227"
 						width="524"
 						height="0"
 						key="line-19"/>
@@ -228,7 +289,7 @@
 				<staticText>
 					<reportElement
 						x="1"
-						y="22"
+						y="23"
 						width="66"
 						height="8"
 						key="staticText-1"/>
@@ -241,7 +302,7 @@
 				<staticText>
 					<reportElement
 						x="1"
-						y="39"
+						y="40"
 						width="66"
 						height="8"
 						key="staticText-2"/>
@@ -254,7 +315,7 @@
 				<staticText>
 					<reportElement
 						x="1"
-						y="56"
+						y="57"
 						width="66"
 						height="8"
 						key="staticText-3"/>
@@ -267,7 +328,7 @@
 				<staticText>
 					<reportElement
 						x="1"
-						y="73"
+						y="74"
 						width="75"
 						height="8"
 						key="staticText-4"/>
@@ -280,7 +341,7 @@
 				<staticText>
 					<reportElement
 						x="1"
-						y="92"
+						y="93"
 						width="75"
 						height="8"
 						key="staticText-5"/>
@@ -293,7 +354,7 @@
 				<staticText>
 					<reportElement
 						x="79"
-						y="56"
+						y="57"
 						width="66"
 						height="8"
 						key="staticText-6"/>
@@ -306,7 +367,7 @@
 				<staticText>
 					<reportElement
 						x="155"
-						y="56"
+						y="57"
 						width="42"
 						height="8"
 						key="staticText-7"/>
@@ -319,7 +380,7 @@
 				<staticText>
 					<reportElement
 						x="212"
-						y="56"
+						y="57"
 						width="22"
 						height="8"
 						key="staticText-8"/>
@@ -332,7 +393,7 @@
 				<staticText>
 					<reportElement
 						x="240"
-						y="56"
+						y="57"
 						width="88"
 						height="8"
 						key="staticText-9"/>
@@ -345,7 +406,7 @@
 				<staticText>
 					<reportElement
 						x="79"
-						y="73"
+						y="74"
 						width="35"
 						height="8"
 						key="staticText-10"/>
@@ -358,7 +419,7 @@
 				<staticText>
 					<reportElement
 						x="126"
-						y="73"
+						y="74"
 						width="24"
 						height="8"
 						key="staticText-11"/>
@@ -371,7 +432,7 @@
 				<staticText>
 					<reportElement
 						x="155"
-						y="73"
+						y="74"
 						width="66"
 						height="8"
 						key="staticText-12"/>
@@ -384,7 +445,7 @@
 				<staticText>
 					<reportElement
 						x="240"
-						y="73"
+						y="74"
 						width="66"
 						height="8"
 						key="staticText-13"/>
@@ -397,7 +458,7 @@
 				<staticText>
 					<reportElement
 						x="357"
-						y="22"
+						y="23"
 						width="100"
 						height="8"
 						key="staticText-14"/>
@@ -410,7 +471,7 @@
 				<staticText>
 					<reportElement
 						x="357"
-						y="39"
+						y="40"
 						width="100"
 						height="8"
 						key="staticText-15"/>
@@ -423,7 +484,7 @@
 				<staticText>
 					<reportElement
 						x="357"
-						y="158"
+						y="159"
 						width="100"
 						height="8"
 						key="staticText-16"/>
@@ -436,7 +497,7 @@
 				<staticText>
 					<reportElement
 						x="357"
-						y="141"
+						y="142"
 						width="100"
 						height="8"
 						key="staticText-17"/>
@@ -449,7 +510,7 @@
 				<staticText>
 					<reportElement
 						x="357"
-						y="124"
+						y="125"
 						width="100"
 						height="8"
 						key="staticText-18"/>
@@ -462,7 +523,7 @@
 				<staticText>
 					<reportElement
 						x="357"
-						y="107"
+						y="108"
 						width="100"
 						height="8"
 						key="staticText-19"/>
@@ -475,7 +536,7 @@
 				<staticText>
 					<reportElement
 						x="357"
-						y="90"
+						y="91"
 						width="100"
 						height="8"
 						key="staticText-20"/>
@@ -488,7 +549,7 @@
 				<staticText>
 					<reportElement
 						x="357"
-						y="73"
+						y="74"
 						width="100"
 						height="8"
 						key="staticText-21"/>
@@ -501,7 +562,7 @@
 				<staticText>
 					<reportElement
 						x="357"
-						y="56"
+						y="57"
 						width="100"
 						height="8"
 						key="staticText-22"/>
@@ -514,7 +575,7 @@
 				<staticText>
 					<reportElement
 						x="1"
-						y="177"
+						y="178"
 						width="33"
 						height="8"
 						key="staticText-23"/>
@@ -527,7 +588,7 @@
 				<staticText>
 					<reportElement
 						x="1"
-						y="215"
+						y="216"
 						width="65"
 						height="8"
 						key="staticText-24"/>
@@ -540,7 +601,7 @@
 				<staticText>
 					<reportElement
 						x="357"
-						y="215"
+						y="216"
 						width="57"
 						height="8"
 						key="staticText-25"/>
@@ -553,7 +614,7 @@
 				<staticText>
 					<reportElement
 						x="315"
-						y="228"
+						y="229"
 						width="68"
 						height="8"
 						key="staticText-26"/>
@@ -566,7 +627,7 @@
 				<staticText>
 					<reportElement
 						x="386"
-						y="228"
+						y="229"
 						width="137"
 						height="11"
 						key="staticText-27"/>
@@ -579,7 +640,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="122"
-						y="5"
+						y="6"
 						width="30"
 						height="15"
 						key="textField-1"/>
@@ -587,12 +648,12 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["VERIFICAR"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="156"
-						y="5"
+						y="6"
 						width="368"
 						height="15"
 						key="textField-2"/>
@@ -600,12 +661,12 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["VERIFICAR"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
-						y="30"
+						y="31"
 						width="347"
 						height="9"
 						key="textField-3"/>
@@ -613,12 +674,12 @@
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{LOCALPAG}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
-						y="47"
+						y="48"
 						width="347"
 						height="9"
 						key="textField-4"/>
@@ -626,12 +687,12 @@
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
-						y="64"
+						y="65"
 						width="66"
 						height="9"
 						key="textField-5"/>
@@ -639,12 +700,12 @@
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTEMITVENDA}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="79"
-						y="64"
+						y="65"
 						width="71"
 						height="9"
 						key="textField-6"/>
@@ -652,12 +713,12 @@
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DOCLANCAITREC}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="155"
-						y="64"
+						y="65"
 						width="51"
 						height="9"
 						key="textField-7"/>
@@ -665,12 +726,12 @@
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["VERIFICAR"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="211"
-						y="64"
+						y="65"
 						width="24"
 						height="9"
 						key="textField-8"/>
@@ -678,12 +739,12 @@
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DOCLANCAITREC} + "teste"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="240"
-						y="64"
+						y="65"
 						width="88"
 						height="9"
 						key="textField-9"/>
@@ -691,12 +752,12 @@
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTEMITVENDA}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
-						y="81"
+						y="82"
 						width="66"
 						height="9"
 						key="textField-10"/>
@@ -704,12 +765,25 @@
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["VERIFICAR"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="5"
+						y="82"
+						width="66"
+						height="9"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Bottom">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["VERIFICAR"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="79"
-						y="81"
+						y="82"
 						width="40"
 						height="9"
 						key="textField-11"/>
@@ -717,12 +791,12 @@
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["VERIFICAR"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="125"
-						y="81"
+						y="82"
 						width="24"
 						height="9"
 						key="textField-12"/>
@@ -730,12 +804,12 @@
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["VERIFICAR"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="166"
-						y="81"
+						y="82"
 						width="66"
 						height="9"
 						key="textField-13"/>
@@ -743,12 +817,12 @@
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["VERIFICAR"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="243"
-						y="81"
+						y="82"
 						width="66"
 						height="9"
 						key="textField-14"/>
@@ -756,13 +830,13 @@
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["VERIFICAR"]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
 						mode="Opaque"
 						x="234"
-						y="79"
+						y="80"
 						width="7"
 						height="8"
 						key="staticText-28"/>
@@ -772,10 +846,10 @@
 					</textElement>
 				<text><![CDATA[X]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="411"
-						y="30"
+						y="31"
 						width="80"
 						height="9"
 						key="textField-15"/>
@@ -783,12 +857,12 @@
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTVENCITREC}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="411"
-						y="47"
+						y="48"
 						width="80"
 						height="9"
 						key="textField-16"/>
@@ -796,25 +870,12 @@
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{AGENCIA}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="411"
-						y="64"
-						width="80"
-						height="9"
-						key="textField-17"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Bottom">
-						<font fontName="Arial" size="7"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="411"
-						y="81"
+						y="82"
 						width="80"
 						height="9"
 						key="textField-18"/>
@@ -822,12 +883,12 @@
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRPARCITREC}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="411"
-						y="98"
+						y="99"
 						width="80"
 						height="9"
 						key="textField-19"/>
@@ -835,12 +896,12 @@
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRDESCITREC}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="411"
-						y="115"
+						y="116"
 						width="80"
 						height="9"
 						key="textField-20"/>
@@ -848,12 +909,12 @@
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="411"
-						y="132"
+						y="133"
 						width="80"
 						height="9"
 						key="textField-21"/>
@@ -861,12 +922,12 @@
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRMULTAITREC}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="411"
-						y="149"
+						y="150"
 						width="80"
 						height="9"
 						key="textField-22"/>
@@ -874,12 +935,12 @@
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="411"
-						y="166"
+						y="167"
 						width="80"
 						height="9"
 						key="textField-23"/>
@@ -887,12 +948,12 @@
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRAPAGITREC}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
-						y="101"
+						y="102"
 						width="340"
 						height="70"
 						key="textField-24"/>
@@ -900,12 +961,12 @@
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{INSTRUCOES}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="67"
-						y="215"
+						y="216"
 						width="287"
 						height="9"
 						key="textField-25"/>
@@ -913,12 +974,12 @@
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["VERIFICAR"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="415"
-						y="215"
+						y="216"
 						width="108"
 						height="9"
 						key="textField-26"/>
@@ -926,25 +987,25 @@
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["VERIFICAR"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="35"
-						y="177"
+						y="178"
 						width="480"
-						height="35"
+						height="8"
 						key="textField-27"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZCLI}]]></textFieldExpression>
 				</textField>
 				<image  vAlign="Middle" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="5"
+						y="6"
 						width="117"
 						height="15"
 						key="image-1"/>
@@ -952,6 +1013,58 @@
 					<graphicElement stretchType="NoStretch"/>
 					<imageExpression class="java.awt.Image"><![CDATA[]]></imageExpression>
 				</image>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="35"
+						y="188"
+						width="480"
+						height="8"
+						key="textField-28"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{ENDCLI} != null ? $F{ENDCLI} : "") + ($F{NUMCLI} != null ? String.valueOf( $F{NUMCLI} ) : "")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="35"
+						y="198"
+						width="480"
+						height="8"
+						key="textField-29"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{CEPCLI} != null ? $F{CEPCLI}.trim().substring(0,4) + "-" + $F{CEPCLI}.trim().substring(5) : "") + " - " + 
+($F{CIDCLI} != null ? $F{CIDCLI} : "") + "  " + $F{UFCLI}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="35"
+						y="208"
+						width="480"
+						height="8"
+						key="textField-30"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[( $F{CNPJCLI} != null ?
+$F{CNPJCLI}.substring(0,2) + "." + $F{CNPJCLI}.substring(2,5) + "." + $F{CNPJCLI}.substring(5,8) + "/" +
+$F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" ) + "  -  " +
+( $F{INSCCLI} != null ? $F{INSCCLI} : "" )]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="268"
+						width="524"
+						height="0"
+						key="line-21"/>
+					<graphicElement stretchType="NoStretch" pen="Dotted"/>
+				</line>
 			</band>
 		</detail>
 		<columnFooter>
@@ -959,7 +1072,7 @@
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="10"  isSplitAllowed="true" >
 			</band>
 		</pageFooter>
 		<summary>
