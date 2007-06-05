@@ -1438,7 +1438,10 @@ public class Funcoes {
 	}
 
 	public static Date sqlDateToDate(java.sql.Date dVal) {
-		Date dRetorno = new Date(dVal.getTime());
+		Date dRetorno = null;
+		if (dVal!=null) {
+			dRetorno = new Date(dVal.getTime()); 
+		}
 		return dRetorno;
 	}
 
