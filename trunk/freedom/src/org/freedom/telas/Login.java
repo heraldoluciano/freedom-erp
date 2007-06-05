@@ -136,7 +136,7 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 	
 	protected abstract boolean montaCombo(String sUsu);
 	  
-	protected abstract boolean adicConFilial();
+	protected abstract boolean adicConFilial(final Connection conX);
 	  
 	public void focusLost(FocusEvent fevt) { }
 	  
@@ -186,20 +186,18 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 			if ( !sUsuAnt.equals(sUsu) ) {
 				if (!execConexao(sUsu, txpSenha.getVlrString().trim()))
 					return;
-				adicConFilial();      
 				montaCombo(sUsu);
 				cbEmp.requestFocus();
 				if (cbEmp.getItemCount() == 1)
 					btOK.doClick();
 				return;
 			} else if ((cbEmp.getVlrInteger().intValue()==0 ) && (!bAdmin)) {
-				if ( sUsuAnt.equals(sUsu) ) 	
+				if ( sUsuAnt.equals(sUsu) ) {	
 					Funcoes.mensagemInforma( this, "Filial não foi selecionada!" );
-				cbEmp.requestFocus();
-				return;
+					cbEmp.requestFocus();
+					return;
+				}
 			}
-			if (!adicConFilial())
-				return;
 		}
 		super.actionPerformed(evt);
 		

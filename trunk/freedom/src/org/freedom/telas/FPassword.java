@@ -187,6 +187,12 @@ public class FPassword extends FFDialogo {
 		boolean[] permissoes = new boolean[ 4 ];
 		
 		try {
+
+//			ps = con.prepareStatement( "SELECT CURRENT_CONNECTION FROM SGEMPRESA" );
+//			rs = ps.executeQuery();
+//			if ( rs.next() ) {
+//				System.out.println("1-Conexão: "+rs.getInt( "CURRENT_CONNECTION" ));
+//			}
 			
 			props = new Properties();			
 			sIDUsu = txtUsu.getVlrString().toLowerCase().trim();
@@ -198,8 +204,21 @@ public class FPassword extends FFDialogo {
 				Funcoes.mensagemErro( this, "Campo em branco!" );
 				return false;
 			}
+
+//			ps = con.prepareStatement( "SELECT CURRENT_CONNECTION FROM SGEMPRESA" );
+//			rs = ps.executeQuery();
+//			if ( rs.next() ) {
+//				System.out.println("2-Conexão: "+rs.getInt( "CURRENT_CONNECTION" ));
+//			}
 			
 			DriverManager.getConnection( Aplicativo.strBanco, props ).close();
+			
+//			ps = con.prepareStatement( "SELECT CURRENT_CONNECTION FROM SGEMPRESA" );
+//			rs = ps.executeQuery();
+//			if ( rs.next() ) {
+//				System.out.println("2-Conexão: "+rs.getInt( "CURRENT_CONNECTION" ));
+//			}
+				 
 
 			sSQL.append( "SELECT BAIXOCUSTOUSU, ABREGAVETAUSU, ALTPARCVENDA, APROVRECEITA " );
 			sSQL.append( "FROM SGUSUARIO " );
