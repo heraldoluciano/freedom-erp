@@ -50,34 +50,39 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 		
 		if (conLogin == null)
 			return null;
-		if (bAdmin)
-			return conLogin;
-		try {
-			
-			sSQL = "SELECT G.IDGRPUSU FROM SGGRPUSU G, SGUSUARIO U "+
-				   "WHERE G.IDGRPUSU=U.IDGRPUSU AND G.CODEMP=U.CODEMPIG "+
-				   "AND G.CODFILIAL=U.CODFILIALIG AND U.IDUSU=?";
-			
-			ps = conLogin.prepareStatement(sSQL);
-			ps.setString(1,txtUsuario.getVlrString().trim().toLowerCase());
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				System.out.println("IDGRUP = "+rs.getString("IDGRPUSU")); 
-				props.put("sql_role_name", rs.getString("IDGRPUSU"));
+		if (bAdmin) {
+			if (adicConFilial(conLogin)) {
+				conRet = conLogin;
 			}
-			rs.close();
-			ps.close();
-			conLogin.close();
-			conRet = DriverManager.getConnection(strBanco, props);
-			
-		} catch (java.sql.SQLException err) {
-			Funcoes.mensagemErro( this,"Não foi possível ajustar o grupo de acesso do usuário.\n"+err.getMessage());
-			err.printStackTrace();
-			return null;
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
+		} else {
+			try {
+				
+				sSQL = "SELECT G.IDGRPUSU FROM SGGRPUSU G, SGUSUARIO U "+
+					   "WHERE G.IDGRPUSU=U.IDGRPUSU AND G.CODEMP=U.CODEMPIG "+
+					   "AND G.CODFILIAL=U.CODFILIALIG AND U.IDUSU=?";
+				
+				ps = conLogin.prepareStatement(sSQL);
+				ps.setString(1,txtUsuario.getVlrString().trim().toLowerCase());
+				rs = ps.executeQuery();
+				if (rs.next()) {
+					System.out.println("IDGRUP = "+rs.getString("IDGRPUSU")); 
+					props.put("sql_role_name", rs.getString("IDGRPUSU"));
+				}
+				rs.close();
+				ps.close();
+				conLogin.close();
+				conRet = DriverManager.getConnection(strBanco, props);
+				adicConFilial(conRet);
+				
+			} catch (java.sql.SQLException err) {
+				Funcoes.mensagemErro( this,"Não foi possível ajustar o grupo de acesso do usuário.\n"+err.getMessage());
+				err.printStackTrace();
+				return null;
+			} finally {
+				ps = null;
+				rs = null;
+				sSQL = null;
+			}
 		}
 		return conRet;
 	}		  
@@ -169,14 +174,14 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 		
 	}
 
-	protected boolean adicConFilial() {		
+	protected boolean adicConFilial(Connection conX) {		
  		boolean bRet = false;
 		String sSQL = null;
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		try {
 			sSQL = "SELECT SRET FROM SGINICONSP(?,?,?,?)";  		
-			ps = conLogin.prepareStatement(sSQL);
+			ps = conX.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setString(2,txtUsuario.getVlrString().trim().toLowerCase());
 			if (iFilialPadrao==0)
@@ -189,8 +194,14 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 				bRet = rs.getInt(1)==1; // grava true se tiver efetuado a conexao
 			rs.close();
 			ps.close();
-			if (!conLogin.getAutoCommit())
-				conLogin.commit();
+			if (!conX.getAutoCommit())
+				conX.commit();
+//			ps = conX.prepareStatement( "SELECT CURRENT_CONNECTION FROM SGEMPRESA" );
+//			rs = ps.executeQuery();
+//			if ( rs.next() ) {
+//				System.out.println("1-Conexão: "+rs.getInt( "CURRENT_CONNECTION" ));
+//			}
+			
 		} catch(SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao gravar filial atual no banco!\n"+err.getMessage());
 			err.printStackTrace();
