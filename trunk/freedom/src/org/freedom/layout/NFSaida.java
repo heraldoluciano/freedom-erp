@@ -67,9 +67,9 @@ public class NFSaida extends NF {
 			sql.append( "(SELECT S.DESCSETOR FROM VDSETOR S WHERE S.CODSETOR=C.CODSETOR AND S.CODFILIAL=C.CODFILIALSR AND S.CODEMP=C.CODEMPSR), " );
 			// sql.append( "(SELECT ITPG.DIASPAG FROM FNPARCPAG ITPG WHERE ITPG.CODEMP=PG.CODEMP AND ITPG.CODFILIAL=PG.CODFILIAL AND ITPG.CODPLANOPAG=PG.CODPLANOPAG) " );
 			sql.append( "V.VLRLIQVENDA,V.VLRICMSVENDA,V.VLRBASEICMSVENDA, V.VLRPRODVENDA, V.VLRBASEISSVENDA, V.VLRISSVENDA, V.VLRPRODVENDA, V.VLRADICVENDA, " );
-			sql.append( "V.VLRIPIVENDA,V.PEDCLIVENDA " );
-			sql.append( "FROM VDVENDA V, VDCLIENTE C, FNPLANOPAG PG, VDVENDEDOR VEND " );
-			sql.append( "WHERE C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
+			sql.append( "V.VLRIPIVENDA,V.PEDCLIVENDA, EMP.PERCISSEMP PERCISS " );
+			sql.append( "FROM VDVENDA V, VDCLIENTE C, FNPLANOPAG PG, VDVENDEDOR VEND, SGEMPRESA EMP " );
+			sql.append( "WHERE EMP.CODEMP=V.CODEMP AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
 			sql.append( "AND V.CODEMPPG=PG.CODEMP AND V.CODFILIALPG=PG.CODFILIAL AND V.CODPLANOPAG=PG.CODPLANOPAG " );
 			sql.append( "AND V.CODVEND=VEND.CODVEND AND V.CODEMPVD=VEND.CODEMP AND V.CODFILIALVD=VEND.CODFILIAL AND C.CODCLI=V.CODCLI " );
 			sql.append( "AND V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.CODVENDA=?" );
@@ -79,7 +79,7 @@ public class NFSaida extends NF {
 			ps.setInt( 3, ( (Integer) parans.elementAt( 2 ) ).intValue() );
 			rs = ps.executeQuery();
 			sql.delete( 0, sql.length() );
-			cab = new TabVector( 60 );
+			cab = new TabVector( 61 );
 			while ( rs.next() ) {
 				cab.addRow();
 				cab.setInt( C_CODPED, rs.getInt( "CODVENDA" ) );
@@ -142,6 +142,7 @@ public class NFSaida extends NF {
 				cab.setFloat( C_VLRIPIPED, rs.getFloat( "VLRIPIVENDA" ) );				
 				cab.setFloat( C_BASEISS, rs.getFloat( "VLRBASEISSVENDA" ) );
 				cab.setFloat( C_VLRISS, rs.getFloat( "VLRISSVENDA" ) );
+				cab.setFloat( C_PERCISS, rs.getFloat( "PERCISS" ) );
 			}
 			rs.close();
 			ps.close();

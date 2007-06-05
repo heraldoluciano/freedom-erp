@@ -28,6 +28,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 
 public class NF044 extends Layout {
 
@@ -38,7 +39,7 @@ public class NF044 extends Layout {
 		boolean bNat = true;
 		boolean bjatem = false;
 		boolean bvlriss = true;
-		final int MAXLINE = 41;
+		final int MAXLINE = 35;
 		final int MAXPROD = 12;
 		int iNumNota = 0;
 		int iItImp = 0;
@@ -62,8 +63,8 @@ public class NF044 extends Layout {
 		Vector vObsVenda = new Vector();
 		Vector<String> vClfisc = new Vector<String>();
 		Vector<String> vSigla = new Vector<String>();
-		Vector vDescServ = new Vector();
 		Vector<Object[]> vServico = new Vector<Object[]>();
+		Object[] itemServ = null; 
 
 		try {
 
@@ -234,7 +235,7 @@ public class NF044 extends Layout {
 
 				// Fim da classificação fiscal
 
-				// Imprime os dados do item no corpo da nota
+				// Imprime os dados do item no corpo da nota e serviços
 
 				if ( !"S".equals( itens.getString( NF.C_TIPOPROD ) ) ) {
 
@@ -250,9 +251,16 @@ public class NF044 extends Layout {
 					imp.say( 132, Funcoes.strDecimalToStrCurrency( 6, 2, String.valueOf( itens.getFloat( NF.C_VLRIPIITPED ) ) ) );
 					iProdImp++;
 				}
-
-				// Fim da impressão do item
-
+				else {
+					
+					itemServ = new Object[2];
+					itemServ[0] = Funcoes.copy( itens.getString( NF.C_DESCPROD ).trim(), 32 );
+					itemServ[1] = new BigDecimal(itens.getFloat( NF.C_VLRPRODITPED ) );
+					vServico.addElement( itemServ );
+				
+				}
+				
+				//Fim da impressão do item e serviços.
 				iItImp++;
 				if ((iItImp == itens.getInt(NF.C_CONTAITENS)) || (imp.pRow() == MAXLINE - 1)) {
 					
@@ -264,9 +272,36 @@ public class NF044 extends Layout {
 					imp.pulaLinha( MAXLINE - imp.pRow(), imp.comprimido());
 					
 					// Imprime totais
+					for (int iserv=0; iserv<10; iserv++) {
+						if (iserv<vServico.size()) {
+							itemServ = vServico.elementAt( iserv );
+							if ( (iserv % 2) == 0 ) {
+								imp.pulaLinha( 1, imp.comprimido() );
+								imp.say( 4, String.valueOf( itemServ[0] ) );
+								imp.say(38, Funcoes.strDecimalToStrCurrency( 16, Aplicativo.casasDecFin, itemServ[1].toString() ) );
+							}
+							else {
+								imp.say( 60, String.valueOf( itemServ[0] ) );
+								imp.say( 94, Funcoes.strDecimalToStrCurrency( 16, Aplicativo.casasDecFin, itemServ[1].toString() ) );
+							}
+						}
+						else if ( (iserv % 2) == 0 ) {
+							imp.pulaLinha( 1, imp.comprimido() );
+						}
+						if (iserv==3) {
+							imp.say(114, Funcoes.strDecimalToStrCurrency( 20, Aplicativo.casasDecFin, String.valueOf( cab.getFloat( NF.C_PERCISS ))));
+						}
+						if(iserv==7){
+							imp.say(114, Funcoes.strDecimalToStrCurrency( 20, Aplicativo.casasDecFin ,  String.valueOf( cab.getFloat( NF.C_VLRISS )) ));
+						}
+						if(iserv==9){
+							imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, Aplicativo.casasDecFin, String.valueOf( cab.getFloat( NF.C_BASEISS ))));
+						}
+						
+					}
 
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
-						imp.pulaLinha( 2, imp.comprimido() );
+						imp.pulaLinha( 4, imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
 						imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRICMSPED ) ) ) );
 						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) - cab.getFloat( NF.C_BASEISS ) ) ) );
