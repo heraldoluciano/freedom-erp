@@ -105,6 +105,7 @@ public class NF {
 	public static final int C_VLRIPIPED = 57;
 	public static final int C_BASEISS = 58;
 	public static final int C_VLRISS = 59;
+	public static final int C_PERCISS = 60;
 	
 	//itens
 	public static final int C_CODITPED = 0;
