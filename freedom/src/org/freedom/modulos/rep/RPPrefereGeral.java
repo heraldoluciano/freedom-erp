@@ -69,6 +69,8 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	private final JPasswordFieldPad txtSenhaSMTP = new JPasswordFieldPad( 30 );
 	
 	private final JCheckBoxPad cbAutenticaSMTP = new JCheckBoxPad( "Autenticar ?", "S", "N" );
+	
+	private final JCheckBoxPad cbSSLSMTP = new JCheckBoxPad( "Usa SSL ?", "S", "N" );
 
 	private final JTextFieldPad txtCasasDesc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -138,8 +140,9 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		adicCampo( txtServidorSMTP, 17, 170, 230, 20, "ServidorSMTP", "Servidor de SMTP", ListaCampos.DB_SI, false );
 		adicCampo( txtPortaSMTP, 250, 170, 41, 20, "PortaSMTP", "Porta", ListaCampos.DB_SI, false );
 		adicDB( cbAutenticaSMTP, 294, 170, 100, 20, "AutenticaSMTP", "", false );
-		adicCampo( txtUsuarioSMTP, 17, 210, 190, 20, "UsuarioSMTP", "Id do usuario", ListaCampos.DB_SI, false );
-		adicCampo( txtSenhaSMTP, 210, 210, 184, 20, "SenhaSMTP", "Senha do usuario", ListaCampos.DB_SI, false );
+		adicCampo( txtUsuarioSMTP, 17, 210, 137, 20, "UsuarioSMTP", "Id do usuario", ListaCampos.DB_SI, false );
+		adicCampo( txtSenhaSMTP, 157, 210, 134, 20, "SenhaSMTP", "Senha do usuario", ListaCampos.DB_SI, false );
+		adicDB( cbSSLSMTP, 294, 210, 100, 20, "SSLSMTP", "", false );
 		
 		JLabel campos = new JLabel( "Campos", SwingConstants.CENTER );
 		campos.setOpaque( true );
@@ -175,7 +178,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		try {
 			
 			sSQL.append( "SELECT IPICOMIS,IPIPED,CODBARPROD,ENDCLIPED,ORDEMPED," );
-			sSQL.append( "SERVIDORSMTP,PORTASMTP,USUARIOSMTP,SENHASMTP,AUTENTICASMTP," );
+			sSQL.append( "SERVIDORSMTP,PORTASMTP,USUARIOSMTP,SENHASMTP,AUTENTICASMTP,SSLSMTP," );
 			sSQL.append( "CASASDEC,CASASDECFIN,CODMOEDA,LAYOUTPED " );
 			sSQL.append( "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps = con.prepareStatement( sSQL.toString() );
@@ -195,6 +198,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 				prefere.add( EPrefere.USUARIOSMTP.ordinal(), rs.getString( "USUARIOSMTP" ) );
 				prefere.add( EPrefere.SENHASMTP.ordinal(), rs.getString( "SENHASMTP" ) );
 				prefere.add( EPrefere.AUTENTICASMTP.ordinal(), rs.getString( "AUTENTICASMTP" ) );
+				prefere.add( EPrefere.SSLSMTP.ordinal(), rs.getString( "SSLSMTP" ) );
 				prefere.add( EPrefere.CASASDEC.ordinal(), rs.getInt( "CASASDEC" ) );
 				prefere.add( EPrefere.CASASDECFIN.ordinal(), rs.getInt( "CASASDECFIN" ) );
 				prefere.add( EPrefere.CODMOEDA.ordinal(), rs.getString( "CODMOEDA" ) );
@@ -227,6 +231,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	    USUARIOSMTP,
 	    SENHASMTP,
 	    AUTENTICASMTP,
+	    SSLSMTP,
 	    CASASDEC,
 	    CASASDECFIN,
 	    CODMOEDA,
