@@ -33,36 +33,41 @@
 	<parameter name="AGENCIA" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["0001-1/CONTA X"]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT
-( SELECT COUNT(*) FROM FNITRECEBER ITR2
-  WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP
-  AND ITR2.CODFILIAL=R.CODFILIAL ) AS PARC,
+	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(4)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODVENDA" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(100)]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[SELECT (SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND ITR2.CODFILIAL=R.CODFILIAL) PARCS,
+ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,ITR.VLRDESCITREC,
+(ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA,
+R.DOCREC,
 V.DTEMITVENDA,V.DOCVENDA,
-ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,
-ITR.VLRDESCITREC,ITR.VLRMULTAITREC,ITR.DOCLANCAITREC,
-C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,
-C.RGCLI,C.INSCCLI,C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,
-C.CIDCLI,C.UFCLI,C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,
-C.CIDCOB,C.UFCOB,C.FONECLI,C.DDDCLI,R.CODREC
+C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,C.RGCLI,C.INSCCLI,
+C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI,
+C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB,
+C.FONECLI,C.DDDCLI,R.CODREC
 FROM FNITRECEBER ITR,VDVENDA V,VDCLIENTE C, FNRECEBER R
-WHERE ITR.CODREC=R.CODREC
-AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL
+WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL
 AND V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA
 AND V.CODFILIAL=R.CODFILIALVA AND C.CODCLI=V.CODCLI
 AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL
-AND R.CODEMPVA=4 AND R.CODFILIALVA=1 AND R.CODVENDA=100
-AND ITR.NPARCITREC=1]]></queryString>
+AND R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODVENDA} ]]></queryString>
 
-	<field name="PARC" class="java.lang.Long"/>
-	<field name="DTEMITVENDA" class="java.sql.Date"/>
-	<field name="DOCVENDA" class="java.lang.Long"/>
+	<field name="PARCS" class="java.lang.Long"/>
 	<field name="DTVENCITREC" class="java.sql.Date"/>
 	<field name="NPARCITREC" class="java.lang.Long"/>
 	<field name="VLRAPAGITREC" class="java.math.BigDecimal"/>
 	<field name="VLRPARCITREC" class="java.math.BigDecimal"/>
 	<field name="VLRDESCITREC" class="java.math.BigDecimal"/>
-	<field name="VLRMULTAITREC" class="java.math.BigDecimal"/>
-	<field name="DOCLANCAITREC" class="java.lang.String"/>
+	<field name="VLRMULTA" class="java.math.BigDecimal"/>
+	<field name="DOCREC" class="java.lang.Long"/>
+	<field name="DTEMITVENDA" class="java.sql.Date"/>
+	<field name="DOCVENDA" class="java.lang.Long"/>
 	<field name="CODCLI" class="java.lang.Long"/>
 	<field name="RAZCLI" class="java.lang.String"/>
 	<field name="NOMECLI" class="java.lang.String"/>
@@ -713,7 +718,7 @@ AND ITR.NPARCITREC=1]]></queryString>
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DOCLANCAITREC}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{DOCREC}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -739,7 +744,7 @@ AND ITR.NPARCITREC=1]]></queryString>
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DOCLANCAITREC} + "teste"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["VERIFICAR"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -922,7 +927,7 @@ AND ITR.NPARCITREC=1]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRMULTAITREC}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRMULTA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
