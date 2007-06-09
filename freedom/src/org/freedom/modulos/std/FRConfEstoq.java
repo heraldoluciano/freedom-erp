@@ -112,6 +112,15 @@ public class FRConfEstoq extends FRelatorio {
 			" C.CODCOMPRA=IC.CODCOMPRA AND C.CODEMP=IC.CODEMP AND C.CODFILIAL=IC.CODFILIAL AND " +
 			" TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM "+sWhere+
 			") QTDITCOMPRA, "+
+			"(SELECT SUM(QTDFINALPRODOP) FROM PPOP O, EQTIPOMOV TM " +
+			" WHERE O.CODEMPPD=P.CODEMP AND O.CODFILIALPD=P.CODFILIAL AND O.CODPROD=P.CODPROD AND " +
+			" TM.CODTIPOMOV=O.CODTIPOMOV AND TM.CODEMP=O.CODEMPTM AND TM.CODFILIAL=O.CODFILIALTM "+sWhere+
+			") QTDFINALPRODOP, "+
+			"(SELECT SUM(QTDEXPITRMA) FROM EQRMA R, EQITRMA IR, EQTIPOMOV TM " +
+			" WHERE IR.CODEMPPD=P.CODEMP AND IR.CODFILIALPD=P.CODFILIAL AND IR.CODPROD=P.CODPROD AND " +
+			" R.CODRMA=IR.CODRMA AND R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND " +
+			" TM.CODTIPOMOV=R.CODTIPOMOV AND TM.CODEMP=R.CODEMPTM AND TM.CODFILIAL=R.CODFILIALTM "+sWhere+
+			") QTDEXPITRMA, "+
 			"(SELECT SUM(QTDITVENDA) FROM VDITVENDA IV, VDVENDA V, EQTIPOMOV TM " +
 			" WHERE IV.CODEMPPD=P.CODEMP AND IV.CODFILIALPD=P.CODFILIAL AND IV.CODPROD=P.CODPROD AND " +
 			" V.CODVENDA=IV.CODVENDA AND V.TIPOVENDA=IV.TIPOVENDA AND V.CODEMP=IV.CODEMP AND " +
@@ -132,7 +141,14 @@ public class FRConfEstoq extends FRelatorio {
 			"( COALESCE((SELECT SUM(QTDITCOMPRA) FROM CPITCOMPRA IC, CPCOMPRA C, EQTIPOMOV TM " +
 			" WHERE IC.CODEMPPD=P.CODEMP AND IC.CODFILIALPD=P.CODFILIAL AND IC.CODPROD=P.CODPROD AND " +
 			" C.CODCOMPRA=IC.CODCOMPRA AND C.CODEMP=IC.CODEMP AND C.CODFILIAL=IC.CODFILIAL AND " +
-			" TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM "+sWhere+"),0 )) - "+
+			" TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM "+sWhere+"),0 )) + " +
+			"( COALESCE((SELECT SUM(QTDFINALPRODOP) FROM PPOP O, EQTIPOMOV TM " +
+			" WHERE O.CODEMPPD=P.CODEMP AND O.CODFILIALPD=P.CODFILIAL AND O.CODPROD=P.CODPROD AND " +
+			" TM.CODTIPOMOV=O.CODTIPOMOV AND TM.CODEMP=O.CODEMPTM AND TM.CODFILIAL=O.CODFILIALTM "+sWhere+"),0 )) - " + 
+			"( COALESCE((SELECT SUM(QTDEXPITRMA) FROM EQRMA R, EQITRMA IR, EQTIPOMOV TM " +
+			" WHERE IR.CODEMPPD=P.CODEMP AND IR.CODFILIALPD=P.CODFILIAL AND IR.CODPROD=P.CODPROD AND " +
+			" R.CODRMA=IR.CODRMA AND R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND " +
+			" TM.CODTIPOMOV=R.CODTIPOMOV AND TM.CODEMP=R.CODEMPTM AND TM.CODFILIAL=R.CODFILIALTM "+sWhere+"),0 )) - " +
 			"( COALESCE((SELECT SUM(QTDITVENDA) FROM VDITVENDA IV, VDVENDA V, EQTIPOMOV TM " +
 			" WHERE IV.CODEMPPD=P.CODEMP AND IV.CODFILIALPD=P.CODFILIAL AND IV.CODPROD=P.CODPROD AND " +
 			" V.CODVENDA=IV.CODVENDA AND V.TIPOVENDA=IV.TIPOVENDA AND V.CODEMP=IV.CODEMP AND " +
@@ -170,36 +186,40 @@ public class FRConfEstoq extends FRelatorio {
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,0,"| DESCRICAO DO PRODUTO");
 					imp.say(imp.pRow()+0,32,"| CODIGO");
-					imp.say(imp.pRow()+0,43,"| REF.");
-					imp.say(imp.pRow()+0,58,"| SALDO ");
-					imp.say(imp.pRow()+0,69,"| QTD.INV.");
-					imp.say(imp.pRow()+0,80,"| QTD.CP.");
-					imp.say(imp.pRow()+0,91,"| QTD.VD.");
-					imp.say(imp.pRow()+0,102,"| SLD.CALC.");
-					imp.say(imp.pRow()+0,113,"| SLD.M.P.");
-					imp.say(imp.pRow()+0,124,"| DIF.SLD.");
+					imp.say(imp.pRow()+0,44,"| SALDO ");
+					imp.say(imp.pRow()+0,53,"| QTD.IV.");
+					imp.say(imp.pRow()+0,62,"| QTD.OP.");
+					imp.say(imp.pRow()+0,71,"| QTD.CP.");
+					imp.say(imp.pRow()+0,80,"| QTD.RM.");
+					imp.say(imp.pRow()+0,89,"| QTD.VD.");
+					imp.say(imp.pRow()+0,98,"| SLD.CA.");
+					imp.say(imp.pRow()+0,107,"| SLD.MP.");
+					imp.say(imp.pRow()+0,116,"| DIF.SD.");
 					imp.say(imp.pRow()+0,135,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
 					
 				}
 				
-	  			deSldCalc = rs.getDouble(5) + rs.getDouble(6) - rs.getDouble(7); 
-	  			deQtdDif = deSldCalc - rs.getDouble(4) ;
+	  			deSldCalc = rs.getDouble("QTDINVP") + rs.getDouble("QTDITCOMPRA") +
+	  			   rs.getDouble("QTDFINALPRODOP") - rs.getDouble("QTDEXPITRMA") - 
+	  			   rs.getDouble("QTDITVENDA"); 
+	  			deQtdDif = deSldCalc - rs.getDouble("SLDLIQPROD") ;
 	  			if (deQtdDif==0) {
-	  				deQtdDif = rs.getDouble(8) - rs.getDouble(4);
+	  				deQtdDif = rs.getDouble("SLDMOVPROD") - rs.getDouble("SLDLIQPROD");
 	  			}
   				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  				imp.say(imp.pRow()+0,0,"|"+Funcoes.adicionaEspacos(rs.getString(1),30));
-  				imp.say(imp.pRow()+0,32,"|"+Funcoes.adicionaEspacos(rs.getString(2),10));
-  				imp.say(imp.pRow()+0,43,"|"+Funcoes.adicionaEspacos(rs.getString(3),13));
-  				imp.say(imp.pRow()+0,58,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(4)+"",10));
-  				imp.say(imp.pRow()+0,69,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(5)+"",10));
-  				imp.say(imp.pRow()+0,80,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(6)+"",10));
-  				imp.say(imp.pRow()+0,91,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(7)+"",10));
-  				imp.say(imp.pRow()+0,102,"|"+Funcoes.adicEspacosEsquerda(deSldCalc+"",10));
-  				imp.say(imp.pRow()+0,113,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(8)+"",10));
-  				imp.say(imp.pRow()+0,124,"|"+Funcoes.adicEspacosEsquerda(deQtdDif+"",10));
+  				imp.say(imp.pRow()+0,0,"|"+Funcoes.adicionaEspacos(rs.getString("DESCPROD"),30));
+  				imp.say(imp.pRow()+0,32,"|"+Funcoes.adicionaEspacos(rs.getString("CODPROD"),10));
+  				imp.say(imp.pRow()+0,44,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("SLDLIQPROD")+"",8));
+  				imp.say(imp.pRow()+0,53,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDINVP")+"",8));
+  				imp.say(imp.pRow()+0,62,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDFINALPRODOP")+"",8));
+  				imp.say(imp.pRow()+0,71,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDITCOMPRA")+"",8));
+  				imp.say(imp.pRow()+0,80,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDITEXPRMA")+"",8));
+  				imp.say(imp.pRow()+0,89,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDITVENDA")+"",8));
+  				imp.say(imp.pRow()+0,98,"|"+Funcoes.adicEspacosEsquerda(deSldCalc+"",8));
+  				imp.say(imp.pRow()+0,107,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("SLDMOVPROD")+"",8));
+  				imp.say(imp.pRow()+0,116,"|"+Funcoes.adicEspacosEsquerda(deQtdDif+"",8));
   				imp.say(imp.pRow()+0,135,"|");
   				
   			}
@@ -265,6 +285,17 @@ public class FRConfEstoq extends FRelatorio {
 			" C.CODCOMPRA=IC.CODCOMPRA AND C.CODEMP=IC.CODEMP AND C.CODFILIAL=IC.CODFILIAL AND " +
 			" TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM " +
 			sWhere+") QTDITCOMPRA, "+
+			"(SELECT SUM(QTDFINALPRODOP) FROM PPOP O, EQTIPOMOV TM " +
+			" WHERE O.CODEMPPD=P.CODEMP AND O.CODFILIALPD=P.CODFILIAL AND O.CODPROD=P.CODPROD AND " +
+			" O.CODEMPLE=L.CODEMP AND O.CODFILIALLE=L.CODFILIAL AND O.CODLOTE=L.CODLOTE AND " +
+			" TM.CODTIPOMOV=O.CODTIPOMOV AND TM.CODEMP=O.CODEMPTM AND TM.CODFILIAL=O.CODFILIALTM "+sWhere+
+			") QTDFINALPRODOP, "+
+			"(SELECT SUM(QTDEXPITRMA) FROM EQRMA R, EQITRMA IR, EQTIPOMOV TM " +
+			" WHERE IR.CODEMPPD=P.CODEMP AND IR.CODFILIALPD=P.CODFILIAL AND IR.CODPROD=P.CODPROD AND " +
+			" R.CODRMA=IR.CODRMA AND R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND " +
+			" IR.CODEMPLE=L.CODEMP AND IR.CODFILIALLE=L.CODFILIAL AND IR.CODLOTE=L.CODLOTE AND " +
+			" TM.CODTIPOMOV=R.CODTIPOMOV AND TM.CODEMP=R.CODEMPTM AND TM.CODFILIAL=R.CODFILIALTM "+sWhere+
+			") QTDEXPITRMA, "+
 			"(SELECT SUM(QTDITVENDA) FROM VDITVENDA IV, VDVENDA V, EQTIPOMOV TM " +
 			" WHERE IV.CODEMPPD=P.CODEMP AND IV.CODFILIALPD=P.CODFILIAL AND IV.CODPROD=P.CODPROD AND " +
 			" IV.CODEMPLE=L.CODEMP AND IV.CODFILIALLE=L.CODFILIAL AND IV.CODLOTE=L.CODLOTE AND " +
@@ -284,7 +315,16 @@ public class FRConfEstoq extends FRelatorio {
 			" WHERE IC.CODEMPPD=P.CODEMP AND IC.CODFILIALPD=P.CODFILIAL AND IC.CODPROD=P.CODPROD AND " +
 			" IC.CODEMPLE=L.CODEMP AND IC.CODFILIALLE=L.CODFILIAL AND IC.CODLOTE=L.CODLOTE AND " +
 			" C.CODCOMPRA=IC.CODCOMPRA AND C.CODEMP=IC.CODEMP AND C.CODFILIAL=IC.CODFILIAL AND " +
-			" TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM "+sWhere+"),0) ) - "+
+			" TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM "+sWhere+"),0) ) + "+
+			"(COALESCE( (SELECT SUM(QTDFINALPRODOP) FROM PPOP O, EQTIPOMOV TM " +
+			" WHERE O.CODEMPPD=P.CODEMP AND O.CODFILIALPD=P.CODFILIAL AND O.CODPROD=P.CODPROD AND " +
+			" O.CODEMPLE=L.CODEMP AND O.CODFILIALLE=L.CODFILIAL AND O.CODLOTE=L.CODLOTE AND " +
+			" TM.CODTIPOMOV=O.CODTIPOMOV AND TM.CODEMP=O.CODEMPTM AND TM.CODFILIAL=O.CODFILIALTM "+sWhere+"),0) ) - "+
+			"(COALESCE( (SELECT SUM(QTDEXPITRMA) FROM EQRMA R, EQITRMA IR, EQTIPOMOV TM " +
+			" WHERE IR.CODEMPPD=P.CODEMP AND IR.CODFILIALPD=P.CODFILIAL AND IR.CODPROD=P.CODPROD AND " +
+			" R.CODRMA=IR.CODRMA AND R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND " +
+			" IR.CODEMPLE=L.CODEMP AND IR.CODFILIALLE=L.CODFILIAL AND IR.CODLOTE=L.CODLOTE AND " +
+			" TM.CODTIPOMOV=R.CODTIPOMOV AND TM.CODEMP=R.CODEMPTM AND TM.CODFILIAL=R.CODFILIALTM "+sWhere+"),0) ) - "+			
 			"( COALESCE( (SELECT SUM(QTDITVENDA) FROM VDITVENDA IV, VDVENDA V, EQTIPOMOV TM " +
 			" WHERE IV.CODEMPPD=P.CODEMP AND IV.CODFILIALPD=P.CODFILIAL AND IV.CODPROD=P.CODPROD AND " +
 			" IV.CODEMPLE=L.CODEMP AND IV.CODFILIALLE=L.CODFILIAL AND IV.CODLOTE=L.CODLOTE AND " +
@@ -324,33 +364,40 @@ public class FRConfEstoq extends FRelatorio {
   	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"| DESCRICAO DO PRODUTO");
-					imp.say(imp.pRow()+0,43,"| CODIGO");
-					imp.say(imp.pRow()+0,54,"| LOTE");
-					imp.say(imp.pRow()+0,69,"| SALDO ");
-					imp.say(imp.pRow()+0,80,"| QTD.INV.");
-					imp.say(imp.pRow()+0,91,"| QTD.CP.");
-					imp.say(imp.pRow()+0,102,"| QTD.VD.");
-					imp.say(imp.pRow()+0,113,"| SLD.CALC.");
-					imp.say(imp.pRow()+0,124,"| DIF.SLD.");
+					imp.say(imp.pRow()+0,0,"| DESCRICAO");
+					imp.say(imp.pRow()+0,35,"| CODIGO");
+					imp.say(imp.pRow()+0,47,"| LOTE");
+					imp.say(imp.pRow()+0,61,"| SALDO ");
+					imp.say(imp.pRow()+0,70,"| QTD.IV.");
+					imp.say(imp.pRow()+0,79,"| QTD.OP.");
+					imp.say(imp.pRow()+0,88,"| QTD.CP.");
+					imp.say(imp.pRow()+0,97,"| QTD.RM.");
+					imp.say(imp.pRow()+0,106,"| QTD.VD.");
+					imp.say(imp.pRow()+0,115,"| SLD.CA.");
+					imp.say(imp.pRow()+0,124,"| DIF.SD.");
 					imp.say(imp.pRow()+0,135,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
 					
 				}
 				
-	  			deSldCalc = rs.getDouble(5) + rs.getDouble(6) - rs.getDouble(7); 
-	  			deQtdDif = deSldCalc - rs.getDouble(4) ; 
+	  			deSldCalc = rs.getDouble("QTDINVP") + rs.getDouble("QTDITCOMPRA") +
+	  			   rs.getDouble("QTDFINALPRODOP") - rs.getDouble("QTDEXPITRMA") - 
+	  			   rs.getDouble("QTDITVENDA"); 
+	  			deQtdDif = deSldCalc - rs.getDouble("SLDLIQLOTE") ;
+
   				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  				imp.say(imp.pRow()+0,0,"|"+Funcoes.adicionaEspacos(rs.getString(1),40));
-  				imp.say(imp.pRow()+0,42,"|"+Funcoes.adicEspacosEsquerda(rs.getString(2),10));
-  				imp.say(imp.pRow()+0,54,"|"+Funcoes.adicionaEspacos(rs.getString(3),13));
-  				imp.say(imp.pRow()+0,69,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(4)+"",10));
-  				imp.say(imp.pRow()+0,80,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(5)+"",10));
-  				imp.say(imp.pRow()+0,91,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(6)+"",10));
-  				imp.say(imp.pRow()+0,102,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(7)+"",10));
-  				imp.say(imp.pRow()+0,113,"|"+Funcoes.adicEspacosEsquerda(deSldCalc+"",10));
-  				imp.say(imp.pRow()+0,124,"|"+Funcoes.adicEspacosEsquerda(deQtdDif+"",10));
+  				imp.say(imp.pRow()+0,0,"|"+Funcoes.adicionaEspacos(rs.getString("DESCPROD"),33));
+  				imp.say(imp.pRow()+0,35,"|"+Funcoes.adicionaEspacos(rs.getString("CODPROD"),10));
+  				imp.say(imp.pRow()+0,47,"|"+Funcoes.adicionaEspacos(rs.getString("CODLOTE"),13));
+  				imp.say(imp.pRow()+0,61,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("SLDLIQLOTE")+"",8));
+  				imp.say(imp.pRow()+0,70,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDINVP")+"",8));
+  				imp.say(imp.pRow()+0,79,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDFINALPRODOP")+"",8));
+  				imp.say(imp.pRow()+0,88,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDITCOMPRA")+"",8));
+  				imp.say(imp.pRow()+0,97,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDEXPITRMA")+"",8));
+  				imp.say(imp.pRow()+0,106,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDITVENDA")+"",8));
+  				imp.say(imp.pRow()+0,115,"|"+Funcoes.adicEspacosEsquerda(deSldCalc+"",8));
+  				imp.say(imp.pRow()+0,124,"|"+Funcoes.adicEspacosEsquerda(deQtdDif+"",8));
   				imp.say(imp.pRow()+0,135,"|");
   				
   			}
