@@ -340,7 +340,7 @@ public class DLEnviarPedido extends FFDialogo {
 		MimeMessage msg = new MimeMessage( session );
 		msg.setFrom( new InternetAddress( txtFrom.getVlrString() ) );
 
-		InternetAddress[] address = { new InternetAddress( txtTo.getVlrString() ) };
+		InternetAddress[] address = { new InternetAddress( txtTo.getVlrString() ), new InternetAddress( txtFrom.getVlrString() ) };
 		msg.setRecipients( Message.RecipientType.TO, address );
 		msg.setSubject( titulo );
 
