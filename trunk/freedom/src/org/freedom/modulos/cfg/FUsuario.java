@@ -518,8 +518,13 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	
 		if ( pevt.getListaCampos() == lcCC ) {
 			
-			System.out.println( "Carrega CC" );
+//			System.out.println( "Carrega CC" );
 		}
+		else if ( (pevt.getListaCampos() == lcCampos) && (txtIDUsu.getText()!=null) ) {
+			txtIDUsu.setText( txtIDUsu.getText().toLowerCase() );
+		}
+		
+	
 	}
 
 	public void afterCarrega( CarregaEvent pevt ) {
@@ -617,9 +622,14 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 			try {
 				
 				boolean bCheck = false;
+
+				if ( (lcCampos.getStatus() == ListaCampos.LCS_INSERT) && (txtIDUsu.getText()!=null) ) {
+					txtIDUsu.setText( txtIDUsu.getText().toLowerCase() );
+				}
 				
 				if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) || ( lcCampos.getStatus() == ListaCampos.LCS_EDIT ) ) {
-					
+
+
 					ps = conIB.prepareStatement( "SELECT SRET FROM CHECKUSER(?)" );
 					ps.setString( 1, txtIDUsu.getVlrString() );
 					
