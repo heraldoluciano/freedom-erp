@@ -175,14 +175,14 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
        String sSQLInventario = null; 
        String sSQLVenda = null;
        String sSQLRMA = null;
-//       String sSQLOP = null;
+       String sSQLOP = null;
        String sWhere = null;
        String sProd = null;
        String sWhereCompra = null;
        String sWhereInventario = null;
        String sWhereVenda = null;
        String sWhereRMA = null;
-//       String sWhereOP = null;
+       String sWhereOP = null;
        PreparedStatement ps = null;
        ResultSet rs = null;
        boolean bOK = false;
@@ -240,14 +240,14 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
              	     sWhereInventario = " AND I.DATAINVP >= '"+Funcoes.dateToStrDB(txtDataini.getVlrDate())+"'";
              	     sWhereVenda = " AND V.DTEMITVENDA >= '"+Funcoes.dateToStrDB(txtDataini.getVlrDate())+"'";
              	     sWhereRMA = " AND RMA.DTAEXPRMA >= '"+Funcoes.dateToStrDB(txtDataini.getVlrDate())+"'";
- //            	     sWhereOP = " AND V.DTPRODITOP >= '"+Funcoes.dateToStrDB(txtDataini.getVlrDate())+"'";
+            	     sWhereOP = " AND O.DTFABROP >= '"+Funcoes.dateToStrDB(txtDataini.getVlrDate())+"'";
              	 }
              	 else {
                  	 sWhereCompra = "";
                  	 sWhereInventario = "";
                  	 sWhereVenda = "";
                  	 sWhereRMA = "";
- //                	 sWhereOP = "";
+                	 sWhereOP = "";
              	 }
 
              	 sSQLInventario = "SELECT 'A',I.CODEMPPD,I.CODFILIALPD,I.CODPROD," +
@@ -261,6 +261,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
              	 				"FROM EQINVPROD I " +
              	 				"WHERE I.CODEMP=? AND I.CODFILIAL=? AND " +
              	 				"I.CODPROD = ?"+sWhereInventario;
+             	 
              	 sSQLCompra = "SELECT 'C',IC.CODEMPPD,IC.CODFILIALPD,IC.CODPROD," +
              	 				"IC.CODEMPLE,IC.CODFILIALLE,IC.CODLOTE," +
              	 				"C.CODEMPTM,C.CODFILIALTM,C.CODTIPOMOV," +             	 				
@@ -274,53 +275,70 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
                                 "IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND "+
                                 "IC.QTDITCOMPRA > 0 AND "+
                                 "C.CODEMP=? AND C.CODFILIAL=? AND IC.CODPROD = ?"+sWhereCompra;
-                 sSQLVenda = "SELECT 'V',IV.CODEMPPD,IV.CODFILIALPD,IV.CODPROD," +
-                 			  "IV.CODEMPLE,IV.CODFILIALLE,IV.CODLOTE," +
-                 		      "V.CODEMPTM,V.CODFILIALTM,V.CODTIPOMOV," +
-                 			  "V.CODEMP,V.CODFILIAL,V.TIPOVENDA,V.CODVENDA,IV.CODITVENDA,"+
-                                "IV.CODEMPNT,IV.CODFILIALNT,IV.CODNAT," +
-                                "V.DTEMITVENDA,V.DOCVENDA,V.FLAG," +
-                                "IV.QTDITVENDA,IV.VLRLIQITVENDA," +
-                                "IV.CODEMPAX, IV.CODFILIALAX, IV.CODALMOX " +
-                                "FROM VDVENDA V ,VDITVENDA IV " +
-                                "WHERE IV.CODVENDA=V.CODVENDA AND "+
-                                "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND "+
-                                "IV.QTDITVENDA > 0 AND "+
-                                "V.CODEMP=? AND V.CODFILIAL=? AND IV.CODPROD = ?"+sWhereVenda;
+             	 
+                 sSQLOP = "SELECT 'O',O.CODEMPPD,O.CODFILIALPD,O.CODPROD," +
+							  "O.CODEMPLE,O.CODFILIALLE,O.CODLOTE," +
+							  "O.CODEMPTM,O.CODFILIALTM,O.CODTIPOMOV," +
+							  "O.CODEMP,O.CODFILIAL,CAST(NULL AS CHAR(1)),O.CODOP," +
+							  "CAST(O.SEQOP AS INTEGER),"+
+							  "CAST(NULL AS INTEGER),CAST(NULL AS SMALLINT),CAST(NULL AS CHAR(4))," +
+							  "O.DTFABPROD,O.CODOP,'N'," +
+							  "O.QTDFINALPRODOP,0," +
+							  "O.CODEMPAX, O.CODFILIALAX, O.CODALMOX " +
+							  "FROM PPOP " +
+							  "WHERE O.QTDFINALPRODOP > 0 AND "+
+							  "O.CODEMP=? AND O.CODFILIAL=? AND O.CODPROD = ?"+sWhereOP;
 
                  sSQLRMA = "SELECT 'R',IT.CODEMPPD,IT.CODFILIALPD,IT.CODPROD," +
-  						  "IT.CODEMPLE,IT.CODFILIALLE,IT.CODLOTE," +
-  						  "RMA.CODEMPTM,RMA.CODFILIALTM,RMA.CODTIPOMOV," +
-  						  "RMA.CODEMP,RMA.CODFILIAL,CAST(NULL AS CHAR(1)),IT.CODRMA,CAST(IT.CODITRMA AS INTEGER),"+
-  						  "CAST(NULL AS INTEGER),CAST(NULL AS SMALLINT),CAST(NULL AS CHAR(4))," +
-  						  "COALESCE(IT.DTAEXPITRMA,RMA.DTAREQRMA),RMA.CODRMA,'N'," +
-  						  "IT.QTDEXPITRMA,IT.PRECOITRMA," +
-  						  "IT.CODEMPAX, IT.CODFILIALAX, IT.CODALMOX " +
-  						  "FROM EQRMA RMA ,EQITRMA IT " +
-  						  "WHERE IT.CODRMA=RMA.CODRMA AND "+
-  						  "IT.CODEMP=RMA.CODEMP AND IT.CODFILIAL=RMA.CODFILIAL AND "+
-  						  "IT.QTDITRMA > 0 AND "+
-  						  "RMA.CODEMP=? AND RMA.CODFILIAL=? AND IT.CODPROD = ?"+sWhereRMA;
+							  "IT.CODEMPLE,IT.CODFILIALLE,IT.CODLOTE," +
+							  "RMA.CODEMPTM,RMA.CODFILIALTM,RMA.CODTIPOMOV," +
+							  "RMA.CODEMP,RMA.CODFILIAL,CAST(NULL AS CHAR(1)),IT.CODRMA,CAST(IT.CODITRMA AS INTEGER),"+
+							  "CAST(NULL AS INTEGER),CAST(NULL AS SMALLINT),CAST(NULL AS CHAR(4))," +
+							  "COALESCE(IT.DTAEXPITRMA,RMA.DTAREQRMA),RMA.CODRMA,'N'," +
+							  "IT.QTDEXPITRMA,IT.PRECOITRMA," +
+							  "IT.CODEMPAX, IT.CODFILIALAX, IT.CODALMOX " +
+							  "FROM EQRMA RMA ,EQITRMA IT " +
+							  "WHERE IT.CODRMA=RMA.CODRMA AND "+
+							  "IT.CODEMP=RMA.CODEMP AND IT.CODFILIAL=RMA.CODFILIAL AND "+
+							  "IT.QTDITRMA > 0 AND "+
+							  "RMA.CODEMP=? AND RMA.CODFILIAL=? AND IT.CODPROD = ?"+sWhereRMA;
+                 
+                 sSQLVenda = "SELECT 'V',IV.CODEMPPD,IV.CODFILIALPD,IV.CODPROD," +
+		         			  "IV.CODEMPLE,IV.CODFILIALLE,IV.CODLOTE," +
+		         		      "V.CODEMPTM,V.CODFILIALTM,V.CODTIPOMOV," +
+		         			  "V.CODEMP,V.CODFILIAL,V.TIPOVENDA,V.CODVENDA,IV.CODITVENDA,"+
+		                      "IV.CODEMPNT,IV.CODFILIALNT,IV.CODNAT," +
+		                      "V.DTEMITVENDA,V.DOCVENDA,V.FLAG," +
+		                      "IV.QTDITVENDA,IV.VLRLIQITVENDA," +
+		                      "IV.CODEMPAX, IV.CODFILIALAX, IV.CODALMOX " +
+		                      "FROM VDVENDA V ,VDITVENDA IV " +
+		                      "WHERE IV.CODVENDA=V.CODVENDA AND "+
+		                      "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND "+
+		                      "IV.QTDITVENDA > 0 AND "+
+		                      "V.CODEMP=? AND V.CODFILIAL=? AND IV.CODPROD = ?"+sWhereVenda;
                  
                  
                  
                  try {
              	    state(sProd+"Iniciando reconstrução...");
-             	    sSQL = sSQLInventario+" UNION "+sSQLCompra+" UNION "+sSQLVenda+" UNION "+sSQLRMA+" ORDER BY 19,1,20";// 1 POR QUE C-Compra,I-Inventario,V-Venda,R-RMA
+             	    sSQL = sSQLInventario+" UNION "+sSQLCompra + " UNION "+sSQLOP+" UNION "+sSQLRMA+" UNION "+sSQLVenda+" ORDER BY 19,1,20";// 1 POR QUE C-Compra,I-Inventario,V-Venda,R-RMA
              	    System.out.println(sSQL);
              	    ps = con.prepareStatement(sSQL);
              	    ps.setInt(1,Aplicativo.iCodEmp);
-             	    ps.setInt(2,ListaCampos.getMasterFilial("CPCOMPRA"));
+             	    ps.setInt(2,ListaCampos.getMasterFilial("EQINVPROD"));
              	    ps.setInt(3,iCodProd);
              	    ps.setInt(4,Aplicativo.iCodEmp);
-             	    ps.setInt(5,ListaCampos.getMasterFilial("EQINVPROD"));
-             	    ps.setInt(6,iCodProd);
-             	    ps.setInt(7,Aplicativo.iCodEmp);
-             	    ps.setInt(8,ListaCampos.getMasterFilial("VDVENDA"));
-             	    ps.setInt(9,iCodProd);
-             	    ps.setInt(10,Aplicativo.iCodEmp);
-             	    ps.setInt(11,ListaCampos.getMasterFilial("VDVENDA"));
-             	    ps.setInt(12,iCodProd);
+             	    ps.setInt(6,ListaCampos.getMasterFilial("CPCOMPRA"));
+             	    ps.setInt(7,iCodProd);
+             	    ps.setInt(8,Aplicativo.iCodEmp);
+             	    ps.setInt(9,ListaCampos.getMasterFilial("PPOP"));
+             	    ps.setInt(10,iCodProd);
+             	    ps.setInt(11,Aplicativo.iCodEmp);
+             	    ps.setInt(12,ListaCampos.getMasterFilial("EQRMA"));
+             	    ps.setInt(13,iCodProd);
+             	    ps.setInt(14,Aplicativo.iCodEmp);
+             	    ps.setInt(15,ListaCampos.getMasterFilial("VDVENDA"));
+             	    ps.setInt(16,iCodProd);
              	    rs = ps.executeQuery();
              	    bOK = true;
              	    while (rs.next() && bOK) {
@@ -466,12 +484,18 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
   				ps.setNull(26,Types.INTEGER); //CodItRma
   			}
   			
-  			ps.setNull(27,Types.INTEGER); //CodEmpOP
-  			ps.setNull(28,Types.INTEGER); //CodFilialOP
-  			ps.setNull(29,Types.INTEGER); //CodOP
-  			ps.setNull(30,Types.INTEGER); //CodItOP
-
-  			
+  			if (sCIV.equals("O")) {
+  				ps.setNull(23,rs.getInt(11)); //CodEmpOp
+  				ps.setNull(24,rs.getInt(12)); //CodFilialOp
+  				ps.setNull(25,rs.getInt(14)); //CodOp
+  				ps.setNull(26,rs.getInt(15)); //SeqOp
+  			}
+  			else {
+  	  			ps.setNull(27,Types.INTEGER); //CodEmpOP
+  	  			ps.setNull(28,Types.INTEGER); //CodFilialOP
+  	  			ps.setNull(29,Types.INTEGER); //CodOP
+  	  			ps.setNull(30,Types.INTEGER); //SeqOp
+  			}
   			
   			if (rs.getString(18)!=null) {
   			    ps.setInt(31,rs.getInt(16)); // CodEmpNt
