@@ -25,6 +25,8 @@
 package org.freedom.modulos.pcp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -110,6 +112,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	private JTextFieldPad txtDtFabProd = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtQtdPrevProdOP = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	
+	private JTextFieldPad txtQtdFinalProdOP = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
 	private JTextFieldPad txtDtValidOP = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -238,6 +242,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	}
 
 	private void montaTela() {
+
 
 		btRatearItem.setBorder( BorderFactory.createEmptyBorder() );
 		setTitulo( "Cadastro de Ordens de produção" );
@@ -370,6 +375,15 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		adicCampo( txtCodLoteProdEst, 330, 100, 80, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLoteProdEst, false );
 		adicDescFKInvisivel( txtDescLoteProdEst, "VenctoLote", "Vencto.Lote" );
 		adicCampo( txtDtValidOP, 413, 100, 80, 20, "dtvalidpdop", "Dt. validade", ListaCampos.DB_SI, false );
+				
+		txtQtdFinalProdOP.setAtivo( false );
+		txtQtdFinalProdOP.tiraBorda();
+		txtQtdFinalProdOP.setForeground( new Color(255,0,0) );
+		txtQtdFinalProdOP.setFont(new Font("Dialog", Font.BOLD, 14));
+		txtQtdFinalProdOP.setHorizontalAlignment( SwingConstants.LEFT );
+				
+		adicCampo( txtQtdFinalProdOP, 7, 140, 110, 20, "qtdfinalprodop", "Qtd.Produzida", ListaCampos.DB_SI, false );
+		
 		setListaCampos( true, "OP", "PP" );
 
 		txtCodTpMov.setAtivo( false );
@@ -1327,6 +1341,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		else if ( evt.getSource() == btRatearItem )
 			ratearItem( true );
 		else if ( evt.getSource() == btDistrb ) {
+			lcCampos.carregaDados();
 			Object[] sValores = new Object[ 7 ];
 			sValores[ 0 ] = txtCodOP.getVlrInteger();
 			sValores[ 1 ] = txtSeqOP.getVlrInteger();
@@ -1334,7 +1349,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			sValores[ 3 ] = txtRefProdEst.getVlrString();
 			sValores[ 4 ] = txtSeqEst.getVlrInteger();
 			sValores[ 5 ] = txtDescEst.getVlrString();
-			sValores[ 6 ] = txtQtdPrevProdOP.getVlrBigDecimal();
+			sValores[ 6 ] = txtQtdFinalProdOP.getVlrBigDecimal();
 
 			DLDistrib dl = new DLDistrib( con, this, bPrefs[ 0 ] );
 			dl.carregaCampos( sValores );
@@ -1455,10 +1470,14 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		}
 	}
 
-	public void beforeInsert( InsertEvent ievt ) {
+	public void beforeInsert( InsertEvent ievt ) {}
 
+	public void beforePost( PostEvent pevt) {
+		if(!(txtQtdFinalProdOP.getVlrBigDecimal().compareTo( new BigDecimal(0) )>0)) {
+			txtQtdFinalProdOP.setVlrBigDecimal( new BigDecimal(0) );
+		}
+		
 	}
-
 	public void afterPost( PostEvent pevt ) {
 
 		if ( lcCampos.getStatusAnt() == ListaCampos.LCS_INSERT )
