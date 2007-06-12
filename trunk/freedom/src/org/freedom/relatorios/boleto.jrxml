@@ -50,13 +50,13 @@ V.DTEMITVENDA,V.DOCVENDA,
 C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,C.RGCLI,C.INSCCLI,
 C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI,
 C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB,
-C.FONECLI,C.DDDCLI,R.CODREC
-FROM FNITRECEBER ITR,VDVENDA V,VDCLIENTE C, FNRECEBER R
-WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL
-AND V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA
-AND V.CODFILIAL=R.CODFILIALVA AND C.CODCLI=V.CODCLI
-AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL
-AND R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODVENDA} ]]></queryString>
+C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA
+FROM FNITRECEBER ITR,VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P
+WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND 
+V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND 
+C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND 
+P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL AND 
+R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODVENDA} ]]></queryString>
 
 	<field name="PARCS" class="java.lang.Long"/>
 	<field name="DTVENCITREC" class="java.sql.Date"/>
@@ -92,6 +92,7 @@ AND R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODV
 	<field name="FONECLI" class="java.lang.String"/>
 	<field name="DDDCLI" class="java.lang.String"/>
 	<field name="CODREC" class="java.lang.Long"/>
+	<field name="CODMOEDA" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -809,7 +810,7 @@ AND R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODV
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["VERIFICAR"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODMOEDA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -818,19 +819,6 @@ AND R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODV
 						width="66"
 						height="9"
 						key="textField-13"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Bottom">
-						<font fontName="Arial" size="7"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["VERIFICAR"]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="243"
-						y="82"
-						width="66"
-						height="9"
-						key="textField-14"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
@@ -975,19 +963,6 @@ AND R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODV
 						width="287"
 						height="9"
 						key="textField-25"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Bottom">
-						<font fontName="Arial" size="7"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["VERIFICAR"]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="415"
-						y="216"
-						width="108"
-						height="9"
-						key="textField-26"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
