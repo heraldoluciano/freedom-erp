@@ -73,6 +73,8 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 
 	private final JTextFieldPad txtDescModBol = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 	
+	private final JTextFieldPad txtCarteira = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
 	private final JCheckBoxPad ckPreImp = new JCheckBoxPad( "Usa boleto pré-impresso ?", "S", "N" );
 
 	private final JTextAreaPad txaBoleto = new JTextAreaPad( 10000 );
@@ -224,7 +226,8 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 		
 		adicCampo( txtCodModBol, 7, 30, 90, 20, "CodModBol", "Cód.mod.bol.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescModBol, 100, 30, 300, 20, "DescModBol", "Descrição do modelo de boleto", ListaCampos.DB_SI, true );
-		adicDB( ckPreImp, 420, 30, 200, 20, "PreImpModBol", "", false );
+		adicCampo( txtCarteira, 404, 30, 50, 20, "cartCob" , "Carteira", ListaCampos.DB_SI, true );
+		adicDB( ckPreImp, 470, 30, 200, 20, "PreImpModBol", "", false );
 		adicDBLiv( txaBoleto, "TxaModBol", "Corpo", false );
 		adicDBLiv( txtClassModBol, "ClassModBol", "Classe modelo", false );
 		setListaCampos( true, "MODBOLETO", "FN" );
