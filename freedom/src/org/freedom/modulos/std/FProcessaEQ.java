@@ -67,6 +67,17 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
     private JCheckBoxPad cbAtivo = new JCheckBoxPad("Processar somente produtos ativos","S","N");
 	private JLabelPad lbStatus = new JLabelPad();
 	private ListaCampos lcProd = new ListaCampos(this);
+	private enum paramCons {NONE, CODEMPIV, CODFILIALIV, CODPRODIV, 
+		CODEMPCP, CODFILIALCP, CODPRODCP, CODEMPOP, CODFILIALOP, CODPRODOP, 
+		CODEMPRM, CODFILIALRM, CODPRODRM, CODEMPVD, CODFILIALVD, CODPRODVD}
+	private enum paramProc { NONE, IUD, CODEMPPD, CODFILIALPD, CODPROD, CODEMPLE,
+		CODFILIALLE, CODLOTE, CODEMPTM, CODFILIALTM, CODTIPOMOV, CODEMPIV,
+	    CODFILIALIV, CODINVPROD, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA,
+	    CODEMPVD, CODFILIALVD, TIPOVENDA, CODVENDA, CODITVENDA, CODEMPRM,
+	    CODFILIALRM, CODRMA, CODITRMA, CODEMPOP, CODFILIALOP, CODOP, SEQOP,
+	    CODEMPNT, CODFILIALNT, CODNAT, DTMOVPROD, DOCMOVPROD, FLAG, QTDMOVPROD, 
+	    PRECOMOVPROD, CODEMPAX, CODFILIALAX, CODALMOX }
+
 	boolean bRunProcesso = false;
 	int iFilialMov = 0; 
     int iUltProd = 0;
@@ -250,25 +261,27 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
                 	 sWhereOP = "";
              	 }
 
-             	 sSQLInventario = "SELECT 'A',I.CODEMPPD,I.CODFILIALPD,I.CODPROD," +
-             	 				"I.CODEMPLE,I.CODFILIALLE,I.CODLOTE," +
-             	 				"I.CODEMPTM,I.CODFILIALTM,I.CODTIPOMOV,"+
-             	 				"I.CODEMP,I.CODFILIAL,CAST(NULL AS CHAR(1)),I.CODINVPROD,I.CODINVPROD,"+
-             	 				"CAST(NULL AS INTEGER),CAST(NULL AS SMALLINT),CAST(NULL AS CHAR(4)),"+
-             	 				"I.DATAINVP,I.CODINVPROD,'N'," +
-             	 				"I.QTDINVP,I.PRECOINVP," +
+             	 sSQLInventario = "SELECT 'A' TIPOPROC, I.CODEMPPD, I.CODFILIALPD, I.CODPROD," +
+             	 				"I.CODEMPLE, I.CODFILIALLE, I.CODLOTE," +
+             	 				"I.CODEMPTM, I.CODFILIALTM, I.CODTIPOMOV,"+
+             	 				"I.CODEMP, I.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA, " +
+             	 				"I.CODINVPROD CODMASTER, I.CODINVPROD CODITEM, "+
+             	 				"CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT ,CAST(NULL AS CHAR(4)) CODNAT,"+
+             	 				"I.DATAINVP DTPROC, I.CODINVPROD DOCPROC,'N' FLAG," +
+             	 				"I.QTDINVP QTDPROC, I.PRECOINVP CUSTOPROC, " +
              	 				"I.CODEMPAX, I.CODFILIALAX, I.CODALMOX "+
              	 				"FROM EQINVPROD I " +
              	 				"WHERE I.CODEMP=? AND I.CODFILIAL=? AND " +
              	 				"I.CODPROD = ?"+sWhereInventario;
              	 
-             	 sSQLCompra = "SELECT 'C',IC.CODEMPPD,IC.CODFILIALPD,IC.CODPROD," +
-             	 				"IC.CODEMPLE,IC.CODFILIALLE,IC.CODLOTE," +
-             	 				"C.CODEMPTM,C.CODFILIALTM,C.CODTIPOMOV," +             	 				
-             	 				"C.CODEMP,C.CODFILIAL,CAST(NULL AS CHAR(1)),C.CODCOMPRA,IC.CODITCOMPRA,"+
-                                "IC.CODEMPNT,IC.CODFILIALNT,IC.CODNAT,"+
-                                "C.DTENTCOMPRA,C.DOCCOMPRA,C.FLAG," +
-                                "IC.QTDITCOMPRA,IC.CUSTOITCOMPRA," +
+             	 sSQLCompra = "SELECT 'C' TIPOPROC, IC.CODEMPPD, IC.CODFILIALPD, IC.CODPROD," +
+             	 				"IC.CODEMPLE, IC.CODFILIALLE, IC.CODLOTE," +
+             	 				"C.CODEMPTM, C.CODFILIALTM, C.CODTIPOMOV," +             	 				
+             	 				"C.CODEMP, C.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA, " +
+             	 				"C.CODCOMPRA CODMASTER, IC.CODITCOMPRA CODITEM,"+
+                                "IC.CODEMPNT, IC.CODFILIALNT, IC.CODNAT, "+
+                                "C.DTENTCOMPRA DTPROC, C.DOCCOMPRA DOCPROC, C.FLAG," +
+                                "IC.QTDITCOMPRA QTDPROC, IC.CUSTOITCOMPRA CUSTOPROC, " +
                                 "IC.CODEMPAX, IC.CODFILIALAX, IC.CODALMOX "+
                                 "FROM CPCOMPRA C,CPITCOMPRA IC " +
                                 "WHERE IC.CODCOMPRA=C.CODCOMPRA AND "+
@@ -276,26 +289,35 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
                                 "IC.QTDITCOMPRA > 0 AND "+
                                 "C.CODEMP=? AND C.CODFILIAL=? AND IC.CODPROD = ?"+sWhereCompra;
              	 
-                 sSQLOP = "SELECT 'O',O.CODEMPPD,O.CODFILIALPD,O.CODPROD," +
-							  "O.CODEMPLE,O.CODFILIALLE,O.CODLOTE," +
-							  "O.CODEMPTM,O.CODFILIALTM,O.CODTIPOMOV," +
-							  "O.CODEMP,O.CODFILIAL,CAST(NULL AS CHAR(1)),O.CODOP," +
-							  "CAST(O.SEQOP AS INTEGER),"+
-							  "CAST(NULL AS INTEGER),CAST(NULL AS SMALLINT),CAST(NULL AS CHAR(4))," +
-							  "O.DTFABPROD,O.CODOP,'N'," +
-							  "O.QTDFINALPRODOP,0," +
+                 sSQLOP = "SELECT 'O' TIPOPROC, O.CODEMPPD, O.CODFILIALPD, O.CODPROD," +
+							  "O.CODEMPLE, O.CODFILIALLE, O.CODLOTE," +
+							  "O.CODEMPTM, O.CODFILIALTM, O.CODTIPOMOV," +
+							  "O.CODEMP, O.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA ," +
+							  "O.CODOP CODMASTER, CAST(O.SEQOP AS INTEGER) CODITEM,"+
+							  "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT, " +
+							  "CAST(NULL AS CHAR(4)) CODNAT, " +
+							  "O.DTFABROP DTPROC, O.CODOP DOCPROC, 'N' FLAG, " +
+							  "O.QTDFINALPRODOP QTDPROC, " +
+							  "( SELECT SUM(PD.CUSTOMPMPROD) FROM PPITOP IT, EQPRODUTO PD " +
+							  "WHERE IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND " +
+							  "IT.CODOP=O.CODOP AND IT.SEQOP=O.SEQOP AND " +
+							  "PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND "+
+							  "PD.CODPROD=IT.CODPROD) CUSTOPROC, " +
 							  "O.CODEMPAX, O.CODFILIALAX, O.CODALMOX " +
-							  "FROM PPOP " +
+							  "FROM PPOP O " +
 							  "WHERE O.QTDFINALPRODOP > 0 AND "+
 							  "O.CODEMP=? AND O.CODFILIAL=? AND O.CODPROD = ?"+sWhereOP;
 
-                 sSQLRMA = "SELECT 'R',IT.CODEMPPD,IT.CODFILIALPD,IT.CODPROD," +
-							  "IT.CODEMPLE,IT.CODFILIALLE,IT.CODLOTE," +
-							  "RMA.CODEMPTM,RMA.CODFILIALTM,RMA.CODTIPOMOV," +
-							  "RMA.CODEMP,RMA.CODFILIAL,CAST(NULL AS CHAR(1)),IT.CODRMA,CAST(IT.CODITRMA AS INTEGER),"+
-							  "CAST(NULL AS INTEGER),CAST(NULL AS SMALLINT),CAST(NULL AS CHAR(4))," +
-							  "COALESCE(IT.DTAEXPITRMA,RMA.DTAREQRMA),RMA.CODRMA,'N'," +
-							  "IT.QTDEXPITRMA,IT.PRECOITRMA," +
+                 sSQLRMA = "SELECT 'R' TIPOPROC, IT.CODEMPPD, IT.CODFILIALPD, IT.CODPROD, " +
+							  "IT.CODEMPLE, IT.CODFILIALLE, IT.CODLOTE, " +
+							  "RMA.CODEMPTM, RMA.CODFILIALTM, RMA.CODTIPOMOV, " +
+							  "RMA.CODEMP, RMA.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA, " +
+							  "IT.CODRMA CODMASTER, CAST(IT.CODITRMA AS INTEGER) CODITEM, "+
+							  "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT, " +
+							  "CAST(NULL AS CHAR(4)) CODNAT, " +
+							  "COALESCE(IT.DTAEXPITRMA,RMA.DTAREQRMA) DTPROC, " +
+							  "RMA.CODRMA DOCPROC, 'N' FLAG, " +
+							  "IT.QTDEXPITRMA QTDPROC, IT.PRECOITRMA CUSTOPROC," +
 							  "IT.CODEMPAX, IT.CODFILIALAX, IT.CODALMOX " +
 							  "FROM EQRMA RMA ,EQITRMA IT " +
 							  "WHERE IT.CODRMA=RMA.CODRMA AND "+
@@ -303,13 +325,14 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 							  "IT.QTDITRMA > 0 AND "+
 							  "RMA.CODEMP=? AND RMA.CODFILIAL=? AND IT.CODPROD = ?"+sWhereRMA;
                  
-                 sSQLVenda = "SELECT 'V',IV.CODEMPPD,IV.CODFILIALPD,IV.CODPROD," +
-		         			  "IV.CODEMPLE,IV.CODFILIALLE,IV.CODLOTE," +
-		         		      "V.CODEMPTM,V.CODFILIALTM,V.CODTIPOMOV," +
-		         			  "V.CODEMP,V.CODFILIAL,V.TIPOVENDA,V.CODVENDA,IV.CODITVENDA,"+
-		                      "IV.CODEMPNT,IV.CODFILIALNT,IV.CODNAT," +
-		                      "V.DTEMITVENDA,V.DOCVENDA,V.FLAG," +
-		                      "IV.QTDITVENDA,IV.VLRLIQITVENDA," +
+                 sSQLVenda = "SELECT 'V' TIPOPROC, IV.CODEMPPD, IV.CODFILIALPD, IV.CODPROD," +
+		         			  "IV.CODEMPLE, IV.CODFILIALLE, IV.CODLOTE," +
+		         		      "V.CODEMPTM, V.CODFILIALTM, V.CODTIPOMOV," +
+		         			  "V.CODEMP, V.CODFILIAL, V.TIPOVENDA, " +
+		         			  "V.CODVENDA CODMASTER, IV.CODITVENDA CODITEM, "+
+		                      "IV.CODEMPNT, IV.CODFILIALNT, IV.CODNAT, " +
+		                      "V.DTEMITVENDA DTPROC, V.DOCVENDA DOCPROC, V.FLAG, " +
+		                      "IV.QTDITVENDA QTDPROC, IV.VLRLIQITVENDA CUSTOPROC, " +
 		                      "IV.CODEMPAX, IV.CODFILIALAX, IV.CODALMOX " +
 		                      "FROM VDVENDA V ,VDITVENDA IV " +
 		                      "WHERE IV.CODVENDA=V.CODVENDA AND "+
@@ -322,23 +345,23 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
                  try {
              	    state(sProd+"Iniciando reconstrução...");
              	    sSQL = sSQLInventario+" UNION "+sSQLCompra + " UNION "+sSQLOP+" UNION "+sSQLRMA+" UNION "+sSQLVenda+" ORDER BY 19,1,20";// 1 POR QUE C-Compra,I-Inventario,V-Venda,R-RMA
-             	    System.out.println(sSQL);
+//             	    System.out.println(sSQL);
              	    ps = con.prepareStatement(sSQL);
-             	    ps.setInt(1,Aplicativo.iCodEmp);
-             	    ps.setInt(2,ListaCampos.getMasterFilial("EQINVPROD"));
-             	    ps.setInt(3,iCodProd);
-             	    ps.setInt(4,Aplicativo.iCodEmp);
-             	    ps.setInt(6,ListaCampos.getMasterFilial("CPCOMPRA"));
-             	    ps.setInt(7,iCodProd);
-             	    ps.setInt(8,Aplicativo.iCodEmp);
-             	    ps.setInt(9,ListaCampos.getMasterFilial("PPOP"));
-             	    ps.setInt(10,iCodProd);
-             	    ps.setInt(11,Aplicativo.iCodEmp);
-             	    ps.setInt(12,ListaCampos.getMasterFilial("EQRMA"));
-             	    ps.setInt(13,iCodProd);
-             	    ps.setInt(14,Aplicativo.iCodEmp);
-             	    ps.setInt(15,ListaCampos.getMasterFilial("VDVENDA"));
-             	    ps.setInt(16,iCodProd);
+             	    ps.setInt(paramCons.CODEMPIV.ordinal(),Aplicativo.iCodEmp);
+             	    ps.setInt(paramCons.CODFILIALIV.ordinal(),ListaCampos.getMasterFilial("EQPRODUTO"));
+             	    ps.setInt(paramCons.CODPRODIV.ordinal(),iCodProd);
+             	    ps.setInt(paramCons.CODEMPCP.ordinal(),Aplicativo.iCodEmp);
+             	    ps.setInt(paramCons.CODFILIALCP.ordinal(),ListaCampos.getMasterFilial("EQPRODUTO"));
+             	    ps.setInt(paramCons.CODPRODCP.ordinal(),iCodProd);
+             	    ps.setInt(paramCons.CODEMPOP.ordinal(),Aplicativo.iCodEmp);
+             	    ps.setInt(paramCons.CODFILIALOP.ordinal(),ListaCampos.getMasterFilial("EQPRODUTO"));
+             	    ps.setInt(paramCons.CODPRODOP.ordinal(),iCodProd);
+             	    ps.setInt(paramCons.CODEMPRM.ordinal(),Aplicativo.iCodEmp);
+             	    ps.setInt(paramCons.CODFILIALRM.ordinal(),ListaCampos.getMasterFilial("EQPRODUTO"));
+             	    ps.setInt(paramCons.CODPRODRM.ordinal(),iCodProd);
+             	    ps.setInt(paramCons.CODEMPVD.ordinal(),Aplicativo.iCodEmp);
+             	    ps.setInt(paramCons.CODFILIALVD.ordinal(),ListaCampos.getMasterFilial("EQPRODUTO"));
+             	    ps.setInt(paramCons.CODPRODVD.ordinal(),iCodProd);
              	    rs = ps.executeQuery();
              	    bOK = true;
              	    while (rs.next() && bOK) {
@@ -417,114 +440,114 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
     	    										 "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     		state(sProd+"Processando dia: "+Funcoes.sqlDateToStrDate(rs.getDate(19))+" Doc: ["+rs.getInt(20)+"]");
     		ps = con.prepareStatement(sSQL);
-    		sCIV = rs.getString(1); // tipo COMPRA, INVENTARIO, VENDA
-    		ps.setString(1,"I");
-    		ps.setInt(2,rs.getInt(2)); //CodEmpPD
-    		ps.setInt(3,rs.getInt(3)); //CodFilialPD
-    		ps.setInt(4,rs.getInt(4)); //CodProd
-    		if (rs.getString(7) != null) {
-      		  ps.setInt(5,rs.getInt(5)); //CodEmpLE
-      		  ps.setInt(6,rs.getInt(6)); //CodFilialLE
-      		  ps.setString(7,rs.getString(7)); //CodLote
+    		sCIV = rs.getString("TIPOPROC"); // tipo COMPRA, INVENTARIO, VENDA
+    		ps.setString(paramProc.IUD.ordinal(),"I");
+    		ps.setInt(paramProc.CODEMPPD.ordinal(),rs.getInt("CODEMPPD")); //CodEmpPD
+    		ps.setInt(paramProc.CODFILIALPD.ordinal(),rs.getInt("CODFILIALPD")); //CodFilialPD
+    		ps.setInt(paramProc.CODPROD.ordinal(),rs.getInt("CODPROD")); //CodProd
+    		if (rs.getString("CODLOTE") != null) {
+      		  ps.setInt(paramProc.CODEMPLE.ordinal(),rs.getInt("CODEMPLE")); //CodEmpLE
+      		  ps.setInt(paramProc.CODFILIALLE.ordinal(),rs.getInt("CODFILIALLE")); //CodFilialLE
+      		  ps.setString(paramProc.CODLOTE.ordinal(),rs.getString("CODLOTE")); //CodLote
       		}
       		else {
-      			ps.setNull(5,Types.INTEGER); //CodEmpLE
-      			ps.setNull(6,Types.INTEGER); //CodFilialLE
-      			ps.setNull(7,Types.CHAR); //CodLote
+      			ps.setNull(paramProc.CODEMPLE.ordinal(),Types.INTEGER); //CodEmpLE
+      			ps.setNull(paramProc.CODFILIALLE.ordinal(),Types.INTEGER); //CodFilialLE
+      			ps.setNull(paramProc.CODLOTE.ordinal(),Types.CHAR); //CodLote
       		}
-  			ps.setInt(8,rs.getInt(8)); //CodEmpTM
-  			ps.setInt(9,rs.getInt(9)); //CodFilialTM
-  			ps.setInt(10,rs.getInt(10)); //CodTipoMov
+  			ps.setInt(paramProc.CODEMPTM.ordinal(),rs.getInt("CODEMPTM")); //CodEmpTM
+  			ps.setInt(paramProc.CODFILIALTM.ordinal(),rs.getInt("CODFILIALTM")); //CodFilialTM
+  			ps.setInt(paramProc.CODTIPOMOV.ordinal(),rs.getInt("CODTIPOMOV")); //CodTipoMov
     		if (sCIV.equals("A")) {
-      			ps.setInt(11,rs.getInt(11)); //CodEmpIv
-      			ps.setInt(12,rs.getInt(12)); //CodFilialIv
-      			ps.setInt(13,rs.getInt(14)); //CodInvProd
+      			ps.setInt(paramProc.CODEMPIV.ordinal(),rs.getInt("CODEMP")); //CodEmpIv
+      			ps.setInt(paramProc.CODFILIALIV.ordinal(),rs.getInt("CODFILIAL")); //CodFilialIv
+      			ps.setInt(paramProc.CODINVPROD.ordinal(),rs.getInt("CODMASTER")); //CodInvProd
     		}
     		else {
-      			ps.setNull(11,Types.INTEGER); //CodEmpIv
-      			ps.setNull(12,Types.INTEGER); //CodFilialIv
-      			ps.setNull(13,Types.INTEGER); //CodInvProd
+      			ps.setNull(paramProc.CODEMPIV.ordinal(),Types.INTEGER); //CodEmpIv
+      			ps.setNull(paramProc.CODFILIALIV.ordinal(),Types.INTEGER); //CodFilialIv
+      			ps.setNull(paramProc.CODINVPROD.ordinal(),Types.INTEGER); //CodInvProd
     		}
   			if (sCIV.equals("C")) {
-      			ps.setInt(14,rs.getInt(11)); //CodEmpCp
-      			ps.setInt(15,rs.getInt(12)); //CodFilialCp
-      			ps.setInt(16,rs.getInt(14)); //CodCompra
-      			ps.setInt(17,rs.getInt(15)); //CodItCompra
+      			ps.setInt(paramProc.CODEMPCP.ordinal(),rs.getInt("CODEMP")); //CodEmpCp
+      			ps.setInt(paramProc.CODFILIALCP.ordinal(),rs.getInt("CODFILIAL")); //CodFilialCp
+      			ps.setInt(paramProc.CODCOMPRA.ordinal(),rs.getInt("CODMASTER")); //CodCompra
+      			ps.setInt(paramProc.CODITCOMPRA.ordinal(),rs.getInt("CODITEM")); //CodItCompra
     		}
     		else {
-      			ps.setNull(14,Types.INTEGER); //CodEmpCp
-      			ps.setNull(15,Types.INTEGER); //CodFilialCp
-      			ps.setNull(16,Types.INTEGER); //CodCompra
-      			ps.setNull(17,Types.INTEGER); //CodItCompra
+      			ps.setNull(paramProc.CODEMPCP.ordinal(),Types.INTEGER); //CodEmpCp
+      			ps.setNull(paramProc.CODFILIALCP.ordinal(),Types.INTEGER); //CodFilialCp
+      			ps.setNull(paramProc.CODCOMPRA.ordinal(),Types.INTEGER); //CodCompra
+      			ps.setNull(paramProc.CODITCOMPRA.ordinal(),Types.INTEGER); //CodItCompra
     		}
   			if (sCIV.equals("V")) {
-      			ps.setInt(18,rs.getInt(11)); //CodEmpVd
-      			ps.setInt(19,rs.getInt(12)); //CodFilialVd
-      			ps.setString(20,rs.getString(13)); //TipoVenda
-      			ps.setInt(21,rs.getInt(14)); //CodVenda
-      			ps.setInt(22,rs.getInt(15)); //CodItVenda
+      			ps.setInt(paramProc.CODEMPVD.ordinal(),rs.getInt("CODEMP")); //CodEmpVd
+      			ps.setInt(paramProc.CODFILIALVD.ordinal(),rs.getInt("CODFILIAL")); //CodFilialVd
+      			ps.setString(paramProc.TIPOVENDA.ordinal(),rs.getString("TIPOVENDA")); //TipoVenda
+      			ps.setInt(paramProc.CODVENDA.ordinal(),rs.getInt("CODMASTER")); //CodVenda
+      			ps.setInt(paramProc.CODITVENDA.ordinal(),rs.getInt("CODITEM")); //CodItVenda
     		}
     		else {
-      			ps.setNull(18,Types.INTEGER); //CodEmpVd
-      			ps.setNull(19,Types.INTEGER); //CodFilialVd
-      			ps.setNull(20,Types.CHAR); //TipoVenda
-      			ps.setNull(21,Types.INTEGER); //CodVenda
-      			ps.setNull(22,Types.INTEGER); //CodItVenda
+      			ps.setNull(paramProc.CODEMPVD.ordinal(),Types.INTEGER); //CodEmpVd
+      			ps.setNull(paramProc.CODFILIALVD.ordinal(),Types.INTEGER); //CodFilialVd
+      			ps.setNull(paramProc.TIPOVENDA.ordinal(),Types.CHAR); //TipoVenda
+      			ps.setNull(paramProc.CODVENDA.ordinal(),Types.INTEGER); //CodVenda
+      			ps.setNull(paramProc.CODITVENDA.ordinal(),Types.INTEGER); //CodItVenda
     		}
   			if (sCIV.equals("R")) {
-  				ps.setNull(23,rs.getInt(11)); //CodEmpRm
-  				ps.setNull(24,rs.getInt(12)); //CodFilialRm
-  				ps.setNull(25,rs.getInt(14)); //CodRma
-  				ps.setNull(26,rs.getInt(15)); //CodItRma
+  				ps.setNull(paramProc.CODEMPRM.ordinal(),rs.getInt("CODEMP")); //CodEmpRm
+  				ps.setNull(paramProc.CODFILIALRM.ordinal(),rs.getInt("CODFILIAL")); //CodFilialRm
+  				ps.setNull(paramProc.CODRMA.ordinal(),rs.getInt("CODMASTER")); //CodRma
+  				ps.setNull(paramProc.CODITRMA.ordinal(),rs.getInt("CODITEM")); //CodItRma
   			}
   			else {
-  				ps.setNull(23,Types.INTEGER); //CodEmpRm
-  				ps.setNull(24,Types.INTEGER); //CodFilialRm
-  				ps.setNull(25,Types.INTEGER); //CodRma
-  				ps.setNull(26,Types.INTEGER); //CodItRma
+  				ps.setNull(paramProc.CODEMPRM.ordinal(),Types.INTEGER); //CodEmpRm
+  				ps.setNull(paramProc.CODFILIALRM.ordinal(),Types.INTEGER); //CodFilialRm
+  				ps.setNull(paramProc.CODRMA.ordinal(),Types.INTEGER); //CodRma
+  				ps.setNull(paramProc.CODITRMA.ordinal(),Types.INTEGER); //CodItRma
   			}
   			
   			if (sCIV.equals("O")) {
-  				ps.setNull(23,rs.getInt(11)); //CodEmpOp
-  				ps.setNull(24,rs.getInt(12)); //CodFilialOp
-  				ps.setNull(25,rs.getInt(14)); //CodOp
-  				ps.setNull(26,rs.getInt(15)); //SeqOp
+  				ps.setNull(paramProc.CODEMPOP.ordinal(),rs.getInt("CODEMP")); //CodEmpOp
+  				ps.setNull(paramProc.CODFILIALOP.ordinal(),rs.getInt("CODFILIAL")); //CodFilialOp
+  				ps.setNull(paramProc.CODOP.ordinal(),rs.getInt("CODMASTER")); //CodOp
+  				ps.setNull(paramProc.SEQOP.ordinal(),rs.getInt("CODITEM")); //SeqOp
   			}
   			else {
-  	  			ps.setNull(27,Types.INTEGER); //CodEmpOP
-  	  			ps.setNull(28,Types.INTEGER); //CodFilialOP
-  	  			ps.setNull(29,Types.INTEGER); //CodOP
-  	  			ps.setNull(30,Types.INTEGER); //SeqOp
+  	  			ps.setNull(paramProc.CODEMPOP.ordinal(),Types.INTEGER); //CodEmpOP
+  	  			ps.setNull(paramProc.CODFILIALOP.ordinal(),Types.INTEGER); //CodFilialOP
+  	  			ps.setNull(paramProc.CODOP.ordinal(),Types.INTEGER); //CodOP
+  	  			ps.setNull(paramProc.SEQOP.ordinal(),Types.INTEGER); //SeqOp
   			}
   			
   			if (rs.getString(18)!=null) {
-  			    ps.setInt(31,rs.getInt(16)); // CodEmpNt
-  			    ps.setInt(32,rs.getInt(17)); // CodFilialNt
-  			    ps.setString(33,rs.getString(18)); // CodNat
+  			    ps.setInt(paramProc.CODEMPNT.ordinal(),rs.getInt("CODEMPNT")); // CodEmpNt
+  			    ps.setInt(paramProc.CODFILIALNT.ordinal(),rs.getInt("CODFILIALNT")); // CodFilialNt
+  			    ps.setString(paramProc.CODNAT.ordinal(),rs.getString("CODNAT")); // CodNat
   			}
   			else {
-  			    ps.setNull(31,Types.INTEGER); // CodEmpNt
-  			    ps.setNull(32,Types.INTEGER); // CodFilialNt
-  			    ps.setNull(33,Types.CHAR); // CodNat
+  			    ps.setNull(paramProc.CODEMPNT.ordinal(),Types.INTEGER); // CodEmpNt
+  			    ps.setNull(paramProc.CODFILIALNT.ordinal(),Types.INTEGER); // CodFilialNt
+  			    ps.setNull(paramProc.CODNAT.ordinal(),Types.CHAR); // CodNat
   			}
   			
-  			ps.setDate(34, rs.getDate(19)); // dtMovProd
-  			ps.setInt(35,rs.getInt(20)); // docMovProd
-  			ps.setString(36,rs.getString(21)); // Flag
-  			ps.setDouble(37,rs.getDouble(22)); // QtdMovProd
-  			if (sCIV.equals("V")) {
-  				if (rs.getDouble(22)>0)
-    				dePrecoMovprod = rs.getDouble(23) / rs.getDouble(22);
+  			ps.setDate(paramProc.DTMOVPROD.ordinal(), rs.getDate("DTPROC")); // dtMovProd
+  			ps.setInt(paramProc.DOCMOVPROD.ordinal(),rs.getInt("DOCPROC")); // docMovProd
+  			ps.setString(paramProc.FLAG.ordinal(),rs.getString("FLAG")); // Flag
+  			ps.setDouble(paramProc.QTDMOVPROD.ordinal(),rs.getDouble("QTDPROC")); // QtdMovProd
+  			if ( sCIV.equals("V") ) {
+  				if (rs.getDouble("QTDPROC")>0)
+    				dePrecoMovprod = rs.getDouble("CUSTOPROC") / rs.getDouble("QTDPROC");
   				else
   					dePrecoMovprod = 0;
   			}
   			else {
-  				dePrecoMovprod = rs.getDouble(23);
+  				dePrecoMovprod = rs.getDouble("CUSTOPROC");
   			}
-			ps.setDouble(38,dePrecoMovprod); // PrecoMovProd
-			ps.setDouble(39,rs.getInt(24)); // Codempax
-			ps.setDouble(40,rs.getInt(25)); // Codfilialax
-			ps.setDouble(41,rs.getInt(26)); // Codalmox
+			ps.setDouble(paramProc.PRECOMOVPROD.ordinal(),dePrecoMovprod); // PrecoMovProd
+			ps.setDouble(paramProc.CODEMPAX.ordinal(),rs.getInt("CODEMPAX")); // Codempax
+			ps.setDouble(paramProc.CODFILIALAX.ordinal(),rs.getInt("CODFILIALAX")); // Codfilialax
+			ps.setDouble(paramProc.CODALMOX.ordinal(),rs.getInt("CODALMOX")); // Codalmox
 			
     		ps.executeUpdate();
    		    ps.close();
