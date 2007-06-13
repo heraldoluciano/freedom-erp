@@ -56,7 +56,7 @@ WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL 
 V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND 
 C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND 
 P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL AND 
-R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODVENDA} ]]></queryString>
+R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODVENDA}]]></queryString>
 
 	<field name="PARCS" class="java.lang.Long"/>
 	<field name="DTVENCITREC" class="java.sql.Date"/>
@@ -619,22 +619,22 @@ R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODVENDA
 				</staticText>
 				<staticText>
 					<reportElement
-						x="315"
+						x="332"
 						y="229"
 						width="68"
 						height="8"
 						key="staticText-26"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" pdfFontName="Helvetica" size="6" isBold="false"/>
+						<font fontName="Arial" pdfFontName="Helvetica" size="5" isBold="false"/>
 					</textElement>
 				<text><![CDATA[Autenticação mecânica]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="386"
+						x="402"
 						y="229"
-						width="137"
+						width="121"
 						height="11"
 						key="staticText-27"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1045,6 +1045,17 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" ) + "  -  " +
 						key="line-21"/>
 					<graphicElement stretchType="NoStretch" pen="Dotted"/>
 				</line>
+				<image  scaleImage="FillFrame" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1"
+						y="230"
+						width="328"
+						height="31"
+						key="barcode-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch" pen="None"/>
+					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(13,"00192240701002023275600005688189834870000005000",false,true,null,0,0)]]></imageExpression>
+				</image>
 			</band>
 		</detail>
 		<columnFooter>
