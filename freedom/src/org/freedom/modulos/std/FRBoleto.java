@@ -30,6 +30,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -378,6 +379,13 @@ public class FRBoleto extends FRelatorio {
 		
 		return classe;
 	}
+	
+	private String getBarCode() {
+		
+		String barcode = null;
+		
+		return barcode;
+	}
 
 	public void imprimir( boolean bVisualizar ) {
 		
@@ -412,38 +420,27 @@ public class FRBoleto extends FRelatorio {
 			imp.verifLinPag();
 			imp.setTitulo( "Boleto" );
 			
-			/*sSQL.append( "SELECT (SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE " );
-			sSQL.append( "ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND " );
-			sSQL.append( "ITR2.CODFILIAL=R.CODFILIAL),ITR.DTVENCITREC,V.DTEMITVENDA," );
-			sSQL.append( "V.DOCVENDA,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC," );
-			sSQL.append( "ITR.VLRDESCITREC,C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI," );
-			sSQL.append( "C.RGCLI,C.INSCCLI,C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI," );
-			sSQL.append( "C.CIDCLI,C.UFCLI,C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB," );
-			sSQL.append( "C.CIDCOB,C.UFCOB,C.FONECLI,C.DDDCLI,R.CODREC " );
-			sSQL.append( "FROM FNITRECEBER ITR,VDVENDA V,VDCLIENTE C, FNRECEBER R " );
+			sSQL.append( "SELECT (SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND ITR2.CODFILIAL=R.CODFILIAL) PARCS," );
+			sSQL.append( "ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,ITR.VLRDESCITREC," );
+			sSQL.append( "(ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA," );
+			sSQL.append( "R.DOCREC,ITR.CODBANCO," );
+			sSQL.append( "(SELECT B.DVBANCO FROM FNBANCO B WHERE B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO) DVBANCO," );
+			sSQL.append( "(SELECT MB.CARTCOB FROM FNMODBOLETO MB, FNBANCO B " );
+			sSQL.append( "   WHERE B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO " );
+			sSQL.append( "   AND MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) CARTCOB," );
+			sSQL.append( "V.DTEMITVENDA,V.DOCVENDA," );
+			sSQL.append( "C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,C.RGCLI,C.INSCCLI," );
+			sSQL.append( "C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI," );
+			sSQL.append( "C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB," );
+			sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA " );
+			sSQL.append( "FROM FNITRECEBER ITR,VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P " );
 			sSQL.append( "WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL " );
-			sSQL.append( "AND V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA " );
-			sSQL.append( "AND V.CODFILIAL=R.CODFILIALVA AND C.CODCLI=V.CODCLI " );
-			sSQL.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL " );
-			sSQL.append( "AND R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA=?" );*/
-			
-			sSQL.append( "SELECT (SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND ITR2.CODFILIAL=R.CODFILIAL) PARCS, " );
-			sSQL.append( "ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,ITR.VLRDESCITREC, " );
-			sSQL.append( "(ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, " );
-			sSQL.append( "R.DOCREC, " );
-			sSQL.append( "V.DTEMITVENDA,V.DOCVENDA, " );
-			sSQL.append( "C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,C.RGCLI,C.INSCCLI, " );
-			sSQL.append( "C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI, " );
-			sSQL.append( "C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, " );
-			sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC " );
-			sSQL.append( "FROM FNITRECEBER ITR,VDVENDA V,VDCLIENTE C, FNRECEBER R " );
-			sSQL.append( "WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL " );
-			sSQL.append( "AND V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA " );
-			sSQL.append( "AND V.CODFILIAL=R.CODFILIALVA AND C.CODCLI=V.CODCLI " );
-			sSQL.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL " );
+			sSQL.append( "AND V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA " );
+			sSQL.append( "AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL " );
+			sSQL.append( "AND P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL " );
 			sSQL.append( "AND R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA=? " );
-			
 			sSQL.append( sParc );	
+			
 			sSQLNat.append( "SELECT I.CODNAT, N.DESCNAT " );
 			sSQLNat.append( "FROM VDITVENDA I, VDVENDA V, LFNATOPER N, FNRECEBER R " );
 			sSQLNat.append( "WHERE N.CODEMP=I.CODEMPNT AND N.CODFILIAL=I.CODFILIALNT AND N.CODNAT=I.CODNAT " );
@@ -543,7 +540,64 @@ public class FRBoleto extends FRelatorio {
 		}
 	}
 	
+	private HashMap<String,Object> getParametros() {
+		
+		HashMap<String,Object> parametros = new HashMap<String, Object>();
+		
+		String agencia = null;
+		String instrucoes = null;
+		String localpag = null;
+		String razemp = null;
+		
+		try {
+			
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append( "SELECT E.RAZFILIAL" );
+			sql.append( "FROM SGEMPRESA E" );
+			sql.append( "SELECT RAZFILIAL" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				agencia = null;
+				instrucoes = null;
+				localpag = null;
+				razemp = null;
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( ! con.getAutoCommit() ) {
+				
+				con.commit();
+			}			
+		}
+		catch ( Exception e ) {
+
+			Funcoes.mensagemErro( this, "Erro ao buscar parametros!\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		
+		parametros.put( "AGENCIA", agencia );
+		parametros.put( "CODBAR", getBarCode() );
+		parametros.put( "CODEMP", Aplicativo.iCodEmp );
+		parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+		parametros.put( "CODVENDA", txtCodVenda.getVlrInteger() );
+		parametros.put( "INSTRUCOES", instrucoes );
+		parametros.put( "LOCALPAG", localpag );
+		//parametros.put( "LOGOBANCO", imgBanco );
+		parametros.put( "RAZEMP", razemp );
+			
+		return parametros;
+	}
+	
 	private void imprimeGrafico( final boolean bVisualizar, final ResultSet rs, final String classe ) {
+		
+		
 		
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/" + classe, "Boleto", null, rs, null, this );
 
