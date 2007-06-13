@@ -109,9 +109,8 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 	//private final JButton btPath = new JButton( "..." );
 
 	private JComboBoxPad cbAcao = null;
-
-	private ListaCampos lcConta = new ListaCampos( this );
 	
+	private ListaCampos lcConta = new ListaCampos( this, "CC" );
 	
 
 	public FModBoleto() {
@@ -119,9 +118,8 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 		super();
 		setTitulo( "Modelo de boleto" );
 		setAtribos( 30, 30, 740, 500 );
-		
-		montaCombos();
-		montaTela();
+
+		ckAceite.setVlrString( "N" );
 		
 		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
@@ -131,11 +129,14 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );
 		
+		montaCombos();
+		montaTela();
+		
+		
 		txaBoleto.setFont( new Font( "Courier", Font.PLAIN, 11 ) );
 		txaBoleto.setTabSize( 0 );
 		
 		ckPreImp.setVlrString( "S" );
-		ckAceite.setVlrString( "N" );
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -252,7 +253,7 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 		
 		adicCampo( txtCodModBol, 7, 30, 90, 20, "CodModBol", "Cód.mod.bol.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescModBol, 100, 30, 300, 20, "DescModBol", "Descrição do modelo de boleto", ListaCampos.DB_SI, true );
-		adicCampo( txtCarteira, 403, 30, 57, 20, "cartCob" , "Carteira", ListaCampos.DB_SI, true );
+		adicCampo( txtCarteira, 404, 30, 50, 20, "cartCob" , "Carteira", ListaCampos.DB_SI, true );
 		adicDB( ckPreImp, 470, 30, 200, 20, "PreImpModBol", "", false );
 		adicDBLiv( txaBoleto, "TxaModBol", "Corpo", false );
 		adicCampo( txtCodConta, 7, 70, 90, 20, "NumConta", "Nº da conta", ListaCampos.DB_FK, txtDescConta, false );
@@ -262,7 +263,9 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 		adicDBLiv( ckAceite, "AceiteModBol", "Aceite", false );
 		adicDBLiv( txtDescLocaPag, "DescLPModBol", "Espécie Doc.", false );
 		adicDBLiv( txaInstrucao, "InstPagModBol", "Instruçâo", false );
+		
 		setListaCampos( true, "MODBOLETO", "FN" );
+
 
 		/***********************************
 		 *  painel de boleto pre-impresso  *
@@ -317,7 +320,7 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 		
 			if ( txaBoleto.getVlrString() == null || txaBoleto.getVlrString().trim().length() == 0 ) {
 				
-				txaBoleto.setVlrString( "Modelo em branco" );
+				txaBoleto.setVlrString( "(Modelo em branco)" );
 			}
 		}
 		
