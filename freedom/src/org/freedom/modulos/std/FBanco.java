@@ -36,6 +36,7 @@ import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.PainelImagem;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
@@ -58,6 +59,8 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 
 	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "firefox.gif" ) );
 
+	private PainelImagem imgBolBanco = new PainelImagem( 65000 );
+
 	private ListaCampos lcModBol = new ListaCampos( this, "MB" );
 
 	private String sURLBanco = null;
@@ -66,7 +69,7 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 
 		super();
 		setTitulo( "Cadastro de Banco" );
-		setAtribos( 50, 50, 390, 200 );
+		setAtribos( 50, 50, 390, 260 );
 
 		lcModBol.add( new GuardaCampo( txtCodModBol, "CodModBol", "Cód.mod.bol.", ListaCampos.DB_PK, txtDescModBol, false ) );
 		lcModBol.add( new GuardaCampo( txtDescModBol, "DescModBol", "Descriçao do modelo de boleto", ListaCampos.DB_SI, null, false ) );
@@ -81,6 +84,8 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 		adicDescFK( txtDescModBol, 80, 60, 230, 20, "DescModBol", "Descrição do modelo de boleto" );
 		adicCampo( txtDigito, 313, 60, 50, 20, "DvBanco", "Digito", ListaCampos.DB_SI, false );
 		adicCampo( txtSiteBanco, 7, 100, 330, 20, "SiteBanco", "Site ", ListaCampos.DB_SI, false );
+		adicDB( imgBolBanco, 7, 140, 200, 30, "ImgBolBanco", "Logo para boleto (200x30)", false );
+
 		adic( btFirefox, 340, 100, 20, 20 );
 		setListaCampos( false, "BANCO", "FN" );
 		btImp.addActionListener( this );
