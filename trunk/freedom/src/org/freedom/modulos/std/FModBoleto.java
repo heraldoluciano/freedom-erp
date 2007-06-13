@@ -29,6 +29,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -40,12 +41,14 @@ import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
+import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
@@ -91,9 +94,23 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 	
 	private final JTextFieldPad txtClassModBol = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 	
+	private final JTextFieldPad txtEspecie = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
+	
+	private final JCheckBoxPad ckAceite = new JCheckBoxPad( "Aceite ?", "S", "N" );
+	
+	private final JTextFieldPad txtDescLocaPag = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
+	
+	private final JTextAreaPad txaInstrucao = new JTextAreaPad( 500 );
+
+	private final JTextFieldPad txtCodConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+
+	private final JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
 	//private final JButton btPath = new JButton( "..." );
 
 	private JComboBoxPad cbAcao = null;
+
+	private ListaCampos lcConta = new ListaCampos( this );
 	
 	
 
@@ -101,15 +118,24 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 
 		super();
 		setTitulo( "Modelo de boleto" );
-		setAtribos( 20, 100, 750, 400 );
+		setAtribos( 30, 30, 740, 500 );
 		
 		montaCombos();
 		montaTela();
+		
+		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.conta", ListaCampos.DB_PK, false ) );
+		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
+		lcConta.montaSql( false, "CONTA", "FN" );
+		lcConta.setReadOnly( true );
+		txtCodConta.setTabelaExterna( lcConta );
+		txtCodConta.setFK( true );
+		txtCodConta.setNomeCampo( "NumConta" );
 		
 		txaBoleto.setFont( new Font( "Courier", Font.PLAIN, 11 ) );
 		txaBoleto.setTabSize( 0 );
 		
 		ckPreImp.setVlrString( "S" );
+		ckAceite.setVlrString( "N" );
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -219,29 +245,34 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 
 	private void montaTela() {
 		
-		panelCampos.setPreferredSize( new Dimension( 750, 70 ) );
+		panelCampos.setPreferredSize( new Dimension( 750, 110 ) );
 		pinCab.add( panelCampos, BorderLayout.NORTH );
 		
 		setPainel( panelCampos );
 		
 		adicCampo( txtCodModBol, 7, 30, 90, 20, "CodModBol", "Cód.mod.bol.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescModBol, 100, 30, 300, 20, "DescModBol", "Descrição do modelo de boleto", ListaCampos.DB_SI, true );
-		adicCampo( txtCarteira, 404, 30, 50, 20, "cartCob" , "Carteira", ListaCampos.DB_SI, true );
+		adicCampo( txtCarteira, 403, 30, 57, 20, "cartCob" , "Carteira", ListaCampos.DB_SI, true );
 		adicDB( ckPreImp, 470, 30, 200, 20, "PreImpModBol", "", false );
 		adicDBLiv( txaBoleto, "TxaModBol", "Corpo", false );
+		adicCampo( txtCodConta, 7, 70, 90, 20, "NumConta", "Nº da conta", ListaCampos.DB_FK, txtDescConta, false );
+		adicDescFK( txtDescConta, 100, 70, 350, 20, "DescConta", "Descrição da conta" );
 		adicDBLiv( txtClassModBol, "ClassModBol", "Classe modelo", false );
+		adicDBLiv( txtEspecie, "EspDocModBol", "Espécie Doc.", false );
+		adicDBLiv( ckAceite, "AceiteModBol", "Aceite", false );
+		adicDBLiv( txtDescLocaPag, "DescLPModBol", "Espécie Doc.", false );
+		adicDBLiv( txaInstrucao, "InstPagModBol", "Instruçâo", false );
 		setListaCampos( true, "MODBOLETO", "FN" );
-
 
 		/***********************************
 		 *  painel de boleto pre-impresso  *
 		 ***********************************/
 		panelPreImp.adic( new JLabelPad( "Campos de dados" ), 7, 10, 223, 20 );
 		panelPreImp.adic( cbCamposDin, 7, 30, 223, 20 );
-		panelPreImp.adic( new JLabelPad( "Campos especiais de dados" ), 240, 10, 217, 20 );
-		panelPreImp.adic( cbCamposEspec, 240, 30, 117, 20 );
-		panelPreImp.adic( txtAdic, 360, 30, 97, 20 );
-		panelPreImp.adic( btAdic, 460, 20, 30, 30 );
+		panelPreImp.adic( new JLabelPad( "Campos especiais de dados" ), 240, 10, 220, 20 );
+		panelPreImp.adic( cbCamposEspec, 240, 30, 115, 20 );
+		panelPreImp.adic( txtAdic, 360, 30, 100, 20 );
+		panelPreImp.adic( btAdic, 470, 20, 30, 30 );
 		panelPreImp.adic( new JLabelPad( "Açoes" ), 7, 50, 223, 20 );
 		panelPreImp.adic( cbAcao, 7, 70, 223, 20 );
 		panelPreImp.setPreferredSize( new Dimension( 750, 110 ) );
@@ -253,7 +284,15 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 		 *  painel de boleto eletronico  *
 		 *********************************/
 		panelBolElect.adic( new JLabelPad( "Class do modelo de boleto" ), 7, 10, 350, 20 );
-		panelBolElect.adic( txtClassModBol, 7, 30, 350, 20 );		
+		panelBolElect.adic( txtClassModBol, 7, 30, 350, 20 );
+		panelBolElect.adic( new JLabelPad( "Espécie doc." ), 360, 10, 100, 20 );
+		panelBolElect.adic( txtEspecie, 360, 30, 100, 20 );
+		panelBolElect.adic( ckAceite, 470, 30, 100, 20 );
+		panelBolElect.adic( new JLabelPad( "Descrição do local de pagamento" ), 7, 50, 450, 20 );
+		panelBolElect.adic( txtDescLocaPag, 7, 70, 453, 20 );
+		panelBolElect.adic( new JLabelPad( "Instruções de cobrança" ), 7, 90, 450, 20 );
+		panelBolElect.adic( new JScrollPane( txaInstrucao ), 7, 110, 453, 130 );
+		
 		//panelBolElect.adic( btPath, 370, 27, 26, 26 );
 		
 		
@@ -278,7 +317,7 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 		
 			if ( txaBoleto.getVlrString() == null || txaBoleto.getVlrString().trim().length() == 0 ) {
 				
-				txaBoleto.setVlrString( "(Modelo em branco)" );
+				txaBoleto.setVlrString( "Modelo em branco" );
 			}
 		}
 		
@@ -392,4 +431,12 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 			}
 		}*/
 	}
+	
+	public void setConexao( Connection cn ) {
+		
+		super.setConexao( cn );
+		
+		lcConta.setConexao( cn );
+	}
+	
 }
