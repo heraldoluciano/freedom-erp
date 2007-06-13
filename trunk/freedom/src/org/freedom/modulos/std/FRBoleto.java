@@ -382,9 +382,63 @@ public class FRBoleto extends FRelatorio {
 	
 	private String getBarCode() {
 		
-		String barcode = null;
+		String barcode = "00192240701002023275600005688189834870000005000";
 		
 		return barcode;
+	}
+
+	private HashMap<String,Object> getParametros() {
+		
+		HashMap<String,Object> parametros = new HashMap<String, Object>();
+		
+		String agencia = null;
+		String instrucoes = null;
+		String localpag = null;
+		String razemp = null;
+		
+		try {
+			
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append( "SELECT F.RAZFILIAL, C.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL " );
+			sql.append( "FROM SGFILIAL F, FNCONTA C, FNMODBOLETO MB " );
+			sql.append( "WHERE MB.CODEMP=? AND MB.CODFILIAL=? AND MB.CODMODBOL =? " );
+			sql.append( "AND F.CODEMP=MB.CODEMP AND F.CODFILIAL=MB.CODFILIAL " );
+			sql.append( "AND C.CODEMP=MB.CODEMPCC AND C.CODFILIAL=MB.CODFILIALCC AND C.NUMCONTA=MB.NUMCONTA" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNMODBOLETO" ) );
+			ps.setInt( 3, txtCodModBol.getVlrInteger() );
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				agencia = rs.getString( "AGENCIACONTA" ) != null ? rs.getString( "AGENCIACONTA" ) + 
+							" / " +
+								( rs.getString( "NUMCONTA" ) != null ? rs.getString( "NUMCONTA" ) : "" ) : "" ;
+				instrucoes = rs.getString( "INSTPAGMODBOL" );
+				localpag = rs.getString( "DESCLPMODBOL" );
+				razemp = rs.getString( "RAZFILIAL" );
+			}	
+		}
+		catch ( Exception e ) {
+	
+			Funcoes.mensagemErro( this, "Erro ao buscar parametros!\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		
+		parametros.put( "AGENCIA", agencia );
+		parametros.put( "CODBAR", getBarCode() );
+		parametros.put( "CODEMP", Aplicativo.iCodEmp );
+		parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+		parametros.put( "CODVENDA", txtCodVenda.getVlrInteger() );
+		parametros.put( "INSTRUCOES", instrucoes );
+		parametros.put( "LOCALPAG", localpag );
+		//parametros.put( "LOGOBANCO", imgBanco );
+		parametros.put( "RAZEMP", razemp );
+			
+		return parametros;
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -425,9 +479,9 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "(ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA," );
 			sSQL.append( "R.DOCREC,ITR.CODBANCO," );
 			sSQL.append( "(SELECT B.DVBANCO FROM FNBANCO B WHERE B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO) DVBANCO," );
-			sSQL.append( "(SELECT MB.CARTCOB FROM FNMODBOLETO MB, FNBANCO B " );
-			sSQL.append( "   WHERE B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO " );
-			sSQL.append( "   AND MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) CARTCOB," );
+			sSQL.append( "(SELECT MB.CARTCOB FROM FNMODBOLETO MB, FNBANCO B WHERE B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO AND MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) CARTCOB," );
+			sSQL.append( "(SELECT MB.ESPDOCMODBOL FROM FNMODBOLETO MB, FNBANCO B WHERE B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO AND MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) ESPDOC," );
+			sSQL.append( "(SELECT MB.ACEITEMODBOL FROM FNMODBOLETO MB, FNBANCO B WHERE B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO AND MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) ACEITE," );
 			sSQL.append( "V.DTEMITVENDA,V.DOCVENDA," );
 			sSQL.append( "C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,C.RGCLI,C.INSCCLI," );
 			sSQL.append( "C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI," );
@@ -540,66 +594,11 @@ public class FRBoleto extends FRelatorio {
 		}
 	}
 	
-	private HashMap<String,Object> getParametros() {
-		
-		HashMap<String,Object> parametros = new HashMap<String, Object>();
-		
-		String agencia = null;
-		String instrucoes = null;
-		String localpag = null;
-		String razemp = null;
-		
-		try {
-			
-			StringBuilder sql = new StringBuilder();
-			
-			sql.append( "SELECT E.RAZFILIAL" );
-			sql.append( "FROM SGEMPRESA E" );
-			sql.append( "SELECT RAZFILIAL" );
-			
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ResultSet rs = ps.executeQuery();
-			
-			if ( rs.next() ) {
-				
-				agencia = null;
-				instrucoes = null;
-				localpag = null;
-				razemp = null;
-			}
-			
-			rs.close();
-			ps.close();
-			
-			if ( ! con.getAutoCommit() ) {
-				
-				con.commit();
-			}			
-		}
-		catch ( Exception e ) {
-
-			Funcoes.mensagemErro( this, "Erro ao buscar parametros!\n" + e.getMessage() );
-			e.printStackTrace();
-		}
-		
-		parametros.put( "AGENCIA", agencia );
-		parametros.put( "CODBAR", getBarCode() );
-		parametros.put( "CODEMP", Aplicativo.iCodEmp );
-		parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-		parametros.put( "CODVENDA", txtCodVenda.getVlrInteger() );
-		parametros.put( "INSTRUCOES", instrucoes );
-		parametros.put( "LOCALPAG", localpag );
-		//parametros.put( "LOGOBANCO", imgBanco );
-		parametros.put( "RAZEMP", razemp );
-			
-		return parametros;
-	}
-	
 	private void imprimeGrafico( final boolean bVisualizar, final ResultSet rs, final String classe ) {
 		
 		
 		
-		FPrinterJob dlGr = new FPrinterJob( "relatorios/" + classe, "Boleto", null, rs, null, this );
+		FPrinterJob dlGr = new FPrinterJob( "relatorios/" + classe, "Boleto", null, rs, getParametros(), this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );

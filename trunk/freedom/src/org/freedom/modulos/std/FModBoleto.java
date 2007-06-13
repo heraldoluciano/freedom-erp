@@ -255,9 +255,9 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 		adicCampo( txtDescModBol, 100, 30, 300, 20, "DescModBol", "Descrição do modelo de boleto", ListaCampos.DB_SI, true );
 		adicCampo( txtCarteira, 404, 30, 50, 20, "cartCob" , "Carteira", ListaCampos.DB_SI, true );
 		adicDB( ckPreImp, 470, 30, 200, 20, "PreImpModBol", "", false );
-		adicDBLiv( txaBoleto, "TxaModBol", "Corpo", false );
 		adicCampo( txtCodConta, 7, 70, 90, 20, "NumConta", "Nº da conta", ListaCampos.DB_FK, txtDescConta, false );
 		adicDescFK( txtDescConta, 100, 70, 350, 20, "DescConta", "Descrição da conta" );
+		adicDBLiv( txaBoleto, "TxaModBol", "Corpo", false );
 		adicDBLiv( txtClassModBol, "ClassModBol", "Classe modelo", false );
 		adicDBLiv( txtEspecie, "EspDocModBol", "Espécie Doc.", false );
 		adicDBLiv( ckAceite, "AceiteModBol", "Aceite", false );
