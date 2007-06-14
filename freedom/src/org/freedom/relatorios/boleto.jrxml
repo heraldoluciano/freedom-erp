@@ -45,6 +45,9 @@
 	<parameter name="CODBAR" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["00192240701002023275600005688189834870000005000"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="NCODBAR" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["00192240701002023275600005688189834870000005000"]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT (SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND ITR2.CODFILIAL=R.CODFILIAL) PARCS,
 ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,ITR.VLRDESCITREC,
 (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA,
@@ -693,7 +696,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CODBAR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{NCODBAR}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
