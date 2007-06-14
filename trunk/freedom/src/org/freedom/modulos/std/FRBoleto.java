@@ -380,13 +380,29 @@ public class FRBoleto extends FRelatorio {
 		return classe;
 	}
 	
-	private String getBarCode() {
+	private String getBarCode(boolean isNum, String codbanco, String codmoeda, String dvbanco, java.util.Date dtVenc ) {
 		
-		String barcode = "00192240701002023275600005688189834870000005000";
+		String barcode = null;
+		if (isNum) {
+			barcode = "00192240701002023275600005688189834870000005000";
+		} else {
+			barcode = Funcoes.strZero( codbanco,3 ) + Funcoes.strZero( codmoeda, 1 ) +
+				Funcoes.strZero( dvbanco, 1 ) + calcFatorVenc(dtVenc);
+		}
 		
 		return barcode;
 	}
 
+	private long calcFatorVenc(java.util.Date dtVenc) {
+		
+		//String retorno = "";
+		long fator = 0;
+		java.util.Date dtBase = Funcoes.encodeDate( 1997, 10, 7 );
+		fator = Funcoes.getNumDias( dtBase, dtVenc );
+		System.out.println(fator);
+		return fator;
+	}
+	
 	private HashMap<String,Object> getParametros() {
 		
 		HashMap<String,Object> parametros = new HashMap<String, Object>();
@@ -429,7 +445,8 @@ public class FRBoleto extends FRelatorio {
 		}
 		
 		parametros.put( "AGENCIA", agencia );
-		parametros.put( "CODBAR", getBarCode() );
+		parametros.put( "CODBAR", getBarCode(false, "001", "9", "9", Funcoes.encodeDate( 2000, 7, 4 )) );
+		parametros.put( "NCODBAR", getBarCode(false, "001", "9", "9", Funcoes.encodeDate( 2000, 7, 4 )) );
 		parametros.put( "CODEMP", Aplicativo.iCodEmp );
 		parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 		parametros.put( "CODVENDA", txtCodVenda.getVlrInteger() );
@@ -486,7 +503,7 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,C.RGCLI,C.INSCCLI," );
 			sSQL.append( "C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI," );
 			sSQL.append( "C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB," );
-			sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA " );
+			sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI " );
 			sSQL.append( "FROM FNITRECEBER ITR,VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P " );
 			sSQL.append( "WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL " );
 			sSQL.append( "AND V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA " );
