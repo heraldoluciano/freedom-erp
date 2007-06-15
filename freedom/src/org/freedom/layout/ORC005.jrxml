@@ -262,10 +262,10 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<rectangle>
 					<reportElement
 						x="4"
-						y="172"
+						y="171"
 						width="527"
 						height="15"
-						forecolor="#000000"
+						forecolor="#EDEBEB"
 						backcolor="#000000"
 						key="rectangle-20"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -357,7 +357,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						width="527"
 						height="15"
 						forecolor="#000000"
-						backcolor="#000000"
+						backcolor="#FAFAFA"
 						key="rectangle-23"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
@@ -369,7 +369,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						width="523"
 						height="11"
 						forecolor="#FFFFFF"
-						backcolor="#000000"
+						backcolor="#DCDCDC"
 						key="staticText-26"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
