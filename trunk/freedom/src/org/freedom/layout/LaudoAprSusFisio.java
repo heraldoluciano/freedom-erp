@@ -61,7 +61,7 @@ public class LaudoAprSusFisio extends LeiauteGR {
 					  "(SELECT A.NOMEATEND FROM ATATENDENTE A WHERE A.CODATEND=O.CODATEND"+
 					  " AND A.CODEMP=O.CODEMPAE AND A.CODFILIAL=O.CODFILIALAE),"+
 					  " O.CODORC,O.TXT01,C.CPFCONV, C.IDENTIFICCONV, C.MAECONV, C.CEPCONV, C.DTNASCCONV," +
-					  " C.SEXOCONV, C.CODCONV,C.NOMECONV,O.DTORC,O.DTVENCORC,C.CIDCONV,C.UFCONV,C.ENDCONV,C.BAIRCONV,C.FONECONV," +
+					  " C.SEXOCONV, C.CODCONV,C.NOMECONV,O.DTORC,O.DTVENCORC,C.CIDCONV,C.UFCONV,C.ENDCONV,C.BAIRCONV,C.DDDCONV,C.FONECONV," +
 					  " T.DESCTPCONV,O.OBSORC,O.VLRLIQORC,O.VLRDESCORC, O.VLRDESCITORC,O.VLRADICORC,O.VLRPRODORC,F.CIDFILIAL,C.NUMCONV" +
 					  " FROM VDORCAMENTO O, ATCONVENIADO C, ATTIPOCONV T, SGFILIAL F"+
 					  " WHERE T.CODEMP=C.CODEMPTC AND T.CODFILIAL=C.CODFILIALTC AND T.CODTPCONV=C.CODTPCONV" +
@@ -229,13 +229,13 @@ public class LaudoAprSusFisio extends LeiauteGR {
 		drawRetangulo(370,165,45,24);
 		drawTexto("DDD",374,173);
 		setFonte(fnConteudo);
-		drawTexto(rs.getString("FONECONV") !=null ? rs.getString("FONECONV").trim().substring(0,4) : "",374,183);
+		drawTexto(rs.getString("DDDCONV") !=null ? rs.getString("DDDCONV").trim() : "",376,183);
 		
 		setFonte(fnSubTitulo);
 		drawRetangulo(420,165,5,24,AL_CDIR);
 		drawTexto("Telefone",424,173);
 		setFonte(fnConteudo);
-		drawTexto(rs.getString("FONECONV") !=null ? Funcoes.setMascara(rs.getString("FONECONV").substring(4),"####-####") : "",424,183);		
+		drawTexto(rs.getString("FONECONV") !=null ? Funcoes.setMascara(rs.getString("FONECONV").trim (),"####-####") : "",424,183);		//
 		
 //		Linha 4
 		setFonte(fnSubTitulo);

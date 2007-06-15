@@ -177,8 +177,8 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		tab.adicColuna("Cód.prod.");
 		tab.adicColuna("Cód.barra");
 		tab.adicColuna("Desc.prod.");
-		tab.adicColuna("Cidade");
-		tab.adicColuna("Encaminhador");
+		tab.adicColuna("Qtd.");
+		tab.adicColuna("Valor.");
 		
 		tab.setTamColuna(70,0);
 		tab.setTamColuna(70,1);
@@ -191,8 +191,8 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		tab.setTamColuna(90,8);
 		tab.setTamColuna(90,9);
 		tab.setTamColuna(200,10);
-		tab.setTamColuna(80,11);
-		tab.setTamColuna(100,12);		
+		tab.setTamColuna(70,11);
+		tab.setTamColuna(70,12);		
 		
 		btBusca.addActionListener(this);		
 		btPrevimp.addActionListener(this);			
@@ -254,7 +254,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 			
 			sSQL="SELECT  O.CODORC,O.DTORC,O.DTVENCORC,"+
 				"O.CODCONV,C.NOMECONV,C.FONECONV , IT.VENCAUTORIZORC,IT.NUMAUTORIZORC,"+
-				"IT.CODPROD, P.CODBARPROD,P.DESCPROD,C.CIDCONV, "+
+				"IT.CODPROD, P.CODBARPROD,P.DESCPROD,it.qtditorc, it.vlrliqitorc, "+
 				"(SELECT EC.NOMEENC FROM ATENCAMINHADOR EC WHERE EC.CODENC=C.CODENC AND "+
 				"EC.CODEMP=C.CODEMPEC AND EC.CODFILIAL=C.CODFILIALEC) "+
 				"FROM VDORCAMENTO O,VDCLIENTE CL,"+
@@ -286,14 +286,15 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 				tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate(3)), iLin, 2);
 				tab.setValor(String.valueOf(rs.getInt(4)), iLin,3);
 				tab.setValor(rs.getString(5)!= null ? rs.getString(5) : "", iLin, 4);
-				tab.setValor(rs.getString(6)!= null ? Funcoes.setMascara(rs.getString(6),"(####)####-####") : "", iLin, 5);
+				tab.setValor(rs.getString(6)!= null ? Funcoes.setMascara(rs.getString(6),"####-####") : "", iLin, 5);
 				tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate(7)), iLin, 6);
 				tab.setValor(rs.getString(8)!= null ? rs.getString(8) : "", iLin, 7);
 				tab.setValor(String.valueOf(rs.getInt(9)), iLin,  8);
 				tab.setValor(rs.getString(10) != null ? rs.getString(10) : "", iLin, 9);
 				tab.setValor(rs.getString(11) != null ? rs.getString(11) : "", iLin, 10);
-				tab.setValor(rs.getString(12), iLin, 11);
-				tab.setValor(rs.getString(13) != null ? rs.getString(13) : "", iLin, 12);
+				tab.setValor(Funcoes.strDecimalToStrCurrency(2, rs.getString(12)), iLin, 11);
+				tab.setValor(Funcoes.strDecimalToStrCurrency(2, rs.getString(13)), iLin, 12);
+			//	tab.setValor(rs.getString(14) != null ? rs.getString(13) : "", iLin, 13);
 				iLin++;
 			}
 			
@@ -331,9 +332,12 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 					imp.say(imp.pRow(), 27, "|  Validade");
 					imp.say(imp.pRow(), 40, "| Autoriz.");
 					imp.say(imp.pRow(), 54, "| Nome");
-					imp.say(imp.pRow(), 82, "| Encaminhador");
-					imp.say(imp.pRow(), 97, "| Cidade");
-					imp.say(imp.pRow(),119, "| Telefone");	
+					imp.say(imp.pRow(), 82, "| Produto");
+					imp.say( imp.pRow(),115, " | Qtd" );
+					imp.say(imp.pRow(),124, "| Valor");	
+					//imp.say(imp.pRow(), 82, "| Encaminhador");
+	             	//imp.say(imp.pRow(), 97, "| Cidade");
+					//imp.say(imp.pRow(),119, "| Telefone");	
 					imp.say(imp.pRow(),135, "|");					
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
@@ -344,9 +348,12 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 				imp.say(imp.pRow(), 27, "| " + tab.getValor(iLin,6));
 				imp.say(imp.pRow(), 40, "| " + Funcoes.copy((String)tab.getValor(iLin,7),11));				
 				imp.say(imp.pRow(), 54, "| " + Funcoes.copy((String)tab.getValor(iLin,4),25));				
-				imp.say(imp.pRow(), 82, "| " + Funcoes.copy((String)tab.getValor(iLin,12),12));				
-				imp.say(imp.pRow(), 97, "| " + Funcoes.copy((String)tab.getValor(iLin,11),19));
-				imp.say(imp.pRow(),119, "|" + tab.getValor(iLin,5));
+				imp.say(imp.pRow(), 82, "| " + Funcoes.copy((String)tab.getValor(iLin,10),31));				
+					
+				imp.say(imp.pRow(), 116, "| " + Funcoes.copy((String)tab.getValor(iLin,11),5));
+				imp.say(imp.pRow(), 124, "| " + Funcoes.copy((String)tab.getValor(iLin,12),8));
+				
+			 
 				imp.say(imp.pRow(),135, "|");			
 			}			
 			imp.say(imp.pRow()+1, 0, imp.comprimido());
