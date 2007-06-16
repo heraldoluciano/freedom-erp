@@ -14,13 +14,13 @@
 	<classpathentry kind="lib" path="/freedom-ecf/lib/comm.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/freedom-ecf"/>
 	<classpathentry kind="lib" path="lib/commons-collections.jar"/>
-	<classpathentry kind="lib" path="lib/itext.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart.jar"/>
 	<classpathentry kind="lib" path="lib/bizcal.jar"/>
 	<classpathentry kind="lib" path="lib/nachocalendar.jar"/>
 	<classpathentry kind="lib" path="lib/commons-beanutils.jar"/>
-	<classpathentry kind="lib" path="lib/barbecue.jar"/>
+	<classpathentry kind="lib" path="lib/itext.jar"/>
 	<classpathentry kind="lib" path="lib/ireport.jar"/>
+	<classpathentry kind="lib" path="lib/barbecue.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

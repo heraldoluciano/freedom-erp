@@ -269,7 +269,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
   }
   private void abreOrc(int iCodOrc) {
 	  if (!fPrim.temTela("Orcamento")) {
-		FOrcamento tela = new FOrcamento();
+		FOrcamentoATD tela = new FOrcamentoATD();
 		fPrim.criatela("Orcamento",tela,con);
 		tela.exec(iCodOrc);
 	  } 

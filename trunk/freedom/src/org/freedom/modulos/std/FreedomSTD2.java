@@ -238,7 +238,7 @@ public class FreedomSTD2 extends AplicativoPD {
 
 		ajustaMenu();
 
-		sNomeModulo = "Administrativo";
+		sNomeModulo = "Standard";
 		sMailSuporte = "suporte@stpinf.com";
 		sNomeSis = "Freedom";
 		sEmpSis = "Setpoint Informática Ltda.";

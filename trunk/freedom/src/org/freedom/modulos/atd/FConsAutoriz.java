@@ -377,7 +377,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 	private void abreOrc() {
 		int iCodOrc = ((Integer)tab.getValor(tab.getLinhaSel(),1)).intValue();
 		if (fPrim.temTela("Orcamento")==false) {
-			FOrcamento tela = new FOrcamento();
+			FOrcamentoATD tela = new FOrcamentoATD();
 			fPrim.criatela("Orcamento",tela,con);
 			tela.exec(iCodOrc);
 		} 

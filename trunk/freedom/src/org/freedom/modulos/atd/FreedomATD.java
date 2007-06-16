@@ -33,6 +33,7 @@ import java.awt.event.ActionListener;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.grh.FFuncao;
 import org.freedom.modulos.std.FCliente;
+import org.freedom.modulos.std.FOrcamento;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrincipalPD;
@@ -73,14 +74,15 @@ public class FreedomATD extends AplicativoPD implements ActionListener {
 
 		//Orçamento:
 		addOpcao(-1, TP_OPCAO_MENU, "Orçamento", "", 'O', 1200000000, 0, false, null);
-		addOpcao(1200000000, TP_OPCAO_ITEM, "Orçamento", "Orcamento", 'O', 120100000, 1, true, FOrcamento.class);
+		addOpcao(1200000000, TP_OPCAO_ITEM, "Orçamento Atendimento", "Orcamento Atendimento", 'O', 120100000, 1, true, FOrcamentoATD.class);
+		addOpcao(1200000000, TP_OPCAO_ITEM, "Orçamento", "Orcamento", 'O', 120100001, 1, true, FOrcamento.class);
 		addSeparador(1200000000);
 		addOpcao(1200000000, TP_OPCAO_ITEM, "Pesquisa Orçamentos", "Pesquisa Orcamentos", 'P', 120200000, 1, true, FConsOrc.class);
 		addOpcao(1200000000, TP_OPCAO_ITEM, "Aprova Orçamentos", "Aprova Orcamento", 'A', 120300000, 1, true, FAprovaOrc.class);
 		addOpcao(1200000000, TP_OPCAO_ITEM, "Pesquisa Autorizações", "Pesquisa Autorização", 'e', 120400000, 1, true, FConsAutoriz.class);
 
 		addBotao("btAtendimento.gif", "Atendimento", "Atendimento", 110100000, FAtendimento.class);
-		addBotao("btOrcamento.gif", "Orçamento", "Orcamento", 120100000, FOrcamento.class);
+		addBotao("btOrcamento.gif", "Orçamento", "Orcamento", 120100000, FOrcamentoATD.class);			
 		addBotao("btConsOrcamento.gif", "Pesquisa Orçamento", "Pesquisa Orcamentos", 120200000, FConsOrc.class);
 		addBotao("barraConveniados.gif", "Conveniados", "Conveniados", 100101040, FConveniado.class);
 		addBotao("btAprovaOrc.gif", "Aprovações de Orçamantos", "Aprova Orcamento", 120300000, FAprovaOrc.class);
