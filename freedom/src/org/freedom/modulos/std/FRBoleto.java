@@ -390,6 +390,7 @@ public class FRBoleto extends FRelatorio {
 				Funcoes.strZero( dvbanco, 1 ) + calcFatorVenc(dtVenc);
 		}
 		
+		
 		return barcode;
 	}
 
