@@ -38,10 +38,9 @@ import javax.swing.JInternalFrame;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -380,30 +379,6 @@ public class FRBoleto extends FRelatorio {
 		return classe;
 	}
 	
-	private String getBarCode(boolean isNum, String codbanco, String codmoeda, String dvbanco, java.util.Date dtVenc ) {
-		
-		String barcode = null;
-		if (isNum) {
-			barcode = "00192240701002023275600005688189834870000005000";
-		} else {
-			barcode = Funcoes.strZero( codbanco,3 ) + Funcoes.strZero( codmoeda, 1 ) +
-				Funcoes.strZero( dvbanco, 1 ) + calcFatorVenc(dtVenc);
-		}
-		
-		
-		return barcode;
-	}
-
-	private long calcFatorVenc(java.util.Date dtVenc) {
-		
-		//String retorno = "";
-		long fator = 0;
-		java.util.Date dtBase = Funcoes.encodeDate( 1997, 10, 7 );
-		fator = Funcoes.getNumDias( dtBase, dtVenc );
-		System.out.println(fator);
-		return fator;
-	}
-	
 	private HashMap<String,Object> getParametros() {
 		
 		HashMap<String,Object> parametros = new HashMap<String, Object>();
@@ -417,11 +392,12 @@ public class FRBoleto extends FRelatorio {
 			
 			StringBuilder sql = new StringBuilder();
 			
-			sql.append( "SELECT F.RAZFILIAL, C.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL " );
-			sql.append( "FROM SGFILIAL F, FNCONTA C, FNMODBOLETO MB " );
+			sql.append( "SELECT F.RAZFILIAL, C.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, B.IMGBOLBANCO " );
+			sql.append( "FROM SGFILIAL F, FNCONTA C, FNMODBOLETO MB, FNBANCO B " );
 			sql.append( "WHERE MB.CODEMP=? AND MB.CODFILIAL=? AND MB.CODMODBOL =? " );
 			sql.append( "AND F.CODEMP=MB.CODEMP AND F.CODFILIAL=MB.CODFILIAL " );
-			sql.append( "AND C.CODEMP=MB.CODEMPCC AND C.CODFILIAL=MB.CODFILIALCC AND C.NUMCONTA=MB.NUMCONTA" );
+			sql.append( "AND C.CODEMP=MB.CODEMPCC AND C.CODFILIAL=MB.CODFILIALCC AND C.NUMCONTA=MB.NUMCONTA " );
+			sql.append( "AND B.CODEMPMB=MB.CODEMP AND B.CODFILIALMB=MB.CODFILIAL AND B.CODMODBOL=MB.CODMODBOL" );
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -446,14 +422,11 @@ public class FRBoleto extends FRelatorio {
 		}
 		
 		parametros.put( "AGENCIA", agencia );
-		parametros.put( "CODBAR", getBarCode(false, "001", "9", "9", Funcoes.encodeDate( 2000, 7, 4 )) );
-		parametros.put( "NCODBAR", getBarCode(false, "001", "9", "9", Funcoes.encodeDate( 2000, 7, 4 )) );
 		parametros.put( "CODEMP", Aplicativo.iCodEmp );
 		parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 		parametros.put( "CODVENDA", txtCodVenda.getVlrInteger() );
 		parametros.put( "INSTRUCOES", instrucoes );
 		parametros.put( "LOCALPAG", localpag );
-		//parametros.put( "LOGOBANCO", imgBanco );
 		parametros.put( "RAZEMP", razemp );
 			
 		return parametros;
@@ -495,18 +468,21 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "SELECT (SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND ITR2.CODFILIAL=R.CODFILIAL) PARCS," );
 			sSQL.append( "ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,ITR.VLRDESCITREC," );
 			sSQL.append( "(ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA," );
-			sSQL.append( "R.DOCREC,ITR.CODBANCO," );
-			sSQL.append( "(SELECT B.DVBANCO FROM FNBANCO B WHERE B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO) DVBANCO," );
-			sSQL.append( "(SELECT MB.CARTCOB FROM FNMODBOLETO MB, FNBANCO B WHERE B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO AND MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) CARTCOB," );
-			sSQL.append( "(SELECT MB.ESPDOCMODBOL FROM FNMODBOLETO MB, FNBANCO B WHERE B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO AND MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) ESPDOC," );
-			sSQL.append( "(SELECT MB.ACEITEMODBOL FROM FNMODBOLETO MB, FNBANCO B WHERE B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO AND MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) ACEITE," );
+			sSQL.append( "R.DOCREC,ITR.CODBANCO, B.DVBANCO," );
+			sSQL.append( "B.IMGBOLBANCO LOGOBANCO01," );
+			sSQL.append( "B.IMGBOLBANCO LOGOBANCO02," );
+			sSQL.append( "B.IMGBOLBANCO LOGOBANCO03," );
+			sSQL.append( "(SELECT MB.CARTCOB FROM FNMODBOLETO MB WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) CARTCOB," );
+			sSQL.append( "(SELECT MB.ESPDOCMODBOL FROM FNMODBOLETO MB WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) ESPDOC," );
+			sSQL.append( "(SELECT MB.ACEITEMODBOL FROM FNMODBOLETO MB WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) ACEITE," );
 			sSQL.append( "V.DTEMITVENDA,V.DOCVENDA," );
 			sSQL.append( "C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,C.RGCLI,C.INSCCLI," );
 			sSQL.append( "C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI," );
 			sSQL.append( "C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB," );
-			sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI, " );
-			sSQL.append( "( ITR.DTVENCITREC-CAST('07.10.1997' AS DATE) ) FATOR ");
-			sSQL.append( "FROM FNITRECEBER ITR,VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P " );
+			sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI " );
+			sSQL.append( "FROM VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNITRECEBER ITR " ); 
+			sSQL.append( "LEFT OUTER JOIN FNBANCO B ON " );
+			sSQL.append( "B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO " );
 			sSQL.append( "WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL " );
 			sSQL.append( "AND V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA " );
 			sSQL.append( "AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL " );
@@ -563,13 +539,7 @@ public class FRBoleto extends FRelatorio {
 		
 		
 		String sVal = null;
-		String sParc = "";
-		ImprimeOS imp = null;			
-
-		if ( txtParc.getVlrInteger().intValue() > 0 ) {
-			sParc = " AND ITR.NPARCITREC = " + txtParc.getVlrString();
-		}
-
+		ImprimeOS imp = null;	
 		imp = new ImprimeOS( "", con );
 		imp.verifLinPag();
 		imp.setTitulo( "Boleto" );
