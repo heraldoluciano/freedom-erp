@@ -85,7 +85,7 @@ public class FreedomCFG extends AplicativoPD {
 		// do
 		// interbase
 
-		sNomeModulo = "Administrativo";
+		sNomeModulo = "Configurador";
 		sNomeSis = "Freedom";
 		sEmpSis = "Setpoint Informática Ltda.";
 		sMailSuporte = "suporte@stpinf.com";

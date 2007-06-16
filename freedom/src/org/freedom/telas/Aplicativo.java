@@ -124,6 +124,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	protected Class cLoginExec = null;
 	public static boolean bSuporte = true;
 	
+	
 	public Connection getConIB() {
 		return conIB;
 	}

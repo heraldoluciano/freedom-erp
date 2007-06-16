@@ -69,7 +69,7 @@ import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FObservacao;
 import org.freedom.telas.FPrinterJob;
 
-public class FOrcamento extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener {
+public class FOrcamentoATD extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -203,9 +203,9 @@ public class FOrcamento extends FDetalhe implements PostListener, CarregaListene
 
 	Vector vParamOrc = new Vector();
 
-	public FOrcamento() {
+	public FOrcamentoATD() {
 
-		setTitulo( "Orçamento" );
+		setTitulo( "Orçamento Atendimento" );
 		setAtribos( 15, 8, 685, 430 );
 	}
 
@@ -365,7 +365,9 @@ public class FOrcamento extends FDetalhe implements PostListener, CarregaListene
 		adicCampo( txtCodOrc, 7, 20, 90, 20, "CodOrc", "Nº orcamento", ListaCampos.DB_PK, true );
 		adicCampo( txtCodConv, 100, 20, 87, 20, "CodConv", "Cód.conv.", ListaCampos.DB_FK, txtDescConv, true );
 		adicDescFK( txtDescConv, 190, 20, 247, 20, "NomeConv", "Nome do conveniado" );
+		
 		adicCampo( txtDtOrc, 440, 20, 107, 20, "DtOrc", "Data", ListaCampos.DB_SI, true );
+		
 		adicCampo( txtDtVencOrc, 550, 20, 110, 20, "DtVencOrc", "Data de validade", ListaCampos.DB_SI, true );
 		adicCampo( txtCodVend, 7, 60, 90, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtNomeVend, true );
 		adicDescFK( txtNomeVend, 100, 60, 250, 20, "NomeVend", "Nome do comissionado" );

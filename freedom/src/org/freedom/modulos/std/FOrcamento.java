@@ -103,6 +103,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldPad txtCodConv = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodTpConv = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescConv = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtCodEnc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldPad txtEstCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtCodItOrc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -198,6 +206,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
 
 	private ListaCampos lcVend = new ListaCampos( this, "VD" );
+	
+	private ListaCampos lcConv = new ListaCampos( this, "CV" );
 
 	private ListaCampos lcTipoCli = new ListaCampos( this, "TC" );
 
@@ -226,7 +236,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private int iCodCliAnt = 0;
 
 	public FOrcamento() {
-
+				
 		setTitulo( "Orçamento" );
 		setAtribos( 50, 50, 769, 460 );
 
@@ -295,6 +305,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcVend.setQueryCommit( false );
 		lcVend.setReadOnly( true );
 
+		
+		// FK Conveniado
+		lcConv.add( new GuardaCampo( txtCodConv, "CodConv", "Cód.conv.", ListaCampos.DB_PK, false ) );
+		lcConv.add( new GuardaCampo( txtDescConv, "NomeConv", "Nome do coveniado", ListaCampos.DB_SI, false ) );
+		lcConv.add( new GuardaCampo( txtCodTpConv, "CodTpConv", "Tipo de Conveniado", ListaCampos.DB_SI, false ) );
+		lcConv.add( new GuardaCampo( txtCodEnc, "CodEnc", "Encaminhador", ListaCampos.DB_SI, false ) );
+		lcConv.montaSql( false, "CONVENIADO", "AT" );
+		lcConv.setQueryCommit( false );
+		lcConv.setReadOnly( true );
+		txtCodConv.setTabelaExterna( lcConv );
+
+		
 		// FK Classificação de comissão
 		lcClComiss.add( new GuardaCampo( txtCodClComiss, "CodClComis", "Cód.cl.comiss.", ListaCampos.DB_PK, false ) );
 		lcClComiss.add( new GuardaCampo( txtDescClComiss, "DescClComis", "Descrição da class. da comissão", ListaCampos.DB_SI, false ) );
@@ -397,17 +419,33 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		// Adiciona os componentes na tela e no ListaCompos da orcamento
 		pinCab = new JPanelPad( 740, 180 );
 		setListaCampos( lcCampos );
-		setAltCab( 130 );
 		setPainel( pinCab, pnCliCab );
 		adicCampo( txtCodOrc, 7, 20, 90, 20, "CodOrc", "Nº orçamento", ListaCampos.DB_PK, true );
-		adicCampo( txtDtOrc, 100, 20, 87, 20, "DtOrc", "Data", ListaCampos.DB_SI, true );
-		adicCampo( txtCodCli, 190, 20, 77, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, txtRazCli, true );
-		adicDescFK( txtRazCli, 270, 20, 277, 20, "RazCli", "Razão social do cliente" );
+		adicCampo( txtDtOrc, 440, 20, 107, 20, "DtOrc", "Data", ListaCampos.DB_SI, true );
+
+		if(Aplicativo.sNomeModulo.equals( "Atendimento" )){
+			setAltCab( 170 );
+			adicCampoInvisivel( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_FK, txtRazCli, false );			
+			adicDescFK( txtRazCli, 7, 100, 345, 20, "RazCli", "Razão social do cliente" );
+			adicCampo( txtCodConv, 100, 20, 87, 20, "CodConv", "Cód.conv.", ListaCampos.DB_FK, txtDescConv, true );
+			adicDescFK( txtDescConv, 190, 20, 247, 20, "NomeConv", "Nome do conveniado" );
+
+			
+			
+		}
+		else {
+			setAltCab( 130 );
+			adicCampo( txtCodCli, 100, 20, 87, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, txtRazCli, true );
+			adicDescFK( txtRazCli, 190, 20, 247, 20, "RazCli", "Razão social do cliente" );
+			adicDescFK( txtDescTipoCli, 270, 60, 147, 20, "DescTipoCli", "Desc. do tipo de cliente" );
+			
+		}
+		
 		adicCampo( txtDtVencOrc, 550, 20, 87, 20, "DtVencOrc", "Dt.valid.", ListaCampos.DB_SI, true );
 		adicCampo( txtPrazoEntOrc, 640, 20, 100, 20, "PrazoEntOrc", "Dias p/ entrega", ListaCampos.DB_SI, false );
 		adicCampo( txtCodVend, 7, 60, 80, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtNomeVend, true );
 		adicDescFK( txtNomeVend, 90, 60, 177, 20, "NomeVend", "Nome do comissionado" );
-		adicDescFK( txtDescTipoCli, 270, 60, 147, 20, "DescTipoCli", "Desc. do tipo de cliente" );
+		
 		adicCampo( txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK, txtDescPlanoPag, true );
 		adicDescFK( txtDescPlanoPag, 500, 60, 240, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
 		adicCampoInvisivel( txtPercDescOrc, "PercDescOrc", "% desc.", ListaCampos.DB_SI, false );
@@ -545,9 +583,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		txtPrecoItOrc.setVlrBigDecimal( bdPreco );
 	}
 
-	public Vector getParansDesconto() {
+	public Vector getParansDesconto() { 
 
-		Vector param = new Vector();
+		Vector<JTextFieldPad> param = new Vector<JTextFieldPad>();
 		param.addElement( txtStrDescItOrc );
 		param.addElement( txtPrecoItOrc );
 		param.addElement( txtVlrDescItOrc );

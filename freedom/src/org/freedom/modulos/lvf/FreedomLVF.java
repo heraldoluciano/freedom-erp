@@ -109,7 +109,7 @@ public class FreedomLVF extends AplicativoPD {
 		
 		ajustaMenu();
 
-		sNomeModulo = "Financeiro";
+		sNomeModulo = "Livros fiscais";
 		sNomeSis = "Freedom";
 		sMailSuporte = "suporte@stpinf.com";
 		sEmpSis = "Setpoint Informática Ltda.";
