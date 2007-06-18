@@ -422,7 +422,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		}
 		txtVlrAceito.setVlrBigDecimal(bVlrAceito);
 		txtVlrAprovado.setVlrBigDecimal(bVlrAprovado);
-	
+		txtTotal.setVlrBigDecimal(bVlrTotal);
 	}
 
 	public void setConexao(Connection cn) {
