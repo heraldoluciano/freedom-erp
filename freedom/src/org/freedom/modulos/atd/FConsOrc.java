@@ -49,6 +49,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.std.FOrcamento;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -434,7 +435,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 	private void abreOrc() {
 		int iCodOrc = ((Integer)tab.getValor(tab.getLinhaSel(),1)).intValue();
 		if (fPrim.temTela("Orcamento")==false) {
-			FOrcamentoATD tela = new FOrcamentoATD();
+			FOrcamento tela = new FOrcamento();
 			fPrim.criatela("Orcamento",tela,con);
 			tela.exec(iCodOrc);
 		} 
