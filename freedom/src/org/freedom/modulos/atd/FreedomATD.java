@@ -74,8 +74,7 @@ public class FreedomATD extends AplicativoPD implements ActionListener {
 
 		//Orçamento:
 		addOpcao(-1, TP_OPCAO_MENU, "Orçamento", "", 'O', 1200000000, 0, false, null);
-		addOpcao(1200000000, TP_OPCAO_ITEM, "Orçamento Atendimento", "Orçamento Atendimento", 'O', 120100000, 1, true, FOrcamentoATD.class);
-		addOpcao(1200000000, TP_OPCAO_ITEM, "Orçamento Padrão", "Orçamento padrão", 'O', 120100001, 1, true, FOrcamento.class);
+		addOpcao(1200000000, TP_OPCAO_ITEM, "Orçamento", "Orçamento", 'O', 120100000, 1, true, FOrcamento.class);
 		addSeparador(1200000000);
 		addOpcao(1200000000, TP_OPCAO_ITEM, "Pesquisa Orçamentos", "Pesquisa Orcamentos", 'P', 120200000, 1, true, FConsOrc.class);
 		addOpcao(1200000000, TP_OPCAO_ITEM, "Aprova Orçamentos", "Aprova Orcamento", 'A', 120300000, 1, true, FAprovaOrc.class);
