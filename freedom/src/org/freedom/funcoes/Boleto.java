@@ -9,7 +9,7 @@ public class Boleto {
 	
 	public static String geraCodBar(final String codbanco,  final String codmoeda,
 			final String dvbanco, final Long fatvenc, final BigDecimal vlrtitulo, 
-			final String convenio, final Long rec, final Short nparc, 
+			final String convenio, final Long rec, final Long nparc, 
 			final String agencia, final String conta, final String carteira  ){
 		
 		final StringBuffer barcode = new StringBuffer();
@@ -33,7 +33,7 @@ public class Boleto {
 	}
 
 	public static String geraNossoNumero( final String convenio, 
-			final Long rec, final Short nparc ) {
+			final Long rec, final Long nparc ) {
 		final StringBuffer retorno = new StringBuffer();
 		if ( convenio==null ) {
 			retorno.append( strZero( "0", 4 ) );
@@ -72,7 +72,7 @@ public class Boleto {
 		return retorno;
 	}
 	
-	public static String getNumCli(Long rec, Short nparc, int tam) {
+	public static String getNumCli(Long rec, Long nparc, int tam) {
 		final StringBuffer retorno = new StringBuffer();
 		if (rec==null) {
 			retorno.append( strZero("0", tam-2) );
