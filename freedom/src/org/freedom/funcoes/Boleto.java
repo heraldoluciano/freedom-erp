@@ -90,7 +90,7 @@ public class Boleto {
 	public static String digVerif(final String codigo){
 		final int[] peso = {2, 3, 4, 5, 6, 7, 8, 9};
 		int soma = 0;
-		int posi = 8;
+		int posi = 7;
 		int resto = 0;
 		String dig = null;
 		
@@ -98,7 +98,7 @@ public class Boleto {
 	    	soma +=  ( Integer.parseInt( codigo.substring( i, i+1 ) ) * (peso[posi]) );
 	    	posi--;
 	    	if (posi<0) {
-	    		posi = 8; 
+	    		posi = 7; 
 	    	}
 	    }
 		resto = soma % 11;
