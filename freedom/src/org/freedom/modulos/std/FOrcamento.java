@@ -466,11 +466,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			adicCampo( txtCodConv, 100, 20, 87, 20, "CodConv", "Cód.conv.", ListaCampos.DB_FK, txtDescConv, true );
 			adicDescFK( txtDescConv, 190, 20, 247, 20, "NomeConv", "Nome do conveniado" );
 			adicCampo( txtCodVend, 7, 60, 90, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtNomeVend, true );
+			adicDescFK( txtNomeVend, 100, 60, 250, 20, "NomeVend", "Nome do comissionado" );
 			adicDescFK( txtDescTipoConv, 456, 60, 205, 20, "DescTpConv", "Tipo de conveniado" );
 			adicDescFK( txtNomeEnc, 355, 100, 305, 20, "NomeEnc", "Org.Encaminhador" );			
 			if ( !oPrefs[ 11 ].equals( "" ) )
 				adicCampo( txtTxt01, 353, 60, 100, 20, "Txt01", oPrefs[ 11 ].toString().trim(), ListaCampos.DB_SI, false );
-			adicDescFK( txtNomeVend, 90, 60, 250, 20, "NomeVend", "Nome do comissionado" );
 			
 		}
 		else {
@@ -480,8 +480,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			adicDescFK( txtDescTipoCli, 270, 60, 147, 20, "DescTipoCli", "Desc. do tipo de cliente" );
 			adicCampo( txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK, txtDescPlanoPag, true );
 			adicDescFK( txtDescPlanoPag, 500, 60, 240, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
-			adicCampo( txtCodVend, 7, 60, 80, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtNomeVend, true );
-			adicDescFK( txtNomeVend, 100, 60, 250, 20, "NomeVend", "Nome do comissionado" );			
+			adicCampo( txtCodVend, 7, 60, 90, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtNomeVend, true );
+			adicDescFK( txtNomeVend, 100, 60, 177, 20, "NomeVend", "Nome do comissionado" );			
 		}
 		
 		adicCampo( txtDtVencOrc, 550, 20, 87, 20, "DtVencOrc", "Dt.valid.", ListaCampos.DB_SI, true );
