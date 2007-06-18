@@ -50,6 +50,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.std.FOrcamento;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -269,7 +270,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
   }
   private void abreOrc(int iCodOrc) {
 	  if (!fPrim.temTela("Orcamento")) {
-		FOrcamentoATD tela = new FOrcamentoATD();
+		FOrcamento tela = new FOrcamento();
 		fPrim.criatela("Orcamento",tela,con);
 		tela.exec(iCodOrc);
 	  } 
