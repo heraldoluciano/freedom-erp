@@ -107,6 +107,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	
 	private JTextFieldPad txtCodTpConv = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
+	private JTextFieldFK txtDescTipoConv = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
 	private JTextFieldFK txtDescConv = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private JTextFieldPad txtCodEnc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -170,12 +172,16 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextFieldPad txtCodFilialLG = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodLog = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtTxt01 = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtNomeEnc = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -196,6 +202,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextAreaPad txaObsItOrc = new JTextAreaPad( 500 );
 
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
+	
+	private ListaCampos lcEnc = new ListaCampos( this, "EC" );
 
 	private ListaCampos lcProd = new ListaCampos( this, "PD" );
 
@@ -208,6 +216,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private ListaCampos lcVend = new ListaCampos( this, "VD" );
 	
 	private ListaCampos lcConv = new ListaCampos( this, "CV" );
+	
+	private ListaCampos lcTipoConv = new ListaCampos( this, "TC" );
 
 	private ListaCampos lcTipoCli = new ListaCampos( this, "TC" );
 
@@ -316,6 +326,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcConv.setReadOnly( true );
 		txtCodConv.setTabelaExterna( lcConv );
 
+		//FK Tipo de conveniado
+		
+		lcTipoConv.add( new GuardaCampo( txtCodTpConv, "CodTpConv", "Cód.tp.conv.", ListaCampos.DB_PK, false ) );
+		lcTipoConv.add( new GuardaCampo( txtDescTipoConv, "DescTpConv", "Descrição do tipo de conveniado", ListaCampos.DB_SI, false ) );
+		txtCodTpConv.setTabelaExterna( lcTipoConv );
+		txtDescTipoConv.setListaCampos( lcTipoConv );
+		lcTipoConv.montaSql( false, "TIPOCONV", "AT" );
+		lcTipoConv.setQueryCommit( false );
+		lcTipoConv.setReadOnly( true );
+
+		
+		
 		
 		// FK Classificação de comissão
 		lcClComiss.add( new GuardaCampo( txtCodClComiss, "CodClComis", "Cód.cl.comiss.", ListaCampos.DB_PK, false ) );
@@ -351,6 +373,20 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		txtCodCli.setTabelaExterna( lcCli );
 		txtNomeCli.setSize( 250, 20 );
 
+		// FK Encaminhador
+		
+
+		lcEnc.add( new GuardaCampo( txtCodEnc, "CodEnc", "Cód.enc.", ListaCampos.DB_PK, false ) );
+		lcEnc.add( new GuardaCampo( txtNomeEnc, "NomeEnc", "Descrição do encaminhador", ListaCampos.DB_SI, false ) );
+		txtCodEnc.setTabelaExterna( lcEnc );
+		txtNomeEnc.setListaCampos( lcEnc );
+		txtCodEnc.setNomeCampo( "CodEnc" );
+		lcEnc.montaSql( false, "ENCAMINHADOR", "AT" );
+		lcEnc.setQueryCommit( false );
+		lcEnc.setReadOnly( true );
+
+		
+		
 		// FK de Almoxarifado
 
 		lcAlmox.add( new GuardaCampo( txtCodAlmoxItOrc, "codalmox", "Cod.Almox.", ListaCampos.DB_PK, false ) );
@@ -429,8 +465,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			adicDescFK( txtRazCli, 7, 100, 345, 20, "RazCli", "Razão social do cliente" );
 			adicCampo( txtCodConv, 100, 20, 87, 20, "CodConv", "Cód.conv.", ListaCampos.DB_FK, txtDescConv, true );
 			adicDescFK( txtDescConv, 190, 20, 247, 20, "NomeConv", "Nome do conveniado" );
-
-			
+			adicCampo( txtCodVend, 7, 60, 90, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtNomeVend, true );
+			adicDescFK( txtDescTipoConv, 456, 60, 205, 20, "DescTpConv", "Tipo de conveniado" );
+			adicDescFK( txtNomeEnc, 355, 100, 305, 20, "NomeEnc", "Org.Encaminhador" );			
+			if ( !oPrefs[ 11 ].equals( "" ) )
+				adicCampo( txtTxt01, 353, 60, 100, 20, "Txt01", oPrefs[ 11 ].toString().trim(), ListaCampos.DB_SI, false );
+			adicDescFK( txtNomeVend, 90, 60, 250, 20, "NomeVend", "Nome do comissionado" );
 			
 		}
 		else {
@@ -438,16 +478,15 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			adicCampo( txtCodCli, 100, 20, 87, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, txtRazCli, true );
 			adicDescFK( txtRazCli, 190, 20, 247, 20, "RazCli", "Razão social do cliente" );
 			adicDescFK( txtDescTipoCli, 270, 60, 147, 20, "DescTipoCli", "Desc. do tipo de cliente" );
-			
+			adicCampo( txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK, txtDescPlanoPag, true );
+			adicDescFK( txtDescPlanoPag, 500, 60, 240, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
+			adicCampo( txtCodVend, 7, 60, 80, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtNomeVend, true );
+			adicDescFK( txtNomeVend, 100, 60, 250, 20, "NomeVend", "Nome do comissionado" );			
 		}
 		
 		adicCampo( txtDtVencOrc, 550, 20, 87, 20, "DtVencOrc", "Dt.valid.", ListaCampos.DB_SI, true );
 		adicCampo( txtPrazoEntOrc, 640, 20, 100, 20, "PrazoEntOrc", "Dias p/ entrega", ListaCampos.DB_SI, false );
-		adicCampo( txtCodVend, 7, 60, 80, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtNomeVend, true );
-		adicDescFK( txtNomeVend, 90, 60, 177, 20, "NomeVend", "Nome do comissionado" );
 		
-		adicCampo( txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK, txtDescPlanoPag, true );
-		adicDescFK( txtDescPlanoPag, 500, 60, 240, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
 		adicCampoInvisivel( txtPercDescOrc, "PercDescOrc", "% desc.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrDescOrc, "VlrDescOrc", "Vlr.desc.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtPercAdicOrc, "PercAdicOrc", "% adic.", ListaCampos.DB_SI, false );
@@ -1364,13 +1403,15 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private Object[] prefs() {
 
-		Object[] oRetorno = new Object[ 11 ];
+		Object[] oRetorno = new Object[ 12 ];
 		String sSQL = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,P4.USALOTEORC,P.CONTESTOQ," + "P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ,P.OBSCLIVEND,P.RECALCPCORC,P4.USABUSCAGENPROD " + "FROM SGPREFERE1 P, SGPREFERE4 P4 " + "WHERE P.CODEMP=? AND P.CODFILIAL=? "
-					+ "AND P4.CODEMP=P.CODEMP AND P4.CODFILIAL=P.CODFILIAL";
+			sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,P4.USALOTEORC,P.CONTESTOQ," 
+				 + "P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ,P.OBSCLIVEND,P.RECALCPCORC,P4.USABUSCAGENPROD,P.TITORCTXT01 " 
+				 + "FROM SGPREFERE1 P, SGPREFERE4 P4 " + "WHERE P.CODEMP=? AND P.CODFILIAL=? "
+				 + "AND P4.CODEMP=P.CODEMP AND P4.CODFILIAL=P.CODFILIAL";
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
@@ -1395,7 +1436,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				oRetorno[ 7 ] = new Boolean( rs.getString( "ReCalcPCOrc" ).equals( "S" ) );
 				oRetorno[ 8 ] = new Boolean( rs.getString( "USABUSCAGENPROD" ).equals( "S" ) );
 				oRetorno[ 9 ] = new Boolean( rs.getString( "USALOTEORC" ).equals( "S" ) );
-				oRetorno[ 10 ] = new Boolean( rs.getString( "CONTESTOQ" ).equals( "S" ) );
+				oRetorno[ 10 ] = new Boolean( rs.getString( "CONTESTOQ" ).equals( "S" ) );								
+				oRetorno[ 11 ] = rs.getString( "TitOrcTxt01" );
+				if ( oRetorno[ 11 ] == null )
+					oRetorno[ 11 ] = "";
+				
 				sOrdNota = rs.getString( "OrdNota" );
 
 			}
@@ -1668,6 +1713,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcTipoCli.setConexao( cn );
 		lcAlmox.setConexao( cn );
 		lcClComiss.setConexao( cn );
+		lcConv.setConexao( cn );
+		lcTipoConv.setConexao( cn );
+		lcEnc.setConexao( cn );
+		
 
 		if ( ( (Boolean) oPrefs[ 8 ] ).booleanValue() ) {
 			if ( ( (Boolean) oPrefs[ 0 ] ).booleanValue() )
