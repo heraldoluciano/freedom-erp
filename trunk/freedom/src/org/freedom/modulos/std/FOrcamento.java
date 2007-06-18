@@ -315,12 +315,21 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcVend.setQueryCommit( false );
 		lcVend.setReadOnly( true );
 
-		
+		// FK Encaminhador
+		lcEnc.add( new GuardaCampo( txtCodEnc, "CodEnc", "Cód.enc.", ListaCampos.DB_PK, false ) );
+		lcEnc.add( new GuardaCampo( txtNomeEnc, "NomeEnc", "Descrição do encaminhador", ListaCampos.DB_SI, false ) );
+		txtCodEnc.setTabelaExterna( lcEnc );
+		txtNomeEnc.setListaCampos( lcEnc );
+		txtCodEnc.setNomeCampo( "CodEnc" );
+		lcEnc.montaSql( false, "ENCAMINHADOR", "AT" );
+		lcEnc.setQueryCommit( false );
+		lcEnc.setReadOnly( true );
+				
 		// FK Conveniado
 		lcConv.add( new GuardaCampo( txtCodConv, "CodConv", "Cód.conv.", ListaCampos.DB_PK, false ) );
 		lcConv.add( new GuardaCampo( txtDescConv, "NomeConv", "Nome do coveniado", ListaCampos.DB_SI, false ) );
 		lcConv.add( new GuardaCampo( txtCodTpConv, "CodTpConv", "Tipo de Conveniado", ListaCampos.DB_SI, false ) );
-		lcConv.add( new GuardaCampo( txtCodEnc, "CodEnc", "Encaminhador", ListaCampos.DB_SI, false ) );
+		lcConv.add( new GuardaCampo( txtCodEnc, "CodEnc", "Encaminhador", ListaCampos.DB_FK, false ) );
 		lcConv.montaSql( false, "CONVENIADO", "AT" );
 		lcConv.setQueryCommit( false );
 		lcConv.setReadOnly( true );
@@ -334,10 +343,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		txtDescTipoConv.setListaCampos( lcTipoConv );
 		lcTipoConv.montaSql( false, "TIPOCONV", "AT" );
 		lcTipoConv.setQueryCommit( false );
-		lcTipoConv.setReadOnly( true );
-
-		
-		
+		lcTipoConv.setReadOnly( true );	
 		
 		// FK Classificação de comissão
 		lcClComiss.add( new GuardaCampo( txtCodClComiss, "CodClComis", "Cód.cl.comiss.", ListaCampos.DB_PK, false ) );
@@ -373,17 +379,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		txtCodCli.setTabelaExterna( lcCli );
 		txtNomeCli.setSize( 250, 20 );
 
-		// FK Encaminhador
-		
 
-		lcEnc.add( new GuardaCampo( txtCodEnc, "CodEnc", "Cód.enc.", ListaCampos.DB_PK, false ) );
-		lcEnc.add( new GuardaCampo( txtNomeEnc, "NomeEnc", "Descrição do encaminhador", ListaCampos.DB_SI, false ) );
-		txtCodEnc.setTabelaExterna( lcEnc );
-		txtNomeEnc.setListaCampos( lcEnc );
-		txtCodEnc.setNomeCampo( "CodEnc" );
-		lcEnc.montaSql( false, "ENCAMINHADOR", "AT" );
-		lcEnc.setQueryCommit( false );
-		lcEnc.setReadOnly( true );
 
 		
 		
@@ -467,11 +463,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			adicDescFK( txtDescConv, 190, 20, 247, 20, "NomeConv", "Nome do conveniado" );
 			adicCampo( txtCodVend, 7, 60, 90, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtNomeVend, true );
 			adicDescFK( txtNomeVend, 100, 60, 250, 20, "NomeVend", "Nome do comissionado" );
-			adicDescFK( txtDescTipoConv, 456, 60, 205, 20, "DescTpConv", "Tipo de conveniado" );
-			adicDescFK( txtNomeEnc, 355, 100, 305, 20, "NomeEnc", "Org.Encaminhador" );			
+			adicDescFK( txtDescTipoConv, 456, 60, 283, 20, "DescTpConv", "Tipo de conveniado" );
+			adicDescFK( txtNomeEnc, 355, 100, 383, 20, "NomeEnc", "Org.Encaminhador" );			
 			if ( !oPrefs[ 11 ].equals( "" ) )
 				adicCampo( txtTxt01, 353, 60, 100, 20, "Txt01", oPrefs[ 11 ].toString().trim(), ListaCampos.DB_SI, false );
-			
+			adicCampoInvisivel( txtCodTpConv, "CodTpConv", "Cód.tp.conv.", ListaCampos.DB_FK, txtDescTipoConv, false );
+
 		}
 		else {
 			setAltCab( 130 );
@@ -539,7 +536,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcCampos.addPostListener( this );
 
 		lcDet.addDeleteListener( this );
-
+	
 	}
 
 	// Função criada para montar a tela conforme a preferência do usuário:
