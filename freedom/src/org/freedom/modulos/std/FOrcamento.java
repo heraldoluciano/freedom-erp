@@ -89,6 +89,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private JButton btOrc = new JButton( Icone.novo( "btImprimeOrc.gif" ) );
 
+	private JButton btOrcTst = new JButton( Icone.novo( "btFisio.gif" ) );
+
+	private JButton btOrcTst2 = new JButton( Icone.novo( "btEmprestimo.gif" ) );
+	
 	private JButton btFechaOrc = new JButton( Icone.novo( "btOk.gif" ) );
 
 	private JButton btExp = new JButton( Icone.novo( "btExportar.gif" ) );
@@ -277,6 +281,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		pnGImp.add( btFechaOrc );
 		pnGImp.add( btObs );// Agora o painel está maior
 		pnGImp.add( btOrc );// Botão provisório para emissão de orçamento padrão
+		
+		if(Aplicativo.sNomeModulo.equals( "Atendimento" )){
+			pnGImp.add( btOrcTst );// Botão para teste de laudo fisioterapia
+			pnGImp.add( btOrcTst2 );// Outro botão de teste para contrato
+		}
 
 		pnTot.setPreferredSize( new Dimension( 120, 200 ) ); // JPanelPad de Totais
 		pnTot.add( pinTot );
@@ -315,6 +324,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcVend.setQueryCommit( false );
 		lcVend.setReadOnly( true );
 
+		// FK Classificação de comissão
+		lcClComiss.add( new GuardaCampo( txtCodClComiss, "CodClComis", "Cód.cl.comiss.", ListaCampos.DB_PK, false ) );
+		lcClComiss.add( new GuardaCampo( txtDescClComiss, "DescClComis", "Descrição da class. da comissão", ListaCampos.DB_SI, false ) );
+		lcClComiss.montaSql( false, "CLCOMIS", "VD" );
+		lcClComiss.setQueryCommit( false );
+		lcClComiss.setReadOnly( true );
+		txtCodClComiss.setTabelaExterna( lcClComiss );
+		
 		// FK Encaminhador
 		lcEnc.add( new GuardaCampo( txtCodEnc, "CodEnc", "Cód.enc.", ListaCampos.DB_PK, false ) );
 		lcEnc.add( new GuardaCampo( txtNomeEnc, "NomeEnc", "Descrição do encaminhador", ListaCampos.DB_SI, false ) );
@@ -345,13 +362,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcTipoConv.setQueryCommit( false );
 		lcTipoConv.setReadOnly( true );	
 		
-		// FK Classificação de comissão
-		lcClComiss.add( new GuardaCampo( txtCodClComiss, "CodClComis", "Cód.cl.comiss.", ListaCampos.DB_PK, false ) );
-		lcClComiss.add( new GuardaCampo( txtDescClComiss, "DescClComis", "Descrição da class. da comissão", ListaCampos.DB_SI, false ) );
-		lcClComiss.montaSql( false, "CLCOMIS", "VD" );
-		lcClComiss.setQueryCommit( false );
-		lcClComiss.setReadOnly( true );
-		txtCodClComiss.setTabelaExterna( lcClComiss );
+
 
 		// FK Lote
 		lcLote.add( new GuardaCampo( txtCodLote, "CodLote", "Lote", ListaCampos.DB_PK, txtDescLote, false ) );
@@ -441,6 +452,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		btFechaOrc.setToolTipText( "Completar o Orçamento (F4)" );
 		btObs.setToolTipText( "Observações (Ctrl + O)" );
 		btOrc.setToolTipText( "Imprime orçamento padrão" );
+		btOrcTst.setToolTipText( "Imprime orçamento assinado" );
+		btOrcTst2.setToolTipText( "Imprime contrato de locação" );
 
 		// Desativa as os TextFields para que os usuários não fussem
 
@@ -478,7 +491,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			adicCampo( txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK, txtDescPlanoPag, true );
 			adicDescFK( txtDescPlanoPag, 500, 60, 240, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
 			adicCampo( txtCodVend, 7, 60, 90, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtNomeVend, true );
-			adicDescFK( txtNomeVend, 100, 60, 167, 20, "NomeVend", "Nome do comissionado" );			
+			adicDescFK( txtNomeVend, 100, 60, 167, 20, "NomeVend", "Nome do comissionado" );	
+			adicCampoInvisivel( txtCodClComiss, "CodClComis", "Cód.cl.comiss.", ListaCampos.DB_FK, txtDescClComiss, false );
 		}
 		
 		adicCampo( txtDtVencOrc, 550, 20, 87, 20, "DtVencOrc", "Dt.valid.", ListaCampos.DB_SI, true );
@@ -494,7 +508,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		 */
 
 		adicCampoInvisivel( txtStatusOrc, "StatusOrc", "Status", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtCodClComiss, "CodClComis", "Cód.cl.comiss.", ListaCampos.DB_FK, txtDescClComiss, false );
+
 		setListaCampos( true, "ORCAMENTO", "VD" );
 
 		// pnRodape.add(btExp);
@@ -509,6 +523,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		btFechaOrc.addActionListener( this );
 		btObs.addActionListener( this );
 		btOrc.addActionListener( this );
+		btOrcTst.addActionListener( this );
+		btOrcTst2.addActionListener( this );
+		
 		btExp.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -1568,6 +1585,40 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			dl = new FPrinterJob( imp, this );
 			dl.setVisible( true );
 		}
+		else if ( evt.getSource() == btOrcTst ) {
+			LeiauteGR leiOrc = null;
+			try {
+				leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout." + "LaudoAprSusFisio" ).newInstance();
+				leiOrc.setConexao( con );
+				vParamOrc.clear();
+				vParamOrc.addElement( txtCodOrc.getText() );
+				vParamOrc.addElement( txtCodConv.getText() );
+				leiOrc.setParam( vParamOrc );
+
+				dl = new FPrinterJob( leiOrc, this );
+				dl.setVisible( true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemInforma( this, "Não foi possível carregar o leiaute de Orçamento Fisio.!\n" + err.getMessage() );
+				err.printStackTrace();
+			}
+		}
+		else if ( evt.getSource() == btOrcTst2 ) {
+			LeiauteGR leiOrc = null;
+			try {
+				leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout." + "ContratoAluguelApr" ).newInstance();
+				leiOrc.setConexao( con );
+				vParamOrc.clear();
+				vParamOrc.addElement( txtCodOrc.getText() );
+				vParamOrc.addElement( txtCodConv.getText() );
+				leiOrc.setParam( vParamOrc );
+
+				dl = new FPrinterJob( leiOrc, this );
+				dl.setVisible( true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemInforma( this, "Não foi possível carregar o leiaute de Contrato de locação!\n" + err.getMessage() );
+				err.printStackTrace();
+			}
+		}		
 		else if ( evt.getSource() == btObs ) {
 			mostraObs( "VDORCAMENTO", txtCodOrc.getVlrInteger().intValue() );
 		}
