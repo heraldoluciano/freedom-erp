@@ -26,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,7 +56,7 @@ import org.freedom.telas.FFilho;
 
 public class FConsAutoriz extends FFilho implements ActionListener {
 	private static final long serialVersionUID = 1L;	
-	private JPanelPad pinCab = new JPanelPad(0,210);
+	private JPanelPad pinCab = new JPanelPad(0,250);
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtNomeCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);	
@@ -66,6 +67,9 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 	private JTextFieldPad txtDtIni = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtDtFim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtCid = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
+	private JTextFieldPad txtCodTpConv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldFK txtDescTipoConv = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	
 	private JLabelPad lbBorda = new JLabelPad();
 	private JCheckBoxPad cbVencidas = new JCheckBoxPad("Vencidas","S","N");
 	private JCheckBoxPad cbCompleto = new JCheckBoxPad("Completo","S","N");
@@ -79,12 +83,13 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 	private ListaCampos lcConv = new ListaCampos(this,"PR");
 	private ListaCampos lcCli = new ListaCampos(this,"CL");
 	private ListaCampos lcEnc = new ListaCampos(this,"EC");
+	private ListaCampos lcTipoConv = new ListaCampos(this,"AT");
+	BigDecimal bTotalLiq = null;
 	
 	public FConsAutoriz() {
 		super(false);
 		setTitulo("Pesquisa Autorização");
-		setAtribos(10,10,605,430);
-
+		setAtribos(10,10,605,505);
 		cbVencidas.setVlrString("S");
 		
 		txtDtIni.setRequerido(true);
@@ -115,7 +120,16 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		txtCodCli.setNomeCampo("CodCli");
 		txtCodCli.setFK(true);
 		lcCli.setReadOnly(true);
-		lcCli.montaSql(false, "CLIENTE", "VD");		
+		lcCli.montaSql(false, "CLIENTE", "VD");	
+		
+		
+		lcTipoConv.add(new GuardaCampo( txtCodTpConv, "CodTpConv", "Cód.tp.conv.", ListaCampos.DB_PK, false));
+		lcTipoConv.add(new GuardaCampo( txtDescTipoConv, "DescTpConv", "Descrição do tipo de conveniado", ListaCampos.DB_SI, false));
+		txtCodTpConv.setTabelaExterna(lcTipoConv);
+		txtCodTpConv.setNomeCampo("CodTpConv");
+		txtCodTpConv.setFK(true);
+		lcTipoConv.setReadOnly(true);
+		lcTipoConv.montaSql(false, "TIPOCONV", "AT");		
 		
 		lcEnc.add(new GuardaCampo( txtCodEnc, "CodEnc", "Cód.enc.", ListaCampos.DB_PK, false));
 		lcEnc.add(new GuardaCampo( txtNomeEnc, "NomeEnc", "Nome do encaminhador", ListaCampos.DB_SI, false));
@@ -140,32 +154,43 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		pinCab.adic(new JLabelPad("Nome do conveniado"),80,40,280,20);
 		pinCab.adic(txtNomeConv,80,60,294,20);
 		
-		pinCab.adic(new JLabelPad("Cód.enc."),7,80,250,20);
-		pinCab.adic(txtCodEnc,7,100,70,20);
-		pinCab.adic(new JLabelPad("Descrição do Encaminhador"),80,80,250,20);
-		pinCab.adic(txtNomeEnc,80,100,294,20);
 		
+		
+		
+		pinCab.adic(new JLabelPad("Cód.tp.conv."),7,80,250,20);
+		pinCab.adic(txtCodTpConv,7,100,70,20);
+		pinCab.adic(new JLabelPad("Descrição do tipo de conveniado"),80,80,250,20);
+		pinCab.adic(txtDescTipoConv,80,100,294,20);
+		
+		pinCab.adic(new JLabelPad("Cód.enc."),7,122,250,20);
+		pinCab.adic(txtCodEnc,7,142,70,20);
+		pinCab.adic(new JLabelPad("Descrição do Encaminhador"),80,122,250,20);
+		pinCab.adic(txtNomeEnc,80,142,294,20);
+		
+						
 		pinCab.adic(new JLabelPad("Período:"),380,0,90,20);
 		pinCab.adic(txtDtIni,380,20,87,20);
 		pinCab.adic(new JLabelPad("Até"),470,20,27,20);
 		pinCab.adic(txtDtFim,494,20,87,20);		
-		
+		 
 		pinCab.adic(new JLabelPad("Cidade"),380,40,50,20);
 		pinCab.adic(txtCid,380,60,200,20);			
-						
-		pinCab.adic(new JLabelPad("Status:"),7,125,90,20);
-		pinCab.adic(lbBorda,7,143,200,55);
-		pinCab.adic(cbVencidas,10,148,80,20);
-		pinCab.adic(cbCompleto,10,173,80,20);
-		pinCab.adic(cbLiberado,123,148,80,20);
-		pinCab.adic(cbFaturado,123,173,80,20);		
 		
-		pinCab.adic(new JLabelPad("Filtrar por:"),225,125,110,20);
-		pinCab.adic(gbVenc,225,143,220,55);
+								
+		pinCab.adic(new JLabelPad("Status:"),7,164,90,20);
+		pinCab.adic(lbBorda,7,183,200,55);
+		pinCab.adic(cbVencidas,10,188,80,20);
+		pinCab.adic(cbCompleto,10,213,80,20);
+		pinCab.adic(cbLiberado,123,188,80,20);
+		pinCab.adic(cbFaturado,123,213,80,20);	
+		
+		
+		pinCab.adic(new JLabelPad("Filtrar por:"),225,164,110,20);
+		pinCab.adic(gbVenc,225,183,220,55);
 			
-		pinCab.adic(btBusca,460,127,120,30);
+		pinCab.adic(btBusca,440,90,140,30);
 		
-		pinCab.adic(btPrevimp,460,170,120,30);
+		pinCab.adic(btPrevimp,440,130,140,30);
 				
 		tab.adicColuna("Cód.orc");
 		tab.adicColuna("Emissão.");
@@ -208,7 +233,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 	/**
 	 * 
 	 * Carrega os valores para a tabela de consulta.
-	 * Este método é executado após carregar o ListaCampos da tabela.
+	 * Este método é executado  após carregar o ListaCampos da tabela.
 	 *
 	 */ 
 	private void carregaTabela() {
@@ -251,6 +276,13 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		if (!txtCid.getVlrString().equals(""))
 			sWhere += " AND C.CIDCONV  = '"+txtCid.getVlrString()+"'";
 		
+		if (!txtCodTpConv.getVlrString().trim().equals("")){
+			sWhere += "AND EXISTS(SELECT T2.CODTPCONV FROM ATTIPOCONV T2, ATCONVENIADO C2 WHERE " +
+					  "T2.CODEMP=C2.CODEMPTC AND T2.CODFILIAL=C2.CODFILIALTC AND T2.CODTPCONV=C2.CODTPCONV AND "+
+					  "C2.CODEMP=O.CODEMPCV AND C2.CODFILIAL=O.CODFILIALCV AND C2.CODCONV=O.CODCONV AND " +
+					  "T2.CODEMP="+Aplicativo.iCodEmp+" AND T2.CODFILIAL="+ListaCampos.getMasterFilial("ATTIPOCONV")+" AND " +
+	            	  "T2.CODTPCONV="+txtCodTpConv.getVlrString().trim()+" ) ";		
+		}
 		try {
 			
 			sSQL="SELECT  O.CODORC,O.DTORC,O.DTVENCORC,"+
@@ -295,9 +327,19 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 				tab.setValor(rs.getString(11) != null ? rs.getString(11) : "", iLin, 10);
 				tab.setValor(Funcoes.strDecimalToStrCurrency(2, rs.getString(12)), iLin, 11);
 				tab.setValor(Funcoes.strDecimalToStrCurrency(2, rs.getString(13)), iLin, 12);
-			//	tab.setValor(rs.getString(14) != null ? rs.getString(13) : "", iLin, 13);
+							//	tab.setValor(rs.getString(14) != null ? rs.getString(13) : "", iLin, 13);
+				
+				bTotalLiq = new BigDecimal( "0" );
+				
+				 
+		
+				bTotalLiq = bTotalLiq.add( new BigDecimal( rs.getString("vlrliqitorc")));
 				iLin++;
+				
+				
 			}
+			
+		
 			
 			if (!con.getAutoCommit())
 				con.commit();
@@ -342,7 +384,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 					imp.say(imp.pRow(),135, "|");					
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
-				}
+				} 
 				imp.say(imp.pRow()+1, 0, imp.comprimido());
 				imp.say(imp.pRow(),  0, "| " + tab.getValor(iLin,0));
 				imp.say(imp.pRow(), 14, "| " + tab.getValor(iLin,1));
@@ -355,10 +397,16 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 				imp.say(imp.pRow(), 124, "| " + Funcoes.copy((String)tab.getValor(iLin,12),8));
 				
 			 
-				imp.say(imp.pRow(),135, "|");			
+				imp.say(imp.pRow(),135, "|");
+				
+								
 			}			
 			imp.say(imp.pRow()+1, 0, imp.comprimido());
 			imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("=",133) + "+");
+			imp.say( imp.pRow()+1, 103, " Total Geral | "    + Funcoes.strDecimalToStrCurrency( 11, 2, "" + bTotalLiq ) + "      |" );
+			imp.say(imp.pRow()+1, 0, imp.comprimido());
+			imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("=",133) + "+");
+			
 			imp.eject();			
 			imp.fechaGravacao();
 			
@@ -402,5 +450,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		lcConv.setConexao(con);
 		lcCli.setConexao(con);
 		lcEnc.setConexao(con);
+		lcTipoConv.setConexao( con );
+		
 	}
 }
