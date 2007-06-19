@@ -85,6 +85,10 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 	private JTextFieldPad txtVlrParc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
 	private JTextFieldPad txtObs = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
+	
+	private final JTextFieldFK txtDescTipoCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private final JTextFieldPad txtCodTipoCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private ListaCampos lcBanco = new ListaCampos( this );
 
@@ -93,6 +97,8 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 	private ListaCampos lcPlan = new ListaCampos( this );
 
 	private ListaCampos lcCC = new ListaCampos( this );
+	
+	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
 	
 	public enum EColEdit{CODCLI, RAZCLI, NUMCONTA, CODPLAN, CODCC, DOC, DTEMIS, DTVENC,
 		VLRJUROS, VLRDESC, VLRPARC, OBS, CODBANCO};
@@ -104,7 +110,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 
 		super( cOrig );
 		setTitulo( "Editar" );
-		setAtribos( 360, 450 );
+		setAtribos( 380, 470 );
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
 		lcBanco.add( new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
@@ -145,6 +151,17 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		txtAnoCC.setTabelaExterna( lcCC );
 		txtAnoCC.setFK( true );
 		txtAnoCC.setNomeCampo( "AnoCC" );
+		
+		txtCodTipoCob.setNomeCampo( "CodTipoCob" );
+		lcTipoCob.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK, false ) );
+		lcTipoCob.add( new GuardaCampo( txtDescTipoCob, "DescTipoCob", "Descrição do tipo de cobrança.", ListaCampos.DB_SI, false ) );
+		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
+		lcTipoCob.setQueryCommit( false );
+		lcTipoCob.setReadOnly( true );
+		txtCodTipoCob.setTabelaExterna( lcTipoCob );
+		txtCodTipoCob.setListaCampos( lcTipoCob );
+		txtDescTipoCob.setListaCampos( lcTipoCob );
+		txtCodTipoCob.setFK( true );
 
 		txtCodCli.setAtivo( false );
 		txtRazCli.setAtivo( false );
@@ -156,37 +173,41 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		adic( new JLabelPad( "Cód.cli." ), 7, 0, 250, 20 );
 		adic( txtCodCli, 7, 20, 80, 20 );
 		adic( new JLabelPad( "Razão social do cliente" ), 90, 0, 250, 20 );
-		adic( txtRazCli, 90, 20, 200, 20 );
-		adic( new JLabelPad( "Cód.banco" ), 7, 40, 250, 20 );
-		adic( txtCodBanco, 7, 60, 80, 20 );
-		adic( new JLabelPad( "Descrição do banco" ), 90, 40, 250, 20 );
-		adic( txtDescBanco, 90, 60, 200, 20 );
-		adic( new JLabelPad( "Nºconta" ), 7, 80, 250, 20 );
-		adic( txtCodConta, 7, 100, 80, 20 );
-		adic( new JLabelPad( "Descrição da conta" ), 90, 80, 250, 20 );
-		adic( txtDescConta, 90, 100, 200, 20 );
-		adic( new JLabelPad( "Cód.catg." ), 7, 120, 250, 20 );
-		adic( txtCodPlan, 7, 140, 100, 20 );
-		adic( new JLabelPad( "Descrição da categoria" ), 110, 120, 250, 20 );
-		adic( txtDescPlan, 110, 140, 200, 20 );
-		adic( new JLabelPad( "Cód.c.c." ), 7, 160, 250, 20 );
-		adic( txtCodCC, 7, 180, 100, 20 );
-		adic( new JLabelPad( "Descrição do centro de custo" ), 110, 160, 250, 20 );
-		adic( txtDescCC, 110, 180, 200, 20 );
-		adic( new JLabelPad( "Doc." ), 7, 200, 110, 20 );
-		adic( txtDoc, 7, 220, 110, 20 );
-		adic( new JLabelPad( "Emissão" ), 120, 200, 107, 20 );
-		adic( txtDtEmis, 120, 220, 107, 20 );
-		adic( new JLabelPad( "Vencimento" ), 230, 200, 110, 20 );
-		adic( txtDtVenc, 230, 220, 110, 20 );
-		adic( new JLabelPad( "Vlr.juros." ), 7, 240, 110, 20 );
-		adic( txtVlrJuros, 7, 260, 110, 20 );
-		adic( new JLabelPad( "Vlr.desc." ), 120, 240, 107, 20 );
-		adic( txtVlrDesc, 120, 260, 107, 20 );
-		adic( new JLabelPad( "Vlr.parcela" ), 230, 240, 110, 20 );
-		adic( txtVlrParc, 230, 260, 110, 20 );
-		adic( new JLabelPad( "Observações" ), 7, 280, 240, 20 );
-		adic( txtObs, 7, 300, 333, 20 );
+		adic( txtRazCli, 90, 20, 250, 20 );
+		adic( new JLabelPad( "Cod.Tp.Cob" ), 7, 40, 80, 20);
+		adic( txtCodTipoCob, 7, 60, 80, 20 );
+		adic( new JLabelPad("Descrição do tipo de cobrança"), 90, 40, 250, 20 );
+		adic(txtDescTipoCob, 90, 60, 250, 20 );
+		adic( new JLabelPad( "Cód.banco" ), 7, 80, 250, 20 );
+		adic( txtCodBanco, 7, 100, 80, 20 );
+		adic( new JLabelPad( "Descrição do banco" ), 90, 80, 250, 20 );
+		adic( txtDescBanco, 90, 100, 250, 20 );
+		adic( new JLabelPad( "Nºconta" ), 7, 120, 250, 20 );
+		adic( txtCodConta, 7, 140, 80, 20 );
+		adic( new JLabelPad( "Descrição da conta" ), 90, 120, 250, 20 );
+		adic( txtDescConta, 90, 140, 250, 20 );
+		adic( new JLabelPad( "Cód.catg." ), 7, 160, 250, 20 );
+		adic( txtCodPlan, 7, 180, 100, 20 );
+		adic( new JLabelPad( "Descrição da categoria" ), 110, 160, 250, 20 );
+		adic( txtDescPlan, 110, 180, 230, 20 );
+		adic( new JLabelPad( "Cód.c.c." ), 7, 200, 250, 20 );
+		adic( txtCodCC, 7, 220, 100, 20 );
+		adic( new JLabelPad( "Descrição do centro de custo" ), 110, 200, 250, 20 );
+		adic( txtDescCC, 110, 220, 230, 20 );
+		adic( new JLabelPad( "Doc." ), 7, 240, 110, 20 );
+		adic( txtDoc, 7, 260, 110, 20 );
+		adic( new JLabelPad( "Emissão" ), 120, 240, 107, 20 );
+		adic( txtDtEmis, 120, 260, 107, 20 );
+		adic( new JLabelPad( "Vencimento" ), 230, 240, 110, 20 );
+		adic( txtDtVenc, 230, 260, 110, 20 );
+		adic( new JLabelPad( "Vlr.juros." ), 7, 280, 110, 20 );
+		adic( txtVlrJuros, 7, 300, 110, 20 );
+		adic( new JLabelPad( "Vlr.desc." ), 120, 280, 107, 20 );
+		adic( txtVlrDesc, 120, 300, 107, 20 );
+		adic( new JLabelPad( "Vlr.parcela" ), 230, 280, 110, 20 );
+		adic( txtVlrParc, 230, 300, 110, 20 );
+		adic( new JLabelPad( "Observações" ), 7, 320, 240, 20 );
+		adic( txtObs, 7, 340, 333, 20 );
 
 		lcCC.addCarregaListener( this );
 	}
@@ -293,6 +314,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		lcCC.setConexao( cn );
 		lcCC.carregaDados();
 		lcBanco.setConexao( cn );
+		lcTipoCob.setConexao( cn );
 		lcBanco.carregaDados();
 	}
 }
