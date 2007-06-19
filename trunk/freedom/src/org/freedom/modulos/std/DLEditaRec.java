@@ -101,10 +101,10 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
 	
 	public enum EColEdit{CODCLI, RAZCLI, NUMCONTA, CODPLAN, CODCC, DOC, DTEMIS, DTVENC,
-		VLRJUROS, VLRDESC, VLRPARC, OBS, CODBANCO};
+		VLRJUROS, VLRDESC, VLRPARC, OBS, CODBANCO, CODTPCOB, DESCTPCOB};
 
 	public enum EColRet{ NUMCONTA, CODPLAN, CODCC, DOC, VLRJUROS, VLRDESC, 
-		DTVENC, OBS, CODBANCO};		
+		DTVENC, OBS, CODBANCO, CODTPCOB, DESCTPCOB};		
 
 	public DLEditaRec( Component cOrig ) {
 
@@ -227,11 +227,13 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		txtVlrParc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRPARC.ordinal() ] );
 		txtObs.setVlrString( (String) sVals[ EColEdit.OBS.ordinal() ] );
 		txtCodBanco.setVlrString((String) sVals[ EColEdit.CODBANCO.ordinal() ] );
+		txtCodTipoCob.setVlrString( ( String) sVals[ EColEdit.CODTPCOB.ordinal() ] );
+		txtDescTipoCob.setVlrString( (String) sVals[ EColEdit.DESCTPCOB.ordinal()] );
 	}
 
 	public Object[] getValores() {
 
-		Object[] oRetorno = new Object[ 9 ];
+		Object[] oRetorno = new Object[ 11 ];
 		oRetorno[ EColRet.NUMCONTA.ordinal() ] = txtCodConta.getVlrString();
 		oRetorno[ EColRet.CODPLAN.ordinal() ] = txtCodPlan.getVlrString();
 		oRetorno[ EColRet.CODCC.ordinal() ] = txtCodCC.getVlrString();
@@ -241,6 +243,8 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		oRetorno[ EColRet.DTVENC.ordinal() ] = txtDtVenc.getVlrDate();
 		oRetorno[ EColRet.OBS.ordinal() ] = txtObs.getVlrString();
 		oRetorno[ EColRet.CODBANCO.ordinal() ] = txtCodBanco.getVlrString();
+		oRetorno[ EColRet.CODTPCOB.ordinal() ] = txtCodTipoCob.getVlrString();
+		oRetorno[ EColRet.DESCTPCOB.ordinal() ] = txtDescTipoCob.getVlrString();
 		return oRetorno;
 	}
 
