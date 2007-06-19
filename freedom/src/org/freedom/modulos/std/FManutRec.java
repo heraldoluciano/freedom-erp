@@ -1615,7 +1615,7 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 							ps.setInt( 15, ListaCampos.getMasterFilial( "FNCC" ) );
 						}
 
-						ps.setString( 16, (String) sRets[ EColRetBaixa.CODCC.ordinal() ] );
+						ps.setString( 16, (String) sRets[ EColRetBaixa.OBS.ordinal() ] );
 						ps.setInt( 17, iCodRec );
 						ps.setInt( 18, iNParcItRec );
 						ps.setInt( 19, Aplicativo.iCodEmp );
