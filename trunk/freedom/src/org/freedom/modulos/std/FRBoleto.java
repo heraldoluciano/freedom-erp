@@ -386,6 +386,7 @@ public class FRBoleto extends FRelatorio {
 		
 		String agencia = null;
 		String numconta = null;
+		String convenio = null;
 		String instrucoes = null;
 		String localpag = null;
 		String razemp = null;
@@ -394,7 +395,8 @@ public class FRBoleto extends FRelatorio {
 			
 			StringBuilder sql = new StringBuilder();
 			
-			sql.append( "SELECT F.RAZFILIAL, C.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, B.IMGBOLBANCO " );
+			sql.append( "SELECT F.RAZFILIAL, C.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, ");
+			sql.append( "MB.INSTPAGMODBOL, B.IMGBOLBANCO, C.CONVCOBCONTA " );
 			sql.append( "FROM SGFILIAL F, FNCONTA C, FNMODBOLETO MB, FNBANCO B " );
 			sql.append( "WHERE MB.CODEMP=? AND MB.CODFILIAL=? AND MB.CODMODBOL =? " );
 			sql.append( "AND F.CODEMP=MB.CODEMP AND F.CODFILIAL=MB.CODFILIAL " );
@@ -419,6 +421,11 @@ public class FRBoleto extends FRelatorio {
 				} else {
 					numconta = rs.getString( "NUMCONTA" );
 				}
+				if (rs.getString( "CONVCOBCONTA" )==null) {
+					convenio = "";
+				} else {
+					convenio = rs.getString( "CONVCOBCONTA" );
+				}
 				instrucoes = rs.getString( "INSTPAGMODBOL" );
 				localpag = rs.getString( "DESCLPMODBOL" );
 				razemp = rs.getString( "RAZFILIAL" );
@@ -432,6 +439,7 @@ public class FRBoleto extends FRelatorio {
 		
 		parametros.put( "AGENCIA", agencia );
 		parametros.put( "NUMCONTA", numconta );
+		parametros.put( "CONVENIO", convenio );
 		parametros.put( "CODEMP", Aplicativo.iCodEmp );
 		parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 		parametros.put( "CODVENDA", txtCodVenda.getVlrInteger() );
@@ -490,7 +498,7 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI," );
 			sSQL.append( "C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB," );
 			sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI, " );
-			sSQL.append( "(ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC), M.CODFBNMOEDA ");
+			sSQL.append( "(ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA ");
 			sSQL.append( "FROM VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNITRECEBER ITR " ); 
 			sSQL.append( "LEFT OUTER JOIN FNBANCO B ON " );
 			sSQL.append( "B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO " );

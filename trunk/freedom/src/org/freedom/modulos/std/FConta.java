@@ -48,6 +48,7 @@ public class FConta extends FTabDados implements CheckBoxListener {
   private JTextFieldPad txtDataConta = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
   private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldPad txtCodPlan = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+  private JTextFieldPad txtConvCobConta = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   private JTextFieldFK txtDescBanco = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldFK txtDescMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING, 50,0);
   private JTextFieldFK txtDescPlan = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
@@ -77,7 +78,7 @@ public class FConta extends FTabDados implements CheckBoxListener {
   public FConta() {
   	super();
     setTitulo("Cadastro de Contas");
-    setAtribos(50,50,450,360);
+    setAtribos(50,50,450,400);
     
 	lcRestricoes.setMaster( lcCampos );
 	lcCampos.adicDetalhe( lcRestricoes );
@@ -136,9 +137,11 @@ public class FConta extends FTabDados implements CheckBoxListener {
     adicDescFK(txtDescMoeda, 153, 100, 237, 20, "SingMoeda", "Descrição da moeda");
     adicCampo(txtCodPlan, 7, 140, 140, 20, "CodPlan", "Cód.tp.lanç.", ListaCampos.DB_FK, true);
     adicDescFK(txtDescPlan, 150, 140, 240, 20, "DescPlan", "Descrição do tipo de lançamento");
-    adicDB(rgTipo, 7, 180, 200, 30, "TipoConta", "Tipo", true);
-    adicDB(cbAtivaConta,220,180,120,20,"ativaconta","Ativa",true);
-	adicDB( chbRestritoTipoMov, 7, 220, 240, 20, "TUSUCONTA", "", true );
+    adicCampo(txtConvCobConta, 7, 180, 150, 20, "ConvCobConta", "Convênio de cobrança", ListaCampos.DB_SI, true);
+
+    adicDB(rgTipo, 7, 220, 200, 30, "TipoConta", "Tipo", true);
+    adicDB(cbAtivaConta,220,220,120,20,"ativaconta","Ativa",true);
+	adicDB( chbRestritoTipoMov, 7, 260, 240, 20, "TUSUCONTA", "", true );
     setListaCampos(false,"CONTA", "FN");
     lcCampos.setQueryInsert(false);   
         

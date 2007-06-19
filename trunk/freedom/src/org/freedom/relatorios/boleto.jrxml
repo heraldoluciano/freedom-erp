@@ -40,10 +40,13 @@
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODVENDA" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(40)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(45)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="NUMCONTA" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["5688-X"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CONVENIO" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["0224071"]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT (SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND ITR2.CODFILIAL=R.CODFILIAL) PARCS,
 ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,ITR.VLRDESCITREC,
@@ -129,7 +132,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 	</variable>
 	<variable name="CODBAR" class="java.lang.String" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraCodBar( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, 
-$F{FATVENC}, $F{VLRAPAGITREC},  "1", $F{DOCREC}, $F{NPARCITREC},  
+$F{FATVENC}, $F{VLRAPAGITREC},  $P{CONVENIO}, $F{DOCREC}, $F{NPARCITREC},  
 $P{AGENCIA}, $P{NUMCONTA}, $F{CARTCOB} )]]></variableExpression>
 	</variable>
 		<background>
@@ -706,7 +709,7 @@ $P{AGENCIA}, $P{NUMCONTA}, $F{CARTCOB} )]]></variableExpression>
 						height="15"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$V{CODBAR}]]></textFieldExpression>
@@ -1756,6 +1759,19 @@ $P{AGENCIA}, $P{NUMCONTA}, $F{CARTCOB} )]]></variableExpression>
 					<graphicElement stretchType="NoStretch"/>
 					<imageExpression class="java.io.InputStream"><![CDATA[$F{LOGOBANCO02}]]></imageExpression>
 				</image>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="274"
+						y="105"
+						width="54"
+						height="15"
+						key="textField-48"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{FATVENC}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>

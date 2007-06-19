@@ -18,7 +18,7 @@ public class Boleto {
 		
 		parte1.append( strZero(codbanco,3) );
 		parte1.append( strZero(codmoeda,1) );
-		parte2.append( strZero(dvbanco,1) );
+		//parte2.append( strZero(dvbanco,1) );
 		parte2.append( strZero(fatvenc.toString(),4) );
 		parte2.append( transValor( vlrtitulo, 10, 2, true ) );
 		parte2.append(  geraNossoNumero(convenio, rec, nparc) );
