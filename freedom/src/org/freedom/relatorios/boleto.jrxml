@@ -58,6 +58,7 @@ B.IMGBOLBANCO LOGOBANCO03,
 (SELECT MB.CARTCOB FROM FNMODBOLETO MB WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) CARTCOB,
 (SELECT MB.ESPDOCMODBOL FROM FNMODBOLETO MB WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) ESPDOC,
 (SELECT MB.ACEITEMODBOL FROM FNMODBOLETO MB WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) ACEITE,
+(SELECT MB.MDECOB FROM FNMODBOLETO MB WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) MDECOB,
 V.DTEMITVENDA,V.DOCVENDA,
 C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,C.RGCLI,C.INSCCLI,
 C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI,
@@ -90,6 +91,7 @@ R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODVENDA
 	<field name="CARTCOB" class="java.lang.String"/>
 	<field name="ESPDOC" class="java.lang.String"/>
 	<field name="ACEITE" class="java.lang.String"/>
+	<field name="MDECOB" class="java.lang.String"/>
 	<field name="DTEMITVENDA" class="java.sql.Date"/>
 	<field name="DOCVENDA" class="java.lang.Long"/>
 	<field name="CODCLI" class="java.lang.Long"/>
@@ -131,9 +133,24 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 		<variableExpression><![CDATA[($F{CPFCLI}==null? "" :($F{CPFCLI}.length()<=9 ? $F{CPFCLI} : $F{CPFCLI}.substring(0,9)+$F{CPFCLI}.substring(9)))]]></variableExpression>
 	</variable>
 	<variable name="CODBAR" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraCodBar( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, 
-$F{FATVENC}, $F{VLRAPAGITREC},  $P{CONVENIO}, $F{DOCREC}, $F{NPARCITREC},  
-$P{AGENCIA}, $P{NUMCONTA}, $F{CARTCOB} )]]></variableExpression>
+		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraCodBar( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, $F{FATVENC}, $F{VLRAPAGITREC},  $P{CONVENIO}, $F{CODREC}, $F{NPARCITREC}, $P{AGENCIA}, $P{NUMCONTA}, $F{CARTCOB}, $F{MDECOB} )]]></variableExpression>
+	</variable>
+	<variable name="AGENCIACONTA" class="java.lang.String" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$P{AGENCIA}+ " / " +$P{NUMCONTA}]]></variableExpression>
+	</variable>
+	<variable name="VCONVENIO" class="java.lang.String" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraConvenio($P{CONVENIO})]]></variableExpression>
+	</variable>
+	<variable name="NOSSONUMERO" class="java.lang.String" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraNossoNumero($F{MDECOB}, $V{VCONVENIO}, $F{CODREC}, $F{NPARCITREC} )]]></variableExpression>
+	</variable>
+	<variable name="CODBAREXT" class="java.lang.String" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$V{CODBAR}.length()>=44
+?$V{CODBAR}.substring(0,5)+"."+$V{CODBAR}.substring(5,10)+" "+
+$V{CODBAR}.substring(10,15)+"."+$V{CODBAR}.substring(15,21)+" "+
+$V{CODBAR}.substring(21,25)+"."+$V{CODBAR}.substring(25,31)+" "+
+$V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
+:$V{CODBAR}]]></variableExpression>
 	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -692,8 +709,8 @@ $P{AGENCIA}, $P{NUMCONTA}, $F{CARTCOB} )]]></variableExpression>
 						height="15"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[($F{CODBANCO}!=null 
   ?
@@ -709,10 +726,10 @@ $P{AGENCIA}, $P{NUMCONTA}, $F{CARTCOB} )]]></variableExpression>
 						height="15"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$V{CODBAR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{CODBAREXT}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -869,7 +886,7 @@ $P{AGENCIA}, $P{NUMCONTA}, $F{CARTCOB} )]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{AGENCIA}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{AGENCIACONTA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -950,14 +967,14 @@ $P{AGENCIA}, $P{NUMCONTA}, $F{CARTCOB} )]]></variableExpression>
 						mode="Opaque"
 						x="1"
 						y="356"
-						width="328"
+						width="319"
 						height="35"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="barcode-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
-					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(13,"01234567890123456789012345678901234567890",false,true,null,0,0)]]></imageExpression>
+					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(13,$V{CODBAR},false,false,null,0,0)]]></imageExpression>
 				</image>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1229,7 +1246,7 @@ $P{AGENCIA}, $P{NUMCONTA}, $F{CARTCOB} )]]></variableExpression>
 					<textElement textAlignment="Left" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{AGENCIA}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{AGENCIACONTA}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -1365,7 +1382,7 @@ $P{AGENCIA}, $P{NUMCONTA}, $F{CARTCOB} )]]></variableExpression>
 					<textElement textAlignment="Left" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{AGENCIA}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{AGENCIACONTA}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -1759,18 +1776,18 @@ $P{AGENCIA}, $P{NUMCONTA}, $F{CARTCOB} )]]></variableExpression>
 					<graphicElement stretchType="NoStretch"/>
 					<imageExpression class="java.io.InputStream"><![CDATA[$F{LOGOBANCO02}]]></imageExpression>
 				</image>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="274"
-						y="105"
-						width="54"
-						height="15"
-						key="textField-48"/>
+						x="363"
+						y="191"
+						width="128"
+						height="9"
+						key="textField-49"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font/>
+					<textElement textAlignment="Right" verticalAlignment="Bottom">
+						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{FATVENC}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{NOSSONUMERO}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
