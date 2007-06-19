@@ -302,12 +302,12 @@ public class FRBoleto extends FRelatorio {
 
 	private String[] getMoeda() {
 		
-		String sRet[] = new String[ 4 ];
+		String sRet[] = new String[ 5 ];
 		StringBuilder sSQL = new StringBuilder();
 		
 		try {
 			
-			sSQL.append( "SELECT M.SINGMOEDA,M.PLURMOEDA,M.DECSMOEDA,M.DECPMOEDA FROM FNMOEDA M, SGPREFERE1 P " );
+			sSQL.append( "SELECT M.SINGMOEDA,M.PLURMOEDA,M.DECSMOEDA,M.DECPMOEDA,M.CODFBNMOEDA FROM FNMOEDA M, SGPREFERE1 P " );
 			sSQL.append( "WHERE M.CODMOEDA=P.CODMOEDA AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO " );
 			sSQL.append( "AND P.CODEMP=? AND P.CODFILIAL=?" );
 			
@@ -321,6 +321,7 @@ public class FRBoleto extends FRelatorio {
 				sRet[ 1 ] = rs.getString( "PlurMoeda" ).trim();
 				sRet[ 2 ] = rs.getString( "DecSMoeda" ).trim();
 				sRet[ 3 ] = rs.getString( "DecPMoeda" ).trim();
+				sRet[ 4 ] = rs.getString( "CodFbnMoeda" ).trim();
 			}
 			rs.close();
 			ps.close();
@@ -384,6 +385,7 @@ public class FRBoleto extends FRelatorio {
 		HashMap<String,Object> parametros = new HashMap<String, Object>();
 		
 		String agencia = null;
+		String numconta = null;
 		String instrucoes = null;
 		String localpag = null;
 		String razemp = null;
@@ -407,9 +409,16 @@ public class FRBoleto extends FRelatorio {
 			
 			if ( rs.next() ) {
 				
-				agencia = rs.getString( "AGENCIACONTA" ) != null ? rs.getString( "AGENCIACONTA" ) + 
-							" / " +
-								( rs.getString( "NUMCONTA" ) != null ? rs.getString( "NUMCONTA" ) : "" ) : "" ;
+				if (rs.getString("AGENCIACONTA")==null) {
+					agencia = "";
+				} else {
+					agencia = rs.getString( "AGENCIACONTA" );
+				}
+				if (rs.getString( "NUMCONTA" )==null) {
+					numconta = "";
+				} else {
+					numconta = rs.getString( "NUMCONTA" );
+				}
 				instrucoes = rs.getString( "INSTPAGMODBOL" );
 				localpag = rs.getString( "DESCLPMODBOL" );
 				razemp = rs.getString( "RAZFILIAL" );
@@ -422,6 +431,7 @@ public class FRBoleto extends FRelatorio {
 		}
 		
 		parametros.put( "AGENCIA", agencia );
+		parametros.put( "NUMCONTA", numconta );
 		parametros.put( "CODEMP", Aplicativo.iCodEmp );
 		parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 		parametros.put( "CODVENDA", txtCodVenda.getVlrInteger() );
@@ -479,15 +489,17 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,C.RGCLI,C.INSCCLI," );
 			sSQL.append( "C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI," );
 			sSQL.append( "C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB," );
-			sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI " );
-			sSQL.append( "FROM VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNITRECEBER ITR " ); 
+			sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI, " );
+			sSQL.append( "(ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC), M.CODFBNMOEDA ");
+			sSQL.append( "FROM VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNITRECEBER ITR " ); 
 			sSQL.append( "LEFT OUTER JOIN FNBANCO B ON " );
 			sSQL.append( "B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO " );
-			sSQL.append( "WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL " );
-			sSQL.append( "AND V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA " );
-			sSQL.append( "AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL " );
-			sSQL.append( "AND P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL " );
-			sSQL.append( "AND R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA=? " );
+			sSQL.append( "WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND " );
+			sSQL.append( "V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND " );
+			sSQL.append( "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " );
+			sSQL.append( "P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL AND " );
+			sSQL.append( "M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA AND " );
+			sSQL.append( "R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA=? " );
 			sSQL.append( sParc );	
 			
 			sSQLNat.append( "SELECT I.CODNAT, N.DESCNAT " );

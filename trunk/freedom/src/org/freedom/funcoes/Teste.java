@@ -14,8 +14,9 @@ public class Teste {
 		
         Date dtBase = Funcoes.encodeDate( 1997, 10, 7 );
         Date dtVencto = Funcoes.encodeDate( 2007, 06, 20 );
-		System.out.println(Boleto.geraCodBar( "1", "9", "9", new Long(Funcoes.getNumDiasAbs( dtBase, dtVencto )) , new BigDecimal(100),
-				"1", new Long(46), new Long(1), "3275-1", "5688-X", "17" ));
+		System.out.println(org.freedom.funcoes.Boleto.geraCodBar( "1",  "9", "9", new Long(3000), 
+				new BigDecimal(100), 
+				 "1", new Long(17), new Long(1),  "3275-1", "5688-0", "17" ));
 
 	}
 

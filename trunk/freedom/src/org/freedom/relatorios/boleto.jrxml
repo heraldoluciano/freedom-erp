@@ -31,7 +31,7 @@
 		<defaultValueExpression ><![CDATA["JUROS DE MORA DE 5.0% MENSAL(0,08 AO DIA)"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="AGENCIA" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["0001-1/CONTA X"]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA["0001-1"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(44)]]></defaultValueExpression>
@@ -41,6 +41,9 @@
 	</parameter>
 	<parameter name="CODVENDA" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(40)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMCONTA" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["5688-X"]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT (SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND ITR2.CODFILIAL=R.CODFILIAL) PARCS,
 ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,ITR.VLRDESCITREC,
@@ -56,15 +59,17 @@ V.DTEMITVENDA,V.DOCVENDA,
 C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,C.RGCLI,C.INSCCLI,
 C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI,
 C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB,
-C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI
-FROM VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNITRECEBER ITR 
+C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI, 
+(ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA
+FROM VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNITRECEBER ITR 
 LEFT OUTER JOIN FNBANCO B ON
 B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO
-WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL
-AND V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA
-AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL
-AND P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL
-AND R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODVENDA}]]></queryString>
+WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND 
+V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND 
+C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND 
+P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL AND 
+M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA AND 
+R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODVENDA}]]></queryString>
 
 	<field name="PARCS" class="java.lang.Long"/>
 	<field name="DTVENCITREC" class="java.sql.Date"/>
@@ -110,6 +115,8 @@ AND R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODV
 	<field name="CODREC" class="java.lang.Long"/>
 	<field name="CODMOEDA" class="java.lang.String"/>
 	<field name="PESSOACLI" class="java.lang.String"/>
+	<field name="FATVENC" class="java.lang.Long"/>
+	<field name="CODFBNMOEDA" class="java.lang.String"/>
 
 	<variable name="CNPJCLIF" class="java.lang.String" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[( $F{CNPJCLI} != null ?
@@ -121,7 +128,9 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 		<variableExpression><![CDATA[($F{CPFCLI}==null? "" :($F{CPFCLI}.length()<=9 ? $F{CPFCLI} : $F{CPFCLI}.substring(0,9)+$F{CPFCLI}.substring(9)))]]></variableExpression>
 	</variable>
 	<variable name="CODBAR" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA["00192240701002023275600005688189834870000005000"]]></variableExpression>
+		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraCodBar( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, 
+$F{FATVENC}, $F{VLRAPAGITREC},  "1", $F{DOCREC}, $F{NPARCITREC},  
+$P{AGENCIA}, $P{NUMCONTA}, $F{CARTCOB} )]]></variableExpression>
 	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -700,7 +709,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[""]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{CODBAR}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -945,7 +954,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 						key="barcode-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
-					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(13,$V{CODBAR},false,true,null,0,0)]]></imageExpression>
+					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(13,"01234567890123456789012345678901234567890",false,true,null,0,0)]]></imageExpression>
 				</image>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1723,8 +1732,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 						key="image-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch"/>
-					<imageExpression class="java.io.InputStream"><![CDATA[$F{LOGOBANCO03}
-]]></imageExpression>
+					<imageExpression class="java.io.InputStream"><![CDATA[$F{LOGOBANCO03}]]></imageExpression>
 				</image>
 				<image  vAlign="Middle" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1735,8 +1743,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 						key="image-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch"/>
-					<imageExpression class="java.io.InputStream"><![CDATA[$F{LOGOBANCO01}
-]]></imageExpression>
+					<imageExpression class="java.io.InputStream"><![CDATA[$F{LOGOBANCO01}]]></imageExpression>
 				</image>
 				<image  vAlign="Middle" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1747,8 +1754,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 						key="image-6"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch"/>
-					<imageExpression class="java.io.InputStream"><![CDATA[$F{LOGOBANCO02}
-]]></imageExpression>
+					<imageExpression class="java.io.InputStream"><![CDATA[$F{LOGOBANCO02}]]></imageExpression>
 				</image>
 			</band>
 		</detail>
