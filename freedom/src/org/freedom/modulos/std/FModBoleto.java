@@ -95,6 +95,8 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 	private final JTextFieldPad txtClassModBol = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 	
 	private final JTextFieldPad txtEspecie = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
+
+	private final JTextFieldPad txtMdeCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
 	private final JCheckBoxPad ckAceite = new JCheckBoxPad( "Aceite ?", "S", "N" );
 	
@@ -252,9 +254,10 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 		setPainel( panelCampos );
 		
 		adicCampo( txtCodModBol, 7, 30, 90, 20, "CodModBol", "Cód.mod.bol.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescModBol, 100, 30, 300, 20, "DescModBol", "Descrição do modelo de boleto", ListaCampos.DB_SI, true );
-		adicCampo( txtCarteira, 404, 30, 50, 20, "cartCob" , "Carteira", ListaCampos.DB_SI, true );
-		adicDB( ckPreImp, 470, 30, 200, 20, "PreImpModBol", "", false );
+		adicCampo( txtDescModBol, 100, 30, 250, 20, "DescModBol", "Descrição do modelo de boleto", ListaCampos.DB_SI, true );
+		adicCampo( txtCarteira, 354, 30, 50, 20, "cartCob" , "Carteira", ListaCampos.DB_SI, true );
+		adicCampo( txtMdeCob, 407, 30, 80, 20, "mdeCob" , "Modalidade", ListaCampos.DB_SI, true );
+		adicDB( ckPreImp, 490, 30, 200, 20, "PreImpModBol", "", false );
 		adicCampo( txtCodConta, 7, 70, 90, 20, "NumConta", "Nº da conta", ListaCampos.DB_FK, txtDescConta, false );
 		adicDescFK( txtDescConta, 100, 70, 350, 20, "DescConta", "Descrição da conta" );
 		adicDBLiv( txaBoleto, "TxaModBol", "Corpo", false );

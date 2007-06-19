@@ -10,21 +10,37 @@ public class Boleto {
 	public static String geraCodBar(final String codbanco,  final String codmoeda,
 			final String dvbanco, final Long fatvenc, final BigDecimal vlrtitulo, 
 			final String convenio, final Long rec, final Long nparc, 
-			final String agencia, final String conta, final String carteira  ){
+			final String agencia, final String conta, final String carteira, 
+			final String modalidade){
 		
 		final StringBuffer barcode = new StringBuffer();
 		final StringBuffer parte1 = new StringBuffer();
 		final StringBuffer parte2 = new StringBuffer();
 		
-		parte1.append( strZero(codbanco,3) );
-		parte1.append( strZero(codmoeda,1) );
+		final String bufCodbanco = strZero(codbanco,3);
+		final String bufCodmoeda = strZero(codmoeda,1);
+		final String bufFatvenc = strZero(fatvenc.toString(),4);
+		final String bufVlrtitulo = geraVlrtitulo(vlrtitulo);
+		final String bufConvenio = geraConvenio(convenio);
+		final String bufModalidade = strZero( modalidade, 2 );
+		final String bufNossoNumero = geraNossoNumero(bufModalidade, bufConvenio, rec, nparc);
+		final String bufAgencia = strZero( getCodSig( agencia )[0], 4);
+		final String bufConta = strZero( getCodSig( conta )[0], 8);
+		final String bufCarteira = strZero( carteira, 2);
+		
+		parte1.append( bufCodbanco );
+		parte1.append( bufCodmoeda );
 		//parte2.append( strZero(dvbanco,1) );
-		parte2.append( strZero(fatvenc.toString(),4) );
-		parte2.append( transValor( vlrtitulo, 10, 2, true ) );
-		parte2.append(  geraNossoNumero(convenio, rec, nparc) );
-		parte2.append( strZero( getCodSig( agencia )[0], 4));
-		parte2.append( strZero( getCodSig( conta )[0], 8));
-		parte2.append( strZero( carteira, 2));
+		parte2.append( bufFatvenc );
+		parte2.append( bufVlrtitulo );
+		parte2.append( bufNossoNumero );
+		if ("21".equals(bufModalidade) ) {
+			parte2.append( bufModalidade );
+		} else {
+			parte2.append( bufAgencia );
+			parte2.append( bufConta );
+			parte2.append( bufCarteira );
+		}
 		
 		barcode.append(parte1);
 		barcode.append( digVerif( parte1.toString() + parte2.toString() ));
@@ -32,20 +48,42 @@ public class Boleto {
 		return barcode.toString();
 	}
 
-	public static String geraNossoNumero( final String convenio, 
+	public static String geraVlrtitulo(final BigDecimal vlrtitulo) {
+		String retorno = null;
+		retorno = transValor( vlrtitulo, 10, 2, true );
+		return retorno;
+	}
+
+	public static String geraConvenio( final String convenio ) {
+		final StringBuffer retorno = new StringBuffer();
+		final String bufConvenio;
+		if (convenio==null) {
+			bufConvenio = "000000";
+		} 
+		else if ( convenio.length()>6 ) {
+			bufConvenio = convenio.substring( convenio.length()-6 );
+		} else {
+			bufConvenio = convenio;
+		}
+		if (bufConvenio.length()<=4) {
+			retorno.append( strZero( bufConvenio, 4 ));
+		} else {
+			retorno.append( strZero( bufConvenio, 6 ));
+		}
+		return retorno.toString();
+	}
+	
+	public static String geraNossoNumero( final String modalidade, final String convenio, 
 			final Long rec, final Long nparc ) {
 		final StringBuffer retorno = new StringBuffer();
-		if ( convenio==null ) {
-			retorno.append( strZero( "0", 4 ) );
-			retorno.append( getNumCli(rec, nparc, 7) );
-		} else if (convenio.length()<=4) {
-			retorno.append( strZero( convenio, 4 ));
-			retorno.append( getNumCli(rec, nparc, 7) );
+		if ( "21".equals(modalidade) ) {
+			retorno.append( convenio );
+			retorno.append( getNumCli(rec, nparc, 17) );
 		} else {
-			retorno.append( strZero( convenio, 6 ));
+			retorno.append(  convenio );
 			retorno.append( getNumCli(rec, nparc, 7) );
+			retorno.append( digVerif(retorno.toString()) );
 		}
-		retorno.append( digVerif(retorno.toString()) );
 			
 		return retorno.toString();
 	}
