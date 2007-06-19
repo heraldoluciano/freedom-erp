@@ -310,7 +310,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 				sFiltro += (!sFiltro.equals("")?" / ":"")+"Repr.: "+iCodVend+" - "+Funcoes.copy(txtNomeVend.getVlrString(),30).trim();
 			}
 			if (sCodBanco.length()>0) {
-				sWhere += " AND R.CODEMPBO=? AND R.CODFILIALBO=? AND R.CODBANCO=? ";
+				sWhere += " AND IT.CODEMPBO=? AND IT.CODFILIALBO=? AND IT.CODBANCO=? ";
 				sFiltro += (!sFiltro.equals("")?" / ":"")+"Repr.: "+sCodBanco+" - "+Funcoes.copy(txtCodBanco.getVlrString(),30).trim();
 			}
 			if (sCodPlanoPag.length()>0) {
