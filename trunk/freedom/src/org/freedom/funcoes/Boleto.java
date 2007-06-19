@@ -82,8 +82,12 @@ public class Boleto {
 			retorno.append( getNumCli(rec, nparc, 17) );
 		} else {
 			retorno.append(  convenio );
-			retorno.append( getNumCli(rec, nparc, 7) );
-			retorno.append( digVerif(retorno.toString()) );
+			if (convenio.length()<=4) {
+				retorno.append( getNumCli(rec, nparc, 7) );
+			} else {
+				retorno.append( getNumCli(rec, nparc, 5) );
+			}
+			//retorno.append( digVerif(retorno.toString()) );
 		}
 			
 		return retorno.toString();
@@ -142,6 +146,9 @@ public class Boleto {
 	    }
 		resto = soma % 11;
 		dig = String.valueOf( 11-resto );
+		if ( "0-1-10-11".indexOf( dig )>-1 ) {
+			dig = "1";
+		}
 		return dig;
 	}
 	
