@@ -178,7 +178,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
     tab.setTamColuna( 72,4);
     tab.setTamColuna( 65,5);
     tab.setTamColuna(100,6);
-    tab.setTamColuna(100,7);
+    tab.setTamColuna(250,7);
     
     btSair.addActionListener(this);
     btPrim.addActionListener(this);
