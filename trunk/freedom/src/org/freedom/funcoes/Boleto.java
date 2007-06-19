@@ -33,10 +33,12 @@ public class Boleto {
 		//parte2.append( strZero(dvbanco,1) );
 		parte2.append( bufFatvenc );
 		parte2.append( bufVlrtitulo );
-		parte2.append( bufNossoNumero );
 		if ("21".equals(bufModalidade) ) {
+			parte2.append( bufConvenio );
+			parte2.append( bufNossoNumero );
 			parte2.append( bufModalidade );
 		} else {
+			parte2.append( bufNossoNumero );
 			parte2.append( bufAgencia );
 			parte2.append( bufConta );
 			parte2.append( bufCarteira );
@@ -77,7 +79,6 @@ public class Boleto {
 			final Long rec, final Long nparc ) {
 		final StringBuffer retorno = new StringBuffer();
 		if ( "21".equals(modalidade) ) {
-			retorno.append( convenio );
 			retorno.append( getNumCli(rec, nparc, 17) );
 		} else {
 			retorno.append(  convenio );
@@ -197,7 +198,7 @@ public class Boleto {
 				retorno = replicate("0", (tam - dec) - retorno.length())
 						+ retorno;
 		}
-		return retorno + dec;
+		return retorno + vlrdec;
 	}
 	
 }

@@ -18,7 +18,7 @@ public class Teste {
 				new Long(Funcoes.getNumDiasAbs( Funcoes.encodeDate( 2007, 06, 22 ), 
 						Funcoes.encodeDate( 1997, 10, 7 ) )), 
 				new BigDecimal(350), 
-				 "0224071", new Long(17), new Long(1),  "3275-1", "5688-0", "18", "21" ));
+				 "0224071", new Long(41), new Long(1),  "3275-1", "5688-0", "18", "21" ));
 
 	}
 
