@@ -309,6 +309,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcVenda.add( new GuardaCampo( txtVlrDescVenda, "VlrDescVenda", "% Desc it.", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtVlrAdicVenda, "VlrAdicVenda", "% Adic.", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtVlrProdVenda, "VlrProdVenda", "V.prod.", ListaCampos.DB_SI, false ) );
+		lcVenda.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cod.tp.cob.", ListaCampos.DB_FK, txtDescTipoCob, false ) );
 		lcVenda.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtDescBanco, false ) );
 		lcVenda.add( new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, false ) );
 		lcVenda.montaSql( false, "VENDA", "VD" );

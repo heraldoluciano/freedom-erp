@@ -2475,7 +2475,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		String[] sValores = null;
 		if ( evt.getSource() == btFechaVenda ) {
-			DLFechaVenda dl = new DLFechaVenda( con, txtCodVenda.getVlrInteger(), this, chbImpPedTipoMov.getVlrString(), chbImpNfTipoMov.getVlrString(), chbImpBolTipoMov.getVlrString(), chbReImpNfTipoMov.getVlrString() );
+			DLFechaVenda dl = new DLFechaVenda( con, txtCodVenda.getVlrInteger(), this, 
+					chbImpPedTipoMov.getVlrString(), chbImpNfTipoMov.getVlrString(), 
+					chbImpBolTipoMov.getVlrString(), chbReImpNfTipoMov.getVlrString() );
 			dl.setVisible( true );
 			if ( dl.OK ) {
 				sValores = dl.getValores();
