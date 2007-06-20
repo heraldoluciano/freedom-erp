@@ -312,6 +312,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 				ps.setInt(iParam,txtCodCli.getVlrInteger().intValue());			
 			rs = ps.executeQuery();
 			tab.limpa();
+			bTotalLiq = new BigDecimal( "0" );
 			while (rs.next()) {
 				tab.adicLinha();
 				tab.setValor(String.valueOf(rs.getInt(1)), iLin, 0);
@@ -328,11 +329,6 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 				tab.setValor(Funcoes.strDecimalToStrCurrency(2, rs.getString(12)), iLin, 11);
 				tab.setValor(Funcoes.strDecimalToStrCurrency(2, rs.getString(13)), iLin, 12);
 							//	tab.setValor(rs.getString(14) != null ? rs.getString(13) : "", iLin, 13);
-				
-				bTotalLiq = new BigDecimal( "0" );
-				
-				 
-		
 				bTotalLiq = bTotalLiq.add( new BigDecimal( rs.getString("vlrliqitorc")));
 				iLin++;
 				
