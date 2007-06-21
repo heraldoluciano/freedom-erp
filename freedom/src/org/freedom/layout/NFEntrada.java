@@ -75,7 +75,7 @@ public class NFEntrada extends NF {
 			ps.setInt( 3, ( (Integer) parans.elementAt( 2 ) ).intValue() );
 			rs = ps.executeQuery();
 			cont++;
-			cab = new TabVector( 59 );
+			cab = new TabVector( 61 );
 			while ( rs.next() ) {
 				cab.addRow();
 				cab.setInt( C_CODPED, rs.getInt( "CODCOMPRA" ) );
@@ -163,7 +163,7 @@ public class NFEntrada extends NF {
 			ps.setInt( 3, ( (Integer) parans.elementAt( 2 ) ).intValue() );
 			rs = ps.executeQuery();
 			cont++;
-			itens = new TabVector( 26 );
+			itens = new TabVector( 27 );
 			while ( rs.next() ) {
 				itens.addRow();
 				itens.setInt( C_CODITPED, rs.getInt( "CODITCOMPRA" ) );
@@ -210,7 +210,7 @@ public class NFEntrada extends NF {
 			 * parc.addRow(); parc.setDate(C_DTVENCTO, null); parc.setFloat(C_VLRPARC, 0); parc.setInt(C_NPARCITREC, 0); parc.setRow(-1);
 			 */
 
-			frete = new TabVector( 20 );
+			frete = new TabVector( 21 );
 			frete.addRow();
 			frete.setInt( C_CODTRAN, 0 );
 			frete.setString( C_RAZTRANSP, "" );
