@@ -60,6 +60,8 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 	private JTextFieldFK txtNomeVend = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
 	private JTextFieldFK txtDescBanco = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtCodTpCob = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
+	private JTextFieldFK txtDescTpCob = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JCheckBoxPad cbObs = new JCheckBoxPad("Imprimir observações?","S","N");
@@ -78,11 +80,12 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 	private ListaCampos lcVendedor = new ListaCampos(this);
 	private ListaCampos lcBanco = new ListaCampos(this);
 	private ListaCampos lcPlanoPag = new ListaCampos(this);
+	private ListaCampos lcTipoCob = new ListaCampos(this);
 	private boolean[] bPref = null;
 	  
 	public FRReceber() {
 		setTitulo("Contas a Receber");
-		setAtribos(80,20,387,500);
+		setAtribos(80,20,387,525);
 		   
 		txtDataini.setVlrDate(new Date());
 		txtDatafim.setVlrDate(new Date());
@@ -126,6 +129,17 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
 		txtCodPlanoPag.setFK(true);
 		txtCodPlanoPag.setNomeCampo("CodPlanoPag");
+		
+		txtCodTpCob.setNomeCampo( "CodTipoCob" );
+		lcTipoCob.add( new GuardaCampo( txtCodTpCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK, false ) );
+		lcTipoCob.add( new GuardaCampo( txtDescTpCob, "DescTipoCob", "Descrição do tipo de cobrança.", ListaCampos.DB_SI, false ) );
+		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
+		lcTipoCob.setQueryCommit( false );
+		lcTipoCob.setReadOnly( true );
+		txtCodTpCob.setTabelaExterna( lcTipoCob );
+		txtCodTpCob.setListaCampos( lcTipoCob );
+		txtDescTpCob.setListaCampos( lcTipoCob );
+		txtCodTpCob.setFK( true );
 		
 		vLabs.addElement("Contas a receber");
 		vLabs.addElement("Contas recebidas");
@@ -190,16 +204,20 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		adic(txtCodVend,7,280,80,20);
 		adic(new JLabelPad("Nome do comissionado"),90,260,250,20);
 		adic(txtNomeVend,90,280,270,20);
-		adic(new JLabelPad("Cód.banco"),7,300,250,20);
-		adic(txtCodBanco,7,320,80,20);
-		adic(new JLabelPad("Descrição do banco"),90,300,250,20);
-		adic(txtDescBanco,90,320,270,20);
-		adic(new JLabelPad("Cód.pl.pag."),7,340,80,20);
-		adic(txtCodPlanoPag,7,360,80,20);
-		adic(new JLabelPad("Descrição do plano de pagamento"),90,340,300,20);
-		adic(txtDescPlanoPag,90,360,270,20);
-		adic(cbObs,7,385,180,20);
-		adic(cbImpTotDia,188,385,180,20);    
+		adic( new JLabelPad ("Cod.Tp.Cob"),7, 300, 250, 20 );
+		adic( txtCodTpCob, 7, 320, 80, 20 );
+		adic( new JLabelPad ("Descrição do Tipo de Cobrança"), 90, 300, 250, 20 );
+		adic( txtDescTpCob, 90, 320, 270, 20 );
+		adic(new JLabelPad("Cód.banco"),7,340,250,20);
+		adic(txtCodBanco,7,360,80,20);
+		adic(new JLabelPad("Descrição do banco"),90,340,250,20);
+		adic(txtDescBanco,90,360,270,20);
+		adic(new JLabelPad("Cód.pl.pag."),7,380,80,20);
+		adic(txtCodPlanoPag,7,400,80,20);
+		adic(new JLabelPad("Descrição do plano de pagamento"),90,380,300,20);
+		adic(txtDescPlanoPag,90,400,270,20);
+		adic(cbObs,7,425,180,20);
+		adic(cbImpTotDia,188,425,180,20);    
 	
 	}
 	
@@ -220,6 +238,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		String sObs = "";
 		String sImpTotDia = "";
 		String sCodBanco = null;
+		String sCodTpCob = null;
 		String sCodPlanoPag = null;
 		String sCampoOrdem = null;
 		String sCampoOrdem2 = null;
@@ -287,6 +306,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			iCodVend = txtCodVend.getVlrInteger().intValue();
 			sCodBanco = txtCodBanco.getVlrString();
 			sCodPlanoPag = txtCodPlanoPag.getVlrString();
+			sCodTpCob = txtCodTpCob.getVlrString();
 				  
 			sObs = cbObs.getVlrString();
 			sImpTotDia = cbImpTotDia.getVlrString();
@@ -316,6 +336,10 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			if (sCodPlanoPag.length()>0) {
 				sWhere += " AND R.CODEMPPG=? AND R.CODFILIALPG=? AND R.CODPLANOPAG=? ";
 				sFiltro += (!sFiltro.equals("")?" / ":"")+"Repr.: "+sCodPlanoPag+" - "+Funcoes.copy(txtCodPlanoPag.getVlrString(),30).trim();
+			}
+			if(sCodTpCob.length()>0){
+				sWhere += "AND IT.CODEMPTC=? AND IT.CODFILIALTC=? AND IT.CODTIPOCOB=? ";
+				sFiltro += (!sFiltro.equals("")?" / ":"")+"Repr.: "+sCodTpCob+" - "+Funcoes.copy(txtCodTpCob.getVlrString(),30).trim();
 			}
 			
 			sSQL =  "SELECT IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI," +
@@ -378,6 +402,11 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 					ps.setInt(iParans++,Aplicativo.iCodEmp);
 					ps.setInt(iParans++,ListaCampos.getMasterFilial("FNPLANOPAG"));
 					ps.setString(iParans++,sCodPlanoPag);
+				}
+				if(sCodTpCob.length()>0){
+					ps.setInt(iParans++,Aplicativo.iCodEmp);
+					ps.setInt(iParans++,ListaCampos.getMasterFilial("FNITRECEBER"));
+					ps.setString(iParans++,sCodTpCob);
 				}
 				
 				rs = ps.executeQuery();
@@ -622,6 +651,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		lcVendedor.setConexao(cn);
 		lcBanco.setConexao(cn);
 		lcPlanoPag.setConexao(cn);
+		lcTipoCob.setConexao( cn );
 		bPref = getPrefere();
 	}
 
