@@ -44,10 +44,13 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -1189,15 +1192,15 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			return;
 		}
 		if ( dlo.getModo().equals( "G" ) ) {
-			imprimiGrafico( bVisualizar );
+			imprimeGrafico( bVisualizar );
 		}
 		else if ( dlo.getModo().equals( "T" ) ) {
 			sOrdem = dlo.getOrdem();
-			imprimiTexto( bVisualizar, sOrdem );
+			imprimeTexto( bVisualizar, sOrdem );
 		}
 	}
 
-	public void imprimiGrafico( boolean bVisualizar ) {
+	public void imprimeGrafico( boolean bVisualizar ) {
 
 		String sClassOrc = "";
 		String sSql = "SELECT CLASSORC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
@@ -1233,18 +1236,32 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 		else {
 			try {
-				leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout." + sClassOrc ).newInstance();
-				leiOrc.setConexao( con );
-				vParamOrc.clear();
-				vParamOrc.addElement( txtCodOrc.getText() );
-				vParamOrc.addElement( txtCodCli.getText() );
-				leiOrc.setParam( vParamOrc );
-				if ( bVisualizar ) {
-					dl = new FPrinterJob( leiOrc, this );
-					dl.setVisible( true );
+				if ( sClassOrc.indexOf( "jasper" ) > -1 ) {
+					HashMap hParam = new HashMap();
+					hParam.put( "CODORC", txtCodOrc.getVlrInteger() );
+					FPrinterJob dlGr = new FPrinterJob( "layout/" + sClassOrc , null, null, this, hParam, con );
+
+					if ( bVisualizar ) {
+						dlGr.setVisible( true );
+					}
+					else {
+						JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+					}
+				} else {
+					leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout." + sClassOrc ).newInstance();
+					leiOrc.setConexao( con );
+					vParamOrc.clear();
+					vParamOrc.addElement( txtCodOrc.getText() );
+					vParamOrc.addElement( txtCodCli.getText() );
+					leiOrc.setParam( vParamOrc );
+					if ( bVisualizar ) {
+						dl = new FPrinterJob( leiOrc, this );
+						dl.setVisible( true );
+					}
+					else {
+						leiOrc.imprimir( true );
+					}
 				}
-				else
-					leiOrc.imprimir( true );
 			} catch ( Exception err ) {
 				Funcoes.mensagemInforma( this, "Não foi possível carregar o leiaute de Orçamento!\n" + err.getMessage() );
 				err.printStackTrace();
@@ -1252,7 +1269,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 	}
 
-	public void imprimiTexto( boolean bVisualizar, String sOrdem ) {
+	public void imprimeTexto( boolean bVisualizar, String sOrdem ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
