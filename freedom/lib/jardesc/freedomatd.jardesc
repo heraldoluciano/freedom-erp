@@ -11,14 +11,14 @@
 </sealing>
 </manifest>
 <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBuscaProd.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FVD.java"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBuscaProd.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBuscaEstoq.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLCodProd.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoCli.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FOrcamento.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoCli.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRCliente.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
@@ -27,8 +27,10 @@
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLCompOrc.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh{FFuncao.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FCliente.java"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLROrcamento.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh{DLRFuncao.java"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FCliente.java"/>
 </selectedElements>
 </jardesc>
