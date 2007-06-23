@@ -234,7 +234,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private ListaCampos lcLote = new ListaCampos( this, "LE" );
 
-	private Vector vParamOrc = new Vector();
+	private Vector<String> vParamOrc = new Vector<String>();
 
 	private String sOrdNota = "";
 
@@ -1202,27 +1202,49 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	public void imprimeGrafico( boolean bVisualizar ) {
 
+		String sSql = "SELECT CLASSTPCONV FROM ATTIPOCONV WHERE CODEMP=? AND CODFILIAL=? AND CODTPCONV=?";
 		String sClassOrc = "";
-		String sSql = "SELECT CLASSORC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		LeiauteGR leiOrc = null;
-
 		try {
-			PreparedStatement ps = null;
-			ResultSet rs = null;
-			ps = con.prepareStatement( sSql );
+			PreparedStatement ps = con.prepareStatement( sSql );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			rs = ps.executeQuery();
-
+			ps.setInt( 2, ListaCampos.getMasterFilial( "ATTIPOCONV" ) );
+			ps.setInt( 3, txtCodTpConv.getVlrInteger().intValue() );
+			ResultSet rs = ps.executeQuery();
 			if ( rs.next() ) {
-				if ( rs.getString( "CLASSORC" ) != null ) {
-					sClassOrc = rs.getString( "CLASSORC" ).trim();
+				if ( rs.getString( "CLASSTPCONV" ) != null ) {
+					sClassOrc = rs.getString( "CLASSTPCONV" ).trim();
+				}
+			}
+			else {
+				sSql = "SELECT CLASSORC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+				sClassOrc = "";
+				PreparedStatement ps2 = null;
+				ResultSet rs2 = null;
+				leiOrc = null;
+				try {
+					ps2 = con.prepareStatement( sSql );
+					ps2.setInt( 1, Aplicativo.iCodEmp );
+					ps2.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+					rs2 = ps.executeQuery();
+
+					if ( rs2.next() ) {
+						if ( rs2.getString( "CLASSORC" ) != null ) {
+							sClassOrc = rs2.getString( "CLASSORC" ).trim();
+							rs2.close();
+							ps2.close();
+						}
+					}
+				} catch ( SQLException err ) {
+					Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
+					err.printStackTrace();
 				}
 			}
 			rs.close();
 			ps.close();
 		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela SGPREFERE1!\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela ATTPCONV!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
 		}
 		if ( sClassOrc.trim().equals( "" ) ) {
 			ImprimeOrc imp = new ImprimeOrc( txtCodOrc.getVlrInteger().intValue() );
@@ -1237,8 +1259,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		else {
 			try {
 				if ( sClassOrc.indexOf( "jasper" ) > -1 ) {
-					HashMap hParam = new HashMap();
+					HashMap<String, Object> hParam = new HashMap<String, Object>();
 					hParam.put( "CODORC", txtCodOrc.getVlrInteger() );
+					hParam.put( "CODEMP", Aplicativo.iCodEmp );					
+					hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+												
 					FPrinterJob dlGr = new FPrinterJob( "layout/" + sClassOrc , null, null, this, hParam, con );
 
 					if ( bVisualizar ) {
