@@ -34,7 +34,10 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.BorderFactory;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
@@ -69,14 +72,28 @@ public class FRBoleto extends FRelatorio {
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtParc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtDtIni = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JLabelPad lbParc = new JLabelPad( "Imp.Parcela  :" );
+	private JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+
+	private JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtCodTpCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescTpCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private ListaCampos lcModBol = new ListaCampos( this );
 
 	private ListaCampos lcVenda = new ListaCampos( this );
 
 	private ListaCampos lcCli = new ListaCampos( this );
+
+	private ListaCampos lcBanco = new ListaCampos( this );
+
+	private ListaCampos lcTipoCob = new ListaCampos( this );
 
 	private JInternalFrame fExt = null;
 
@@ -90,12 +107,28 @@ public class FRBoleto extends FRelatorio {
 	public FRBoleto( JInternalFrame fExt ) {
 
 		setTitulo( "Impressão de boleto" );
-		setAtribos( 80, 80, 530, 200 );
+		setAtribos( 80, 80, 545, 280 );
 
 		this.fExt = fExt;
+		
+		montaListaCampos();
+		montaTela();
 
-		txtCodVenda.setRequerido( true );
+		//txtCodVenda.setRequerido( true );
 
+		Calendar cal = Calendar.getInstance();			
+		txtDtFim.setVlrDate( cal.getTime() );		
+		//cal.set( cal.get( Calendar.YEAR ), cal.get( Calendar.MONTH ) - 1, cal.get( Calendar.DATE ) );
+		txtDtIni.setVlrDate( cal.getTime() );
+
+	}
+	
+	private void montaListaCampos() {
+		
+		/********************
+		 * MODELO DE BOLETO *
+		 ********************/
+		
 		lcModBol.add( new GuardaCampo( txtCodModBol, "CodModBol", "Cód.mod.", ListaCampos.DB_PK, true ) );
 		lcModBol.add( new GuardaCampo( txtDescModBol, "DescModBol", "Descrição do modelo de boleto", ListaCampos.DB_SI, false ) );
 		lcModBol.setReadOnly( true );
@@ -104,6 +137,10 @@ public class FRBoleto extends FRelatorio {
 		txtCodModBol.setFK( true );
 		txtCodModBol.setNomeCampo( "CodModBol" );
 
+		/*********
+		 * VENDA *
+		 *********/
+		
 		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, true ) );
 		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "Doc.", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtDataVenda, "DtEmitVenda", "Data", ListaCampos.DB_SI, false ) );
@@ -114,27 +151,78 @@ public class FRBoleto extends FRelatorio {
 		txtCodVenda.setFK( true );
 		txtCodVenda.setNomeCampo( "CodVenda" );
 
+		/***********
+		 * CLIENTE *
+		 ***********/
+		
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.setReadOnly( true );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		txtCodCli.setTabelaExterna( lcCli );
+		
+		/*********
+		 * BANCO *
+		 *********/		
+		
+		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
+		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
+		lcBanco.setReadOnly( true );
+		lcBanco.montaSql( false, "BANCO", "FN" );
+		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setPK( true );
+		txtCodBanco.setNomeCampo( "CodBanco" );
+		txtCodBanco.setListaCampos( lcBanco );
+		
+		/********************
+		 * TIPO DE COBRANÇA *
+		 ********************/		
+		
+		lcTipoCob.add( new GuardaCampo( txtCodTpCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK, false ) );
+		lcTipoCob.add( new GuardaCampo( txtDescTpCob, "DescTipoCob", "Descrição do tipo de cobrança", ListaCampos.DB_SI, false ) );
+		lcTipoCob.setReadOnly( true );
+		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
+		txtCodTpCob.setTabelaExterna( lcTipoCob );
+		txtCodTpCob.setPK( true );
+		txtCodTpCob.setNomeCampo( "CodTipoCob" );
+		txtCodTpCob.setListaCampos( lcTipoCob );
+	}
+	
+	private void montaTela() {
+		
+		adic( new JLabelPad( "Venda" ), 7, 10, 80, 20 );
+		adic( txtCodVenda, 7, 30, 80, 20 );
+		adic( new JLabelPad( "Doc." ), 90, 10, 97, 20 );
+		adic( txtDocVenda, 90, 30, 97, 20 );
+		adic( new JLabelPad( "Data" ), 190, 10, 97, 20 );
+		adic( txtDataVenda, 190, 30, 97, 20 );
+		adic( new JLabelPad( "Cliente" ), 290, 10, 230, 20 );
+		adic( txtRazCli, 290,30, 230, 20 );
+		/*adic( new JLabelPad( "Cód.mod." ), 7, 50, 300, 20 );
+		adic( txtCodModBol, 7, 70, 80, 20 );
+		adic( new JLabelPad( "Descrição do modelo" ), 90, 50, 300, 20 );
+		adic( txtDescModBol, 90, 70, 300, 20 );*/
+		adic( new JLabelPad( "Cód.banco" ), 7, 50, 80, 20 );
+		adic( txtCodBanco, 7, 70, 80, 20 );
+		adic( new JLabelPad( "Nome do banco" ), 90, 50, 430, 20 );
+		adic( txtNomeBanco, 90, 70, 430, 20 );
+		adic( new JLabelPad( "Cód.tp.cob." ), 7, 90, 300, 20 );
+		adic( txtCodTpCob, 7, 110, 80, 20 );
+		adic( new JLabelPad( "Descrição do tipo de cobrança" ), 90, 90, 430, 20 );
+		adic( txtDescTpCob, 90, 110, 430, 20 );
+		
+		JLabel periodo = new JLabel( "Periodo", SwingConstants.CENTER );
+		periodo.setOpaque( true );
+		adic( periodo, 25, 140, 60, 20 );		
+		JLabel borda = new JLabel();
+		borda.setBorder( BorderFactory.createEtchedBorder() );
+		adic( borda, 7, 150, 296, 45 );		
+		adic( txtDtIni, 25, 165, 110, 20 );
+		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 165, 40, 20 );
+		adic( txtDtFim, 175, 165, 110, 20 );		
 
-		adic( new JLabelPad( "Venda" ), 7, 5, 80, 20 );
-		adic( txtCodVenda, 7, 25, 80, 20 );
-		adic( new JLabelPad( "Doc." ), 90, 5, 97, 20 );
-		adic( txtDocVenda, 90, 25, 97, 20 );
-		adic( new JLabelPad( "Data" ), 190, 5, 97, 20 );
-		adic( txtDataVenda, 190, 25, 97, 20 );
-		adic( new JLabelPad( "Cliente" ), 290, 5, 200, 20 );
-		adic( txtRazCli, 290, 25, 200, 20 );
-		adic( new JLabelPad( "Cód.mod." ), 7, 45, 300, 20 );
-		adic( txtCodModBol, 7, 65, 80, 20 );
-		adic( new JLabelPad( "Descrição do modelo" ), 90, 45, 300, 20 );
-		adic( txtDescModBol, 90, 65, 300, 20 );
-		adic( lbParc, 7, 95, 90, 20 );
-		adic( txtParc, 100, 95, 35, 20 );
-
+		adic( new JLabelPad( "Imprimir parcela " ), 350, 165, 100, 20 );
+		adic( txtParc, 450, 165, 70, 20 );
 	}
 
 	private String aplicCampos( ResultSet rs, String[] sNat ) {
@@ -449,18 +537,17 @@ public class FRBoleto extends FRelatorio {
 			
 		return parametros;
 	}
-
+	
 	public void imprimir( boolean bVisualizar ) {
 		
-		if ( txtCodVenda.getVlrString().equals( "" ) ) {
+		/*if ( txtCodVenda.getVlrString().equals( "" ) ) {
 			Funcoes.mensagemInforma( this, "Código da venda em branco!" );
 			return;
 		}
 		else if ( txtCodModBol.getVlrString().equals( "" ) ) {
 			Funcoes.mensagemInforma( this, "Código do modelo em branco!" );
 			return;
-		}
-		
+		}*/		
 		
 		try {
 
@@ -556,8 +643,7 @@ public class FRBoleto extends FRelatorio {
 		}
 	}
 	
-	private void imprimeTexto( final boolean bVisualizar, final ResultSet rs, final String[] sNat ) throws Exception {
-		
+	private void imprimeTexto( final boolean bVisualizar, final ResultSet rs, final String[] sNat ) throws Exception {		
 		
 		String sVal = null;
 		ImprimeOS imp = null;	
@@ -606,8 +692,6 @@ public class FRBoleto extends FRelatorio {
 	
 	private void imprimeGrafico( final boolean bVisualizar, final ResultSet rs, final String classe ) {
 		
-		
-		
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/" + classe, "Boleto", null, rs, getParametros(), this );
 
 		if ( bVisualizar ) {
@@ -628,6 +712,8 @@ public class FRBoleto extends FRelatorio {
 		lcModBol.setConexao( cn );
 		lcVenda.setConexao( cn );
 		lcCli.setConexao( cn );
+		lcBanco.setConexao( cn );
+		lcTipoCob.setConexao( cn );
 		sInfoMoeda = getMoeda();
 	}
 }
