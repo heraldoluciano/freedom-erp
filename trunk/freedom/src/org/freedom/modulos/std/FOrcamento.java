@@ -484,6 +484,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			if ( !oPrefs[ 11 ].equals( "" ) )
 				adicCampo( txtTxt01, 353, 60, 100, 20, "Txt01", oPrefs[ 11 ].toString().trim(), ListaCampos.DB_SI, false );
 			adicCampoInvisivel( txtCodTpConv, "CodTpConv", "Cód.tp.conv.", ListaCampos.DB_FK, txtDescTipoConv, false );
+			adicCampoInvisivel( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK, txtDescPlanoPag, true );
 
 		}
 		else {
