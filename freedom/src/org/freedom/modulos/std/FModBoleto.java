@@ -53,8 +53,9 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+import org.freedom.telas.FTabDados;
 
-public class FModBoleto extends FDados implements ActionListener, JComboBoxListener, CheckBoxListener {
+public class FModBoleto extends FTabDados implements ActionListener, JComboBoxListener, CheckBoxListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -71,7 +72,15 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 	private final JPanelPad panelPreImp = new JPanelPad();
 	
 	private final JPanelPad panelBolElect = new JPanelPad();
-
+	
+	private JPanelPad pnGeral = new JPanelPad(new BorderLayout());
+	
+	private JPanelPad pnGeral2 = new JPanelPad(new BorderLayout());
+	
+	private JPanelPad pnBancos = new JPanelPad(new BorderLayout());
+	
+	private JPanelPad pnBancos2 = new JPanelPad(new BorderLayout());
+	
 	private final JTextFieldPad txtCodModBol = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private final JTextFieldPad txtDescModBol = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
@@ -134,12 +143,23 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 		montaCombos();
 		montaTela();
 		
+		// aba Geral
+		
+		setPainel( pnGeral );
+		adicTab( "Geral", pnGeral );
+		pnGeral.add(pnGeral2);
+		
+		// aba Banco
+		
+		setPainel( pnBancos );
+		adicTab( "Bancos", pnBancos );
+		pnBancos.add(pnBancos2);
 		
 		txaBoleto.setFont( new Font( "Courier", Font.PLAIN, 11 ) );
 		txaBoleto.setTabSize( 0 );
 		
 		ckPreImp.setVlrString( "S" );
-
+		
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btAdic.addActionListener( this );
@@ -313,7 +333,8 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 		
 		pnCliente.add( pinCab, BorderLayout.CENTER );
 
-		
+		pnGeral2.add( pinCab );
+	
 	}
 	
 	@Override
