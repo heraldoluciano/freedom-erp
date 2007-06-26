@@ -33,6 +33,7 @@ import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -48,6 +49,7 @@ public class FRInadimplentes extends FRelatorio {
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0); 
+  private JCheckBoxPad cbParcial = new JCheckBoxPad("Considerar recebimento parcial?","S","N");
   
   private ListaCampos lcVend = new ListaCampos(this);
   
@@ -63,8 +65,9 @@ public class FRInadimplentes extends FRelatorio {
     adic(new JLabelPad("Periodo:"),7,5,120,20);
     adic(new JLabelPad("De:"),7,25,30,20);
     adic(txtDataini,40,25,97,20);
-    adic(new JLabelPad("Até:"),140,25,17,20);
-    adic(txtDatafim,160,25,100,20);
+    adic(new JLabelPad("Até:"),140,25,25,20);
+    adic(txtDatafim,170,25,100,20);
+    adic(cbParcial, 05,50,250,20);
     
   	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false));
   	lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false));
@@ -75,10 +78,10 @@ public class FRInadimplentes extends FRelatorio {
 	txtCodVend.setFK(true);
   	txtCodVend.setTabelaExterna(lcVend);
  
-  	adic(new JLabelPad("Cód.comiss."),7,68,200,20);
-	adic(txtCodVend,7,88,70,20);
-	adic(new JLabelPad("Nome do comissionado"),80,68,200,20);
-	adic(txtDescVend,80,88,199,20);
+  	adic(new JLabelPad("Cód.comiss."),7,78,200,20);
+	adic(txtCodVend,7,98,70,20);
+	adic(new JLabelPad("Nome do comissionado"),80,78,200,20);
+	adic(txtDescVend,80,98,199,20);
     
     
     
@@ -94,9 +97,8 @@ public class FRInadimplentes extends FRelatorio {
   	
   	 String sWhere = "";
 	 String sCab="";
+	 String sFiltro = "'R1'";
 	
-	
-	 
 	 if (txtCodVend.getText().trim().length() > 0) {
 		sWhere += " AND R.CODVEND = "+txtCodVend.getText().trim();
 		sCab = "COMISS.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
@@ -109,6 +111,9 @@ public class FRInadimplentes extends FRelatorio {
       return;
     }
 
+    if ("S".equals(cbParcial.getVlrString())) {
+    	sFiltro += ",'RL'";
+    }
     ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
     
@@ -130,7 +135,7 @@ public class FRInadimplentes extends FRelatorio {
                   " FROM FNITRECEBER IT,FNRECEBER R,VDCLIENTE C"+
                   " WHERE R.FLAG IN "+
                   AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+" AND IT.DTVENCITREC BETWEEN ? AND ? AND"+
-                  " R.CODREC = IT.CODREC AND IT.STATUSITREC='R1' AND"+
+                  " R.CODREC = IT.CODREC AND IT.STATUSITREC IN ("+sFiltro+") AND"+
                   " C.CODCLI=R.CODCLI AND R.CODEMPCL=C.CODEMP AND R.CODFILIALCL=C.CODFILIAL AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL "+sWhere+" ORDER BY IT.DTVENCITREC,C.RAZCLI";
     PreparedStatement ps = null;
     ResultSet rs = null;
