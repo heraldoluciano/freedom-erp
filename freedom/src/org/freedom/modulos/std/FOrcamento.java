@@ -993,7 +993,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				// pega o status antigo do orçamento;
 				oldStatusOrc = txtStatusOrc.getVlrString().trim();
 				// Ajusta o status para OC - orçamento completo.
-				txtStatusOrc.setVlrString( "OC" );
+				if ("OC-OV".indexOf(oldStatusOrc)==-1) { 
+					txtStatusOrc.setVlrString( "OC" );
+				}
 				lcCampos.post();
 				lcCampos.carregaDados();
 
