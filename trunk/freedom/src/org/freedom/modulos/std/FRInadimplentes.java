@@ -83,9 +83,6 @@ public class FRInadimplentes extends FRelatorio {
 	adic(new JLabelPad("Nome do comissionado"),80,78,200,20);
 	adic(txtDescVend,80,98,199,20);
     
-    
-    
-    
   }
   public void setConexao(Connection cn) {
     super.setConexao(cn);
