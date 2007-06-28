@@ -6,9 +6,9 @@
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
-		 pageWidth="580"
+		 pageWidth="595"
 		 pageHeight="842"
-		 columnWidth="524"
+		 columnWidth="539"
 		 columnSpacing="0"
 		 leftMargin="28"
 		 rightMargin="28"
@@ -23,7 +23,9 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<parameter name="RAZEMP" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="RAZEMP" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["SETPOINT INFORMÀTICA"]]></defaultValueExpression>
+	</parameter>
 	<parameter name="LOCALPAG" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["QUALQUER BANCO ATÉ O VENCIMENTO"]]></defaultValueExpression>
 	</parameter>
@@ -169,7 +171,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="396"  isSplitAllowed="true" >
+			<band height="407"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -1618,8 +1620,8 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="2"
-						y="97"
+						x="1"
+						y="92"
 						width="256"
 						height="0"
 						key="line-47"/>
@@ -1630,27 +1632,14 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 						x="2"
 						y="80"
 						width="33"
-						height="8"
+						height="6"
 						key="staticText-46"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" pdfFontName="Helvetica" size="6" isBold="false"/>
+						<font fontName="Arial" pdfFontName="Helvetica" size="5" isBold="false"/>
 					</textElement>
-				<text><![CDATA[Sacado]]></text>
+				<text><![CDATA[Cedente]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="2"
-						y="88"
-						width="256"
-						height="9"
-						key="textField-46"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Bottom">
-						<font fontName="Arial" size="7"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZCLI}]]></textFieldExpression>
-				</textField>
 				<line direction="TopDown">
 					<reportElement
 						x="266"
@@ -1689,7 +1678,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="266"
-						y="97"
+						y="107"
 						width="256"
 						height="0"
 						key="line-49"/>
@@ -1711,7 +1700,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="96"
-						y="99"
+						y="107"
 						width="68"
 						height="8"
 						key="staticText-49"/>
@@ -1805,6 +1794,63 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 						<font fontName="Arial" size="7"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$V{NOSSONUMERO}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="406"
+						width="524"
+						height="0"
+						key="line-50"/>
+					<graphicElement stretchType="NoStretch" pen="Dotted"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="106"
+						width="256"
+						height="0"
+						key="line-51"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="2"
+						y="93"
+						width="33"
+						height="6"
+						key="staticText-51"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="Helvetica" size="5" isBold="false"/>
+					</textElement>
+				<text><![CDATA[Sacado]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="83"
+						width="257"
+						height="9"
+						key="textField-54"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Bottom">
+						<font fontName="Arial" size="6"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="98"
+						width="256"
+						height="8"
+						key="textField-55"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="Arial" size="6"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZCLI}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
