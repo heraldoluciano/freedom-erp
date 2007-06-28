@@ -68,7 +68,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
-public class FManutPag extends FFilho implements ActionListener, KeyListener, CarregaListener, ChangeListener {
+public class FManutPag extends FFilho implements ActionListener,  CarregaListener, ChangeListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -618,9 +618,8 @@ public class FManutPag extends FFilho implements ActionListener, KeyListener, Ca
 		tabManut.setTamColuna( 220, 18 );
 		tabManut.setTamColuna( 260, 19 );
 
+		lcFor.addCarregaListener( this );
 		lcPagBaixa.addCarregaListener( this );
-		txtCodFor.addKeyListener( this );
-		txtCodForBaixa.addKeyListener( this );
 		btBaixa.addActionListener( this );
 		btBaixaConsulta.addActionListener( this );
 		btBaixaManut.addActionListener( this );
@@ -1806,22 +1805,13 @@ public class FManutPag extends FFilho implements ActionListener, KeyListener, Ca
 
 		tabBaixa.limpa();
 		carregaGridBaixa();
-	}
-
-	public void keyReleased( KeyEvent kevt ) {
-
-	}
-
-	public void keyTyped( KeyEvent kevt ) {
-
-	}
-
-	public void keyPressed( KeyEvent kevt ) {
-
-		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
+		
+		
+		if ( cevt.getListaCampos() == lcFor ) {
+				
 			carregaConsulta();
 		}
-	}
+	} 
 
 	public void actionPerformed( ActionEvent evt ) {
 

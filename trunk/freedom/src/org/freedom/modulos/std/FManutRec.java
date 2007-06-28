@@ -30,8 +30,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -62,7 +60,6 @@ import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.DLBaixaRec.EColBaixa;
@@ -72,7 +69,7 @@ import org.freedom.modulos.std.DLEditaRec.EColRet;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
-public class FManutRec extends FFilho implements ActionListener, KeyListener, CarregaListener, ChangeListener {
+public class FManutRec extends FFilho implements ActionListener, CarregaListener, ChangeListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -738,10 +735,9 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 		tabManut.setTamColuna( 240, EColTabManut.NOMEBANCO.ordinal() );
 		tabManut.setTamColuna( 240, EColTabManut.OBS.ordinal() );
 
+		lcCli.addCarregaListener( this );
 		lcRecBaixa.addCarregaListener( this );
 		lcRecManut.addCarregaListener( this );
-		txtCodCli.addKeyListener( this );
-		txtCodCliBaixa.addKeyListener( this );
 		btBaixa.addActionListener( this );
 		btBaixaConsulta.addActionListener( this );
 		btBaixaManut.addActionListener( this );
@@ -1992,22 +1988,6 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 		return iRet;
 	}
 
-	public void keyReleased( KeyEvent kevt ) {
-
-	}
-
-	public void keyTyped( KeyEvent kevt ) {
-
-	}
-
-	public void keyPressed( KeyEvent kevt ) {
-
-		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
-			
-			carregaConsulta();
-		}
-	}
-
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btSair ) {
@@ -2046,9 +2026,7 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 		}
 	}
 
-	public void beforeCarrega( CarregaEvent cevt ) {
-
-	}
+	public void beforeCarrega( CarregaEvent cevt ) { }
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
@@ -2062,6 +2040,10 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 			
 			bBuscaAtual = false;
 			carregaGridManut( bBuscaAtual );
+		}
+		else if ( cevt.getListaCampos() == lcCli ) {
+			
+			carregaConsulta();
 		}
 	}
 
