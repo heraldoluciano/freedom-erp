@@ -236,7 +236,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						width="31"
 						height="12"
 						forecolor="#FFFFFF"
-						backcolor="#FF0000"
+						backcolor="#000000"
 						key="rectangle-9"/>
 					<graphicElement stretchType="NoStretch" pen="None"/>
 				</rectangle>
@@ -247,7 +247,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						width="15"
 						height="28"
 						forecolor="#FFFFFF"
-						backcolor="#FF0000"
+						backcolor="#000000"
 						key="rectangle-10"/>
 					<graphicElement stretchType="NoStretch" pen="None"/>
 				</rectangle>
@@ -259,33 +259,6 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 		</columnHeader>
 		<detail>
 			<band height="684"  isSplitAllowed="true" >
-				<rectangle>
-					<reportElement
-						x="4"
-						y="171"
-						width="527"
-						height="15"
-						forecolor="#EDEBEB"
-						backcolor="#000000"
-						key="rectangle-20"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="5"
-						y="174"
-						width="523"
-						height="11"
-						forecolor="#FFFFFF"
-						backcolor="#000000"
-						key="staticText-23"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font fontName="Bitstream Vera Sans" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[PROCEDIMENTO SOLICITADO]]></text>
-				</staticText>
 				<line direction="TopDown">
 					<reportElement
 						x="4"
@@ -368,8 +341,8 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						y="218"
 						width="523"
 						height="11"
-						forecolor="#FFFFFF"
-						backcolor="#DCDCDC"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
 						key="staticText-26"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -1096,10 +1069,10 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						y="361"
 						width="523"
 						height="11"
-						forecolor="#FFFFFF"
-						backcolor="#000000"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
 						key="staticText-43"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
 						<font fontName="Bitstream Vera Sans" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
@@ -1238,8 +1211,8 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						y="488"
 						width="523"
 						height="11"
-						forecolor="#FFFFFF"
-						backcolor="#000000"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
 						key="staticText-49"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -1380,8 +1353,8 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						y="557"
 						width="523"
 						height="11"
-						forecolor="#FFFFFF"
-						backcolor="#000000"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
 						key="staticText-55"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -1874,8 +1847,8 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						y="2"
 						width="523"
 						height="11"
-						forecolor="#FFFFFF"
-						backcolor="#000000"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
 						key="staticText-72"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -1937,8 +1910,8 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						y="42"
 						width="523"
 						height="11"
-						forecolor="#FFFFFF"
-						backcolor="#000000"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
 						key="staticText-73"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -1992,60 +1965,6 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					</textElement>
 				<text><![CDATA[2 - CNES]]></text>
 				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="439"
-						y="24"
-						width="0"
-						height="13"
-						key="line-159"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="454"
-						y="24"
-						width="0"
-						height="13"
-						key="line-160"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="469"
-						y="24"
-						width="0"
-						height="13"
-						key="line-161"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="484"
-						y="24"
-						width="0"
-						height="13"
-						key="line-162"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="499"
-						y="24"
-						width="0"
-						height="13"
-						key="line-163"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="512"
-						y="24"
-						width="0"
-						height="13"
-						key="line-164"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
 				<rectangle>
 					<reportElement
 						x="10"
@@ -2424,8 +2343,8 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				</textField>
 				<staticText>
 					<reportElement
-						x="430"
-						y="23"
+						x="428"
+						y="19"
 						width="97"
 						height="16"
 						key="staticText-92"/>
@@ -2582,8 +2501,8 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="443"
-						y="65"
+						x="451"
+						y="60"
 						width="84"
 						height="15"
 						key="TXTCNSCONV-6"/>
@@ -2671,6 +2590,31 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CEPCONV}==null ? "" : (($F{CEPCONV}.length()>5)? ($F{CEPCONV}.substring( 0,5 ) + "-" + $F{CEPCONV}.substring(5)) : $F{CEPCONV})]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="4"
+						y="172"
+						width="527"
+						height="16"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-95"/>
+					<box topBorder="2Point" topBorderColor="#000000" leftBorder="2Point" leftBorderColor="#000000" rightBorder="2Point" rightBorderColor="#000000" bottomBorder="2Point" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font fontName="Bitstream Vera Sans" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[PROCEDIMENTO SOLICITADO]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="4"
+						y="101"
+						width="0"
+						height="118"
+						key="line-171"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
 			</band>
 		</detail>
 		<columnFooter>
@@ -2683,7 +2627,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						x="5"
 						y="3"
-						width="527"
+						width="526"
 						height="15"
 						forecolor="#000000"
 						backcolor="#000000"
@@ -2697,8 +2641,8 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						y="5"
 						width="523"
 						height="11"
-						forecolor="#FFFFFF"
-						backcolor="#000000"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
 						key="staticText-67"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
@@ -2790,60 +2734,6 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="437"
-						y="30"
-						width="0"
-						height="13"
-						key="line-147"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="452"
-						y="30"
-						width="0"
-						height="13"
-						key="line-148"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="467"
-						y="30"
-						width="0"
-						height="13"
-						key="line-149"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="482"
-						y="30"
-						width="0"
-						height="13"
-						key="line-150"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="497"
-						y="30"
-						width="0"
-						height="13"
-						key="line-151"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="512"
-						y="30"
-						width="0"
-						height="13"
-						key="line-152"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
 						x="0"
 						y="54"
 						width="536"
@@ -2862,8 +2752,8 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				</line>
 				<staticText>
 					<reportElement
-						x="429"
-						y="30"
+						x="432"
+						y="25"
 						width="99"
 						height="16"
 						key="staticText-71"/>
