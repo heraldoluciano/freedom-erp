@@ -62,7 +62,7 @@ public class LaudoAprSusFisio extends LeiauteGR {
 					  " AND A.CODEMP=O.CODEMPAE AND A.CODFILIAL=O.CODFILIALAE),"+
 					  " O.CODORC,O.TXT01,C.CPFCONV, C.IDENTIFICCONV, C.MAECONV, C.CEPCONV, C.DTNASCCONV," +
 					  " C.SEXOCONV, C.CODCONV,C.NOMECONV,O.DTORC,O.DTVENCORC,C.CIDCONV,C.UFCONV,C.ENDCONV,C.BAIRCONV,C.DDDCONV,C.FONECONV," +
-					  " T.DESCTPCONV,O.OBSORC,O.VLRLIQORC,O.VLRDESCORC, O.VLRDESCITORC,O.VLRADICORC,O.VLRPRODORC,F.CIDFILIAL,C.NUMCONV" +
+					  " T.DESCTPCONV,O.OBSORC,O.VLRLIQORC,O.VLRDESCORC, O.VLRDESCITORC,O.VLRADICORC,O.VLRPRODORC,F.CIDFILIAL,C.NUMCONV, C.CNSCONV" +
 					  " FROM VDORCAMENTO O, ATCONVENIADO C, ATTIPOCONV T, SGFILIAL F"+
 					  " WHERE T.CODEMP=C.CODEMPTC AND T.CODFILIAL=C.CODFILIALTC AND T.CODTPCONV=C.CODTPCONV" +
 					  " AND C.CODCONV=O.CODCONV AND C.CODEMP=O.CODEMPCV AND C.CODFILIAL=O.CODFILIALCV"+
@@ -190,16 +190,23 @@ public class LaudoAprSusFisio extends LeiauteGR {
 
 //		Informações do paciente
 		setFonte(fnTitulo);
-		drawTexto("Dados do Paciente",0,100);
+		drawTexto("Dados do Paciente",0,100); 
 		drawRetangulo(0,102,0,600,AL_LL);
 
 //      Linha 1
 		setFonte(fnSubTitulo);
-		drawRetangulo(5,107,5,24,AL_CDIR);
+		drawRetangulo(5,107,182,24,AL_CDIR);
 		drawTexto("Nome do Paciente",9,115);
 		setFonte(fnConteudo);		
-		drawTexto(rs.getString("NomeConv") !=null ? rs.getString("NomeConv").trim() : "",9,125);
-
+	    drawTexto(rs.getString("NomeConv") !=null ? rs.getString("NomeConv").trim() : "",9,125);
+	    
+	    setFonte(fnSubTitulo);
+	    drawRetangulo(390,107,5,24,AL_CDIR);
+		drawTexto("Numero CNS.",394,115);
+		setFonte(fnConteudo);
+		drawTexto(rs.getString("CnsConv") !=null ? rs.getString("CnsCOnv").trim() : "",394,125); 
+		
+		
 //		Linha 2		
 		setFonte(fnSubTitulo);
 		drawRetangulo(5,136,115,24);
