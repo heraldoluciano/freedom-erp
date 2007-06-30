@@ -52,7 +52,6 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.FDados;
 import org.freedom.telas.FTabDados;
 
 public class FModBoleto extends FTabDados implements ActionListener, JComboBoxListener, CheckBoxListener {
@@ -73,13 +72,11 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 	
 	private final JPanelPad panelBolElect = new JPanelPad();
 	
-	private JPanelPad pnGeral = new JPanelPad(new BorderLayout());
+	private JPanelPad pnGeral = new JPanelPad( new BorderLayout() );
 	
-	private JPanelPad pnGeral2 = new JPanelPad(new BorderLayout());
+	private JPanelPad panelBancos = new JPanelPad( new BorderLayout() );
 	
-	private JPanelPad pnBancos = new JPanelPad(new BorderLayout());
-	
-	private JPanelPad pnBancos2 = new JPanelPad(new BorderLayout());
+	private JPanelPad pnteste = new JPanelPad();
 	
 	private final JTextFieldPad txtCodModBol = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -143,17 +140,6 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		montaCombos();
 		montaTela();
 		
-		// aba Geral
-		
-		setPainel( pnGeral );
-		adicTab( "Geral", pnGeral );
-		pnGeral.add(pnGeral2);
-		
-		// aba Banco
-		
-		setPainel( pnBancos );
-		adicTab( "Bancos", pnBancos );
-		pnBancos.add(pnBancos2);
 		
 		txaBoleto.setFont( new Font( "Courier", Font.PLAIN, 11 ) );
 		txaBoleto.setTabSize( 0 );
@@ -268,6 +254,12 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 
 	private void montaTela() {
 		
+		/****************
+		 *  Aba Geral  *
+		 ****************/
+				
+		adicTab( "Geral", pnGeral );
+		
 		panelCampos.setPreferredSize( new Dimension( 750, 110 ) );
 		pinCab.add( panelCampos, BorderLayout.NORTH );
 		
@@ -318,22 +310,23 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		panelBolElect.adic( txtDescLocaPag, 7, 70, 453, 20 );
 		panelBolElect.adic( new JLabelPad( "Instruções de cobrança" ), 7, 90, 450, 20 );
 		panelBolElect.adic( new JScrollPane( txaInstrucao ), 7, 110, 453, 130 );
-		
 		//panelBolElect.adic( btPath, 370, 27, 26, 26 );
 		
-		
-		/**
-		 *  montando os paineis
-		 */
-		
 		panelBoleto.add( "preimp", pinPreImp );
-		panelBoleto.add( "bolelect", panelBolElect );		
-		
+		panelBoleto.add( "bolelect", panelBolElect );	
 		pinCab.add( panelBoleto, BorderLayout.CENTER );
 		
-		pnCliente.add( pinCab, BorderLayout.CENTER );
+		
+		/****************
+		 *  Aba Bancos  *
+		 ****************/
+		
+		adicTab( "Bancos", panelBancos );
+		panelBancos.add( pnteste, BorderLayout.WEST );
+		pnteste.setPreferredSize( new Dimension( 500, 150 ) );
+		
 
-		pnGeral2.add( pinCab );
+		pnGeral.add( pinCab );
 	
 	}
 	

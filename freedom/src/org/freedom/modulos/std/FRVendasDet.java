@@ -38,6 +38,7 @@ import javax.swing.BorderFactory;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.acao.Processo;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -46,7 +47,9 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.rep.DLLoading;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
@@ -89,9 +92,9 @@ public class FRVendasDet extends FRelatorio {
 
 		setTitulo( "Vendas Detalhadas" );
 		setAtribos( 80, 80, 295, 410 );
-		
-		Vector<String> vLabs = new Vector<String>();
-		Vector<String> vVals = new Vector<String>();
+
+		Vector< String > vLabs = new Vector< String >();
+		Vector< String > vVals = new Vector< String >();
 
 		vLabs.addElement( "Grafico" );
 		vLabs.addElement( "Texto" );
@@ -99,9 +102,9 @@ public class FRVendasDet extends FRelatorio {
 		vVals.addElement( "T" );
 		rgTipo = new JRadioGroup( 1, 2, vLabs, vVals );
 		rgTipo.setVlrString( "T" );
-		
-		Vector<String> vLabs1 = new Vector<String>();
-		Vector<String> vVals1 = new Vector<String>();
+
+		Vector< String > vLabs1 = new Vector< String >();
+		Vector< String > vVals1 = new Vector< String >();
 
 		vLabs1.addElement( "Faturado" );
 		vLabs1.addElement( "Não Faturado" );
@@ -111,9 +114,9 @@ public class FRVendasDet extends FRelatorio {
 		vVals1.addElement( "A" );
 		rgFaturados = new JRadioGroup( 3, 1, vLabs1, vVals1 );
 		rgFaturados.setVlrString( "S" );
-		
-		Vector<String> vLabs2 = new Vector<String>();
-		Vector<String> vVals2 = new Vector<String>();
+
+		Vector< String > vLabs2 = new Vector< String >();
+		Vector< String > vVals2 = new Vector< String >();
 
 		vLabs2.addElement( "Financeiro" );
 		vLabs2.addElement( "Não Finaceiro" );
@@ -139,7 +142,7 @@ public class FRVendasDet extends FRelatorio {
 		txtCodProd.setFK( true );
 		lcProd.setReadOnly( true );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
-		
+
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		txtCodVend.setTabelaExterna( lcVend );
@@ -268,22 +271,22 @@ public class FRVendasDet extends FRelatorio {
 
 			sSQL.append( "SELECT " );
 			sSQL.append( "	( SELECT VO.CODORC FROM VDVENDAORC VO " );
-			sSQL.append( "	  WHERE VO.CODEMP=IT.CODEMP AND VO.CODFILIAL=IT.CODFILIAL " ); 
+			sSQL.append( "	  WHERE VO.CODEMP=IT.CODEMP AND VO.CODFILIAL=IT.CODFILIAL " );
 			sSQL.append( "	  AND VO.CODVENDA=IT.CODVENDA AND VO.CODITVENDA=IT.CODITVENDA AND VO.TIPOVENDA=IT.TIPOVENDA ) AS CODORC, " );
 			sSQL.append( "V.CODVENDA,V.DOCVENDA,V.DTEMITVENDA,V.DTSAIDAVENDA,PP.DESCPLANOPAG,V.CODCLI," );
-			sSQL.append( "C.RAZCLI,V.VLRDESCVENDA,V.VLRLIQVENDA,IT.CODPROD,IT.REFPROD,P.DESCPROD,IT.CODLOTE," ); 
+			sSQL.append( "C.RAZCLI,V.VLRDESCVENDA,V.VLRLIQVENDA,IT.CODPROD,IT.REFPROD,P.DESCPROD,IT.CODLOTE," );
 			sSQL.append( "IT.QTDITVENDA,IT.PRECOITVENDA,IT.VLRDESCITVENDA,IT.VLRLIQITVENDA " );
-			sSQL.append( "FROM VDVENDA V, FNPLANOPAG PP, VDCLIENTE C, VDITVENDA IT, EQPRODUTO P, EQTIPOMOV TM  " ); 
+			sSQL.append( "FROM VDVENDA V, FNPLANOPAG PP, VDCLIENTE C, VDITVENDA IT, EQPRODUTO P, EQTIPOMOV TM  " );
 			sSQL.append( "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? " );
 			sSQL.append( "AND PP.CODEMP=V.CODEMPPG AND PP.CODFILIAL=V.CODFILIAL AND PP.CODPLANOPAG=V.CODPLANOPAG " );
 			sSQL.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
 			sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
-			sSQL.append( "AND IT.CODEMP=V.CODEMP AND IT.CODFILIAL=V.CODFILIAL AND IT.CODVENDA=V.CODVENDA AND IT.TIPOVENDA=V.TIPOVENDA " ); 
+			sSQL.append( "AND IT.CODEMP=V.CODEMP AND IT.CODFILIAL=V.CODFILIAL AND IT.CODVENDA=V.CODVENDA AND IT.TIPOVENDA=V.TIPOVENDA " );
 			sSQL.append( "AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPROD " );
-			sSQL.append( sWhere1 ); 
-			sSQL.append( sWhere2 ); 
-			sSQL.append( sWhere3 ); 
-			sSQL.append( sWhere4 ); 
+			sSQL.append( sWhere1 );
+			sSQL.append( sWhere2 );
+			sSQL.append( sWhere3 );
+			sSQL.append( sWhere4 );
 			sSQL.append( sWhere5 );
 			sSQL.append( "ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA" );
 
@@ -292,7 +295,7 @@ public class FRVendasDet extends FRelatorio {
 			ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			ps.setInt( 3, Aplicativo.iCodEmp );
 			ps.setInt( 4, ListaCampos.getMasterFilial( "VDVENDA" ) );
-			rs = ps.executeQuery();			
+			rs = ps.executeQuery();
 
 			if ( "T".equals( rgTipo.getVlrString() ) ) {
 				imprimirTexto( bVisualizar, rs, sCab.toString(), bComRef );
@@ -300,21 +303,21 @@ public class FRVendasDet extends FRelatorio {
 			else if ( "G".equals( rgTipo.getVlrString() ) ) {
 				imprimirGrafico( bVisualizar, rs, sCab.toString(), bComRef );
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!" + err.getMessage(), true, con, err );
 			err.printStackTrace();
-		} 
+		}
 	}
-	
+
 	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef ) {
-		
+
 		String sLinFina = Funcoes.replicate( "-", 133 );
 		String sLinDupla = Funcoes.replicate( "=", 133 );
 		BigDecimal bVlrDesc = new BigDecimal( "0" );
@@ -337,8 +340,8 @@ public class FRVendasDet extends FRelatorio {
 			imp.limpaPags();
 
 			while ( rs.next() ) {
-				
-				if ( ! montou ) {
+
+				if ( !montou ) {
 					montou = true;
 				}
 
@@ -456,18 +459,18 @@ public class FRVendasDet extends FRelatorio {
 			else {
 				imp.print();
 			}
-			
+
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!" + err.getMessage(), true, con, err );
 			err.printStackTrace();
-		} 
+		}
 	}
 
 	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef ) {
 
-		HashMap<String,Object> hParam = new HashMap<String,Object>();
+		HashMap< String, Object > hParam = new HashMap< String, Object >();
 		hParam.put( "COMREF", bComRef ? "S" : "N" );
-		
+
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasDetalhadas.jasper", "Vendas Detalhadas", sCab, rs, hParam, this );
 
 		if ( bVisualizar ) {
