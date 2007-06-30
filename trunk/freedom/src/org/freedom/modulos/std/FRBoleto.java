@@ -231,8 +231,6 @@ public class FRBoleto extends FRelatorio {
 
 	private String aplicCampos( ResultSet rs, String[] sNat ) {
 	
-		PreparedStatement ps = null;
-		ResultSet rs2 = null;
 		Date dCampo = null;
 		String sRet = null;
 		String sTxa = null;
@@ -240,124 +238,114 @@ public class FRBoleto extends FRelatorio {
 	
 		try {
 			
-			ps = con.prepareStatement( "SELECT TXAMODBOL FROM FNMODBOLETO WHERE CODEMP=? AND CODFILIAL=? AND CODMODBOL=?" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, lcModBol.getCodFilial() );
-			ps.setInt( 3, txtCodModBol.getVlrInteger().intValue() );
-			
-			rs2 = ps.executeQuery();
-			
-			if ( rs2.next() ) {
-				
-				sTxa = rs2.getString( "TxaModBol" );
-				sCampo = "";
-				dCampo = null;
-	
-				// Aplicando campos de dados:
-				// Estes '\\' que aparecem por ai..são para anular caracteres especiais de "expressão regular".
-	
-				if ( sTxa != null ) {
-					if ( ( dCampo = rs.getDate( "DtVencItRec" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[VENCIMEN]", Funcoes.sqlDateToStrDate( dCampo ) );
-					if ( ( dCampo = rs.getDate( "DtEmitVenda" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[DATADOC_]", Funcoes.sqlDateToStrDate( dCampo ) );
-					if ( ( sCampo = rs.getString( "CodRec" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[CODREC]", Funcoes.alinhaDir( sCampo, 8 ) );
-					if ( ( sCampo = rs.getString( "DocVenda" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[__DOCUMENTO__]", Funcoes.alinhaDir( sCampo, 15 ) );
-					if ( ( sCampo = rs.getString( "NParcItRec" ) ) != null ) {
-						sTxa = sTxa.replaceAll( "\\[P]", Funcoes.copy( sCampo, 0, 3 ) );
-						if ( rs.getInt( 1 ) > 1 )
-							sTxa = sTxa.replaceAll( "\\[A]", "" + ( (char) ( rs.getInt( "NParcItRec" ) + 64 ) ) );
-					}
-					if ( ( sCampo = rs.getInt( 1 ) + "" ) != null )
-						sTxa = sTxa.replaceAll( "\\[T]", "/" + Funcoes.copy( sCampo, 0, 2 ) );
-					if ( ( sCampo = rs.getString( "VlrParcItRec" ) ) != null && rs.getDouble( "VlrParcItRec" ) != 0 ) {
-						sTxa = sTxa.replaceAll( "\\[VALOR_DOCUMEN]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
-						sTxa = sTxa.replaceAll( "\\[VALOR_EXTENSO]", Extenso.extenso( rs.getDouble( "VlrParcItRec" ), sInfoMoeda[ 0 ], sInfoMoeda[ 1 ], sInfoMoeda[ 2 ], sInfoMoeda[ 3 ] ) );
-					}
-					if ( ( sCampo = rs.getString( "VlrApagItRec" ) ) != null && rs.getDouble( "VlrApagItRec" ) != 0 )
-						sTxa = sTxa.replaceAll( "\\[VLIQ_DOCUMENT]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
-					if ( ( sCampo = rs.getString( "VlrDescItRec" ) ) != null && rs.getDouble( "VlrDescItRec" ) != 0 )
-						sTxa = sTxa.replaceAll( "\\[DESC_DOCUMENT]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
-					if ( ( sCampo = rs.getString( "CodCli" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[CODCLI]", Funcoes.copy( sCampo, 0, 8 ) );
-					if ( ( sCampo = rs.getString( "RazCli" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[_____________RAZAO____DO____CLIENTE_____________]", Funcoes.copy( sCampo, 0, 50 ) );
-					if ( ( sCampo = rs.getString( "NomeCli" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[_____________NOME_____DO____CLIENTE_____________]", Funcoes.copy( sCampo, 0, 50 ) );
-					if ( ( sCampo = rs.getString( "CpfCli" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[CPF/CNPJ_ CLIENT]", Funcoes.setMascara( sCampo, "###.###.###-##" ) );
-					else if ( ( sCampo = rs.getString( "CnpjCli" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[CPF/CNPJ_ CLIENT]", Funcoes.setMascara( sCampo, "##.###.###/####-##" ) );
-					if ( ( sCampo = rs.getString( "RgCli" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[____IE/RG____CLIENTE]", Funcoes.copy( sCampo, 0, 22 ) );
-					else if ( ( sCampo = rs.getString( "InscCli" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[____IE/RG____CLIENTE]", Funcoes.copy( sCampo, 0, 22 ) );
-					if ( ( sCampo = rs.getString( "EndCob" ) ) != null || ( sCampo = rs.getString( "EndCli" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[____________ENDERECO____DO____CLIENTE___________]", sCampo.trim() );
-					if ( ( sCampo = rs.getString( "NumCob" ) ) != null || ( sCampo = rs.getString( "NumCli" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[NUMERO]", sCampo );
-					if ( ( sCampo = rs.getString( "ComplCob" ) ) != null || ( sCampo = rs.getString( "ComplCli" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[____COMPLEMENTO___]", sCampo.trim() );
-					if ( ( sCampo = rs.getString( "CepCob" ) ) != null || ( sCampo = rs.getString( "CepCli" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[__CEP__]", Funcoes.setMascara( sCampo, "#####-###" ) );
-					if ( ( sCampo = rs.getString( "BairCob" ) ) != null || ( sCampo = rs.getString( "BairCli" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[___________BAIRRO___________]", sCampo.trim() );
-					if ( ( sCampo = rs.getString( "CidCob" ) ) != null || ( sCampo = rs.getString( "CidCli" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[___________CIDADE___________]", sCampo.trim() );
-					if ( ( sCampo = rs.getString( "UfCob" ) ) != null || ( sCampo = rs.getString( "UfCli" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[UF]", Funcoes.copy( sCampo, 0, 2 ) );
-					if ( ( sCampo = rs.getString( "FoneCli" ) ) != null )
-						sTxa = sTxa.replaceAll( "\\[__TELEFONE___]", Funcoes.setMascara( sCampo.trim(), "####-####" ) );
-					if ( ( sCampo = rs.getString( "DDDCli" ) ) != null || ( sCampo = "(" + rs.getString( "DDDCli" ) ) + ")" != null )
-						sTxa = sTxa.replaceAll( "\\[DDD]", Funcoes.copy( sCampo, 0, 5 ) );
-					if ( ( sCampo = sNat[ 0 ] ) != null )
-						sTxa = sTxa.replaceAll( "\\[CODNAT]", Funcoes.copy( sCampo, 0, 8 ) );
-					if ( ( sCampo = sNat[ 1 ] ) != null )
-						sTxa = sTxa.replaceAll( "\\[______________NATUREZA_DA_OPERACAO______________]", Funcoes.copy( sCampo, 0, 50 ) );
-	
-					// Aplicar campos especiais de dados:
-	
-					int iPos = 0;
-					while ( ( iPos = sTxa.indexOf( "%_VAL", iPos + 1 ) ) > 0 ) {
-						double dVal = 0;
-						String sCaixa = sTxa.substring( iPos - 9, iPos );
-						sCaixa += "\\" + sTxa.substring( iPos, iPos + 6 );
-						dVal = rs.getDouble( "VlrParcitRec" );
-						dVal *= Double.parseDouble( sTxa.substring( iPos - 8, iPos ) ) / 100;
-						sTxa = sTxa.replaceAll( "\\" + sCaixa, Funcoes.strDecimalToStrCurrency( 15, 2, new BigDecimal( dVal ).setScale( 2, BigDecimal.ROUND_HALF_UP ).toString() ) );
-					}
-					iPos = 0;
-					while ( ( iPos = sTxa.indexOf( "+_VAL", iPos + 1 ) ) > 0 ) {
-						double dVal = 0;
-						String sCaixa = sTxa.substring( iPos - 9, iPos );
-						sCaixa += "\\" + sTxa.substring( iPos, iPos + 6 );
-						dVal = rs.getDouble( "VlrParcitRec" );
-						dVal += Double.parseDouble( sTxa.substring( iPos - 8, iPos ) );
-						sTxa = sTxa.replaceAll( "\\" + sCaixa, Funcoes.strDecimalToStrCurrency( 15, 2, new BigDecimal( dVal ).setScale( 2, BigDecimal.ROUND_HALF_UP ).toString() ) );
-					}
-					iPos = 0;
-					while ( ( iPos = sTxa.indexOf( "-_VAL", iPos + 1 ) ) > 0 ) {
-						double dVal = 0;
-						String sCaixa = sTxa.substring( iPos - 9, iPos );
-						sCaixa += "\\" + sTxa.substring( iPos, iPos + 6 );
-						dVal = rs.getDouble( "VlrParcitRec" );
-						dVal -= Double.parseDouble( sTxa.substring( iPos - 8, iPos ) );
-						sTxa = sTxa.replaceAll( "\\" + sCaixa, Funcoes.strDecimalToStrCurrency( 15, 2, new BigDecimal( dVal ).setScale( 2, BigDecimal.ROUND_HALF_UP ).toString() ) );
-					}
-					iPos = 0;
-					while ( ( iPos = sTxa.indexOf( "+_VEN", iPos + 1 ) ) > 0 ) {
-						GregorianCalendar cVal = new GregorianCalendar();
-						String sCaixa = sTxa.substring( iPos - 4, iPos );
-						sCaixa += "\\" + sTxa.substring( iPos, iPos + 6 );
-						cVal.setTime( rs.getDate( "DtVencItRec" ) );
-						cVal.set( Calendar.DATE, cVal.get( Calendar.DATE ) + Integer.parseInt( sTxa.substring( iPos - 3, iPos ) ) );
-						sTxa = sTxa.replaceAll( "\\" + sCaixa, Funcoes.dateToStrDate( cVal.getTime() ) );
-					}
-	
-					sRet = sTxa;
+			sTxa = rs.getString( "TxaModBol" );
+			sCampo = "";
+			dCampo = null;
+
+			// Aplicando campos de dados:
+			// Estes '\\' que aparecem por ai..são para anular caracteres especiais de "expressão regular".
+
+			if ( sTxa != null ) {
+				if ( ( dCampo = rs.getDate( "DtVencItRec" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[VENCIMEN]", Funcoes.sqlDateToStrDate( dCampo ) );
+				if ( ( dCampo = rs.getDate( "DtEmitVenda" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[DATADOC_]", Funcoes.sqlDateToStrDate( dCampo ) );
+				if ( ( sCampo = rs.getString( "CodRec" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[CODREC]", Funcoes.alinhaDir( sCampo, 8 ) );
+				if ( ( sCampo = rs.getString( "DocVenda" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[__DOCUMENTO__]", Funcoes.alinhaDir( sCampo, 15 ) );
+				if ( ( sCampo = rs.getString( "NParcItRec" ) ) != null ) {
+					sTxa = sTxa.replaceAll( "\\[P]", Funcoes.copy( sCampo, 0, 3 ) );
+					if ( rs.getInt( 1 ) > 1 )
+						sTxa = sTxa.replaceAll( "\\[A]", "" + ( (char) ( rs.getInt( "NParcItRec" ) + 64 ) ) );
 				}
+				if ( ( sCampo = rs.getInt( 1 ) + "" ) != null )
+					sTxa = sTxa.replaceAll( "\\[T]", "/" + Funcoes.copy( sCampo, 0, 2 ) );
+				if ( ( sCampo = rs.getString( "VlrParcItRec" ) ) != null && rs.getDouble( "VlrParcItRec" ) != 0 ) {
+					sTxa = sTxa.replaceAll( "\\[VALOR_DOCUMEN]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
+					sTxa = sTxa.replaceAll( "\\[VALOR_EXTENSO]", Extenso.extenso( rs.getDouble( "VlrParcItRec" ), sInfoMoeda[ 0 ], sInfoMoeda[ 1 ], sInfoMoeda[ 2 ], sInfoMoeda[ 3 ] ) );
+				}
+				if ( ( sCampo = rs.getString( "VlrApagItRec" ) ) != null && rs.getDouble( "VlrApagItRec" ) != 0 )
+					sTxa = sTxa.replaceAll( "\\[VLIQ_DOCUMENT]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
+				if ( ( sCampo = rs.getString( "VlrDescItRec" ) ) != null && rs.getDouble( "VlrDescItRec" ) != 0 )
+					sTxa = sTxa.replaceAll( "\\[DESC_DOCUMENT]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
+				if ( ( sCampo = rs.getString( "CodCli" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[CODCLI]", Funcoes.copy( sCampo, 0, 8 ) );
+				if ( ( sCampo = rs.getString( "RazCli" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[_____________RAZAO____DO____CLIENTE_____________]", Funcoes.copy( sCampo, 0, 50 ) );
+				if ( ( sCampo = rs.getString( "NomeCli" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[_____________NOME_____DO____CLIENTE_____________]", Funcoes.copy( sCampo, 0, 50 ) );
+				if ( ( sCampo = rs.getString( "CpfCli" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[CPF/CNPJ_ CLIENT]", Funcoes.setMascara( sCampo, "###.###.###-##" ) );
+				else if ( ( sCampo = rs.getString( "CnpjCli" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[CPF/CNPJ_ CLIENT]", Funcoes.setMascara( sCampo, "##.###.###/####-##" ) );
+				if ( ( sCampo = rs.getString( "RgCli" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[____IE/RG____CLIENTE]", Funcoes.copy( sCampo, 0, 22 ) );
+				else if ( ( sCampo = rs.getString( "InscCli" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[____IE/RG____CLIENTE]", Funcoes.copy( sCampo, 0, 22 ) );
+				if ( ( sCampo = rs.getString( "EndCob" ) ) != null || ( sCampo = rs.getString( "EndCli" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[____________ENDERECO____DO____CLIENTE___________]", sCampo.trim() );
+				if ( ( sCampo = rs.getString( "NumCob" ) ) != null || ( sCampo = rs.getString( "NumCli" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[NUMERO]", sCampo );
+				if ( ( sCampo = rs.getString( "ComplCob" ) ) != null || ( sCampo = rs.getString( "ComplCli" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[____COMPLEMENTO___]", sCampo.trim() );
+				if ( ( sCampo = rs.getString( "CepCob" ) ) != null || ( sCampo = rs.getString( "CepCli" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[__CEP__]", Funcoes.setMascara( sCampo, "#####-###" ) );
+				if ( ( sCampo = rs.getString( "BairCob" ) ) != null || ( sCampo = rs.getString( "BairCli" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[___________BAIRRO___________]", sCampo.trim() );
+				if ( ( sCampo = rs.getString( "CidCob" ) ) != null || ( sCampo = rs.getString( "CidCli" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[___________CIDADE___________]", sCampo.trim() );
+				if ( ( sCampo = rs.getString( "UfCob" ) ) != null || ( sCampo = rs.getString( "UfCli" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[UF]", Funcoes.copy( sCampo, 0, 2 ) );
+				if ( ( sCampo = rs.getString( "FoneCli" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[__TELEFONE___]", Funcoes.setMascara( sCampo.trim(), "####-####" ) );
+				if ( ( sCampo = rs.getString( "DDDCli" ) ) != null || ( sCampo = "(" + rs.getString( "DDDCli" ) ) + ")" != null )
+					sTxa = sTxa.replaceAll( "\\[DDD]", Funcoes.copy( sCampo, 0, 5 ) );
+				if ( ( sCampo = sNat[ 0 ] ) != null )
+					sTxa = sTxa.replaceAll( "\\[CODNAT]", Funcoes.copy( sCampo, 0, 8 ) );
+				if ( ( sCampo = sNat[ 1 ] ) != null )
+					sTxa = sTxa.replaceAll( "\\[______________NATUREZA_DA_OPERACAO______________]", Funcoes.copy( sCampo, 0, 50 ) );
+
+				// Aplicar campos especiais de dados:
+
+				int iPos = 0;
+				while ( ( iPos = sTxa.indexOf( "%_VAL", iPos + 1 ) ) > 0 ) {
+					double dVal = 0;
+					String sCaixa = sTxa.substring( iPos - 9, iPos );
+					sCaixa += "\\" + sTxa.substring( iPos, iPos + 6 );
+					dVal = rs.getDouble( "VlrParcitRec" );
+					dVal *= Double.parseDouble( sTxa.substring( iPos - 8, iPos ) ) / 100;
+					sTxa = sTxa.replaceAll( "\\" + sCaixa, Funcoes.strDecimalToStrCurrency( 15, 2, new BigDecimal( dVal ).setScale( 2, BigDecimal.ROUND_HALF_UP ).toString() ) );
+				}
+				iPos = 0;
+				while ( ( iPos = sTxa.indexOf( "+_VAL", iPos + 1 ) ) > 0 ) {
+					double dVal = 0;
+					String sCaixa = sTxa.substring( iPos - 9, iPos );
+					sCaixa += "\\" + sTxa.substring( iPos, iPos + 6 );
+					dVal = rs.getDouble( "VlrParcitRec" );
+					dVal += Double.parseDouble( sTxa.substring( iPos - 8, iPos ) );
+					sTxa = sTxa.replaceAll( "\\" + sCaixa, Funcoes.strDecimalToStrCurrency( 15, 2, new BigDecimal( dVal ).setScale( 2, BigDecimal.ROUND_HALF_UP ).toString() ) );
+				}
+				iPos = 0;
+				while ( ( iPos = sTxa.indexOf( "-_VAL", iPos + 1 ) ) > 0 ) {
+					double dVal = 0;
+					String sCaixa = sTxa.substring( iPos - 9, iPos );
+					sCaixa += "\\" + sTxa.substring( iPos, iPos + 6 );
+					dVal = rs.getDouble( "VlrParcitRec" );
+					dVal -= Double.parseDouble( sTxa.substring( iPos - 8, iPos ) );
+					sTxa = sTxa.replaceAll( "\\" + sCaixa, Funcoes.strDecimalToStrCurrency( 15, 2, new BigDecimal( dVal ).setScale( 2, BigDecimal.ROUND_HALF_UP ).toString() ) );
+				}
+				iPos = 0;
+				while ( ( iPos = sTxa.indexOf( "+_VEN", iPos + 1 ) ) > 0 ) {
+					GregorianCalendar cVal = new GregorianCalendar();
+					String sCaixa = sTxa.substring( iPos - 4, iPos );
+					sCaixa += "\\" + sTxa.substring( iPos, iPos + 6 );
+					cVal.setTime( rs.getDate( "DtVencItRec" ) );
+					cVal.set( Calendar.DATE, cVal.get( Calendar.DATE ) + Integer.parseInt( sTxa.substring( iPos - 3, iPos ) ) );
+					sTxa = sTxa.replaceAll( "\\" + sCaixa, Funcoes.dateToStrDate( cVal.getTime() ) );
+				}
+
+				sRet = sTxa;
 			}
 	
 			// Ajustando campos de ação:
@@ -377,9 +365,6 @@ public class FRBoleto extends FRelatorio {
 			
 			m.appendTail( sb );
 			sRet = sb.toString();
-			
-			rs2.close();
-			ps.close();
 			
 			/*if ( ! con.getAutoCommit() ) {
 				con.commit();
@@ -550,7 +535,7 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "R.DOCREC,ITR.CODBANCO, B.DVBANCO," );
 			sSQL.append( "B.IMGBOLBANCO LOGOBANCO01, B.IMGBOLBANCO LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, " );
 			sSQL.append( "MB.CARTCOB, MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, " );
-			sSQL.append( "MB.PREIMPMODBOL, MB.CLASSMODBOL, V.DTEMITVENDA, V.DOCVENDA," );
+			sSQL.append( "MB.PREIMPMODBOL, MB.CLASSMODBOL, MB.TXAMODBOL, V.DTEMITVENDA, V.DOCVENDA," );
 			sSQL.append( "C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,C.RGCLI,C.INSCCLI," );
 			sSQL.append( "C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI," );
 			sSQL.append( "C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB," );
