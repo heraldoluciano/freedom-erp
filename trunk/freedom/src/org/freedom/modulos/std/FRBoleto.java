@@ -43,6 +43,7 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -84,6 +85,8 @@ public class FRBoleto extends FRelatorio {
 	private JTextFieldPad txtCodTpCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTpCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JCheckBoxPad cbTipoImp = new JCheckBoxPad("Impressão gráfica","S","N");
 
 	private ListaCampos lcModBol = new ListaCampos( this );
 
@@ -211,18 +214,19 @@ public class FRBoleto extends FRelatorio {
 		adic( new JLabelPad( "Descrição do tipo de cobrança" ), 90, 90, 430, 20 );
 		adic( txtDescTpCob, 90, 110, 430, 20 );
 		
-		JLabel periodo = new JLabel( "Periodo", SwingConstants.CENTER );
+		JLabel periodo = new JLabel( "Período", SwingConstants.CENTER );
 		periodo.setOpaque( true );
-		adic( periodo, 25, 140, 60, 20 );		
+		adic( periodo, 25, 130, 60, 20 );		
 		JLabel borda = new JLabel();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
-		adic( borda, 7, 150, 296, 45 );		
-		adic( txtDtIni, 25, 165, 110, 20 );
-		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 165, 40, 20 );
-		adic( txtDtFim, 175, 165, 110, 20 );		
+		adic( borda, 7, 140, 296, 45 );		
+		adic( txtDtIni, 25, 155, 110, 20 );
+		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 155, 40, 20 );
+		adic( txtDtFim, 175, 155, 110, 20 );		
 
-		adic( new JLabelPad( "Imprimir parcela " ), 350, 165, 100, 20 );
-		adic( txtParc, 450, 165, 70, 20 );
+		adic( new JLabelPad( "Nro.parcela" ), 310, 140, 100, 20 );
+		adic( txtParc, 310, 160, 70, 20 );
+		adic( cbTipoImp, 390, 150, 150, 30);
 	}
 
 	private String aplicCampos( ResultSet rs, String[] sNat ) {
@@ -429,43 +433,15 @@ public class FRBoleto extends FRelatorio {
 		return sRet;
 	}
 
-	private String getClassModelo() {
+	private String getClassModelo(final String preImpModbol, final String classModBol) {
 		
-		String classe = null;
-		StringBuilder sSQL = new StringBuilder();
+		String retorno = null;
 		
-		try {
-			
-			sSQL.append( "SELECT PREIMPMODBOL, CLASSMODBOL " );
-			sSQL.append( "FROM FNMODBOLETO " );
-			sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODMODBOL=?" );
-			
-			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNMODBOLETO" ) );
-			ps.setInt( 3, txtCodModBol.getVlrInteger() );
-			ResultSet rs = ps.executeQuery();
-			
-			if ( rs.next() ) {
-				
-				if ( "N".equals( rs.getString( "PREIMPMODBOL" ) ) ) {
-					
-					classe = rs.getString( "CLASSMODBOL" );
-				}
-			}
-			
-			rs.close();
-			ps.close();
-			
-			/*if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}*/
-		} catch ( Exception err ) {
-			Funcoes.mensagemErro( null, "Erro ao verificar classes padrão!\n" + err.getMessage(), true, con, err );
-			err.printStackTrace();
-		}
+		if ( "N".equals( preImpModbol) ) {
+			retorno = classModBol;
+		} 
+		return retorno;
 		
-		return classe;
 	}
 	
 	private HashMap<String,Object> getParametros() {
@@ -553,8 +529,6 @@ public class FRBoleto extends FRelatorio {
 
 			PreparedStatement ps = null;
 			ResultSet rs = null;
-			PreparedStatement psNat = null;
-			ResultSet rsNat = null;
 			StringBuilder sSQL = new StringBuilder();
 			StringBuilder sSQLNat = new StringBuilder();
 			String sVal = null;
@@ -574,36 +548,31 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,ITR.VLRDESCITREC," );
 			sSQL.append( "(ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA," );
 			sSQL.append( "R.DOCREC,ITR.CODBANCO, B.DVBANCO," );
-			sSQL.append( "B.IMGBOLBANCO LOGOBANCO01," );
-			sSQL.append( "B.IMGBOLBANCO LOGOBANCO02," );
-			sSQL.append( "B.IMGBOLBANCO LOGOBANCO03," );
-			sSQL.append( "(SELECT MB.CARTCOB FROM FNMODBOLETO MB WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) CARTCOB," );
-			sSQL.append( "(SELECT MB.ESPDOCMODBOL FROM FNMODBOLETO MB WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) ESPDOC," );
-			sSQL.append( "(SELECT MB.ACEITEMODBOL FROM FNMODBOLETO MB WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) ACEITE," );
-			sSQL.append( "(SELECT MB.MDECOB FROM FNMODBOLETO MB WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) MDECOB," );
-			sSQL.append( "V.DTEMITVENDA,V.DOCVENDA," );
+			sSQL.append( "B.IMGBOLBANCO LOGOBANCO01, B.IMGBOLBANCO LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, " );
+			sSQL.append( "MB.CARTCOB, MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, " );
+			sSQL.append( "MB.PREIMPMODBOL, MB.CLASSMODBOL, V.DTEMITVENDA, V.DOCVENDA," );
 			sSQL.append( "C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,C.RGCLI,C.INSCCLI," );
 			sSQL.append( "C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI," );
 			sSQL.append( "C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB," );
 			sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI, " );
-			sSQL.append( "(ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA ");
-			sSQL.append( "FROM VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNITRECEBER ITR " ); 
-			sSQL.append( "LEFT OUTER JOIN FNBANCO B ON " );
-			sSQL.append( "B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO " );
+			sSQL.append( "(ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA, ");
+			sSQL.append( "IV.CODNAT, N.DESCNAT ");
+			sSQL.append( "FROM VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, ");
+			sSQL.append( "FNMODBOLETO MB, VDITVENDA IV, LFNATOPER N,  FNITRECEBER ITR " ); 
 			sSQL.append( "WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND " );
 			sSQL.append( "V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND " );
 			sSQL.append( "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " );
 			sSQL.append( "P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL AND " );
 			sSQL.append( "M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA AND " );
+			sSQL.append( "B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO AND " );
+			sSQL.append( "MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL AND  ");
+			sSQL.append( "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.TIPOVENDA=V.TIPOVENDA AND " );
+			sSQL.append( "IV.CODVENDA=V.CODVENDA AND IV.CODITVENDA=( SELECT MIN(CODITVENDA) FROM VDITVENDA IV2 " );
+			sSQL.append( "WHERE IV2.CODEMP=IV.CODEMP AND IV2.CODFILIAL=IV.CODFILIAL AND IV2.TIPOVENDA=IV.TIPOVENDA AND " );
+			sSQL.append( "IV2.CODVENDA=IV.CODVENDA AND IV2.CODNAT IS NOT NULL ) AND " );
+			sSQL.append( "N.CODEMP=IV.CODEMPNT AND N.CODFILIAL=IV.CODFILIALNT AND N.CODNAT=IV.CODNAT AND  " );
 			sSQL.append( "R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA=? " );
 			sSQL.append( sParc );	
-			
-			sSQLNat.append( "SELECT I.CODNAT, N.DESCNAT " );
-			sSQLNat.append( "FROM VDITVENDA I, VDVENDA V, LFNATOPER N, FNRECEBER R " );
-			sSQLNat.append( "WHERE N.CODEMP=I.CODEMPNT AND N.CODFILIAL=I.CODFILIALNT AND N.CODNAT=I.CODNAT " );
-			sSQLNat.append( "AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA AND I.TIPOVENDA=V.TIPOVENDA " );
-			sSQLNat.append( "AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND V.CODVENDA=R.CODVENDA AND V.TIPOVENDA='V' " );
-			sSQLNat.append( "AND R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA=?" );
 			
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -611,25 +580,19 @@ public class FRBoleto extends FRelatorio {
 			ps.setInt( 3, txtCodVenda.getVlrInteger().intValue() );
 			rs = ps.executeQuery();
 
-			psNat = con.prepareStatement( sSQLNat.toString() );
-			psNat.setInt( 1, Aplicativo.iCodEmp );
-			psNat.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
-			psNat.setInt( 3, txtCodVenda.getVlrInteger().intValue() );
-			rsNat = psNat.executeQuery();
-
-			if ( rsNat.next() ) {
-				sNat[ 0 ] = rsNat.getString( "CODNAT" );
-				sNat[ 1 ] = rsNat.getString( "DESCNAT" );
+			String classe = null;
+			while (rs.next()) {
+				classe = getClassModelo(rs.getString( "PREIMPMODBOL" ), rs.getString("CLASSMODBOL") );
+				sNat[ 0 ] = rs.getString( "CODNAT" );
+				sNat[ 1 ] = rs.getString( "DESCNAT" );
+				if ( classe == null ) {
+					imprimeTexto( bVisualizar, rs, sNat );
+				}
+				else {
+					imprimeGrafico( bVisualizar, rs, classe );
+				}
+				
 			}
-			
-			String classe = getClassModelo();
-			if ( classe == null ) {
-				imprimeTexto( bVisualizar, rs, sNat );
-			}
-			else {
-				imprimeGrafico( bVisualizar, rs, classe );
-			}
-			
 			rs.close();
 			ps.close();
 			
@@ -651,26 +614,20 @@ public class FRBoleto extends FRelatorio {
 		imp.verifLinPag();
 		imp.setTitulo( "Boleto" );
 				
-		while ( rs.next() ) {
+		sVal = aplicCampos( rs, sNat );
 			
-			sVal = aplicCampos( rs, sNat );
-			
-			if ( sVal != null ) {
+		if ( sVal != null ) {
 				
-				String[] sLinhas = ( sVal + " " ).split( "\n" );
+			String[] sLinhas = ( sVal + " " ).split( "\n" );
 				
-				for ( int i = 0; i < sLinhas.length; i++ ) {
-					if ( i == 0 ) {
-						imp.say( imp.pRow() + 1, 0, imp.normal() + imp.comprimido() + "" );
-						imp.say( imp.pRow(), 0, sLinhas[ i ] );
-					}
-					else {
-						imp.say( imp.pRow() + 1, 0, sLinhas[ i ] );
-					}
+			for ( int i = 0; i < sLinhas.length; i++ ) {
+				if ( i == 0 ) {
+					imp.say( imp.pRow() + 1, 0, imp.normal() + imp.comprimido() + "" );
+					imp.say( imp.pRow(), 0, sLinhas[ i ] );
 				}
-			}
-			else {
-				break;
+				else {
+					imp.say( imp.pRow() + 1, 0, sLinhas[ i ] );
+				}
 			}
 		}
 
