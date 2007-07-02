@@ -175,7 +175,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="120"
+						y="115"
 						width="524"
 						height="0"
 						key="line-20"/>
@@ -184,7 +184,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="1"
-						y="141"
+						y="135"
 						width="522"
 						height="0"
 						key="line-1"/>
@@ -193,7 +193,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="120"
-						y="124"
+						y="118"
 						width="0"
 						height="17"
 						key="line-2"/>
@@ -202,7 +202,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="154"
-						y="124"
+						y="118"
 						width="0"
 						height="17"
 						key="line-3"/>
@@ -211,7 +211,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="158"
+						y="152"
 						width="524"
 						height="0"
 						key="line-4"/>
@@ -220,7 +220,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="175"
+						y="169"
 						width="524"
 						height="0"
 						key="line-5"/>
@@ -229,7 +229,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="192"
+						y="186"
 						width="524"
 						height="0"
 						key="line-6"/>
@@ -238,7 +238,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="209"
+						y="203"
 						width="524"
 						height="0"
 						key="line-7"/>
@@ -247,7 +247,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="354"
-						y="141"
+						y="135"
 						width="0"
 						height="153"
 						key="line-8"/>
@@ -256,7 +256,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="294"
+						y="288"
 						width="524"
 						height="0"
 						key="line-9"/>
@@ -265,7 +265,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="354"
-						y="226"
+						y="220"
 						width="170"
 						height="0"
 						key="line-10"/>
@@ -274,7 +274,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="354"
-						y="243"
+						y="237"
 						width="170"
 						height="0"
 						key="line-11"/>
@@ -283,7 +283,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="354"
-						y="260"
+						y="254"
 						width="170"
 						height="0"
 						key="line-12"/>
@@ -292,7 +292,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="354"
-						y="277"
+						y="271"
 						width="170"
 						height="0"
 						key="line-13"/>
@@ -301,7 +301,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="76"
-						y="175"
+						y="169"
 						width="0"
 						height="34"
 						key="line-14"/>
@@ -310,7 +310,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="152"
-						y="175"
+						y="169"
 						width="0"
 						height="34"
 						key="line-15"/>
@@ -319,7 +319,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="124"
-						y="192"
+						y="186"
 						width="0"
 						height="17"
 						key="line-16"/>
@@ -328,7 +328,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="237"
-						y="175"
+						y="169"
 						width="0"
 						height="34"
 						key="line-17"/>
@@ -337,7 +337,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="209"
-						y="175"
+						y="169"
 						width="0"
 						height="17"
 						key="line-18"/>
@@ -346,7 +346,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="337"
+						y="331"
 						width="524"
 						height="0"
 						key="line-19"/>
@@ -355,7 +355,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="1"
-						y="141"
+						y="135"
 						width="66"
 						height="8"
 						key="staticText-1"/>
@@ -368,7 +368,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="1"
-						y="158"
+						y="152"
 						width="66"
 						height="8"
 						key="staticText-2"/>
@@ -381,7 +381,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="1"
-						y="175"
+						y="169"
 						width="66"
 						height="8"
 						key="staticText-3"/>
@@ -394,7 +394,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="1"
-						y="192"
+						y="186"
 						width="75"
 						height="8"
 						key="staticText-4"/>
@@ -407,7 +407,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="1"
-						y="211"
+						y="205"
 						width="75"
 						height="8"
 						key="staticText-5"/>
@@ -420,7 +420,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="79"
-						y="175"
+						y="169"
 						width="66"
 						height="8"
 						key="staticText-6"/>
@@ -433,7 +433,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="155"
-						y="175"
+						y="169"
 						width="42"
 						height="8"
 						key="staticText-7"/>
@@ -446,7 +446,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="212"
-						y="175"
+						y="169"
 						width="22"
 						height="8"
 						key="staticText-8"/>
@@ -459,7 +459,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="240"
-						y="175"
+						y="169"
 						width="88"
 						height="8"
 						key="staticText-9"/>
@@ -472,7 +472,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="79"
-						y="192"
+						y="186"
 						width="35"
 						height="8"
 						key="staticText-10"/>
@@ -485,7 +485,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="126"
-						y="192"
+						y="186"
 						width="24"
 						height="8"
 						key="staticText-11"/>
@@ -498,7 +498,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="155"
-						y="192"
+						y="186"
 						width="66"
 						height="8"
 						key="staticText-12"/>
@@ -511,7 +511,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="240"
-						y="192"
+						y="186"
 						width="66"
 						height="8"
 						key="staticText-13"/>
@@ -524,7 +524,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="357"
-						y="141"
+						y="135"
 						width="100"
 						height="8"
 						key="staticText-14"/>
@@ -537,7 +537,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="357"
-						y="158"
+						y="152"
 						width="100"
 						height="8"
 						key="staticText-15"/>
@@ -550,7 +550,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="357"
-						y="277"
+						y="271"
 						width="100"
 						height="8"
 						key="staticText-16"/>
@@ -563,7 +563,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="357"
-						y="260"
+						y="254"
 						width="100"
 						height="8"
 						key="staticText-17"/>
@@ -576,7 +576,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="357"
-						y="243"
+						y="237"
 						width="100"
 						height="8"
 						key="staticText-18"/>
@@ -589,7 +589,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="357"
-						y="226"
+						y="220"
 						width="100"
 						height="8"
 						key="staticText-19"/>
@@ -602,7 +602,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="357"
-						y="209"
+						y="203"
 						width="100"
 						height="8"
 						key="staticText-20"/>
@@ -615,7 +615,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="357"
-						y="192"
+						y="186"
 						width="100"
 						height="8"
 						key="staticText-21"/>
@@ -628,7 +628,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="357"
-						y="175"
+						y="169"
 						width="100"
 						height="8"
 						key="staticText-22"/>
@@ -641,7 +641,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="1"
-						y="296"
+						y="290"
 						width="33"
 						height="8"
 						key="staticText-23"/>
@@ -654,7 +654,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="1"
-						y="326"
+						y="320"
 						width="65"
 						height="8"
 						key="staticText-24"/>
@@ -667,7 +667,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="357"
-						y="326"
+						y="320"
 						width="57"
 						height="8"
 						key="staticText-25"/>
@@ -680,7 +680,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="332"
-						y="339"
+						y="333"
 						width="68"
 						height="8"
 						key="staticText-26"/>
@@ -693,7 +693,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="410"
-						y="339"
+						y="333"
 						width="106"
 						height="11"
 						key="staticText-27"/>
@@ -706,7 +706,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="122"
-						y="124"
+						y="118"
 						width="30"
 						height="15"
 						key="textField-1"/>
@@ -723,7 +723,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="156"
-						y="124"
+						y="118"
 						width="368"
 						height="15"
 						key="textField-2"/>
@@ -736,7 +736,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
-						y="149"
+						y="143"
 						width="347"
 						height="9"
 						key="textField-3"/>
@@ -749,7 +749,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
-						y="166"
+						y="160"
 						width="347"
 						height="9"
 						key="textField-4"/>
@@ -762,7 +762,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
-						y="183"
+						y="177"
 						width="66"
 						height="9"
 						key="textField-5"/>
@@ -775,7 +775,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="79"
-						y="183"
+						y="177"
 						width="71"
 						height="9"
 						key="textField-6"/>
@@ -788,7 +788,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="155"
-						y="183"
+						y="177"
 						width="51"
 						height="9"
 						key="textField-7"/>
@@ -801,7 +801,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="211"
-						y="183"
+						y="177"
 						width="24"
 						height="9"
 						key="textField-8"/>
@@ -814,7 +814,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="240"
-						y="183"
+						y="177"
 						width="88"
 						height="9"
 						key="textField-9"/>
@@ -827,7 +827,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="79"
-						y="200"
+						y="194"
 						width="40"
 						height="9"
 						key="textField-11"/>
@@ -840,7 +840,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="125"
-						y="200"
+						y="194"
 						width="24"
 						height="9"
 						key="textField-12"/>
@@ -854,7 +854,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 					<reportElement
 						mode="Opaque"
 						x="234"
-						y="198"
+						y="192"
 						width="7"
 						height="8"
 						key="staticText-28"/>
@@ -867,7 +867,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="411"
-						y="149"
+						y="143"
 						width="80"
 						height="9"
 						key="textField-15"/>
@@ -880,7 +880,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="411"
-						y="166"
+						y="160"
 						width="80"
 						height="9"
 						key="textField-16"/>
@@ -893,7 +893,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="411"
-						y="200"
+						y="194"
 						width="80"
 						height="9"
 						key="textField-18"/>
@@ -906,7 +906,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="411"
-						y="217"
+						y="211"
 						width="80"
 						height="9"
 						key="textField-19"/>
@@ -919,7 +919,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="411"
-						y="251"
+						y="245"
 						width="80"
 						height="9"
 						key="textField-21"/>
@@ -932,7 +932,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="411"
-						y="285"
+						y="279"
 						width="80"
 						height="9"
 						key="textField-23"/>
@@ -945,7 +945,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
-						y="220"
+						y="214"
 						width="340"
 						height="70"
 						key="textField-24"/>
@@ -959,7 +959,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 					<reportElement
 						mode="Opaque"
 						x="1"
-						y="339"
+						y="333"
 						width="319"
 						height="35"
 						forecolor="#000000"
@@ -972,7 +972,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="37"
-						y="295"
+						y="289"
 						width="477"
 						height="9"
 						key="textField-31"/>
@@ -985,7 +985,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="37"
-						y="305"
+						y="299"
 						width="477"
 						height="9"
 						key="textField-32"/>
@@ -998,7 +998,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="37"
-						y="315"
+						y="309"
 						width="42"
 						height="9"
 						key="textField-33"/>
@@ -1011,7 +1011,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="76"
-						y="315"
+						y="309"
 						width="438"
 						height="9"
 						key="textField-34"/>
@@ -1033,16 +1033,16 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="262"
-						y="3"
+						y="4"
 						width="0"
-						height="115"
+						height="109"
 						key="line-23"/>
 					<graphicElement stretchType="NoStretch" pen="Dotted"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="2"
-						y="24"
+						y="22"
 						width="256"
 						height="0"
 						key="line-24"/>
@@ -1051,7 +1051,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="155"
-						y="7"
+						y="5"
 						width="0"
 						height="17"
 						key="line-25"/>
@@ -1060,7 +1060,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="121"
-						y="7"
+						y="5"
 						width="0"
 						height="17"
 						key="line-26"/>
@@ -1069,7 +1069,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="157"
-						y="7"
+						y="5"
 						width="100"
 						height="15"
 						key="staticText-29"/>
@@ -1082,7 +1082,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="385"
-						y="7"
+						y="5"
 						width="0"
 						height="17"
 						key="line-27"/>
@@ -1091,7 +1091,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="266"
-						y="24"
+						y="22"
 						width="256"
 						height="0"
 						key="line-28"/>
@@ -1100,7 +1100,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="419"
-						y="7"
+						y="5"
 						width="0"
 						height="17"
 						key="line-29"/>
@@ -1109,7 +1109,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="421"
-						y="8"
+						y="6"
 						width="100"
 						height="15"
 						key="staticText-30"/>
@@ -1122,7 +1122,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="123"
-						y="7"
+						y="5"
 						width="30"
 						height="15"
 						key="textField-35"/>
@@ -1139,7 +1139,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="387"
-						y="8"
+						y="6"
 						width="30"
 						height="15"
 						key="textField-36"/>
@@ -1156,7 +1156,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="155"
-						y="24"
+						y="22"
 						width="0"
 						height="17"
 						key="line-30"/>
@@ -1165,7 +1165,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="50"
-						y="24"
+						y="22"
 						width="0"
 						height="17"
 						key="line-31"/>
@@ -1174,7 +1174,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="2"
-						y="41"
+						y="39"
 						width="256"
 						height="0"
 						key="line-32"/>
@@ -1183,7 +1183,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="207"
-						y="24"
+						y="22"
 						width="0"
 						height="17"
 						key="line-33"/>
@@ -1192,7 +1192,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="2"
-						y="24"
+						y="22"
 						width="46"
 						height="8"
 						key="staticText-31"/>
@@ -1205,7 +1205,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="2"
-						y="32"
+						y="30"
 						width="46"
 						height="9"
 						key="textField-37"/>
@@ -1218,7 +1218,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="53"
-						y="24"
+						y="22"
 						width="100"
 						height="8"
 						key="staticText-32"/>
@@ -1231,7 +1231,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="53"
-						y="32"
+						y="30"
 						width="100"
 						height="9"
 						key="textField-38"/>
@@ -1244,7 +1244,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="158"
-						y="24"
+						y="22"
 						width="24"
 						height="8"
 						key="staticText-33"/>
@@ -1257,7 +1257,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="158"
-						y="32"
+						y="30"
 						width="46"
 						height="9"
 						key="textField-39"/>
@@ -1270,7 +1270,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="210"
-						y="24"
+						y="22"
 						width="47"
 						height="8"
 						key="staticText-34"/>
@@ -1283,7 +1283,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="266"
-						y="24"
+						y="22"
 						width="256"
 						height="0"
 						key="line-34"/>
@@ -1292,7 +1292,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="419"
-						y="24"
+						y="22"
 						width="0"
 						height="17"
 						key="line-35"/>
@@ -1301,7 +1301,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="314"
-						y="24"
+						y="22"
 						width="0"
 						height="17"
 						key="line-36"/>
@@ -1310,7 +1310,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="266"
-						y="41"
+						y="39"
 						width="256"
 						height="0"
 						key="line-37"/>
@@ -1319,7 +1319,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="471"
-						y="24"
+						y="22"
 						width="0"
 						height="17"
 						key="line-38"/>
@@ -1328,7 +1328,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="266"
-						y="24"
+						y="22"
 						width="46"
 						height="8"
 						key="staticText-35"/>
@@ -1341,7 +1341,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="266"
-						y="32"
+						y="30"
 						width="46"
 						height="9"
 						key="textField-40"/>
@@ -1354,7 +1354,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="317"
-						y="24"
+						y="22"
 						width="100"
 						height="8"
 						key="staticText-36"/>
@@ -1367,7 +1367,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="317"
-						y="32"
+						y="30"
 						width="100"
 						height="9"
 						key="textField-41"/>
@@ -1380,7 +1380,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="422"
-						y="24"
+						y="22"
 						width="24"
 						height="8"
 						key="staticText-37"/>
@@ -1393,7 +1393,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="422"
-						y="32"
+						y="30"
 						width="46"
 						height="9"
 						key="textField-42"/>
@@ -1406,7 +1406,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="474"
-						y="24"
+						y="22"
 						width="47"
 						height="8"
 						key="staticText-38"/>
@@ -1419,7 +1419,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="2"
-						y="58"
+						y="56"
 						width="256"
 						height="0"
 						key="line-39"/>
@@ -1428,7 +1428,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="87"
-						y="41"
+						y="39"
 						width="0"
 						height="17"
 						key="line-40"/>
@@ -1437,7 +1437,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="172"
-						y="41"
+						y="39"
 						width="0"
 						height="17"
 						key="line-41"/>
@@ -1446,7 +1446,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="2"
-						y="41"
+						y="39"
 						width="82"
 						height="8"
 						key="staticText-39"/>
@@ -1459,7 +1459,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="2"
-						y="49"
+						y="47"
 						width="74"
 						height="9"
 						key="textField-43"/>
@@ -1472,7 +1472,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="90"
-						y="41"
+						y="39"
 						width="80"
 						height="8"
 						key="staticText-40"/>
@@ -1485,7 +1485,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="175"
-						y="41"
+						y="39"
 						width="82"
 						height="8"
 						key="staticText-41"/>
@@ -1498,7 +1498,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="87"
-						y="58"
+						y="56"
 						width="0"
 						height="17"
 						key="line-42"/>
@@ -1507,7 +1507,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="2"
-						y="75"
+						y="73"
 						width="256"
 						height="0"
 						key="line-43"/>
@@ -1516,7 +1516,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="172"
-						y="58"
+						y="56"
 						width="0"
 						height="17"
 						key="line-44"/>
@@ -1525,7 +1525,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="2"
-						y="58"
+						y="56"
 						width="82"
 						height="8"
 						key="staticText-42"/>
@@ -1538,7 +1538,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="90"
-						y="58"
+						y="56"
 						width="80"
 						height="8"
 						key="staticText-43"/>
@@ -1551,7 +1551,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="175"
-						y="58"
+						y="56"
 						width="66"
 						height="8"
 						key="staticText-44"/>
@@ -1564,7 +1564,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="175"
-						y="66"
+						y="64"
 						width="71"
 						height="9"
 						key="textField-44"/>
@@ -1577,7 +1577,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="266"
-						y="41"
+						y="39"
 						width="82"
 						height="8"
 						key="staticText-45"/>
@@ -1590,7 +1590,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="266"
-						y="49"
+						y="47"
 						width="74"
 						height="9"
 						key="textField-45"/>
@@ -1603,7 +1603,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="351"
-						y="41"
+						y="39"
 						width="0"
 						height="17"
 						key="line-45"/>
@@ -1612,7 +1612,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="266"
-						y="58"
+						y="56"
 						width="256"
 						height="0"
 						key="line-46"/>
@@ -1621,7 +1621,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="1"
-						y="87"
+						y="85"
 						width="256"
 						height="0"
 						key="line-47"/>
@@ -1630,7 +1630,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="2"
-						y="75"
+						y="73"
 						width="33"
 						height="6"
 						key="staticText-46"/>
@@ -1643,7 +1643,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="266"
-						y="75"
+						y="73"
 						width="256"
 						height="0"
 						key="line-48"/>
@@ -1652,7 +1652,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="266"
-						y="66"
+						y="64"
 						width="256"
 						height="9"
 						key="textField-47"/>
@@ -1665,7 +1665,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="266"
-						y="58"
+						y="56"
 						width="33"
 						height="8"
 						key="staticText-47"/>
@@ -1678,7 +1678,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="266"
-						y="102"
+						y="99"
 						width="256"
 						height="0"
 						key="line-49"/>
@@ -1687,7 +1687,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="266"
-						y="75"
+						y="73"
 						width="81"
 						height="8"
 						key="staticText-48"/>
@@ -1700,20 +1700,20 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="96"
-						y="102"
+						y="100"
 						width="68"
 						height="8"
 						key="staticText-49"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" pdfFontName="Helvetica" size="6" isBold="false"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="5" isBold="false"/>
 					</textElement>
 				<text><![CDATA[Autenticação mecânica]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						x="363"
-						y="41"
+						y="39"
 						width="80"
 						height="8"
 						key="staticText-50"/>
@@ -1726,7 +1726,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<image  vAlign="Middle" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="1"
-						y="124"
+						y="118"
 						width="117"
 						height="15"
 						key="image-4"/>
@@ -1737,7 +1737,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<image  vAlign="Middle" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="1"
-						y="6"
+						y="4"
 						width="117"
 						height="15"
 						key="image-5"/>
@@ -1748,7 +1748,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<image  vAlign="Middle" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="265"
-						y="6"
+						y="4"
 						width="117"
 						height="15"
 						key="image-6"/>
@@ -1759,7 +1759,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="363"
-						y="182"
+						y="176"
 						width="128"
 						height="9"
 						key="textField-49"/>
@@ -1772,7 +1772,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="90"
-						y="65"
+						y="63"
 						width="79"
 						height="9"
 						key="textField-50"/>
@@ -1785,7 +1785,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="363"
-						y="47"
+						y="45"
 						width="159"
 						height="9"
 						key="textField-51"/>
@@ -1807,7 +1807,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<line direction="TopDown">
 					<reportElement
 						x="1"
-						y="101"
+						y="99"
 						width="256"
 						height="0"
 						key="line-51"/>
@@ -1816,7 +1816,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<staticText>
 					<reportElement
 						x="2"
-						y="88"
+						y="86"
 						width="33"
 						height="6"
 						key="staticText-51"/>
@@ -1829,7 +1829,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="2"
-						y="78"
+						y="76"
 						width="257"
 						height="9"
 						key="textField-54"/>
@@ -1842,7 +1842,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="2"
-						y="93"
+						y="91"
 						width="256"
 						height="8"
 						key="textField-55"/>
