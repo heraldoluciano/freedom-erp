@@ -128,7 +128,7 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 			FreedomREP freedom = new FreedomREP();
 			freedom.show();
 		} catch ( Throwable e ) {
-			Funcoes.criaTelaErro( "Erro de execução" );
+			Funcoes.criaTelaErro( "Erro de execução\n" + e.getMessage() );
 			e.printStackTrace();
 		}
 	}
