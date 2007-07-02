@@ -107,6 +107,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 	private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtTipoFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtRedFisc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
+	private JTextFieldPad txtCodUn = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
 	private JTextFieldPad txtVlrIPICompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
 	private JTextFieldPad txtVlrDescCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
 	private JTextFieldPad txtVlrLiqCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
@@ -230,7 +231,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		lcProd.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cod.Fiscal",ListaCampos.DB_FK, false));
 		lcProd.add(new GuardaCampo(txtCodBarProd, "CodBarProd", "Cod.Barra",ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtCodFabProd, "CodFabProd","Cod.Fabricante", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCodUn, "CodUnid", "Unidade", ListaCampos.DB_SI, false ));
 
+		txtCodUn.setAtivo( false );
 		lcProd.setWhereAdic("ATIVOPROD='S'");
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setQueryCommit(false);
@@ -373,17 +376,19 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		}
 		txtCustoItCompra.setSoLeitura(true);
 		adicDescFK(txtDescProd, 110, 20, 197, 20, "DescProd","Descrição do produto");
-		adicCampo(txtCodLote, 310, 20, 67, 20, "CodLote", "Lote",ListaCampos.DB_FK, txtDescLote, false);
-		adicCampo(txtQtdItCompra, 380, 20, 67, 20, "qtditcompra", "Qtd.",ListaCampos.DB_SI, true);
+		adic( new JLabelPad("Unidade"),310, 0, 60, 20);
+		adic( txtCodUn, 310, 20, 60, 20 );
+		adicCampo(txtCodLote, 373, 20, 95, 20, "CodLote", "Lote",ListaCampos.DB_FK, txtDescLote, false);
+		adicCampo(txtQtdItCompra, 470, 20, 67, 20, "qtditcompra", "Qtd.",ListaCampos.DB_SI, true);
 
 		adicCampoInvisivel(txtCodAlmoxItCompra, "codalmox", "Cod.Almox",ListaCampos.DB_FK, false);
 		
 		txtQtdItCompra.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd,con,"qtditcompra"));		
 				
-		adicCampo(txtPrecoItCompra, 450, 20, 67, 20, "PrecoItCompra", "Preço",ListaCampos.DB_SI, true);
-		adicCampo(txtPercDescItCompra, 520, 20, 57, 20, "PercDescItCompra","% Desc.", ListaCampos.DB_SI, false);
-		adicCampo(txtVlrDescItCompra, 580, 20, 67, 20, "VlrDescItCompra","V. Desc.", ListaCampos.DB_SI, false);
-		adicCampo(txtCustoItCompra, 650, 20, 85, 20, "CustoItCompra","Custo Estoq.", ListaCampos.DB_SI, false);
+		adicCampo(txtPrecoItCompra, 540, 20, 67, 20, "PrecoItCompra", "Preço",ListaCampos.DB_SI, true);
+		adicCampo(txtPercDescItCompra, 610, 20, 57, 20, "PercDescItCompra","% Desc.", ListaCampos.DB_SI, false);
+		adicCampo(txtVlrDescItCompra, 670, 20, 67, 20, "VlrDescItCompra","V. Desc.", ListaCampos.DB_SI, false);
+		adicCampo(txtCustoItCompra, 650, 60, 85, 20, "CustoItCompra","Custo Estoq.", ListaCampos.DB_SI, false);
 		adicCampo(txtCodNat, 7, 60, 67, 20, "CodNat", "CFOP",ListaCampos.DB_FK, txtDescNat, true);
 		adicDescFK(txtDescNat, 80, 60, 197, 20, "DescNat", "Descrição da CFOP");
 		adicCampo(txtBaseICMSItCompra, 280, 60, 67, 20, "VlrBaseICMSItCompra","B. ICMS", ListaCampos.DB_SI, false);
@@ -393,7 +398,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		adicCampoInvisivel(txtAliqIPIItCompra, "PercIPIItCompra", "% IPI",ListaCampos.DB_SI, false);
 		adicCampo(txtVlrIPIItCompra, 480, 60, 67, 20, "VlrIPIItCompra","V. IPI", ListaCampos.DB_SI, false);
 		adicCampoInvisivel(txtVlrProdItCompra, "VlrProdItCompra", "V. Bruto",ListaCampos.DB_SI, false);
-		adicCampo(txtVlrLiqItCompra, 550, 60, 100, 20, "VlrLiqItCompra","Valor Item", ListaCampos.DB_SI, false);
+		adicCampo(txtVlrLiqItCompra, 550, 60, 97, 20, "VlrLiqItCompra","Valor Item", ListaCampos.DB_SI, false);
 		pinTot.adic(new JLabelPad("Tot. IPI"), 7, 0, 120, 20);
 		pinTot.adic(txtVlrIPICompra, 7, 20, 120, 20);
 		pinTot.adic(new JLabelPad("Tot. Desc."), 7, 40, 120, 20);
