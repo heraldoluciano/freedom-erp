@@ -43,7 +43,7 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.JCheckBoxPad;
+//import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -62,6 +62,10 @@ public class FRBoleto extends FRelatorio {
 
 	private JTextFieldFK txtDescModBol = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldFK txtPreImpModBol = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
+
+	private JTextFieldFK txtClassModBol = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+	
 	public JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	public JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -85,8 +89,8 @@ public class FRBoleto extends FRelatorio {
 	private JTextFieldPad txtCodTpCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTpCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
-	private JCheckBoxPad cbTipoImp = new JCheckBoxPad("Impressão gráfica","S","N");
+
+	//private JCheckBoxPad cbTipoImp = new JCheckBoxPad("Impressão gráfica","S","N");
 
 	private ListaCampos lcModBol = new ListaCampos( this );
 
@@ -110,7 +114,7 @@ public class FRBoleto extends FRelatorio {
 	public FRBoleto( JInternalFrame fExt ) {
 
 		setTitulo( "Impressão de boleto" );
-		setAtribos( 80, 80, 545, 280 );
+		setAtribos( 80, 80, 545, 320 );
 
 		this.fExt = fExt;
 		
@@ -134,6 +138,8 @@ public class FRBoleto extends FRelatorio {
 		
 		lcModBol.add( new GuardaCampo( txtCodModBol, "CodModBol", "Cód.mod.", ListaCampos.DB_PK, true ) );
 		lcModBol.add( new GuardaCampo( txtDescModBol, "DescModBol", "Descrição do modelo de boleto", ListaCampos.DB_SI, false ) );
+		lcModBol.add( new GuardaCampo( txtPreImpModBol, "PreImpModBol", "Pré-impr.", ListaCampos.DB_SI, false) );
+		lcModBol.add( new GuardaCampo( txtClassModBol, "ClassModBol", "Classe do modelo", ListaCampos.DB_SI, false) );
 		lcModBol.setReadOnly( true );
 		lcModBol.montaSql( false, "MODBOLETO", "FN" );
 		txtCodModBol.setTabelaExterna( lcModBol );
@@ -144,7 +150,7 @@ public class FRBoleto extends FRelatorio {
 		 * VENDA *
 		 *********/
 		
-		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, true ) );
+		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, false ) );
 		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "Doc.", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtDataVenda, "DtEmitVenda", "Data", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_FK, true ) );
@@ -193,40 +199,40 @@ public class FRBoleto extends FRelatorio {
 	
 	private void montaTela() {
 		
-		adic( new JLabelPad( "Venda" ), 7, 10, 80, 20 );
-		adic( txtCodVenda, 7, 30, 80, 20 );
-		adic( new JLabelPad( "Doc." ), 90, 10, 97, 20 );
-		adic( txtDocVenda, 90, 30, 97, 20 );
-		adic( new JLabelPad( "Data" ), 190, 10, 97, 20 );
-		adic( txtDataVenda, 190, 30, 97, 20 );
-		adic( new JLabelPad( "Cliente" ), 290, 10, 230, 20 );
-		adic( txtRazCli, 290,30, 230, 20 );
-		/*adic( new JLabelPad( "Cód.mod." ), 7, 50, 300, 20 );
-		adic( txtCodModBol, 7, 70, 80, 20 );
-		adic( new JLabelPad( "Descrição do modelo" ), 90, 50, 300, 20 );
-		adic( txtDescModBol, 90, 70, 300, 20 );*/
-		adic( new JLabelPad( "Cód.banco" ), 7, 50, 80, 20 );
-		adic( txtCodBanco, 7, 70, 80, 20 );
-		adic( new JLabelPad( "Nome do banco" ), 90, 50, 430, 20 );
-		adic( txtNomeBanco, 90, 70, 430, 20 );
-		adic( new JLabelPad( "Cód.tp.cob." ), 7, 90, 300, 20 );
-		adic( txtCodTpCob, 7, 110, 80, 20 );
-		adic( new JLabelPad( "Descrição do tipo de cobrança" ), 90, 90, 430, 20 );
-		adic( txtDescTpCob, 90, 110, 430, 20 );
+		adic( new JLabelPad( "Cód.mod." ), 7, 0, 300, 20 );
+		adic( txtCodModBol, 7, 20, 80, 20 );
+		adic( new JLabelPad( "Descrição do modelo" ), 90, 0, 300, 20 );
+		adic( txtDescModBol, 90, 20, 300, 20 );
+		adic( new JLabelPad( "Pedido" ), 7, 40, 80, 20 );
+		adic( txtCodVenda, 7, 60, 80, 20 );
+		adic( new JLabelPad( "Doc." ), 90, 40, 97, 20 );
+		adic( txtDocVenda, 90, 60, 97, 20 );
+		adic( new JLabelPad( "Data" ), 190, 40, 97, 20 );
+		adic( txtDataVenda, 190, 60, 97, 20 );
+		adic( new JLabelPad( "Cliente" ), 290, 40, 230, 20 );
+		adic( txtRazCli, 290,60, 230, 20 );
+		adic( new JLabelPad( "Nro.parcela" ), 7, 80, 80, 20 );
+		adic( txtParc, 7, 100, 80, 20 );
+		adic( new JLabelPad( "Cód.banco" ), 90, 80, 80, 20 );
+		adic( txtCodBanco, 90, 100, 80, 20 );
+		adic( new JLabelPad( "Nome do banco" ), 173, 80, 348, 20 );
+		adic( txtNomeBanco, 173, 100, 348, 20 );
+		adic( new JLabelPad( "Cód.tp.cob." ), 7, 120, 300, 20 );
+		adic( txtCodTpCob, 7, 140, 80, 20 );
+		adic( new JLabelPad( "Descrição do tipo de cobrança" ), 90, 120, 430, 20 );
+		adic( txtDescTpCob, 90, 140, 430, 20 );
 		
-		JLabel periodo = new JLabel( "Período", SwingConstants.CENTER );
+		JLabel periodo = new JLabel( "Período (Emissão)", SwingConstants.CENTER );
 		periodo.setOpaque( true );
-		adic( periodo, 25, 130, 60, 20 );		
+		adic( periodo, 25, 160, 150, 20 );		
 		JLabel borda = new JLabel();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
-		adic( borda, 7, 140, 296, 45 );		
-		adic( txtDtIni, 25, 155, 110, 20 );
-		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 155, 40, 20 );
-		adic( txtDtFim, 175, 155, 110, 20 );		
+		adic( borda, 7, 170, 296, 45 );		
+		adic( txtDtIni, 25, 185, 110, 20 );
+		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 185, 40, 20 );
+		adic( txtDtFim, 175, 185, 110, 20 );		
 
-		adic( new JLabelPad( "Nro.parcela" ), 310, 140, 100, 20 );
-		adic( txtParc, 310, 160, 70, 20 );
-		adic( cbTipoImp, 390, 150, 150, 30);
+		//adic( cbTipoImp, 390, 180, 150, 30);
 	}
 
 	private String aplicCampos( ResultSet rs, String[] sNat ) {
@@ -501,30 +507,49 @@ public class FRBoleto extends FRelatorio {
 	
 	public void imprimir( boolean bVisualizar ) {
 		
-		/*if ( txtCodVenda.getVlrString().equals( "" ) ) {
-			Funcoes.mensagemInforma( this, "Código da venda em branco!" );
+		final int codvenda = txtCodVenda.getVlrInteger().intValue();
+		final int nparc = txtParc.getVlrInteger().intValue();
+		final String codbanco = txtCodBanco.getVlrString().trim();
+		final int codtipocob = txtCodTpCob.getVlrInteger().intValue();
+		int param = 1;
+		
+		if ( txtCodModBol.getVlrString().equals( "" ) ) {
+			Funcoes.mensagemInforma( this, "Modelo de boleto não selecionado!" );
+			txtCodModBol.requestFocus();
 			return;
 		}
-		else if ( txtCodModBol.getVlrString().equals( "" ) ) {
-			Funcoes.mensagemInforma( this, "Código do modelo em branco!" );
+		else if ( ( codvenda==0 ) && 
+				  ( ("".equals( txtDtIni.getVlrString() )) || 
+					("".equals( txtDtFim.getVlrString()) ) ) ) {
+			Funcoes.mensagemInforma( this, "Período não selecionado!" );
+			txtDtIni.requestFocus();
 			return;
-		}*/		
+		}
 		
 		try {
 
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 			StringBuilder sSQL = new StringBuilder();
-			StringBuilder sSQLNat = new StringBuilder();
-			String sVal = null;
-			String sParc = "";
-			String[] sNat = new String[ 2 ];
+			StringBuilder sWhere = new StringBuilder();
+//			String sVal = null;
 			ImprimeOS imp = null;			
 	
-			if ( txtParc.getVlrInteger().intValue() > 0 ) {
-				sParc = " AND ITR.NPARCITREC = " + txtParc.getVlrString();
+			sWhere.append("MB.CODEMP=? AND MB.CODFILIAL=? AND MB.CODMODBOL=? AND ");
+			if ( codvenda!=0) {
+				sWhere.append( "R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA=? " );
+			} else {
+				sWhere.append( "V.DTEMITVENDA BETWEEN ? AND ? " );
 			}
-	
+			if (!"".equals(codbanco)) {
+				sWhere.append("AND B.CODEMP=? AND B.CODFILIAL=? AND B.CODBANCO=? ");
+			}
+			if ( codtipocob!=0 ) {
+				sWhere.append("AND ITR.CODEMPTC=? AND ITR.CODFILIALTC=? AND ITR.CODTIPOCOB=? ");
+			}
+			if (nparc!=0) {
+				sWhere.append("AND ITR.NPARCITREC=? ");
+			}
 			imp = new ImprimeOS( "", con );
 			imp.verifLinPag();
 			imp.setTitulo( "Boleto" );
@@ -556,27 +581,42 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "WHERE IV2.CODEMP=IV.CODEMP AND IV2.CODFILIAL=IV.CODFILIAL AND IV2.TIPOVENDA=IV.TIPOVENDA AND " );
 			sSQL.append( "IV2.CODVENDA=IV.CODVENDA AND IV2.CODNAT IS NOT NULL ) AND " );
 			sSQL.append( "N.CODEMP=IV.CODEMPNT AND N.CODFILIAL=IV.CODFILIALNT AND N.CODNAT=IV.CODNAT AND  " );
-			sSQL.append( "R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA=? " );
-			sSQL.append( sParc );	
+			sSQL.append( sWhere );
 			
 			ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
-			ps.setInt( 3, txtCodVenda.getVlrInteger().intValue() );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNMODBOLETO" ) );
+			ps.setInt( param++, txtCodModBol.getVlrInteger().intValue() );
+			if ( codvenda!=0 ) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+				ps.setInt( param++, txtCodVenda.getVlrInteger().intValue() );
+			} else {
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
+			}
+			if (!"".equals( codbanco )) { 
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "FNBANCO" ) );
+				ps.setString( param++, codbanco );
+			}
+			if ( codtipocob!=0 ) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "FNTIPOCOB" ) );
+				ps.setInt( param++, codtipocob );
+			}
+			if (nparc!=0) {
+				ps.setInt( param++, nparc);
+			}
+			
 			rs = ps.executeQuery();
 
 			String classe = null;
-			while (rs.next()) {
-				classe = getClassModelo(rs.getString( "PREIMPMODBOL" ), rs.getString("CLASSMODBOL") );
-				sNat[ 0 ] = rs.getString( "CODNAT" );
-				sNat[ 1 ] = rs.getString( "DESCNAT" );
-				if ( classe == null ) {
-					imprimeTexto( bVisualizar, rs, sNat );
-				}
-				else {
-					imprimeGrafico( bVisualizar, rs, classe );
-				}
-				
+			classe = getClassModelo(txtPreImpModBol.getVlrString(), txtClassModBol.getVlrString() );
+			if (classe == null ) {
+				imprimeTexto( bVisualizar, rs );
+			} else {
+				imprimeGrafico( bVisualizar, rs, classe );
 			}
 			rs.close();
 			ps.close();
@@ -591,29 +631,36 @@ public class FRBoleto extends FRelatorio {
 		}
 	}
 	
-	private void imprimeTexto( final boolean bVisualizar, final ResultSet rs, final String[] sNat ) throws Exception {		
+	private void imprimeTexto( final boolean bVisualizar, final ResultSet rs ) throws Exception {		
 		
 		String sVal = null;
 		ImprimeOS imp = null;	
 		imp = new ImprimeOS( "", con );
 		imp.verifLinPag();
 		imp.setTitulo( "Boleto" );
+		String[] sNat = null;
 				
-		sVal = aplicCampos( rs, sNat );
+		while (rs.next()) {
+			sNat = new String[2];
+			sNat[ 0 ] = rs.getString( "CODNAT" );
+			sNat[ 1 ] = rs.getString( "DESCNAT" );
+			sVal = aplicCampos( rs, sNat );
 			
-		if ( sVal != null ) {
-				
-			String[] sLinhas = ( sVal + " " ).split( "\n" );
-				
-			for ( int i = 0; i < sLinhas.length; i++ ) {
-				if ( i == 0 ) {
-					imp.say( imp.pRow() + 1, 0, imp.normal() + imp.comprimido() + "" );
-					imp.say( imp.pRow(), 0, sLinhas[ i ] );
-				}
-				else {
-					imp.say( imp.pRow() + 1, 0, sLinhas[ i ] );
+			if ( sVal != null ) {
+					
+				String[] sLinhas = ( sVal + " " ).split( "\n" );
+					
+				for ( int i = 0; i < sLinhas.length; i++ ) {
+					if ( i == 0 ) {
+						imp.say( imp.pRow() + 1, 0, imp.normal() + imp.comprimido() + "" );
+						imp.say( imp.pRow(), 0, sLinhas[ i ] );
+					}
+					else {
+						imp.say( imp.pRow() + 1, 0, sLinhas[ i ] );
+					}
 				}
 			}
+			
 		}
 
 		imp.fechaGravacao();
