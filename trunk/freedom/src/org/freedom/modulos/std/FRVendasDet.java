@@ -38,7 +38,6 @@ import javax.swing.BorderFactory;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.acao.Processo;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -47,9 +46,7 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.modulos.rep.DLLoading;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
