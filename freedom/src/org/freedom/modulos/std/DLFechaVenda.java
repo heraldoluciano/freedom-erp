@@ -423,6 +423,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtTipoVenda.setVlrString( "V" );
 		txtCodVenda.setVlrInteger( iCodVenda );
 		lcVenda.carregaDados();
+		
+		getDadosCli();
 
 		// Carrega o frete
 
@@ -1070,7 +1072,46 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			sSQL = null;
 		}
 	}
-
+	
+	public void getDadosCli(){
+	
+		StringBuilder sSQL = new StringBuilder() ;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		if( "P1".equals( txtStatusVenda.getVlrString() ) || "V1".equals( txtStatusVenda.getVlrString() )){
+			
+			try {
+				
+				sSQL.append( "SELECT C.CODTIPOCOB, C.CODBANCO " );
+				sSQL.append( "FROM VDCLIENTE C, VDVENDA V " );
+				sSQL.append( "WHERE C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
+				sSQL.append( "AND V.CODEMP=? AND V.CODFILIAL=? AND CODVENDA=?" );
+				
+				ps = con.prepareStatement( sSQL.toString() );
+				
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" )); 
+				ps.setInt( 3, txtCodVenda.getVlrInteger());
+				rs = ps.executeQuery();
+				
+				if(rs.next()){
+					
+					txtCodBanco.setVlrString( rs.getString( "CODBANCO" ));	
+					txtCodTipoCob.setVlrString( rs.getString( "CODTIPOCOB" ));
+					
+					lcBanco.carregaDados();		
+					lcTipoCob.carregaDados(); 
+		
+				}
+			} catch ( Exception e ) {
+			
+				Funcoes.mensagemErro( this, "Erro ao carregar dados do cliente \n" +e.getMessage());
+				e.printStackTrace();
+		
+			}
+		}
+	}
 	public String[] getValores() {
 
 		String[] sRetorno = new String[ 8 ];
