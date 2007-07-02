@@ -51,6 +51,8 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.Navegador;
+import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FTabDados;
 
@@ -59,6 +61,8 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 	private static final long serialVersionUID = 1L;
 	
 	private final CardLayout cardlayout = new CardLayout();
+	
+	private final JPanelPad pnGeral = new JPanelPad( new BorderLayout() );
 
 	private final JPanelPad pinCab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
@@ -72,13 +76,11 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 	
 	private final JPanelPad panelBolElect = new JPanelPad();
 	
-	private JPanelPad pnGeral = new JPanelPad( new BorderLayout() );
+	private final JPanelPad panelBancos = new JPanelPad( new BorderLayout() );
 	
-	private JPanelPad panelBancos = new JPanelPad( new BorderLayout() );
+	private final JPanelPad panelCamposBancos = new JPanelPad();
 	
-	private JPanelPad pnteste = new JPanelPad();
-	
-	private final JTextFieldPad txtCodModBol = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	private final JTextFieldPad txtCodModBol = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtDescModBol = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 	
@@ -113,12 +115,24 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 	private final JTextFieldPad txtCodConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private final JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private final JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
+
+	private final JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	//private final JButton btPath = new JButton( "..." );
 
 	private JComboBoxPad cbAcao = null;
 	
-	private ListaCampos lcConta = new ListaCampos( this, "CC" );
+	private final Tabela tabBancos = new Tabela();
+	
+	private final Navegador navBancos = new Navegador( true );
+	
+	private final ListaCampos lcConta = new ListaCampos( this, "CC" );
+	
+	private final ListaCampos lcBanco = new ListaCampos( this, "BO" );
+	
+	private final ListaCampos lcItModBol = new ListaCampos( this );
 	
 
 	public FModBoleto() {
@@ -127,22 +141,26 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		setTitulo( "Modelo de boleto" );
 		setAtribos( 30, 30, 740, 500 );
 
-		ckAceite.setVlrString( "N" );
 		
-		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.conta", ListaCampos.DB_PK, false ) );
-		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
-		lcConta.montaSql( false, "CONTA", "FN" );
-		lcConta.setReadOnly( true );
-		txtCodConta.setTabelaExterna( lcConta );
-		txtCodConta.setFK( true );
-		txtCodConta.setNomeCampo( "NumConta" );
+		lcItModBol.setMaster( lcCampos );
+		lcCampos.adicDetalhe( lcItModBol );
+		lcItModBol.setTabela( tabBancos );
+		lcItModBol.setNavegador( navBancos );
+		navBancos.setListaCampos( lcItModBol );
 		
 		montaCombos();
-		montaTela();
-		
+		montaTela();		
+		montaListaCampos();
+
+		lcItModBol.montaTab();
+		tabBancos.setTamColuna( 100, 0 );
+		tabBancos.setTamColuna( 250, 1 );
+		tabBancos.setTamColuna( 120, 2 );
 		
 		txaBoleto.setFont( new Font( "Courier", Font.PLAIN, 11 ) );
 		txaBoleto.setTabSize( 0 );
+
+		ckAceite.setVlrString( "N" );
 		
 		ckPreImp.setVlrString( "S" );
 		
@@ -160,6 +178,40 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		
 	}
 	
+	private void montaListaCampos() {
+		
+		/*************
+		 *  FNCONTA  *
+		 *************/
+		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.conta", ListaCampos.DB_PK, false ) );
+		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
+		lcConta.montaSql( false, "CONTA", "FN" );
+		lcConta.setReadOnly( true );
+		txtCodConta.setTabelaExterna( lcConta );
+		txtCodConta.setFK( true );
+		txtCodConta.setNomeCampo( "NumConta" );
+		
+		/*************
+		 *  FNBANCO  *
+		 *************/
+		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
+		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
+		lcBanco.montaSql( false, "BANCO", "FN" );
+		lcBanco.setReadOnly( true );
+		txtCodBanco.setListaCampos( lcBanco );
+		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setFK( true );
+		txtCodBanco.setNomeCampo( "CodBanco" );
+		
+		/*******************
+		 *  FNITMODBOLETO  *
+		 *******************/
+		lcItModBol.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, false ) );
+		lcItModBol.add( new GuardaCampo( txtCarteira, "CartCob", "Carteira", ListaCampos.DB_SI, false ) );
+		lcItModBol.montaSql( false, "ITMODBOLETO", "FN" );
+		lcItModBol.setQueryInsert( false );
+		lcItModBol.setQueryCommit( false );
+	}
 	
 	private void montaCombos() {
 		
@@ -267,9 +319,9 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		
 		adicCampo( txtCodModBol, 7, 30, 90, 20, "CodModBol", "Cód.mod.bol.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescModBol, 100, 30, 250, 20, "DescModBol", "Descrição do modelo de boleto", ListaCampos.DB_SI, true );
-		adicCampo( txtCarteira, 354, 30, 50, 20, "cartCob" , "Carteira", ListaCampos.DB_SI, true );
-		adicCampo( txtMdeCob, 407, 30, 80, 20, "mdeCob" , "Modalidade", ListaCampos.DB_SI, true );
-		adicDB( ckPreImp, 490, 30, 200, 20, "PreImpModBol", "", false );
+		
+		adicCampo( txtMdeCob, 353, 30, 97, 20, "mdeCob" , "Modalidade", ListaCampos.DB_SI, true );
+		adicDB( ckPreImp, 460, 30, 200, 20, "PreImpModBol", "", false );
 		adicCampo( txtCodConta, 7, 70, 90, 20, "NumConta", "Nº da conta", ListaCampos.DB_FK, txtDescConta, false );
 		adicDescFK( txtDescConta, 100, 70, 350, 20, "DescConta", "Descrição da conta" );
 		adicDBLiv( txaBoleto, "TxaModBol", "Corpo", false );
@@ -322,10 +374,21 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		 ****************/
 		
 		adicTab( "Bancos", panelBancos );
-		panelBancos.add( pnteste, BorderLayout.WEST );
-		pnteste.setPreferredSize( new Dimension( 500, 150 ) );
 		
-
+		panelBancos.add( new JScrollPane( tabBancos ), BorderLayout.CENTER );
+		
+		panelCamposBancos.setPreferredSize( new Dimension( 600, 100 ) );		
+		panelCamposBancos.adic( new JLabelPad( "Cód.banco" ), 7, 10, 90, 20 );
+		panelCamposBancos.adic( txtCodBanco, 7, 30, 90, 20 );
+		panelCamposBancos.adic( new JLabelPad( "Nome do banco" ), 100, 10, 250, 20 );
+		panelCamposBancos.adic( txtNomeBanco, 100, 30, 250, 20 );
+		panelCamposBancos.adic( new JLabelPad( "Carteira" ), 353, 10, 250, 20 );
+		panelCamposBancos.adic( txtCarteira, 353, 30, 97, 20 );
+		
+		panelCamposBancos.adic( navBancos, 0, 65, 270, 30 );
+		
+		panelBancos.add( panelCamposBancos, BorderLayout.SOUTH );
+		
 		pnGeral.add( pinCab );
 	
 	}
@@ -457,6 +520,8 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		super.setConexao( cn );
 		
 		lcConta.setConexao( cn );
+		lcBanco.setConexao( cn );
+		lcItModBol.setConexao( cn );
 	}
 	
 }
