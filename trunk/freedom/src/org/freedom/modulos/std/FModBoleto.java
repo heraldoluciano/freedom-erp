@@ -244,6 +244,11 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vLabs.addElement( "DDD do cliente" );
 		vLabs.addElement( "CFOP" );
 		vLabs.addElement( "Descrição da natureza" );
+		vLabs.addElement( "Codigo do orçamento" );
+		vLabs.addElement( "Código do conveniado" );
+		vLabs.addElement( "Nome do conveniado" );
+		
+		
 
 		Vector<String> vVals = new Vector<String>();
 		vVals.addElement( "" ); // larg: 10
@@ -274,6 +279,11 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vVals.addElement( "[DDD]" );// larg: 4
 		vVals.addElement( "[CODNAT]" ); // larg: 8
 		vVals.addElement( "[______________NATUREZA_DA_OPERACAO______________]" ); // larg: 50
+		vVals.addElement( "[_CODORC_]" ); // larg: 10
+		vVals.addElement( "[_CODCONV]" ); // larg: 10
+		vVals.addElement( "[_NOMECONV]" ); // larg: 50
+		vVals.addElement( "[______________________OBSORC____________________]" ); // larg: 50
+		
 
 		cbCamposDin = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_STRING, 50, 0 );
 

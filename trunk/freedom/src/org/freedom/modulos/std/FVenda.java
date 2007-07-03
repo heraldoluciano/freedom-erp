@@ -2498,7 +2498,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					FRBoleto fBol = new FRBoleto( this );
 					fBol.setConexao( con );
 					fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 6 ] ) );
-					fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
+					fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );										
 					fBol.imprimir( true );
 				}
 				if ( ( sValores[ 4 ].equals( "S" ) ) || ( sValores[ 7 ].equals( "S" ) ) ) {
