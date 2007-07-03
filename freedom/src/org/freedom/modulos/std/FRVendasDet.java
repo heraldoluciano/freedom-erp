@@ -73,7 +73,7 @@ public class FRVendasDet extends FRelatorio {
 
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar Canceladas", "S", "N" );
 	
-	private JCheckBoxPad cbVendaFilial = new JCheckBoxPad( "Listar vendas dos sub-clientes", "S", "N" );
+	private JCheckBoxPad cbVendaSubcli = new JCheckBoxPad( "Listar vendas dos sub-clientes", "S", "N" );
 
 	private JRadioGroup rgTipo = null;
 
@@ -184,7 +184,7 @@ public class FRVendasDet extends FRelatorio {
 		adic( rgTipo, 7, 190, 265, 30 );
 		adic( rgFaturados, 7, 225, 120, 70 );
 		adic( rgFinanceiro, 153, 225, 120, 70 );
-		adic( cbVendaFilial, 7, 300, 200, 20 );
+		adic( cbVendaSubcli, 7, 300, 200, 20 );
 		adic( cbVendaCanc, 7, 325, 200, 20 );
 		
 
@@ -247,15 +247,18 @@ public class FRVendasDet extends FRelatorio {
 			if ( cbVendaCanc.getVlrString().equals( "N" ) ) {
 				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 			}
-			if ( cbVendaFilial.getVlrString().equals( "S" ) ) { 
-				sWhere6 = " ";
-			}
-			if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
-				sWhere4 = " AND C.CODCLI=" + txtCodCli.getVlrInteger().intValue() + " ";
+			if ( txtCodCli.getVlrInteger().intValue() > 0 ) {				
 				if ( sCab.length() > 0 ) {
 					sCab.append( "\n" );
 				}
-				sCab.append( "Cliente : " );
+				if ( cbVendaSubcli.getVlrString().equals( "S" ) ) { 
+					sWhere6 = " AND C.CODPESQ=" + txtCodCli.getVlrInteger().intValue() + " ";
+					sCab.append( "Cliente principal: " );		
+				}				
+				else {
+					sWhere4 = " AND C.CODCLI=" + txtCodCli.getVlrInteger().intValue() + " ";
+					sCab.append( "Cliente : " );		
+				}
 				sCab.append( txtRazCli.getVlrString() );
 			}
 			if ( txtCodProd.getVlrInteger().intValue() > 0 ) {
