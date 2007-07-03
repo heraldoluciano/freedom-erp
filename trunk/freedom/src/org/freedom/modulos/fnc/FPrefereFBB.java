@@ -32,10 +32,9 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 
-import org.freedom.acao.InsertEvent;
-import org.freedom.acao.InsertListener;
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.PostEvent;
-import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
@@ -46,7 +45,7 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.telas.FTabDados;
 
-public class FPrefereFBB extends FTabDados implements InsertListener {
+public class FPrefereFBB extends FTabDados implements CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -86,9 +85,9 @@ public class FPrefereFBB extends FTabDados implements InsertListener {
 		
 	private final JTextFieldPad txtNroSeqSiacc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
-	private final JRadioGroup rgIdentAmbCliSiacc;
+	private JRadioGroup rgIdentAmbCliSiacc;
 	
-	private final JRadioGroup rgIdentAmbBcoSiacc;
+	private JRadioGroup rgIdentAmbBcoSiacc;
 	
 	private final JTextFieldPad txtTipoCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
@@ -106,9 +105,9 @@ public class FPrefereFBB extends FTabDados implements InsertListener {
 		
 	private final JTextFieldPad txtNroSeqCnab = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
-	private final JRadioGroup rgIdentAmbCliCnab;
+	private JRadioGroup rgIdentAmbCliCnab;
 	
-	private final JRadioGroup rgIdentAmbBcoCnab;
+	private JRadioGroup rgIdentAmbBcoCnab;
 
 	private final ListaCampos lcSiacc = new ListaCampos( this, "BO" );
 
@@ -134,6 +133,33 @@ public class FPrefereFBB extends FTabDados implements InsertListener {
 
 		setTitulo( "Preferências Gerais" );
 		setAtribos( 50, 50, 400, 470 );
+		
+		montaRadioGrupos();
+		montaTela();
+		montaListaCampos();
+		
+		tabSiacc.setTamColuna( 40, 0 );
+		tabSiacc.setTamColuna( 80, 1 );
+		tabSiacc.setTamColuna( 150, 2 );
+		tabSiacc.setTamColuna( 50, 3 );
+		
+		tabCnab.setTamColuna( 40, 0 );
+		tabCnab.setTamColuna( 80, 1 );
+		tabCnab.setTamColuna( 150, 2 );
+		tabCnab.setTamColuna( 50, 3 );
+		
+		txtTipoSiacc.setVlrString( TP_SIACC );
+		txtTipoCnab.setVlrString( TP_CNAB );
+		
+		lcCnab.addPostListener( this );
+		lcSiacc.addPostListener( this );
+		
+		lcCampos.addCarregaListener( this );
+		lcCnab.addCarregaListener( this );
+		lcSiacc.addCarregaListener( this );
+	}
+	
+	private void montaRadioGrupos() {
 		
 		Vector<String> vLabs0 = new Vector<String>();
 		Vector<String> vVals0 = new Vector<String>();
@@ -166,7 +192,14 @@ public class FPrefereFBB extends FTabDados implements InsertListener {
 		vVals3.add( "P" );
 		vVals3.add( "T" );
 		rgIdentAmbBcoCnab = new JRadioGroup( 2, 1, vLabs3, vVals3 );
-		
+	}
+	
+	private void montaListaCampos() {
+
+
+		/**********************
+		 *   FNBANCO  SIACC   *
+		 **********************/
 		lcBancoSiacc.add( new GuardaCampo( txtCodBancoSiacc, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBancoSiacc.add( new GuardaCampo( txtNomeBancoSiacc, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
 		lcBancoSiacc.setDinWhereAdic( " CODBANCO=#N ", txtCodBancoSiacc );
@@ -175,6 +208,15 @@ public class FPrefereFBB extends FTabDados implements InsertListener {
 		lcBancoSiacc.setReadOnly( true );
 		txtCodBancoSiacc.setTabelaExterna( lcBancoSiacc );
 		
+		lcSiacc.setMaster( lcCampos );
+		lcSiacc.setTabela( tabSiacc );
+		lcSiacc.montaTab();
+		
+		lcCampos.adicDetalhe( lcSiacc );
+		
+		/**********************
+		 *    FNBANCO  CNAB   *
+		 **********************/
 		lcBancoCnab.add( new GuardaCampo( txtCodBancoCnab, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBancoCnab.add( new GuardaCampo( txtNomeBancoCnab, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
 		lcBancoCnab.setDinWhereAdic( " CODBANCO=#N ", txtCodBancoCnab );
@@ -182,25 +224,12 @@ public class FPrefereFBB extends FTabDados implements InsertListener {
 		lcBancoCnab.setQueryCommit( false );
 		lcBancoCnab.setReadOnly( true );
 		txtCodBancoCnab.setTabelaExterna( lcBancoCnab );
-		
-		montaTela();
-		
-		lcSiacc.setMaster( lcCampos );
-		lcSiacc.setTabela( tabSiacc );
-		lcSiacc.montaTab();
-		
+
 		lcCnab.setMaster( lcCampos );
 		lcCnab.setTabela( tabCnab );
 		lcCnab.montaTab();
 		
-		lcCampos.adicDetalhe( lcSiacc );
 		lcCampos.adicDetalhe( lcCnab );
-		
-		txtTipoSiacc.setVlrString( TP_SIACC );
-		txtTipoCnab.setVlrString( TP_CNAB );
-		
-		lcCnab.addInsertListener(this);
-		lcSiacc.addInsertListener(this);
 	}
 	
 	private void montaTela() {
@@ -237,17 +266,10 @@ public class FPrefereFBB extends FTabDados implements InsertListener {
 		panelTabSiacc.setPreferredSize( new Dimension( 300, 100 ) );
 		panelTabSiacc.setBorder( BorderFactory.createEtchedBorder() );
 		panelTabSiacc.add( new JScrollPane( tabSiacc ), BorderLayout.CENTER );
-		
-		tabSiacc.setTamColuna( 50, 0 );
-		tabSiacc.setTamColuna( 80, 0 );
-		tabSiacc.setTamColuna( 150, 0 );
-		tabSiacc.setTamColuna( 50, 0 );
 
-		//adicCampoInvisivel( txtTipoSiacc, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true );
 		lcSiacc.add( new GuardaCampo( txtTipoSiacc, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true ) );
 
-		//lcSiacc.add
-		adicCampo( txtCodBancoSiacc, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBancoSiacc, true );
+		adicCampo( txtCodBancoSiacc, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PK, txtNomeBancoSiacc, true );
 		adicDescFK( txtNomeBancoSiacc, 110, 30, 260, 20, "NomeBanco", "Nome do banco" );
 		
 		adicCampo( txtCodConvSiacc, 7, 70, 140, 20, "CodConv", "Convênio", ListaCampos.DB_SI, false );
@@ -258,14 +280,16 @@ public class FPrefereFBB extends FTabDados implements InsertListener {
 		adicDB( rgIdentAmbCliSiacc, 7, 160, 178, 60, "IdentAmbCli", "Ambiente do cliente", false );
 		adicDB( rgIdentAmbBcoSiacc, 193, 160, 178, 60, "IdentAmbBco", "Ambiente do banco", false );
 		setListaCampos( false, "ITPREFERE6", "SG" );
+		lcSiacc.setWhereAdic( " TIPOFEBRABAN='01' " );
+		
 		
 		panelNavSiacc.setPreferredSize( new Dimension( 300, 30 ) );
 		panelNavSiacc.setBorder( BorderFactory.createEtchedBorder() );
 		panelNavSiacc.add( nvSiacc, BorderLayout.WEST );
 		
-		/*****************
-		 *     CNAB      *
-		 *****************/
+		/****************
+		 *     CNAB     *
+		 ****************/
 		
 		setListaCampos( lcCnab );
 		setNavegador( nvCnab );
@@ -281,10 +305,9 @@ public class FPrefereFBB extends FTabDados implements InsertListener {
 		panelCnab.add( panelCamposCnab, BorderLayout.CENTER );
 		panelCnab.add( panelNavCnab, BorderLayout.SOUTH );
 
-		//adicCampoInvisivel( txtTipoCnab, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true );
 		lcCnab.add( new GuardaCampo( txtTipoCnab, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true ) );
 
-		adicCampo( txtCodBancoCnab, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBancoSiacc, true );
+		adicCampo( txtCodBancoCnab, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PK, txtNomeBancoCnab, true );
 		adicDescFK( txtNomeBancoCnab, 110, 30, 260, 20, "NomeBanco", "Nome do banco" );
 		
 		adicCampo( txtCodConvCnab, 7, 70, 140, 20, "CodConv", "Convênio", ListaCampos.DB_SI, false );
@@ -295,35 +318,46 @@ public class FPrefereFBB extends FTabDados implements InsertListener {
 		adicDB( rgIdentAmbCliCnab, 7, 160, 178, 60, "IdentAmbCli", "Ambiente do cliente", false );
 		adicDB( rgIdentAmbBcoCnab, 193, 160, 178, 60, "IdentAmbBco", "Ambiente do banco", false );
 		setListaCampos( false, "ITPREFERE6", "SG" );
+		lcCnab.setWhereAdic( " TIPOFEBRABAN='02' " );
 		
 		panelNavCnab.setPreferredSize( new Dimension( 300, 30 ) );
 		panelNavCnab.setBorder( BorderFactory.createEtchedBorder() );
 		panelNavCnab.add( nvCnab, BorderLayout.WEST );
 		
 	}
-	
-	public void beforeInsert(InsertEvent ievt) {
-		if (ievt.getListaCampos()==lcSiacc) {
-			txtTipoSiacc.setText(TP_SIACC);
+
+	public void afterCarrega( CarregaEvent e ) { }
+
+	public void beforeCarrega( CarregaEvent e ) {
+
+		if ( e.getListaCampos() == lcCampos ) {
+
+			txtTipoCnab.setVlrString( TP_CNAB );
+			txtTipoSiacc.setVlrString( TP_SIACC );
 		}
-		else if (ievt.getListaCampos()==lcCnab) {
-			txtTipoCnab.setText(TP_CNAB);
-		} 
-		
 	}
-	
-	public void afterInsert(InsertEvent ievt) {
-		
+
+	public void beforePost( PostEvent e ) {
+
+		if ( e.getListaCampos() == lcSiacc ) {
+			
+			txtTipoSiacc.setVlrString( TP_SIACC );
+		}
+		else if ( e.getListaCampos() == lcCnab ) {
+			
+			txtTipoCnab.setVlrString( TP_CNAB );
+		}
 	}
 	
 	public void setConexao( Connection cn ) {
 
 		super.setConexao( cn );
+		
 		lcSiacc.setConexao( cn );
 		lcCnab.setConexao( cn );
 		lcBancoSiacc.setConexao( cn );
 		lcBancoCnab.setConexao( cn );
-		
+
 		lcCampos.carregaDados();
 	}
 }
