@@ -626,7 +626,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtBairCli, 7, 260, 180, 20, "BairCli", "Bairro", ListaCampos.DB_SI, false );
 		adicCampo( txtCidCli, 190, 260, 177, 20, "CidCli", "Cidade", ListaCampos.DB_SI, false );
 		adicCampo( txtCepCli, 370, 260, 77, 20, "CepCli", "Cep", ListaCampos.DB_SI, false );
-		adicCampo( txtUFCli, 450, 260, 50, 20, "UFCli", "UF", ListaCampos.DB_SI, false );
+		adicCampo( txtUFCli, 450, 260, 50, 20, "UFCli", "UF", ListaCampos.DB_SI, true );
 		adicCampo( txtCodPais, 7, 300, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescPais, 80, 300, 217, 20, "DescPais", "Nome do país" );
 		adicCampo( txtDDDCli, 300, 300, 40, 20, "DDDCli", "DDD", ListaCampos.DB_SI, false );
