@@ -6,7 +6,7 @@
  * 
  * Pacote: org.freedom.modulos.std <BR>
  * Classe:
- * @(#)FRemessa.java <BR>
+ * @(#)FRemFBN.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -263,8 +263,10 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 		btSelTudo.setToolTipText( "Selecionar tudo" );
 		btSelNada.setToolTipText( "Limpar seleção" );
 
-		txtDtIni.setVlrDate( Calendar.getInstance().getTime() );
-		txtDtFim.setVlrDate( Calendar.getInstance().getTime() );
+		Calendar cal = Calendar.getInstance();
+		txtDtFim.setVlrDate( cal.getTime() );
+		cal.set( Calendar.MONTH, cal.get( Calendar.MONTH )-1 );
+		txtDtIni.setVlrDate( cal.getTime() );
 
 	}
 
@@ -512,7 +514,7 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 		
 				FileDialog fileDialogSiacc = null;
 				fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
-				sFileName = "remessa"+prefs.get( SiaccUtil.EPrefs.NROSEQ )+".txt";
+				sFileName = "remessa"+prefs.get( SiaccUtil.EPrefs.NROSEQ )+".cmp";
 				fileDialogSiacc.setFile( sFileName );
 				fileDialogSiacc.setVisible( true );
 		
