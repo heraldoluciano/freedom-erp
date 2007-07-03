@@ -73,7 +73,7 @@ public class FRVendasDet extends FRelatorio {
 
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar Canceladas", "S", "N" );
 	
-	private JCheckBoxPad cbVendaFilial = new JCheckBoxPad( "Listar vendas das filiais?", "S", "N" );
+	private JCheckBoxPad cbVendaFilial = new JCheckBoxPad( "Listar vendas dos sub-clientes", "S", "N" );
 
 	private JRadioGroup rgTipo = null;
 
