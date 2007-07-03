@@ -529,7 +529,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sWhere1 = "";
 		String sWhere2 = "";
 		String sWhere3 = "";
-		String sWhereTM = null;
+		String sWhereTM = "";
 		String sCab = "";
 		String sFrom = "";
 		StringBuffer sFiltros1 = new StringBuffer();
@@ -662,7 +662,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					sFrom = ", VDCLIENTE C1, VDCLIENTE C2 ";
 				}
 				else {
-					sWhere.append( "AND C1.CODCLI=? " );
+//					sWhere.append( "AND C1.CODCLI=? " );
+					sWhere.append( "AND V.CODCLI=? " );
 				}
 				sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
 				sFiltros2.append( " CLI.: " );
@@ -735,6 +736,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			sSQL.append( "GROUP BY 1,2,3,4,5" );
 			sSQL.append( "ORDER BY 1,2,3,4,5" );
 
+			System.out.println(sSQL.toString());
 			try {
 
 				ps = con.prepareStatement( sSQL.toString() );
@@ -1212,17 +1214,18 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					sFrom = ",VDCLIENTE C1, VDCLIENTE C2 ";
 					sFiltros2.append( "AGRUP. CLI. PRINC." );
 				}
-
-				if ( sFrom.equals( "" ) ) {
-					sWhere.append( "AND C1.CODCLI=V.CODCLI AND C1.CODEMP=V.CODEMPCL AND C1.CODFILIAL=V.CODFILIALCL " );
-					sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTI=TC.CODEMP AND C1.CODFILIALTI=TC.CODFILIAL " );
-					sWhere.append( "AND TC.CODTIPOCLI=? " );
-					sFrom = ",VDCLIENTE C1, VDTIPOCLI TC ";
-				}
 				else {
-					sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTI=TC.CODEMP AND C1.CODFILIALTI=TC.CODFILIAL " );
-					sWhere.append( "AND TC.CODTIPOCLI=? " );
-					sFrom = ", VDTIPOCLI TC " + sFrom;
+					if ( sFrom.equals( "" ) ) {
+						sWhere.append( "AND C1.CODCLI=V.CODCLI AND C1.CODEMP=V.CODEMPCL AND C1.CODFILIAL=V.CODFILIALCL " );
+						sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTI=TC.CODEMP AND C1.CODFILIALTI=TC.CODFILIAL " );
+						sWhere.append( "AND TC.CODTIPOCLI=? " );
+						sFrom = ",VDCLIENTE C1, VDTIPOCLI TC ";
+					}
+					else {
+						sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTI=TC.CODEMP AND C1.CODFILIALTI=TC.CODFILIAL " );
+						sWhere.append( "AND TC.CODTIPOCLI=? " );
+						sFrom = ", VDTIPOCLI TC " + sFrom;
+					}
 				}
 				sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
 				sFiltros2.append( " TP.CLI.: " );
