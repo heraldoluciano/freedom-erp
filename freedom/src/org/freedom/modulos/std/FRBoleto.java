@@ -583,30 +583,77 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "N.CODEMP=IV.CODEMPNT AND N.CODFILIAL=IV.CODFILIALNT AND N.CODNAT=IV.CODNAT AND  " );
 			sSQL.append( sWhere );
 			
+			String strDebug = sSQL.toString();
+			
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( param++, Aplicativo.iCodEmp );
+			
+			strDebug = strDebug.replaceFirst( "\\?", Aplicativo.iCodEmp + "");
+			
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNMODBOLETO" ) );
+			
+			strDebug = strDebug.replaceFirst( "\\?", ListaCampos.getMasterFilial( "FNMODBOLETO" )+"");
+			
 			ps.setInt( param++, txtCodModBol.getVlrInteger().intValue() );
+			
+			strDebug = strDebug.replaceFirst( "\\?", txtCodModBol.getVlrInteger().intValue()+"");
+			
 			if ( codvenda!=0 ) {
 				ps.setInt( param++, Aplicativo.iCodEmp );
+				
+				strDebug = strDebug.replaceFirst( "\\?", Aplicativo.iCodEmp + "");
+				
 				ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+				
+				strDebug = strDebug.replaceFirst( "\\?", ListaCampos.getMasterFilial( "VDVENDA" ) + "");				
+				
 				ps.setInt( param++, txtCodVenda.getVlrInteger().intValue() );
-			} else {
+				
+				strDebug = strDebug.replaceFirst( "\\?",  txtCodVenda.getVlrInteger().intValue() + "");				
+				
+			} 
+			else {
 				ps.setDate( param++, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
+				
+				strDebug = strDebug.replaceFirst( "\\?",  Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) + "");				 
+				
 				ps.setDate( param++, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
+				
+				strDebug = strDebug.replaceFirst( "\\?",  Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) + "");
+								
+				
 			}
 			if (!"".equals( codbanco )) { 
 				ps.setInt( param++, Aplicativo.iCodEmp );
+				
+				strDebug = strDebug.replaceFirst( "\\?",  Aplicativo.iCodEmp + "");
+				
 				ps.setInt( param++, ListaCampos.getMasterFilial( "FNBANCO" ) );
+				
+				strDebug = strDebug.replaceFirst( "\\?",  ListaCampos.getMasterFilial( "FNBANCO" ) + "");
+				
 				ps.setString( param++, codbanco );
+				
+				strDebug = strDebug.replaceFirst( "\\?",  codbanco + "");
+				
 			}
 			if ( codtipocob!=0 ) {
 				ps.setInt( param++, Aplicativo.iCodEmp );
+				
+				strDebug = strDebug.replaceFirst( "\\?",  Aplicativo.iCodEmp + "");
+				
 				ps.setInt( param++, ListaCampos.getMasterFilial( "FNTIPOCOB" ) );
+				
+				strDebug = strDebug.replaceFirst( "\\?",  ListaCampos.getMasterFilial( "FNTIPOCOB" ) + "");
+				
 				ps.setInt( param++, codtipocob );
+				
+				strDebug = strDebug.replaceFirst( "\\?",  codtipocob + "");
+				
 			}
 			if (nparc!=0) {
 				ps.setInt( param++, nparc);
+				strDebug = strDebug.replaceFirst( "\\?",  nparc + "");
 			}
 			
 			rs = ps.executeQuery();
@@ -625,7 +672,10 @@ public class FRBoleto extends FRelatorio {
 				con.commit();
 			}
 			
-		} catch ( Exception err ) {
+			System.out.println( "SQL: " + strDebug );
+			
+		} 
+		catch ( Exception err ) {
 			Funcoes.mensagemErro( null, "Erro ao tentar imprimir!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
