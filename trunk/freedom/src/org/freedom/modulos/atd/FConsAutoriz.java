@@ -299,7 +299,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 				"AND CL.CODCLI=O.CODCLI  AND C.CODEMP=O.CODEMPCV AND C.CODFILIAL=O.CODFILIALCV "+
 				"AND O.CODCONV=C.CODCONV "+					
 				"AND P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND " +
-				"P.CODFILIAL=IT.CODFILIALPD "+sWhere;
+				"P.CODFILIAL=IT.CODFILIALPD " +sWhere+" ORDER BY O.CODORC"; 
 			
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
