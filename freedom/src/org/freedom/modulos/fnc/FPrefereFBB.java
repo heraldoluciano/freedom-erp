@@ -135,8 +135,11 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		setAtribos( 50, 50, 400, 470 );
 		
 		montaRadioGrupos();
-		montaTela();
 		montaListaCampos();
+		montaTela();
+		
+		lcSiacc.montaTab();
+		lcCnab.montaTab();
 		
 		tabSiacc.setTamColuna( 40, 0 );
 		tabSiacc.setTamColuna( 80, 1 );
@@ -210,7 +213,6 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		
 		lcSiacc.setMaster( lcCampos );
 		lcSiacc.setTabela( tabSiacc );
-		lcSiacc.montaTab();
 		
 		lcCampos.adicDetalhe( lcSiacc );
 		
@@ -227,7 +229,6 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 
 		lcCnab.setMaster( lcCampos );
 		lcCnab.setTabela( tabCnab );
-		lcCnab.montaTab();
 		
 		lcCampos.adicDetalhe( lcCnab );
 	}
@@ -251,8 +252,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 
 		/*****************
 		 *     SIACC     *
-		 *****************/
-		
+		 *****************/		
 		setListaCampos( lcSiacc );
 		setNavegador( nvSiacc );
 
@@ -268,12 +268,10 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		panelTabSiacc.add( new JScrollPane( tabSiacc ), BorderLayout.CENTER );
 
 		lcSiacc.add( new GuardaCampo( txtTipoSiacc, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true ) );
-
-		adicCampo( txtCodBancoSiacc, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PK, txtNomeBancoSiacc, true );
-		adicDescFK( txtNomeBancoSiacc, 110, 30, 260, 20, "NomeBanco", "Nome do banco" );
-		
+		adicCampo( txtCodBancoSiacc, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBancoSiacc, true );
+		adicDescFK( txtNomeBancoSiacc, 110, 30, 260, 20, "NomeBanco", "Nome do banco" );		
 		adicCampo( txtCodConvSiacc, 7, 70, 140, 20, "CodConv", "Convênio", ListaCampos.DB_SI, false );
-		adicCampo( txtVersaoSiacc, 150, 70, 100, 20, "VerLayout", "Versão ", ListaCampos.DB_SI, false );
+		adicCampo( txtVersaoSiacc, 150, 70, 100, 20, "VerLayout", "Versão", ListaCampos.DB_SI, false );
 		adicCampo( txtIdentServSiacc, 253, 70, 117, 20, "IdentServ", "Ident. Serviço", ListaCampos.DB_SI, false );
 		adicCampo( txtContaComprSiacc, 7, 110, 240, 20, "ContaCompr", "Conta Compromisso", ListaCampos.DB_SI, false );
 		adicCampo( txtNroSeqSiacc, 250, 110, 120, 20, "NroSeq", "Sequência", ListaCampos.DB_SI, false );
@@ -281,16 +279,15 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		adicDB( rgIdentAmbBcoSiacc, 193, 160, 178, 60, "IdentAmbBco", "Ambiente do banco", false );
 		setListaCampos( false, "ITPREFERE6", "SG" );
 		lcSiacc.setWhereAdic( " TIPOFEBRABAN='01' " );
-		
-		
+				
 		panelNavSiacc.setPreferredSize( new Dimension( 300, 30 ) );
 		panelNavSiacc.setBorder( BorderFactory.createEtchedBorder() );
 		panelNavSiacc.add( nvSiacc, BorderLayout.WEST );
 		
+		
 		/****************
 		 *     CNAB     *
-		 ****************/
-		
+		 ****************/		
 		setListaCampos( lcCnab );
 		setNavegador( nvCnab );
 		
@@ -306,10 +303,8 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		panelCnab.add( panelNavCnab, BorderLayout.SOUTH );
 
 		lcCnab.add( new GuardaCampo( txtTipoCnab, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true ) );
-
-		adicCampo( txtCodBancoCnab, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PK, txtNomeBancoCnab, true );
-		adicDescFK( txtNomeBancoCnab, 110, 30, 260, 20, "NomeBanco", "Nome do banco" );
-		
+		adicCampo( txtCodBancoCnab, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBancoCnab, true );
+		adicDescFK( txtNomeBancoCnab, 110, 30, 260, 20, "NomeBanco", "Nome do banco" );		
 		adicCampo( txtCodConvCnab, 7, 70, 140, 20, "CodConv", "Convênio", ListaCampos.DB_SI, false );
 		adicCampo( txtVersaoCnab, 150, 70, 100, 20, "VerLayout", "Versão ", ListaCampos.DB_SI, false );
 		adicCampo( txtIdentServCnab, 253, 70, 117, 20, "IdentServ", "Ident. Serviço", ListaCampos.DB_SI, false );
@@ -322,8 +317,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		
 		panelNavCnab.setPreferredSize( new Dimension( 300, 30 ) );
 		panelNavCnab.setBorder( BorderFactory.createEtchedBorder() );
-		panelNavCnab.add( nvCnab, BorderLayout.WEST );
-		
+		panelNavCnab.add( nvCnab, BorderLayout.WEST );		
 	}
 
 	public void afterCarrega( CarregaEvent e ) { }
