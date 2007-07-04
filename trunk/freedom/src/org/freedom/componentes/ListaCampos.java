@@ -207,6 +207,8 @@ public class ListaCampos extends Container implements PostListener,
 	private Vector vDescFK = new Vector();
 
 	private String sWhereAdic = "";
+	
+	private String sWhereAdicMax = "";
 
 	private boolean[] bCamposCanc = null;
 
@@ -797,6 +799,18 @@ public class ListaCampos extends Container implements PostListener,
 	}
 
 	/**
+	 * Retorna a condição adicional para auto incremento de chave. <BR>
+	 * Retorna a condição adicional ajustada para este <BR>
+	 * 
+	 * @return Condição adicional.
+	 * @see #setWhereAdicMax
+	 *  
+	 */
+	public String getWhereAdicMax() {
+		return sWhereAdicMax;
+	}
+	
+	/**
 	 * Ajusta a condição adicional. <BR>
 	 * Ajusta a condição adicional para este ListaCampos, <BR>
 	 * bom isto é usado para ajustar uma condição que o <BR>
@@ -814,6 +828,17 @@ public class ListaCampos extends Container implements PostListener,
 		sWhereAdic = sW;
 	}
 
+	/**
+	 * Ajusta a condição adicional do select max. <BR>
+	 * @param WhereAdicMax
+	 *            Condição adicional.
+	 * @see #getWhereAdicMax
+	 *  
+	 */
+	public void setWhereAdicMax(String sW) {
+		sWhereAdicMax = sW;
+	}
+	
 	/**
 	 * Adiciona dinamicamente o valor para o where. <BR>
 	 * Busca na hora do carregadados() o valor where e adiciona-o no lugar de #_
@@ -1364,6 +1389,13 @@ public class ListaCampos extends Container implements PostListener,
 			else
 				sSQLMax = "SELECT MAX(" + sPK + ") FROM " + sTabela
 						+ (bDetalhe ? " WHERE " : "");
+			if (!"".equals( sWhereAdicMax )) {
+				if ( sSQLMax.indexOf( "WHERE" )>=0 ) {
+					sSQLMax += " AND "+sWhereAdicMax;
+				} else {
+					sSQLMax += "WHERE "+sWhereAdicMax;
+				}
+			}
 		}
 		if (bTiraFI)
 			sSQLInsert = "INSERT INTO " + sTabela + " (CODEMP,";
