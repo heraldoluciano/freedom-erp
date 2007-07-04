@@ -409,7 +409,7 @@ PP.CODPLANOPAG=O.CODPLANOPAG]]></queryString>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCLI}.trim()+", "+$F{NUMCLI} ]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCLI}.trim()+", "+$F{NUMCLI}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
