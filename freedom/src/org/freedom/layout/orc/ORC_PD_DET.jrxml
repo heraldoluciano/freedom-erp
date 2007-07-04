@@ -2,22 +2,22 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="Orc_Detalhe"
+		 name="ORC_PD_DET"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
 		 pageWidth="595"
 		 pageHeight="842"
-		 columnWidth="535"
+		 columnWidth="595"
 		 columnSpacing="0"
-		 leftMargin="30"
-		 rightMargin="30"
-		 topMargin="20"
+		 leftMargin="0"
+		 rightMargin="0"
+		 topMargin="0"
 		 bottomMargin="20"
 		 whenNoDataType="NoPages"
 		 isTitleNewPage="false"
 		 isSummaryNewPage="false">
-	<property name="ireport.scriptlethandling" value="2" />
+	<property name="ireport.scriptlethandling" value="0" />
 	<property name="ireport.encoding" value="UTF-8" />
 	<import value="java.util.*" />
 	<import value="net.sf.jasperreports.engine.*" />
@@ -63,7 +63,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=110]]></queryStri
 					<reportElement
 						x="1"
 						y="3"
-						width="534"
+						width="530"
 						height="0"
 						key="line-1"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -72,7 +72,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=110]]></queryStri
 					<reportElement
 						x="1"
 						y="22"
-						width="533"
+						width="528"
 						height="0"
 						key="line-2"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -200,7 +200,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=110]]></queryStri
 					<reportElement
 						x="468"
 						y="4"
-						width="66"
+						width="60"
 						height="18"
 						key="staticText-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -220,7 +220,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=110]]></queryStri
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="534"
+						x="530"
 						y="4"
 						width="0"
 						height="19"
@@ -234,7 +234,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=110]]></queryStri
 				<staticText>
 					<reportElement
 						x="401"
-						y="1"
+						y="2"
 						width="65"
 						height="16"
 						key="staticText-8"/>
@@ -246,9 +246,9 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=110]]></queryStri
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="###0.00;###0.00-" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="467"
-						y="0"
-						width="67"
+						x="468"
+						y="2"
+						width="63"
 						height="17"
 						key="textField-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -260,28 +260,37 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=110]]></queryStri
 				<line direction="TopDown">
 					<reportElement
 						x="467"
-						y="0"
+						y="2"
 						width="0"
-						height="18"
+						height="19"
 						key="line-25"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="467"
-						y="18"
-						width="68"
-						height="0"
+						y="20"
+						width="64"
+						height="1"
 						key="line-26"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="534"
-						y="0"
+						x="530"
+						y="2"
 						width="0"
-						height="18"
+						height="19"
 						key="line-27"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="1"
+						width="531"
+						height="0"
+						key="line-28"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -310,7 +319,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=110]]></queryStri
 						x="34"
 						y="-2"
 						width="0"
-						height="21"
+						height="22"
 						key="line-11"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -319,17 +328,8 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=110]]></queryStri
 						x="0"
 						y="-2"
 						width="0"
-						height="21"
+						height="22"
 						key="line-12"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="19"
-						width="535"
-						height="0"
-						key="line-13"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
@@ -337,7 +337,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=110]]></queryStri
 						x="94"
 						y="-2"
 						width="0"
-						height="21"
+						height="22"
 						key="line-14"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -423,7 +423,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=110]]></queryStri
 					<reportElement
 						x="468"
 						y="0"
-						width="64"
+						width="61"
 						height="17"
 						key="textField-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -437,7 +437,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=110]]></queryStri
 						x="313"
 						y="-3"
 						width="0"
-						height="22"
+						height="23"
 						key="line-20"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -446,7 +446,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=110]]></queryStri
 						x="352"
 						y="-4"
 						width="0"
-						height="23"
+						height="24"
 						key="line-21"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -455,7 +455,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=110]]></queryStri
 						x="401"
 						y="-1"
 						width="0"
-						height="20"
+						height="21"
 						key="line-22"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -464,16 +464,16 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=110]]></queryStri
 						x="467"
 						y="-3"
 						width="0"
-						height="22"
+						height="23"
 						key="line-23"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="534"
-						y="-1"
+						x="530"
+						y="-3"
 						width="0"
-						height="21"
+						height="23"
 						key="line-24"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
