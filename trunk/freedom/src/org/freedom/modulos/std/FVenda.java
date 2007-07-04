@@ -710,6 +710,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampo( txtVlrISSVenda, 339, 60, 80, 20, "VlrISSVenda", "Vlr. ISS", ListaCampos.DB_SI, false );
 		
 		lcCampos.setWhereAdic( "TIPOVENDA='V'" );
+		lcCampos.setWhereAdicMax( "TIPOVENDA='V'" );
 		setListaCampos( true, "VENDA", "VD" );
 
 		setAltDet( 100 );
