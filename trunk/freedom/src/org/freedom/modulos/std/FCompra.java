@@ -64,9 +64,9 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.layout.Layout;
-import org.freedom.layout.Leiaute;
-import org.freedom.layout.NFEntrada;
+import org.freedom.layout.componentes.Layout;
+import org.freedom.layout.componentes.Leiaute;
+import org.freedom.layout.componentes.NFEntrada;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
@@ -517,7 +517,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 			return;
 		}
 		try {
-			layNF = Class.forName("org.freedom.layout." + imp.getClassNota()).newInstance();
+			layNF = Class.forName("org.freedom.layout.nf." + imp.getClassNota()).newInstance();
 		} catch (Exception err) {
 			Funcoes.mensagemInforma(this,"Não foi possível carregar o leiaute de Nota Fiscal!\n"+ err.getMessage());
 		}
