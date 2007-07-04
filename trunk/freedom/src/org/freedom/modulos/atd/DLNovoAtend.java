@@ -49,7 +49,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.layout.LeiauteGR;
+import org.freedom.layout.componentes.LeiauteGR;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLPrinterJob;
 import org.freedom.telas.FFDialogo;
@@ -319,7 +319,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 			try {
 				iDoc = getCodLev();
 				Vector vParam = new Vector();
-				LeiauteGR lei = (LeiauteGR)Class.forName("org.freedom.layout."+sPrefs[1].trim()).newInstance();      
+				LeiauteGR lei = (LeiauteGR)Class.forName("org.freedom.layout.atd."+sPrefs[1].trim()).newInstance();      
 				lei.setConexao(con);
 				vParam.addElement(txtCodConv.getVlrInteger());
 				vParam.addElement(txtNomeAtend.getVlrString());
