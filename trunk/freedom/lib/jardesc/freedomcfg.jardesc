@@ -1,26 +1,33 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <jardesc>
-    <jar path="freedom/lib/freedomcfg.jar"/>
-    <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomcfg.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
-    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
-    <selectedProjects/>
-    <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
-        <sealing sealJar="false">
-            <packagesToSeal/>
-            <packagesToUnSeal/>
-        </sealing>
-    </manifest>
-    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.drivers"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAgenda.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLCodProd.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
-    </selectedElements>
+<jar path="freedom/lib/freedomcfg.jar"/>
+<options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomcfg.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+<storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+<selectedProjects/>
+<manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+<sealing sealJar="false">
+<packagesToSeal/>
+<packagesToUnSeal/>
+</sealing>
+</manifest>
+<selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLCodProd.java"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.componentes"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.pd"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAgenda.java"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.drivers"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.orc"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.atd"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.nf"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg"/>
+</selectedElements>
 </jardesc>
