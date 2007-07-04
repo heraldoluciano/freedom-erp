@@ -149,8 +149,8 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		navBancos.setListaCampos( lcItModBol );
 		
 		montaCombos();
-		montaTela();		
 		montaListaCampos();
+		montaTela();		
 
 		lcItModBol.montaTab();
 		tabBancos.setTamColuna( 100, 0 );
@@ -159,10 +159,6 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		
 		txaBoleto.setFont( new Font( "Courier", Font.PLAIN, 11 ) );
 		txaBoleto.setTabSize( 0 );
-
-		ckAceite.setVlrString( "N" );
-		
-		ckPreImp.setVlrString( "S" );
 		
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -173,6 +169,10 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		cbAcao.addComboBoxListener( this );
 		
 		ckPreImp.addCheckBoxListener( this );
+
+		ckAceite.setVlrString( "N" );
+		
+		ckPreImp.setVlrString( "S" );
 		
 		setImprimir( true );
 		
@@ -410,13 +410,12 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		
 			if ( txaBoleto.getVlrString() == null || txaBoleto.getVlrString().trim().length() == 0 ) {
 				
-				txaBoleto.setVlrString( "(Modelo em branco)" );
+				txaBoleto.setVlrString( "Modelo em branco" );
 			}
 		}
 		
 		super.beforePost( pevt );
 	}
-
 
 	public void valorAlterado( CheckBoxEvent evt ) {
 
@@ -430,7 +429,6 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 			}
 		}
 	}
-
 
 	public void valorAlterado( JComboBoxEvent evt ) {
 
