@@ -70,9 +70,9 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.layout.Layout;
-import org.freedom.layout.Leiaute;
-import org.freedom.layout.NFSaida;
+import org.freedom.layout.componentes.Layout;
+import org.freedom.layout.componentes.Leiaute;
+import org.freedom.layout.componentes.NFSaida;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPassword;
 
@@ -1584,10 +1584,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			if ( bPrefs[ 16 ] ) {
 				
 				try {
-					layNF = Class.forName( "org.freedom.layout." + getLayoutPedido() ).newInstance();
+					layNF = Class.forName( "org.freedom.layout.pd." + getLayoutPedido() ).newInstance();
 				} catch ( Exception err ) {
 					err.printStackTrace();
-					Funcoes.mensagemInforma( this, "Não foi possível carregar o layout de Nota Fiscal!\n" + err.getMessage() );
+					Funcoes.mensagemInforma( this, "Não foi possível carregar o layout do Pedido!\n" + err.getMessage() );
 				}
 				
 				if ( layNF != null ) {
@@ -1872,7 +1872,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}
 
 			try {
-				layNF = Class.forName( "org.freedom.layout." + imp.getClassNota() ).newInstance();
+				layNF = Class.forName( "org.freedom.layout.nf." + imp.getClassNota() ).newInstance();
 			} catch ( Exception err ) {
 				Funcoes.mensagemInforma( this, "Não foi possível carregar o layout de Nota Fiscal!\n" + err.getMessage() );
 			}
