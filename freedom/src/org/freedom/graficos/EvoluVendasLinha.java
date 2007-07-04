@@ -32,7 +32,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import org.freedom.funcoes.Funcoes;
-import org.freedom.layout.LeiauteGR;
+import org.freedom.layout.componentes.LeiauteGR;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
