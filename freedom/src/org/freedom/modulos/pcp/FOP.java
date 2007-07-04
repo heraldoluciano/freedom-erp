@@ -71,7 +71,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.layout.LeiauteGR;
+import org.freedom.layout.componentes.LeiauteGR;
 import org.freedom.modulos.gms.FRma;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.telas.Aplicativo;
@@ -1295,7 +1295,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				Funcoes.mensagemErro( this, "Não existe org.freedom.layout para ordem de produção. \n Cadastre o org.freedom.layout no documento de preferências do módulo de produção \n e tente novamente." );
 			else {
 				try {
-					leiOP = (LeiauteGR) Class.forName( "org.freedom.layout." + sClassOP ).newInstance();
+					leiOP = (LeiauteGR) Class.forName( "org.freedom.layout.op." + sClassOP ).newInstance();
 					leiOP.setConexao( con );
 					vParamOP.clear();
 					vParamOP.addElement( txtCodOP.getText() );
