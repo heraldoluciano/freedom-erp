@@ -70,7 +70,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.layout.LeiauteGR;
+import org.freedom.layout.componentes.LeiauteGR;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 
@@ -1276,7 +1276,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 						JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 					}
 				} else {
-					leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout." + sClassOrc ).newInstance();
+					leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout.orc." + sClassOrc ).newInstance();
 					leiOrc.setConexao( con );
 					vParamOrc.clear();
 					vParamOrc.addElement( txtCodOrc.getText() );
@@ -1633,7 +1633,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		else if ( evt.getSource() == btOrcTst ) {
 			LeiauteGR leiOrc = null;
 			try {
-				leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout." + "LaudoAprSusFisio" ).newInstance();
+				leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout.orc." + "LaudoAprSusFisio" ).newInstance();
 				leiOrc.setConexao( con );
 				vParamOrc.clear();
 				vParamOrc.addElement( txtCodOrc.getText() );
@@ -1650,7 +1650,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		else if ( evt.getSource() == btOrcTst2 ) {
 			LeiauteGR leiOrc = null;
 			try {
-				leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout." + "ContratoAluguelApr" ).newInstance();
+				leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout.orc." + "ContratoAluguelApr" ).newInstance();
 				leiOrc.setConexao( con );
 				vParamOrc.clear();
 				vParamOrc.addElement( txtCodOrc.getText() );
