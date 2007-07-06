@@ -1301,7 +1301,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 					hParam.put( "CODEMP", Aplicativo.iCodEmp );					
 					hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 												
-					FPrinterJob dlGr = new FPrinterJob( "layout/" + sClassOrc , null, null, this, hParam, con );
+					FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + sClassOrc , null, null, this, hParam, con );
 
 					if ( bVisualizar ) {
 						dlGr.setVisible( true );
