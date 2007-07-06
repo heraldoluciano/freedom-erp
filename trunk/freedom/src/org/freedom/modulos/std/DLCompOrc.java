@@ -22,7 +22,6 @@
 
 package org.freedom.modulos.std;
 import java.awt.Component;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -122,11 +121,10 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 		adic(txtPercAdicOrc,180,60,77,20);
 		adic(lbVlrAdicOrc,260,40,90,20);
 		adic(txtVlrAdicOrc,260,60,90,20);
-		adic(cbImpOrc,7,130,150,20);
+		adic(cbAprovOrc,7,120,150,20);
+		adic(cbImpOrc,7,140,150,20);
 		
-		if(getAprova()) {
-			adic(cbAprovOrc,7,120,150,20);
-		}
+		cbAprovOrc.setEnabled( getAprova() );
 		
 		txtPercDescOrc.addFocusListener(this);
 		txtVlrDescOrc.addFocusListener(this);
