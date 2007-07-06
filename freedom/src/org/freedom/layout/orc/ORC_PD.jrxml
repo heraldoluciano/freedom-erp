@@ -26,14 +26,31 @@
 	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["C:\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\layout\\orc\\"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(4)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIALPF" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODORC" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(3)]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT O.CODCLI, O.OBSORC, O.PRAZOENTORC, O.PRAZOENTORC, C.CIDCLI, C.ENDCLI,
 C.FONECLI, C.BAIRCLI, C.UFCLI, DDDCLI, C.NUMCLI, C.RAZCLI, O.CODORC, O.DTORC, 
-O.DTVENCORC, PP.DESCPLANOPAG, E.RAZEMP
-FROM  VDORCAMENTO O, VDCLIENTE C, FNPLANOPAG PP, SGEMPRESA E
-WHERE O.CODEMP=4 AND O.CODFILIAL=1 AND O.CODORC=110 AND
+O.DTVENCORC, PP.DESCPLANOPAG, E.RAZEMP,
+(CASE WHEN P1.USAIMGASSORC='S' THEN COALESCE(V.IMGASSVEND,P1.IMGASSORC)
+ELSE P1.IMGASSORC
+END) IMGASS
+FROM  VDORCAMENTO O, VDCLIENTE C, FNPLANOPAG PP, SGEMPRESA E, SGPREFERE1 P1, VDVENDEDOR V
+WHERE O.CODEMP=$P{CODEMP} AND O.CODFILIAL=$P{CODFILIAL} AND O.CODORC=$P{CODORC} AND
 C.CODEMP=O.CODEMPCL AND C.CODFILIAL=O.CODFILIALCL AND C.CODCLI=O.CODCLI AND
 PP.CODEMP=O.CODEMPPG AND PP.CODFILIAL=O.CODFILIALPG AND
-PP.CODPLANOPAG=O.CODPLANOPAG AND E.CODEMP=O.CODEMP]]></queryString>
+PP.CODPLANOPAG=O.CODPLANOPAG AND E.CODEMP=O.CODEMP AND
+V.CODEMP=O.CODEMPVD AND V.CODFILIAL=O.CODFILIALVD AND V.CODVEND=O.CODVEND AND 
+P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 
 	<field name="CODCLI" class="java.lang.Long"/>
 	<field name="OBSORC" class="java.lang.String"/>
@@ -51,6 +68,7 @@ PP.CODPLANOPAG=O.CODPLANOPAG AND E.CODEMP=O.CODEMP]]></queryString>
 	<field name="DTVENCORC" class="java.sql.Date"/>
 	<field name="DESCPLANOPAG" class="java.lang.String"/>
 	<field name="RAZEMP" class="java.lang.String"/>
+	<field name="IMGASS" class="java.io.InputStream"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -60,10 +78,10 @@ PP.CODPLANOPAG=O.CODPLANOPAG AND E.CODEMP=O.CODEMP]]></queryString>
 			<band height="38"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
-						x="7"
-						y="4"
-						width="523"
-						height="32"
+						x="5"
+						y="3"
+						width="527"
+						height="35"
 						key="subreport-1"/>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ORC_PD_CAB.jasper"]]></subreportExpression>
@@ -523,7 +541,7 @@ PP.CODPLANOPAG=O.CODPLANOPAG AND E.CODEMP=O.CODEMP]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="52"  isSplitAllowed="true" >
+			<band height="50"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
 						x="3"
@@ -541,13 +559,13 @@ PP.CODPLANOPAG=O.CODPLANOPAG AND E.CODEMP=O.CODEMP]]></queryString>
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="28"  isSplitAllowed="true" >
+			<band height="20"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="442"
-						y="15"
-						width="92"
+						x="440"
+						y="8"
+						width="94"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -561,29 +579,40 @@ PP.CODPLANOPAG=O.CODPLANOPAG AND E.CODEMP=O.CODEMP]]></queryString>
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="67"  isSplitAllowed="true" >
+			<band height="118"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
-						x="39"
-						y="48"
-						width="163"
+						x="11"
+						y="74"
+						width="239"
 						height="0"
 						key="line-14"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="11"
-						y="51"
-						width="265"
+						x="13"
+						y="79"
+						width="245"
 						height="16"
 						key="textField-13"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
 						<font fontName="Arial"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZEMP}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZEMP}.trim()]]></textFieldExpression>
 				</textField>
+				<image  vAlign="Middle" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="28"
+						y="42"
+						width="200"
+						height="30"
+						key="image-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.io.InputStream"><![CDATA[$F{IMGASS}]]></imageExpression>
+				</image>
 			</band>
 		</summary>
 </jasperReport>
