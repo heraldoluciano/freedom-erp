@@ -1283,51 +1283,42 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela ATTPCONV!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
-		if ( sClassOrc.trim().equals( "" ) ) {
-			ImprimeOrc imp = new ImprimeOrc( txtCodOrc.getVlrInteger().intValue() );
-			imp.setConexao( con );
-			if ( bVisualizar ) {
-				dl = new FPrinterJob( imp, this );
-				dl.setVisible( true );
-			}
-			else
-				imp.imprimir( true );
-		}
-		else {
-			try {
-				if ( sClassOrc.indexOf( "jasper" ) > -1 ) {
-					HashMap<String, Object> hParam = new HashMap<String, Object>();
-					hParam.put( "CODORC", txtCodOrc.getVlrInteger() );
-					hParam.put( "CODEMP", Aplicativo.iCodEmp );					
-					hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
-												
-					FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + sClassOrc , null, null, this, hParam, con );
-
-					if ( bVisualizar ) {
-						dlGr.setVisible( true );
-					}
-					else {
-						JasperPrintManager.printReport( dlGr.getRelatorio(), true );
-					}
-				} else {
-					leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout.orc." + sClassOrc ).newInstance();
-					leiOrc.setConexao( con );
-					vParamOrc.clear();
-					vParamOrc.addElement( txtCodOrc.getText() );
-					vParamOrc.addElement( txtCodCli.getText() );
-					leiOrc.setParam( vParamOrc );
-					if ( bVisualizar ) {
-						dl = new FPrinterJob( leiOrc, this );
-						dl.setVisible( true );
-					}
-					else {
-						leiOrc.imprimir( true );
-					}
+		try {
+			if ( ("".equals( sClassOrc.trim() )) || ( sClassOrc.indexOf( "jasper" ) > -1 )) {
+				HashMap<String, Object> hParam = new HashMap<String, Object>();
+				hParam.put( "CODORC", txtCodOrc.getVlrInteger() );
+				hParam.put( "CODEMP", Aplicativo.iCodEmp );					
+				hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+				hParam.put( "CODFILIALPF", ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+				if ("".equals( sClassOrc.trim() ) ) {
+					sClassOrc = "ORC_PD.jasper";
 				}
-			} catch ( Exception err ) {
-				Funcoes.mensagemInforma( this, "Não foi possível carregar o leiaute de Orçamento!\n" + err.getMessage() );
-				err.printStackTrace();
+				FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + sClassOrc , null, null, this, hParam, con );
+
+				if ( bVisualizar ) {
+					dlGr.setVisible( true );
+				}
+				else {
+					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				}
+			} else {
+				leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout.orc." + sClassOrc ).newInstance();
+				leiOrc.setConexao( con );
+				vParamOrc.clear();
+				vParamOrc.addElement( txtCodOrc.getText() );
+				vParamOrc.addElement( txtCodCli.getText() );
+				leiOrc.setParam( vParamOrc );
+				if ( bVisualizar ) {
+					dl = new FPrinterJob( leiOrc, this );
+					dl.setVisible( true );
+				}
+				else {
+					leiOrc.imprimir( true );
+				}
 			}
+		} catch ( Exception err ) {
+			Funcoes.mensagemInforma( this, "Não foi possível carregar o leiaute de Orçamento!\n" + err.getMessage() );
+			err.printStackTrace();
 		}
 	}
 
