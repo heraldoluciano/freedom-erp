@@ -207,6 +207,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private JTextFieldFK txtDescLote = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
+	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
 	private JTextAreaPad txaObsItOrc = new JTextAreaPad( 500 );
 
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
@@ -234,6 +238,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private ListaCampos lcClComiss = new ListaCampos( this, "CM" );
 
 	private ListaCampos lcLote = new ListaCampos( this, "LE" );
+
+	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
 
 	private Vector<String> vParamOrc = new Vector<String>();
 
@@ -394,10 +400,16 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		txtCodCli.setTabelaExterna( lcCli );
 		txtNomeCli.setSize( 250, 20 );
 
-
-
+		// FK de atendente
 		
-		
+		lcAtend.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
+		lcAtend.add( new GuardaCampo( txtDescAtend, "NomeAtend", "Nome do atendente", ListaCampos.DB_SI, false ) );
+		txtCodAtend.setTabelaExterna( lcAtend );
+		txtDescAtend.setListaCampos( lcAtend );
+		lcAtend.montaSql( false, "ATENDENTE", "AT" );
+		lcAtend.setQueryCommit( false );
+		lcAtend.setReadOnly( true );
+
 		// FK de Almoxarifado
 
 		lcAlmox.add( new GuardaCampo( txtCodAlmoxItOrc, "codalmox", "Cod.Almox.", ListaCampos.DB_PK, false ) );
@@ -486,6 +498,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				adicCampo( txtTxt01, 353, 60, 100, 20, "Txt01", oPrefs[ PrefOrc.TITORCTXT01.ordinal() ].toString().trim(), ListaCampos.DB_SI, false );
 			adicCampoInvisivel( txtCodTpConv, "CodTpConv", "Cód.tp.conv.", ListaCampos.DB_FK, txtDescTipoConv, false );
 			adicCampoInvisivel( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK, txtDescPlanoPag, true );
+			adicCampoInvisivel( txtCodAtend, "CodAtend", "Plano atendente.", ListaCampos.DB_FK, txtDescAtend, false );
 
 		}
 		else {
@@ -976,8 +989,17 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private void fechaOrc() {
 
 		Object[] oValores = null;
-		DLCompOrc dl = new DLCompOrc( this, ( txtVlrDescOrc.floatValue() > 0 ), txtVlrProdOrc.getVlrBigDecimal(), txtPercDescOrc.getVlrBigDecimal(), txtVlrDescOrc.getVlrBigDecimal(), txtPercAdicOrc.getVlrBigDecimal(), txtVlrAdicOrc.getVlrBigDecimal(), txtCodPlanoPag.getVlrInteger() );
+
+		DLCompOrc dl = new DLCompOrc( this, ( txtVlrDescOrc.floatValue() > 0 ), 
+				txtVlrProdOrc.getVlrBigDecimal(), txtPercDescOrc.getVlrBigDecimal(), 
+				txtVlrDescOrc.getVlrBigDecimal(), txtPercAdicOrc.getVlrBigDecimal(), 
+				txtVlrAdicOrc.getVlrBigDecimal(), txtCodPlanoPag.getVlrInteger() );
 		try {
+			/*
+			 * Verifica se o orçamento foi gerado por um atendimento e adiciona a PK para ser preenchida na tela de complemento.
+			 */
+			if ( txtStatusOrc.getVlrString().equals( "OA" ) || txtCodAtend.getVlrInteger().intValue() > 0 )
+				dl.setFKAtend( txtCodAtend.getVlrInteger().intValue() );
 			dl.setConexao( con );
 			dl.setVisible( true );
 			if ( dl.OK ) {
@@ -1004,9 +1026,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				if ("OC-OL-OV".indexOf(oldStatusOrc)==-1) { 
 					txtStatusOrc.setVlrString( "OC" );
 				}
+				if ( ( oValores[7]!= null ) && ( ((Integer) oValores[7] )).intValue()>0 ) {
+					txtCodAtend.setVlrInteger( (Integer) oValores[7] );
+				}
 				lcCampos.post();
 				lcCampos.carregaDados();
-
 				if ( oValores[ 5 ].equals( "S" ) )
 					aprovar();
 				if ( oValores[ 6 ].equals( "S" ) )
@@ -1834,7 +1858,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcConv.setConexao( cn );
 		lcTipoConv.setConexao( cn );
 		lcEnc.setConexao( cn );
-		
+		lcAtend.setConexao( cn );
+
 		if ( ( (Boolean) oPrefs[ PrefOrc.USABUSCAGENPROD.ordinal() ] ).booleanValue() ) {
 			if ( ( (Boolean) oPrefs[ PrefOrc.USAREFPROD.ordinal() ] ).booleanValue() )
 				txtRefProd.setBuscaGenProd( new DLCodProd( cn, null ) );
