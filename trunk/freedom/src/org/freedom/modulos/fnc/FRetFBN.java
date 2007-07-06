@@ -657,7 +657,7 @@ public class FRetFBN extends FFilho implements ActionListener, MouseListener, Ke
 			sSQL.append( " SELECT DESCRET " );
 			sSQL.append( " FROM FNFBNCODRET " );
 			sSQL.append( " WHERE CODEMP=? AND CODFILIAL=?  AND CODEMPBO=? " );
-			sSQL.append( " AND CODFILIALBO=?  AND CODRET=? "  );
+			sSQL.append( " AND CODFILIALBO=?  AND CODRET=? AND TIPOFEBRABAN='01'"  );
 			
 			ps = con.prepareStatement( sSQL.toString() );
 			
