@@ -23,10 +23,19 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
+	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(4)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODORC" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(3)]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT P.CODPROD, O.QTDITORC, O.VLRPRODITORC , O.VLRDESCITORC, O.QTDITORC,
 O.PRECOITORC,P.DESCPROD, P.CODBARPROD, O.CODORC
-FROM VDITORCAMENTO O, EQPRODUTO P WHERE O.CODEMP=4 AND O.CODFILIAL=1 AND P.CODEMP=O.CODEMPPD AND
-P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=110]]></queryString>
+FROM VDITORCAMENTO O, EQPRODUTO P WHERE O.CODEMP=$P{CODEMP} AND O.CODFILIAL=$P{CODFILIAL} AND P.CODEMP=O.CODEMPPD AND
+P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></queryString>
 
 	<field name="CODPROD" class="java.lang.Long"/>
 	<field name="QTDITORC" class="java.math.BigDecimal"/>
