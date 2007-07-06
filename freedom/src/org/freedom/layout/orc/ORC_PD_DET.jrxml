@@ -30,7 +30,7 @@
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODORC" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(3)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(101)]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT P.CODPROD, O.QTDITORC, O.VLRPRODITORC , O.VLRDESCITORC, O.QTDITORC,
 O.PRECOITORC,P.DESCPROD, P.CODBARPROD, O.CODORC
@@ -232,7 +232,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 						x="530"
 						y="4"
 						width="0"
-						height="19"
+						height="20"
 						key="line-19"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -326,9 +326,9 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 				<line direction="TopDown">
 					<reportElement
 						x="34"
-						y="-2"
+						y="-1"
 						width="0"
-						height="22"
+						height="21"
 						key="line-11"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -344,9 +344,9 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 				<line direction="TopDown">
 					<reportElement
 						x="94"
-						y="-2"
+						y="-1"
 						width="0"
-						height="22"
+						height="21"
 						key="line-14"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -444,18 +444,18 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 				<line direction="TopDown">
 					<reportElement
 						x="313"
-						y="-3"
+						y="-1"
 						width="0"
-						height="23"
+						height="21"
 						key="line-20"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="352"
-						y="-4"
+						y="-1"
 						width="0"
-						height="24"
+						height="21"
 						key="line-21"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -471,18 +471,18 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 				<line direction="TopDown">
 					<reportElement
 						x="467"
-						y="-3"
+						y="-1"
 						width="0"
-						height="23"
+						height="21"
 						key="line-23"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="530"
-						y="-3"
+						y="0"
 						width="0"
-						height="23"
+						height="20"
 						key="line-24"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>

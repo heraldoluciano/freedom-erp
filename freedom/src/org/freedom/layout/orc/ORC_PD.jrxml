@@ -36,7 +36,7 @@
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODORC" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(3)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(101)]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT O.CODCLI, O.OBSORC, O.PRAZOENTORC, O.PRAZOENTORC, C.CIDCLI, C.ENDCLI,
 C.FONECLI, C.BAIRCLI, C.UFCLI, DDDCLI, C.NUMCLI, C.RAZCLI, O.CODORC, O.DTORC, 
@@ -549,6 +549,15 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 						width="531"
 						height="47"
 						key="subreport-2"/>
+					<subreportParameter  name="CODEMP">
+						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODFILIAL">
+						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODORC">
+						<subreportParameterExpression><![CDATA[$P{CODORC}]]></subreportParameterExpression>
+					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ORC_PD_DET.jasper"]]></subreportExpression>
 				</subreport>
