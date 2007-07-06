@@ -24,13 +24,13 @@
 	<import value="net.sf.jasperreports.engine.data.*" />
 
 	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(4)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(5)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODORC" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(101)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(25659)]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT P.CODPROD, O.QTDITORC, O.VLRPRODITORC , O.VLRDESCITORC, O.QTDITORC,
 O.PRECOITORC,P.DESCPROD, P.CODBARPROD, O.CODORC
