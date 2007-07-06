@@ -22,6 +22,7 @@
 
 package org.freedom.modulos.std;
 import java.awt.Component;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -51,12 +52,23 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 	private JTextFieldPad txtVlrAdicOrc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtDescAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
 	private JCheckBoxPad cbImpOrc = new JCheckBoxPad("Imprime Orçamento?","S","N");
 	private JCheckBoxPad cbAprovOrc = new JCheckBoxPad("Aprova Orçamento?","S","N");
 	private ListaCampos lcPlanoPag = new ListaCampos(this, "PG");
+	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
+
 	private BigDecimal bVlrProd;
 	private BigDecimal bVlrDescAnt;
 	private BigDecimal bVlrAdicAnt;
+	
+    private JLabelPad lbPercDescOrc = new JLabelPad("% Desc.");
+	private JLabelPad lbVlrDescOrc = new JLabelPad("V Desc.");
+	private JLabelPad lbPercAdicOrc = new JLabelPad("% Adic.");
+	private JLabelPad lbVlrAdicOrc = new JLabelPad("V Adic.");
+    private boolean bTestaAtend = false;
 	
 	public DLCompOrc(Component cOrig, boolean bDIt, 
 			BigDecimal bVP, BigDecimal bVPD, BigDecimal bVD, BigDecimal bVPA, BigDecimal bVA, Integer iCodPlanoPag) {
@@ -64,7 +76,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 		super(cOrig);    
 		bVlrProd = bVP;
 		setTitulo("Completar Orçamento");
-		setAtribos(380,240);
+		setAtribos(380,280);
 		
 		txtCodPlanoPag.setVlrInteger(iCodPlanoPag);
 		txtPercDescOrc.setVlrBigDecimal(bVPD);
@@ -88,19 +100,29 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 		txtCodPlanoPag.setFK(true);
 		txtCodPlanoPag.setNomeCampo("CodPlanoPag");
 		
+		// FK de atendente
+		
+		lcAtend.add( new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
+		lcAtend.add( new GuardaCampo( txtDescAtend, "NomeAtend", "Nome do atendente", ListaCampos.DB_SI, false ) );
+		txtCodAtend.setTabelaExterna( lcAtend );
+		txtDescAtend.setListaCampos( lcAtend );
+		lcAtend.montaSql( false, "ATENDENTE", "AT" );
+		lcAtend.setQueryCommit( false );
+		lcAtend.setReadOnly( true );
+		
 		adic(new JLabelPad("Cód.p.pg."),7,0,270,20);
 		adic(txtCodPlanoPag,7,20,80,20);
 		adic(new JLabelPad("Descrição do plano de pagamento"),90,0,270,20);
 		adic(txtDescPlanoPag,90,20,260,20);
-		adic(new JLabelPad("% Desc."),7,40,80,20);
+		adic(lbPercDescOrc,7,40,80,20);
 		adic(txtPercDescOrc,7,60,80,20);
-		adic(new JLabelPad("V Desc."),90,40,87,20);
+		adic(lbVlrDescOrc,90,40,87,20);
 		adic(txtVlrDescOrc,90,60,87,20);
-		adic(new JLabelPad("% Adic."),180,40,77,20);
+		adic(lbPercAdicOrc,180,40,77,20);
 		adic(txtPercAdicOrc,180,60,77,20);
-		adic(new JLabelPad("V Adic."),260,40,90,20);
+		adic(lbVlrAdicOrc,260,40,90,20);
 		adic(txtVlrAdicOrc,260,60,90,20);
-		adic(cbImpOrc,7,100,150,20);
+		adic(cbImpOrc,7,130,150,20);
 		
 		if(getAprova()) {
 			adic(cbAprovOrc,7,120,150,20);
@@ -144,7 +166,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 	}
 
 	public Object[] getValores() {
-		Object[] bRetorno = new Object[7];
+		Object[] bRetorno = new Object[8];
 		bRetorno[0] = txtPercDescOrc.getVlrBigDecimal();
 		bRetorno[1] = txtVlrDescOrc.getVlrBigDecimal();
 		bRetorno[2] = txtPercAdicOrc.getVlrBigDecimal();
@@ -152,6 +174,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 		bRetorno[4] = txtCodPlanoPag.getVlrInteger();
 		bRetorno[5] = cbAprovOrc.getVlrString();
 		bRetorno[6] = cbImpOrc.getVlrString();
+		bRetorno[7] = txtCodAtend.getVlrInteger();
 		return bRetorno;
 	}
 	
@@ -185,7 +208,13 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 				txtCodPlanoPag.requestFocus();
 				return;
 			}
-		
+  	      	else if (bTestaAtend) {
+		       	if (txtCodAtend.getVlrInteger().intValue() == 0) {
+		       		Funcoes.mensagemInforma(this,"O campo 'Código do atendente' é requerido!");
+		       	    txtCodAtend.requestFocus();
+	        	    return;
+	        	}
+	        }
 		super.actionPerformed(evt);
 	}
 
@@ -196,12 +225,46 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 			calcValor( "adicional" );
 	}
 	
+	  public void setFKAtend(int codatend) {
+		  	txtCodAtend.setRequerido(true);
+		  	
+			adic(new JLabelPad("Código e nome do atendente."),7,80,270,20);
+			adic(txtCodAtend,7,100,80,20);
+			adic(txtDescAtend,90,100,260,20);
+
+//		Aumenta mais 40 pxs a janela.
+
+		    //Rectangle tamAnt = getBounds();
+		    //tamAnt.height += 40; 
+		    //setBounds(tamAnt);	
+			
+//		Move todos os demais componentes 40pxs abaixo.
+
+			//lbPercDescOrc.setBounds(7,80,80,20);
+			//txtPercDescOrc.setBounds(7,100,80,20);
+			//lbVlrDescOrc.setBounds(90,80,87,20);
+			//txtVlrDescOrc.setBounds(90,100,87,20);
+			//lbPercAdicOrc.setBounds(180,80,77,20);
+			//txtPercAdicOrc.setBounds(180,100,77,20);
+			//lbVlrAdicOrc.setBounds(260,80,90,20);
+			//txtVlrAdicOrc.setBounds(260,100,90,20);
+			//cbImpOrc.setBounds(7,140,150,20);
+
+			if (codatend!=0) {
+				txtCodAtend.setVlrInteger( codatend ) ;
+			}
+			bTestaAtend = true;
+		  }
+
+	
 	public void focusGained(FocusEvent fevt) { }
 	
 	public void setConexao(Connection cn) {    
 		super.setConexao(cn);
 		lcPlanoPag.setConexao(cn);
+		lcAtend.setConexao(cn);
 		montaTela();
 		lcPlanoPag.carregaDados();	
+		lcAtend.carregaDados();
 	}
 }
