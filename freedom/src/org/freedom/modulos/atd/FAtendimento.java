@@ -288,6 +288,14 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
   	if (dl.OK) {
   	  sRets = dl.getValores();
   	  try {
+  		  /*    ICODCONV INTEGER,
+    ICODTIPOATENDO INTEGER,
+    ICODATEND INTEGER,
+    ICODSETOR INTEGER,
+    VOBSATENDO VARCHAR(10000),
+    ICODEMP INTEGER,
+    ICODFILIAL INTEGER,
+    IDOC INTEGER)*/
         String sSQL = "EXECUTE PROCEDURE ATADICATENDIMENTOSP(?,?,?,?,?,?,?,?)";
         PreparedStatement ps = con.prepareStatement(sSQL);
         ps.setInt(1,txtCodConv.getVlrInteger().intValue());
