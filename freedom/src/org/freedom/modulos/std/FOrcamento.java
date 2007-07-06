@@ -74,7 +74,8 @@ import org.freedom.layout.componentes.LeiauteGR;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 
-public class FOrcamento extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener {
+public class FOrcamento extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, 
+   InsertListener, DeleteListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -481,8 +482,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			adicDescFK( txtNomeVend, 100, 60, 250, 20, "NomeVend", "Nome do comissionado" );
 			adicDescFK( txtDescTipoConv, 456, 60, 283, 20, "DescTpConv", "Tipo de conveniado" );
 			adicDescFK( txtNomeEnc, 355, 100, 383, 20, "NomeEnc", "Org.Encaminhador" );			
-			if ( !oPrefs[ 11 ].equals( "" ) )
-				adicCampo( txtTxt01, 353, 60, 100, 20, "Txt01", oPrefs[ 11 ].toString().trim(), ListaCampos.DB_SI, false );
+			if ( !oPrefs[ PrefOrc.TITORCTXT01.ordinal() ].equals( "" ) )
+				adicCampo( txtTxt01, 353, 60, 100, 20, "Txt01", oPrefs[ PrefOrc.TITORCTXT01.ordinal() ].toString().trim(), ListaCampos.DB_SI, false );
 			adicCampoInvisivel( txtCodTpConv, "CodTpConv", "Cód.tp.conv.", ListaCampos.DB_FK, txtDescTipoConv, false );
 			adicCampoInvisivel( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK, txtDescPlanoPag, true );
 
@@ -570,7 +571,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 		adicCampo( txtCodItOrc, 7, 20, 30, 20, "CodItOrc", "Item", ListaCampos.DB_PK, true );
-		if ( ( (Boolean) oPrefs[ 0 ] ).booleanValue() ) {
+		
+		if ( ( (Boolean) oPrefs[ PrefOrc.USAREFPROD.ordinal() ] ).booleanValue() ) {
 			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
 			adicCampoInvisivel( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_FK, false );
 			adic( new JLabelPad( "Referência" ), 40, 0, 67, 20 );
@@ -586,8 +588,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		txtQtdItOrc.setBuscaAdic( new DLBuscaEstoq( lcDet, lcAlmox, lcProd, con, "qtditvenda" ) );
 		txtCodAlmoxItOrc.setAtivo( false );
 
-		adicDescFK( txtDescProd, 110, 20, ( ( (Boolean) oPrefs[ 9 ] ).booleanValue() ? 187 : 277 ), 20, "DescProd", "Descrição do produto" );
-		if ( ( (Boolean) oPrefs[ 9 ] ).booleanValue() )
+		adicDescFK( txtDescProd, 110, 20, ( ( (Boolean) oPrefs[ PrefOrc.USALOTEORC.ordinal() ] ).booleanValue() ? 
+				187 : 277 ), 20, "DescProd", "Descrição do produto" );
+		if ( ( (Boolean) oPrefs[ PrefOrc.USALOTEORC.ordinal() ] ).booleanValue() )
 			adicCampo( txtCodLote, 300, 20, 88, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLote, false );
 		adicCampo( txtQtdItOrc, 391, 20, 60, 20, "QtdItOrc", "Qtd.", ListaCampos.DB_SI, true );
 		adicCampo( txtPrecoItOrc, 454, 20, 80, 20, "PrecoItOrc", "Preço", ListaCampos.DB_SI, true );
@@ -652,7 +655,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	public String[] getParansPass() {
 
-		return new String[] { "orçamento", txtCodOrc.getVlrString().trim(), txtCodItOrc.getVlrString().trim(), txtCodProd.getVlrString().trim(), txtVlrProdItOrc.getVlrString().trim() };
+		return new String[] { "orçamento", txtCodOrc.getVlrString().trim(), txtCodItOrc.getVlrString().trim(), 
+				txtCodProd.getVlrString().trim(), txtVlrProdItOrc.getVlrString().trim() };
 	}
 
 	private int getClComiss( int iCodVend ) {
@@ -745,14 +749,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private void getLote() {
 
-		txtCodLote.setVlrString( getLote( txtCodProd.getVlrInteger().intValue(), ( (Boolean) oPrefs[ 10 ] ).booleanValue() ) );
+		txtCodLote.setVlrString( getLote( txtCodProd.getVlrInteger().intValue(), 
+				( (Boolean) oPrefs[ PrefOrc.CONTESTOQ.ordinal() ] ).booleanValue() ) );
 		lcLote.carregaDados();
 	}
 
 	public int[] getParansPreco() {
 
-		int[] iRetorno = { txtCodProd.getVlrInteger().intValue(), txtCodCli.getVlrInteger().intValue(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodPlanoPag.getVlrInteger().intValue(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "FNPLANOPAG" ),
-				( (Integer) oPrefs[ 3 ] ).intValue(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTIPOMOV" ), Aplicativo.iCodEmp, Aplicativo.iCodFilial, txtCodOrc.getVlrInteger().intValue(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ) };
+		int[] iRetorno = { txtCodProd.getVlrInteger().intValue(), txtCodCli.getVlrInteger().intValue(), Aplicativo.iCodEmp, 
+				ListaCampos.getMasterFilial( "VDCLIENTE" ),	 txtCodPlanoPag.getVlrInteger().intValue(), Aplicativo.iCodEmp, 
+				ListaCampos.getMasterFilial( "FNPLANOPAG" ), ( (Integer) oPrefs[ PrefOrc.CODTIPOMOV2.ordinal() ] ).intValue(), 
+				Aplicativo.iCodEmp,	ListaCampos.getMasterFilial( "EQTIPOMOV" ), Aplicativo.iCodEmp, Aplicativo.iCodFilial, 
+				txtCodOrc.getVlrInteger().intValue(), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ) };
 		return iRetorno;
 
 	}
@@ -1044,7 +1052,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			ps.setInt( 5, iVals[ 0 ] );
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
-				if ( Funcoes.mensagemConfirma( this, "Orçamento '" + rs.getInt( 1 ) + "' criado com sucesso!\n" + "Gostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
+				if ( Funcoes.mensagemConfirma( this, "Orçamento '" + rs.getInt( 1 ) + "' criado com sucesso!\n" + 
+						"Gostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
 					txtCodOrc.setVlrInteger( new Integer( rs.getInt( 1 ) ) );
 					lcCampos.carregaDados();
 				}
@@ -1086,7 +1095,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				return;
 			}
 
-			sSQL = "UPDATE VDITORCAMENTO SET ACEITEITORC='S', APROVITORC='S', VENCAUTORIZORC=?, EMITITORC='N' " + "WHERE CODEMP=? AND CODFILIAL=? AND CODITORC=? AND CODORC=?";
+			sSQL = "UPDATE VDITORCAMENTO SET ACEITEITORC='S', APROVITORC='S', VENCAUTORIZORC=?, " +
+					"EMITITORC='N' " + "WHERE CODEMP=? AND CODFILIAL=? AND CODITORC=? AND CODORC=?";
 
 			try {
 				ps = con.prepareStatement( sSQL );
@@ -1157,7 +1167,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		lcDet.insert( true );
 		txtCodItOrc.setVlrInteger( new Integer( 1 ) );
-		if ( ( (Boolean) oPrefs[ 0 ] ).booleanValue() )
+		if ( ( (Boolean) oPrefs[ PrefOrc.USAREFPROD.ordinal() ] ).booleanValue() )
 			txtRefProd.requestFocus();
 		else
 			txtCodProd.requestFocus();
@@ -1178,7 +1188,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private void focusCodprod() {
 
-		if ( ( (Boolean) oPrefs[ 0 ] ).booleanValue() )
+		if ( ( (Boolean) oPrefs[ PrefOrc.USAREFPROD.ordinal() ] ).booleanValue() )
 			txtRefProd.requestFocus();
 		else
 			txtCodProd.requestFocus();
@@ -1310,12 +1320,21 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		int linPag = imp.verifLinPag() - 1;
 
 		try {
-			sSQL = "SELECT O.CODORC, O.CODPLANOPAG, O.CODCLI, O.OBSORC, O.VLRLIQORC, O.PRAZOENTORC, C.RAZCLI," + " C.CONTCLI, C.CNPJCLI, C.CPFCLI, C.RGCLI, C.INSCCLI, C.SITECLI, C.EMAILCLI, C.ENDCLI, C.NUMCLI,"
-					+ " C.BAIRCLI, C.CIDCLI, C.UFCLI, C.CEPCLI,C.DDDCLI, C.FONECLI, C.FAXCLI, I.CODITORC, I.CODPROD," + " I.QTDITORC, I.PRECOITORC, I.VLRPRODITORC, I.VLRDESCITORC, P.REFPROD, P.DESCPROD, P.CODUNID," + " PG.DESCPLANOPAG, I.OBSITORC, VEND.NOMEVEND, VEND.EMAILVEND,"
-					+ " (SELECT FN.DESCFUNC FROM RHFUNCAO FN WHERE FN.CODEMP=VEND.CODEMPFU" + " AND FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC)" + " FROM VDORCAMENTO O, VDITORCAMENTO I, VDCLIENTE C, EQPRODUTO P, FNPLANOPAG PG, VDVENDEDOR VEND"
-					+ " WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODORC=?" + " AND C.CODEMP=O.CODEMPCL AND C.CODFILIAL=O.CODFILIALCL AND C.CODCLI=O.CODCLI" + " AND I.CODEMP=O.CODEMP AND I.CODFILIAL=O.CODFILIAL AND I.CODORC=O.CODORC AND I.TIPOORC=O.TIPOORC"
-					+ " AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD" + " AND PG.CODEMP=O.CODEMPPG AND PG.CODFILIAL=O.CODFILIALPG AND PG.CODPLANOPAG=O.CODPLANOPAG" + " AND VEND.CODEMP=O.CODEMPVD AND VEND.CODFILIAL=O.CODFILIALVD AND VEND.CODVEND=O.CODVEND"
-					+ " ORDER BY P." + sOrdem + ",P.DESCPROD";
+			sSQL = "SELECT O.CODORC, O.CODPLANOPAG, O.CODCLI, O.OBSORC, O.VLRLIQORC, O.PRAZOENTORC, C.RAZCLI," + 
+			" C.CONTCLI, C.CNPJCLI, C.CPFCLI, C.RGCLI, C.INSCCLI, C.SITECLI, C.EMAILCLI, C.ENDCLI, C.NUMCLI,"	+ 
+			" C.BAIRCLI, C.CIDCLI, C.UFCLI, C.CEPCLI,C.DDDCLI, C.FONECLI, C.FAXCLI, I.CODITORC, I.CODPROD," + 
+			" I.QTDITORC, I.PRECOITORC, I.VLRPRODITORC, I.VLRDESCITORC, P.REFPROD, P.DESCPROD, P.CODUNID," + 
+			" PG.DESCPLANOPAG, I.OBSITORC, VEND.NOMEVEND, VEND.EMAILVEND,"	+ 
+			" (SELECT FN.DESCFUNC FROM RHFUNCAO FN WHERE FN.CODEMP=VEND.CODEMPFU" + 
+			" AND FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC)" + 
+			" FROM VDORCAMENTO O, VDITORCAMENTO I, VDCLIENTE C, EQPRODUTO P, FNPLANOPAG PG, VDVENDEDOR VEND" + 
+			" WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODORC=?" + 
+			" AND C.CODEMP=O.CODEMPCL AND C.CODFILIAL=O.CODFILIALCL AND C.CODCLI=O.CODCLI" + 
+			" AND I.CODEMP=O.CODEMP AND I.CODFILIAL=O.CODFILIAL AND I.CODORC=O.CODORC AND I.TIPOORC=O.TIPOORC"	+ 
+			" AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD" + 
+			" AND PG.CODEMP=O.CODEMPPG AND PG.CODFILIAL=O.CODFILIALPG AND PG.CODPLANOPAG=O.CODPLANOPAG" + 
+			" AND VEND.CODEMP=O.CODEMPVD AND VEND.CODFILIAL=O.CODFILIALVD AND VEND.CODVEND=O.CODVEND" + 
+			" ORDER BY P." + sOrdem + ",P.DESCPROD";
 
 			imp.montaCab();
 			imp.setTitulo( "ORÇAMENTO" );
@@ -1328,8 +1347,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			while ( rs.next() ) {
 
 				vDesc = new Vector();
-				if ( ( (Boolean) oPrefs[ 4 ] ).booleanValue() )
-					vDesc = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "ObsItOrc" ) == null ? rs.getString( "DescProd" ).trim() : rs.getString( "ObsItOrc" ).trim() ), 50 );
+				if ( ( (Boolean) oPrefs[ PrefOrc.DESCCOMPPED.ordinal() ] ).booleanValue() )
+					vDesc = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "ObsItOrc" ) == null ? 
+							rs.getString( "DescProd" ).trim() : rs.getString( "ObsItOrc" ).trim() ), 50 );
 				else
 					vDesc = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "DescProd" ).trim() ), 50 );
 
@@ -1377,7 +1397,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 					if ( i == 0 ) {
 						imp.say( 1, rs.getString( "CodItOrc" ).trim() );
 
-						if ( ( (Boolean) oPrefs[ 0 ] ).booleanValue() )
+						if ( ( (Boolean) oPrefs[ PrefOrc.USAREFPROD.ordinal() ] ).booleanValue() )
 							imp.say( 7, rs.getString( "RefProd" ).trim() );
 						else
 							imp.say( 7, rs.getString( "CodProd" ).trim() );
@@ -1460,45 +1480,47 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 	}
 
+	private enum PrefOrc {USAREFPROD, USALIQREL, TIPOPRECOCUSTO, CODTIPOMOV2, DESCCOMPPED, USAORCSEQ, 
+		OBSCLIVEND, RECALCPCORC, USABUSCAGENPROD, USALOTEORC, CONTESTOQ, TITORCTXT01  } ;
+	
 	private Object[] prefs() {
 
-		Object[] oRetorno = new Object[ 12 ];
+		Object[] oRetorno = new Object[ PrefOrc.values().length ];
 		String sSQL = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,P4.USALOTEORC,P.CONTESTOQ," 
-				 + "P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ,P.OBSCLIVEND,P.RECALCPCORC,P4.USABUSCAGENPROD,P.TITORCTXT01 " 
-				 + "FROM SGPREFERE1 P, SGPREFERE4 P4 " + "WHERE P.CODEMP=? AND P.CODFILIAL=? "
-				 + "AND P4.CODEMP=P.CODEMP AND P4.CODFILIAL=P.CODFILIAL";
+			sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,P4.USALOTEORC,P.CONTESTOQ," + 
+			  "P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ,P.OBSCLIVEND,P.RECALCPCORC,P4.USABUSCAGENPROD,P.TITORCTXT01 " +
+			  "FROM SGPREFERE1 P, SGPREFERE4 P4 " + "WHERE P.CODEMP=? AND P.CODFILIAL=? " + 
+			  "AND P4.CODEMP=P.CODEMP AND P4.CODFILIAL=P.CODFILIAL";
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
+				oRetorno[ PrefOrc.USAREFPROD.ordinal() ] = new Boolean( rs.getString( "UsaRefProd" ).trim().equals( "S" ) );
 				if ( rs.getString( "UsaLiqRel" ) == null ) {
-					oRetorno[ 1 ] = new Boolean( false );
+					oRetorno[ PrefOrc.USALIQREL.ordinal() ] = new Boolean( false );
 					Funcoes.mensagemInforma( this, "Preencha opção de desconto em preferências!" );
 				}
 				else
-					oRetorno[ 1 ] = new Boolean( rs.getString( "UsaLiqRel" ).trim().equals( "S" ) );
-
+					oRetorno[ PrefOrc.USALIQREL.ordinal() ] = new Boolean( rs.getString( "UsaLiqRel" ).trim().equals( "S" ) );
+				oRetorno[ PrefOrc.TIPOPRECOCUSTO.ordinal() ] = new Boolean( rs.getString( "TipoPrecoCusto" ).equals( "M" ) );
 				if ( rs.getString( "CODTIPOMOV2" ) != null )
-					oRetorno[ 3 ] = new Integer( rs.getInt( "CODTIPOMOV2" ) );
+					oRetorno[ PrefOrc.CODTIPOMOV2.ordinal() ] = new Integer( rs.getInt( "CODTIPOMOV2" ) );
 				else
-					oRetorno[ 3 ] = new Integer( 0 );
-				oRetorno[ 0 ] = new Boolean( rs.getString( "UsaRefProd" ).trim().equals( "S" ) );
-				oRetorno[ 2 ] = new Boolean( rs.getString( "TipoPrecoCusto" ).equals( "M" ) );
-				oRetorno[ 4 ] = new Boolean( rs.getString( "DescCompPed" ).equals( "S" ) );
-				oRetorno[ 5 ] = new Boolean( rs.getString( "UsaOrcSeq" ).equals( "S" ) );
-				oRetorno[ 6 ] = new Boolean( rs.getString( "ObsCliVend" ).equals( "S" ) );
-				oRetorno[ 7 ] = new Boolean( rs.getString( "ReCalcPCOrc" ).equals( "S" ) );
-				oRetorno[ 8 ] = new Boolean( rs.getString( "USABUSCAGENPROD" ).equals( "S" ) );
-				oRetorno[ 9 ] = new Boolean( rs.getString( "USALOTEORC" ).equals( "S" ) );
-				oRetorno[ 10 ] = new Boolean( rs.getString( "CONTESTOQ" ).equals( "S" ) );								
-				oRetorno[ 11 ] = rs.getString( "TitOrcTxt01" );
-				if ( oRetorno[ 11 ] == null )
-					oRetorno[ 11 ] = "";
+					oRetorno[ PrefOrc.CODTIPOMOV2.ordinal() ] = new Integer( 0 );
+				oRetorno[ PrefOrc.DESCCOMPPED.ordinal() ] = new Boolean( rs.getString( "DescCompPed" ).equals( "S" ) );
+				oRetorno[ PrefOrc.USAORCSEQ.ordinal() ] = new Boolean( rs.getString( "UsaOrcSeq" ).equals( "S" ) );
+				oRetorno[ PrefOrc.OBSCLIVEND.ordinal() ] = new Boolean( rs.getString( "ObsCliVend" ).equals( "S" ) );
+				oRetorno[ PrefOrc.RECALCPCORC.ordinal() ] = new Boolean( rs.getString( "ReCalcPCOrc" ).equals( "S" ) );
+				oRetorno[ PrefOrc.USABUSCAGENPROD.ordinal() ] = new Boolean( rs.getString( "USABUSCAGENPROD" ).equals( "S" ) );
+				oRetorno[ PrefOrc.USALOTEORC.ordinal() ] = new Boolean( rs.getString( "USALOTEORC" ).equals( "S" ) );
+				oRetorno[ PrefOrc.CONTESTOQ.ordinal() ] = new Boolean( rs.getString( "CONTESTOQ" ).equals( "S" ) );								
+				oRetorno[ PrefOrc.TITORCTXT01.ordinal() ] = rs.getString( "TitOrcTxt01" );
+				if ( oRetorno[ PrefOrc.TITORCTXT01.ordinal() ] == null )
+					oRetorno[ PrefOrc.TITORCTXT01.ordinal() ] = "";
 				
 				sOrdNota = rs.getString( "OrdNota" );
 
@@ -1686,7 +1708,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 		else if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) {
 			if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
-				if ( ( (Boolean) oPrefs[ 9 ] ).booleanValue() && txtCLoteProd.getVlrString().equals( "S" ) ) {
+
+				if ( ( (Boolean) oPrefs[ PrefOrc.USALOTEORC.ordinal() ] ).booleanValue() && 
+						txtCLoteProd.getVlrString().equals( "S" ) ) {
 					getLote();
 					txtCodLote.setAtivo( true );
 				}
@@ -1704,29 +1728,29 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			s = null;
 		}
 		else if ( cevt.getListaCampos() == lcCli ) {
-			if ( ( (Boolean) oPrefs[ 6 ] ).booleanValue() ) {
+			if ( ( (Boolean) oPrefs[ PrefOrc.OBSCLIVEND.ordinal() ] ).booleanValue() ) {
 				if ( iCodCliAnt != txtCodCli.getVlrInteger().intValue() ) {
 					iCodCliAnt = txtCodCli.getVlrInteger().intValue();
-					mostraObsCli( iCodCliAnt, new Point( this.getX(), this.getY() + pinCab.getHeight() + pnCab.getHeight() + 10 ), new Dimension( spTab.getWidth(), 150 ) );
+					mostraObsCli( iCodCliAnt, new Point( this.getX(), this.getY() + pinCab.getHeight() + 
+							pnCab.getHeight() + 10 ), new Dimension( spTab.getWidth(), 150 ) );
 				}
 			}
-			if ( ( (Boolean) oPrefs[ 7 ] ).booleanValue() ) {
+			if ( ( (Boolean) oPrefs[ PrefOrc.RECALCPCORC.ordinal() ] ).booleanValue() ) {
 				setReCalcPreco( true );
 			}
 			txtCodTpCli.setVlrInteger( new Integer( getCodTipoCli() ) );
 			lcTipoCli.carregaDados();
 		}
 		else if ( cevt.getListaCampos() == lcPlanoPag ) {
-			if ( ( (Boolean) oPrefs[ 7 ] ).booleanValue() )
+			if ( ( (Boolean) oPrefs[ PrefOrc.RECALCPCORC.ordinal() ] ).booleanValue() )
 				setReCalcPreco( true );
 		}
 	}
 
 	public void beforePost( PostEvent evt ) {
-
 		if ( evt.getListaCampos() == lcCampos ) {
 			if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
-				if ( ( (Boolean) oPrefs[ 5 ] ).booleanValue() )
+				if ( ( (Boolean) oPrefs[ PrefOrc.USAORCSEQ.ordinal() ] ).booleanValue() )
 					txtCodOrc.setVlrInteger( testaCodPK( "VDORCAMENTO" ) );
 				txtStatusOrc.setVlrString( "*" );
 			}
@@ -1746,7 +1770,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 					evt.cancela();
 					return;
 				}
-				if ( txtCLoteProd.getVlrString().equals( "S" ) && ( (Boolean) oPrefs[ 9 ] ).booleanValue() ) {
+				if ( txtCLoteProd.getVlrString().equals( "S" ) && 
+						( (Boolean) oPrefs[ PrefOrc.USALOTEORC.ordinal() ] ).booleanValue() ) {
 					if ( !testaCodLote() )
 						evt.cancela();
 				}
@@ -1810,9 +1835,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcTipoConv.setConexao( cn );
 		lcEnc.setConexao( cn );
 		
-
-		if ( ( (Boolean) oPrefs[ 8 ] ).booleanValue() ) {
-			if ( ( (Boolean) oPrefs[ 0 ] ).booleanValue() )
+		if ( ( (Boolean) oPrefs[ PrefOrc.USABUSCAGENPROD.ordinal() ] ).booleanValue() ) {
+			if ( ( (Boolean) oPrefs[ PrefOrc.USAREFPROD.ordinal() ] ).booleanValue() )
 				txtRefProd.setBuscaGenProd( new DLCodProd( cn, null ) );
 			else
 				txtCodProd.setBuscaGenProd( new DLCodProd( cn, null ) );
