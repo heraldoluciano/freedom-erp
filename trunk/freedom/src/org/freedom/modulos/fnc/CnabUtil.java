@@ -10,9 +10,9 @@ class CnabUtil extends FbnUtil {
 	
 	abstract class Reg {
 		
-		public abstract void parseLine( String line ) throws Exception;
+		public abstract void parseLine( String line ) throws ExceptionCnab;
 		
-		public abstract String getLine() throws Exception;
+		public abstract String getLine() throws ExceptionCnab;
 		
 		protected String format( Object obj, ETipo tipo, int tam, int dec ) {
 
@@ -246,7 +246,7 @@ class CnabUtil extends FbnUtil {
 		}
 
 		@Override
-		public String getLine() throws Exception {
+		public String getLine() throws ExceptionCnab {
 		
 			StringBuilder line = new StringBuilder();
 			
@@ -277,19 +277,19 @@ class CnabUtil extends FbnUtil {
 				line.append( Funcoes.replicate( " ", 33 ) );
 			}
 			catch ( Exception e ) {	
-				throw new Exception( "CNAB registro 1.\nErro ao escrever registro.\n" + e.getMessage() );
+				throw new ExceptionCnab( "CNAB registro 1.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
 			
 			return line.toString();
 		}
 
 		@Override
-		public void parseLine( final String line ) throws Exception {
+		public void parseLine( final String line ) throws ExceptionCnab {
 
 			try {
 
 				if ( line == null ) {					
-					throw new Exception( "CNAB registro 1.\nLinha nula." );
+					throw new ExceptionCnab( "CNAB registro 1.\nLinha nula." );
 				}
 				else {
 				
@@ -316,7 +316,7 @@ class CnabUtil extends FbnUtil {
 					setDataCred( Funcoes.encodeDate( Integer.parseInt( line.substring( 199, 201 ).trim() ), Integer.parseInt( line.substring( 201, 203 ).trim() ), Integer.parseInt( line.substring( 203, 207 ).trim() ) ) );
 				}
 			} catch ( Exception e ) {
-				throw new Exception( "CNAB registro 1.\nErro ao ler registro.\n" + e.getMessage() );
+				throw new ExceptionCnab( "CNAB registro 1.\nErro ao ler registro.\n" + e.getMessage() );
 			}			
 		}
 				
@@ -386,7 +386,7 @@ class CnabUtil extends FbnUtil {
 			this.seqLote = seqLote;
 		}
 
-		public String getLineReg3() throws Exception {
+		public String getLineReg3() throws ExceptionCnab {
 
 			StringBuilder line = new StringBuilder();
 			
@@ -401,18 +401,18 @@ class CnabUtil extends FbnUtil {
 				line.append( format( getCodMovimento(), ETipo.$9, 2, 0 ) );
 			}
 			catch ( Exception e ) {	
-				throw new Exception( "CNAB registro 3.\nErro ao escrever registro.\n" + e.getMessage() );
+				throw new ExceptionCnab( "CNAB registro 3.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
 			
 			return line.toString();
 		}
 
-		public void parseLineReg3( String line ) throws Exception {
+		public void parseLineReg3( String line ) throws ExceptionCnab {
 
 			try {
 
 				if ( line == null ) {					
-					throw new Exception( "Linha nula." );
+					throw new ExceptionCnab( "Linha nula." );
 				}
 				else {
 				
@@ -424,7 +424,7 @@ class CnabUtil extends FbnUtil {
 					setCodMovimento( line.substring( 15, 17 ).trim().length() > 0 ? Integer.parseInt( line.substring( 15, 17 ).trim() ) : 0 );
 				}
 			} catch ( Exception e ) {
-				throw new Exception( "CNAB registro 3.\nErro ao ler registro.\n" + e.getMessage() );
+				throw new ExceptionCnab( "CNAB registro 3.\nErro ao ler registro.\n" + e.getMessage() );
 			}
 		}				
 	}	
@@ -748,7 +748,7 @@ class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3#getLine()
 		 */
 		@Override
-		public String getLine() throws Exception {
+		public String getLine() throws ExceptionCnab {
 
 			StringBuilder line = new StringBuilder();
 			
@@ -791,7 +791,7 @@ class CnabUtil extends FbnUtil {
 				line.append( format( getContrOperCred(), ETipo.$9, 10, 0 ) );
 			}
 			catch ( Exception e ) {	
-				throw new Exception( "CNAB registro 3 segmento P.\nErro ao escrever registro.\n" + e.getMessage() );
+				throw new ExceptionCnab( "CNAB registro 3 segmento P.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
 			
 			return line.toString();
@@ -801,12 +801,12 @@ class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3#parseLine(java.lang.String)
 		 */
 		@Override
-		public void parseLine( String line ) throws Exception {
+		public void parseLine( String line ) throws ExceptionCnab {
 
 			try {
 
 				if ( line == null ) {					
-					throw new Exception( "Linha nula." );
+					throw new ExceptionCnab( "Linha nula." );
 				}
 				else {
 
@@ -847,7 +847,7 @@ class CnabUtil extends FbnUtil {
 					setContrOperCred( line.substring( 229, 239 ) );
 				}
 			} catch ( Exception e ) {
-				throw new Exception( "CNAB registro 3 segmento P.\nErro ao ler registro.\n" + e.getMessage() );
+				throw new ExceptionCnab( "CNAB registro 3 segmento P.\nErro ao ler registro.\n" + e.getMessage() );
 			}
 		}		
 	}
@@ -983,7 +983,7 @@ class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3#getLine()
 		 */
 		@Override
-		public String getLine() throws Exception {
+		public String getLine() throws ExceptionCnab {
 
 			StringBuilder line = new StringBuilder();
 			
@@ -1006,7 +1006,7 @@ class CnabUtil extends FbnUtil {
 				line.append( Funcoes.replicate( " ", 8 ) );
 			}
 			catch ( Exception e ) {	
-				throw new Exception( "CNAB registro 3 segmento Q.\nErro ao escrever registro.\n" + e.getMessage() );
+				throw new ExceptionCnab( "CNAB registro 3 segmento Q.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
 			
 			return line.toString();
@@ -1016,12 +1016,12 @@ class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3#parseLine(java.lang.String)
 		 */
 		@Override
-		public void parseLine( String line ) throws Exception {
+		public void parseLine( String line ) throws ExceptionCnab {
 			
 			try {
 
 				if ( line == null ) {					
-					throw new Exception( "Linha nula." );
+					throw new ExceptionCnab( "Linha nula." );
 				}
 				else {
 
@@ -1041,7 +1041,7 @@ class CnabUtil extends FbnUtil {
 					setNossoNumero( line.substring( 212, 232 ) );
 				}
 			} catch ( Exception e ) {
-				throw new Exception( "CNAB registro 3 segmento Q.\nErro ao ler registro.\n" + e.getMessage() );
+				throw new ExceptionCnab( "CNAB registro 3 segmento Q.\nErro ao ler registro.\n" + e.getMessage() );
 			}
 		}		
 	}
@@ -1203,7 +1203,7 @@ class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3#getLine()
 		 */
 		@Override
-		public String getLine() throws Exception {
+		public String getLine() throws ExceptionCnab {
 
 			StringBuilder line = new StringBuilder();
 			
@@ -1228,7 +1228,7 @@ class CnabUtil extends FbnUtil {
 				line.append( format( getCodOcorrSacado(), ETipo.$9, 8, 0 ) );
 			}
 			catch ( Exception e ) {	
-				throw new Exception( "CNAB registro 3 segmento R.\nErro ao escrever registro.\n" + e.getMessage() );
+				throw new ExceptionCnab( "CNAB registro 3 segmento R.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
 			
 			return line.toString();
@@ -1238,12 +1238,12 @@ class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3#parseLine(java.lang.String)
 		 */
 		@Override
-		public void parseLine( String line ) throws Exception {
+		public void parseLine( String line ) throws ExceptionCnab {
 			
 			try {
 
 				if ( line == null ) {					
-					throw new Exception( "Linha nula." );
+					throw new ExceptionCnab( "Linha nula." );
 				}
 				else {
 
@@ -1266,7 +1266,170 @@ class CnabUtil extends FbnUtil {
 					setCodOcorrSacado( line.substring( 199, 207 ).trim().length() > 0 ? Integer.parseInt( line.substring( 199, 207 ).trim() ) : 0 );
 				}
 			} catch ( Exception e ) {
-				throw new Exception( "CNAB registro 3 segmento R.\nErro ao ler registro.\n" + e.getMessage() );
+				throw new ExceptionCnab( "CNAB registro 3 segmento R.\nErro ao ler registro.\n" + e.getMessage() );
+			}
+		}
+	}
+	
+	class Reg3S extends Reg3 {
+		
+		private int tipoImpressao;
+		private int linhaImp;
+		private String msgImp;
+		private int tipoChar;		
+		private String msg5;
+		private String msg6;
+		private String msg7;
+		private String msg8;
+		private String msg9;
+		
+		public Reg3S() {
+			
+			super( 'S' );
+		}
+		
+		public int getLinhaImp() {		
+			return linhaImp;
+		}
+		
+		public void setLinhaImp( final int linhaImp ) {		
+			this.linhaImp = linhaImp;
+		}
+		
+		public String getMsg5() {		
+			return msg5;
+		}
+		
+		public void setMsg5( final String msg5 ) {		
+			this.msg5 = msg5;
+		}
+		
+		public String getMsg6() {		
+			return msg6;
+		}
+		
+		public void setMsg6( final String msg6 ) {		
+			this.msg6 = msg6;
+		}
+		
+		public String getMsg7() {		
+			return msg7;
+		}
+		
+		public void setMsg7( final String msg7 ) {		
+			this.msg7 = msg7;
+		}
+		
+		public String getMsg8() {		
+			return msg8;
+		}
+		
+		public void setMsg8( final String msg8 ) {		
+			this.msg8 = msg8;
+		}
+		
+		public String getMsg9() {		
+			return msg9;
+		}
+		
+		public void setMsg9( final String msg9 ) {		
+			this.msg9 = msg9;
+		}
+		
+		public String getMsgImp() {		
+			return msgImp;
+		}
+		
+		public void setMsgImp( final String msgImp ) {		
+			this.msgImp = msgImp;
+		}
+		
+		public int getTipoChar() {		
+			return tipoChar;
+		}
+		
+		public void setTipoChar( final int tipoChar ) {		
+			this.tipoChar = tipoChar;
+		}
+		
+		public int getTipoImpressao() {		
+			return tipoImpressao;
+		}
+		
+		public void setTipoImpressao( final int tipoImpressao ) {		
+			this.tipoImpressao = tipoImpressao;
+		}
+
+		/* (non-Javadoc)
+		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#getLine()
+		 */
+		@Override
+		public String getLine() throws ExceptionCnab {
+
+			StringBuilder line = new StringBuilder();
+			
+			try {
+				
+				line.append( super.getLineReg3() );
+				line.append( format( getTipoImpressao(), ETipo.$9, 1, 0 ) );
+				
+				if ( getTipoImpressao() == 1 || getTipoImpressao() == 2 ) {
+
+					line.append( format( getLinhaImp(), ETipo.$9, 2, 0 ) );
+					line.append( format( getMsgImp(), ETipo.X, 140, 0 ) );
+					line.append( format( getTipoChar(), ETipo.$9, 2, 0 ) );
+					line.append( Funcoes.replicate( " ", 78 ) );
+				}
+				else if ( getTipoImpressao() == 3 )  {
+				
+					line.append( format( getMsg5(), ETipo.X, 40, 0 ) );
+					line.append( format( getMsg6(), ETipo.X, 40, 0 ) );
+					line.append( format( getMsg7(), ETipo.X, 40, 0 ) );
+					line.append( format( getMsg8(), ETipo.X, 40, 0 ) );
+					line.append( format( getMsg9(), ETipo.X, 40, 0 ) );
+					line.append( Funcoes.replicate( " ", 22 ) );
+				}
+			}
+			catch ( Exception e ) {	
+				throw new ExceptionCnab( "CNAB registro 3 segmento S.\nErro ao escrever registro.\n" + e.getMessage() );
+			}
+			
+			return line.toString();
+		}
+
+		/* (non-Javadoc)
+		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#parseLine(java.lang.String)
+		 */
+		@Override
+		public void parseLine( String line ) throws ExceptionCnab {
+
+			try {
+
+				if ( line == null ) {					
+					throw new ExceptionCnab( "Linha nula." );
+				}
+				else {
+
+					super.parseLineReg3( line );
+					setTipoImpressao( line.substring( 17, 18 ).trim().length() > 0 ? Integer.parseInt( line.substring( 17, 18 ).trim() ) : 0 );
+					
+					if ( getTipoImpressao() == 1 || getTipoImpressao() == 2 ) {
+
+						setLinhaImp( line.substring( 18, 20 ).trim().length() > 0 ? Integer.parseInt( line.substring( 18, 20 ).trim() ) : 0 );
+						setMsgImp( line.substring( 20, 160 ) );
+						setTipoChar( line.substring( 160, 162 ).trim().length() > 0 ? Integer.parseInt( line.substring( 160, 162 ).trim() ) : 0 );						
+					}
+					else if ( getTipoImpressao() == 3 )  {
+					
+						setMsg5( line.substring( 18, 58 ) );
+						setMsg6( line.substring( 58, 98 ) );
+						setMsg7( line.substring( 98, 138 ) );
+						setMsg8( line.substring( 138, 178 ) );
+						setMsg9( line.substring( 178, 218 ) );
+					}					
+				}
+			} catch ( Exception e ) {
+				throw new ExceptionCnab( "CNAB registro 3 segmento S.\nErro ao ler registro.\n" + e.getMessage() );
 			}
 		}
 	}
@@ -1473,7 +1636,7 @@ class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#getLine()
 		 */
 		@Override
-		public String getLine() throws Exception {
+		public String getLine() throws ExceptionCnab {
 
 			StringBuilder line = new StringBuilder();
 			
@@ -1504,7 +1667,7 @@ class CnabUtil extends FbnUtil {
 				line.append( Funcoes.replicate( " ", 17 ) );
 			}
 			catch ( Exception e ) {	
-				throw new Exception( "CNAB registro 3 segmento T.\nErro ao escrever registro.\n" + e.getMessage() );
+				throw new ExceptionCnab( "CNAB registro 3 segmento T.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
 			
 			return line.toString();
@@ -1514,12 +1677,12 @@ class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#parseLine(java.lang.String)
 		 */
 		@Override
-		public void parseLine( String line ) throws Exception {
+		public void parseLine( String line ) throws ExceptionCnab {
 
 			try {
 
 				if ( line == null ) {					
-					throw new Exception( "Linha nula." );
+					throw new ExceptionCnab( "Linha nula." );
 				}
 				else {
 
@@ -1547,7 +1710,7 @@ class CnabUtil extends FbnUtil {
 					setCodRejeicoes( line.substring( 213, 223 ) );
 				}
 			} catch ( Exception e ) {
-				throw new Exception( "CNAB registro 3 segmento T.\nErro ao ler registro.\n" + e.getMessage() );
+				throw new ExceptionCnab( "CNAB registro 3 segmento T.\nErro ao ler registro.\n" + e.getMessage() );
 			}
 		}
 	}
@@ -1709,7 +1872,7 @@ class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#getLine()
 		 */
 		@Override
-		public String getLine() throws Exception {
+		public String getLine() throws ExceptionCnab {
 
 			StringBuilder line = new StringBuilder();
 			
@@ -1735,7 +1898,7 @@ class CnabUtil extends FbnUtil {
 				line.append( Funcoes.replicate( " ", 7 ) );
 			}
 			catch ( Exception e ) {	
-				throw new Exception( "CNAB registro 3 segmento T.\nErro ao escrever registro.\n" + e.getMessage() );
+				throw new ExceptionCnab( "CNAB registro 3 segmento T.\nErro ao escrever registro.\n" + e.getMessage() );
 			}
 			
 			return line.toString();
@@ -1745,12 +1908,12 @@ class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#parseLine(java.lang.String)
 		 */
 		@Override
-		public void parseLine( String line ) throws Exception {
+		public void parseLine( String line ) throws ExceptionCnab {
 
 			try {
 
 				if ( line == null ) {					
-					throw new Exception( "Linha nula." );
+					throw new ExceptionCnab( "Linha nula." );
 				}
 				else {
 
@@ -1773,11 +1936,11 @@ class CnabUtil extends FbnUtil {
 					setNossoNrCompens( line.substring( 213, 233 ) );
 				}
 			} catch ( Exception e ) {
-				throw new Exception( "CNAB registro 3 segmento U.\nErro ao ler registro.\n" + e.getMessage() );
+				throw new ExceptionCnab( "CNAB registro 3 segmento U.\nErro ao ler registro.\n" + e.getMessage() );
 			}
 		}
 	}
-	
+		
 	class Reg5 extends Reg {
 		
 		private String codBanco;
@@ -1799,7 +1962,7 @@ class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#getLine()
 		 */
 		@Override
-		public String getLine() throws Exception {
+		public String getLine() throws ExceptionCnab {
 
 			// TODO Auto-generated method stub
 			return null;
@@ -1809,13 +1972,13 @@ class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#parseLine(java.lang.String)
 		 */
 		@Override
-		public void parseLine( String line ) throws Exception {
+		public void parseLine( String line ) throws ExceptionCnab {
 
 			// TODO Auto-generated method stub
 			
 		}
 	}
-	
+
 	/**
 	 * Converte java.util.Date para um String em formato DDMMAAAA.
 	 * @param arg java.util.Date.
@@ -1830,7 +1993,7 @@ class CnabUtil extends FbnUtil {
 		
 		return retorno;
 	}
-
+	
 	/**
 	 * Converte para java.math.BigDecimal um String de inteiros sem ponto ou virgula.
 	 * @param arg String de inteiros sem ponto ou virgula.
