@@ -24,7 +24,7 @@
 package org.freedom.modulos.fnc;
 
 
-public class FRetCnab extends FRemFBN {
+public class FRetCnab extends FRetFBN {
 
 	private static final long serialVersionUID = 1l;
 	

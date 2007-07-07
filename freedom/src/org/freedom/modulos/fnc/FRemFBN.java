@@ -27,23 +27,16 @@ package org.freedom.modulos.fnc;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FileDialog;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,8 +50,6 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JPanelPad;
@@ -70,49 +61,52 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.telas.FPrinterJob;
 
-public class FRemFBN extends FFilho implements ActionListener, MouseListener {
+public abstract class FRemFBN extends FFilho implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final int COL_SEL = 0;
+	protected static final int COL_SEL = 0;
 
-	private static final int COL_RAZCLI = 1;
+	protected static final int COL_RAZCLI = 1;
 
-	private static final int COL_CODCLI = 2;
+	protected static final int COL_CODCLI = 2;
 
-	private static final int COL_CODREC = 3;
+	protected static final int COL_CODREC = 3;
 
-	private static final int COL_DOCREC = 4;
+	protected static final int COL_DOCREC = 4;
 
-	private static final int COL_NRPARC = 5;
+	protected static final int COL_NRPARC = 5;
 
-	private static final int COL_VLRAPAG = 6;
+	protected static final int COL_VLRAPAG = 6;
 
-	private static final int COL_DTREC = 7;
+	protected static final int COL_DTREC = 7;
 
-	private static final int COL_DTVENC = 8;
+	protected static final int COL_DTVENC = 8;
 
-	private static final int COL_AGENCIACLI = 9;
+	protected static final int COL_AGENCIACLI = 9;
 
-	private static final int COL_IDENTCLI = 10;
+	protected static final int COL_IDENTCLI = 10;
 
-	private static final int COL_SITREM = 11;
+	protected static final int COL_SITREM = 11;
 
-	private static final int COL_SITRET = 12;
+	protected static final int COL_SITRET = 12;
 
-	private static final int COL_STIPOFEBRABAN = 13;
+	protected static final int COL_STIPOFEBRABAN = 13;
 
-	private static final int COL_TIPOREMCLI = 14;
+	protected static final int COL_TIPOREMCLI = 14;
 
-	private static final int COL_PESSOACLI = 15;
+	protected static final int COL_PESSOACLI = 15;
 
-	private static final int COL_CPFCLI = 16;
+	protected static final int COL_CPFCLI = 16;
 	
-	private static final int COL_CNPJCLI = 17;
+	protected static final int COL_CNPJCLI = 17;
 	
-	private static final String TIPO_FEBRABAN = "01";
+	protected static final String TIPO_FEBRABAN_SIACC = "01";
+	
+	protected static final String TIPO_FEBRABAN_CNAB = "02";
+	
+	protected final String TIPO_FEBRABAN;
 
 	private JPanelPad panelRodape = null;
 
@@ -130,19 +124,19 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 
 	private final JPanelPad pnImp = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
 
-	private final Tabela tab = new Tabela();
+	protected final Tabela tab = new Tabela();
 
-	private final JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
+	protected final JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
-	private final JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	protected final JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtDtIni = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	protected final JTextFieldPad txtDtIni = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private final JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	protected final JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private final JRadioGroup rgData;
+	protected final JRadioGroup rgData;
 	
-	private final JRadioGroup rgSitRemessa;
+	protected final JRadioGroup rgSitRemessa;
 
 	private final JButton btCarrega = new JButton( "Buscar", Icone.novo( "btExecuta.gif" ) );
 
@@ -156,11 +150,11 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 	
 	private final JButton btVisImp = new JButton( Icone.novo( "btPrevimp.gif" ) );
 
-	private final JLabel lbStatus = new JLabel();
+	protected final JLabel lbStatus = new JLabel();
 
-	private final ListaCampos lcBanco = new ListaCampos( this );
+	protected final ListaCampos lcBanco = new ListaCampos( this );
 
-	private Map<SiaccUtil.EPrefs, Object> prefs = new HashMap<SiaccUtil.EPrefs, Object>();
+	protected Map<Enum, Object> prefs = new HashMap<Enum, Object>();
 	
 	private final Vector<String> vVals = new Vector<String>();
 	
@@ -170,13 +164,16 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 	
 	private final Vector<String> vLabsRem = new Vector<String>();
 	
-	String where = "";
+	protected String where = "";
 	
-	public FRemFBN() {
+	
+	public FRemFBN( final String tipofebraban ) {
 
 		super( false );
 		setTitulo( "Manutenção de contas a receber" );
 		setAtribos( 10, 10, 780, 540 );
+		
+		this.TIPO_FEBRABAN = tipofebraban;
 
 		vVals.addElement( "E" );
 		vVals.addElement( "V" );
@@ -325,43 +322,89 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 		
 	}
 
-	private boolean setPrefs() {
-	
-		boolean retorno = false;
+	protected String getMenssagemRet( final String codretorno ) {
+		
+		String msg = null; 
+		StringBuilder sSQL = new StringBuilder();
+		PreparedStatement ps = null;
+		
 		try {
-			PreparedStatement ps = con.prepareStatement( "SELECT I.CODCONV, P.NOMEEMP, I.VERLAYOUT, " +
-					"I.IDENTSERV, I.CONTACOMPR, " + "I.IDENTAMBCLI, I.IDENTAMBBCO, " +
-					"I.NROSEQ FROM SGITPREFERE6 I, SGPREFERE6 P WHERE I.CODEMP=? AND " +
-					"I.CODFILIAL=? AND I.CODEMPBO=? AND " +
-					"I.CODFILIALBO=? AND I.CODBANCO=? AND I.TIPOFEBRABAN=? AND " + 
-					"P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL" );
+			
+			sSQL.append( " SELECT DESCRET " );
+			sSQL.append( " FROM FNFBNCODRET " );
+			sSQL.append( " WHERE CODEMP=? AND CODFILIAL=?  AND CODEMPBO=? " );
+			sSQL.append( " AND CODFILIALBO=?  AND CODRET=? AND TIPOFEBRABAN=? "  );
+			
+			ps = con.prepareStatement( sSQL.toString() );
+			
+			ps.setInt( 1,  Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "FNBANCO" ) );
+			ps.setString( 5, codretorno );
+			ps.setString( 6, TIPO_FEBRABAN );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if( rs.next() ){
+				
+				msg = rs.getString( "DESCRET" );
+			}
+		} catch ( Exception e ) {
+			Funcoes.mensagemInforma( this, "Erro ao montar grid. \n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		return msg;		
+	}
+
+	protected boolean setPrefs() {
+
+		boolean retorno = false;
+
+		try {
+			
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append( "SELECT I.CODCONV, P.NOMEEMP, I.VERLAYOUT, I.IDENTSERV, I.CONTACOMPR, " );
+			sql.append( "I.IDENTAMBCLI, I.IDENTAMBBCO, I.NROSEQ " );
+			sql.append( "FROM SGITPREFERE6 I, SGPREFERE6 P " );
+			sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? " );
+			sql.append( "AND I.CODEMPBO=? AND I.CODFILIALBO=? AND I.CODBANCO=? AND I.TIPOFEBRABAN=? " );
+			sql.append( "AND P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL" );
+
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
 			ps.setInt( 3, Aplicativo.iCodEmp );
 			ps.setInt( 4, ListaCampos.getMasterFilial( "FNBANCO" ) );
 			ps.setString( 5, txtCodBanco.getVlrString() );
 			ps.setString( 6, TIPO_FEBRABAN );
+			
 			ResultSet rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
-				prefs.put( SiaccUtil.EPrefs.CODCONV, rs.getString( SiaccUtil.EPrefs.CODCONV.toString() ) );
-				prefs.put( SiaccUtil.EPrefs.NOMEEMP, rs.getString( SiaccUtil.EPrefs.NOMEEMP.toString() ) );
-				prefs.put( SiaccUtil.EPrefs.VERLAYOUT, rs.getString( SiaccUtil.EPrefs.VERLAYOUT.toString() ) );
-				prefs.put( SiaccUtil.EPrefs.CODBANCO, txtCodBanco.getVlrString() );
-				prefs.put( SiaccUtil.EPrefs.NOMEBANCO, txtNomeBanco.getVlrString() );
-				prefs.put( SiaccUtil.EPrefs.IDENTSERV, rs.getString( SiaccUtil.EPrefs.IDENTSERV.toString() ) );
-				prefs.put( SiaccUtil.EPrefs.CONTACOMPR, rs.getString( SiaccUtil.EPrefs.CONTACOMPR.toString() ) );
-				prefs.put( SiaccUtil.EPrefs.IDENTAMBCLI, rs.getString( SiaccUtil.EPrefs.IDENTAMBCLI.toString() ) );
-				prefs.put( SiaccUtil.EPrefs.IDENTAMBBCO, rs.getString( SiaccUtil.EPrefs.IDENTAMBBCO.toString() ) );
-				prefs.put( SiaccUtil.EPrefs.NROSEQ, new Integer(rs.getInt( SiaccUtil.EPrefs.NROSEQ.toString() )) );
+				
+				prefs.put( FbnUtil.EPrefs.CODCONV, rs.getString( FbnUtil.EPrefs.CODCONV.toString() ) );
+				prefs.put( FbnUtil.EPrefs.NOMEEMP, rs.getString( FbnUtil.EPrefs.NOMEEMP.toString() ) );
+				prefs.put( FbnUtil.EPrefs.VERLAYOUT, rs.getString( FbnUtil.EPrefs.VERLAYOUT.toString() ) );
+				prefs.put( FbnUtil.EPrefs.CODBANCO, txtCodBanco.getVlrString() );
+				prefs.put( FbnUtil.EPrefs.NOMEBANCO, txtNomeBanco.getVlrString() );
+				prefs.put( FbnUtil.EPrefs.IDENTSERV, rs.getString( FbnUtil.EPrefs.IDENTSERV.toString() ) );
+				prefs.put( FbnUtil.EPrefs.CONTACOMPR, rs.getString( FbnUtil.EPrefs.CONTACOMPR.toString() ) );
+				prefs.put( FbnUtil.EPrefs.IDENTAMBCLI, rs.getString( FbnUtil.EPrefs.IDENTAMBCLI.toString() ) );
+				prefs.put( FbnUtil.EPrefs.IDENTAMBBCO, rs.getString( FbnUtil.EPrefs.IDENTAMBBCO.toString() ) );
+				prefs.put( FbnUtil.EPrefs.NROSEQ, new Integer( rs.getInt( FbnUtil.EPrefs.NROSEQ.toString() ) ) );
 				retorno = true;
 			}
 			else {
 				retorno = false;
 				Funcoes.mensagemInforma( null, "Ajuste os parâmetros antes de executar!" );
 			}
+			
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() ) {
+			
+			if ( ! con.getAutoCommit() ) {
 				con.commit();
 			}
 		} catch ( SQLException sqlError ) {
@@ -369,17 +412,17 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 			Funcoes.mensagemErro( this, "Carregando parâmetros!\n" + sqlError.getMessage() );
 			lbStatus.setText( "" );
 		}
+		
 		return retorno;
 	}
 
-	private ResultSet executeQuery() throws SQLException {
-	
+	protected ResultSet executeQuery() throws SQLException {
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sSQL = new StringBuilder();
 		String sDtFiltro = "E".equals( rgData.getVlrString() ) ? "IR.DTITREC" : "IR.DTVENCITREC";
-		
-		
+
 		if ( "00".equals( rgSitRemessa.getVlrString() ) ) {
 			where = "AND ( FR.SITREMESSA IS NULL OR FR.SITREMESSA='00' ) AND ( FR.SITRETORNO IS NULL OR FR.SITRETORNO='00' ) ";
 		}
@@ -389,7 +432,7 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 		else if ( "02".equals( rgSitRemessa.getVlrString() ) ) {
 			where = "AND ( FR.SITRETORNO IS NOT NULL AND FR.SITRETORNO<>'00' ) ";
 		}
-		
+
 		sSQL.append( "SELECT IR.CODREC, IR.NPARCITREC, R.DOCREC, R.CODCLI, C.RAZCLI, IR.DTITREC, IR.DTVENCITREC," );
 		sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, COALESCE(FR.SITREMESSA,'00') SITREMESSA, " );
 		sSQL.append( "FR.SITRETORNO, COALESCE(COALESCE(FR.STIPOFEBRABAN,FC.STIPOFEBRABAN),'02') STIPOFEBRABAN, " );
@@ -408,7 +451,7 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 		sSQL.append( "IR.CODEMPBO=? AND IR.CODFILIALBO=? AND IR.CODBANCO=? " );
 		sSQL.append( where );
 		sSQL.append( "ORDER BY C.RAZCLI, R.CODREC, IR.NPARCITREC " );
-		
+
 		ps = con.prepareStatement( sSQL.toString() );
 		ps.setDate( 1, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
 		ps.setDate( 2, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
@@ -419,24 +462,24 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 		return rs;
 	}
 
-	private void carregaTab() {
-	
-		ResultSet rs;
-	
+	protected void carregaTab() {
+
 		if ( txtCodBanco.getVlrString().trim().length() < 1 ) {
 			Funcoes.mensagemErro( this, "O código do banco é obrigatorio!" );
 			return;
 		}
-	
+
 		try {
-	
+			
+			lbStatus.setText( "      carregando tabela ..." );
+
 			tab.limpa();
-	
-			rs = executeQuery();
-	
+
+			ResultSet rs = executeQuery();
+
 			int i = 0;
 			for ( i = 0; rs.next(); i++ ) {
-	
+
 				tab.adicLinha();
 				tab.setValor( new Boolean( true ), i, COL_SEL );
 				tab.setValor( rs.getString( "RAZCLI" ), i, COL_RAZCLI );
@@ -454,23 +497,23 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 				tab.setValor( rs.getString( "STIPOFEBRABAN" ), i, COL_STIPOFEBRABAN );
 				tab.setValor( rs.getString( "TIPOREMCLI" ), i, COL_TIPOREMCLI );
 				tab.setValor( rs.getString( "PESSOACLI" ), i, COL_PESSOACLI );
-				tab.setValor( rs.getString( "CPFCLI" ), i, COL_CPFCLI);
+				tab.setValor( rs.getString( "CPFCLI" ), i, COL_CPFCLI );
 				tab.setValor( rs.getString( "CNPJCLI" ), i, COL_CNPJCLI );
 			}
-	
+
 			rs.close();
-	
+
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
-	
+
 			if ( i > 0 ) {
 				lbStatus.setText( "     tabela carregada com " + i + " itens..." );
 			}
 			else {
 				lbStatus.setText( "" );
 			}
-	
+
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao busca dados!\n" + e.getMessage() );
 			e.printStackTrace();
@@ -478,15 +521,16 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 		} finally {
 			System.gc();
 		}
-	
-	}
 
+	}
+	
 	private void selecionaTudo() {
 	
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 			tab.setValor( new Boolean( true ), i, 0 );
 		}
 	}
+	
 
 	private void selecionaNada() {
 	
@@ -494,259 +538,9 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 			tab.setValor( new Boolean( false ), i, 0 );
 		}
 	}
-
-	private boolean execExporta() {
 	
-		boolean retorno = false;
-		String sFileName = null;
-		File fileSiacc = null;
-		FileWriter fw = null;
-		BufferedWriter bw = null;
-		HashSet<SiaccUtil.StuffCli> hsCli = new HashSet<SiaccUtil.StuffCli>();
-		HashSet<SiaccUtil.StuffRec> hsRec = new HashSet<SiaccUtil.StuffRec>();
-	
-		if ( consisteExporta( hsCli, hsRec ) ) {
-			
-			retorno = setPrefs();
-			
-			if (retorno) {
-				lbStatus.setText( "     criando arquivo ..." );
-		
-				FileDialog fileDialogSiacc = null;
-				fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
-				sFileName = "remessa"+prefs.get( SiaccUtil.EPrefs.NROSEQ )+".cmp";
-				fileDialogSiacc.setFile( sFileName );
-				fileDialogSiacc.setVisible( true );
-		
-				if ( fileDialogSiacc.getFile() == null ) {
-					lbStatus.setText( "" );
-					return retorno;
-				}
-		
-				sFileName = fileDialogSiacc.getDirectory() + fileDialogSiacc.getFile();
-		
-				fileSiacc = new File( sFileName );
-		
-				try {
-					fileSiacc.createNewFile();
-					fw = new FileWriter( fileSiacc );
-					bw = new BufferedWriter( fw );
-		
-					lbStatus.setText( "     gravando arquivo ..." );
-					retorno = gravaRemessa( bw, hsCli, hsRec );
-				} catch ( IOException ioError ) {
-					Funcoes.mensagemErro( this, "Erro Criando o arquivo!\n " + sFileName + "\n" + ioError.getMessage() );
-					lbStatus.setText( "" );
-					return retorno;
-				}
-				
-				lbStatus.setText( "     pronto ..." );
-				atualizaSitremessaExp(hsCli, hsRec);
-			}
-			
-		}
-		return retorno;
-	}
 
-	private void atualizaSitremessaExp(HashSet<SiaccUtil.StuffCli> hsCli, HashSet<SiaccUtil.StuffRec> hsRec) {
-		setSitremessa(hsRec, "01");
-		persisteDados( hsCli, hsRec );
-		updatePrefere();
-	}
-	
-	private void setSitremessa(HashSet<SiaccUtil.StuffRec> hsRec, final String sit) {
-		for (SiaccUtil.StuffRec sr: hsRec) {
-			sr.setSitremessa( sit );
-		}
-	}
-	
-	private boolean gravaRemessa( final BufferedWriter bw, HashSet<SiaccUtil.StuffCli> hsCli, 
-			HashSet<SiaccUtil.StuffRec> hsRec ) {
-
-		boolean retorno = false;
-		Integer numReg = new Integer(0);
-		Integer nroSeq = (Integer) prefs.get(SiaccUtil.EPrefs.NROSEQ); 
-	
-		try {
-			
-			ArrayList<SiaccUtil.Reg> list = new ArrayList<SiaccUtil.Reg>();
-			list.add( new SiaccUtil().new RegA( '1', prefs, numReg++ ) );
-			int numAgenda = 1;
-			BigDecimal vlrtotal = new BigDecimal(0);
-			SiaccUtil.RegE e = null;
-			
-			// Implementar no futuro (Registro de clientes não podem ser enviados com Registro E)
-			
-			/*
-			for ( SiaccUtil.StuffCli c : hsCli ) {
-				if ( "B".equals( c.getArgs()[ SiaccUtil.EColcli.TIPOREMCLI.ordinal() ] ) ) {
-					list.add(  new  SiaccUtil().new RegB( 'B', c ) ) ;
-					numReg++;
-				}
-			}
-			for ( SiaccUtil.StuffCli c : hsCli ) {
-				if ( "C".equals( c.getArgs()[ SiaccUtil.EColcli.TIPOREMCLI.ordinal() ] ) ) {
-					list.add( new SiaccUtil().new RegC( 'C', c, numReg++ ) );
-				}
-			}
-			for ( SiaccUtil.StuffCli c : hsCli ) {
-				if ( "D".equals( c.getArgs()[ SiaccUtil.EColcli.TIPOREMCLI.ordinal() ] ) ) {
-					list.add( new SiaccUtil().new RegD( 'D', c, numReg++ ) );
-				}
-			} */
-			for ( SiaccUtil.StuffRec r : hsRec ) {
-				//if ( sitRemessa.indexOf(( r.getArgs()[ SiaccUtil.EColrec.SITREMESSA.ordinal() ] ))>-1 ) {
-					e = new SiaccUtil().new RegE( 'E', r, numReg++, numAgenda );
-					list.add( e );
-					vlrtotal = vlrtotal.add(e.getVlrParc());
-					numAgenda++;
-				//}
-			}
-			
-			list.add(new SiaccUtil().new RegZ(numReg+1, vlrtotal.floatValue(), numReg++));
-			
-			for ( SiaccUtil.Reg reg : list ) {
-				bw.write( reg.toString() );
-			}
-			bw.flush();
-			bw.close();
-			prefs.put( SiaccUtil.EPrefs.NROSEQ, ++nroSeq ) ;
-			
-		} catch ( IOException ioError ) {
-			Funcoes.mensagemErro( this, "Erro gravando no arquivo!\n" + ioError.getMessage() );
-			lbStatus.setText( "" );
-			retorno = false;
-		}
-
-		return retorno;
-	}
-
-	private boolean updateCliente( int codCli, String codBanco, String tipoFebraban, String stipoFebraban, String agenciaCli, String identCli, String tipoRemCli ) {
-
-		boolean retorno = false;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement( "SELECT AGENCIACLI, IDENTCLI, STIPOFEBRABAN, TIPOREMCLI FROM FNFBNCLI " + "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? AND CODEMPPF=? AND " + "CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND " + "CODBANCO=? AND TIPOFEBRABAN=?" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setInt( 3, codCli );
-			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
-			ps.setInt( 6, Aplicativo.iCodEmp );
-			ps.setInt( 7, ListaCampos.getMasterFilial( "FNBANCO" ) );
-			ps.setString( 8, codBanco );
-			ps.setString( 9, tipoFebraban );
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				if ( ( !agenciaCli.equals( rs.getString( "AGENCIACLI" ) ) ) || ( !identCli.equals( rs.getString( "IDENTCLI" ) ) ) || ( !stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) ) ) || ( !tipoRemCli.equals( rs.getString( "TIPOREMCLI" ) ) ) ) {
-					ps = con.prepareStatement( "UPDATE FNFBNCLI SET AGENCIACLI=?, IDENTCLI=?, STIPOFEBRABAN=?, TIPOREMCLI=? " + "WHERE CODEMP=? AND CODFILIAL=? AND " + "CODCLI=? AND CODEMPPF=? AND CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND " + "CODBANCO=? AND TIPOFEBRABAN=?" );
-					ps.setString( 1, agenciaCli );
-					ps.setString( 2, identCli );
-					ps.setString( 3, stipoFebraban );
-					ps.setString( 4, tipoRemCli );
-					ps.setInt( 5, Aplicativo.iCodEmp );
-					ps.setInt( 6, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-					ps.setInt( 7, codCli );
-					ps.setInt( 8, Aplicativo.iCodEmp );
-					ps.setInt( 9, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
-					ps.setInt( 10, Aplicativo.iCodEmp );
-					ps.setInt( 11, ListaCampos.getMasterFilial( "FNBANCO" ) );
-					ps.setString( 12, codBanco );
-					ps.setString( 13, tipoFebraban );
-					ps.executeUpdate();
-				}
-			}
-			else {
-				ps = con.prepareStatement( "INSERT INTO FNFBNCLI (AGENCIACLI, IDENTCLI, CODEMP, CODFILIAL, " + "CODCLI, CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, " + "TIPOFEBRABAN, STIPOFEBRABAN, TIPOREMCLI) " + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)" );
-				ps.setString( 1, agenciaCli );
-				ps.setString( 2, identCli );
-				ps.setInt( 3, Aplicativo.iCodEmp );
-				ps.setInt( 4, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-				ps.setInt( 5, codCli );
-				ps.setInt( 6, Aplicativo.iCodEmp );
-				ps.setInt( 7, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
-				ps.setInt( 8, Aplicativo.iCodEmp );
-				ps.setInt( 9, ListaCampos.getMasterFilial( "FNBANCO" ) );
-				ps.setString( 10, codBanco );
-				ps.setString( 11, tipoFebraban );
-				ps.setString( 12, stipoFebraban );
-				ps.setString( 13, tipoRemCli );
-
-				ps.executeUpdate();
-			}
-			if ( !con.getAutoCommit() )
-				con.commit();
-			// rs.close();
-			retorno = true;
-		} catch ( SQLException e ) {
-			Funcoes.mensagemErro( this, "Erro atualizando cliente!\n" + e.getMessage() );
-		}
-
-		return retorno;
-	}
-
-	private boolean updateReceber( int codRec, int nParcitrec, String codBanco, String tipoFebraban, String stipoFebraban, String sitRemessa ) {
-
-		boolean retorno = false;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement( "SELECT CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN, SITREMESSA " + 
-					"FROM FNFBNREC WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-			ps.setInt( 3, codRec );
-			ps.setInt( 4, nParcitrec );
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				if ( ( !codBanco.equals( rs.getString( "CODBANCO" ) ) ) || 
-						( !tipoFebraban.equals( rs.getString( "TIPOFEBRABAN" ) ) ) || 
-						( !stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) ) ) || 
-						( !sitRemessa.equals( rs.getString( "SITREMESSA" ) ) ) ) {
-					ps = con.prepareStatement( "UPDATE FNFBNREC SET CODBANCO=?, TIPOFEBRABAN=?, STIPOFEBRABAN=?, " +
-							"SITREMESSA=? " +
-							"WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?" );
-					ps.setString( 1, codBanco );
-					ps.setString( 2, tipoFebraban );
-					ps.setString( 3, stipoFebraban );
-					ps.setString( 4, sitRemessa );
-					ps.setInt( 5, Aplicativo.iCodEmp );
-					ps.setInt( 6, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-					ps.setInt( 7, codRec );
-					ps.setInt( 8, nParcitrec );
-					ps.executeUpdate();
-				}
-			}
-			else {
-				ps = con.prepareStatement( "INSERT INTO FNFBNREC (CODEMP, CODFILIAL, CODREC, NPARCITREC, " + "CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN, " + "SITREMESSA) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "FNFBNREC" ) );
-				ps.setInt( 3, codRec );
-				ps.setInt( 4, nParcitrec );
-				ps.setInt( 5, Aplicativo.iCodEmp );
-				ps.setInt( 6, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
-				ps.setInt( 7, Aplicativo.iCodEmp );
-				ps.setInt( 8, ListaCampos.getMasterFilial( "FNBANCO" ) );
-				ps.setString( 9, codBanco );
-				ps.setString( 10, tipoFebraban );
-				ps.setString( 11, stipoFebraban );
-				ps.setString( 12, sitRemessa );
-				ps.executeUpdate();
-			}
-			if ( !con.getAutoCommit() )
-				con.commit();
-			// rs.close();
-			retorno = true;
-
-		} catch ( SQLException e ) {
-			Funcoes.mensagemErro( this, "Erro atualizando situação do contas a receber!\n" + e.getMessage() );
-		}
-
-		return retorno;
-	}
-
-	private boolean consisteExporta( HashSet<SiaccUtil.StuffCli> hsCli, HashSet<SiaccUtil.StuffRec> hsRec ) {
+	protected boolean consisteExporta( HashSet<FbnUtil.StuffCli> hsCli, HashSet<FbnUtil.StuffRec> hsRec ) {
 
 		boolean retorno = true;
 		Vector vLinha = null;
@@ -757,18 +551,18 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 
 			if ( (Boolean) vLinha.elementAt( COL_SEL ) ) {
 				if ( ( "".equals( (String) vLinha.elementAt( COL_AGENCIACLI ) ) ) || ( "".equals( (String) vLinha.elementAt( COL_IDENTCLI ) ) ) ) {
-					if ( !completaTabela( i, (Integer) vLinha.elementAt( COL_CODCLI ), (String) vLinha.elementAt( COL_RAZCLI ), (String) vLinha.elementAt( COL_AGENCIACLI ), (String) vLinha.elementAt( COL_IDENTCLI ), (String) vLinha.elementAt( COL_STIPOFEBRABAN ) ) ) {
+					if ( ! completaTabela( i, (Integer) vLinha.elementAt( COL_CODCLI ), (String) vLinha.elementAt( COL_RAZCLI ), (String) vLinha.elementAt( COL_AGENCIACLI ), (String) vLinha.elementAt( COL_IDENTCLI ), (String) vLinha.elementAt( COL_STIPOFEBRABAN ) ) ) {
 						retorno = false;
 						break;
 					}
 				}
-				hsCli.add( new SiaccUtil().new StuffCli( (Integer) vLinha.elementAt( COL_CODCLI ), 
+				hsCli.add( new FbnUtil().new StuffCli( (Integer) vLinha.elementAt( COL_CODCLI ), 
 						new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, 
 						(String) vLinha.elementAt( COL_STIPOFEBRABAN ),
 						(String) vLinha.elementAt( COL_AGENCIACLI ), 
 						(String) vLinha.elementAt( COL_IDENTCLI ),
 						(String) vLinha.elementAt( COL_TIPOREMCLI ) } ) );
-				hsRec.add( new SiaccUtil().new StuffRec( (Integer) vLinha.elementAt( COL_CODREC ), 
+				hsRec.add( new FbnUtil().new StuffRec( (Integer) vLinha.elementAt( COL_CODREC ), 
 						(Integer) vLinha.elementAt( COL_NRPARC ),
 				/*
 				 * String codBanco, String tipoFebraban, String stipoFebraban, 
@@ -795,66 +589,8 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 
 		return retorno;
 	}
-
-	private boolean persisteDados( final HashSet<SiaccUtil.StuffCli> hsCli, 
-			final HashSet<SiaccUtil.StuffRec> hsRec ) {
-
-		boolean retorno = true;
-		for ( SiaccUtil.StuffCli stfCli : hsCli ) {
-			retorno = updateCliente( stfCli.getCodigo(), stfCli.getArgs()[ SiaccUtil.EColcli.CODBANCO.ordinal() ], 
-					stfCli.getArgs()[ SiaccUtil.EColcli.TIPOFEBRABAN.ordinal() ], stfCli.getArgs()[ SiaccUtil.EColcli.STIPOFEBRABAN.ordinal() ], 
-					stfCli.getArgs()[ SiaccUtil.EColcli.AGENCIACLI.ordinal() ], stfCli.getArgs()[ SiaccUtil.EColcli.IDENTCLI
-					.ordinal() ], stfCli.getArgs()[ SiaccUtil.EColcli.TIPOREMCLI.ordinal() ] );
-			if ( !retorno ) {
-				retorno = false;
-				break;
-			}
-		}
-		if ( retorno ) {
-			for ( SiaccUtil.StuffRec stfRec : hsRec ) {
-				retorno = updateReceber( stfRec.getCodrec(), stfRec.getNParcitrec(), 
-						stfRec.getArgs()[ SiaccUtil.EColrec.CODBANCO.ordinal() ], 
-						stfRec.getArgs()[ SiaccUtil.EColrec.TIPOFEBRABAN.ordinal() ], 
-						stfRec.getArgs()[ SiaccUtil.EColrec.STIPOFEBRABAN.ordinal() ], 
-						stfRec.getArgs()[ SiaccUtil.EColrec.SITREMESSA.ordinal() ] );
-				if ( !retorno ) {
-					retorno = false;
-					break;
-				}
-			}
-		}
-		return retorno;
-	}
-
-	private boolean updatePrefere() {
-		boolean retorno = true;
-		
-		try {
-			PreparedStatement ps = con.prepareStatement( "UPDATE SGITPREFERE6 I SET NROSEQ=? " +
-					"WHERE I.CODEMP=? AND I.CODFILIAL=? AND I.CODEMPBO=? AND " +
-					"I.CODFILIALBO=? AND I.CODBANCO=? AND I.TIPOFEBRABAN=?");
-			ps.setInt( 1, (Integer) prefs.get(SiaccUtil.EPrefs.NROSEQ) );
-			ps.setInt( 2, Aplicativo.iCodEmp);
-			ps.setInt( 3, ListaCampos.getMasterFilial( "SGITPREFERE6" ));
-			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, ListaCampos.getMasterFilial( "FNBANCO" ) );
-			ps.setString( 6, (String) prefs.get( SiaccUtil.EPrefs.CODBANCO ) );
-			ps.setString( 7, TIPO_FEBRABAN );
-			ps.executeUpdate();
-			ps.close();
-			if (!con.getAutoCommit()) {
-				con.commit();
-			}
-		}
-		catch (SQLException e) {
-			retorno = false;
-			Funcoes.mensagemErro( this, "Erro atualizando parâmetros!\n" + e.getMessage() );
-		}
-
-		return retorno;
-	}
 	
-	private boolean completaTabela( final int linha, final Integer codCli, final String razCli, 
+	protected boolean completaTabela( final int linha, final Integer codCli, final String razCli, 
 			final String agenciaCli, final String identCli, final String subTipo ) {
 
 		boolean retorno = true;
@@ -872,7 +608,7 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 		return retorno;
 	}
 
-	private void ajustaClientes( final Integer codCli, final String agenciaCli, final String identCli, final String subTipo ) {
+	protected void ajustaClientes( final Integer codCli, final String agenciaCli, final String identCli, final String subTipo ) {
 
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 			if ( ( (Boolean) tab.getValor( i, COL_SEL ) ).booleanValue() && codCli.equals( (Integer) tab.getValor( i, COL_CODCLI ) ) ) {
@@ -881,115 +617,240 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 				tab.setValor( subTipo, i, COL_STIPOFEBRABAN );
 			}
 		}
-	}	
-	
-	private String getMenssagemRet( final String codretorno ) {
-		
-		String msg = null; 
-		StringBuilder sSQL = new StringBuilder();
-		PreparedStatement ps = null;
-		
-		try {
-			
-			sSQL.append( " SELECT DESCRET " );
-			sSQL.append( " FROM FNFBNCODRET " );
-			sSQL.append( " WHERE CODEMP=? AND CODFILIAL=?  AND CODEMPBO=? " );
-			sSQL.append( " AND CODFILIALBO=?  AND CODRET=? "  );
-			
-			ps = con.prepareStatement( sSQL.toString() );
-			
-			ps.setInt( 1,  Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "FNBANCO" ) );
-			ps.setString( 5, codretorno );
-			
-			ResultSet rs = ps.executeQuery();
-			
-			if( rs.next() ){
-				
-				msg = rs.getString( "DESCRET" );
-			}
-		} catch ( Exception e ) {
-			Funcoes.mensagemInforma( this, "Erro ao montar grid. \n" + e.getMessage() );
-			e.printStackTrace();
-		}
-		return msg;		
 	}
 
-	public void imprimir( boolean visualizar ) {
+	protected boolean persisteDados( final HashSet<FbnUtil.StuffCli> hsCli, 
+			final HashSet<FbnUtil.StuffRec> hsRec ) {
 
-		ResultSet rs = null;
-		String sDtFiltro = "E".equals( rgData.getVlrString() ) ? "IR.DTITREC" : "IR.DTVENCITREC";
-		PreparedStatement ps = null;
-		
-		if(txtCodBanco.getVlrString().equals( "" )){
-			Funcoes.mensagemInforma( this, "Código do banco é requerido!" );
-			return;
+		boolean retorno = true;
+		for ( FbnUtil.StuffCli stfCli : hsCli ) {
+			retorno = updateCliente( stfCli.getCodigo(), stfCli.getArgs()[ FbnUtil.EColcli.CODBANCO.ordinal() ], 
+					stfCli.getArgs()[ FbnUtil.EColcli.TIPOFEBRABAN.ordinal() ], stfCli.getArgs()[ FbnUtil.EColcli.STIPOFEBRABAN.ordinal() ], 
+					stfCli.getArgs()[ FbnUtil.EColcli.AGENCIACLI.ordinal() ], stfCli.getArgs()[ FbnUtil.EColcli.IDENTCLI
+					.ordinal() ], stfCli.getArgs()[ FbnUtil.EColcli.TIPOREMCLI.ordinal() ] );
+			if ( !retorno ) {
+				retorno = false;
+				break;
+			}
 		}
+		if ( retorno ) {
+			for ( FbnUtil.StuffRec stfRec : hsRec ) {
+				retorno = updateReceber( stfRec.getCodrec(), stfRec.getNParcitrec(), 
+						stfRec.getArgs()[ FbnUtil.EColrec.CODBANCO.ordinal() ], 
+						stfRec.getArgs()[ FbnUtil.EColrec.TIPOFEBRABAN.ordinal() ], 
+						stfRec.getArgs()[ FbnUtil.EColrec.STIPOFEBRABAN.ordinal() ], 
+						stfRec.getArgs()[ FbnUtil.EColrec.SITREMESSA.ordinal() ] );
+				if ( !retorno ) {
+					retorno = false;
+					break;
+				}
+			}
+		}
+		return retorno;
+	}	
+	
+	protected boolean updateCliente( int codCli, String codBanco, String tipoFebraban, String stipoFebraban, String agenciaCli, String identCli, String tipoRemCli ) {
+
+		boolean retorno = false;
+
+		try {
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append( "SELECT AGENCIACLI, IDENTCLI, STIPOFEBRABAN, TIPOREMCLI FROM FNFBNCLI " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );
+			sql.append( "AND CODEMPPF=? AND CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND CODBANCO=? AND TIPOFEBRABAN=?" );
+						
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setInt( 3, codCli );
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
+			ps.setInt( 6, Aplicativo.iCodEmp );
+			ps.setInt( 7, ListaCampos.getMasterFilial( "FNBANCO" ) );
+			ps.setString( 8, codBanco );
+			ps.setString( 9, tipoFebraban );
+			
+			ResultSet rs = ps.executeQuery();
+			if ( rs.next() ) {
+				
+				if ( ( !agenciaCli.equals( rs.getString( "AGENCIACLI" ) ) ) || ( !identCli.equals( rs.getString( "IDENTCLI" ) ) ) || ( !stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) ) ) || ( !tipoRemCli.equals( rs.getString( "TIPOREMCLI" ) ) ) ) {
+					
+					StringBuilder sqlup = new StringBuilder();
+					sqlup.append( "UPDATE FNFBNCLI SET AGENCIACLI=?, IDENTCLI=?, STIPOFEBRABAN=?, TIPOREMCLI=? " );
+					sqlup.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );
+					sqlup.append( "AND CODEMPPF=? AND CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND CODBANCO=? AND TIPOFEBRABAN=?" ); 
+					
+					ps = con.prepareStatement( sqlup.toString() );
+					ps.setString( 1, agenciaCli );
+					ps.setString( 2, identCli );
+					ps.setString( 3, stipoFebraban );
+					ps.setString( 4, tipoRemCli );
+					ps.setInt( 5, Aplicativo.iCodEmp );
+					ps.setInt( 6, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+					ps.setInt( 7, codCli );
+					ps.setInt( 8, Aplicativo.iCodEmp );
+					ps.setInt( 9, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
+					ps.setInt( 10, Aplicativo.iCodEmp );
+					ps.setInt( 11, ListaCampos.getMasterFilial( "FNBANCO" ) );
+					ps.setString( 12, codBanco );
+					ps.setString( 13, tipoFebraban );
+					ps.executeUpdate();
+				}
+			}
+			else {
+				
+				StringBuilder sqlin = new StringBuilder();
+				sqlin.append( "INSERT INTO FNFBNCLI (AGENCIACLI, IDENTCLI, CODEMP, CODFILIAL, " ); 
+				sqlin.append( "CODCLI, CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, " );
+				sqlin.append( "TIPOFEBRABAN, STIPOFEBRABAN, TIPOREMCLI) " );
+				sqlin.append( "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+				
+				ps = con.prepareStatement( sqlin.toString() );
+				ps.setString( 1, agenciaCli );
+				ps.setString( 2, identCli );
+				ps.setInt( 3, Aplicativo.iCodEmp );
+				ps.setInt( 4, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+				ps.setInt( 5, codCli );
+				ps.setInt( 6, Aplicativo.iCodEmp );
+				ps.setInt( 7, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
+				ps.setInt( 8, Aplicativo.iCodEmp );
+				ps.setInt( 9, ListaCampos.getMasterFilial( "FNBANCO" ) );
+				ps.setString( 10, codBanco );
+				ps.setString( 11, tipoFebraban );
+				ps.setString( 12, stipoFebraban );
+				ps.setString( 13, tipoRemCli );
+
+				ps.executeUpdate();
+			}
+			if ( ! con.getAutoCommit() ) {
+				con.commit();				
+			}
+			
+			retorno = true;
+			
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro atualizando cliente!\n" + e.getMessage() );
+		}
+
+		return retorno;
+	}
+
+	protected boolean updateReceber( int codRec, int nParcitrec, String codBanco, String tipoFebraban, String stipoFebraban, String sitRemessa ) {
+
+		boolean retorno = false;
 		
 		try {
 			
-			StringBuilder sSQL = new StringBuilder();
+			StringBuilder sql = new StringBuilder();
+			sql.append( "SELECT CODBANCO, TIPOFEBRABAN, STIPOFEBRABAN, SITREMESSA " );
+			sql.append( "FROM FNFBNREC WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?" );
 			
-			sSQL.append( "SELECT IR.CODREC, IR.NPARCITREC, R.DOCREC, R.CODCLI, C.RAZCLI, IR.DTITREC, IR.DTVENCITREC," );
-			sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, COALESCE(FR.SITREMESSA,'00') SITREMESSA, " );
-			sSQL.append( "FR.SITRETORNO, COALESCE(COALESCE(FR.STIPOFEBRABAN,FC.STIPOFEBRABAN),'02') STIPOFEBRABAN, " );
-			sSQL.append( "COALESCE(FC.TIPOREMCLI,'B') TIPOREMCLI, C.PESSOACLI, C.CPFCLI, C.CNPJCLI " );
-			sSQL.append( "FROM VDCLIENTE C," );
-			sSQL.append( "FNRECEBER R LEFT OUTER JOIN FNFBNCLI FC ON " );
-			sSQL.append( "FC.CODEMP=R.CODEMPCL AND FC.CODFILIAL=R.CODFILIALCL AND FC.CODCLI=R.CODCLI ," );
-			sSQL.append( "FNITRECEBER IR LEFT OUTER JOIN FNFBNREC FR ON " );
-			sSQL.append( "FR.CODEMP=IR.CODEMP AND FR.CODFILIAL=IR.CODFILIAL AND " );
-			sSQL.append( "FR.CODREC=IR.CODREC AND FR.NPARCITREC=IR.NPARCITREC AND " );
-			sSQL.append( "FR.CODEMPBO=IR.CODEMPBO AND FR.CODFILIALBO=IR.CODFILIALBO AND FR.CODBANCO=IR.CODBANCO " );
-			sSQL.append( "WHERE R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC AND " );
-			sSQL.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND " );
-			sSQL.append( sDtFiltro );
-			sSQL.append( " BETWEEN ? AND ? AND IR.STATUSITREC IN ('R1','RL') AND " );
-			sSQL.append( "IR.CODEMPBO=? AND IR.CODFILIALBO=? AND IR.CODBANCO=? " );
-			sSQL.append( where );
-			sSQL.append( "ORDER BY C.RAZCLI, R.CODREC, IR.NPARCITREC " );
-			ps = con.prepareStatement( sSQL.toString() );
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+			ps.setInt( 3, codRec );
+			ps.setInt( 4, nParcitrec );
 			
-			ps.setDate( 1, Funcoes.dateToSQLDate(txtDtIni.getVlrDate()));
-			ps.setDate( 2, Funcoes.dateToSQLDate(txtDtFim.getVlrDate()));
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, Aplicativo.iCodFilial );
-			ps.setInt( 5, txtCodBanco.getVlrInteger());
-			
-			rs = ps.executeQuery();
-			
-			HashMap<String,Object> hParam = new HashMap<String, Object>();
-			
-			hParam.put( "CODEMP", Aplicativo.iCodEmp );
-			hParam.put( "REPORT_CONNECTION", con );
-		
-			FPrinterJob dlGr = new FPrinterJob( "relatorios/RemSiacci.jasper", "RELATÓRIO DE REMESSA", null, rs, hParam, this );
-
-			if ( visualizar ) {
-				dlGr.setVisible( true );
+			ResultSet rs = ps.executeQuery();
+			if ( rs.next() ) {
+				if ( ( !codBanco.equals( rs.getString( "CODBANCO" ) ) ) || 
+						( !tipoFebraban.equals( rs.getString( "TIPOFEBRABAN" ) ) ) || 
+						( !stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) ) ) || 
+						( !sitRemessa.equals( rs.getString( "SITREMESSA" ) ) ) ) {
+					
+					StringBuilder sqlup = new StringBuilder();
+					sqlup.append( "UPDATE FNFBNREC SET CODBANCO=?, TIPOFEBRABAN=?, STIPOFEBRABAN=?, SITREMESSA=? " );
+					sqlup.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?" );
+					
+					ps = con.prepareStatement( sqlup.toString() );
+					ps.setString( 1, codBanco );
+					ps.setString( 2, tipoFebraban );
+					ps.setString( 3, stipoFebraban );
+					ps.setString( 4, sitRemessa );
+					ps.setInt( 5, Aplicativo.iCodEmp );
+					ps.setInt( 6, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+					ps.setInt( 7, codRec );
+					ps.setInt( 8, nParcitrec );
+					ps.executeUpdate();
+				}
 			}
 			else {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				
+				StringBuilder sqlin = new StringBuilder();
+				sqlin.append( "INSERT INTO FNFBNREC (CODEMP, CODFILIAL, CODREC, NPARCITREC, " ); 
+				sqlin.append( "CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, " );
+				sqlin.append( "TIPOFEBRABAN, STIPOFEBRABAN, SITREMESSA) " );
+				sqlin.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
+				
+				ps = con.prepareStatement( sqlin.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "FNFBNREC" ) );
+				ps.setInt( 3, codRec );
+				ps.setInt( 4, nParcitrec );
+				ps.setInt( 5, Aplicativo.iCodEmp );
+				ps.setInt( 6, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
+				ps.setInt( 7, Aplicativo.iCodEmp );
+				ps.setInt( 8, ListaCampos.getMasterFilial( "FNBANCO" ) );
+				ps.setString( 9, codBanco );
+				ps.setString( 10, tipoFebraban );
+				ps.setString( 11, stipoFebraban );
+				ps.setString( 12, sitRemessa );
+				ps.executeUpdate();
 			}
-			
-			rs.close();
-			ps.close();
 			
 			if ( ! con.getAutoCommit() ) {
 				con.commit();
 			}
-		} catch ( Exception e ) {
-			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
-			e.printStackTrace();
+			
+			retorno = true;
+
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro atualizando situação do contas a receber!\n" + e.getMessage() );
 		}
+
+		return retorno;
 	}
+	
+	protected boolean updatePrefere() {
+		
+		boolean retorno = true;
+		
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append( "UPDATE SGITPREFERE6 I SET NROSEQ=? " );
+			sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? " );
+			sql.append( "AND I.CODEMPBO=? AND I.CODFILIALBO=? AND I.CODBANCO=? AND I.TIPOFEBRABAN=?" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, (Integer) prefs.get(FbnUtil.EPrefs.NROSEQ) );
+			ps.setInt( 2, Aplicativo.iCodEmp);
+			ps.setInt( 3, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, ListaCampos.getMasterFilial( "FNBANCO" ) );
+			ps.setString( 6, (String) prefs.get( FbnUtil.EPrefs.CODBANCO ) );
+			ps.setString( 7, TIPO_FEBRABAN );
+			ps.executeUpdate();
+			ps.close();
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+		}
+		catch ( SQLException e ) {
+			retorno = false;
+			Funcoes.mensagemErro( this, "Erro atualizando parâmetros!\n" + e.getMessage() );
+		}
+
+		return retorno;
+	}
+	
+	abstract protected boolean execExporta();
+	
+	abstract public void imprimir( boolean bVisualizar ); 
 	
 	public void actionPerformed( ActionEvent evt ) {
 	
 		if ( evt.getSource() == btCarrega ) {
-			lbStatus.setText( "      carregando tabela ..." );
 			carregaTab();
 		}
 		else if ( evt.getSource() == btSelTudo ) {
@@ -1009,37 +870,23 @@ public class FRemFBN extends FFilho implements ActionListener, MouseListener {
 	public void mouseClicked( MouseEvent e ) {
 
 		if ( e.getClickCount() == 2 && e.getSource() == tab && tab.getLinhaSel() > -1 ) {
-			
-			if ( ! "00".equals( tab.getValor( tab.getLinhaSel(), COL_SITRET ) ) ) {
-				
-				Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + getMenssagemRet( (String) tab.getValor( tab.getLinhaSel(), COL_SITRET ) )  );
-				//return;
+
+			if ( !"00".equals( tab.getValor( tab.getLinhaSel(), COL_SITRET ) ) ) {
+
+				Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + getMenssagemRet( (String) tab.getValor( tab.getLinhaSel(), COL_SITRET ) ) );
 			}
-			completaTabela( 
-					tab.getLinhaSel(), 
-					(Integer) tab.getValor( tab.getLinhaSel(), COL_CODCLI ), 
-					(String) tab.getValor( tab.getLinhaSel(), COL_RAZCLI ), 
-					(String) tab.getValor( tab.getLinhaSel(), COL_AGENCIACLI ), 
-					(String) tab.getValor( tab.getLinhaSel(), COL_IDENTCLI ), 
-					(String) tab.getValor( tab.getLinhaSel(), COL_STIPOFEBRABAN ) );
+			completaTabela( tab.getLinhaSel(), (Integer) tab.getValor( tab.getLinhaSel(), COL_CODCLI ), (String) tab.getValor( tab.getLinhaSel(), COL_RAZCLI ), (String) tab.getValor( tab.getLinhaSel(), COL_AGENCIACLI ), (String) tab.getValor( tab.getLinhaSel(), COL_IDENTCLI ), (String) tab
+					.getValor( tab.getLinhaSel(), COL_STIPOFEBRABAN ) );
 		}
 	}
 
-	public void mouseEntered( MouseEvent e ) {
+	public void mouseEntered( MouseEvent e ) { }
 
-	}
+	public void mouseExited( MouseEvent e ) { }
 
-	public void mouseExited( MouseEvent e ) {
+	public void mousePressed( MouseEvent e ) { }
 
-	}
-
-	public void mousePressed( MouseEvent e ) {
-
-	}
-
-	public void mouseReleased( MouseEvent e ) {
-
-	}
+	public void mouseReleased( MouseEvent e ) { }
 
 	public void setConexao( Connection cn ) {
 
