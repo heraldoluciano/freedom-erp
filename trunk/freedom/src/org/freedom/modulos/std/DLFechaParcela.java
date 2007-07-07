@@ -34,6 +34,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.ListaCampos;
 
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLFechaParcela extends FFDialogo {
@@ -50,7 +51,7 @@ public class DLFechaParcela extends FFDialogo {
 
 	private JTextFieldFK txtDescTipoCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -97,8 +98,9 @@ public class DLFechaParcela extends FFDialogo {
 
 		montaTela();
 
-		lcTipoCob.carregaDados();
 		lcBanco.carregaDados();
+		lcTipoCob.carregaDados();
+
 
 	}
 
