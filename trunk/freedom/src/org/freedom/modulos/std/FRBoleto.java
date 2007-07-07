@@ -31,6 +31,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -105,12 +106,15 @@ public class FRBoleto extends FRelatorio {
 	private JInternalFrame fExt = null;
 
 	private String sInfoMoeda[] = new String[ 4 ];
+	
+	private List lsParcelas = null;
 
 	public FRBoleto() {
 
 		this( null );
 	}
-
+	
+	
 	public FRBoleto( JInternalFrame fExt ) {
 
 		setTitulo( "Impressão de boleto" );
@@ -505,6 +509,10 @@ public class FRBoleto extends FRelatorio {
 		return parametros;
 	}
 	
+	public void setParcelas(final List lsParcParam) {
+		lsParcelas = lsParcParam;
+	}
+	
 	public void imprimir( boolean bVisualizar ) {
 		
 		final int codvenda = txtCodVenda.getVlrInteger().intValue();
@@ -550,6 +558,17 @@ public class FRBoleto extends FRelatorio {
 			if (nparc!=0) {
 				sWhere.append("AND ITR.NPARCITREC=? ");
 			}
+			if(lsParcelas.size()>0) {
+				sWhere.append("AND ITR.NPARCITREC IN (");
+				for ( int i = 0; i < lsParcelas.size(); i++ ) {
+					if (i!=0) {
+						sWhere.append( "," );
+					}						
+					sWhere.append( lsParcelas.get( i ) );
+				}
+				sWhere.append(")");
+			}
+			
 			imp = new ImprimeOS( "", con );
 			imp.verifLinPag();
 			imp.setTitulo( "Boleto" );

@@ -45,6 +45,8 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -2473,7 +2475,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
-
+		List<Integer> lsParcRecibo = null; 
 		String[] sValores = null;
 		if ( evt.getSource() == btFechaVenda ) {
 			DLFechaVenda dl = new DLFechaVenda( con, txtCodVenda.getVlrInteger(), this, 
@@ -2483,6 +2485,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			dl.setVisible( true );
 			
 			if ( dl.OK ) {
+				lsParcRecibo = dl.getParcRecibo();
 				sValores = dl.getValores();
 				dl.dispose();
 			}
@@ -2502,6 +2505,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );										
 					fBol.imprimir( true );
 				}
+				else if(!sValores[ 6 ].equals( "" ) && lsParcRecibo.size()>0) { // Logica para impressão do recibo.
+					FRBoleto fBol = new FRBoleto( this );
+					fBol.setConexao( con );
+					fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 6 ] ) );
+					fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
+					fBol.setParcelas(lsParcRecibo);
+					fBol.imprimir( true );
+				}
+				
 				if ( ( sValores[ 4 ].equals( "S" ) ) || ( sValores[ 7 ].equals( "S" ) ) ) {
 					if ( txtTipoMov.getVlrString().equals( "VD" ) || txtTipoMov.getVlrString().equals( "VT" ) || txtTipoMov.getVlrString().equals( "TR" ) || txtTipoMov.getVlrString().equals( "CS" ) || txtTipoMov.getVlrString().equals( "CE" ) || txtTipoMov.getVlrString().equals( "PE" )
 							|| txtTipoMov.getVlrString().equals( "DV" ) || txtTipoMov.getVlrString().equals( "BN" ) ) {

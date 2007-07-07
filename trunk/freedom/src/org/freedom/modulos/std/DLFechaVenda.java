@@ -37,12 +37,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.RadioGroupEvent;
@@ -63,7 +68,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FPassword;
 
-public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListener, CheckBoxListener, RadioGroupListener {
+public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListener, CheckBoxListener, RadioGroupListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -208,6 +213,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private final Tabela tabComis = new Tabela();
 
 	private int iCodVendaFecha = 0;
+	
+	private boolean bCarregaReceber = true;
 
 	private boolean bCarFrete = false;
 
@@ -219,7 +226,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		setConexao( cn );
 		iCodVendaFecha = iCodVenda.intValue();
 		setTitulo( "Fechar Venda" );
-		setAtribos( 390, 350 );
+		setAtribos( 395, 355 );
 
 		lcItReceber.setMaster( lcReceber );
 		lcReceber.adicDetalhe( lcItReceber );
@@ -409,6 +416,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		
 		tabRec.addMouseListener( this );
 
+		tabRec.adicColuna( "Imp.Rec." ); // xxxx
+		
 		txtCodComi.setNomeCampo( "CodComi" );
 		lcComis.add( new GuardaCampo( txtCodComi, "CodComi", "Cód.comis.", ListaCampos.DB_PK, false ) );
 		lcComis.add( new GuardaCampo( txtVlrComi, "VlrComi", "Valor da comissão", ListaCampos.DB_SI, false ) );
@@ -557,6 +566,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		bPrefs = prefs();
 		lcVenda.edit();
+		
+		lcItReceber.addCarregaListener( this );
 		
 		
 	}
@@ -1112,6 +1123,25 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			}
 		}
 	}
+
+	public List getParcRecibo() {
+		List<Integer> lsRet = new ArrayList<Integer>();
+		try {			
+			for ( int i = 0; i < tabRec.getRowCount(); i++ ) {
+//				Funcoes.mensagem( "Parc:" + tabRec.getValor( i, 4 ).toString(), "teste", 0);
+				Boolean bParc = new Boolean(tabRec.getValor( i, 4 ).toString()); 
+
+				if(bParc) {
+					lsRet.add( (Integer)tabRec.getValor( i, 0 ) );
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lsRet;
+	}
+	
 	public String[] getValores() {
 
 		String[] sRetorno = new String[ 8 ];
@@ -1122,9 +1152,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		sRetorno[ 4 ] = cbImpNot.getVlrString();
 		sRetorno[ 5 ] = cbImpBol.getVlrString();
 		sRetorno[ 6 ] = txtCodModBol.getVlrString();
-		sRetorno[ 7 ] = cbReImpNot.getVlrString();
+		sRetorno[ 7 ] = cbReImpNot.getVlrString();		
 		return sRetorno;
 	}
+	
 
 	public void actionPerformed( ActionEvent evt ) {
 
@@ -1170,11 +1201,11 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	public void focusGained( FocusEvent fevt ) { }
 
 	public void mouseClicked( MouseEvent mevt ) {
-
-		if ( mevt.getClickCount() == 2 ) {
-			
-			if ( mevt.getSource() == tabRec && tabRec.getLinhaSel() >= 0 ) {
-				
+		
+		Tabela tab = (Tabela) mevt.getSource();
+		
+		if ( mevt.getClickCount() == 2 ) {			
+			if ( tab == tabRec && tabRec.getLinhaSel() >= 0 ) {
 				if ( bPrefs[ 2 ] ) {
 					
 					FPassword fpw = new FPassword( this, FPassword.ALT_PARC_VENDA, null, con );
@@ -1189,9 +1220,24 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 					alteraRec();
 				}
 			}
-			else if ( mevt.getSource() == tabComis && tabComis.getLinhaSel() >= 0 ) {			
+			else if ( tab == tabComis && tabComis.getLinhaSel() >= 0 ) {			
 				alteraComis();
 			}
+		}
+		else if (mevt.getClickCount() == 1) {
+			if ( tab == tabRec && tabRec.getLinhaSel() >= 0 ) {
+				Boolean bAtu;
+				try {
+					bAtu = (Boolean) tabRec.getValor( tabRec.getLinhaSel(), 4 );
+				}
+				catch(ClassCastException e) {
+					bAtu = false;
+				}
+				tabRec.setValor( ! new Boolean (bAtu) ,tabRec.getLinhaSel(), 4 );
+				if (bCarregaReceber) {
+					bCarregaReceber = false;
+				}				
+			}			
 		}
 	}
 
@@ -1227,5 +1273,23 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			cbAdicFrete.setVlrString( "N" );
 		}
 	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+		if ( ( cevt.getListaCampos() == lcItReceber && bCarregaReceber) ) {
+			for ( int i = 0; i < tabRec.getRowCount(); i++ ) {
+				try {
+					Boolean bVlr = (Boolean)tabRec.getValor(i, 4);					
+					if (!bVlr) {
+						tabRec.setValor( new Boolean(false),i, 4);						
+					}
+				} 
+				catch ( ClassCastException e ) {
+					tabRec.setValor( new Boolean(false),i, 4);	
+				}
+			}
+		}
+	}
+	public void beforeCarrega( CarregaEvent cevt ) {};
+	
 
 }
