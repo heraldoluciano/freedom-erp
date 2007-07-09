@@ -176,6 +176,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private final JCheckBoxPad cbImpBol = new JCheckBoxPad( "Imprime Boleto?", "S", "N" );
 
+	private final JCheckBoxPad cbImpRec = new JCheckBoxPad( "Imprime Recibo?", "S", "N" );
+	
 	private final JCheckBoxPad cbReImpNot = new JCheckBoxPad( "Reimprime Nota?", "S", "N" );
 
 	private final JCheckBoxPad cbAdicFrete = new JCheckBoxPad( "adiciona valor do frete na nota?", "S", "N" );
@@ -220,13 +222,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private boolean bPrefs[] = null;
 
-	public DLFechaVenda( Connection cn, Integer iCodVenda, Component cOrig, String impPed, String impNf, String impBol, String reImpNf ) {
+	public DLFechaVenda( Connection cn, Integer iCodVenda, Component cOrig, String impPed, String impNf, String impBol, String impRec, String reImpNf ) {
 
 		super( cOrig );
 		setConexao( cn );
 		iCodVendaFecha = iCodVenda.intValue();
 		setTitulo( "Fechar Venda" );
-		setAtribos( 395, 355 );
+		setAtribos( 395, 375 );
 
 		lcItReceber.setMaster( lcReceber );
 		lcReceber.adicDetalhe( lcItReceber );
@@ -460,6 +462,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		cbImpNot.addCheckBoxListener( this );
 		cbImpPed.addCheckBoxListener( this );
 		cbImpBol.addCheckBoxListener( this );
+		cbImpRec.addCheckBoxListener( this );
 		cbReImpNot.addCheckBoxListener( this );
 		
 		setPainel( pinFecha );
@@ -490,7 +493,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		adic( cbImpPed, 230, 130, 150, 20 );
 		adic( cbImpNot, 230, 150, 150, 20 );
 		adic( cbImpBol, 230, 170, 150, 20 );
-		adic( cbReImpNot, 230, 190, 150, 20 );		
+		adic( cbImpRec, 230, 190, 150, 20 );
+		adic( cbReImpNot, 230, 210, 150, 20 );		
 		
 
 		setPainel( pinFrete );
@@ -562,6 +566,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		cbImpPed.setVlrString( impPed );
 		cbImpNot.setVlrString( impNf );
 		cbImpBol.setVlrString( impBol );
+		cbImpRec.setVlrString( impRec );
 		cbReImpNot.setVlrString( reImpNf );
 
 		bPrefs = prefs();
@@ -1144,15 +1149,16 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 8 ];
+		String[] sRetorno = new String[ 9 ];
 		sRetorno[ 0 ] = txtCodPlanoPag.getVlrString();
 		sRetorno[ 1 ] = txtVlrDescVenda.getVlrString();
 		sRetorno[ 2 ] = txtVlrAdicVenda.getVlrString();
 		sRetorno[ 3 ] = cbImpPed.getVlrString();
 		sRetorno[ 4 ] = cbImpNot.getVlrString();
 		sRetorno[ 5 ] = cbImpBol.getVlrString();
-		sRetorno[ 6 ] = txtCodModBol.getVlrString();
-		sRetorno[ 7 ] = cbReImpNot.getVlrString();		
+		sRetorno[ 6 ] = cbImpRec.getVlrString();
+		sRetorno[ 7 ] = txtCodModBol.getVlrString();
+		sRetorno[ 8 ] = cbReImpNot.getVlrString();		
 		return sRetorno;
 	}
 	
@@ -1254,11 +1260,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		if ( evt.getCheckBox() == cbReImpNot ) {
 			if ( cbReImpNot.getVlrString().equals( "S" ) ) {
 				cbImpBol.setVlrString( "N" );
+				cbImpRec.setVlrString( "N" );
 				cbImpNot.setVlrString( "N" );
 				cbImpPed.setVlrString( "N" );
 			}
 		}
-		else if ( ( evt.getCheckBox() == cbImpNot ) || ( evt.getCheckBox() == cbImpBol ) || ( evt.getCheckBox() == cbImpPed ) ) {
+		else if ( ( evt.getCheckBox() == cbImpNot ) || ( evt.getCheckBox() == cbImpBol ) || 
+				( evt.getCheckBox() == cbImpRec ) || ( evt.getCheckBox() == cbImpPed ) ) {
 			if ( ( (JCheckBoxPad) evt.getCheckBox() ).getVlrString().equals( "S" ) )
 				cbReImpNot.setVlrString( "N" );
 		}

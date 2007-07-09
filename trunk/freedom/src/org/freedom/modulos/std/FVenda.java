@@ -282,6 +282,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JCheckBoxPad chbImpBolTipoMov = new JCheckBoxPad( "Imp.bol.?", "S", "N" );
 
+	private JCheckBoxPad chbImpRecTipoMov = new JCheckBoxPad( "Imp.rec.?", "S", "N" );
+	
 	private JCheckBoxPad chbReImpNfTipoMov = new JCheckBoxPad( "Reimp.NF?", "S", "N" );
 
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
@@ -637,6 +639,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcTipoMov.add( new GuardaCampo( chbImpPedTipoMov, "ImpPedTipoMov", "Imp.ped.", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( chbImpNfTipoMov, "ImpNfTipoMov", "Imp.NF", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( chbImpBolTipoMov, "ImpBolTipoMov", "Imp.bol.", ListaCampos.DB_SI, false ) );
+		lcTipoMov.add( new GuardaCampo( chbImpRecTipoMov, "ImpRecTipoMov", "Imp.rec.", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( chbReImpNfTipoMov, "ReImpNfTipoMov", "Reimp.NF", ListaCampos.DB_SI, false ) );
 		/*
 		 * SELECT CODTIPOMOV, DESCTIPOMOV FROM EQTIPOMOV WHERE ( TUSUTIPOMOV='S' OR EXISTS (SELECT * FROM EQTIPOMOVUSU TU WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=4 AND TU.CODFILIALUS=1 AND TU.IDUSU='sysdba') ) ORDER
@@ -2480,7 +2483,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		if ( evt.getSource() == btFechaVenda ) {
 			DLFechaVenda dl = new DLFechaVenda( con, txtCodVenda.getVlrInteger(), this, 
 					chbImpPedTipoMov.getVlrString(), chbImpNfTipoMov.getVlrString(), 
-					chbImpBolTipoMov.getVlrString(), chbReImpNfTipoMov.getVlrString() );
+					chbImpBolTipoMov.getVlrString(),chbImpRecTipoMov.getVlrString() , 
+					chbReImpNfTipoMov.getVlrString() );
 			//dl.getDadosCli();
 			dl.setVisible( true );
 			
@@ -2498,25 +2502,27 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				// Ordem dos parâmetros decrescente por que uma tela abre na
 				// frente da outra.
 
-				if ( sValores[ 5 ].equals( "S" ) && !sValores[ 6 ].equals( "" ) ) {
+				if ( sValores[ 5 ].equals( "S" ) && !sValores[ 7 ].equals( "" ) ) {
 					FRBoleto fBol = new FRBoleto( this );
 					fBol.setConexao( con );
-					fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 6 ] ) );
+					fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 7 ] ) );
 					fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );										
 					fBol.imprimir( true );
 				}
 				else if(!sValores[ 6 ].equals( "" ) && lsParcRecibo.size()>0) { // Logica para impressão do recibo.
 					FRBoleto fBol = new FRBoleto( this );
 					fBol.setConexao( con );
-					fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 6 ] ) );
+					fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 7 ] ) );
 					fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
 					fBol.setParcelas(lsParcRecibo);
 					fBol.imprimir( true );
 				}
 				
-				if ( ( sValores[ 4 ].equals( "S" ) ) || ( sValores[ 7 ].equals( "S" ) ) ) {
-					if ( txtTipoMov.getVlrString().equals( "VD" ) || txtTipoMov.getVlrString().equals( "VT" ) || txtTipoMov.getVlrString().equals( "TR" ) || txtTipoMov.getVlrString().equals( "CS" ) || txtTipoMov.getVlrString().equals( "CE" ) || txtTipoMov.getVlrString().equals( "PE" )
-							|| txtTipoMov.getVlrString().equals( "DV" ) || txtTipoMov.getVlrString().equals( "BN" ) ) {
+				if ( ( sValores[ 4 ].equals( "S" ) ) || ( sValores[ 8 ].equals( "S" ) ) ) {
+					if ( txtTipoMov.getVlrString().equals( "VD" ) || txtTipoMov.getVlrString().equals( "VT" ) || 
+							txtTipoMov.getVlrString().equals( "TR" ) || txtTipoMov.getVlrString().equals( "CS" ) || 
+							txtTipoMov.getVlrString().equals( "CE" ) || txtTipoMov.getVlrString().equals( "PE" ) || 
+							txtTipoMov.getVlrString().equals( "DV" ) || txtTipoMov.getVlrString().equals( "BN" ) ) {
 						emitNota( "NF" );
 					}
 					else if ( txtTipoMov.getVlrString().equals( "SE" ) ) {
@@ -2526,14 +2532,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						Funcoes.mensagemErro( this, "Não existe nota para o tipo de movimento: '" + txtTipoMov.getVlrString() + "'" );
 						return;
 					}
-					if ( sValores[ 7 ].equals( "N" ) ) {
+					if ( sValores[ 8 ].equals( "N" ) ) {
 						txtStatusVenda.setVlrString( "V4" );
 					}
 				}
 				else if ( sValores[ 3 ].equals( "S" ) ) {
 					imprimir( true, txtCodVenda.getVlrInteger().intValue() );
 				}
-				if ( sValores[ 7 ].equals( "N" ) ) {
+				if ( sValores[ 8 ].equals( "N" ) ) {
 					lcCampos.edit();
 					lcCampos.post();
 				}

@@ -125,6 +125,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 	private JCheckBoxPad chbImpBolTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
 
+	private JCheckBoxPad chbImpRecTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
+
 	private JCheckBoxPad chbReImpNfTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
 
 	private JCheckBoxPad chbSeqNfTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
@@ -249,11 +251,12 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		adicDB( chbSomaTipoMov, 238, 270, 69, 20, "SomaVdTipoMov", "Financeiro", true );
 		adicDB( cbTipoMov, 7, 315, 290, 30, "TipoMov", "Tipo de movimento", true );
 		adicCampo( txtEspecieTipomov, 305, 320, 92, 24, "EspecieTipomov", "Espécie", ListaCampos.DB_SI, true );
-		adicDB( chbImpPedTipoMov, 16, 390, 70, 20, "ImpPedTipoMov", "Imp.ped.", true );
-		adicDB( chbImpNfTipoMov, 91, 390, 70, 20, "ImpNfTipoMov", "Imp.NF", true );
-		adicDB( chbImpBolTipoMov, 162, 390, 70, 20, "ImpBolTipoMov", "Imp.bol.", true );
-		adicDB( chbReImpNfTipoMov, 235, 390, 70, 20, "ReImpNfTipoMov", "Reimp.NF", true );
-		adicDB( chbSeqNfTipoMov, 310, 390, 80, 20, "SeqNfTipoMov", "Aloca NRO.NF", true );
+		adicDB( chbImpPedTipoMov, 16, 390, 55, 20, "ImpPedTipoMov", "Imp.ped.", true );
+		adicDB( chbImpNfTipoMov, 74, 390, 55, 20, "ImpNfTipoMov", "Imp.NF", true );
+		adicDB( chbImpBolTipoMov, 132, 390, 55, 20, "ImpBolTipoMov", "Imp.bol.", true );
+		adicDB( chbImpRecTipoMov, 190, 390, 55, 20, "ImpRecTipoMov", "Imp.rec.", true );
+		adicDB( chbReImpNfTipoMov, 248, 390, 55, 20, "ReImpNfTipoMov", "Reimp.NF", true );
+		adicDB( chbSeqNfTipoMov, 306, 390, 70, 20, "SeqNfTipoMov", "Aloca Nº.NF", true );
 		adicDB( chbVlrMFinTipoMov, 13, 430, 400, 20, "VlrMFinTipoMov", "", true );
 		adicDB( chbRestritoTipoMov, 13, 450, 240, 20, "TUSUTIPOMOV", "", true );
 
@@ -305,8 +308,10 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 	public void afterInsert( InsertEvent ievt ) {
 
-		if ( !bPrefs[ 0 ] )
+		if ( !bPrefs[ 0 ] ) {
 			chbEstoqTipoMov.setVlrString( "N" );
+		}
+
 	}
 
 	private void montaCbTipoMov( String ES ) {
