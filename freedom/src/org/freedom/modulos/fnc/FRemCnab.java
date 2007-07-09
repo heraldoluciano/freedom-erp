@@ -71,7 +71,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setConta( conta );
 		reg.setDigConta( digConta );
 		reg.setDigAgConta( digAgeConta );
-		reg.setRazEmp( nomeEmp );
+		reg.setRazEmp( (String) prefs.get( FbnUtil.EPrefs.NOMEEMP ) );
 		reg.setMsg1( msg1 );
 		reg.setMsg2( msg2 );
 		reg.setNrRemRet( nrRemRet );
