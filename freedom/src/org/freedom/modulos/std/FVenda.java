@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.freedom.acao.CarregaEvent;
@@ -2489,8 +2490,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			dl.setVisible( true );
 			
 			if ( dl.OK ) {
-				lsParcRecibo = dl.getParcRecibo();
 				sValores = dl.getValores();
+				if ("S".equals( sValores[ 6 ] )) {
+					lsParcRecibo = dl.getParcRecibo();
+				}
 				dl.dispose();
 			}
 			else {
@@ -2509,13 +2512,18 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );										
 					fBol.imprimir( true );
 				}
-				else if(!sValores[ 6 ].equals( "" ) && lsParcRecibo.size()>0) { // Logica para impressão do recibo.
+				else if ( ( "S".equals( sValores[ 6 ] ) ) && 
+						(lsParcRecibo!=null) && (lsParcRecibo.size()>0) ) { // Logica para impressão do recibo.
 					FRBoleto fBol = new FRBoleto( this );
 					fBol.setConexao( con );
-					fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 7 ] ) );
-					fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
-					fBol.setParcelas(lsParcRecibo);
-					fBol.imprimir( true );
+					if ("".equals(sValores[ 7 ])) {
+						Funcoes.mensagemInforma( this, "Modelo de boleto/recibo não foi selecionado!" );
+					} else {
+						fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 7 ] ) );
+						fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
+						fBol.setParcelas(lsParcRecibo);
+						fBol.imprimir( true );
+					}
 				}
 				
 				if ( ( sValores[ 4 ].equals( "S" ) ) || ( sValores[ 8 ].equals( "S" ) ) ) {

@@ -39,7 +39,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -288,7 +287,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtCodBanco.setNomeCampo( "CodBanco" );
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
 		lcBanco.add( new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
-		lcBanco.add( new GuardaCampo( txtCodModBol, "CodModBol", "Cód.m.bloq.", ListaCampos.DB_SI, false ) );
+		lcBanco.add( new GuardaCampo( txtCodModBol, "CodModBol", "Cód.m.bl/rc.", ListaCampos.DB_SI, false ) );
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
@@ -418,7 +417,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		
 		tabRec.addMouseListener( this );
 
-		tabRec.adicColuna( "Imp.Rec." ); // xxxx
+		//tabRec.adicColuna( "Imp.Rec." ); // xxxx
 		
 		txtCodComi.setNomeCampo( "CodComi" );
 		lcComis.add( new GuardaCampo( txtCodComi, "CodComi", "Cód.comis.", ListaCampos.DB_PK, false ) );
@@ -1131,19 +1130,27 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	public List getParcRecibo() {
 		List<Integer> lsRet = new ArrayList<Integer>();
-		try {			
-			for ( int i = 0; i < tabRec.getRowCount(); i++ ) {
-//				Funcoes.mensagem( "Parc:" + tabRec.getValor( i, 4 ).toString(), "teste", 0);
-				Boolean bParc = new Boolean(tabRec.getValor( i, 4 ).toString()); 
-
-				if(bParc) {
-					lsRet.add( (Integer)tabRec.getValor( i, 0 ) );
-				}
-			}
+		Vector<Object> vRec = new Vector<Object>();
+		List<Object[]> lsCab = new ArrayList<Object[]>();
+		DLSelRecibo dlsr = new DLSelRecibo(Aplicativo.telaPrincipal, true);
+		Object[] cab = null;
+		Boolean sel = null;
+		
+		for (int i=0; i<tabRec.getNumColunas(); i++) {
+			cab = new Object[2];
+			cab[0] = tabRec.getColumnName( i );
+			cab[1] = new Integer(tabRec.getColumn( cab[0] ).getWidth());
+			lsCab.add(cab);
 		}
-		catch (Exception e) {
-			e.printStackTrace();
+		for (int i=0; i<tabRec.getNumLinhas(); i++) {
+			vRec.addElement( tabRec.getLinha( i ) );
 		}
+		dlsr.carregaTab(lsCab, vRec);
+		dlsr.setVisible( true );
+		if (dlsr.OK) {
+			lsRet = dlsr.getParcRecibo();
+		}
+		dlsr.dispose();
 		return lsRet;
 	}
 	
@@ -1283,7 +1290,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
-		if ( ( cevt.getListaCampos() == lcItReceber && bCarregaReceber) ) {
+		/*if ( ( cevt.getListaCampos() == lcItReceber && bCarregaReceber) ) {
 			for ( int i = 0; i < tabRec.getRowCount(); i++ ) {
 				try {
 					Boolean bVlr = (Boolean)tabRec.getValor(i, 4);					
@@ -1295,7 +1302,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 					tabRec.setValor( new Boolean(false),i, 4);	
 				}
 			}
-		}
+		}*/
 	}
 	public void beforeCarrega( CarregaEvent cevt ) {};
 	
