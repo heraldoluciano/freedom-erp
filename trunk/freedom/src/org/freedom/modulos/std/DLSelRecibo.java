@@ -34,6 +34,7 @@ public class DLSelRecibo extends FFDialogo {
 		if (lsCab!=null) {
 			tab.adicColuna( "Sel." );
 			tab.setTamColuna( lsCab.size(), 50 );
+			tab.setColunaEditavel( 0, true );
 			for(int i=0; i<lsCab.size(); i++ ) {
 				cab = lsCab.get( i );
 				tab.adicColuna( cab[0] );
@@ -43,7 +44,7 @@ public class DLSelRecibo extends FFDialogo {
 			for (int i=0; i<vRec.size(); i++) {
 				linha = new Vector<Object>();
 //				 Adicionar a coluna de seleção
-				linha.addElement( new Boolean(true ) );
+				linha.addElement( new Boolean( (i==0) ) ); // seleciona a primeira linha
 				for (int i2=0; i2<(((Vector) vRec.elementAt( i )).size()); i2++) {
 					linha.addElement(((Vector) vRec.elementAt( i )).elementAt(i2));
 				}
