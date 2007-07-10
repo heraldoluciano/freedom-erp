@@ -171,9 +171,9 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 500300000, TP_OPCAO_ITEM, "Descontos por setor", "Descontos por setor", 'D', 500304000, 2, true, FRReceberSetor.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Financeiro", "", 'F', 600000000, 0, false, null );
-			addOpcao( 600000000, TP_OPCAO_MENU, "Boleto", "", 'B', 600100000, 1, false, null );
-				addOpcao( 600100000, TP_OPCAO_ITEM, "Modelo", "Modelo de boleto", 'M', 600110000, 2, true, FModBoleto.class );
-				addOpcao( 600100000, TP_OPCAO_ITEM, "Imprimir", "Boleto", 'I', 600120000, 2, true, FRBoleto.class );
+			addOpcao( 600000000, TP_OPCAO_MENU, "Boleto/Recibo", "", 'B', 600100000, 1, false, null );
+				addOpcao( 600100000, TP_OPCAO_ITEM, "Modelo", "Modelo de boleto/recibo", 'M', 600110000, 2, true, FModBoleto.class );
+				addOpcao( 600100000, TP_OPCAO_ITEM, "Imprimir", "Boleto/Recibo", 'I', 600120000, 2, true, FRBoleto.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Banco", "Banco", 'a', 600200000, 1, true, FBanco.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Planejamento", "Planejamento", 'P', 600300000, 1, true, FPlanejamento.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Centro de custo", "Centro de Custos", 'C', 600400000, 1, true, FCentroCusto.class );

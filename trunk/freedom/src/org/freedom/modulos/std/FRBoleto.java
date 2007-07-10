@@ -117,7 +117,7 @@ public class FRBoleto extends FRelatorio {
 	
 	public FRBoleto( JInternalFrame fExt ) {
 
-		setTitulo( "Impressão de boleto" );
+		setTitulo( "Impressão de boleto/recibo" );
 		setAtribos( 80, 80, 545, 320 );
 
 		this.fExt = fExt;
