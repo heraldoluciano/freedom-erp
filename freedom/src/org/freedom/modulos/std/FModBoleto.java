@@ -138,7 +138,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 	public FModBoleto() {
 
 		super();
-		setTitulo( "Modelo de boleto" );
+		setTitulo( "Modelo de boleto/Recibo" );
 		setAtribos( 30, 30, 740, 500 );
 
 		
