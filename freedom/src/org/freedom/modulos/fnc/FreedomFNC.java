@@ -129,9 +129,9 @@ public class FreedomFNC extends AplicativoPD {
 			addOpcao( 300300000, TP_OPCAO_ITEM, "Descontos por setor", "Descontos por setor", 'D', 300304000, 2, true, FRReceberSetor.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Financeiro", "", 'F', 400000000, 0, false, null );
-			addOpcao( 400000000, TP_OPCAO_MENU, "Boleto", "", 'o', 400100000, 1, false, null );
-				addOpcao( 400100000, TP_OPCAO_ITEM, "Modelo", "Modelo de boleto", 'M', 400101000, 2, true, FModBoleto.class );
-				addOpcao( 400100000, TP_OPCAO_ITEM, "Imprimir", "Boleto", 'I', 400101000, 2, true, FRBoleto.class );
+			addOpcao( 400000000, TP_OPCAO_MENU, "Boleto/Recibo", "", 'o', 400100000, 1, false, null );
+				addOpcao( 400100000, TP_OPCAO_ITEM, "Modelo", "Modelo de boleto/recibo", 'M', 400101000, 2, true, FModBoleto.class );
+				addOpcao( 400100000, TP_OPCAO_ITEM, "Imprimir", "Boleto/Recibo", 'I', 400101000, 2, true, FRBoleto.class );
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Banco", "Banco", 'B', 400200000, 1, true, FBanco.class );
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Planejamento", "Planejamento", 'P', 400300000, 1, true, FPlanejamento.class );
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Centro de custo", "Centro de Custos", 'C', 400400000, 1, true, FCentroCusto.class );
