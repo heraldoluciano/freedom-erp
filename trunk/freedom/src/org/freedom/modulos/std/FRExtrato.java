@@ -95,8 +95,9 @@ public class FRExtrato extends FRelatorio {
     String sCodConta = txtCodConta.getVlrString();
     boolean bPrim = true;
     
-    BigDecimal bTotal = new BigDecimal("0");
-    BigDecimal bSaldo = new BigDecimal("0");
+    BigDecimal bTotal = new BigDecimal(0);
+    BigDecimal bSaldo = new BigDecimal(0);
+    BigDecimal bSaldoLinha = new BigDecimal(0);
     BigDecimal bAnt = buscaSaldoAnt();
         
     String sDataLanca = "";
@@ -143,17 +144,20 @@ public class FRExtrato extends FRelatorio {
       while ( rs.next() ) {
         if (!bPrim) {
           if (!(sDataLanca.equals(rs.getString("DataSL")))) {
-            imp.say(imp.pRow()+0,103,Funcoes.strDecimalToStrCurrency(15,2,""+bSaldo)+" | ");
-            imp.say(imp.pRow()+0,135,"|");
+            //imp.say(imp.pRow()+0,103,Funcoes.strDecimalToStrCurrency(15,2,""+bSaldo)+" | ");
+            //imp.say(imp.pRow()+0,135,"|");
             bTotal = new BigDecimal(rs.getString("SaldoSL"));
+            //bSaldoLinha = new BigDecimal(rs.getString("SaldoSL"));
           }
           else {
-            imp.say(imp.pRow()+0,119,"|");
-            imp.say(imp.pRow()+0,135,"|");
+            //imp.say(imp.pRow()+0,119,"|");
+           // imp.say(imp.pRow()+0,135,"|");
           }
         }
-        else
+        else {
   		  bTotal = new BigDecimal(rs.getString("SaldoSL"));
+          //bSaldoLinha = new BigDecimal(rs.getString("SaldoSL"));
+        }
         if (imp.pRow() == linPag) {
           imp.eject();
           imp.incPags();          
@@ -180,20 +184,24 @@ public class FRExtrato extends FRelatorio {
              imp.say(imp.pRow()+0,135,"|");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+             bSaldoLinha = new BigDecimal(bAnt.floatValue());
            }
          }
          bPrim = false;
          bSaldo = new BigDecimal(rs.getString("SaldoSL"));
          bAnt = bSaldo;
          sDataLanca = rs.getString("DataSL");
+         bSaldoLinha = bSaldoLinha.add( rs.getBigDecimal("VlrSubLanca") );
          imp.say(imp.pRow()+1,0,""+imp.comprimido());
          imp.say(imp.pRow()+0,0,"| "+Funcoes.sqlDateToStrDate(rs.getDate("DataSL")));
          imp.say(imp.pRow()+0,14,"| "+Funcoes.copy(rs.getString("HistBLanca"),0,50));
          imp.say(imp.pRow()+0,67,"| "+Funcoes.copy((rs.getString("DocLanca")!=null?rs.getString("DocLanca"):""),0,11));
-         imp.say(imp.pRow()+0,83,"| "+Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrSubLanca"))+" | ");
+         imp.say(imp.pRow()+0,83,"| "+Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrSubLanca")));
+         imp.say(imp.pRow()+0,101,"| "+Funcoes.strDecimalToStrCurrency(15,2,""+bSaldoLinha));
+         imp.say(imp.pRow()+0,135,"|");
        }
-       imp.say(imp.pRow()+0,102,""+Funcoes.strDecimalToStrCurrency(15,2,""+bSaldo)+" |");
-       imp.say(imp.pRow()+0,135,"|");
+       //imp.say(imp.pRow()+0,102,""+Funcoes.strDecimalToStrCurrency(15,2,""+bSaldo)+" |");
+       //imp.say(imp.pRow()+0,135,"|");
        imp.say(imp.pRow()+1,0,""+imp.comprimido());
        imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
        imp.say(imp.pRow()+1,0,""+imp.comprimido());
