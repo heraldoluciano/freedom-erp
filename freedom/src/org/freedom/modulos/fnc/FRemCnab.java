@@ -38,8 +38,17 @@ import java.util.HashSet;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.fnc.CnabUtil.Reg;
 import org.freedom.modulos.fnc.CnabUtil.Reg1;
 import org.freedom.modulos.fnc.CnabUtil.Reg3P;
+import org.freedom.modulos.fnc.CnabUtil.Reg3Q;
+import org.freedom.modulos.fnc.CnabUtil.Reg3R;
+import org.freedom.modulos.fnc.CnabUtil.Reg3S;
+import org.freedom.modulos.fnc.CnabUtil.Reg3T;
+import org.freedom.modulos.fnc.CnabUtil.Reg3U;
+import org.freedom.modulos.fnc.CnabUtil.Reg5;
+import org.freedom.modulos.fnc.FbnUtil.StuffCli;
+import org.freedom.modulos.fnc.FbnUtil.StuffRec;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 
@@ -58,8 +67,8 @@ public class FRemCnab extends FRemFBN {
 	private Reg1 getReg1() {
 		
 		Reg1 reg = cnabutil.new Reg1();
-		/*
-		reg.setCodBanco( (String) prefs.get( FbnUtil.EPrefs.CODBANCO ) );
+		
+		/*reg.setCodBanco( (String) prefs.get( FbnUtil.EPrefs.CODBANCO ) );
 		reg.setLoteServico( loteServico );
 		reg.setTipoOperacao( tipoOperacao );
 		reg.setFormaLancamento( formaLancamento );
@@ -81,11 +90,15 @@ public class FRemCnab extends FRemFBN {
 		return reg;
 	}
 	
-	private Reg3P getReg3P () {
+	private Reg3P getReg3P() {
 		
 		Reg3P reg = cnabutil.new Reg3P();
+
+		/*reg.setCodBanco( codBanco );
+		reg.setLoteServico( loteServico );
+		reg.setSeqLote( seqLote );
+		reg.setCodMovimento( codMovimento );
 		
-		/*
 		reg.setAgencia( agencia );
 		reg.setDigAgencia( digAgencia );
 		reg.setConta( conta );
@@ -120,6 +133,166 @@ public class FRemCnab extends FRemFBN {
 		reg.setDiasBaixaDevol( diasBaixaDevol );  
 		reg.setCodMoeda( codMoeda );
 		reg.setContrOperCred( contrOperCred );*/
+		
+		return reg;
+	}
+	
+	private Reg3Q getReg3Q() {
+		
+		Reg3Q reg = null;
+
+		/*reg.setCodBanco( codBanco );
+		reg.setLoteServico( loteServico );
+		reg.setSeqLote( seqLote );
+		reg.setCodMovimento( codMovimento );
+		
+		reg.setTipoInscCli( tipoInscCli );
+		reg.setCpfCnpjCli( cpfCnpjCli );
+		reg.setRazCli( razCli );
+		reg.setEndCli( endCli );
+		reg.setBairCli( bairCli );
+		reg.setCepCli( cepCli );
+		reg.setCidCli( cidCli );
+		reg.setUfCli( ufCli );
+		reg.setTipoInscAva( tipoInscAva );
+		reg.setCpfCnpjAva( cpfCnpjAva );
+		reg.setRazAva( razAva );
+		reg.setCodCompensacao( codCompensacao );
+		reg.setNossoNumero( nossoNumero );*/
+		
+		return reg;
+	}
+	
+	private Reg3R getReg3R() {
+		
+		Reg3R reg = null;
+
+		/*reg.setCodBanco( codBanco );
+		reg.setLoteServico( loteServico );
+		reg.setSeqLote( seqLote );
+		reg.setCodMovimento( codMovimento );
+		
+		reg.setCodDesc2( codDesc2 );
+		reg.setDataDesc2( dataDesc2 );
+		reg.setVlrPercConced2( vlrPercConced2 );
+		reg.setCodDesc3( codDesc3 );
+		reg.setDataDesc3( dataDesc3 );
+		reg.setVlrPercConced3( vlrPercConced3 );
+		reg.setCodMulta( codMulta );
+		reg.setDataMulta( dataMulta );
+		reg.setVlrPercMulta( vlrPercMulta );
+		reg.setMsgSacado( msgSacado );
+		reg.setMsg3( msg3 );
+		reg.setMsg4( msg4 );
+		reg.setCodBancoDeb( codBancoDeb );
+		reg.setAgenciaDeb( agenciaDeb );
+		reg.setContaDeb( contaDeb );
+		reg.setCodOcorrSacado( codOcorrSacado );*/
+		
+		return reg;
+	}
+	
+	private Reg3S getReg3S() {
+		
+		Reg3S reg = null;
+
+		/*reg.setCodBanco( codBanco );
+		reg.setLoteServico( loteServico );
+		reg.setSeqLote( seqLote );
+		reg.setCodMovimento( codMovimento );
+		
+		reg.setTipoImpressao( tipoImpressao );
+		reg.setLinhaImp( linhaImp );
+		reg.setMsgImp( msgImp );
+		reg.setTipoChar( tipoChar );		
+		reg.setMsg5( msg5 );
+		reg.setMsg6( msg6 );
+		reg.setMsg7( msg7 );
+		reg.setMsg8( msg8 );
+		reg.setMsg9( msg9 );*/
+		
+		return reg;
+	}
+	
+	private Reg3T getReg3T() {
+		
+		Reg3T reg = null;
+
+		/*reg.setCodBanco( codBanco );
+		reg.setLoteServico( loteServico );
+		reg.setSeqLote( seqLote );
+		reg.setCodMovimento( codMovimento );
+		
+		reg.setAgencia( agencia );
+		reg.setDigAgencia( digAgencia );
+		reg.setConta( conta );
+		reg.setDigConta( digConta );
+		reg.setDigAgConta( digAgConta );
+		reg.setIdentTitBanco( identTitBanco );
+		reg.setCarteira( carteira );
+		reg.setDocCob( docCob );
+		reg.setDataVencTit( dataVencTit );
+		reg.setVlrTitulo( vlrTitulo );
+		reg.setCodBanco( codBanco );
+		reg.setAgenciaCob( agenciaCob );
+		reg.setDigAgenciaCob( digAgenciaCob );
+		reg.setIdentTitEmp( identTitEmp );
+		reg.setCodMoeda( codMoeda );
+		reg.setTipoInscCli( tipoInscCli );
+		reg.setCpfCnpjCli( cpfCnpjCli );
+		reg.setRazCli( razCli );
+		reg.setContratoCred( contratoCred );
+		reg.setVlrTarifa( vlrTarifa ); 
+		reg.setCodRejeicoes( codRejeicoes );*/
+		
+		return reg;
+	}
+	
+	private Reg3U getReg3U() {
+		
+		Reg3U reg = null;
+
+		/*reg.setCodBanco( codBanco );
+		reg.setLoteServico( loteServico );
+		reg.setSeqLote( seqLote );
+		reg.setCodMovimento( codMovimento );
+		
+		reg.setVlrJurosMulta( vlrJurosMulta );
+		reg.setVlrDesc( vlrDesc );
+		reg.setVrlAbatCancel( vrlAbatCancel );
+		reg.setVlrIOF( vlrIOF );
+		reg.setVlrPago( vlrPago );
+		reg.setVlrLiqCred( vlrLiqCred );
+		reg.setVlrOutrasDesp( vlrOutrasDesp );
+		reg.setVlrOutrosCred( vlrOutrosCred );
+		reg.setDataOcorr( dataOcorr );
+		reg.setDataEfetvCred( dataEfetvCred );
+		reg.setCodOcorrSac( codOcorrSac );
+		reg.setDataOcorrSac( dataOcorrSac );
+		reg.setVlrOcorrSac( vlrOcorrSac );
+		reg.setCompOcorrSac( compOcorrSac );
+		reg.setCodBancoCompens( codBancoCompens );
+		reg.setNossoNrCompens( nossoNrCompens );*/
+		
+		return reg;
+	}
+	
+	private Reg5 getReg5() {
+		
+		Reg5 reg = null;
+		
+		/*reg.setCodBanco( codBanco );
+		reg.setLoteServico( loteServico );
+		reg.setQtdRegistros( qtdRegistros );
+		reg.setQtdSimples( qtdSimples );
+		reg.setVlrSimples( vlrSimples );
+		reg.setQtdVinculado( qtdVinculado );
+		reg.setVlrVinculado( vlrVinculado );
+		reg.setQtdCalculado( qtdCalculado );
+		reg.setVlrCalculado( vlrCalculado );
+		reg.setQtdDescontado( qtdDescontado );
+		reg.setVlrDescontado( vlrDescontado );
+		reg.setAvisoLanca( avisoLanca );*/
 		
 		return reg;
 	}
@@ -163,7 +336,7 @@ public class FRemCnab extends FRemFBN {
 					bw = new BufferedWriter( fw );
 		
 					lbStatus.setText( "     gravando arquivo ..." );
-					//retorno = gravaRemessa( bw, hsCli, hsRec );
+					retorno = gravaRemessa( bw, hsCli, hsRec );
 				} catch ( IOException ioError ) {
 					Funcoes.mensagemErro( this, "Erro Criando o arquivo!\n " + sFileName + "\n" + ioError.getMessage() );
 					lbStatus.setText( "" );
@@ -178,17 +351,28 @@ public class FRemCnab extends FRemFBN {
 		return retorno;
 	}
 	
-	private boolean gravaRemessa( final BufferedWriter bw, HashSet< SiaccUtil.StuffCli > hsCli, HashSet< SiaccUtil.StuffRec > hsRec ) {
+	private boolean gravaRemessa( final BufferedWriter bw, HashSet< StuffCli > hsCli, HashSet< StuffRec > hsRec ) {
 		
 		boolean retorno = false;
 		
 		try {
 			
-			ArrayList< CnabUtil.Reg > list = new ArrayList< CnabUtil.Reg >();
+			ArrayList< Reg > registros = new ArrayList< Reg >();
 			
-			list.add( getReg1() );
+			registros.add( getReg1() );
 			
-			for ( CnabUtil.Reg reg : list ) {
+			for ( CnabUtil.StuffRec rec : hsRec ) {
+				registros.add( getReg3P() );
+				registros.add( getReg3Q() );
+				registros.add( getReg3R() );
+				registros.add( getReg3S() );
+				registros.add( getReg3T() );
+				registros.add( getReg3U() );
+			}
+			
+			registros.add( getReg5() );
+			
+			for ( Reg reg : registros ) {
 				bw.write( reg.getLine() );
 			}
 			

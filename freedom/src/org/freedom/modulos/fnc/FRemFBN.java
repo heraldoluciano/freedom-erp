@@ -62,45 +62,11 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
+import static org.freedom.modulos.fnc.FRemFBN.EColTab.*;
+
 public abstract class FRemFBN extends FFilho implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
-
-	protected static final int COL_SEL = 0;
-
-	protected static final int COL_RAZCLI = 1;
-
-	protected static final int COL_CODCLI = 2;
-
-	protected static final int COL_CODREC = 3;
-
-	protected static final int COL_DOCREC = 4;
-
-	protected static final int COL_NRPARC = 5;
-
-	protected static final int COL_VLRAPAG = 6;
-
-	protected static final int COL_DTREC = 7;
-
-	protected static final int COL_DTVENC = 8;
-
-	protected static final int COL_AGENCIACLI = 9;
-
-	protected static final int COL_IDENTCLI = 10;
-
-	protected static final int COL_SITREM = 11;
-
-	protected static final int COL_SITRET = 12;
-
-	protected static final int COL_STIPOFEBRABAN = 13;
-
-	protected static final int COL_TIPOREMCLI = 14;
-
-	protected static final int COL_PESSOACLI = 15;
-
-	protected static final int COL_CPFCLI = 16;
-	
-	protected static final int COL_CNPJCLI = 17;
 	
 	protected static final String TIPO_FEBRABAN_SIACC = "01";
 	
@@ -225,27 +191,27 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		tab.adicColuna( "C.P.F." );
 		tab.adicColuna( "C.N.P.J." );
 
-		tab.setTamColuna( 20, COL_SEL );
-		tab.setTamColuna( 150, COL_RAZCLI );
-		tab.setTamColuna( 70, COL_CODCLI );
-		tab.setTamColuna( 70, COL_CODREC );
-		tab.setTamColuna( 80, COL_DOCREC );
-		tab.setTamColuna( 70, COL_NRPARC );
-		tab.setTamColuna( 70, COL_VLRAPAG );
-		tab.setTamColuna( 70, COL_DTREC );
-		tab.setTamColuna( 70, COL_DTVENC );
-		tab.setTamColuna( 100, COL_AGENCIACLI );
-		tab.setTamColuna( 100, COL_IDENTCLI );
-		tab.setTamColuna( 50, COL_SITREM );
-		tab.setTamColuna( 50, COL_SITRET );
-		tab.setTamColuna( 30, COL_STIPOFEBRABAN );
-		tab.setTamColuna( 30, COL_TIPOREMCLI );
-		tab.setTamColuna( 30, COL_PESSOACLI );
-		tab.setTamColuna( 80, COL_CPFCLI );
-		tab.setTamColuna( 80, COL_CNPJCLI );
+		tab.setTamColuna( 20, COL_SEL.ordinal() );
+		tab.setTamColuna( 150, COL_RAZCLI.ordinal() );
+		tab.setTamColuna( 70, COL_CODCLI.ordinal() );
+		tab.setTamColuna( 70, COL_CODREC.ordinal() );
+		tab.setTamColuna( 80, COL_DOCREC.ordinal() );
+		tab.setTamColuna( 70, COL_NRPARC.ordinal() );
+		tab.setTamColuna( 70, COL_VLRAPAG.ordinal() );
+		tab.setTamColuna( 70, COL_DTREC.ordinal() );
+		tab.setTamColuna( 70, COL_DTVENC.ordinal() );
+		tab.setTamColuna( 100, COL_AGENCIACLI.ordinal() );
+		tab.setTamColuna( 100, COL_IDENTCLI.ordinal() );
+		tab.setTamColuna( 50, COL_SITREM.ordinal() );
+		tab.setTamColuna( 50, COL_SITRET.ordinal() );
+		tab.setTamColuna( 30, COL_STIPOFEBRABAN.ordinal() );
+		tab.setTamColuna( 30, COL_TIPOREMCLI.ordinal() );
+		tab.setTamColuna( 30, COL_PESSOACLI.ordinal() );
+		tab.setTamColuna( 80, COL_CPFCLI.ordinal() );
+		tab.setTamColuna( 80, COL_CNPJCLI.ordinal() );
 		
 
-		tab.setColunaEditavel( COL_SEL, true );
+		tab.setColunaEditavel( COL_SEL.ordinal(), true );
 
 		tab.addMouseListener( this );
 
@@ -481,24 +447,24 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			for ( i = 0; rs.next(); i++ ) {
 
 				tab.adicLinha();
-				tab.setValor( new Boolean( true ), i, COL_SEL );
-				tab.setValor( rs.getString( "RAZCLI" ), i, COL_RAZCLI );
-				tab.setValor( new Integer( rs.getInt( "CODCLI" ) ), i, COL_CODCLI );
-				tab.setValor( new Integer( rs.getInt( "CODREC" ) ), i, COL_CODREC );
-				tab.setValor( rs.getString( "DOCREC" ), i, COL_DOCREC );
-				tab.setValor( new Integer( rs.getInt( "NPARCITREC" ) ), i, COL_NRPARC );
-				tab.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRAPAGITREC" ) ), i, COL_VLRAPAG );
-				tab.setValor( rs.getDate( "DTITREC" ), i, COL_DTREC );
-				tab.setValor( rs.getDate( "DTVENCITREC" ), i, COL_DTVENC );
-				tab.setValor( rs.getString( "AGENCIACLI" ), i, COL_AGENCIACLI );
-				tab.setValor( rs.getString( "IDENTCLI" ), i, COL_IDENTCLI );
-				tab.setValor( rs.getString( "SITREMESSA" ), i, COL_SITREM );
-				tab.setValor( rs.getString( "SITRETORNO" ), i, COL_SITRET );
-				tab.setValor( rs.getString( "STIPOFEBRABAN" ), i, COL_STIPOFEBRABAN );
-				tab.setValor( rs.getString( "TIPOREMCLI" ), i, COL_TIPOREMCLI );
-				tab.setValor( rs.getString( "PESSOACLI" ), i, COL_PESSOACLI );
-				tab.setValor( rs.getString( "CPFCLI" ), i, COL_CPFCLI );
-				tab.setValor( rs.getString( "CNPJCLI" ), i, COL_CNPJCLI );
+				tab.setValor( new Boolean( true ), i, COL_SEL.ordinal() );
+				tab.setValor( rs.getString( "RAZCLI" ), i, COL_RAZCLI.ordinal() );
+				tab.setValor( new Integer( rs.getInt( "CODCLI" ) ), i, COL_CODCLI.ordinal() );
+				tab.setValor( new Integer( rs.getInt( "CODREC" ) ), i, COL_CODREC.ordinal() );
+				tab.setValor( rs.getString( "DOCREC" ), i, COL_DOCREC.ordinal() );
+				tab.setValor( new Integer( rs.getInt( "NPARCITREC" ) ), i, COL_NRPARC.ordinal() );
+				tab.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRAPAGITREC" ) ), i, COL_VLRAPAG.ordinal() );
+				tab.setValor( rs.getDate( "DTITREC" ), i, COL_DTREC.ordinal() );
+				tab.setValor( rs.getDate( "DTVENCITREC" ), i, COL_DTVENC.ordinal() );
+				tab.setValor( rs.getString( "AGENCIACLI" ), i, COL_AGENCIACLI.ordinal() );
+				tab.setValor( rs.getString( "IDENTCLI" ), i, COL_IDENTCLI.ordinal() );
+				tab.setValor( rs.getString( "SITREMESSA" ), i, COL_SITREM.ordinal() );
+				tab.setValor( rs.getString( "SITRETORNO" ), i, COL_SITRET.ordinal() );
+				tab.setValor( rs.getString( "STIPOFEBRABAN" ), i, COL_STIPOFEBRABAN.ordinal() );
+				tab.setValor( rs.getString( "TIPOREMCLI" ), i, COL_TIPOREMCLI.ordinal() );
+				tab.setValor( rs.getString( "PESSOACLI" ), i, COL_PESSOACLI.ordinal() );
+				tab.setValor( rs.getString( "CPFCLI" ), i, COL_CPFCLI.ordinal() );
+				tab.setValor( rs.getString( "CNPJCLI" ), i, COL_CNPJCLI.ordinal() );
 			}
 
 			rs.close();
@@ -549,21 +515,27 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 			vLinha = tab.getLinha( i );
 
-			if ( (Boolean) vLinha.elementAt( COL_SEL ) ) {
-				if ( ( "".equals( (String) vLinha.elementAt( COL_AGENCIACLI ) ) ) || ( "".equals( (String) vLinha.elementAt( COL_IDENTCLI ) ) ) ) {
-					if ( ! completaTabela( i, (Integer) vLinha.elementAt( COL_CODCLI ), (String) vLinha.elementAt( COL_RAZCLI ), (String) vLinha.elementAt( COL_AGENCIACLI ), (String) vLinha.elementAt( COL_IDENTCLI ), (String) vLinha.elementAt( COL_STIPOFEBRABAN ) ) ) {
+			if ( (Boolean) vLinha.elementAt( COL_SEL.ordinal() ) ) {
+				if ( ( "".equals( (String) vLinha.elementAt( COL_AGENCIACLI.ordinal() ) ) ) 
+						|| ( "".equals( (String) vLinha.elementAt( COL_IDENTCLI.ordinal() ) ) ) ) {
+					if ( ! completaTabela( i, 
+								(Integer) vLinha.elementAt( COL_CODCLI.ordinal() ), 
+								(String) vLinha.elementAt( COL_RAZCLI.ordinal() ), 
+								(String) vLinha.elementAt( COL_AGENCIACLI.ordinal() ), 
+								(String) vLinha.elementAt( COL_IDENTCLI.ordinal() ), 
+								(String) vLinha.elementAt( COL_STIPOFEBRABAN.ordinal() ) ) ) {
 						retorno = false;
 						break;
 					}
 				}
-				hsCli.add( new FbnUtil().new StuffCli( (Integer) vLinha.elementAt( COL_CODCLI ), 
+				hsCli.add( new FbnUtil().new StuffCli( (Integer) vLinha.elementAt( COL_CODCLI.ordinal() ), 
 						new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, 
-						(String) vLinha.elementAt( COL_STIPOFEBRABAN ),
-						(String) vLinha.elementAt( COL_AGENCIACLI ), 
-						(String) vLinha.elementAt( COL_IDENTCLI ),
-						(String) vLinha.elementAt( COL_TIPOREMCLI ) } ) );
-				hsRec.add( new FbnUtil().new StuffRec( (Integer) vLinha.elementAt( COL_CODREC ), 
-						(Integer) vLinha.elementAt( COL_NRPARC ),
+						(String) vLinha.elementAt( COL_STIPOFEBRABAN.ordinal() ),
+						(String) vLinha.elementAt( COL_AGENCIACLI.ordinal() ), 
+						(String) vLinha.elementAt( COL_IDENTCLI.ordinal() ),
+						(String) vLinha.elementAt( COL_TIPOREMCLI.ordinal() ) } ) );
+				hsRec.add( new FbnUtil().new StuffRec( (Integer) vLinha.elementAt( COL_CODREC.ordinal() ), 
+						(Integer) vLinha.elementAt( COL_NRPARC.ordinal() ),
 				/*
 				 * String codBanco, String tipoFebraban, String stipoFebraban, 
 				 * String sitRemessa {CODBANCO, TIPOFEBRABAN, 
@@ -571,16 +543,16 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				 * IDENTCLI, DTVENC, VLRPARC, PESSOACLI, CPJCLI, CNPJCLI}
 				 */
 				new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, 
-						(String) vLinha.elementAt( COL_STIPOFEBRABAN ), 
-						(String) vLinha.elementAt( COL_SITREM ), 
-						String.valueOf( (Integer) vLinha.elementAt( COL_CODCLI ) ), 
-						(String) vLinha.elementAt( COL_AGENCIACLI ),
-						(String) vLinha.elementAt( COL_IDENTCLI ), 
-						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( COL_DTVENC ) ), 
-						Funcoes.strToBd( vLinha.elementAt( COL_VLRAPAG )).toString(),
-						(String) vLinha.elementAt(COL_PESSOACLI),
-						(String) vLinha.elementAt( COL_CPFCLI ),
-						(String) vLinha.elementAt( COL_CNPJCLI ) } ) ); 
+						(String) vLinha.elementAt( COL_STIPOFEBRABAN.ordinal() ), 
+						(String) vLinha.elementAt( COL_SITREM.ordinal() ), 
+						String.valueOf( (Integer) vLinha.elementAt( COL_CODCLI.ordinal() ) ), 
+						(String) vLinha.elementAt( COL_AGENCIACLI.ordinal() ),
+						(String) vLinha.elementAt( COL_IDENTCLI.ordinal() ), 
+						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( COL_DTVENC.ordinal() ) ), 
+						Funcoes.strToBd( vLinha.elementAt( COL_VLRAPAG.ordinal() )).toString(),
+						(String) vLinha.elementAt( COL_PESSOACLI.ordinal() ),
+						(String) vLinha.elementAt( COL_CPFCLI.ordinal() ),
+						(String) vLinha.elementAt( COL_CNPJCLI.ordinal() ) } ) ); 
 		   }
 		}
 		if ( retorno ) {
@@ -602,7 +574,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			ajustaClientes( codCli, (String) valores[ 1 ], (String) valores[ 2 ], (String) valores[ 3 ] );
 		}
 		else {
-			tab.setValor( false, linha, COL_SEL );
+			tab.setValor( false, linha, COL_SEL.ordinal() );
 		}
 
 		return retorno;
@@ -611,10 +583,11 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 	protected void ajustaClientes( final Integer codCli, final String agenciaCli, final String identCli, final String subTipo ) {
 
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-			if ( ( (Boolean) tab.getValor( i, COL_SEL ) ).booleanValue() && codCli.equals( (Integer) tab.getValor( i, COL_CODCLI ) ) ) {
-				tab.setValor( agenciaCli, i, COL_AGENCIACLI );
-				tab.setValor( identCli, i, COL_IDENTCLI );
-				tab.setValor( subTipo, i, COL_STIPOFEBRABAN );
+			if ( ( (Boolean) tab.getValor( i, COL_SEL.ordinal() ) ).booleanValue() 
+					&& codCli.equals( (Integer) tab.getValor( i, COL_CODCLI.ordinal() ) ) ) {
+				tab.setValor( agenciaCli, i, COL_AGENCIACLI.ordinal() );
+				tab.setValor( identCli, i, COL_IDENTCLI.ordinal() );
+				tab.setValor( subTipo, i, COL_STIPOFEBRABAN.ordinal() );
 			}
 		}
 	}
@@ -624,11 +597,14 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 		boolean retorno = true;
 		for ( FbnUtil.StuffCli stfCli : hsCli ) {
-			retorno = updateCliente( stfCli.getCodigo(), stfCli.getArgs()[ FbnUtil.EColcli.CODBANCO.ordinal() ], 
-					stfCli.getArgs()[ FbnUtil.EColcli.TIPOFEBRABAN.ordinal() ], stfCli.getArgs()[ FbnUtil.EColcli.STIPOFEBRABAN.ordinal() ], 
-					stfCli.getArgs()[ FbnUtil.EColcli.AGENCIACLI.ordinal() ], stfCli.getArgs()[ FbnUtil.EColcli.IDENTCLI
-					.ordinal() ], stfCli.getArgs()[ FbnUtil.EColcli.TIPOREMCLI.ordinal() ] );
-			if ( !retorno ) {
+			retorno = updateCliente( stfCli.getCodigo(), 
+					stfCli.getArgs()[ FbnUtil.EColcli.CODBANCO.ordinal() ], 
+					stfCli.getArgs()[ FbnUtil.EColcli.TIPOFEBRABAN.ordinal() ], 
+					stfCli.getArgs()[ FbnUtil.EColcli.STIPOFEBRABAN.ordinal() ], 
+					stfCli.getArgs()[ FbnUtil.EColcli.AGENCIACLI.ordinal() ], 
+					stfCli.getArgs()[ FbnUtil.EColcli.IDENTCLI.ordinal() ], 
+					stfCli.getArgs()[ FbnUtil.EColcli.TIPOREMCLI.ordinal() ] );
+			if ( ! retorno ) {
 				retorno = false;
 				break;
 			}
@@ -649,7 +625,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		return retorno;
 	}	
 	
-	protected boolean updateCliente( int codCli, String codBanco, String tipoFebraban, String stipoFebraban, String agenciaCli, String identCli, String tipoRemCli ) {
+	protected boolean updateCliente( int codCli, String codBanco, String tipoFebraban, 
+			String stipoFebraban, String agenciaCli, String identCli, String tipoRemCli ) {
 
 		boolean retorno = false;
 
@@ -674,7 +651,10 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			ResultSet rs = ps.executeQuery();
 			if ( rs.next() ) {
 				
-				if ( ( !agenciaCli.equals( rs.getString( "AGENCIACLI" ) ) ) || ( !identCli.equals( rs.getString( "IDENTCLI" ) ) ) || ( !stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) ) ) || ( !tipoRemCli.equals( rs.getString( "TIPOREMCLI" ) ) ) ) {
+				if ( ( ! agenciaCli.equals( rs.getString( "AGENCIACLI" ) ) ) 
+						|| ( !identCli.equals( rs.getString( "IDENTCLI" ) ) ) 
+							|| ( !stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) ) ) 
+								|| ( !tipoRemCli.equals( rs.getString( "TIPOREMCLI" ) ) ) ) {
 					
 					StringBuilder sqlup = new StringBuilder();
 					sqlup.append( "UPDATE FNFBNCLI SET AGENCIACLI=?, IDENTCLI=?, STIPOFEBRABAN=?, TIPOREMCLI=? " );
@@ -736,7 +716,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		return retorno;
 	}
 
-	protected boolean updateReceber( int codRec, int nParcitrec, String codBanco, String tipoFebraban, String stipoFebraban, String sitRemessa ) {
+	protected boolean updateReceber( int codRec, int nParcitrec, String codBanco, 
+			String tipoFebraban, String stipoFebraban, String sitRemessa ) {
 
 		boolean retorno = false;
 		
@@ -871,12 +852,17 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 		if ( e.getClickCount() == 2 && e.getSource() == tab && tab.getLinhaSel() > -1 ) {
 
-			if ( !"00".equals( tab.getValor( tab.getLinhaSel(), COL_SITRET ) ) ) {
+			if ( !"00".equals( tab.getValor( tab.getLinhaSel(), COL_SITRET.ordinal() ) ) ) {
 
-				Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + getMenssagemRet( (String) tab.getValor( tab.getLinhaSel(), COL_SITRET ) ) );
+				Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + 
+						getMenssagemRet( (String) tab.getValor( tab.getLinhaSel(), COL_SITRET.ordinal() ) ) );
 			}
-			completaTabela( tab.getLinhaSel(), (Integer) tab.getValor( tab.getLinhaSel(), COL_CODCLI ), (String) tab.getValor( tab.getLinhaSel(), COL_RAZCLI ), (String) tab.getValor( tab.getLinhaSel(), COL_AGENCIACLI ), (String) tab.getValor( tab.getLinhaSel(), COL_IDENTCLI ), (String) tab
-					.getValor( tab.getLinhaSel(), COL_STIPOFEBRABAN ) );
+			completaTabela( tab.getLinhaSel(), 
+					(Integer) tab.getValor( tab.getLinhaSel(), COL_CODCLI.ordinal() ), 
+					(String) tab.getValor( tab.getLinhaSel(), COL_RAZCLI.ordinal() ), 
+					(String) tab.getValor( tab.getLinhaSel(), COL_AGENCIACLI.ordinal() ), 
+					(String) tab.getValor( tab.getLinhaSel(), COL_IDENTCLI.ordinal() ), 
+					(String) tab.getValor( tab.getLinhaSel(), COL_STIPOFEBRABAN.ordinal() ) );
 		}
 	}
 
@@ -892,6 +878,13 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 		super.setConexao( cn );
 		lcBanco.setConexao( cn );
+	}
+	
+	enum EColTab {
+		
+		COL_SEL, COL_RAZCLI, COL_CODCLI, COL_CODREC, COL_DOCREC, COL_NRPARC, COL_VLRAPAG,
+		COL_DTREC, COL_DTVENC, COL_AGENCIACLI, COL_IDENTCLI, COL_SITREM, COL_SITRET,
+		COL_STIPOFEBRABAN, COL_TIPOREMCLI, COL_PESSOACLI, COL_CPFCLI, COL_CNPJCLI;
 	}
 
 }

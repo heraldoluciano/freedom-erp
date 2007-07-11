@@ -77,6 +77,12 @@ class CnabUtil extends FbnUtil {
 			setVersaoLayout( "020" );
 		}
 		
+		public Reg1( final String line ) throws ExceptionCnab {
+			
+			this();
+			parseLine( line );
+		}
+		
 		public String getAgencia() {		
 			return agencia;
 		}
@@ -470,6 +476,12 @@ class CnabUtil extends FbnUtil {
 		public Reg3P() {
 			
 			super( 'P' );			
+		}
+		
+		public Reg3P( final String line ) throws ExceptionCnab {
+			
+			this();
+			parseLine( line );
 		}
 		
 		public char getAceite() {		
@@ -875,6 +887,12 @@ class CnabUtil extends FbnUtil {
 			super( 'Q' );
 		}
 		
+		public Reg3Q( final String line ) throws ExceptionCnab {
+			
+			this();
+			parseLine( line );
+		}
+		
 		public String getBairCli() {		
 			return bairCli;
 		}
@@ -1069,6 +1087,12 @@ class CnabUtil extends FbnUtil {
 		public Reg3R() {
 			
 			super( 'R' );
+		}
+		
+		public Reg3R( final String line ) throws ExceptionCnab {
+			
+			this();
+			parseLine( line );
 		}
 		
 		public String getAgenciaDeb() {		
@@ -1288,6 +1312,12 @@ class CnabUtil extends FbnUtil {
 			super( 'S' );
 		}
 		
+		public Reg3S( final String line ) throws ExceptionCnab {
+			
+			this();
+			parseLine( line );
+		}
+		
 		public int getLinhaImp() {		
 			return linhaImp;
 		}
@@ -1462,6 +1492,12 @@ class CnabUtil extends FbnUtil {
 		public Reg3T() {
 			
 			super( 'T' );
+		}
+		
+		public Reg3T( final String line ) throws ExceptionCnab {
+			
+			this();
+			parseLine( line );
 		}
 		
 		public String getAgencia() {		
@@ -1740,6 +1776,12 @@ class CnabUtil extends FbnUtil {
 			super( 'U' );
 		}
 		
+		public Reg3U( final String line ) throws ExceptionCnab {
+			
+			this();
+			parseLine( line );
+		}
+		
 		public String getCodBancoCompens() {		
 			return codBancoCompens;
 		}
@@ -1961,6 +2003,12 @@ class CnabUtil extends FbnUtil {
 		public Reg5() {
 			
 			setRegistroTraler( 5 );
+		}
+		
+		public Reg5( final String line ) throws ExceptionCnab {
+			
+			this();
+			parseLine( line );
 		}
 				
 		public String getAvisoLanca() {		
