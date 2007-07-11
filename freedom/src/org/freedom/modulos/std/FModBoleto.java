@@ -245,8 +245,9 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vLabs.addElement( "CFOP" );
 		vLabs.addElement( "Descrição da natureza" );
 		vLabs.addElement( "Codigo do orçamento" );
-		vLabs.addElement( "Código do conveniado" );
+	//	vLabs.addElement( "Código do conveniado" );
 		vLabs.addElement( "Nome do conveniado" );
+		vLabs.addElement( "Observações do orçamento" );
 		
 		
 
@@ -280,7 +281,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vVals.addElement( "[CODNAT]" ); // larg: 8
 		vVals.addElement( "[______________NATUREZA_DA_OPERACAO______________]" ); // larg: 50
 		vVals.addElement( "[_CODORC_]" ); // larg: 10
-		vVals.addElement( "[_CODCONV]" ); // larg: 10
+//		vVals.addElement( "[_CODCONV]" ); // larg: 10
 		vVals.addElement( "[_____________________NOMECONV___________________]" ); // larg: 50
 		vVals.addElement( "[______________________OBSORC____________________]" ); // larg: 50
 		
