@@ -114,7 +114,10 @@ public class FRBoleto extends FRelatorio {
 		this( null );
 	}
 	
-	
+	private boolean bCodOrc = false;
+	private boolean bNomeConv = false;
+	private boolean bObsOrc = false;
+		
 	public FRBoleto( JInternalFrame fExt ) {
 
 		setTitulo( "Impressão de boleto/recibo" );
@@ -238,7 +241,7 @@ public class FRBoleto extends FRelatorio {
 
 		//adic( cbTipoImp, 390, 180, 150, 30);
 	}
-
+	
 	private String aplicCampos( ResultSet rs, String[] sNat ) {
 	
 		Date dCampo = null;
@@ -256,6 +259,16 @@ public class FRBoleto extends FRelatorio {
 			// Estes '\\' que aparecem por ai..são para anular caracteres especiais de "expressão regular".
 
 			if ( sTxa != null ) {
+				
+				if ( ( sCampo = rs.getString( "CODORC" ) ) != null ) 
+					sTxa = sTxa.replaceAll( "\\[_CODORC_]", sCampo );			
+				
+				if ( ( sCampo = rs.getString( "NOMECONV" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[_____________________NOMECONV___________________]", sCampo );
+				
+				if ( ( sCampo = rs.getString( "OBSORC" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[______________________OBSORC____________________]", sCampo );				
+				
 				if ( ( dCampo = rs.getDate( "DtVencItRec" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[VENCIMEN]", Funcoes.sqlDateToStrDate( dCampo ) );
 				if ( ( dCampo = rs.getDate( "DtEmitVenda" ) ) != null )
@@ -540,10 +553,7 @@ public class FRBoleto extends FRelatorio {
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 			StringBuilder sSQL = new StringBuilder();
-			StringBuilder sWhere = new StringBuilder();
-			
-			
-//			String sVal = null;
+			StringBuilder sWhere = new StringBuilder();			
 			ImprimeOS imp = null;			
 	
 			sWhere.append("MB.CODEMP=? AND MB.CODFILIAL=? AND MB.CODMODBOL=? AND ");
@@ -589,6 +599,26 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI, " );
 			sSQL.append( "(ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA, ");
 			sSQL.append( "IV.CODNAT, N.DESCNAT ");
+						
+			sSQL.append( ",(SELECT FIRST 1 VO.CODORC FROM vdvendaorc VO " );
+			sSQL.append( "WHERE VO.CODEMP=V.CODEMP AND VO.CODFILIAL=VO.CODFILIAL AND " );
+			sSQL.append( "VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA) AS CODORC ");
+
+			
+			sSQL.append( ",(SELECT AC.NOMECONV FROM ATCONVENIADO AC,VDORCAMENTO VA ");					
+			sSQL.append( "WHERE VA.CODEMP=V.CODEMP AND VA.CODFILIAL=V.CODFILIAL AND ");
+			sSQL.append( "VA.CODORC =(SELECT FIRST 1 VO.CODORC FROM VDVENDAORC VO ");  
+			sSQL.append( "WHERE VO.CODEMP=V.CODEMP AND VO.CODFILIAL=VO.CODFILIAL AND ");
+			sSQL.append( "VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA) AND ");
+			sSQL.append( "AC.CODEMP=VA.CODEMPCV AND AC.CODFILIAL=VA.CODFILIALCV AND "); 		
+			sSQL.append( "AC.CODCONV=VA.CODCONV) AS NOMECONV " );
+			
+			sSQL.append( ",(SELECT VA.OBSORC FROM VDORCAMENTO VA ");					
+			sSQL.append( "WHERE VA.CODEMP=V.CODEMP AND VA.CODFILIAL=V.CODFILIAL AND ");
+			sSQL.append( "VA.CODORC =(SELECT FIRST 1 VO.CODORC FROM VDVENDAORC VO ");  
+			sSQL.append( "WHERE VO.CODEMP=V.CODEMP AND VO.CODFILIAL=VO.CODFILIAL AND ");
+			sSQL.append( "VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA)) AS OBSORC " );
+																
 			sSQL.append( "FROM VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, ");
 			sSQL.append( "FNMODBOLETO MB, VDITVENDA IV, LFNATOPER N,  FNITRECEBER ITR " ); 
 			sSQL.append( "WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND " );

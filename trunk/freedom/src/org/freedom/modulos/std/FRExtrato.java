@@ -174,7 +174,7 @@ public class FRExtrato extends FRelatorio {
            imp.say(imp.pRow()+0,0,"| Data");
            imp.say(imp.pRow()+0,12,"| Historico");
            imp.say(imp.pRow()+0,63,"| Doc");
-           imp.say(imp.pRow()+0,74,"| Valor");
+           imp.say(imp.pRow()+0,76,"| Valor");
            imp.say(imp.pRow()+0,89,"| Débito");
            imp.say(imp.pRow()+0,104,"| Crédito");
            imp.say(imp.pRow()+0,120,"| Saldo");
@@ -196,21 +196,26 @@ public class FRExtrato extends FRelatorio {
          bAnt = bSaldo;
          sDataLanca = rs.getString("DataSL");
          bSaldoLinha = bSaldoLinha.add( rs.getBigDecimal("VlrSubLanca") );
+         
          if (rs.getFloat("VlrSubLanca")<0) {
         	 bVlrDeb = new BigDecimal(rs.getFloat("VlrSubLanca")).abs();
         	 bVlrCred = new BigDecimal("0.00");
          } else {
         	 bVlrCred = new BigDecimal(rs.getFloat("VlrSubLanca"));
         	 bVlrDeb = new BigDecimal("0.00");
-        	 
          }
-         
+          
          imp.say(imp.pRow()+1,0,""+imp.comprimido());
          imp.say(imp.pRow()+0,0,"|"+Funcoes.sqlDateToStrDate(rs.getDate("DataSL")));
          imp.say(imp.pRow()+0,12,"|"+Funcoes.copy(rs.getString("HistBLanca"),0,50));
-         imp.say(imp.pRow()+0,62,"|"+Funcoes.alinhaDir( rs.getString("DocLanca"), 10 ));
-         imp.say(imp.pRow()+0,74,"|"+Funcoes.strDecimalToStrCurrency(13,2,bVlrCred.toString()));
-         imp.say(imp.pRow()+0,89,"|"+Funcoes.strDecimalToStrCurrency(13,2,bVlrDeb.toString()));
+         imp.say(imp.pRow()+0,63,"|"+Funcoes.alinhaDir( rs.getString("DocLanca"), 10 ));
+         imp.say(imp.pRow()+0,76,"|"+Funcoes.strDecimalToStrCurrency(11,2,rs.getBigDecimal( "VlrSubLanca" ).toString()));
+         imp.say(imp.pRow()+0,89,"|"); // ALEX;
+         if( bVlrDeb.floatValue() != 0 )
+        	 imp.say(imp.pRow()+0,90,Funcoes.strDecimalToStrCurrency(13,2,bVlrDeb.toString()));
+         imp.say(imp.pRow()+0,104,"|");
+         if( bVlrCred.floatValue() != 0 )
+        	 imp.say(imp.pRow()+0,105,Funcoes.strDecimalToStrCurrency(13,2,bVlrCred.toString()));
          imp.say(imp.pRow()+0,120,"|"+Funcoes.strDecimalToStrCurrency(13,2,bSaldoLinha.toString()));
          imp.say(imp.pRow()+0,135,"|");
        }
