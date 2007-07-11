@@ -32,6 +32,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -254,6 +255,10 @@ public class FRBoleto extends FRelatorio {
 			sTxa = rs.getString( "TxaModBol" );
 			sCampo = "";
 			dCampo = null;
+			String sObsOrc;
+			List<String> lObsOrc;
+			int iNumLinObs = 0;
+			int iNumColObs = 0;
 
 			// Aplicando campos de dados:
 			// Estes '\\' que aparecem por ai..são para anular caracteres especiais de "expressão regular".
@@ -266,8 +271,62 @@ public class FRBoleto extends FRelatorio {
 				if ( ( sCampo = rs.getString( "NOMECONV" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[_____________________NOMECONV___________________]", sCampo );
 				
-				if ( ( sCampo = rs.getString( "OBSORC" ) ) != null )
-					sTxa = sTxa.replaceAll( "\\[______________________OBSORC____________________]", sCampo );				
+				sObsOrc = rs.getString( "OBSORC" );
+				String sObsParam1 = "";
+				String sObsParam2 = "";
+				if ( ( sCampo = rs.getString( "OBSORC" ) ) != null ) {
+					try {
+						int iposini = sTxa.indexOf( "[OBSORC_");
+						if(iposini>-1) {
+							
+							sObsParam1 = sTxa.substring( iposini+8,iposini+11);
+							sObsParam2 = sTxa.substring( iposini+12,iposini+15);
+							
+							System.out.println(sObsParam1);
+							System.out.println(sObsParam2);							
+							
+							iNumLinObs = new Integer( sObsParam1 ).intValue();
+							iNumColObs = new Integer( sObsParam2 ).intValue();
+							
+							System.out.println("iNumLinObs" + iNumLinObs);
+							System.out.println("iNumColObs" + iNumColObs);
+						}	
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				
+				lObsOrc = (List) Funcoes.stringToVector( sObsOrc, "\n" );
+				
+				System.out.println("tamanho antes" + lObsOrc.size() );
+				
+				if(lObsOrc.size()>iNumLinObs) {
+					lObsOrc = lObsOrc.subList( 0, iNumLinObs );
+				}
+				else {
+					while (lObsOrc.size()<iNumLinObs) {
+						lObsOrc.add( "" );
+					}
+				}
+				
+				System.out.println( "tamanho depois" + lObsOrc.size() );
+				String sLinhaObs;
+				String sLinhasObs = "";
+				for ( int i = 0; i < lObsOrc.size(); i++ ) {
+					sLinhaObs = lObsOrc.get( i ).toString();
+					sLinhaObs = sLinhaObs.length()>iNumColObs?sLinhaObs.substring( 0, iNumColObs):sLinhaObs;
+					if(i==0) {
+						sLinhasObs = sLinhaObs;
+					}
+					else {
+						sLinhasObs = sLinhasObs + "\n" + sLinhaObs;
+					}
+				
+				}
+				System.out.println("Linhas "+ ":" + sLinhasObs);
+				
+				sTxa = sTxa.replaceAll( "\\[OBSORC_" + sObsParam1 + "_" + sObsParam2 + "]", sLinhasObs );		
 				
 				if ( ( dCampo = rs.getDate( "DtVencItRec" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[VENCIMEN]", Funcoes.sqlDateToStrDate( dCampo ) );
@@ -571,7 +630,7 @@ public class FRBoleto extends FRelatorio {
 			if (nparc!=0) {
 				sWhere.append("AND ITR.NPARCITREC=? ");
 			}
-			if(lsParcelas.size()>0) {
+			if((lsParcelas!=null) && (lsParcelas.size()>0)) {
 				sWhere.append("AND ITR.NPARCITREC IN (");
 				for ( int i = 0; i < lsParcelas.size(); i++ ) {
 					if (i!=0) {
