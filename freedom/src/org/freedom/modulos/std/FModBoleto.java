@@ -281,7 +281,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vVals.addElement( "[______________NATUREZA_DA_OPERACAO______________]" ); // larg: 50
 		vVals.addElement( "[_CODORC_]" ); // larg: 10
 		vVals.addElement( "[_CODCONV]" ); // larg: 10
-		vVals.addElement( "[_NOMECONV]" ); // larg: 50
+		vVals.addElement( "[_____________________NOMECONV___________________]" ); // larg: 50
 		vVals.addElement( "[______________________OBSORC____________________]" ); // larg: 50
 		
 

@@ -519,6 +519,7 @@ public class FRBoleto extends FRelatorio {
 		final int nparc = txtParc.getVlrInteger().intValue();
 		final String codbanco = txtCodBanco.getVlrString().trim();
 		final int codtipocob = txtCodTpCob.getVlrInteger().intValue();
+		
 		int param = 1;
 		
 		if ( txtCodModBol.getVlrString().equals( "" ) ) {
@@ -540,6 +541,8 @@ public class FRBoleto extends FRelatorio {
 			ResultSet rs = null;
 			StringBuilder sSQL = new StringBuilder();
 			StringBuilder sWhere = new StringBuilder();
+			
+			
 //			String sVal = null;
 			ImprimeOS imp = null;			
 	
