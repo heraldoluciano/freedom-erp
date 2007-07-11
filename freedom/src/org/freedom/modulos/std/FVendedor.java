@@ -160,6 +160,7 @@ public class FVendedor extends FTabDados implements PostListener {
 		txtCodFunc.setTabelaExterna( lcFuncao );
 		txtCodFunc.setNomeCampo( "codfunc" );
 		txtCodFunc.setFK( true );
+		lcFuncao.setQueryCommit( false );
 		lcFuncao.setReadOnly( true );
 		lcFuncao.montaSql( false, "FUNCAO", "RH" );
 
