@@ -167,7 +167,6 @@ public class FreedomFNC extends AplicativoPD {
 		sEmpSis = "Setpoint Informática Ltda.";
 		vEquipeSis.add( "Robson Sanchez - Supervisão / Analise" );
 		vEquipeSis.add( "Anderson Sanchez - Supervisão / Programação" );
-		vEquipeSis.add( "Sidnei Varanis - Supervisão" );
 		vEquipeSis.add( "Alex Rodrigues - Programação" );
 		vEquipeSis.add( "Alexandre Marcondes - Programação" );
 		vEquipeSis.add( "Fernando Oliveira - Programação" );
