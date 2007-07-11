@@ -105,6 +105,16 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		
 	private final JTextFieldPad txtNroSeqCnab = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
+	private final JTextFieldPad txtAgenciaCnab = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private final JTextFieldPad txtDigAgenciaCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private final JTextFieldPad txtContaCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
+	
+	private final JTextFieldPad txtDigContaCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private final JTextFieldPad txtDigAgContaCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
 	private JRadioGroup rgIdentAmbCliCnab;
 	
 	private JRadioGroup rgIdentAmbBcoCnab;
@@ -306,10 +316,18 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		adicCampo( txtCodBancoCnab, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBancoCnab, true );
 		adicDescFK( txtNomeBancoCnab, 110, 30, 260, 20, "NomeBanco", "Nome do banco" );		
 		adicCampo( txtCodConvCnab, 7, 70, 140, 20, "CodConv", "Convênio", ListaCampos.DB_SI, false );
-		adicCampo( txtVersaoCnab, 150, 70, 100, 20, "VerLayout", "Versão ", ListaCampos.DB_SI, false );
-		adicCampo( txtIdentServCnab, 253, 70, 117, 20, "IdentServ", "Ident. Serviço", ListaCampos.DB_SI, false );
-		adicCampo( txtContaComprCnab, 7, 110, 240, 20, "ContaCompr", "Conta Compromisso", ListaCampos.DB_SI, false );
-		adicCampo( txtNroSeqCnab, 250, 110, 120, 20, "NroSeq", "Sequência", ListaCampos.DB_SI, false );
+		adicCampo( txtVersaoCnab, 150, 70, 50, 20, "VerLayout", "Versão", ListaCampos.DB_SI, false );
+		adicCampo( txtIdentServCnab, 203, 70, 100, 20, "IdentServ", "Ident. Serviço", ListaCampos.DB_SI, false );
+		adicCampo( txtNroSeqCnab, 306, 70, 63, 20, "NroSeq", "Sequência", ListaCampos.DB_SI, false );
+		//adicCampo( txtContaComprCnab, 7, 110, 240, 20, "ContaCompr", "Conta Compromisso", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtAgenciaCnab, 7, 110, 60, 20, "Agencia", "Agência", ListaCampos.DB_SI, false );
+		adicCampo( txtDigAgenciaCnab, 70, 110, 50, 20, "DigAgencia", "Dig.", ListaCampos.DB_SI, false );
+		adicCampo( txtContaCnab, 123, 110, 110, 20, "NumConta", "Conta", ListaCampos.DB_SI, false );
+		adicCampo( txtDigContaCnab, 236, 110, 50, 20, "DigConta", "Dig.", ListaCampos.DB_SI, false );
+		adicCampo( txtDigAgContaCnab, 289, 110, 80, 20, "DigAgConta", "Dig. Ag/Conta", ListaCampos.DB_SI, false );
+		
+		//adicCampo( txtNroSeqCnab, 250, 110, 120, 20, "NroSeq", "Sequência", ListaCampos.DB_SI, false );
 		adicDB( rgIdentAmbCliCnab, 7, 160, 178, 60, "IdentAmbCli", "Ambiente do cliente", false );
 		adicDB( rgIdentAmbBcoCnab, 193, 160, 178, 60, "IdentAmbBco", "Ambiente do banco", false );
 		setListaCampos( false, "ITPREFERE6", "SG" );
