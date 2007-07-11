@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -52,6 +53,8 @@ import org.freedom.modulos.fnc.FbnUtil.StuffRec;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 
+import static org.freedom.modulos.fnc.FbnUtil.*; 
+
 
 public class FRemCnab extends FRemFBN {
 	
@@ -68,38 +71,38 @@ public class FRemCnab extends FRemFBN {
 		
 		Reg1 reg = cnabutil.new Reg1();
 		
-		/*reg.setCodBanco( (String) prefs.get( FbnUtil.EPrefs.CODBANCO ) );
-		reg.setLoteServico( loteServico );
-		reg.setTipoOperacao( tipoOperacao );
-		reg.setFormaLancamento( formaLancamento );
+		reg.setCodBanco( txtCodBanco.getVlrString() );
+		//reg.setLoteServico( loteServico );
+		//reg.setTipoOperacao( tipoOperacao );
+		reg.setFormaLancamento( "00" );
 		reg.setTipoInscEmp( 2 );
-		reg.setCpfCnpjEmp(  );
-		reg.setCodConvBanco( codConvBanco );
-		reg.setAgencia( prefs.get( FbnUtil.EPrefs. ) );
-		reg.setDigAgencia( digAgencia );
-		reg.setConta( conta );
-		reg.setDigConta( digConta );
-		reg.setDigAgConta( digAgeConta );
+		reg.setCpfCnpjEmp( (String) prefs.get( EPrefs.CNPFEMP ) );
+		reg.setCodConvBanco( (String) prefs.get( EPrefs.CODCONV ) );
+		reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) );
+		reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
+		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
+		reg.setDigConta((String) prefs.get( EPrefs.DIGCONTA ) );
+		reg.setDigAgConta( (String) prefs.get( EPrefs.DIGAGCONTA ) );
 		reg.setRazEmp( (String) prefs.get( FbnUtil.EPrefs.NOMEEMP ) );
-		reg.setMsg1( msg1 );
-		reg.setMsg2( msg2 );
-		reg.setNrRemRet( nrRemRet );
-		reg.setDataRemRet( dataRemRet );
-		reg.setDataCred( dataCred );*/
+		reg.setMsg1( null );
+		reg.setMsg2( null );
+		reg.setNrRemRet( 0 );
+		reg.setDataRemRet( Calendar.getInstance().getTime() );
+		reg.setDataCred( null );
 		
 		return reg;
 	}
 	
-	private Reg3P getReg3P() {
+	private Reg3P getReg3P( final StuffRec rec ) {
 		
 		Reg3P reg = cnabutil.new Reg3P();
 
-		/*reg.setCodBanco( codBanco );
-		reg.setLoteServico( loteServico );
-		reg.setSeqLote( seqLote );
-		reg.setCodMovimento( codMovimento );
+		reg.setCodBanco( txtCodBanco.getVlrString() );
+		//reg.setLoteServico( loteServico );
+		//reg.setSeqLote( seqLote );
+		//reg.setCodMovimento( codMovimento );
 		
-		reg.setAgencia( agencia );
+		/*reg.setAgencia( agencia );
 		reg.setDigAgencia( digAgencia );
 		reg.setConta( conta );
 		reg.setDigConta( digConta );
@@ -304,8 +307,8 @@ public class FRemCnab extends FRemFBN {
 		File fileSiacc = null;
 		FileWriter fw = null;
 		BufferedWriter bw = null;
-		HashSet<CnabUtil.StuffCli> hsCli = new HashSet<CnabUtil.StuffCli>();
-		HashSet<CnabUtil.StuffRec> hsRec = new HashSet<CnabUtil.StuffRec>();
+		HashSet<StuffCli> hsCli = new HashSet<StuffCli>();
+		HashSet<StuffRec> hsRec = new HashSet<StuffRec>();
 	
 		if ( consisteExporta( hsCli, hsRec ) ) {
 			
@@ -351,7 +354,7 @@ public class FRemCnab extends FRemFBN {
 		return retorno;
 	}
 	
-	private boolean gravaRemessa( final BufferedWriter bw, HashSet< StuffCli > hsCli, HashSet< StuffRec > hsRec ) {
+	private boolean gravaRemessa( final BufferedWriter bw, final HashSet< StuffCli > hsCli, final HashSet< StuffRec > hsRec ) {
 		
 		boolean retorno = false;
 		
@@ -361,8 +364,8 @@ public class FRemCnab extends FRemFBN {
 			
 			registros.add( getReg1() );
 			
-			for ( CnabUtil.StuffRec rec : hsRec ) {
-				registros.add( getReg3P() );
+			for ( StuffRec rec : hsRec ) {
+				registros.add( getReg3P( rec ) );
 				registros.add( getReg3Q() );
 				registros.add( getReg3R() );
 				registros.add( getReg3S() );
