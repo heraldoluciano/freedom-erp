@@ -1113,7 +1113,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			if ( ( FreedomPDV.bECFTerm && ( ecf != null ) ) ) {
 				if ( txtTipoFisc.getVlrString().equals( "TT" ) ) {
 					sTributo = getPosAliquota( txtAliqIcms.getVlrBigDecimal().floatValue() );
-					if ( sTributo.equals( "00" ) ) {
+					if ( (sTributo.equals( "00" )) && (!AplicativoPDV.bModoDemo) ) {
 						Funcoes.mensagemErro( this, "Alíquota " + txtAliqIcms.getVlrBigDecimal().floatValue() + " não foi cadastrada na impressora fiscal!" );
 						return false;
 					}
