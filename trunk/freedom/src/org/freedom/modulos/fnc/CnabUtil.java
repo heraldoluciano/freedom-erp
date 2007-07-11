@@ -2190,8 +2190,16 @@ class CnabUtil extends FbnUtil {
 	public static String dateToString( final Date arg ) throws Exception {
 		
 		String retorno = null;
-		int[] args = Funcoes.decodeDate( arg );		
-		retorno = String.valueOf( args[2] ) + String.valueOf( args[1] ) + String.valueOf( args[0] );
+		
+		if ( arg != null ) {
+
+			int[] args = Funcoes.decodeDate( arg );		
+			retorno = String.valueOf( args[2] ) + String.valueOf( args[1] ) + String.valueOf( args[0] );	
+		}
+		else {
+			// 8 espaços
+			retorno = "        ";
+		}
 		
 		return retorno;
 	}

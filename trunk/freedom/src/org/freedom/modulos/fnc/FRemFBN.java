@@ -59,10 +59,9 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.fnc.FbnUtil.EPrefs;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-
-import static org.freedom.modulos.fnc.FRemFBN.EColTab.*;
 
 public abstract class FRemFBN extends FFilho implements ActionListener, MouseListener {
 
@@ -191,27 +190,27 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		tab.adicColuna( "C.P.F." );
 		tab.adicColuna( "C.N.P.J." );
 
-		tab.setTamColuna( 20, COL_SEL.ordinal() );
-		tab.setTamColuna( 150, COL_RAZCLI.ordinal() );
-		tab.setTamColuna( 70, COL_CODCLI.ordinal() );
-		tab.setTamColuna( 70, COL_CODREC.ordinal() );
-		tab.setTamColuna( 80, COL_DOCREC.ordinal() );
-		tab.setTamColuna( 70, COL_NRPARC.ordinal() );
-		tab.setTamColuna( 70, COL_VLRAPAG.ordinal() );
-		tab.setTamColuna( 70, COL_DTREC.ordinal() );
-		tab.setTamColuna( 70, COL_DTVENC.ordinal() );
-		tab.setTamColuna( 100, COL_AGENCIACLI.ordinal() );
-		tab.setTamColuna( 100, COL_IDENTCLI.ordinal() );
-		tab.setTamColuna( 50, COL_SITREM.ordinal() );
-		tab.setTamColuna( 50, COL_SITRET.ordinal() );
-		tab.setTamColuna( 30, COL_STIPOFEBRABAN.ordinal() );
-		tab.setTamColuna( 30, COL_TIPOREMCLI.ordinal() );
-		tab.setTamColuna( 30, COL_PESSOACLI.ordinal() );
-		tab.setTamColuna( 80, COL_CPFCLI.ordinal() );
-		tab.setTamColuna( 80, COL_CNPJCLI.ordinal() );
+		tab.setTamColuna( 20, EColTab.COL_SEL.ordinal() );
+		tab.setTamColuna( 150, EColTab.COL_RAZCLI.ordinal() );
+		tab.setTamColuna( 70, EColTab.COL_CODCLI.ordinal() );
+		tab.setTamColuna( 70, EColTab.COL_CODREC.ordinal() );
+		tab.setTamColuna( 80, EColTab.COL_DOCREC.ordinal() );
+		tab.setTamColuna( 70, EColTab.COL_NRPARC.ordinal() );
+		tab.setTamColuna( 70, EColTab.COL_VLRAPAG.ordinal() );
+		tab.setTamColuna( 70, EColTab.COL_DTREC.ordinal() );
+		tab.setTamColuna( 70, EColTab.COL_DTVENC.ordinal() );
+		tab.setTamColuna( 100, EColTab.COL_AGENCIACLI.ordinal() );
+		tab.setTamColuna( 100, EColTab.COL_IDENTCLI.ordinal() );
+		tab.setTamColuna( 50, EColTab.COL_SITREM.ordinal() );
+		tab.setTamColuna( 50, EColTab.COL_SITRET.ordinal() );
+		tab.setTamColuna( 30, EColTab.COL_STIPOFEBRABAN.ordinal() );
+		tab.setTamColuna( 30, EColTab.COL_TIPOREMCLI.ordinal() );
+		tab.setTamColuna( 30, EColTab.COL_PESSOACLI.ordinal() );
+		tab.setTamColuna( 80, EColTab.COL_CPFCLI.ordinal() );
+		tab.setTamColuna( 80, EColTab.COL_CNPJCLI.ordinal() );
 		
 
-		tab.setColunaEditavel( COL_SEL.ordinal(), true );
+		tab.setColunaEditavel( EColTab.COL_SEL.ordinal(), true );
 
 		tab.addMouseListener( this );
 
@@ -332,11 +331,14 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			StringBuilder sql = new StringBuilder();
 			
 			sql.append( "SELECT I.CODCONV, P.NOMEEMP, I.VERLAYOUT, I.IDENTSERV, I.CONTACOMPR, " );
-			sql.append( "I.IDENTAMBCLI, I.IDENTAMBBCO, I.NROSEQ " );
-			sql.append( "FROM SGITPREFERE6 I, SGPREFERE6 P " );
+			sql.append( "I.IDENTAMBCLI, I.IDENTAMBBCO, I.NROSEQ," );
+			sql.append( "I.AGENCIA, I.DIGAGENCIA, I.NUMCONTA, I.DIGCONTA, I.DIGAGCONTA," );
+			sql.append( "E.CNPJFILIAL " );
+			sql.append( "FROM SGITPREFERE6 I, SGPREFERE6 P, SGFILIAL E " );
 			sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? " );
 			sql.append( "AND I.CODEMPBO=? AND I.CODFILIALBO=? AND I.CODBANCO=? AND I.TIPOFEBRABAN=? " );
-			sql.append( "AND P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL" );
+			sql.append( "AND P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL " );
+			sql.append( "AND E.CODEMP=I.CODEMP AND E.CODFILIAL=I.CODFILIAL" );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -350,16 +352,22 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			
 			if ( rs.next() ) {
 				
-				prefs.put( FbnUtil.EPrefs.CODCONV, rs.getString( FbnUtil.EPrefs.CODCONV.toString() ) );
-				prefs.put( FbnUtil.EPrefs.NOMEEMP, rs.getString( FbnUtil.EPrefs.NOMEEMP.toString() ) );
-				prefs.put( FbnUtil.EPrefs.VERLAYOUT, rs.getString( FbnUtil.EPrefs.VERLAYOUT.toString() ) );
-				prefs.put( FbnUtil.EPrefs.CODBANCO, txtCodBanco.getVlrString() );
-				prefs.put( FbnUtil.EPrefs.NOMEBANCO, txtNomeBanco.getVlrString() );
-				prefs.put( FbnUtil.EPrefs.IDENTSERV, rs.getString( FbnUtil.EPrefs.IDENTSERV.toString() ) );
-				prefs.put( FbnUtil.EPrefs.CONTACOMPR, rs.getString( FbnUtil.EPrefs.CONTACOMPR.toString() ) );
-				prefs.put( FbnUtil.EPrefs.IDENTAMBCLI, rs.getString( FbnUtil.EPrefs.IDENTAMBCLI.toString() ) );
-				prefs.put( FbnUtil.EPrefs.IDENTAMBBCO, rs.getString( FbnUtil.EPrefs.IDENTAMBBCO.toString() ) );
-				prefs.put( FbnUtil.EPrefs.NROSEQ, new Integer( rs.getInt( FbnUtil.EPrefs.NROSEQ.toString() ) ) );
+				prefs.put( EPrefs.CODCONV, rs.getString( EPrefs.CODCONV.toString() ) );
+				prefs.put( EPrefs.NOMEEMP, rs.getString( EPrefs.NOMEEMP.toString() ) );
+				prefs.put( EPrefs.VERLAYOUT, rs.getString( EPrefs.VERLAYOUT.toString() ) );
+				prefs.put( EPrefs.CODBANCO, txtCodBanco.getVlrString() );
+				prefs.put( EPrefs.NOMEBANCO, txtNomeBanco.getVlrString() );
+				prefs.put( EPrefs.IDENTSERV, rs.getString( EPrefs.IDENTSERV.toString() ) );
+				prefs.put( EPrefs.CONTACOMPR, rs.getString( EPrefs.CONTACOMPR.toString() ) );
+				prefs.put( EPrefs.IDENTAMBCLI, rs.getString( EPrefs.IDENTAMBCLI.toString() ) );
+				prefs.put( EPrefs.IDENTAMBBCO, rs.getString( EPrefs.IDENTAMBBCO.toString() ) );
+				prefs.put( EPrefs.NROSEQ, new Integer( rs.getInt( EPrefs.NROSEQ.toString() ) ) );
+				prefs.put( EPrefs.AGENCIA, rs.getString( EPrefs.AGENCIA.toString() ) );
+				prefs.put( EPrefs.DIGAGENCIA, rs.getString( EPrefs.DIGAGENCIA.toString() ) );
+				prefs.put( EPrefs.NUMCONTA, rs.getString( EPrefs.NUMCONTA.toString() ) );
+				prefs.put( EPrefs.DIGCONTA, rs.getString( EPrefs.DIGCONTA.toString() ) );
+				prefs.put( EPrefs.DIGAGCONTA, rs.getString( EPrefs.DIGAGCONTA.toString() ) );
+				prefs.put( EPrefs.CNPFEMP, rs.getString( "CNPJFILIAL" ) );
 				retorno = true;
 			}
 			else {
@@ -447,24 +455,24 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			for ( i = 0; rs.next(); i++ ) {
 
 				tab.adicLinha();
-				tab.setValor( new Boolean( true ), i, COL_SEL.ordinal() );
-				tab.setValor( rs.getString( "RAZCLI" ), i, COL_RAZCLI.ordinal() );
-				tab.setValor( new Integer( rs.getInt( "CODCLI" ) ), i, COL_CODCLI.ordinal() );
-				tab.setValor( new Integer( rs.getInt( "CODREC" ) ), i, COL_CODREC.ordinal() );
-				tab.setValor( rs.getString( "DOCREC" ), i, COL_DOCREC.ordinal() );
-				tab.setValor( new Integer( rs.getInt( "NPARCITREC" ) ), i, COL_NRPARC.ordinal() );
-				tab.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRAPAGITREC" ) ), i, COL_VLRAPAG.ordinal() );
-				tab.setValor( rs.getDate( "DTITREC" ), i, COL_DTREC.ordinal() );
-				tab.setValor( rs.getDate( "DTVENCITREC" ), i, COL_DTVENC.ordinal() );
-				tab.setValor( rs.getString( "AGENCIACLI" ), i, COL_AGENCIACLI.ordinal() );
-				tab.setValor( rs.getString( "IDENTCLI" ), i, COL_IDENTCLI.ordinal() );
-				tab.setValor( rs.getString( "SITREMESSA" ), i, COL_SITREM.ordinal() );
-				tab.setValor( rs.getString( "SITRETORNO" ), i, COL_SITRET.ordinal() );
-				tab.setValor( rs.getString( "STIPOFEBRABAN" ), i, COL_STIPOFEBRABAN.ordinal() );
-				tab.setValor( rs.getString( "TIPOREMCLI" ), i, COL_TIPOREMCLI.ordinal() );
-				tab.setValor( rs.getString( "PESSOACLI" ), i, COL_PESSOACLI.ordinal() );
-				tab.setValor( rs.getString( "CPFCLI" ), i, COL_CPFCLI.ordinal() );
-				tab.setValor( rs.getString( "CNPJCLI" ), i, COL_CNPJCLI.ordinal() );
+				tab.setValor( new Boolean( true ), i, EColTab.COL_SEL.ordinal() );
+				tab.setValor( rs.getString( "RAZCLI" ), i, EColTab.COL_RAZCLI.ordinal() );
+				tab.setValor( new Integer( rs.getInt( "CODCLI" ) ), i, EColTab.COL_CODCLI.ordinal() );
+				tab.setValor( new Integer( rs.getInt( "CODREC" ) ), i, EColTab.COL_CODREC.ordinal() );
+				tab.setValor( rs.getString( "DOCREC" ), i, EColTab.COL_DOCREC.ordinal() );
+				tab.setValor( new Integer( rs.getInt( "NPARCITREC" ) ), i, EColTab.COL_NRPARC.ordinal() );
+				tab.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRAPAGITREC" ) ), i, EColTab.COL_VLRAPAG.ordinal() );
+				tab.setValor( rs.getDate( "DTITREC" ), i, EColTab.COL_DTREC.ordinal() );
+				tab.setValor( rs.getDate( "DTVENCITREC" ), i, EColTab.COL_DTVENC.ordinal() );
+				tab.setValor( rs.getString( "AGENCIACLI" ), i, EColTab.COL_AGENCIACLI.ordinal() );
+				tab.setValor( rs.getString( "IDENTCLI" ), i, EColTab.COL_IDENTCLI.ordinal() );
+				tab.setValor( rs.getString( "SITREMESSA" ), i, EColTab.COL_SITREM.ordinal() );
+				tab.setValor( rs.getString( "SITRETORNO" ), i, EColTab.COL_SITRET.ordinal() );
+				tab.setValor( rs.getString( "STIPOFEBRABAN" ), i, EColTab.COL_STIPOFEBRABAN.ordinal() );
+				tab.setValor( rs.getString( "TIPOREMCLI" ), i, EColTab.COL_TIPOREMCLI.ordinal() );
+				tab.setValor( rs.getString( "PESSOACLI" ), i, EColTab.COL_PESSOACLI.ordinal() );
+				tab.setValor( rs.getString( "CPFCLI" ), i, EColTab.COL_CPFCLI.ordinal() );
+				tab.setValor( rs.getString( "CNPJCLI" ), i, EColTab.COL_CNPJCLI.ordinal() );
 			}
 
 			rs.close();
@@ -515,27 +523,27 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 			vLinha = tab.getLinha( i );
 
-			if ( (Boolean) vLinha.elementAt( COL_SEL.ordinal() ) ) {
-				if ( ( "".equals( (String) vLinha.elementAt( COL_AGENCIACLI.ordinal() ) ) ) 
-						|| ( "".equals( (String) vLinha.elementAt( COL_IDENTCLI.ordinal() ) ) ) ) {
+			if ( (Boolean) vLinha.elementAt( EColTab.COL_SEL.ordinal() ) ) {
+				if ( ( "".equals( (String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ) ) ) 
+						|| ( "".equals( (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ) ) ) ) {
 					if ( ! completaTabela( i, 
-								(Integer) vLinha.elementAt( COL_CODCLI.ordinal() ), 
-								(String) vLinha.elementAt( COL_RAZCLI.ordinal() ), 
-								(String) vLinha.elementAt( COL_AGENCIACLI.ordinal() ), 
-								(String) vLinha.elementAt( COL_IDENTCLI.ordinal() ), 
-								(String) vLinha.elementAt( COL_STIPOFEBRABAN.ordinal() ) ) ) {
+								(Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ), 
+								(String) vLinha.elementAt( EColTab.COL_RAZCLI.ordinal() ), 
+								(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ), 
+								(String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ), 
+								(String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ) ) ) {
 						retorno = false;
 						break;
 					}
 				}
-				hsCli.add( new FbnUtil().new StuffCli( (Integer) vLinha.elementAt( COL_CODCLI.ordinal() ), 
+				hsCli.add( new FbnUtil().new StuffCli( (Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ), 
 						new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, 
-						(String) vLinha.elementAt( COL_STIPOFEBRABAN.ordinal() ),
-						(String) vLinha.elementAt( COL_AGENCIACLI.ordinal() ), 
-						(String) vLinha.elementAt( COL_IDENTCLI.ordinal() ),
-						(String) vLinha.elementAt( COL_TIPOREMCLI.ordinal() ) } ) );
-				hsRec.add( new FbnUtil().new StuffRec( (Integer) vLinha.elementAt( COL_CODREC.ordinal() ), 
-						(Integer) vLinha.elementAt( COL_NRPARC.ordinal() ),
+						(String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ),
+						(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ), 
+						(String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ),
+						(String) vLinha.elementAt( EColTab.COL_TIPOREMCLI.ordinal() ) } ) );
+				hsRec.add( new FbnUtil().new StuffRec( (Integer) vLinha.elementAt( EColTab.COL_CODREC.ordinal() ), 
+						(Integer) vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ),
 				/*
 				 * String codBanco, String tipoFebraban, String stipoFebraban, 
 				 * String sitRemessa {CODBANCO, TIPOFEBRABAN, 
@@ -543,16 +551,16 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				 * IDENTCLI, DTVENC, VLRPARC, PESSOACLI, CPJCLI, CNPJCLI}
 				 */
 				new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, 
-						(String) vLinha.elementAt( COL_STIPOFEBRABAN.ordinal() ), 
-						(String) vLinha.elementAt( COL_SITREM.ordinal() ), 
-						String.valueOf( (Integer) vLinha.elementAt( COL_CODCLI.ordinal() ) ), 
-						(String) vLinha.elementAt( COL_AGENCIACLI.ordinal() ),
-						(String) vLinha.elementAt( COL_IDENTCLI.ordinal() ), 
-						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( COL_DTVENC.ordinal() ) ), 
-						Funcoes.strToBd( vLinha.elementAt( COL_VLRAPAG.ordinal() )).toString(),
-						(String) vLinha.elementAt( COL_PESSOACLI.ordinal() ),
-						(String) vLinha.elementAt( COL_CPFCLI.ordinal() ),
-						(String) vLinha.elementAt( COL_CNPJCLI.ordinal() ) } ) ); 
+						(String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ), 
+						(String) vLinha.elementAt( EColTab.COL_SITREM.ordinal() ), 
+						String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ) ), 
+						(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ),
+						(String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ), 
+						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTVENC.ordinal() ) ), 
+						Funcoes.strToBd( vLinha.elementAt( EColTab.COL_VLRAPAG.ordinal() )).toString(),
+						(String) vLinha.elementAt( EColTab.COL_PESSOACLI.ordinal() ),
+						(String) vLinha.elementAt( EColTab.COL_CPFCLI.ordinal() ),
+						(String) vLinha.elementAt( EColTab.COL_CNPJCLI.ordinal() ) } ) ); 
 		   }
 		}
 		if ( retorno ) {
@@ -574,7 +582,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			ajustaClientes( codCli, (String) valores[ 1 ], (String) valores[ 2 ], (String) valores[ 3 ] );
 		}
 		else {
-			tab.setValor( false, linha, COL_SEL.ordinal() );
+			tab.setValor( false, linha, EColTab.COL_SEL.ordinal() );
 		}
 
 		return retorno;
@@ -583,11 +591,11 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 	protected void ajustaClientes( final Integer codCli, final String agenciaCli, final String identCli, final String subTipo ) {
 
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-			if ( ( (Boolean) tab.getValor( i, COL_SEL.ordinal() ) ).booleanValue() 
-					&& codCli.equals( (Integer) tab.getValor( i, COL_CODCLI.ordinal() ) ) ) {
-				tab.setValor( agenciaCli, i, COL_AGENCIACLI.ordinal() );
-				tab.setValor( identCli, i, COL_IDENTCLI.ordinal() );
-				tab.setValor( subTipo, i, COL_STIPOFEBRABAN.ordinal() );
+			if ( ( (Boolean) tab.getValor( i, EColTab.COL_SEL.ordinal() ) ).booleanValue() 
+					&& codCli.equals( (Integer) tab.getValor( i, EColTab.COL_CODCLI.ordinal() ) ) ) {
+				tab.setValor( agenciaCli, i, EColTab.COL_AGENCIACLI.ordinal() );
+				tab.setValor( identCli, i, EColTab.COL_IDENTCLI.ordinal() );
+				tab.setValor( subTipo, i, EColTab.COL_STIPOFEBRABAN.ordinal() );
 			}
 		}
 	}
@@ -852,17 +860,17 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 		if ( e.getClickCount() == 2 && e.getSource() == tab && tab.getLinhaSel() > -1 ) {
 
-			if ( !"00".equals( tab.getValor( tab.getLinhaSel(), COL_SITRET.ordinal() ) ) ) {
+			if ( !"00".equals( tab.getValor( tab.getLinhaSel(), EColTab.COL_SITRET.ordinal() ) ) ) {
 
 				Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + 
-						getMenssagemRet( (String) tab.getValor( tab.getLinhaSel(), COL_SITRET.ordinal() ) ) );
+						getMenssagemRet( (String) tab.getValor( tab.getLinhaSel(), EColTab.COL_SITRET.ordinal() ) ) );
 			}
 			completaTabela( tab.getLinhaSel(), 
-					(Integer) tab.getValor( tab.getLinhaSel(), COL_CODCLI.ordinal() ), 
-					(String) tab.getValor( tab.getLinhaSel(), COL_RAZCLI.ordinal() ), 
-					(String) tab.getValor( tab.getLinhaSel(), COL_AGENCIACLI.ordinal() ), 
-					(String) tab.getValor( tab.getLinhaSel(), COL_IDENTCLI.ordinal() ), 
-					(String) tab.getValor( tab.getLinhaSel(), COL_STIPOFEBRABAN.ordinal() ) );
+					(Integer) tab.getValor( tab.getLinhaSel(), EColTab.COL_CODCLI.ordinal() ), 
+					(String) tab.getValor( tab.getLinhaSel(), EColTab.COL_RAZCLI.ordinal() ), 
+					(String) tab.getValor( tab.getLinhaSel(), EColTab.COL_AGENCIACLI.ordinal() ), 
+					(String) tab.getValor( tab.getLinhaSel(), EColTab.COL_IDENTCLI.ordinal() ), 
+					(String) tab.getValor( tab.getLinhaSel(), EColTab.COL_STIPOFEBRABAN.ordinal() ) );
 		}
 	}
 
