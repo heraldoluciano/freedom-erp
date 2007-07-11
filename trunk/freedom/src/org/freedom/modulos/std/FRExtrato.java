@@ -100,6 +100,8 @@ public class FRExtrato extends FRelatorio {
     BigDecimal bSaldoLinha = new BigDecimal(0);
     BigDecimal bVlrDeb = new BigDecimal(0);
     BigDecimal bVlrCred = new BigDecimal(0);
+    BigDecimal bVlrTotDeb = new BigDecimal(0);
+    BigDecimal bVlrTotCred = new BigDecimal(0);
     BigDecimal bAnt = buscaSaldoAnt();
         
     String sDataLanca = "";
@@ -174,17 +176,17 @@ public class FRExtrato extends FRelatorio {
            imp.say(imp.pRow()+0,0,"| Data");
            imp.say(imp.pRow()+0,12,"| Historico");
            imp.say(imp.pRow()+0,63,"| Doc");
-           imp.say(imp.pRow()+0,76,"| Valor");
-           imp.say(imp.pRow()+0,89,"| Débito");
-           imp.say(imp.pRow()+0,104,"| Crédito");
-           imp.say(imp.pRow()+0,120,"| Saldo");
+           imp.say(imp.pRow()+0,74,"| Débito");
+           imp.say(imp.pRow()+0,88,"| Crédito");
+           imp.say(imp.pRow()+0,104,"| Saldo");
+           imp.say(imp.pRow()+0,120,"|");
            imp.say(imp.pRow()+0,135,"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
            if (bPrim) {
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+0,0,"|");
-             imp.say(imp.pRow()+0,50," Saldo Anterior: "+Funcoes.strDecimalToStrCurrency(15,2,""+bAnt));
+             imp.say(imp.pRow()+0,91," Saldo Anterior: "+Funcoes.strDecimalToStrCurrency(11,2,""+bAnt));
              imp.say(imp.pRow()+0,135,"|");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
@@ -200,23 +202,25 @@ public class FRExtrato extends FRelatorio {
          if (rs.getFloat("VlrSubLanca")<0) {
         	 bVlrDeb = new BigDecimal(rs.getFloat("VlrSubLanca")).abs();
         	 bVlrCred = new BigDecimal("0.00");
+        	 bVlrTotDeb = bVlrTotDeb.add( new BigDecimal( bVlrDeb.floatValue()) );
          } else {
         	 bVlrCred = new BigDecimal(rs.getFloat("VlrSubLanca"));
         	 bVlrDeb = new BigDecimal("0.00");
+        	 bVlrTotCred = bVlrTotCred.add( new BigDecimal( bVlrCred.floatValue()) );
          }
           
          imp.say(imp.pRow()+1,0,""+imp.comprimido());
          imp.say(imp.pRow()+0,0,"|"+Funcoes.sqlDateToStrDate(rs.getDate("DataSL")));
          imp.say(imp.pRow()+0,12,"|"+Funcoes.copy(rs.getString("HistBLanca"),0,50));
-         imp.say(imp.pRow()+0,63,"|"+Funcoes.alinhaDir( rs.getString("DocLanca"), 10 ));
-         imp.say(imp.pRow()+0,76,"|"+Funcoes.strDecimalToStrCurrency(11,2,rs.getBigDecimal( "VlrSubLanca" ).toString()));
-         imp.say(imp.pRow()+0,89,"|"); // ALEX;
+         imp.say(imp.pRow()+0,63,"|"+Funcoes.alinhaDir( rs.getString("DocLanca"), 9 ));
+         imp.say(imp.pRow()+0,74,"|");
          if( bVlrDeb.floatValue() != 0 )
-        	 imp.say(imp.pRow()+0,90,Funcoes.strDecimalToStrCurrency(13,2,bVlrDeb.toString()));
-         imp.say(imp.pRow()+0,104,"|");
+        	 imp.say(imp.pRow()+0,74,Funcoes.strDecimalToStrCurrency(12,2,bVlrDeb.toString()));
+         imp.say(imp.pRow()+0,88,"|");
          if( bVlrCred.floatValue() != 0 )
-        	 imp.say(imp.pRow()+0,105,Funcoes.strDecimalToStrCurrency(13,2,bVlrCred.toString()));
-         imp.say(imp.pRow()+0,120,"|"+Funcoes.strDecimalToStrCurrency(13,2,bSaldoLinha.toString()));
+        	 imp.say(imp.pRow()+0,88,Funcoes.strDecimalToStrCurrency(14,2,bVlrCred.toString()));
+         imp.say(imp.pRow()+0,104,"|"+Funcoes.strDecimalToStrCurrency(14,2,bSaldoLinha.toString()));
+         imp.say(imp.pRow()+0,120,"|");
          imp.say(imp.pRow()+0,135,"|");
        }
        //imp.say(imp.pRow()+0,102,""+Funcoes.strDecimalToStrCurrency(15,2,""+bSaldo)+" |");
@@ -225,7 +229,10 @@ public class FRExtrato extends FRelatorio {
        imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
        imp.say(imp.pRow()+1,0,""+imp.comprimido());
        imp.say(imp.pRow()+0,0,"|");
-       imp.say(imp.pRow()+0,50," Saldo Atual: "+Funcoes.strDecimalToStrCurrency(15,2,""+bTotal));
+       imp.say(imp.pRow()+0,75,Funcoes.strDecimalToStrCurrency(12,2,bVlrTotDeb.toString())+" |");
+       imp.say(imp.pRow()+0,89,Funcoes.strDecimalToStrCurrency(14,2,bVlrTotCred.toString())+" |");
+       imp.say(imp.pRow()+0,107,Funcoes.strDecimalToStrCurrency(12,2,""+bTotal));
+       imp.say(imp.pRow()+0,120,"|");
        imp.say(imp.pRow()+0,135,"|");
        imp.say(imp.pRow()+1,0,""+imp.comprimido());
        imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
