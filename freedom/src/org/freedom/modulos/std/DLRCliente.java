@@ -51,6 +51,8 @@ public class DLRCliente extends FFDialogo {
 
 	private JTextFieldPad txtA = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
+	private JTextFieldPad txtEstCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
 	private JTextFieldPad txtCodSetor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -194,8 +196,11 @@ public class DLRCliente extends FFDialogo {
 		adic( new JLabelPad( "À:", SwingConstants.RIGHT ), 12, 125, 30, 20 );
 		adic( txtA, 47, 125, 200, 20 );
 
-		adic( new JLabelPad( "Cidade" ), 277, 75, 140, 20 );
-		adic( txtCid, 277, 95, 163, 20 );
+		adic( new JLabelPad( "UF" ), 277,75, 30, 20 );
+		adic( txtEstCli, 277, 95, 30, 20 );
+		
+		adic( new JLabelPad( "Cidade" ), 310, 75, 130, 20 );
+		adic( txtCid, 310, 95, 130, 20 );
 		adic( new JLabelPad( "Bairro" ), 277, 115, 140, 20 );
 		adic( txtBairro, 277, 135, 163, 20 );
 		
@@ -240,7 +245,7 @@ public class DLRCliente extends FFDialogo {
 
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 19 ];
+		String[] sRetorno = new String[ 20 ];
 
 		if ( rgOrdem.getVlrString().equals( "C" ) ) {
 			sRetorno[ 0 ] = "C1.CODCLI";
@@ -277,6 +282,7 @@ public class DLRCliente extends FFDialogo {
 		sRetorno[ 16 ] = txtDescClasCli.getVlrString();
 		sRetorno[ 17 ] = rgEnd.getVlrString();
 		sRetorno[ 18 ] = txtBairro.getVlrString().trim();
+		sRetorno[ 19 ] = txtEstCli.getVlrString().trim();
 
 		return sRetorno;
 

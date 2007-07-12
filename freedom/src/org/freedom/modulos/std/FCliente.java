@@ -2029,6 +2029,20 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
 		}
 
+		if ( !sValores[19].equals( "" )) {
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.UFCLI=" );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.UFENT=" );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.UFCOB=" );
+			}
+			sWhere.append( "'" + sValores[ 19 ] + "'" );
+			imp.addSubTitulo( "ESTADO = " + sValores[ 19 ] );
+		}
+		
 		try {				
 
 			imp.limpaPags();
@@ -2249,6 +2263,20 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			}
 			sWhere.append( "'" + sValores[ 18 ] + "'" );
 			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
+		}
+
+		if ( !sValores[19].equals( "" )) {
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.UFCLI=" );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.UFENT=" );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.UFCOB=" );
+			}
+			sWhere.append( "'" + sValores[ 19 ] + "'" );
+			imp.addSubTitulo( "ESTADO = " + sValores[ 19 ] );
 		}
 
 		try {				
@@ -2473,6 +2501,20 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
 		}
 
+		if ( !sValores[19].equals( "" )) {
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.UFCLI=" );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.UFENT=" );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.UFCOB=" );
+			}
+			sWhere.append( "'" + sValores[ 19 ] + "'" );
+			imp.addSubTitulo( "ESTADO = " + sValores[ 19 ] );
+		}
+		
 		try {				
 
 			imp.limpaPags();
@@ -2687,6 +2729,19 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
 		}
 
+		if ( !sValores[19].equals( "" )) {
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.UFCLI=" );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.UFENT=" );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.UFCOB=" );
+			}
+			sWhere.append( "'" + sValores[ 19 ] + "'" );
+			imp.addSubTitulo( "ESTADO = " + sValores[ 19 ] );
+		}
 		
 		try {				
 
@@ -2931,6 +2986,23 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "BAIRRO : " + sValores[ 18 ] );
 		}
 
+		if ( !sValores[19].equals( "" )) {
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.UFCLI=" );
+				sWhere2.append( " AND C2.UFCLI=" );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.UFENT=" );
+				sWhere2.append( " AND C2.UFENT=" );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.UFCOB=" );
+				sWhere2.append( " AND C2.UFCOB=" );
+			}
+			sWhere.append( "'" + sValores[ 19 ] + "'" );
+			sWhere2.append( "'" + sValores[ 19 ] + "'" );
+			imp.addSubTitulo( "ESTADO = " + sValores[ 19 ] );
+		}
 
 		try {				
 
