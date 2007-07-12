@@ -90,7 +90,7 @@ public class FConta extends FTabDados implements CheckBoxListener {
     lcBanco.setQueryCommit(false);
     lcBanco.setReadOnly(true);
     txtCodBanco.setTabelaExterna(lcBanco);
-
+  
     lcMoeda.add(new GuardaCampo( txtCodMoeda, "CodMoeda", "Cód.mda.",ListaCampos.DB_PK ,true));
     lcMoeda.add(new GuardaCampo( txtDescMoeda, "SingMoeda", "Descrição da moeda", ListaCampos.DB_SI, false));
     lcMoeda.montaSql(false, "MOEDA", "FN");    
