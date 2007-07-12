@@ -536,21 +536,17 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 						break;
 					}
 				}
-				hsCli.add( new FbnUtil().new StuffCli( (Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ), 
+				hsCli.add( new FbnUtil().new StuffCli( 
+						(Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ), 
 						new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, 
 						(String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ),
 						(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ), 
 						(String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ),
 						(String) vLinha.elementAt( EColTab.COL_TIPOREMCLI.ordinal() ) } ) );
-				hsRec.add( new FbnUtil().new StuffRec( (Integer) vLinha.elementAt( EColTab.COL_CODREC.ordinal() ), 
+				hsRec.add( new FbnUtil().new StuffRec( 
+						(Integer) vLinha.elementAt( EColTab.COL_CODREC.ordinal() ), 
 						(Integer) vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ),
-				/*
-				 * String codBanco, String tipoFebraban, String stipoFebraban, 
-				 * String sitRemessa {CODBANCO, TIPOFEBRABAN, 
-				 * STIPOFEBRABAN, SITREMESSA, CODCLI, AGENCIACLI, 
-				 * IDENTCLI, DTVENC, VLRPARC, PESSOACLI, CPJCLI, CNPJCLI}
-				 */
-				new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, 
+						new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, 
 						(String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ), 
 						(String) vLinha.elementAt( EColTab.COL_SITREM.ordinal() ), 
 						String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ) ), 
@@ -560,7 +556,13 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 						Funcoes.strToBd( vLinha.elementAt( EColTab.COL_VLRAPAG.ordinal() )).toString(),
 						(String) vLinha.elementAt( EColTab.COL_PESSOACLI.ordinal() ),
 						(String) vLinha.elementAt( EColTab.COL_CPFCLI.ordinal() ),
-						(String) vLinha.elementAt( EColTab.COL_CNPJCLI.ordinal() ) } ) ); 
+						(String) vLinha.elementAt( EColTab.COL_CNPJCLI.ordinal() ) } ) );
+						/*
+						 * String codBanco, String tipoFebraban, String stipoFebraban, 
+						 * String sitRemessa {CODBANCO, TIPOFEBRABAN, 
+						 * STIPOFEBRABAN, SITREMESSA, CODCLI, AGENCIACLI, 
+						 * IDENTCLI, DTVENC, VLRPARC, PESSOACLI, CPJCLI, CNPJCLI}
+						 */
 		   }
 		}
 		if ( retorno ) {

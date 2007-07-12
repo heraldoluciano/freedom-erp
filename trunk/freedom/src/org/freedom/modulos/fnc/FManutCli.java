@@ -37,6 +37,8 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.Boleto;
+import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
@@ -56,7 +58,9 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 
 	private final JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtAgencia = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+	private final JTextFieldPad txtConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+
+	private final JTextFieldPad txtAgencia = new JTextFieldPad( JTextFieldPad.TP_STRING, 9, 0 );
 
 	private final JTextFieldPad txtIdentificacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -116,6 +120,8 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		rgTipoFebraban.addRadioGroupListener( this );
 		
 		lcCampos.addPostListener( this );
+		
+		txtIdentificacao.setAtivo( false );
 	}
 
 	private void montaTela() {
@@ -130,17 +136,44 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		adicDescFK( txtRazCli, 100, 70, 240, 20, "RazCli", "Razão social do cliente" );
 		adicCampo( txtCodBanco, 7, 110, 90, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true );
 		adicDescFK( txtNomeBanco, 100, 110, 240, 20, "NomeBanco", "Nome do banco" );
-		adicCampo( txtAgencia, 7, 150, 150, 20, "AgenciaCli", "Agência", ListaCampos.DB_SI, true );
-		adicCampo( txtIdentificacao, 7, 190, 150, 20, "IdentCli", "Identificação", ListaCampos.DB_SI, true );
-		adicDB( rgSubTipoFebraban, 170, 150, 170, 60, "STipoFebraban", "", false );
+		adicCampo( txtConta, 7, 150, 90, 20, "NumContaCli", "Conta", ListaCampos.DB_SI, true );
+		adicCampo( txtAgencia, 100, 150, 80, 20, "AgenciaCli", "Agência", ListaCampos.DB_SI, true );
+		adicCampo( txtIdentificacao, 7, 190, 173, 20, "IdentCli", "Identificação", ListaCampos.DB_SI, false );
+		adicDB( rgSubTipoFebraban, 190, 150, 150, 60, "STipoFebraban", "", false );
 		adicCampoInvisivel( txtCodEmpPF, "CodEmpPF", "Cód.emp.pf.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodFilialPF, "CodFilialPF", "Cód.filial.pf.", ListaCampos.DB_SI, false );
 
 		setListaCampos( false, "FBNCLI", "FN" );
 	}
+	
+	private boolean getIdentificacao() {
+		
+		boolean retorno = true;
+		
+		try {
+			
+			String agencia = Funcoes.strZero( txtAgencia.getVlrString().trim().replaceAll( "-", "" ), 5 );
+			String conta = Funcoes.strZero( txtConta.getVlrString().trim().replaceAll( "-", "" ), 10 );
+			String digito = Boleto.digVerif( agencia + conta );
+			String identificacao = agencia + conta + digito;
+			
+			txtIdentificacao.setVlrString( identificacao );
+		}
+		catch ( Exception e ) {
+			retorno = false;
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao montar identificação.\n" + e.getMessage(), true, con, e );
+		}
+		
+		return retorno;
+	}
 
 	@ Override
 	public void beforePost( PostEvent e ) {
+		
+		if ( ! getIdentificacao() ) {
+			e.cancela();
+		}
 
 		super.beforePost( e );
 		
