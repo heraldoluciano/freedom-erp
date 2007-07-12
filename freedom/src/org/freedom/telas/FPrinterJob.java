@@ -49,7 +49,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.view.JRViewer;
+import org.freedom.telas.JRViewerPad;
 
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
@@ -264,7 +264,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
 			relJasper = JasperFillManager.fillReport( FPrinterJob.class.getResourceAsStream( "/org/freedom/" + sLayout ), hParam, jrRS );
 
-			JRViewer viewer = new JRViewer( relJasper );
+			JRViewerPad viewer = new JRViewerPad( relJasper );
 			this.setContentPane( viewer );
 		} catch ( JRException err ) {
 			err.printStackTrace();
@@ -307,7 +307,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
 			relJasper = JasperFillManager.fillReport( FPrinterJob.class.getResourceAsStream( "/org/freedom/" + sLayout ), hParam, con );
 
-			JRViewer viewer = new JRViewer( relJasper );
+			JRViewerPad viewer = new JRViewerPad( relJasper );
 			this.setContentPane( viewer );
 		} catch ( JRException err ) {
 			err.printStackTrace();
