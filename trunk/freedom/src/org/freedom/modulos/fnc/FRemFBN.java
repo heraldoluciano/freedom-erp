@@ -331,9 +331,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			StringBuilder sql = new StringBuilder();
 			
 			sql.append( "SELECT I.CODCONV, P.NOMEEMP, I.VERLAYOUT, I.IDENTSERV, I.CONTACOMPR, " );
-			sql.append( "I.IDENTAMBCLI, I.IDENTAMBBCO, I.NROSEQ," );
-			sql.append( "I.AGENCIA, I.DIGAGENCIA, I.NUMCONTA, I.DIGCONTA, I.DIGAGCONTA," );
-			sql.append( "E.CNPJFILIAL " );
+			sql.append( "I.IDENTAMBCLI, I.IDENTAMBBCO, I.NROSEQ, " );
+			sql.append( "I.AGENCIA, I.NUMCONTA, E.CNPJFILIAL " );
 			sql.append( "FROM SGITPREFERE6 I, SGPREFERE6 P, SGFILIAL E " );
 			sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? " );
 			sql.append( "AND I.CODEMPBO=? AND I.CODFILIALBO=? AND I.CODBANCO=? AND I.TIPOFEBRABAN=? " );
@@ -362,11 +361,11 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				prefs.put( EPrefs.IDENTAMBCLI, rs.getString( EPrefs.IDENTAMBCLI.toString() ) );
 				prefs.put( EPrefs.IDENTAMBBCO, rs.getString( EPrefs.IDENTAMBBCO.toString() ) );
 				prefs.put( EPrefs.NROSEQ, new Integer( rs.getInt( EPrefs.NROSEQ.toString() ) ) );
-				prefs.put( EPrefs.AGENCIA, rs.getString( EPrefs.AGENCIA.toString() ) );
-				prefs.put( EPrefs.DIGAGENCIA, rs.getString( EPrefs.DIGAGENCIA.toString() ) );
-				prefs.put( EPrefs.NUMCONTA, rs.getString( EPrefs.NUMCONTA.toString() ) );
-				prefs.put( EPrefs.DIGCONTA, rs.getString( EPrefs.DIGCONTA.toString() ) );
-				prefs.put( EPrefs.DIGAGCONTA, rs.getString( EPrefs.DIGAGCONTA.toString() ) );
+				prefs.put( EPrefs.AGENCIA, rs.getString( EPrefs.AGENCIA.toString() ).substring( 0, rs.getString( EPrefs.AGENCIA.toString() ).indexOf( '-' ) ) );
+				prefs.put( EPrefs.DIGAGENCIA, rs.getString( EPrefs.AGENCIA.toString() ).substring( rs.getString( EPrefs.AGENCIA.toString() ).indexOf( '-' ) ) );
+				prefs.put( EPrefs.NUMCONTA, rs.getString( EPrefs.NUMCONTA.toString() ).substring( rs.getString( EPrefs.NUMCONTA.toString() ).indexOf( '-' ) ) );
+				prefs.put( EPrefs.DIGCONTA, rs.getString( EPrefs.NUMCONTA.toString() ).substring( rs.getString( EPrefs.NUMCONTA.toString() ).indexOf( '-' ) ) ); 
+				prefs.put( EPrefs.DIGAGCONTA, null );
 				prefs.put( EPrefs.CNPFEMP, rs.getString( "CNPJFILIAL" ) );
 				retorno = true;
 			}
