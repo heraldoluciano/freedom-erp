@@ -60,9 +60,11 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.DLEnviarEmail;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FObservacao;
 import org.freedom.telas.FPrinterJob;
@@ -655,11 +657,19 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		if ( txtCodPed.getVlrInteger() != null && txtCodPed.getVlrInteger() > 0 ) {
 
 			try {
+				
+				EmailBean mail = new EmailBean();
+				mail.setAssunto( "Pedido nº" + txtCodPed.getVlrInteger() + " de " + txtDataPed.getVlrString() );
+				mail.setHost( (String) prefere.get( EPrefere.SERVIDORSMTP.ordinal() ) );
+				mail.setPorta( (Integer) prefere.get( EPrefere.PORTASMTP.ordinal() ) );
+				mail.setUsuario( (String) prefere.get( EPrefere.USUARIOSMTP.ordinal() ) );
+				mail.setSenha( ((String) prefere.get( EPrefere.SENHASMTP.ordinal() )).trim() );
+				mail.setDe( mail.getEmailEmp( con ) );
+				mail.setPara( EmailBean.getEmailCli( txtCodCli.getVlrInteger(), con ) );
+				mail.setAutentica( (String) prefere.get( EPrefere.AUTENTICASMTP.ordinal() ) );
+				mail.setSsl( (String) prefere.get( EPrefere.SSLSMTP.ordinal() ) );
 
-				DLEnviarPedido enviar = new DLEnviarPedido( this );
-				enviar.setConexao( con );
-				enviar.preparar( "Pedido nº" + txtCodPed.getVlrInteger() + " de " + txtDataPed.getVlrString(),
-						         txtCodCli.getVlrInteger() );
+				DLEnviarEmail enviar = new DLEnviarEmail( this, mail );
 
 				String classLayout = "pedido";
 				if ( prefere.get( EPrefere.LAYOUTPED.ordinal() ) != null && ( (String) prefere.get( EPrefere.LAYOUTPED.ordinal() ) ).trim().length() > 0 ) {
@@ -674,7 +684,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 				FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/" + classLayout + ".jasper", "PEDIDO Nº " + txtCodPed.getVlrInteger(), null, rs, hParam, this );
 
-				enviar.setPedido( dlGr.getRelatorio() );
+				enviar.setReport( dlGr.getRelatorio() );
 				enviar.setVisible( true );
 
 			} catch ( Exception e ) {
