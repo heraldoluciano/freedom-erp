@@ -257,7 +257,7 @@ public class FTipoCli extends FDados implements ActionListener {
 
 	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs ) {
 
-		FPrinterJob dlGr = new FPrinterJob( "relatorios/TipoCli.jasper", "Vendas por Cliente", null, rs, null, this );
+		FPrinterJob dlGr = new FPrinterJob( "relatorios/TipoCli.jasper", "Tipo de Cliente", null, rs, null, this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
