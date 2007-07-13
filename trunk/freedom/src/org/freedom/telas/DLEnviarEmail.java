@@ -22,7 +22,7 @@
  * Formulário para envio do pedido por e-mail.
  */
 
-package org.freedom.modulos.rep;
+package org.freedom.telas;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -30,11 +30,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -62,14 +58,11 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ProcessoSec;
+import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFDialogo;
 
-public class DLEnviarPedido extends FFDialogo {
+public class DLEnviarEmail extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
@@ -82,6 +75,8 @@ public class DLEnviarPedido extends FFDialogo {
 	private final JTextFieldPad txtFrom = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldPad txtTo = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+		
+	private final JTextFieldPad txtAssunto = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldPad txtUser = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -93,37 +88,39 @@ public class DLEnviarPedido extends FFDialogo {
 
 	private final JLabel status = new JLabel();
 
-	private JasperPrint pedido = null;
+	private JasperPrint report = null;
+	
+	private EmailBean mail = null;
+	
+	private boolean preparado = false;
 
-	private List<Object> prefere = null;
-
-	private String titulo = "";
-
-	public DLEnviarPedido( final Component cOrig ) {
+	public DLEnviarEmail( final Component cOrig, final EmailBean mail ) {
 
 		super( cOrig );
-		setTitulo( "Enviar Pedido" );
-		setAtribos( 405, 310 );
+		setTitulo( "Enviar por e-mail" );
+		setAtribos( 405, 350 );
 		setResizable( false );
+		
+		this.mail = mail;
 
 		montaTela();
 		
 		btEnviar.addActionListener( this );
-		
-		txtUser.setAtivo( false );
 	}
 
 	private void montaTela() {
 
 		adic( new JLabel( "Para:" ), 10, 10, 370, 20 );
 		adic( txtTo, 10, 30, 370, 20 );
-		adic( new JLabel( "Menssagem:" ), 10, 50, 370, 20 );
-		adic( new JScrollPane( txtMessage ), 10, 70, 370, 100 );
-		adic( new JLabel( "Usuario" ), 10, 170, 185, 20 );
-		adic( txtUser, 10, 190, 185, 20 );
-		adic( new JLabel( "Senha" ), 200, 170, 180, 20 );
-		adic( txtPassword, 200, 190, 180, 20 );
-		adic( status, 10, 220, 370, 20 );
+		adic( new JLabel( "Assunto:" ), 10, 50, 370, 20 );
+		adic( txtAssunto, 10, 70, 370, 20 );
+		adic( new JLabel( "Menssagem:" ), 10, 90, 370, 20 );
+		adic( new JScrollPane( txtMessage ), 10, 110, 370, 100 );
+		adic( new JLabel( "Usuario" ), 10, 210, 185, 20 );
+		adic( txtUser, 10, 230, 185, 20 );
+		adic( new JLabel( "Senha" ), 200, 210, 180, 20 );
+		adic( txtPassword, 200, 230, 180, 20 );
+		adic( status, 10, 260, 370, 20 );
 
 		status.setForeground( Color.BLUE );
 
@@ -133,9 +130,9 @@ public class DLEnviarPedido extends FFDialogo {
 		panelRodape.add( btEnviar, BorderLayout.WEST );
 	}
 
-	public void setPedido( final JasperPrint pedido ) {
+	public void setReport( final JasperPrint report ) {
 
-		this.pedido = pedido;
+		this.report = report;
 	}
 
 	private void setStatus( final String msg ) {
@@ -143,86 +140,49 @@ public class DLEnviarPedido extends FFDialogo {
 		status.setText( msg != null ? msg : "" );
 	}
 
-	public void preparar( final String titulo, final int codcli ) {
-
-		this.titulo = titulo;
-		txtHost.setVlrString( (String) prefere.get( EPrefere.SERVIDORSMTP.ordinal() ) );
-		txtPort.setVlrInteger( (Integer) prefere.get( EPrefere.PORTASMTP.ordinal() ) );
-		txtUser.setVlrString( (String) prefere.get( EPrefere.USUARIOSMTP.ordinal() ) );
-		txtPassword.setVlrString( ( (String) prefere.get( EPrefere.SENHASMTP.ordinal() ) ).trim() );
-		txtFrom.setVlrString( getEmailEmp() );
-		txtTo.setVlrString( getEmailCli( codcli ) );
-	}
-
-	private String getEmailEmp() {
-
-		String email = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuilder sSQL = new StringBuilder();
-
-		try {
-
-			sSQL.append( "SELECT EMAILFILIAL FROM SGFILIAL WHERE CODEMP=? AND CODFILIAL=?" );
-			ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGFILIAL" ) );
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-
-				email = rs.getString( "EMAILFILIAL" ) != null ? rs.getString( "EMAILFILIAL" ).trim() : null;
+	public void preparar() {
+		
+		if ( mail == null ) {
+			
+			mail = getEmailBean();
+			
+			if ( mail == null ) {
+				
+				dispose();
 			}
-
-			rs.close();
-			ps.close();
-
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
-
-		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro ao buscar email da filial!\n" + e.getMessage() );
-			e.printStackTrace();
 		}
 
-		return email;
-	}
-
-	private String getEmailCli( final int codcli ) {
-
-		String email = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuilder sSQL = new StringBuilder();
-
-		try {
-
-			sSQL.append( "SELECT EMAILCLI FROM RPCLIENTE WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?" );
-			ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGFILIAL" ) );
-			ps.setInt( 3, codcli );
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-
-				email = rs.getString( "EMAILCLI" ) != null ? rs.getString( "EMAILCLI" ).trim() : "";
-			}
-
-			rs.close();
-			ps.close();
-
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
-
-		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro ao buscar email do cliente!\n" + e.getMessage() );
-			e.printStackTrace();
+		if ( mail != null ) {
+			
+			txtAssunto.setVlrString( mail.getAssunto() );		
+			txtHost.setVlrString( mail.getHost() );
+			txtPort.setVlrInteger( mail.getPorta() );
+			txtUser.setVlrString( mail.getUsuario() );
+			txtPassword.setVlrString( mail.getSenha() );
+			txtFrom.setVlrString( mail.getDe() );
+			txtTo.setVlrString( mail.getPara() );
+			
+			preparado = true;
 		}
+	}
+	
+	private EmailBean getEmailBean() {
+		
+		EmailBean mail = null;
+		
+		DLEmailBean dlemail = new DLEmailBean();
+		dlemail.setVisible( true );
+		
+		if ( dlemail.OK ) {
 
-		return email;
+			mail = dlemail.getEmailBean();	
+		}
+		
+		return mail;
+	}
+	
+	public boolean preparado() {
+		return preparado;
 	}
 
 	private boolean validaEnviar() {
@@ -268,7 +228,7 @@ public class DLEnviarPedido extends FFDialogo {
 
 			try {
 				
-				if ( "S".equals( prefere.get( EPrefere.AUTENTICASMTP.ordinal() ) ) ) {
+				if ( "S".equals( mail.getAutentica() ) ) {
 					//loading.start();
 					enviarAutenticado();
 				}
@@ -294,7 +254,7 @@ public class DLEnviarPedido extends FFDialogo {
 
 		String socketFactory = "javax.net.SocketFactory";
 		
-		if ( "S".equals( prefere.get( EPrefere.SSLSMTP.ordinal() ) ) ) {
+		if ( "S".equals( mail.getSsl() ) ) {
 			socketFactory = "javax.net.ssl.SSLSocketFactory";	
 		}
 				
@@ -340,9 +300,10 @@ public class DLEnviarPedido extends FFDialogo {
 		MimeMessage msg = new MimeMessage( session );
 		msg.setFrom( new InternetAddress( txtFrom.getVlrString() ) );
 
-		InternetAddress[] address = { new InternetAddress( txtTo.getVlrString() ), new InternetAddress( txtFrom.getVlrString() ) };
+		//InternetAddress[] address = { new InternetAddress( txtTo.getVlrString() ), new InternetAddress( txtFrom.getVlrString() ) };
+		InternetAddress[] address = { new InternetAddress( txtTo.getVlrString() ) };
 		msg.setRecipients( Message.RecipientType.TO, address );
-		msg.setSubject( titulo );
+		msg.setSubject( txtAssunto.getVlrString() );
 
 		MimeBodyPart mbp1 = new MimeBodyPart();
 		mbp1.setText( txtMessage.getVlrString() );
@@ -350,8 +311,8 @@ public class DLEnviarPedido extends FFDialogo {
 
 		setStatus( "Criando arquivo de anexo em " + Aplicativo.strTemp );
 
-		String filename = Aplicativo.strTemp + "pedido" + Calendar.getInstance().getTimeInMillis() + ".pdf";
-		JasperExportManager.exportReportToPdfFile( pedido, filename );
+		String filename = Aplicativo.strTemp + Calendar.getInstance().getTimeInMillis() + ".pdf";
+		JasperExportManager.exportReportToPdfFile( report, filename );
 		File file = new File( filename );
 		if ( !file.exists() ) {
 			Funcoes.mensagemErro( this, "Anexo não foi criado.\nVerifique o parametro 'temp' no arquivo de parametros." );
@@ -397,14 +358,6 @@ public class DLEnviarPedido extends FFDialogo {
 
 			pSec.iniciar();
 		}
-	}
-
-	@ Override
-	public void setConexao( Connection cn ) {
-
-		super.setConexao( cn );
-
-		prefere = RPPrefereGeral.getPrefere( cn );
 	}
 
 	class SMTPAuthenticator extends Authenticator {
