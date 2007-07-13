@@ -48,13 +48,11 @@ import org.freedom.modulos.fnc.CnabUtil.Reg3S;
 import org.freedom.modulos.fnc.CnabUtil.Reg3T;
 import org.freedom.modulos.fnc.CnabUtil.Reg3U;
 import org.freedom.modulos.fnc.CnabUtil.Reg5;
-import org.freedom.modulos.fnc.FRemFBN.EColTab;
+import org.freedom.modulos.fnc.FbnUtil.EPrefs;
 import org.freedom.modulos.fnc.FbnUtil.StuffCli;
 import org.freedom.modulos.fnc.FbnUtil.StuffRec;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
-
-import static org.freedom.modulos.fnc.FbnUtil.*; 
 
 
 public class FRemCnab extends FRemFBN {
@@ -62,6 +60,10 @@ public class FRemCnab extends FRemFBN {
 	public static final long serialVersionUID = 1L;
 	
 	private final CnabUtil cnabutil = new CnabUtil();
+	
+	private int loteServico = 1;
+	
+	private int seqLoteServico = 1;
 
 	public FRemCnab() {
 
@@ -73,8 +75,8 @@ public class FRemCnab extends FRemFBN {
 		Reg1 reg = cnabutil.new Reg1();
 		
 		reg.setCodBanco( txtCodBanco.getVlrString() );
-		//reg.setLoteServico( loteServico );
-		//reg.setTipoOperacao( tipoOperacao );
+		reg.setLoteServico( loteServico );
+		reg.setTipoOperacao( null );
 		reg.setFormaLancamento( "00" );
 		reg.setTipoInscEmp( 2 );
 		reg.setCpfCnpjEmp( (String) prefs.get( EPrefs.CNPFEMP ) );
@@ -82,8 +84,8 @@ public class FRemCnab extends FRemFBN {
 		reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) );
 		reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
 		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
-		reg.setDigConta((String) prefs.get( EPrefs.DIGCONTA ) );
-		reg.setDigAgConta( (String) prefs.get( EPrefs.DIGAGCONTA ) );
+		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
+		reg.setDigAgConta( null );
 		reg.setRazEmp( (String) prefs.get( FbnUtil.EPrefs.NOMEEMP ) );
 		reg.setMsg1( null );
 		reg.setMsg2( null );
@@ -99,8 +101,8 @@ public class FRemCnab extends FRemFBN {
 		Reg3P reg = cnabutil.new Reg3P();
 
 		reg.setCodBanco( txtCodBanco.getVlrString() );
-		//reg.setLoteServico( loteServico );
-		//reg.setSeqLote( seqLote );
+		reg.setLoteServico( loteServico );
+		reg.setSeqLote( seqLoteServico++ );
 		//reg.setCodMovimento( codMovimento );
 		
 		/*reg.setAgencia( agencia );
@@ -305,8 +307,6 @@ public class FRemCnab extends FRemFBN {
 		
 		boolean retorno = false;
 		String sFileName = null;
-		File fileSiacc = null;
-		FileWriter fw = null;
 		BufferedWriter bw = null;
 		HashSet<StuffCli> hsCli = new HashSet<StuffCli>();
 		HashSet<StuffRec> hsRec = new HashSet<StuffRec>();
@@ -319,24 +319,25 @@ public class FRemCnab extends FRemFBN {
 				
 				lbStatus.setText( "     criando arquivo ..." );
 		
-				FileDialog fileDialogSiacc = null;
-				fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
-				sFileName = "remessa"+prefs.get( SiaccUtil.EPrefs.NROSEQ )+".txt";
-				fileDialogSiacc.setFile( sFileName );
-				fileDialogSiacc.setVisible( true );
+				FileDialog fileDialogCnab = null;
+				fileDialogCnab = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
+				sFileName = "remessa"+prefs.get( EPrefs.NROSEQ )+".txt";
+				fileDialogCnab.setFile( sFileName );
+				fileDialogCnab.setVisible( true );
 		
-				if ( fileDialogSiacc.getFile() == null ) {
+				if ( fileDialogCnab.getFile() == null ) {
 					lbStatus.setText( "" );
 					return retorno;
 				}
 		
-				sFileName = fileDialogSiacc.getDirectory() + fileDialogSiacc.getFile();
-		
-				fileSiacc = new File( sFileName );
-		
+				sFileName = fileDialogCnab.getDirectory() + fileDialogCnab.getFile();
+				
 				try {
-					fileSiacc.createNewFile();
-					fw = new FileWriter( fileSiacc );
+
+					File fileCnab = new File( sFileName );
+					fileCnab.createNewFile();
+
+					FileWriter fw = new FileWriter( fileCnab );
 					bw = new BufferedWriter( fw );
 		
 					lbStatus.setText( "     gravando arquivo ..." );
