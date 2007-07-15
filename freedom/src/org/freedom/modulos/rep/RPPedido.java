@@ -658,18 +658,12 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 			try {
 				
-				EmailBean mail = new EmailBean();
+				EmailBean mail = Aplicativo.getEmailBean();
 				mail.setAssunto( "Pedido nº" + txtCodPed.getVlrInteger() + " de " + txtDataPed.getVlrString() );
-				mail.setHost( (String) prefere.get( EPrefere.SERVIDORSMTP.ordinal() ) );
-				mail.setPorta( (Integer) prefere.get( EPrefere.PORTASMTP.ordinal() ) );
-				mail.setUsuario( (String) prefere.get( EPrefere.USUARIOSMTP.ordinal() ) );
-				mail.setSenha( ((String) prefere.get( EPrefere.SENHASMTP.ordinal() )).trim() );
-				mail.setDe( mail.getEmailEmp( con ) );
 				mail.setPara( EmailBean.getEmailCli( txtCodCli.getVlrInteger(), con ) );
-				mail.setAutentica( (String) prefere.get( EPrefere.AUTENTICASMTP.ordinal() ) );
-				mail.setSsl( (String) prefere.get( EPrefere.SSLSMTP.ordinal() ) );
 
 				DLEnviarEmail enviar = new DLEnviarEmail( this, mail );
+				enviar.preparar();
 
 				String classLayout = "pedido";
 				if ( prefere.get( EPrefere.LAYOUTPED.ordinal() ) != null && ( (String) prefere.get( EPrefere.LAYOUTPED.ordinal() ) ).trim().length() > 0 ) {
@@ -684,8 +678,10 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 				FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/" + classLayout + ".jasper", "PEDIDO Nº " + txtCodPed.getVlrInteger(), null, rs, hParam, this );
 
-				enviar.setReport( dlGr.getRelatorio() );
-				enviar.setVisible( true );
+				if ( enviar.preparado() ) {
+					enviar.setReport( dlGr.getRelatorio() );
+					enviar.setVisible( true );
+				}
 
 			} catch ( Exception e ) {
 				Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage(), true, con, e );

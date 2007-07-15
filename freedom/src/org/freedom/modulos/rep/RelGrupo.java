@@ -85,7 +85,6 @@ public class RelGrupo extends FRelatorio {
 			HashMap<String,Object> hParam = new HashMap<String, Object>();
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
-			hParam.put( "SUBREPORT_DIR", "/opt/freedom/reports/" );
 			hParam.put( "REPORT_CONNECTION", con );
 			
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpgrupo.jasper", "GRUPOS DE PRODUTOS", null, rs, hParam, this );
@@ -96,8 +95,6 @@ public class RelGrupo extends FRelatorio {
 			else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			}
-			
-			dispose();
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
 			e.printStackTrace();

@@ -36,6 +36,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import org.freedom.acao.PostEvent;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPasswordFieldPad;
@@ -97,6 +98,8 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		
 		nav.setAtivo( 0, false );
 		lcCampos.setPodeExc( false );
+		
+		lcCampos.addPostListener( this );
 	}
 	
 	private void montaListaCampos() {
@@ -158,6 +161,14 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		adicCampo( txtCodMoeda, 17, 360, 100, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, txtNomeMoeda, false );
 		adicDescFK( txtNomeMoeda, 120, 360, 274, 20, "SingMoeda", "Descrição da moeda" );
 		
+	}
+
+	@Override
+	public void afterPost( PostEvent pevt ) {
+
+		super.afterPost( pevt );
+		
+		AplicativoRep.atualizaEmailBean( con );
 	}
 
 	@ Override
