@@ -45,8 +45,8 @@
 	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(4)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["C:\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\modulos\\rep\\relatorios\\"]]></defaultValueExpression>
+	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["/opt/freedom/reports/"]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[select CODFOR,RAZFOR,NOMEFOR,CNPJFOR,INSCFOR,ENDFOR,CIDFOR,ESTFOR,CEPFOR,BAIRFOR,DDDFOR,
 FONEFOR,FAXFOR,EMAILFOR,CODREPFOR
@@ -214,8 +214,9 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 						<font size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[($F{DDDFOR} != null ? "(" + $F{DDDFOR}.trim() + ")" : "")
-+ ($F{FONEFOR} != null ? $F{FONEFOR}.trim().substring(0,4) + "-" + $F{FONEFOR}.trim().substring(4) : "")
-+ ($F{FAXFOR} != null ? $F{FAXFOR}.trim().substring(0,4) + "-" + $F{FAXFOR}.trim().substring(4) : "")]]></textFieldExpression>
++ (($F{FONEFOR}!=null && $F{FONEFOR}.trim().length()>=4) ? $F{FONEFOR}.trim().substring(0,4) + "-" + $F{FONEFOR}.trim().substring(4) : "")
++ " "
++ (($F{FAXFOR}!=null && $F{FAXFOR}.trim().length()>=4) ? $F{FAXFOR}.trim().substring(0,4) + "-" + $F{FAXFOR}.trim().substring(4) : "")]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

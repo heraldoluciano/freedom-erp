@@ -45,8 +45,8 @@
 	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(4)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["C:\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\modulos\\rep\\relatorios\\"]]></defaultValueExpression>
+	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["/opt/freedom/reports/"]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT CODCLI,RAZCLI,NOMECLI,CNPJCLI,INSCCLI,
 ENDCLI,CIDCLI,ESTCLI,CEPCLI,BAIRCLI,DDDCLI,
@@ -247,8 +247,8 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 						<font size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[($F{DDDCLI} != null ? "(" + $F{DDDCLI}.trim() + ")" : "")
-+ ($F{FONECLI} != null ? " " + $F{FONECLI}.trim().substring(0,4) + "-" + $F{FONECLI}.trim().substring(4) : "")
-+ ($F{FAXCLI} != null ? " " + $F{FAXCLI}.trim().substring(0,4) + "-" + $F{FAXCLI}.trim().substring(4) : "")]]></textFieldExpression>
++ (($F{FONECLI}!=null && $F{FONECLI}.trim().length()>3) ? " " + $F{FONECLI}.trim().substring(0,4) + "-" + $F{FONECLI}.trim().substring(4) : "")
++ (($F{FAXCLI}!=null && $F{FAXCLI}.trim().length()>3) ? " " + $F{FAXCLI}.trim().substring(0,4) + "-" + $F{FAXCLI}.trim().substring(4) : "")]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -443,9 +443,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[($F{CEPCLI} != null ? 
-$F{CEPCLI}.trim().substring(0,4) + "-" + $F{CEPCLI}.trim().substring(5)
-: "")]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[(($F{CEPCLI}!=null && $F{CEPCLI}.trim().length()>4) ? $F{CEPCLI}.trim().substring(0,4) + "-" + $F{CEPCLI}.trim().substring(5) : "")]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement

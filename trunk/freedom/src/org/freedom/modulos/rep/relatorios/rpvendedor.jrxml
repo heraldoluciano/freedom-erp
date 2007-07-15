@@ -45,8 +45,8 @@
 	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(4)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["C:\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\modulos\\rep\\relatorios\\"]]></defaultValueExpression>
+	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["/opt/freedom/reports/"]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT CODVEND, NOMEVEND, ENDVEND, CIDVEND, CEPVEND, 
 ESTVEND, DDDVEND, FONEVEND, FAXVEND, EMAILVEND, PERCCOMIS
@@ -393,8 +393,9 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 						<font size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[($F{DDDVEND} != null ? "(" + $F{DDDVEND}.trim() + ")" : "")
-+ ($F{FONEVEND} != null ? $F{FONEVEND}.trim().substring(0,4) + "-" + $F{FONEVEND}.trim().substring(4) : "")
-+ ($F{FAXVEND} != null ? " / " + $F{FAXVEND}.trim().substring(0,4) + "-" + $F{FAXVEND}.trim().substring(4) : "")]]></textFieldExpression>
++ (($F{FONEVEND}!=null && $F{FONEVEND}.trim().length()>3) ? $F{FONEVEND}.trim().substring(0,4) + "-" + $F{FONEVEND}.trim().substring(4) : "")
++ " "
++ (($F{FAXVEND}!=null && $F{FAXVEND}.trim().length()>3) ? " / " + $F{FAXVEND}.trim().substring(0,4) + "-" + $F{FAXVEND}.trim().substring(4) : "")]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -433,7 +434,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[($F{CEPVEND} != null ?  $F{CEPVEND}.trim().substring(0,4) + "-" + $F{CEPVEND}.trim().substring(5) : "")]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[(($F{CEPVEND}!=null && $F{CEPVEND}.trim().length()>5) ?  $F{CEPVEND}.trim().substring(0,4) + "-" + $F{CEPVEND}.trim().substring(5) : "")]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
