@@ -142,13 +142,12 @@ public class DLEnviarEmail extends FFDialogo {
 
 	public void preparar() {
 		
-		if ( mail == null ) {
+		while ( ! validaEmailBean( mail ) ) {
 			
-			mail = getEmailBean();
+			mail = getEmailBean( mail );
 			
 			if ( mail == null ) {
-				
-				dispose();
+				break;
 			}
 		}
 
@@ -166,19 +165,37 @@ public class DLEnviarEmail extends FFDialogo {
 		}
 	}
 	
-	private EmailBean getEmailBean() {
+	private EmailBean getEmailBean( EmailBean mail ) {
 		
-		EmailBean mail = null;
-		
-		DLEmailBean dlemail = new DLEmailBean();
+		DLEmailBean dlemail = new DLEmailBean( mail );
 		dlemail.setVisible( true );
-		
-		if ( dlemail.OK ) {
-
-			mail = dlemail.getEmailBean();	
-		}
+		mail = dlemail.getEmailBean();
 		
 		return mail;
+	}
+	
+	private boolean validaEmailBean( EmailBean mail ) {
+		
+		boolean ok = false;
+		
+		if ( mail != null ) {
+			
+			String host = mail.getHost();
+			String from = mail.getDe();
+			String autentica = mail.getAutentica();
+			String ssl = mail.getSsl();
+			int porta = mail.getPorta();
+			
+			if ( ( host != null && host.trim().length() > 0 ) 
+					&& ( from != null && from.trim().length() > 0 )
+						&& ( autentica != null && autentica.trim().length() > 0 ) 
+							&& ( ssl != null && ssl.trim().length() > 0 )
+								&& ( porta > 0 ) ) {
+				ok = true;
+			}			
+		}
+		
+		return ok;
 	}
 	
 	public boolean preparado() {

@@ -47,9 +47,9 @@ public class DLEmailBean extends FFDialogo {
 	
 	private final JCheckBoxPad cbSSLSMTP = new JCheckBoxPad( "Usa SSL ?", "S", "N" );
 	
-	private EmailBean mail = new EmailBean();
+	private EmailBean mail = null;
 
-	public DLEmailBean() {
+	public DLEmailBean( EmailBean mail ) {
 
 		super();
 		setTitulo( "Configuraçôes de envio" );
@@ -57,6 +57,17 @@ public class DLEmailBean extends FFDialogo {
 		setResizable( false );
 
 		montaTela();
+		
+		this.mail = mail;
+		
+		if ( mail != null) {
+			
+			txtHost.setVlrString( mail.getHost() );
+			txtPort.setVlrInteger( mail.getPorta() );
+			txtFrom.setVlrString( mail.getDe() );
+			cbAutenticaSMTP.setVlrString( mail.getAutentica() );
+			cbSSLSMTP.setVlrString( mail.getSsl() );
+		}
 	}
 
 	private void montaTela() {
@@ -78,6 +89,11 @@ public class DLEmailBean extends FFDialogo {
 
 	@Override
 	public void ok() {
+		
+		if ( mail == null ) {		
+
+			mail = new EmailBean();
+		}
 
 		mail.setHost( txtHost.getVlrString() );
 		mail.setPorta( txtPort.getVlrInteger() );
@@ -87,5 +103,13 @@ public class DLEmailBean extends FFDialogo {
 		mail.setSsl( cbSSLSMTP.getVlrString() );
 		
 		super.ok();
+	}
+
+	@Override
+	public void cancel() {
+
+		mail = null;
+		
+		super.cancel();
 	}	
 }

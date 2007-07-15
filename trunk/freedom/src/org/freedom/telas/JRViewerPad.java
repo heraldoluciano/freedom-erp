@@ -72,7 +72,7 @@ public class JRViewerPad extends JRViewer {
 	
 	private void showDLEnviarEmail() {
 		
-		DLEnviarEmail enviaemail = new DLEnviarEmail( this, null );
+		DLEnviarEmail enviaemail = new DLEnviarEmail( this, Aplicativo.getEmailBean() );
 		enviaemail.setReport( report );
 		enviaemail.preparar();
 		if ( enviaemail.preparado() ) {
