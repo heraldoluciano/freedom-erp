@@ -274,12 +274,12 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 			sql.append( "(SELECT T.RAZTRAN FROM RPTRANSP T WHERE T.CODEMP=P.CODEMPTP AND T.CODFILIAL=P.CODFILIALTP AND T.CODTRAN=P.CODTRAN) AS RAZTRAN, " );
 			sql.append( "P.TIPOFRETEPED,P.TIPOREMPED,P.NUMPEDCLI,P.NUMPEDFOR,P.VLRTOTPED, " );
 			sql.append( "P.QTDTOTPED,P.VLRLIQPED,P.VLRIPIPED,P.VLRDESCPED,P.VLRADICPED,P.VLRRECPED, " );
-			sql.append( "P.VLRPAGPED,P.OBSPED,IT.CODITPED,IT.CODPROD,PD.DESCPROD,IT.CODFOR,FI.RAZFOR, " );
+			sql.append( "P.VLRPAGPED,P.OBSPED,IT.CODITPED,IT.CODPROD,PD.DESCPROD, " );
 			sql.append( "IT.QTDITPED,IT.PRECOITPED,IT.VLRITPED,IT.VLRLIQITPED,IT.PERCIPIITPED, " );
 			sql.append( "IT.VLRIPIITPED,IT.PERCDESCITPED,IT.VLRDESCITPED,IT.PERCADICITPED, " );
 			sql.append( "IT.VLRADICITPED,IT.PERCRECITPED,IT.VLRRECITPED,IT.PERCPAGITPED,IT.VLRPAGITPED, " );
 			sql.append( "C.ENDCLI,C.CIDCLI,C.ESTCLI,C.CEPCLI,C.BAIRCLI,C.DDDCLI,C.FONECLI,C.FAXCLI,C.EMAILCLI,C.CNPJCLI,C.INSCCLI " );
-			sql.append( "FROM RPPEDIDO P, RPITPEDIDO IT, RPPRODUTO PD, RPFORNECEDOR FI, " );
+			sql.append( "FROM RPPEDIDO P, RPITPEDIDO IT, RPPRODUTO PD, " );
 			sql.append( "RPCLIENTE C,RPVENDEDOR V, RPPLANOPAG PG, RPMOEDA M, RPFORNECEDOR F " );
 			sql.append( "WHERE IT.CODEMP=? AND IT.CODFILIAL=? " );
 			sql.append( "AND P.DATAPED BETWEEN ? AND ? " );
@@ -290,7 +290,6 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 			sql.append( "AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA " );
 			sql.append( "AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR " );
 			sql.append( "AND PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND PD.CODPROD=IT.CODPROD " );
-			sql.append( "AND FI.CODEMP=IT.CODEMPFO AND FI.CODFILIAL=IT.CODFILIALFO AND FI.CODFOR=IT.CODFOR " );
 			
 			if ( txtCodMoeda.getVlrString().trim().length() > 0 ) {
 				sql.append( "AND M.CODMOEDA='" + txtCodMoeda.getVlrString() + "'" );
@@ -328,7 +327,6 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 			HashMap<String,Object> hParam = new HashMap<String, Object>();
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
-			hParam.put( "SUBREPORT_DIR", "/opt/freedom/reports/" );
 			hParam.put( "REPORT_CONNECTION", con );
 			hParam.put( "DTINI", dtini );
 			hParam.put( "DTFIM", dtfim );

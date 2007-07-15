@@ -90,8 +90,8 @@ public class RelCliente extends FRelatorio {
 		labs1.add( "Código" );
 		labs1.add( "Descrição" );
 		Vector<String> vals1 = new Vector<String>();
-		vals1.add( "CODVEND" );
-		vals1.add( "NOMEVEND" );
+		vals1.add( "CODCLI" );
+		vals1.add( "RAZCLI" );
 		rgOrdem = new JRadioGroup( 1, 2, labs1, vals1 );		
 	}
 	
@@ -143,7 +143,7 @@ public class RelCliente extends FRelatorio {
 			
 			String relatorio = "C".equals( rgModo.getVlrString() ) ? "rpclientecomp.jasper" : "rpclienteresum.jasper";
 			String modo = "C".equals( rgModo.getVlrString() ) ? "( completo )" : " ( resumido )";
-			String filtro = null;
+			String filtro = "";
 			
 			StringBuilder sql = new StringBuilder();
 			
@@ -153,12 +153,12 @@ public class RelCliente extends FRelatorio {
 			sql.append( "FROM RPCLIENTE " );
 			sql.append( "WHERE CODEMP=? AND CODFILIAL=? " );
 			if ( txtCodTpCli.getVlrString().trim().length() > 0 ) {
-				sql.append( "AND CODCLI=" + txtCodTpCli.getVlrInteger().intValue() );
+				sql.append( "AND CODTIPOCLI=" + txtCodTpCli.getVlrInteger().intValue() );
 				filtro = "Tipo de cliente : " + txtDescTpCli.getVlrString().trim();
 			}
 			if ( txtNomeVend.getVlrString().trim().length() > 0 ) {
 				sql.append( "AND CODVEND=" + txtCodVend.getVlrInteger().intValue() );
-				filtro = "Vendedor : " + txtNomeVend.getVlrString().trim();
+				filtro += "  Vendedor : " + txtNomeVend.getVlrString().trim();
 			}
 			sql.append( "ORDER BY " + rgOrdem.getVlrString() );
 			
@@ -170,7 +170,6 @@ public class RelCliente extends FRelatorio {
 			HashMap<String,Object> hParam = new HashMap<String, Object>();
 			
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
-			hParam.put( "SUBREPORT_DIR", "/opt/freedom/reports/" );
 			hParam.put( "REPORT_CONNECTION", con );
 			
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/"+relatorio, "CLIENTES" + modo, filtro, rs, hParam, this );
@@ -186,7 +185,6 @@ public class RelCliente extends FRelatorio {
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
 			e.printStackTrace();
 		}
-
 	}
 
 	public void setConexao( Connection cn ) {

@@ -103,15 +103,15 @@ public class RelEvolucaoVendas extends FRelatorio {
 		adic( new JLabel( Icone.novo( "graficoPizza.gif" ) ), 10, 40, 30, 30 );
 		adic( new JLabel( Icone.novo( "graficoBarra.gif" ) ), 10, 70, 30, 30 );
 		adic( new JLabel( Icone.novo( "graficoLinha.gif" ) ), 10, 100, 30, 30 );
-		adic( rgModo, 25, 35, 275, 100 );
+		adic( rgModo, 25, 35, 275, 105 );
 
 		JLabel periodo = new JLabel( "Periodo", SwingConstants.CENTER );
 		periodo.setOpaque( true );
-		adic( periodo, 25, 140, 60, 20 );
+		adic( periodo, 25, 145, 60, 20 );
 
 		JLabel borda = new JLabel();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
-		adic( borda, 10, 160, 290, 45 );
+		adic( borda, 10, 155, 290, 50 );
 
 		adic( txtDtIni, 25, 175, 110, 20 );
 		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 175, 40, 20 );
@@ -167,7 +167,6 @@ public class RelEvolucaoVendas extends FRelatorio {
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
 			hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RPPEDIDO" ) );
-			hParam.put( "SUBREPORT_DIR", "/opt/freedom/reports/" );
 			hParam.put( "REPORT_CONNECTION", con );
 			hParam.put( "GRAFICO", getGrafico( rs, rgModo.getVlrString() ) );
 
