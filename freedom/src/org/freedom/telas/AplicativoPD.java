@@ -77,6 +77,8 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		iniConexao();
 		carregaCasasDec();
 		carregaBuscaProd();
+		//ainda não implementado...
+		createEmailBean();
 		getMultiAlmox();
 		buscaInfoUsuAtual();
 		setaInfoTela();
@@ -480,6 +482,11 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 				setFiltro('3');
 		}
 	}
+
+	@Override
+	public void createEmailBean() {
+		// TODO Definir como os modulos que usam o banco freedom.fdb criaram o seu bean de email.		
+	}	
 
 }
 
