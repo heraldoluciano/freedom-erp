@@ -22,7 +22,7 @@
  * Display de espera.
  */
 
-package org.freedom.modulos.rep;
+package org.freedom.telas;
 
 
 import java.awt.BorderLayout;
