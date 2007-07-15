@@ -94,6 +94,23 @@ public class EmailBean {
 	public void setUsuario( String user ) {		
 		this.usuario = user;
 	}
+	
+	public EmailBean getClone() {
+				
+		EmailBean clone = new EmailBean();
+		
+		clone.setAssunto( getAssunto() );
+		clone.setHost( getHost() );
+		clone.setPorta( getPorta() );
+		clone.setUsuario( getUsuario() );
+		clone.setSenha( getSenha() );
+		clone.setDe( getDe() );
+		clone.setPara( getPara() );
+		clone.setAutentica( getAutentica() );
+		clone.setSsl( getSsl() );
+		
+		return clone;
+	}
 
 	public String getEmailEmp( final Connection con ) {
 
