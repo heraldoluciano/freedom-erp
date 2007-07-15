@@ -45,8 +45,8 @@
 	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(4)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["C:\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\modulos\\rep\\relatorios\\"]]></defaultValueExpression>
+	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["/opt/freedom/reports/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
@@ -1182,9 +1182,7 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[($F{CEPCLI} != null ? 
-$F{CEPCLI}.trim().substring(0,4) + "-" + $F{CEPCLI}.trim().substring(5)
-: "")]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[(($F{CEPCLI}!=null && $F{CEPCLI}.trim().length()>4) ? $F{CEPCLI}.trim().substring(0,4) + "-" + $F{CEPCLI}.trim().substring(5) : "")]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -1211,8 +1209,8 @@ $F{CEPCLI}.trim().substring(0,4) + "-" + $F{CEPCLI}.trim().substring(5)
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[($F{DDDCLI} != null ? "(" + $F{DDDCLI}.trim() + ")" : "")
-+ ($F{FONECLI} != null ? " " + $F{FONECLI}.trim().substring(0,4) + "-" + $F{FONECLI}.trim().substring(4) : "")
-+ ($F{FAXCLI} != null ? " " + $F{FAXCLI}.trim().substring(0,4) + "-" + $F{FAXCLI}.trim().substring(4) : "")]]></textFieldExpression>
++ (($F{FONECLI}!=null && $F{FONECLI}.trim().length()>3) ? " " + $F{FONECLI}.trim().substring(0,4) + "-" + $F{FONECLI}.trim().substring(4) : "")
++ (($F{FAXCLI}!=null && $F{FAXCLI}.trim().length()>3) ? " " + $F{FAXCLI}.trim().substring(0,4) + "-" + $F{FAXCLI}.trim().substring(4) : "")]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -1296,7 +1294,7 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMEVEND} != null ? ( "Vendedor : " + $F{NOMEVEND}.trim() ) : ""]]></textFieldExpression>
 				</textField>
@@ -2058,19 +2056,6 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 		</columnHeader>
 		<detail>
 			<band height="16"  isSplitAllowed="true" >
-				<rectangle>
-					<reportElement
-						x="0"
-						y="0"
-						width="535"
-						height="15"
-						forecolor="#F4F4FF"
-						backcolor="#F4F4FF"
-						key="rectangle-1">
-							<printWhenExpression><![CDATA[new Boolean( $V{COLUMN_COUNT}.intValue()%2 == 0 )]]></printWhenExpression>
-						</reportElement>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
 				<line direction="TopDown">
 					<reportElement
 						x="535"

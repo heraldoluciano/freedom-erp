@@ -45,8 +45,8 @@
 	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(4)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["C:\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\modulos\\rep\\relatorios\\"]]></defaultValueExpression>
+	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["/opt/freedom/reports/"]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT CODPROD, DESCPROD, CODBARPROD, EMBALAPROD,
 PRECOPROD1, PRECOPROD2, PRECOPROD3

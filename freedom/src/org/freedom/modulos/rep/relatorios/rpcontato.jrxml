@@ -45,8 +45,8 @@
 	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(4)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["C:\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\modulos\\rep\\relatorios\\"]]></defaultValueExpression>
+	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["/opt/freedom/reports/"]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT CODCONT, NOMECONT, ENDCONT, CIDCONT, CEPCONT, 
 ESTCONT, DDDCONT, FONECONT, FAXCONT, EMAILCONT, NASCCONT
@@ -220,7 +220,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Courier-Bold" size="9" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Fone / Fax]]></text>
+				<text><![CDATA[Fone]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -401,8 +401,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 						<font size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[($F{DDDCONT} != null ? "(" + $F{DDDCONT}.trim() + ")" : "")
-+ ($F{FONECONT} != null ? $F{FONECONT}.trim().substring(0,4) + "-" + $F{FONECONT}.trim().substring(4) : "")
-+ ($F{FAXCONT} != null ? " / " + $F{FAXCONT}.trim().substring(0,4) + "-" + $F{FAXCONT}.trim().substring(4) : "")]]></textFieldExpression>
++ (($F{FONECONT}!=null && $F{FONECONT}.trim().length()>3) ? $F{FONECONT}.trim().substring(0,4) + "-" + $F{FONECONT}.trim().substring(4) : "")]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
