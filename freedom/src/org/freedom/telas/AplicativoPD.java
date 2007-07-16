@@ -42,6 +42,7 @@ import org.freedom.bmps.Imagem;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ObjetoEmpresa;
 import org.freedom.componentes.TabObjeto;
+import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 
 public class AplicativoPD extends Aplicativo implements ActionListener, KeyListener {
@@ -485,8 +486,69 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 
 	@Override
 	public void createEmailBean() {
-		// TODO Definir como os modulos que usam o banco freedom.fdb criaram o seu bean de email.		
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		EmailBean email = new EmailBean();
+		sql.append("SELECT P3.SMTPMAIL, P3.SMTPAUTMAIL, P3.USERMAIL, P3.PASSMAIL, ");
+		sql.append("P3.SMTPSSLMAIL, P3.PORTAMAIL ");
+		sql.append("FROM SGPREFERE3 P3 ");
+		sql.append("WHERE P3.CODEMP=? AND P3.CODFILIAL=?");
+		try {
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				email.setHost( rs.getString("SMTPMAIL") );
+				email.setAutentica( rs.getString( "SMTPAUTMAIL" ) );
+				email.setSsl( rs.getString("SMTPSSLMAIL") );
+				email.setPorta( rs.getInt( "PORTAMAIL") );
+				email.setUsuario( rs.getString( "USERMAIL" ) );
+				email.setSenha( rs.getString("PASSMAIL") );
+				setEmailBean( email  );
+			}
+			rs.close();
+			ps.close();
+			if (!con.getAutoCommit()) {
+				con.commit();
+			}
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( null, "Não foi possível carregar as informações para envio de emial!\n"+
+					e.getMessage() );
+		}
+		
 	}	
+	@Override
+	public void updateEmailBean(EmailBean email) {
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append("UPDATE SGPREFERE3 P3 ");
+		sql.append("SET P3.SMTPMAIL=?, P3.SMTPAUTMAIL=?, P3.USERMAIL=?, P3.PASSMAIL=?, ");
+		sql.append("P3.SMTPSSLMAIL=?, P3.PORTAMAIL=? ");
+		sql.append("WHERE P3.CODEMP=? AND P3.CODFILIAL=?");
+		try {
+			ps = con.prepareStatement( sql.toString() );
+			ps.setString( 1, email.getHost() );
+			ps.setString( 2, email.getAutentica() );
+			ps.setString( 3, email.getUsuario() );
+			ps.setString( 4, email.getSenha() );
+			ps.setString(  5, email.getSsl() );
+			ps.setInt( 6, email.getPorta() );
+			ps.setInt( 7, iCodEmp );
+			ps.setInt( 8, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+			ps.executeUpdate();
+			ps.close();
+			if (!con.getAutoCommit()) {
+				con.commit();
+			}
+			setEmailBean( email );
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( null, "Não foi gravar as alterações de configuração de email!\n"+
+					e.getMessage() );
+		}
+		
+	}
 
 }
 

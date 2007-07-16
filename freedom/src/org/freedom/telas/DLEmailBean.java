@@ -30,6 +30,7 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.EmailBean;
+import org.freedom.funcoes.Funcoes;
 
 public class DLEmailBean extends FFDialogo {
 
@@ -61,12 +62,15 @@ public class DLEmailBean extends FFDialogo {
 		this.mail = mail;
 		
 		if ( mail != null) {
-			
-			txtHost.setVlrString( mail.getHost() );
-			txtPort.setVlrInteger( mail.getPorta() );
-			txtFrom.setVlrString( mail.getDe() );
-			cbAutenticaSMTP.setVlrString( mail.getAutentica() );
-			cbSSLSMTP.setVlrString( mail.getSsl() );
+			try {
+				txtHost.setVlrString( mail.getHost() );
+				txtPort.setVlrInteger( mail.getPorta() );
+				txtFrom.setVlrString( mail.getDe() );
+				cbAutenticaSMTP.setVlrString( mail.getAutentica() );
+				cbSSLSMTP.setVlrString( mail.getSsl() );
+			} catch (Exception e) {
+				Funcoes.mensagemErro( null, "Não foi possível carregar as todas as informações para envio de email!\n" );
+			}
 		}
 	}
 
