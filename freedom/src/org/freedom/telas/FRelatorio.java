@@ -144,16 +144,14 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 			imprimir( false );
 		}
 		else if ( evt.getSource() == btPrevimp ) {
-			ProcessoSec pSec = new ProcessoSec( 500, new Processo() {
-				public void run() { }
-			}, new Processo() {
+			Thread th = new Thread( new Processo() {
 				public void run() {
 					wait.start();
 					imprimir( true );
 					wait.stop();
 				}
 			} );
-			pSec.iniciar();
+			th.start();
 		}
 	}
 
