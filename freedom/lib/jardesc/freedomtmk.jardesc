@@ -13,20 +13,21 @@
 <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes{Funcoes.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.componentes"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.pd"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.tmk"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.componentes"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.tmk"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.orc"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.atd"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes{EmailBean.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.nf"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd"/>
 </selectedElements>
 </jardesc>

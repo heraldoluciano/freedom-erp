@@ -52,8 +52,8 @@
 <file path="/freedom/src/org/freedom/images/freedompdv.ico"/>
 <file path="/freedom/src/org/freedom/images/ba1110.gif"/>
 <file path="/freedom/src/org/freedom/images/btSimilar.gif"/>
-<file path="/freedom/src/org/freedom/images/btAprovaOrc2.gif"/>
 <file path="/freedom/src/org/freedom/images/btTXT.gif"/>
+<file path="/freedom/src/org/freedom/images/btAprovaOrc2.gif"/>
 <file path="/freedom/src/org/freedom/images/lgSTP2.jpg"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoAgenda.java"/>
 <file path="/freedom/src/org/freedom/relatorios/RegistroEntrada.jasper"/>
@@ -173,8 +173,8 @@
 <file path="/freedom/src/org/freedom/relatorios/receberSetor.jrxml"/>
 <file path="/freedom/src/org/freedom/images/btEstProduto.gif"/>
 <file path="/freedom/src/org/freedom/images/btLancamentoFin.gif"/>
-<file path="/freedom/src/org/freedom/images/btFluxo.gif"/>
 <file path="/freedom/src/org/freedom/images/ba1100.gif"/>
+<file path="/freedom/src/org/freedom/images/btFluxo.gif"/>
 <file path="/freedom/src/org/freedom/images/btEntrada.gif"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
 <file path="/freedom/src/org/freedom/images/btImprimeOrc.gif"/>
@@ -205,6 +205,7 @@
 <file path="/freedom/src/org/freedom/images/load_1.gif"/>
 <file path="/freedom/src/org/freedom/images/btsoliccp.gif"/>
 <file path="/freedom/src/org/freedom/images/ba1001.gif"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes{EmailBean.java"/>
 <file path="/freedom/src/org/freedom/relatorios/ResumoDiarioDetalhado.jrxml"/>
 <file path="/freedom/src/org/freedom/images/barraEstoque.gif"/>
 <file path="/freedom/src/org/freedom/images/clPagoParcial.gif"/>
@@ -270,9 +271,9 @@
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConsAutoriz.java"/>
 <file path="/freedom/src/org/freedom/images/firefox.png"/>
 <file path="/freedom/src/org/freedom/images/btOk.gif"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes{Logger.java"/>
 <file path="/freedom/src/org/freedom/relatorios/gercontas.jasper"/>
 <file path="/freedom/src/org/freedom/images/bgFreedomSTD2.jpg"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes{Logger.java"/>
 <file path="/freedom/src/org/freedom/images/btFlechaDir.gif"/>
 <file path="/freedom/src/org/freedom/images/iconConfiguracao32.gif"/>
 <file path="/freedom/src/org/freedom/images/ba1000.gif"/>
