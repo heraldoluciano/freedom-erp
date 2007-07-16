@@ -297,6 +297,7 @@ public class FRVendasDet extends FRelatorio {
 			sSQL.append( sWhere3 );
 			sSQL.append( sWhere4 );
 			sSQL.append( sWhere5 );
+			sSQL.append( sWhere6 );
 			sSQL.append( "ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA" );
 
 			ps = con.prepareStatement( sSQL.toString() );
