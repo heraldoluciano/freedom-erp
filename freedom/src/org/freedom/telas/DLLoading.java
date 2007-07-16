@@ -78,7 +78,7 @@ public class DLLoading extends JWindow implements ActionListener {
 		
 		panel.setLayout( new BorderLayout() );
 		panel.setBackground( azul_claro );
-		panel.setBorder( BorderFactory.createEtchedBorder( azul, azul ) );
+		panel.setBorder( BorderFactory.createEtchedBorder( 2, azul, azul ) );
 		c.add( panel, BorderLayout.CENTER );
 		
 		loading.setIcon( img[ index ] );
@@ -101,13 +101,15 @@ public class DLLoading extends JWindow implements ActionListener {
 
 		if( ! timer.isRunning() ) {
 			timer.start();
+			setVisible( true );
 		}		
-		setVisible( true );
 	}
 	
 	public void stop() {
 		
-		timer.stop();
+		if( timer.isRunning() ) {
+			timer.stop();
+		}
 		dispose();
 	}
 	
