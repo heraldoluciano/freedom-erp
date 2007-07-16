@@ -170,7 +170,9 @@ public class DLEnviarEmail extends FFDialogo {
 		DLEmailBean dlemail = new DLEmailBean( mail );
 		dlemail.setVisible( true );
 		mail = dlemail.getEmailBean();
-		
+		if (mail!=null) {
+			Aplicativo.updateEmailBean(mail);
+		}
 		return mail;
 	}
 	
