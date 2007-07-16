@@ -137,6 +137,7 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btSair ) {
+			wait.stop();
 			dispose();
 		}
 		else if ( evt.getSource() == btImp ) {
