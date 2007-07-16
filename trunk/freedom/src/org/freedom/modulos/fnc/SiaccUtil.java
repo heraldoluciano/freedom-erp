@@ -582,7 +582,7 @@ class SiaccUtil extends FbnUtil {
 			this.sbreg.append( format( numAgenda, ETipo.$9, 6, 0 ) );
 			this.sbreg.append( format( "", ETipo.X, 8, 0 ) ); // Reservado para o futuro
 			this.sbreg.append( format( numSeq, ETipo.$9, 6, 0 ) ); // Reservado para o futuro
-			this.sbreg.append( COD_MOV );
+			this.sbreg.append( stfRec.getArgs()[ EColrec.CODMOVIMENTO.ordinal() ] );
 			this.sbreg.append( (char) 13 );
 			this.sbreg.append( (char) 10 );
 		}

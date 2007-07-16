@@ -50,6 +50,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JPanelPad;
@@ -63,7 +65,7 @@ import org.freedom.modulos.fnc.FbnUtil.EPrefs;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
-public abstract class FRemFBN extends FFilho implements ActionListener, MouseListener {
+public abstract class FRemFBN extends FFilho implements ActionListener, MouseListener, RadioGroupListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -99,9 +101,11 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 	protected final JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	protected final JRadioGroup rgData;
+	protected JRadioGroup rgData;
 	
-	protected final JRadioGroup rgSitRemessa;
+	protected JRadioGroup rgSitRemessa;
+	
+	protected JRadioGroup rgTipoRemessa;
 
 	private final JButton btCarrega = new JButton( "Buscar", Icone.novo( "btExecuta.gif" ) );
 
@@ -121,14 +125,6 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 	protected Map<Enum, Object> prefs = new HashMap<Enum, Object>();
 	
-	private final Vector<String> vVals = new Vector<String>();
-	
-	private final Vector<String> vLabs = new Vector<String>();
-
-	private final Vector<String> vValsRem = new Vector<String>();
-	
-	private final Vector<String> vLabsRem = new Vector<String>();
-	
 	protected String where = "";
 	
 	
@@ -139,36 +135,9 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		setAtribos( 10, 10, 780, 540 );
 		
 		this.TIPO_FEBRABAN = tipofebraban;
-
-		vVals.addElement( "E" );
-		vVals.addElement( "V" );
-		vLabs.addElement( "Emissão" );
-		vLabs.addElement( "Vencimento" );
-		rgData = new JRadioGroup( 2, 1, vLabs, vVals );
 		
-		vValsRem.addElement( "00" );
-		vValsRem.addElement( "01" );
-		vValsRem.addElement( "02" );
-		vValsRem.addElement( "99" );
-		vLabsRem.addElement( "Não exportados" );
-		vLabsRem.addElement( "Exportados" );
-		vLabsRem.addElement( "Rejeitados" );
-		vLabsRem.addElement( "Todos" );
-		
-		rgSitRemessa = new JRadioGroup( 2, 2, vLabsRem, vValsRem );
-
-		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
-		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
-		lcBanco.montaSql( false, "BANCO", "FN" );
-		lcBanco.setQueryCommit( false );
-		lcBanco.setReadOnly( true );
-		txtCodBanco.setNomeCampo( "CodBanco" );
-		txtCodBanco.setTabelaExterna( lcBanco );
-		txtCodBanco.setListaCampos( lcBanco );
-		txtCodBanco.setFK( true );
-		txtCodBanco.setRequerido( true );
-		txtNomeBanco.setListaCampos( lcBanco );
-
+		montaRadioGrupos();
+		montaListaCampos();
 		montaTela();
 
 		tab.adicColuna( "Sel." );
@@ -208,10 +177,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		tab.setTamColuna( 30, EColTab.COL_PESSOACLI.ordinal() );
 		tab.setTamColuna( 80, EColTab.COL_CPFCLI.ordinal() );
 		tab.setTamColuna( 80, EColTab.COL_CNPJCLI.ordinal() );
-		
-
 		tab.setColunaEditavel( EColTab.COL_SEL.ordinal(), true );
-
 		tab.addMouseListener( this );
 
 		btCarrega.addActionListener( this );
@@ -219,8 +185,9 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		btSelNada.addActionListener( this );
 		btExporta.addActionListener( this );
 		btImprime.addActionListener( this );
-		btVisImp.addActionListener( this );
+		btVisImp.addActionListener( this );		
 		
+		rgTipoRemessa.addRadioGroupListener( this );
 		
 		btSelTudo.setToolTipText( "Selecionar tudo" );
 		btSelNada.setToolTipText( "Limpar seleção" );
@@ -231,6 +198,63 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		txtDtIni.setVlrDate( cal.getTime() );
 
 	}
+	
+	private void montaRadioGrupos() {
+		
+		Vector<String> vValsDate = new Vector<String>();
+		
+		Vector<String> vLabsDate = new Vector<String>();
+
+		Vector<String> vValsRem = new Vector<String>();
+		
+		Vector<String> vLabsRem = new Vector<String>();
+
+		Vector<String> vValsTipo = new Vector<String>();
+		
+		Vector<String> vLabsTipo = new Vector<String>();
+
+		vValsDate.addElement( "E" );
+		vValsDate.addElement( "V" );
+		vLabsDate.addElement( "Emissão" );
+		vLabsDate.addElement( "Vencimento" );
+		rgData = new JRadioGroup( 2, 1, vLabsDate, vValsDate );
+		
+		vValsRem.addElement( "00" );
+		vValsRem.addElement( "01" );
+		vValsRem.addElement( "02" );
+		vValsRem.addElement( "99" );
+		vLabsRem.addElement( "Não exportados" );
+		vLabsRem.addElement( "Exportados" );
+		vLabsRem.addElement( "Rejeitados" );
+		vLabsRem.addElement( "Todos" );
+		
+		rgSitRemessa = new JRadioGroup( 2, 2, vLabsRem, vValsRem );
+		
+		vValsTipo.addElement( "1" );
+		vValsTipo.addElement( "2" );
+		vLabsTipo.addElement( "Inclusão" );
+		vLabsTipo.addElement( "Exclusão" );
+		rgTipoRemessa = new JRadioGroup( 2, 1, vLabsTipo, vValsTipo );
+	}
+	
+	private void montaListaCampos() {
+		
+		/***************
+		 *   FNBANCO   *
+		 ***************/
+
+		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
+		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
+		lcBanco.montaSql( false, "BANCO", "FN" );
+		lcBanco.setQueryCommit( false );
+		lcBanco.setReadOnly( true );
+		txtCodBanco.setNomeCampo( "CodBanco" );
+		txtCodBanco.setTabelaExterna( lcBanco );
+		txtCodBanco.setListaCampos( lcBanco );
+		txtCodBanco.setFK( true );
+		txtCodBanco.setRequerido( true );
+		txtNomeBanco.setListaCampos( lcBanco );
+	}
 
 	private void montaTela() {
 	
@@ -239,27 +263,32 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		panelRemessa.add( panelFiltros, BorderLayout.NORTH );
 		panelRemessa.add( panelTabela, BorderLayout.CENTER );
 		panelRemessa.add( panelStatus, BorderLayout.SOUTH );
-	
-		panelFiltros.setPreferredSize( new Dimension( 300, 145 ) );
-		panelFiltros.adic( new JLabel( "Cód.banco" ), 7, 0, 90, 20 );
-		panelFiltros.adic( txtCodBanco, 7, 20, 90, 20 );
-		panelFiltros.adic( new JLabel( "Nome do banco" ), 100, 0, 300, 20 );
-		panelFiltros.adic( txtNomeBanco, 100, 20, 300, 20 );
-	
+
 		JLabel bordaData = new JLabel();
 		bordaData.setBorder( BorderFactory.createEtchedBorder() );
+		JLabel periodo = new JLabel( "Periodo", SwingConstants.CENTER );
+		periodo.setOpaque( true );
+		
+		panelFiltros.setPreferredSize( new Dimension( 300, 165 ) );
+		panelFiltros.adic( new JLabel( "Cód.banco" ), 7, 10, 90, 20 );
+		panelFiltros.adic( txtCodBanco, 7, 30, 90, 20 );
+		panelFiltros.adic( new JLabel( "Nome do banco" ), 100, 10, 300, 20 );
+		panelFiltros.adic( txtNomeBanco, 100, 30, 318, 20 );	
+		
+		panelFiltros.adic( periodo, 443, 10, 80, 20 );
+		panelFiltros.adic( txtDtIni, 445, 30, 120, 20 );
+		panelFiltros.adic( new JLabel( "até", SwingConstants.CENTER ), 565, 30, 50, 20 );
+		panelFiltros.adic( txtDtFim, 615, 30, 120, 20 );
+		panelFiltros.adic( bordaData, 433, 20, 317, 40 );	
+
+		panelFiltros.adic( new JLabel( "Tipo de remessa:" ), 7, 60, 150, 20 );
+		panelFiltros.adic( rgTipoRemessa, 7, 80, 150, 70 );
+		panelFiltros.adic( new JLabel( "filtro:" ), 170, 60, 250, 20 );
+		panelFiltros.adic( rgSitRemessa, 170, 80, 250, 70 );
+		panelFiltros.adic( new JLabel( "filtro:" ), 433, 60, 150, 20 );
+		panelFiltros.adic( rgData, 433, 80, 150, 70 );
 	
-		panelFiltros.adic( new JLabel( "filtro:" ), 7, 40, 60, 20 );
-		panelFiltros.adic( rgSitRemessa, 7, 60, 250, 70 );
-		panelFiltros.adic( new JLabel( "filtro:" ), 260, 40, 60, 20 );
-		panelFiltros.adic( rgData, 260, 60, 120, 70 );
-		panelFiltros.adic( new JLabel( "Período:" ), 383, 40, 80, 20 );
-		panelFiltros.adic( txtDtIni, 395, 85, 75, 20 );
-		panelFiltros.adic( new JLabel( "até", SwingConstants.CENTER ), 468, 85, 40, 20 );
-		panelFiltros.adic( txtDtFim, 505, 85, 75, 20 );
-		panelFiltros.adic( bordaData, 383, 60, 210, 70 );
-	
-		panelFiltros.adic( btCarrega, 605, 80, 150, 30 );
+		panelFiltros.adic( btCarrega, 600, 100, 150, 30 );
 	
 		panelTabela.add( new JScrollPane( tab ), BorderLayout.CENTER );
 		panelTabela.add( panelFuncoes, BorderLayout.EAST );
@@ -332,12 +361,13 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			
 			sql.append( "SELECT I.CODCONV, P.NOMEEMP, I.VERLAYOUT, I.IDENTSERV, I.CONTACOMPR, " );
 			sql.append( "I.IDENTAMBCLI, I.IDENTAMBBCO, I.NROSEQ, " );
-			sql.append( "I.AGENCIA, I.NUMCONTA, E.CNPJFILIAL " );
-			sql.append( "FROM SGITPREFERE6 I, SGPREFERE6 P, SGFILIAL E " );
+			sql.append( "I.NUMCONTA, C.AGENCIACONTA, E.CNPJFILIAL " );
+			sql.append( "FROM SGITPREFERE6 I, SGPREFERE6 P, SGFILIAL E, FNCONTA C " );
 			sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? " );
 			sql.append( "AND I.CODEMPBO=? AND I.CODFILIALBO=? AND I.CODBANCO=? AND I.TIPOFEBRABAN=? " );
 			sql.append( "AND P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL " );
-			sql.append( "AND E.CODEMP=I.CODEMP AND E.CODFILIAL=I.CODFILIAL" );
+			sql.append( "AND E.CODEMP=I.CODEMP AND E.CODFILIAL=I.CODFILIAL " );
+			sql.append( "AND C.CODEMP=I.CODEMPCA AND C.CODFILIAL=I.CODFILIALCA AND C.NUMCONTA=I.NUMCONTA " );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -361,8 +391,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				prefs.put( EPrefs.IDENTAMBCLI, rs.getString( EPrefs.IDENTAMBCLI.toString() ) );
 				prefs.put( EPrefs.IDENTAMBBCO, rs.getString( EPrefs.IDENTAMBBCO.toString() ) );
 				prefs.put( EPrefs.NROSEQ, new Integer( rs.getInt( EPrefs.NROSEQ.toString() ) ) );
-				prefs.put( EPrefs.AGENCIA, rs.getString( EPrefs.AGENCIA.toString() ).substring( 0, rs.getString( EPrefs.AGENCIA.toString() ).indexOf( '-' ) ) );
-				prefs.put( EPrefs.DIGAGENCIA, rs.getString( EPrefs.AGENCIA.toString() ).substring( rs.getString( EPrefs.AGENCIA.toString() ).indexOf( '-' ) ) );
+				prefs.put( EPrefs.AGENCIA, rs.getString( "AGENCIACONTA" ).substring( 0, rs.getString( "AGENCIACONTA" ).indexOf( '-' ) ) );
+				prefs.put( EPrefs.DIGAGENCIA, rs.getString( "AGENCIACONTA" ).substring( rs.getString( "AGENCIACONTA" ).indexOf( '-' ) ) );
 				prefs.put( EPrefs.NUMCONTA, rs.getString( EPrefs.NUMCONTA.toString() ).substring( rs.getString( EPrefs.NUMCONTA.toString() ).indexOf( '-' ) ) );
 				prefs.put( EPrefs.DIGCONTA, rs.getString( EPrefs.NUMCONTA.toString() ).substring( rs.getString( EPrefs.NUMCONTA.toString() ).indexOf( '-' ) ) ); 
 				prefs.put( EPrefs.DIGAGCONTA, null );
@@ -380,9 +410,10 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			if ( ! con.getAutoCommit() ) {
 				con.commit();
 			}
-		} catch ( SQLException sqlError ) {
+		} catch ( Exception e ) {
 			retorno = false;
-			Funcoes.mensagemErro( this, "Carregando parâmetros!\n" + sqlError.getMessage() );
+			Funcoes.mensagemErro( this, "Carregando parâmetros!\n" + e.getMessage() );
+			e.printStackTrace();
 			lbStatus.setText( "" );
 		}
 		
@@ -486,6 +517,10 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			else {
 				lbStatus.setText( "" );
 			}
+			
+			if ( "2".equals( rgTipoRemessa.getVlrString() ) ) {
+				selecionaNada();
+			}
 
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao busca dados!\n" + e.getMessage() );
@@ -555,7 +590,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 						Funcoes.strToBd( vLinha.elementAt( EColTab.COL_VLRAPAG.ordinal() )).toString(),
 						(String) vLinha.elementAt( EColTab.COL_PESSOACLI.ordinal() ),
 						(String) vLinha.elementAt( EColTab.COL_CPFCLI.ordinal() ),
-						(String) vLinha.elementAt( EColTab.COL_CNPJCLI.ordinal() ) } ) );
+						(String) vLinha.elementAt( EColTab.COL_CNPJCLI.ordinal() ),
+						rgTipoRemessa.getVlrString() } ) );
 						/*
 						 * String codBanco, String tipoFebraban, String stipoFebraban, 
 						 * String sitRemessa {CODBANCO, TIPOFEBRABAN, 
@@ -838,6 +874,16 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 	
 	abstract public void imprimir( boolean bVisualizar ); 
 	
+	public void valorAlterado( RadioGroupEvent e ) {
+
+		if ( "1".equals( rgTipoRemessa.getVlrString() ) ) {
+			selecionaTudo();
+		}
+		else if ( "2".equals( rgTipoRemessa.getVlrString() ) ) {
+			selecionaNada();
+		}
+	}
+
 	public void actionPerformed( ActionEvent evt ) {
 	
 		if ( evt.getSource() == btCarrega ) {
