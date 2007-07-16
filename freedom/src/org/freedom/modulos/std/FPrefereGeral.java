@@ -28,6 +28,8 @@ import java.sql.Connection;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -178,13 +180,19 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 	private JTextFieldFK txtDescCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtSmtpMail = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldPad txtServidorSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtUserMail = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldPad txtPortaSMTP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private final JTextFieldPad txtUsuarioSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );	
+	
+	private final JPasswordFieldPad txtSenhaSMTP = new JPasswordFieldPad( 30 );
+	
+	private final JCheckBoxPad cbAutenticaSMTP = new JCheckBoxPad( "Autenticar ?", "S", "N" );
+	
+	private final JCheckBoxPad cbSSLSMTP = new JCheckBoxPad( "Usa SSL ?", "S", "N" );
 
 	private JTextFieldPad txtDiasVencOrc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad( 16 );
 
 	private final String opcoes = "    Opções";
 
@@ -944,14 +952,23 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		setListaCampos( lcPrefere3 );
 		setPainel( pinEmail );
 		adicTab( "Mail", pinEmail );
-		JLabelPad lbServer = new JLabelPad( "   Configurações para envio de email" );
-		lbServer.setOpaque( true );
-		adic( lbServer, 15, 10, 230, 15 );
-		adic( pinSmtp, 10, 15, 320, 160 );
-		setPainel( pinSmtp );
-		adicCampo( txtSmtpMail, 10, 30, 150, 20, "SmtpMail", "Servidor SMTP", ListaCampos.DB_SI, false );
-		adicCampo( txtUserMail, 10, 70, 150, 20, "UserMail", "Usuario SMTP", ListaCampos.DB_SI, false );
-		adicCampo( txpPassMail, 10, 110, 150, 20, "PassMail", "Senha SMTP", ListaCampos.DB_SI, false );
+		
+		JLabel email = new JLabel( "Configuração de e-mail", SwingConstants.CENTER );
+		email.setOpaque( true );
+		JLabel linha2 = new JLabel();
+		linha2.setBorder( BorderFactory.createEtchedBorder() );
+		
+		adic( email, 27, 10, 180, 20 );
+		adic( linha2, 7, 20, 403, 155 );
+		
+		//setPainel( pinSmtp );
+		
+		adicCampo( txtServidorSMTP, 17, 60, 230, 20, "SMTPMAIL", "Servidor de SMTP", ListaCampos.DB_SI, false );
+		adicCampo( txtPortaSMTP, 250, 60, 50, 20, "PORTAMAIL", "Porta", ListaCampos.DB_SI, false );
+		adicDB( cbAutenticaSMTP, 307, 60, 100, 20, "SMTPAUTMAIL", "", false );
+		adicCampo( txtUsuarioSMTP, 17, 100, 283, 20, "USERMAIL", "Id do usuario", ListaCampos.DB_SI, false );
+		adicDB( cbSSLSMTP, 307, 100, 100, 20, "SMTPSSLMAIL", "", false );
+		adicCampo( txtSenhaSMTP, 17, 140, 283, 20, "PASSMAIL", "Senha do usuario", ListaCampos.DB_SI, false );
 		setListaCampos( false, "PREFERE3", "SG" );
 
 		// fim da adicï¿½o de abas
