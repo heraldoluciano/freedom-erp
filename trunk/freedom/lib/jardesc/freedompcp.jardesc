@@ -12,8 +12,8 @@
 </manifest>
 <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoMov.java"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBuscaEstoq.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRConfEstoq.java"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBuscaEstoq.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLCodProd.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FCLFiscal.java"/>
@@ -32,8 +32,8 @@
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FProcessaEQ.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.nf"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLNovoAgen.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.tmk{FPrefere.java"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBuscaProd.java"/>
