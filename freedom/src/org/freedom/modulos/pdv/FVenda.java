@@ -635,7 +635,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 			robo = new Robot();
 
-			sSQL = "SELECT CODPROD, QTDITORC, VLRPRODITORC, PERCDESCITORC, VLRDESCITORC, CODLOTE " + "FROM VDITORCAMENTO " + "WHERE CODEMP=? AND CODFILIAL=? AND CODORC=? AND CODITORC=?";
+			sSQL = "SELECT CODPROD, QTDITORC, VLRPRODITORC, PERCDESCITORC, VLRDESCITORC, CODLOTE " + 
+			  "FROM VDITORCAMENTO " + "WHERE CODEMP=? AND CODFILIAL=? AND CODORC=? AND CODITORC=?";
 
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, AplicativoPDV.iCodEmp );
@@ -650,6 +651,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 				robo.keyPress( KeyEvent.VK_ENTER );
 
+
+				
 				txtPreco.setVlrBigDecimal( rs.getBigDecimal( "VLRPRODITORC" ) );
 				txtPercDescItOrc.setVlrBigDecimal( rs.getBigDecimal( "PERCDESCITORC" ) != null ? rs.getBigDecimal( "PERCDESCITORC" ) : new BigDecimal( "0" ) );
 				txtVlrDescItOrc.setVlrBigDecimal( rs.getBigDecimal( "VLRDESCITORC" ) != null ? rs.getBigDecimal( "VLRDESCITORC" ) : new BigDecimal( "0" ) );
@@ -1052,8 +1055,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		BigDecimal[] argsComis = getItComis( iCodItOrc );
 
 		try {
-
-			sSQL = "SELECT CODITVENDA,PERCICMSITVENDA,VLRBASEICMSITVENDA,VLRICMSITVENDA,VLRLIQITVENDA FROM VDADICITEMPDVSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			sSQL = "SELECT CODITVENDA,PERCICMSITVENDA,VLRBASEICMSITVENDA,VLRICMSITVENDA,VLRLIQITVENDA " +
+					"FROM VDADICITEMPDVSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, txtCodVenda.getVlrInteger().intValue() );
