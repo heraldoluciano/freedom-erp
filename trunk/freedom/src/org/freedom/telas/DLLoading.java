@@ -48,9 +48,9 @@ public class DLLoading extends JWindow implements ActionListener {
 
 	private static final long serialVersionUID = 1;
 	
-	private final Color azul_claro = new Color( 0.95f, 0.95f, 1f );
+	private final Color azul_claro = new Color( 0.9f, 0.93f, 1f );
 	
-	private final Color azul = new Color( 0.6f, 0.62f, 0.8f );
+	private final Color azul = new Color( 0.5f, 0.62f, 0.95f );
 	
 	private final JLabel aguarde = new JLabel( "Aguarde ...", SwingConstants.CENTER );
 	
@@ -60,7 +60,7 @@ public class DLLoading extends JWindow implements ActionListener {
 	
 	private ImageIcon[] img = new ImageIcon[ 8 ];
 	
-	private Timer timer = new Timer( 120, this );
+	private Timer timer = new Timer( 100, this );
 	
 	private int index = 0;
 	
@@ -78,7 +78,7 @@ public class DLLoading extends JWindow implements ActionListener {
 		
 		panel.setLayout( new BorderLayout() );
 		panel.setBackground( azul_claro );
-		panel.setBorder( BorderFactory.createEtchedBorder( Color.GRAY, Color.GRAY ) );
+		panel.setBorder( BorderFactory.createEtchedBorder( azul, azul ) );
 		c.add( panel, BorderLayout.CENTER );
 		
 		loading.setIcon( img[ index ] );
