@@ -71,6 +71,39 @@ public class AplicativoRep extends AplicativoPD {
 		setEmailBean( mail );
 	}
 
+	@Override
+	public void updateEmailBean( EmailBean email ) {
+		
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			sql.append( "UPDATE SGPREFERE1 " );
+			sql.append( "SET SERVIDORSMTP=?,PORTASMTP=?,USUARIOSMTP=?,SENHASMTP=?,AUTENTICASMTP=?,SSLSMTP=? " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=?" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setString( 1, email.getHost() );
+			ps.setInt( 2, email.getPorta() );
+			ps.setString( 3, email.getUsuario() );
+			ps.setString( 4, email.getSenha() );
+			ps.setString( 5, email.getAutentica() );
+			ps.setString( 6, email.getSsl() );
+			ps.setInt( 7, iCodEmp );
+			ps.setInt( 8, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			ps.executeUpdate();
+			ps.close();
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
+			setEmailBean( email );
+			
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( null, "Não foi gravar as alterações de configuração de email!\n" + e.getMessage() );
+		}
+	}
+
 	public static void atualizaEmailBean( Connection con ) {
 		
 		List<Object> prefere = RPPrefereGeral.getPrefere( con );

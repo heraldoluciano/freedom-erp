@@ -80,7 +80,7 @@ public class DLEnviarEmail extends FFDialogo {
 
 	private final JTextFieldPad txtUser = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JPasswordFieldPad txtPassword = new JPasswordFieldPad( 20 );
+	private final JPasswordFieldPad txtPassword = new JPasswordFieldPad( 30 );
 
 	private final JTextAreaPad txtMessage = new JTextAreaPad( 1000 );
 
@@ -170,9 +170,12 @@ public class DLEnviarEmail extends FFDialogo {
 		DLEmailBean dlemail = new DLEmailBean( mail );
 		dlemail.setVisible( true );
 		mail = dlemail.getEmailBean();
-		if (mail!=null) {
-			Aplicativo.updateEmailBean(mail);
+		
+		if ( mail != null ) {
+			
+			Aplicativo.getInstace().updateEmailBean( mail );
 		}
+		
 		return mail;
 	}
 	

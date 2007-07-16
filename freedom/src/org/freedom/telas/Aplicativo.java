@@ -187,15 +187,22 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	
 	private static EmailBean emailbean = null;
 	
-
-	public Connection getConIB() {
-
-		return conIB;
-	}
+	private static Aplicativo instance = null;
+	
 
 	public Aplicativo() {
 
 		Locale.setDefault( new Locale( "pt", "BR" ) );
+		instance = this;
+	}
+	
+	public static Aplicativo getInstace() {
+		return instance;
+	}
+	
+	public Connection getConIB() {
+
+		return conIB;
 	}
 
 	public static void setLookAndFeel( String sNomeArqIni ) {
@@ -908,5 +915,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	}
 	
 	public abstract void createEmailBean();
+	
+	public abstract void updateEmailBean( EmailBean email );
 
 }

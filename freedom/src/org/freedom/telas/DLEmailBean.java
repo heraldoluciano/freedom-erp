@@ -28,6 +28,7 @@ import javax.swing.JLabel;
 
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
@@ -43,6 +44,10 @@ public class DLEmailBean extends FFDialogo {
 	private final JTextFieldPad txtPort = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldPad txtFrom = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private final JTextFieldPad txtUser = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private final JPasswordFieldPad txtPassword = new JPasswordFieldPad( 20 );
 	
 	private final JCheckBoxPad cbAutenticaSMTP = new JCheckBoxPad( "Autenticar ?", "S", "N" );
 	
@@ -54,7 +59,7 @@ public class DLEmailBean extends FFDialogo {
 
 		super();
 		setTitulo( "Configuraçôes de envio" );
-		setAtribos( 405, 240 );
+		setAtribos( 405, 320 );
 		setResizable( false );
 
 		montaTela();
@@ -66,6 +71,8 @@ public class DLEmailBean extends FFDialogo {
 				txtHost.setVlrString( mail.getHost() );
 				txtPort.setVlrInteger( mail.getPorta() );
 				txtFrom.setVlrString( mail.getDe() );
+				txtUser.setVlrString( mail.getUsuario() );
+				txtPassword.setVlrString( mail.getSenha() );
 				cbAutenticaSMTP.setVlrString( mail.getAutentica() );
 				cbSSLSMTP.setVlrString( mail.getSsl() );
 			} catch (Exception e) {
@@ -80,10 +87,14 @@ public class DLEmailBean extends FFDialogo {
 		adic( txtHost, 10, 30, 300, 20 );
 		adic( new JLabel( "Porta" ), 320, 10, 60, 20 );
 		adic( txtPort, 320, 30, 60, 20 );
-		adic( new JLabel( "Usuario:" ), 10, 50, 370, 20 );
+		adic( new JLabel( "Conta de e-mail:" ), 10, 50, 370, 20 );
 		adic( txtFrom, 10, 70, 370, 20 );
-		adic( cbAutenticaSMTP, 10, 100, 370, 20 );
-		adic( cbSSLSMTP, 10, 120, 370, 20 );
+		adic( new JLabel( "Usuario SMTP:" ), 10, 90, 370, 20 );
+		adic( txtUser, 10, 110, 370, 20 );
+		adic( new JLabel( "Senha SMTP:" ), 10, 130, 370, 20 );
+		adic( txtPassword, 10, 150, 370, 20 );
+		adic( cbAutenticaSMTP, 10, 180, 370, 20 );
+		adic( cbSSLSMTP, 10, 200, 370, 20 );
 	}
 	
 	public EmailBean getEmailBean() {
@@ -102,7 +113,8 @@ public class DLEmailBean extends FFDialogo {
 		mail.setHost( txtHost.getVlrString() );
 		mail.setPorta( txtPort.getVlrInteger() );
 		mail.setDe( txtFrom.getVlrString() );
-		mail.setUsuario( txtFrom.getVlrString() );
+		mail.setUsuario( txtUser.getVlrString() );
+		mail.setSenha( txtPassword.getVlrString() );
 		mail.setAutentica( cbAutenticaSMTP.getVlrString() );
 		mail.setSsl( cbSSLSMTP.getVlrString() );
 		
