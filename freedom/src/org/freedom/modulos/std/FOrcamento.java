@@ -1317,7 +1317,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				}
 			}
 		} catch ( Exception err ) {
-			Funcoes.mensagemInforma( this, "Não foi possível carregar o leiaute de Orçamento!\n" + err.getMessage() );
+			Funcoes.mensagemInforma( this, "Não foi possível carregar o layout de Orçamento!\n" + err.getMessage() );
 			err.printStackTrace();
 		}
 	}
