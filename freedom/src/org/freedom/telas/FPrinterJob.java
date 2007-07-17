@@ -304,7 +304,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 			if ( hParamRel != null ) {
 				hParam.putAll( hParamRel );
 			}
-
+			
 			relJasper = JasperFillManager.fillReport( FPrinterJob.class.getResourceAsStream( "/org/freedom/" + sLayout ), hParam, con );
 
 			JRViewerPad viewer = new JRViewerPad( relJasper );
