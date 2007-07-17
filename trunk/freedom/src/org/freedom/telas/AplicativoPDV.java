@@ -43,7 +43,7 @@ public class AplicativoPDV extends AplicativoPD {
 
 
 	public AplicativoPDV(String sIcone, String sSplash, int iCodSis, String sDescSis, int iCodModu, String sDescModu, String sDirImagem) {
-	    super(sIcone, sSplash, iCodSis, sDescSis,iCodModu, sDescModu, sDirImagem,new FPrincipalPD(null, "bgFreedomSTD.jpg"),LoginPD.class);
+	    super(sIcone, sSplash, iCodSis, sDescSis,iCodModu, sDescModu, sDirImagem,new FPrincipalPD(null, "bgFreedom2.jpg"),LoginPD.class);
 
 	    pluginVenda = getParameter( "pluginVenda" );
 	    
