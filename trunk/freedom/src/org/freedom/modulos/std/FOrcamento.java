@@ -36,6 +36,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -1290,6 +1291,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				hParam.put( "CODEMP", Aplicativo.iCodEmp );					
 				hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 				hParam.put( "CODFILIALPF", ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+								
+				hParam.put( "SUBREPORT_DIR", "/org/freedom/layout/orc/"); 
 				if ("".equals( sClassOrc.trim() ) ) {
 					sClassOrc = "ORC_PD.jasper";
 				}
