@@ -1292,7 +1292,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 				hParam.put( "CODFILIALPF", ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 								
-				hParam.put( "SUBREPORT_DIR", "/org/freedom/layout/orc/"); 
+				hParam.put( "SUBREPORT_DIR", "org/freedom/layout/orc/"); 
+				
 				if ("".equals( sClassOrc.trim() ) ) {
 					sClassOrc = "ORC_PD.jasper";
 				}
