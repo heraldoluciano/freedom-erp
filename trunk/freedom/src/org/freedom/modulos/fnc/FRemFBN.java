@@ -362,12 +362,13 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			sql.append( "SELECT I.CODCONV, P.NOMEEMP, I.VERLAYOUT, I.IDENTSERV, I.CONTACOMPR, " );
 			sql.append( "I.IDENTAMBCLI, I.IDENTAMBBCO, I.NROSEQ, " );
 			sql.append( "I.NUMCONTA, C.AGENCIACONTA, E.CNPJFILIAL " );
-			sql.append( "FROM SGITPREFERE6 I, SGPREFERE6 P, SGFILIAL E, FNCONTA C " );
+			sql.append( "FROM SGPREFERE6 P, SGFILIAL E, " );			
+			sql.append( "SGITPREFERE6 I LEFT OUTER JOIN FNCONTA C ON " );
+			sql.append( "C.CODEMP=I.CODEMPCA AND C.CODFILIAL=I.CODFILIALCA AND C.NUMCONTA=I.NUMCONTA " );			
 			sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? " );
 			sql.append( "AND I.CODEMPBO=? AND I.CODFILIALBO=? AND I.CODBANCO=? AND I.TIPOFEBRABAN=? " );
 			sql.append( "AND P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL " );
 			sql.append( "AND E.CODEMP=I.CODEMP AND E.CODFILIAL=I.CODFILIAL " );
-			sql.append( "AND C.CODEMP=I.CODEMPCA AND C.CODFILIAL=I.CODFILIALCA AND C.NUMCONTA=I.NUMCONTA " );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -391,10 +392,10 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				prefs.put( EPrefs.IDENTAMBCLI, rs.getString( EPrefs.IDENTAMBCLI.toString() ) );
 				prefs.put( EPrefs.IDENTAMBBCO, rs.getString( EPrefs.IDENTAMBBCO.toString() ) );
 				prefs.put( EPrefs.NROSEQ, new Integer( rs.getInt( EPrefs.NROSEQ.toString() ) ) );
-				prefs.put( EPrefs.AGENCIA, rs.getString( "AGENCIACONTA" ).substring( 0, rs.getString( "AGENCIACONTA" ).indexOf( '-' ) ) );
-				prefs.put( EPrefs.DIGAGENCIA, rs.getString( "AGENCIACONTA" ).substring( rs.getString( "AGENCIACONTA" ).indexOf( '-' ) ) );
-				prefs.put( EPrefs.NUMCONTA, rs.getString( EPrefs.NUMCONTA.toString() ).substring( rs.getString( EPrefs.NUMCONTA.toString() ).indexOf( '-' ) ) );
-				prefs.put( EPrefs.DIGCONTA, rs.getString( EPrefs.NUMCONTA.toString() ).substring( rs.getString( EPrefs.NUMCONTA.toString() ).indexOf( '-' ) ) ); 
+				prefs.put( EPrefs.AGENCIA, rs.getString( "AGENCIACONTA" ) != null ? ( rs.getString( "AGENCIACONTA" ).substring( 0, rs.getString( "AGENCIACONTA" ).indexOf( '-' ) ) ) : "" );
+				prefs.put( EPrefs.DIGAGENCIA, rs.getString( "AGENCIACONTA" ) != null ? ( rs.getString( "AGENCIACONTA" ).substring( rs.getString( "AGENCIACONTA" ).indexOf( '-' ) ) ) : "" );
+				prefs.put( EPrefs.NUMCONTA, rs.getString( EPrefs.NUMCONTA.toString() ) != null ? ( rs.getString( EPrefs.NUMCONTA.toString() ).substring( 0, rs.getString( EPrefs.NUMCONTA.toString() ).indexOf( '-' ) ) ) : "" );
+				prefs.put( EPrefs.DIGCONTA, rs.getString( EPrefs.NUMCONTA.toString() ) != null ? ( rs.getString( EPrefs.NUMCONTA.toString() ).substring( rs.getString( EPrefs.NUMCONTA.toString() ).indexOf( '-' ) ) ) : "" ); 
 				prefs.put( EPrefs.DIGAGCONTA, null );
 				prefs.put( EPrefs.CNPFEMP, rs.getString( "CNPJFILIAL" ) );
 				retorno = true;
