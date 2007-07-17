@@ -41,7 +41,7 @@ import org.freedom.telas.LoginPD;
 
 public class FreedomATD extends AplicativoPD implements ActionListener {
 	public FreedomATD() {
-		super("iconAtendimento32.gif", "splashATD.jpg",  1, "Freedom" , 4, "Atendimento",  null,new FPrincipalPD(null, "bgFreedomSTD.jpg"),LoginPD.class);
+		super("iconAtendimento32.gif", "splashATD.jpg",  1, "Freedom" , 4, "Atendimento",  null,new FPrincipalPD(null, "bgFreedom2.jpg"),LoginPD.class);
  
 		//Arquivo:
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,null);

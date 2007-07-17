@@ -37,7 +37,7 @@ import org.freedom.telas.LoginPD;
 public class FreedomGRH extends AplicativoPD {
 
 	public FreedomGRH() {
-		super("iconAtendimento32.gif", "splashGRH.jpg", 1, "Freedom", 9, "Gestão de Recursos Humandos", null,new FPrincipalPD(null, "bgFreedomSTD.jpg"),LoginPD.class);
+		super("iconAtendimento32.gif", "splashGRH.jpg", 1, "Freedom", 9, "Gestão de Recursos Humandos", null,new FPrincipalPD(null, "bgFreedom2.jpg"),LoginPD.class);
 
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,
 				null);
