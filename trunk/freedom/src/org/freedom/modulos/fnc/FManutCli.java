@@ -121,7 +121,7 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		
 		lcCampos.addPostListener( this );
 		
-		txtIdentificacao.setAtivo( false );
+		//txtIdentificacao.setAtivo( false );
 	}
 
 	private void montaTela() {
@@ -136,8 +136,8 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		adicDescFK( txtRazCli, 100, 70, 240, 20, "RazCli", "Razão social do cliente" );
 		adicCampo( txtCodBanco, 7, 110, 90, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true );
 		adicDescFK( txtNomeBanco, 100, 110, 240, 20, "NomeBanco", "Nome do banco" );
-		adicCampo( txtConta, 7, 150, 90, 20, "NumContaCli", "Conta", ListaCampos.DB_SI, true );
-		adicCampo( txtAgencia, 100, 150, 80, 20, "AgenciaCli", "Agência", ListaCampos.DB_SI, true );
+		//adicCampo( txtConta, 7, 150, 90, 20, "NumContaCli", "Conta", ListaCampos.DB_SI, true );
+		//adicCampo( txtAgencia, 100, 150, 80, 20, "AgenciaCli", "Agência", ListaCampos.DB_SI, true );
 		adicCampo( txtIdentificacao, 7, 190, 173, 20, "IdentCli", "Identificação", ListaCampos.DB_SI, false );
 		adicDB( rgSubTipoFebraban, 190, 150, 150, 60, "STipoFebraban", "", false );
 		adicCampoInvisivel( txtCodEmpPF, "CodEmpPF", "Cód.emp.pf.", ListaCampos.DB_SI, false );
@@ -171,9 +171,9 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 	@ Override
 	public void beforePost( PostEvent e ) {
 		
-		if ( ! getIdentificacao() ) {
-			e.cancela();
-		}
+		//if ( ! getIdentificacao() ) {
+			//e.cancela();
+		//}
 
 		super.beforePost( e );
 		
