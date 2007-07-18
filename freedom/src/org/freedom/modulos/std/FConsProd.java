@@ -209,7 +209,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
         
         pinCab.adic(new JLabelPad("Local armz."),7,40,100,20);
         pinCab.adic(txtLocalProd,7,60,100,20);
-        pinCab.adic(new JLabelPad("Códi.und."),110,40,200,20);
+        pinCab.adic(new JLabelPad("Cód.unid."),110,40,200,20);
         pinCab.adic(txtCodUnid,110,60,67,20);
         pinCab.adic(new JLabelPad("Descrição da unidade"),180,40,147,20);
         pinCab.adic(txtDescUnid,180,60,147,20);
@@ -324,9 +324,10 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
         cPeriodoVd.set(Calendar.DAY_OF_MONTH,cPeriodoVd.get(Calendar.DAY_OF_MONTH)-30);
         txtDtVdIni.setVlrDate(cPeriodoVd.getTime());
 
-        tabVendas.adicColuna("Cód.cli.");        
+        tabVendas.adicColuna("N.pedido");        
         tabVendas.adicColuna("NF.");
-        tabVendas.adicColuna("Cliente");
+        tabVendas.adicColuna("Cód.cli.");        
+        tabVendas.adicColuna("Razão social do cliente");
         tabVendas.adicColuna("Item");
         tabVendas.adicColuna("Data");
         tabVendas.adicColuna("Qtd.It.");
@@ -339,16 +340,17 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
         
         tabVendas.setTamColuna(50,0);
         tabVendas.setTamColuna(50,1);
-        tabVendas.setTamColuna(200,2);
-        tabVendas.setTamColuna(40,3);
-        tabVendas.setTamColuna(95,4);
-        tabVendas.setTamColuna(75,5);
+        tabVendas.setTamColuna(50,2);
+        tabVendas.setTamColuna(200,3);
+        tabVendas.setTamColuna(40,4);
+        tabVendas.setTamColuna(95,5);
         tabVendas.setTamColuna(75,6);
         tabVendas.setTamColuna(75,7);
         tabVendas.setTamColuna(75,8);
         tabVendas.setTamColuna(75,9);
         tabVendas.setTamColuna(75,10);
         tabVendas.setTamColuna(75,11);
+        tabVendas.setTamColuna(75,12);
         
         
 		tpn.addChangeListener(this);
@@ -434,7 +436,9 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	private void carregaVendas() {		  
       if (validaPeriodoVenda()) {
 		String sSQL2 = "SELECT IT.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA,IT.PRECOITVENDA,IT.VLRICMSITVENDA,"+
-					  "IT.VLRIPIITVENDA,IT.VLRLIQITVENDA,IT.VLRDESCITVENDA,IT.CODPROD,C.RAZCLI,V.DOCVENDA,IT.VLRPRODITVENDA,IT.VLRADICITVENDA,IT.QTDITVENDA FROM VDVENDA V,VDITVENDA IT,VDCLIENTE C "+
+					  "IT.VLRIPIITVENDA,IT.VLRLIQITVENDA,IT.VLRDESCITVENDA,IT.CODPROD,C.CODCLI,C.RAZCLI,V.DOCVENDA," +
+					  "IT.VLRPRODITVENDA,IT.VLRADICITVENDA,IT.QTDITVENDA " +
+					  "FROM VDVENDA V,VDITVENDA IT,VDCLIENTE C "+
 					  "WHERE IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODPROD=? AND V.DTEMITVENDA BETWEEN ? AND ? AND "+
 					  "V.CODVENDA=IT.CODVENDA AND V.CODEMP=IT.CODEMP AND V.CODFILIAL=IT.CODFILIAL AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL "+
 					  "ORDER BY V.DTEMITVENDA DESC";
@@ -454,16 +458,17 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 
 				tabVendas.setValor(new Integer(rs.getString("CODVENDA")),i,0);
 				tabVendas.setValor(rs.getString("DOCVENDA"),i,1);
-				tabVendas.setValor(rs.getString("RAZCLI"),i,2);
-				tabVendas.setValor(rs.getString("CODITVENDA"),i,3);
-				tabVendas.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DTEMITVENDA")),i,4);				
-				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("QTDITVENDA")),i,5);
-				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRPRODITVENDA")),i,6);
-				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRDESCITVENDA")),i,7);			
-				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRADICITVENDA")),i,8);
-				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRLIQITVENDA")),i,9);
-				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRICMSITVENDA")),i,10);				
-				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRIPIITVENDA")),i,11);
+				tabVendas.setValor(rs.getString("CODCLI"),i,2);
+				tabVendas.setValor(rs.getString("RAZCLI"),i,3);
+				tabVendas.setValor(rs.getString("CODITVENDA"),i,4);
+				tabVendas.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DTEMITVENDA")),i,5);				
+				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("QTDITVENDA")),i,6);
+				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRPRODITVENDA")),i,7);
+				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRDESCITVENDA")),i,8);			
+				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRADICITVENDA")),i,9);
+				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRLIQITVENDA")),i,10);
+				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRICMSITVENDA")),i,11);				
+				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRIPIITVENDA")),i,12);
 				
 			}
 			rs.close();
@@ -836,7 +841,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
                 imp.say(imp.pRow()+0,29,"Doc.venda : ");
                 imp.say(imp.pRow()+0,40,""+tabVendas.getValor(i,1));
                 imp.say(imp.pRow()+0,53,"Cliente:");
-                imp.say(imp.pRow()+0,66,""+tabVendas.getValor(i,2)); 
+                imp.say(imp.pRow()+0,66,""+tabVendas.getValor(i,3)); 
                 imp.say(imp.pRow()+0,135,"|");
                 
 				imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -846,13 +851,13 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
                
                 imp.say(imp.pRow()+0,0,"|");
                 imp.say(imp.pRow()+0,02,"Cod.it.vd.:");
-                imp.say(imp.pRow()+0,16,""+tabVendas.getValor(i,3));
+                imp.say(imp.pRow()+0,16,""+tabVendas.getValor(i,4));
                 imp.say(imp.pRow()+0,35,"Dt.venda.: ");
-                imp.say(imp.pRow()+0,50,""+tabVendas.getValor(i,4));
+                imp.say(imp.pRow()+0,50,""+tabVendas.getValor(i,5));
                 imp.say(imp.pRow()+0,69,"Qtd.it.vd.: ");
-                imp.say(imp.pRow()+0,80,""+tabVendas.getValor(i,5));
+                imp.say(imp.pRow()+0,80,""+tabVendas.getValor(i,6));
                 imp.say(imp.pRow()+0,95,"Vlr.prod.: ");
-                imp.say(imp.pRow()+0,115,""+tabVendas.getValor(i,6));
+                imp.say(imp.pRow()+0,115,""+tabVendas.getValor(i,7));
                 imp.say(imp.pRow()+0,135,"|");
                 imp.say(imp.pRow()+1,0,""+imp.comprimido());
                 imp.say(imp.pRow()+0,0,"|");
@@ -860,15 +865,15 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
                 imp.say(imp.pRow()+1,0,""+imp.comprimido());
                 imp.say(imp.pRow()+0,0,"|");
                 imp.say(imp.pRow()+0,2,"Vlr.desc.: ");
-                imp.say(imp.pRow()+0,15,""+tabVendas.getValor(i,7));
+                imp.say(imp.pRow()+0,15,""+tabVendas.getValor(i,8));
                 imp.say(imp.pRow()+0,26,"Vlr.adic.:");
-                imp.say(imp.pRow()+0,37,""+tabVendas.getValor(i,8));
+                imp.say(imp.pRow()+0,37,""+tabVendas.getValor(i,9));
                 imp.say(imp.pRow()+0,53,"Vlr.liq.:");
-                imp.say(imp.pRow()+0,65,""+tabVendas.getValor(i,9));
+                imp.say(imp.pRow()+0,65,""+tabVendas.getValor(i,10));
                 imp.say(imp.pRow()+0,82,"Vlr.Icms.:");
-                imp.say(imp.pRow()+0,95,""+tabVendas.getValor(i,10));
+                imp.say(imp.pRow()+0,95,""+tabVendas.getValor(i,11));
                 imp.say(imp.pRow()+0,115,"Vlr.IPI.:");
-                imp.say(imp.pRow()+0,124,""+tabVendas.getValor(i,11));
+                imp.say(imp.pRow()+0,124,""+tabVendas.getValor(i,12));
                 imp.say(imp.pRow()+0,135,"|");
              
          	}  
