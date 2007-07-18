@@ -33,11 +33,9 @@ import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.ProcessoSec;
 
-import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JPanelPad;
 
 public abstract class FRelatorio extends FFilho implements ActionListener, KeyListener {
 
@@ -144,9 +142,9 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 			imprimir( false );
 		}
 		else if ( evt.getSource() == btPrevimp ) {
-			//Thread th = new Thread( new Processo() {
+			//wait.start();
+			//Thread th = new Thread( new Runnable() {
 			//	public void run() {
-			//		wait.start();
 					imprimir( true );
 			//		wait.stop();
 			//	}
