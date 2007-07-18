@@ -63,7 +63,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 
 	private JTextFieldPad txtNumItemPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
 
-	private JTextFieldPad txtPercItemPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
+	private JTextFieldPad txtPercItemPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 9, 5 );
 
 	private JTextFieldPad txtDiasItemPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
