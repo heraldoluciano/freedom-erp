@@ -167,6 +167,7 @@ public class NF011 extends Layout {
 							iProd++;
 						}
 						
+						
 						imp.say( 16, sDesc );
 					}
 
@@ -191,6 +192,7 @@ public class NF011 extends Layout {
 							}
 						}
 
+						
 						if ( ! bjatem ) {
 							
 							vClfisc.addElement( sCodfisc );
@@ -270,7 +272,7 @@ public class NF011 extends Layout {
 
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 16, "CLASSIFICACAO FISCAL" );
-
+			
 			int pos = 1;
 
 			for ( int i = 0; i < vSigla.size(); i++ ) {
@@ -288,7 +290,13 @@ public class NF011 extends Layout {
 					iProd++;
 				}
 			}
-			
+		
+			if(cab.getFloat( NF.C_VLRDESCITPED )>0){
+				
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 16, "Valor do desconto : " + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( cab.getFloat( NF.C_VLRDESCITPED ) ) ) );
+			}
+				
 			if ( vMatObs != null ) {
 
 				imp.pulaLinha( ( 45 - vMatObs.size() ) - imp.pRow(), imp.comprimido() );
