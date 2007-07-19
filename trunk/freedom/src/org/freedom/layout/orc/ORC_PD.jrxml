@@ -67,7 +67,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 	<field name="DESCPLANOPAG" class="java.lang.String"/>
 	<field name="RAZEMP" class="java.lang.String"/>
 	<field name="CONTCLI" class="java.lang.String"/>
-	<field name="IMGASS" class="java.sql.Blob"/>
+	<field name="IMGASS" class="java.io.InputStream"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
