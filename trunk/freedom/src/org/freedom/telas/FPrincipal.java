@@ -111,7 +111,9 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	private Border borderFreedom = null;
 
-	public Color padrao = new Color( 69, 62, 113 );
+//	public Color padrao = new Color( 69, 62, 113 );
+
+	public Color padrao = new Color( 145, 167, 208 );
 
 	public String sImgFundo = null;
 
@@ -125,9 +127,9 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	private JSplitPane splitPane = null;
 
-	private String imgLogoSis = "lgFreedom.jpg";
+	private String imgLogoSis = "lgFreedom3.jpg";
 
-	private String imgLogoEmp = "lgSTP.jpg";
+	private String imgLogoEmp = "lgSTP3.jpg";
 
 	public FPrincipal( String sDirImagem, String sImgFundo ) {
 
