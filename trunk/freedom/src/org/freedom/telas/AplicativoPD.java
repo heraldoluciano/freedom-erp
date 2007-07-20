@@ -486,7 +486,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		StringBuilder sql = new StringBuilder();
 		EmailBean email = new EmailBean();
 		sql.append( "SELECT P3.SMTPMAIL, P3.SMTPAUTMAIL, P3.USERMAIL, P3.PASSMAIL, " );
-		sql.append( "P3.SMTPSSLMAIL, P3.PORTAMAIL " );
+		sql.append( "P3.SMTPSSLMAIL, P3.PORTAMAIL, P3.ENDMAIL " );
 		sql.append( "FROM SGPREFERE3 P3 " );
 		sql.append( "WHERE P3.CODEMP=? AND P3.CODFILIAL=?" );
 		try {
@@ -501,6 +501,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 				email.setPorta( rs.getInt( "PORTAMAIL" ) );
 				email.setUsuario( rs.getString( "USERMAIL" ) );
 				email.setSenha( rs.getString( "PASSMAIL" ) );
+				email.setDe( rs.getString( "ENDMAIL" ) );
 				setEmailBean( email );
 			}
 			rs.close();
@@ -521,8 +522,9 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 
 			StringBuilder sql = new StringBuilder();
 			sql.append( "UPDATE SGPREFERE3 P3 " );
-			sql.append( "SET P3.SMTPMAIL=?, P3.SMTPAUTMAIL=?, P3.USERMAIL=?, P3.PASSMAIL=?, " );
-			sql.append( "P3.SMTPSSLMAIL=?, P3.PORTAMAIL=? " );
+			sql.append( "SET P3.SMTPMAIL=?, P3.SMTPAUTMAIL=?, ");
+			sql.append( "P3.USERMAIL=?, P3.PASSMAIL=?, " );
+			sql.append( "P3.SMTPSSLMAIL=?, P3.PORTAMAIL=?, P3.ENDMAIL=? " );
 			sql.append( "WHERE P3.CODEMP=? AND P3.CODFILIAL=?" );
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -532,8 +534,9 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			ps.setString( 4, email.getSenha() );
 			ps.setString( 5, email.getSsl() );
 			ps.setInt( 6, email.getPorta() );
-			ps.setInt( 7, iCodEmp );
-			ps.setInt( 8, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
+			ps.setString( 7, email.getDe() );
+			ps.setInt( 8, iCodEmp );
+			ps.setInt( 9, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
 			ps.executeUpdate();
 			ps.close();
 			
