@@ -331,6 +331,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private JCheckBoxPad cbUsaPrecoZero = null;
 
 	private JCheckBoxPad cbUsaImgOrc = null;
+	
+	private JCheckBoxPad cbUsaNomeVendOrc = null;
 
 	private JCheckBoxPad cbConsIECli= null;
 
@@ -647,6 +649,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbUsaPrecoZero.setVlrString( "N" );
 		cbUsaImgOrc = new JCheckBoxPad( "Usar imagem de assinatura no orçamento?", "S", "N" );
 		cbUsaImgOrc.setVlrString( "N" );
+		cbUsaNomeVendOrc = new JCheckBoxPad( "Usar nome do comissionado no orçamento?", "S", "N" );
+		cbUsaNomeVendOrc.setVlrString( "N" );
 		cbConsIECli = new JCheckBoxPad( "Validar IE no cliente?", "S", "N" );
 		cbConsIECli.setVlrString( "S" );
 		cbConsIEFor = new JCheckBoxPad( "Validar IE do fornecedor?", "S", "N" );
@@ -814,6 +818,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDB( cbUsaOrcSeq, 10, 215, 160, 20, "UsaOrcSeq", "", true );
 		adicDB( cbReCalcOrc, 10, 235, 250, 20, "ReCalcPCOrc", "", true );
 		adicDB( cbUsaImgOrc, 10, 295, 300, 20, "UsaImgAssOrc", "", true );
+		adicDB( cbUsaNomeVendOrc, 10, 315, 300, 20, "UsaNomeVendOrc", "", true );
 		adicDB( imgAssOrc, 510, 250, 200, 95, "ImgAssOrc", "Assinatura", false );
 
 		// Financeiro
