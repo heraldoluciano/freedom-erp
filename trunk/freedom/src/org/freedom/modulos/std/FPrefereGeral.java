@@ -184,7 +184,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 	private final JTextFieldPad txtPortaSMTP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private final JTextFieldPad txtUsuarioSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );	
+	private final JTextFieldPad txtUsuarioSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+	
+	private final JTextFieldPad txtEndEmail = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
 	
 	private final JPasswordFieldPad txtSenhaSMTP = new JPasswordFieldPad( 30 );
 	
@@ -959,16 +961,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		linha2.setBorder( BorderFactory.createEtchedBorder() );
 		
 		adic( email, 27, 10, 180, 20 );
-		adic( linha2, 7, 20, 403, 155 );
+		adic( linha2, 7, 20, 403, 190 );
 		
 		//setPainel( pinSmtp );
 		
 		adicCampo( txtServidorSMTP, 17, 60, 230, 20, "SMTPMAIL", "Servidor de SMTP", ListaCampos.DB_SI, false );
 		adicCampo( txtPortaSMTP, 250, 60, 50, 20, "PORTAMAIL", "Porta", ListaCampos.DB_SI, false );
 		adicDB( cbAutenticaSMTP, 307, 60, 100, 20, "SMTPAUTMAIL", "", false );
-		adicCampo( txtUsuarioSMTP, 17, 100, 283, 20, "USERMAIL", "Id do usuario", ListaCampos.DB_SI, false );
+		adicCampo( txtEndEmail, 17, 100, 283, 20, "ENDMAIL", "E-mail do usuario", ListaCampos.DB_SI, false );
+		adicCampo( txtUsuarioSMTP, 17, 140, 283, 20, "USERMAIL", "Id do usuario", ListaCampos.DB_SI, false );
 		adicDB( cbSSLSMTP, 307, 100, 100, 20, "SMTPSSLMAIL", "", false );
-		adicCampo( txtSenhaSMTP, 17, 140, 283, 20, "PASSMAIL", "Senha do usuario", ListaCampos.DB_SI, false );
+		adicCampo( txtSenhaSMTP, 17, 180, 283, 20, "PASSMAIL", "Senha do usuario", ListaCampos.DB_SI, false );
 		setListaCampos( false, "PREFERE3", "SG" );
 
 		// fim da adic�o de abas
