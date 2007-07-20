@@ -24,16 +24,16 @@
 	<import value="net.sf.jasperreports.engine.data.*" />
 
 	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(5)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(4)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODORC" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(25659)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(100)]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT P.CODPROD, O.QTDITORC, O.VLRPRODITORC , O.VLRDESCITORC, O.QTDITORC,
-O.PRECOITORC,P.DESCPROD, P.CODBARPROD, O.CODORC
+O.PRECOITORC,P.DESCPROD, P.CODBARPROD, O.CODORC, P.CODUNID
 FROM VDITORCAMENTO O, EQPRODUTO P WHERE O.CODEMP=$P{CODEMP} AND O.CODFILIAL=$P{CODFILIAL} AND P.CODEMP=O.CODEMPPD AND
 P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></queryString>
 
@@ -45,6 +45,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="CODBARPROD" class="java.lang.String"/>
 	<field name="CODORC" class="java.lang.Long"/>
+	<field name="CODUNID" class="java.lang.String"/>
 
 	<variable name="TOTALLIQ" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRPRODITORC}]]></variableExpression>
@@ -152,7 +153,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 					<reportElement
 						x="314"
 						y="4"
-						width="38"
+						width="41"
 						height="18"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -163,7 +164,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="352"
+						x="359"
 						y="3"
 						width="0"
 						height="20"
@@ -172,9 +173,9 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 				</line>
 				<staticText>
 					<reportElement
-						x="353"
+						x="359"
 						y="4"
-						width="47"
+						width="41"
 						height="18"
 						key="staticText-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -391,9 +392,9 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00;###0.00-" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="315"
+						x="314"
 						y="0"
-						width="36"
+						width="29"
 						height="17"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -404,9 +405,9 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00;###0.00-" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="355"
+						x="359"
 						y="0"
-						width="45"
+						width="40"
 						height="17"
 						key="textField-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -452,7 +453,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="352"
+						x="359"
 						y="-1"
 						width="0"
 						height="21"
@@ -486,6 +487,19 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 						key="line-24"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="346"
+						y="0"
+						width="12"
+						height="17"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODUNID}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
