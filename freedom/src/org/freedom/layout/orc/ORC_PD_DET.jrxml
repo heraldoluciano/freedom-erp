@@ -33,7 +33,8 @@
 		<defaultValueExpression ><![CDATA[new Integer(100)]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT P.CODPROD, O.QTDITORC, O.VLRPRODITORC , O.VLRDESCITORC, O.QTDITORC,
-O.PRECOITORC,P.DESCPROD, P.CODBARPROD, O.CODORC, P.CODUNID
+O.PRECOITORC, P.CODBARPROD, O.CODORC, P.CODUNID,
+COALESCE(O.OBSITORC , P.DESCPROD) DESCPROD
 FROM VDITORCAMENTO O, EQPRODUTO P WHERE O.CODEMP=$P{CODEMP} AND O.CODFILIAL=$P{CODFILIAL} AND P.CODEMP=O.CODEMPPD AND
 P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></queryString>
 
@@ -42,10 +43,10 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 	<field name="VLRPRODITORC" class="java.math.BigDecimal"/>
 	<field name="VLRDESCITORC" class="java.math.BigDecimal"/>
 	<field name="PRECOITORC" class="java.math.BigDecimal"/>
-	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="CODBARPROD" class="java.lang.String"/>
 	<field name="CODORC" class="java.lang.Long"/>
 	<field name="CODUNID" class="java.lang.String"/>
+	<field name="DESCPROD" class="java.lang.String"/>
 
 	<variable name="TOTALLIQ" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRPRODITORC}]]></variableExpression>
