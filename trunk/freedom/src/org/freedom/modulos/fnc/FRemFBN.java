@@ -230,8 +230,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		
 		rgSitRemessa = new JRadioGroup( 2, 2, vLabsRem, vValsRem );
 		
+		vValsTipo.addElement( "0" );
 		vValsTipo.addElement( "1" );
-		vValsTipo.addElement( "2" );
 		vLabsTipo.addElement( "Inclusão" );
 		vLabsTipo.addElement( "Exclusão" );
 		rgTipoRemessa = new JRadioGroup( 2, 1, vLabsTipo, vValsTipo );
