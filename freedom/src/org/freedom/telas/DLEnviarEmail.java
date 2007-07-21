@@ -286,6 +286,8 @@ public class DLEnviarEmail extends FFDialogo {
 		props.put( "mail.smtp.auth", "true" );
 		props.put( "mail.smtp.starttls.enable", "true" );
 		props.put( "mail.smtp.socketFactory.class", socketFactory );
+		props.put( "mail.smtp.quitwait", "false" );
+
 
 		Authenticator authenticator = new SMTPAuthenticator( txtUser.getVlrString(), txtPassword.getVlrString().trim() );
 		
