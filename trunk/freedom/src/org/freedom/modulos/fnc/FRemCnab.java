@@ -29,6 +29,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -103,42 +104,61 @@ public class FRemCnab extends FRemFBN {
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
 		reg.setSeqLote( seqLoteServico++ );
-		//reg.setCodMovimento( codMovimento );
+		/*reg.setCodMovimento( codMovimento );
 		
-		/*reg.setAgencia( agencia );
+		reg.setAgencia( agencia );
 		reg.setDigAgencia( digAgencia );
 		reg.setConta( conta );
 		reg.setDigConta( digConta );
-		reg.setDigAgConta( digAgConta );
+		reg.setDigAgConta( digAgConta );*/
 		reg.setIdentTitulo( rec.getArgs()[ EColTab.COL_DOCREC.ordinal() ] );
-		reg.setCodCarteira( codCarteira );
-		reg.setFormaCadTitulo( formaCadTitulo );
-		reg.setTipoDoc( tipoDoc );
-		reg.setIdentEmitBol( identEmitBol );
-		reg.setIdentDist( identDist );
-		reg.setDocCobranca( docCobranca );
-		reg.setDtVencTitulo( rec.getArgs()[ EColTab.COL_DTVENC.ordinal() ] );
-		reg.setVlrTitulo( rec.getArgs()[ EColTab.COL_VLRAPAG.ordinal() ] );
-		reg.setAgenciaCob( agenciaCob );
-		reg.setDigAgenciaCob( digAgenciaCob );
-		reg.setEspecieTit( especieTit );
-		reg.setAceite( aceite );
-		reg.setDtEmitTit( rec.getArgs()[ EColTab.COL_DTREC.ordinal() ] );
-		reg.setCodJuros( codJuros );
-		reg.setDtJuros( dtJuros );
-		reg.setVlrJurosTaxa( vlrJurosTaxa ); 
-		reg.setCodDesc( codDesc );
-		reg.setDtDesc( dtDesc );
-		reg.setVlrpercConced( vlrpercConced );
-		reg.setVlrIOF( vlrIOF );
-		reg.setVlrAbatimento( vlrAbatimento );
+		reg.setCodCarteira( 0 );
+		reg.setFormaCadTitulo( 0 );
+		reg.setTipoDoc( 0 );
+		reg.setIdentEmitBol( 0 );
+		reg.setIdentDist( 0 );
+		reg.setDocCobranca( null );
+		reg.setDtVencTitulo( Funcoes.strDateToDate( rec.getArgs()[ EColTab.COL_DTVENC.ordinal() ] ) );
+		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColTab.COL_VLRAPAG.ordinal() ] ) );
+		reg.setAgenciaCob( null );
+		reg.setDigAgenciaCob( null );
+		reg.setEspecieTit( 0 );
+		reg.setAceite( '\u0000' );
+		reg.setDtEmitTit( Funcoes.strDateToDate( rec.getArgs()[ EColTab.COL_DTREC.ordinal() ] ) );
+		reg.setCodJuros( 0 );
+		reg.setDtJuros( null );
+		reg.setVlrJurosTaxa( null ); 
+		reg.setCodDesc( 0 );
+		reg.setDtDesc( null );
+		reg.setVlrpercConced( null );
+		reg.setVlrIOF( null );
+		reg.setVlrAbatimento( null );
 		reg.setIdentTitEmp( rec.getArgs()[ EColTab.COL_CODREC.ordinal() ] );
-		reg.setCodProtesto( codProtesto );
-		reg.setDiasProtesto( diasProtesto );
-		reg.setCodBaixaDev( codBaixaDev );
-		reg.setDiasBaixaDevol( diasBaixaDevol );  
-		reg.setCodMoeda( codMoeda );
-		reg.setContrOperCred( contrOperCred );*/
+		reg.setCodProtesto( 0 );
+		reg.setDiasProtesto( 0 );
+		reg.setCodBaixaDev( 0 );
+		reg.setDiasBaixaDevol( 0 );  
+		reg.setCodMoeda( 0 );
+		reg.setContrOperCred( null );
+		
+		/* COL_SEL, 
+		 * COL_RAZCLI, 
+		 * COL_CODCLI, 
+		 * COL_CODREC, 
+		 * COL_DOCREC, 
+		 * COL_NRPARC, 
+		 * COL_VLRAPAG,	
+		 * COL_DTREC, 
+		 * COL_DTVENC, 
+		 * COL_AGENCIACLI, 
+		 * COL_IDENTCLI, 
+		 * COL_SITREM, 
+		 * COL_SITRET,
+		 * COL_STIPOFEBRABAN, 
+		 * COL_TIPOREMCLI, 
+		 * COL_PESSOACLI, 
+		 * COL_CPFCLI, 
+		 * COL_CNPJCLI;*/
 		
 		return reg;
 	}
