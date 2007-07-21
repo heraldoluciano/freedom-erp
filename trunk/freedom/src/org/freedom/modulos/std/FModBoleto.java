@@ -151,6 +151,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		montaCombos();
 		montaListaCampos();
 		montaTela();		
+		montaListaCampos2();
 
 		lcItModBol.montaTab();
 		tabBancos.setTamColuna( 100, 0 );
@@ -201,6 +202,9 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		txtCodBanco.setListaCampos( lcBanco );
 		txtCodBanco.setTabelaExterna( lcBanco );
 		txtCodBanco.setNomeCampo( "CodBanco" );
+	}
+	
+	private void montaListaCampos2() {
 		
 		/*******************
 		 *  FNITMODBOLETO  *
@@ -210,6 +214,13 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		lcItModBol.montaSql( false, "ITMODBOLETO", "FN" );
 		lcItModBol.setQueryInsert( false );
 		lcItModBol.setQueryCommit( false );
+		lcItModBol.setNavegador( navBancos );
+		
+		navBancos.setListaCampos( lcItModBol );
+		navBancos.setAtivo( 6, false );
+		
+		txtCodBanco.addKeyListener( navBancos );
+		txtCarteira.addKeyListener( navBancos );
 	}
 	
 	private void montaCombos() {
