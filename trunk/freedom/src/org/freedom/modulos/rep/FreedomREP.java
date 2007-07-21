@@ -60,6 +60,8 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 			addSeparador( 100000000 );
 			addOpcao( 100000000, TP_OPCAO_ITEM, "Estação de trabalho", "Estação de trabalho", 't', 100300000, 1, true, RPEstacao.class );
 			addOpcao( 100000000, TP_OPCAO_ITEM, "Empresa", "Empresa", 'E', 100400000, 1, true, RPEmpresa.class );
+			addSeparador( 100000000 );
+			addOpcao( 100000000, TP_OPCAO_ITEM, "Importação", "Importação de dados", 'I', 100500000, 1, true, RPImportacao.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Vendas", "", 'V', 200000000, 0, false, null );
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Pedidos", "Pedidos", 'P', 200100000, 1, true, RPPedido.class );
