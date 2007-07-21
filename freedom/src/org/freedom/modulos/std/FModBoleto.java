@@ -200,7 +200,6 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		lcBanco.setReadOnly( true );
 		txtCodBanco.setListaCampos( lcBanco );
 		txtCodBanco.setTabelaExterna( lcBanco );
-		txtCodBanco.setFK( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );
 		
 		/*******************
