@@ -26,6 +26,7 @@
 package org.freedom.modulos.rep;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FileDialog;
@@ -36,6 +37,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -47,6 +49,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JPasswordFieldPad;
@@ -56,6 +59,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FFilho;
+import org.freedom.telas.FObservacao;
 
 public class RPImportacao extends FFilho implements ActionListener {
 
@@ -70,6 +74,22 @@ public class RPImportacao extends FFilho implements ActionListener {
 	private final JPanelPad panelSair = new JPanelPad( JPanelPad.TP_JPANEL, new FlowLayout( FlowLayout.CENTER, 6, 4 ) );
 
 	private final JTextFieldPad txtDiretorio = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
+	
+	private final JCheckBoxPad cbRPVendedor = new JCheckBoxPad( "vendedores", "S", "N" );
+	
+	private final JCheckBoxPad cbRPFornecedor = new JCheckBoxPad( "fornecedores", "S", "N" );
+	
+	private final JCheckBoxPad cbRPTransportadora = new JCheckBoxPad( "transportadoras", "S", "N" );
+	
+	private final JCheckBoxPad cbRPProduto = new JCheckBoxPad( "produtos", "S", "N" );
+	
+	private final JCheckBoxPad cbRPTipocliente = new JCheckBoxPad( "tipos de cliente", "S", "N" );
+	
+	private final JCheckBoxPad cbRPCliente = new JCheckBoxPad( "clientes", "S", "N" );
+	
+	private final JCheckBoxPad cbRPPlanopagamento = new JCheckBoxPad( "planos de pagamento", "S", "N" );
+	
+	private final JCheckBoxPad cbRPPedido = new JCheckBoxPad( "pedidos", "S", "N" );
 
 	private final JButton btConectar = new JButton( "Conectar" );
 
@@ -77,28 +97,46 @@ public class RPImportacao extends FFilho implements ActionListener {
 
 	private final JButton btDirtorio = new JButton( "..." );
 
+	private final JButton btLogError = new JButton( "log" );
+
 	private final JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
 
 	private final JLabel status = new JLabel( "Selecione a base de dados ..." );
 	
 	private Connection conexaoparadox = null;
+	
+	private StringBuilder falhas = new StringBuilder();
+	
+	private long indexerro = 0;
 
 
 	public RPImportacao() {
 
 		super( false );
 		setTitulo( "Importação de dados" );
-		setAtribos( 100, 100, 420, 200 );
+		setAtribos( 100, 100, 420, 380 );
 
 		montaTela();
 
 		btConectar.addActionListener( this );
 		btImportar.addActionListener( this );
 		btDirtorio.addActionListener( this );
+		btLogError.addActionListener( this );
 		btSair.addActionListener( this );
 
 		btConectar.setEnabled( false );
 		btImportar.setEnabled( false );
+		
+		cbRPVendedor.setVlrString( "S" );
+		cbRPProduto.setVlrString( "S" );
+		cbRPTransportadora.setVlrString( "S" );
+		cbRPFornecedor.setVlrString( "S" );
+		cbRPTipocliente.setVlrString( "S" );
+		cbRPCliente.setVlrString( "S" );
+		cbRPPlanopagamento.setVlrString( "S" );
+		cbRPPedido.setVlrString( "S" );
+		
+		status.setForeground( Color.BLUE );
 	}
 
 	private void montaTela() {
@@ -107,9 +145,28 @@ public class RPImportacao extends FFilho implements ActionListener {
 
 		panelImportacao.adic( new JLabel( "Local da base de dados" ), 10, 20, 350, 20 );
 		panelImportacao.adic( txtDiretorio, 10, 40, 350, 20 );
-		panelImportacao.adic( btDirtorio, 370, 38, 24, 24 );
+		panelImportacao.adic( btDirtorio, 370, 38, 24, 24 );		
+		
+		JLabel tabelas = new JLabel( "Tabelas", SwingConstants.CENTER );
+		tabelas.setOpaque( true );
+		JLabel linha1 = new JLabel();
+		linha1.setBorder( BorderFactory.createEtchedBorder() );
+		
+		panelImportacao.adic( tabelas, 30, 70, 80, 20 );
+		panelImportacao.adic( linha1, 10, 80, 384, 180 );
+		
+		panelImportacao.adic( cbRPVendedor, 30, 90, 200, 20 );
+		panelImportacao.adic( cbRPFornecedor, 30, 110, 200, 20 );
+		panelImportacao.adic( cbRPProduto, 30, 130, 200, 20 );
+		panelImportacao.adic( cbRPTransportadora, 30, 150, 200, 20);
+		panelImportacao.adic( cbRPTipocliente, 30, 170, 200, 20 );
+		panelImportacao.adic( cbRPCliente, 30, 190, 200, 20 );
+		panelImportacao.adic( cbRPPlanopagamento, 30, 210, 200, 20 );
+		panelImportacao.adic( cbRPPedido, 30, 230, 200, 20 );
 
-		panelImportacao.adic( status, 10, 90, 350, 20 );
+		panelImportacao.adic( status, 10, 270, 330, 20 );
+		
+		panelImportacao.adic( btLogError, 340, 268, 54, 24 );
 
 		btConectar.setPreferredSize( new Dimension( 120, 30 ) );
 		btImportar.setPreferredSize( new Dimension( 120, 30 ) );
@@ -170,6 +227,9 @@ public class RPImportacao extends FFilho implements ActionListener {
 	private void conectar() {
 
 		try {
+			
+			falhas = new StringBuilder();
+			indexerro = 0;
 
 			Login login = new Login( this );
 			login.setVisible( true );
@@ -227,46 +287,64 @@ public class RPImportacao extends FFilho implements ActionListener {
 		
 		if ( opt == JOptionPane.YES_OPTION ) {
 			
-			String msg = "";
-			
-			try {
-			
-				if ( ! importarVendedor() ) {
-					msg = "dos Vendedores.";
-				}
-				else if ( ! importarFornecedor() ) {
-					msg = "dos Fornecedores.";
-				}
-				else if ( ! importarProduto() ) {
-					msg = "dos Produtos.";
-				}
-				else if ( ! importarTransportadora() ) {
-					msg = "das Transportadoras.";
-				}
-				else if ( ! importarTipoCliente() ) {
-					msg = "dos Tipos de Cliente.";
-				}
-				else if ( ! importarCliente() ) {
-					msg = "dos Clientes.";
-				} 
+			if ( "S".equals( cbRPVendedor.getVlrString() ) ) { 
+				importarVendedor();
 			}
-			catch ( Exception e ) {
-				status.setText( "" );
-				e.printStackTrace();
-				Funcoes.mensagemErro( this, "Erro ao importar dados " + msg + "\n" + e.getMessage() );
-			}			
+			if ( "S".equals( cbRPFornecedor.getVlrString() ) ) {
+				importarFornecedor();
+			}
+			if ( "S".equals( cbRPProduto.getVlrString() ) ) {
+				importarProduto();
+			}
+			if ( "S".equals( cbRPTransportadora.getVlrString() ) ) {
+				importarTransportadora();
+			}
+			if ( "S".equals( cbRPTipocliente.getVlrString() ) ) {
+				importarTipoCliente();
+			}
+			if ( "S".equals( cbRPCliente.getVlrString() ) ) {
+				importarCliente();
+			}
+			if ( "S".equals( cbRPPlanopagamento.getVlrString() ) ) {
+				importarPlanopagamento();
+			}
+			if ( "S".equals( cbRPPedido.getVlrString() ) ) {
+				//importarPedidos();
+			}
+					
+			status.setText( "Dados importados..." );
 		}
 	}
 	
-	private boolean executeGeneric( final String sql ) throws Exception {
+	private boolean executeGeneric( final String insert ) {
 		
 		boolean retorno = true;
 		
 		try {
 			
-			Connection session = getConexaoparadox();
-			List< String > dadosparadox = new ArrayList< String >();
-			
+			PreparedStatement ps = con.prepareStatement( insert );
+			ps.execute();
+				
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+		}
+		catch ( Exception e ) {
+			Funcoes.mensagemInforma( this, "Erro ao execurar script!\n" + e.getMessage() );
+			e.printStackTrace();
+			retorno = false;
+		}
+		
+		return retorno;
+	}
+	
+	private void importarGeneric( final String sql ) {
+					
+		Connection session = getConexaoparadox();
+		List< String > dadosparadox = new ArrayList< String >();
+		
+		try {
+		
 			PreparedStatement ps = session.prepareStatement( sql );
 			ResultSet rs = ps.executeQuery();
 			
@@ -278,11 +356,18 @@ public class RPImportacao extends FFilho implements ActionListener {
 			if ( ! session.getAutoCommit() ) {
 				session.commit();
 			}
+		}
+		catch ( SQLException e ) {
+			Funcoes.mensagemInforma( this, "Erro ao buscar dados!\n" + e.getMessage() );
+			e.printStackTrace();
+			return;
+		}
+		
+		PreparedStatement psf = null;
+		
+		for ( String insert : dadosparadox ) {
 			
-			PreparedStatement psf = null;
-			
-			for ( String insert : dadosparadox ) {
-				
+			try {					
 				psf = con.prepareStatement( insert );
 				psf.execute();
 				
@@ -290,83 +375,15 @@ public class RPImportacao extends FFilho implements ActionListener {
 					con.commit();
 				}
 			}
-		}
-		catch ( Exception e ) {
-			retorno = false;
-			throw e;
-		}
-		
-		return retorno;
-	}
-	
-	private boolean importarGeneric( final String sql ) throws Exception {
-		
-		boolean retorno = true;
-		
-		try {
-			
-			Connection session = getConexaoparadox();
-			List< String > dadosparadox = new ArrayList< String >();
-			
-			PreparedStatement ps = session.prepareStatement( sql );
-			ResultSet rs = ps.executeQuery();
-			
-			while ( rs.next() ) {
-				
-				dadosparadox.add( rs.getString( 1 ) );
-			}
-			
-			if ( ! session.getAutoCommit() ) {
-				session.commit();
-			}
-			
-			PreparedStatement psf = null;
-			
-			for ( String insert : dadosparadox ) {
-				
-				psf = con.prepareStatement( insert );
-				psf.execute();
-				
-				if ( ! con.getAutoCommit() ) {
-					con.commit();
-				}
+			catch ( SQLException e ) {
+				indexerro++;
+				System.out.println( "[" + indexerro + "]" + e.getMessage() );
+				falhas.append( "[" + indexerro + "]" +insert + "\n" );
 			}
 		}
-		catch ( Exception e ) {
-			retorno = false;
-			throw e;
-		}
-		
-		return retorno;
 	}
-	
-	private boolean importarVendedor() throws Exception {
-		
-		boolean retorno = false;		
-		
-		StringBuilder sql = new StringBuilder();
-		
-		sql.append( "SELECT 'INSERT INTO RPVENDEDOR " );
-		sql.append( "( CODEMP,CODFILIAL,CODVEND,NOMEVEND,ENDVEND,CIDVEND,BAIRVEND," );
-		sql.append( "CEPVEND,ESTVEND,DDDVEND,FONEVEND,FAXVEND,PERCCOMIS,EMAILVEND ) VALUES ( " );
-		sql.append( Aplicativo.iCodEmp );
-		sql.append( "," );
-		sql.append( ListaCampos.getMasterFilial( "RRVENDEDOR" ) );
-		sql.append( ",'||Codvend||','||char(39)||Nomevend||char(39)||','||" );
-		sql.append( "char(39)||Endvend||char(39)||','||char(39)||Cidvend||char(39)||','||" );
-		sql.append( "char(39)||Bairvend||char(39)||','||char(39)||Cepvend||char(39)||','||" );
-		sql.append( "char(39)||Estvend||char(39)||','||'NULL'||','||char(39)||Fonevend||" );
-		sql.append( "char(39)||','||char(39)||Faxvend||char(39)||','||COALESCE(Perccomvend,'NULL')||','||" );
-		sql.append( "char(39)||Emailvend||char(39)||' )' FROM VENDEDOR" );
-		
-		status.setText( "Importando Vendedores..." );
-		
-		return importarGeneric( sql.toString() );
-	}
-	
-	private boolean importarFornecedor() throws Exception {
-		
-		boolean retorno = false;
+
+	private void importarFornecedor() {
 		
 		StringBuilder sql = new StringBuilder();
 		
@@ -375,7 +392,7 @@ public class RPImportacao extends FFilho implements ActionListener {
 		sql.append( "CEPFOR,BAIRFOR,FONEFOR,FAXFOR,EMAILFOR,CODREPFOR ) VALUES ( " );
 		sql.append( Aplicativo.iCodEmp );
 		sql.append( "," );
-		sql.append( ListaCampos.getMasterFilial( "RRFORNECEDOR" ) );
+		sql.append( ListaCampos.getMasterFilial( "RPFORNECEDOR" ) );
 		sql.append( ",'||codfor||','||char(39)||razfor||char(39)||','||char(39)||nomefor||char(39)||','||" );
 		sql.append( "char(39)||cgcfor||char(39)||','||char(39)||inscfor||char(39)||','||char(39)||endfor||" );
 		sql.append( "char(39)||','||char(39)||cidfor||char(39)||','||char(39)||estfor||char(39)||','||" );
@@ -385,16 +402,52 @@ public class RPImportacao extends FFilho implements ActionListener {
 		
 		status.setText( "Importando Fornecedores..." );
 		
-		return importarGeneric( sql.toString() );
+		importarGeneric( sql.toString() );
 	}
 	
-	private boolean importarProduto() throws Exception {
-		
-		boolean retorno = false;
+	private void importarVendedor() {		
 		
 		StringBuilder sql = new StringBuilder();
 		
+		sql.append( "SELECT 'INSERT INTO RPVENDEDOR " );
+		sql.append( "( CODEMP,CODFILIAL,CODVEND,NOMEVEND,ENDVEND,CIDVEND,BAIRVEND," );
+		sql.append( "CEPVEND,ESTVEND,DDDVEND,FONEVEND,FAXVEND,PERCCOMIS,EMAILVEND ) VALUES ( " );
+		sql.append( Aplicativo.iCodEmp );
+		sql.append( "," );
+		sql.append( ListaCampos.getMasterFilial( "RPVENDEDOR" ) );
+		sql.append( ",'||Codvend||','||char(39)||Nomevend||char(39)||','||" );
+		sql.append( "char(39)||Endvend||char(39)||','||char(39)||Cidvend||char(39)||','||" );
+		sql.append( "char(39)||Bairvend||char(39)||','||char(39)||Cepvend||char(39)||','||" );
+		sql.append( "char(39)||Estvend||char(39)||','||'NULL'||','||char(39)||Fonevend||" );
+		sql.append( "char(39)||','||char(39)||Faxvend||char(39)||','||COALESCE(Perccomvend,'NULL')||','||" );
+		sql.append( "char(39)||Emailvend||char(39)||' )' FROM VENDEDOR" );
 		
+		status.setText( "Importando Vendedores..." );
+		
+		importarGeneric( sql.toString() );
+	}
+	
+	private void importarProduto() {
+		
+		StringBuilder insProduto = new StringBuilder();		
+		
+		insProduto.append( "INSERT INTO RPGRUPO ( CODEMP,CODFILIAL,CODGRUP,DESCGRUP,NIVELGRUP ) VALUES ( " );
+		insProduto.append( AplicativoRep.iCodEmp + "," );
+		insProduto.append( ListaCampos.getMasterFilial( "RPGRUPO" ) + "," );
+		insProduto.append( "'0001','GRUPO DE PRODUTOS', 1 )" );
+		
+		executeGeneric( insProduto.toString() );
+		
+		StringBuilder insUnidade = new StringBuilder();		
+		
+		insUnidade.append( "INSERT INTO RPUNIDADE ( CODEMP,CODFILIAL,CODUNID,DESCUNID ) VALUES ( " );
+		insUnidade.append( AplicativoRep.iCodEmp + "," );
+		insUnidade.append( ListaCampos.getMasterFilial( "RPUNIDADE" ) + "," );
+		insUnidade.append( "'UN','UNIDADE' )" );
+		
+		executeGeneric( insUnidade.toString() );
+		
+		StringBuilder sql = new StringBuilder();		
 		
 		sql.append( "SELECT 'INSERT INTO RPPRODUTO " );
 		sql.append( "( CODEMP,CODFILIAL,CODPROD,DESCPROD,REFPROD,CODBARPROD,CODEMPGP,CODFILIALGP,CODGRUP,CODEMPUD,"  );
@@ -402,16 +455,16 @@ public class RPImportacao extends FFilho implements ActionListener {
 		sql.append( "PERCIPIPROD,PRECOPROD1,PRECOPROD2,PRECOPROD3 ) VALUES ( " );
 		sql.append( Aplicativo.iCodEmp );
 		sql.append( "," );
-		sql.append( ListaCampos.getMasterFilial( "RRFORNECEDOR" ) );
+		sql.append( ListaCampos.getMasterFilial( "RPFORNECEDOR" ) );
 		sql.append( ",'||CODPROD||','||CHAR(39)||DESCPROD||CHAR(39)||','||CHAR(39)||CODPROD||CHAR(39)||','||" );
 		sql.append( "CHAR(39)||CODBARPROD||CHAR(39)||','||" );
 		sql.append( Aplicativo.iCodEmp );
 		sql.append( "||','||" );
-		sql.append( ListaCampos.getMasterFilial( "RRPRODUTO" ) );
+		sql.append( ListaCampos.getMasterFilial( "RPPRODUTO" ) );
 		sql.append( "||','||CHAR(39)||'0001'||CHAR(39)||','||" );
 		sql.append( Aplicativo.iCodEmp );
 		sql.append( "||','||" );
-		sql.append( ListaCampos.getMasterFilial( "RRPRODUTO" ) );
+		sql.append( ListaCampos.getMasterFilial( "RPPRODUTO" ) );
 		sql.append( "||','||CHAR(39)||'UN'||CHAR(39)||','||" );
 		sql.append( Aplicativo.iCodEmp );
 		sql.append( "||','||" );
@@ -422,12 +475,10 @@ public class RPImportacao extends FFilho implements ActionListener {
 		
 		status.setText( "Importando Produtos..." );
 		
-		return importarGeneric( sql.toString() );
+		importarGeneric( sql.toString() );
 	}
-	
-	private boolean importarTransportadora() throws Exception {
-		
-		boolean retorno = false;
+
+	private void importarTransportadora() {
 		
 		StringBuilder sql = new StringBuilder();
 		
@@ -436,7 +487,7 @@ public class RPImportacao extends FFilho implements ActionListener {
 		sql.append( "CIDTRAN,ESTTRAN,CEPTRAN,BAIRTRAN,FONETRAN,FAXTRAN ) VALUES ( " );
 		sql.append( Aplicativo.iCodEmp );
 		sql.append( "," );
-		sql.append( ListaCampos.getMasterFilial( "RRTRANSP" ) );
+		sql.append( ListaCampos.getMasterFilial( "RPTRANSP" ) );
 		sql.append( ",'||codtransp||','||char(39)||nometransp||char(39)||','||char(39)||nometransp||" );
 		sql.append( "char(39)||','||char(39)||cnpjtransp||char(39)||','||char(39)||insctransp||" );
 		sql.append( "char(39)||','||char(39)||endtransp||char(39)||','||char(39)||cidtransp||" );
@@ -446,29 +497,25 @@ public class RPImportacao extends FFilho implements ActionListener {
 		
 		status.setText( "Importando Tramsportadoras..." );
 		
-		return importarGeneric( sql.toString() );
+		importarGeneric( sql.toString() );
 	}
 	
-	private boolean importarTipoCliente() throws Exception {
-		
-		boolean retorno = false;
+	private void importarTipoCliente() {
 
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append( "SELECT 'INSERT INTO RPTIPOCLI ( CODEMP,CODFILIAL,CODTIPOCLI,DESCTIPOCLI,TIPOCLI ) VALUES ( " );
 		sql.append( Aplicativo.iCodEmp );
 		sql.append( "," );
-		sql.append( ListaCampos.getMasterFilial( "RRTIPOCLI" ) );
+		sql.append( ListaCampos.getMasterFilial( "RPTIPOCLI" ) );
 		sql.append( ",'||CODTIPOCLI||','||char(39)||DESCTIPOCLI||char(39)||','||char(39)||TIPOCLI||char(39)||' )' FROM TIPOCLI" );
 		
 		status.setText( "Importando Tipos de Clientes..." );
 		
-		return importarGeneric( sql.toString() );
+		importarGeneric( sql.toString() );
 	}
 	
-	private boolean importarCliente() throws Exception {
-		
-		boolean retorno = false;
+	private void importarCliente() {
 		
 		StringBuilder sql = new StringBuilder();
 		
@@ -482,11 +529,11 @@ public class RPImportacao extends FFilho implements ActionListener {
 		sql.append( "'||','||CODCLI||','||char(39)||RAZCLI||char(39)||','||char(39)||NOMECLI||char(39)||','||'" );
 		sql.append( Aplicativo.iCodEmp );
 		sql.append( "'||','||" );
-		sql.append( ListaCampos.getMasterFilial( "RRCLIENTE" ) );
+		sql.append( ListaCampos.getMasterFilial( "RPCLIENTE" ) );
 		sql.append( "||','||CODVEND||','||'" );
 		sql.append( Aplicativo.iCodEmp );
 		sql.append( "'||','||" );
-		sql.append( ListaCampos.getMasterFilial( "RRCLIENTE" ) );
+		sql.append( ListaCampos.getMasterFilial( "RPCLIENTE" ) );
 		sql.append( "||','||CODTIPOCLI||','||char(39)||CGCCLI||char(39)||','||char(39)||INSCCLI||char(39)||','||char(39)||ENDCLI||" );
 		sql.append( "char(39)||','||char(39)||CIDCLI||char(39)||','||char(39)||ESTCLI||char(39)||','||char(39)||CEPCLI||char(39)||','||" );
 		sql.append( "char(39)||BAIRCLI||char(39)||','||char(39)||FONECLI||char(39)||','||char(39)||FAXCLI||char(39)||','||char(39)||" );
@@ -498,7 +545,56 @@ public class RPImportacao extends FFilho implements ActionListener {
 		
 		status.setText( "Importando Clientes..." );
 		
-		return importarGeneric( sql.toString() );
+		importarGeneric( sql.toString() );
+	}
+	
+	private void importarPlanopagamento() {
+		
+		status.setText( "Importando Planos de pagamento..." );
+
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "select 'insert into RPPLANOPAG ( CODEMP,CODFILIAL,CODPLANOPAG,DESCPLANOPAG,PARCPLANOPAG )" );
+		sql.append( "values ( " );
+		sql.append( Aplicativo.iCodEmp );
+		sql.append( "," );
+		sql.append( ListaCampos.getMasterFilial( "RPPARCPLANOPAG" ) );
+		sql.append( ",' || p.Codplanopag || ',' || char(39) || p.Descplanopag || char(39) ||" ); 
+		sql.append( "',' || (select count(i.coditplano) from itplano i where i.codplanopag=p.codplanopag ) ||" );
+		sql.append( "' )' from planopag p" );
+				
+		importarGeneric( sql.toString() );
+		
+		StringBuilder sqlparc = new StringBuilder();
+		
+		sqlparc.append( "SELECT 'INSERT INTO RPPARCPLANOPAG " );
+		sqlparc.append( "( CODEMP,CODFILIAL,CODPLANOPAG,NROPARCPAG,DIASPAG,PERCPAG,JUROSPARCPAG ) " );
+		sqlparc.append( "VALUES ( " );
+		sqlparc.append( Aplicativo.iCodEmp );
+		sqlparc.append( "," );
+		sqlparc.append( ListaCampos.getMasterFilial( "RPPARCPLANOPAG" ) );
+		sqlparc.append( ",'||Codplanopag||','||Coditplano||','|| coalesce(Diasitplano,0)||','||coalesce(Percitplano,0)||','||coalesce(Jurositplano,0)||' )'" );
+		sqlparc.append( "FROM ITPLANO" );
+		
+		importarGeneric( sqlparc.toString() );
+	}
+	
+	private void importarPedidos() {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "" );
+		
+		status.setText( "Importando Pedido..." );
+		
+		importarGeneric( sql.toString() );
+	}
+	
+	private void getLogError() {
+		
+		FObservacao log = new FObservacao( "Scripts não executados...", falhas.toString() );
+		log.setAtribos( 500, 400 );
+		log.setVisible( true );
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
@@ -509,12 +605,14 @@ public class RPImportacao extends FFilho implements ActionListener {
 		else if ( evt.getSource() == btConectar ) {
 			conectar();
 		}
-		else if ( evt.getSource() == btImportar ) {
-			
+		else if ( evt.getSource() == btImportar ) {			
 			importar();
 		}
 		else if ( evt.getSource() == btDirtorio ) {
 			getDiretorio();
+		}
+		else if ( evt.getSource() == btLogError ) {
+			getLogError();
 		}
 	}
 
