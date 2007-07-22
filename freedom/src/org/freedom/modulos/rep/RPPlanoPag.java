@@ -25,15 +25,20 @@
 
 package org.freedom.modulos.rep;
 
+import java.math.BigDecimal;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
 import org.freedom.acao.DeleteListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
+import org.freedom.acao.PostEvent;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class RPPlanoPag extends FDetalhe implements CarregaListener, InsertListener, DeleteListener {
@@ -94,6 +99,8 @@ public class RPPlanoPag extends FDetalhe implements CarregaListener, InsertListe
 		lcCampos.addCarregaListener( this );
 		lcCampos.addInsertListener( this );
 		lcCampos.addDeleteListener( this );
+		
+		lcDet.addPostListener( this );
 	}
 	
 	private void montaMaster() {
@@ -127,6 +134,31 @@ public class RPPlanoPag extends FDetalhe implements CarregaListener, InsertListe
 		adicCampo( txtDescItemPag, 7, 60, 369, 20, "DescParcPag", "Descrição", ListaCampos.DB_SI, false );
 		
 	}
+	
+	private boolean verificaPercParcelas() {
+		
+		boolean retorno = false;
+		
+		BigDecimal total = new BigDecimal( "0.00" );
+		
+		for ( int i=0; i < tab.getNumLinhas(); i++ ) {
+			
+			if ( txtNumItemPag.getVlrInteger().intValue() != (Integer) tab.getValor( i, 0 ) ) {
+
+				total = total.add( new BigDecimal( ( (String) tab.getValor( i, 2 ) ).replace( ',', '.' ) ).setScale( 5, BigDecimal.ROUND_HALF_UP ) );	
+			}
+			else {
+				
+				total = total.add( new BigDecimal( txtPercItemPag.getVlrString().replace( ',', '.' ) ) );
+			}
+		}
+		
+		if ( total.floatValue() == 100.00000 ) {
+			retorno = true;
+		}
+		
+		return retorno;
+	}
 
 	public void beforeCarrega( CarregaEvent e ) { }
 
@@ -143,6 +175,19 @@ public class RPPlanoPag extends FDetalhe implements CarregaListener, InsertListe
 	}
 
 	public void beforeInsert( InsertEvent e ) { }
+
+	@ Override
+	public void beforePost( PostEvent e ) {
+
+		if ( e.getListaCampos() == lcDet ) {
+			if ( ! verificaPercParcelas() ) {
+				lcDet.cancelPost();
+				Funcoes.mensagemErro( this, "Porcentagem das parcelas devem totalizar 100%!" );
+			}
+		}
+		
+		super.beforePost( e );
+	}
 
 	public void afterDelete( DeleteEvent e ) {
 
