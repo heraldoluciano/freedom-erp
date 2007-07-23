@@ -407,8 +407,6 @@ class CnabUtil extends FbnUtil {
 				line.append( getSegmento() );
 				line.append( ' ' );
 				line.append( format( getCodMovimento(), ETipo.$9, 2, 0 ) );
-				line.append( (char) 13 );
-				line.append( (char) 10 );
 			}
 			catch ( Exception e ) {	
 				throw new ExceptionCnab( "CNAB registro 3.\nErro ao escrever registro.\n" + e.getMessage() );
@@ -796,7 +794,7 @@ class CnabUtil extends FbnUtil {
 				line.append( format( getCodDesc(), ETipo.$9, 1, 0 ) );
 				line.append( dateToString( getDtDesc() ) );
 				line.append( format( getVlrpercConced(), ETipo.$9, 15, 2 ) );
-				line.append( format( getVlrIOF(), ETipo.$9, 13, 2 ) );
+				line.append( format( getVlrIOF(), ETipo.$9, 15, 2 ) );
 				line.append( format( getVlrAbatimento(), ETipo.$9, 15, 2 ) );
 				line.append( format( getIdentTitEmp(), ETipo.X, 25, 0 ) );
 				line.append( format( getCodProtesto(), ETipo.$9, 1, 0 ) );
@@ -805,6 +803,7 @@ class CnabUtil extends FbnUtil {
 				line.append( format( getDiasBaixaDevol(), ETipo.$9, 3, 0 ) );  
 				line.append( format( getCodMoeda(), ETipo.$9, 2, 0 ) );
 				line.append( format( getContrOperCred(), ETipo.$9, 10, 0 ) );
+				line.append( " " );
 				line.append( (char) 13 );
 				line.append( (char) 10 );
 			}
