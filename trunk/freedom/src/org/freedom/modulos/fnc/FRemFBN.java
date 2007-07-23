@@ -392,10 +392,16 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				prefs.put( EPrefs.IDENTAMBCLI, rs.getString( EPrefs.IDENTAMBCLI.toString() ) );
 				prefs.put( EPrefs.IDENTAMBBCO, rs.getString( EPrefs.IDENTAMBBCO.toString() ) );
 				prefs.put( EPrefs.NROSEQ, new Integer( rs.getInt( EPrefs.NROSEQ.toString() ) ) );
-				prefs.put( EPrefs.AGENCIA, rs.getString( "AGENCIACONTA" ) != null ? ( rs.getString( "AGENCIACONTA" ).substring( 0, rs.getString( "AGENCIACONTA" ).indexOf( '-' ) ) ) : "" );
-				prefs.put( EPrefs.DIGAGENCIA, rs.getString( "AGENCIACONTA" ) != null ? ( rs.getString( "AGENCIACONTA" ).substring( rs.getString( "AGENCIACONTA" ).indexOf( '-' ) ) ) : "" );
-				prefs.put( EPrefs.NUMCONTA, rs.getString( EPrefs.NUMCONTA.toString() ) != null ? ( rs.getString( EPrefs.NUMCONTA.toString() ).substring( 0, rs.getString( EPrefs.NUMCONTA.toString() ).indexOf( '-' ) ) ) : "" );
-				prefs.put( EPrefs.DIGCONTA, rs.getString( EPrefs.NUMCONTA.toString() ) != null ? ( rs.getString( EPrefs.NUMCONTA.toString() ).substring( rs.getString( EPrefs.NUMCONTA.toString() ).indexOf( '-' ) ) ) : "" ); 
+				int da = 0;
+				if ( rs.getString( "AGENCIACONTA" ) != null ) 
+					da = rs.getString( "AGENCIACONTA" ).indexOf( '-' ) > -1 ? rs.getString( "AGENCIACONTA" ).indexOf( '-' ) : rs.getString( "AGENCIACONTA" ).trim().length();
+				int dc = 0;
+				if ( rs.getString( EPrefs.NUMCONTA.toString() ) != null ) 
+					dc = rs.getString( EPrefs.NUMCONTA.toString() ).indexOf( '-' ) > -1 ? rs.getString( EPrefs.NUMCONTA.toString() ).indexOf( '-' ) : rs.getString( EPrefs.NUMCONTA.toString() ).trim().length();
+				prefs.put( EPrefs.AGENCIA, rs.getString( "AGENCIACONTA" ) != null ? ( rs.getString( "AGENCIACONTA" ).substring( 0, da ) ) : "" );
+				prefs.put( EPrefs.DIGAGENCIA, rs.getString( "AGENCIACONTA" ) != null ? ( rs.getString( "AGENCIACONTA" ).substring( da ) ) : "" );
+				prefs.put( EPrefs.NUMCONTA, rs.getString( EPrefs.NUMCONTA.toString() ) != null ? ( rs.getString( EPrefs.NUMCONTA.toString() ).substring( 0, dc ) ) : "" );
+				prefs.put( EPrefs.DIGCONTA, rs.getString( EPrefs.NUMCONTA.toString() ) != null ? ( rs.getString( EPrefs.NUMCONTA.toString() ).substring( dc ) ) : "" ); 
 				prefs.put( EPrefs.DIGAGCONTA, null );
 				prefs.put( EPrefs.CNPFEMP, rs.getString( "CNPJFILIAL" ) );
 				retorno = true;
