@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -39,6 +40,7 @@ import java.util.HashSet;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.fnc.CnabUtil.Reg;
 import org.freedom.modulos.fnc.CnabUtil.Reg1;
@@ -71,6 +73,55 @@ public class FRemCnab extends FRemFBN {
 		super( TIPO_FEBRABAN_CNAB );
 	}
 	
+	private String[] getContaCli( final int codcli ) {
+		
+		String[] args = new String[5];
+		
+		try {
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append( "SELECT FC.AGENCIACLI, FC.NUMCONTACLI " );
+			sql.append( "FROM FNFBNCLI FC " );
+			sql.append( "WHERE FC.CODEMP=? AND FC.CODFILIAL=? AND FC.CODCLI=?  " );
+			sql.append( "AND FC.CODEMPPF=? AND FC.CODFILIALPF=? " );
+			sql.append( "AND FC.CODEMPBO=? AND FC.CODFILIALBO=? AND FC.CODBANCO=? AND FC.TIPOFEBRABAN=?" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNFBNCLI" ) );
+			ps.setInt( 3, codcli );
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
+			ps.setInt( 6, Aplicativo.iCodEmp );
+			ps.setInt( 7, ListaCampos.getMasterFilial( "FNBANCO" ) );
+			ps.setString( 8, txtCodBanco.getVlrString() );
+			ps.setString( 9, TIPO_FEBRABAN_CNAB );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				args[ 0 ] = rs.getString( "AGENCIACLI" ) != null ? ( rs.getString( "AGENCIACLI" ).substring( 0, rs.getString( "AGENCIACLI" ).indexOf( '-' ) ) ) : "";
+				args[ 1 ] = rs.getString( "AGENCIACLI" ) != null ? ( rs.getString( "AGENCIACLI" ).substring( rs.getString( "AGENCIACLI" ).indexOf( '-' ) ) ) : "";
+				args[ 2 ] = rs.getString( "NUMCONTACLI" ) != null ? ( rs.getString( "NUMCONTACLI" ).substring( 0, rs.getString( "NUMCONTACLI" ).indexOf( '-' ) ) ) : "";
+				args[ 3 ] = rs.getString( "NUMCONTACLI" ) != null ? ( rs.getString( "NUMCONTACLI" ).substring( rs.getString( "NUMCONTACLI" ).indexOf( '-' ) ) ) : ""; 
+				args[ 4 ] = "";
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+		}
+		catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+		
+		return args;
+	}
+	
 	private Reg1 getReg1() {
 		
 		Reg1 reg = cnabutil.new Reg1();
@@ -101,16 +152,20 @@ public class FRemCnab extends FRemFBN {
 		
 		Reg3P reg = cnabutil.new Reg3P();
 
+		// em Reg3.
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
 		reg.setSeqLote( seqLoteServico++ );
-		/*reg.setCodMovimento( codMovimento );
+		//reg.setCodMovimento( codMovimento );
 		
-		reg.setAgencia( agencia );
-		reg.setDigAgencia( digAgencia );
-		reg.setConta( conta );
-		reg.setDigConta( digConta );
-		reg.setDigAgConta( digAgConta );*/
+		
+		// em Reg3P.
+		String[] args = getContaCli( Integer.parseInt( rec.getArgs()[ EColTab.COL_CODCLI.ordinal() ] ) );
+		reg.setAgencia( args[ 0 ] );
+		reg.setDigAgencia( args[ 1 ] );
+		reg.setConta( args[ 2 ] );
+		reg.setDigConta( args[ 3 ] );
+		reg.setDigAgConta( args[ 4 ] );
 		reg.setIdentTitulo( rec.getArgs()[ EColTab.COL_DOCREC.ordinal() ] );
 		reg.setCodCarteira( 0 );
 		reg.setFormaCadTitulo( 0 );
@@ -123,7 +178,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setAgenciaCob( null );
 		reg.setDigAgenciaCob( null );
 		reg.setEspecieTit( 0 );
-		reg.setAceite( '\u0000' );
+		reg.setAceite( ' ' );
 		reg.setDtEmitTit( Funcoes.strDateToDate( rec.getArgs()[ EColTab.COL_DTREC.ordinal() ] ) );
 		reg.setCodJuros( 0 );
 		reg.setDtJuros( null );
@@ -141,25 +196,6 @@ public class FRemCnab extends FRemFBN {
 		reg.setCodMoeda( 0 );
 		reg.setContrOperCred( null );
 		
-		/* COL_SEL, 
-		 * COL_RAZCLI, 
-		 * COL_CODCLI, 
-		 * COL_CODREC, 
-		 * COL_DOCREC, 
-		 * COL_NRPARC, 
-		 * COL_VLRAPAG,	
-		 * COL_DTREC, 
-		 * COL_DTVENC, 
-		 * COL_AGENCIACLI, 
-		 * COL_IDENTCLI, 
-		 * COL_SITREM, 
-		 * COL_SITRET,
-		 * COL_STIPOFEBRABAN, 
-		 * COL_TIPOREMCLI, 
-		 * COL_PESSOACLI, 
-		 * COL_CPFCLI, 
-		 * COL_CNPJCLI;*/
-		
 		return reg;
 	}
 	
@@ -167,12 +203,12 @@ public class FRemCnab extends FRemFBN {
 		
 		Reg3Q reg = null;
 
-		/*reg.setCodBanco( codBanco );
+		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
-		reg.setSeqLote( seqLote );
-		reg.setCodMovimento( codMovimento );
+		reg.setSeqLote( seqLoteServico++ );
+		//reg.setCodMovimento( codMovimento );
 		
-		reg.setTipoInscCli( tipoInscCli );
+		/*reg.setTipoInscCli( tipoInscCli );
 		reg.setCpfCnpjCli( cpfCnpjCli );
 		reg.setRazCli( razCli );
 		reg.setEndCli( endCli );
@@ -305,7 +341,7 @@ public class FRemCnab extends FRemFBN {
 	
 	private Reg5 getReg5() {
 		
-		Reg5 reg = null;
+		Reg5 reg = cnabutil.new Reg5();
 		
 		/*reg.setCodBanco( codBanco );
 		reg.setLoteServico( loteServico );
@@ -382,20 +418,23 @@ public class FRemCnab extends FRemFBN {
 		
 		try {
 			
+			int regs = 0;
+			
 			ArrayList< Reg > registros = new ArrayList< Reg >();
 			
 			registros.add( getReg1() );
 			
 			for ( StuffRec rec : hsRec ) {
 				registros.add( getReg3P( rec ) );
-				registros.add( getReg3Q() );
+				/*registros.add( getReg3Q() );
 				registros.add( getReg3R() );
 				registros.add( getReg3S() );
 				registros.add( getReg3T() );
-				registros.add( getReg3U() );
+				registros.add( getReg3U() );*/
+				regs++;
 			}
 			
-			registros.add( getReg5() );
+			registros.add( getReg5() ); 
 			
 			for ( Reg reg : registros ) {
 				bw.write( reg.getLine() );
@@ -403,6 +442,8 @@ public class FRemCnab extends FRemFBN {
 			
 			bw.flush();
 			bw.close();
+			
+			System.out.println( "[ " + regs + " ] registros gravados." );
 		} 
 		catch ( ExceptionCnab e ) {
 			Funcoes.mensagemErro( this, e.getMessage() );
