@@ -122,6 +122,48 @@ public class FRemCnab extends FRemFBN {
 		return args;
 	}
 	
+	private String[] getCliente( final int codcli ) {
+		
+		String[] args = new String[10];
+		
+		try {
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append( "SELECT C.RAZCLI, C.ENDCLI, C.NUMCLI, C.BAIRCLI, C.CEPCLI, C.CIDCLI, C.UFCLI, C.CNPJCLI, C.CPFCLI " );
+			sql.append( "FROM VDCLIENTE C " );
+			sql.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? AND C.CODCLI=?  " );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setInt( 3, codcli );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				for ( int i=0; i<args.length-1; i++ ) {
+					
+					args[ i ] = rs.getString( i + 1 );					
+				}
+				
+				args[ DadosCliente.CNPJCPF.ordinal() ] = args[ DadosCliente.CNPJ.ordinal() ] == null ? "2" : "1";
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+		}
+		catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+		
+		return args;
+	}
+	
 	private Reg1 getReg1() {
 		
 		Reg1 reg = cnabutil.new Reg1();
@@ -152,15 +194,13 @@ public class FRemCnab extends FRemFBN {
 		
 		Reg3P reg = cnabutil.new Reg3P();
 
-		// em Reg3.
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
 		reg.setSeqLote( seqLoteServico++ );
 		//reg.setCodMovimento( codMovimento );
-		
-		
-		// em Reg3P.
+
 		String[] args = getContaCli( Integer.parseInt( rec.getArgs()[ EColTab.COL_CODCLI.ordinal() ] ) );
+		
 		reg.setAgencia( args[ 0 ] );
 		reg.setDigAgencia( args[ 1 ] );
 		reg.setConta( args[ 2 ] );
@@ -199,142 +239,143 @@ public class FRemCnab extends FRemFBN {
 		return reg;
 	}
 	
-	private Reg3Q getReg3Q() {
+	private Reg3Q getReg3Q( final StuffRec rec ) {
 		
-		Reg3Q reg = null;
+		Reg3Q reg = cnabutil.new Reg3Q();
 
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
 		reg.setSeqLote( seqLoteServico++ );
 		//reg.setCodMovimento( codMovimento );
 		
-		/*reg.setTipoInscCli( tipoInscCli );
-		reg.setCpfCnpjCli( cpfCnpjCli );
-		reg.setRazCli( razCli );
-		reg.setEndCli( endCli );
-		reg.setBairCli( bairCli );
-		reg.setCepCli( cepCli );
-		reg.setCidCli( cidCli );
-		reg.setUfCli( ufCli );
-		reg.setTipoInscAva( tipoInscAva );
-		reg.setCpfCnpjAva( cpfCnpjAva );
-		reg.setRazAva( razAva );
-		reg.setCodCompensacao( codCompensacao );
-		reg.setNossoNumero( nossoNumero );*/
+		String[] dadosCliente = getCliente( Integer.parseInt( rec.getArgs()[ EColTab.COL_CODCLI.ordinal() ] ) );
+		reg.setTipoInscCli( Integer.parseInt( dadosCliente[ DadosCliente.CNPJCPF.ordinal()] ) );
+		reg.setCpfCnpjCli( "2".equals( reg.getTipoInscCli() ) ? dadosCliente[ DadosCliente.CNPJ.ordinal() ] : dadosCliente[ DadosCliente.CPF.ordinal() ] );
+		reg.setRazCli( dadosCliente[ DadosCliente.RAZCLI.ordinal() ] );
+		reg.setEndCli( dadosCliente[ DadosCliente.ENDCLI.ordinal() ] );
+		reg.setBairCli( dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] );
+		reg.setCepCli( dadosCliente[ DadosCliente.CEPCLI.ordinal() ] );
+		reg.setCidCli( dadosCliente[ DadosCliente.CIDCLI.ordinal() ] );
+		reg.setUfCli( dadosCliente[ DadosCliente.UFCLI.ordinal() ] );
+		reg.setTipoInscAva( 0 );
+		reg.setCpfCnpjAva( null );
+		reg.setRazAva( null );
+		reg.setCodCompensacao( 0 );
+		reg.setNossoNumero( null );
 		
 		return reg;
 	}
 	
-	private Reg3R getReg3R() {
+	private Reg3R getReg3R( final StuffRec rec ) {
 		
 		Reg3R reg = null;
 
-		/*reg.setCodBanco( codBanco );
+		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
-		reg.setSeqLote( seqLote );
-		reg.setCodMovimento( codMovimento );
+		reg.setSeqLote( seqLoteServico++ );
+		//reg.setCodMovimento( codMovimento );
 		
-		reg.setCodDesc2( codDesc2 );
-		reg.setDataDesc2( dataDesc2 );
-		reg.setVlrPercConced2( vlrPercConced2 );
-		reg.setCodDesc3( codDesc3 );
-		reg.setDataDesc3( dataDesc3 );
-		reg.setVlrPercConced3( vlrPercConced3 );
-		reg.setCodMulta( codMulta );
-		reg.setDataMulta( dataMulta );
-		reg.setVlrPercMulta( vlrPercMulta );
-		reg.setMsgSacado( msgSacado );
-		reg.setMsg3( msg3 );
-		reg.setMsg4( msg4 );
-		reg.setCodBancoDeb( codBancoDeb );
-		reg.setAgenciaDeb( agenciaDeb );
-		reg.setContaDeb( contaDeb );
-		reg.setCodOcorrSacado( codOcorrSacado );*/
+		reg.setCodDesc2( 0 );
+		reg.setDataDesc2( null );
+		reg.setVlrPercConced2( null );
+		reg.setCodDesc3( 0 );
+		reg.setDataDesc3( null );
+		reg.setVlrPercConced3( null );
+		reg.setCodMulta( 0 );
+		reg.setDataMulta( null );
+		reg.setVlrPercMulta( null );
+		reg.setMsgSacado( null );
+		reg.setMsg3( null );
+		reg.setMsg4( null );
+		reg.setCodBancoDeb( null );
+		reg.setAgenciaDeb( null );
+		reg.setContaDeb( null );
+		reg.setCodOcorrSacado( 0 );
 		
 		return reg;
 	}
 	
-	private Reg3S getReg3S() {
+	private Reg3S getReg3S( final StuffRec rec ) {
 		
 		Reg3S reg = null;
 
-		/*reg.setCodBanco( codBanco );
+		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
-		reg.setSeqLote( seqLote );
-		reg.setCodMovimento( codMovimento );
+		reg.setSeqLote( seqLoteServico++ );
+		//reg.setCodMovimento( codMovimento );
 		
-		reg.setTipoImpressao( tipoImpressao );
-		reg.setLinhaImp( linhaImp );
-		reg.setMsgImp( msgImp );
-		reg.setTipoChar( tipoChar );		
-		reg.setMsg5( msg5 );
-		reg.setMsg6( msg6 );
-		reg.setMsg7( msg7 );
-		reg.setMsg8( msg8 );
-		reg.setMsg9( msg9 );*/
+		reg.setTipoImpressao( 0 );
+		reg.setLinhaImp( 0 );
+		reg.setMsgImp( null );
+		reg.setTipoChar( 0 );		
+		reg.setMsg5( null );
+		reg.setMsg6( null );
+		reg.setMsg7( null );
+		reg.setMsg8( null );
+		reg.setMsg9( null );
 		
 		return reg;
 	}
 	
-	private Reg3T getReg3T() {
+	private Reg3T getReg3T( final StuffRec rec ) {
 		
 		Reg3T reg = null;
 
-		/*reg.setCodBanco( codBanco );
+		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
-		reg.setSeqLote( seqLote );
-		reg.setCodMovimento( codMovimento );
+		reg.setSeqLote( seqLoteServico++ );
+		//reg.setCodMovimento( codMovimento );
 		
-		reg.setAgencia( agencia );
-		reg.setDigAgencia( digAgencia );
-		reg.setConta( conta );
-		reg.setDigConta( digConta );
-		reg.setDigAgConta( digAgConta );
-		reg.setIdentTitBanco( identTitBanco );
-		reg.setCarteira( carteira );
-		reg.setDocCob( docCob );
-		reg.setDataVencTit( dataVencTit );
-		reg.setVlrTitulo( vlrTitulo );
-		reg.setCodBanco( codBanco );
-		reg.setAgenciaCob( agenciaCob );
-		reg.setDigAgenciaCob( digAgenciaCob );
-		reg.setIdentTitEmp( identTitEmp );
-		reg.setCodMoeda( codMoeda );
-		reg.setTipoInscCli( tipoInscCli );
-		reg.setCpfCnpjCli( cpfCnpjCli );
-		reg.setRazCli( razCli );
-		reg.setContratoCred( contratoCred );
-		reg.setVlrTarifa( vlrTarifa ); 
-		reg.setCodRejeicoes( codRejeicoes );*/
+		reg.setAgencia( null );
+		reg.setDigAgencia( null );
+		reg.setConta( null );
+		reg.setDigConta( null );
+		reg.setDigAgConta( null );
+		reg.setIdentTitBanco( null );
+		reg.setCarteira( 0 );
+		reg.setDocCob( null );
+		reg.setDataVencTit( null );
+		reg.setVlrTitulo( null );
+		reg.setCodBanco( null );
+		reg.setAgenciaCob( null );
+		reg.setDigAgenciaCob( null );
+		reg.setIdentTitEmp( null );
+		reg.setCodMoeda( 0 );
+		reg.setTipoInscCli( 0 );
+		reg.setCpfCnpjCli( null );
+		reg.setRazCli( null );
+		reg.setContratoCred( null );
+		reg.setVlrTarifa( null ); 
+		reg.setCodRejeicoes( null );
 		
 		return reg;
 	}
 	
-	private Reg3U getReg3U() {
+	private Reg3U getReg3U( final StuffRec rec ) {
 		
 		Reg3U reg = null;
 
-		/*reg.setCodBanco( codBanco );
+		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
-		reg.setSeqLote( seqLote );
-		reg.setCodMovimento( codMovimento );
+		reg.setSeqLote( seqLoteServico++ );
+		//reg.setCodMovimento( codMovimento );
 		
-		reg.setVlrJurosMulta( vlrJurosMulta );
-		reg.setVlrDesc( vlrDesc );
-		reg.setVrlAbatCancel( vrlAbatCancel );
-		reg.setVlrIOF( vlrIOF );
-		reg.setVlrPago( vlrPago );
-		reg.setVlrLiqCred( vlrLiqCred );
-		reg.setVlrOutrasDesp( vlrOutrasDesp );
-		reg.setVlrOutrosCred( vlrOutrosCred );
-		reg.setDataOcorr( dataOcorr );
-		reg.setDataEfetvCred( dataEfetvCred );
-		reg.setCodOcorrSac( codOcorrSac );
-		reg.setDataOcorrSac( dataOcorrSac );
-		reg.setVlrOcorrSac( vlrOcorrSac );
-		reg.setCompOcorrSac( compOcorrSac );
-		reg.setCodBancoCompens( codBancoCompens );
-		reg.setNossoNrCompens( nossoNrCompens );*/
+		reg.setVlrJurosMulta( null );
+		reg.setVlrDesc( null );
+		reg.setVrlAbatCancel( null );
+		reg.setVlrIOF( null );
+		reg.setVlrPago( null );
+		reg.setVlrLiqCred( null );
+		reg.setVlrOutrasDesp( null );
+		reg.setVlrOutrosCred( null );
+		reg.setDataOcorr( null );
+		reg.setDataEfetvCred( null );
+		reg.setCodOcorrSac( null );
+		reg.setDataOcorrSac( null );
+		reg.setVlrOcorrSac( null );
+		reg.setCompOcorrSac( null );
+		reg.setCodBancoCompens( null );
+		reg.setNossoNrCompens( null );
 		
 		return reg;
 	}
@@ -426,11 +467,11 @@ public class FRemCnab extends FRemFBN {
 			
 			for ( StuffRec rec : hsRec ) {
 				registros.add( getReg3P( rec ) );
-				/*registros.add( getReg3Q() );
-				registros.add( getReg3R() );
-				registros.add( getReg3S() );
-				registros.add( getReg3T() );
-				registros.add( getReg3U() );*/
+				registros.add( getReg3Q( rec ) );
+				//registros.add( getReg3R() );
+				//registros.add( getReg3S() );
+				//registros.add( getReg3T() );
+				//registros.add( getReg3U() );
 				regs++;
 			}
 			
@@ -526,5 +567,9 @@ public class FRemCnab extends FRemFBN {
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
 			e.printStackTrace();
 		}
+	}
+	
+	enum DadosCliente {
+		RAZCLI, ENDCLI, NUMCLI, BAIRCLI, CEPCLI, CIDCLI, UFCLI, CNPJ, CPF, CNPJCPF;
 	}
 }
