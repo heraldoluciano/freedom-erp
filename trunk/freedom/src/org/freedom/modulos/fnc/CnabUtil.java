@@ -281,6 +281,8 @@ class CnabUtil extends FbnUtil {
 				line.append( dateToString( getDataRemRet() ) );
 				line.append( dateToString( getDataCred() ) );
 				line.append( Funcoes.replicate( " ", 33 ) );
+				line.append( (char) 13 );
+				line.append( (char) 10 );
 			}
 			catch ( Exception e ) {	
 				throw new ExceptionCnab( "CNAB registro 1.\nErro ao escrever registro.\n" + e.getMessage() );
@@ -405,6 +407,8 @@ class CnabUtil extends FbnUtil {
 				line.append( getSegmento() );
 				line.append( ' ' );
 				line.append( format( getCodMovimento(), ETipo.$9, 2, 0 ) );
+				line.append( (char) 13 );
+				line.append( (char) 10 );
 			}
 			catch ( Exception e ) {	
 				throw new ExceptionCnab( "CNAB registro 3.\nErro ao escrever registro.\n" + e.getMessage() );
@@ -801,6 +805,8 @@ class CnabUtil extends FbnUtil {
 				line.append( format( getDiasBaixaDevol(), ETipo.$9, 3, 0 ) );  
 				line.append( format( getCodMoeda(), ETipo.$9, 2, 0 ) );
 				line.append( format( getContrOperCred(), ETipo.$9, 10, 0 ) );
+				line.append( (char) 13 );
+				line.append( (char) 10 );
 			}
 			catch ( Exception e ) {	
 				throw new ExceptionCnab( "CNAB registro 3 segmento P.\nErro ao escrever registro.\n" + e.getMessage() );
@@ -1022,6 +1028,8 @@ class CnabUtil extends FbnUtil {
 				line.append( format( getCodCompensacao(), ETipo.$9, 3, 0 ) );
 				line.append( format( getNossoNumero(), ETipo.X, 20, 0 ) );
 				line.append( Funcoes.replicate( " ", 8 ) );
+				line.append( (char) 13 );
+				line.append( (char) 10 );
 			}
 			catch ( Exception e ) {	
 				throw new ExceptionCnab( "CNAB registro 3 segmento Q.\nErro ao escrever registro.\n" + e.getMessage() );
@@ -1250,6 +1258,8 @@ class CnabUtil extends FbnUtil {
 				line.append( format( getAgenciaDeb(), ETipo.$9, 4, 0 ) );
 				line.append( format( getContaDeb(), ETipo.$9, 13, 0 ) );
 				line.append( format( getCodOcorrSacado(), ETipo.$9, 8, 0 ) );
+				line.append( (char) 13 );
+				line.append( (char) 10 );
 			}
 			catch ( Exception e ) {	
 				throw new ExceptionCnab( "CNAB registro 3 segmento R.\nErro ao escrever registro.\n" + e.getMessage() );
@@ -1419,6 +1429,9 @@ class CnabUtil extends FbnUtil {
 					line.append( format( getMsg9(), ETipo.X, 40, 0 ) );
 					line.append( Funcoes.replicate( " ", 22 ) );
 				}
+				
+				line.append( (char) 13 );
+				line.append( (char) 10 );
 			}
 			catch ( Exception e ) {	
 				throw new ExceptionCnab( "CNAB registro 3 segmento S.\nErro ao escrever registro.\n" + e.getMessage() );
@@ -1701,6 +1714,8 @@ class CnabUtil extends FbnUtil {
 				line.append( format( getVlrTarifa(), ETipo.$9, 15, 2 ) ); 
 				line.append( format( getCodRejeicoes(), ETipo.$9, 10, 0 ) );
 				line.append( Funcoes.replicate( " ", 17 ) );
+				line.append( (char) 13 );
+				line.append( (char) 10 );
 			}
 			catch ( Exception e ) {	
 				throw new ExceptionCnab( "CNAB registro 3 segmento T.\nErro ao escrever registro.\n" + e.getMessage() );
@@ -1938,6 +1953,8 @@ class CnabUtil extends FbnUtil {
 				line.append( format( getCodBancoCompens(), ETipo.$9, 3, 0 ) );
 				line.append( format( getNossoNrCompens(), ETipo.$9, 20, 0 ) );
 				line.append( Funcoes.replicate( " ", 7 ) );
+				line.append( (char) 13 );
+				line.append( (char) 10 );
 			}
 			catch ( Exception e ) {	
 				throw new ExceptionCnab( "CNAB registro 3 segmento T.\nErro ao escrever registro.\n" + e.getMessage() );
@@ -2140,6 +2157,8 @@ class CnabUtil extends FbnUtil {
 				line.append( format( getVlrDescontado(), ETipo.$9, 15, 2 ) );
 				line.append( format( getVlrDescontado(), ETipo.X, 8, 0 ) );
 				line.append( Funcoes.replicate( " ", 117 ) );
+				line.append( (char) 13 );
+				line.append( (char) 10 );
 			}
 			catch ( Exception e ) {	
 				throw new ExceptionCnab( "CNAB registro 5.\nErro ao escrever registro.\n" + e.getMessage() );
