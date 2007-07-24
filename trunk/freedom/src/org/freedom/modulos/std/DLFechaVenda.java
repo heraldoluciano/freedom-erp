@@ -773,11 +773,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		
 		if ( dl.OK ) {
 			
-			txtVlrParcItRec.setVlrBigDecimal( (BigDecimal) dl.getValores()[ 0 ] );
-			txtDtVencItRec.setVlrDate( (Date) dl.getValores()[ 1 ] );
-			txtVlrDescItRec.setVlrBigDecimal( (BigDecimal) dl.getValores()[ 2 ] );
-			txtCodTipoCobItRec.setVlrInteger( (Integer) dl.getValores()[ 3 ] );
-			txtCodBancoItRec.setVlrString( (String) dl.getValores()[ 4 ] );
+			Object[] valores = dl.getValores();
+			
+			txtVlrParcItRec.setVlrBigDecimal( (BigDecimal) valores[ 0 ] );
+			txtDtVencItRec.setVlrDate( (Date) valores[ 1 ] );
+			txtVlrDescItRec.setVlrBigDecimal( (BigDecimal) valores[ 2 ] );
+			txtCodTipoCobItRec.setVlrString( (String) valores[ 3 ] );
+			txtCodBancoItRec.setVlrString( (String) valores[ 4 ] );
 			
 			txtAltUsuRec.setVlrString( "S" );
 			
