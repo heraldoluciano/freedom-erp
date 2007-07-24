@@ -31,10 +31,8 @@ import java.util.Date;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
-import org.freedom.componentes.ListaCampos;
-
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.funcoes.Funcoes;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FFDialogo;
 
 public class DLFechaParcela extends FFDialogo {
@@ -100,8 +98,6 @@ public class DLFechaParcela extends FFDialogo {
 
 		lcBanco.carregaDados();
 		lcTipoCob.carregaDados();
-
-
 	}
 
 	private void montaTela() {
@@ -129,7 +125,7 @@ public class DLFechaParcela extends FFDialogo {
 		oRetorno[ 0 ] = txtParcItRec.getVlrBigDecimal();
 		oRetorno[ 1 ] = txtDtVencItRec.getVlrDate();
 		oRetorno[ 2 ] = txtVlrDescItRec.getVlrBigDecimal();
-		oRetorno[ 3 ] = txtCodTipoCob.getVlrInteger();
+		oRetorno[ 3 ] = txtCodTipoCob.getVlrInteger()!=0 ? String.valueOf( txtCodTipoCob.getVlrInteger() ) : "";
 		oRetorno[ 4 ] = txtCodBanco.getVlrString();
 
 		return oRetorno;
