@@ -45,12 +45,10 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.freedom.acao.CarregaEvent;

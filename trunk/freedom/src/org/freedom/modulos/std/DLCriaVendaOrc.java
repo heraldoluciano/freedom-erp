@@ -32,6 +32,10 @@ public class DLCriaVendaOrc extends FDialogo {
 				
 	}
 	
+	public void setNewCodVenda( int arg ) {
+		txtNewCodVenda.setVlrInteger( arg );
+	}
+	
 	public int getNewCodVenda() {
 		return txtNewCodVenda.getVlrInteger().intValue();
 	}
