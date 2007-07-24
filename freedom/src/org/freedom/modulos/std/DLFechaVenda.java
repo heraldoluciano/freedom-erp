@@ -1172,7 +1172,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		}
 	}
 
-	public List getParcRecibo() {
+	public List<Integer> getParcRecibo() {
 		List<Integer> lsRet = new ArrayList<Integer>();
 		Vector<Object> vRec = new Vector<Object>();
 		List<Object[]> lsCab = new ArrayList<Object[]>();
