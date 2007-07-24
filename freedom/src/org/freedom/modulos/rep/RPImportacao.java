@@ -309,7 +309,7 @@ public class RPImportacao extends FFilho implements ActionListener {
 				importarPlanopagamento();
 			}
 			if ( "S".equals( cbRPPedido.getVlrString() ) ) {
-				//importarPedidos();
+				importarPedidos();
 			}
 					
 			status.setText( "Dados importados..." );
@@ -429,6 +429,8 @@ public class RPImportacao extends FFilho implements ActionListener {
 	
 	private void importarProduto() {
 		
+		status.setText( "Importando Produtos..." );
+		
 		StringBuilder insProduto = new StringBuilder();		
 		
 		insProduto.append( "INSERT INTO RPGRUPO ( CODEMP,CODFILIAL,CODGRUP,DESCGRUP,NIVELGRUP ) VALUES ( " );
@@ -447,35 +449,38 @@ public class RPImportacao extends FFilho implements ActionListener {
 		
 		executeGeneric( insUnidade.toString() );
 		
-		StringBuilder sql = new StringBuilder();		
+		StringBuilder sql = null;
 		
-		sql.append( "SELECT 'INSERT INTO RPPRODUTO " );
-		sql.append( "( CODEMP,CODFILIAL,CODPROD,DESCPROD,REFPROD,CODBARPROD,CODEMPGP,CODFILIALGP,CODGRUP,CODEMPUD,"  );
-		sql.append( "CODFILIALUD,CODUNID,CODEMPFO,CODFILIALFO,CODFOR,REFPRODFOR,PESOLIQPROD,PESOBRUTPROD,COMISPROD,"  );
-		sql.append( "PERCIPIPROD,PRECOPROD1,PRECOPROD2,PRECOPROD3 ) VALUES ( " );
-		sql.append( Aplicativo.iCodEmp );
-		sql.append( "," );
-		sql.append( ListaCampos.getMasterFilial( "RPFORNECEDOR" ) );
-		sql.append( ",'||CODPROD||','||CHAR(39)||DESCPROD||CHAR(39)||','||CHAR(39)||CODPROD||CHAR(39)||','||" );
-		sql.append( "CHAR(39)||CODBARPROD||CHAR(39)||','||" );
-		sql.append( Aplicativo.iCodEmp );
-		sql.append( "||','||" );
-		sql.append( ListaCampos.getMasterFilial( "RPPRODUTO" ) );
-		sql.append( "||','||CHAR(39)||'0001'||CHAR(39)||','||" );
-		sql.append( Aplicativo.iCodEmp );
-		sql.append( "||','||" );
-		sql.append( ListaCampos.getMasterFilial( "RPPRODUTO" ) );
-		sql.append( "||','||CHAR(39)||'UN'||CHAR(39)||','||" );
-		sql.append( Aplicativo.iCodEmp );
-		sql.append( "||','||" );
-		sql.append( ListaCampos.getMasterFilial( "RRPRODUTO" ) );
-		sql.append( "||','||CODFOR||','||CHAR(39)||CODFORPROD||CHAR(39)||','||COALESCE(PESOPROD,'NULL')||','||COALESCE(PESOPROD,'NULL')||','||" );
-		sql.append( "COALESCE(COMISPROD,'NULL')||','||COALESCE(PERCIPIPROD,'NULL')||','||COALESCE(PRECOPROD,'NULL')||','||" );
-		sql.append( "COALESCE(PRECOPROD2,'NULL')||','||COALESCE(PRECOPROD3,'NULL')||' )' FROM PRODUTO" );
-		
-		status.setText( "Importando Produtos..." );
-		
-		importarGeneric( sql.toString() );
+		for ( int i=1; i <=100; i++) {
+			
+			sql = new StringBuilder();		
+			
+			sql.append( "SELECT 'INSERT INTO RPPRODUTO " );
+			sql.append( "( CODEMP,CODFILIAL,CODPROD,DESCPROD,REFPROD,CODBARPROD,CODEMPGP,CODFILIALGP,CODGRUP,CODEMPUD,"  );
+			sql.append( "CODFILIALUD,CODUNID,CODEMPFO,CODFILIALFO,CODFOR,REFPRODFOR,PESOLIQPROD,PESOBRUTPROD,COMISPROD,"  );
+			sql.append( "PERCIPIPROD,PRECOPROD1,PRECOPROD2,PRECOPROD3 ) VALUES ( " );
+			sql.append( Aplicativo.iCodEmp );
+			sql.append( "," );
+			sql.append( ListaCampos.getMasterFilial( "RPFORNECEDOR" ) );
+			sql.append( ",'||CODPROD||','||CHAR(39)||DESCPROD||CHAR(39)||','||CHAR(39)||CODPROD||CHAR(39)||','||" );
+			sql.append( "CHAR(39)||CODBARPROD||CHAR(39)||','||" );
+			sql.append( Aplicativo.iCodEmp );
+			sql.append( "||','||" );
+			sql.append( ListaCampos.getMasterFilial( "RPPRODUTO" ) );
+			sql.append( "||','||CHAR(39)||'0001'||CHAR(39)||','||" );
+			sql.append( Aplicativo.iCodEmp );
+			sql.append( "||','||" );
+			sql.append( ListaCampos.getMasterFilial( "RPPRODUTO" ) );
+			sql.append( "||','||CHAR(39)||'UN'||CHAR(39)||','||" );
+			sql.append( Aplicativo.iCodEmp );
+			sql.append( "||','||" );
+			sql.append( ListaCampos.getMasterFilial( "RRPRODUTO" ) );
+			sql.append( "||','||CODFOR||','||CHAR(39)||CODFORPROD||CHAR(39)||','||COALESCE(PESOPROD,'NULL')||','||COALESCE(PESOPROD,'NULL')||','||" );
+			sql.append( "COALESCE(COMISPROD,'NULL')||','||COALESCE(PERCIPIPROD,'NULL')||','||COALESCE(PRECOPROD,'NULL')||','||" );
+			sql.append( "COALESCE(PRECOPROD2,'NULL')||','||COALESCE(PRECOPROD3,'NULL')||' )' FROM PRODUTO WHERE CODPROD>0 AND CODPROD<" + (i*1000) );
+			
+			importarGeneric( sql.toString() );
+		}
 	}
 
 	private void importarTransportadora() {
@@ -581,13 +586,79 @@ public class RPImportacao extends FFilho implements ActionListener {
 	
 	private void importarPedidos() {
 		
-		StringBuilder sql = new StringBuilder();
-		
-		sql.append( "" );
-		
 		status.setText( "Importando Pedido..." );
 		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "select 'insert into RPPEDIDO ( " );
+		sql.append( "CODEMP,CODFILIAL,CODPED,DATAPED,CODCLI,CODEMPCL,CODFILIALCL,CODVEND,CODEMPVD,CODFILIALVD," );
+		sql.append( "CODPLANOPAG,CODEMPPG,CODFILIALPG,CODMOEDA,CODEMPMO,CODFILIALMO,CODFOR,CODEMPFO,CODFILIALFO," );
+		sql.append( "CODTRAN,CODEMPTP,CODFILIALTP,TIPOFRETEPED,TIPOREMPED,NUMPEDCLI,NUMPEDFOR,OBSPED )" );
+		sql.append( "values ( " );
+		sql.append( Aplicativo.iCodEmp );
+		sql.append( "," );
+		sql.append( ListaCampos.getMasterFilial( "RPPEDIDO" ) );
+		sql.append( ",'||Codped||','||" );
+		sql.append( "char(39)||extract(year FROM dataped)||'-'||extract(month FROM dataped)||'-'||extract(day FROM dataped)||char(39)" );
+		sql.append( "||','||Codcli||','||" );
+		sql.append( Aplicativo.iCodEmp );
+		sql.append( "||','||" );
+		sql.append( ListaCampos.getMasterFilial( "RPCVENDEDOR" ) );
+		sql.append( "||','||Codvend||','||" );
+		sql.append( Aplicativo.iCodEmp );
+		sql.append( "||','||" );
+		sql.append( ListaCampos.getMasterFilial( "RPPLANOPAG" ) );
+		sql.append( "||','||" );
+		sql.append( "Codplanopag||','||" );
+		sql.append( Aplicativo.iCodEmp );
+		sql.append( "||','||" );
+		sql.append( ListaCampos.getMasterFilial( "RPMOEDA" ) );
+		sql.append( "||','||" );
+		sql.append( "char(39)||'R$'||char(39)||','||" );
+		sql.append( Aplicativo.iCodEmp );
+		sql.append( "||','||" );
+		sql.append( ListaCampos.getMasterFilial( "RPMOEDA" ) );
+		sql.append( "||','||" );
+		sql.append( "Codfor||','||" );
+		sql.append( Aplicativo.iCodEmp );
+		sql.append( "||','||" );
+		sql.append( ListaCampos.getMasterFilial( "RPFORNECEDOR" ) );
+		sql.append( "||','||" );
+		sql.append( "(case when CodTransp is not null then CodTransp else 'null' end)||','||" );
+		sql.append( "(case when CodTransp is not null then " );
+		sql.append( Aplicativo.iCodEmp );
+		sql.append( " else 'null' end)||','||" );
+		sql.append( "(case when CodTransp is not null then " );
+		sql.append( ListaCampos.getMasterFilial( "RPTRANSP" ) );
+		sql.append( " else 'null' end)||','||" );
+		sql.append( "char(39)||Tiporemped||char(39)||','||char(39)||Tipofreteped||char(39)||','||" );
+		sql.append( "coalesce(Numcliped,0)||','||coalesce(Numforped,0)||','||char(39)||coalesce(Obs,'')||char(39)||')' from pedido" );
+		
 		importarGeneric( sql.toString() );
+		
+		StringBuilder sqlitem = new StringBuilder();
+		
+		sqlitem.append( "select 'insert into RPITPEDIDO (CODEMP,CODFILIAL,CODPED,CODITPED,CODPROD,CODFILIALPD,CODEMPPD,QTDITPED,PRECOITPED" );
+		sqlitem.append( ",VLRITPED,VLRLIQITPED,PERCIPIITPED,VLRIPIITPED,PERCDESCITPED,VLRDESCITPED,PERCADICITPED" );
+		sqlitem.append( ",VLRADICITPED,PERCRECITPED,VLRRECITPED,PERCPAGITPED,VLRPAGITPED) values ( " );
+		sqlitem.append( Aplicativo.iCodEmp );
+		sqlitem.append( "," );
+		sqlitem.append( ListaCampos.getMasterFilial( "RPPEDIDO" ) );
+		sqlitem.append( ",'||Codped||','||Coditped||','||Codprod||','||" );
+		sqlitem.append( Aplicativo.iCodEmp );
+		sqlitem.append( "||','||" );
+		sqlitem.append( ListaCampos.getMasterFilial( "RPMOEDA" ) );
+		sqlitem.append( "||','||" );
+		sqlitem.append( "coalesce(Qtditped,0)||','||coalesce(Precoitped,0)||','||" );
+		sqlitem.append( "(coalesce(Qtditped,0)*coalesce(Precoitped,0))||','||" );
+		sqlitem.append( "((coalesce(Qtditped,0)*coalesce(Precoitped,0))+coalesce(Valipiitped,0)-coalesce(Valdescitped,0)+coalesce(Valadicitped,0))||','||" ); 
+		sqlitem.append( "coalesce(Percipiitped,0)||','||coalesce(Valipiitped,0)||','||" );
+		sqlitem.append( "coalesce(Percdescitped,0)||','||coalesce(Valdescitped,0)||','||" );
+		sqlitem.append( "coalesce(Percadicitped,0)||','||coalesce(Valadicitped,0)||','||" );
+		sqlitem.append( "coalesce(Perccomritped,0)||','||coalesce(Valcomritped,0)||','||" );
+		sqlitem.append( "coalesce(Perccompitped,0)||','||coalesce(Valcompitped,0)||')' from ITPED" );
+		
+		importarGeneric( sqlitem.toString() );
 	}
 	
 	private void getLogError() {
