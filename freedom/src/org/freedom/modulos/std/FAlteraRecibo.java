@@ -1,6 +1,6 @@
 /**
  * @version 14/07/2003 <BR>
- * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
+ * @author Setpoint Informática Ltda./Armando Nogueira <BR>
  *
  * Projeto: Freedom <BR>
  *  
@@ -123,7 +123,6 @@ public class FAlteraRecibo extends FFilho implements ActionListener {
 
 		btTrocaDoc.setToolTipText("Alterar");
 
-		//txtCodVenda.setRequerido(true);
 		txtNParcItRec.setRequerido( true );
 
 		txtVlrParcRec.setSoLeitura( true );
@@ -140,21 +139,15 @@ public class FAlteraRecibo extends FFilho implements ActionListener {
 		pinCli.adic( txtNParcItRec, 7, 60, 70, 20 );
 		pinCli.adic( new JLabelPad( "Vlr.parcela" ), 153, 40, 70, 20 );
 		pinCli.adic( txtVlrParcItRec, 153, 60, 70, 20 );
-		pinCli.adic( btTrocaDoc, 190, 100, 26, 26 );
+		pinCli.adic( btTrocaDoc, 190, 90, 30, 30 );
 		pinCli.adic( new JLabelPad( "Nº Recibo" ), 80, 40, 100, 20);
 		pinCli.adic( txtReciboItRec , 80, 60, 70, 20);
 	}
 	
-	/*if JLabelPad( "Nº Recibo" ) != null;
-	 JLabelFk ("Já Existe Recibo\n deseja realmente altera-lo ?");
-	 else JLabelPad( "Nº Recibo" ) =""*/
-	
 	private void trocaDoc() {
 
-		String sImpNota = "";
-
-		String sSQL1 = "SELECT RECIBOITREC FROM FNITRECEBER WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=?";
-		String sSQL2 = "UPDATE FNITRECEBER SET ReciboItRec=? WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=?";//"UPDATE FNITRECEBER SET RECIBOITREC=? WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=?";
+		String sSQL1 = "SELECT RECIBOITREC FROM FNITRECEBER WHERE CODREC=? AND CODEMP=? AND CODFILIAL=?";
+		String sSQL2 = "UPDATE FNITRECEBER SET RECIBOITREC=? WHERE CODREC=? AND CODEMP=? AND CODFILIAL=?";
 
 		try {
 
@@ -164,33 +157,28 @@ public class FAlteraRecibo extends FFilho implements ActionListener {
 			ps.setInt(3,ListaCampos.getMasterFilial("FNRECEBER"));
 			ResultSet rs = ps.executeQuery();
 
-			if (rs.next()) {
-				sImpNota = rs.getString("VlrParcItRec");
-			}
-
 			rs.close();
 			ps.close();
 
 			ps = con.prepareStatement(sSQL2);
 			ps.setInt(1,txtReciboItRec.getVlrInteger().intValue());
-			ps.setInt(2,txtCodVenda.getVlrInteger().intValue());
+			ps.setInt(2,txtCodRec.getVlrInteger().intValue());
 			ps.setInt(3,Aplicativo.iCodEmp);
 			ps.setInt(4,ListaCampos.getMasterFilial("FNRECEBER"));
 			ps.executeUpdate();
 			ps.close();
 
-			con.commit();
+			if (!con.getAutoCommit())
+				con.commit();
 			Funcoes.mensagemInforma( this, "Numero do recibo alterado com Sucesso!" );
-			txtCodRec.setVlrString( "" );
 
 		}
 		catch(SQLException err) {
 
-			Funcoes.mensagemErro(this,"Erro ao alterar numero do recibo!\n"+err.getMessage(),true,con,err);//"Erro ao alterar a venda!"
+			Funcoes.mensagemErro(this,"Erro ao alterar numero do recibo!\n"+err.getMessage(),true,con,err);
 			err.printStackTrace();
-
-		}
 	}
+}
 	public void actionPerformed(ActionEvent evt) { 
 
 		if (evt.getSource() == btSair)
