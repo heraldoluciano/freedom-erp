@@ -94,6 +94,7 @@ public class FreedomSTD extends AplicativoPD {
 	
 			addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'F', 100200000, 1, false, null );
 				addOpcao( 100200000, TP_OPCAO_ITEM, "Alteração de numero de nota", "Alteração de doc", 'A', 100210000, 2, true, FTrocaDoc.class );
+				addOpcao( 100200000, TP_OPCAO_ITEM, "Alteração nº do recibo", "Alteração nº do recibo", 'P', 100280000, 2, true, FAlteraRecibo.class );
 				addOpcao( 100200000, TP_OPCAO_MENU, "Exportar", "Exportar", 'E', 100220000, 2, false, null );
 					addOpcao( 100220000, TP_OPCAO_ITEM, "Contabil/Livros Fiscais", "Contabil/Livros Fiscais", 'C', 100220100, 3, true, FExporta.class );
 					addOpcao( 100220000, TP_OPCAO_ITEM, "SVV", "SVV", 'S', 100220200, 3, true, FSVV.class );
@@ -117,6 +118,7 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 100400000, TP_OPCAO_ITEM, "Estação de trabalho", "Estações de trabalho", 'E', 100440000, 2, true, FEstacao.class );// lom
 				addSeparador( 100400000 );
 				addOpcao( 100400000, TP_OPCAO_ITEM, "Empresa", "Empresa", 'E', 100450000, 2, true, FEmpresa.class );
+				
 
 		addOpcao( -1, TP_OPCAO_MENU, "Entrada", "", 'E', 200000000, 0, false, null );
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Compra", "Compras", 'C', 200100000, 1, true, FCompra.class );
