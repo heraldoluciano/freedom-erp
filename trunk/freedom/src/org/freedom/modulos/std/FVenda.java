@@ -2511,38 +2511,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		super.keyReleased( kevt );
 	}
 
-	private void gravaImpRecibo( List<Integer> lsParcRecibo ) {
-
-		PreparedStatement ps = null;
-		StringBuilder sql = new StringBuilder();
-		sql.append( "UPDATE FNITRECEBER IR SET IMPRECIBOITREC=? " );
-		sql.append( "WHERE IR.CODEMP=? AND IR.CODFILIAL=? AND IR.CODITREC=? AND " );
-		sql.append( "IR.CODREC=(SELECT R.CODREC FROM FNRECEBER R ");
-		sql.append( "WHERE R.CODEMPVA=? AND R.CODFILIALVA=? AND R.TIPOVENDA=? AND R.CODVENDA=? AND ");
-		sql.append( "R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL)" );
-		try {
-			for (Integer nrparc: lsParcRecibo) {
-				ps = con.prepareStatement( sql.toString() );
-				ps.setString( 1, "S" );
-				ps.setInt( 2, Aplicativo.iCodEmp );
-				ps.setInt( 3, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-				ps.setInt( 4, nrparc.intValue() );
-				ps.setInt( 5, Aplicativo.iCodEmp );
-				ps.setInt( 6, ListaCampos.getMasterFilial( "VDVENDA" ));
-				ps.setString( 7, "V");
-				ps.setInt( 8, txtCodVenda.getVlrInteger().intValue() );
-				ps.executeUpdate();
-				if (!con.getAutoCommit()) {
-					con.commit();
-				}
-				ps.close();
-			}
-		} catch (SQLException e) {
-			Funcoes.mensagemErro( this, "Não foi possível gravar informações do recibo!\n" + e.getMessage());
-		}
-		
-	}
-
 	public void actionPerformed( ActionEvent evt ) {
 
 		List<Integer> lsParcRecibo = null;
@@ -2558,12 +2526,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					chbReImpNfTipoMov.getVlrString() );
 			// dl.getDadosCli();
 			dl.setVisible( true );
-
+			dl.getParcRecibo();
 			if ( dl.OK ) {
 				sValores = dl.getValores();
 				if ( "S".equals( sValores[ 6 ] ) ) {
 					lsParcRecibo = dl.getParcRecibo();
-					gravaImpRecibo( lsParcRecibo );
 				}
 				dl.dispose();
 			}
