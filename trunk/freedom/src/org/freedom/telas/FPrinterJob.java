@@ -57,6 +57,7 @@ import org.freedom.componentes.ImprimeLayout;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.rep.RelCliente;
 
@@ -227,6 +228,10 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 		}
 
 	}
+	
+	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, ResultSet rs, HashMap<String, Object> hParamRel, JInternalFrame ifOrig ) {
+		this( sLayout, sTituloRel, sFiltros, rs, hParamRel, ifOrig, null );
+	}
 
 	/**
 	 * Construção do FPrinterJob utilizando JasperReports através de resultset.
@@ -237,7 +242,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	 * @param rs
 	 * @param ifOrig
 	 */
-	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, ResultSet rs, HashMap<String, Object> hParamRel, JInternalFrame ifOrig ) {
+	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, ResultSet rs, HashMap<String, Object> hParamRel, JInternalFrame ifOrig, EmailBean mail ) {
 
 		super( false );
 		setTitulo( sTituloRel );
@@ -264,7 +269,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
 			relJasper = JasperFillManager.fillReport( FPrinterJob.class.getResourceAsStream( "/org/freedom/" + sLayout ), hParam, jrRS );
 
-			JRViewerPad viewer = new JRViewerPad( relJasper );
+			JRViewerPad viewer = new JRViewerPad( relJasper, mail );
 			this.setContentPane( viewer );
 		} catch ( JRException err ) {
 			err.printStackTrace();
@@ -276,6 +281,10 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 			err.printStackTrace();
 		}
 	}
+	
+	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, Connection con ) {
+		this( sLayout, sTituloRel, sFiltros, ifOrig, hParamRel, con, null );
+	}
 
 	/**
 	 * Construção do FPrinterJob utilizando JasperReports através de query no JasperReport.
@@ -286,7 +295,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	 * @param rs
 	 * @param ifOrig
 	 */
-	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, Connection con ) {
+	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, Connection con, EmailBean mail ) {
 
 		super( false );
 		setTitulo( sTituloRel );
@@ -307,7 +316,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 			
 			relJasper = JasperFillManager.fillReport( FPrinterJob.class.getResourceAsStream( "/org/freedom/" + sLayout ), hParam, con );
 
-			JRViewerPad viewer = new JRViewerPad( relJasper );
+			JRViewerPad viewer = new JRViewerPad( relJasper, mail );
 			this.setContentPane( viewer );
 		} catch ( JRException err ) {
 			err.printStackTrace();

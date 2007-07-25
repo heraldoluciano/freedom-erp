@@ -70,6 +70,7 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.componentes.LeiauteGR;
 import org.freedom.telas.Aplicativo;
@@ -1242,8 +1243,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		String sSql = "SELECT CLASSTPCONV FROM ATTIPOCONV WHERE CODEMP=? AND CODFILIAL=? AND CODTPCONV=?";
 		String sClassOrc = "";
+		
 		LeiauteGR leiOrc = null;
+		
 		try {
+			
 			PreparedStatement ps = con.prepareStatement( sSql );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "ATTIPOCONV" ) );
@@ -1297,7 +1301,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				if ("".equals( sClassOrc.trim() ) ) {
 					sClassOrc = "ORC_PD.jasper";
 				}
-				FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + sClassOrc , null, null, this, hParam, con );
+				
+				EmailBean mail = Aplicativo.getEmailBean();				
+				mail.setPara( EmailBean.getEmailCli( txtCodCli.getVlrInteger(), con ) );
+				
+				FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + sClassOrc , null, null, this, hParam, con, mail );
 
 				if ( bVisualizar ) {
 					dlGr.setVisible( true );

@@ -14,6 +14,7 @@ import net.sf.jasperreports.view.JRViewer;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.funcoes.EmailBean;
 
 
 public class JRViewerPad extends JRViewer {
@@ -25,34 +26,40 @@ public class JRViewerPad extends JRViewer {
 	private JButton btnEmail;
 
 	private JasperPrint report = null;
+	
+	private EmailBean mail = Aplicativo.getEmailBean();
 
-	public JRViewerPad( JasperPrint arg0 ) {
+	public JRViewerPad( JasperPrint arg0, EmailBean mail ) {
 
 		super( arg0 );
 		report = arg0;
-		init();
+		init( mail );
 	}
 
-	public JRViewerPad( JasperPrint arg0, Locale arg1 ) {
+	public JRViewerPad( JasperPrint arg0, Locale arg1, EmailBean mail ) {
 
 		super( arg0, arg1 );
-		init();
-		report = arg0;		
+		init( mail );
+		report = arg0;
 	}
 
-	public JRViewerPad( JasperPrint arg0, Locale arg1, ResourceBundle arg2 ) {
+	public JRViewerPad( JasperPrint arg0, Locale arg1, ResourceBundle arg2, EmailBean mail ) {
 
 		super( arg0, arg1, arg2 );
-		init();
+		init( mail );
 		report = arg0;
 	}
 	
-	private void init() {
+	private void init( EmailBean mail ) {
 		
 		tlbToolBar.add( panelButtonsStp );
 		panelButtonsStp.setPreferredSize( new Dimension( 115, 30 ) );
 		
 		createButtonEmail();
+		
+		if ( mail != null ) {
+			setMail( mail );
+		}
 	}
 
 	private void createButtonEmail() {
@@ -72,7 +79,7 @@ public class JRViewerPad extends JRViewer {
 	
 	private void showDLEnviarEmail() {
 		
-		DLEnviarEmail enviaemail = new DLEnviarEmail( this, Aplicativo.getEmailBean() );
+		DLEnviarEmail enviaemail = new DLEnviarEmail( this, getMail() );
 		enviaemail.setReport( report );
 		enviaemail.preparar();
 		if ( enviaemail.preparado() ) {
@@ -80,5 +87,13 @@ public class JRViewerPad extends JRViewer {
 		} else {
 			enviaemail.dispose();
 		}
+	}
+	
+	public EmailBean getMail() {	
+		return mail;
+	}
+	
+	public void setMail( EmailBean mail ) {	
+		this.mail = mail;
 	}
 }
