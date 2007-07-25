@@ -67,7 +67,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FPassword;
 
-public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListener, CheckBoxListener, RadioGroupListener, CarregaListener {
+public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListener, CheckBoxListener, RadioGroupListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -617,7 +617,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		bPrefs = prefs();
 		lcVenda.edit();
 		
-		lcItReceber.addCarregaListener( this );
+		//lcItReceber.addCarregaListener( this );
 		
 		
 	}
@@ -807,6 +807,34 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		}
 		
 		dl.dispose();
+	}
+
+	private void gravaImpRecibo( int codrec, int nparcitrec, boolean imprecibo ) {
+
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append( "UPDATE FNITRECEBER IR SET IMPRECIBOITREC=? " );
+		sql.append( "WHERE IR.CODEMP=? AND IR.CODFILIAL=? AND IR.CODREC=? AND IR.NPARCITREC=?"); 
+		try {
+			ps = con.prepareStatement( sql.toString() );
+			if (imprecibo) {
+				ps.setString( 1, "S" );
+			} else {
+				ps.setString( 1, "N" );
+			}
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+			ps.setInt( 4, codrec );
+			ps.setInt( 5, nparcitrec );
+			ps.executeUpdate();
+				if (!con.getAutoCommit()) {
+					con.commit();
+				}
+				ps.close();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Não foi possível gravar informações do recibo!\n" + e.getMessage());
+		}
+		
 	}
 
 	private void alteraComis() {
@@ -1180,27 +1208,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	public List<Integer> getParcRecibo() {
 		List<Integer> lsRet = new ArrayList<Integer>();
-		//Vector<Object> vRec = new Vector<Object>();
-		//List<Object[]> lsCab = new ArrayList<Object[]>();
-		//DLSelRecibo dlsr = new DLSelRecibo(Aplicativo.telaPrincipal, true);
-		//Object[] cab = null;
-		//Boolean sel = null;
-		
-		//for (int i=0; i<tabRec.getNumColunas(); i++) {
-			//cab = new Object[2];
-			//cab[0] = tabRec.getColumnName( i );
-			//cab[1] = new Integer(tabRec.getColumn( cab[0] ).getWidth());
-			//lsCab.add(cab);
-		//}
-		//for (int i=0; i<tabRec.getNumLinhas(); i++) {
-			//vRec.addElement( tabRec.getLinha( i ) );
-		//}
-		//dlsr.carregaTab(lsCab, vRec);
-		//dlsr.setVisible( true );
-		//if (dlsr.OK) {
-			//lsRet = dlsr.getParcRecibo();
-		//}
-		//dlsr.dispose();
 		Boolean sel = new Boolean(false);
 		for (int i=0; i < tabRec.getNumLinhas(); i++) {
 			sel = (Boolean) tabRec.getValor( i, 1 );
@@ -1208,7 +1215,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				lsRet.add( (Integer) tabRec.getValor( i, 0 ) ); // Coluna da parcela
 			}
 		}
-
 		return lsRet;
 	}
 	
@@ -1258,11 +1264,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		if ( fevt.getSource() == txtPercAdicVenda ) {
 			
 			if ( txtPercAdicVenda.getText().trim().length() < 1 ) {
-			
 				txtVlrAdicVenda.setAtivo( true );
 			}
 			else {
-				
 				txtVlrAdicVenda.setVlrBigDecimal( txtVlrProdVenda.getVlrBigDecimal().multiply( txtPercAdicVenda.getVlrBigDecimal() ).divide( new BigDecimal( "100" ), 3, BigDecimal.ROUND_HALF_UP ) );
 				txtVlrAdicVenda.setAtivo( false );
 			}
@@ -1274,8 +1278,14 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	public void mouseClicked( MouseEvent mevt ) {
 		
 		Tabela tab = (Tabela) mevt.getSource();
-		
-		if ( mevt.getClickCount() == 2 ) {			
+		String imprecibo = "N";
+		if ( mevt.getClickCount() == 1) {
+			
+			gravaImpRecibo( txtCodRec.getVlrInteger(), (Integer) tabRec.getValor( tabRec.getLinhaSel(), 0 ),
+					(Boolean) tabRec.getValor( tabRec.getLinhaSel(), 1 ) );
+			
+		}
+		else if ( mevt.getClickCount() == 2 ) {			
 			if ( tab == tabRec && tabRec.getLinhaSel() >= 0 ) {
 				if ( bPrefs[ 2 ] ) {
 					
@@ -1295,21 +1305,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				alteraComis();
 			}
 		}
-		/*else if (mevt.getClickCount() == 1) {
-			if ( tab == tabRec && tabRec.getLinhaSel() >= 0 ) {
-				Boolean bAtu;
-				try {
-					bAtu = (Boolean) tabRec.getValor( tabRec.getLinhaSel(), 8 );
-				}
-				catch(ClassCastException e) {
-					bAtu = false;
-				}
-				tabRec.setValor( ! new Boolean (bAtu) ,tabRec.getLinhaSel(), 8 );
-				if (bCarregaReceber) {
-					bCarregaReceber = false;
-				}				
-			}			
-		}*/
+
 	}
 
 	public void mouseEntered( MouseEvent e ) { }
@@ -1346,23 +1342,5 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			cbAdicFrete.setVlrString( "N" );
 		}
 	}
-
-	public void afterCarrega( CarregaEvent cevt ) {
-		/*if ( ( cevt.getListaCampos() == lcItReceber && bCarregaReceber) ) {
-			for ( int i = 0; i < tabRec.getRowCount(); i++ ) {
-				try {
-					Boolean bVlr = (Boolean)tabRec.getValor(i, 4);					
-					if (!bVlr) {
-						tabRec.setValor( new Boolean(false),i, 4);						
-					}
-				} 
-				catch ( ClassCastException e ) {
-					tabRec.setValor( new Boolean(false),i, 4);	
-				}
-			}
-		}*/
-	}
-	public void beforeCarrega( CarregaEvent cevt ) {};
-	
 
 }
