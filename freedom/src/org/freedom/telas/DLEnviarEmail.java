@@ -68,15 +68,15 @@ public class DLEnviarEmail extends FFDialogo {
 
 	private JPanelPad panelRodape = null;
 
-	private final JTextFieldPad txtHost = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtHost = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 
-	private final JTextFieldPad txtPort = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtPort = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 
-	private final JTextFieldPad txtFrom = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtFrom = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 
-	private final JTextFieldPad txtTo = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtTo = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 		
-	private final JTextFieldPad txtAssunto = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtAssunto = new JTextFieldPad( JTextFieldPad.TP_STRING, 120, 0 );
 
 	private final JTextFieldPad txtUser = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -246,24 +246,25 @@ public class DLEnviarEmail extends FFDialogo {
 
 		if ( validaEnviar() ) {
 			
-			//DLLoading loading = new DLLoading( this );
+			DLLoading loading = new DLLoading();
 
 			try {
 				
 				if ( "S".equals( mail.getAutentica() ) ) {
-					//loading.start();
+					loading.start();
 					enviarAutenticado();
 				}
 				else {
-					//loading.start();
+					loading.start();
 					enviarNaoAutenticado();
 				}
 
 			} catch ( Exception e ) {
+				loading.stop();
 				Funcoes.mensagemErro( this, "Erro ao enviar pedido!\n" + e.getMessage(), true, con, e );
 				e.printStackTrace();
 			} finally {
-				//loading.stop();
+				loading.stop();
 			}
 
 			setStatus( null );
