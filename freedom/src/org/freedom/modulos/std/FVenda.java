@@ -2510,91 +2510,98 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		super.keyReleased( kevt );
 	}
+	
+	private void fechaVenda() {
+		
+		List<Integer> lsParcRecibo = null;
+		String[] sValores = null;
+		
+		DLFechaVenda dl = new DLFechaVenda( con, 
+				txtCodVenda.getVlrInteger(), 
+				this, 
+				chbImpPedTipoMov.getVlrString(), 
+				chbImpNfTipoMov.getVlrString(), 
+				chbImpBolTipoMov.getVlrString(), 
+				chbImpRecTipoMov.getVlrString(), 
+				chbReImpNfTipoMov.getVlrString() );
+		// dl.getDadosCli();
+		dl.setVisible( true );
+
+		if ( dl.OK ) {
+			sValores = dl.getValores();
+			if ( "S".equals( sValores[ 6 ] ) ) {
+				lsParcRecibo = dl.getParcRecibo();
+			}
+			dl.dispose();
+		}
+		else {
+			dl.dispose();
+		}
+		
+		lcCampos.carregaDados();
+		
+		if ( sValores != null ) {
+
+			// Ordem dos parâmetros decrescente por que uma tela abre na
+			// frente da outra.
+
+			if ( sValores[ 5 ].equals( "S" ) && !sValores[ 7 ].equals( "" ) ) {
+				FRBoleto fBol = new FRBoleto( this );
+				fBol.setConexao( con );
+				fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 7 ] ) );
+				fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
+				fBol.imprimir( true );
+			}
+			else if ( ( "S".equals( sValores[ 6 ] ) ) && ( lsParcRecibo != null ) && ( lsParcRecibo.size() > 0 ) ) { // Logica para impressão do recibo.
+				FRBoleto fBol = new FRBoleto( this );
+				fBol.setConexao( con );
+				if ( "".equals( sValores[ 7 ] ) ) {
+					Funcoes.mensagemInforma( this, "Modelo de boleto/recibo não foi selecionado!" );
+				}
+				else {
+					fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 7 ] ) );
+					fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
+					fBol.setParcelas( lsParcRecibo );
+					fBol.imprimir( true );
+				}
+			}
+
+			if ( ( sValores[ 4 ].equals( "S" ) ) || ( sValores[ 8 ].equals( "S" ) ) ) {
+				if ( txtTipoMov.getVlrString().equals( "VD" ) || txtTipoMov.getVlrString().equals( "VT" ) || txtTipoMov.getVlrString().equals( "TR" ) || txtTipoMov.getVlrString().equals( "CS" ) || txtTipoMov.getVlrString().equals( "CE" ) || txtTipoMov.getVlrString().equals( "PE" )
+						|| txtTipoMov.getVlrString().equals( "DV" ) || txtTipoMov.getVlrString().equals( "BN" ) ) {
+					emitNota( "NF" );
+				}
+				else if ( txtTipoMov.getVlrString().equals( "SE" ) ) {
+					emitNota( "NS" );
+				}
+				else {
+					Funcoes.mensagemErro( this, "Não existe nota para o tipo de movimento: '" + txtTipoMov.getVlrString() + "'" );
+					return;
+				}
+				if ( sValores[ 8 ].equals( "N" ) ) {
+					txtStatusVenda.setVlrString( "V4" );
+				}
+			}
+			else if ( sValores[ 3 ].equals( "S" ) ) {
+				imprimir( true, txtCodVenda.getVlrInteger().intValue() );
+			}
+			if ( sValores[ 8 ].equals( "N" ) ) {
+				lcCampos.edit();
+				lcCampos.post();
+			}
+			if ( ( sValores[ 4 ].equals( "S" ) ) && ( bPrefs[ 7 ] ) ) {
+				bloqvenda();
+			}
+		}
+
+		tpnCab.setSelectedIndex( 0 );
+		txtCodVenda.requestFocus();
+	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		List<Integer> lsParcRecibo = null;
-		String[] sValores = null;
 		if ( evt.getSource() == btFechaVenda ) {
-			DLFechaVenda dl = new DLFechaVenda( con, 
-					txtCodVenda.getVlrInteger(), 
-					this, 
-					chbImpPedTipoMov.getVlrString(), 
-					chbImpNfTipoMov.getVlrString(), 
-					chbImpBolTipoMov.getVlrString(), 
-					chbImpRecTipoMov.getVlrString(), 
-					chbReImpNfTipoMov.getVlrString() );
-			// dl.getDadosCli();
-			dl.setVisible( true );
-			dl.getParcRecibo();
-			if ( dl.OK ) {
-				sValores = dl.getValores();
-				if ( "S".equals( sValores[ 6 ] ) ) {
-					lsParcRecibo = dl.getParcRecibo();
-				}
-				dl.dispose();
-			}
-			else {
-				dl.dispose();
-			}
-			lcCampos.carregaDados();
-			if ( sValores != null ) {
-
-				// Ordem dos parâmetros decrescente por que uma tela abre na
-				// frente da outra.
-
-				if ( sValores[ 5 ].equals( "S" ) && !sValores[ 7 ].equals( "" ) ) {
-					FRBoleto fBol = new FRBoleto( this );
-					fBol.setConexao( con );
-					fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 7 ] ) );
-					fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
-					fBol.imprimir( true );
-				}
-				else if ( ( "S".equals( sValores[ 6 ] ) ) && ( lsParcRecibo != null ) && ( lsParcRecibo.size() > 0 ) ) { // Logica para impressão do recibo.
-					FRBoleto fBol = new FRBoleto( this );
-					fBol.setConexao( con );
-					if ( "".equals( sValores[ 7 ] ) ) {
-						Funcoes.mensagemInforma( this, "Modelo de boleto/recibo não foi selecionado!" );
-					}
-					else {
-						fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 7 ] ) );
-						fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
-						fBol.setParcelas( lsParcRecibo );
-						fBol.imprimir( true );
-					}
-				}
-
-				if ( ( sValores[ 4 ].equals( "S" ) ) || ( sValores[ 8 ].equals( "S" ) ) ) {
-					if ( txtTipoMov.getVlrString().equals( "VD" ) || txtTipoMov.getVlrString().equals( "VT" ) || txtTipoMov.getVlrString().equals( "TR" ) || txtTipoMov.getVlrString().equals( "CS" ) || txtTipoMov.getVlrString().equals( "CE" ) || txtTipoMov.getVlrString().equals( "PE" )
-							|| txtTipoMov.getVlrString().equals( "DV" ) || txtTipoMov.getVlrString().equals( "BN" ) ) {
-						emitNota( "NF" );
-					}
-					else if ( txtTipoMov.getVlrString().equals( "SE" ) ) {
-						emitNota( "NS" );
-					}
-					else {
-						Funcoes.mensagemErro( this, "Não existe nota para o tipo de movimento: '" + txtTipoMov.getVlrString() + "'" );
-						return;
-					}
-					if ( sValores[ 8 ].equals( "N" ) ) {
-						txtStatusVenda.setVlrString( "V4" );
-					}
-				}
-				else if ( sValores[ 3 ].equals( "S" ) ) {
-					imprimir( true, txtCodVenda.getVlrInteger().intValue() );
-				}
-				if ( sValores[ 8 ].equals( "N" ) ) {
-					lcCampos.edit();
-					lcCampos.post();
-				}
-				if ( ( sValores[ 4 ].equals( "S" ) ) && ( bPrefs[ 7 ] ) ) {
-					bloqvenda();
-				}
-			}
-
-			tpnCab.setSelectedIndex( 0 );
-			txtCodVenda.requestFocus();
-
+			fechaVenda();
 		}
 		else if ( evt.getSource() == btConsPgto ) {
 			DLConsultaPgto dl = new DLConsultaPgto( this, con, txtCodCli.getVlrInteger().intValue() );

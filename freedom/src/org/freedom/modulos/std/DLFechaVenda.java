@@ -71,6 +71,16 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private static final long serialVersionUID = 1L;
 
+	private final int ABA_FECHAMENTO = 0;
+	
+	private final int ABA_FERETE = 1;
+	
+	private final int ABA_ADIC = 2;
+	
+	private final int ABA_RECEBER = 3;
+	
+	private final int ABA_COMISSAO = 4;
+
 	private final int casasDec = Aplicativo.casasDec;
 
 	private final JTabbedPanePad tpn = new JTabbedPanePad();
@@ -870,7 +880,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		
 		switch ( tpn.getSelectedIndex() ) {
 			
-			case 0 :
+			case ABA_FECHAMENTO :
 				
 				txtCodVenda.setVlrInteger( new Integer( iCodVendaFecha ) );
 				txtTipoVenda.setVlrString( "V" );
@@ -909,7 +919,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				}
 				
 				break;
-			case 1 :
+			case ABA_FERETE :
 				
 				if ( bPrefs[ 0 ] ) {				
 					lcFreteVD.edit();
@@ -935,7 +945,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				}
 				
 				break;
-			case 2 :
+			case ABA_ADIC :
 
 				gravaVenda();
 				tpn.setEnabledAt( 0, false );		
