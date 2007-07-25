@@ -2476,6 +2476,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		super.keyReleased( kevt );
 	}
 
+	private void gravaImpRecibo(List<Integer> lsParcRecibo) {
+		
+	}
+	
 	public void actionPerformed( ActionEvent evt ) {
 		List<Integer> lsParcRecibo = null; 
 		String[] sValores = null;
@@ -2491,6 +2495,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				sValores = dl.getValores();
 				if ("S".equals( sValores[ 6 ] )) {
 					lsParcRecibo = dl.getParcRecibo();
+					gravaImpRecibo(lsParcRecibo);
 				}
 				dl.dispose();
 			}

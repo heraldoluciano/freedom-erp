@@ -184,7 +184,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private final JCheckBoxPad cbImpBol = new JCheckBoxPad( "Imprime Boleto?", "S", "N" );
 
 	private final JCheckBoxPad cbImpRec = new JCheckBoxPad( "Imprime Recibo?", "S", "N" );
-	
+
+	private final JCheckBoxPad cbImpReciboItRec = new JCheckBoxPad( "Imp.rec.", "S", "N" );
+
 	private final JCheckBoxPad cbReImpNot = new JCheckBoxPad( "Reimprime Nota?", "S", "N" );
 
 	private final JCheckBoxPad cbAdicFrete = new JCheckBoxPad( "adiciona valor do frete na nota?", "S", "N" );
@@ -440,6 +442,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		txtNParcItRec.setNomeCampo( "NParcItRec" );
 		lcItReceber.add( new GuardaCampo( txtNParcItRec, "NParcItRec", "N.parc.", ListaCampos.DB_PK, false ) );
+		lcItReceber.add( new GuardaCampo( cbImpReciboItRec, "ImpReciboItRec", "Imp.rec.", ListaCampos.DB_SI, false) );
 		lcItReceber.add( new GuardaCampo( txtVlrParcItRec, "VlrParcItRec", "Valor tot.", ListaCampos.DB_SI, false ) );
 		lcItReceber.add( new GuardaCampo( txtDtVencItRec, "DtVencItRec", "Dt. vencto.", ListaCampos.DB_SI, false ) );
 		lcItReceber.add( new GuardaCampo( txtVlrDescItRec, "VlrDescItRec", "Valor desc.", ListaCampos.DB_SI, false ) );
@@ -455,6 +458,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtCodBancoItRec.setListaCampos( lcItReceber );
 		lcItReceber.montaTab();
 		lcItReceber.setConexao( cn );
+		tabRec.setColunaEditavel( 1, true );
 		//tabRec.getcol
 		
 		tabRec.addMouseListener( this );
@@ -1176,27 +1180,35 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	public List<Integer> getParcRecibo() {
 		List<Integer> lsRet = new ArrayList<Integer>();
-		Vector<Object> vRec = new Vector<Object>();
-		List<Object[]> lsCab = new ArrayList<Object[]>();
-		DLSelRecibo dlsr = new DLSelRecibo(Aplicativo.telaPrincipal, true);
-		Object[] cab = null;
-		Boolean sel = null;
+		//Vector<Object> vRec = new Vector<Object>();
+		//List<Object[]> lsCab = new ArrayList<Object[]>();
+		//DLSelRecibo dlsr = new DLSelRecibo(Aplicativo.telaPrincipal, true);
+		//Object[] cab = null;
+		//Boolean sel = null;
 		
-		for (int i=0; i<tabRec.getNumColunas(); i++) {
-			cab = new Object[2];
-			cab[0] = tabRec.getColumnName( i );
-			cab[1] = new Integer(tabRec.getColumn( cab[0] ).getWidth());
-			lsCab.add(cab);
+		//for (int i=0; i<tabRec.getNumColunas(); i++) {
+			//cab = new Object[2];
+			//cab[0] = tabRec.getColumnName( i );
+			//cab[1] = new Integer(tabRec.getColumn( cab[0] ).getWidth());
+			//lsCab.add(cab);
+		//}
+		//for (int i=0; i<tabRec.getNumLinhas(); i++) {
+			//vRec.addElement( tabRec.getLinha( i ) );
+		//}
+		//dlsr.carregaTab(lsCab, vRec);
+		//dlsr.setVisible( true );
+		//if (dlsr.OK) {
+			//lsRet = dlsr.getParcRecibo();
+		//}
+		//dlsr.dispose();
+		Boolean sel = new Boolean(false);
+		for (int i=0; i < tabRec.getNumLinhas(); i++) {
+			sel = (Boolean) tabRec.getValor( i, 1 );
+			if (sel) {
+				lsRet.add( (Integer) tabRec.getValor( i, 0 ) ); // Coluna da parcela
+			}
 		}
-		for (int i=0; i<tabRec.getNumLinhas(); i++) {
-			vRec.addElement( tabRec.getLinha( i ) );
-		}
-		dlsr.carregaTab(lsCab, vRec);
-		dlsr.setVisible( true );
-		if (dlsr.OK) {
-			lsRet = dlsr.getParcRecibo();
-		}
-		dlsr.dispose();
+
 		return lsRet;
 	}
 	
