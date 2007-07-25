@@ -75,7 +75,7 @@ public class FAlteraRecibo extends FFilho implements ActionListener {
 
 		super(false);
 		setTitulo("Troca de documento");
-		setAtribos(50,50,350,200);
+		setAtribos(50,50,270,200);
 
 		btSair.addActionListener(this);
 		btTrocaDoc.addActionListener(this);
@@ -137,14 +137,18 @@ public class FAlteraRecibo extends FFilho implements ActionListener {
 		pinCli.adic( new JLabelPad( "Vlr.total" ), 153, 0, 70, 20 );
 		pinCli.adic( txtVlrParcRec, 153, 20, 70, 20 );
 		pinCli.adic( new JLabelPad( "Nº parcela" ), 7, 40, 100, 20 );
-		pinCli.adic( txtNParcItRec, 7, 60, 141, 20 );
+		pinCli.adic( txtNParcItRec, 7, 60, 70, 20 );
 		pinCli.adic( new JLabelPad( "Vlr.parcela" ), 153, 40, 70, 20 );
 		pinCli.adic( txtVlrParcItRec, 153, 60, 70, 20 );
-		pinCli.adic( btTrocaDoc, 191, 100, 30, 20 );
-		pinCli.adic( new JLabelPad( "Nº Recibo" ), 7, 80, 73, 20);
-		pinCli.adic( txtReciboItRec , 7, 100, 100, 20 );
+		pinCli.adic( btTrocaDoc, 190, 100, 26, 26 );
+		pinCli.adic( new JLabelPad( "Nº Recibo" ), 80, 40, 100, 20);
+		pinCli.adic( txtReciboItRec , 80, 60, 70, 20);
 	}
-
+	
+	/*if JLabelPad( "Nº Recibo" ) != null;
+	 JLabelFk ("Já Existe Recibo\n deseja realmente altera-lo ?");
+	 else JLabelPad( "Nº Recibo" ) =""*/
+	
 	private void trocaDoc() {
 
 		String sImpNota = "";
