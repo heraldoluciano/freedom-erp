@@ -768,6 +768,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		if ( iCodRec > 0 ) {
 			
 			txtCodRec.setVlrInteger( new Integer( iCodRec ) );
+			if ("S".equals( cbImpRec.getVlrString())) {
+				gravaImpRecibo( iCodRec, 1, new Boolean(true) );
+			}
 			lcReceber.carregaDados();
 		}
 	}
