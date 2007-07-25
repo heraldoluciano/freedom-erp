@@ -129,6 +129,10 @@ public class FRCodficProd extends FRelatorio {
 	
 	public void montaListaCampos(){
 		
+
+		/*********
+		 * Grupo *
+		 *********/
 		lcGrupo.add(new GuardaCampo( txtCodGrupo, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false));
 		lcGrupo.add(new GuardaCampo( txtDescGrupo, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false));
 		lcGrupo.montaSql(false, "GRUPO", "EQ");
@@ -137,6 +141,9 @@ public class FRCodficProd extends FRelatorio {
 		txtCodGrupo.setFK(true);
 		txtCodGrupo.setNomeCampo("CodGrup");
 		
+		/*********
+		 * Marca *
+		 *********/
 		lcMarca.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false));
 		lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false));
 		txtCodMarca.setTabelaExterna(lcMarca);
