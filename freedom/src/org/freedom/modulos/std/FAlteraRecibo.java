@@ -44,6 +44,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FAlteraRecibo extends FFilho implements ActionListener {
+	
 	private static final long serialVersionUID = 1L;
 
 	private JPanelPad pinCli = new JPanelPad(350,100);
@@ -52,42 +53,63 @@ public class FAlteraRecibo extends FFilho implements ActionListener {
 	
 	private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	
-	private JTextFieldFK txtSerie = new JTextFieldFK(JTextFieldPad.TP_STRING,4,0);
+	private JTextFieldPad txtCodRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	
-	private JTextFieldFK txtVlrLiqVenda = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,2);
+	private JTextFieldFK txtVlrParcRec = new JTextFieldFK(JTextFieldFK.TP_DECIMAL, 15, Aplicativo.casasDecFin);
 	
-	private JTextFieldFK txtStatusVenda = new JTextFieldFK(JTextFieldPad.TP_STRING,2,0);
+	private JTextFieldFK txtVlrParcItRec = new JTextFieldFK(JTextFieldFK.TP_DECIMAL, 15, Aplicativo.casasDecFin);
 	
-	private JTextFieldPad txtCodRec = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
+	private JTextFieldPad txtReciboItRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	
-	private JTextFieldFK txtNovo = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtNParcItRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	
 	private JButton btTrocaDoc = new JButton(Icone.novo("btTrocaNumero.gif"));
 	
 	private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
 	
-	private ListaCampos lcVenda = new ListaCampos(this);
+	private ListaCampos lcReceber = new ListaCampos(this, "");
+	
+	private ListaCampos lcItReceber = new ListaCampos(this, "");
 	
 	public FAlteraRecibo() {
+		
 		super(false);
 		setTitulo("Troca de documento");
-		setAtribos(50,50,350,170);
-
-		txtCodVenda.setRequerido(true);
-
-		lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, false));
-		lcVenda.add(new GuardaCampo( txtNovo, "DocVenda", "Documento", ListaCampos.DB_SI, false));
-		lcVenda.add(new GuardaCampo( txtCodRec, "DocVenda", "Documento", ListaCampos.DB_SI, false));
-		lcVenda.add(new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, false));
-		lcVenda.add(new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "V. liq.", ListaCampos.DB_SI, false));
-		lcVenda.add(new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, false));
-		lcVenda.add( new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, false));
-		lcVenda.montaSql(false, "VENDA", "VD");
-		lcVenda.setReadOnly(true);
-		txtCodVenda.setTabelaExterna(lcVenda);
-		txtCodVenda.setFK(true);
-		txtCodVenda.setNomeCampo("CodVenda");
-
+		setAtribos(50,50,350,200);
+		
+		btSair.addActionListener(this);
+		btTrocaDoc.addActionListener(this);
+		
+		montaTela();
+	}
+	
+	public void montaListaCampos(){
+		
+		lcReceber.add(new GuardaCampo( txtCodRec, "CodRec", "Cód.rec.", ListaCampos.DB_PK,true));
+		lcReceber.add(new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_SI, false));
+		lcReceber.add(new GuardaCampo( txtVlrParcRec, "VlrParcRec", "Valor Total", ListaCampos.DB_SI, false));
+		
+		lcReceber.montaSql(false, "RECEBER", "FN");
+		lcReceber.setReadOnly(true);
+		txtCodRec.setTabelaExterna(lcReceber);
+		txtCodRec.setFK(true);
+		txtCodRec.setNomeCampo("CodRec");
+		
+		lcItReceber.add(new GuardaCampo( txtCodRec, "CodRec", "Cód.rec.", ListaCampos.DB_PF, true));
+		lcItReceber.add(new GuardaCampo( txtNParcItRec , "NParcItRec", "Nº parc.", ListaCampos.DB_PK, true));
+		lcItReceber.add( new GuardaCampo( txtVlrParcItRec, "VlrParcItRec", "Vlr.parc.", ListaCampos.DB_SI, false) );
+		lcItReceber.add(  new GuardaCampo( txtReciboItRec, "ReciboItRec", "Nº recibo", ListaCampos.DB_SI, false) );
+	    lcItReceber.setMaster( lcReceber );	
+		lcItReceber.montaSql(false, "ITRECEBER", "FN");
+		lcItReceber.setReadOnly(true);
+	
+		txtNParcItRec.setTabelaExterna(lcItReceber);
+		txtNParcItRec.setFK(true);
+		txtNParcItRec.setNomeCampo("NParcItRec"); 
+	}
+	
+	public void montaTela(){
+		
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout());
 
@@ -98,43 +120,53 @@ public class FAlteraRecibo extends FFilho implements ActionListener {
 
 		c.add(pnRod,BorderLayout.SOUTH);
 		c.add(pinCli,BorderLayout.CENTER);
-
+		
 		btTrocaDoc.setToolTipText("Alterar");
 
-		pinCli.adic( new JLabelPad( "Venda" ), 7, 0, 80, 20 );
-		pinCli.adic( txtCodVenda, 7, 20, 100, 20 );
-		pinCli.adic( new JLabelPad( "Valor" ), 120, 0, 100, 20 );
-		pinCli.adic( txtVlrLiqVenda, 120, 20, 100, 20 );
-		pinCli.adic( btTrocaDoc, 187, 50, 30, 30 );
-		pinCli.adic( new JLabelPad( "Novo Recibo" ), 7, 40, 73, 20);
-		pinCli.adic( txtCodRec , 7, 60, 100, 20 );
+		//txtCodVenda.setRequerido(true);
+		txtNParcItRec.setRequerido( true );
+	
+		txtVlrParcRec.setSoLeitura( true );
+		txtVlrParcItRec.setSoLeitura( true );
+		txtCodVenda.setSoLeitura( true );
 		
-		btSair.addActionListener(this);
-		btTrocaDoc.addActionListener(this);
+		pinCli.adic( new JLabelPad( "Cód.rec." ), 7, 0, 70, 20 );
+		pinCli.adic( txtCodRec, 7, 20, 70, 20 );
+		pinCli.adic( new JLabelPad( "Nº pedido"), 80, 0, 70, 20 );
+		pinCli.adic( txtCodVenda, 80, 20, 70, 20);
+		pinCli.adic( new JLabelPad( "Vlr.total" ), 153, 0, 70, 20 );
+		pinCli.adic( txtVlrParcRec, 153, 20, 70, 20 );
+		pinCli.adic( new JLabelPad( "Nº parcela" ), 7, 40, 100, 20 );
+		pinCli.adic( txtNParcItRec, 7, 60, 100, 20 );
+		pinCli.adic( new JLabelPad( "Vlr.parcela" ), 120, 40, 100, 20 );
+		pinCli.adic( txtVlrParcItRec, 120, 60, 100, 20 );
+		pinCli.adic( btTrocaDoc, 240, 50, 30, 30 );
+		pinCli.adic( new JLabelPad( "Nº Recibo" ), 7, 80, 73, 20);
+		pinCli.adic( txtReciboItRec , 7, 100, 100, 20 );
 	}
-	private void trocar() {
+	
+	private void trocaDoc() {
 		
-		if (txtStatusVenda.getVlrString().equals("")) {
-			Funcoes.mensagemInforma(this,"Nenhuma venda foi selecionada!");
-			txtCodVenda.requestFocus();
-			return;
-		}
 		String sImpNota = "";
-	    String sSQL1 = "SELECT DOCVENDA FROM VDVENDA WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=?";
-	    String sSQL2 = "UPDATE VDVENDA SET DOCVENDA=? WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=? ";
+		
+	    String sSQL1 = "SELECT RECIBOITREC FROM FNITRECEBER WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=?";
+	    String sSQL2 = "UPDATE FNITRECEBER SET RECIBOITREC=? WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=?";
+	   
 	    try {
-//	1a. query:
+	    	
 	   	  PreparedStatement ps = con.prepareStatement(sSQL1);
 	      ps.setInt(1,txtCodRec.getVlrInteger().intValue());
 	      ps.setInt(2,Aplicativo.iCodEmp);
 	      ps.setInt(3,ListaCampos.getMasterFilial("VDVENDA"));
 	      ResultSet rs = ps.executeQuery();
+	    
 	      if (rs.next()) {
 	        sImpNota = rs.getString("DocVenda");
 	      }
+	     
 	      rs.close();
 	      ps.close();
-//	2a. query:
+
 	      ps = con.prepareStatement(sSQL2);
 	      ps.setInt(1,txtCodRec.getVlrInteger().intValue());
 	      ps.setInt(2,txtCodVenda.getVlrInteger().intValue());
@@ -154,20 +186,22 @@ public class FAlteraRecibo extends FFilho implements ActionListener {
 			err.printStackTrace();
 
 		}
-
 	}
 	public void actionPerformed(ActionEvent evt) { 
+		
 		if (evt.getSource() == btSair)
 			dispose();
 
 		else if (evt.getSource() == btTrocaDoc)
-			trocar();
-
+			trocaDoc();
 
 	}
 	public void setConexao(Connection cn) {
+		
 		super.setConexao(cn);
-		lcVenda.setConexao(cn);
+		lcReceber.setConexao(cn);
+		lcItReceber.setConexao( cn );
+		montaListaCampos();
 	}
 }
 
