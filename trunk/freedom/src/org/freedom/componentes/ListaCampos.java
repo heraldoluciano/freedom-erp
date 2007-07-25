@@ -991,20 +991,34 @@ public class ListaCampos extends Container implements PostListener,
 						if (rsItens.getString(iCol + 1) == null) {
 							tab.setValor("", iLin, iCol);
 						} 
-						else if (iTipos[iCol] == JTextFieldPad.TP_STRING)
+						else if (iTipos[iCol] == JTextFieldPad.TP_BOOLEAN) {
+							if ("S".equals(rsItens.getString(iCol+1))) {
+								tab.setValor( new Boolean(true), iLin, iCol );	
+							} else {
+								tab.setValor( new Boolean(false), iLin, iCol );
+							}
+						}
+						else if (iTipos[iCol] == JTextFieldPad.TP_STRING) {
 							tab.setValor(rsItens.getString(iCol + 1), iLin,iCol);
-						else if (iTipos[iCol] == JTextFieldPad.TP_INTEGER)
+						}
+						else if (iTipos[iCol] == JTextFieldPad.TP_INTEGER) {
 							tab.setValor(new Integer(rsItens.getInt(iCol + 1)),iLin, iCol);
-						else if (iTipos[iCol] == JTextFieldPad.TP_DATE)
+						}
+						else if (iTipos[iCol] == JTextFieldPad.TP_DATE) {
 							tab.setValor(Funcoes.sqlDateToStrDate(rsItens.getDate(iCol + 1)), iLin, iCol);
-						else if (iTipos[iCol] == JTextFieldPad.TP_TIME)
+						}
+						else if (iTipos[iCol] == JTextFieldPad.TP_TIME) {
 							tab.setValor(Funcoes.sqlTimeToStrTime(rsItens.getTime(iCol + 1)), iLin, iCol);
-						else if (iTipos[iCol] == JTextFieldPad.TP_DECIMAL)
+						}
+						else if (iTipos[iCol] == JTextFieldPad.TP_DECIMAL) {
 							tab.setValor(Funcoes.setPontoDec(rsItens.getString(iCol + 1)), iLin, iCol);
-						else if (iTipos[iCol] == JTextFieldPad.TP_NUMERIC)
+						}
+						else if (iTipos[iCol] == JTextFieldPad.TP_NUMERIC) {
 							tab.setValor(Funcoes.setPontoDec(rsItens.getString(iCol + 1)), iLin, iCol);
-						else if (iTipos[iCol] == JTextFieldPad.TP_BYTES)
+						}
+						else if (iTipos[iCol] == JTextFieldPad.TP_BYTES) {
 							tab.setValor("# BINÁRIO #", iLin, iCol);
+						}
 					}
 				}
 				if ((bQueryCommit) && (!con.getAutoCommit()) && bPodeCommit)
@@ -1171,7 +1185,11 @@ public class ListaCampos extends Container implements PostListener,
 			comp = getComponent(i - iNumDescs);
 			sTitulo = ((GuardaCampo) comp).getTituloCampo();
 			sNome = ((GuardaCampo) comp).getNomeCampo();
-			iTipos[i] = ((GuardaCampo) comp).getTipo();
+			if (((GuardaCampo) comp).getComponente() instanceof JCheckBoxPad) {
+				iTipos[i] = JTextFieldPad.TP_BOOLEAN;
+			} else {
+				iTipos[i] = ((GuardaCampo) comp).getTipo();
+			}
 			if (((GuardaCampo) comp).getCampo() != null)
 				sMascs[i] = ((GuardaCampo) comp).getCampo().getStrMascara();
 			tab.adicColuna(sTitulo);
@@ -2159,7 +2177,10 @@ public class ListaCampos extends Container implements PostListener,
 											sqlLC.setNull(iParamPost,Types.INTEGER);
 										else
 											sqlLC.setInt(iParamPost,((GuardaCampo) comp).getVlrInteger().intValue());
-									} 
+									}
+									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_BOOLEAN) {
+										sqlLC.setString( iParamPost, ((GuardaCampo) comp).getVlrString() );
+									}
 									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_STRING) {
 										sqlLC.setString(iParamPost,((GuardaCampo) comp).getVlrString());
 									} 
