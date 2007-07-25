@@ -230,6 +230,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vLabs.addElement( "Vencimento" );
 		vLabs.addElement( "Data documento" );
 		vLabs.addElement( "Nº documento" );
+		vLabs.addElement( "Nº recibo" );
 		vLabs.addElement( "Nº baixa" );
 		vLabs.addElement( "Parcela (No.)" );
 		vLabs.addElement( "Parcela (A,B...)" );
@@ -265,6 +266,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vVals.addElement( "[VENCIMEN]" ); // larg: 10
 		vVals.addElement( "[DATADOC_]" ); // larg: 10
 		vVals.addElement( "[__DOCUMENTO__]" ); // larg: 15
+		vVals.addElement( "[RECIBO]" ); // larg: 8
 		vVals.addElement( "[CODREC]" ); // larg: 8
 		vVals.addElement( "[P]" ); // larg: 3
 		vVals.addElement( "[A]" ); // larg: 3

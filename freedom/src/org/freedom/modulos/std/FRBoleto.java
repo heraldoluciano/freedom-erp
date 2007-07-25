@@ -140,9 +140,9 @@ public class FRBoleto extends FRelatorio {
 
 	private void montaListaCampos() {
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/********************
          * MODELO DE BOLETO *
-         **************************************************************************************************************************************************************************************************************************************************************************************************/
+         ********************/
 
 		lcModBol.add( new GuardaCampo( txtCodModBol, "CodModBol", "Cód.mod.", ListaCampos.DB_PK, true ) );
 		lcModBol.add( new GuardaCampo( txtDescModBol, "DescModBol", "Descrição do modelo de boleto", ListaCampos.DB_SI, false ) );
@@ -154,9 +154,9 @@ public class FRBoleto extends FRelatorio {
 		txtCodModBol.setFK( true );
 		txtCodModBol.setNomeCampo( "CodModBol" );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/*********
          * VENDA *
-         **************************************************************************************************************************************************************************************************************************************************************************************************/
+         *********/
 
 		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, false ) );
 		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "Doc.", ListaCampos.DB_SI, false ) );
@@ -168,9 +168,9 @@ public class FRBoleto extends FRelatorio {
 		txtCodVenda.setFK( true );
 		txtCodVenda.setNomeCampo( "CodVenda" );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/***********
          * CLIENTE *
-         **************************************************************************************************************************************************************************************************************************************************************************************************/
+         ***********/
 
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
@@ -178,9 +178,9 @@ public class FRBoleto extends FRelatorio {
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		txtCodCli.setTabelaExterna( lcCli );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/*********
          * BANCO *
-         **************************************************************************************************************************************************************************************************************************************************************************************************/
+         *********/
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
@@ -191,9 +191,9 @@ public class FRBoleto extends FRelatorio {
 		txtCodBanco.setNomeCampo( "CodBanco" );
 		txtCodBanco.setListaCampos( lcBanco );
 
-		/***************************************************************************************************************************************************************************************************************************************************************************************************
+		/********************
          * TIPO DE COBRANÇA *
-         **************************************************************************************************************************************************************************************************************************************************************************************************/
+         ********************/
 
 		lcTipoCob.add( new GuardaCampo( txtCodTpCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK, false ) );
 		lcTipoCob.add( new GuardaCampo( txtDescTpCob, "DescTipoCob", "Descrição do tipo de cobrança", ListaCampos.DB_SI, false ) );
@@ -335,6 +335,8 @@ public class FRBoleto extends FRelatorio {
 					sTxa = sTxa.replaceAll( "\\[CODREC]", Funcoes.alinhaDir( sCampo, 8 ) );
 				if ( ( sCampo = rs.getString( "DocVenda" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[__DOCUMENTO__]", Funcoes.alinhaDir( sCampo, 15 ) );
+				if ( ( sCampo = rs.getString( "ReciboItRec" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[RECIBO]", Funcoes.alinhaDir( sCampo, 8 ) );
 				if ( ( sCampo = rs.getString( "NParcItRec" ) ) != null ) {
 					sTxa = sTxa.replaceAll( "\\[P]", Funcoes.copy( sCampo, 0, 3 ) );
 					if ( rs.getInt( 1 ) > 1 )
@@ -589,7 +591,7 @@ public class FRBoleto extends FRelatorio {
 
 	public void imprimir( boolean bVisualizar ) {
 
-		final int codvenda = txtCodVenda.getVlrInteger().intValue();
+ 		final int codvenda = txtCodVenda.getVlrInteger().intValue();
 		final int nparc = txtParc.getVlrInteger().intValue();
 		final String codbanco = txtCodBanco.getVlrString().trim();
 		final int codtipocob = txtCodTpCob.getVlrInteger().intValue();
@@ -656,7 +658,7 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,C.RGCLI,C.INSCCLI," );
 			sSQL.append( "C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI," );
 			sSQL.append( "C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB," );
-			sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI, " );
+			sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI, ITR.RECIBOITREC, " );
 			sSQL.append( "(ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA, " );
 			sSQL.append( "IV.CODNAT, N.DESCNAT " );
 
@@ -768,14 +770,15 @@ public class FRBoleto extends FRelatorio {
 
 			rs = ps.executeQuery();
 
-			String classe = null;
-			classe = getClassModelo( txtPreImpModBol.getVlrString(), txtClassModBol.getVlrString() );
+			String classe = getClassModelo( txtPreImpModBol.getVlrString(), txtClassModBol.getVlrString() );
+			
 			if ( classe == null ) {
 				imprimeTexto( bVisualizar, rs );
 			}
 			else {
 				imprimeGrafico( bVisualizar, rs, classe );
 			}
+			
 			rs.close();
 			ps.close();
 
