@@ -117,9 +117,9 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	private JTextFieldPad txtSiteFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtCodContDeb = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodContDeb = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
-	private JTextFieldPad txtCodContCred = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodContCred = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtCodForContab = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
@@ -213,7 +213,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		adicCampo( txtEmailFor, 7, 300, 220, 20, "EmailFor", "E-Mail", ListaCampos.DB_SI, false );
 		adicCampo( txtSiteFor, 235, 300, 190, 20, "SiteFor", "Site", ListaCampos.DB_SI, false );
 		adicCampo( txtContFor, 7, 340, 443, 20, "ContFor", "Contato", ListaCampos.DB_SI, false );
-		adicCampo( txtCodForContab, 7, 380, 145, 20, "CodForContab", "Cód.cli.contábil", ListaCampos.DB_SI, false );
+		adicCampo( txtCodForContab, 7, 380, 145, 20, "CodForContab", "Cód.for.contábil", ListaCampos.DB_SI, false );
 		adicCampo( txtCodContDeb, 155, 380, 145, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
 		adicCampo( txtCodContCred, 303, 380, 147, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
 		adicCampo( txtCodHistPad, 7, 420, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
