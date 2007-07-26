@@ -69,6 +69,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FSetor.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FClasCli.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLChecaLFSaida.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTabICMS.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FGeraFiscal.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRTipoFor.java"/>
