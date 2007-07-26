@@ -70,6 +70,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 	private JPanelPad pinFin = new JPanelPad();
 
+	private JPanelPad pinCtb = new JPanelPad();
+
 	private JPanelPad pinSVV = new JPanelPad();
 
 	private JPanelPad pinDev = new JPanelPad();
@@ -210,6 +212,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 	private JLabelPad lbFinOpcoes = new JLabelPad( opcoes );
 
+	private JLabelPad lbCtbOpcoes = new JLabelPad( opcoes );
+
 	private JLabelPad lbPrcOpcoes = new JLabelPad( opcoes );
 
 	private JLabelPad lbOrcCont = new JLabelPad();
@@ -220,9 +224,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 	private JLabelPad lbFinCont = new JLabelPad();
 
-	private JLabelPad lbPrcCont = new JLabelPad();
+	private JLabelPad lbCtbCont = new JLabelPad();
 
-	private JComboBoxPad cbTamDescProd = null;
+	private JLabelPad lbPrcCont = new JLabelPad();
 
 	private JRadioGroup rgTipoValidOrc = null;
 
@@ -233,6 +237,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private JRadioGroup rgOrdNota = null;
 
 	private JRadioGroup rgLibCred = null;
+
+	private JComboBoxPad cbSisContabil = null;
+
+	private JComboBoxPad cbTamDescProd = null;
 
 	private JCheckBoxPad cbUsaRefProd = null;
 
@@ -388,7 +396,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 		super();
 		setTitulo( "Preferências Gerais" );
-		setAtribos( 40, 40, 760, 460 );
+		setAtribos( 30, 40, 770, 460 );
 
 		lcCampos.setMensInserir( false );
 		lcPrefere3.setMensInserir( false );
@@ -717,6 +725,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		vValsTipo.addElement( new Integer( 100 ) );
 		cbTamDescProd = new JComboBoxPad( vLabsTipo, vValsTipo, JComboBoxPad.TP_INTEGER, 4, 0 );
 
+		Vector<String> vLabsCtb = new Vector<String>();
+		Vector<String> vValsCtb = new Vector<String>();
+		vLabsCtb.addElement( "<--Selecione-->" );
+		vLabsCtb.addElement( "Freedom Contabil" );
+		vLabsCtb.addElement( "Safe Contabil" );
+		vValsCtb.addElement( "00" );
+		vValsCtb.addElement( "01" );
+		vValsCtb.addElement( "02" );
+		cbSisContabil = new JComboBoxPad( vLabsCtb, vValsCtb, JComboBoxPad.TP_STRING, 2, 0 );
+
 		// Geral
 
 		setPainel( pinGeral );
@@ -839,6 +857,18 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDB( cbJurosPosCalc, 20, 200, 310, 20, "JurosPosCalc", "", true );
 		adicCampo( txtCodTabJuros, 20, 240, 70, 20, "CodTbj", "Cód.tab.jr.", ListaCampos.DB_FK, txtDescTabJuros, false );
 		adicDescFK( txtDescTabJuros, 93, 240, 250, 20, "DescTbj", "Descrição da tabela de juros." );
+		
+		// Contabil
+
+		setPainel( pinCtb );
+		adicTab( "Contabíl", pinCtb );
+
+		lbCtbCont.setBorder( BorderFactory.createEtchedBorder( 1 ) );
+		lbCtbOpcoes.setOpaque( true );
+		
+		adic( lbCtbOpcoes, 20, 10, 70, 20 );
+		adic( lbCtbCont, 10, 20, 400, 80 );
+		adicDB( cbSisContabil, 20, 55, 300, 20, "SisContabil", "Sistema para exportação", false );
 
 		// SVV
 
