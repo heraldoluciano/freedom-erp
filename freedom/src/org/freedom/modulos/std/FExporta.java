@@ -5,11 +5,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -19,12 +21,14 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 
+import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -32,6 +36,12 @@ import org.freedom.telas.FFilho;
 public class FExporta extends FFilho implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
+	
+	private final int NUMERIC = 0;
+	
+	private final int CHAR = 1;
+	
+	private final int DATE = 2;
 	
 	private static final String RETURN = String.valueOf( (char) 13 ) + String.valueOf( (char) 10 );
 
@@ -55,7 +65,7 @@ public class FExporta extends FFilho implements ActionListener {
 
 		super( false );
 		setTitulo( "Exportar Arquivo" );
-		setAtribos( 50, 50, 470, 220 );
+		setAtribos( 50, 50, 470, 280 );
 
 		montaRadioGrupos();
 		montaTela();
@@ -93,25 +103,28 @@ public class FExporta extends FFilho implements ActionListener {
 
 		getTela().add( panelExporta, BorderLayout.CENTER );
 
-		panelExporta.adic( new JLabel( "Salvar em:" ), 10, 0, 100, 20 );
-		panelExporta.adic( txtFile, 10, 20, 400, 20 );
-		panelExporta.adic( btFile, 420, 20, 20, 20 );
+		panelExporta.adic( new JLabel( "Salvar em:" ), 10, 10, 100, 20 );
+		panelExporta.adic( txtFile, 10, 30, 400, 20 );
+		panelExporta.adic( btFile, 420, 30, 20, 20 );
+		
+		panelExporta.adic( new JLabel( "Tipo de exportação :" ), 10, 50, 150, 20 );
+		panelExporta.adic( rgModo, 10, 70, 430, 30 );
 
 		JLabel periodo = new JLabel( "Periodo", SwingConstants.CENTER );
 		periodo.setOpaque( true );
-		panelExporta.adic( periodo, 25, 45, 60, 20 );
+		panelExporta.adic( periodo, 25, 105, 60, 20 );
 
 		JLabel borda = new JLabel();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
-		panelExporta.adic( borda, 10, 55, 290, 45 );
+		panelExporta.adic( borda, 10, 115, 290, 45 );
 
-		panelExporta.adic( txtDtIni, 25, 70, 110, 20 );
-		panelExporta.adic( new JLabel( "até", SwingConstants.CENTER ), 135, 70, 40, 20 );
-		panelExporta.adic( txtDtFim, 175, 70, 110, 20 );
+		panelExporta.adic( txtDtIni, 25, 130, 110, 20 );
+		panelExporta.adic( new JLabel( "até", SwingConstants.CENTER ), 135, 130, 40, 20 );
+		panelExporta.adic( txtDtFim, 175, 130, 110, 20 );
 
-		panelExporta.adic( btGerar, 310, 65, 130, 25 );
+		panelExporta.adic( btGerar, 310, 120, 130, 35 );
 
-		panelExporta.adic( progress, 10, 120, 430, 20 );
+		panelExporta.adic( progress, 10, 180, 430, 20 );
 		
 		adicBotaoSair();
 	}
@@ -188,22 +201,28 @@ public class FExporta extends FFilho implements ActionListener {
 	private List<String> getReadRows() throws Exception {
 		
 		List<String> readrows = new ArrayList<String>();
-
-		// implementar seleção de formato de arquivo.
-		//if ( "C".equals( rgModo.getVlrString() ) ) {
-		//	if ( opção de formato ) {						
-			getLayoutContabil( readrows );
-		//	}
-		//}
+		String sistema = getSistemaContabil();
+		
+		if ( "C".equals( rgModo.getVlrString() ) ) {
+			
+			if ( "01".equals( sistema ) ) {		
+				
+				getLayoutFreedom( readrows );
+			}
+			else if ( "02".equals( sistema ) ) {		
+				
+				getLayoutSafe( readrows );
+			} 
+		}
 		//if ( "L".equals( rgModo.getVlrString() ) ) {
-		//	if ( opção de formato ) {	
+		//		if ( opção de formato ) {	
 		//	}
 		//}
 				
 		return readrows;
 	}
 	
-	private void getLayoutContabil( final List<String> readrows ) {
+	private void getLayoutFreedom( final List<String> readrows ) {
 		
 		try {
 			
@@ -291,21 +310,174 @@ public class FExporta extends FFilho implements ActionListener {
 			}
 		}
 		catch ( Exception e ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar dados!" );
+			Funcoes.mensagemErro( this, "Erro ao buscar dados para sistema Freedom Contábil!" );
 			e.printStackTrace();
 		}
+	}
+	
+	private void getLayoutSafe( final List<String> readrows ) {
+		
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			StringBuilder row = new StringBuilder();
+						
+			sql.append( "SELECT F.CODCONTDEB CONTADEB, F.CODCONTCRED CONTACRED, C.VLRLIQCOMPRA VALOR," );
+			sql.append( "C.SERIE, C.DOCCOMPRA DOC, H.DESCHIST, C.DTENTCOMPRA DATA, C.CODFILIAL " );
+			sql.append( "FROM CPCOMPRA C, EQTIPOMOV T, CPFORNECED F " );
+			sql.append( "LEFT OUTER JOIN FNHISTPAD H " );
+			sql.append( "ON H.CODEMP=F.CODEMPHP AND H.CODFILIAL=F.CODFILIALHP AND H.CODHIST=F.CODHIST " );
+			sql.append( "WHERE C.DTENTCOMPRA BETWEEN ? AND ? " );
+			sql.append( "AND T.CODEMP=C.CODEMPTM AND T.CODFILIAL=C.CODFILIALTM " );					
+			sql.append( "AND T.CODTIPOMOV=C.CODTIPOMOV AND T.FISCALTIPOMOV='S' " );
+			sql.append( "AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR " ); 
+			sql.append( "AND C.CODEMP=? AND C.CODFILIAL=? " );
+								
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setDate( 1, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
+			ps.setDate( 2, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while( rs.next() ) {
+				
+				row.delete( 0, row.length() );
+
+				row.append( format( rs.getString( "CONTADEB" ), CHAR, 11, 0 ) );
+				row.append( format( rs.getString( "CONTACRED" ), CHAR, 11, 0 ) );
+				row.append( format( rs.getString( "VALOR" ), NUMERIC, 14, 2 ) );				
+				row.append( Funcoes.replicate( " ", 14 ) ); // Centro de custo
+				row.append( format( rs.getString( "DOC" ), CHAR, 12, 0 ) );
+				row.append( format( decodeHistorico( rs, rs.getString( "DESCHIST" ) ), CHAR, 250, 0 ) );
+				row.append( format( rs.getDate( "DATA" ), DATE, 0, 0 ) );
+				row.append( format( rs.getString( "CODFILIAL" ), NUMERIC, 5, 0 ) );
+				row.append( Funcoes.replicate( " ", 25 ) );
+						
+				readrows.add( row.toString() );
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+		}
+		catch ( Exception e ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar dados para sistema Freedom Contábil!" );
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Este metodo é funcional somente para o layout do sistema Safe Contábil.
+	 * @param rs
+	 * @param historico
+	 * @return
+	 */
+	private String decodeHistorico( final ResultSet rs, final String historico ) {
+		
+		String decode = null;
+		
+		if ( historico != null ) {	
+			
+			try {
+				
+				String tmp = historico;
+				
+				tmp = tmp.replaceAll( "<DOCUMENTO>", rs.getString( "DOC" ) != null ? rs.getString( "DOC" ).trim() : "" );
+				tmp = tmp.replaceAll( "<VALOR>", String.valueOf( ( rs.getBigDecimal( "VALOR" ) != null 
+						? rs.getBigDecimal( "VALOR" ) : new BigDecimal( "0.00" ) ).setScale( 2, BigDecimal.ROUND_HALF_UP ) ) );
+				tmp = tmp.replaceAll( "<SERIE>", rs.getString( "SERIE" ) != null ? rs.getString( "SERIE" ).trim() : "" );
+				tmp = tmp.replaceAll( "<DATA>", Funcoes.dateToStrDate( rs.getDate( "DATA" ) ) );
+				
+				decode = tmp;
+			}
+			catch ( Exception e ) {
+				e.printStackTrace();
+			}
+		}
+		
+		return decode;
+	}
+	
+	private String getSistemaContabil() {
+		
+		String sistema = "00";
+		
+		try {
+			
+			String sql = "SELECT SISCONTABIL FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			
+			PreparedStatement ps = con.prepareStatement( sql );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				sistema = rs.getString( "SISCONTABIL" );
+			}
+		}
+		catch ( Exception e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao verificar preferências!\n" + e.getMessage() );
+		}
+		
+		return sistema;
+	}
+
+	private String format( Object obj, int tipo, int tam, int dec ) {
+
+		String retorno = null;
+		String str = null;
+		
+		if ( obj == null ) {
+			str = "";
+		}
+		else {
+			str = obj.toString();
+		}
+		
+		if ( tipo == NUMERIC ) {			
+			if ( dec > 0 ) {
+				retorno = Funcoes.transValor( str, tam, dec, true );	
+			}
+			else {
+				retorno = Funcoes.strZero( str, tam );
+			}
+		}
+		else if ( tipo == CHAR ) {			
+			retorno = Funcoes.adicionaEspacos( str, tam );
+		}
+		else if ( tipo == DATE ) {			
+			int[] args = Funcoes.decodeDate( (Date) obj );		
+			retorno = 
+				Funcoes.strZero( String.valueOf( args[2] ), 2 )	+ 
+				Funcoes.strZero( String.valueOf( args[1] ), 2 ) + 
+				Funcoes.strZero( String.valueOf( args[0] ), 4 );
+		}
+		
+		return retorno;
 	}
 
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btGerar ) {
 
-			Thread tdg = new Thread() {
+			ProcessoSec pSec = new ProcessoSec( 500, new Processo() {
+				public void run() {
+					progress.updateUI();
+				}
+			}, new Processo() {
 				public void run() {
 					gerar();
 				}
-			};			
-			tdg.start();
+			} );
+			pSec.iniciar();
 		}
 		else if ( e.getSource() == btFile ) {
 
