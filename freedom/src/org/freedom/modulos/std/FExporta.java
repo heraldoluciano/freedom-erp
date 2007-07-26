@@ -155,7 +155,7 @@ public class FExporta extends FFilho implements ActionListener {
 			
 			List<String> readrows = getReadRows();
 			
-			if ( readrows.size() > 0 ) {
+			if ( readrows != null && readrows.size() > 0 ) {
 				
 				String filename = txtFile.getVlrString().trim();
 				File filecontabil = new File( filename );
@@ -211,7 +211,12 @@ public class FExporta extends FFilho implements ActionListener {
 			}
 			else if ( "02".equals( sistema ) ) {		
 				
-				getLayoutSafe( readrows );
+				List<SafeBean> erros = new ArrayList<SafeBean>();
+				getLayoutSafe( readrows, erros );
+				
+				if ( erros.size() > 0 ) {
+					readrows = null;
+				}
 			} 
 		}
 		//if ( "L".equals( rgModo.getVlrString() ) ) {
@@ -315,47 +320,88 @@ public class FExporta extends FFilho implements ActionListener {
 		}
 	}
 	
-	private void getLayoutSafe( final List<String> readrows ) {
+	private void getLayoutSafe( final List<String> readrows, final List<SafeBean> erros ) {
 		
 		try {
 
 			StringBuilder sql = new StringBuilder();
-			StringBuilder row = new StringBuilder();
 						
-			sql.append( "SELECT F.CODCONTDEB CONTADEB, F.CODCONTCRED CONTACRED, C.VLRLIQCOMPRA VALOR," );
+			sql.append( "SELECT F.CODFOR CODIGO, F.CODCONTDEB CONTADEB, F.CODCONTCRED CONTACRED, C.VLRLIQCOMPRA VALOR," );
 			sql.append( "C.SERIE, C.DOCCOMPRA DOC, H.DESCHIST, C.DTENTCOMPRA DATA, C.CODFILIAL " );
 			sql.append( "FROM CPCOMPRA C, EQTIPOMOV T, CPFORNECED F " );
 			sql.append( "LEFT OUTER JOIN FNHISTPAD H " );
 			sql.append( "ON H.CODEMP=F.CODEMPHP AND H.CODFILIAL=F.CODFILIALHP AND H.CODHIST=F.CODHIST " );
-			sql.append( "WHERE C.DTENTCOMPRA BETWEEN ? AND ? " );
+			sql.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? " );
+			sql.append( "AND C.DTENTCOMPRA BETWEEN ? AND ? " );
 			sql.append( "AND T.CODEMP=C.CODEMPTM AND T.CODFILIAL=C.CODFILIALTM " );					
 			sql.append( "AND T.CODTIPOMOV=C.CODTIPOMOV AND T.FISCALTIPOMOV='S' " );
 			sql.append( "AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR " ); 
-			sql.append( "AND C.CODEMP=? AND C.CODFILIAL=? " );
 								
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setDate( 1, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
-			ps.setDate( 2, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+			executeSqlSafe( sql.toString(), "COMPRA", readrows, erros );
+			
+			sql.append( "SELECT F.CODCONTCRED CONTADEB, CT.CODCONTCRED CONTACRED," );
+			sql.append( "S.VLRSUBLANCA VALOR, C.SERIE, C.DOCCOMPRA DOC," );
+			sql.append( "H.DESCHIST, S.DATASUBLANCA DATA, S.CODFILIAL " );
+			sql.append( "FROM FNSUBLANCA S, FNLANCA L, FNITPAGAR I, CPFORNECED F, FNCONTA CT," );
+			sql.append( "FNHISTPAD H, FNPAGAR P " );
+			sql.append( "LEFT OUTER JOIN CPCOMPRA C ON " );
+			sql.append( "C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA " );
+			sql.append( "WHERE S.CODEMP=? AND S.CODFILIAL=? " );
+			sql.append( "AND S.DATASUBLANCA BETWEEN ? AND ? " );
+			sql.append( "AND S.CODSUBLANCA<>0 " );
+			sql.append( "AND L.CODEMP=S.CODEMP AND L.CODFILIAL=S.CODFILIAL AND L.CODLANCA=S.CODLANCA " );
+			sql.append( "AND I.CODEMP=L.CODEMPPG AND I.CODFILIAL=L.CODFILIALPG AND I.CODPAG=L.CODPAG " );
+			sql.append( "AND I.NPARCPAG=L.NPARCPAG AND P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL " );
+			sql.append( "AND P.CODPAG=I.CODPAG AND F.CODEMP=S.CODEMPFR AND F.CODFILIAL=S.CODFILIALFR " );
+			sql.append( "AND F.CODFOR=S.CODFOR AND CT.CODEMPPN=L.CODEMPPN AND CT.CODFILIALPN=L.CODFILIALPN " );
+			sql.append( "AND CT.CODPLAN=CT.CODPLAN AND H.CODEMP=CT.CODEMPHP AND H.CODFILIAL=CT.CODFILIALHP " );
+			sql.append( "AND H.CODHIST=CT.CODHIST " );
+									
+			executeSqlSafe( sql.toString(), "FNSUBLANCA", readrows, erros );
+		}
+		catch ( Exception e ) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void executeSqlSafe( final String sql, final String table, final List<String> readrows, final List<SafeBean> erros  ) {
+		
+		try {
+			
+			StringBuilder row = new StringBuilder();
+			
+			PreparedStatement ps = con.prepareStatement( sql );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( table ) );
+			ps.setDate( 3, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
+			ps.setDate( 4, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
 			
 			ResultSet rs = ps.executeQuery();
+			
+			SafeBean sb = null;
 			
 			while( rs.next() ) {
 				
 				row.delete( 0, row.length() );
-
-				row.append( format( rs.getString( "CONTADEB" ), CHAR, 11, 0 ) );
-				row.append( format( rs.getString( "CONTACRED" ), CHAR, 11, 0 ) );
-				row.append( format( rs.getString( "VALOR" ), NUMERIC, 14, 2 ) );				
-				row.append( Funcoes.replicate( " ", 14 ) ); // Centro de custo
-				row.append( format( rs.getString( "DOC" ), CHAR, 12, 0 ) );
-				row.append( format( decodeHistorico( rs, rs.getString( "DESCHIST" ) ), CHAR, 250, 0 ) );
-				row.append( format( rs.getDate( "DATA" ), DATE, 0, 0 ) );
-				row.append( format( rs.getString( "CODFILIAL" ), NUMERIC, 5, 0 ) );
-				row.append( Funcoes.replicate( " ", 25 ) );
-						
-				readrows.add( row.toString() );
+				
+				sb = new SafeBean();
+				
+				sb.setContacred( rs.getString( "CONTADEB" ) );
+				sb.setContadeb( rs.getString( "CONTACRED" ) );
+				sb.setValor( rs.getBigDecimal( "VALOR" ) );
+				sb.setDocumento( rs.getString( "DOC" ) );
+				sb.setHistorico( decodeHistorico( rs, rs.getString( "DESCHIST" ) ) );
+				sb.setData( rs.getDate( "DATA" ) );
+				sb.setFilial( rs.getInt( "CODFILIAL" ) );
+				
+				if ( ! sb.valido() ) {
+				
+					readrows.add( row.toString() );
+				}
+				else {
+					
+					erros.add( sb );
+				}
 			}
 			
 			rs.close();
@@ -401,6 +447,19 @@ public class FExporta extends FFilho implements ActionListener {
 		}
 		
 		return decode;
+	}
+	
+	private void formatSafe( final SafeBean sb, final StringBuilder row ) {
+		
+		row.append( format( sb.getContacred(), CHAR, 11, 0 ) );
+		row.append( format( sb.getContadeb(), CHAR, 11, 0 ) );
+		row.append( format( sb.getValor(), NUMERIC, 14, 2 ) );				
+		row.append( Funcoes.replicate( " ", 14 ) ); // Centro de custo
+		row.append( format( sb.getDocumento(), CHAR, 12, 0 ) );
+		row.append( format( sb.getHistorico(), CHAR, 250, 0 ) );
+		row.append( format( sb.getData(), DATE, 0, 0 ) );
+		row.append( format( sb.getFilial(), NUMERIC, 5, 0 ) );
+		row.append( Funcoes.replicate( " ", 25 ) );
 	}
 	
 	private String getSistemaContabil() {
@@ -489,5 +548,107 @@ public class FExporta extends FFilho implements ActionListener {
 	public void setConexao( Connection cn ) {
 
 		super.setConexao( cn );
+	}
+
+	private class SafeBean {
+
+		private String contadeb;
+
+		private String contacred;
+
+		private BigDecimal valor;
+
+		private String centrocusto;
+
+		private String documento;
+
+		private String historico;
+
+		private Date data;
+
+		private Integer filial;
+
+		
+		public String getCentrocusto() {		
+			return centrocusto;
+		}
+		
+		public void setCentrocusto( final String centrocusto ) {		
+			this.centrocusto = centrocusto;
+		}
+		
+		public String getContacred() {		
+			return contacred;
+		}
+		
+		public void setContacred( final String contacred ) {		
+			this.contacred = contacred;
+		}
+		
+		public String getContadeb() {		
+			return contadeb;
+		}
+		
+		public void setContadeb( final String contadeb ) {		
+			this.contadeb = contadeb;
+		}
+		
+		public Date getData() {		
+			return data;
+		}
+		
+		public void setData( final Date data ) {		
+			this.data = data;
+		}
+		
+		public String getDocumento() {		
+			return documento;
+		}
+		
+		public void setDocumento( final String documento ) {		
+			this.documento = documento;
+		}
+		
+		public Integer getFilial() {		
+			return filial;
+		}
+		
+		public void setFilial( final Integer filial ) {		
+			this.filial = filial;
+		}
+		
+		public String getHistorico() {		
+			return historico;
+		}
+		
+		public void setHistorico( final String historico ) {		
+			this.historico = historico;
+		}
+		
+		public BigDecimal getValor() {		
+			return valor;
+		}
+		
+		public void setValor( final BigDecimal valor ) {		
+			this.valor = valor;
+		}
+		
+		public boolean valido() {
+			
+			boolean valido = true;
+			
+			if ( ( getContacred() != null && getContacred().trim().length() > 0 ) && 
+					( getContadeb() != null && getContadeb().trim().length() > 0 ) && 
+					( getValor() != null && getValor().floatValue() > 0 ) &&	
+					( getDocumento() != null && getDocumento().trim().length() > 0 ) && 
+					( getHistorico() != null && getHistorico().trim().length() > 0 ) && 
+					( getData() != null ) && 
+					( getFilial() > 0 ) ) {
+				valido = true;
+			}
+			
+			return valido;
+		}
+		
 	}
 }
