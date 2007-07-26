@@ -103,9 +103,7 @@ public class FreedomLVF extends AplicativoPD {
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Registro de Saida", "Registro de Saida", 'S', 400100000, 1, true, FRRegitroSaida.class );
 		
 		addBotao( "barraUsuario.gif", "Cliente", "Clientes", 100101050, FCliente.class );
-		addBotao( "btContaPagar.gif", "Contas a pagar", "Manutenção de contas a pagar", 200100000, FManutPag.class );
-		addBotao( "btContaReceber.gif", "Contas a receber", "Manutenção de contas a receber", 300100000, FManutRec.class );
-		addBotao( "btLancamentoFin.gif", "Lançamentos financeiros", "Lançamentos", 400600000, FLanca.class );
+		addBotao( "btForneced.gif", "Fornecedor", "Fornecedor", 100108000, FFornecedor.class );
 		
 		ajustaMenu();
 
@@ -115,12 +113,11 @@ public class FreedomLVF extends AplicativoPD {
 		sEmpSis = "Setpoint Informática Ltda.";
 		vEquipeSis.add( "Robson Sanchez - Supervisão / Analise" );
 		vEquipeSis.add( "Anderson Sanchez - Supervisão / Programação" );
-		vEquipeSis.add( "Sidnei Varanis - Supervisão" );
 		vEquipeSis.add( "Alex Rodrigues - Programação" );
 		vEquipeSis.add( "Alexandre Marcondes - Programação" );
 		vEquipeSis.add( "Fernando Oliveira - Programação" );
 		vEquipeSis.add( "Moyzes Braz - Arte gráfica" );
-		vEquipeSis.add( "Reginaldo Garcia - Testes / Suporte" );
+		vEquipeSis.add( "Reginaldo Garcia - Programação / Suporte" );
 
 	}
 
