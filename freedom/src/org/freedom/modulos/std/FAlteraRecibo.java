@@ -146,35 +146,25 @@ public class FAlteraRecibo extends FFilho implements ActionListener {
 	
 	private void trocaDoc() {
 
-		String sSQL1 = "SELECT RECIBOITREC FROM FNITRECEBER WHERE CODREC=? AND CODEMP=? AND CODFILIAL=?";
-		String sSQL2 = "UPDATE FNITRECEBER SET RECIBOITREC=? WHERE CODREC=? AND CODEMP=? AND CODFILIAL=?";
+		PreparedStatement ps = null;
+		String sSQL = "UPDATE FNITRECEBER SET RECIBOITREC=? WHERE CODREC=? AND CODEMP=? AND CODFILIAL=?";
 
 		try {
-
-			PreparedStatement ps = con.prepareStatement(sSQL1);
-			ps.setInt(1,txtCodRec.getVlrInteger().intValue());
-			ps.setInt(2,Aplicativo.iCodEmp);
-			ps.setInt(3,ListaCampos.getMasterFilial("FNRECEBER"));
-			ResultSet rs = ps.executeQuery();
-
-			rs.close();
-			ps.close();
-
-			ps = con.prepareStatement(sSQL2);
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,txtReciboItRec.getVlrInteger().intValue());
 			ps.setInt(2,txtCodRec.getVlrInteger().intValue());
 			ps.setInt(3,Aplicativo.iCodEmp);
-			ps.setInt(4,ListaCampos.getMasterFilial("FNRECEBER"));
+			ps.setInt(4,ListaCampos.getMasterFilial("FNITRECEBER"));
 			ps.executeUpdate();
 			ps.close();
 
-			if (!con.getAutoCommit())
+			if (!con.getAutoCommit()) {
 				con.commit();
+			}
 			Funcoes.mensagemInforma( this, "Numero do recibo alterado com Sucesso!" );
 
 		}
 		catch(SQLException err) {
-
 			Funcoes.mensagemErro(this,"Erro ao alterar numero do recibo!\n"+err.getMessage(),true,con,err);
 			err.printStackTrace();
 	}
