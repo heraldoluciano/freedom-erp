@@ -44,7 +44,7 @@
 	</parameter>
 	<parameter name="INSC" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="CNPJ" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="FOLHA" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="FOLHA" isForPrompting="true" class="java.lang.Integer"/>
 	<parameter name="PERIODO" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT
 L.CODLF, L.TIPOLF, L.ANOMESLF, L.ESPECIELF, L.DOCINILF, L.SERIELF,
@@ -53,8 +53,8 @@ L.ALIQICMSLF, L.VLRICMSLF, L.VLRISENTASICMSLF, L.VLROUTRASICMSLF,
 L.VLRBASEIPILF, L.ALIQIPILF, L.VLRIPILF, L.VLRISENTASIPILF,
 L.VLROUTRASIPILF, L.CODEMITLF, L.UFLF, L.DOCFIMLF, L.OBSLF
 FROM LFLIVROFISCAL L
-WHERE L.CODEMP=4 AND L.CODFILIAL=1 AND L.TIPOLF='E'
-AND L.DTEMITLF BETWEEN '2006-01-01' AND '2007-12-01'
+WHERE L.CODEMP=5 AND L.CODFILIAL=1 AND L.TIPOLF='E'
+AND L.DTEMITLF BETWEEN '2007-06-01' AND '2007-06-30'
 ORDER BY L.DTEMITLF, L.DOCINILF, L.SERIELF, L.CODEMITLF, L.CODNAT]]></queryString>
 
 	<field name="CODLF" class="java.lang.Long"/>
@@ -105,6 +105,10 @@ ORDER BY L.DTEMITLF, L.DOCINILF, L.SERIELF, L.CODEMITLF, L.CODNAT]]></queryStrin
 	<variable name="VLRBASEICMSLF" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRBASEICMSLF}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="FOLHA_CONT" class="java.lang.Integer" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Integer($V{PAGE_NUMBER}.intValue()+$P{FOLHA}.intValue())]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{FOLHA}]]></initialValueExpression>
 	</variable>
 
 		<group  name="GERAL" >
@@ -642,7 +646,7 @@ Doc.]]></text>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Folha : " + String.valueOf( $V{VLRCONTABIL} )]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Folha : " + String.valueOf( $V{FOLHA_CONT} )]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
