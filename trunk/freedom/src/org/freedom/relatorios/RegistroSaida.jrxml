@@ -44,7 +44,9 @@
 	</parameter>
 	<parameter name="INSC" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="CNPJ" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="FOLHA" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="FOLHA" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
 	<parameter name="PERIODO" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT
 L.CODLF, L.TIPOLF, L.ANOMESLF, L.ESPECIELF, L.DOCINILF, L.SERIELF,
@@ -53,8 +55,8 @@ L.ALIQICMSLF, L.VLRICMSLF, L.VLRISENTASICMSLF, L.VLROUTRASICMSLF,
 L.VLRBASEIPILF, L.ALIQIPILF, L.VLRIPILF, L.VLRISENTASIPILF,
 L.VLROUTRASIPILF, L.CODEMITLF, L.UFLF, L.DOCFIMLF, L.OBSLF
 FROM LFLIVROFISCAL L
-WHERE L.CODEMP=4 AND L.CODFILIAL=1 AND L.TIPOLF='E'
-AND L.DTEMITLF BETWEEN '2006-01-01' AND '2007-12-01'
+WHERE L.CODEMP=5 AND L.CODFILIAL=1 AND L.TIPOLF='E'
+AND L.DTEMITLF BETWEEN '2007-06-01' AND '2007-06-30'
 ORDER BY L.DTEMITLF, L.DOCINILF, L.SERIELF, L.CODEMITLF, L.CODNAT]]></queryString>
 
 	<field name="CODLF" class="java.lang.Long"/>
@@ -82,8 +84,8 @@ ORDER BY L.DTEMITLF, L.DOCINILF, L.SERIELF, L.CODEMITLF, L.CODNAT]]></queryStrin
 	<field name="DOCFIMLF" class="java.lang.Long"/>
 	<field name="OBSLF" class="java.lang.String"/>
 
-	<variable name="FOLHACOUNT" class="java.lang.Integer" resetType="Report" incrementType="Page" calculation="Sum">
-		<variableExpression><![CDATA[$P{FOLHA}]]></variableExpression>
+	<variable name="FOLHACOUNT" class="java.lang.Integer" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Integer($V{PAGE_NUMBER}.intValue()+$P{FOLHA}.intValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[$P{FOLHA}]]></initialValueExpression>
 	</variable>
 	<variable name="VLRCONTABILLF" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
