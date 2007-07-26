@@ -255,7 +255,7 @@ public class FreedomSTD extends AplicativoPD {
 		vEquipeSis.add( "Alexandre Marcondes - Programação" );
 		vEquipeSis.add( "Fernando Oliveira - Programação" );
 		vEquipeSis.add( "Moyzes Braz - Arte gráfica" );
-		vEquipeSis.add( "Reginaldo Garcia - Testes / Suporte" );
+		vEquipeSis.add( "Reginaldo Garcia - Programação / Suporte" );
 
 	}
 
