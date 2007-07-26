@@ -288,9 +288,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JTextFieldPad txtVlrMetaVend = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtCodContDeb = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodContDeb = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
-	private JTextFieldPad txtCodContCred = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodContCred = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtCodCliContab = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
