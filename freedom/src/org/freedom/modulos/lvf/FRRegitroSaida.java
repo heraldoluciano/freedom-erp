@@ -105,6 +105,7 @@ public class FRRegitroSaida extends FRelatorio {
 		
 		try {
 			
+			String[] empresa = getEmpresa();
 			StringBuilder sql = new StringBuilder();
 			
 			sql.append( "SELECT L.CODLF, L.TIPOLF, L.ANOMESLF, L.ESPECIELF, L.DOCINILF, L.SERIELF," );
@@ -127,7 +128,10 @@ public class FRRegitroSaida extends FRelatorio {
 			HashMap<String,Object> hParam = new HashMap<String, Object>();
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
-			//hParam.put( "SUBREPORT_DIR", "/opt/freedom/reports/" );
+			hParam.put( "FOLHA", txtPaginaIncial.getVlrInteger() );
+			hParam.put( "CNPJ", empresa[ 0 ] );
+			hParam.put( "INSC", empresa[ 1 ] );
+			hParam.put( "PERIODO", txtDtIni.getVlrString() + " até " + txtDtFim.getVlrString() );
 			hParam.put( "REPORT_CONNECTION", con );
 			
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/RegistroSaida.jasper", "REGISTRO DE SAIDAS", null, rs, hParam, this );
@@ -139,12 +143,45 @@ public class FRRegitroSaida extends FRelatorio {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			}
 			
-			dispose();
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
 			e.printStackTrace();
 		}
 
+	}
+	private String[] getEmpresa() {
+		
+		String[] empresa = { "", "" };
+		
+		try {
+			
+			StringBuilder sql = new StringBuilder();			
+			sql.append( "SELECT CNPJFILIAL, INSCFILIAL FROM SGFILIAL WHERE CODEMP=? AND CODFILIAL=? " );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGFILIAL" ) );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				empresa[ 0 ] = rs.getString( "CNPJFILIAL" );
+				empresa[ 1 ] = rs.getString( "INSCFILIAL" );
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( this, "Erro ao busca dados da filial!\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+		
+		return empresa;
 	}
 
 }
