@@ -446,19 +446,16 @@ public class FExporta extends FFilho implements ActionListener {
 			sql.append( "S.VLRSUBLANCA VALOR, C.SERIE, C.DOCCOMPRA DOC," );
 			sql.append( "H.DESCHIST, S.DATASUBLANCA DATA, S.CODFILIAL " );
 			sql.append( "FROM FNSUBLANCA S, FNLANCA L, FNITPAGAR I, CPFORNECED F, FNCONTA CT," );
-			sql.append( "FNHISTPAD H, FNPAGAR P " );
-			sql.append( "LEFT OUTER JOIN CPCOMPRA C ON " );
-			sql.append( "C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA " );
-			sql.append( "WHERE S.CODEMP=? AND S.CODFILIAL=? " );
-			sql.append( "AND S.DATASUBLANCA BETWEEN ? AND ? " );
+			sql.append( "FNHISTPAD H, FNPAGAR P, CPCOMPRA C " );
+			sql.append( "WHERE S.CODEMP=? AND S.CODFILIAL=? AND S.DATASUBLANCA BETWEEN ? AND ? " );
 			sql.append( "AND S.CODSUBLANCA<>0 " );
 			sql.append( "AND L.CODEMP=S.CODEMP AND L.CODFILIAL=S.CODFILIAL AND L.CODLANCA=S.CODLANCA " );
-			sql.append( "AND I.CODEMP=L.CODEMPPG AND I.CODFILIAL=L.CODFILIALPG AND I.CODPAG=L.CODPAG " );
-			sql.append( "AND I.NPARCPAG=L.NPARCPAG AND P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL " );
-			sql.append( "AND P.CODPAG=I.CODPAG AND F.CODEMP=S.CODEMPFR AND F.CODFILIAL=S.CODFILIALFR " );
-			sql.append( "AND F.CODFOR=S.CODFOR AND CT.CODEMPPN=L.CODEMPPN AND CT.CODFILIALPN=L.CODFILIALPN " );
-			sql.append( "AND CT.CODPLAN=CT.CODPLAN AND H.CODEMP=CT.CODEMPHP AND H.CODFILIAL=CT.CODFILIALHP " );
-			sql.append( "AND H.CODHIST=CT.CODHIST " );
+			sql.append( "AND I.CODEMP=L.CODEMPPG AND I.CODFILIAL=L.CODFILIALPG AND I.CODPAG=L.CODPAG AND I.NPARCPAG=L.NPARCPAG " );
+			sql.append( "AND P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL AND P.CODPAG=I.CODPAG " );
+			sql.append( "AND F.CODEMP=S.CODEMPFR AND F.CODFILIAL=S.CODFILIALFR AND F.CODFOR=S.CODFOR " );
+			sql.append( "AND CT.CODEMPPN=L.CODEMPPN AND CT.CODFILIALPN=L.CODFILIALPN AND CT.CODPLAN=CT.CODPLAN " );
+			sql.append( "AND H.CODEMP=CT.CODEMPHP AND H.CODFILIAL=CT.CODFILIALHP AND H.CODHIST=CT.CODHIST " );
+			sql.append( "AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA " );
 									
 			executeSqlSafe( sql.toString(), "FNSUBLANCA", SafeBean.CONTAS_PAGAR, readrows, erros );
 		}
@@ -758,6 +755,16 @@ public class FExporta extends FFilho implements ActionListener {
 			}
 			
 			return valido;
+		}
+
+		@ Override
+		public String toString() {
+
+			return "[" + getDocumento() + "," +
+			   			 getContacred() + "," +
+						 getContadeb() + "," +
+						 getValor() + "," +
+						 getData() + "]";
 		}
 		
 	}

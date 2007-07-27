@@ -52,6 +52,8 @@ public class DLChecaExporta extends DLRelatorio {
 
 	public DLChecaExporta( final String tipo, final String sistema ) {
 
+		super();
+		setModal( true );		
 		setTitulo( "Inconsistências de Vendas" );
 		setAtribos( 600, 400 );
 		
