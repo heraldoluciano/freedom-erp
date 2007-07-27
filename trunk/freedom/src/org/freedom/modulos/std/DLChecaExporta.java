@@ -86,11 +86,11 @@ public class DLChecaExporta extends DLRelatorio {
 		tab.adicColuna( "Historico" );
 		tab.adicColuna( "Filial" );
 
-		tab.setTamColuna( 80, 0 );
+		tab.setTamColuna( 100, 0 );
 		tab.setTamColuna( 100, 1 );
 		tab.setTamColuna( 100, 2 );
 		tab.setTamColuna( 80, 3 );
-		tab.setTamColuna( 80, 4 );
+		tab.setTamColuna( 90, 4 );
 		tab.setTamColuna( 100, 5 );
 		tab.setTamColuna( 300, 6 );
 		tab.setTamColuna( 50, 7 );
