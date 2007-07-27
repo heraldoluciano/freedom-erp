@@ -1,3 +1,25 @@
+/**
+ * @version 07/2007 <BR>
+ * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
+ *
+ * Projeto: Freedom <BR>
+ *  
+ * Pacote: org.freedom.modulos.std <BR>
+ * Classe: @(#)FExporta.java <BR>
+ * 
+ * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
+ * versão 2.1.0 ou qualquer versão posterior. <BR>
+ * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
+ * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
+ * o LICENCIADOR ou então pegar uma cópia em: <BR>
+ * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
+ * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * de acordo com os termos da LPG-PC <BR> <BR>
+ *
+ * Formulário de exportação de dados para arquivo, dos dados referentes a contabilidade e livros fiscais.
+ * 
+ */
+
 package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
@@ -21,14 +43,12 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 
-import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -337,7 +357,7 @@ public class FExporta extends FFilho implements ActionListener {
 			sql.append( "AND T.CODTIPOMOV=C.CODTIPOMOV AND T.FISCALTIPOMOV='S' " );
 			sql.append( "AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR " ); 
 								
-			executeSqlSafe( sql.toString(), "COMPRA", readrows, erros );
+			executeSqlSafe( sql.toString(), "CPCOMPRA", readrows, erros );
 			
 			sql.append( "SELECT F.CODCONTCRED CONTADEB, CT.CODCONTCRED CONTACRED," );
 			sql.append( "S.VLRSUBLANCA VALOR, C.SERIE, C.DOCCOMPRA DOC," );
@@ -526,17 +546,12 @@ public class FExporta extends FFilho implements ActionListener {
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btGerar ) {
-
-			ProcessoSec pSec = new ProcessoSec( 500, new Processo() {
-				public void run() {
-					progress.updateUI();
-				}
-			}, new Processo() {
+			Thread th = new Thread( new Runnable() {
 				public void run() {
 					gerar();
 				}
 			} );
-			pSec.iniciar();
+			th.start();
 		}
 		else if ( e.getSource() == btFile ) {
 
