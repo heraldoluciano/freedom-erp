@@ -114,7 +114,7 @@ public class FRRegitroSaida extends FRelatorio {
 			sql.append( "L.VLRBASEIPILF, L.ALIQIPILF, L.VLRIPILF, L.VLRISENTASIPILF," );
 			sql.append( "L.VLROUTRASIPILF, L.CODEMITLF, L.UFLF, L.DOCFIMLF, L.OBSLF " );
 			sql.append( "FROM LFLIVROFISCAL L " );
-			sql.append( "WHERE L.CODEMP=? AND L.CODFILIAL=? AND L.TIPOLF='E' " );
+			sql.append( "WHERE L.CODEMP=? AND L.CODFILIAL=? AND L.TIPOLF='S' " );
 			sql.append( "AND L.DTEMITLF BETWEEN ? AND ? " );
 			sql.append( "ORDER BY L.DTEMITLF, L.DOCINILF, L.SERIELF, L.CODEMITLF, L.CODNAT " );
 			
