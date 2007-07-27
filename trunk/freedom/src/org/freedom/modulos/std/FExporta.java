@@ -63,6 +63,10 @@ public class FExporta extends FFilho implements ActionListener {
 	
 	private final int DATE = 2;
 	
+	private final String FREEDOM_CONTABIL = "01";
+	
+	private final String SAFE_CONTABIL = "02";
+	
 	private static final String RETURN = String.valueOf( (char) 13 ) + String.valueOf( (char) 10 );
 
 	private final JPanelPad panelExporta = new JPanelPad();
@@ -73,13 +77,21 @@ public class FExporta extends FFilho implements ActionListener {
 
 	private final JTextFieldPad txtFile = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 
-	private JButtonPad btGerar = new JButtonPad( "Exportar", Icone.novo( "btGerar.gif" ) );
+	private final JButtonPad btChecar = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
-	private JButtonPad btFile = new JButtonPad( Icone.novo( "btAbrirPeq.gif" ) );
+	private final JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
+
+	private final JButtonPad btFile = new JButtonPad( Icone.novo( "btAbrirPeq.gif" ) );
 
 	private final JProgressBar progress = new JProgressBar();
 	
 	private JRadioGroup rgModo;
+	
+	private String sistema;
+	
+	private List<String> readrows;
+	
+	private List<SafeBean> erros;
 
 	public FExporta() {
 
@@ -98,13 +110,17 @@ public class FExporta extends FFilho implements ActionListener {
 		txtDtIni.setRequerido( true );
 		txtDtFim.setRequerido( true );
 
+		btChecar.setToolTipText( "Verificar inconsistências" );
 		btGerar.setToolTipText( "Gerar Arquivo" );
 		btFile.setToolTipText( "Salvar como" );
 
+		btChecar.addActionListener( this );
 		btGerar.addActionListener( this );
 		btFile.addActionListener( this );
 		
 		progress.setStringPainted( true );
+		
+		btGerar.setEnabled( false );
 	}
 	
 	private void montaRadioGrupos() {
@@ -142,7 +158,8 @@ public class FExporta extends FFilho implements ActionListener {
 		panelExporta.adic( new JLabel( "até", SwingConstants.CENTER ), 135, 130, 40, 20 );
 		panelExporta.adic( txtDtFim, 175, 130, 110, 20 );
 
-		panelExporta.adic( btGerar, 310, 120, 130, 35 );
+		panelExporta.adic( btChecar, 360, 120, 35, 35 );
+		panelExporta.adic( btGerar, 405, 120, 35, 35 );
 
 		panelExporta.adic( progress, 10, 180, 430, 20 );
 		
@@ -159,7 +176,44 @@ public class FExporta extends FFilho implements ActionListener {
 		}
 	}
 	
-	private void gerar() {
+	private String getSistemaContabil() {
+		
+		String sistema = "00";
+		
+		try {
+			
+			String sql = "SELECT SISCONTABIL FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			
+			PreparedStatement ps = con.prepareStatement( sql );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				sistema = rs.getString( "SISCONTABIL" );
+			}
+		}
+		catch ( Exception e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao verificar preferências!\n" + e.getMessage() );
+		}
+		
+		return sistema;
+	}
+	
+	private void showErros() {
+		
+		DLChecaExporta dl = new DLChecaExporta( rgModo.getVlrString(), sistema );
+		
+		dl.carregaDados( erros );
+		
+		dl.setVisible( true );
+	}
+
+	private void checar() {
+
 		
 		if ( txtFile.getVlrString() == null || txtFile.getVlrString().trim().length() < 1 ) {
 			Funcoes.mensagemInforma( this, "Selecione o arquivo!" );
@@ -173,7 +227,31 @@ public class FExporta extends FFilho implements ActionListener {
 		
 		try {
 			
-			List<String> readrows = getReadRows();
+			readrows = getReadRows();
+			
+			if ( erros == null && readrows != null ) {
+				
+				btChecar.setEnabled( false );
+				btGerar.setEnabled( true );
+			}
+			else {
+				
+				btChecar.setEnabled( true );
+				btGerar.setEnabled( false );
+				
+				showErros();
+			}
+			
+		}
+		catch ( Exception e ) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void gerar() {
+		
+		try {
 			
 			if ( readrows != null && readrows.size() > 0 ) {
 				
@@ -220,22 +298,25 @@ public class FExporta extends FFilho implements ActionListener {
 	
 	private List<String> getReadRows() throws Exception {
 		
-		List<String> readrows = new ArrayList<String>();
-		String sistema = getSistemaContabil();
+		readrows = new ArrayList<String>();
+		sistema = getSistemaContabil();
 		
 		if ( "C".equals( rgModo.getVlrString() ) ) {
 			
-			if ( "01".equals( sistema ) ) {		
+			if ( FREEDOM_CONTABIL.equals( sistema ) ) {		
 				
-				getLayoutFreedom( readrows );
+				getLayoutFreedom();
 			}
-			else if ( "02".equals( sistema ) ) {		
+			else if ( SAFE_CONTABIL.equals( sistema ) ) {		
 				
-				List<SafeBean> erros = new ArrayList<SafeBean>();
-				getLayoutSafe( readrows, erros );
+				erros = new ArrayList<SafeBean>();
+				getLayoutSafe();
 				
 				if ( erros.size() > 0 ) {
 					readrows = null;
+				}
+				else if ( erros.size() == 0 ) {
+					erros = null;
 				}
 			} 
 		}
@@ -247,7 +328,7 @@ public class FExporta extends FFilho implements ActionListener {
 		return readrows;
 	}
 	
-	private void getLayoutFreedom( final List<String> readrows ) {
+	private void getLayoutFreedom() {
 		
 		try {
 			
@@ -340,7 +421,7 @@ public class FExporta extends FFilho implements ActionListener {
 		}
 	}
 	
-	private void getLayoutSafe( final List<String> readrows, final List<SafeBean> erros ) {
+	private void getLayoutSafe() {
 		
 		try {
 
@@ -357,7 +438,9 @@ public class FExporta extends FFilho implements ActionListener {
 			sql.append( "AND T.CODTIPOMOV=C.CODTIPOMOV AND T.FISCALTIPOMOV='S' " );
 			sql.append( "AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR " ); 
 								
-			executeSqlSafe( sql.toString(), "CPCOMPRA", readrows, erros );
+			executeSqlSafe( sql.toString(), "CPCOMPRA", SafeBean.COMPRAS, readrows, erros );
+			
+			sql.delete( 0, sql.length() );
 			
 			sql.append( "SELECT F.CODCONTCRED CONTADEB, CT.CODCONTCRED CONTACRED," );
 			sql.append( "S.VLRSUBLANCA VALOR, C.SERIE, C.DOCCOMPRA DOC," );
@@ -377,14 +460,14 @@ public class FExporta extends FFilho implements ActionListener {
 			sql.append( "AND CT.CODPLAN=CT.CODPLAN AND H.CODEMP=CT.CODEMPHP AND H.CODFILIAL=CT.CODFILIALHP " );
 			sql.append( "AND H.CODHIST=CT.CODHIST " );
 									
-			executeSqlSafe( sql.toString(), "FNSUBLANCA", readrows, erros );
+			executeSqlSafe( sql.toString(), "FNSUBLANCA", SafeBean.CONTAS_PAGAR, readrows, erros );
 		}
 		catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void executeSqlSafe( final String sql, final String table, final List<String> readrows, final List<SafeBean> erros  ) {
+	private void executeSqlSafe( final String sql, final String table, final int tipo, final List<String> readrows, final List<SafeBean> erros  ) {
 		
 		try {
 			
@@ -413,8 +496,9 @@ public class FExporta extends FFilho implements ActionListener {
 				sb.setHistorico( decodeHistorico( rs, rs.getString( "DESCHIST" ) ) );
 				sb.setData( rs.getDate( "DATA" ) );
 				sb.setFilial( rs.getInt( "CODFILIAL" ) );
+				sb.setTipo( tipo );
 				
-				if ( ! sb.valido() ) {
+				if ( sb.valido() ) {
 				
 					readrows.add( row.toString() );
 				}
@@ -482,33 +566,6 @@ public class FExporta extends FFilho implements ActionListener {
 		row.append( Funcoes.replicate( " ", 25 ) );
 	}
 	
-	private String getSistemaContabil() {
-		
-		String sistema = "00";
-		
-		try {
-			
-			String sql = "SELECT SISCONTABIL FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-			
-			PreparedStatement ps = con.prepareStatement( sql );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			
-			ResultSet rs = ps.executeQuery();
-			
-			if ( rs.next() ) {
-				
-				sistema = rs.getString( "SISCONTABIL" );
-			}
-		}
-		catch ( Exception e ) {
-			e.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao verificar preferências!\n" + e.getMessage() );
-		}
-		
-		return sistema;
-	}
-
 	private String format( Object obj, int tipo, int tam, int dec ) {
 
 		String retorno = null;
@@ -553,6 +610,9 @@ public class FExporta extends FFilho implements ActionListener {
 			} );
 			th.start();
 		}
+		if ( e.getSource() == btChecar ) {
+			checar();
+		}
 		else if ( e.getSource() == btFile ) {
 
 			getFile();
@@ -565,7 +625,15 @@ public class FExporta extends FFilho implements ActionListener {
 		super.setConexao( cn );
 	}
 
-	private class SafeBean {
+	static class SafeBean {
+		
+		public static final int COMPRAS = 0;
+		
+		public static final int CONTAS_PAGAR = 1;
+		
+		public static final int VENDAS = 2;
+		
+		public static final int CONTAS_RECEBER = 3;
 
 		private String contadeb;
 
@@ -582,6 +650,8 @@ public class FExporta extends FFilho implements ActionListener {
 		private Date data;
 
 		private Integer filial;
+		
+		private int tipo;
 
 		
 		public String getCentrocusto() {		
@@ -640,6 +710,31 @@ public class FExporta extends FFilho implements ActionListener {
 			this.historico = historico;
 		}
 		
+		public Integer getTipo() {		
+			return tipo;
+		}
+		
+		public String getStrTipo() {
+			String stipo = null;
+			if ( getTipo() == COMPRAS ) {
+				stipo = "Compras";
+			}
+			else if ( getTipo() == CONTAS_PAGAR ) {
+				stipo = "Pagamentos";
+			}
+			else if ( getTipo() == VENDAS ) {
+				stipo = "Vendas";
+			}
+			else if ( getTipo() == CONTAS_RECEBER ) {
+				stipo = "Recebimentos";
+			}
+			return stipo;
+		}
+		
+		public void setTipo( final Integer tipo ) {		
+			this.tipo = tipo;
+		}
+		
 		public BigDecimal getValor() {		
 			return valor;
 		}
@@ -650,7 +745,7 @@ public class FExporta extends FFilho implements ActionListener {
 		
 		public boolean valido() {
 			
-			boolean valido = true;
+			boolean valido = false;
 			
 			if ( ( getContacred() != null && getContacred().trim().length() > 0 ) && 
 					( getContadeb() != null && getContadeb().trim().length() > 0 ) && 
