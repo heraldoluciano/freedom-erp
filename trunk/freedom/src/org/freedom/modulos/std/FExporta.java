@@ -25,6 +25,8 @@ package org.freedom.modulos.std;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.math.BigDecimal;
@@ -53,7 +55,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
-public class FExporta extends FFilho implements ActionListener {
+public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -117,6 +119,9 @@ public class FExporta extends FFilho implements ActionListener {
 		btChecar.addActionListener( this );
 		btGerar.addActionListener( this );
 		btFile.addActionListener( this );
+		
+		txtDtIni.addFocusListener( this );
+		txtDtFim.addFocusListener( this );
 		
 		progress.setStringPainted( true );
 		
@@ -205,10 +210,9 @@ public class FExporta extends FFilho implements ActionListener {
 	
 	private void showErros() {
 		
-		DLChecaExporta dl = new DLChecaExporta( rgModo.getVlrString(), sistema );
-		
-		dl.carregaDados( erros );
-		
+		DLChecaExporta dl = new DLChecaExporta( this, rgModo.getVlrString(), sistema );
+		dl.setConexao( con );
+		dl.carregaDados( erros );		
 		dl.setVisible( true );
 	}
 
@@ -650,6 +654,21 @@ public class FExporta extends FFilho implements ActionListener {
 		else if ( e.getSource() == btFile ) {
 
 			getFile();
+		}
+	}
+
+	public void focusGained( FocusEvent e ) { }
+
+	public void focusLost( FocusEvent e ) {
+
+		if ( e.getSource() == txtDtIni ) {
+			
+			btChecar.setEnabled( true );
+			btGerar.setEnabled( false );			
+		}
+		else if ( e.getSource() == txtDtFim ) {
+			
+			btChecar.requestFocus();
 		}
 	}
 
