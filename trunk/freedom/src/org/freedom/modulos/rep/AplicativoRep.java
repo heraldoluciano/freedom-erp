@@ -10,6 +10,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrincipal;
 
@@ -59,16 +60,19 @@ public class AplicativoRep extends AplicativoPD {
 
 		List<Object> prefere = RPPrefereGeral.getPrefere( con );
 
-		EmailBean mail = new EmailBean();
-		mail.setHost( (String) prefere.get( EPrefere.SERVIDORSMTP.ordinal() ) );
-		mail.setPorta( (Integer) prefere.get( EPrefere.PORTASMTP.ordinal() ) );
-		mail.setUsuario( (String) prefere.get( EPrefere.USUARIOSMTP.ordinal() ) );
-		mail.setSenha( ((String) prefere.get( EPrefere.SENHASMTP.ordinal() )).trim() );
-		mail.setDe( mail.getEmailEmp( con ) );
-		mail.setAutentica( (String) prefere.get( EPrefere.AUTENTICASMTP.ordinal() ) );
-		mail.setSsl( (String) prefere.get( EPrefere.SSLSMTP.ordinal() ) );
-		
-		setEmailBean( mail );
+		if ( prefere.size() == EPrefere.values().length ) {
+			
+			EmailBean mail = new EmailBean();
+			mail.setHost( (String) prefere.get( EPrefere.SERVIDORSMTP.ordinal() ) );
+			mail.setPorta( (Integer) prefere.get( EPrefere.PORTASMTP.ordinal() ) );
+			mail.setUsuario( (String) prefere.get( EPrefere.USUARIOSMTP.ordinal() ) );
+			mail.setSenha( ((String) prefere.get( EPrefere.SENHASMTP.ordinal() )).trim() );
+			mail.setDe( mail.getEmailEmp( con ) );
+			mail.setAutentica( (String) prefere.get( EPrefere.AUTENTICASMTP.ordinal() ) );
+			mail.setSsl( (String) prefere.get( EPrefere.SSLSMTP.ordinal() ) );
+			
+			setEmailBean( mail );
+		}
 	}
 
 	@Override
@@ -118,5 +122,41 @@ public class AplicativoRep extends AplicativoPD {
 		mail.setSsl( (String) prefere.get( EPrefere.SSLSMTP.ordinal() ) );
 		
 		setEmailBean( mail );
+	}
+
+	public static String getEmailCli( final int codcli, final Connection con ) {
+
+		String email = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sSQL = new StringBuilder();
+
+		try {
+
+			sSQL.append( "SELECT EMAILCLI FROM RPCLIENTE WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?" );
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "RPCLIENTE" ) );
+			ps.setInt( 3, codcli );
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+
+				email = rs.getString( "EMAILCLI" ) != null ? rs.getString( "EMAILCLI" ).trim() : "";
+			}
+
+			rs.close();
+			ps.close();
+
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( null, "Erro ao buscar email do cliente!\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+
+		return email;
 	}
 }

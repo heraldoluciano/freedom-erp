@@ -660,7 +660,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 				
 				EmailBean mail = Aplicativo.getEmailBean();
 				mail.setAssunto( "Pedido nº" + txtCodPed.getVlrInteger() + " de " + txtDataPed.getVlrString() );
-				mail.setPara( EmailBean.getEmailCli( txtCodCli.getVlrInteger(), con ) );
+				mail.setPara( AplicativoRep.getEmailCli( txtCodCli.getVlrInteger(), con ) );
 
 				DLEnviarEmail enviar = new DLEnviarEmail( this, mail );
 				enviar.preparar();
