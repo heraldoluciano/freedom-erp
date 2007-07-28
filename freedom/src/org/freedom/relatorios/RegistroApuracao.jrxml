@@ -54,8 +54,8 @@ SUM(L.VLRICMSLF) VLRICMSLF,
 SUM(L.VLRISENTASICMSLF) VLRISENTASICMSLF,
 SUM(L.VLROUTRASICMSLF) VLROUTRASICMSLF
 FROM LFLIVROFISCAL L, LFNATOPER N
-WHERE L.CODEMP=5 AND L.CODFILIAL=1 AND
-L.DTESLF BETWEEN '01.06.2007' AND '20.06.2007' AND
+WHERE L.CODEMP=4 AND L.CODFILIAL=1 AND
+L.DTESLF BETWEEN '01.01.2006' AND '15.06.2006' AND
 N.CODEMP=L.CODEMPNT AND N.CODFILIAL=L.CODFILIALNT AND N.CODNAT=L.CODNAT
 GROUP BY L.TIPOLF, L.CODNAT, N.DESCNAT
 ORDER BY L.TIPOLF, L.CODNAT, N.DESCNAT]]></queryString>
@@ -73,30 +73,72 @@ ORDER BY L.TIPOLF, L.CODNAT, N.DESCNAT]]></queryString>
 		<variableExpression><![CDATA[new Integer($V{PAGE_NUMBER}.intValue()+$P{FOLHA}.intValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[$P{FOLHA}]]></initialValueExpression>
 	</variable>
-	<variable name="SUBVLRCONTABIL" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+	<variable name="SUBVLRCONTABIL" class="java.math.BigDecimal" resetType="Group" resetGroup="SUBTOTAL" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRCONTABILLF}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="SUBVLRBASEICMSLF" class="java.math.BigDecimal" resetType="Group" resetGroup="SUBTOTAL" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRBASEICMSLF}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 
 		<group  name="TIPO" >
 			<groupExpression><![CDATA[$F{TIPOLF}]]></groupExpression>
 			<groupHeader>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="18"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="167"
+						y="0"
+						width="200"
+						height="18"
+						key="textField-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TIPOLF}=="S" ? "Saida" : "Entrada"]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="535"
+						height="0"
+						key="line-39"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="17"
+						width="535"
+						height="0"
+						key="line-40"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="0"
+						width="0"
+						height="18"
+						key="line-41"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="534"
+						y="0"
+						width="0"
+						height="18"
+						key="line-42"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-			</groupFooter>
-		</group>
-		<group  name="TOTAL" >
-			<groupExpression><![CDATA[]]></groupExpression>
-			<groupHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-			</groupHeader>
-			<groupFooter>
-			<band height="50"  isSplitAllowed="true" >
+			<band height="18"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
@@ -212,7 +254,7 @@ ORDER BY L.TIPOLF, L.CODNAT, N.DESCNAT]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRBASEICMSLF}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SUBVLRBASEICMSLF}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -311,14 +353,14 @@ ORDER BY L.TIPOLF, L.CODNAT, N.DESCNAT]]></queryString>
 					<reportElement
 						x="47"
 						y="0"
-						width="200"
+						width="194"
 						height="19"
 						key="staticText-48"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Sub Total ]]></text>
+				<text><![CDATA[Sub-total]]></text>
 				</staticText>
 			</band>
 			</groupFooter>
@@ -933,12 +975,12 @@ ORDER BY L.TIPOLF, L.CODNAT, N.DESCNAT]]></queryString>
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="53"  isSplitAllowed="true" >
+			<band height="19"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="317"
-						y="29"
+						y="4"
 						width="174"
 						height="11"
 						forecolor="#000000"
@@ -954,7 +996,7 @@ ORDER BY L.TIPOLF, L.CODNAT, N.DESCNAT]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="494"
-						y="29"
+						y="4"
 						width="36"
 						height="11"
 						forecolor="#000000"
