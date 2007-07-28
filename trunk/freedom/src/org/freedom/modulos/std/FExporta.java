@@ -93,7 +93,9 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 	
 	private List<String> readrows;
 	
-	private List<SafeBean> erros;
+	private Object erros;
+	
+	private List<SafeBean> errosSafe;
 
 	public FExporta() {
 
@@ -179,6 +181,170 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 			
 			txtFile.setVlrString( fileChooser.getSelectedFile().getPath() );
 		}
+	}
+	
+	public static String getSqlCompras() {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "SELECT F.CODFOR CODIGO, F.CODCONTDEB CONTADEB, F.CODCONTCRED CONTACRED, C.VLRLIQCOMPRA VALOR," );
+		sql.append( "C.SERIE, C.DOCCOMPRA DOC, H.DESCHIST, C.DTENTCOMPRA DATA, C.CODFILIAL " );
+		sql.append( "FROM CPCOMPRA C, EQTIPOMOV T, CPFORNECED F " );
+		sql.append( "LEFT OUTER JOIN FNHISTPAD H " );
+		sql.append( "ON H.CODEMP=F.CODEMPHP AND H.CODFILIAL=F.CODFILIALHP AND H.CODHIST=F.CODHIST " );
+		sql.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? AND C.DTENTCOMPRA BETWEEN ? AND ? AND " );
+		sql.append( "T.CODEMP=C.CODEMPTM AND T.CODFILIAL=C.CODFILIALTM AND " );					
+		sql.append( "T.CODTIPOMOV=C.CODTIPOMOV AND T.FISCALTIPOMOV='S' AND " );
+		sql.append( "F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR " ); 
+		sql.append( "ORDER BY DTENTCOMPRA" );
+							
+		return sql.toString();
+	}
+	
+	public static String getSqlComprasPagas() {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "SELECT CT.CODCONTDEB CONTADEB, CT.CODCONTCRED CONTACRED," );
+		sql.append( "S.VLRSUBLANCA VALOR, C.SERIE, C.DOCCOMPRA DOC," );
+		sql.append( "H.DESCHIST, S.DATASUBLANCA DATA, S.CODFILIAL " );
+		sql.append( "FROM FNSUBLANCA S, FNLANCA L, FNITPAGAR I, CPFORNECED F, FNCONTA CT," );
+		sql.append( "FNHISTPAD H, FNPAGAR P, CPCOMPRA C " );
+		sql.append( "WHERE S.CODEMP=? AND S.CODFILIAL=? AND S.DATASUBLANCA BETWEEN ? AND ? AND " );
+		sql.append( "S.CODSUBLANCA<>0 AND " );
+		sql.append( "L.CODEMP=S.CODEMP AND L.CODFILIAL=S.CODFILIAL AND L.CODLANCA=S.CODLANCA AND " );
+		sql.append( "I.CODEMP=L.CODEMPPG AND I.CODFILIAL=L.CODFILIALPG AND I.CODPAG=L.CODPAG AND I.NPARCPAG=L.NPARCPAG AND " );
+		sql.append( "P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL AND P.CODPAG=I.CODPAG AND " );
+		sql.append( "F.CODEMP=S.CODEMPFR AND F.CODFILIAL=S.CODFILIALFR AND F.CODFOR=S.CODFOR AND " );
+		sql.append( "CT.CODEMPPN=L.CODEMPPN AND CT.CODFILIALPN=L.CODFILIALPN AND CT.CODPLAN=L.CODPLAN AND " );
+		sql.append( "H.CODEMP=CT.CODEMPHP AND H.CODFILIAL=CT.CODFILIALHP AND H.CODHIST=CT.CODHIST AND " );
+		sql.append( "C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA " );
+		sql.append( "ORDER BY DATASUBLANCA" );
+							
+		return sql.toString();
+	}
+			
+	public static String getSqlVendas() {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "SELECT C.CODCLI CODIGO, C.CODCONTDEB CONTADEB, C.CODCONTCRED CONTACRED, V.VLRLIQVENDA VALOR," );
+		sql.append( "V.SERIE, V.DOCVENDA DOC, H.DESCHIST, V.DTEMITVENDA DATA, C.CODFILIAL " );
+		sql.append( "FROM VDVENDA V, EQTIPOMOV T, VDCLIENTE C " );
+		sql.append( "LEFT OUTER JOIN FNHISTPAD H " );
+		sql.append( "ON H.CODEMP=C.CODEMPHP AND H.CODFILIAL=C.CODFILIALHP AND H.CODHIST=C.CODHIST " );
+		sql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.DTEMITVENDA BETWEEN ? AND ? AND " );
+		sql.append( "NOT SUBSTR(V.STATUSVENDA,1,1)='C' AND " );
+		sql.append( "T.CODEMP=V.CODEMPTM AND T.CODFILIAL=V.CODFILIALTM AND " );
+		sql.append( "T.CODTIPOMOV=V.CODTIPOMOV AND T.FISCALTIPOMOV='S' AND " );
+		sql.append( "C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
+		sql.append( "ORDER BY DTEMITVENDA" );
+							
+		return sql.toString();
+	}
+	
+	public static String getSqlVendasRecebebidas() {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "SELECT CT.CODCONTDEB CONTADEB, C.CODCONTDEB CONTACRED," );
+		sql.append( "(S.VLRSUBLANCA*-1) VALOR, V.SERIE, V.DOCVENDA DOC," );
+		sql.append( "H.DESCHIST, S.DATASUBLANCA DATA, S.CODFILIAL " );
+		sql.append( "FROM FNSUBLANCA S, FNLANCA L, FNITRECEBER I, VDCLIENTE C, FNCONTA CT," );
+		sql.append( "FNHISTPAD H, FNRECEBER R, VDVENDA V " );
+		sql.append( "WHERE S.CODEMP=? AND S.CODFILIAL=? AND S.DATASUBLANCA BETWEEN ? AND ? AND " );
+		sql.append( "S.CODSUBLANCA<>0 AND " );
+		sql.append( "L.CODEMP=S.CODEMP AND L.CODFILIAL=S.CODFILIAL AND L.CODLANCA=S.CODLANCA AND " );
+		sql.append( "I.CODEMP=L.CODEMPRC AND I.CODFILIAL=L.CODFILIALRC AND I.CODREC=L.CODREC AND I.NPARCITREC=L.NPARCITREC AND " );
+		sql.append( "R.CODEMP=I.CODEMP AND R.CODFILIAL=I.CODFILIAL AND R.CODREC=I.CODREC AND " );
+		sql.append( "C.CODEMP=S.CODEMPCL AND C.CODFILIAL=S.CODFILIALCL AND C.CODCLI=S.CODCLI AND " );
+		sql.append( "CT.CODEMPPN=L.CODEMPPN AND CT.CODFILIALPN=L.CODFILIALPN AND CT.CODPLAN=L.CODPLAN AND " );
+		sql.append( "H.CODEMP=CT.CODEMPHP AND H.CODFILIAL=CT.CODFILIALHP AND H.CODHIST=CT.CODHIST AND " );
+		sql.append( "V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND V.TIPOVENDA=R.TIPOVENDA AND V.CODVENDA=R.CODVENDA " );
+		sql.append( "ORDER BY DATASUBLANCA" );
+							
+		return sql.toString();
+	}
+	
+	public static String getSqlContasPagar() {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "SELECT F.CODFOR CODIGO, F.CODCONTDEB CONTADEB, F.CODCONTCRED CONTACRED, P.VLRPARCPAG VALOR," );
+		sql.append( "' ' SERIE, P.DOCPAG DOC, H.DESCHIST, P.DATAPAG DATA, P.CODFILIAL " );
+		sql.append( "FROM FNPAGAR P, CPFORNECED F " );
+		sql.append( "LEFT OUTER JOIN FNHISTPAD H " );
+		sql.append( "ON H.CODEMP=F.CODEMPHP AND H.CODFILIAL=F.CODFILIALHP AND H.CODHIST=F.CODHIST " );
+		sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.DATAPAG BETWEEN ? AND ? AND " );
+		sql.append( "F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND F.CODFOR=P.CODFOR AND " );
+		sql.append( "P.CODCOMPRA IS NULL " );
+		sql.append( "ORDER BY P.DATAPAG " );
+							
+		return sql.toString();
+	}
+	
+	public static String getSqlContasPagas() {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "SELECT CT.CODCONTDEB CONTADEB, CT.CODCONTCRED CONTACRED," );
+		sql.append( "S.VLRSUBLANCA VALOR, ' ' SERIE, P.DOCPAG DOC," );
+		sql.append( "H.DESCHIST, S.DATASUBLANCA DATA, S.CODFILIAL " );
+		sql.append( "FROM FNSUBLANCA S, FNLANCA L, FNITPAGAR I, CPFORNECED F, FNCONTA CT, " );
+		sql.append( "FNHISTPAD H, FNPAGAR P " );
+		sql.append( "WHERE S.CODEMP=5 AND S.CODFILIAL=1 AND S.DATASUBLANCA BETWEEN '01.06.2007' AND '30.06.2007' AND " );
+		sql.append( "S.CODSUBLANCA<>0 AND " );
+		sql.append( "L.CODEMP=S.CODEMP AND L.CODFILIAL=S.CODFILIAL AND L.CODLANCA=S.CODLANCA AND " );
+		sql.append( "I.CODEMP=L.CODEMPPG AND I.CODFILIAL=L.CODFILIALPG AND I.CODPAG=L.CODPAG AND I.NPARCPAG=L.NPARCPAG AND " );
+		sql.append( "P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL AND P.CODPAG=I.CODPAG AND " );
+		sql.append( "F.CODEMP=S.CODEMPFR AND F.CODFILIAL=S.CODFILIALFR AND F.CODFOR=S.CODFOR AND " );
+		sql.append( "CT.CODEMPPN=L.CODEMPPN AND CT.CODFILIALPN=L.CODFILIALPN AND CT.CODPLAN=L.CODPLAN AND " );
+		sql.append( "H.CODEMP=CT.CODEMPHP AND H.CODFILIAL=CT.CODFILIALHP AND H.CODHIST=CT.CODHIST AND " );
+		sql.append( "P.CODCOMPRA IS NULL " );
+		sql.append( "ORDER BY DATASUBLANCA" );
+							
+		return sql.toString();
+	}
+	
+	public static String getSqlContasReceber() {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "SELECT C.CODCLI CODIGO, C.CODCONTDEB CONTADEB, C.CODCONTCRED CONTACRED," );
+		sql.append( "R.VLRPARCREC VALOR," );
+		sql.append( "' ' SERIE, R.DOCREC DOC, H.DESCHIST, R.DATAREC DATA, R.CODFILIAL " );
+		sql.append( "FROM FNRECEBER R, VDCLIENTE C " );
+		sql.append( "LEFT OUTER JOIN FNHISTPAD H " );
+		sql.append( "ON H.CODEMP=C.CODEMPHP AND H.CODFILIAL=C.CODFILIALHP AND H.CODHIST=C.CODHIST " );
+		sql.append( "WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.DATAREC BETWEEN ? AND ? AND " );
+		sql.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND " );
+		sql.append( "R.CODVENDA IS NULL " );
+		sql.append( "ORDER BY R.DATAREC" );
+							
+		return sql.toString();
+	}
+	
+	public static String getSqlContasRecebidas() {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "SELECT CT.CODCONTDEB CONTADEB, C.CODCONTDEB CONTACRED," );
+		sql.append( "(S.VLRSUBLANCA*-1) VALOR, ' ' SERIE, R.DOCREC DOC," );
+		sql.append( "H.DESCHIST, S.DATASUBLANCA DATA, S.CODFILIAL " );
+		sql.append( "FROM FNSUBLANCA S, FNLANCA L, FNITRECEBER I, VDCLIENTE C, FNCONTA CT, " );
+		sql.append( "FNHISTPAD H, FNRECEBER R " );
+		sql.append( "WHERE S.CODEMP=? AND S.CODFILIAL=? AND S.DATASUBLANCA BETWEEN ? AND ? AND " );
+		sql.append( "S.CODSUBLANCA<>0 AND " );
+		sql.append( "L.CODEMP=S.CODEMP AND L.CODFILIAL=S.CODFILIAL AND L.CODLANCA=S.CODLANCA AND " );
+		sql.append( "I.CODEMP=L.CODEMPRC AND I.CODFILIAL=L.CODFILIALRC AND I.CODREC=L.CODREC AND I.NPARCITREC=L.NPARCITREC AND " );
+		sql.append( "R.CODEMP=I.CODEMP AND R.CODFILIAL=I.CODFILIAL AND R.CODREC=I.CODREC AND " );
+		sql.append( "C.CODEMP=S.CODEMPCL AND C.CODFILIAL=S.CODFILIALCL AND C.CODCLI=S.CODCLI AND " );
+		sql.append( "CT.CODEMPPN=L.CODEMPPN AND CT.CODFILIALPN=L.CODFILIALPN AND CT.CODPLAN=L.CODPLAN AND " );
+		sql.append( "H.CODEMP=CT.CODEMPHP AND H.CODFILIAL=CT.CODFILIALHP AND H.CODHIST=CT.CODHIST AND " );
+		sql.append( "R.CODVENDA IS NULL " );
+		sql.append( "ORDER BY DATASUBLANCA" );
+							
+		return sql.toString();
 	}
 	
 	private String getSistemaContabil() {
@@ -313,13 +479,15 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 			}
 			else if ( SAFE_CONTABIL.equals( sistema ) ) {		
 				
-				erros = new ArrayList<SafeBean>();
+				errosSafe = new ArrayList<SafeBean>();
 				getLayoutSafe();
 				
-				if ( erros.size() > 0 ) {
+				if ( errosSafe.size() > 0 ) {
 					readrows = null;
+					erros = errosSafe;
 				}
-				else if ( erros.size() == 0 ) {
+				else if ( errosSafe.size() == 0 ) {
+					errosSafe = null;
 					erros = null;
 				}
 			} 
@@ -428,92 +596,26 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 	private void getLayoutSafe() {
 		
 		try {
-
-			StringBuilder sql = new StringBuilder();
-						
-			sql.append( "SELECT F.CODFOR CODIGO, F.CODCONTDEB CONTADEB, F.CODCONTCRED CONTACRED, C.VLRLIQCOMPRA VALOR," );
-			sql.append( "C.SERIE, C.DOCCOMPRA DOC, H.DESCHIST, C.DTENTCOMPRA DATA, C.CODFILIAL " );
-			sql.append( "FROM CPCOMPRA C, EQTIPOMOV T, CPFORNECED F " );
-			sql.append( "LEFT OUTER JOIN FNHISTPAD H " );
-			sql.append( "ON H.CODEMP=F.CODEMPHP AND H.CODFILIAL=F.CODFILIALHP AND H.CODHIST=F.CODHIST " );
-			sql.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? AND C.DTENTCOMPRA BETWEEN ? AND ? AND " );
-			sql.append( "T.CODEMP=C.CODEMPTM AND T.CODFILIAL=C.CODFILIALTM AND " );					
-			sql.append( "T.CODTIPOMOV=C.CODTIPOMOV AND T.FISCALTIPOMOV='S' AND " );
-			sql.append( "F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR " ); 
-			sql.append( "ORDER BY DTENTCOMPRA" );
 								
-			executeSqlSafe( sql.toString(), "CPCOMPRA", SafeBean.COMPRAS, readrows, erros );
-			
-			sql.delete( 0, sql.length() );
-			
-			sql.append( "SELECT CT.CODCONTDEB CONTADEB, CT.CODCONTCRED CONTACRED," );
-			sql.append( "S.VLRSUBLANCA VALOR, C.SERIE, C.DOCCOMPRA DOC," );
-			sql.append( "H.DESCHIST, S.DATASUBLANCA DATA, S.CODFILIAL " );
-			sql.append( "FROM FNSUBLANCA S, FNLANCA L, FNITPAGAR I, CPFORNECED F, FNCONTA CT," );
-			sql.append( "FNHISTPAD H, FNPAGAR P, CPCOMPRA C " );
-			sql.append( "WHERE S.CODEMP=? AND S.CODFILIAL=? AND S.DATASUBLANCA BETWEEN ? AND ? AND " );
-			sql.append( "S.CODSUBLANCA<>0 AND " );
-			sql.append( "L.CODEMP=S.CODEMP AND L.CODFILIAL=S.CODFILIAL AND L.CODLANCA=S.CODLANCA AND " );
-			sql.append( "I.CODEMP=L.CODEMPPG AND I.CODFILIAL=L.CODFILIALPG AND I.CODPAG=L.CODPAG AND I.NPARCPAG=L.NPARCPAG AND " );
-			sql.append( "P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL AND P.CODPAG=I.CODPAG AND " );
-			sql.append( "F.CODEMP=S.CODEMPFR AND F.CODFILIAL=S.CODFILIALFR AND F.CODFOR=S.CODFOR AND " );
-			sql.append( "CT.CODEMPPN=L.CODEMPPN AND CT.CODFILIALPN=L.CODFILIALPN AND CT.CODPLAN=L.CODPLAN AND " );
-			sql.append( "H.CODEMP=CT.CODEMPHP AND H.CODFILIAL=CT.CODFILIALHP AND H.CODHIST=CT.CODHIST AND " );
-			sql.append( "C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA " );
-			sql.append( "ORDER BY DATASUBLANCA" );
-									
-			executeSqlSafe( sql.toString(), "FNSUBLANCA", SafeBean.CONTAS_PAGAR, readrows, erros );			
+			for ( ETipo t : ETipo.values() ) {
 
-			sql.delete( 0, sql.length() );
-			
-			sql.append( "SELECT C.CODCLI CODIGO, C.CODCONTDEB CONTADEB, C.CODCONTCRED CONTACRED, V.VLRLIQVENDA VALOR," );
-			sql.append( "V.SERIE, V.DOCVENDA DOC, H.DESCHIST, V.DTEMITVENDA DATA, C.CODFILIAL " );
-			sql.append( "FROM VDVENDA V, EQTIPOMOV T, VDCLIENTE C " );
-			sql.append( "LEFT OUTER JOIN FNHISTPAD H " );
-			sql.append( "ON H.CODEMP=C.CODEMPHP AND H.CODFILIAL=C.CODFILIALHP AND H.CODHIST=C.CODHIST " );
-			sql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.DTEMITVENDA BETWEEN ? AND ? AND " );
-			sql.append( "NOT SUBSTR(V.STATUSVENDA,1,1)='C' AND " );
-			sql.append( "T.CODEMP=V.CODEMPTM AND T.CODFILIAL=V.CODFILIALTM AND " );
-			sql.append( "T.CODTIPOMOV=V.CODTIPOMOV AND T.FISCALTIPOMOV='S' AND " );
-			sql.append( "C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
-			sql.append( "ORDER BY DTEMITVENDA" );
-									
-			executeSqlSafe( sql.toString(), "VDVENDA", SafeBean.VENDAS, readrows, erros );		
-			
-			sql.delete( 0, sql.length() );
-			
-			sql.append( "SELECT CT.CODCONTDEB CONTADEB, C.CODCONTDEB CONTACRED," );
-			sql.append( "(S.VLRSUBLANCA*-1) VALOR, V.SERIE, V.DOCVENDA DOC," );
-			sql.append( "H.DESCHIST, S.DATASUBLANCA DATA, S.CODFILIAL " );
-			sql.append( "FROM FNSUBLANCA S, FNLANCA L, FNITRECEBER I, VDCLIENTE C, FNCONTA CT," );
-			sql.append( "FNHISTPAD H, FNRECEBER R, VDVENDA V " );
-			sql.append( "WHERE S.CODEMP=? AND S.CODFILIAL=? AND S.DATASUBLANCA BETWEEN ? AND ? AND " );
-			sql.append( "S.CODSUBLANCA<>0 AND " );
-			sql.append( "L.CODEMP=S.CODEMP AND L.CODFILIAL=S.CODFILIAL AND L.CODLANCA=S.CODLANCA AND " );
-			sql.append( "I.CODEMP=L.CODEMPRC AND I.CODFILIAL=L.CODFILIALRC AND I.CODREC=L.CODREC AND I.NPARCITREC=L.NPARCITREC AND " );
-			sql.append( "R.CODEMP=I.CODEMP AND R.CODFILIAL=I.CODFILIAL AND R.CODREC=I.CODREC AND " );
-			sql.append( "C.CODEMP=S.CODEMPCL AND C.CODFILIAL=S.CODFILIALCL AND C.CODCLI=S.CODCLI AND " );
-			sql.append( "CT.CODEMPPN=L.CODEMPPN AND CT.CODFILIALPN=L.CODFILIALPN AND CT.CODPLAN=L.CODPLAN AND " );
-			sql.append( "H.CODEMP=CT.CODEMPHP AND H.CODFILIAL=CT.CODFILIALHP AND H.CODHIST=CT.CODHIST AND " );
-			sql.append( "V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND V.TIPOVENDA=R.TIPOVENDA AND V.CODVENDA=R.CODVENDA " );
-			sql.append( "ORDER BY DATASUBLANCA" );
-									
-			executeSqlSafe( sql.toString(), "FNSUBLANCA", SafeBean.CONTAS_RECEBER, readrows, erros );
+				executeSqlSafe( t, errosSafe );	
+			}
 		}
 		catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void executeSqlSafe( final String sql, final String table, final int tipo, final List<String> readrows, final List<SafeBean> erros  ) {
+	private void executeSqlSafe( final ETipo tipo, final List<SafeBean> erros ) {
 		
 		try {
 			
 			StringBuilder row = new StringBuilder();
 			
-			PreparedStatement ps = con.prepareStatement( sql );
+			PreparedStatement ps = con.prepareStatement( tipo.getSql() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( table ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( tipo.getTabela() ) );
 			ps.setDate( 3, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
 			ps.setDate( 4, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
 			
@@ -677,16 +779,43 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 		super.setConexao( cn );
 	}
+	
+	enum ETipo {
+				
+		COMPRAS( "Compras", getSqlCompras(), "CPCOMPRA" ),
+		COMPRAS_PAGAS( "Compras pagas", getSqlComprasPagas(), "FNSUBLANCA" ),
+		VENDAS( "Vendas", getSqlVendas(), "VDVENDA" ),
+		VENDAS_RECEBIDAS( "Vendas recebidas", getSqlVendasRecebebidas(), "FNSUBLANCA" ),
+		CONTAS_PAGAR( "Contas a pagar", getSqlContasPagar(), "FNPAGAR" ),
+		CONTAS_PAGAS( "Contas pagas", getSqlContasPagas(), "FNSUBLANCA" ),
+		CONTAS_RECEBER( "Contas a receber", getSqlContasReceber(), "FNRECEBER" ),
+		CONTAS_RECEBIDAS( "Contas recebidas", getSqlContasRecebidas(), "FNSUBLANCA" );
+		
+		String descricao = "";
+		String tabela = "";
+		String sql = "";
+				
+		ETipo( String descricao, String sql, String tabela ) {
 
-	static class SafeBean {
+			this.descricao = descricao;
+			this.sql = sql;
+			this.tabela = tabela;
+		}
 		
-		public static final int COMPRAS = 0;
+		public String getDescricao() {
+			return this.descricao;
+		}
 		
-		public static final int CONTAS_PAGAR = 1;
+		public String getSql() {
+			return this.sql;
+		}
 		
-		public static final int VENDAS = 2;
-		
-		public static final int CONTAS_RECEBER = 3;
+		public String getTabela() {
+			return this.tabela;
+		}
+	}
+
+	class SafeBean {
 
 		private String contadeb;
 
@@ -704,7 +833,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 		private Integer filial;
 		
-		private int tipo;
+		private ETipo tipo;
 
 		
 		public String getCentrocusto() {		
@@ -763,28 +892,11 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 			this.historico = historico;
 		}
 		
-		public Integer getTipo() {		
+		public ETipo getTipo() {		
 			return tipo;
 		}
 		
-		public String getStrTipo() {
-			String stipo = null;
-			if ( getTipo() == COMPRAS ) {
-				stipo = "Compras";
-			}
-			else if ( getTipo() == CONTAS_PAGAR ) {
-				stipo = "Pagamentos";
-			}
-			else if ( getTipo() == VENDAS ) {
-				stipo = "Vendas";
-			}
-			else if ( getTipo() == CONTAS_RECEBER ) {
-				stipo = "Recebimentos";
-			}
-			return stipo;
-		}
-		
-		public void setTipo( final Integer tipo ) {		
+		public void setTipo( final ETipo tipo ) {		
 			this.tipo = tipo;
 		}
 		

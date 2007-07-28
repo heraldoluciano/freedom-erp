@@ -128,7 +128,7 @@ public class DLChecaExporta extends DLRelatorio {
 			
 			tab.adicLinha();
 			
-			tab.setValor( sb.getStrTipo(), row, 0 );
+			tab.setValor( sb.getTipo().getDescricao(), row, 0 );
 			tab.setValor( sb.getContadeb(), row, 1 );
 			tab.setValor( sb.getContacred(), row, 2 );
 			tab.setValor( sb.getDocumento(), row, 3 );
