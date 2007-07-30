@@ -167,6 +167,10 @@ class CnabUtil extends FbnUtil {
 			return formaLancamento;
 		}
 		
+		/**
+		 * 
+		 * @param formaLancamento
+		 */
 		public void setFormaLancamento( final String formaLancamento ) {		
 			this.formaLancamento = formaLancamento;
 		}
@@ -175,6 +179,12 @@ class CnabUtil extends FbnUtil {
 			return loteServico;
 		}
 		
+		/**
+		 * Indentifica um Lote de Serviço.<br>
+		 * Sequencial e nmão deve ser repetido dentro do arquivo.<br>
+		 * As numerações 0000 e 9999 <br>
+		 * são exclusivas para o Header e para o Trailer do arquivo respectivamente.<br>
+		 */
 		public void setLoteServico( final int loteServico ) {		
 			this.loteServico = loteServico;
 		}
@@ -183,10 +193,18 @@ class CnabUtil extends FbnUtil {
 			return msg1;
 		}
 		
+		/**
+		 * As menssagens serão impressas em todos os bloquetos referentes 1 e 2 ao mesmo lote.<br>
+		 * Estes campos não serão utilizados no arquivo de retorno.<br>
+		 */
 		public void setMsg1( final String msg1 ) {		
 			this.msg1 = msg1;
 		}
 		
+		/**
+		 * As menssagens serão impressas em todos os bloquetos referentes 1 e 2 ao mesmo lote.<br>
+		 * Estes campos não serão utilizados no arquivo de retorno.<br>
+		 */
 		public String getMsg2() {		
 			return msg2;
 		}
@@ -231,6 +249,16 @@ class CnabUtil extends FbnUtil {
 			return tipoOperacao;
 		}
 		
+		/**
+		 * Indica a operação que devera ser realizada com os registros Detalhe do Lote.<br>
+		 * Deve constar apenas um tipo por Lote:<br>
+		 * C - Lançamento a Crédito.<br>
+		 * D - Lançamento a Débito.<br>
+		 * E - Extrato para conciliação.<br>
+		 * I - Informações de titulos capturados do próprio banco.<br>
+		 * R - Arquivo de remessa.<br>
+		 * T - Arquivo de retorno.<br>
+		 */
 		public void setTipoOperacao( final String tipoOperacao ) {		
 			this.tipoOperacao = tipoOperacao;
 		}
@@ -365,7 +393,13 @@ class CnabUtil extends FbnUtil {
 		public int getLoteServico() {		
 			return loteServico;
 		}
-		
+
+		/**
+		 * Indentifica um Lote de Serviço.<br>
+		 * Sequencial e nmão deve ser repetido dentro do arquivo.<br>
+		 * As numerações 0000 e 9999 <br>
+		 * são exclusivas para o Header e para o Trailer do arquivo respectivamente.<br>
+		 */
 		public void setLoteServico( final int loteServico ) {		
 			this.loteServico = loteServico;
 		}
