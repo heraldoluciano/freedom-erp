@@ -528,12 +528,14 @@ public class FRBoleto extends FRelatorio {
 			StringBuilder sql = new StringBuilder();
 
 			sql.append( "SELECT F.RAZFILIAL, C.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, " );
-			sql.append( "MB.INSTPAGMODBOL, B.IMGBOLBANCO, C.CONVCOBCONTA " );
-			sql.append( "FROM SGFILIAL F, FNCONTA C, FNMODBOLETO MB, FNBANCO B " );
+			sql.append( "MB.INSTPAGMODBOL, B.IMGBOLBANCO, IM.CONVCOB " );
+			sql.append( "FROM SGFILIAL F, FNCONTA C, FNMODBOLETO MB, FNBANCO B, FNITMODBOLETO IM " );
 			sql.append( "WHERE MB.CODEMP=? AND MB.CODFILIAL=? AND MB.CODMODBOL =? " );
-			sql.append( "AND F.CODEMP=MB.CODEMP AND F.CODFILIAL=MB.CODFILIAL " );
-			sql.append( "AND C.CODEMP=MB.CODEMPCC AND C.CODFILIAL=MB.CODFILIALCC AND C.NUMCONTA=MB.NUMCONTA " );
-			sql.append( "AND B.CODEMPMB=MB.CODEMP AND B.CODFILIALMB=MB.CODFILIAL AND B.CODMODBOL=MB.CODMODBOL" );
+			sql.append( "F.CODEMP=MB.CODEMP AND F.CODFILIAL=MB.CODFILIAL AND " );
+			sql.append( "IM.CODEMP=M.CODEMP AND IM.CODFILIAL=M.CODFILIAL AND IM.CODEMPBO=B.CODEMP AND ");
+			sql.append( "IM.CODFILIALBO=B.CODFILIAL AND IM.CODBANCO=B.CODBANCO AND ");
+			sql.append( "C.CODEMP=MB.CODEMPCC AND C.CODFILIAL=MB.CODFILIALCC AND C.NUMCONTA=MB.NUMCONTA AND " );
+			sql.append( "B.CODEMPMB=MB.CODEMP AND B.CODFILIALMB=MB.CODFILIAL AND B.CODMODBOL=MB.CODMODBOL" );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -555,11 +557,11 @@ public class FRBoleto extends FRelatorio {
 				else {
 					numconta = rs.getString( "NUMCONTA" );
 				}
-				if ( rs.getString( "CONVCOBCONTA" ) == null ) {
+				if ( rs.getString( "CONVCOB" ) == null ) {
 					convenio = "";
 				}
 				else {
-					convenio = rs.getString( "CONVCOBCONTA" );
+					convenio = rs.getString( "CONVCOB" );
 				}
 				instrucoes = rs.getString( "INSTPAGMODBOL" );
 				localpag = rs.getString( "DESCLPMODBOL" );
