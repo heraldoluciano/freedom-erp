@@ -231,7 +231,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 			if(!con.getAutoCommit())
 				con.commit();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao veficar levantamento. ");
+			Funcoes.mensagemErro(this,"Erro ao verificar levantamento. ");
 		} finally {
 			ps = null;
 			rs = null;
