@@ -580,7 +580,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[($F{CODCONV}!=null ? String.valueOf($F{CODCONV})+" - " : "") 
 + ($F{NOMECONV}!=null?$F{NOMECONV}.trim():"") 
-+ ($F{CODTPCONV}!=null ? " Tipo: " + String.valueOf($F{CODTPCONV}) + " - " : "")
++ ($F{CODTPCONV}!=null ? " / Tipo: " + String.valueOf($F{CODTPCONV}) + " - " : "")
 + ($F{DESCTPCONV}!=null ?  $F{DESCTPCONV}.trim() : "")]]></textFieldExpression>
 				</textField>
 			</band>
