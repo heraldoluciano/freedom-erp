@@ -168,8 +168,7 @@ class CnabUtil extends FbnUtil {
 		}
 		
 		/**
-		 * 
-		 * @param formaLancamento
+		 * Este campo não será utilizado para combrança.<br>
 		 */
 		public void setFormaLancamento( final String formaLancamento ) {		
 			this.formaLancamento = formaLancamento;
@@ -233,6 +232,9 @@ class CnabUtil extends FbnUtil {
 			return registroHeader;
 		}
 		
+		/**
+		 * Indica o tipo de registro.<br>
+		 */
 		private void setRegistroHeader( final int registroHeader ) {		
 			this.registroHeader = registroHeader;
 		}
@@ -267,6 +269,11 @@ class CnabUtil extends FbnUtil {
 			return tipoServico;
 		}
 		
+		/**
+		 * Indica o tipo de serviço que o lote contém.<br>
+		 * 01 - Cobramça.<br>
+		 * 02 - Cobrança em papel.<br>
+		 */
 		private void setTipoServico( final String tipoServico ) {		
 			this.tipoServico = tipoServico;
 		}
