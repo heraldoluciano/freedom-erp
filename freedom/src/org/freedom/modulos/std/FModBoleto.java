@@ -198,7 +198,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		/*************
 		 *  FNBANCO  *
 		 *************/
-		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
+		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, txtNomeBanco, false ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setReadOnly( true );
@@ -212,12 +212,15 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		/*******************
 		 *  FNITMODBOLETO  *
 		 *******************/
+		lcItModBol.add( new GuardaCampo( txtCarteira, "CartCob", "Carteira", ListaCampos.DB_PK, true ) );
 		lcItModBol.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true ) );
-		lcItModBol.add( new GuardaCampo( txtCarteira, "CartCob", "Carteira", ListaCampos.DB_SI, true ) );
 		lcItModBol.add( new GuardaCampo( txtConvCob, "ConvCob", "Convênio de cobrança", ListaCampos.DB_SI, true ) );
 		lcItModBol.montaSql( false, "ITMODBOLETO", "FN" );
 		lcItModBol.setQueryInsert( false );
 		lcItModBol.setQueryCommit( false );
+		txtCarteira.setTabelaExterna( lcItModBol );
+		txtCarteira.setListaCampos( lcItModBol );
+		txtConvCob.setListaCampos( lcItModBol );
 	}
 	
 	private void montaCombos() {
