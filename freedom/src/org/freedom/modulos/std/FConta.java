@@ -59,8 +59,6 @@ public class FConta extends FTabDados implements CheckBoxListener {
 
 	private JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
-	private JTextFieldPad txtConvCobConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
-
 	private JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtDescMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -125,7 +123,7 @@ public class FConta extends FTabDados implements CheckBoxListener {
 
 		super( false );
 		setTitulo( "Cadastro de Contas" );
-		setAtribos( 50, 50, 430, 410 );
+		setAtribos( 50, 50, 430, 350 );
 
 		lcRestricoes.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcRestricoes );
@@ -175,9 +173,9 @@ public class FConta extends FTabDados implements CheckBoxListener {
 		rgTipo = new JRadioGroup( 1, 2, vLabsTipo, vValsTipo );
 
 		
-		/**
-		 *  ABA GERAL
-		 */
+		/***************
+		 *  ABA GERAL  *
+		 ***************/
 		setPainel( pinCamposGeral );
 
 		adicTab( "Geral", pinCamposGeral );
@@ -192,15 +190,14 @@ public class FConta extends FTabDados implements CheckBoxListener {
 		adicDescFK( txtDescMoeda, 153, 100, 237, 20, "SingMoeda", "Descrição da moeda" );
 		adicCampo( txtCodPlan, 7, 140, 140, 20, "CodPlan", "Cód.tp.lanç.", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescPlan, 150, 140, 240, 20, "DescPlan", "Descrição do tipo de lançamento" );
-		adicCampo( txtConvCobConta, 7, 180, 150, 20, "ConvCobConta", "Convênio de cobrança", ListaCampos.DB_SI, true );
 
-		adicDB( rgTipo, 7, 220, 200, 30, "TipoConta", "Tipo", true );
-		adicDB( cbAtivaConta, 220, 220, 120, 20, "ativaconta", "Ativa", true );
-		adicDB( chbRestritoTipoMov, 7, 260, 240, 20, "TUSUCONTA", "", true );
+		adicDB( rgTipo, 7, 180, 200, 30, "TipoConta", "Tipo", true );
+		adicDB( cbAtivaConta, 220, 180, 120, 20, "ativaconta", "Ativa", true );
+		adicDB( chbRestritoTipoMov, 7, 220, 240, 20, "TUSUCONTA", "", true );
 		
-		/**
-		 * ABA CONTABIL
-		 */
+		/******************
+		 *  ABA CONTABIL  *
+		 ******************/
 		setPainel( pinCamposContabil );
 
 		adicTab( "Contábil", pinCamposContabil );
@@ -220,6 +217,10 @@ public class FConta extends FTabDados implements CheckBoxListener {
 		pinDetRestricoes.add( pinNavRestricoes, BorderLayout.SOUTH );
 		pinDetRestricoes.add( pinCamposRestricoes, BorderLayout.CENTER );
 
+		
+		/********************
+		 *  ABA RESTRIÇÕES  *
+		 ********************/
 		setListaCampos( lcRestricoes );
 		setNavegador( navRestricoes );
 
