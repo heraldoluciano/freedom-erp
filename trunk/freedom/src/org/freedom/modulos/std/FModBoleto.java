@@ -86,6 +86,8 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 	
 	private final JTextFieldPad txtCarteira = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
+	private final JTextFieldPad txtConvCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
 	private final JCheckBoxPad ckPreImp = new JCheckBoxPad( "Usa boleto pré-impresso ?", "S", "N" );
 
 	private final JTextAreaPad txaBoleto = new JTextAreaPad( 10000 );
@@ -154,9 +156,10 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		montaListaCampos2();
 
 		lcItModBol.montaTab();
-		tabBancos.setTamColuna( 100, 0 );
-		tabBancos.setTamColuna( 250, 1 );
-		tabBancos.setTamColuna( 120, 2 );
+		tabBancos.setTamColuna( 90, 0 );
+		tabBancos.setTamColuna( 260, 1 );
+		tabBancos.setTamColuna( 100, 2 );
+		tabBancos.setTamColuna( 140, 3 );
 		
 		txaBoleto.setFont( new Font( "Courier", Font.PLAIN, 11 ) );
 		txaBoleto.setTabSize( 0 );
@@ -209,18 +212,12 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		/*******************
 		 *  FNITMODBOLETO  *
 		 *******************/
-		lcItModBol.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, false ) );
-		lcItModBol.add( new GuardaCampo( txtCarteira, "CartCob", "Carteira", ListaCampos.DB_SI, false ) );
+		lcItModBol.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true ) );
+		lcItModBol.add( new GuardaCampo( txtCarteira, "CartCob", "Carteira", ListaCampos.DB_SI, true ) );
+		lcItModBol.add( new GuardaCampo( txtConvCob, "ConvCob", "Convênio de cobrança", ListaCampos.DB_SI, true ) );
 		lcItModBol.montaSql( false, "ITMODBOLETO", "FN" );
 		lcItModBol.setQueryInsert( false );
 		lcItModBol.setQueryCommit( false );
-		lcItModBol.setNavegador( navBancos );
-		
-		navBancos.setListaCampos( lcItModBol );
-		navBancos.setAtivo( 6, false );
-		
-		txtCodBanco.addKeyListener( navBancos );
-		txtCarteira.addKeyListener( navBancos );
 	}
 	
 	private void montaCombos() {
@@ -404,8 +401,10 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		panelCamposBancos.adic( txtCodBanco, 7, 30, 90, 20 );
 		panelCamposBancos.adic( new JLabelPad( "Nome do banco" ), 100, 10, 250, 20 );
 		panelCamposBancos.adic( txtNomeBanco, 100, 30, 250, 20 );
-		panelCamposBancos.adic( new JLabelPad( "Carteira" ), 353, 10, 250, 20 );
+		panelCamposBancos.adic( new JLabelPad( "Carteira" ), 353, 10, 97, 20 );
 		panelCamposBancos.adic( txtCarteira, 353, 30, 97, 20 );
+		panelCamposBancos.adic( new JLabelPad( "Convênio de cobrança" ), 453, 10, 140, 20 );
+		panelCamposBancos.adic( txtConvCob, 453, 30, 140, 20 );
 		
 		panelCamposBancos.adic( navBancos, 0, 65, 270, 30 );
 		
