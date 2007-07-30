@@ -96,7 +96,7 @@ public class Boleto {
 	public static String[] getCodSig(String codigo) {
 		final String[] retorno = new String[2];
 		final StringBuffer buffer = new StringBuffer();
-		final String valido = "0123456789";
+		final String valido = "0123456789X";
 		for (int i=0; i<codigo.length(); i++) {
 			if (valido.indexOf( codigo.charAt( i ) )>-1) {
 				buffer.append(  codigo.charAt( i ) );
