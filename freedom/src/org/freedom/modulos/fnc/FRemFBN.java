@@ -60,6 +60,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
+import org.freedom.funcoes.Boleto;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.fnc.FbnUtil.EPrefs;
 import org.freedom.telas.Aplicativo;
@@ -392,16 +393,27 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				prefs.put( EPrefs.IDENTAMBCLI, rs.getString( EPrefs.IDENTAMBCLI.toString() ) );
 				prefs.put( EPrefs.IDENTAMBBCO, rs.getString( EPrefs.IDENTAMBBCO.toString() ) );
 				prefs.put( EPrefs.NROSEQ, new Integer( rs.getInt( EPrefs.NROSEQ.toString() ) ) );
-				int da = 0;
-				if ( rs.getString( "AGENCIACONTA" ) != null ) 
-					da = rs.getString( "AGENCIACONTA" ).indexOf( '-' ) > -1 ? rs.getString( "AGENCIACONTA" ).indexOf( '-' ) : rs.getString( "AGENCIACONTA" ).trim().length();
-				int dc = 0;
-				if ( rs.getString( EPrefs.NUMCONTA.toString() ) != null ) 
-					dc = rs.getString( EPrefs.NUMCONTA.toString() ).indexOf( '-' ) > -1 ? rs.getString( EPrefs.NUMCONTA.toString() ).indexOf( '-' ) : rs.getString( EPrefs.NUMCONTA.toString() ).trim().length();
-				prefs.put( EPrefs.AGENCIA, rs.getString( "AGENCIACONTA" ) != null ? ( rs.getString( "AGENCIACONTA" ).substring( 0, da ) ) : "" );
-				prefs.put( EPrefs.DIGAGENCIA, rs.getString( "AGENCIACONTA" ) != null ? ( rs.getString( "AGENCIACONTA" ).substring( da ) ) : "" );
-				prefs.put( EPrefs.NUMCONTA, rs.getString( EPrefs.NUMCONTA.toString() ) != null ? ( rs.getString( EPrefs.NUMCONTA.toString() ).substring( 0, dc ) ) : "" );
-				prefs.put( EPrefs.DIGCONTA, rs.getString( EPrefs.NUMCONTA.toString() ) != null ? ( rs.getString( EPrefs.NUMCONTA.toString() ).substring( dc ) ) : "" ); 
+
+				if ( rs.getString( "AGENCIACONTA" ) != null ) {
+					String[] agencia = Boleto.getCodSig( rs.getString( "AGENCIACONTA" ) );
+					prefs.put( EPrefs.AGENCIA, agencia[ 0 ] );
+					prefs.put( EPrefs.DIGAGENCIA, agencia[ 1 ] );
+				}
+				else {
+					prefs.put( EPrefs.AGENCIA, "" );
+					prefs.put( EPrefs.DIGAGENCIA, "" );
+				}
+				
+				if ( rs.getString( EPrefs.NUMCONTA.toString() ) != null ) {
+					String[] conta = Boleto.getCodSig( rs.getString( EPrefs.NUMCONTA.toString() ) );
+					prefs.put( EPrefs.NUMCONTA, conta[ 0 ] );
+					prefs.put( EPrefs.DIGCONTA, conta[ 1 ] );
+				}
+				else {
+					prefs.put( EPrefs.NUMCONTA, "" );
+					prefs.put( EPrefs.DIGCONTA, "" );
+				}
+				
 				prefs.put( EPrefs.DIGAGCONTA, null );
 				prefs.put( EPrefs.CNPFEMP, rs.getString( "CNPJFILIAL" ) );
 				retorno = true;

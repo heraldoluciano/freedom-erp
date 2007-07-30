@@ -41,6 +41,7 @@ import java.util.HashSet;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.Boleto;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.fnc.CnabUtil.Reg;
 import org.freedom.modulos.fnc.CnabUtil.Reg1;
@@ -93,7 +94,7 @@ public class FRemCnab extends FRemFBN {
 			ps.setInt( 4, Aplicativo.iCodEmp );
 			ps.setInt( 5, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
 			ps.setInt( 6, Aplicativo.iCodEmp );
-			ps.setInt( 7, ListaCampos.getMasterFilial( "FNBANCO" ) );
+			ps.setInt( 7, ListaCampos.getMasterFilial( "FNFBNCLI" ) );
 			ps.setString( 8, txtCodBanco.getVlrString() );
 			ps.setString( 9, TIPO_FEBRABAN_CNAB );
 			
@@ -101,10 +102,26 @@ public class FRemCnab extends FRemFBN {
 			
 			if ( rs.next() ) {
 				
-				args[ 0 ] = rs.getString( "AGENCIACLI" ) != null ? ( rs.getString( "AGENCIACLI" ).substring( 0, rs.getString( "AGENCIACLI" ).indexOf( '-' ) ) ) : "";
-				args[ 1 ] = rs.getString( "AGENCIACLI" ) != null ? ( rs.getString( "AGENCIACLI" ).substring( rs.getString( "AGENCIACLI" ).indexOf( '-' ) ) ) : "";
-				args[ 2 ] = rs.getString( "NUMCONTACLI" ) != null ? ( rs.getString( "NUMCONTACLI" ).substring( 0, rs.getString( "NUMCONTACLI" ).indexOf( '-' ) ) ) : "";
-				args[ 3 ] = rs.getString( "NUMCONTACLI" ) != null ? ( rs.getString( "NUMCONTACLI" ).substring( rs.getString( "NUMCONTACLI" ).indexOf( '-' ) ) ) : ""; 
+				if ( rs.getString( "AGENCIACLI" ) != null ) {
+					String[] agencia = Boleto.getCodSig( rs.getString( "AGENCIACLI" ) );
+					args[ 0 ] = agencia[ 0 ];
+					args[ 1 ] = agencia[ 1 ];
+				}
+				else {
+					args[ 0 ] = "";
+					args[ 1 ] = "";
+				}
+				
+				if ( rs.getString( "NUMCONTACLI" ) != null ) {
+					String[] conta = Boleto.getCodSig( rs.getString( "NUMCONTACLI" ) );
+					args[ 2 ] = conta[ 0 ];
+					args[ 2 ] = conta[ 1 ];
+				}
+				else {
+					args[ 2 ] = "";
+					args[ 2 ] = "";
+				}
+
 				args[ 4 ] = "";
 			}
 			
@@ -183,7 +200,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setRazEmp( (String) prefs.get( FbnUtil.EPrefs.NOMEEMP ) );
 		reg.setMsg1( null );
 		reg.setMsg2( null );
-		reg.setNrRemRet( 0 );
+		reg.setNrRemRet( (Integer) prefs.get(FbnUtil.EPrefs.NROSEQ) );
 		reg.setDataRemRet( Calendar.getInstance().getTime() );
 		reg.setDataCred( null );
 		
@@ -197,7 +214,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
 		reg.setSeqLote( seqLoteServico++ );
-		//reg.setCodMovimento( codMovimento );
+		reg.setCodMovimento( 1 );
 
 		String[] args = getContaCli( Integer.parseInt( rec.getArgs()[ EColTab.COL_CODCLI.ordinal() ] ) );
 		
@@ -206,7 +223,11 @@ public class FRemCnab extends FRemFBN {
 		reg.setConta( args[ 2 ] );
 		reg.setDigConta( args[ 3 ] );
 		reg.setDigAgConta( args[ 4 ] );
-		reg.setIdentTitulo( rec.getArgs()[ EColTab.COL_DOCREC.ordinal() ] );
+		/*reg.setIdentTitulo( Boleto.geraNossoNumero( 
+				"modalidade", 
+				"convenio", 
+				rec.getArgs()[ EColTab.COL_CODREC.ordinal() ], 
+				rec.getArgs()[ EColTab.COL_NRPARC.ordinal() ] );*/
 		reg.setCodCarteira( 0 );
 		reg.setFormaCadTitulo( 0 );
 		reg.setTipoDoc( 0 );
@@ -459,10 +480,12 @@ public class FRemCnab extends FRemFBN {
 		
 		try {
 			
+			loteServico++;
+			seqLoteServico = 1;
 			int regs = 0;
 			
 			ArrayList< Reg > registros = new ArrayList< Reg >();
-			
+						
 			registros.add( getReg1() );
 			
 			for ( StuffRec rec : hsRec ) {
