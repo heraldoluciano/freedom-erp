@@ -97,7 +97,7 @@ class CnabUtil extends FbnUtil {
 		
 		/**
 		 * Inscrição da empresa. Conforme o tipo da inscrição.<br>
-		 * @see org.freedom.modulos.fnc.CnabUtil#setTipoInscEmp( int tipoInscEmp )
+		 * @see org.freedom.modulos.fnc.CnabUtil.Reg1#setTipoInscEmp( int tipoInscEmp )
 		 */
 		public void setCpfCnpjEmp( final String cnpjEmp ) {		
 			this.cpfCnpjEmp = cnpjEmp;
@@ -613,6 +613,11 @@ class CnabUtil extends FbnUtil {
 			return codBaixaDev;
 		}
 		
+		/**
+		 * Código para baixa/devolução.<br>
+		 * 1 - Baixar/Devolver.<br>
+		 * 2 - Não baixar/ Não devolver.<br>
+		 */
 		public void setCodBaixaDev( final int codBaixaDev ) {		
 			this.codBaixaDev = codBaixaDev;
 		}
@@ -637,6 +642,16 @@ class CnabUtil extends FbnUtil {
 			return codDesc;
 		}
 		
+		/**
+		 * Código do desconto.<br>
+		 * 1 - Valor fixo até a data informada.<br>
+		 * 2 - Percentual até a data informada.<br>
+		 * 3 - Valor por antecipação por dia corrido.<br>
+		 * 4 - Valor por antecipação por dia util.<br>
+		 * 5 - Percentual sobre o valor nominal dia corrido.<br>
+		 * 6 - Percentual sobre o valor nominal dia util.<br>
+		 * Obs.: Para as opções 1 e 2 será obrigatório a informação da data.<br>
+		 */
 		public void setCodDesc( final int codDesc ) {		
 			this.codDesc = codDesc;
 		}
@@ -659,6 +674,18 @@ class CnabUtil extends FbnUtil {
 			return codMoeda;
 		}
 		
+		/**
+		 * Código da moeda.<br>
+		 * 01 - Reservado para uso futuro.<br>
+		 * 02 - Dolar americano comercial/venda.<br>
+		 * 03 - Dolar americano turismo/venda.<br>
+		 * 04 - ITRD.<br>
+		 * 05 - IDTR.<br>
+		 * 06 - UFIR diária.<br>
+		 * 07 - UFIR mensal.<br>
+		 * 08 - FAJ-TR.<br>
+		 * 09 - Real.<br>
+		 */
 		public void setCodMoeda( final int codMoeda ) {		
 			this.codMoeda = codMoeda;
 		}
@@ -667,6 +694,12 @@ class CnabUtil extends FbnUtil {
 			return codProtesto;
 		}
 		
+		/**
+		 * Código para protesto.<br>
+		 * 1 - Dias corridos.<br>
+		 * 2 - Dias utéis.<br>
+		 * 3 - Não protestar.<br> 
+		 */
 		public void setCodProtesto( final int codProtesto ) {		
 			this.codProtesto = codProtesto;
 		}
@@ -691,6 +724,9 @@ class CnabUtil extends FbnUtil {
 			return diasBaixaDevol;
 		}
 		
+		/**
+		 * Número de dias para a Baixa / Devolução.<br>
+		 */
 		public void setDiasBaixaDevol( final int diasBaixaDevol ) {		
 			this.diasBaixaDevol = diasBaixaDevol;
 		}
@@ -699,6 +735,9 @@ class CnabUtil extends FbnUtil {
 			return diasProtesto;
 		}
 		
+		/**
+		 * Número de dias para protesto.<br>
+		 */
 		public void setDiasProtesto( final int diasProtesto ) {		
 			this.diasProtesto = diasProtesto;
 		}
@@ -1106,7 +1145,10 @@ class CnabUtil extends FbnUtil {
 			return codCompensacao;
 		}
 		
-		public void setCodCompensacao( final int codCompensacao ) {		
+		/**
+		 * Somente para troca de arquivos entre bancos.<br>
+		 */
+		private void setCodCompensacao( final int codCompensacao ) {		
 			this.codCompensacao = codCompensacao;
 		}
 		
@@ -1114,6 +1156,10 @@ class CnabUtil extends FbnUtil {
 			return cpfCnpjAva;
 		}
 		
+		/**
+		 * Inscrição. Conforme o tipo da inscrição.<br>
+		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3Q#setTipoInscAva( int tipoInscEmp )
+		 */
 		public void setCpfCnpjAva( final String cpfCnpjAva ) {		
 			this.cpfCnpjAva = cpfCnpjAva;
 		}
@@ -1122,6 +1168,10 @@ class CnabUtil extends FbnUtil {
 			return cpfCnpjCli;
 		}
 		
+		/**
+		 * Inscrição. Conforme o tipo da inscrição.<br>
+		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3Q#setTipoInscCli( int tipoInscEmp )
+		 */
 		public void setCpfCnpjCli( final String cpfCnpjCli ) {		
 			this.cpfCnpjCli = cpfCnpjCli;
 		}
@@ -1138,7 +1188,10 @@ class CnabUtil extends FbnUtil {
 			return nossoNumero;
 		}
 		
-		public void setNossoNumero( final String nossoNumero ) {		
+		/**
+		 * Somente para troca de arquivos entre bancos.<br>
+		 */
+		private void setNossoNumero( final String nossoNumero ) {		
 			this.nossoNumero = nossoNumero;
 		}
 		
@@ -1146,6 +1199,9 @@ class CnabUtil extends FbnUtil {
 			return razAva;
 		}
 		
+		/**
+		 * Informação obrigatória quando se tratar de titulo negociado em nome de terceiros.<br>
+		 */
 		public void setRazAva( final String razAva ) {		
 			this.razAva = razAva;
 		}
@@ -1162,6 +1218,12 @@ class CnabUtil extends FbnUtil {
 			return tipoInscAva;
 		}
 		
+		/**
+		 * Indica o tipo de inscrição da empresa.<br>
+		 * 0 - Isento / Não informado.<br>
+		 * 1 - CPF.<br>
+		 * 2 - CNPJ.<br>
+		 */		
 		public void setTipoInscAva( final int tipoInscAva ) {		
 			this.tipoInscAva = tipoInscAva;
 		}
@@ -1170,6 +1232,12 @@ class CnabUtil extends FbnUtil {
 			return tipoInscCli;
 		}
 		
+		/**
+		 * Indica o tipo de inscrição da empresa.<br>
+		 * 0 - Isento / Não informado.<br>
+		 * 1 - CPF.<br>
+		 * 2 - CNPJ.<br>
+		 */
 		public void setTipoInscCli( final int tipoInscCli ) {		
 			this.tipoInscCli = tipoInscCli;
 		}
@@ -1194,7 +1262,7 @@ class CnabUtil extends FbnUtil {
 				
 				line.append( super.getLineReg3() );
 				line.append( format( getTipoInscCli(), ETipo.$9, 1, 0 ) );
-				line.append( format( getCpfCnpjCli(), ETipo.X, 15, 0 ) );
+				line.append( format( getCpfCnpjCli(), ETipo.$9, 15, 0 ) );
 				line.append( format( getRazCli(), ETipo.X, 40, 0 ) );
 				line.append( format( getEndCli(), ETipo.X, 40, 0 ) );
 				line.append( format( getBairCli(), ETipo.X, 15, 0 ) );
