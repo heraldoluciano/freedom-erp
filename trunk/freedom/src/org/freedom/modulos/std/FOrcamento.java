@@ -1349,7 +1349,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			sSQL = "SELECT O.CODORC, O.CODPLANOPAG, O.CODCLI, O.OBSORC, O.VLRLIQORC, O.PRAZOENTORC, C.RAZCLI," + 
 			" C.CONTCLI, C.CNPJCLI, C.CPFCLI, C.RGCLI, C.INSCCLI, C.SITECLI, C.EMAILCLI, C.ENDCLI, C.NUMCLI,"	+ 
 			" C.BAIRCLI, C.CIDCLI, C.UFCLI, C.CEPCLI,C.DDDCLI, C.FONECLI, C.FAXCLI, I.CODITORC, I.CODPROD," + 
-			" I.QTDITORC, I.PRECOITORC, I.VLRPRODITORC, I.VLRDESCITORC, P.REFPROD, P.DESCPROD, P.CODUNID," + 
+			" I.QTDITORC, I.PRECOITORC, I.VLRPRODITORC, I.VLRLIQITORC, I.VLRDESCITORC, P.REFPROD, P.DESCPROD, P.CODUNID," + 
 			" PG.DESCPLANOPAG, I.OBSITORC, VEND.NOMEVEND, VEND.EMAILVEND,"	+ 
 			" (SELECT FN.DESCFUNC FROM RHFUNCAO FN WHERE FN.CODEMP=VEND.CODEMPFU" + 
 			" AND FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC)" + 
@@ -1436,7 +1436,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 						imp.say( 78, Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( "QtdItOrc" ) ) );
 						imp.say( 92, Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( "PrecoItOrc" ) ) );
 						imp.say( 106, Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( "VlrDescItOrc" ) ) );
-						imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrProdItOrc" ) ) );
+						imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrLiqItOrc" ) ) );
 					}
 				}
 			}
