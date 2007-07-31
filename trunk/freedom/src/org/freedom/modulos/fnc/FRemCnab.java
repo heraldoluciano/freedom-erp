@@ -243,18 +243,18 @@ public class FRemCnab extends FRemFBN {
 		reg.setDtEmitTit( Funcoes.strDateToDate( rec.getArgs()[ EColTab.COL_DTREC.ordinal() ] ) );
 		reg.setCodJuros( 3 );
 		reg.setDtJuros( null );
-		reg.setVlrJurosTaxa( null ); 
-		reg.setCodDesc( 0 );
+		reg.setVlrJurosTaxa( new BigDecimal( 0 ) ); 		
+		reg.setCodDesc( 6 );
 		reg.setDtDesc( null );
-		reg.setVlrpercConced( null );
-		reg.setVlrIOF( null );
-		reg.setVlrAbatimento( null );
+		reg.setVlrpercConced( new BigDecimal( 0 ) );
+		reg.setVlrIOF( new BigDecimal( 0 ) );
+		reg.setVlrAbatimento( new BigDecimal( 0 ) );
 		reg.setIdentTitEmp( rec.getArgs()[ EColTab.COL_CODREC.ordinal() ] );
-		reg.setCodProtesto( 0 );
+		reg.setCodProtesto( 3 );
 		reg.setDiasProtesto( 0 );
-		reg.setCodBaixaDev( 0 );
+		reg.setCodBaixaDev( 2 );
 		reg.setDiasBaixaDevol( 0 );  
-		reg.setCodMoeda( 0 );
+		reg.setCodMoeda( 9 );
 		reg.setContrOperCred( null );
 		
 		return reg;
@@ -267,22 +267,34 @@ public class FRemCnab extends FRemFBN {
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
 		reg.setSeqLote( seqLoteServico++ );
-		//reg.setCodMovimento( codMovimento );
+		reg.setCodMovimento( 1 );
 		
 		String[] dadosCliente = getCliente( Integer.parseInt( rec.getArgs()[ EColTab.COL_CODCLI.ordinal() ] ) );
+		
 		reg.setTipoInscCli( Integer.parseInt( dadosCliente[ DadosCliente.CNPJCPF.ordinal()] ) );
-		reg.setCpfCnpjCli( "2".equals( reg.getTipoInscCli() ) ? dadosCliente[ DadosCliente.CNPJ.ordinal() ] : dadosCliente[ DadosCliente.CPF.ordinal() ] );
+		
+		if ( 2 == reg.getTipoInscCli() ) {
+			reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CNPJ.ordinal() ] );
+		}
+		else if ( 1 == reg.getTipoInscCli() ) {
+			reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CPF.ordinal() ] );
+		}
+		else {
+			reg.setTipoInscCli( 0 );
+			reg.setCpfCnpjCli( "0" );
+		}
+		
 		reg.setRazCli( dadosCliente[ DadosCliente.RAZCLI.ordinal() ] );
 		reg.setEndCli( dadosCliente[ DadosCliente.ENDCLI.ordinal() ] );
 		reg.setBairCli( dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] );
 		reg.setCepCli( dadosCliente[ DadosCliente.CEPCLI.ordinal() ] );
 		reg.setCidCli( dadosCliente[ DadosCliente.CIDCLI.ordinal() ] );
-		reg.setUfCli( dadosCliente[ DadosCliente.UFCLI.ordinal() ] );
+		reg.setUfCli( dadosCliente[ DadosCliente.UFCLI.ordinal() ] );		
 		reg.setTipoInscAva( 0 );
-		reg.setCpfCnpjAva( null );
+		reg.setCpfCnpjAva( "0" );		
 		reg.setRazAva( null );
-		reg.setCodCompensacao( 0 );
-		reg.setNossoNumero( null );
+		//reg.setCodCompensacao( 0 );
+		//reg.setNossoNumero( null );
 		
 		return reg;
 	}
@@ -294,7 +306,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
 		reg.setSeqLote( seqLoteServico++ );
-		//reg.setCodMovimento( codMovimento );
+		reg.setCodMovimento( 1 );
 		
 		reg.setCodDesc2( 0 );
 		reg.setDataDesc2( null );
