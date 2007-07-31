@@ -95,6 +95,10 @@ class CnabUtil extends FbnUtil {
 			return cpfCnpjEmp;
 		}
 		
+		/**
+		 * Inscrição da empresa. Conforme o tipo da inscrição.<br>
+		 * @see org.freedom.modulos.fnc.CnabUtil#setTipoInscEmp( int tipoInscEmp )
+		 */
 		public void setCpfCnpjEmp( final String cnpjEmp ) {		
 			this.cpfCnpjEmp = cnpjEmp;
 		}
@@ -110,7 +114,16 @@ class CnabUtil extends FbnUtil {
 		public String getCodConvBanco() {		
 			return codConvBanco;
 		}
-		
+
+		/**
+		 * Indentifica a empresa no banco para determinados tipos de serviços.<br>
+		 * Observar as regras de preenchimento abaixo no que se refere ao headre de serviço/lote:<br>
+		 * "9999999994444CCVVV  " / 20 bytes / , onde:<br>
+		 * 999999999 - Código do convênio.<br>
+		 * 4444      - Código do produto.<br>
+		 * CC        - Carteira de cobrança.<br>
+		 * VVV       - Variação da carteira de cobrança.<br>
+		 */
 		public void setCodConvBanco( final String codConvBanco ) {		
 			this.codConvBanco = codConvBanco;
 		}
@@ -243,6 +256,11 @@ class CnabUtil extends FbnUtil {
 			return tipoInscEmp;
 		}
 		
+		/**
+		 * Indica o tipo de inscrição da empresa.<br>
+		 * 1 - CPF.<br>
+		 * 2 - CNPJ.<br>
+		 */
 		public void setTipoInscEmp( final int tipoInscEmp ) {		
 			this.tipoInscEmp = tipoInscEmp;
 		}
@@ -273,6 +291,14 @@ class CnabUtil extends FbnUtil {
 		 * Indica o tipo de serviço que o lote contém.<br>
 		 * 01 - Cobramça.<br>
 		 * 02 - Cobrança em papel.<br>
+		 * 03 - Bloqueto eletronico.<br>
+		 * 04 - Conciliação bancária.<br>
+		 * 05 - Débitos.<br>
+		 * 10 - Pagamento dividendos.<br>
+		 * 20 - Pagamento fornecedor.<br>
+		 * 30 - Pagamento salários.<br>
+		 * 50 - Pagamento sinistro segurados.<br>
+		 * 60 - Pagamento despesa viajante em trânsito.<br>
 		 */
 		private void setTipoServico( final String tipoServico ) {		
 			this.tipoServico = tipoServico;
@@ -282,6 +308,11 @@ class CnabUtil extends FbnUtil {
 			return versaoLayout;
 		}
 		
+		/**
+		 * Indica o número da versão do layout do lote, composto de:<br>
+		 * versão : 2 digitos.<br>
+		 * release: 1 digito.<br>
+		 */
 		private void setVersaoLayout( final String versaoLayout ) {		
 			this.versaoLayout = versaoLayout;
 		}
@@ -393,6 +424,20 @@ class CnabUtil extends FbnUtil {
 			return codMovimento;
 		}
 		
+		/**
+		 * 01 - Entrada de titulos.<br>
+		 * 02 - Pedido de baixa.<br>
+		 * 04 - Comcessão de abatimento.<br>
+		 * 05 - Cancelamento de abatimento.<br>
+		 * 06 - Alteração de vencimento.<br>
+		 * 07 - Concessão de desconto.<br>
+		 * 08 - Cancelamento de desconto.<br>
+		 * 09 - Protestar.<br>
+		 * 10 - Cancela/Sustação da instrução de protesto.<br>
+		 * 30 - Recusa da alegação do sacado.<br>
+		 * 31 - Alteração de outros dados.<br>
+		 * 40 - Alteração da modalidade.<br>
+		 */
 		public void setCodMovimento( final int codMovimento ) {		
 			this.codMovimento = codMovimento;
 		}
@@ -415,6 +460,9 @@ class CnabUtil extends FbnUtil {
 			return registroDetalhe;
 		}
 		
+		/**
+		 * Indica o tipo do registro.<br>
+		 */
 		private void setRegistroDetalhe( final int registroDetalhe ) {		
 			this.registroDetalhe = registroDetalhe;
 		}
@@ -423,6 +471,9 @@ class CnabUtil extends FbnUtil {
 			return segmento;
 		}
 		
+		/**
+		 * Indica o seguimento do registro.
+		 */
 		private void setSegmento( final char segmento ) {		
 			this.segmento = segmento;
 		}
@@ -431,6 +482,9 @@ class CnabUtil extends FbnUtil {
 			return seqLote;
 		}
 		
+		/**
+		 * Número de sequência do registro no lote inicializado sempre em 1.<br>
+		 */
 		public void setSeqLote( final int seqLote ) {		
 			this.seqLote = seqLote;
 		}
@@ -531,6 +585,10 @@ class CnabUtil extends FbnUtil {
 			return aceite;
 		}
 		
+		/**
+		 * A - Aceite.<br>
+		 * N - Não aceite.<br>
+		 */
 		public void setAceite( final char aceite ) {		
 			this.aceite = aceite;
 		}
@@ -563,6 +621,14 @@ class CnabUtil extends FbnUtil {
 			return codCarteira;
 		}
 		
+		/**
+		 * Carteira.<br>
+		 * 1 - Cobrança simpres.<br>
+		 * 2 - Cobrança vinculada.<br>
+		 * 3 - Cobrança caucionada.<br>
+		 * 4 - Cobrança descontada.<br>
+		 * 7 - Cobrança direta especial / carteira 17.
+		 */
 		public void setCodCarteira( final int codCarteira ) {		
 			this.codCarteira = codCarteira;
 		}
@@ -579,6 +645,12 @@ class CnabUtil extends FbnUtil {
 			return codJuros;
 		}
 		
+		/**
+		 * Código do juros de mora.<br>
+		 * 1 - Valor por dia.<br>
+		 * 2 - Taxa nensal.<br>
+		 * 3 - Isento.<br>
+		 */
 		public void setCodJuros( final int codJuros ) {		
 			this.codJuros = codJuros;
 		}
@@ -667,6 +739,9 @@ class CnabUtil extends FbnUtil {
 			return docCobranca;
 		}
 		
+		/**
+		 * Número utilizado pelo cliente para identificação do titulo.<br>
+		 */
 		public void setDocCobranca( final String docCobranca ) {		
 			this.docCobranca = docCobranca;
 		}
@@ -691,6 +766,9 @@ class CnabUtil extends FbnUtil {
 			return dtJuros;
 		}
 		
+		/**
+		 * Se inválida ou não informada, será assumida a data do vencimento.<br>
+		 */
 		public void setDtJuros( final Date dtJuros ) {		
 			this.dtJuros = dtJuros;
 		}
@@ -699,6 +777,13 @@ class CnabUtil extends FbnUtil {
 			return dtVencTitulo;
 		}
 		
+		/**
+		 * Data de vencimento do titulo.<br>
+		 * A vista             - preencher com 11111111.<br>
+		 * Contra-apresentação - preencher com 99999999.<br>
+		 * Obs.: O prazo legal para vencimento "a vista" ou "contra apresentação"<br>
+		 * é de 15 dias da data do registro no banco.<br>
+		 */
 		public void setDtVencTitulo( final Date dtVencTitulo ) {		
 			this.dtVencTitulo = dtVencTitulo;
 		}
@@ -707,6 +792,32 @@ class CnabUtil extends FbnUtil {
 			return especieTit;
 		}
 		
+		/**
+		 * Especie do titulo.<br>
+		 * 01 - CH   Cheque.<br>
+		 * 02 - DM   Duplicata mercantíl.<br>
+		 * 03 - DMI  Duplicata mercantíl p/ indicação.<br>
+		 * 04 - DS   Duplicata de serviço.<br>
+		 * 05 - DSI  DUplicata de serviçõ p/ indicação.<br>
+		 * 06 - DR   Duplicata rural.<br>
+		 * 07 - LC   Letra de cambio.<br>
+		 * 08 - NCC  Nota de crédito comercial.<br>
+		 * 09 - NCE  Nota de crédito a exportação.<br>
+		 * 10 - NCI  Nota de crédito indústria.<br>
+		 * 11 - NCR  Nota de crédito rural.<br>
+		 * 12 - NP   Nota promissória.<br>
+		 * 13 - NPR  Nota promissória rural.<br>
+		 * 14 - TM   Triplicata mercantíl.<br>
+		 * 15 - TS   Triplicata de serviço.<br>
+		 * 16 - NS   Nota de seguro.<br>
+		 * 17 - RC   Recibo.<br>
+		 * 18 - FAT  Fatura.<br>
+		 * 19 - ND   Nota de débito.<br>
+		 * 20 - AP   Apolice de seguro.<br>
+		 * 21 - ME   Mensalidade escolar.<br>
+		 * 22 - PC   Parcela de consórcio.<br>
+		 * 99 - Outros.<br>
+		 */
 		public void setEspecieTit( final int especieTit ) {		
 			this.especieTit = especieTit;
 		}
@@ -715,6 +826,11 @@ class CnabUtil extends FbnUtil {
 			return formaCadTitulo;
 		}
 		
+		/**
+		 * Forma de cadastramento do titulo.<br>
+		 * 1 - Com cadastro.<br>
+		 * 2 - Sem cadastro.<br>
+		 */
 		public void setFormaCadTitulo( final int formaCadTitulo ) {		
 			this.formaCadTitulo = formaCadTitulo;
 		}
@@ -723,6 +839,11 @@ class CnabUtil extends FbnUtil {
 			return identDist;
 		}
 		
+		/**
+		 * Identificação da distribuição.<br>
+		 * 1 - Banco.<br>
+		 * 2 - Cliente.<br>
+		 */
 		public void setIdentDist( final int identDist ) {		
 			this.identDist = identDist;
 		}
@@ -731,6 +852,16 @@ class CnabUtil extends FbnUtil {
 			return identEmitBol;
 		}
 		
+		/**
+		 * Identificação da emissão de bloqueto.<br>
+		 * 1 - Banco emite.<br>
+		 * 2 - Cliente emite.<br>
+		 * 3 - Banco pré-emite e o cliente completa.<br>
+		 * 4 - Banco reemite.<br>
+		 * 5 - Banco não reemite.<br>
+		 * 6 - Cobrança sem papel.<br>
+		 * Obs.: Os campos 4 e 5 só serão aceitos para código de movimento para remessa 31.
+		 */
 		public void setIdentEmitBol( final int identEmitBol ) {		
 			this.identEmitBol = identEmitBol;
 		}
@@ -747,6 +878,9 @@ class CnabUtil extends FbnUtil {
 			return identTitulo;
 		}
 		
+		/**
+		 * Nosso número.<br>
+		 */
 		public void setIdentTitulo( final String identTitulo ) {		
 			this.identTitulo = identTitulo;
 		}
@@ -755,6 +889,11 @@ class CnabUtil extends FbnUtil {
 			return tipoDoc;
 		}
 		
+		/**
+		 * Tipo de documento.<br>
+		 * 1 - Tradicional.<br>
+		 * 2 - Escrutiral.<br>
+		 */
 		public void setTipoDoc( final int tipoDoc ) {		
 			this.tipoDoc = tipoDoc;
 		}
