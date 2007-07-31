@@ -46,8 +46,8 @@ public class FCaixa extends FDados implements ActionListener, CarregaListener {
 	private JTextFieldPad txtCodCaixa = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtDescCaixa = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtCodEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	private JTextFieldPad txtSeqIni = new JTextFieldPad(JTextFieldPad.TP_INTEGER,7,0);
-	private JTextFieldPad txtSeqMax = new JTextFieldPad(JTextFieldPad.TP_INTEGER,7,0);
+	private JTextFieldPad txtSeqIni = new JTextFieldPad(JTextFieldPad.TP_INTEGER,9,0);
+	private JTextFieldPad txtSeqMax = new JTextFieldPad(JTextFieldPad.TP_INTEGER,9,0);
 	private JTextFieldFK txtDescEst = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JCheckBoxPad cbECF = new JCheckBoxPad("Cupom fiscal?","S","N");
 	private JCheckBoxPad cbTEF = new JCheckBoxPad("Possui Gerenciador Padrão?","S","N");
