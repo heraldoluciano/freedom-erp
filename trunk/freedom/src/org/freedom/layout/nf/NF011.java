@@ -85,7 +85,7 @@ public class NF011 extends Layout {
 					if ( parc.next() ) {
 						
 						sVencs[ i ] = Funcoes.dateToStrDate( parc.getDate( NF.C_DTVENCTO ) );
-						sVals[ i ] = Funcoes.strDecimalToStrCurrency( 12, 2, parc.getString( NF.C_VLRPARC ) );
+						sVals[ i ] = Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( new BigDecimal( parc.getFloat( NF.C_VLRPARC ) ).setScale( 2, BigDecimal.ROUND_HALF_UP ) ) );
 					}
 					else {
 
@@ -207,7 +207,7 @@ public class NF011 extends Layout {
 						imp.say( 73, sSigla );
 						imp.say( 76, itens.getString( NF.C_CODUNID ).substring( 0, 4 ) );
 						imp.say( 79, String.valueOf( itens.getFloat( NF.C_QTDITPED ) ) );
-						imp.say( 89, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( ( ( new BigDecimal( itens.getFloat( NF.C_VLRLIQITPED ) ) ).divide( new BigDecimal( itens.getFloat( NF.C_QTDITPED ) ), 2, BigDecimal.ROUND_HALF_UP ) ) ) ) );
+						imp.say( 89, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( ( ( new BigDecimal( itens.getFloat( NF.C_VLRPRODITPED ) ) ).divide( new BigDecimal( itens.getFloat( NF.C_QTDITPED ) ), 2, BigDecimal.ROUND_HALF_UP ) ) ) ) );
 						imp.say( 103, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( itens.getFloat( NF.C_VLRLIQITPED ) ) ) );
 						imp.say( 118, String.valueOf( itens.getFloat( NF.C_PERCICMSITPED ) ) );
 						iProd++;
@@ -220,7 +220,7 @@ public class NF011 extends Layout {
 
 					vValores.addElement( String.valueOf( cab.getFloat( NF.C_VLRBASEICMSPED ) ) );// 0
 					vValores.addElement( String.valueOf( cab.getFloat( NF.C_VLRICMSPED ) ) );// 1
-					vValores.addElement( String.valueOf( ( cab.getFloat( NF.C_VLRLIQPED ) - frete.getFloat( NF.C_VLRFRETEPED ) - itens.getFloat( NF.C_VLRADICITPED ) ) ) );// 2
+					vValores.addElement( String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) ) );// 2
 					vValores.addElement( String.valueOf( frete.getFloat( NF.C_VLRFRETEPED ) ) );// 3
 					vValores.addElement( String.valueOf( itens.getFloat( NF.C_VLRADICITPED ) ) );// 4
 					vValores.addElement( String.valueOf( cab.getFloat( NF.C_VLRIPIPED ) ) );// 5
