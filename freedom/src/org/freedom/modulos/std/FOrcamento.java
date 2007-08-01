@@ -1708,7 +1708,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				dl = new FPrinterJob( leiOrc, this );
 				dl.setVisible( true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemInforma( this, "Não foi possível carregar o leiaute de Contrato de locação!\n" + err.getMessage() );
+				Funcoes.mensagemInforma( this, "Não foi possível carregar o layout de Contrato de locação!\n" + err.getMessage() );
 				err.printStackTrace();
 			}
 		}		
