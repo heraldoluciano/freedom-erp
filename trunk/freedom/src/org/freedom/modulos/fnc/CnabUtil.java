@@ -1370,6 +1370,16 @@ class CnabUtil extends FbnUtil {
 			return codDesc2;
 		}
 		
+		/**
+		 * Código do desconto.<br>
+		 * 1 - Valor fixo até a data informada.<br>
+		 * 2 - Percentual até a data informada.<br>
+		 * 3 - Valor por antecipação por dia corrido.<br>
+		 * 4 - Valor por antecipação por dia util.<br>
+		 * 5 - Percentual sobre o valor nominal dia corrido.<br>
+		 * 6 - Percentual sobre o valor nominal dia util.<br>
+		 * Obs.: Para as opções 1 e 2 será obrigatório a informação da data.<br>
+		 */
 		public void setCodDesc2( final int codDesc2 ) {		
 			this.codDesc2 = codDesc2;
 		}
@@ -1378,6 +1388,16 @@ class CnabUtil extends FbnUtil {
 			return codDesc3;
 		}
 		
+		/**
+		 * Código do desconto.<br>
+		 * 1 - Valor fixo até a data informada.<br>
+		 * 2 - Percentual até a data informada.<br>
+		 * 3 - Valor por antecipação por dia corrido.<br>
+		 * 4 - Valor por antecipação por dia util.<br>
+		 * 5 - Percentual sobre o valor nominal dia corrido.<br>
+		 * 6 - Percentual sobre o valor nominal dia util.<br>
+		 * Obs.: Para as opções 1 e 2 será obrigatório a informação da data.<br>
+		 */
 		public void setCodDesc3( final int codDesc3 ) {		
 			this.codDesc3 = codDesc3;
 		}
@@ -1386,6 +1406,11 @@ class CnabUtil extends FbnUtil {
 			return codMulta;
 		}
 		
+		/**
+		 * Código da multa.<br>
+		 * 1 - Valor fixo.<br>
+		 * 2 - Percentual.<br>
+		 */
 		public void setCodMulta( final int codMulta ) {		
 			this.codMulta = codMulta;
 		}
@@ -1394,6 +1419,11 @@ class CnabUtil extends FbnUtil {
 			return codOcorrSacado;
 		}
 		
+		/**
+		 * Deverá conter o(s) código(s) da(s) ocorrência(s) do sacado<br>
+		 * a(s) qual(is) o cedente não concorda.<br>
+		 * Somente será utilizado para o código de movimento 30.<br> 
+		 */
 		public void setCodOcorrSacado( final int codOcorrSacado ) {		
 			this.codOcorrSacado = codOcorrSacado;
 		}
@@ -1434,10 +1464,18 @@ class CnabUtil extends FbnUtil {
 			return msg3;
 		}
 		
+		/**
+		 * Menssagem livre a ser impressa no campo instruções<br>
+		 * da ficha de compensação do bloqueto.<br> 
+		 */
 		public void setMsg3( final String msg3 ) {		
 			this.msg3 = msg3;
 		}
 		
+		/**
+		 * Menssagem livre a ser impressa no campo instruções<br>
+		 * da ficha de compensação do bloqueto.<br> 
+		 */
 		public String getMsg4() {		
 			return msg4;
 		}
@@ -1450,6 +1488,10 @@ class CnabUtil extends FbnUtil {
 			return msgSacado;
 		}
 		
+		/**
+		 * Este campo só poderá ser utilizado,<br>
+		 * cazo haja troca de arquivos magnéticos entre o banco e o sacado.<br>
+		 */
 		public void setMsgSacado( final String msgSacado ) {		
 			this.msgSacado = msgSacado;
 		}
@@ -1579,6 +1621,12 @@ class CnabUtil extends FbnUtil {
 			return linhaImp;
 		}
 		
+		/**
+		 * Número da linha a ser impressa.<br>
+		 * Frente : Poderá variar de 01 a 36.<br>
+		 * Verso  : Poderá variar de 01 a 24.<br>
+		 * Zeros  : Para envio de bloqueto por e-mail.<br>
+		 */
 		public void setLinhaImp( final int linhaImp ) {		
 			this.linhaImp = linhaImp;
 		}
@@ -1586,7 +1634,11 @@ class CnabUtil extends FbnUtil {
 		public String getMsg5() {		
 			return msg5;
 		}
-		
+
+		/**
+		 * Menssagem livre a ser impressa no campo instruções<br>
+		 * da ficha de compensação do bloqueto.<br> 
+		 */
 		public void setMsg5( final String msg5 ) {		
 			this.msg5 = msg5;
 		}
@@ -1594,7 +1646,11 @@ class CnabUtil extends FbnUtil {
 		public String getMsg6() {		
 			return msg6;
 		}
-		
+
+		/**
+		 * Menssagem livre a ser impressa no campo instruções<br>
+		 * da ficha de compensação do bloqueto.<br> 
+		 */
 		public void setMsg6( final String msg6 ) {		
 			this.msg6 = msg6;
 		}
@@ -1602,7 +1658,11 @@ class CnabUtil extends FbnUtil {
 		public String getMsg7() {		
 			return msg7;
 		}
-		
+
+		/**
+		 * Menssagem livre a ser impressa no campo instruções<br>
+		 * da ficha de compensação do bloqueto.<br> 
+		 */
 		public void setMsg7( final String msg7 ) {		
 			this.msg7 = msg7;
 		}
@@ -1610,7 +1670,11 @@ class CnabUtil extends FbnUtil {
 		public String getMsg8() {		
 			return msg8;
 		}
-		
+
+		/**
+		 * Menssagem livre a ser impressa no campo instruções<br>
+		 * da ficha de compensação do bloqueto.<br> 
+		 */
 		public void setMsg8( final String msg8 ) {		
 			this.msg8 = msg8;
 		}
@@ -1618,7 +1682,11 @@ class CnabUtil extends FbnUtil {
 		public String getMsg9() {		
 			return msg9;
 		}
-		
+
+		/**
+		 * Menssagem livre a ser impressa no campo instruções<br>
+		 * da ficha de compensação do bloqueto.<br> 
+		 */
 		public void setMsg9( final String msg9 ) {		
 			this.msg9 = msg9;
 		}
@@ -1627,6 +1695,12 @@ class CnabUtil extends FbnUtil {
 			return msgImp;
 		}
 		
+		/**
+		 * Está linha deverá ser enviada no formato imagem de impressão,<br>
+		 * com tamanho maximo de 140 posições.<br>
+		 * Para bloqueto por e-mail: os endereços de e-mail deverão ser separados<br>
+		 * por ";" e sem espaços.<br>
+		 */
 		public void setMsgImp( final String msgImp ) {		
 			this.msgImp = msgImp;
 		}
@@ -1635,6 +1709,12 @@ class CnabUtil extends FbnUtil {
 			return tipoChar;
 		}
 		
+		/**
+		 * Formato do caractere de impressão.<br>
+		 * 01 - Normal.<br>
+		 * 02 - Itálico.<br>
+		 * Zeros para envio de bloqueto por e-mail.<br>
+		 */
 		public void setTipoChar( final int tipoChar ) {		
 			this.tipoChar = tipoChar;
 		}
@@ -1643,6 +1723,13 @@ class CnabUtil extends FbnUtil {
 			return tipoImpressao;
 		}
 		
+		/**
+		 * Código de indentificação para impressão da menssagem.<br>
+		 * 1 - Frente do bloqueto.<br>
+		 * 2 - Verso do bloqueto.<br>
+		 * 3 - Campo instruções da ficha de compensação do bloqueto.<br>
+		 * 8 - Bloqueto por e-mail.<br>
+		 */
 		public void setTipoImpressao( final int tipoImpressao ) {		
 			this.tipoImpressao = tipoImpressao;
 		}
@@ -1779,7 +1866,15 @@ class CnabUtil extends FbnUtil {
 		public int getCarteira() {		
 			return carteira;
 		}
-		
+
+		/**
+		 * Carteira.<br>
+		 * 1 - Cobrança simpres.<br>
+		 * 2 - Cobrança vinculada.<br>
+		 * 3 - Cobrança caucionada.<br>
+		 * 4 - Cobrança descontada.<br>
+		 * 7 - Cobrança direta especial / carteira 17.
+		 */
 		public void setCarteira( final int carteira ) {		
 			this.carteira = carteira;
 		}
@@ -1788,6 +1883,9 @@ class CnabUtil extends FbnUtil {
 			return codBanco;
 		}
 		
+		/**
+		 * Agencia cobradora/recebedora.<br>
+		 */
 		public void setCodBanco( final String codBanco ) {		
 			this.codBanco = codBanco;
 		}
@@ -1795,7 +1893,19 @@ class CnabUtil extends FbnUtil {
 		public int getCodMoeda() {		
 			return codMoeda;
 		}
-		
+
+		/**
+		 * Código da moeda.<br>
+		 * 01 - Reservado para uso futuro.<br>
+		 * 02 - Dolar americano comercial/venda.<br>
+		 * 03 - Dolar americano turismo/venda.<br>
+		 * 04 - ITRD.<br>
+		 * 05 - IDTR.<br>
+		 * 06 - UFIR diária.<br>
+		 * 07 - UFIR mensal.<br>
+		 * 08 - FAJ-TR.<br>
+		 * 09 - Real.<br>
+		 */
 		public void setCodMoeda( final int codMoeda ) {		
 			this.codMoeda = codMoeda;
 		}
@@ -1803,7 +1913,7 @@ class CnabUtil extends FbnUtil {
 		public String getCodRejeicoes() {		
 			return codRejeicoes;
 		}
-		
+				
 		public void setCodRejeicoes( final String codRejeicoes ) {		
 			this.codRejeicoes = codRejeicoes;
 		}
@@ -2168,7 +2278,7 @@ class CnabUtil extends FbnUtil {
 			return vrlAbatCancel;
 		}
 		
-		public void setVrlAbatCancel( final BigDecimal vrlAbatCancel ) {		
+		public void setVlrAbatCancel( final BigDecimal vrlAbatCancel ) {		
 			this.vrlAbatCancel = vrlAbatCancel;
 		}
 
@@ -2226,7 +2336,7 @@ class CnabUtil extends FbnUtil {
 					super.parseLineReg3( line );
 					setVlrJurosMulta( strToBigDecimal( line.substring( 17, 32 ) ) );
 					setVlrDesc( strToBigDecimal( line.substring( 32, 47 ) ) );
-					setVrlAbatCancel( strToBigDecimal( line.substring( 47, 62 ) ) );
+					setVlrAbatCancel( strToBigDecimal( line.substring( 47, 62 ) ) );
 					setVlrIOF( strToBigDecimal( line.substring( 62, 77 ) ) );
 					setVlrPago( strToBigDecimal( line.substring( 77, 92 ) ) );
 					setVlrLiqCred( strToBigDecimal( line.substring( 92, 107 ) ) );
