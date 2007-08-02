@@ -435,7 +435,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setVlrOcorrSac( new BigDecimal(0) );
 		reg.setCompOcorrSac( null );
 		reg.setCodBancoCompens( null );
-		reg.setNossoNrCompens( null );
+		//reg.setNossoNrCompens( null );
 		
 		return reg;
 	}
@@ -446,16 +446,16 @@ public class FRemCnab extends FRemFBN {
 		
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
-		reg.setQtdRegistros( seqLoteServico );
-		/*reg.setQtdSimples( qtdSimples );
-		reg.setVlrSimples( vlrSimples );
-		reg.setQtdVinculado( qtdVinculado );
-		reg.setVlrVinculado( vlrVinculado );
-		reg.setQtdCalculado( qtdCalculado );
-		reg.setVlrCalculado( vlrCalculado );
-		reg.setQtdDescontado( qtdDescontado );
-		reg.setVlrDescontado( vlrDescontado );
-		reg.setAvisoLanca( avisoLanca );*/
+		reg.setQtdRegistros( ++seqLoteServico );
+		reg.setQtdSimples( 0 );
+		reg.setVlrSimples( new BigDecimal(0) );
+		reg.setQtdVinculado( 0 );
+		reg.setVlrVinculado( new BigDecimal(0) );
+		reg.setQtdCalculado( 0 );
+		reg.setVlrCalculado( new BigDecimal(0) );
+		reg.setQtdDescontado( 0 );
+		reg.setVlrDescontado( new BigDecimal(0) );
+		reg.setAvisoLanca( null );
 		
 		return reg;
 	}

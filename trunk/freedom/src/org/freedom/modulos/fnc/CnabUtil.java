@@ -2206,6 +2206,9 @@ class CnabUtil extends FbnUtil {
 			return nossoNrCompens;
 		}
 		
+		/**
+		 * Somente para troca de arquivo entre bancos.<br>
+		 */
 		public void setNossoNrCompens( final String nossoNrCompens ) {		
 			this.nossoNrCompens = nossoNrCompens;
 		}
@@ -2388,7 +2391,10 @@ class CnabUtil extends FbnUtil {
 		public String getAvisoLanca() {		
 			return avisoLanca;
 		}
-		
+
+		/**
+		 * Somente será utilizado para informação do arquivo de retorno.<br>
+		 */
 		public void setAvisoLanca( String avisoLanca ) {		
 			this.avisoLanca = avisoLanca;
 		}
@@ -2405,6 +2411,12 @@ class CnabUtil extends FbnUtil {
 			return loteServico;
 		}
 		
+		/**
+		 * Indentifica um Lote de Serviço.<br>
+		 * Sequencial e nmão deve ser repetido dentro do arquivo.<br>
+		 * As numerações 0000 e 9999 <br>
+		 * são exclusivas para o Header e para o Trailer do arquivo respectivamente.<br>
+		 */
 		public void setLoteServico( int loteServico ) {		
 			this.loteServico = loteServico;
 		}
@@ -2412,7 +2424,10 @@ class CnabUtil extends FbnUtil {
 		public int getQtdCalculado() {		
 			return qtdCalculado;
 		}
-		
+
+		/**
+		 * Somente será utilizado para informação do arquivo de retorno.<br>
+		 */
 		public void setQtdCalculado( int qtdCalculado ) {		
 			this.qtdCalculado = qtdCalculado;
 		}
@@ -2420,7 +2435,10 @@ class CnabUtil extends FbnUtil {
 		public int getQtdDescontado() {		
 			return qtdDescontado;
 		}
-		
+
+		/**
+		 * Somente será utilizado para informação do arquivo de retorno.<br>
+		 */
 		public void setQtdDescontado( int qtdDescontado ) {		
 			this.qtdDescontado = qtdDescontado;
 		}
@@ -2429,6 +2447,9 @@ class CnabUtil extends FbnUtil {
 			return qtdRegistros;
 		}
 		
+		/**
+		 * Quantidade de registros no lote, incluindo o Header e o Traler.<br>
+		 */
 		public void setQtdRegistros( int qtdRegistros ) {		
 			this.qtdRegistros = qtdRegistros;
 		}
@@ -2437,6 +2458,9 @@ class CnabUtil extends FbnUtil {
 			return qtdSimples;
 		}
 		
+		/**
+		 * Somente será utilizado para informação do arquivo de retorno.<br>
+		 */
 		public void setQtdSimples( int qtdSimples ) {		
 			this.qtdSimples = qtdSimples;
 		}
@@ -2444,7 +2468,10 @@ class CnabUtil extends FbnUtil {
 		public int getQtdVinculado() {		
 			return qtdVinculado;
 		}
-		
+
+		/**
+		 * Somente será utilizado para informação do arquivo de retorno.<br>
+		 */
 		public void setQtdVinculado( int qtdVinculado ) {		
 			this.qtdVinculado = qtdVinculado;
 		}
@@ -2460,7 +2487,10 @@ class CnabUtil extends FbnUtil {
 		public BigDecimal getVlrCalculado() {		
 			return vlrCalculado;
 		}
-		
+
+		/**
+		 * Somente será utilizado para informação do arquivo de retorno.<br>
+		 */
 		public void setVlrCalculado( BigDecimal vlrCalculado ) {		
 			this.vlrCalculado = vlrCalculado;
 		}
@@ -2468,7 +2498,10 @@ class CnabUtil extends FbnUtil {
 		public BigDecimal getVlrDescontado() {		
 			return vlrDescontado;
 		}
-		
+
+		/**
+		 * Somente será utilizado para informação do arquivo de retorno.<br>
+		 */
 		public void setVlrDescontado( BigDecimal vlrDescontado ) {		
 			this.vlrDescontado = vlrDescontado;
 		}
@@ -2476,7 +2509,10 @@ class CnabUtil extends FbnUtil {
 		public BigDecimal getVlrSimples() {		
 			return vlrSimples;
 		}
-		
+
+		/**
+		 * Somente será utilizado para informação do arquivo de retorno.<br>
+		 */
 		public void setVlrSimples( BigDecimal vlrSimples ) {		
 			this.vlrSimples = vlrSimples;
 		}
@@ -2484,7 +2520,10 @@ class CnabUtil extends FbnUtil {
 		public BigDecimal getVlrVinculado() {		
 			return vlrVinculado;
 		}
-		
+
+		/**
+		 * Somente será utilizado para informação do arquivo de retorno.<br>
+		 */
 		public void setVlrVinculado( BigDecimal vlrVinculado ) {		
 			this.vlrVinculado = vlrVinculado;
 		}
