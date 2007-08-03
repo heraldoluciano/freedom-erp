@@ -210,6 +210,8 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		txtCodBanco.setListaCampos( lcBanco );
 		txtCodBanco.setTabelaExterna( lcBanco );
 		txtCodBanco.setNomeCampo( "CodBanco" );
+		txtCodBanco.setPKFK( true, true );
+		txtNomeBanco.setLabel( "Nome do banco" );
 		
 		/***************
 		 *  FNCARTCOB  *
@@ -221,6 +223,8 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		txtCartCob.setListaCampos( lcCartCob );
 		txtCartCob.setTabelaExterna( lcCartCob );
 		txtCartCob.setNomeCampo( "CodCartCob" );
+		txtCartCob.setPKFK( true, true );
+		txtDescCartCob.setLabel( "Descrição da carteira de cobrança" );
 	}
 	
 	private void montaListaCampos2() {
@@ -415,20 +419,13 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		panelCamposBancos.setPreferredSize( new Dimension( 600, 100 ) );	
 		
 		panelCamposBancos.adic( new JLabelPad( "Cód.cart.cob." ), 7, 10, 80, 20 );
-		panelCamposBancos.adic( txtCartCob, 293, 30, 80, 20 );
-		panelCamposBancos.adic( new JLabelPad( "Descrição da carteira de cobrança" ), 376, 10, 200, 20 );
-		panelCamposBancos.adic( txtDescCartCob, 376, 30, 200, 20 );
-		
-		panelCamposBancos.adic( new JLabelPad( "Cód.banco" ), 7, 10, 80, 20 );
-		panelCamposBancos.adic( txtCodBanco, 7, 30, 80, 20 );
-		panelCamposBancos.adic( new JLabelPad( "Nome do banco" ), 90, 10, 200, 20 );
-		panelCamposBancos.adic( txtNomeBanco, 90, 30, 200, 20 );
-		
-		panelCamposBancos.adic( new JLabelPad( "Cód.cart.cob." ), 293, 10, 80, 20 );
-		panelCamposBancos.adic( txtCartCob, 293, 30, 80, 20 );
-		panelCamposBancos.adic( new JLabelPad( "Descrição da carteira de cobrança" ), 376, 10, 200, 20 );
-		panelCamposBancos.adic( txtDescCartCob, 376, 30, 200, 20 );
-		
+		panelCamposBancos.adic( txtCartCob, 7, 30, 80, 20 );
+		panelCamposBancos.adic( new JLabelPad( "Descrição da carteira de cobrança" ), 90, 10, 200, 20 );
+		panelCamposBancos.adic( txtDescCartCob, 90, 30, 200, 20 );		
+		panelCamposBancos.adic( new JLabelPad( "Cód.banco" ), 293, 10, 80, 20 );
+		panelCamposBancos.adic( txtCodBanco, 293, 30, 80, 20 );
+		panelCamposBancos.adic( new JLabelPad( "Nome do banco" ), 376, 10, 200, 20 );
+		panelCamposBancos.adic( txtNomeBanco, 376, 30, 200, 20 );		
 		panelCamposBancos.adic( new JLabelPad( "Convênio de cobrança" ), 579, 10, 130, 20 );
 		panelCamposBancos.adic( txtConvCob, 579, 30, 130, 20 );
 		
@@ -566,8 +563,8 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		
 		lcConta.setConexao( cn );
 		lcBanco.setConexao( cn );
-		lcItModBol.setConexao( cn );
 		lcCartCob.setConexao( cn );
+		lcItModBol.setConexao( cn );
 	}
 	
 }
