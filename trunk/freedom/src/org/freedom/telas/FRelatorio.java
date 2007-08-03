@@ -55,15 +55,18 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 	
 	private final DLLoading wait = new DLLoading();
 
-	boolean bSetArea = true;
+	boolean setArea = true;
 
 	boolean bCtrl = false;
 
 	Container c = null;
 
 	public FRelatorio() {
+		this( true );
+	}
 
-		super( false );
+	public FRelatorio(boolean comScroll) {
+		super(comScroll);
 		setTitulo( "Requisiçao de Relatório" );
 		setAtribos( 100, 100, 350, 200 );
 		c = super.getTela();
@@ -89,30 +92,30 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 		btPrevimp.addKeyListener( this );
 		btSair.addKeyListener( this );
 	}
-
+	
 	public void setPanel( JPanelPad pn ) {
 
 		c.remove( pinCli );
 		c.add( pn, BorderLayout.CENTER );
-		bSetArea = false;
+		setArea = false;
 	}
 
 	public void setPainel( JPanelPad pin ) {
 
 		pinCli = pin;
-		bSetArea = false;
+		setArea = false;
 	}
 
-	public void setAreaComp() {
-
-		pinCli = new JPanelPad( (int) getSize().getWidth() - 10, (int) getSize().getHeight() - 45 );
-		c.add( pinCli, BorderLayout.CENTER );
-		bSetArea = false;
-	}
-
+    public void setAreaComp() {
+	    pinCli = new JPanelPad((int)getSize().getWidth()-10,
+	      (int)getSize().getHeight()-65);  
+	    pnCliente.add(pinCli, BorderLayout.CENTER);
+	    setArea = false;
+    }
+    
 	public void adic( Component comp, int iX, int iY, int iLarg, int iAlt ) {
 
-		if ( bSetArea )
+		if ( setArea )
 			setAreaComp();
 		comp.addKeyListener( this );
 		pinCli.adic( comp, iX, iY, iLarg, iAlt );
