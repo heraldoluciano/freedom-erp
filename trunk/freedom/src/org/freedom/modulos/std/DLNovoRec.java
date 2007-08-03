@@ -79,7 +79,7 @@ public class DLNovoRec extends FFDialogo implements PostListener {
 
 	private JTextFieldFK txtDescTipoCobItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldPad txtCodBancoItRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodBancoItRec = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private JTextFieldFK txtDescBancoItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -216,7 +216,6 @@ public class DLNovoRec extends FFDialogo implements PostListener {
 		lcReceber.add( new GuardaCampo( txtDocRec, "DocRec", "N.doc.", ListaCampos.DB_SI, true ) );
 		lcReceber.add( new GuardaCampo( txtObs, "ObsRec", "Obs.", ListaCampos.DB_SI, false ) );
 		lcReceber.add( new GuardaCampo( txtStatus, "StatusRec", "Status", ListaCampos.DB_SI, false ) );
-		// lcReceber.add(new GuardaCampo( txtCodTipCob, "CodTipoCob", "Cód.banco", ListaCampos.DB_FK, false));
 		lcReceber.montaSql( true, "RECEBER", "FN" );
 
 		txtNParcRec.setNomeCampo( "NParcRec" );
@@ -249,32 +248,7 @@ public class DLNovoRec extends FFDialogo implements PostListener {
 
 				if ( ( mevt.getClickCount() == 2 ) & ( tabRec.getLinhaSel() >= 0 ) ) {
 					
-					lcItReceber.edit();
-					
-					DLFechaParcela dl = new DLFechaParcela( DLNovoRec.this, con, txtVlrParcItRec.getVlrBigDecimal(), txtDtVencItRec.getVlrDate(), txtVlrDescItRec.getVlrBigDecimal(), txtCodTipoCobItRec.getVlrInteger(), txtCodBancoItRec.getVlrString() );
-					dl.setVisible( true );
-					
-					if ( dl.OK ) {
-						
-						txtVlrParcItRec.setVlrBigDecimal( (BigDecimal) dl.getValores()[ 0 ] );
-						txtDtVencItRec.setVlrDate( (Date) dl.getValores()[ 1 ] );
-						txtVlrDescItRec.setVlrBigDecimal( (BigDecimal) dl.getValores()[ 2 ] );
-						txtCodTipoCobItRec.setVlrInteger( (Integer) dl.getValores()[ 3 ] );
-						txtCodBancoItRec.setVlrString( (String) dl.getValores()[ 4 ] );
-						lcItReceber.post();
-						// Atualiza lcReceber
-						if ( lcReceber.getStatus() == ListaCampos.LCS_EDIT ) {
-							lcReceber.post(); // Caso o lcReceber estaja como edit executa o post que atualiza
-						}
-						else {
-							lcReceber.carregaDados(); // Caso não, atualiza
-						}
-					}
-					else {
-						dl.dispose();
-						lcItReceber.cancel( true );
-					}
-					dl.dispose();
+					alteraRec();
 				}
 			}
 		} );
@@ -337,6 +311,57 @@ public class DLNovoRec extends FFDialogo implements PostListener {
 			}
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao confirmar código da conta a receber!\n" + err.getMessage(), true, con, err );
+		}
+	}
+	
+	private void alteraRec() {
+		
+		lcReceber.carregaDados();
+		lcItReceber.carregaDados();
+		lcItReceber.edit();
+		
+		DLFechaParcela dl = new DLFechaParcela( this, con, 
+				txtVlrParcItRec.getVlrBigDecimal(), 
+				txtDtVencItRec.getVlrDate(), 
+				txtVlrDescItRec.getVlrBigDecimal(), 
+				txtCodTipoCobItRec.getVlrInteger(), 
+				txtCodBancoItRec.getVlrString() );
+		
+		try {
+			
+			dl.setVisible( true );
+			
+			if ( dl.OK ) {
+				
+				Object[] valores = dl.getValores();
+				
+				txtVlrParcItRec.setVlrBigDecimal( (BigDecimal) valores[ 0 ] );
+				txtDtVencItRec.setVlrDate( (Date) valores[ 1 ] );
+				txtVlrDescItRec.setVlrBigDecimal( (BigDecimal) valores[ 2 ] );
+				txtCodTipoCobItRec.setVlrString( (String) valores[ 3 ] );
+				txtCodBancoItRec.setVlrString( (String) dl.getValores()[ 4 ] );
+				
+				if ( lcItReceber.post() ) {
+					// Atualiza lcReceber
+					if ( lcReceber.getStatus() == ListaCampos.LCS_EDIT ) {
+						lcReceber.post(); // Caso o lcReceber estaja como edit executa o post que atualiza
+					}
+					else {
+						lcReceber.carregaDados(); // Caso não, atualiza
+					}
+				}
+				dl.dispose();
+			}
+			else {
+				dl.dispose();
+				lcItReceber.cancel( true );
+			}
+		}
+		catch ( Exception e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao atualizar parcelas.\n" + e.getMessage() );
+			lcItReceber.cancel( true );
+			lcReceber.cancel( true );
 		}
 	}
 
