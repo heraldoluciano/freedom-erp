@@ -45,8 +45,6 @@ import java.util.Vector;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
-import org.freedom.acao.CarregaEvent;
-import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.RadioGroupEvent;
