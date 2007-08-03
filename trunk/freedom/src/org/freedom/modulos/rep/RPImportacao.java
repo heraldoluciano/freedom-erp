@@ -475,7 +475,7 @@ public class RPImportacao extends FFilho implements ActionListener {
 		sql.append( ListaCampos.getMasterFilial( "RRPRODUTO" ) );
 		sql.append( "||','||CODFOR||','||CHAR(39)||CODFORPROD||CHAR(39)||','||COALESCE(PESOPROD,'NULL')||','||COALESCE(PESOPROD,'NULL')||','||" );
 		sql.append( "COALESCE(COMISPROD,'NULL')||','||COALESCE(PERCIPIPROD,'NULL')||','||COALESCE(PRECOPROD,'NULL')||','||" );
-		sql.append( "COALESCE(PRECOPROD2,'NULL')||','||COALESCE(PRECOPROD3,'NULL')||' )' FROM PRODUTO" );
+		sql.append( "COALESCE(PRECOPROD2,'NULL')||','||COALESCE(PRECOPROD3,'NULL')||' )' FROM PRODUTO WHERE CODFOR NOT IN(2,15,19,17,3,20,9,12)" );
 		
 		importarGeneric( sql.toString() );
 	}
@@ -534,11 +534,11 @@ public class RPImportacao extends FFilho implements ActionListener {
 		sql.append( Aplicativo.iCodEmp );
 		sql.append( "||','||" );
 		sql.append( ListaCampos.getMasterFilial( "RPCLIENTE" ) );
-		sql.append( "||','||CODVEND||','||" );
+		sql.append( "||','||coalesce(CODVEND,1)||','||" );
 		sql.append( Aplicativo.iCodEmp );
 		sql.append( "||','||" );
 		sql.append( ListaCampos.getMasterFilial( "RPCLIENTE" ) );
-		sql.append( "||','||CODTIPOCLI||','||char(39)||CGCCLI||char(39)||','||char(39)||INSCCLI||char(39)||','||char(39)||ENDCLI||" );
+		sql.append( "||','||coalesce(CODTIPOCLI,1)||','||char(39)||CGCCLI||char(39)||','||char(39)||INSCCLI||char(39)||','||char(39)||ENDCLI||" );
 		sql.append( "char(39)||','||char(39)||CIDCLI||char(39)||','||char(39)||ESTCLI||char(39)||','||char(39)||CEPCLI||char(39)||','||" );
 		sql.append( "char(39)||BAIRCLI||char(39)||','||char(39)||FONECLI||char(39)||','||char(39)||FAXCLI||char(39)||','||char(39)||" );
 		sql.append( "EMAILCLI||char(39)||','||char(39)||ENDCOBCLI||char(39)||','||char(39)||BAIRCOBCLI||char(39)||','||char(39)||" );
