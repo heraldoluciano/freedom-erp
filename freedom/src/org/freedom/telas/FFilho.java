@@ -79,7 +79,7 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
     protected JPanelPad pnCliente = new JPanelPad(JPanelPad.TP_JPANEL);
     protected JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL);
     protected JPanelPad pnBordRod = new JPanelPad(JPanelPad.TP_JPANEL);
-    protected JScrollPane spPrincipal = new JScrollPane(pnPrincipal, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    protected JScrollPane spPrincipal = new JScrollPane(pnPrincipal, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 //    public JScrollPane spCliente = new JScrollPane(pnPrincipal, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 //    public JScrollPane spCliente = new JScrollPane(pnCliente, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     
