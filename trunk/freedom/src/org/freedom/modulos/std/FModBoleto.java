@@ -84,7 +84,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 
 	private final JTextFieldPad txtDescModBol = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private final JTextFieldPad txtCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	private final JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private final JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
@@ -160,11 +160,11 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		montaListaCampos2();
 
 		lcItModBol.montaTab();
-		tabBancos.setTamColuna( 80, 0 );
-		tabBancos.setTamColuna( 200, 1 );
-		tabBancos.setTamColuna( 80, 2 );
-		tabBancos.setTamColuna( 200, 3 );
-		tabBancos.setTamColuna( 120, 4 );
+		/*tabBancos.setTamColuna( 70, 0 );
+		tabBancos.setTamColuna( 70, 1 );
+		tabBancos.setTamColuna( 200, 2 );
+		tabBancos.setTamColuna( 70, 3 );
+		tabBancos.setTamColuna( 200, 4 );*/
 		
 		lcItModBol.setState( ListaCampos.LCS_NONE );
 		
@@ -218,14 +218,14 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		/***************
 		 *  FNCARTCOB  *
 		 ***************/
-		lcCartCob.add( new GuardaCampo( txtCartCob, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_PK, txtDescCartCob, false ) );
+		lcCartCob.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_PK, txtDescCartCob, false ) );
 		lcCartCob.add( new GuardaCampo( txtDescCartCob, "DescCartCob", "Descrição da carteira de cobrança", ListaCampos.DB_SI, false ) );
 		lcCartCob.montaSql( false, "CARTCOB", "FN" );
 		lcCartCob.setReadOnly( true );
-		txtCartCob.setListaCampos( lcCartCob );
-		txtCartCob.setTabelaExterna( lcCartCob );
-		txtCartCob.setNomeCampo( "CodCartCob" );
-		txtCartCob.setPKFK( true, true );
+		txtCodCartCob.setListaCampos( lcCartCob );
+		txtCodCartCob.setTabelaExterna( lcCartCob );
+		txtCodCartCob.setNomeCampo( "CodCartCob" );
+		txtCodCartCob.setPKFK( true, true );
 		txtDescCartCob.setLabel( "Descrição da carteira de cobrança" );
 	}
 	
@@ -234,13 +234,15 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		/*******************
 		 *  FNITMODBOLETO  *
 		 *******************/
-		lcItModBol.add( new GuardaCampo( txtCartCob, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_PF, txtDescCartCob, true ) );
-		lcItModBol.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true ) );
-		lcItModBol.add( new GuardaCampo( txtConvCob, "ConvCob", "Convênio de cobrança", ListaCampos.DB_SI, true ) );
-		lcItModBol.montaSql( false, "ITMODBOLETO", "FN" );
-		txtCartCob.setListaCampos( lcItModBol );
-		txtCodBanco.setListaCampos( lcItModBol );
-		txtConvCob.setListaCampos( lcItModBol );
+		//lcItModBol.add( new GuardaCampo( txtConvCob, "ConvCob", "Convênio de cobrança", ListaCampos.DB_PK, true ) );
+		//lcItModBol.add( new GuardaCampo( txtCartCob, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_PF, txtDescCartCob, true ) );
+		//lcItModBol.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true ) );
+		//lcItModBol.add( new GuardaCampo( txtConvCob, "ConvCob", "Convênio de cobrança", ListaCampos.DB_SI, true ) );
+//		lcItModBol.add( new GuardaCampo( txtConvCob, "ConvCob", "Convênio de cobrança", ListaCampos.DB_SI, true ) );
+		//lcItModBol.montaSql( false, "ITMODBOLETO", "FN" );
+		//txtCartCob.setListaCampos( lcItModBol );
+//		txtCodBanco.setListaCampos( lcItModBol );
+		//txtConvCob.setListaCampos( lcItModBol );
 	}
 	
 	private void montaCombos() {
@@ -421,7 +423,20 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		
 		panelCamposBancos.setPreferredSize( new Dimension( 600, 100 ) );	
 		
-		panelCamposBancos.adic( new JLabelPad( "Cód.cart.cob." ), 7, 10, 80, 20 );
+		setPainel( panelCamposBancos );
+		
+		setListaCampos( lcItModBol );
+		setNavegador( navBancos );
+		
+		adicCampo( txtCodCartCob, 7,30,80,20, "CodCartCob", "Cart.cob.", ListaCampos.DB_PF, txtDescCartCob, true );
+		adicDescFK( txtDescCartCob, 90,30,200,20, "DescCartCob", "Descrição da carteira de cobrança" );
+		adicCampo( txtCodBanco, 293, 30, 80, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true);
+		adicDescFK( txtNomeBanco, 376,30, 200, 20, "NomeBanco", "Nome do banco");
+		adicCampo( txtConvCob, 579,30 , 130 ,20, "ConvCob", "Convênio cob.", ListaCampos.DB_SI, true);
+		
+		setListaCampos( false, "ITMODBOLETO", "FN" );
+		
+		/*panelCamposBancos.adic( new JLabelPad( "Cód.cart.cob." ), 7, 10, 80, 20 );
 		panelCamposBancos.adic( txtCartCob, 7, 30, 80, 20 );
 		panelCamposBancos.adic( new JLabelPad( "Descrição da carteira de cobrança" ), 90, 10, 200, 20 );
 		panelCamposBancos.adic( txtDescCartCob, 90, 30, 200, 20 );		
@@ -433,6 +448,8 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		panelCamposBancos.adic( txtConvCob, 579, 30, 130, 20 );
 		
 		panelCamposBancos.adic( navBancos, 0, 65, 270, 30 );
+
+		*/
 		
 		panelBancos.add( panelCamposBancos, BorderLayout.SOUTH );
 		
