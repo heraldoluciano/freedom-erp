@@ -45,7 +45,7 @@ public class FCartCob extends FDados implements ActionListener {
 
 	private final JTextFieldPad txtDescCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtCartCobCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
+	private final JTextFieldPad txtCartCobCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	protected final ListaCampos lcBanco = new ListaCampos( this, "BO" );
 	
