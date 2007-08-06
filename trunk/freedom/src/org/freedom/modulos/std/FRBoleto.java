@@ -68,6 +68,8 @@ public class FRBoleto extends FRelatorio {
 
 	public JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldFK txtTipoVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
+
 	public JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDataVenda = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
@@ -113,6 +115,9 @@ public class FRBoleto extends FRelatorio {
 	private boolean bNomeConv = false;
 
 	private boolean bObsOrc = false;
+	
+	private boolean bAtlParcela = false;
+	
 
 	public FRBoleto() {
 
@@ -133,7 +138,6 @@ public class FRBoleto extends FRelatorio {
 
 		Calendar cal = Calendar.getInstance();
 		txtDtFim.setVlrDate( cal.getTime() );
-		// cal.set( cal.get( Calendar.YEAR ), cal.get( Calendar.MONTH ) - 1, cal.get( Calendar.DATE ) );
 		txtDtIni.setVlrDate( cal.getTime() );
 
 	}
@@ -162,6 +166,7 @@ public class FRBoleto extends FRelatorio {
 		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "Doc.", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtDataVenda, "DtEmitVenda", "Data", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_FK, true ) );
+		lcVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo Venda", ListaCampos.DB_SI, false ) );
 		lcVenda.setReadOnly( true );
 		lcVenda.montaSql( false, "VENDA", "VD" );
 		txtCodVenda.setTabelaExterna( lcVenda );
@@ -486,9 +491,9 @@ public class FRBoleto extends FRelatorio {
 			rs.close();
 			ps.close();
 
-			/*
-             * if ( ! con.getAutoCommit() ) { con.commit(); }
-             */
+			if ( ! con.getAutoCommit() ) { 
+				con.commit(); 
+			}
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar a moeda padrão!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
@@ -510,6 +515,140 @@ public class FRBoleto extends FRelatorio {
 		}
 		return retorno;
 
+	}
+	
+	private Integer getCodrec( final Integer codvenda, final String tipovenda ) {
+		
+		Integer codrec = null;
+		
+		try {
+			
+			StringBuilder sql = new StringBuilder();
+
+			sql.append( "SELECT CODREC FROM FNRECEBER " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND " );
+			sql.append( "CODEMPVA=? AND CODFILIALVA=? AND CODVENDA=? AND TIPOVENDA=?" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			ps.setInt( 5, codvenda );
+			ps.setString( 6, tipovenda );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				codrec = rs.getInt( "CODREC" );
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+		}
+		catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+		
+		return codrec;
+	}
+	
+	private void getAtualizaParcela() {
+		
+		try {
+			
+			String sql = "SELECT ATBANCOIMPBOL FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			
+			PreparedStatement ps = con.prepareStatement( sql );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				bAtlParcela = "S".equalsIgnoreCase( rs.getString( "ATBANCOIMPBOL" ) );
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+		}
+		catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+	}
+	
+	private boolean atualizaParcela( final Integer codrec, final Integer codparc, final String codbanco ) {
+		
+		boolean ret = true;
+		
+		if ( bAtlParcela && ( codbanco != null && codbanco.trim().length() > 0 ) ) {
+			
+			try {
+				
+				if ( ! con.getAutoCommit() ) {
+					con.commit();
+				}
+				
+				StringBuilder sql = new StringBuilder();
+
+				sql.append( "UPDATE FNRECEBER SET CODEMPBO=?, CODFILIALBO=?, CODBANCO=? " );
+				sql.append( "WHERE CODREC=? AND CODFILIAL=? AND CODEMP=? " );
+				
+				PreparedStatement ps = con.prepareStatement( sql.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "FNBANCO" ) );
+				ps.setString( 3, codbanco );
+				ps.setInt( 4, codrec );
+				ps.setInt( 5, Aplicativo.iCodEmp );
+				ps.setInt( 6, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+				ps.executeUpdate();
+				ps.close();
+				
+				if ( ! con.getAutoCommit() ) {
+					con.commit();
+				}	
+				
+				if ( codparc != null && codparc > 0 ) {
+					
+					sql = new StringBuilder();
+
+					sql.append( "UPDATE FNITRECEBER SET CODEMPBO=?, CODFILIALBO=?, CODBANCO=? " );
+					sql.append( "WHERE CODREC=? AND NPARCITREC=? AND CODFILIAL=? AND CODEMP=? " );
+					
+					ps = con.prepareStatement( sql.toString() );
+					ps.setInt( 1, Aplicativo.iCodEmp );
+					ps.setInt( 2, ListaCampos.getMasterFilial( "FNBANCO" ) );
+					ps.setString( 3, codbanco );
+					ps.setInt( 4, codrec );
+					ps.setInt( 5, codparc );
+					ps.setInt( 6, Aplicativo.iCodEmp );
+					ps.setInt( 7, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+					ps.executeUpdate();					
+					ps.close();
+					
+					if ( ! con.getAutoCommit() ) {
+						con.commit();
+					}
+				}
+			}
+			catch ( Exception e ) {
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro ao atualizar paracela(s)!\n" + e.getMessage() );
+				ret = false;
+			}
+		}
+		
+		return ret;
 	}
 
 	private HashMap< String, Object > getParametros() {
@@ -610,8 +749,12 @@ public class FRBoleto extends FRelatorio {
 			txtDtIni.requestFocus();
 			return;
 		}
+		
 
 		try {
+			
+
+			atualizaParcela( getCodrec( txtCodVenda.getVlrInteger(), txtTipoVenda.getVlrString() ), txtParc.getVlrInteger(), txtCodBanco.getVlrString() );
 
 			PreparedStatement ps = null;
 			ResultSet rs = null;
@@ -869,5 +1012,7 @@ public class FRBoleto extends FRelatorio {
 		lcBanco.setConexao( cn );
 		lcTipoCob.setConexao( cn );
 		sInfoMoeda = getMoeda();
+		
+		getAtualizaParcela();
 	}
 }
