@@ -619,27 +619,29 @@ public class FRBoleto extends FRelatorio {
 					con.commit();
 				}	
 				
-				if ( codparc != null && codparc > 0 ) {
-					
-					sql = new StringBuilder();
+				sql = new StringBuilder();
 
-					sql.append( "UPDATE FNITRECEBER SET CODEMPBO=?, CODFILIALBO=?, CODBANCO=? " );
-					sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=? " );
-					
-					ps = con.prepareStatement( sql.toString() );
-					ps.setInt( 1, Aplicativo.iCodEmp );
-					ps.setInt( 2, ListaCampos.getMasterFilial( "FNBANCO" ) );
-					ps.setString( 3, codbanco );
-					ps.setInt( 4, Aplicativo.iCodEmp );
-					ps.setInt( 5, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-					ps.setInt( 6, codrec );
+				sql.append( "UPDATE FNITRECEBER SET CODEMPBO=?, CODFILIALBO=?, CODBANCO=? " );
+				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? " );
+				if ( codparc != null && codparc > 0 ) {
+				  sql.append("AND NPARCITREC=? " );
+				}
+				
+				ps = con.prepareStatement( sql.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "FNBANCO" ) );
+				ps.setString( 3, codbanco );
+				ps.setInt( 4, Aplicativo.iCodEmp );
+				ps.setInt( 5, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+				ps.setInt( 6, codrec );
+				if ( codparc != null && codparc > 0 ) {
 					ps.setInt( 7, codparc );
-					ps.executeUpdate();					
-					ps.close();
-					
-					if ( ! con.getAutoCommit() ) {
-						con.commit();
-					}
+				}
+				ps.executeUpdate();					
+				ps.close();
+				
+				if ( ! con.getAutoCommit() ) {
+					con.commit();
 				}
 			}
 			catch ( Exception e ) {
