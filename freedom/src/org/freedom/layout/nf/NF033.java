@@ -34,8 +34,6 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.componentes.Layout;
 import org.freedom.telas.Aplicativo;
 
-import com.sun.crypto.provider.DESParameters;
-
 public class NF033 extends Layout {
 
 	private NF nf;
