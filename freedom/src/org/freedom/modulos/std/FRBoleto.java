@@ -167,6 +167,7 @@ public class FRBoleto extends FRelatorio {
 		lcVenda.add( new GuardaCampo( txtDataVenda, "DtEmitVenda", "Data", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_FK, true ) );
 		lcVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo Venda", ListaCampos.DB_SI, false ) );
+		lcVenda.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtNomeBanco, false) );
 		lcVenda.setReadOnly( true );
 		lcVenda.montaSql( false, "VENDA", "VD" );
 		txtCodVenda.setTabelaExterna( lcVenda );
@@ -595,22 +596,22 @@ public class FRBoleto extends FRelatorio {
 			
 			try {
 				
-				if ( ! con.getAutoCommit() ) {
-					con.commit();
-				}
+//				if ( ! con.getAutoCommit() ) {
+	//				con.commit();
+//				}
 				
 				StringBuilder sql = new StringBuilder();
 
 				sql.append( "UPDATE FNRECEBER SET CODEMPBO=?, CODFILIALBO=?, CODBANCO=? " );
-				sql.append( "WHERE CODREC=? AND CODFILIAL=? AND CODEMP=? " );
+				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=?" );
 				
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "FNBANCO" ) );
 				ps.setString( 3, codbanco );
-				ps.setInt( 4, codrec );
-				ps.setInt( 5, Aplicativo.iCodEmp );
-				ps.setInt( 6, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+				ps.setInt( 4, Aplicativo.iCodEmp );
+				ps.setInt( 5, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+				ps.setInt( 6, codrec );
 				ps.executeUpdate();
 				ps.close();
 				
@@ -623,16 +624,16 @@ public class FRBoleto extends FRelatorio {
 					sql = new StringBuilder();
 
 					sql.append( "UPDATE FNITRECEBER SET CODEMPBO=?, CODFILIALBO=?, CODBANCO=? " );
-					sql.append( "WHERE CODREC=? AND NPARCITREC=? AND CODFILIAL=? AND CODEMP=? " );
+					sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=? " );
 					
 					ps = con.prepareStatement( sql.toString() );
 					ps.setInt( 1, Aplicativo.iCodEmp );
 					ps.setInt( 2, ListaCampos.getMasterFilial( "FNBANCO" ) );
 					ps.setString( 3, codbanco );
-					ps.setInt( 4, codrec );
-					ps.setInt( 5, codparc );
-					ps.setInt( 6, Aplicativo.iCodEmp );
-					ps.setInt( 7, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+					ps.setInt( 4, Aplicativo.iCodEmp );
+					ps.setInt( 5, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+					ps.setInt( 6, codrec );
+					ps.setInt( 7, codparc );
 					ps.executeUpdate();					
 					ps.close();
 					
