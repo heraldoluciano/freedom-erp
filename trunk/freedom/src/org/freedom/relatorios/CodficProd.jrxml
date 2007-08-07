@@ -60,7 +60,7 @@ LC.CODEMP=PD.CODEMPFC AND LC.CODFILIAL=PD.CODFILIALFC AND LC.CODFISC=PD.CODFISC]
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="CODBARPROD" class="java.lang.String"/>
 	<field name="REFPROD" class="java.lang.String"/>
-	<field name="ALIQIPIFISC" class="java.lang.Long"/>
+	<field name="ALIQIPIFISC" class="java.math.BigDecimal"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -96,7 +96,7 @@ LC.CODEMP=PD.CODEMPFC AND LC.CODFILIAL=PD.CODFILIALFC AND LC.CODFISC=PD.CODFISC]
 						mode="Transparent"
 						x="140"
 						y="73"
-						width="295"
+						width="310"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -250,16 +250,20 @@ LC.CODEMP=PD.CODEMPFC AND LC.CODFILIAL=PD.CODFILIALFC AND LC.CODFISC=PD.CODFISC]
 				</staticText>
 				<staticText>
 					<reportElement
-						x="440"
+						mode="Transparent"
+						x="454"
 						y="73"
-						width="89"
-						height="11"
-						key="staticText-3"/>
+						width="74"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-4"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9"/>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Courier" size="9" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[% de IPI]]></text>
+				<text><![CDATA[% IPI]]></text>
 				</staticText>
 			</band>
 		</pageHeader>
@@ -288,7 +292,7 @@ LC.CODEMP=PD.CODEMPFC AND LC.CODFILIAL=PD.CODFILIALFC AND LC.CODFISC=PD.CODFISC]
 					<reportElement
 						x="140"
 						y="3"
-						width="296"
+						width="310"
 						height="12"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -329,16 +333,16 @@ LC.CODEMP=PD.CODEMPFC AND LC.CODFILIAL=PD.CODFILIALFC AND LC.CODFISC=PD.CODFISC]
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="440"
+						x="455"
 						y="3"
-						width="89"
-						height="11"
+						width="74"
+						height="12"
 						key="textField-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="9"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{ALIQIPIFISC}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{ALIQIPIFISC}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
