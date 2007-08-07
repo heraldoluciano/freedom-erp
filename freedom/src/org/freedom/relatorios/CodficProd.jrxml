@@ -45,13 +45,22 @@
 	<parameter name="CODREF" isForPrompting="true" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["C"]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT PD.CODPROD,PD.DESCPROD,PD.CODBARPROD, PD.REFPROD
-FROM EQPRODUTO PD WHERE PD.CODEMP=4 AND PD.CODFILIAL=1]]></queryString>
+	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(35)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[SELECT PD.CODPROD,PD.DESCPROD,PD.CODBARPROD, PD.REFPROD, LC.ALIQIPIFISC
+FROM EQPRODUTO PD, LFCLFISCAL LC
+WHERE PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND
+LC.CODEMP=PD.CODEMPFC AND LC.CODFILIAL=PD.CODFILIALFC AND LC.CODFISC=PD.CODFISC]]></queryString>
 
 	<field name="CODPROD" class="java.lang.Long"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="CODBARPROD" class="java.lang.String"/>
 	<field name="REFPROD" class="java.lang.String"/>
+	<field name="ALIQIPIFISC" class="java.lang.Long"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -87,7 +96,7 @@ FROM EQPRODUTO PD WHERE PD.CODEMP=4 AND PD.CODFILIAL=1]]></queryString>
 						mode="Transparent"
 						x="140"
 						y="73"
-						width="326"
+						width="295"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -239,6 +248,19 @@ FROM EQPRODUTO PD WHERE PD.CODEMP=4 AND PD.CODFILIAL=1]]></queryString>
 					</textElement>
 				<text><![CDATA[Referência]]></text>
 				</staticText>
+				<staticText>
+					<reportElement
+						x="440"
+						y="73"
+						width="89"
+						height="11"
+						key="staticText-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<text><![CDATA[% de IPI]]></text>
+				</staticText>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -266,7 +288,7 @@ FROM EQPRODUTO PD WHERE PD.CODEMP=4 AND PD.CODFILIAL=1]]></queryString>
 					<reportElement
 						x="140"
 						y="3"
-						width="326"
+						width="296"
 						height="12"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -304,6 +326,19 @@ FROM EQPRODUTO PD WHERE PD.CODEMP=4 AND PD.CODFILIAL=1]]></queryString>
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{REFPROD}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="440"
+						y="3"
+						width="89"
+						height="11"
+						key="textField-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{ALIQIPIFISC}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

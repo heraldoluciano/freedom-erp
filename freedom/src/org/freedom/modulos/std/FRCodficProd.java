@@ -130,9 +130,9 @@ public class FRCodficProd extends FRelatorio {
 	public void montaListaCampos(){
 		
 
-		/*********
-		 * Grupo *
-		 *********/
+		/************
+		 * LC Grupo *
+		 ************/
 		lcGrupo.add(new GuardaCampo( txtCodGrupo, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false));
 		lcGrupo.add(new GuardaCampo( txtDescGrupo, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false));
 		lcGrupo.montaSql(false, "GRUPO", "EQ");
@@ -141,9 +141,9 @@ public class FRCodficProd extends FRelatorio {
 		txtCodGrupo.setFK(true);
 		txtCodGrupo.setNomeCampo("CodGrup");
 		
-		/*********
-		 * Marca *
-		 *********/
+		/************
+		 * LC Marca *
+		 ************/
 		lcMarca.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false));
 		lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false));
 		txtCodMarca.setTabelaExterna(lcMarca);
@@ -209,6 +209,8 @@ public class FRCodficProd extends FRelatorio {
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		hParam.put( "CODREF", rgProd.getVlrString() );
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		//hParam.put( "CODFILIAL",  )
 		
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/CodficProd.jasper", "Codificação de produto", null, rs, hParam, this );
 		
@@ -219,7 +221,7 @@ public class FRCodficProd extends FRelatorio {
 			try {				
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );				
 			} catch ( Exception err ) {					
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de codificação de produto!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de codificação de produto!\n" + err.getMessage(), true, con, err );
 			}
 		}
 	}
