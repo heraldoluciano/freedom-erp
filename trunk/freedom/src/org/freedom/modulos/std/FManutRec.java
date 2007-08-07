@@ -302,7 +302,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		super( false );
 		setTitulo( "Manutenção de contas a receber" );
-		setAtribos( 20, 20, 750, 450 );
+		setAtribos( 20, 20, 792, 480 );
 
 		cbAReceber.setVlrString( "S" );
 

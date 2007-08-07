@@ -149,7 +149,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	public FRVendaSetor() {
 
 		setTitulo( "Relatório de Vendas por Setor" );
-		setAtribos( 80, 80, 610, 430 );
+		setAtribos( 80, 80, 660, 460 );
 
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.add( Calendar.DATE, -30 );

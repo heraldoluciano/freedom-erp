@@ -123,7 +123,7 @@ public class FConta extends FTabDados implements CheckBoxListener {
 
 		super( false );
 		setTitulo( "Cadastro de Contas" );
-		setAtribos( 50, 50, 430, 350 );
+		setAtribos( 50, 50, 463, 380 );
 
 		lcRestricoes.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcRestricoes );

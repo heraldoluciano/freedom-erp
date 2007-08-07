@@ -51,7 +51,7 @@ public class FSimilar extends FDetalhe implements CarregaListener, InsertListene
 	
 	public FSimilar () {
 		setTitulo("Agrupamento de produtos similares");
-		setAtribos( 100, 10, 450, 350);        
+		setAtribos( 100, 10, 480, 380);        
 		
 		//  ********************  Lista campos adicional  ********************    
 		

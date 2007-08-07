@@ -72,7 +72,7 @@ public class FCentroCusto extends FFilho 	implements ActionListener, MouseListen
 	public FCentroCusto() {
 		super(false);
 		setTitulo("Centro de Custo");
-		setAtribos(25, 25, 620, 380);
+		setAtribos(25, 25, 660, 380);
 
 		Container c = getContentPane();
 

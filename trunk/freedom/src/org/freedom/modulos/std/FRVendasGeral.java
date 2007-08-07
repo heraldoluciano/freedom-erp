@@ -78,7 +78,7 @@ public class FRVendasGeral extends FRelatorio {
 	public FRVendasGeral() {
 
 		setTitulo( "Vendas em Geral" );
-		setAtribos( 80, 80, 295, 300 );
+		setAtribos( 80, 80, 325, 310 );
 
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );

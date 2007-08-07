@@ -103,7 +103,7 @@ public class FRVendasItem extends FRelatorio {
 	public FRVendasItem() {
 
 		setTitulo( "Vendas por Item" );
-		setAtribos( 80, 80, 590, 350 );
+		setAtribos( 80, 80, 620, 380 );
 
 		txtDescVend.setAtivo( false );
 		txtDescGrup.setAtivo( false );

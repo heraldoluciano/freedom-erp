@@ -73,7 +73,7 @@ public class FRPagar extends FRelatorio {
 	public FRPagar() {
 		
 		setTitulo("Contas a Pagar");
-		setAtribos(80,80,387,320);
+		setAtribos(80,80,430,340);
 		
 		lcFor.add(new GuardaCampo( txtCodFor, "CodFor", "Cód.forn.", ListaCampos.DB_PK, false));
 		lcFor.add(new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false));

@@ -55,7 +55,7 @@ public class FCaixa extends FDados implements ActionListener, CarregaListener {
 	public FCaixa() {
 		super();
 		setTitulo("Cadastro de caixa PDV");
-		setAtribos( 50, 50, 420, 240);
+		setAtribos( 50, 50, 445, 270);
 		
 		lcEst.add(new GuardaCampo( txtCodEst, "CodEst", "Cód.est.", ListaCampos.DB_PK, false));
 		lcEst.add(new GuardaCampo( txtDescEst, "DescEst", "Descrição da estação de trabalho", ListaCampos.DB_SI,false));

@@ -432,7 +432,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		super();
 		setTitulo( "Cadastro de Produtos" );
-		setAtribos( 30, 10, 680, 625 );
+		setAtribos( 30, 10, 710, 655 );
 
 		lcFatConv.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcFatConv );

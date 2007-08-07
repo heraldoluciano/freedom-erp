@@ -90,7 +90,7 @@ public class FRUltimaVenda extends FRelatorio {
 	public FRUltimaVenda() {
 
 		setTitulo( "Ultima Venda por Cliente" );
-		setAtribos( 80, 80, 290, 390 );
+		setAtribos( 80, 80, 320, 420 );
 
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );

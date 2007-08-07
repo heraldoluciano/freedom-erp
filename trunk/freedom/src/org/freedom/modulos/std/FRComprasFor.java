@@ -61,7 +61,7 @@ public class FRComprasFor extends FRelatorio {
 	public FRComprasFor() {
 
 		setTitulo( "Compras por Fornecedor" );
-		setAtribos( 50, 50, 310, 180 );
+		setAtribos( 50, 50, 340, 195 );
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );

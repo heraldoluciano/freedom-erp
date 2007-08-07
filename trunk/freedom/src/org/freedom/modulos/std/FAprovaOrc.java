@@ -91,7 +91,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 	public FAprovaOrc() {
 		super(false);
 		setTitulo("Aprova Orçamento");
-		setAtribos(15,30,785,350);
+		setAtribos(15,30,796,380);
 
 		btCalc.setToolTipText("Recarregar ítens");
 		btOk.setToolTipText("Confirmar aprovação");

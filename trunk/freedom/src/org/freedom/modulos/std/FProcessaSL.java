@@ -62,7 +62,7 @@ public class FProcessaSL extends FFilho implements ActionListener {
     public FProcessaSL() {
     	super(false);
     	setTitulo("Processamento de saldo");
-    	setAtribos(100,100,485,390);
+    	setAtribos(100,100,500,410);
     	
     	Container c = getContentPane();
     	c.setLayout(new BorderLayout());

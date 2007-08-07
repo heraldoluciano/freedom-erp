@@ -78,7 +78,7 @@ public class FRVendasFisico extends FRelatorio {
 	public FRVendasFisico() {
 
 		setTitulo( "Fechamento Fisico de Vendas" );
-		setAtribos( 80, 80, 305, 380 );
+		setAtribos( 80, 80, 325, 400 );
 
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );

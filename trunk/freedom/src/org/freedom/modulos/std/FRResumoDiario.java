@@ -77,7 +77,7 @@ public class FRResumoDiario extends FRelatorio {
 	public FRResumoDiario() {
 
 		setTitulo( "Resumo Diario" );
-		setAtribos( 80, 80, 296, 380 );
+		setAtribos( 80, 80, 329, 420 );
 
 		Vector vLabs = new Vector();
 		Vector vVals = new Vector();
@@ -269,10 +269,10 @@ public class FRResumoDiario extends FRelatorio {
 			else if ( "G".equals( rgTipo.getVlrString() ) ) {
 				imprimirGrafico( bVisualizar, rs, sCab.toString() );
 			}
-			
+
 			rs.close();
 			ps.close();
-			
+
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}

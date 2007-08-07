@@ -54,7 +54,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
   	super();
   	//cbImpDtSaidaNat.set
     setTitulo("Cadastro de Naturezas de Opreção");
-    setAtribos( 50, 50, 330, 265);
+    setAtribos( 50, 50, 365, 285);
     adicCampo(txtCodNat, 7, 20, 70, 20,"CodNat","Cód.nat.op.",ListaCampos.DB_PK,true);
     adicCampo(txtDescNat, 80, 20, 230, 20,"DescNat","Descrição da natureza da operação",ListaCampos.DB_SI,true);
     adicCampo(txtAliqeNat, 7, 60, 90, 20,"AliqENat","Aliq.estadual",ListaCampos.DB_SI,false);

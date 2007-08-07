@@ -69,7 +69,7 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 
 		super();
 		setTitulo( "Cadastro de Banco" );
-		setAtribos( 50, 50, 390, 260 );
+		setAtribos( 50, 50, 450, 310 );
 
 		lcModBol.add( new GuardaCampo( txtCodModBol, "CodModBol", "Cód.mod.bol.", ListaCampos.DB_PK, txtDescModBol, false ) );
 		lcModBol.add( new GuardaCampo( txtDescModBol, "DescModBol", "Descriçao do modelo de boleto", ListaCampos.DB_SI, null, false ) );

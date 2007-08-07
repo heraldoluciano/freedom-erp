@@ -139,7 +139,7 @@ public class FManutPreco extends FFilho implements ActionListener,
 	public FManutPreco() {
 		super(false);
 		setTitulo("Manutenção de Preços");
-		setAtribos(10, 10, 450, 450);
+		setAtribos(10, 10, 480, 470);
 
 		Container c = getContentPane();
 

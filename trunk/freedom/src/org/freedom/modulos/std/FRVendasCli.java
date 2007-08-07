@@ -67,7 +67,7 @@ public class FRVendasCli extends FRelatorio {
 	public FRVendasCli() {
 
 		setTitulo( "Vendas por Cliente" );
-		setAtribos( 80, 80, 290, 340 );
+		setAtribos( 80, 80, 340, 390 );
 
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );

@@ -41,7 +41,7 @@ public class FPapel extends FDados {
     pnRodape.remove(2);
 //Monta a tela:
     setTitulo("Cadastro de tipos de papeis");
-    setAtribos(60,60,400,195);    
+    setAtribos(60,60,444,220);    
     
     adicCampo(txtCodPapel, 7, 20, 80, 20, "CodPapel", "Cód.papel", ListaCampos.DB_PK, true);
     adicCampo(txtDescPapel, 90, 20, 287, 20, "DescPapel", "Descrição do papel",ListaCampos.DB_SI, true);

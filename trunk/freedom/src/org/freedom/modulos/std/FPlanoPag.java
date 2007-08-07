@@ -94,7 +94,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 	public FPlanoPag() {
 
 		setTitulo( "Cadastro de Planos de Pagamento" );
-		setAtribos( 50, 50, 700, 350 );
+		setAtribos( 50, 50, 730, 380 );
 
 		lcConta.add( new GuardaCampo( txtNumConta, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );

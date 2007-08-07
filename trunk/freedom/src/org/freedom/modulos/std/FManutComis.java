@@ -134,7 +134,7 @@ public class FManutComis extends FFilho implements ActionListener {
 
 		super( false );
 		setTitulo( "Controle de Comissões" );
-		setAtribos( 50, 25, 660, 400 );
+		setAtribos( 50, 25, 690, 430 );
 		cbLiberadas.setVlrString( "S" );
 
 		vVals.addElement( "E" );

@@ -144,7 +144,7 @@ public class FVendedor extends FTabDados implements PostListener {
 
 		super();
 		setTitulo( "Cadastro de comissionados" );
-		setAtribos( 50, 10, 400, 520 );
+		setAtribos( 50, 10, 440, 560 );
 
 		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, txtDescPlan, false ) );
 		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descriçao do planejamento", ListaCampos.DB_SI, false ) );

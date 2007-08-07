@@ -67,7 +67,7 @@ public class FRBalancete extends FRelatorio {
 	public FRBalancete() {
 
 		setTitulo( "Balancete" );
-		setAtribos( 80, 80, 330, 210 );
+		setAtribos( 80, 80, 350, 240 );
 
 		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );

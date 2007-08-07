@@ -54,7 +54,7 @@ public class FModGrade extends FDetalhe {
   private ListaCampos lcVarG = new ListaCampos(this,"VG");
   public FModGrade() {
     setTitulo("Cadastro de Modelos da Grade");
-    setAtribos( 50, 20, 600, 380);
+    setAtribos( 50, 20, 620, 400);
     setAltCab(120);
     pinCab = new JPanelPad(590,110);
     setListaCampos(lcCampos);

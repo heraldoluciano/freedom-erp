@@ -71,7 +71,7 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
   public FBloqVenda() {
   	super(false);
     setTitulo("Bloqueio e desbloqueio de vendas");
-    setAtribos(50,50,350,250);
+    setAtribos(50,50,380,230);
     
     //Funcoes.setBordReq(txtCodVenda);
     txtDocVenda.setAtivo(false);

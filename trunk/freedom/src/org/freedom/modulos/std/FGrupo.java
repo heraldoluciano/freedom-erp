@@ -90,7 +90,7 @@ public class FGrupo extends FFilho implements ActionListener, MouseListener, Key
 
 		super( false );
 		setTitulo( "Cadastro de Grupos e Sub-Grupos" );
-		setAtribos( 5, 5, 590, 350 );
+		setAtribos( 5, 5, 600, 380 );
 
 		Container c = getContentPane();
 
