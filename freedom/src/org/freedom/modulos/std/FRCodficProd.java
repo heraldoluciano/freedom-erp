@@ -187,8 +187,9 @@ public class FRCodficProd extends FRelatorio {
 			filtro.append( txtCodMarca.getVlrString().trim() + "'" );
 		}
 		
-		sSQL.append( "SELECT P.CODPROD,P.DESCPROD,P.CODBARPROD, P.REFPROD " );
-		sSQL.append( "FROM EQPRODUTO P WHERE P.CODEMP=? AND P.CODFILIAL=? " );
+		sSQL.append( "SELECT P.CODPROD,P.DESCPROD,P.CODBARPROD, P.REFPROD, LC.ALIQIPIFISC " );
+		sSQL.append( "FROM EQPRODUTO  P, LFCLFISCAL LC WHERE P.CODEMP=? AND P.CODFILIAL=? " );
+		sSQL.append( "AND LC.CODEMP=P.CODEMPFC AND LC.CODFILIAL=P.CODFILIALFC AND LC.CODFISC=P.CODFISC ");
 		sSQL.append( filtro );
 		sSQL.append( " ORDER BY " );
 		sSQL.append( rgOrdem.getVlrString() );
@@ -210,7 +211,7 @@ public class FRCodficProd extends FRelatorio {
 
 		hParam.put( "CODREF", rgProd.getVlrString() );
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
-		//hParam.put( "CODFILIAL",  )
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "EQPRODUTO" ));
 		
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/CodficProd.jasper", "Codificação de produto", null, rs, hParam, this );
 		
