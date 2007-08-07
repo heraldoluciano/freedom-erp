@@ -98,7 +98,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 // Monta a tela
     super(false);
     setTitulo("Grade");
-    setAtribos(25,10,700,420);
+    setAtribos(25,10,730,450);
     Container c = getTela();
     c.setLayout(new BorderLayout());
     c.add(pnRod,BorderLayout.SOUTH);

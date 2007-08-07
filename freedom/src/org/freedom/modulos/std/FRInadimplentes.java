@@ -55,7 +55,7 @@ public class FRInadimplentes extends FRelatorio {
   
   public FRInadimplentes() {
     setTitulo("Inadimplentes");
-    setAtribos(80,80,308,200);
+    setAtribos(80,80,330,220);
    
 	GregorianCalendar cPeriodo = new GregorianCalendar();
     txtDatafim.setVlrDate(cPeriodo.getTime());

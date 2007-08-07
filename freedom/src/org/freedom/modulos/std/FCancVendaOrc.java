@@ -64,7 +64,7 @@ public class FCancVendaOrc extends FFilho implements ActionListener, CarregaList
   public FCancVendaOrc() {
   	super(false);
     setTitulo("Canc. de vínc. venda x orçamento");
-    setAtribos(50,50,350,250);
+    setAtribos(50,50,380,230);
     
     Funcoes.setBordReq(txtCodVenda);
     txtDocVenda.setAtivo(false);

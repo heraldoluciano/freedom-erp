@@ -90,7 +90,7 @@ public class FRVendasDet extends FRelatorio {
 	public FRVendasDet() {
 
 		setTitulo( "Vendas Detalhadas" );
-		setAtribos( 80, 80, 295, 420 );
+		setAtribos( 80, 80, 320, 440 );
 
 		Vector< String > vLabs = new Vector< String >();
 		Vector< String > vVals = new Vector< String >();

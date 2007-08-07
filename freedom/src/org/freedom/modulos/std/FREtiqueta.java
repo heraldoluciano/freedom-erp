@@ -130,7 +130,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 
 		setTitulo( "Impressão de etiquetas" );
 
-		setAtribos( 20, 20, 600, 450 );
+		setAtribos( 20, 20, 600, 350 );
 
 		pnDet.add( spnDet, BorderLayout.CENTER );
 		pnTotal.add( pinCab, BorderLayout.NORTH );

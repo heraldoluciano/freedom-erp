@@ -261,7 +261,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 		super( false );
 		setTitulo( "Manutenção de contas a pagar" );
-		setAtribos( 20, 20, 750, 450 );
+		setAtribos( 20, 20, 780, 480 );
 
 		cbAPagar.setVlrString( "S" );
 

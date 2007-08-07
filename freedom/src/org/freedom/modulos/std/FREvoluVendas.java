@@ -82,7 +82,7 @@ public class FREvoluVendas extends FRelatorio {
 	public FREvoluVendas() {
 
 		setTitulo( "Evolução de vendas" );
-		setAtribos( 80, 80, 300, 350 );
+		setAtribos( 80, 80, 330, 380 );
 
 		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, false ) );
 		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo do cliente", ListaCampos.DB_SI, false ) );

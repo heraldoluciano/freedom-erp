@@ -90,7 +90,7 @@ public class FRVendasCFOP extends FRelatorio {
 	public FRVendasCFOP() {
 
 		setTitulo( "Vendas em Geral" );
-		setAtribos( 80, 80, 295, 340 );
+		setAtribos( 80, 80, 330, 370 );
 
 		vLabsFat.addElement( "Faturado" );
 		vLabsFat.addElement( "Não Faturado" );

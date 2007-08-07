@@ -55,7 +55,7 @@ public class FImpressora extends FDados {
     pnRodape.remove(2);
 //Constroi a tela FImpressoras:
     setTitulo("Cadastro de impressoras");
-    setAtribos( 50, 50, 420, 250);
+    setAtribos( 50, 50, 440, 270);
 
 //Prepara o Combo para alterar o campo txtTipoImp    
     vLabsTipo.addElement("<--Selecione-->");           

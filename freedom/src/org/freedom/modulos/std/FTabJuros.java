@@ -42,7 +42,7 @@ public class FTabJuros extends FDetalhe {
   private JTextFieldPad txtPerc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,9,2);
   public FTabJuros() {
     setTitulo("Tabelas de juros");
-    setAtribos( 50, 20, 380, 380);
+    setAtribos( 50, 20, 410, 410);
     setAltCab(140);
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);

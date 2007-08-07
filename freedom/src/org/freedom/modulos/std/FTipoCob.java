@@ -59,7 +59,7 @@ public class FTipoCob extends FDados implements ActionListener {
 
 		super();
 		setTitulo( "Cadastro de Tipo de Cobrança" );
-		setAtribos( 50, 50, 450, 220 );
+		setAtribos( 50, 50, 480, 250 );
 
 		montaRadioGrupos();
 		

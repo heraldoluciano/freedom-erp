@@ -201,7 +201,7 @@ public class FEmpresa extends FTabDados implements PostListener, CarregaListener
 
 		super();
 		setTitulo( "Cadastro da Empresa" );
-		setAtribos( 50, 20, 500, 470 );
+		setAtribos( 50, 20, 530, 500 );
 
 		lcCampos.addPostListener( this );
 		lcFilial.addPostListener( this );

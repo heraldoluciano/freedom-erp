@@ -87,7 +87,7 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
 	public FLiberaCredito() {
 		super();
 		setTitulo("Liberação de crédito");
-		setAtribos(10,10,650,400);
+		setAtribos(10,10,680,430);
 		
   	 // Mecanismo de busca e validação de clientes
 		lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true));

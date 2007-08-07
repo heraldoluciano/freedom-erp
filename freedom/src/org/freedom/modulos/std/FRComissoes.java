@@ -71,7 +71,7 @@ public class FRComissoes extends FRelatorio {
 	public FRComissoes() {
 	  	super();		
 		setTitulo("Comissões");
-		setAtribos(80, 80, 330, 300);
+		setAtribos(80, 80, 360, 340);
 
 		Funcoes.setBordReq(txtCodVend);
 

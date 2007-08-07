@@ -109,7 +109,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
 
 		super();
 		setTitulo( "Cadastro de Classificações Fiscais" );
-		setAtribos( 0, 0, 420, 470 );
+		setAtribos( 0, 0, 460, 500 );
 
 		lcRegraFiscal.add( new GuardaCampo( txtCodRegra, "CodRegra", "Cód.reg.fisc.", ListaCampos.DB_PK, null, true ) );
 		lcRegraFiscal.add( new GuardaCampo( txtDescRegra, "DescRegra", "Descrição da regra fiscal", ListaCampos.DB_SI, null, false ) );

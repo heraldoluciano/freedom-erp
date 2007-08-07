@@ -102,7 +102,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
   public FLanca() {
   	super(false);
     setTitulo("Lançamentos Financeiros");
-    setAtribos(50,25,617,400);
+    setAtribos(50,25,750,350);
     
     Container c = getContentPane();
     

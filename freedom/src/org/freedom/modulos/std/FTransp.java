@@ -72,7 +72,7 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener,I
   public FTransp () {
   	super();
     setTitulo("Cadastro de Tranportadoras");
-    setAtribos( 50, 50, 396, 420);
+    setAtribos( 50, 50, 436, 440);
     
     lcCampos.addInsertListener(this);
     lcCampos.addPostListener(this);

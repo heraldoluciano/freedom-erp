@@ -87,7 +87,7 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 		super();
 
 		setTitulo( "Descontos por Setor" );
-		setAtribos( 80, 80, 387, 380 );
+		setAtribos( 80, 80, 410, 410 );
 
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );

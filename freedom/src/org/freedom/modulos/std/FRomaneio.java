@@ -58,7 +58,7 @@ public class FRomaneio extends FDetalhe implements InsertListener,ActionListener
   private ListaCampos lcVenda = new ListaCampos(this,"VA");
   public FRomaneio() {
     setTitulo("Cadastro de Romaneio");
-    setAtribos( 50, 20, 510, 350);
+    setAtribos( 50, 20, 540, 380);
     setAltCab(90);
     pinCab = new JPanelPad(500,90);
     setListaCampos(lcCampos);

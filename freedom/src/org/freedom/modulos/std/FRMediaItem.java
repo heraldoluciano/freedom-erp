@@ -82,7 +82,7 @@ public class FRMediaItem extends FRelatorio {
 
 	public FRMediaItem() {
 		setTitulo("Media de vendas por item");
-		setAtribos(80, 80, 305, 510);
+		setAtribos(80, 80, 335, 540);
 
 		txtDescGrup.setAtivo(false);
 		txtDescMarca.setAtivo(false);

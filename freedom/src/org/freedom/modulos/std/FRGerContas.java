@@ -104,7 +104,7 @@ public class FRGerContas extends FRelatorio  {
   
   public FRGerContas() {
     setTitulo("Gerenciamento de contas");
-    setAtribos(80,50,665,430);
+    setAtribos(80,50,695,460);
 
     txtAno.setRequerido(true);
     txtAno.setVlrInteger(new Integer((new GregorianCalendar()).get(Calendar.YEAR)));

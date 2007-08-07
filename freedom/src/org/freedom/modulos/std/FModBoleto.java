@@ -145,7 +145,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 
 		super();
 		setTitulo( "Modelo de boleto/Recibo" );
-		setAtribos( 30, 30, 740, 500 );
+		setAtribos( 30, 30, 700, 450 );
 
 		
 		lcItModBol.setMaster( lcCampos );

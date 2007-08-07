@@ -85,7 +85,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 	  
 	public FRReceber() {
 		setTitulo("Contas a Receber");
-		setAtribos(80,20,387,525);
+		setAtribos(80,20,417,555);
 		   
 		txtDataini.setVlrDate(new Date());
 		txtDatafim.setVlrDate(new Date());

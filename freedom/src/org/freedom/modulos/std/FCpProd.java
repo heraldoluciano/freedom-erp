@@ -135,7 +135,7 @@ public class FCpProd extends FFilho implements ActionListener, CheckBoxListener 
 
 		super( false );
 		setTitulo( "Cópia de preços" );
-		setAtribos( 50, 20, 680, 440 );
+		setAtribos( 50, 20, 710, 470 );
 
 		Funcoes.setBordReq( txtCodGrup );
 		Funcoes.setBordReq( txtCodPlanoPag );

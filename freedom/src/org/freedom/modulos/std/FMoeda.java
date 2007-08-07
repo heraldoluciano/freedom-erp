@@ -89,7 +89,7 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
 
 		super();
 		setTitulo( "Cadastro de Moedas" );
-		setAtribos( 50, 50, 420, 340 );
+		setAtribos( 50, 50, 450, 360 );
 
 		lcCot.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcCot );

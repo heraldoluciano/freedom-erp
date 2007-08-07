@@ -78,7 +78,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
   public FFrete () {
   	super();
     setTitulo("Lançamento de Fretes");
-    setAtribos( 50, 50, 380, 285);
+    setAtribos( 50, 50, 420, 310);
     
     lcCampos.addPostListener(this);
 	 	

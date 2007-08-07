@@ -61,7 +61,7 @@ public class FRExtrato extends FRelatorio {
 	public FRExtrato() {
 
 		setTitulo( "Extrato" );
-		setAtribos( 80, 80, 327, 200 );
+		setAtribos( 80, 80, 350, 200 );
 
 		txtCodConta.setRequerido( true );
 		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.conta", ListaCampos.DB_PK, false ) );

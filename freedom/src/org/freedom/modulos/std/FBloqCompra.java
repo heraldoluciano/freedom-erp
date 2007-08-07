@@ -63,7 +63,7 @@ public class FBloqCompra extends FFilho implements ActionListener, CarregaListen
   public FBloqCompra() {
   	super(false);
     setTitulo("Bloqueio e desbloqueio de compras");
-    setAtribos(50,50,350,250);
+    setAtribos(50,50,380,230);
     
     Funcoes.setBordReq(txtCodCompra);
     txtDocCompra.setAtivo(false);
