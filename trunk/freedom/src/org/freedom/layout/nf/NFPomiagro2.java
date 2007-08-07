@@ -251,7 +251,7 @@ public class NFPomiagro2 extends Layout {
              
              imp.say(imp.pRow()+0,4,Funcoes.strDecimalToStrCurrency(20,2,""+cab.getFloat(NF.C_VLRBASEICMSPED)));
              imp.say(imp.pRow()+0,32,Funcoes.strDecimalToStrCurrency(20,2,""+cab.getFloat(NF.C_VLRICMSPED)));
-             imp.say(imp.pRow()+0,114,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRPRODITPED)));
+             imp.say(imp.pRow()+0,114,Funcoes.strDecimalToStrCurrency(20,2,""+cab.getFloat(NF.C_VLRPRODPED)));
 //             imp.say(imp.pRow()+0,114,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRLIQITPED)));
              imp.say(imp.pRow()+1,0,"");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
