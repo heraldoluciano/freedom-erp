@@ -54,8 +54,8 @@
 <file path="/freedom/src/org/freedom/images/freedompdv.ico"/>
 <file path="/freedom/src/org/freedom/images/ba1110.gif"/>
 <file path="/freedom/src/org/freedom/images/btSimilar.gif"/>
-<file path="/freedom/src/org/freedom/images/btTXT.gif"/>
 <file path="/freedom/src/org/freedom/images/btAprovaOrc2.gif"/>
+<file path="/freedom/src/org/freedom/images/btTXT.gif"/>
 <file path="/freedom/src/org/freedom/images/lgSTP2.jpg"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoAgenda.java"/>
 <file path="/freedom/src/org/freedom/relatorios/RegistroEntrada.jasper"/>
@@ -123,8 +123,8 @@
 <file path="/freedom/src/org/freedom/images/btPdvAliquota.gif"/>
 <file path="/freedom/src/org/freedom/images/btProdutoSimilar.gif"/>
 <file path="/freedom/src/org/freedom/images/btResetcont.gif"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConsOrc.java"/>
 <file path="/freedom/src/org/freedom/images/ba0011.gif"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConsOrc.java"/>
 <file path="/freedom/src/org/freedom/images/mail.gif"/>
 <file path="/freedom/src/org/freedom/images/btProx.gif"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh{FFuncao.java"/>
@@ -143,6 +143,7 @@
 <file path="/freedom/src/org/freedom/images/btPesquisa.gif"/>
 <file path="/freedom/src/org/freedom/images/btExportar.gif"/>
 <file path="/freedom/src/org/freedom/relatorios/RegistroSaida.jasper"/>
+<file path="/freedom/src/org/freedom/relatorios/CodficProdGrup.jasper"/>
 <file path="/freedom/src/org/freedom/images/splashFNC.jpg"/>
 <file path="/freedom/src/org/freedom/images/btExcluir.gif"/>
 <file path="/freedom/src/org/freedom/images/btGerar.gif"/>
@@ -157,11 +158,11 @@
 <file path="/freedom/src/org/freedom/images/btPdvCalc.gif"/>
 <file path="/freedom/src/org/freedom/images/btPdvLeituraXPq.gif"/>
 <file path="/freedom/src/org/freedom/images/btAnt.gif"/>
-<file path="/freedom/src/org/freedom/images/splashSTD.jpg"/>
 <file path="/freedom/src/org/freedom/images/btOrcamento2.gif"/>
+<file path="/freedom/src/org/freedom/images/splashSTD.jpg"/>
 <file path="/freedom/src/org/freedom/relatorios/listapreco.jrxml"/>
-<file path="/freedom/src/org/freedom/images/ok.gif"/>
 <file path="/freedom/src/org/freedom/images/Thumbs.db"/>
+<file path="/freedom/src/org/freedom/images/ok.gif"/>
 <file path="/freedom/src/org/freedom/images/btEstoque.gif"/>
 <file path="/freedom/src/org/freedom/images/btRecusado.gif"/>
 <file path="/freedom/src/org/freedom/images/curZoom.gif"/>
@@ -179,8 +180,8 @@
 <file path="/freedom/src/org/freedom/images/btEstProduto.gif"/>
 <file path="/freedom/src/org/freedom/images/btLancamentoFin.gif"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FCartCob.java"/>
-<file path="/freedom/src/org/freedom/images/ba1100.gif"/>
 <file path="/freedom/src/org/freedom/images/btFluxo.gif"/>
+<file path="/freedom/src/org/freedom/images/ba1100.gif"/>
 <file path="/freedom/src/org/freedom/images/btEntrada.gif"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
 <file path="/freedom/src/org/freedom/images/btImprimeOrc.gif"/>
@@ -198,8 +199,8 @@
 <file path="/freedom/src/org/freedom/images/statusbarFilial.gif"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
 <file path="/freedom/src/org/freedom/images/ba0110.gif"/>
-<javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
 <file path="/freedom/src/org/freedom/images/btAbrirPeq.gif"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
 <file path="/freedom/src/org/freedom/images/btPdvGravaMoeda.gif"/>
 <file path="/freedom/src/org/freedom/images/barraGrupo.gif"/>
 <file path="/freedom/src/org/freedom/relatorios/Setor.jrxml"/>
@@ -209,6 +210,7 @@
 <file path="/freedom/src/org/freedom/images/barraVenda.gif"/>
 <file path="/freedom/src/org/freedom/images/statusbarPc.gif"/>
 <file path="/freedom/src/org/freedom/images/load_1.gif"/>
+<file path="/freedom/src/org/freedom/relatorios/CodficProdGrup.jrxml"/>
 <file path="/freedom/src/org/freedom/images/btsoliccp.gif"/>
 <file path="/freedom/src/org/freedom/images/ba1001.gif"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes{EmailBean.java"/>
