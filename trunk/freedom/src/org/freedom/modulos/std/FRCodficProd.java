@@ -28,6 +28,7 @@ import java.util.Vector;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
@@ -60,6 +61,8 @@ public class FRCodficProd extends FRelatorio {
 	private JRadioGroup rgAtivoProd = null;
 	
 	private JRadioGroup rgProd = null;
+	
+	private JCheckBoxPad cbRel = new JCheckBoxPad("Agrupar por grupo?", true, true);
 	 
 	private Vector<String> vLabs = new Vector<String>();
 	
@@ -77,7 +80,7 @@ public class FRCodficProd extends FRelatorio {
 	public FRCodficProd(){
 		
 		setTitulo("Codificação de Produtos");
-	    setAtribos(80,30,460,280);
+	    setAtribos(80,30,490,300);
 	    
 	    vLabs.addElement("Código");
 	    vLabs.addElement("Descrição");
@@ -125,6 +128,7 @@ public class FRCodficProd extends FRelatorio {
 		adic( txtCodMarca, 7, 175, 80, 20 );
 		adic( new JLabelPad("Descrição da marca"),90, 155, 200, 20 );
 		adic( txtDescMarca, 90, 175, 350, 20 );
+		adic(cbRel, 7, 200, 250, 20 );
 	}
 	
 	public void montaListaCampos(){
@@ -187,11 +191,15 @@ public class FRCodficProd extends FRelatorio {
 			filtro.append( txtCodMarca.getVlrString().trim() + "'" );
 		}
 		
-		sSQL.append( "SELECT P.CODPROD,P.DESCPROD,P.CODBARPROD, P.REFPROD, LC.ALIQIPIFISC " );
-		sSQL.append( "FROM EQPRODUTO  P, LFCLFISCAL LC WHERE P.CODEMP=? AND P.CODFILIAL=? " );
-		sSQL.append( "AND LC.CODEMP=P.CODEMPFC AND LC.CODFILIAL=P.CODFILIALFC AND LC.CODFISC=P.CODFISC ");
+		sSQL.append( "SELECT P.CODGRUP, G.DESCGRUP, P.CODPROD,P.DESCPROD,P.CODBARPROD, P.REFPROD, LC.ALIQIPIFISC " );
+		sSQL.append( "FROM EQPRODUTO  P, LFCLFISCAL LC, EQGRUPO G WHERE P.CODEMP=? AND P.CODFILIAL=? " );
+		sSQL.append( "AND LC.CODEMP=P.CODEMPFC AND LC.CODFILIAL=P.CODFILIALFC AND LC.CODFISC=P.CODFISC AND ");
+		sSQL.append( "G.CODEMP=P.CODEMPGP AND G.CODFILIAL=P.CODFILIALGP AND G.CODGRUP=P.CODGRUP ");
 		sSQL.append( filtro );
 		sSQL.append( " ORDER BY " );
+		if ( cbRel.getStatus() == true ) {
+			sSQL.append("P.CODGRUP, ");
+		}
 		sSQL.append( rgOrdem.getVlrString() );
 		
 		try {
@@ -213,16 +221,35 @@ public class FRCodficProd extends FRelatorio {
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "EQPRODUTO" ));
 		
-		FPrinterJob dlGr = new FPrinterJob( "relatorios/CodficProd.jasper", "Codificação de produto", null, rs, hParam, this );
+		if( cbRel.getStatus() == true){
 		
-		if ( bVisualizar ) {
-			dlGr.setVisible( true );
+			FPrinterJob dlGr = new FPrinterJob( "relatorios/CodficProdGrup.jasper", "Codificação de produto", null, rs, hParam, this );
+			
+			if ( bVisualizar ) {
+				dlGr.setVisible( true );
+			}
+			else {		
+				try {				
+					JasperPrintManager.printReport( dlGr.getRelatorio(), true );				
+				} catch ( Exception err ) {					
+					Funcoes.mensagemErro( this, "Erro na impressão de relatório de codificação de produto!\n" + err.getMessage(), true, con, err );
+				}
+			}
 		}
-		else {		
-			try {				
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );				
-			} catch ( Exception err ) {					
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de codificação de produto!\n" + err.getMessage(), true, con, err );
+		else{
+			
+			FPrinterJob dlGr = new FPrinterJob( "relatorios/CodficProd.jasper", "Codificação de produto", null, rs, hParam, this );
+			
+			if ( bVisualizar ) {
+				dlGr.setVisible( true );
+			}
+			else {		
+				try {				
+			
+					JasperPrintManager.printReport( dlGr.getRelatorio(), true );				
+				} catch ( Exception err ) {					
+					Funcoes.mensagemErro( this, "Erro na impressão de relatório de codificação de produto!\n" + err.getMessage(), true, con, err );
+				}
 			}
 		}
 	}
