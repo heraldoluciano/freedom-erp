@@ -95,7 +95,7 @@ public class FreedomSTD extends AplicativoPD {
 	
 			addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'F', 100200000, 1, false, null );
 				addOpcao( 100200000, TP_OPCAO_ITEM, "Alteração de numero de nota", "Alteração de doc", 'A', 100210000, 2, true, FTrocaDoc.class );
-				addOpcao( 100200000, TP_OPCAO_ITEM, "Alteração nº do recibo", "Alteração nº do recibo", 'P', 100280000, 2, true, FAlteraRecibo.class );
+				addOpcao( 100200000, TP_OPCAO_ITEM, "Alteração de numero do recibo", "Alteração do numero do recibo", 'P', 100280000, 2, true, FAlteraRecibo.class );
 				addOpcao( 100200000, TP_OPCAO_MENU, "Exportar", "Exportar", 'E', 100220000, 2, false, null );
 					addOpcao( 100220000, TP_OPCAO_ITEM, "Contabil/Livros Fiscais", "Contabil/Livros Fiscais", 'C', 100220100, 3, true, FExporta.class );
 					addOpcao( 100220000, TP_OPCAO_ITEM, "SVV", "SVV", 'S', 100220200, 3, true, FSVV.class );
