@@ -67,7 +67,7 @@ ORDER BY PD.CODGRUP, PD.DESCPROD]]></queryString>
 	<field name="ALIQIPIFISC" class="java.math.BigDecimal"/>
 
 
-		<group  name="GRUPPROD" isStartNewColumn="true" >
+		<group  name="GRUPPROD" >
 			<groupExpression><![CDATA[$F{CODGRUP}]]></groupExpression>
 			<groupHeader>
 			<band height="18"  isSplitAllowed="true" >
