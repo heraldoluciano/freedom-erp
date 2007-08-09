@@ -596,10 +596,6 @@ public class FRBoleto extends FRelatorio {
 			
 			try {
 				
-//				if ( ! con.getAutoCommit() ) {
-	//				con.commit();
-//				}
-				
 				StringBuilder sql = new StringBuilder();
 
 				sql.append( "UPDATE FNRECEBER SET CODEMPBO=?, CODFILIALBO=?, CODBANCO=? " );
