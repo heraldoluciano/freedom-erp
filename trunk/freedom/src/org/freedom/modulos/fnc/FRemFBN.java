@@ -159,6 +159,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		tab.adicColuna( "Pessoa" );
 		tab.adicColuna( "C.P.F." );
 		tab.adicColuna( "C.N.P.J." );
+		tab.adicColuna( "Cart. cob." );
 
 		tab.setTamColuna( 20, EColTab.COL_SEL.ordinal() );
 		tab.setTamColuna( 150, EColTab.COL_RAZCLI.ordinal() );
@@ -178,6 +179,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		tab.setTamColuna( 30, EColTab.COL_PESSOACLI.ordinal() );
 		tab.setTamColuna( 80, EColTab.COL_CPFCLI.ordinal() );
 		tab.setTamColuna( 80, EColTab.COL_CNPJCLI.ordinal() );
+		tab.setTamColuna( 80, EColTab.COL_CARTEIRA.ordinal() );
 		tab.setColunaEditavel( EColTab.COL_SEL.ordinal(), true );
 		tab.addMouseListener( this );
 
@@ -958,7 +960,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		
 		COL_SEL, COL_RAZCLI, COL_CODCLI, COL_CODREC, COL_DOCREC, COL_NRPARC, COL_VLRAPAG,
 		COL_DTREC, COL_DTVENC, COL_AGENCIACLI, COL_IDENTCLI, COL_SITREM, COL_SITRET,
-		COL_STIPOFEBRABAN, COL_TIPOREMCLI, COL_PESSOACLI, COL_CPFCLI, COL_CNPJCLI;
+		COL_STIPOFEBRABAN, COL_TIPOREMCLI, COL_PESSOACLI, COL_CPFCLI, COL_CNPJCLI, COL_CARTEIRA;
 	}
 
 }
