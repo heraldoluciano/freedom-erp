@@ -244,6 +244,8 @@ public class DLEnviarEmail extends FFDialogo {
 
 	private void enviar() {
 
+		boolean enviado = false;
+		
 		if ( validaEnviar() ) {
 			
 			DLLoading loading = new DLLoading();
@@ -252,11 +254,11 @@ public class DLEnviarEmail extends FFDialogo {
 				
 				if ( "S".equals( mail.getAutentica() ) ) {
 					loading.start();
-					enviarAutenticado();
+					enviado = enviarAutenticado();
 				}
 				else {
 					loading.start();
-					enviarNaoAutenticado();
+					enviado = enviarNaoAutenticado();
 				}
 
 			} catch ( Exception e ) {
@@ -265,14 +267,19 @@ public class DLEnviarEmail extends FFDialogo {
 				e.printStackTrace();
 			} finally {
 				loading.stop();
+				if (enviado) {
+					Funcoes.mensagemInforma( this, "E-mail enviado com sucesso." );
+				}
 			}
 
 			setStatus( null );
 		}
 	}
 
-	private void enviarAutenticado() throws Exception {
+	private boolean enviarAutenticado() throws Exception {
 
+		boolean retorno = false;
+		
 		Properties props = new Properties();
 
 		String socketFactory = "javax.net.SocketFactory";
@@ -299,12 +306,16 @@ public class DLEnviarEmail extends FFDialogo {
 		if ( msg != null ) {
 			setStatus( "Enviando e-mail..." );
 			Transport.send( msg );
-			Funcoes.mensagemInforma( this, "E-mail enviado com sucesso." );
+			retorno = true;
 		}
+		
+		return retorno;
+		
 	}
 
-	private void enviarNaoAutenticado() throws Exception {
+	private boolean enviarNaoAutenticado() throws Exception {
 
+		boolean retorno = false;
 		Properties props = new Properties();
 		props.put( "mail.transport.protocol", "smtp" );
 		props.put( "mail.smtp.host", txtHost.getVlrString() );
@@ -316,8 +327,9 @@ public class DLEnviarEmail extends FFDialogo {
 		if ( msg != null ) {
 			setStatus( "Enviando e-mail..." );
 			Transport.send( msg );
-			Funcoes.mensagemInforma( this, "E-mail enviado com sucesso." );
+			retorno = true;
 		}
+		return retorno;
 	}
 	
 	private MimeMessage getMessage( final Session session ) throws Exception {
