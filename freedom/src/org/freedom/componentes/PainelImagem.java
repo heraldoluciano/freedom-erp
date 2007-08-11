@@ -202,6 +202,7 @@ public class PainelImagem extends JPanelPad implements ActionListener, MouseList
   	bAlt = false;
   	bZoom = false;
   	repaint();
+  	bNulo = false;
   }
   public int[] getValsEncaixa(Image im) {
     int[] iRetorno = new int[2];

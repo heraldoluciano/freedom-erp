@@ -170,7 +170,7 @@ public class ListaCampos extends Container implements PostListener,
 
 	private String sOrdem = "";
 
-	private Vector vCache = new Vector();
+	private Vector<Comparable> vCache = new Vector<Comparable>();
 
 	private Navegador nvLC = null;
 
@@ -190,7 +190,7 @@ public class ListaCampos extends Container implements PostListener,
 
 	private ListaCampos lcM = null;
 
-	private Vector vLcDetalhe = new Vector();
+	private Vector<ListaCampos> vLcDetalhe = new Vector<ListaCampos>();
 
 	private Tabela tab = null;
 
@@ -204,7 +204,7 @@ public class ListaCampos extends Container implements PostListener,
 
 	private int iNumDescs = 0;
 
-	private Vector vDescFK = new Vector();
+	private Vector<JTextFieldPad> vDescFK = new Vector<JTextFieldPad>();
 
 	private String sWhereAdic = "";
 	
@@ -228,7 +228,7 @@ public class ListaCampos extends Container implements PostListener,
 
 	private boolean bPodeCommit = true;
 
-	public Vector vTxtValor = null;
+	public Vector<JTextComponent> vTxtValor = null;
 
 	private JTextComponent txtValor = null;
 
@@ -853,7 +853,7 @@ public class ListaCampos extends Container implements PostListener,
 				+ sDinWhere;
 		txtValor = jtValor;
 		if (vTxtValor == null) {
-			vTxtValor = new Vector();
+			vTxtValor = new Vector<JTextComponent>();
 		}
 		vTxtValor.addElement(txtValor);
 	}
@@ -1171,7 +1171,7 @@ public class ListaCampos extends Container implements PostListener,
 		String sNome = "";
 		sSepT = " ";
 		sWhereT = "";
-		HashMap hmTabelasExternas = new HashMap();
+		HashMap<String, Integer> hmTabelasExternas = new HashMap<String, Integer>();
 		int i = 0;
 		int iTot = 0;
 		sSQLTab = "SELECT ";
@@ -1179,7 +1179,7 @@ public class ListaCampos extends Container implements PostListener,
 		sMascs = new String[150];
 		iTot = getComponentCount();
 		iNumDescs = 0;
-		vDescFK = new Vector();
+		vDescFK = new Vector<JTextFieldPad>();
 
 		while (i < iTot) {
 			comp = getComponent(i - iNumDescs);
@@ -1247,7 +1247,7 @@ public class ListaCampos extends Container implements PostListener,
 	public Vector getCamposPK() {
 		Component comp = null;
 		GuardaCampo gcCampo = null;
-		Vector vRetorno = new Vector();
+		Vector<GuardaCampo> vRetorno = new Vector<GuardaCampo>();
 		try {
 			for (int i = 0; i < getComponentCount(); i++) {
 				comp = getComponent(i);
@@ -1347,7 +1347,7 @@ public class ListaCampos extends Container implements PostListener,
 
 	public void montaSqlCircular1(ListaCampos lc) {
 		Component comp = null;
-		HashMap hmTabelasExternas = new HashMap();
+		HashMap<String, Integer> hmTabelasExternas = new HashMap<String, Integer>();
 		lcM = lc.getMaster();
 		if (lcM != null) {
 			for (int i = 0; i < lcM.getComponentCount(); i++) {
@@ -1633,7 +1633,7 @@ public class ListaCampos extends Container implements PostListener,
 				bResultado = false;
 			}
 		}
-		vCache = new Vector();
+		vCache = new Vector<Comparable>();
 		if (bResultado) {
 			if (con == null) {
 				Funcoes.mensagemErro(this, "Conexão nula!!");
@@ -1663,7 +1663,7 @@ public class ListaCampos extends Container implements PostListener,
 
 				if (rsLC.next()) {
 					for (int i = 0; i < getComponentCount(); i++) {
-						comp = getComponent(i);
+						comp = getComponent(i);					
 						if (!bCamposCanc[i]) {
 							if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_BYTES) {
 								Blob bVal = rsLC.getBlob(((GuardaCampo) comp).getNomeCampo());
@@ -2139,7 +2139,6 @@ public class ListaCampos extends Container implements PostListener,
 						}
 						if (bParam) {							
 							comp = getComponent(i);
-							System.out.println(((GuardaCampo) comp).getNomeCampo());
 							if (!((GuardaCampo) comp).getSoLeitura()) {
 								if (((GuardaCampo) comp).ehNulo()) {
 									if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {
@@ -2581,7 +2580,7 @@ public class ListaCampos extends Container implements PostListener,
 	}
 
 	private void carregaGridInsert(boolean b) {
-		Vector vVals = new Vector();
+		Vector<Comparable> vVals = new Vector<Comparable>();
 		int iContaDesc = 0;
 		if ((b) && (tab != null)) {
 			for (int i = 0; i < (getComponentCount() + iNumDescs); i++) {
