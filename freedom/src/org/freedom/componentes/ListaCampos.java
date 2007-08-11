@@ -2137,8 +2137,9 @@ public class ListaCampos extends Container implements PostListener,
 							else
 								bParam = true;
 						}
-						if (bParam) {
+						if (bParam) {							
 							comp = getComponent(i);
+							System.out.println(((GuardaCampo) comp).getNomeCampo());
 							if (!((GuardaCampo) comp).getSoLeitura()) {
 								if (((GuardaCampo) comp).ehNulo()) {
 									if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {
