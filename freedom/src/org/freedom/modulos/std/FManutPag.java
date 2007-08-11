@@ -1026,7 +1026,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 				sSQL.append( "IT.OBSITPAG,IT.NPARCPAG,IT.VLRJUROSITPAG," );
 				sSQL.append( "(SELECT CO.DOCCOMPRA FROM CPCOMPRA CO " );
 				sSQL.append( "WHERE CO.CODCOMPRA=P.CODCOMPRA AND CO.CODEMP=P.CODEMPCP AND CO.CODFILIAL=P.CODFILIALCP)," );
-				sSQL.append( "IT.DTITPAG,IT.VLRADICITPAG " );
+				sSQL.append( "IT.DTITPAG,IT.VLRADICITPAG,P.DOCPAG " );
 				sSQL.append( "FROM FNITPAGAR IT,FNPAGAR P,CPFORNECED F " );
 				sSQL.append( "WHERE P.CODPAG=IT.CODPAG AND F.CODFOR=P.CODFOR " );
 				sSQL.append( sWhereManut );
@@ -1073,7 +1073,8 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 						tabManut.setValor( rs.getString( "RazFor" ), i, 4 );
 						tabManut.setValor( rs.getString( "CodPag" ), i, 5 );
 						tabManut.setValor( rs.getString( "NParcPag" ), i, 6 );
-						tabManut.setValor( ( rs.getString( "DocLancaItPag" ) != null ? rs.getString( "DocLancaItPag" ) : "" ), i, 7 );
+						tabManut.setValor( ( rs.getString( "DocLancaItPag" ) != null ? rs.getString( "DocLancaItPag" ) : 
+							( rs.getString( "DocPag" ) != null ? rs.getString( "DocPag" ) + "/" + rs.getString( "NParcPag" ) : "" ) ), i, 7 );
 						tabManut.setValor( Funcoes.copy( rs.getString( 23 ), 0, 10 ).trim(), i, 8 );
 						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrParcItPag" ) ), i, 9 );
 						tabManut.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DtPagoItPag" ) ), i, 10 );
@@ -1420,7 +1421,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 					sVals[ 2 ] = String.valueOf( vNumContas.elementAt( iLin ) );
 					sVals[ 3 ] = String.valueOf( vCodPlans.elementAt( iLin ) );
 					sVals[ 4 ] = String.valueOf( vCodCCs.elementAt( iLin ) );
-					sVals[ 5 ] = (String) tabManut.getValor( iLin, 5 );
+					sVals[ 5 ] = (String) tabManut.getValor( iLin, 7 );
 					sVals[ 6 ] = String.valueOf( vDtEmiss.elementAt( iLin ) );
 					sVals[ 7 ] = (String) tabManut.getValor( iLin, 1 );
 					sVals[ 8 ] = (String) tabManut.getValor( iLin, 9 );
@@ -1445,7 +1446,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 					}
 					
 					// SE o doccompra estiver em branco getvalor(8) quer dizer que o lançamento foi feito pelo usuário.
-					dl.setValores( sVals, "".equals( tabManut.getValor( iLin, 8 ).toString().trim() ) );
+					dl.setValores( sVals, ! "".equals( tabManut.getValor( iLin, 8 ).toString().trim() ) );
 					dl.setConexao( con );
 					dl.setVisible( true );
 					
