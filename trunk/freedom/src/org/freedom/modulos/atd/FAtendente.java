@@ -60,7 +60,7 @@ public class FAtendente extends FDados {
 	public FAtendente () {
 		super();
 		setTitulo("Cadastro de Atendentes");
-		setAtribos( 50, 20, 500, 440);
+		setAtribos( 50, 20, 530, 467);
 		
 		lcTipoAtend.add(new GuardaCampo( txtCodTipoAtend, "CodTpAtend", "Cód.tp.atend.", ListaCampos.DB_PK, false),"txtCodVendx");
 		lcTipoAtend.add(new GuardaCampo( txtDescTipoAtend, "DescTpAtend", "Descriçao do tipo de atendente", ListaCampos.DB_SI,false),"txtCodVendx");
