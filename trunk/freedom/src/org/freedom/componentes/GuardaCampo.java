@@ -418,7 +418,9 @@ public class GuardaCampo extends Component {
       ((PainelImagem)comp).setVlrBytes(bVals);
   }
   public void setVlrBytes(InputStream bVals) {
-  	if (comp instanceof PainelImagem)
+  	if (comp instanceof PainelImagem){
   		((PainelImagem)comp).setVlrBytes(bVals);
+  	      	
+  	}
   }
 }
