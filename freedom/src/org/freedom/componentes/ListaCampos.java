@@ -1045,7 +1045,7 @@ public class ListaCampos extends Container implements PostListener,
 		GuardaCampo gcCampo = null;
 		int iSalto = 0;
 		if ((tab != null) && (bDetalhe)) {
-			if (tab.getNumLinhas() > 0) {
+			/*if (tab.getNumLinhas() > 0) {
 				for (int i = 0; i < getComponentCount(); i++) {
 					gcCampo = ((GuardaCampo) getComponent(i));
 					if (gcCampo.ehPK()) {
@@ -1055,7 +1055,19 @@ public class ListaCampos extends Container implements PostListener,
 						iSalto++;
 				}
 				bRetorno = carregaDados();
+			}*/
+			int iComp = 0;
+			for (int i=0;i<tab.getNumColunas();i++) {
+				gcCampo = ((GuardaCampo) getComponent(iComp));
+				if (gcCampo.ehPK()) {
+					gcCampo.getCampo().setVlrString(String.valueOf(tab.getValor(ind, i)));
+					iComp++;
+				}
+				if (gcCampo.ehFK() && gcCampo.getDescFK() != null) {
+					i++;
+				}
 			}
+			bRetorno = carregaDados();
 		}
 		return bRetorno;
 	}
