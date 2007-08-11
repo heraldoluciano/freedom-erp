@@ -42,7 +42,7 @@ public class FTipoFor extends FDados implements ActionListener {
 	public FTipoFor () {
 		super();
 		setTitulo("Cadastro de Tipo de Fornecedor");
-		setAtribos( 50, 50, 350, 125);
+		setAtribos( 50, 50, 380, 145);
 		adicCampo(txtCodTipoFor, 7, 20, 70, 20,"CodTipoFor","Cód.tp.for.", ListaCampos.DB_PK, true);
 		adicCampo(txtDescTipoFor, 80, 20, 250, 20,"DescTipoFor","Descrição do tipo de fornecedor", ListaCampos.DB_SI, true);
 		setListaCampos( true, "TIPOFOR", "CP");
