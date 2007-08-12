@@ -49,7 +49,7 @@ public class RelGrupo extends FRelatorio {
 
 	public RelGrupo() {
 
-		super();
+		super( false );
 		setTitulo( "Relatorio de grupos de produtos" );		
 		setAtribos( 50, 50, 285, 150 );
 		

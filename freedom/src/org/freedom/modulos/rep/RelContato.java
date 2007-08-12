@@ -49,7 +49,7 @@ public class RelContato extends FRelatorio {
 
 	public RelContato() {
 
-		super();
+		super( false );
 		setTitulo( "Relatorio de contatos" );		
 		setAtribos( 50, 50, 285, 150 );
 		

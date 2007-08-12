@@ -55,6 +55,7 @@ import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
@@ -83,19 +84,19 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private final JPanelPad panelCamposItens = new JPanelPad();
 
-	private final JTextFieldPad txtCodPed = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodPed = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldPad txtDataPed = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private final JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private final JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private final JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -103,21 +104,23 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private final JTextFieldFK txtDescMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private final JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private final JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldFK txtRazTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private final JTextFieldPad txtCodPedFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodPedFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private final JTextFieldPad txtCodPedCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodPedCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldPad txtCodItem = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private final JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private final JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private final JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -192,6 +195,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	private final ListaCampos lcTransportadora = new ListaCampos( this, "TP" );
 
 	private final ListaCampos lcProduto = new ListaCampos( this, "PD" );
+	
+	private final ListaCampos lcProd2 = new ListaCampos( this, "PD" );
 
 	private final ListaCampos lcFornecedorItem = new ListaCampos( this, "FO" );
 
@@ -209,21 +214,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		montaListaCampos();
 
 		montaMaster();
-		setListaCampos( true, "PEDIDO", "RP" );
-
-		setListaCampos( lcDet );
-		setNavegador( navRod );
-		montaDetale();
-		setListaCampos( true, "ITPEDIDO", "RP" );
-		montaTab();
-
-		tab.setTamColuna( 50, 0 );
-		tab.setTamColuna( 100, 1 );
-		tab.setTamColuna( 235, 2 );
-		tab.setTamColuna( 100, 3 );
-		tab.setTamColuna( 100, 4 );
-		tab.setTamColuna( 100, 5 );
-
+		
 		setImprimir( true );
 		btPrevimp.addActionListener( this );
 		btImp.addActionListener( this );
@@ -365,12 +356,33 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProduto.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
 		lcProduto.add( new GuardaCampo( txtCodForItem, "CodFor", "Cód.for.", ListaCampos.DB_SI, false ) );
 		lcProduto.montaSql( false, "PRODUTO", "RP" );
+//		lcProduto.setWhereAdic( "ATIVOPROD='S'" );
 		lcProduto.setQueryCommit( false );
 		lcProduto.setReadOnly( true );
 		txtCodProd.setTabelaExterna( lcProduto );
 
+		// FK do produto (*Somente em caso de referências este listaCampos
+		// Trabalha como gatilho para o listaCampos de produtos, assim
+		// carregando o código do produto que será armazenado no Banco)
+		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_PK, txtDescProd, false ) );
+		lcProd2.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtCodForItem, "CodFor", "Cód.for.", ListaCampos.DB_SI, false ) );
+		txtRefProd.setNomeCampo( "RefProd" );
+		txtRefProd.setListaCampos( lcDet );
+//		lcProd2.setWhereAdic( "ATIVOPROD='S'" );
+		lcProd2.montaSql( false, "PRODUTO", "RP" );
+		lcProd2.setQueryCommit( false );
+		lcProd2.setReadOnly( true );
+		txtRefProd.setTabelaExterna( lcProd2 );
+		
+		txtRefProd.addKeyListener( this );
+		
+		
 		/****************
 		 * FORNECEDOR 2 *
 		 ****************/
@@ -389,7 +401,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		/***********
 		 * PEDIDOS *
 		 ***********/
-
+		setListaCampos( lcCampos );
+		
 		setAltCab( 170 );
 		setPainel( panelPedido, pnCliCab );
 
@@ -414,10 +427,12 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 		adicDB( rgRemessa, 584, 20, 90, 110, "TipoRemPed", "Remessa", false );
 		adicDB( rgFrete, 469, 100, 110, 30, "TipoFretePed", "Frete", false );
+		
+		setListaCampos( true, "PEDIDO", "RP" );
 
 	}
 
-	private void montaDetale() {
+	private void montaDetalhe() {
 
 		/*********
 		 * ITENS *
@@ -455,11 +470,25 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 		setAltDet( 175 );
 		setPainel( panelCamposItens, panelItens );
-
+		
+		setListaCampos( lcDet );
+		setNavegador( navRod );
+		
 		panelCamposItens.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(), "Itens" ) );
 
-		adicCampo( txtCodItem, 7, 15, 70, 20, "CodItPed", "Item", ListaCampos.DB_PK, true );
-		adicCampo( txtCodProd, 80, 15, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
+		adicCampo( txtCodItem, 7, 15, 50, 20, "CodItPed", "Item", ListaCampos.DB_PK, true );
+		
+		if ( "S".equals( (String) prefere.get( EPrefere.USAREFPROD.ordinal() ) ) ) {
+			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
+			adicCampoInvisivel( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_FK, false );
+			adic( new JLabelPad( "Referência" ), 60, -5, 90, 20 );
+			adic( txtRefProd, 60, 15, 90, 20 );
+			txtRefProd.setFK( true );
+		}
+		else {
+			adicCampo( txtCodProd, 60, 15, 90, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
+		}
+		
 		adicDescFK( txtDescProd, 153, 15, 246, 20, "DescProd", "Descrição do produto" );
 		adicCampo( txtQtdItem, 402, 15, 92, 20, "QtdItPed", "Qtd.", ListaCampos.DB_SI, true );
 		adicCampo( txtPrecoItem, 497, 15, 94, 20, "PrecoItPed", "Preço", ListaCampos.DB_SI, true );
@@ -488,6 +517,18 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		btEmailPed.setToolTipText( "Enviar pedido por e-mail" );
 		pnGImp.setPreferredSize( new Dimension( 120, 26 ) );
 		pnGImp.add( btEmailPed );
+
+		setListaCampos( true, "ITPEDIDO", "RP" );
+		
+		montaTab();
+
+		tab.setTamColuna( 50, 0 );
+		tab.setTamColuna( 100, 1 );
+		tab.setTamColuna( 235, 2 );
+		tab.setTamColuna( 100, 3 );
+		tab.setTamColuna( 100, 4 );
+		tab.setTamColuna( 100, 5 );
+
 	}
 
 	private void calculaValorItem() {
@@ -611,45 +652,29 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			}
 		}
 	}
-
-	private ResultSet getRsPedido() throws Exception {
-
-		StringBuilder sql = new StringBuilder();
-
-		sql.append( "SELECT IT.CODPED,P.DATAPED,P.CODCLI,C.RAZCLI,P.CODVEND,V.NOMEVEND,P.CODPLANOPAG,PG.DESCPLANOPAG, " );
-		sql.append( "P.CODMOEDA,M.SINGMOEDA,P.CODFOR,F.RAZFOR,P.CODTRAN, " );
-		sql.append( "(SELECT T.RAZTRAN FROM RPTRANSP T WHERE T.CODEMP=P.CODEMPTP AND T.CODFILIAL=P.CODFILIALTP AND T.CODTRAN=P.CODTRAN) AS RAZTRAN, " );
-		sql.append( "P.TIPOFRETEPED,P.TIPOREMPED,P.NUMPEDCLI,P.NUMPEDFOR,P.VLRTOTPED, " );
-		sql.append( "P.QTDTOTPED,P.VLRLIQPED,P.VLRIPIPED,P.VLRDESCPED,P.VLRADICPED,P.VLRRECPED, " );
-		sql.append( "P.VLRPAGPED,P.OBSPED,IT.CODITPED,IT.CODPROD,PD.DESCPROD, " );
-		sql.append( "IT.QTDITPED,IT.PRECOITPED,IT.VLRITPED,IT.VLRLIQITPED,IT.PERCIPIITPED, " );
-		sql.append( "IT.VLRIPIITPED,IT.PERCDESCITPED,IT.VLRDESCITPED,IT.PERCADICITPED, " );
-		sql.append( "IT.VLRADICITPED,IT.PERCRECITPED,IT.VLRRECITPED,IT.PERCPAGITPED,IT.VLRPAGITPED,PD.CUBAGEMPROD " );
-		sql.append( "FROM RPPEDIDO P, RPITPEDIDO IT, RPPRODUTO PD, " );
-		sql.append( "RPCLIENTE C,RPVENDEDOR V, RPPLANOPAG PG, RPMOEDA M, RPFORNECEDOR F " );
-		sql.append( "WHERE IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODPED=? " );
-		sql.append( "AND P.CODEMP=IT.CODEMP AND P.CODFILIAL=IT.CODFILIAL AND P.CODPED=IT.CODPED " );
-		sql.append( "AND C.CODEMP=P.CODEMPCL AND C.CODFILIAL=P.CODFILIALCL AND C.CODCLI=P.CODCLI " );
-		sql.append( "AND V.CODEMP=P.CODEMPVD AND V.CODFILIAL=P.CODFILIALVD AND V.CODVEND=P.CODVEND " );
-		sql.append( "AND PG.CODEMP=P.CODEMPPG AND PG.CODFILIAL=P.CODFILIALPG AND PG.CODPLANOPAG=P.CODPLANOPAG " );
-		sql.append( "AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA " );
-		sql.append( "AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR " );
-		sql.append( "AND PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND PD.CODPROD=IT.CODPROD " );
-
+	
+	private FPrinterJob getPedido( final Integer codped ) {
+		
+		String classLayout = "modulos/rep/relatorios/pedido.jasper";
+		
+		if ( prefere.get( EPrefere.LAYOUTPED.ordinal() ) != null && ( (String) prefere.get( EPrefere.LAYOUTPED.ordinal() ) ).trim().length() > 0 ) {
+		
+			classLayout = "/opt/freedom/reports/" + (String) prefere.get( EPrefere.LAYOUTPED.ordinal() ) + ".jasper";
+		}
+		
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RPPEDIDO" ) );
+		hParam.put( "CODPED", codped );
 		if ( "S".equals( (String) prefere.get( EPrefere.ORDEMPED.ordinal() ) ) ) {
-			sql.append( "ORDER BY PD.DESCPROD " );
+			hParam.put( "ORDERBY", "DESCPROD" );
 		}
 		else {
-			sql.append( "ORDER BY IT.CODITPED " );
+			hParam.put( "ORDERBY", "CODITPED" );
 		}
+		hParam.put( "REPORT_CONNECTION", con );
 
-		PreparedStatement ps = con.prepareStatement( sql.toString() );
-		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, ListaCampos.getMasterFilial( "RPPEDIDO" ) );
-		ps.setInt( 3, txtCodPed.getVlrInteger() );
-		ResultSet rs = ps.executeQuery();
-
-		return rs;
+		return new FPrinterJob( classLayout, "PEDIDO Nº " + txtCodPed.getVlrInteger(), "", this, hParam, con, true );
 	}
 
 	private void enviarPedido() {
@@ -665,18 +690,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 				DLEnviarEmail enviar = new DLEnviarEmail( this, mail );
 				enviar.preparar();
 
-				String classLayout = "pedido";
-				if ( prefere.get( EPrefere.LAYOUTPED.ordinal() ) != null && ( (String) prefere.get( EPrefere.LAYOUTPED.ordinal() ) ).trim().length() > 0 ) {
-					classLayout = (String) prefere.get( EPrefere.LAYOUTPED.ordinal() );
-				}
-
-				ResultSet rs = getRsPedido();
-				HashMap<String, Object> hParam = new HashMap<String, Object>();
-				hParam.put( "CODEMP", Aplicativo.iCodEmp );
-				hParam.put( "SUBREPORT_DIR", "/opt/freedom/reports/" );
-				hParam.put( "REPORT_CONNECTION", con );
-
-				FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/" + classLayout + ".jasper", "PEDIDO Nº " + txtCodPed.getVlrInteger(), null, rs, hParam, this );
+				FPrinterJob dlGr = getPedido( txtCodPed.getVlrInteger() );
 
 				if ( enviar.preparado() ) {
 					enviar.setReport( dlGr.getRelatorio() );
@@ -696,20 +710,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 			try {
 
-				String classLayout = "pedido";
-
-				if ( prefere.get( EPrefere.LAYOUTPED.ordinal() ) != null && ( (String) prefere.get( EPrefere.LAYOUTPED.ordinal() ) ).trim().length() > 0 ) {
-					classLayout = (String) prefere.get( EPrefere.LAYOUTPED.ordinal() );
-				}
-
-				ResultSet rs = getRsPedido();
-				HashMap<String, Object> hParam = new HashMap<String, Object>();
-				hParam.put( "CODEMP", Aplicativo.iCodEmp );
-				hParam.put( "SUBREPORT_DIR", "/opt/freedom/reports/" );
-				hParam.put( "REPORT_CONNECTION", con );
-
-				FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/" + classLayout + ".jasper", "PEDIDO Nº " + txtCodPed.getVlrInteger(), null, rs, hParam, this );
-
+				FPrinterJob dlGr = getPedido( txtCodPed.getVlrInteger() );
+				
 				if ( visualizar ) {
 					dlGr.setVisible( true );
 				}
@@ -717,7 +719,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 				}
 			} catch ( Exception e ) {
-				Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
+				Funcoes.mensagemErro( this, "Erro ao montar pedido!\n" + e.getMessage() );
 				e.printStackTrace();
 			}
 		}
@@ -759,7 +761,14 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		}
 		else if ( e.getListaCampos() == lcDet ) {
 
-			txtCodProd.requestFocus();
+			if ( "S".equals( prefere.get( EPrefere.USAREFPROD.ordinal() ) ) ) {
+				
+				txtRefProd.requestFocus();
+			}
+			else {
+				
+				txtCodProd.requestFocus();
+			}
 		}
 	}
 
@@ -771,7 +780,17 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		if ( e.getListaCampos() == lcCampos && lcCampos.getStatusAnt() == ListaCampos.LCS_INSERT ) {
 
 			lcDet.insert( true );
+			
+			if ( "S".equals( prefere.get( EPrefere.USAREFPROD.ordinal() ) ) ) {
+				
+				txtRefProd.requestFocus();
+			}
+			else {
+				
+				txtCodProd.requestFocus();
+			}
 		}
+		
 		super.afterPost( e );
 	}
 
@@ -825,14 +844,12 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			lcDet.post();
 			lcDet.insert( true );
 		}
-		else if ( e.getSource() == txtPercIPIItem ) {
-			txtPercDescItem.requestFocus();
-		}
+		
 	}
-
 	public void setConexao( Connection cn ) {
-
 		super.setConexao( cn );
+		
+		prefere = RPPrefereGeral.getPrefere( cn );
 
 		lcCliente.setConexao( cn );
 		lcVendedor.setConexao( cn );
@@ -841,10 +858,18 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcFornecedor.setConexao( cn );
 		lcTransportadora.setConexao( cn );
 		lcProduto.setConexao( cn );
+		lcProd2.setConexao( cn );
 		lcFornecedorItem.setConexao( cn );
 		lcPedido.setConexao( cn );
+		
+		montaDetalhe();
 
-		prefere = RPPrefereGeral.getPrefere( cn );
+		
+	}
+	
+	public void executar( final Integer codped ) {
+		txtCodPed.setVlrInteger( codped );
+		lcCampos.carregaDados();
 	}
 
 }

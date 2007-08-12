@@ -28,6 +28,7 @@ package org.freedom.modulos.rep;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -58,15 +59,15 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 
 	private static final long serialVersionUID = 1;
 
-	private final JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -96,7 +97,7 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 
 	public RelPedido() {
 
-		super();
+		super( false );
 		setTitulo( "Relatorio de Pedidos" );		
 		setAtribos( 100, 50, 325, 430 );
 		
@@ -127,7 +128,7 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 		labs1.add( "Descrição" );
 		Vector<String> vals1 = new Vector<String>();
 		vals1.add( "IT.CODITPED" );
-		vals1.add( "P.DESCPROD" );
+		vals1.add( "PD.DESCPROD" );
 		rgOrdem1 = new JRadioGroup( 1, 2, labs1, vals1 );
 		
 		Vector<String> labs2 = new Vector<String>();
@@ -240,6 +241,101 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 		adic( new JLabel( "Descrição da moeda" ), 90, 310, 210, 20 );
 		adic( txtNomeMoeda, 90, 330, 210, 20 );
 	}
+	
+	private ResultSet getQueryCompleto() throws SQLException {
+		
+		Date dtini = txtDtIni.getVlrDate();
+		Date dtfim = txtDtFim.getVlrDate();
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "SELECT IT.CODPED,P.DATAPED,P.CODCLI,C.RAZCLI,P.CODVEND,V.NOMEVEND,P.CODPLANOPAG,PG.DESCPLANOPAG, " );
+		sql.append( "P.CODMOEDA,M.SINGMOEDA,P.CODFOR,F.RAZFOR,P.CODTRAN, " );
+		sql.append( "(SELECT T.RAZTRAN FROM RPTRANSP T WHERE T.CODEMP=P.CODEMPTP AND T.CODFILIAL=P.CODFILIALTP AND T.CODTRAN=P.CODTRAN) AS RAZTRAN, " );
+		sql.append( "P.TIPOFRETEPED,P.TIPOREMPED,P.NUMPEDCLI,P.NUMPEDFOR,P.VLRTOTPED, " );
+		sql.append( "P.QTDTOTPED,P.VLRLIQPED,P.VLRIPIPED,P.VLRDESCPED,P.VLRADICPED,P.VLRRECPED, " );
+		sql.append( "P.VLRPAGPED,P.OBSPED,IT.CODITPED,IT.CODPROD,PD.DESCPROD, " );
+		sql.append( "IT.QTDITPED,IT.PRECOITPED,IT.VLRITPED,IT.VLRLIQITPED,IT.PERCIPIITPED, " );
+		sql.append( "IT.VLRIPIITPED,IT.PERCDESCITPED,IT.VLRDESCITPED,IT.PERCADICITPED, " );
+		sql.append( "IT.VLRADICITPED,IT.PERCRECITPED,IT.VLRRECITPED,IT.PERCPAGITPED,IT.VLRPAGITPED, " );
+		sql.append( "C.ENDCLI,C.CIDCLI,C.ESTCLI,C.CEPCLI,C.BAIRCLI,C.DDDCLI,C.FONECLI,C.FAXCLI,C.EMAILCLI,C.CNPJCLI,C.INSCCLI " );
+		sql.append( "FROM RPPEDIDO P, RPITPEDIDO IT, RPPRODUTO PD, " );
+		sql.append( "RPCLIENTE C,RPVENDEDOR V, RPPLANOPAG PG, RPMOEDA M, RPFORNECEDOR F " );
+		sql.append( "WHERE IT.CODEMP=? AND IT.CODFILIAL=? " );
+		sql.append( "AND P.DATAPED BETWEEN ? AND ? " );
+		sql.append( "AND P.CODEMP=IT.CODEMP AND P.CODFILIAL=IT.CODFILIAL AND P.CODPED=IT.CODPED " );
+		sql.append( "AND C.CODEMP=P.CODEMPCL AND C.CODFILIAL=P.CODFILIALCL AND C.CODCLI=P.CODCLI " );
+		sql.append( "AND V.CODEMP=P.CODEMPVD AND V.CODFILIAL=P.CODFILIALVD AND V.CODVEND=P.CODVEND " );
+		sql.append( "AND PG.CODEMP=P.CODEMPPG AND PG.CODFILIAL=P.CODFILIALPG AND PG.CODPLANOPAG=P.CODPLANOPAG " );
+		sql.append( "AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA " );
+		sql.append( "AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR " );
+		sql.append( "AND PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND PD.CODPROD=IT.CODPROD " );
+		
+		if ( txtCodMoeda.getVlrString().trim().length() > 0 ) {
+			sql.append( "AND M.CODMOEDA='" + txtCodMoeda.getVlrString() + "'" );
+		}
+		if ( txtCodCli.getVlrString().trim().length() > 0 ) {
+			sql.append( "AND C.CODCLI=" + txtCodCli.getVlrInteger() );
+		}
+		if ( txtCodFor.getVlrString().trim().length() > 0 ) {
+			sql.append( "AND F.CODFOR=" + txtCodFor.getVlrInteger() );
+		}
+		if ( txtCodVend.getVlrString().trim().length() > 0 ) {
+			sql.append( "AND V.CODVEND=" + txtCodVend.getVlrInteger().intValue() );
+		}
+
+		sql.append( " ORDER BY P.CODPED, " + rgOrdem1.getVlrString() );
+		
+		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "RPITPEDIDO" ) );
+		ps.setDate( 3, Funcoes.dateToSQLDate( dtini ) );
+		ps.setDate( 4, Funcoes.dateToSQLDate( dtfim ) );
+
+		return ps.executeQuery();
+	}
+		
+	private ResultSet getQueryResumido() throws SQLException {
+		
+		Date dtini = txtDtIni.getVlrDate();
+		Date dtfim = txtDtFim.getVlrDate();
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "SELECT P.CODPED,P.DATAPED,P.CODCLI,C.RAZCLI,P.CODVEND,V.NOMEVEND," );
+		sql.append( "P.CODFOR,F.RAZFOR,P.NUMPEDCLI,P.NUMPEDFOR,P.QTDTOTPED,P.VLRLIQPED," );
+		sql.append( "P.VLRDESCPED,P.VLRADICPED,P.VLRIPIPED " );
+		sql.append( "FROM RPPEDIDO P, RPCLIENTE C, RPVENDEDOR V, RPFORNECEDOR F, RPMOEDA M " );
+		sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? " );
+		sql.append( "AND P.DATAPED BETWEEN ? AND ? " );
+		sql.append( "AND C.CODEMP=P.CODEMPCL AND C.CODFILIAL=P.CODFILIALCL AND C.CODCLI=P.CODCLI " );
+		sql.append( "AND V.CODEMP=P.CODEMPVD AND V.CODFILIAL=P.CODFILIALVD AND V.CODVEND=P.CODVEND " );
+		sql.append( "AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR " );
+		sql.append( "AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA " );
+		
+		if ( txtCodMoeda.getVlrString().trim().length() > 0 ) {
+			sql.append( "AND M.CODMOEDA='" + txtCodMoeda.getVlrString() + "'" );
+		}
+		if ( txtCodCli.getVlrString().trim().length() > 0 ) {
+			sql.append( "AND C.CODCLI=" + txtCodCli.getVlrInteger() );
+		}
+		if ( txtCodFor.getVlrString().trim().length() > 0 ) {
+			sql.append( "AND F.CODFOR=" + txtCodFor.getVlrInteger() );
+		}
+		if ( txtCodVend.getVlrString().trim().length() > 0 ) {
+			sql.append( "AND V.CODVEND=" + txtCodVend.getVlrInteger().intValue() );
+		}
+
+		sql.append( " ORDER BY " + rgOrdem2.getVlrString() );
+		
+		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "RPITPEDIDO" ) );
+		ps.setDate( 3, Funcoes.dateToSQLDate( dtini ) );
+		ps.setDate( 4, Funcoes.dateToSQLDate( dtfim ) );
+
+		return ps.executeQuery();
+	}
 
 	@ Override
 	public void imprimir( boolean visualizar ) {
@@ -258,6 +354,7 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 
 		try {
 			
+			ResultSet rs = "C".equals( rgModo.getVlrString() ) ? getQueryCompleto() : getQueryResumido();
 			String relatorio = "C".equals( rgModo.getVlrString() ) ? "rppedidocomp.jasper" : "rppedidoresum.jasper";
 			String modo = "C".equals( rgModo.getVlrString() ) ? "( completo )" : " ( resumido )";
 			String nomevend = null;
@@ -267,62 +364,18 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 			Date dtini = txtDtIni.getVlrDate();
 			Date dtfim = txtDtFim.getVlrDate();
 			
-			StringBuilder sql = new StringBuilder();
-			
-			sql.append( "SELECT IT.CODPED,P.DATAPED,P.CODCLI,C.RAZCLI,P.CODVEND,V.NOMEVEND,P.CODPLANOPAG,PG.DESCPLANOPAG, " );
-			sql.append( "P.CODMOEDA,M.SINGMOEDA,P.CODFOR,F.RAZFOR,P.CODTRAN, " );
-			sql.append( "(SELECT T.RAZTRAN FROM RPTRANSP T WHERE T.CODEMP=P.CODEMPTP AND T.CODFILIAL=P.CODFILIALTP AND T.CODTRAN=P.CODTRAN) AS RAZTRAN, " );
-			sql.append( "P.TIPOFRETEPED,P.TIPOREMPED,P.NUMPEDCLI,P.NUMPEDFOR,P.VLRTOTPED, " );
-			sql.append( "P.QTDTOTPED,P.VLRLIQPED,P.VLRIPIPED,P.VLRDESCPED,P.VLRADICPED,P.VLRRECPED, " );
-			sql.append( "P.VLRPAGPED,P.OBSPED,IT.CODITPED,IT.CODPROD,PD.DESCPROD, " );
-			sql.append( "IT.QTDITPED,IT.PRECOITPED,IT.VLRITPED,IT.VLRLIQITPED,IT.PERCIPIITPED, " );
-			sql.append( "IT.VLRIPIITPED,IT.PERCDESCITPED,IT.VLRDESCITPED,IT.PERCADICITPED, " );
-			sql.append( "IT.VLRADICITPED,IT.PERCRECITPED,IT.VLRRECITPED,IT.PERCPAGITPED,IT.VLRPAGITPED, " );
-			sql.append( "C.ENDCLI,C.CIDCLI,C.ESTCLI,C.CEPCLI,C.BAIRCLI,C.DDDCLI,C.FONECLI,C.FAXCLI,C.EMAILCLI,C.CNPJCLI,C.INSCCLI " );
-			sql.append( "FROM RPPEDIDO P, RPITPEDIDO IT, RPPRODUTO PD, " );
-			sql.append( "RPCLIENTE C,RPVENDEDOR V, RPPLANOPAG PG, RPMOEDA M, RPFORNECEDOR F " );
-			sql.append( "WHERE IT.CODEMP=? AND IT.CODFILIAL=? " );
-			sql.append( "AND P.DATAPED BETWEEN ? AND ? " );
-			sql.append( "AND P.CODEMP=IT.CODEMP AND P.CODFILIAL=IT.CODFILIAL AND P.CODPED=IT.CODPED " );
-			sql.append( "AND C.CODEMP=P.CODEMPCL AND C.CODFILIAL=P.CODFILIALCL AND C.CODCLI=P.CODCLI " );
-			sql.append( "AND V.CODEMP=P.CODEMPVD AND V.CODFILIAL=P.CODFILIALVD AND V.CODVEND=P.CODVEND " );
-			sql.append( "AND PG.CODEMP=P.CODEMPPG AND PG.CODFILIAL=P.CODFILIALPG AND PG.CODPLANOPAG=P.CODPLANOPAG " );
-			sql.append( "AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA " );
-			sql.append( "AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR " );
-			sql.append( "AND PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND PD.CODPROD=IT.CODPROD " );
-			
 			if ( txtCodMoeda.getVlrString().trim().length() > 0 ) {
-				sql.append( "AND M.CODMOEDA='" + txtCodMoeda.getVlrString() + "'" );
 				moeda = txtNomeMoeda.getVlrString();
 			}
 			if ( txtCodCli.getVlrString().trim().length() > 0 ) {
-				sql.append( "AND C.CODCLI=" + txtCodCli.getVlrInteger() );
 				razcli = txtRazCli.getVlrString();
 			}
 			if ( txtCodFor.getVlrString().trim().length() > 0 ) {
-				sql.append( "AND F.CODFOR=" + txtCodFor.getVlrInteger() );
 				razfor = txtRazFor.getVlrString();
 			}
 			if ( txtCodVend.getVlrString().trim().length() > 0 ) {
-				sql.append( "AND V.CODVEND=" + txtCodVend.getVlrInteger().intValue() );
 				nomevend = txtNomeVend.getVlrString();
 			}
-
-			if ( "C".equals( rgModo.getVlrString() ) ) {
-			
-				sql.append( " ORDER BY P.CODPED, " + rgOrdem1.getVlrString() );
-			}
-			else if ( "R".equals( rgModo.getVlrString() ) ) {
-			
-				sql.append( " ORDER BY " + rgOrdem2.getVlrString() );
-			}
-			
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "RPITPEDIDO" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( dtini ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( dtfim ) );
-			ResultSet rs = ps.executeQuery();
 			
 			HashMap<String,Object> hParam = new HashMap<String, Object>();
 

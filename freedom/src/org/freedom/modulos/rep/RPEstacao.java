@@ -33,7 +33,7 @@ public class RPEstacao extends FDados {
 
 	private static final long serialVersionUID = 1L;
 
-	private final JTextFieldPad txtCodEst = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodEst = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldPad txtDescEst = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 	

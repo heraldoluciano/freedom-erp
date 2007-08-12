@@ -47,7 +47,7 @@ public class RPTransportadora extends FDados implements ActionListener {
 	
 	private final JTextFieldPad txtEndTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 45, 0 );
 
-	//private final JTextFieldPad txtNumCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	//private final JTextFieldPad txtNumCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldPad txtCidTran = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 

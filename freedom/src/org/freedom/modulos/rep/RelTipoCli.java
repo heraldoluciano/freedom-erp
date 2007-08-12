@@ -49,7 +49,7 @@ public class RelTipoCli extends FRelatorio {
 
 	public RelTipoCli() {
 
-		super();
+		super( false );
 		setTitulo( "Relatorio de tipos de clientes" );		
 		setAtribos( 50, 50, 285, 150 );
 		

@@ -49,7 +49,7 @@ public class RelVendedor extends FRelatorio {
 
 	public RelVendedor() {
 
-		super();
+		super( false );
 		setTitulo( "Relatorio de vendedores" );		
 		setAtribos( 50, 50, 285, 150 );
 		

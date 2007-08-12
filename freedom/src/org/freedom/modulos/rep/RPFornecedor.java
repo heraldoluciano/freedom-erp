@@ -36,7 +36,7 @@ public class RPFornecedor extends FDados implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldPad txtRazFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 
