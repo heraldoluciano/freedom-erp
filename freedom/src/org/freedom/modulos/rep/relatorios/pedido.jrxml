@@ -43,23 +43,36 @@
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
 	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(4)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(99)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["/opt/freedom/reports/"]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT IT.CODPED,P.DATAPED,P.CODCLI,C.RAZCLI,P.CODVEND,V.NOMEVEND,P.CODPLANOPAG,PG.DESCPLANOPAG,
+	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODPED" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ORDERBY" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["CODITPED"]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[SELECT 
+( CASE WHEN 'CODITPED'=$P{ORDERBY} THEN IT.CODITPED ELSE PD.DESCPROD END ) AS ORDEM,
+IT.CODPED,P.DATAPED,P.CODCLI,C.RAZCLI,P.CODVEND,V.NOMEVEND,P.CODPLANOPAG,PG.DESCPLANOPAG,
 P.CODMOEDA,M.SINGMOEDA,P.CODFOR,F.RAZFOR,P.CODTRAN,
 (SELECT T.RAZTRAN FROM RPTRANSP T WHERE T.CODEMP=P.CODEMPTP AND T.CODFILIAL=P.CODFILIALTP AND T.CODTRAN=P.CODTRAN) AS RAZTRAN,
+(SELECT T.DDDTRAN FROM RPTRANSP T WHERE T.CODEMP=P.CODEMPTP AND T.CODFILIAL=P.CODFILIALTP AND T.CODTRAN=P.CODTRAN) AS DDDTRAN,
+(SELECT T.FONETRAN FROM RPTRANSP T WHERE T.CODEMP=P.CODEMPTP AND T.CODFILIAL=P.CODFILIALTP AND T.CODTRAN=P.CODTRAN) AS FONETRAN,
 P.TIPOFRETEPED,P.TIPOREMPED,P.NUMPEDCLI,P.NUMPEDFOR,P.VLRTOTPED,
 P.QTDTOTPED,P.VLRLIQPED,P.VLRIPIPED,P.VLRDESCPED,P.VLRADICPED,P.VLRRECPED,
-P.VLRPAGPED,P.OBSPED,IT.CODITPED,IT.CODPROD,PD.DESCPROD,IT.CODFOR,FI.RAZFOR,
+P.VLRPAGPED,P.OBSPED,IT.CODITPED,IT.CODPROD,PD.DESCPROD,
 IT.QTDITPED,IT.PRECOITPED,IT.VLRITPED,IT.VLRLIQITPED,IT.PERCIPIITPED,
 IT.VLRIPIITPED,IT.PERCDESCITPED,IT.VLRDESCITPED,IT.PERCADICITPED,
 IT.VLRADICITPED,IT.PERCRECITPED,IT.VLRRECITPED,IT.PERCPAGITPED,IT.VLRPAGITPED,PD.CUBAGEMPROD
-FROM RPPEDIDO P, RPITPEDIDO IT, RPPRODUTO PD, RPFORNECEDOR FI,
+FROM RPPEDIDO P, RPITPEDIDO IT, RPPRODUTO PD,
 RPCLIENTE C,RPVENDEDOR V, RPPLANOPAG PG, RPMOEDA M, RPFORNECEDOR F
-WHERE IT.CODEMP=4 AND IT.CODFILIAL=1 AND IT.CODPED=2
+WHERE IT.CODEMP=$P{CODEMP} AND IT.CODFILIAL=$P{CODFILIAL} AND IT.CODPED=$P{CODPED}
 AND P.CODEMP=IT.CODEMP AND P.CODFILIAL=IT.CODFILIAL AND P.CODPED=IT.CODPED
 AND C.CODEMP=P.CODEMPCL AND C.CODFILIAL=P.CODFILIALCL AND C.CODCLI=P.CODCLI
 AND V.CODEMP=P.CODEMPVD AND V.CODFILIAL=P.CODFILIALVD AND V.CODVEND=P.CODVEND
@@ -67,7 +80,7 @@ AND PG.CODEMP=P.CODEMPPG AND PG.CODFILIAL=P.CODFILIALPG AND PG.CODPLANOPAG=P.COD
 AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA
 AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR
 AND PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND PD.CODPROD=IT.CODPROD
-AND FI.CODEMP=IT.CODEMPFO AND FI.CODFILIAL=IT.CODFILIALFO AND FI.CODFOR=IT.CODFOR]]></queryString>
+ORDER BY 1]]></queryString>
 
 	<field name="CODPED" class="java.lang.Long"/>
 	<field name="DATAPED" class="java.sql.Date"/>
@@ -83,6 +96,8 @@ AND FI.CODEMP=IT.CODEMPFO AND FI.CODFILIAL=IT.CODFILIALFO AND FI.CODFOR=IT.CODFO
 	<field name="RAZFOR" class="java.lang.String"/>
 	<field name="CODTRAN" class="java.lang.Long"/>
 	<field name="RAZTRAN" class="java.lang.String"/>
+	<field name="DDDTRAN" class="java.lang.String"/>
+	<field name="FONETRAN" class="java.lang.String"/>
 	<field name="TIPOFRETEPED" class="java.lang.String"/>
 	<field name="TIPOREMPED" class="java.lang.String"/>
 	<field name="NUMPEDCLI" class="java.lang.String"/>
@@ -1542,6 +1557,23 @@ AND FI.CODEMP=IT.CODEMPFO AND FI.CODFILIAL=IT.CODFILIALFO AND FI.CODFOR=IT.CODFO
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="9"
+						y="3"
+						width="207"
+						height="12"
+						forecolor="#6464C8"
+						backcolor="#FFFFFF"
+						key="staticText-33"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Setpoint informática - (41) 3238-1364]]></text>
+				</staticText>
 			</band>
 		</pageFooter>
 		<summary>

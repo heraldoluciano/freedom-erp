@@ -43,7 +43,7 @@
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
 	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(4)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(99)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["/opt/freedom/reports/"]]></defaultValueExpression>
@@ -51,10 +51,10 @@
 	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="DTINI" isForPrompting="false" class="java.util.Date">
+	<parameter name="DTINI" isForPrompting="true" class="java.util.Date">
 		<defaultValueExpression ><![CDATA[Calendar.getInstance().getTime()]]></defaultValueExpression>
 	</parameter>
-	<parameter name="DTFIM" isForPrompting="false" class="java.util.Date">
+	<parameter name="DTFIM" isForPrompting="true" class="java.util.Date">
 		<defaultValueExpression ><![CDATA[Calendar.getInstance().getTime()]]></defaultValueExpression>
 	</parameter>
 	<parameter name="RAZFOR" isForPrompting="false" class="java.lang.String"/>
@@ -66,23 +66,22 @@ P.CODMOEDA,M.SINGMOEDA,P.CODFOR,F.RAZFOR,P.CODTRAN,
 (SELECT T.RAZTRAN FROM RPTRANSP T WHERE T.CODEMP=P.CODEMPTP AND T.CODFILIAL=P.CODFILIALTP AND T.CODTRAN=P.CODTRAN) AS RAZTRAN,
 P.TIPOFRETEPED,P.TIPOREMPED,P.NUMPEDCLI,P.NUMPEDFOR,P.VLRTOTPED,
 P.QTDTOTPED,P.VLRLIQPED,P.VLRIPIPED,P.VLRDESCPED,P.VLRADICPED,P.VLRRECPED,
-P.VLRPAGPED,P.OBSPED,IT.CODITPED,IT.CODPROD,PD.DESCPROD,IT.CODFOR,FI.RAZFOR,
+P.VLRPAGPED,P.OBSPED,IT.CODITPED,IT.CODPROD,PD.DESCPROD,
 IT.QTDITPED,IT.PRECOITPED,IT.VLRITPED,IT.VLRLIQITPED,IT.PERCIPIITPED,
 IT.VLRIPIITPED,IT.PERCDESCITPED,IT.VLRDESCITPED,IT.PERCADICITPED,
 IT.VLRADICITPED,IT.PERCRECITPED,IT.VLRRECITPED,IT.PERCPAGITPED,IT.VLRPAGITPED,
 C.ENDCLI,C.CIDCLI,C.ESTCLI,C.CEPCLI,C.BAIRCLI,C.DDDCLI,C.FONECLI,C.FAXCLI,C.EMAILCLI,C.CNPJCLI,C.INSCCLI
-FROM RPPEDIDO P, RPITPEDIDO IT, RPPRODUTO PD, RPFORNECEDOR FI,
+FROM RPPEDIDO P, RPITPEDIDO IT, RPPRODUTO PD,
 RPCLIENTE C,RPVENDEDOR V, RPPLANOPAG PG, RPMOEDA M, RPFORNECEDOR F
-WHERE IT.CODEMP=$P{CODEMP} AND IT.CODFILIAL=$P{CODFILIAL} 
+WHERE IT.CODEMP=$P{CODEMP} AND IT.CODFILIAL=$P{CODFILIAL}
+AND P.DATAPED BETWEEN $P{DTINI} AND $P{DTFIM}
 AND P.CODEMP=IT.CODEMP AND P.CODFILIAL=IT.CODFILIAL AND P.CODPED=IT.CODPED
 AND C.CODEMP=P.CODEMPCL AND C.CODFILIAL=P.CODFILIALCL AND C.CODCLI=P.CODCLI
 AND V.CODEMP=P.CODEMPVD AND V.CODFILIAL=P.CODFILIALVD AND V.CODVEND=P.CODVEND
 AND PG.CODEMP=P.CODEMPPG AND PG.CODFILIAL=P.CODFILIALPG AND PG.CODPLANOPAG=P.CODPLANOPAG
 AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA
 AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR
-AND PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND PD.CODPROD=IT.CODPROD
-AND FI.CODEMP=IT.CODEMPFO AND FI.CODFILIAL=IT.CODFILIALFO AND FI.CODFOR=IT.CODFOR
-ORDER BY P.CODPED, IT.CODITPED]]></queryString>
+AND PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND PD.CODPROD=IT.CODPROD]]></queryString>
 
 	<field name="CODPED" class="java.lang.Long"/>
 	<field name="DATAPED" class="java.sql.Date"/>
@@ -599,9 +598,9 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 				</rectangle>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="40"
+						x="50"
 						y="17"
-						width="180"
+						width="200"
 						height="12"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -625,7 +624,7 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 						mode="Transparent"
 						x="5"
 						y="17"
-						width="30"
+						width="40"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -645,7 +644,7 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 						height="12"
 						key="textField-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
+					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DATAPED}]]></textFieldExpression>
@@ -670,25 +669,25 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="225"
+						x="253"
 						y="17"
-						width="60"
+						width="47"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-8"
 						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Pagamento em]]></text>
+				<text><![CDATA[Pagamento]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="290"
+						x="302"
 						y="17"
-						width="160"
+						width="148"
 						height="12"
 						key="textField-12"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -700,40 +699,8 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="5"
-						y="62"
-						width="40"
-						height="12"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-10"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[E-Mail]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="50"
-						y="62"
-						width="235"
-						height="12"
-						key="textField-14">
-							<printWhenExpression><![CDATA[new Boolean($F{RAZTRAN}!=null)]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{EMAILCLI}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="290"
-						y="62"
+						x="455"
+						y="47"
 						width="20"
 						height="12"
 						forecolor="#000000"
@@ -741,16 +708,16 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 						key="staticText-12"
 						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Frete]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="312"
-						y="62"
-						width="15"
+						x="480"
+						y="47"
+						width="19"
 						height="12"
 						key="textField-16"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -762,7 +729,7 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="329"
+						x="253"
 						y="62"
 						width="50"
 						height="12"
@@ -771,16 +738,16 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 						key="staticText-13"
 						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Ped. Cliente]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="381"
+						x="306"
 						y="62"
-						width="40"
+						width="67"
 						height="12"
 						key="textField-17"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -791,9 +758,9 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="490"
+						x="444"
 						y="62"
-						width="40"
+						width="84"
 						height="12"
 						key="textField-18"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -805,7 +772,7 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="423"
+						x="376"
 						y="62"
 						width="65"
 						height="12"
@@ -814,7 +781,7 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 						key="staticText-14"
 						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Ped. Fornecedor]]></text>
@@ -1101,7 +1068,7 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="420"
+						x="341"
 						y="32"
 						width="30"
 						height="12"
@@ -1117,9 +1084,9 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="455"
+						x="374"
 						y="32"
-						width="50"
+						width="54"
 						height="12"
 						key="textField-47"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1130,13 +1097,13 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="510"
+						x="430"
 						y="32"
 						width="20"
 						height="12"
 						key="textField-48"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ESTCLI} != null ? $F{ESTCLI} : ""]]></textFieldExpression>
@@ -1144,9 +1111,9 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="330"
+						x="253"
 						y="32"
-						width="25"
+						width="27"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1160,7 +1127,7 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="360"
+						x="283"
 						y="32"
 						width="55"
 						height="12"
@@ -1173,7 +1140,7 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="275"
+						x="480"
 						y="32"
 						width="50"
 						height="12"
@@ -1186,9 +1153,9 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 				</textField>
 				<staticText>
 					<reportElement
-						x="5"
+						x="253"
 						y="47"
-						width="40"
+						width="47"
 						height="12"
 						key="staticText-48"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1199,9 +1166,9 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="50"
+						x="302"
 						y="47"
-						width="195"
+						width="148"
 						height="12"
 						key="textField-51"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1214,22 +1181,22 @@ ORDER BY P.CODPED, IT.CODITPED]]></queryString>
 				</textField>
 				<staticText>
 					<reportElement
-						x="250"
+						x="5"
 						y="47"
-						width="25"
+						width="40"
 						height="12"
 						key="staticText-49"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[CNPJ]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="280"
+						x="50"
 						y="47"
-						width="110"
+						width="200"
 						height="12"
 						key="textField-52"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1242,22 +1209,22 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 				</textField>
 				<staticText>
 					<reportElement
-						x="395"
-						y="47"
+						x="5"
+						y="62"
 						width="40"
 						height="12"
 						key="staticText-50"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Inscrição]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="440"
-						y="47"
-						width="90"
+						x="50"
+						y="62"
+						width="200"
 						height="12"
 						key="textField-53"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1269,7 +1236,7 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="253"
+						x="455"
 						y="32"
 						width="20"
 						height="12"
@@ -1278,7 +1245,7 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 						key="staticText-51"
 						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[CEP]]></text>

@@ -882,21 +882,6 @@ ORDER BY P.CODPED]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{MOEDA} != null ? $P{MOEDA} : "Todas"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="230"
-						y="145"
-						width="300"
-						height="12"
-						key="textField-60">
-							<printWhenExpression><![CDATA[new Boolean( $P{NOMEVEND} == null )]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMEVEND} != null ? ( "Vendedor : " + $F{NOMEVEND}.trim() ) : ""]]></textFieldExpression>
-				</textField>
 				<staticText>
 					<reportElement
 						mode="Transparent"

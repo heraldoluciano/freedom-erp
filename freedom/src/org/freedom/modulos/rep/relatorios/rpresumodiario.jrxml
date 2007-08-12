@@ -430,7 +430,7 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				</line>
 				<ellipse>
 					<reportElement
-						x="131"
+						x="91"
 						y="2"
 						width="12"
 						height="12"
@@ -454,7 +454,7 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 					<reportElement
 						x="16"
 						y="2"
-						width="122"
+						width="82"
 						height="12"
 						forecolor="#DCDCFF"
 						backcolor="#DCDCFF"
@@ -463,7 +463,7 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				</rectangle>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="53"
+						x="32"
 						y="2"
 						width="50"
 						height="12"
