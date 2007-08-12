@@ -1060,7 +1060,7 @@ public class ListaCampos extends Container implements PostListener,
 			for (int i=0;i<tab.getNumColunas();i++) {
 				gcCampo = ((GuardaCampo) getComponent(iComp));
 				if (gcCampo.ehPK()) {
-					gcCampo.getCampo().setVlrString(String.valueOf(tab.getValor(ind, i)));
+					gcCampo.getCampo().setVlrString(tab.getValor(ind, i)!=null ? String.valueOf(tab.getValor(ind, i)) : "");
 					iComp++;
 				}
 				if (gcCampo.ehFK() && gcCampo.getDescFK() != null) {
