@@ -51,6 +51,8 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	
+	private final JCheckBoxPad cbUsaRefProd = new JCheckBoxPad( "Usar referência para produto?", "S", "N" );
+	
 	private final JCheckBoxPad cbIpiComis = new JCheckBoxPad( "Incluir IPI no calculo da comissão?", "S", "N" );
 	
 	private final JCheckBoxPad cbIPIPed = new JCheckBoxPad( "Imprimir IPI no pedido?", "S", "N" );
@@ -63,7 +65,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 
 	private final JTextFieldPad txtServidorSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtPortaSMTP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtPortaSMTP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldPad txtUsuarioSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );	
 	
@@ -118,19 +120,21 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	
 	private void montaTela() {
 		
-		JLabel vendas = new JLabel( "Vendas", SwingConstants.CENTER );
-		vendas.setOpaque( true );
+		JLabel geral = new JLabel( "Geral", SwingConstants.CENTER );
+		geral.setOpaque( true );
 		JLabel linha1 = new JLabel();
 		linha1.setBorder( BorderFactory.createEtchedBorder() );
 		
-		adic( vendas, 27, 0, 80, 20 );
+		adic( geral, 27, 0, 80, 20 );
 		adic( linha1, 7, 10, 397, 120 );
 		
-		adicDB( cbIpiComis, 17, 20, 300, 20, "IpiComis", null, true );
-		adicDB( cbIPIPed, 17, 40, 300, 20, "IPIPed", null, true );
-		adicDB( cbCodBarProd, 17, 60, 300, 20, "CodBarProd", null, true );
-		adicDB( cbEndCliPed, 17, 80, 300, 20, "EndCliPed", null, true );
-		adicDB( cbOrdemPed, 17, 100, 300, 20, "OrdemPed", null, true );
+		adicDB( cbUsaRefProd, 17, 20, 300, 20, "UsaRefProd", null, true );
+		adicDB( cbOrdemPed, 17, 40, 300, 20, "OrdemPed", null, true );
+		
+		//adicDB( cbIpiComis, 17, 40, 300, 20, "IPIPed", null, true );
+		//adicDB( cbIPIPed, 17, 60, 300, 20, "CodBarProd", null, true );
+		//adicDB( cbCodBarProd, 17, 80, 300, 20, "EndCliPed", null, true );
+		//adicDB( cbEndCliPed, 17, 100, 300, 20, "OrdemPed", null, true );
 		
 		JLabel email = new JLabel( "E - Mail", SwingConstants.CENTER );
 		email.setOpaque( true );
@@ -190,7 +194,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 			
 			sSQL.append( "SELECT IPICOMIS,IPIPED,CODBARPROD,ENDCLIPED,ORDEMPED," );
 			sSQL.append( "SERVIDORSMTP,PORTASMTP,USUARIOSMTP,SENHASMTP,AUTENTICASMTP,SSLSMTP," );
-			sSQL.append( "CASASDEC,CASASDECFIN,CODMOEDA,LAYOUTPED " );
+			sSQL.append( "CASASDEC,CASASDECFIN,CODMOEDA,LAYOUTPED,USAREFPROD " );
 			sSQL.append( "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -214,6 +218,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 				prefere.add( EPrefere.CASASDECFIN.ordinal(), rs.getInt( "CASASDECFIN" ) );
 				prefere.add( EPrefere.CODMOEDA.ordinal(), rs.getString( "CODMOEDA" ) );
 				prefere.add( EPrefere.LAYOUTPED.ordinal(), rs.getString( "LAYOUTPED" ) );
+				prefere.add( EPrefere.USAREFPROD.ordinal(), rs.getString( "USAREFPROD" ) );
 			}
 			
 			rs.close();
@@ -246,6 +251,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	    CASASDEC,
 	    CASASDECFIN,
 	    CODMOEDA,
-	    LAYOUTPED;
+	    LAYOUTPED,
+	    USAREFPROD;
 	}
 }

@@ -76,6 +76,8 @@ public class RPImportacao extends FFilho implements ActionListener {
 
 	private final JTextFieldPad txtDiretorio = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 	
+	private final JTextFieldPad txtCondicao = new JTextFieldPad( JTextFieldPad.TP_STRING, 300, 0 );
+	
 	private final JCheckBoxPad cbRPVendedor = new JCheckBoxPad( "vendedores", "S", "N" );
 	
 	private final JCheckBoxPad cbRPFornecedor = new JCheckBoxPad( "fornecedores", "S", "N" );
@@ -91,6 +93,8 @@ public class RPImportacao extends FFilho implements ActionListener {
 	private final JCheckBoxPad cbRPPlanopagamento = new JCheckBoxPad( "planos de pagamento", "S", "N" );
 	
 	private final JCheckBoxPad cbRPPedido = new JCheckBoxPad( "pedidos", "S", "N" );
+	
+	private final JCheckBoxPad cbRPITPedido = new JCheckBoxPad( "itens de pedidos", "S", "N" );
 
 	private final JButton btConectar = new JButton( "Conectar" );
 
@@ -115,7 +119,7 @@ public class RPImportacao extends FFilho implements ActionListener {
 
 		super( false );
 		setTitulo( "Importação de dados" );
-		setAtribos( 100, 100, 420, 380 );
+		setAtribos( 100, 100, 420, 440 );
 
 		montaTela();
 
@@ -128,14 +132,15 @@ public class RPImportacao extends FFilho implements ActionListener {
 		btConectar.setEnabled( false );
 		btImportar.setEnabled( false );
 		
-		cbRPVendedor.setVlrString( "S" );
-		cbRPProduto.setVlrString( "S" );
-		cbRPTransportadora.setVlrString( "S" );
-		cbRPFornecedor.setVlrString( "S" );
-		cbRPTipocliente.setVlrString( "S" );
-		cbRPCliente.setVlrString( "S" );
-		cbRPPlanopagamento.setVlrString( "S" );
-		cbRPPedido.setVlrString( "S" );
+		cbRPVendedor.setVlrString( "N" );
+		cbRPProduto.setVlrString( "N" );
+		cbRPTransportadora.setVlrString( "N" );
+		cbRPFornecedor.setVlrString( "N" );
+		cbRPTipocliente.setVlrString( "N" );
+		cbRPCliente.setVlrString( "N" );
+		cbRPPlanopagamento.setVlrString( "N" );
+		cbRPPedido.setVlrString( "N" );
+		cbRPITPedido.setVlrString( "N" );
 			
 		status.setStringPainted( true );
 		status.setString(  "Selecione a base de dados ..."  );
@@ -155,7 +160,7 @@ public class RPImportacao extends FFilho implements ActionListener {
 		linha1.setBorder( BorderFactory.createEtchedBorder() );
 		
 		panelImportacao.adic( tabelas, 30, 70, 80, 20 );
-		panelImportacao.adic( linha1, 10, 80, 384, 180 );
+		panelImportacao.adic( linha1, 10, 80, 384, 200 );
 		
 		panelImportacao.adic( cbRPVendedor, 30, 90, 200, 20 );
 		panelImportacao.adic( cbRPFornecedor, 30, 110, 200, 20 );
@@ -165,10 +170,14 @@ public class RPImportacao extends FFilho implements ActionListener {
 		panelImportacao.adic( cbRPCliente, 30, 190, 200, 20 );
 		panelImportacao.adic( cbRPPlanopagamento, 30, 210, 200, 20 );
 		panelImportacao.adic( cbRPPedido, 30, 230, 200, 20 );
-
-		panelImportacao.adic( status, 10, 270, 320, 20 );
+		panelImportacao.adic( cbRPITPedido, 30, 250, 200, 20 );
 		
-		panelImportacao.adic( btLogError, 340, 268, 54, 24 );
+		panelImportacao.adic( new JLabel( "Condicao..." ), 10, 280, 350, 20 );
+		panelImportacao.adic( txtCondicao, 10, 300, 384, 20 );
+
+		panelImportacao.adic( status, 10, 330, 320, 20 );
+		
+		panelImportacao.adic( btLogError, 360, 328, 54, 24 );
 
 		btConectar.setPreferredSize( new Dimension( 120, 30 ) );
 		btImportar.setPreferredSize( new Dimension( 120, 30 ) );
@@ -309,6 +318,9 @@ public class RPImportacao extends FFilho implements ActionListener {
 		if ( "S".equals( cbRPPedido.getVlrString() ) ) {
 			importarPedidos();
 		}
+		if ( "S".equals( cbRPITPedido.getVlrString() ) ) {
+			importarItensPedido();
+		}
 
 		status.setString( "Dados importados..." );		
 	}
@@ -341,14 +353,18 @@ public class RPImportacao extends FFilho implements ActionListener {
 		List< String > dadosparadox = new ArrayList< String >();
 		
 		try {
-		
-			PreparedStatement ps = session.prepareStatement( sql );
+			
+			PreparedStatement ps = session.prepareStatement( sql + " " + txtCondicao.getVlrString().trim() );
+			
 			ResultSet rs = ps.executeQuery();
 			
 			while ( rs.next() ) {
 				
 				dadosparadox.add( rs.getString( 1 ) );
 			}
+			
+			Funcoes.mensagemInforma( this, "Adicionou todos registros na lista!" );
+			
 			
 			if ( ! session.getAutoCommit() ) {
 				session.commit();
@@ -377,12 +393,13 @@ public class RPImportacao extends FFilho implements ActionListener {
 			}
 			catch ( SQLException e ) {
 				indexerro++;
-				System.out.println( "[" + indexerro + "]" + e.getMessage() );
 				falhas.append( insert + ";\n" );
 			}
 			
 			status.setValue( ++count );
 		}
+		
+		System.gc();
 	}
 
 	private void importarFornecedor() {
@@ -440,7 +457,7 @@ public class RPImportacao extends FFilho implements ActionListener {
 		insProduto.append( ListaCampos.getMasterFilial( "RPGRUPO" ) + "," );
 		insProduto.append( "'0001','GRUPO DE PRODUTOS', 1 )" );
 		
-		executeGeneric( insProduto.toString() );
+		//executeGeneric( insProduto.toString() );
 		
 		StringBuilder insUnidade = new StringBuilder();		
 		
@@ -449,7 +466,7 @@ public class RPImportacao extends FFilho implements ActionListener {
 		insUnidade.append( ListaCampos.getMasterFilial( "RPUNIDADE" ) + "," );
 		insUnidade.append( "'UN','UNIDADE' )" );
 		
-		executeGeneric( insUnidade.toString() );
+		//executeGeneric( insUnidade.toString() );
 		
 		StringBuilder sql = new StringBuilder();		
 			
@@ -475,7 +492,7 @@ public class RPImportacao extends FFilho implements ActionListener {
 		sql.append( ListaCampos.getMasterFilial( "RRPRODUTO" ) );
 		sql.append( "||','||CODFOR||','||CHAR(39)||CODFORPROD||CHAR(39)||','||COALESCE(PESOPROD,'NULL')||','||COALESCE(PESOPROD,'NULL')||','||" );
 		sql.append( "COALESCE(COMISPROD,'NULL')||','||COALESCE(PERCIPIPROD,'NULL')||','||COALESCE(PRECOPROD,'NULL')||','||" );
-		sql.append( "COALESCE(PRECOPROD2,'NULL')||','||COALESCE(PRECOPROD3,'NULL')||' )' FROM PRODUTO WHERE CODFOR NOT IN(2,15,19,17,3,20,9,12)" );
+		sql.append( "COALESCE(PRECOPROD2,'NULL')||','||COALESCE(PRECOPROD3,'NULL')||' )' FROM PRODUTO " );
 		
 		importarGeneric( sql.toString() );
 	}
@@ -629,9 +646,15 @@ public class RPImportacao extends FFilho implements ActionListener {
 		sql.append( ListaCampos.getMasterFilial( "RPTRANSP" ) );
 		sql.append( " else 'null' end)||','||" );
 		sql.append( "char(39)||Tiporemped||char(39)||','||char(39)||Tipofreteped||char(39)||','||" );
-		sql.append( "coalesce(Numcliped,0)||','||coalesce(Numforped,0)||','||char(39)||coalesce(Obs,'')||char(39)||')' from pedido" );
+		sql.append( "coalesce(Numcliped,0)||','||coalesce(Numforped,0)||','||char(39)||''||char(39)||')' from pedido" );
 		
 		importarGeneric( sql.toString() );
+		
+	}
+	
+	private void importarItensPedido() {
+		
+		status.setString( "Importando Itens de Pedido..." );
 		
 		StringBuilder sqlitem = new StringBuilder();
 		

@@ -41,7 +41,7 @@ public class RPVendedor extends FDados implements ActionListener {
 	
 	private final JTextFieldPad txtEndVend = new JTextFieldPad( JTextFieldPad.TP_STRING, 45, 0 );
 
-	//private final JTextFieldPad txtNumCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	//private final JTextFieldPad txtNumCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldPad txtCidVend = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 

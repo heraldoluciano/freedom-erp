@@ -49,11 +49,11 @@ public class RelCliente extends FRelatorio {
 
 	private static final long serialVersionUID = 1;
 
-	private final JTextFieldPad txtCodTpCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodTpCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldFK txtDescTpCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
@@ -67,7 +67,7 @@ public class RelCliente extends FRelatorio {
 
 	public RelCliente() {
 
-		super();
+		super( false );
 		setTitulo( "Relatorio de clientes" );		
 		setAtribos( 50, 50, 325, 290 );
 

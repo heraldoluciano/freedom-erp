@@ -69,7 +69,7 @@ public class RPEmpresa extends FTabDados {
 
 	private JTextFieldPad txtEndEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 45, 0 );
 
-	private JTextFieldPad txtNumEmp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtNumEmp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextFieldPad txtCnpjEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
@@ -97,7 +97,7 @@ public class RPEmpresa extends FTabDados {
 
     private PainelImagem imLogoEmp = new PainelImagem( 65000 );	
 
-    private JTextFieldPad txtCodFilial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+    private JTextFieldPad txtCodFilial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextFieldPad txtRazFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -105,7 +105,7 @@ public class RPEmpresa extends FTabDados {
 
 	private JTextFieldPad txtEndFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtNumFilial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtNumFilial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextFieldPad txtCnpjFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 

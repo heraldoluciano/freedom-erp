@@ -29,6 +29,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -61,11 +63,11 @@ public class RPConsPedido extends FFilho implements ActionListener {
 	
 	private final JPanelPad panelTabela = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private final JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	private final JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private final JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
@@ -98,6 +100,15 @@ public class RPConsPedido extends FFilho implements ActionListener {
 		txtDtIni.setVlrDate( cal.getTime() );	
 		
 		btPesquisar.addActionListener( this );
+		
+		tabConsulta.addMouseListener( new MouseAdapter() {
+			@ Override
+			public void mouseClicked( MouseEvent e ) {
+				if ( e.getSource() == tabConsulta && tabConsulta.getLinhaSel() > -1 ) {
+					openPedido( (Integer) tabConsulta.getValor( tabConsulta.getLinhaSel(), EConsulta.PEDIDO.ordinal() ) );
+				}
+			}			
+		} );
 	}
 	
 	private void montaListaCampos() {
@@ -241,6 +252,23 @@ public class RPConsPedido extends FFilho implements ActionListener {
 			Funcoes.mensagemErro( this, "erro ao carregar tabela!" , true, con, e );
 			e.printStackTrace();
 		}		
+	}
+	
+	private void openPedido( final Integer codped ) {
+		
+		RPPedido pedido = new RPPedido();
+		
+		if ( fPrim.temTela( "Pedidos" ) ) {
+
+			pedido = (RPPedido) fPrim.getTela( "Pedidos" );
+		}
+		else {
+		
+			fPrim.criatela( "Pedidos", pedido, con );
+		}
+		
+		pedido.executar( codped );	
+		pedido.toFront();
 	}
 
 	public void actionPerformed( ActionEvent e ) {
