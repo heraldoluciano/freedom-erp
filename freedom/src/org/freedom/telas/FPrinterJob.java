@@ -36,6 +36,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.io.File;
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -285,6 +286,10 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, Connection con ) {
 		this( sLayout, sTituloRel, sFiltros, ifOrig, hParamRel, con, null );
 	}
+		
+	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, Connection con, boolean externo ) {
+		this( sLayout, sTituloRel, sFiltros, ifOrig, hParamRel, con, null, externo );
+	}
 
 	/**
 	 * Construção do FPrinterJob utilizando JasperReports através de query no JasperReport.
@@ -296,6 +301,10 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	 * @param ifOrig
 	 */
 	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, Connection con, EmailBean mail ) {
+		this( sLayout, sTituloRel, sFiltros, ifOrig, hParamRel, con, mail, false );
+	}
+	
+	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, Connection con, EmailBean mail, boolean externo ) {
 
 		super( false );
 		setTitulo( sTituloRel );
@@ -314,11 +323,13 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 				hParam.putAll( hParamRel );
 			}
 			
-			relJasper = JasperFillManager.fillReport( FPrinterJob.class.getResourceAsStream( "/org/freedom/" + sLayout ), hParam, con );
+			relJasper = JasperFillManager.fillReport( externo ? new FileInputStream( sLayout ) : FPrinterJob.class.getResourceAsStream( "/org/freedom/" + sLayout ), hParam, con );
 
 			JRViewerPad viewer = new JRViewerPad( relJasper, mail );
 			this.setContentPane( viewer );
 		} catch ( JRException err ) {
+			err.printStackTrace();
+		} catch ( Exception err ) {
 			err.printStackTrace();
 		}
 
