@@ -54,21 +54,19 @@ import javax.mail.internet.MimeMultipart;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.tmk.FPrefere;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FPrincipal;
 
 /**
  * @author robson
@@ -108,10 +106,10 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		pinRod.tiraBorda();
 
 		txaMen.setVlrString("Descreva aqui seu problema, dúvida ou sugestão...");
-		Vector vVals = new Vector();
+		Vector<String> vVals = new Vector<String>();
 		vVals.add("A");
 		vVals.add("C");
-		Vector vLabs = new Vector();
+		Vector<String> vLabs = new Vector<String>();
 		vLabs.add("Arquivo no anexo.");
 		vLabs.add("Arquivo no corpo.");
 
@@ -269,11 +267,9 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		String sEmail = Aplicativo.sMailSuporte;
 		if (!bEnvia)
 			return;
-		if (sEmail != null)
-//			sEmail = "Suporte" + " <" + sEmail.trim() + '>';
+		if (sEmail != null) {
 			sEmail = sEmail.trim();
-		else
-			sEmail = sEmail.trim();
+		}
 		mandaMail(sEmail, se);
 		pbAnd.setValue(++iConta);
 	}
