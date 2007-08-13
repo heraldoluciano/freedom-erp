@@ -269,11 +269,9 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		String sEmail = Aplicativo.sMailSuporte;
 		if (!bEnvia)
 			return;
-		if (sEmail != null)
-//			sEmail = "Suporte" + " <" + sEmail.trim() + '>';
+		if (sEmail != null) {
 			sEmail = sEmail.trim();
-		else
-			sEmail = sEmail.trim();
+		}
 		mandaMail(sEmail, se);
 		pbAnd.setValue(++iConta);
 	}

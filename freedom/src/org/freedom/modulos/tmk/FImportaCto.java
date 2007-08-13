@@ -239,7 +239,7 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 			tim = new Timer(300,this);
 			pbAnd.setMinimum(0);
 			pbAnd.setValue(0);
-			pbAnd.setMaximum((int) fOrig.length());
+//			pbAnd.setMaximum((int) fOrig.length()); // Não implementado ponto de null pointer exception.
 			try {
 				if (bOrigem) 
 					sArq = txtArqOrig.getVlrString();
