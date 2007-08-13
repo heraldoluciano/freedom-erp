@@ -112,9 +112,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private final JTextFieldFK txtRazTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private final JTextFieldPad txtCodPedFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	private final JTextFieldPad txtCodPedFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
-	private final JTextFieldPad txtCodPedCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	private final JTextFieldPad txtCodPedCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private final JTextFieldPad txtCodItem = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
