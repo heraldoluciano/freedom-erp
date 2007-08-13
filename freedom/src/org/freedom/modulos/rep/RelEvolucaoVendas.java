@@ -257,19 +257,19 @@ public class RelEvolucaoVendas extends FRelatorio {
 			
 			if ( txtCodMoeda.getVlrString().trim().length() > 0 ) {
 				from.append( ", RPMOEDA M " );
-				where.append( " AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND P.CODMOEDA='" + txtCodMoeda.getVlrString() + "'" );
+				where.append( " AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND P.CODMOEDA='" + txtCodMoeda.getVlrString() + "' AND M.CODMOEDA=P.CODMOEDA " );
 			}
 			if ( txtCodCli.getVlrString().trim().length() > 0 ) {
 				from.append( ", RPCLIENTE C " );
-				where.append( " AND C.CODEMP=P.CODEMPCL AND C.CODFILIAL=P.CODFILIALCL AND P.CODCLI=" + txtCodCli.getVlrInteger() );
+				where.append( " AND C.CODEMP=P.CODEMPCL AND C.CODFILIAL=P.CODFILIALCL AND P.CODCLI=" + txtCodCli.getVlrInteger() + " AND C.CODCLI=P.CODCLI " );
 			}
 			if ( txtCodFor.getVlrString().trim().length() > 0 ) {
 				from.append( ", RPFORNECEDOR F " );
-				where.append( " AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND P.CODFOR=" + txtCodFor.getVlrInteger() );
+				where.append( " AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND P.CODFOR=" + txtCodFor.getVlrInteger() + " AND F.CODFOR=P.CODFOR " );
 			}
 			if ( txtCodVend.getVlrString().trim().length() > 0 ) {
 				from.append( ", RPVENDEDOR V " );
-				where.append( " AND V.CODEMP=P.CODEMPVD AND V.CODFILIAL=P.CODFILIALVD AND P.CODVEND=" + txtCodVend.getVlrInteger().intValue() );
+				where.append( " AND V.CODEMP=P.CODEMPVD AND V.CODFILIAL=P.CODFILIALVD AND P.CODVEND=" + txtCodVend.getVlrInteger().intValue() + " AND V.CODVEND=P.CODVEND "  );
 			}
 
 			StringBuilder sql = new StringBuilder();
@@ -295,6 +295,8 @@ public class RelEvolucaoVendas extends FRelatorio {
 			sql.append( where );
 			sql.append( " GROUP BY 2 " );
 
+			System.out.println("Query:" + sql.toString());
+			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "RPPEDIDO" ) );
