@@ -69,6 +69,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.PainelImagem;
 import org.freedom.componentes.Tabela;
+import org.freedom.funcoes.EANFactory;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FAndamento;
@@ -423,10 +424,15 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private Navegador navCodAcess = new Navegador( true );
 
 	private JButton btExp = new JButton( "exportar", Icone.novo( "btExportar.gif" ) );
+	
+	private JButton btCodBar = new JButton( "", Icone.novo( "btCodBar.gif" ) );
 
 	private PainelImagem imFotoProd = new PainelImagem( 65000 );
 
 	private String[] sPrefs = null;
+	
+	private enum eprefs {	CODMOEDA ,PEPSPROD, TIPOCODBAR, CODEANEMP, CODPAISEMP };
+
 
 	public FProduto() {
 
@@ -614,6 +620,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
+		btCodBar.addActionListener( this );
 		tpn.addChangeListener( this );
 		
 		setImprimir( true );
@@ -645,7 +652,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicCampo( txtCodMoeda, 259, 60, 70, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescMoeda, 332, 60, 181, 20, "SingMoeda", "Descrição da moeda" );
 		adicCampo( txtCodBarProd, 7, 100, 125, 20, "CodBarProd", "Código de barras", ListaCampos.DB_SI, true );
-		adicCampo( txtCodFabProd, 135, 100, 125, 20, "CodFabProd", "Código do fabricante", ListaCampos.DB_SI, true );
+		adic( btCodBar, 135, 100, 20, 20 );
+		adicCampo( txtCodFabProd, 160, 100, 100, 20, "CodFabProd", "Cód. fabricante", ListaCampos.DB_SI, true );
 		adicCampo( txtCodAlmox, 263, 100, 70, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescAlmox, 336, 100, 176, 20, "DescAlmox", "Descrição do almoxarifado" );
 		adicCampo( txtPesoBrutProd, 7, 140, 90, 20, "PesoBrutProd", "Peso bruto", ListaCampos.DB_SI, true );
@@ -655,6 +663,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicCampo( txtQtdMinProd, 370, 140, 67, 20, "QtdMinProd", "Qtd.min.", ListaCampos.DB_SI, true );
 		adicCampo( txtQtdMaxProd, 440, 140, 72, 20, "QtdMaxProd", "Qtd.máx.", ListaCampos.DB_SI, true );
 		adicCampo( txtLocalProd, 7, 180, 165, 20, "LocalProd", "Local armz.", ListaCampos.DB_SI, false );
+		
+		btCodBar.setToolTipText( "Gera cód. barras" ); 
 
 		adic( new JLabelPad( "Custo MPM" ), 175, 160, 87, 20 );
 		adic( txtCustoMPMProd, 175, 180, 76, 20 );
@@ -1067,8 +1077,13 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 				sWhere = "SP.CODEMPAX = ? AND SP.CODFILIALAX=? AND SP.CODALMOX = ?";
 			}
 	
-			sSQL = "SELECT P.CODPROD,P.DESCPROD,P.SLDPROD, P.SLDRESPROD, " + "P.SLDCONSIGPROD,P.SLDLIQPROD,SP.SLDPROD SLDPRODAX, SP.SLDRESPROD SLDRESPRODAX, " + "SP.SLDCONSIGPROD SLDCONSIGPRODAX,SP.SLDLIQPROD SLDLIQPRODAX " + "FROM EQPRODUTO P, EQSALDOPROD SP "
-					+ "WHERE SP.CODEMP=P.CODEMP AND SP.CODFILIAL=P.CODFILIAL AND SP.CODPROD = P.CODPROD AND " + "P.ATIVOPROD='S' AND P.CODEMPGP=? AND P.CODFILIALGP=? AND " + sFiltro + " AND " + sWhere + " ORDER BY P.DESCPROD ";
+			sSQL = "SELECT P.CODPROD,P.DESCPROD,P.SLDPROD, P.SLDRESPROD, " + 
+			       "P.SLDCONSIGPROD,P.SLDLIQPROD,SP.SLDPROD SLDPRODAX, SP.SLDRESPROD SLDRESPRODAX, " + 
+			       "SP.SLDCONSIGPROD SLDCONSIGPRODAX,SP.SLDLIQPROD SLDLIQPRODAX " + 
+			       "FROM EQPRODUTO P, EQSALDOPROD SP "	+ 
+			       "WHERE SP.CODEMP=P.CODEMP AND SP.CODFILIAL=P.CODFILIAL AND SP.CODPROD = P.CODPROD AND " + 
+			       "P.ATIVOPROD='S' AND P.CODEMPGP=? AND P.CODFILIALGP=? AND " + 
+			       sFiltro + " AND " + sWhere + " ORDER BY P.DESCPROD ";
 	
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( iParam++, Aplicativo.iCodEmp );
@@ -1149,14 +1164,16 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private String[] getPrefs() {
 
-		String sRetorno[] = { "", "" };
+		String sRetorno[] = new String[5];
 		String sSQL = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
 		try {
 			
-			sSQL = "SELECT CODMOEDA,PEPSPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			sSQL = "SELECT P.CODMOEDA, P.PEPSPROD, P.TIPOCODBAR, E.CODEANEMP, E.CODPAISEMP  " +
+					"FROM SGPREFERE1 P, SGEMPRESA E " +
+					"WHERE P.CODEMP=? AND P.CODFILIAL=? AND E.CODEMP=P.CODEMP";
 			
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -1164,8 +1181,11 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 			rs = ps.executeQuery();
 			
 			if ( rs.next() ) {
-				sRetorno[ 0 ] = rs.getString( "CODMOEDA" );
-				sRetorno[ 1 ] = rs.getString( "PEPSPROD" );
+				sRetorno[ eprefs.CODMOEDA.ordinal() ] = rs.getString( "CODMOEDA" );
+				sRetorno[ eprefs.PEPSPROD.ordinal() ] = rs.getString( "PEPSPROD" );
+				sRetorno[ eprefs.TIPOCODBAR.ordinal() ] = rs.getString( "TIPOCODBAR" );
+				sRetorno[ eprefs.CODEANEMP.ordinal() ] = rs.getString( "CODEANEMP" );
+				sRetorno[ eprefs.CODPAISEMP.ordinal() ] = rs.getString( "CODPAISEMP" );
 			}
 			
 			rs.close();
@@ -1469,6 +1489,26 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		}
 		
 	}
+	public void setCodBar(){
+		
+		EANFactory ean = new EANFactory();
+		String codbarras = null;
+		
+		if ( sPrefs[eprefs.CODPAISEMP.ordinal()] == null && sPrefs[eprefs.CODEANEMP.ordinal()] == null ){
+			Funcoes.mensagemInforma( this, "Ajuste o cadastro da empresa.\nCodificação EAN requerida!" );
+		}
+	
+		if ( sPrefs[eprefs.TIPOCODBAR.ordinal()].equals( "1" ) ){
+			
+			codbarras = ean.novoEAN13( sPrefs[eprefs.CODPAISEMP.ordinal()], sPrefs[eprefs.CODEANEMP.ordinal()],txtCodProd.getVlrInteger().toString() );
+			txtCodBarProd.setVlrString( codbarras );
+			
+		} else if (sPrefs[eprefs.TIPOCODBAR.ordinal()].equals( "2" ) ){
+			
+			codbarras = txtCodProd.getVlrString();
+			txtCodBarProd.setVlrString( codbarras );
+		}
+	}
 
 	public void exec( int iCodProduto ) {
 	
@@ -1486,6 +1526,9 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		}
 		else if ( evt.getSource() == btExp ) {
 			exportar();
+		}
+		if( evt.getSource() == btCodBar ){
+			setCodBar();
 		}
 		
 		super.actionPerformed( evt );
