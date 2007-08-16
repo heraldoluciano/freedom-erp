@@ -347,7 +347,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private JCheckBoxPad cbConsIEFor = null;
 
 	private JCheckBoxPad cbAltItReceberImp = null;
-
+	
+	private JRadioGroup rgCodBar = null;
+	
 	private PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
 	private ListaCampos lcMoeda = new ListaCampos( this, "MO" );
@@ -667,6 +669,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbConsIECli.setVlrString( "S" );
 		cbConsIEFor = new JCheckBoxPad( "Validar IE do fornecedor?", "S", "N" );
 		cbConsIEFor.setVlrString( "S" );
+		
 
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
@@ -903,18 +906,31 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 		lbProdCont.setBorder( BorderFactory.createEtchedBorder( 1 ) );
 		lbProdOpcoes.setOpaque( true );
+		
+		Vector<String> vLabs4 = new Vector<String>();
+		Vector<String> vVals4 = new Vector<String>();
+		vLabs4.addElement( "EAN 13" );
+		vLabs4.addElement( "39" );
+		vVals4.addElement( "1" );
+		vVals4.addElement( "2" );
+
+		rgCodBar = new JRadioGroup( 1, 2, vLabs4, vVals4 );
+		rgCodBar.setVlrString( "2" );
 
 		adic( lbProdOpcoes, 17, 10, 70, 20 );
-		adic( lbProdCont, 7, 20, 393, 240 );
+		adic( lbProdCont, 7, 20, 393, 305 );
 		adicDB( cbPepsProd, 17, 35, 310, 20, "PepsProd", "", false );
 		adicDB( cbBuscaProdSimilar, 17, 55, 310, 20, "BuscaProdSimilar", "", false );
-		adicDB( cbDescCompl, 17, 75, 500, 20, "DescCompPed", "", true );
+		adicDB( cbDescCompl, 17, 75, 480, 20, "DescCompPed", "", true );
 		adicDB( cbUsaBuscGenProd, 17, 95, 350, 20, "BUSCACODPRODGEN", "", false );
 		adicDB( cbFilBuscGenProd1, 37, 115, 350, 20, "FILBUSCGENPROD", "", false );
 		adicDB( cbFilBuscGenProd2, 37, 135, 350, 20, "FILBUSCGENREF", "", false );
 		adicDB( cbFilBuscGenProd3, 37, 155, 350, 20, "FILBUSCGENCODBAR", "", false );
 		adicDB( cbFilBuscGenProd4, 37, 175, 350, 20, "FILBUSCGENCODFAB", "", false );
 		adicDB( cbTamDescProd, 17, 230, 373, 20, "TamDescProd", "Tamanho da descrição do produto", false );
+		adic( new JLabelPad("Tipo de código de barras"), 17, 260, 200, 20 );
+		adicDB( rgCodBar, 17, 280, 180, 25, "TipoCodBar", "", false );
+		
 
 		// Estoque
 		setPainel( pinEstoq );
@@ -933,7 +949,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDB( cbContEstoq, 17, 115, 250, 20, "ContEstoq", "", true );
 		adicDB( cbMultiAlmox, 17, 135, 250, 20, "MultiAlmox", "", true );
 		adicDB( cbBloqCompra, 17, 155, 300, 20, "BloqCompra", "", true );
-		adicDB( cbBuscaVlrUltCompra, 17, 175, 300, 20, "BuscaVlrUltCompra", "", true );
+		adicDB( cbBuscaVlrUltCompra, 10, 175, 300, 20, "BuscaVlrUltCompra", "", true );
 
 		nav.setAtivo( 0, false );
 		lcCampos.setPodeExc( false );
