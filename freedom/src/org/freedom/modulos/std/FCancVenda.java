@@ -118,12 +118,12 @@ public class FCancVenda extends FFilho implements ActionListener {
 		else if (sStatus.substring(0,1).equals("C"))
 			Funcoes.mensagemInforma(null,"Venda ja foi cancelada!!");
 		
-		else if ((sStatus.substring(0,1).equals("V")) || (sStatus.substring(0,1).equals("P"))) {
+		else if ( "VPD".indexOf( sStatus.substring(0,1)) !=-1 ) {
 			
 			if (Funcoes.mensagemConfirma(null, "Deseja realmente cancelar esta venda?") ==
 												JOptionPane.YES_OPTION ) {
 				PreparedStatement ps = null;
-				String sSQL = "UPDATE VDVENDA SET STATUSVENDA = 'CP' " +
+				String sSQL = "UPDATE VDVENDA SET STATUSVENDA = 'C"+sStatus.substring(0,1)+"' " +
 							  "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'";
 				
 				try {
