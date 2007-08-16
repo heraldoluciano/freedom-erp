@@ -60,6 +60,8 @@ public class FRVendasDet extends FRelatorio {
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	
+	private JTextFieldPad txtCidCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -90,7 +92,7 @@ public class FRVendasDet extends FRelatorio {
 	public FRVendasDet() {
 
 		setTitulo( "Vendas Detalhadas" );
-		setAtribos( 80, 80, 320, 440 );
+		setAtribos( 80, 80, 320, 480 );
 
 		Vector< String > vLabs = new Vector< String >();
 		Vector< String > vVals = new Vector< String >();
@@ -180,12 +182,14 @@ public class FRVendasDet extends FRelatorio {
 		adic( txtCodVend, 7, 160, 80, 20 );
 		adic( new JLabelPad( "Nome do comissionado" ), 90, 140, 200, 20 );
 		adic( txtNomeVend, 90, 160, 183, 20 );
+		adic( new JLabelPad( "Cidade do Cliente" ), 7, 180, 200, 20 );
+		adic( txtCidCli, 7, 200, 265, 20 );
 
-		adic( rgTipo, 7, 190, 265, 30 );
-		adic( rgFaturados, 7, 225, 120, 70 );
-		adic( rgFinanceiro, 153, 225, 120, 70 );
-		adic( cbVendaSubcli, 7, 300, 200, 20 );
-		adic( cbVendaCanc, 7, 325, 200, 20 );
+		adic( rgTipo, 7, 230, 265, 30 );
+		adic( rgFaturados, 7, 265, 120, 70 );
+		adic( rgFinanceiro, 153, 265, 120, 70 );
+		adic( cbVendaSubcli, 7, 340, 200, 20 );
+		adic( cbVendaCanc, 7, 360, 230, 20 );
 		
 
 	}
@@ -207,6 +211,7 @@ public class FRVendasDet extends FRelatorio {
 		String sWhere4 = "";
 		String sWhere5 = "";
 		String sWhere6 = "";
+		String sWhere7 = "";
 		
 		boolean bComRef = comRef();
 
@@ -277,6 +282,9 @@ public class FRVendasDet extends FRelatorio {
 				sCab.append( "Comissionado :" );
 				sCab.append( txtNomeVend.getVlrString() );
 			}
+			if ("".equals( txtCidCli.getVlrString().trim() )) {
+				sWhere7 = " AND C.CIDCLI='"+txtCidCli.getVlrString().trim()+"'";
+			}
 
 			sSQL.append( "SELECT " );
 			sSQL.append( "	( SELECT VO.CODORC FROM VDVENDAORC VO " );
@@ -298,6 +306,7 @@ public class FRVendasDet extends FRelatorio {
 			sSQL.append( sWhere4 );
 			sSQL.append( sWhere5 );
 			sSQL.append( sWhere6 );
+			sSQL.append( sWhere7 );
 			sSQL.append( "ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA" );
 
 			ps = con.prepareStatement( sSQL.toString() );
