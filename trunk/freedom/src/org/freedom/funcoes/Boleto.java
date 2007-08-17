@@ -119,11 +119,15 @@ public class Boleto {
 		final StringBuffer retorno = new StringBuffer();
 		if (rec==null) {
 			retorno.append( strZero("0", tam-2) );
-		} else {
-			retorno.append( strZero(rec.toString(), tam-2));
+		} else 	if ( rec.toString().length()>tam-2 ) { 
+				retorno.append( rec.toString().substring( 0, tam-1) );
+		} else  {
+				retorno.append( strZero( rec.toString(), tam-2 ));
 		}
 		if (nparc==null) {
 			retorno.append( "00" );
+		} else if ( ( rec.toString().length()>tam-2 ) ) {
+			retorno.append( nparc.toString().substring( 0, 1 ) );
 		} else {
 			retorno.append( strZero(nparc.toString(), 2) );
 		}
