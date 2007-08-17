@@ -515,8 +515,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcCartCob.setQueryCommit( false );
 		lcCartCob.setReadOnly( true );
 		lcCartCob.setConexao( cn );
-
 		txtCodCartCob.setTabelaExterna( lcCartCob );
+		txtCodCartCob.setListaCampos( lcCartCob );
+		txtDescCartCob.setListaCampos( lcCartCob );
 		txtCodCartCob.setFK( true );
 		
 		
