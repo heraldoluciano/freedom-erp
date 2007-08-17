@@ -282,7 +282,7 @@ public class FRVendasDet extends FRelatorio {
 				sCab.append( "Comissionado :" );
 				sCab.append( txtNomeVend.getVlrString() );
 			}
-			if ("".equals( txtCidCli.getVlrString().trim() )) {
+			if (!"".equals( txtCidCli.getVlrString().trim() )) {
 				sWhere7 = " AND C.CIDCLI='"+txtCidCli.getVlrString().trim()+"'";
 			}
 
