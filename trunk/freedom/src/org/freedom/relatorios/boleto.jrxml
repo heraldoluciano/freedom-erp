@@ -36,7 +36,7 @@
 		<defaultValueExpression ><![CDATA["0001-1"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(44)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(2)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
@@ -50,32 +50,46 @@
 	<parameter name="CONVENIO" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["0224071"]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT (SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND ITR2.CODFILIAL=R.CODFILIAL) PARCS,
-ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,ITR.VLRDESCITREC,
-(ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA,
-R.DOCREC,ITR.CODBANCO, B.DVBANCO,
-B.IMGBOLBANCO LOGOBANCO01,
-B.IMGBOLBANCO LOGOBANCO02,
-B.IMGBOLBANCO LOGOBANCO03,
-(SELECT MB.CARTCOB FROM FNMODBOLETO MB WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) CARTCOB,
-(SELECT MB.ESPDOCMODBOL FROM FNMODBOLETO MB WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) ESPDOC,
-(SELECT MB.ACEITEMODBOL FROM FNMODBOLETO MB WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) ACEITE,
-(SELECT MB.MDECOB FROM FNMODBOLETO MB WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL) MDECOB,
-V.DTEMITVENDA,V.DOCVENDA,
-C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,C.RGCLI,C.INSCCLI,
-C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI,
-C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB,
-C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI, 
-(ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA
-FROM VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNITRECEBER ITR 
-LEFT OUTER JOIN FNBANCO B ON
-B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO
+	<queryString><![CDATA[SELECT (SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND
+ ITR2.CODFILIAL=R.CODFILIAL) PARCS,ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,
+ITR.VLRDESCITREC,(ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA,R.DOCREC,ITR.CODBANCO, 
+B.DVBANCO,B.IMGBOLBANCO LOGOBANCO01, B.IMGBOLBANCO LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, 
+IM.CODCARTCOB, MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, MB.PREIMPMODBOL, 
+MB.CLASSMODBOL, MB.TXAMODBOL, V.DTEMITVENDA, V.DOCVENDA,C.CODCLI,C.RAZCLI,C.NOMECLI,
+C.CPFCLI,C.CNPJCLI,C.RGCLI,C.INSCCLI,C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,
+C.CIDCLI,C.UFCLI,C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB,C.FONECLI,
+C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI, ITR.RECIBOITREC, 
+(ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA, IV.CODNAT, N.DESCNAT, 
+F.RAZFILIAL, CT.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, 
+(SELECT FIRST 1 VO.CODORC FROM VDVENDAORC VO WHERE VO.CODEMP=V.CODEMP AND VO.CODFILIAL=VO.CODFILIAL AND 
+VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA) AS CODORC ,(SELECT AC.NOMECONV FROM ATCONVENIADO AC,
+VDORCAMENTO VA WHERE VA.CODEMP=V.CODEMP AND VA.CODFILIAL=V.CODFILIAL AND 
+VA.CODORC =(SELECT FIRST 1 VO.CODORC FROM VDVENDAORC VO WHERE VO.CODEMP=V.CODEMP AND 
+VO.CODFILIAL=VO.CODFILIAL AND VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA) AND 
+AC.CODEMP=VA.CODEMPCV AND AC.CODFILIAL=VA.CODFILIALCV AND AC.CODCONV=VA.CODCONV) AS NOMECONV ,
+(SELECT VA.OBSORC FROM VDORCAMENTO VA WHERE VA.CODEMP=V.CODEMP AND VA.CODFILIAL=V.CODFILIAL AND 
+VA.CODORC =(SELECT FIRST 1 VO.CODORC FROM VDVENDAORC VO WHERE VO.CODEMP=V.CODEMP AND 
+VO.CODFILIAL=VO.CODFILIAL AND VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA)) AS OBSORC 
+FROM VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB, 
+FNITMODBOLETO IM, VDITVENDA IV, LFNATOPER N,  FNITRECEBER ITR, SGFILIAL F, FNCONTA CT 
 WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND 
-V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND 
-C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND 
-P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL AND 
-M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA AND 
-R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODVENDA}]]></queryString>
+V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND F.CODEMP=R.CODEMP AND 
+F.CODFILIAL=R.CODFILIAL AND CT.CODEMP=MB.CODEMPCC AND CT.CODFILIAL=MB.CODFILIALCC AND 
+CT.NUMCONTA=MB.NUMCONTA AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND 
+P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND 
+M.CODMOEDA=P.CODMOEDA AND B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND 
+B.CODBANCO=ITR.CODBANCO AND MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND 
+MB.CODMODBOL=B.CODMODBOL AND  IM.CODEMP=MB.CODEMP AND IM.CODFILIAL=MB.CODFILIAL AND 
+IM.CODMODBOL=MB.CODMODBOL AND IM.CODEMPBO=ITR.CODEMPBO AND IM.CODFILIALBO=ITR.CODFILIALBO AND 
+IM.CODBANCO=ITR.CODBANCO AND IM.CODEMPCB=ITR.CODEMPCB AND IM.CODFILIALCB=ITR.CODFILIALCB AND 
+IM.CODCARTCOB=ITR.CODCARTCOB AND IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND 
+IV.TIPOVENDA=V.TIPOVENDA AND IV.CODVENDA=V.CODVENDA AND 
+IV.CODITVENDA=( SELECT MIN(CODITVENDA) FROM VDITVENDA IV2 
+WHERE IV2.CODEMP=IV.CODEMP AND IV2.CODFILIAL=IV.CODFILIAL AND IV2.TIPOVENDA=IV.TIPOVENDA AND 
+ITR.STATUSITREC IN ('R1','RL') AND 
+IV2.CODVENDA=IV.CODVENDA AND IV2.CODNAT IS NOT NULL ) AND N.CODEMP=IV.CODEMPNT AND 
+N.CODFILIAL=IV.CODFILIALNT AND N.CODNAT=IV.CODNAT AND  MB.CODEMP=$P{CODEMP} AND MB.CODFILIAL=$P{CODFILIAL} AND 
+MB.CODMODBOL=1 AND V.DTEMITVENDA BETWEEN '01.08.2007' AND '30.08.2007']]></queryString>
 
 	<field name="PARCS" class="java.lang.Long"/>
 	<field name="DTVENCITREC" class="java.sql.Date"/>
@@ -90,10 +104,13 @@ R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODVENDA
 	<field name="LOGOBANCO01" class="java.io.InputStream"/>
 	<field name="LOGOBANCO02" class="java.io.InputStream"/>
 	<field name="LOGOBANCO03" class="java.io.InputStream"/>
-	<field name="CARTCOB" class="java.lang.String"/>
+	<field name="CODCARTCOB" class="java.lang.String"/>
 	<field name="ESPDOC" class="java.lang.String"/>
 	<field name="ACEITE" class="java.lang.String"/>
 	<field name="MDECOB" class="java.lang.String"/>
+	<field name="PREIMPMODBOL" class="java.lang.String"/>
+	<field name="CLASSMODBOL" class="java.lang.String"/>
+	<field name="TXAMODBOL" class="java.lang.String"/>
 	<field name="DTEMITVENDA" class="java.sql.Date"/>
 	<field name="DOCVENDA" class="java.lang.Long"/>
 	<field name="CODCLI" class="java.lang.Long"/>
@@ -122,8 +139,20 @@ R.CODEMPVA=$P{CODEMP} AND R.CODFILIALVA=$P{CODFILIAL} AND R.CODVENDA=$P{CODVENDA
 	<field name="CODREC" class="java.lang.Long"/>
 	<field name="CODMOEDA" class="java.lang.String"/>
 	<field name="PESSOACLI" class="java.lang.String"/>
+	<field name="RECIBOITREC" class="java.lang.Long"/>
 	<field name="FATVENC" class="java.lang.Long"/>
 	<field name="CODFBNMOEDA" class="java.lang.String"/>
+	<field name="CODNAT" class="java.lang.String"/>
+	<field name="DESCNAT" class="java.lang.String"/>
+	<field name="RAZFILIAL" class="java.lang.String"/>
+	<field name="AGENCIACONTA" class="java.lang.String"/>
+	<field name="NUMCONTA" class="java.lang.String"/>
+	<field name="DESCLPMODBOL" class="java.lang.String"/>
+	<field name="INSTPAGMODBOL" class="java.lang.String"/>
+	<field name="CONVCOB" class="java.lang.String"/>
+	<field name="CODORC" class="java.lang.Long"/>
+	<field name="NOMECONV" class="java.lang.String"/>
+	<field name="OBSORC" class="java.lang.String"/>
 
 	<variable name="CNPJCLIF" class="java.lang.String" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[( $F{CNPJCLI} != null ?
@@ -135,13 +164,13 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 		<variableExpression><![CDATA[($F{CPFCLI}==null? "" :($F{CPFCLI}.length()<=9 ? $F{CPFCLI} : $F{CPFCLI}.substring(0,9)+$F{CPFCLI}.substring(9)))]]></variableExpression>
 	</variable>
 	<variable name="CODBAR" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraCodBar( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, $F{FATVENC}, $F{VLRAPAGITREC},  $P{CONVENIO}, $F{CODREC}, $F{NPARCITREC}, $P{AGENCIA}, $P{NUMCONTA}, $F{CARTCOB}, $F{MDECOB} )]]></variableExpression>
+		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraCodBar( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, $F{FATVENC}, $F{VLRAPAGITREC},  $F{CONVCOB}, $F{CODREC}, $F{NPARCITREC}, $F{AGENCIACONTA}, $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></variableExpression>
 	</variable>
 	<variable name="AGENCIACONTA" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[$P{AGENCIA}+ " / " +$P{NUMCONTA}]]></variableExpression>
+		<variableExpression><![CDATA[$F{AGENCIACONTA}+ " / " +$F{NUMCONTA}]]></variableExpression>
 	</variable>
 	<variable name="VCONVENIO" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraConvenio($P{CONVENIO})]]></variableExpression>
+		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraConvenio($F{CONVCOB})]]></variableExpression>
 	</variable>
 	<variable name="NOSSONUMERO" class="java.lang.String" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraNossoNumero($F{MDECOB}, $V{VCONVENIO}, $F{CODREC}, $F{NPARCITREC} )]]></variableExpression>
@@ -835,7 +864,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 					<textElement textAlignment="Center" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CARTCOB}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODCARTCOB}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1467,7 +1496,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRPARCITREC}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRAPAGITREC}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -1598,7 +1627,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRPARCITREC}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRAPAGITREC}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
