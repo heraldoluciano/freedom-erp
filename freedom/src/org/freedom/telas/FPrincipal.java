@@ -496,8 +496,9 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	public void addLinks( final ImageIcon icStpinf, final ImageIcon icFreedom ) {
 
-		lbFreedom = new JLabelPad( icFreedom );
 		lbStpinf = new JLabelPad( icStpinf );
+		lbFreedom = new JLabelPad( icFreedom );
+		
 
 		final int iWidthImgStpinf = icStpinf.getIconWidth();
 		final int iHeightImgStpinf = icStpinf.getIconHeight();
@@ -515,8 +516,9 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		dpArea.add( lbStpinf );
 		dpArea.add( lbFreedom );
 
-		lbFreedom.addMouseListener( this );
 		lbStpinf.addMouseListener( this );
+		lbFreedom.addMouseListener( this );
+		
 	}
 	
 	public void addFundo() {

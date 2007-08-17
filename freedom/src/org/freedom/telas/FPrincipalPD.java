@@ -48,7 +48,7 @@ public class FPrincipalPD extends FPrincipal implements ActionListener, MouseLis
 	public void inicializaTela() {
 
 		addFundo();
-		addLinks( Icone.novo( "lgFreedom3.jpg" ), Icone.novo( "lgSTP3.jpg" ) );
+		addLinks( Icone.novo( "lgSTP3.jpg" ) , Icone.novo( "lgFreedom3.jpg" ));
 		setBgColor( padrao );
 		adicBotoes();
 
