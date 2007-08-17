@@ -160,10 +160,10 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 
 		lcItModBol.montaTab();
 		tabBancos.setTamColuna( 70, 0 );
-		tabBancos.setTamColuna( 70, 1 );
-		tabBancos.setTamColuna( 200, 2 );
-		tabBancos.setTamColuna( 70, 3 );
-		tabBancos.setTamColuna( 200, 4 );
+		tabBancos.setTamColuna( 200, 1 );
+		tabBancos.setTamColuna( 70, 2 );
+		tabBancos.setTamColuna( 200, 3 );
+		tabBancos.setTamColuna( 70, 4 );
 		
 		lcItModBol.setState( ListaCampos.LCS_NONE );
 		
