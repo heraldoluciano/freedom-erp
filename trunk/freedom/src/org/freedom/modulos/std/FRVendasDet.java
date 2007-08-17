@@ -285,7 +285,7 @@ public class FRVendasDet extends FRelatorio {
 			if (!"".equals( txtCidCli.getVlrString().trim() )) {
 				sWhere7 = " AND C.CIDCLI='"+txtCidCli.getVlrString().trim()+"'";
 		
-				sCab.append( "Cidade:  " );
+				sCab.append( " - CID.:  " );
 				sCab.append( txtCidCli.getVlrString() );
 			}
 
