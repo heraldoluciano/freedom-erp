@@ -2567,8 +2567,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}
 
 			if ( ( sValores[ 4 ].equals( "S" ) ) || ( sValores[ 8 ].equals( "S" ) ) ) {
-				if ( txtTipoMov.getVlrString().equals( "VD" ) || txtTipoMov.getVlrString().equals( "VT" ) || txtTipoMov.getVlrString().equals( "TR" ) || txtTipoMov.getVlrString().equals( "CS" ) || txtTipoMov.getVlrString().equals( "CE" ) || txtTipoMov.getVlrString().equals( "PE" )
-						|| txtTipoMov.getVlrString().equals( "DV" ) || txtTipoMov.getVlrString().equals( "BN" ) ) {
+				if ( txtTipoMov.getVlrString().equals( "VD" ) || txtTipoMov.getVlrString().equals( "VT" ) || 
+						txtTipoMov.getVlrString().equals( "TR" ) || 
+						txtTipoMov.getVlrString().equals( "CS" ) || 
+						txtTipoMov.getVlrString().equals( "CE" ) || 
+						txtTipoMov.getVlrString().equals( "PE" ) || 
+						txtTipoMov.getVlrString().equals( "DV" ) ||
+						txtTipoMov.getVlrString().equals( "BN" ) ) {
 					emitNota( "NF" );
 				}
 				else if ( txtTipoMov.getVlrString().equals( "SE" ) ) {
