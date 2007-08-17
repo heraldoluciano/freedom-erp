@@ -174,6 +174,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private final JTextFieldPad txtCodTipoCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private final JTextFieldPad txtCodTipoCobItRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private final JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private final JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -226,6 +230,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private final ListaCampos lcCartCobItRec = new ListaCampos( this, "CB" );
 	
 	private final ListaCampos lcTipoCobItRec = new ListaCampos( this, "TC" );
+	
+	private final ListaCampos lcCartCob = new ListaCampos( this, "CB" );
 
 	private final ListaCampos lcItReceber = new ListaCampos( this );
 
@@ -255,7 +261,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		setConexao( cn );
 		iCodVendaFecha = iCodVenda.intValue();
 		setTitulo( "Fechar Venda" );
-		setAtribos( 395, 375 );
+		setAtribos( 395, 450 );
 
 		lcItReceber.setMaster( lcReceber );
 		lcReceber.adicDetalhe( lcItReceber );
@@ -499,6 +505,36 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcComis.setQueryCommit( false );
 		lcComis.montaTab();
 		lcComis.setConexao( cn );
+		
+		txtCodCartCob.setNomeCampo( "CodCartCob" );
+		lcCartCob.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_PK, false ) );
+		lcCartCob.add( new GuardaCampo( txtDescCartCob, "DescCartCob", "Desc.Cart.Cob", ListaCampos.DB_SI, false ) );
+		lcCartCob.setDinWhereAdic( "CODBANCO = #S", txtCodBanco );
+		lcCartCob.montaSql( false, "CARTCOB", "FN" );
+		lcCartCob.setQueryCommit( false );
+		lcCartCob.setReadOnly( true );
+		lcCartCob.setConexao( cn );
+
+		txtCodCartCob.setTabelaExterna( lcCartCob );
+		txtCodCartCob.setFK( true );
+		
+		
+		/*		
+		 *
+		 * 		txtCodCartCob.setListaCampos( lcCartCob );
+		txtDescCartCob.setListaCampos( lcCartCob );
+
+		 * lcCartCobItRec.add( new GuardaCampo( txtCodCartCobItRec, "CodCartCob", "Cód.Cart.Cob.", ListaCampos.DB_PK, false ) );
+		//lcCartCob.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PF, false ) );
+		lcCartCobItRec.add( new GuardaCampo( txtDescCartCobItRec, "DescCartCob", "Descrição da carteira de cobrança", ListaCampos.DB_SI, false ) );
+		lcCartCobItRec.montaSql( false, "CARTCOB", "FN" );
+		lcCartCobItRec.setQueryCommit( false );
+		lcCartCobItRec.setReadOnly( true );
+		lcCartCobItRec.setConexao( cn );
+		txtCodCartCobItRec.setTabelaExterna( lcCartCobItRec );
+		txtCodCartCobItRec.setFK( true );
+		txtCodCartCobItRec.setNomeCampo( "CodCartCob" );	
+*/
 
 		tabComis.addMouseListener( this );
 
@@ -551,21 +587,26 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		adic( txtCodBanco, 7, 100, 100, 20 );
 		adic( new JLabelPad( "Descrição do Banco" ), 110, 80, 250, 20 );
 		adic( txtDescBanco, 110, 100, 250, 20 );
-
-		adic( new JLabel( "% Desc." ), 7, 120, 100, 20 );
-		adic( txtPercDescVenda, 7, 140, 100, 20 );
-		adic( new JLabelPad( "V Desc." ), 110, 120, 100, 20 );
-		adic( txtVlrDescVenda, 110, 140, 100, 20 );
-		adic( new JLabelPad( "% Adic." ), 7, 160, 100, 20 );
-		adic( txtPercAdicVenda, 7, 180, 100, 20 );
-		adic( new JLabelPad( "V Adic." ), 110, 160, 100, 20 );
-		adic( txtVlrAdicVenda, 110, 180, 100, 20 );
 		
-		adic( cbImpPed, 230, 130, 150, 20 );
-		adic( cbImpNot, 230, 150, 150, 20 );
-		adic( cbImpBol, 230, 170, 150, 20 );
-		adic( cbImpRec, 230, 190, 150, 20 );
-		adic( cbReImpNot, 230, 210, 150, 20 );		
+		adic( new JLabelPad("Cód. Cart. cob"), 7, 120, 100, 20 );
+		adic( txtCodCartCob, 7, 140, 100, 20 );
+		adic( new JLabelPad("Descriçao da Carteira de cobrança"), 110, 120, 250, 20 );
+		adic( txtDescCartCob, 110, 140, 250, 20 );
+
+		adic( new JLabel( "% Desc." ), 7, 160, 100, 20 );
+		adic( txtPercDescVenda, 7, 180, 100, 20 );
+		adic( new JLabelPad( "V Desc." ), 110, 160, 100, 20 );
+		adic( txtVlrDescVenda, 110, 180, 100, 20 );
+		adic( new JLabelPad( "% Adic." ), 7, 200, 100, 20 );
+		adic( txtPercAdicVenda, 7, 220, 100, 20 );
+		adic( new JLabelPad( "V Adic." ), 110, 200, 100, 20 );
+		adic( txtVlrAdicVenda, 110, 220, 100, 20 );
+		
+		adic( cbImpPed, 230, 170, 150, 20 );
+		adic( cbImpNot, 230, 190, 150, 20 );
+		adic( cbImpBol, 230, 210, 150, 20 );
+		adic( cbImpRec, 230, 230, 150, 20 );
+		adic( cbReImpNot, 230, 250, 150, 20 );		
 		
 
 		setPainel( pinFrete );
