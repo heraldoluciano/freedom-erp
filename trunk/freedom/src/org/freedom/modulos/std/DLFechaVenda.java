@@ -1262,7 +1262,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			
 			try {
 				
-				sSQL.append( "SELECT C.CODTIPOCOB, C.CODBANCO " );
+				sSQL.append( "SELECT C.CODTIPOCOB, C.CODBANCO, C.CODCARTCOB " );
 				sSQL.append( "FROM VDCLIENTE C, VDVENDA V " );
 				sSQL.append( "WHERE C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
 				sSQL.append( "AND V.CODEMP=? AND V.CODFILIAL=? AND CODVENDA=?" );
@@ -1278,6 +1278,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 					
 					txtCodBanco.setVlrString( rs.getString( "CODBANCO" ));	
 					txtCodTipoCob.setVlrString( rs.getString( "CODTIPOCOB" ));
+					txtCodCartCob.setVlrString( rs.getString( "CODCARTCOB" ) );
 					
 					lcBanco.carregaDados();		
 					lcTipoCob.carregaDados(); 
