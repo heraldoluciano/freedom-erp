@@ -89,6 +89,10 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 	private final JTextFieldFK txtDescTipoCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
 	private final JTextFieldPad txtCodTipoCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private final JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private final JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private ListaCampos lcBanco = new ListaCampos( this );
 
@@ -98,19 +102,21 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 
 	private ListaCampos lcCC = new ListaCampos( this );
 	
+	private final ListaCampos lcCartCob = new ListaCampos( this, "CB" );
+	
 	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
 	
 	public enum EColEdit{CODCLI, RAZCLI, NUMCONTA, CODPLAN, CODCC, DOC, DTEMIS, DTVENC,
-		VLRJUROS, VLRDESC, VLRPARC, OBS, CODBANCO, CODTPCOB, DESCTPCOB};
+		VLRJUROS, VLRDESC, VLRPARC, OBS, CODBANCO, CODTPCOB, DESCTPCOB,CODCARTCOB, DESCCARTCOB};
 
 	public enum EColRet{ NUMCONTA, CODPLAN, CODCC, DOC, VLRJUROS, VLRDESC, 
-		DTVENC, OBS, CODBANCO, CODTPCOB, DESCTPCOB};		
+		DTVENC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB};		
 
 	public DLEditaRec( Component cOrig ) {
 
 		super( cOrig );
 		setTitulo( "Editar" );
-		setAtribos( 380, 470 );
+		setAtribos( 380, 510 );
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
 		lcBanco.add( new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
@@ -120,6 +126,23 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		txtCodBanco.setFK( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );
 
+		/************************
+         * CARTEIRA DE COBRANÇA *
+         ************************/
+		
+		txtCodCartCob.setNomeCampo( "CodCartCob" );
+		lcCartCob.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_PK, false ) );
+		lcCartCob.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
+		lcCartCob.add( new GuardaCampo( txtDescCartCob, "DescCartCob", "Desc.Cart.Cob", ListaCampos.DB_SI, false ) );
+		lcCartCob.setDinWhereAdic( "CODBANCO = #S", txtCodBanco );
+		lcCartCob.montaSql( false, "CARTCOB", "FN" );
+		lcCartCob.setQueryCommit( false );
+		lcCartCob.setReadOnly( true );		
+		txtCodCartCob.setTabelaExterna( lcCartCob );
+		txtCodCartCob.setListaCampos( lcCartCob );
+		txtDescCartCob.setListaCampos( lcCartCob );
+		txtCodCartCob.setFK( true );
+		
 		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
@@ -182,32 +205,43 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		adic( txtCodBanco, 7, 100, 80, 20 );
 		adic( new JLabelPad( "Descrição do banco" ), 90, 80, 250, 20 );
 		adic( txtDescBanco, 90, 100, 250, 20 );
-		adic( new JLabelPad( "Nºconta" ), 7, 120, 250, 20 );
-		adic( txtCodConta, 7, 140, 80, 20 );
-		adic( new JLabelPad( "Descrição da conta" ), 90, 120, 250, 20 );
-		adic( txtDescConta, 90, 140, 250, 20 );
-		adic( new JLabelPad( "Cód.catg." ), 7, 160, 250, 20 );
-		adic( txtCodPlan, 7, 180, 100, 20 );
-		adic( new JLabelPad( "Descrição da categoria" ), 110, 160, 250, 20 );
-		adic( txtDescPlan, 110, 180, 230, 20 );
-		adic( new JLabelPad( "Cód.c.c." ), 7, 200, 250, 20 );
-		adic( txtCodCC, 7, 220, 100, 20 );
-		adic( new JLabelPad( "Descrição do centro de custo" ), 110, 200, 250, 20 );
-		adic( txtDescCC, 110, 220, 230, 20 );
-		adic( new JLabelPad( "Doc." ), 7, 240, 110, 20 );
-		adic( txtDoc, 7, 260, 110, 20 );
-		adic( new JLabelPad( "Emissão" ), 120, 240, 107, 20 );
-		adic( txtDtEmis, 120, 260, 107, 20 );
-		adic( new JLabelPad( "Vencimento" ), 230, 240, 110, 20 );
-		adic( txtDtVenc, 230, 260, 110, 20 );
-		adic( new JLabelPad( "Vlr.juros." ), 7, 280, 110, 20 );
-		adic( txtVlrJuros, 7, 300, 110, 20 );
-		adic( new JLabelPad( "Vlr.desc." ), 120, 280, 107, 20 );
-		adic( txtVlrDesc, 120, 300, 107, 20 );
-		adic( new JLabelPad( "Vlr.parcela" ), 230, 280, 110, 20 );
-		adic( txtVlrParc, 230, 300, 110, 20 );
-		adic( new JLabelPad( "Observações" ), 7, 320, 240, 20 );
-		adic( txtObs, 7, 340, 333, 20 );
+		
+		adic( new JLabelPad( "Cód.cart.cob." ), 7, 120, 250, 20 );
+		adic( txtCodCartCob, 7, 140, 80, 20 );
+		adic( new JLabelPad( "Descrição da carteira de cobrança" ), 90, 120, 250, 20 );
+		adic( txtDescCartCob, 90, 140, 250, 20 );
+
+		adic( new JLabelPad( "Nºconta" ), 7, 160, 250, 20 );
+		adic( txtCodConta, 7, 180, 80, 20 );
+		adic( new JLabelPad( "Descrição da conta" ), 90, 160, 250, 20 );
+		adic( txtDescConta, 90, 180, 250, 20 );
+		
+		adic( new JLabelPad( "Cód.catg." ), 7, 200, 250, 20 );
+		adic( txtCodPlan, 7, 220, 100, 20 );
+		adic( new JLabelPad( "Descrição da categoria" ), 110, 200, 250, 20 );
+		adic( txtDescPlan, 110, 220, 230, 20 );
+		
+		adic( new JLabelPad( "Cód.c.c." ), 7, 240, 250, 20 );
+		adic( txtCodCC, 7, 260, 100, 20 );
+		adic( new JLabelPad( "Descrição do centro de custo" ), 110, 240, 250, 20 );
+		adic( txtDescCC, 110, 260, 230, 20 );
+		
+		adic( new JLabelPad( "Doc." ), 7, 280, 110, 20 );
+		adic( txtDoc, 7, 300, 110, 20 );
+		adic( new JLabelPad( "Emissão" ), 120, 280, 107, 20 );
+		adic( txtDtEmis, 120, 300, 107, 20 );
+		adic( new JLabelPad( "Vencimento" ), 230, 280, 110, 20 );
+		adic( txtDtVenc, 230, 300, 110, 20 );
+		
+		adic( new JLabelPad( "Vlr.juros." ), 7, 320, 110, 20 );
+		adic( txtVlrJuros, 7, 340, 110, 20 );
+		adic( new JLabelPad( "Vlr.desc." ), 120, 320, 107, 20 );
+		adic( txtVlrDesc, 120, 340, 107, 20 );
+		adic( new JLabelPad( "Vlr.parcela" ), 230, 320, 110, 20 );
+		adic( txtVlrParc, 230, 340, 110, 20 );
+		
+		adic( new JLabelPad( "Observações" ), 7, 360, 240, 20 );
+		adic( txtObs, 7, 380, 333, 20 );
 
 		lcCC.addCarregaListener( this );
 	}
@@ -229,11 +263,14 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		txtCodBanco.setVlrString((String) sVals[ EColEdit.CODBANCO.ordinal() ] );
 		txtCodTipoCob.setVlrString( ( String) sVals[ EColEdit.CODTPCOB.ordinal() ] );
 		txtDescTipoCob.setVlrString( (String) sVals[ EColEdit.DESCTPCOB.ordinal()] );
+		txtCodCartCob.setVlrString( ( String) sVals[ EColEdit.CODCARTCOB.ordinal() ] );
+		txtDescCartCob.setVlrString( (String) sVals[ EColEdit.DESCCARTCOB.ordinal()] );
+		
 	}
 
 	public Object[] getValores() {
 
-		Object[] oRetorno = new Object[ 11 ];
+		Object[] oRetorno = new Object[ 13 ];
 		oRetorno[ EColRet.NUMCONTA.ordinal() ] = txtCodConta.getVlrString();
 		oRetorno[ EColRet.CODPLAN.ordinal() ] = txtCodPlan.getVlrString();
 		oRetorno[ EColRet.CODCC.ordinal() ] = txtCodCC.getVlrString();
@@ -245,6 +282,8 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		oRetorno[ EColRet.CODBANCO.ordinal() ] = txtCodBanco.getVlrString();
 		oRetorno[ EColRet.CODTPCOB.ordinal() ] = txtCodTipoCob.getVlrString();
 		oRetorno[ EColRet.DESCTPCOB.ordinal() ] = txtDescTipoCob.getVlrString();
+		oRetorno[ EColRet.CODCARTCOB.ordinal() ] = txtCodCartCob.getVlrString();
+		oRetorno[ EColRet.DESCCARTCOB.ordinal() ] = txtDescCartCob.getVlrString();
 		return oRetorno;
 	}
 
@@ -320,5 +359,8 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		lcBanco.setConexao( cn );
 		lcTipoCob.setConexao( cn );
 		lcBanco.carregaDados();
+		lcCartCob.setConexao( cn );
+		lcCartCob.carregaDados();
+		
 	}
 }

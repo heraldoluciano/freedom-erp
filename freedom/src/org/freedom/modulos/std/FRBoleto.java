@@ -261,7 +261,7 @@ public class FRBoleto extends FRelatorio {
 		adic( new JLabelPad( "Descrição do tipo de cobrança" ), 90, 120, 430, 20 );
 		adic( txtDescTpCob, 90, 140, 430, 20 );
 
-		adic( new JLabelPad( "Cód.cart.cob" ), 7, 160, 80, 20 );
+		adic( new JLabelPad( "Cód.cart.cob." ), 7, 160, 80, 20 );
 		adic( txtCodCartCob, 7, 180, 80, 20 );
 		adic( new JLabelPad( "Descrição da carteira de cobrança" ), 90, 160, 430, 20 );
 		adic( txtDescCartCob, 90, 180, 430, 20 );
@@ -617,7 +617,7 @@ public class FRBoleto extends FRelatorio {
 		}
 	}
 	
-	private boolean atualizaParcela( final Integer codrec, final Integer codparc, final String codbanco, final Integer codcartcob ) {
+	private boolean atualizaParcela( final Integer codrec, final Integer codparc, final String codbanco, final String codcartcob ) {
 		
 		boolean ret = true;
 		boolean bcart = false;
@@ -626,7 +626,7 @@ public class FRBoleto extends FRelatorio {
 			
 			try {
 				
-				bcart = ( codcartcob != null && (codcartcob.compareTo( new Integer(0) )>0) );
+				bcart = ( codcartcob != null && codcartcob.trim().length() > 0 ) ;
 				
 				StringBuilder sql = new StringBuilder();
 
@@ -643,7 +643,7 @@ public class FRBoleto extends FRelatorio {
 				if (bcart) {					
 					ps.setInt( iparam++, Aplicativo.iCodEmp );
 					ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNCARTCOB" ) );
-					ps.setInt( iparam++, codcartcob );	
+					ps.setString( iparam++, codcartcob );	
 				}
 				
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
@@ -675,7 +675,7 @@ public class FRBoleto extends FRelatorio {
 				if (bcart) {					
 					ps.setInt( iparam++, Aplicativo.iCodEmp );
 					ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNCARTCOB" ) );
-					ps.setInt( iparam++, codcartcob );	
+					ps.setString( iparam++, codcartcob );	
 				}								
 				
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
@@ -741,7 +741,7 @@ public class FRBoleto extends FRelatorio {
 
 		try {
 			
-			atualizaParcela( getCodrec( txtCodVenda.getVlrInteger(), txtTipoVenda.getVlrString() ), txtParc.getVlrInteger(), txtCodBanco.getVlrString(), txtCodCartCob.getVlrInteger() );
+			atualizaParcela( getCodrec( txtCodVenda.getVlrInteger(), txtTipoVenda.getVlrString() ), txtParc.getVlrInteger(), txtCodBanco.getVlrString(), txtCodCartCob.getVlrString() );
 
 			PreparedStatement ps = null;
 			ResultSet rs = null;
