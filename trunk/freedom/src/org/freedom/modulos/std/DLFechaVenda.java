@@ -330,6 +330,20 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtCodBanco.setListaCampos( lcBanco );
 		txtDescBanco.setListaCampos( lcBanco );
 		txtCodBanco.setFK( true );
+		
+		txtCodCartCob.setNomeCampo( "CodCartCob" );
+		lcCartCob.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_PK, false ) );
+		lcCartCob.add( new GuardaCampo( txtDescCartCob, "DescCartCob", "Desc.Cart.Cob", ListaCampos.DB_SI, false ) );
+		lcCartCob.setDinWhereAdic( "CODBANCO = #S", txtCodBanco );
+		lcCartCob.montaSql( false, "CARTCOB", "FN" );
+		lcCartCob.setQueryCommit( false );
+		lcCartCob.setReadOnly( true );
+		lcCartCob.setConexao( cn );
+		txtCodCartCob.setTabelaExterna( lcCartCob );
+		txtCodCartCob.setListaCampos( lcCartCob );
+		txtDescCartCob.setListaCampos( lcCartCob );
+		txtCodCartCob.setFK( true );
+		
 
 		txtCodTipoCob.setNomeCampo( "CodTipoCob" );
 		lcTipoCob.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK, false ) );
@@ -506,19 +520,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcComis.setQueryCommit( false );
 		lcComis.montaTab();
 		lcComis.setConexao( cn );
-		
-		txtCodCartCob.setNomeCampo( "CodCartCob" );
-		lcCartCob.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_PK, false ) );
-		lcCartCob.add( new GuardaCampo( txtDescCartCob, "DescCartCob", "Desc.Cart.Cob", ListaCampos.DB_SI, false ) );
-		lcCartCob.setDinWhereAdic( "CODBANCO = #S", txtCodBanco );
-		lcCartCob.montaSql( false, "CARTCOB", "FN" );
-		lcCartCob.setQueryCommit( false );
-		lcCartCob.setReadOnly( true );
-		lcCartCob.setConexao( cn );
-		txtCodCartCob.setTabelaExterna( lcCartCob );
-		txtCodCartCob.setListaCampos( lcCartCob );
-		txtDescCartCob.setListaCampos( lcCartCob );
-		txtCodCartCob.setFK( true );
 		
 		
 		/*		
