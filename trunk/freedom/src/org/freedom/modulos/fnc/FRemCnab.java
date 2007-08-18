@@ -52,6 +52,7 @@ import org.freedom.modulos.fnc.CnabUtil.Reg3S;
 import org.freedom.modulos.fnc.CnabUtil.Reg3T;
 import org.freedom.modulos.fnc.CnabUtil.Reg3U;
 import org.freedom.modulos.fnc.CnabUtil.Reg5;
+import org.freedom.modulos.fnc.FbnUtil.EColrec;
 import org.freedom.modulos.fnc.FbnUtil.EPrefs;
 import org.freedom.modulos.fnc.FbnUtil.StuffCli;
 import org.freedom.modulos.fnc.FbnUtil.StuffRec;
@@ -183,6 +184,82 @@ public class FRemCnab extends FRemFBN {
 		return args;
 	}
 	
+	private String getModalidade( final int codbanco ) {
+		
+		String modalidade = "";
+		
+		try {
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append( "SELECT MB.MDECOB " );
+			sql.append( "FROM FNMODBOLETO MB, FNBANCO B " );
+			sql.append( "WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL AND " );
+			sql.append( "B.CODEMP=? AND B.CODFILIAL=? AND B.CODBANCO=?" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNMODBOLETO" ) );
+			ps.setInt( 3, codbanco );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				modalidade = rs.getString( "MDECOB" );
+			}
+			
+			rs.close();
+			ps.close();
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+		}
+		catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+		
+		return modalidade;
+	}
+	
+	private int getCarteiraCobranca( final int codrec, final int nparc ) {
+		
+		int carteira = 0;
+		
+		try {
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append( "SELECT CB.CARTCOBCNAB " );
+			sql.append( "FROM FNCARTCOB CB, FNITRECEBER IR " );
+			sql.append( "WHERE CB.CODEMPBO=IR.CODEMPBO AND CB.CODFILIAL=IR.CODFILIALBO AND CB.CODBANCO=IR.CODBANCO AND " );
+			sql.append( "CB.CODEMP=IR.CODEMPCB AND CB.CODFILIAL=IR.CODFILIALCB AND CB.CODCARTCOB=IR.CODCARTCOB AND " );
+			sql.append( "IR.CODEMP=? AND IR.CODFILIAL=? AND IR.CODREC=? AND IR.NPARCITREC=?" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNCARTCOB" ) );
+			ps.setInt( 3, codrec );
+			ps.setInt( 4, nparc );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				carteira = rs.getInt( "CARTCOBCNAB" );
+			}
+			
+			rs.close();
+			ps.close();
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+		}
+		catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+		
+		return carteira;
+	}
+	
 	private Reg1 getReg1() {
 		
 		Reg1 reg = cnabutil.new Reg1();
@@ -218,31 +295,33 @@ public class FRemCnab extends FRemFBN {
 		reg.setSeqLote( seqLoteServico++ );
 		reg.setCodMovimento( codMovimento );
 
-		String[] args = getContaCli( Integer.parseInt( rec.getArgs()[ EColTab.COL_CODCLI.ordinal() ] ) );
+		String[] args = getContaCli( Integer.parseInt( rec.getArgs()[ EColrec.CODCLI.ordinal() ] ) );
 		
 		reg.setAgencia( args[ 0 ] );
 		reg.setDigAgencia( args[ 1 ] );
 		reg.setConta( args[ 2 ] );
 		reg.setDigConta( args[ 3 ] );
 		reg.setDigAgConta( args[ 4 ] );
-		/*reg.setIdentTitulo( Boleto.geraNossoNumero( 
-				"modalidade", 
-				"convenio", 
-				rec.getArgs()[ EColTab.COL_CODREC.ordinal() ], 
-				rec.getArgs()[ EColTab.COL_NRPARC.ordinal() ] );*/
-		reg.setCodCarteira( 0 );
+		reg.setIdentTitulo( Boleto.geraNossoNumero( 
+				getModalidade( txtCodBanco.getVlrInteger() ), 
+				(String)prefs.get( EPrefs.CODCONV ), 
+				Long.parseLong( rec.getCodrec().toString() ), 
+				Long.parseLong( rec.getNParcitrec().toString() ) ) );
+		reg.setCodCarteira( getCarteiraCobranca( 
+				rec.getCodrec(), 
+				rec.getNParcitrec() ) );
 		reg.setFormaCadTitulo( 0 );
 		reg.setTipoDoc( 0 );
 		reg.setIdentEmitBol( 0 );
 		reg.setIdentDist( 0 );
-		reg.setDocCobranca( (String) rec.getArgs()[ EColTab.COL_DOCREC.ordinal() ] );
-		reg.setDtVencTitulo( Funcoes.strDateToDate( rec.getArgs()[ EColTab.COL_DTVENC.ordinal() ] ) );
-		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColTab.COL_VLRAPAG.ordinal() ] ) );		
+		reg.setDocCobranca( (String) rec.getArgs()[ EColrec.DOCREC.ordinal() ] );
+		reg.setDtVencTitulo( Funcoes.strDateToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
+		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );		
 		reg.setAgenciaCob( null );
 		reg.setDigAgenciaCob( null );
 		reg.setEspecieTit( 2 );
 		reg.setAceite( 'A' );
-		reg.setDtEmitTit( Funcoes.strDateToDate( rec.getArgs()[ EColTab.COL_DTREC.ordinal() ] ) );
+		reg.setDtEmitTit( Funcoes.strDateToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
 		reg.setCodJuros( 3 );
 		reg.setDtJuros( null );
 		reg.setVlrJurosTaxa( new BigDecimal( 0 ) ); 		
@@ -251,7 +330,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setVlrpercConced( new BigDecimal( 0 ) );
 		reg.setVlrIOF( new BigDecimal( 0 ) );
 		reg.setVlrAbatimento( new BigDecimal( 0 ) );
-		reg.setIdentTitEmp( rec.getArgs()[ EColTab.COL_CODREC.ordinal() ] );
+		reg.setIdentTitEmp( rec.getCodrec().toString() );
 		reg.setCodProtesto( 3 );
 		reg.setDiasProtesto( 0 );
 		reg.setCodBaixaDev( 2 );
@@ -271,7 +350,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setSeqLote( seqLoteServico++ );
 		reg.setCodMovimento( codMovimento );
 		
-		String[] dadosCliente = getCliente( Integer.parseInt( rec.getArgs()[ EColTab.COL_CODCLI.ordinal() ] ) );
+		String[] dadosCliente = getCliente( Integer.parseInt( rec.getArgs()[ EColrec.CODCLI.ordinal() ] ) );
 		
 		reg.setTipoInscCli( Integer.parseInt( dadosCliente[ DadosCliente.CNPJCPF.ordinal()] ) );
 		
@@ -363,21 +442,22 @@ public class FRemCnab extends FRemFBN {
 		reg.setSeqLote( seqLoteServico++ );
 		reg.setCodMovimento( codMovimento );
 		
-		String[] args = getContaCli( Integer.parseInt( rec.getArgs()[ EColTab.COL_CODCLI.ordinal() ] ) );
+		String[] args = getContaCli( Integer.parseInt( rec.getArgs()[ EColrec.CODCLI.ordinal() ] ) );
 		
 		reg.setAgencia( args[ 0 ] );
 		reg.setDigAgencia( args[ 1 ] );
 		reg.setConta( args[ 2 ] );
 		reg.setDigConta( args[ 3 ] );
 		reg.setDigAgConta( args[ 4 ] );
-		/*reg.setIdentTitulo( Boleto.geraNossoNumero( 
-				"modalidade", 
-				"convenio", 
-				rec.getArgs()[ EColTab.COL_CODREC.ordinal() ], 
-				rec.getArgs()[ EColTab.COL_NRPARC.ordinal() ] );*/
-		
-		reg.setCarteira( 0 );
-		reg.setDocCob( rec.getArgs()[ EColTab.COL_DOCREC.ordinal() ] );
+		reg.setIdentTitBanco( Boleto.geraNossoNumero( 
+				getModalidade( txtCodBanco.getVlrInteger() ), 
+				(String)prefs.get( EPrefs.CODCONV ), 
+				Long.parseLong( rec.getCodrec().toString() ), 
+				Long.parseLong( rec.getNParcitrec().toString() ) ) );
+		reg.setCarteira( getCarteiraCobranca( 
+				rec.getCodrec(), 
+				rec.getNParcitrec() ) );
+		reg.setDocCob( rec.getArgs()[ EColrec.DOCREC.ordinal() ] );
 		reg.setDataVencTit( null );
 		reg.setVlrTitulo( new BigDecimal(0) );
 		
@@ -385,10 +465,10 @@ public class FRemCnab extends FRemFBN {
 		reg.setAgenciaCob( null );
 		reg.setDigAgenciaCob( null );
 		
-		reg.setIdentTitEmp( rec.getArgs()[ EColTab.COL_CODREC.ordinal() ] );
+		reg.setIdentTitEmp( rec.getCodrec().toString() );
 		reg.setCodMoeda( 9 );
 		
-		String[] dadosCliente = getCliente( Integer.parseInt( rec.getArgs()[ EColTab.COL_CODCLI.ordinal() ] ) );
+		String[] dadosCliente = getCliente( Integer.parseInt( rec.getArgs()[ EColrec.CODCLI.ordinal() ] ) );
 		
 		reg.setTipoInscCli( Integer.parseInt( dadosCliente[ DadosCliente.CNPJCPF.ordinal()] ) );
 		
