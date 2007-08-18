@@ -1285,7 +1285,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		PreparedStatement ps = null;
 		StringBuffer sSQL = new StringBuffer();
-		Object[] sVals = new Object[ 15 ];
+		Object[] sVals = new Object[ 17 ];
 		Object[] sRets = null;
 		DLEditaRec dl = null;
 		ImageIcon imgStatusAt = null;
@@ -1334,7 +1334,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					sVals[ EColEdit.CODBANCO.ordinal() ] = tabManut.getValor( iLin, EColTabManut.CODBANCO.ordinal() );
 					sVals[ EColEdit.CODTPCOB.ordinal() ] = String.valueOf( tabManut.getValor( iLin, EColTabManut.CODTIPOCOB.ordinal() ) );
 					sVals[ EColEdit.DESCTPCOB.ordinal() ] = String.valueOf( tabManut.getValor( iLin, EColTabManut.DESCTIPOCOB.ordinal() ) );
+					sVals[ EColEdit.CODCARTCOB.ordinal() ] = String.valueOf( tabManut.getValor( iLin, EColTabManut.CODCARTCOB.ordinal() ) );
+					sVals[ EColEdit.DESCCARTCOB.ordinal() ] = String.valueOf( tabManut.getValor( iLin, EColTabManut.DESCCARTCOB.ordinal() ) );
 
+					
 					dl.setValores( sVals );
 					dl.setConexao( con );
 					dl.setVisible( true );
@@ -1346,7 +1349,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 						sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC=?,VLRJUROSITREC=?," );
 						sSQL.append( "VLRDESCITREC=?,DTVENCITREC=?,OBSITREC=?,CODEMPBO=?,CODFILIALBO=?,CODBANCO=?, " );
-						sSQL.append( " CODEMPTC=?, CODFILIALTC=?, CODTIPOCOB=? " );
+						sSQL.append( " CODEMPTC=?, CODFILIALTC=?, CODTIPOCOB=?, " );
+						sSQL.append( " CODEMPCB=?, CODFILIALCB=?, CODCARTCOB=? " );
 						sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
 
 						try {
@@ -1434,11 +1438,22 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 								ps.setInt( 20, ListaCampos.getMasterFilial( "FNTIPOCOB" ) );
 								ps.setInt( 21, Integer.parseInt( (String) sRets[ EColRet.CODTPCOB.ordinal() ] ) );
 							}
+							
+							if ( "".equals( sRets[ EColRet.CODCARTCOB.ordinal() ] ) ) {
+								ps.setNull( 19, Types.INTEGER );
+								ps.setNull( 20, Types.INTEGER );
+								ps.setNull( 21, Types.CHAR );
+							}
+							else {
+								ps.setInt( 22, Aplicativo.iCodEmp );
+								ps.setInt( 23, ListaCampos.getMasterFilial( "FNCARTCOB" ) );
+								ps.setString( 24, ( (String) sRets[ EColRet.CODCARTCOB.ordinal() ] ) );
+							}
 
-							ps.setInt( 22, iCodRec );
-							ps.setInt( 23, iNParcItRec );
-							ps.setInt( 24, Aplicativo.iCodEmp );
-							ps.setInt( 25, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+							ps.setInt( 25, iCodRec );
+							ps.setInt( 26, iNParcItRec );
+							ps.setInt( 27, Aplicativo.iCodEmp );
+							ps.setInt( 28, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 
 							ps.executeUpdate();
 
