@@ -484,11 +484,9 @@ public class FRBoleto extends FRelatorio {
 
 			m.appendTail( sb );
 			sRet = sb.toString();
-
-			/*
-             * if ( ! con.getAutoCommit() ) { con.commit(); }
-             */
-		} catch ( SQLException err ) {
+			
+		} 
+		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro na consulta ao modelo de boleto!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
@@ -618,26 +616,38 @@ public class FRBoleto extends FRelatorio {
 		}
 	}
 	
-	private boolean atualizaParcela( final Integer codrec, final Integer codparc, final String codbanco ) {
+	private boolean atualizaParcela( final Integer codrec, final Integer codparc, final String codbanco, final Integer codcartcob ) {
 		
 		boolean ret = true;
-		
+		boolean bcart = false;
+		int iparam = 1;
 		if ( bAtlParcela && ( codbanco != null && codbanco.trim().length() > 0 ) ) {
 			
 			try {
 				
+				bcart = ( codcartcob != null && (codcartcob.compareTo( new Integer(0) )>0) );
+				
 				StringBuilder sql = new StringBuilder();
 
 				sql.append( "UPDATE FNRECEBER SET CODEMPBO=?, CODFILIALBO=?, CODBANCO=? " );
+				if (bcart) sql.append(", CODEMPCB=?, CODFILIALCB=?,  CODCARTCOB=? ");				
+				
 				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=?" );
 				
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "FNBANCO" ) );
-				ps.setString( 3, codbanco );
-				ps.setInt( 4, Aplicativo.iCodEmp );
-				ps.setInt( 5, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-				ps.setInt( 6, codrec );
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNBANCO" ) );
+				ps.setString( iparam++, codbanco );
+				
+				if (bcart) {					
+					ps.setInt( iparam++, Aplicativo.iCodEmp );
+					ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNCARTCOB" ) );
+					ps.setInt( iparam++, codcartcob );	
+				}
+				
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+				ps.setInt( iparam++, codrec );
 				ps.executeUpdate();
 				ps.close();
 				
@@ -648,20 +658,31 @@ public class FRBoleto extends FRelatorio {
 				sql = new StringBuilder();
 
 				sql.append( "UPDATE FNITRECEBER SET CODEMPBO=?, CODFILIALBO=?, CODBANCO=? " );
+				if (bcart) sql.append(", CODEMPCB=?, CODFILIALCB=?,  CODCARTCOB=? ");		
 				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? " );
 				if ( codparc != null && codparc > 0 ) {
 				  sql.append("AND NPARCITREC=? " );
 				}
 				
+				iparam = 1;
+				
 				ps = con.prepareStatement( sql.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "FNBANCO" ) );
-				ps.setString( 3, codbanco );
-				ps.setInt( 4, Aplicativo.iCodEmp );
-				ps.setInt( 5, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-				ps.setInt( 6, codrec );
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNBANCO" ) );
+				ps.setString( iparam++, codbanco );
+				
+				if (bcart) {					
+					ps.setInt( iparam++, Aplicativo.iCodEmp );
+					ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNCARTCOB" ) );
+					ps.setInt( iparam++, codcartcob );	
+				}								
+				
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+				ps.setInt( iparam++, codrec );														
+				
 				if ( codparc != null && codparc > 0 ) {
-					ps.setInt( 7, codparc );
+					ps.setInt( iparam++, codparc );
 				}
 				ps.executeUpdate();					
 				ps.close();
@@ -719,8 +740,7 @@ public class FRBoleto extends FRelatorio {
 
 		try {
 			
-
-			atualizaParcela( getCodrec( txtCodVenda.getVlrInteger(), txtTipoVenda.getVlrString() ), txtParc.getVlrInteger(), txtCodBanco.getVlrString() );
+			atualizaParcela( getCodrec( txtCodVenda.getVlrInteger(), txtTipoVenda.getVlrString() ), txtParc.getVlrInteger(), txtCodBanco.getVlrString(), txtCodCartCob.getVlrInteger() );
 
 			PreparedStatement ps = null;
 			ResultSet rs = null;
