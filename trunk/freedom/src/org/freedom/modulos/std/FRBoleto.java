@@ -91,6 +91,10 @@ public class FRBoleto extends FRelatorio {
 	private JTextFieldPad txtCodTpCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTpCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private final JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private final JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	// private JCheckBoxPad cbTipoImp = new JCheckBoxPad("Impressão gráfica","S","N");
 
@@ -103,6 +107,8 @@ public class FRBoleto extends FRelatorio {
 	private ListaCampos lcBanco = new ListaCampos( this );
 
 	private ListaCampos lcTipoCob = new ListaCampos( this );
+	
+	private final ListaCampos lcCartCob = new ListaCampos( this, "CB" );
 
 	private JInternalFrame fExt = null;
 
@@ -127,7 +133,7 @@ public class FRBoleto extends FRelatorio {
 	public FRBoleto( JInternalFrame fExt ) {
 
 		setTitulo( "Impressão de boleto/recibo" );
-		setAtribos( 80, 80, 545, 320 );
+		setAtribos( 80, 80, 545, 375 );
 
 		this.fExt = fExt;
 
@@ -168,6 +174,7 @@ public class FRBoleto extends FRelatorio {
 		lcVenda.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_FK, true ) );
 		lcVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo Venda", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtNomeBanco, false) );
+		lcVenda.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_FK, txtDescCartCob, false ));
 		lcVenda.setReadOnly( true );
 		lcVenda.montaSql( false, "VENDA", "VD" );
 		txtCodVenda.setTabelaExterna( lcVenda );
@@ -209,6 +216,23 @@ public class FRBoleto extends FRelatorio {
 		txtCodTpCob.setPK( true );
 		txtCodTpCob.setNomeCampo( "CodTipoCob" );
 		txtCodTpCob.setListaCampos( lcTipoCob );
+		
+		/************************
+         * CARTEIRA DE COBRANÇA *
+         ************************/
+		
+		txtCodCartCob.setNomeCampo( "CodCartCob" );
+		lcCartCob.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_PK, false ) );
+		lcCartCob.add( new GuardaCampo( txtDescCartCob, "DescCartCob", "Desc.Cart.Cob", ListaCampos.DB_SI, false ) );
+		lcCartCob.setDinWhereAdic( "CODBANCO = #S", txtCodBanco );
+		lcCartCob.montaSql( false, "CARTCOB", "FN" );
+		lcCartCob.setQueryCommit( false );
+		lcCartCob.setReadOnly( true );		
+		txtCodCartCob.setTabelaExterna( lcCartCob );
+		txtCodCartCob.setListaCampos( lcCartCob );
+		txtDescCartCob.setListaCampos( lcCartCob );
+		txtCodCartCob.setFK( true );
+		
 	}
 
 	private void montaTela() {
@@ -236,15 +260,21 @@ public class FRBoleto extends FRelatorio {
 		adic( new JLabelPad( "Descrição do tipo de cobrança" ), 90, 120, 430, 20 );
 		adic( txtDescTpCob, 90, 140, 430, 20 );
 
+		adic( new JLabelPad( "Cód.cart.cob" ), 7, 160, 80, 20 );
+		adic( txtCodCartCob, 7, 180, 80, 20 );
+		adic( new JLabelPad( "Descrição da carteira de cobrança" ), 90, 160, 430, 20 );
+		adic( txtDescCartCob, 90, 180, 430, 20 );
+		
 		JLabel periodo = new JLabel( "Período (Emissão)", SwingConstants.CENTER );
 		periodo.setOpaque( true );
-		adic( periodo, 25, 160, 150, 20 );
+		
+		adic( periodo, 25, 210, 150, 20 );
 		JLabel borda = new JLabel();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
-		adic( borda, 7, 170, 296, 45 );
-		adic( txtDtIni, 25, 185, 110, 20 );
-		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 185, 40, 20 );
-		adic( txtDtFim, 175, 185, 110, 20 );
+		adic( borda, 7, 220, 300, 45 );
+		adic( txtDtIni, 25, 235, 110, 20 );
+		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 235, 40, 20 );
+		adic( txtDtFim, 175, 235, 110, 20 );
 
 		// adic( cbTipoImp, 390, 180, 150, 30);
 	}
@@ -302,7 +332,7 @@ public class FRBoleto extends FRelatorio {
 					}
 				}
 
-				lObsOrc = (List) Funcoes.stringToVector( sObsOrc, "\n" );
+				lObsOrc = (List<String>) Funcoes.stringToVector( sObsOrc, "\n" );
 
 				System.out.println( "tamanho antes" + lObsOrc.size() );
 
@@ -966,7 +996,9 @@ public class FRBoleto extends FRelatorio {
 		lcCli.setConexao( cn );
 		lcBanco.setConexao( cn );
 		lcTipoCob.setConexao( cn );
+		lcCartCob.setConexao( con );
 		sInfoMoeda = getMoeda();
+		
 		
 		getAtualizaParcela();
 	}
