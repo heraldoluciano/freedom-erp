@@ -382,6 +382,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtCodBancoItRec.setFK( true );
 		
 		lcCartCobItRec.add( new GuardaCampo( txtCodCartCobItRec, "CodCartCob", "Cód.Cart.Cob.", ListaCampos.DB_PK, false ) );
+		lcCartCobItRec.add( new GuardaCampo( txtCodBancoItRec, "CodBanco", "Cód.Banco.", ListaCampos.DB_PK, false ) );
 		//lcCartCob.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PF, false ) );
 		lcCartCobItRec.add( new GuardaCampo( txtDescCartCobItRec, "DescCartCob", "Descrição da carteira de cobrança", ListaCampos.DB_SI, false ) );
 		lcCartCobItRec.montaSql( false, "CARTCOB", "FN" );
@@ -485,7 +486,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtTipoVenda.setListaCampos( lcReceber );
 		txtAltUsuRec.setListaCampos( lcReceber );
 		
-
 		txtNParcItRec.setNomeCampo( "NParcItRec" );
 		lcItReceber.add( new GuardaCampo( txtNParcItRec, "NParcItRec", "N.parc.", ListaCampos.DB_PK, false ) );
 		lcItReceber.add( new GuardaCampo( cbImpReciboItRec, "ImpReciboItRec", "Imp.rec.", ListaCampos.DB_SI, false) );
