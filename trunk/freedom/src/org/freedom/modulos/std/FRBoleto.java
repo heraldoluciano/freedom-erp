@@ -223,6 +223,7 @@ public class FRBoleto extends FRelatorio {
 		
 		txtCodCartCob.setNomeCampo( "CodCartCob" );
 		lcCartCob.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_PK, false ) );
+		lcCartCob.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
 		lcCartCob.add( new GuardaCampo( txtDescCartCob, "DescCartCob", "Desc.Cart.Cob", ListaCampos.DB_SI, false ) );
 		lcCartCob.setDinWhereAdic( "CODBANCO = #S", txtCodBanco );
 		lcCartCob.montaSql( false, "CARTCOB", "FN" );
