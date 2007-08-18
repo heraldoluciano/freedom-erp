@@ -31,13 +31,16 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
+import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -59,11 +62,21 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	
 	private final JPanelPad panelNavSiacc = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
+	private final JTabbedPanePad tbCnab = new JTabbedPanePad();
+	
 	private final JPanelPad panelCnab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private final JPanelPad panelCnabManager = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private final JPanelPad panelCnabGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private final JPanelPad panelCnabPref = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private final JPanelPad panelTabCnab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private final JPanelPad panelCamposCnab = new JPanelPad();
+	
+	private final JPanelPad panelCamposPref = new JPanelPad();
 	
 	private final JPanelPad panelNavCnab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -121,6 +134,8 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	
 	private JRadioGroup rgIdentAmbBcoCnab;
 
+	private JComboBoxPad cbFormaCadastramento = null;
+
 	private final ListaCampos lcSiacc = new ListaCampos( this, "BO" );
 
 	private final ListaCampos lcCnab = new ListaCampos( this, "BO" );
@@ -148,9 +163,10 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	public FPrefereFBB() {
 
 		setTitulo( "Preferências Gerais" );
-		setAtribos( 50, 50, 400, 490 );
+		setAtribos( 50, 50, 400, 520 );
 		
 		montaRadioGrupos();
+		montaComboBoxs();
 		montaListaCampos();
 		montaTela();
 		
@@ -213,6 +229,17 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		rgIdentAmbBcoCnab = new JRadioGroup( 2, 1, vLabs3, vVals3 );
 	}
 	
+	private void montaComboBoxs() {
+
+		Vector<String> vLabs1 = new Vector<String>();
+		Vector<Integer> vVals1 = new Vector<Integer>();
+		vLabs1.addElement( "com cadastro" );
+		vLabs1.addElement( "sem cadastro" );
+		vVals1.addElement( 1 );
+		vVals1.addElement( 2 );
+		cbFormaCadastramento = new JComboBoxPad( vLabs1, vVals1, JComboBoxPad.TP_INTEGER, 1, 0 );
+	}
+	
 	private void montaListaCampos() {
 
 
@@ -233,7 +260,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		lcCampos.adicDetalhe( lcSiacc );
 		
 		/**********************
-		 *    FNBANCO  CNAB   *
+		 *   FNBANCO   CNAB   *
 		 **********************/
 		lcBancoCnab.add( new GuardaCampo( txtCodBancoCnab, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBancoCnab.add( new GuardaCampo( txtNomeBancoCnab, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
@@ -255,9 +282,9 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	    txtNumContaCnab.setTabelaExterna(lcContaCnab);
 	    
 	    
-	    /**********************
-		 *FNCONTA CONTA SIACC *
-		 **********************/
+	    /***********************
+		 * FNCONTA CONTA SIACC *
+		 ***********************/
 	    lcContaSiacc.add(new GuardaCampo( txtNumContaSiacc, "NumConta", "N° Conta", ListaCampos.DB_PK, false));
 	    lcContaSiacc.add(new GuardaCampo( txtAgenciaSiacc, "AgenciaConta", "Agência", ListaCampos.DB_SI, false ));
 	    lcContaSiacc.add(new GuardaCampo( txtDescContaSiacc, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false));
@@ -335,17 +362,26 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		 ****************/		
 		setListaCampos( lcCnab );
 		setNavegador( nvCnab );
+
+		adicTab( "CNAB", panelCnab );
+		
+		panelCnab.add( panelCnabManager, BorderLayout.CENTER );
 		
 		panelTabCnab.setPreferredSize( new Dimension( 300, 100 ) );
 		panelTabCnab.setBorder( BorderFactory.createEtchedBorder() );
-		panelTabCnab.add( new JScrollPane( tabCnab ), BorderLayout.CENTER );
-
-		adicTab( "CNAB", panelCnab );
-		setPainel( panelCamposCnab, panelCnab );
+		panelTabCnab.add( new JScrollPane( tabCnab ), BorderLayout.CENTER );		
 		
-		panelCnab.add( panelTabCnab, BorderLayout.NORTH );
-		panelCnab.add( panelCamposCnab, BorderLayout.CENTER );
-		panelCnab.add( panelNavCnab, BorderLayout.SOUTH );
+		panelCnabManager.add( panelTabCnab, BorderLayout.NORTH );
+		panelCnabManager.add( tbCnab, BorderLayout.CENTER );
+		panelCnabManager.add( panelNavCnab, BorderLayout.SOUTH );
+		
+		tbCnab.setTabPlacement( SwingConstants.BOTTOM );
+		
+		/*** ABA GERAL ***/		
+		
+		tbCnab.add( "geral", panelCnabGeral );		
+		panelCnabGeral.add( panelCamposCnab, BorderLayout.CENTER );
+		setPainel( panelCamposCnab );
 
 		lcCnab.add( new GuardaCampo( txtTipoCnab, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true ) );
 		adicCampo( txtCodBancoCnab, 7, 30, 100, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBancoCnab, true );
@@ -364,12 +400,25 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		//adicCampo( txtNroSeqCnab, 250, 110, 120, 20, "NroSeq", "Sequência", ListaCampos.DB_SI, false );
 		adicDB( rgIdentAmbCliCnab, 7, 190, 178, 60, "IdentAmbCli", "Ambiente do cliente", false );
 		adicDB( rgIdentAmbBcoCnab, 193, 190, 178, 60, "IdentAmbBco", "Ambiente do banco", false );
-		setListaCampos( false, "ITPREFERE6", "SG" );
-		lcCnab.setWhereAdic( " TIPOFEBRABAN='02' " );
 		
 		panelNavCnab.setPreferredSize( new Dimension( 300, 30 ) );
 		panelNavCnab.setBorder( BorderFactory.createEtchedBorder() );
-		panelNavCnab.add( nvCnab, BorderLayout.WEST );		
+		panelNavCnab.add( nvCnab, BorderLayout.WEST );	
+		
+		/****************/
+		
+		/*** ABA PREF ***/
+
+		tbCnab.add( "preferências", panelCnabPref );		
+		panelCnabPref.add( panelCamposPref, BorderLayout.CENTER );
+		setPainel( panelCamposPref );
+		
+		adicDB( cbFormaCadastramento, 10, 20, 250, 20, "IdentAmbCli", "Forma de cadastramento do titulo no banco", false );
+		
+		/****************/
+		
+		setListaCampos( false, "ITPREFERE6", "SG" );
+		lcCnab.setWhereAdic( " TIPOFEBRABAN='02' " );
 	}
 
 	public void afterCarrega( CarregaEvent e ) { }
