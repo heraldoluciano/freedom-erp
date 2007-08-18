@@ -93,7 +93,7 @@ public class Funcoes {
 	
     public static boolean executeURL(String os, String comando, String url) {
     	boolean retorno = false;
-    	Vector comandos = new Vector();
+    	Vector<String> comandos = new Vector<String>();
     	if ( (comando!=null) && (!comando.equals("")) ) 
     		comandos.addElement(comando);
     	if (os.equalsIgnoreCase("windows")) {
@@ -1051,7 +1051,7 @@ public class Funcoes {
 	}
 
 	public static Vector stringToVector(String sTexto,String sSep) {
-		Vector vRetorno = new Vector();
+		Vector<String> vRetorno = new Vector<String>();
 		String sLinha = "";
 		if (sTexto != null) {
 			int iPos = sTexto.indexOf(sSep);
