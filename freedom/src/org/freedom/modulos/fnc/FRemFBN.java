@@ -482,7 +482,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		ps.setDate( 2, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
 		ps.setInt( 3, Aplicativo.iCodEmp );
 		ps.setInt( 4, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-		ps.setInt( 5, txtCodBanco.getVlrInteger() );
+		ps.setString( 5, txtCodBanco.getVlrString() );
 		rs = ps.executeQuery();
 		return rs;
 	}
@@ -503,7 +503,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			ResultSet rs = executeQuery();
 
 			int i = 0;
-			for ( i = 0; rs.next(); i++ ) {
+			while ( rs.next() ) {
 
 				tab.adicLinha();
 				tab.setValor( new Boolean( true ), i, EColTab.COL_SEL.ordinal() );
@@ -524,9 +524,10 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				tab.setValor( rs.getString( "PESSOACLI" ), i, EColTab.COL_PESSOACLI.ordinal() );
 				tab.setValor( rs.getString( "CPFCLI" ), i, EColTab.COL_CPFCLI.ordinal() );
 				tab.setValor( rs.getString( "CNPJCLI" ), i, EColTab.COL_CNPJCLI.ordinal() );
+				i++;
 			}
 
-			rs.close();
+ 			rs.close();
 
 			if ( !con.getAutoCommit() ) {
 				con.commit();
@@ -612,7 +613,9 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 						(String) vLinha.elementAt( EColTab.COL_PESSOACLI.ordinal() ),
 						(String) vLinha.elementAt( EColTab.COL_CPFCLI.ordinal() ),
 						(String) vLinha.elementAt( EColTab.COL_CNPJCLI.ordinal() ),
-						rgTipoRemessa.getVlrString() } ) );
+						rgTipoRemessa.getVlrString(),
+						String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_CODREC.ordinal() ) ),
+						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTREC.ordinal() ) ) } ) );
 						/*
 						 * String codBanco, String tipoFebraban, String stipoFebraban, 
 						 * String sitRemessa {CODBANCO, TIPOFEBRABAN, 
