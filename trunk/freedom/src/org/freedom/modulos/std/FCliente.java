@@ -387,6 +387,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextAreaPad txaTxtObsCli = new JTextAreaPad(); // Campo memo para observações por data
 
 	private JTextAreaPad txaObsMetaVend = new JTextAreaPad();
+	
+	private final JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private final JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JScrollPane spnObs = new JScrollPane( txaObs ); // Scroll pane para observações gerais
 
@@ -423,6 +427,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private ListaCampos lcPais = new ListaCampos( this, "" );
 
 	private ListaCampos lcHistorico = new ListaCampos( this, "HP" );
+	
+	private final ListaCampos lcCartCob = new ListaCampos( this, "CB" );
 
 	private JScrollPane spnTabFor = new JScrollPane( tabFor );
 
@@ -571,6 +577,24 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
 		txtCodBanco.setTabelaExterna( lcBanco );
+		
+		/************************
+         * CARTEIRA DE COBRANÇA *
+         ************************/
+		
+		txtCodCartCob.setNomeCampo( "CodCartCob" );
+		lcCartCob.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_PK, false ) );
+		lcCartCob.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
+		lcCartCob.add( new GuardaCampo( txtDescCartCob, "DescCartCob", "Desc.Cart.Cob", ListaCampos.DB_SI, false ) );
+		lcCartCob.setDinWhereAdic( "CODBANCO = #S", txtCodBanco );
+		lcCartCob.montaSql( false, "CARTCOB", "FN" );
+		lcCartCob.setQueryCommit( false );
+		lcCartCob.setReadOnly( true );		
+		txtCodCartCob.setTabelaExterna( lcCartCob );
+		txtCodCartCob.setListaCampos( lcCartCob );
+		txtDescCartCob.setListaCampos( lcCartCob );
+		txtCodCartCob.setFK( true );
+		
 
 		lcPesq.add( new GuardaCampo( txtCodPesq, "CodCli", "Cód.cli.p.", ListaCampos.DB_PK, false ) );
 		lcPesq.add( new GuardaCampo( txtDescPesq, "RazCli", "Razão social do cliente pricipal", ListaCampos.DB_SI, false ) );
@@ -713,15 +737,19 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicDescFK( txtDescTipoCob, 90, 140, 240, 20, "DescTipoCob", "Descrição do tipo de cobrança" );
 		adicCampo( txtCodBanco, 7, 180, 80, 20, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtNomeBanco, false );
 		adicDescFK( txtNomeBanco, 90, 180, 240, 20, "NomeBanco", "Nome do banco" );
-		adicCampo( txtCodPesq, 7, 220, 80, 20, "CodPesq", "Cód.cli.p.", ListaCampos.DB_FK, txtDescPesq, false );
-		adicDescFK( txtDescPesq, 90, 220, 240, 20, "RazCli", "Razão social do cliente principal" );
-		adicCampo( txtCodFiscCli, 7, 260, 80, 20, "CodFiscCli", "Cód.tp.fisc.", ListaCampos.DB_FK, txtDescFiscCli, false );
-		adicDescFK( txtDescFiscCli, 90, 260, 240, 20, "DescFiscCli", "Descrição do tipo fiscal" );
-		adicCampo( txtCodCliContab, 7, 300, 160, 20, "CodCliContab", "Cód.cli.contábil", ListaCampos.DB_SI, false );
-		adicCampo( txtCodContDeb, 7, 340, 160, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
-		adicCampo( txtCodContCred, 170, 340, 160, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
-		adicCampo( txtCodHistPad, 7, 380, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
-		adicDescFK( txtDescHistPad, 90, 380, 240, 20, "DescHist", "Descrição do historico padrão" );
+
+		adicCampo( txtCodCartCob, 7, 220, 80, 20, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_FK, txtDescCartCob, false );
+		adicDescFK( txtDescCartCob, 90, 220, 240, 20, "DescCartCob", "Descrição da carteira de cobrança" );		
+		
+		adicCampo( txtCodPesq, 7, 260, 80, 20, "CodPesq", "Cód.cli.p.", ListaCampos.DB_FK, txtDescPesq, false );
+		adicDescFK( txtDescPesq, 90, 260, 240, 20, "RazCli", "Razão social do cliente principal" );
+		adicCampo( txtCodFiscCli, 7, 300, 80, 20, "CodFiscCli", "Cód.tp.fisc.", ListaCampos.DB_FK, txtDescFiscCli, false );
+		adicDescFK( txtDescFiscCli, 90, 300, 240, 20, "DescFiscCli", "Descrição do tipo fiscal" );
+		adicCampo( txtCodCliContab, 7, 340, 160, 20, "CodCliContab", "Cód.cli.contábil", ListaCampos.DB_SI, false );
+		adicCampo( txtCodContDeb, 7, 380, 160, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
+		adicCampo( txtCodContCred, 170, 380, 160, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
+		adicCampo( txtCodHistPad, 7, 420, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
+		adicDescFK( txtDescHistPad, 90, 420, 240, 20, "DescHist", "Descrição do historico padrão" );
 		
 		// Adicionar botão para agrupamento de clientes
 
@@ -3568,6 +3596,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		lcPais.setConexao( con );
 		lcMetaVend.setConexao( con );
 		lcHistorico.setConexao( con );
+		lcCartCob.setConexao( con );
 		
 		if ( lcSetor != null ) {
 			lcSetor.setConexao( con );
