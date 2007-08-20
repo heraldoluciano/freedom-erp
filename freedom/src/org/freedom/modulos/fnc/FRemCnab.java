@@ -310,31 +310,31 @@ public class FRemCnab extends FRemFBN {
 		reg.setCodCarteira( getCarteiraCobranca( 
 				rec.getCodrec(), 
 				rec.getNParcitrec() ) );
-		reg.setFormaCadTitulo( 0 );
-		reg.setTipoDoc( 0 );
-		reg.setIdentEmitBol( 0 );
-		reg.setIdentDist( 0 );
+		reg.setFormaCadTitulo( (Integer) prefs.get( EPrefs.FORCADTIT ) );//**
+		reg.setTipoDoc( (Integer) prefs.get( EPrefs.TIPODOC ) );//**
+		reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );//**
+		reg.setIdentDist( (Integer) prefs.get( EPrefs.IDENTDISTBOL ) );//**
 		reg.setDocCobranca( (String) rec.getArgs()[ EColrec.DOCREC.ordinal() ] );
 		reg.setDtVencTitulo( Funcoes.strDateToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );		
 		reg.setAgenciaCob( null );
 		reg.setDigAgenciaCob( null );
-		reg.setEspecieTit( 2 );
-		reg.setAceite( 'A' );
+		reg.setEspecieTit( (Integer) prefs.get( EPrefs.ESPECTIT ) );//**/
+		reg.setAceite( 'N' );
 		reg.setDtEmitTit( Funcoes.strDateToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
-		reg.setCodJuros( 3 );
+		reg.setCodJuros( (Integer) prefs.get( EPrefs.CODJUROS ) );//**
 		reg.setDtJuros( null );
-		reg.setVlrJurosTaxa( new BigDecimal( 0 ) ); 		
-		reg.setCodDesc( 6 );
+		reg.setVlrJurosTaxa( (BigDecimal) prefs.get( EPrefs.VLRPERCJUROS ) ); //**		
+		reg.setCodDesc( (Integer) prefs.get( EPrefs.CODDESC ) );//**
 		reg.setDtDesc( null );
-		reg.setVlrpercConced( new BigDecimal( 0 ) );
+		reg.setVlrpercConced( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) );//**
 		reg.setVlrIOF( new BigDecimal( 0 ) );
 		reg.setVlrAbatimento( new BigDecimal( 0 ) );
 		reg.setIdentTitEmp( rec.getCodrec().toString() );
-		reg.setCodProtesto( 3 );
-		reg.setDiasProtesto( 0 );
-		reg.setCodBaixaDev( 2 );
-		reg.setDiasBaixaDevol( 0 );  
+		reg.setCodProtesto( (Integer) prefs.get( EPrefs.CODPROT ) );//**
+		reg.setDiasProtesto( (Integer) prefs.get( EPrefs.DIASPROT ) );//**
+		reg.setCodBaixaDev( (Integer) prefs.get( EPrefs.CODBAIXADEV ) );//**
+		reg.setDiasBaixaDevol( (Integer) prefs.get( EPrefs.DIASBAIXADEV ) );//**  
 		reg.setCodMoeda( 9 );
 		reg.setContrOperCred( null );
 		
@@ -612,8 +612,8 @@ public class FRemCnab extends FRemFBN {
 				registros.add( getReg3Q( rec ) );
 				//registros.add( getReg3R() );
 				//registros.add( getReg3S() );
-				//registros.add( getReg3T() );
-				//registros.add( getReg3U() );
+				registros.add( getReg3T( rec ) );
+				registros.add( getReg3U( rec ) );
 				regs++;
 			}
 			

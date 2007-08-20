@@ -364,7 +364,9 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			
 			sql.append( "SELECT I.CODCONV, P.NOMEEMP, I.VERLAYOUT, I.IDENTSERV, I.CONTACOMPR, " );
 			sql.append( "I.IDENTAMBCLI, I.IDENTAMBBCO, I.NROSEQ, " );
-			sql.append( "I.NUMCONTA, C.AGENCIACONTA, E.CNPJFILIAL " );
+			sql.append( "I.NUMCONTA, C.AGENCIACONTA, E.CNPJFILIAL, " );
+			sql.append( "FORCADTIT, TIPODOC, IDENTEMITBOL , IDENTDISTBOL, ESPECTIT, CODJUROS, VLRPERCJUROS, " );
+			sql.append( "CODDESC, VLRPERCDESC, CODPROT, DIASPROT, CODBAIXADEV, DIASBAIXADEV " );
 			sql.append( "FROM SGPREFERE6 P, SGFILIAL E, " );			
 			sql.append( "SGITPREFERE6 I LEFT OUTER JOIN FNCONTA C ON " );
 			sql.append( "C.CODEMP=I.CODEMPCA AND C.CODFILIAL=I.CODFILIALCA AND C.NUMCONTA=I.NUMCONTA " );			
@@ -418,6 +420,21 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				
 				prefs.put( EPrefs.DIGAGCONTA, null );
 				prefs.put( EPrefs.CNPFEMP, rs.getString( "CNPJFILIAL" ) );
+				
+				prefs.put( EPrefs.FORCADTIT, rs.getInt( EPrefs.FORCADTIT.toString() ) );
+				prefs.put( EPrefs.TIPODOC, rs.getInt( EPrefs.TIPODOC.toString() ) );
+				prefs.put( EPrefs.IDENTEMITBOL, rs.getInt( EPrefs.IDENTEMITBOL.toString() ) );
+				prefs.put( EPrefs.IDENTDISTBOL, rs.getInt( EPrefs.IDENTDISTBOL.toString() ) );
+				prefs.put( EPrefs.ESPECTIT, rs.getInt( EPrefs.ESPECTIT.toString() ) );
+				prefs.put( EPrefs.CODJUROS, rs.getInt( EPrefs.CODJUROS.toString() ) );
+				prefs.put( EPrefs.VLRPERCJUROS, rs.getBigDecimal( EPrefs.VLRPERCJUROS.toString() ) );
+				prefs.put( EPrefs.CODDESC, rs.getInt( EPrefs.CODDESC.toString() ) );
+				prefs.put( EPrefs.VLRPERCDESC, rs.getBigDecimal( EPrefs.VLRPERCDESC.toString() ) );
+				prefs.put( EPrefs.CODPROT, rs.getInt( EPrefs.CODPROT.toString() ) );
+				prefs.put( EPrefs.DIASPROT, rs.getInt( EPrefs.DIASPROT.toString() ) );
+				prefs.put( EPrefs.CODBAIXADEV, rs.getInt( EPrefs.CODBAIXADEV.toString() ) );
+				prefs.put( EPrefs.DIASBAIXADEV, rs.getInt( EPrefs.DIASBAIXADEV.toString() ) );
+				
 				retorno = true;
 			}
 			else {
