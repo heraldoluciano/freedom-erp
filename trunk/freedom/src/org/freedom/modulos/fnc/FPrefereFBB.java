@@ -46,6 +46,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
 public class FPrefereFBB extends FTabDados implements CarregaListener {
@@ -76,7 +77,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	
 	private final JPanelPad panelCamposCnab = new JPanelPad();
 	
-	private final JPanelPad panelCamposPref = new JPanelPad();
+	private final JPanelPad panelCamposPref = new JPanelPad( 300, 400 );
 	
 	private final JPanelPad panelNavCnab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -134,7 +135,31 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	
 	private JRadioGroup rgIdentAmbBcoCnab;
 
-	private JComboBoxPad cbFormaCadastramento = null;
+	private JComboBoxPad cbFormaCadastramento;
+	
+	private JComboBoxPad cbTipoDocumento;
+	
+	private JComboBoxPad cbEmissaoBloqueto;
+	
+	private JComboBoxPad cbDistribuicao;
+	
+	private JComboBoxPad cbEspecieTitulo;
+	
+	private JComboBoxPad cbJurosMora;
+	
+	private final JTextFieldPad txtVlrJuros = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
+	private JComboBoxPad cbDesconto;
+	
+	private final JTextFieldPad txtVlrDesconto = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
+	private JComboBoxPad cbProtesto;
+	
+	private final JTextFieldPad txtNumDiasProtesto = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
+	
+	private JComboBoxPad cbDevolucao;
+	
+	private final JTextFieldPad txtNumDiasDevolucao = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
 
 	private final ListaCampos lcSiacc = new ListaCampos( this, "BO" );
 
@@ -238,6 +263,132 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		vVals1.addElement( 1 );
 		vVals1.addElement( 2 );
 		cbFormaCadastramento = new JComboBoxPad( vLabs1, vVals1, JComboBoxPad.TP_INTEGER, 1, 0 );
+
+		Vector<String> vLabs2 = new Vector<String>();
+		Vector<Integer> vVals2 = new Vector<Integer>();
+		vLabs2.addElement( "tradicional" );
+		vLabs2.addElement( "escritural" );
+		vVals2.addElement( 1 );
+		vVals2.addElement( 2 );
+		cbTipoDocumento = new JComboBoxPad( vLabs2, vVals2, JComboBoxPad.TP_INTEGER, 1, 0 );
+
+		Vector<String> vLabs3 = new Vector<String>();
+		Vector<Integer> vVals3 = new Vector<Integer>();
+		vLabs3.addElement( "Banco emite" );
+		vLabs3.addElement( "Empresa emite" );
+		vLabs3.addElement( "Banco pré-emite e empresa completa" );
+		vLabs3.addElement( "Banco reemite" );
+		vLabs3.addElement( "Banco não reemite" );
+		vLabs3.addElement( "Combraça sem papel" );
+		vVals3.addElement( 1 );
+		vVals3.addElement( 2 );
+		vVals3.addElement( 3 );
+		vVals3.addElement( 4 );
+		vVals3.addElement( 5 );
+		vVals3.addElement( 6 );
+		cbEmissaoBloqueto = new JComboBoxPad( vLabs3, vVals3, JComboBoxPad.TP_INTEGER, 1, 0 );
+
+		Vector<String> vLabs4 = new Vector<String>();
+		Vector<Integer> vVals4 = new Vector<Integer>();
+		vLabs4.addElement( "Banco" );
+		vLabs4.addElement( "Empresa" );
+		vVals4.addElement( 1 );
+		vVals4.addElement( 2 );
+		cbDistribuicao = new JComboBoxPad( vLabs4, vVals4, JComboBoxPad.TP_INTEGER, 1, 0 );
+
+		Vector<String> vLabs5 = new Vector<String>();
+		Vector<Integer> vVals5 = new Vector<Integer>();
+		vLabs5.addElement( "CH - Cheque" ); 
+		vLabs5.addElement( "DM - Duplicata mercantíl" );
+		vLabs5.addElement( "DMI - Duplicata mercantíl p/ indicação" );
+		vLabs5.addElement( "DS - Duplicata de serviço" );
+		vLabs5.addElement( "DSI - DUplicata de serviço p/ indicação" );
+		vLabs5.addElement( "DR - Duplicata rural" );
+		vLabs5.addElement( "LC - Letra de cambio" );
+		vLabs5.addElement( "NCC - Nota de crédito comercial" );
+		vLabs5.addElement( "NCE - Nota de crédito a exportação" );
+		vLabs5.addElement( "NCI - Nota de crédito indústria" );
+		vLabs5.addElement( "NCR - Nota de crédito rural" );
+		vLabs5.addElement( "NP - Nota promissória" );
+		vLabs5.addElement( "NPR - Nota promissória rural" );
+		vLabs5.addElement( "TM - Triplicata mercantíl" );
+		vLabs5.addElement( "TS - Triplicata de serviço" );
+		vLabs5.addElement( "NS - Nota de seguro" );
+		vLabs5.addElement( "RC - Recibo" );
+		vLabs5.addElement( "FAT - Fatura" );
+		vLabs5.addElement( "ND - Nota de débito" );
+		vLabs5.addElement( "AP - Apolice de seguro" );
+		vLabs5.addElement( "ME - Mensalidade escolar" );
+		vLabs5.addElement( "PC - Parcela de consórcio" );
+		vLabs5.addElement( "Outros" );
+		vVals5.addElement( 1 );
+		vVals5.addElement( 2 );
+		vVals5.addElement( 3 );
+		vVals5.addElement( 4 );
+		vVals5.addElement( 5 );
+		vVals5.addElement( 6 );
+		vVals5.addElement( 7 );
+		vVals5.addElement( 8 );
+		vVals5.addElement( 9 );
+		vVals5.addElement( 10 );
+		vVals5.addElement( 11 );
+		vVals5.addElement( 12 );
+		vVals5.addElement( 13 );
+		vVals5.addElement( 14 );
+		vVals5.addElement( 15 );
+		vVals5.addElement( 16 );
+		vVals5.addElement( 17 );
+		vVals5.addElement( 18 );
+		vVals5.addElement( 19 );
+		vVals5.addElement( 20 );
+		vVals5.addElement( 21 );
+		vVals5.addElement( 22 );
+		vVals5.addElement( 99 );
+		cbEspecieTitulo = new JComboBoxPad( vLabs5, vVals5, JComboBoxPad.TP_INTEGER, 2, 0 );
+
+		Vector<String> vLabs6 = new Vector<String>();
+		Vector<Integer> vVals6 = new Vector<Integer>();
+		vLabs6.addElement( "Valor por dia" );
+		vLabs6.addElement( "Taxa mensal" );
+		vLabs6.addElement( "Isento" );
+		vVals6.addElement( 1 );
+		vVals6.addElement( 2 );
+		vVals6.addElement( 3 );
+		cbJurosMora = new JComboBoxPad( vLabs6, vVals6, JComboBoxPad.TP_INTEGER, 1, 0 );
+
+		Vector<String> vLabs7 = new Vector<String>();
+		Vector<Integer> vVals7 = new Vector<Integer>();
+		vLabs7.addElement( "Valor fixo até a data informada" );
+		vLabs7.addElement( "Percentual até a data informada" );
+		vLabs7.addElement( "Valor por antecipação por dia corrido" );
+		vLabs7.addElement( "Valor por antecipação por dia util" );
+		vLabs7.addElement( "Percentual sobre o valor nominal dia corrido" );
+		vLabs7.addElement( "Percentual sobre o valor nominal dia util" );
+		vVals7.addElement( 1 );
+		vVals7.addElement( 2 );
+		vVals7.addElement( 3 );
+		vVals7.addElement( 4 );
+		vVals7.addElement( 5 );
+		vVals7.addElement( 6 );
+		cbDesconto = new JComboBoxPad( vLabs7, vVals7, JComboBoxPad.TP_INTEGER, 1, 0 );
+
+		Vector<String> vLabs8 = new Vector<String>();
+		Vector<Integer> vVals8 = new Vector<Integer>();
+		vLabs8.addElement( "Dias corridos" );
+		vLabs8.addElement( "Dias utéis" );
+		vLabs8.addElement( "Não protestar" );
+		vVals8.addElement( 1 );
+		vVals8.addElement( 2 );
+		vVals8.addElement( 3 );
+		cbProtesto = new JComboBoxPad( vLabs8, vVals8, JComboBoxPad.TP_INTEGER, 1, 0 );
+
+		Vector<String> vLabs9 = new Vector<String>();
+		Vector<Integer> vVals9 = new Vector<Integer>();
+		vLabs9.addElement( "Baixar / Devolver" );
+		vLabs9.addElement( "Não baixar / Não devlover" );
+		vVals9.addElement( 1 );
+		vVals9.addElement( 2 );
+		cbDevolucao = new JComboBoxPad( vLabs9, vVals9, JComboBoxPad.TP_INTEGER, 1, 0 );
 	}
 	
 	private void montaListaCampos() {
@@ -410,10 +561,22 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		/*** ABA PREF ***/
 
 		tbCnab.add( "preferências", panelCnabPref );		
-		panelCnabPref.add( panelCamposPref, BorderLayout.CENTER );
+		panelCnabPref.add( new JScrollPane( panelCamposPref ), BorderLayout.CENTER );
 		setPainel( panelCamposPref );
 		
-		adicDB( cbFormaCadastramento, 10, 20, 250, 20, "IdentAmbCli", "Forma de cadastramento do titulo no banco", false );
+		adicDB( cbFormaCadastramento, 10, 20, 320, 20, "FORCADTIT", "Forma de cadastramento do titulo no banco", false );
+		adicDB( cbTipoDocumento, 10, 60, 320, 20, "TIPODOC", "Tipo de documento", false );
+		adicDB( cbEmissaoBloqueto, 10, 100, 320, 20, "IDENTEMITBOL", "Indentificação da emissão do bloqueto", false );
+		adicDB( cbDistribuicao, 10, 140, 320, 20, "IDENTDISITBOL", "Indentificação da distribuição", false );
+		adicDB( cbEspecieTitulo, 10, 180, 320, 20, "ESPECTIT", "Espécie do titulo", false );
+		adicDB( cbJurosMora, 10, 220, 250, 20, "CODJUROS", "Indentificação para cobrança de juros", false );
+		adicDB( txtVlrJuros, 270, 220, 60, 20, "VLRPERCJUROS", "Valor/%", false );
+		adicDB( cbDesconto, 10, 260, 250, 20, "CODDESC", "Indentificação para consessão de desconto", false );
+		adicDB( txtVlrDesconto, 270, 260, 60, 20, "VLRPERCDESC", "Valor/%", false );
+		adicDB( cbProtesto, 10, 300, 250, 20, "CODPROT", "Instrução de protesto", false );
+		adicDB( txtNumDiasProtesto, 270, 300, 60, 20, "DIASPROT", "Dias", false );
+		adicDB( cbDevolucao, 10, 340, 250, 20, "CODBAIXADEV", "Código para devolução", false );
+		adicDB( txtNumDiasDevolucao, 270, 340, 60, 20, "DIASBAIXADEV", "Dias", false );
 		
 		/****************/
 		

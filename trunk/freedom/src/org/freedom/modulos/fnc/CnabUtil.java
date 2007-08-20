@@ -2551,7 +2551,7 @@ class CnabUtil extends FbnUtil {
 				line.append( format( getVlrCalculado(), ETipo.$9, 15, 2 ) );
 				line.append( format( getQtdDescontado(), ETipo.$9, 6, 0 ) );
 				line.append( format( getVlrDescontado(), ETipo.$9, 15, 2 ) );
-				line.append( format( getVlrDescontado(), ETipo.X, 8, 0 ) );
+				line.append( format( getAvisoLanca(), ETipo.X, 8, 0 ) );
 				line.append( Funcoes.replicate( " ", 117 ) );
 				line.append( (char) 13 );
 				line.append( (char) 10 );
@@ -2609,7 +2609,9 @@ class CnabUtil extends FbnUtil {
 		if ( arg != null ) {
 
 			int[] args = Funcoes.decodeDate( arg );		
-			retorno = String.valueOf( args[2] ) + String.valueOf( args[1] ) + String.valueOf( args[0] );	
+			retorno = Funcoes.strZero( String.valueOf( args[2] ), 2) 
+					+ Funcoes.strZero( String.valueOf( args[1] ), 2 ) 
+					+ Funcoes.strZero( String.valueOf( args[0] ), 4 );	
 		}
 		else {
 			// 8 espaços
