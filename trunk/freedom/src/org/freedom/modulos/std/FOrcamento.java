@@ -1267,7 +1267,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 					ps2 = con.prepareStatement( sSql );
 					ps2.setInt( 1, Aplicativo.iCodEmp );
 					ps2.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-					rs2 = ps.executeQuery();
+					rs2 = ps2.executeQuery();
 
 					if ( rs2.next() ) {
 						if ( rs2.getString( "CLASSORC" ) != null ) {
