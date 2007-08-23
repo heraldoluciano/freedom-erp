@@ -2544,13 +2544,13 @@ class CnabUtil extends FbnUtil {
 				line.append( Funcoes.replicate( " ", 9 ) );
 				line.append( format( getQtdRegistros(), ETipo.$9, 6, 0 ) );
 				line.append( format( getQtdSimples(), ETipo.$9, 6, 0 ) );
-				line.append( format( getVlrSimples(), ETipo.$9, 15, 2 ) );
+				line.append( format( getVlrSimples(), ETipo.$9, 17, 2 ) );
 				line.append( format( getQtdVinculado(), ETipo.$9, 6, 0 ) );
-				line.append( format( getVlrVinculado(), ETipo.$9, 15, 2 ) );
+				line.append( format( getVlrVinculado(), ETipo.$9, 17, 2 ) );
 				line.append( format( getQtdCalculado(), ETipo.$9, 6, 0 ) );
-				line.append( format( getVlrCalculado(), ETipo.$9, 15, 2 ) );
+				line.append( format( getVlrCalculado(), ETipo.$9, 17, 2 ) );
 				line.append( format( getQtdDescontado(), ETipo.$9, 6, 0 ) );
-				line.append( format( getVlrDescontado(), ETipo.$9, 15, 2 ) );
+				line.append( format( getVlrDescontado(), ETipo.$9, 17, 2 ) );
 				line.append( format( getAvisoLanca(), ETipo.X, 8, 0 ) );
 				line.append( Funcoes.replicate( " ", 117 ) );
 				line.append( (char) 13 );
