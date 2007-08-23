@@ -77,71 +77,6 @@ public class FRemCnab extends FRemFBN {
 		super( TIPO_FEBRABAN_CNAB );
 	}
 	
-	private String[] getContaCli( final int codcli ) {
-		
-		String[] args = new String[5];
-		
-		try {
-			
-			StringBuilder sql = new StringBuilder();
-			sql.append( "SELECT FC.AGENCIACLI, FC.NUMCONTACLI " );
-			sql.append( "FROM FNFBNCLI FC " );
-			sql.append( "WHERE FC.CODEMP=? AND FC.CODFILIAL=? AND FC.CODCLI=?  " );
-			sql.append( "AND FC.CODEMPPF=? AND FC.CODFILIALPF=? " );
-			sql.append( "AND FC.CODEMPBO=? AND FC.CODFILIALBO=? AND FC.CODBANCO=? AND FC.TIPOFEBRABAN=?" );
-			
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNFBNCLI" ) );
-			ps.setInt( 3, codcli );
-			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, ListaCampos.getMasterFilial( "SGITPREFERE6" ) );
-			ps.setInt( 6, Aplicativo.iCodEmp );
-			ps.setInt( 7, ListaCampos.getMasterFilial( "FNFBNCLI" ) );
-			ps.setString( 8, txtCodBanco.getVlrString() );
-			ps.setString( 9, TIPO_FEBRABAN_CNAB );
-			
-			ResultSet rs = ps.executeQuery();
-			
-			if ( rs.next() ) {
-				
-				if ( rs.getString( "AGENCIACLI" ) != null ) {
-					String[] agencia = Boleto.getCodSig( rs.getString( "AGENCIACLI" ) );
-					args[ 0 ] = agencia[ 0 ];
-					args[ 1 ] = agencia[ 1 ];
-				}
-				else {
-					args[ 0 ] = "";
-					args[ 1 ] = "";
-				}
-				
-				if ( rs.getString( "NUMCONTACLI" ) != null ) {
-					String[] conta = Boleto.getCodSig( rs.getString( "NUMCONTACLI" ) );
-					args[ 2 ] = conta[ 0 ];
-					args[ 2 ] = conta[ 1 ];
-				}
-				else {
-					args[ 2 ] = "";
-					args[ 2 ] = "";
-				}
-
-				args[ 4 ] = "";
-			}
-			
-			rs.close();
-			ps.close();
-			
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
-		}
-		catch ( SQLException e ) {
-			e.printStackTrace();
-		}
-		
-		return args;
-	}
-	
 	private String[] getCliente( final int codcli ) {
 		
 		String[] args = new String[10];
@@ -294,14 +229,11 @@ public class FRemCnab extends FRemFBN {
 		reg.setLoteServico( loteServico );
 		reg.setSeqLote( seqLoteServico++ );
 		reg.setCodMovimento( codMovimento );
-
-		String[] args = getContaCli( Integer.parseInt( rec.getArgs()[ EColrec.CODCLI.ordinal() ] ) );
-		
-		reg.setAgencia( args[ 0 ] );
-		reg.setDigAgencia( args[ 1 ] );
-		reg.setConta( args[ 2 ] );
-		reg.setDigConta( args[ 3 ] );
-		reg.setDigAgConta( args[ 4 ] );
+		reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) );
+		reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
+		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
+		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
+		reg.setDigAgConta( null );
 		reg.setIdentTitulo( Boleto.geraNossoNumero( 
 				getModalidade( txtCodBanco.getVlrInteger() ), 
 				(String)prefs.get( EPrefs.CODCONV ), 
@@ -441,14 +373,11 @@ public class FRemCnab extends FRemFBN {
 		reg.setLoteServico( loteServico );
 		reg.setSeqLote( seqLoteServico++ );
 		reg.setCodMovimento( codMovimento );
-		
-		String[] args = getContaCli( Integer.parseInt( rec.getArgs()[ EColrec.CODCLI.ordinal() ] ) );
-		
-		reg.setAgencia( args[ 0 ] );
-		reg.setDigAgencia( args[ 1 ] );
-		reg.setConta( args[ 2 ] );
-		reg.setDigConta( args[ 3 ] );
-		reg.setDigAgConta( args[ 4 ] );
+		reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) );
+		reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
+		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
+		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
+		reg.setDigAgConta( null );
 		reg.setIdentTitBanco( Boleto.geraNossoNumero( 
 				getModalidade( txtCodBanco.getVlrInteger() ), 
 				(String)prefs.get( EPrefs.CODCONV ), 
