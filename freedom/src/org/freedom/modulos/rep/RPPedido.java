@@ -487,6 +487,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		}
 		else {
 			adicCampo( txtCodProd, 60, 15, 90, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, true );
+			adicCampoInvisivel( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_SI, false );
 		}
 		
 		adicDescFK( txtDescProd, 153, 15, 246, 20, "DescProd", "Descrição do produto" );
