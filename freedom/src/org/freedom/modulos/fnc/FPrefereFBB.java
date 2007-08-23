@@ -567,7 +567,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		adicDB( cbFormaCadastramento, 10, 20, 320, 20, "FORCADTIT", "Forma de cadastramento do titulo no banco", false );
 		adicDB( cbTipoDocumento, 10, 60, 320, 20, "TIPODOC", "Tipo de documento", false );
 		adicDB( cbEmissaoBloqueto, 10, 100, 320, 20, "IDENTEMITBOL", "Indentificação da emissão do bloqueto", false );
-		adicDB( cbDistribuicao, 10, 140, 320, 20, "IDENTDISITBOL", "Indentificação da distribuição", false );
+		adicDB( cbDistribuicao, 10, 140, 320, 20, "IDENTDISTBOL", "Indentificação da distribuição", false );
 		adicDB( cbEspecieTitulo, 10, 180, 320, 20, "ESPECTIT", "Espécie do titulo", false );
 		adicDB( cbJurosMora, 10, 220, 250, 20, "CODJUROS", "Indentificação para cobrança de juros", false );
 		adicDB( txtVlrJuros, 270, 220, 60, 20, "VLRPERCJUROS", "Valor/%", false );
