@@ -698,9 +698,9 @@ public class ECFDriver {
 				
 				String aliquotas = ecf.retornoAliquotas();
 				
-				final int tamanho = Integer.parseInt( aliquotas.substring( 0, 2 ) );
+				final int tamanho = Integer.parseInt( aliquotas.substring( 0, 3 ) );
 				
-				sRetorno = aliquotas.substring( 2, ( tamanho * 4 ) + 2 );
+				sRetorno = aliquotas.substring( 3, ( tamanho * 4 ) + 2 );
 
 				
 			} catch ( Exception e ) {
