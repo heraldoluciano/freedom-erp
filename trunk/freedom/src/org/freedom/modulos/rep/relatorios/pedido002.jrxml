@@ -71,7 +71,7 @@ IT.VLRIPIITPED,IT.PERCDESCITPED,IT.VLRDESCITPED,IT.PERCADICITPED,
 IT.VLRADICITPED,IT.PERCRECITPED,IT.VLRRECITPED,IT.PERCPAGITPED,IT.VLRPAGITPED,PD.CUBAGEMPROD,
 C.ENDCLI,C.CIDCLI,C.CNPJCLI,C.INSCCLI,C.BAIRCLI,C.CEPCLI,C.ESTCLI,C.DDDCLI,C.FONECLI,
 C.ENDENTCLI,C.CEPENTCLI,C.ENDCOBCLI,C.CEPCOBCLI,
-F.CIDFOR,F.ESTFOR,PD.PESOLIQPROD
+F.CIDFOR,F.ESTFOR,PD.PESOLIQPROD,C.FAXCLI
 FROM RPPEDIDO P, RPITPEDIDO IT, RPPRODUTO PD,
 RPCLIENTE C,RPVENDEDOR V, RPPLANOPAG PG, RPMOEDA M, RPFORNECEDOR F
 WHERE IT.CODEMP=$P{CODEMP} AND IT.CODFILIAL=$P{CODFILIAL} AND IT.CODPED=$P{CODPED}
@@ -148,6 +148,7 @@ ORDER BY 1]]></queryString>
 	<field name="CIDFOR" class="java.lang.String"/>
 	<field name="ESTFOR" class="java.lang.String"/>
 	<field name="PESOLIQPROD" class="java.math.BigDecimal"/>
+	<field name="FAXCLI" class="java.lang.String"/>
 
 
 		<group  name="PEDIDO" >
@@ -736,18 +737,10 @@ $F{CNPJCLI}.substring(12)
 					<textElement verticalAlignment="Middle">
 						<font pdfFontName="Helvetica" size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[($F{DDDCLI}!=null
-?
-"("+$F{DDDCLI}.substring(0,4)+") "
-:
-"")
-+
-($F{FONECLI}!=null
-?
-$F{FONECLI}.substring(0,4)+"-"+
-$F{FONECLI}.substring(4)
-:
-"")]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{DDDCLI}!=null ? "("+$F{DDDCLI}.substring(0,3)+") " : "")
++($F{FONECLI}!=null ? $F{FONECLI}.substring(0,4)+"-"+ $F{FONECLI}.substring(4).trim() : "")
++($F{FAXCLI}!=null ? " / "+$F{FAXCLI}.substring(0,4)+"-"+ $F{FAXCLI}.substring(4) : "")
+]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -764,7 +757,7 @@ $F{FONECLI}.substring(4)
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Helvetica" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Telefone]]></text>
+				<text><![CDATA[Telefone/Fax]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
