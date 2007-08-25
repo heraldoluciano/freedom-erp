@@ -688,25 +688,27 @@ public class ECFDriver {
 	public String retornoAliquotas() {
 
 		String sRetorno = "";
-
+		final int iNumCharAliq = 64 ;
+				
 		if ( dll ) {
 			sRetorno = bema.retornaAliquotas( sUserID, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 
 			try {
-				
+
 				String aliquotas = ecf.retornoAliquotas();
 				
-				Funcoes.mensagemInforma( null, "String contendo as aliquotas:" + aliquotas );//retirar mensagem apos teste
+/*				final int tamanho = Integer.parseInt( aliquotas.substring( 0, 3 ) );				
+				sRetorno = aliquotas.substring( 3, ( tamanho * 4 ) + 2 );*/				
 				
-				
-				final int tamanho = Integer.parseInt( aliquotas.substring( 0, 3 ) );
-				
-				sRetorno = aliquotas.substring( 3, ( tamanho * 4 ) + 2 );
+				System.out.println("Aliquotas no retornoAliquotas (ECFDriver) antes:" + aliquotas );//retirar mensagem apos teste
+				sRetorno = aliquotas.substring( aliquotas.length() - iNumCharAliq );
+				System.out.println( sRetorno );
 
 				
-			} catch ( Exception e ) {
+			} 
+			catch ( Exception e ) {
 				Logger.gravaLogTxt( "", sUserID, Logger.LGEP_RET_ALIQ, sMensErroLog );
 			}
 
