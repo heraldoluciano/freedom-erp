@@ -49,8 +49,6 @@ import org.freedom.modulos.fnc.CnabUtil.Reg3P;
 import org.freedom.modulos.fnc.CnabUtil.Reg3Q;
 import org.freedom.modulos.fnc.CnabUtil.Reg3R;
 import org.freedom.modulos.fnc.CnabUtil.Reg3S;
-import org.freedom.modulos.fnc.CnabUtil.Reg3T;
-import org.freedom.modulos.fnc.CnabUtil.Reg3U;
 import org.freedom.modulos.fnc.CnabUtil.Reg5;
 import org.freedom.modulos.fnc.FbnUtil.EColrec;
 import org.freedom.modulos.fnc.FbnUtil.EPrefs;
@@ -66,7 +64,7 @@ public class FRemCnab extends FRemFBN {
 	
 	private final CnabUtil cnabutil = new CnabUtil();
 	
-	private int loteServico = 1;
+	private int loteServico = 0;
 	
 	private int seqLoteServico = 1;
 	
@@ -201,7 +199,7 @@ public class FRemCnab extends FRemFBN {
 		
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
-		reg.setTipoOperacao( null );
+		reg.setTipoOperacao( "R" );
 		reg.setFormaLancamento( "00" );
 		reg.setTipoInscEmp( 2 );
 		reg.setCpfCnpjEmp( (String) prefs.get( EPrefs.CNPFEMP ) );
@@ -252,10 +250,10 @@ public class FRemCnab extends FRemFBN {
 		reg.setAgenciaCob( null );
 		reg.setDigAgenciaCob( null );
 		reg.setEspecieTit( (Integer) prefs.get( EPrefs.ESPECTIT ) );//**/
-		reg.setAceite( 'N' );
+		reg.setAceite( 'A' );
 		reg.setDtEmitTit( Funcoes.strDateToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
 		reg.setCodJuros( (Integer) prefs.get( EPrefs.CODJUROS ) );//**
-		reg.setDtJuros( null );
+		reg.setDtJuros( Funcoes.strDateToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		reg.setVlrJurosTaxa( (BigDecimal) prefs.get( EPrefs.VLRPERCJUROS ) ); //**		
 		reg.setCodDesc( (Integer) prefs.get( EPrefs.CODDESC ) );//**
 		reg.setDtDesc( null );
@@ -303,7 +301,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setCepCli( dadosCliente[ DadosCliente.CEPCLI.ordinal() ] );
 		reg.setCidCli( dadosCliente[ DadosCliente.CIDCLI.ordinal() ] );
 		reg.setUfCli( dadosCliente[ DadosCliente.UFCLI.ordinal() ] );		
-		reg.setTipoInscAva( 0 );
+		reg.setTipoInscAva( 2 );
 		reg.setCpfCnpjAva( "0" );		
 		reg.setRazAva( null );
 		//reg.setCodCompensacao( 0 );
@@ -364,91 +362,92 @@ public class FRemCnab extends FRemFBN {
 		
 		return reg;
 	}
-	
-	private Reg3T getReg3T( final StuffRec rec ) {
-		
-		Reg3T reg = cnabutil.new Reg3T();
-
-		reg.setCodBanco( txtCodBanco.getVlrString() );
-		reg.setLoteServico( loteServico );
-		reg.setSeqLote( seqLoteServico++ );
-		reg.setCodMovimento( codMovimento );
-		reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) );
-		reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
-		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
-		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
-		reg.setDigAgConta( null );
-		reg.setIdentTitBanco( Boleto.geraNossoNumero( 
-				getModalidade( txtCodBanco.getVlrInteger() ), 
-				(String)prefs.get( EPrefs.CODCONV ), 
-				Long.parseLong( rec.getCodrec().toString() ), 
-				Long.parseLong( rec.getNParcitrec().toString() ) ) );
-		reg.setCarteira( getCarteiraCobranca( 
-				rec.getCodrec(), 
-				rec.getNParcitrec() ) );
-		reg.setDocCob( rec.getArgs()[ EColrec.DOCREC.ordinal() ] );
-		reg.setDataVencTit( null );
-		reg.setVlrTitulo( new BigDecimal(0) );
-		
-		reg.setCodBanco( null );
-		reg.setAgenciaCob( null );
-		reg.setDigAgenciaCob( null );
-		
-		reg.setIdentTitEmp( rec.getCodrec().toString() );
-		reg.setCodMoeda( 9 );
-		
-		String[] dadosCliente = getCliente( Integer.parseInt( rec.getArgs()[ EColrec.CODCLI.ordinal() ] ) );
-		
-		reg.setTipoInscCli( Integer.parseInt( dadosCliente[ DadosCliente.CNPJCPF.ordinal()] ) );
-		
-		if ( 2 == reg.getTipoInscCli() ) {
-			reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CNPJ.ordinal() ] );
-		}
-		else if ( 1 == reg.getTipoInscCli() ) {
-			reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CPF.ordinal() ] );
-		}
-		else {
-			reg.setTipoInscCli( 0 );
-			reg.setCpfCnpjCli( "0" );
-		}
-		
-		reg.setRazCli( dadosCliente[ DadosCliente.RAZCLI.ordinal() ] );	
-		reg.setContratoCred( (String) prefs.get( EPrefs.CODCONV ) );
-		reg.setVlrTarifa( new BigDecimal(0) ); 
-		reg.setCodRejeicoes( null );
-		
-		return reg;
-	}
-	
-	private Reg3U getReg3U( final StuffRec rec ) {
-		
-		Reg3U reg = cnabutil.new Reg3U();
-
-		reg.setCodBanco( txtCodBanco.getVlrString() );
-		reg.setLoteServico( loteServico );
-		reg.setSeqLote( seqLoteServico++ );
-		reg.setCodMovimento( codMovimento );
-		
-		reg.setVlrJurosMulta( new BigDecimal(0) );
-		reg.setVlrDesc( new BigDecimal(0) );
-		reg.setVlrAbatCancel( new BigDecimal(0) );
-		reg.setVlrIOF( new BigDecimal(0) );
-		reg.setVlrPago( new BigDecimal(0) );
-		reg.setVlrLiqCred( new BigDecimal(0) );
-		reg.setVlrOutrasDesp( new BigDecimal(0) );
-		reg.setVlrOutrosCred( new BigDecimal(0) );
-		reg.setDataOcorr( null );
-		reg.setDataEfetvCred( null );
-		reg.setCodOcorrSac( null );
-		reg.setDataOcorrSac( null );
-		reg.setVlrOcorrSac( new BigDecimal(0) );
-		reg.setCompOcorrSac( null );
-		reg.setCodBancoCompens( null );
-		//reg.setNossoNrCompens( null );
-		
-		return reg;
-	}
-	
+	/*
+	 * 
+	 *private Reg3T getReg3T( final StuffRec rec ) {
+	 *	
+	 *	Reg3T reg = cnabutil.new Reg3T();
+	 *
+	 *	reg.setCodBanco( txtCodBanco.getVlrString() );
+	 *	reg.setLoteServico( loteServico );
+	 *	reg.setSeqLote( seqLoteServico++ );
+	 *	reg.setCodMovimento( codMovimento );
+	 *	reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) );
+	 *	reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
+	 *	reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
+	 *	reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
+	 *	reg.setDigAgConta( null );
+	 *	reg.setIdentTitBanco( Boleto.geraNossoNumero( 
+	 *			getModalidade( txtCodBanco.getVlrInteger() ), 
+	 *			(String)prefs.get( EPrefs.CODCONV ), 
+	 *			Long.parseLong( rec.getCodrec().toString() ), 
+	 *			Long.parseLong( rec.getNParcitrec().toString() ) ) );
+	 *	reg.setCarteira( getCarteiraCobranca( 
+	 *			rec.getCodrec(), 
+	 *			rec.getNParcitrec() ) );
+	 *	reg.setDocCob( rec.getArgs()[ EColrec.DOCREC.ordinal() ] );
+	 *	reg.setDataVencTit( null );
+	 *	reg.setVlrTitulo( new BigDecimal(0) );
+	 *	
+	 *	reg.setCodBanco( null );
+	 *	reg.setAgenciaCob( null );
+	 *	reg.setDigAgenciaCob( null );
+	 *	
+	 *	reg.setIdentTitEmp( rec.getCodrec().toString() );
+	 *	reg.setCodMoeda( 9 );
+	 *	
+	 *	String[] dadosCliente = getCliente( Integer.parseInt( rec.getArgs()[ EColrec.CODCLI.ordinal() ] ) );
+	 *	
+	 *	reg.setTipoInscCli( Integer.parseInt( dadosCliente[ DadosCliente.CNPJCPF.ordinal()] ) );
+	 *	
+	 *	if ( 2 == reg.getTipoInscCli() ) {
+	 *		reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CNPJ.ordinal() ] );
+	 *	}
+	 *	else if ( 1 == reg.getTipoInscCli() ) {
+	 *		reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CPF.ordinal() ] );
+	 *	}
+	 *	else {
+	 *		reg.setTipoInscCli( 0 );
+	 *		reg.setCpfCnpjCli( "0" );
+	 *	}
+	 *	
+	 *	reg.setRazCli( dadosCliente[ DadosCliente.RAZCLI.ordinal() ] );	
+	 *	reg.setContratoCred( (String) prefs.get( EPrefs.CODCONV ) );
+	 *	reg.setVlrTarifa( new BigDecimal(0) ); 
+	 *	reg.setCodRejeicoes( null );
+	 *	
+	 *	return reg;
+	 *}
+	 *
+	 *private Reg3U getReg3U( final StuffRec rec ) {
+	 *	
+	 *	Reg3U reg = cnabutil.new Reg3U(); 
+ 	 *
+	 *	reg.setCodBanco( txtCodBanco.getVlrString() );
+	 *	reg.setLoteServico( loteServico );
+	 *	reg.setSeqLote( seqLoteServico++ );
+	 *	reg.setCodMovimento( codMovimento );
+	 *	
+	 *	reg.setVlrJurosMulta( new BigDecimal(0) );
+	 *	reg.setVlrDesc( new BigDecimal(0) );
+	 *	reg.setVlrAbatCancel( new BigDecimal(0) );
+	 *	reg.setVlrIOF( new BigDecimal(0) );
+	 *	reg.setVlrPago( new BigDecimal(0) );
+	 *	reg.setVlrLiqCred( new BigDecimal(0) );
+	 *	reg.setVlrOutrasDesp( new BigDecimal(0) );
+	 *	reg.setVlrOutrosCred( new BigDecimal(0) );
+	 *	reg.setDataOcorr( null );
+	 *	reg.setDataEfetvCred( null );
+	 *	reg.setCodOcorrSac( null );
+	 *	reg.setDataOcorrSac( null );
+	 *	reg.setVlrOcorrSac( new BigDecimal(0) );
+	 *	reg.setCompOcorrSac( null );
+	 *	reg.setCodBancoCompens( null );
+	 *	//reg.setNossoNrCompens( null );
+	 *	
+	 *	return reg;
+	 *}
+	 */
 	private Reg5 getReg5() {
 		
 		Reg5 reg = cnabutil.new Reg5();
@@ -541,8 +540,8 @@ public class FRemCnab extends FRemFBN {
 				registros.add( getReg3Q( rec ) );
 				//registros.add( getReg3R() );
 				//registros.add( getReg3S() );
-				registros.add( getReg3T( rec ) );
-				registros.add( getReg3U( rec ) );
+				//registros.add( getReg3T( rec ) ); utilizados somente no retorno
+				//registros.add( getReg3U( rec ) ); utilizados somente no retorno
 				regs++;
 			}
 			

@@ -1270,7 +1270,7 @@ class CnabUtil extends FbnUtil {
 				line.append( format( getCidCli(), ETipo.X, 15, 0 ) );
 				line.append( format( getUfCli(), ETipo.X, 2, 0 ) );
 				line.append( format( getTipoInscAva(), ETipo.$9, 1, 0 ) );
-				line.append( format( getCpfCnpjAva(), ETipo.X, 15, 0 ) );
+				line.append( format( getCpfCnpjAva(), ETipo.$9, 15, 0 ) );
 				line.append( format( getRazAva(), ETipo.X, 40, 0 ) );
 				line.append( format( getCodCompensacao(), ETipo.$9, 3, 0 ) );
 				line.append( format( getNossoNumero(), ETipo.X, 20, 0 ) );
@@ -2614,8 +2614,7 @@ class CnabUtil extends FbnUtil {
 					+ Funcoes.strZero( String.valueOf( args[0] ), 4 );	
 		}
 		else {
-			// 8 espaços
-			retorno = "        ";
+			retorno = "00000000";
 		}
 		
 		return retorno;
