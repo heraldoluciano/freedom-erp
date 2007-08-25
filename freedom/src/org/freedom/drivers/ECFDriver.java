@@ -698,6 +698,9 @@ public class ECFDriver {
 				
 				String aliquotas = ecf.retornoAliquotas();
 				
+				Funcoes.mensagemInforma( null, "String contendo as aliquotas:" + aliquotas );//retirar mensagem apos teste
+				
+				
 				final int tamanho = Integer.parseInt( aliquotas.substring( 0, 3 ) );
 				
 				sRetorno = aliquotas.substring( 3, ( tamanho * 4 ) + 2 );
