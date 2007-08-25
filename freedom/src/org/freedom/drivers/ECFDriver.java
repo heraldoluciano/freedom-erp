@@ -696,16 +696,12 @@ public class ECFDriver {
 		else if ( !bModoDemo && ecf != null ) {
 
 			try {
-
+				
 				String aliquotas = ecf.retornoAliquotas();
 				
-//				final int tamanho = Integer.parseInt( aliquotas.substring( 0, 3 ) );
 				final int tamanho = Integer.parseInt( aliquotas.substring( 0, aliquotas.length()-iNumCharAliq));
-				sRetorno = aliquotas.substring( aliquotas.length()-iNumCharAliq, ( tamanho * 4 ) + 2 );								
-				System.out.println("Aliquotas no retornoAliquotas (ECFDriver) antes:" + aliquotas );//retirar mensagem apos teste
-//				sRetorno = aliquotas.substring( aliquotas.length() - iNumCharAliq );
-				System.out.println( sRetorno );
-
+				
+				sRetorno = aliquotas.substring( aliquotas.length()-iNumCharAliq, ( tamanho * 4 ) + 2 );
 				
 			} 
 			catch ( Exception e ) {
