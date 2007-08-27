@@ -87,15 +87,20 @@ public class FRFechaDiario extends FRelatorio{
 		PreparedStatement ps = null;
 		StringBuilder sCab = new StringBuilder();
 		boolean bComRef = comRef();
+		int codcaixa = txtCodCaixa.getVlrInteger().intValue();
+		int param = 1;
 		
 		try {
 		
-			sSQL.append( "SELECT 'A' TIPO, V.DTSAIDAVENDA DATA, V.CODCAIXA, C.DESCCAIXA, V.IDUSUINS, " );
+			sSQL.append( "SELECT CAST('A' AS CHAR(1)) TIPOLANCA, V.DTSAIDAVENDA DATA, V.CODCAIXA, C.DESCCAIXA, V.IDUSUINS, " );
 			sSQL.append( "V.CODTIPOMOV, M.DESCTIPOMOV, " );
 			sSQL.append( "V.CODPLANOPAG, P.DESCPLANOPAG, SUM(V.VLRLIQVENDA) VALOR " );
 			sSQL.append( "FROM VDVENDA V, PVCAIXA C, EQTIPOMOV M, FNPLANOPAG P " );
 			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND " );
 			sSQL.append( "V.DTEMITVENDA=? AND " );
+			if (codcaixa!=0) {
+				sSQL.append( "V.CODEMPCX=? AND V.CODFILIALCX=? AND V.CODCAIXA=? AND " );
+			}
 			sSQL.append( "C.CODEMP=V.CODEMPCX AND C.CODFILIAL=V.CODFILIALCX AND " );
 			sSQL.append( "C.CODCAIXA=V.CODCAIXA AND " );
 			sSQL.append( "M.CODEMP=V.CODEMPTM AND M.CODFILIAL=V.CODFILIALTM AND " );
@@ -104,7 +109,7 @@ public class FRFechaDiario extends FRelatorio{
 			sSQL.append( "P.CODPLANOPAG=V.CODPLANOPAG " );
 			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
 			sSQL.append( "UNION " );
-			sSQL.append( "SELECT 'B' TIPO, CP.DTEMITCOMPRA DATA, 40 CODCAIXA, " );
+			sSQL.append( "SELECT CAST('B' AS CHAR(1)) TIPOLANCA, CP.DTEMITCOMPRA DATA, 40 CODCAIXA, " );
 			sSQL.append( "CAST('GERAL' AS CHAR(40) ) DESCCAIXA, CP.IDUSUINS, " );
 			sSQL.append( "CP.CODTIPOMOV, M.DESCTIPOMOV, " );
 			sSQL.append( "CP.CODPLANOPAG, P.DESCPLANOPAG, SUM(CP.VLRLIQCOMPRA*-1) VALOR " );
@@ -119,12 +124,17 @@ public class FRFechaDiario extends FRelatorio{
 			sSQL.append( "ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
 			
 			ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( txtData.getVlrDate() ));
-			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-			ps.setDate( 6, Funcoes.dateToSQLDate( txtData.getVlrDate() ));
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtData.getVlrDate() ));
+			if (codcaixa!=0) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "PVCAIXA" ) );
+				ps.setInt( param++, codcaixa );
+			}
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtData.getVlrDate() ));
 			rs = ps.executeQuery();
 			
 			imp.setTitulo( "Fechamento diário" );
