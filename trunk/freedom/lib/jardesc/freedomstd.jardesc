@@ -54,8 +54,8 @@
 <file path="/freedom/src/org/freedom/images/freedompdv.ico"/>
 <file path="/freedom/src/org/freedom/images/ba1110.gif"/>
 <file path="/freedom/src/org/freedom/images/btSimilar.gif"/>
-<file path="/freedom/src/org/freedom/images/btTXT.gif"/>
 <file path="/freedom/src/org/freedom/images/btAprovaOrc2.gif"/>
+<file path="/freedom/src/org/freedom/images/btTXT.gif"/>
 <file path="/freedom/src/org/freedom/images/lgSTP2.jpg"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoAgenda.java"/>
 <file path="/freedom/src/org/freedom/relatorios/RegistroEntrada.jasper"/>
@@ -84,6 +84,7 @@
 <file path="/freedom/src/org/freedom/relatorios/filtros.jrxml"/>
 <file path="/freedom/src/org/freedom/images/iconRep32.ico"/>
 <file path="/freedom/src/org/freedom/images/btTrocaNumero.gif"/>
+<file path="/freedom/src/org/freedom/relatorios/FechaDiario.jasper"/>
 <file path="/freedom/src/org/freedom/relatorios/TipoCli.jasper"/>
 <file path="/freedom/src/org/freedom/images/splashCFG.jpg"/>
 <file path="/freedom/src/org/freedom/images/btPdvFechaVenda.gif"/>
@@ -158,11 +159,11 @@
 <file path="/freedom/src/org/freedom/images/btPdvCalc.gif"/>
 <file path="/freedom/src/org/freedom/images/btPdvLeituraXPq.gif"/>
 <file path="/freedom/src/org/freedom/images/btAnt.gif"/>
-<file path="/freedom/src/org/freedom/images/splashSTD.jpg"/>
 <file path="/freedom/src/org/freedom/images/btOrcamento2.gif"/>
+<file path="/freedom/src/org/freedom/images/splashSTD.jpg"/>
 <file path="/freedom/src/org/freedom/relatorios/listapreco.jrxml"/>
-<file path="/freedom/src/org/freedom/images/ok.gif"/>
 <file path="/freedom/src/org/freedom/images/Thumbs.db"/>
+<file path="/freedom/src/org/freedom/images/ok.gif"/>
 <file path="/freedom/src/org/freedom/images/btEstoque.gif"/>
 <file path="/freedom/src/org/freedom/images/btRecusado.gif"/>
 <file path="/freedom/src/org/freedom/images/curZoom.gif"/>
@@ -180,8 +181,8 @@
 <file path="/freedom/src/org/freedom/images/btEstProduto.gif"/>
 <file path="/freedom/src/org/freedom/images/btLancamentoFin.gif"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FCartCob.java"/>
-<file path="/freedom/src/org/freedom/images/ba1100.gif"/>
 <file path="/freedom/src/org/freedom/images/btFluxo.gif"/>
+<file path="/freedom/src/org/freedom/images/ba1100.gif"/>
 <file path="/freedom/src/org/freedom/images/btEntrada.gif"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
 <file path="/freedom/src/org/freedom/images/btImprimeOrc.gif"/>
@@ -209,6 +210,7 @@
 <file path="/freedom/src/org/freedom/relatorios/filtros.jasper"/>
 <file path="/freedom/src/org/freedom/images/barraVenda.gif"/>
 <file path="/freedom/src/org/freedom/images/statusbarPc.gif"/>
+<file path="/freedom/src/org/freedom/relatorios/FechaDiario.jrxml"/>
 <file path="/freedom/src/org/freedom/images/load_1.gif"/>
 <file path="/freedom/src/org/freedom/relatorios/CodficProdGrup.jrxml"/>
 <file path="/freedom/src/org/freedom/images/btsoliccp.gif"/>
