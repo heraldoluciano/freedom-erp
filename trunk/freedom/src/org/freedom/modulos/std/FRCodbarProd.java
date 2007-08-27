@@ -25,14 +25,13 @@ package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.Connection;
 
-
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
@@ -46,10 +45,11 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
+import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FRelatorio;
 
 
-public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaListener {
+public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -65,7 +65,9 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	
 	private JButton btExecuta = new JButton( Icone.novo( "btExecuta.gif" ) );
 	
-	private JButton btExcluir = new JButton( Icone.novo( "btExcluir.gif" ) );
+	private JButton btExcluir = new JButton( Icone.novo( "btCancelar.gif" ) );
+	
+	private JButton btExcluirTudo = new JButton( Icone.novo( "btNada.gif" ) );
 	
 	private Tabela tabGrid = new Tabela();
 	
@@ -73,17 +75,20 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	
 	private ListaCampos lcProduto = new ListaCampos(this);
 	 
-	private JPanelPad pnCampos = new JPanelPad(600,110);
+	private JPanelPad pnCampos = new JPanelPad(600,65);
+	
+	private JPanelPad pnBotoesGrid = new JPanelPad(35,200);
 	  
-	private JPanelPad pnGrid = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(2,1));
+	private JPanelPad pnGrid = new JPanelPad(600, 200 );
 	  
 	private JComboBox cbSel = null;
 	
 	
-	private enum EProduto {SEL, CODPROD, DESCPROD, QTDPROD };
+	private enum EProduto {CODPROD, DESCPROD, QTDPROD };
 	
 	public FRCodbarProd(){
 		
+		super( true );
 		setTitulo( "Etiquetas de código de barras" );
 		setAtribos( 80, 30, 490, 380 );
 		
@@ -96,12 +101,11 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		txtDescProd.setSoLeitura( true );
 		
 		Container c = getContentPane();
-	    c.setLayout(new BorderLayout());
-	    
+		
 	    c.add(pnCampos,BorderLayout.NORTH);
-	    c.add(pnGrid,BorderLayout.CENTER);
-	    
-	    pnGrid.add(spnGrid);
+	    c.add(pnGrid, BorderLayout.CENTER);
+	    c.add( pnBotoesGrid, BorderLayout.EAST ); 
+	    c.add(spnGrid);
 	
 	    pnCampos.adic( new JLabelPad("Cód. Produto"), 07, 05, 100, 20 );
 	    pnCampos.adic( txtCodProd, 07, 23, 80, 20 );
@@ -109,25 +113,27 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	    pnCampos.adic( txtDescProd, 93, 23, 280, 20 );
 	    pnCampos.adic( new JLabelPad("qtd."), 375, 05, 30, 20 );
 	    pnCampos.adic( txtQtdPod, 375, 23, 30, 20 );
-	    pnCampos.adic( btExecuta, 420, 15, 30, 30 );
-	    pnCampos.adic( btExcluir, 420, 55, 30, 30 );
+	    pnCampos.adic( btExecuta, 410, 15, 30, 30 );
+	    pnBotoesGrid.adic( btExcluir, 0, 0, 30, 30 );
+	    pnBotoesGrid.adic( btExcluirTudo, 0, 31, 30, 30 );
  
-		tabGrid.adicColuna( " " );
 		tabGrid.adicColuna( "Cód. prod" );
 		tabGrid.adicColuna( "Descrição do produto" );
 		tabGrid.adicColuna( "Qtd" );
 		
-		tabGrid.setTamColuna( 0, EProduto.SEL.ordinal() );
 		tabGrid.setTamColuna( 60, EProduto.CODPROD.ordinal()  );
-		tabGrid.setTamColuna( 260, EProduto.DESCPROD.ordinal() );
+		tabGrid.setTamColuna( 320, EProduto.DESCPROD.ordinal() );
 		tabGrid.setTamColuna( 60, EProduto.QTDPROD.ordinal() );
-		
+	
 		lcProduto.addCarregaListener( this );
 		btExecuta.addActionListener( this );
 		btExcluir.addActionListener( this );
+		btExcluirTudo.addActionListener( this );
+		txtQtdPod.addKeyListener( this );
 		
 		btExecuta.setToolTipText( "Executar" );
 		btExcluir.setToolTipText( "Ecluir" );
+		btExcluirTudo.setToolTipText( "Excluir tudo" );
 		
 	}
 	public void montaListaCampos(){
@@ -150,20 +156,43 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	
 	public void carregaGrid(){
 		
-		int codProd = Integer.parseInt( txtQtdPod.getVlrString() );
+		boolean verific = true;
 		
-		if( tabGrid.getRowCount() == 0 ){
+		if( tabGrid.getNumLinhas()>0 ){
 			
-			for( int i=0; i<codProd; i++ ){
+			if(txtCodProd.getVlrString().equals( tabGrid.getValor( tabGrid.getNumLinhas(), EProduto.CODPROD.ordinal()))){
+				
+				Funcoes.mensagemInforma( this, "Produto já está na lista!" );
+			
+			}
+		}
+		else if(tabGrid.getNumLinhas()<=0 ){
+		
+			while( verific ){
 				
 				tabGrid.adicLinha();
-				tabGrid.setValor( txtCodProd.getVlrString(), i,  EProduto.CODPROD.ordinal() );
-				tabGrid.setValor( txtDescProd.getVlrString(), i, EProduto.DESCPROD.ordinal() );
-				tabGrid.setValor( txtQtdPod.getVlrString(), i, EProduto.QTDPROD.ordinal() );
+				tabGrid.setValor( txtCodProd.getVlrString(), tabGrid.getNumLinhas()-1,  EProduto.CODPROD.ordinal() );
+				tabGrid.setValor( txtDescProd.getVlrString(), tabGrid.getNumLinhas()-1, EProduto.DESCPROD.ordinal() );
+				tabGrid.setValor( txtQtdPod.getVlrString(), tabGrid.getNumLinhas()-1, EProduto.QTDPROD.ordinal() );
+					
+				verific = false;
 			}
 		}
 	}
 	
+	public void excluiLinha(){
+		
+		if( tabGrid.getLinhaSel() != -1 ){
+			
+			tabGrid.delLinha( tabGrid.getLinhaSel() );
+		}else{
+			Funcoes.mensagemInforma( this, "Selecione uma linha na lista!" );
+		}
+	}
+	public void excluiTudo(){
+		
+		tabGrid.limpa();
+	}
 	public void imprimir( boolean b ) {}
 	
 	public void setConexao(Connection cn) {
@@ -180,18 +209,32 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		}
 	}
 
+	@ Override
+	public void keyPressed( KeyEvent kevt ) {
+
+		super.keyPressed(kevt);
+		
+		if ( kevt.getSource() == txtQtdPod ){
+			
+			if( kevt.getKeyCode() == KeyEvent.VK_ENTER ){
+				btExecuta.doClick();
+			}
+		}
+	}
+
 	public void actionPerformed( ActionEvent evt ) {
 
 		super.actionPerformed(evt);
 		
 		if( evt.getSource() == btExecuta ){
 			carregaGrid();
+			txtCodProd.requestFocus();
 		}
 		if( evt.getSource() == btExcluir ){
-			tabGrid.limpa();
-			txtCodProd.setVlrString( "" );
-			txtDescProd.setVlrString( "" );
-			txtQtdPod.setVlrString( "" );
+			excluiLinha();
+		}
+		if( evt.getSource() == btExcluirTudo ){
+			excluiTudo();
 			txtCodProd.requestFocus();
 		}
 	}

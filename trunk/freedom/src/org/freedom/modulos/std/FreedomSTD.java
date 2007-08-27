@@ -150,7 +150,9 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas por Cliente", "Vendas por Cliente", 'C', 301000800, 2, true, FRVendasCli.class );
 				addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas por Setor", "Vendas por Setor", 't', 301000900, 2, true, FRVendaSetor.class );
 				addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas por CFOP", "Vendas por CFOP", 'F', 301001000, 2, true, FRVendasCFOP.class );
-				addOpcao( 301000000, TP_OPCAO_ITEM, "Gerenciamento de contas", "Gerenciamento de contas", 'i', 301011000, 2, true, FRGerContas.class );
+				addOpcao( 301000000, TP_OPCAO_ITEM, "Gerenciamento de contas", "Gerenciamento de contas", 'i', 301001100, 2, true, FRGerContas.class );
+				addOpcao( 301000000, TP_OPCAO_ITEM, "Fechamento diário", "Fechamento diário", 'i', 301001200, 2, true, FRFechaDiario.class );
+				
 			addOpcao( 300000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 301100000, 1, false, null );
 				addOpcao( 301100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 301110000, 2, true, FREvoluVendas.class );
 			addSeparador( 300000000 );
