@@ -3,8 +3,12 @@ package org.freedom.modulos.std;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -12,6 +16,9 @@ import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 
@@ -71,24 +78,104 @@ public class FRFechaDiario extends FRelatorio{
 	}
 
 	@ Override
-	public void imprimir( boolean b ) {
+	public void imprimir( boolean bVisualizar ) {
 		
 		ImprimeOS imp = new ImprimeOS( "", con );
 		
-		StringBuilder sSQL = new StringBuilder();
+		StringBuffer sSQL = new StringBuffer();
 		ResultSet rs = null;
 		PreparedStatement ps = null;
+		StringBuilder sCab = new StringBuilder();
+		boolean bComRef = comRef();
 		
 		try {
+		
+			sSQL.append( "SELECT 'A' TIPO, V.DTSAIDAVENDA DATA, V.CODCAIXA, C.DESCCAIXA, V.IDUSUINS, " );
+			sSQL.append( "V.CODTIPOMOV, M.DESCTIPOMOV, " );
+			sSQL.append( "V.CODPLANOPAG, P.DESCPLANOPAG, SUM(V.VLRLIQVENDA) VALOR " );
+			sSQL.append( "FROM VDVENDA V, PVCAIXA C, EQTIPOMOV M, FNPLANOPAG P " );
+			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND " );
+			sSQL.append( "V.DTEMITVENDA=? AND " );
+			sSQL.append( "C.CODEMP=V.CODEMPCX AND C.CODFILIAL=V.CODFILIALCX AND " );
+			sSQL.append( "C.CODCAIXA=V.CODCAIXA AND " );
+			sSQL.append( "M.CODEMP=V.CODEMPTM AND M.CODFILIAL=V.CODFILIALTM AND " );
+			sSQL.append( "M.CODTIPOMOV=V.CODTIPOMOV AND " );
+			sSQL.append( "P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND " );
+			sSQL.append( "P.CODPLANOPAG=V.CODPLANOPAG " );
+			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
+			sSQL.append( "UNION " );
+			sSQL.append( "SELECT 'B' TIPO, CP.DTEMITCOMPRA DATA, 40 CODCAIXA, " );
+			sSQL.append( "CAST('GERAL' AS CHAR(40) ) DESCCAIXA, CP.IDUSUINS, " );
+			sSQL.append( "CP.CODTIPOMOV, M.DESCTIPOMOV, " );
+			sSQL.append( "CP.CODPLANOPAG, P.DESCPLANOPAG, SUM(CP.VLRLIQCOMPRA*-1) VALOR " );
+			sSQL.append( "FROM CPCOMPRA CP, EQTIPOMOV M, FNPLANOPAG P " );
+			sSQL.append( "WHERE CP.CODEMP=? AND CP.CODFILIAL=? AND " );
+			sSQL.append( "CP.DTEMITCOMPRA=? AND " );
+			sSQL.append( "M.CODEMP=CP.CODEMPTM AND M.CODFILIAL=CP.CODFILIALTM AND " );
+			sSQL.append( "M.CODTIPOMOV=CP.CODTIPOMOV AND M.TIPOMOV='DV' AND " );
+			sSQL.append( "P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND " );
+			sSQL.append( "P.CODPLANOPAG=CP.CODPLANOPAG " );
+			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
+			sSQL.append( "ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
 			
-			sSQL.append( "" );
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			ps.setDate( 3, Funcoes.dateToSQLDate( txtData.getVlrDate() ));
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+			ps.setDate( 6, Funcoes.dateToSQLDate( txtData.getVlrDate() ));
+			rs = ps.executeQuery();
 			
 			imp.setTitulo( "Fechamento diário" );
-			imp.addSubTitulo( "FECHAMENTO DIÀRIO" );
-		
-		} catch ( Exception e ) {
+			imp.addSubTitulo( "FECHAMENTO DIÁRIO" );
 			
+			HashMap< String, Object > hParam = new HashMap< String, Object >();
+			
+			hParam.put( "CODEMP", Aplicativo.iCodEmp );	
+			hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ));
+			hParam.put( "COMREF", bComRef ? "S" : "N" );
+
+			FPrinterJob dlGr = new FPrinterJob( "relatorios/FechaDiario.jasper", "Fechamento Diário", sCab.toString(), rs, hParam, this );
+
+			if ( bVisualizar ) {
+				dlGr.setVisible( true );
+			}
+			else {
+				try {
+					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				} catch ( Exception err ) {
+					Funcoes.mensagemErro( this, "Erro na impressão de relatório de Fechamento diário!" + err.getMessage(), true, con, err );
+				}
+			}
+		} catch ( Exception e ) {
+			e.printStackTrace();
 		}
-		
+	}
+	private boolean comRef() {
+
+		boolean bRetorno = false;
+		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement( sSQL );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				if ( rs.getString( "UsaRefProd" ).trim().equals( "S" ) )
+					bRetorno = true;
+			}
+			if ( !con.getAutoCommit() )
+				con.commit();
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		return bRetorno;
 	}
 }
