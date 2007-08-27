@@ -221,6 +221,7 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Conferência", "Conferência de Estoque", 'C', 700706000, 2, true, FRConfEstoq.class );
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Inventário", "Inventário", 'I', 700707000, 2, true, FRInvPeps.class );
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Codifição de produto", "Codificação de produto", 'P', 700708000, 2, true, FRCodficProd.class );
+				addOpcao( 700700000, TP_OPCAO_ITEM, "Etiquetas de código de barras", "Etiquetas de código de barras", 'E', 700709000, 2, true, FRCodbarProd.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Fiscal", "", 'F', 800000000, 0, false, null );
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Gerar", "Gera Fiscal", 'G', 800100000, 1, true, FGeraFiscal.class );
