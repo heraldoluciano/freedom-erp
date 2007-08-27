@@ -110,7 +110,7 @@ public class FRFechaDiario extends FRelatorio{
 			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
 			sSQL.append( "UNION " );
 			sSQL.append( "SELECT CAST('B' AS CHAR(1)) TIPOLANCA, CP.DTEMITCOMPRA DATA, 40 CODCAIXA, " );
-			sSQL.append( "CAST('GERAL' AS CHAR(40) ) DESCCAIXA, CP.IDUSUINS, " );
+			sSQL.append( "CAST( null AS CHAR(40) ) DESCCAIXA, CP.IDUSUINS, " );
 			sSQL.append( "CP.CODTIPOMOV, M.DESCTIPOMOV, " );
 			sSQL.append( "CP.CODPLANOPAG, P.DESCPLANOPAG, SUM(CP.VLRLIQCOMPRA*-1) VALOR " );
 			sSQL.append( "FROM CPCOMPRA CP, EQTIPOMOV M, FNPLANOPAG P " );
