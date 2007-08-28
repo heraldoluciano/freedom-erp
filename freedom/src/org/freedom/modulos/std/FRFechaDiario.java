@@ -31,13 +31,15 @@ public class FRFechaDiario extends FRelatorio{
 	private JTextFieldFK txtDescCaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
 	private JTextFieldPad txtData = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtIdUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0);
 
 	private ListaCampos lcCaixa = new ListaCampos( this );
 	
 	public FRFechaDiario(){
 		
 		setTitulo( "Fechamento diário" );
-		setAtribos( 80, 80, 340, 170 );
+		setAtribos( 80, 80, 360, 200 );
 		
 		montaTela();
 		montaListaCampos();
@@ -45,14 +47,18 @@ public class FRFechaDiario extends FRelatorio{
 	
 	public void montaTela(){
 		
-		adic( new JLabelPad("Data:"), 7, 47, 50, 20 );
-		adic( txtData, 7, 67, 110, 20 );
 		
 		adic( new JLabelPad( "Nº caixa" ), 7, 7, 80, 20 );		
 		adic( txtCodCaixa, 7, 27, 70, 20 );
 		adic( new JLabelPad( "Descrição do caixa" ), 80, 7, 200, 20 );
 		adic( txtDescCaixa, 80, 27, 223, 20 );
 
+		adic( new JLabelPad("Data"), 7, 47, 50, 20 );
+		adic( txtData, 7, 67, 110, 20 );
+
+		adic( new JLabelPad("Usuário"), 120, 47, 100, 20);
+		adic( txtIdUsu, 120, 67, 100, 20);
+		
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) );
 		txtData.setVlrDate( cPeriodo.getTime() );
@@ -89,9 +95,11 @@ public class FRFechaDiario extends FRelatorio{
 		boolean bComRef = comRef();
 		int codcaixa = txtCodCaixa.getVlrInteger().intValue();
 		int param = 1;
+		String idusu = txtIdUsu.getVlrString().trim().toUpperCase();
 		
 		try {
 		
+			sCab.append( "Data: "+txtData.getVlrString() );
 			sSQL.append( "SELECT CAST('A' AS CHAR(1)) TIPOLANCA, V.DTSAIDAVENDA DATA, ");
 			sSQL.append( "V.CODTIPOMOV, M.DESCTIPOMOV, " );
 			sSQL.append( "V.CODCAIXA, C.DESCCAIXA, V.IDUSUINS, " );
@@ -101,6 +109,11 @@ public class FRFechaDiario extends FRelatorio{
 			sSQL.append( "V.DTEMITVENDA=? AND " );
 			if (codcaixa!=0) {
 				sSQL.append( "V.CODEMPCX=? AND V.CODFILIALCX=? AND V.CODCAIXA=? AND " );
+				sCab.append( " - Caixa: "+codcaixa );
+			}
+			if (!"".equals(idusu)) {
+				sSQL.append( " V.IDUSUINS=? AND ");
+				sCab.append( " - Usuário: "+idusu );
 			}
 			sSQL.append( "C.CODEMP=V.CODEMPCX AND C.CODFILIAL=V.CODFILIALCX AND " );
 			sSQL.append( "C.CODCAIXA=V.CODCAIXA AND " );
@@ -117,6 +130,9 @@ public class FRFechaDiario extends FRelatorio{
 			sSQL.append( "FROM CPCOMPRA CP, EQTIPOMOV M, FNPLANOPAG P " );
 			sSQL.append( "WHERE CP.CODEMP=? AND CP.CODFILIAL=? AND " );
 			sSQL.append( "CP.DTEMITCOMPRA=? AND " );
+			if (!"".equals(idusu)) {
+				sSQL.append( " CP.IDUSUINS=? AND ");
+			}
 			sSQL.append( "M.CODEMP=CP.CODEMPTM AND M.CODFILIAL=CP.CODFILIALTM AND " );
 			sSQL.append( "M.CODTIPOMOV=CP.CODTIPOMOV AND M.TIPOMOV='DV' AND " );
 			sSQL.append( "P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND " );
@@ -133,9 +149,15 @@ public class FRFechaDiario extends FRelatorio{
 				ps.setInt( param++, ListaCampos.getMasterFilial( "PVCAIXA" ) );
 				ps.setInt( param++, codcaixa );
 			}
+			if (!"".equals(idusu)) {
+				ps.setString(  param++, idusu );
+			}
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtData.getVlrDate() ));
+			if (!"".equals(idusu)) {
+				ps.setString(  param++, idusu );
+			}
 			rs = ps.executeQuery();
 			
 			imp.setTitulo( "Fechamento diário" );
