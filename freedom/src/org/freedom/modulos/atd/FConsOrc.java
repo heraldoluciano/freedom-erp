@@ -322,6 +322,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 				   "AND P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND " +
 				   "P.CODFILIAL=IT.CODFILIALPD "+sWhere;			
 			
+			//System.out.println(sSQL);
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("VDORCAMENTO"));
