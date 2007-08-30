@@ -91,6 +91,8 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 
 	private JCheckBoxPad cbAutoBaixa = new JCheckBoxPad( "Gerar lançamento financeiro já quitado?", "S", "N" );
 
+	private JCheckBoxPad cbApOrcPlanoPag = new JCheckBoxPad( "Orçamento aprovado por padrão?", "S", "N" );
+
 	public FPlanoPag() {
 
 		setTitulo( "Cadastro de Planos de Pagamento" );
@@ -135,6 +137,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		adicDescFK( txtDescCC, 410, 60, 200, 20, "DescCC", "Descrição do centro de custo" );
 		adicCampoInvisivel( txtAnoCC, "AnoCC", "Ano.C.C.", ListaCampos.DB_SI, false );
 		adicDB( cbAutoBaixa, 7, 80, 300, 20, "AutoBaixaPlanoPag", "", false );
+		adicDB( cbApOrcPlanoPag, 310, 80, 250, 20, "ApOrcPlanoPag", "", true );
 
 		setListaCampos( true, "PLANOPAG", "FN" );
 		lcCampos.setQueryInsert( true );
@@ -205,7 +208,11 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 			dl.dispose();
 			return;
 		}
-		String sSQL = "SELECT PLANO.CODPLANOPAG,PLANO.DESCPLANOPAG,PLANO.PARCPLANOPAG," + "PARC.NROPARCPAG,PARC.PERCPAG,PARC.DIASPAG " + "FROM FNPLANOPAG PLANO,FNPARCPAG PARC " + "WHERE PARC.CODPLANOPAG=PLANO.CODPLANOPAG " + "ORDER BY " + dl.getValor();
+		String sSQL = "SELECT PLANO.CODPLANOPAG,PLANO.DESCPLANOPAG,PLANO.PARCPLANOPAG," + 
+			"PARC.NROPARCPAG,PARC.PERCPAG,PARC.DIASPAG " + 
+			"FROM FNPLANOPAG PLANO,FNPARCPAG PARC " + 
+			"WHERE PARC.CODPLANOPAG=PLANO.CODPLANOPAG " + 
+			"ORDER BY " + dl.getValor();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sCodMaster = "";
