@@ -63,6 +63,8 @@ public class FRVendasDet extends FRelatorio {
 	
 	private JTextFieldPad txtCidCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
+	private JTextFieldPad txtIdUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
@@ -182,8 +184,10 @@ public class FRVendasDet extends FRelatorio {
 		adic( txtCodVend, 7, 160, 80, 20 );
 		adic( new JLabelPad( "Nome do comissionado" ), 90, 140, 200, 20 );
 		adic( txtNomeVend, 90, 160, 183, 20 );
-		adic( new JLabelPad( "Cidade do Cliente" ), 7, 180, 200, 20 );
-		adic( txtCidCli, 7, 200, 265, 20 );
+		adic( new JLabelPad( "Cidade do Cliente" ), 7, 180, 130, 20 );
+		adic( txtCidCli, 7, 200, 130, 20 );
+		adic( new JLabelPad( "Usuário" ), 140, 180, 132, 20 );
+		adic( txtIdUsu, 140, 200, 132, 20 );
 
 		adic( rgTipo, 7, 230, 265, 30 );
 		adic( rgFaturados, 7, 265, 120, 70 );
@@ -289,6 +293,13 @@ public class FRVendasDet extends FRelatorio {
 				sCab.append( txtCidCli.getVlrString() );
 			}
 
+			if (!"".equals( txtIdUsu.getVlrString().trim() )) {
+				sWhere7 = " AND V.IDUSUINS='"+txtIdUsu.getVlrString().trim().toUpperCase()+"'";
+		
+				sCab.append( " - USU.:  " );
+				sCab.append( txtIdUsu.getVlrString().trim().toUpperCase() );
+			}
+			
 			sSQL.append( "SELECT " );
 			sSQL.append( "	( SELECT VO.CODORC FROM VDVENDAORC VO " );
 			sSQL.append( "	  WHERE VO.CODEMP=IT.CODEMP AND VO.CODFILIAL=IT.CODFILIAL " );
