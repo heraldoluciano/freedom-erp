@@ -31,6 +31,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
@@ -41,7 +43,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
-public class DLCompOrc extends FFDialogo implements FocusListener {
+public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListener {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -50,6 +52,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 	private JTextFieldPad txtPercAdicOrc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,6,2);
 	private JTextFieldPad txtVlrAdicOrc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtApOrcPlanoPag = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private JTextFieldPad txtCodAtend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	private JTextFieldFK txtDescAtend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -68,6 +71,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 	private JLabelPad lbPercAdicOrc = new JLabelPad("% Adic.");
 	private JLabelPad lbVlrAdicOrc = new JLabelPad("V Adic.");
     private boolean bTestaAtend = false;
+    private boolean aprovaOrc = false;
 	
 	public DLCompOrc(Component cOrig, boolean bDIt, 
 			BigDecimal bVP, BigDecimal bVPD, BigDecimal bVD, BigDecimal bVPA, BigDecimal bVA, Integer iCodPlanoPag) {
@@ -91,8 +95,10 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 	
 	public void montaTela(){
 	  	   
+		lcPlanoPag.addCarregaListener( this );
 		lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag","Cód.p.pag.", ListaCampos.DB_PK,txtDescPlanoPag,true));
 		lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag, "DescPlanoPag","Descrição do plano de pagamento", ListaCampos.DB_SI, false));
+		lcPlanoPag.add(new GuardaCampo(txtApOrcPlanoPag, "ApOrcPlanoPag","Aprova orçamento", ListaCampos.DB_SI, false));
 		lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag.setReadOnly(true);
 		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
@@ -124,7 +130,8 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 		adic(cbAprovOrc,7,120,150,20);
 		adic(cbImpOrc,7,140,150,20);
 		
-		cbAprovOrc.setEnabled( getAprova() );
+		aprovaOrc = getAprova();
+		cbAprovOrc.setEnabled( aprovaOrc );
 		
 		txtPercDescOrc.addFocusListener(this);
 		txtVlrDescOrc.addFocusListener(this);
@@ -264,5 +271,18 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 		montaTela();
 		lcPlanoPag.carregaDados();	
 		lcAtend.carregaDados();
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+		if ( cevt.getListaCampos()==lcPlanoPag ) {
+			if (aprovaOrc) {
+				cbAprovOrc.setVlrString( txtApOrcPlanoPag.getVlrString() ); 
+			}
+		}
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		
 	}
 }
