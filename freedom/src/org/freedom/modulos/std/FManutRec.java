@@ -1440,9 +1440,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 							}
 							
 							if ( "".equals( sRets[ EColRet.CODCARTCOB.ordinal() ] ) ) {
-								ps.setNull( 19, Types.INTEGER );
-								ps.setNull( 20, Types.INTEGER );
-								ps.setNull( 21, Types.CHAR );
+								ps.setNull( 22, Types.INTEGER );
+								ps.setNull( 23, Types.INTEGER );
+								ps.setNull( 24, Types.CHAR );
 							}
 							else {
 								ps.setInt( 22, Aplicativo.iCodEmp );
