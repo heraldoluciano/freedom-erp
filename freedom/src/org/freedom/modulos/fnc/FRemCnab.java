@@ -50,6 +50,8 @@ import org.freedom.modulos.fnc.CnabUtil.Reg3Q;
 import org.freedom.modulos.fnc.CnabUtil.Reg3R;
 import org.freedom.modulos.fnc.CnabUtil.Reg3S;
 import org.freedom.modulos.fnc.CnabUtil.Reg5;
+import org.freedom.modulos.fnc.CnabUtil.RegHeader;
+import org.freedom.modulos.fnc.CnabUtil.RegTrailer;
 import org.freedom.modulos.fnc.FbnUtil.EColrec;
 import org.freedom.modulos.fnc.FbnUtil.EPrefs;
 import org.freedom.modulos.fnc.FbnUtil.StuffCli;
@@ -191,6 +193,39 @@ public class FRemCnab extends FRemFBN {
 		}
 		
 		return carteira;
+	}
+	
+	private RegHeader getRegHeader() {
+		
+		RegHeader reg = cnabutil.new RegHeader();
+		
+		reg.setCodBanco( txtCodBanco.getVlrString() );
+		reg.setTipoInscEmp( 2 );
+		reg.setCpfCnpjEmp( (String) prefs.get( EPrefs.CNPFEMP ) );
+		reg.setCodConvBanco( (String) prefs.get( EPrefs.CODCONV ) );
+		reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) );
+		reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
+		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
+		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
+		reg.setDigAgConta( null );
+		reg.setRazEmp( (String) prefs.get( FbnUtil.EPrefs.NOMEEMP ) );
+		reg.setNomeBanco( txtNomeBanco.getVlrString() );
+		
+		Calendar cal = Calendar.getInstance();
+		
+		reg.setDataGeracao( cal.getTime() );
+		reg.setHoraGeracao( new Integer( 
+				  String.valueOf( cal.get( Calendar.HOUR_OF_DAY ) ) 
+				+ String.valueOf( cal.get( Calendar.MINUTE ) ) 
+				+ String.valueOf( cal.get( Calendar.SECOND ) ) ) );
+		reg.setSequenciaArq( (Integer) prefs.get( EPrefs.NROSEQ )  );
+		reg.setUsoBanco( null );
+		reg.setUsoEmp( null );
+		reg.setUsoVans( null );
+		reg.setTipoServico( "02" );//cobrança sem papel.
+		reg.setOcorrencias( null );
+		
+		return reg;
 	}
 	
 	private Reg1 getReg1() {
@@ -468,6 +503,17 @@ public class FRemCnab extends FRemFBN {
 		return reg;
 	}
 	
+	private RegTrailer getRegTrailer() {	
+		
+		RegTrailer reg = cnabutil.new RegTrailer();
+		
+		reg.setCodBanco( txtCodBanco.getVlrString() );
+		reg.setQtdLotes( loteServico );
+		reg.setQtdRegistros( seqLoteServico + 2 );
+		
+		return reg;
+	}
+	
 	protected boolean execExporta() {
 		
 		boolean retorno = false;
@@ -514,7 +560,8 @@ public class FRemCnab extends FRemFBN {
 				}
 				
 				lbStatus.setText( "     pronto ..." );
-				//atualizaSitremessaExp(hsCli, hsRec);
+				prefs.put( SiaccUtil.EPrefs.NROSEQ, ((Integer) prefs.get( EPrefs.NROSEQ )).intValue() + 1 );
+				updatePrefere();
 			}
 			
 		}
@@ -532,7 +579,8 @@ public class FRemCnab extends FRemFBN {
 			int regs = 0;
 			
 			ArrayList< Reg > registros = new ArrayList< Reg >();
-						
+			
+			registros.add( getRegHeader() );
 			registros.add( getReg1() );
 			
 			for ( StuffRec rec : hsRec ) {
@@ -546,6 +594,7 @@ public class FRemCnab extends FRemFBN {
 			}
 			
 			registros.add( getReg5() ); 
+			registros.add(  getRegTrailer() );
 			
 			for ( Reg reg : registros ) {
 				bw.write( reg.getLine() );
