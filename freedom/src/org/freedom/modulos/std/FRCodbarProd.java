@@ -25,7 +25,6 @@ package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -34,6 +33,7 @@ import java.sql.Connection;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
@@ -42,6 +42,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
@@ -55,7 +56,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
-	private JTextFieldPad txtDescProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtDescProd = new JTextFieldFK ( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 	
@@ -83,7 +84,6 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	  
 	private JComboBox cbSel = null;
 	
-	
 	private enum EProduto {CODPROD, DESCPROD, QTDPROD };
 	
 	public FRCodbarProd(){
@@ -98,14 +98,12 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 	public void montaTela(){
 		
-		txtDescProd.setSoLeitura( true );
-		
 		Container c = getContentPane();
 		
-	    c.add(pnCampos,BorderLayout.NORTH);
-	    c.add(pnGrid, BorderLayout.CENTER);
+	    c.add( pnCampos,BorderLayout.NORTH );
+	    c.add( pnGrid, BorderLayout.CENTER );
 	    c.add( pnBotoesGrid, BorderLayout.EAST ); 
-	    c.add(spnGrid);
+	    c.add( spnGrid );
 	
 	    pnCampos.adic( new JLabelPad("Cód. Produto"), 07, 05, 100, 20 );
 	    pnCampos.adic( txtCodProd, 07, 23, 80, 20 );
@@ -115,7 +113,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	    pnCampos.adic( txtQtdPod, 375, 23, 30, 20 );
 	    pnCampos.adic( btExecuta, 410, 15, 30, 30 );
 	    pnBotoesGrid.adic( btExcluir, 0, 0, 30, 30 );
-	    pnBotoesGrid.adic( btExcluirTudo, 0, 31, 30, 30 );
+	    pnBotoesGrid.adic( btExcluirTudo, 0, 30, 30, 30 );
  
 		tabGrid.adicColuna( "Cód. prod" );
 		tabGrid.adicColuna( "Descrição do produto" );
@@ -157,25 +155,39 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	public void carregaGrid(){
 		
 		boolean verific = true;
+		String qtd = "";
 		
-		if( tabGrid.getNumLinhas()>0 ){
+		if( tabGrid.getNumLinhas()>0  ){
 			
-			if(txtCodProd.getVlrString().equals( tabGrid.getValor( tabGrid.getNumLinhas(), EProduto.CODPROD.ordinal()))){
+			for (int i=0; i<tabGrid.getNumLinhas(); i++ ){
 				
-				Funcoes.mensagemInforma( this, "Produto já está na lista!" );
-			
+				 if(txtCodProd.getVlrString().equals( tabGrid.getValor( i, EProduto.CODPROD.ordinal())) &&
+						 !txtQtdPod.getVlrString().equals( tabGrid.getValor( i, EProduto.QTDPROD.ordinal()))){
+						
+					 if( Funcoes.mensagemConfirma( this, "Produto já está na lista!\nDeseja substituir a quantidade?" ) == JOptionPane.YES_OPTION ){
+						 
+						 qtd = txtQtdPod.getVlrString();
+
+						 tabGrid.delLinha( i );
+						 tabGrid.adicLinha();
+						 tabGrid.setValor( qtd,i, EProduto.QTDPROD.ordinal() );
+						 tabGrid.setValor( txtCodProd.getVlrString(), tabGrid.getNumLinhas()-1,  EProduto.CODPROD.ordinal() );
+						 tabGrid.setValor( txtDescProd.getVlrString(), tabGrid.getNumLinhas()-1, EProduto.DESCPROD.ordinal() );
+					 
+						 
+					 }	 
+				 }
 			}
-		}
-		else if(tabGrid.getNumLinhas()<=0 ){
-		
-			while( verific ){
-				
-				tabGrid.adicLinha();
-				tabGrid.setValor( txtCodProd.getVlrString(), tabGrid.getNumLinhas()-1,  EProduto.CODPROD.ordinal() );
-				tabGrid.setValor( txtDescProd.getVlrString(), tabGrid.getNumLinhas()-1, EProduto.DESCPROD.ordinal() );
-				tabGrid.setValor( txtQtdPod.getVlrString(), tabGrid.getNumLinhas()-1, EProduto.QTDPROD.ordinal() );
+		}else if ( tabGrid.getNumLinhas()<=0 ){
+			
+				while( verific ){
 					
-				verific = false;
+					tabGrid.adicLinha();
+					tabGrid.setValor( txtCodProd.getVlrString(), tabGrid.getNumLinhas()-1,  EProduto.CODPROD.ordinal() );
+					tabGrid.setValor( txtDescProd.getVlrString(), tabGrid.getNumLinhas()-1, EProduto.DESCPROD.ordinal() );
+					tabGrid.setValor( txtQtdPod.getVlrString(), tabGrid.getNumLinhas()-1, EProduto.QTDPROD.ordinal() );
+						
+					verific = false;
 			}
 		}
 	}
@@ -185,14 +197,18 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		if( tabGrid.getLinhaSel() != -1 ){
 			
 			tabGrid.delLinha( tabGrid.getLinhaSel() );
+			
 		}else{
+			
 			Funcoes.mensagemInforma( this, "Selecione uma linha na lista!" );
 		}
 	}
+	
 	public void excluiTudo(){
 		
 		tabGrid.limpa();
 	}
+	
 	public void imprimir( boolean b ) {}
 	
 	public void setConexao(Connection cn) {
