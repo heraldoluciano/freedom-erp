@@ -45,6 +45,357 @@ class CnabUtil extends FbnUtil {
 		}
 	}
 	
+	class RegHeader extends Reg {
+		
+		private String codBanco;
+		private String loteServico;
+		private int registroHeader;
+		private int tipoInscEmp;
+		private String cpfCnpjEmp;
+		private String codConvBanco;
+		private String agencia;
+		private String digAgencia;
+		private String conta;
+		private String digConta;
+		private String digAgConta;
+		private String razEmp;
+		private String nomeBanco;
+		private int tipoOperacao;
+		private Date dataGeracao;
+		private int horaGeracao;
+		private Integer sequenciaArq;
+		private String versaoLayout;
+		private String densidadeArq;
+		private String usoBanco;
+		private String usoEmp;
+		//private String COBRANÇA S/PAPEL
+		private String usoVans;
+		private String tipoServico;
+		private String ocorrencias;
+		
+		
+		public RegHeader() {
+			
+			setLoteServico( "0000" );
+			setRegistroHeader( 0 );
+			setTipoOperacao( 1 );
+			setVersaoLayout( "030" );
+		}
+		
+		public String getAgencia() {		
+			return agencia;
+		}
+		
+		public void setAgencia( final String agencia ) {		
+			this.agencia = agencia;
+		}
+		
+		public String getCodBanco() {		
+			return codBanco;
+		}
+		
+		public void setCodBanco( final String codBanco ) {		
+			this.codBanco = codBanco;
+		}
+		
+		/**
+		 * Indentifica a empresa no banco para determinados tipos de serviços.<br>
+		 * Observar as regras de preenchimento abaixo no que se refere ao headre de serviço/lote:<br>
+		 * "9999999994444CCVVV  " / 20 bytes / , onde:<br>
+		 * 999999999 - Código do convênio.<br>
+		 * 4444      - Código do produto.<br>
+		 * CC        - Carteira de cobrança.<br>
+		 * VVV       - Variação da carteira de cobrança.<br>
+		 */
+		public String getCodConvBanco() {		
+			return codConvBanco;
+		}
+		
+		public void setCodConvBanco( final String codConvenio ) {		
+			this.codConvBanco = codConvenio;
+		}
+		
+		public String getConta() {		
+			return conta;
+		}
+		
+		public void setConta( final String conta ) {		
+			this.conta = conta;
+		}
+		
+		/**
+		 * Inscrição da empresa. Conforme o tipo da inscrição.<br>
+		 * @see org.freedom.modulos.fnc.CnabUtil.Reg1#setTipoInscEmp( int tipoInscEmp )
+		 */
+		public String getCpfCnpjEmp() {		
+			return cpfCnpjEmp;
+		}
+		
+		public void setCpfCnpjEmp( final String cpfCnpjEmp ) {		
+			this.cpfCnpjEmp = cpfCnpjEmp;
+		}
+		
+		public Date getDataGeracao() {		
+			return dataGeracao;
+		}
+		
+		public void setDataGeracao( final Date dataGeracao ) {		
+			this.dataGeracao = dataGeracao;
+		}
+		
+		public String getDensidadeArq() {		
+			return densidadeArq;
+		}
+		
+		public void setDensidadeArq( final String densidadeArq ) {		
+			this.densidadeArq = densidadeArq;
+		}
+		
+		public String getDigAgConta() {		
+			return digAgConta;
+		}
+		
+		public void setDigAgConta( final String digAgeConta ) {		
+			this.digAgConta = digAgeConta;
+		}
+		
+		public String getDigAgencia() {		
+			return digAgencia;
+		}
+		
+		public void setDigAgencia( final String digAgencia ) {		
+			this.digAgencia = digAgencia;
+		}
+		
+		public String getDigConta() {		
+			return digConta;
+		}
+		
+		public void setDigConta( final String digConta ) {		
+			this.digConta = digConta;
+		}
+		
+		public int getHoraGeracao() {		
+			return horaGeracao;
+		}
+		
+		public void setHoraGeracao( final int horaGeracao ) {		
+			this.horaGeracao = horaGeracao;
+		}
+		
+		public String getLoteServico() {		
+			return loteServico;
+		}
+		
+		private void setLoteServico( final String loteServico ) {		
+			this.loteServico = loteServico;
+		}
+		
+		public String getNomeBanco() {		
+			return nomeBanco;
+		}
+		
+		public void setNomeBanco( final String nomeBanco ) {		
+			this.nomeBanco = nomeBanco;
+		}
+		
+		public String getOcorrencias() {		
+			return ocorrencias;
+		}
+		
+		public void setOcorrencias( final String ocorrencias ) {		
+			this.ocorrencias = ocorrencias;
+		}
+		
+		public String getRazEmp() {		
+			return razEmp;
+		}
+		
+		public void setRazEmp( final String razaoEmp ) {		
+			this.razEmp = razaoEmp;
+		}
+		
+		public int getRegistroHeader() {		
+			return registroHeader;
+		}
+		
+		private void setRegistroHeader( final int registroHeader ) {		
+			this.registroHeader = registroHeader;
+		}
+		
+		public Integer getSequenciaArq() {		
+			return sequenciaArq;
+		}
+		
+		public void setSequenciaArq( final Integer sequenciaArq ) {		
+			this.sequenciaArq = sequenciaArq;
+		}
+		
+		/**
+		 * Indica o tipo de inscrição da empresa.<br>
+		 * 1 - CPF<br>
+		 * 2 - CNPJ<br>
+		 */
+		public int getTipoInscEmp() {		
+			return tipoInscEmp;
+		}
+		
+		public void setTipoInscEmp( final int tipoInscEmp ) {		
+			this.tipoInscEmp = tipoInscEmp;
+		}
+		
+		/**
+		 * Ocorrências especificas para o arquivo com s<br>
+		 * lote de serviço comprança sem papel.<br>
+		 * 
+		 * 01 - Controle do registro header inválido.<br>
+		 * 02 - Código de remessa diferente de "1".<br>
+		 * 03 - Data de geração inválida ou diferente de D+1.<br>
+		 * 04 - Número sequêncial do arquivo não numerico ou fora da sequência.<br>
+		 * 05 - Número da versão do layout do arquivo inválido.<br>
+		 * 06 - Tipo de serviço diferente de "02".<br>
+		 * 07 - Controle do registro trailer inválido.<br>
+		 * 08 - Arquivo não aceiro - Totais do arquivo trailer com diferença.<br>
+		 */
+		public String getTipoServico() {		
+			return tipoServico;
+		}
+		
+		public void setTipoServico( final String tipoServico ) {		
+			this.tipoServico = tipoServico;
+		}
+		
+		public String getUsoBanco() {		
+			return usoBanco;
+		}
+		
+		public void setUsoBanco( final String usoBanco ) {		
+			this.usoBanco = usoBanco;
+		}
+		
+		public String getUsoEmp() {		
+			return usoEmp;
+		}
+		
+		public void setUsoEmp( final String usoEmp ) {		
+			this.usoEmp = usoEmp;
+		}
+		
+		public String getUsoVans() {		
+			return usoVans;
+		}
+		
+		public void setUsoVans( final String usoVans ) {		
+			this.usoVans = usoVans;
+		}
+		
+		/**
+		 * Indica o tipo de operação.<br>
+		 * 1 - Remessa.<br>
+		 * 2 - Retorno.<br>
+		 */
+		public int getTipoOperacao() {		
+			return tipoOperacao;
+		}
+		
+		private void setTipoOperacao( final int tipoOperacao ) {
+			this.tipoOperacao = tipoOperacao;
+		}		
+		
+		public String getVersaoLayout() {		
+			return versaoLayout;
+		}
+		
+		private void setVersaoLayout( final String versaoLayout ) {		
+			this.versaoLayout = versaoLayout;
+		}
+
+		@Override
+		public String getLine() throws ExceptionCnab {
+		
+			StringBuilder line = new StringBuilder();
+			
+			try {
+				
+				line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
+				line.append( getLoteServico() );
+				line.append( getRegistroHeader() );
+				line.append( Funcoes.replicate( " ", 9 ) );
+				line.append( format( getTipoInscEmp(), ETipo.$9, 1, 0 ) );
+				line.append( format( getCpfCnpjEmp(), ETipo.$9, 14, 0 ) );
+				line.append( format( getCodConvBanco(), ETipo.X, 20, 0 ) );
+				line.append( format( getAgencia(), ETipo.$9, 5, 0 ) );
+				line.append( format( getDigAgencia(), ETipo.X, 1, 0 ) );
+				line.append( format( getConta(), ETipo.$9, 12, 0 ) );
+				line.append( format( getDigConta(), ETipo.X, 1, 0 ) );
+				line.append( format( getDigAgConta(), ETipo.X, 1, 0 ) );
+				line.append( format( getRazEmp(), ETipo.X, 30, 0 ) );
+				line.append( format( getNomeBanco(), ETipo.X, 30, 0 ) );
+				line.append( Funcoes.replicate( " ", 10 ) );				
+				line.append( format( getTipoOperacao(), ETipo.$9, 1, 0 ) );
+				line.append( dateToString( getDataGeracao() ) );
+				line.append( format( getHoraGeracao(), ETipo.$9, 6, 0 ) );
+				line.append( format( getSequenciaArq(), ETipo.$9, 6, 0 ) );
+				line.append( getVersaoLayout() );
+				line.append( format( getDensidadeArq(), ETipo.$9, 5, 0 ) );
+				line.append( format( getUsoBanco(), ETipo.X, 20, 0 ) );
+				line.append( format( getUsoEmp(), ETipo.X, 20, 0 ) );
+				line.append( Funcoes.replicate( " ", 11 ) );
+				line.append( "CSP" );//indentifica cobrança sem papel.
+				line.append( format( getUsoVans(), ETipo.$9, 3, 0 ) );
+				line.append( format( getTipoServico(), ETipo.X, 2, 0 ) );
+				line.append( format( getOcorrencias(), ETipo.X, 10, 0 ) );
+				line.append( (char) 13 );
+				line.append( (char) 10 );
+			}
+			catch ( Exception e ) {	
+				throw new ExceptionCnab( "CNAB registro Header.\nErro ao escrever registro.\n" + e.getMessage() );
+			}
+			
+			return line.toString();
+		}
+
+		@Override
+		public void parseLine( final String line ) throws ExceptionCnab {
+
+			try {
+
+				if ( line == null ) {					
+					throw new ExceptionCnab( "CNAB registro Header.\nLinha nula." );
+				}
+				else {
+				
+					setCodBanco( line.substring( 0, 3 ) );
+					setLoteServico( line.substring( 3, 7 ) );
+					setRegistroHeader( line.substring( 7, 8 ).trim().length() > 0 ? Integer.parseInt( line.substring( 7, 8 ).trim() ) : 0 );
+					setTipoInscEmp( line.substring( 17, 18 ).trim().length() > 0 ? Integer.parseInt( line.substring( 17, 18 ).trim() ) : 0 );
+					setCpfCnpjEmp( line.substring( 18, 32 ) );
+					setCodConvBanco( line.substring( 32, 52 ) );
+					setAgencia( line.substring( 52, 57 ) );
+					setDigAgencia( line.substring( 57, 58 ) );
+					setConta( line.substring( 58, 70 ) );
+					setDigConta( line.substring( 70, 71 ) );
+					setDigAgConta( line.substring( 71, 72 ) );
+					setRazEmp( line.substring( 72, 102 ) );
+					setNomeBanco( line.substring( 102, 132 ) );	
+					setTipoOperacao( line.substring( 142,143 ).trim().length() > 0 ? Integer.parseInt( line.substring( 142,143 ).trim() ) : 0 );
+					setDataGeracao( Funcoes.encodeDate( Integer.parseInt( line.substring( 143, 145 ).trim() ), Integer.parseInt( line.substring( 145, 147 ).trim() ), Integer.parseInt( line.substring( 147, 151 ).trim() ) ) );
+					setHoraGeracao( line.substring( 151, 157 ).trim().length() > 0 ? Integer.parseInt( line.substring( 151, 157 ).trim() ) : 0 );
+					setSequenciaArq( line.substring( 157, 163 ).trim().length() > 0 ? Integer.parseInt( line.substring( 157, 163 ).trim() ) : 0 );
+					setVersaoLayout( line.substring( 163, 166 ) );
+					setDensidadeArq( line.substring( 166, 171 ) );
+					setUsoBanco( line.substring( 171, 191 ) );
+					setUsoEmp( line.substring( 191, 211 ) );
+					setUsoVans( line.substring( 225, 228 ) );
+					setTipoServico( line.substring( 228, 230 ) );
+					setOcorrencias( line.substring( 230 ) );
+				}
+			} catch ( Exception e ) {
+				throw new ExceptionCnab( "CNAB registro Header.\nErro ao ler registro.\n" + e.getMessage() );
+			}			
+		}
+	}
+		
 	class Reg1 extends Reg {
 		
 		private String codBanco;
@@ -2364,7 +2715,7 @@ class CnabUtil extends FbnUtil {
 		
 		private String codBanco;
 		private int loteServico;
-		private int registroTraler;
+		private int registroTrailer;
 		private int qtdRegistros;
 		private int qtdSimples;
 		private BigDecimal vlrSimples;
@@ -2379,7 +2730,7 @@ class CnabUtil extends FbnUtil {
 		
 		public Reg5() {
 			
-			setRegistroTraler( 5 );
+			setRegistroTrailer( 5 );
 		}
 		
 		public Reg5( final String line ) throws ExceptionCnab {
@@ -2476,12 +2827,12 @@ class CnabUtil extends FbnUtil {
 			this.qtdVinculado = qtdVinculado;
 		}
 		
-		public int getRegistroTraler() {		
-			return registroTraler;
+		public int getRegistroTrailer() {		
+			return registroTrailer;
 		}
 		
-		private void setRegistroTraler( int registroTraler ) {		
-			this.registroTraler = registroTraler;
+		private void setRegistroTrailer( int registroTraler ) {		
+			this.registroTrailer = registroTraler;
 		}
 		
 		public BigDecimal getVlrCalculado() {		
@@ -2540,7 +2891,7 @@ class CnabUtil extends FbnUtil {
 				
 				line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
 				line.append( format( getLoteServico(), ETipo.$9, 4, 0 ) );
-				line.append( format( getRegistroTraler(), ETipo.$9, 1, 0 ) );
+				line.append( format( getRegistroTrailer(), ETipo.$9, 1, 0 ) );
 				line.append( Funcoes.replicate( " ", 9 ) );
 				line.append( format( getQtdRegistros(), ETipo.$9, 6, 0 ) );
 				line.append( format( getQtdSimples(), ETipo.$9, 6, 0 ) );
@@ -2578,7 +2929,7 @@ class CnabUtil extends FbnUtil {
 					
 					setCodBanco( line.substring( 0, 3 ) );
 					setLoteServico( line.substring( 3, 7 ).trim().length() > 0 ? Integer.parseInt( line.substring( 3, 7 ).trim() ) : 0 );
-					setRegistroTraler( line.substring( 7, 8 ).trim().length() > 0 ? Integer.parseInt( line.substring( 7, 8 ).trim() ) : 0 );
+					setRegistroTrailer( line.substring( 7, 8 ).trim().length() > 0 ? Integer.parseInt( line.substring( 7, 8 ).trim() ) : 0 );
 					setQtdRegistros( line.substring( 17, 23 ).trim().length() > 0 ? Integer.parseInt( line.substring( 17, 23 ).trim() ) : 0 );
 					setQtdSimples( line.substring( 23, 29 ).trim().length() > 0 ? Integer.parseInt( line.substring( 23, 29 ).trim() ) : 0 );
 					setVlrSimples( strToBigDecimal( line.substring( 29, 46 ) ) );
@@ -2592,6 +2943,122 @@ class CnabUtil extends FbnUtil {
 				}
 			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro 5.\nErro ao ler registro.\n" + e.getMessage() );
+			}
+		}
+	}
+	
+	public class RegTrailer extends Reg {
+		
+		private String codBanco;
+		private String loteServico;
+		private String registroTrailer;
+		private int qtdLotes;
+		private int qtdRegistros;
+		private int qtdConsilacoes; 
+		
+		
+		public RegTrailer() {
+			
+			setLoteServico( "9999" );
+			setRegistroTrailer( "9" );
+		}
+			
+		public String getCodBanco() {		
+			return codBanco;
+		}
+		
+		public void setCodBanco( final String codBanco ) {		
+			this.codBanco = codBanco;
+		}
+		
+		public String getLoteServico() {		
+			return loteServico;
+		}
+		
+		private void setLoteServico( final String loteServico ) {		
+			this.loteServico = loteServico;
+		}
+		
+		public int getQtdConsilacoes() {		
+			return qtdConsilacoes;
+		}
+		
+		public void setQtdConsilacoes( final int qtdConsilacoes ) {		
+			this.qtdConsilacoes = qtdConsilacoes;
+		}
+		
+		public int getQtdLotes() {		
+			return qtdLotes;
+		}
+		
+		public void setQtdLotes( final int qtdLotes ) {		
+			this.qtdLotes = qtdLotes;
+		}
+		
+		public int getQtdRegistros() {		
+			return qtdRegistros;
+		}
+		
+		public void setQtdRegistros( final int qtdRegistros ) {		
+			this.qtdRegistros = qtdRegistros;
+		}
+		
+		public String getRegistroTrailer() {		
+			return registroTrailer;
+		}
+		
+		private void setRegistroTrailer( final String regTrailer ) {		
+			this.registroTrailer = regTrailer;
+		}
+		
+		
+		@Override
+		public String getLine() throws ExceptionCnab {
+
+			StringBuilder line = new StringBuilder();
+			
+			try {
+				
+				line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
+				line.append( format( getLoteServico(), ETipo.$9, 4, 0 ) );
+				line.append( format( getRegistroTrailer(), ETipo.$9, 1, 0 ) );
+				line.append( Funcoes.replicate( " ", 9 ) );
+				line.append( format( getQtdRegistros(), ETipo.$9, 6, 0 ) );
+				line.append( format( getQtdLotes(), ETipo.$9, 6, 0 ) );
+				line.append( format( getQtdRegistros(), ETipo.$9, 6, 0 ) );
+				line.append( Funcoes.replicate( " ", 205 ) );
+				line.append( (char) 13 );
+				line.append( (char) 10 );
+			}
+			catch ( Exception e ) {	
+				throw new ExceptionCnab( "CNAB registro trailer.\nErro ao escrever registro.\n" + e.getMessage() );
+			}
+			
+			return line.toString();
+		}
+
+		/* (non-Javadoc)
+		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#parseLine(java.lang.String)
+		 */
+		@Override
+		public void parseLine( String line ) throws ExceptionCnab {
+
+			try {
+
+				if ( line == null ) {					
+					throw new ExceptionCnab( "Linha nula." );
+				}
+				else {
+					
+					setCodBanco( line.substring( 0, 3 ) ); 
+					setLoteServico( line.substring( 3, 7 ) );
+					setRegistroTrailer( line.substring( 7, 8 ) );
+					setQtdRegistros( line.substring( 17, 23 ).trim().length() > 0 ? Integer.parseInt( line.substring( 17, 23 ).trim() ) : 0 );
+					setQtdLotes( line.substring( 23, 29 ).trim().length() > 0 ? Integer.parseInt( line.substring( 23, 29 ).trim() ) : 0 );
+					setQtdRegistros( line.substring( 29, 35 ).trim().length() > 0 ? Integer.parseInt( line.substring( 29, 35 ).trim() ) : 0 );
+				}
+			} catch ( Exception e ) {
+				throw new ExceptionCnab( "CNAB registro trailer.\nErro ao ler registro.\n" + e.getMessage() );
 			}
 		}
 	}
