@@ -154,7 +154,6 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	
 	public void adicLinha(){
 		
-		boolean verific = true;
 		int qtd = txtQtdPod.getVlrInteger().intValue();
 		int codprod = txtCodProd.getVlrInteger().intValue();
 		int pos = -1;
