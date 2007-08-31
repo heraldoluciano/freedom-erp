@@ -37,6 +37,12 @@ public class Boleto {
 			parte2.append( bufConvenio );
 			parte2.append( bufNossoNumero );
 			parte2.append( bufModalidade );
+		} 
+		else if (bufConvenio.length()>=7) {
+			parte2.append( "000000" );
+			parte2.append( bufNossoNumero );
+			parte2.append( bufCarteira );
+			
 		} else {
 			parte2.append( bufNossoNumero );
 			parte2.append( bufAgencia );
@@ -62,7 +68,10 @@ public class Boleto {
 		if (convenio==null) {
 			bufConvenio = "000000";
 		} 
-		else if ( convenio.length()>6 ) {
+		else if ( convenio.length()>=7 ) {
+			bufConvenio = convenio.substring( convenio.length()-7 );
+		} 
+		else if ( convenio.length()==6 ) {
 			bufConvenio = convenio.substring( convenio.length()-6 );
 		} else {
 			bufConvenio = convenio;
@@ -83,9 +92,11 @@ public class Boleto {
 		} else {
 			retorno.append(  convenio );
 			if (convenio.length()<=4) {
-				retorno.append( getNumCli(rec, nparc, 7) );
-			} else {
+				retorno.append( getNumCli(rec, nparc, 6) );
+			} else if (convenio.length()==6) {
 				retorno.append( getNumCli(rec, nparc, 5) );
+			} else {
+				retorno.append( getNumCli(rec, nparc, 10 ));
 			}
 			//retorno.append( digVerif(retorno.toString()) );
 		}
