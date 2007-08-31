@@ -152,44 +152,34 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		
 	}
 	
-	public void carregaGrid(){
+	public void adicLinha(){
 		
 		boolean verific = true;
-		String qtd = "";
+		int qtd = txtQtdPod.getVlrInteger().intValue();
+		int codprod = txtCodProd.getVlrInteger().intValue();
+		int pos = -1;
 		
-		if( tabGrid.getNumLinhas()>0  ){
-			
-			for (int i=0; i<tabGrid.getNumLinhas(); i++ ){
-				
-				 if(txtCodProd.getVlrString().equals( tabGrid.getValor( i, EProduto.CODPROD.ordinal())) &&
-						 !txtQtdPod.getVlrString().equals( tabGrid.getValor( i, EProduto.QTDPROD.ordinal()))){
-						
-					 if( Funcoes.mensagemConfirma( this, "Produto já está na lista!\nDeseja substituir a quantidade?" ) == JOptionPane.YES_OPTION ){
-						 
-						 qtd = txtQtdPod.getVlrString();
-
-						 tabGrid.delLinha( i );
-						 tabGrid.adicLinha();
-						 tabGrid.setValor( qtd,i, EProduto.QTDPROD.ordinal() );
-						 tabGrid.setValor( txtCodProd.getVlrString(), tabGrid.getNumLinhas()-1,  EProduto.CODPROD.ordinal() );
-						 tabGrid.setValor( txtDescProd.getVlrString(), tabGrid.getNumLinhas()-1, EProduto.DESCPROD.ordinal() );
-					 
-						 
-					 }	 
-				 }
-			}
-		}else if ( tabGrid.getNumLinhas()<=0 ){
-			
-				while( verific ){
-					
-					tabGrid.adicLinha();
-					tabGrid.setValor( txtCodProd.getVlrString(), tabGrid.getNumLinhas()-1,  EProduto.CODPROD.ordinal() );
-					tabGrid.setValor( txtDescProd.getVlrString(), tabGrid.getNumLinhas()-1, EProduto.DESCPROD.ordinal() );
-					tabGrid.setValor( txtQtdPod.getVlrString(), tabGrid.getNumLinhas()-1, EProduto.QTDPROD.ordinal() );
-						
-					verific = false;
+		if (codprod==0) {
+			Funcoes.mensagemInforma( this, "Produto não encontrado!" );
+			txtCodProd.requestFocus();
+			return;
+		}
+		for (int i=0; i<tabGrid.getNumLinhas(); i++) {
+			if (codprod ==  ( (Integer) tabGrid.getValor( i, EProduto.CODPROD.ordinal() ) ).intValue() ) {
+				pos = i;
+				qtd += (Integer) tabGrid.getValor( i, EProduto.QTDPROD.ordinal() );
+				break;
 			}
 		}
+		
+		if (pos == -1) {
+			tabGrid.adicLinha();
+			pos = tabGrid.getNumLinhas()-1;
+		}
+		tabGrid.setValor( codprod, pos,  EProduto.CODPROD.ordinal() );
+		tabGrid.setValor( txtDescProd.getVlrString(), pos, EProduto.DESCPROD.ordinal() );
+		tabGrid.setValor( qtd, pos, EProduto.QTDPROD.ordinal() );
+		
 	}
 	
 	public void excluiLinha(){
@@ -243,7 +233,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		super.actionPerformed(evt);
 		
 		if( evt.getSource() == btExecuta ){
-			carregaGrid();
+			adicLinha();
 			txtCodProd.requestFocus();
 		}
 		if( evt.getSource() == btExcluir ){
