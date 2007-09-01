@@ -1071,10 +1071,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 							|| txtTipoMov.getVlrString().equals("CE")
 							|| txtTipoMov.getVlrString().equals("PE")
 							|| txtTipoMov.getVlrString().equals("DV")
-							|| txtTipoMov.getVlrString().equals("BN"))
+							|| txtTipoMov.getVlrString().equals("BN")) {
 						emitNota("NF");
-					else if (txtTipoMov.getVlrString().equals("SE"))
+					}
+					else if (txtTipoMov.getVlrString().equals("CP") && "S".equals(cbSeqNfTipoMov.getVlrString())) {
+						emitNota("NF");
+					}
+					else if (txtTipoMov.getVlrString().equals("SE")) {
 						emitNota("NS");
+					}
 					else {
 						Funcoes.mensagemErro(this, "Não existe nota para o tipo de movimento: '" + txtTipoMov.getVlrString() + "'");
 						return;
