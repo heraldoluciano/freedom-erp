@@ -1081,7 +1081,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 						emitNota("NS");
 					}
 					else {
-						Funcoes.mensagemErro(this, "Não existe nota para o tipo de movimento: '" + txtTipoMov.getVlrString() + "'");
+						Funcoes.mensagemErro(this, 
+								"O tipo de movimento utilizado não permite impressão de nota!\n" +
+								"Verifique o cadastro do tipo de movimento.");
 						return;
 					}
 				}
