@@ -58,7 +58,6 @@
 		<defaultValueExpression ><![CDATA["CODITPED"]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT 
-( CASE WHEN 'CODITPED'=$P{ORDERBY} THEN IT.CODITPED ELSE PD.DESCPROD END ) AS ORDEM,
 IT.CODPED,P.DATAPED,P.CODCLI,C.RAZCLI,P.CODVEND,V.NOMEVEND,P.CODPLANOPAG,PG.DESCPLANOPAG,
 P.CODMOEDA,M.SINGMOEDA,P.CODFOR,F.RAZFOR,P.CODTRAN,
 (SELECT T.RAZTRAN FROM RPTRANSP T WHERE T.CODEMP=P.CODEMPTP AND T.CODFILIAL=P.CODFILIALTP AND T.CODTRAN=P.CODTRAN) AS RAZTRAN,
@@ -66,7 +65,7 @@ P.CODMOEDA,M.SINGMOEDA,P.CODFOR,F.RAZFOR,P.CODTRAN,
 (SELECT T.FONETRAN FROM RPTRANSP T WHERE T.CODEMP=P.CODEMPTP AND T.CODFILIAL=P.CODFILIALTP AND T.CODTRAN=P.CODTRAN) AS FONETRAN,
 P.TIPOFRETEPED,P.TIPOREMPED,P.NUMPEDCLI,P.NUMPEDFOR,P.VLRTOTPED,
 P.QTDTOTPED,P.VLRLIQPED,P.VLRIPIPED,P.VLRDESCPED,P.VLRADICPED,P.VLRRECPED,
-P.VLRPAGPED,P.OBSPED,IT.CODITPED,IT.CODPROD,PD.DESCPROD,
+P.VLRPAGPED,P.OBSPED,IT.CODITPED,IT.CODPROD,IT.REFPROD,PD.DESCPROD,
 IT.QTDITPED,IT.PRECOITPED,IT.VLRITPED,IT.VLRLIQITPED,IT.PERCIPIITPED,
 IT.VLRIPIITPED,IT.PERCDESCITPED,IT.VLRDESCITPED,IT.PERCADICITPED,
 IT.VLRADICITPED,IT.PERCRECITPED,IT.VLRRECITPED,IT.PERCPAGITPED,IT.VLRPAGITPED,PD.CUBAGEMPROD
@@ -80,7 +79,7 @@ AND PG.CODEMP=P.CODEMPPG AND PG.CODFILIAL=P.CODFILIALPG AND PG.CODPLANOPAG=P.COD
 AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA
 AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR
 AND PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND PD.CODPROD=IT.CODPROD
-ORDER BY 1]]></queryString>
+ORDER BY DESCPROD]]></queryString>
 
 	<field name="CODPED" class="java.lang.Long"/>
 	<field name="DATAPED" class="java.sql.Date"/>
@@ -113,6 +112,7 @@ ORDER BY 1]]></queryString>
 	<field name="OBSPED" class="java.lang.String"/>
 	<field name="CODITPED" class="java.lang.Short"/>
 	<field name="CODPROD" class="java.lang.Long"/>
+	<field name="REFPROD" class="java.lang.String"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="QTDITPED" class="java.math.BigDecimal"/>
 	<field name="PRECOITPED" class="java.math.BigDecimal"/>
@@ -618,7 +618,7 @@ ORDER BY 1]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="5"
+						x="1"
 						y="90"
 						width="20"
 						height="12"
@@ -635,24 +635,7 @@ ORDER BY 1]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="30"
-						y="90"
-						width="30"
-						height="12"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-17"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[Código]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="65"
+						x="90"
 						y="90"
 						width="150"
 						height="12"
@@ -661,7 +644,7 @@ ORDER BY 1]]></queryString>
 						key="staticText-18"
 						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Descrição do produto]]></text>
@@ -669,7 +652,7 @@ ORDER BY 1]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="220"
+						x="243"
 						y="90"
 						width="40"
 						height="12"
@@ -686,7 +669,7 @@ ORDER BY 1]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="265"
+						x="285"
 						y="90"
 						width="50"
 						height="12"
@@ -703,7 +686,7 @@ ORDER BY 1]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="320"
+						x="337"
 						y="90"
 						width="60"
 						height="12"
@@ -720,7 +703,7 @@ ORDER BY 1]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="385"
+						x="399"
 						y="90"
 						width="40"
 						height="12"
@@ -737,7 +720,7 @@ ORDER BY 1]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="430"
+						x="441"
 						y="90"
 						width="40"
 						height="12"
@@ -754,7 +737,7 @@ ORDER BY 1]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="475"
+						x="483"
 						y="90"
 						width="20"
 						height="12"
@@ -771,7 +754,7 @@ ORDER BY 1]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="500"
+						x="505"
 						y="90"
 						width="30"
 						height="12"
@@ -819,6 +802,23 @@ ORDER BY 1]]></queryString>
 				<textFieldExpression   class="java.lang.String"><![CDATA[($F{DDDTRAN}!=null ? $F{DDDTRAN} : "") 
 + ($F{FONETRAN}!=null?$F{FONETRAN}.substring(0,4) + "-" + $F{FONETRAN}.substring(4):"")]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="23"
+						y="90"
+						width="65"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-37"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Referência]]></text>
+				</staticText>
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -1374,7 +1374,7 @@ ORDER BY 1]]></queryString>
 				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="5"
+						x="1"
 						y="2"
 						width="20"
 						height="12"
@@ -1387,20 +1387,7 @@ ORDER BY 1]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="30"
-						y="2"
-						width="30"
-						height="12"
-						key="textField-20"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODPROD}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="65"
+						x="90"
 						y="2"
 						width="150"
 						height="12"
@@ -1413,7 +1400,7 @@ ORDER BY 1]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="220"
+						x="243"
 						y="2"
 						width="40"
 						height="12"
@@ -1426,7 +1413,7 @@ ORDER BY 1]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="265"
+						x="285"
 						y="2"
 						width="50"
 						height="12"
@@ -1439,7 +1426,7 @@ ORDER BY 1]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="320"
+						x="337"
 						y="2"
 						width="60"
 						height="12"
@@ -1452,7 +1439,7 @@ ORDER BY 1]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="385"
+						x="399"
 						y="2"
 						width="40"
 						height="12"
@@ -1465,7 +1452,7 @@ ORDER BY 1]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="430"
+						x="441"
 						y="2"
 						width="40"
 						height="12"
@@ -1478,7 +1465,7 @@ ORDER BY 1]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="475"
+						x="483"
 						y="2"
 						width="20"
 						height="12"
@@ -1491,7 +1478,7 @@ ORDER BY 1]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="500"
+						x="505"
 						y="2"
 						width="30"
 						height="12"
@@ -1503,6 +1490,19 @@ ORDER BY 1]]></queryString>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{CUBAGEMPROD} != null 
 ? $F{QTDITPED}.multiply( $F{CUBAGEMPROD} )
 : new BigDecimal( 0 )]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="23"
+						y="2"
+						width="65"
+						height="12"
+						key="textField-37"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{REFPROD}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
