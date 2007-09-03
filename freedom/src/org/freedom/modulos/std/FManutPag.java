@@ -1446,7 +1446,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 					}
 					
 					// SE o doccompra estiver em branco getvalor(8) quer dizer que o lançamento foi feito pelo usuário.
-					dl.setValores( sVals, ! "".equals( tabManut.getValor( iLin, 8 ).toString().trim() ) );
+					dl.setValores( sVals, "".equals( tabManut.getValor( iLin, 8 ).toString().trim() ) );
 					dl.setConexao( con );
 					dl.setVisible( true );
 					
