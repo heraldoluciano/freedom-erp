@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,6 +68,8 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 	private JButton btExecuta = new JButton( Icone.novo( "btExecuta.gif" ) );
 
+	private JButton btSelectCompra = new JButton( Icone.novo( "btPesquisa.gif" ) );
+
 	private JButton btExcluir = new JButton( Icone.novo( "btCancelar.gif" ) );
 
 	private JButton btExcluirTudo = new JButton( Icone.novo( "btNada.gif" ) );
@@ -77,7 +80,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 	private ListaCampos lcProduto = new ListaCampos( this );
 
-	private JPanelPad pnCampos = new JPanelPad( 600, 65 );
+	private JPanelPad pnCampos = new JPanelPad( 600, 95 );
 
 	private JPanelPad pnBotoesGrid = new JPanelPad( 35, 200 );
 
@@ -90,10 +93,28 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 		super( true );
 		setTitulo( "Etiquetas de código de barras" );
-		setAtribos( 80, 30, 490, 380 );
+		setAtribos( 80, 30, 520, 380 );
 
 		montaTela();
 		montaListaCampos();
+	}
+
+	private void montaListaCampos() {
+	
+		/***********
+		 * Produto *
+		 ***********/
+	
+		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.produto", ListaCampos.DB_PK, true ) );
+		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProduto.add( new GuardaCampo( txtRefProd, "RefProd", "Ref. produto", ListaCampos.DB_SI, false ) );
+		lcProduto.add( new GuardaCampo( txtCodBarProd, "CodBarProd", "Cód. Barras", ListaCampos.DB_SI, false ) );
+		txtCodProd.setTabelaExterna( lcProduto );
+		txtCodProd.setNomeCampo( "CodProd" );
+		txtCodProd.setFK( true );
+		lcProduto.setReadOnly( true );
+		lcProduto.montaSql( false, "PRODUTO", "EQ" );
+	
 	}
 
 	private void montaTela() {
@@ -105,13 +126,14 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		c.add( pnBotoesGrid, BorderLayout.EAST );
 		c.add( spnGrid );
 
-		pnCampos.adic( new JLabelPad( "Cód. Produto" ), 07, 05, 100, 20 );
-		pnCampos.adic( txtCodProd, 07, 23, 80, 20 );
-		pnCampos.adic( new JLabelPad( "Descrição do produto" ), 93, 05, 200, 20 );
-		pnCampos.adic( txtDescProd, 93, 23, 280, 20 );
-		pnCampos.adic( new JLabelPad( "qtd." ), 375, 05, 30, 20 );
-		pnCampos.adic( txtQtdPod, 375, 23, 30, 20 );
-		pnCampos.adic( btExecuta, 410, 15, 30, 30 );
+		pnCampos.adic( new JLabelPad( "Cód. Produto" ), 07, 10, 100, 20 );
+		pnCampos.adic( txtCodProd, 07, 30, 80, 20 );
+		pnCampos.adic( new JLabelPad( "Descrição do produto" ), 93, 10, 200, 20 );
+		pnCampos.adic( txtDescProd, 93, 30, 280, 20 );
+		pnCampos.adic( new JLabelPad( "qtd." ), 375, 10, 60, 20 );
+		pnCampos.adic( txtQtdPod, 375, 30, 60, 20 );
+		pnCampos.adic( btExecuta, 445, 20, 50, 30 );
+		pnCampos.adic( btSelectCompra, 445, 55, 50, 30 );
 		pnBotoesGrid.adic( btExcluir, 0, 0, 30, 30 );
 		pnBotoesGrid.adic( btExcluirTudo, 0, 30, 30, 30 );
 
@@ -120,43 +142,26 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		tabGrid.adicColuna( "Qtd" );
 
 		tabGrid.setTamColuna( 60, EProduto.CODPROD.ordinal() );
-		tabGrid.setTamColuna( 300, EProduto.DESCPROD.ordinal() );
+		tabGrid.setTamColuna( 330, EProduto.DESCPROD.ordinal() );
 		tabGrid.setTamColuna( 60, EProduto.QTDPROD.ordinal() );
 
 		lcProduto.addCarregaListener( this );
+		
 		btExecuta.addActionListener( this );
+		btSelectCompra.addActionListener( this );
 		btExcluir.addActionListener( this );
 		btExcluirTudo.addActionListener( this );
 		txtQtdPod.addKeyListener( this );
 
 		btExecuta.setToolTipText( "Executar" );
+		btSelectCompra.setToolTipText( "Selecionar produtos da compra" );
 		btExcluir.setToolTipText( "Ecluir" );
 		btExcluirTudo.setToolTipText( "Excluir tudo" );
 
 	}
 
-	private void montaListaCampos() {
-
-		/***********
-		 * Produto *
-		 ***********/
-
-		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.produto", ListaCampos.DB_PK, true ) );
-		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		lcProduto.add( new GuardaCampo( txtRefProd, "RefProd", "Ref. produto", ListaCampos.DB_SI, false ) );
-		lcProduto.add( new GuardaCampo( txtCodBarProd, "CodBarProd", "Cód. Barras", ListaCampos.DB_SI, false ) );
-		txtCodProd.setTabelaExterna( lcProduto );
-		txtCodProd.setNomeCampo( "CodProd" );
-		txtCodProd.setFK( true );
-		lcProduto.setReadOnly( true );
-		lcProduto.montaSql( false, "PRODUTO", "EQ" );
-
-	}
-
-	private void adicLinha() {
-
-		int qtd = txtQtdPod.getVlrInteger().intValue();
-		int codprod = txtCodProd.getVlrInteger().intValue();
+	private void adicLinha( BigDecimal qtd, int codprod, String descprod ) {
+		
 		int pos = -1;
 
 		if ( codprod == 0 ) {
@@ -170,7 +175,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 			if ( codprod == ( (Integer) tabGrid.getValor( i, EProduto.CODPROD.ordinal() ) ).intValue() ) {
 				pos = i;
-				qtd += (Integer) tabGrid.getValor( i, EProduto.QTDPROD.ordinal() );
+				qtd = qtd.add( (BigDecimal) tabGrid.getValor( i, EProduto.QTDPROD.ordinal() ) );
 				break;
 			}
 		}
@@ -182,7 +187,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		}
 
 		tabGrid.setValor( codprod, pos, EProduto.CODPROD.ordinal() );
-		tabGrid.setValor( txtDescProd.getVlrString(), pos, EProduto.DESCPROD.ordinal() );
+		tabGrid.setValor( descprod, pos, EProduto.DESCPROD.ordinal() );
 		tabGrid.setValor( qtd, pos, EProduto.QTDPROD.ordinal() );
 
 	}
@@ -204,13 +209,63 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		tabGrid.limpa();
 	}
 	
+	private void selectCompra() {
+		
+		DLEtiqCompra dl = new DLEtiqCompra( this );
+		dl.setConexao( con );
+		
+		dl.setVisible( true );
+		
+		int codcompra = dl.getCompra();
+		
+		if ( dl.OK && codcompra > 0 ) {
+			
+			// fazer select dos itens da compra e colocar na tabela com o 
+			// adiclinha( quantidade, codigo do produto, descrição do produto).
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append( "SELECT IT.CODPROD, IT.QTDITCOMPRA, PD.DESCPROD " );
+			sql.append( "FROM CPITCOMPRA IT, EQPRODUTO PD, CPCOMPRA C " );
+			sql.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=? AND " );
+			sql.append( "IT.CODEMP=C.CODEMP AND IT.CODFILIAL=C.CODFILIAL AND IT.CODCOMPRA=C.CODCOMPRA AND " );
+			sql.append( "PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND PD.CODPROD=IT.CODPROD " );
+			
+			try {
+				
+				PreparedStatement ps = con.prepareStatement( sql.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
+				ps.setInt( 3, codcompra );
+				
+				ResultSet rs = ps.executeQuery();
+				
+				while ( rs.next() ) {
+					
+					adicLinha( rs.getBigDecimal( "QTDITCOMPRA" ).setScale( 0, BigDecimal.ROUND_HALF_UP ), rs.getInt( "CODPROD" ), rs.getString( "DESCPROD" ) );
+				}
+				
+				rs.close();
+				ps.close();
+				
+				if ( ! con.getAutoCommit() ) {
+					con.commit();
+				}
+			} catch ( SQLException e ) {
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro ao carregar itens da compra!\n" + e.getMessage(), true, con, e );
+			}
+		}
+		
+		dl.dispose();
+	}
+	
 	private int getNrConexao() {
 		
 		int conexao = -1;
 		
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append( "SELEC CURRENT_CONNECTION FROM SGEMPRESA E WHERE C.CODEMP=?" );
+		sql.append( "SELECT CURRENT_CONNECTION FROM SGEMPRESA E WHERE E.CODEMP=?" );
 		
 		try {
 			
@@ -220,7 +275,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 			ResultSet rs = ps.executeQuery();
 			
 			if ( rs.next() ) {
-				conexao = rs.getInt( "NRCONEXAO" );
+				conexao = rs.getInt( "CURRENT_CONNECTION" );
 			}
 			
 			rs.close();
@@ -259,7 +314,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 				con.commit();
 			}
 			
-			if ( exec > 0 ) {
+			if ( exec > -1 ) {
 				retorno = true;
 			}
 			
@@ -294,7 +349,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 			for ( int i = 0; i < tabGrid.getNumLinhas(); i++ ) {
 
 				codprod = (Integer) tabGrid.getValor( i, EProduto.CODPROD.ordinal() );
-				quantidade = (Integer) tabGrid.getValor( i, EProduto.QTDPROD.ordinal() );
+				quantidade = ( (BigDecimal) tabGrid.getValor( i, EProduto.QTDPROD.ordinal() ) ).intValue();
 				
 				for ( int j = 0; j < quantidade ; j++ ) {
 					
@@ -380,13 +435,16 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		super.actionPerformed( evt );
 
 		if ( evt.getSource() == btExecuta ) {
-			adicLinha();
+			adicLinha( new BigDecimal( txtQtdPod.getVlrString() ), txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString() );
 			txtCodProd.requestFocus();
 		}
-		if ( evt.getSource() == btExcluir ) {
+		else if ( evt.getSource() == btSelectCompra ) {
+			selectCompra();
+		}
+		else if ( evt.getSource() == btExcluir ) {
 			excluiLinha();
 		}
-		if ( evt.getSource() == btExcluirTudo ) {
+		else if ( evt.getSource() == btExcluirTudo ) {
 			excluiTudo();
 			txtCodProd.requestFocus();
 		}
