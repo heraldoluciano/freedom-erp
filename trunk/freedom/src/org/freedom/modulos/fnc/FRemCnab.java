@@ -195,7 +195,7 @@ public class FRemCnab extends FRemFBN {
 		return carteira;
 	}
 	
-	private RegHeader getRegHeader() {
+	private RegHeader getRegHeader() throws ExceptionCnab {
 		
 		RegHeader reg = cnabutil.new RegHeader();
 		
@@ -222,13 +222,13 @@ public class FRemCnab extends FRemFBN {
 		reg.setUsoBanco( null );
 		reg.setUsoEmp( null );
 		reg.setUsoVans( null );
-		reg.setTipoServico( "02" );//cobrança sem papel.
+		reg.setTipoServico( null );
 		reg.setOcorrencias( null );
 		
 		return reg;
 	}
 	
-	private Reg1 getReg1() {
+	private Reg1 getReg1() throws ExceptionCnab {
 		
 		Reg1 reg = cnabutil.new Reg1();
 		
@@ -254,7 +254,7 @@ public class FRemCnab extends FRemFBN {
 		return reg;
 	}
 	
-	private Reg3P getReg3P( final StuffRec rec ) {
+	private Reg3P getReg3P( final StuffRec rec ) throws ExceptionCnab {
 		
 		Reg3P reg = cnabutil.new Reg3P();
 
@@ -280,15 +280,15 @@ public class FRemCnab extends FRemFBN {
 		reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );//**
 		reg.setIdentDist( (Integer) prefs.get( EPrefs.IDENTDISTBOL ) );//**
 		reg.setDocCobranca( (String) rec.getArgs()[ EColrec.DOCREC.ordinal() ] );
-		reg.setDtVencTitulo( Funcoes.strDateToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
+		reg.setDtVencTitulo( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );		
 		reg.setAgenciaCob( null );
 		reg.setDigAgenciaCob( null );
-		reg.setEspecieTit( (Integer) prefs.get( EPrefs.ESPECTIT ) );//**/
+ 		reg.setEspecieTit( (Integer) prefs.get( EPrefs.ESPECTIT ) );//**/
 		reg.setAceite( 'A' );
-		reg.setDtEmitTit( Funcoes.strDateToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
+		reg.setDtEmitTit( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
 		reg.setCodJuros( (Integer) prefs.get( EPrefs.CODJUROS ) );//**
-		reg.setDtJuros( Funcoes.strDateToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
+		reg.setDtJuros( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		reg.setVlrJurosTaxa( (BigDecimal) prefs.get( EPrefs.VLRPERCJUROS ) ); //**		
 		reg.setCodDesc( (Integer) prefs.get( EPrefs.CODDESC ) );//**
 		reg.setDtDesc( null );
@@ -306,7 +306,7 @@ public class FRemCnab extends FRemFBN {
 		return reg;
 	}
 	
-	private Reg3Q getReg3Q( final StuffRec rec ) {
+	private Reg3Q getReg3Q( final StuffRec rec ) throws ExceptionCnab {
 		
 		Reg3Q reg = cnabutil.new Reg3Q();
 
@@ -332,20 +332,32 @@ public class FRemCnab extends FRemFBN {
 		
 		reg.setRazCli( dadosCliente[ DadosCliente.RAZCLI.ordinal() ] );
 		reg.setEndCli( dadosCliente[ DadosCliente.ENDCLI.ordinal() ] );
-		reg.setBairCli( dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] );
+		//reg.setBairCli( dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] );
 		reg.setCepCli( dadosCliente[ DadosCliente.CEPCLI.ordinal() ] );
 		reg.setCidCli( dadosCliente[ DadosCliente.CIDCLI.ordinal() ] );
-		reg.setUfCli( dadosCliente[ DadosCliente.UFCLI.ordinal() ] );		
-		reg.setTipoInscAva( 2 );
-		reg.setCpfCnpjAva( "0" );		
-		reg.setRazAva( null );
+		reg.setUfCli( dadosCliente[ DadosCliente.UFCLI.ordinal() ] );	
+		
+		reg.setTipoInscAva( Integer.parseInt( dadosCliente[ DadosCliente.CNPJCPF.ordinal()] ) );
+		
+		if ( 2 == reg.getTipoInscAva() ) {
+			reg.setCpfCnpjAva( dadosCliente[ DadosCliente.CNPJ.ordinal() ] );
+		}
+		else if ( 1 == reg.getTipoInscAva() ) {
+			reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CPF.ordinal() ] );
+		}
+		else {
+			reg.setTipoInscCli( 0 );
+			reg.setCpfCnpjCli( "0" );
+		}
+				
+		reg.setRazAva( dadosCliente[ DadosCliente.RAZCLI.ordinal() ] );
 		//reg.setCodCompensacao( 0 );
 		//reg.setNossoNumero( null );
 		
 		return reg;
 	}
 	
-	private Reg3R getReg3R( final StuffRec rec ) {
+	private Reg3R getReg3R( final StuffRec rec ) throws ExceptionCnab {
 		
 		Reg3R reg = cnabutil.new Reg3R();
 
@@ -376,7 +388,7 @@ public class FRemCnab extends FRemFBN {
 		return reg;
 	}
 	
-	private Reg3S getReg3S( final StuffRec rec ) {
+	private Reg3S getReg3S( final StuffRec rec ) throws ExceptionCnab {
 		
 		Reg3S reg = cnabutil.new Reg3S();
 
@@ -483,7 +495,7 @@ public class FRemCnab extends FRemFBN {
 	 *	return reg;
 	 *}
 	 */
-	private Reg5 getReg5() {
+	private Reg5 getReg5() throws ExceptionCnab {
 		
 		Reg5 reg = cnabutil.new Reg5();
 		
@@ -503,13 +515,14 @@ public class FRemCnab extends FRemFBN {
 		return reg;
 	}
 	
-	private RegTrailer getRegTrailer() {	
+	private RegTrailer getRegTrailer() throws ExceptionCnab {	
 		
 		RegTrailer reg = cnabutil.new RegTrailer();
 		
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setQtdLotes( loteServico );
 		reg.setQtdRegistros( seqLoteServico + 2 );
+		reg.setQtdConsilacoes( 0 );
 		
 		return reg;
 	}
