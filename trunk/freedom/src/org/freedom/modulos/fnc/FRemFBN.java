@@ -366,7 +366,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			sql.append( "I.IDENTAMBCLI, I.IDENTAMBBCO, I.NROSEQ, " );
 			sql.append( "I.NUMCONTA, C.AGENCIACONTA, E.CNPJFILIAL, " );
 			sql.append( "FORCADTIT, TIPODOC, IDENTEMITBOL , IDENTDISTBOL, ESPECTIT, CODJUROS, VLRPERCJUROS, " );
-			sql.append( "CODDESC, VLRPERCDESC, CODPROT, DIASPROT, CODBAIXADEV, DIASBAIXADEV " );
+			sql.append( "CODDESC, VLRPERCDESC, CODPROT, DIASPROT, CODBAIXADEV, DIASBAIXADEV, I.MDECOB " );
 			sql.append( "FROM SGPREFERE6 P, SGFILIAL E, " );			
 			sql.append( "SGITPREFERE6 I LEFT OUTER JOIN FNCONTA C ON " );
 			sql.append( "C.CODEMP=I.CODEMPCA AND C.CODFILIAL=I.CODFILIALCA AND C.NUMCONTA=I.NUMCONTA " );			
@@ -434,6 +434,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				prefs.put( EPrefs.DIASPROT, rs.getInt( EPrefs.DIASPROT.toString() ) );
 				prefs.put( EPrefs.CODBAIXADEV, rs.getInt( EPrefs.CODBAIXADEV.toString() ) );
 				prefs.put( EPrefs.DIASBAIXADEV, rs.getInt( EPrefs.DIASBAIXADEV.toString() ) );
+				prefs.put( EPrefs.MDECOB, rs.getString( "MDECOB" ) );
 				
 				retorno = true;
 			}

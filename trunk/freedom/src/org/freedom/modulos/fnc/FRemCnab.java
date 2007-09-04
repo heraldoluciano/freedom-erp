@@ -41,7 +41,6 @@ import java.util.HashSet;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.ListaCampos;
-import org.freedom.funcoes.Boleto;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.fnc.CnabUtil.Reg;
 import org.freedom.modulos.fnc.CnabUtil.Reg1;
@@ -118,44 +117,7 @@ public class FRemCnab extends FRemFBN {
 		
 		return args;
 	}
-	
-	private String getModalidade( final int codbanco ) {
 		
-		String modalidade = "";
-		
-		try {
-			
-			StringBuilder sql = new StringBuilder();
-			sql.append( "SELECT MB.MDECOB " );
-			sql.append( "FROM FNMODBOLETO MB, FNBANCO B " );
-			sql.append( "WHERE MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL AND " );
-			sql.append( "B.CODEMP=? AND B.CODFILIAL=? AND B.CODBANCO=?" );
-			
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNMODBOLETO" ) );
-			ps.setInt( 3, codbanco );
-			
-			ResultSet rs = ps.executeQuery();
-			
-			if ( rs.next() ) {
-				
-				modalidade = rs.getString( "MDECOB" );
-			}
-			
-			rs.close();
-			ps.close();
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
-		}
-		catch ( SQLException e ) {
-			e.printStackTrace();
-		}
-		
-		return modalidade;
-	}
-	
 	private int getCarteiraCobranca( final int codrec, final int nparc ) {
 		
 		int carteira = 0;
@@ -267,11 +229,12 @@ public class FRemCnab extends FRemFBN {
 		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
 		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
 		reg.setDigAgConta( null );
-		reg.setIdentTitulo( Boleto.geraNossoNumero( 
-				getModalidade( txtCodBanco.getVlrInteger() ), 
+		/*reg.setIdentTitulo( Boleto.geraNossoNumero( 
+				(String)prefs.get( EPrefs.MDECOB ), 
 				(String)prefs.get( EPrefs.CODCONV ), 
 				Long.parseLong( rec.getCodrec().toString() ), 
-				Long.parseLong( rec.getNParcitrec().toString() ) ) );
+				Long.parseLong( rec.getNParcitrec().toString() ) ) );*/
+		reg.setIdentTitulo( (String)prefs.get( EPrefs.CODCONV ) );
 		reg.setCodCarteira( getCarteiraCobranca( 
 				rec.getCodrec(), 
 				rec.getNParcitrec() ) );
