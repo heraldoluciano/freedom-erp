@@ -131,6 +131,8 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	
 	private final JTextFieldFK txtDescContaSiacc = new JTextFieldFK(JTextFieldFK.TP_STRING, 50, 0);
 	
+	private final JTextFieldPad txtModalidadeCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
 	private JRadioGroup rgIdentAmbCliCnab;
 	
 	private JRadioGroup rgIdentAmbBcoCnab;
@@ -184,11 +186,12 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	private static final String TP_SIACC = "01";
 	
 	private static final String TP_CNAB = "02";
+	
 
 	public FPrefereFBB() {
 
 		setTitulo( "Preferências Gerais" );
-		setAtribos( 50, 50, 400, 520 );
+		setAtribos( 50, 50, 405, 520 );
 		
 		montaRadioGrupos();
 		montaComboBoxs();
@@ -492,18 +495,15 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		adicCampo( txtCodConvSiacc, 7, 70, 140, 20, "CodConv", "Convênio", ListaCampos.DB_SI, false );
 		adicCampo( txtVersaoSiacc, 150, 70, 50, 20, "VerLayout", "Versão", ListaCampos.DB_SI, false );
 		adicCampo( txtIdentServSiacc, 203, 70, 100, 20, "IdentServ", "Ident. Serviço", ListaCampos.DB_SI, false );
-		adicCampo( txtNroSeqSiacc, 306, 70, 63, 20, "NroSeq", "Sequência", ListaCampos.DB_SI, false );
-		
+		adicCampo( txtNroSeqSiacc, 306, 70, 63, 20, "NroSeq", "Sequência", ListaCampos.DB_SI, false );		
 		adicCampo( txtNumContaSiacc, 7, 110, 80, 20, "NumConta", "Nº da conta", ListaCampos.DB_FK, true );
 		adicDescFK( txtAgenciaSiacc, 90, 110, 57, 20, "AgenciaConta", "Agência" );
 		adicDescFK( txtDescContaSiacc, 150, 110, 220, 20, "DescConta", "Descrição da conta" );
-		adicCampo( txtContaComprSiacc, 7, 150, 143, 20, "ContaCompr", "Conta Compromisso", ListaCampos.DB_SI, false );
-		
+		adicCampo( txtContaComprSiacc, 7, 150, 140, 20, "ContaCompr", "Conta Compromisso", ListaCampos.DB_SI, false );		
 		adicDB( rgIdentAmbCliSiacc, 7, 190, 178, 60, "IdentAmbCli", "Ambiente do cliente", false );
 		adicDB( rgIdentAmbBcoSiacc, 193, 190, 178, 60, "IdentAmbBco", "Ambiente do banco", false );
 		setListaCampos( false, "ITPREFERE6", "SG" );
-		lcSiacc.setWhereAdic( " TIPOFEBRABAN='01' " );
-		
+		lcSiacc.setWhereAdic( " TIPOFEBRABAN='01' " );		
 				
 		panelNavSiacc.setPreferredSize( new Dimension( 300, 30 ) );
 		panelNavSiacc.setBorder( BorderFactory.createEtchedBorder() );
@@ -543,14 +543,12 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		adicCampo( txtVersaoCnab, 150, 70, 50, 20, "VerLayout", "Versão", ListaCampos.DB_SI, false );
 		adicCampo( txtIdentServCnab, 203, 70, 100, 20, "IdentServ", "Ident. Serviço", ListaCampos.DB_SI, false );
 		adicCampo( txtNroSeqCnab, 306, 70, 63, 20, "NroSeq", "Sequência", ListaCampos.DB_SI, false );
-		//adicCampo( txtContaComprCnab, 7, 110, 240, 20, "ContaCompr", "Conta Compromisso", ListaCampos.DB_SI, false );
-		
 		adicCampo( txtNumContaCnab, 7, 110, 80, 20, "NumConta", "Nº da conta", ListaCampos.DB_FK, true );
 		adicDescFK( txtAgenciaCnab, 90, 110, 57, 20, "AgenciaConta", "Agência" );
 		adicDescFK( txtDescContaCnab, 150, 110, 220, 20, "DescConta", "Descrição da conta" );
-		adicCampo( txtContaComprCnab, 7, 150, 143, 20, "ContaCompr", "Conta Compromisso", ListaCampos.DB_SI, false );
+		adicCampo( txtContaComprCnab, 7, 150, 140, 20, "ContaCompr", "Conta Compromisso", ListaCampos.DB_SI, false );
+		adicCampo( txtModalidadeCnab, 150, 150, 100, 20, "MdeCob", "Modalidade", ListaCampos.DB_SI, false );
 		
-		//adicCampo( txtNroSeqCnab, 250, 110, 120, 20, "NroSeq", "Sequência", ListaCampos.DB_SI, false );
 		adicDB( rgIdentAmbCliCnab, 7, 190, 178, 60, "IdentAmbCli", "Ambiente do cliente", false );
 		adicDB( rgIdentAmbBcoCnab, 193, 190, 178, 60, "IdentAmbBco", "Ambiente do banco", false );
 		
