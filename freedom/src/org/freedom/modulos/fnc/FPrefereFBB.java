@@ -358,12 +358,14 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 
 		Vector<String> vLabs7 = new Vector<String>();
 		Vector<Integer> vVals7 = new Vector<Integer>();
+		vLabs7.addElement( "Sem desconto" );
 		vLabs7.addElement( "Valor fixo até a data informada" );
 		vLabs7.addElement( "Percentual até a data informada" );
 		vLabs7.addElement( "Valor por antecipação por dia corrido" );
 		vLabs7.addElement( "Valor por antecipação por dia util" );
 		vLabs7.addElement( "Percentual sobre o valor nominal dia corrido" );
 		vLabs7.addElement( "Percentual sobre o valor nominal dia util" );
+		vVals7.addElement( 0 );
 		vVals7.addElement( 1 );
 		vVals7.addElement( 2 );
 		vVals7.addElement( 3 );
