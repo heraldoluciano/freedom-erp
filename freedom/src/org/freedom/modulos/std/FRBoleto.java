@@ -547,9 +547,9 @@ public class FRBoleto extends FRelatorio {
 
 	}
 	
-	private Integer getCodrec( final Integer codvenda, final String tipovenda ) {
+	private int getCodrec( final int codvenda, final String tipovenda ) {
 		
-		Integer codrec = null;
+		int codrec = 0;
 		
 		try {
 			
@@ -617,12 +617,13 @@ public class FRBoleto extends FRelatorio {
 		}
 	}
 	
-	private boolean atualizaParcela( final Integer codrec, final Integer codparc, final String codbanco, final String codcartcob ) {
+	private boolean atualizaParcela( final int codrec, final Integer codparc, final String codbanco, final String codcartcob ) {
 		
 		boolean ret = true;
 		boolean bcart = false;
 		int iparam = 1;
-		if ( bAtlParcela && ( codbanco != null && codbanco.trim().length() > 0 ) ) {
+		
+		if ( bAtlParcela && ( codbanco != null && codbanco.trim().length() > 0 ) && codrec > 0 ) {
 			
 			try {
 				
@@ -631,61 +632,64 @@ public class FRBoleto extends FRelatorio {
 				StringBuilder sql = new StringBuilder();
 
 				sql.append( "UPDATE FNRECEBER SET CODEMPBO=?, CODFILIALBO=?, CODBANCO=? " );
-				if (bcart) sql.append(", CODEMPCB=?, CODFILIALCB=?,  CODCARTCOB=? ");				
-				
+				if ( bcart ) {
+					sql.append( ", CODEMPCB=?, CODFILIALCB=?,  CODCARTCOB=? " );
+				}
 				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=?" );
-				
+
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
 				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNBANCO" ) );
 				ps.setString( iparam++, codbanco );
-				
-				if (bcart) {					
+
+				if ( bcart ) {
 					ps.setInt( iparam++, Aplicativo.iCodEmp );
 					ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNCARTCOB" ) );
-					ps.setString( iparam++, codcartcob );	
+					ps.setString( iparam++, codcartcob );
 				}
-				
+
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
 				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 				ps.setInt( iparam++, codrec );
 				ps.executeUpdate();
 				ps.close();
-				
-				if ( ! con.getAutoCommit() ) {
+
+				if ( !con.getAutoCommit() ) {
 					con.commit();
-				}	
-				
+				}
+
 				sql = new StringBuilder();
 
 				sql.append( "UPDATE FNITRECEBER SET CODEMPBO=?, CODFILIALBO=?, CODBANCO=? " );
-				if (bcart) sql.append(", CODEMPCB=?, CODFILIALCB=?,  CODCARTCOB=? ");		
+				if ( bcart ) {
+					sql.append( ", CODEMPCB=?, CODFILIALCB=?,  CODCARTCOB=? " );
+				}
 				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? " );
 				if ( codparc != null && codparc > 0 ) {
-				  sql.append("AND NPARCITREC=? " );
+					sql.append( "AND NPARCITREC=? " );
 				}
-				
+
 				iparam = 1;
-				
+
 				ps = con.prepareStatement( sql.toString() );
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
 				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNBANCO" ) );
 				ps.setString( iparam++, codbanco );
-				
-				if (bcart) {					
+
+				if ( bcart ) {
 					ps.setInt( iparam++, Aplicativo.iCodEmp );
 					ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNCARTCOB" ) );
-					ps.setString( iparam++, codcartcob );	
-				}								
-				
+					ps.setString( iparam++, codcartcob );
+				}
+
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
 				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-				ps.setInt( iparam++, codrec );														
-				
+				ps.setInt( iparam++, codrec );
+
 				if ( codparc != null && codparc > 0 ) {
 					ps.setInt( iparam++, codparc );
 				}
-				ps.executeUpdate();					
+				ps.executeUpdate();
 				ps.close();
 				
 				if ( ! con.getAutoCommit() ) {

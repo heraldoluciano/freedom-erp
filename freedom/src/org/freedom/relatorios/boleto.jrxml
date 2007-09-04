@@ -29,9 +29,6 @@
 	<parameter name="LOCALPAG" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["QUALQUER BANCO ATÉ O VENCIMENTO"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="INSTRUCOES" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["JUROS DE MORA DE 5.0% MENSAL(0,08 AO DIA)"]]></defaultValueExpression>
-	</parameter>
 	<parameter name="AGENCIA" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["0001-1"]]></defaultValueExpression>
 	</parameter>
@@ -89,7 +86,7 @@ WHERE IV2.CODEMP=IV.CODEMP AND IV2.CODFILIAL=IV.CODFILIAL AND IV2.TIPOVENDA=IV.T
 ITR.STATUSITREC IN ('R1','RL') AND 
 IV2.CODVENDA=IV.CODVENDA AND IV2.CODNAT IS NOT NULL ) AND N.CODEMP=IV.CODEMPNT AND 
 N.CODFILIAL=IV.CODFILIALNT AND N.CODNAT=IV.CODNAT AND  MB.CODEMP=$P{CODEMP} AND MB.CODFILIAL=$P{CODFILIAL} AND 
-MB.CODMODBOL=1 AND V.DTEMITVENDA BETWEEN '01.08.2007' AND '30.08.2007']]></queryString>
+MB.CODMODBOL=1 AND V.DTEMITVENDA BETWEEN '01.01.2007' AND '30.08.2007']]></queryString>
 
 	<field name="PARCS" class="java.lang.Long"/>
 	<field name="DTVENCITREC" class="java.sql.Date"/>
@@ -982,7 +979,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{INSTRUCOES}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{INSTPAGMODBOL}]]></textFieldExpression>
 				</textField>
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
