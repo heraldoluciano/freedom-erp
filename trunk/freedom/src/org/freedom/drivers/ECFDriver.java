@@ -31,7 +31,7 @@ public class ECFDriver {
 			bema = new JBemaFI32();
 		}
 		else {
-			ecf = new ECFBematech( Serial.COM1 );
+			ecf = new ECFBematech( AplicativoPDV.getPortaECF() ); 
 		}
 
 	}
