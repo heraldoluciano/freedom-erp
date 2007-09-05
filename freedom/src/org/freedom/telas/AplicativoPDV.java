@@ -39,6 +39,8 @@ public class AplicativoPDV extends AplicativoPD {
 	
 	private static boolean ecfDriver = false;
 	
+	private static String portaECF = "COM1" ;
+	
 	private static String pluginVenda;
 
 
@@ -53,6 +55,16 @@ public class AplicativoPDV extends AplicativoPD {
 			
 		}	
 	    
+	    setPortaECF( getParameter( "portaecf") );
+	    
+	}
+	
+	public static void setPortaECF( String porta ) {
+		portaECF = porta;
+	}
+	
+	public static String getPortaECF() {
+		return portaECF;
 	}
 	
 	public static boolean usaEcfDriver() {		
@@ -88,7 +100,7 @@ public class AplicativoPDV extends AplicativoPD {
 			ps.setInt( 3, iNumEst );
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
-				iCodCaixa = rs.getInt( "CODCAIXA" );
+				iCodCaixa = rs.getInt( "CODCAIXA" ); 
 			}
 			
 			rs.close();
