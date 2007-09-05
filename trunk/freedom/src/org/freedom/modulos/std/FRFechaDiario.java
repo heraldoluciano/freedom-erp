@@ -7,12 +7,14 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Vector;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -36,17 +38,30 @@ public class FRFechaDiario extends FRelatorio{
 
 	private ListaCampos lcCaixa = new ListaCampos( this );
 	
+	private JRadioGroup rgTipo = null;
+	
 	public FRFechaDiario(){
 		
 		setTitulo( "Fechamento diário" );
-		setAtribos( 80, 80, 360, 200 );
+		setAtribos( 80, 80, 360, 220 );
 		
 		montaTela();
 		montaListaCampos();
+	
 	}
 	
 	public void montaTela(){
 		
+		Vector vLabs = new Vector();
+		Vector vVals = new Vector();
+
+		vLabs.addElement( "Resumido" );
+		vLabs.addElement( "Detalhado" );
+		vVals.addElement( "R" );
+		vVals.addElement( "D" );
+		
+		rgTipo = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgTipo.setVlrString( "R" );
 		
 		adic( new JLabelPad( "Nº caixa" ), 7, 7, 80, 20 );		
 		adic( txtCodCaixa, 7, 27, 70, 20 );
@@ -58,6 +73,8 @@ public class FRFechaDiario extends FRelatorio{
 
 		adic( new JLabelPad("Usuário"), 120, 47, 100, 20);
 		adic( txtIdUsu, 120, 67, 100, 20);
+		
+		adic( rgTipo, 7, 100, 215, 30 );
 		
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) );
@@ -96,6 +113,7 @@ public class FRFechaDiario extends FRelatorio{
 		int codcaixa = txtCodCaixa.getVlrInteger().intValue();
 		int param = 1;
 		String idusu = txtIdUsu.getVlrString().trim().toUpperCase();
+		String sRelatorio = "";
 		
 		try {
 		
@@ -169,7 +187,13 @@ public class FRFechaDiario extends FRelatorio{
 			hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ));
 			hParam.put( "COMREF", bComRef ? "S" : "N" );
 
-			FPrinterJob dlGr = new FPrinterJob( "relatorios/FechaDiario.jasper", "Fechamento Diário", sCab.toString(), rs, hParam, this );
+			if("R".equals( rgTipo.getVlrString())){
+				sRelatorio = "relatorios/FechaDiario.jasper";
+			}else{
+				sRelatorio = "relatorios/FechaDiarioDet.jasper";
+			}
+			
+			FPrinterJob dlGr = new FPrinterJob( sRelatorio, "Fechamento Diário", sCab.toString(), rs, hParam, this );
 
 			if ( bVisualizar ) {
 				dlGr.setVisible( true );
