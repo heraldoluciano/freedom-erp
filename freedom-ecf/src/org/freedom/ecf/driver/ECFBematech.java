@@ -3,6 +3,8 @@ package org.freedom.ecf.driver;
 
 import java.util.Date;
 
+import org.freedom.ecf.com.Serial;
+
 /**
  * Classe implementa metodos de acesso a comandos de impressão <BR>
  * Projeto: freedom-ecf <BR>
@@ -44,6 +46,20 @@ public class ECFBematech extends AbstractECFDriver {
 		ativaPorta( com );
 	}
 
+	/**
+	 * Construtor da classe ECFBematech. <BR>
+	 * Inicia a construção da classe chamando o construtor padrão da classe super <BR>
+	 * e chama o metodo ativaPorta(int). <BR>
+	 * 
+	 * @param port
+	 *            parametro para ativação da porta serial.<BR>
+	 */
+	public ECFBematech( final String port ) {
+
+		super();
+		ativaPorta( Serial.convPorta(port) );
+	}
+	
 	/**
 	 * Prepara o comando conforme o protocolo de comunicação com a impressora. <BR>
 	 * O protocolo de comunicação com a impressora é estruturado <BR>
