@@ -57,6 +57,16 @@ public class Serial {
 	public static final int COM4 = 3;
 
 	public static final int COM5 = 4;
+	
+	public static final int COM_USB1 = 10;
+	
+	public static final int COM_USB2 = 11;
+	
+	public static final int COM_USB3 = 12;
+	
+	public static final int COM_USB4 = 13;
+
+	public static final int COM_USB5 = 14;
 
 	public static final int OS_NONE = -1;
 
@@ -153,15 +163,55 @@ public class Serial {
 
 	}
 
-	public String convPorta( final int com ) {
+	public static int convPorta( String com) {
+		int porta = COM1;
+		if (com!=null) {
+			if (com.equalsIgnoreCase( "COM1" )) {
+				porta = COM1;
+			}
+			else if (com.equalsIgnoreCase("COM2")) {
+				porta = COM2;
+			}
+			else if (com.equalsIgnoreCase("COM3")) {
+				porta = COM3;
+			}
+			else if (com.equalsIgnoreCase("COM4")) {
+				porta = COM4;
+			}
+			else if (com.equalsIgnoreCase("COM5")) {
+				porta = COM5;
+			}
+			else if (com.equalsIgnoreCase( "COM_USB1" )) {
+				porta = COM_USB1;
+			}
+			else if (com.equalsIgnoreCase("COM_USB2")) {
+				porta = COM_USB2;
+			}
+			else if (com.equalsIgnoreCase("COM_USB3")) {
+				porta = COM_USB3;
+			}
+			else if (com.equalsIgnoreCase("COM_USB4")) {
+				porta = COM_USB4;
+			}
+			else if (com.equalsIgnoreCase("COM_USB5")) {
+				porta = COM_USB5;
+			}
+		}
+		return porta;
+	}
+	
+	public static String convPorta( final int com ) {
 
 		final StringBuffer porta = new StringBuffer();
 
 		if ( getSistema() == OS_WINDOWS ) {
 			porta.append( "COM" );
 			porta.append( com + 1 );
-		}
-		else {
+		} 
+		else if ( com >= COM_USB1 ) {
+			porta.append( "/dev/ttyUSB" );
+			porta.append( com-10 );
+		} else {
 			porta.append( "/dev/ttyS" );
 			porta.append( com );
 		}
