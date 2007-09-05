@@ -308,20 +308,17 @@ public class NF049 extends Layout {
 					sizeObs = vObsVenda.size() > sizeObs ? vObsVenda.size() : sizeObs;
 
 					int aux = 0;
-					for ( int i = 0; i < 7; i++ ) {
-						if ( aux < sizeObs ) {
-							imp.pulaLinha( 2, imp.comprimido() );
-							if ( vObsVenda.size() > 0 && indexObs < vObsVenda.size() ) {
-								imp.say( 20, Funcoes.copy( (String) vObsVenda.elementAt( indexObs++ ), 40 ) );
-							}
+					imp.pulaLinha( 2, imp.comprimido() );
+					for ( int i = 0; i < 4; i++ ) {
+						if ( i<vObsVenda.size() ) {
+							imp.say( 20, Funcoes.copy( (String) vObsVenda.elementAt( i ), 40 ) );
 						}
-						else {
-							imp.pulaLinha( 1, imp.comprimido() );
-						}
+						imp.pulaLinha( 1, imp.comprimido() );
 					}
 
 //					 Fim da observação
 					
+					imp.pulaLinha( 4, imp.comprimido() );
 					imp.say( 105, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					// Imprime canhoto
