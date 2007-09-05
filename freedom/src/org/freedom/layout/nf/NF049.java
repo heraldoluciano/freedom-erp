@@ -126,7 +126,7 @@ public class NF049 extends Layout {
 					imp.pulaLinha( 1, imp.comprimido() );
 
 					if ( nf.getTipoNF() == NF.TPNF_ENTRADA ) {
-						imp.say( 84, "X" );
+						imp.say( 85, "X" );
 					}
 					else {
 						imp.say( 74, "X" );
