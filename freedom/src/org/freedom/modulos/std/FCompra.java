@@ -643,6 +643,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 			if (!con.getAutoCommit())
 				con.commit();
 	
+			
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
 					+ err.getMessage(),true,con,err);
@@ -1303,7 +1304,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		lcFisc.setConexao(cn);
 		lcCompra2.setConexao(cn);
 		lcAlmox.setConexao(cn);
-		montaDetalhe();
 		getPrefere();
+		montaDetalhe();
 	}
 }
