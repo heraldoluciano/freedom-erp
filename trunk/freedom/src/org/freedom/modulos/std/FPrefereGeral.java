@@ -65,6 +65,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private JPanelPad pinGeral = new JPanelPad( 330, 200 );
 
 	private JPanelPad pinPreco = new JPanelPad( 330, 200 );
+	
+	private JPanelPad pinCompra = new JPanelPad( 330, 200 );
 
 	private JPanelPad pinOrc = new JPanelPad( 330, 200 );
 
@@ -87,6 +89,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private JPanelPad pinOpcoesVenda = new JPanelPad();
 
 	private JPanelPad pinOpcoesGeral = new JPanelPad();
+	
+	private JPanelPad pinCompras = new JPanelPad();
 
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
@@ -201,6 +205,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private final String opcoes = "    Opções";
 
 	private JLabelPad lbVendOpcoes = new JLabelPad( opcoes );
+	
+	private JLabelPad lbCompOpcoes = new JLabelPad( opcoes );
 
 	private JLabelPad lbGeralOpcoes = new JLabelPad( opcoes );
 
@@ -275,6 +281,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private JCheckBoxPad cbInscEstForObrig = null;
 
 	private JCheckBoxPad cbEstLotNeg = null;
+	
+	private JCheckBoxPad cbUsaRefCompra = null;
 
 	private JCheckBoxPad cbEstNeg = null;
 
@@ -400,7 +408,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 		super();
 		setTitulo( "Preferências Gerais" );
-		setAtribos( 30, 40, 770, 460 );
+		setAtribos( 30, 40, 850, 480 );
 
 		lcCampos.setMensInserir( false );
 		lcPrefere3.setMensInserir( false );
@@ -669,6 +677,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbConsIECli.setVlrString( "S" );
 		cbConsIEFor = new JCheckBoxPad( "Validar IE do fornecedor?", "S", "N" );
 		cbConsIEFor.setVlrString( "S" );
+		cbUsaRefCompra = new JCheckBoxPad ("Usa referência na compra? ", "S", "N" );
+		cbUsaRefCompra.setVlrString( "N" );
 		
 
 		Vector<String> vLabs = new Vector<String>();
@@ -783,32 +793,43 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adic( lbVendOpcoes, 357, 5, 70, 20 );
 		adic( pinOpcoesVenda, 348, 15, 380, 340 );
 		setPainel( pinOpcoesVenda );
+		
+		adicDB( cbUsaPedSeq, 5, 10, 160, 20, "UsaPedSeq", "", true );
+		adicDB( cbEstNeg, 5, 30, 160, 20, "EstNeg", "", true );
+		adicDB( cbEstLotNeg, 5, 50, 160, 20, "EstLotNeg", "", true );
+		adicDB( cbPrazoEnt, 5, 70, 200, 20, "UsaTabPE", "", true );
+		adicDB( cbDiasPEData, 5, 90, 200, 20, "DIASPEDT", "", true );
+		adicDB( cbReCalcVenda, 5, 110, 200, 20, "ReCalcPCVenda", "", true );
+		adicDB( cbVendaMatPrim, 5, 130, 300, 20, "VendaMatPrim", "", true );
+		adicDB( cbTravaTMNFVD, 5, 150, 300, 20, "TravaTMNFVD", "", true );
+		adicDB( cbBloqVenda, 5, 170, 300, 20, "BloqVenda", "", true );
+		adicDB( cbComisPDupl, 5, 190, 300, 20, "ComisPDupl", "", true );
+		adicDB( cbEstNegGrupo, 5, 210, 250, 20, "EstNegGrup", "", true );
+		adicDB( cbLayoutPed, 5, 230, 300, 20, "UsaLayoutPed", "", true );
+		adicDB( cbObsCliVend, 5, 250, 350, 20, "ObsCliVend", "", true );
+		adicDB( cbVerifAltParVenda, 5, 270, 350, 20, "VerifAltParcVenda", "", true );
+		adicDB( cbUsaPrecoZero, 5, 290, 350, 20, "UsaPrecoZero", "", true );
+		adicDB( cbUsaClasComis, 5, 310, 160, 20, "UsaClasComis", "", true );
+		
+		adicDB( cbTabFreteVd, 205, 10, 160, 20, "TabFreteVd", "", true );
+		adicDB( cbTabAdicVd, 205, 30, 160, 20, "TabAdicVd", "", true );
+		adicDB( cbUsaDescEspelho, 205, 50, 160, 20, "UsaLiqRel", "", true );
+		adicDB( cbIPIVenda, 205, 70, 160, 20, "IPIVenda", "", true );
+		adicDB( cbNatVenda, 205, 90, 160, 20, "NatVenda", "", true );
+		adicDB( cbIcmsVenda, 205, 110, 170, 20, "IcmsVenda", "", true );
+		
+		// Compra
+		
+		
+		//setPainel( pinCompra );
+		//adicTab( "Compras", pinCompra );
 
-		adicDB( cbUsaRefProd, 5, 10, 160, 20, "UsaRefProd", "", true );
-		adicDB( cbUsaPedSeq, 5, 30, 160, 20, "UsaPedSeq", "", true );
-		adicDB( cbEstNeg, 5, 50, 160, 20, "EstNeg", "", true );
-		adicDB( cbEstLotNeg, 5, 70, 160, 20, "EstLotNeg", "", true );
-		adicDB( cbPrazoEnt, 5, 90, 200, 20, "UsaTabPE", "", true );
-		adicDB( cbDiasPEData, 5, 110, 200, 20, "DIASPEDT", "", true );
-		adicDB( cbReCalcVenda, 5, 130, 200, 20, "ReCalcPCVenda", "", true );
-		adicDB( cbVendaMatPrim, 5, 150, 300, 20, "VendaMatPrim", "", true );
-		adicDB( cbTravaTMNFVD, 5, 170, 300, 20, "TravaTMNFVD", "", true );
-		adicDB( cbBloqVenda, 5, 190, 300, 20, "BloqVenda", "", true );
-		adicDB( cbComisPDupl, 5, 210, 300, 20, "ComisPDupl", "", true );
-		adicDB( cbEstNegGrupo, 5, 230, 250, 20, "EstNegGrup", "", true );
-		adicDB( cbLayoutPed, 5, 250, 300, 20, "UsaLayoutPed", "", true );
-		adicDB( cbObsCliVend, 5, 270, 350, 20, "ObsCliVend", "", true );
-		adicDB( cbVerifAltParVenda, 5, 290, 350, 20, "VerifAltParcVenda", "", true );
-		adicDB( cbUsaPrecoZero, 5, 310, 350, 20, "UsaPrecoZero", "", true );
-
-		adicDB( cbUsaClasComis, 205, 10, 160, 20, "UsaClasComis", "", true );
-		adicDB( cbTabFreteVd, 205, 30, 160, 20, "TabFreteVd", "", true );
-		adicDB( cbTabAdicVd, 205, 50, 160, 20, "TabAdicVd", "", true );
-		adicDB( cbUsaDescEspelho, 205, 70, 160, 20, "UsaLiqRel", "", true );
-		adicDB( cbIPIVenda, 205, 90, 160, 20, "IPIVenda", "", true );
-		adicDB( cbNatVenda, 205, 110, 160, 20, "NatVenda", "", true );
-		adicDB( cbIcmsVenda, 205, 130, 170, 20, "IcmsVenda", "", true );
-
+		//lbCompOpcoes.setOpaque( true );
+		//adic( lbCompOpcoes, 10, 5, 70, 20 );
+		//adic( pinCompras, 7, 15, 280, 50 );
+		//setPainel( pinCompras );
+		//adicDB( cbUsaRefCompra, 7, 7, 200, 20, "UsaRefProd", "",false );
+		
 		// Preço
 
 		setPainel( pinPreco );
@@ -918,7 +939,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		rgCodBar.setVlrString( "2" );
 
 		adic( lbProdOpcoes, 17, 10, 70, 20 );
-		adic( lbProdCont, 7, 20, 393, 305 );
+		adic( lbProdCont, 7, 20, 393, 315 );
 		adicDB( cbPepsProd, 17, 35, 310, 20, "PepsProd", "", false );
 		adicDB( cbBuscaProdSimilar, 17, 55, 310, 20, "BuscaProdSimilar", "", false );
 		adicDB( cbDescCompl, 17, 75, 480, 20, "DescCompPed", "", true );
@@ -927,9 +948,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDB( cbFilBuscGenProd2, 37, 135, 350, 20, "FILBUSCGENREF", "", false );
 		adicDB( cbFilBuscGenProd3, 37, 155, 350, 20, "FILBUSCGENCODBAR", "", false );
 		adicDB( cbFilBuscGenProd4, 37, 175, 350, 20, "FILBUSCGENCODFAB", "", false );
-		adicDB( cbTamDescProd, 17, 230, 373, 20, "TamDescProd", "Tamanho da descrição do produto", false );
-		adic( new JLabelPad("Tipo de código de barras"), 17, 260, 200, 20 );
-		adicDB( rgCodBar, 17, 280, 180, 25, "TipoCodBar", "", false );
+		adicDB( cbUsaRefProd, 17, 195, 160, 20, "UsaRefProd", "", true );
+		adicDB( cbTamDescProd, 17, 250, 373, 20, "TamDescProd", "Tamanho da descrição do produto", false );
+		adic( new JLabelPad("Tipo de código de barras"), 17, 280, 200, 20 );
+		adicDB( rgCodBar, 17, 300, 180, 25, "TipoCodBar", "", false );
 		
 
 		// Estoque
