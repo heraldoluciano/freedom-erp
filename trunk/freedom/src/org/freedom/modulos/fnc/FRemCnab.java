@@ -41,6 +41,7 @@ import java.util.HashSet;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.Boleto;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.fnc.CnabUtil.Reg;
 import org.freedom.modulos.fnc.CnabUtil.Reg1;
@@ -228,13 +229,12 @@ public class FRemCnab extends FRemFBN {
 		reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
 		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
 		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
-		reg.setDigAgConta( null );
-		/*reg.setIdentTitulo( Boleto.geraNossoNumero( 
+		reg.setDigAgConta( 0 );
+		reg.setIdentTitulo( Boleto.geraNossoNumero( 
 				(String)prefs.get( EPrefs.MDECOB ), 
 				(String)prefs.get( EPrefs.CODCONV ), 
 				Long.parseLong( rec.getCodrec().toString() ), 
-				Long.parseLong( rec.getNParcitrec().toString() ) ) );*/
-		reg.setIdentTitulo( (String)prefs.get( EPrefs.CODCONV ) );
+				Long.parseLong( rec.getNParcitrec().toString() ) ) );
 		reg.setCodCarteira( getCarteiraCobranca( 
 				rec.getCodrec(), 
 				rec.getNParcitrec() ) );
@@ -246,9 +246,9 @@ public class FRemCnab extends FRemFBN {
 		reg.setDtVencTitulo( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );		
 		reg.setAgenciaCob( null );
-		reg.setDigAgenciaCob( null );
+		reg.setDigAgenciaCob( 0 );
  		reg.setEspecieTit( (Integer) prefs.get( EPrefs.ESPECTIT ) );//**/
-		reg.setAceite( 'A' );
+		reg.setAceite( 'N' );
 		reg.setDtEmitTit( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
 		reg.setCodJuros( (Integer) prefs.get( EPrefs.CODJUROS ) );//**
 		reg.setDtJuros( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
@@ -300,20 +300,9 @@ public class FRemCnab extends FRemFBN {
 		reg.setCidCli( dadosCliente[ DadosCliente.CIDCLI.ordinal() ] );
 		reg.setUfCli( dadosCliente[ DadosCliente.UFCLI.ordinal() ] );	
 		
-		reg.setTipoInscAva( Integer.parseInt( dadosCliente[ DadosCliente.CNPJCPF.ordinal()] ) );
-		
-		if ( 2 == reg.getTipoInscAva() ) {
-			reg.setCpfCnpjAva( dadosCliente[ DadosCliente.CNPJ.ordinal() ] );
-		}
-		else if ( 1 == reg.getTipoInscAva() ) {
-			reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CPF.ordinal() ] );
-		}
-		else {
-			reg.setTipoInscCli( 0 );
-			reg.setCpfCnpjCli( "0" );
-		}
-				
-		reg.setRazAva( dadosCliente[ DadosCliente.RAZCLI.ordinal() ] );
+		reg.setTipoInscAva( 0 );
+		reg.setCpfCnpjAva( null );			
+		reg.setRazAva( null );
 		//reg.setCodCompensacao( 0 );
 		//reg.setNossoNumero( null );
 		
