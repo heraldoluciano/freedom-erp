@@ -154,7 +154,7 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 			
 			String agencia = Funcoes.strZero( txtAgencia.getVlrString().trim().replaceAll( "-", "" ), 5 );
 			String conta = Funcoes.strZero( txtConta.getVlrString().trim().replaceAll( "-", "" ), 10 );
-			String digito = Boleto.digVerif( agencia + conta );
+			String digito = Boleto.digVerif( agencia + conta, 11 );
 			String identificacao = agencia + conta + digito;
 			
 			txtIdentificacao.setVlrString( identificacao );
