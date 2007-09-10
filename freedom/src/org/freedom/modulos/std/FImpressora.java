@@ -80,7 +80,7 @@ public class FImpressora extends FDados {
     vValsTipo.addElement(new Integer(8));
     vValsTipo.addElement(new Integer(9));
     
-    cbTipoImp = new JComboBoxPad(vLabsTipo, vValsTipo, JComboBoxPad.TP_INTEGER, 8, 0); 
+    cbTipoImp = new JComboBoxPad(vLabsTipo, vValsTipo, JComboBoxPad.TP_INTEGER, 9, 0); 
     
     vLabsDest.addElement("<--Selecione-->");           
     vLabsDest.addElement("Nota fiscal");           
