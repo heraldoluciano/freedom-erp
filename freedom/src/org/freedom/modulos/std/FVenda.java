@@ -187,6 +187,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JTextFieldPad txtRedFisc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
 
+	private JTextFieldPad txtTpRedIcmsFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+
 	private JTextFieldPad txtVlrFreteVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
 	private JTextFieldPad txtVlrComisVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
@@ -906,9 +908,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		float fBaseICMS = 0;
 		float fICMS = 0;
 		float fIPI = 0;
-
+		String tpredicmsfisc = null;
+	
 		try {
 
+			tpredicmsfisc = txtTpRedIcmsFisc.getVlrString();
 			fRed = txtRedFisc.getVlrBigDecimal() != null ? txtRedFisc.floatValue() : 0;
 			fVlrProd = calcVlrTotalProd( txtVlrProdItVenda.getVlrBigDecimal(), txtVlrDescItVenda.getVlrBigDecimal() ).floatValue();
 
@@ -1009,11 +1013,20 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				if ( fVlrProd > 0 ) {
 
 					if ( bBuscaBase ) {
-						fBaseICMS = Funcoes.arredFloat( fVlrProd - fVlrProd * fRed / 100, casasDecFin );
+						if ("B".equals(tpredicmsfisc)) {
+							fBaseICMS = Funcoes.arredFloat( fVlrProd - fVlrProd * fRed / 100, casasDecFin );
+						} else {
+							fBaseICMS = Funcoes.arredFloat( fVlrProd , casasDecFin );
+						}
 					}
 
 					fBaseIPI = fVlrProd;
-					fICMS = Funcoes.arredFloat( fBaseICMS * txtPercICMSItVenda.floatValue() / 100, casasDecFin );
+					if ( ("V".equals(tpredicmsfisc)) && (fRed>0)) {
+						fICMS = Funcoes.arredFloat( fBaseICMS * txtPercICMSItVenda.floatValue() / 100, casasDecFin );
+						fICMS -= Funcoes.arredFloat( fICMS * fRed /100, casasDecFin );
+					} else {
+						fICMS = Funcoes.arredFloat( fBaseICMS * txtPercICMSItVenda.floatValue() / 100, casasDecFin );
+					}
 					fIPI = Funcoes.arredFloat( fBaseIPI * txtAliqIPIItVenda.floatValue() / 100, casasDecFin );
 
 				}
@@ -1160,7 +1173,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = "SELECT ORIGFISC,CODTRATTRIB,REDFISC,TIPOFISC,CODMENS,ALIQFISC,ALIQIPIFISC" + " FROM LFBUSCAFISCALSP(?,?,?,?,?,?,?)";
+		String sSQL = "SELECT ORIGFISC,CODTRATTRIB, REDFISC,TIPOFISC, " +
+				"CODMENS,ALIQFISC,ALIQIPIFISC, TPREDICMSFISC " + 
+				"FROM LFBUSCAFISCALSP(?,?,?,?,?,?,?)";
 
 		try {
 
@@ -1182,6 +1197,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				txtCodMens.setVlrString( rs.getString( "CODMENS" ) );
 				txtAliqFisc.setVlrString( rs.getString( "ALIQFISC" ) );
 				txtAliqIPIFisc.setVlrBigDecimal( new BigDecimal( rs.getString( "ALIQIPIFISC" ) != null ? rs.getString( "ALIQIPIFISC" ) : "0" ) );
+				txtTpRedIcmsFisc.setVlrString( rs.getString("TPREDICMSFISC") );
 			}
 
 			rs.close();

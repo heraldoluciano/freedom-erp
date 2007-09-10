@@ -489,9 +489,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 				}
 				fBaseIPI = fVlrProd;
 			}
-			if ( ("A".equals( tpredicmfisc )) && (fRed>0) ) {
+			if ( ("V".equals( tpredicmfisc )) && (fRed>0) ) {
 				fICMS = Funcoes.arredFloat(fBaseICMS * txtPercICMSItCompra.floatValue() / 100, casasDecFin);
-				fICMS -= fICMS * fRed / 100;
+				fICMS -= Funcoes.arredFloat( fICMS * fRed / 100, casasDecFin) ;
 			} else {
 				fICMS = Funcoes.arredFloat(fBaseICMS * txtPercICMSItCompra.floatValue() / 100, casasDecFin);
 			}
