@@ -133,6 +133,8 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	
 	private final JTextFieldPad txtModalidadeCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
+	private final JTextFieldPad txtConvBol = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
 	private JRadioGroup rgIdentAmbCliCnab;
 	
 	private JRadioGroup rgIdentAmbBcoCnab;
@@ -548,6 +550,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		adicDescFK( txtDescContaCnab, 150, 110, 220, 20, "DescConta", "Descrição da conta" );
 		adicCampo( txtContaComprCnab, 7, 150, 140, 20, "ContaCompr", "Conta Compromisso", ListaCampos.DB_SI, false );
 		adicCampo( txtModalidadeCnab, 150, 150, 100, 20, "MdeCob", "Modalidade", ListaCampos.DB_SI, false );
+		adicCampo( txtConvBol, 253, 150, 117, 20, "ConvCob", "Convênio boleto", ListaCampos.DB_SI, false );
 		
 		adicDB( rgIdentAmbCliCnab, 7, 190, 178, 60, "IdentAmbCli", "Ambiente do cliente", false );
 		adicDB( rgIdentAmbBcoCnab, 193, 190, 178, 60, "IdentAmbBco", "Ambiente do banco", false );
