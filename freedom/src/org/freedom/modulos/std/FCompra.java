@@ -107,6 +107,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 	private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtTipoFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtRedFisc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
+	private JTextFieldPad txtTpRedIcmsFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
 	private JTextFieldPad txtCodUn = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
 	private JTextFieldPad txtVlrIPICompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
 	private JTextFieldPad txtVlrDescCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
@@ -216,6 +217,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		lcFisc.add(new GuardaCampo(txtCodFisc, "CodFisc", "Código",ListaCampos.DB_PK, false));
 		lcFisc.add(new GuardaCampo(txtDescFisc, "DescFisc", "Descrição",ListaCampos.DB_SI, false));
 		lcFisc.add(new GuardaCampo(txtTipoFisc, "TipoFisc", "Tipo",ListaCampos.DB_SI, false));
+		lcFisc.add(new GuardaCampo(txtTpRedIcmsFisc, "TpRedIcmsFisc", "Tp.red.",ListaCampos.DB_SI, false));
 		lcFisc.add(new GuardaCampo(txtRedFisc, "RedFisc", "Redução",ListaCampos.DB_SI, false));
 		lcFisc.add(new GuardaCampo(txtAliqIPIFisc, "AliqIPIFisc", "% IPI",ListaCampos.DB_SI, false));
 		lcFisc.montaSql(false, "CLFISCAL", "LF");
@@ -472,6 +474,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 	}
 
 	private void calcImpostos(boolean bCalcBase) {
+		String tpredicmfisc = txtTpRedIcmsFisc.getVlrString();
 		float fRed = txtRedFisc.floatValue();
 		float fVlrProd = Funcoes.arredFloat(txtVlrProdItCompra.floatValue() - txtVlrDescItCompra.floatValue(), casasDecFin);
 		float fBaseICMS = Funcoes.arredFloat(txtBaseICMSItCompra.floatValue(), casasDecFin);
@@ -479,10 +482,19 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		float fICMS = 0;
 		if (fVlrProd > 0) {
 			if (bCalcBase) {
-				fBaseICMS = Funcoes.arredFloat(fVlrProd - (fVlrProd * fRed / 100), casasDecFin);
+				if ("B".equals(tpredicmfisc)) {
+					fBaseICMS = Funcoes.arredFloat(fVlrProd - (fVlrProd * fRed / 100), casasDecFin);
+				} else {
+					fBaseICMS = Funcoes.arredFloat( fVlrProd, casasDecFin);
+				}
 				fBaseIPI = fVlrProd;
 			}
-			fICMS = Funcoes.arredFloat(fBaseICMS * txtPercICMSItCompra.floatValue() / 100, casasDecFin);
+			if ( ("A".equals( tpredicmfisc )) && (fRed>0) ) {
+				fICMS = Funcoes.arredFloat(fBaseICMS * txtPercICMSItCompra.floatValue() / 100, casasDecFin);
+				fICMS -= fICMS * fRed / 100;
+			} else {
+				fICMS = Funcoes.arredFloat(fBaseICMS * txtPercICMSItCompra.floatValue() / 100, casasDecFin);
+			}
 		}
 		txtVlrICMSItCompra.setVlrBigDecimal(new BigDecimal(fICMS));
 		if (bCalcBase) {
