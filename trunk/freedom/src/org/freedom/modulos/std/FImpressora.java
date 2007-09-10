@@ -67,6 +67,7 @@ public class FImpressora extends FDados {
     vLabsTipo.addElement("Fiscal MP20");           
     vLabsTipo.addElement("Fiscal MP40");     
     vLabsTipo.addElement("OKI ML/320/420/421");
+    vLabsTipo.addElement("Argox");
                
     vValsTipo.addElement(new Integer(0));           
     vValsTipo.addElement(new Integer(1));           
@@ -77,6 +78,7 @@ public class FImpressora extends FDados {
     vValsTipo.addElement(new Integer(6));
     vValsTipo.addElement(new Integer(7));
     vValsTipo.addElement(new Integer(8));
+    vValsTipo.addElement(new Integer(9));
     
     cbTipoImp = new JComboBoxPad(vLabsTipo, vValsTipo, JComboBoxPad.TP_INTEGER, 8, 0); 
     
@@ -85,21 +87,22 @@ public class FImpressora extends FDados {
     vLabsDest.addElement("Nota fiscal - serviço");           
     vLabsDest.addElement("Pedido");           
     vLabsDest.addElement("Relatório simples");           
-    vLabsDest.addElement("Relatório gráfico");           
-    vLabsDest.addElement("Todos (não NF)");           
+    vLabsDest.addElement("Relatório gráfico");   
+    vLabsDest.addElement("Etiquetas"); 
+    vLabsDest.addElement("Todos (não NF)");     
                
     vValsDest.addElement("");           
     vValsDest.addElement("NF");           
     vValsDest.addElement("NS");           
     vValsDest.addElement("PD");           
     vValsDest.addElement("RS");           
-    vValsDest.addElement("RG");           
-    vValsDest.addElement("TO");           
+    vValsDest.addElement("RG");  
+    vValsDest.addElement("ET"); 
+    vValsDest.addElement("TO");    
+    
     
     cbDestImp = new JComboBoxPad(vLabsDest,vValsDest, JComboBoxPad.TP_STRING, 2, 0);
-    //cbDestImp.setVlrString("");
-
-//Prepara FKs
+  
 
     lcPapel.add(new GuardaCampo( txtCodPapel, "CodPapel", "Cód.tp.papel", ListaCampos.DB_PK, true));
     lcPapel.add(new GuardaCampo( txtDescPapel, "DescPapel", "Descrição do tipo de papel", ListaCampos.DB_SI, false));
@@ -107,7 +110,7 @@ public class FImpressora extends FDados {
     lcPapel.setQueryCommit(false);
     lcPapel.setReadOnly(true);
     txtCodPapel.setTabelaExterna(lcPapel);
-//Adiciona componentes   
+   
     adicCampo(txtCodImp, 7, 20, 90, 20, "CodImp", "Cód.imp.", ListaCampos.DB_PK, true);
     adicCampo(txtDescImp, 100, 20, 276, 20, "DescImp", "Descrição da impressora", ListaCampos.DB_SI, true);
     adicDB(cbTipoImp,7,60,140,25,"TipoImp", "Tipo de impressora", true);
