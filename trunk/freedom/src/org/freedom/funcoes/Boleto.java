@@ -34,16 +34,20 @@ public class Boleto {
 		parte2.append( bufFatvenc );
 		parte2.append( bufVlrtitulo );
 		if ("21".equals(bufModalidade) ) {
+			// Formato do código de barras para convênios da carteira sem registro
+			// 16 e 18 - com nossó número livre de 17 posições
 			parte2.append( bufConvenio );
 			parte2.append( bufNossoNumero );
 			parte2.append( bufModalidade );
 		} 
 		else if (bufConvenio.length()>=7) {
+			// Código de barras bara convêncios acima de 1.000.000
 			parte2.append( "000000" );
 			parte2.append( bufNossoNumero );
 			parte2.append( bufCarteira );
 			
 		} else {
+			// Formato do código de barras para convênios com 4 ou 6 posições
 			parte2.append( bufNossoNumero );
 			parte2.append( bufAgencia );
 			parte2.append( bufConta );
@@ -51,9 +55,49 @@ public class Boleto {
 		}
 		
 		barcode.append(parte1);
-		barcode.append( digVerif( parte1.toString() + parte2.toString() ));
+		barcode.append( digVerif( parte1.toString() + parte2.toString(), 11 ));
 		barcode.append(parte2);
 		return barcode.toString();
+	}
+
+	public static String geraLinhaDig(final String codbar, 
+			final Long fatvenc, final BigDecimal vlrtitulo){
+		final StringBuffer linhadig = new StringBuffer();
+		final StringBuffer campo1 = new StringBuffer();
+		final StringBuffer campo2 = new StringBuffer();
+		final StringBuffer campo3 = new StringBuffer();
+		final StringBuffer campo4 = new StringBuffer();
+		final StringBuffer campo5 = new StringBuffer();
+
+		if (codbar!=null) {
+			final String bufCodbanco = codbar.substring( 0,3);
+			final String bufCodmoeda = codbar.substring( 3, 4 );
+			final String bufFatvenc = strZero(fatvenc.toString(),4);
+			final String bufVlrtitulo = geraVlrtitulo(vlrtitulo);
+			
+			campo1.append( bufCodbanco ); // Código do banco 
+			campo1.append( bufCodmoeda ); // Código da moeda
+			
+			// Formato da linha digitável para convênios da carteira sem registro
+			// 16 e 18 - com nossó número livre de 17 posições
+			// Linha digitável para convênios de 4 ou 6 posições
+			// Linha digitável para convêncios acima de 1.000.000
+			campo1.append( codbar.substring(19, 24) ); // Posição 20 a 24 do código de barras
+			campo1.append( digVerif( campo1.toString(),10 ) ); // Dígito verificador do campo 1 
+			campo2.append( codbar.substring(24, 34) );  // Posição 25 a 34 do código de barras
+			campo2.append( digVerif( campo2.toString(), 10)); // DAC que amarra o campo 2 
+			campo3.append( codbar.substring(34, 44) );  // Posição 35 a 34 do código de barras
+			campo3.append( digVerif( campo3.toString(), 10)); // DAC que amarra o campo 3
+			campo4.append( codbar.substring(4,5) ); // Dígito verificador do código de barras 
+			campo5.append( bufFatvenc); // Fator de vencimento 
+			campo5.append( bufVlrtitulo); // Valor do título
+			linhadig.append( campo1 );
+			linhadig.append( campo2 );
+			linhadig.append( campo3 );
+			linhadig.append( campo4 );
+			linhadig.append( campo5 );
+		}
+		return linhadig.toString();
 	}
 
 	public static String geraVlrtitulo(final BigDecimal vlrtitulo) {
@@ -145,23 +189,35 @@ public class Boleto {
 		return retorno.toString();
 	}
 	
-	public static String digVerif(final String codigo){
-		final int[] peso = {2, 3, 4, 5, 6, 7, 8, 9};
+	public static String digVerif(final String codigo, final int modulo){
+		int[] peso;
+		if (modulo==10) {
+			peso = new int[2];
+			peso[0] = 2; peso[1] = 1;
+		} else {
+			peso = new int[7];
+			for (int i=0; i<peso.length; i++) {
+				peso[i] = i+2;
+			}
+		}
 		int soma = 0;
-		int posi = 7;
+		int posi = 0;
 		int resto = 0;
 		String dig = null;
 		
 	    for (int i=codigo.length()-1; i>-1; i--) {
 	    	soma +=  ( Integer.parseInt( codigo.substring( i, i+1 ) ) * (peso[posi]) );
-	    	posi--;
-	    	if (posi<0) {
-	    		posi = 7; 
+	    	posi++;
+	    	if (posi>=peso.length) {
+	    		posi = 0; 
 	    	}
 	    }
-		resto = soma % 11;
-		dig = String.valueOf( 11-resto );
-		if ( "0-1-10-11".indexOf( dig )>-1 ) {
+		resto = soma % modulo;
+		dig = String.valueOf( modulo-resto );
+		if ( (modulo==10) && (dig=="10") ) {
+			dig = "0";
+		}
+		else if ( (modulo==11) && ("0-1-10-11".indexOf( dig )>-1) ) {
 			dig = "1";
 		}
 		return dig;
