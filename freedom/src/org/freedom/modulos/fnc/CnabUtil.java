@@ -1025,7 +1025,7 @@ class CnabUtil extends FbnUtil {
 
 		private String digConta;
 
-		private String digAgConta;
+		private int digAgConta;
 
 		private String identTitulo;
 
@@ -1047,7 +1047,7 @@ class CnabUtil extends FbnUtil {
 
 		private String agenciaCob;
 
-		private String digAgenciaCob;
+		private int digAgenciaCob;
 
 		private int especieTit;
 
@@ -1283,12 +1283,12 @@ class CnabUtil extends FbnUtil {
 			this.diasProtesto = diasProtesto;
 		}
 
-		public String getDigAgConta() {
+		public int getDigAgConta() {
 
 			return digAgConta;
 		}
 
-		public void setDigAgConta( final String digAgConta ) {
+		public void setDigAgConta( final int digAgConta ) {
 
 			this.digAgConta = digAgConta;
 		}
@@ -1303,12 +1303,12 @@ class CnabUtil extends FbnUtil {
 			this.digAgencia = digAgencia;
 		}
 
-		public String getDigAgenciaCob() {
+		public int getDigAgenciaCob() {
 
 			return digAgenciaCob;
 		}
 
-		public void setDigAgenciaCob( final String digAgenciaCob ) {
+		public void setDigAgenciaCob( final int digAgenciaCob ) {
 
 			this.digAgenciaCob = digAgenciaCob;
 		}
@@ -1577,7 +1577,7 @@ class CnabUtil extends FbnUtil {
 				line.append( format( getDigAgencia(), ETipo.X, 1, 0 ) );
 				line.append( format( getConta(), ETipo.$9, 12, 0 ) );
 				line.append( format( getDigConta(), ETipo.X, 1, 0 ) );
-				line.append( format( getDigAgConta(), ETipo.X, 1, 0 ) );
+				line.append( format( getDigAgConta(), ETipo.$9, 1, 0 ) );
 				line.append( format( getIdentTitulo(), ETipo.X, 20, 0 ) );
 				line.append( format( getCodCarteira(), ETipo.$9, 1, 0 ) );
 				line.append( format( getFormaCadTitulo(), ETipo.$9, 1, 0 ) );
@@ -1588,7 +1588,7 @@ class CnabUtil extends FbnUtil {
 				line.append( dateToString( getDtVencTitulo() ) );
 				line.append( format( getVlrTitulo(), ETipo.$9, 15, 2 ) );
 				line.append( format( getAgenciaCob(), ETipo.$9, 5, 0 ) );
-				line.append( format( getDigAgenciaCob(), ETipo.X, 1, 0 ) );
+				line.append( format( getDigAgenciaCob(), ETipo.$9, 1, 0 ) );
 				line.append( format( getEspecieTit(), ETipo.$9, 2, 0 ) );
 				line.append( format( getAceite(), ETipo.X, 1, 0 ) );
 				line.append( dateToString( getDtEmitTit() ) );
@@ -1637,7 +1637,7 @@ class CnabUtil extends FbnUtil {
 					setDigAgencia( line.substring( 22, 23 ) );
 					setConta( line.substring( 23, 35 ) );
 					setDigConta( line.substring( 35, 36 ) );
-					setDigAgConta( line.substring( 36, 37 ) );
+					setDigAgConta( line.substring( 36, 37 ).trim().length() > 0 ? Integer.parseInt( line.substring( 36, 37 ).trim() ) : 0 );
 					setIdentTitulo( line.substring( 37, 57 ) );
 					setCodCarteira( line.substring( 57, 58 ).trim().length() > 0 ? Integer.parseInt( line.substring( 57, 58 ).trim() ) : 0 );
 					setFormaCadTitulo( line.substring( 58, 59 ).trim().length() > 0 ? Integer.parseInt( line.substring( 58, 59 ).trim() ) : 0 );
@@ -1648,7 +1648,7 @@ class CnabUtil extends FbnUtil {
 					setDtVencTitulo( Funcoes.encodeDate( Integer.parseInt( line.substring( 77, 79 ).trim() ), Integer.parseInt( line.substring( 79, 81 ).trim() ), Integer.parseInt( line.substring( 81, 85 ).trim() ) ) );
 					setVlrTitulo( strToBigDecimal( line.substring( 85, 100 ) ) );
 					setAgenciaCob( line.substring( 100, 105 ) );
-					setDigAgenciaCob( line.substring( 105, 106 ) );
+					setDigAgenciaCob( line.substring( 105, 106 ).trim().length() > 0 ? Integer.parseInt( line.substring( 105, 106 ).trim() ) : 0 );
 					setEspecieTit( line.substring( 106, 108 ).trim().length() > 0 ? Integer.parseInt( line.substring( 106, 108 ).trim() ) : 0 );
 					setAceite( line.substring( 108, 109 ).charAt( 0 ) );
 					setDtEmitTit( Funcoes.encodeDate( Integer.parseInt( line.substring( 109, 111 ).trim() ), Integer.parseInt( line.substring( 111, 113 ).trim() ), Integer.parseInt( line.substring( 113, 117 ).trim() ) ) );
