@@ -232,7 +232,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setDigAgConta( 0 );
 		reg.setIdentTitulo( Boleto.geraNossoNumero( 
 				(String)prefs.get( EPrefs.MDECOB ), 
-				(String)prefs.get( EPrefs.CODCONV ), 
+				(String)prefs.get( EPrefs.CONVCOB ), 
 				Long.parseLong( rec.getCodrec().toString() ), 
 				Long.parseLong( rec.getNParcitrec().toString() ) ) );
 		reg.setCodCarteira( getCarteiraCobranca( 
