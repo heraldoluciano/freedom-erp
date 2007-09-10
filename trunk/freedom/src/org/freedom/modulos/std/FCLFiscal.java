@@ -175,10 +175,10 @@ public class FCLFiscal extends FDados implements CarregaListener {
 		adicDB( cbOrig, 7, 100, 387, 30, "OrigFisc", "Origem", true );
 		adicCampo( txtCodTratTrib, 7, 150, 94, 20, "CodTratTrib", "Cód.t.trib.", ListaCampos.DB_FK, txtDescTratTrib, true );
 		adicDescFK( txtDescTratTrib, 104, 150, 290, 20, "DescTratTrib", "Descrição da tratamento tributário" );
-		adicCampo( txtAliqFisc, 7, 190, 94, 20, "AliqFisc", "Aliq.fiscal", ListaCampos.DB_SI, null, false );
-		adicCampo( txtAliqlFisc, 104, 190, 94, 20, "AliqlFisc", "Aliq.liv.fiscal", ListaCampos.DB_SI, null, false );
-		adicCampo( txtAliqIPIFisc, 201, 190, 94, 20, "AliqIPIFisc", "Aliq. de IPI", ListaCampos.DB_SI, null, false );
-		adicCampo( txtRedFisc, 298, 190, 94, 20, "RedFisc", "Redução fiscal", ListaCampos.DB_SI, null, false );
+		adicCampo( txtAliqFisc, 7, 190, 94, 20, "AliqFisc", "% Aliq.ICMS", ListaCampos.DB_SI, null, false );
+		adicCampo( txtAliqlFisc, 104, 190, 94, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
+		adicCampo( txtAliqIPIFisc, 201, 190, 94, 20, "AliqIPIFisc", "% Aliq.IPI", ListaCampos.DB_SI, null, false );
+		adicCampo( txtRedFisc, 298, 190, 94, 20, "RedFisc", "% Redução ICMS", ListaCampos.DB_SI, null, false );
 		adicCampo( txtCodMens, 7, 230, 94, 20, "CodMens", "Cód.mens.", ListaCampos.DB_FK, txtDescMens, false );
 		adicDescFK( txtDescMens, 104, 230, 290, 20, "Mens", "Mensagem" );
 		adicDB( rgTipoFisc, 7, 270, 120, 100, "TipoFisc", "Situação do ICMS:", true );

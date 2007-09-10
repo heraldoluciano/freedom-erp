@@ -121,6 +121,12 @@ public class FItCLFiscal extends FDetalhe {
     vValsOrig.addElement("1");
     vValsOrig.addElement("2");
     cbOrig = new JComboBoxPad(vLabsOrig,vValsOrig, JComboBoxPad.TP_STRING,1,0);
+    
+    /**adicCampo( txtAliqFisc, 7, 190, 94, 20, "AliqFisc", "% Aliq.ICMS", ListaCampos.DB_SI, null, false );
+		adicCampo( txtAliqlFisc, 104, 190, 94, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
+		adicCampo( txtAliqIPIFisc, 201, 190, 94, 20, "AliqIPIFisc", "% Aliq.IPI", ListaCampos.DB_SI, null, false );
+		adicCampo( txtRedFisc, 298, 190, 94, 20, "RedFisc", "% Redução ICMS", ListaCampos.DB_SI, null, false );
+     * */
 
     setAltDet(260);
     setPainel( pinDet, pnDet);
@@ -129,11 +135,11 @@ public class FItCLFiscal extends FDetalhe {
     adicCampo(txtCodItClFiscal, 7, 20, 60, 20,"CodItFisc","Item", ListaCampos.DB_PK, true);
     adicCampo(txtCodTratTrib, 70, 20, 77, 20, "CodTratTrib", "Cód.tr.tab.", ListaCampos.DB_FK, txtDescTratTrib, true);
     adicDescFK(txtDescTratTrib, 150, 20, 300, 20, "DescTratTrib", "Descrição da tratamento tributário");
-	adicCampo(txtRedFisc, 7, 60, 85, 20, "RedFisc", "Redução", ListaCampos.DB_SI, false);
-    adicDB(cbOrig, 95, 60, 287, 25, "OrigFisc", "Origem",true);
+	adicCampo(txtRedFisc, 7, 60, 95, 20, "RedFisc", "% Redução ICMS", ListaCampos.DB_SI, false);
+    adicDB(cbOrig, 105, 60, 275, 25, "OrigFisc", "Origem",true);
 	adicDB(cbNoUF, 385, 60, 80, 20, "NOUFITFISC", "No Estado",true);
-	adicCampo(txtAliqICMS, 7, 105, 80, 20, "AliqFisc", "Alíquota ICMS", ListaCampos.DB_SI, false);
-	adicCampo(txtAliqIPI, 90, 105, 80, 20, "AliqIPIFisc", "Alíquota IPI", ListaCampos.DB_SI, false);
+	adicCampo(txtAliqICMS, 7, 105, 80, 20, "AliqFisc", "% Alíq.ICMS", ListaCampos.DB_SI, false);
+	adicCampo(txtAliqIPI, 90, 105, 80, 20, "AliqIPIFisc", "% Alíq.IPI", ListaCampos.DB_SI, false);
 	adicCampo(txtCodTipoFisc, 173, 105, 80, 20, "CodFiscCli", "Cód.fisc.cli.", ListaCampos.DB_FK, txtDescFiscCli, false);
 	adicDescFK(txtDescFiscCli, 256, 105, 195, 20, "DescTratTrib", "Descrição do tipo fiscal de cliente");
 	adicDB(rgTipoFisc, 7, 150, 450, 50, "TipoFisc", "Situação do ICMS:",true);
