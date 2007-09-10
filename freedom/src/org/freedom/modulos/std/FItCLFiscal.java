@@ -121,12 +121,7 @@ public class FItCLFiscal extends FDetalhe {
     vValsOrig.addElement("1");
     vValsOrig.addElement("2");
     cbOrig = new JComboBoxPad(vLabsOrig,vValsOrig, JComboBoxPad.TP_STRING,1,0);
-    
-    /**adicCampo( txtAliqFisc, 7, 190, 94, 20, "AliqFisc", "% Aliq.ICMS", ListaCampos.DB_SI, null, false );
-		adicCampo( txtAliqlFisc, 104, 190, 94, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
-		adicCampo( txtAliqIPIFisc, 201, 190, 94, 20, "AliqIPIFisc", "% Aliq.IPI", ListaCampos.DB_SI, null, false );
-		adicCampo( txtRedFisc, 298, 190, 94, 20, "RedFisc", "% Redução ICMS", ListaCampos.DB_SI, null, false );
-     * */
+  
 
     setAltDet(260);
     setPainel( pinDet, pnDet);
