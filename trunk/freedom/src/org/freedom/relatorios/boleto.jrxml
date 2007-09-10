@@ -173,13 +173,17 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 	<variable name="NOSSONUMERO" class="java.lang.String" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraNossoNumero($F{MDECOB}, $V{VCONVENIO}, $F{CODREC}, $F{NPARCITREC} )]]></variableExpression>
 	</variable>
-	<variable name="CODBAREXT" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[$V{CODBAR}.length()>=44
-?$V{CODBAR}.substring(0,5)+"."+$V{CODBAR}.substring(5,10)+" "+
-$V{CODBAR}.substring(10,15)+"."+$V{CODBAR}.substring(15,21)+" "+
-$V{CODBAR}.substring(21,25)+"."+$V{CODBAR}.substring(25,31)+" "+
-$V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
-:$V{CODBAR}]]></variableExpression>
+	<variable name="LINHADIG" class="java.lang.String" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraLinhaDig( $V{CODBAR},  $F{FATVENC}, $F{VLRAPAGITREC} )]]></variableExpression>
+		<initialValueExpression><![CDATA["012345678901234567890123456789012345678901234567"]]></initialValueExpression>
+	</variable>
+	<variable name="LINHADIGEXT" class="java.lang.String" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$V{LINHADIG}.length()>=47
+?$V{LINHADIG}.substring(0,5)+"."+$V{LINHADIG}.substring(5,10)+" "+
+$V{LINHADIG}.substring(10,15)+"."+$V{LINHADIG}.substring(15,21)+" "+
+$V{LINHADIG}.substring(21,26)+"."+$V{LINHADIG}.substring(26,32)+" "+
+$V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
+:$V{LINHADIG}]]></variableExpression>
 	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -758,7 +762,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$V{CODBAREXT}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{LINHADIGEXT}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -994,7 +998,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 						key="barcode-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
-					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(13,$V{CODBAR},true,false,null,0,0)]]></imageExpression>
+					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(13,$V{CODBAR},false,false,null,0,0)]]></imageExpression>
 				</image>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
