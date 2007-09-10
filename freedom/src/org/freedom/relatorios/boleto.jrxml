@@ -162,6 +162,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 	</variable>
 	<variable name="CODBAR" class="java.lang.String" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraCodBar( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, $F{FATVENC}, $F{VLRAPAGITREC},  $F{CONVCOB}, $F{CODREC}, $F{NPARCITREC}, $F{AGENCIACONTA}, $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></variableExpression>
+		<initialValueExpression><![CDATA["12345678901234567890123456789012345678901234"]]></initialValueExpression>
 	</variable>
 	<variable name="AGENCIACONTA" class="java.lang.String" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[$F{AGENCIACONTA}+ " / " +$F{NUMCONTA}]]></variableExpression>
@@ -993,7 +994,7 @@ $V{CODBAR}.substring(31,32)+" "+$V{CODBAR}.substring(32)
 						key="barcode-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
-					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(13,$V{CODBAR},false,false,null,0,0)]]></imageExpression>
+					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(13,$V{CODBAR},true,false,null,0,0)]]></imageExpression>
 				</image>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
