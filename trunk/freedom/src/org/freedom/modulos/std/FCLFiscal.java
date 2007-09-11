@@ -221,7 +221,8 @@ public class FCLFiscal extends FDados implements CarregaListener {
 	public void verifItens() {
 
 		boolean bAtivo = true;
-		String sSQL = "SELECT COUNT(*) FROM LFITCLFISCAL" + " WHERE CODEMP=? AND CODFILIAL=? AND CODFISC=?";
+		String sSQL = "SELECT COUNT(*) FROM LFITCLFISCAL" + 
+		   " WHERE CODEMP=? AND CODFILIAL=? AND CODFISC=?";
 		try {
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
