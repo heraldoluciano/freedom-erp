@@ -201,6 +201,8 @@ public class NF049 extends Layout {
 				// Fim da classificação fiscal
 
 				// Imprime os dados do item no corpo da nota
+				
+				BigDecimal vlricmsorig = new BigDecimal(0);
 
 				if ( !"S".equals( itens.getString( NF.C_TIPOPROD ) ) ) {
 
@@ -217,6 +219,10 @@ public class NF049 extends Layout {
 					imp.say( 124, Funcoes.strDecimalToStrCurrency( 2, 0, String.valueOf( itens.getFloat( NF.C_PERCIPIITPED ) ) ) );					
 					imp.say( 129, Funcoes.strDecimalToStrCurrency( 6, 2, String.valueOf( itens.getFloat( NF.C_VLRIPIITPED ) ) ) );
 					iProdImp++;
+					
+					vlricmsorig = vlricmsorig.add(( new BigDecimal(itens.getFloat( NF.C_PERCICMSITPED )).multiply( new BigDecimal(itens.getFloat( NF.C_VLRPRODITPED )).divide( new BigDecimal(100))))); 
+					
+					// xxx
 				}
 
 				// Fim da impressão do item
@@ -334,6 +340,14 @@ public class NF049 extends Layout {
 						imp.pulaLinha( 1, imp.comprimido() );
 					}
 
+					Float vlrdiferido = vlricmsorig.subtract(
+							new BigDecimal (cab.getFloat( NF.C_VLRICMSPED )).setScale( 2,BigDecimal.ROUND_CEILING )
+							
+					).floatValue();
+					
+					imp.say( 2, "VALOR DIFERIDO:" + Funcoes.strDecimalToStrCurrency(10,2,String.valueOf( vlrdiferido )));
+					
+					
 //					 Fim da observação
 					
 					imp.pulaLinha( 5, imp.comprimido() );
