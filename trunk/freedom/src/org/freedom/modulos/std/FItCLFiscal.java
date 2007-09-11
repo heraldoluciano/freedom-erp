@@ -56,6 +56,9 @@ public class FItCLFiscal extends FDetalhe {
   private JTextFieldPad txtAliqIPI = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,9,2);
   private JCheckBoxPad cbNoUF = new JCheckBoxPad("Sim","S","N");
   private JComboBoxPad cbOrig = null;
+  private JRadioGroup rgTpRedIcmsFisc = null;
+  private Vector vTpRedIcmsFiscLabs = new Vector();
+  private Vector vTpRedIcmsFiscVals = new Vector();  
   private Vector vValsOrig = new Vector();
   private Vector vLabsOrig = new Vector();
   private JRadioGroup rgTipoFisc = null;
@@ -66,7 +69,7 @@ public class FItCLFiscal extends FDetalhe {
   private ListaCampos lcMens = new ListaCampos(this,"ME");
   public FItCLFiscal () {
     setTitulo("Cadastro de variações de ICMS");
-    setAtribos( 50, 50, 490, 470);
+    setAtribos( 50, 50, 510, 520);
 
     txtCodFisc.setAtivo(false);
     txtDescFisc.setAtivo(false);
@@ -121,25 +124,32 @@ public class FItCLFiscal extends FDetalhe {
     vValsOrig.addElement("1");
     vValsOrig.addElement("2");
     cbOrig = new JComboBoxPad(vLabsOrig,vValsOrig, JComboBoxPad.TP_STRING,1,0);
-  
- 
-    setAltDet(260);
+
+	vTpRedIcmsFiscLabs.addElement( "Base ICMS" );
+	vTpRedIcmsFiscLabs.addElement( "Valor ICMS" );
+	vTpRedIcmsFiscVals.addElement( "B" );
+	vTpRedIcmsFiscVals.addElement( "V" );
+	rgTpRedIcmsFisc = new JRadioGroup( 2, 1, vTpRedIcmsFiscLabs, vTpRedIcmsFiscVals );    
+    rgTpRedIcmsFisc.setVlrString( "B" );
+    
+    setAltDet(310);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);
     adicCampo(txtCodItClFiscal, 7, 20, 60, 20,"CodItFisc","Item", ListaCampos.DB_PK, true);
     adicCampo(txtCodTratTrib, 70, 20, 77, 20, "CodTratTrib", "Cód.tr.tab.", ListaCampos.DB_FK, txtDescTratTrib, true);
     adicDescFK(txtDescTratTrib, 150, 20, 300, 20, "DescTratTrib", "Descrição da tratamento tributário");
-	adicCampo(txtRedFisc, 7, 60, 95, 20, "RedFisc", "% Redução ICMS", ListaCampos.DB_SI, false);
-    adicDB(cbOrig, 105, 60, 275, 25, "OrigFisc", "Origem",true);
-	adicDB(cbNoUF, 385, 60, 80, 20, "NOUFITFISC", "No Estado",true);
-	adicCampo(txtAliqICMS, 7, 105, 80, 20, "AliqFisc", "% Alíq.ICMS", ListaCampos.DB_SI, false);
-	adicCampo(txtAliqIPI, 90, 105, 80, 20, "AliqIPIFisc", "% Alíq.IPI", ListaCampos.DB_SI, false);
-	adicCampo(txtCodTipoFisc, 173, 105, 80, 20, "CodFiscCli", "Cód.fisc.cli.", ListaCampos.DB_FK, txtDescFiscCli, false);
-	adicDescFK(txtDescFiscCli, 256, 105, 195, 20, "DescTratTrib", "Descrição do tipo fiscal de cliente");
-	adicDB(rgTipoFisc, 7, 150, 450, 50, "TipoFisc", "Situação do ICMS:",true);
-	adicCampo(txtCodMens, 7, 220, 80, 20, "CodMens", "Cód.mens.", ListaCampos.DB_FK, txtMens, false);
-	adicDescFK(txtMens, 90, 220, 360, 20, "Mens", "Mensagem");
+    adicDB(cbOrig, 7, 60, 355, 25, "OrigFisc", "Origem",true);
+	adicDB(cbNoUF, 380, 60, 80, 20, "NOUFITFISC", "No Estado",true);
+	adicCampo(txtAliqIPI, 7, 105, 95, 20, "AliqIPIFisc", "% Alíq.IPI", ListaCampos.DB_SI, false);
+	adicCampo(txtAliqICMS, 110, 105, 95, 20, "AliqFisc", "% Alíq.ICMS", ListaCampos.DB_SI, false);
+	adicCampo(txtRedFisc, 213, 105, 95, 20, "RedFisc", "% Redução ICMS", ListaCampos.DB_SI, false);
+	adicDB( rgTpRedIcmsFisc, 320, 105, 140, 60, "tpredicmsfisc", "Tipo de Redução", false );
+	adicCampo(txtCodTipoFisc, 7, 145, 80, 20, "CodFiscCli", "Cód.fisc.cli.", ListaCampos.DB_FK, txtDescFiscCli, false);
+	adicDescFK(txtDescFiscCli, 90, 145, 223, 20, "DescTratTrib", "Descrição do tipo fiscal de cliente");
+	adicDB(rgTipoFisc, 7, 185, 450, 53, "TipoFisc", "Situação do ICMS:",true);
+	adicCampo(txtCodMens, 7, 260, 80, 20, "CodMens", "Cód.mens.", ListaCampos.DB_FK, txtMens, false);
+	adicDescFK(txtMens, 90, 260, 360, 20, "Mens", "Mensagem");
     setListaCampos( true, "ITCLFISCAL", "LF");
     lcDet.setQueryInsert(false);
 
