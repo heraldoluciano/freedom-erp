@@ -13,7 +13,8 @@ public class Teste {
 	/**
 	 * @param args
 	 */
-	public static void main(final String[] args) {
+	@SuppressWarnings("deprecation")
+    public static void main(final String[] args) {
 
 		final ECFBematech ecf = new ECFBematech(Serial.COM1);
 		

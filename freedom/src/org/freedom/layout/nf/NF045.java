@@ -22,7 +22,6 @@
 
 package org.freedom.layout.nf;
 
-import java.math.BigDecimal;
 import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
