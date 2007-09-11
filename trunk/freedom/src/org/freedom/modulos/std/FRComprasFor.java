@@ -30,6 +30,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
+import javax.swing.BorderFactory;
+
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
@@ -70,16 +72,23 @@ public class FRComprasFor extends FRelatorio {
 		txtCodFor.setFK( true );
 		lcFor.setReadOnly( true );
 		lcFor.montaSql( false, "FORNECED", "CP" );
-
-		adic( new JLabelPad( "Periodo:" ), 7, 5, 120, 20 );
-		adic( new JLabelPad( "De:" ), 7, 25, 30, 20 );
+		
+		JLabelPad lbLinha = new JLabelPad();
+		lbLinha.setBorder(BorderFactory.createEtchedBorder());
+		JLabelPad lbPeriodo = new JLabelPad("   	Periodo:");
+		lbPeriodo.setOpaque(true);
+		
+		adic(lbPeriodo,7, 1, 80, 20 );
+		adic(lbLinha,5,10,300,45);
+		
+		adic( new JLabelPad( "De:" ), 10, 25, 30, 20 );
 		adic( txtDataini, 40, 25, 97, 20 );
 		adic( new JLabelPad( "Até:" ), 140, 25, 37, 20 );
 		adic( txtDatafim, 180, 25, 100, 20 );
-		adic( new JLabelPad( "Cód.for." ), 7, 50, 280, 20 );
-		adic( txtCodFor, 7, 70, 70, 20 );
-		adic( new JLabelPad( "Descrição do fornecedor" ), 80, 50, 280, 20 );
-		adic( txtDescFor, 80, 70, 200, 20 );
+		adic( new JLabelPad( "Cód.for." ), 7, 60, 280, 20 );
+		adic( txtCodFor, 7, 80, 70, 20 );
+		adic( new JLabelPad( "Descrição do fornecedor" ), 80, 60, 280, 20 );
+		adic( txtDescFor, 80, 80, 200, 20 );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );

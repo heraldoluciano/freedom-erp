@@ -28,6 +28,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
+import javax.swing.BorderFactory;
+
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
@@ -52,6 +54,7 @@ public class FRCompras extends FRelatorio {
 	private ListaCampos lcPlanoPag = new ListaCampos(this);
 	
 	public FRCompras() {
+		
 		setTitulo("Compras por Fornecedor");
 		setAtribos(50,50,345,240);
 
@@ -70,20 +73,28 @@ public class FRCompras extends FRelatorio {
 		txtCodPlanoPag.setFK(true);
 		lcPlanoPag.setReadOnly(true);
 		lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
+		
 
-		adic(new JLabelPad("Periodo:"),7,5,120,20);
-		adic(new JLabelPad("De:"),7,25,30,20);
+		JLabelPad lbLinha = new JLabelPad();
+		lbLinha.setBorder(BorderFactory.createEtchedBorder());
+		JLabelPad lbPeriodo = new JLabelPad("   	Periodo:");
+		lbPeriodo.setOpaque(true);
+		
+		adic(lbPeriodo,7, 1, 80, 20 );
+		adic(lbLinha,5,10,300,45);
+		
+		adic(new JLabelPad("De:"),10,25,30,20);
 		adic(txtDataini,40,25,97,20);
 		adic(new JLabelPad("Até:"),152,25,37,20);
 		adic(txtDatafim,190,25,100,20);
-		adic(new JLabelPad("Cód.for."),7,50,80,20);
-		adic(txtCodFor,7,70,80,20);
-		adic(new JLabelPad("Descrição do fornecedor"),90,50,200,20);
-		adic(txtDescFor,90,70,200,20);		
-		adic(new JLabelPad("Cód.pl.pag."),7,90,80,20);
-		adic(txtCodPlanoPag,7,110,80,20);
-		adic(new JLabelPad("Descrição do plano de pagamento"),90,90,200,20);
-		adic(txtDescPlanoPag,90,110,200,20);
+		adic(new JLabelPad("Cód.for."),7,60,80,20);
+		adic(txtCodFor,7,80,80,20);
+		adic(new JLabelPad("Descrição do fornecedor"),90,60,200,20);
+		adic(txtDescFor,90,80,215,20);		
+		adic(new JLabelPad("Cód.pl.pag."),7,100,80,20);
+		adic(txtCodPlanoPag,7,120,80,20);
+		adic(new JLabelPad("Descrição do plano de pagamento"),90,100,200,20);
+		adic(txtDescPlanoPag,90,120,215,20);
 		
 		Calendar cPeriodo = Calendar.getInstance();
 	    txtDatafim.setVlrDate(cPeriodo.getTime());
