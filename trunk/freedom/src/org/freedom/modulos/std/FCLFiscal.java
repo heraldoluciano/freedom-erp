@@ -192,7 +192,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
 		adicCampo( txtAliqlFisc, 7, 230, 94, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
 		adicCampo( txtAliqFisc, 103, 190, 94, 20, "AliqFisc", "% Aliq.ICMS", ListaCampos.DB_SI, null, false );
 		adicCampo( txtRedFisc, 103, 230, 94, 20, "RedFisc", "% Redução ICMS", ListaCampos.DB_SI, null, false );
-		adicDB( rgTpRedIcmsFisc, 200, 190, 140, 60, "AliqFisc", "Tipo de Redução", false );
+		adicDB( rgTpRedIcmsFisc, 200, 190, 140, 60, "tpredicmsfisc", "Tipo de Redução", false );
 		adicCampo( txtCodMens, 7, 265, 94, 20, "CodMens", "Cód.mens.", ListaCampos.DB_FK, txtDescMens, false );
 		adicDescFK( txtDescMens, 104, 265, 290, 20, "Mens", "Mensagem" );
 		adicDB( rgTipoFisc, 7, 310, 120, 100, "TipoFisc", "Situação do ICMS:", true );
