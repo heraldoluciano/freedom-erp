@@ -264,6 +264,7 @@ public class FRCpTipoMov extends FRelatorio {
 					imp.say(imp.pRow(), 75, "| Lote");
 					imp.say(imp.pRow(), 91, "| Qtd");
 					imp.say(imp.pRow(),102, "| Vlr.Item");
+					imp.say(imp.pRow(),115, "|");
 					imp.say(imp.pRow(),135, "|");
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
@@ -275,7 +276,7 @@ public class FRCpTipoMov extends FRelatorio {
 				imp.say(imp.pRow(), 75, "| " + (rs.getString("CODLOTE") != null ? rs.getString("CODLOTE") : ""));
 				imp.say(imp.pRow(), 91, "| " + Funcoes.strDecimalToStrCurrency(8,Aplicativo.casasDec,(rs.getString("QTDITCOMPRA") != null ? rs.getString("QTDITCOMPRA") : "")));
 				imp.say(imp.pRow(),102, "| " + Funcoes.strDecimalToStrCurrency(10,2,(rs.getString("VLRLIQITCOMPRA") != null ? rs.getString("VLRLIQITCOMPRA") : "")));
-	
+				imp.say(imp.pRow(),115, "|");
 				imp.say(imp.pRow(),135, "|");	
 				bTotal = bTotal.add(rs.getBigDecimal("VLRLIQITCOMPRA"));
 			}
