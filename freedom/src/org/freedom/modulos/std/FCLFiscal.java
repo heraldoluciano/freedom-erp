@@ -83,9 +83,9 @@ public class FCLFiscal extends FDados implements CarregaListener {
 
 	private JRadioGroup rgTipoFisc = null;
 
-	private Vector vTipoVals = new Vector();
+	private Vector<String> vTipoVals = new Vector<String>();
 
-	private Vector vTipoLabs = new Vector();
+	private Vector<String> vTipoLabs = new Vector<String>();
 
 	private JRadioGroup rgSitPis = null;
 
@@ -93,23 +93,23 @@ public class FCLFiscal extends FDados implements CarregaListener {
 	
 	private JRadioGroup rgTpRedIcmsFisc = null;
 	
-	private Vector vTpRedIcmsFiscLabs = new Vector();
+	private Vector<String> vTpRedIcmsFiscLabs = new Vector<String>();
 	
-	private Vector vTpRedIcmsFiscVals = new Vector();
+	private Vector<String> vTpRedIcmsFiscVals = new Vector<String>();
 
-	private Vector vSitPisVals = new Vector();
+	private Vector<String> vSitPisVals = new Vector<String>();
 
-	private Vector vSitPisLabs = new Vector();
+	private Vector<String> vSitPisLabs = new Vector<String>();
 
-	private Vector vSitCofinsVals = new Vector();
+	private Vector<String> vSitCofinsVals = new Vector<String>();
 
-	private Vector vSitCofinsLabs = new Vector();
+	private Vector<String> vSitCofinsLabs = new Vector<String>();
 
 	private JComboBoxPad cbOrig = null;
 
-	private Vector vValsOrig = new Vector();
+	private Vector<String> vValsOrig = new Vector<String>();
 
-	private Vector vLabsOrig = new Vector();
+	private Vector<String> vLabsOrig = new Vector<String>();
 
 	public FCLFiscal() {
 
