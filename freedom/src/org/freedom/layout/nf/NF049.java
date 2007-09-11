@@ -345,7 +345,7 @@ public class NF049 extends Layout {
 							
 					).floatValue();
 					
-					imp.say( 2, "VALOR DIFERIDO:" + Funcoes.strDecimalToStrCurrency(10,2,String.valueOf( vlrdiferido )));
+					imp.say( 2, "VALOR DO ICMS DIFERIDO:" + Funcoes.strDecimalToStrCurrency(10,2,String.valueOf( vlrdiferido )));
 					
 					
 //					 Fim da observação
