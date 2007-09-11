@@ -115,7 +115,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
 
 		super();
 		setTitulo( "Cadastro de Classificações Fiscais" );
-		setAtribos( 0, 0, 460, 505 );
+		setAtribos( 0, 0, 460, 525 );
 
 		lcRegraFiscal.add( new GuardaCampo( txtCodRegra, "CodRegra", "Cód.reg.fisc.", ListaCampos.DB_PK, null, true ) );
 		lcRegraFiscal.add( new GuardaCampo( txtDescRegra, "DescRegra", "Descrição da regra fiscal", ListaCampos.DB_SI, null, false ) );
@@ -188,16 +188,16 @@ public class FCLFiscal extends FDados implements CarregaListener {
 		adicDB( cbOrig, 7, 100, 387, 30, "OrigFisc", "Origem", true );
 		adicCampo( txtCodTratTrib, 7, 150, 94, 20, "CodTratTrib", "Cód.t.trib.", ListaCampos.DB_FK, txtDescTratTrib, true );
 		adicDescFK( txtDescTratTrib, 104, 150, 290, 20, "DescTratTrib", "Descrição da tratamento tributário" );
-		adicCampo( txtAliqIPIFisc, 7, 190, 94, 20, "AliqIPIFisc", "% Aliq.IPI", ListaCampos.DB_SI, null, false );
-		adicCampo( txtAliqlFisc, 7, 230, 94, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
-		adicCampo( txtAliqFisc, 103, 190, 94, 20, "AliqFisc", "% Aliq.ICMS", ListaCampos.DB_SI, null, false );
-		adicCampo( txtRedFisc, 103, 230, 94, 20, "RedFisc", "% Redução ICMS", ListaCampos.DB_SI, null, false );
-		adicDB( rgTpRedIcmsFisc, 200, 190, 140, 60, "tpredicmsfisc", "Tipo de Redução", false );
-		adicCampo( txtCodMens, 7, 265, 94, 20, "CodMens", "Cód.mens.", ListaCampos.DB_FK, txtDescMens, false );
-		adicDescFK( txtDescMens, 104, 265, 290, 20, "Mens", "Mensagem" );
-		adicDB( rgTipoFisc, 7, 310, 120, 100, "TipoFisc", "Situação do ICMS:", true );
-		adicDB( rgSitPis, 130, 310, 120, 80, "SitPisFisc", "Situação do PIS:", true );
-		adicDB( rgSitCofins, 253, 310, 120, 80, "SitCofinsFisc", "Situação do COFINS:", true );
+		adicCampo( txtAliqIPIFisc, 7, 190, 105, 20, "AliqIPIFisc", "% Aliq.IPI", ListaCampos.DB_SI, null, false );
+		adicCampo( txtAliqlFisc, 7, 230, 105, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
+		adicCampo( txtAliqFisc, 133, 190, 105, 20, "AliqFisc", "% Aliq.ICMS", ListaCampos.DB_SI, null, false );
+		adicCampo( txtRedFisc, 133, 230, 105, 20, "RedFisc", "% Redução ICMS", ListaCampos.DB_SI, null, false );
+		adicDB( rgTpRedIcmsFisc, 253, 190, 140, 60, "tpredicmsfisc", "Tipo de Redução", false );
+		adicCampo( txtCodMens, 7, 270, 94, 20, "CodMens", "Cód.mens.", ListaCampos.DB_FK, txtDescMens, false );
+		adicDescFK( txtDescMens, 104, 270, 290, 20, "Mens", "Mensagem" );
+		adicDB( rgTipoFisc, 7, 313, 120, 100, "TipoFisc", "Situação do ICMS:", true );
+		adicDB( rgSitPis, 135, 313, 120, 80, "SitPisFisc", "Situação do PIS:", true );
+		adicDB( rgSitCofins, 263, 313, 120, 80, "SitCofinsFisc", "Situação do COFINS:", true );
 		rgTipoFisc.setVlrString( "TT" );
 		rgSitPis.setVlrString( "T" );
 		rgSitCofins.setVlrString( "T" );
