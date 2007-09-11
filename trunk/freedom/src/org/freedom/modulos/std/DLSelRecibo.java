@@ -15,6 +15,7 @@ import org.freedom.telas.FFDialogo;
 
 public class DLSelRecibo extends FFDialogo {
 
+	private static final long serialVersionUID = 1L;
 	private Tabela tab = new Tabela();
 	private final JPanelPad pnRec = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout()  );;
 

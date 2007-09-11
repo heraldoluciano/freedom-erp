@@ -23,7 +23,6 @@
 package org.freedom.modulos.std;
 
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,15 +31,13 @@ import javax.swing.BorderFactory;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 import org.freedom.telas.FPrinterJob;
 

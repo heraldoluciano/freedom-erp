@@ -31,18 +31,15 @@ import java.util.Calendar;
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
-
-import com.sun.org.apache.bcel.internal.generic.ISUB;
 
 public class FRDevolucao extends FRelatorio {
 	

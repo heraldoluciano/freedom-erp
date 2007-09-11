@@ -2,7 +2,6 @@ package org.freedom.drivers;
 
 import java.math.BigDecimal;
 
-import org.freedom.ecf.com.Serial;
 import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.ecf.driver.ECFBematech;
 import org.freedom.funcoes.Funcoes;

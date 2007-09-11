@@ -21,8 +21,6 @@
  */
 
 package org.freedom.modulos.std;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,11 +32,10 @@ import javax.swing.BorderFactory;
 
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;

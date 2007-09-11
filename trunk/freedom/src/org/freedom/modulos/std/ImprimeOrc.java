@@ -26,8 +26,6 @@ package org.freedom.modulos.std;
 
 import java.awt.BasicStroke;
 import java.awt.Font;
-import java.awt.Image;
-import java.io.IOException;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

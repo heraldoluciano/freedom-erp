@@ -50,7 +50,6 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import org.freedom.telas.JRViewerPad;
 
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
@@ -60,7 +59,6 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.modulos.rep.RelCliente;
 
 public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
