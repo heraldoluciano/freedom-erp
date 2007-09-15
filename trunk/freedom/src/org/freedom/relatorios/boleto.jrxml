@@ -185,6 +185,9 @@ $V{LINHADIG}.substring(21,26)+"."+$V{LINHADIG}.substring(26,32)+" "+
 $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 :$V{LINHADIG}]]></variableExpression>
 	</variable>
+	<variable name="DOCUMENTO" class="java.lang.String" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$F{DOCREC}.toString()+"/"+$F{NPARCITREC}.toString()]]></variableExpression>
+	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -814,7 +817,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{DOCREC}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{DOCUMENTO}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1603,7 +1606,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{DOCREC}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{DOCUMENTO}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
