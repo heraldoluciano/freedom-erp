@@ -634,13 +634,9 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 						(String) vLinha.elementAt( EColTab.COL_CNPJCLI.ordinal() ),
 						rgTipoRemessa.getVlrString(),
 						String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_CODREC.ordinal() ) ),
-						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTREC.ordinal() ) ) } ) );
-						/*
-						 * String codBanco, String tipoFebraban, String stipoFebraban, 
-						 * String sitRemessa {CODBANCO, TIPOFEBRABAN, 
-						 * STIPOFEBRABAN, SITREMESSA, CODCLI, AGENCIACLI, 
-						 * IDENTCLI, DTVENC, VLRPARC, PESSOACLI, CPJCLI, CNPJCLI}
-						 */
+						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTREC.ordinal() ) ),
+						String.valueOf( vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ) ) } 
+					) );
 		   }
 		}
 		if ( retorno ) {
