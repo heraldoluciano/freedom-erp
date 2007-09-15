@@ -1025,7 +1025,7 @@ class CnabUtil extends FbnUtil {
 
 		private String digConta;
 
-		private int digAgConta;
+		private String digAgConta;
 
 		private String identTitulo;
 
@@ -1283,12 +1283,12 @@ class CnabUtil extends FbnUtil {
 			this.diasProtesto = diasProtesto;
 		}
 
-		public int getDigAgConta() {
+		public String getDigAgConta() {
 
 			return digAgConta;
 		}
 
-		public void setDigAgConta( final int digAgConta ) {
+		public void setDigAgConta( final String digAgConta ) {
 
 			this.digAgConta = digAgConta;
 		}
@@ -1577,7 +1577,7 @@ class CnabUtil extends FbnUtil {
 				line.append( format( getDigAgencia(), ETipo.X, 1, 0 ) );
 				line.append( format( getConta(), ETipo.$9, 12, 0 ) );
 				line.append( format( getDigConta(), ETipo.X, 1, 0 ) );
-				line.append( format( getDigAgConta(), ETipo.$9, 1, 0 ) );
+				line.append( format( getDigAgConta(), ETipo.X, 1, 0 ) );
 				line.append( format( getIdentTitulo(), ETipo.X, 20, 0 ) );
 				line.append( format( getCodCarteira(), ETipo.$9, 1, 0 ) );
 				line.append( format( getFormaCadTitulo(), ETipo.$9, 1, 0 ) );
@@ -1637,7 +1637,7 @@ class CnabUtil extends FbnUtil {
 					setDigAgencia( line.substring( 22, 23 ) );
 					setConta( line.substring( 23, 35 ) );
 					setDigConta( line.substring( 35, 36 ) );
-					setDigAgConta( line.substring( 36, 37 ).trim().length() > 0 ? Integer.parseInt( line.substring( 36, 37 ).trim() ) : 0 );
+					setDigAgConta( line.substring( 36, 37 ) );
 					setIdentTitulo( line.substring( 37, 57 ) );
 					setCodCarteira( line.substring( 57, 58 ).trim().length() > 0 ? Integer.parseInt( line.substring( 57, 58 ).trim() ) : 0 );
 					setFormaCadTitulo( line.substring( 58, 59 ).trim().length() > 0 ? Integer.parseInt( line.substring( 58, 59 ).trim() ) : 0 );

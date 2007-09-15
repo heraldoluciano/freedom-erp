@@ -102,7 +102,7 @@ public class FRemCnab extends FRemFBN {
 					args[ i ] = rs.getString( i + 1 );					
 				}
 				
-				args[ DadosCliente.CNPJCPF.ordinal() ] = args[ DadosCliente.CNPJ.ordinal() ] == null ? "2" : "1";
+				args[ DadosCliente.CNPJCPF.ordinal() ] = args[ DadosCliente.CNPJ.ordinal() ] != null ? "2" : "1";
 			}
 			
 			rs.close();
@@ -229,7 +229,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
 		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
 		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
-		reg.setDigAgConta( 0 );
+		reg.setDigAgConta( null );
 		reg.setIdentTitulo( Boleto.geraNossoNumero( 
 				(String)prefs.get( EPrefs.MDECOB ), 
 				(String)prefs.get( EPrefs.CONVCOB ), 
@@ -238,31 +238,37 @@ public class FRemCnab extends FRemFBN {
 		reg.setCodCarteira( getCarteiraCobranca( 
 				rec.getCodrec(), 
 				rec.getNParcitrec() ) );
-		reg.setFormaCadTitulo( (Integer) prefs.get( EPrefs.FORCADTIT ) );//**
-		reg.setTipoDoc( (Integer) prefs.get( EPrefs.TIPODOC ) );//**
-		reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );//**
-		reg.setIdentDist( (Integer) prefs.get( EPrefs.IDENTDISTBOL ) );//**
-		reg.setDocCobranca( (String) rec.getArgs()[ EColrec.DOCREC.ordinal() ] );
+		reg.setFormaCadTitulo( (Integer) prefs.get( EPrefs.FORCADTIT ) );
+		reg.setTipoDoc( (Integer) prefs.get( EPrefs.TIPODOC ) );
+		reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );
+		reg.setIdentDist( (Integer) prefs.get( EPrefs.IDENTDISTBOL ) );
+		reg.setDocCobranca( (String) rec.getArgs()[ EColrec.DOCREC.ordinal() ] + "/" + (String) rec.getArgs()[ EColrec.NRPARCPAG.ordinal() ] );
 		reg.setDtVencTitulo( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );		
 		reg.setAgenciaCob( null );
 		reg.setDigAgenciaCob( 0 );
- 		reg.setEspecieTit( (Integer) prefs.get( EPrefs.ESPECTIT ) );//**/
+ 		reg.setEspecieTit( (Integer) prefs.get( EPrefs.ESPECTIT ) );
 		reg.setAceite( 'N' );
 		reg.setDtEmitTit( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
-		reg.setCodJuros( (Integer) prefs.get( EPrefs.CODJUROS ) );//**
-		reg.setDtJuros( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
-		reg.setVlrJurosTaxa( (BigDecimal) prefs.get( EPrefs.VLRPERCJUROS ) ); //**		
-		reg.setCodDesc( (Integer) prefs.get( EPrefs.CODDESC ) );//**
+		reg.setCodJuros( (Integer) prefs.get( EPrefs.CODJUROS ) );
+		// se for isento de juros.
+		if ( 3 == reg.getCodJuros() ) {
+			reg.setDtJuros( null );
+		}
+		else {
+			reg.setDtJuros( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
+		}
+		reg.setVlrJurosTaxa( (BigDecimal) prefs.get( EPrefs.VLRPERCJUROS ) );		
+		reg.setCodDesc( (Integer) prefs.get( EPrefs.CODDESC ) );
 		reg.setDtDesc( null );
-		reg.setVlrpercConced( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) );//**
+		reg.setVlrpercConced( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) );
 		reg.setVlrIOF( new BigDecimal( 0 ) );
 		reg.setVlrAbatimento( new BigDecimal( 0 ) );
 		reg.setIdentTitEmp( rec.getCodrec().toString() );
-		reg.setCodProtesto( (Integer) prefs.get( EPrefs.CODPROT ) );//**
-		reg.setDiasProtesto( (Integer) prefs.get( EPrefs.DIASPROT ) );//**
-		reg.setCodBaixaDev( (Integer) prefs.get( EPrefs.CODBAIXADEV ) );//**
-		reg.setDiasBaixaDevol( (Integer) prefs.get( EPrefs.DIASBAIXADEV ) );//**  
+		reg.setCodProtesto( (Integer) prefs.get( EPrefs.CODPROT ) );
+		reg.setDiasProtesto( (Integer) prefs.get( EPrefs.DIASPROT ) );
+		reg.setCodBaixaDev( (Integer) prefs.get( EPrefs.CODBAIXADEV ) );
+		reg.setDiasBaixaDevol( (Integer) prefs.get( EPrefs.DIASBAIXADEV ) ); 
 		reg.setCodMoeda( 9 );
 		reg.setContrOperCred( null );
 		
