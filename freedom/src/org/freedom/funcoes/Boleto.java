@@ -214,7 +214,7 @@ public class Boleto {
 	    }
 		resto = soma % modulo;
 		dig = String.valueOf( modulo-resto );
-		if ( (modulo==10) && (dig=="10") ) {
+		if ( (modulo==10) && ("10".equals( dig )) ) {
 			dig = "0";
 		}
 		else if ( (modulo==11) && ("0-1-10-11".indexOf( dig )>-1) ) {
