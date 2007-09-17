@@ -42,6 +42,7 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -392,15 +393,83 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		return retorno;
 	}
 
-	public void imprimir( boolean b ) {
+	public void imprimir( boolean bVisualizar ) {
 		
-		if ( removeEtiquetas() ) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sSQL = new StringBuffer();
+		ImprimeOS imp = new ImprimeOS( "", con );
+		String sLinhaFina = Funcoes.replicate( "-", 133 );
+		String sLinhaDupla = Funcoes.replicate( "=", 133 );
+		int linPag = imp.verifLinPag() - 1;
+		int iLinha = 1;
+		int iCol = 0;
+		
+		try {
 			
-			if ( persistEtiquetas() ) {
-
-				// Montar jasper com etiquetas...	
+		sSQL.append( "SELECT EQ.CODBARPROD, EQ.DESCPROD " );
+		sSQL.append( "FROM EQPRODUTO EQ " );
+		sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODMARCA=3" );
+		
+		ps = con.prepareStatement( sSQL.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+		rs = ps.executeQuery();
+		
+		imp.montaCab();
+		imp.setTitulo( "Etiqueta de Código de barras" );
+		imp.addSubTitulo( "ETIQUETAS DE CÒDIGO DE BARRAS" );
+			
+		while ( rs.next() ) {
+		
+			if ( imp.pRow() >= ( linPag - 1 ) ) {
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "+" + sLinhaFina + "+" );
+				imp.incPags();
+				imp.eject();
 			}
+		
+			if ( imp.pRow() == 0 ) {
+				
+				imp.impCab( 136, true );
+				imp.say( 0, "|" + sLinhaFina + "|" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "| Cód.Bar.Prod" );
+				imp.say( 16, "| Descrição do produto" );
+				imp.say( 135, "|" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "|" + sLinhaFina + "|" );
+				
+				
+			}
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say( 0, "| " + rs.getString( "CODBARPROD" ) );
+			imp.say( 15, "| " + rs.getString( "DESCPROD" ) );
+			imp.say( 135, "|" );
+			
 		}
+		
+		imp.pulaLinha( 1, imp.comprimido() );
+		imp.say( 0, "|" + sLinhaDupla + "|" );
+		
+		imp.eject();
+		imp.fechaGravacao();
+		
+		if ( bVisualizar ) {
+			imp.preview( this );
+		}else {
+			imp.print();	
+		}
+		
+		} catch ( Exception e ) {
+		
+			e.printStackTrace();
+		}	
+		//	if ( removeEtiquetas() ) {
+		//		if ( persistEtiquetas() ) {
+				// Montar jasper com etiquetas...	
+		//		}
+		//	}
 	}
 
 	public void setConexao( Connection cn ) {
