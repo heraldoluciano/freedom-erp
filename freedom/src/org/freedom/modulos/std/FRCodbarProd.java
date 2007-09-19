@@ -394,7 +394,17 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	}
 
 	public void imprimir( boolean bVisualizar ) {
+
+		if ( removeEtiquetas() ) {
+				if ( persistEtiquetas() ) {
+					imprimirTexto( bVisualizar );
+		//		 Montar jasper com etiquetas...	
+				}
+		}
 		
+	}
+	
+	private void imprimirTexto( boolean bVisualizar ) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
@@ -465,11 +475,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		
 			e.printStackTrace();
 		}	
-		//	if ( removeEtiquetas() ) {
-		//		if ( persistEtiquetas() ) {
-				// Montar jasper com etiquetas...	
-		//		}
-		//	}
+		
 	}
 
 	public void setConexao( Connection cn ) {
