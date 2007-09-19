@@ -117,48 +117,44 @@ public class FRFechaDiario extends FRelatorio{
 		
 		try {
 		
+			/**
+			 *SELECT CAST('A' AS CHAR(1)) TIPOLANCA, V.DTSAIDAVENDA DATA,
+V.CODTIPOMOV, M.DESCTIPOMOV,
+V.CODCAIXA, C.DESCCAIXA, V.IDUSUINS,
+V.CODPLANOPAG, P.DESCPLANOPAG, V.CODVENDA PEDIDO, V.DOCVENDA DOC,
+VO.NOMEVEND,
+SUM(V.VLRLIQVENDA) VALOR
+FROM VDVENDA V, PVCAIXA C, EQTIPOMOV M, FNPLANOPAG P, VDVENDEDOR VO
+WHERE V.CODEMP=42 AND V.CODFILIAL=1 AND
+V.DTEMITVENDA='27.08.2007' AND
+C.CODEMP=V.CODEMPCX AND C.CODFILIAL=V.CODFILIALCX AND
+C.CODCAIXA=V.CODCAIXA AND
+M.CODEMP=V.CODEMPTM AND M.CODFILIAL=V.CODFILIALTM AND
+M.CODTIPOMOV=V.CODTIPOMOV AND
+P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND
+P.CODPLANOPAG=V.CODPLANOPAG AND VO.CODEMP=V.CODEMPVD AND
+VO.CODFILIAL=V.CODFILIALVD AND VO.CODVEND=V.CODVEND
+GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+UNION
+SELECT CAST('B' AS CHAR(1)) TIPO, CP.DTEMITCOMPRA DATA,
+CP.CODTIPOMOV, M.DESCTIPOMOV, 0 CODCAIXA,
+CAST ( NULL AS CHAR(40)) DESCCAIXA, CP.IDUSUINS,
+CP.CODPLANOPAG, P.DESCPLANOPAG, CP.CODCOMPRA PEDIDO, CP.DOCCOMPRA DOC,
+CAST ( NULL AS CHAR(40)) NOMEVEND,
+SUM(CP.VLRLIQCOMPRA*-1) VALOR
+FROM CPCOMPRA CP, EQTIPOMOV M, FNPLANOPAG P
+WHERE CP.CODEMP=42 AND CP.CODFILIAL=1 AND
+CP.DTEMITCOMPRA='27.08.2007' AND
+M.CODEMP=CP.CODEMPTM AND M.CODFILIAL=CP.CODFILIALTM AND
+M.CODTIPOMOV=CP.CODTIPOMOV AND M.TIPOMOV='DV' AND
+P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND
+P.CODPLANOPAG=CP.CODPLANOPAG
+GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+			 * */
 			sCab.append( "Data: "+txtData.getVlrString() );
-			sSQL.append( "SELECT CAST('A' AS CHAR(1)) TIPOLANCA, V.DTSAIDAVENDA DATA, ");
-			sSQL.append( "V.CODTIPOMOV, M.DESCTIPOMOV, " );
-			sSQL.append( "V.CODCAIXA, C.DESCCAIXA, V.IDUSUINS, " );
-			sSQL.append( "V.CODPLANOPAG, P.DESCPLANOPAG, SUM(V.VLRLIQVENDA) VALOR " );
-			sSQL.append( "FROM VDVENDA V, PVCAIXA C, EQTIPOMOV M, FNPLANOPAG P " );
-			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND " );
-			sSQL.append( "V.DTEMITVENDA=? AND " );
-			if (codcaixa!=0) {
-				sSQL.append( "V.CODEMPCX=? AND V.CODFILIALCX=? AND V.CODCAIXA=? AND " );
-				sCab.append( " - Caixa: "+codcaixa );
-			}
-			if (!"".equals(idusu)) {
-				sSQL.append( " V.IDUSUINS=? AND ");
-				sCab.append( " - Usuário: "+idusu );
-			}
-			sSQL.append( "C.CODEMP=V.CODEMPCX AND C.CODFILIAL=V.CODFILIALCX AND " );
-			sSQL.append( "C.CODCAIXA=V.CODCAIXA AND " );
-			sSQL.append( "M.CODEMP=V.CODEMPTM AND M.CODFILIAL=V.CODFILIALTM AND " );
-			sSQL.append( "M.CODTIPOMOV=V.CODTIPOMOV AND M.SOMAVDTIPOMOV='S' AND " );
-			sSQL.append( "P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND " );
-			sSQL.append( "P.CODPLANOPAG=V.CODPLANOPAG " );
-			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
-			sSQL.append( "UNION " );
-			sSQL.append( "SELECT CAST('B' AS CHAR(1)) TIPOLANCA, CP.DTEMITCOMPRA DATA, " );
-			sSQL.append( "CP.CODTIPOMOV, M.DESCTIPOMOV, " );
-			sSQL.append( "40 CODCAIXA, CAST( null AS CHAR(40) ) DESCCAIXA, CP.IDUSUINS, " );
-			sSQL.append( "CP.CODPLANOPAG, P.DESCPLANOPAG, SUM(CP.VLRLIQCOMPRA*-1) VALOR " );
-			sSQL.append( "FROM CPCOMPRA CP, EQTIPOMOV M, FNPLANOPAG P " );
-			sSQL.append( "WHERE CP.CODEMP=? AND CP.CODFILIAL=? AND " );
-			sSQL.append( "CP.DTEMITCOMPRA=? AND " );
-			if (!"".equals(idusu)) {
-				sSQL.append( " CP.IDUSUINS=? AND ");
-			}
-			sSQL.append( "M.CODEMP=CP.CODEMPTM AND M.CODFILIAL=CP.CODFILIALTM AND " );
-			sSQL.append( "M.CODTIPOMOV=CP.CODTIPOMOV AND M.TIPOMOV='DV' AND " );
-			sSQL.append( "P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND " );
-			sSQL.append( "P.CODPLANOPAG=CP.CODPLANOPAG " );
-			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
-			sSQL.append( "ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
 			
-			ps = con.prepareStatement( sSQL.toString() );
+			ps = con.prepareStatement( montaSql(codcaixa, idusu, sCab) );
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtData.getVlrDate() ));
@@ -208,6 +204,103 @@ public class FRFechaDiario extends FRelatorio{
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
+	}
+	
+	private String montaSql(int codcaixa, String idusu, StringBuilder sCab) {
+		
+		StringBuilder sSQL = new StringBuilder();
+		
+		if("R".equals( rgTipo.getVlrString())){
+			
+			sCab.append( "Data: "+txtData.getVlrString() );
+			sSQL.append( "SELECT CAST('A' AS CHAR(1)) TIPOLANCA, V.DTSAIDAVENDA DATA, ");
+			sSQL.append( "V.CODTIPOMOV, M.DESCTIPOMOV, " );
+			sSQL.append( "V.CODCAIXA, C.DESCCAIXA, V.IDUSUINS, " );
+			sSQL.append( "V.CODPLANOPAG, P.DESCPLANOPAG, SUM(V.VLRLIQVENDA) VALOR " );
+			sSQL.append( "FROM VDVENDA V, PVCAIXA C, EQTIPOMOV M, FNPLANOPAG P " );
+			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND " );
+			sSQL.append( "V.DTEMITVENDA=? AND " );
+			if (codcaixa!=0) {
+				sSQL.append( "V.CODEMPCX=? AND V.CODFILIALCX=? AND V.CODCAIXA=? AND " );
+				sCab.append( " - Caixa: "+codcaixa );
+			}
+			if (!"".equals(idusu)) {
+				sSQL.append( " V.IDUSUINS=? AND ");
+				sCab.append( " - Usuário: "+idusu );
+			}
+			sSQL.append( "C.CODEMP=V.CODEMPCX AND C.CODFILIAL=V.CODFILIALCX AND " );
+			sSQL.append( "C.CODCAIXA=V.CODCAIXA AND " );
+			sSQL.append( "M.CODEMP=V.CODEMPTM AND M.CODFILIAL=V.CODFILIALTM AND " );
+			sSQL.append( "M.CODTIPOMOV=V.CODTIPOMOV AND M.SOMAVDTIPOMOV='S' AND " );
+			sSQL.append( "P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND " );
+			sSQL.append( "P.CODPLANOPAG=V.CODPLANOPAG " );
+			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
+			sSQL.append( "UNION " );
+			sSQL.append( "SELECT CAST('B' AS CHAR(1)) TIPOLANCA, CP.DTEMITCOMPRA DATA, " );
+			sSQL.append( "CP.CODTIPOMOV, M.DESCTIPOMOV, " );
+			sSQL.append( "40 CODCAIXA, CAST( null AS CHAR(40) ) DESCCAIXA, CP.IDUSUINS, " );
+			sSQL.append( "CP.CODPLANOPAG, P.DESCPLANOPAG, SUM(CP.VLRLIQCOMPRA*-1) VALOR " );
+			sSQL.append( "FROM CPCOMPRA CP, EQTIPOMOV M, FNPLANOPAG P " );
+			sSQL.append( "WHERE CP.CODEMP=? AND CP.CODFILIAL=? AND " );
+			sSQL.append( "CP.DTEMITCOMPRA=? AND " );
+			if (!"".equals(idusu)) {
+				sSQL.append( " CP.IDUSUINS=? AND ");
+			}
+			sSQL.append( "M.CODEMP=CP.CODEMPTM AND M.CODFILIAL=CP.CODFILIALTM AND " );
+			sSQL.append( "M.CODTIPOMOV=CP.CODTIPOMOV AND M.TIPOMOV='DV' AND " );
+			sSQL.append( "P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND " );
+			sSQL.append( "P.CODPLANOPAG=CP.CODPLANOPAG " );
+			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
+			sSQL.append( "ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
+			
+		}else{
+			sSQL.append( "SELECT CAST('A' AS CHAR(1)) TIPOLANCA, V.DTSAIDAVENDA DATA, ");
+			sSQL.append( "V.CODTIPOMOV, M.DESCTIPOMOV, " );
+			sSQL.append( "V.CODCAIXA, C.DESCCAIXA, V.IDUSUINS, " );
+			sSQL.append( "V.CODPLANOPAG, P.DESCPLANOPAG, V.CODVENDA PEDIDO, V.DOCVENDA DOC, VO.NOMEVEND, ");
+			sSQL.append( "SUM(V.VLRLIQVENDA) VALOR " );
+			sSQL.append( "FROM VDVENDA V, PVCAIXA C, EQTIPOMOV M, FNPLANOPAG P, VDVENDEDOR VO " );
+			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND " );
+			sSQL.append( "V.DTEMITVENDA=? AND " );
+			if (codcaixa!=0) {
+				sSQL.append( "V.CODEMPCX=? AND V.CODFILIALCX=? AND V.CODCAIXA=? AND " );
+				sCab.append( " - Caixa: "+codcaixa );
+			}
+			if (!"".equals(idusu)) {
+				sSQL.append( " V.IDUSUINS=? AND ");
+				sCab.append( " - Usuário: "+idusu );
+			}
+			sSQL.append( "C.CODEMP=V.CODEMPCX AND C.CODFILIAL=V.CODFILIALCX AND " );
+			sSQL.append( "C.CODCAIXA=V.CODCAIXA AND " );
+			sSQL.append( "M.CODEMP=V.CODEMPTM AND M.CODFILIAL=V.CODFILIALTM AND " );
+			sSQL.append( "M.CODTIPOMOV=V.CODTIPOMOV AND M.SOMAVDTIPOMOV='S' AND " );
+			sSQL.append( "P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND " );
+			sSQL.append( "P.CODPLANOPAG=V.CODPLANOPAG AND VO.CODEMP=V.CODEMPVD AND " );
+			sSQL.append( "VO.CODFILIAL=V.CODFILIALVD AND VO.CODVEND=V.CODVEND " );
+			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 " );
+			sSQL.append( "UNION " );
+			sSQL.append( "SELECT CAST('B' AS CHAR(1)) TIPOLANCA, CP.DTEMITCOMPRA DATA, " );
+			sSQL.append( "CP.CODTIPOMOV, M.DESCTIPOMOV, " );
+			sSQL.append( "0 CODCAIXA, CAST( null AS CHAR(40) ) DESCCAIXA, CP.IDUSUINS, " );
+			sSQL.append( "CP.CODPLANOPAG, P.DESCPLANOPAG, CP.CODCOMPRA PEDIDO, CP.DOCCOMPRA DOC," ); 
+			sSQL.append( "CAST ( NULL AS CHAR(40)) NOMEVEND, " );
+			sSQL.append( "SUM(CP.VLRLIQCOMPRA*-1) VALOR " );
+			sSQL.append( "FROM CPCOMPRA CP, EQTIPOMOV M, FNPLANOPAG P " );
+			sSQL.append( "WHERE CP.CODEMP=? AND CP.CODFILIAL=? AND " );
+			sSQL.append( "CP.DTEMITCOMPRA=? AND " );
+			if (!"".equals(idusu)) {
+				sSQL.append( " CP.IDUSUINS=? AND ");
+			}
+			sSQL.append( "M.CODEMP=CP.CODEMPTM AND M.CODFILIAL=CP.CODFILIALTM AND " );
+			sSQL.append( "M.CODTIPOMOV=CP.CODTIPOMOV AND M.TIPOMOV='DV' AND " );
+			sSQL.append( "P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND " );
+			sSQL.append( "P.CODPLANOPAG=CP.CODPLANOPAG " );
+			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 " );
+			sSQL.append( "ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 " );
+		}
+		
+		return sSQL.toString();
+		
 	}
 	private boolean comRef() {
 
