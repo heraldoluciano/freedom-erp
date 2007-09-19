@@ -29,6 +29,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -39,6 +40,7 @@ import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -82,6 +84,14 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 	private JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
 	private JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JCheckBoxPad cbAtivo = null;
+	
+	private JRadioGroup rgCV = null;
+	
+	private Vector vLabsCV = new Vector();
+
+	private Vector vValsCV = new Vector();
 
 	private ListaCampos lcConta = new ListaCampos( this, "CA" );
 
@@ -96,8 +106,20 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 	public FPlanoPag() {
 
 		setTitulo( "Cadastro de Planos de Pagamento" );
-		setAtribos( 50, 50, 730, 380 );
+		setAtribos( 50, 50, 730, 480 );
 
+		vValsCV.addElement( "C" );
+		vValsCV.addElement( "V" );
+		vValsCV.addElement( "A" );
+		vLabsCV.addElement( "Compra" );
+		vLabsCV.addElement( "Venda" );
+		vLabsCV.addElement( "Ambos" );
+		rgCV = new JRadioGroup( 1, 3, vLabsCV, vValsCV );
+		rgCV.setVlrString( "V" );
+		
+		cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
+		cbAtivo.setVlrString( "S" );
+		
 		lcConta.add( new GuardaCampo( txtNumConta, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
@@ -121,7 +143,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		lcCC.setReadOnly( true );
 		txtCodCC.setTabelaExterna( lcCC );
 
-		setAltCab( 160 );
+		setAltCab( 194 );
 		pinCab = new JPanelPad();
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
@@ -130,14 +152,16 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		adicCampo( txtDescPlanoPag, 80, 20, 217, 20, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, null, true );
 		adicCampo( txtNumParc, 300, 20, 67, 20, "ParcPlanoPag", "N° Parcs.", ListaCampos.DB_SI, null, true );
 		adicCampo( txtNumConta, 370, 20, 97, 20, "NumConta", "N.Conta", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescConta, 470, 20, 200, 20, "DescConta", "Descrição da conta" );
+		adicDescFK( txtDescConta, 470, 20, 225, 20, "DescConta", "Descrição da conta" ); 
 		adicCampo( txtCodPlan, 7, 60, 100, 20, "CodPlan", "Cód.planj.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescPlan, 110, 60, 197, 20, "DescPlan", "Descrição do planejamento" );
-		adicCampo( txtCodCC, 310, 60, 97, 20, "CodCC", "Centro de custo", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescCC, 410, 60, 200, 20, "DescCC", "Descrição do centro de custo" );
+		adicDescFK( txtDescPlan, 110, 60, 257, 20, "DescPlan", "Descrição do planejamento" );
+		adicCampo( txtCodCC, 370, 60, 97, 20, "CodCC", "Centro de custo", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescCC, 470, 60, 225, 20, "DescCC", "Descrição do centro de custo" );
 		adicCampoInvisivel( txtAnoCC, "AnoCC", "Ano.C.C.", ListaCampos.DB_SI, false );
-		adicDB( cbAutoBaixa, 7, 80, 300, 20, "AutoBaixaPlanoPag", "", false );
-		adicDB( cbApOrcPlanoPag, 310, 80, 250, 20, "ApOrcPlanoPag", "", true );
+		adicDB( cbAutoBaixa, 4, 84, 300, 20, "AutoBaixaPlanoPag", "", false ); 
+		adicDB( cbApOrcPlanoPag, 4, 106, 250, 20, "ApOrcPlanoPag", "", true ); 
+		adicDB( rgCV, 370, 104, 324, 37, "CVPlanoPag", "Cadastro para:", true );
+		adicDB( cbAtivo, 4, 128, 250, 20, "AtivoPlanoPag", "", true ); 
 
 		setListaCampos( true, "PLANOPAG", "FN" );
 		lcCampos.setQueryInsert( true );
