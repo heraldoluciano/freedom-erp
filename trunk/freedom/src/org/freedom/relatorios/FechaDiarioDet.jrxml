@@ -45,11 +45,13 @@
 	<parameter name="COMREF" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["N"]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT CAST('A' AS CHAR(1)) TIPOLANCA, V.DTSAIDAVENDA DATA, 
-V.CODTIPOMOV, M.DESCTIPOMOV, 
+	<queryString><![CDATA[SELECT CAST('A' AS CHAR(1)) TIPOLANCA, V.DTSAIDAVENDA DATA,
+V.CODTIPOMOV, M.DESCTIPOMOV,
 V.CODCAIXA, C.DESCCAIXA, V.IDUSUINS,
-V.CODPLANOPAG, P.DESCPLANOPAG, SUM(V.VLRLIQVENDA) VALOR
-FROM VDVENDA V, PVCAIXA C, EQTIPOMOV M, FNPLANOPAG P
+V.CODPLANOPAG, P.DESCPLANOPAG, V.CODVENDA PEDIDO, V.DOCVENDA DOC,
+VO.NOMEVEND,
+SUM(V.VLRLIQVENDA) VALOR
+FROM VDVENDA V, PVCAIXA C, EQTIPOMOV M, FNPLANOPAG P, VDVENDEDOR VO
 WHERE V.CODEMP=42 AND V.CODFILIAL=1 AND
 V.DTEMITVENDA='27.08.2007' AND
 C.CODEMP=V.CODEMPCX AND C.CODFILIAL=V.CODFILIALCX AND
@@ -57,13 +59,16 @@ C.CODCAIXA=V.CODCAIXA AND
 M.CODEMP=V.CODEMPTM AND M.CODFILIAL=V.CODFILIALTM AND
 M.CODTIPOMOV=V.CODTIPOMOV AND
 P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND
-P.CODPLANOPAG=V.CODPLANOPAG
-GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9
+P.CODPLANOPAG=V.CODPLANOPAG AND VO.CODEMP=V.CODEMPVD AND
+VO.CODFILIAL=V.CODFILIALVD AND VO.CODVEND=V.CODVEND
+GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
 UNION
-SELECT CAST('B' AS CHAR(1)) TIPO, CP.DTEMITCOMPRA DATA, 
+SELECT CAST('B' AS CHAR(1)) TIPO, CP.DTEMITCOMPRA DATA,
 CP.CODTIPOMOV, M.DESCTIPOMOV, 0 CODCAIXA,
 CAST ( NULL AS CHAR(40)) DESCCAIXA, CP.IDUSUINS,
-CP.CODPLANOPAG, P.DESCPLANOPAG, SUM(CP.VLRLIQCOMPRA*-1) VALOR
+CP.CODPLANOPAG, P.DESCPLANOPAG, CP.CODCOMPRA PEDIDO, CP.DOCCOMPRA DOC,
+CAST ( NULL AS CHAR(40)) NOMEVEND,
+SUM(CP.VLRLIQCOMPRA*-1) VALOR
 FROM CPCOMPRA CP, EQTIPOMOV M, FNPLANOPAG P
 WHERE CP.CODEMP=42 AND CP.CODFILIAL=1 AND
 CP.DTEMITCOMPRA='27.08.2007' AND
@@ -71,8 +76,8 @@ M.CODEMP=CP.CODEMPTM AND M.CODFILIAL=CP.CODFILIALTM AND
 M.CODTIPOMOV=CP.CODTIPOMOV AND M.TIPOMOV='DV' AND
 P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND
 P.CODPLANOPAG=CP.CODPLANOPAG
-GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9
-ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
+GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]]></queryString>
 
 	<field name="TIPOLANCA" class="java.lang.String"/>
 	<field name="DATA" class="java.sql.Date"/>
@@ -83,6 +88,9 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 	<field name="IDUSUINS" class="java.lang.String"/>
 	<field name="CODPLANOPAG" class="java.lang.Long"/>
 	<field name="DESCPLANOPAG" class="java.lang.String"/>
+	<field name="PEDIDO" class="java.lang.Long"/>
+	<field name="DOC" class="java.lang.Long"/>
+	<field name="NOMEVEND" class="java.lang.String"/>
 	<field name="VALOR" class="java.math.BigDecimal"/>
 
 	<variable name="SUBTOTAL_CAIXA" class="java.math.BigDecimal" resetType="Group" resetGroup="CAIXA_DATA" calculation="Sum">
@@ -94,6 +102,9 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 	<variable name="SUBTOTAL_TIPOMOV" class="java.math.BigDecimal" resetType="Group" resetGroup="TIPOMOV_DATA" calculation="Sum">
 		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
 	</variable>
+	<variable name="SUBTOTAL_USU" class="java.math.BigDecimal" resetType="Group" resetGroup="USU_DATA" calculation="Sum">
+		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
+	</variable>
 
 		<group  name="GERAL" >
 			<groupExpression><![CDATA[]]></groupExpression>
@@ -103,7 +114,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 					<reportElement
 						x="35"
 						y="15"
-						width="31"
+						width="35"
 						height="12"
 						key="staticText-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -127,9 +138,9 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="135"
+						x="121"
 						y="15"
-						width="54"
+						width="75"
 						height="12"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -140,7 +151,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="333"
+						x="464"
 						y="15"
 						width="70"
 						height="12"
@@ -164,14 +175,53 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 					</textElement>
 				<text><![CDATA[Data]]></text>
 				</staticText>
+				<staticText>
+					<reportElement
+						x="221"
+						y="15"
+						width="64"
+						height="12"
+						key="staticText-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Comissionado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="294"
+						y="15"
+						width="75"
+						height="12"
+						key="staticText-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Num.Pedido]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="374"
+						y="15"
+						width="64"
+						height="12"
+						key="staticText-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Doc.]]></text>
+				</staticText>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="14"  isSplitAllowed="true" >
+			<band height="17"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="2"
-						y="1"
+						y="2"
 						width="31"
 						height="12"
 						key="staticText-1"/>
@@ -183,8 +233,8 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="334"
-						y="0"
+						x="465"
+						y="2"
 						width="70"
 						height="12"
 						key="textField-23"/>
@@ -196,7 +246,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="313"
+						x="437"
 						y="1"
 						width="98"
 						height="0"
@@ -256,7 +306,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 				<staticText>
 					<reportElement
 						x="17"
-						y="1"
+						y="4"
 						width="159"
 						height="12"
 						key="staticText-6"/>
@@ -268,8 +318,8 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="334"
-						y="0"
+						x="464"
+						y="3"
 						width="70"
 						height="12"
 						key="textField-20"/>
@@ -281,7 +331,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="313"
+						x="437"
 						y="1"
 						width="98"
 						height="0"
@@ -328,7 +378,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 				<staticText>
 					<reportElement
 						x="33"
-						y="1"
+						y="3"
 						width="159"
 						height="12"
 						key="staticText-7"/>
@@ -340,8 +390,8 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="334"
-						y="0"
+						x="463"
+						y="3"
 						width="70"
 						height="12"
 						key="textField-22"/>
@@ -353,11 +403,70 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="313"
+						x="437"
 						y="1"
 						width="98"
 						height="0"
 						key="line-10"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="USU_DATA" >
+			<groupExpression><![CDATA[$F{CODCAIXA}.toString()+$F{DATA}.toString()+$F{CODTIPOMOV}.toString()+$F{IDUSUINS}]]></groupExpression>
+			<groupHeader>
+			<band height="15"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="117"
+						y="1"
+						width="75"
+						height="12"
+						key="textField-21"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{IDUSUINS}]]></textFieldExpression>
+				</textField>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="18"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="117"
+						y="2"
+						width="159"
+						height="12"
+						key="staticText-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Sub-total (Usuário)]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="463"
+						y="3"
+						width="70"
+						height="12"
+						key="textField-29"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SUBTOTAL_USU}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="436"
+						y="1"
+						width="98"
+						height="0"
+						key="line-12"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -486,11 +595,11 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="14"  isSplitAllowed="true" >
+			<band height="16"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="334"
-						y="0"
+						x="463"
+						y="2"
 						width="70"
 						height="12"
 						key="textField-19"/>
@@ -502,16 +611,42 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="136"
-						y="1"
-						width="123"
+						x="216"
+						y="2"
+						width="75"
 						height="12"
-						key="textField-21"/>
+						key="textField-26"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{IDUSUINS}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMEVEND}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="294"
+						y="2"
+						width="75"
+						height="12"
+						key="textField-27"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{PEDIDO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="374"
+						y="2"
+						width="64"
+						height="12"
+						key="textField-28"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{DOC}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
