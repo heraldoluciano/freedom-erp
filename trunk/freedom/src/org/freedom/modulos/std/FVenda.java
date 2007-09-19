@@ -389,7 +389,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		// FK Plano de Pagamento
 		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_PK, false ) );
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição plano de pagamento", ListaCampos.DB_SI, false ) );
-		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
+		lcPlanoPag.setWhereAdic( "ATIVOPLANOPAG='S' AND CVPLANOPAG IN ('V','A')" );
+		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );		
 		lcPlanoPag.setQueryCommit( false );
 		lcPlanoPag.setReadOnly( true );
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
