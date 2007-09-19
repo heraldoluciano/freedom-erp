@@ -320,6 +320,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		// FK Plano de pagamento
 		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );
 		lcPlanoPag.add( new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false ) );
+		lcPlanoPag.setWhereAdic( "ATIVOPLANOPAG='S' AND CVPLANOPAG IN ('V','A')" );
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
 		txtDescPlanoPag.setListaCampos( lcPlanoPag );
 		lcPlanoPag.montaSql( false, "PLANOPAG", "FN" );
