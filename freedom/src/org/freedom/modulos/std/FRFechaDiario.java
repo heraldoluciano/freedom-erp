@@ -219,12 +219,23 @@ public class FRFechaDiario extends FRelatorio{
 			sSQL.append( "ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
 			
 		}else{
+			
 			sSQL.append( "SELECT CAST('A' AS CHAR(1)) TIPOLANCA, V.DTSAIDAVENDA DATA, ");
 			sSQL.append( "V.CODTIPOMOV, M.DESCTIPOMOV, " );
 			sSQL.append( "V.CODCAIXA, C.DESCCAIXA, V.IDUSUINS, " );
-			sSQL.append( "V.CODPLANOPAG, P.DESCPLANOPAG, V.CODVENDA PEDIDO, V.DOCVENDA DOC, VO.NOMEVEND, ");
+			sSQL.append( "V.CODPLANOPAG, P.DESCPLANOPAG, V.CODVENDA PEDIDO, V.DOCVENDA DOC," ); 
+			sSQL.append( " VO.NOMEVEND, VC.CODORC, VC.CODITORC, ");
+			sSQL.append( "SUM(IO.VLRLIQITORC) VALORORC, ");
 			sSQL.append( "SUM(V.VLRLIQVENDA) VALOR " );
-			sSQL.append( "FROM VDVENDA V, PVCAIXA C, EQTIPOMOV M, FNPLANOPAG P, VDVENDEDOR VO " );
+			sSQL.append( "FROM PVCAIXA C, EQTIPOMOV M, FNPLANOPAG P, VDVENDEDOR VO, " );
+			sSQL.append( "VDVENDA V, VDITVENDA IV " );
+			sSQL.append( "LEFT OUTER JOIN VDVENDAORC VC ON " );
+			sSQL.append( "VC.CODEMP=IV.CODEMP AND VC.CODFILIAL=IV.CODFILIAL AND " );
+			sSQL.append( "VC.TIPOVENDA=IV.TIPOVENDA AND VC.CODVENDA=IV.CODVENDA AND " );
+			sSQL.append( "VC.CODITVENDA=IV.CODITVENDA " );
+			sSQL.append( "LEFT OUTER JOIN VDITORCAMENTO IO ON " );
+			sSQL.append( "IO.CODEMP=VC.CODEMPOR AND IO.CODFILIAL=VC.CODFILIALOR AND " );
+			sSQL.append( "IO.CODORC=VC.CODORC AND IO.CODITORC=VC.CODITORC " );
 			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND " );
 			sSQL.append( "V.DTEMITVENDA=? AND " );
 			if (codcaixa!=0) {
@@ -235,6 +246,9 @@ public class FRFechaDiario extends FRelatorio{
 				sSQL.append( " V.IDUSUINS=? AND ");
 				sCab.append( " - Usuário: "+idusu );
 			}
+			
+			sSQL.append( "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND ");
+			sSQL.append( "IV.TIPOVENDA=V.TIPOVENDA AND IV.CODVENDA=V.CODVENDA AND " );
 			sSQL.append( "C.CODEMP=V.CODEMPCX AND C.CODFILIAL=V.CODFILIALCX AND " );
 			sSQL.append( "C.CODCAIXA=V.CODCAIXA AND " );
 			sSQL.append( "M.CODEMP=V.CODEMPTM AND M.CODFILIAL=V.CODFILIALTM AND " );
@@ -242,13 +256,16 @@ public class FRFechaDiario extends FRelatorio{
 			sSQL.append( "P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND " );
 			sSQL.append( "P.CODPLANOPAG=V.CODPLANOPAG AND VO.CODEMP=V.CODEMPVD AND " );
 			sSQL.append( "VO.CODFILIAL=V.CODFILIALVD AND VO.CODVEND=V.CODVEND " );
-			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 " );
+			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 " );
 			sSQL.append( "UNION " );
 			sSQL.append( "SELECT CAST('B' AS CHAR(1)) TIPOLANCA, CP.DTEMITCOMPRA DATA, " );
 			sSQL.append( "CP.CODTIPOMOV, M.DESCTIPOMOV, " );
 			sSQL.append( "0 CODCAIXA, CAST( null AS CHAR(40) ) DESCCAIXA, CP.IDUSUINS, " );
 			sSQL.append( "CP.CODPLANOPAG, P.DESCPLANOPAG, CP.CODCOMPRA PEDIDO, CP.DOCCOMPRA DOC," ); 
 			sSQL.append( "CAST ( NULL AS CHAR(40)) NOMEVEND, " );
+			sSQL.append( "0 CODORC, " );
+			sSQL.append( "0 CODITORC, " );
+			sSQL.append( "SUM(0) VALORORC, " );
 			sSQL.append( "SUM(CP.VLRLIQCOMPRA*-1) VALOR " );
 			sSQL.append( "FROM CPCOMPRA CP, EQTIPOMOV M, FNPLANOPAG P " );
 			sSQL.append( "WHERE CP.CODEMP=? AND CP.CODFILIAL=? AND " );
@@ -260,8 +277,8 @@ public class FRFechaDiario extends FRelatorio{
 			sSQL.append( "M.CODTIPOMOV=CP.CODTIPOMOV AND M.TIPOMOV='DV' AND " );
 			sSQL.append( "P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND " );
 			sSQL.append( "P.CODPLANOPAG=CP.CODPLANOPAG " );
-			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 " );
-			sSQL.append( "ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 " );
+			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 " );
+			sSQL.append( "ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 " );
 		}
 		
 		return sSQL.toString();
