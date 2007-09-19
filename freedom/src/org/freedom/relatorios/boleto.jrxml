@@ -33,13 +33,13 @@
 		<defaultValueExpression ><![CDATA["0001-1"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(2)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(44)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODVENDA" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(17)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(36)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="NUMCONTA" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["5688-X"]]></defaultValueExpression>
@@ -86,7 +86,7 @@ WHERE IV2.CODEMP=IV.CODEMP AND IV2.CODFILIAL=IV.CODFILIAL AND IV2.TIPOVENDA=IV.T
 ITR.STATUSITREC IN ('R1','RL') AND 
 IV2.CODVENDA=IV.CODVENDA AND IV2.CODNAT IS NOT NULL ) AND N.CODEMP=IV.CODEMPNT AND 
 N.CODFILIAL=IV.CODFILIALNT AND N.CODNAT=IV.CODNAT AND  MB.CODEMP=$P{CODEMP} AND MB.CODFILIAL=$P{CODFILIAL} AND 
-MB.CODMODBOL=1 AND V.DTEMITVENDA BETWEEN '01.01.2007' AND '30.08.2007']]></queryString>
+MB.CODMODBOL=1 AND V.DTEMITVENDA BETWEEN '01.01.2007' AND '30.08.2007' AND V.CODVENDA=$P{CODVENDA}]]></queryString>
 
 	<field name="PARCS" class="java.lang.Long"/>
 	<field name="DTVENCITREC" class="java.sql.Date"/>
