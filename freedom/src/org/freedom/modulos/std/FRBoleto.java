@@ -48,6 +48,7 @@ import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.ObjetoEmpresa;
 import org.freedom.funcoes.Extenso;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -709,11 +710,11 @@ public class FRBoleto extends FRelatorio {
 	private HashMap< String, Object > getParametros() {
 
 		HashMap< String, Object > parametros = new HashMap< String, Object >();
-
+		ObjetoEmpresa empresa = new ObjetoEmpresa(con);
 		parametros.put( "CODEMP", Aplicativo.iCodEmp );
 		parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 		if (Aplicativo.empresa!=null) {
-			parametros.put(  "RAZEMP", Aplicativo.empresa.getAll().get( "RAZEMP" ) );
+			parametros.put(  "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
 		}
 		//parametros.put( "CODVENDA", txtCodVenda.getVlrInteger() );
 
