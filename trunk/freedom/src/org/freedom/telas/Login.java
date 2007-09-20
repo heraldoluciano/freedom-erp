@@ -118,7 +118,7 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 		return cbEmp.getVlrInteger().intValue();
 	}
 	
-	public String getRazFilial() {
+	public String getNomeFilial() {
 		String retorno = (String) cbEmp.getItemAt(cbEmp.getSelectedIndex());
 		if (retorno==null) {
 			retorno = "DEMONSTRAÇÃO";
