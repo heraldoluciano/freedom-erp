@@ -215,7 +215,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 					<textElement>
 						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Num.Pedido]]></text>
+				<text><![CDATA[Num.pedido]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -241,7 +241,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 					<textElement>
 						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Num.Orc.]]></text>
+				<text><![CDATA[N.orc.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -254,7 +254,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 					<textElement>
 						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Item Orc.]]></text>
+				<text><![CDATA[Item orc.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -267,7 +267,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 					<textElement>
 						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Vlr.Orc]]></text>
+				<text><![CDATA[Vlr.orc]]></text>
 				</staticText>
 			</band>
 			</groupHeader>
