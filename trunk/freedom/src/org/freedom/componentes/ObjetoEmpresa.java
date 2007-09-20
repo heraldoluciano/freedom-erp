@@ -50,7 +50,7 @@ public class ObjetoEmpresa {
         rs = ps.executeQuery();
         
         if(rs.next()){
-        	hValores.put("RAZAOEMP",rs.getString("RAZEMP"));
+        	hValores.put("RAZEMP",rs.getString("RAZEMP"));
         	hValores.put("FONEEMP",rs.getString("FONEEMP"));
         	hValores.put("FAXEMP",rs.getString("FAXEMP"));
         	
