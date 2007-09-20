@@ -26,12 +26,6 @@
 	<parameter name="RAZEMP" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["SETPOINT INFORMÀTICA"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="LOCALPAG" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["QUALQUER BANCO ATÉ O VENCIMENTO"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="AGENCIA" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["0001-1"]]></defaultValueExpression>
-	</parameter>
 	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(44)]]></defaultValueExpression>
 	</parameter>
@@ -40,12 +34,6 @@
 	</parameter>
 	<parameter name="CODVENDA" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(36)]]></defaultValueExpression>
-	</parameter>
-	<parameter name="NUMCONTA" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["5688-X"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="CONVENIO" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["0224071"]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT (SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND
  ITR2.CODFILIAL=R.CODFILIAL) PARCS,ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,
@@ -778,7 +766,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<textElement verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{LOCALPAG}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCLPMODBOL}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
