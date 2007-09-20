@@ -103,7 +103,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 
 		telaPrincipal.statusBar.setUsuario( strUsuario );// Variavel de usuario da
 		telaPrincipal.statusBar.setCodFilial( iCodFilial );
-		telaPrincipal.statusBar.setRazFilial( sRazFilial );
+		telaPrincipal.statusBar.setNomeFilial( sNomeFilial );
 		telaPrincipal.statusBar.setNumEst( iNumEst );
 		telaPrincipal.statusBar.setDescEst( getDescEst() );
 

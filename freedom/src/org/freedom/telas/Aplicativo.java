@@ -105,7 +105,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public static int iCodFilialParam = 0;
 
-	public static String sRazFilial = "";
+	public static String sNomeFilial = "";
 
 	public static int iCodFilialMz = 0;
 
@@ -667,7 +667,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			strUsuario = sVals[ 0 ];
 			strSenha = sVals[ 1 ];
 			iCodFilial = lgBanco.getFilial();
-			sRazFilial = lgBanco.getRazFilial();
+			sNomeFilial = lgBanco.getNomeFilial();
 			iCodFilialMz = lgBanco.getFilialMz();
 			iCodFilialPad = lgBanco.getFilialPad();
 			conRetorno = lgBanco.getConection();

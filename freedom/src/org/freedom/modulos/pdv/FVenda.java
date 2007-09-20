@@ -2298,7 +2298,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 		sbVenda.setUsuario( Aplicativo.strUsuario );
 		sbVenda.setCodFilial( Aplicativo.iCodFilial );
-		sbVenda.setRazFilial( Aplicativo.sRazFilial );
+		sbVenda.setNomeFilial( Aplicativo.sNomeFilial );
 		sbVenda.setNumEst( Aplicativo.iNumEst );
 		sbVenda.setDescEst( getDescEst() );
 

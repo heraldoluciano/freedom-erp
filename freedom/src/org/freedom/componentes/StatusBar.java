@@ -53,7 +53,7 @@ public class StatusBar extends JPanelPad {
 	private JPanelPad pnEsquerda = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnDescEst = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnFilial = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-	private JPanelPad pnRazFilial = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnNomeFilial = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnUsuario = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnInfo = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnRelogio = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
@@ -70,7 +70,7 @@ public class StatusBar extends JPanelPad {
 	private JLabelPad lRelogio = new JLabelPad();  
 	private int iNumEst = 0;
 	private int iCodFilial = 0;
-	private String sRazFilial = "";
+	private String sNomeFilial = "";
 	private String sDescEst = "";
 	private String sIDUsu = "";
 	private ImageIcon iconFilial = Icone.novo("statusbarFilial.gif");
@@ -132,7 +132,7 @@ public class StatusBar extends JPanelPad {
 	  this.setPreferredSize(new Dimension(300, 25));
 	  this.setBorder(BorderFactory.createRaisedBevelBorder());
 
-	  pnRazFilial.add(lFilial);
+	  pnNomeFilial.add(lFilial);
       pnDescEst.add(lEst);
       pnIDUSU.add(lUsuario);
       pnDescInfo.add(lInfo);
@@ -168,7 +168,7 @@ public class StatusBar extends JPanelPad {
 	  pnInfo.setBorder(BorderFactory.createLoweredBevelBorder());
 
       pnFilial.add(pnIconFilial,BorderLayout.WEST);
-      pnFilial.add(pnRazFilial,BorderLayout.CENTER);
+      pnFilial.add(pnNomeFilial,BorderLayout.CENTER);
 	  
       pnEst.add(pnIconEst,BorderLayout.WEST);
       pnEst.add(pnDescEst,BorderLayout.CENTER);
@@ -235,8 +235,8 @@ public class StatusBar extends JPanelPad {
 	   ajustaEst(); 		
 	}
 
-	public void setRazFilial(String sRazFilial) {
-		this.sRazFilial = sRazFilial;
+	public void setNomeFilial(String sNomeFilial) {
+		this.sNomeFilial = sNomeFilial;
 		ajustaFilial();
 	}
 	public void setDescEst(String sDescEst) {
@@ -260,8 +260,8 @@ public class StatusBar extends JPanelPad {
 	   return sIDUsu;	
 	}
 	
-	public String getRazFilial() {
-		return sRazFilial;
+	public String getNomeFilial() {
+		return sNomeFilial;
 	}
 	
 	private void ajustaEst() {
@@ -269,7 +269,7 @@ public class StatusBar extends JPanelPad {
 	}
 	
 	private void ajustaFilial() {
-	   lFilial.setText((" "+iCodFilial+"-"+sRazFilial.trim()));
+	   lFilial.setText((" "+iCodFilial+"-"+sNomeFilial.trim()));
 	}
 	public void setInfo(String sTexto) {
 	   if (sTexto==null) 

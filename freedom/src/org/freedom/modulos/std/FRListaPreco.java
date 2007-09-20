@@ -544,7 +544,7 @@ public class FRListaPreco extends FRelatorio {
 		   	
     	try {
     		
-        	hParam.put("RAZAOEMP",Aplicativo.sRazFilial);
+        	hParam.put("RAZAOEMP",Aplicativo.sNomeFilial);
         	hParam.put("DESCPLANOPAG",txtDescPlanoPag1.getVlrString().trim());
         	hParam.put("DESCGRUPO",txtDescGrup.getVlrString().trim());
         	hParam.put("DESCMARCA",txtDescMarca.getVlrString().trim());
