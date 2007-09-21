@@ -69,6 +69,7 @@ import org.freedom.layout.componentes.Leiaute;
 import org.freedom.layout.componentes.NFEntrada;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
+import org.freedom.telas.FObservacao;
 
 public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		FocusListener, ActionListener, InsertListener {
@@ -83,6 +84,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 	private JPanelPad pnTot = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1, 1));
 	private JPanelPad pnCenter = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JButton btFechaCompra = new JButton(Icone.novo("btOk.gif"));
+	private JButton btObs = new JButton( Icone.novo( "btObs.gif" ));
 	private JTextFieldPad txtCodCompra = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtDtEmitCompra = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
@@ -159,11 +161,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 
 		pnMaster.remove(2);
 		pnGImp.removeAll();
-		pnGImp.setLayout(new GridLayout(1, 3));
+		pnGImp.setLayout(new GridLayout(1, 4));
 		pnGImp.setPreferredSize(new Dimension(220, 26));
 		pnGImp.add(btPrevimp);
 		pnGImp.add(btImp);
 		pnGImp.add(btFechaCompra);
+		pnGImp.add(btObs);
 
 		pnTot.setPreferredSize(new Dimension(140, 200));
 		pnTot.add(pinTot);
@@ -348,6 +351,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		lcCampos.addInsertListener(this);
 		lcCampos.addPostListener(this);
 		lcDet.addPostListener(this);
+		btObs.addActionListener( this );
 
 		
 		lbStatus.setForeground(Color.WHITE);
@@ -447,6 +451,84 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		txtVlrLiqItCompra.setVlrBigDecimal(new BigDecimal(deVlrProd));
 	}
 
+	public void mostraObs( String sTabela, int iCod ) {
+
+		FObservacao obs = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQLselect = null;
+		String sSQLupdate = null;
+		
+		try {
+		
+			try {
+				
+				if ( sTabela.equals( "CPCOMPRA" ) ) {
+					
+					sSQLselect = "SELECT OBSERVACAO FROM CPCOMPRA WHERE CODEMP=? AND CODFILIAL=? AND CODCOMPRA=?";
+					sSQLupdate = "UPDATE CPCOMPRA SET OBSERVACAO=? WHERE CODEMP=? AND CODFILIAL=? AND CODCOMPRA=?";
+				}
+
+				ps = con.prepareStatement( sSQLselect );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( sTabela ) );
+				ps.setInt( 3, iCod );
+				rs = ps.executeQuery();
+				
+				if ( rs.next() ) {
+					obs = new FObservacao( ( rs.getString( 1 ) != null ? rs.getString( 1 ) : "" ) );
+				}
+				else {
+					obs = new FObservacao( "" );
+				}
+
+				rs.close();
+				ps.close();
+
+				if ( !con.getAutoCommit() ) {
+					con.commit();
+				}
+
+			} catch ( SQLException err ) {
+				Funcoes.mensagemErro( this, "Erro ao carregar a observação!\n" + err.getMessage(), true, con, err );
+			}
+			if ( obs != null ) {
+				
+				obs.setVisible( true );
+				
+				if ( obs.OK ) {
+					
+					try {
+						ps = con.prepareStatement( sSQLupdate );
+						ps.setString( 1, obs.getTexto() );
+						ps.setInt( 2, Aplicativo.iCodEmp );
+						ps.setInt( 3, ListaCampos.getMasterFilial( sTabela ) );
+						ps.setInt( 4, iCod );
+						ps.executeUpdate();
+
+						ps.close();
+
+						if ( !con.getAutoCommit() ) {
+							con.commit();
+						}
+						
+					} catch ( SQLException err ) {
+						Funcoes.mensagemErro( this, "Erro ao inserir observação no orçamento!\n" + err.getMessage(), true, con, err );
+					}
+				}
+				
+				obs.dispose();
+				
+			}
+			
+		} finally {
+			ps = null;
+			rs = null;
+			sSQLselect = null;
+			sSQLupdate = null;
+		}
+
+	}
 	private void bloqCompra() {
 		PreparedStatement ps = null;
 		String sSQL = null;
@@ -1065,6 +1147,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 
 	public void actionPerformed(ActionEvent evt) {
 		String[] sValores = null;
+		
 		if (evt.getSource() == btFechaCompra) {
 			DLFechaCompra dl = new DLFechaCompra(con, txtCodCompra .getVlrInteger(), this);
 			dl.setVisible(true);
@@ -1111,10 +1194,17 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 					bloqCompra();
 				}
 			}
-		} else if (evt.getSource() == btPrevimp)
+		} else if (evt.getSource() == btPrevimp){
 			imprimir(true, txtCodCompra.getVlrInteger().intValue());
-		else if (evt.getSource() == btImp)
+		}
+		else if (evt.getSource() == btImp){
 			imprimir(false, txtCodCompra.getVlrInteger().intValue());
+		}
+
+		if(evt.getSource() == btObs ){
+			mostraObs( "CPCOMPRA", txtCodCompra.getVlrInteger().intValue() );
+			
+		}
 		super.actionPerformed(evt);
 	}
 
