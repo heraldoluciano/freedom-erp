@@ -62,7 +62,7 @@ public class NFEntrada extends NF {
 			sql.append( "SELECT C.CODCOMPRA, C.CODFOR, F.RAZFOR,  F.CNPJFOR, F.CPFFOR, F.ENDFOR, F.NUMFOR, F.COMPLFOR," ); 
 			sql.append( "F.BAIRFOR, F.CEPFOR, F.CIDFOR, F.UFFOR, F.FONEFOR, F.FAXFOR, F.DDDFONEFOR, F.INSCFOR, F.RGFOR, " );
 			sql.append( "C.VLRDESCITCOMPRA, F.EMAILFOR, F.SITEFOR, F.CONTFOR, C.DTEMITCOMPRA, C.DOCCOMPRA, C.DTENTCOMPRA, " );
-			sql.append( "C.CODPLANOPAG, PG.DESCPLANOPAG, C.CODBANCO, " );
+			sql.append( "C.CODPLANOPAG, PG.DESCPLANOPAG, C.CODBANCO, C.OBSERVACAO " );
 			sql.append( "(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODEMP=C.CODEMPBO AND B.CODFILIAL=C.CODFILIALBO AND B.CODBANCO=C.CODBANCO), " );
 			sql.append( "C.VLRLIQCOMPRA,C.VLRPRODCOMPRA,C.VLRADICCOMPRA,C.VLRICMSCOMPRA,C.VLRBASEICMSCOMPRA,C.VLRIPICOMPRA, " );
 			sql.append( "C.VLRFRETECOMPRA "  );
@@ -105,7 +105,7 @@ public class NFEntrada extends NF {
 				cab.setDate( C_DTSAIDA, rs.getDate( "DTENTCOMPRA" ) );
 				cab.setString( C_CODPLANOPG, ( rs.getString( "CODPLANOPAG" ) != null ? rs.getString( "CODPLANOPAG" ) : "" ) );
 				cab.setString( C_DESCPLANOPAG, ( rs.getString( "DESCPLANOPAG" ) != null ? rs.getString( "DESCPLANOPAG" ) : "" ) );
-				cab.setString( C_OBSPED, "" );
+				cab.setString( C_OBSPED,( rs.getString( "OBSERVACAO" ) != null ? rs.getString( "OBSERVACAO" ) : "" ) );
 				cab.setString( C_NOMEVEND, "" );
 				cab.setString( C_EMAILVEND, "" );
 				cab.setString( C_DESCFUNC, "" );
