@@ -156,6 +156,7 @@ public class NF048 extends Layout {
 					imp.say( 77, sValsCli[ 3 ] );
 					imp.say( 82, !cab.getString( NF.C_RGEMIT ).equals( "" ) ? cab.getString( NF.C_RGEMIT ) : cab.getString( NF.C_INSCEMIT ) );
 					imp.pulaLinha( 3, imp.comprimido() );
+					
 					// Fim do cabeçalho
 
 				}
