@@ -88,7 +88,7 @@ public class FRComprasFor extends FRelatorio {
 		adic( new JLabelPad( "Cód.for." ), 7, 60, 280, 20 );
 		adic( txtCodFor, 7, 80, 70, 20 );
 		adic( new JLabelPad( "Descrição do fornecedor" ), 80, 60, 280, 20 );
-		adic( txtDescFor, 80, 80, 200, 20 );
+		adic( txtDescFor, 80, 80, 225, 20 );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
