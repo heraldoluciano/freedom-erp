@@ -360,7 +360,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 						vVals.addElement( new Integer( rs.getInt( "CodItOrc" ) ) );
 						vVals.addElement( new Integer( rs.getInt( "CodProd" ) ) );
 						vVals.addElement( rs.getString( "DescProd" ).trim() );
-						vVals.addElement( new Integer( rs.getInt( "QtdItOrc" ) ) );
+						vVals.addElement( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "QtdItOrc" ) != null ? rs.getString( "QtdItOrc" ) : "0" ) );
 						vVals.addElement( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "PrecoItOrc" ) != null ? rs.getString( "PrecoItOrc" ) : "0" ) );
 						vVals.addElement( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrDescItOrc" ) != null ? rs.getString( "VlrDescItOrc" ) : "0" ) );
 						vVals.addElement( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrLiqItOrc" ) != null ? rs.getString( "VlrLiqItOrc" ) : "0" ) );
