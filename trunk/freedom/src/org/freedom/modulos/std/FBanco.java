@@ -82,7 +82,7 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 		adicCampo( txtNomeBanco, 80, 20, 280, 20, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, true );
 		adicCampo( txtCodModBol, 7, 60, 70, 20, "CodModBol", "Cód.mod.", ListaCampos.DB_FK, txtDescModBol, false );
 		adicDescFK( txtDescModBol, 80, 60, 230, 20, "DescModBol", "Descrição do modelo de boleto" );
-		adicCampo( txtDigito, 313, 60, 50, 20, "DvBanco", "Digito", ListaCampos.DB_SI, false );
+		adicCampo( txtDigito, 313, 60, 50, 20, "DvBanco", "Digito", ListaCampos.DB_SI, true );
 		adicCampo( txtSiteBanco, 7, 100, 330, 20, "SiteBanco", "Site ", ListaCampos.DB_SI, false );
 		adicDB( imgBolBanco, 7, 140, 200, 30, "ImgBolBanco", "Logo para boleto (200x30)", false );
 

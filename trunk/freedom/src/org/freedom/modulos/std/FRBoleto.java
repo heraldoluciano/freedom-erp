@@ -281,12 +281,73 @@ public class FRBoleto extends FRelatorio {
 		// adic( cbTipoImp, 390, 180, 150, 30);
 	}
 
+	private String aplicaTxtObs(String sTxa, final String sCampo, String sValor) {
+		String retorno = null;
+		String sParam1 = null;
+		String sParam2 = null;
+		Integer iNumLinObs = null;
+		Integer iNumColObs = null;
+		List<String> lObs = null;
+		
+		if(sValor!=null) {
+
+			try {
+			
+				int iposini = sTxa.indexOf( sCampo );
+			
+				if ( iposini > -1 ) {
+					sParam1 = sTxa.substring( iposini + 8, iposini + 11 );
+					sParam2 = sTxa.substring( iposini + 12, iposini + 15 );
+	
+					iNumLinObs = new Integer( sParam1 ).intValue();
+					iNumColObs = new Integer( sParam2 ).intValue();
+				}
+			
+				lObs = (List<String>) Funcoes.stringToVector( sValor, "\n" );
+	
+				if ( lObs.size() > iNumLinObs ) {
+					lObs = lObs.subList( 0, iNumLinObs );
+				}
+				else {
+					while ( lObs.size() < iNumLinObs ) {
+						lObs.add( "" );
+					}
+				}
+	
+				String sLinhaObs;
+				String sLinhasObs = "";
+			
+				for ( int i = 0; i < lObs.size(); i++ ) {
+					sLinhaObs = lObs.get( i ).toString();
+					sLinhaObs = sLinhaObs.length() > iNumColObs ? sLinhaObs.substring( 0, iNumColObs ) : sLinhaObs;
+					if ( i == 0 ) {
+						sLinhasObs = sLinhaObs;
+					}
+					else {
+						sLinhasObs = sLinhasObs + "\n" + sLinhaObs;
+					}
+				}
+			
+				retorno = sTxa.replaceAll( "\\" + sCampo + sParam1 + "_" + sParam2 + "]", sLinhasObs );
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else {
+			retorno = sTxa; 
+		}
+		return retorno;
+	}
+	
 	private String aplicCampos( ResultSet rs, String[] sNat ) {
 
 		Date dCampo = null;
 		String sRet = null;
 		String sTxa = null;
 		String sCampo = null;
+		String sParam1 = null;
+		String sParam2 = null;
 
 		try {
 
@@ -294,6 +355,7 @@ public class FRBoleto extends FRelatorio {
 			sCampo = "";
 			dCampo = null;
 			String sObsOrc;
+			String sObsVen;
 			List< String > lObsOrc;
 			int iNumLinObs = 0;
 			int iNumColObs = 0;
@@ -302,69 +364,19 @@ public class FRBoleto extends FRelatorio {
 			// Estes '\\' que aparecem por ai..são para anular caracteres especiais de "expressão regular".
 
 			if ( sTxa != null ) {
-
+				
 				if ( ( sCampo = rs.getString( "CODORC" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[_CODORC_]", sCampo );
 
 				if ( ( sCampo = rs.getString( "NOMECONV" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[_____________________NOMECONV___________________]", sCampo );
-
-				sObsOrc = rs.getString( "OBSORC" );
-				String sObsParam1 = "";
-				String sObsParam2 = "";
-				if ( ( sCampo = rs.getString( "OBSORC" ) ) != null ) {
-					try {
-						int iposini = sTxa.indexOf( "[OBSORC_" );
-						if ( iposini > -1 ) {
-
-							sObsParam1 = sTxa.substring( iposini + 8, iposini + 11 );
-							sObsParam2 = sTxa.substring( iposini + 12, iposini + 15 );
-
-							System.out.println( sObsParam1 );
-							System.out.println( sObsParam2 );
-
-							iNumLinObs = new Integer( sObsParam1 ).intValue();
-							iNumColObs = new Integer( sObsParam2 ).intValue();
-
-							System.out.println( "iNumLinObs" + iNumLinObs );
-							System.out.println( "iNumColObs" + iNumColObs );
-						}
-					} catch ( Exception e ) {
-						e.printStackTrace();
-					}
-				}
-
-				lObsOrc = (List<String>) Funcoes.stringToVector( sObsOrc, "\n" );
-
-				System.out.println( "tamanho antes" + lObsOrc.size() );
-
-				if ( lObsOrc.size() > iNumLinObs ) {
-					lObsOrc = lObsOrc.subList( 0, iNumLinObs );
-				}
-				else {
-					while ( lObsOrc.size() < iNumLinObs ) {
-						lObsOrc.add( "" );
-					}
-				}
-
-				System.out.println( "tamanho depois" + lObsOrc.size() );
-				String sLinhaObs;
-				String sLinhasObs = "";
-				for ( int i = 0; i < lObsOrc.size(); i++ ) {
-					sLinhaObs = lObsOrc.get( i ).toString();
-					sLinhaObs = sLinhaObs.length() > iNumColObs ? sLinhaObs.substring( 0, iNumColObs ) : sLinhaObs;
-					if ( i == 0 ) {
-						sLinhasObs = sLinhaObs;
-					}
-					else {
-						sLinhasObs = sLinhasObs + "\n" + sLinhaObs;
-					}
-
-				}
-				System.out.println( "Linhas " + ":" + sLinhasObs );
-
-				sTxa = sTxa.replaceAll( "\\[OBSORC_" + sObsParam1 + "_" + sObsParam2 + "]", sLinhasObs );
-
+				
+				sParam1 = "";
+				sParam2 = "";
+				
+				sTxa = aplicaTxtObs( sTxa, "[OBSORC_", rs.getString( "OBSORC" ) );				
+				sTxa = aplicaTxtObs (sTxa, "[OBSVEN_", rs.getString( "OBSVENDA" ) );
+				
 				if ( ( dCampo = rs.getDate( "DtVencItRec" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[VENCIMEN]", Funcoes.sqlDateToStrDate( dCampo ) );
 				if ( ( dCampo = rs.getDate( "DtEmitVenda" ) ) != null )
@@ -426,7 +438,9 @@ public class FRBoleto extends FRelatorio {
 					sTxa = sTxa.replaceAll( "\\[CODNAT]", Funcoes.copy( sCampo, 0, 8 ) );
 				if ( ( sCampo = sNat[ 1 ] ) != null )
 					sTxa = sTxa.replaceAll( "\\[______________NATUREZA_DA_OPERACAO______________]", Funcoes.copy( sCampo, 0, 50 ) );
-
+				if ( ( sCampo = rs.getString( "CODVENDA" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[CODVENDA]", Funcoes.copy( sCampo, 0, 10 ) );					
+				
 				// Aplicar campos especiais de dados:
 
 				int iPos = 0;
@@ -788,7 +802,7 @@ public class FRBoleto extends FRelatorio {
 			imp.verifLinPag();
 			imp.setTitulo( "Boleto" );
 
-			sSQL.append( "SELECT (SELECT COUNT(*) FROM FNITRECEBER ITR2 ");
+			sSQL.append( "SELECT V.CODVENDA,V.OBSVENDA,(SELECT COUNT(*) FROM FNITRECEBER ITR2 ");
 			sSQL.append( "WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND ITR2.CODFILIAL=R.CODFILIAL) PARCS, " );
 			sSQL.append( "ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,ITR.VLRDESCITREC, " );
 			sSQL.append( "(ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, " );
@@ -843,7 +857,6 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL AND " );
 			sSQL.append( "M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA AND " );
 			sSQL.append( "B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO AND " );
-			sSQL.append( "MB.CODEMP=B.CODEMPMB AND MB.CODFILIAL=B.CODFILIALMB AND MB.CODMODBOL=B.CODMODBOL AND  " );
 			sSQL.append( "IM.CODEMP=MB.CODEMP AND IM.CODFILIAL=MB.CODFILIAL AND IM.CODMODBOL=MB.CODMODBOL AND ");
 			sSQL.append( "IM.CODEMPBO=ITR.CODEMPBO AND IM.CODFILIALBO=ITR.CODFILIALBO AND IM.CODBANCO=ITR.CODBANCO AND " );
 			sSQL.append( "IM.CODEMPCB=ITR.CODEMPCB AND IM.CODFILIALCB=ITR.CODFILIALCB AND IM.CODCARTCOB=ITR.CODCARTCOB AND " );
