@@ -124,7 +124,7 @@ public class AplicativoRep extends AplicativoPD {
 		setEmailBean( mail );
 	}
 
-	public static String getEmailCli( final int codcli, final Connection con ) {
+	public static String getEmailCliente( final int codcli, final Connection con ) {
 
 		String email = null;
 		PreparedStatement ps = null;
@@ -154,6 +154,42 @@ public class AplicativoRep extends AplicativoPD {
 
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar email do cliente!\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+
+		return email;
+	}
+
+	public static String getEmailFornecedor( final int codfor, final Connection con ) {
+
+		String email = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sSQL = new StringBuilder();
+
+		try {
+
+			sSQL.append( "SELECT EMAILCLI FROM RPFORNECEDOR WHERE CODEMP=? AND CODFILIAL=? AND CODFOR=?" );
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "RPFORNECEDOR" ) );
+			ps.setInt( 3, codfor );
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+
+				email = rs.getString( "EMAILFOR" ) != null ? rs.getString( "EMAILFOR" ).trim() : "";
+			}
+
+			rs.close();
+			ps.close();
+
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( null, "Erro ao buscar email do fornecedor!\n" + e.getMessage() );
 			e.printStackTrace();
 		}
 
