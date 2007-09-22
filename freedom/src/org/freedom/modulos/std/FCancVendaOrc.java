@@ -51,9 +51,9 @@ public class FCancVendaOrc extends FFilho implements ActionListener, CarregaList
 
   private JPanelPad pinCli = new JPanelPad(350,100);
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-  private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldPad txtDocVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtSerie = new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
+  private JTextFieldPad txtSerie = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldPad txtTipoVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
   private JTextFieldPad txtBloqVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
   private JTextFieldPad txtVlrLiqVenda = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
@@ -73,6 +73,7 @@ public class FCancVendaOrc extends FFilho implements ActionListener, CarregaList
     txtStatusVenda.setAtivo(false);
     txtBloqVenda.setAtivo(false);
     
+    lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "Nro.pedido", ListaCampos.DB_PK, true));
     lcVenda.add(new GuardaCampo( txtDocVenda, "DocVenda", "Documento", ListaCampos.DB_SI, false));
     lcVenda.add(new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, false));
     lcVenda.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.venda", ListaCampos.DB_SI, false));
