@@ -13,10 +13,10 @@ public class Teste {
 	public static void main( String[] args ) {
 		
         Date dtBase = Funcoes.encodeDate( 1997, 10, 7 );
-        Date dtVencto = Funcoes.encodeDate( 2008, 11, 15 );
-        Long fatvenc = new Long(Funcoes.getNumDiasAbs( Funcoes.encodeDate( 2007, 8, 23 ), 
+        Date dtVencto = Funcoes.encodeDate( 2007, 8, 23 );
+        Long fatvenc = new Long(Funcoes.getNumDiasAbs( dtVencto, 
 				Funcoes.encodeDate( 1997, 10, 7 ) ));
-        BigDecimal vlrtit = new BigDecimal(100);
+        BigDecimal vlrtit = new BigDecimal(2000);
         String barra = org.freedom.funcoes.Boleto.geraCodBar( "1",  "9", "9", 
 				fatvenc, 
 				vlrtit, 
@@ -29,7 +29,7 @@ public class Teste {
 		
 		
 		//System.out.println(org.freedom.funcoes.Boleto.geraNossoNumero( "00", "1421609", new Long(1), new Long(1) ));
-        System.out.println(Boleto.digVerif( "0019340100000000330375031750416060680935011" , 11 ));
+        System.out.println("Digito verif."+Boleto.digVerif( "0019340100000000330375031750416060680935011" , 11 ));
 
 	}
 
