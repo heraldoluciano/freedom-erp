@@ -89,9 +89,9 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 	
 	private JRadioGroup rgCV = null;
 	
-	private Vector vLabsCV = new Vector();
+	private Vector<String> vLabsCV = new Vector<String>();
 
-	private Vector vValsCV = new Vector();
+	private Vector<String> vValsCV = new Vector<String>();
 
 	private ListaCampos lcConta = new ListaCampos( this, "CA" );
 

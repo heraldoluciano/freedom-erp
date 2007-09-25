@@ -61,9 +61,9 @@ public class FREvoluVendas extends FRelatorio {
 
 	private JRadioGroup rgGrafico = null;
 
-	private Vector vLabs = new Vector( 2 );
+	private Vector<String> vLabs = new Vector<String>( 2 );
 
-	private Vector vVals = new Vector( 2 );
+	private Vector<String> vVals = new Vector<String>( 2 );
 
 	private JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 

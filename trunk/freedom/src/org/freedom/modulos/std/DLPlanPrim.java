@@ -43,8 +43,8 @@ public class DLPlanPrim extends FFDialogo {
   private JTextFieldPad txtCodCont = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldPad txtDescCont = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JPanelPad pinCont = new JPanelPad(360,220);
-  private Vector vVals = new Vector();
-  private Vector vLabs = new Vector();
+  private Vector<String> vVals = new Vector<String>();
+  private Vector<String> vLabs = new Vector<String>();
   private JRadioGroup rgTipo = null;
   private JTabbedPanePad ptb = new JTabbedPanePad();
   private JLabelPad lbCod = new JLabelPad("Código");

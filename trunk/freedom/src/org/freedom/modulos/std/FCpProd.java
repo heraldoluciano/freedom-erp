@@ -107,9 +107,9 @@ public class FCpProd extends FFilho implements ActionListener, CheckBoxListener 
 
 	private JCheckBoxPad cbPrecoBaseDest = null;
 
-	private Vector vVals = new Vector();
+	private Vector<String> vVals = new Vector<String>();
 
-	private Vector vLabs = new Vector();
+	private Vector<String> vLabs = new Vector<String>();
 
 	private JRadioGroup rgInc = null;
 

@@ -115,11 +115,11 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
     setTitulo("Sub-Lançamentos");
     setAtribos(20,1,615,480);
 
-	Vector vVals = new Vector();
+	Vector<String> vVals = new Vector<String>();
 	vVals.addElement("A");
 	vVals.addElement("F");
 	vVals.addElement("C");	
-	Vector vLabs = new Vector();
+	Vector<String> vLabs = new Vector<String>();
 	vLabs.addElement("Avulso");
 	vLabs.addElement("Fornecedor");
 	vLabs.addElement("Cliente");	

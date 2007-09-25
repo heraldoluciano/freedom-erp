@@ -51,7 +51,43 @@ import org.freedom.bmps.Icone;
 import org.freedom.componentes.JPanelPad;
 
 public class FDialogo extends JDialog implements ActionListener, KeyListener,
-		WindowListener {
+		WindowListener, IFilho {
+	private FPrincipal fPrim;
+
+	public JPanelPad adicBotaoSair() {
+        Container c = getContentPane();
+        JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
+        JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
+        pnRod.setPreferredSize(new Dimension(200, 30));
+        btSair.setPreferredSize(new Dimension(110, 30));
+        pnRod.add(btSair, BorderLayout.EAST);
+        c.add(pnRod, BorderLayout.SOUTH);
+        btSair.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                dispose();
+            }
+        });
+        return pnRod;
+	}
+
+	public void execShow() {
+		setVisible(true);
+	}
+
+	public Container getTela() {
+        Container tela = getContentPane();
+        tela.setLayout(new BorderLayout());
+        return tela;
+	}
+
+	public void setTela( Container c ) {
+        setContentPane(c);
+    }
+
+	public void setTelaPrim( FPrincipal fP ) {
+        fPrim = fP;
+    }
+
 	private static final long serialVersionUID = 1L;
 
 	public JButton btCancel = new JButton("Cancelar", Icone.novo("btCancelar.gif"));

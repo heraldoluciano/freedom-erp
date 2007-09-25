@@ -124,6 +124,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 	protected final ListaCampos lcBanco = new ListaCampos( this );
 
+	@SuppressWarnings("unchecked")
 	protected Map<Enum, Object> prefs = new HashMap<Enum, Object>();
 	
 	protected String where = "";
@@ -589,6 +590,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	protected boolean consisteExporta( HashSet<FbnUtil.StuffCli> hsCli, HashSet<FbnUtil.StuffRec> hsRec ) {
 
 		boolean retorno = true;

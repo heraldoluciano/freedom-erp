@@ -261,25 +261,25 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JTextFieldFK txtDescPlanoPagPreco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private Vector vLabsTipo = new Vector();
+	private Vector<String> vLabsTipo = new Vector<String>();
 
-	private Vector vValsTipo = new Vector();
+	private Vector<String> vValsTipo = new Vector<String>();
 
-	private Vector vLabsCV = new Vector();
+	private Vector<String> vLabsCV = new Vector<String>();
 
-	private Vector vValsCV = new Vector();
+	private Vector<String> vValsCV = new Vector<String>();
 
-	private Vector vLabsTF = new Vector();
+	private Vector<String> vLabsTF = new Vector<String>();
 
-	private Vector vValsTF = new Vector();
+	private Vector<String> vValsTF = new Vector<String>();
 
-	private Vector vLabsTipoPP = new Vector();
+	private Vector<String> vLabsTipoPP = new Vector<String>();
 
-	private Vector vValsTipoPP = new Vector();
+	private Vector<String> vValsTipoPP = new Vector<String>();
 
-	private Vector vLabsPA = new Vector();
+	private Vector<String> vLabsPA = new Vector<String>();
 
-	private Vector vValsPA = new Vector();
+	private Vector<String> vValsPA = new Vector<String>();
 
 	private JRadioGroup rgPA = null;
 

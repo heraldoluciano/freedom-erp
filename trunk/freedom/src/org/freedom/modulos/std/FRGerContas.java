@@ -80,8 +80,8 @@ public class FRGerContas extends FRelatorio  {
   private JRadioGroup rgOrdemRel = null;
   private JRadioGroup rgOrdemRel1 = null;
   private JRadioGroup rgOrdemRel2 = null;
-  private Vector vLabOrdemRel = new Vector();
-  private Vector vValOrdemRel = new Vector();
+  private Vector<String> vLabOrdemRel = new Vector<String>();
+  private Vector<String> vValOrdemRel = new Vector<String>();
   private ListaCampos lcGrup1 = new ListaCampos(this);
   private ListaCampos lcGrup2 = new ListaCampos(this);
   private ListaCampos lcVendedor = new ListaCampos(this);
@@ -684,7 +684,7 @@ public class FRGerContas extends FRelatorio  {
   public void imprimir(boolean bVisualizar) {	    
 	FPrinterJob dlGr = null;
 	ResultSet rsRel = rodaQuery();
-	HashMap hParam = new HashMap();
+	HashMap<String, Object> hParam = new HashMap<String, Object>();
 	hParam.put("VLRRELEV",new Double(dbVendasGeral));
 	hParam.put("ANO",txtAno.getVlrInteger());
 	hParam.put("CODVEND",txtCodVend.getVlrInteger());

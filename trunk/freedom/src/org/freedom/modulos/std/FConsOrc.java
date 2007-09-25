@@ -118,10 +118,10 @@ public class FConsOrc extends FFilho implements ActionListener {
 		pnBordaConsVenda.add(btConsVenda);
 		pnRod.add(pnBordaConsVenda,BorderLayout.WEST);
 		  
-		Vector vVals = new Vector();
+		Vector<String> vVals = new Vector<String>();
 		vVals.addElement("D");
 		vVals.addElement("V");
-		Vector vLabs = new Vector();
+		Vector<String> vLabs = new Vector<String>();
 		vLabs.addElement("Data de Emissão");
 		vLabs.addElement("Data de Validade");
 		gbVenc = new JRadioGroup(2, 1, vLabs, vVals);

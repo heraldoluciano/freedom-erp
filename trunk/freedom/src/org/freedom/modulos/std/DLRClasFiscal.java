@@ -36,8 +36,8 @@ public class DLRClasFiscal extends FFDialogo {
   private JRadioGroup rgOrdem = null;
   private JCheckBoxPad cbListaExec = new JCheckBoxPad("Listar exeções ? ","S","N");
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
-  private Vector vLabs = new Vector();
-  private Vector vVals = new Vector();
+  private Vector<String> vLabs = new Vector<String>();
+  private Vector<String> vVals = new Vector<String>();
   public DLRClasFiscal(Component cOrig) {
   	super(cOrig);
     setTitulo("Ordem do Relatório");

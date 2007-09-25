@@ -32,8 +32,8 @@ public class DLRTipoCred extends FFDialogo {
 
   private JRadioGroup rgOrdem = null;
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
-  private Vector vLabs = new Vector();
-  private Vector vVals = new Vector();
+  private Vector<String> vLabs = new Vector<String>();
+  private Vector<String> vVals = new Vector<String>();
   public DLRTipoCred() {
     setTitulo("Ordem do Relatório");
     setAtribos(300,140);

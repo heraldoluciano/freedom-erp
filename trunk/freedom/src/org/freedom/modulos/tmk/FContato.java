@@ -104,8 +104,8 @@ public class FContato extends FTabDados implements RadioGroupListener,
 	private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodAtiv = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldFK txtDescAtiv = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
-	private Vector vPessoaLab = new Vector();
-	private Vector vPessoaVal = new Vector();
+	private Vector<String> vPessoaLab = new Vector<String>();
+	private Vector<String> vPessoaVal = new Vector<String>();
 	private JRadioGroup rgPessoa = null;
 	private JPanelPad pnCompl = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextAreaPad txaObs = new JTextAreaPad();
@@ -315,7 +315,7 @@ public class FContato extends FTabDados implements RadioGroupListener,
 		String sAnd = " WHERE ";
 		String sTmp = null;
 		String[] sValores;
-		Vector vFiltros = new Vector();
+		Vector<String> vFiltros = new Vector<String>();
 		ImprimeOS imp = new ImprimeOS("", con);
 		int linPag = imp.verifLinPag() - 1;
 		int iContaReg = 0;
@@ -385,7 +385,7 @@ public class FContato extends FTabDados implements RadioGroupListener,
 				imp.addSubTitulo("Relatório de Contatos");
 				imp.addSubTitulo("Filtrado por:");
 				for (int i = 0; i < vFiltros.size(); i++) {
-					sTmp = (String) vFiltros.elementAt(i);
+					sTmp = vFiltros.elementAt(i);
 					imp.addSubTitulo(sTmp);
 				}
 				imp.limpaPags();
@@ -511,7 +511,7 @@ public class FContato extends FTabDados implements RadioGroupListener,
 						imp.impCab(136, true);
 						imp.say(imp.pRow() + 0, 2, "|"+ Funcoes.replicate(" ", 60) + "Filtrado por:"+ Funcoes.replicate(" ", 60) + "|");
 						for (int i = 0; i < vFiltros.size(); i++) {
-							sTmp = (String) vFiltros.elementAt(i);
+							sTmp = vFiltros.elementAt(i);
 							sTmp = "|"+ Funcoes.replicate(" ", (((135 - sTmp.length()) / 2) - 1)) + sTmp;
 							sTmp += Funcoes.replicate(" ", 134 - sTmp.length())+ "|";
 							imp.say(imp.pRow()+1, 0, imp.comprimido());

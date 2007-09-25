@@ -48,8 +48,8 @@ public class DLRInventario extends FFDialogo {
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private JLabelPad lbGrup = new JLabelPad("Cód.grupo");
   private JLabelPad lbDescGrup = new JLabelPad("Descrição do grupo");
-  private Vector vLabs = new Vector();
-  private Vector vVals = new Vector();
+  private Vector<String> vLabs = new Vector<String>();
+  private Vector<String> vVals = new Vector<String>();
   private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private ListaCampos lcGrup = new ListaCampos(this);
   public DLRInventario(Connection cn,Component cOrig) {

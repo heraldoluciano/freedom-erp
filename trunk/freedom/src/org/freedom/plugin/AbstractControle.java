@@ -5,12 +5,12 @@ import java.util.Map;
 
 public abstract class AbstractControle {
 
-	private Map objects;
+	private Map<String, Object> objects;
 
 	public void addAttribute( String name, Object obj ) {
 
 		if ( objects == null ) {
-			objects = new HashMap();
+			objects = new HashMap<String, Object>();
 		}
 		
 		objects.put( name, obj );

@@ -78,7 +78,8 @@ class SiaccUtil extends FbnUtil {
 			parseLine( line );
 		}
 
-		RegA( final char codrem, final Map map, final int numReg ) {
+		@SuppressWarnings("unchecked")
+		RegA( final char codrem, final Map<Enum, Object> map, final int numReg ) {
 
 			super( CODREG );
 			this.sbreg.append( codrem );

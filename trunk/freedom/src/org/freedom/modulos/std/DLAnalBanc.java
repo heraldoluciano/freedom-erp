@@ -75,11 +75,11 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
   private JLabelPad lbDataCont = new JLabelPad("Data Inicial");
   private JLabelPad lbCodMoeda = new JLabelPad("Código");
   private JLabelPad lbDescMoeda = new JLabelPad("e descrição da moeda");
-  private Vector vVals = new Vector();
-  private Vector vLabs = new Vector();
+  private Vector<String> vVals = new Vector<String>();
+  private Vector<String> vLabs = new Vector<String>();
   private JRadioGroup rgTipo = null; 
-  private Vector vValsCont = new Vector();
-  private Vector vLabsCont = new Vector();
+  private Vector<String> vValsCont = new Vector<String>();
+  private Vector<String> vLabsCont = new Vector<String>();
   private JRadioGroup rgTipoCont = null; 
   private ListaCampos lcBanc = new ListaCampos(this,"BO");
   private ListaCampos lcMoeda = new ListaCampos(this,"MA");

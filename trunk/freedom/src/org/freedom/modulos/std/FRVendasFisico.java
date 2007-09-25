@@ -87,8 +87,8 @@ public class FRVendasFisico extends FRelatorio {
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 
-		Vector vLabs = new Vector();
-		Vector vVals = new Vector();
+		Vector<String> vLabs = new Vector<String>();
+		Vector<String> vVals = new Vector<String>();
 
 		vLabs.addElement( "Grafico" );
 		vLabs.addElement( "Texto" );
@@ -97,8 +97,8 @@ public class FRVendasFisico extends FRelatorio {
 		rgTipo = new JRadioGroup( 1, 2, vLabs, vVals );
 		rgTipo.setVlrString( "T" );
 
-		Vector vLabs1 = new Vector();
-		Vector vVals1 = new Vector();
+		Vector<String> vLabs1 = new Vector<String>();
+		Vector<String> vVals1 = new Vector<String>();
 
 		vLabs1.addElement( "Código" );
 		vLabs1.addElement( "Descrição" );
@@ -107,8 +107,8 @@ public class FRVendasFisico extends FRelatorio {
 		rgOrdem = new JRadioGroup( 1, 2, vLabs1, vVals1 );
 		rgOrdem.setVlrString( "D" );
 
-		Vector vLabs2 = new Vector();
-		Vector vVals2 = new Vector();
+		Vector<String> vLabs2 = new Vector<String>();
+		Vector<String> vVals2 = new Vector<String>();
 
 		vLabs2.addElement( "Faturado" );
 		vLabs2.addElement( "Não Faturado" );
@@ -119,8 +119,8 @@ public class FRVendasFisico extends FRelatorio {
 		rgFaturados = new JRadioGroup( 3, 1, vLabs2, vVals2 );
 		rgFaturados.setVlrString( "S" );
 
-		Vector vLabs3 = new Vector();
-		Vector vVals3 = new Vector();
+		Vector<String> vLabs3 = new Vector<String>();
+		Vector<String> vVals3 = new Vector<String>();
 
 		vLabs3.addElement( "Financeiro" );
 		vLabs3.addElement( "Não Finaceiro" );

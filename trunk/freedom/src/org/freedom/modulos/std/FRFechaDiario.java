@@ -52,8 +52,8 @@ public class FRFechaDiario extends FRelatorio{
 	
 	public void montaTela(){
 		
-		Vector vLabs = new Vector();
-		Vector vVals = new Vector();
+		Vector<String> vLabs = new Vector<String>();
+		Vector<String> vVals = new Vector<String>();
 
 		vLabs.addElement( "Resumido" );
 		vLabs.addElement( "Detalhado" );

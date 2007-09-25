@@ -42,8 +42,8 @@ public class DLRSetor extends FFDialogo {
 	setTitulo("Ordem do Relatório");
     setAtribos(300,190);
     
-    Vector vLabs = new Vector();
-    Vector vVals = new Vector();
+    Vector<String> vLabs = new Vector<String>();
+    Vector<String> vVals = new Vector<String>();
 	
     vLabs.addElement("Código");
     vLabs.addElement("Descrição");
@@ -54,8 +54,8 @@ public class DLRSetor extends FFDialogo {
     adic(lbOrdem,7,0,80,15);
     adic(rgOrdem,7,20,270,30);
     
-    Vector vLabs1 = new Vector();
-	Vector vVals1 = new Vector();
+    Vector<String> vLabs1 = new Vector<String>();
+	Vector<String> vVals1 = new Vector<String>();
 	
 	vVals1.addElement( "G" );
 	vVals1.addElement( "T" );

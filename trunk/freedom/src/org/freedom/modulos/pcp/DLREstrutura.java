@@ -34,12 +34,12 @@ public class DLREstrutura extends FFDialogo {
   private JLabelPad lbModo = new JLabelPad("Modo do Relatório:");
   private JLabelPad lbEstrut = new JLabelPad("Estrutura:");
   private JLabelPad lbOrdem = new JLabelPad("Ordenado por:");
-  private Vector vLabs = new Vector();
-  private Vector vVals = new Vector();
-  private Vector vLabsModo = new Vector();
-  private Vector vValsModo = new Vector();
-  private Vector vLabsEstrut = new Vector();
-  private Vector vValsEstrut = new Vector();
+  private Vector<String> vLabs = new Vector<String>();
+  private Vector<String> vVals = new Vector<String>();
+  private Vector<String> vLabsModo = new Vector<String>();
+  private Vector<String> vValsModo = new Vector<String>();
+  private Vector<String> vLabsEstrut = new Vector<String>();
+  private Vector<String> vValsEstrut = new Vector<String>();
   
   public DLREstrutura() {	
     setTitulo("Relatório de Estrutura de Produtos");

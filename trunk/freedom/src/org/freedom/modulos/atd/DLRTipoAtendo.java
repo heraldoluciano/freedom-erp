@@ -33,8 +33,8 @@ public class DLRTipoAtendo extends FFDialogo {
   private static final long serialVersionUID = 1L;
   private JRadioGroup rgOrdem = null;
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
-  private Vector vLabs = new Vector();
-  private Vector vVals = new Vector();
+  private Vector<String> vLabs = new Vector<String>();
+  private Vector<String> vVals = new Vector<String>();
   public DLRTipoAtendo() {
 	setTitulo("Ordem do Relatório");
 	setAtribos(300,140);

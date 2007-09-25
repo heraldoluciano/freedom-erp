@@ -122,17 +122,17 @@ public class FManutPreco extends FFilho implements ActionListener,
 
 	private ListaCampos lcClasCli = new ListaCampos(this);
 
-	private Vector vDescTipoOper = new Vector();
+	private Vector<String> vDescTipoOper = new Vector<String>();
 
-	private Vector vSelTipoOper = new Vector();
+	private Vector<String> vSelTipoOper = new Vector<String>();
 
-	private Vector vDescOrigem = new Vector();
+	private Vector<String> vDescOrigem = new Vector<String>();
 
-	private Vector vSelOrigem = new Vector();
+	private Vector<String> vSelOrigem = new Vector<String>();
 
-	private Vector vDescOperador = new Vector();
+	private Vector<String> vDescOperador = new Vector<String>();
 
-	private Vector vSelOperador = new Vector();
+	private Vector<String> vSelOperador = new Vector<String>();
 
 	private int iCasasDec = 0;
 

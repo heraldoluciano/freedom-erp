@@ -71,12 +71,12 @@ public class FRInvPeps extends FRelatorio {
   private JLabelPad lbDescGrup = new JLabelPad("Descrição do grupo");
   
   private JRadioGroup rgOrdem = null;
-  private Vector vDesc = new Vector();
-  private Vector vOpc = new Vector();
+  private Vector<String> vDesc = new Vector<String>();
+  private Vector<String> vOpc = new Vector<String>();
   
   private JRadioGroup rgCusto = null;
-  private Vector vDescCusto = new Vector();
-  private Vector vOpcCusto = new Vector();
+  private Vector<String> vDescCusto = new Vector<String>();
+  private Vector<String> vOpcCusto = new Vector<String>();
   private boolean[] bPrefs = null;
   
   public FRInvPeps() {

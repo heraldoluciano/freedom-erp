@@ -58,8 +58,8 @@ public class FRPagar extends FRelatorio {
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
 	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
 	private JRadioGroup cbFiltro = null;
-	private Vector vVals = new Vector();
-	private Vector vLabs = new Vector();
+	private Vector<String> vVals = new Vector<String>();
+	private Vector<String> vLabs = new Vector<String>();
 	private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtRazFor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -135,7 +135,7 @@ public class FRPagar extends FRelatorio {
 	}
 	
 	public void exportaTXT() {
-		Vector vLinhas = new Vector();
+		Vector<String> vLinhas = new Vector<String>();
 		ResultSet rs = getResultSet();
 		String sVencto = null;
 		String sDuplic = null;

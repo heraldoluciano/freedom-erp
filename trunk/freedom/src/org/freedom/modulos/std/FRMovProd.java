@@ -64,12 +64,12 @@ public class FRMovProd extends FRelatorio {
   private JLabelPad lbDescGrupo = new JLabelPad("Descrição do grupo");
   private JLabelPad lbMarca = new JLabelPad("Cód.marca");
   private JLabelPad lbDescMarca = new JLabelPad("Descrição da Marca");
-  private Vector vLabs = new Vector();
-  private Vector vVals = new Vector();
-  private Vector vVals1 = new Vector();
-  private Vector vLabs1 = new Vector();
-  private Vector vLabs2 = new Vector();
-  private Vector vVals2 = new Vector(); 
+  private Vector<String> vLabs = new Vector<String>();
+  private Vector<String> vVals = new Vector<String>();
+  private Vector<String> vVals1 = new Vector<String>();
+  private Vector<String> vLabs1 = new Vector<String>();
+  private Vector<String> vLabs2 = new Vector<String>();
+  private Vector<String> vVals2 = new Vector<String>(); 
   private JLabelPad lbAlmox = new JLabelPad("Cód.almox.");
   private JLabelPad lbDescAlmox = new JLabelPad("Descrição do Almoxarifado");
   private JTextFieldPad txtCodForn = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -229,7 +229,7 @@ public class FRMovProd extends FRelatorio {
   }
   public void imprimir(boolean bVisualizar) {
 	 ImprimeOS imp = new ImprimeOS("",con);
-	 Vector vFiltros = new Vector();
+	 Vector<String> vFiltros = new Vector<String>();
 	 String sSQL = "";
 	 int linPag = imp.verifLinPag()-1;
 	 int iContaReg = 0;
@@ -394,7 +394,7 @@ public class FRMovProd extends FRelatorio {
 			 imp.say(imp.pRow()+0,0,""+imp.comprimido());
 			 imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",60)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
 			 for (int i=0;i<vFiltros.size();i++) {            
-					 String sTmp = (String)vFiltros.elementAt(i);
+					 String sTmp = vFiltros.elementAt(i);
 					 sTmp = "|"+Funcoes.replicate(" ",(((134-sTmp.length())/2)-1))+sTmp;
 					 sTmp += Funcoes.replicate(" ",134-sTmp.length())+"|";
 					 imp.say(imp.pRow()+1,0,""+imp.comprimido());

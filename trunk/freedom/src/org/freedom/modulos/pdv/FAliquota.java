@@ -65,7 +65,7 @@ public class FAliquota extends FFDialogo implements ActionListener {
 
 	//private String sAliquotas = "";
 	
-	private Vector vAliquotas = new Vector();
+	private Vector<String> vAliquotas = new Vector<String>();
 
 	public FAliquota() {
 
@@ -150,7 +150,7 @@ public class FAliquota extends FFDialogo implements ActionListener {
 		
 		for ( int i=0; i < tamanho; i++ ) {
 			
-			aliq = "T" + Funcoes.strZero( String.valueOf( i + 1 ), 2 ) + " = " + df.format( new Float( (String)vAliquotas.elementAt( i ) ).floatValue() / 100 ) + " %";
+			aliq = "T" + Funcoes.strZero( String.valueOf( i + 1 ), 2 ) + " = " + df.format( new Float( vAliquotas.elementAt( i ) ).floatValue() / 100 ) + " %";
 			
 			tab.setValor( aliq, iRow, iCol++ );
 			
@@ -169,9 +169,9 @@ public class FAliquota extends FFDialogo implements ActionListener {
 
 	}
 	
-	public static Vector getAliquotas( final ECFDriver ecf ) {
+	public static Vector<String> getAliquotas( final ECFDriver ecf ) {
 		
-		final Vector aliquotas = new Vector();
+		final Vector<String> aliquotas = new Vector<String>();
 		
 		String sAliquotas = ( ecf.retornoAliquotas() ).trim();
 		

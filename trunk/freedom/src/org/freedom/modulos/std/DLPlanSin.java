@@ -45,8 +45,8 @@ public class DLPlanSin extends FFDialogo {
   private JLabelPad lbDescPai = new JLabelPad("Descrição da origem");
   private JLabelPad lbCodSin = new JLabelPad("Código");
   private JLabelPad lbDescSin = new JLabelPad("Descrição");
-  private Vector vVals = new Vector();
-  private Vector vLabs = new Vector();
+  private Vector<String> vVals = new Vector<String>();
+  private Vector<String> vLabs = new Vector<String>();
   private JRadioGroup rgTipo = null; 
   private String sCodPai = "";
   private String sDesc = "";

@@ -88,17 +88,17 @@ public class FSintegra extends FFilho implements ActionListener {
 
 	private JRadioGroup rgFinalidade;
 
-	private Vector vLabConvenio = new Vector();
+	private Vector<String> vLabConvenio = new Vector<String>();
 
-	private Vector vValConvenio = new Vector();
+	private Vector<String> vValConvenio = new Vector<String>();
 
-	private Vector vLabNatoper = new Vector();
+	private Vector<String> vLabNatoper = new Vector<String>();
 
-	private Vector vValNatoper = new Vector();
+	private Vector<String> vValNatoper = new Vector<String>();
 
-	private Vector vLabFinalidade = new Vector();
+	private Vector<String> vLabFinalidade = new Vector<String>();
 
-	private Vector vValFinalidade = new Vector();
+	private Vector<String> vValFinalidade = new Vector<String>();
 
 	private JLabelPad lbAnd = new JLabelPad();
 

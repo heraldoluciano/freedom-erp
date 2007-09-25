@@ -125,7 +125,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public static ImageIcon imgIcone = null;
 
-	public static Vector vArqINI = null;
+	public static Vector<String> vArqINI = null;
 
 	public String[][][] sConfig = new String[ 0 ][ 0 ][ 0 ];
 
@@ -149,9 +149,9 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	protected JButton btAtualMenu = new JButton( Icone.novo( "btAtualMenu.gif" ) );
 
-	protected Vector vOpcoes = null;
+	protected Vector<JMenuItem> vOpcoes = null;
 
-	protected Vector vBotoes = null;
+	protected Vector<JButtonPad> vBotoes = null;
 
 	protected int iCodSis = 0;
 
@@ -163,7 +163,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	protected Connection conIB;
 
-	public static Vector vEquipeSis = new Vector();
+	public static Vector<String> vEquipeSis = new Vector<String>();
 
 	public static String sNomeSis = "";
 
@@ -181,7 +181,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public static boolean bModoDemo = true;
 
-	protected Class cLoginExec = null;
+	protected Class<? extends Login> cLoginExec = null;
 
 	public static boolean bSuporte = true;
 	
@@ -233,7 +233,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		int iCodMenu = -1;
 		try {
 			for ( int i = 0; i < vOpcoes.size(); i++ ) {
-				miTemp = (JMenuItem) vOpcoes.elementAt( i );
+				miTemp = vOpcoes.elementAt( i );
 				if ( miTemp != null ) {
 					if ( miTemp instanceof JMenuPad )
 						iCodMenu = ( (JMenuPad) miTemp ).getCodMenu();
@@ -264,7 +264,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		}
 	}
 
-	public void addOpcao( int iSuperMenu, int iTipo, String sCaption, String titulo, char cAtalho, int iOpcao, int iNivel, boolean bExec, Class tela ) {
+	public void addOpcao( int iSuperMenu, int iTipo, String sCaption, String titulo, char cAtalho, int iOpcao, int iNivel, boolean bExec, Class<? extends IFilho> tela ) {
 
 		JMenuItem mOpcao = null;
 		JMenuPad mpMaster = null;
@@ -318,7 +318,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	}
 
-	public JButtonPad addBotao( String sImagem, String sToolTip, String titulo, int iCodMenu, Class tela ) {
+	public JButtonPad addBotao( String sImagem, String sToolTip, String titulo, int iCodMenu, Class<? extends IFilho> tela ) {
 
 		JButtonPad btOpcao = null;
 		try {
@@ -359,6 +359,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		item.addActionListener( this );
 	}
 
+	@SuppressWarnings("unchecked")
 	public void actionPerformed( ActionEvent evt ) {
 
 		Object oTemp = evt.getSource();
@@ -400,7 +401,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				}
 			}
 			if ( iCodMenu != -1 ) {
-				Class telaClass = null;
+				Class<? extends IFilho> telaClass = null;
 				String titulo = "";
 				if ( oTemp instanceof JMenuItemPad ) {
 					telaClass = ( (JMenuItemPad) oTemp ).getTela();
@@ -420,7 +421,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 							Object obj = telaClass.newInstance();
 							if ( obj instanceof FFDialogo ) {
 								FFDialogo tela = (FFDialogo) obj;
-
+							
 								Class partypes[] = new Class[ 2 ];
 								partypes[ 0 ] = Connection.class;
 								partypes[ 1 ] = Connection.class;
@@ -438,6 +439,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 									arglist[ 0 ] = con;
 									arglist[ 1 ] = conIB;
 									meth.invoke( obj, arglist );
+									
+									
 								}
 							}
 							else if ( obj instanceof FFilho ) {
@@ -529,7 +532,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	private boolean upMenuDB( JMenuItem men, JMenuPad menPai ) {
 
 		boolean bRet = false;
-		Class tela = null;
+		Class<? extends IFilho> tela = null;
 		String sNomeMenu = null;
 		String sAcaoMenu = null;
 		int iCodMenu = 0;
@@ -712,11 +715,12 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public String[][][] getConfig2() {
 
-		Vector vSessao = new Vector();
+		Vector<Vector<?>> vSessao = new Vector<Vector<?>>();
 		Vector vValSessao = new Vector();
-		Vector vValCampo = new Vector();
+		Vector<String> vValCampo = new Vector<String>();
 		String sTmp = "";
 		boolean bLeSessao = false;
 		boolean bLeCampo = false;
@@ -796,18 +800,18 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		Funcoes.mensagemErro( null, "TESTE: " + vSessao.size() + " ~ " + iMaxCampo );
 		String[][][] sRetorno = new String[ vSessao.size() ][ iMaxCampo ][ 2 ];
 		for ( int iS = 0; iS < ( vSessao.size() ); iS++ ) {
-			sRetorno[ iS ][ 0 ][ 0 ] = (String) ( (Vector) vSessao.elementAt( iS ) ).elementAt( 0 );
+			sRetorno[ iS ][ 0 ][ 0 ] = (String) vSessao.elementAt( iS ).elementAt( 0 );
 			for ( int iC = 1; iC < iMaxCampo; iC++ ) {
-				sRetorno[ iS ][ iC ][ 0 ] = (String) ( (Vector) ( (Vector) vSessao.elementAt( iS ) ).elementAt( iC ) ).elementAt( 0 );
-				sRetorno[ iS ][ iC ][ 1 ] = (String) ( (Vector) ( (Vector) vSessao.elementAt( iS ) ).elementAt( iC ) ).elementAt( 1 );
+				sRetorno[ iS ][ iC ][ 0 ] = (String) ( (Vector) vSessao.elementAt( iS ).elementAt( iC ) ).elementAt( 0 );
+				sRetorno[ iS ][ iC ][ 1 ] = (String) ( (Vector) vSessao.elementAt( iS ).elementAt( iC ) ).elementAt( 1 );
 			}
 		}
 		return sRetorno;
 	}
 
-	public static Vector getArqINI( String sNomeArq ) {
+	public static Vector<String> getArqINI( String sNomeArq ) {
 
-		Vector vRetorno = new Vector();
+		Vector<String> vRetorno = new Vector<String>();
 		String sTemp = "";
 		int iTam = 0;
 		char c = (char) 0;
@@ -862,10 +866,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		String sLabel = "";
 		int iLocal = 0;
 		for ( int i = 0; i < vArqINI.size(); i++ ) {
-			sLinha = ( (String) vArqINI.elementAt( i ) ).trim();
+			sLinha = vArqINI.elementAt( i ).trim();
 			if ( sLinha.indexOf( sSecao ) > 0 ) {
 				for ( int i2 = i + 1; i2 < vArqINI.size(); i2++ ) {
-					sLinha = (String) vArqINI.elementAt( i2 );
+					sLinha = vArqINI.elementAt( i2 );
 					if ( sLinha.indexOf( '[' ) > 0 ) {
 						break;
 					}

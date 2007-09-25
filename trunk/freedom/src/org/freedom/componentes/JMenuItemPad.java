@@ -21,6 +21,8 @@
 package org.freedom.componentes;
 import javax.swing.JMenuItem;
 
+import org.freedom.telas.IFilho;
+
 public class JMenuItemPad extends JMenuItem {
 
 	private static final long serialVersionUID = 1L;
@@ -28,7 +30,7 @@ public class JMenuItemPad extends JMenuItem {
 	private int iCodMod = 0;
     private int iCodIt = 0;
     private int iCodNiv = 0;
-    private Class tela = null;
+    private Class<? extends IFilho> tela = null;
     private String titulo = "";
   
 	public String getTitulo() {
@@ -46,7 +48,7 @@ public class JMenuItemPad extends JMenuItem {
 	public int getICodSys() {
 		return iCodSys;
 	}
-	public Class getTela() {
+	public Class<? extends IFilho> getTela() {
 		return tela;
 	}
 	/**
@@ -66,7 +68,7 @@ public class JMenuItemPad extends JMenuItem {
 	*
 	*/
   
-	public JMenuItemPad (int iCodSistema, int iCodModulo, int iCodItem, int iCodNivel, Class tela, String titulo) {
+	public JMenuItemPad (int iCodSistema, int iCodModulo, int iCodItem, int iCodNivel, Class<? extends IFilho> tela, String titulo) {
 		iCodSys = iCodSistema;
 		iCodMod = iCodModulo;
 		iCodIt = iCodItem;

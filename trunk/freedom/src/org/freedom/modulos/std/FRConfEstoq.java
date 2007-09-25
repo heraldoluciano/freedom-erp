@@ -40,8 +40,8 @@ public class FRConfEstoq extends FRelatorio {
 	private static final long serialVersionUID = 1L;
 
   
-  private Vector vLabTipoRel = new Vector();
-  private Vector vValTipoRel = new Vector();
+  private Vector<String> vLabTipoRel = new Vector<String>();
+  private Vector<String> vValTipoRel = new Vector<String>();
   private JRadioGroup rgTipoRel = null;
   private JCheckBoxPad cbTipoMovEstoq = null;
   private JCheckBoxPad cbAtivo = null;

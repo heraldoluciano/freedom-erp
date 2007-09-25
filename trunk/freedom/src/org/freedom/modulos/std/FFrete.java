@@ -69,8 +69,8 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
   private JTextFieldPad txtEspFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   private JTextFieldPad txtMarcaFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   
-  private Vector vVals = new Vector();
-  private Vector vLabs = new Vector();
+  private Vector<String> vVals = new Vector<String>();
+  private Vector<String> vLabs = new Vector<String>();
  
   private ListaCampos lcTran = new ListaCampos(this,"TN");
   private ListaCampos lcVenda = new ListaCampos(this,"");

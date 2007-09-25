@@ -201,29 +201,29 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 	private JRadioGroup rgVenc = null;
 
-	private Vector vCodPag = new Vector();
+	private Vector<String> vCodPag = new Vector<String>();
 
-	private Vector vNParcPag = new Vector();
+	private Vector<String> vNParcPag = new Vector<String>();
 
-	private Vector vNParcBaixa = new Vector();
+	private Vector<String> vNParcBaixa = new Vector<String>();
 
-	private Vector vCodPed = new Vector();
+	private Vector<String> vCodPed = new Vector<String>();
 
-	private Vector vNumContas = new Vector();
+	private Vector<String> vNumContas = new Vector<String>();
 
-	private Vector vCodPlans = new Vector();
+	private Vector<String> vCodPlans = new Vector<String>();
 
-	private Vector vCodCCs = new Vector();
+	private Vector<String> vCodCCs = new Vector<String>();
 
-	private Vector vDtEmiss = new Vector();
+	private Vector<String> vDtEmiss = new Vector<String>();
 
-	private Vector vValsData = new Vector();
+	private Vector<String> vValsData = new Vector<String>();
 
-	private Vector vLabsData = new Vector();
+	private Vector<String> vLabsData = new Vector<String>();
 
-	private Vector vValsVenc = new Vector();
+	private Vector<String> vValsVenc = new Vector<String>();
 
-	private Vector vLabsVenc = new Vector();
+	private Vector<String> vLabsVenc = new Vector<String>();
 
 	private ImageIcon imgVencido = Icone.novo( "clVencido.gif" );
 
@@ -1120,9 +1120,9 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 		if ( tabConsulta.getLinhaSel() != -1 ) {
 			
-			txtCodPagBaixa.setVlrString( (String) vCodPag.elementAt( tabConsulta.getLinhaSel() ) );
+			txtCodPagBaixa.setVlrString( vCodPag.elementAt( tabConsulta.getLinhaSel() ) );
 			
-			int iNParc = ( new Integer( (String) vNParcPag.elementAt( tabConsulta.getLinhaSel() ) ) ).intValue();
+			int iNParc = ( new Integer( vNParcPag.elementAt( tabConsulta.getLinhaSel() ) ) ).intValue();
 			
 			lcPagBaixa.carregaDados();
 			tpn.setSelectedIndex( 1 );
@@ -1131,7 +1131,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 			
 			for ( int i = 0; i < vNParcBaixa.size(); i++ ) {
 				
-				if ( iNParc == ( new Integer( (String) vNParcBaixa.elementAt( i ) ) ).intValue() ) {
+				if ( iNParc == ( new Integer( vNParcBaixa.elementAt( i ) ) ).intValue() ) {
 					
 					tabBaixa.setLinhaSel( i );
 					break;
@@ -1175,14 +1175,14 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 				sVals[ 0 ] = (String) tabManut.getValor( iLin, 3 );
 				sVals[ 1 ] = (String) tabManut.getValor( iLin, 4 );
-				sVals[ 2 ] = "".equals( (String) vNumContas.elementAt( iLin ) ) ? sRelPlanPag[ 2 ] : (String) vNumContas.elementAt( iLin );
-				sVals[ 3 ] = "".equals( (String) vCodPlans.elementAt( iLin ) ) ? sRelPlanPag[ 1 ] : (String) vCodPlans.elementAt( iLin );
+				sVals[ 2 ] = "".equals( vNumContas.elementAt( iLin ) ) ? sRelPlanPag[ 2 ] : vNumContas.elementAt( iLin );
+				sVals[ 3 ] = "".equals( vCodPlans.elementAt( iLin ) ) ? sRelPlanPag[ 1 ] : vCodPlans.elementAt( iLin );
 				sVals[ 4 ] = "".equals( (String) tabManut.getValor( iLin, 7 ) ) ? (String) tabManut.getValor( iLin, 8 ) : (String) tabManut.getValor( iLin, 7 );
 				sVals[ 5 ] = (String) tabManut.getValor( iLin, 1 );
 				sVals[ 6 ] = (String) tabManut.getValor( iLin, 1 );
 				sVals[ 7 ] = (String) tabManut.getValor( iLin, 9 );
 				sVals[ 8 ] = Funcoes.dateToStrDate( new Date() );
-				sVals[ 10 ] = "".equals( (String) vCodCCs.elementAt( iLin ) ) ? sRelPlanPag[ 3 ] : (String) vCodCCs.elementAt( iLin );
+				sVals[ 10 ] = "".equals( vCodCCs.elementAt( iLin ) ) ? sRelPlanPag[ 3 ] : vCodCCs.elementAt( iLin );
 
 				if ( "".equals( ( (String) tabManut.getValor( iLin, 10 ) ).trim() ) ) {// Para verificar c jah esta pago testa se a data de pgto esta setada.
 					
@@ -1287,14 +1287,14 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 				sVals[ 0 ] = txtCodForBaixa.getVlrString();
 				sVals[ 1 ] = txtRazForBaixa.getVlrString();
-				sVals[ 2 ] = "".equals( (String) vNumContas.elementAt( iLin ) ) ? sRelPlanPag[ 2 ] : (String) vNumContas.elementAt( iLin );
-				sVals[ 3 ] = "".equals( (String) vCodPlans.elementAt( iLin ) ) ? sRelPlanPag[ 1 ] : (String) vCodPlans.elementAt( iLin );
+				sVals[ 2 ] = "".equals( vNumContas.elementAt( iLin ) ) ? sRelPlanPag[ 2 ] : vNumContas.elementAt( iLin );
+				sVals[ 3 ] = "".equals( vCodPlans.elementAt( iLin ) ) ? sRelPlanPag[ 1 ] : vCodPlans.elementAt( iLin );
 				sVals[ 4 ] = txtDoc.getVlrString();
 				sVals[ 5 ] = txtDtEmisBaixa.getVlrString();
 				sVals[ 6 ] = (String) tabBaixa.getValor( iLin, 1 );
 				sVals[ 7 ] = (String) tabBaixa.getValor( iLin, 5 );
 				sVals[ 8 ] = Funcoes.dateToStrDate( new Date() );
-				sVals[ 10 ] = "".equals( (String) vCodCCs.elementAt( iLin ) ) ? sRelPlanPag[ 3 ] : (String) vCodCCs.elementAt( iLin );
+				sVals[ 10 ] = "".equals( vCodCCs.elementAt( iLin ) ) ? sRelPlanPag[ 3 ] : vCodCCs.elementAt( iLin );
 
 				if ( "".equals( ( (String) tabBaixa.getValor( iLin, 6 ) ).trim() ) ) {
 					

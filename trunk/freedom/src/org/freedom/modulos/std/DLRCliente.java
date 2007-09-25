@@ -89,17 +89,17 @@ public class DLRCliente extends FFDialogo {
 
 	private ListaCampos lcVendedor = new ListaCampos( this );
 
-	private Vector vLabsOrdem = new Vector();
+	private Vector<String> vLabsOrdem = new Vector<String>();
 
-	private Vector vValsOrdem = new Vector();
+	private Vector<String> vValsOrdem = new Vector<String>();
 
-	private Vector vLabsModo = new Vector();
+	private Vector<String> vLabsModo = new Vector<String>();
 
-	private Vector vValsModo = new Vector();
+	private Vector<String> vValsModo = new Vector<String>();
 
-	private Vector vLabsEnd = new Vector();
+	private Vector<String> vLabsEnd = new Vector<String>();
 
-	private Vector vValsEnd = new Vector();
+	private Vector<String> vValsEnd = new Vector<String>();
 
 	public DLRCliente( Component cOrig, Connection cn ) {
 

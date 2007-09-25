@@ -35,10 +35,10 @@ public class DLRRecursos extends FFDialogo {
   private JRadioGroup rgTipo = null;
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private JLabelPad lbTipo = new JLabelPad("Tipo de impressão:");
-  private Vector vLabsOrd = new Vector();
-  private Vector vValsOrd = new Vector();
-  private Vector vLabsTipo = new Vector();
-  private Vector vValsTipo = new Vector();
+  private Vector<String> vLabsOrd = new Vector<String>();
+  private Vector<String> vValsOrd = new Vector<String>();
+  private Vector<String> vLabsTipo = new Vector<String>();
+  private Vector<String> vValsTipo = new Vector<String>();
 
   public DLRRecursos(Component cOrig) {
   	super(cOrig);
@@ -65,8 +65,8 @@ public class DLRRecursos extends FFDialogo {
     adic(rgTipo,7,85,275,30);
 
   }
-  public Vector getValores() {
-  	Vector vRet = new Vector();
+  public Vector<String> getValores() {
+  	Vector<String> vRet = new Vector<String>();
 	
   	if(rgOrdem.getVlrString().compareTo("C") == 0)
   		vRet.addElement("CODRECP");

@@ -78,9 +78,9 @@ public class FManutComis extends FFilho implements ActionListener {
 
 	private JLabelPad lbTotPg = new JLabelPad( "Total pago" );
 
-	private Vector vVals = new Vector();
+	private Vector<String> vVals = new Vector<String>();
 
-	private Vector vLabs = new Vector();
+	private Vector<String> vLabs = new Vector<String>();
 
 	private JRadioGroup rgEmitRel = null;
 
@@ -122,7 +122,7 @@ public class FManutComis extends FFilho implements ActionListener {
 
 	private JButton btLib = new JButton( Icone.novo( "btOk.gif" ) );
 
-	private Vector vCodComi = new Vector();
+	private Vector<String> vCodComi = new Vector<String>();
 
 	String sEmitRel = "";
 
@@ -296,7 +296,7 @@ public class FManutComis extends FFilho implements ActionListener {
 			bVlrTot = new BigDecimal( "0.0" );
 			bVlrTot.setScale( 3 );
 			bVlrTotPago = new BigDecimal( "0.0" ).setScale( 2, BigDecimal.ROUND_HALF_UP );
-			vCodComi = new Vector();
+			vCodComi = new Vector<String>();
 			for ( int i = 0; rs.next(); i++ ) {
 				tab.adicLinha();
 				vCodComi.addElement( rs.getString( "CodComi" ) );
@@ -346,7 +346,7 @@ public class FManutComis extends FFilho implements ActionListener {
 				else {
 					ps = con.prepareStatement( sSQL2 );
 				}
-				ps.setInt( 1, Integer.parseInt( (String) vCodComi.elementAt( i ) ) );
+				ps.setInt( 1, Integer.parseInt( vCodComi.elementAt( i ) ) );
 				ps.setInt( 2, Aplicativo.iCodEmp );
 				ps.setInt( 3, ListaCampos.getMasterFilial( "VDCOMISSAO" ) );
 				ps.executeUpdate();

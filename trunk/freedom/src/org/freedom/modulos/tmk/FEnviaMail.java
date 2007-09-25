@@ -113,10 +113,10 @@ public class FEnviaMail extends FFilho implements ActionListener {
     	lbStatus.setForeground(Color.BLUE);
     	pinRod.tiraBorda();
     	
-    	Vector vVals = new Vector();
+    	Vector<String> vVals = new Vector<String>();
     	vVals.add("A");
 		vVals.add("C");
-		Vector vLabs = new Vector();
+		Vector<String> vLabs = new Vector<String>();
 		vLabs.add("Arquivo no anexo.");
 		vLabs.add("Arquivo no corpo.");
 		rgTipo = new JRadioGroup(1,2,vLabs,vVals);

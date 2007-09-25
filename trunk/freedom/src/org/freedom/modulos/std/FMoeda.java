@@ -45,13 +45,13 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
 
 	private JPanelPad pinGeral = new JPanelPad( 370, 220 );
 
-	private Vector vValsTipo = new Vector();
+	private Vector<String> vValsTipo = new Vector<String>();
 
-	private Vector vLabsTipo = new Vector();
+	private Vector<String> vLabsTipo = new Vector<String>();
 
-	private Vector vValsAtua = new Vector();
+	private Vector<String> vValsAtua = new Vector<String>();
 
-	private Vector vLabsAtua = new Vector();
+	private Vector<String> vLabsAtua = new Vector<String>();
 
 	private JRadioGroup rgTipo = null;
 

@@ -38,8 +38,8 @@ public class DLRPedido extends FFDialogo {
 	private JRadioGroup rgOrdem = null;
 	private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
 	private JCheckBox cbxResumido = new JCheckBox("Relatório Resumido"); 
-	private Vector vLabs = new Vector();
-	private Vector vVals = new Vector();
+	private Vector<String> vLabs = new Vector<String>();
+	private Vector<String> vVals = new Vector<String>();
 	
 	public DLRPedido(String OrdNota, boolean RelResumido) {
 		setTitulo("Ordem do Relatório");

@@ -42,8 +42,8 @@ public class DLRVendedor extends FFDialogo {
   private JTextFieldPad txtCid = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private JLabelPad lbCid = new JLabelPad("Cidade");
-  private Vector vLabs = new Vector();
-  private Vector vVals = new Vector();
+  private Vector<String> vLabs = new Vector<String>();
+  private Vector<String> vVals = new Vector<String>();
   private JLabelPad lbSetor = new JLabelPad("Cód.setor");
   private JLabelPad lbDescSetor = new JLabelPad("Descrição do setor");
   private JLabelPad lbCodFuncaoVend = new JLabelPad("Cód.funcao");

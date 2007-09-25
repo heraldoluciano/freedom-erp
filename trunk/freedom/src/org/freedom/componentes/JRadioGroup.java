@@ -25,6 +25,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -49,7 +51,7 @@ public class JRadioGroup extends JPanel implements ActionListener, KeyListener{
   private RadioGroupListener rgLis = new DefaultRadioGroupListener();
   private ListaCampos lcRadio = null;
   public int Tipo = -1;
-  public JRadioGroup(int Lin, int Col, Vector label, Vector val) {
+  public JRadioGroup(int Lin, int Col, Vector<String> label, Vector<String> val) {
     this(Lin,Col,label.toArray(),val.toArray());
   }
   public JRadioGroup(int Lin, int Col, Object oLabs[], Object oVals[]) {
@@ -134,9 +136,9 @@ public class JRadioGroup extends JPanel implements ActionListener, KeyListener{
     }
   }
   public void setAtivo(boolean bAtiva) {
-  	JRadioButton rbTmp = null;
-  	for (Enumeration e = bg.getElements(); e.hasMoreElements(); ) {
-  		rbTmp = (JRadioButton) e.nextElement();
+  	AbstractButton rbTmp = null;
+  	for (Enumeration<AbstractButton> e = bg.getElements(); e.hasMoreElements(); ) {
+  		rbTmp = e.nextElement();
   		if (rbTmp!=null)
   			rbTmp.setEnabled(bAtiva);
   	}
