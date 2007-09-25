@@ -129,8 +129,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	private JScrollPane spTabCot = new JScrollPane(tabCot);
 	private Navegador navCot = new Navegador(true);	
 	private JRadioGroup rgPriod = null;
-	private Vector vLabsTipo = new Vector();
-	private Vector vValsTipo = new Vector();	
+	private Vector<String> vLabsTipo = new Vector<String>();
+	private Vector<String> vValsTipo = new Vector<String>();	
 	private ListaCampos lcUsu = new ListaCampos(this, "UU");
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
@@ -152,11 +152,11 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	boolean bAprovaCab = false;
 	boolean bCotacao = false;
 	int cont = 0;
-	Vector vItem = new Vector();
-	Vector vProdCan = new Vector();
-	Vector vMotivoCan = new Vector();
-	Vector vPrecCan = new Vector();
-	Vector vQtdCan = new Vector();
+	Vector<String> vItem = new Vector<String>();
+	Vector<String> vProdCan = new Vector<String>();
+	Vector<String> vMotivoCan = new Vector<String>();
+	Vector<String> vPrecCan = new Vector<String>();
+	Vector<String> vQtdCan = new Vector<String>();
     String sSitSol;
     String sSitItAprov;
     String sSitItExp;
@@ -462,7 +462,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcCotacao.setNavegador(navRod);
 		lcCotacao.setTabela(tab);
 	
-//		txtQtdItAprovado.setSoLeitura(true);
 		txtQtdItAprovado.setNaoEditavel(true);
 		txtDtCot.setSoLeitura(true);
 
