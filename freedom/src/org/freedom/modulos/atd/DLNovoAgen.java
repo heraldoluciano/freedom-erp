@@ -109,9 +109,9 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener {
 
 	private ListaCampos lcUsu = new ListaCampos( this );
 
-	private Vector vCodTipoAGD = new Vector();
+	private Vector<String> vCodTipoAGD = new Vector<String>();
 
-	private Vector vDescTipoAGD = new Vector();
+	private Vector<String> vDescTipoAGD = new Vector<String>();
 
 	public DLNovoAgen( Component cOrig ) {
 
@@ -155,21 +155,21 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener {
 
 		cbTipo = new JComboBoxPad( vDescTipoAGD, vCodTipoAGD, JComboBoxPad.TP_STRING, 2, 0 );
 
-		Vector vVals1 = new Vector();
+		Vector<String> vVals1 = new Vector<String>();
 		vVals1.addElement( "PU" );
 		vVals1.addElement( "PR" );
-		Vector vLabs1 = new Vector();
+		Vector<String> vLabs1 = new Vector<String>();
 		vLabs1.addElement( "publico" );
 		vLabs1.addElement( "privado" );
 		rgCAAGD = new JRadioGroup( 1, 2, vLabs1, vVals1 );
 		rgCAAGD.setVlrString( "PR" );
 
-		Vector vVals2 = new Vector();
+		Vector<String> vVals2 = new Vector<String>();
 		vVals2.addElement( "1" );
 		vVals2.addElement( "2" );
 		vVals2.addElement( "3" );
 		vVals2.addElement( "4" );
-		Vector vLabs2 = new Vector();
+		Vector<String> vLabs2 = new Vector<String>();
 		vLabs2.addElement( "nenhuma" );
 		vLabs2.addElement( "baixa" );
 		vLabs2.addElement( "média" );
@@ -268,7 +268,7 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener {
 		sVal[ 4 ] = txtAssunto.getVlrString();
 		sVal[ 5 ] = txaDescAtend.getVlrString();
 		sVal[ 6 ] = String.valueOf( Aplicativo.iCodFilial );
-		sVal[ 7 ] = (String) vCodTipoAGD.elementAt( cbTipo.getSelectedIndex() );
+		sVal[ 7 ] = vCodTipoAGD.elementAt( cbTipo.getSelectedIndex() );
 		sVal[ 8 ] = cbPrioridade.getVlrString();
 		sVal[ 9 ] = txtCodAge.getVlrString();
 		sVal[ 10 ] = txtTipoAge.getVlrString();

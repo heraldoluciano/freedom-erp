@@ -26,8 +26,6 @@ public interface IFilho {
     public abstract void setTela(Container c);
 
     public abstract Container getTela();
-
-    
     
     public abstract JPanelPad adicBotaoSair();
 

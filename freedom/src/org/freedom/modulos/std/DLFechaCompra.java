@@ -128,9 +128,9 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 	private ListaCampos lcItPagar = new ListaCampos( this );
 
-	private Vector vVals = new Vector();
+	private Vector<String> vVals = new Vector<String>();
 
-	private Vector vLabs = new Vector();
+	private Vector<String> vLabs = new Vector<String>();
 
 	private int iCodCompraFecha = 0;
 

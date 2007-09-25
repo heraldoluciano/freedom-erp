@@ -34,10 +34,10 @@ public class DLROrcamento extends FFDialogo {
   private JRadioGroup rgModo = null;
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private JLabelPad lbModo = new JLabelPad("Modo da impressão:");
-  private Vector vOLabs = new Vector();
-  private Vector vOVals = new Vector();
-  private Vector vMLabs = new Vector();
-  private Vector vMVals = new Vector();
+  private Vector<String> vOLabs = new Vector<String>();
+  private Vector<String> vOVals = new Vector<String>();
+  private Vector<String> vMLabs = new Vector<String>();
+  private Vector<String> vMVals = new Vector<String>();
   public DLROrcamento(String OrdNota, String ModoNota) {
     setTitulo("Ordem do Relatório");
     setAtribos(370,230);

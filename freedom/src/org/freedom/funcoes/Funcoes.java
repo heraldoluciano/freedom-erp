@@ -77,9 +77,11 @@ import org.freedom.telas.FSuporte;
 
 public class Funcoes {
 
-	private static Vector vIE = new Vector(34);
+	@SuppressWarnings("unchecked")
+	private static Vector<Vector<Comparable>> vIE = new Vector<Vector<Comparable>>(34);
 
-	private static Vector vPesoIE = new Vector(13);
+	@SuppressWarnings("unchecked")
+	private static Vector<Vector<Comparable>> vPesoIE = new Vector<Vector<Comparable>>(13);
 
 	//private static ImageIcon imgIcone = null;
 	public static String sIEValida = "";
@@ -310,8 +312,8 @@ public class Funcoes {
 		return sTexto;
 	}
 
-	public static Vector quebraLinha(Vector vValor, int iTam) {
-		Vector vRetorno = new Vector();
+	public static Vector<String> quebraLinha(Vector<String> vValor, int iTam) {
+		Vector<String> vRetorno = new Vector<String>();
 		String sLinha = null;
 		String sValor = null;
 		int iParte = 0;
@@ -340,7 +342,7 @@ public class Funcoes {
 		return vRetorno;
 	}
 
-	public static Vector ordenaVector(Vector v, int iEspacos) {
+	public static Vector<String> ordenaVector(Vector<String> v, int iEspacos) {
 		String s1 = "";
 		String s2 = "";
 		try {
@@ -377,6 +379,7 @@ public class Funcoes {
 		return v;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void mostraVector(Vector v) {
 		String sMostra = "";
 		try {
@@ -1050,7 +1053,7 @@ public class Funcoes {
 		return cRetorno;
 	}
 
-	public static Vector stringToVector(String sTexto,String sSep) {
+	public static Vector<String> stringToVector(String sTexto,String sSep) {
 		Vector<String> vRetorno = new Vector<String>();
 		String sLinha = "";
 		if (sTexto != null) {
@@ -1074,8 +1077,8 @@ public class Funcoes {
 		}
 		return vRetorno;
 	}
-	public static Vector stringToVector(String sTexto) {
-		Vector vRetorno = new Vector();
+	public static Vector<String> stringToVector(String sTexto) {
+		Vector<String> vRetorno = new Vector<String>();
 		String sLinha = "";
 		char c10 = (char) 10;
 		char c13 = (char) 13;
@@ -1565,9 +1568,9 @@ public class Funcoes {
 		return sRetorno;
 	}
 
-	public static Vector strToVectorSilabas(String sVals, int iNumColunas) {
+	public static Vector<String> strToVectorSilabas(String sVals, int iNumColunas) {
 		sVals = strTostrQuebra(sVals, iNumColunas);
-		Vector vRetorno = new Vector();
+		Vector<String> vRetorno = new Vector<String>();
 		String[] sSeparadaPorEnter = null;
 		String sLinhaAnt = "";
 		String sLinhaNova = "";
@@ -2058,12 +2061,12 @@ public class Funcoes {
 		String sIE2 = "";
 
 		for (int i = 0; i < 34; i++) {
-			if (((String) ((Vector) vIE.elementAt(i)).elementAt(0))
+			if (((String) vIE.elementAt(i).elementAt(0))
 					.equals(sEstado)
-					&& ((Integer) ((Vector) vIE.elementAt(i)).elementAt(1))
+					&& ((Integer) vIE.elementAt(i).elementAt(1))
 							.intValue() == iCaso) {
 				sIE2 = sIE;
-				if (testaCasoIE(sIE2, (Vector) vIE.elementAt(i))) {
+				if (testaCasoIE(sIE2, vIE.elementAt(i))) {
 					sIE = sIE2;
 					bRetorno = true;
 					break;
@@ -2073,6 +2076,7 @@ public class Funcoes {
 		return bRetorno;
 	}
 
+	@SuppressWarnings("unchecked")
 	private static boolean testaCasoIE(String sIE, Vector vXIE) {
 		String sIENova = "";
 		int iSX, iSY, iSQiX, iSQiY, iPosDVX, iPosDVY;
@@ -2197,6 +2201,7 @@ public class Funcoes {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	private static int[] retPeso(Vector vXIE, char XY) {
 		String sPeso = "";
 		int[] aRetorno = new int[14];
@@ -2205,11 +2210,11 @@ public class Funcoes {
 		if (XY == 'X') {
 			sPeso = (String) vXIE.elementAt(6);
 			for (int i = 0; i < vPesoIE.size(); i++) {
-				if (((String) ((Vector) vPesoIE.elementAt(i)).elementAt(0))
+				if (((String) vPesoIE.elementAt(i).elementAt(0))
 						.compareTo(sPeso) == 0) {
 					for (int i2 = (15 - tam); i2 <= 14; i2++) {
-						aRetorno[i2 - (15 - tam)] = ((Integer) ((Vector) vPesoIE
-								.elementAt(i)).elementAt(i2)).intValue();
+						aRetorno[i2 - (15 - tam)] = ((Integer) vPesoIE
+								.elementAt(i).elementAt(i2)).intValue();
 					}
 					break;
 				}
@@ -2217,12 +2222,12 @@ public class Funcoes {
 		} else if (XY == 'Y') {
 			sPeso = (String) vXIE.elementAt(9);
 			for (int i = 1; i < vPesoIE.size(); i++) {
-				if (((String) ((Vector) vPesoIE.elementAt(i)).elementAt(0))
+				if (((String) vPesoIE.elementAt(i).elementAt(0))
 						.compareTo(sPeso) == 0) {
 					for (int i2 = (15 - tam); i2 <= 14; i2++) {
-						aRetorno[i2 - (15 - tam)] = ((Integer) ((Vector) vPesoIE
-								.elementAt(i)).elementAt(i2)).intValue();
-						peso += ((Vector) vPesoIE.elementAt(i)).elementAt(i2)
+						aRetorno[i2 - (15 - tam)] = ((Integer) vPesoIE
+								.elementAt(i).elementAt(i2)).intValue();
+						peso += vPesoIE.elementAt(i).elementAt(i2)
 								+ " ,";
 					}
 					break;
@@ -2254,7 +2259,7 @@ public class Funcoes {
 		return sRetorno;
 	}
 
-	private static int[] carregaPosDV(Vector vXIE) {
+	private static int[] carregaPosDV(Vector<String> vXIE) {
 		int[] aRetorno = new int[2];
 		aRetorno[0] = -1;
 		aRetorno[1] = -1;
@@ -2269,21 +2274,22 @@ public class Funcoes {
 		return aRetorno;
 	}
 
+	@SuppressWarnings("unchecked")
 	private static void montaTabPesoIE() {
 
-		Vector linha01 = new Vector();
-		Vector linha02 = new Vector();
-		Vector linha03 = new Vector();
-		Vector linha04 = new Vector();
-		Vector linha05 = new Vector();
-		Vector linha06 = new Vector();
-		Vector linha07 = new Vector();
-		Vector linha08 = new Vector();
-		Vector linha09 = new Vector();
-		Vector linha10 = new Vector();
-		Vector linha11 = new Vector();
-		Vector linha12 = new Vector();
-		Vector linha13 = new Vector();
+		Vector<Comparable> linha01 = new Vector<Comparable>();
+		Vector<Comparable> linha02 = new Vector<Comparable>();
+		Vector<Comparable> linha03 = new Vector<Comparable>();
+		Vector<Comparable> linha04 = new Vector<Comparable>();
+		Vector<Comparable> linha05 = new Vector<Comparable>();
+		Vector<Comparable> linha06 = new Vector<Comparable>();
+		Vector<Comparable> linha07 = new Vector<Comparable>();
+		Vector<Comparable> linha08 = new Vector<Comparable>();
+		Vector<Comparable> linha09 = new Vector<Comparable>();
+		Vector<Comparable> linha10 = new Vector<Comparable>();
+		Vector<Comparable> linha11 = new Vector<Comparable>();
+		Vector<Comparable> linha12 = new Vector<Comparable>();
+		Vector<Comparable> linha13 = new Vector<Comparable>();
 
 		linha01.addElement("P1");
 		linha01.addElement(new Integer(6));
@@ -2507,41 +2513,42 @@ public class Funcoes {
 		vPesoIE.addElement(linha13);
 	}
 
+	@SuppressWarnings("unchecked")
 	private static void montaTabCalcIE() {
-		Vector linha01 = new Vector();
-		Vector linha02 = new Vector();
-		Vector linha03 = new Vector();
-		Vector linha04 = new Vector();
-		Vector linha05 = new Vector();
-		Vector linha06 = new Vector();
-		Vector linha07 = new Vector();
-		Vector linha08 = new Vector();
-		Vector linha09 = new Vector();
-		Vector linha10 = new Vector();
-		Vector linha11 = new Vector();
-		Vector linha12 = new Vector();
-		Vector linha13 = new Vector();
-		Vector linha14 = new Vector();
-		Vector linha15 = new Vector();
-		Vector linha16 = new Vector();
-		Vector linha17 = new Vector();
-		Vector linha18 = new Vector();
-		Vector linha19 = new Vector();
-		Vector linha20 = new Vector();
-		Vector linha21 = new Vector();
-		Vector linha22 = new Vector();
-		Vector linha23 = new Vector();
-		Vector linha24 = new Vector();
-		Vector linha25 = new Vector();
-		Vector linha26 = new Vector();
-		Vector linha27 = new Vector();
-		Vector linha28 = new Vector();
-		Vector linha29 = new Vector();
-		Vector linha30 = new Vector();
-		Vector linha31 = new Vector();
-		Vector linha32 = new Vector();
-		Vector linha33 = new Vector();
-		Vector linha34 = new Vector();
+		Vector<Comparable> linha01 = new Vector<Comparable>();
+		Vector<Comparable> linha02 = new Vector<Comparable>();
+		Vector<Comparable> linha03 = new Vector<Comparable>();
+		Vector<Comparable> linha04 = new Vector<Comparable>();
+		Vector<Comparable> linha05 = new Vector<Comparable>();
+		Vector<Comparable> linha06 = new Vector<Comparable>();
+		Vector<Comparable> linha07 = new Vector<Comparable>();
+		Vector<Comparable> linha08 = new Vector<Comparable>();
+		Vector<Comparable> linha09 = new Vector<Comparable>();
+		Vector<Comparable> linha10 = new Vector<Comparable>();
+		Vector<Comparable> linha11 = new Vector<Comparable>();
+		Vector<Comparable> linha12 = new Vector<Comparable>();
+		Vector<Comparable> linha13 = new Vector<Comparable>();
+		Vector<Comparable> linha14 = new Vector<Comparable>();
+		Vector<Comparable> linha15 = new Vector<Comparable>();
+		Vector<Comparable> linha16 = new Vector<Comparable>();
+		Vector<Comparable> linha17 = new Vector<Comparable>();
+		Vector<Comparable> linha18 = new Vector<Comparable>();
+		Vector<Comparable> linha19 = new Vector<Comparable>();
+		Vector<Comparable> linha20 = new Vector<Comparable>();
+		Vector<Comparable> linha21 = new Vector<Comparable>();
+		Vector<Comparable> linha22 = new Vector<Comparable>();
+		Vector<Comparable> linha23 = new Vector<Comparable>();
+		Vector<Comparable> linha24 = new Vector<Comparable>();
+		Vector<Comparable> linha25 = new Vector<Comparable>();
+		Vector<Comparable> linha26 = new Vector<Comparable>();
+		Vector<Comparable> linha27 = new Vector<Comparable>();
+		Vector<Comparable> linha28 = new Vector<Comparable>();
+		Vector<Comparable> linha29 = new Vector<Comparable>();
+		Vector<Comparable> linha30 = new Vector<Comparable>();
+		Vector<Comparable> linha31 = new Vector<Comparable>();
+		Vector<Comparable> linha32 = new Vector<Comparable>();
+		Vector<Comparable> linha33 = new Vector<Comparable>();
+		Vector<Comparable> linha34 = new Vector<Comparable>();
 
 		linha01.addElement("AC");
 		linha01.addElement(new Integer(1));

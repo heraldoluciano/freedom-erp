@@ -42,8 +42,8 @@ public class DLRClComis extends FFDialogo {
 	  setTitulo("Ordem do Relatório");
 	  setAtribos(300,190);
 	  
-	  Vector vLabs = new Vector();
-	  Vector vVals = new Vector();
+	  Vector<String> vLabs = new Vector<String>();
+	  Vector<String> vVals = new Vector<String>();
 	  
 	  vLabs.addElement("Código");
 	  vLabs.addElement("Descrição");
@@ -55,8 +55,8 @@ public class DLRClComis extends FFDialogo {
 	  adic(lbOrdem,7,0,80,15);
 	  adic(rgOrdem,7,20,280,30);
 	  
-	  Vector vLabs1 = new Vector();
-	  Vector vVals1 = new Vector();
+	  Vector<String> vLabs1 = new Vector<String>();
+	  Vector<String> vVals1 = new Vector<String>();
 	  
 	  vLabs1.addElement("Grafico");
 	  vLabs1.addElement("Texto");

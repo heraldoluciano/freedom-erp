@@ -45,8 +45,8 @@ public class DLRTipoFiscCli extends FFDialogo {
 		setTitulo( "Ordem do Relatório" );
 		setAtribos( 300, 190 );
 
-		Vector vLabs = new Vector();
-		Vector vVals = new Vector();
+		Vector<String> vLabs = new Vector<String>();
+		Vector<String> vVals = new Vector<String>();
 
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
@@ -55,8 +55,8 @@ public class DLRTipoFiscCli extends FFDialogo {
 		rgOrdem = new JRadioGroup( 1, 2, vLabs, vVals );
 		rgOrdem.setVlrString( "D" );
 
-		Vector vLabs1 = new Vector();
-		Vector vVals1 = new Vector();
+		Vector<String> vLabs1 = new Vector<String>();
+		Vector<String> vVals1 = new Vector<String>();
 
 		vVals1.addElement( "G" );
 		vVals1.addElement( "T" );

@@ -46,10 +46,10 @@ public class FRPisCofins extends FRelatorio {
 	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);  
 	private JCheckBoxPad cbSemMov = new JCheckBoxPad("Ocultar produtos sem movimento","S","N");
 	private JRadioGroup rgPis = null;
-	private Vector vPisLab = new Vector();
-	private Vector vPisVal = new Vector();
-	private Vector vCofinsLab = new Vector();
-	private Vector vCofinsVal = new Vector();
+	private Vector<String> vPisLab = new Vector<String>();
+	private Vector<String> vPisVal = new Vector<String>();
+	private Vector<String> vCofinsLab = new Vector<String>();
+	private Vector<String> vCofinsVal = new Vector<String>();
 	private JRadioGroup rgCofins = null;
 	
 	public FRPisCofins() {

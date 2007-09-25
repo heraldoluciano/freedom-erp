@@ -116,8 +116,8 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 		txtCodVend.setFK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
 
-		Vector vVals = new Vector();
-		Vector vLabs = new Vector();
+		Vector<String> vVals = new Vector<String>();
+		Vector<String> vLabs = new Vector<String>();
 		vLabs.addElement( "Contas a receber" );
 		vLabs.addElement( "Contas recebidas" );
 		vLabs.addElement( "Ambas as contas" );
@@ -128,8 +128,8 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 		cbTipoRel = new JRadioGroup( 3, 1, vLabs, vVals );
 		cbTipoRel.setVlrString( "A" );
 
-		Vector vVals1 = new Vector();
-		Vector vLabs1 = new Vector();
+		Vector<String> vVals1 = new Vector<String>();
+		Vector<String> vLabs1 = new Vector<String>();
 		vLabs1.addElement( "Faturamento" );
 		vLabs1.addElement( "Vencimento" );
 		vVals1.addElement( "F" );
@@ -306,7 +306,7 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 
 			rs = ps.executeQuery();
 
-			HashMap hParam = new HashMap();
+			HashMap<String, Object> hParam = new HashMap<String, Object>();
 			hParam.put( "MOSTRAOBS", cbObs.getVlrString() );
 
 			FPrinterJob dlGr = null;

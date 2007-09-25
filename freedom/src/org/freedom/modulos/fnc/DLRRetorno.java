@@ -37,9 +37,9 @@ public class DLRRetorno extends FFDialogo {
   private JComboBoxPad cbTipoSaida = null;
   
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
-  private Vector vLabs = new Vector();
-  private Vector vVals = new Vector();
-  private Vector vStrTipo = new Vector();
+  private Vector<String> vLabs = new Vector<String>();
+  private Vector<String> vVals = new Vector<String>();
+  private Vector<String> vStrTipo = new Vector<String>();
   
   public DLRRetorno(Component cOrig) {
   	super(cOrig);

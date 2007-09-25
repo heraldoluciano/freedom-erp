@@ -56,10 +56,10 @@ public class FRCustoProducao extends FRelatorio {
 	private JRadioGroup rgOrdem = null;
 	private JLabelPad lbOpcao = new JLabelPad("Opção ");
 	private JRadioGroup rgOpcao = null;
-	private Vector vLbOrdem = new Vector();
-	private Vector vVlrOrdem = new Vector();
-	private Vector vLbOpcao = new Vector();
-	private Vector vVlrOpcao = new Vector();
+	private Vector<String> vLbOrdem = new Vector<String>();
+	private Vector<String> vVlrOrdem = new Vector<String>();
+	private Vector<String> vLbOpcao = new Vector<String>();
+	private Vector<String> vVlrOpcao = new Vector<String>();
 	private ListaCampos lcAlmox = new ListaCampos(this);
 	private ListaCampos lcGrup = new ListaCampos(this);
 	private ListaCampos lcMarca = new ListaCampos(this);

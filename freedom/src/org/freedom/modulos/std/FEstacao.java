@@ -60,8 +60,8 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 	private JTextFieldFK txtDescPapel = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JCheckBoxPad cbImpPad = new JCheckBoxPad("Impressora padrão?","S","N");
 	private JCheckBoxPad cbImpGrafica = new JCheckBoxPad("Impressão gráfica?","S","N");
-	private Vector vValTipoUsoImp = new Vector();
-	private Vector vLabTipoUsoImp = new Vector();
+	private Vector<String> vValTipoUsoImp = new Vector<String>();
+	private Vector<String> vLabTipoUsoImp = new Vector<String>();
 	private JRadioGroup rgTipoUsoImp = null;
 	
 	public FEstacao() {

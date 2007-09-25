@@ -93,10 +93,10 @@ public class FConsOrc extends FFilho implements ActionListener {
 		txtDtFim.setRequerido(true);
 		lbBorda.setBorder( BorderFactory.createEtchedBorder() );
 		
-		Vector vVals = new Vector();
+		Vector<String> vVals = new Vector<String>();
 		vVals.addElement("D");
 		vVals.addElement("V");
-		Vector vLabs = new Vector();
+		Vector<String> vLabs = new Vector<String>();
 		vLabs.addElement("Data de emissão");
 		vLabs.addElement("Data de validade");
 		gbVenc = new JRadioGroup(2,1,vLabs,vVals);

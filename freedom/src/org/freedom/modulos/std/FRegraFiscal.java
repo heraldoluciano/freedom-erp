@@ -44,8 +44,8 @@ public class FRegraFiscal extends FDetalhe {
 	private JTextFieldPad txtCodTipoMov= new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JCheckBoxPad cbNoUF = new JCheckBoxPad("Sim","S","N");
-	private Vector vDescCV = new Vector();
-	private Vector vValCV = new Vector();
+	private Vector<String> vDescCV = new Vector<String>();
+	private Vector<String> vValCV = new Vector<String>();
 	private ListaCampos lcNat = new ListaCampos(this);
 	private ListaCampos lcMov = new ListaCampos(this,"TM");
 	public FRegraFiscal () {

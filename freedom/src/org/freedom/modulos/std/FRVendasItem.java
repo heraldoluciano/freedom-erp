@@ -110,8 +110,8 @@ public class FRVendasItem extends FRelatorio {
 		txtDescMarca.setAtivo( false );
 		txtRazCli.setAtivo( false );
 
-		Vector vLabs = new Vector();
-		Vector vVals = new Vector();
+		Vector<String> vLabs = new Vector<String>();
+		Vector<String> vVals = new Vector<String>();
 
 		vLabs.addElement( "Grafico" );
 		vLabs.addElement( "Texto" );
@@ -120,8 +120,8 @@ public class FRVendasItem extends FRelatorio {
 		rgTipo = new JRadioGroup( 1, 2, vLabs, vVals );
 		rgTipo.setVlrString( "T" );
 		
-		Vector vLabs1 = new Vector();
-		Vector vVals1 = new Vector();
+		Vector<String> vLabs1 = new Vector<String>();
+		Vector<String> vVals1 = new Vector<String>();
 
 		vLabs1.addElement( "Faturado" );
 		vLabs1.addElement( "Não Faturado" );
@@ -132,8 +132,8 @@ public class FRVendasItem extends FRelatorio {
 		rgFaturados = new JRadioGroup( 3, 1, vLabs1, vVals1 );
 		rgFaturados.setVlrString( "S" );
 		
-		Vector vLabs2 = new Vector();
-		Vector vVals2 = new Vector();
+		Vector<String> vLabs2 = new Vector<String>();
+		Vector<String> vVals2 = new Vector<String>();
 
 		vLabs2.addElement( "Financeiro" );
 		vLabs2.addElement( "Não Finaceiro" );
@@ -144,8 +144,8 @@ public class FRVendasItem extends FRelatorio {
 		rgFinanceiro = new JRadioGroup( 3, 1, vLabs2, vVals2 );
 		rgFinanceiro.setVlrString( "S" );
 		
-		Vector vLabs3 = new Vector();
-		Vector vVals3 = new Vector();
+		Vector<String> vLabs3 = new Vector<String>();
+		Vector<String> vVals3 = new Vector<String>();
 		
 		vLabs3.addElement( "Código" );
 		vLabs3.addElement( "Descrição" );
@@ -395,6 +395,7 @@ public class FRVendasItem extends FRelatorio {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final Vector cab, final boolean bComRef ) {
 
 		String sLinhaFina = Funcoes.replicate( "-", 133 );
@@ -484,7 +485,7 @@ public class FRVendasItem extends FRelatorio {
 
 	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef ) {
 
-		HashMap hParam = new HashMap();
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "COMREF", bComRef ? "S" : "N" );
 		
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasItem.jasper", "Vendas por Item", sCab, rs, hParam, this );

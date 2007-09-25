@@ -59,10 +59,10 @@ public class DLRFornecedor extends FFDialogo {
   private JCheckBoxPad cbObs = new JCheckBoxPad("Imprimir Observações ?","S","N");
   private JCheckBoxPad cbFis = new JCheckBoxPad("Física","S","N");
   private JCheckBoxPad cbJur = new JCheckBoxPad("Jurídica","S","N");
-  private Vector vLabs = new Vector();
-  private Vector vVals = new Vector();
-  private Vector vLabsModo = new Vector();
-  private Vector vValsModo = new Vector();
+  private Vector<String> vLabs = new Vector<String>();
+  private Vector<String> vVals = new Vector<String>();
+  private Vector<String> vLabsModo = new Vector<String>();
+  private Vector<String> vValsModo = new Vector<String>();
   private JLabelPad lbTipoFor = new JLabelPad("Cód.t.for.");
   private JLabelPad lbDescTipoFor = new JLabelPad("Descrição do tipo de fornecedor");
   private JTextFieldPad txtCodTipoFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

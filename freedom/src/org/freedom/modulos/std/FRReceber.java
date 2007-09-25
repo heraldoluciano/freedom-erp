@@ -66,12 +66,12 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 	private JRadioGroup rgTipoRel = null;
 	private JRadioGroup rgOrdem = null;
 	private JRadioGroup rgOrdem2 = null;
-	private Vector vVals = new Vector();
-	private Vector vLabs = new Vector();
-	private Vector vVals1 = new Vector();
-	private Vector vLabs1 = new Vector();
-	private Vector vVals2 = new Vector();
-	private Vector vLabs2 = new Vector();
+	private Vector<String> vVals = new Vector<String>();
+	private Vector<String> vLabs = new Vector<String>();
+	private Vector<String> vVals1 = new Vector<String>();
+	private Vector<String> vLabs1 = new Vector<String>();
+	private Vector<String> vVals2 = new Vector<String>();
+	private Vector<String> vLabs2 = new Vector<String>();
 	private ListaCampos lcCli = new ListaCampos(this);
 	private ListaCampos lcSetor = new ListaCampos(this);
 	private ListaCampos lcVendedor = new ListaCampos(this);
@@ -239,7 +239,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		String sCodPlanoPag = null;
 		String sCampoOrdem = null;
 		String sCampoOrdem2 = null;
-		Vector vObs = null;
+		Vector<String> vObs = null;
 		ImprimeOS imp = null;
 		int linPag = 0;
 		int iCodCli = 0;
@@ -578,14 +578,14 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		}
 	}
 	
-	private Vector getObs(String sObs, int iTam) {
-		Vector vRetorno = null;
+	private Vector<String> getObs(String sObs, int iTam) {
+		Vector<String> vRetorno = null;
 		boolean bFim = false;
 		try {
 			sObs = sObs.replaceAll(((char)13)+""," ");
 			sObs = sObs.replaceAll(((char)10)+"","");
 			sObs = sObs.trim();
-			vRetorno = new Vector();
+			vRetorno = new Vector<String>();
 			if (!sObs.equals("")) {
 				while (!bFim) {
 					if (sObs.length()<=iTam) {

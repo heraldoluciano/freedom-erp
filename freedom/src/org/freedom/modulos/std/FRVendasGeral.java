@@ -65,13 +65,13 @@ public class FRVendasGeral extends FRelatorio {
 
 	private JRadioGroup rgFinanceiro = null;
 
-	private Vector vLabsFat = new Vector();
+	private Vector<String> vLabsFat = new Vector<String>();
 
-	private Vector vValsFat = new Vector();
+	private Vector<String> vValsFat = new Vector<String>();
 
-	private Vector vLabsFin = new Vector();
+	private Vector<String> vLabsFin = new Vector<String>();
 
-	private Vector vValsFin = new Vector();
+	private Vector<String> vValsFin = new Vector<String>();
 
 	private ListaCampos lcVend = new ListaCampos( this );
 

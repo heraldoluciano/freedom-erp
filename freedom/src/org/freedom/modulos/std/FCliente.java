@@ -1569,7 +1569,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		if ( iCodAtende.compareTo( new Integer( 0 ) ) > 0 ) {
 			
-			HashMap<String,HashMap> hmMeses = new HashMap<String,HashMap>();
+			HashMap<String,HashMap<String, Integer>> hmMeses = new HashMap<String,HashMap<String, Integer>>();
 			HashMap<String,Integer> hmJan = new HashMap<String,Integer>();
 			HashMap<String,Integer> hmFev = new HashMap<String,Integer>();
 			HashMap<String,Integer> hmMar = new HashMap<String,Integer>();
@@ -1623,8 +1623,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 			if ( iMes == null ) {
 				for ( int iM = 1; iM < 13; iM++ ) {
-					int iQtdAnt = ( (Integer) ( (HashMap) ( hmMeses.get( String.valueOf(iM) ) ) ).get( "ANT" ) ).intValue();
-					int iQtdNov = ( (Integer) ( (HashMap) ( hmMeses.get( String.valueOf(iM) ) ) ).get( "NOVO" ) ).intValue();
+					int iQtdAnt = ( (Integer) ( hmMeses.get( String.valueOf(iM) ) ).get( "ANT" ) ).intValue();
+					int iQtdNov = ( (Integer) ( hmMeses.get( String.valueOf(iM) ) ).get( "NOVO" ) ).intValue();
 
 					if ( iQtdNov > 0 ) {
 						if ( iQtdAnt > iQtdNov ) {
@@ -1641,8 +1641,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				}
 			}
 			else {
-				int iQtdAnt = ( (Integer) ( (HashMap) ( hmMeses.get( String.valueOf(iMes) ) ) ).get( "ANT" ) ).intValue();
-				int iQtdNov = ( (Integer) ( (HashMap) ( hmMeses.get( String.valueOf(iMes) ) ) ).get( "NOVO" ) ).intValue();
+				int iQtdAnt = ( (Integer) ( hmMeses.get( String.valueOf(iMes) ) ).get( "ANT" ) ).intValue();
+				int iQtdNov = ( (Integer) ( hmMeses.get( String.valueOf(iMes) ) ).get( "NOVO" ) ).intValue();
 				if ( iQtdNov > 0 ) {
 					if ( iQtdAnt > iQtdNov ) {
 						Funcoes.mensagemInforma( this, 
@@ -1982,7 +1982,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		StringBuffer sWhere = new StringBuffer();
 		String sFrom = "";
 		String linhaFina = Funcoes.replicate( "-", 133 );
-		Vector vObs = null;
+		Vector<String> vObs = null;
 		FAndamento And = null;
 		int linPag = imp.verifLinPag() - 1;
 		int iContaReg = 0;
@@ -2218,7 +2218,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		StringBuffer sWhere = new StringBuffer();
 		String sFrom = "";
 		String linhaFina = Funcoes.replicate( "-", 133 );
-		Vector vObs = null;
+		Vector<String> vObs = null;
 		FAndamento And = null;
 		int linPag = imp.verifLinPag() - 1;
 		int iContaReg = 0;
@@ -2454,7 +2454,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		StringBuffer sWhere = new StringBuffer();
 		String sFrom = "";
 		String linhaFina = Funcoes.replicate( "-", 133 );
-		Vector vObs = null;
+		Vector<String> vObs = null;
 		FAndamento And = null;
 		int linPag = imp.verifLinPag() - 1;
 		int iContaReg = 0;

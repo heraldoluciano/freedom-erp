@@ -37,8 +37,11 @@ import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Vector;
 
+import javax.swing.JMenuItem;
+
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ObjetoEmpresa;
 import org.freedom.componentes.TabObjeto;
@@ -52,7 +55,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		Locale.setDefault( new Locale( "pt", "BR" ) );
 	}
 
-	public AplicativoPD( String sIcone, String sSplash, int iCodSis, String sDescSis, int iCodModu, String sDescModu, String sDirImagem, final FPrincipal telaP, Class cLogin ) {
+	public AplicativoPD( String sIcone, String sSplash, int iCodSis, String sDescSis, int iCodModu, String sDescModu, String sDirImagem, final FPrincipal telaP, Class<? extends Login> cLogin ) {
 
 		if ( sDirImagem != null ) {
 			Imagem.dirImages = sDirImagem;
@@ -62,8 +65,8 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			ligaLog( System.getProperty( "ARQLOG" ) );
 		strSplash = sSplash;
 		Locale.setDefault( new Locale( "pt", "BR" ) );
-		vOpcoes = new Vector();
-		vBotoes = new Vector();
+		vOpcoes = new Vector<JMenuItem>();
+		vBotoes = new Vector<JButtonPad>();
 
 		telaPrincipal = telaP;
 		this.iCodSis = iCodSis;

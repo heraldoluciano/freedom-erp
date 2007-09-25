@@ -116,21 +116,21 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	private JRadioGroup rgOrdemRel = null;
 
-	private Vector vLabsFat = new Vector();
+	private Vector<String> vLabsFat = new Vector<String>();
 
-	private Vector vValsFat = new Vector();
+	private Vector<String> vValsFat = new Vector<String>();
 
-	private Vector vLabsFin = new Vector();
+	private Vector<String> vLabsFin = new Vector<String>();
 
-	private Vector vValsFin = new Vector();
+	private Vector<String> vValsFin = new Vector<String>();
 
-	private Vector vLabTipoRel = new Vector();
+	private Vector<String> vLabTipoRel = new Vector<String>();
 
-	private Vector vValTipoRel = new Vector();
+	private Vector<String> vValTipoRel = new Vector<String>();
 
-	private Vector vLabOrdemRel = new Vector();
+	private Vector<String> vLabOrdemRel = new Vector<String>();
 
-	private Vector vValOrdemRel = new Vector();
+	private Vector<String> vValOrdemRel = new Vector<String>();
 
 	private ListaCampos lcGrup1 = new ListaCampos( this );
 
@@ -339,18 +339,18 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		return iRetorno;
 	}
 
-	private Vector getVendedores( String sCodSetor, Vector vItens ) {
+	private Vector<String> getVendedores( String sCodSetor, Vector<Vector<Comparable>> vItens ) {
 
-		Vector vRetorno = new Vector();
+		Vector<String> vRetorno = new Vector<String>();
 		String sCodVend = "";
 		boolean bInicio = false;
 
 		for ( int i = 0; i < vItens.size(); i++ ) {
 
-			if ( ( (Vector) vItens.elementAt( i ) ).elementAt( POS_CODSETOR ).toString().equals( sCodSetor ) ) {
+			if ( vItens.elementAt( i ).elementAt( POS_CODSETOR ).toString().equals( sCodSetor ) ) {
 				
 				bInicio = true;
-				sCodVend = new String( ( (Vector) vItens.elementAt( i ) ).elementAt( POS_CODVEND ).toString() );
+				sCodVend = new String( vItens.elementAt( i ).elementAt( POS_CODVEND ).toString() );
 				
 				if ( vRetorno.indexOf( sCodVend ) == -1 ) {
 					
@@ -384,7 +384,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		return iRetorno;
 	}
 
-	private String getColSetor( final Vector vCols, final int iTotPassadas, final int iPassada ) {
+	private String getColSetor( final Vector<String> vCols, final int iTotPassadas, final int iPassada ) {
 
 		StringBuffer sRetorno = new StringBuffer();
 		int iCols = 0;
@@ -419,7 +419,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		return sRetorno.toString();
 	}
 
-	private String getTotSetor( Vector vTotSetor, int iTotPassadas, int iPassada ) {
+	private String getTotSetor( Vector<Double> vTotSetor, int iTotPassadas, int iPassada ) {
 
 		StringBuffer sRetorno = new StringBuffer();
 		double deTotal = 0;
@@ -439,7 +439,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 		for ( int i = 0; i < iColunas; i++ ) {
 
-			deTemp = (Double) vTotSetor.elementAt( i + ( iPassada * NUM_COLUNAS ) );
+			deTemp = vTotSetor.elementAt( i + ( iPassada * NUM_COLUNAS ) );
 
 			if ( deTemp == null ) {
 				
@@ -466,7 +466,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	}
 
-	private int posVendedor( String sCodVend, Vector vCols ) {
+	private int posVendedor( String sCodVend, Vector<String> vCols ) {
 
 		int iRetorno = -1;
 
@@ -485,9 +485,9 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		return iRetorno;
 	}
 
-	private Vector initTotSetor( Vector vCols ) {
+	private Vector<Double> initTotSetor( Vector<String> vCols ) {
 
-		Vector vRetorno = new Vector();
+		Vector<Double> vRetorno = new Vector<Double>();
 
 		for ( int i = 0; i < vCols.size(); i++ ) {
 			
@@ -497,7 +497,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		return vRetorno;
 	}
 
-	private Vector adicValorSetor( int iPos, Double deValor, Vector vTotSetor ) {
+	private Vector<Double> adicValorSetor( int iPos, Double deValor, Vector<Double> vTotSetor ) {
 
 		Double dlTemp = null;
 		double dTemp = 0;
@@ -506,7 +506,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 			if ( iPos < vTotSetor.size() ) {
 
-				dlTemp = (Double) vTotSetor.elementAt( iPos );
+				dlTemp = vTotSetor.elementAt( iPos );
 
 				if ( dlTemp != null ) {
 
@@ -545,10 +545,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sMes = null;
 		String sMesAnt = null;
 		ImprimeOS imp = null;
-		Vector vItens = null;
-		Vector vItem = null;
-		Vector vTotSetor = null;
-		Vector vCols = null;
+		Vector<Vector<Comparable>> vItens = null;
+		Vector<Comparable> vItem = null;
+		Vector<Double> vTotSetor = null;
+		Vector<String> vCols = null;
 		int linPag = 0;
 		int iParam = 1;
 		int iCol = 0;
@@ -575,7 +575,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			imp.addSubTitulo( "PERIODO DE: " + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
 			imp.limpaPags();
 
-			vItens = new Vector();
+			vItens = new Vector<Vector<Comparable>>();
 			sCodMarca = txtCodMarca.getVlrString().trim();
 			sCodGrup1 = txtCodGrup1.getVlrString().trim();
 			sCodGrup2 = txtCodGrup2.getVlrString().trim();
@@ -775,7 +775,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 				while ( rs.next() ) {
 
-					vItem = new Vector();
+					vItem = new Vector<Comparable>();
 					sCodSetor = rs.getString( 1 );
 					sMes = rs.getString( 2 );
 					sCodGrup = rs.getString( 3 );
@@ -808,7 +808,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					con.commit();
 				}
 
-				vTotSetor = new Vector();
+				vTotSetor = new Vector<Double>();
 
 				sCodSetorAnt = "";
 				sCodSetor = "";
@@ -816,11 +816,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sMes = "";
 				sCodGrupAnt = "";
 				sCodGrup = "";
-				vCols = new Vector();
+				vCols = new Vector<String>();
 
 				for ( int i = 0; i < vItens.size(); i++ ) {
 
-					vItem = (Vector) vItens.elementAt( i );
+					vItem = vItens.elementAt( i );
 
 					if ( !sCodSetor.equals( vItem.elementAt( POS_CODSETOR ).toString() ) || !sMes.equals( vItem.elementAt( POS_MES ).toString() ) || !sCodGrup.equals( vItem.elementAt( POS_CODGRUP ).toString() ) ) {
 
@@ -830,7 +830,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 								imp.say( 21 + ( iConta * 11 ), "|" + Funcoes.replicate( " ", 10 ) );
 							}
 
-							imp.say( 123, "|" + Funcoes.strDecimalToStrCurrency( 11, 2, ( (Vector) vItens.elementAt( i - 1 ) ).elementAt( POS_TOTSETOR ).toString() ) );
+							imp.say( 123, "|" + Funcoes.strDecimalToStrCurrency( 11, 2, vItens.elementAt( i - 1 ).elementAt( POS_TOTSETOR ).toString() ) );
 							imp.say( 135, "|" );
 							imp.pulaLinha( 1, imp.comprimido() );
 							imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
@@ -985,7 +985,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						imp.say( imp.pRow(), 21 + ( iConta * 11 ), "|" + Funcoes.replicate( " ", 10 ) );
 					}
 
-					imp.say( imp.pRow(), 123, "|" + Funcoes.strDecimalToStrCurrency( 11, 2, ( (Vector) vItens.elementAt( iPos ) ).elementAt( POS_TOTSETOR ).toString() ) );
+					imp.say( imp.pRow(), 123, "|" + Funcoes.strDecimalToStrCurrency( 11, 2, vItens.elementAt( iPos ).elementAt( POS_TOTSETOR ).toString() ) );
 					imp.say( imp.pRow(), 135, "|" );
 					iLinsSetor++;
 					iCol = 0;

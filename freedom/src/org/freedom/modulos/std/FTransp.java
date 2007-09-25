@@ -66,8 +66,8 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener,I
   private JTextFieldPad txtCelTran = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JTextFieldPad txtContTran = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtUFTran = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
-  private Vector vTipoTransp = new Vector();
-  private Vector vTipoTranspVal = new Vector();
+  private Vector<String> vTipoTransp = new Vector<String>();
+  private Vector<String> vTipoTranspVal = new Vector<String>();
   private JRadioGroup rgTipoTransp =null ;
   public FTransp () {
   	super();

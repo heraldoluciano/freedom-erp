@@ -243,9 +243,10 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private ListaCampos lcConv = new ListaCampos( this, "CV" );
 
-	private Vector vCacheItem = new Vector();
+	@SuppressWarnings("unchecked")
+	private Vector<Comparable> vCacheItem = new Vector<Comparable>();
 
-	private Vector vAliquotas = null;
+	private Vector<String> vAliquotas = null;
 
 	private ECFDriver ecf = new ECFDriver( !AplicativoPDV.usaEcfDriver() );
 
@@ -289,6 +290,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private static AbstractControleVendaPDV pluginVenda;
 
+	@SuppressWarnings("unchecked")
 	public FVenda() {
 
 		setTitulo( "Venda" );
@@ -1384,7 +1386,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sSQL = null;
-		Vector vArgs = new Vector();
+		Vector<Integer> vArgs = new Vector<Integer>();
 
 		try {
 
@@ -1403,11 +1405,11 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			}
 
 			if ( vArgs.size() == 3 ) {
-				txtCodCli.setVlrInteger( (Integer) vArgs.elementAt( 0 ) );
+				txtCodCli.setVlrInteger( vArgs.elementAt( 0 ) );
 				lcCliente.carregaDados();
-				txtCodPlanoPag.setVlrInteger( (Integer) vArgs.elementAt( 1 ) );
+				txtCodPlanoPag.setVlrInteger( vArgs.elementAt( 1 ) );
 				lcPlanoPag.carregaDados();
-				txtCodVend.setVlrInteger( (Integer) vArgs.elementAt( 2 ) );
+				txtCodVend.setVlrInteger( vArgs.elementAt( 2 ) );
 				lcVendedor.carregaDados();
 				lcClComis.carregaDados();
 

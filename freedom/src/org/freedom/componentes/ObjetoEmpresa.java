@@ -33,7 +33,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 
 public class ObjetoEmpresa {
-  private HashMap hValores = new HashMap();
+  private HashMap<String, Object> hValores = new HashMap<String, Object>();
   public ObjetoEmpresa(Connection con){
     carregaObjeto(con);
   }
@@ -77,7 +77,7 @@ public class ObjetoEmpresa {
     }
   }
   
-  public HashMap getAll(){
+  public HashMap<String, Object> getAll(){
   	return hValores;
   }
   

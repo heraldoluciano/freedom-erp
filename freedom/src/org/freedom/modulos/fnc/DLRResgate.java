@@ -34,8 +34,8 @@ public class DLRResgate extends FFDialogo {
 		50, 0);
  
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
-  private Vector vLabs = new Vector();
-  private Vector vVals = new Vector();
+  private Vector<String> vLabs = new Vector<String>();
+  private Vector<String> vVals = new Vector<String>();
 //  private Vector vStrTipo = new Vector();
   
   public DLRResgate(Component cOrig) {

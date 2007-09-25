@@ -78,13 +78,13 @@ public class DLRProduto extends FFDialogo {
 
 	private ListaCampos lcMarca = new ListaCampos( this );
 
-	private Vector vLabs = new Vector();
+	private Vector<String> vLabs = new Vector<String>();
 
-	private Vector vVals = new Vector();
+	private Vector<String> vVals = new Vector<String>();
 
-	private Vector vLabsModo = new Vector();
+	private Vector<String> vLabsModo = new Vector<String>();
 
-	private Vector vValsModo = new Vector();
+	private Vector<String> vValsModo = new Vector<String>();
 
 	public DLRProduto( Connection cn ) {
 

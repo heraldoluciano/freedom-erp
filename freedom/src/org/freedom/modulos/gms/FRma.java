@@ -188,9 +188,9 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 	private JRadioGroup rgPriod = null;
 
-	private Vector vLabsTipo = new Vector();
+	private Vector<String> vLabsTipo = new Vector<String>();
 
-	private Vector vValsTipo = new Vector();
+	private Vector<String> vValsTipo = new Vector<String>();
 
 	private JScrollPane spnMotivo = new JScrollPane( txaMotivoRma );
 
@@ -236,11 +236,11 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 	int cont = 0;
 
-	Vector vItem = new Vector();
+	Vector<String> vItem = new Vector<String>();
 
-	Vector vProdCan = new Vector();
+	Vector<String> vProdCan = new Vector<String>();
 
-	Vector vMotivoCan = new Vector();
+	Vector<String> vMotivoCan = new Vector<String>();
 
 	String sSitItExp;
 

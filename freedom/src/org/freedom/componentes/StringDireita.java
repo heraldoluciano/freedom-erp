@@ -20,7 +20,7 @@
 
 package org.freedom.componentes;
 
-public class StringDireita {
+public class StringDireita implements Comparable {
 	private String sTexto = "";
 	public StringDireita( String sTexto) {
 		if (sTexto!=null)
@@ -28,5 +28,8 @@ public class StringDireita {
 	}
 	public String toString() {
 		return sTexto;
+	}
+	public int compareTo( Object arg0 ) {
+		return sTexto.compareTo( arg0.toString() );
 	}
 }

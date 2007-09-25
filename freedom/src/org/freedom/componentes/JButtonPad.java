@@ -32,6 +32,8 @@ import javax.swing.DefaultButtonModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
+import org.freedom.telas.IFilho;
+
 public class JButtonPad extends JButton {
 
 	private static final long serialVersionUID = 1L;
@@ -42,7 +44,7 @@ public class JButtonPad extends JButton {
 
 	private int iCodIt = 0;
 
-	private Class tela = null;
+	private Class<? extends IFilho> tela = null;
 
 	private String titulo = "";
 
@@ -58,7 +60,7 @@ public class JButtonPad extends JButton {
 		return iCodSys;
 	}
 
-	public Class getTela() {
+	public Class<? extends IFilho> getTela() {
 		return tela;
 	}
 
@@ -97,7 +99,7 @@ public class JButtonPad extends JButton {
 	 *  
 	 */
 
-	public JButtonPad(int iCodSistema, int iCodModulo, int iCodItem, Class tela, String titulo) {
+	public JButtonPad(int iCodSistema, int iCodModulo, int iCodItem, Class<? extends IFilho> tela, String titulo) {
 		iCodSys = iCodSistema;
 		iCodMod = iCodModulo;
 		iCodIt = iCodItem;

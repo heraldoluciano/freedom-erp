@@ -80,10 +80,10 @@ public class FRListaPreco extends FRelatorio {
     private JCheckBoxPad cbAgrupar = new JCheckBoxPad("Agrupar por grupo?","S","N");
 	private JRadioGroup rgTipo = null;
 	private JRadioGroup rgOrdem = null;
-	private Vector vLabs = new Vector(2);
-	private Vector vVals = new Vector(2);
-	private Vector vLabs2 = new Vector(2);
-	private Vector vVals2 = new Vector(2);
+	private Vector<String> vLabs = new Vector<String>(2);
+	private Vector<String> vVals = new Vector<String>(2);
+	private Vector<String> vLabs2 = new Vector<String>(2);
+	private Vector<String> vVals2 = new Vector<String>(2);
 	private ListaCampos lcGrup = new ListaCampos(this);
 	private ListaCampos lcMarca = new ListaCampos(this);
 	private ListaCampos lcClassCli = new ListaCampos(this);
@@ -539,7 +539,7 @@ public class FRListaPreco extends FRelatorio {
     	String sWhere = "";
 		String sOrdem = rgOrdem.getVlrString();
     	String sCodRel = null;
-    	HashMap hParam = new HashMap();
+    	HashMap<String, Object> hParam = new HashMap<String, Object>();
 		FPrinterJob dlGr = null;
 		   	
     	try {

@@ -65,13 +65,13 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 	private static final long serialVersionUID = 1L;
 
-	private static Vector vCodDisp = new Vector();
+	private static Vector<String> vCodDisp = new Vector<String>();
 
-	private static Vector vCodEmp = new Vector();
+	private static Vector<String> vCodEmp = new Vector<String>();
 
-	private static Vector vDisp = new Vector();
+	private static Vector<String> vDisp = new Vector<String>();
 
-	private static Vector vEmp = new Vector();
+	private static Vector<String> vEmp = new Vector<String>();
 
 	private JButton btAdicEmp = new JButton( Icone.novo( "btFlechaDir.gif" ) );
 
@@ -143,13 +143,13 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 	private ListaCampos lcGrup = new ListaCampos( this, "IG" );
 
-	private Vector vAprovaRMALab = new Vector();
+	private Vector<String> vAprovaRMALab = new Vector<String>();
 
-	private Vector vAprovaRMAVal = new Vector();
+	private Vector<String> vAprovaRMAVal = new Vector<String>();
 
-	private Vector vAprovaSolicitacaoLab = new Vector();
+	private Vector<String> vAprovaSolicitacaoLab = new Vector<String>();
 
-	private Vector vAprovaSolicitacaoVal = new Vector();
+	private Vector<String> vAprovaSolicitacaoVal = new Vector<String>();
 
 	public FUsuario() {
 

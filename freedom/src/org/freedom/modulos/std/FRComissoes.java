@@ -52,10 +52,10 @@ import org.freedom.telas.FRelatorio;
 
 public class FRComissoes extends FRelatorio {
 	private static final long serialVersionUID = 1L;
-	private Vector vVals = new Vector();
-	private Vector vLabs = new Vector();
-	private Vector vValsOrdem = new Vector();
-	private Vector vLabsOrdem = new Vector();
+	private Vector<String> vVals = new Vector<String>();
+	private Vector<String> vLabs = new Vector<String>();
+	private Vector<String> vValsOrdem = new Vector<String>();
+	private Vector<String> vLabsOrdem = new Vector<String>();
 	private JRadioGroup rgEmitRel = null;
 	private JRadioGroup rgOrdemRel = null;
 	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);

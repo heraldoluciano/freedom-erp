@@ -39,11 +39,11 @@ public class DLRSCheque extends FFDialogo {
   
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private JLabelPad lbSaida = new JLabelPad("Visualizar saída:");
-  private Vector vLabs = new Vector();
-  private Vector vVals = new Vector();
-  private Vector vLabs2 = new Vector();
-  private Vector vVals2 = new Vector();
-  private Vector vStrTipo = new Vector();
+  private Vector<String> vLabs = new Vector<String>();
+  private Vector<String> vVals = new Vector<String>();
+  private Vector<String> vLabs2 = new Vector<String>();
+  private Vector<String> vVals2 = new Vector<String>();
+  private Vector<String> vStrTipo = new Vector<String>();
   
   public DLRSCheque(Component cOrig) {
   	super(cOrig);
