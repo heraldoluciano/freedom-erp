@@ -195,7 +195,7 @@ public class Boleto {
 			peso = new int[2];
 			peso[0] = 2; peso[1] = 1;
 		} else {
-			peso = new int[7];
+			peso = new int[8];
 			for (int i=0; i<peso.length; i++) {
 				peso[i] = i+2;
 			}
