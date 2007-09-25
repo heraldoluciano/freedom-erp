@@ -115,8 +115,8 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private JTextFieldPad txtCodUnid = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
 	//private JTextFieldFK txtDescUnid = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private JRadioGroup rgPriod = null;
-	private Vector vLabsTipo = new Vector();
-	private Vector vValsTipo = new Vector();
+	private Vector<String> vLabsTipo = new Vector<String>();
+	private Vector<String> vValsTipo = new Vector<String>();
 	private JScrollPane spnMotivo = new JScrollPane(txaMotivoSol);
 	private JTextFieldPad txtCodFabProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
@@ -136,9 +136,9 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	boolean[] bPrefs = null;
 	boolean bAprovaCab = false;
 	int cont = 0;
-	Vector vItem = new Vector();
-	Vector vProdCan = new Vector();
-	Vector vMotivoCan = new Vector();
+	Vector<String> vItem = new Vector<String>();
+	Vector<String> vProdCan = new Vector<String>();
+	Vector<String> vMotivoCan = new Vector<String>();
     String sSitSol;
     String sSitItAprov;
     String sSitItExp;
