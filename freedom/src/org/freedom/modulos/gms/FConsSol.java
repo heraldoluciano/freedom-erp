@@ -93,7 +93,7 @@ public class FConsSol extends FFilho implements ActionListener {
 	boolean bAprovaParcial = false;
 	boolean bExpede = false;
 	boolean bAprova = false;
-	private Vector vSitSol = new Vector();
+	private Vector<String> vSitSol = new Vector<String>();
 	public FConsSol() {
 		super(false);
 		setTitulo("Pesquisa Solicitações de Compra");
@@ -351,7 +351,7 @@ public class FConsSol extends FFilho implements ActionListener {
 			int iLin = 0;
 
 			tab.limpa();
-			vSitSol = new Vector();
+			vSitSol = new Vector<String>();
 			while (rs.next()) {
 				tab.adicLinha();
 				

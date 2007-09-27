@@ -32,9 +32,9 @@ public class TabObjeto {
   public static final int COMENTOBJ = 4;
   public static final int USOMEOBJ = 5;
   
-  private Vector vObjetos = null;
+  private Vector<ObjetoBD> vObjetos = null;
   public TabObjeto() {
-  	vObjetos = new Vector();
+  	vObjetos = new Vector<ObjetoBD>();
   }
      
   public boolean montaLista(Connection con, int iCodEmp, String sTabela, String sTipoObj) {
@@ -72,9 +72,9 @@ public class TabObjeto {
      boolean bRetorno = true;
      if ( (vObjetos!=null) && (sTabela!=null) ){
      	for (int i=0; i<vObjetos.size(); i++) {
-     		if ( ((ObjetoBD) vObjetos.elementAt(i)).getIDObj().
+     		if ( vObjetos.elementAt(i).getIDObj().
      		        toUpperCase().trim().equals(sTabela.toUpperCase().trim())) {
-     		   if ( !((ObjetoBD) vObjetos.elementAt(i)).getUsomeObj().equals("S")) 
+     		   if ( !vObjetos.elementAt(i).getUsomeObj().equals("S")) 
      		   	  bRetorno = false;
   		   	   break;
      		}

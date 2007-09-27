@@ -230,7 +230,7 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 		int iSep = ';';
 		int iCarac = 0;
 		String sColuna = "";
-		Vector vColunas = null;
+		Vector<String> vColunas = null;
 		
 		try {
 			btGerar.setEnabled(false);
@@ -247,7 +247,7 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 					sArq = txtArqDest.getVlrString();
 				fOrig = new File(sArq);
 				frOrig = new FileReader(fOrig);
-				vColunas = new Vector(); 
+				vColunas = new Vector<String>(); 
 				for (int i=0; i<fOrig.length(); i++) {
 				   iCarac = frOrig.read();
 				   if (iCarac==-1) 
@@ -327,8 +327,8 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 		String sLabelAnt = "";
 		String sLinha = "";
 		String sColuna = "";
-		Vector vColunas = new Vector();
-		Vector vSel = null;
+		Vector<String> vColunas = new Vector<String>();
+		Vector<String> vSel = null;
 //		int iSobra = 0;
 		int iColunas = 0;
 		int iCarac = 0;
@@ -430,7 +430,7 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 							if (iColunas==28) {
 								sLinha = "";
 								bCompletou = false;
-								vSel = new Vector();
+								vSel = new Vector<String>();
 								iColunas=0;
 								sColunaTmp = "";
 //								iSobra = 0;
@@ -568,7 +568,7 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 									  }
 									}
 								}
-								vColunas = new Vector();
+								vColunas = new Vector<String>();
 								for (int iPos=0; iPos<vSel.size(); iPos++) {
 									sColunaTmp = vSel.elementAt(iPos).toString();
 									vColunas.add(sColunaTmp);

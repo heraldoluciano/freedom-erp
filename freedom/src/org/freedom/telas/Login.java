@@ -42,8 +42,8 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 	private static final long serialVersionUID = 1L;	
 	protected JTextFieldPad txtUsuario = new JTextFieldPad(JTextFieldPad.TP_STRING,15,0);
 	protected JPasswordFieldPad txpSenha = new JPasswordFieldPad(9);
-	protected Vector vVals = new Vector();
-	protected Vector vLabs = new Vector();
+	protected Vector<Integer> vVals = new Vector<Integer>();
+	protected Vector<String> vLabs = new Vector<String>();
 	protected JComboBoxPad cbEmp = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_INTEGER, 8 , 0);
 	protected String strBanco = "";
 	protected String strDriver = "";

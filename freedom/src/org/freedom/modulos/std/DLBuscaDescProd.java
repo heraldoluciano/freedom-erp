@@ -87,7 +87,7 @@ public class DLBuscaDescProd extends FDialogo {
 			
 			ResultSet rs = ps.executeQuery();
 			
-			Vector data = new Vector();
+			Vector<String> data = new Vector<String>();
 			
 			while ( rs.next() ) {
 				

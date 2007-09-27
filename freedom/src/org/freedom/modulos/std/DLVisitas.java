@@ -201,7 +201,7 @@ public class DLVisitas extends FFDialogo implements MouseListener{
 	  PreparedStatement ps = null;
   	  ResultSet rs = null;
   	  String sql = null;
-  	  Vector vLinha = null;
+  	  Vector<Comparable> vLinha = null;
   	  int ano = year;
   	  int mes = month;
   	  try {
@@ -219,7 +219,7 @@ public class DLVisitas extends FFDialogo implements MouseListener{
   	  	rs = ps.executeQuery();
   	  	while (rs.next()) {
  	  		
-  	  		vLinha = new Vector();
+  	  		vLinha = new Vector<Comparable>();
   	  		vLinha.addElement(new Integer(rs.getInt("CODHISTTK")));
   	  		vLinha.addElement(new Integer(rs.getInt("CODCTO")));
   	  		vLinha.addElement(new Integer(rs.getInt("CODATEND")));

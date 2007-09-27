@@ -399,12 +399,12 @@ public abstract class FVD extends FDetalhe {
 			PreparedStatement ps = null;
 			PreparedStatement ps2 = null;
 			ResultSet rs = null;
-			Vector vCodItem = new Vector();
-			Vector vQtdItem = new Vector();
-			Vector vDescProd = new Vector();
-			Vector vPercDescProd = new Vector();
-			Vector vCodProd = new Vector();
-			Vector vPrecoProd = new Vector();
+			Vector<Integer> vCodItem = new Vector<Integer>();
+			Vector<BigDecimal> vQtdItem = new Vector<BigDecimal>();
+			Vector<BigDecimal> vDescProd = new Vector<BigDecimal>();
+			Vector<BigDecimal> vPercDescProd = new Vector<BigDecimal>();
+			Vector<Integer> vCodProd = new Vector<Integer>();
+			Vector<BigDecimal> vPrecoProd = new Vector<BigDecimal>();
 			BigDecimal bdBuscaPreco = null;
 			BigDecimal bdPrecoProd = null;
 			BigDecimal bdVlrBrutoProd = null;
@@ -452,23 +452,23 @@ public abstract class FVD extends FDetalhe {
 
 				// percorre todos os itens
 				for ( int i = 0; i < vCodItem.size(); i++ ) {
-					iParans[ 0 ] = ( (Integer) vCodProd.elementAt( i ) ).intValue();
+					iParans[ 0 ] = vCodProd.elementAt( i ).intValue();
 
-					bdQtdItem = (BigDecimal) vQtdItem.elementAt( i );
+					bdQtdItem = vQtdItem.elementAt( i );
 					bdBuscaPreco = buscaPreco( iParans );
-					bdPrecoProd = ( (BigDecimal) vPrecoProd.elementAt( i ) ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
+					bdPrecoProd = vPrecoProd.elementAt( i ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
 
 					// se o preço for diferente altera.
 					if ( bdPrecoProd.floatValue() != bdBuscaPreco.floatValue() ) {
 
-						bdPercDescProd = ( (BigDecimal) vPercDescProd.elementAt( i ) ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
+						bdPercDescProd = vPercDescProd.elementAt( i ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
 						bdVlrBrutoProd = calcVlrProd( bdBuscaPreco, bdQtdItem );
 
 						if ( bdPercDescProd.floatValue() > 0 ) {
 							bdDescProd = ( bdVlrBrutoProd.multiply( bdPercDescProd ).divide( new BigDecimal( 100 ), Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) );
 						}
 						else {
-							bdDescProd = ( (BigDecimal) vDescProd.elementAt( i ) ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
+							bdDescProd = vDescProd.elementAt( i ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
 						}
 
 						bdVlrLiqProd = calcVlrTotalProd( bdVlrBrutoProd, bdDescProd );
@@ -481,7 +481,7 @@ public abstract class FVD extends FDetalhe {
 						ps2.setInt( 5, iParans[ 13 ] );// código da empresa
 						ps2.setInt( 6, iParans[ 14 ] );// código da filial
 						ps2.setInt( 7, iParans[ 12 ] );// código da PK
-						ps2.setInt( 8, ( (Integer) vCodItem.elementAt( i ) ).intValue() );// código do item
+						ps2.setInt( 8, vCodItem.elementAt( i ).intValue() );// código do item
 						ps2.executeUpdate();
 					}
 				}

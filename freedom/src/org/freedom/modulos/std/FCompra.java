@@ -597,7 +597,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 
 	private void emitNota(String tipo){		
 		Object layNF = null;		
-		Vector parans = null;
+		Vector<Integer> parans = null;
 		NFEntrada nf = null;
 		String sTipo = tipo;
 		boolean bImpOK = false;
@@ -619,7 +619,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		try {
 			if (layNF != null) {
 				if (layNF instanceof Layout) {
-					parans = new Vector();
+					parans = new Vector<Integer>();
 					parans.addElement(new Integer(Aplicativo.iCodEmp));
 					parans.addElement(new Integer(ListaCampos.getMasterFilial("CPCOMPRA")));
 					parans.addElement(new Integer(iCodCompra));

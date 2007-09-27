@@ -33,7 +33,7 @@ import java.util.Vector;
 
 public class TabVector {
 
-	private Vector vRows = new Vector();
+	private Vector<Vector<Object>> vRows = new Vector<Vector<Object>>();
 	int cols = 0;
 	int row = -1;
 	public TabVector(int cols) {
@@ -55,7 +55,7 @@ public class TabVector {
 	}
 	
 	public void addRow() {
-		Vector vTemp = new Vector();
+		Vector<Object> vTemp = new Vector<Object>();
 		vTemp.setSize(cols);
 		vRows.addElement(vTemp);
 		row++;
@@ -109,7 +109,7 @@ public class TabVector {
 		return value;
 	}
 	public void setObject(int pos, Object obj) {
-		Vector v = getCol(this.row);
+		Vector<Object> v = getCol(this.row);
 		if (v!=null) { 
 			v.setElementAt(obj, pos);
 			vRows.setElementAt(v, this.row);
@@ -118,16 +118,16 @@ public class TabVector {
 
 	public Object getObject(int pos) {
 		Object o = null;
-		Vector v = getCol(this.row);
+		Vector<Object> v = getCol(this.row);
 		if (v!=null) 
 			o = v.elementAt(pos);
 		return o;
 	}
 	
-	public Vector getCol(int row) {
-		Vector col = null;
+	public Vector<Object> getCol(int row) {
+		Vector<Object> col = null;
 		if ((row!=-1) && (row<vRows.size()) )
-			col = (Vector) vRows.elementAt(row);
+			col = vRows.elementAt(row);
 		return col;	
 	}
 

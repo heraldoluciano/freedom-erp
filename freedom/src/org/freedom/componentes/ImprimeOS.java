@@ -139,7 +139,7 @@ public class ImprimeOS implements ActionListener {
 
 	String sTitulo = "";
 
-	Vector subTitulos = new Vector();
+	Vector<String> subTitulos = new Vector<String>();
 
 	Timer tim = null;
 
@@ -154,7 +154,7 @@ public class ImprimeOS implements ActionListener {
 	}
 
 	public String getSubTitulo(int index) {
-		return (String) subTitulos.elementAt(index);
+		return subTitulos.elementAt(index);
 	}
 
 	public void addSubTitulo(String subTitulo) {

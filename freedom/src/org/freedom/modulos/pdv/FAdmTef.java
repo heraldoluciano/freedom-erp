@@ -63,8 +63,8 @@ public class FAdmTef extends FFilho implements ActionListener {
 	public FAdmTef() {
 
 		super( false );
-		Vector vLabs = new Vector();
-		Vector vVals = new Vector();
+		Vector<String> vLabs = new Vector<String>();
+		Vector<String> vVals = new Vector<String>();
 		vLabs.addElement( "<--Selecione-->" );
 		vLabs.addElement( "Administrativas - Outras" );
 		vVals.addElement( "" );

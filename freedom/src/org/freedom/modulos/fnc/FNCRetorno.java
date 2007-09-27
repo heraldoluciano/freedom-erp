@@ -65,7 +65,7 @@ public class FNCRetorno extends FDados implements JComboBoxListener {
 
 	private JLabelPad lbDescCod = new JLabelPad( "Descrição do Código de Retorno:" );
 
-	private Vector vStrTipo = new Vector();
+	private Vector<String> vStrTipo = new Vector<String>();
 
 	private ListaCampos lcTBanco = new ListaCampos( this, "TR" );
 

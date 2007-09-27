@@ -62,10 +62,10 @@ public class NF020 extends Layout {
 		String[] sDuplics = new String[ 6 ];
 		BigDecimal bdVlrIssServ = new BigDecimal( "0" );
 		BigDecimal bdVlrTotServ = new BigDecimal( "0" );
-		Vector vClfisc = new Vector();
+		Vector<String> vClfisc = new Vector<String>();
 		Vector vSigla = new Vector();
 		Vector vDescFisc = new Vector();
-		Vector vServico = new Vector();
+		Vector<Object[]> vServico = new Vector<Object[]>();
 		Vector vDescServ = new Vector();
 
 		try {
@@ -214,7 +214,7 @@ public class NF020 extends Layout {
 				if ( !sCodfisc.equals( "" ) ) {
 					for ( int i = 0; i < vClfisc.size(); i++ ) {
 						if ( vClfisc.elementAt( i ) != null ) {
-							if ( sCodfisc.equals( (String) vClfisc.elementAt( i ) ) ) {
+							if ( sCodfisc.equals( vClfisc.elementAt( i ) ) ) {
 								bjatem = true;
 								sSigla = String.valueOf( (char) ( 64 + i ) );
 							}
@@ -284,18 +284,18 @@ public class NF020 extends Layout {
 						iProdImp = 0;
 						int contaLinha = 0;
 						for ( int i = 0; i < vServico.size(); i++ ) {							
-							bdVlrTotServ = bdVlrTotServ.add( (BigDecimal) ( (Object[]) vServico.get( i ) )[ 2 ] ).setScale( 2, BigDecimal.ROUND_HALF_UP );
-							bdVlrIssServ = bdVlrIssServ.add( (BigDecimal) ( (Object[]) vServico.get( i ) )[ 3 ] ).setScale( 2, BigDecimal.ROUND_HALF_UP );
+							bdVlrTotServ = bdVlrTotServ.add( (BigDecimal) vServico.get( i )[ 2 ] ).setScale( 2, BigDecimal.ROUND_HALF_UP );
+							bdVlrIssServ = bdVlrIssServ.add( (BigDecimal) vServico.get( i )[ 3 ] ).setScale( 2, BigDecimal.ROUND_HALF_UP );
 						}
 						for ( int i = 0; i < vServico.size(); i++ ) {
-							vDescServ = Funcoes.strToVectorSilabas( (String) ( (Object[]) vServico.get( indexServ ) )[ 0 ], 80 );
+							vDescServ = Funcoes.strToVectorSilabas( (String) vServico.get( indexServ )[ 0 ], 80 );
 							for ( int j = 0; j < vDescServ.size() && contaLinha < 10; j++ ) {
 								contaLinha++;
 								imp.pulaLinha( 1, imp.comprimido() );
 								imp.say( 4, (String) vDescServ.elementAt( j ) );
 								if ( j == 0 ) {
-									imp.say( 87, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( (BigDecimal) ( (Object[]) vServico.get( indexServ ) )[ 1 ] ) ) );
-									imp.say( 100, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( (BigDecimal) ( (Object[]) vServico.get( indexServ ) )[ 2 ] ) ) );
+									imp.say( 87, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( (BigDecimal) vServico.get( indexServ )[ 1 ] ) ) );
+									imp.say( 100, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( (BigDecimal) vServico.get( indexServ )[ 2 ] ) ) );
 								}
 								if ( contaLinha == 6 ) {
 									imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( bdVlrIssServ ) ) );

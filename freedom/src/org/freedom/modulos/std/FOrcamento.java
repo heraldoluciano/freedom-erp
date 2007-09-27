@@ -658,7 +658,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		txtPrecoItOrc.setVlrBigDecimal( bdPreco );
 	}
 
-	public Vector getParansDesconto() { 
+	public Vector<JTextFieldPad> getParansDesconto() { 
 
 		Vector<JTextFieldPad> param = new Vector<JTextFieldPad>();
 		param.addElement( txtStrDescItOrc );

@@ -802,7 +802,7 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 		adicCampoInvisivel( txtCodFilialTb, "codfilialec", "cod. filial", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodTb, "codtbec", "cod. emp.", ListaCampos.DB_SI, false );
 
-		cbEstCivCli = new JComboBoxPad( new Vector(), new Vector(), JComboBoxPad.TP_INTEGER, 5, 0 );
+		cbEstCivCli = new JComboBoxPad( new Vector<String>(), new Vector(), JComboBoxPad.TP_INTEGER, 5, 0 );
 		lbEstadoCivil = adicDB( cbEstCivCli, 7, 380, 200, 25, "codittbec", "Estado civil", false );
 		cbEstCivCli.setZeroNulo();
 		setListaCampos( true, "CLIENTE", "VD" );
@@ -1373,8 +1373,8 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
 		
-		Vector vDesc = new Vector();
-		Vector vCod = new Vector();
+		Vector<String> vDesc = new Vector<String>();
+		Vector<Integer> vCod = new Vector<Integer>();
 
 		try {
 

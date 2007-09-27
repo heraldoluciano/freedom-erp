@@ -181,7 +181,7 @@ public class NF048 extends Layout {
 				if ( !sCodfisc.equals( "" ) ) {
 					for ( int i = 0; i < vClfisc.size(); i++ ) {
 						if ( vClfisc.elementAt( i ) != null ) {
-							if ( sCodfisc.equals( (String) vClfisc.elementAt( i ) ) ) {
+							if ( sCodfisc.equals( vClfisc.elementAt( i ) ) ) {
 								bjatem = true;
 								sSigla = String.valueOf( (char) ( 64 + i ) );
 							}
@@ -329,7 +329,7 @@ public class NF048 extends Layout {
 						if ( aux < sizeObs ) {
 							imp.pulaLinha( 2, imp.comprimido() );
 							if ( vSigla.size() > 0 && indexSigla < vSigla.size() ) {
-								imp.say( 4, (String) vSigla.elementAt( indexSigla++ ) );
+								imp.say( 4, vSigla.elementAt( indexSigla++ ) );
 							}
 							if ( vObsVenda.size() > 0 && indexObs < vObsVenda.size() ) {
 								imp.say( 20, Funcoes.copy( (String) vObsVenda.elementAt( indexObs++ ), 40 ) );

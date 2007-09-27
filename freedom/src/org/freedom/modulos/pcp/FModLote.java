@@ -60,7 +60,7 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 	private JButton btAdic = new JButton(Icone.novo("btOk.gif"));
     private JComboBoxPad cbCampos = null;
     private Vector vTamanhos = new Vector();
-	private Vector vLabs = new Vector();    	
+	private Vector<String> vLabs = new Vector<String>();    	
 	private Vector vVals = new Vector();
 	private ObjetoModLote objModLote = new ObjetoModLote();
 
@@ -82,7 +82,7 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
     	
     	setListaCampos( true, "MODLOTE", "EQ");   	    
     	
-    	vLabs = new Vector();    	
+    	vLabs = new Vector<String>();    	
     	vVals = new Vector();
     	vTamanhos = new Vector();
     	

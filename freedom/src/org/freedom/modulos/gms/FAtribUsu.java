@@ -54,10 +54,10 @@ public class FAtribUsu extends FFilho implements  CarregaListener, ActionListene
   private JPanelPad pinCli = new JPanelPad();
   private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-  private static Vector vAtrib = new Vector();
-  private static Vector vDisp =  new Vector();
-  private static Vector vCodAtrib = new Vector();
-  private static Vector vCodDisp =  new Vector();
+  private static Vector<String> vAtrib = new Vector<String>();
+  private static Vector<String> vDisp =  new Vector<String>();
+  private static Vector<String> vCodAtrib = new Vector<String>();
+  private static Vector<String> vCodDisp =  new Vector<String>();
   private JList lsAtrib = new JList();
   private JList lsDisp = new JList();
   private JScrollPane spnAtrib = new JScrollPane(lsAtrib);

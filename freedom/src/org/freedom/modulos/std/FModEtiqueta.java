@@ -107,7 +107,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 
     	setListaCampos( false, "MODETIQUETA", "SG");
    	        	
-    	Vector vLabs = objEtiqCli.getLabels();    	
+    	Vector<String> vLabs = objEtiqCli.getLabels();    	
     	Vector vVals = objEtiqCli.getValores();
     	vTamanhos = objEtiqCli.getTams();
     	    	

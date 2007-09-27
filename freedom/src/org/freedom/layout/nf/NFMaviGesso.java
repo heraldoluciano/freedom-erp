@@ -41,7 +41,7 @@ public class NFMaviGesso extends Leiaute {
 	String sTipoTran="";
     boolean bFat = true;
     boolean bTotalizou = false;
-    Vector vValores = new Vector();
+    Vector<String> vValores = new Vector<String>();
     String[] sNat = new String[4];
     String[] sVencs = new String[6];
     String[] sVals = new String[6];
@@ -266,7 +266,7 @@ public class NFMaviGesso extends Leiaute {
     return bRetorno;
   }
 
-  private void impTotais(ImprimeOS imp,Vector vValores){
+  private void impTotais(ImprimeOS imp,Vector<String> vValores){
   	    try {	
   	      for (int i=0;(imp.pRow()<42);i++) { 
           	imp.say(imp.pRow()+1,0,"");

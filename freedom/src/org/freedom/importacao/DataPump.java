@@ -35,11 +35,11 @@ public class DataPump {
 
 	private Document document = null;
 
-	private Vector size = new Vector();
+	private Vector<Integer> size = new Vector<Integer>();
 
 //	private Vector values = new Vector();
 
-	private Vector fields = new Vector();
+	private Vector<JTextFieldPad> fields = new Vector<JTextFieldPad>();
 
 	private boolean windows = false;
 
@@ -193,7 +193,7 @@ public class DataPump {
 		String values = "(";
 
 		for (int i = 0; i < fields.size(); i++) {
-			int origSize = ((Integer) size.get(i)).intValue();
+			int origSize = size.get(i).intValue();
 			char cbuf[] = new char[origSize];
 			boolean parar = false;
 			boolean fim = false;
@@ -227,7 +227,7 @@ public class DataPump {
 				if (parar && fim && buf.equals(""))
 					return null;
 
-				JTextFieldPad field = (JTextFieldPad) fields.get(i);
+				JTextFieldPad field = fields.get(i);
 
 				columns += field.getNomeCampo();
 				switch (field.getTipo()) {

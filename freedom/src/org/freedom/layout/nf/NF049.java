@@ -182,7 +182,7 @@ public class NF049 extends Layout {
 				if ( !sCodfisc.equals( "" ) ) {
 					for ( int i = 0; i < vClfisc.size(); i++ ) {
 						if ( vClfisc.elementAt( i ) != null ) {
-							if ( sCodfisc.equals( (String) vClfisc.elementAt( i ) ) ) {
+							if ( sCodfisc.equals( vClfisc.elementAt( i ) ) ) {
 								bjatem = true;
 								sSigla = String.valueOf( (char) ( 64 + i ) );
 							}

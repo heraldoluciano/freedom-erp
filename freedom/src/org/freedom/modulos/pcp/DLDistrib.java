@@ -268,7 +268,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   	  PreparedStatement ps = null;
   	  ResultSet rs = null;
   	  String sql = null;
-  	  Vector vLinha = null;
+  	  Vector<Comparable> vLinha = null;
   	  int i = 0;
   	  try {
   	  	sql = "SELECT D.CODPRODDE, ED.DESCEST, D.SEQEST, D.SEQEF, " +
@@ -300,7 +300,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   	  	rs = ps.executeQuery();
   	  	while (rs.next()) {
  	  		
-  	  		vLinha = new Vector();
+  	  		vLinha = new Vector<Comparable>();
   	  		vLinha.addElement(new Integer(rs.getInt("SEQEF")));
   	  		vLinha.addElement(new Integer(rs.getInt("CODFASE")));
   	  		vLinha.addElement(rs.getString("DESCFASE"));

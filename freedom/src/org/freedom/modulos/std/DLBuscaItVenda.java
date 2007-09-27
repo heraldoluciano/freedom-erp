@@ -80,8 +80,8 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
   private JButton btNadaVenda = new JButton(Icone.novo("btNada.gif"));
   private JButton btLimpa = new JButton(Icone.novo("btRetorno.gif"));
   private ListaCampos lcVenda = new ListaCampos(this,"");
-  private Vector vTipoVenda = new Vector();
-  private Vector vTipo = new Vector();
+  private Vector<String> vTipoVenda = new Vector<String>();
+  private Vector<String> vTipo = new Vector<String>();
   public DLBuscaItVenda(Component cOrig) {
     super(cOrig);
 // Monta a tela
@@ -106,10 +106,10 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
     txtCodVenda.setFK(true);
     txtCodVenda.setNomeCampo("CodVenda");
 	    
-	Vector vVals = new Vector();
+	Vector<String> vVals = new Vector<String>();
 	vVals.addElement("L");
 	vVals.addElement("O");
-	Vector vLabs = new Vector();
+	Vector<String> vLabs = new Vector<String>();
 	vLabs.addElement("Cliente");
 	vLabs.addElement("Conveniado");
 
@@ -237,7 +237,7 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
         ps.setString(4,txtTipoVenda.getVlrString());
         ResultSet rs = ps.executeQuery();
         while(rs.next()) { 
-            Vector vVals = new Vector();
+            Vector<Object> vVals = new Vector<Object>();
             vVals.addElement(new Boolean("true"));
             vVals.addElement(new Integer(rs.getInt(1)-rs.getInt(2)));
             vVals.addElement(new Integer(rs.getInt(1)-rs.getInt(2)));
@@ -271,7 +271,7 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
   		  break;
   		}
   		
-		Vector vVals = new Vector();
+		Vector<Object> vVals = new Vector<Object>();
 		vVals.addElement(tabVenda.getValor(i,1));
         vVals.addElement(tabVenda.getValor(i,3));
 		vVals.addElement(tabVenda.getValor(i,4));
@@ -292,8 +292,8 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
     txtVlrDesc.setVlrBigDecimal(new BigDecimal(dValDesc));
     txtVlrLiq.setVlrBigDecimal(new BigDecimal(dValLiq));
   }
-  public Vector getValores() {
-     Vector vRet = new Vector();
+  public Vector<Object[]> getValores() {
+     Vector<Object[]> vRet = new Vector<Object[]>();
      for (int i=0;i<tab.getNumLinhas();i++)
         vRet.add(new Object[] {
                         tab.getValor(i,0),

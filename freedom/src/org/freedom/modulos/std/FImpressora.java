@@ -44,10 +44,10 @@ public class FImpressora extends FDados {
   private JTextFieldFK txtDescPapel = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JComboBoxPad cbTipoImp = null;
   private JComboBoxPad cbDestImp = null;
-  private Vector vValsDest = new Vector();
-  private Vector vLabsDest = new Vector();
-  private Vector vValsTipo = new Vector();
-  private Vector vLabsTipo = new Vector();
+  private Vector<String> vValsDest = new Vector<String>();
+  private Vector<String> vLabsDest = new Vector<String>();
+  private Vector<Integer> vValsTipo = new Vector<Integer>();
+  private Vector<String> vLabsTipo = new Vector<String>();
   private ListaCampos lcPapel = new ListaCampos(this,"PL");
   public FImpressora() {
   	super();
