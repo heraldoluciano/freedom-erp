@@ -1089,7 +1089,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		try {
 			
-			ps = con.prepareStatement( "SELECT CODREC FROM FNRECEBER WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=?" );
+			ps = con.prepareStatement( "SELECT CODREC FROM FNRECEBER WHERE TIPOVENDA='V' AND CODVENDA=? AND CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, iCodVendaFecha );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "FNRECEBER" ) );
@@ -1124,7 +1124,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		try {
 			
-			ps = con.prepareStatement( "SELECT CODAUXV FROM VDAUXVENDA WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=?" );
+			ps = con.prepareStatement( "SELECT CODAUXV FROM VDAUXVENDA WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDAUXVENDA" ) );
 			ps.setInt( 3, txtCodVenda.getVlrInteger().intValue() );
@@ -1164,7 +1164,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			sSQL = "SELECT C.CODTRAN " + 
 				   "FROM VDCLIENTE C, VDVENDA V " + 
 				   "WHERE C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL " +
-				   "AND V.CODVENDA=? AND V.CODEMP=? AND V.CODFILIAL=?";
+				   "AND V.CODVENDA=? AND TIPOVENDA='V' AND V.CODEMP=? AND V.CODFILIAL=?";
 			
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, iCodVendaFecha );
@@ -1265,7 +1265,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				sSQL.append( "SELECT C.CODTIPOCOB, C.CODBANCO, C.CODCARTCOB " );
 				sSQL.append( "FROM VDCLIENTE C, VDVENDA V " );
 				sSQL.append( "WHERE C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
-				sSQL.append( "AND V.CODEMP=? AND V.CODFILIAL=? AND CODVENDA=?" );
+				sSQL.append( "AND V.CODEMP=? AND V.CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'" );
 				
 				ps = con.prepareStatement( sSQL.toString() );
 				

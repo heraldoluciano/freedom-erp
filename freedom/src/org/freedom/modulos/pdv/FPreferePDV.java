@@ -62,6 +62,8 @@ public class FPreferePDV extends FTabDados {
 
 	private JCheckBoxPad cbAutoFechaVenda = new JCheckBoxPad( "Fechar a venda apos buscar orçamento?", "S", "N" );
 
+	private JCheckBoxPad cbHabReceber = new JCheckBoxPad( "Habilita aba receber no fechamento?", "S", "N" );
+
 	private JCheckBoxPad cbAdicionais = new JCheckBoxPad( "Dados adicionais p/ frete no fechamento?", "S", "N" );
 
 	private ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
@@ -76,7 +78,7 @@ public class FPreferePDV extends FTabDados {
 
 		super();
 		setTitulo( "Preferências do PDV" );
-		setAtribos( 50, 50, 355, 375 );
+		setAtribos( 50, 50, 355, 395 );
 
 		lcCampos.setMensInserir( false );
 
@@ -117,10 +119,11 @@ public class FPreferePDV extends FTabDados {
 		adicCampo( txtCodCli, 10, 110, 77, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, true );
 		adicDescFK( txtRazCli, 90, 110, 230, 20, "RazCli", "Razão do cliente padrão" );
 		adicDB( cbAutoFechaVenda, 20, 155, 270, 20, "AutoFechaVenda", "", true );
-		adicDB( cbAdicionais, 20, 175, 270, 20, "AdicPDV", "", true );
-		adic( new JLabelPad( "Produto para frete." ), 20, 200, 250, 20 );
-		adicCampo( txtCodProdFrete, 20, 235, 77, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescProdeFrete, 100, 235, 200, 20, "DescProd", "Descrição do produto" );
+		adicDB( cbHabReceber, 20, 175, 270, 20, "HabReceber", "", true );
+		adicDB( cbAdicionais, 20, 195, 270, 20, "AdicPDV", "", true );
+		adic( new JLabelPad( "Produto para frete." ), 20, 220, 250, 20 );
+		adicCampo( txtCodProdFrete, 20, 255, 77, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescProdeFrete, 100, 255, 200, 20, "DescProd", "Descrição do produto" );
 
 		JLabel lbBorda = new JLabel();
 		lbBorda.setBorder( BorderFactory.createEtchedBorder() );
@@ -128,7 +131,7 @@ public class FPreferePDV extends FTabDados {
 		lbOpcoes.setOpaque( true );
 
 		adic( lbOpcoes, 15, 135, 60, 20 );
-		adic( lbBorda, 10, 145, 310, 120 );
+		adic( lbBorda, 10, 145, 310, 140 );
 
 		setListaCampos( false, "PREFERE4", "SG" );
 
