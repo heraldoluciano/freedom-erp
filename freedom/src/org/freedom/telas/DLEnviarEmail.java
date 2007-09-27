@@ -30,7 +30,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.sql.Connection;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -61,6 +63,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.rep.RPPrefereGeral;
 
 public class DLEnviarEmail extends FFDialogo {
 
@@ -93,6 +96,9 @@ public class DLEnviarEmail extends FFDialogo {
 	private EmailBean mail = null;
 	
 	private boolean preparado = false;
+	
+	private boolean comCopia = false;
+	
 
 	public DLEnviarEmail( final Component cOrig, final EmailBean mail ) {
 
@@ -337,8 +343,15 @@ public class DLEnviarEmail extends FFDialogo {
 		MimeMessage msg = new MimeMessage( session );
 		msg.setFrom( new InternetAddress( txtFrom.getVlrString() ) );
 
-		//InternetAddress[] address = { new InternetAddress( txtTo.getVlrString() ), new InternetAddress( txtFrom.getVlrString() ) };
-		InternetAddress[] address = { new InternetAddress( txtTo.getVlrString() ) };
+		InternetAddress[] address = null;
+		
+		if ( comCopia ) {
+			address = new InternetAddress[] { new InternetAddress( txtTo.getVlrString() ), new InternetAddress( txtFrom.getVlrString() ) };
+		}
+		else {
+			address = new InternetAddress[] { new InternetAddress( txtTo.getVlrString() ) };
+		}
+		
 		msg.setRecipients( Message.RecipientType.TO, address );
 		msg.setSubject( txtAssunto.getVlrString() );
 
@@ -395,6 +408,18 @@ public class DLEnviarEmail extends FFDialogo {
 
 			pSec.iniciar();
 		}
+	}
+	
+	@Override
+	public void setConexao( Connection conn ) {
+		
+		super.setConexao( conn );
+		
+		if ( con != null ) {
+
+			List<Object> prefere = RPPrefereGeral.getPrefere( con );
+			comCopia = "S".equals( prefere.get( RPPrefereGeral.EPrefere.ENVIACOPIA.ordinal() ) );	
+		}		
 	}
 
 	class SMTPAuthenticator extends Authenticator {

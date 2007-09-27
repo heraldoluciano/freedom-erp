@@ -53,6 +53,10 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	
 	private final JCheckBoxPad cbUsaRefProd = new JCheckBoxPad( "Usar referência para produto?", "S", "N" );
 	
+	private final JCheckBoxPad cbOrdemPed = new JCheckBoxPad( "Ordena pedido por ordem alfabetíca?", "S", "N" );
+	
+	private final JCheckBoxPad cbEnviaCopia = new JCheckBoxPad( "Enviar cópia de pedido para empresa?", "S", "N" );
+	
 	private final JCheckBoxPad cbIpiComis = new JCheckBoxPad( "Incluir IPI no calculo da comissão?", "S", "N" );
 	
 	private final JCheckBoxPad cbIPIPed = new JCheckBoxPad( "Imprimir IPI no pedido?", "S", "N" );
@@ -60,8 +64,6 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	private final JCheckBoxPad cbCodBarProd = new JCheckBoxPad( "Usar código de barras no pedido?", "S", "N" );
 	
 	private final JCheckBoxPad cbEndCliPed = new JCheckBoxPad( "Incluir endereço dos clientes no pedido?", "S", "N" );
-	
-	private final JCheckBoxPad cbOrdemPed = new JCheckBoxPad( "Ordena pedido por ordem alfabetíca?", "S", "N" );
 
 	private final JTextFieldPad txtServidorSMTP = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -130,6 +132,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		
 		adicDB( cbUsaRefProd, 17, 20, 300, 20, "UsaRefProd", null, true );
 		adicDB( cbOrdemPed, 17, 40, 300, 20, "OrdemPed", null, true );
+		adicDB( cbEnviaCopia, 17, 60, 300, 20, "EnviaCopia", null, true );
 		
 		//adicDB( cbIpiComis, 17, 40, 300, 20, "IPIPed", null, true );
 		//adicDB( cbIPIPed, 17, 60, 300, 20, "CodBarProd", null, true );
@@ -194,7 +197,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 			
 			sSQL.append( "SELECT IPICOMIS,IPIPED,CODBARPROD,ENDCLIPED,ORDEMPED," );
 			sSQL.append( "SERVIDORSMTP,PORTASMTP,USUARIOSMTP,SENHASMTP,AUTENTICASMTP,SSLSMTP," );
-			sSQL.append( "CASASDEC,CASASDECFIN,CODMOEDA,LAYOUTPED,USAREFPROD " );
+			sSQL.append( "CASASDEC,CASASDECFIN,CODMOEDA,LAYOUTPED,USAREFPROD, ENVIACOPIA " );
 			sSQL.append( "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -219,6 +222,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 				prefere.add( EPrefere.CODMOEDA.ordinal(), rs.getString( "CODMOEDA" ) );
 				prefere.add( EPrefere.LAYOUTPED.ordinal(), rs.getString( "LAYOUTPED" ) );
 				prefere.add( EPrefere.USAREFPROD.ordinal(), rs.getString( "USAREFPROD" ) );
+				prefere.add( EPrefere.ENVIACOPIA.ordinal(), rs.getString( "ENVIACOPIA" ) );
 			}
 			
 			rs.close();
@@ -252,6 +256,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	    CASASDECFIN,
 	    CODMOEDA,
 	    LAYOUTPED,
-	    USAREFPROD;
+	    USAREFPROD,
+	    ENVIACOPIA;
 	}
 }
