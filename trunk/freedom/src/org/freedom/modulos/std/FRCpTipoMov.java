@@ -27,18 +27,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRCpTipoMov extends FRelatorio {
@@ -67,10 +73,12 @@ public class FRCpTipoMov extends FRelatorio {
 	
 	private ListaCampos lcTipoMov = new ListaCampos(this);
 	
+	private JRadioGroup rgTipo = null;
+	
 	public FRCpTipoMov() {
 	
 		setTitulo("Compras por tipo de movimento");
-		setAtribos(50,50,345,270);
+		setAtribos(50,50,345,310);
 		
 		montaListaCampos();
 		montaTela();
@@ -108,6 +116,17 @@ public class FRCpTipoMov extends FRelatorio {
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		JLabelPad lbPeriodo = new JLabelPad("   	Periodo:");
 		lbPeriodo.setOpaque(true);
+
+		Vector vLabs = new Vector();
+		Vector vVals = new Vector();
+		
+		vLabs.addElement( "Grafico" );
+		vLabs.addElement( "Texto" );
+		vVals.addElement( "G" );
+		vVals.addElement( "T" );
+		
+		rgTipo = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgTipo.setVlrString( "T" );
 		
 		adic(lbPeriodo,7, 1, 80, 20 );
 		adic(lbLinha,5,10,300,45);
@@ -127,6 +146,7 @@ public class FRCpTipoMov extends FRelatorio {
 		adic(txtCodTipoMov, 7, 160, 80, 20 );
 		adic( new JLabelPad("Descrição do tipo de movimento"), 90, 140, 200, 20 );
 		adic(txtDescTipoMov,90, 160, 215, 20);
+		adic(rgTipo, 7, 190, 300, 30 );
 		
 		Calendar cPeriodo = Calendar.getInstance();
 	    txtDatafim.setVlrDate(cPeriodo.getTime());
@@ -154,41 +174,29 @@ public class FRCpTipoMov extends FRelatorio {
 		String sSQL = null;
 		String sWhere = "";
 		BigDecimal bTotal = null;
-		ImprimeOS imp = null;
-		int linPag = 0;
-		int iparam = 1;
-		int iCab = 7;
-		int iCodCompra = 0;		
+		StringBuilder sCab = new StringBuilder();	
 		
 		try {
-			
-			imp = new ImprimeOS("",con);
-			linPag = imp.verifLinPag()-1;
-			imp.montaCab();
-			imp.setTitulo("Relatório de Compras");
-			imp.addSubTitulo("RELATORIO DE COMPRAS ");
-			imp.addSubTitulo("PERIODO DE: " + txtDataini.getVlrString() + " Até: "+txtDatafim.getVlrString());
-			imp.limpaPags();	
 			
 			bTotal = new BigDecimal("0");
 			
 			if (txtCodFor.getVlrInteger().intValue() > 0) {
 				
 				sWhere += " AND C.CODFOR = " + txtCodFor.getVlrInteger().intValue();
-				imp.addSubTitulo("FORNECEDOR : " + txtDescFor.getVlrString());		
-				iCab++;
+				sCab.append("FORNECEDOR : " + txtDescFor.getVlrString());		
+				
 			}
 			if (txtCodPlanoPag.getVlrInteger().intValue() > 0) {
 				
 				sWhere += " AND C.CODPLANOPAG = " + txtCodPlanoPag.getVlrInteger().intValue();
-				imp.addSubTitulo("PLANO DE PAGAMENTO: " + txtDescPlanoPag.getVlrString());		
-				iCab++;
+				sCab.append("PLANO DE PAGAMENTO: " + txtDescPlanoPag.getVlrString());		
+				
 			}
 			if (txtCodTipoMov.getVlrInteger().intValue() > 0 ){
 				
 				sWhere += " AND C.CODTIPOMOV = " + txtCodTipoMov.getVlrInteger().intValue();
-				imp.addSubTitulo("TIPO DE MOVIMENTO: " + txtDescTipoMov.getVlrString());		
-				iCab++;
+				sCab.append("TIPO DE MOVIMENTO: " + txtDescTipoMov.getVlrString());		
+				
 			}
 			
 			sSQL = "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, " +
@@ -210,31 +218,75 @@ public class FRCpTipoMov extends FRelatorio {
 				   sWhere+
 				   " ORDER BY C.CODCOMPRA, IT.CODITCOMPRA";
 			
-			
 			ps = con.prepareStatement(sSQL);
-			ps.setInt(iparam++, Aplicativo.iCodEmp);
-			ps.setInt(iparam++, ListaCampos.getMasterFilial("CPCOMPRA"));
-			ps.setDate(iparam++, Funcoes.strDateToSqlDate(txtDataini.getVlrString()));
-			ps.setDate(iparam++, Funcoes.strDateToSqlDate(txtDatafim.getVlrString()));
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("CPCOMPRA"));
+			ps.setDate(3, Funcoes.strDateToSqlDate(txtDataini.getVlrString()));
+			ps.setDate(4, Funcoes.strDateToSqlDate(txtDatafim.getVlrString()));
 			rs = ps.executeQuery();
+			
+			if( "G".equals( rgTipo.getVlrString() )){
+				imprimirGrafico( bVisualizar, rs, sCab.toString() ) ;
+			
+			}else{
+				imprimirTexto( bVisualizar, rs, sCab.toString() );
+			}
+			
+			rs.close();
+			ps.close();
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
+		} catch( SQLException err ){	
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro consulta tabela de tipo de movimento!\n" + err.getMessage(), true, con, err );
+
+		}finally {
+			System.gc();
+		}	
+	}
+	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sCab ){
+	
+		String sSQL = null;
+		String sWhere = "";
+		BigDecimal bTotal = new BigDecimal(0);
+		ImprimeOS imp = null;
+		int linPag = 0;
+		int iparam = 1;
+		int iCab = 7;
+		int iCodCompra = 0;		
+		
+		try {
+			
+			imp = new ImprimeOS("",con);
+			linPag = imp.verifLinPag()-1;
+			imp.montaCab();
+			imp.setTitulo("Relatório de Compras");
+			imp.addSubTitulo("RELATORIO DE COMPRAS ");
+			imp.addSubTitulo("PERIODO DE: " + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString());
+			imp.limpaPags();	
+			
 			while( rs.next() ) {
-            	if(imp.pRow() >= linPag) {
-                    imp.say(imp.pRow()+1, 0, imp.comprimido());
-                    imp.say(imp.pRow(),0, "+" + Funcoes.replicate("-",133) + "+");
-                    imp.eject();
-                    imp.incPags();
-            	}
+		        
+				if(imp.pRow() >= linPag) {
+	                imp.say(imp.pRow()+1, 0, imp.comprimido());
+	                imp.say(imp.pRow(),0, "+" + Funcoes.replicate("-",133) + "+");
+	                imp.eject();
+	                imp.incPags();
+	        	}
 				if(imp.pRow() == 0) {
 					imp.impCab(136, true);
-        			imp.say(imp.pRow(), 0, imp.comprimido());
+	    			imp.say(imp.pRow(), 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("=",133) + "|");
 				}
-            	if(iCodCompra != rs.getInt("CODCOMPRA")) {
-            		iCodCompra = rs.getInt("CODCOMPRA");
-            		if(imp.pRow() > iCab) {
-            			imp.say(imp.pRow()+1, 0, imp.comprimido());
+	        	if(iCodCompra != rs.getInt("CODCOMPRA")) {
+	        		iCodCompra = rs.getInt("CODCOMPRA");
+	        		if(imp.pRow() > iCab) {
+	        			imp.say(imp.pRow()+1, 0, imp.comprimido());
 						imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("=",133) + "|");
-            		}
+	        		}
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "| N. Compra");
 					imp.say(imp.pRow(), 13, "| Doc");
@@ -268,8 +320,8 @@ public class FRCpTipoMov extends FRelatorio {
 					imp.say(imp.pRow(),135, "|");
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
-            	}
-            	imp.say(imp.pRow()+1, 0, imp.comprimido());
+	        	}
+	        	imp.say(imp.pRow()+1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 0, "| " + (rs.getString("CODITCOMPRA") != null ? rs.getString("CODITCOMPRA") : ""));
 				imp.say(imp.pRow(), 8, "| " + (rs.getString("CODPROD") != null ? rs.getString("CODPROD") : ""));
 				imp.say(imp.pRow(), 22, "| " + (rs.getString("DESCPROD") != null ? rs.getString("DESCPROD") : ""));
@@ -278,6 +330,7 @@ public class FRCpTipoMov extends FRelatorio {
 				imp.say(imp.pRow(),102, "| " + Funcoes.strDecimalToStrCurrency(10,2,(rs.getString("VLRLIQITCOMPRA") != null ? rs.getString("VLRLIQITCOMPRA") : "")));
 				imp.say(imp.pRow(),115, "|");
 				imp.say(imp.pRow(),135, "|");	
+				
 				bTotal = bTotal.add(rs.getBigDecimal("VLRLIQITCOMPRA"));
 			}
 
@@ -292,26 +345,41 @@ public class FRCpTipoMov extends FRelatorio {
 		 
 			imp.eject();		 
 			imp.fechaGravacao();
-
-			if (!con.getAutoCommit())
-                con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro(this,"Erro consulta tabela compras!\n"+err.getMessage(),true,con,err);
-			err.printStackTrace();
-		} catch ( Exception err ) {
-			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-			sWhere = null;
-			bTotal = null;
-			System.gc();
+	            
+			if (bVisualizar)
+				imp.preview(this);
+			
+			else
+				imp.print();
+			
+		} catch ( Exception e ) {
+		
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao montar o relatorio!\n" + e.getMessage(), true, con, e );
 		}
-	 
-		if (bVisualizar)
-			imp.preview(this);
-		else
-			imp.print();
+	}
+	
+	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+
+		FPrinterJob dlGr = null;
+		HashMap hParam = new HashMap();
+		
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ));
+		hParam.put( "RAZAOEMP" , Aplicativo.sEmpSis );
+		hParam.put( "FILTROS", sCab );
+
+		dlGr = new FPrinterJob( "relatorios/CpTipoMov.jasper", "Relatorio de compras por tipo de movimento", sCab, rs, hParam, this );
+		
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de resumo diario!" + err.getMessage(), true, con, err );
+			}
+		}
 	}
 }
