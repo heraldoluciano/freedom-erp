@@ -1297,9 +1297,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 				}
 				else if ( AplicativoPDV.bModoDemo ) {
 
-					bRet = true;
+					bRet = finalizaVenda();
 
-					if ( finalizaVenda() ) {
+					if ( bRet ) {
 						btCancel.setEnabled( false );
 					}
 					if ( txtVlrTroco.floatValue() > 0 ) {
