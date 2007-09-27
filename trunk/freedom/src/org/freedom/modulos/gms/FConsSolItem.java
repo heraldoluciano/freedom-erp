@@ -93,7 +93,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 	boolean bAprovaParcial = false;
 	boolean bExpede = false;
 	boolean bAprova = false;
-	private Vector vSitSol = new Vector();
+	private Vector<?> vSitSol = new Vector<Object>();
 	public FConsSolItem() {
 		super(false);
 		setTitulo("Sumário de Solicitações de Compra");
@@ -340,7 +340,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 			int iLin = 0;
 
 			tab.limpa();
-			vSitSol = new Vector();
+			vSitSol = new Vector<Object>();
 			while (rs.next()) {
 				tab.adicLinha();
 				

@@ -181,7 +181,7 @@ public class FichaMedida extends LeiauteGR {
 			Funcoes.mensagemErro(this,"Erro ao montar o cabeçalho do relatório!!!\n"+err.getMessage());
 		}
 	}
-	public void setParam(Vector vParam) {
+	public void setParam(Vector<?> vParam) {
 	  iCodConv = Integer.parseInt(""+vParam.elementAt(0));
 	  sAtend = ""+vParam.elementAt(1);
 	  iCodLev = Integer.parseInt(""+vParam.elementAt(2));

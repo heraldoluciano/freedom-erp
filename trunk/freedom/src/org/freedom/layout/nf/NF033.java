@@ -62,8 +62,8 @@ public class NF033 extends Layout {
 		String[] sDuplics = new String[] { "", "", "", "", "", "", "", "" };
 		String[] sDescParcs = new String[] { "", "", "", "", "", "", "", "" };
 		Map<Integer,String> mDescParcs = null;
-		Vector vDescFisc = new Vector();
-		Vector vDescProd = new Vector();
+		Vector<?> vDescFisc = new Vector<Object>();
+		Vector<?> vDescProd = new Vector<Object>();
 
 		try {
 

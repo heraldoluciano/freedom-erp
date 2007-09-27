@@ -48,7 +48,7 @@ public class NFEntrada extends NF {
 		return this.tipoNF;
 	}
 
-	public boolean carregaTabelas( Connection con, Vector parans ) {
+	public boolean carregaTabelas( Connection con, Vector<?> params ) {
 
 		boolean retorno = true;
 		PreparedStatement ps = null;
@@ -71,9 +71,9 @@ public class NFEntrada extends NF {
 			sql.append( "AND PG.CODEMP=C.CODEMPPG AND PG.CODFILIAL=C.CODFILIALPG AND PG.CODPLANOPAG=C.CODPLANOPAG " );
 			sql.append( "AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=?" );
 			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, ( (Integer) parans.elementAt( 0 ) ).intValue() );
-			ps.setInt( 2, ( (Integer) parans.elementAt( 1 ) ).intValue() );
-			ps.setInt( 3, ( (Integer) parans.elementAt( 2 ) ).intValue() );
+			ps.setInt( 1, ( (Integer) params.elementAt( 0 ) ).intValue() );
+			ps.setInt( 2, ( (Integer) params.elementAt( 1 ) ).intValue() );
+			ps.setInt( 3, ( (Integer) params.elementAt( 2 ) ).intValue() );
 			rs = ps.executeQuery();
 			cont++;
 			cab = new TabVector( 61 );
@@ -165,9 +165,9 @@ public class NFEntrada extends NF {
 			sql.append( "AND CL.CODFISC=P.CODFISC AND CL.CODEMP=P.CODEMPFC AND CL.CODFILIAL=P.CODFILIALFC " );
 			sql.append( "AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=?" );
 			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, ( (Integer) parans.elementAt( 0 ) ).intValue() );
-			ps.setInt( 2, ( (Integer) parans.elementAt( 1 ) ).intValue() );
-			ps.setInt( 3, ( (Integer) parans.elementAt( 2 ) ).intValue() );
+			ps.setInt( 1, ( (Integer) params.elementAt( 0 ) ).intValue() );
+			ps.setInt( 2, ( (Integer) params.elementAt( 1 ) ).intValue() );
+			ps.setInt( 3, ( (Integer) params.elementAt( 2 ) ).intValue() );
 			rs = ps.executeQuery();
 			cont++;
 			itens = new TabVector( 27 );

@@ -54,9 +54,9 @@ public class NFBuzzi extends Leiaute {
 		String[] sDuplics = new String[6];
 		String[] sMatObs = null;
 		Vector<String> vValores = new Vector<String>();
-		Vector vDesc = null;
+		Vector<?> vDesc = null;
 		Vector<String> vClfisc = new Vector<String>();
-		Vector vSigla = new Vector();
+		Vector<String> vSigla = new Vector<String>();
 		    
 		
 		try {
@@ -264,10 +264,10 @@ public class NFBuzzi extends Leiaute {
 				
 				if(pos==1){
 					imp.pulaLinha(1, imp.comprimido());
-					imp.say( 16, (String)vSigla.elementAt(i));
+					imp.say( 16, vSigla.elementAt(i));
 					pos = 2;
 				} else{
-					imp.say( 35, (String)vSigla.elementAt(i));
+					imp.say( 35, vSigla.elementAt(i));
 					pos = 1;
 					iProd++;
 				}
@@ -306,7 +306,7 @@ public class NFBuzzi extends Leiaute {
 		
 	private void impTotais(ImprimeOS imp,Vector<String> vValores){
 		
-		Vector vObs = null;
+		Vector<?> vObs = null;
 		
 		try {	
 						

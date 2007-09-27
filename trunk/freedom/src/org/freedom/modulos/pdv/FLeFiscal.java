@@ -385,7 +385,7 @@ public class FLeFiscal extends FTabDados {
 		
 		if ( AplicativoPDV.usaEcfDriver() ) {
 			
-			Vector vAliquotas = FAliquota.getAliquotas( ecf );
+			Vector<?> vAliquotas = FAliquota.getAliquotas( ecf );
 			
 			for ( int i = 0; i < vAliquotas.size(); i++ ) {
 				

@@ -43,7 +43,7 @@ public class NFIswara2 extends Layout {
 		int iContaObs = 0; //Contador para a gamb de asterisco
 		int iContaObs2 = 0; //Contador para a gamb de '"'
 	    Calendar cHora = Calendar.getInstance();
-	    Vector vMens = null;
+	    Vector<?> vMens = null;
 	    Vector<String> vClfisc = new Vector<String>();
 	    String sDescAdic = "";
 	    String sNumNota = ""; 

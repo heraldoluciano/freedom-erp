@@ -55,8 +55,8 @@ public class NFPomiagro3 extends Layout {
 		String[] sVencs = new String[6];
 		String[] sVals = new String[6];
 		String[] sMatObs = new String[5]; 
-		Vector vObs = new Vector();
-		Vector vMens = new Vector();
+		Vector<?> vObs = new Vector<Object>();
+		Vector<String> vMens = new Vector<String>();
 		Vector<String[]> vMensT1 = new Vector<String[]>();
 		Vector<String[]> vMensT2 = new Vector<String[]>();
 		

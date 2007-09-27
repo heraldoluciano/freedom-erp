@@ -54,8 +54,8 @@ public class NF025 extends Layout {
 		BigDecimal bdQtdItem = new BigDecimal(0);
 		BigDecimal bdVlrItem = new BigDecimal(0);
 		BigDecimal bdVlrLiqItem = new BigDecimal(0);
-		Vector vObs = new Vector();
-		Vector vDescFisc = new Vector();
+		Vector<?> vObs = new Vector<Object>();
+		Vector<?> vDescFisc = new Vector<Object>();
 		
 		try {		    	    
 			

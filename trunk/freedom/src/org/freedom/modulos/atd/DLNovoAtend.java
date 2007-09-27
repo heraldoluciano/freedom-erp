@@ -63,11 +63,11 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 	private JTextFieldPad txtCodAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtNomeAtend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextAreaPad txaDescAtend = new JTextAreaPad();
-	private Vector vValsTipo = new Vector();
-	private Vector vLabsTipo = new Vector();
+	private Vector<Object> vValsTipo = new Vector<Object>();
+	private Vector<String> vLabsTipo = new Vector<String>();
 	private JComboBoxPad cbTipo = new JComboBoxPad(vLabsTipo,vValsTipo, JComboBoxPad.TP_INTEGER, 8, 0); 
-	private Vector vValsSetor = new Vector();
-	private Vector vLabsSetor = new Vector();
+	private Vector<Integer> vValsSetor = new Vector<Integer>();
+	private Vector<String> vLabsSetor = new Vector<String>();
 	private JComboBoxPad cbSetor = new JComboBoxPad(vLabsSetor,vValsSetor, JComboBoxPad.TP_INTEGER, 8, 0); 
 	private ListaCampos lcConv = new ListaCampos(this);
 	private ListaCampos lcAtend = new ListaCampos(this);
@@ -318,7 +318,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 			}
 			try {
 				iDoc = getCodLev();
-				Vector vParam = new Vector();
+				Vector<Object> vParam = new Vector<Object>();
 				LeiauteGR lei = (LeiauteGR)Class.forName("org.freedom.layout.atd."+sPrefs[1].trim()).newInstance();      
 				lei.setConexao(con);
 				vParam.addElement(txtCodConv.getVlrInteger());

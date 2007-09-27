@@ -244,7 +244,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	private ListaCampos lcConv = new ListaCampos( this, "CV" );
 
 	@SuppressWarnings("unchecked")
-	private Vector<Comparable> vCacheItem = new Vector<Comparable>();
+	private Vector<Object> vCacheItem = new Vector<Object>();
 
 	private Vector<String> vAliquotas = null;
 

@@ -108,10 +108,10 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		pinRod.tiraBorda();
 
 		txaMen.setVlrString("Descreva aqui seu problema, dúvida ou sugestão...");
-		Vector vVals = new Vector();
+		Vector<String> vVals = new Vector<String>();
 		vVals.add("A");
 		vVals.add("C");
-		Vector vLabs = new Vector();
+		Vector<String> vLabs = new Vector<String>();
 		vLabs.add("Arquivo no anexo.");
 		vLabs.add("Arquivo no corpo.");
 

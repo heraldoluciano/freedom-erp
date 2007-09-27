@@ -115,7 +115,7 @@ public class FRBoleto extends FRelatorio {
 
 	private String sInfoMoeda[] = new String[ 4 ];
 
-	private List lsParcelas = null;
+	private List<?> lsParcelas = null;
 
 	private boolean bCodOrc = false;
 
@@ -735,7 +735,7 @@ public class FRBoleto extends FRelatorio {
 		return parametros;
 	}
 
-	public void setParcelas( final List lsParcParam ) {
+	public void setParcelas( final List<?> lsParcParam ) {
 
 		lsParcelas = lsParcParam;
 	}

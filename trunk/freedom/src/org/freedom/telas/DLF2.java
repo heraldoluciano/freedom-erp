@@ -262,7 +262,7 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 		try {
 			rsF2 = sqlF2.executeQuery();
 			while ( rsF2.next() ) {
-				Vector<String> data = new Vector<String>();
+				Vector<Object> data = new Vector<Object>();
 				for ( int i = 0; i < tab.getNumColunas(); i++ ) {
 					sNomeCampoX = ( (GuardaCampo) ( lcF2.getComponent( i ) ) ).getNomeCampo();
 					if ( ( (GuardaCampo) ( lcF2.getComponent( i ) ) ).getTipo() == JTextFieldPad.TP_DATE ) {

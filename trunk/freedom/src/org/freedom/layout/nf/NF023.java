@@ -57,8 +57,8 @@ public class NF023 extends Layout {
 		String[] sVencs = new String[ 4 ];
 		String[] sVals = new String[ 4 ];
 		Vector<String> vClfisc = new Vector<String>();
-		Vector vSigla = new Vector();
-		Vector vObs = new Vector();
+		Vector<String> vSigla = new Vector<String>();
+		Vector<?> vObs = new Vector<Object>();
 		Vector<String> vDescFisc = new Vector<String>();
 
 		try {
@@ -381,7 +381,7 @@ public class NF023 extends Layout {
 							
 							if ( vSigla.size() > 0 && indexSigla < vSigla.size() ) {
 							
-								imp.say( 2, (String) vSigla.elementAt( indexSigla++ ) );
+								imp.say( 2, vSigla.elementAt( indexSigla++ ) );
 							}
 							if ( vDescFisc.size() > 0 && indexDescFisc < vDescFisc.size() ) {
 							

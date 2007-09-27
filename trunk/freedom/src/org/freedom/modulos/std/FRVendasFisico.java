@@ -277,7 +277,7 @@ public class FRVendasFisico extends FRelatorio {
 		}
 	}
 
-	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final Vector cab ) {
+	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final Vector<?> cab ) {
 		
 		String sCodGrup = null;
 		String sGrup = null;

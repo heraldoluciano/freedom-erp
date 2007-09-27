@@ -34,7 +34,7 @@ public class FVisual extends FFilho {
 	private static final long serialVersionUID = 1L;
 	private JComboBoxPad cbLookAndFeel = null;
 	private Vector<String> vDescLookAndFeel = new Vector<String>();
-	private Vector vValLookAndFeel = new Vector();
+	private Vector<?> vValLookAndFeel = new Vector<Object>();
 	private JLabelPad lbLookAndFeel = new JLabelPad("Selecione o visual desejado");
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	

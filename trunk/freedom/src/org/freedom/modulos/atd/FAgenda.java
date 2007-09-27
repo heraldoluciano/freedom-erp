@@ -105,7 +105,7 @@ public class FAgenda extends FFilho implements ActionListener {
 
 	private ListaCampos lcUsu = new ListaCampos( this );
 
-	private Vector vUsu = new Vector();
+	private Vector<String> vUsu = new Vector<String>();
 
 	private int iCodAge = 0;
 
@@ -320,7 +320,7 @@ public class FAgenda extends FFilho implements ActionListener {
 
 	}
 
-	public static void carregaTabAgd( final int codAge, final String tipoAge, final Object[] datas, final Tabela tabAgd, final boolean todos, final Connection con, final Component cOrig, final Vector usu ) {
+	public static void carregaTabAgd( final int codAge, final String tipoAge, final Object[] datas, final Tabela tabAgd, final boolean todos, final Connection con, final Component cOrig, final Vector<String> usu ) {
 
 		if ( codAge > 0 ) {
 

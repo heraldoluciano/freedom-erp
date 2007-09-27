@@ -44,13 +44,13 @@ public class OPSwara extends LeiauteGR {
 	private Font fnArial9 = new Font("Arial",Font.PLAIN,9);
 	private Font fnInstrucoes = new Font("Arial",Font.PLAIN,6);
 	private Font fnArial9N = new Font("Arial",Font.BOLD,9);
-	Vector vParamOP = new Vector();
+	Vector<?> vParamOP = new Vector<Object>();
 	final int iPosIniItens = 400;
 	final int iPosMaxItens = 740;
 	int iYPosProd=0;
 	int iY = 100;
-	Vector vItens = new Vector();
-	Vector vItem = new Vector();
+	Vector<Vector<String>> vItens = new Vector<Vector<String>>();
+	Vector<String> vItem = new Vector<String>();
 	int iCodOP = 0;
 	int iSeqOP = 0;
 	String sDescProd = "";
@@ -65,10 +65,11 @@ public class OPSwara extends LeiauteGR {
 	    impRaz(false);
 		montaRel();
 	}
-	public void setParam(Vector vParam) {
+	public void setParam(Vector<?> vParam) {
 		vParamOP = vParam;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void montaRel() {
 		setMargemPdf(5,5);
 		iCodOP = Integer.parseInt(vParamOP.elementAt(0).toString());
@@ -94,14 +95,14 @@ public class OPSwara extends LeiauteGR {
 		  ResultSet rs = ps.executeQuery();
 		  		   
 		  while (rs.next()) {
-            vItem = new Vector();
+            vItem = new Vector<String>();
             vItem.addElement((rs.getString(12)!=null?rs.getString(12):"")); //Código
             vItem.addElement((rs.getString(13)!=null?rs.getString(13):"")); //Descrição
             vItem.addElement((rs.getString(16)!=null?Funcoes.strDecimalToStrCurrency(3,rs.getString(16)):"0")); //Quantidade
             vItem.addElement((rs.getString(20)!=null?rs.getString(20):"")); //Código da Unidade
             vItem.addElement((rs.getString(15)!=null?rs.getString(15):"")); //Lote
             vItem.addElement((rs.getString(18)!=null?rs.getString(18):"0")); //Fase            
-            vItens.addElement(vItem.clone());
+            vItens.addElement((Vector<String>) vItem.clone());
 		  }
 
 		  sDescProd  = (rs.getString(5)!=null?rs.getString(5).trim():"");
@@ -172,7 +173,7 @@ public class OPSwara extends LeiauteGR {
 		double iNLinhas = iPixels/iLargura;
 		int iNCaracteres = Funcoes.tiraChar(sTexto,"\n").length();
 		int iNCaracPorLinha = (int) (iNCaracteres/iNLinhas);  		
-        Vector vTextoSilabas = Funcoes.strToVectorSilabas(sTexto,iNCaracPorLinha);
+        Vector<?> vTextoSilabas = Funcoes.strToVectorSilabas(sTexto,iNCaracPorLinha);
 		for (int i=0;vTextoSilabas.size()>i;i++) {
 
 			setFonte(fonte);			
@@ -242,11 +243,11 @@ public class OPSwara extends LeiauteGR {
                         
                         
             for(int i=0;vItens.size()>i;i++) {
-              sCod  = ((Vector) vItens.elementAt(i)).elementAt(0).toString();
-              sQtd  = ((Vector) vItens.elementAt(i)).elementAt(2).toString();
-              sUnid = ((Vector) vItens.elementAt(i)).elementAt(3).toString();
-              sLote = ((Vector) vItens.elementAt(i)).elementAt(4).toString();
-              iCodFaseI = Integer.parseInt(((Vector) vItens.elementAt(i)).elementAt(5).toString());
+              sCod  = vItens.elementAt(i).elementAt(0).toString();
+              sQtd  = vItens.elementAt(i).elementAt(2).toString();
+              sUnid = vItens.elementAt(i).elementAt(3).toString();
+              sLote = vItens.elementAt(i).elementAt(4).toString();
+              iCodFaseI = Integer.parseInt(vItens.elementAt(i).elementAt(5).toString());
               
               if(iCodFaseI==iCodFaseF) {
                 drawTexto(sCod,30,iY); //Codigo	
@@ -287,8 +288,8 @@ public class OPSwara extends LeiauteGR {
 	  	int iCodFaseF = 0;
 	  	int iCodFaseI = 0;
 	  	int iYIni = 0;
-	  	Vector vItensEB = null;
-	  	Vector vColunasEB = null;
+	  	Vector<Vector<String>> vItensEB = null;
+	  	Vector<String> vColunasEB = null;
         String sCodProd = null;
         String sDesc = null;
         String sQtd = null;
@@ -381,9 +382,9 @@ public class OPSwara extends LeiauteGR {
 				ps.setInt(4,iSeqOP);			 
 				rs = ps.executeQuery();
 			
-			vItensEB = new Vector();
+			vItensEB = new Vector<Vector<String>>();
 			while (rs.next()) {
-				vColunasEB = new Vector();
+				vColunasEB = new Vector<String>();
 			    vColunasEB.addElement((rs.getString("CODPROD")!=null?rs.getString("CODPROD"):"")); //Código
 			    vColunasEB.addElement((rs.getString("DESCPROD")!=null?rs.getString("DESCPROD"):"")); //Descrição
 			    vColunasEB.addElement((rs.getString("QTDPREVPRODOP")!=null?Funcoes.strDecimalToStrCurrency(0,rs.getString("QTDPREVPRODOP")):"0")); //Quantidade
@@ -420,7 +421,7 @@ public class OPSwara extends LeiauteGR {
 					iY = iY+20;
 				}
 				
-				vColunasEB = (Vector) vItensEB.elementAt(i);
+				vColunasEB = vItensEB.elementAt(i);
 			    sCodProd  = vColunasEB.elementAt(0).toString();
 			    sDesc = vColunasEB.elementAt(1).toString();
 			    sQtd  = vColunasEB.elementAt(2).toString();

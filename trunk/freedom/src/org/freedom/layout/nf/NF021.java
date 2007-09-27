@@ -35,7 +35,7 @@ public class NF021 extends Layout {
 		Vector<String> vValores = new Vector<String>();
 		Vector<String> vClfisc = new Vector<String>();
 		Vector<String> vSigla = new Vector<String>();
-		Vector vDesc = null;
+		Vector<?> vDesc = null;
 		String sDesc = null;
 		String sCodfisc = null;
 		String sSigla = null;   

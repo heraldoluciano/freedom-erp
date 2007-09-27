@@ -249,7 +249,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   
   public float getSomaTab() {
 	  float ftTotal =  0;
-	  Vector v = null;
+	  Vector<?> v = null;
 	  try {
 		  for (int i=0; i<tabDistrib.getNumLinhas(); i++) {
 			  v = tabDistrib.getLinha(i);
@@ -268,7 +268,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   	  PreparedStatement ps = null;
   	  ResultSet rs = null;
   	  String sql = null;
-  	  Vector<Comparable> vLinha = null;
+  	  Vector<Object> vLinha = null;
   	  int i = 0;
   	  try {
   	  	sql = "SELECT D.CODPRODDE, ED.DESCEST, D.SEQEST, D.SEQEF, " +
@@ -300,7 +300,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   	  	rs = ps.executeQuery();
   	  	while (rs.next()) {
  	  		
-  	  		vLinha = new Vector<Comparable>();
+  	  		vLinha = new Vector<Object>();
   	  		vLinha.addElement(new Integer(rs.getInt("SEQEF")));
   	  		vLinha.addElement(new Integer(rs.getInt("CODFASE")));
   	  		vLinha.addElement(rs.getString("DESCFASE"));
@@ -389,7 +389,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   }
 	  
   private void gravaDistrib() {
-	  Vector linha = null;
+	  Vector<?> linha = null;
 	  try {
 		  for (int i=0; i<tabDistrib.getNumLinhas(); i++) {
 			  linha = tabDistrib.getLinha(i);
@@ -402,7 +402,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
       }
   }
   
-  private void gravaOp(Vector op) {
+  private void gravaOp(Vector<?> op) {
 	  PreparedStatement ps = null;
 	  String sql = null;
 	  ResultSet rs = null;

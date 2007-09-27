@@ -81,7 +81,7 @@ public class ImprimeOrc extends ImprimeLayout {
 		double iNLinhas = iPixels / iLargura;
 		int iNCaracteres = Funcoes.tiraChar( sTexto, "\n" ).length();
 		int iNCaracPorLinha = (int) ( iNCaracteres / iNLinhas );
-		Vector vTextoSilabas = Funcoes.strToVectorSilabas( sTexto, iNCaracPorLinha );
+		Vector<?> vTextoSilabas = Funcoes.strToVectorSilabas( sTexto, iNCaracPorLinha );
 
 		for ( int i = 0; vTextoSilabas.size() > i; i++ ) {
 			drawTexto( vTextoSilabas.elementAt( i ).toString(), iMargem, iY );

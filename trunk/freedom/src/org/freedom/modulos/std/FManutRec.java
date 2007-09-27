@@ -260,7 +260,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	// private Vector vNParcItRec = new Vector();
 
-	private Vector vNParcBaixa = new Vector();
+	private Vector<?> vNParcBaixa = new Vector<Object>();
 
 	// private Vector vCodPed = new Vector();
 

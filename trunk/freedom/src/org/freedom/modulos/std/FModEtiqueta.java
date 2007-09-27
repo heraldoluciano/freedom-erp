@@ -69,7 +69,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 	private JButton btAdic = new JButton(Icone.novo("btOk.gif"));
     private JComboBoxPad cbCampos = null;
     private ListaCampos lcPapel = new ListaCampos(this,"PL");
-    private Vector vTamanhos = new Vector();
+    private Vector<?> vTamanhos = new Vector<Object>();
     private JCheckBoxPad cbComprimido = new JCheckBoxPad("Imprime Comprimido","S","N");
 	ObjetoEtiquetaCli objEtiqCli = new ObjetoEtiquetaCli();
 	public FModEtiqueta() {
@@ -108,7 +108,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     	setListaCampos( false, "MODETIQUETA", "SG");
    	        	
     	Vector<String> vLabs = objEtiqCli.getLabels();    	
-    	Vector vVals = objEtiqCli.getValores();
+    	Vector<?> vVals = objEtiqCli.getValores();
     	vTamanhos = objEtiqCli.getTams();
     	    	
     	cbCampos = new JComboBoxPad(vLabs,vVals, JComboBoxPad.TP_STRING, 50, 0);
@@ -133,7 +133,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     }
     
 	public void beforePost(PostEvent pevt) {	    
-	    Vector vLinhas = null;
+	    Vector<?> vLinhas = null;
 	    vLinhas = Funcoes.stringToVector(txaEtiqueta.getVlrString());
 	    int iColsPapel = txtColPapel.getVlrInteger().intValue();
 	    int iColsModel = txtNColModEtiq.getVlrInteger().intValue();
@@ -142,7 +142,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 	    	    	    
 	    if(vLinhas.size()>0) {
 		    objEtiqCli.setTexto(txaEtiqueta.getVlrString());//carrega o texto criado para o objeto
-		    Vector vValoresAdic = objEtiqCli.getValoresAdic(); //busca quais as palavras chaves adicionadas.
+		    Vector<?> vValoresAdic = objEtiqCli.getValoresAdic(); //busca quais as palavras chaves adicionadas.
 	        for(int i=0;vLinhas.size()>i;i++) { //Loop para percorrer todas as linhas do modelo de etiquetas.
 	            String sTmp = vLinhas.elementAt(i).toString(); // Carrega string com a linha atual.	            	            	            
 	            for(int i2 = 0;vValoresAdic.size()>i2;i2++){ //Loop para percorrer todos os elementos adicionados para elimina-los da string medida	            	

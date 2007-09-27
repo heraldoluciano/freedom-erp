@@ -331,7 +331,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		Vector<Comparable> vVals = null;
+		Vector<Object> vVals = null;
 		String sSQL = null;
 		float fValProd = 0;
 		float fValDesc = 0;
@@ -355,7 +355,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 					ps.setInt( 3, Aplicativo.iCodEmp );
 					rs = ps.executeQuery();
 					while ( rs.next() ) {
-						vVals = new Vector<Comparable>();
+						vVals = new Vector<Object>();
 						vVals.addElement( new Boolean( "true" ) );
 						vVals.addElement( new Integer( rs.getInt( "CodItOrc" ) ) );
 						vVals.addElement( new Integer( rs.getInt( "CodProd" ) ) );
@@ -528,7 +528,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		ResultSet rs = null;
 		String sSQL = null;
 		String sWhere = null;
-		Vector<Comparable> vVals = null;
+		Vector<Object> vVals = null;
 		boolean bOrc = false;
 		boolean bConv = false;
 		int iCod = -1;
@@ -582,7 +582,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 				tabOrc.limpa();
 				while ( rs.next() ) {
 					if ( rs.getString( 8 ).equals( "OL" ) ) {
-						vVals = new Vector<Comparable>();
+						vVals = new Vector<Object>();
 						vVals.addElement( new Boolean( true ) );
 						vVals.addElement( new Integer( rs.getInt( "CodOrc" ) ) );
 						vVals.addElement( new Integer( rs.getInt( 2 ) ) );

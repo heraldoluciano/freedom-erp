@@ -18,6 +18,7 @@
  * Layout da nota fiscal para a empresa Iswara Ltda.
  */
 package org.freedom.layout.nf;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,7 +33,8 @@ import org.freedom.layout.componentes.Leiaute;
 public class NFNBim extends Leiaute {
   private BigDecimal bigSomaServ = new BigDecimal(0);
   
-  public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {
+  @SuppressWarnings("unchecked")
+public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {
     Calendar cHora = Calendar.getInstance();
     boolean bRetorno;
     int iNumNota = 0;
@@ -42,8 +44,8 @@ public class NFNBim extends Leiaute {
 	String sTipoTran="";
     boolean bFat = true;
     boolean bTotalizou = false;
-    Vector vValores = new Vector();
-    Vector vDescServ = new Vector();
+    Vector<String> vValores = new Vector<String>();
+    Vector<Vector<Object>> vDescServ = new Vector<Vector<Object>>();
     String[] sNat = new String[4];
     String[] sVencs = new String[4];
     String[] sVals = new String[4];
@@ -168,7 +170,7 @@ public class NFNBim extends Leiaute {
          if (!rs.getString("TipoProd").equals("S")) {
             imp.say(imp.pRow()+1,0,""+imp.comprimido());            
             imp.say(imp.pRow()+0,11,rs.getString("CodProd"));             
-            Vector vDesc = Funcoes.strToVectorSilabas(rs.getString("ObsItVenda")==null || rs.getString("ObsItVenda").equals("") ? (rs.getString("DescProd").trim()):rs.getString("ObsItVenda"),46);
+            Vector<?> vDesc = Funcoes.strToVectorSilabas(rs.getString("ObsItVenda")==null || rs.getString("ObsItVenda").equals("") ? (rs.getString("DescProd").trim()):rs.getString("ObsItVenda"),46);
             String sDesc = "";
             for (int iConta=0;( (iConta < 20) && (vDesc.size()>iConta) );iConta++){
             	if (!vDesc.elementAt(iConta).toString().equals(""))
@@ -221,11 +223,11 @@ public class NFNBim extends Leiaute {
 		    imp.say(imp.pRow()+0,132,Funcoes.strDecimalToStrCurrency(7,2,rs.getString("VlrIPIItvenda")));
          }
          else {
-            Vector vDesc = new Vector();
+            Vector<Serializable> vDesc = new Vector<Serializable>();
             vDesc.addElement(Funcoes.strToVectorSilabas(rs.getString("ObsItVenda")==null || rs.getString("ObsItVenda").equals("") ? (rs.getString("DescProd").trim()):rs.getString("ObsItVenda"),45)); 
             vDesc.addElement(Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrLiqItVenda"))); 
             if (vDesc!=null) {
-            	vDescServ.addElement(vDesc.clone());
+            	vDescServ.addElement((Vector<Object>) vDesc.clone());
          	}
 
          	bigSomaServ = bigSomaServ.add(new BigDecimal(rs.getDouble("VlrLiqItVenda")));
@@ -306,7 +308,7 @@ public class NFNBim extends Leiaute {
     return bRetorno;
   }
 
-  private void impServ(Vector vServs,BigDecimal bigSomaServ,String sVlrIss,ImprimeOS imp) {
+  private void impServ(Vector<Vector<Object>> vServs,BigDecimal bigSomaServ,String sVlrIss,ImprimeOS imp) {
     for (int i=0;imp.pRow()<42;i++) {
     	imp.say(imp.pRow()+1,0,""+imp.comprimido());
     	imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -315,10 +317,10 @@ public class NFNBim extends Leiaute {
     int iImp = 0;
     if (vServs!=null) {
     	for (int i=0;vServs.size()>i;i++) {
-    		Vector vServ = (Vector)vServs.elementAt(i); 
+    		Vector<?> vServ = vServs.elementAt(i); 
     		if (vServ!=null) {
 
-    		  Vector vDescServ = (Vector)vServ.elementAt(0);
+    		  Vector<?> vDescServ = (Vector<?>)vServ.elementAt(0);
     		  String sVlrServ = vServ.elementAt(1).toString(); 
     			    			
     		  String sDesc = "";
@@ -351,7 +353,7 @@ public class NFNBim extends Leiaute {
     	}
     }
  }
-  private void impTotais(ImprimeOS imp,Vector vValores){
+  private void impTotais(ImprimeOS imp,Vector<String> vValores){
   	    try {	
   	      for (int i=0;(imp.pRow()<49);i++) {
           	imp.say(imp.pRow()+1,0,"");

@@ -51,7 +51,7 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
 	private ImageIcon imgPadrao = Icone.novo("clPagoParcial.gif");
 	private ImageIcon imgColuna = null;
 	public int iPadrao = 0;
-	Vector vLinhasProibidas = new Vector();
+	Vector<?> vLinhasProibidas = new Vector<Object>();
 	
 	public DLBuscaEstoq(ListaCampos lc1, ListaCampos lc2, ListaCampos lc3,Connection con,String sCol) {
 	   	 

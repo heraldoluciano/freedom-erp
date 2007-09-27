@@ -26,7 +26,7 @@ import org.freedom.componentes.ImprimeLayout;
 
 public abstract class LeiauteGR extends ImprimeLayout {
   public LeiauteGR() {} 
-  public abstract void setParam(Vector vParam);  
+  public abstract void setParam(Vector<?> vParam);  
   public abstract void setConexao(Connection cn);
 
 }

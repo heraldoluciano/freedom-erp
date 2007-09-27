@@ -240,7 +240,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
      
      String sTmp = "";
      Vector<String> vModelos = new Vector<String>();
-     Vector<Vector> vItens = new Vector<Vector>();
+     Vector<Vector<String[]>> vItens = new Vector<Vector<String[]>>();
      boolean bAchou = false;
      
      
@@ -275,21 +275,21 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
      }
   }
   
-  private void geraItens(String sDesc,String sRef,String sCodfab,String sCodbar,int iItem,Vector<Vector> vItens) {
+  private void geraItens(String sDesc,String sRef,String sCodfab,String sCodbar,int iItem,Vector<Vector<String[]>> itens) {
      String sDescAnt = sDesc;
      String sRefAnt = sRef;
      String sCodfabAnt = sCodfab;
      String sCodbarAnt = sCodbar;
      
-     if (iItem<vItens.size()) {  
-        for (int i=0 ; i<vItens.elementAt(iItem).size() ; i++) {
-           sDesc = sDescAnt.trim()+" " + ((String[])vItens.elementAt(iItem).elementAt(i))[0];
-           sRef = sRefAnt.trim()+ ((String[])vItens.elementAt(iItem).elementAt(i))[1];
-           sCodfab = sCodfabAnt.trim()+ ((String[])vItens.elementAt(iItem).elementAt(i))[2];
-           sCodbar = sCodbarAnt.trim()+ ((String[])vItens.elementAt(iItem).elementAt(i))[3];
+     if (iItem<itens.size()) {  
+        for (int i=0 ; i<itens.elementAt(iItem).size() ; i++) {
+           sDesc = sDescAnt.trim()+" " + ((String[])itens.elementAt(iItem).elementAt(i))[0];
+           sRef = sRefAnt.trim()+ ((String[])itens.elementAt(iItem).elementAt(i))[1];
+           sCodfab = sCodfabAnt.trim()+ ((String[])itens.elementAt(iItem).elementAt(i))[2];
+           sCodbar = sCodbarAnt.trim()+ ((String[])itens.elementAt(iItem).elementAt(i))[3];
           
-           geraItens(sDesc,sRef,sCodfab,sCodbar,iItem+1,vItens);
-          if (iItem==vItens.size()-1) {
+           geraItens(sDesc,sRef,sCodfab,sCodbar,iItem+1,itens);
+          if (iItem==itens.size()-1) {
             if (!sDesc.equals("")) {
               tab.adicLinha();
               tab.setValor(new Boolean(true),tab.getNumLinhas()-1,0);
@@ -313,8 +313,8 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
     return aItem;
   }
   
-  private Vector getItens(String sTipo) {
-      Vector vTmp = new Vector();
+  private Vector<String[]> getItens(String sTipo) {
+      Vector<String[]> vTmp = new Vector<String[]>();
       for (int i=0 ; i<tabMod.getNumLinhas() ; i++ ) {
         if ( ((Boolean)tabMod.getValor(i,0)).booleanValue() & tabMod.getValor(i,1).equals(sTipo)) {
           vTmp.addElement(getMatrizTab(i));

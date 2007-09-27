@@ -80,7 +80,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcConv = new ListaCampos(this);
   private ListaCampos lcCli = new ListaCampos(this);
-  private Vector vCodAtends = new Vector();
+  private Vector<String> vCodAtends = new Vector<String>();
   public FAtendimento() {
   	super(false);
   	setTitulo("Atendimento");

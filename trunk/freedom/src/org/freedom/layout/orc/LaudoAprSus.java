@@ -44,7 +44,7 @@ public class LaudoAprSus extends LeiauteGR {
 	private Font fnConteudo = new Font("Courier",Font.PLAIN,10);	
 	private Font fnLogo = new Font("Times New Roman",Font.BOLD,11);
 	private Font fnLogo2 = new Font("Times New Roman",Font.PLAIN,10);
-	Vector vParamOrc = new Vector();
+	Vector<?> vParamOrc = new Vector<Object>();
 	public void montaG() {
 		montaRel();
 	}
@@ -407,7 +407,7 @@ public class LaudoAprSus extends LeiauteGR {
 	 }
 	}
 	
-	public void setParam(Vector vParam) {
+	public void setParam(Vector<?> vParam) {
 		vParamOrc = vParam;
 	}
 

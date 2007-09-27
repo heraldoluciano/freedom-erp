@@ -42,7 +42,7 @@ public class NF018 extends Layout {
 		int iContaObs = 0; //Contador para a gamb de asterisco
 		int iContaObs2 = 0; //Contador para a gamb de '"'
 		Calendar cHora = Calendar.getInstance();
-		Vector vMens = null;
+		Vector<?> vMens = null;
 		String[] sNat = new String[2];
 		String[] sVencs = new String[2];
 		String[] sVals = new String[2];

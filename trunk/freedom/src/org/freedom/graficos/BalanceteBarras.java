@@ -50,7 +50,7 @@ public class BalanceteBarras extends LeiauteGR {
 	private ResultSet rs = null;
 	private String sTitulo1 = "";
 	private String sTitulo2 = "";
-	Vector vParamOrc = new Vector();
+	Vector<?> vParamOrc = new Vector<Object>();
 	
 	public void montaG() {
 		impRaz(false);
@@ -79,7 +79,7 @@ public class BalanceteBarras extends LeiauteGR {
 	
 	private void montaRel() {
 	  imprimeRodape(false);
-	  Vector<Vector<Comparable>> vData = new Vector<Vector<Comparable>>();
+	  Vector<Vector<Object>> vData = new Vector<Vector<Object>>();
 	  double dVlrOutros = 0.0;      
 	  double dVlrTotal = 0.0;
 	  double dValor = 0.0;
@@ -87,7 +87,7 @@ public class BalanceteBarras extends LeiauteGR {
 	  String sLabel = "";
 	  try {	    
 		while (rs.next()) {
-			Vector<Comparable> vLinha = new Vector<Comparable>();
+			Vector<Object> vLinha = new Vector<Object>();
 			vLinha.addElement(rs.getString(2).trim());
 			vLinha.addElement(new Double (rs.getDouble(4))); 
 			vData.addElement(vLinha);
@@ -157,7 +157,7 @@ public class BalanceteBarras extends LeiauteGR {
 
 	}
 
-	public void setParam(Vector vParam) {
+	public void setParam(Vector<?> vParam) {
 		vParamOrc = vParam;
 	}
 

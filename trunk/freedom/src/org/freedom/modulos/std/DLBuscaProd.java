@@ -43,7 +43,7 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
 
 	private String sCol = null;
 
-	private Vector vValsProd = new Vector();
+	private Vector<?> vValsProd = new Vector<Object>();
 
 	public int iPadrao = 0;
 
