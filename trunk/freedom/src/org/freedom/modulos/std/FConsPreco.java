@@ -147,13 +147,13 @@ public class FConsPreco extends FFilho implements KeyListener, FocusListener {
 	    		"(PF.CODEMPCE=PP.CODEMPCC AND PF.CODFILIALCE=PP.CODFILIALCC AND PF.CODCLASCLI=PP.CODCLASCLI ) ) " +
 	    		"AND PF.CODEMP=" + Aplicativo.iCodEmp + 
 	    		" ORDER BY P.DESCPROD";
-	    Vector vLinha = null;
+	    Vector<Comparable> vLinha = null;
 	    try {
 	    	ps = con.prepareStatement(sSql);
 	    	rs = ps.executeQuery();
 	    	tbPreco.limpa();
 	    	while (rs.next()) {
-	    		vLinha = new Vector();
+	    		vLinha = new Vector<Comparable>();
 	    		vLinha.addElement(new StringDireita(String.valueOf(rs.getInt("CODPROD"))));
 	    		vLinha.addElement(new StringDireita(rs.getString("REFPROD")));
 	    		vLinha.addElement(rs.getString("DESCPROD"));

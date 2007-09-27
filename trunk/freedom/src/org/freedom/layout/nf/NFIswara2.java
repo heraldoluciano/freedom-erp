@@ -44,7 +44,7 @@ public class NFIswara2 extends Layout {
 		int iContaObs2 = 0; //Contador para a gamb de '"'
 	    Calendar cHora = Calendar.getInstance();
 	    Vector vMens = null;
-	    Vector vClfisc = new Vector();
+	    Vector<String> vClfisc = new Vector<String>();
 	    String sDescAdic = "";
 	    String sNumNota = ""; 
 		String sTipoTran = "";
@@ -200,7 +200,7 @@ public class NFIswara2 extends Layout {
 	   		if(!sCodfisc.equals("")){
 	   			for(int i=0;i<vClfisc.size();i++){
 	   				if(vClfisc.elementAt(i)!=null){
-	   					if(sCodfisc.equals((String)vClfisc.elementAt(i))){
+	   					if(sCodfisc.equals(vClfisc.elementAt(i))){
 	       					bjatem = true;
 	       					sSigla = ""+(char)(65 + i);
 	   					}
@@ -332,9 +332,9 @@ public class NFIswara2 extends Layout {
 					   imp.say(imp.pRow(),21,sVals[iPos]); // imprimir valor 
 				   }
 				   if (iPos<vClfisc.size() && iPos<5) {
-					   imp.say(imp.pRow(),33,(vClfisc.elementAt(iPos)!=null?(String)vClfisc.elementAt(iPos):"")); // imprimir classificação fiscal
+					   imp.say(imp.pRow(),33,(vClfisc.elementAt(iPos)!=null?vClfisc.elementAt(iPos):"")); // imprimir classificação fiscal
 					   if(vClfisc.size()>(5+iPos))
-						   imp.say(imp.pRow(),45,(vClfisc.elementAt(iPos+5)!=null?(String)vClfisc.elementAt(iPos+5):""));// imprimir classificação fiscal
+						   imp.say(imp.pRow(),45,(vClfisc.elementAt(iPos+5)!=null?vClfisc.elementAt(iPos+5):""));// imprimir classificação fiscal
 				   }
 				   
 				   if (iPos<vMens.size()) {

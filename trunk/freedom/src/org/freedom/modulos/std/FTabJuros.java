@@ -47,7 +47,7 @@ public class FTabJuros extends FDetalhe {
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
     
-    Vector vLabs = new Vector();
+    Vector<String> vLabs = new Vector<String>();
     vLabs.addElement("<--Selecione-->");
     vLabs.addElement("Diário");
     vLabs.addElement("Mensal");
@@ -55,7 +55,7 @@ public class FTabJuros extends FDetalhe {
     vLabs.addElement("Trimestral");
     vLabs.addElement("Semestral");
     vLabs.addElement("Anual");
-    Vector vVals = new Vector();
+    Vector<String> vVals = new Vector<String>();
     vVals.addElement("");
     vVals.addElement("D");
     vVals.addElement("M");

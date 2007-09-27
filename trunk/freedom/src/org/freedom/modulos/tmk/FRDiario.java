@@ -44,8 +44,8 @@ public class FRDiario extends FRelatorio {
 	private static final long serialVersionUID = 1L;
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
 	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-	private Vector vVals = new Vector();
-	private Vector vLabs = new Vector();
+	private Vector<String> vVals = new Vector<String>();
+	private Vector<String> vLabs = new Vector<String>();
 	private JComboBoxPad cbSit = null;
 	private JCheckBoxPad cbComp = new JCheckBoxPad("Imprimir completo?","S","N");
 	private boolean bComp = false;

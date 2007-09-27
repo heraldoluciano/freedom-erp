@@ -83,7 +83,7 @@ public class BalancetePizza extends LeiauteGR {
 	private void montaRel() {
 	  imprimeRodape(false);
 	  DefaultPieDataset data = new DefaultPieDataset();
-      Vector vData = new Vector();
+      Vector<Vector<Comparable>> vData = new Vector<Vector<Comparable>>();
       double dVlrOutros = 0.0;      
       double dVlrTotal = 0.0;
       double dValor = 0.0;
@@ -91,7 +91,7 @@ public class BalancetePizza extends LeiauteGR {
       String sLabel = "";
       try {	    
         while (rs.next()) {
-            Vector vLinha = new Vector();
+            Vector<Comparable> vLinha = new Vector<Comparable>();
             vLinha.addElement(rs.getString(2).trim());
             vLinha.addElement(new Double (rs.getDouble(4))); 
 			vData.addElement(vLinha);
@@ -103,13 +103,13 @@ public class BalancetePizza extends LeiauteGR {
 	  }
     
 	  for (int i2=0;vData.size()>i2;i2++){
-	    dValor = ((Double) ((Vector) vData.elementAt(i2)).elementAt(1)).doubleValue();	
+	    dValor = ((Double) vData.elementAt(i2).elementAt(1)).doubleValue();	
 	    dValorPerc = (dValor*100)/dVlrTotal;	
 	    if (dValorPerc<3.0) {
 	      dVlrOutros += dValor;		  	
 	    }
 	    else {
-		  sLabel = ((String) ((Vector) vData.elementAt(i2)).elementAt(0));
+		  sLabel = ((String) vData.elementAt(i2).elementAt(0));
 		  sLabel = sLabel + " ("+		
 	               Funcoes.strDecimalToStrCurrency(14,2,dValor+"")+" ) ";
 	  	  data.setValue(sLabel,dValor);	  		  	

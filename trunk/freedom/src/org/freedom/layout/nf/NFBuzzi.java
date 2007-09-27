@@ -53,9 +53,9 @@ public class NFBuzzi extends Leiaute {
 		String[] sVals = new String[6];
 		String[] sDuplics = new String[6];
 		String[] sMatObs = null;
-		Vector vValores = new Vector();
+		Vector<String> vValores = new Vector<String>();
 		Vector vDesc = null;
-		Vector vClfisc = new Vector();
+		Vector<String> vClfisc = new Vector<String>();
 		Vector vSigla = new Vector();
 		    
 		
@@ -175,7 +175,7 @@ public class NFBuzzi extends Leiaute {
 						for(int i=0; i < vClfisc.size(); i++){
 							
 							if( vClfisc.elementAt(i) != null ){
-								if( sCodfisc.equals((String)vClfisc.elementAt(i)) ){
+								if( sCodfisc.equals(vClfisc.elementAt(i)) ){
 									bjatem = true;
 									sSigla = String.valueOf((char)(64 + i));
 								} else
@@ -304,7 +304,7 @@ public class NFBuzzi extends Leiaute {
 		
 	}
 		
-	private void impTotais(ImprimeOS imp,Vector vValores){
+	private void impTotais(ImprimeOS imp,Vector<String> vValores){
 		
 		Vector vObs = null;
 		

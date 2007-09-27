@@ -180,7 +180,7 @@ public class NF011 extends Layout {
 
 							if ( vClfisc.elementAt( i ) != null ) {
 
-								if ( sCodfisc.equals( (String) vClfisc.elementAt( i ) ) ) {
+								if ( sCodfisc.equals( vClfisc.elementAt( i ) ) ) {
 									
 									bjatem = true;
 									sSigla = String.valueOf( (char) ( 64 + i ) );
@@ -280,12 +280,12 @@ public class NF011 extends Layout {
 				if ( pos == 1 ) {
 					
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 16, (String) vSigla.elementAt( i ) );
+					imp.say( 16, vSigla.elementAt( i ) );
 					pos = 2;
 				}
 				else {
 					
-					imp.say( 35, (String) vSigla.elementAt( i ) );
+					imp.say( 35, vSigla.elementAt( i ) );
 					pos = 1;
 					iProd++;
 				}
@@ -351,7 +351,7 @@ public class NF011 extends Layout {
 
 	}
 
-	private void impTotais( ImprimeOS imp, Vector vValores ) {
+	private void impTotais( ImprimeOS imp, Vector<String> vValores ) {
 
 		Vector vObs = null;
 

@@ -57,8 +57,8 @@ public class NFPomiagro3 extends Layout {
 		String[] sMatObs = new String[5]; 
 		Vector vObs = new Vector();
 		Vector vMens = new Vector();
-		Vector vMensT1 = new Vector();
-		Vector vMensT2 = new Vector();
+		Vector<String[]> vMensT1 = new Vector<String[]>();
+		Vector<String[]> vMensT2 = new Vector<String[]>();
 		
 		try{
 			
@@ -182,16 +182,16 @@ public class NFPomiagro3 extends Layout {
 				if (sTmp.length() > 0) {					
 					int i = 0;
 					for(;i<vMensT1.size();i++) {						
-						if (((String[])vMensT1.elementAt(i))[1].equals(sTmp) &&
-							((String[])vMensT1.elementAt(i))[0].indexOf("*") == 0) {
-							sDescAdic += " "+((String[])vMensT1.elementAt(i))[0];
+						if (vMensT1.elementAt(i)[1].equals(sTmp) &&
+							vMensT1.elementAt(i)[0].indexOf("*") == 0) {
+							sDescAdic += " "+vMensT1.elementAt(i)[0];
 							break;
 						}
 					}				
 					if (i == vMensT1.size()) {
 						vMensT1.add(new String[] {Funcoes.replicate("*",iContaAst++),sTmp});
-						sDescAdic += " "+((String[])vMensT1.elementAt(i))[0];
-						vMens.add(((String[])vMensT1.elementAt(i))[0] + " - " +((String[])vMensT1.elementAt(i))[1]);
+						sDescAdic += " "+vMensT1.elementAt(i)[0];
+						vMens.add(vMensT1.elementAt(i)[0] + " - " +vMensT1.elementAt(i)[1]);
 					}
 				}
 				
@@ -200,13 +200,13 @@ public class NFPomiagro3 extends Layout {
 				if (sTmp.length() > 0) {
 					int i = 0;
 					for(;i<vMensT2.size();i++) {						
-						if (((String[])vMensT2.elementAt(i))[0].equals(sClasFisc)) {
+						if (vMensT2.elementAt(i)[0].equals(sClasFisc)) {
 							break;
 						}
 					}				
 					if (i == vMensT2.size()) {
 						vMensT2.add(new String[] {sClasFisc,sTmp});
-						vMens.add(((String[])vMensT2.elementAt(i))[0] + " - " +((String[])vMensT2.elementAt(i))[1]);
+						vMens.add(vMensT2.elementAt(i)[0] + " - " +vMensT2.elementAt(i)[1]);
 					}
 											
 				}		 

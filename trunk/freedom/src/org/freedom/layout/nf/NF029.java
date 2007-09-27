@@ -54,10 +54,10 @@ public class NF029 extends Layout {
 		String[] sDuplics = new String[ 4 ];
 		String[] sVencs = new String[ 4 ];
 		String[] sVals = new String[ 4 ];
-		Vector vClfisc = new Vector();
+		Vector<String> vClfisc = new Vector<String>();
 		Vector vSigla = new Vector();
 		Vector vObs = new Vector();
-		Vector vDescFisc = new Vector();
+		Vector<String> vDescFisc = new Vector<String>();
 
 		try {
 
@@ -222,7 +222,7 @@ public class NF029 extends Layout {
 						
 						if ( vClfisc.elementAt( i ) != null ) {
 							
-							if ( sCodfisc.equals( (String) vClfisc.elementAt( i ) ) ) {
+							if ( sCodfisc.equals( vClfisc.elementAt( i ) ) ) {
 								
 								bjatem = true;
 								sSigla = String.valueOf( (char) ( 64 + i ) );

@@ -56,8 +56,8 @@ public class JGroupField extends JScrollPane implements CarregaListener, InsertL
   private String sColM = "";
   private String sColD = "";
   private ListaCampos lco = null;
-  private Vector vCods = new Vector();
-  private Vector vTxts = new Vector();
+  private Vector<String> vCods = new Vector<String>();
+  private Vector<JTextFieldPad> vTxts = new Vector<JTextFieldPad>();
   private Connection con = null;
   public JGroupField() {
 	setBorder(BorderFactory.createEmptyBorder());
@@ -184,7 +184,7 @@ public class JGroupField extends JScrollPane implements CarregaListener, InsertL
   public void afterEdit(EditEvent pevt) { 
 	String sVal = "";
 	for (int i=0; i<vCods.size();i++) {
-	  if ((sVal = ((JTextFieldPad)vTxts.elementAt(i)).getVlrString()).equals(""))
+	  if ((sVal = vTxts.elementAt(i).getVlrString()).equals(""))
 		continue;
 	  try {
 		String sSQL = "DELETE FROM "+sTab+" WHERE CODEMP=? AND CODFILIAL=? AND "+
@@ -213,7 +213,7 @@ public class JGroupField extends JScrollPane implements CarregaListener, InsertL
 	if (pevt.ok) {
 	  for (int i=0; i<vCods.size();i++) {
 	    try {
-		  if ((sVal = ((JTextFieldPad)vTxts.elementAt(i)).getVlrString()).equals(""))
+		  if ((sVal = vTxts.elementAt(i).getVlrString()).equals(""))
 		    continue;
 	    
 		  String sSQL = "INSERT INTO "+sTab+" (CODEMP,CODFILIAL,"+sColM+","+sColD+",CODEMPTB,CODFILIALTB,CODTB,CODITTB)"+
@@ -241,7 +241,7 @@ public class JGroupField extends JScrollPane implements CarregaListener, InsertL
   public void beforeDelete(DeleteEvent devt) {
   	String sVal = "";
 	for (int i=0; i<vCods.size();i++) {
-	  if ((sVal = ((JTextFieldPad)vTxts.elementAt(i)).getVlrString()).equals(""))
+	  if ((sVal = vTxts.elementAt(i).getVlrString()).equals(""))
 	    continue;
 	  try {
   	    String sSQL = "DELETE FROM "+sTab+" WHERE CODEMP=? AND CODFILIAL=? AND "+
@@ -259,7 +259,7 @@ public class JGroupField extends JScrollPane implements CarregaListener, InsertL
 		ps.close();
 		if (!con.getAutoCommit())
 			con.commit();
-		((JTextFieldPad)vTxts.elementAt(i)).getTabelaExterna().limpaCampos(true);
+		vTxts.elementAt(i).getTabelaExterna().limpaCampos(true);
 	  }
 	  catch (SQLException err) {
  	    Funcoes.mensagemErro(this,"Erro ao apagar codigos do JGroupField!\n"+err.getMessage());
@@ -283,11 +283,11 @@ public class JGroupField extends JScrollPane implements CarregaListener, InsertL
 		  ResultSet rs = ps.executeQuery();
 		  if (rs.next()) {
 		  	if (rs.getString("CodItTB") != null) {
-		  	  ((JTextFieldPad)vTxts.elementAt(i)).setVlrString(rs.getString("CodItTB"));
-			  ((JTextFieldPad)vTxts.elementAt(i)).getTabelaExterna().carregaDados();
+		  	  vTxts.elementAt(i).setVlrString(rs.getString("CodItTB"));
+			  vTxts.elementAt(i).getTabelaExterna().carregaDados();
 		  	}
 		  	else
-			  ((JTextFieldPad)vTxts.elementAt(i)).setVlrString("");
+			  vTxts.elementAt(i).setVlrString("");
 		  }
 		  rs.close();
 		  ps.close();

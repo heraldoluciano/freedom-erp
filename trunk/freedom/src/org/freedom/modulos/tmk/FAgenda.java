@@ -74,13 +74,13 @@ public class FAgenda extends FFilho implements JComboBoxListener, ActionListener
   private JButton btNovo = new JButton(Icone.novo("btNovo.gif"));
   private JButton btExcluir = new JButton(Icone.novo("btExcluir.gif"));
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
-  private Vector vVals = new Vector();
-  private Vector vLabs = new Vector();
+  private Vector<String> vVals = new Vector<String>();
+  private Vector<String> vLabs = new Vector<String>();
   private JComboBoxPad cbPeriodo = null;
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private ListaCampos lcUsu = new ListaCampos(this);
-  private Vector vCodAgds = new Vector();
+  private Vector<String> vCodAgds = new Vector<String>();
   public FAgenda() {
   	super(false);
   	setTitulo("Agenda");

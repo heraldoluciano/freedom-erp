@@ -330,7 +330,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 			tab.limpa();
 			
 			while (rs.next()) {
-			    Vector vVals = new Vector();
+			    Vector<Object> vVals = new Vector<Object>();
 				
 				if (rs.getString(7).trim().equals("S")) {
 					vVals.addElement(new Boolean(true));	

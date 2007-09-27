@@ -32,14 +32,14 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 
 public abstract class ObjetoModeloLote {
-  private Vector vLabels = new Vector();
-  private Vector vLabelsAdic = new Vector();
-  private Vector vLabelsColunas = new Vector();
-  private Vector vValores = new Vector();
-  private Vector vValoresAdic = new Vector();
-  private Vector vTams = new Vector();
-  private Vector vTamsAdic = new Vector();
-  private Vector vMascaras = new Vector();
+  private Vector<String> vLabels = new Vector<String>();
+  private Vector<String> vLabelsAdic = new Vector<String>();
+  private Vector<String> vLabelsColunas = new Vector<String>();
+  private Vector<String> vValores = new Vector<String>();
+  private Vector<String> vValoresAdic = new Vector<String>();
+  private Vector<Integer> vTams = new Vector<Integer>();
+  private Vector<String> vTamsAdic = new Vector<String>();
+  private Vector<String> vMascaras = new Vector<String>();
   public static final String VLR_CODPROD = "#CODPROD#";
   public static final String VLR_DIA = "#DIA#";
   public static final String VLR_MES = "#MES#";
@@ -61,47 +61,47 @@ public abstract class ObjetoModeloLote {
 /**
  * @return Returns the vLabels.
  */
-public Vector getLabels() {
+public Vector<String> getLabels() {
     return vLabels;
 }
 /**
  * @return Returns the vLabels.
  */
-public Vector getLabelsAdic() {
+public Vector<String> getLabelsAdic() {
     return vLabelsAdic;
 }
 /**
  * @return Returns the vTams.
  */
-public Vector getTams() {
+public Vector<Integer> getTams() {
     return vTams;
 }
 /**
  * @return Returns the vTamsAdic.
  */
-public Vector getTamsAdic() {
+public Vector<String> getTamsAdic() {
     return vTamsAdic;
 }
 
 /**
  * @return Returns the vValores.
  */
-public Vector getValores() {
+public Vector<String> getValores() {
     return vValores;
 }
 /**
  * @return Returns the vValoresAdic.
  */
-public Vector getValoresAdic() {
+public Vector<String> getValoresAdic() {
     return vValoresAdic;
 }
 /**
  * @return Returns the vMascaras.
  */
-public Vector getMascaras() {
+public Vector<String> getMascaras() {
     return vMascaras;
 }
-public Vector getLabelsColunas() {
+public Vector<String> getLabelsColunas() {
     return vLabelsColunas;
 }
 public void setTexto(String sTexto){
@@ -111,9 +111,9 @@ public void setTexto(String sTexto){
 }
 
 public void getAdic(){
-        vTamsAdic = new Vector();
-        vLabelsAdic = new Vector ();
-        vValoresAdic = new Vector();   
+        vTamsAdic = new Vector<String>();
+        vLabelsAdic = new Vector<String> ();
+        vValoresAdic = new Vector<String>();   
 
         for(int i2=0;vValores.size()>i2;i2++) {
             if((sTexto.indexOf(vValores.elementAt(i2).toString()))>(-1)){
@@ -131,7 +131,7 @@ public String getLote(Integer iCodProd,Integer iCodProdDist,Date dData,Connectio
 	GregorianCalendar cal = new GregorianCalendar();
 	    try {
 	    	cal.setTime(dData);
-  	        Vector vValAdic = getValoresAdic();
+  	        Vector<String> vValAdic = getValoresAdic();
   	        if (sRetorno != null) { 
   	        	if(iCodProdDist!=null)
   	        		iProcDia = iCodProdDist.intValue();

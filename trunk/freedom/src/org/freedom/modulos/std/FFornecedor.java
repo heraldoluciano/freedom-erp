@@ -314,7 +314,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 				imp.addSubTitulo( "Relatório de Fornecedores" );
 				imp.addSubTitulo( "Filtrado por:" );
 				for ( int i = 0; i < vFiltros.size(); i++ ) {
-					String sTmp = (String) vFiltros.elementAt( i );
+					String sTmp = vFiltros.elementAt( i );
 					imp.addSubTitulo( sTmp );
 				}
 
@@ -453,7 +453,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 						imp.say( imp.pRow() + 0, 2, "|" + Funcoes.replicate( " ", 60 ) + "Filtrado por:" + Funcoes.replicate( " ", 60 ) + "|" );
 						for ( int i = 0; i < vFiltros.size(); i++ ) {
-							String sTmp = (String) vFiltros.elementAt( i );
+							String sTmp = vFiltros.elementAt( i );
 							sTmp = "|" + Funcoes.replicate( " ", ( ( ( 135 - sTmp.length() ) / 2 ) - 1 ) ) + sTmp;
 							sTmp += Funcoes.replicate( " ", 134 - sTmp.length() ) + "|";
 							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );

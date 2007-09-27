@@ -47,7 +47,7 @@ public class NFComCardoso extends Leiaute {
 		String[] sNat = new String[2];
 		String[] sVencs = new String[5];
 		String[] sVals = new String[4];
-		Vector vMens = new Vector();
+		Vector<String[]> vMens = new Vector<String[]>();
 		Calendar cHora = Calendar.getInstance();;
 		
 			
@@ -141,7 +141,7 @@ public class NFComCardoso extends Leiaute {
 				if (sTmp.length() > 0) {
 					int iLinha;
 					for (iLinha=0;iLinha<vMens.size();iLinha++)
-						if (((String[])vMens.elementAt(iLinha))[0].equals(sClasFisc))
+						if (vMens.elementAt(iLinha)[0].equals(sClasFisc))
 							break;
 
 					if (iLinha==vMens.size())

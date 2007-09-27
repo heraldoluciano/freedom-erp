@@ -239,8 +239,8 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
      tab.limpa();
      
      String sTmp = "";
-     Vector vModelos = new Vector();
-     Vector vItens = new Vector();
+     Vector<String> vModelos = new Vector<String>();
+     Vector<Vector> vItens = new Vector<Vector>();
      boolean bAchou = false;
      
      
@@ -275,18 +275,18 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
      }
   }
   
-  private void geraItens(String sDesc,String sRef,String sCodfab,String sCodbar,int iItem,Vector vItens) {
+  private void geraItens(String sDesc,String sRef,String sCodfab,String sCodbar,int iItem,Vector<Vector> vItens) {
      String sDescAnt = sDesc;
      String sRefAnt = sRef;
      String sCodfabAnt = sCodfab;
      String sCodbarAnt = sCodbar;
      
      if (iItem<vItens.size()) {  
-        for (int i=0 ; i<((Vector)vItens.elementAt(iItem)).size() ; i++) {
-           sDesc = sDescAnt.trim()+" " + ((String[])((Vector)vItens.elementAt(iItem)).elementAt(i))[0];
-           sRef = sRefAnt.trim()+ ((String[])((Vector)vItens.elementAt(iItem)).elementAt(i))[1];
-           sCodfab = sCodfabAnt.trim()+ ((String[])((Vector)vItens.elementAt(iItem)).elementAt(i))[2];
-           sCodbar = sCodbarAnt.trim()+ ((String[])((Vector)vItens.elementAt(iItem)).elementAt(i))[3];
+        for (int i=0 ; i<vItens.elementAt(iItem).size() ; i++) {
+           sDesc = sDescAnt.trim()+" " + ((String[])vItens.elementAt(iItem).elementAt(i))[0];
+           sRef = sRefAnt.trim()+ ((String[])vItens.elementAt(iItem).elementAt(i))[1];
+           sCodfab = sCodfabAnt.trim()+ ((String[])vItens.elementAt(iItem).elementAt(i))[2];
+           sCodbar = sCodbarAnt.trim()+ ((String[])vItens.elementAt(iItem).elementAt(i))[3];
           
            geraItens(sDesc,sRef,sCodfab,sCodbar,iItem+1,vItens);
           if (iItem==vItens.size()-1) {

@@ -39,8 +39,8 @@ public class FFase extends FDados implements ActionListener {
 	
   private JTextFieldPad txtCodFase = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescFase = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
-  Vector vVals = new Vector();
-  Vector vLabs = new Vector();
+  Vector<String> vVals = new Vector<String>();
+  Vector<String> vLabs = new Vector<String>();
   private JComboBoxPad cbTipo = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 3, 0);
   public FFase () {
   	super();

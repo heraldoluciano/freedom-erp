@@ -68,10 +68,10 @@ public class DLNovoHist extends FFDialogo {
 	private ListaCampos lcAtend = new ListaCampos(this);
 	private JScrollPane spnDesc = new JScrollPane(txaDescAtend);
 	private JLabelPad lbImg = new JLabelPad(Icone.novo("bannerTMKhistorico.jpg"));
-	private Vector vVals = new Vector();
-	private Vector vLabs = new Vector();
-	private Vector vVals1 = new Vector();
-	private Vector vLabs1 = new Vector();
+	private Vector<String> vVals = new Vector<String>();
+	private Vector<String> vLabs = new Vector<String>();
+	private Vector<String> vVals1 = new Vector<String>();
+	private Vector<String> vLabs1 = new Vector<String>();
 	private JComboBoxPad cbSit = null; 
 	private JComboBoxPad cbTipo = null; 
 	private String[] sValsAgen = null;

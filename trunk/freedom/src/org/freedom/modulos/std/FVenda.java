@@ -1219,7 +1219,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	}
 
-	public Vector getParansDesconto() {
+	public Vector<Object> getParansDesconto() {
 
 		Vector<Object> param = new Vector<Object>();
 		param.addElement( txtStrDescItVenda );

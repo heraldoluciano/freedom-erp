@@ -31,7 +31,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.componentes.Leiaute;
 
 public class NFModelCraft extends Leiaute {
-  private Vector vClfiscal = null;
+  private Vector<String[]> vClfiscal = null;
   public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {
     Calendar cHora = Calendar.getInstance();
 	int iSigla = 0;   
@@ -52,7 +52,7 @@ public class NFModelCraft extends Leiaute {
     String[] sDuplics = new String[4];
 	String[] sMatObs = null;
 	String sHora = Funcoes.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.SECOND),2);
-	vClfiscal = new Vector();
+	vClfiscal = new Vector<String[]>();
 	String sItemCF[] = new String[2];
 	sItemCF[0] = "A";
 	sItemCF[1] = "4419009900"; 
@@ -179,8 +179,8 @@ public class NFModelCraft extends Leiaute {
        bAchouCF = false;
        iSigla = 0;
        for (int iCF = 0; iCF<vClfiscal.size(); iCF++) {
-         if ( sCodfisc.equals( ( (String[]) vClfiscal.elementAt(iCF) )[1] ) ) {
-           sSigla = ( (String[]) vClfiscal.elementAt(iCF) )[0];
+         if ( sCodfisc.equals( vClfiscal.elementAt(iCF)[1] ) ) {
+           sSigla = vClfiscal.elementAt(iCF)[0];
            bAchouCF = true;
            break;
          }
@@ -343,7 +343,7 @@ public class NFModelCraft extends Leiaute {
 		   iSigla = 0;
 		   for (int iCF=1; iCF<vClfiscal.size(); iCF++){
 //			  imp.say(imp.pRow()+1,10,( (String[]) vClfiscal.elementAt(iCF))[1] ); 
-			  imp.say(imp.pRow()+1,14,( (String[]) vClfiscal.elementAt(iCF) )[1]); 
+			  imp.say(imp.pRow()+1,14,vClfiscal.elementAt(iCF)[1]); 
 			  iSigla = iCF;
 		   }
 		   

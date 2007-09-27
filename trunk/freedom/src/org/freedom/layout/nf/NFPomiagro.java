@@ -48,7 +48,7 @@ public class NFPomiagro extends Leiaute {
 	String sImpDtSaidaNat = "";
 	int iContaMens = 1;
 	String sIncra = "" ;
-	Vector vMens = new Vector();
+	Vector<String[]> vMens = new Vector<String[]>();
 	vMens.clear();
 	
 //    String sHora = Funcoes.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.SECOND),2);
@@ -186,9 +186,9 @@ public class NFPomiagro extends Leiaute {
 		 if (sTmp.length() > 0) {
 		 	 int iLinha;
 		 	 for (iLinha=0;iLinha<vMens.size();iLinha++) {
-		 	 	if (((String[])vMens.elementAt(iLinha))[1].equals(sTmp) &&
-		 	 		((String[])vMens.elementAt(iLinha))[0].indexOf("*") == 0) {
-		 	 		sDescAdic += " "+((String[])vMens.elementAt(iLinha))[0];
+		 	 	if (vMens.elementAt(iLinha)[1].equals(sTmp) &&
+		 	 		vMens.elementAt(iLinha)[0].indexOf("*") == 0) {
+		 	 		sDescAdic += " "+vMens.elementAt(iLinha)[0];
 		 	 		break;
 		 	 	}
 		 	 }
@@ -199,7 +199,7 @@ public class NFPomiagro extends Leiaute {
 								sTmp
 						}
 		 	 	);
-		 	 	sDescAdic += " "+((String[])vMens.elementAt(iLinha))[0];
+		 	 	sDescAdic += " "+vMens.elementAt(iLinha)[0];
 		 	 }
 		 	 
 		 }
@@ -208,7 +208,7 @@ public class NFPomiagro extends Leiaute {
 		 if (sTmp.length() > 0) {
 		 	int iLinha;
 		 	for (iLinha=0;iLinha<vMens.size();iLinha++) {
-		 		if (((String[])vMens.elementAt(iLinha))[0].equals(sClasFisc))
+		 		if (vMens.elementAt(iLinha)[0].equals(sClasFisc))
 		 			break;
 		 	}
 		 	if (iLinha==vMens.size()) {
@@ -327,7 +327,7 @@ public class NFPomiagro extends Leiaute {
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            
            for(int i=0;i<vMens.size();i++)
-           	 sObs += ((String[])vMens.elementAt(i))[0] + " - " +((String[])vMens.elementAt(i))[1]+ '\n';
+           	 sObs += vMens.elementAt(i)[0] + " - " +vMens.elementAt(i)[1]+ '\n';
            
            sMatObs = Funcoes.strToStrArray(sObs,5);
            imp.say(imp.pRow()+1,0,"");

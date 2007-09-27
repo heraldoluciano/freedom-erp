@@ -57,9 +57,9 @@ public class NF014 extends Layout {
 		String[] sVals = new String[4];
 		String[] sDuplics = new String[4];
 		String[] moeda = new String[]{"centavos","centavo","real","reais"};
-		Vector vClfiscal = new Vector();
+		Vector<String> vClfiscal = new Vector<String>();
 		Vector vMatObs = null;
-		Vector vMens = new Vector();
+		Vector<String[]> vMens = new Vector<String[]>();
 		Vector vObs = null;
 		Vector vSigla = new Vector();
 		Calendar cHora = Calendar.getInstance();
@@ -169,15 +169,15 @@ public class NF014 extends Layout {
 				if (sTmp.length() > 0) {
 					int iLinha;
 					for (iLinha=0;iLinha<vMens.size();iLinha++) {
-						if (((String[])vMens.elementAt(iLinha))[1].equals(sTmp) &&
-								((String[])vMens.elementAt(iLinha))[0].indexOf("*") == 0) {
-							sDescAdic += " "+((String[])vMens.elementAt(iLinha))[0];
+						if (vMens.elementAt(iLinha)[1].equals(sTmp) &&
+								vMens.elementAt(iLinha)[0].indexOf("*") == 0) {
+							sDescAdic += " "+vMens.elementAt(iLinha)[0];
 							break;
 						}
 					}
 					if (iLinha==vMens.size()) {
 						vMens.add(new String[] {Funcoes.replicate("*",iContaMens++),sTmp});
-						sDescAdic += " "+((String[])vMens.elementAt(iLinha))[0];
+						sDescAdic += " "+vMens.elementAt(iLinha)[0];
 					}					 	 
 				}
 					
@@ -187,7 +187,7 @@ public class NF014 extends Layout {
 				if (sTmp.length() > 0) {
 					int iLinha;
 					for (iLinha=0;iLinha<vMens.size();iLinha++) {
-						if (((String[])vMens.elementAt(iLinha))[0].equals(sClasFisc))
+						if (vMens.elementAt(iLinha)[0].equals(sClasFisc))
 							break;
 					}
 					if (iLinha==vMens.size()) {
@@ -212,7 +212,7 @@ public class NF014 extends Layout {
 				if(!sCodfisc.equals("")) {
 					for(int i=0;i<vClfiscal.size();i++){
 						if(vClfiscal.elementAt(i)!=null){
-							if(sCodfisc.equals((String)vClfiscal.elementAt(i))){
+							if(sCodfisc.equals(vClfiscal.elementAt(i))){
 								bjatem = true;
 								sSigla = ""+(char)(65 + i);
 							} else
@@ -305,7 +305,7 @@ public class NF014 extends Layout {
 					}
 					   
 					for(int i=0;i<vMens.size();i++)
-						sObs += ((String[])vMens.elementAt(i))[0] + " - " +((String[])vMens.elementAt(i))[1]+"\n";
+						sObs += vMens.elementAt(i)[0] + " - " +vMens.elementAt(i)[1]+"\n";
 					
 					vObs = Funcoes.strToVectorSilabas(sObs,80);
 					   

@@ -490,7 +490,7 @@ public class Tef {
 
     
     public Object[] retImpTef(Properties prop) {
-        Vector vRet = new Vector();
+        Vector<String> vRet = new Vector<String>();
         String sLinha = null;
         int iNumLinhas = Integer
                 .parseInt(prop.getProperty(TEF_QTD_LINHAS, "0"));

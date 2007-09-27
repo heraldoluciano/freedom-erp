@@ -65,8 +65,8 @@ public class DLNovoAgen extends FFDialogo {
 	private ListaCampos lcUsuario = new ListaCampos(this);
 	private JScrollPane spnDesc = new JScrollPane(txaDescAtend);
 	private JLabelPad lbImg = new JLabelPad(Icone.novo("bannerTMKagendamento.jpg"));
-	Vector vVals = new Vector();
-	Vector vLabs = new Vector();
+	Vector<String> vVals = new Vector<String>();
+	Vector<String> vLabs = new Vector<String>();
 	private JComboBoxPad cbTipo = null;
 	public DLNovoAgen(Component cOrig) {
 		this("",cOrig);

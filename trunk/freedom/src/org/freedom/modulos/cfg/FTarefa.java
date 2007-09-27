@@ -44,8 +44,8 @@ public class FTarefa extends FDados implements ActionListener {
   private JTextFieldPad txtDescTarefa = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtIDObj = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JTextFieldFK txtDescObj = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-  private Vector vValsTipo = new Vector();
-  private Vector vLabsTipo = new Vector();
+  private Vector<String> vValsTipo = new Vector<String>();
+  private Vector<String> vLabsTipo = new Vector<String>();
   private JComboBoxPad cbTipo = new JComboBoxPad(vLabsTipo, vValsTipo, JComboBoxPad.TP_STRING, 2, 0); 
   private ListaCampos lcObjeto = new ListaCampos(this,"OB");
   public FTarefa () {

@@ -51,8 +51,8 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 	private boolean bFilRefProd = false;
 	private boolean bFilCodBar = false;
 	private boolean bFilCodFab = false;
-	private Vector vProds = new Vector();
-	private Vector vUsaLote = new Vector();
+	private Vector<Integer> vProds = new Vector<Integer>();
+	private Vector<String> vUsaLote = new Vector<String>();
 	private JComponent proxFoco = null;
 	
 	public DLCodProd(Connection con, JComponent proxFoco) {
@@ -208,13 +208,13 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 				Funcoes.mensagemErro(this, "Código Invalido!");
 				return false;
 			} else if(vProds.size() == 1) {
-				iCodProd = ((Integer)vProds.elementAt(0)).intValue();
+				iCodProd = vProds.elementAt(0).intValue();
 				ok();
 				return true;
 			}
 			
 			for(int i=0; i<vProds.size(); i++) {
-				if(((String)vUsaLote.elementAt(i)).equals("S"))
+				if(vUsaLote.elementAt(i).equals("S"))
 					sTemp = sSQL1;
 				else 
 					sTemp = sSQL2;
@@ -222,12 +222,12 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 				ps2 = con.prepareStatement(sTemp);
 				ps2.setInt(1, Aplicativo.iCodEmp);
 				ps2.setInt(2, ListaCampos.getMasterFilial("EQPRODUTO"));
-				ps2.setInt(3, ((Integer)vProds.elementAt(i)).intValue());
+				ps2.setInt(3, vProds.elementAt(i).intValue());
 				
 				rs2 = ps2.executeQuery();
 				
 				if(rs2.next()) {
-					if(((String)vUsaLote.elementAt(i)).equals("S")) {
+					if(vUsaLote.elementAt(i).equals("S")) {
 						tab.adicLinha( new Object[]{(rs2.getString("CODPROD") != null ? rs2.getString("CODPROD").trim() : ""),
 													(rs2.getString("REFPROD") != null ? rs2.getString("REFPROD").trim() : ""),
 													(rs2.getString("CODBARPROD") != null ? rs2.getString("CODBARPROD").trim() : ""),
@@ -254,7 +254,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 				Funcoes.mensagemErro(this, "Código Invalido!");
 				return false;
 			} else if(ilinha == 1) {
-				iCodProd = ((Integer)vProds.elementAt(0)).intValue();
+				iCodProd = vProds.elementAt(0).intValue();
 				ok();
 				return true;
 			}

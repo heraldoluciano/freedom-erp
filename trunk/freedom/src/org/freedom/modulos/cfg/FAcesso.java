@@ -65,9 +65,9 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
   private ListaCampos lcUsuario = new ListaCampos(this);
   private Arvore arvore = new Arvore();
   private JScrollPane spnArv = new JScrollPane(arvore);
-  private Vector vAcessos = new Vector();
-  private Vector vVals = new Vector();
-  private Vector vLabs = new Vector();
+  private Vector<String[]> vAcessos = new Vector<String[]>();
+  private Vector<Comparable> vVals = new Vector<Comparable>();
+  private Vector<String> vLabs = new Vector<String>();
   private JComboBoxPad cbFiliais = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_INTEGER, 8, 0);
   private JButton btSalva = new JButton(Icone.novo("btGerar.gif"));
   boolean bEOF = false;
@@ -269,7 +269,7 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
     int iInd = Integer.parseInt(sVal.substring(iPrim+1,iUlt));
     if (iInd == -1)
       return null;
-  	return Icone.novo("ba"+((iInd < vAcessos.size()) && (iInd != -1) ? ((String[])vAcessos.elementAt(iInd))[0] : "0000")+".gif");
+  	return Icone.novo("ba"+((iInd < vAcessos.size()) && (iInd != -1) ? vAcessos.elementAt(iInd)[0] : "0000")+".gif");
   }
   
   
@@ -291,7 +291,7 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
     if (iInd == -1)
       return;
 
-    String sVals[] = (String[])vAcessos.elementAt(iInd);
+    String sVals[] = vAcessos.elementAt(iInd);
     cAcesso = sVals[0].toCharArray();
     
     iDif = x-arvore.getRowBounds(iLinha).x;
@@ -307,12 +307,12 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
     
     sVals[0] = new String(cAcesso);
     
-    iNivelClick = Integer.parseInt(((String[])vAcessos.elementAt(iInd))[4]);
+    iNivelClick = Integer.parseInt(vAcessos.elementAt(iInd)[4]);
     vAcessos.setElementAt(sVals,iInd);
     
     for (int i=iInd+1; i<vAcessos.size(); i++) {
     	char cAcessoFilho[] = new char[4];
-    	sVals = (String[])vAcessos.elementAt(i);
+    	sVals = vAcessos.elementAt(i);
     	
     	iNivel = Integer.parseInt((sVals)[4]);
     	
@@ -344,40 +344,40 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
   			ps.setInt(1,Aplicativo.iCodEmp);
   			ps.setInt(2,cbFiliais.getVlrInteger().intValue());
   			ps.setString(3,txtCodUsu.getVlrString());
-  			ps.setString(4,((String[])vAcessos.elementAt(i))[3]);
-  			ps.setString(5,((String[])vAcessos.elementAt(i))[2]);
-  			ps.setString(6,((String[])vAcessos.elementAt(i))[1]);
-  			if (((String[])vAcessos.elementAt(i))[0].equals("0000"))
+  			ps.setString(4,vAcessos.elementAt(i)[3]);
+  			ps.setString(5,vAcessos.elementAt(i)[2]);
+  			ps.setString(6,vAcessos.elementAt(i)[1]);
+  			if (vAcessos.elementAt(i)[0].equals("0000"))
     			ps.setString(7,"A");
-  			else if (((String[])vAcessos.elementAt(i))[0].equals("0000"))
+  			else if (vAcessos.elementAt(i)[0].equals("0000"))
     			ps.setString(7,"B");
-  			else if (((String[])vAcessos.elementAt(i))[0].equals("0010"))
+  			else if (vAcessos.elementAt(i)[0].equals("0010"))
     			ps.setString(7,"C");
-  			else if (((String[])vAcessos.elementAt(i))[0].equals("0011"))
+  			else if (vAcessos.elementAt(i)[0].equals("0011"))
     			ps.setString(7,"D");
-  			else if (((String[])vAcessos.elementAt(i))[0].equals("0100"))
+  			else if (vAcessos.elementAt(i)[0].equals("0100"))
     			ps.setString(7,"E");
-  			else if (((String[])vAcessos.elementAt(i))[0].equals("0101"))
+  			else if (vAcessos.elementAt(i)[0].equals("0101"))
     			ps.setString(7,"F");
-  			else if (((String[])vAcessos.elementAt(i))[0].equals("0110"))
+  			else if (vAcessos.elementAt(i)[0].equals("0110"))
     			ps.setString(7,"G");
-  			else if (((String[])vAcessos.elementAt(i))[0].equals("0111"))
+  			else if (vAcessos.elementAt(i)[0].equals("0111"))
     			ps.setString(7,"H");
-  			else if (((String[])vAcessos.elementAt(i))[0].equals("1000"))
+  			else if (vAcessos.elementAt(i)[0].equals("1000"))
     			ps.setString(7,"I");
-  			else if (((String[])vAcessos.elementAt(i))[0].equals("1001"))
+  			else if (vAcessos.elementAt(i)[0].equals("1001"))
     			ps.setString(7,"J");
-  			else if (((String[])vAcessos.elementAt(i))[0].equals("1010"))
+  			else if (vAcessos.elementAt(i)[0].equals("1010"))
     			ps.setString(7,"K");
-  			else if (((String[])vAcessos.elementAt(i))[0].equals("1011"))
+  			else if (vAcessos.elementAt(i)[0].equals("1011"))
     			ps.setString(7,"L");
-  			else if (((String[])vAcessos.elementAt(i))[0].equals("1100"))
+  			else if (vAcessos.elementAt(i)[0].equals("1100"))
     			ps.setString(7,"M");
-  			else if (((String[])vAcessos.elementAt(i))[0].equals("1101"))
+  			else if (vAcessos.elementAt(i)[0].equals("1101"))
     			ps.setString(7,"N");
-  			else if (((String[])vAcessos.elementAt(i))[0].equals("1110"))
+  			else if (vAcessos.elementAt(i)[0].equals("1110"))
     			ps.setString(7,"O");
-  			else if (((String[])vAcessos.elementAt(i))[0].equals("1111"))
+  			else if (vAcessos.elementAt(i)[0].equals("1111"))
     			ps.setString(7,"P");
     		else
     			ps.setString(7,"A");

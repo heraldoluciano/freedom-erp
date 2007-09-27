@@ -32,9 +32,9 @@ public class NF021 extends Layout {
 	public boolean imprimir(NF nf,ImprimeOS imp) {
 		boolean retorno = super.imprimir(nf, imp);
 		Calendar cHora = Calendar.getInstance();
-		Vector vValores = new Vector();
-		Vector vClfisc = new Vector();
-		Vector vSigla = new Vector();
+		Vector<String> vValores = new Vector<String>();
+		Vector<String> vClfisc = new Vector<String>();
+		Vector<String> vSigla = new Vector<String>();
 		Vector vDesc = null;
 		String sDesc = null;
 		String sCodfisc = null;
@@ -125,7 +125,7 @@ public class NF021 extends Layout {
 				if(!sCodfisc.equals("")){
 					for(int i=0;i<vClfisc.size();i++){
 						if(vClfisc.elementAt(i)!=null){
-							if(sCodfisc.equals((String)vClfisc.elementAt(i))){
+							if(sCodfisc.equals(vClfisc.elementAt(i))){
 								bjatem = true;
 								sSigla = String.valueOf((char)(64 + i));
 							} else
@@ -210,7 +210,7 @@ public class NF021 extends Layout {
 			
 			if(vSigla.size()>0) {
 				imp.pulaLinha(1, imp.comprimido());
-				imp.say(  9,(String)vSigla.elementAt(0));
+				imp.say(  9,vSigla.elementAt(0));
 			} 
 			
 			retorno = true;
@@ -247,7 +247,7 @@ public class NF021 extends Layout {
 		return retorno;
 	}
 			
-	private void impTotais(ImprimeOS imp,Vector vValores){
+	private void impTotais(ImprimeOS imp,Vector<String> vValores){
 		
 		try {	
 			

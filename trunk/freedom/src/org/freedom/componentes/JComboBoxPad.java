@@ -34,7 +34,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
   public static final int TP_NONE = -1;
   public static final int TP_STRING = 0;
   public static final int TP_INTEGER = 4;
-  private Vector valores = new Vector();
+  private Vector<?> valores = new Vector<Object>();
   private JComboBoxListener cbLis = this;
   private ListaCampos lcCombo = null;
   private boolean criando = true;
@@ -61,7 +61,8 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
   public void setZeroNulo() {
   	bZeroNull = true;
   }
-  public JComboBoxPad(Vector label, Vector val, int tipo, int tam, int dec) {
+  
+  public JComboBoxPad(Vector<String> label, Vector<?> val, int tipo, int tam, int dec) {
     criando = true;
     if (val != null && label != null) {
       valores = val;
@@ -76,7 +77,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
     this.dec = dec;
     criando = false;
   }
-  public void setItens(Vector label, Vector val) {
+  public void setItens(Vector<String> label, Vector<?> val) {
   	criando = true;
     removeAllItems();
     valores = val;
@@ -106,7 +107,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
   public String getVlrString() {
   	int iInd = getSelectedIndex();
   	if (valores != null && iInd >= 0 && iInd < valores.size())
-  		return (String) valores.elementAt(getSelectedIndex());
+  		return valores.elementAt(getSelectedIndex()).toString();
     return "";
   }
   public String getText() {

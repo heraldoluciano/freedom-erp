@@ -29,7 +29,6 @@
 package org.freedom.componentes;
 
 import java.sql.Connection;
-import java.util.Vector;
 
 import org.freedom.telas.Aplicativo;
 
@@ -228,11 +227,11 @@ public class NF {
 		}
 		return t;
 	}
-	
+	/*	
 	public boolean carregaTabelas(Connection con, Vector parans ) {
 		return false;
 	}
-/* 		String sSQL = "SELECT (SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC WHERE IC.CODVENDA=V.CODVENDA),"
+ 		String sSQL = "SELECT (SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC WHERE IC.CODVENDA=V.CODVENDA),"
 				+ "(SELECT L.CODLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE),"
 				+ "(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE),"
 				+ "(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=I.CODMENS"

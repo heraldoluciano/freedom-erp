@@ -50,7 +50,7 @@ public class DLFechaDistrib extends FFDialogo {
   private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtDtFabProd = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDtValid = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private Vector vBuscaLote = new Vector();
+  private Vector<Object> vBuscaLote = new Vector<Object>();
   private int iProdPrinc = 0;
  
    

@@ -136,7 +136,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
       String sSQL = null;
       PreparedStatement ps = null;
       ResultSet rs = null;
-      Vector vProds = null;
+      Vector<Integer> vProds = null;
       if (iUltProd > 0) {
             if (Funcoes.mensagemConfirma(null,"Gostaria de continuar a partir do produto '"+iUltProd+"'?") != JOptionPane.YES_OPTION)
                   iUltProd = 0;
@@ -151,7 +151,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
          ps.setInt(2,Aplicativo.iCodEmp);
          ps.setInt(3,iUltProd);
          rs = ps.executeQuery();
-         vProds = new Vector();
+         vProds = new Vector<Integer>();
          while (rs.next()) {
              vProds.addElement(new Integer(rs.getInt("CodProd")));
          }
@@ -161,7 +161,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
             con.commit();
          
          for (int i=0; i<vProds.size(); i++) {
-             iUltProd =  ( (Integer) vProds.elementAt(i) ).intValue();
+             iUltProd =  vProds.elementAt(i).intValue();
              if (!processar(iUltProd)) {
                  if (Funcoes.mensagemConfirma(null,"Ocorreram problemas com o produto: '"+iUltProd+"'.\n" +
                                                    "Deseja continuar mesmo assim?") != JOptionPane.YES_OPTION)

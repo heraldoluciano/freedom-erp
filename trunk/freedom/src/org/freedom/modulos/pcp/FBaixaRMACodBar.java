@@ -420,7 +420,7 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   	String sResto = null;
   	String sOpcao = null;
   	String sTemp = null;
-  	Vector vCampos = null;
+  	Vector<JTextFieldPad> vCampos = null;
   	JTextFieldPad jtCampo = null;
   	try{
   		sTexto = txtEntrada.getVlrString();
@@ -429,7 +429,7 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   			if (sTexto.length()>0){
   				int iCampos = Funcoes.contaChar(sTexto,'#'); 
   				if(iCampos==6) {
-  					vCampos = new Vector();
+  					vCampos = new Vector<JTextFieldPad>();
   					vCampos.addElement(txtSeqOf);
   					vCampos.addElement(txtCodOp);
   					vCampos.addElement(txtSeqOp);
@@ -444,7 +444,7 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 					
 					if(sOpcao.equals("P")){
 						for(int i=0;vCampos.size()>i;i++){		
-	  						jtCampo = ((JTextFieldPad)(vCampos.elementAt(i))); 
+	  						jtCampo = (vCampos.elementAt(i)); 
 	  						jtCampo.setVlrString(sResto.substring(0,sResto.indexOf("#")>-1?sResto.indexOf("#"):sResto.length()));
 	  						sResto = sResto.substring(sResto.indexOf("#")+1);
 	  					}
@@ -452,7 +452,7 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 					}
 					else if(sOpcao.equals("D")){
 						for(int i=0;vCampos.size()>i;i++){		
-	  						jtCampo = ((JTextFieldPad)(vCampos.elementAt(i)));
+	  						jtCampo = (vCampos.elementAt(i));
 	  						sTemp = sResto.substring(0,sResto.indexOf("#")>-1?sResto.indexOf("#"):sResto.length());
 	  						if(jtCampo==txtCodOp || jtCampo==txtSeqOp)
 	  							jtCampo.setVlrString(sTemp);

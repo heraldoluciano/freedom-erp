@@ -137,9 +137,9 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 	boolean[] bPrefs = null;
 	boolean bCotacao = false;
 	int cont = 0;
-	Vector vItem = new Vector();
-	Vector vProdCan = new Vector();
-	Vector vMotivoCan = new Vector();
+	Vector<String> vItem = new Vector<String>();
+	Vector<String> vProdCan = new Vector<String>();
+	Vector<String> vMotivoCan = new Vector<String>();
     String sSitSol;
     String sSitItAprov;
     String sSitItExp;

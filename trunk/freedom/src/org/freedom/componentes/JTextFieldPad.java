@@ -806,7 +806,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	
 	public boolean mostraDLF2FK() {
 		boolean bRet = false;
-		Vector vTemp = null;
+		Vector<GuardaCampo> vTemp = null;
 		GuardaCampo gcCampo = null;
 		DLF2 dl = null;
 		try {
@@ -820,7 +820,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 				if (lcTabExt.getNumPKs()>1) {
 					vTemp = lcTabExt.getCamposPK();
 					for (int i=0; i<vTemp.size(); i++) {
-						gcCampo = (GuardaCampo) vTemp.elementAt(i);
+						gcCampo = vTemp.elementAt(i);
 						if (gcCampo!=null)
 							if (!gcCampo.getNomeCampo().equalsIgnoreCase(sNomeCampo)) 
 								gcCampo.setVlrString((String) dl.getValor(gcCampo.getNomeCampo()));

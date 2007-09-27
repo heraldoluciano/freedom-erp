@@ -25,18 +25,18 @@ import java.util.Vector;
 import org.freedom.funcoes.Funcoes;
 
 public abstract class ObjetoEtiqueta {
-  private Vector vLabels = new Vector();
-  private Vector vLabelsAdic = new Vector();
-  private Vector vLabelsColunas = new Vector();
-  private Vector vLabelsColunasAdic = new Vector();
-  private Vector vValores = new Vector();
-  private Vector vValoresAdic = new Vector();
-  private Vector vCampos = new Vector();
-  private Vector vCamposAdic = new Vector();
-  private Vector vTams = new Vector();
-  private Vector vTamsAdic = new Vector();
-  private Vector vMascaras = new Vector();
-  private Vector vMascarasAdic = new Vector();
+  private Vector<String> vLabels = new Vector<String>();
+  private Vector<String> vLabelsAdic = new Vector<String>();
+  private Vector<String> vLabelsColunas = new Vector<String>();
+  private Vector<String> vLabelsColunasAdic = new Vector<String>();
+  private Vector<String> vValores = new Vector<String>();
+  private Vector<String> vValoresAdic = new Vector<String>();
+  private Vector<String> vCampos = new Vector<String>();
+  private Vector<String> vCamposAdic = new Vector<String>();
+  private Vector<Integer> vTams = new Vector<Integer>();
+  private Vector<String> vTamsAdic = new Vector<String>();
+  private Vector<String> vMascaras = new Vector<String>();
+  private Vector<String> vMascarasAdic = new Vector<String>();
   private String sTexto = "";
 
   public ObjetoEtiqueta() { 
@@ -55,68 +55,68 @@ public abstract class ObjetoEtiqueta {
 /**
  * @return Returns the vLabels.
  */
-public Vector getLabels() {
+public Vector<String> getLabels() {
     return vLabels;
 }
 /**
  * @return Returns the vLabels.
  */
-public Vector getLabelsAdic() {
+public Vector<String> getLabelsAdic() {
     return vLabelsAdic;
 }
 /**
  * @return Returns the vCampos.
  */
-public Vector getCampos() {
+public Vector<String> getCampos() {
     return vCampos;
 }
 /**
  * @return Returns the vCamposAdic.
  */
-public Vector getCamposAdic() {
+public Vector<String> getCamposAdic() {
     return vCamposAdic;
 }
 /**
  * @return Returns the vTams.
  */
-public Vector getTams() {
+public Vector<Integer> getTams() {
     return vTams;
 }
 /**
  * @return Returns the vTamsAdic.
  */
-public Vector getTamsAdic() {
+public Vector<String> getTamsAdic() {
     return vTamsAdic;
 }
 
 /**
  * @return Returns the vValores.
  */
-public Vector getValores() {
+public Vector<String> getValores() {
     return vValores;
 }
 /**
  * @return Returns the vValoresAdic.
  */
-public Vector getValoresAdic() {
+public Vector<String> getValoresAdic() {
     return vValoresAdic;
 }
 /**
  * @return Returns the vMascaras.
  */
-public Vector getMascaras() {
+public Vector<String> getMascaras() {
     return vMascaras;
 }
 /**
  * @return Returns the vMascarasAdic.
  */
-public Vector getMascarasAdic() {
+public Vector<String> getMascarasAdic() {
     return vMascarasAdic;
 }
-public Vector getLabelsColunas() {
+public Vector<String> getLabelsColunas() {
     return vLabelsColunas;
 }
-public Vector getLabelsColunasAdic() {
+public Vector<String> getLabelsColunasAdic() {
     return vLabelsColunasAdic;
 }
 public void setTexto(String sTexto){
@@ -134,12 +134,12 @@ public int getNumLinEtiq(){
     return iRet;
 }
 public void getAdic(){
-        vCamposAdic = new Vector();
-        vTamsAdic = new Vector();
-        vLabelsAdic = new Vector ();
-        vMascarasAdic = new Vector ();	
-        vValoresAdic = new Vector();   
-        vLabelsColunasAdic = new Vector();
+        vCamposAdic = new Vector<String>();
+        vTamsAdic = new Vector<String>();
+        vLabelsAdic = new Vector<String> ();
+        vMascarasAdic = new Vector<String> ();	
+        vValoresAdic = new Vector<String>();   
+        vLabelsColunasAdic = new Vector<String>();
 
         for(int i2=0;vValores.size()>i2;i2++) {
             if((sTexto.indexOf(vValores.elementAt(i2).toString()))>(-1)){

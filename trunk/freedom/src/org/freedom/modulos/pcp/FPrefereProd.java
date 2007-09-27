@@ -50,8 +50,8 @@ public class FPrefereProd extends FTabDados {
 		setTitulo("Preferências de Produção");
 		setAtribos(50, 50, 540, 270);
 
-		Vector vLabs = new Vector();
-		Vector vVals = new Vector();
+		Vector<String> vLabs = new Vector<String>();
+		Vector<String> vVals = new Vector<String>();
 
 		vLabs.addElement("<--Selecione-->");
 		vLabs.addElement("Pendente");

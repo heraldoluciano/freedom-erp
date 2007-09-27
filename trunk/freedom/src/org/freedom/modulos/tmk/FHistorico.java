@@ -105,8 +105,8 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcCont = new ListaCampos(this);
   private ListaCampos lcCli = new ListaCampos(this);
-  private Vector vCodHists = new Vector();
-  private Vector vCodAtends = new Vector();
+  private Vector<String> vCodHists = new Vector<String>();
+  private Vector<String> vCodAtends = new Vector<String>();
   private Tabela tabTemp = null;
   
   
@@ -498,7 +498,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		  	DLNovoHist dl = new DLNovoHist(iCod,tpnHist.getSelectedIndex(),this);
 		  	dl.setConexao(con);
 		  	dl.setValores(new Object[] {(String)tabTemp.getValor(iLin,5),
-							   			(String)vCodAtends.elementAt(iLin),
+							   			vCodAtends.elementAt(iLin),
 							   			(String)tabTemp.getValor(iLin,1),
 							   			(String)tabTemp.getValor(iLin,2),
 							   			(Date)Funcoes.strDateToSqlDate((String)tabTemp.getValor(iLin,3))

@@ -52,9 +52,9 @@ public class FNCsaida extends FDados implements PostListener {
 
 	private JComboBoxPad cbTipoSaida = null;
 
-	private Vector vStrTipo = new Vector();
+	private Vector<String> vStrTipo = new Vector<String>();
 
-	private Vector vValsTipo = new Vector();
+	private Vector<Integer> vValsTipo = new Vector<Integer>();
 
 	private ListaCampos lcTBanco = new ListaCampos( this, "TR" );
 

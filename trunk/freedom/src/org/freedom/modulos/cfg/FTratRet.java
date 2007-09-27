@@ -50,8 +50,8 @@ public class FTratRet extends FDetalhe implements ActionListener {
   private JTextFieldPad txtCodItProc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
-  private Vector vValsTipo = new Vector();
-  private Vector vLabsTipo = new Vector();
+  private Vector<String> vValsTipo = new Vector<String>();
+  private Vector<String> vLabsTipo = new Vector<String>();
   private JComboBoxPad cbTipo = null; 
   private ListaCampos lcTarefa = new ListaCampos(this,"TA");
   private ListaCampos lcItProc = new ListaCampos(this,"GT");
