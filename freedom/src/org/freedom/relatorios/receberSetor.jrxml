@@ -103,9 +103,9 @@ AND S.CODEMP=V.CODEMPSE AND S.CODFILIAL=V.CODFILIALSE AND S.CODSETOR=V.CODSETOR;
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="25"
+						y="18"
 						width="397"
-						height="11"
+						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Empresa"/>
@@ -131,9 +131,9 @@ AND S.CODEMP=V.CODEMPSE AND S.CODFILIAL=V.CODFILIALSE AND S.CODSETOR=V.CODSETOR;
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="39"
+						y="38"
 						width="240"
-						height="11"
+						height="19"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor"/>
@@ -303,9 +303,9 @@ AND S.CODEMP=V.CODEMPSE AND S.CODFILIAL=V.CODFILIALSE AND S.CODSETOR=V.CODSETOR;
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="51"
+						y="61"
 						width="397"
-						height="48"
+						height="38"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Empresa-1"/>

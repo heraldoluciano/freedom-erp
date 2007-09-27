@@ -369,9 +369,9 @@ FROM VDVENDA V]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="25"
+						y="19"
 						width="397"
-						height="11"
+						height="16"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Empresa"/>
@@ -409,9 +409,9 @@ FROM VDVENDA V]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="39"
+						y="38"
 						width="240"
-						height="11"
+						height="17"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor"/>
@@ -457,9 +457,9 @@ FROM VDVENDA V]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="53"
+						y="57"
 						width="397"
-						height="21"
+						height="17"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor-1"/>

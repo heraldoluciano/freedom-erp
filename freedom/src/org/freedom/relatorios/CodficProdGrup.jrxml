@@ -244,9 +244,9 @@ ORDER BY PD.CODGRUP, PD.DESCPROD]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="25"
+						y="20"
 						width="397"
-						height="11"
+						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Empresa"/>
@@ -284,9 +284,9 @@ ORDER BY PD.CODGRUP, PD.DESCPROD]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="39"
+						y="44"
 						width="240"
-						height="11"
+						height="21"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor"/>

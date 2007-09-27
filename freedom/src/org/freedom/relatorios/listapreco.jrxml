@@ -228,9 +228,9 @@ ORDER BY PP.CODPROD]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="25"
+						y="17"
 						width="397"
-						height="11"
+						height="22"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Empresa"/>
@@ -268,9 +268,9 @@ ORDER BY PP.CODPROD]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="39"
+						y="43"
 						width="240"
-						height="11"
+						height="21"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor"/>

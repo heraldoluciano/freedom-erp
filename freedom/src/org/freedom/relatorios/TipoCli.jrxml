@@ -171,9 +171,9 @@ GROUP BY C.CODTIPOCLI,T.DESCTIPOCLI]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="25"
+						y="20"
 						width="397"
-						height="11"
+						height="21"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Empresa"/>
@@ -211,9 +211,9 @@ GROUP BY C.CODTIPOCLI,T.DESCTIPOCLI]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="39"
+						y="46"
 						width="240"
-						height="11"
+						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor"/>

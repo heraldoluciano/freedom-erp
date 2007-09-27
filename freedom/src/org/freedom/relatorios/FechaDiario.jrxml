@@ -391,9 +391,9 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="25"
+						y="19"
 						width="397"
-						height="11"
+						height="19"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Empresa"/>
@@ -407,9 +407,9 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="39"
+						y="40"
 						width="240"
-						height="11"
+						height="17"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor"/>
@@ -467,9 +467,9 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="77"
-						y="52"
+						y="63"
 						width="397"
-						height="29"
+						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor-1"/>

@@ -299,9 +299,9 @@ ORDER BY L.DTEMITLF, L.DOCINILF, L.SERIELF, L.CODEMITLF, L.CODNAT]]></queryStrin
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="25"
+						y="20"
 						width="535"
-						height="12"
+						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Empresa"/>
