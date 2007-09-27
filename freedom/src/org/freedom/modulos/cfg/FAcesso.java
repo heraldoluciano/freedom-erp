@@ -66,7 +66,7 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
   private Arvore arvore = new Arvore();
   private JScrollPane spnArv = new JScrollPane(arvore);
   private Vector<String[]> vAcessos = new Vector<String[]>();
-  private Vector<Comparable> vVals = new Vector<Comparable>();
+  private Vector<Object> vVals = new Vector<Object>();
   private Vector<String> vLabs = new Vector<String>();
   private JComboBoxPad cbFiliais = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_INTEGER, 8, 0);
   private JButton btSalva = new JButton(Icone.novo("btGerar.gif"));

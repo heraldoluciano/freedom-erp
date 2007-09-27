@@ -51,8 +51,8 @@ public class NF011 extends Layout {
 		String[] sNat = new String[ 4 ];
 		String[] sVencs = new String[ 6 ];
 		String[] sVals = new String[ 6 ];
-		Vector vMatObs = null;
-		Vector vDesc = null;
+		Vector<?> vMatObs = null;
+		Vector<?> vDesc = null;
 		Vector<String> vValores = new Vector<String>();
 		Vector<String> vClfisc = new Vector<String>();
 		Vector<String> vSigla = new Vector<String>();
@@ -353,7 +353,7 @@ public class NF011 extends Layout {
 
 	private void impTotais( ImprimeOS imp, Vector<String> vValores ) {
 
-		Vector vObs = null;
+		Vector<?> vObs = null;
 
 		try {
 

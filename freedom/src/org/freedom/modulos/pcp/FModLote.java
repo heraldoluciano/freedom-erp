@@ -59,9 +59,9 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 	private JScrollPane spnCli = new JScrollPane(txaModLote); 
 	private JButton btAdic = new JButton(Icone.novo("btOk.gif"));
     private JComboBoxPad cbCampos = null;
-    private Vector vTamanhos = new Vector();
+    private Vector<?> vTamanhos = new Vector<Object>();
 	private Vector<String> vLabs = new Vector<String>();    	
-	private Vector vVals = new Vector();
+	private Vector<?> vVals = new Vector<Object>();
 	private ObjetoModLote objModLote = new ObjetoModLote();
 
 	public FModLote() {
@@ -83,8 +83,8 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
     	setListaCampos( true, "MODLOTE", "EQ");   	    
     	
     	vLabs = new Vector<String>();    	
-    	vVals = new Vector();
-    	vTamanhos = new Vector();
+    	vVals = new Vector<Object>();
+    	vTamanhos = new Vector<Object>();
     	
     	vLabs = objModLote.getLabels();
     	vVals = objModLote.getValores();
@@ -112,7 +112,7 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 	public void beforePost(PostEvent pevt) {	     
 		int iMax = 13;	
 		objModLote.setTexto(txaModLote.getVlrString());//carrega o texto criado para o objeto
-		Vector vTemp = new Vector();
+		Vector<?> vTemp = new Vector<Object>();
 		String sTexto = txaModLote.getVlrString();
 		String sTmp = sTexto;
 

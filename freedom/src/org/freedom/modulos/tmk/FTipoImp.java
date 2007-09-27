@@ -152,7 +152,7 @@ public class FTipoImp extends FDados implements PostListener, CarregaListener, D
 				}
 			}
 			if (!bColEq) {
-			  Vector<String> vVals = new Vector<String>();
+			  Vector<Object> vVals = new Vector<Object>();
 			  vVals.add(met.getColumnName(i));
 			  vVals.add(met.getColumnTypeName(i));
 			  tab.adicLinha(vVals);

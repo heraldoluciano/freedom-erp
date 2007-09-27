@@ -132,7 +132,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 
 	public void adicLinha() {
 
-		Vector vVals = new Vector();
+		Vector<Object> vVals = new Vector<Object>();
 		for ( int i = 0; i < ContaColunas; i++ ) {
 			vVals.addElement( "" );
 		}
@@ -143,7 +143,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 		ContaLinhas++;
 	}
 
-	public void adicLinha( Vector valores ) {
+	public void adicLinha( Vector<Object> valores ) {
 
 		modelo.addRow( valores );
 		if ( bAutoRol ) {
@@ -165,7 +165,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 
 		int iRetorno = -1;
 		int iTam = 0;
-		Vector vTemp = null;
+		Vector<?> vTemp = null;
 		try {
 			if ( sTexto != null ) {
 				iTam = sTexto.length();
@@ -187,7 +187,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 		return iRetorno;
 	}
 
-	public void adicLinha( int iLin, Vector vDados ) {
+	public void adicLinha( int iLin, Vector<Object> vDados ) {
 
 		modelo.insertRow( iLin, vDados );
 		ContaLinhas++;
@@ -205,7 +205,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 		ContaLinhas--;
 	}
 
-	public Vector getLinha( int iInd ) {
+	public Vector<Object> getLinha( int iInd ) {
 
 		return modelo.getRow( iInd );
 	}
@@ -331,9 +331,9 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 
 		private static final long serialVersionUID = 1L;
 
-		protected Vector dataVector;
+		protected Vector<Vector<Object>> dataVector;
 
-		protected Vector columnIdentifiers;
+		protected Vector<Object> columnIdentifiers;
 
 		boolean bEditavel = false;
 
@@ -343,26 +343,26 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 
 		public Modelo() {
 
-			this( (Vector) null, 0 );
+			this( (Vector<Object>) null, 0 );
 		}
 
 		public Modelo( int numRows, int numColumns ) {
 
-			Vector names = new Vector( numColumns );
+			Vector<Object> names = new Vector<Object>( numColumns );
 			names.setSize( numColumns );
 			setColumnIdentifiers( names );
-			dataVector = new Vector();
+			dataVector = new Vector<Vector<Object>>();
 			setNumRows( numRows );
 		}
 
-		public Modelo( Vector columnNames, int numRows ) {
+		public Modelo( Vector<Object> columnNames, int numRows ) {
 
 			setColumnIdentifiers( columnNames );
-			dataVector = new Vector();
+			dataVector = new Vector<Vector<Object>>();
 			setNumRows( numRows );
 		}
 
-		public Modelo( Vector data, Vector columnNames ) {
+		public Modelo(Vector<Vector<Object>> data, Vector<Object> columnNames ) {
 
 			setDataVector( data, columnNames );
 		}
@@ -377,16 +377,16 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 			tabEdLis = tab;
 		}
 
-		public Vector getDataVector() {
+		public Vector<Vector<Object>> getDataVector() {
 
 			return dataVector;
 		}
 
-		public void setDataVector( Vector newData, Vector columnNames ) {
+		public void setDataVector(Vector<Vector<Object>> newData, Vector<Object> columnNames ) {
 
 			if ( newData == null )
 				throw new IllegalArgumentException( "setDataVector() - Null parameter" );
-			dataVector = new Vector( 0 );
+			dataVector = new Vector<Vector<Object>>( 0 );
 			setColumnIdentifiers( columnNames );
 			dataVector = newData;
 			newRowsAdded( new TableModelEvent( this, 0, getRowCount() - 1, TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT ) );
@@ -411,7 +411,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 			if ( end < 0 )
 				end = getRowCount() - 1;
 			for ( int i = start; i < end; i++ )
-				( (Vector) dataVector.elementAt( i ) ).setSize( getColumnCount() );
+				dataVector.elementAt( i ).setSize( getColumnCount() );
 			fireTableChanged( event );
 		}
 
@@ -420,13 +420,13 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 			fireTableChanged( event );
 		}
 
-		public void setColumnIdentifiers( Vector newIdentifiers ) {
+		public void setColumnIdentifiers( Vector<Object> newIdentifiers ) {
 
 			if ( newIdentifiers != null ) {
 				columnIdentifiers = newIdentifiers;
 			}
 			else {
-				columnIdentifiers = new Vector();
+				columnIdentifiers = new Vector<Object>();
 			}
 			fireTableStructureChanged();
 		}
@@ -448,7 +448,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 			else {
 				int columnCount = getColumnCount();
 				while ( getRowCount() < newSize ) {
-					Vector newRow = new Vector( columnCount );
+					Vector<Object> newRow = new Vector<Object>( columnCount );
 					newRow.setSize( columnCount );
 					dataVector.addElement( newRow );
 				}
@@ -458,23 +458,23 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 
 		public void addColumn( Object columnName ) {
 
-			addColumn( columnName, (Vector) null );
+			addColumn( columnName, (Vector<Object>) null );
 		}
 
-		public void addColumn( Object columnName, Vector columnData ) {
+		public void addColumn( Object columnName, Vector<?> columnData ) {
 
 			if ( columnName == null )
 				throw new IllegalArgumentException( "addColumn() - null parameter" );
 			columnIdentifiers.addElement( columnName );
 			int index = 0;
-			Enumeration enumeration = dataVector.elements();
+			Enumeration<Vector<Object>> enumeration = dataVector.elements();
 			while ( enumeration.hasMoreElements() ) {
 				Object value;
 				if ( ( columnData != null ) && ( index < columnData.size() ) )
 					value = columnData.elementAt( index );
 				else
 					value = null;
-				( (Vector) enumeration.nextElement() ).addElement( value );
+				enumeration.nextElement().addElement( value );
 				index++;
 			}
 			fireTableStructureChanged();
@@ -485,10 +485,10 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 			addColumn( columnName, convertToVector( columnData ) );
 		}
 
-		public void addRow( Vector rowData ) {
+		public void addRow( Vector<Object> rowData ) {
 
 			if ( rowData == null ) {
-				rowData = new Vector( getColumnCount() );
+				rowData = new Vector<Object>( getColumnCount() );
 			}
 			else {
 				rowData.setSize( getColumnCount() );
@@ -502,10 +502,10 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 			addRow( convertToVector( rowData ) );
 		}
 
-		public void insertRow( int row, Vector rowData ) {
+		public void insertRow( int row, Vector<Object> rowData ) {
 
 			if ( rowData == null ) {
-				rowData = new Vector( getColumnCount() );
+				rowData = new Vector<Object>( getColumnCount() );
 			}
 			else {
 				rowData.setSize( getColumnCount() );
@@ -531,7 +531,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 				return;
 			boolean shift = toIndex < startIndex;
 			for ( int i = startIndex; i <= endIndex; i++ ) {
-				Object aRow = dataVector.elementAt( i );
+				Vector<Object> aRow = dataVector.elementAt( i );
 				dataVector.removeElementAt( i );
 				dataVector.insertElementAt( aRow, toIndex );
 				if ( shift )
@@ -546,9 +546,9 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 			fireTableRowsDeleted( row, row );
 		}
 
-		public Vector getRow( int iInd ) {
+		public Vector<Object> getRow( int iInd ) {
 
-			return (Vector) dataVector.elementAt( iInd );
+			return dataVector.elementAt( iInd );
 		}
 
 		public void limpa() {
@@ -603,39 +603,39 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 
 		public Object getValueAt( int row, int column ) {
 
-			Vector rowVector = (Vector) dataVector.elementAt( row );
+			Vector<?> rowVector = dataVector.elementAt( row );
 			return rowVector.elementAt( column );
 		}
 
 		public void setValueAt( Object aValue, int row, int column ) {
 
-			Vector rowVector = (Vector) dataVector.elementAt( row );
+			Vector<Object> rowVector = dataVector.elementAt( row );
 			rowVector.setElementAt( aValue, column );
 			fireTableChanged( new TableModelEvent( this, row, row, column ) );
 		}
 
-		public Class getColumnClass( int c ) {
+		public Class<? extends Object> getColumnClass( int c ) {
 
 			Object bRet = getValueAt( 0, c );
 			return bRet == null ? null : bRet.getClass();
 		}
 
-		protected Vector convertToVector( Object[] anArray ) {
+		protected Vector<Object> convertToVector( Object[] anArray ) {
 
 			if ( anArray == null )
 				return null;
-			Vector v = new Vector( anArray.length );
+			Vector<Object> v = new Vector<Object>( anArray.length );
 			for ( int i = 0; i < anArray.length; i++ ) {
 				v.addElement( anArray[ i ] );
 			}
 			return v;
 		}
 
-		protected Vector convertToVector( Object[][] anArray ) {
+		protected Vector<Vector<Object>> convertToVector( Object[][] anArray ) {
 
 			if ( anArray == null )
 				return null;
-			Vector v = new Vector( anArray.length );
+			Vector<Vector<Object>> v = new Vector<Vector<Object>>( anArray.length );
 			for ( int i = 0; i < anArray.length; i++ ) {
 				v.addElement( convertToVector( anArray[ i ] ) );
 			}

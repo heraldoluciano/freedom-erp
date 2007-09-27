@@ -339,7 +339,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		return iRetorno;
 	}
 
-	private Vector<String> getVendedores( String sCodSetor, Vector<Vector<Comparable>> vItens ) {
+	private Vector<String> getVendedores( String sCodSetor, Vector<Vector<Object>> vItens ) {
 
 		Vector<String> vRetorno = new Vector<String>();
 		String sCodVend = "";
@@ -545,8 +545,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sMes = null;
 		String sMesAnt = null;
 		ImprimeOS imp = null;
-		Vector<Vector<Comparable>> vItens = null;
-		Vector<Comparable> vItem = null;
+		Vector<Vector<Object>> vItens = null;
+		Vector<Object> vItem = null;
 		Vector<Double> vTotSetor = null;
 		Vector<String> vCols = null;
 		int linPag = 0;
@@ -575,7 +575,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			imp.addSubTitulo( "PERIODO DE: " + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
 			imp.limpaPags();
 
-			vItens = new Vector<Vector<Comparable>>();
+			vItens = new Vector<Vector<Object>>();
 			sCodMarca = txtCodMarca.getVlrString().trim();
 			sCodGrup1 = txtCodGrup1.getVlrString().trim();
 			sCodGrup2 = txtCodGrup2.getVlrString().trim();
@@ -775,7 +775,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 				while ( rs.next() ) {
 
-					vItem = new Vector<Comparable>();
+					vItem = new Vector<Object>();
 					sCodSetor = rs.getString( 1 );
 					sMes = rs.getString( 2 );
 					sCodGrup = rs.getString( 3 );

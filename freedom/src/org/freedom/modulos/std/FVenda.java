@@ -1550,8 +1550,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		DLRPedido dl = null;
 		GregorianCalendar cal = null;
 		Date dtHoje = null;
-		Vector vDesc = null;
-		Vector vObs = null;
+		Vector<?> vDesc = null;
+		Vector<?> vObs = null;
 		Object layNF = null;
 		ImprimeOS imp = new ImprimeOS( "", con, "PD", true );
 		boolean bImpOK = false;
@@ -1679,7 +1679,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 				while ( rs.next() ) {
 
-					vDesc = new Vector();
+					vDesc = new Vector<Object>();
 
 					if ( bPrefs[ 9 ] ) {
 						vDesc = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "ObsItVenda" ) == null ? rs.getString( "DescProd" ).trim() : rs.getString( "ObsItVenda" ).trim() ), 40 );

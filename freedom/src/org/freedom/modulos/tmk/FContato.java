@@ -566,7 +566,7 @@ public class FContato extends FTabDados implements RadioGroupListener,
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == btPrevimp) {
 			imprimir(true);
-			Vector vVal = Funcoes.stringToVector(txaObs.getText());
+			Vector<?> vVal = Funcoes.stringToVector(txaObs.getText());
 			int iTam = vVal.size();
 			for (int i = 0; i < iTam; i++) {
 				System.out.println(i + " : " + vVal.elementAt(i));

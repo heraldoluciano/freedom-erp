@@ -78,10 +78,10 @@ import org.freedom.telas.FSuporte;
 public class Funcoes {
 
 	@SuppressWarnings("unchecked")
-	private static Vector<Vector<Comparable>> vIE = new Vector<Vector<Comparable>>(34);
+	private static Vector<Vector<Object>> vIE = new Vector<Vector<Object>>(34);
 
 	@SuppressWarnings("unchecked")
-	private static Vector<Vector<Comparable>> vPesoIE = new Vector<Vector<Comparable>>(13);
+	private static Vector<Vector<Object>> vPesoIE = new Vector<Vector<Object>>(13);
 
 	//private static ImageIcon imgIcone = null;
 	public static String sIEValida = "";
@@ -2277,19 +2277,19 @@ public class Funcoes {
 	@SuppressWarnings("unchecked")
 	private static void montaTabPesoIE() {
 
-		Vector<Comparable> linha01 = new Vector<Comparable>();
-		Vector<Comparable> linha02 = new Vector<Comparable>();
-		Vector<Comparable> linha03 = new Vector<Comparable>();
-		Vector<Comparable> linha04 = new Vector<Comparable>();
-		Vector<Comparable> linha05 = new Vector<Comparable>();
-		Vector<Comparable> linha06 = new Vector<Comparable>();
-		Vector<Comparable> linha07 = new Vector<Comparable>();
-		Vector<Comparable> linha08 = new Vector<Comparable>();
-		Vector<Comparable> linha09 = new Vector<Comparable>();
-		Vector<Comparable> linha10 = new Vector<Comparable>();
-		Vector<Comparable> linha11 = new Vector<Comparable>();
-		Vector<Comparable> linha12 = new Vector<Comparable>();
-		Vector<Comparable> linha13 = new Vector<Comparable>();
+		Vector<Object> linha01 = new Vector<Object>();
+		Vector<Object> linha02 = new Vector<Object>();
+		Vector<Object> linha03 = new Vector<Object>();
+		Vector<Object> linha04 = new Vector<Object>();
+		Vector<Object> linha05 = new Vector<Object>();
+		Vector<Object> linha06 = new Vector<Object>();
+		Vector<Object> linha07 = new Vector<Object>();
+		Vector<Object> linha08 = new Vector<Object>();
+		Vector<Object> linha09 = new Vector<Object>();
+		Vector<Object> linha10 = new Vector<Object>();
+		Vector<Object> linha11 = new Vector<Object>();
+		Vector<Object> linha12 = new Vector<Object>();
+		Vector<Object> linha13 = new Vector<Object>();
 
 		linha01.addElement("P1");
 		linha01.addElement(new Integer(6));
@@ -2515,40 +2515,40 @@ public class Funcoes {
 
 	@SuppressWarnings("unchecked")
 	private static void montaTabCalcIE() {
-		Vector<Comparable> linha01 = new Vector<Comparable>();
-		Vector<Comparable> linha02 = new Vector<Comparable>();
-		Vector<Comparable> linha03 = new Vector<Comparable>();
-		Vector<Comparable> linha04 = new Vector<Comparable>();
-		Vector<Comparable> linha05 = new Vector<Comparable>();
-		Vector<Comparable> linha06 = new Vector<Comparable>();
-		Vector<Comparable> linha07 = new Vector<Comparable>();
-		Vector<Comparable> linha08 = new Vector<Comparable>();
-		Vector<Comparable> linha09 = new Vector<Comparable>();
-		Vector<Comparable> linha10 = new Vector<Comparable>();
-		Vector<Comparable> linha11 = new Vector<Comparable>();
-		Vector<Comparable> linha12 = new Vector<Comparable>();
-		Vector<Comparable> linha13 = new Vector<Comparable>();
-		Vector<Comparable> linha14 = new Vector<Comparable>();
-		Vector<Comparable> linha15 = new Vector<Comparable>();
-		Vector<Comparable> linha16 = new Vector<Comparable>();
-		Vector<Comparable> linha17 = new Vector<Comparable>();
-		Vector<Comparable> linha18 = new Vector<Comparable>();
-		Vector<Comparable> linha19 = new Vector<Comparable>();
-		Vector<Comparable> linha20 = new Vector<Comparable>();
-		Vector<Comparable> linha21 = new Vector<Comparable>();
-		Vector<Comparable> linha22 = new Vector<Comparable>();
-		Vector<Comparable> linha23 = new Vector<Comparable>();
-		Vector<Comparable> linha24 = new Vector<Comparable>();
-		Vector<Comparable> linha25 = new Vector<Comparable>();
-		Vector<Comparable> linha26 = new Vector<Comparable>();
-		Vector<Comparable> linha27 = new Vector<Comparable>();
-		Vector<Comparable> linha28 = new Vector<Comparable>();
-		Vector<Comparable> linha29 = new Vector<Comparable>();
-		Vector<Comparable> linha30 = new Vector<Comparable>();
-		Vector<Comparable> linha31 = new Vector<Comparable>();
-		Vector<Comparable> linha32 = new Vector<Comparable>();
-		Vector<Comparable> linha33 = new Vector<Comparable>();
-		Vector<Comparable> linha34 = new Vector<Comparable>();
+		Vector<Object> linha01 = new Vector<Object>();
+		Vector<Object> linha02 = new Vector<Object>();
+		Vector<Object> linha03 = new Vector<Object>();
+		Vector<Object> linha04 = new Vector<Object>();
+		Vector<Object> linha05 = new Vector<Object>();
+		Vector<Object> linha06 = new Vector<Object>();
+		Vector<Object> linha07 = new Vector<Object>();
+		Vector<Object> linha08 = new Vector<Object>();
+		Vector<Object> linha09 = new Vector<Object>();
+		Vector<Object> linha10 = new Vector<Object>();
+		Vector<Object> linha11 = new Vector<Object>();
+		Vector<Object> linha12 = new Vector<Object>();
+		Vector<Object> linha13 = new Vector<Object>();
+		Vector<Object> linha14 = new Vector<Object>();
+		Vector<Object> linha15 = new Vector<Object>();
+		Vector<Object> linha16 = new Vector<Object>();
+		Vector<Object> linha17 = new Vector<Object>();
+		Vector<Object> linha18 = new Vector<Object>();
+		Vector<Object> linha19 = new Vector<Object>();
+		Vector<Object> linha20 = new Vector<Object>();
+		Vector<Object> linha21 = new Vector<Object>();
+		Vector<Object> linha22 = new Vector<Object>();
+		Vector<Object> linha23 = new Vector<Object>();
+		Vector<Object> linha24 = new Vector<Object>();
+		Vector<Object> linha25 = new Vector<Object>();
+		Vector<Object> linha26 = new Vector<Object>();
+		Vector<Object> linha27 = new Vector<Object>();
+		Vector<Object> linha28 = new Vector<Object>();
+		Vector<Object> linha29 = new Vector<Object>();
+		Vector<Object> linha30 = new Vector<Object>();
+		Vector<Object> linha31 = new Vector<Object>();
+		Vector<Object> linha32 = new Vector<Object>();
+		Vector<Object> linha33 = new Vector<Object>();
+		Vector<Object> linha34 = new Vector<Object>();
 
 		linha01.addElement("AC");
 		linha01.addElement(new Integer(1));

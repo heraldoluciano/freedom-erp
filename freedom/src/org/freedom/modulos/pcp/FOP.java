@@ -1272,7 +1272,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		ResultSet rs = null;
 		String sSql = "SELECT CLASSOP FROM SGPREFERE5 WHERE CODEMP=? AND CODFILIAL=?";
 		String sClassOP = "";
-		Vector<String> vParamOP = new Vector<String>();
+		Vector<Object> vParamOP = new Vector<Object>();
 		LeiauteGR leiOP = null;
 		try {
 			try {

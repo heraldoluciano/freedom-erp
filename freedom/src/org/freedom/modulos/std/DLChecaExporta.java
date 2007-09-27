@@ -106,12 +106,12 @@ public class DLChecaExporta extends DLRelatorio {
 		tab.setTamColuna( 50, 7 );
 	}
 
-	public void carregaDados( Object dados ) {
+	public void carregaDados( List<FExporta.SafeBean> dados ) {
 		
 		if ( SAFE_CONTABIL.equals( sistema ) ) {
 			
 			try {
-				carregaDadosSafeContabil( (List<FExporta.SafeBean>) dados );
+				carregaDadosSafeContabil( dados );
 			} catch ( ClassCastException e ) {
 				e.printStackTrace();
 			}

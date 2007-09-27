@@ -56,7 +56,7 @@ public class EvoluVendasBarras extends LeiauteGR {
 
 	private ResultSet rs = null;
 
-	Vector vParamOrc = new Vector();
+	Vector<?> vParamOrc = new Vector<Object>();
 
 	public void montaG() {
 
@@ -129,7 +129,7 @@ public class EvoluVendasBarras extends LeiauteGR {
 		finaliza();
 	}
 
-	public void setParam( Vector vParam ) {
+	public void setParam( Vector<?> vParam ) {
 
 		vParamOrc = vParam;
 	}

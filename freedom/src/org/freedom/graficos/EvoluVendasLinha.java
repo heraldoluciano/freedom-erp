@@ -57,7 +57,7 @@ public class EvoluVendasLinha extends LeiauteGR {
 
 	private ResultSet rs = null;
 
-	Vector vParamOrc = new Vector();
+	Vector<?> vParamOrc = new Vector<Object>();
 
 	public void montaG() {
 
@@ -85,7 +85,7 @@ public class EvoluVendasLinha extends LeiauteGR {
 	private void montaRel() {
 
 		imprimeRodape( false );
-		Vector vLegenda = new Vector();
+		Vector<String> vLegenda = new Vector<String>();
 		
 		try {
 			XYSeries series = new XYSeries( "Evolução de vendas" );
@@ -167,7 +167,7 @@ public class EvoluVendasLinha extends LeiauteGR {
 		finaliza();
 	}
 
-	public void setParam( Vector vParam ) {
+	public void setParam( Vector<?> vParam ) {
 
 		vParamOrc = vParam;
 	}

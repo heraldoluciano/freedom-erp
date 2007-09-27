@@ -63,10 +63,10 @@ public class NF020 extends Layout {
 		BigDecimal bdVlrIssServ = new BigDecimal( "0" );
 		BigDecimal bdVlrTotServ = new BigDecimal( "0" );
 		Vector<String> vClfisc = new Vector<String>();
-		Vector vSigla = new Vector();
-		Vector vDescFisc = new Vector();
+		Vector<String> vSigla = new Vector<String>();
+		Vector<?> vDescFisc = new Vector<Object>();
 		Vector<Object[]> vServico = new Vector<Object[]>();
-		Vector vDescServ = new Vector();
+		Vector<?> vDescServ = new Vector<Object>();
 
 		try {
 
@@ -389,7 +389,7 @@ public class NF020 extends Layout {
 						if ( aux < sizeObs ) {
 							imp.pulaLinha( 1, imp.comprimido() );
 							if ( vSigla.size() > 0 && indexSigla < vSigla.size() ) {
-								imp.say( 4, (String) vSigla.elementAt( indexSigla++ ) );
+								imp.say( 4, vSigla.elementAt( indexSigla++ ) );
 							}
 							if ( vDescFisc.size() > 0 && indexDescFisc < vDescFisc.size() ) {
 								imp.say( 20, Funcoes.copy( (String) vDescFisc.elementAt( indexDescFisc++ ), 40 ) );

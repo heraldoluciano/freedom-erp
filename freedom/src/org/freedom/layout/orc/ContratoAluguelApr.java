@@ -38,7 +38,7 @@ public class ContratoAluguelApr extends LeiauteGR {
 	private Font fnTopEmp = new Font("Arial",Font.BOLD,11);
 	private Font fnCabEmp = new Font("Arial",Font.PLAIN,9);
 	private Font fnCabEmpNeg = new Font("Arial",Font.BOLD,9);	
-	Vector vParamOrc = new Vector();
+	Vector<?> vParamOrc = new Vector<Object>();
 	String sCidade;
 	public void montaG() {
 		montaRel();
@@ -184,7 +184,7 @@ public class ContratoAluguelApr extends LeiauteGR {
 
 	}
 	
-	public void setParam(Vector vParam) {
+	public void setParam(Vector<?> vParam) {
 		vParamOrc = vParam;
 	}
 

@@ -98,7 +98,7 @@ public class FDevolucao extends FWizard implements CarregaListener {
 
 	private JLabelPad lbBuscaItVenda1b = new JLabelPad( "0 iten(s) a ser(em) adicionado(s)" );
 
-	private Vector vItVenda1b = null;
+	private Vector<?> vItVenda1b = null;
 
 	public FDevolucao() {
 
@@ -337,7 +337,7 @@ public class FDevolucao extends FWizard implements CarregaListener {
 		return iRet;
 	}
 
-	private int entradaParc( Vector vItens ) {
+	private int entradaParc( Vector<?> vItens ) {
 
 		int iRet = 0;
 		String sSQL = "SELECT CODCOMPRA FROM CPGERAENTRADASP(?,?,?,?,?,'N')";

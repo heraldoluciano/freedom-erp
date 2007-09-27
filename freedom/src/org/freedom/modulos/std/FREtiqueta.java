@@ -136,8 +136,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 		pnTotal.add( pinCab, BorderLayout.NORTH );
 		pnTotal.add( pnDet, BorderLayout.CENTER );
 
-		Vector lAtivo = new Vector();
-		Vector vAtivo = new Vector();
+		Vector<String> lAtivo = new Vector<String>();
+		Vector<String> vAtivo = new Vector<String>();
 		lAtivo.addElement( "<--Selecione-->" );
 		lAtivo.addElement( "Ativos" );
 		lAtivo.addElement( "Inativos" );
@@ -261,8 +261,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 
 		tb.limpa();
 		objEtiqCli.setTexto( txaEtiqueta.getVlrString() );
-		Vector vLabelsColunas = objEtiqCli.getLabelsColunasAdic();
-		Vector vTamanhos = objEtiqCli.getTamsAdic();
+		Vector<?> vLabelsColunas = objEtiqCli.getLabelsColunasAdic();
+		Vector<?> vTamanhos = objEtiqCli.getTamsAdic();
 		for ( int i = 0; vLabelsColunas.size() > i; i++ ) {
 			tb.adicColuna( vLabelsColunas.elementAt( i ).toString() );
 			String sTmp = vTamanhos.elementAt( i ).toString();
@@ -279,6 +279,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 		bMontaTab = false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void adicItens() {
 
 		ResultSet rs = null;
@@ -287,15 +288,15 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 			ps = con.prepareStatement( montaQuery( "VDCLIENTE" ) );
 			rs = ps.executeQuery();
 
-			Vector vLinha = new Vector();
+			Vector<Object> vLinha = new Vector<Object>();
 
 			while ( rs.next() ) {
-				vLinha = new Vector();
+				vLinha = new Vector<Object>();
 				for ( int i = 1; objEtiqCli.getCamposAdic().size() >= i; i++ ) {
 					String sTmp = rs.getString( i ) != null ? rs.getString( i ) : "";
 					vLinha.addElement( sTmp );
 				}
-				tab.adicLinha( (Vector) vLinha.clone() );
+				tab.adicLinha( (Vector<Object>) vLinha.clone() );
 			}
 		} catch ( SQLException e ) {
 			e.printStackTrace();
@@ -334,6 +335,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 		lcVendedor.setConexao( cn );
 	}
 
+	@SuppressWarnings("unchecked")
 	public void imprimir( boolean bVisualizar ) {
 
 		String sTxa = txaEtiqueta.getVlrString();
@@ -357,9 +359,9 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 				try {
 					ps = con.prepareStatement( montaQuery( "VDCLIENTE" ) );
 					rs = ps.executeQuery();
-					Vector vCol = new Vector();
-					Vector vCols = new Vector();
-					Vector vVal = new Vector();
+					Vector<Vector<?>> vCol = new Vector<Vector<?>>();
+					Vector<Vector<Vector<?>>> vCols = new Vector<Vector<Vector<?>>>();
+					Vector<?> vVal = new Vector<Object>();
 
 					int iAdic = 0;
 					for ( int i = 0; tab.getNumLinhas() > i; i++ ) {
@@ -368,8 +370,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 						iAdic++;
 
 						if ( iNColModEtiq == iAdic ) {
-							vCols.addElement( vCol.clone() );
-							vCol = new Vector();
+							vCols.addElement( (Vector<Vector<?>>) vCol.clone() );
+							vCol = new Vector<Vector<?>>();
 							iAdic = 0;
 						}
 					}
@@ -413,7 +415,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 		String sSQL = "";
 		try {
 			String sCampos = "";
-			Vector vCamposAdic = objEtiqCli.getCamposAdic();
+			Vector<?> vCamposAdic = objEtiqCli.getCamposAdic();
 			String sWhere = "WHERE CODEMP=" + Aplicativo.iCodEmp + " AND CODFILIAL=" + ListaCampos.getMasterFilial( sTabela );
 
 			try {
@@ -456,7 +458,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 		return sSQL;
 	}
 
-	private void impCol( ImprimeOS imp, Vector vCols ) {
+	private void impCol( ImprimeOS imp, Vector<Vector<Vector<?>>> vCols ) {
 
 		try {
 			int iColsEtiq = txtNColModEtiq.getVlrInteger().intValue();
@@ -471,12 +473,12 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 					if ( txtComprimido.getVlrString().equals( "S" ) )
 						imp.say( imp.pRow(), 0, "" + imp.comprimido() );
 				for ( int i1 = 0; vCols.size() > i1; i1++ ) {
-					Vector vCol = ( (Vector) ( vCols.elementAt( i1 ) ) );
+					Vector<?> vCol = ( vCols.elementAt( i1 ) );
 					for ( int iNumLinhaEtiqAtual = 0; iNumLinEtiq > iNumLinhaEtiqAtual; iNumLinhaEtiqAtual++ ) {
 						for ( int i2 = 0; iColsEtiq > i2; i2++ ) {
 
 							if ( vCol.size() > i2 ) {
-								Vector vEtiqueta = (Vector) vCol.elementAt( i2 );
+								Vector<?> vEtiqueta = (Vector<?>) vCol.elementAt( i2 );
 								String sImp = "";
 								if ( vEtiqueta.size() > iNumLinhaEtiqAtual )
 									sImp = vEtiqueta.elementAt( iNumLinhaEtiqAtual ).toString();
@@ -535,17 +537,17 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 		}
 	}
 
-	private Vector aplicCampos( int iLinha ) {
+	private Vector<?> aplicCampos( int iLinha ) {
 
 		String sCampo = "";
 		String sRetorno = txaEtiqueta.getVlrString();
 		sRetorno = sRetorno.replaceAll( "\\\n", "[Q]" );
-		Vector vRet = null;
+		Vector<?> vRet = null;
 		if ( iLinha > -1 ) {
 			try {
-				Vector vMascAdic = objEtiqCli.getMascarasAdic();
-				Vector vValAdic = objEtiqCli.getValoresAdic();
-				Vector vCamposAdic = objEtiqCli.getCamposAdic();
+				Vector<?> vMascAdic = objEtiqCli.getMascarasAdic();
+				Vector<?> vValAdic = objEtiqCli.getValoresAdic();
+				Vector<?> vCamposAdic = objEtiqCli.getCamposAdic();
 				if ( sRetorno != null ) {
 					try {
 						for ( int i = 0; vCamposAdic.size() > i; i++ ) {

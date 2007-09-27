@@ -81,7 +81,7 @@ public class FRUltimaVenda extends FRelatorio {
 
 	private Vector<String> vValsFin = new Vector<String>();
 
-	private Vector vObs = null;
+	private Vector<?> vObs = null;
 
 	private ListaCampos lcVend = new ListaCampos( this );
 

@@ -180,7 +180,7 @@ public class NFMcraftSvco extends Leiaute {
 					imp.say(imp.pRow()+0,14,rs.getString("DescProd").trim());
 */
 				
-				Vector vDesc = Funcoes.strToVectorSilabas(rs.getString("ObsItVenda")==null || rs.getString("ObsItVenda").equals("") ? (rs.getString("DescProd").trim()):rs.getString("ObsItVenda"),70);
+				Vector<?> vDesc = Funcoes.strToVectorSilabas(rs.getString("ObsItVenda")==null || rs.getString("ObsItVenda").equals("") ? (rs.getString("DescProd").trim()):rs.getString("ObsItVenda"),70);
 				String sDesc = "";
 				for (int iConta=0;( (iConta < 20) && (vDesc.size()>iConta) );iConta++){
 					if (!vDesc.elementAt(iConta).toString().equals(""))

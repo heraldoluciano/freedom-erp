@@ -69,7 +69,7 @@ public abstract class FVD extends FDetalhe {
 	/**
 	 * @return parametros para mostrar a dialog de desconto.
 	 */
-	public abstract Vector getParansDesconto();
+	public abstract Vector<?> getParansDesconto();
 
 	/**
 	 * @return parametros para mostrar a dialog de dassword.
@@ -733,7 +733,7 @@ public abstract class FVD extends FDetalhe {
 	 */
 	protected void mostraTelaDesconto() {
 
-		Vector param = getParansDesconto();
+		Vector<?> param = getParansDesconto();
 		/*
 		 * param 0 - descontos 1 - preço do item 2 - valor do desconto do item 3 - quantidade do item
 		 */

@@ -37,13 +37,13 @@ public class OPApr extends LeiauteGR {
 	private Font fnTitulo = new Font("Times New Roman",Font.BOLD,14);
 	private Font fnArial9 = new Font("Arial",Font.PLAIN,9);
 	private Font fnArial9N = new Font("Arial",Font.BOLD,9);
-	Vector vParamOP = new Vector();
+	Vector<?> vParamOP = new Vector<Object>();
 	final int iPosIniItens = 400;
 	final int iPosMaxItens = 740;
 	int iYPosProd=0;
 	int iY = 160;
-	Vector vItens = new Vector();
-	Vector vItem = new Vector();
+	Vector<Vector<String>> vItens = new Vector<Vector<String>>();
+	Vector<String> vItem = new Vector<String>();
 	int iCodOP = 0;
 	String sDescProd = "";
 	String sLote = "";
@@ -55,10 +55,11 @@ public class OPApr extends LeiauteGR {
 	public void montaG() {
 		montaRel();
 	}
-	public void setParam(Vector vParam) {
+	public void setParam(Vector<?> vParam) {
 		vParamOP = vParam;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void montaRel() {
 		setMargemPdf(5,5);
 		iCodOP = Integer.parseInt(vParamOP.elementAt(0).toString());
@@ -81,14 +82,14 @@ public class OPApr extends LeiauteGR {
 		  ResultSet rs = ps.executeQuery();
 		  		   
 		  while (rs.next()) {
-            vItem = new Vector();
+            vItem = new Vector<String>();
             vItem.addElement((rs.getString(12)!=null?rs.getString(12):"")); //Código
             vItem.addElement((rs.getString(13)!=null?rs.getString(13):"")); //Descrição
             vItem.addElement((rs.getString(16)!=null?Funcoes.strDecimalToStrCurrency(3,rs.getString(16)):"0")); //Quantidade
             vItem.addElement((rs.getString(14)!=null?rs.getString(14):"")); //Unidade
             vItem.addElement((rs.getString(15)!=null?rs.getString(15):"")); //Lote
             vItem.addElement((rs.getString(18)!=null?rs.getString(18):"0")); //Fase            
-            vItens.addElement(vItem.clone());
+            vItens.addElement((Vector<String>) vItem.clone());
             System.out.println("Adicionou:"+rs.getString(13));
 		  }
 
@@ -198,12 +199,12 @@ public class OPApr extends LeiauteGR {
             String sLote = "";
                         
             for(int i=0;vItens.size()>i;i++) {
-              sCod  = ((Vector) vItens.elementAt(i)).elementAt(0).toString();
-              sDesc = ((Vector) vItens.elementAt(i)).elementAt(1).toString();
-              sQtd  = ((Vector) vItens.elementAt(i)).elementAt(2).toString();
-              sUnid = ((Vector) vItens.elementAt(i)).elementAt(3).toString();
-              sLote = ((Vector) vItens.elementAt(i)).elementAt(4).toString();
-              iCodFaseI = Integer.parseInt(((Vector) vItens.elementAt(i)).elementAt(5).toString());
+              sCod  = vItens.elementAt(i).elementAt(0).toString();
+              sDesc = vItens.elementAt(i).elementAt(1).toString();
+              sQtd  = vItens.elementAt(i).elementAt(2).toString();
+              sUnid = vItens.elementAt(i).elementAt(3).toString();
+              sLote = vItens.elementAt(i).elementAt(4).toString();
+              iCodFaseI = Integer.parseInt(vItens.elementAt(i).elementAt(5).toString());
               
               if(iCodFaseI==iCodFaseF) {
                 drawTexto(sCod,10,iY); //Codigo	
@@ -283,13 +284,13 @@ public class OPApr extends LeiauteGR {
             String sLote = "";
 
             for(int i=0;vItens.size()>i;i++) {
-                sCod  = ((Vector) vItens.elementAt(i)).elementAt(0).toString();
-                sDesc = ((Vector) vItens.elementAt(i)).elementAt(1).toString();
-                sLote = ((Vector) vItens.elementAt(i)).elementAt(4).toString();
-                sQtd  = ((Vector) vItens.elementAt(i)).elementAt(2).toString();
-                sUnid = ((Vector) vItens.elementAt(i)).elementAt(3).toString();
+                sCod  = vItens.elementAt(i).elementAt(0).toString();
+                sDesc = vItens.elementAt(i).elementAt(1).toString();
+                sLote = vItens.elementAt(i).elementAt(4).toString();
+                sQtd  = vItens.elementAt(i).elementAt(2).toString();
+                sUnid = vItens.elementAt(i).elementAt(3).toString();
 
-                iCodFaseI = Integer.parseInt(((Vector) vItens.elementAt(i)).elementAt(5).toString());
+                iCodFaseI = Integer.parseInt(vItens.elementAt(i).elementAt(5).toString());
                 
                 if(iCodFaseI==iCodFaseF) {
                   drawTexto(sCod,18,iY); //Codigo
@@ -476,7 +477,7 @@ public class OPApr extends LeiauteGR {
 	  }
 	}
     	
-	public void stParam(Vector vParam) {
+	public void stParam(Vector<?> vParam) {
 		vParamOP = vParam;
 	}
 

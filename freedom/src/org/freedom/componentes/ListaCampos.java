@@ -171,7 +171,7 @@ public class ListaCampos extends Container implements PostListener,
 	private String sOrdem = "";
 
 	@SuppressWarnings("unchecked")
-	private Vector<Comparable> vCache = new Vector<Comparable>();
+	private Vector<Object> vCache = new Vector<Object>();
 
 	private Navegador nvLC = null;
 
@@ -1647,7 +1647,7 @@ public class ListaCampos extends Container implements PostListener,
 				bResultado = false;
 			}
 		}
-		vCache = new Vector<Comparable>();
+		vCache = new Vector<Object>();
 		if (bResultado) {
 			if (con == null) {
 				Funcoes.mensagemErro(this, "Conexão nula!!");
@@ -2595,7 +2595,7 @@ public class ListaCampos extends Container implements PostListener,
 
 	@SuppressWarnings("unchecked")
 	private void carregaGridInsert(boolean b) {
-		Vector<Comparable> vVals = new Vector<Comparable>();
+		Vector<Object> vVals = new Vector<Object>();
 		int iContaDesc = 0;
 		if ((b) && (tab != null)) {
 			for (int i = 0; i < (getComponentCount() + iNumDescs); i++) {

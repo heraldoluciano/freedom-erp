@@ -93,7 +93,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 	
 	private List<String> readrows;
 	
-	private Object erros;
+	private List<FExporta.SafeBean> erros;
 	
 	private List<SafeBean> errosSafe;
 

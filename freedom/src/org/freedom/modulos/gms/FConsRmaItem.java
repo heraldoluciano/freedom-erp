@@ -106,7 +106,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 	boolean bAprovaParcial = false;
 	boolean bExpede = false;
 	boolean bAprova = false;
-	private Vector vSitRMA = new Vector();
+	private Vector<?> vSitRMA = new Vector<Object>();
 	public FConsRmaItem() {
 		super(false);
 		setTitulo("Pesquisa Requisições de material");
@@ -443,7 +443,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 			int iLin = 0;
 
 			tab.limpa();
-			vSitRMA = new Vector();
+			vSitRMA = new Vector<Object>();
 			while (rs.next()) {
 				tab.adicLinha();
 				

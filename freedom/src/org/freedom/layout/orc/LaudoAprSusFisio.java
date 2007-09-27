@@ -46,7 +46,7 @@ public class LaudoAprSusFisio extends LeiauteGR {
 	private Font fnCabCli = new Font("Times New Roman",Font.PLAIN,9);
 	private Font fnLogo = new Font("Times New Roman",Font.BOLD,11);
 	private Font fnLogo2 = new Font("Times New Roman",Font.PLAIN,10);
-	Vector vParamOrc = new Vector();
+	Vector<?> vParamOrc = new Vector<Object>();
 	String sCidade;
 	public void montaG() {
 		montaRel();
@@ -397,7 +397,7 @@ public class LaudoAprSusFisio extends LeiauteGR {
 	 }
 	}
 	
-	public void setParam(Vector vParam) {
+	public void setParam(Vector<?> vParam) {
 		vParamOrc = vParam;
 	}
 

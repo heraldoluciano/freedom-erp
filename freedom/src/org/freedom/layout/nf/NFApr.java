@@ -54,8 +54,8 @@ public class NFApr extends Leiaute {
 		String sHora = null;
 		Calendar cHora = Calendar.getInstance();
 		Vector<Object[]> vServ = new Vector<Object[]>();
-		Vector vDesc = null;
-		Vector vDescTemp = null;
+		Vector<?> vDesc = null;
+		Vector<?> vDescTemp = null;
 		BigDecimal bigSomaServ = new BigDecimal(0);
 		BigDecimal bigSomaProd = new BigDecimal(0);
 		
@@ -174,7 +174,7 @@ public class NFApr extends Leiaute {
 						
 						if (iServAtual<vServ.size()) {
 							
-							vDescTemp = (Vector)vServ.elementAt(iServAtual)[0];
+							vDescTemp = (Vector<?>)vServ.elementAt(iServAtual)[0];
 							
 							for (int j=0; j < vDescTemp.size() && iServ < 3; j++){
 								if (!vDescTemp.elementAt(j).toString().equals(""))

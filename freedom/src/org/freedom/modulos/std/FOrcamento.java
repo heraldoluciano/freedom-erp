@@ -242,7 +242,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private ListaCampos lcAtend = new ListaCampos( this, "AE" );
 
-	private Vector<String> vParamOrc = new Vector<String>();
+	private Vector<Object> vParamOrc = new Vector<Object>();
 
 	private String sOrdNota = "";
 
@@ -1340,8 +1340,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		ResultSet rs = null;
 		String sSQL = null;
 		String linhaFina = Funcoes.replicate( "-", 135 );
-		Vector vDesc = null;
-		Vector vObs = null;
+		Vector<?> vDesc = null;
+		Vector<?> vObs = null;
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int iCodOrc = txtCodOrc.getVlrInteger().intValue();
 		int linPag = imp.verifLinPag() - 1;
@@ -1373,7 +1373,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			rs = ps.executeQuery();
 			while ( rs.next() ) {
 
-				vDesc = new Vector();
+				vDesc = new Vector<Object>();
 				if ( ( (Boolean) oPrefs[ PrefOrc.DESCCOMPPED.ordinal() ] ).booleanValue() )
 					vDesc = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "ObsItOrc" ) == null ? 
 							rs.getString( "DescProd" ).trim() : rs.getString( "ObsItOrc" ).trim() ), 50 );

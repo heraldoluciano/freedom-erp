@@ -43,8 +43,8 @@ public class NF2001 extends Layout {
 		Calendar cHora = Calendar.getInstance();
 		Vector<String> vValores = new Vector<String>();
 		Vector<String> vClfisc = new Vector<String>();
-		Vector vSigla = new Vector();
-		Vector vDesc = null;
+		Vector<String> vSigla = new Vector<String>();
+		Vector<?> vDesc = null;
 		String sDesc = null;
 		String sCodfisc = null;
 		String sSigla = null;   
@@ -297,9 +297,9 @@ public class NF2001 extends Layout {
 		return retorno;
 	}
 	
-	private void impTotais(ImprimeOS imp,Vector<String> vValores,Vector vSigla){
+	private void impTotais(ImprimeOS imp,Vector<String> vValores,Vector<String> vSigla){
 		
-		Vector vObs = null;
+		Vector<?> vObs = null;
 		
 		try {	
 
@@ -343,13 +343,13 @@ public class NF2001 extends Layout {
 			for(int i=0;i<vSigla.size();i++){
 				if(pos==1){
 					imp.pulaLinha(1, imp.comprimido());
-					imp.say(  6, (String)vSigla.elementAt(i));
+					imp.say(  6, vSigla.elementAt(i));
 					pos = 2;
 				} else if(pos==2){
-					imp.say( 28, (String)vSigla.elementAt(i));
+					imp.say( 28, vSigla.elementAt(i));
 					pos = 3;
 				} else if(pos==3){
-					imp.say( 50, (String)vSigla.elementAt(i));
+					imp.say( 50, vSigla.elementAt(i));
 					pos = 1;
 				}
 			}

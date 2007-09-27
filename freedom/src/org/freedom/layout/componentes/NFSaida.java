@@ -48,7 +48,7 @@ public class NFSaida extends NF {
 		return this.tipoNF;
 	}
 
-	public boolean carregaTabelas( Connection con, Vector parans ) {
+	public boolean carregaTabelas( Connection con, Vector<?> parans ) {
 
 		boolean retorno = true;
 		PreparedStatement ps = null;

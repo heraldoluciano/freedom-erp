@@ -156,7 +156,7 @@ public class NFMaviGesso extends Leiaute {
          if (!rs.getString("TipoProd").equals("S")) { // CASO NÃO SEJA SEVIÇO
             imp.say(imp.pRow()+1,0,""+imp.comprimido());            
             imp.say(imp.pRow()+0,6,rs.getString("CodProd"));             
-            Vector vDesc = Funcoes.strToVectorSilabas(rs.getString("ObsItVenda")==null || rs.getString("ObsItVenda").equals("") ? (rs.getString("DescProd").trim()):rs.getString("ObsItVenda"),46);
+            Vector<?> vDesc = Funcoes.strToVectorSilabas(rs.getString("ObsItVenda")==null || rs.getString("ObsItVenda").equals("") ? (rs.getString("DescProd").trim()):rs.getString("ObsItVenda"),46);
             String sDesc = "";
             for (int iConta=0;( (iConta < 20) && (vDesc.size()>iConta) );iConta++){
             	if (!vDesc.elementAt(iConta).toString().equals(""))

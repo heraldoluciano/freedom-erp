@@ -58,10 +58,10 @@ public class NF014 extends Layout {
 		String[] sDuplics = new String[4];
 		String[] moeda = new String[]{"centavos","centavo","real","reais"};
 		Vector<String> vClfiscal = new Vector<String>();
-		Vector vMatObs = null;
+		Vector<?> vMatObs = null;
 		Vector<String[]> vMens = new Vector<String[]>();
-		Vector vObs = null;
-		Vector vSigla = new Vector();
+		Vector<?> vObs = null;
+		Vector<String> vSigla = new Vector<String>();
 		Calendar cHora = Calendar.getInstance();
 		
 		try {
@@ -195,7 +195,7 @@ public class NF014 extends Layout {
 					}
 				}
 				 
-				Vector vDesc = Funcoes.strToVectorSilabas((itens.getString(NF.C_OBSITPED).equals("") ? (itens.getString(NF.C_DESCPROD).trim()) : itens.getString(NF.C_OBSITPED))+sDescAdic,49);
+				Vector<?> vDesc = Funcoes.strToVectorSilabas((itens.getString(NF.C_OBSITPED).equals("") ? (itens.getString(NF.C_DESCPROD).trim()) : itens.getString(NF.C_OBSITPED))+sDescAdic,49);
 				
 				
 				for (int i=0; i<vDesc.size();i++){
@@ -301,7 +301,7 @@ public class NF014 extends Layout {
 					   
 					for(int i=0; i<vSigla.size(); i++){
 						imp.pulaLinha(1, imp.comprimido());
-						imp.say(  9, (String)vSigla.elementAt(i));
+						imp.say(  9, vSigla.elementAt(i));
 					}
 					   
 					for(int i=0;i<vMens.size();i++)

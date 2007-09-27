@@ -38,7 +38,7 @@ public class OrcMCraft extends LeiauteGR {
 	private Connection con = null;
 	private Font fnTitulo = new Font("Times New Roman",Font.BOLD,15);
 	private Font fnCabCliIta = new Font("Times New Roman",Font.ITALIC,14);
-	Vector vParamOrc = new Vector();
+	Vector<?> vParamOrc = new Vector<Object>();
 	final int iPosIniItens = 360;
 	final int iPosMaxItens = 740; 
 	final int iSaltoProd = 13;
@@ -55,7 +55,7 @@ public class OrcMCraft extends LeiauteGR {
 		double iNLinhas = iPixels/iLargura;
 		int iNCaracteres = Funcoes.tiraChar(sTexto,"\n").length();
 		int iNCaracPorLinha = (int) (iNCaracteres/iNLinhas);  		
-        Vector vTextoSilabas = Funcoes.strToVectorSilabas(sTexto,iNCaracPorLinha);
+        Vector<?> vTextoSilabas = Funcoes.strToVectorSilabas(sTexto,iNCaracPorLinha);
 		for (int i=0;vTextoSilabas.size()>i;i++) {
 
 			if (iY > iPosMaxItens && rs != null) {
@@ -274,7 +274,7 @@ public class OrcMCraft extends LeiauteGR {
 	  }
 	}
 	
-	public void setParam(Vector vParam) {
+	public void setParam(Vector<?> vParam) {
 		vParamOrc = vParam;
 	}
 

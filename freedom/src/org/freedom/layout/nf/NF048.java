@@ -60,10 +60,10 @@ public class NF048 extends Layout {
 		String[] sVencs = new String[ 9 ];
 		String[] sVals = new String[ 9 ];
 		String[] sDuplics = new String[ 9 ];
-		Vector vObsVenda = new Vector();
+		Vector<?> vObsVenda = new Vector<Object>();
 		Vector<String> vClfisc = new Vector<String>();
 		Vector<String> vSigla = new Vector<String>();
-		Vector vDescServ = new Vector();
+		Vector<?> vDescServ = new Vector<Object>();
 		Vector<Object[]> vServico = new Vector<Object[]>();
 
 		try {

@@ -112,7 +112,7 @@ public class FConsPreco extends FFilho implements KeyListener, FocusListener {
 	}
 	
 	private void pesqCodProd(String sCodProd) {
-		Vector vtemp = null;
+		Vector<?> vtemp = null;
 		int iPesq = -1;
 		try {
 			for(int i=0; i<tbPreco.getNumLinhas(); i++) {
@@ -147,13 +147,13 @@ public class FConsPreco extends FFilho implements KeyListener, FocusListener {
 	    		"(PF.CODEMPCE=PP.CODEMPCC AND PF.CODFILIALCE=PP.CODFILIALCC AND PF.CODCLASCLI=PP.CODCLASCLI ) ) " +
 	    		"AND PF.CODEMP=" + Aplicativo.iCodEmp + 
 	    		" ORDER BY P.DESCPROD";
-	    Vector<Comparable> vLinha = null;
+	    Vector<Object> vLinha = null;
 	    try {
 	    	ps = con.prepareStatement(sSql);
 	    	rs = ps.executeQuery();
 	    	tbPreco.limpa();
 	    	while (rs.next()) {
-	    		vLinha = new Vector<Comparable>();
+	    		vLinha = new Vector<Object>();
 	    		vLinha.addElement(new StringDireita(String.valueOf(rs.getInt("CODPROD"))));
 	    		vLinha.addElement(new StringDireita(rs.getString("REFPROD")));
 	    		vLinha.addElement(rs.getString("DESCPROD"));

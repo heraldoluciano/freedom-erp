@@ -75,7 +75,7 @@ public class DLVisitas extends FFDialogo implements MouseListener{
   private ListaCampos lcAtendente = new ListaCampos(this,"AE");
   private Navegador navHist = new Navegador(false);
   
-  public DLVisitas(Component cOrig, Connection con,Vector vCli) {
+  public DLVisitas(Component cOrig, Connection con,Vector<?> vCli) {
     super(cOrig);    
     setTitulo("Alteração de historico");
     setAtribos(520, 500);
@@ -167,7 +167,7 @@ public class DLVisitas extends FFDialogo implements MouseListener{
     
   }
   
-  public void setCampos(Vector args){
+  public void setCampos(Vector<?> args){
 	  txtCodCli.setVlrInteger((Integer)args.elementAt(0));
 	  txtRazCli.setVlrString((String)args.elementAt(1));
 	  txtAno.setVlrInteger(((Integer)args.elementAt(2)));	    
@@ -201,7 +201,7 @@ public class DLVisitas extends FFDialogo implements MouseListener{
 	  PreparedStatement ps = null;
   	  ResultSet rs = null;
   	  String sql = null;
-  	  Vector<Comparable> vLinha = null;
+  	  Vector<Object> vLinha = null;
   	  int ano = year;
   	  int mes = month;
   	  try {
@@ -219,7 +219,7 @@ public class DLVisitas extends FFDialogo implements MouseListener{
   	  	rs = ps.executeQuery();
   	  	while (rs.next()) {
  	  		
-  	  		vLinha = new Vector<Comparable>();
+  	  		vLinha = new Vector<Object>();
   	  		vLinha.addElement(new Integer(rs.getInt("CODHISTTK")));
   	  		vLinha.addElement(new Integer(rs.getInt("CODCTO")));
   	  		vLinha.addElement(new Integer(rs.getInt("CODATEND")));

@@ -29,9 +29,9 @@ public class DLSelRecibo extends FFDialogo {
 		
 	}
 	
-	public void carregaTab(List<Comparable[]> lsCab, Vector<Object> vRec) {
-		Comparable[] cab = null;
-		Vector<Comparable> linha = null;
+	public void carregaTab(List<Object[]> lsCab, Vector<Vector<?>> vRec) {
+		Object[] cab = null;
+		Vector<Object> linha = null;
 		if (lsCab!=null) {
 			tab.adicColuna( "Sel." );
 			tab.setTamColuna( lsCab.size(), 50 );
@@ -43,11 +43,11 @@ public class DLSelRecibo extends FFDialogo {
 			}
 			
 			for (int i=0; i<vRec.size(); i++) {
-				linha = new Vector<Comparable>();
+				linha = new Vector<Object>();
 //				 Adicionar a coluna de seleção
 				linha.addElement( new Boolean( (i==0) ) ); // seleciona a primeira linha
-				for (int i2=0; i2<(((Vector) vRec.elementAt( i )).size()); i2++) {
-					linha.addElement((Comparable) ((Vector) vRec.elementAt( i )).elementAt(i2));
+				for (int i2=0; i2<(vRec.elementAt( i ).size()); i2++) {
+					linha.addElement(vRec.elementAt( i ).elementAt(i2));
 				}
 				tab.adicLinha(linha);
 			}

@@ -54,12 +54,12 @@ public class NF017 extends Layout {
 		String[] sVencs = new String[2];
 		String[] sVals = new String[2];
 		String[] sDuplics = new String[2];
-		Vector vMatObs = new Vector();
+		Vector<?> vMatObs = new Vector<Object>();
 		Vector<String> vClfiscal = new Vector<String>();
-		Vector vSigla = new Vector();
+		Vector<String> vSigla = new Vector<String>();
 		Vector<String[]> vMens = new Vector<String[]>();
-		Vector vDesc = null;
-		Vector vObs = null;
+		Vector<?> vDesc = null;
+		Vector<?> vObs = null;
 		Calendar cHora = Calendar.getInstance();
 		
 		try {
@@ -292,7 +292,7 @@ public class NF017 extends Layout {
 					   
 					for(int i=0; i<vSigla.size(); i++){
 						imp.pulaLinha(1, imp.comprimido());
-						imp.say(  9, (String)vSigla.elementAt(i));
+						imp.say(  9, vSigla.elementAt(i));
 					}
 					   
 					for(int i=0;i<vMens.size();i++)
