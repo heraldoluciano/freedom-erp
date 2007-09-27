@@ -95,7 +95,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 		lcCli.montaSql(false, "CLIENTE", "VD");
 		
 		lcCli.add(new GuardaCampo(txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, null, false));
-		lcCli.add(new GuardaCampo(txtNomeCli, "NomeCli", "Razão social do cliente", ListaCampos.DB_SI, null, false));
+		lcCli.add(new GuardaCampo(txtNomeCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, null, false));
 		txtCodCli.setTabelaExterna(lcCli);
 		txtCodCli.setNomeCampo("CodCli");
 		txtCodCli.setFK(true);
