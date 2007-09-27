@@ -117,8 +117,8 @@ public class FRCpTipoMov extends FRelatorio {
 		JLabelPad lbPeriodo = new JLabelPad("   	Periodo:");
 		lbPeriodo.setOpaque(true);
 
-		Vector vLabs = new Vector();
-		Vector vVals = new Vector();
+		Vector<String> vLabs = new Vector<String>();
+		Vector<String> vVals = new Vector<String>();
 		
 		vLabs.addElement( "Grafico" );
 		vLabs.addElement( "Texto" );
@@ -362,7 +362,7 @@ public class FRCpTipoMov extends FRelatorio {
 	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
 
 		FPrinterJob dlGr = null;
-		HashMap hParam = new HashMap();
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ));
