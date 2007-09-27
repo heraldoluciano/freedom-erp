@@ -27,7 +27,7 @@
 		<parameterDescription><![CDATA[Logo da Empresa]]></parameterDescription>
 		<defaultValueExpression ><![CDATA[null]]></defaultValueExpression>
 	</parameter>
-	<parameter name="RAZAOEMP" isForPrompting="false" class="java.lang.String">
+	<parameter name="RAZEMP" isForPrompting="false" class="java.lang.String">
 		<parameterDescription><![CDATA[Razão social da empresa]]></parameterDescription>
 		<defaultValueExpression ><![CDATA["Setpoint Informática Ltda (Razão Social não carregada)"]]></defaultValueExpression>
 	</parameter>
@@ -254,7 +254,7 @@ ORDER BY PD.CODGRUP, PD.DESCPROD]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{RAZAOEMP}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
 				</textField>
 				<line direction="BottomUp">
 					<reportElement
