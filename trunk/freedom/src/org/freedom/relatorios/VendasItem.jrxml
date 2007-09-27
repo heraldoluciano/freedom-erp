@@ -233,9 +233,9 @@ ORDER BY P.CODPROD,P.DESCPROD]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="25"
+						y="19"
 						width="397"
-						height="11"
+						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Empresa"/>
@@ -273,9 +273,9 @@ ORDER BY P.CODPROD,P.DESCPROD]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="39"
+						y="42"
 						width="240"
-						height="11"
+						height="16"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor"/>
@@ -321,9 +321,9 @@ ORDER BY P.CODPROD,P.DESCPROD]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="52"
+						y="61"
 						width="397"
-						height="22"
+						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor-1"/>

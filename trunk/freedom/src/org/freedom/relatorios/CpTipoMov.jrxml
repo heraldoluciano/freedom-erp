@@ -616,9 +616,9 @@ ORDER BY C.CODCOMPRA, IT.CODITCOMPRA]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="25"
+						y="19"
 						width="397"
-						height="11"
+						height="17"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Empresa"/>
@@ -632,9 +632,9 @@ ORDER BY C.CODCOMPRA, IT.CODITCOMPRA]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="39"
+						y="40"
 						width="240"
-						height="11"
+						height="17"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor"/>
@@ -680,9 +680,9 @@ ORDER BY C.CODCOMPRA, IT.CODITCOMPRA]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="77"
-						y="52"
+						y="62"
 						width="397"
-						height="29"
+						height="19"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor-1"/>

@@ -545,9 +545,9 @@ ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="25"
+						y="24"
 						width="397"
-						height="11"
+						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Empresa"/>
@@ -561,9 +561,9 @@ ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="39"
+						y="44"
 						width="240"
-						height="11"
+						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor"/>
@@ -609,9 +609,9 @@ ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="51"
+						y="67"
 						width="397"
-						height="29"
+						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor-1"/>
@@ -625,9 +625,9 @@ ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="51"
+						y="67"
 						width="397"
-						height="29"
+						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor-1"/>

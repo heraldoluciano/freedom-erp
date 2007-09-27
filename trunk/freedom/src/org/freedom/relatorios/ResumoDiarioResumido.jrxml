@@ -203,9 +203,9 @@ ORDER BY DTEMITVENDA]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="25"
+						y="17"
 						width="397"
-						height="11"
+						height="19"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Empresa"/>
@@ -245,7 +245,7 @@ ORDER BY DTEMITVENDA]]></queryString>
 						x="79"
 						y="39"
 						width="240"
-						height="11"
+						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor"/>
@@ -291,9 +291,9 @@ ORDER BY DTEMITVENDA]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="54"
+						y="58"
 						width="397"
-						height="19"
+						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor-1"/>
