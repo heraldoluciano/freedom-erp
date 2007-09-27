@@ -26,6 +26,7 @@
 package org.freedom.modulos.rep;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
@@ -67,6 +68,7 @@ import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLEnviarEmail;
 import org.freedom.telas.FDetalhe;
+import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FObservacao;
 import org.freedom.telas.FPrinterJob;
 
@@ -686,9 +688,24 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 				
 				EmailBean mail = Aplicativo.getEmailBean();
 				mail.setAssunto( "Pedido nº" + txtCodPed.getVlrInteger() + " de " + txtDataPed.getVlrString() );
-				mail.setPara( AplicativoRep.getEmailCliente( txtCodCli.getVlrInteger(), con ) );
+				
+				DLEmail dlenvio = new DLEmail( this );
+				dlenvio.setVisible( true );
+				
+				if ( dlenvio.OK ) {
+					if ( dlenvio.OPTION_CLIENTE == dlenvio.getOption() ) {
+						mail.setPara( AplicativoRep.getEmailCliente( txtCodCli.getVlrInteger(), con ) );	
+					}
+					else {
+						mail.setPara( AplicativoRep.getEmailFornecedor( txtCodFor.getVlrInteger(), con ) );
+					}
+				}
+				else {
+					return;
+				}
 
 				DLEnviarEmail enviar = new DLEnviarEmail( this, mail );
+				enviar.setConexao( con );
 				enviar.preparar();
 
 				FPrinterJob dlGr = getPedido( txtCodPed.getVlrInteger() );
@@ -863,14 +880,52 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcFornecedorItem.setConexao( cn );
 		lcPedido.setConexao( cn );
 		
-		montaDetalhe();
-
-		
+		montaDetalhe();		
 	}
 	
 	public void executar( final Integer codped ) {
 		txtCodPed.setVlrInteger( codped );
 		lcCampos.carregaDados();
+	}
+	
+	private class DLEmail extends FFDialogo {
+		
+		private static final long serialVersionUID = 1L;
+
+		private JRadioGroup rgOrdem = null;
+
+		private Vector<String> vLabs = new Vector<String>();
+
+		private Vector<String> vVals = new Vector<String>();
+		
+		final int OPTION_FORNECEDOR = 0;
+		
+		final int OPTION_CLIENTE = 1;
+		
+
+		public DLEmail( Component cOrig ) {
+
+			super( cOrig );
+			
+			setTitulo( "Seleção de envio" );
+			setAtribos( 300, 160 );
+			
+			vLabs.addElement( "Fornecedor" );
+			vLabs.addElement( "Cliente" );
+			vVals.addElement( String.valueOf( OPTION_FORNECEDOR ) );
+			vVals.addElement( String.valueOf( OPTION_CLIENTE ) );
+			rgOrdem = new JRadioGroup( 1, 2, vLabs, vVals );
+			rgOrdem.setVlrString( String.valueOf( OPTION_FORNECEDOR ) );
+			
+			adic( new JLabelPad( "Enviar para:" ), 7, 10, 80, 15 );
+			adic( rgOrdem, 7, 30, 270, 30 );
+		}
+
+		public int getOption() {
+
+			return Integer.parseInt( rgOrdem.getVlrString() );
+		}
+		
 	}
 
 }

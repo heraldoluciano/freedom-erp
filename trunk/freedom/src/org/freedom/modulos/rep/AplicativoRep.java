@@ -170,7 +170,7 @@ public class AplicativoRep extends AplicativoPD {
 
 		try {
 
-			sSQL.append( "SELECT EMAILCLI FROM RPFORNECEDOR WHERE CODEMP=? AND CODFILIAL=? AND CODFOR=?" );
+			sSQL.append( "SELECT EMAILFOR FROM RPFORNECEDOR WHERE CODEMP=? AND CODFILIAL=? AND CODFOR=?" );
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "RPFORNECEDOR" ) );
