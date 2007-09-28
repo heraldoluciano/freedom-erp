@@ -225,16 +225,17 @@ public class Serial {
 	 * @param porta
 	 * @return
 	 */
-	public SerialPort ativaSerial( final String porta ) {
+	@SuppressWarnings("unchecked")
+    public SerialPort ativaSerial( final String porta ) {
 
 		SerialPort portaSerial = null;
-		Enumeration listaPortas = null;
+		Enumeration<CommPortIdentifier> listaPortas = null;
 		CommPortIdentifier ips = null;
-		listaPortas = CommPortIdentifier.getPortIdentifiers();
+		listaPortas = (Enumeration<CommPortIdentifier>) CommPortIdentifier.getPortIdentifiers();
 
 		while ( listaPortas.hasMoreElements() ) {
 
-			ips = (CommPortIdentifier) listaPortas.nextElement();
+			ips = listaPortas.nextElement();
 
 			if ( ips.getName().equalsIgnoreCase( porta ) ) {
 				break;
