@@ -530,7 +530,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		vLabsData.addElement( "Vencimento" );
 		vLabsData.addElement( "Emissão" );
 
-		rgData = new JRadioGroup( 2, 1, vLabsData, vValsData );
+		rgData = new JRadioGroup<String, String>( 2, 1, vLabsData, vValsData );
 		rgData.setVlrString( "V" );
 		pinManut.adic( new JLabelPad( "Filtrar por:" ), 247, 0, 115, 20 );
 		pinManut.adic( rgData, 247, 20, 115, 65 );
@@ -552,7 +552,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		pinFiltroStatus.adic( cbPagas, 5, 20, 120, 20 );
 		pinFiltroStatus.adic( cbPagParcial, 5, 40, 120, 20 );
 
-		rgVenc = new JRadioGroup( 3, 2, vLabsVenc, vValsVenc );
+		rgVenc = new JRadioGroup<String, String>( 3, 2, vLabsVenc, vValsVenc );
 		rgVenc.setVlrString( "TT" );
 		pinManut.adic( new JLabelPad( "Filtrar por:" ), 365, 0, 150, 20 );
 		pinManut.adic( rgVenc, 365, 20, 115, 65 );

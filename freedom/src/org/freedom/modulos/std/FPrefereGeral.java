@@ -687,7 +687,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		vLabs.addElement( "Custo PEPS" );
 		vVals.addElement( "M" );
 		vVals.addElement( "P" );
-		rgTipoPrecoCusto = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgTipoPrecoCusto = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgTipoPrecoCusto.setVlrString( "M" );
 
 		Vector<String> vLabs1 = new Vector<String>();
@@ -698,7 +698,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		vVals1.addElement( "C" );
 		vVals1.addElement( "D" );
 		vVals1.addElement( "M" );
-		rgOrdNota = new JRadioGroup( 3, 1, vLabs1, vVals1 );
+		rgOrdNota = new JRadioGroup<String, String>( 3, 1, vLabs1, vVals1 );
 		rgOrdNota.setVlrString( "C" );
 
 		Vector<String> vLabs2 = new Vector<String>();
@@ -709,7 +709,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		vVals2.addElement( "C" );
 		vVals2.addElement( "V" );
 		vVals2.addElement( "A" );
-		rgSetorVenda = new JRadioGroup( 3, 1, vLabs2, vVals2 );
+		rgSetorVenda = new JRadioGroup<String, String>( 3, 1, vLabs2, vVals2 );
 		rgSetorVenda.setVlrString( "C" );
 
 		Vector<String> vLabs3 = new Vector<String>();
@@ -720,7 +720,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		vVals3.addElement( "N" );
 		vVals3.addElement( "A" );
 		vVals3.addElement( "L" );
-		rgLibCred = new JRadioGroup( 3, 1, vLabs3, vVals3 );
+		rgLibCred = new JRadioGroup<String, String>( 3, 1, vLabs3, vVals3 );
 		rgLibCred.setVlrString( "N" );
 
 		Vector<String> vLabsTpValidOrc1 = new Vector<String>();
@@ -729,7 +729,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		vLabsTpValidOrc1.addElement( "Nro. de dias" );
 		vValsTpValidOrc1.addElement( "D" );
 		vValsTpValidOrc1.addElement( "N" );
-		rgTipoValidOrc = new JRadioGroup( 1, 2, vLabsTpValidOrc1, vValsTpValidOrc1 );
+		rgTipoValidOrc = new JRadioGroup<String, String>( 1, 2, vLabsTpValidOrc1, vValsTpValidOrc1 );
 		rgTipoValidOrc.setVlrString( "D" );
 
 		Vector<Integer> vValsTipo = new Vector<Integer>();
@@ -935,7 +935,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		vVals4.addElement( "1" );
 		vVals4.addElement( "2" );
 
-		rgCodBar = new JRadioGroup( 1, 2, vLabs4, vVals4 );
+		rgCodBar = new JRadioGroup<String, String>( 1, 2, vLabs4, vVals4 );
 		rgCodBar.setVlrString( "2" );
 
 		adic( lbProdOpcoes, 17, 10, 70, 20 );

@@ -123,7 +123,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
 	vLabs.addElement("Avulso");
 	vLabs.addElement("Fornecedor");
 	vLabs.addElement("Cliente");	
-	rgTipoLanca = new JRadioGroup(1,3,vLabs,vVals);
+	rgTipoLanca = new JRadioGroup<String, String>(1,3,vLabs,vVals);
 	rgTipoLanca.addRadioGroupListener(this);   
 		
     txtVlrAtualLanca.setAtivo(false);

@@ -81,7 +81,7 @@ public class FRComissoes extends FRelatorio {
 		vLabs.addElement("Emissão");
 		vLabs.addElement("Vencimento");
 		vLabs.addElement("Pagto. comissão");
-		rgEmitRel = new JRadioGroup(3, 2, vLabs, vVals);
+		rgEmitRel = new JRadioGroup<String, String>(3, 2, vLabs, vVals);
 		rgEmitRel.setVlrString("E");
 		rgEmitRel.setAtivo(0, true);
 		rgEmitRel.setAtivo(1, true);
@@ -94,7 +94,7 @@ public class FRComissoes extends FRelatorio {
 		vLabsOrdem.addElement("Vencimento");
 		vLabsOrdem.addElement("Pagto. comissão");
 		vLabsOrdem.addElement("Duplicata");
-		rgOrdemRel = new JRadioGroup(2, 2, vLabsOrdem, vValsOrdem);
+		rgOrdemRel = new JRadioGroup<String, String>(2, 2, vLabsOrdem, vValsOrdem);
 		rgOrdemRel.setVlrString("E");
 		rgOrdemRel.setAtivo(0, true);
 		rgOrdemRel.setAtivo(1, true);

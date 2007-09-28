@@ -61,7 +61,7 @@ public class RPMoeda extends FDados {
 		vValsTipo.addElement( "I" );
 		vLabsTipo.addElement( "Moeda corrente" );
 		vLabsTipo.addElement( "Indice de valores" );
-		rgTipo = new JRadioGroup( 2, 1, vLabsTipo, vValsTipo );
+		rgTipo = new JRadioGroup<String, String>( 2, 1, vLabsTipo, vValsTipo );
 		rgTipo.setVlrString( "C" );
 		
 		montaTela();

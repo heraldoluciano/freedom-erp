@@ -124,7 +124,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 		Vector<String> vLabs = new Vector<String>();
 		vLabs.addElement("Data de Emissão");
 		vLabs.addElement("Data de Validade");
-		gbVenc = new JRadioGroup(2, 1, vLabs, vVals);
+		gbVenc = new JRadioGroup<String, String>(2, 1, vLabs, vVals);
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		JLabelPad lbLinha2 = new JLabelPad();

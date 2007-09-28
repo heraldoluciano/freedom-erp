@@ -118,7 +118,7 @@ public class RelHistoricoCliente extends FRelatorio {
 		Vector<String> vals2 = new Vector<String>();
 		vals2.add( "P.CODCLI,C.RAZCLI" );
 		vals2.add( "C.RAZCLI,P.CODCLI" );
-		rgOrdem = new JRadioGroup( 1, 2, labs2, vals2 );
+		rgOrdem = new JRadioGroup<String, String>( 1, 2, labs2, vals2 );
 	}
 	
 	private void montaListaCampos() {

@@ -170,7 +170,7 @@ public class FConta extends FTabDados implements CheckBoxListener {
 		vValsTipo.addElement( "C" );
 		vLabsTipo.addElement( "Bancos" );
 		vLabsTipo.addElement( "Caixa" );
-		rgTipo = new JRadioGroup( 1, 2, vLabsTipo, vValsTipo );
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabsTipo, vValsTipo );
 
 		
 		/***************

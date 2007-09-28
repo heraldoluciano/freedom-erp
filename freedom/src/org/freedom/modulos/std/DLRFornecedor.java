@@ -76,14 +76,14 @@ public class DLRFornecedor extends FFDialogo {
     vLabs.addElement("Razão");
     vVals.addElement("C");
     vVals.addElement("D");
-    rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+    rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
     rgOrdem.setVlrString("D");
 
     vLabsModo.addElement("Resumido");
     vLabsModo.addElement("Completo");
     vValsModo.addElement("R");
     vValsModo.addElement("C");
-    rgModo = new JRadioGroup(1,2,vLabsModo,vValsModo);
+    rgModo = new JRadioGroup<String, String>(1,2,vLabsModo,vValsModo);
     rgModo.setVlrString("R");
 
     cbObs.setVlrString("N");

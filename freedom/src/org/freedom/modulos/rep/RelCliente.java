@@ -84,7 +84,7 @@ public class RelCliente extends FRelatorio {
 		Vector<String> vals = new Vector<String>();
 		vals.add( "C" );
 		vals.add( "R" );
-		rgModo = new JRadioGroup( 1, 2, labs, vals );
+		rgModo = new JRadioGroup<String, String>( 1, 2, labs, vals );
 		
 		Vector<String> labs1 = new Vector<String>();
 		labs1.add( "Código" );
@@ -92,7 +92,7 @@ public class RelCliente extends FRelatorio {
 		Vector<String> vals1 = new Vector<String>();
 		vals1.add( "CODCLI" );
 		vals1.add( "RAZCLI" );
-		rgOrdem = new JRadioGroup( 1, 2, labs1, vals1 );		
+		rgOrdem = new JRadioGroup<String, String>( 1, 2, labs1, vals1 );		
 	}
 	
 	private void montaListaCampos() {

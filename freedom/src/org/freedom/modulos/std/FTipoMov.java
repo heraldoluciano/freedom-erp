@@ -211,7 +211,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		vValsES.addElement( "E" );
 		vValsES.addElement( "S" );
 		vValsES.addElement( "I" );
-		rgESTipoMov = new JRadioGroup( 1, 3, vLabsES, vValsES );
+		rgESTipoMov = new JRadioGroup<String, String>( 1, 3, vLabsES, vValsES );
 		rgESTipoMov.addRadioGroupListener( this );
 
 		Vector<String> vValsTF = new Vector<String>();
@@ -220,7 +220,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		vLabsTF.addElement( "FOB" );
 		vValsTF.addElement( "C" );
 		vValsTF.addElement( "F" );
-		rgTipoFrete = new JRadioGroup( 2, 1, vLabsTF, vValsTF );
+		rgTipoFrete = new JRadioGroup<String, String>( 2, 1, vLabsTF, vValsTF );
 		rgTipoFrete.setAtivo( false );
 
 		montaCbTipoMov( "E" );

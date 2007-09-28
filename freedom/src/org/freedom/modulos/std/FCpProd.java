@@ -293,7 +293,7 @@ public class FCpProd extends FFilho implements ActionListener, CheckBoxListener 
 		vLabs.addElement( "Perc." );
 		vLabs.addElement( "Valor" );
 
-		rgInc = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgInc = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 
 		pinInc.adic( lbInc, 7, 0, 270, 20 );
 		pinInc.adic( new JLabelPad( "Perc." ), 7, 30, 77, 20 );

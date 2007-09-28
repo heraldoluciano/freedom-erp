@@ -127,13 +127,13 @@ public class FRGerContas extends FRelatorio  {
     vValOrdemRel.addElement("S");
     vValOrdemRel.addElement("V");
     
-    rgOrdemRel = new JRadioGroup(1,6,vLabOrdemRel,vValOrdemRel);
+    rgOrdemRel = new JRadioGroup<String, String>(1,6,vLabOrdemRel,vValOrdemRel);
     rgOrdemRel.setVlrString("T");
     
-    rgOrdemRel1 = new JRadioGroup(1,6,vLabOrdemRel,vValOrdemRel);
+    rgOrdemRel1 = new JRadioGroup<String, String>(1,6,vLabOrdemRel,vValOrdemRel);
     rgOrdemRel1.setVlrString("S");
     
-    rgOrdemRel2 = new JRadioGroup(1,6,vLabOrdemRel,vValOrdemRel);
+    rgOrdemRel2 = new JRadioGroup<String, String>(1,6,vLabOrdemRel,vValOrdemRel);
     rgOrdemRel2.setVlrString("V");
     
 	lcGrup1.add(new GuardaCampo(txtCodGrup1, "CodGrup", "Cód.grupo",ListaCampos.DB_PK, false));

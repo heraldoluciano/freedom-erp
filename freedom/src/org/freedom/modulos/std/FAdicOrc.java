@@ -193,7 +193,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		Vector<String> vLabs = new Vector<String>();
 		vLabs.addElement( "Cliente" );
 		vLabs.addElement( "Conveniado" );
-		rgBusca = new JRadioGroup( 2, 1, vLabs, vVals );
+		rgBusca = new JRadioGroup<String, String>( 2, 1, vLabs, vVals );
 
 		pinCab.adic( new JLabelPad( "Nº orçamento" ), 7, 5, 90, 20 );
 		pinCab.adic( txtCodOrc, 7, 25, 90, 20 );

@@ -81,7 +81,7 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener,I
 	vTipoTransp.addElement("Cliente");
 	vTipoTranspVal.addElement("T");
 	vTipoTranspVal.addElement("C");
-	rgTipoTransp = new JRadioGroup( 2, 1, vTipoTransp, vTipoTranspVal);
+	rgTipoTransp = new JRadioGroup<String, String>( 2, 1, vTipoTransp, vTipoTranspVal);
 	rgTipoTransp.setVlrString("T");
 	
 	

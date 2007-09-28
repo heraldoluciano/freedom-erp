@@ -113,7 +113,7 @@ public class FItCLFiscal extends FDetalhe {
 	vTipoVals.addElement("FF");
 	vTipoVals.addElement("NN");
 	vTipoVals.addElement("TT");
-	rgTipoFisc = new JRadioGroup( 2, 2, vTipoLabs, vTipoVals);
+	rgTipoFisc = new JRadioGroup<String, String>( 2, 2, vTipoLabs, vTipoVals);
 
 	vLabsOrig.addElement("<--Selecione-->");
     vLabsOrig.addElement("Nacional");
@@ -129,7 +129,7 @@ public class FItCLFiscal extends FDetalhe {
 	vTpRedIcmsFiscLabs.addElement( "Valor ICMS" );
 	vTpRedIcmsFiscVals.addElement( "B" );
 	vTpRedIcmsFiscVals.addElement( "V" );
-	rgTpRedIcmsFisc = new JRadioGroup( 2, 1, vTpRedIcmsFiscLabs, vTpRedIcmsFiscVals );    
+	rgTpRedIcmsFisc = new JRadioGroup<String, String>( 2, 1, vTpRedIcmsFiscLabs, vTpRedIcmsFiscVals );    
     rgTpRedIcmsFisc.setVlrString( "B" );
     
     setAltDet(310);

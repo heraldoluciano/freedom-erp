@@ -44,7 +44,7 @@ public class DLRBanco extends FFDialogo {
     vLabs.addElement("Nome");
     vVals.addElement("C");
     vVals.addElement("N");
-    rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+    rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
     rgOrdem.setVlrString("N");
     adic(lbOrdem,7,0,80,15);
     adic(rgOrdem,7,20,280,30);

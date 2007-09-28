@@ -625,7 +625,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		vPessoaLab.addElement( "Física" );
 		vPessoaVal.addElement( "J" );
 		vPessoaVal.addElement( "F" );
-		rgPessoa = new JRadioGroup( 2, 1, vPessoaLab, vPessoaVal );
+		rgPessoa = new JRadioGroup<String, String>( 2, 1, vPessoaLab, vPessoaVal );
 		rgPessoa.addRadioGroupListener( this );
 
 		adicDB( rgPessoa, 400, 20, 100, 60, "PessoaCli", "Pessoa", true );

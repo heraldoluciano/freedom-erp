@@ -50,7 +50,7 @@ public class DLRPedido extends FFDialogo {
 		vVals.addElement("C");
 		vVals.addElement("D");
 		vVals.addElement("M");
-		rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+		rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
 		rgOrdem.setVlrString(OrdNota);
 		if (RelResumido)
 		adic(cbxResumido, 7, 55, 180, 15);

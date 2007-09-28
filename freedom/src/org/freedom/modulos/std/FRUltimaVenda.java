@@ -122,7 +122,7 @@ public class FRUltimaVenda extends FRelatorio {
 		vValsFat.addElement( "S" );
 		vValsFat.addElement( "N" );
 		vValsFat.addElement( "A" );
-		rgFaturados = new JRadioGroup( 3, 1, vLabsFat, vValsFat );
+		rgFaturados = new JRadioGroup<String, String>( 3, 1, vLabsFat, vValsFat );
 		rgFaturados.setVlrString( "S" );
 
 		vLabsFin.addElement( "Financeiro" );
@@ -131,7 +131,7 @@ public class FRUltimaVenda extends FRelatorio {
 		vValsFin.addElement( "S" );
 		vValsFin.addElement( "N" );
 		vValsFin.addElement( "A" );
-		rgFinanceiro = new JRadioGroup( 3, 1, vLabsFin, vValsFin );
+		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabsFin, vValsFin );
 		rgFinanceiro.setVlrString( "S" );
 
 		adic( new JLabelPad( "Periodo:" ), 7, 5, 120, 20 );

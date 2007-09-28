@@ -147,7 +147,7 @@ public class FManutPreco extends FFilho implements ActionListener,
 		vDescTipoOper.addElement("Atualiza preço da tabela");
 		vSelTipoOper.addElement("B");
 		vSelTipoOper.addElement("P");
-		rgTipoOper = new JRadioGroup(1, 2, vDescTipoOper, vSelTipoOper);
+		rgTipoOper = new JRadioGroup<String, String>(1, 2, vDescTipoOper, vSelTipoOper);
 
 		vDescOperador.addElement("<--Selecione-->");
 		vDescOperador.addElement("/");
@@ -171,7 +171,7 @@ public class FManutPreco extends FFilho implements ActionListener,
 		vSelOrigem.addElement("P");
 		vSelOrigem.addElement("B");
 		vSelOrigem.addElement("T");
-		rgOrigem = new JRadioGroup(2, 2, vDescOrigem, vSelOrigem);
+		rgOrigem = new JRadioGroup<String, String>(2, 2, vDescOrigem, vSelOrigem);
 
 		txtCodMarca.setNomeCampo("CodMarca");
 		lcMarca.add(new GuardaCampo(txtCodMarca, "CodMarca", "Cód.marca",

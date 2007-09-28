@@ -113,7 +113,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
     vLabs.addElement("CIF");
     vLabs.addElement("FOB");
     
-    rgFreteVD = new JRadioGroup(2,1,vLabs, vVals);
+    rgFreteVD = new JRadioGroup<String, String>(2,1,vLabs, vVals);
     
     txtPercVendaFreteVD.setAtivo(false);
     

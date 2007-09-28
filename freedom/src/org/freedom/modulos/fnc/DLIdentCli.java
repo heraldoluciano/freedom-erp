@@ -59,7 +59,7 @@ public class DLIdentCli extends FFDialogo {
 		vLabs.add( "Débito em conta" );
 		vVals.add( "01" );
 		vVals.add( "02" );
-		rgSubTipoFebraban = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgSubTipoFebraban = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgSubTipoFebraban.setVlrString( "02" );
 		
 		txtCodCli.setAtivo( false );

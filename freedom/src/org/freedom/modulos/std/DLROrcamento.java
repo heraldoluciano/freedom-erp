@@ -47,14 +47,14 @@ public class DLROrcamento extends FFDialogo {
     vOVals.addElement("C");
     vOVals.addElement("D");
     vOVals.addElement("M");
-    rgOrdem = new JRadioGroup(1,2,vOLabs,vOVals);
+    rgOrdem = new JRadioGroup<String, String>(1,2,vOLabs,vOVals);
     rgOrdem.setVlrString(OrdNota);
     
     vMLabs.addElement("Grafica");
     vMLabs.addElement("Texto");
     vMVals.addElement("G");
     vMVals.addElement("T");
-    rgModo = new JRadioGroup(1,2,vMLabs,vMVals);
+    rgModo = new JRadioGroup<String, String>(1,2,vMLabs,vMVals);
     rgModo.setVlrString(ModoNota);
     
     adic(lbModo,7,10,120,15);

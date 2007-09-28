@@ -94,7 +94,7 @@ public class DLRRetorno extends FFDialogo {
     vLabs.addElement("Nome");
     vVals.addElement("D");
     vVals.addElement("N");
-    rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+    rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
     rgOrdem.setVlrString("D");
     adic(lbOrdem,7,50,80,15);
     adic(rgOrdem,7,70,264,30);

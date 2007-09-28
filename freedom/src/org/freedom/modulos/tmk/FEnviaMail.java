@@ -119,7 +119,7 @@ public class FEnviaMail extends FFilho implements ActionListener {
 		Vector<String> vLabs = new Vector<String>();
 		vLabs.add("Arquivo no anexo.");
 		vLabs.add("Arquivo no corpo.");
-		rgTipo = new JRadioGroup(1,2,vLabs,vVals);
+		rgTipo = new JRadioGroup<String, String>(1,2,vLabs,vVals);
 		rgTipo.setBorder(BorderFactory.createEmptyBorder());
 		
 		lbStatus.setBorder(BorderFactory.createEtchedBorder());

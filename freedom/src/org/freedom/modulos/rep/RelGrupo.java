@@ -59,7 +59,7 @@ public class RelGrupo extends FRelatorio {
 		Vector<String> vals = new Vector<String>();
 		vals.add( "CODGRUP" );
 		vals.add( "DESCGRUP" );
-		rgOrdem = new JRadioGroup( 1, 2, labs, vals );
+		rgOrdem = new JRadioGroup<String, String>( 1, 2, labs, vals );
 		
 		adic( new JLabel( "Ordem do relatorio :" ), 10, 10, 200, 20 );
 		adic( rgOrdem, 10, 35, 250, 30 );

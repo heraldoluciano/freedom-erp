@@ -77,7 +77,7 @@ public class DLRVendedor extends FFDialogo {
     vVals.addElement("C");
     vVals.addElement("N");
 
-    rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+    rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
     rgOrdem.setVlrString("C");
 
     lcClComis.add(new GuardaCampo( txtCodClComis, "CodClComis", "Cód.cl.comis.", ListaCampos.DB_PK, txtDescClComis, false));

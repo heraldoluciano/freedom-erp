@@ -68,7 +68,7 @@ public class FCodRetorno extends FDados implements RadioGroupListener {
 		vLabs.add( "CNAB" );
 		vVals.add( "01" );
 		vVals.add( "02" );
-		rgTipoFebraban = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgTipoFebraban = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );

@@ -60,7 +60,7 @@ public class FRFechaDiario extends FRelatorio{
 		vVals.addElement( "R" );
 		vVals.addElement( "D" );
 		
-		rgTipo = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgTipo.setVlrString( "R" );
 		
 		adic( new JLabelPad( "Nº caixa" ), 7, 7, 80, 20 );		

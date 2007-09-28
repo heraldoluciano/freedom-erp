@@ -78,14 +78,14 @@ public class FRCustoProducao extends FRelatorio {
 		vLbOrdem.addElement("Descrição");
 		vVlrOrdem.addElement("C");
 		vVlrOrdem.addElement("D");
-		rgOrdem = new JRadioGroup(1,2,vLbOrdem,vVlrOrdem);
+		rgOrdem = new JRadioGroup<String, String>(1,2,vLbOrdem,vVlrOrdem);
 		rgOrdem.setVlrString("D");
 		
 		vLbOpcao.addElement("detalhado");
 		vLbOpcao.addElement("resumido");
 		vVlrOpcao.addElement("D");
 		vVlrOpcao.addElement("R");
-		rgOpcao = new JRadioGroup(1,2,vLbOpcao,vVlrOpcao);
+		rgOpcao = new JRadioGroup<String, String>(1,2,vLbOpcao,vVlrOpcao);
 		rgOpcao.setVlrString("R");
 		
 		lcAlmox.add(new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, false));

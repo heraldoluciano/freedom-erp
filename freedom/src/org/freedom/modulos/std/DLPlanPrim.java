@@ -65,7 +65,7 @@ public class DLPlanPrim extends FFDialogo {
     vLabs.addElement("Caixa e Bancos");
     vLabs.addElement("Receita");
     vLabs.addElement("Despesa");
-    rgTipo = new JRadioGroup(1,3,vLabs,vVals);
+    rgTipo = new JRadioGroup<String, String>(1,3,vLabs,vVals);
     rgTipo.setVlrString("D");
     pinCont.adic(lbCod,7,0,80,20);
     pinCont.adic(txtCodCont,7,20,100,20);

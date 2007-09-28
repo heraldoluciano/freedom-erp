@@ -173,8 +173,8 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		vAprovaRMAVal.add( "CC" );
 		vAprovaRMAVal.add( "TD" );
 
-		rgAprovaSolicitacao = new JRadioGroup( 3, 1, vAprovaSolicitacaoLab, vAprovaSolicitacaoVal );
-		rgAprovaRMA = new JRadioGroup( 3, 1, vAprovaRMALab, vAprovaRMAVal );
+		rgAprovaSolicitacao = new JRadioGroup<String, String>( 3, 1, vAprovaSolicitacaoLab, vAprovaSolicitacaoVal );
+		rgAprovaRMA = new JRadioGroup<String, String>( 3, 1, vAprovaRMALab, vAprovaRMAVal );
 
 		txpSenha.setListaCampos( lcCampos );
 		txpConfirma.setListaCampos( lcCampos );

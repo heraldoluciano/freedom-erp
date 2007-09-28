@@ -102,7 +102,7 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
     vLabs.addElement("Caixa");
     vLabs.addElement("Despesas");
     vLabs.addElement("Receitas");
-    rgTipo = new JRadioGroup(2,2,vLabs,vVals);
+    rgTipo = new JRadioGroup<String, String>(2,2,vLabs,vVals);
     rgTipo.setVlrString(sTipo);
     rgTipo.setAtivo(0,false);
     rgTipo.setAtivo(1,false);
@@ -119,7 +119,7 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
     vValsCont.addElement("C");
     vLabsCont.addElement("Bancos");
     vLabsCont.addElement("Caixa");
-    rgTipoCont = new JRadioGroup(1,2,vLabsCont,vValsCont);
+    rgTipoCont = new JRadioGroup<String, String>(1,2,vLabsCont,vValsCont);
     Funcoes.setBordReq(txtDescAnal);
     Funcoes.setBordReq(txtNumCont);    
     Funcoes.setBordReq(txtDescCont);    

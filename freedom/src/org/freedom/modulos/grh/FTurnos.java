@@ -76,7 +76,7 @@ public class FTurnos extends FDados implements ActionListener {
 	  	vTipoTurnoVal.addElement("T");
 	  	vTipoTurnoVal.addElement("O");
 	  	vTipoTurnoVal.addElement("E");
-	  	rgTipoTurno = new JRadioGroup( 3, 2, vTipoTurnoLab, vTipoTurnoVal);	  	  	
+	  	rgTipoTurno = new JRadioGroup<String, String>( 3, 2, vTipoTurnoLab, vTipoTurnoVal);	  	  	
 	  	adicDB(rgTipoTurno, 7, 100, 409, 70, "TipoTurno", "Tipo de Turno:", true);
 	  	rgTipoTurno.setVlrString("N");	  	
 	  	setListaCampos( true, "TURNO", "RH");

@@ -66,7 +66,7 @@ public class FREstoqueMin extends FRelatorio {
     vLabs.addElement("Descrição");
     vVals.addElement("C");
     vVals.addElement("D");
-    rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+    rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
     rgOrdem.setVlrString("D");
 
     lcGrup.add(new GuardaCampo( txtCodGrup,"CodGrup", "Cód.grupo", ListaCampos.DB_PK,true));

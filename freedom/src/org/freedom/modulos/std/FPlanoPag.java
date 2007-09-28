@@ -114,7 +114,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		vLabsCV.addElement( "Compra" );
 		vLabsCV.addElement( "Venda" );
 		vLabsCV.addElement( "Ambos" );
-		rgCV = new JRadioGroup( 1, 3, vLabsCV, vValsCV );
+		rgCV = new JRadioGroup<String, String>( 1, 3, vLabsCV, vValsCV );
 		rgCV.setVlrString( "V" );
 		
 		cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );

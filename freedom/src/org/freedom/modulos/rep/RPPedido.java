@@ -248,7 +248,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		Vector<String> vals = new Vector<String>();
 		vals.add( "C" );
 		vals.add( "F" );
-		rgFrete = new JRadioGroup( 1, 2, labs, vals );
+		rgFrete = new JRadioGroup<String, String>( 1, 2, labs, vals );
 
 		Vector<String> labs1 = new Vector<String>();
 		labs1.add( "Molote" );
@@ -262,7 +262,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		vals1.add( "T" );
 		vals1.add( "F" );
 		vals1.add( "E" );
-		rgRemessa = new JRadioGroup( 5, 1, labs1, vals1 );
+		rgRemessa = new JRadioGroup<String, String>( 5, 1, labs1, vals1 );
 	}
 
 	private void montaListaCampos() {
@@ -914,7 +914,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			vLabs.addElement( "Cliente" );
 			vVals.addElement( String.valueOf( OPTION_FORNECEDOR ) );
 			vVals.addElement( String.valueOf( OPTION_CLIENTE ) );
-			rgOrdem = new JRadioGroup( 1, 2, vLabs, vVals );
+			rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 			rgOrdem.setVlrString( String.valueOf( OPTION_FORNECEDOR ) );
 			
 			adic( new JLabelPad( "Enviar para:" ), 7, 10, 80, 15 );

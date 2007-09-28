@@ -138,7 +138,7 @@ public class FREvoluVendas extends FRelatorio {
 		vLabs.addElement( "Linha horizontal" );
 		vVals.addElement( "B" );
 		vVals.addElement( "L" );
-		rgGrafico = new JRadioGroup( 2, 1, vLabs, vVals );
+		rgGrafico = new JRadioGroup<String, String>( 2, 1, vLabs, vVals );
 		rgGrafico.setVlrString( "B" );
 		rgGrafico.setBorder( BorderFactory.createEmptyBorder() );
 		adic( rgGrafico, 42, 193, 200, 82 );

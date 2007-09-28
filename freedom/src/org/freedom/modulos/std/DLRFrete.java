@@ -54,7 +54,7 @@ public class DLRFrete extends FFDialogo {
     vLabs.addElement("Transp.");
     vVals.addElement("D");
     vVals.addElement("T");
-    rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+    rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
     rgOrdem.setVlrString("C");
     adic(new JLabelPad("Periodo:"),7,5,120,20);
     adic(new JLabelPad("De:"),7,27,30,20);

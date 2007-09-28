@@ -70,7 +70,7 @@ public class FREstatAtend extends FRelatorio {
     vLabs.addElement("Resumido");
     vVals.addElement("D");
     vVals.addElement("R");
-    rgFormato= new JRadioGroup(1,2,vLabs, vVals);
+    rgFormato= new JRadioGroup<String, String>(1,2,vLabs, vVals);
     rgFormato.setVlrString("D");
     
     adic(rgFormato,7,80,265,25);

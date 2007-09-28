@@ -121,7 +121,7 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 		Vector<String> vals = new Vector<String>();
 		vals.add( "C" );
 		vals.add( "R" );
-		rgModo = new JRadioGroup( 1, 2, labs, vals );
+		rgModo = new JRadioGroup<String, String>( 1, 2, labs, vals );
 		
 		Vector<String> labs1 = new Vector<String>();
 		labs1.add( "Item" );
@@ -129,7 +129,7 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 		Vector<String> vals1 = new Vector<String>();
 		vals1.add( "IT.CODITPED" );
 		vals1.add( "PD.DESCPROD" );
-		rgOrdem1 = new JRadioGroup( 1, 2, labs1, vals1 );
+		rgOrdem1 = new JRadioGroup<String, String>( 1, 2, labs1, vals1 );
 		
 		Vector<String> labs2 = new Vector<String>();
 		labs2.add( "Pedido" );
@@ -137,7 +137,7 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 		Vector<String> vals2 = new Vector<String>();
 		vals2.add( "P.CODPED" );
 		vals2.add( "C.RAZCLI" );
-		rgOrdem2 = new JRadioGroup( 1, 2, labs2, vals2 );
+		rgOrdem2 = new JRadioGroup<String, String>( 1, 2, labs2, vals2 );
 	}
 	
 	private void montaListaCampos() {

@@ -294,7 +294,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		vLabs.addElement( "CIF" );
 		vLabs.addElement( "FOB" );
 
-		rgFreteVD = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgFreteVD = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 
 		txtCodPlanoPag.setNomeCampo( "CodPlanoPag" );
 		lcPlanoPag.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false ) );

@@ -125,7 +125,7 @@ public class FRCpTipoMov extends FRelatorio {
 		vVals.addElement( "G" );
 		vVals.addElement( "T" );
 		
-		rgTipo = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgTipo.setVlrString( "T" );
 		
 		adic(lbPeriodo,7, 1, 80, 20 );

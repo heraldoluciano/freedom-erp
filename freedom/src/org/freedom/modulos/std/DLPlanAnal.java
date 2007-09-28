@@ -72,7 +72,7 @@ public class DLPlanAnal extends FFDialogo {
     vLabsTipoPlan.addElement("Caixa");
     vLabsTipoPlan.addElement("Despesas");
     vLabsTipoPlan.addElement("Receitas");
-    rgTipoPlan = new JRadioGroup(2,2,vLabsTipoPlan,vValsTipoPlan);
+    rgTipoPlan = new JRadioGroup<String, String>(2,2,vLabsTipoPlan,vValsTipoPlan);
     rgTipoPlan.setVlrString(sTipo);
     rgTipoPlan.setAtivo(0,false);
     rgTipoPlan.setAtivo(1,false);
@@ -101,7 +101,7 @@ public class DLPlanAnal extends FFDialogo {
     vLabsFinPlan.addElement("CS - Contribuição social");
     vLabsFinPlan.addElement("IR - Imposto de renda");
     vLabsFinPlan.addElement("OO - Outros");
-    rgFinPlan = new JRadioGroup(6,2,vLabsFinPlan,vValsFinPlan);
+    rgFinPlan = new JRadioGroup<String, String>(6,2,vLabsFinPlan,vValsFinPlan);
     if (sFin.trim().equals(""))
       rgFinPlan.setVlrString(sFin);
     adic(lbCodPai,7,0,80,20);

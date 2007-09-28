@@ -252,7 +252,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		vValsTipo.addElement("A");
 		vLabsTipo.addElement("Normal");
 		vLabsTipo.addElement("Urgente");
-		rgPriod = new JRadioGroup(2, 1, vLabsTipo, vValsTipo);
+		rgPriod = new JRadioGroup<String, String>(2, 1, vLabsTipo, vValsTipo);
 		rgPriod.setVlrString("M");
 
 		setListaCampos(lcCampos);
