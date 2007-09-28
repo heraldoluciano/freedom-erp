@@ -1,0 +1,191 @@
+/**
+ * @version 27/09/2007 <BR>
+ * @author Setpoint Informática Ltda./Reginado Garcia Heua <BR>
+ *
+ * Projeto: Freedom <BR>
+ *  
+ * Pacote: org.freedom.modulos.std <BR>
+ * Classe: @(#)FRCpProd.java <BR>
+ * 
+ * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
+ * versão 2.1.0 ou qualquer versão posterior. <BR>
+ * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
+ * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
+ * o LICENCIADOR ou então pegar uma cópia em: <BR>
+ * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
+ * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * de acordo com os termos da LPG-PC <BR> <BR>
+ *
+ * Comentários sobre a classe...
+ * 
+ */
+package org.freedom.modulos.std;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
+
+import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JTextFieldFK;
+import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FPrinterJob;
+import org.freedom.telas.FRelatorio;
+
+public class FRCpProd extends FRelatorio {
+
+	private static final long serialVersionUID = 1L;
+	
+	private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
+
+	private JTextFieldFK txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	
+	private JTextFieldPad txtCodGrupo = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
+	
+	private JTextFieldFK txtDescGrupo = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0); 
+	
+	private ListaCampos lcGrupo = new ListaCampos(this);
+	
+	private ListaCampos lcMarca = new ListaCampos(this);
+	
+	public FRCpProd(){
+		
+		setTitulo("Últimas compras/produto");
+		setAtribos(50, 50, 345, 200);
+		
+		montaTela();
+		montaListaCampos();
+		
+	}
+	
+	public void montaTela(){
+		
+		adic( new JLabelPad("Cód.Grupo"), 7, 10, 70, 20 );
+		adic( txtCodGrupo, 7, 30, 70, 20 );
+		adic( new JLabelPad("Descrição do grupo"), 80, 10, 170, 20 ); 
+		adic( txtDescGrupo, 80, 30, 225, 20 );
+		adic( new JLabelPad("Cód.Marca"), 7, 50, 100, 20 );
+		adic( txtCodMarca, 7, 70, 70, 20 );
+		adic( new JLabelPad("Descrição da marca"), 80, 50, 200, 20 );
+		adic( txtDescMarca, 80, 70, 225, 20 );
+		
+	}
+	
+	public void montaListaCampos(){
+		
+		/************
+		 * LC Grupo *
+		 ************/
+		lcGrupo.add(new GuardaCampo( txtCodGrupo, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false));
+		lcGrupo.add(new GuardaCampo( txtDescGrupo, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false));
+		lcGrupo.montaSql(false, "GRUPO", "EQ");
+		lcGrupo.setReadOnly(true);
+		txtCodGrupo.setTabelaExterna(lcGrupo);
+		txtCodGrupo.setFK(true);
+		txtCodGrupo.setNomeCampo("CodGrup");
+		
+		/************
+		 * LC Marca *
+		 ************/
+		lcMarca.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false));
+		lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false));
+		txtCodMarca.setTabelaExterna(lcMarca);
+		txtCodMarca.setNomeCampo("CodMarca");
+		txtCodMarca.setFK(true);
+		lcMarca.setReadOnly(true);
+		lcMarca.montaSql(false, "MARCA", "EQ");
+		
+	}
+	
+	@ Override
+	public void imprimir( boolean bVisualizar ) {
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sSQL = new StringBuilder();
+		StringBuilder filtro = new StringBuilder();
+		
+		if ( txtCodGrupo.getVlrString() != null && txtCodGrupo.getVlrString().trim().length()>0 ) {
+			
+			filtro.append( "AND P.CODGRUP='"+txtCodGrupo.getVlrString()+"'" );
+
+		}
+		
+		if ( txtCodMarca.getVlrString() != null && txtCodMarca.getVlrString().trim().length()>0 ) {
+		
+			filtro.append( "AND P.CODMARCA='"+txtCodMarca.getVlrString()+"'" );
+			
+		}
+		
+			
+		sSQL.append( "SELECT P.CODPROD, P.REFPROD, P.DESCPROD, P.CODUNID,");
+		sSQL.append( "IT.VLRPRODITCOMPRA, IT.VLRIPIITCOMPRA," );
+		sSQL.append( "(IT.VLRPRODITCOMPRA+IT.VLRIPIITCOMPRA) VLRSUBTOTAL,");
+		sSQL.append( "IT.VLRFRETEITCOMPRA, IT.VLRLIQITCOMPRA, C.DTEMITCOMPRA, C.DOCCOMPRA ");
+		sSQL.append( "FROM EQPRODUTO P, CPITCOMPRA IT, CPCOMPRA C ");
+		sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND ");
+		sSQL.append( "C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND ");
+		sSQL.append( "C.CODCOMPRA=IT.CODCOMPRA AND ");
+		sSQL.append( "IT.CODEMPPD=P.CODEMP AND IT.CODFILIALPD=P.CODFILIAL AND ");
+		sSQL.append( "IT.CODPROD=P.CODPROD AND IT.CODCOMPRA = ( SELECT FIRST 1 C2.CODCOMPRA FROM ");
+		sSQL.append( "CPCOMPRA C2, CPITCOMPRA IT2 ");
+		sSQL.append( "WHERE C2.CODEMP=IT2.CODEMP AND C2.CODFILIAL=IT2.CODFILIAL AND ");
+		sSQL.append( "C2.CODCOMPRA=IT2.CODCOMPRA AND IT2.CODEMP=IT.CODEMP AND ");
+		sSQL.append( "IT2.CODFILIAL=IT.CODFILIAL AND IT2.CODEMPPD=IT.CODEMPPD AND ");
+		sSQL.append( "IT2.CODFILIALPD=IT.CODFILIALPD AND ");
+		sSQL.append( "IT2.CODPROD=IT.CODPROD ");
+		sSQL.append( filtro.toString() );
+		sSQL.append( "ORDER BY C2.DTEMITCOMPRA DESC ) ");
+		sSQL.append( "ORDER BY P.DESCPROD");
+	
+		try {
+		
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			rs = ps.executeQuery();
+			
+		} catch ( Exception e ) {
+		
+			Funcoes.mensagemErro( this, "Erro ao buscar dados do produto !\n" + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "EQPRODUTO" ));
+		
+		FPrinterJob dlGr = new FPrinterJob( "relatorios/CpProd.jasper", "Últimas Compras/produto", null, rs, hParam, this );
+		
+		if ( bVisualizar ) {
+			
+			dlGr.setVisible( true );
+		
+		}
+		else {		
+			try {				
+			
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );				
+			
+			} catch ( Exception err ) {					
+			
+					Funcoes.mensagemErro( this, "Erro na impressão de relatório de Últimas compras/produto!\n" + err.getMessage(), true, con, err );
+			}
+		}
+	}
+	
+	public void setConexao(Connection cn) {
+		
+		super.setConexao( cn );
+		lcGrupo.setConexao( cn );
+		lcMarca.setConexao( cn );
+		
+	}
+}

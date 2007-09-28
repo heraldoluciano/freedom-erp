@@ -396,12 +396,11 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	public void imprimir( boolean bVisualizar ) {
 
 		if ( removeEtiquetas() ) {
-				if ( persistEtiquetas() ) {
-					imprimirTexto( bVisualizar );
-		//		 Montar jasper com etiquetas...	
-				}
-		}
+			if ( persistEtiquetas() ) {
+				imprimirTexto( bVisualizar );
 		
+			}
+		}
 	}
 	
 	private void imprimirTexto( boolean bVisualizar ) {
@@ -417,9 +416,10 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		
 		try {
 			
-		sSQL.append( "SELECT EQ.CODBARPROD, EQ.DESCPROD " );
-		sSQL.append( "FROM EQPRODUTO EQ " );
-		sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODMARCA=3" );
+		sSQL.append( "SELECT ET.CODEMP, ET.CODFILIAL, ET.CODPRODUTO, EP.DESCPROD " );
+		sSQL.append( "FROM EQETIQPROD ET, EQPRODUTO EP " );
+		sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND " );
+		sSQL.append( "ET.CODPROD=EP.CODPROD " );
 		
 		ps = con.prepareStatement( sSQL.toString() );
 		ps.setInt( 1, Aplicativo.iCodEmp );
