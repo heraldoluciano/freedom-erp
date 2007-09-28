@@ -242,7 +242,11 @@ public class FRemCnab extends FRemFBN {
 		reg.setTipoDoc( (Integer) prefs.get( EPrefs.TIPODOC ) );
 		reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );
 		reg.setIdentDist( (Integer) prefs.get( EPrefs.IDENTDISTBOL ) );
-		reg.setDocCobranca( (String) rec.getArgs()[ EColrec.DOCREC.ordinal() ] + "/" + (String) rec.getArgs()[ EColrec.NRPARCPAG.ordinal() ] );
+		reg.setDocCobranca( Boleto.getNumCli( 
+				(String)prefs.get( EPrefs.MDECOB ), 
+				(String)prefs.get( EPrefs.CONVCOB ), 
+				Long.parseLong( rec.getCodrec().toString() ), 
+				Long.parseLong( rec.getNParcitrec().toString() ) ) );
 		reg.setDtVencTitulo( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );		
 		reg.setAgenciaCob( null );
