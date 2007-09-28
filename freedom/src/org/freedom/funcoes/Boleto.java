@@ -208,12 +208,25 @@ public class Boleto {
 			}
 		}
 		int soma = 0;
+		int calc = 0;
 		int posi = 0;
 		int resto = 0;
+		String str = "";
 		String dig = null;
 		
 	    for (int i=codigo.length()-1; i>-1; i--) {
-	    	soma +=  ( Integer.parseInt( codigo.substring( i, i+1 ) ) * (peso[posi]) );
+	    	if (modulo==11) {
+	    		calc = ( Integer.parseInt( codigo.substring( i, i+1 ) ) * (peso[posi]) ); 
+	    	} else {
+	    		// transforma o valor do produto em String 
+	    		str = String.valueOf( Integer.parseInt(codigo.substring( i, i+1 ) ) * (peso[posi]) );
+	    		// soma os valores. Exemplo: para resultado do produto = 14 (1+4=5).
+	    		calc = 0;
+	    		for (int s=0; s<str.length(); s++) {
+	    			calc += Integer.parseInt( str.substring( s, s+1 ) );
+	    		}
+	    	}
+	    	soma +=  calc;
 	    	posi++;
 	    	if (posi>=peso.length) {
 	    		posi = 0; 
