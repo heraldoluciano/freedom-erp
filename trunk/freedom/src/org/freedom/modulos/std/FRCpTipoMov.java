@@ -201,7 +201,7 @@ public class FRCpTipoMov extends FRelatorio {
 			
 			sSQL = "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, " +
 				   "F.NOMEFOR, PG.DESCPLANOPAG,  "+
-				   "IT.CODITCOMPRA, IT.CODPROD, PD.DESCPROD, IT.CODLOTE, IT.QTDITCOMPRA, "+
+				   "IT.CODITCOMPRA, IT.CODPROD, PD.DESCPROD, PD.PRECOBASEPROD, IT.CODLOTE, IT.QTDITCOMPRA, "+
 				   "(IT.QTDITCOMPRA*PD.PRECOBASEPROD) VLRLIQITCOMPRA, " +
 				   "(SELECT SUM(PD2.PRECOBASEPROD*IT2.QTDITCOMPRA) " +
 				   "FROM EQPRODUTO PD2, CPITCOMPRA IT2 " +
@@ -315,8 +315,8 @@ public class FRCpTipoMov extends FRelatorio {
 					imp.say(imp.pRow(), 22, "| Descricao do produto");
 					imp.say(imp.pRow(), 75, "| Lote");
 					imp.say(imp.pRow(), 91, "| Qtd");
-					imp.say(imp.pRow(),102, "| Vlr.Item");
-					imp.say(imp.pRow(),115, "|");
+					imp.say(imp.pRow(),102, "| Vlr.Unitario ");
+					imp.say(imp.pRow(),117, "| Vlr.Item" );
 					imp.say(imp.pRow(),135, "|");
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
@@ -327,8 +327,8 @@ public class FRCpTipoMov extends FRelatorio {
 				imp.say(imp.pRow(), 22, "| " + (rs.getString("DESCPROD") != null ? rs.getString("DESCPROD") : ""));
 				imp.say(imp.pRow(), 75, "| " + (rs.getString("CODLOTE") != null ? rs.getString("CODLOTE") : ""));
 				imp.say(imp.pRow(), 91, "| " + Funcoes.strDecimalToStrCurrency(8,Aplicativo.casasDec,(rs.getString("QTDITCOMPRA") != null ? rs.getString("QTDITCOMPRA") : "")));
-				imp.say(imp.pRow(),102, "| " + Funcoes.strDecimalToStrCurrency(10,2,(rs.getString("VLRLIQITCOMPRA") != null ? rs.getString("VLRLIQITCOMPRA") : "")));
-				imp.say(imp.pRow(),115, "|");
+				imp.say(imp.pRow(), 102, "| " + (rs.getString("PRECOBASEPROD") != null ? rs.getString("PRECOBASEPROD") : ""));
+				imp.say(imp.pRow(),117, "| " + Funcoes.strDecimalToStrCurrency(10,2,(rs.getString("VLRLIQITCOMPRA") != null ? rs.getString("VLRLIQITCOMPRA") : "")));
 				imp.say(imp.pRow(),135, "|");	
 				
 				bTotal = bTotal.add(rs.getBigDecimal("VLRLIQITCOMPRA"));
