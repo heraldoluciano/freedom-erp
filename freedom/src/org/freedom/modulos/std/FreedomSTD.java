@@ -127,6 +127,7 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 200200000, TP_OPCAO_ITEM, "Relatorio de Compras", "Relatorio de Compras", 'p', 200210000, 2, true, FRCompras.class );
 				addOpcao( 200200000, TP_OPCAO_ITEM, "Relatorio por tipo de movimento ", "Relatorio  por tipo de movimento", 'p', 200220000, 2, true, FRCpTipoMov.class );
 				addOpcao( 200200000, TP_OPCAO_ITEM, "Compras por fornecedor", "Compras por Fornecedor", 'f', 200230000, 2, true, FRComprasFor.class );
+				
 
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 300000000, 0, false, null );
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Venda", "Venda", 'V', 300100000, 1, true, FVenda.class );
@@ -217,15 +218,16 @@ public class FreedomSTD extends AplicativoPD {
 			addOpcao( 700000000, TP_OPCAO_ITEM, "Reprocessa estoque", "Reprocessa estoque", 'R', 700600000, 1, true, FProcessaEQ.class );
 			addSeparador( 700000000 );
 			addOpcao( 700000000, TP_OPCAO_MENU, "Listagens", "", 'L', 700700000, 1, false, null );
-				addOpcao( 700700000, TP_OPCAO_ITEM, "Estoque mínimo", "Estoque Mínimo", 's', 700701000, 2, true, FREstoqueMin.class );
-				addOpcao( 700700000, TP_OPCAO_ITEM, "Produtos/Movimentos", "Listagem de Produtos", 'P', 700702000, 2, true, FRMovProd.class );
-				addOpcao( 700700000, TP_OPCAO_ITEM, "Vencimentos de lote", "Vencimento Lote", 'V', 700703000, 2, true, FRVencLote.class );
-				addOpcao( 700700000, TP_OPCAO_ITEM, "Saldos de lote", "Saldos de Lote", 'l', 700704000, 2, true, FRSaldoLote.class );
+				addOpcao( 700700000, TP_OPCAO_ITEM, "Estoque mínimo", "Estoque Mínimo", 's', 700700100, 2, true, FREstoqueMin.class );
+				addOpcao( 700700000, TP_OPCAO_ITEM, "Produtos/Movimentos", "Listagem de Produtos", 'P', 700700200, 2, true, FRMovProd.class );
+				addOpcao( 700700000, TP_OPCAO_ITEM, "Vencimentos de lote", "Vencimento Lote", 'V', 700700300, 2, true, FRVencLote.class );
+				addOpcao( 700700000, TP_OPCAO_ITEM, "Saldos de lote", "Saldos de Lote", 'l', 700700400, 2, true, FRSaldoLote.class );
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Demanda", "Demanda", 'D', 700705000, 2, true, FRDemanda.class );
-				addOpcao( 700700000, TP_OPCAO_ITEM, "Conferência", "Conferência de Estoque", 'C', 700706000, 2, true, FRConfEstoq.class );
-				addOpcao( 700700000, TP_OPCAO_ITEM, "Inventário", "Inventário", 'I', 700707000, 2, true, FRInvPeps.class );
-				addOpcao( 700700000, TP_OPCAO_ITEM, "Codifição de produto", "Codificação de produto", 'P', 700708000, 2, true, FRCodficProd.class );
-				addOpcao( 700700000, TP_OPCAO_ITEM, "Etiquetas de código de barras", "Etiquetas de código de barras", 'E', 700709000, 2, true, FRCodbarProd.class );
+				addOpcao( 700700000, TP_OPCAO_ITEM, "Conferência", "Conferência de Estoque", 'C', 700700600, 2, true, FRConfEstoq.class );
+				addOpcao( 700700000, TP_OPCAO_ITEM, "Inventário", "Inventário", 'I', 700700700, 2, true, FRInvPeps.class );
+				addOpcao( 700700000, TP_OPCAO_ITEM, "Codifição de produto", "Codificação de produto", 'P', 700700800, 2, true, FRCodficProd.class );
+				addOpcao( 700700000, TP_OPCAO_ITEM, "Etiquetas de código de barras", "Etiquetas de código de barras", 'E', 700700900, 2, true, FRCodbarProd.class );
+				addOpcao( 700700000, TP_OPCAO_ITEM, "Ultimas compras/produto", "Ultimas compras/produto", 'E', 700701000, 2, true, FRCpProd.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Fiscal", "", 'F', 800000000, 0, false, null );
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Gerar", "Gera Fiscal", 'G', 800100000, 1, true, FGeraFiscal.class );
