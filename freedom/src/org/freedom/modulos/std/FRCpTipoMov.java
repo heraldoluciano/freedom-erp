@@ -73,7 +73,7 @@ public class FRCpTipoMov extends FRelatorio {
 	
 	private ListaCampos lcTipoMov = new ListaCampos(this);
 	
-	private JRadioGroup rgTipo = null;
+	private JRadioGroup<?, ?> rgTipo = null;
 	
 	public FRCpTipoMov() {
 	

@@ -72,7 +72,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 	private JCheckBoxPad cbLiberado = new JCheckBoxPad("Liberado","S","N");
 	private JCheckBoxPad cbFaturado = new JCheckBoxPad("Faturado","S","N");
 	private JCheckBoxPad cbConveniado = new JCheckBoxPad("Listar conveniados","S","N");	
-	private JRadioGroup gbVenc;
+	private JRadioGroup<?, ?> gbVenc;
 	private Tabela tab = new Tabela();
 	private JButton btPrevimp = new JButton ("Imprimir",Icone.novo("btPrevimp.gif"));
 	private JButton btBusca = new JButton("Buscar",Icone.novo("btPesquisa.gif"));

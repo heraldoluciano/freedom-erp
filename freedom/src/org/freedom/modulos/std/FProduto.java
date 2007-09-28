@@ -281,15 +281,15 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private Vector<String> vValsPA = new Vector<String>();
 
-	private JRadioGroup rgPA = null;
+	private JRadioGroup<?, ?> rgPA = null;
 
-	private JRadioGroup rgTipo = null;
+	private JRadioGroup<?, ?> rgTipo = null;
 
-	private JRadioGroup rgCV = null;
+	private JRadioGroup<?, ?> rgCV = null;
 
-	private JRadioGroup rgTF = null;
+	private JRadioGroup<?, ?> rgTF = null;
 
-	private JRadioGroup rgTipoPP = null;
+	private JRadioGroup<?, ?> rgTipoPP = null;
 
 	private JCheckBoxPad cbLote = null;
 

@@ -80,7 +80,7 @@ public class FRegraFiscal extends FDetalhe {
 		vValCV.addElement("V");
 		vValCV.addElement("C");
 	
-		JRadioGroup rgCV = new JRadioGroup<String, String>(1,2,vDescCV,vValCV);
+		JRadioGroup<?, ?> rgCV = new JRadioGroup<String, String>(1,2,vDescCV,vValCV);
 		rgCV.setVlrString("V");
 
 		setAltDet(120);

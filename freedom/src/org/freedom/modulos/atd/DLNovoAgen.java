@@ -93,7 +93,7 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener {
 
 	private JComboBoxPad cbTipo = null;
 
-	private JRadioGroup rgCAAGD = null;
+	private JRadioGroup<?, ?> rgCAAGD = null;
 
 	private JTextAreaPad txaDescAtend = new JTextAreaPad();
 
@@ -162,7 +162,7 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener {
 		vLabs1.addElement( "publico" );
 		vLabs1.addElement( "privado" );
 		JRadioGroup<String, String> radioGroup2 = new JRadioGroup<String,String>( 1, 2, vLabs1, vVals1 );
-		JRadioGroup radioGroup = radioGroup2;
+		JRadioGroup<?,?> radioGroup = radioGroup2;
 		rgCAAGD = radioGroup;
 		rgCAAGD.setVlrString( "PR" );
 

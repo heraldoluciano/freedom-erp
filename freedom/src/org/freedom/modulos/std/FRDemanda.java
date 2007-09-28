@@ -56,7 +56,7 @@ public class FRDemanda extends FRelatorio {
   private JLabelPad lbCodMarca = new JLabelPad("Cód.marca");
   private JLabelPad lbDescGrup = new JLabelPad("Descrição do grupo");
   private JLabelPad lbDescMarca = new JLabelPad("Descrição do marca");
-  private JRadioGroup rgOrdem = null;
+  private JRadioGroup<?, ?> rgOrdem = null;
   private Vector<String> vLabs = new Vector<String>(2);
   private Vector<String> vVals = new Vector<String>(2);
   private ListaCampos lcGrup = new ListaCampos(this);

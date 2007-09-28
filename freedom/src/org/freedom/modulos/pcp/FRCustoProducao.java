@@ -53,9 +53,9 @@ public class FRCustoProducao extends FRelatorio {
 	private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
 	private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
-	private JRadioGroup rgOrdem = null;
+	private JRadioGroup<?, ?> rgOrdem = null;
 	private JLabelPad lbOpcao = new JLabelPad("Opção ");
-	private JRadioGroup rgOpcao = null;
+	private JRadioGroup<?, ?> rgOpcao = null;
 	private Vector<String> vLbOrdem = new Vector<String>();
 	private Vector<String> vVlrOrdem = new Vector<String>();
 	private Vector<String> vLbOpcao = new Vector<String>();

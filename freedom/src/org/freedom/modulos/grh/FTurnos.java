@@ -45,7 +45,7 @@ public class FTurnos extends FDados implements ActionListener {
   private JTextFieldPad txtHFimTurno = new JTextFieldPad(JTextFieldPad.TP_TIME,8,0);
   private Vector<String> vTipoTurnoLab = new Vector<String>();
   private Vector<String> vTipoTurnoVal = new Vector<String>();  
-  private JRadioGroup rgTipoTurno = null;
+  private JRadioGroup<?, ?> rgTipoTurno = null;
   
   public FTurnos () {
   	super();

@@ -62,7 +62,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
   private JTextFieldPad txtPlacaFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   private JTextFieldPad txtUFFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JTextFieldPad txtVlrFreteVD = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
-  private JRadioGroup rgFreteVD = null;
+  private JRadioGroup<?, ?> rgFreteVD = null;
   private JTextFieldPad txtQtdFreteVD = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
   private JTextFieldPad txtPesoBrutVD = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,casasDec);
   private JTextFieldPad txtPesoLiqVD = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,casasDec);

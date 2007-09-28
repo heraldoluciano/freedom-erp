@@ -56,12 +56,12 @@ public class FItCLFiscal extends FDetalhe {
   private JTextFieldPad txtAliqIPI = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,9,2);
   private JCheckBoxPad cbNoUF = new JCheckBoxPad("Sim","S","N");
   private JComboBoxPad cbOrig = null;
-  private JRadioGroup rgTpRedIcmsFisc = null;
+  private JRadioGroup<?, ?> rgTpRedIcmsFisc = null;
   private Vector<String> vTpRedIcmsFiscLabs = new Vector<String>();
   private Vector<String> vTpRedIcmsFiscVals = new Vector<String>();  
   private Vector<String> vValsOrig = new Vector<String>();
   private Vector<String> vLabsOrig = new Vector<String>();
-  private JRadioGroup rgTipoFisc = null;
+  private JRadioGroup<?, ?> rgTipoFisc = null;
   private Vector<String> vTipoVals = new Vector<String>();
   private Vector<String> vTipoLabs = new Vector<String>();
   private ListaCampos lcTratTrib = new ListaCampos(this,"TT");

@@ -68,13 +68,13 @@ public class FDevolucao extends FWizard implements CarregaListener {
 
 	private JPanelPad pin1c1 = null;
 
-	private JRadioGroup rg1 = null;
+	private JRadioGroup<?, ?> rg1 = null;
 
-	private JRadioGroup rg1a = null;
+	private JRadioGroup<?, ?> rg1a = null;
 
-	private JRadioGroup rg1b = null;
+	private JRadioGroup<?, ?> rg1b = null;
 
-	private JRadioGroup rg1c = null;
+	private JRadioGroup<?, ?> rg1c = null;
 
 	private JTextFieldPad txtCodVenda1a = null;
 
@@ -120,7 +120,7 @@ public class FDevolucao extends FWizard implements CarregaListener {
 		pin1 = new JPanelPad();
 		setPainel( pin1 );
 
-		rg1 = new JRadioGroup( 3, 1, new Object[] { "Devolução de saída completa.", "Devolução de saída parcial.", "Devolução de saída sem venda agregada.", }, new Object[] { "SC", "SP", "SS" } );
+		rg1 = new JRadioGroup<String, String>(3, 1, new Object[] { "Devolução de saída completa.", "Devolução de saída parcial.", "Devolução de saída sem venda agregada.", }, new Object[] { "SC", "SP", "SS" } );
 		rg1.setBorder( BorderFactory.createEmptyBorder() );
 
 		adic( new JLabelPad( "Documento de entrada:" ), 20, 10, 250, 20 );
@@ -146,7 +146,7 @@ public class FDevolucao extends FWizard implements CarregaListener {
 		JTextFieldFK txtVlrLiqVenda = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 		txtTipoVenda1a = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
-		rg1a = new JRadioGroup( 2, 1, new Object[] { "Cancelar venda", "Emitir nota de entrada", }, new Object[] { "CV", "NE" } );
+		rg1a = new JRadioGroup<String, String>( 2, 1, new Object[] { "Cancelar venda", "Emitir nota de entrada", }, new Object[] { "CV", "NE" } );
 		rg1a.setBorder( BorderFactory.createEmptyBorder() );
 
 		lcVenda1a = new ListaCampos( this );
@@ -194,7 +194,7 @@ public class FDevolucao extends FWizard implements CarregaListener {
 		pin1b = new JPanelPad();
 		setPainel( pin1b );
 
-		rg1b = new JRadioGroup( 1, 1, new Object[] { "Gerar entrada agora.", }, new Object[] { "GE" } );
+		rg1b = new JRadioGroup<String, String>( 1, 1, new Object[] { "Gerar entrada agora.", }, new Object[] { "GE" } );
 		rg1b.setBorder( BorderFactory.createEmptyBorder() );
 
 		rg1b.setAtivo( false );
@@ -220,7 +220,7 @@ public class FDevolucao extends FWizard implements CarregaListener {
 		txtCodCli1c = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 		txtRazCli1c = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-		rg1c = new JRadioGroup( 1, 1, new Object[] { "Gerar fornecedor agora.", }, new Object[] { "GC" } );
+		rg1c = new JRadioGroup<String, String>( 1, 1, new Object[] { "Gerar fornecedor agora.", }, new Object[] { "GC" } );
 		rg1c.setBorder( BorderFactory.createEmptyBorder() );
 
 		lcCli1c = new ListaCampos( this );

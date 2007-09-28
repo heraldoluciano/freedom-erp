@@ -65,13 +65,13 @@ public class FRVendasFisico extends FRelatorio {
 
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar Canceladas", "S", "N" );
 
-	private JRadioGroup rgTipo = null;
+	private JRadioGroup<?, ?> rgTipo = null;
 
-	private JRadioGroup rgOrdem = null;
+	private JRadioGroup<?, ?> rgOrdem = null;
 
-	private JRadioGroup rgFaturados = null;
+	private JRadioGroup<?, ?> rgFaturados = null;
 
-	private JRadioGroup rgFinanceiro = null;
+	private JRadioGroup<?, ?> rgFinanceiro = null;
 
 	private ListaCampos lcVend = new ListaCampos( this );
 

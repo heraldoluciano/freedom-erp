@@ -62,7 +62,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 	private JCheckBoxPad cbImpGrafica = new JCheckBoxPad("Impressão gráfica?","S","N");
 	private Vector<String> vValTipoUsoImp = new Vector<String>();
 	private Vector<String> vLabTipoUsoImp = new Vector<String>();
-	private JRadioGroup rgTipoUsoImp = null;
+	private JRadioGroup<?, ?> rgTipoUsoImp = null;
 	
 	public FEstacao() {
 		setTitulo("Cadastro de estações de trabalho"); 

@@ -128,7 +128,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	private Tabela tabCot = new Tabela();
 	private JScrollPane spTabCot = new JScrollPane(tabCot);
 	private Navegador navCot = new Navegador(true);	
-	private JRadioGroup rgPriod = null;
+	private JRadioGroup<?, ?> rgPriod = null;
 	private Vector<String> vLabsTipo = new Vector<String>();
 	private Vector<String> vValsTipo = new Vector<String>();	
 	private ListaCampos lcUsu = new ListaCampos(this, "UU");

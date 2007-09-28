@@ -56,11 +56,11 @@ public class FRCodficProd extends FRelatorio {
 	
 	private ListaCampos lcMarca = new ListaCampos(this);
 	
-	private JRadioGroup rgOrdem = null;
+	private JRadioGroup<?, ?> rgOrdem = null;
 	
-	private JRadioGroup rgAtivoProd = null;
+	private JRadioGroup<?, ?> rgAtivoProd = null;
 	
-	private JRadioGroup rgProd = null;
+	private JRadioGroup<?, ?> rgProd = null;
 	
 	private JCheckBoxPad cbRel = new JCheckBoxPad("Agrupar por grupo?", true, true);
 	 

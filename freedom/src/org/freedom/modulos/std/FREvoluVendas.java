@@ -59,7 +59,7 @@ public class FREvoluVendas extends FRelatorio {
 
 	private FPrinterJob dl = null;
 
-	private JRadioGroup rgGrafico = null;
+	private JRadioGroup<?, ?> rgGrafico = null;
 
 	private Vector<String> vLabs = new Vector<String>( 2 );
 

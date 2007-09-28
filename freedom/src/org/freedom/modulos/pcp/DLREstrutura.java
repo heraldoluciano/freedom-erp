@@ -28,9 +28,9 @@ import org.freedom.telas.FFDialogo;
 public class DLREstrutura extends FFDialogo {
 	private static final long serialVersionUID = 1L;
 	
-  private JRadioGroup rgOrdem = null;
-  private JRadioGroup rgModo = null;
-  private JRadioGroup rgEstrut = null;
+  private JRadioGroup<?, ?> rgOrdem = null;
+  private JRadioGroup<?, ?> rgModo = null;
+  private JRadioGroup<?, ?> rgEstrut = null;
   private JLabelPad lbModo = new JLabelPad("Modo do Relatório:");
   private JLabelPad lbEstrut = new JLabelPad("Estrutura:");
   private JLabelPad lbOrdem = new JLabelPad("Ordenado por:");

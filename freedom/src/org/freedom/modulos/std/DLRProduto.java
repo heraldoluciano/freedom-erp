@@ -40,9 +40,9 @@ public class DLRProduto extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	private JRadioGroup rgOrdem = null;
+	private JRadioGroup<?, ?> rgOrdem = null;
 
-	private JRadioGroup rgModo = null;
+	private JRadioGroup<?, ?> rgModo = null;
 
 	private JPanelPad pinSelec = new JPanelPad( 172, 90 );
 

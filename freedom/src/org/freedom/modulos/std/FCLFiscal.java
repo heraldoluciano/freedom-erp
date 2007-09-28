@@ -81,17 +81,17 @@ public class FCLFiscal extends FDados implements CarregaListener {
 
 	private ListaCampos lcMens = new ListaCampos( this, "ME" );
 
-	private JRadioGroup rgTipoFisc = null;
+	private JRadioGroup<?, ?> rgTipoFisc = null;
 
 	private Vector<String> vTipoVals = new Vector<String>();
 
 	private Vector<String> vTipoLabs = new Vector<String>();
 
-	private JRadioGroup rgSitPis = null;
+	private JRadioGroup<?, ?> rgSitPis = null;
 
-	private JRadioGroup rgSitCofins = null;
+	private JRadioGroup<?, ?> rgSitCofins = null;
 	
-	private JRadioGroup rgTpRedIcmsFisc = null;
+	private JRadioGroup<?, ?> rgTpRedIcmsFisc = null;
 	
 	private Vector<String> vTpRedIcmsFiscLabs = new Vector<String>();
 	

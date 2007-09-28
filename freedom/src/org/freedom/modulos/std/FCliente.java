@@ -304,7 +304,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private Vector<String> vPessoaVal = new Vector<String>();
 
-	private JRadioGroup rgPessoa = null;
+	private JRadioGroup<?, ?> rgPessoa = null;
 
 	private JPanelPad pinEnt = new JPanelPad();
 

@@ -77,9 +77,9 @@ public class FRGerContas extends FRelatorio  {
   private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?","S","N");
   private JCheckBoxPad cbCliPrinc = new JCheckBoxPad("Mostrar no cliente principal?","S","N");
   private JCheckBoxPad cbIncluiPed = new JCheckBoxPad("Incluir pedidos não faturados?","S","N");
-  private JRadioGroup rgOrdemRel = null;
-  private JRadioGroup rgOrdemRel1 = null;
-  private JRadioGroup rgOrdemRel2 = null;
+  private JRadioGroup<?, ?> rgOrdemRel = null;
+  private JRadioGroup<?, ?> rgOrdemRel1 = null;
+  private JRadioGroup<?, ?> rgOrdemRel2 = null;
   private Vector<String> vLabOrdemRel = new Vector<String>();
   private Vector<String> vValOrdemRel = new Vector<String>();
   private ListaCampos lcGrup1 = new ListaCampos(this);

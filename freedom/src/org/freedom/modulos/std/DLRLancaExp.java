@@ -52,7 +52,7 @@ public class DLRLancaExp extends FFDialogo implements FocusListener {
 	private ListaCampos lcTipoExp = new ListaCampos(this);
     private Vector<String> vLabsRet = new Vector<String>();
     private Vector<String> vValsRet = new Vector<String>();
-    private JRadioGroup rgRet;
+    private JRadioGroup<?, ?> rgRet;
 	public DLRLancaExp() {
 		setTitulo("Lançamentos de Expositores");
 		setAtribos(80,80,310,270);

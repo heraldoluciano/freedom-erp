@@ -75,11 +75,11 @@ public class DLRCliente extends FFDialogo {
 
 	private JCheckBoxPad cbJur = new JCheckBoxPad( "Jurídica", "S", "N" );
 
-	private JRadioGroup rgOrdem = null;
+	private JRadioGroup<?, ?> rgOrdem = null;
 
-	private JRadioGroup rgModo = null;
+	private JRadioGroup<?, ?> rgModo = null;
 
-	private JRadioGroup rgEnd = null;
+	private JRadioGroup<?, ?> rgEnd = null;
 
 	private ListaCampos lcSetor = new ListaCampos( this );
 

@@ -82,7 +82,7 @@ public class FManutComis extends FFilho implements ActionListener {
 
 	private Vector<String> vLabs = new Vector<String>();
 
-	private JRadioGroup rgEmitRel = null;
+	private JRadioGroup<?, ?> rgEmitRel = null;
 
 	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 

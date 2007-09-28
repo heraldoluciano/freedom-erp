@@ -98,7 +98,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
   private String sCodPlan = "";
   private Date dIni = null;
   private Date dFim = null;
-  private JRadioGroup rgTipoLanca;
+  private JRadioGroup<?, ?> rgTipoLanca;
   private JLabelPad lbRazCli = null;
   private JLabelPad lbRazFor = null;
   private JLabelPad lbCodCli = null;

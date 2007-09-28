@@ -47,7 +47,7 @@ public class FREstatAtend extends FRelatorio {
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private Vector<String> vLabs = new Vector<String>();
   private Vector<String> vVals = new Vector<String>();
-  private JRadioGroup rgFormato=null;
+  private JRadioGroup<?, ?> rgFormato=null;
   private int iLinha = 1;
   private int iCol = 1;
   public FREstatAtend() {

@@ -75,7 +75,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 	private JCheckBoxPad cbCompleto = new JCheckBoxPad("Completo","S","N");
 	private JCheckBoxPad cbLiberado = new JCheckBoxPad("Liberado","S","N");
 	private JCheckBoxPad cbFaturado = new JCheckBoxPad("Faturado","S","N");
-	private JRadioGroup gbVenc;
+	private JRadioGroup<?, ?> gbVenc;
 	private Tabela tab = new Tabela();
 	private JButton btBusca = new JButton("Buscar",Icone.novo("btPesquisa.gif"));
 	private JButton btPrevimp = new JButton ("Imprimir",Icone.novo("btPrevimp.gif"));

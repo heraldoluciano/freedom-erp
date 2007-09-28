@@ -35,9 +35,9 @@ public class DLRClasCli extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	private JRadioGroup rgOrdem = null;
+	private JRadioGroup<?, ?> rgOrdem = null;
 
-	private JRadioGroup rgTipo = null;
+	private JRadioGroup<?, ?> rgTipo = null;
 
 	private JLabelPad lbOrdem = new JLabelPad( "Ordenar por:" );
 

@@ -56,13 +56,13 @@ public class FRVendasCli extends FRelatorio {
 
 	private JCheckBoxPad cbDesc = new JCheckBoxPad( "Ordenar decrescente ?", "S", "N" );
 
-	private JRadioGroup rgTipo = null;
+	private JRadioGroup<?, ?> rgTipo = null;
 
-	private JRadioGroup rgOrdem = null;
+	private JRadioGroup<?, ?> rgOrdem = null;
 
-	private JRadioGroup rgFaturados = null;
+	private JRadioGroup<?, ?> rgFaturados = null;
 
-	private JRadioGroup rgFinanceiro = null;
+	private JRadioGroup<?, ?> rgFinanceiro = null;
 
 	public FRVendasCli() {
 

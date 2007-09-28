@@ -77,10 +77,10 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
   private JLabelPad lbDescMoeda = new JLabelPad("e descrição da moeda");
   private Vector<String> vVals = new Vector<String>();
   private Vector<String> vLabs = new Vector<String>();
-  private JRadioGroup rgTipo = null; 
+  private JRadioGroup<?, ?> rgTipo = null; 
   private Vector<String> vValsCont = new Vector<String>();
   private Vector<String> vLabsCont = new Vector<String>();
-  private JRadioGroup rgTipoCont = null; 
+  private JRadioGroup<?, ?> rgTipoCont = null; 
   private ListaCampos lcBanc = new ListaCampos(this,"BO");
   private ListaCampos lcMoeda = new ListaCampos(this,"MA");
   public DLAnalBanc(Component cOrig, String sCodPai, String sDescPai, String sCod, String sDesc, String sTipo,String[] ContVals) {
@@ -94,7 +94,7 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
     txtCodPai.setVlrString(sCodPai); //Eles Receber valor padrão:
     txtDescPai.setVlrString(sDescPai); 
     txtCodAnal.setVlrString(sCod); 
-    vVals.addElement("B");  //Aqui é montado o JRadioGroup do tipo de conta:
+    vVals.addElement("B");  //Aqui é montado o JRadioGroup<?, ?> do tipo de conta:
     vVals.addElement("C");
     vVals.addElement("D");
     vVals.addElement("R");
@@ -115,7 +115,7 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
     txtCodMoeda.setTabelaExterna(lcMoeda); //Tabela da Foreign Key
     txtCodMoeda.setFK(true);
     txtCodMoeda.setNomeCampo("CodMoeda");
-    vValsCont.addElement("B"); //Aqui é montado o JRadioGroup do tipo de entrada:
+    vValsCont.addElement("B"); //Aqui é montado o JRadioGroup<?, ?> do tipo de entrada:
     vValsCont.addElement("C");
     vLabsCont.addElement("Bancos");
     vLabsCont.addElement("Caixa");
