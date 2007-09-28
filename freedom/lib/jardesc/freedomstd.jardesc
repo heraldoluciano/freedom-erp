@@ -29,6 +29,7 @@
 <file path="/freedom/src/org/freedom/images/btPdvLeituraX.gif"/>
 <file path="/freedom/src/org/freedom/relatorios/ResumoDiarioResumido.jrxml"/>
 <file path="/freedom/src/org/freedom/relatorios/VendasFisico.jasper"/>
+<file path="/freedom/src/org/freedom/relatorios/CpProd.jasper"/>
 <file path="/freedom/src/org/freedom/images/iconAtendimento32.gif"/>
 <file path="/freedom/src/org/freedom/images/lgFreedom.jpg"/>
 <file path="/freedom/src/org/freedom/images/freedomstd.ico"/>
@@ -55,8 +56,8 @@
 <file path="/freedom/src/org/freedom/images/freedompdv.ico"/>
 <file path="/freedom/src/org/freedom/images/ba1110.gif"/>
 <file path="/freedom/src/org/freedom/images/btSimilar.gif"/>
-<file path="/freedom/src/org/freedom/images/btAprovaOrc2.gif"/>
 <file path="/freedom/src/org/freedom/images/btTXT.gif"/>
+<file path="/freedom/src/org/freedom/images/btAprovaOrc2.gif"/>
 <file path="/freedom/src/org/freedom/images/lgSTP2.jpg"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoAgenda.java"/>
 <file path="/freedom/src/org/freedom/relatorios/RegistroEntrada.jasper"/>
@@ -86,8 +87,8 @@
 <file path="/freedom/src/org/freedom/images/iconRep32.ico"/>
 <file path="/freedom/src/org/freedom/images/btTrocaNumero.gif"/>
 <file path="/freedom/src/org/freedom/relatorios/FechaDiario.jasper"/>
-<file path="/freedom/src/org/freedom/relatorios/TipoCli.jasper"/>
 <file path="/freedom/src/org/freedom/relatorios/CpTipoMov.jrxml"/>
+<file path="/freedom/src/org/freedom/relatorios/TipoCli.jasper"/>
 <file path="/freedom/src/org/freedom/images/splashCFG.jpg"/>
 <file path="/freedom/src/org/freedom/images/btPdvFechaVenda.gif"/>
 <file path="/freedom/src/org/freedom/images/load_2.gif"/>
@@ -95,8 +96,8 @@
 <file path="/freedom/src/org/freedom/images/clEditar.gif"/>
 <file path="/freedom/src/org/freedom/images/btReceber.gif"/>
 <file path="/freedom/src/org/freedom/relatorios/FuncComis.jasper"/>
-<file path="/freedom/src/org/freedom/images/freedomcfg.ico"/>
 <file path="/freedom/src/org/freedom/images/splashTMK.jpg"/>
+<file path="/freedom/src/org/freedom/images/freedomcfg.ico"/>
 <file path="/freedom/src/org/freedom/images/btConsBaixa.gif"/>
 <file path="/freedom/src/org/freedom/images/.cvsignore"/>
 <file path="/freedom/src/org/freedom/images/splashGMS.jpg"/>
@@ -162,11 +163,11 @@
 <file path="/freedom/src/org/freedom/images/btPdvCalc.gif"/>
 <file path="/freedom/src/org/freedom/images/btPdvLeituraXPq.gif"/>
 <file path="/freedom/src/org/freedom/images/btAnt.gif"/>
-<file path="/freedom/src/org/freedom/images/btOrcamento2.gif"/>
 <file path="/freedom/src/org/freedom/images/splashSTD.jpg"/>
+<file path="/freedom/src/org/freedom/images/btOrcamento2.gif"/>
 <file path="/freedom/src/org/freedom/relatorios/listapreco.jrxml"/>
-<file path="/freedom/src/org/freedom/images/Thumbs.db"/>
 <file path="/freedom/src/org/freedom/images/ok.gif"/>
+<file path="/freedom/src/org/freedom/images/Thumbs.db"/>
 <file path="/freedom/src/org/freedom/images/btEstoque.gif"/>
 <file path="/freedom/src/org/freedom/images/btRecusado.gif"/>
 <file path="/freedom/src/org/freedom/images/curZoom.gif"/>
@@ -184,8 +185,8 @@
 <file path="/freedom/src/org/freedom/images/btEstProduto.gif"/>
 <file path="/freedom/src/org/freedom/images/btLancamentoFin.gif"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FCartCob.java"/>
-<file path="/freedom/src/org/freedom/images/btFluxo.gif"/>
 <file path="/freedom/src/org/freedom/images/ba1100.gif"/>
+<file path="/freedom/src/org/freedom/images/btFluxo.gif"/>
 <file path="/freedom/src/org/freedom/images/btEntrada.gif"/>
 <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
 <file path="/freedom/src/org/freedom/images/btImprimeOrc.gif"/>
@@ -210,6 +211,7 @@
 <file path="/freedom/src/org/freedom/relatorios/Setor.jrxml"/>
 <file path="/freedom/src/org/freedom/images/ba0101.gif"/>
 <file path="/freedom/src/org/freedom/relatorios/ClasCli.jasper"/>
+<file path="/freedom/src/org/freedom/relatorios/CpProd.jrxml"/>
 <file path="/freedom/src/org/freedom/relatorios/filtros.jasper"/>
 <file path="/freedom/src/org/freedom/images/barraVenda.gif"/>
 <file path="/freedom/src/org/freedom/images/statusbarPc.gif"/>
