@@ -131,23 +131,14 @@ public class Boleto {
 	public static String geraNossoNumero( final String modalidade, final String convenio, 
 			final Long rec, final Long nparc ) {
 		final StringBuffer retorno = new StringBuffer();
-		if ( "21".equals(modalidade) ) {
-			retorno.append( getNumCli(rec, nparc, 17) );
-		} else {
+		if ( !"21".equals(modalidade) ) {
 			retorno.append(  convenio );
-			if (convenio.length()<=4) {
-				retorno.append( getNumCli(rec, nparc, 6) );
-			} else if (convenio.length()==6) {
-				retorno.append( getNumCli(rec, nparc, 5) );
-			} else {
-				retorno.append( getNumCli(rec, nparc, 10 ));
-			}
-			//retorno.append( digVerif(retorno.toString()) );
-		}
-			
+		} 
+		retorno.append( getNumCli(modalidade, convenio, rec, nparc ) );
 		return retorno.toString();
 	}
 
+	
 	public static String[] getCodSig(String codigo) {
 		final String[] retorno = new String[2];
 		final StringBuffer buffer = new StringBuffer();
@@ -168,6 +159,22 @@ public class Boleto {
 			retorno[1]=buffer.toString();
 		}
 		return retorno;
+	}
+	
+	public static String getNumCli(String modalidade, String convenio, Long rec, Long nparc) {
+		final StringBuffer retorno = new StringBuffer();
+		if ("21".equals(modalidade)) {
+			retorno.append( getNumCli( rec, nparc, 17) );
+		} else {
+			if (convenio.length()<=4) {
+				retorno.append( getNumCli(rec, nparc, 6) );
+			} else if (convenio.length()==6) {
+				retorno.append( getNumCli(rec, nparc, 5) );
+			} else {
+				retorno.append( getNumCli(rec, nparc, 10 ));
+			}
+		}
+		return retorno.toString();
 	}
 	
 	public static String getNumCli(Long rec, Long nparc, int tam) {
