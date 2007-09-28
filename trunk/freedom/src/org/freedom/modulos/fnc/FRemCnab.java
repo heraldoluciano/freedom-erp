@@ -246,7 +246,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setDtVencTitulo( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );		
 		reg.setAgenciaCob( null );
-		reg.setDigAgenciaCob( 0 );
+		reg.setDigAgenciaCob( null );
  		reg.setEspecieTit( (Integer) prefs.get( EPrefs.ESPECTIT ) );
 		reg.setAceite( 'N' );
 		reg.setDtEmitTit( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
