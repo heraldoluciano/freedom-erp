@@ -167,7 +167,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 
 	private final Vector<String> vLabs = new Vector<String>();
 
-	private JRadioGroup rgFreteVD = null;
+	private JRadioGroup<String, String> rgFreteVD = null;
 
 	private final JTabbedPanePad tpn = new JTabbedPanePad();
 
@@ -1274,7 +1274,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 
 								for ( int i = 0; i < vTefsOK.size(); i++ ) {
 
-									if ( finalizaTEF( (Properties) vTefsOK.elementAt( i ) ) ) {
+									if ( finalizaTEF( vTefsOK.elementAt( i ) ) ) {
 										bRet = true;
 									}
 									else {
