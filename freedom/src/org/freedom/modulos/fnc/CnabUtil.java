@@ -1047,7 +1047,7 @@ class CnabUtil extends FbnUtil {
 
 		private String agenciaCob;
 
-		private int digAgenciaCob;
+		private String digAgenciaCob;
 
 		private int especieTit;
 
@@ -1303,12 +1303,12 @@ class CnabUtil extends FbnUtil {
 			this.digAgencia = digAgencia;
 		}
 
-		public int getDigAgenciaCob() {
+		public String getDigAgenciaCob() {
 
 			return digAgenciaCob;
 		}
 
-		public void setDigAgenciaCob( final int digAgenciaCob ) {
+		public void setDigAgenciaCob( final String digAgenciaCob ) {
 
 			this.digAgenciaCob = digAgenciaCob;
 		}
@@ -1648,7 +1648,7 @@ class CnabUtil extends FbnUtil {
 					setDtVencTitulo( Funcoes.encodeDate( Integer.parseInt( line.substring( 77, 79 ).trim() ), Integer.parseInt( line.substring( 79, 81 ).trim() ), Integer.parseInt( line.substring( 81, 85 ).trim() ) ) );
 					setVlrTitulo( strToBigDecimal( line.substring( 85, 100 ) ) );
 					setAgenciaCob( line.substring( 100, 105 ) );
-					setDigAgenciaCob( line.substring( 105, 106 ).trim().length() > 0 ? Integer.parseInt( line.substring( 105, 106 ).trim() ) : 0 );
+					setDigAgenciaCob( line.substring( 105, 106 ).trim() );
 					setEspecieTit( line.substring( 106, 108 ).trim().length() > 0 ? Integer.parseInt( line.substring( 106, 108 ).trim() ) : 0 );
 					setAceite( line.substring( 108, 109 ).charAt( 0 ) );
 					setDtEmitTit( Funcoes.encodeDate( Integer.parseInt( line.substring( 109, 111 ).trim() ), Integer.parseInt( line.substring( 111, 113 ).trim() ), Integer.parseInt( line.substring( 113, 117 ).trim() ) ) );
