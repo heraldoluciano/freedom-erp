@@ -24,7 +24,7 @@
 
 package org.freedom.modulos.pdv;
 
-import java.awt.AWTException;
+import java.awt.AWTKeyStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -42,8 +42,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -572,7 +573,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 		addKeyListener( this );
 
-		txtCodProd.setFocusTraversalKeys( KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET );
+		Set<AWTKeyStroke> empyt_set = new HashSet<AWTKeyStroke>();
+		txtCodProd.setFocusTraversalKeys( KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, empyt_set );
 
 		txtCodProd.addKeyListener( this );
 		txtQtdade.addKeyListener( this );
