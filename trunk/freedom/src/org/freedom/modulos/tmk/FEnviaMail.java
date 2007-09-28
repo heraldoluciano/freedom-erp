@@ -97,7 +97,7 @@ public class FEnviaMail extends FFilho implements ActionListener {
 	private JPanelPad pnCenter = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JProgressBar pbAnd = new JProgressBar();
 	private JLabelPad lbStatus = new JLabelPad("Pronto.");
-	private JRadioGroup rgTipo = null;
+	private JRadioGroup<?, ?> rgTipo = null;
 	private ListaCampos lcAtiv = new ListaCampos(this,"");
 	String sSMTP = null;
 	String sUser = null;

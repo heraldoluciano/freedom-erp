@@ -63,9 +63,9 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JCheckBoxPad cbObs = new JCheckBoxPad("Imprimir observações?","S","N");
 	private JCheckBoxPad cbImpTotDia = new JCheckBoxPad("Imprimir totalizador diário?","S","N");  
-	private JRadioGroup rgTipoRel = null;
-	private JRadioGroup rgOrdem = null;
-	private JRadioGroup rgOrdem2 = null;
+	private JRadioGroup<?, ?> rgTipoRel = null;
+	private JRadioGroup<?, ?> rgOrdem = null;
+	private JRadioGroup<?, ?> rgOrdem2 = null;
 	private Vector<String> vVals = new Vector<String>();
 	private Vector<String> vLabs = new Vector<String>();
 	private Vector<String> vVals1 = new Vector<String>();

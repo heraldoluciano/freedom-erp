@@ -51,8 +51,8 @@ public class DLPlanAnal extends FFDialogo {
   private Vector<String> vLabsTipoPlan = new Vector<String>();
   private Vector<String> vValsFinPlan = new Vector<String>();
   private Vector<String> vLabsFinPlan = new Vector<String>();
-  private JRadioGroup rgTipoPlan = null; 
-  private JRadioGroup rgFinPlan = null; 
+  private JRadioGroup<?, ?> rgTipoPlan = null; 
+  private JRadioGroup<?, ?> rgFinPlan = null; 
   public DLPlanAnal(Component cOrig,String sCodPai, String sDescPai, String sCod, String sDesc, String sTipo, String sFin) {
   	super(cOrig);
   	setTitulo("Planejamento financeiro (Conta Analítica)");

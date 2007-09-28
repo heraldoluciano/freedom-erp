@@ -87,7 +87,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 	
 	private JCheckBoxPad cbAtivo = null;
 	
-	private JRadioGroup rgCV = null;
+	private JRadioGroup<?, ?> rgCV = null;
 	
 	private Vector<String> vLabsCV = new Vector<String>();
 

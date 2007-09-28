@@ -234,15 +234,15 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 	private JLabelPad lbPrcCont = new JLabelPad();
 
-	private JRadioGroup rgTipoValidOrc = null;
+	private JRadioGroup<?, ?> rgTipoValidOrc = null;
 
-	private JRadioGroup rgTipoPrecoCusto = null;
+	private JRadioGroup<?, ?> rgTipoPrecoCusto = null;
 
-	private JRadioGroup rgSetorVenda = null;
+	private JRadioGroup<?, ?> rgSetorVenda = null;
 
-	private JRadioGroup rgOrdNota = null;
+	private JRadioGroup<?, ?> rgOrdNota = null;
 
-	private JRadioGroup rgLibCred = null;
+	private JRadioGroup<?, ?> rgLibCred = null;
 
 	private JComboBoxPad cbSisContabil = null;
 
@@ -356,7 +356,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 	private JCheckBoxPad cbAltItReceberImp = null;
 	
-	private JRadioGroup rgCodBar = null;
+	private JRadioGroup<?, ?> rgCodBar = null;
 	
 	private PainelImagem imgAssOrc = new PainelImagem( 65000 );
 

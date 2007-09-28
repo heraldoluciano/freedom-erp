@@ -54,7 +54,7 @@ public class FRBalanceteGrafico extends FRelatorio {
   private JTextFieldFK txtDescPlan = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);  
   private ListaCampos lcPlan = new ListaCampos(this);
   private FPrinterJob dl = null;
-  private JRadioGroup rgGrafico = null;
+  private JRadioGroup<?, ?> rgGrafico = null;
   private Vector<String> vLabs = new Vector<String>(2);
   private Vector<String> vVals = new Vector<String>(2);
   private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,19,0);   

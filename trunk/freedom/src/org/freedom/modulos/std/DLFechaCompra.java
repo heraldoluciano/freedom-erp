@@ -116,7 +116,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 	private JCheckBoxPad cbAdicFrete = new JCheckBoxPad( "adiciona valor do frete ao custo?", "S", "N" );
 
-	private JRadioGroup rgFreteVD = null;
+	private JRadioGroup<?, ?> rgFreteVD = null;
 
 	private ListaCampos lcCompra = new ListaCampos( this );
 

@@ -102,11 +102,11 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 	protected final JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	protected JRadioGroup rgData;
+	protected JRadioGroup<?, ?> rgData;
 	
-	protected JRadioGroup rgSitRemessa;
+	protected JRadioGroup<?, ?> rgSitRemessa;
 	
-	protected JRadioGroup rgTipoRemessa;
+	protected JRadioGroup<?, ?> rgTipoRemessa;
 
 	private final JButton btCarrega = new JButton( "Buscar", Icone.novo( "btExecuta.gif" ) );
 

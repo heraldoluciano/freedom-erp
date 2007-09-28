@@ -45,7 +45,7 @@ public class DLPlanPrim extends FFDialogo {
   private JPanelPad pinCont = new JPanelPad(360,220);
   private Vector<String> vVals = new Vector<String>();
   private Vector<String> vLabs = new Vector<String>();
-  private JRadioGroup rgTipo = null;
+  private JRadioGroup<?, ?> rgTipo = null;
   private JTabbedPanePad ptb = new JTabbedPanePad();
   private JLabelPad lbCod = new JLabelPad("Código");
   private JLabelPad lbDesc = new JLabelPad("Descrição");

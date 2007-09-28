@@ -61,9 +61,9 @@ public class FRVendasGeral extends FRelatorio {
 
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar Canceladas", "S", "N" );
 
-	private JRadioGroup rgFaturados = null;
+	private JRadioGroup<?, ?> rgFaturados = null;
 
-	private JRadioGroup rgFinanceiro = null;
+	private JRadioGroup<?, ?> rgFinanceiro = null;
 
 	private Vector<String> vLabsFat = new Vector<String>();
 

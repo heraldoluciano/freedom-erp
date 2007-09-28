@@ -70,7 +70,7 @@ public class FRSaldoLote extends FRelatorio {
 
 	private ListaCampos lcMarca = new ListaCampos( this );
 
-	private JRadioGroup rgOrdem = null;
+	private JRadioGroup<?, ?> rgOrdem = null;
 
 	private Vector<String> vLabs = new Vector<String>( 2 );
 

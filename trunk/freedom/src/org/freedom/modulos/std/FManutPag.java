@@ -197,9 +197,9 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 	private JCheckBoxPad cbPagParcial = new JCheckBoxPad( "Pag. Parcial", "S", "N" );
 
-	private JRadioGroup rgData = null;
+	private JRadioGroup<?, ?> rgData = null;
 
-	private JRadioGroup rgVenc = null;
+	private JRadioGroup<?, ?> rgVenc = null;
 
 	private Vector<String> vCodPag = new Vector<String>();
 

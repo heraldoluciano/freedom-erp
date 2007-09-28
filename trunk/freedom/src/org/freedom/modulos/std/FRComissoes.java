@@ -56,8 +56,8 @@ public class FRComissoes extends FRelatorio {
 	private Vector<String> vLabs = new Vector<String>();
 	private Vector<String> vValsOrdem = new Vector<String>();
 	private Vector<String> vLabsOrdem = new Vector<String>();
-	private JRadioGroup rgEmitRel = null;
-	private JRadioGroup rgOrdemRel = null;
+	private JRadioGroup<?, ?> rgEmitRel = null;
+	private JRadioGroup<?, ?> rgOrdemRel = null;
 	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10, 0);
 	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10, 0);

@@ -50,7 +50,7 @@ public class FTipoCob extends FDados implements ActionListener {
 
 	private final JTextFieldPad txtDuplCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 	
-	private JRadioGroup rgTipoFebraban = null;
+	private JRadioGroup<?, ?> rgTipoFebraban = null;
 	
 	private final JCheckBoxPad cbObriCartCob = new JCheckBoxPad( "Obrigar carteira de cobraça?", "S", "N" );
 	

@@ -99,9 +99,9 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		
 	private final JTextFieldPad txtNroSeqSiacc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
-	private JRadioGroup rgIdentAmbCliSiacc;
+	private JRadioGroup<?, ?> rgIdentAmbCliSiacc;
 	
-	private JRadioGroup rgIdentAmbBcoSiacc;
+	private JRadioGroup<?, ?> rgIdentAmbBcoSiacc;
 	
 	private final JTextFieldPad txtTipoCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
@@ -135,9 +135,9 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	
 	private final JTextFieldPad txtConvBol = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 	
-	private JRadioGroup rgIdentAmbCliCnab;
+	private JRadioGroup<?, ?> rgIdentAmbCliCnab;
 	
-	private JRadioGroup rgIdentAmbBcoCnab;
+	private JRadioGroup<?, ?> rgIdentAmbBcoCnab;
 
 	private JComboBoxPad cbFormaCadastramento;
 	

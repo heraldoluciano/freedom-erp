@@ -79,11 +79,11 @@ public class FRVendasDet extends FRelatorio {
 	
 	private JCheckBoxPad cbVendaSubcli = new JCheckBoxPad( "Listar vendas dos sub-clientes", "S", "N" );
 
-	private JRadioGroup rgTipo = null;
+	private JRadioGroup<?, ?> rgTipo = null;
 
-	private JRadioGroup rgFaturados = null;
+	private JRadioGroup<?, ?> rgFaturados = null;
 
-	private JRadioGroup rgFinanceiro = null;
+	private JRadioGroup<?, ?> rgFinanceiro = null;
 
 	private ListaCampos lcCliente = new ListaCampos( this );
 

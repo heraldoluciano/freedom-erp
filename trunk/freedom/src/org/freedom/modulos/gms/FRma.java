@@ -186,7 +186,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 	private JTextFieldFK txtDescUnid = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JRadioGroup rgPriod = null;
+	private JRadioGroup<?, ?> rgPriod = null;
 
 	private Vector<String> vLabsTipo = new Vector<String>();
 

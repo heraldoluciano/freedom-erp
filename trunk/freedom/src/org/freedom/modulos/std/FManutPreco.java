@@ -102,9 +102,9 @@ public class FManutPreco extends FFilho implements ActionListener,
 	private JTextFieldPad txtMultiplic = new JTextFieldPad(
 			JTextFieldPad.TP_DECIMAL, 7, 2);
 
-	private JRadioGroup rgTipoOper = null;
+	private JRadioGroup<?, ?> rgTipoOper = null;
 
-	private JRadioGroup rgOrigem = null;
+	private JRadioGroup<?, ?> rgOrigem = null;
 
 	private JComboBoxPad cbOperador = null;
 

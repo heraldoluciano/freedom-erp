@@ -278,7 +278,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
     comp.addKeyListener(this);
     comp.addKeyListener(navSeq);
     if (comp instanceof JRadioGroup)
-      ((JRadioGroup) comp).setListaCampos(lcSeq);
+      ((JRadioGroup<?, ?>) comp).setListaCampos(lcSeq);
     else if (comp instanceof JCheckBoxPad)
       ((JCheckBoxPad) comp).setListaCampos(lcSeq);
     else if (comp instanceof JTextAreaPad)
@@ -291,7 +291,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
     comp.addKeyListener(this);
     comp.addKeyListener(navSeq);
     if (comp instanceof JRadioGroup)
-      ((JRadioGroup) comp).setListaCampos(lcSeq);
+      ((JRadioGroup<?, ?>) comp).setListaCampos(lcSeq);
     else if (comp instanceof JCheckBoxPad)
       ((JCheckBoxPad) comp).setListaCampos(lcSeq);
     else if (comp instanceof JTextAreaPad) {
@@ -310,7 +310,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
   	JLabelPad lbTmp = null;
     comp.setName(nome);
     if (comp instanceof JRadioGroup)
-      ((JRadioGroup) comp).setListaCampos(lcSeq);
+      ((JRadioGroup<?, ?>) comp).setListaCampos(lcSeq);
     else if (comp instanceof JCheckBoxPad)
       ((JCheckBoxPad) comp).setListaCampos(lcSeq);
 	else if (comp instanceof JComboBoxPad)

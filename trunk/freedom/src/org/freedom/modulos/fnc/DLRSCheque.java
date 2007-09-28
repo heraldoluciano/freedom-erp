@@ -26,8 +26,8 @@ import org.freedom.telas.FFDialogo;
 
 public class DLRSCheque extends FFDialogo {
   private static final long serialVersionUID = 1L;	
-  private JRadioGroup rgOrdem = null;
-  private JRadioGroup rgSaida = null;
+  private JRadioGroup<?, ?> rgOrdem = null;
+  private JRadioGroup<?, ?> rgSaida = null;
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,
 			10, 0);
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,

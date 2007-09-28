@@ -108,13 +108,13 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar Canceladas", "S", "N" );
 
-	private JRadioGroup rgFaturados = null;
+	private JRadioGroup<?, ?> rgFaturados = null;
 
-	private JRadioGroup rgFinanceiro = null;
+	private JRadioGroup<?, ?> rgFinanceiro = null;
 
-	private JRadioGroup rgTipoRel = null;
+	private JRadioGroup<?, ?> rgTipoRel = null;
 
-	private JRadioGroup rgOrdemRel = null;
+	private JRadioGroup<?, ?> rgOrdemRel = null;
 
 	private Vector<String> vLabsFat = new Vector<String>();
 

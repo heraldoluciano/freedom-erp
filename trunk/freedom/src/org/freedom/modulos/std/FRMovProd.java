@@ -44,9 +44,9 @@ import org.freedom.telas.FRelatorio;
 public class FRMovProd extends FRelatorio {
 	private static final long serialVersionUID = 1L;
 
-  private JRadioGroup rgOrdem = null;
-  private JRadioGroup rgAtivoProd=null;
-  private JRadioGroup rgProduto=null;
+  private JRadioGroup<?, ?> rgOrdem = null;
+  private JRadioGroup<?, ?> rgAtivoProd=null;
+  private JRadioGroup<?, ?> rgProduto=null;
   private JPanelPad pnlbSelec = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
   private JPanelPad pinSelec = new JPanelPad(350,90);
   private JLabelPad lbSelec = new JLabelPad(" Seleção:");

@@ -33,7 +33,7 @@ public class DLRClasFiscal extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-  private JRadioGroup rgOrdem = null;
+  private JRadioGroup<?, ?> rgOrdem = null;
   private JCheckBoxPad cbListaExec = new JCheckBoxPad("Listar exeções ? ","S","N");
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private Vector<String> vLabs = new Vector<String>();

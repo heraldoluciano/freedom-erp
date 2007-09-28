@@ -72,9 +72,9 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 
 	private JCheckBoxPad cbSoVendas = new JCheckBoxPad( "Mostrar somente recebimentos de vendas?", "S", "N" );
 
-	private JRadioGroup cbTipoRel = null;
+	private JRadioGroup<?, ?> cbTipoRel = null;
 
-	private JRadioGroup cbData = null;
+	private JRadioGroup<?, ?> cbData = null;
 
 	private ListaCampos lcCli = new ListaCampos( this );
 

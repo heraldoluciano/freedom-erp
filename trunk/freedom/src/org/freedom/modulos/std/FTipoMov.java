@@ -105,9 +105,9 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 	private JLabelPad lbInfoPadImp = new JLabelPad( "   Padrões para fechamento de venda" );
 
-	private JRadioGroup rgESTipoMov = null;
+	private JRadioGroup<?, ?> rgESTipoMov = null;
 
-	private JRadioGroup rgTipoFrete = null;
+	private JRadioGroup<?, ?> rgTipoFrete = null;
 
 	private JComboBoxPad cbTipoMov = null;
 

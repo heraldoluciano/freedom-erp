@@ -67,9 +67,9 @@ public class FRMediaItem extends FRelatorio {
 	private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad("Mostrar Canceladas", "S", "N");
-	private JRadioGroup rgOrdem = null;	
-	private JRadioGroup rgFaturados = null;
-	private JRadioGroup rgFinanceiro = null;
+	private JRadioGroup<?, ?> rgOrdem = null;	
+	private JRadioGroup<?, ?> rgFaturados = null;
+	private JRadioGroup<?, ?> rgFinanceiro = null;
 	private Vector<String> vLabs = new Vector<String>();
 	private Vector<String> vVals = new Vector<String>(); 
 	private Vector<String> vLabsFat = new Vector<String>();

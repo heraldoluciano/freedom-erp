@@ -34,11 +34,11 @@ public class DLRTipoFiscCli extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	private JRadioGroup rgOrdem = null;
+	private JRadioGroup<?, ?> rgOrdem = null;
 
 	private JLabelPad lbOrdem = new JLabelPad( "Ordenar por:" );
 
-	private JRadioGroup rgTipo = null;
+	private JRadioGroup<?, ?> rgTipo = null;
 
 	public DLRTipoFiscCli() {
 

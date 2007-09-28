@@ -30,7 +30,7 @@ import java.util.Vector;
 public class DLRAtiv extends FFDialogo {
 	private static final long serialVersionUID = 1L;
 
-  private JRadioGroup rgOrdem = null;
+  private JRadioGroup<?, ?> rgOrdem = null;
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private Vector<String> vLabs = new Vector<String>();
   private Vector<String> vVals = new Vector<String>();

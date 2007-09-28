@@ -73,7 +73,7 @@ public class FConta extends FTabDados implements CheckBoxListener {
 
 	private Vector<String> vLabsTipo = new Vector<String>();
 
-	private JRadioGroup rgTipo = null;
+	private JRadioGroup<?, ?> rgTipo = null;
 
 	private ListaCampos lcBanco = new ListaCampos( this, "BO" );
 

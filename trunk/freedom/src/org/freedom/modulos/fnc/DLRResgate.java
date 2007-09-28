@@ -25,7 +25,7 @@ import org.freedom.telas.FFDialogo;
 
 public class DLRResgate extends FFDialogo {
   private static final long serialVersionUID = 1L;	
-  private JRadioGroup rgOrdem = null;
+  private JRadioGroup<?, ?> rgOrdem = null;
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,
 			10, 0);
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,

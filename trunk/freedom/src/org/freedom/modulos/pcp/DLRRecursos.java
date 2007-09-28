@@ -31,8 +31,8 @@ import org.freedom.telas.FFDialogo;
 public class DLRRecursos extends FFDialogo {
 	private static final long serialVersionUID = 1L;
 	
-  private JRadioGroup rgOrdem = null;
-  private JRadioGroup rgTipo = null;
+  private JRadioGroup<?, ?> rgOrdem = null;
+  private JRadioGroup<?, ?> rgTipo = null;
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private JLabelPad lbTipo = new JLabelPad("Tipo de impressão:");
   private Vector<String> vLabsOrd = new Vector<String>();

@@ -78,8 +78,8 @@ public class FRListaPreco extends FRelatorio {
 	private JTextFieldPad txtDescPlanoPag6 = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtDescPlanoPag7 = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
     private JCheckBoxPad cbAgrupar = new JCheckBoxPad("Agrupar por grupo?","S","N");
-	private JRadioGroup rgTipo = null;
-	private JRadioGroup rgOrdem = null;
+	private JRadioGroup<?, ?> rgTipo = null;
+	private JRadioGroup<?, ?> rgOrdem = null;
 	private Vector<String> vLabs = new Vector<String>(2);
 	private Vector<String> vVals = new Vector<String>(2);
 	private Vector<String> vLabs2 = new Vector<String>(2);

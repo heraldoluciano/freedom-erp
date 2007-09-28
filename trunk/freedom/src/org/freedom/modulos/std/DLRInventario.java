@@ -42,7 +42,7 @@ public class DLRInventario extends FFDialogo {
 	private static final long serialVersionUID = 1L;
 
   private JCheckBoxPad cbGrupo = new JCheckBoxPad("Dividir por grupo","S","N");
-  private JRadioGroup rgOrdem = null;
+  private JRadioGroup<?, ?> rgOrdem = null;
   private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
   private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");

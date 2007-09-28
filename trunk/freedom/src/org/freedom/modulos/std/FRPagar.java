@@ -57,7 +57,7 @@ public class FRPagar extends FRelatorio {
 	private static final long serialVersionUID = 1L;
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
 	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-	private JRadioGroup cbFiltro = null;
+	private JRadioGroup<?, ?> cbFiltro = null;
 	private Vector<String> vVals = new Vector<String>();
 	private Vector<String> vLabs = new Vector<String>();
 	private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

@@ -236,9 +236,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JCheckBoxPad cbRecParcial = new JCheckBoxPad( "Rec. Parcial", "S", "N" );
 
-	private JRadioGroup rgData = null;
+	private JRadioGroup<?, ?> rgData = null;
 
-	private JRadioGroup rgVenc = null;
+	private JRadioGroup<?, ?> rgVenc = null;
 
 	private ListaCampos lcCli = new ListaCampos( this );
 

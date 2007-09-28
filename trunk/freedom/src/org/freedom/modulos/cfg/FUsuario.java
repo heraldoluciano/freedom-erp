@@ -97,9 +97,9 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 	private JPanelPad pinGeral = new JPanelPad();
 
-	private JRadioGroup rgAprovaRMA = null;
+	private JRadioGroup<?, ?> rgAprovaRMA = null;
 
-	private JRadioGroup rgAprovaSolicitacao = null;
+	private JRadioGroup<?, ?> rgAprovaSolicitacao = null;
 
 	private JTextAreaPad txaComentUsu = new JTextAreaPad();
 

@@ -43,7 +43,7 @@ public class DLIdentCli extends FFDialogo {
 
 	private final JTextFieldPad txtIdentCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
-	private final JRadioGroup rgSubTipoFebraban;
+	private final JRadioGroup<?, ?> rgSubTipoFebraban;
 
 	private static boolean MRET = false;
 

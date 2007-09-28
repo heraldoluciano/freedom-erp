@@ -106,7 +106,7 @@ public class FContato extends FTabDados implements RadioGroupListener,
 	private JTextFieldFK txtDescAtiv = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private Vector<String> vPessoaLab = new Vector<String>();
 	private Vector<String> vPessoaVal = new Vector<String>();
-	private JRadioGroup rgPessoa = null;
+	private JRadioGroup<?, ?> rgPessoa = null;
 	private JPanelPad pnCompl = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextAreaPad txaObs = new JTextAreaPad();
 	private JScrollPane spnObs = new JScrollPane(txaObs);

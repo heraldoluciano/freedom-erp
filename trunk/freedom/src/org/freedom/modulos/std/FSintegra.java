@@ -82,11 +82,11 @@ public class FSintegra extends FFilho implements ActionListener {
 
 	private String CR = "" + ( (char) 13 ) + "" + ( (char) 10 );
 
-	private JRadioGroup rgConvenio;
+	private JRadioGroup<?, ?> rgConvenio;
 
-	private JRadioGroup rgNatoper;
+	private JRadioGroup<?, ?> rgNatoper;
 
-	private JRadioGroup rgFinalidade;
+	private JRadioGroup<?, ?> rgFinalidade;
 
 	private Vector<String> vLabConvenio = new Vector<String>();
 

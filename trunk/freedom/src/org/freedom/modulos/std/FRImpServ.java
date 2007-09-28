@@ -51,7 +51,7 @@ public class FRImpServ extends FRelatorio {
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10, 0);
 	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10, 0);
 	private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?", "S", "N");
-	private JRadioGroup rgFormato = null;
+	private JRadioGroup<?, ?> rgFormato = null;
 	private String linhaFina = Funcoes.replicate("-", 133);
 	private String linhaLarga = Funcoes.replicate("=", 133);
 	private float fTotMesBase = 0;
@@ -83,7 +83,7 @@ public class FRImpServ extends FRelatorio {
 
 		cbVendas.setVlrString("S");
 
-		rgFormato = new JRadioGroup(1, 2, new Object[] { "Detalhado", "Resumido" }, new Object[] { "D", "R" });
+		rgFormato = new JRadioGroup<String, String>(1, 2, new Object[] { "Detalhado", "Resumido" }, new Object[] { "D", "R" });
 		rgFormato.setVlrString("D");
 
 		adic(new JLabelPad("Período"), 7, 0, 250, 20);

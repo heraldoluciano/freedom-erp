@@ -108,7 +108,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 
 	private JTextFieldPad txtVlrLiq = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JRadioGroup rgBusca = null;
+	private JRadioGroup<?, ?> rgBusca = null;
 
 	private JButton btBusca = new JButton( "Buscar", Icone.novo( "btPesquisa.gif" ) );
 

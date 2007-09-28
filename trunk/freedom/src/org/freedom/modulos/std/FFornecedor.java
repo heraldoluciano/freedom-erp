@@ -133,7 +133,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	private Vector<String> vPessoaVal = new Vector<String>();
 
-	private JRadioGroup rgPessoa = null;
+	private JRadioGroup<?, ?> rgPessoa = null;
 
 	private JTextAreaPad txaObs = new JTextAreaPad();
 

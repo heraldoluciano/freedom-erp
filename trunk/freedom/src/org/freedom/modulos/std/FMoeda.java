@@ -53,9 +53,9 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
 
 	private Vector<String> vLabsAtua = new Vector<String>();
 
-	private JRadioGroup rgTipo = null;
+	private JRadioGroup<?, ?> rgTipo = null;
 
-	private JRadioGroup rgAtua = null;
+	private JRadioGroup<?, ?> rgAtua = null;
 
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 

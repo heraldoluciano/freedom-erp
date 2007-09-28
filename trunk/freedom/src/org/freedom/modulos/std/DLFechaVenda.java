@@ -207,7 +207,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private final JCheckBoxPad cbAdicFrete = new JCheckBoxPad( "adiciona valor do frete na nota?", "S", "N" );
 
-	private final JRadioGroup rgFreteVD;
+	private final JRadioGroup<?, ?> rgFreteVD;
 
 	private final ListaCampos lcVenda = new ListaCampos( this );
 

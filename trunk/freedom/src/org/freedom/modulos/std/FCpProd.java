@@ -111,7 +111,7 @@ public class FCpProd extends FFilho implements ActionListener, CheckBoxListener 
 
 	private Vector<String> vLabs = new Vector<String>();
 
-	private JRadioGroup rgInc = null;
+	private JRadioGroup<?, ?> rgInc = null;
 
 	private ListaCampos lcGrup = new ListaCampos( this );
 

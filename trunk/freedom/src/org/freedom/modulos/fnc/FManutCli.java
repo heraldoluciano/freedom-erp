@@ -66,9 +66,9 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 
 	private final JTextFieldPad txtTipoFebraban = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private final JRadioGroup rgTipoFebraban;
+	private final JRadioGroup<?, ?> rgTipoFebraban;
 
-	private final JRadioGroup rgSubTipoFebraban;
+	private final JRadioGroup<?, ?> rgSubTipoFebraban;
 
 	private final ListaCampos lcBanco = new ListaCampos( this, "BO" );
 	

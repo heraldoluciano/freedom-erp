@@ -87,7 +87,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 	private final JProgressBar progress = new JProgressBar();
 	
-	private JRadioGroup rgModo;
+	private JRadioGroup<?, ?> rgModo;
 	
 	private String sistema;
 	
