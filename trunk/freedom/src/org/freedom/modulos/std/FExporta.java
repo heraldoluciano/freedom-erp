@@ -138,7 +138,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		Vector<String> vals = new Vector<String>();
 		vals.add( "C" );
 		vals.add( "L" );
-		rgModo = new JRadioGroup( 1, 2, labs, vals );
+		rgModo = new JRadioGroup<String, String>( 1, 2, labs, vals );
 		rgModo.setVlrString( "C" );
 	}
 

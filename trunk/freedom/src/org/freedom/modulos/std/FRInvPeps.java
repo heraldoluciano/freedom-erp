@@ -92,7 +92,7 @@ public class FRInvPeps extends FRelatorio {
     vDesc.addElement("Código");
     vOpc.addElement("D");
     vOpc.addElement("C");
-    rgOrdem = new JRadioGroup(2,1,vDesc,vOpc);
+    rgOrdem = new JRadioGroup<String, String>(2,1,vDesc,vOpc);
     
     vDescCusto.addElement("C.PEPS");
     vDescCusto.addElement("C.MPM");
@@ -101,7 +101,7 @@ public class FRInvPeps extends FRelatorio {
     vOpcCusto.addElement("M");
     vOpcCusto.addElement("B");
     
-    rgCusto = new JRadioGroup(1,3,vDescCusto,vOpcCusto);
+    rgCusto = new JRadioGroup<String, String>(1,3,vDescCusto,vOpcCusto);
     
 
     cbSemEstoq.setVlrString("N");

@@ -141,7 +141,7 @@ public class FManutComis extends FFilho implements ActionListener {
 		vVals.addElement( "V" );
 		vLabs.addElement( "Emissão" );
 		vLabs.addElement( "Vencimento" );
-		rgEmitRel = new JRadioGroup( 2, 2, vLabs, vVals );
+		rgEmitRel = new JRadioGroup<String, String>( 2, 2, vLabs, vVals );
 		rgEmitRel.setVlrString( "E" );
 		rgEmitRel.setAtivo( 0, true );
 		rgEmitRel.setAtivo( 1, true );

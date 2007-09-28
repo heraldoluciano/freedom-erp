@@ -81,7 +81,7 @@ public class FRVendasCli extends FRelatorio {
 		vLabs.addElement( "Texto" );
 		vVals.addElement( "G" );
 		vVals.addElement( "T" );
-		rgTipo = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgTipo.setVlrString( "T" );
 		
 		Vector<String> vLabs1 = new Vector<String>();
@@ -93,7 +93,7 @@ public class FRVendasCli extends FRelatorio {
 		vVals1.addElement( "C" );
 		vVals1.addElement( "R" );
 		vVals1.addElement( "V" );
-		rgOrdem = new JRadioGroup( 1, 3, vLabs1, vVals1 );
+		rgOrdem = new JRadioGroup<String, String>( 1, 3, vLabs1, vVals1 );
 		rgOrdem.setVlrString( "V" );
 
 		Vector<String> vLabs2 = new Vector<String>();
@@ -105,7 +105,7 @@ public class FRVendasCli extends FRelatorio {
 		vVals2.addElement( "S" );
 		vVals2.addElement( "N" );
 		vVals2.addElement( "A" );
-		rgFaturados = new JRadioGroup( 3, 1, vLabs2, vVals2 );
+		rgFaturados = new JRadioGroup<String, String>( 3, 1, vLabs2, vVals2 );
 		rgFaturados.setVlrString( "S" );
 
 		Vector<String> vLabs3 = new Vector<String>();
@@ -117,7 +117,7 @@ public class FRVendasCli extends FRelatorio {
 		vVals3.addElement( "S" );
 		vVals3.addElement( "N" );
 		vVals3.addElement( "A" );
-		rgFinanceiro = new JRadioGroup( 3, 1, vLabs3, vVals3 );
+		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabs3, vVals3 );
 		rgFinanceiro.setVlrString( "S" );
 
 		cbDesc.setVlrString( "S" );

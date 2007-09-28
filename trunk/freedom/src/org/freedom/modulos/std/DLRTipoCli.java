@@ -53,7 +53,7 @@ public class DLRTipoCli extends FFDialogo {
 		vLabs.addElement( "Descrição" );
 		vVals.addElement( "C" );
 		vVals.addElement( "D" );
-		rgOrdem = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgOrdem.setVlrString( "D" );
 		adic( lbOrdem, 7, 0, 80, 15 );
 		adic( rgOrdem, 7, 20, 270, 30 );
@@ -66,7 +66,7 @@ public class DLRTipoCli extends FFDialogo {
 		vVals1.addElement( "T" );
 		vLabs1.addElement( "Grafico" );
 		vLabs1.addElement( "Texto" );
-		rgTipo = new JRadioGroup( 1, 2, vLabs1, vVals1 );
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
 		rgTipo.setVlrString( "T" );
 		
 		adic( rgTipo, 7, 60, 270, 30 );

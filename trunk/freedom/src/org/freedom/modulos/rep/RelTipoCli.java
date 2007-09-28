@@ -59,7 +59,7 @@ public class RelTipoCli extends FRelatorio {
 		Vector<String> vals = new Vector<String>();
 		vals.add( "CODTIPOCLI" );
 		vals.add( "DESCTIPOCLI" );
-		rgOrdem = new JRadioGroup( 1, 2, labs, vals );
+		rgOrdem = new JRadioGroup<String, String>( 1, 2, labs, vals );
 		
 		adic( new JLabel( "Ordem do relatorio :" ), 10, 10, 200, 20 );
 		adic( rgOrdem, 10, 35, 250, 30 );

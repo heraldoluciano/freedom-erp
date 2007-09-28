@@ -366,7 +366,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		vValsTipo.addElement( "A" );
 		vLabsTipo.addElement( "Normal" );
 		vLabsTipo.addElement( "Urgente" );
-		rgPriod = new JRadioGroup( 2, 1, vLabsTipo, vValsTipo );
+		rgPriod = new JRadioGroup<String, String>( 2, 1, vLabsTipo, vValsTipo );
 		rgPriod.setVlrString( "B" );
 
 		setListaCampos( lcCampos );

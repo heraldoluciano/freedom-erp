@@ -91,7 +91,7 @@ public class FTipoCob extends FDados implements ActionListener {
 		vValsTipoFebraban.addElement( "01" );
 		vValsTipoFebraban.addElement( "02" );
 		
-		rgTipoFebraban = new JRadioGroup( 1, 2, vLabsTipoFebraban, vValsTipoFebraban );
+		rgTipoFebraban = new JRadioGroup<String, String>( 1, 2, vLabsTipoFebraban, vValsTipoFebraban );
 	}
 	
 	private void montaTela() {

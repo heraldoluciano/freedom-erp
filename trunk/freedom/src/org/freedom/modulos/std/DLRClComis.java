@@ -50,7 +50,7 @@ public class DLRClComis extends FFDialogo {
 	  vVals.addElement("C");
 	  vVals.addElement("D");
 	  
-	  rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+	  rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
 	  rgOrdem.setVlrString("D");
 	  adic(lbOrdem,7,0,80,15);
 	  adic(rgOrdem,7,20,280,30);
@@ -63,7 +63,7 @@ public class DLRClComis extends FFDialogo {
 	  vVals1.addElement("G");
 	  vVals1.addElement("T");
 	  
-	  rgTipo = new JRadioGroup(1,2,vLabs1,vVals1);
+	  rgTipo = new JRadioGroup<String, String>(1,2,vLabs1,vVals1);
 	  rgOrdem.setVlrString("T");
 	  adic(rgTipo,7,60,280,30);
 	  

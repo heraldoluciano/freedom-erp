@@ -48,14 +48,14 @@ public class DLRRecursos extends FFDialogo {
     vLabsOrd.addElement("Nome");
     vValsOrd.addElement("C");
     vValsOrd.addElement("N");
-    rgOrdem = new JRadioGroup(1,2,vLabsOrd,vValsOrd);
+    rgOrdem = new JRadioGroup<String, String>(1,2,vLabsOrd,vValsOrd);
     rgOrdem.setVlrString("N");
     
     vLabsTipo.addElement("Texto");
     vLabsTipo.addElement("Gráfica");
     vValsTipo.addElement("T");
     vValsTipo.addElement("G");
-    rgTipo = new JRadioGroup(1,2,vLabsTipo,vValsTipo);
+    rgTipo = new JRadioGroup<String, String>(1,2,vLabsTipo,vValsTipo);
     rgTipo.setVlrString("G");
 
     adic(lbOrdem,7,5,80,15);

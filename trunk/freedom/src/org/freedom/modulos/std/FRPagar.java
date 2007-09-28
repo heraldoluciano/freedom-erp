@@ -101,7 +101,7 @@ public class FRPagar extends FRelatorio {
 		vVals.addElement("P");
 		vVals.addElement("A");
 		
-		cbFiltro = new JRadioGroup(3,1,vLabs,vVals);
+		cbFiltro = new JRadioGroup<String, String>(3,1,vLabs,vVals);
 		
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());

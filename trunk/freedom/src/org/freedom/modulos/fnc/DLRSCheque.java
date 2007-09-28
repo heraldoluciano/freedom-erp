@@ -65,7 +65,7 @@ public class DLRSCheque extends FFDialogo {
     vLabs2.addElement("Todas");
     vVals2.addElement("P");
     vVals2.addElement("T");
-    rgSaida = new JRadioGroup(1,2,vLabs2,vVals2);
+    rgSaida = new JRadioGroup<String, String>(1,2,vLabs2,vVals2);
     rgSaida.setVlrString("P");
     adic(lbSaida,7,5,150,15);
     adic(rgSaida,7,25,264,30);  
@@ -80,7 +80,7 @@ public class DLRSCheque extends FFDialogo {
     vLabs.addElement("Nome");
     vVals.addElement("D");
     vVals.addElement("N");
-    rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+    rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
     rgOrdem.setVlrString("D");
     adic(lbOrdem,7,100,80,15);
     adic(rgOrdem,7,120,264,30);

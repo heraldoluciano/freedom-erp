@@ -95,7 +95,7 @@ public class FRMovProd extends FRelatorio {
     vLabs.addElement("Descrição");
     vVals.addElement("C");
     vVals.addElement("D");
-    rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+    rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
     rgOrdem.setVlrString("D");
 	
 	vLabs1.addElement("Ativos");
@@ -104,7 +104,7 @@ public class FRMovProd extends FRelatorio {
 	vVals1.addElement("A");
 	vVals1.addElement("N");
 	vVals1.addElement("T");
-	rgAtivoProd = new  JRadioGroup(1,3, vLabs1, vVals1);
+	rgAtivoProd = new  JRadioGroup<String, String>(1,3, vLabs1, vVals1);
 	rgAtivoProd.setVlrString("A");
 	
 	vLabs2.addElement("Comercio");
@@ -122,7 +122,7 @@ public class FRMovProd extends FRelatorio {
 	vVals2.addElement("C");
 	vVals2.addElement("T");
 	
-	rgProduto= new JRadioGroup(4,2,vLabs2, vVals2);
+	rgProduto= new JRadioGroup<String, String>(4,2,vLabs2, vVals2);
 	rgProduto.setVlrString("P");
     
     lcAlmox.add(new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, false));

@@ -161,7 +161,9 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener {
 		Vector<String> vLabs1 = new Vector<String>();
 		vLabs1.addElement( "publico" );
 		vLabs1.addElement( "privado" );
-		rgCAAGD = new JRadioGroup( 1, 2, vLabs1, vVals1 );
+		JRadioGroup<String, String> radioGroup2 = new JRadioGroup<String,String>( 1, 2, vLabs1, vVals1 );
+		JRadioGroup radioGroup = radioGroup2;
+		rgCAAGD = radioGroup;
 		rgCAAGD.setVlrString( "PR" );
 
 		Vector<String> vVals2 = new Vector<String>();

@@ -145,7 +145,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		vVals.addElement("P");
 		vVals.addElement("A");
 
-		rgTipoRel = new JRadioGroup(3,1,vLabs,vVals);
+		rgTipoRel = new JRadioGroup<String, String>(3,1,vLabs,vVals);
 		rgTipoRel.addRadioGroupListener( this );
 		
 		vLabs1.addElement( "Emissão" );
@@ -155,7 +155,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		vVals1.addElement( "V" );
 		vVals1.addElement( "P" );
 
-		rgOrdem = new JRadioGroup(3,1,vLabs1,vVals1);
+		rgOrdem = new JRadioGroup<String, String>(3,1,vLabs1,vVals1);
 		rgOrdem.setVlrString( "V" );
 
 		vLabs2.addElement( "Razão Social" );
@@ -163,7 +163,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		vVals2.addElement( "R" );
 		vVals2.addElement( "D" );
 
-		rgOrdem2 = new JRadioGroup(1,2,vLabs2,vVals2);
+		rgOrdem2 = new JRadioGroup<String, String>(1,2,vLabs2,vVals2);
 		rgOrdem2.setVlrString( "R" );
 		
 		cbObs.setVlrString("S");

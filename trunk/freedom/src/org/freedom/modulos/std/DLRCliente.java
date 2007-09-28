@@ -114,7 +114,7 @@ public class DLRCliente extends FFDialogo {
 		vValsOrdem.addElement( "C" );
 		vValsOrdem.addElement( "R" );
 		vValsOrdem.addElement( "I" );
-		rgOrdem = new JRadioGroup( 1, 3, vLabsOrdem, vValsOrdem );
+		rgOrdem = new JRadioGroup<String, String>( 1, 3, vLabsOrdem, vValsOrdem );
 		rgOrdem.setVlrString( "R" );
 
 		vLabsModo.addElement( "Resumido 1" );
@@ -128,7 +128,7 @@ public class DLRCliente extends FFDialogo {
 		vValsModo.addElement( "C" );
 		vValsModo.addElement( "A" );
 
-		rgModo = new JRadioGroup( 2, 3, vLabsModo, vValsModo );
+		rgModo = new JRadioGroup<String, String>( 2, 3, vLabsModo, vValsModo );
 		rgModo.setVlrString( "R" );
 		
 		vLabsEnd.addElement( "Cadast." );
@@ -137,7 +137,7 @@ public class DLRCliente extends FFDialogo {
 		vValsEnd.addElement( "A" );
 		vValsEnd.addElement( "E" );
 		vValsEnd.addElement( "C" );
-		rgEnd = new JRadioGroup( 1, 3, vLabsEnd, vValsEnd );
+		rgEnd = new JRadioGroup<String, String>( 1, 3, vLabsEnd, vValsEnd );
 		rgEnd.setVlrString( "A" );
 
 		cbObs.setVlrString( "N" );

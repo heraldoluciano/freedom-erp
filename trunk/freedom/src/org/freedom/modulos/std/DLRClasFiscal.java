@@ -46,7 +46,7 @@ public class DLRClasFiscal extends FFDialogo {
     vLabs.addElement("Descrição");
     vVals.addElement("C");
     vVals.addElement("D");
-    rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+    rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
     rgOrdem.setVlrString("D");
     adic(lbOrdem,7,5,80,15);
     adic(rgOrdem,7,25,280,30);

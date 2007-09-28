@@ -161,7 +161,7 @@ public class FContato extends FTabDados implements RadioGroupListener,
 		vPessoaVal.addElement("J");
 		vPessoaVal.addElement("F");
 
-		rgPessoa = new JRadioGroup(2, 1, vPessoaLab, vPessoaVal);
+		rgPessoa = new JRadioGroup<String, String>(2, 1, vPessoaLab, vPessoaVal);
 		rgPessoa.addRadioGroupListener(this);
 
 		adicDB(rgPessoa, 400, 20, 100, 60, "PessoaCto", "Pessoa", true);

@@ -146,7 +146,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
 		vTipoVals.addElement( "FF" );
 		vTipoVals.addElement( "NN" );
 		vTipoVals.addElement( "TT" );
-		rgTipoFisc = new JRadioGroup( 4, 1, vTipoLabs, vTipoVals );
+		rgTipoFisc = new JRadioGroup<String, String>( 4, 1, vTipoLabs, vTipoVals );
 
 		vSitPisLabs.addElement( "Tributado" );
 		vSitPisLabs.addElement( "Isento" );
@@ -154,7 +154,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
 		vSitPisVals.addElement( "T" );
 		vSitPisVals.addElement( "I" );
 		vSitPisVals.addElement( "S" );
-		rgSitPis = new JRadioGroup( 3, 1, vSitPisLabs, vSitPisVals );
+		rgSitPis = new JRadioGroup<String, String>( 3, 1, vSitPisLabs, vSitPisVals );
 
 		vSitCofinsLabs.addElement( "Tributado" );
 		vSitCofinsLabs.addElement( "Isento" );
@@ -162,14 +162,14 @@ public class FCLFiscal extends FDados implements CarregaListener {
 		vSitCofinsVals.addElement( "T" );
 		vSitCofinsVals.addElement( "I" );
 		vSitCofinsVals.addElement( "S" );
-		rgSitCofins = new JRadioGroup( 3, 1, vSitCofinsLabs, vSitCofinsVals );
+		rgSitCofins = new JRadioGroup<String, String>( 3, 1, vSitCofinsLabs, vSitCofinsVals );
 		
 		//desenvolvimento.
 		vTpRedIcmsFiscLabs.addElement( "Base ICMS" );
 		vTpRedIcmsFiscLabs.addElement( "Valor ICMS" );
 		vTpRedIcmsFiscVals.addElement( "B" );
 		vTpRedIcmsFiscVals.addElement( "V" );
-		rgTpRedIcmsFisc = new JRadioGroup( 2, 1, vTpRedIcmsFiscLabs, vTpRedIcmsFiscVals );
+		rgTpRedIcmsFisc = new JRadioGroup<String, String>( 2, 1, vTpRedIcmsFiscLabs, vTpRedIcmsFiscVals );
 
 		vLabsOrig.addElement( "<--Selecione-->" );
 		vLabsOrig.addElement( "Nacional" );

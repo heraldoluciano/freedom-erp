@@ -54,7 +54,7 @@ public class DLRConsProd extends FFDialogo {
     vVals.addElement("C");
     vVals.addElement("V");
     
-    rgOrdem = new JRadioGroup(3,1,vLabs,vVals);
+    rgOrdem = new JRadioGroup<String, String>(3,1,vLabs,vVals);
     
     
     

@@ -99,7 +99,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 		Vector<String> vLabs = new Vector<String>();
 		vLabs.addElement("Data de emissão");
 		vLabs.addElement("Data de validade");
-		gbVenc = new JRadioGroup(2,1,vLabs,vVals);
+		gbVenc = new JRadioGroup<String, String>(2,1,vLabs,vVals);
 		
 		lcConv.add(new GuardaCampo( txtCodConv, "CodConv", "Cód.conv.", ListaCampos.DB_PK, false));
 		lcConv.add(new GuardaCampo( txtNomeConv, "NomeConv", "Nome do conveniado", ListaCampos.DB_SI, false));

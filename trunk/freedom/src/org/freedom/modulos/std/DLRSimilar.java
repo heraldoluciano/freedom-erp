@@ -45,7 +45,7 @@ public class DLRSimilar extends FFDialogo {
     vVals.addElement("R");
     vVals.addElement("S");
     vVals.addElement("D");
-    rgOrdem = new JRadioGroup(2,2,vLabs,vVals);
+    rgOrdem = new JRadioGroup<String, String>(2,2,vLabs,vVals);
     rgOrdem.setVlrString("D");
     adic(lbOrdem,7,0,80,15);
     adic(rgOrdem,7,20,280,60);

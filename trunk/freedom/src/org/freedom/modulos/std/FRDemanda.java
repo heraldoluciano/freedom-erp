@@ -70,7 +70,7 @@ public class FRDemanda extends FRelatorio {
     vLabs.addElement("Descrição");
     vVals.addElement("C");
     vVals.addElement("D");
-    rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+    rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
     rgOrdem.setVlrString("D");
 
     GregorianCalendar cal = new GregorianCalendar();

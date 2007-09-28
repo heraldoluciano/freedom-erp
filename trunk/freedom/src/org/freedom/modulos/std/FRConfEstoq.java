@@ -55,7 +55,7 @@ public class FRConfEstoq extends FRelatorio {
     vValTipoRel.addElement("L");
     vValTipoRel.addElement("S");
     
-    rgTipoRel = new JRadioGroup(1,3,vLabTipoRel,vValTipoRel);
+    rgTipoRel = new JRadioGroup<String, String>(1,3,vLabTipoRel,vValTipoRel);
     
     cbTipoMovEstoq = new JCheckBoxPad("Apenas tipos de movimento c/ contr. de estoq.","S","N");
     cbTipoMovEstoq.setVlrString("S");

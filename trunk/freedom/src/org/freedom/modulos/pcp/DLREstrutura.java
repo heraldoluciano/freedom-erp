@@ -49,21 +49,21 @@ public class DLREstrutura extends FFDialogo {
     vLabsEstrut.addElement("Todas");
     vValsEstrut.addElement("A");
     vValsEstrut.addElement("T");
-    rgEstrut = new JRadioGroup(1,2,vLabsEstrut,vValsEstrut);
+    rgEstrut = new JRadioGroup<String, String>(1,2,vLabsEstrut,vValsEstrut);
     rgEstrut.setVlrString("T");
     
     vLabsModo.addElement("Resumido");
     vLabsModo.addElement("Completo");
     vValsModo.addElement("R");
     vValsModo.addElement("C");
-    rgModo = new JRadioGroup(1,2,vLabsModo,vValsModo);
+    rgModo = new JRadioGroup<String, String>(1,2,vLabsModo,vValsModo);
     rgModo.setVlrString("C");
     
     vLabs.addElement("Código");
     vLabs.addElement("Descrição");
     vVals.addElement("C");
     vVals.addElement("D");
-    rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+    rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
     rgOrdem.setVlrString("D");
 
     adic(lbEstrut,10,10,70,20);

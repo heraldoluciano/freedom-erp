@@ -180,7 +180,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		vPessoaLab.addElement( "Jurídica" );
 		vPessoaVal.addElement( "F" );
 		vPessoaVal.addElement( "J" );
-		rgPessoa = new JRadioGroup( 2, 1, vPessoaLab, vPessoaVal );
+		rgPessoa = new JRadioGroup<String, String>( 2, 1, vPessoaLab, vPessoaVal );
 		rgPessoa.addRadioGroupListener( this );
 
 		panelDados = new JPanelPad( 470, 300 );

@@ -117,7 +117,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 	    vLabTipoUsoImp.addElement("Relatório simples");
 	    vLabTipoUsoImp.addElement("Relatório gráfico");
 	    vLabTipoUsoImp.addElement("Todos");
-	    rgTipoUsoImp = new JRadioGroup(2,3,vLabTipoUsoImp,vValTipoUsoImp);
+	    rgTipoUsoImp = new JRadioGroup<String, String>(2,3,vLabTipoUsoImp,vValTipoUsoImp);
 	    adicCampo(txtNroImp,7,20,80,20,"NroImp","Nº imp.",ListaCampos.DB_PK,true);
 	    adicCampo(txtCodImp,90,20,80,20,"CodImp","Cód.imp.",ListaCampos.DB_FK,txtDescImp,true);
 	    adicDescFK(txtDescImp,173,20,300,20,"DescImp","Descrição da impressora");

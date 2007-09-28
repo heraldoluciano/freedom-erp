@@ -81,7 +81,7 @@ public class RelProduto extends FRelatorio {
 		Vector<String> vals = new Vector<String>();
 		vals.add( "P" );
 		vals.add( "R" );
-		rgModo = new JRadioGroup( 1, 2, labs, vals );
+		rgModo = new JRadioGroup<String, String>( 1, 2, labs, vals );
 		
 		Vector<String> labs1 = new Vector<String>();
 		labs1.add( "Código" );
@@ -89,7 +89,7 @@ public class RelProduto extends FRelatorio {
 		Vector<String> vals1 = new Vector<String>();
 		vals1.add( "CODPROD" );
 		vals1.add( "DESCPROD" );
-		rgOrdem = new JRadioGroup( 1, 2, labs1, vals1 );
+		rgOrdem = new JRadioGroup<String, String>( 1, 2, labs1, vals1 );
 		
 		adic( new JLabel( "Modo :" ), 10, 10, 200, 20 );
 		adic( rgModo, 10, 35, 290, 30 );

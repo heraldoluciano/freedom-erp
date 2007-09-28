@@ -232,7 +232,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		vLabs0.add( "Teste" );
 		vVals0.add( "P" );
 		vVals0.add( "T" );
-		rgIdentAmbCliSiacc = new JRadioGroup( 2, 1, vLabs0, vVals0 );
+		rgIdentAmbCliSiacc = new JRadioGroup<String, String>( 2, 1, vLabs0, vVals0 );
 		
 		Vector<String> vLabs1 = new Vector<String>();
 		Vector<String> vVals1 = new Vector<String>();
@@ -240,7 +240,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		vLabs1.add( "Teste" );
 		vVals1.add( "P" );
 		vVals1.add( "T" );
-		rgIdentAmbBcoSiacc = new JRadioGroup( 2, 1, vLabs1, vVals1 );
+		rgIdentAmbBcoSiacc = new JRadioGroup<String, String>( 2, 1, vLabs1, vVals1 );
 		
 		Vector<String> vLabs2 = new Vector<String>();
 		Vector<String> vVals2 = new Vector<String>();
@@ -248,7 +248,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		vLabs2.add( "Teste" );
 		vVals2.add( "P" );
 		vVals2.add( "T" );
-		rgIdentAmbCliCnab = new JRadioGroup( 2, 1, vLabs2, vVals2 );
+		rgIdentAmbCliCnab = new JRadioGroup<String, String>( 2, 1, vLabs2, vVals2 );
 		
 		Vector<String> vLabs3 = new Vector<String>();
 		Vector<String> vVals3 = new Vector<String>();
@@ -256,7 +256,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		vLabs3.add( "Teste" );
 		vVals3.add( "P" );
 		vVals3.add( "T" );
-		rgIdentAmbBcoCnab = new JRadioGroup( 2, 1, vLabs3, vVals3 );
+		rgIdentAmbBcoCnab = new JRadioGroup<String, String>( 2, 1, vLabs3, vVals3 );
 	}
 	
 	private void montaComboBoxs() {

@@ -101,7 +101,7 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
 		vValsTipo.addElement( "C" );
 		vLabsTipo.addElement( "Indice de valores" );
 		vLabsTipo.addElement( "Moeda corrente" );
-		rgTipo = new JRadioGroup( 1, 2, vLabsTipo, vValsTipo );
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabsTipo, vValsTipo );
 		rgTipo.addRadioGroupListener( this );
 		vValsAtua.addElement( "D" );
 		vValsAtua.addElement( "S" );
@@ -113,7 +113,7 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
 		vLabsAtua.addElement( "Mensal" );
 		vLabsAtua.addElement( "Anual" );
 		vLabsAtua.addElement( "Moeda corrente" );
-		rgAtua = new JRadioGroup( 3, 2, vLabsAtua, vValsAtua );
+		rgAtua = new JRadioGroup<String, String>( 3, 2, vLabsAtua, vValsAtua );
 		rgAtua.setVlrString( "M" );
 		rgAtua.setAtivo( 4, false );
 

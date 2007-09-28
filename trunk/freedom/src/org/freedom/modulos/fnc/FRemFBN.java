@@ -221,7 +221,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		vValsDate.addElement( "V" );
 		vLabsDate.addElement( "Emissão" );
 		vLabsDate.addElement( "Vencimento" );
-		rgData = new JRadioGroup( 2, 1, vLabsDate, vValsDate );
+		rgData = new JRadioGroup<String, String>( 2, 1, vLabsDate, vValsDate );
 		
 		vValsRem.addElement( "00" );
 		vValsRem.addElement( "01" );
@@ -232,13 +232,13 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		vLabsRem.addElement( "Rejeitados" );
 		vLabsRem.addElement( "Todos" );
 		
-		rgSitRemessa = new JRadioGroup( 2, 2, vLabsRem, vValsRem );
+		rgSitRemessa = new JRadioGroup<String, String>( 2, 2, vLabsRem, vValsRem );
 		
 		vValsTipo.addElement( "0" );
 		vValsTipo.addElement( "1" );
 		vLabsTipo.addElement( "Inclusão" );
 		vLabsTipo.addElement( "Exclusão" );
-		rgTipoRemessa = new JRadioGroup( 2, 1, vLabsTipo, vValsTipo );
+		rgTipoRemessa = new JRadioGroup<String, String>( 2, 1, vLabsTipo, vValsTipo );
 	}
 	
 	private void montaListaCampos() {

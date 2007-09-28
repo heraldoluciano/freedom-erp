@@ -73,7 +73,7 @@ public class FRPisCofins extends FRelatorio {
 		vPisVal.addElement("S");
 		vPisVal.addElement("N");
 		
-		rgPis = new JRadioGroup(1,4,vPisLab,vPisVal);
+		rgPis = new JRadioGroup<String, String>(1,4,vPisLab,vPisVal);
 		
 		vCofinsLab.addElement("Tributado");
 		vCofinsLab.addElement("Isento");
@@ -84,7 +84,7 @@ public class FRPisCofins extends FRelatorio {
 		vCofinsVal.addElement("S");
 		vCofinsVal.addElement("N");
 		
-		rgCofins = new JRadioGroup(1,4,vCofinsLab,vCofinsVal);
+		rgCofins = new JRadioGroup<String, String>(1,4,vCofinsLab,vCofinsVal);
 		
 		adic(new JLabelPad("Período:"),7,0,250,20);
 		adic(txtDataini,7,20,100,20);

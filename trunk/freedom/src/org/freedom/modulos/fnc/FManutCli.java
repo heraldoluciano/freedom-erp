@@ -92,13 +92,13 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		vLabs.add( "CNAB" );
 		vVals.add( "01" );
 		vVals.add( "02" );
-		rgTipoFebraban = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgTipoFebraban = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 
 		vLabs1.add( "Débito em folha" );
 		vLabs1.add( "Débito em conta" );
 		vVals1.add( "01" );
 		vVals1.add( "02" );
-		rgSubTipoFebraban = new JRadioGroup( 2, 1, vLabs1, vVals1 );
+		rgSubTipoFebraban = new JRadioGroup<String, String>( 2, 1, vLabs1, vVals1 );
 		rgSubTipoFebraban.setVlrString( "02" );
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );

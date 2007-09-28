@@ -117,7 +117,7 @@ public class FRVendasItem extends FRelatorio {
 		vLabs.addElement( "Texto" );
 		vVals.addElement( "G" );
 		vVals.addElement( "T" );
-		rgTipo = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgTipo.setVlrString( "T" );
 		
 		Vector<String> vLabs1 = new Vector<String>();
@@ -129,7 +129,7 @@ public class FRVendasItem extends FRelatorio {
 		vVals1.addElement( "S" );
 		vVals1.addElement( "N" );
 		vVals1.addElement( "A" );
-		rgFaturados = new JRadioGroup( 3, 1, vLabs1, vVals1 );
+		rgFaturados = new JRadioGroup<String, String>( 3, 1, vLabs1, vVals1 );
 		rgFaturados.setVlrString( "S" );
 		
 		Vector<String> vLabs2 = new Vector<String>();
@@ -141,7 +141,7 @@ public class FRVendasItem extends FRelatorio {
 		vVals2.addElement( "S" );
 		vVals2.addElement( "N" );
 		vVals2.addElement( "A" );
-		rgFinanceiro = new JRadioGroup( 3, 1, vLabs2, vVals2 );
+		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabs2, vVals2 );
 		rgFinanceiro.setVlrString( "S" );
 		
 		Vector<String> vLabs3 = new Vector<String>();
@@ -151,7 +151,7 @@ public class FRVendasItem extends FRelatorio {
 		vLabs3.addElement( "Descrição" );
 		vVals3.addElement( "C" );
 		vVals3.addElement( "D" );
-		rgOrdem = new JRadioGroup( 1, 2, vLabs3, vVals3 );
+		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs3, vVals3 );
 		rgOrdem.setVlrString( "D" );
 		
 		lcGrup.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );

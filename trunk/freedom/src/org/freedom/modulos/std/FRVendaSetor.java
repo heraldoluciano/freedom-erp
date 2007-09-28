@@ -168,7 +168,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		vValsFat.addElement( "S" );
 		vValsFat.addElement( "N" );
 		vValsFat.addElement( "A" );
-		rgFaturados = new JRadioGroup( 3, 1, vLabsFat, vValsFat );
+		rgFaturados = new JRadioGroup<String, String>( 3, 1, vLabsFat, vValsFat );
 		rgFaturados.setVlrString( "S" );
 
 		vLabsFin.addElement( "Financeiro" );
@@ -177,7 +177,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		vValsFin.addElement( "S" );
 		vValsFin.addElement( "N" );
 		vValsFin.addElement( "A" );
-		rgFinanceiro = new JRadioGroup( 3, 1, vLabsFin, vValsFin );
+		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabsFin, vValsFin );
 		rgFinanceiro.setVlrString( "S" );
 
 		vLabTipoRel.addElement( "Vendedor" );
@@ -186,7 +186,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		vValTipoRel.addElement( "V" );
 		vValTipoRel.addElement( "P" );
 		vValTipoRel.addElement( "C" );
-		rgTipoRel = new JRadioGroup( 1, 3, vLabTipoRel, vValTipoRel );
+		rgTipoRel = new JRadioGroup<String, String>( 1, 3, vLabTipoRel, vValTipoRel );
 		rgTipoRel.addRadioGroupListener( this );
 
 		vLabOrdemRel.addElement( "Valor" );
@@ -195,7 +195,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		vValOrdemRel.addElement( "V" );
 		vValOrdemRel.addElement( "R" );
 		vValOrdemRel.addElement( "C" );
-		rgOrdemRel = new JRadioGroup( 3, 1, vLabOrdemRel, vValOrdemRel );
+		rgOrdemRel = new JRadioGroup<String, String>( 3, 1, vLabOrdemRel, vValOrdemRel );
 
 		lcMarca.add( new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false ) );
 		lcMarca.add( new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false ) );

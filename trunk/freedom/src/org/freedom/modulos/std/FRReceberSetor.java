@@ -125,7 +125,7 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 		vVals.addElement( "P" );
 		vVals.addElement( "A" );
 
-		cbTipoRel = new JRadioGroup( 3, 1, vLabs, vVals );
+		cbTipoRel = new JRadioGroup<String, String>( 3, 1, vLabs, vVals );
 		cbTipoRel.setVlrString( "A" );
 
 		Vector<String> vVals1 = new Vector<String>();
@@ -135,7 +135,7 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 		vVals1.addElement( "F" );
 		vVals1.addElement( "V" );
 
-		cbData = new JRadioGroup( 2, 1, vLabs1, vVals1 );
+		cbData = new JRadioGroup<String, String>( 2, 1, vLabs1, vVals1 );
 		cbData.setVlrString( "V" );
 
 		cbObs.setVlrString( "S" );

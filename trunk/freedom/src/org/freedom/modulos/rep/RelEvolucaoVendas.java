@@ -127,7 +127,7 @@ public class RelEvolucaoVendas extends FRelatorio {
 		vals.add( "P" );
 		vals.add( "B" );
 		vals.add( "L" );
-		rgModo = new JRadioGroup( 3, 1, labs, vals );
+		rgModo = new JRadioGroup<String, String>( 3, 1, labs, vals );
 	}
 	
 	private void montaListaCampos() {

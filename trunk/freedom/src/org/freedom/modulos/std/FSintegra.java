@@ -133,7 +133,7 @@ public class FSintegra extends FFilho implements ActionListener {
 		vValConvenio.addElement( "2" );
 		vValConvenio.addElement( "3" );
 
-		rgConvenio = new JRadioGroup( 3, 1, vLabConvenio, vValConvenio );
+		rgConvenio = new JRadioGroup<String, String>( 3, 1, vLabConvenio, vValConvenio );
 		rgConvenio.setVlrString( "3" );
 
 		vLabNatoper.addElement( "Interestaduais - Somente operações sujeitas ao regime de substituição tributária" );
@@ -142,7 +142,7 @@ public class FSintegra extends FFilho implements ActionListener {
 		vValNatoper.addElement( "1" );
 		vValNatoper.addElement( "2" );
 		vValNatoper.addElement( "3" );
-		rgNatoper = new JRadioGroup( 3, 3, vLabNatoper, vValNatoper );
+		rgNatoper = new JRadioGroup<String, String>( 3, 3, vLabNatoper, vValNatoper );
 		rgNatoper.setVlrString( "3" );
 
 		vLabFinalidade.addElement( "Normal" );
@@ -155,7 +155,7 @@ public class FSintegra extends FFilho implements ActionListener {
 		vValFinalidade.addElement( "3" );
 		vValFinalidade.addElement( "4" );
 		vValFinalidade.addElement( "5" );
-		rgFinalidade = new JRadioGroup( 5, 5, vLabFinalidade, vValFinalidade );
+		rgFinalidade = new JRadioGroup<String, String>( 5, 5, vLabFinalidade, vValFinalidade );
 
 		pinCliente.adic( new JLabelPad( "Inicio" ), 7, 0, 110, 25 );
 		pinCliente.adic( txtDataini, 7, 20, 110, 20 );

@@ -54,7 +54,7 @@ public class DLRClasCli extends FFDialogo {
 		vLabs.addElement( "Descrição" );
 		vVals.addElement( "C" );
 		vVals.addElement( "D" );
-		rgOrdem = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgOrdem.setVlrString( "D" );
 
 		Vector<String> vLabs1 = new Vector<String>();
@@ -64,7 +64,7 @@ public class DLRClasCli extends FFDialogo {
 		vVals1.addElement( "T" );
 		vLabs1.addElement( "Grafico" );
 		vLabs1.addElement( "Texto" );
-		rgTipo = new JRadioGroup( 1, 2, vLabs1, vVals1 );
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
 		rgTipo.setVlrString( "G" );
 
 		adic( lbOrdem, 7, 0, 80, 15 );

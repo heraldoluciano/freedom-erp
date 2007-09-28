@@ -41,7 +41,7 @@ public class DLRTipoCob extends FFDialogo {
     vLabs.addElement("Descrição");
     vVals.addElement("C");
     vVals.addElement("D");
-    rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+    rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
     rgOrdem.setVlrString("D");
     adic(lbOrdem,7,0,80,15);
     adic(rgOrdem,7,20,280,30);

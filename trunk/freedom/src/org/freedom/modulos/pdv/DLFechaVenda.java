@@ -269,7 +269,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 		vVals.addElement( "F" );
 		vLabs.addElement( "CIF" );
 		vLabs.addElement( "FOB" );
-		rgFreteVD = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgFreteVD = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 
 		montaListaCampos();
 

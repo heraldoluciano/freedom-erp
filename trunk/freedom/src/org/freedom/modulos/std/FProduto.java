@@ -545,7 +545,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		vLabsTipo.addElement( "Mat.prima" );
 		vLabsTipo.addElement( "Patrimonio" );
 		vLabsTipo.addElement( "Consumo" );
-		rgTipo = new JRadioGroup( 6, 1, vLabsTipo, vValsTipo );
+		rgTipo = new JRadioGroup<String, String>( 6, 1, vLabsTipo, vValsTipo );
 		rgTipo.setVlrString( "P" );
 
 		vValsCV.addElement( "C" );
@@ -554,7 +554,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		vLabsCV.addElement( "Compra" );
 		vLabsCV.addElement( "Venda" );
 		vLabsCV.addElement( "Ambos" );
-		rgCV = new JRadioGroup( 3, 1, vLabsCV, vValsCV );
+		rgCV = new JRadioGroup<String, String>( 3, 1, vLabsCV, vValsCV );
 		rgCV.setVlrString( "V" );
 
 		vValsTF.addElement( "P" );
@@ -565,21 +565,21 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		vLabsTF.addElement( "Média" );
 		vLabsTF.addElement( "Natural" );
 		vLabsTF.addElement( "Grande" );
-		rgTF = new JRadioGroup( 1, 4, vLabsTF, vValsTF );
+		rgTF = new JRadioGroup<String, String>( 1, 4, vLabsTF, vValsTF );
 		rgTF.setVlrString( "P" );
 
 		vValsTipoPP.addElement( "R" );
 		vValsTipoPP.addElement( "D" );
 		vLabsTipoPP.addElement( "Receitas" );
 		vLabsTipoPP.addElement( "Despesas" );
-		rgTipoPP = new JRadioGroup( 1, 2, vLabsTipoPP, vValsTipoPP );
+		rgTipoPP = new JRadioGroup<String, String>( 1, 2, vLabsTipoPP, vValsTipoPP );
 		rgTipoPP.setVlrString( "R" );
 
 		vValsPA.addElement( "RMA" );
 		vValsPA.addElement( "PDV" );
 		vLabsPA.addElement( "RMA" );
 		vLabsPA.addElement( "PDV" );
-		rgPA = new JRadioGroup( 1, 2, vLabsPA, vValsPA );
+		rgPA = new JRadioGroup<String, String>( 1, 2, vLabsPA, vValsPA );
 		rgPA.setVlrString( "R" );
 		rgPA.addRadioGroupListener( this );
 

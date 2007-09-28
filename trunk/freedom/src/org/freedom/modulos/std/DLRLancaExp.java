@@ -92,7 +92,7 @@ public class DLRLancaExp extends FFDialogo implements FocusListener {
         vLabsRet.addElement("Enviados");
         vLabsRet.addElement("Retornados");
         vLabsRet.addElement("Todos");
-        rgRet = new JRadioGroup(1,3,vLabsRet,vValsRet);
+        rgRet = new JRadioGroup<String, String>(1,3,vLabsRet,vValsRet);
         rgRet.setVlrString("T");
 		
         adic(new JLabelPad("Periodo:"),7,5,120,20);

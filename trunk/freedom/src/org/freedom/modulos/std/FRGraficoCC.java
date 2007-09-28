@@ -115,7 +115,7 @@ public class FRGraficoCC extends FRelatorio {
 	vVals.addElement("P");
 	vVals.addElement("B");
 	vVals.addElement("G");
-	rgGrafico = new JRadioGroup(3,1,vLabs,vVals);
+	rgGrafico = new JRadioGroup<String, String>(3,1,vLabs,vVals);
 	rgGrafico.setVlrString("P");    
 	rgGrafico.setBorder(BorderFactory.createEmptyBorder());
 	adic(rgGrafico,42,163,250,122);

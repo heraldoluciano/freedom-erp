@@ -71,7 +71,7 @@ public class DLPlanSin extends FFDialogo {
     vLabs.addElement("Caixa");
     vLabs.addElement("Despesas");
     vLabs.addElement("Receitas");
-    rgTipo = new JRadioGroup(2,2,vLabs,vVals);
+    rgTipo = new JRadioGroup<String, String>(2,2,vLabs,vVals);
     setTipo(sTipo);    
     adic(lbCodPai,7,0,80,20);
     adic(txtCodPai,7,20,80,20);

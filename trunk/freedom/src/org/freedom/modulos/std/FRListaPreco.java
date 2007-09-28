@@ -104,7 +104,7 @@ public class FRListaPreco extends FRelatorio {
 		vLabs.addElement("Descrição");
 		vVals.addElement("C");
 		vVals.addElement("D");
-		rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+		rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
 		rgOrdem.setVlrString("D");
 		
 		
@@ -112,7 +112,7 @@ public class FRListaPreco extends FRelatorio {
 		vLabs2.addElement("Texto");
 		vVals2.addElement("G");
 		vVals2.addElement("T");
-		rgTipo = new JRadioGroup(1,2,vLabs2,vVals2);
+		rgTipo = new JRadioGroup<String, String>(1,2,vLabs2,vVals2);
 		rgTipo.setVlrString("T");
 
 		lcGrup.add(new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false));
