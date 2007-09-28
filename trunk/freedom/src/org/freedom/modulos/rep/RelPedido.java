@@ -79,11 +79,11 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 	
 	private final JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
-	private JRadioGroup rgModo;
+	private JRadioGroup<String, String> rgModo;
 	
-	private JRadioGroup rgOrdem1;
+	private JRadioGroup<String, String> rgOrdem1;
 	
-	private JRadioGroup rgOrdem2;
+	private JRadioGroup<String, String> rgOrdem2;
 	
 	private final ListaCampos lcCliente = new ListaCampos( this );
 	

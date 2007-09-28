@@ -45,7 +45,7 @@ public class RelVendedor extends FRelatorio {
 
 	private static final long serialVersionUID = 1;
 	
-	private JRadioGroup rgOrdem;
+	private JRadioGroup<String, String> rgOrdem;
 
 	public RelVendedor() {
 

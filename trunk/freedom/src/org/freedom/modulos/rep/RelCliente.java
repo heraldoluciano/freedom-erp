@@ -57,9 +57,9 @@ public class RelCliente extends FRelatorio {
 
 	private final JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private JRadioGroup rgModo;
+	private JRadioGroup<String, String> rgModo;
 	
-	private JRadioGroup rgOrdem;
+	private JRadioGroup<String, String> rgOrdem;
 	
 	private final ListaCampos lcTipoCli = new ListaCampos( this );
 	
