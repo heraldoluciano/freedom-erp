@@ -36,7 +36,7 @@ public class RPMoeda extends FDados {
 
 	private static final long serialVersionUID = 1L;
 
-	private final JRadioGroup rgTipo;
+	private final JRadioGroup<String, String> rgTipo;
 
 	private final JTextFieldPad txtCodMoeda = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 

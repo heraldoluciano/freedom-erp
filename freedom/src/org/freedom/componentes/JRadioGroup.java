@@ -71,11 +71,6 @@ public class JRadioGroup<S, T> extends JPanel implements ActionListener, KeyList
 
 		this( Lin, Col, labs.toArray(), vals.toArray() );
 	}
-/*
-	public JRadioGroup( Integer lin, Integer col, Vector<String> labs, Vector<String> vals ) {
-
-		this( lin, col, labs.toArray(), vals.toArray() );
-	}*/
 
 	public JRadioGroup( int Lin, int Col, Object oLabs[], Object oVals[] ) {
 

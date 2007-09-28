@@ -80,7 +80,7 @@ public class RelHistoricoCliente extends FRelatorio {
 	
 	private final JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
-	private JRadioGroup rgOrdem;
+	private JRadioGroup<String, String> rgOrdem;
 	
 	private final ListaCampos lcCliente = new ListaCampos( this );
 	

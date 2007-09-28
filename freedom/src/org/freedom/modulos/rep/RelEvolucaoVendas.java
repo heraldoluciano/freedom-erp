@@ -88,7 +88,7 @@ public class RelEvolucaoVendas extends FRelatorio {
 
 	private final JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JRadioGroup rgModo;
+	private JRadioGroup<String, String> rgModo;
 	
 	private final ListaCampos lcCliente = new ListaCampos( this );
 	
