@@ -174,7 +174,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 :$V{LINHADIG}]]></variableExpression>
 	</variable>
 	<variable name="DOCUMENTO" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[$F{DOCREC}.toString()+"/"+$F{NPARCITREC}.toString()]]></variableExpression>
+		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.getNumCli($F{MDECOB}, $V{VCONVENIO}, $F{CODREC}, $F{NPARCITREC} )]]></variableExpression>
 	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
