@@ -49,6 +49,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
+import org.freedom.funcoes.EtiquetaPPLA;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
@@ -398,84 +399,51 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		if ( removeEtiquetas() ) {
 			if ( persistEtiquetas() ) {
 				imprimirTexto( bVisualizar );
-		
 			}
 		}
 	}
 	
 	private void imprimirTexto( boolean bVisualizar ) {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuffer sSQL = new StringBuffer();
-		ImprimeOS imp = new ImprimeOS( "", con );
-		String sLinhaFina = Funcoes.replicate( "-", 133 );
-		String sLinhaDupla = Funcoes.replicate( "=", 133 );
-		int linPag = imp.verifLinPag() - 1;
-		int iLinha = 1;
-		int iCol = 0;
-		
+
+
 		try {
+
+			StringBuffer sSQL = new StringBuffer();
+			sSQL.append( "SELECT E.CODPROD, P.DESCPROD, P.CODBARPROD " );
+			sSQL.append( "FROM EQETIQPROD E, EQPRODUTO P " );
+			sSQL.append( "WHERE E.NRCONEXAO=? AND " );
+			sSQL.append( "P.CODEMP=E.CODEMP AND P.CODFILIAL=E.CODFILIAL AND P.CODPROD=E.CODPROD " );
+		
+			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, getNrConexao() );
 			
-		sSQL.append( "SELECT ET.CODEMP, ET.CODFILIAL, ET.CODPRODUTO, EP.DESCPROD " );
-		sSQL.append( "FROM EQETIQPROD ET, EQPRODUTO EP " );
-		sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND " );
-		sSQL.append( "ET.CODPROD=EP.CODPROD " );
-		
-		ps = con.prepareStatement( sSQL.toString() );
-		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-		rs = ps.executeQuery();
-		
-		imp.montaCab();
-		imp.setTitulo( "Etiqueta de Código de barras" );
-		imp.addSubTitulo( "ETIQUETAS DE CÒDIGO DE BARRAS" );
+			ResultSet rs = ps.executeQuery();
 			
-		while ( rs.next() ) {
-		
-			if ( imp.pRow() >= ( linPag - 1 ) ) {
-				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 0, "+" + sLinhaFina + "+" );
-				imp.incPags();
-				imp.eject();
+			ImprimeOS imp = new ImprimeOS( "", con );
+			EtiquetaPPLA etiqueta;
+
+			while ( rs.next() ) {
+
+				etiqueta = new EtiquetaPPLA();
+				
+				etiqueta.printString( 5, 5, rs.getString( "DESCPROD" ) );
+
+				imp.gravaTexto( etiqueta.command() );
 			}
-		
-			if ( imp.pRow() == 0 ) {
-				
-				imp.impCab( 136, true );
-				imp.say( 0, "|" + sLinhaFina + "|" );
-				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 0, "| Cód.Bar.Prod" );
-				imp.say( 16, "| Descrição do produto" );
-				imp.say( 135, "|" );
-				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 0, "|" + sLinhaFina + "|" );
-				
-				
-			}
-			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( 0, "| " + rs.getString( "CODBARPROD" ) );
-			imp.say( 15, "| " + rs.getString( "DESCPROD" ) );
-			imp.say( 135, "|" );
 			
-		}
-		
-		imp.pulaLinha( 1, imp.comprimido() );
-		imp.say( 0, "|" + sLinhaDupla + "|" );
-		
-		imp.eject();
-		imp.fechaGravacao();
-		
-		if ( bVisualizar ) {
-			imp.preview( this );
-		}else {
-			imp.print();	
-		}
-		
+			imp.fechaGravacao();
+
+			if ( bVisualizar ) {
+				imp.preview( this );
+			}
+			else {
+				imp.print();
+			}
+
 		} catch ( Exception e ) {
-		
 			e.printStackTrace();
-		}	
-		
+		}
+
 	}
 
 	public void setConexao( Connection cn ) {
