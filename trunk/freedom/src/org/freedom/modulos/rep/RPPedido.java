@@ -923,7 +923,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 		public int getOption() {
 
-			return Integer.parseInt( rgOrdem.getVlrString() );
+			return rgOrdem.getVlrInteger();
 		}
 		
 	}
