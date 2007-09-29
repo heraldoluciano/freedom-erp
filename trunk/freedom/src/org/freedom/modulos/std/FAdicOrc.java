@@ -389,6 +389,30 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		}
 	}
 
+	private void atualizaObsPed(final StringBuffer obs, final int iCodVenda) {
+
+		PreparedStatement ps = null;
+		String sSql = null;
+
+		try{
+			sSql = "UPDATE VDVENDA SET OBSVENDA=? WHERE "+
+			 	   "CODEMP=? AND CODFILIAL=? AND CODVENDA=?";
+			
+			PreparedStatement ps2 = con.prepareStatement(sSql);
+							
+			ps2.setString(1,obs.toString());
+			ps2.setInt(2,Aplicativo.iCodEmp);
+			ps2.setInt(3,Aplicativo.iCodFilial);
+			ps2.setInt(4,iCodVenda); 
+
+			ps2.execute();
+			
+		}
+		catch (SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao atualizar a tabela ORCAMENTO!\n"+err.getMessage(),true,con,err);
+		}
+	}
+	
 	private boolean gerar() {
 
 		PreparedStatement ps = null;
@@ -398,10 +422,16 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		boolean bPrim = true;
 		int iCodVenda = 0;
 		int[] iVals = null;
+		StringBuffer obs = new StringBuffer();		
 		DLCriaVendaOrc diag = null;
 
+	
+
 		try {
+			
 			if ( tab.getNumLinhas() > 0 ) {
+				
+
 
 				boolean usaPedSeq = prefs[ 0 ];
 				diag = new DLCriaVendaOrc( usaPedSeq, sTipoVenda );
@@ -421,13 +451,31 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 
 				// STD
 				if ( sTipoVenda.equals( "V" ) ) {
-
+										
 					for ( int i = 0; i < vValidos.size(); i++ ) {
 						if ( ! ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() )
 							continue;
 
 						iVals = (int[]) vValidos.elementAt( i );
 
+						if(prefs[2]){
+							if(bPrim) {
+								obs.append( "Orçamentos:\n" );
+								obs.append( iVals[0] );
+							}
+							else {
+							    obs.append( iVals[0] );	
+							}
+							
+							if(vValidos.size()>1 && (vValidos.size()!=i+1)) {									
+								obs.append( " , " );
+							}
+							else {
+								obs.append( " . " );
+							}							
+						}
+
+						
 						if ( bPrim ) {
 							try {
 								sSQL = "SELECT IRET FROM VDADICVENDAORCSP(?,?,?,?,?)";
@@ -443,8 +491,10 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 									iCodVenda = rs.getInt( 1 );
 
 								rs.close();
-								ps.close();
-							} catch ( SQLException err ) {
+								ps.close();																
+								
+							} 
+							catch ( SQLException err ) {
 								if ( err.getErrorCode() == 335544665 ) {
 									Funcoes.mensagemErro( this, "Número de pedido já existe!" );
 									return gerar();
@@ -469,7 +519,8 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 							ps2.setString( 7, sTipoVenda );
 							ps2.execute();
 							ps2.close();
-						} catch ( SQLException err ) {
+						} 
+						catch ( SQLException err ) {
 							Funcoes.mensagemErro( this, "Erro ao gerar itvenda: '" + ( i + 1 ) + "'!\n" + err.getMessage(), true, con, err );
 							try {
 								con.rollback();
@@ -477,6 +528,9 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 							}
 							return false;
 						}
+						
+						atualizaObsPed(obs,iCodVenda);
+						
 					}
 					try {
 						if ( !con.getAutoCommit() )
@@ -622,9 +676,13 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sSQL = null;
-		boolean[] ret = new boolean[ 2 ];
+		boolean[] ret = new boolean[ 3 ];
 		try {
-			sSQL = "SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA " + "FROM SGPREFERE1 P1, SGPREFERE4 P4 " + "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " + "AND P4.CODEMP=P1.CODEMP AND P4.CODFILIAL=P4.CODFILIAL";
+			sSQL = "SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA,P1.ADICORCOBSPED " 
+				 + "FROM SGPREFERE1 P1, SGPREFERE4 P4 " 
+			     + "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " 
+			     + "AND P4.CODEMP=P1.CODEMP AND P4.CODFILIAL=P4.CODFILIAL";
+			
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
@@ -634,6 +692,9 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 					ret[ 0 ] = true;
 				if ( rs.getString( 2 ).equals( "S" ) )
 					ret[ 1 ] = true;
+				if ( rs.getString( 3 ).equals( "S" ) )
+					ret[ 2 ] = true;
+				
 			}
 			rs.close();
 			ps.close();
