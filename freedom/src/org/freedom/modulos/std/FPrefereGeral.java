@@ -356,6 +356,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 	private JCheckBoxPad cbAltItReceberImp = null;
 	
+	private JCheckBoxPad cbAdicCodOrcObsPed = null;
+	
 	private JRadioGroup<?, ?> rgCodBar = null;
 	
 	private PainelImagem imgAssOrc = new PainelImagem( 65000 );
@@ -679,7 +681,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbConsIEFor.setVlrString( "S" );
 		cbUsaRefCompra = new JCheckBoxPad ("Usa referência na compra? ", "S", "N" );
 		cbUsaRefCompra.setVlrString( "N" );
-		
+		cbAdicCodOrcObsPed = new JCheckBoxPad( "Adicionar códigos de orçamentos na observação do pedido?", "S", "N" );
+		cbAdicCodOrcObsPed.setVlrString( "N" );				
 
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
@@ -860,13 +863,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicCampo( txtDescClassOrc, 403, 25, 250, 20, "ClassOrc", "Classe padrão para orçamento.", ListaCampos.DB_SI, false );
 		adicCampo( txtTitOrcTxt01, 403, 65, 250, 20, "TitOrcTxt01", "Título para campo TXT01", ListaCampos.DB_SI, false );
 		
-		adicDB( rgTipoValidOrc, 460, 200, 250, 30, "tipovalidorc", "Validade na impressão", true );
+		adicDB( rgTipoValidOrc, 460, 207, 250, 30, "tipovalidorc", "Validade na impressão", true );
 		adicDB( cbUsaOrcSeq, 10, 215, 160, 20, "UsaOrcSeq", "", true );
 		adicDB( cbReCalcOrc, 10, 235, 250, 20, "ReCalcPCOrc", "", true );
 		adicDB( cbUsaImgOrc, 10, 295, 300, 20, "UsaImgAssOrc", "", true );
 		adicDB( cbUsaNomeVendOrc, 10, 315, 300, 20, "UsaNomeVendOrc", "", true );
-		adicDB( imgAssOrc, 510, 250, 200, 95, "ImgAssOrc", "Assinatura", false );
-
+		adicDB( cbAdicCodOrcObsPed, 10, 335, 400, 20, "ADICORCOBSPED", "", false );
+		adicDB( imgAssOrc, 460, 260, 250, 95, "ImgAssOrc", "Assinatura", false );
+		
 		// Financeiro
 
 		setPainel( pinFin );
@@ -1021,7 +1025,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicCampo( txtDiasVencOrc, 403, 145, 250, 20, "DiasVencOrc", "Dias p/ vencimento do orçamento", ListaCampos.DB_SI, false );
 		
 		adic( lbOrcOpcoes, 17, 170, 70, 20 );
-		adic( lbOrcCont, 7, 180, 720, 175 );		
+		adic( lbOrcCont, 7, 180, 720, 200 );		
 		adicDB( cbAprovOrc, 10, 195, 350, 20, "AprovOrc", "", true );
 		adicDB( cbUsaBuscGenProdORC, 10, 255, 350, 20, "USABUSCAGENPROD", "", false );
 		adicDB( cbUsaLoteOrc, 10, 275, 300, 20, "USALOTEORC", "", false );
