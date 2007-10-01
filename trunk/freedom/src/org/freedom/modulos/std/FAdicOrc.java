@@ -123,6 +123,8 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 	private JButton btNadaIt = new JButton( Icone.novo( "btNada.gif" ) );
 
 	private JButton btGerar = new JButton( Icone.novo( "btGerar.gif" ) );
+	
+	private JButton btAgruparItens = new JButton( Icone.novo( "btAdic2.gif" ) );
 
 	private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
 
@@ -154,7 +156,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 			vendaPDV = (org.freedom.modulos.pdv.FVenda) vd;
 
 		setTitulo( "Nova venda de orçamento" );
-		setAtribos( 700, 440 );
+		setAtribos( 705, 470 );
 
 		// Container c = getTela();
 		c.setLayout( new BorderLayout() );
@@ -246,6 +248,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		pinBtSel.adic( btTudoIt, 5, 5, 30, 30 );
 		pinBtSel.adic( btNadaIt, 5, 38, 30, 30 );
 		pinBtSel.adic( btGerar, 5, 71, 30, 30 );
+		pinBtSel.adic( btAgruparItens,5,104,30,30);
 
 		pnCli.add( pnTabOrc, BorderLayout.NORTH );
 		pnCli.add( pnCliTab, BorderLayout.CENTER );
@@ -260,7 +263,8 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		btExec.setToolTipText( "Executar montagem" );
 		btTudoOrc.setToolTipText( "Selecionar tudo" );
 		btNadaOrc.setToolTipText( "Limpar seleção" );
-		btGerar.setToolTipText( "Gerar no banco" );
+		btGerar.setToolTipText( "Gerar no venda" );
+		btAgruparItens.setToolTipText( "Agrupar ítens" );
 
 		// Monta as tabelas
 
@@ -308,12 +312,14 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		tabOrc.addKeyListener( this );
 		btBusca.addKeyListener( this );
 		btGerar.addKeyListener( this );
+		btAgruparItens.addKeyListener( this );
 
 		txtCodOrc.addActionListener( this );
 		btSair.addActionListener( this );
 		btBusca.addActionListener( this );
 		btExec.addActionListener( this );
 		btGerar.addActionListener( this );
+		btAgruparItens.addActionListener( this );
 		btTudoOrc.addActionListener( this );
 		btNadaOrc.addActionListener( this );
 		btTudoIt.addActionListener( this );
@@ -425,14 +431,10 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		StringBuffer obs = new StringBuffer();		
 		DLCriaVendaOrc diag = null;
 
-	
-
 		try {
 			
 			if ( tab.getNumLinhas() > 0 ) {
 				
-
-
 				boolean usaPedSeq = prefs[ 0 ];
 				diag = new DLCriaVendaOrc( usaPedSeq, sTipoVenda );
 				
@@ -709,6 +711,15 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		return ret;
 	}
 
+	private void agrupaItens() {
+		try {
+			Funcoes.mensagemInforma( this, "Em desenvolvimento...");
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void carregaTudo( Tabela tb ) {
 
 		for ( int i = 0; i < tb.getNumLinhas(); i++ ) {
@@ -766,6 +777,16 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 				}
 			}
 		}
+		else if ( evt.getSource() == btAgruparItens ) {
+			try {
+				if (Funcoes.mensagemConfirma( null, "Confirma o agrupamento dos ítens iguais?\nSerão agrupados apenas os ítens de código e preços iguais." ) == JOptionPane.YES_OPTION ) {
+					agrupaItens();
+				}					
+			} 
+			catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro ao realizar agrupamento de ítens!!\n" + err.getMessage(), true, con, err );
+			}
+		}		
 		else if ( evt.getSource() == btTudoOrc )
 			carregaTudo( tabOrc );
 		else if ( evt.getSource() == btNadaOrc )
