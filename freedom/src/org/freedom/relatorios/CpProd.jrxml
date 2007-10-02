@@ -45,7 +45,9 @@
 	<queryString><![CDATA[SELECT P.CODPROD, P.REFPROD, P.DESCPROD, P.CODUNID,
 IT.VLRPRODITCOMPRA, IT.VLRIPIITCOMPRA,
 (IT.VLRPRODITCOMPRA+IT.VLRIPIITCOMPRA) VLRSUBTOTAL,
-IT.VLRFRETEITCOMPRA, IT.VLRLIQITCOMPRA, C.DTEMITCOMPRA, C.DOCCOMPRA
+IT.VLRFRETEITCOMPRA, IT.VLRLIQITCOMPRA, C.DTEMITCOMPRA, C.DOCCOMPRA, 
+(IT.VLRLIQITCOMPRA/(CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 
+ELSE IT.QTDITCOMPRA END)) PRECOITCOMPRA
 FROM EQPRODUTO P, CPITCOMPRA IT, CPCOMPRA C
 WHERE P.CODEMP=4 AND P.CODFILIAL=1 AND
 C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND
@@ -72,6 +74,7 @@ ORDER BY P.DESCPROD]]></queryString>
 	<field name="VLRLIQITCOMPRA" class="java.math.BigDecimal"/>
 	<field name="DTEMITCOMPRA" class="java.sql.Date"/>
 	<field name="DOCCOMPRA" class="java.lang.Long"/>
+	<field name="PRECOITCOMPRA" class="java.math.BigDecimal"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -427,7 +430,7 @@ ORDER BY P.DESCPROD]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{DOCCOMPRA}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODPROD}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -574,7 +577,7 @@ ORDER BY P.DESCPROD]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRPRODITCOMPRA}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{PRECOITCOMPRA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
