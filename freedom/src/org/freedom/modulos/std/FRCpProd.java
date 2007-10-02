@@ -25,11 +25,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.Vector;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -37,6 +39,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
+
 
 public class FRCpProd extends FRelatorio {
 
@@ -60,10 +63,16 @@ public class FRCpProd extends FRelatorio {
 	
 	private ListaCampos lcMarca = new ListaCampos(this);
 	
+	private JRadioGroup<?, ?> rgOrdem = null;
+	
+	private Vector<String> vLabs = new Vector<String>();
+	
+	private Vector<String> vVals = new Vector<String>();
+	
 	public FRCpProd(){
 		
 		setTitulo("Últimas compras/produto");
-		setAtribos(50, 50, 345, 250);
+		setAtribos(50, 50, 345, 270);
 		
 		montaTela();
 		montaListaCampos();
@@ -71,6 +80,14 @@ public class FRCpProd extends FRelatorio {
 	}
 	
 	public void montaTela(){
+		
+		vLabs.addElement("Código");
+	    vLabs.addElement("Descrição");
+	    vVals.addElement("P.CODPROD");
+	    vVals.addElement("P.DESCPROD");
+	    
+	    rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
+	    rgOrdem.setVlrString("P.CODPROD");
 		
 		adic( new JLabelPad("Cód.Prod"), 7, 10, 70, 20 );
 		adic( txtCodProd, 7, 30, 70, 20 );
@@ -85,6 +102,8 @@ public class FRCpProd extends FRelatorio {
 		adic( new JLabelPad("Descrição da marca"), 80, 90, 200, 20 );
 		adic( txtDescMarca, 80, 110, 225, 20 );
 		
+		adic( new JLabelPad("Ordenar por:"), 7, 135, 80, 20 );
+		adic( rgOrdem, 7, 155, 300, 35 ); 
 	}
 	
 	public void montaListaCampos(){
@@ -114,11 +133,8 @@ public class FRCpProd extends FRelatorio {
 		/***********
 		 * Produto *
 		 ***********/
-	
 		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.produto", ListaCampos.DB_PK, false ) );
 		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		//lcProduto.add( new GuardaCampo( txtRefProd, "RefProd", "Ref. produto", ListaCampos.DB_SI, false ) );
-		//lcProduto.add( new GuardaCampo( txtCodBarProd, "CodBarProd", "Cód. Barras", ListaCampos.DB_SI, false ) );
 		txtCodProd.setTabelaExterna( lcProduto );
 		txtCodProd.setNomeCampo( "CodProd" );
 		txtCodProd.setFK( true );
@@ -156,7 +172,9 @@ public class FRCpProd extends FRelatorio {
 		sSQL.append( "SELECT P.CODPROD, P.REFPROD, P.DESCPROD, P.CODUNID,");
 		sSQL.append( "IT.VLRPRODITCOMPRA, IT.VLRIPIITCOMPRA," );
 		sSQL.append( "(IT.VLRPRODITCOMPRA+IT.VLRIPIITCOMPRA) VLRSUBTOTAL,");
-		sSQL.append( "IT.VLRFRETEITCOMPRA, IT.VLRLIQITCOMPRA, C.DTEMITCOMPRA, C.DOCCOMPRA ");
+		sSQL.append( "IT.VLRFRETEITCOMPRA, IT.VLRLIQITCOMPRA, C.DTEMITCOMPRA, C.DOCCOMPRA,");
+		sSQL.append( "(IT.VLRLIQITCOMPRA/(CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 " );
+		sSQL.append("ELSE IT.QTDITCOMPRA END)) PRECOITCOMPRA " ); 
 		sSQL.append( "FROM EQPRODUTO P, CPITCOMPRA IT, CPCOMPRA C ");
 		sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND ");
 		sSQL.append( "C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND ");
@@ -171,7 +189,10 @@ public class FRCpProd extends FRelatorio {
 		sSQL.append( "IT2.CODPROD=IT.CODPROD ");
 		sSQL.append( filtro.toString() );
 		sSQL.append( "ORDER BY C2.DTEMITCOMPRA DESC ) ");
-		sSQL.append( "ORDER BY P.DESCPROD");
+//		sSQL.append( "ORDER BY P.DESCPROD");
+		sSQL.append( " ORDER BY " );
+		sSQL.append( rgOrdem.getVlrString() );
+		
 	
 		try {
 		
