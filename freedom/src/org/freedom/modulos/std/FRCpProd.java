@@ -50,6 +50,12 @@ public class FRCpProd extends FRelatorio {
 	
 	private JTextFieldFK txtDescGrupo = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0); 
 	
+	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+
+	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private ListaCampos lcProduto = new ListaCampos( this );
+	
 	private ListaCampos lcGrupo = new ListaCampos(this);
 	
 	private ListaCampos lcMarca = new ListaCampos(this);
@@ -57,7 +63,7 @@ public class FRCpProd extends FRelatorio {
 	public FRCpProd(){
 		
 		setTitulo("Últimas compras/produto");
-		setAtribos(50, 50, 345, 200);
+		setAtribos(50, 50, 345, 250);
 		
 		montaTela();
 		montaListaCampos();
@@ -66,14 +72,18 @@ public class FRCpProd extends FRelatorio {
 	
 	public void montaTela(){
 		
-		adic( new JLabelPad("Cód.Grupo"), 7, 10, 70, 20 );
-		adic( txtCodGrupo, 7, 30, 70, 20 );
-		adic( new JLabelPad("Descrição do grupo"), 80, 10, 170, 20 ); 
-		adic( txtDescGrupo, 80, 30, 225, 20 );
-		adic( new JLabelPad("Cód.Marca"), 7, 50, 100, 20 );
-		adic( txtCodMarca, 7, 70, 70, 20 );
-		adic( new JLabelPad("Descrição da marca"), 80, 50, 200, 20 );
-		adic( txtDescMarca, 80, 70, 225, 20 );
+		adic( new JLabelPad("Cód.Prod"), 7, 10, 70, 20 );
+		adic( txtCodProd, 7, 30, 70, 20 );
+		adic( new JLabelPad("Descrição do produto"), 80, 10, 170, 20 );
+		adic( txtDescProd, 80, 30, 225, 20 );
+		adic( new JLabelPad("Cód.Grupo"), 7, 50, 70, 20 );
+		adic( txtCodGrupo, 7, 70, 70, 20 );
+		adic( new JLabelPad("Descrição do grupo"), 80, 50, 170, 20 ); 
+		adic( txtDescGrupo, 80, 70, 225, 20 );
+		adic( new JLabelPad("Cód.Marca"), 7, 90, 100, 20 );
+		adic( txtCodMarca, 7, 110, 70, 20 );
+		adic( new JLabelPad("Descrição da marca"), 80, 90, 200, 20 );
+		adic( txtDescMarca, 80, 110, 225, 20 );
 		
 	}
 	
@@ -101,6 +111,20 @@ public class FRCpProd extends FRelatorio {
 		lcMarca.setReadOnly(true);
 		lcMarca.montaSql(false, "MARCA", "EQ");
 		
+		/***********
+		 * Produto *
+		 ***********/
+	
+		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.produto", ListaCampos.DB_PK, false ) );
+		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		//lcProduto.add( new GuardaCampo( txtRefProd, "RefProd", "Ref. produto", ListaCampos.DB_SI, false ) );
+		//lcProduto.add( new GuardaCampo( txtCodBarProd, "CodBarProd", "Cód. Barras", ListaCampos.DB_SI, false ) );
+		txtCodProd.setTabelaExterna( lcProduto );
+		txtCodProd.setNomeCampo( "CodProd" );
+		txtCodProd.setFK( true );
+		lcProduto.setReadOnly( true );
+		lcProduto.montaSql( false, "PRODUTO", "EQ" );
+		
 	}
 	
 	@ Override
@@ -121,6 +145,11 @@ public class FRCpProd extends FRelatorio {
 		
 			filtro.append( "AND P.CODMARCA='"+txtCodMarca.getVlrString()+"'" );
 			
+		}
+		
+		if( txtCodProd.getVlrString() != null && txtCodProd.getVlrString().trim().length()>0  ){
+			
+			filtro.append( "AND P.CODPROD='"+txtCodProd.getVlrString()+"'" );
 		}
 		
 			
@@ -186,6 +215,6 @@ public class FRCpProd extends FRelatorio {
 		super.setConexao( cn );
 		lcGrupo.setConexao( cn );
 		lcMarca.setConexao( cn );
-		
+		lcProduto.setConexao( cn );
 	}
 }
