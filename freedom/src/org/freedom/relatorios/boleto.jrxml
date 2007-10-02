@@ -223,7 +223,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="154"
+						x="160"
 						y="118"
 						width="0"
 						height="17"
@@ -729,7 +729,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<reportElement
 						x="122"
 						y="118"
-						width="30"
+						width="36"
 						height="15"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -744,9 +744,9 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="156"
+						x="162"
 						y="118"
-						width="368"
+						width="362"
 						height="15"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1059,7 +1059,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="155"
+						x="162"
 						y="5"
 						width="0"
 						height="17"
@@ -1077,9 +1077,9 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</line>
 				<staticText>
 					<reportElement
-						x="157"
+						x="166"
 						y="5"
-						width="100"
+						width="90"
 						height="15"
 						key="staticText-29"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1108,7 +1108,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="419"
+						x="426"
 						y="5"
 						width="0"
 						height="17"
@@ -1117,9 +1117,9 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</line>
 				<staticText>
 					<reportElement
-						x="421"
-						y="6"
-						width="100"
+						x="428"
+						y="5"
+						width="93"
 						height="15"
 						key="staticText-30"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1132,12 +1132,12 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<reportElement
 						x="123"
 						y="5"
-						width="30"
+						width="37"
 						height="15"
 						key="textField-35"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[($F{CODBANCO}!=null 
   ?
@@ -1148,13 +1148,13 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="387"
-						y="6"
-						width="30"
+						y="5"
+						width="37"
 						height="15"
 						key="textField-36"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[($F{CODBANCO}!=null 
   ?
@@ -1164,7 +1164,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="155"
+						x="162"
 						y="22"
 						width="0"
 						height="17"
@@ -1228,7 +1228,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<reportElement
 						x="53"
 						y="22"
-						width="100"
+						width="106"
 						height="8"
 						key="staticText-32"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1241,7 +1241,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<reportElement
 						x="53"
 						y="30"
-						width="100"
+						width="106"
 						height="9"
 						key="textField-38"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1252,7 +1252,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</textField>
 				<staticText>
 					<reportElement
-						x="158"
+						x="166"
 						y="22"
 						width="24"
 						height="8"
@@ -1265,9 +1265,9 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="158"
+						x="166"
 						y="30"
-						width="46"
+						width="39"
 						height="9"
 						key="textField-39"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
