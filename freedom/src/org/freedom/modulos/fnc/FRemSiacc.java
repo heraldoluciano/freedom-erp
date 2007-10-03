@@ -25,6 +25,7 @@
 package org.freedom.modulos.fnc;
 
 import java.awt.FileDialog;
+import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -61,7 +62,7 @@ public class FRemSiacc extends FRemFBN {
 		HashSet< SiaccUtil.StuffCli > hsCli = new HashSet< SiaccUtil.StuffCli >();
 		HashSet< SiaccUtil.StuffRec > hsRec = new HashSet< SiaccUtil.StuffRec >();
 
-		if ( consisteExporta( hsCli, hsRec ) ) {
+		if ( consisteExporta( hsCli, hsRec, true ) ) {
 
 			retorno = setPrefs();
 
@@ -245,6 +246,25 @@ public class FRemSiacc extends FRemFBN {
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
 			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void mouseClicked( MouseEvent e ) {
+
+		if ( e.getClickCount() == 2 && e.getSource() == tab && tab.getLinhaSel() > -1 ) {
+
+			if ( !"00".equals( tab.getValor( tab.getLinhaSel(), EColTab.COL_SITRET.ordinal() ) ) ) {
+
+				Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + 
+						getMenssagemRet( (String) tab.getValor( tab.getLinhaSel(), EColTab.COL_SITRET.ordinal() ) ) );
+			}
+			completaTabela( tab.getLinhaSel(), 
+					(Integer) tab.getValor( tab.getLinhaSel(), EColTab.COL_CODCLI.ordinal() ), 
+					(String) tab.getValor( tab.getLinhaSel(), EColTab.COL_RAZCLI.ordinal() ), 
+					(String) tab.getValor( tab.getLinhaSel(), EColTab.COL_AGENCIACLI.ordinal() ), 
+					(String) tab.getValor( tab.getLinhaSel(), EColTab.COL_IDENTCLI.ordinal() ), 
+					(String) tab.getValor( tab.getLinhaSel(), EColTab.COL_STIPOFEBRABAN.ordinal() ) );
 		}
 	}
 }
