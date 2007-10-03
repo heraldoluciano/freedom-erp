@@ -424,7 +424,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" pdfFontName="Helvetica" size="6" isBold="false"/>
 					</textElement>
-				<text><![CDATA[Nº da Conta / Respons.]]></text>
+				<text><![CDATA[Uso do Banco]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -746,11 +746,11 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<reportElement
 						x="162"
 						y="118"
-						width="362"
+						width="360"
 						height="15"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$V{LINHADIGEXT}]]></textFieldExpression>
