@@ -25,6 +25,7 @@
 package org.freedom.modulos.fnc;
 
 import java.awt.FileDialog;
+import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -497,7 +498,7 @@ public class FRemCnab extends FRemFBN {
 		HashSet<StuffCli> hsCli = new HashSet<StuffCli>();
 		HashSet<StuffRec> hsRec = new HashSet<StuffRec>();
 	
-		if ( consisteExporta( hsCli, hsRec ) ) {
+		if ( consisteExporta( hsCli, hsRec, false ) ) {
 			
 			retorno = setPrefs();
 			
@@ -660,6 +661,19 @@ public class FRemCnab extends FRemFBN {
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
 			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void mouseClicked( MouseEvent e ) {
+
+		if ( e.getClickCount() == 2 && e.getSource() == tab && tab.getLinhaSel() > -1 ) {
+
+			if ( !"00".equals( tab.getValor( tab.getLinhaSel(), EColTab.COL_SITRET.ordinal() ) ) ) {
+
+				Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + 
+						getMenssagemRet( (String) tab.getValor( tab.getLinhaSel(), EColTab.COL_SITRET.ordinal() ) ) );
+			}
 		}
 	}
 	

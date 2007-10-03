@@ -102,11 +102,11 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 	protected final JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	protected JRadioGroup<?, ?> rgData;
+	protected JRadioGroup<String, String> rgData;
 	
-	protected JRadioGroup<?, ?> rgSitRemessa;
+	protected JRadioGroup<String, String> rgSitRemessa;
 	
-	protected JRadioGroup<?, ?> rgTipoRemessa;
+	protected JRadioGroup<String, String> rgTipoRemessa;
 
 	private final JButton btCarrega = new JButton( "Buscar", Icone.novo( "btExecuta.gif" ) );
 
@@ -124,7 +124,6 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 	protected final ListaCampos lcBanco = new ListaCampos( this );
 
-	@SuppressWarnings("unchecked")
 	protected Map<Enum, Object> prefs = new HashMap<Enum, Object>();
 	
 	protected String where = "";
@@ -588,10 +587,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			tab.setValor( new Boolean( false ), i, 0 );
 		}
 	}
-	
 
-	@SuppressWarnings("unchecked")
-	protected boolean consisteExporta( HashSet<FbnUtil.StuffCli> hsCli, HashSet<FbnUtil.StuffRec> hsRec ) {
+	protected boolean consisteExporta( HashSet<FbnUtil.StuffCli> hsCli, HashSet<FbnUtil.StuffRec> hsRec, boolean completartabela ) {
 
 		boolean retorno = true;
 		Vector vLinha = null;
@@ -601,16 +598,18 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			vLinha = tab.getLinha( i );
 
 			if ( (Boolean) vLinha.elementAt( EColTab.COL_SEL.ordinal() ) ) {
-				if ( ( "".equals( (String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ) ) ) 
-						|| ( "".equals( (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ) ) ) ) {
-					if ( ! completaTabela( i, 
+				if ( completartabela ) {
+					if ( "".equals( (String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ) ) 
+							|| "".equals( (String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ) ) ) {
+						if ( ! completaTabela( i, 
 								(Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ), 
 								(String) vLinha.elementAt( EColTab.COL_RAZCLI.ordinal() ), 
 								(String) vLinha.elementAt( EColTab.COL_AGENCIACLI.ordinal() ), 
-								(String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ), 
+								(String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ),
 								(String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ) ) ) {
-						retorno = false;
-						break;
+							retorno = false;
+							break;
+						}
 					}
 				}
 				hsCli.add( new FbnUtil().new StuffCli( 
@@ -797,6 +796,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro atualizando cliente!\n" + e.getMessage() );
+			e.printStackTrace();
 		}
 
 		return retorno;
@@ -944,23 +944,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		}
 	}
 
-	public void mouseClicked( MouseEvent e ) {
-
-		if ( e.getClickCount() == 2 && e.getSource() == tab && tab.getLinhaSel() > -1 ) {
-
-			if ( !"00".equals( tab.getValor( tab.getLinhaSel(), EColTab.COL_SITRET.ordinal() ) ) ) {
-
-				Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + 
-						getMenssagemRet( (String) tab.getValor( tab.getLinhaSel(), EColTab.COL_SITRET.ordinal() ) ) );
-			}
-			completaTabela( tab.getLinhaSel(), 
-					(Integer) tab.getValor( tab.getLinhaSel(), EColTab.COL_CODCLI.ordinal() ), 
-					(String) tab.getValor( tab.getLinhaSel(), EColTab.COL_RAZCLI.ordinal() ), 
-					(String) tab.getValor( tab.getLinhaSel(), EColTab.COL_AGENCIACLI.ordinal() ), 
-					(String) tab.getValor( tab.getLinhaSel(), EColTab.COL_IDENTCLI.ordinal() ), 
-					(String) tab.getValor( tab.getLinhaSel(), EColTab.COL_STIPOFEBRABAN.ordinal() ) );
-		}
-	}
+	public void mouseClicked( MouseEvent e ) { }
 
 	public void mouseEntered( MouseEvent e ) { }
 
