@@ -124,8 +124,8 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( -1, TP_OPCAO_MENU, "Entrada", "", 'E', 200000000, 0, false, null );
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Compra", "Compras", 'C', 200100000, 1, true, FCompra.class );
 			addOpcao( 200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200200000, 1, false, null );
-				addOpcao( 200200000, TP_OPCAO_ITEM, "Relatorio de Compras", "Relatorio de Compras", 'p', 200210000, 2, true, FRCompras.class );
-				addOpcao( 200200000, TP_OPCAO_ITEM, "Relatorio por tipo de movimento ", "Relatorio  por tipo de movimento", 'p', 200220000, 2, true, FRCpTipoMov.class );
+				addOpcao( 200200000, TP_OPCAO_ITEM, "Compras geral", "Compras geral", 'p', 200210000, 2, true, FRCompras.class );
+				addOpcao( 200200000, TP_OPCAO_ITEM, "Compras por tipo de movimento ", "Compras por tipo de movimento", 'p', 200220000, 2, true, FRCpTipoMov.class );
 				addOpcao( 200200000, TP_OPCAO_ITEM, "Compras por fornecedor", "Compras por Fornecedor", 'f', 200230000, 2, true, FRComprasFor.class );
 				
 
