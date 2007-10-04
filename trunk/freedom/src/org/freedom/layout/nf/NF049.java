@@ -283,7 +283,6 @@ public class NF049 extends Layout {
 					imp.pulaLinha( 3, imp.comprimido() );
 					imp.say( 1, frete.getString( NF.C_RAZTRANSP ) );
 					imp.say( 84, "C".equals(frete.getString( NF.C_TIPOFRETE ) ) ? "1" : "2" );
-				//	imp.say( 91, frete.getString( NF.C_PLACAFRETE ) );
 					imp.say( 106, frete.getString( NF.C_UFFRETE ) );
 
 					if ( "C".equals(frete.getString( NF.C_TIPOTRANSP ) ) ) {
@@ -316,10 +315,7 @@ public class NF049 extends Layout {
 					if(frete.getString( NF.C_QTDFRETE )!=null) 
 						imp.say( 1, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( frete.getString( NF.C_QTDFRETE ) ) ) );
 					imp.say( 21, Funcoes.copy( frete.getString( NF.C_ESPFRETE ), 27 ) );
-					//imp.say( 53, Funcoes.copy( frete.getString( NF.C_MARCAFRETE ), 22 ) );
 					imp.say( 82, Funcoes.copy( frete.getString( NF.C_CONHECFRETEPED ), 20 ) );
-					//imp.say( 95, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getFloat( NF.C_PESOBRUTO ) ) ) );
-					//imp.say( 120, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getFloat( NF.C_PESOLIQ ) ) ) );
 					imp.pulaLinha( 2, imp.comprimido() );
 
 					// Fim da impressão do frete
