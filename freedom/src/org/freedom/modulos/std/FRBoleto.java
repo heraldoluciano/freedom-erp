@@ -282,11 +282,11 @@ public class FRBoleto extends FRelatorio {
 	}
 
 	private String aplicaTxtObs(String sTxa, final String sCampo, String sValor) {
-		String retorno = null;
-		String sParam1 = null;
-		String sParam2 = null;
-		Integer iNumLinObs = null;
-		Integer iNumColObs = null;
+		String retorno = "";
+		String sParam1 = "";
+		String sParam2 = "";
+		Integer iNumLinObs = new Integer(0);
+		Integer iNumColObs = new Integer(0);
 		List<String> lObs = null;
 		
 		if(sValor!=null) {
