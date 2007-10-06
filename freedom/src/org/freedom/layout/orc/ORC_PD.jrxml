@@ -27,7 +27,7 @@
 		<defaultValueExpression ><![CDATA["\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\layout\\orc\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(5)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(2)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
@@ -36,7 +36,7 @@
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODORC" isForPrompting="true" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(100)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(39)]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT O.CODCLI, O.OBSORC, O.PRAZOENTORC, O.PRAZOENTORC, C.CIDCLI, C.ENDCLI,
 C.FONECLI, C.BAIRCLI, C.UFCLI, DDDCLI, C.NUMCLI, C.RAZCLI, O.CODORC, O.DTORC, 
@@ -297,8 +297,9 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 						y="17"
 						width="0"
 						height="96"
-						key="line-8"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-8"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -306,8 +307,9 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 						y="16"
 						width="0"
 						height="96"
-						key="line-9"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-9"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<staticText>
 					<reportElement
@@ -393,7 +395,8 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 						y="111"
 						width="530"
 						height="0"
-						key="line-10"/>
+						key="line-10"
+						positionType="FixRelativeToBottom"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<staticText>
@@ -500,7 +503,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["( "+$F{DDDCLI}+") " + $F{FONECLI}.substring(0,4)+"-"+$F{FONECLI}.substring(4,12)]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="81"
 						y="98"
