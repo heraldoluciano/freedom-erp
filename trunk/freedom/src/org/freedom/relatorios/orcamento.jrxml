@@ -443,7 +443,8 @@ PP.CODPLANOPAG=O.CODPLANOPAG]]></queryString>
 						y="98"
 						width="449"
 						height="12"
-						key="textField-9"/>
+						key="textField-9"
+						stretchType="RelativeToTallestObject"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
