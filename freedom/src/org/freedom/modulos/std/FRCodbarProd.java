@@ -89,7 +89,6 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	private JPanelPad pnGrid = new JPanelPad( 600, 200 );
 
 	private JComboBox cbSel = null;
-	
 
 	public FRCodbarProd() {
 
@@ -102,11 +101,11 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	}
 
 	private void montaListaCampos() {
-	
-		/***********
-		 * Produto *
-		 ***********/
-	
+
+		/*
+		 * Produto
+		 */
+
 		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.produto", ListaCampos.DB_PK, true ) );
 		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProduto.add( new GuardaCampo( txtRefProd, "RefProd", "Ref. produto", ListaCampos.DB_SI, false ) );
@@ -116,7 +115,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		txtCodProd.setFK( true );
 		lcProduto.setReadOnly( true );
 		lcProduto.montaSql( false, "PRODUTO", "EQ" );
-	
+
 	}
 
 	private void montaTela() {
@@ -148,7 +147,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		tabGrid.setTamColuna( 60, EProduto.QTDPROD.ordinal() );
 
 		lcProduto.addCarregaListener( this );
-		
+
 		btExecuta.addActionListener( this );
 		btSelectCompra.addActionListener( this );
 		btExcluir.addActionListener( this );
@@ -163,7 +162,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	}
 
 	private void adicLinha( BigDecimal qtd, int codprod, String descprod ) {
-		
+
 		int pos = -1;
 
 		if ( codprod == 0 ) {
@@ -210,46 +209,46 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 		tabGrid.limpa();
 	}
-	
+
 	private void selectCompra() {
-		
+
 		DLEtiqCompra dl = new DLEtiqCompra( this );
 		dl.setConexao( con );
-		
+
 		dl.setVisible( true );
-		
+
 		int codcompra = dl.getCompra();
-		
+
 		if ( dl.OK && codcompra > 0 ) {
-			
-			// fazer select dos itens da compra e colocar na tabela com o 
+
+			// fazer select dos itens da compra e colocar na tabela com o
 			// adiclinha( quantidade, codigo do produto, descrição do produto).
-			
+
 			StringBuilder sql = new StringBuilder();
 			sql.append( "SELECT IT.CODPROD, IT.QTDITCOMPRA, PD.DESCPROD " );
 			sql.append( "FROM CPITCOMPRA IT, EQPRODUTO PD, CPCOMPRA C " );
 			sql.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=? AND " );
 			sql.append( "IT.CODEMP=C.CODEMP AND IT.CODFILIAL=C.CODFILIAL AND IT.CODCOMPRA=C.CODCOMPRA AND " );
 			sql.append( "PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND PD.CODPROD=IT.CODPROD " );
-			
+
 			try {
-				
+
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
 				ps.setInt( 3, codcompra );
-				
+
 				ResultSet rs = ps.executeQuery();
-				
+
 				while ( rs.next() ) {
-					
+
 					adicLinha( rs.getBigDecimal( "QTDITCOMPRA" ).setScale( 0, BigDecimal.ROUND_HALF_UP ), rs.getInt( "CODPROD" ), rs.getString( "DESCPROD" ) );
 				}
-				
+
 				rs.close();
 				ps.close();
-				
-				if ( ! con.getAutoCommit() ) {
+
+				if ( !con.getAutoCommit() ) {
 					con.commit();
 				}
 			} catch ( SQLException e ) {
@@ -257,132 +256,132 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 				Funcoes.mensagemErro( this, "Erro ao carregar itens da compra!\n" + e.getMessage(), true, con, e );
 			}
 		}
-		
+
 		dl.dispose();
 	}
-	
+
 	private int getNrConexao() {
-		
+
 		int conexao = -1;
-		
+
 		StringBuilder sql = new StringBuilder();
-		
+
 		sql.append( "SELECT CURRENT_CONNECTION FROM SGEMPRESA E WHERE E.CODEMP=?" );
-		
+
 		try {
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			
+
 			ResultSet rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
 				conexao = rs.getInt( "CURRENT_CONNECTION" );
 			}
-			
+
 			rs.close();
 			ps.close();
-			
-			if ( ! con.getAutoCommit() ) {
+
+			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
-			
+
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar número da conexão!\n" + e.getMessage(), true, con, e );
 		}
-		
+
 		return conexao;
 	}
-	
+
 	private boolean removeEtiquetas() {
-		
+
 		boolean retorno = false;
-		
+
 		StringBuilder sql = new StringBuilder();
-		
+
 		sql.append( "DELETE FROM EQETIQPROD E WHERE E.NRCONEXAO=?" );
-		
+
 		try {
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, getNrConexao() );
-			
+
 			int exec = ps.executeUpdate();
-			
+
 			ps.close();
-			
-			if ( ! con.getAutoCommit() ) {
+
+			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
-			
+
 			if ( exec > -1 ) {
 				retorno = true;
 			}
-			
+
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao limpar tabela temporaria de etiquetas!\n" + e.getMessage(), true, con, e );
 		}
-		
+
 		return retorno;
 	}
-	
+
 	private boolean persistEtiquetas() {
-		
+
 		boolean retorno = false;
-		
+
 		int conexao = getNrConexao();
-		
+
 		StringBuilder sSql = new StringBuilder();
-		
+
 		sSql.append( "INSERT INTO EQETIQPROD " );
 		sSql.append( "( NRCONEXAO, CODEMP, CODFILIAL, CODPROD ) " );
 		sSql.append( "VALUES " );
 		sSql.append( "( ?, ?, ?, ? )" );
-		
+
 		String sql = sSql.toString();
-		
+
 		int codprod = 0;
 		int quantidade = 0;
-		
+
 		etiquetas : {
-			
+
 			for ( int i = 0; i < tabGrid.getNumLinhas(); i++ ) {
 
 				codprod = (Integer) tabGrid.getValor( i, EProduto.CODPROD.ordinal() );
 				quantidade = ( (BigDecimal) tabGrid.getValor( i, EProduto.QTDPROD.ordinal() ) ).intValue();
-				
-				for ( int j = 0; j < quantidade ; j++ ) {
-					
-					if ( ! insetEtiqueta( conexao, codprod, sql ) ) {
-						
+
+				for ( int j = 0; j < quantidade; j++ ) {
+
+					if ( !insetEtiqueta( conexao, codprod, sql ) ) {
+
 						break etiquetas;
 					}
 				}
 			}
-			
+
 			retorno = true;
 		}
-		
+
 		return retorno;
 	}
-	
+
 	private boolean insetEtiqueta( int conexao, int codprod, String sql ) {
-		
+
 		boolean retorno = true;
-		
+
 		try {
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, conexao );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "EQETIQPROD" ) );
 			ps.setInt( 4, codprod );
-			
+
 			ps.execute();
-			
-			if ( ! con.getAutoCommit() ) {
+
+			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
 		} catch ( SQLException e ) {
@@ -390,60 +389,80 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao relacionar etiquetas!\n" + e.getMessage(), true, con, e );
 		}
-		
+
 		return retorno;
 	}
 
-	public void imprimir( boolean bVisualizar ) {
+	private Object[] montaEtiquetas() {
 
-		if ( removeEtiquetas() ) {
-			if ( persistEtiquetas() ) {
-				imprimirTexto( bVisualizar );
-			}
-		}
-	}
-	
-	private void imprimirTexto( boolean bVisualizar ) {
-
+		Object[] buffer = new Object[ 2 ];
+		StringBuilder bufferImprimir = new StringBuilder();
+		ImprimeOS imp = new ImprimeOS( "", con );
 
 		try {
+
+			buffer[ 0 ] = imp;
+			buffer[ 1 ] = bufferImprimir;
 
 			StringBuffer sSQL = new StringBuffer();
 			sSQL.append( "SELECT E.CODPROD, P.DESCPROD, P.CODBARPROD " );
 			sSQL.append( "FROM EQETIQPROD E, EQPRODUTO P " );
 			sSQL.append( "WHERE E.NRCONEXAO=? AND " );
 			sSQL.append( "P.CODEMP=E.CODEMP AND P.CODFILIAL=E.CODFILIAL AND P.CODPROD=E.CODPROD " );
-		
+
 			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, getNrConexao() );
-			
+
 			ResultSet rs = ps.executeQuery();
-			
-			ImprimeOS imp = new ImprimeOS( "", con );
+
 			EtiquetaPPLA etiqueta;
 
 			while ( rs.next() ) {
 
 				etiqueta = new EtiquetaPPLA();
-				
-				etiqueta.printString( 5, 5, rs.getString( "DESCPROD" ) );
 
-				imp.gravaTexto( etiqueta.command() );
-			}
-			
-			imp.fechaGravacao();
+				etiqueta.printString( 100, 50, rs.getString( "DESCPROD" ) );
 
-			if ( bVisualizar ) {
-				imp.preview( this );
-			}
-			else {
-				imp.print();
+				bufferImprimir.append( etiqueta.command() );
 			}
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
+			buffer = null;
 		}
 
+		return buffer;
+	}
+
+	public void imprimir( boolean bVisualizar ) {
+
+		if ( removeEtiquetas() ) {
+
+			if ( persistEtiquetas() ) {
+
+				ImprimeOS imp = new ImprimeOS( "", con );
+
+				Object[] etiquetas = montaEtiquetas();
+
+				if ( etiquetas != null ) {
+
+					// visualização.
+					if ( bVisualizar ) {
+
+						imp = (ImprimeOS) etiquetas[ 0 ];
+						imp.preview( this );
+					}
+					// impressão.
+					else {
+						
+						imp.gravaTexto( etiquetas[ 1 ].toString() );
+						imp.fechaGravacao();	
+						imp.preview( this );					
+						//imp.print();
+					}
+				}
+			}
+		}
 	}
 
 	public void setConexao( Connection cn ) {
@@ -498,9 +517,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	}
 
 	private enum EProduto {
-		
-		CODPROD, 
-		DESCPROD, 
-		QTDPROD
+
+		CODPROD, DESCPROD, QTDPROD
 	}
 }

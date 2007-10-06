@@ -33,6 +33,12 @@ public class EtiquetaPPLA {
 	private CMD horizontal_multiplier = HORIZONTAL_MULTIPLIER_DEFAULT;
 
 	private CMD vertical_multiplier = VERTICAL_MULTIPLIER_DEFAULT;
+	
+	private CMD barcode_type = BARCODE_A;
+	
+	private CMD barcode_b_w = BARCODE_WIDE_BAR_DEFAULT;
+	
+	private CMD barcode_b_f = BARCODE_FINE_BAR_DEFAULT;
 
 	/**
 	 * Contrutor padrão para EtiquetaPPLA.
@@ -105,6 +111,36 @@ public class EtiquetaPPLA {
 
 		this.vertical_multiplier = vertical_multiplier;
 	}
+	
+	public CMD getBarcode_b_f() {
+	
+		return barcode_b_f;
+	}
+	
+	public void setBarcode_b_f( CMD barcode_b_f ) {
+	
+		this.barcode_b_f = barcode_b_f;
+	}
+	
+	public CMD getBarcode_b_w() {
+	
+		return barcode_b_w;
+	}
+	
+	public void setBarcode_b_w( CMD barcode_b_l ) {
+	
+		this.barcode_b_w = barcode_b_l;
+	}
+	
+	public CMD getBarcode_type() {
+	
+		return barcode_type;
+	}
+	
+	public void setBarcode_type( CMD barcode_type ) {
+	
+		this.barcode_type = barcode_type;
+	}
 
 	/**
 	 * Adiciona commando ao script.
@@ -136,21 +172,72 @@ public class EtiquetaPPLA {
 	 */
 	private void open() {
 
-		getCommand().append( STX.getCommand() );
-		getCommand().append( L.getCommand() );
-		getCommand().append( CR.getCommand() );
+		addCommand( STX );
+		addCommand( L );
+		addCommand( CR );
 	}
 
+	/**
+	 * Armazena no buffer de comandos o comando de escrita de texto<br>
+	 * formatando o comando com parametros previamente definidos<br> 
+	 * <br> 
+	 * - Ordinance<br> 
+	 * - Font<br> 
+	 * - Horizontal multiplier<br> 
+	 * - Vertical multiplier<br> 
+	 * - Subtype font<br> 
+	 * <br>
+	 * e os passados por parametro na assinatura do metodo.<br>
+	 * 
+	 * @param arg0
+	 *            posição Y
+	 * @param arg1
+	 *            posição X
+	 * @param arg2
+	 *            texto
+	 */
 	public void printString( int arg0, int arg1, String arg2 ) {
 
 		addCommand( getOrdinance() );
 		addCommand( getFont() );
 		addCommand( getHorizontal_multiplier() );
 		addCommand( getVertical_multiplier() );
-		addCommand( intToStrZero( getSubtype_font().getCommand(), 3 ) );
+		addCommand( charToStrZero( getSubtype_font().getCommand(), 3 ) );
 		addCommand( intToStrZero( arg0 ) );
 		addCommand( intToStrZero( arg1 ) );
 		addCommand( arg2 );
+	}
+
+	/**
+	 * * Armazena no buffer de comandos o comando de impressão de código de barras<br>
+	 * formatando o comando com parametros previamente definidos<br>
+	 * <br> 
+	 * - Ordinance<br> 
+	 * - Barcode type<br> 
+	 * - Barcode wide bar<br> 
+	 * - Barcode fine bar<br>
+	 * <br>
+	 * e os passados por parametro na assinatura do metodo.<br>
+	 * 
+	 * @param arg0
+	 *            Altura do código de barras.
+	 * @param arg1
+	 *            posição Y
+	 * @param arg2
+	 *            posição X
+	 * @param arg3
+	 *            dados para o código.
+	 */
+	public void printBarCode( int arg0, int arg1, int arg2, String arg3 ) {
+
+		addCommand( getOrdinance() );
+		addCommand( getBarcode_type() );
+		addCommand( getBarcode_b_w() );
+		addCommand( getBarcode_b_f() );
+		addCommand( intToStrZero( arg0, 3 ) );
+		addCommand( intToStrZero( arg1 ) );
+		addCommand( intToStrZero( arg2 ) );
+		addCommand( arg3 );
 	}
 
 	/**
@@ -158,8 +245,8 @@ public class EtiquetaPPLA {
 	 */
 	private void close() {
 
-		getCommand().append( E.getCommand() );
-		getCommand().append( CR.getCommand() );
+		addCommand( E );
+		addCommand( CR );
 	}
 
 	/**
@@ -214,6 +301,31 @@ public class EtiquetaPPLA {
 	}
 
 	/**
+	 * Converte um character em uma String adicioanda de zeros a esquerda<br>
+	 * completando o tamanho especificado.
+	 * 
+	 * @param arg
+	 *            inteiro a ser formatado.
+	 * @param size
+	 *            tamanho do retorno.
+	 * @return String formatada com zeros a esquerda.
+	 */
+	private String charToStrZero( final char arg, final int size ) {
+
+		String value = String.valueOf( arg );
+		StringBuffer buffer = new StringBuffer();
+		int strsize = size - value.length();
+
+		for ( int i = 0; i < strsize; i++ ) {
+			buffer.append( 0 );
+		}
+
+		buffer.append( arg );
+
+		return buffer.toString();
+	}
+
+	/**
 	 * Enumera os comandos utilizados na criação de script para<br>
 	 * impressão de etiquetas utilizando a linguagem PPLA.
 	 * 
@@ -238,13 +350,23 @@ public class EtiquetaPPLA {
 
 		ORDINANCE_ROTATION_90( 0x34 ),
 		
+		// Fonts ...
+
 		FONT_DEFAULT( 0x32 ),
 
 		SUBTYPE_FONT_DEFAULT( 0x30 ),
-		
+
 		HORIZONTAL_MULTIPLIER_DEFAULT( 0x31 ),
+
+		VERTICAL_MULTIPLIER_DEFAULT( 0x31 ),
 		
-		VERTICAL_MULTIPLIER_DEFAULT( 0x31 );
+		// Barcode ...
+		
+		BARCODE_A( 'A' ),
+		
+		BARCODE_WIDE_BAR_DEFAULT( 0x35 ),
+		
+		BARCODE_FINE_BAR_DEFAULT( 0x32 );
 
 		/**
 		 * Armazena o valor hexadecimal do comando.
@@ -260,9 +382,9 @@ public class EtiquetaPPLA {
 		 * 
 		 * @return inteiro com o valor hexadecimal do comando.
 		 */
-		public int getCommand() {
+		public char getCommand() {
 
-			return this.command;
+			return (char) this.command;
 		}
 	}
 }
