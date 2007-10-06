@@ -71,7 +71,7 @@ import org.freedom.drivers.ECFDriver;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.modulos.std.DLCodProd;
-import org.freedom.modulos.std.FAdicOrc;
+import org.freedom.modulos.std.DLAdicOrc;
 import org.freedom.plugin.AbstractControleVendaPDV;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
@@ -611,7 +611,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	private void abreAdicOrc() {
 
 		if ( !Aplicativo.telaPrincipal.temTela( "Busca orçamento" ) ) {
-			FAdicOrc tela = new FAdicOrc( this, "E" );
+			DLAdicOrc tela = new DLAdicOrc( this, "E" );
 			Aplicativo.telaPrincipal.criatela( "Orcamento", tela, con );
 		}
 	}
