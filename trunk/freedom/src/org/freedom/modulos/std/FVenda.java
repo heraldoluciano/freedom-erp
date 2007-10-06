@@ -820,7 +820,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private void abreAdicOrc() {
 
 		if ( !Aplicativo.telaPrincipal.temTela( "Busca orçamento" ) ) {
-			FAdicOrc tela = new FAdicOrc( this, "V" );
+			DLAdicOrc tela = new DLAdicOrc( this, "V" );
 			Aplicativo.telaPrincipal.criatela( "Orcamento", tela, con );
 		}
 	}

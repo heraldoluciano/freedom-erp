@@ -6,7 +6,7 @@
  * 
  * Pacote: org.freedom.modulos.std <BR>
  * Classe:
- * @(#)FAdicOrc.java <BR>
+ * @(#)DLAdicOrc.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -56,8 +56,22 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
 
-public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener {
+public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener {
 
+	private final int POS_CODPROD = 2;
+	
+	private final int POS_QTD = 4;
+	
+	private final int POS_PRECO = 5;
+	
+	private final int POS_VLRLIQ = 7;
+	
+	private final int POS_TPAGR = 8;
+	
+	private final int POS_PAI = 9;
+	
+	private final int POS_VLRAGRP = 10;			
+		
 	private static final long serialVersionUID = 1L;
 
 	private Tabela tab = new Tabela();
@@ -144,7 +158,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 
 	private boolean[] prefs;
 
-	public FAdicOrc( Object vd, String tipo ) {
+	public DLAdicOrc( Object vd, String tipo ) {
 
 		// Monta a tela
 		// super(false);
@@ -296,6 +310,9 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		tab.adicColuna( "Preco." );
 		tab.adicColuna( "Valor desc." );
 		tab.adicColuna( "Valor liq." );
+		tab.adicColuna( "Tp.Agr." );
+		tab.adicColuna( "Agr." );
+		tab.adicColuna( "Valor agr." );
 
 		tab.setTamColuna( 35, 0 );
 		tab.setTamColuna( 35, 1 );
@@ -305,6 +322,10 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		tab.setTamColuna( 90, 5 );
 		tab.setTamColuna( 100, 6 );
 		tab.setTamColuna( 100, 7 );
+		tab.setTamColuna( 50, 8 );
+		tab.setTamColuna( 50, 9 );
+		tab.setTamColuna( 100, 10 );
+
 
 		tab.setColunaEditavel( 0, true );
 
@@ -370,6 +391,9 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 						vVals.addElement( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "PrecoItOrc" ) != null ? rs.getString( "PrecoItOrc" ) : "0" ) );
 						vVals.addElement( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrDescItOrc" ) != null ? rs.getString( "VlrDescItOrc" ) : "0" ) );
 						vVals.addElement( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( "VlrLiqItOrc" ) != null ? rs.getString( "VlrLiqItOrc" ) : "0" ) );
+						vVals.addElement( "" );
+						vVals.addElement( "" );
+						vVals.addElement( "0,00" );
 						fValProd += rs.getFloat( "VlrProdItOrc" );
 						fValDesc += rs.getFloat( "VlrDescItOrc" );
 						fValLiq += rs.getFloat( "VlrLiqItOrc" );
@@ -711,9 +735,88 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		return ret;
 	}
 
-	private void agrupaItens() {
+	private void limpaNaoSelecionados(Tabela ltab) {
 		try {
-			Funcoes.mensagemInforma( this, "Em desenvolvimento...");
+			for ( int i = 0; i < ltab.getNumLinhas(); i++ ) {
+				if ( ! ( (Boolean) ltab.getValor( i, 0 ) ).booleanValue() ) {
+					ltab.tiraLinha( i );						
+				}					
+			}			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private Float marcaFilhos(final int iLinha, final Integer codprodpai, final Float precopai) {
+		Integer codprodfilho = null;	
+		Float precofilho = null;
+		Float vlrliqfilho = null;
+		Float qtdfilho = null;
+		Float ret = new Float(0);
+		String tpagrup = null;
+		
+		try {
+			for ( int i = iLinha; i < tab.getNumLinhas(); i++ ) {
+				codprodfilho = new Integer(tab.getValor( i, POS_CODPROD ).toString());
+				qtdfilho = new Float(Funcoes.strCurrencyToDouble(tab.getValor( i, POS_PRECO ).toString()));
+				vlrliqfilho = new Float(Funcoes.strCurrencyToDouble(tab.getValor( i, POS_VLRLIQ ).toString()));
+				tpagrup = tab.getValor( i, POS_TPAGR ).toString();
+								
+				if( codprodfilho == codprodpai && precopai == precofilho && vlrliqfilho == (qtdfilho * precofilho) && tpagrup.equals( "" ) ) {
+					
+					tab.setValor( "F", i, POS_TPAGR );
+					tab.setValor( iLinha - 1 + "", i , POS_PAI );
+					ret += qtdfilho;
+				}
+				
+				
+				
+			}
+		} 
+		catch ( Exception e ) {
+			e.printStackTrace();
+		}	
+		return ret;
+	}
+	
+	private void agrupaItens() {
+		Integer codprodpai = null;	
+		Float vlrliqnovopai = null;
+		Float qtdpaiatu = null;
+		Float qtdnovopai = new Float(0);
+		Float precopai = null;
+				
+		try {
+			//Funcoes.mensagemInforma( this, "Em desenvolvimento...");
+			
+			limpaNaoSelecionados( tab );
+			
+			Funcoes.mensagemInforma( this, "Limpou");
+			
+			for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+				codprodpai = new Integer(tab.getValor( i, POS_CODPROD ).toString());
+								
+				qtdpaiatu = new Float( Funcoes.strCurrencyToDouble( tab.getValor( i, POS_QTD ).toString()));
+				precopai = new Float( Funcoes.strCurrencyToDouble(tab.getValor( i, POS_PRECO ).toString()));
+				
+				qtdnovopai += marcaFilhos( i+1, codprodpai, precopai );
+					
+				vlrliqnovopai = new Float( precopai * qtdnovopai );					
+				
+				if(qtdpaiatu != qtdnovopai ) {
+					tab.setValor( "P", i, POS_TPAGR );
+					tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, qtdnovopai.toString()), i, POS_QTD );
+				}
+				else {
+					tab.setValor( "N", i, POS_TPAGR );					
+				}				
+					
+			}		
+			
+			
+			
+			
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -780,7 +883,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		else if ( evt.getSource() == btAgruparItens ) {
 			try {
 				if (Funcoes.mensagemConfirma( null, "Confirma o agrupamento dos ítens iguais?\nSerão agrupados apenas os ítens de código e preços iguais." ) == JOptionPane.YES_OPTION ) {
-					agrupaItens();
+//					agrupaItens();
 				}					
 			} 
 			catch ( Exception err ) {
