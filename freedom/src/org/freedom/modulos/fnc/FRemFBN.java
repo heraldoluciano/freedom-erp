@@ -124,7 +124,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 	protected final ListaCampos lcBanco = new ListaCampos( this );
 
-	protected Map<Enum, Object> prefs = new HashMap<Enum, Object>();
+	protected Map<Enum<EPrefs>, Object> prefs = new HashMap<Enum<EPrefs>, Object>();
 	
 	protected String where = "";
 	
@@ -591,7 +591,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 	protected boolean consisteExporta( HashSet<FbnUtil.StuffCli> hsCli, HashSet<FbnUtil.StuffRec> hsRec, boolean completartabela ) {
 
 		boolean retorno = true;
-		Vector vLinha = null;
+		Vector<?> vLinha = null;
 
 		for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 

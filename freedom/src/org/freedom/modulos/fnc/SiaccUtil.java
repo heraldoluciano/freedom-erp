@@ -79,21 +79,21 @@ class SiaccUtil extends FbnUtil {
 		}
 
 		@SuppressWarnings("unchecked")
-		RegA( final char codrem, final Map<Enum, Object> map, final int numReg ) {
+		RegA( final char codrem, final Map<Enum<EPrefs>, Object> prefs, final int numReg ) {
 
 			super( CODREG );
 			this.sbreg.append( codrem );
-			this.sbreg.append( format( map.get( EPrefs.CODCONV ), ETipo.X, 20, 0 ) );
-			this.sbreg.append( format( map.get( EPrefs.NOMEEMP ), ETipo.X, 20, 0 ) );
-			this.sbreg.append( format( map.get( EPrefs.CODBANCO ), ETipo.$9, 3, 0 ) );
-			this.sbreg.append( format( map.get( EPrefs.NOMEBANCO ), ETipo.X, 20, 0 ) );
+			this.sbreg.append( format( prefs.get( EPrefs.CODCONV ), ETipo.X, 20, 0 ) );
+			this.sbreg.append( format( prefs.get( EPrefs.NOMEEMP ), ETipo.X, 20, 0 ) );
+			this.sbreg.append( format( prefs.get( EPrefs.CODBANCO ), ETipo.$9, 3, 0 ) );
+			this.sbreg.append( format( prefs.get( EPrefs.NOMEBANCO ), ETipo.X, 20, 0 ) );
 			this.sbreg.append( Funcoes.dataAAAAMMDD( new Date() ) );
-			this.sbreg.append( format( map.get( EPrefs.NROSEQ ), ETipo.$9, 6, 0 ) );
-			this.sbreg.append( format( map.get( EPrefs.VERLAYOUT ), ETipo.$9, 2, 0 ) );
-			this.sbreg.append( format( map.get( EPrefs.IDENTSERV ), ETipo.X, 17, 0 ) );
-			this.sbreg.append( format( map.get( EPrefs.CONTACOMPR ), ETipo.$9, 16, 0 ) );
-			this.sbreg.append( format( map.get( EPrefs.IDENTAMBCLI ), ETipo.X, 1, 0 ) );
-			this.sbreg.append( format( map.get( EPrefs.IDENTAMBBCO ), ETipo.X, 1, 0 ) );
+			this.sbreg.append( format( prefs.get( EPrefs.NROSEQ ), ETipo.$9, 6, 0 ) );
+			this.sbreg.append( format( prefs.get( EPrefs.VERLAYOUT ), ETipo.$9, 2, 0 ) );
+			this.sbreg.append( format( prefs.get( EPrefs.IDENTSERV ), ETipo.X, 17, 0 ) );
+			this.sbreg.append( format( prefs.get( EPrefs.CONTACOMPR ), ETipo.$9, 16, 0 ) );
+			this.sbreg.append( format( prefs.get( EPrefs.IDENTAMBCLI ), ETipo.X, 1, 0 ) );
+			this.sbreg.append( format( prefs.get( EPrefs.IDENTAMBBCO ), ETipo.X, 1, 0 ) );
 			this.sbreg.append( format( "", ETipo.X, 27, 0 ) ); // Reservado para o futuro
 			this.sbreg.append( format( numReg, ETipo.$9, 6, 0 ) ); // Número sequencial do registro
 			this.sbreg.append( format( "", ETipo.X, 1, 0 ) ); // Reservado para o futuro
