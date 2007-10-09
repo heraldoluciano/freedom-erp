@@ -85,7 +85,7 @@ ORDER BY P.DESCPROD]]></queryString>
 			</band>
 		</title>
 		<pageHeader>
-			<band height="90"  isSplitAllowed="true" >
+			<band height="100"  isSplitAllowed="true" >
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
@@ -106,7 +106,7 @@ ORDER BY P.DESCPROD]]></queryString>
 						x="79"
 						y="20"
 						width="397"
-						height="21"
+						height="17"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Empresa"/>
@@ -119,8 +119,8 @@ ORDER BY P.DESCPROD]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="79"
-						y="49"
+						x="77"
+						y="41"
 						width="240"
 						height="17"
 						forecolor="#000000"
@@ -167,7 +167,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="3"
-						y="76"
+						y="86"
 						width="30"
 						height="11"
 						key="staticText-1"/>
@@ -180,7 +180,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="35"
-						y="76"
+						y="86"
 						width="137"
 						height="11"
 						key="staticText-2"/>
@@ -193,7 +193,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="175"
-						y="76"
+						y="86"
 						width="23"
 						height="11"
 						key="staticText-3"/>
@@ -206,7 +206,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="201"
-						y="76"
+						y="86"
 						width="38"
 						height="11"
 						key="staticText-4"/>
@@ -219,7 +219,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="241"
-						y="76"
+						y="86"
 						width="38"
 						height="11"
 						key="staticText-5"/>
@@ -232,7 +232,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="282"
-						y="76"
+						y="86"
 						width="49"
 						height="11"
 						key="staticText-6"/>
@@ -245,7 +245,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="334"
-						y="76"
+						y="86"
 						width="49"
 						height="11"
 						key="staticText-7"/>
@@ -258,7 +258,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="387"
-						y="76"
+						y="86"
 						width="49"
 						height="11"
 						key="staticText-8"/>
@@ -271,7 +271,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="438"
-						y="76"
+						y="86"
 						width="60"
 						height="11"
 						key="staticText-9"/>
@@ -284,7 +284,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="501"
-						y="76"
+						y="89"
 						width="37"
 						height="11"
 						key="staticText-10"/>
@@ -297,7 +297,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="35"
-						y="73"
+						y="83"
 						width="0"
 						height="17"
 						key="line-3"/>
@@ -306,7 +306,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="73"
+						y="83"
 						width="0"
 						height="17"
 						key="line-4"/>
@@ -315,7 +315,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="72"
+						y="82"
 						width="539"
 						height="0"
 						key="line-5"/>
@@ -324,7 +324,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="173"
-						y="73"
+						y="83"
 						width="0"
 						height="17"
 						key="line-7"/>
@@ -333,7 +333,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="89"
+						y="99"
 						width="539"
 						height="0"
 						key="line-8"/>
@@ -342,7 +342,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="200"
-						y="73"
+						y="83"
 						width="0"
 						height="17"
 						key="line-11"/>
@@ -351,7 +351,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="240"
-						y="72"
+						y="83"
 						width="0"
 						height="17"
 						key="line-19"/>
@@ -360,7 +360,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="281"
-						y="73"
+						y="83"
 						width="0"
 						height="17"
 						key="line-20"/>
@@ -369,7 +369,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="333"
-						y="72"
+						y="83"
 						width="0"
 						height="17"
 						key="line-21"/>
@@ -378,7 +378,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="385"
-						y="73"
+						y="83"
 						width="0"
 						height="17"
 						key="line-22"/>
@@ -387,7 +387,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="437"
-						y="73"
+						y="83"
 						width="0"
 						height="17"
 						key="line-23"/>
@@ -396,7 +396,7 @@ ORDER BY P.DESCPROD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="500"
-						y="73"
+						y="83"
 						width="0"
 						height="17"
 						key="line-24"/>
@@ -405,12 +405,28 @@ ORDER BY P.DESCPROD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="539"
-						y="72"
+						y="82"
 						width="0"
 						height="18"
 						key="line-25"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="78"
+						y="60"
+						width="397"
+						height="20"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Emissor-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
