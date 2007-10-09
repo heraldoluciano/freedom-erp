@@ -367,7 +367,7 @@ public class LaudoAprSusFisio extends LeiauteGR {
 		
 		drawTexto("DATA",30,456,70,AL_BCEN);
 		drawTexto("ASSINATURA",80,456,400,AL_BCEN);
-		drawTexto("FISICO", 252, 456, 400, AL_BCEN );
+		drawTexto("FISIO", 252, 456, 400, AL_BCEN );
 		drawTexto("PSICO", 286, 456, 400, AL_BCEN );
 		drawTexto("TO", 315, 456, 400, AL_BCEN );
 		drawTexto("FONO", 346, 456, 400, AL_BCEN );
