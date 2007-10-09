@@ -358,11 +358,19 @@ public class LaudoAprSusFisio extends LeiauteGR {
 		
 		drawLinha(35,445,35,660);      // Linhas Verticais
 		drawLinha(100,445,100,660);    // Linhas Verticais
+		drawLinha(435,445,435,660);		
+		drawLinha(470,445,470,660);
+		drawLinha(500,445,500,660);
+		drawLinha(530,445,530,660);
 		
 		setFonte(fnCabCli);
 		
 		drawTexto("DATA",30,456,70,AL_BCEN);
-		drawTexto("ASSINATURA",100,456,400,AL_BCEN);
+		drawTexto("ASSINATURA",80,456,400,AL_BCEN);
+		drawTexto("FISICO", 252, 456, 400, AL_BCEN );
+		drawTexto("PSICO", 286, 456, 400, AL_BCEN );
+		drawTexto("TO", 315, 456, 400, AL_BCEN );
+		drawTexto("FONO", 346, 456, 400, AL_BCEN );
 		
 		drawTexto("1",5,468,30,AL_BCEN);
 		drawTexto("2",5,478,30,AL_BCEN);		
