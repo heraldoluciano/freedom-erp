@@ -126,9 +126,9 @@ public class FRCpProd extends FRelatorio {
 	
 	public void montaListaCampos(){
 		
-		/************
-		 * LC Grupo *
-		 ************/
+		/**********
+		 *  Grupo *
+		 **********/
 		lcGrupo.add(new GuardaCampo( txtCodGrupo, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false));
 		lcGrupo.add(new GuardaCampo( txtDescGrupo, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false));
 		lcGrupo.montaSql(false, "GRUPO", "EQ");
@@ -137,9 +137,9 @@ public class FRCpProd extends FRelatorio {
 		txtCodGrupo.setFK(true);
 		txtCodGrupo.setNomeCampo("CodGrup");
 		
-		/************
-		 * LC Marca *
-		 ************/
+		/***********
+		 *  Marca *
+		 ***********/
 		lcMarca.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false));
 		lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false));
 		txtCodMarca.setTabelaExterna(lcMarca);
@@ -167,27 +167,27 @@ public class FRCpProd extends FRelatorio {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sSQL = new StringBuilder();
-		StringBuilder filtro = new StringBuilder();
+		StringBuilder sFiltro = new StringBuilder();
 		StringBuilder sCab = new StringBuilder();
 		
 		if ( txtCodGrupo.getVlrString() != null && txtCodGrupo.getVlrString().trim().length()>0 ) {
 			
-			filtro.append( "AND P.CODGRUP='"+txtCodGrupo.getVlrString()+"'" );
-			sCab.append( "Còd. Grupo"+ txtCodGrupo.getVlrString() );
+			sFiltro.append( "AND P.CODGRUP='"+txtCodGrupo.getVlrString()+"'" );
+			sCab.append( "Grupo: "+ txtDescGrupo.getVlrString() );
 
 		}
 		
 		if ( txtCodMarca.getVlrString() != null && txtCodMarca.getVlrString().trim().length()>0 ) {
 		
-			filtro.append( "AND P.CODMARCA='"+txtCodMarca.getVlrString()+"'" );
-			sCab.append( "Còd. marca"+ txtCodMarca.getVlrString() );
+			sFiltro.append( "AND P.CODMARCA='"+txtCodMarca.getVlrString()+"'" );
+			sCab.append( "Marca: "+ txtDescMarca.getVlrString() );
 			
 		}
 		
 		if( txtCodProd.getVlrString() != null && txtCodProd.getVlrString().trim().length()>0  ){
 			
-			filtro.append( "AND P.CODPROD='"+txtCodProd.getVlrString()+"'" );
-			sCab.append( "Còd. Produto"+ txtCodProd.getVlrString() );
+			sFiltro.append( "AND P.CODPROD='"+txtCodProd.getVlrString()+"'" );
+			sCab.append( "Produto: "+ txtDescProd.getVlrString() );
 		}
 		
 			
@@ -209,7 +209,7 @@ public class FRCpProd extends FRelatorio {
 		sSQL.append( "IT2.CODFILIAL=IT.CODFILIAL AND IT2.CODEMPPD=IT.CODEMPPD AND ");
 		sSQL.append( "IT2.CODFILIALPD=IT.CODFILIALPD AND ");
 		sSQL.append( "IT2.CODPROD=IT.CODPROD ");
-		sSQL.append( filtro.toString() );
+		sSQL.append( sFiltro.toString() );
 		sSQL.append( "ORDER BY C2.DTEMITCOMPRA DESC ) ");
 		sSQL.append( " ORDER BY " );
 		sSQL.append( rgOrdem.getVlrString() );
@@ -234,7 +234,7 @@ public class FRCpProd extends FRelatorio {
 			
 		}else{
 			
-			imprimeGrafico( rs, bVisualizar );
+			imprimeGrafico( rs, bVisualizar, sCab.toString() );
 			
 		}
 	}
@@ -251,11 +251,9 @@ public class FRCpProd extends FRelatorio {
 			imp = new ImprimeOS( "", con );
 			linPag = imp.verifLinPag() - 1;
 			imp.montaCab();
-			imp.setTitulo( "Relatório de Ùltimas compras/Priduto" );
+			imp.setTitulo( "Relatório de Ùltimas compras/Produto" );
 			imp.addSubTitulo( sCab );
 			imp.limpaPags();
-
-			
 			
 			while ( rs.next() ) {
 				
@@ -278,20 +276,20 @@ public class FRCpProd extends FRelatorio {
 					imp.say( 13, "Descrição" );
 					imp.say( 45, "|" );
 					imp.say( 47, "UN" );
-					imp.say( 51, "|" );
-					imp.say( 53, "R$ Unit" );
-					imp.say( 63, "|" );
-					imp.say( 65, "IPI" );
+					imp.say( 52, "|" );
+					imp.say( 54, "R$ Unit" );
+					imp.say( 64, "|" );
+					imp.say( 66, "IPI" );
 					imp.say( 73, "|" );
 					imp.say( 75, "Sub-Total" );
 					imp.say( 88, "|" );
 					imp.say( 90, "Frete" );
 					imp.say( 97, "|" );
 					imp.say( 99, "R$ Total" );
-					imp.say( 108, "|" );
-					imp.say( 110, "Ùltima compra" );
-					imp.say( 124, "|" );
-					imp.say( 126, "Dóc." );
+					imp.say( 112, "|" );
+					imp.say( 114, "Ùlt. compra" );
+					imp.say( 125, "|" );
+					imp.say( 129, "Dóc." );
 					imp.say( 135, "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" + sLinFina + "|" );
@@ -300,15 +298,31 @@ public class FRCpProd extends FRelatorio {
 				
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" );
-				imp.say( 3, rs.getString( "CODPROD" ) != null ? rs.getString( "CODPROD" ): "" );
+				imp.say( 3,  rs.getString( "CODPROD" ).trim() != null ? rs.getString( "CODPROD" ): "" );
 				imp.say( 11, "|" );
-				//imp.say( 13, rs.getString( "DESCPROD" ).trim()  != null ? rs.getString( "DESCPROD" ).trim() : "" );
+				imp.say( 13, Funcoes. copy( rs.getString( "DESCPROD" ).trim(), 31 ) );
 				imp.say( 45, "|" );
+				imp.say( 47,  rs.getString( "CODUNID" ).trim() != null ? rs.getString( "CODUNID" ).trim() : "" );
+				imp.say( 52, "|" );
+				imp.say( 54, Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( rs.getFloat( "PRECOITCOMPRA" ) ) ) );
+				imp.say( 64, "|" );
+				imp.say( 66, Funcoes.strDecimalToStrCurrency( 6, 2 , String.valueOf( rs.getFloat( "VLRIPIITCOMPRA" ) ) ) );
+				imp.say( 73, "|" );
+				imp.say( 75, Funcoes.strDecimalToStrCurrency( 12, 2 , String.valueOf( rs.getFloat( "VLRSUBTOTAL" ) ) ) );
+				imp.say( 88, "|" );
+				imp.say( 90, Funcoes.strDecimalToStrCurrency( 6, 2 , String.valueOf( rs.getFloat( "VLRFRETEITCOMPRA" ) ) ) );
+				imp.say( 97, "|" );
+				imp.say( 99, Funcoes.strDecimalToStrCurrency( 12, 2 , String.valueOf( rs.getFloat( "VLRLIQITCOMPRA" ) ) ) );
+				imp.say( 112, "|" );
+				imp.say( 114, Funcoes.sqlDateToStrDate( rs.getDate( "DTEMITCOMPRA" ) ) );
+				imp.say( 125, "|" );
+				imp.say( 127, rs.getString( "DOCCOMPRA" ) );
 				imp.say( 135, "|" );
 				
-		
 			}
 			
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say( 0, "|" + sLinDupla + "|" );
 			imp.eject();
 			imp.fechaGravacao();
 
@@ -322,17 +336,17 @@ public class FRCpProd extends FRelatorio {
 			
 		}catch ( Exception err ) {
 				
-			Funcoes.mensagemErro( this, "Erro ao montar relatorio!" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro ao montar relatório! " + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
 	}
-	public void imprimeGrafico( final ResultSet rs, final boolean bVisualizar ){
-		
+	public void imprimeGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ){
 
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "EQPRODUTO" ));
+		hParam.put( "FILTROS", sCab );
 		
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/CpProd.jasper", "Últimas Compras/produto", null, rs, hParam, this );
 		
@@ -348,7 +362,7 @@ public class FRCpProd extends FRelatorio {
 			
 			} catch ( Exception err ) {					
 			
-					Funcoes.mensagemErro( this, "Erro na impressão de relatório de Últimas compras/produto!\n" + err.getMessage(), true, con, err );
+					Funcoes.mensagemErro( this, "Erro na impressão do relatório de Últimas compras/produto!\n" + err.getMessage(), true, con, err );
 			}
 		}
 	}
