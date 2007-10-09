@@ -30,6 +30,7 @@ import java.util.Vector;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
@@ -69,10 +70,16 @@ public class FRCpProd extends FRelatorio {
 	
 	private Vector<String> vVals = new Vector<String>();
 	
+	private JRadioGroup<?, ?> rgTipo = null;
+	
+	private Vector<String> vLabs1 = new Vector<String>();
+	
+	private Vector<String> vVals1 = new Vector<String>();
+	
 	public FRCpProd(){
 		
 		setTitulo("Últimas compras/produto");
-		setAtribos(50, 50, 345, 270);
+		setAtribos(50, 50, 345, 330);
 		
 		montaTela();
 		montaListaCampos();
@@ -88,6 +95,14 @@ public class FRCpProd extends FRelatorio {
 	    
 	    rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
 	    rgOrdem.setVlrString("P.CODPROD");
+	    
+	    vLabs1.addElement("Texto");
+	    vLabs1.addElement("Grafico");
+	    vVals1.addElement("T");
+	    vVals1.addElement("G");
+	    
+	    rgTipo = new JRadioGroup<String, String>(1,2,vLabs1,vVals1);
+	    rgOrdem.setVlrString("T");
 		
 		adic( new JLabelPad("Cód.Prod"), 7, 10, 70, 20 );
 		adic( txtCodProd, 7, 30, 70, 20 );
@@ -104,6 +119,9 @@ public class FRCpProd extends FRelatorio {
 		
 		adic( new JLabelPad("Ordenar por:"), 7, 135, 80, 20 );
 		adic( rgOrdem, 7, 155, 300, 35 ); 
+		
+		adic( new JLabelPad("Tipo:"), 7, 190, 80, 20 );
+		adic( rgTipo, 7, 210, 300, 35 );
 	}
 	
 	public void montaListaCampos(){
@@ -150,22 +168,26 @@ public class FRCpProd extends FRelatorio {
 		ResultSet rs = null;
 		StringBuilder sSQL = new StringBuilder();
 		StringBuilder filtro = new StringBuilder();
+		StringBuilder sCab = new StringBuilder();
 		
 		if ( txtCodGrupo.getVlrString() != null && txtCodGrupo.getVlrString().trim().length()>0 ) {
 			
 			filtro.append( "AND P.CODGRUP='"+txtCodGrupo.getVlrString()+"'" );
+			sCab.append( "Còd. Grupo"+ txtCodGrupo.getVlrString() );
 
 		}
 		
 		if ( txtCodMarca.getVlrString() != null && txtCodMarca.getVlrString().trim().length()>0 ) {
 		
 			filtro.append( "AND P.CODMARCA='"+txtCodMarca.getVlrString()+"'" );
+			sCab.append( "Còd. marca"+ txtCodMarca.getVlrString() );
 			
 		}
 		
 		if( txtCodProd.getVlrString() != null && txtCodProd.getVlrString().trim().length()>0  ){
 			
 			filtro.append( "AND P.CODPROD='"+txtCodProd.getVlrString()+"'" );
+			sCab.append( "Còd. Produto"+ txtCodProd.getVlrString() );
 		}
 		
 			
@@ -189,11 +211,9 @@ public class FRCpProd extends FRelatorio {
 		sSQL.append( "IT2.CODPROD=IT.CODPROD ");
 		sSQL.append( filtro.toString() );
 		sSQL.append( "ORDER BY C2.DTEMITCOMPRA DESC ) ");
-//		sSQL.append( "ORDER BY P.DESCPROD");
 		sSQL.append( " ORDER BY " );
 		sSQL.append( rgOrdem.getVlrString() );
 		
-	
 		try {
 		
 			ps = con.prepareStatement( sSQL.toString() );
@@ -201,12 +221,114 @@ public class FRCpProd extends FRelatorio {
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 			rs = ps.executeQuery();
 			
+			
 		} catch ( Exception e ) {
 		
 			Funcoes.mensagemErro( this, "Erro ao buscar dados do produto !\n" + e.getMessage());
 			e.printStackTrace();
 		}
+
+		if("T".equals( rgTipo.getVlrString() ) ){
+			
+			imprimeTexto( rs, bVisualizar, sCab.toString() );
+			
+		}else{
+			
+			imprimeGrafico( rs, bVisualizar );
+			
+		}
+	}
+	
+	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ){
 		
+		String sLinFina = Funcoes.replicate( "-", 133 );
+		String sLinDupla = Funcoes.replicate( "=", 133 );
+		ImprimeOS imp = null;
+		int linPag = 0;
+		
+		try {
+
+			imp = new ImprimeOS( "", con );
+			linPag = imp.verifLinPag() - 1;
+			imp.montaCab();
+			imp.setTitulo( "Relatório de Ùltimas compras/Priduto" );
+			imp.addSubTitulo( sCab );
+			imp.limpaPags();
+
+			
+			
+			while ( rs.next() ) {
+				
+				if ( imp.pRow() >= linPag - 1 ) {
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "+" + sLinFina + "+" );
+					imp.incPags();
+					imp.eject();
+				}
+
+				if ( imp.pRow() == 0 ) {
+					imp.impCab( 136, true );
+					imp.pulaLinha( 0, imp.comprimido() );
+					imp.say( 0, "|" + sLinFina + "|" );
+					
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "|" );
+					imp.say( 5, "Cód." );
+					imp.say( 11, "|" );
+					imp.say( 13, "Descrição" );
+					imp.say( 45, "|" );
+					imp.say( 47, "UN" );
+					imp.say( 51, "|" );
+					imp.say( 53, "R$ Unit" );
+					imp.say( 63, "|" );
+					imp.say( 65, "IPI" );
+					imp.say( 73, "|" );
+					imp.say( 75, "Sub-Total" );
+					imp.say( 88, "|" );
+					imp.say( 90, "Frete" );
+					imp.say( 97, "|" );
+					imp.say( 99, "R$ Total" );
+					imp.say( 108, "|" );
+					imp.say( 110, "Ùltima compra" );
+					imp.say( 124, "|" );
+					imp.say( 126, "Dóc." );
+					imp.say( 135, "|" );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "|" + sLinFina + "|" );
+					
+				}
+				
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "|" );
+				imp.say( 3, rs.getString( "CODPROD" ) != null ? rs.getString( "CODPROD" ): "" );
+				imp.say( 11, "|" );
+				//imp.say( 13, rs.getString( "DESCPROD" ).trim()  != null ? rs.getString( "DESCPROD" ).trim() : "" );
+				imp.say( 45, "|" );
+				imp.say( 135, "|" );
+				
+		
+			}
+			
+			imp.eject();
+			imp.fechaGravacao();
+
+			if ( bVisualizar ) {
+				imp.preview( this );
+			}
+			
+			else {
+				imp.print();
+			}
+			
+		}catch ( Exception err ) {
+				
+			Funcoes.mensagemErro( this, "Erro ao montar relatorio!" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		}
+	}
+	public void imprimeGrafico( final ResultSet rs, final boolean bVisualizar ){
+		
+
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
