@@ -173,7 +173,13 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener,
 	}
 
 	public void setTitulo(String tit) {
+		setTitulo(tit, this.getClass().getName() );
+	}
+	public void setTitulo(String tit, String name) {
 		setTitle(tit);
+		if (getName()==null) {
+			setName(name);
+		}
 	}
 
 	public void setAtribos(int X, int Y, int Larg, int Alt) {

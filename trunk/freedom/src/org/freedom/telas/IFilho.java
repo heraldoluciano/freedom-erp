@@ -19,7 +19,7 @@ import org.freedom.componentes.JPanelPad;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public interface IFilho {
-    public abstract void setTitulo(String tit);
+    public abstract void setTitulo(String tit, String name);
 
     public abstract void setAtribos(int Esq, int Topo, int Larg, int Alt);
 

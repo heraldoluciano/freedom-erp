@@ -14,7 +14,7 @@ public class DLCriaVendaOrc extends FDialogo {
 	
 	public DLCriaVendaOrc( boolean arg0, String arg1 ) {
 		
-		setTitulo("Confirmação");
+		setTitulo("Confirmação", this.getClass().getName() );
 		
 		if(arg1.equals("E"))
 			setAtribos(235, 120);

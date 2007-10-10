@@ -119,7 +119,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 		super( false );
 		impLay = impL;
 
-		setTitulo( "Visualizar Impressão Gráfica" );
+		setTitulo( "Visualizar Impressão Gráfica", this.getClass().getName() );
 
 		setBounds( 50, 50, 500, 400 );
 
@@ -244,7 +244,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, ResultSet rs, HashMap<String, Object> hParamRel, JInternalFrame ifOrig, EmailBean mail ) {
 
 		super( false );
-		setTitulo( sTituloRel );
+		setTitulo( sTituloRel, this.getClass().getName() );
 		setBounds( 50, 50, 500, 400 );
 
 		ifOrig.getDesktopPane().add( this );
@@ -305,7 +305,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, Connection con, EmailBean mail, boolean externo ) {
 
 		super( false );
-		setTitulo( sTituloRel );
+		setTitulo( sTituloRel, this.getClass().getName() );
 		setBounds( 50, 50, 500, 400 );
 
 		ifOrig.getDesktopPane().add( this );

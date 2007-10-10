@@ -55,7 +55,7 @@ public class FAbreCaixa extends FDialogo {
 
 	public FAbreCaixa() {
 
-		setTitulo( "Abrir Caixa" );
+		setTitulo( "Abrir Caixa", this.getClass().getName() );
 		setAtribos( 250, 110 );
 
 		txtData.setVlrDate( Calendar.getInstance().getTime() );

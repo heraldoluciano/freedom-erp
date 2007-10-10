@@ -293,7 +293,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	
 	public FVenda() {
 
-		setTitulo( "Venda" );
+		setTitulo( "Venda", this.getClass().getName() );
 		setAtribos( 798, 580 );
 		setToFrameLayout();
 		setResizable( false );

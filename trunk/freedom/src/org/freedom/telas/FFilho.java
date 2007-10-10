@@ -140,12 +140,16 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
 		}
 		//
 	}
-    public void setTitulo(String tit) {
-        if (getName() == null)
-            setName(tit);
-        setTitle(tit);
-    }
+   public void setTitulo(String tit) {
+	   setTitulo(tit, this.getClass().getName() );
+    } 
 
+    public void setTitulo(String tit, String name) {
+    	if (getName() == null ) {
+    		setName(name);
+    	}
+    	setTitle(tit);
+    }
     //protected void ativaScroll() {
     	
     //}

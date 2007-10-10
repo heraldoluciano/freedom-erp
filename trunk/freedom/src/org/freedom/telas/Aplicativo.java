@@ -363,6 +363,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public void actionPerformed( ActionEvent evt ) {
 
 		Object oTemp = evt.getSource();
+		String name = "";
 		int iCodMenu = -1;
 		if ( oTemp != null ) {
 			if ( oTemp instanceof JButtonPad ) {
@@ -416,7 +417,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 					}
 				}
 				if ( telaClass != null ) {
-					if ( telaPrincipal.temTela( titulo ) == false ) {
+					name = telaClass.getName();
+					if ( !telaPrincipal.temTela( name ) ) {
 						try {
 							Object obj = telaClass.newInstance();
 							if ( obj instanceof FFDialogo ) {

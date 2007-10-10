@@ -115,7 +115,7 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 	public DLCancCupom() {
 
 		Funcoes.strDecimalToStrCurrency( 2, Funcoes.transValorInv( "15" ) + "" );
-		setTitulo( "Cancela Venda" );
+		setTitulo( "Cancela Venda", this.getClass().getName() );
 		setAtribos( 100, 150, 715, 300 );
 
 		txtVenda.setPK( true );

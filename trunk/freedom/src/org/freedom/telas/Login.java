@@ -89,7 +89,7 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 		String sUsuarioTst = Aplicativo.getParameter("usuariotst");
 		String sSenhaTst = Aplicativo.getParameter("senhatst");
 		 	
-		setTitulo("Login");		
+		setTitulo("Login", this.getClass().getName());		
 		lbInstrucoes.setForeground(Color.BLUE );				
 		txtUsuario.addFocusListener(this);
 		txpSenha.addFocusListener(this);

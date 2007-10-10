@@ -88,7 +88,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
    	 super(comScroll);
    	 btImp.setVisible(false);
    	 btPrevimp.setVisible(false);
-     setTitulo("Formulário de dados");
+     //setTitulo("Formulário de dados", this.getClass().getName());
 
      lcSeq = lcCampos;
      navSeq = nav;

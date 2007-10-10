@@ -261,7 +261,7 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 
 
 		setResizable(false);  
-		setTitulo("Calculadora");
+		setTitulo("Calculadora", this.getClass().getName());
 		setAtribos( 50, 50, 310, 390);
 	}
 
