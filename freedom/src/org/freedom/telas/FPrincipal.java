@@ -434,19 +434,21 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	}
 
-	public void criatela( String nome, FFDialogo comp, Connection cn ) {
+	public void criatela( String titulo, FFDialogo comp, Connection cn ) {
 
-		comp.setName( nome );
-		comp.setTitulo( nome );
+		//comp.setName( nome );
+		String name = comp.getClass().getName();
+		comp.setTitulo( titulo, name  );
 		comp.setConexao( cn );
 		comp.execShow();
 	}
 
-	public void criatela( String nome, FFilho comp, Connection cn ) {
+	public void criatela( String titulo, FFilho comp, Connection cn ) {
 
-		comp.setName( nome );
-		comp.setTitulo( nome );
-		dpArea.add( nome, comp );
+	//	comp.setName( nome );
+		String name = comp.getClass().getName();
+		comp.setTitulo( titulo, name  );
+		dpArea.add( name, comp );
 		comp.setConexao( cn );
 		comp.execShow();
 		try {
@@ -455,10 +457,11 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		}
 	}
 
-	public void criatela( String nome, FDialogo comp, Connection cn ) {
+	public void criatela( String titulo, FDialogo comp, Connection cn ) {
 
-		comp.setName( nome );
-		comp.setTitulo( nome );
+		String name = comp.getClass().getName();
+		//comp.setName( name  );
+		comp.setTitulo( titulo, name );
 		comp.setConexao( cn );
 		comp.setVisible( true );
 	}

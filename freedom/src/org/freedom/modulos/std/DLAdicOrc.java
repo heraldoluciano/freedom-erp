@@ -169,7 +169,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		else if ( sTipoVenda.equals( "E" ) )
 			vendaPDV = (org.freedom.modulos.pdv.FVenda) vd;
 
-		setTitulo( "Nova venda de orçamento" );
+		setTitulo( "Nova venda de orçamento", this.getClass().getName() );
 		setAtribos( 705, 470 );
 
 		// Container c = getTela();

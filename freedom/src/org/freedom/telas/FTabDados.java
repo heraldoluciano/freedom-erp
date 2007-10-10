@@ -49,7 +49,7 @@ public class FTabDados extends FDados implements KeyListener {
 	public FTabDados() {
 		this(true);
 		setInitFirstFocus(false);
-		setTitulo("Formulário de tabulação");
+		setTitulo("Formulário de tabulação", this.getClass().getName());
 		setAtribos(50, 50, 350, 300);
 		pnCliente.remove(pinDados);
 		tpn.addKeyListener(this);

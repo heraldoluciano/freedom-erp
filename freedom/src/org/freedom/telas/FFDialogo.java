@@ -215,11 +215,16 @@ public class FFDialogo extends JDialog implements ActionListener,
     }
     
     public void setTitulo(String tit) {
-        if (getName() == null)
-            setName(tit);
-        setTitle(tit);
+    	setTitulo(tit, this.getClass().getName() );
+
     }
 
+    public void setTitulo(String tit, String name) {
+    	if (getName() == null) {
+    		setName(name);
+    	}
+    	setTitle(tit);
+    }
     public void setAtribos(int X, int Y, int Larg, int Alt) {
         setBounds(X, Y, Larg, Alt);
     }

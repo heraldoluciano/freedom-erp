@@ -67,7 +67,7 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 
 	public FRelatorio(boolean comScroll) {
 		super(comScroll);
-		setTitulo( "Requisiçao de Relatório" );
+		setTitulo( "Requisiçao de Relatório", this.getClass().getName() );
 		setAtribos( 100, 100, 350, 200 );
 		c = super.getTela();
 		pnRod.setBorder( BorderFactory.createEtchedBorder() );

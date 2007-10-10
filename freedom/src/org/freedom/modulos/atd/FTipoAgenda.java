@@ -44,7 +44,7 @@ public class FTipoAgenda extends FDialogo {
 	public FTipoAgenda () {
 		  
 		super();
-		setTitulo("Tipos de Agendamentos");
+		setTitulo("Tipos de Agendamentos", this.getClass().getName() );
 		setAtribos( 345, 125 );
 		setToFrameLayout();
 		

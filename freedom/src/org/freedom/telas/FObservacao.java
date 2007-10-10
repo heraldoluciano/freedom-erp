@@ -69,11 +69,11 @@ public class FObservacao extends FDialogo {
 
 		if ( sTit != null ) {
 		
-			setTitulo( sTit );
+			setTitulo( sTit, this.getClass().getName() );
 		}
 		else {
 		
-			setTitulo( "Observação" );
+			setTitulo( "Observação", this.getClass().getName() );
 		}
 		
 		setAtribos( 400, 200 );
