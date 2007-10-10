@@ -165,7 +165,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		tabBancos.setTamColuna( 200, 3 );
 		tabBancos.setTamColuna( 70, 4 );
 		
-		lcItModBol.setState( ListaCampos.LCS_NONE );
+		//lcItModBol.setState( ListaCampos.LCS_NONE );
 		
 		txaBoleto.setFont( new Font( "Courier", Font.PLAIN, 11 ) );
 		txaBoleto.setTabSize( 0 );
@@ -211,7 +211,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		txtCodBanco.setListaCampos( lcBanco );
 		txtCodBanco.setTabelaExterna( lcBanco );
 		txtCodBanco.setNomeCampo( "CodBanco" );
-		txtCodBanco.setPKFK( true, true );
+		txtCodBanco.setFK( true );
 		txtNomeBanco.setLabel( "Nome do banco" );
 		
 		/***************
@@ -219,12 +219,13 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		 ***************/
 		lcCartCob.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_PK, txtDescCartCob, false ) );
 		lcCartCob.add( new GuardaCampo( txtDescCartCob, "DescCartCob", "Descrição da carteira de cobrança", ListaCampos.DB_SI, false ) );
+		lcCartCob.setWhereAdicSubSel( "CODBANCO=master.CODBANCO" );
 		lcCartCob.montaSql( false, "CARTCOB", "FN" );
 		lcCartCob.setReadOnly( true );
 		txtCodCartCob.setListaCampos( lcCartCob );
 		txtCodCartCob.setTabelaExterna( lcCartCob );
 		txtCodCartCob.setNomeCampo( "CodCartCob" );
-		txtCodCartCob.setPKFK( true, true );
+		txtCodCartCob.setFK( true );
 		txtDescCartCob.setLabel( "Descrição da carteira de cobrança" );
 	}
 	
@@ -415,10 +416,10 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		setListaCampos( lcItModBol );
 		setNavegador( navBancos );
 		
-		adicCampo( txtCodCartCob, 7, 30, 80, 20, "CodCartCob", "Cart.cob.", ListaCampos.DB_PF, txtDescCartCob, true );
-		adicDescFK( txtDescCartCob, 90, 30, 200, 20, "DescCartCob", "Descrição da carteira de cobrança" );
-		adicCampo( txtCodBanco, 293, 30, 80, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true);
-		adicDescFK( txtNomeBanco, 376, 30, 200, 20, "NomeBanco", "Nome do banco");
+		adicCampo( txtCodBanco, 7, 30, 80, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true);
+		adicDescFK( txtNomeBanco, 90, 30, 200, 20, "NomeBanco", "Nome do banco");
+		adicCampo( txtCodCartCob, 293, 30, 80, 20, "CodCartCob", "Cart.cob.", ListaCampos.DB_PF, txtDescCartCob, true );
+		adicDescFK( txtDescCartCob, 376, 30, 200, 20, "DescCartCob", "Descrição da carteira de cobrança" );
 		adicCampo( txtConvCob, 579, 30, 80 ,20, "ConvCob", "Convênio cob.", ListaCampos.DB_SI, true);
 		adic( navBancos, 0, 65, 270, 30 );
 		

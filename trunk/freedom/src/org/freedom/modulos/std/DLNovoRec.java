@@ -286,17 +286,18 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		/***************
 		 *  FNCARTCOB  *
 		 ***************/
-		lcCartCobItRec.add( new GuardaCampo( txtCodCartCobItRec, "CodCartCob", "Cód.Cart.Cob.", ListaCampos.DB_PK, txtDescCartCobItRec, false ) );
+		txtCodCartCobItRec.setNomeCampo( "CodCartCob" );
+		lcCartCobItRec.add( new GuardaCampo( txtCodCartCobItRec, "CodCartCob", "Cód.Cart.Cob.", ListaCampos.DB_PK, false ) );
 		lcCartCobItRec.add( new GuardaCampo( txtDescCartCobItRec, "DescCartCob", "Descrição da carteira de cobrança", ListaCampos.DB_SI, false ) );
-		//lcCartCobItRec.add( new GuardaCampo( txtCodBancoItRec, "CodBanco", "Cód.banco", ListaCampos.DB_FK, false ) );
+		lcCartCobItRec.setWhereAdicSubSel( "CODBANCO=master.CODBANCO" );
 		lcCartCobItRec.montaSql( false, "CARTCOB", "FN" );
 		lcCartCobItRec.setQueryCommit( false );
 		lcCartCobItRec.setReadOnly( true );
 		txtCodCartCobItRec.setTabelaExterna( lcCartCobItRec );
-		txtCodCartCobItRec.setFK( true );
-		txtCodCartCobItRec.setNomeCampo( "CodCartCob" );	
-		txtDescCartCobItRec.setTabelaExterna( lcCartCobItRec );
+		txtCodCartCobItRec.setListaCampos( lcCartCobItRec );
+		txtDescCartCobItRec.setListaCampos( lcCartCobItRec );
 		txtDescCartCobItRec.setLabel( "Descrição da carteira de cobrança" );
+		txtCodCartCobItRec.setFK( true );
 
 		/**********************
 		 *  FNBANCO - DETALE  *

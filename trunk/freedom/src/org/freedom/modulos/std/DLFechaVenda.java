@@ -342,8 +342,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtCodCartCob.setTabelaExterna( lcCartCob );
 		txtCodCartCob.setListaCampos( lcCartCob );
 		txtDescCartCob.setListaCampos( lcCartCob );
-		txtCodCartCob.setFK( true );
-		
+		txtCodCartCob.setFK( true );		
 
 		txtCodTipoCob.setNomeCampo( "CodTipoCob" );
 		lcTipoCob.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK, false ) );
@@ -380,18 +379,19 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtCodBancoItRec.setListaCampos( lcBancoItRec );
 		txtDescBancoItRec.setListaCampos( lcBancoItRec );
 		txtCodBancoItRec.setFK( true );
-		
+
+		txtCodCartCobItRec.setNomeCampo( "CodCartCob" );
 		lcCartCobItRec.add( new GuardaCampo( txtCodCartCobItRec, "CodCartCob", "Cód.Cart.Cob.", ListaCampos.DB_PK, false ) );
-		lcCartCobItRec.add( new GuardaCampo( txtCodBancoItRec, "CodBanco", "Cód.Banco.", ListaCampos.DB_PK, false ) );
-		//lcCartCob.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PF, false ) );
 		lcCartCobItRec.add( new GuardaCampo( txtDescCartCobItRec, "DescCartCob", "Descrição da carteira de cobrança", ListaCampos.DB_SI, false ) );
+		lcCartCobItRec.setWhereAdicSubSel( "CODBANCO=master.CODBANCO" );
 		lcCartCobItRec.montaSql( false, "CARTCOB", "FN" );
 		lcCartCobItRec.setQueryCommit( false );
 		lcCartCobItRec.setReadOnly( true );
 		lcCartCobItRec.setConexao( cn );
 		txtCodCartCobItRec.setTabelaExterna( lcCartCobItRec );
+		txtCodCartCobItRec.setListaCampos( lcCartCobItRec );
+		txtDescCartCobItRec.setListaCampos( lcCartCobItRec );
 		txtCodCartCobItRec.setFK( true );
-		txtCodCartCobItRec.setNomeCampo( "CodCartCob" );	
 
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
 		lcVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.venda", ListaCampos.DB_PK, false ) );
