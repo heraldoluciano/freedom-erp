@@ -210,6 +210,8 @@ public class ListaCampos extends Container implements PostListener,
 	private String sWhereAdic = "";
 	
 	private String sWhereAdicMax = "";
+	
+	private String sWhereAdicSubSel = "";
 
 	private boolean[] bCamposCanc = null;
 
@@ -839,6 +841,29 @@ public class ListaCampos extends Container implements PostListener,
 	public void setWhereAdicMax(String sW) {
 		sWhereAdicMax = sW;
 	}
+
+	/**
+	 * Retorna a condição adicional para consulta de tabela. <BR>
+	 * Retorna a condição adicional ajustada para este <BR>
+	 * 
+	 * @return Condição adicional.
+	 * @see #setWhereAdicTab
+	 *  
+	 */
+	public String getWhereAdicSubSel() {
+		return sWhereAdicSubSel;
+	}
+
+	/**
+	 * Ajusta a condição adicional do sub select para tab. <BR>
+	 * @param WhereAdicSubSel
+	 *            Condição adicional.
+	 * @see #getWhereAdicSubSel
+	 *  
+	 */
+	public void setWhereAdicSubSel(String sT) {
+		sWhereAdicSubSel = sT;
+	}
 	
 	/**
 	 * Adiciona dinamicamente o valor para o where. <BR>
@@ -1141,7 +1166,10 @@ public class ListaCampos extends Container implements PostListener,
 						+ lcFK.getSigla()
 						+ (lcFK.getUsaFI() ? " AND CODFILIAL=master.CODFILIAL"
 								+ lcFK.getSigla() : "") + " AND " : "")
-				+ sWhere + ")";
+				+ sWhere   
+				+ ( lcFK.getWhereAdicSubSel() != null && lcFK.getWhereAdicSubSel().trim().length() > 0
+						? " AND " + lcFK.getWhereAdicSubSel() : "" ) 
+				+ ")";
 		return sRetorno;
 	}
 
