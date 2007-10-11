@@ -182,7 +182,8 @@ public class Boleto {
 		if (rec==null) {
 			retorno.append( strZero("0", tam-2) );
 		} else 	if ( rec.toString().length()>tam-2 ) { 
-				retorno.append( rec.toString().substring( 0, tam-1) );
+			// Remover caracteres a mais da esquerda para direita
+				retorno.append( rec.toString().substring( rec.toString().length()-tam) );
 		} else  {
 				retorno.append( strZero( rec.toString(), tam-2 ));
 		}
