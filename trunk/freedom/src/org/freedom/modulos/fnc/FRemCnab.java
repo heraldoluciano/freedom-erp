@@ -269,7 +269,9 @@ public class FRemCnab extends FRemFBN {
 		reg.setVlrpercConced( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) );
 		reg.setVlrIOF( new BigDecimal( 0 ) );
 		reg.setVlrAbatimento( new BigDecimal( 0 ) );
-		reg.setIdentTitEmp( rec.getCodrec().toString() );
+		
+		reg.setIdentTitEmp( cnabutil.new Receber( rec.getCodrec(), rec.getNParcitrec() ) );
+		
 		reg.setCodProtesto( (Integer) prefs.get( EPrefs.CODPROT ) );
 		reg.setDiasProtesto( (Integer) prefs.get( EPrefs.DIASPROT ) );
 		reg.setCodBaixaDev( (Integer) prefs.get( EPrefs.CODBAIXADEV ) );

@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.freedom.funcoes.Funcoes;
 
-class CnabUtil extends FbnUtil {
+public class CnabUtil extends FbnUtil {
 
 	abstract class Reg {
 
@@ -1071,7 +1071,7 @@ class CnabUtil extends FbnUtil {
 
 		private BigDecimal vlrAbatimento;
 
-		private String identTitEmp;
+		private Receber identTitEmp;
 
 		private int codProtesto;
 
@@ -1472,12 +1472,12 @@ class CnabUtil extends FbnUtil {
 			this.identEmitBol = identEmitBol;
 		}
 
-		public String getIdentTitEmp() {
+		public Receber getIdentTitEmp() {
 
 			return identTitEmp;
 		}
 
-		public void setIdentTitEmp( final String identTitEmp ) {
+		public void setIdentTitEmp( final Receber identTitEmp ) {
 
 			this.identTitEmp = identTitEmp;
 		}
@@ -1660,7 +1660,7 @@ class CnabUtil extends FbnUtil {
 					setVlrpercConced( strToBigDecimal( line.substring( 150, 165 ) ) );
 					setVlrIOF( strToBigDecimal( line.substring( 165, 180 ) ) );
 					setVlrAbatimento( strToBigDecimal( line.substring( 180, 195 ) ) );
-					setIdentTitEmp( line.substring( 195, 220 ) );
+					setIdentTitEmp( new Receber( line.substring( 195, 220 ) ) );
 					setCodProtesto( line.substring( 220, 221 ).trim().length() > 0 ? Integer.parseInt( line.substring( 220, 221 ).trim() ) : 0 );
 					setDiasProtesto( line.substring( 221, 223 ).trim().length() > 0 ? Integer.parseInt( line.substring( 221, 223 ).trim() ) : 0 );
 					setCodBaixaDev( line.substring( 223, 224 ).trim().length() > 0 ? Integer.parseInt( line.substring( 223, 224 ).trim() ) : 0 );
@@ -3455,7 +3455,7 @@ class CnabUtil extends FbnUtil {
 		}
 	}
 
-	public class RegTrailer extends Reg {
+	class RegTrailer extends Reg {
 
 		private String codBanco;
 
@@ -3583,6 +3583,125 @@ class CnabUtil extends FbnUtil {
 				}
 			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro trailer.\nErro ao ler registro.\n" + e.getMessage() );
+			}
+		}
+	}
+	
+	class Receber {
+		
+		private int codrec;
+		
+		private int nrparcrec;
+		
+		private String docrec;
+		
+		private BigDecimal valorApagar;
+		
+		private Date emissao;
+		
+		private Date vencimento;
+		
+		private String conta;
+		
+		private String planejamento;
+		
+		private String code;
+		
+		
+		public Receber() {
+			
+		}
+		
+		public Receber( int arg0, int arg1 ) { 
+			
+			setCodrec( arg0 );
+			setNrparcrec( arg1 );
+		}
+		
+		public Receber( String arg ) {
+			
+			this.code = arg;
+			decode();
+		}
+		
+		public int getCodrec() {		
+			return codrec;
+		}
+		
+		public void setCodrec( int codrec ) {		
+			this.codrec = codrec;
+		}
+		
+		public int getNrparcrec() {		
+			return nrparcrec;
+		}
+		
+		public void setNrparcrec( int nrparcrec ) {		
+			this.nrparcrec = nrparcrec;
+		}		
+		
+		public String getConta() {		
+			return conta;
+		}
+		
+		public void setConta( String conta ) {		
+			this.conta = conta;
+		}
+		
+		public String getDocrec() {		
+			return docrec;
+		}
+		
+		public void setDocrec( String docrec ) {		
+			this.docrec = docrec;
+		}
+		
+		public Date getEmissao() {		
+			return emissao;
+		}
+	
+		public void setEmissao( Date emissao ) {		
+			this.emissao = emissao;
+		}
+		
+		public String getPlanejamento() {		
+			return planejamento;
+		}
+		
+		public void setPlanejamento( String planejamento ) {		
+			this.planejamento = planejamento;
+		}
+		
+		public BigDecimal getValorApagar() {		
+			return valorApagar;
+		}
+		
+		public void setValorApagar( BigDecimal valorApagar ) {		
+			this.valorApagar = valorApagar;
+		}
+		
+		public Date getVencimento() {		
+			return vencimento;
+		}
+		
+		public void setVencimento( Date vencimento ) {
+			this.vencimento = vencimento;
+		}
+
+		public String encode() {
+			
+			this.code = Funcoes.strZero( String.valueOf( getCodrec() ), 10 ) 
+						+ Funcoes.strZero( String.valueOf( getNrparcrec() ), 3 );
+			
+			return this.code;
+		}
+		
+		public void decode() {
+			
+			if ( code != null && code.trim().length() > 10 ) {
+				
+				setCodrec( Integer.parseInt( code.substring( 0, 10 ) ) );
+				setNrparcrec( Integer.parseInt( code.substring( 10 ) ) );
 			}
 		}
 	}
