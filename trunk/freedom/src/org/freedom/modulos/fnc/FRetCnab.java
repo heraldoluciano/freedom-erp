@@ -34,8 +34,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.fnc.CnabUtil.Receber;
 import org.freedom.modulos.fnc.CnabUtil.Reg;
-import org.freedom.modulos.fnc.CnabUtil.Reg3;
+import org.freedom.modulos.fnc.CnabUtil.Reg3P;
+import org.freedom.modulos.fnc.CnabUtil.Reg5;
 import org.freedom.telas.Aplicativo;
 
 
@@ -202,69 +204,52 @@ public class FRetCnab extends FRetFBN {
 
 				List<Object> infocli = new ArrayList<Object>();
 				String regJ = null;
-				Reg3 reg3 = null;
+				Reg3P reg3P = null;
 				
 				for ( Reg reg : registros ) {
 
-					if ( reg instanceof Reg3 ) {
-						
-						reg3 = (Reg3) reg;						
+					if ( reg instanceof Reg3P ) {
 
-						if ( reg3.getSegmento() == 'P' ) {
+						reg3P = (Reg3P) reg;
+
+						infocli.clear();
+
+						if ( infocli.size() == EColInfoCli.values().length ) {
+
+							Receber rec = reg3P.getIdentTitEmp();
+
+							tab.adicLinha();
+							//tab.setValor( (String) infocli.get( EColInfoCli.RAZCLI.ordinal() ), row, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
+							//tab.setValor( (Integer) infocli.get( EColInfoCli.CODCLI.ordinal() ), row, EColTab.CODCLI.ordinal() ); // Cód.cli.							
+							tab.setValor( rec.getCodrec(), row, EColTab.CODREC.ordinal() ); // Cód.rec.							
+							tab.setValor( rec.getDocrec(), row, EColTab.DOCREC.ordinal() ); // Doc
+							tab.setValor( rec.getNrparcrec(), row, EColTab.NRPARC.ordinal() ); // Nro.Parc.							
+							tab.setValor( Funcoes.bdToStr( rec.getValorApagar() ), row, EColTab.VLRAPAG.ordinal() ); // Valor
+							tab.setValor( rec.getEmissao(), row, EColTab.DTREC.ordinal() ); // Emissão
+							tab.setValor( rec.getVencimento(), row, EColTab.DTVENC.ordinal() ); // Vencimento
+							//tab.setValor( Funcoes.bdToStr( (BigDecimal) ( (RegF) reg ).getValorDebCred() ), row, EColTab.VLRPAG.ordinal() ); // Valor pago
+							//tab.setValor( (Date) ( (RegF) reg ).getDataVenc(), row, EColTab.DTPAG.ordinal() ); // Data pgto.
+							tab.setValor( rec.getConta(), row, EColTab.NUMCONTA.ordinal() ); // Conta
+							tab.setValor( rec.getPlanejamento(), row, EColTab.CODPLAN.ordinal() ); // Planejamento
+							//tab.setValor( Funcoes.bdToStr( new BigDecimal( 0 ) ), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
+							//tab.setValor( Funcoes.bdToStr( new BigDecimal( 0 ) ), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
+							tab.setValor( "BAIXA AUTOMÁTICA CNAB", row, EColTab.OBS.ordinal() ); // HISTÓRICO
+							//tab.setValor( (String) infocli.get( EColInfoCli.TIPOFEBRABAN.ordinal() ), row, EColTab.TIPOFEBRABAN.ordinal() );
+							//tab.setValor( ( (RegF) reg ).getCodRetorno(), row, EColTab.CODRET.ordinal() ); // código retorno
+							//tab.setValor( getMenssagemRet( ( (RegF) reg ).getCodRetorno() ), row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro*/
 							
-							infocli.clear();
-
-							/*if ( !setInfoCli( ( (RegF) reg ).getCodRec(), ( (RegF) reg ).getNparcItRec(), infocli ) ) {
-								retorno = false;
-								break;
-							}*/
-							if ( infocli.size() == EColInfoCli.values().length ) {
-
-								tab.adicLinha();
-								
-								/*if ( "00".equals( ( (RegF) reg ).getCodRetorno() ) ) {
-									
-									tab.setValor( imgok, row, EColTab.STATUS.ordinal() );
-									tab.setValor( new Boolean( Boolean.TRUE ), row, EColTab.SEL.ordinal() );
-								}
-								else {
-									
-									updateStatusRetorno( (RegF) reg );
-									
-									tab.setValor( imgcancel, row, EColTab.STATUS.ordinal() );
-									tab.setValor( new Boolean( Boolean.FALSE ), row, EColTab.SEL.ordinal() );
-								}*/
-								
-								/*tab.setValor( (String) infocli.get( EColInfoCli.RAZCLI.ordinal() ), row, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
-								tab.setValor( (Integer) infocli.get( EColInfoCli.CODCLI.ordinal() ), row, EColTab.CODCLI.ordinal() ); // Cód.cli.
-								tab.setValor( (Integer) infocli.get( EColInfoCli.CODREC.ordinal() ), row, EColTab.CODREC.ordinal() ); // Cód.rec.
-								tab.setValor( (String) infocli.get( EColInfoCli.DOCREC.ordinal() ), row, EColTab.DOCREC.ordinal() ); // Doc
-								tab.setValor( (Integer) infocli.get( EColInfoCli.NPARCITREC.ordinal() ), row, EColTab.NRPARC.ordinal() ); // Nro.Parc.
-								tab.setValor( Funcoes.bdToStr( (BigDecimal) infocli.get( EColInfoCli.VLRAPAGITREC.ordinal() ) ), row, EColTab.VLRAPAG.ordinal() ); // Valor
-								tab.setValor( (Date) infocli.get( EColInfoCli.DTITREC.ordinal() ), row, EColTab.DTREC.ordinal() ); // Emissão
-								tab.setValor( (Date) infocli.get( EColInfoCli.DTVENCITREC.ordinal() ), row, EColTab.DTVENC.ordinal() ); // Vencimento
-								tab.setValor( Funcoes.bdToStr( (BigDecimal) ( (RegF) reg ).getValorDebCred() ), row, EColTab.VLRPAG.ordinal() ); // Valor pago
-								tab.setValor( (Date) ( (RegF) reg ).getDataVenc(), row, EColTab.DTPAG.ordinal() ); // Data pgto.
-								tab.setValor( (String) infocli.get( EColInfoCli.NUMCONTA.ordinal() ), row, EColTab.NUMCONTA.ordinal() ); // Conta
-								tab.setValor( (String) infocli.get( EColInfoCli.CODPLAN.ordinal() ), row, EColTab.CODPLAN.ordinal() ); // Planejamento
-								tab.setValor( Funcoes.bdToStr( new BigDecimal( 0 ) ), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
-								tab.setValor( Funcoes.bdToStr( new BigDecimal( 0 ) ), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
-								tab.setValor( "BAIXA AUTOMÁTICA SIACC", row, EColTab.OBS.ordinal() ); // HISTÓRICO
-								tab.setValor( (String) infocli.get( EColInfoCli.TIPOFEBRABAN.ordinal() ), row, EColTab.TIPOFEBRABAN.ordinal() );
-								tab.setValor( ( (RegF) reg ).getCodRetorno(), row, EColTab.CODRET.ordinal() ); // código retorno
-								tab.setValor( getMenssagemRet( ( (RegF) reg ).getCodRetorno() ), row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro*/
-								
-								row++;
-							}
 						}
 					}
+					else if ( reg instanceof Reg5 ) {
+						row++;
+					}
+				}
 
-					if ( row > 0 ) {
-						lbStatus.setText( "     Tabela carregada ..." );
-					}
-					else {
-						lbStatus.setText( "     Informações do cliente não encontradas ..." );
-					}
+				if ( row > 0 ) {
+					lbStatus.setText( "     Tabela carregada ..." );
+				}
+				else {
+					lbStatus.setText( "     Informações do cliente não encontradas ..." );
 				}
 				
 			} catch ( Exception e ) {
