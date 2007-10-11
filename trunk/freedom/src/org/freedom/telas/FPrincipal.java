@@ -348,14 +348,30 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btCalc ) {
-			Calc calc = new Calc();
-			dpArea.add( "Calc", calc );
-			calc.show();
+			Calc calc = null;
+			if (!this.temTela( "org.freedom.telas.Calc" ) ) {
+				calc = new Calc();
+				dpArea.add( calc.getClass().getName(), calc );
+				calc.show();
+			} else {
+				calc = (Calc) getTela("org.freedom.telas.Calc");
+				if (calc!=null) {
+					calc.show();
+				}
+			}
+			
 		}
 		else if ( evt.getSource() == btAgenda ) {
-			if ( this.temTela( "Agenda" ) == false ) {
-				FAgenda tela = new FAgenda();
-				this.criatela( "Agenda", tela, con );
+			FAgenda agenda = null;
+			if ( this.temTela( "org.freedom.modulos.atd.FAgenda" ) ) {
+				agenda = (FAgenda) this.getTela( "org.freedom.modulos.atd.FAgenda" );
+				if (agenda!=null) {
+					agenda.show();
+					carregaAgenda();
+				}
+			} else {
+				agenda = new FAgenda();
+				this.criatela( "Agenda", agenda, con );
 				carregaAgenda();
 			}
 		}
