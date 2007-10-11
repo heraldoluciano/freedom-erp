@@ -234,7 +234,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setIdentTitulo( Boleto.geraNossoNumero( 
 				(String)prefs.get( EPrefs.MDECOB ), 
 				(String)prefs.get( EPrefs.CONVCOB ), 
-				Long.parseLong( rec.getCodrec().toString() ), 
+				Long.parseLong( rec.getDocrec().toString() ), 
 				Long.parseLong( rec.getNParcitrec().toString() ) ) );
 		reg.setCodCarteira( getCarteiraCobranca( 
 				rec.getCodrec(), 
@@ -246,7 +246,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setDocCobranca( Boleto.getNumCli( 
 				(String)prefs.get( EPrefs.MDECOB ), 
 				(String)prefs.get( EPrefs.CONVCOB ), 
-				Long.parseLong( rec.getCodrec().toString() ), 
+				Long.parseLong( rec.getDocrec().toString() ), 
 				Long.parseLong( rec.getNParcitrec().toString() ) ) );
 		reg.setDtVencTitulo( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );		
@@ -392,7 +392,7 @@ public class FRemCnab extends FRemFBN {
 	 *	reg.setIdentTitBanco( Boleto.geraNossoNumero( 
 	 *			getModalidade( txtCodBanco.getVlrInteger() ), 
 	 *			(String)prefs.get( EPrefs.CODCONV ), 
-	 *			Long.parseLong( rec.getCodrec().toString() ), 
+	 *			Long.parseLong( rec.getDocrec().toString() ), 
 	 *			Long.parseLong( rec.getNParcitrec().toString() ) ) );
 	 *	reg.setCarteira( getCarteiraCobranca( 
 	 *			rec.getCodrec(), 

@@ -149,7 +149,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 		<variableExpression><![CDATA[($F{CPFCLI}==null? "" :($F{CPFCLI}.length()<=9 ? $F{CPFCLI} : $F{CPFCLI}.substring(0,9)+$F{CPFCLI}.substring(9)))]]></variableExpression>
 	</variable>
 	<variable name="CODBAR" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraCodBar( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, $F{FATVENC}, $F{VLRAPAGITREC},  $F{CONVCOB}, $F{CODREC}, $F{NPARCITREC}, $F{AGENCIACONTA}, $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></variableExpression>
+		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraCodBar( $F{CODBANCO},  $F{CODFBNMOEDA}, $F{DVBANCO}, $F{FATVENC}, $F{VLRAPAGITREC},  $F{CONVCOB}, $F{DOCREC}, $F{NPARCITREC}, $F{AGENCIACONTA}, $F{NUMCONTA}, $F{CODCARTCOB}, $F{MDECOB} )]]></variableExpression>
 		<initialValueExpression><![CDATA["12345678901234567890123456789012345678901234"]]></initialValueExpression>
 	</variable>
 	<variable name="AGENCIACONTA" class="java.lang.String" resetType="Report" calculation="Nothing">
@@ -159,7 +159,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraConvenio($F{CONVCOB})]]></variableExpression>
 	</variable>
 	<variable name="NOSSONUMERO" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraNossoNumero($F{MDECOB}, $V{VCONVENIO}, $F{CODREC}, $F{NPARCITREC} )]]></variableExpression>
+		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraNossoNumero($F{MDECOB}, $V{VCONVENIO}, $F{DOCREC}, $F{NPARCITREC} )]]></variableExpression>
 	</variable>
 	<variable name="LINHADIG" class="java.lang.String" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraLinhaDig( $V{CODBAR},  $F{FATVENC}, $F{VLRAPAGITREC} )]]></variableExpression>
@@ -174,7 +174,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 :$V{LINHADIG}]]></variableExpression>
 	</variable>
 	<variable name="DOCUMENTO" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.getNumCli($F{MDECOB}, $V{VCONVENIO}, $F{CODREC}, $F{NPARCITREC} )]]></variableExpression>
+		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.getNumCli($F{MDECOB}, $V{VCONVENIO}, $F{DOCREC}, $F{NPARCITREC} )]]></variableExpression>
 	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >

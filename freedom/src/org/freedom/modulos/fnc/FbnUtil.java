@@ -76,6 +76,8 @@ class FbnUtil {
 		private Integer chave1 = null;
 	
 		private Integer chave2 = null;
+		
+		private Integer docrec = null;
 	
 		private String chaveComp = null;
 	
@@ -86,6 +88,9 @@ class FbnUtil {
 			this.chave2 = nParcItRec;
 			this.chaveComp = "[" + String.valueOf( codRec ) + "][" +String.valueOf( nParcItRec ) +"]";
 			this.stfArgs = args;
+			if (args.length>EColrec.DOCREC.ordinal()) {
+				docrec = new Integer(args[EColrec.DOCREC.ordinal()]);
+			}
 		}
 	
 		public String[] getArgs() {
@@ -98,6 +103,10 @@ class FbnUtil {
 			return this.chave1;
 		}
 	
+		public Integer getDocrec() {
+			return this.docrec;
+		}
+		
 		public Integer getNParcitrec() {
 	
 			return this.chave2;
