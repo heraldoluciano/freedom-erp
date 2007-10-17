@@ -195,6 +195,8 @@ public class FRCpProd extends FRelatorio {
 		sSQL.append( "IT.VLRPRODITCOMPRA, IT.VLRIPIITCOMPRA," );
 		sSQL.append( "(IT.VLRPRODITCOMPRA+IT.VLRIPIITCOMPRA) VLRSUBTOTAL,");
 		sSQL.append( "IT.VLRFRETEITCOMPRA, IT.VLRLIQITCOMPRA, C.DTEMITCOMPRA, C.DOCCOMPRA,");
+		sSQL.append( "(IT.VLRIPIITCOMPRA/ (CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 " );
+		sSQL.append( "ELSE IT.QTDITCOMPRA END )) IPIITCOMPRA, " );
 		sSQL.append( "(IT.VLRLIQITCOMPRA/(CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 " );
 		sSQL.append( "ELSE IT.QTDITCOMPRA END)) PRECOITCOMPRA " ); 
 		sSQL.append( "FROM EQPRODUTO P, CPITCOMPRA IT, CPCOMPRA C ");
@@ -306,7 +308,7 @@ public class FRCpProd extends FRelatorio {
 				imp.say( 52, "|" );
 				imp.say( 54, Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( rs.getFloat( "PRECOITCOMPRA" ) ) ) );
 				imp.say( 64, "|" );
-				imp.say( 66, Funcoes.strDecimalToStrCurrency( 6, 2 , String.valueOf( rs.getFloat( "VLRIPIITCOMPRA" ) ) ) );
+				imp.say( 66, Funcoes.strDecimalToStrCurrency( 6, 2 , String.valueOf( rs.getFloat( "IPIITCOMPRA" ) ) ) );
 				imp.say( 73, "|" );
 				imp.say( 75, Funcoes.strDecimalToStrCurrency( 12, 2 , String.valueOf( rs.getFloat( "VLRSUBTOTAL" ) ) ) );
 				imp.say( 88, "|" );
