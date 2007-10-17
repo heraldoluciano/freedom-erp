@@ -195,9 +195,11 @@ public class FRCpProd extends FRelatorio {
 		sSQL.append( "IT.VLRPRODITCOMPRA, IT.VLRIPIITCOMPRA," );
 		sSQL.append( "(IT.VLRPRODITCOMPRA+IT.VLRIPIITCOMPRA) VLRSUBTOTAL,");
 		sSQL.append( "IT.VLRFRETEITCOMPRA, IT.VLRLIQITCOMPRA, C.DTEMITCOMPRA, C.DOCCOMPRA,");
-		sSQL.append( "(IT.VLRIPIITCOMPRA/ (CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 " );
+		sSQL.append( "(IT.VLRIPIITCOMPRA/ (CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 " ); // IPI 
 		sSQL.append( "ELSE IT.QTDITCOMPRA END )) IPIITCOMPRA, " );
-		sSQL.append( "(IT.VLRLIQITCOMPRA/(CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 " );
+		sSQL.append( "(IT.VLRFRETEITCOMPRA/ (CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.CODITCOMPRA=0 THEN 1 " );// FRETE
+		sSQL.append( "ELSE IT.QTDITCOMPRA END )) FRETEITCOMPRA, " );
+		sSQL.append( "(IT.VLRLIQITCOMPRA/(CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 " );// PREÇO
 		sSQL.append( "ELSE IT.QTDITCOMPRA END)) PRECOITCOMPRA " ); 
 		sSQL.append( "FROM EQPRODUTO P, CPITCOMPRA IT, CPCOMPRA C ");
 		sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND ");
@@ -312,7 +314,7 @@ public class FRCpProd extends FRelatorio {
 				imp.say( 73, "|" );
 				imp.say( 75, Funcoes.strDecimalToStrCurrency( 12, 2 , String.valueOf( rs.getFloat( "VLRSUBTOTAL" ) ) ) );
 				imp.say( 88, "|" );
-				imp.say( 90, Funcoes.strDecimalToStrCurrency( 6, 2 , String.valueOf( rs.getFloat( "VLRFRETEITCOMPRA" ) ) ) );
+				imp.say( 90, Funcoes.strDecimalToStrCurrency( 6, 2 , String.valueOf( rs.getFloat( "FRETEITCOMPRA" ) ) ) );
 				imp.say( 97, "|" );
 				imp.say( 99, Funcoes.strDecimalToStrCurrency( 12, 2 , String.valueOf( rs.getFloat( "VLRLIQITCOMPRA" ) ) ) );
 				imp.say( 112, "|" );
