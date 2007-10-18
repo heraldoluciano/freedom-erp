@@ -253,6 +253,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		lcProd2.add(new GuardaCampo(txtCodFisc, "CodFisc", "CodFisc",ListaCampos.DB_FK, false));
 		lcProd2.add(new GuardaCampo(txtCodBarProd, "CodBarProd", "Cod.Barra",ListaCampos.DB_SI, false));
 		lcProd2.add(new GuardaCampo(txtCodFabProd, "CodFabProd","Cod.Fabricante", ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodUn, "CodUnid", "Unidade", ListaCampos.DB_SI, false ));
 
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
