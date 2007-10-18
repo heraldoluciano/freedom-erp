@@ -43,20 +43,20 @@
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
 	<queryString><![CDATA[SELECT P.CODPROD, P.REFPROD, P.DESCPROD, P.CODUNID,IT.VLRPRODITCOMPRA, 
-IT.VLRIPIITCOMPRA,(IT.VLRPRODITCOMPRA+IT.VLRIPIITCOMPRA) VLRSUBTOTAL,
-IT.VLRFRETEITCOMPRA, IT.VLRLIQITCOMPRA, C.DTEMITCOMPRA, C.DOCCOMPRA,
+IT.VLRIPIITCOMPRA,IT.VLRLIQITCOMPRA, C.DTEMITCOMPRA, C.DOCCOMPRA,
 (IT.VLRIPIITCOMPRA/ (CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 
-ELSE IT.QTDITCOMPRA END )) IPIITCOMPRA, (IT.VLRFRETEITCOMPRA/ (CASE WHEN IT.QTDITCOMPRA IS NULL
-OR IT.CODITCOMPRA=0 THEN 1 ELSE IT.QTDITCOMPRA END )) FRETEITCOMPRA, 
-(IT.VLRLIQITCOMPRA/(CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 
+ELSE IT.QTDITCOMPRA END )) IPIITCOMPRA, 
+(IT.VLRFRETEITCOMPRA/ (CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.CODITCOMPRA=0 THEN 1 
+ELSE IT.QTDITCOMPRA END )) FRETEITCOMPRA, 
+(IT.VLRPRODITCOMPRA/(CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 
 ELSE IT.QTDITCOMPRA END)) PRECOITCOMPRA FROM EQPRODUTO P, CPITCOMPRA IT, CPCOMPRA C 
-WHERE P.CODEMP=4 AND P.CODFILIAL=1 AND C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL 
-AND C.CODCOMPRA=IT.CODCOMPRA AND IT.CODEMPPD=P.CODEMP AND IT.CODFILIALPD=P.CODFILIAL AND 
+WHERE P.CODEMP=4 AND P.CODFILIAL=1 AND C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND 
+C.CODCOMPRA=IT.CODCOMPRA AND IT.CODEMPPD=P.CODEMP AND IT.CODFILIALPD=P.CODFILIAL AND 
 IT.CODPROD=P.CODPROD AND IT.CODCOMPRA = ( SELECT FIRST 1 C2.CODCOMPRA FROM CPCOMPRA C2, 
 CPITCOMPRA IT2 WHERE C2.CODEMP=IT2.CODEMP AND C2.CODFILIAL=IT2.CODFILIAL AND 
 C2.CODCOMPRA=IT2.CODCOMPRA AND IT2.CODEMP=IT.CODEMP AND IT2.CODFILIAL=IT.CODFILIAL AND 
-IT2.CODEMPPD=IT.CODEMPPD AND IT2.CODFILIALPD=IT.CODFILIALPD AND IT2.CODPROD=IT.CODPROD 
-ORDER BY C2.DTEMITCOMPRA DESC )  ORDER BY P.CODPROD]]></queryString>
+IT2.CODEMPPD=IT.CODEMPPD AND IT2.CODFILIALPD=IT.CODFILIALPD AND IT2.CODPROD=IT.CODPROD AND 
+P.CODPROD='1' ORDER BY C2.DTEMITCOMPRA DESC ) ORDER BY P.CODPROD]]></queryString>
 
 	<field name="CODPROD" class="java.lang.Long"/>
 	<field name="REFPROD" class="java.lang.String"/>
@@ -73,6 +73,12 @@ ORDER BY C2.DTEMITCOMPRA DESC )  ORDER BY P.CODPROD]]></queryString>
 	<field name="FRETEITCOMPRA" class="java.math.BigDecimal"/>
 	<field name="PRECOITCOMPRA" class="java.math.BigDecimal"/>
 
+	<variable name="SUB_TOTAL" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$F{PRECOITCOMPRA}.add($F{IPIITCOMPRA})]]></variableExpression>
+	</variable>
+	<variable name="TOTAL" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$V{SUB_TOTAL}.add($F{FRETEITCOMPRA})]]></variableExpression>
+	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -616,7 +622,7 @@ ORDER BY C2.DTEMITCOMPRA DESC )  ORDER BY P.CODPROD]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRSUBTOTAL}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SUB_TOTAL}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -668,7 +674,7 @@ ORDER BY C2.DTEMITCOMPRA DESC )  ORDER BY P.CODPROD]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRLIQITCOMPRA}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTAL}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
