@@ -183,7 +183,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
 
 		adicCampo( txtCodFisc, 7, 20, 94, 20, "CodFisc", "Cód.c.fisc.", ListaCampos.DB_PK, null, true );
 		adicCampo( txtDescFisc, 104, 20, 290, 20, "DescFisc", "Descrição da classificação fiscal", ListaCampos.DB_SI, null, true );
-		adicCampo( txtCodRegra, 7, 60, 94, 20, "CodRegra", "Cód.reg.fisc.", ListaCampos.DB_FK, txtDescRegra, true );
+		adicCampo( txtCodRegra, 7, 60, 94, 20, "CodRegra", "Cód.reg.CFOP", ListaCampos.DB_FK, txtDescRegra, true );
 		adicDescFK( txtDescRegra, 104, 60, 290, 20, "DescRegra", "Descrição da regra fiscal" );
 		adicDB( cbOrig, 7, 100, 387, 30, "OrigFisc", "Origem", true );
 		adicCampo( txtCodTratTrib, 7, 150, 94, 20, "CodTratTrib", "Cód.t.trib.", ListaCampos.DB_FK, txtDescTratTrib, true );

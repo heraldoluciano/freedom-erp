@@ -231,7 +231,7 @@ public class FreedomSTD extends AplicativoPD {
 
 		addOpcao( -1, TP_OPCAO_MENU, "Fiscal", "", 'F', 800000000, 0, false, null );
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Gerar", "Gera Fiscal", 'G', 800100000, 1, true, FGeraFiscal.class );
-			addOpcao( 800000000, TP_OPCAO_ITEM, "Regras fiscais", "Regras Fiscais", 'R', 800200000, 1, true, FRegraFiscal.class );
+			addOpcao( 800000000, TP_OPCAO_ITEM, "Regras CFOP", "Regras CFOP", 'R', 800200000, 1, true, FRegraFiscal.class );
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Sintegra", "Gera Arquivo Sintegra", 'S', 800300000, 1, true, FSintegra.class );
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela de Alíquotas", "Tabela de alíquotas", 'T', 800400000, 1, true, FTabICMS.class );
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Mensagens", "Mensagens", 'M', 800500000, 1, true, FMensagem.class );
