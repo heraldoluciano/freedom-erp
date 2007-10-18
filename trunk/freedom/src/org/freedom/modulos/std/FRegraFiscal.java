@@ -49,7 +49,7 @@ public class FRegraFiscal extends FDetalhe {
 	private ListaCampos lcNat = new ListaCampos(this);
 	private ListaCampos lcMov = new ListaCampos(this,"TM");
 	public FRegraFiscal () {
-		setTitulo("Regras Fiscais");
+		setTitulo("Regras CFOP");
 		setAtribos( 50, 50, 600, 450);
 		pinCab = new JPanelPad(440,70);
 		setListaCampos(lcCampos);
