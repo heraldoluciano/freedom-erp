@@ -21,6 +21,7 @@
  */
 package org.freedom.modulos.std;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -193,14 +194,12 @@ public class FRCpProd extends FRelatorio {
 			
 		sSQL.append( "SELECT P.CODPROD, P.REFPROD, P.DESCPROD, P.CODUNID,");
 		sSQL.append( "IT.VLRPRODITCOMPRA, IT.VLRIPIITCOMPRA," );
-		sSQL.append( "(IT.VLRPRODITCOMPRA/(CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 " );//SUB - TOTAL
-		sSQL.append( "ELSE IT.QTDITCOMPRA END)+IT.VLRIPIITCOMPRA ) VLRSUBTOTAL,");
 		sSQL.append( "IT.VLRLIQITCOMPRA, C.DTEMITCOMPRA, C.DOCCOMPRA,");
 		sSQL.append( "(IT.VLRIPIITCOMPRA/ (CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 " ); // IPI 
 		sSQL.append( "ELSE IT.QTDITCOMPRA END )) IPIITCOMPRA, " );
 		sSQL.append( "(IT.VLRFRETEITCOMPRA/ (CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.CODITCOMPRA=0 THEN 1 " );// FRETE
 		sSQL.append( "ELSE IT.QTDITCOMPRA END )) FRETEITCOMPRA, " );
-		sSQL.append( "(IT.VLRLIQITCOMPRA/(CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 " );// PREÇO " R$ UNIT "
+		sSQL.append( "(IT.VLRPRODITCOMPRA/(CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 " );// PREÇO " R$ UNIT "
 		sSQL.append( "ELSE IT.QTDITCOMPRA END)) PRECOITCOMPRA " ); 
 		sSQL.append( "FROM EQPRODUTO P, CPITCOMPRA IT, CPCOMPRA C ");
 		sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND ");
@@ -250,6 +249,9 @@ public class FRCpProd extends FRelatorio {
 		String sLinDupla = Funcoes.replicate( "=", 133 );
 		ImprimeOS imp = null;
 		int linPag = 0;
+		BigDecimal subtotal = new BigDecimal(0);
+		BigDecimal total = new BigDecimal(0);
+		
 		
 		try {
 
@@ -282,7 +284,7 @@ public class FRCpProd extends FRelatorio {
 					imp.say( 45, "|" );
 					imp.say( 47, "UN" );
 					imp.say( 52, "|" );
-					imp.say( 54, "R$ Unit" );
+					imp.say( 54, "Unit" );
 					imp.say( 64, "|" );
 					imp.say( 66, "IPI" );
 					imp.say( 73, "|" );
@@ -290,7 +292,7 @@ public class FRCpProd extends FRelatorio {
 					imp.say( 88, "|" );
 					imp.say( 90, "Frete" );
 					imp.say( 97, "|" );
-					imp.say( 99, "R$ Total" );
+					imp.say( 99, "Total" );
 					imp.say( 112, "|" );
 					imp.say( 114, "Ùlt. compra" );
 					imp.say( 125, "|" );
@@ -301,6 +303,9 @@ public class FRCpProd extends FRelatorio {
 					
 				}
 				
+				subtotal = rs.getBigDecimal( "PRECOITCOMPRA" ); // adiciona o valor unitário a variável subtotal 
+				subtotal = subtotal.add( rs.getBigDecimal( "IPIITCOMPRA" ) ); // incrementa o valor unitário com IPI
+				total = subtotal.add( rs.getBigDecimal( "FRETEITCOMPRA" ) ); // adiciona o frete ao subtotal e atribui a variável total 
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" );
 				imp.say( 3,  rs.getString( "CODPROD" ).trim() != null ? rs.getString( "CODPROD" ): "" );
@@ -313,11 +318,11 @@ public class FRCpProd extends FRelatorio {
 				imp.say( 64, "|" );
 				imp.say( 66, Funcoes.strDecimalToStrCurrency( 6, 2 , String.valueOf( rs.getFloat( "IPIITCOMPRA" ) ) ) );
 				imp.say( 73, "|" );
-				imp.say( 75, Funcoes.strDecimalToStrCurrency( 12, 2 , String.valueOf( rs.getFloat( "VLRSUBTOTAL" ) ) ) );
+				imp.say( 75, Funcoes.strDecimalToStrCurrency( 12, 2 , String.valueOf( subtotal ) ) );
 				imp.say( 88, "|" );
 				imp.say( 90, Funcoes.strDecimalToStrCurrency( 6, 2 , String.valueOf( rs.getFloat( "FRETEITCOMPRA" ) ) ) );
 				imp.say( 97, "|" );
-				imp.say( 99, Funcoes.strDecimalToStrCurrency( 12, 2 , String.valueOf( rs.getFloat( "VLRLIQITCOMPRA" ) ) ) );
+				imp.say( 99, Funcoes.strDecimalToStrCurrency( 12, 2 , String.valueOf( total ) ) );
 				imp.say( 112, "|" );
 				imp.say( 114, Funcoes.sqlDateToStrDate( rs.getDate( "DTEMITCOMPRA" ) ) );
 				imp.say( 125, "|" );
