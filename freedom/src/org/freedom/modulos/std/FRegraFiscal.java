@@ -54,7 +54,7 @@ public class FRegraFiscal extends FDetalhe {
 		pinCab = new JPanelPad(440,70);
 		setListaCampos(lcCampos);
 		setPainel( pinCab, pnCliCab);
-		adicCampo(txtCodRegraFiscal, 7, 20, 80, 20,"CodRegra","Cód.reg.fisc.", ListaCampos.DB_PK,true);
+		adicCampo(txtCodRegraFiscal, 7, 20, 80, 20,"CodRegra","Cód.reg.CFOP", ListaCampos.DB_PK,true);
 		adicCampo(txtDescRegraFiscal, 90, 20, 220, 20,"DescRegra","Descrição da regra fiscal", ListaCampos.DB_SI, true);
 		setListaCampos( true, "REGRAFISCAL", "LF");
         lcCampos.setQueryInsert(false);
