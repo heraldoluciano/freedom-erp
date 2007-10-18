@@ -183,14 +183,14 @@ public class Boleto {
 			retorno.append( strZero("0", tam-2) );
 		} else 	if ( rec.toString().length()>tam-2 ) { 
 			// Remover caracteres a mais da esquerda para direita
-				retorno.append( rec.toString().substring( rec.toString().length()-tam) );
+				retorno.append( rec.toString().substring( rec.toString().length()-(tam-2)) );
 		} else  {
 				retorno.append( strZero( rec.toString(), tam-2 ));
 		}
 		if (nparc==null) {
 			retorno.append( "00" );
-		} else if ( ( rec.toString().length()>tam-2 ) ) {
-			retorno.append( nparc.toString().substring( 0, 1 ) );
+		/*} else if ( ( rec.toString().length()>tam-2 ) ) {
+			retorno.append( nparc.toString().substring( 0, 1 ) );*/
 		} else {
 			retorno.append( strZero(nparc.toString(), 2) );
 		}
