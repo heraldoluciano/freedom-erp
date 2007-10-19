@@ -198,7 +198,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private final ListaCampos lcProduto = new ListaCampos( this, "PD" );
 	
-	private final ListaCampos lcProd2 = new ListaCampos( this, "PD" );
+	private final ListaCampos lcReferencia = new ListaCampos( this, "PD" );
 
 	private final ListaCampos lcFornecedorItem = new ListaCampos( this, "FO" );
 
@@ -226,6 +226,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcDet.addCarregaListener( this );
 		lcCliente.addCarregaListener( this );
 		lcProduto.addCarregaListener( this );
+		lcReferencia.addCarregaListener( this );
 
 		lcCampos.addInsertListener( this );
 		lcDet.addInsertListener( this );
@@ -369,16 +370,16 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		 * REFERENCIA *
 		 **************/
 		txtRefProd.setNomeCampo( "RefProd" );
-		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_PK, txtDescProd, false ) );
-		lcProd2.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false ) );
-		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
-		lcProd2.add( new GuardaCampo( txtCodForItem, "CodFor", "Cód.for.", ListaCampos.DB_SI, false ) );
-		lcProd2.montaSql( false, "PRODUTO", "RP" );
-		lcProd2.setQueryCommit( false );
-		lcProd2.setReadOnly( true );
+		lcReferencia.add( new GuardaCampo( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_PK, txtDescProd, false ) );
+		lcReferencia.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false ) );
+		lcReferencia.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcReferencia.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
+		lcReferencia.add( new GuardaCampo( txtCodForItem, "CodFor", "Cód.for.", ListaCampos.DB_SI, false ) );
+		lcReferencia.montaSql( false, "PRODUTO", "RP" );
+		lcReferencia.setQueryCommit( false );
+		lcReferencia.setReadOnly( true );
 		txtRefProd.setListaCampos( lcDet );
-		txtRefProd.setTabelaExterna( lcProd2 );
+		txtRefProd.setTabelaExterna( lcReferencia );
 		
 		txtRefProd.addKeyListener( this );
 		
@@ -683,7 +684,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	
 	private FPrinterJob getPedido( final Integer codped ) {
 		
-		String classLayout = "modulos/rep/relatorios/pedido.jasper";
+		String classLayout = "/opt/freedom/reports/pedido.jasper";
 		
 		if ( prefere.get( EPrefere.LAYOUTPED.ordinal() ) != null && ( (String) prefere.get( EPrefere.LAYOUTPED.ordinal() ) ).trim().length() > 0 ) {
 		
@@ -782,6 +783,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		else if ( e.getListaCampos() == lcCliente ) {
 			lcVendedor.carregaDados();
 			lcPlanoPag.carregaDados();
+		}
+		else if ( e.getListaCampos() == lcReferencia ) {
+			lcProduto.carregaDados();
 		}
 		else if ( e.getListaCampos() == lcProduto ) {
 			lcFornecedorItem.carregaDados();
@@ -904,7 +908,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcFornecedor.setConexao( cn );
 		lcTransportadora.setConexao( cn );
 		lcProduto.setConexao( cn );
-		lcProd2.setConexao( cn );
+		lcReferencia.setConexao( cn );
 		lcFornecedorItem.setConexao( cn );
 		lcPedido.setConexao( cn );
 		
