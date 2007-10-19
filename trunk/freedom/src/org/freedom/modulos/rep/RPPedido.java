@@ -180,7 +180,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private JRadioGroup<String, String> rgRemessa;
 
-	private final JButton btObsPed = new JButton( "Obs.", Icone.novo( "btObs.gif" ) );
+	private final JButton btObsPed = new JButton( Icone.novo( "btObs.gif" ) );
 
 	private final JButton btEmailPed = new JButton( Icone.novo( "btEnviarMail.gif" ) );
 
@@ -362,25 +362,22 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcProduto.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
 		lcProduto.add( new GuardaCampo( txtCodForItem, "CodFor", "Cód.for.", ListaCampos.DB_SI, false ) );
 		lcProduto.montaSql( false, "PRODUTO", "RP" );
-//		lcProduto.setWhereAdic( "ATIVOPROD='S'" );
-		lcProduto.setQueryCommit( false );
 		lcProduto.setReadOnly( true );
 		txtCodProd.setTabelaExterna( lcProduto );
 
-		// FK do produto (*Somente em caso de referências este listaCampos
-		// Trabalha como gatilho para o listaCampos de produtos, assim
-		// carregando o código do produto que será armazenado no Banco)
+		/**************
+		 * REFERENCIA *
+		 **************/
+		txtRefProd.setNomeCampo( "RefProd" );
 		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_PK, txtDescProd, false ) );
 		lcProd2.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodForItem, "CodFor", "Cód.for.", ListaCampos.DB_SI, false ) );
-		txtRefProd.setNomeCampo( "RefProd" );
-		txtRefProd.setListaCampos( lcDet );
-//		lcProd2.setWhereAdic( "ATIVOPROD='S'" );
 		lcProd2.montaSql( false, "PRODUTO", "RP" );
 		lcProd2.setQueryCommit( false );
 		lcProd2.setReadOnly( true );
+		txtRefProd.setListaCampos( lcDet );
 		txtRefProd.setTabelaExterna( lcProd2 );
 		
 		txtRefProd.addKeyListener( this );
@@ -512,14 +509,15 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		adic( new JLabel( "Cód.for." ), 319, 35, 80, 20 );
 		adic( txtCodForItem, 319, 55, 80, 20 );
 		adic( new JLabel( "Razão social do fornecedor" ), 402, 35, 189, 20 );
-		adic( txtRazForItem, 402, 55, 189, 20 );
+		adic( txtRazForItem, 402, 55, 264, 20 );
 
 		txtCodForItem.setAtivo( false );
 
-		panelCamposItens.adic( btObsPed, 595, 45, 70, 30 );
-
+		btObsPed.setToolTipText( "Observação do pedido" );
 		btEmailPed.setToolTipText( "Enviar pedido por e-mail" );
-		pnGImp.setPreferredSize( new Dimension( 120, 26 ) );
+		
+		pnGImp.setPreferredSize( new Dimension( 160, 26 ) );
+		pnGImp.add( btObsPed );
 		pnGImp.add( btEmailPed );
 
 		setListaCampos( true, "ITPEDIDO", "RP" );
@@ -592,6 +590,32 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 		if ( txtPercPagItem.getVlrBigDecimal() != null && txtVlrItem.getVlrBigDecimal() != null ) {
 			txtVlrPagItem.setVlrBigDecimal( ( txtVlrItem.getVlrBigDecimal().divide( bdCem ) ).multiply( txtPercPagItem.getVlrBigDecimal() ) );
+		}
+	}
+	
+	private void loadProduto() {
+		
+		try {
+
+			PreparedStatement ps = con.prepareStatement( 
+					"SELECT PRECOPROD1, PERCIPIPROD FROM RPPRODUTO WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "RPPRODUTO" ) );
+			ps.setInt( 3, txtCodProd.getVlrInteger() );
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				txtPrecoItem.setVlrBigDecimal( rs.getBigDecimal( "PRECOPROD1" ) == null ? new BigDecimal( "0" ) : rs.getBigDecimal( "PRECOPROD1" ) );
+				txtPercIPIItem.setVlrBigDecimal( rs.getBigDecimal( "PERCIPIPROD" ) == null ? new BigDecimal( "0" ) : rs.getBigDecimal( "PERCIPIPROD" ) );
+			}			
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( this, "Erro ao carregar produto!\n" + e.getMessage() );
+			e.printStackTrace();
 		}
 	}
 
@@ -761,6 +785,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		}
 		else if ( e.getListaCampos() == lcProduto ) {
 			lcFornecedorItem.carregaDados();
+			if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
+				loadProduto();
+			}
 		}
 	}
 
