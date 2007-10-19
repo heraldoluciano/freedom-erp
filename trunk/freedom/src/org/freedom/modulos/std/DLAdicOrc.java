@@ -759,10 +759,11 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		try {
 			for ( int i = iLinha; i < tab.getNumLinhas(); i++ ) {
 				codprodfilho = new Integer(tab.getValor( i, POS_CODPROD ).toString());
-				qtdfilho = new Float(Funcoes.strCurrencyToDouble(tab.getValor( i, POS_PRECO ).toString()));
+				qtdfilho = new Float(Funcoes.strCurrencyToDouble(tab.getValor( i, POS_QTD ).toString()));
 				vlrliqfilho = new Float(Funcoes.strCurrencyToDouble(tab.getValor( i, POS_VLRLIQ ).toString()));
 				tpagrup = tab.getValor( i, POS_TPAGR ).toString();
-								
+				precofilho = new Float(Funcoes.strCurrencyToDouble(tab.getValor( i, POS_PRECO ).toString()));
+				
 				if( codprodfilho == codprodpai && precopai == precofilho && vlrliqfilho == (qtdfilho * precofilho) && tpagrup.equals( "" ) ) {
 					
 					tab.setValor( "F", i, POS_TPAGR );
