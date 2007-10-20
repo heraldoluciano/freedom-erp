@@ -736,19 +736,39 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 	}
 
 	private void limpaNaoSelecionados(Tabela ltab) {
-		try {
-			for ( int i = 0; i < ltab.getNumLinhas(); i++ ) {
+		int linhas = ltab.getNumLinhas();
+		int pos = 0;
+		try {			
+			for ( int i = 0; i < linhas; i++ ) {
 				if ( ! ( (Boolean) ltab.getValor( i, 0 ) ).booleanValue() ) {
-					ltab.tiraLinha( i );						
+					ltab.tiraLinha( i );
+					i--;
 				}					
-			}			
+			}									
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private Float marcaFilhos(final int iLinha, final Integer codprodpai, final Float precopai) {
+	private void limpaFilhos(Tabela ltab) {
+		int linhas = ltab.getNumLinhas();
+		int pos = 0;
+		try {			
+			for ( int i = 0; i < linhas; i++ ) {
+				if ( ltab.getValor( i, POS_TPAGR ).toString().equals( "F" ))  {
+					ltab.tiraLinha( i );
+					i--;
+				}					
+			}									
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	private Float marcaFilhos(int i, final Integer codprodpai, final Float precopai) {
 		Integer codprodfilho = null;	
 		Float precofilho = null;
 		Float vlrliqfilho = null;
@@ -756,23 +776,20 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		Float ret = new Float(0);
 		String tpagrup = null;
 		
-		try {
-			for ( int i = iLinha; i < tab.getNumLinhas(); i++ ) {
+		try {			
+			while (i < tab.getNumLinhas()) {
 				codprodfilho = new Integer(tab.getValor( i, POS_CODPROD ).toString());
 				qtdfilho = new Float(Funcoes.strCurrencyToDouble(tab.getValor( i, POS_QTD ).toString()));
 				vlrliqfilho = new Float(Funcoes.strCurrencyToDouble(tab.getValor( i, POS_VLRLIQ ).toString()));
 				tpagrup = tab.getValor( i, POS_TPAGR ).toString();
-				precofilho = new Float(Funcoes.strCurrencyToDouble(tab.getValor( i, POS_PRECO ).toString()));
-				
-				if( codprodfilho == codprodpai && precopai == precofilho && vlrliqfilho == (qtdfilho * precofilho) && tpagrup.equals( "" ) ) {
-					
+				precofilho = new Float(Funcoes.strCurrencyToDouble(tab.getValor( i, POS_PRECO ).toString()));			
+				//if( codprodfilho == codprodpai && precopai == precofilho && vlrliqfilho == (qtdfilho * precofilho) && tpagrup.equals( "" ) ) {
+				if( (codprodfilho.compareTo( codprodpai )==0) && (precopai.compareTo( precofilho)==0) ) {					
 					tab.setValor( "F", i, POS_TPAGR );
-					tab.setValor( iLinha - 1 + "", i , POS_PAI );
+					tab.setValor( i - 1 + "", i , POS_PAI );
 					ret += qtdfilho;
-				}
-				
-				
-				
+				}				
+				i++;				
 			}
 		} 
 		catch ( Exception e ) {
@@ -784,40 +801,35 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 	private void agrupaItens() {
 		Integer codprodpai = null;	
 		Float vlrliqnovopai = null;
-		Float qtdpaiatu = null;
+		Float qtdatupai = null;
 		Float qtdnovopai = new Float(0);
 		Float precopai = null;
+		String tpagr = "";
 				
-		try {
-			//Funcoes.mensagemInforma( this, "Em desenvolvimento...");
-			
+		try {	
 			limpaNaoSelecionados( tab );
-			
-			Funcoes.mensagemInforma( this, "Limpou");
-			
+						
 			for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
-				codprodpai = new Integer(tab.getValor( i, POS_CODPROD ).toString());
-								
-				qtdpaiatu = new Float( Funcoes.strCurrencyToDouble( tab.getValor( i, POS_QTD ).toString()));
+				codprodpai = new Integer(tab.getValor( i, POS_CODPROD ).toString());								
+				qtdatupai = new Float( Funcoes.strCurrencyToDouble( tab.getValor( i, POS_QTD ).toString()));
 				precopai = new Float( Funcoes.strCurrencyToDouble(tab.getValor( i, POS_PRECO ).toString()));
+				tpagr = tab.getValor( i, POS_TPAGR ).toString();
 				
-				qtdnovopai += marcaFilhos( i+1, codprodpai, precopai );
+				if(tpagr.equals( "" )) {
+					qtdnovopai = qtdatupai;
+					qtdnovopai += marcaFilhos( i+1, codprodpai, precopai );					
+					vlrliqnovopai = new Float( precopai * qtdnovopai );					
 					
-				vlrliqnovopai = new Float( precopai * qtdnovopai );					
-				
-				if(qtdpaiatu != qtdnovopai ) {
-					tab.setValor( "P", i, POS_TPAGR );
-					tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, qtdnovopai.toString()), i, POS_QTD );
-				}
-				else {
-					tab.setValor( "N", i, POS_TPAGR );					
-				}				
-					
-			}		
-			
-			
-			
-			
+					if( qtdatupai.compareTo( qtdnovopai )!= 0 ) {
+						tab.setValor( "P", i, POS_TPAGR );
+						tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, qtdnovopai.toString()), i, POS_QTD );
+					}
+					else {
+						tab.setValor( "N", i, POS_TPAGR );					
+					}
+				}					
+			}	
+			limpaFilhos( tab );
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -884,7 +896,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		else if ( evt.getSource() == btAgruparItens ) {
 			try {
 				if (Funcoes.mensagemConfirma( null, "Confirma o agrupamento dos ítens iguais?\nSerão agrupados apenas os ítens de código e preços iguais." ) == JOptionPane.YES_OPTION ) {
-//					agrupaItens();
+//					agrupaItens(); //comentar
 				}					
 			} 
 			catch ( Exception err ) {
