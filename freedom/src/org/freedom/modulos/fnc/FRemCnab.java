@@ -235,7 +235,7 @@ public class FRemCnab extends FRemFBN {
 				(String)prefs.get( EPrefs.MDECOB ), 
 				(String)prefs.get( EPrefs.CONVCOB ), 
 				Long.parseLong( rec.getDocrec().toString() ), 
-				Long.parseLong( rec.getNParcitrec().toString() ) ) );
+				Long.parseLong( rec.getNParcitrec().toString() ) , true ) );
 		reg.setCodCarteira( getCarteiraCobranca( 
 				rec.getCodrec(), 
 				rec.getNParcitrec() ) );
