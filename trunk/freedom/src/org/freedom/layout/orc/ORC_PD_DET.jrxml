@@ -272,7 +272,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 				<line direction="TopDown">
 					<reportElement
 						x="467"
-						y="1"
+						y="0"
 						width="0"
 						height="20"
 						key="line-25"/>
@@ -281,7 +281,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 				<line direction="TopDown">
 					<reportElement
 						x="467"
-						y="20"
+						y="19"
 						width="64"
 						height="1"
 						key="line-26"/>
@@ -291,8 +291,8 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 					<reportElement
 						x="530"
 						y="0"
-						width="0"
-						height="21"
+						width="1"
+						height="19"
 						key="line-27"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -332,8 +332,9 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 						y="0"
 						width="0"
 						height="20"
-						key="line-11"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-11"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -341,8 +342,9 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 						y="0"
 						width="0"
 						height="20"
-						key="line-12"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-12"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -350,8 +352,9 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 						y="0"
 						width="0"
 						height="20"
-						key="line-14"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-14"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject"/>
 				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -379,13 +382,14 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODBARPROD}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="98"
 						y="1"
 						width="196"
 						height="17"
-						key="textField-3"/>
+						key="textField-3"
+						stretchType="RelativeToTallestObject"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
@@ -447,47 +451,52 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 				<line direction="TopDown">
 					<reportElement
 						x="296"
-						y="-1"
+						y="0"
 						width="0"
-						height="21"
-						key="line-20"/>
-					<graphicElement stretchType="NoStretch"/>
+						height="20"
+						key="line-20"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="353"
-						y="-1"
+						y="0"
 						width="0"
-						height="21"
-						key="line-21"/>
-					<graphicElement stretchType="NoStretch"/>
+						height="20"
+						key="line-21"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="410"
-						y="-1"
+						y="0"
 						width="0"
-						height="21"
-						key="line-22"/>
-					<graphicElement stretchType="NoStretch"/>
+						height="20"
+						key="line-22"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="467"
-						y="-1"
+						y="0"
 						width="0"
-						height="21"
-						key="line-23"/>
-					<graphicElement stretchType="NoStretch"/>
+						height="20"
+						key="line-23"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="530"
-						y="-1"
+						y="0"
 						width="0"
-						height="21"
-						key="line-24"/>
-					<graphicElement stretchType="NoStretch"/>
+						height="20"
+						key="line-24"
+						stretchType="RelativeToTallestObject"/>
+					<graphicElement stretchType="RelativeToTallestObject"/>
 				</line>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
