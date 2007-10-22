@@ -23,7 +23,7 @@ public class Boleto {
 		final String bufVlrtitulo = geraVlrtitulo(vlrtitulo);
 		final String bufConvenio = geraConvenio(convenio);
 		final String bufModalidade = strZero( modalidade, 2 );
-		final String bufNossoNumero = geraNossoNumero(bufModalidade, bufConvenio, rec, nparc);
+		final String bufNossoNumero = geraNossoNumero(bufModalidade, bufConvenio, rec, nparc, false);
 		final String bufAgencia = strZero( getCodSig( agencia )[0], 4);
 		final String bufConta = strZero( getCodSig( conta )[0], 8);
 		final String bufCarteira = strZero( carteira, 2);
@@ -130,14 +130,22 @@ public class Boleto {
 	
 	public static String geraNossoNumero( final String modalidade, final String convenio, 
 			final Long rec, final Long nparc ) {
+		return geraNossoNumero( modalidade, convenio, rec, nparc, true );
+	}
+
+	public static String geraNossoNumero( final String modalidade, final String convenio, 
+			final Long rec, final Long nparc, final boolean comdigito ) {
 		final StringBuffer retorno = new StringBuffer();
 		if ( !"21".equals(modalidade) ) {
 			retorno.append(  convenio );
 		} 
 		retorno.append( getNumCli(modalidade, convenio, rec, nparc ) );
+		if ( (comdigito) && ( (convenio.length()==4) || (convenio.length()==6) ) ) {
+			retorno.append( "-" + digVerif( retorno.toString(), 11, true ) );
+		}
 		return retorno.toString();
 	}
-
+	
 	
 	public static String[] getCodSig(String codigo) {
 		final String[] retorno = new String[2];
@@ -197,7 +205,10 @@ public class Boleto {
 		return retorno.toString();
 	}
 	
-	public static String digVerif(final String codigo, final int modulo){
+	public static String digVerif(final String codigo, final int modulo) {
+		return digVerif(codigo, modulo, false);
+	}
+	public static String digVerif(final String codigo, final int modulo, final boolean digx){
 		int[] peso;
 		if (modulo==10) {
 			peso = new int[2];
@@ -238,7 +249,10 @@ public class Boleto {
 		if ( (modulo==10) && ("10".equals( dig )) ) {
 			dig = "0";
 		}
-		else if ( (modulo==11) && ("0-1-10-11".indexOf( dig )>-1) ) {
+		else if ( (modulo==11) && ("10".equals( dig )) && (digx) ) {
+			dig = "X";
+		}
+		else if ( (modulo==11) && ("0-1-10-11".indexOf( dig )>-1) && (!digx) ) {
 			dig = "1";
 		}
 		return dig;
