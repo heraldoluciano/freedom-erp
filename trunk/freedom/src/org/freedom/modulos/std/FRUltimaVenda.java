@@ -31,9 +31,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
@@ -45,6 +49,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRUltimaVenda extends FRelatorio {
@@ -80,6 +85,12 @@ public class FRUltimaVenda extends FRelatorio {
 	private Vector<String> vLabsFin = new Vector<String>();
 
 	private Vector<String> vValsFin = new Vector<String>();
+	
+	private JRadioGroup<?, ?> rgTipo = null;
+	
+	private Vector<String> vLabs1 = new Vector<String>();
+	
+	private Vector<String> vVals1 = new Vector<String>();
 
 	private Vector<?> vObs = null;
 
@@ -90,7 +101,7 @@ public class FRUltimaVenda extends FRelatorio {
 	public FRUltimaVenda() {
 
 		setTitulo( "Ultima Venda por Cliente" );
-		setAtribos( 80, 80, 320, 420 );
+		setAtribos( 80, 80, 320, 460 );
 
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -122,6 +133,7 @@ public class FRUltimaVenda extends FRelatorio {
 		vValsFat.addElement( "S" );
 		vValsFat.addElement( "N" );
 		vValsFat.addElement( "A" );
+		
 		rgFaturados = new JRadioGroup<String, String>( 3, 1, vLabsFat, vValsFat );
 		rgFaturados.setVlrString( "S" );
 
@@ -131,9 +143,18 @@ public class FRUltimaVenda extends FRelatorio {
 		vValsFin.addElement( "S" );
 		vValsFin.addElement( "N" );
 		vValsFin.addElement( "A" );
+		
 		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabsFin, vValsFin );
 		rgFinanceiro.setVlrString( "S" );
 
+		vLabs1.addElement("Texto");
+		vLabs1.addElement("Grafico");
+		vVals1.addElement("T");
+		vVals1.addElement("G");
+		   
+		rgTipo = new JRadioGroup<String, String>(1,2,vLabs1,vVals1);
+		rgTipo.setVlrString("T");
+		    
 		adic( new JLabelPad( "Periodo:" ), 7, 5, 120, 20 );
 		adic( new JLabelPad( "De:" ), 7, 27, 30, 20 );
 		adic( txtDataini, 37, 27, 90, 20 );
@@ -150,9 +171,10 @@ public class FRUltimaVenda extends FRelatorio {
 		adic( txtDescVend, 80, 136, 186, 20 );
 		adic( cbListaFilial, 7, 165, 200, 20 );
 		adic( cbObsVenda, 7, 185, 250, 20 );
-		adic( rgFaturados, 7, 215, 120, 70 );
-		adic( rgFinanceiro, 148, 215, 120, 70 );
-		adic( cbVendaCanc, 7, 295, 200, 20 );
+		adic( rgTipo, 7, 220, 260, 30 );
+		adic( rgFaturados, 7, 260, 120, 70 );
+		adic( rgFinanceiro, 148, 260, 120, 70 );
+		adic( cbVendaCanc, 7, 340, 200, 20 );
 
 	}
 
@@ -180,10 +202,7 @@ public class FRUltimaVenda extends FRelatorio {
 		String sCab = "";
 		String sCab1 = "";
 		String sTmp = null;
-		String sLinhaFina = Funcoes.replicate( "-", 133 );
-		BigDecimal bTotalVd = null;
-		ImprimeOS imp = null;
-		int linPag = 0;
+		
 
 		if ( txtCodCli.getText().trim().length() > 0 ) {
 			if ( cbListaFilial.getVlrString().equals( "S" ) )
@@ -225,33 +244,23 @@ public class FRUltimaVenda extends FRelatorio {
 		if ( cbVendaCanc.getVlrString().equals( "N" ) )
 			sWhere3 = " AND NOT SUBSTR(VD.STATUSVENDA,1,1)='C' ";
 
+		
+
+			
+		sSQL = "SELECT C.CODCLI,C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA, " 
+			+ "VD.DOCVENDA, VD.VLRLIQVENDA, MAX(VD.DTEMITVENDA), VD.OBSVENDA " 
+			+ "FROM VDCLIENTE C, VDVENDA VD, EQTIPOMOV TM " 
+			+ "WHERE C.CODFILIAL=? AND C.CODEMP=? "
+			+ "AND C.CODCLI=VD.CODCLI AND C.CODEMP=VD.CODEMPCL AND C.CODFILIAL=VD.CODFILIALCL " 
+			+ "AND VD.DTEMITVENDA BETWEEN ? AND ? " 
+			+ "AND TM.CODEMP=VD.CODEMPTM AND TM.CODFILIAL=VD.CODFILIALTM AND TM.CODTIPOMOV=VD.CODTIPOMOV " 
+			+ sWhere + sWhere1 + sWhere2 + sWhere3
+			+ "GROUP BY C.CODCLI, C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA,VD.DOCVENDA,VD.VLRLIQVENDA,VD.OBSVENDA ";
+
+		
+			
 		try {
-
-			imp = new ImprimeOS( "", con );
-			linPag = imp.verifLinPag() - 1;
-			imp.montaCab();
-			imp.setTitulo( "Relatório de Ultimas Vendas" );
-			imp.addSubTitulo( "ULTIMAS VENDAS  -   PERIODO DE :" + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
-			if ( sCab.length() > 0 )
-				imp.addSubTitulo( sCab );
-			if ( sCab1.equals( " - FINANCEIRO" ) || sCab1.equals( " - NAO FINANCEIRO" ) )
-				imp.addSubTitulo( sCab1.substring( 3, sCab1.length() ) );
-			else
-				imp.addSubTitulo( sCab1 );
-			imp.limpaPags();
-
-			bTotalVd = new BigDecimal( "0" );
-
-			sSQL = "SELECT C.CODCLI,C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA, " 
-				+ "VD.DOCVENDA, VD.VLRLIQVENDA, MAX(VD.DTEMITVENDA), VD.OBSVENDA " 
-				+ "FROM VDCLIENTE C, VDVENDA VD, EQTIPOMOV TM " 
-				+ "WHERE C.CODFILIAL=? AND C.CODEMP=? "
-				+ "AND C.CODCLI=VD.CODCLI AND C.CODEMP=VD.CODEMPCL AND C.CODFILIAL=VD.CODFILIALCL " 
-				+ "AND VD.DTEMITVENDA BETWEEN ? AND ? " 
-				+ "AND TM.CODEMP=VD.CODEMPTM AND TM.CODFILIAL=VD.CODFILIALTM AND TM.CODTIPOMOV=VD.CODTIPOMOV " 
-				+ sWhere + sWhere1 + sWhere2 + sWhere3
-				+ "GROUP BY C.CODCLI, C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA,VD.DOCVENDA,VD.VLRLIQVENDA,VD.OBSVENDA ";
-
+			
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			ps.setInt( 2, Aplicativo.iCodEmp );
@@ -259,6 +268,61 @@ public class FRUltimaVenda extends FRelatorio {
 			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			rs = ps.executeQuery();
 
+		} 
+		catch ( Exception e ) {
+				
+			Funcoes.mensagemErro( this, "Erro ao buscar dados da venda !\n" + e.getMessage());
+			e.printStackTrace();
+		}
+
+		if("T".equals( rgTipo.getVlrString())){
+			
+			imprimeTexto( rs, bVisualizar, sCab );
+		}
+		else{
+			
+			imprimeGrafico( rs, bVisualizar, sCab ); 
+		}
+	}
+	
+	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ){
+		
+		String sLinhaFina = Funcoes.replicate( "-", 133 );
+		BigDecimal bTotalVd = null;
+		ImprimeOS imp = null;
+		int linPag = 0;
+		//String sCab = "";
+		String sCab1 = "";
+		
+		try {
+
+			imp = new ImprimeOS( "", con );
+			linPag = imp.verifLinPag() - 1;
+			imp.montaCab();
+			imp.setTitulo( "Relatório de Ultimas Vendas" );
+			imp.addSubTitulo( "ULTIMAS VENDAS  -   PERIODO DE :" + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
+			
+			if ( sCab.length() > 0 ){
+				
+				imp.addSubTitulo( sCab );
+				
+			}
+			
+			if ( sCab1.equals( " - FINANCEIRO" ) || sCab1.equals( " - NAO FINANCEIRO" ) ){
+				
+				imp.addSubTitulo( sCab1.substring( 3, sCab1.length() ) );
+				
+			}
+			else{
+				
+				imp.addSubTitulo( sCab1 );
+				
+			}
+			
+			imp.limpaPags();
+
+			bTotalVd = new BigDecimal( "0" );
+			
 			while ( rs.next() ) {
 
 				if ( imp.pRow() >= linPag ) {
@@ -321,11 +385,8 @@ public class FRUltimaVenda extends FRelatorio {
 								imp.incPags();
 
 							}
-
 						}
-
 					}
-
 				}
 
 				bTotalVd = bTotalVd.add( new BigDecimal( rs.getString( "VlrLiqVenda" ) ) );
@@ -349,24 +410,42 @@ public class FRUltimaVenda extends FRelatorio {
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro na consulta ao relatório de vendas!\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-			sWhere = null;
-			sWhere1 = null;
-			sWhere2 = null;
-			sWhere3 = null;
-			sCab = null;
-			sCab1 = null;
-			sTmp = null;
-			bTotalVd = null;
-			System.gc();
-		}
+		} 
 
-		if ( bVisualizar )
+		if ( bVisualizar ){
+			
 			imp.preview( this );
-		else
+		}
+		else{
+			
 			imp.print();
+		}
+			
+	}
+	public void imprimeGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ){
+		
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDCLIENTE" ));
+		hParam.put( "FILTROS", sCab );
+		
+		FPrinterJob dlGr = new FPrinterJob( "relatorios/UltVendasPorCliente.jasper", "Vendas Geral", null, rs, hParam, this );
+		
+		if ( bVisualizar ) {
+			
+			dlGr.setVisible( true );
+		
+		}
+		else {		
+			try {				
+			
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );				
+			
+			} catch ( Exception err ) {					
+			
+					Funcoes.mensagemErro( this, "Erro na impressão do relatório de Últimas Vendas por cliente!\n" + err.getMessage(), true, con, err );
+			}
+		}
 	}
 }

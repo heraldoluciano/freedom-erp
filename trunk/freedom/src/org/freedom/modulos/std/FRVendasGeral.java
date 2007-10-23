@@ -30,9 +30,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -45,6 +48,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRVendasGeral extends FRelatorio {
@@ -77,6 +81,12 @@ public class FRVendasGeral extends FRelatorio {
 
 	private Vector<String> vValsFin = new Vector<String>();
 
+	private JRadioGroup<?, ?> rgTipo = null;
+	
+	private Vector<String> vLabs1 = new Vector<String>();
+	
+	private Vector<String> vVals1 = new Vector<String>();
+	
 	private ListaCampos lcVend = new ListaCampos( this );
 	
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
@@ -84,7 +94,7 @@ public class FRVendasGeral extends FRelatorio {
 	public FRVendasGeral() {
 
 		setTitulo( "Vendas em Geral" );
-		setAtribos( 80, 80, 325, 350 );
+		setAtribos( 80, 80, 325, 400 );
 
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
@@ -108,7 +118,15 @@ public class FRVendasGeral extends FRelatorio {
 		vValsFin.addElement( "A" );
 		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabsFin, vValsFin );
 		rgFinanceiro.setVlrString( "S" );
-
+		
+	    vLabs1.addElement("Texto");
+	    vLabs1.addElement("Grafico");
+	    vVals1.addElement("T");
+	    vVals1.addElement("G");
+	    
+	    rgTipo = new JRadioGroup<String, String>(1,2,vLabs1,vVals1);
+	    rgTipo.setVlrString("T");
+		
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		lcVend.montaSql( false, "VENDEDOR", "VD" );
@@ -140,9 +158,10 @@ public class FRVendasGeral extends FRelatorio {
 		adic(txtCodCli, 7, 120, 70, 20 );
 		adic( new JLabelPad("Descrição do cliente"),80, 100, 190, 20 );
 		adic( txtNomeCli,80, 120, 190, 20 );
-		adic( rgFaturados, 7, 150, 120, 70 );
-		adic( rgFinanceiro, 153, 150, 120, 70 );
-		adic( cbVendaCanc, 7, 230, 200, 20 );
+		adic( rgTipo,7, 150, 265, 30 );
+		adic( rgFaturados, 7, 190, 120, 70 );
+		adic( rgFinanceiro, 153, 190, 120, 70 );
+		adic( cbVendaCanc, 7, 270, 200, 20 );
 	}
 
 	public void setConexao( Connection cn ) {
@@ -167,13 +186,7 @@ public class FRVendasGeral extends FRelatorio {
 		String sWhere2 = "";
 		String sWhere3 = "";
 		String sCab = "";
-		String sDatasaidavenda = null;
-		BigDecimal bTotalVal = null;
-		BigDecimal bTotalDesc = null;
-		BigDecimal bTotalLiq = null;
-		ImprimeOS imp = null;
-		int linPag = 0;
-
+		
 		if ( txtCodVend.getText().trim().length() > 0 ) {
 			sWhere += " AND V.CODVEND = " + txtCodVend.getText().trim();
 			sCab = "REPR.: " + txtCodVend.getVlrString() + " - " + txtDescVend.getText().trim();
@@ -211,8 +224,65 @@ public class FRVendasGeral extends FRelatorio {
 		if ( cbVendaCanc.getVlrString().equals( "N" ) )
 			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 
+		sSQL.append( "SELECT V.DTSAIDAVENDA,V.CODVENDA,V.SERIE,V.STATUSVENDA,V.DOCVENDA," );
+		sSQL.append( "V.DTEMITVENDA,V.VLRPRODVENDA,V.VLRLIQVENDA,V.CODPLANOPAG,P.DESCPLANOPAG," );
+		sSQL.append( "V.VLRCOMISVENDA,V.VLRDESCVENDA,V.VLRDESCITVENDA,V.CODCLI,C.RAZCLI " );
+		sSQL.append( "FROM VDVENDA V,VDCLIENTE C,FNPLANOPAG P, EQTIPOMOV TM " );
+		sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? " );
+		sSQL.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
+		sSQL.append( "AND P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG " );
+		sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
+		sSQL.append( "AND TM.TIPOMOV IN ('VD','VE','PV','VT','SE') " );
+		sSQL.append( sWhere );
+		sSQL.append( sWhere1 );
+		sSQL.append( sWhere2 );
+		sSQL.append( sWhere3 );
+		sSQL.append( "AND V.DTSAIDAVENDA BETWEEN ? AND ? AND V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
+		sSQL.append( "ORDER BY V.DTSAIDAVENDA,V.DOCVENDA " );
+
+			
+		try {
+			
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			rs = ps.executeQuery();
+				
+		}catch ( Exception e ) {
+				
+			Funcoes.mensagemErro( this, "Erro ao buscar dados da venda !\n" + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		if("T".equals( rgTipo.getVlrString())){
+			
+			imprimeTexto( rs, bVisualizar, sCab );
+		}
+		else{
+			imprimeGrafico( rs, bVisualizar, sCab ); 
+		}
+	}
+
+	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ){
+		
+		PreparedStatement ps = null;
+		StringBuffer sSQL = new StringBuffer();
+		ImprimeOS imp = null;
+		int linPag = 0;
+		BigDecimal bTotalVal = null;
+		BigDecimal bTotalDesc = null;
+		BigDecimal bTotalLiq = null;
+		String sDatasaidavenda = null;
+		
 		try {
 
+
+			bTotalVal = new BigDecimal( "0" );
+			bTotalDesc = new BigDecimal( "0" );
+			bTotalLiq = new BigDecimal( "0" );
+			
 			imp = new ImprimeOS( "", con );
 			linPag = imp.verifLinPag() - 1;
 			imp.verifLinPag();
@@ -220,37 +290,13 @@ public class FRVendasGeral extends FRelatorio {
 			imp.setTitulo( "Relatório de Vendas Geral" );
 			imp.addSubTitulo( "RELATORIO DE VENDAS GERAL   -   PERIODO DE :" + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
 			imp.limpaPags();
+			
 			if ( sCab.length() > 0 ) {
+				
 				imp.addSubTitulo( sCab );
 			}
-
-			bTotalVal = new BigDecimal( "0" );
-			bTotalDesc = new BigDecimal( "0" );
-			bTotalLiq = new BigDecimal( "0" );
-
-			sSQL.append( "SELECT V.DTSAIDAVENDA,V.CODVENDA,V.SERIE,V.STATUSVENDA,V.DOCVENDA," );
-			sSQL.append( "V.DTEMITVENDA,V.VLRPRODVENDA,V.VLRLIQVENDA,V.CODPLANOPAG,P.DESCPLANOPAG," );
-			sSQL.append( "V.VLRCOMISVENDA,V.VLRDESCVENDA,V.VLRDESCITVENDA,V.CODCLI,C.RAZCLI " );
-			sSQL.append( "FROM VDVENDA V,VDCLIENTE C,FNPLANOPAG P, EQTIPOMOV TM " );
-			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? " );
-			sSQL.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
-			sSQL.append( "AND P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG " );
-			sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
-			sSQL.append( "AND TM.TIPOMOV IN ('VD','VE','PV','VT','SE') " );
-			sSQL.append( sWhere );
-			sSQL.append( sWhere1 );
-			sSQL.append( sWhere2 );
-			sSQL.append( sWhere3 );
-			sSQL.append( "AND V.DTSAIDAVENDA BETWEEN ? AND ? AND V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
-			sSQL.append( "ORDER BY V.DTSAIDAVENDA,V.DOCVENDA " );
-
-			ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			rs = ps.executeQuery();
 			while ( rs.next() ) {
+				
 				if ( imp.pRow() >= ( linPag - 1 ) ) {
 					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 					imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
@@ -319,23 +365,42 @@ public class FRVendasGeral extends FRelatorio {
 				con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de preços!\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			rs = null;
-			sWhere = null;
-			sWhere1 = null;
-			sWhere2 = null;
-			sWhere3 = null;
-			sCab = null;
-			sDatasaidavenda = null;
-			bTotalVal = null;
-			bTotalDesc = null;
-			bTotalLiq = null;
-			System.gc();
 		}
 
 		if ( bVisualizar )
+			
 			imp.preview( this );
-		else imp.print();
+		
+		else{
+			
+			imp.print();
+		}
+	}
+	
+	public void imprimeGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ){
+
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ));
+		hParam.put( "FILTROS", sCab );
+		
+		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasGeral.jasper", "Vendas Geral", null, rs, hParam, this );
+		
+		if ( bVisualizar ) {
+			
+			dlGr.setVisible( true );
+		
+		}
+		else {		
+			try {				
+			
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );				
+			
+			} catch ( Exception err ) {					
+			
+					Funcoes.mensagemErro( this, "Erro na impressão do relatório de Últimas compras/produto!\n" + err.getMessage(), true, con, err );
+			}
+		}
 	}
 }
