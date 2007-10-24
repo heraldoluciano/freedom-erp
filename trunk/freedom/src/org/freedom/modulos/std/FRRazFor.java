@@ -128,7 +128,9 @@ public class FRRazFor extends FRelatorio {
 			}
 
 			sSQL.append( "SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
-			sSQL.append( "CAST( ? AS DATE) DATA, 'A' TIPO, 0 DOC, " );
+			sSQL.append( "CAST( '");
+			sSQL.append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) );
+			sSQL.append( "' AS DATE) DATA, 'A' TIPO, 0 DOC, " );
 			sSQL.append( "(COALESCE( ( SELECT SUM(P.VLRPARCPAG) " );
 			sSQL.append( "FROM FNPAGAR P " );
 			sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND " );
@@ -185,7 +187,7 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( "ORDER BY 1, 2, 3, 4, 5" );
 		
 			ps = con.prepareStatement( sSQL.toString() );
-			ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDataini.getVlrString() )); // 1
+			//ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDataini.getVlrString() )); // 1
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 2
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 3
 			ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDataini.getVlrString() )); // 4
@@ -221,7 +223,7 @@ public class FRRazFor extends FRelatorio {
 			ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDatafim.getVlrString() )); // 28
 			rs = ps.executeQuery();
 			
-			imprimiGrafico( bVisualizar, rs, sCab);
+			imprimiGrafico( bVisualizar, rs, sCab.toString());
 			
 			rs.close();
 			ps.close();
@@ -237,7 +239,7 @@ public class FRRazFor extends FRelatorio {
 		}
 	}
 	
-	private void imprimiGrafico( final boolean bVisualizar, final ResultSet rs, final StringBuffer sCab ) {
+	private void imprimiGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
 		
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -247,7 +249,7 @@ public class FRRazFor extends FRelatorio {
 		hParam.put( "RAZAOEMP" , Aplicativo.sEmpSis );
 		hParam.put( "FILTROS", sCab );
 
-		dlGr = new FPrinterJob( "relatorios/FRRazFor.jasper", "Relatório por Razão", sCab.toString(), rs, hParam, this );
+		dlGr = new FPrinterJob( "relatorios/FRRazFor.jasper", "Relatório por Razão", sCab, rs, hParam, this );
 		
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
