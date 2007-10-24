@@ -125,22 +125,62 @@ public class FRRazFor extends FRelatorio {
 				sCab.append( "FORNECEDOR - " + txtDescFor.getVlrString() );
 				sWhere.append( "" );
 			}
-			
-			sSQL.append( "" );
-			sSQL.append( "" );
-			sSQL.append( "" );
-			sSQL.append( "" );
-			sSQL.append( "" );
-			sSQL.append( "" );
-			sSQL.append( "" );
+
+			sSQL.append( "SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
+			sSQL.append( "CAST( ? AS DATE) DATA, 'A' TIPO, 0 DOC, " );
+			sSQL.append( "(COALESCE( ( SELECT SUM(P.VLRPARCPAG) " );
+			sSQL.append( "FROM FNPAGAR P " );
+			sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND " );
+			sSQL.append( "P.CODEMPFR=F.CODEMP AND P.CODFILIALFR=F.CODFILIAL AND " );
+			sSQL.append( "P.CODFOR=F.CODFOR AND " );
+			sSQL.append( "P.DATAPAG < ? ),0) + " );
+			sSQL.append( "COALESCE( ( SELECT SUM(L.VLRLANCA) " );
+			sSQL.append( "FROM FNLANCA L, FNPAGAR P " );
+			sSQL.append( "WHERE L.CODEMPPG=P.CODEMP AND L.CODFILIALPG=P.CODFILIAL AND " );
+			sSQL.append( "L.CODPAG=P.CODPAG AND P.CODEMPFR=F.CODEMP AND P.CODFILIALFR=F.CODFILIAL AND " );
+			sSQL.append( "P.CODFOR=F.CODFOR AND " );
+			sSQL.append( "P.CODEMP=? AND P.CODFILIAL=? AND " );
+			sSQL.append( "L.DATALANCA < ? ), 0) " );
+			sSQL.append( ") VALOR " );
+			sSQL.append( "FROM CPFORNECED F " );
+			sSQL.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND F.CODFOR=? AND " );
+			sSQL.append( "( EXISTS (SELECT * FROM FNPAGAR P2 " );
+			sSQL.append( "WHERE P2.CODEMP=? AND P2.CODFILIAL=? AND " );
+			sSQL.append( "P2.CODEMPFR=F.CODEMP AND P2.CODFILIALFR=F.CODFILIAL AND " );
+			sSQL.append( "P2.CODFOR=F.CODFOR AND DATAPAG BETWEEN ? AND ? )" );
+			sSQL.append( "OR EXISTS (SELECT * FROM FNLANCA L2, FNPAGAR P2 " );
+			sSQL.append( "WHERE L2.CODEMPPG=P2.CODEMP AND L2.CODFILIALPG=P2.CODFILIAL AND " );
+			sSQL.append( "L2.CODPAG=P2.CODPAG AND F.CODEMP=P2.CODEMPFR AND " );
+			sSQL.append( "F.CODFILIAL=P2.CODFILIALFR AND F.CODFOR=P2.CODFOR AND " );
+			sSQL.append( "P2.CODEMP=? AND P2.CODFILIAL=? AND " );
+			sSQL.append( "L2.DATALANCA BETWEEN ? AND ?" );
+			sSQL.append( ") ) " );
+			sSQL.append( "UNION " );
+			sSQL.append( "SELECT P.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
+			sSQL.append( "P.DATAPAG DATA, 'C' TIPO, P.DOCPAG DOC, P.VLRPARCPAG VALOR " );
+			sSQL.append( "FROM FNPAGAR P, CPFORNECED F " );
+			sSQL.append( "WHERE F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
+			sSQL.append( "F.CODFOR=P.CODFOR AND " );
+			sSQL.append( "P.CODEMP=? AND P.CODFILIAL=? AND F.CODFOR=? AND " );
+			sSQL.append( "P.DATAPAG BETWEEN ? AND ? " );
+			sSQL.append( "UNION " );
+			sSQL.append( "SELECT P.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
+			sSQL.append( "L.DATALANCA DATA, 'P' TIPO, P.DOCPAG DOC, L.VLRLANCA " );
+			sSQL.append( "FROM FNLANCA L, FNPAGAR P, CPFORNECED F " );
+			sSQL.append( "WHERE L.CODEMPPG=P.CODEMP AND L.CODFILIALPG=P.CODFILIAL AND " );
+			sSQL.append( "L.CODPAG=P.CODPAG AND F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
+			sSQL.append( "F.CODFOR=P.CODFOR AND F.CODFOR=? AND " );
+			sSQL.append( "P.CODEMP=? AND P.CODFILIAL=? AND " );
+			sSQL.append( "L.DATALANCA BETWEEN ? AND ? " );
+			sSQL.append( "ORDER BY 1, 2, 3, 4, 5" );
 			sSQL.append( sWhere );
 		
-			
 			ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial( "FNPAGAR" )); 
-			ps.setDate(3, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ));
-			ps.setDate(4, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ));
+			ps.setDate( 1 , Funcoes.strDateToSqlDate( txtDataini.getVlrString() ));
+			//ps.setInt(1, Aplicativo.iCodEmp);
+			//ps.setInt(2, ListaCampos.getMasterFilial( "FNPAGAR" )); 
+			//
+			//ps.setDate(4, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ));
 			rs = ps.executeQuery();
 			
 			imprimiGrafico( bVisualizar, rs, sCab);
