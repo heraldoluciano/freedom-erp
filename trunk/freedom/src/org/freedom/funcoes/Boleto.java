@@ -249,7 +249,7 @@ public class Boleto {
 		if ( (modulo==10) && ("10".equals( dig )) ) {
 			dig = "0";
 		}
-		else if ( (modulo==11) && ("10".equals( dig )) && (digx) ) {
+		else if ( (modulo==11) && ("10-11".indexOf( dig )>-1) && (digx) ) {
 			dig = "X";
 		}
 		else if ( (modulo==11) && ("0-1-10-11".indexOf( dig )>-1) && (!digx) ) {
