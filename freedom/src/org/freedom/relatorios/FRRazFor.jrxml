@@ -89,9 +89,7 @@ L.CODPAG=P.CODPAG AND F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND
 F.CODFOR=P.CODFOR AND F.CODFOR=1 AND
 P.CODEMP=25 AND P.CODFILIAL=1 AND
 L.DATALANCA BETWEEN '01.01.2007' AND '31.12.2007'
-ORDER BY 1, 2, 3, 4, 5
-
-]]></queryString>
+ORDER BY 1, 2, 3, 4, 5]]></queryString>
 
 	<field name="CODEMIT" class="java.lang.Long"/>
 	<field name="RAZEMIT" class="java.lang.String"/>
@@ -100,6 +98,17 @@ ORDER BY 1, 2, 3, 4, 5
 	<field name="DOC" class="java.lang.Long"/>
 	<field name="VALOR" class="java.math.BigDecimal"/>
 
+	<variable name="DESCTIPO" class="java.lang.String" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[("A".equals($F{TIPO})?"SALDO INICIAL":("C".equals($F{TIPO})?"COMPRA":"PAGAMENTO"))]]></variableExpression>
+	</variable>
+	<variable name="SALDOFOR" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
+		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="SALDOGERAL" class="java.math.BigDecimal" resetType="Group" resetGroup="GERAL" calculation="Sum">
+		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
 
 		<group  name="GERAL" >
 			<groupExpression><![CDATA[]]></groupExpression>
@@ -109,6 +118,19 @@ ORDER BY 1, 2, 3, 4, 5
 			</groupHeader>
 			<groupFooter>
 			<band height="21"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="388"
+						y="2"
+						width="70"
+						height="11"
+						key="textField-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SALDOGERAL}]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>
@@ -185,16 +207,29 @@ ORDER BY 1, 2, 3, 4, 5
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="24"  isSplitAllowed="true" >
+			<band height="17"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="0"
+						y="16"
 						width="539"
 						height="0"
 						key="line-29"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="385"
+						y="2"
+						width="70"
+						height="11"
+						key="textField-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SALDOFOR}]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>
@@ -498,7 +533,7 @@ ORDER BY 1, 2, 3, 4, 5
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TIPO}.trim()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{DESCTIPO}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -556,7 +591,7 @@ ORDER BY 1, 2, 3, 4, 5
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="382"
-						y="3"
+						y="2"
 						width="70"
 						height="11"
 						key="textField-7"/>
@@ -564,7 +599,7 @@ ORDER BY 1, 2, 3, 4, 5
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VALOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SALDOFOR}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
