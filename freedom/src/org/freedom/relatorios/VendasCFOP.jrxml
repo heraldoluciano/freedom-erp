@@ -158,7 +158,7 @@ V.CODCLI, C.RAZCLI, I.VLRLIQITVENDA ORDER BY I.CODNAT, V.DTEMITVENDA, V.DOCVENDA
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<text><![CDATA[Sub-Total]]></text>
+				<text><![CDATA[SubTotal]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
