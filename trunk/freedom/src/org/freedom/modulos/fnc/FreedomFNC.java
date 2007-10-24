@@ -55,6 +55,7 @@ import org.freedom.modulos.std.FRFluxoCaixa;
 import org.freedom.modulos.std.FRGraficoCC;
 import org.freedom.modulos.std.FRInadimplentes;
 import org.freedom.modulos.std.FRPagar;
+import org.freedom.modulos.std.FRRazFor;
 import org.freedom.modulos.std.FRRazaoFin;
 import org.freedom.modulos.std.FRReceber;
 import org.freedom.modulos.std.FRReceberSetor;
@@ -113,6 +114,7 @@ public class FreedomFNC extends AplicativoPD {
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Manutenção", "Manutenção de contas a pagar", 'M', 200100000, 1, true, FManutPag.class );
 		addOpcao( 200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200200000, 1, false, null );
 			addOpcao( 200200000, TP_OPCAO_ITEM, "Pagar/Pagas", "Pagar/Pagas", 'P', 200201000, 2, true, FRPagar.class );
+			addOpcao( 200200000, TP_OPCAO_ITEM, "Razão", "Razão", 'R', 200202000, 2, true, FRRazFor.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Receber", "", 'R', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Manutenção", "Manutenção de contas a receber", 'M', 300100000, 1, true, FManutRec.class );
