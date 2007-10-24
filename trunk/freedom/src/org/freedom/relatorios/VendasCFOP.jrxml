@@ -621,7 +621,7 @@ V.CODCLI, C.RAZCLI, I.VLRLIQITVENDA ORDER BY I.CODNAT, V.DTEMITVENDA, V.DOCVENDA
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="220"
+						x="219"
 						y="0"
 						width="0"
 						height="18"
@@ -630,7 +630,7 @@ V.CODCLI, C.RAZCLI, I.VLRLIQITVENDA ORDER BY I.CODNAT, V.DTEMITVENDA, V.DOCVENDA
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="271"
+						x="270"
 						y="0"
 						width="0"
 						height="18"
