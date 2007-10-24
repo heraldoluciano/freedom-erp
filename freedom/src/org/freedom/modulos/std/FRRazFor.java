@@ -107,6 +107,9 @@ public class FRRazFor extends FRelatorio {
 	@ Override
 	public void imprimir( boolean bVisualizar ) {
 
+		int param = 1;
+		int codfor = 0;
+		
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
@@ -115,15 +118,13 @@ public class FRRazFor extends FRelatorio {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
-		StringBuffer sWhere = new StringBuffer();
 		StringBuffer sCab = new StringBuffer();
 		
 		try {
 			
-			if( txtCodFor.getVlrString() != null && txtCodFor.getVlrString().trim().length()>0 ){
-				
+			codfor = txtCodFor.getVlrInteger().intValue(); 
+			if( codfor!=0 ){
 				sCab.append( "FORNECEDOR - " + txtDescFor.getVlrString() );
-				sWhere.append( "" );
 			}
 
 			sSQL.append( "SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
@@ -143,7 +144,10 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( "L.DATALANCA < ? ), 0) " );
 			sSQL.append( ") VALOR " );
 			sSQL.append( "FROM CPFORNECED F " );
-			sSQL.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND F.CODFOR=? AND " );
+			sSQL.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND ");
+			if (codfor!=0) {
+				sSQL.append("F.CODFOR=? AND " );
+			}
 			sSQL.append( "( EXISTS (SELECT * FROM FNPAGAR P2 " );
 			sSQL.append( "WHERE P2.CODEMP=? AND P2.CODFILIAL=? AND " );
 			sSQL.append( "P2.CODEMPFR=F.CODEMP AND P2.CODFILIALFR=F.CODFILIAL AND " );
@@ -161,7 +165,10 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( "FROM FNPAGAR P, CPFORNECED F " );
 			sSQL.append( "WHERE F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
 			sSQL.append( "F.CODFOR=P.CODFOR AND " );
-			sSQL.append( "P.CODEMP=? AND P.CODFILIAL=? AND F.CODFOR=? AND " );
+			sSQL.append( "P.CODEMP=? AND P.CODFILIAL=? AND ");
+			if (codfor!=0) {
+				sSQL.append( "F.CODFOR=? AND " );
+			}
 			sSQL.append( "P.DATAPAG BETWEEN ? AND ? " );
 			sSQL.append( "UNION " );
 			sSQL.append( "SELECT P.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
@@ -169,18 +176,49 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( "FROM FNLANCA L, FNPAGAR P, CPFORNECED F " );
 			sSQL.append( "WHERE L.CODEMPPG=P.CODEMP AND L.CODFILIALPG=P.CODFILIAL AND " );
 			sSQL.append( "L.CODPAG=P.CODPAG AND F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
-			sSQL.append( "F.CODFOR=P.CODFOR AND F.CODFOR=? AND " );
+			sSQL.append( "F.CODFOR=P.CODFOR AND ");
+			if (codfor!=0) {
+				sSQL.append( "F.CODFOR=? AND " );
+			}
 			sSQL.append( "P.CODEMP=? AND P.CODFILIAL=? AND " );
 			sSQL.append( "L.DATALANCA BETWEEN ? AND ? " );
 			sSQL.append( "ORDER BY 1, 2, 3, 4, 5" );
-			sSQL.append( sWhere );
 		
 			ps = con.prepareStatement( sSQL.toString() );
-			ps.setDate( 1 , Funcoes.strDateToSqlDate( txtDataini.getVlrString() ));
-			//ps.setInt(1, Aplicativo.iCodEmp);
-			//ps.setInt(2, ListaCampos.getMasterFilial( "FNPAGAR" )); 
-			//
-			//ps.setDate(4, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ));
+			ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDataini.getVlrString() )); // 1
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 2
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 3
+			ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDataini.getVlrString() )); // 4
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 5
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 6
+			ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDataini.getVlrString() )); // 7
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 8
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) ); // 9
+			if (codfor!=0) {
+				ps.setInt( param++, codfor ); // 10
+			}
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 11
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 12
+			ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDataini.getVlrString() )); // 13
+			ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDatafim.getVlrString() )); // 14
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 15
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 16
+			ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDataini.getVlrString() )); // 17
+			ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDatafim.getVlrString() )); // 18
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 19
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 20
+			if (codfor!=0) {
+				ps.setInt( param++, codfor ); // 21
+			}
+			ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDataini.getVlrString() )); // 22
+			ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDatafim.getVlrString() )); // 23
+			if (codfor!=0) {
+				ps.setInt( param++, codfor ); // 24
+			}
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 25
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 26
+			ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDataini.getVlrString() )); // 27
+			ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDatafim.getVlrString() )); // 28
 			rs = ps.executeQuery();
 			
 			imprimiGrafico( bVisualizar, rs, sCab);
