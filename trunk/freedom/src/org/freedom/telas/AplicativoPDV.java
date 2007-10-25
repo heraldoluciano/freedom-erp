@@ -87,18 +87,20 @@ public class AplicativoPDV extends AplicativoPD {
 		return bRetorno;
 	}
 
-	public boolean abreCaixa() {
+	public int abreCaixa() {
 
-		boolean bRetorno = false;
+		int result = -1;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		int iRet = 0;
+		
 		try {
+			
 			ps = con.prepareStatement( "SELECT CODCAIXA FROM PVCAIXA WHERE CODEMP=? AND CODFILIAL=? AND CODEST=?" );
 			ps.setInt( 1, iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "PVCAIXA" ) );
 			ps.setInt( 3, iNumEst );
 			rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
 				iCodCaixa = rs.getInt( "CODCAIXA" ); 
 			}
@@ -112,9 +114,7 @@ public class AplicativoPDV extends AplicativoPD {
 
 			setECF();
 
-			ps = con.prepareStatement( "SELECT IRETORNO FROM PVVERIFCAIXASP(?,?,?,?,?,?)" ); // caixa,
-			// emp,
-			// filial
+			ps = con.prepareStatement( "SELECT IRETORNO FROM PVVERIFCAIXASP(?,?,?,?,?,?)" ); 
 			ps.setInt( 1, iCodCaixa );
 			ps.setInt( 2, iCodEmp );
 			ps.setInt( 3, iCodFilial );
@@ -122,31 +122,51 @@ public class AplicativoPDV extends AplicativoPD {
 			ps.setInt( 5, iCodFilialPad );
 			ps.setString( 6, strUsuario );
 			rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
 				
-				iRet = rs.getInt( 1 );
+				result = rs.getInt( 1 );
 				
-				switch ( iRet ) {
+				switch ( result ) {
+					// caixa ok
 					case 0 : {
-						bRetorno = pegaValorINI();
+						if ( ! pegaValorINI() ) {
+							result = -1;
+						}
 						break;
 					}
-					// case 1: { Reservado.
-					case 2 : {
+					// warnings
+					case 1: { 
 						Funcoes.mensagemInforma( null, "Caixa já está aberto!" );
-						bRetorno = true;
+						break;
+					}
+					case 2 : {
+						Funcoes.mensagemInforma( null, "Caixa anterior fechado sem redução \"Z\"." +
+													 "\nA leitura da memória fiscal deverá ser feita pelo usuario." );
 						break;
 					}
 					case 3 : {
-						killProg( 3, "Já foi realizada leitura \"Z\" neste caixa hoje!" );
+						Funcoes.mensagemInforma( null, "Caixa anterior não foi fechado!" +
+								                    "\nO caixa deverá ser fechado sem a excução da redução \"Z\"." +
+								                    "\nA leitura da memória fiscal deverá ser feita pelo usuario." );
 						break;
 					}
-					case 4 : {
-						killProg( 4, "Caixa foi aberto com outro usuário!" );
+					// erros
+					case 11 : {
+						killProg( 1, "Já foi realizada leitura \"Z\" neste caixa hoje!" );
+						break;
+					}
+					case 12 : {
+						killProg( 2, "Caixa foi aberto com outro usuário!" );
+						break;
+					}
+					case 13 : {
+						killProg( 3, "Tentativa de abertura de caixa retroativo!" +
+								   "\nVerifique a configuração de data do sistema operacional." );
 						break;
 					}
 					default : {
-						killProg( 5, "Erro na ultima transacão de caixa." );
+						killProg( 4, "Erro na ultima transacão de caixa." );
 						break;
 					}
 					
@@ -168,36 +188,25 @@ public class AplicativoPDV extends AplicativoPD {
 			killProg( 6, "Erro abrir o caixa!\n" + err.getMessage() );
 		}
 		
-		return bRetorno;
+		return result;
 	}
 
 	private void setECF() {
-
-		String sSQL = "SELECT CX.ECFCAIXA,CX.TEFCAIXA FROM PVCAIXA CX WHERE CODCAIXA=? AND CODFILIAL=? AND CODEMP=?";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		
 		try {
 			
-			ps = con.prepareStatement( sSQL );
+			PreparedStatement ps = con.prepareStatement( 
+					"SELECT CX.ECFCAIXA,CX.TEFCAIXA FROM PVCAIXA CX WHERE CODCAIXA=? AND CODFILIAL=? AND CODEMP=?" );
 			ps.setInt( 1, iCodCaixa );
 			ps.setInt( 2, Aplicativo.iCodFilial );
 			ps.setInt( 3, Aplicativo.iCodEmp );
-			rs = ps.executeQuery();
+			
+			ResultSet rs = ps.executeQuery();
 			
 			if ( rs.next() ) {
-				if ( rs.getString( "ECFCaixa" ) != null && rs.getString( "ECFCaixa" ).equals( "S" ) ) {
-					bECFTerm = true;
-				}
-				else {
-					bECFTerm = false;
-				}
-				if ( rs.getString( "TEFCaixa" ) != null && rs.getString( "TEFCaixa" ).equals( "S" ) ) {
-					bTEFTerm = true;
-				}
-				else {
-					bTEFTerm = false;
-				}
+				
+				bECFTerm = "S".equals( rs.getString( "ECFCaixa" ) );
+				bTEFTerm = "S".equals( rs.getString( "TEFCaixa" ) );
 			}
 			
 			rs.close();
