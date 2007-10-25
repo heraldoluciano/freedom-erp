@@ -141,10 +141,15 @@ public class FreedomPDV extends AplicativoPDV {
 			AplicativoPDV.setLookAndFeel( "freedom.ini" );
 			FreedomPDV freedom = new FreedomPDV();
 			freedom.show();
-			if ( freedom.abreCaixa() ) {
+			/* so verifico o retorno 0 porque 
+			 * os retornos de errors que tem valor maior que 10 
+			 * chamam killProg que mata todos os processos
+			 * e os de warnings não acionam a tela de venda.
+			 */
+			if ( freedom.abreCaixa() == 0 ) {
 				freedom.btVenda.doClick();
 			}
-			else {
+			else if ( freedom.abreCaixa() == -1 ) {
 				freedom.killProg( 5, "Caixa não foi aberto. A aplicação será fechada!" );
 			}
 		} catch ( Throwable e ) {
