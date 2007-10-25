@@ -109,6 +109,26 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
+	<variable name="VLRDEBITO" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$F{TIPO}.equals( "P" ) ? $F{VALOR} : new BigDecimal(0)]]></variableExpression>
+		<initialValueExpression><![CDATA[
+]]></initialValueExpression>
+	</variable>
+	<variable name="VLRCREDITO" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA["CA".indexOf($F{TIPO})>-1 ? $F{VALOR} : new BigDecimal(0) ]]></variableExpression>
+	</variable>
+	<variable name="TOTALCREDITOFOR" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
+		<variableExpression><![CDATA[$V{VLRCREDITO}]]></variableExpression>
+	</variable>
+	<variable name="TOTALDEBITOFOR" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
+		<variableExpression><![CDATA[$V{VLRDEBITO}]]></variableExpression>
+	</variable>
+	<variable name="TOTALDEBITO" class="java.math.BigDecimal" resetType="Group" resetGroup="GERAL" calculation="Sum">
+		<variableExpression><![CDATA[$V{VLRDEBITO}]]></variableExpression>
+	</variable>
+	<variable name="TOTALCREDITO" class="java.math.BigDecimal" resetType="Group" resetGroup="GERAL" calculation="Sum">
+		<variableExpression><![CDATA[$V{VLRCREDITO}]]></variableExpression>
+	</variable>
 
 		<group  name="GERAL" >
 			<groupExpression><![CDATA[]]></groupExpression>
@@ -118,9 +138,9 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 			</groupHeader>
 			<groupFooter>
 			<band height="21"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="382"
+						x="465"
 						y="2"
 						width="70"
 						height="11"
@@ -160,7 +180,7 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 				</line>
 				<staticText>
 					<reportElement
-						x="294"
+						x="180"
 						y="2"
 						width="81"
 						height="12"
@@ -173,16 +193,7 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="455"
-						y="0"
-						width="0"
-						height="17"
-						key="line-37"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="377"
+						x="292"
 						y="0"
 						width="0"
 						height="17"
@@ -191,11 +202,55 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="292"
+						x="178"
 						y="0"
 						width="0"
 						height="17"
 						key="line-41"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="296"
+						y="2"
+						width="78"
+						height="11"
+						key="textField-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALDEBITO}.multiply(new BigDecimal(-1))]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="381"
+						y="2"
+						width="78"
+						height="11"
+						key="textField-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALCREDITO}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="462"
+						y="0"
+						width="0"
+						height="17"
+						key="line-46"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="377"
+						y="0"
+						width="0"
+						height="17"
+						key="line-47"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -284,10 +339,10 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 						key="line-29"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="382"
-						y="2"
+						x="465"
+						y="3"
 						width="70"
 						height="11"
 						key="textField-8"/>
@@ -326,7 +381,7 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 				</line>
 				<staticText>
 					<reportElement
-						x="294"
+						x="180"
 						y="2"
 						width="81"
 						height="12"
@@ -339,16 +394,7 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="455"
-						y="0"
-						width="0"
-						height="17"
-						key="line-36"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="377"
+						x="292"
 						y="0"
 						width="0"
 						height="17"
@@ -357,11 +403,55 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="292"
+						x="178"
 						y="0"
 						width="0"
 						height="17"
 						key="line-40"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="296"
+						y="2"
+						width="78"
+						height="11"
+						key="textField-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALDEBITOFOR}.multiply(new BigDecimal(-1))]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="380"
+						y="2"
+						width="78"
+						height="11"
+						key="textField-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALCREDITOFOR}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="377"
+						y="0"
+						width="0"
+						height="17"
+						key="line-44"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="462"
+						y="0"
+						width="0"
+						height="17"
+						key="line-45"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -495,9 +585,9 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="112"
+						x="180"
 						y="86"
-						width="98"
+						width="103"
 						height="11"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -508,7 +598,7 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="222"
+						x="110"
 						y="86"
 						width="65"
 						height="11"
@@ -530,11 +620,11 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<text><![CDATA[Valor]]></text>
+				<text><![CDATA[Débito]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="382"
+						x="464"
 						y="86"
 						width="70"
 						height="11"
@@ -556,7 +646,7 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="216"
+						x="178"
 						y="85"
 						width="0"
 						height="15"
@@ -610,13 +700,26 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="455"
-						y="85"
+						x="462"
+						y="84"
 						width="0"
 						height="15"
-						key="line-21"/>
+						key="line-42"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<staticText>
+					<reportElement
+						x="380"
+						y="86"
+						width="78"
+						height="11"
+						key="staticText-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Crédito]]></text>
+				</staticText>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -658,9 +761,9 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 				</line>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="112"
+						x="180"
 						y="2"
-						width="98"
+						width="103"
 						height="11"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -671,7 +774,7 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="216"
+						x="178"
 						y="0"
 						width="0"
 						height="16"
@@ -680,7 +783,7 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 				</line>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="220"
+						x="108"
 						y="3"
 						width="69"
 						height="11"
@@ -700,7 +803,7 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 						key="line-25"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="296"
 						y="2"
@@ -711,7 +814,7 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VALOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRDEBITO}.equals(new BigDecimal(0))?null:$V{VLRDEBITO}.multiply( new BigDecimal(-1))]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -722,9 +825,9 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 						key="line-26"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="382"
+						x="465"
 						y="2"
 						width="70"
 						height="11"
@@ -737,15 +840,6 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="455"
-						y="0"
-						width="0"
-						height="16"
-						key="line-27"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
 						x="539"
 						y="0"
 						width="0"
@@ -753,6 +847,28 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 						key="line-28"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="462"
+						y="0"
+						width="0"
+						height="16"
+						key="line-43"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="380"
+						y="2"
+						width="78"
+						height="11"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRCREDITO}.equals(new BigDecimal(0))?null:$V{VLRCREDITO}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
