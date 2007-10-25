@@ -202,7 +202,7 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 			</groupFooter>
 		</group>
 		<group  name="FORNECEDOR" >
-			<groupExpression><![CDATA[]]></groupExpression>
+			<groupExpression><![CDATA[$F{CODEMIT}]]></groupExpression>
 			<groupHeader>
 			<band height="18"  isSplitAllowed="true" >
 				<staticText>
