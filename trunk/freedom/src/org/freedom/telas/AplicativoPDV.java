@@ -149,6 +149,18 @@ public class AplicativoPDV extends AplicativoPD {
 						Funcoes.mensagemInforma( null, "Caixa anterior não foi fechado!" +
 								                    "\nO caixa deverá ser fechado sem a excução da redução \"Z\"." +
 								                    "\nA leitura da memória fiscal deverá ser feita pelo usuario." );
+						/*
+						DLFechaDia fecha = new DLFechaDia();
+						fecha.setConexao( con );
+						fecha.setVisible( true );
+
+						result = -1;
+						if ( fecha.OK ) {
+							if ( pegaValorINI() ) {
+								result = 0;
+							}
+						}*/
+						
 						break;
 					}
 					// erros
@@ -161,8 +173,7 @@ public class AplicativoPDV extends AplicativoPD {
 						break;
 					}
 					case 13 : {
-						killProg( 3, "Tentativa de abertura de caixa retroativo!" +
-								   "\nVerifique a configuração de data do sistema operacional." );
+						killProg( 3, "Tentativa de abertura de caixa retroativo!" );
 						break;
 					}
 					default : {

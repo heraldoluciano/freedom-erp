@@ -59,6 +59,8 @@ public class DLFechaDia extends FFDialogo {
 	private JCheckBoxPad cbReducaoZ = new JCheckBoxPad( "Deseja executar a redução Z?", "S", "N" );
 
 	private ECFDriver ecf = new ECFDriver( ! AplicativoPDV.usaEcfDriver() );
+	
+	private Date datacaixa = null;
 
 	public DLFechaDia() {
 
@@ -73,33 +75,33 @@ public class DLFechaDia extends FFDialogo {
 		adic( txtVlrCaixa, 150, 30, 140, 20 );
 		adic( cbReducaoZ, 10, 60, 280, 20 );
 
-		txtDataHora.setVlrString( ( new SimpleDateFormat( "dd/MM/yyyy HH:mm" ) ).format( new Date() ) );
-
 	}
 
-	private void buscaSaldoDia() {
+	private void loadCaixa() {
 	
 		try {
 			
-			String sSQL = "SELECT FIRST 1 VLRSLDMOV FROM PVMOVCAIXA WHERE CODEMP=? AND CODFILIAL=? AND CODCAIXA=? AND DTAMOV=? ORDER BY NROMOV DESC";
-			
-			PreparedStatement ps = con.prepareStatement( sSQL );
+			PreparedStatement ps = con.prepareStatement( 
+				"SELECT FIRST 1 DTAMOV, VLRSLDMOV FROM PVMOVCAIXA WHERE CODEMP=? AND CODFILIAL=? AND CODCAIXA=? ORDER BY DTAMOV DESC, NROMOV DESC" );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
 			ps.setInt( 3, AplicativoPDV.iCodCaixa );
-			ps.setDate( 4, Funcoes.dateToSQLDate( new Date() ) );
 			ResultSet rs = ps.executeQuery();
 			
 			if ( rs.next() ) {
+				
+				datacaixa = rs.getDate( "DTAMOV" ) == null ? new Date() : rs.getDate( "DTAMOV" );
+				txtDataHora.setVlrString( ( new SimpleDateFormat( "dd/MM/yyyy HH:mm" ) ).format( datacaixa ) );
 				txtVlrCaixa.setVlrBigDecimal( new BigDecimal( ( rs.getBigDecimal( "VLRSLDMOV" ) != null ? rs.getDouble( "VLRSLDMOV" ) : 0 ) ) );
 			}
 			
 			rs.close();
 			ps.close();
 			
-			if ( !con.getAutoCommit() )
+			if ( !con.getAutoCommit() ) {
 				con.commit();
+			}
 			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Não foi possível buscar o saldo atual.\n" + err.getMessage(), true, con, err );
@@ -115,14 +117,12 @@ public class DLFechaDia extends FFDialogo {
 		try {
 
 			// Fecha o caixa:	
-
-			String sSQL = "EXECUTE PROCEDURE PVFECHACAIXASP(?,?,?,?,?,?,?)";
 			
-			PreparedStatement ps = con.prepareStatement( sSQL );
+			PreparedStatement ps = con.prepareStatement( "EXECUTE PROCEDURE PVFECHACAIXASP(?,?,?,?,?,?,?)" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "PVMOVCAIXA" ) );
 			ps.setInt( 3, AplicativoPDV.iCodCaixa );
-			ps.setDate( 4, Funcoes.dateToSQLDate( new Date() ) );
+			ps.setDate( 4, Funcoes.dateToSQLDate( datacaixa ) );
 			ps.setString( 5, bReduz ? "S" : "N" );
 			ps.setInt( 6, Aplicativo.iCodFilial );
 			ps.setString( 7, Aplicativo.strUsuario );
@@ -153,15 +153,13 @@ public class DLFechaDia extends FFDialogo {
 
 		try {
 			
-			String sSQL = "EXECUTE PROCEDURE PVSANGRIASP(?,?,?,?,?,?)";
-			
-			PreparedStatement ps = con.prepareStatement( sSQL );
+			PreparedStatement ps = con.prepareStatement( "EXECUTE PROCEDURE PVSANGRIASP(?,?,?,?,?,?)" );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "PVMOVCAIXA" ) );
 			ps.setBigDecimal( 3, txtVlrCaixa.getVlrBigDecimal() );
 			ps.setInt( 4, AplicativoPDV.iCodCaixa );
-			ps.setDate( 5, Funcoes.dateToSQLDate( new Date() ) );
+			ps.setDate( 5, Funcoes.dateToSQLDate( datacaixa ) );
 			ps.setString( 6, Aplicativo.strUsuario );
 			ps.execute();
 			
@@ -190,12 +188,9 @@ public class DLFechaDia extends FFDialogo {
 				if ( ! ecf.sangria( txtVlrCaixa.getVlrBigDecimal() ) ) {
 					
 					Funcoes.mensagemErro( null, "Erro ao executar a sangria!" );
-					return;
-					
-				}
-				
-			}
-			
+					return;					
+				}				
+			}			
 		}
 		
 		if ( execFechamento( bReduz ) ) {
@@ -260,6 +255,7 @@ public class DLFechaDia extends FFDialogo {
 	public void setConexao( Connection cn ) {
 
 		super.setConexao( cn );
-		buscaSaldoDia();
+		
+		loadCaixa();
 	}
 }
