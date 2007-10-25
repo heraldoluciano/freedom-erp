@@ -141,7 +141,7 @@ public class Boleto {
 		} 
 		retorno.append( getNumCli(modalidade, convenio, rec, nparc ) );
 		if ( (comdigito) && ( (convenio.length()==4) || (convenio.length()==6) ) ) {
-			retorno.append( "-" + digVerif( retorno.toString(), 11, true ) );
+			retorno.append( digVerif( retorno.toString(), 11, true ) );
 		}
 		return retorno.toString();
 	}
@@ -240,7 +240,7 @@ public class Boleto {
 	    	}
 	    	soma +=  calc;
 	    	posi++;
-	    	if (posi>=peso.length) {
+	    	if (posi>=peso.length) { 
 	    		posi = 0; 
 	    	}
 	    }
@@ -249,7 +249,7 @@ public class Boleto {
 		if ( (modulo==10) && ("10".equals( dig )) ) {
 			dig = "0";
 		}
-		else if ( (modulo==11) && ("10-11".indexOf( dig )>-1) && (digx) ) {
+		else if ( (modulo==11) && ("10".indexOf( dig )>-1) && (digx) ) {
 			dig = "X";
 		}
 		else if ( (modulo==11) && ("0-1-10-11".indexOf( dig )>-1) && (!digx) ) {
