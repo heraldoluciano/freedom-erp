@@ -73,9 +73,9 @@ public class FAbreCaixa extends FDialogo {
 
 		System.out.println( "Modo demo PDV: " + Aplicativo.bModoDemo );
 		
-		if ( ! AplicativoPDV.bECFTerm || ecf.leituraX() ) {
+		if ( ecf.leituraX() || AplicativoPDV.bECFTerm  ) {
 			
-			if ( ! AplicativoPDV.bECFTerm || ecf.suprimento( txtValor.getVlrBigDecimal() ) ) {
+			if ( ecf.suprimento( txtValor.getVlrBigDecimal() ) || AplicativoPDV.bECFTerm ) {
 
 				try {
 				
@@ -102,12 +102,9 @@ public class FAbreCaixa extends FDialogo {
 				
 				if ( AplicativoPDV.bECFTerm ) {
 					ecf.abreGaveta();
-				}
-				
-			}
-			
-		}
-		
+				}				
+			}			
+		}		
 	}
 
 	public void actionPerformed( ActionEvent evt ) {

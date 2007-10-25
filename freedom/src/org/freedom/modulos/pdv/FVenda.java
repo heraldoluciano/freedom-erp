@@ -42,6 +42,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -70,8 +71,8 @@ import org.freedom.comutacao.Tef;
 import org.freedom.drivers.ECFDriver;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
-import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.DLAdicOrc;
+import org.freedom.modulos.std.DLCodProd;
 import org.freedom.plugin.AbstractControleVendaPDV;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
@@ -2001,6 +2002,48 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			Funcoes.mensagemErro( this, "Erro ao carregar o preço!\n" + err.getMessage(), true, con, err );
 		}
 	}
+	
+	private boolean caixaAberto() {
+		
+		boolean result = false;
+		
+		try {
+			
+			PreparedStatement ps = con.prepareStatement( 
+				"SELECT FIRST 1 DTAMOV FROM PVMOVCAIXA WHERE CODEMP=? AND CODFILIAL=? AND CODCAIXA=? ORDER BY DTAMOV DESC, NROMOV DESC" );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setInt( 3, AplicativoPDV.iCodCaixa );
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				Calendar hoje = Calendar.getInstance();
+				Calendar diacaixa = Calendar.getInstance();
+				diacaixa.setTime( Funcoes.sqlDateToDate( rs.getDate( "DTAMOV" ) ) );
+				
+				if ( hoje.get( Calendar.YEAR ) == diacaixa.get( Calendar.YEAR ) 
+						&& hoje.get( Calendar.MONTH ) == diacaixa.get( Calendar.MONTH )
+							&& hoje.get( Calendar.DAY_OF_MONTH ) == diacaixa.get( Calendar.DAY_OF_MONTH ) ) { 		
+					result = true;
+				}
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( null, "Não foi possível buscar o saldo atual.\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		}
+		
+		return result;
+	}
 
 	private Object prefs( int index ) {
 
@@ -2296,6 +2339,19 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	public void setConexao( Connection con ) {
 
 		super.setConexao( con );
+		
+		if ( ! caixaAberto() ) {
+			
+			FAbreCaixa tela = new FAbreCaixa();
+			tela.setConexao( con );
+			tela.setVisible( true );
+			
+			if ( ! tela.OK ) {
+				Funcoes.mensagemErro( null, "Caixa não foi aberto. A aplicação será fechada!" );
+				System.exit( 5 );
+			}
+		}
+		
 		lcCliente.setConexao( con );
 		lcVendedor.setConexao( con );
 		lcClComis.setConexao( con );
