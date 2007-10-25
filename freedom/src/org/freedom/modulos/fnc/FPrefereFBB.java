@@ -77,7 +77,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	
 	private final JPanelPad panelCamposCnab = new JPanelPad();
 	
-	private final JPanelPad panelCamposPref = new JPanelPad( 300, 400 );
+	private final JPanelPad panelCamposPref = new JPanelPad( 300, 420 );
 	
 	private final JPanelPad panelNavCnab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -164,6 +164,8 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	private JComboBoxPad cbDevolucao;
 	
 	private final JTextFieldPad txtNumDiasDevolucao = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
+	
+	private JComboBoxPad cbAceite;
 
 	private final ListaCampos lcSiacc = new ListaCampos( this, "BO" );
 
@@ -396,6 +398,14 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		vVals9.addElement( 1 );
 		vVals9.addElement( 2 );
 		cbDevolucao = new JComboBoxPad( vLabs9, vVals9, JComboBoxPad.TP_INTEGER, 1, 0 );
+		
+		Vector<String> vLabs10 = new Vector<String>();
+		Vector<String> vVals10 = new Vector<String>();
+		vLabs10.addElement( "Sim" );
+		vLabs10.addElement( "Não" );
+		vVals10.addElement( "S" );
+		vVals10.addElement( "N" );
+		cbAceite = new JComboBoxPad( vLabs10, vVals10, JComboBoxPad.TP_STRING, 1, 0 );
 	}
 	
 	private void montaListaCampos() {
@@ -580,6 +590,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		adicDB( txtNumDiasProtesto, 270, 300, 60, 20, "DIASPROT", "Dias", false );
 		adicDB( cbDevolucao, 10, 340, 250, 20, "CODBAIXADEV", "Código para devolução", false );
 		adicDB( txtNumDiasDevolucao, 270, 340, 60, 20, "DIASBAIXADEV", "Dias", false );
+		adicDB( cbAceite, 10, 380, 320, 20, "ACEITE", "Aceite", false );
 		
 		/****************/
 		
