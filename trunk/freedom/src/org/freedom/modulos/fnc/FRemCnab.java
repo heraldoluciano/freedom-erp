@@ -253,7 +253,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setAgenciaCob( null );
 		reg.setDigAgenciaCob( null );
  		reg.setEspecieTit( (Integer) prefs.get( EPrefs.ESPECTIT ) );
-		reg.setAceite( 'N' );
+		reg.setAceite( ((String) prefs.get( EPrefs.ACEITE )).charAt( 0 ) );
 		reg.setDtEmitTit( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
 		reg.setCodJuros( (Integer) prefs.get( EPrefs.CODJUROS ) );
 		// se for isento de juros.
