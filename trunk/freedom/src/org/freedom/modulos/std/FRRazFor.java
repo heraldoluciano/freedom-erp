@@ -132,7 +132,7 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( "CAST( '" );
 			sSQL.append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) );
 			sSQL.append( "' AS DATE) DATA, 'A' TIPO, 0 DOC, " );
-			sSQL.append( "(COALESCE( ( SELECT SUM(P.VLRPARCPAG) " );
+			sSQL.append( "(COALESCE( ( SELECT SUM(P.VLRPAG) " );
 			sSQL.append( "FROM FNPAGAR P " );
 			sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND " );
 			sSQL.append( "P.CODEMPFR=F.CODEMP AND P.CODFILIALFR=F.CODFILIAL AND " );
@@ -164,7 +164,7 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( ") ) " );
 			sSQL.append( "UNION " );
 			sSQL.append( "SELECT P.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
-			sSQL.append( "P.DATAPAG DATA, 'C' TIPO, P.DOCPAG DOC, P.VLRPARCPAG VALOR " );
+			sSQL.append( "P.DATAPAG DATA, 'C' TIPO, P.DOCPAG DOC, P.VLRPAG VALOR " );
 			sSQL.append( "FROM FNPAGAR P, CPFORNECED F " );
 			sSQL.append( "WHERE F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
 			sSQL.append( "F.CODFOR=P.CODFOR AND " );
