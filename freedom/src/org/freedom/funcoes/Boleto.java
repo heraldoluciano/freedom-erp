@@ -215,8 +215,8 @@ public class Boleto {
 			peso[0] = 2; peso[1] = 1;
 		} else {
 			peso = new int[8];
-			for (int i=0; i<peso.length; i++) {
-				peso[i] = i+2;
+			for (int i=peso.length-1; i>-1; i--) {
+				peso[i] = peso.length-(i-1);
 			}
 		}
 		int soma = 0;
@@ -245,11 +245,15 @@ public class Boleto {
 	    	}
 	    }
 		resto = soma % modulo;
-		dig = String.valueOf( modulo-resto );
+		if (modulo==10) {
+			dig = String.valueOf( modulo-resto );
+		} else {
+			dig = String.valueOf( resto );
+		}
 		if ( (modulo==10) && ("10".equals( dig )) ) {
 			dig = "0";
 		}
-		else if ( (modulo==11) && ("10".indexOf( dig )>-1) && (digx) ) {
+		else if ( (modulo==11) && ("10".equals( dig )) && (digx) ) {
 			dig = "X";
 		}
 		else if ( (modulo==11) && ("0-1-10-11".indexOf( dig )>-1) && (!digx) ) {
