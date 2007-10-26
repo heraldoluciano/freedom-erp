@@ -7287,6 +7287,7 @@ end
 
 SET TERM ; ^
 COMMIT WORK;
+
 SET TERM ^ ;
 ALTER PROCEDURE "PVVERIFCAIXASP"("ICODCAIXA" INTEGER,
 "ICODEMP" INTEGER,
@@ -7299,43 +7300,69 @@ ALTER PROCEDURE "PVVERIFCAIXASP"("ICODCAIXA" INTEGER,
 DECLARE VARIABLE CTMP CHAR(1);
 DECLARE VARIABLE CIDUSUANT CHAR(8);
 DECLARE VARIABLE SCODFILIALANT SMALLINT;
+DECLARE VARIABLE DULTMOV DATE;
 DECLARE VARIABLE INROMOV INTEGER;
 BEGIN
   iRetorno = -1;
-  SELECT MAX(NROMOV) FROM PVMOVCAIXA
-    WHERE CODCAIXA=:ICODCAIXA  AND DTAMOV = :DDTAMOV AND
-       CODEMP=:ICODEMP AND CODFILIAL=:SCODFILIAL
-    INTO :INROMOV;
-  SELECT TIPOMOV,IDUSU,CODFILIALUS FROM PVMOVCAIXA WHERE
-       CODEMP=:ICODEMP AND CODFILIAL=:SCODFILIAL AND
-       CODCAIXA=:ICODCAIXA AND NROMOV=:INROMOV AND
-       DTAMOV=:DDTAMOV
-    INTO :cTMP, :cIDUSUANT, :SCodFilialAnt;
-  if ( (cTMP IS NULL) OR (cTMP = 'F') ) then
+  SELECT FIRST 1 MC.TIPOMOV, MC.IDUSU, MC.CODFILIALUS, MC.DTAMOV, MC.NROMOV
+    FROM PVMOVCAIXA MC
+    WHERE MC.CODCAIXA=:ICODCAIXA  AND
+       MC.CODEMP=:ICODEMP AND MC.CODFILIAL=:SCODFILIAL
+    ORDER BY MC.DTAMOV DESC, MC.NROMOV DESC
+    INTO :cTMP, :cIDUSUANT, :SCodFilialAnt, :DULTMOV, :INROMOV;
+
+  if ( (DULTMOV IS NULL) OR (DDTAMOV = DULTMOV) ) then
   BEGIN
-    iRetorno = 0; /*Caixa OK*/
-    SUSPEND;
-    EXIT;
+     if ( (cTMP IS NULL) OR (cTMP = 'F') ) then
+     BEGIN
+       iRetorno = 0; /*Caixa OK*/
+       SUSPEND;
+       EXIT;
+     END
+     else if (cTMP = 'Z') then
+     BEGIN
+       iRetorno = 11; /*Jah foi realizada reduçãoZ neste dia*/
+       SUSPEND;
+       EXIT;
+     END
+     else if (cTMP in ('A','S','U','V')) then
+     BEGIN
+       if ( (cIDUSU=cIDUSUANT) AND (SCodFilialUs=SCodFilialAnt) )then
+          iRetorno = 1; /*Caixa aberto*/
+       else
+          iRetorno = 12; /* Caixa aberto por outro usuatio */
+       SUSPEND;
+       EXIT;
+     END
   END
-  else if (cTMP in ('A','S','U','V')) then
+  else if (DDTAMOV > DULTMOV) then
   BEGIN
-    if ( (cIDUSU=cIDUSUANT) AND (SCodFilialUs=SCodFilialAnt) )then
-       iRetorno = 2; /*Caixa aberto*/
-    else
-       iRetorno = 4;
-    SUSPEND;
-    EXIT;
+     if ( cTMP = 'F' ) then /* Caixa anterior fechado sem redução Z */
+     BEGIN                  /* O usuário deverá digitar a leitura da memória fiscal */
+       iRetorno = 2;
+       SUSPEND;
+       EXIT;
+     END
+     else if (cTMP = 'Z') then
+     BEGIN
+       iRetorno = 0; /* Caixa anterior fechado corretamente */
+       SUSPEND;
+       EXIT;
+     END
+     else /* Caixa anterior deverá ser fechado */
+     BEGIN
+       iRetorno = 3; /* devera fechar o caixa*/
+       SUSPEND;
+       EXIT;
+     END
   END
-  else if (cTMP = 'Z') then
-  BEGIN
-    iRetorno = 3; /*Jah foi realizada reduçãoZ neste dia*/
-    SUSPEND;
-    EXIT;
+  ELSE
+  BEGIN /*Tentativa de abertura de caixa retroativo*/
+     iRetorno = 13;
   END
   SUSPEND;
 END
 ^
-
 SET TERM ; ^
 COMMIT WORK;
 CREATE TABLE "SGAGENTE"("CODEMP" INTEGER NOT NULL,
