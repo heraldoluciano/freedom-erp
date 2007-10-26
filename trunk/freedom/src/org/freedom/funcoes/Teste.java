@@ -31,10 +31,11 @@ public class Teste {
 		//System.out.println(org.freedom.funcoes.Boleto.geraNossoNumero( "00", "1421609", new Long(1), new Long(1) ));
         //System.out.println("Digito verif."+Boleto.digVerif( "0019340100000000330375031750416060680935011" , 11 ));
         
-        System.out.println("Digito campo1: "+Boleto.digVerif( "001903477", 10 ));
-        System.out.println("Digito campo2: "+Boleto.digVerif( "9483981606", 10 ));
-        System.out.println("Digito campo3: "+Boleto.digVerif( "0680935011", 10 ));
+        //System.out.println("Digito campo1: "+Boleto.digVerif( "001903477", 10 ));
+        //System.out.println("Digito campo2: "+Boleto.digVerif( "9483981606", 10 ));
+        //System.out.println("Digito campo3: "+Boleto.digVerif( "0680935011", 10 ));
         //System.out.println("Digito campo1: "+Boleto.digVerif( "", 10 ));
+        System.out.println("Digito nosso número: "+Boleto.digVerif( "19153303302", 11, true ));
 
 	}
 
