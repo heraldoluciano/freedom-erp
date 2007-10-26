@@ -250,7 +250,7 @@ public class FRRazFor extends FRelatorio {
 		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
 		hParam.put( "FILTROS", sCab );
 
-		dlGr = new FPrinterJob( "relatorios/FRRazFor.jasper", "Relatório por Razão", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( "relatorios/FRRazFor.jasper", "Relatório de Razão por fornecedor", sCab, rs, hParam, this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
