@@ -208,6 +208,7 @@ public class Boleto {
 	public static String digVerif(final String codigo, final int modulo) {
 		return digVerif(codigo, modulo, false);
 	}
+	
 	public static String digVerif(final String codigo, final int modulo, final boolean digx){
 		int[] peso;
 		if (modulo==10) {
