@@ -277,8 +277,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private int CODTIPOMOV = 0;
 
-	private int CODCAIXA = AplicativoPDV.iCodCaixa;
-
 	private int CODORC = 0;
 
 	private int CODCLI = 0;
@@ -912,7 +910,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				pluginVenda.addAttribute( "CodEmp", new Integer( AplicativoPDV.iCodEmp ) );
 				pluginVenda.addAttribute( "CodFilial", new Integer( AplicativoPDV.iCodFilial ) );
 				pluginVenda.addAttribute( "IDUsuario", AplicativoPDV.strUsuario );
-				pluginVenda.addAttribute( "CodCaixa", new Integer( CODCAIXA ) );
+				pluginVenda.addAttribute( "CodCaixa", new Integer( AplicativoPDV.iCodCaixa ) );
 
 				pluginVenda.addAttribute( "txtCodVenda", txtCodVenda );
 				pluginVenda.addAttribute( "txtTipoVenda", txtTipoVenda );
@@ -1285,8 +1283,15 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	private synchronized void iniVenda( int codCli, int codPlanoPag, int vend ) {
 
 		CODORC = 0;
+		
+		int iseq = getCodSeqCaixa();
+		
+		if ( iseq == -1 ) {
+			dispose();
+		}
+		
 		lcVenda.insert( false );
-		txtCodVenda.setVlrInteger( getCodSeqCaixa() );
+		txtCodVenda.setVlrInteger( iseq );
 		txtTipoVenda.setVlrString( "E" );
 		txtCodCli.setVlrInteger( new Integer( codCli ) );
 		lcCliente.carregaDados();
@@ -1915,14 +1920,14 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private Integer getCodSeqCaixa() {
 
-		Integer retorno = new Integer( 0 );
+		Integer retorno = new Integer( -1 );
 
 		try {
 
 			PreparedStatement ps = con.prepareStatement( "SELECT ISEQ FROM SPGERANUMPDV(?,?,?)" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setInt( 3, CODCAIXA );
+			ps.setInt( 3, AplicativoPDV.iCodCaixa );
 			
 			ResultSet rs = ps.executeQuery();
 
@@ -1940,7 +1945,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar sequencia." + err.getMessage() );
 			err.printStackTrace();
-			setVisible( false );
 		}
 
 		return retorno;
@@ -2332,13 +2336,13 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				dispose();
 			}
 			else { 
-				if ( caixaAberto() ) {					
+				if ( caixaAberto() ) {			
+					iniVenda();		
 					super.setVisible( bVal );
-					iniVenda();
 				}
 				else if ( FreedomPDV.pegaValorINI( con ) ) {
-					super.setVisible( bVal );
 					iniVenda();
+					super.setVisible( bVal );
 				}
 				else {
 					super.setVisible( ! bVal );
