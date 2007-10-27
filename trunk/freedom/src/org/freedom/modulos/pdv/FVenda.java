@@ -2334,9 +2334,11 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			else { 
 				if ( caixaAberto() ) {					
 					super.setVisible( bVal );
+					iniVenda();
 				}
 				else if ( FreedomPDV.pegaValorINI( con ) ) {
 					super.setVisible( bVal );
+					iniVenda();
 				}
 				else {
 					super.setVisible( ! bVal );
@@ -2387,8 +2389,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		pnStatusBar.add( sbVenda, BorderLayout.CENTER );
 		pnRodape.add( pnStatusBar, BorderLayout.CENTER );
 		vAliquotas = FAliquota.getAliquotas( ecf );
-
-		iniVenda();
 
 		sbVenda.setUsuario( Aplicativo.strUsuario );
 		sbVenda.setCodFilial( Aplicativo.iCodFilial );
