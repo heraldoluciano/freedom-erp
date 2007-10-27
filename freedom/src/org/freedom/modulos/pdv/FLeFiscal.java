@@ -456,38 +456,41 @@ public class FLeFiscal extends FTabDados {
 
 	private void carregaTotalizadores() {
 
-		String sTotalizadores[] = ecf.retornoTotalizadores().trim().split( "," );
-		String sTot = "";
+		if ( AplicativoPDV.bECFTerm && !AplicativoPDV.bModoDemo ) {
 
-		sTot = sTotalizadores[ 5 ].substring( 0, 12 ) + "." + sTotalizadores[ 5 ].substring( 12 );
-		txtTSangria.setVlrDouble( new Double( sTot ) );
-		sTot = sTotalizadores[ 6 ].substring( 0, 12 ) + "." + sTotalizadores[ 6 ].substring( 12 );
-		txtTSuprimento.setVlrDouble( new Double( sTot ) );
-		txtVlrCanc.setVlrDouble( new Double( ecf.cancelamentos() ) );
-		txtVlrDesc.setVlrDouble( new Double( ecf.descontos() ) );
-		sTot = sTotalizadores[ 7 ].substring( 0, 16 ) + "." + sTotalizadores[ 7 ].substring( 16 );
-		txtTotal.setVlrBigDecimal( new BigDecimal( sTot ) );
+			String sTotalizadores[] = ecf.retornoTotalizadores().trim().split( "," );
+			String sTot = "";
 
-		// Totalizadores fiscais:
-		for ( int i = 0; i < ( 224 - 13 ); i += 14 ) {
-			sTot = sTotalizadores[ 0 ].substring( i, i + 12 ) + "." + sTotalizadores[ 0 ].substring( i + 12, i + 14 );
-			lcCampos.getCampo( "TT" + Funcoes.strZero( "" + ( ( i / 14 ) + 1 ), 2 ) ).setVlrDouble( new Double( sTot ) );
+			sTot = sTotalizadores[ 5 ].substring( 0, 12 ) + "." + sTotalizadores[ 5 ].substring( 12 );
+			txtTSangria.setVlrDouble( new Double( sTot ) );
+			sTot = sTotalizadores[ 6 ].substring( 0, 12 ) + "." + sTotalizadores[ 6 ].substring( 12 );
+			txtTSuprimento.setVlrDouble( new Double( sTot ) );
+			txtVlrCanc.setVlrDouble( new Double( ecf.cancelamentos() ) );
+			txtVlrDesc.setVlrDouble( new Double( ecf.descontos() ) );
+			sTot = sTotalizadores[ 7 ].substring( 0, 16 ) + "." + sTotalizadores[ 7 ].substring( 16 );
+			txtTotal.setVlrBigDecimal( new BigDecimal( sTot ) );
+
+			// Totalizadores fiscais:
+			for ( int i = 0; i < ( 224 - 13 ); i += 14 ) {
+				sTot = sTotalizadores[ 0 ].substring( i, i + 12 ) + "." + sTotalizadores[ 0 ].substring( i + 12, i + 14 );
+				lcCampos.getCampo( "TT" + Funcoes.strZero( "" + ( ( i / 14 ) + 1 ), 2 ) ).setVlrDouble( new Double( sTot ) );
+			}
+
+			// Totalizadores não fiscais:
+			for ( int i = 0; i < ( 126 - 13 ); i += 14 ) {
+				sTot = sTotalizadores[ 4 ].substring( i, i + 12 ) + "." + sTotalizadores[ 4 ].substring( i + 12, i + 14 );
+				lcCampos.getCampo( "TN" + ( ( i / 14 ) + 1 ) ).setVlrDouble( new Double( sTot ) );
+			}
+			sTot = sTotalizadores[ 1 ].substring( 0, 12 ) + "." + sTotalizadores[ 1 ].substring( 12 );
+			txtVlrIsento.setVlrDouble( new Double( sTot ) );
+			sTot = sTotalizadores[ 2 ].substring( 0, 12 ) + "." + sTotalizadores[ 2 ].substring( 12 );
+			txtVlrNI.setVlrDouble( new Double( sTot ) );
+			sTot = sTotalizadores[ 3 ].substring( 0, 12 ) + "." + sTotalizadores[ 3 ].substring( 12 );
+			txtVlrSubst.setVlrDouble( new Double( sTot ) );
+
+			txtVlrContabil.setVlrBigDecimal( new BigDecimal( txtVlrIsento.floatValue() + txtVlrNI.floatValue() + txtVlrSubst.floatValue() ) );
+
 		}
-
-		// Totalizadores não fiscais:
-		for ( int i = 0; i < ( 126 - 13 ); i += 14 ) {
-			sTot = sTotalizadores[ 4 ].substring( i, i + 12 ) + "." + sTotalizadores[ 4 ].substring( i + 12, i + 14 );
-			lcCampos.getCampo( "TN" + ( ( i / 14 ) + 1 ) ).setVlrDouble( new Double( sTot ) );
-		}
-		sTot = sTotalizadores[ 1 ].substring( 0, 12 ) + "." + sTotalizadores[ 1 ].substring( 12 );
-		txtVlrIsento.setVlrDouble( new Double( sTot ) );
-		sTot = sTotalizadores[ 2 ].substring( 0, 12 ) + "." + sTotalizadores[ 2 ].substring( 12 );
-		txtVlrNI.setVlrDouble( new Double( sTot ) );
-		sTot = sTotalizadores[ 3 ].substring( 0, 12 ) + "." + sTotalizadores[ 3 ].substring( 12 );
-		txtVlrSubst.setVlrDouble( new Double( sTot ) );
-
-		txtVlrContabil.setVlrBigDecimal( new BigDecimal( txtVlrIsento.floatValue() + txtVlrNI.floatValue() + txtVlrSubst.floatValue() ) );
-
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
