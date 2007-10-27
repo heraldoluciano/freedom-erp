@@ -893,7 +893,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		return getValorSecao( "parametros", sParam );
 	}
 
-	public void killProg( int iTerm, String sMess ) {
+	public static void killProg( int iTerm, String sMess ) {
 
 		Funcoes.mensagemErro( null, sMess );
 		System.exit( iTerm );

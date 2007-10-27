@@ -21,6 +21,7 @@
  */
 package org.freedom.telas;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
@@ -77,17 +78,16 @@ public class AplicativoPDV extends AplicativoPD {
 		return pluginVenda;
 	}
 	
-	public boolean pegaValorINI() {
+	public static boolean pegaValorINI( final Connection con ) {
 
-		boolean bRetorno = false;
 		FAbreCaixa tela = new FAbreCaixa();
 		tela.setConexao( con );
 		tela.setVisible( true );
-		bRetorno = tela.OK;
-		return bRetorno;
+
+		return tela.OK;
 	}
 
-	public int abreCaixa() {
+	public static int abreCaixa( final Connection con ) {
 
 		int result = -1;
 		PreparedStatement ps = null;
@@ -111,8 +111,8 @@ public class AplicativoPDV extends AplicativoPD {
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
-
-			setECF();
+			
+			setECF( con );
 
 			ps = con.prepareStatement( "SELECT IRETORNO FROM PVVERIFCAIXASP(?,?,?,?,?,?)" ); 
 			ps.setInt( 1, iCodCaixa );
@@ -130,7 +130,7 @@ public class AplicativoPDV extends AplicativoPD {
 				switch ( result ) {
 					// caixa ok
 					case 0 : {
-						if ( ! pegaValorINI() ) {
+						if ( ! pegaValorINI( con ) ) {
 							result = -1;
 						}
 						break;
@@ -202,7 +202,7 @@ public class AplicativoPDV extends AplicativoPD {
 		return result;
 	}
 
-	private void setECF() {
+	public static void setECF( Connection con ) {
 		
 		try {
 			
