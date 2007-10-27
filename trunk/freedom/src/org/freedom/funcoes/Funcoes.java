@@ -1952,10 +1952,13 @@ public class Funcoes {
 	}
 
 	public static String strZero(String val, int zeros) {
-		if (val == null)
-			return val;
-		String sRetorno = replicate("0", zeros - val.trim().length());
-		sRetorno += val.trim();
+		String sRetorno = null;
+		if (val == null) {
+			sRetorno = replicate("0", zeros);
+		} else {	
+			sRetorno = replicate("0", zeros - val.trim().length());
+			sRetorno += val.trim();
+		}
 		return sRetorno;
 	}
 
