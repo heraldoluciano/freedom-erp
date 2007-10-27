@@ -534,7 +534,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 							bPrim = false;
 						}
 						try {
-							sSQL = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?,?)";
+							sSQL = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?,?,?,?)";
 							ps2 = con.prepareStatement( sSQL );
 							ps2.setInt( 1, Aplicativo.iCodFilial );
 							ps2.setInt( 2, iCodVenda );
@@ -543,6 +543,10 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 							ps2.setInt( 5, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 							ps2.setInt( 6, Aplicativo.iCodEmp );
 							ps2.setString( 7, sTipoVenda );
+							
+							ps2.setString( 8, tab.getValor( i, POS_TPAGR ).toString());
+							ps2.setFloat( 9, new Float(Funcoes.strCurrencyToDouble(tab.getValor( i, POS_QTD ).toString())));
+							
 							ps2.execute();
 							ps2.close();
 						} 
@@ -768,13 +772,15 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 	}
 	
 	
-	private Float marcaFilhos(int i, final Integer codprodpai, final Float precopai) {
+	private Float marcaFilhos(final int iLinha, final Integer codprodpai, final Float precopai) {
 		Integer codprodfilho = null;	
 		Float precofilho = null;
 		Float vlrliqfilho = null;
 		Float qtdfilho = null;
 		Float ret = new Float(0);
 		String tpagrup = null;
+		int i = iLinha;
+		int iPai = iLinha -1;
 		
 		try {			
 			while (i < tab.getNumLinhas()) {
@@ -786,7 +792,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 				//if( codprodfilho == codprodpai && precopai == precofilho && vlrliqfilho == (qtdfilho * precofilho) && tpagrup.equals( "" ) ) {
 				if( (codprodfilho.compareTo( codprodpai )==0) && (precopai.compareTo( precofilho)==0) ) {					
 					tab.setValor( "F", i, POS_TPAGR );
-					tab.setValor( i - 1 + "", i , POS_PAI );
+					tab.setValor( String.valueOf( iPai ),  i , POS_PAI );
 					ret += qtdfilho;
 				}				
 				i++;				
@@ -829,7 +835,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 					}
 				}					
 			}	
-			limpaFilhos( tab );
+//			limpaFilhos( tab );
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -896,7 +902,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		else if ( evt.getSource() == btAgruparItens ) {
 			try {
 				if (Funcoes.mensagemConfirma( null, "Confirma o agrupamento dos ítens iguais?\nSerão agrupados apenas os ítens de código e preços iguais." ) == JOptionPane.YES_OPTION ) {
-//					agrupaItens(); //comentar
+					agrupaItens(); //comentar
 				}					
 			} 
 			catch ( Exception err ) {
