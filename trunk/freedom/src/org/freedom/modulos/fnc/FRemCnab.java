@@ -172,7 +172,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
 		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
 		reg.setDigAgConta( null );
-		reg.setRazEmp( (String) prefs.get( FbnUtil.EPrefs.NOMEEMP ) );
+		reg.setRazEmp( (String) prefs.get( FbnUtil.EPrefs.NOMEEMPCNAB ) );
 		reg.setNomeBanco( txtNomeBanco.getVlrString() );
 		
 		Calendar cal = Calendar.getInstance();

@@ -83,6 +83,8 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 
 	private final JTextFieldPad txtNomeEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
+	private final JTextFieldPad txtNomeEmpCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+	
 	private final JTextFieldPad txtTipoSiacc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
 	private final JTextFieldPad txtCodBancoSiacc = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
@@ -477,7 +479,8 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 
 		setPainel( panelGeral );
 		adicTab( "Geral", panelGeral );
-		adicCampo( txtNomeEmp, 7, 30, 250, 20, "NomeEmp", "Nome da empresa", ListaCampos.DB_SI, true );		
+		adicCampo( txtNomeEmp, 7, 30, 250, 20, "NomeEmp", "Nome da empresa (siacc)", ListaCampos.DB_SI, true );
+		adicCampo( txtNomeEmpCnab, 7, 70, 250, 20, "NomeEmpCnab", "Nome da empresa (cnab)", ListaCampos.DB_SI, true );
 		
 		nav.setAtivo( 0, false );
 		lcCampos.setPodeExc( false );

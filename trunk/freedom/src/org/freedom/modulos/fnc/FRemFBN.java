@@ -362,7 +362,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			
 			StringBuilder sql = new StringBuilder();
 			
-			sql.append( "SELECT I.CODCONV, P.NOMEEMP, I.VERLAYOUT, I.IDENTSERV, I.CONTACOMPR, " );
+			sql.append( "SELECT I.CODCONV, P.NOMEEMP, P.NOMEEMPCNAB, I.VERLAYOUT, I.IDENTSERV, I.CONTACOMPR, " );
 			sql.append( "I.IDENTAMBCLI, I.IDENTAMBBCO, I.NROSEQ, " );
 			sql.append( "I.NUMCONTA, C.AGENCIACONTA, E.CNPJFILIAL, " );
 			sql.append( "FORCADTIT, TIPODOC, IDENTEMITBOL , IDENTDISTBOL, ESPECTIT, CODJUROS, VLRPERCJUROS, " );
@@ -389,6 +389,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				
 				prefs.put( EPrefs.CODCONV, rs.getString( EPrefs.CODCONV.toString() ) );
 				prefs.put( EPrefs.NOMEEMP, rs.getString( EPrefs.NOMEEMP.toString() ) );
+				prefs.put( EPrefs.NOMEEMPCNAB, rs.getString( EPrefs.NOMEEMPCNAB.toString() ) );
 				prefs.put( EPrefs.VERLAYOUT, rs.getString( EPrefs.VERLAYOUT.toString() ) );
 				prefs.put( EPrefs.CODBANCO, txtCodBanco.getVlrString() );
 				prefs.put( EPrefs.NOMEBANCO, txtNomeBanco.getVlrString() );
