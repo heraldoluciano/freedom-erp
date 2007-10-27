@@ -181,9 +181,9 @@ public class DLFechaDia extends FFDialogo {
 
 	private void fechaCaixa( boolean bReduz ) {
 
-		if ( txtVlrCaixa.getVlrDouble().doubleValue() > 0 ) {
+		if ( txtVlrCaixa.getVlrBigDecimal().floatValue() > 0.0F ) {
 
-			if ( execSangria() && AplicativoPDV.bECFTerm ) {
+			if ( execSangria() && AplicativoPDV.bECFTerm && !AplicativoPDV.bModoDemo ) {
 				
 				if ( ! ecf.sangria( txtVlrCaixa.getVlrBigDecimal() ) ) {
 					
@@ -197,7 +197,7 @@ public class DLFechaDia extends FFDialogo {
 			
 			Funcoes.mensagemInforma( null, "O caixa foi fechado." );
 			
-			if ( AplicativoPDV.bECFTerm && bReduz ) {
+			if ( AplicativoPDV.bECFTerm && bReduz && !AplicativoPDV.bModoDemo ) {
 				
 				FLeFiscal fiscal = new FLeFiscal();
 				fiscal.setConexao( con );

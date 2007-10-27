@@ -1563,24 +1563,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		}
 	}
 
-	// O botão sair execute este método para sair:
-	public void setVisible( boolean bVal ) {
-
-		if ( !bVal ) {
-			
-			if ( ( FreedomPDV.bECFTerm  ) && ( ecf != null ) ) {
-				
-				if ( ecf.verificaCupomAberto() ) {
-					
-					Funcoes.mensagemInforma( null, "Cupom fiscal está aberto!" );
-					return;
-				}
-			}
-		}
-
-		super.setVisible( bVal );
-	}
-
 	private int getLinha( int iItem ) {
 
 		int iLinha = -1;
@@ -2336,21 +2318,49 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		}
 	}
 
+	// O botão sair execute este método para sair:
+	public void setVisible( boolean bVal ) {
+
+		if ( bVal ) {
+			
+			int result = FreedomPDV.abreCaixa( con );
+
+			if ( result == -1 ) {
+				FreedomPDV.killProg( 5, "Caixa não foi aberto. A aplicação será fechada!" );
+			}
+			else if ( result == 3 ) {
+				dispose();
+			}
+			else { 
+				if ( caixaAberto() ) {					
+					super.setVisible( bVal );
+				}
+				else if ( FreedomPDV.pegaValorINI( con ) ) {
+					super.setVisible( bVal );
+				}
+				else {
+					super.setVisible( ! bVal );
+				}
+			}
+		}
+		else {
+			
+			if ( ( FreedomPDV.bECFTerm  ) && ( ecf != null ) ) {
+				
+				if ( ecf.verificaCupomAberto() ) {
+					
+					Funcoes.mensagemInforma( null, "Cupom fiscal está aberto!" );
+					return;
+				}
+			}
+			
+			super.setVisible( bVal );
+		}
+	}
+
 	public void setConexao( Connection con ) {
 
 		super.setConexao( con );
-		
-		if ( ! caixaAberto() ) {
-			
-			FAbreCaixa tela = new FAbreCaixa();
-			tela.setConexao( con );
-			tela.setVisible( true );
-			
-			if ( ! tela.OK ) {
-				Funcoes.mensagemErro( null, "Caixa não foi aberto. A aplicação será fechada!" );
-				System.exit( 5 );
-			}
-		}
 		
 		lcCliente.setConexao( con );
 		lcVendedor.setConexao( con );
