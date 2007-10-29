@@ -325,9 +325,13 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 				}
 			}
 			else if ( ( ( txtPesq.getTipo() == JTextFieldPad.TP_STRING ) || ( txtPesq.getEhMascara() ) ) && ( !bString1 ) ) {
-				sWhere += sSep + sNomeCampoAtual + ( bLike ? " LIKE ?" : "=?" ) + " ORDER BY " + sNomeCampoAtual;// Foi usada essa variavel booleana (blike) por que quando o campo estiver todo preenchido (do tamnho do length) nao eh preciso fazer LIKE.
+				// Foi usada essa variavel booleana (blike) por que quando o campo estiver todo 
+				// preenchido (do tamnho do length) nao eh preciso fazer LIKE.
+				sWhere += sSep + sNomeCampoAtual + ( bLike ? 
+						( " LIKE '" + txtPesq.getVlrString().trim() + "%'" ) : 
+						( "='" + txtPesq.getVlrString().trim() + "'" ) ) + " ORDER BY " + sNomeCampoAtual;
 				sqlF2 = cnF2.prepareStatement( sSqlF2 + sWhere );
-				sqlF2.setString( 1, txtPesq.getVlrString().trim() + ( bLike ? "%" : "" ) );
+				//sqlF2.setString( 1, txtPesq.getVlrString().trim() + ( bLike ? "%" : "" ) );
 			}
 			else if ( bString1 ) {
 				sOrderBy = " ORDER BY " + sNomeCampoAtual;
