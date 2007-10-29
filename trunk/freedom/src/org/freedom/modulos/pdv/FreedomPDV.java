@@ -154,7 +154,7 @@ public class FreedomPDV extends AplicativoPDV {
 			}
 			*/
 		} catch ( Throwable e ) {
-			Funcoes.criaTelaErro( "Erro de execução" );
+			Funcoes.criaTelaErro( "Erro de execução\n\n" + e.getMessage() );
 			e.printStackTrace();
 		}
 	}
