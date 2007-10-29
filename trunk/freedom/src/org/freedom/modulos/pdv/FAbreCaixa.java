@@ -73,9 +73,9 @@ public class FAbreCaixa extends FDialogo {
 
 		System.out.println( "Modo demo PDV: " + Aplicativo.bModoDemo );
 		
-		if ( ecf.leituraX() || AplicativoPDV.bECFTerm  ) {
+		if ( AplicativoPDV.bECFTerm && ( AplicativoPDV.bModoDemo || ecf.leituraX() ) ) {
 			
-			if ( ecf.suprimento( txtValor.getVlrBigDecimal() ) || AplicativoPDV.bECFTerm ) {
+			if ( AplicativoPDV.bModoDemo || ecf.suprimento( txtValor.getVlrBigDecimal() ) ) {
 
 				try {
 				
@@ -100,7 +100,7 @@ public class FAbreCaixa extends FDialogo {
 					Funcoes.mensagemErro( this, "Erro ao abrir o caixa!\n" + err.getMessage(), true, con, err );
 				}
 				
-				if ( AplicativoPDV.bECFTerm ) {
+				if ( ! AplicativoPDV.bModoDemo ) {
 					ecf.abreGaveta();
 				}				
 			}			

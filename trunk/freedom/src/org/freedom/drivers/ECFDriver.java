@@ -739,7 +739,7 @@ public class ECFDriver {
 		boolean bRetorno = false;
 
 		if ( dll ) {
-			bRetorno = bema.sangria( sUserID, valor, bModoDemo );
+			bRetorno = bema.suprimento( sUserID, valor, "Dinheiro", bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null && valor.floatValue() > 0 ) {
 

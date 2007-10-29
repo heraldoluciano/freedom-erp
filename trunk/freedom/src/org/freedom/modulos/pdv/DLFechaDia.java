@@ -180,45 +180,49 @@ public class DLFechaDia extends FFDialogo {
 	}
 
 	private void fechaCaixa( boolean bReduz ) {
-
-		if ( txtVlrCaixa.getVlrBigDecimal().floatValue() > 0.0F ) {
-
-			if ( execSangria() && AplicativoPDV.bECFTerm && !AplicativoPDV.bModoDemo ) {
-				
-				if ( ! ecf.sangria( txtVlrCaixa.getVlrBigDecimal() ) ) {
-					
-					Funcoes.mensagemErro( null, "Erro ao executar a sangria!" );
-					return;					
-				}				
-			}			
-		}
 		
-		if ( execFechamento( bReduz ) ) {
-			
-			Funcoes.mensagemInforma( null, "O caixa foi fechado." );
-			
-			if ( AplicativoPDV.bECFTerm && bReduz && !AplicativoPDV.bModoDemo ) {
-				
-				FLeFiscal fiscal = new FLeFiscal();
-				fiscal.setConexao( con );
-				
-				if ( fiscal.getReducaoZ( Calendar.getInstance().getTime(), AplicativoPDV.iCodCaixa ) ) {
-					
-					if ( ecf.reducaoZ() ) {
-						
-						fiscal.salvaReducaoZ();						
-					}
-					else {						
-						
-						Funcoes.mensagemErro( null, "Erro ao executar a redução Z!" );						
-					}					
+		if ( AplicativoPDV.bECFTerm ) {
+
+			if ( txtVlrCaixa.getVlrBigDecimal().floatValue() > 0.0F ) {
+
+				if ( execSangria() && ! AplicativoPDV.bModoDemo ) {
+
+					ecf.sangria( txtVlrCaixa.getVlrBigDecimal() );
 				}
-				else {			
-					
-					Funcoes.mensagemErro( null, "Erro ao executar a redução Z!" );						
-				}			
+			}
+			
+			if ( ! AplicativoPDV.bModoDemo ) {
+			
+				ecf.leituraX();
 			}			
-		}		
+
+			if ( execFechamento( bReduz ) ) {
+
+				Funcoes.mensagemInforma( null, "O caixa foi fechado." );
+
+				if ( bReduz && !AplicativoPDV.bModoDemo ) {
+
+					FLeFiscal fiscal = new FLeFiscal();
+					fiscal.setConexao( con );
+
+					if ( fiscal.getReducaoZ( Calendar.getInstance().getTime(), AplicativoPDV.iCodCaixa ) ) {
+
+						if ( ecf.reducaoZ() ) {
+
+							fiscal.salvaReducaoZ();
+						}
+						else {
+
+							Funcoes.mensagemErro( null, "Erro ao executar a redução Z!" );
+						}
+					}
+					else {
+
+						Funcoes.mensagemErro( null, "Erro ao executar a redução Z!" );
+					}
+				}
+			}					
+		}
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
