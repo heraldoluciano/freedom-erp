@@ -83,6 +83,8 @@ public class ImprimeOS implements ActionListener {
 	private DLPrinterJob dlPrevGraf = null;
 
 	private ImprimeLayout impLay = null;
+	
+	private int margem = 0;
 
 	private String[] sVals = new String[ 5 ];
 
@@ -146,6 +148,14 @@ public class ImprimeOS implements ActionListener {
 
 	FAndamento and = null;
 
+	public void setMargem(final int marg) {
+		this.margem = marg;
+	}
+	
+	public int getMargem() {
+		return this.margem;
+	}
+	
 	public void setImpEject( boolean bImpEject ) {
 
 		this.bImpEject = bImpEject;
@@ -561,6 +571,8 @@ public class ImprimeOS implements ActionListener {
 
 	public void say( int iR, int iC, String sTexto ) {
 
+		iC += margem;
+		
 		if ( sTexto == null ) {
 			sTexto = " ";
 		}
