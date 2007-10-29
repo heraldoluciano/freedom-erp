@@ -1272,22 +1272,25 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		return ret;
 	}
 
-	private synchronized void iniVenda() {
+	private synchronized boolean iniVenda() {
 
 		if ( checkVendaAberta() ) {
 
-			iniVenda( CODCLI, PLANOPAG, CODVEND );
+			return iniVenda( CODCLI, PLANOPAG, CODVEND );
 		}
+		
+		return false;
 	}
 
-	private synchronized void iniVenda( int codCli, int codPlanoPag, int vend ) {
+	private synchronized boolean iniVenda( int codCli, int codPlanoPag, int vend ) {
 
 		CODORC = 0;
 		
 		int iseq = getCodSeqCaixa();
 		
 		if ( iseq == -1 ) {
-			dispose();
+			setVisible( false );
+			return false;
 		}
 		
 		lcVenda.insert( false );
@@ -1323,6 +1326,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		mostraInfoImp();
 
 		iniItem();
+		
+		return true;
 	}
 
 	private void leituraX() {
@@ -2336,13 +2341,10 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				dispose();
 			}
 			else { 
-				if ( caixaAberto() ) {			
-					iniVenda();		
-					super.setVisible( bVal );
-				}
-				else if ( FreedomPDV.pegaValorINI( con ) ) {
-					iniVenda();
-					super.setVisible( bVal );
+				if ( caixaAberto() || FreedomPDV.pegaValorINI( con ) ) {
+					if ( iniVenda() ) {
+						super.setVisible( bVal );						
+					}
 				}
 				else {
 					super.setVisible( ! bVal );
