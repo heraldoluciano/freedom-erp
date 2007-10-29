@@ -178,7 +178,8 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 500300000, TP_OPCAO_ITEM, "Inadimplentes", "Inadimplentes", 'I', 500302000, 2, true, FRInadimplentes.class );
 				addOpcao( 500300000, TP_OPCAO_ITEM, "Bordero de cobrança", "Bordero de cobrança", 'B', 500303000, 2, true, FRBordero.class );
 				addOpcao( 500300000, TP_OPCAO_ITEM, "Descontos por setor", "Descontos por setor", 'D', 500304000, 2, true, FRReceberSetor.class );
-
+				addOpcao( 500300000, TP_OPCAO_ITEM, "Razão", "Razão", 'R', 500305000, 2, true, FRRazCli.class );
+				
 		addOpcao( -1, TP_OPCAO_MENU, "Financeiro", "", 'F', 600000000, 0, false, null );
 			addOpcao( 600000000, TP_OPCAO_MENU, "Boleto/Recibo", "", 'B', 600100000, 1, false, null );
 				addOpcao( 600100000, TP_OPCAO_ITEM, "Modelo", "Modelo de boleto/recibo", 'M', 600110000, 2, true, FModBoleto.class );
