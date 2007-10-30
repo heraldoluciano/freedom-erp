@@ -135,13 +135,22 @@ public class Boleto {
 
 	public static String geraNossoNumero( final String modalidade, final String convenio, 
 			final Long rec, final Long nparc, final boolean comdigito ) {
+		return geraNossoNumero(modalidade, convenio, rec, nparc, comdigito, false );
+	}
+
+	public static String geraNossoNumero( final String modalidade, final String convenio, 
+			final Long rec, final Long nparc, final boolean comdigito, final boolean comtraco ) {
 		final StringBuffer retorno = new StringBuffer();
 		if ( !"21".equals(modalidade) ) {
 			retorno.append(  convenio );
 		} 
 		retorno.append( getNumCli(modalidade, convenio, rec, nparc ) );
 		if ( (comdigito) && ( (convenio.length()==4) || (convenio.length()==6) ) ) {
-			retorno.append( digVerif( retorno.toString(), 11, true ) );
+			if (comtraco) {
+				retorno.append( "-" + digVerif( retorno.toString(), 11, true ) );
+			} else {
+				retorno.append( digVerif( retorno.toString(), 11, true ) );
+			}
 		}
 		return retorno.toString();
 	}
