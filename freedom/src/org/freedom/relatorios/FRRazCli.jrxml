@@ -57,12 +57,12 @@ DATAREC BETWEEN '2007-01-01' AND '2007-12-01' )OR EXISTS (SELECT * FROM FNLANCA 
 WHERE L2.CODEMPRC=R2.CODEMP AND L2.CODFILIALRC=R2.CODFILIAL AND
 L2.CODREC=R2.CODREC AND C.CODEMP=R2.CODEMPCL AND C.CODFILIAL=R2.CODFILIALCL AND
 C.CODCLI=R2.CODCLI AND R2.CODEMP=25 AND R2.CODFILIAL=1 AND L2.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01') )
-UNION SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, R.DATAREC DATA, 'C' TIPO, R.DOCREC DOC,
+UNION SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, R.DATAREC DATA, 'Q' TIPO, R.DOCREC DOC,
 R.VLRREC VALOR FROM FNRECEBER R, VDCLIENTE C WHERE C.CODEMP=R.CODEMPCL AND
 C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND R.CODEMP=25 AND
 R.CODFILIAL=1 AND C.CODCLI=28 AND R.DATAREC BETWEEN '2007-01-01' AND '2007-12-01'
 UNION SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, L.DATALANCA DATA,
-'P' TIPO, R.DOCREC DOC, L.VLRLANCA FROM FNLANCA L, FNRECEBER R, VDCLIENTE C
+'R' TIPO, R.DOCREC DOC, L.VLRLANCA FROM FNLANCA L, FNRECEBER R, VDCLIENTE C
 WHERE L.CODEMPRC=R.CODEMP AND L.CODFILIALRC=R.CODFILIAL AND
 L.CODREC=R.CODREC AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND
 C.CODCLI=R.CODCLI AND C.CODCLI=28 AND R.CODEMP=25 AND R.CODFILIAL=1 AND
@@ -76,23 +76,21 @@ L.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01' ORDER BY 1, 2, 3, 4, 5]]></que
 	<field name="VALOR" class="java.math.BigDecimal"/>
 
 	<variable name="DESCTIPO" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[("A".equals($F{TIPO})?"SALDO INICIAL":("C".equals($F{TIPO})?"VENDA":"RECEBIMENTO"))]]></variableExpression>
+		<variableExpression><![CDATA[("A".equals($F{TIPO})?"SALDO INICIAL":("Q".equals($F{TIPO})?"VENDA":"RECEBIMENTO"))]]></variableExpression>
 	</variable>
 	<variable name="SALDOFOR" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
-		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+		<variableExpression><![CDATA[( "AR".indexOf($F{TIPO})>-1 ? $F{VALOR}: $F{VALOR}.multiply( new BigDecimal(-1) ) )]]></variableExpression>
 	</variable>
 	<variable name="SALDOGERAL" class="java.math.BigDecimal" resetType="Group" resetGroup="GERAL" calculation="Sum">
-		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+		<variableExpression><![CDATA[( "AR".indexOf($F{TIPO})>-1 ? $F{VALOR}: $F{VALOR}.multiply( new BigDecimal(-1) ) )]]></variableExpression>
 	</variable>
 	<variable name="VLRDEBITO" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[$F{TIPO}.equals( "P" ) ? $F{VALOR} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{TIPO}.equals( "Q" ) ? $F{VALOR} : new BigDecimal(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[
 ]]></initialValueExpression>
 	</variable>
 	<variable name="VLRCREDITO" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA["CA".indexOf($F{TIPO})>-1 ? $F{VALOR} : new BigDecimal(0) ]]></variableExpression>
+		<variableExpression><![CDATA["R".indexOf($F{TIPO})>-1 ? $F{VALOR} : new BigDecimal(0) ]]></variableExpression>
 	</variable>
 	<variable name="TOTALCREDITOFOR" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
 		<variableExpression><![CDATA[$V{VLRCREDITO}]]></variableExpression>
