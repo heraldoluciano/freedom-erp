@@ -55,6 +55,7 @@ import org.freedom.modulos.std.FRFluxoCaixa;
 import org.freedom.modulos.std.FRGraficoCC;
 import org.freedom.modulos.std.FRInadimplentes;
 import org.freedom.modulos.std.FRPagar;
+import org.freedom.modulos.std.FRRazCli;
 import org.freedom.modulos.std.FRRazFor;
 import org.freedom.modulos.std.FRRazaoFin;
 import org.freedom.modulos.std.FRReceber;
@@ -130,6 +131,7 @@ public class FreedomFNC extends AplicativoPD {
 			addOpcao( 300300000, TP_OPCAO_ITEM, "Inadimplentes", "Inadimplentes", 'I', 300302000, 2, true, FRInadimplentes.class );
 			addOpcao( 300300000, TP_OPCAO_ITEM, "Bordero de cobrança", "Bordero de cobrança", 'B', 300303000, 2, true, FRBordero.class );
 			addOpcao( 300300000, TP_OPCAO_ITEM, "Descontos por setor", "Descontos por setor", 'D', 300304000, 2, true, FRReceberSetor.class );
+			addOpcao( 300300000, TP_OPCAO_ITEM, "Razão", "Razão", 'R', 300305000, 2, true, FRRazCli.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Financeiro", "", 'F', 400000000, 0, false, null );
 			addOpcao( 400000000, TP_OPCAO_MENU, "Boleto/Recibo", "", 'o', 400100000, 1, false, null );
