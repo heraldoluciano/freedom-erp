@@ -66,8 +66,7 @@ UNION SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, L.DATALANCA DATA,
 WHERE L.CODEMPRC=R.CODEMP AND L.CODFILIALRC=R.CODFILIAL AND
 L.CODREC=R.CODREC AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND
 C.CODCLI=R.CODCLI AND C.CODCLI=28 AND R.CODEMP=25 AND R.CODFILIAL=1 AND
-L.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01' ORDER BY 1, 2, 3, 4, 5
-]]></queryString>
+L.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01' ORDER BY 1, 2, 3, 4, 5]]></queryString>
 
 	<field name="CODEMIT" class="java.lang.Long"/>
 	<field name="RAZEMIT" class="java.lang.String"/>
@@ -77,7 +76,7 @@ L.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01' ORDER BY 1, 2, 3, 4, 5
 	<field name="VALOR" class="java.math.BigDecimal"/>
 
 	<variable name="DESCTIPO" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[("A".equals($F{TIPO})?"SALDO INICIAL":("C".equals($F{TIPO})?"COMPRA":"PAGAMENTO"))]]></variableExpression>
+		<variableExpression><![CDATA[("A".equals($F{TIPO})?"SALDO INICIAL":("C".equals($F{TIPO})?"VENDA":"RECEBIMENTO"))]]></variableExpression>
 	</variable>
 	<variable name="SALDOFOR" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
 		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
