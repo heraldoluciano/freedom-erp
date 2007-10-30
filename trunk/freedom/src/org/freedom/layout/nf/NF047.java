@@ -332,7 +332,11 @@ public class NF047 extends Layout {
 					if(frete.getString( NF.C_QTDFRETE )!=null) 
 						imp.say( 1, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( frete.getString( NF.C_QTDFRETE ) ) ) );
 					imp.say( 21, Funcoes.copy( frete.getString( NF.C_ESPFRETE ), 27 ) );
-					imp.say( 82, Funcoes.copy( frete.getString( NF.C_CONHECFRETEPED ), 20 ) );
+					imp.say( 60, Funcoes.copy( frete.getString( NF.C_MARCAFRETE ), 27 ) );
+					imp.say( 83, Funcoes.copy( frete.getString( NF.C_NUMTRANSP ), 4 ) );
+					imp.say( 108, Funcoes.copy( frete.getString( NF.C_PESOBRUTO ), 4 ) );
+					imp.say( 125, Funcoes.copy( frete.getString( NF.C_PESOLIQ ), 4 ) );
+					
 					imp.pulaLinha( 1, imp.comprimido() );
 
 					// Fim da impressão do frete
@@ -358,12 +362,12 @@ public class NF047 extends Layout {
 							
 					).floatValue();
 					
-					imp.say( 2, "VALOR DO ICMS DIFERIDO:" + Funcoes.strDecimalToStrCurrency(10,2,String.valueOf( vlrdiferido )));
+					//imp.say( 2, "VALOR DO ICMS DIFERIDO:" + Funcoes.strDecimalToStrCurrency(10,2,String.valueOf( vlrdiferido )));
 					
 					
 //					 Fim da observação
 					
-					imp.pulaLinha( 5, imp.comprimido() );
+					imp.pulaLinha( 4, imp.comprimido() );
 					imp.say( 120, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					// Imprime canhoto
