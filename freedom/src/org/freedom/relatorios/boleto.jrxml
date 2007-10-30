@@ -159,7 +159,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraConvenio($F{CONVCOB})]]></variableExpression>
 	</variable>
 	<variable name="NOSSONUMERO" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraNossoNumero($F{MDECOB}, $V{VCONVENIO}, $F{DOCREC}, $F{NPARCITREC} )]]></variableExpression>
+		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraNossoNumero($F{MDECOB}, $V{VCONVENIO}, $F{DOCREC}, $F{NPARCITREC}, true, true )]]></variableExpression>
 	</variable>
 	<variable name="LINHADIG" class="java.lang.String" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[org.freedom.funcoes.Boleto.geraLinhaDig( $V{CODBAR},  $F{FATVENC}, $F{VLRAPAGITREC} )]]></variableExpression>
