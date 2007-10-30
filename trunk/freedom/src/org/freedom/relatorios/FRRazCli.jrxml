@@ -197,7 +197,7 @@ L.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01' ORDER BY 1, 2, 3, 4, 5]]></que
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALDEBITO}.multiply(new BigDecimal(-1))]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALDEBITO}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -387,7 +387,7 @@ L.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01' ORDER BY 1, 2, 3, 4, 5]]></que
 						key="line-40"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="296"
 						y="2"
@@ -398,9 +398,9 @@ L.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01' ORDER BY 1, 2, 3, 4, 5]]></que
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALDEBITOFOR}.multiply(new BigDecimal(-1))]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALDEBITOFOR}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="380"
 						y="2"
@@ -780,7 +780,7 @@ L.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01' ORDER BY 1, 2, 3, 4, 5]]></que
 						key="line-25"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="296"
 						y="2"
@@ -791,7 +791,7 @@ L.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01' ORDER BY 1, 2, 3, 4, 5]]></que
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRDEBITO}.equals(new BigDecimal(0))?null:$V{VLRDEBITO}.multiply( new BigDecimal(-1))]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRDEBITO}.equals(new BigDecimal(0))?null:$V{VLRDEBITO}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -833,7 +833,7 @@ L.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01' ORDER BY 1, 2, 3, 4, 5]]></que
 						key="line-43"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="380"
 						y="2"
