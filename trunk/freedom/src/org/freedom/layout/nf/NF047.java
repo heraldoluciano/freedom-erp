@@ -65,7 +65,7 @@ public class NF047 extends Layout {
 		Vector<String> vSigla = new Vector<String>();
 		Vector<?> vDescServ = new Vector<Object>();
 		Vector<Object[]> vServico = new Vector<Object[]>();
-		imp.setMargem( 3 );
+		imp.setMargem( 2 );
 
 		try {
 
@@ -127,10 +127,10 @@ public class NF047 extends Layout {
 					imp.pulaLinha( 2, imp.comprimido() );
 					
 					if ( nf.getTipoNF() == NF.TPNF_ENTRADA ) {
-						imp.say( 98, "X" );
+						imp.say( 126, "X" );
 					}
 					else {
-						imp.say( 86, "X" );
+						imp.say( 102, "X" );
 					}
 
 					imp.say( 127, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
