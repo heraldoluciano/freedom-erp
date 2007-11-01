@@ -1599,7 +1599,7 @@ public class CnabUtil extends FbnUtil {
 				line.append( dateToString( getDtDesc() ) );
 				line.append( format( getVlrpercConced(), ETipo.$9, 15, 2 ) );
 				line.append( format( getVlrIOF(), ETipo.$9, 15, 2 ) );
-				line.append( format( getVlrAbatimento(), ETipo.$9, 15, 2 ) );
+				line.append( format( getVlrAbatimento(), ETipo.$9, 15, 2 ) ); 
 				line.append( format( getIdentTitEmp(), ETipo.X, 25, 0 ) );
 				line.append( format( getCodProtesto(), ETipo.$9, 1, 0 ) );
 				line.append( format( getDiasProtesto(), ETipo.$9, 2, 0 ) );
@@ -3703,6 +3703,10 @@ public class CnabUtil extends FbnUtil {
 				setCodrec( Integer.parseInt( code.substring( 0, 10 ) ) );
 				setNrparcrec( Integer.parseInt( code.substring( 10 ) ) );
 			}
+		}
+		
+		public String toString() {
+			return encode();
 		}
 	}
 
