@@ -29,19 +29,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.SwingConstants;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRComprasFor extends FRelatorio {
@@ -57,13 +64,19 @@ public class FRComprasFor extends FRelatorio {
 	private JTextFieldFK txtDescFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private ListaCampos lcFor = new ListaCampos( this );
+	
+	private Vector<String> vLabs1 = new Vector<String>();
+	
+	private Vector<String> vVals1 = new Vector<String>();
+	
+	private JRadioGroup<?, ?> rgTipo = null;
 
 	private String sCodProd = "CODPROD";
 
 	public FRComprasFor() {
 
 		setTitulo( "Compras por Fornecedor" );
-		setAtribos( 50, 50, 340, 195 );
+		setAtribos( 50, 50, 340, 225 );
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
@@ -73,9 +86,17 @@ public class FRComprasFor extends FRelatorio {
 		lcFor.setReadOnly( true );
 		lcFor.montaSql( false, "FORNECED", "CP" );
 		
+		vLabs1.addElement("Texto");
+ 		vLabs1.addElement("Grafico"); 
+ 		vVals1.addElement("T");
+ 		vVals1.addElement("G");
+		    
+ 		rgTipo = new JRadioGroup<String, String>(1,2,vLabs1,vVals1);
+ 		rgTipo.setVlrString("T");
+		
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
-		JLabelPad lbPeriodo = new JLabelPad("   	Periodo:");
+		JLabelPad lbPeriodo = new JLabelPad("Periodo:" , SwingConstants.CENTER );
 		lbPeriodo.setOpaque(true);
 		
 		adic(lbPeriodo,7, 1, 80, 20 );
@@ -89,6 +110,7 @@ public class FRComprasFor extends FRelatorio {
 		adic( txtCodFor, 7, 80, 70, 20 );
 		adic( new JLabelPad( "Descrição do fornecedor" ), 80, 60, 280, 20 );
 		adic( txtDescFor, 80, 80, 225, 20 );
+		adic( rgTipo, 7, 105, 300, 30 );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -107,28 +129,16 @@ public class FRComprasFor extends FRelatorio {
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
 		StringBuffer sWhere = new StringBuffer();
-		String sTmp = "";
-		String sLinhaFina = Funcoes.replicate( "-", 133 );
-
-		ImprimeOS imp = new ImprimeOS( "", con );
-
-		boolean termFor = false;
-
-		int linPag = imp.verifLinPag() - 1;
-		int iCodFor = 0;
-		int iCodForAnt = -1;
+		StringBuilder sCab = new StringBuilder();
 		
-		float fVlr = 0;
-		float fQtd = 0;
-		float fVlrFor = 0;
-		float fQtdFor = 0;		
-		
+
 		ehRef();
 
 		if ( txtCodFor.getText().trim().length() > 0 ) {
 			
 			sWhere.append( " AND C.CODFOR = " );
 			sWhere.append( txtCodFor.getText().trim() );
+			sCab.append( "Fornecedro: " + txtDescFor.getVlrString() );
 		}
 		
 		sSQL.append( "SELECT C.CODFOR,F.RAZFOR,C.DTEMITCOMPRA,C.CODCOMPRA,C.DOCCOMPRA," ); 
@@ -140,7 +150,44 @@ public class FRComprasFor extends FRelatorio {
 		sSQL.append( sWhere ); 
 		sSQL.append( " AND C.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) ); 
 		sSQL.append( " ORDER BY C.CODFOR,C.DTEMITCOMPRA" );
+		
+		try {
+			
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 				
+			rs = ps.executeQuery();
+				
+		} catch ( SQLException e ) {
+				
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao consultar a tabela de compras", true, con, e );
+		}
+		
+		if("T".equals( rgTipo.getVlrString())){
+			
+			imprimeTexto( rs, bVisualizar, sCab.toString() );
+		}
+		else{
+			imprimiGrafico( rs, bVisualizar, sCab.toString() ); 
+		}
+	} 
+	
+	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ){
+		
+		float fVlr = 0;
+		float fQtd = 0;
+		float fVlrFor = 0;
+		float fQtdFor = 0;	
+		ImprimeOS imp = new ImprimeOS( "", con );
+		int linPag = imp.verifLinPag() - 1;
+		int iCodFor = 0;
+		int iCodForAnt = -1;
+		String sLinhaFina = Funcoes.replicate( "-", 133 );
+		boolean termFor = false;
+		String sTmp = "";
+		
 		try {
 
 			imp.montaCab();
@@ -148,12 +195,6 @@ public class FRComprasFor extends FRelatorio {
 			imp.addSubTitulo( "RELATORIO DE COMPRAS POR FORNECEDOR  -  PERIODO DE: " + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );			
 			imp.limpaPags();
 			
-			ps = con.prepareStatement( sSQL.toString() );
-			ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			
-			rs = ps.executeQuery();
-						
 			while ( rs.next() ) {
 				
 				iCodFor = rs.getInt( "CodFor" );
@@ -266,23 +307,42 @@ public class FRComprasFor extends FRelatorio {
 
 			imp.eject();
 			imp.fechaGravacao();
-
-			rs.close();
-			ps.close();
 			
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
-		} catch ( SQLException err ) {
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro consulta tabela compras!\n" + err.getMessage(), true, con, err );
-		}
-
+			
+		}catch( SQLException err ){
+			
+	}
 		if ( bVisualizar ) {
 			imp.preview( this );
 		}
 		else {
 			imp.print();
+		}
+	}
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar,  final String sCab ) {
+		
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "FILTROS", sCab );
+
+		dlGr = new FPrinterJob( "relatorios/FRComprasFor.jasper", "Relatório de Compras por fornecedor", sCab, rs, hParam, this );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório Compras por fornecedor!" + err.getMessage(), true, con, err );
+			}
 		}
 	}
 
