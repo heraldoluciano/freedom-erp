@@ -318,7 +318,7 @@ public class FRCompras extends FRelatorio {
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
-		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNRECEBER" ) );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
 		hParam.put( "FILTROS", sCab );
 
