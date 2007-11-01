@@ -157,7 +157,8 @@ public class NFEntrada extends NF {
 			sql.append( "(SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC WHERE IC.CODCOMPRA=C.CODCOMPRA AND ");
 			sql.append( "IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL) QTDITENS, " );
 			sql.append(	"(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=CL.CODMENS AND ");
-			sql.append( "M.CODFILIAL=CL.CODFILIALME AND M.CODEMP=CL.CODEMPME) MENS " );
+			sql.append( "M.CODFILIAL=CL.CODFILIALME AND M.CODEMP=CL.CODEMPME) MENS, " );
+			sql.append( "P.CODBARPROD " );
 			sql.append( "FROM CPITCOMPRA I, CPCOMPRA C, EQPRODUTO P, LFNATOPER N, LFCLFISCAL CL " ); 
 			sql.append( "WHERE I.CODEMP=C.CODEMP AND I.CODFILIAL=C.CODFILIAL AND I.CODCOMPRA=C.CODCOMPRA " );
 			sql.append( "AND I.CODNAT=N.codnat AND I.CODEMPNT=N.CODEMP AND I.CODFILIALNT=N.CODFILIAL " );
@@ -170,7 +171,7 @@ public class NFEntrada extends NF {
 			ps.setInt( 3, ( (Integer) params.elementAt( 2 ) ).intValue() );
 			rs = ps.executeQuery();
 			cont++;
-			itens = new TabVector( 27 );
+			itens = new TabVector( TAM_ITENS );
 			while ( rs.next() ) {
 				itens.addRow();
 				itens.setInt( C_CODITPED, rs.getInt( "CODITCOMPRA" ) );
@@ -200,6 +201,8 @@ public class NFEntrada extends NF {
 				itens.setString( C_TIPOPROD, rs.getString( "TIPOPROD" ) != null ? rs.getString( "TIPOPROD" ) : "" );
 				itens.setFloat( C_VLRISSITPED, 0f );
 				itens.setFloat( C_VLRDESCITPROD, rs.getFloat( "VLRDESCITCOMPRA" ) );
+				itens.setString( C_CODBAR, rs.getString( "CODBARPROD" ) );
+
 			}
 			rs.close();
 			ps.close();

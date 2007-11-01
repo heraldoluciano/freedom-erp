@@ -34,6 +34,8 @@ import org.freedom.telas.Aplicativo;
 
 public class NF {
 	
+	public static final int TAM_ITENS = 28;
+	
 	public static final int TPNF_NONE = -1;
 	public static final int TPNF_ENTRADA = 0;
 	public static final int TPNF_SAIDA = 1;
@@ -134,6 +136,7 @@ public class NF {
 	public static final int C_TIPOPROD = 24;
 	public static final int C_VLRISSITPED = 25;
 	public static final int C_VLRDESCITPROD = 26;
+	public static final int C_CODBAR = 27;
 	
 	//adic
 	public static final int C_CODAUXV = 0;

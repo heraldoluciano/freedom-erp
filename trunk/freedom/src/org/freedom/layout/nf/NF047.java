@@ -224,7 +224,7 @@ public class NF047 extends Layout {
 				if ( !"S".equals( itens.getString( NF.C_TIPOPROD ) ) ) {
 
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say(1, itens.getString( NF.C_REFPROD ) );
+					imp.say(1, itens.getString( NF.C_CODBAR ) );
 					imp.say(17, Funcoes.copy( itens.getString( NF.C_DESCPROD ).trim(), 48 ) );
 					imp.say(70, sCodfisc );
 					imp.say(72, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 0, 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 0, 2 ) );
