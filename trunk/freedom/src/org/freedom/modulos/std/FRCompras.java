@@ -27,36 +27,56 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRCompras extends FRelatorio {
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+	
 	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+	
 	private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
+	
 	private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
+	
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	
 	private ListaCampos lcFor = new ListaCampos(this);
+	
 	private ListaCampos lcPlanoPag = new ListaCampos(this);
+
+	private Vector<String> vLabs1 = new Vector<String>();
+	
+	private Vector<String> vVals1 = new Vector<String>();
+	
+	private JRadioGroup<?, ?> rgTipo = null;
 	
 	public FRCompras() {
 		
 		setTitulo("Compras por Fornecedor");
-		setAtribos(50,50,345,240);
+		setAtribos(50,50,345,260);
 
 		lcFor.add(new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false));
 		lcFor.add(new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI,false));
@@ -74,6 +94,14 @@ public class FRCompras extends FRelatorio {
 		lcPlanoPag.setReadOnly(true);
 		lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
 		
+		 
+		vLabs1.addElement("Texto");
+ 		vLabs1.addElement("Grafico"); 
+ 		vVals1.addElement("T");
+ 		vVals1.addElement("G");
+		    
+ 		rgTipo = new JRadioGroup<String, String>(1,2,vLabs1,vVals1);
+ 		rgTipo.setVlrString("T");
 
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
@@ -95,6 +123,7 @@ public class FRCompras extends FRelatorio {
 		adic(txtCodPlanoPag,7,120,80,20);
 		adic(new JLabelPad("Descrição do plano de pagamento"),90,100,200,20);
 		adic(txtDescPlanoPag,90,120,215,20);
+		adic(rgTipo,7,150,300,30);
 		
 		Calendar cPeriodo = Calendar.getInstance();
 	    txtDatafim.setVlrDate(cPeriodo.getTime());
@@ -108,7 +137,8 @@ public class FRCompras extends FRelatorio {
 		lcPlanoPag.setConexao(cn);
 	}
 	
-	public void imprimir(boolean bVisualizar) {
+	public void imprimir( boolean bVisualizar ) {
+		
 		if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
 			Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
 			return;
@@ -116,59 +146,80 @@ public class FRCompras extends FRelatorio {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = null;
-		String sWhere = "";
-		BigDecimal bTotal = null;
+		StringBuilder sSQL = new StringBuilder();
+		StringBuilder sWhere = new StringBuilder();
+		StringBuilder sCab = new StringBuilder();
+		
+		int iparam = 1;
+			
+		if (txtCodFor.getVlrInteger().intValue() > 0) {
+			sWhere.append( " AND C.CODFOR = " + txtCodFor.getVlrInteger().intValue()); 
+			sCab.append( "FORNECEDOR : " + txtDescFor.getVlrString());		
+		}
+		if (txtCodPlanoPag.getVlrInteger().intValue() > 0) {
+			sWhere.append( " AND C.CODPLANOPAG = " + txtCodPlanoPag.getVlrInteger().intValue());
+			sCab.append("PLANO DE PAGAMENTO: " + txtDescPlanoPag.getVlrString());		
+			
+		}
+		
+		sSQL.append( "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, C.VLRLIQCOMPRA, " );
+		sSQL.append( "F.NOMEFOR, PG.DESCPLANOPAG, " );
+		sSQL.append( "IT.CODITCOMPRA, IT.CODPROD, PD.DESCPROD, IT.CODLOTE, IT.QTDITCOMPRA, " );
+		sSQL.append( "IT.VLRLIQITCOMPRA, IT.PERCDESCITCOMPRA, IT.VLRDESCITCOMPRA, IT.VLRLIQITCOMPRA " );
+		sSQL.append( "FROM CPCOMPRA C, CPITCOMPRA IT, CPFORNECED F, FNPLANOPAG PG, EQPRODUTO PD " );
+		sSQL.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? " );
+		sSQL.append( "AND C.CODEMPFR=F.CODEMP AND C.CODFILIALFR=F.CODFILIAL AND C.CODFOR=F.CODFOR " );
+		sSQL.append( "AND C.CODEMPPG=PG.CODEMP AND C.CODFILIALPG=PG.CODFILIAL AND C.CODPLANOPAG=PG.CODPLANOPAG " );
+		sSQL.append( "AND C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND C.CODCOMPRA=IT.CODCOMPRA " );
+		sSQL.append( "AND IT.CODEMPPD=PD.CODEMP AND IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD " );
+		sSQL.append( "AND C.DTEMITCOMPRA BETWEEN ? AND ? ");
+		sSQL.append( sWhere );
+		sSQL.append( " ORDER BY C.CODCOMPRA, IT.CODITCOMPRA" ) ;
+		
+		try {
+				
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt(iparam++, Aplicativo.iCodEmp);
+			ps.setInt(iparam++, ListaCampos.getMasterFilial("CPCOMPRA"));
+			ps.setDate(iparam++, Funcoes.strDateToSqlDate(txtDataini.getVlrString()));
+			ps.setDate(iparam++, Funcoes.strDateToSqlDate(txtDatafim.getVlrString()));
+			rs = ps.executeQuery();
+			
+		} catch ( SQLException err ) {
+				
+			err.printStackTrace();
+			Funcoes.mensagemErro( this," Erro na consulta da tabela de compras" );
+		}
+		
+		if("T".equals( rgTipo.getVlrString())){
+			
+			imprimeTexto( rs, bVisualizar, sCab.toString() );
+		}
+		else{
+			imprimiGrafico( rs, bVisualizar, sCab.toString() ); 
+		}
+	}
+		
+	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ){
+		
 		ImprimeOS imp = null;
 		int linPag = 0;
-		int iparam = 1;
-		int iCab = 7;
+		BigDecimal bTotal = null;
 		int iCodCompra = 0;		
+		int iCab = 7;
 		
 		try {
 			
+			bTotal = new BigDecimal("0");
 			imp = new ImprimeOS("",con);
 			linPag = imp.verifLinPag()-1;
 			imp.montaCab();
 			imp.setTitulo("Relatório de Compras");
 			imp.addSubTitulo("RELATORIO DE COMPRAS");
 			imp.addSubTitulo("PERIODO DE: "+txtDataini.getVlrString()+" Até: "+txtDatafim.getVlrString());
+			imp.addSubTitulo( sCab.toString() );
 			imp.limpaPags();	
 			
-			bTotal = new BigDecimal("0");
-			
-			if (txtCodFor.getVlrInteger().intValue() > 0) {
-				sWhere += " AND C.CODFOR = " + txtCodFor.getVlrInteger().intValue();
-				imp.addSubTitulo("FORNECEDOR : " + txtDescFor.getVlrString());		
-				iCab++;
-			}
-			if (txtCodPlanoPag.getVlrInteger().intValue() > 0) {
-				sWhere += " AND C.CODPLANOPAG = " + txtCodPlanoPag.getVlrInteger().intValue();
-				imp.addSubTitulo("PLANO DE PAGAMENTO: " + txtDescPlanoPag.getVlrString());		
-				iCab++;
-			}
-			
-			sSQL = "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, C.VLRLIQCOMPRA, " +
-				   "F.NOMEFOR, PG.DESCPLANOPAG, "+
-				   "IT.CODITCOMPRA, IT.CODPROD, PD.DESCPROD, IT.CODLOTE, IT.QTDITCOMPRA, "+
-				   "IT.VLRLIQITCOMPRA, IT.PERCDESCITCOMPRA, IT.VLRDESCITCOMPRA, IT.VLRLIQITCOMPRA "+
-				   "FROM CPCOMPRA C, CPITCOMPRA IT, CPFORNECED F, FNPLANOPAG PG, EQPRODUTO PD "+
-				   "WHERE C.CODEMP=? AND C.CODFILIAL=? "+
-				   "AND C.CODEMPFR=F.CODEMP AND C.CODFILIALFR=F.CODFILIAL AND C.CODFOR=F.CODFOR "+
-				   "AND C.CODEMPPG=PG.CODEMP AND C.CODFILIALPG=PG.CODFILIAL AND C.CODPLANOPAG=PG.CODPLANOPAG "+
-				   "AND C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND C.CODCOMPRA=IT.CODCOMPRA "+
-				   "AND IT.CODEMPPD=PD.CODEMP AND IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD "+
-				   "AND C.DTEMITCOMPRA BETWEEN ? AND ? "+
-				   sWhere+
-				   " ORDER BY C.CODCOMPRA, IT.CODITCOMPRA";
-			
-			
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(iparam++, Aplicativo.iCodEmp);
-			ps.setInt(iparam++, ListaCampos.getMasterFilial("CPCOMPRA"));
-			ps.setDate(iparam++, Funcoes.strDateToSqlDate(txtDataini.getVlrString()));
-			ps.setDate(iparam++, Funcoes.strDateToSqlDate(txtDatafim.getVlrString()));
-			rs = ps.executeQuery();
 			while( rs.next() ) {
             	if(imp.pRow() >= linPag) {
                     imp.say(imp.pRow()+1, 0, imp.comprimido());
@@ -249,23 +300,39 @@ public class FRCompras extends FRelatorio {
 
 			if (!con.getAutoCommit())
                 con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro(this,"Erro consulta tabela compras!\n"+err.getMessage(),true,con,err);
+			
+		}catch ( Exception err ) {
+			
 			err.printStackTrace();
-		} catch ( Exception err ) {
-			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-			sWhere = null;
-			bTotal = null;
-			System.gc();
 		}
-	 
-		if (bVisualizar)
-			imp.preview(this);
-		else
+		if ( bVisualizar ) {
+			imp.preview( this );
+		}
+		else {
 			imp.print();
+		}
+	}
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar,  final String sCab ) {
+
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNRECEBER" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "FILTROS", sCab );
+
+		dlGr = new FPrinterJob( "relatorios/FRCompras.jasper", "Relatório de Compras Geral", sCab, rs, hParam, this );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório Compras Geral!" + err.getMessage(), true, con, err );
+			}
+		}
 	}
 }
