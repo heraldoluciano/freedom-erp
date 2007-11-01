@@ -65,7 +65,7 @@ public class NFEntrada extends NF {
 			sql.append( "C.CODPLANOPAG, PG.DESCPLANOPAG, C.CODBANCO, C.OBSERVACAO, " );
 			sql.append( "(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODEMP=C.CODEMPBO AND B.CODFILIAL=C.CODFILIALBO AND B.CODBANCO=C.CODBANCO), " );
 			sql.append( "C.VLRLIQCOMPRA,C.VLRPRODCOMPRA,C.VLRADICCOMPRA,C.VLRICMSCOMPRA,C.VLRBASEICMSCOMPRA,C.VLRIPICOMPRA, " );
-			sql.append( "C.VLRFRETECOMPRA "  );
+			sql.append( "C.VLRFRETECOMPRA, C.HALT "  );
 			sql.append( "FROM CPCOMPRA C, CPFORNECED F, FNPLANOPAG PG " );
 			sql.append( "WHERE F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR " );
 			sql.append( "AND PG.CODEMP=C.CODEMPPG AND PG.CODFILIAL=C.CODFILIALPG AND PG.CODPLANOPAG=C.CODPLANOPAG " );
@@ -76,7 +76,7 @@ public class NFEntrada extends NF {
 			ps.setInt( 3, ( (Integer) params.elementAt( 2 ) ).intValue() );
 			rs = ps.executeQuery();
 			cont++;
-			cab = new TabVector( 61 );
+			cab = new TabVector( TAM_CAB );
 			while ( rs.next() ) {
 				cab.addRow();
 				cab.setInt( C_CODPED, rs.getInt( "CODCOMPRA" ) );
@@ -139,7 +139,8 @@ public class NFEntrada extends NF {
 				cab.setFloat( C_VLRIPIPED, rs.getFloat( "VLRIPICOMPRA" ) );				
 				cab.setFloat( C_BASEISS, 0 );
 				cab.setFloat( C_VLRISS, 0 );
-				cab.setFloat( C_VLRFRETEPED, rs.getFloat( "VLRFRETECOMPRA" ) );				
+				cab.setFloat( C_VLRFRETEPED, rs.getFloat( "VLRFRETECOMPRA" ) );		
+				cab.setString( C_HALT, rs.getString( "HALT" ) );
 			}
 			rs.close();
 			ps.close();
