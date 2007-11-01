@@ -379,7 +379,7 @@ C.FLAG IN ('S','N') ORDER BY C.CODFOR,C.DTEMITCOMPRA]]></queryString>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<text><![CDATA[Data da operação]]></text>
+				<text><![CDATA[Data]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
