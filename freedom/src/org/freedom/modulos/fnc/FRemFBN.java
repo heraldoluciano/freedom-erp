@@ -532,7 +532,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				tab.setValor( rs.getString( "RAZCLI" ), i, EColTab.COL_RAZCLI.ordinal() );
 				tab.setValor( new Integer( rs.getInt( "CODCLI" ) ), i, EColTab.COL_CODCLI.ordinal() );
 				tab.setValor( new Integer( rs.getInt( "CODREC" ) ), i, EColTab.COL_CODREC.ordinal() );
-				tab.setValor( rs.getString( "DOCREC" ), i, EColTab.COL_DOCREC.ordinal() );
+				tab.setValor( new Integer( rs.getInt( "DOCREC" ) ), i, EColTab.COL_DOCREC.ordinal() );
 				tab.setValor( new Integer( rs.getInt( "NPARCITREC" ) ), i, EColTab.COL_NRPARC.ordinal() );
 				tab.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRAPAGITREC" ) ), i, EColTab.COL_VLRAPAG.ordinal() );
 				tab.setValor( rs.getDate( "DTITREC" ), i, EColTab.COL_DTREC.ordinal() );
@@ -623,9 +623,9 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 						(String) vLinha.elementAt( EColTab.COL_IDENTCLI.ordinal() ),
 						(String) vLinha.elementAt( EColTab.COL_TIPOREMCLI.ordinal() ) } ) );
 				hsRec.add( new FbnUtil().new StuffRec( 
-						(Integer) vLinha.elementAt( EColTab.COL_CODREC.ordinal() ), 
-						(Integer) vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ),
-						new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, 
+						/*0*/ (Integer) vLinha.elementAt( EColTab.COL_CODREC.ordinal() ), 
+						/*1*/(Integer) vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ),
+						/*2*/new String[] { txtCodBanco.getVlrString(), TIPO_FEBRABAN, 
 						(String) vLinha.elementAt( EColTab.COL_STIPOFEBRABAN.ordinal() ), 
 						(String) vLinha.elementAt( EColTab.COL_SITREM.ordinal() ), 
 						String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_CODCLI.ordinal() ) ), 
@@ -637,7 +637,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 						(String) vLinha.elementAt( EColTab.COL_CPFCLI.ordinal() ),
 						(String) vLinha.elementAt( EColTab.COL_CNPJCLI.ordinal() ),
 						rgTipoRemessa.getVlrString(),
-						String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_CODREC.ordinal() ) ),
+						String.valueOf( (Integer) vLinha.elementAt( EColTab.COL_DOCREC.ordinal() ) ),
 						Funcoes.dataAAAAMMDD( (Date) vLinha.elementAt( EColTab.COL_DTREC.ordinal() ) ),
 						String.valueOf( vLinha.elementAt( EColTab.COL_NRPARC.ordinal() ) ) } 
 					) );
