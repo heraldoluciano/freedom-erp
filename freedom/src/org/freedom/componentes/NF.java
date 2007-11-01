@@ -36,7 +36,6 @@ public class NF {
 	
 	public static final int TAM_ITENS = 28;
 	public static final int TAM_CAB = 62;
-	
 	public static final int TPNF_NONE = -1;
 	public static final int TPNF_ENTRADA = 0;
 	public static final int TPNF_SAIDA = 1;
