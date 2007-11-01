@@ -158,7 +158,8 @@ public class NFSaida extends NF {
 			sql.append( "(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODEMP=I.CODEMPLE AND L.CODFILIAL=I.CODFILIALLE AND L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE)," );
 			sql.append( "(SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC WHERE IC.CODVENDA=V.CODVENDA AND IC.CODEMP=V.CODEMP AND IC.CODFILIAL=V.CODFILIAL AND IC.TIPOVENDA=V.TIPOVENDA)," );
 			sql.append( "(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=CL.CODMENS AND M.CODFILIAL=CL.CODFILIALME AND M.CODEMP=CL.CODEMPME)," );
-			sql.append( "(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=I.CODMENS AND M.CODFILIAL=I.CODFILIALME AND M.CODEMP=I.CODEMPME) " );
+			sql.append( "(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=I.CODMENS AND M.CODFILIAL=I.CODFILIALME AND M.CODEMP=I.CODEMPME), " );
+			sql.append( "P.CODBARPROD " );
 			sql.append( "FROM VDITVENDA I, VDVENDA V, EQPRODUTO P, LFNATOPER N, LFCLFISCAL CL " );
 			sql.append( "WHERE P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD " );
 			sql.append( "AND N.CODEMP=I.CODEMPNT AND N.CODFILIAL=I.CODFILIALNT " );
@@ -172,7 +173,7 @@ public class NFSaida extends NF {
 			ps.setInt( 3, ( (Integer) parans.elementAt( 2 ) ).intValue() );
 			rs = ps.executeQuery();
 			sql.delete( 0, sql.length() );
-			itens = new TabVector( 27 );
+			itens = new TabVector( TAM_ITENS );
 			while ( rs.next() ) {
 				itens.addRow();
 				itens.setInt( C_CODITPED, rs.getInt( "CODITVENDA" ) );
@@ -202,6 +203,7 @@ public class NFSaida extends NF {
 				itens.setString( C_TIPOPROD, rs.getString( "TIPOPROD" ) != null ? rs.getString( "TIPOPROD" ) : "" );
 				itens.setFloat( C_VLRISSITPED, rs.getFloat( "VLRISSITVENDA" ) );
 				itens.setFloat( C_VLRDESCITPROD, rs.getFloat( "VLRDESCITVENDA" ) );
+				itens.setString( C_CODBAR, rs.getString( "CODBARPROD" ) );
 			}
 			rs.close();
 			ps.close();
