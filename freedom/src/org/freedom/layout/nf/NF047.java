@@ -155,6 +155,7 @@ public class NF047 extends Layout {
 					imp.say( 62, ( !cab.getString( NF.C_DDDEMIT ).equals( "" ) ? "(" + cab.getString( NF.C_DDDEMIT ) + ")" : "" ) + ( !cab.getString( NF.C_FONEEMIT ).equals( "" ) ? Funcoes.setMascara( cab.getString( NF.C_FONEEMIT ).trim(), "####-####" ) : "" ).trim() );
 					imp.say( 96, sValsCli[ 3 ] ); // UF
 					imp.say( 102, !cab.getString( NF.C_RGEMIT ).equals( "" ) ? cab.getString( NF.C_RGEMIT ) : cab.getString( NF.C_INSCEMIT ) );
+					imp.say( 148, cab.getString( NF.C_HALT ) );
  
 					imp.pulaLinha( 3, imp.comprimido() );
 
