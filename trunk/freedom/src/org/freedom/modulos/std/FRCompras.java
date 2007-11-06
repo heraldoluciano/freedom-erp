@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
@@ -105,7 +106,7 @@ public class FRCompras extends FRelatorio {
 
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
-		JLabelPad lbPeriodo = new JLabelPad("   	Periodo:");
+		JLabelPad lbPeriodo = new JLabelPad("Periodo:" , SwingConstants.CENTER );
 		lbPeriodo.setOpaque(true);
 		
 		adic(lbPeriodo,7, 1, 80, 20 );
