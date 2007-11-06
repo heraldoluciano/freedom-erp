@@ -790,7 +790,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		try {
 
 			// Busca totais ...
-			sSQL.append( "SELECT SUM(VLRPARCREC),SUM(VLRPAGOREC),SUM(VLRAPAGREC),MIN(DATAREC),MAX(DATAREC) " );
+			sSQL.append( "SELECT SUM(VLRREC),SUM(VLRPAGOREC),SUM(VLRAPAGREC),MIN(DATAREC),MAX(DATAREC) " );
 			sSQL.append( "FROM FNRECEBER " );
 			sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );
 
@@ -818,7 +818,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 			// Busca a maior fatura ...
 			sSQL.delete( 0, sSQL.length() );
-			sSQL.append( "SELECT MAX(VLRPARCREC),DATAREC " );
+			sSQL.append( "SELECT MAX(VLRREC),DATAREC " );
 			sSQL.append( "FROM FNRECEBER " );
 			sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );
 			sSQL.append( "GROUP BY DATAREC " );
@@ -845,7 +845,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 			// Busca o maior acumulo ...
 			sSQL.delete( 0, sSQL.length() );
-			sSQL.append( "SELECT EXTRACT(MONTH FROM DATAREC), SUM(VLRPARCREC), EXTRACT(YEAR FROM DATAREC) " );
+			sSQL.append( "SELECT EXTRACT(MONTH FROM DATAREC), SUM(VLRREC), EXTRACT(YEAR FROM DATAREC) " );
 			sSQL.append( "FROM FNRECEBER " );
 			sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );
 			sSQL.append( "GROUP BY 1, 3 " );
