@@ -214,7 +214,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="120"
+						x="115"
 						y="118"
 						width="0"
 						height="17"
@@ -727,10 +727,10 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="122"
-						y="118"
-						width="36"
-						height="15"
+						x="117"
+						y="116"
+						width="42"
+						height="17"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -745,9 +745,9 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="162"
-						y="118"
+						y="116"
 						width="360"
-						height="15"
+						height="17"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -1059,7 +1059,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="162"
+						x="166"
 						y="5"
 						width="0"
 						height="17"
@@ -1068,7 +1068,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="121"
+						x="116"
 						y="5"
 						width="0"
 						height="17"
@@ -1077,10 +1077,10 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</line>
 				<staticText>
 					<reportElement
-						x="166"
-						y="5"
-						width="90"
-						height="15"
+						x="172"
+						y="3"
+						width="82"
+						height="17"
 						key="staticText-29"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -1090,7 +1090,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="385"
+						x="380"
 						y="5"
 						width="0"
 						height="17"
@@ -1108,7 +1108,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="426"
+						x="431"
 						y="5"
 						width="0"
 						height="17"
@@ -1117,10 +1117,10 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</line>
 				<staticText>
 					<reportElement
-						x="428"
-						y="5"
-						width="93"
-						height="15"
+						x="437"
+						y="3"
+						width="81"
+						height="17"
 						key="staticText-30"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -1130,10 +1130,10 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="123"
-						y="5"
-						width="37"
-						height="15"
+						x="120"
+						y="3"
+						width="42"
+						height="17"
 						key="textField-35"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -1147,10 +1147,10 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="387"
-						y="5"
-						width="37"
-						height="15"
+						x="385"
+						y="3"
+						width="42"
+						height="17"
 						key="textField-36"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -1735,9 +1735,9 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<image  vAlign="Middle" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="1"
-						y="118"
-						width="117"
-						height="15"
+						y="116"
+						width="112"
+						height="18"
 						key="image-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -1747,8 +1747,8 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<reportElement
 						x="1"
 						y="4"
-						width="117"
-						height="15"
+						width="112"
+						height="18"
 						key="image-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -1758,8 +1758,8 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<reportElement
 						x="265"
 						y="4"
-						width="117"
-						height="15"
+						width="112"
+						height="18"
 						key="image-6"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch"/>
