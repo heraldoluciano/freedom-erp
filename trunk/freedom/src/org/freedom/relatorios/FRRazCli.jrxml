@@ -79,10 +79,12 @@ L.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01' ORDER BY 1, 2, 3, 4, 5]]></que
 		<variableExpression><![CDATA[("A".equals($F{TIPO})?"SALDO INICIAL":("Q".equals($F{TIPO})?"VENDA":"RECEBIMENTO"))]]></variableExpression>
 	</variable>
 	<variable name="SALDOFOR" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
-		<variableExpression><![CDATA[( "AR".indexOf($F{TIPO})>-1 ? $F{VALOR}: $F{VALOR}.multiply( new BigDecimal(-1) ) )]]></variableExpression>
+		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="SALDOGERAL" class="java.math.BigDecimal" resetType="Group" resetGroup="GERAL" calculation="Sum">
-		<variableExpression><![CDATA[( "AR".indexOf($F{TIPO})>-1 ? $F{VALOR}: $F{VALOR}.multiply( new BigDecimal(-1) ) )]]></variableExpression>
+		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="VLRDEBITO" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[$F{TIPO}.equals( "Q" ) ? $F{VALOR} : new BigDecimal(0)]]></variableExpression>
@@ -208,7 +210,7 @@ L.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01' ORDER BY 1, 2, 3, 4, 5]]></que
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALCREDITO}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALCREDITO}.multiply( new BigDecimal(-1))]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -409,7 +411,7 @@ L.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01' ORDER BY 1, 2, 3, 4, 5]]></que
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALCREDITOFOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALCREDITOFOR}.multiply( new BigDecimal(-1))]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -842,7 +844,7 @@ L.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01' ORDER BY 1, 2, 3, 4, 5]]></que
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRCREDITO}.equals(new BigDecimal(0))?null:$V{VLRCREDITO}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRCREDITO}.equals(new BigDecimal(0))?null:$V{VLRCREDITO}.multiply( new BigDecimal(-1))]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
