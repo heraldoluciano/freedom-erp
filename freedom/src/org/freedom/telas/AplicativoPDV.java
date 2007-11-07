@@ -78,7 +78,7 @@ public class AplicativoPDV extends AplicativoPD {
 		return pluginVenda;
 	}
 	
-	public static boolean pegaValorINI( final Connection con ) {
+	public synchronized static boolean pegaValorINI( final Connection con ) {
 
 		FAbreCaixa tela = new FAbreCaixa();
 		tela.setConexao( con );
