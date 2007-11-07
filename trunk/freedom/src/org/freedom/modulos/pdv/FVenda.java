@@ -644,10 +644,12 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			if ( rs.next() ) {
 				
 				txtCodProd.setVlrString( rs.getString( "CODPROD" ) );
+				lcProduto.carregaDados();
 				
 				actionCodProd();
 				
 				txtPreco.setVlrBigDecimal( rs.getBigDecimal( "VLRPRODITORC" ) );
+				
 				txtPercDescItOrc.setVlrBigDecimal( rs.getBigDecimal( "PERCDESCITORC" ) != null ? rs.getBigDecimal( "PERCDESCITORC" ) : new BigDecimal( "0" ) );
 				txtVlrDescItOrc.setVlrBigDecimal( rs.getBigDecimal( "VLRDESCITORC" ) != null ? rs.getBigDecimal( "VLRDESCITORC" ) : new BigDecimal( "0" ) );
 				txtCodLote.setVlrString( rs.getString( "CODLOTE" ) );
@@ -655,7 +657,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				
 				actionQtdade();
 
-				lcProduto.carregaDados();
 				lcLote.carregaDados();
 				
 				if ( actionPostVendaForStatus() ) {
