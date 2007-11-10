@@ -222,9 +222,16 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 				Funcoes.mensagemInforma(this,"Não ha nenhum ítem para ser aprovado");
 				return;
 			}
-				
-			sSQL = "UPDATE VDITORCAMENTO SET ACEITEITORC=?, APROVITORC=?, NUMAUTORIZORC=?, VENCAUTORIZORC=?, EMITITORC='N' WHERE "+
-						  "CODEMP=? AND CODFILIAL=? AND CODITORC=? AND CODORC=?";
+
+			/* TIRADO O UPDATE EM EMITITORC PARA NÃO PERMITIR A EMISÃO DO MESMO ITEM MAIS DE UMA VEZ
+			 * 
+			 * sSQL = "UPDATE VDITORCAMENTO SET ACEITEITORC=?, APROVITORC=?, NUMAUTORIZORC=?, 
+			 * VENCAUTORIZORC=?, EMITITORC='N' WHERE "+
+			 * "CODEMP=? AND CODFILIAL=? AND CODITORC=? AND CODORC=?";*/
+			
+			sSQL = "UPDATE VDITORCAMENTO SET ACEITEITORC=?, APROVITORC=?, NUMAUTORIZORC=?, VENCAUTORIZORC=? "+
+			  	   "WHERE CODEMP=? AND CODFILIAL=? AND CODITORC=? AND CODORC=?";
+			
 			bAtStOrc = false;
 			sStatusAt = "OC";
 			try {

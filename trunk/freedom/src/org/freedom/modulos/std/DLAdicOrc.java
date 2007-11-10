@@ -359,7 +359,6 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Vector<Object> vVals = null;
-		String sSQL = null;
 		float fValProd = 0;
 		float fValDesc = 0;
 		float fValLiq = 0;
@@ -373,10 +372,15 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 				if ( ! ( (Boolean) tabOrc.getValor( i, 0 ) ).booleanValue() )
 					continue;
 
-				sSQL = "SELECT IT.CODORC,IT.CODITORC,IT.CODPROD,P.DESCPROD," + "IT.QTDITORC,IT.PRECOITORC,IT.VLRDESCITORC,IT.VLRLIQITORC," + "IT.VLRPRODITORC FROM VDITORCAMENTO IT, EQPRODUTO P " + "WHERE P.CODPROD=IT.CODPROD AND P.CODFILIAL=IT.CODFILIALPD "
-						+ "AND P.CODEMP=IT.CODEMPPD AND IT.ACEITEITORC='S' AND IT.EMITITORC='N' " + "AND IT.APROVITORC='S' AND IT.CODORC=? AND IT.CODFILIAL=? AND it.CODEMP=?";
+				StringBuilder sql = new StringBuilder();
+				sql.append( "SELECT IT.CODORC,IT.CODITORC,IT.CODPROD,P.DESCPROD," ); 
+				sql.append( "IT.QTDITORC,IT.PRECOITORC,IT.VLRDESCITORC,IT.VLRLIQITORC," );
+				sql.append( "IT.VLRPRODITORC FROM VDITORCAMENTO IT, EQPRODUTO P " );
+				sql.append( "WHERE P.CODPROD=IT.CODPROD AND P.CODFILIAL=IT.CODFILIALPD " );
+				sql.append( "AND P.CODEMP=IT.CODEMPPD AND IT.ACEITEITORC='S' AND IT.EMITITORC='N' " ); 
+				sql.append( "AND IT.APROVITORC='S' AND IT.CODORC=? AND IT.CODFILIAL=? AND it.CODEMP=?" );
 				try {
-					ps = con.prepareStatement( sSQL );
+					ps = con.prepareStatement( sql.toString() );
 					ps.setInt( 1, ( (Integer) tabOrc.getValor( i, 1 ) ).intValue() );
 					ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 					ps.setInt( 3, Aplicativo.iCodEmp );
@@ -411,11 +415,6 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-			vVals = null;
-			sSQL = null;
 		}
 	}
 
