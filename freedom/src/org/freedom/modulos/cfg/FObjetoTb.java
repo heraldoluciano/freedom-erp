@@ -46,7 +46,10 @@ public class FObjetoTb extends FDetalhe implements InsertListener,ActionListener
   private JCheckBoxPad cbRequerido = null;  
   private ListaCampos lcTabela = new ListaCampos(this,"TB");
   public FObjetoTb() {
-    setTitulo("Vinculo entre tabelas físicas e auxiliares");
+    lcCampos.setUsaFI(false);
+	lcDet.setUsaFI(false);
+
+	setTitulo("Vinculo entre tabelas físicas e auxiliares");
     setAtribos( 50, 20, 500, 350);
     setAltCab(90);
     pinCab = new JPanelPad(500,90);
@@ -55,9 +58,9 @@ public class FObjetoTb extends FDetalhe implements InsertListener,ActionListener
     
 	lcTabela.add(new GuardaCampo( txtCodTb, "CODTB",  "Cód.tab.",  ListaCampos.DB_PK, txtDescTb, false));
 	lcTabela.add(new GuardaCampo( txtDescTb, "DESCTB", "Descriçao da tabela", ListaCampos.DB_SI, false));
+	lcTabela.setReadOnly(true);
 	lcTabela.montaSql(false, "TABELA", "SG");    
 	lcTabela.setQueryCommit(false);
-	lcTabela.setReadOnly(true);
 
 	txtCodTb.setTabelaExterna(lcTabela);
     txtCodTb.setNomeCampo("CODTB");    
@@ -65,12 +68,11 @@ public class FObjetoTb extends FDetalhe implements InsertListener,ActionListener
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);  
        
-    adicCampo(txtIDObj, 7, 20, 70, 20,"IDObj","Id.obj.",ListaCampos.DB_PK,true);
-    adicCampo(txtDescObj, 80, 20, 380, 20, "DescObj","Descrição do objeto",ListaCampos.DB_SI,true);
-	lcCampos.setUsaFI(false);
-    setListaCampos( false, "OBJETO", "SG");
+    adicCampo(txtIDObj, 7, 20, 100, 20,"IDObj","Id.obj.",ListaCampos.DB_PK,true);
+    adicCampo(txtDescObj, 110, 20, 350, 20, "DescObj","Descrição do objeto",ListaCampos.DB_SI,true);
     lcCampos.setReadOnly(true);
-    lcCampos.setQueryInsert(false);
+    lcCampos.setQueryInsert(false);	
+    setListaCampos( false, "OBJETO", "SG");
         
     setAltDet(60);
     pinDet = new JPanelPad(590,110);
@@ -81,17 +83,16 @@ public class FObjetoTb extends FDetalhe implements InsertListener,ActionListener
 	cbRequerido = new JCheckBoxPad("Requerido","S","N");
 	cbRequerido.setVlrString("N");
 
-    adicCampo(txtCodTb, 7, 20, 70, 20,"CODTB","Item", ListaCampos.DB_PF, txtDescTb, true);
+    adicCampo(txtCodTb, 7, 20, 70, 20,"CODTB","Cód.tabela", ListaCampos.DB_PF, txtDescTb, true);
 	adicDescFK(txtDescTb, 80, 20, 280, 20, "DESCTB", "Descrição da tabela");
 	adicDB(cbRequerido, 365, 20, 90, 20, "ObrigObjTb", "", true);    
-	lcDet.setUsaFI(false);
     setListaCampos( false, "OBJETOTB", "SG");
     lcCampos.setQueryInsert(false);
     montaTab();
     
     tab.setTamColuna(50,0);
     tab.setTamColuna(415,1);
-    tab.setTamColuna(20,2);
+    tab.setTamColuna(30,2);
     
     lcCampos.addInsertListener(this);
     btImp.addActionListener(this);
