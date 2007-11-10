@@ -704,7 +704,7 @@ public class ListaCampos extends Container implements PostListener,
 	 *  
 	 */
 	public void setUsaFI(boolean bVal) {
-		bTiraFI = bVal;
+		bTiraFI = !bVal;
 	}
 
 	/**
@@ -1001,9 +1001,11 @@ public class ListaCampos extends Container implements PostListener,
 
 				String sNovaSelect = inDinWhereAdic(sTmp, vTxtValor);
 				sqlItens = con.prepareStatement(sNovaSelect);
-				if (bUsaME && !bTiraFI) {
+				if (bUsaME) {
 					sqlItens.setInt(iOrdemT, iCodEmp);
 					iOrdemT++;
+				}
+				if (bUsaME && !bTiraFI) {
 					sqlItens.setInt(iOrdemT, iCodFilial);
 					iOrdemT++;
 				}
