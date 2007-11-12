@@ -624,9 +624,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 
 		boolean bRet = false;
 
-		if ( txtCodClComis.getVlrInteger().intValue() == 0 ) {
+		if ( txtCodVend.getVlrInteger().intValue() == 0 ) {
 			Funcoes.mensagemInforma( this, "Digite o código do comissionado!" );
-			txtCodClComis.requestFocus();
+			txtCodVend.requestFocus();
 			return false;
 		}
 		else if ( txtCodPlanoPag.getVlrInteger().intValue() == 0 ) {
