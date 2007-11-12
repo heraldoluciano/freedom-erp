@@ -87,7 +87,7 @@ public class AplicativoPDV extends AplicativoPD {
 		return tela.OK;
 	}
 
-	public static int abreCaixa( final Connection con ) {
+	public static synchronized int abreCaixa( final Connection con ) {
 
 		int result = -1;
 		PreparedStatement ps = null;
@@ -148,19 +148,7 @@ public class AplicativoPDV extends AplicativoPD {
 					case 3 : {
 						Funcoes.mensagemInforma( null, "Caixa anterior não foi fechado!" +
 								                    "\nO caixa deverá ser fechado sem a excução da redução \"Z\"." +
-								                    "\nA leitura da memória fiscal deverá ser feita pelo usuario." );
-						/*
-						DLFechaDia fecha = new DLFechaDia();
-						fecha.setConexao( con );
-						fecha.setVisible( true );
-
-						result = -1;
-						if ( fecha.OK ) {
-							if ( pegaValorINI() ) {
-								result = 0;
-							}
-						}*/
-						
+								                    "\nA leitura da memória fiscal deverá ser feita pelo usuario." );						
 						break;
 					}
 					// erros
@@ -202,7 +190,7 @@ public class AplicativoPDV extends AplicativoPD {
 		return result;
 	}
 
-	public static void setECF( Connection con ) {
+	public static synchronized void setECF( Connection con ) {
 		
 		try {
 			

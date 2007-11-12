@@ -73,37 +73,39 @@ public class FAbreCaixa extends FDialogo {
 
 		System.out.println( "Modo demo PDV: " + Aplicativo.bModoDemo );
 		
-		if ( AplicativoPDV.bECFTerm && ( AplicativoPDV.bModoDemo || ecf.leituraX() ) ) {
+		if ( AplicativoPDV.bECFTerm ) {
 			
-			if ( AplicativoPDV.bModoDemo || ecf.suprimento( txtValor.getVlrBigDecimal() ) ) {
-
-				try {
+			ecf.leituraX();
+			
+			if ( txtValor.getVlrBigDecimal().floatValue() > 0.0f ) {
 				
-					PreparedStatement ps = con.prepareStatement( "EXECUTE PROCEDURE PVABRECAIXASP(?,?,?,?,?,?,?)" );
-					
-					ps.setInt( 1, AplicativoPDV.iCodCaixa );
-					ps.setInt( 2, Aplicativo.iCodFilial );
-					ps.setInt( 3, Aplicativo.iCodEmp );
-					ps.setBigDecimal( 4, txtValor.getVlrBigDecimal() );
-					ps.setDate( 5, Funcoes.dateToSQLDate( new Date() ) );
-					ps.setInt( 6, Aplicativo.iCodFilialPad );
-					ps.setString( 7, Aplicativo.strUsuario );
-					ps.execute();
-					
-					ps.close();
-					
-					if ( !con.getAutoCommit() ) {
-						con.commit();
-					}
-					
-				} catch ( SQLException err ) {
-					Funcoes.mensagemErro( this, "Erro ao abrir o caixa!\n" + err.getMessage(), true, con, err );
+				ecf.suprimento( txtValor.getVlrBigDecimal() );
+			}
+
+			try {
+			
+				PreparedStatement ps = con.prepareStatement( "EXECUTE PROCEDURE PVABRECAIXASP(?,?,?,?,?,?,?)" );
+				
+				ps.setInt( 1, AplicativoPDV.iCodCaixa );
+				ps.setInt( 2, Aplicativo.iCodFilial );
+				ps.setInt( 3, Aplicativo.iCodEmp );
+				ps.setBigDecimal( 4, txtValor.getVlrBigDecimal() );
+				ps.setDate( 5, Funcoes.dateToSQLDate( new Date() ) );
+				ps.setInt( 6, Aplicativo.iCodFilialPad );
+				ps.setString( 7, Aplicativo.strUsuario );
+				ps.execute();
+				
+				ps.close();
+				
+				if ( !con.getAutoCommit() ) {
+					con.commit();
 				}
 				
-				if ( ! AplicativoPDV.bModoDemo ) {
-					ecf.abreGaveta();
-				}				
-			}			
+			} catch ( SQLException err ) {
+				Funcoes.mensagemErro( this, "Erro ao abrir o caixa!\n" + err.getMessage(), true, con, err );
+			}
+			
+			ecf.abreGaveta();
 		}		
 	}
 
