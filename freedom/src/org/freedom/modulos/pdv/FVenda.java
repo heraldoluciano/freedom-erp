@@ -630,7 +630,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 			StringBuilder sql = new StringBuilder();  
 				
-			sql.append( "SELECT CODPROD, QTDITORC, VLRPRODITORC, PERCDESCITORC, VLRDESCITORC, CODLOTE " ); 
+			sql.append( "SELECT CODPROD, QTDITORC, PRECOITORC, PERCDESCITORC, VLRDESCITORC, CODLOTE " ); 
 			sql.append( "FROM VDITORCAMENTO WHERE CODEMP=? AND CODFILIAL=? AND CODORC=? AND CODITORC=?" );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -648,7 +648,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				
 				actionCodProd();
 				
-				txtPreco.setVlrBigDecimal( rs.getBigDecimal( "VLRPRODITORC" ) );
+				txtPreco.setVlrBigDecimal( rs.getBigDecimal( "PRECOITORC" ) );
 				
 				txtPercDescItOrc.setVlrBigDecimal( rs.getBigDecimal( "PERCDESCITORC" ) != null ? rs.getBigDecimal( "PERCDESCITORC" ) : new BigDecimal( "0" ) );
 				txtVlrDescItOrc.setVlrBigDecimal( rs.getBigDecimal( "VLRDESCITORC" ) != null ? rs.getBigDecimal( "VLRDESCITORC" ) : new BigDecimal( "0" ) );
