@@ -66,7 +66,7 @@ public class FConveniado extends FTabDados implements PostListener {
 
 	private JTextFieldPad txtNomeConv = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtRgConv = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	private JTextFieldPad txtRgConv = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextFieldPad txtCPFConv = new JTextFieldPad( JTextFieldPad.TP_STRING, 11, 0 );
 
@@ -272,7 +272,7 @@ public class FConveniado extends FTabDados implements PostListener {
 		adicCampo( txtNVia, 330, 300, 47, 20, "NRVIACONV", "Nº Via", ListaCampos.DB_SI, false );
 		adicCampo( txtICard, 380, 300, 120, 20, "ICARDCONV", "Matricula", ListaCampos.DB_SI, false );
 		
-		txtRgConv.setMascara( JTextFieldPad.MC_RG );
+		//txtRgConv.setMascara( JTextFieldPad.MC_RG );
 		txtCPFConv.setMascara( JTextFieldPad.MC_CPF );
 		txtCepConv.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneConv.setMascara( JTextFieldPad.MC_FONE );
