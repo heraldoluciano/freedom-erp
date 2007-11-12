@@ -301,9 +301,9 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="437"
+						x="463"
 						y="1"
-						width="98"
+						width="70"
 						height="0"
 						key="line-11"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -341,7 +341,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODTIPOMOV}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="4"
 						y="1"
@@ -386,9 +386,9 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="437"
+						x="463"
 						y="1"
-						width="98"
+						width="70"
 						height="0"
 						key="line-9"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -458,9 +458,9 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="437"
+						x="463"
 						y="1"
-						width="98"
+						width="70"
 						height="0"
 						key="line-10"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -517,9 +517,9 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="436"
+						x="463"
 						y="1"
-						width="98"
+						width="70"
 						height="0"
 						key="line-12"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -729,7 +729,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODITORC}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="405"
 						y="2"
