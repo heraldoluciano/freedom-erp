@@ -36,11 +36,11 @@
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODORC" isForPrompting="true" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(100)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(108)]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT O.CODCLI, O.OBSORC, O.PRAZOENTORC, O.PRAZOENTORC, C.CIDCLI, C.ENDCLI,
 C.FONECLI, C.BAIRCLI, C.UFCLI, DDDCLI, C.NUMCLI, C.EMAILCLI, C.CEPCLI, C.RAZCLI, C.CPFCLI,
-C.CELCLI, O.CODORC, O.DTORC,
+C.CELCLI, O.CODORC, O.DTORC, C.PESSOACLI, C.CNPJCLI, C.CONTCLI,
 O.DTVENCORC, PP.DESCPLANOPAG, E.RAZEMP,C.CONTCLI, P1.USANOMEVENDORC, 
 (CASE WHEN P1.USANOMEVENDORC='S' THEN V.NOMEVEND ELSE E.RAZEMP END) NOMEASS,
 (CASE WHEN P1.USAIMGASSORC='S' THEN COALESCE(V.IMGASSVEND,P1.IMGASSORC) END) IMGASS,
@@ -74,10 +74,12 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 	<field name="CELCLI" class="java.lang.String"/>
 	<field name="CODORC" class="java.lang.Long"/>
 	<field name="DTORC" class="java.sql.Date"/>
+	<field name="PESSOACLI" class="java.lang.String"/>
+	<field name="CNPJCLI" class="java.lang.String"/>
+	<field name="CONTCLI" class="java.lang.String"/>
 	<field name="DTVENCORC" class="java.sql.Date"/>
 	<field name="DESCPLANOPAG" class="java.lang.String"/>
 	<field name="RAZEMP" class="java.lang.String"/>
-	<field name="CONTCLI" class="java.lang.String"/>
 	<field name="USANOMEVENDORC" class="java.lang.String"/>
 	<field name="NOMEASS" class="java.lang.String"/>
 	<field name="IMGASS" class="java.sql.Blob"/>
@@ -326,7 +328,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 						key="line-26"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="80"
 						y="18"
@@ -339,7 +341,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODCLI}.toString()+" - "+$F{RAZCLI}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="80"
 						y="34"
@@ -352,7 +354,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCLI}.trim()+", "+$F{NUMCLI}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="80"
 						y="67"
@@ -378,7 +380,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTORC}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="80"
 						y="51"
@@ -391,7 +393,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{EMAILCLI}.trim()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="386"
 						y="35"
@@ -404,7 +406,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CEPCLI}.substring(0,2) + "." + $F{CEPCLI}.substring(2,5) + "-" + $F{CEPCLI}.substring(5,8)]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="412"
 						y="51"
@@ -415,9 +417,9 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CPFCLI}.substring(0,3) + "." + $F{CPFCLI}.substring(3,6) + "." + $F{CPFCLI}.substring(6,9) + "-" + $F{CPFCLI}.substring(9,11)]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["F".equals($F{PESSOACLI}) ? $F{CPFCLI}.substring(0,3) + "." + $F{CPFCLI}.substring(3,6) + "." + $F{CPFCLI}.substring(6,9) + "-" + $F{CPFCLI}.substring(9,11) : $F{CNPJCLI}.substring(0,2) + "." + $F{CNPJCLI}.substring(2,5) + "." + $F{CNPJCLI}.substring(5,8)+"/"+ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12,14)]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="80"
 						y="85"
@@ -429,6 +431,19 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CELCLI}.substring(0,4) + "-" + $F{CELCLI}.substring(4,8)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="260"
+						y="67"
+						width="160"
+						height="11"
+						key="textField-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CONTCLI}.trim()]]></textFieldExpression>
 				</textField>
 			</band>
 		</columnHeader>

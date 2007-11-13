@@ -33,7 +33,7 @@
 		<defaultValueExpression ><![CDATA[new Integer(25)]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT P.CODPROD, O.QTDITORC, O.VLRPRODITORC, O.VLRLIQITORC, O.VLRDESCITORC, O.QTDITORC,
-O.PRECOITORC, P.CODBARPROD, O.CODORC, P.CODUNID,
+O.PRECOITORC, P.CODBARPROD, O.CODORC, P.CODUNID, O.CODITORC,
 COALESCE(O.OBSITORC , P.DESCPROD) DESCPROD
 FROM VDITORCAMENTO O, EQPRODUTO P WHERE O.CODEMP=$P{CODEMP} AND O.CODFILIAL=$P{CODFILIAL} AND P.CODEMP=O.CODEMPPD AND
 P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></queryString>
@@ -47,6 +47,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 	<field name="CODBARPROD" class="java.lang.String"/>
 	<field name="CODORC" class="java.lang.Long"/>
 	<field name="CODUNID" class="java.lang.String"/>
+	<field name="CODITORC" class="java.lang.Long"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 
 	<variable name="TOTALLIQ" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
@@ -140,7 +141,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 					<reportElement
 						x="0"
 						y="1"
-						width="537"
+						width="533"
 						height="1"
 						forecolor="#C5C5C6"
 						key="line-29"/>
@@ -150,7 +151,7 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 					<reportElement
 						x="0"
 						y="23"
-						width="537"
+						width="533"
 						height="1"
 						forecolor="#C5C5C6"
 						key="line-30"/>
@@ -250,12 +251,25 @@ P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD AND O.CODORC=$P{CODORC}]]></qu
 					<reportElement
 						x="0"
 						y="19"
-						width="537"
+						width="533"
 						height="1"
 						forecolor="#C5C5C6"
 						key="line-31"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="3"
+						width="30"
+						height="16"
+						key="textField-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODITORC}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
