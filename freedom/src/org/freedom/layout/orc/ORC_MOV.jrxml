@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="ORC_MOV"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="842"
+		 columnWidth="595"
+		 columnSpacing="0"
+		 leftMargin="0"
+		 rightMargin="0"
+		 topMargin="0"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<queryString><![CDATA[SELECT P.CODPROD, P.DESCPROD FROM EQPRODUTO P WHERE P.CODPROD=1]]></queryString>
+
+	<field name="CODPROD" class="java.lang.Long"/>
+	<field name="DESCPROD" class="java.lang.String"/>
+
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="232"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="219"
+						y="3"
+						width="40"
+						height="18"
+						key="staticText-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Núm de 
+Parc.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="219"
+						y="27"
+						width="40"
+						height="18"
+						key="staticText-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="10"/>
+					</textElement>
+				<text><![CDATA[2X]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="219"
+						y="50"
+						width="40"
+						height="18"
+						key="staticText-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="10"/>
+					</textElement>
+				<text><![CDATA[4X]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="219"
+						y="73"
+						width="40"
+						height="18"
+						key="staticText-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="10"/>
+					</textElement>
+				<text><![CDATA[6X]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="219"
+						y="96"
+						width="40"
+						height="17"
+						key="staticText-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="10"/>
+					</textElement>
+				<text><![CDATA[8X]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="264"
+						y="3"
+						width="170"
+						height="18"
+						key="staticText-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[OPÇÕES DE PARCELAMENTO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="448"
+						y="3"
+						width="40"
+						height="18"
+						key="staticText-7"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[VALOR DA 
+PARCELA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="492"
+						y="3"
+						width="41"
+						height="18"
+						key="staticText-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[TOTAL]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="9"
+						y="118"
+						width="139"
+						height="13"
+						key="staticText-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[PRAZO DE ENTREGA:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="162"
+						y="119"
+						width="89"
+						height="13"
+						key="staticText-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[De 30 a 45 dias]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="257"
+						y="119"
+						width="89"
+						height="13"
+						key="staticText-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[De 45 a 60 dias]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="349"
+						y="119"
+						width="89"
+						height="13"
+						key="staticText-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[De 60 a 90 dias]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="445"
+						y="119"
+						width="86"
+						height="13"
+						key="staticText-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[De 90 a 120 dias]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="5"
+						y="139"
+						width="115"
+						height="13"
+						key="staticText-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[DATA DE ASSUNATURA]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="123"
+						y="150"
+						width="56"
+						height="0"
+						key="line-22"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="181"
+						y="138"
+						width="38"
+						height="13"
+						key="staticText-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[DE]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="222"
+						y="150"
+						width="56"
+						height="0"
+						key="line-23"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="280"
+						y="139"
+						width="38"
+						height="13"
+						key="staticText-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[DE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="4"
+						y="4"
+						width="211"
+						height="111"
+						key="staticText-18"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified">
+						<font size="4"/>
+					</textElement>
+				<text><![CDATA[OBSERVAÇÕES: ESSE PEDIDO PASSA A VALER CONTRATUALMENTE COMO PEDIDO SE ASSINADO PELO CONTRATANTE E CONTRATADO EMITIDO EM DUAS VIAS DE IGUAL VALOR E TEOR. FRETES FORA DA REGIÃO METROPOLITANA DE CURITIBA CORREM POR CONTA DO CONTRATANTE. PUXADORES, VIDROS, TECIDOS, EQUIPAMENTOS ELETRONICOS, GRANITOS, RODAS, ESPELHOS E PEÇAS DECORATIVAS NÃO ESTÃO INCLUSOS. AS MADEIRAS POR SEREM PRODUTOS NATURAIS PODE APRESENTAR PEQUENAS VARIAÇÕES DE TOM OU COR. OS DESENHOS EVENTUALMENTE REALIZADOS PELA MOVELARIA PAULISTA ANEXADOS A ESTE ORÇAMENTO/PEDIDO TÊM SEUS DIREITOS AUTORAIS RESERVADOS CONFORME AS DETERMINAÇÕES E SANÇÕES DA LEI FEDERAL N° 9.610 DE 19.02.98. NÃO PODENDO SER USADO SEM AUTORIZAÇÃO DOS AUTORES. CASO O CONTRATANTE DESEJE USAR OS DESENHOS SEM A CONTRATAÇÃO DA EXECUÇÃO O CUSTO SERÁ DE 10% DO VALOR TOTAL. O PRAZO DE ENTREGA PASSA A CONTAR À PARTIR DA EFETIVAÇÃO DE EVENTUAIS PARCELAS VINCULADAS AO FECHAMENTO DO PEDIDO. A MARCAÇÃO "(NI)" SIGNIFICA QUE ESTE ITEM NÃO ESTA INCLUSO NESTE ORÇAMENTO. DESCONTOS EVENTUALMENTE CONCEDIDOS VIGORAM CASO AS PARCELAS PREVISTAS SEJAM ACERTADAS NAS DATAS PREVISTAS. OS PAGAMENTOS PODERÃO SER FEITOS ATRAVÉZ DE CHEUQES, DEPÓSITO OU FATURA BANCÁRIA (*) DE2,0% AO MÊS.  A VALIDADE DESTE ORÇAMENTO/PEDIDO É DE ATÉ 5 DIAS]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="263"
+						y="25"
+						width="185"
+						height="21"
+						key="staticText-21"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+				<text><![CDATA[50% NO PEDIDO E 50% NA ENTREGA - SEM
+JUROS]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="263"
+						y="49"
+						width="185"
+						height="21"
+						key="staticText-22"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+				<text><![CDATA[25% NO PEDIDO, 25% 30 DD PEDIDO, 25% 60 DD
+PEDIDO E 25% 90 DD PEDIDO - SEM JUROS]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="263"
+						y="72"
+						width="185"
+						height="21"
+						key="staticText-23"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+				<text><![CDATA[NO PEDIDO, 30 DD PEDIDO, 60 DD PEDIDO, NA 
+ENTREGA, 90 DD PEDIDO E 120 DD PEDIDO(*)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="263"
+						y="94"
+						width="185"
+						height="21"
+						key="staticText-24"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+				<text><![CDATA[NO PEDIDO, 30 DD PEDIDO, 60 DD PEDIDO, NA ENTEGA, 90 DD PEDIDO, 120 DD PEDIDO, 150 DD PEDIDO E 180 DD PEDIDO(*)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="10"
+						y="216"
+						width="131"
+						height="13"
+						key="staticText-19"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Movelaria Paranista - Contratado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="202"
+						y="218"
+						width="131"
+						height="13"
+						key="staticText-20"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Movelaria Paranista - Contratante]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="136"
+						width="535"
+						height="1"
+						forecolor="#C5C5C6"
+						key="line-26"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="115"
+						width="535"
+						height="1"
+						forecolor="#C5C5C6"
+						key="line-27"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="218"
+						y="92"
+						width="317"
+						height="1"
+						forecolor="#C5C5C6"
+						key="line-28"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="217"
+						y="70"
+						width="317"
+						height="1"
+						forecolor="#C5C5C6"
+						key="line-29"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="218"
+						y="47"
+						width="317"
+						height="1"
+						forecolor="#C5C5C6"
+						key="line-30"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="218"
+						y="23"
+						width="317"
+						height="1"
+						forecolor="#C5C5C6"
+						key="line-31"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="441"
+						y="115"
+						width="0"
+						height="22"
+						forecolor="#C5C5C6"
+						key="line-32"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="535"
+						y="0"
+						width="0"
+						height="137"
+						forecolor="#C5C5C6"
+						key="line-33"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="490"
+						y="0"
+						width="0"
+						height="115"
+						forecolor="#C5C5C6"
+						key="line-34"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="447"
+						y="0"
+						width="0"
+						height="115"
+						forecolor="#C5C5C6"
+						key="line-35"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="260"
+						y="0"
+						width="0"
+						height="115"
+						forecolor="#C5C5C6"
+						key="line-36"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="216"
+						y="0"
+						width="0"
+						height="115"
+						forecolor="#C5C5C6"
+						key="line-37"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="347"
+						y="115"
+						width="0"
+						height="22"
+						forecolor="#C5C5C6"
+						key="line-38"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="254"
+						y="114"
+						width="0"
+						height="22"
+						forecolor="#C5C5C6"
+						key="line-39"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="156"
+						y="115"
+						width="0"
+						height="22"
+						forecolor="#C5C5C6"
+						key="line-40"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="0"
+						height="115"
+						forecolor="#C5C5C6"
+						key="line-41"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="114"
+						width="0"
+						height="22"
+						forecolor="#C5C5C6"
+						key="line-42"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="3"
+						y="210"
+						width="166"
+						height="1"
+						forecolor="#C5C5C6"
+						key="line-43"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="192"
+						y="210"
+						width="166"
+						height="1"
+						forecolor="#C5C5C6"
+						key="line-44"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="28"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>
