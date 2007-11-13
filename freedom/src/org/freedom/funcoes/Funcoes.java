@@ -442,6 +442,73 @@ public class Funcoes {
 		cal.set(Calendar.DAY_OF_MONTH,iUltimoDia);
 		return cal.getTime();
 	}
+	
+	public static int getDiaMes(Date data) {
+		int retorno = 1;
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setGregorianChange( data );
+		retorno = cal.get( Calendar.DAY_OF_MONTH );
+		return retorno;
+	}
+	
+	public static int getAno(Date data ) {
+		int retorno = 1;
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setGregorianChange( data );
+		retorno = cal.get( Calendar.YEAR );
+		return retorno;
+	}
+
+	public static int getMes(Date data ) {
+		int retorno = 1;
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setGregorianChange( data );
+		retorno = cal.get( Calendar.MONTH );
+		return retorno;
+	}
+	
+	public static String getMesExtenso(Date data) {
+		String retorno = "";
+		int mes = getMes(data);
+		if (mes==1) {
+			retorno = "JANEIRO";
+		} 
+		else if (mes==2) {
+			retorno = "FEVEREIRO";
+		}
+		else if (mes==3) {
+			retorno = "MARÇO";
+		}
+		else if (mes==4) {
+			retorno = "ABRIL";
+		}
+		else if (mes==5) {
+			retorno = "MAIO";
+		}
+		else if (mes==6) {
+			retorno = "JUNHO";
+		}
+		else if (mes==7) {
+			retorno = "JULHO";
+		}
+		else if (mes==8) {
+			retorno = "AGOSTO";
+		}
+		else if (mes==9) {
+			retorno = "SETEMBRO";
+		}
+		else if (mes==10) {
+			retorno = "OUTUBRO";
+		}
+		else if (mes==11) {
+			retorno = "NOVEMBRO";
+		}
+		else if (mes==12) {
+			retorno = "DEZEMBRO";
+		}
+		return retorno;
+	}
+	
 	public static Date getDataIniMes(int iMes, int iAno){				
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.set(Calendar.DAY_OF_MONTH,1);
