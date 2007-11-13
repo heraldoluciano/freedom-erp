@@ -330,7 +330,7 @@ public class ECFDriver {
 			}
 
 			if ( bRetorno ) {
-				ecf.terminaFechamentoCupom( sMensagem );
+				ecf.finalizaFechamentoCupom( sMensagem );
 			}
 
 			if ( !sMensErroLog.trim().equals( "" ) ) {
