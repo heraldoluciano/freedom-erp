@@ -379,8 +379,12 @@ public class FRBoleto extends FRelatorio {
 				
 				if ( ( dCampo = rs.getDate( "DtVencItRec" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[VENCIMEN]", Funcoes.sqlDateToStrDate( dCampo ) );
-				if ( ( dCampo = rs.getDate( "DtEmitVenda" ) ) != null )
+				if ( ( dCampo = rs.getDate( "DtEmitVenda" ) ) != null ) {
 					sTxa = sTxa.replaceAll( "\\[DATADOC_]", Funcoes.sqlDateToStrDate( dCampo ) );
+					sTxa = sTxa.replaceAll( "\\[DIA_E]", Funcoes.strZero( String.valueOf( Funcoes.getDiaMes( Funcoes.sqlDateToDate( dCampo ) ) ), 2 ) );
+					sTxa = sTxa.replaceAll( "\\[MES_E]", Funcoes.strZero( Funcoes.getMesExtenso( Funcoes.sqlDateToDate( dCampo ) ), 2 ) );
+					sTxa = sTxa.replaceAll( "\\[ANO_E]", Funcoes.strZero( String.valueOf( Funcoes.getAno( Funcoes.sqlDateToDate( dCampo ) ) ), 2 ) );
+				}
 				if ( ( sCampo = rs.getString( "CodRec" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[CODREC]", Funcoes.alinhaDir( sCampo, 8 ) );
 				if ( ( sCampo = rs.getString( "DocVenda" ) ) != null )
@@ -439,7 +443,7 @@ public class FRBoleto extends FRelatorio {
 				if ( ( sCampo = sNat[ 1 ] ) != null )
 					sTxa = sTxa.replaceAll( "\\[______________NATUREZA_DA_OPERACAO______________]", Funcoes.copy( sCampo, 0, 50 ) );
 				if ( ( sCampo = rs.getString( "CODVENDA" ) ) != null )
-					sTxa = sTxa.replaceAll( "\\[CODVENDA]", Funcoes.copy( sCampo, 0, 10 ) );					
+					sTxa = sTxa.replaceAll( "\\[CODVENDA]", Funcoes.copy( sCampo, 0, 10 ) );
 				
 				// Aplicar campos especiais de dados:
 
