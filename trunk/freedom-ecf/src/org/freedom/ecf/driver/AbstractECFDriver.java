@@ -2,6 +2,7 @@
  * Classe base para impressoras fiscais Autor: Robson Sanchez Data: 05/04/2006
  
  */
+
 package org.freedom.ecf.driver;
 
 import java.io.IOException;
@@ -21,24 +22,20 @@ import org.freedom.ecf.com.Serial;
  * Classe base para impressoras fiscais <BR>
  * Projeto: freedom-ecf <BR>
  * Pacote: org.freedom.ecf.driver <BR>
- * Classe: @(#)AbstractECFDriver.java <BR>
- * <BR>
- * Este programa é licenciado de acordo com a LGPL (Lesser General Public
- * License), <BR>
- * versão 2.1, Fevereiro de 1999 <BR>
- * A LGPL deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
- * Programa. <BR>
- * Caso uma cópia da LGPL não esteja disponível junto com este Programa, você
- * pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <a
- * href=http://creativecommons.org/licenses/LGPL/2.1/legalcode.pt> Creative
- * Commons</a> <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é
- * preciso estar de acordo com os termos da LGPL. <BR>
- * <BR>
+ * Classe:
+ * 
+ * @(#)AbstractECFDriver.java <BR>
+ *                            <BR>
+ *                            Este programa é licenciado de acordo com a LGPL (Lesser General Public License), <BR>
+ *                            versão 2.1, Fevereiro de 1999 <BR>
+ *                            A LGPL deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
+ *                            Caso uma cópia da LGPL não esteja disponível junto com este Programa, você pode contatar <BR>
+ *                            o LICENCIADOR ou então pegar uma cópia em: <a href=http://creativecommons.org/licenses/LGPL/2.1/legalcode.pt> Creative Commons</a> <BR>
+ *                            Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar de acordo com os termos da LGPL. <BR>
+ *                            <BR>
  * @author Robson Sanchez/Setpoint Informática Ltda. <BR>
- * criada: 05/04/2006. <BR>
- *  <BR>
+ *         criada: 05/04/2006. <BR>
+ *         <BR>
  */
 
 public abstract class AbstractECFDriver implements SerialPortEventListener {
@@ -178,8 +175,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 		for ( int i = 0; i < retorno.length; i++ ) {
 			if ( i < variavel.length ) {
 				retorno[ i ] = variavel[ i ];
-			}
-			else {
+			} else {
 				retorno[ i ] = incremental[ i - variavel.length ];
 			}
 		}
@@ -230,19 +226,18 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 			if ( event.getEventType() == SerialPortEvent.DATA_AVAILABLE ) {
 
 				retorno = new byte[ entrada.available() ];
-				//System.out.println("Evento available");
+				// System.out.println("Evento available");
 
 				if ( retorno != null ) {
-					
+
 					entrada.read( retorno );
-					
+
 					if ( buffer == null ) {
 						bufferTmp = retorno;
-					}
-					else {
+					} else {
 
 						leuEvento = true;
-						//System.out.println("leu evento");
+						// System.out.println("leu evento");
 						tmp = buffer;
 						bufferTmp = new byte[ tmp.length + retorno.length ];
 
@@ -250,31 +245,25 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 							if ( i < tmp.length ) {
 								bufferTmp[ i ] = tmp[ i ];
-							}
-							else {
+							} else {
 								bufferTmp[ i ] = retorno[ i - tmp.length ];
 							}
-							//System.out.println("buffer "+bufferTmp[i]);
+							// System.out.println("buffer "+bufferTmp[i]);
 
 						}
 					}
 
 					buffer = bufferTmp;
-
 				}
-
 			}
-
 		} catch ( IOException e ) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public byte[] enviaCmd( final byte[] CMD, final int tamEsperado ) {
 
 		return enviaCmd( CMD, portaSel, tamEsperado );
-
 	}
 
 	public byte[] enviaCmd( final byte[] CMD, final int com, final int tamRetorno ) {
@@ -306,11 +295,9 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 			} catch ( InterruptedException e ) {
 				e.printStackTrace();
 			}
-
 		}
 
 		return buffer;
-
 	}
 
 	public String parseParam( final String param, final int tamanho, final boolean terminador ) {
@@ -331,23 +318,17 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 					if ( Serial.OS_LINUX == Serial.getSistema() ) {
 						int arg = tamanho - param.length();
 						tmp.append( replicate( String.valueOf( (char) 0 ), arg ) );
-					}
-					else {
+					} else {
 						tmp.append( (char) 10 );
-					}					
+					}
 				}
-
-			}
-			else {
-
+			} else {
 				if ( tamanho < param.length() ) {
 					tmp.append( param.substring( 0, tamanho ) );
-				}
-				else {
+				} else {
 					tmp.append( param );
 				}
 			}
-
 		}
 
 		return tmp.toString();
@@ -357,19 +338,16 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	public String parseParam( final int param, final int tamanho ) {
 
 		return strZero( String.valueOf( param ), tamanho );
-
 	}
 
 	public String parseParam( final char param ) {
 
 		return String.valueOf( param );
-
 	}
 
 	public String parseParam( final float param, final int tamanho, final int casasdec ) {
 
 		return strDecimalToStrCurrency( param, tamanho, casasdec );
-
 	}
 
 	public String parseParam( final Date param ) {
@@ -377,7 +355,6 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 		final SimpleDateFormat sdf = new SimpleDateFormat( "ddMMyy", Locale.getDefault() );
 
 		return sdf.format( param ).trim();
-
 	}
 
 	public String replicate( final String texto, final int quant ) {
@@ -389,7 +366,6 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 		}
 
 		return sRetorno.toString();
-
 	}
 
 	public String strDecimalToStrCurrency( final float param, final int tamanho, final int casasdec ) {
@@ -414,7 +390,6 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 		}
 
 		return strZero( str.toString(), tamanho );
-
 	}
 
 	public String strZero( final String val, final int zeros ) {
@@ -431,7 +406,6 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 		sRetorno.append( str.trim() );
 
 		return sRetorno.toString();
-
 	}
 
 	public abstract byte[] preparaCmd( byte[] CMD );
@@ -439,12 +413,6 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	public abstract int executaCmd( byte[] CMD, int tamRetorno );
 
 	public abstract int checkRetorno( byte[] bytes );
-
-	// //////////////////////
-	// /// /////
-	// /// COMANDOS /////
-	// /// /////
-	// //////////////////////
 
 	public abstract int aberturaDeCupom();// 0
 
@@ -496,7 +464,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public abstract int iniciaFechamentoCupom( char opt, float percentual );// 32
 
-	public abstract int terminaFechamentoCupom( String menssagem );// 34
+	public abstract int finalizaFechamentoCupom( String menssagem );// 34
 
 	public abstract String retornoVariaveis( char var );// 35
 
@@ -512,7 +480,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public abstract int programarEspacoEntreLinhas( int espaco );// 60
 
-	public abstract int programarEspacoEntreCupons( int espaco );// 61
+	public abstract int programarLinhasEntreCupons( int espaco );// 61
 
 	public abstract int programaUnidadeMedida( String descUnid );// 62 51
 
