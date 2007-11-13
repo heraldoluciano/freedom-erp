@@ -139,7 +139,7 @@ public class NFSaida extends NF {
 				cab.setFloat( C_VLRADICPED, rs.getFloat( "VLRADICVENDA" ) );
 				cab.setFloat( C_VLRICMSPED, rs.getFloat( "VLRICMSVENDA" ) );
 				cab.setFloat( C_VLRBASEICMSPED, rs.getFloat( "VLRBASEICMSVENDA" ) );
-				cab.setFloat( C_VLRIPIPED, rs.getFloat( "VLRIPIVENDA" ) );				
+				cab.setFloat( C_VLRIPIPED, rs.getFloat( "VLRIPIVENDA" ) );
 				cab.setFloat( C_BASEISS, rs.getFloat( "VLRBASEISSVENDA" ) );
 				cab.setFloat( C_VLRISS, rs.getFloat( "VLRISSVENDA" ) );
 				cab.setFloat( C_PERCISS, rs.getFloat( "PERCISS" ) );
@@ -266,7 +266,8 @@ public class NFSaida extends NF {
 			sql.append( "SELECT T.CODTRAN, T.RAZTRAN, T.NOMETRAN, T.INSCTRAN, T.CNPJTRAN, T.TIPOTRAN, " );
 			sql.append( "T.ENDTRAN, T.NUMTRAN, T.CIDTRAN, T.UFTRAN , F.TIPOFRETEVD, F.PLACAFRETEVD, " );
 			sql.append( "F.UFFRETEVD, F.QTDFRETEVD, F.ESPFRETEVD, F.MARCAFRETEVD, F.PESOBRUTVD, F.PESOLIQVD, " );
-			sql.append( "V.VLRFRETEVENDA, F.CONHECFRETEVD, T.CPFTRAN " );
+			sql.append( "(CASE WHEN V.VLRFRETEVENDA<=0 THEN F.VLRFRETEVD ELSE V.VLRFRETEVENDA END) VLRFRETEVENDA, ");
+			sql.append( "F.CONHECFRETEVD, T.CPFTRAN " );
 			sql.append( "FROM VDTRANSP T, VDFRETEVD F, VDVENDA V " );
 			sql.append( "WHERE T.CODEMP=F.CODEMPTN AND T.CODFILIAL=F.CODFILIALTN AND T.CODTRAN=F.CODTRAN " );
 			sql.append( "AND F.CODEMP=V.CODEMP AND F.CODFILIAL=V.CODFILIAL AND F.CODVENDA=V.CODVENDA AND F.TIPOVENDA=V.TIPOVENDA " );
