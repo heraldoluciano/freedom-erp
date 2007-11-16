@@ -33,6 +33,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -45,6 +46,7 @@ import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -92,15 +94,18 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	private JPanelPad pnGrid = new JPanelPad( 600, 200 );
 
 	private JComboBox cbSel = null;
+	
+	private JComboBoxPad cbEtiquetas = null;
 
 	public FRCodbarProd() {
 
 		super( true );
 		setTitulo( "Etiquetas de código de barras" );
 		setAtribos( 80, 30, 520, 380 );
-
+		
 		montaTela();
 		montaListaCampos();
+
 	}
 
 	private void montaListaCampos() {
@@ -130,6 +135,28 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		c.add( pnBotoesGrid, BorderLayout.EAST );
 		c.add( spnGrid );
 
+		
+		Vector<String> vLabsCtb = new Vector<String>();
+		Vector<String> vValsCtb = new Vector<String>();
+		vLabsCtb.addElement( "<--Selecione-->" );
+		vLabsCtb.addElement( "Etiquetas normal" );
+		vLabsCtb.addElement( "Etiquetas teste" );
+		vLabsCtb.addElement( "Etiquetas 01" );
+		vLabsCtb.addElement( "Etiquetas 02" );
+		vLabsCtb.addElement( "Etiquetas 03" );
+		
+		vValsCtb.addElement( "00" );
+		vValsCtb.addElement( "01" );
+		vValsCtb.addElement( "02" );
+		vValsCtb.addElement( "03" );
+		vValsCtb.addElement( "04" );
+		vValsCtb.addElement( "05" );
+		
+	
+		cbEtiquetas = new JComboBoxPad( vLabsCtb, vValsCtb, JComboBoxPad.TP_STRING, 2, 0 );
+		
+		pnCampos.adic( cbEtiquetas, 7, 60, 200, 20 );
+		
 		pnCampos.adic( new JLabelPad( "Cód. Produto" ), 07, 10, 100, 20 );
 		pnCampos.adic( txtCodProd, 07, 30, 80, 20 );
 		pnCampos.adic( new JLabelPad( "Descrição do produto" ), 93, 10, 200, 20 );
@@ -140,7 +167,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		pnCampos.adic( btSelectCompra, 445, 55, 50, 30 );
 		pnBotoesGrid.adic( btExcluir, 0, 0, 30, 30 );
 		pnBotoesGrid.adic( btExcluirTudo, 0, 30, 30, 30 );
-
+	
 		tabGrid.adicColuna( "Cód. prod" );
 		tabGrid.adicColuna( "Descrição do produto" );
 		tabGrid.adicColuna( "Qtd" );
