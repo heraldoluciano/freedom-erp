@@ -38,6 +38,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
@@ -52,6 +54,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.EtiquetaPPLA;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaListener, KeyListener {
@@ -436,6 +439,8 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 	public void imprimir( boolean bVisualizar ) {
 
+		FPrinterJob dlGr = null;
+		
 		if ( removeEtiquetas() ) {
 
 			if ( persistEtiquetas() ) {
@@ -447,17 +452,23 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 				if ( etiquetas != null ) {
 
 					// visualização.
+					dlGr = new FPrinterJob( "relatorios/FRCodBarProd.jasper", "Etiquetas", strTemp, this, null, con );
 					if ( bVisualizar ) {
 
-						imp = (ImprimeOS) etiquetas[ 0 ];
-						imp.preview( this );
+						dlGr.setVisible( true );
+						//imp = (ImprimeOS) etiquetas[ 0 ];
+						//imp.preview( this );
 					}
 					// impressão.
 					else {
-						
-						imp.gravaTexto( etiquetas[ 1 ].toString() );
-						imp.fechaGravacao();	
-						imp.preview( this );					
+						try {
+							JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+						} catch ( Exception err ) {
+							Funcoes.mensagemErro( this, "Erro na impressão de Etiquetas!" + err.getMessage(), true, con, err );
+						}
+						//imp.gravaTexto( etiquetas[ 1 ].toString() );
+						//imp.fechaGravacao();	
+						//imp.preview( this );					
 						//imp.print();
 					}
 				}
