@@ -120,7 +120,7 @@ public class DLEnviarEmail extends FFDialogo {
 		adic( txtTo, 10, 30, 370, 20 );
 		adic( new JLabel( "Assunto:" ), 10, 50, 370, 20 );
 		adic( txtAssunto, 10, 70, 370, 20 );
-		adic( new JLabel( "Menssagem:" ), 10, 90, 370, 20 );
+		adic( new JLabel( "Mensagem:" ), 10, 90, 370, 20 );
 		adic( new JScrollPane( txtMessage ), 10, 110, 370, 100 );
 		adic( new JLabel( "Usuario" ), 10, 210, 185, 20 );
 		adic( txtUser, 10, 230, 185, 20 );
