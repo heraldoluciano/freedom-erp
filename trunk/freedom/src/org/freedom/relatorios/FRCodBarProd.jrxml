@@ -23,9 +23,10 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<queryString><![CDATA[SELECT P.CODPROD, P.DESCPROD, P.CODBARPROD, P.PRECOBASEPROD 
-FROM EQETIQPROD E, EQPRODUTO P 
-WHERE P.CODGRUP='ERRE01']]></queryString>
+	<queryString><![CDATA[SELECT E.CODPROD, P.DESCPROD, P.CODBARPROD, P.PRECOBASEPROD
+FROM EQETIQPROD E, EQPRODUTO P
+WHERE E.NRCONEXAO=84 AND
+P.CODEMP=E.CODEMP AND P.CODFILIAL=E.CODFILIAL AND P.CODPROD=E.CODPROD]]></queryString>
 
 	<field name="CODPROD" class="java.lang.Long"/>
 	<field name="DESCPROD" class="java.lang.String"/>
@@ -101,7 +102,7 @@ WHERE P.CODGRUP='ERRE01']]></queryString>
 						key="barcode-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
-					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(9,"12345",false,false,null,0,0)]]></imageExpression>
+					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(9,$F{CODBARPROD},false,false,null,0,0)]]></imageExpression>
 				</image>
 			</band>
 		</detail>
