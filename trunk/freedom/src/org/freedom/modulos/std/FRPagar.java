@@ -210,6 +210,10 @@ public class FRPagar extends FRelatorio {
 			comObs = false;
 		
 		try {
+			
+			if( "P".equals( cbFiltro.getVlrString() )){
+				
+			}
 
 			sCodFor = txtCodFor.getVlrString();
 			sCodPlanoPag = txtCodPlanoPag.getVlrString();
@@ -228,7 +232,8 @@ public class FRPagar extends FRelatorio {
 					"FROM FNITPAGAR IT,FNPAGAR P,CPFORNECED F "+
 					" WHERE P.FLAG IN "+
 					AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
-					" AND IT.CODEMP = P.CODEMP AND IT.CODFILIAL=P.CODFILIAL AND IT.DTVENCITPAG BETWEEN ? AND ? AND"+
+					" AND IT.CODEMP = P.CODEMP AND IT.CODFILIAL=P.CODFILIAL AND " +
+					( "P".equals( cbFiltro.getVlrString() ) ? "IT.DTPAGOITPAG" : "IT.DTVENCITPAG" ) + " BETWEEN ? AND ? AND"+
 					" IT.STATUSITPAG IN (?,?) AND P.CODPAG = IT.CODPAG" +
 					" AND F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND F.CODFOR=P.CODFOR"+
 					(sCodFor.trim().equals("")?"":" AND P.CODFOR=" + sCodFor) +
