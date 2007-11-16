@@ -356,9 +356,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 				quantidade = ( (BigDecimal) tabGrid.getValor( i, EProduto.QTDPROD.ordinal() ) ).intValue();
 
 				for ( int j = 0; j < quantidade; j++ ) {
-
 					if ( !insetEtiqueta( conexao, codprod, sql ) ) {
-
 						break etiquetas;
 					}
 				}
@@ -395,20 +393,13 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 		return retorno;
 	}
-
-	private Object[] montaEtiquetas() {
-
-		Object[] buffer = new Object[ 2 ];
-		StringBuilder bufferImprimir = new StringBuilder();
-		ImprimeOS imp = new ImprimeOS( "", con );
-
+	
+	private ResultSet getEtiquetas() {
+		
+		ResultSet rs = null;
 		try {
-
-			buffer[ 0 ] = imp;
-			buffer[ 1 ] = bufferImprimir;
-
 			StringBuffer sSQL = new StringBuffer();
-			sSQL.append( "SELECT E.CODPROD, P.DESCPROD, P.CODBARPROD " );
+			sSQL.append( "SELECT E.CODPROD, P.DESCPROD, P.CODBARPROD, P.PRECOBASEPROD " );
 			sSQL.append( "FROM EQETIQPROD E, EQPRODUTO P " );
 			sSQL.append( "WHERE E.NRCONEXAO=? AND " );
 			sSQL.append( "P.CODEMP=E.CODEMP AND P.CODFILIAL=E.CODFILIAL AND P.CODPROD=E.CODPROD " );
@@ -416,7 +407,26 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, getNrConexao() );
 
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+		
+		return rs;
+	}
+
+	private Object[] montaEtiquetas() {
+
+		Object[] buffer = new Object[ 3 ];
+		StringBuilder bufferImprimir = new StringBuilder();
+		ImprimeOS imp = new ImprimeOS( "", con );
+
+		try {
+
+			buffer[ 0 ] = imp;
+			buffer[ 1 ] = bufferImprimir;
+			
+			ResultSet rs = getEtiquetas(); 
 
 			EtiquetaPPLA etiqueta;
 
@@ -438,34 +448,35 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	}
 
 	public void imprimir( boolean bVisualizar ) {
-
-		FPrinterJob dlGr = null;
 		
 		if ( removeEtiquetas() ) {
 
 			if ( persistEtiquetas() ) {
 
-				ImprimeOS imp = new ImprimeOS( "", con );
+				// visualização.
+				if ( bVisualizar ) {
 
-				Object[] etiquetas = montaEtiquetas();
-
-				if ( etiquetas != null ) {
-
-					// visualização.
-					dlGr = new FPrinterJob( "relatorios/FRCodBarProd.jasper", "Etiquetas", strTemp, this, null, con );
-					if ( bVisualizar ) {
-
-						dlGr.setVisible( true );
-						//imp = (ImprimeOS) etiquetas[ 0 ];
-						//imp.preview( this );
-					}
-					// impressão.
-					else {
+					FPrinterJob dlGr = null;
+					dlGr = new FPrinterJob( "relatorios/FRCodBarProd.jasper", "Etiquetas", null, getEtiquetas(), null, this );
+					dlGr.setVisible( true );
+				}
+				// impressão.
+				else {
+					
+					if ( true ) {
 						try {
+							FPrinterJob dlGr = null;
+							dlGr = new FPrinterJob( "relatorios/FRCodBarProd.jasper", "Etiquetas", null, getEtiquetas(), null, this );
 							JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 						} catch ( Exception err ) {
 							Funcoes.mensagemErro( this, "Erro na impressão de Etiquetas!" + err.getMessage(), true, con, err );
-						}
+						}	
+					}
+					// impressora de etiquetas
+					else {
+
+						ImprimeOS imp = new ImprimeOS( "", con );
+						Object[] etiquetas = montaEtiquetas();
 						//imp.gravaTexto( etiquetas[ 1 ].toString() );
 						//imp.fechaGravacao();	
 						//imp.preview( this );					
