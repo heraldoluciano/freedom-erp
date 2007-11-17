@@ -72,8 +72,11 @@ public class DLFechaDia extends FFDialogo {
 		setAtribos( 313, 170 );
 
 		cbReducaoZ.setVlrString( "N" );
+	}
+	
+	private void montaTela() {
 		
-		naoExecutouReducaoZ = ! ecf.executadaReducaoZ();
+		naoExecutouReducaoZ = naoExecutouReducaoZ();
 
 		adic( new JLabelPad( "Data e Hora: " ), 7, 10, 110, 20 );
 		adic( txtDataHora, 7, 30, 140, 20 );
@@ -83,6 +86,43 @@ public class DLFechaDia extends FFDialogo {
 		if ( naoExecutouReducaoZ ) {		
 			adic( cbReducaoZ, 10, 60, 280, 20 );
 		}
+	}
+	
+	private boolean naoExecutouReducaoZ() {
+		
+		int procedureresult = -1;
+		
+		try {
+			
+			PreparedStatement ps = con.prepareStatement( "SELECT IRETORNO FROM PVVERIFCAIXASP(?,?,?,?,?,?)" ); 
+			ps.setInt( 1, AplicativoPDV.iCodCaixa );
+			ps.setInt( 2, AplicativoPDV.iCodEmp );
+			ps.setInt( 3, AplicativoPDV.iCodFilial );
+			ps.setDate( 4, Funcoes.dateToSQLDate( new Date() ) );
+			ps.setInt( 5, AplicativoPDV.iCodFilialPad );
+			ps.setString( 6, AplicativoPDV.strUsuario );
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				procedureresult = rs.getInt( 1 );	
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+				
+		if ( procedureresult != 3 && procedureresult != 11 ) {
+			return true;				
+		}
+			
+		return false;
 	}
 
 	private void loadCaixa() {
@@ -268,7 +308,7 @@ public class DLFechaDia extends FFDialogo {
 	public void setConexao( Connection cn ) {
 
 		super.setConexao( cn );
-		
+		montaTela();
 		loadCaixa();
 	}
 }
