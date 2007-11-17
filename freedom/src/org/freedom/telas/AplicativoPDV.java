@@ -27,6 +27,7 @@ import java.sql.ResultSet;
 import java.util.Date;
 
 import org.freedom.componentes.ListaCampos;
+import org.freedom.drivers.ECFDriver;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.pdv.FAbreCaixa;
 
@@ -87,7 +88,7 @@ public class AplicativoPDV extends AplicativoPD {
 		return tela.OK;
 	}
 
-	public static synchronized int abreCaixa( final Connection con ) {
+	public static synchronized int abreCaixa( final Connection con, final ECFDriver ecf ) {
 
 		int result = -1;
 		PreparedStatement ps = null;
@@ -130,10 +131,15 @@ public class AplicativoPDV extends AplicativoPD {
 				switch ( result ) {
 					// caixa ok
 					case 0 : {
-						if ( ! pegaValorINI( con ) ) {
-							result = -1;
+						// verifica redução Z pois o caixa anterior pode não ter executado
+						// e executado por engano para abertura do novo caixa.
+						if ( ecf.executadaReducaoZ() ) {
+							result = 11;
 						}
-						break;
+						else if ( ! pegaValorINI( con ) ) {
+							result = -1;
+							break;
+						}
 					}
 					// warnings
 					case 1: { 
