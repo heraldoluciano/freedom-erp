@@ -2329,11 +2329,11 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	}
 
 	// O botão sair execute este método para sair:
-	public void setVisible( boolean bVal ) {
+	public void setVisible( boolean arg0 ) {
 
-		if ( bVal ) {
+		if ( arg0 ) {
 			
-			int result = FreedomPDV.abreCaixa( con );
+			int result = FreedomPDV.abreCaixa( con, ecf );
 
 			if ( result == -1 ) {
 				FreedomPDV.killProg( 5, "Caixa não foi aberto. A aplicação será fechada!" );
@@ -2342,28 +2342,26 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				dispose();
 			}
 			else { 
-				if ( caixaAberto() || FreedomPDV.pegaValorINI( con ) ) {
+				if ( ( caixaAberto() || FreedomPDV.pegaValorINI( con ) ) ) {
 					if ( iniVenda() ) {
-						super.setVisible( bVal );						
+						super.setVisible( arg0 );						
 					}
 				}
 				else {
-					super.setVisible( ! bVal );
+					super.setVisible( ! arg0 );
 				}
 			}
 		}
 		else {
 			
-			if ( ( FreedomPDV.bECFTerm  ) && ( ecf != null ) ) {
-				
-				if ( ecf.verificaCupomAberto() ) {
-					
+			if ( ( FreedomPDV.bECFTerm  ) && ( ecf != null ) ) {				
+				if ( ecf.verificaCupomAberto() ) {					
 					Funcoes.mensagemInforma( null, "Cupom fiscal está aberto!" );
 					return;
 				}
 			}
 			
-			super.setVisible( bVal );
+			super.setVisible( arg0 );
 		}
 	}
 

@@ -889,6 +889,37 @@ public class ECFDriver {
 		
 	}
 	
+	public boolean executadaReducaoZ() {
+
+		boolean bRetorno = false;
+		
+		if ( dll ) {
+			//bRetorno = bema.verificaCupomAberto( sUserID, bModoDemo );
+		}
+		else if ( ! bModoDemo ) {
+			
+			int iret = Integer.parseInt( ecf.retornoVariaveis( AbstractECFDriver.V_FLAG_FISCAL ) );
+			if ( iret >= 128 ) {
+				iret -= 128;
+			}
+			if ( iret >= 64 ) {
+				iret -= 64;
+			}
+			if ( iret >= 32 ) {
+				iret -= 32;
+			}
+			if ( iret >= 16 ) {
+				iret -= 16;
+			}
+			if ( iret >= 8 ) {
+				iret -= 8;
+				bRetorno = true;
+			}
+		}
+		
+		return bRetorno;		
+	}
+	
 	public String transStatus( char cStatus ) {
 
 		String sRet = "";

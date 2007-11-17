@@ -61,6 +61,8 @@ public class DLFechaDia extends FFDialogo {
 	private ECFDriver ecf = new ECFDriver( ! AplicativoPDV.usaEcfDriver() );
 	
 	private Date datacaixa = null;
+	
+	private boolean naoExecutouReducaoZ = false;
 
 	public DLFechaDia() {
 
@@ -69,12 +71,18 @@ public class DLFechaDia extends FFDialogo {
 		setTitulo( "Fechamento de caixa" );
 		setAtribos( 313, 170 );
 
+		cbReducaoZ.setVlrString( "N" );
+		
+		naoExecutouReducaoZ = ! ecf.executadaReducaoZ();
+
 		adic( new JLabelPad( "Data e Hora: " ), 7, 10, 110, 20 );
 		adic( txtDataHora, 7, 30, 140, 20 );
 		adic( new JLabelPad( "Saldo do caixa: " ), 155, 10, 120, 20 );
 		adic( txtVlrCaixa, 150, 30, 140, 20 );
-		adic( cbReducaoZ, 10, 60, 280, 20 );
-
+		
+		if ( naoExecutouReducaoZ ) {		
+			adic( cbReducaoZ, 10, 60, 280, 20 );
+		}
 	}
 
 	private void loadCaixa() {
@@ -82,7 +90,8 @@ public class DLFechaDia extends FFDialogo {
 		try {
 			
 			PreparedStatement ps = con.prepareStatement( 
-				"SELECT FIRST 1 DTAMOV, VLRSLDMOV FROM PVMOVCAIXA WHERE CODEMP=? AND CODFILIAL=? AND CODCAIXA=? ORDER BY DTAMOV DESC, NROMOV DESC" );
+				"SELECT FIRST 1 DTAMOV, VLRSLDMOV FROM PVMOVCAIXA " +
+				"WHERE CODEMP=? AND CODFILIAL=? AND CODCAIXA=? ORDER BY DTAMOV DESC, NROMOV DESC" );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
@@ -183,7 +192,7 @@ public class DLFechaDia extends FFDialogo {
 		
 		if ( AplicativoPDV.bECFTerm ) {
 
-			if ( txtVlrCaixa.getVlrBigDecimal().floatValue() > 0.0F ) {
+			if ( naoExecutouReducaoZ && txtVlrCaixa.getVlrBigDecimal().floatValue() > 0.0F ) {
 
 				if ( execSangria() && ! AplicativoPDV.bModoDemo ) {
 
