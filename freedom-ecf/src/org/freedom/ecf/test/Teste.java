@@ -1,9 +1,10 @@
 
-package org.freedom.ecf.driver;
+package org.freedom.ecf.test;
 
 import java.util.Date;
 
 import org.freedom.ecf.com.Serial;
+import org.freedom.ecf.driver.ECFBematech;
 
 public class Teste {
 
@@ -37,8 +38,11 @@ public class Teste {
 		// ecf.iniciaFechamentoCupom(ECFBematech.DESCONTO_PERC,0);
 		// ecf.efetuaFormaPagamento("01",15,"to testando...");
 		// ecf.terminaFechamentoCupom("Volte sempre!!!");
+		
+		//ecf.cancelaCupom();
 
-		// ecf.leituraX();
+		//ecf.leituraX();
+		ecf.reducaoZ();
 
 		// ecf.autenticacaoDeDocumento();
 
