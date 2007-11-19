@@ -533,6 +533,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		// pnRodape.add(btExp);
 		btExp.setPreferredSize( new Dimension( 30, 30 ) );
+		btExp.setToolTipText( "Copia orçamento." );
 		pnNavCab.add( btExp, BorderLayout.EAST );
 
 		// adic(btExp, 633, 50, 30, 30);
