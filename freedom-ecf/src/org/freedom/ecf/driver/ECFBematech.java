@@ -286,7 +286,7 @@ public class ECFBematech extends AbstractECFDriver {
 	}
 
 	/**
-	 * Através do comando “01”, pode-se alterar o símbolo da moeda usando como tamanho de parâmetro<br>
+	 * Através do comando 01, pode-se alterar o símbolo da moeda usando como tamanho de parâmetro<br>
 	 * dois caracteres ASCII alfanuméricos. Ex: “" R" (um espaço em branco e a letra R maiúscula).<br>
 	 * O símbolo monetário “$” já está programado, sendo assim, não precisa ser inserido.<br>
 	 * 
@@ -378,7 +378,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * Exemplo:<br>
 	 * <br>
-	 * <p style="background=#000000"> // para definir Arredondamento.<br>
+	 * <p style="background=#eeffee"> // para definir Arredondamento.<br>
 	 * programaTruncamentoArredondamento( '1' );<br>
 	 * </p>
 	 * <br>
@@ -887,7 +887,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		buf.append( parseParam( dataIni ) );
 		buf.append( parseParam( dataFim ) );
-		buf.append( parseParam( tipo, 1 ) );
+		buf.append( tipo );
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
@@ -914,7 +914,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		buf.append( parseParam( ini, 6 ) );
 		buf.append( parseParam( fim, 6 ) );
-		buf.append( parseParam( tipo, 1 ) );
+		buf.append( tipo );
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
@@ -1505,6 +1505,61 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
+		return executaCmd( CMD, 3 );
+	}
+
+	/**
+	 * Este comando retorna pela porta serial 1 byte correspondendo ao estado atual de<br>
+	 * inserção ou não do cheque.<br>
+	 * 
+	 * @return estado da impressora.<br>
+	 */
+	public String retornoStatusCheque() {
+
+		byte[] CMD = { ESC, 62, 48 };
+		
+		executaCmd( CMD, 3 );
+
+		return bcdToAsc( getBytesLidos() );
+	}
+
+	/**
+	 * <br>
+	 * 
+	 * @return estado da impressora.<br>
+	 */
+	public int cancelaImpressaoCheque() {
+
+		byte[] CMD = { ESC, 62, 49 };
+		
+		return executaCmd( CMD, 3 );
+	}
+
+	/**
+	 * <br>
+	 * 
+	 * @return estado da impressora.<br>
+	 */
+	public int imprimeCheque( final float valor, final String favorecido, final String localidade, final int dia , final int mes, final int ano ) {
+
+		byte[] CMD = { ESC, 57 };
+		
+		final StringBuffer buf = new StringBuffer();
+
+		buf.append( parseParam( valor, 14, 2 ) );
+		buf.append( parseParam( favorecido, 45, false ) );
+		buf.append( parseParam( localidade, 27, false ) );
+		buf.append( parseParam( dia, 2 ) );
+		buf.append( parseParam( mes, 2 ) );
+		buf.append( parseParam( ano, 4 ) );	
+
+		CMD = adicBytes( CMD, buf.toString().getBytes() );
+		
+		final byte[] posicoes = { 55, 10, 1, 6, 18, 50, 54, 71, 2, 5, 8, 10, 12, 0 };
+
+		CMD = adicBytes( CMD, posicoes );
+
+		
 		return executaCmd( CMD, 3 );
 	}
 

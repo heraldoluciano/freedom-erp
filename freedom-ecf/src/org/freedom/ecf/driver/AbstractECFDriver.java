@@ -147,6 +147,10 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	public static final char V_DEPARTAMENTOS = 34;
 
 	public static final char V_TIPO_IMP = 253;
+	
+	public static final String SUPRIMENTO = "SU";
+	
+	public static final String SANGRIA = "SA";
 
 	private static byte[] bytesLidos = new byte[ 3 ];
 
@@ -473,6 +477,8 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	public abstract int nomeiaTotalizadorNaoSujeitoICMS( int indice, String desc );// 40
 
 	public abstract int vendaItemTresCasas( String codProd, String descProd, String sitTrib, float qtd, float valor, float desconto );// 56
+	
+	public abstract int imprimeCheque( final float valor, final String favorecido, final String localidade, final int dia , final int mes, final int ano ); // 57
 
 	public abstract int programaMoedaSingular( String nomeSingular );// 58
 
@@ -481,6 +487,10 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	public abstract int programarEspacoEntreLinhas( int espaco );// 60
 
 	public abstract int programarLinhasEntreCupons( int espaco );// 61
+	
+	public abstract String retornoStatusCheque();// 62 48
+	
+	public abstract int cancelaImpressaoCheque();// 62 49
 
 	public abstract int programaUnidadeMedida( String descUnid );// 62 51
 
