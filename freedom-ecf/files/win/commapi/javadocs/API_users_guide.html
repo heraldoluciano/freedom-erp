@@ -1,0 +1,125 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.05 [en] (X11; I; SunOS 5.6 sun4u) [Netscape]">
+   <TITLE>Java(tm) Communications API Users Guide</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<!-- @(#)API_users_guide.html   1.11 97/12/15 -->
+<center>
+<H1>
+Java(tm) Communications API Users Guide</H1>
+<I>Version 2.0</I><p>
+<A HREF="../COMM2.0_license.txt">License</A>
+</center>
+
+<P>This document provides an overview of the components of the Java(tm) 
+communications
+API, which is a standard extension to the Java platform. It is not a tutorial;
+readers should know the basics of serial and parallel port programming,
+and be comfortable reading the Java communications API <A HREF="packages.html">reference
+pages</A>.
+
+<P>Like all Java standard extensions, the Java communications 
+API is intended to be implementable from specification by third parties.
+
+<P>
+<HR>
+<H2>
+<TT>javax.comm</TT> Extension Package</H2>
+
+<P>There are three levels of classes in the Java communications API:
+<UL>
+<LI>
+High-level classes like <TT>CommPortIdentifier</TT> and <TT>CommPort</TT>
+manage access and ownership of communication ports.</LI>
+
+<LI>
+Low-level classes like <TT>SerialPort</TT> and <TT>ParallelPort</TT> provide
+an interface to physical communications ports. The current release of the
+Java communications API enables access to serial (RS-232) and
+parallel (IEEE 1284) ports.</LI>
+
+<LI>
+Driver-level classes provide an interface between the low-level classes
+and the underlying operating system. Driver-level classes are part of the
+implementation but not the Java communications API. They should
+not be used by application programmers.</LI>
+</UL>
+The <TT>javax.comm</TT> package provides the following basic services:
+<UL>
+<LI>
+Enumerate the available ports on the system. The static method <TT>CommPortIdentifier.getPortIdentifiers</TT>
+returns an enumeration object that contains a <TT>CommPortIdentifier</TT>
+object for each available port. This <TT>CommPortIdentifier</TT> object
+is the central mechanism for controlling access to a communications port.</LI>
+
+<LI>
+Open and claim ownership of communications ports by using the high level
+methods in their <TT>CommPortIdentifier</TT> objects.</LI>
+
+<LI>
+Resolve port ownership contention between multiple Java applications. Events
+are propagated to notify interested applications of ownership contention
+and allow the port's owner to relinquish ownership. <TT>PortInUseException</TT>
+is thrown when an application fails to open the port.</LI>
+
+<LI>
+Perform asynchronous and synchronous I/O on communications ports. Low-level
+classes like <TT>SerialPort</TT> and <TT>ParallelPort</TT> have methods
+for managing I/O on communications ports.</LI>
+
+<LI>
+Receive events describing communication port state changes. For example,
+when a serial port has a state change for Carrier Detect, Ring Indicator,
+DTR, etc. the <TT>SerialPort</TT> object propagates a <TT>SerialPortEvent</TT>
+that describes the state change.</LI>
+</UL>
+
+<H2>
+A Simple Reading Example</H2>
+<TT><A HREF="../samples/Simple/SimpleRead.java">SimpleRead.java</A></TT> opens
+a serial port and creates a thread for asynchronously reading data through
+an event callback technique.
+<H2>
+A Simple Writing Example</H2>
+<TT><A HREF="../samples/Simple/SimpleWrite.java">SimpleWrite.java</A></TT>
+opens a serial port for writing data.
+<H2>
+Solaris Notes</H2>
+The Solaris implementation of the Java communications API requires
+the <A HREF="http://java.sun.com/products/jdk/1.1/">Solaris Native Threads
+Pack</A> for JDK 1.1.x.
+
+<P>Here's how to test the <TT>SimpleRead.java</TT> example above on Solaris:
+<OL>
+<LI>
+Attach a null-modem cable between two serial ports.</LI>
+
+<LI>
+Start <TT>tip</TT>(1) on one of the serial ports:</LI>
+
+<PRE>% tip -9600 /dev/term/b</PRE>
+
+<LI>
+Compile <TT>SimpleRead.java</TT>:</LI>
+
+<PRE>% javac SimpleRead.java</PRE>
+
+<LI>
+Run <TT>SimpleRead</TT>:</LI>
+
+<PRE>% java -native SimpleRead</PRE>
+
+<LI>
+Type text into the <TT>tip</TT>(1) window.</LI>
+</OL>
+
+<HR>
+<FONT SIZE="1">
+Copyright &copy 1998 <A HREF="http://www.sun.com">Sun Microsystems, Inc.</A>
+<BR>
+All Rights Reserved.
+</FONT>
+</BODY>
+</HTML>

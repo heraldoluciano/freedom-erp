@@ -1,0 +1,161 @@
+			Serial Port Black Box Tester
+			    Author: Tom Corson
+				JavaSoft
+
+
+Black Box is a Java(TM) application for monitoring and testing serial
+ports.
+
+It's usage is:
+
+Usage: java -native BlackBox [-h] | [-f] [-l] [-m] [-n] [-s]
+				    [-d receive_delay] [-p ports]
+
+Where:
+	-h	this usage message
+
+	-f      "Friendly" mode.  Relinquish control of the port (close it)
+		 if another requestor attempts an open.
+
+	-l	run as a line monitor.  The output stream for each port 
+		is interchanged with the output stream of the other
+		port.  This means that what is received on port A is
+		resent on port B and vice versa.  On a system with at
+		least 2 serial ports, this allows you to connect the
+		system to a device being tested and observe all data
+		sent and received as well as control signal
+		transitions, etc.  This setting allows the tool to be
+		used as a line monitor.
+
+	-m 	Modem mode.  Transmit a newline as \n\r. 
+
+	-n 	do not use receiver threads.  Slows the receive processing 
+		down by using the same thread for the transmitter as
+		well as the receiver.  Useful for checking flow
+		control.
+
+	-s	Silent mode.  Don't display received data.
+
+	-d	sleep for receive_delay msecs after each read.  Delays 
+		the receive processing.  Also useful for checking 
+		flow control.
+
+	-p	open only the ports specified (separated by spaces).  If 
+		not specified, all ports will be opened.
+		Note: This must be the last argument given.
+
+When BlackBox starts, it opens the specified serial ports (or all, by
+default) on the machine from which it is run and displays an
+information panel for each.  The information shown consists of:
+
+
+The name of the port.
+
+	The label color reflects the state of the port as follows:
+
+		Green  - port is open
+		Yellow - port is in use but awaiting an open when the
+			 port becomes available
+		Red    - port is closed
+
+	Note: Clicking on the port name toggles the port from open to
+	      closed.
+
+
+A set of controls for:
+
+	Baud Rate
+	Data Bits
+	Stop Bits
+	Parity
+
+	Manipulating them changes each attribute to the indicated
+	value.
+
+
+A set of indicators for:
+
+	RTS	Request To Send
+	CTS	Clear To Send
+	DTR	Data Terminal Ready
+	DSR	Data Set Ready
+	RI	Ring Indicate
+	CD	Carrier Detect
+
+		Note: RTS and DTR can each be reset by clicking on
+		them.
+
+	OE	Overrun Error
+	FE	Framing Error
+	PE	Parity Error
+	BI	Break Indicator
+
+		Note: Each of the above indicators can be reset by
+		clicking on them.
+
+	DA	Data Available
+	BE	Output Buffer Empty
+
+
+
+A set of checkboxes for setting flow control, ether RTS/CTS, XON/XOFF,
+both, or none.
+
+
+A text area for transmitting data, a display of the buffer size in use,
+along with a count of the number of bytes sent and the actual
+(calculated) baud rate.  
+
+There are 2 check boxes above the transmit text area:  
+
+	Selecting "Auto Transmit" causes a test pattern to be
+	continuously transmitted.
+
+	Selecting "Send Break" sends a 1000 millisecond break signal.
+
+Note: Clicking on the "Bytes Transmitted" label resets the counter to 0.
+
+      Clicking on the "Baud Rate" label resets it to 0.
+
+      Clicking on the "Buffer Size" label resets the buffer size to the
+      default value.
+
+
+A text area for receiving data, a display of the buffer size in use,
+along with a count of the number of bytes received and the actual
+(calculated) baud rate.
+
+There are 3 text fields above the receive text area:  
+
+	Entering a value for "Timeout" causes the receive timeout to be
+	set to that many milliseconds.
+
+	Entering a value for "Threshold" causes the receive threshold
+	to be set to that many bytes.
+
+	Entering a value for "Framing" causes the receive framing byte
+	to be set to that hexadecimal value.
+
+Note: Clicking on the "Bytes Received" label resets the counter to 0.
+
+      Clicking on the "Baud Rate" label resets it to 0.
+
+      Clicking on the "Buffer Size" label resets the buffer size to the
+      default value.
+
+      Clicking on the "Timeout" label resets the receive timeout to the
+      default value.
+
+      Clicking on the "Threshold" label resets the receive threshold to
+      the default value.
+
+      Clicking on the "Framing" label resets the receive framing byte
+      to the default value.
+
+Note: Any nonprintable characters received will be shown as multi-byte
+symbols, eg, "^C".
+
+
+README
+Version: 1.8
+Last Modified: 06/25/98

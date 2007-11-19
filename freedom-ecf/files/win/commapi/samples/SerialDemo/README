@@ -1,0 +1,142 @@
+Copyright (c) 1998 Sun Microsystems, Inc. All Rights Reserved.
+
+SerialDemo is a sample program designed to demonstrate some of the features of
+the Java(tm) Communication API (comm api). This document describes how to
+build and run SerialDemo. 
+
+
+
+
+Building SerialDemo
+
+All the .java files for SerialDemo reside in a single directory and none of
+them have package statements. This makes SerialDemo very easy to build. Follow
+the directions for installing the comm api on your machine. Make sure that you
+have included comm.jar in your classpath. Compiling SerialDemo only requires
+a single command. In the same directory that the .java files reside type:
+
+javac *.java
+
+This will produce all the .class files needed to run SerialDemo.
+
+
+Starting SerialDemo
+
+Run SerialDemo from the command line, in the directory containing the .class
+files, with the following command:
+
+java SerialDemo
+
+SerialDemo may also be started with a properties file as an argument
+
+java SerialDemo serialdemo.properties
+
+This properties file is created when a configuration is saved by the user
+while running SerialDemo.
+
+
+SerialDemo Description
+
+SerialDemo is a simple two way "talk" type program. I consists of two TextAreas,
+the top one takes typed input and writes that input to a serial port. The
+bottom TextArea displays data received from a serial port. Under the TextAreas
+is a configuration panel that allows the user to choose a serial port and the
+settings for the serial port. At the bottom of SerialDemo are three buttons:
+"Open Port", "Close Port", and "Send Break". There is one menu consisting of
+three items: "Load", "Save", and "Exit".
+
+
+Hardware Setup
+
+Some of the features of SerialDemo will work without any hardware setup, but
+to use the two way communications feature a null modem cable is required. The
+cable can either be looped back between the serial ports on a single machine or
+used to connect the serial ports on two different machines.
+
+
+Using SerialDemo
+
+Once the program is started, choose the port you want to connect to and the
+settings you want for the port on the Configuration Panel. Then press the 
+"Open Port" button. After the port is opened, keystrokes typed into the top
+TextArea are sent to the port. Data received from the port is displayed in
+the bottom TextArea.
+
+Port choices can not be changed while a port is open. If a change is attempted
+a dialog box will appear notifying the user that the port can not be changed
+and the Configuration Panel port choice will revert to the original setting.
+
+Port settings may be changed while the port is open. If a setting is not 
+supported by the platform a dialog box will appear notifying the user that 
+setting is not supported and the setting in the Configuration Panel will
+revert to the original setting. 
+
+Settings may also be changed while the port is closed. If an unsupported 
+setting is chosen no notification will occur until the port is opened. At
+that time the port open will fail, the user will be notified and asked to 
+try different settings.
+
+Configurations may be saved to and loaded from files. Configurations may only
+be loaded while a port is closed. To save a configuration, choose the "Save"
+item from the menu. A file dialog will appear allowing the file to be saved.
+A default name for the file is "serialdemo.properties". This name can be 
+changed in the file dialog. 
+
+To load configurations, choose the "Load" item from the menu. A file dialog 
+will appear. Choose the file that contains the configuration that you want
+to load. SerialDemo can load configurations that may not work on the platform
+on which the program is running. If a configuration contains unsupported
+settings or an incorrect port name the port will not open.
+
+Configurations may also be loaded from a file at start up. To use a 
+configuration file at start up, pass the name of the file to the program as
+an argument. Example:
+
+java SerialDemo serialdemo.properties
+
+A break signal can be sent to serial port by pressing the "Send Break" button.
+If a break signal is received the message "--- BREAK RECEIVED ---" is printed
+in the bottom TextArea. Some platforms do not reliably report break signals
+to the comm api. If the break signal is not correctly reported then the 
+comm api and SerialDemo will interpret the signal as a byte of value 0. In
+this case the break received message will not be displayed.
+
+
+Port Contention Resolution
+
+SerilDemo implements the comm api port contention resolution feature. This 
+feature allows an application to request a port that is use and have the 
+application that is using the port make a choice on whether to give up the 
+port or not. On some platforms, such as Windows, this resolution can occur
+between separate Virtual Machines. On other platforms, such as Solaris, 
+resolution can only occur within the same Virtual Machine.
+
+If you are running on a platform that supports contention resolution between 
+different Virtual Machines SerialDemo can demonstrate port conflict resolution.
+To see port conflict resolution do the following steps.
+
+1) Start two instances of SerialDemo and have both instances showing on the 
+screen.
+
+2) Open a port in one of the instances.
+
+3) Attempt to open the same port in the other instance. A dialog box should
+appear over the first instance telling the user that an other application
+has requested the port and asking if they will give the port up. If the user
+presses the "Yes" button, the first instance will close the port and the 
+second instance will open the port. 
+
+The port open calls in SerialDemo have a 30 second timeout. If the instance
+controlling the port does not give it up within 30 seconds then the open
+will fail and the instance requesting the port will be notified that the
+port is in use.
+
+
+Features To Look For In the Code
+
+* Opening, closing, and setting serial ports -- SerialConnection.java
+* Event driven I/O - SerialConnection.java
+* Event driven ownership resolution -- SerialConnection.java
+* Comm port exception handling -- SerialConnection.java
+* Saving and loading configuration files -- SerialDemo.java
+
