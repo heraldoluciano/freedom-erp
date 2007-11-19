@@ -1514,7 +1514,7 @@ public class Funcoes {
 		}
 		return dRetorno;
 	}
-
+	
 	public static GregorianCalendar sqlDateToGregorianCalendar(
 			java.sql.Date dVal) {
 		GregorianCalendar cal = new GregorianCalendar();

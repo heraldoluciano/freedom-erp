@@ -937,7 +937,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 				tabConsulta.adicLinha();
 				tabConsulta.setValor( imgColuna, i, EColTabConsulta.IMGSTATUS.ordinal() );
-				tabConsulta.setValor( ( rs.getDate( "DTVENCITREC" ) != null ? Funcoes.sqlDateToDate( rs.getDate( "DTVENCITREC" ) ) : "" ), i, EColTabConsulta.DTVENC.ordinal() );
+				tabConsulta.setValor( ( rs.getDate( "DTVENCITREC" ) != null ? Funcoes.sqlDateToStrDate( rs.getDate( "DTVENCITREC" ) ) : "" ), i, EColTabConsulta.DTVENC.ordinal() );
 				tabConsulta.setValor( rs.getInt( "CODREC" ), i, EColTabConsulta.CODREC.ordinal() );
 				tabConsulta.setValor( rs.getInt( "NPARCITREC" ), i, EColTabConsulta.NPARCITREC.ordinal() );
 				tabConsulta.setValor( ( rs.getString( "DOCREC" ) != null ? rs.getString( "DOCREC" ) : "" ), i, EColTabConsulta.DOC.ordinal() );
@@ -1215,7 +1215,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				if ( rs.getString( "StatusItRec" ).equals( "RP" ) && bdVlrAReceber == 0 ) {
 					imgColuna = imgPago;
 				}
-				else if ( bdVlrPago > 0 ) {
+				else if ( bdVlrPago > 0 ) { 
 					imgColuna = imgPagoParcial;
 				}
 				else if ( rs.getDate( "DtVencItRec" ).before( Calendar.getInstance().getTime() ) ) {
@@ -1226,8 +1226,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				}
 
 				tabManut.setValor( imgColuna, i, EColTabManut.IMGSTATUS.ordinal() );
-				tabManut.setValor( Funcoes.sqlDateToDate( rs.getDate( "DTVENCITREC" ) ), i, EColTabManut.DTVENC.ordinal() );
-				tabManut.setValor( Funcoes.sqlDateToDate( rs.getDate( "DTITREC" ) ), i, EColTabManut.DTEMIT.ordinal() );
+				tabManut.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DTVENCITREC" ) ), i, EColTabManut.DTVENC.ordinal() );
+				tabManut.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DTITREC" ) ), i, EColTabManut.DTEMIT.ordinal() );
 				tabManut.setValor( rs.getInt( "CODCLI" ), i, EColTabManut.CODCLI.ordinal() );
 				tabManut.setValor( rs.getString( "RAZCLI" ), i, EColTabManut.RAZCLI.ordinal() );
 				tabManut.setValor( rs.getInt( "CODREC" ), i, EColTabManut.CODREC.ordinal() );
@@ -1236,7 +1236,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					( rs.getString( "DocRec" ) != null ? rs.getString( "DocRec" ) + "/" + rs.getString( "NParcItRec" ) : "" ) ), i, EColTabManut.DOCLANCA.ordinal() );
 				tabManut.setValor( rs.getInt( "DOCVENDA" ), i, EColTabManut.DOCVENDA.ordinal() );// DOCVENDA
 				tabManut.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRPARCITREC" ) ), i, EColTabManut.VLRPARC.ordinal() );
-				tabManut.setValor( ( rs.getDate( "DTPAGOITREC" ) != null ? Funcoes.sqlDateToDate( rs.getDate( "DtPagoItRec" ) ) : "" ), i, EColTabManut.DTPAGTO.ordinal() );
+				tabManut.setValor( ( rs.getDate( "DTPAGOITREC" ) != null ? Funcoes.sqlDateToDate( rs.getDate( "DtPagoItRec" ) ) : new Date() ), i, EColTabManut.DTPAGTO.ordinal() );				
+				tabManut.setValor( ( rs.getDate( "DTPAGOITREC" ) != null ? Funcoes.sqlDateToStrDate( rs.getDate( "DtPagoItRec" ) ) : "" ), i, EColTabManut.DTPAGTO.ordinal() );
+				
 				tabManut.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRPAGOITREC" ) ), i, EColTabManut.VLRPAGO.ordinal() );
 				tabManut.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRDESCITREC" ) ), i, EColTabManut.VLRDESC.ordinal() );
 				tabManut.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRJUROSITREC" ) ), i, EColTabManut.VLRJUROS.ordinal() );
@@ -1254,6 +1256,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				tabManut.setValor( rs.getString( "CODCARTCOB" ) != null ? rs.getString( "CODCARTCOB" ) : "", i, EColTabManut.CODCARTCOB.ordinal() );// CODBANCO
 				tabManut.setValor( rs.getString( "DESCCARTCOB" ) != null ? rs.getString( "DESCCARTCOB" ) : "", i, EColTabManut.DESCCARTCOB.ordinal() );// NOMEBANCO
 				tabManut.setValor( rs.getString( "ObsItRec" ) != null ? rs.getString( "ObsItRec" ) : "", i, EColTabManut.OBS.ordinal() );
+				
+				
+				
 				// vCodPed.addElement( rs.getString( "CodVenda" ) );
 				// vNumContas.addElement( rs.getString( "NumConta" ) != null ? rs.getString( "NumConta" ) : "" );
 				// vCodPlans.addElement( rs.getString( "CodPlan" ) != null ? rs.getString( "CodPlan" ) : "" );
@@ -1318,8 +1323,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						sVals[ EColEdit.DOC.ordinal() ] = tabManut.getValor( iLin, EColTabManut.DOCLANCA.ordinal() );
 					}
 					sVals[ EColEdit.DOC.ordinal() ] = (String) tabManut.getValor( iLin, EColTabManut.DOCLANCA.ordinal() );
-					sVals[ EColEdit.DTEMIS.ordinal() ] = tabManut.getValor( iLin, EColTabManut.DTEMIT.ordinal() );
-					sVals[ EColEdit.DTVENC.ordinal() ] = tabManut.getValor( iLin, EColTabManut.DTVENC.ordinal() );
+					sVals[ EColEdit.DTEMIS.ordinal() ] = Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTEMIT.ordinal() ).toString());
+					sVals[ EColEdit.DTVENC.ordinal() ] = Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTVENC.ordinal() ).toString());
 					sVals[ EColEdit.VLRJUROS.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRJUROS.ordinal() ) );
 					sVals[ EColEdit.VLRDESC.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRDESC.ordinal() ) );
 					sVals[ EColEdit.VLRPARC.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPARC.ordinal() ) );
