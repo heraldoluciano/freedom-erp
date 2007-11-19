@@ -42,7 +42,7 @@ public class DLCopiaOrc extends FFDialogo {
   public DLCopiaOrc(Component cOrig) {
   	super(cOrig);
     setTitulo("Cópia de orçamento");
-    setAtribos(320,130);
+    setAtribos(320,200);
     
     lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK,true));
     lcCli.add(new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI,false));
