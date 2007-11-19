@@ -40,7 +40,7 @@
 	</parameter>
 	<queryString><![CDATA[SELECT O.CODCLI, O.OBSORC, O.PRAZOENTORC, O.PRAZOENTORC, C.CIDCLI, C.ENDCLI,
 C.FONECLI, C.BAIRCLI, C.UFCLI, DDDCLI, C.NUMCLI, C.EMAILCLI, C.CEPCLI, C.RAZCLI, C.CPFCLI,
-C.CELCLI, O.CODORC, O.DTORC, C.PESSOACLI, C.CNPJCLI, C.CONTCLI,
+C.CELCLI, O.CODORC, O.DTORC, C.PESSOACLI, C.CNPJCLI, C.CONTCLI, V.NOMEVEND,
 O.DTVENCORC, PP.DESCPLANOPAG, E.RAZEMP,C.CONTCLI, P1.USANOMEVENDORC, 
 (CASE WHEN P1.USANOMEVENDORC='S' THEN V.NOMEVEND ELSE E.RAZEMP END) NOMEASS,
 (CASE WHEN P1.USAIMGASSORC='S' THEN COALESCE(V.IMGASSVEND,P1.IMGASSORC) END) IMGASS,
@@ -77,6 +77,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 	<field name="PESSOACLI" class="java.lang.String"/>
 	<field name="CNPJCLI" class="java.lang.String"/>
 	<field name="CONTCLI" class="java.lang.String"/>
+	<field name="NOMEVEND" class="java.lang.String"/>
 	<field name="DTVENCORC" class="java.sql.Date"/>
 	<field name="DESCPLANOPAG" class="java.lang.String"/>
 	<field name="RAZEMP" class="java.lang.String"/>
@@ -259,14 +260,14 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 					<reportElement
 						x="361"
 						y="83"
-						width="44"
+						width="49"
 						height="12"
 						key="staticText-21"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="8"/>
 					</textElement>
-				<text><![CDATA[RESPNS.]]></text>
+				<text><![CDATA[RESPONS.]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -445,6 +446,19 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CONTCLI}.trim()]]></textFieldExpression>
 				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="412"
+						y="83"
+						width="121"
+						height="11"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMEVEND}.trim()]]></textFieldExpression>
+				</textField>
 			</band>
 		</columnHeader>
 		<detail>
@@ -480,12 +494,12 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 					<reportElement
 						x="41"
 						y="1"
-						width="428"
+						width="439"
 						height="26"
 						key="staticText-22"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9"/>
+						<font fontName="Conga" size="7"/>
 					</textElement>
 				<text><![CDATA[Movelaria Paranista Ltda. ME Rua Des. Hugo Simas 1793- CEP 80520250 - Curitiba - Pr
 Telefone e fax 41 3387495 CNPJ 85024446/0001-09 - www.movelariaparanista.com.br]]></text>

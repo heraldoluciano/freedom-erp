@@ -58,14 +58,14 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 			</band>
 		</title>
 		<pageHeader>
-			<band height="50"  isSplitAllowed="true" >
+			<band height="65"  isSplitAllowed="true" >
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="7"
-						y="6"
-						width="58"
-						height="41"
+						x="3"
+						y="1"
+						width="79"
+						height="61"
 						forecolor="#FFFFFF"
 						backcolor="#FFFFFF"
 						key="image-1"/>
@@ -75,42 +75,42 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 				</image>
 				<staticText>
 					<reportElement
-						x="234"
-						y="39"
+						x="236"
+						y="44"
 						width="96"
 						height="8"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
-						<font size="6"/>
+						<font fontName="Conga" size="5"/>
 					</textElement>
 				<text><![CDATA[DESDE 1991]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="68"
-						y="1"
-						width="434"
-						height="21"
+						x="84"
+						y="4"
+						width="385"
+						height="25"
 						key="staticText-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Georgia" size="18"/>
+						<font fontName="Conga" pdfFontName="Helvetica-Bold" size="16" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Movelaria Paranista]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="68"
-						y="23"
-						width="434"
+						x="84"
+						y="30"
+						width="385"
 						height="13"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
-						<font size="10"/>
+						<font fontName="Conga" size="9"/>
 					</textElement>
-				<text><![CDATA[Mòveis Especiais e Instalações Comerciais]]></text>
+				<text><![CDATA[Móveis Especiais e Instalações Comerciais]]></text>
 				</staticText>
 			</band>
 		</pageHeader>
