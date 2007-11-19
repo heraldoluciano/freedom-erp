@@ -1,0 +1,15 @@
+			Java Communications API - Samples
+
+1) BlackBox: A Serial Port BlackBox application.
+
+2) ParallelBlackBox: A Parallel Port BlackBox application
+
+3) SerialDemo: A simpler SerialPort sample application
+
+4) Simple: A very simple comm application
+
+5) NullDriver: A template for driver writers. Can be used as the starting point
+   to write a driver for the Comm API.
+
+6) porting: A template CommPortIdentifier java file for people interested
+   in porting the Comm API to a new platform.

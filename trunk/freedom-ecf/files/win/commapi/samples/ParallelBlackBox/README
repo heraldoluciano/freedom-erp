@@ -1,0 +1,134 @@
+			Parallel Port Black Box Tester
+			    Author: Tom Corson
+				JavaSoft
+
+
+Black Box is a Java(TM) application for monitoring and testing parallel
+ports.
+
+It's usage is:
+
+Usage: java -native ParallelBlackBox [-h] | [-f] [-l] [-n] [-d receive_delay] [-p ports]
+
+Where:
+	-h	this usage message
+
+	-f      "Friendly" mode.  Relinquish control of the port (close it)
+		 if another requestor attempts an open.
+
+	-n 	do not use receiver threads.  Slows the receive processing 
+		down by using the same thread for the transmitter as
+		well as the receiver.  Useful for checking flow
+		control.
+
+	-d	sleep for receive_delay msecs after each read.  Delays 
+		the receive processing. 
+
+	-l	run as a line monitor.  The output stream for each port 
+		is interchanged with the output stream of the other
+		port.  This means that what is received on port A is
+		resent on port B and vice versa.  On a system with at
+		least 2 parallel ports, this allows you to connect the
+		system to a device being tested and observe all data
+		sent and received as well as control signal
+		transitions, etc.  This setting allows the tool to be
+		used as a line monitor.
+
+	-p	open only the ports specified (separated by spaces).  If 
+		not specified, all ports will be opened.
+		Note: This must be the last argument given.
+
+When BlackBox starts, it opens the specified parallel ports (or all, by
+default) on the machine from which it is run and displays an
+information panel for each.  The information shown consists of:
+
+
+The name of the port.
+
+	The label color reflects the state of the port as follows:
+
+		Green  - port is open
+		Yellow - port is in use but awaiting an open when the
+			 port becomes available
+		Red    - port is closed
+
+	Note: Clicking on the port name toggles the port from open to
+	      closed.
+
+
+A control for:
+
+	Mode
+
+	Manipulating it changes the port mode to the indicated
+	value.
+
+
+A set of indicators for:
+
+	SEL	Printer Selected
+	BSY	Printer Busy
+
+	TO	Timed Out
+	PE	Printer Error
+	PO	Paper Out
+
+	BE	Output Buffer Empty
+
+
+
+A text area for transmitting data, a display of the buffer size in use,
+along with a count of the number of bytes sent and the actual
+(calculated) baud rate.  
+
+There are 2 check boxes above the transmit text area:  
+
+	Selecting "Auto Transmit" causes a test pattern to be
+	continuously transmitted.
+
+Note: Clicking on the "Bytes Transmitted" label resets the counter to 0.
+
+      Clicking on the "Baud Rate" label resets it to 0.
+
+      Clicking on the "Buffer Size" label resets the buffer size to the
+      default value.
+
+
+A text area for receiving data, a display of the buffer size in use,
+along with a count of the number of bytes received and the actual
+(calculated) baud rate.
+
+There are 3 text fields above the receive text area:  
+
+	Entering a value for "Timeout" causes the receive timeout to be
+	set to that many milliseconds.
+
+	Entering a value for "Threshold" causes the receive threshold
+	to be set to that many bytes.
+
+	Entering a value for "Framing" causes the receive framing byte
+	to be set to that hexadecimal value.
+
+Note: Clicking on the "Bytes Received" label resets the counter to 0.
+
+      Clicking on the "Baud Rate" label resets it to 0.
+
+      Clicking on the "Buffer Size" label resets the buffer size to the
+      default value.
+
+      Clicking on the "Timeout" label resets the receive timeout to the
+      default value.
+
+      Clicking on the "Threshold" label resets the receive threshold to
+      the default value.
+
+      Clicking on the "Framing" label resets the receive framing byte
+      to the default value.
+
+Note: Any nonprintable characters received will be shown as multi-byte
+symbols, eg, "^C".
+
+
+README
+Version: 1.1
+Last Modified: 06/02/98
