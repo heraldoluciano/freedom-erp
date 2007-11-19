@@ -88,8 +88,8 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 		txtVlrAdicOrc.setVlrBigDecimal(bVlrAdicAnt = bVA);
 		
 		if (bDIt) {
-			txtPercDescOrc.setAtivo(false);
-			txtVlrDescOrc.setAtivo(false);
+/*			txtPercDescOrc.setAtivo(false);
+			txtVlrDescOrc.setAtivo(false);*/
 		}
 	}
 	
@@ -185,8 +185,9 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 	
 	private void calcValor( String arg ) {
 		if( arg.equals("desconto") ) {
-			if( bVlrDescAnt != txtVlrDescOrc.getVlrBigDecimal())
-					txtPercDescOrc.setVlrString("");
+			if( bVlrDescAnt.compareTo( txtVlrDescOrc.getVlrBigDecimal())!=0) {
+				txtPercDescOrc.setVlrString("");
+			}
 			if( txtPercDescOrc.floatValue() > 0 ) {
 				txtVlrDescOrc.setVlrBigDecimal(new BigDecimal(
 						Funcoes.arredFloat(bVlrProd.floatValue()
@@ -195,8 +196,9 @@ public class DLCompOrc extends FFDialogo implements FocusListener, CarregaListen
 			}
 		}
 		else if( arg.equals("adicional") ) {
-			if( bVlrAdicAnt != txtVlrAdicOrc.getVlrBigDecimal())
+			if( bVlrAdicAnt.compareTo( txtVlrAdicOrc.getVlrBigDecimal())!=0){
 					txtPercAdicOrc.setVlrString("");
+			}
 			if( txtPercAdicOrc.floatValue() > 0) {
 				txtVlrAdicOrc.setVlrBigDecimal(new BigDecimal(
 						Funcoes.arredFloat(bVlrProd.floatValue()
