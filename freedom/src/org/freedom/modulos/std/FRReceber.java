@@ -230,13 +230,14 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		String sOrdem2 = null;
 		String sTitRel = null;
 		String sTitRel1 = null;
-		String sDtVencItRec = "";
+		String sDtTotal = "";
 		String sDtPago = "";
 		String sObs = "";
 		String sImpTotDia = "";
 		String sCodBanco = null;
 		String sCodTpCob = null;
 		String sCodPlanoPag = null;
+		String sCampoTotal = null;
 		String sCampoOrdem = null;
 		String sCampoOrdem2 = null;
 		Vector<String> vObs = null;
@@ -281,14 +282,17 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			if (sOrdem.equals("P")) {
 				sTitRel1 = "PAGAMENTO";
 				sCampoOrdem = "IT.DTPAGOITREC";
+				sCampoTotal = "DTPAGOITREC";
 			}
 			else if (sOrdem.equals("E")) {
 				sTitRel1 = "EMISSÂO";
 				sCampoOrdem = "IT.DTITREC";
+				sCampoTotal = "DTITREC";
 			}
 			else {
 				sTitRel1 = "VENCIMENTO";
 				sCampoOrdem = "IT.DTVENCITREC";
+				sCampoTotal = "DTVENCITREC";
 			}
 
 			if (sOrdem2.equals("R")) {
@@ -435,13 +439,13 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 						imp.say(  0, "|" + Funcoes.replicate("-",133) + "|");
 					}
 					
-					if ((!Funcoes.sqlDateToStrDate(rs.getDate("DtVencItRec")).equals(sDtVencItRec)) && 
+					if ((!Funcoes.sqlDateToStrDate(rs.getDate(sCampoTotal)).equals(sDtTotal)) && 
 								(bFimDia) && (sImpTotDia.equals("S")) ) {
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say(  0, "|" + Funcoes.replicate("-",133) + "|");
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say(  0, "|");
-						imp.say( 41, "Totais do Dia-> | "+sDtVencItRec+" | "+
+						imp.say( 41, "Totais do Dia-> | "+sDtTotal+" | "+
 											Funcoes.strDecimalToStrCurrency(14,2,String.valueOf(deTotalDiaParc))+" | "+
 											Funcoes.strDecimalToStrCurrency(14,2,String.valueOf(deTotalDiaPago))+" | "+
 											Funcoes.strDecimalToStrCurrency(13,2,String.valueOf(deTotalDiaApag))+" | ");
@@ -457,7 +461,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say(  0, "|");
 					
-					if (!Funcoes.sqlDateToStrDate(rs.getDate("DtVencItRec")).equals(sDtVencItRec))
+					if ((!"V".equals( sOrdem)) || (!Funcoes.sqlDateToStrDate(rs.getDate(sCampoTotal)).equals(sDtTotal))  )
 						imp.say(  3, Funcoes.sqlDateToStrDate(rs.getDate("DtVencItRec")) );
 					
 					imp.say( 14, "| " + Funcoes.copy(rs.getString("CodCli"),0,6) + "-" + Funcoes.copy(rs.getString("RazCli"),0,33)+  " |" );
@@ -501,7 +505,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 					}
 					 
 					bFimDia = true;
-					sDtVencItRec = Funcoes.sqlDateToStrDate(rs.getDate("DtVencItRec"));
+					sDtTotal = Funcoes.sqlDateToStrDate(rs.getDate(sCampoTotal));
 				}
 				
 				if ((bFimDia) && (sImpTotDia.equals("S"))) {
@@ -509,7 +513,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 					imp.say(  0, "|" + Funcoes.replicate("-",133) + "|");
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say(  0, "|");
-					imp.say( 41, "Totais do Dia-> | "+sDtVencItRec+" | "+
+					imp.say( 41, "Totais do Dia-> | "+sDtTotal+" | "+
 										Funcoes.strDecimalToStrCurrency(14,2,String.valueOf(deTotalDiaParc))+" | "+
 										Funcoes.strDecimalToStrCurrency(14,2,String.valueOf(deTotalDiaPago))+" | "+
 										Funcoes.strDecimalToStrCurrency(13,2,String.valueOf(deTotalDiaApag)));
@@ -556,7 +560,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			sFiltro = null;
 			sTipoRel = null;
 			sTitRel = null;
-			sDtVencItRec = null;
+			sDtTotal = null;
 			sDtPago = null;
 			sSQL = null;
 			sObs = null;
