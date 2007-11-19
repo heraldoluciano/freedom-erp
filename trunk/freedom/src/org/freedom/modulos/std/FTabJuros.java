@@ -55,6 +55,7 @@ public class FTabJuros extends FDetalhe {
     vLabs.addElement("Trimestral");
     vLabs.addElement("Semestral");
     vLabs.addElement("Anual");
+    vLabs.addElement("Fixo");
     Vector<String> vVals = new Vector<String>();
     vVals.addElement("");
     vVals.addElement("D");
@@ -63,6 +64,7 @@ public class FTabJuros extends FDetalhe {
     vVals.addElement("T");
     vVals.addElement("S");
     vVals.addElement("A");
+    vVals.addElement("F");
     cbTipo = new JComboBoxPad(vLabs,vVals,JComboBoxPad.TP_STRING, 1, 0);
     
     adicCampo(txtCodTbJ, 7, 20, 80, 20,"CodTbJ","Cód.tb.juros", ListaCampos.DB_PK, true);
