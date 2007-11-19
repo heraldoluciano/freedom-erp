@@ -44,9 +44,10 @@ public class DbConnection {
 	private String password;
 	private String driver;
 	private String urldb;
+	private String schema;
 	
 	public DbConnection(String drv, String url, String usrid, String pwd) {
-		execConnection(drv, url, usrid, pwd);
+		executeConnection(drv, url, usrid, pwd);
 	}
 	
    /**
@@ -116,7 +117,7 @@ public class DbConnection {
 		return userid;
 	}
 
-	public boolean execConnection(String drv, String url, String usrid, String pwd) {
+	public boolean executeConnection(String drv, String url, String usrid, String pwd) {
 		boolean ret = true;
 		setDriver(drv);
 		setUrldb(url);
@@ -141,5 +142,13 @@ public class DbConnection {
 	
 	public boolean isConnected() {
 		return connected;
+	}
+
+	public String getSchema() {
+		return schema;
+	}
+
+	public void setSchema(String schema) {
+		this.schema = schema;
 	}
 }
