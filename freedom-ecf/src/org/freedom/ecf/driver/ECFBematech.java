@@ -5,6 +5,8 @@ import java.util.Date;
 
 import org.freedom.ecf.com.Serial;
 
+import static org.freedom.ecf.driver.EStatus.*;
+
 /**
  * Classe implementa metodos de acesso a comandos de impressão <BR>
  * Projeto: freedom-ecf <BR>
@@ -26,6 +28,14 @@ import org.freedom.ecf.com.Serial;
  */
 
 public class ECFBematech extends AbstractECFDriver {
+
+	/**
+	 * Construtor da classe ECFBematech. <BR>
+	 */
+	public ECFBematech() {
+
+		super();
+	}
 
 	/**
 	 * Construtor da classe ECFBematech. <BR>
@@ -283,6 +293,52 @@ public class ECFBematech extends AbstractECFDriver {
 		}
 
 		return retorno;
+	}
+	
+	public EStatus decodeReturnECF( final int arg ) {
+
+		EStatus status = RETORNO_OK;
+
+		switch ( arg ) {
+
+			case 0 :
+				status = ERRO_COMUNICACAO;
+				break;
+			case 1 :
+				status = null;
+				break;
+			case -2 :
+				status = PARAMETRO_INVALIDO;
+				break;
+			case -3 :
+				status = ALIQUOTA_NAO_PROGRAMADA;
+				break;
+			case -4 :
+				status = ARQ_INI_NAO_ENCONTRADO;
+				break;
+			case -5 :
+				status = ERRO_ABRIR_PORTA;
+				break;
+			case -8 :
+				status = ERRO_GRAVAR_RETORNO;
+				break;
+			case -27 :
+				status = NAO_STATUS_600;
+				break;
+			case -30 :
+				status = FUNCAO_NAO_COMPATIVEL;
+				break;
+			case -31 :
+				status = FORMA_PAGAMENTO_NAO_FINALIZADA;
+				break;
+			default :
+				EStatus stmp = RETORNO_INDEFINIDO;
+				stmp.setMessage( "Retorno indefinido: " + arg );
+				status = stmp;
+				break;
+		}
+		
+		return status;
 	}
 
 	/**
