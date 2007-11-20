@@ -417,6 +417,8 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	public abstract int executaCmd( byte[] CMD, int tamRetorno );
 
 	public abstract int checkRetorno( byte[] bytes );
+	
+	public abstract EStatus decodeReturnECF( final int arg );
 
 	public abstract int aberturaDeCupom();// 0
 
