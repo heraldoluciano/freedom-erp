@@ -340,8 +340,11 @@ public class DLEnviarEmail extends FFDialogo {
 	
 	private MimeMessage getMessage( final Session session ) throws Exception {
 		
+		InternetAddress from[] = {new InternetAddress( txtFrom.getVlrString() )};
 		MimeMessage msg = new MimeMessage( session );
-		msg.setFrom( new InternetAddress( txtFrom.getVlrString() ) );
+		msg.setFrom( from[0] );
+		//msg.setRecipient( InternetAddress., arg1 )( from[0] );
+		msg.setReplyTo( from );
 
 		InternetAddress[] address = null;
 		
