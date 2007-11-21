@@ -444,6 +444,8 @@ public class FRBoleto extends FRelatorio {
 					sTxa = sTxa.replaceAll( "\\[______________NATUREZA_DA_OPERACAO______________]", Funcoes.copy( sCampo, 0, 50 ) );
 				if ( ( sCampo = rs.getString( "CODVENDA" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[CODVENDA]", Funcoes.copy( sCampo, 0, 10 ) );
+				if ( ( sCampo = rs.getString( "VlrApagRec" ) ) != null && rs.getDouble( "VlrApagRec" ) != 0 )
+					sTxa = sTxa.replaceAll( "\\[TOTAL_PARCELAS]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
 				
 				// Aplicar campos especiais de dados:
 
@@ -820,7 +822,7 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI, ITR.RECIBOITREC, " );
 			sSQL.append( "(ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA, " );
 			sSQL.append( "IV.CODNAT, N.DESCNAT, F.RAZFILIAL, CT.AGENCIACONTA, MB.NUMCONTA, " );
-			sSQL.append( "MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, " );
+			sSQL.append( "MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, R.VLRAPAGREC" );
 
 			sSQL.append( "(SELECT FIRST 1 VO.CODORC FROM VDVENDAORC VO " );
 			sSQL.append( "WHERE VO.CODEMP=V.CODEMP AND VO.CODFILIAL=VO.CODFILIAL AND " );
