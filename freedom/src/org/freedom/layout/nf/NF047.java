@@ -341,7 +341,7 @@ public class NF047 extends Layout {
 						imp.say( 0, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( frete.getString( NF.C_QTDFRETE ) ) ) );
 					imp.say( 22, Funcoes.copy( frete.getString( NF.C_ESPFRETE ), 27 ) );
 					imp.say( 62, Funcoes.copy( frete.getString( NF.C_MARCAFRETE ), 27 ) );
-					imp.say( 94, Funcoes.copy( frete.getString( NF.C_NUMTRANSP ), 4 ) );
+					imp.say( 94, Funcoes.strZero( String.valueOf( iNumNota ), 6 )  );
 					imp.say( 123, Funcoes.copy( frete.getString( NF.C_PESOBRUTO ), 4 ) );
 					imp.say( 144, Funcoes.copy( frete.getString( NF.C_PESOLIQ ), 4 ) );
 					
