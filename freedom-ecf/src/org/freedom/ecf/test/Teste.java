@@ -39,10 +39,10 @@ public class Teste {
 		// ecf.efetuaFormaPagamento("01",15,"to testando...");
 		// ecf.terminaFechamentoCupom("Volte sempre!!!");
 		
-		//ecf.cancelaCupom();
+		ecf.cancelaCupom();
 
 		//ecf.leituraX();
-		ecf.reducaoZ();
+		//ecf.reducaoZ();
 
 		// ecf.autenticacaoDeDocumento();
 

@@ -51,7 +51,7 @@ public class ECFBematechTest extends TestCase {
 
 		System.out.print( "vendaItem > " );
 		assertTrue( trataRetornoFuncao( ecf.vendaItem( 
-				"0000000000001", "Produto Teste                ", "FF", 1f, 10f, 0f ) ) );
+				"0000000000001", "Produto Teste                ", "FF", 1, 1f, 10f, 2, 0f ) ) );
 
 		System.out.print( "cancelaItemAnterior > " );
 		assertTrue( trataRetornoFuncao( ecf.cancelaItemAnterior() ) );
@@ -62,7 +62,7 @@ public class ECFBematechTest extends TestCase {
 		 
 		System.out.print( "vendaItemTresCasas > " ); 
 		assertTrue( trataRetornoFuncao( ecf.vendaItemTresCasas( 
-				"1234567890002", "Produto Teste                ", "FF", 2f, 2.050f, 0.10f ) ) );
+				"1234567890002", "Produto Teste                ", "FF", 1, 2f, 2.050f, 2, 0.10f ) ) );
 		
 		System.out.print( "vendaItemDepartamento > " ); 
 		assertTrue( trataRetornoFuncao( ecf.vendaItemDepartamento( 
