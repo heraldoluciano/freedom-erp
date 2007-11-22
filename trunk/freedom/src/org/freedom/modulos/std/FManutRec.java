@@ -1588,8 +1588,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				sVals[ EColBaixa.CODPLAN.ordinal() ] = 
 					"".equals( sPlanoConta[ 1 ] ) ? tabManut.getValor( iLin, EColTabManut.CODPLAN.ordinal() ) : sPlanoConta[ 1 ];
 				sVals[ EColBaixa.DOC.ordinal() ] = ( "".equals( tabManut.getValor( iLin, EColTabManut.DOCLANCA.ordinal() ) ) ? String.valueOf( tabManut.getValor( iLin, EColTabManut.DOCVENDA.ordinal() ) ) : tabManut.getValor( iLin, EColTabManut.DOCLANCA.ordinal() ) );
-				sVals[ EColBaixa.DTEMIT.ordinal() ] = tabManut.getValor( iLin, EColTabManut.DTEMIT.ordinal() );
-				sVals[ EColBaixa.DTVENC.ordinal() ] = tabManut.getValor( iLin, EColTabManut.DTVENC.ordinal() );
+				sVals[ EColBaixa.DTEMIT.ordinal() ] = Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTEMIT.ordinal() ).toString());
+				sVals[ EColBaixa.DTVENC.ordinal() ] = Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTVENC.ordinal() ).toString());
 				sVals[ EColBaixa.VLRPARC.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPARC.ordinal() ) );
 				sVals[ EColBaixa.VLRAPAG.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRAPAG.ordinal() ) );
 				sVals[ EColBaixa.VLRDESC.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRDESC.ordinal() ) );
