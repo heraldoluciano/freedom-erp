@@ -151,6 +151,18 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	public static final String SUPRIMENTO = "SU";
 	
 	public static final String SANGRIA = "SA";
+	
+	public static int TP_QTD_INTEIRO = 1;
+	
+	public static int TP_QTD_DECIMAL = 2;
+	
+	public static int TP_DESC_PERCENTUAL = 1;
+	
+	public static int TP_DESC_VALOR = 2;
+	
+	public static int DUAS_CASAS_DECIMAIS = 2;
+	
+	public static int TRES_CASAS_DECIMAIS = 3;
 
 	private static byte[] bytesLidos = new byte[ 3 ];
 
@@ -339,6 +351,20 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	}
 
+	public String parseParam( final String param, final int tamanho ) {		
+
+		final StringBuffer tmp = new StringBuffer();
+		
+		if ( tamanho < param.length() ) {
+			tmp.append( param.substring( 0, tamanho ) );
+		} else {
+			tmp.append( param );
+			tmp.append( replicate( " ", tamanho - param.length() ) );
+		}
+
+		return tmp.toString();
+	}
+
 	public String parseParam( final int param, final int tamanho ) {
 
 		return strZero( String.valueOf( param ), tamanho );
@@ -351,7 +377,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public String parseParam( final float param, final int tamanho, final int casasdec ) {
 
-		return strDecimalToStrCurrency( param, tamanho, casasdec );
+		return floatToString( param, tamanho, casasdec );
 	}
 
 	public String parseParam( final Date param ) {
@@ -372,26 +398,24 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 		return sRetorno.toString();
 	}
 
-	public String strDecimalToStrCurrency( final float param, final int tamanho, final int casasdec ) {
+	public String floatToString( final float param, final int tamanho, final int casasdec ) {
 
 		final StringBuffer str = new StringBuffer();
-		str.append( String.valueOf( param ) );
 
-		final char[] strTochar = str.toString().toCharArray();
-		final int index = str.indexOf( "." );
-		final int indexDesc = casasdec - ( ( strTochar.length - 1 ) - index );
-
-		str.delete( 0, strTochar.length );
-
-		for ( int i = 0; i < strTochar.length; i++ ) {
-			if ( i != index ) {
-				str.append( strTochar[ i ] );
+		final char[] strTochar = String.valueOf( param ).toCharArray();
+		final int index = String.valueOf( param ).indexOf( "." );
+		
+		for ( int i=0; i < index; i++ ) {
+			str.append( strTochar[ i ] );
+		}
+		for ( int i=0; i < casasdec; i++ ) {
+			if ( ( index + i ) + 1 < strTochar.length ) {
+				str.append( strTochar[ ( index + i ) + 1 ] );
 			}
-		}
-
-		for ( int i = 0; i < indexDesc; i++ ) {
-			str.append( 0 );
-		}
+			else {
+				str.append( 0 );
+			}
+		}		
 
 		return strZero( str.toString(), tamanho );
 	}
@@ -436,7 +460,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public abstract int leituraMemoriaFiscal( int ini, int fim, char tipo );// 8
 
-	public abstract int vendaItem( String codProd, String descProd, String sitTrib, float qtd, float valor, float desconto );// 9
+	public abstract int vendaItem( String codProd, String descProd, String aliquota, int tpqtd, float qtd, float valor, int tpdesc, float desconto );// 9
 
 	public abstract int cancelaItemAnterior();// 13
 
@@ -478,7 +502,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public abstract int nomeiaTotalizadorNaoSujeitoICMS( int indice, String desc );// 40
 
-	public abstract int vendaItemTresCasas( String codProd, String descProd, String sitTrib, float qtd, float valor, float desconto );// 56
+	public abstract int vendaItemTresCasas( String codProd, String descProd, String aliquota, int tpqtd, float qtd, float valor, int tpdesc, float desconto );// 56
 	
 	public abstract int imprimeCheque( final float valor, final String favorecido, final String localidade, final int dia , final int mes, final int ano ); // 57
 

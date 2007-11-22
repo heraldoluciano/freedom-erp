@@ -305,7 +305,7 @@ public class ECFBematech extends AbstractECFDriver {
 				status = ERRO_COMUNICACAO;
 				break;
 			case 1 :
-				status = null;
+				status = RETORNO_OK;
 				break;
 			case -2 :
 				status = PARAMETRO_INVALIDO;
@@ -592,7 +592,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		byte[] CMD = { ESC, 62, 52 };
 
-		CMD = adicBytes( CMD, parseParam( descricao, 200, true ).getBytes() );
+		CMD = adicBytes( CMD, parseParam( descricao, 200 ).getBytes() );
 
 		return executaCmd( CMD, 3 );
 	}
@@ -605,18 +605,22 @@ public class ECFBematech extends AbstractECFDriver {
 	 *            código do produto.<br>
 	 * @param descProd
 	 *            descrição do produto.<br>
-	 * @param sitTrib
-	 *            situação tributária do item.<br>
+	 * @param aliquota
+	 *            aliquota do item.<br>
+	 * @param tpqtd
+	 *            tipo de quantidade, inteiro ou decimal.<br>
 	 * @param qtd
 	 *            quantidade do item.<br>
 	 * @param valor
 	 *            valor do item.<br>
+	 * @param tpdesc
+	 *            tipo do desconto, percentual ou valor.<br>
 	 * @param desconto
-	 *            descrição do item.<br>
+	 *            valor do desconto.<br>
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int vendaItem( final String codProd, final String descProd, final String sitTrib, final float qtd, final float valor, final float desconto ) {
+	public int vendaItem( final String codProd, final String descProd, final String aliquota, final int tpqtd, final float qtd, final float valor, final int tpdesc, final float desconto ) {
 
 		byte[] CMD = { ESC, 9 };
 
@@ -624,10 +628,20 @@ public class ECFBematech extends AbstractECFDriver {
 
 		buf.append( parseParam( codProd, 13, false ) );
 		buf.append( parseParam( descProd, 29, false ) );
-		buf.append( parseParam( sitTrib, 2, false ) );
-		buf.append( parseParam( qtd, 7, 3 ) );
+		buf.append( parseParam( aliquota, 2, false ) );
+		if ( tpqtd == TP_QTD_DECIMAL ) {
+			buf.append( parseParam( qtd, 7, 3 ) );
+		}
+		else if ( tpqtd == TP_QTD_INTEIRO ) {
+			buf.append( parseParam( qtd, 4, 0 ) );
+		}
 		buf.append( parseParam( valor, 8, 2 ) );
-		buf.append( parseParam( desconto, 8, 2 ) );
+		if ( tpqtd == TP_DESC_VALOR ) {
+			buf.append( parseParam( desconto, 8, 2 ) );
+		}
+		else if ( tpqtd == TP_DESC_PERCENTUAL) {
+			buf.append( parseParam( desconto, 4, 0 ) );
+		}
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
@@ -642,18 +656,22 @@ public class ECFBematech extends AbstractECFDriver {
 	 *            código do produto.<br>
 	 * @param descProd
 	 *            descrição do produto.<br>
-	 * @param sitTrib
-	 *            situação tributária do item.<br>
+	 * @param aliquota
+	 *            aliquota do item.<br>
+	 * @param tpqtd
+	 *            tipo de quantidade, inteiro ou decimal.<br>
 	 * @param qtd
 	 *            quantidade do item.<br>
 	 * @param valor
 	 *            valor do item.<br>
+	 * @param tpdesc
+	 *            tipo do desconto, percentual ou valor.<br>
 	 * @param desconto
-	 *            descrição do item.<br>
+	 *            valor do desconto.<br>
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int vendaItemTresCasas( final String codProd, final String descProd, final String sitTrib, final float qtd, final float valor, final float desconto ) {
+	public int vendaItemTresCasas( final String codProd, final String descProd, final String aliquota, final int tpqtd, final float qtd, final float valor, final int tpdesc, final float desconto ) {
 
 		byte[] CMD = { ESC, 56 };
 
@@ -661,10 +679,22 @@ public class ECFBematech extends AbstractECFDriver {
 
 		buf.append( parseParam( codProd, 13, false ) );
 		buf.append( parseParam( descProd, 29, false ) );
-		buf.append( parseParam( sitTrib, 2, false ) );
-		buf.append( parseParam( qtd, 7, 3 ) );
+		buf.append( parseParam( aliquota, 2, false ) );
+		if ( tpqtd == TP_QTD_DECIMAL ) {
+			buf.append( parseParam( qtd, 7, 3 ) );
+		}
+		else if ( tpqtd == TP_QTD_INTEIRO ) {
+			buf.append( parseParam( qtd, 4, 0 ) );
+		}
+		
 		buf.append( parseParam( valor, 8, 3 ) );
-		buf.append( parseParam( desconto, 8, 2 ) );
+		
+		if ( tpqtd == TP_DESC_VALOR ) {
+			buf.append( parseParam( desconto, 8, 2 ) );
+		}
+		else if ( tpqtd == TP_DESC_PERCENTUAL) {
+			buf.append( parseParam( desconto, 4, 0 ) );
+		}
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 

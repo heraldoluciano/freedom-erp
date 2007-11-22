@@ -3,7 +3,7 @@ package org.freedom.ecf.driver;
 
 public enum EStatus {
 
-	RETORNO_OK( null ),
+	RETORNO_OK( "RETORNO_OK" ),
 	ERRO_COMUNICACAO( "Erro de comunicação física." ),
 	PARAMETRO_INVALIDO( "Parâmetro inválido na função." ),
 	ALIQUOTA_NAO_PROGRAMADA( "Aliquota não programada." ),
