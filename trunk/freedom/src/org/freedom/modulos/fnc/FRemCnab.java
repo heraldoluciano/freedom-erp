@@ -248,20 +248,20 @@ public class FRemCnab extends FRemFBN {
 				(String)prefs.get( EPrefs.CONVCOB ), 
 				Long.parseLong( rec.getDocrec().toString() ), 
 				Long.parseLong( rec.getNParcitrec().toString() ) ) );
-		reg.setDtVencTitulo( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
+		reg.setDtVencTitulo( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );		
 		reg.setAgenciaCob( null );
 		reg.setDigAgenciaCob( null );
  		reg.setEspecieTit( (Integer) prefs.get( EPrefs.ESPECTIT ) );
 		reg.setAceite( ((String) prefs.get( EPrefs.ACEITE )).charAt( 0 ) );
-		reg.setDtEmitTit( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
+		reg.setDtEmitTit( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
 		reg.setCodJuros( (Integer) prefs.get( EPrefs.CODJUROS ) );
 		// se for isento de juros.
 		if ( 3 == reg.getCodJuros() ) {
 			reg.setDtJuros( null );
 		}
 		else {
-			reg.setDtJuros( CnabUtil.stringToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
+			reg.setDtJuros( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		}
 		reg.setVlrJurosTaxa( (BigDecimal) prefs.get( EPrefs.VLRPERCJUROS ) );		
 		reg.setCodDesc( (Integer) prefs.get( EPrefs.CODDESC ) );
