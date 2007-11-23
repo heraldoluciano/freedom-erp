@@ -243,7 +243,7 @@ public class FRetSiacc extends FRetFBN {
 							tab.setValor( "BAIXA AUTOMÁTICA SIACC", row, EColTab.OBS.ordinal() ); // HISTÓRICO
 							tab.setValor( (String) infocli.get( EColInfoCli.TIPOFEBRABAN.ordinal() ), row, EColTab.TIPOFEBRABAN.ordinal() );
 							tab.setValor( ( (RegF) reg ).getCodRetorno(), row, EColTab.CODRET.ordinal() ); // código retorno
-							tab.setValor( getMenssagemRet( ( (RegF) reg ).getCodRetorno() ), row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
+							tab.setValor( getMenssagemRet( txtCodBanco.getVlrString(), ( (RegF) reg ).getCodRetorno(), FPrefereFBB.TP_SIACC ), row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
 							
 							row++;
 						}

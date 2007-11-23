@@ -332,7 +332,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		}
 	}
 	
-	protected String getMenssagemRet( final String codretorno ) {
+	protected String getMenssagemRet( final String codbanco, final String codretorno, final String tipofebraban ) {
 		
 		String msg = null; 
 		StringBuilder sSQL = new StringBuilder();
@@ -340,10 +340,10 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		
 		try {
 			
-			sSQL.append( " SELECT DESCRET " );
-			sSQL.append( " FROM FNFBNCODRET " );
-			sSQL.append( " WHERE CODEMP=? AND CODFILIAL=?  AND CODEMPBO=? " );
-			sSQL.append( " AND CODFILIALBO=?  AND CODRET=? AND TIPOFEBRABAN='01'"  );
+			sSQL.append( "SELECT DESCRET " );
+			sSQL.append( "FROM FNFBNCODRET " );
+			sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODEMPBO=? AND CODFILIALBO=? AND " );
+			sSQL.append( "CODBANCO=? AND CODRET=? AND TIPOFEBRABAN=?" );
 			
 			ps = con.prepareStatement( sSQL.toString() );
 			
@@ -351,7 +351,9 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			ps.setInt( 3, Aplicativo.iCodEmp );
 			ps.setInt( 4, ListaCampos.getMasterFilial( "FNBANCO" ) );
-			ps.setString( 5, codretorno );
+			ps.setString( 5, codbanco );
+			ps.setString( 6, codretorno );
+			ps.setString( 7, tipofebraban );
 			
 			ResultSet rs = ps.executeQuery();
 			
