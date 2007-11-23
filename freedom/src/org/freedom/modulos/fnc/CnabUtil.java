@@ -435,7 +435,7 @@ public class CnabUtil extends FbnUtil {
 					setRazEmp( line.substring( 72, 102 ) );
 					setNomeBanco( line.substring( 102, 132 ) );
 					setTipoOperacao( line.substring( 142, 143 ).trim().length() > 0 ? Integer.parseInt( line.substring( 142, 143 ).trim() ) : 0 );
-					setDataGeracao( Funcoes.encodeDate( Integer.parseInt( line.substring( 143, 145 ).trim() ), Integer.parseInt( line.substring( 145, 147 ).trim() ), Integer.parseInt( line.substring( 147, 151 ).trim() ) ) );
+					setDataGeracao( stringDDMMAAAAToDate( line.substring( 143, 151 ).trim() ) );
 					setHoraGeracao( line.substring( 151, 157 ).trim().length() > 0 ? Integer.parseInt( line.substring( 151, 157 ).trim() ) : 0 );
 					setSequenciaArq( line.substring( 157, 163 ).trim().length() > 0 ? Integer.parseInt( line.substring( 157, 163 ).trim() ) : 0 );
 					setVersaoLayout( line.substring( 163, 166 ) );
@@ -850,12 +850,12 @@ public class CnabUtil extends FbnUtil {
 					setConta( line.substring( 59, 71 ) );
 					setDigConta( line.substring( 71, 72 ) );
 					setDigAgConta( line.substring( 72, 73 ) );
-					setRazEmp( line.substring( 74, 103 ) );
+					setRazEmp( line.substring( 73, 103 ) );
 					setMsg1( line.substring( 103, 143 ) );
 					setMsg2( line.substring( 143, 183 ) );
 					setNrRemRet( line.substring( 183, 191 ).trim().length() > 0 ? Integer.parseInt( line.substring( 183, 191 ).trim() ) : 0 );
-					setDataRemRet( Funcoes.encodeDate( Integer.parseInt( line.substring( 191, 193 ).trim() ), Integer.parseInt( line.substring( 193, 195 ).trim() ), Integer.parseInt( line.substring( 195, 199 ).trim() ) ) );
-					setDataCred( Funcoes.encodeDate( Integer.parseInt( line.substring( 199, 201 ).trim() ), Integer.parseInt( line.substring( 201, 203 ).trim() ), Integer.parseInt( line.substring( 203, 207 ).trim() ) ) );
+					setDataRemRet( stringDDMMAAAAToDate( line.substring( 191, 199 ).trim() ) );
+					setDataCred( stringDDMMAAAAToDate( line.substring( 199, 207 ).trim() ) );
 				}
 			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro 1.\nErro ao ler registro.\n" + e.getMessage() );
@@ -1645,18 +1645,18 @@ public class CnabUtil extends FbnUtil {
 					setIdentEmitBol( line.substring( 60, 61 ).trim().length() > 0 ? Integer.parseInt( line.substring( 60, 61 ).trim() ) : 0 );
 					setIdentDist( line.substring( 61, 62 ).trim().length() > 0 ? Integer.parseInt( line.substring( 61, 62 ).trim() ) : 0 );
 					setDocCobranca( line.substring( 62, 77 ) );
-					setDtVencTitulo( Funcoes.encodeDate( Integer.parseInt( line.substring( 77, 79 ).trim() ), Integer.parseInt( line.substring( 79, 81 ).trim() ), Integer.parseInt( line.substring( 81, 85 ).trim() ) ) );
+					setDtVencTitulo( stringDDMMAAAAToDate( line.substring( 77, 85 ).trim() ) );
 					setVlrTitulo( strToBigDecimal( line.substring( 85, 100 ) ) );
 					setAgenciaCob( line.substring( 100, 105 ) );
 					setDigAgenciaCob( line.substring( 105, 106 ).trim() );
 					setEspecieTit( line.substring( 106, 108 ).trim().length() > 0 ? Integer.parseInt( line.substring( 106, 108 ).trim() ) : 0 );
 					setAceite( line.substring( 108, 109 ).charAt( 0 ) );
-					setDtEmitTit( Funcoes.encodeDate( Integer.parseInt( line.substring( 109, 111 ).trim() ), Integer.parseInt( line.substring( 111, 113 ).trim() ), Integer.parseInt( line.substring( 113, 117 ).trim() ) ) );
+					setDtEmitTit( stringDDMMAAAAToDate( line.substring( 109, 117 ).trim() ) );
 					setCodJuros( line.substring( 117, 118 ).trim().length() > 0 ? Integer.parseInt( line.substring( 117, 118 ).trim() ) : 0 );
-					setDtJuros( Funcoes.encodeDate( Integer.parseInt( line.substring( 118, 120 ).trim() ), Integer.parseInt( line.substring( 120, 122 ).trim() ), Integer.parseInt( line.substring( 122, 126 ).trim() ) ) );
+					setDtJuros( stringDDMMAAAAToDate( line.substring( 118, 126 ).trim() ) );
 					setVlrJurosTaxa( strToBigDecimal( line.substring( 126, 141 ) ) );
 					setCodDesc( line.substring( 141, 142 ).trim().length() > 0 ? Integer.parseInt( line.substring( 141, 142 ).trim() ) : 0 );
-					setDtDesc( Funcoes.encodeDate( Integer.parseInt( line.substring( 142, 144 ).trim() ), Integer.parseInt( line.substring( 144, 146 ).trim() ), Integer.parseInt( line.substring( 146, 150 ).trim() ) ) );
+					setDtDesc( stringDDMMAAAAToDate( line.substring( 142, 150 ).trim() ) );
 					setVlrpercConced( strToBigDecimal( line.substring( 150, 165 ) ) );
 					setVlrIOF( strToBigDecimal( line.substring( 165, 180 ) ) );
 					setVlrAbatimento( strToBigDecimal( line.substring( 180, 195 ) ) );
@@ -2249,13 +2249,13 @@ public class CnabUtil extends FbnUtil {
 
 					super.parseLineReg3( line );
 					setCodDesc2( line.substring( 17, 18 ).trim().length() > 0 ? Integer.parseInt( line.substring( 17, 18 ).trim() ) : 0 );
-					setDataDesc2( Funcoes.encodeDate( Integer.parseInt( line.substring( 18, 20 ).trim() ), Integer.parseInt( line.substring( 20, 22 ).trim() ), Integer.parseInt( line.substring( 22, 26 ).trim() ) ) );
+					setDataDesc2( stringDDMMAAAAToDate( line.substring( 18, 26 ).trim() ) );
 					setVlrPercConced2( strToBigDecimal( line.substring( 26, 41 ) ) );
 					setCodDesc3( line.substring( 41, 42 ).trim().length() > 0 ? Integer.parseInt( line.substring( 41, 42 ).trim() ) : 0 );
-					setDataDesc3( Funcoes.encodeDate( Integer.parseInt( line.substring( 42, 44 ).trim() ), Integer.parseInt( line.substring( 44, 46 ).trim() ), Integer.parseInt( line.substring( 46, 50 ).trim() ) ) );
+					setDataDesc3( stringDDMMAAAAToDate( line.substring( 42, 50 ).trim() ) );
 					setVlrPercConced3( strToBigDecimal( line.substring( 50, 65 ) ) );
 					setCodMulta( line.substring( 65, 66 ).trim().length() > 0 ? Integer.parseInt( line.substring( 65, 66 ).trim() ) : 0 );
-					setDataMulta( Funcoes.encodeDate( Integer.parseInt( line.substring( 66, 68 ).trim() ), Integer.parseInt( line.substring( 68, 70 ).trim() ), Integer.parseInt( line.substring( 70, 74 ).trim() ) ) );
+					setDataMulta( stringDDMMAAAAToDate( line.substring( 66, 74 ).trim() ) );
 					setVlrPercMulta( strToBigDecimal( line.substring( 74, 89 ) ) );
 					setMsgSacado( line.substring( 89, 99 ) );
 					setMsg3( line.substring( 99, 139 ) );
@@ -2873,12 +2873,12 @@ public class CnabUtil extends FbnUtil {
 					setIdentTitBanco( line.substring( 37, 57 ) );
 					setCarteira( line.substring( 57, 58 ).trim().length() > 0 ? Integer.parseInt( line.substring( 57, 58 ).trim() ) : 0 );
 					setDocCob( line.substring( 58, 73 ) );
-					setDataVencTit( Funcoes.encodeDate( Integer.parseInt( line.substring( 73, 75 ).trim() ), Integer.parseInt( line.substring( 75, 77 ).trim() ), Integer.parseInt( line.substring( 77, 81 ).trim() ) ) );
+					setDataVencTit( stringDDMMAAAAToDate( line.substring( 73, 81 ).trim() ) );
 					setVlrTitulo( strToBigDecimal( line.substring( 81, 96 ) ) );
 					setCodBanco( line.substring( 96, 99 ) );
 					setAgenciaCob( line.substring( 99, 104 ) );
 					setDigAgenciaCob( line.substring( 104, 105 ) );
-					setIdentTitEmp( line.substring( 150, 130 ) );
+					setIdentTitEmp( line.substring( 105, 130 ) );
 					setCodMoeda( line.substring( 130, 132 ).trim().length() > 0 ? Integer.parseInt( line.substring( 130, 132 ).trim() ) : 0 );
 					setTipoInscCli( line.substring( 132, 133 ).trim().length() > 0 ? Integer.parseInt( line.substring( 132, 133 ).trim() ) : 0 );
 					setCpfCnpjCli( line.substring( 133, 148 ) );
@@ -2888,6 +2888,7 @@ public class CnabUtil extends FbnUtil {
 					setCodRejeicoes( line.substring( 213, 223 ) );
 				}
 			} catch ( Exception e ) {
+				e.printStackTrace();
 				throw new ExceptionCnab( "CNAB registro 3 segmento T.\nErro ao ler registro.\n" + e.getMessage() );
 			}
 		}
@@ -3164,16 +3165,17 @@ public class CnabUtil extends FbnUtil {
 					setVlrLiqCred( strToBigDecimal( line.substring( 92, 107 ) ) );
 					setVlrOutrasDesp( strToBigDecimal( line.substring( 107, 122 ) ) );
 					setVlrOutrosCred( strToBigDecimal( line.substring( 122, 137 ) ) );
-					setDataOcorr( Funcoes.encodeDate( Integer.parseInt( line.substring( 137, 139 ).trim() ), Integer.parseInt( line.substring( 139, 141 ).trim() ), Integer.parseInt( line.substring( 141, 145 ).trim() ) ) );
-					setDataEfetvCred( Funcoes.encodeDate( Integer.parseInt( line.substring( 145, 147 ).trim() ), Integer.parseInt( line.substring( 147, 149 ).trim() ), Integer.parseInt( line.substring( 149, 153 ).trim() ) ) );
+					setDataOcorr( stringDDMMAAAAToDate( line.substring( 137, 145 ).trim() ) );
+					setDataEfetvCred( stringDDMMAAAAToDate( line.substring( 145, 153 ).trim() ) );
 					setCodOcorrSac( line.substring( 153, 157 ) );
-					setDataOcorrSac( Funcoes.encodeDate( Integer.parseInt( line.substring( 157, 159 ).trim() ), Integer.parseInt( line.substring( 159, 161 ).trim() ), Integer.parseInt( line.substring( 161, 165 ).trim() ) ) );
+					setDataOcorrSac( stringDDMMAAAAToDate( line.substring( 157, 165 ).trim() ) );
 					setVlrOcorrSac( strToBigDecimal( line.substring( 165, 180 ) ) );
 					setCompOcorrSac( line.substring( 180, 210 ) );
 					setCodBancoCompens( line.substring( 210, 213 ) );
 					setNossoNrCompens( line.substring( 213, 233 ) );
 				}
 			} catch ( Exception e ) {
+				e.printStackTrace();
 				throw new ExceptionCnab( "CNAB registro 3 segmento U.\nErro ao ler registro.\n" + e.getMessage() );
 			}
 		}
@@ -3607,6 +3609,10 @@ public class CnabUtil extends FbnUtil {
 		
 		private String code;
 		
+		private int codcliente;
+		
+		private String razcliente;
+		
 		
 		public Receber() {
 			
@@ -3687,6 +3693,22 @@ public class CnabUtil extends FbnUtil {
 		public void setVencimento( Date vencimento ) {
 			this.vencimento = vencimento;
 		}
+		
+		public int getCodcliente() {		
+			return codcliente;
+		}
+		
+		public void setCodcliente( int codcliente ) {		
+			this.codcliente = codcliente;
+		}
+		
+		public String getRazcliente() {		
+			return razcliente;
+		}
+		
+		public void setRazcliente( String razcliente ) {		
+			this.razcliente = razcliente;
+		}
 
 		public String encode() {
 			
@@ -3749,7 +3771,7 @@ public class CnabUtil extends FbnUtil {
 	 * @return java.util.Date.
 	 * @throws Exception
 	 */
-	public static Date stringToDate( final String arg ) throws ExceptionCnab {
+	public static Date stringAAAAMMDDToDate( final String arg ) throws ExceptionCnab {
 
 		Date retorno = null;
 
@@ -3760,7 +3782,39 @@ public class CnabUtil extends FbnUtil {
 				int mes = Integer.parseInt( arg.substring( 4, 6 ) );
 				int ano = Integer.parseInt( arg.substring( 0, 4 ) );
 
-				retorno = Funcoes.encodeDate( ano, mes, dia );
+				if ( dia > 0 && mes > 0 && ano > 0 ) {
+					retorno = Funcoes.encodeDate( ano, mes, dia );					
+				}
+			}
+		} catch ( NumberFormatException e ) {
+			throw new ExceptionCnab( "Erro na função stringToDate.\n" + e.getMessage() );
+		}
+
+		return retorno;
+	}
+
+	/**
+	 * Converte um java.lang.String em formato AAAAMMDD para java.util.Date
+	 * 
+	 * @param arg
+	 *            java.lang.String.
+	 * @return java.util.Date.
+	 * @throws Exception
+	 */
+	public static Date stringDDMMAAAAToDate( final String arg ) throws ExceptionCnab {
+
+		Date retorno = null;
+
+		try {
+			if ( arg != null && arg.trim().length() > 7 ) {
+
+				int dia = Integer.parseInt( arg.substring( 0, 2 ) );
+				int mes = Integer.parseInt( arg.substring( 2, 4 ) );
+				int ano = Integer.parseInt( arg.substring( 4 ) );
+
+				if ( dia > 0 && mes > 0 && ano > 0 ) {
+					retorno = Funcoes.encodeDate( ano, mes, dia );					
+				}
 			}
 		} catch ( NumberFormatException e ) {
 			throw new ExceptionCnab( "Erro na função stringToDate.\n" + e.getMessage() );
@@ -3779,15 +3833,15 @@ public class CnabUtil extends FbnUtil {
 	 */
 	public static BigDecimal strToBigDecimal( final String arg ) throws ExceptionCnab {
 
-		String value = null;
+		BigDecimal bdReturn = null;
 
 		try {
 			if ( arg != null ) {
+				String value = null;
 
 				char chars[] = arg.toCharArray();
 
 				for ( int i = 0; i < chars.length; i++ ) {
-
 					if ( '0' != chars[ i ] ) {
 						value = arg.substring( i );
 						break;
@@ -3796,11 +3850,12 @@ public class CnabUtil extends FbnUtil {
 				if ( value != null ) {
 					value = value.substring( 0, value.length() - 2 ) + "." + value.substring( value.length() - 2 );
 				}
+				bdReturn = new BigDecimal( value != null ? value : "0" );
 			}
 		} catch ( RuntimeException e ) {
 			throw new ExceptionCnab( "Erro na função strToBigDecimal.\n" + e.getMessage() );
 		}
 
-		return new BigDecimal( value );
+		return bdReturn;
 	}
 }
