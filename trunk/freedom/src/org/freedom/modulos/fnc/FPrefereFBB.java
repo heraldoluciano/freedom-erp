@@ -189,9 +189,9 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	
 	private final Tabela tabCnab = new Tabela();
 	
-	private static final String TP_SIACC = "01";
+	public static final String TP_SIACC = "01";
 	
-	private static final String TP_CNAB = "02";
+	public static final String TP_CNAB = "02";
 	
 
 	public FPrefereFBB() {
