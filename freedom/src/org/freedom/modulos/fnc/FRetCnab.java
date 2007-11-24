@@ -44,6 +44,8 @@ import org.freedom.modulos.fnc.CnabUtil.Reg;
 import org.freedom.modulos.fnc.CnabUtil.Reg1;
 import org.freedom.modulos.fnc.CnabUtil.Reg3T;
 import org.freedom.modulos.fnc.CnabUtil.Reg3U;
+import org.freedom.modulos.fnc.FRetFBN.EColTab;
+import org.freedom.modulos.fnc.SiaccUtil.RegF;
 import org.freedom.telas.Aplicativo;
 
 
@@ -228,11 +230,23 @@ public class FRetCnab extends FRetFBN {
 						
 						reg3T = (Reg3T) reg;						
 						rec = findReceber( reg3T.getDocCob() );	
+					}
+					else if ( reg instanceof Reg3U  ) {
+
+						reg3U = (Reg3U) reg;
 						
 						if ( rec != null ) {
 							
 							tab.adicLinha();
-							tab.setValor( true, row, EColTab.SEL.ordinal() ); // Seleção
+							
+							if ( "00".equals( reg3T.getCodRejeicoes().trim() ) ) {								
+								tab.setValor( imgok, row, EColTab.STATUS.ordinal() );
+								tab.setValor( new Boolean( Boolean.TRUE ), row, EColTab.SEL.ordinal() );
+							}
+							else {								
+								tab.setValor( imgcancel, row, EColTab.STATUS.ordinal() );
+								tab.setValor( new Boolean( Boolean.FALSE ), row, EColTab.SEL.ordinal() );
+							}
 							tab.setValor( rec.getRazcliente(), row, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
 							tab.setValor( rec.getCodcliente(), row, EColTab.CODCLI.ordinal() ); // Cód.cli.							
 							tab.setValor( rec.getCodrec(), row, EColTab.CODREC.ordinal() ); // Cód.rec.							
@@ -249,16 +263,13 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( reg3T.getCodRejeicoes(), row, EColTab.CODRET.ordinal() ); // código retorno
 							tab.setValor( getMenssagemRet( txtCodBanco.getVlrString(), reg3T.getCodRejeicoes().trim(), FPrefereFBB.TP_CNAB ), row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
 							
+							tab.setValor( reg3U.getVlrPago(), row, EColTab.VLRPAG.ordinal() ); // Valor pago
+							tab.setValor( reg3U.getVlrDesc(), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
+							tab.setValor( reg3U.getVlrJurosMulta(), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
+							
 							row++;
+							rec = null;
 						}
-					}
-					else if ( reg instanceof Reg3U  ) {
-
-						reg3U = (Reg3U) reg;
-						
-						tab.setValor( reg3U.getVlrPago(), row, EColTab.VLRPAG.ordinal() ); // Valor pago
-						tab.setValor( reg3U.getVlrDesc(), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
-						tab.setValor( reg3U.getVlrJurosMulta(), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
 					}
 				}
 
@@ -292,6 +303,7 @@ public class FRetCnab extends FRetFBN {
 			try {
 				String tmp = docrec.trim();
 				final int idocrec = Integer.parseInt( tmp.substring( 0, tmp.length() - 2 ) );
+				final int iparc = Integer.parseInt( tmp.substring( tmp.length() - 2 ) );
 				
 				StringBuilder sql = new StringBuilder();				
 				sql.append( "SELECT " );
@@ -300,7 +312,7 @@ public class FRetCnab extends FRetFBN {
 				sql.append( "FROM " );
 				sql.append( "  FNITRECEBER IR, FNRECEBER R, VDCLIENTE CL " );
 				sql.append( "WHERE " );
-				sql.append( "  IR.CODEMP=? AND IR.CODFILIAL=? AND " );
+				sql.append( "  IR.CODEMP=? AND IR.CODFILIAL=? AND IR.NPARCITREC=? AND " );
 				sql.append( "  IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND R.DOCREC=? AND " );
 				sql.append( "  R.CODEMPCL=CL.CODEMP AND R.CODFILIALCL=CL.CODFILIAL AND R.CODCLI=CL.CODCLI " );
 				
@@ -308,7 +320,8 @@ public class FRetCnab extends FRetFBN {
 					PreparedStatement ps = con.prepareStatement( sql.toString() );
 					ps.setInt( 1, Aplicativo.iCodEmp );
 					ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-					ps.setInt( 3, idocrec );
+					ps.setInt( 3, iparc );
+					ps.setInt( 4, idocrec );
 					
 					ResultSet rs = ps.executeQuery();
 					
