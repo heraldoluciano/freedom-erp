@@ -112,10 +112,10 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 	public enum EColRet{ NUMCONTA, CODPLAN, CODCC, DOC, VLRJUROS, VLRDESC, 
 		DTVENC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB};		
 
-	public DLEditaRec( Component cOrig ) {
+	public DLEditaRec( Component cOrig, final boolean bEdita ) {
 
 		super( cOrig );
-		setTitulo( "Editar" );
+		setTitulo( bEdita?"Editar":"Visualizar" );
 		setAtribos( 380, 510 );
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
@@ -244,6 +244,28 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		adic( txtObs, 7, 380, 333, 20 );
 
 		lcCC.addCarregaListener( this );
+		
+		if(!bEdita) {
+			txtAnoCC.setAtivo( bEdita );
+			txtCodBanco.setAtivo( bEdita );
+			txtCodCartCob.setAtivo( bEdita );
+			txtCodCC.setAtivo( bEdita );
+			txtCodCli.setAtivo( bEdita );
+			txtCodConta.setAtivo( bEdita );
+			txtCodPlan.setAtivo( bEdita );
+			txtCodTipoCob.setAtivo( bEdita );
+			txtDoc.setAtivo( bEdita );
+			txtDtEmis.setAtivo( bEdita );
+			txtDtVenc.setAtivo( bEdita );
+			txtObs.setAtivo( bEdita );
+			txtSiglaCC.setAtivo( bEdita );
+			txtVlrDesc.setAtivo( bEdita );
+			txtVlrJuros.setAtivo( bEdita );
+			txtVlrParc.setAtivo( bEdita );
+			btOK.setVisible( bEdita );
+		}
+		
+		
 	}
 
 	public void setValores( Object[] sVals ) {
