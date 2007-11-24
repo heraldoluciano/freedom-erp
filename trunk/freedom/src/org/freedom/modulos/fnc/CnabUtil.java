@@ -95,12 +95,19 @@ public class CnabUtil extends FbnUtil {
 
 		private String ocorrencias;
 
+		
 		public RegHeader() {
 
 			setLoteServico( "0000" );
 			setRegistroHeader( 0 );
 			setTipoOperacao( 1 );
 			setVersaoLayout( "030" );
+		}
+		
+		public RegHeader( String line ) throws ExceptionCnab {
+			
+			this();
+			parseLine( line );
 		}
 
 		public String getAgencia() {
