@@ -44,8 +44,7 @@ import org.freedom.modulos.fnc.CnabUtil.Reg;
 import org.freedom.modulos.fnc.CnabUtil.Reg1;
 import org.freedom.modulos.fnc.CnabUtil.Reg3T;
 import org.freedom.modulos.fnc.CnabUtil.Reg3U;
-import org.freedom.modulos.fnc.FRetFBN.EColTab;
-import org.freedom.modulos.fnc.SiaccUtil.RegF;
+import org.freedom.modulos.fnc.CnabUtil.RegHeader;
 import org.freedom.telas.Aplicativo;
 
 
@@ -106,8 +105,8 @@ public class FRetCnab extends FRetFBN {
 							if ( leArquivo( fileReaderCnab, registros ) ) {
 
 								if ( ! montaGrid( registros ) ) {
-									Funcoes.mensagemInforma( this, "Nenhum registro de retorno encontrado." );
-									lbStatus.setText( "" );
+									//Funcoes.mensagemInforma( this, "Nenhum registro de retorno encontrado." );
+									lbStatus.setText( "     Nenhum registro de retorno encontrado." );
 									retorno = false;
 								}
 							}
@@ -145,6 +144,9 @@ public class FRetCnab extends FRetFBN {
 				tipo = line.charAt( 7 );
 				
 				switch ( tipo ) {
+					case '0' :
+						list.add( cnabutil.new RegHeader( line ) );
+						break;
 					case '1' :
 						Reg1 reg1 = cnabutil.new Reg1( line );
 						list.add( reg1 );
@@ -216,6 +218,7 @@ public class FRetCnab extends FRetFBN {
 
 			try {
 
+				RegHeader header = null;
 				Reg3T reg3T = null;
 				Reg3U reg3U = null;
 				Receber rec = null;
@@ -226,7 +229,11 @@ public class FRetCnab extends FRetFBN {
 				
 				for ( Reg reg : registros ) {
 					
-					if ( reg instanceof Reg3T  ) {		
+					if ( reg instanceof RegHeader  ) {		
+						
+						header = (RegHeader) reg;	
+					}
+					else if ( reg instanceof Reg3T  ) {		
 						
 						reg3T = (Reg3T) reg;						
 						rec = findReceber( reg3T.getDocCob() );	
@@ -276,8 +283,15 @@ public class FRetCnab extends FRetFBN {
 				if ( row > 0 ) {
 					lbStatus.setText( "     Tabela carregada ..." );
 				}
+				else if ( header != null ) {
+					lbStatus.setText( "     Arquivo lido ..." );
+					String codigo = ( "53" + header.getOcorrencias().trim() + "00" ).substring( 0, 4 );
+					String mensagem = getMenssagemRet( txtCodBanco.getVlrString(), codigo, FPrefereFBB.TP_CNAB );
+					Funcoes.mensagemInforma( this, mensagem != null ? mensagem : "Mensagem do arquivo não identificada." );
+					return false;
+				}
 				else {
-					lbStatus.setText( "     Informações do cliente não encontradas ..." );
+					lbStatus.setText( "" );
 				}
 				
 			} catch ( Exception e ) {
