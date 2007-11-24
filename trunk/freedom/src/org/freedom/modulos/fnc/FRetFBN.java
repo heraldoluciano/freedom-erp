@@ -263,7 +263,6 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			}
 			
 			dl = new DLBaixaRec( this );
-			dl.setConexao( con );
 
 			sVals[ DLBaixaRec.EColBaixa.CODCLI.ordinal() ] = tab.getValor( iLin, EColTab.CODCLI.ordinal() );
 			sVals[ DLBaixaRec.EColBaixa.RAZCLI.ordinal() ] = tab.getValor( iLin, EColTab.RAZCLI.ordinal() );
@@ -283,6 +282,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			sVals[ DLBaixaRec.EColBaixa.OBS.ordinal() ] = String.valueOf( tab.getValor( iLin, EColTab.OBS.ordinal() ) );
 
 			dl.setValores( sVals );
+			dl.setConexao( con );
 			dl.setVisible( true );
 
 			if ( dl.OK ) {
@@ -301,7 +301,6 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 				tab.setValor( Funcoes.bdToStr( (BigDecimal) sRets[ EColRetBaixa.VLRJUROS.ordinal() ] ), iLin, EColTab.VLRJUROS.ordinal() );
 				tab.setValor( sRets[ EColRetBaixa.CODCC.ordinal() ], iLin, EColTab.CODCC.ordinal() );
 				tab.setValor( sRets[ EColRetBaixa.OBS.ordinal() ], iLin, EColTab.OBS.ordinal() );
-
 			}
 		}
 		else {
