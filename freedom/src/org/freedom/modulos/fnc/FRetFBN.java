@@ -68,6 +68,8 @@ import org.freedom.telas.FFilho;
 public abstract class FRetFBN extends FFilho implements ActionListener, MouseListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
+	
+	private final String TIPO_FEBRABAN;
 
 	private JPanelPad panelRodape = null;
 
@@ -106,11 +108,13 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 	protected final ListaCampos lcBanco = new ListaCampos( this );
 	
 
-	public FRetFBN() {
+	public FRetFBN( final String tipoFebraban ) {
 
 		super( false );
 		setTitulo( "Leitura do arquivo de retorno" );
 		setAtribos( 10, 10, 780, 540 );
+		
+		this.TIPO_FEBRABAN = tipoFebraban;
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
@@ -251,10 +255,13 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		if ( iLin > -1 ) {
 
 			iLin = tab.getLinhaSel();
-			if ( ! "00".equals( tab.getValor( iLin, EColTab.CODRET.ordinal() ) ) ) {
-				Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + tab.getValor( iLin, EColTab.MENSSAGEM.ordinal() ) );
-				return;
+			if ( FPrefereFBB.TP_SIACC.equals( TIPO_FEBRABAN ) ) {
+				if ( ! "00".equals( tab.getValor( iLin, EColTab.CODRET.ordinal() ) ) ) {
+					Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + tab.getValor( iLin, EColTab.MENSSAGEM.ordinal() ) );
+					return;
+				}				
 			}
+			
 			dl = new DLBaixaRec( this );
 			dl.setConexao( con );
 

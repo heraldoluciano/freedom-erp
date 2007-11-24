@@ -3607,6 +3607,8 @@ public class CnabUtil extends FbnUtil {
 		
 		private String planejamento;
 		
+		private String centrocusto;
+		
 		private String code;
 		
 		private int codcliente;
@@ -3676,8 +3678,16 @@ public class CnabUtil extends FbnUtil {
 		
 		public void setPlanejamento( String planejamento ) {		
 			this.planejamento = planejamento;
+		}		
+		
+		public String getCentrocusto() {		
+			return centrocusto;
 		}
 		
+		public void setCentrocusto( String centrocusto ) {		
+			this.centrocusto = centrocusto;
+		}
+
 		public BigDecimal getValorApagar() {		
 			return valorApagar;
 		}

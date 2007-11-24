@@ -51,7 +51,7 @@ public class FRetSiacc extends FRetFBN {
 	
 	public FRetSiacc() {
 		
-		super();
+		super( FPrefereFBB.TP_SIACC );
 	}
 
 	/* (non-Javadoc)

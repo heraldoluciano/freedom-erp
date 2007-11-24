@@ -41,6 +41,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.fnc.CnabUtil.Receber;
 import org.freedom.modulos.fnc.CnabUtil.Reg;
+import org.freedom.modulos.fnc.CnabUtil.Reg1;
 import org.freedom.modulos.fnc.CnabUtil.Reg3T;
 import org.freedom.modulos.fnc.CnabUtil.Reg3U;
 import org.freedom.telas.Aplicativo;
@@ -54,7 +55,7 @@ public class FRetCnab extends FRetFBN {
 	
 	public FRetCnab() {
 		
-		super();
+		super( FPrefereFBB.TP_CNAB );
 	}
 
 	/* (non-Javadoc)
@@ -136,15 +137,20 @@ public class FRetCnab extends FRetFBN {
 		BufferedReader in = new BufferedReader( fileReaderCnab );
 
 		try {
-			
-			learquivo : 
-				while ( ( line = in.readLine() ) != null ) {
+			 
+			while ( ( line = in.readLine() ) != null ) {
 
 				tipo = line.charAt( 7 );
 				
 				switch ( tipo ) {
 					case '1' :
-						list.add( cnabutil.new Reg1( line ) );
+						Reg1 reg1 = cnabutil.new Reg1( line );
+						list.add( reg1 );
+						if ( reg1 == null 
+								|| ! reg1.getCodBanco().trim().equals( txtCodBanco.getVlrString().trim() ) ) {
+							Funcoes.mensagemErro( this, "Arquivo de retorno não refere-se ao banco selecionado!" );
+							return false;
+						}
 						break;
 					case '3' :
 						
@@ -169,16 +175,16 @@ public class FRetCnab extends FRetFBN {
 							case 'U' :
 								list.add( cnabutil.new Reg3U( line ) );
 								break;
-							//default :
-							//	break learquivo;
+							default :
+								break; 
 						}
 						
 						break;
 					case '5' :
 						list.add( cnabutil.new Reg5( line ) );
 						break;
-					//default :
-					//	break learquivo;
+					default :
+						break;
 				}
 			}
 
@@ -234,13 +240,12 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( rec.getNrparcrec(), row, EColTab.NRPARC.ordinal() ); // Nro.Parc.							
 							tab.setValor( Funcoes.bdToStr( rec.getValorApagar() ), row, EColTab.VLRAPAG.ordinal() ); // Valor
 							tab.setValor( rec.getEmissao(), row, EColTab.DTREC.ordinal() ); // Emissão
-							tab.setValor( rec.getVencimento(), row, EColTab.DTVENC.ordinal() ); // Vencimento							
-							tab.setValor( reg3T.getVlrTitulo(), row, EColTab.VLRPAG.ordinal() ); // Valor pago
+							tab.setValor( rec.getVencimento(), row, EColTab.DTVENC.ordinal() ); // Vencimento
 							tab.setValor( reg3T.getDataVencTit(), row, EColTab.DTPAG.ordinal() ); // Data pgto.							
 							tab.setValor( rec.getConta(), row, EColTab.NUMCONTA.ordinal() ); // Conta
 							tab.setValor( rec.getPlanejamento(), row, EColTab.CODPLAN.ordinal() ); // Planejamento						
 							tab.setValor( "BAIXA AUTOMÁTICA CNAB", row, EColTab.OBS.ordinal() ); // HISTÓRICO							
-							//tab.setValor( (String) infocli.get( EColInfoCli.TIPOFEBRABAN.ordinal() ), row, EColTab.TIPOFEBRABAN.ordinal() );
+							tab.setValor( FPrefereFBB.TP_CNAB, row, EColTab.TIPOFEBRABAN.ordinal() );
 							tab.setValor( reg3T.getCodRejeicoes(), row, EColTab.CODRET.ordinal() ); // código retorno
 							tab.setValor( getMenssagemRet( txtCodBanco.getVlrString(), reg3T.getCodRejeicoes().trim(), FPrefereFBB.TP_CNAB ), row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
 							
@@ -251,6 +256,7 @@ public class FRetCnab extends FRetFBN {
 
 						reg3U = (Reg3U) reg;
 						
+						tab.setValor( reg3U.getVlrPago(), row, EColTab.VLRPAG.ordinal() ); // Valor pago
 						tab.setValor( reg3U.getVlrDesc(), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
 						tab.setValor( reg3U.getVlrJurosMulta(), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
 					}
@@ -290,7 +296,7 @@ public class FRetCnab extends FRetFBN {
 				StringBuilder sql = new StringBuilder();				
 				sql.append( "SELECT " );
 				sql.append( "  IR.CODREC, IR.NPARCITREC, R.DOCREC, IR.VLRAPAGITREC, IR.DTITREC, IR.DTVENCITREC," );
-				sql.append( "  R.CODCLI, CL.RAZCLI " );
+				sql.append( "  IR.NUMCONTA, IR.CODPLAN, IR.CODCC, R.CODCLI, CL.RAZCLI " );
 				sql.append( "FROM " );
 				sql.append( "  FNITRECEBER IR, FNRECEBER R, VDCLIENTE CL " );
 				sql.append( "WHERE " );
@@ -316,38 +322,13 @@ public class FRetCnab extends FRetFBN {
 						receber.setValorApagar( rs.getBigDecimal( "VLRAPAGITREC" ) );
 						receber.setEmissao( Funcoes.sqlDateToDate( rs.getDate( "DTITREC" ) ) );
 						receber.setVencimento( Funcoes.sqlDateToDate( rs.getDate( "DTVENCITREC" ) ) );
+						receber.setConta( rs.getString( "NUMCONTA" ) );
+						receber.setPlanejamento( rs.getString( "CODPLAN" ) );
+						receber.setCentrocusto( rs.getString( "CODCC" ));
 						receber.setCodcliente( rs.getInt( "CODCLI" ) );
 						receber.setRazcliente( rs.getString( "RAZCLI" ) );
 					}
-					
-					if ( receber != null ) {
-						
-						sql = new StringBuilder();						
-						sql.append( "SELECT " );
-						sql.append( "  P.NUMCONTA, C.CODPLAN " );
-						sql.append( "FROM " );
-						sql.append( "  SGITPREFERE6 P, FNCONTA C " );
-						sql.append( "WHERE " );
-						sql.append( "  P.CODEMP=? AND P.CODFILIAL=? AND P.TIPOFEBRABAN='02' AND P.CODBANCO=? AND " );
-						sql.append( "  P.CODEMPCA=C.CODEMP AND P.CODFILIALCA=C.CODFILIAL AND P.NUMCONTA=C.NUMCONTA " );
-						
-						rs.close();
-						ps.close();
-						
-						ps = con.prepareStatement( sql.toString() );
-						ps.setInt( 1, Aplicativo.iCodEmp );
-						ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-						ps.setString( 3, txtCodBanco.getVlrString() );
-						
-						rs = ps.executeQuery();
-						
-						if ( rs.next() ) {
 
-							receber.setConta( rs.getString( "NUMCONTA" ) );
-							receber.setPlanejamento( rs.getString( "CODPLAN" ) );
-						}
-					}
-					
 					rs.close();
 					ps.close();
 					
@@ -365,13 +346,5 @@ public class FRetCnab extends FRetFBN {
 		}
 		
 		return receber;
-	}
-
-	@ Override
-	protected void baixar() {
-		
-		if ( baixaReceber() ) {
-			tab.limpa();
-		}
 	}
 }
