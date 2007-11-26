@@ -54,11 +54,15 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public static final char ACRECIMO_PERC = 'A';
 
-	public static final char DESCONTO_PERC = 'D';
-
 	public static final char ACRECIMO_VALOR = 'a';
 
+	public static final char DESCONTO_PERC = 'D';
+
 	public static final char DESCONTO_VALOR = 'd';
+
+	public static final char QTD_INTEIRO = 'I';
+
+	public static final char QTD_DECIMAL = 'D';
 
 	public static final char IMPRESSAO = 'I';
 
@@ -151,14 +155,6 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	public static final String SUPRIMENTO = "SU";
 	
 	public static final String SANGRIA = "SA";
-	
-	public static int TP_QTD_INTEIRO = 1;
-	
-	public static int TP_QTD_DECIMAL = 2;
-	
-	public static int TP_DESC_PERCENTUAL = 1;
-	
-	public static int TP_DESC_VALOR = 2;
 	
 	public static int DUAS_CASAS_DECIMAIS = 2;
 	
@@ -355,11 +351,13 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 		final StringBuffer tmp = new StringBuffer();
 		
-		if ( tamanho < param.length() ) {
-			tmp.append( param.substring( 0, tamanho ) );
-		} else {
-			tmp.append( param );
-			tmp.append( replicate( " ", tamanho - param.length() ) );
+		if ( param != null ) {
+			if ( tamanho < param.length() ) {
+				tmp.append( param.substring( 0, tamanho ) );
+			} else {
+				tmp.append( param );
+				tmp.append( replicate( " ", tamanho - param.length() ) );
+			}
 		}
 
 		return tmp.toString();
@@ -460,7 +458,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public abstract int leituraMemoriaFiscal( int ini, int fim, char tipo );// 8
 
-	public abstract int vendaItem( String codProd, String descProd, String aliquota, int tpqtd, float qtd, float valor, int tpdesc, float desconto );// 9
+	public abstract int vendaItem( String codProd, String descProd, String aliquota, char tpqtd, float qtd, float valor, char tpdesc, float desconto );// 9
 
 	public abstract int cancelaItemAnterior();// 13
 
@@ -494,7 +492,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public abstract int iniciaFechamentoCupom( char opt, float percentual );// 32
 
-	public abstract int finalizaFechamentoCupom( String menssagem );// 34
+	public abstract int finalizaFechamentoCupom( String mensagem );// 34
 
 	public abstract String retornoVariaveis( char var );// 35
 
@@ -502,7 +500,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public abstract int nomeiaTotalizadorNaoSujeitoICMS( int indice, String desc );// 40
 
-	public abstract int vendaItemTresCasas( String codProd, String descProd, String aliquota, int tpqtd, float qtd, float valor, int tpdesc, float desconto );// 56
+	public abstract int vendaItemTresCasas( String codProd, String descProd, String aliquota, char tpqtd, float qtd, float valor, char tpdesc, float desconto );// 56
 	
 	public abstract int imprimeCheque( final float valor, final String favorecido, final String localidade, final int dia , final int mes, final int ano ); // 57
 
