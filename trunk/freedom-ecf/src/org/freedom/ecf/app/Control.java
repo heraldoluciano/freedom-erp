@@ -1,5 +1,15 @@
 package org.freedom.ecf.app;
 
+import static org.freedom.ecf.app.EParametro.PARAM_ACRECIMO;
+import static org.freedom.ecf.app.EParametro.PARAM_ALIQUOTA;
+import static org.freedom.ecf.app.EParametro.PARAM_CODIGO;
+import static org.freedom.ecf.app.EParametro.PARAM_DEPARTAMENTO;
+import static org.freedom.ecf.app.EParametro.PARAM_DESCONTO;
+import static org.freedom.ecf.app.EParametro.PARAM_DESCRICAO;
+import static org.freedom.ecf.app.EParametro.PARAM_QUANTIDADE;
+import static org.freedom.ecf.app.EParametro.PARAM_UNIDADE_MEDIDA;
+import static org.freedom.ecf.app.EParametro.PARAM_VALOR_UNITARIO;
+import static org.freedom.ecf.app.EParametro.PARAM_FORMA_PAGAMENTO;
 import static org.freedom.ecf.driver.EStatus.RETORNO_OK;
 
 import java.math.BigDecimal;
@@ -13,7 +23,7 @@ import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.infra.components.LoggerManager;
 
 public class Control {
-	
+		
 	private boolean modoDemostracao;	
 	
 	private AbstractECFDriver ecf;
@@ -234,6 +244,51 @@ public class Control {
 	
 	// Comandos ...
 	
+	public boolean programaAliquota( BigDecimal aliquota, final char tipoaliquota ) {
+
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			aliquota = aliquota.setScale( 2, BigDecimal.ROUND_HALF_UP );
+			String sAliquota = ecf.parseParam( aliquota.floatValue(), 4, 2 );
+			returnOfAction = decodeReturn( ecf.adicaoDeAliquotaTriburaria( sAliquota, tipoaliquota ) );
+			if ( ! returnOfAction ) {
+				whiterLogError( "[PROGRAMA ALIQUOTA] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public boolean nomeiaDepartamento( final int index, final String departamento ) {
+
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			returnOfAction = decodeReturn( ecf.nomeiaDepartamento( index, departamento ) );
+			if ( ! returnOfAction ) {
+				whiterLogError( "[NOMEIA DEPARTAMENTO] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public String programaFormaPagamento( final String formapagamento ) {
+
+		String returnOfAction = null;
+		
+		if ( notIsModoDemostracao() ) {	
+			returnOfAction = ecf.programaFormaPagamento( formapagamento );
+			if ( returnOfAction == null ) {
+				setMessageLog( "Forma de pagamento não encontrada/programada." );
+				whiterLogError( "[FORMA DE PAGAMENTO] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
 	public boolean leituraX() {
 		
 		return leituraX( false );
@@ -273,7 +328,7 @@ public class Control {
 						ecf.comprovanteNFiscalNVinculado( 
 								AbstractECFDriver.SUPRIMENTO, 
 								valorsuprimento.floatValue(), 
-								formatString( formaDePagamento, 16 ) ) );
+								formaDePagamento ) );
 			}
 			if ( !returnOfAction ) {
 				whiterLogError( "[SUPRIMENTO] " );
@@ -346,130 +401,422 @@ public class Control {
 		return returnOfAction;
 	}
 	
-	public boolean vendaItem (
-			final String codigo, 
-			final String descricao, 
-			BigDecimal aliquota, 
-			BigDecimal quantidade, 
-			BigDecimal valor ) {
+	private boolean validaParamVenda( final EParametro arg0, final Object arg1, final char arg2 ) {
+		
+		boolean actionOK = true;
+
+		if ( arg0 == null  ) {
+			actionOK = false;
+		}
+		else if ( arg1 == null ) {
+			setMessageLog( arg0.getName() + " inválido.[" + arg1.toString() +"]" );
+			actionOK = false;
+		}
+		else {
+			
+			switch ( arg0 ) {
+    
+    			case PARAM_CODIGO: {
+    				if ( ((String)arg1).trim().length() == 0 ) {
+    					setMessageLog( "Código do produto inválido.[" + arg1 +"]" );
+    					actionOK = false;
+    				}
+    				break;
+    			}
+    			case PARAM_DESCRICAO: {
+    				if ( ((String)arg1).trim().length() == 0 ) {
+        				setMessageLog( "Descrição do item inválida.[" + arg1 +"]" );
+        				actionOK = false;
+    				}
+    				break;
+    			}
+    			case PARAM_ALIQUOTA: {
+    				if ( ((BigDecimal)arg1).floatValue() <= 0.0f
+    						&& ((BigDecimal)arg1).floatValue() > 99.994f ) {
+        				setMessageLog( "Aliquota inválida.[" + arg1 +"]" );
+        				actionOK = false;
+    				}
+    				break;
+    			}
+    			case PARAM_TIPO_QUANTIDADE: {
+    				break;
+    			}
+    			case PARAM_QUANTIDADE: {
+    				if (((BigDecimal)arg1).floatValue() <= 0.0f 
+    						|| ( arg2 == AbstractECFDriver.QTD_INTEIRO 
+    								&& ((BigDecimal)arg1).floatValue() > 9999f )
+    						|| ( arg2 == AbstractECFDriver.QTD_DECIMAL 
+    								&& ((BigDecimal)arg1).floatValue() > 9999.9994f ) ) {
+    					setMessageLog( "Quantidade inválida.[" + arg1 +"]" );
+    					actionOK = false; 
+    				}
+    				break;
+    			}
+    			case PARAM_CASAS_DECIMAIS: {
+    				break;
+    			}
+    			case PARAM_VALOR_UNITARIO: {
+    				if (((BigDecimal)arg1).floatValue() <= 0.0f
+    						|| ((BigDecimal)arg1).floatValue() > 999999.994f ) {
+    				setMessageLog( "Valor inválido.[" + arg1 +"]" );
+    				actionOK = false;
+    			}
+    				break;
+    			}
+    			case PARAM_TIPO_DESCONTO: {
+    				break;
+    			}
+    			case PARAM_DESCONTO: {
+    				if ( ((BigDecimal)arg1).floatValue() < 0.0f
+    						|| ( arg2 == AbstractECFDriver.DESCONTO_PERC 
+    								&& ((BigDecimal)arg1).floatValue() > 99.994f )
+    						|| ( arg2 == AbstractECFDriver.DESCONTO_VALOR
+    								&& ((BigDecimal)arg1).floatValue() > 9999.9994f ) ) {
+    					setMessageLog( "Desconto inválido.[" + arg1 +"]" );
+    					actionOK = false;
+    				}
+    				break;
+    			}
+    			case PARAM_ACRECIMO: {
+    				if ( ((BigDecimal)arg1).floatValue() < 0.0f 
+    						|| ( arg2 == AbstractECFDriver.ACRECIMO_PERC
+    								&& ((BigDecimal)arg1).floatValue() > 99.994f )
+    						|| ( arg2 == AbstractECFDriver.ACRECIMO_VALOR
+    								&& ((BigDecimal)arg1).floatValue() > 9999.9994f ) ) {
+    					setMessageLog( "Acrécimo inválido.[" + arg1 +"]" );
+    					actionOK = false;
+    				}
+    				break;
+    			}
+    			case PARAM_DEPARTAMENTO: {
+    				if ( (Integer)arg1 <= 0 && (Integer)arg1 > 20 ) {
+        				setMessageLog( "Departamento inválido.[" + arg1 +"]" );
+        				actionOK = false;
+    				}
+    				break;
+    			}
+    			case PARAM_UNIDADE_MEDIDA: {
+    				if ( ((String)arg1).trim().length() == 0 ) {
+        				setMessageLog( "Unidade de medida inválida.[" + arg1 +"]" );
+        				actionOK = false;
+    				}
+    				break;
+    			}
+    			case PARAM_FORMA_PAGAMENTO: {
+    				if ( ((String)arg1).trim().length() == 0 ) {
+        				setMessageLog( "Forma de pagamento inválida.[" + arg1 +"]" );
+        				actionOK = false;
+    				}
+    				break;
+    			}
+			}			
+		}
+		
+		return actionOK;
+	}
+	
+	public boolean vendaItem ( 
+			final String codigo, final String descricao, final BigDecimal aliquota, 
+			final BigDecimal quantidade, final BigDecimal valor ) {
 		
 		return vendaItem( 
-				codigo, 
-				descricao, 
-				aliquota, 
-				quantidade,
-				valor,
-				new BigDecimal( "0" ) );
+				codigo, descricao, aliquota, 
+				quantidade, valor, new BigDecimal( "0" ) );
 	}
 	
 	public boolean vendaItem (
-			final String codigo, 
-			final String descricao, 
-			BigDecimal aliquota, 
-			BigDecimal quantidade, 
-			BigDecimal valor, 
-			BigDecimal desconto ) {
+			final String codigo, final String descricao, final BigDecimal aliquota, 
+			final BigDecimal quantidade, final BigDecimal valor, final BigDecimal desconto ) {
 		
 		return vendaItem( 
-				codigo, 
-				descricao, 
-				aliquota, 
-				AbstractECFDriver.TP_QTD_DECIMAL, 
-				quantidade, 
-				AbstractECFDriver.DUAS_CASAS_DECIMAIS, 
-				valor, 
-				AbstractECFDriver.TP_DESC_VALOR, 
-				desconto );
+				codigo, descricao, aliquota,  
+				AbstractECFDriver.QTD_DECIMAL, quantidade, 
+				AbstractECFDriver.DUAS_CASAS_DECIMAIS, valor, 
+				AbstractECFDriver.DESCONTO_VALOR, desconto );
 	}
 	
 	public boolean vendaItem( 
 			final String codigo, 
 			final String descricao, 
 			BigDecimal aliquota, 
-			final int tipoQuantidade,
+			final char tipoQuantidade,
 			BigDecimal quantidade, 
 			final int casasDecimais,
 			BigDecimal valor, 
-			final int tipoDesconto,
+			final char tipoDesconto,
 			BigDecimal desconto ) {
 
 		boolean returnOfAction = true;
 		
 		if ( notIsModoDemostracao() ) {
 			boolean actionOK = true;
-			String strAliquota = null;
-			if ( codigo == null || codigo.trim().length() == 0 ) {
-				setMessageLog( "Código do produto inválido.[" + codigo +"]" );
+			if ( ! validaParamVenda( PARAM_CODIGO, codigo, '0' ) ) {
 				actionOK = false;
 			}
-			else if ( descricao == null || descricao.trim().length() == 0 ) {
-				setMessageLog( "Descrição do item inválida.[" + descricao +"]" );
-				actionOK = false;
-			}
-			else if ( aliquota == null || aliquota.floatValue() <= 0.0f ) {
-				setMessageLog( "Aliquota inválida.[" + aliquota +"]" );
-				actionOK = false;
-			}
-			else if ( ( strAliquota = getIndexAliquota( aliquota.floatValue() ) ) == null ) {
-				setMessageLog( "Aliquota não encontrada.[" + aliquota +"]" );
-				actionOK = false;
-			}
-			else if ( quantidade == null || quantidade.floatValue() <= 0.0f 
-					|| ( tipoQuantidade == AbstractECFDriver.TP_QTD_INTEIRO && quantidade.floatValue() > 9999f )
-					|| ( tipoQuantidade == AbstractECFDriver.TP_QTD_DECIMAL && quantidade.floatValue() > 9999.9994f ) ) {
-				setMessageLog( "Quantidade inválida.[" + quantidade +"]" );
-				actionOK = false; 
-			}
-			else if ( valor == null || valor.floatValue() <= 0.0f
-						|| valor.floatValue() > 999999.994f ) {
-				setMessageLog( "Valor inválido.[" + valor +"]" );
-				actionOK = false;
-			}
-			else if ( desconto == null || desconto.floatValue() < 0.0f
-					|| ( tipoDesconto == AbstractECFDriver.TP_DESC_PERCENTUAL && desconto.floatValue() > 99.994f )
-					|| ( tipoDesconto == AbstractECFDriver.TP_DESC_VALOR && desconto.floatValue() > 9999.9994f ) ) {
-				setMessageLog( "Desconto inválido.[" + desconto +"]" );
-				actionOK = false;
-			}
+			else if ( ! validaParamVenda( PARAM_DESCRICAO, descricao, '0' ) ) {
+    			actionOK = false;
+    		}
+			else if ( ! validaParamVenda( PARAM_ALIQUOTA, aliquota, '0' ) ) {
+    			actionOK = false;
+    		}
+			else if ( ! validaParamVenda( PARAM_QUANTIDADE, quantidade, tipoQuantidade ) ) {
+    			actionOK = false;
+    		}
+			else if ( ! validaParamVenda( PARAM_VALOR_UNITARIO, valor, '0' ) ) {
+    			actionOK = false;
+    		}
+			else if ( ! validaParamVenda( PARAM_DESCONTO, desconto, tipoDesconto ) ) {
+    			actionOK = false;
+    		}
 			
 			if ( actionOK ) {
-				quantidade = tipoQuantidade == AbstractECFDriver.TP_QTD_INTEIRO 
+				String strAliquota = getIndexAliquota( aliquota.floatValue() );
+				quantidade = tipoQuantidade == AbstractECFDriver.QTD_INTEIRO 
 								? new BigDecimal( quantidade.intValue() )
 										: quantidade.setScale( 3, BigDecimal.ROUND_HALF_UP ) ;
 				desconto = desconto.setScale( 2, BigDecimal.ROUND_HALF_UP );
+				int countWhite = 0;
 				if ( casasDecimais == 3 ) {
 					valor = valor.setScale( 3, BigDecimal.ROUND_HALF_UP );
-					ecf.vendaItemTresCasas( 
-							formatString( codigo, 13 ), 
-							formatString( tiraAcentos( descricao ), 29 ), 
+					while ( ! decodeReturn( ecf.vendaItemTresCasas( 
+							codigo, 
+							tiraAcentos( descricao ), 
 							strAliquota, 
 							tipoQuantidade,
 							quantidade.floatValue(), 
 							valor.floatValue(),
 							tipoDesconto,
-							desconto.floatValue() );	
+							desconto.floatValue() ) ) ) {	
+						
+						try {
+							Thread.sleep( 2000 );
+						} catch ( InterruptedException e ) {
+							whiterLogError( e );
+						}
+						
+						if ( (countWhite++) >= 5 ) {
+							returnOfAction = false;
+							break;
+						}
+					}
 				}
 				else {
 					valor = valor.setScale( 2, BigDecimal.ROUND_HALF_UP );
-					ecf.vendaItemTresCasas( 
-							formatString( codigo, 13 ), 
-							formatString( tiraAcentos( descricao ), 29 ), 
+					while ( ! decodeReturn( ecf.vendaItem( 
+							codigo, 
+							tiraAcentos( descricao ), 
 							strAliquota, 
 							tipoQuantidade,
 							quantidade.floatValue(), 
-							valor.floatValue(), 
+							valor.floatValue(),
 							tipoDesconto,
-							desconto.floatValue() );	
+							desconto.floatValue() ) ) ) {	
+						
+						try {
+							Thread.sleep( 2000 );
+						} catch ( InterruptedException e ) {
+							whiterLogError( e );
+						}
+						
+						if ( (countWhite++) >= 5 ) {
+							returnOfAction = false;
+							break;
+						}
+					}
 				}
 			}
 			else {
 				returnOfAction = false;
+			}
+			
+			if ( !returnOfAction ) {
 				whiterLogError( "[VENDA DE ITEM] " );
 			}
 		}
 		
 		return returnOfAction;
 	}
+	
+	public boolean vendaItemDepartamento(
+			 final String codigo, 
+			 final String descricao, 
+			 final BigDecimal aliquota, 
+			 BigDecimal valor, 
+			 BigDecimal quantidade, 
+			 final BigDecimal acrescimo, 
+			 BigDecimal desconto, 
+			 final int departamento, 
+			 final String unidadeMedida ) {
+
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			boolean actionOK = true;
+			if ( ! validaParamVenda( PARAM_CODIGO, codigo, '0' ) ) {
+				actionOK = false;
+			}
+			else if ( ! validaParamVenda( PARAM_DESCRICAO, descricao, '0' ) ) {
+    			actionOK = false;
+    		}
+			else if ( ! validaParamVenda( PARAM_ALIQUOTA, aliquota, '0' ) ) {
+    			actionOK = false;
+    		}
+			else if ( ! validaParamVenda( PARAM_VALOR_UNITARIO, valor, '0' ) ) {
+    			actionOK = false;
+    		}
+			else if ( ! validaParamVenda( PARAM_QUANTIDADE, quantidade, AbstractECFDriver.QTD_DECIMAL ) ) {
+    			actionOK = false;
+    		}
+			else if ( ! validaParamVenda( PARAM_ACRECIMO, acrescimo, AbstractECFDriver.ACRECIMO_VALOR ) ) {
+    			actionOK = false;
+    		}
+			else if ( ! validaParamVenda( PARAM_DESCONTO, desconto, AbstractECFDriver.DESCONTO_VALOR ) ) {
+    			actionOK = false;
+    		}
+			else if ( ! validaParamVenda( PARAM_DEPARTAMENTO, departamento, '0' ) ) {
+    			actionOK = false;
+    		}
+			else if ( ! validaParamVenda( PARAM_UNIDADE_MEDIDA, unidadeMedida, '0' ) ) {
+    			actionOK = false;
+    		}
+			
+			if ( actionOK ) {
+				String strAliquota = getIndexAliquota( aliquota.floatValue() );
+				quantidade = quantidade.setScale( 3, BigDecimal.ROUND_HALF_UP ) ;
+				desconto = desconto.setScale( 2, BigDecimal.ROUND_HALF_UP );
+				int countWhite = 0;
+				valor = valor.setScale( 3, BigDecimal.ROUND_HALF_UP );
+				while ( ! decodeReturn( ecf.vendaItemDepartamento( 
+						strAliquota,
+						valor.floatValue(),
+						quantidade.floatValue(),
+						desconto.floatValue(),
+						acrescimo.floatValue(),
+						departamento,
+						unidadeMedida,							
+						codigo,
+						descricao ) ) ) {	
+					
+					try {
+						Thread.sleep( 2000 );
+					} catch ( InterruptedException e ) {
+						whiterLogError( e );
+					}
+					
+					if ( (countWhite++) >= 5 ) {
+						returnOfAction = false;
+						break;
+					}
+				}
+			}
+			else {
+				returnOfAction = false;
+			}
+			if ( !returnOfAction ) {
+				whiterLogError( "[VENDA DEPARTAMENTO] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public boolean cancelaItem() {
+		
+		return cancelaItem( 0 );
+	}
+	
+	public boolean cancelaItem( final int item ) {
+
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			returnOfAction = decodeReturn( 
+					item == 0 ?
+						ecf.cancelaItemAnterior() : ecf.cancelaItemGenerico( item ) );
+			if ( !returnOfAction ) {
+				whiterLogError( "[CANCELAMENTO DE ITEM] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public boolean iniciaFechamentoCupom( final char opcao, BigDecimal percentual ) {
+
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			boolean actionOK = true;
+			if ( opcao == AbstractECFDriver.ACRECIMO_PERC
+					|| opcao == AbstractECFDriver.ACRECIMO_VALOR ) {
+				if ( ! validaParamVenda( PARAM_ACRECIMO, percentual, opcao ) ) {
+	    			actionOK = false;
+	    		}
+			}
+			else if ( opcao == AbstractECFDriver.DESCONTO_PERC
+					|| opcao == AbstractECFDriver.DESCONTO_PERC ) {
+				if ( ! validaParamVenda( PARAM_DESCONTO, percentual, opcao ) ) {
+	    			actionOK = false;
+	    		}
+			}
+			else {
+				actionOK = false;
+				setMessageLog( "Opção indefinida." );
+			}
+			if ( actionOK ) {
+				percentual = percentual.setScale( 2, BigDecimal.ROUND_HALF_UP );
+				returnOfAction = decodeReturn( ecf.iniciaFechamentoCupom( opcao, percentual.floatValue() ) );				
+			}
+			if ( !returnOfAction ) {
+				whiterLogError( "[INICIA FECHAMENTO DE CUPOM] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public boolean efetuaFormaPagamento( 
+			final String formaPagamento, BigDecimal valor, final String descricaoAuxiliar ) {
+
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			boolean actionOK = true;
+			if ( ! validaParamVenda( PARAM_FORMA_PAGAMENTO, formaPagamento, '0' ) ) {
+    			actionOK = false;
+			}
+			else if ( ! validaParamVenda( PARAM_VALOR_UNITARIO, valor, '0' ) ) {
+    			actionOK = false;
+			}
+			if ( actionOK ) {
+				String sIndice = "Dinheiro".equals( formaPagamento.trim() ) 
+									? "01" : programaFormaPagamento( formaPagamento );
+				valor = valor.setScale( 2, BigDecimal.ROUND_HALF_UP );
+				returnOfAction = decodeReturn( 
+						ecf.efetuaFormaPagamento( sIndice, valor.floatValue(), descricaoAuxiliar ) );				
+			}
+			if ( !returnOfAction ) {
+				whiterLogError( "[EFETUA FORMA DE PAGAMENTO] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public boolean finalizaFechamentoCupom( final String mensagem ) {
+
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			returnOfAction = decodeReturn( ecf.finalizaFechamentoCupom( mensagem ) );
+			if ( !returnOfAction ) {
+				whiterLogError( "[FINALIZA FECHAMENTO DE CUPOM] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+
 	
 	public boolean sangria( final BigDecimal valor ) {
 		
@@ -490,10 +837,10 @@ public class Control {
 						ecf.comprovanteNFiscalNVinculado( 
 								AbstractECFDriver.SANGRIA, 
 								valorsangria.floatValue(), 
-								formatString( formaDePagamento, 16 ) ) );
+								formaDePagamento ) );
 			}
 			if ( !returnOfAction ) {
-				logger.error( "[SANGRIA] " + getMessageLog() );
+				whiterLogError( "[SANGRIA] " );
 			}
 		}
 		
@@ -557,30 +904,11 @@ public class Control {
 		return strReturn;
 	}
 	
-	/**
-	 * Formata uma String complentando com espaços em branco até<br>
-	 * que o tamanho string seja o passado por parametro.<br>
-	 * 
-	 * @param arg0
-	 *            String a ser formatada.
-	 * @param arg1
-	 *            tamanho da string formatada.
-	 * @return string formatada.
-	 */
-	private String formatString( final String arg0, final int arg1 ) {
+	private void whiterLogError( final Throwable e ) {
 		
-		final StringBuilder buffer = new StringBuilder();
-		String str = "";		
-		if ( arg0 != null ) {
-			str = arg0;
-		}	
-		final int i = arg1 - str.length();		
-		buffer.append( arg0 );
-		for ( int j=0; j < i; j++ ) {
-			buffer.append( " " );
+		if ( logger != null ) {
+			logger.error( getMessageLog(), e );
 		}
-		
-		return buffer.toString();
 	}
 	
 	private void whiterLogError( final String actionName ) {
