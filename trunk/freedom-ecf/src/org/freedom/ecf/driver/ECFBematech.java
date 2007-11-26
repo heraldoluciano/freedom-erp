@@ -620,26 +620,26 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int vendaItem( final String codProd, final String descProd, final String aliquota, final int tpqtd, final float qtd, final float valor, final int tpdesc, final float desconto ) {
+	public int vendaItem( final String codProd, final String descProd, final String aliquota, final char tpqtd, final float qtd, final float valor, final char tpdesc, final float desconto ) {
 
 		byte[] CMD = { ESC, 9 };
 
 		final StringBuffer buf = new StringBuffer();
 
-		buf.append( parseParam( codProd, 13, false ) );
-		buf.append( parseParam( descProd, 29, false ) );
-		buf.append( parseParam( aliquota, 2, false ) );
-		if ( tpqtd == TP_QTD_DECIMAL ) {
+		buf.append( parseParam( codProd, 13 ) );
+		buf.append( parseParam( descProd, 29 ) );
+		buf.append( parseParam( aliquota, 2 ) );
+		if ( tpqtd == QTD_DECIMAL ) {
 			buf.append( parseParam( qtd, 7, 3 ) );
 		}
-		else if ( tpqtd == TP_QTD_INTEIRO ) {
+		else if ( tpqtd == QTD_INTEIRO ) {
 			buf.append( parseParam( qtd, 4, 0 ) );
 		}
 		buf.append( parseParam( valor, 8, 2 ) );
-		if ( tpqtd == TP_DESC_VALOR ) {
+		if ( tpdesc == DESCONTO_VALOR ) {
 			buf.append( parseParam( desconto, 8, 2 ) );
 		}
-		else if ( tpqtd == TP_DESC_PERCENTUAL) {
+		else if ( tpdesc == DESCONTO_PERC ) {
 			buf.append( parseParam( desconto, 4, 0 ) );
 		}
 
@@ -671,28 +671,28 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int vendaItemTresCasas( final String codProd, final String descProd, final String aliquota, final int tpqtd, final float qtd, final float valor, final int tpdesc, final float desconto ) {
+	public int vendaItemTresCasas( final String codProd, final String descProd, final String aliquota, final char tpqtd, final float qtd, final float valor, final char tpdesc, final float desconto ) {
 
 		byte[] CMD = { ESC, 56 };
 
 		final StringBuffer buf = new StringBuffer();
 
-		buf.append( parseParam( codProd, 13, false ) );
-		buf.append( parseParam( descProd, 29, false ) );
-		buf.append( parseParam( aliquota, 2, false ) );
-		if ( tpqtd == TP_QTD_DECIMAL ) {
+		buf.append( parseParam( codProd, 13 ) );
+		buf.append( parseParam( descProd, 29 ) );
+		buf.append( parseParam( aliquota, 2 ) );
+		if ( tpqtd == QTD_DECIMAL ) {
 			buf.append( parseParam( qtd, 7, 3 ) );
 		}
-		else if ( tpqtd == TP_QTD_INTEIRO ) {
+		else if ( tpqtd == QTD_INTEIRO ) {
 			buf.append( parseParam( qtd, 4, 0 ) );
 		}
 		
 		buf.append( parseParam( valor, 8, 3 ) );
 		
-		if ( tpqtd == TP_DESC_VALOR ) {
+		if ( tpdesc == DESCONTO_VALOR ) {
 			buf.append( parseParam( desconto, 8, 2 ) );
 		}
-		else if ( tpqtd == TP_DESC_PERCENTUAL) {
+		else if ( tpdesc == DESCONTO_PERC ) {
 			buf.append( parseParam( desconto, 4, 0 ) );
 		}
 
@@ -833,9 +833,9 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final StringBuffer buf = new StringBuffer();
 
-		buf.append( parseParam( indice, 2, false ) );
+		buf.append( parseParam( indice, 2 ) );
 		buf.append( parseParam( valor, 14, 2 ) );
-		buf.append( parseParam( descForma, 80, false ) );
+		buf.append( parseParam( descForma, 80 ) );
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
@@ -847,16 +847,16 @@ public class ECFBematech extends AbstractECFDriver {
 	 * Esta mensagem possui um tamanho máximo de 492 caracteres, sendo limitada em até 8 linhas.<br>
 	 * Se não houver nenhum item vendido, não será permitido o fechamento do Cupom.<br>
 	 * 
-	 * @param menssagem
+	 * @param mensagem
 	 *            menssagem promocional de final de cupom.<br>
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int finalizaFechamentoCupom( final String menssagem ) {
+	public int finalizaFechamentoCupom( final String mensagem ) {
 
 		byte[] CMD = { ESC, 34 };
 
-		CMD = adicBytes( CMD, parseParam( menssagem, 492, true ).getBytes() );
+		CMD = adicBytes( CMD, parseParam( mensagem, 492, true ).getBytes() );
 
 		return executaCmd( CMD, 3 );
 	}
@@ -892,7 +892,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		byte[] CMD = { ESC, 71 };
 
-		CMD = adicBytes( CMD, parseParam( descricao, 16, false ).getBytes() );
+		CMD = adicBytes( CMD, parseParam( descricao, 16 ).getBytes() );
 
 		executaCmd( CMD, 4 );
 
@@ -1076,9 +1076,9 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final StringBuffer buf = new StringBuffer();
 
-		buf.append( parseParam( opt, 2, false ) );
+		buf.append( parseParam( opt, 2 ) );
 		buf.append( parseParam( valor, 14, 2 ) );
-		buf.append( parseParam( formaPag, 16, false ) );
+		buf.append( parseParam( formaPag, 16 ) );
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
@@ -1171,9 +1171,10 @@ public class ECFBematech extends AbstractECFDriver {
 
 		byte[] bytes = new byte[ caracteres.length ];
 		for ( int i = 0; i < caracteres.length; i++ ) {
-			bytes[ i ] = (byte) caracteres[ i ];
+			bytes[ i ] = (byte) (caracteres[ i ]-128);
 		}
 		CMD = adicBytes( CMD, bytes );
+
 
 		return executaCmd( CMD, 3 );
 	}
@@ -1512,7 +1513,11 @@ public class ECFBematech extends AbstractECFDriver {
 
 		String retorno = "";
 
-		if ( var == V_NUM_SERIE || var == V_CNPJ_IE || var == V_CLICHE || var == V_MOEDA ) {
+		if ( var == V_NUM_SERIE 
+				|| var == V_CNPJ_IE 
+					|| var == V_CLICHE 
+						|| var == V_MOEDA
+							|| var == V_DEPARTAMENTOS ) {
 			retorno = new String( getBytesLidos() );
 		} else {
 			retorno = bcdToAsc( getBytesLidos() );
