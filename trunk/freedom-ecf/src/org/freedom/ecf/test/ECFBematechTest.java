@@ -51,7 +51,7 @@ public class ECFBematechTest extends TestCase {
 
 		System.out.print( "vendaItem > " );
 		assertTrue( trataRetornoFuncao( ecf.vendaItem( 
-				"0000000000001", "Produto Teste                ", "FF", 1, 1f, 10f, 2, 0f ) ) );
+				"0000000000001", "Produto Teste                ", "FF", 'I', 1f, 10f, 'D', 0f ) ) );
 
 		System.out.print( "cancelaItemAnterior > " );
 		assertTrue( trataRetornoFuncao( ecf.cancelaItemAnterior() ) );
@@ -62,7 +62,7 @@ public class ECFBematechTest extends TestCase {
 		 
 		System.out.print( "vendaItemTresCasas > " ); 
 		assertTrue( trataRetornoFuncao( ecf.vendaItemTresCasas( 
-				"1234567890002", "Produto Teste                ", "FF", 1, 2f, 2.050f, 2, 0.10f ) ) );
+				"1234567890002", "Produto Teste                ", "FF", 'I', 2f, 2.050f, 'D', 0.10f ) ) );
 		
 		System.out.print( "vendaItemDepartamento > " ); 
 		assertTrue( trataRetornoFuncao( ecf.vendaItemDepartamento( 
@@ -137,7 +137,7 @@ public class ECFBematechTest extends TestCase {
 		
 		System.out.print( "programaCaracterParaAutenticacao > " ); 
 		//int [] sesc = {143,137,137,249,0,255,137,137,137,0,143,137,137,249,0,255,129,129 };
-		int [] sesc = {1,1,1,1,1,1,1,1,1,0,1,1,1,2,0,2,1,1 };
+		int [] sesc = {1,2,4,8,16,32,64,128,64,32,16,8,4,2,1,129,129,129 };
 		assertTrue( trataRetornoFuncao( ecf.programaCaracterParaAutenticacao( sesc ) ) );	
 		
 		testComandosDeCupomFiscal();
