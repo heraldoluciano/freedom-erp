@@ -846,7 +846,7 @@ public class ECFDriver {
 			String sDescricao = Funcoes.tiraAcentos( Funcoes.adicionaEspacos( sDescprod, 29 ) );
 			int index = 1;
 
-			while ( ! trataRetornoFuncao( ecf.vendaItem( sCodprod, sDescricao, sTributo, 2, bdQuant.floatValue(), bdValor.floatValue(), 2, bdValDesc.floatValue() ) ) ) {
+			while ( ! trataRetornoFuncao( ecf.vendaItem( sCodprod, sDescricao, sTributo, 'D', bdQuant.floatValue(), bdValor.floatValue(), 'D', bdValDesc.floatValue() ) ) ) {
 				
 				Logger.gravaLogTxt( "", sUserID, Logger.LGEP_IMPRES_ITEM, "Codigo: " + sCodprod + "-Descrição: " + sDescprod + "-Qtd.: " + bdQuant.floatValue() + "-Valor: " + bdValor.floatValue() + "-Desconto: " + bdValDesc.floatValue() + "-Erro: " + sMensErroLog );
 				
