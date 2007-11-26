@@ -45,6 +45,9 @@ O.TIPOORC=$P{TIPOORC} AND O.CODORC=$P{CODORC}]]></queryString>
 
 	<field name="VLRLIQORC" class="java.math.BigDecimal"/>
 
+	<variable name="ANO" class="java.lang.Integer" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Integer(((new GregorianCalendar().get( Calendar.YEAR ))))]]></variableExpression>
+	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -670,6 +673,19 @@ ENTREGA, 90 DD PEDIDO E 120 DD PEDIDO(*)]]></text>
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRLIQORC}.divide( new BigDecimal(6),2,BigDecimal.ROUND_HALF_UP )]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="304"
+						y="139"
+						width="73"
+						height="13"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{ANO}]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
