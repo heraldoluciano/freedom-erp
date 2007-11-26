@@ -754,7 +754,7 @@ public class Control {
 	    		}
 			}
 			else if ( opcao == AbstractECFDriver.DESCONTO_PERC
-					|| opcao == AbstractECFDriver.DESCONTO_PERC ) {
+					|| opcao == AbstractECFDriver.DESCONTO_VALOR ) {
 				if ( ! validaParamVenda( PARAM_DESCONTO, percentual, opcao ) ) {
 	    			actionOK = false;
 	    		}

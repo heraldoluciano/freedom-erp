@@ -854,8 +854,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 */
 	public int finalizaFechamentoCupom( final String mensagem ) {
 
-		byte[] CMD = { ESC, 34 };
-
+		byte[] CMD = { ESC, 34, ESC };
 		CMD = adicBytes( CMD, parseParam( mensagem, 492, true ).getBytes() );
 
 		return executaCmd( CMD, 3 );
