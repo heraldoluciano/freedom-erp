@@ -409,7 +409,7 @@ public class Control {
 			actionOK = false;
 		}
 		else if ( arg1 == null ) {
-			setMessageLog( arg0.getName() + " inválido.[" + arg0.toString() +"]" );
+			setMessageLog( arg0.getName() + " inválido.[" + arg1 +"]" );
 			actionOK = false;
 		}
 		else {
