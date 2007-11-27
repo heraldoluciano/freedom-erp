@@ -1,7 +1,7 @@
 package org.freedom.infra.x.swing;
 
 import java.awt.Dimension;
-
+ 
 /**
  * Classe de derivada de JFrame. <BR>
  * Projeto: freedom-infra <BR>
