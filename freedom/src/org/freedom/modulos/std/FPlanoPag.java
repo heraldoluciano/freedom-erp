@@ -85,6 +85,12 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 
 	private JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
+	private JTextFieldPad txtCodTbJ = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	 
+	private JTextFieldFK txtDescTbJ = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+	
+	private JTextFieldPad txtPercDesc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
+	
 	private JCheckBoxPad cbAtivo = null;
 	
 	private JRadioGroup<?, ?> rgCV = null;
@@ -98,6 +104,8 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 	private ListaCampos lcPlan = new ListaCampos( this, "PN" );
 
 	private ListaCampos lcCC = new ListaCampos( this, "CC" );
+	
+	private ListaCampos lcTabJuros = new ListaCampos( this, "TBJ"  );
 
 	private JCheckBoxPad cbAutoBaixa = new JCheckBoxPad( "Gerar lançamento financeiro já quitado?", "S", "N" );
 
@@ -142,8 +150,16 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		lcCC.setQueryCommit( false );
 		lcCC.setReadOnly( true );
 		txtCodCC.setTabelaExterna( lcCC );
+		
+		lcTabJuros.add( new GuardaCampo( txtCodTbJ, "CodTbj", "Cód.tb.jur.", ListaCampos.DB_PK, false ) );
+		lcTabJuros.add( new GuardaCampo( txtDescTbJ, "DescTbJ", "Descrição da tabela de juros", ListaCampos.DB_SI, false ) );
+		lcTabJuros.montaSql( false, "TBJUROS", "FN" );
+		lcTabJuros.setQueryCommit( false );
+		lcTabJuros.setReadOnly( true );
+		txtCodTbJ.setTabelaExterna( lcTabJuros );
+		
 
-		setAltCab( 194 );
+		setAltCab( 220 );
 		pinCab = new JPanelPad();
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
@@ -158,11 +174,15 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		adicCampo( txtCodCC, 370, 60, 97, 20, "CodCC", "Centro de custo", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescCC, 470, 60, 225, 20, "DescCC", "Descrição do centro de custo" );
 		adicCampoInvisivel( txtAnoCC, "AnoCC", "Ano.C.C.", ListaCampos.DB_SI, false );
-		adicDB( cbAutoBaixa, 4, 84, 300, 20, "AutoBaixaPlanoPag", "", false ); 
-		adicDB( cbApOrcPlanoPag, 4, 106, 250, 20, "ApOrcPlanoPag", "", true ); 
-		adicDB( rgCV, 370, 104, 324, 37, "CVPlanoPag", "Cadastro para:", true );
-		adicDB( cbAtivo, 4, 128, 250, 20, "AtivoPlanoPag", "", true ); 
-
+		adicCampo( txtCodTbJ, 7, 100, 70, 20,"CodTbJ","Cód.tb.juros", ListaCampos.DB_FK, false );
+		adicDescFK (txtDescTbJ, 80, 100, 217, 20, "DescTbJ", "Descrição da tabela de juros" );
+		adicCampo( txtPercDesc, 300, 100, 70, 20, "PercDesc", "% Desconto", ListaCampos.DB_SI, false );
+		adicDB( cbAutoBaixa, 4, 120, 300, 20, "AutoBaixaPlanoPag", "", false ); 
+		adicDB( cbApOrcPlanoPag, 4, 140, 250, 20, "ApOrcPlanoPag", "", true ); 
+		adicDB( rgCV, 373, 104, 320, 37, "CVPlanoPag", "Cadastro para:", true );
+		adicDB( cbAtivo, 4, 160, 250, 20, "AtivoPlanoPag", "", true ); 
+		
+		
 		setListaCampos( true, "PLANOPAG", "FN" );
 		lcCampos.setQueryInsert( true );
 
@@ -351,6 +371,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		lcConta.setConexao( cn );
 		lcPlan.setConexao( cn );
 		lcCC.setConexao( cn );
+		lcTabJuros.setConexao( cn );
 	}
 
 }
