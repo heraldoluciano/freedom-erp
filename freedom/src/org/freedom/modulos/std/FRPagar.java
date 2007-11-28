@@ -79,6 +79,8 @@ public class FRPagar extends FRelatorio {
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JCheckBoxPad cbObs = new JCheckBoxPad( "Imprimir observações?", "S", "N" );
+	
+	private JCheckBoxPad cbParPar = new JCheckBoxPad( "Imprimir pagamentos parciais?", "S", "N" );
 
 	private ListaCampos lcFor = new ListaCampos( this );
 
@@ -89,7 +91,7 @@ public class FRPagar extends FRelatorio {
 	public FRPagar() {
 
 		setTitulo( "Contas a Pagar" );
-		setAtribos( 80, 80, 410, 340 );
+		setAtribos( 80, 80, 410, 355 );
 		
 		montaListaCampos();
 		montaCheckBox();
@@ -128,6 +130,7 @@ public class FRPagar extends FRelatorio {
 		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 190, 300, 20 );
 		adic( txtDescPlanoPag, 90, 210, 277, 20 );
 		adic( cbObs, 7, 235, 360, 20 );
+		adic( cbParPar, 7, 255, 360, 20 );
 
 		btExp.setToolTipText( "Exporta para aquivo no formato csv." );
 		btExp.setPreferredSize( new Dimension( 40, 28 ) );
