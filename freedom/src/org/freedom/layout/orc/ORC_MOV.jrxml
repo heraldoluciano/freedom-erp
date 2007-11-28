@@ -35,15 +35,16 @@
 	<parameter name="CODORC" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="TIPOORC" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA[new String("O")]]></defaultValueExpression>
-	</parameter>
-	<queryString><![CDATA[SELECT O.VLRLIQORC 
-FROM VDORCAMENTO O 
-WHERE O.CODEMP=$P{CODEMP} AND O.CODFILIAL=$P{CODFILIAL} AND 
-O.TIPOORC=$P{TIPOORC} AND O.CODORC=$P{CODORC}]]></queryString>
+	<parameter name="TIPOORC" isForPrompting="false" class="java.lang.String"/>
+	<queryString><![CDATA[SELECT O.VLRLIQORC, P1.CODMENSORC, LM.MENS
+FROM VDORCAMENTO O, SGPREFERE1 P1, LFMENSAGEM LM
+WHERE O.CODEMP=$P{CODEMP} AND O.CODFILIAL=$P{CODFILIAL} AND  
+O.TIPOORC='O' AND O.CODORC=$P{CODORC} AND
+P1.CODMENSORC=LM.CODMENS]]></queryString>
 
 	<field name="VLRLIQORC" class="java.math.BigDecimal"/>
+	<field name="CODMENSORC" class="java.lang.Long"/>
+	<field name="MENS" class="java.lang.String"/>
 
 	<variable name="ANO" class="java.lang.Integer" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[new Integer(((new GregorianCalendar().get( Calendar.YEAR ))))]]></variableExpression>
@@ -285,19 +286,6 @@ PARCELA]]></text>
 						<font size="8"/>
 					</textElement>
 				<text><![CDATA[DE]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="4"
-						y="4"
-						width="211"
-						height="111"
-						key="staticText-18"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Justified">
-						<font size="4"/>
-					</textElement>
-				<text><![CDATA[OBSERVAÇÕES: ESSE PEDIDO PASSA A VALER CONTRATUALMENTE COMO PEDIDO SE ASSINADO PELO CONTRATANTE E CONTRATADO EMITIDO EM DUAS VIAS DE IGUAL VALOR E TEOR. FRETES FORA DA REGIÃO METROPOLITANA DE CURITIBA CORREM POR CONTA DO CONTRATANTE. PUXADORES, VIDROS, TECIDOS, EQUIPAMENTOS ELETRONICOS, GRANITOS, RODAS, ESPELHOS E PEÇAS DECORATIVAS NÃO ESTÃO INCLUSOS. AS MADEIRAS POR SEREM PRODUTOS NATURAIS PODE APRESENTAR PEQUENAS VARIAÇÕES DE TOM OU COR. OS DESENHOS EVENTUALMENTE REALIZADOS PELA MOVELARIA PAULISTA ANEXADOS A ESTE ORÇAMENTO/PEDIDO TÊM SEUS DIREITOS AUTORAIS RESERVADOS CONFORME AS DETERMINAÇÕES E SANÇÕES DA LEI FEDERAL N° 9.610 DE 19.02.98. NÃO PODENDO SER USADO SEM AUTORIZAÇÃO DOS AUTORES. CASO O CONTRATANTE DESEJE USAR OS DESENHOS SEM A CONTRATAÇÃO DA EXECUÇÃO O CUSTO SERÁ DE 10% DO VALOR TOTAL. O PRAZO DE ENTREGA PASSA A CONTAR À PARTIR DA EFETIVAÇÃO DE EVENTUAIS PARCELAS VINCULADAS AO FECHAMENTO DO PEDIDO. A MARCAÇÃO "(NI)" SIGNIFICA QUE ESTE ITEM NÃO ESTA INCLUSO NESTE ORÇAMENTO. DESCONTOS EVENTUALMENTE CONCEDIDOS VIGORAM CASO AS PARCELAS PREVISTAS SEJAM ACERTADAS NAS DATAS PREVISTAS. OS PAGAMENTOS PODERÃO SER FEITOS ATRAVÉZ DE CHEUQES, DEPÓSITO OU FATURA BANCÁRIA (*) DE2,0% AO MÊS.  A VALIDADE DESTE ORÇAMENTO/PEDIDO É DE ATÉ 5 DIAS]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -686,6 +674,19 @@ ENTREGA, 90 DD PEDIDO E 120 DD PEDIDO(*)]]></text>
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{ANO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="2"
+						width="212"
+						height="110"
+						key="textField-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="4"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{MENS}.trim()]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
