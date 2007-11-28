@@ -1268,7 +1268,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					( rs.getString( "DocRec" ) != null ? rs.getString( "DocRec" ) + "/" + rs.getString( "NParcItRec" ) : "" ) ), i, EColTabManut.DOCLANCA.ordinal() );
 				tabManut.setValor( rs.getInt( "DOCVENDA" ), i, EColTabManut.DOCVENDA.ordinal() );// DOCVENDA
 				tabManut.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRPARCITREC" ) ), i, EColTabManut.VLRPARC.ordinal() );
-				tabManut.setValor( ( rs.getDate( "DTPAGOITREC" ) != null ? Funcoes.sqlDateToDate( rs.getDate( "DtPagoItRec" ) ) : new Date() ), i, EColTabManut.DTPAGTO.ordinal() );				
 				tabManut.setValor( ( rs.getDate( "DTPAGOITREC" ) != null ? Funcoes.sqlDateToStrDate( rs.getDate( "DtPagoItRec" ) ) : "" ), i, EColTabManut.DTPAGTO.ordinal() );
 				
 				tabManut.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRPAGOITREC" ) ), i, EColTabManut.VLRPAGO.ordinal() );
@@ -1755,11 +1754,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				sVals[ EColBaixa.CODCC.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.CODCC.ordinal() ); // Codcc
 
 				if ( "".equals( tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) ) { // Data de pagamento branco
-					sVals[ EColBaixa.DTPGTO.ordinal() ] = new Date(); // Data pagto
+					sVals[ EColBaixa.DTPGTO.ordinal() ] = Funcoes.dateToStrDate( new Date() ); // Data pagto
 					sVals[ EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ); // valor pago
 				}
 				else {
-					sVals[ EColBaixa.DTPGTO.ordinal() ] = Funcoes.strDateToDate( (String) tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ); // Data pagto
+					sVals[ EColBaixa.DTPGTO.ordinal() ] = (String) tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ; // Data pagto
 					sVals[ EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ); // valor pago
 				}
 				if ( "".equals( ( (String) tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) ).trim() ) ) {

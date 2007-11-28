@@ -348,16 +348,38 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 				sFiltro += (!sFiltro.equals("")?" / ":"")+"Repr.: "+sCodTpCob+" - "+Funcoes.copy(txtCodTpCob.getVlrString(),30).trim();
 			}
 			
-			sSQL.append( "SELECT IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI," );
-			sSQL.append( "IT.VLRPARCITREC, ");
+			sSQL.append( "SELECT IT.DTITREC, IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI," );
 			if ("S".equals( cbParPar.getVlrString()) ) {
+				sSQL.append( "(CASE WHEN L.CODLANCA IS NOT NULL AND L.CODLANCA=");
+				sSQL.append( "(SELECT MIN(L2.CODLANCA) FROM FNLANCA L2 ");
+				sSQL.append( "WHERE L2.CODEMPRC=IT.CODEMP AND L2.CODFILIALRC=IT.CODFILIAL AND ");
+				sSQL.append( "L2.CODREC=IT.CODREC AND L2.NPARCITREC=IT.NPARCITREC");
+				if ("P".equals(sOrdem)) {
+					sSQL.append(" AND L2.DATALANCA BETWEEN ? AND ? ");
+				}
+				sSQL.append(") THEN IT.VLRPARCITREC ");
+				sSQL.append( "ELSE 0 END) VLRPARCITREC, ");
+				
 				sSQL.append( "COALESCE(L.VLRLANCA,IT.VLRPAGOITREC) VLRPAGOITREC, ");
+
+				sSQL.append( "(CASE WHEN L.CODLANCA IS NOT NULL AND L.CODLANCA=");
+				sSQL.append( "(SELECT MIN(L2.CODLANCA) FROM FNLANCA L2 ");
+				sSQL.append( "WHERE L2.CODEMPRC=IT.CODEMP AND L2.CODFILIALRC=IT.CODFILIAL AND ");
+				sSQL.append( "L2.CODREC=IT.CODREC AND L2.NPARCITREC=IT.NPARCITREC");
+				if ("P".equals(sOrdem)) {
+					sSQL.append(" AND L2.DATALANCA BETWEEN ? AND ? ");
+				}
+				sSQL.append(") THEN IT.VLRAPAGITREC ");
+				sSQL.append( "ELSE 0 END) VLRAPAGITREC, ");
+				
 				sSQL.append( "COALESCE(L.DATALANCA,IT.DTPAGOITREC) DTPAGOITREC, ");
 			} else {
+				sSQL.append( "IT.VLRPARCITREC, ");
 				sSQL.append( "IT.VLRPAGOITREC, ");
+				sSQL.append( "IT.VLRAPAGITREC, ");
 				sSQL.append( "IT.DTPAGOITREC, ");
+
 			}
-			sSQL.append( "IT.VLRAPAGITREC, ");
 			sSQL.append("R.DOCREC, IT.OBSITREC, " );
 			sSQL.append( "(SELECT V.STATUSVENDA FROM VDVENDA V " );
 			sSQL.append( "WHERE V.FLAG IN "+AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp ));
@@ -381,6 +403,14 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			try {
 				iParans = 1;
 				ps = con.prepareStatement( sSQL.toString() );
+
+				if ("S".equals(cbParPar.getVlrString()) && "P".equals(sOrdem)) {
+					ps.setDate(iParans++,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
+					ps.setDate(iParans++,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
+					ps.setDate(iParans++,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
+					ps.setDate(iParans++,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
+				}
+
 				ps.setInt(iParans++,Aplicativo.iCodEmp);
 				ps.setInt(iParans++,ListaCampos.getMasterFilial("FNRECEBER"));
 				ps.setDate(iParans++,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
