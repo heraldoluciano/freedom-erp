@@ -1649,7 +1649,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				sVals[ EColBaixa.CODCC.ordinal() ] =
 					"".equals( sPlanoConta[ 3 ] ) ? tabManut.getValor( iLin, EColTabManut.CODCC.ordinal() ) : sPlanoConta[ 3 ];
 				if ( "".trim().equals( tabManut.getValor( iLin, EColTabManut.DTPAGTO.ordinal() ) ) ) {
-					sVals[ EColBaixa.DTPGTO.ordinal() ] = new Date();
+					sVals[ EColBaixa.DTPGTO.ordinal() ] = Funcoes.dateToStrDate( new Date() );
 					sVals[ EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() ) );
 				}
 				else {
