@@ -581,7 +581,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		txtCodClasCli.setFK( true );
 		txtDescClasCli.setListaCampos( lcClasCli );
 		
-		lcMens.add( new GuardaCampo( txtCodMens, "CodMens", "Cód.mens.", ListaCampos.DB_PK, null, false ) );
+		lcMens.add( new GuardaCampo( txtCodMens, "CodMens", "Cód.mens.", ListaCampos.DB_PK, null, true ) );
 		lcMens.add( new GuardaCampo( txtDescMens, "Mens", "Mensagem", ListaCampos.DB_SI, null, false ) );
 		lcMens.montaSql( false, "MENSAGEM", "LF" );
 		lcMens.setQueryCommit( false );
@@ -877,7 +877,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDescFK( txtDescTipoMov2, 100, 25, 300, 20, "DescTipoMov", "Tipo de movimento para orçamentos." );
 		adicCampo( txtDescClassOrc, 403, 25, 250, 20, "ClassOrc", "Classe padrão para orçamento.", ListaCampos.DB_SI, false );
 		adicCampo( txtTitOrcTxt01, 403, 65, 250, 20, "TitOrcTxt01", "Título para campo TXT01", ListaCampos.DB_SI, false );
-		adicCampo( txtCodMens, 7, 185, 90, 20, "CodMensOrc", "Cód.mens", ListaCampos.DB_FK, txtDescMens, false );
+		adicCampo( txtCodMens, 7, 185, 90, 20, "CodMensOrc", "Cód.mens", ListaCampos.DB_FK, txtDescMens, true );
 		adicDescFK( txtDescMens, 100, 185, 300, 20, "mens", " Mensagem" );
 		
 		adicDB( rgTipoValidOrc, 403, 185, 250, 30, "tipovalidorc", "Validade na impressão", true );
