@@ -63,6 +63,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JCheckBoxPad cbObs = new JCheckBoxPad("Imprimir observações?","S","N");
 	private JCheckBoxPad cbImpTotDia = new JCheckBoxPad("Imprimir totalizador diário?","S","N");  
+	private JCheckBoxPad cbParPar = new JCheckBoxPad( "Imprimir pagamentos parciais?", "S", "N" );
 	private JRadioGroup<?, ?> rgTipoRel = null;
 	private JRadioGroup<?, ?> rgOrdem = null;
 	private JRadioGroup<?, ?> rgOrdem2 = null;
@@ -82,7 +83,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 	  
 	public FRReceber() {
 		setTitulo("Contas a Receber");
-		setAtribos(80,20,417,555);
+		setAtribos(80,20,417,565);
 		   
 		txtDataini.setVlrDate(new Date());
 		txtDatafim.setVlrDate(new Date());
@@ -214,15 +215,16 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		adic(new JLabelPad("Descrição do plano de pagamento"),90,380,300,20);
 		adic(txtDescPlanoPag,90,400,270,20);
 		adic(cbObs,7,425,180,20);
-		adic(cbImpTotDia,188,425,180,20);    
+		adic(cbImpTotDia,7,445,180,20);    
+		adic(cbParPar,7,465,250,20);
 	
 	}
 	
 	public void imprimir(boolean bVisualizar) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = null;
-		String sWhere = "";
+		StringBuffer sSQL =  new StringBuffer();
+		StringBuffer sWhere = new StringBuffer();
 		String sFrom = " ";
 		String sFiltro = "";
 		String sTipoRel = null;
@@ -313,53 +315,52 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			sImpTotDia = cbImpTotDia.getVlrString();
 			
 			if (iCodCli!=0) {
-				sWhere += " AND R.CODEMPCL=? AND R.CODFILIALCL=? AND R.CODCLI=? ";
+				sWhere.append( " AND R.CODEMPCL=? AND R.CODFILIALCL=? AND R.CODCLI=? " );
 				sFiltro = "Cli.: "+iCodCli+" - "+Funcoes.copy(txtRazCli.getVlrString(),30).trim();
 			}
 			if (iCodSetor!=0) {
 				if (bPref[0])
-					sWhere += " AND C.CODEMPSR=? AND C.CODFILIALSR=? AND C.CODSETOR=?";
+					sWhere.append( " AND C.CODEMPSR=? AND C.CODFILIALSR=? AND C.CODSETOR=?" );
 				else {
-					sWhere += " AND VD.CODEMPSE=? AND VD.CODFILIALSE=? AND VD.CODSETOR=? AND " +
-					" VD.CODEMP=R.CODEMPVD AND VD.CODFILIAL=R.CODFILIALVD AND VD.CODVEND=R.CODVEND ";
+					sWhere.append( " AND VD.CODEMPSE=? AND VD.CODFILIALSE=? AND VD.CODSETOR=? AND  VD.CODEMP=R.CODEMPVD AND VD.CODFILIAL=R.CODFILIALVD AND VD.CODVEND=R.CODVEND " );
 					sFrom = ",VDVENDEDOR VD ";
 				}
 				sFiltro += (!sFiltro.equals("")?" / ":"")+"Setor: "+iCodSetor+" - "+Funcoes.copy(txtDescSetor.getVlrString(),30).trim();
 			}
 			if (iCodVend!=0) {
-				sWhere += " AND R.CODEMPVD=? AND R.CODFILIALVD=? AND R.CODVEND=? ";
+				sWhere.append( " AND R.CODEMPVD=? AND R.CODFILIALVD=? AND R.CODVEND=? " );
 				sFiltro += (!sFiltro.equals("")?" / ":"")+"Repr.: "+iCodVend+" - "+Funcoes.copy(txtNomeVend.getVlrString(),30).trim();
 			}
 			if (sCodBanco.length()>0) {
-				sWhere += " AND IT.CODEMPBO=? AND IT.CODFILIALBO=? AND IT.CODBANCO=? ";
+				sWhere.append( " AND IT.CODEMPBO=? AND IT.CODFILIALBO=? AND IT.CODBANCO=? " );
 				sFiltro += (!sFiltro.equals("")?" / ":"")+"Repr.: "+sCodBanco+" - "+Funcoes.copy(txtCodBanco.getVlrString(),30).trim();
 			}
 			if (sCodPlanoPag.length()>0) {
-				sWhere += " AND R.CODEMPPG=? AND R.CODFILIALPG=? AND R.CODPLANOPAG=? ";
+				sWhere.append( " AND R.CODEMPPG=? AND R.CODFILIALPG=? AND R.CODPLANOPAG=? " );
 				sFiltro += (!sFiltro.equals("")?" / ":"")+"Repr.: "+sCodPlanoPag+" - "+Funcoes.copy(txtCodPlanoPag.getVlrString(),30).trim();
 			}
 			if(sCodTpCob.length()>0){
-				sWhere += "AND IT.CODEMPTC=? AND IT.CODFILIALTC=? AND IT.CODTIPOCOB=? ";
+				sWhere.append( "AND IT.CODEMPTC=? AND IT.CODFILIALTC=? AND IT.CODTIPOCOB=? " );
 				sFiltro += (!sFiltro.equals("")?" / ":"")+"Repr.: "+sCodTpCob+" - "+Funcoes.copy(txtCodTpCob.getVlrString(),30).trim();
 			}
 			
-			sSQL =  "SELECT IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI," +
-					"IT.VLRPARCITREC,IT.VLRPAGOITREC,IT.VLRAPAGITREC,IT.DTPAGOITREC,R.DOCREC,IT.OBSITREC,"+
-					"(SELECT V.STATUSVENDA FROM VDVENDA V "+
-						"WHERE V.FLAG IN "+AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
-						" AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND V.CODVENDA=R.CODVENDA AND V.TIPOVENDA=R.TIPOVENDA) " +
-					"FROM FNITRECEBER IT,FNRECEBER R,VDCLIENTE C" + sFrom +
-					"WHERE R.FLAG IN "+ AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
-					"AND R.CODEMP=? AND R.CODFILIAL=? AND "+sCampoOrdem+" BETWEEN ? AND ? "+
-					"AND IT.STATUSITREC IN (?,?,?) AND R.CODREC = IT.CODREC " +
-					"AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL " +
-					"AND C.CODEMP = R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI "+
-					sWhere +
-					" ORDER BY "+sCampoOrdem+" ,"+sCampoOrdem2;
+			sSQL.append( "SELECT IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI," );
+			sSQL.append( "IT.VLRPARCITREC,IT.VLRPAGOITREC,IT.VLRAPAGITREC,IT.DTPAGOITREC,R.DOCREC,IT.OBSITREC," );
+			sSQL.append( "(SELECT V.STATUSVENDA FROM VDVENDA V " );
+			sSQL.append( "WHERE V.FLAG IN "+AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp ));
+			sSQL.append( " AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND V.CODVENDA=R.CODVENDA AND V.TIPOVENDA=R.TIPOVENDA) " );
+			sSQL.append( "FROM FNITRECEBER IT,FNRECEBER R,VDCLIENTE C" + sFrom );
+			sSQL.append( "WHERE R.FLAG IN "+ AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp ));
+			sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND "+sCampoOrdem+" BETWEEN ? AND ? " );
+			sSQL.append( "AND IT.STATUSITREC IN (?,?,?) AND R.CODREC = IT.CODREC " );
+			sSQL.append( "AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL " );
+			sSQL.append( "AND C.CODEMP = R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI " );
+			sSQL.append( sWhere.toString() );
+			sSQL.append( " ORDER BY "+sCampoOrdem+" ,"+sCampoOrdem2 );
 			          
 			try {
 				iParans = 1;
-				ps = con.prepareStatement(sSQL);
+				ps = con.prepareStatement( sSQL.toString() );
 				ps.setInt(iParans++,Aplicativo.iCodEmp);
 				ps.setInt(iParans++,ListaCampos.getMasterFilial("FNRECEBER"));
 				ps.setDate(iParans++,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
