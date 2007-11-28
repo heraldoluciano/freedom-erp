@@ -283,7 +283,11 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			
 			if (sOrdem.equals("P")) {
 				sTitRel1 = "PAGAMENTO";
-				sCampoOrdem = "IT.DTPAGOITREC";
+				if ("S".equals( cbParPar.getVlrString()) ) {
+					sCampoOrdem = "L.DATALANCA";
+				} else {
+					sCampoOrdem = "IT.DTPAGOITREC";
+				}
 				sCampoTotal = "DTPAGOITREC";
 			}
 			else if (sOrdem.equals("E")) {
@@ -345,11 +349,27 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			}
 			
 			sSQL.append( "SELECT IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI," );
-			sSQL.append( "IT.VLRPARCITREC,IT.VLRPAGOITREC,IT.VLRAPAGITREC,IT.DTPAGOITREC,R.DOCREC,IT.OBSITREC," );
+			sSQL.append( "IT.VLRPARCITREC, ");
+			if ("S".equals( cbParPar.getVlrString()) ) {
+				sSQL.append( "COALESCE(L.VLRLANCA,IT.VLRPAGOITREC) VLRPAGOITREC, ");
+				sSQL.append( "COALESCE(L.DATALANCA,IT.DTPAGOITREC) DTPAGOITREC, ");
+			} else {
+				sSQL.append( "IT.VLRPAGOITREC, ");
+				sSQL.append( "IT.DTPAGOITREC, ");
+			}
+			sSQL.append( "IT.VLRAPAGITREC, ");
+			sSQL.append("R.DOCREC, IT.OBSITREC, " );
 			sSQL.append( "(SELECT V.STATUSVENDA FROM VDVENDA V " );
 			sSQL.append( "WHERE V.FLAG IN "+AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp ));
 			sSQL.append( " AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND V.CODVENDA=R.CODVENDA AND V.TIPOVENDA=R.TIPOVENDA) " );
-			sSQL.append( "FROM FNITRECEBER IT,FNRECEBER R,VDCLIENTE C" + sFrom );
+			sSQL.append( "FROM FNITRECEBER IT,VDCLIENTE C ");
+			sSQL.append( sFrom );
+			sSQL.append( ",FNRECEBER R ");
+			if ("S".equals( cbParPar.getVlrString()) ) { 
+				sSQL.append(" LEFT OUTER JOIN FNLANCA L ON ");
+				sSQL.append("L.CODEMPRC=IT.CODEMP AND L.CODFILIALRC=IT.CODFILIAL AND ");
+				sSQL.append("L.CODREC=IT.CODREC AND L.NPARCITREC=IT.NPARCITREC ");
+			}
 			sSQL.append( "WHERE R.FLAG IN "+ AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp ));
 			sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND "+sCampoOrdem+" BETWEEN ? AND ? " );
 			sSQL.append( "AND IT.STATUSITREC IN (?,?,?) AND R.CODREC = IT.CODREC " );
