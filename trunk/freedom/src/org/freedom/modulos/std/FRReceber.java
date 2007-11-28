@@ -362,9 +362,9 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			sSQL.append( "(SELECT V.STATUSVENDA FROM VDVENDA V " );
 			sSQL.append( "WHERE V.FLAG IN "+AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp ));
 			sSQL.append( " AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND V.CODVENDA=R.CODVENDA AND V.TIPOVENDA=R.TIPOVENDA) " );
-			sSQL.append( "FROM FNITRECEBER IT,VDCLIENTE C ");
+			sSQL.append( "FROM FNRECEBER R,VDCLIENTE C ");
 			sSQL.append( sFrom );
-			sSQL.append( ",FNRECEBER R ");
+			sSQL.append( ",FNITRECEBER IT ");
 			if ("S".equals( cbParPar.getVlrString()) ) { 
 				sSQL.append(" LEFT OUTER JOIN FNLANCA L ON ");
 				sSQL.append("L.CODEMPRC=IT.CODEMP AND L.CODFILIALRC=IT.CODFILIAL AND ");
