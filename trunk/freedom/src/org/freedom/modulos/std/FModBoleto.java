@@ -336,10 +336,12 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		Vector<String> vLabs3 = new Vector<String>();
 		vLabs3.addElement( "<--Selecione-->" );
 		vLabs3.addElement( "Limpa se campo vazio" );
+		vLabs3.addElement( "Eject" );
 
 		Vector<String> vVals3 = new Vector<String>();
 		vVals3.addElement( "" );
 		vVals3.addElement( "<LP><_LP>" );
+		vVals3.addElement( "<EJECT>");
 
 		cbAcao = new JComboBoxPad( vLabs3, vVals3, JComboBoxPad.TP_STRING, 10, 0 );
 	}
@@ -383,7 +385,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		panelPreImp.adic( cbCamposEspec, 240, 30, 115, 20 );
 		panelPreImp.adic( txtAdic, 360, 30, 100, 20 );
 		panelPreImp.adic( btAdic, 470, 20, 30, 30 );
-		panelPreImp.adic( new JLabelPad( "Açoes" ), 7, 50, 223, 20 );
+		panelPreImp.adic( new JLabelPad( "Ações" ), 7, 50, 223, 20 );
 		panelPreImp.adic( cbAcao, 7, 70, 223, 20 );
 		panelPreImp.setPreferredSize( new Dimension( 750, 110 ) );
 		
