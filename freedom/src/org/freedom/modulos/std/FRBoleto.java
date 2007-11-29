@@ -493,6 +493,7 @@ public class FRBoleto extends FRelatorio {
 
 			sRet = sRet.replaceAll( "\\<LP\\>.*].*\\<_LP\\>", "" );
 			sRet = sRet.replaceAll( "\\<[_]*LP\\>", "" );
+			sRet = sRet.replaceAll( "\\<EJECT\\>", ""+((char)12)+((char)13) ); 
 
 			// Tirando campos não setados:
 
