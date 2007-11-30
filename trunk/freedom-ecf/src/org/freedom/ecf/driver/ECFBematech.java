@@ -1626,14 +1626,28 @@ public class ECFBematech extends AbstractECFDriver {
 	}
 
 	/**
+	 * Função para impressão de cheques.<br>
 	 * <br>
+	 * 
+	 * @param valor
+	 *            valor do cheque.
+	 * @param favorecido
+	 *            favorecido pelo cheque.
+	 * @param localidade
+	 *            praça do cheque
+	 * @param dia
+	 *            dia para composição da data.
+	 * @param mes
+	 *            mês para composição da data.
+	 * @param ano
+	 *            ano para composição da data.
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int imprimeCheque( final float valor, final String favorecido, final String localidade, final int dia , final int mes, final int ano ) {
+	public int imprimeCheque( final float valor, final String favorecido, final String localidade, final int dia, final int mes, final int ano ) {
 
 		byte[] CMD = { ESC, 57 };
-		
+
 		final StringBuffer buf = new StringBuffer();
 
 		buf.append( parseParam( valor, 14, 2 ) );
@@ -1641,15 +1655,14 @@ public class ECFBematech extends AbstractECFDriver {
 		buf.append( parseParam( localidade, 27, false ) );
 		buf.append( parseParam( dia, 2 ) );
 		buf.append( parseParam( mes, 2 ) );
-		buf.append( parseParam( ano, 4 ) );	
+		buf.append( parseParam( ano, 4 ) );
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
-		
+
 		final byte[] posicoes = { 55, 10, 1, 6, 18, 50, 54, 71, 2, 5, 8, 10, 12, 0 };
 
 		CMD = adicBytes( CMD, posicoes );
 
-		
 		return executaCmd( CMD, 3 );
 	}
 
