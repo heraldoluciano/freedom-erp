@@ -139,18 +139,18 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		Vector<String> vLabsCtb = new Vector<String>();
 		Vector<String> vValsCtb = new Vector<String>();
 		vLabsCtb.addElement( "<--Selecione-->" );
-		vLabsCtb.addElement( "Etiquetas normal" );
-		vLabsCtb.addElement( "Etiquetas teste" );
+		vLabsCtb.addElement( "Pimanco 6280" );
 		vLabsCtb.addElement( "Etiquetas 01" );
 		vLabsCtb.addElement( "Etiquetas 02" );
 		vLabsCtb.addElement( "Etiquetas 03" );
+		vLabsCtb.addElement( "Etiquetas 04" );
 		
 		vValsCtb.addElement( "00" );
+		vValsCtb.addElement( "6280" );
 		vValsCtb.addElement( "01" );
 		vValsCtb.addElement( "02" );
 		vValsCtb.addElement( "03" );
 		vValsCtb.addElement( "04" );
-		vValsCtb.addElement( "05" );
 		
 	
 		cbEtiquetas = new JComboBoxPad( vLabsCtb, vValsCtb, JComboBoxPad.TP_STRING, 2, 0 );
@@ -473,6 +473,24 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 		return buffer;
 	}
+	
+	private String getTpEtiquetas(){
+		
+		String retorno = "";
+		
+		if( "00".equals( cbEtiquetas.getVlrString() )){
+		
+			Funcoes.mensagemInforma( this, "Selecione um modelo de etiqueta!" ); 
+		}
+		
+		else if("6280".equals( cbEtiquetas.getVlrString())){
+			
+			retorno = "relatorios/Pimanco6280.jasper";
+		}
+		
+		return retorno;
+		
+	}
 
 	public void imprimir( boolean bVisualizar ) {
 		
@@ -484,7 +502,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 				if ( bVisualizar ) {
 
 					FPrinterJob dlGr = null;
-					dlGr = new FPrinterJob( "relatorios/FRCodBarProd.jasper", "Etiquetas", null, getEtiquetas(), null, this );
+					dlGr = new FPrinterJob( getTpEtiquetas() , "Etiquetas", null, getEtiquetas(), null, this );
 					dlGr.setVisible( true );
 				}
 				// impressão.
@@ -493,7 +511,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 					if ( true ) {
 						try {
 							FPrinterJob dlGr = null;
-							dlGr = new FPrinterJob( "relatorios/FRCodBarProd.jasper", "Etiquetas", null, getEtiquetas(), null, this );
+							dlGr = new FPrinterJob( getTpEtiquetas(), "Etiquetas", null, getEtiquetas(), null, this );
 							JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 						} catch ( Exception err ) {
 							Funcoes.mensagemErro( this, "Erro na impressão de Etiquetas!" + err.getMessage(), true, con, err );
