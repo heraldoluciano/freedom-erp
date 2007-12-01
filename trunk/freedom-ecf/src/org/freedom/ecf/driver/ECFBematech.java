@@ -218,7 +218,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * Auxilia o metodo checkRetorno.<BR>
 	 * 
 	 * @param ST1
-	 * @return
+	 * @return retorno checado
 	 */
 	private int checkST1( final byte ST1 ) {
 
@@ -258,7 +258,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * Auxilia o metodo checkRetorno.<BR>
 	 * 
 	 * @param ST2
-	 * @return
+	 * @return retorno checado
 	 */
 	private int checkST2( final byte ST2 ) {
 
