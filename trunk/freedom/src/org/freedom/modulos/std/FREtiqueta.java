@@ -73,6 +73,10 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 	private JTextFieldPad txtCodTipo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipo = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtUfCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0);
+	
+	private JTextFieldPad txtCidadeCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0);
 
 	private ListaCampos lcModEtiq = new ListaCampos( this );
 
@@ -209,6 +213,12 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 
 		pinCab.adic( new JLabelPad( "Status" ), 370, 5, 100, 20 );
 		pinCab.adic( cbAtivoCli, 370, 25, 135, 25 );
+		
+		pinCab.adic( new JLabelPad("Cidade do Cliente"), 370, 85, 100, 20 );
+		pinCab.adic( txtCidadeCli, 370, 105, 100, 20 );
+		
+		pinCab.adic( new JLabelPad("UF do cliente"), 370, 125, 100, 20 );
+		pinCab.adic( txtUfCli, 370, 145, 100, 20 );
 
 		pinCab.adic( new JLabelPad( "Cód.tp.cli." ), 7, 45, 280, 20 );
 		pinCab.adic( txtCodTipo, 7, 65, 80, 20 );
@@ -411,7 +421,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 	}
 
 	private String montaQuery( String sTabela ) {
-
+		
 		String sSQL = "";
 		try {
 			String sCampos = "";
@@ -431,6 +441,12 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 				}
 				if ( !txtCodCli.getVlrString().equals( "" ) ) {
 					sWhere += " AND CODCLI=" + txtCodCli.getVlrInteger().intValue();
+				}
+				if( !txtCidadeCli.getVlrString().equals( "" ) ){
+					sWhere += " AND CIDCLI=" + "'" + txtCidadeCli.getVlrString().trim() + "'";
+				}
+				if (!txtUfCli.getVlrString().equals( "" )){
+					sWhere += " AND UFCLI=" + "'" + txtUfCli.getVlrString().trim() + "'";
 				}
 				if ( cbAtivoCli.getVlrString() != null ) {
 					if ( cbAtivoCli.getVlrString().equals( "Ativos" ) )
