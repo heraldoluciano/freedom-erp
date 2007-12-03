@@ -3,17 +3,17 @@
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
 		 name="FRCodBarProd"
-		 columnCount="4"
+		 columnCount="3"
 		 printOrder="Vertical"
 		 orientation="Portrait"
-		 pageWidth="595"
-		 pageHeight="842"
-		 columnWidth="133"
+		 pageWidth="612"
+		 pageHeight="792"
+		 columnWidth="189"
 		 columnSpacing="0"
-		 leftMargin="30"
-		 rightMargin="30"
-		 topMargin="20"
-		 bottomMargin="20"
+		 leftMargin="22"
+		 rightMargin="22"
+		 topMargin="35"
+		 bottomMargin="35"
 		 whenNoDataType="NoPages"
 		 isTitleNewPage="false"
 		 isSummaryNewPage="false">
@@ -23,18 +23,16 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<queryString><![CDATA[SELECT E.CODPROD, P.DESCPROD, P.CODBARPROD, P.PRECOBASEPROD
-FROM EQETIQPROD E, EQPRODUTO P
-WHERE E.NRCONEXAO=84 AND
-P.CODEMP=E.CODEMP AND P.CODFILIAL=E.CODFILIAL AND P.CODPROD=E.CODPROD]]></queryString>
+	<queryString><![CDATA[SELECT P.CODPROD, P.PRECOBASEPROD, P.CODBARPROD, P.DESCPROD FROM EQPRODUTO P
+WHERE P.CODMARCA='1']]></queryString>
 
 	<field name="CODPROD" class="java.lang.Long"/>
-	<field name="DESCPROD" class="java.lang.String"/>
-	<field name="CODBARPROD" class="java.lang.String"/>
 	<field name="PRECOBASEPROD" class="java.math.BigDecimal"/>
+	<field name="CODBARPROD" class="java.lang.String"/>
+	<field name="DESCPROD" class="java.lang.String"/>
 
 		<background>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="1"  isSplitAllowed="true" >
 			</band>
 		</background>
 		<title>
@@ -50,12 +48,12 @@ P.CODEMP=E.CODEMP AND P.CODFILIAL=E.CODFILIAL AND P.CODPROD=E.CODPROD]]></queryS
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="100"  isSplitAllowed="true" >
+			<band height="72"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="2"
-						y="52"
-						width="125"
+						x="11"
+						y="42"
+						width="151"
 						height="11"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -66,9 +64,9 @@ P.CODEMP=E.CODEMP AND P.CODFILIAL=E.CODFILIAL AND P.CODPROD=E.CODPROD]]></queryS
 				</textField>
 				<staticText>
 					<reportElement
-						x="2"
-						y="65"
-						width="26"
+						x="10"
+						y="56"
+						width="31"
 						height="11"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -79,9 +77,9 @@ P.CODEMP=E.CODEMP AND P.CODFILIAL=E.CODFILIAL AND P.CODPROD=E.CODPROD]]></queryS
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="31"
-						y="65"
-						width="96"
+						x="44"
+						y="56"
+						width="117"
 						height="11"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -93,10 +91,10 @@ P.CODEMP=E.CODEMP AND P.CODFILIAL=E.CODFILIAL AND P.CODPROD=E.CODPROD]]></queryS
 				<image  scaleImage="RetainShape" vAlign="Top" hAlign="Left" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="2"
-						y="2"
-						width="126"
-						height="48"
+						x="10"
+						y="8"
+						width="151"
+						height="32"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="barcode-1"/>
