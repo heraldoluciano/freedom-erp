@@ -139,7 +139,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		Vector<String> vLabsCtb = new Vector<String>();
 		Vector<String> vValsCtb = new Vector<String>();
 		vLabsCtb.addElement( "<--Selecione-->" );
-		vLabsCtb.addElement( "Pimanco 6280" );
+		vLabsCtb.addElement( "Pimaco 6280" );
 		vLabsCtb.addElement( "Etiquetas 01" );
 		vLabsCtb.addElement( "Etiquetas 02" );
 		vLabsCtb.addElement( "Etiquetas 03" );
