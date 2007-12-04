@@ -483,12 +483,13 @@ public abstract class FVD extends FDetalhe {
 						ps2.setInt( 7, iParans[ 12 ] );// código da PK
 						ps2.setInt( 8, vCodItem.elementAt( i ).intValue() );// código do item
 						ps2.executeUpdate();
+						ps2.close();
 					}
 				}
 
 				calcVlrItem( null, false );
 
-				ps2.close();
+				
 
 				if ( !con.getAutoCommit() ) {
 					con.commit();
