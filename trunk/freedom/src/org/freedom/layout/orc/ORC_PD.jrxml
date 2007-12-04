@@ -40,7 +40,7 @@
 	</parameter>
 	<queryString><![CDATA[SELECT O.CODCLI, O.OBSORC, O.PRAZOENTORC, O.PRAZOENTORC, C.CIDCLI, C.ENDCLI,
 C.FONECLI, C.BAIRCLI, C.UFCLI, DDDCLI, C.NUMCLI, C.RAZCLI, O.CODORC, O.DTORC, 
-O.DTVENCORC, PP.DESCPLANOPAG, E.RAZEMP,C.CONTCLI, P1.USANOMEVENDORC, 
+O.DTVENCORC, PP.DESCPLANOPAG, E.RAZEMP,C.CONTCLI, P1.USANOMEVENDORC, C.CNPJCLI,
 (CASE WHEN P1.USANOMEVENDORC='S' THEN V.NOMEVEND ELSE E.RAZEMP END) NOMEASS,
 (CASE WHEN P1.USAIMGASSORC='S' THEN COALESCE(V.IMGASSVEND,P1.IMGASSORC) END) IMGASS,
 CV.CODCONV, CV.NOMECONV, O.CODTPCONV, TC.DESCTPCONV
@@ -74,8 +74,9 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 	<field name="RAZEMP" class="java.lang.String"/>
 	<field name="CONTCLI" class="java.lang.String"/>
 	<field name="USANOMEVENDORC" class="java.lang.String"/>
+	<field name="CNPJCLI" class="java.lang.String"/>
 	<field name="NOMEASS" class="java.lang.String"/>
-	<field name="IMGASS" class="java.io.InputStream"/>
+	<field name="IMGASS" class="java.sql.Blob"/>
 	<field name="CODCONV" class="java.lang.Long"/>
 	<field name="NOMECONV" class="java.lang.String"/>
 	<field name="CODTPCONV" class="java.lang.Long"/>
@@ -586,6 +587,32 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 + ($F{NOMECONV}!=null?$F{NOMECONV}.trim():"") 
 + ($F{CODTPCONV}!=null ? " / Tipo: " + String.valueOf($F{CODTPCONV}) + " - " : "")
 + ($F{DESCTPCONV}!=null ?  $F{DESCTPCONV}.trim() : "")]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="361"
+						y="67"
+						width="30"
+						height="12"
+						key="staticText-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<text><![CDATA[CNPJ:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="394"
+						y="68"
+						width="94"
+						height="11"
+						key="textField-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CNPJCLI}.substring(0,2) + "." + $F{CNPJCLI}.substring(2,5) + "." + $F{CNPJCLI}.substring(5,8)+"/"+ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12,14)]]></textFieldExpression>
 				</textField>
 			</band>
 		</columnHeader>
