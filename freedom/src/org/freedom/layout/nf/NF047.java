@@ -61,7 +61,7 @@ public class NF047 extends Layout {
 		String[] sVencs = new String[ 9 ];
 		String[] sVals = new String[ 9 ];
 		String[] sDuplics = new String[ 9 ];
-		Vector<?> vObsVenda = new Vector<Object>();
+		Vector<String> vObsVenda = new Vector<String>();
 		Vector<String> vClfisc = new Vector<String>();
 		Vector<String> vSigla = new Vector<String>();
 		Vector<?> vDescServ = new Vector<Object>();
@@ -352,6 +352,7 @@ public class NF047 extends Layout {
 					// Imprime observação e classificações fiscais
 
 					vObsVenda = Funcoes.strToVectorSilabas( ( sDescFisc.length() > 0 ? sDescFisc + "\n" : "" ) + sObsVenda, 100 );
+					vObsVenda.addElement( "PRAZO DE PAGAMENTO: "+cab.getString( NF.C_DESCPLANOPAG ) );
 
 					sizeObs = vSigla.size();
 					sizeObs = vObsVenda.size() > sizeObs ? vObsVenda.size() : sizeObs;
