@@ -42,57 +42,58 @@
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
-	<queryString><![CDATA[SELECT C.CODCLI CODEMIT, C.RAZCLI RAZEMIT, CAST( '2007-1-1' AS DATE) DATA, 'A' TIPO,
+	<queryString><![CDATA[SELECT C.CODCLI CODEMIT, C.RAZCLI RAZEMIT, CAST( '2007-12-1' AS DATE) DATA, 'A' TIPO,
 0 DOC, (COALESCE( ( SELECT SUM(R.VLRREC) FROM FNRECEBER R WHERE
 R.CODEMP=25 AND R.CODFILIAL=1 AND R.CODEMPCL=C.CODEMP AND
-R.CODFILIALCL=C.CODFILIAL AND R.CODCLI=C.CODCLI AND R.DATAREC < '2007-01-01' ),0) +
+R.CODFILIALCL=C.CODFILIAL AND R.CODCLI=C.CODCLI AND R.DATAREC < '2007-12-01' ),0) +
 COALESCE( ( SELECT SUM(L.VLRLANCA) FROM FNLANCA L, FNRECEBER R WHERE L.CODEMPRC=R.CODEMP AND
 L.CODFILIALRC=R.CODFILIAL AND L.CODREC=R.CODREC AND
 R.CODEMPCL=C.CODEMP AND R.CODFILIALCL=R.CODFILIAL AND
-R.CODCLI=R.CODCLI AND R.CODEMP=25 AND R.CODFILIAL=1 AND L.DATALANCA < '2007-01-01' ), 0) ) VALOR
+R.CODCLI=R.CODCLI AND R.CODEMP=25 AND R.CODFILIAL=1 AND L.DATALANCA < '2007-12-01' ), 0) ) VLRDEB, cast(0.00 as decimal(15,5)) VLRCRED 
 FROM VDCLIENTE C WHERE C.CODEMP=25 AND C.CODFILIAL=1 AND C.CODCLI=28 AND
 ( EXISTS (SELECT * FROM FNRECEBER R2 WHERE R2.CODEMP=25 AND R2.CODFILIAL=1 AND
 R2.CODEMPCL=C.CODEMP AND R2.CODFILIALCL=C.CODFILIAL AND R2.CODCLI=C.CODCLI AND
 DATAREC BETWEEN '2007-01-01' AND '2007-12-01' )OR EXISTS (SELECT * FROM FNLANCA L2, FNRECEBER R2
 WHERE L2.CODEMPRC=R2.CODEMP AND L2.CODFILIALRC=R2.CODFILIAL AND
 L2.CODREC=R2.CODREC AND C.CODEMP=R2.CODEMPCL AND C.CODFILIAL=R2.CODFILIALCL AND
-C.CODCLI=R2.CODCLI AND R2.CODEMP=25 AND R2.CODFILIAL=1 AND L2.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01') )
+C.CODCLI=R2.CODCLI AND R2.CODEMP=25 AND R2.CODFILIAL=1 AND L2.DATALANCA BETWEEN '2007-12-01' AND '2007-12-01') )
 UNION SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, R.DATAREC DATA, 'Q' TIPO, R.DOCREC DOC,
-R.VLRREC VALOR FROM FNRECEBER R, VDCLIENTE C WHERE C.CODEMP=R.CODEMPCL AND
+R.VLRPARCREC VLRDEB, (R.VLRPARCREC-R.VLRREC) VLRCRED FROM FNRECEBER R, VDCLIENTE C WHERE C.CODEMP=R.CODEMPCL AND
 C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND R.CODEMP=25 AND
-R.CODFILIAL=1 AND C.CODCLI=28 AND R.DATAREC BETWEEN '2007-01-01' AND '2007-12-01'
+R.CODFILIAL=1 AND C.CODCLI=28 AND R.DATAREC BETWEEN '2007-12-01' AND '2007-12-01'
 UNION SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, L.DATALANCA DATA,
-'R' TIPO, R.DOCREC DOC, L.VLRLANCA FROM FNLANCA L, FNRECEBER R, VDCLIENTE C
+'R' TIPO, R.DOCREC DOC, cast(0.00 as decimal(15,5)) VLRDEB, L.VLRLANCA VLRCRED FROM FNLANCA L, FNRECEBER R, VDCLIENTE C
 WHERE L.CODEMPRC=R.CODEMP AND L.CODFILIALRC=R.CODFILIAL AND
-L.CODREC=R.CODREC AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND
+L.CODREC=R.CODREC AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND 
 C.CODCLI=R.CODCLI AND C.CODCLI=28 AND R.CODEMP=25 AND R.CODFILIAL=1 AND
-L.DATALANCA BETWEEN '2007-01-01' AND '2007-12-01' ORDER BY 1, 2, 3, 4, 5]]></queryString>
+L.DATALANCA BETWEEN '2007-12-01' AND '2007-12-01' ORDER BY 1, 2, 3, 4, 5]]></queryString>
 
 	<field name="CODEMIT" class="java.lang.Long"/>
 	<field name="RAZEMIT" class="java.lang.String"/>
 	<field name="DATA" class="java.sql.Date"/>
 	<field name="TIPO" class="java.lang.String"/>
 	<field name="DOC" class="java.lang.Long"/>
-	<field name="VALOR" class="java.math.BigDecimal"/>
+	<field name="VLRDEB" class="java.math.BigDecimal"/>
+	<field name="VLRCRED" class="java.math.BigDecimal"/>
 
 	<variable name="DESCTIPO" class="java.lang.String" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[("A".equals($F{TIPO})?"SALDO INICIAL":("Q".equals($F{TIPO})?"VENDA":"RECEBIMENTO"))]]></variableExpression>
 	</variable>
 	<variable name="SALDOFOR" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
-		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRDEB}.add($F{VLRCRED})]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="SALDOGERAL" class="java.math.BigDecimal" resetType="Group" resetGroup="GERAL" calculation="Sum">
-		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRDEB}.add($F{VLRCRED})]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="VLRDEBITO" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[$F{TIPO}.equals( "Q" ) ? $F{VALOR} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{TIPO}.equals( "A" ) ?  new BigDecimal(0) : $F{VLRDEB}]]></variableExpression>
 		<initialValueExpression><![CDATA[
 ]]></initialValueExpression>
 	</variable>
 	<variable name="VLRCREDITO" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA["R".indexOf($F{TIPO})>-1 ? $F{VALOR} : new BigDecimal(0) ]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRCRED}]]></variableExpression>
 	</variable>
 	<variable name="TOTALCREDITOFOR" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
 		<variableExpression><![CDATA[$V{VLRCREDITO}]]></variableExpression>
