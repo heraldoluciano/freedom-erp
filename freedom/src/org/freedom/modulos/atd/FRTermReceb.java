@@ -22,13 +22,23 @@
 package org.freedom.modulos.atd;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import javax.crypto.spec.PSource;
+
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 
@@ -50,15 +60,6 @@ public class FRTermReceb extends FRelatorio {
 	
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
-	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
-	
-	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
-	private JTextFieldPad txtCodItOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	
-	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
-	
-	private JTextFieldPad txtCodBarras = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	public FRTermReceb(){
 		
@@ -94,14 +95,54 @@ public class FRTermReceb extends FRelatorio {
 		lcOrc.add( new GuardaCampo( txtDtVencOrc, "DtVencOrc", "Dt.vencto.", ListaCampos.DB_SI, false ) );
 		lcOrc.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_SI, false ) );
 		lcOrc.montaSql( false, "ORCAMENTO", "VD" );
-		lcOrc.setQueryCommit( false );
+//		lcOrc.setQueryCommit( true );
 		lcOrc.setReadOnly( true );
 		txtCodOrc.setTabelaExterna(lcOrc);
-		txtCodProd.setAtivo( false );
+		txtCodOrc.setFK( true );
+		txtCodOrc.setNomeCampo( "CODORC" );
 		
 	}
 	@ Override
 	public void imprimir( boolean b ) {
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		StringBuffer sql = new StringBuffer();
+		if (txtCodOrc.getVlrInteger()==0) {
+			Funcoes.mensagemInforma( this, "Selecione um orçamento!" );
+			return;
+		}
+		
+		sql.append( "SELECT O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV ");
+		sql.append( "FROM VDORCAMENTO O, VDITORCAMENTO IO, ATCONVENIADO CV ");
+		sql.append( "WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODORC=? AND "); 
+		sql.append( "IO.CODEMP=O.CODEMP AND IO.CODFILIAL=O.CODFILIAL AND "); 
+		sql.append( "IO.CODORC=O.CODORC AND IO.SITENTITORC='N' AND ");
+		sql.append( "IO.SITTERMRITORC='E' AND CV.CODEMP=O.CODEMPCV AND "); 
+		sql.append( "CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV" );
+		
+		try {
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ));
+			ps.setInt( 3, txtCodOrc.getVlrInteger());
+			rs = ps.executeQuery();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Ocorreu um erro executando a consulta.\n"+e.getMessage() );
+			return;
+		}
+		
+		FPrinterJob dlGr = new FPrinterJob( "relatorios/TermReceb.jasper", "TERMO DE RECEBIMENTO", null, rs, null, this );
+
+		if ( b ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por cliente!" + err.getMessage(), true, con, err );
+			}
+		}
 
 		
 	}
