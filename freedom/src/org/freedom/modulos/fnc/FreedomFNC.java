@@ -100,6 +100,7 @@ public class FreedomFNC extends AplicativoPD {
 					addOpcao( 100109000, TP_OPCAO_ITEM, "Códigos de retorno", "Códigos de retorno", 'C', 100109010, 3, true, FCodRetorno.class );
 					addOpcao( 100109000, TP_OPCAO_ITEM, "Manutenção de clientes", "Manutenção de clientes", 'M', 100109020, 3, true, FManutCli.class );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'F', 100200000, 1, false, null );
+					addOpcao( 100200000, TP_OPCAO_ITEM, "Transf. lançtos. entre categorias", "Transf. lançtos. entre categorias", 'F', 100200010, 1, true, FTrnsLancCat.class );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100300000, 1, false, null );
 				addOpcao( 100300000, TP_OPCAO_ITEM, "Preferências gerais", "Preferência Gerais", 'G', 100310000, 2, true, FPrefereFNC.class );
 				addOpcao( 100300000, TP_OPCAO_ITEM, "Preferências febraban", "Preferência Febraban", 'F', 100310000, 2, true, FPrefereFBB.class );
@@ -176,7 +177,7 @@ public class FreedomFNC extends AplicativoPD {
 		vEquipeSis.add( "Alexandre Marcondes - Programação" );
 		vEquipeSis.add( "Fernando Oliveira - Programação" );
 		vEquipeSis.add( "Moyzes Braz - Arte gráfica" );
-		vEquipeSis.add( "Reginaldo Garcia - Testes / Suporte" );
+		vEquipeSis.add( "Reginaldo Garcia - Programação / Suporte" );
 
 	}
 
