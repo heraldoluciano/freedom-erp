@@ -29,7 +29,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
 
-import javax.swing.JButton;
+
 import javax.swing.JOptionPane;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -40,7 +40,6 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
-import org.freedom.bmps.Icone;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
