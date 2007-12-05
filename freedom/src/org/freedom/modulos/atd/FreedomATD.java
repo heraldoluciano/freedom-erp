@@ -83,6 +83,7 @@ public class FreedomATD extends AplicativoPD implements ActionListener {
 		addOpcao(1200000000, TP_OPCAO_ITEM, "Pesquisa Orçamentos", "Pesquisa Orcamentos", 'P', 120200000, 1, true, FConsOrc.class);
 		addOpcao(1200000000, TP_OPCAO_ITEM, "Aprova Orçamentos", "Aprova Orcamento", 'A', 120300000, 1, true, FAprovaOrc.class);
 		addOpcao(1200000000, TP_OPCAO_ITEM, "Pesquisa Autorizações", "Pesquisa Autorização", 'e', 120400000, 1, true, FConsAutoriz.class);
+		addOpcao(1200000000, TP_OPCAO_ITEM, "Termo de Recebimento", "Termo de Recebimento", 'e', 120500000, 1, true, FRTermReceb.class);
 
 		addBotao("btAtendimento.gif", "Atendimento", "Atendimento", 110100000, FAtendimento.class);
 		addBotao("btOrcamento.gif", "Orçamento", "Orcamento", 120100000, FOrcamento.class);			
@@ -102,7 +103,7 @@ public class FreedomATD extends AplicativoPD implements ActionListener {
 		vEquipeSis.add("Alexandre Marcondes - Programação");
 		vEquipeSis.add("Fernando Oliveira - Programação");
 		vEquipeSis.add("Moyzes Braz - Arte gráfica");
-		vEquipeSis.add("Reginaldo Garcia - Testes / Suporte");		
+		vEquipeSis.add("Reginaldo Garcia - Programação / Suporte");		
 		
 	}
 
