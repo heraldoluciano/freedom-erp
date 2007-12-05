@@ -21,13 +21,18 @@
  */
 
 package org.freedom.modulos.std;
+import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
@@ -35,12 +40,14 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
+import org.freedom.telas.FPrinterJob;
 
 
 public class FTransp extends FDados implements PostListener,RadioGroupListener,InsertListener {
@@ -69,6 +76,7 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener,I
   private Vector<String> vTipoTransp = new Vector<String>();
   private Vector<String> vTipoTranspVal = new Vector<String>();
   private JRadioGroup<?, ?> rgTipoTransp =null ;
+  
   public FTransp () {
   	super();
     setTitulo("Cadastro de Tranportadoras");
@@ -117,9 +125,12 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener,I
     lcCampos.setQueryInsert(false);
     
 	rgTipoTransp.addRadioGroupListener(this);
+	btPrevimp.addActionListener( this );
 
     
-        
+	setImprimir( true );
+    
+  
   }  
   public void beforePost(PostEvent pevt) {
     if ( ("".equals( txtCnpjTran.getVlrString().trim())) && ("".equals( txtCpfTran.getVlrString().trim() ) ) ) {
@@ -195,6 +206,80 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener,I
 	}
 	public void beforeInsert(InsertEvent ievt) {
 
+	}
+	/* (non-Javadoc)
+	 * @see org.freedom.telas.FDados#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	
+	public void imprimir( boolean bVisualizar ) {
+		
+		StringBuilder sSQL = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sCab = "";
+		DLTranspFor dl = new DLTranspFor();
+		
+		sSQL.append( "SELECT T.CODTRAN, T.NOMETRAN, T.ENDTRAN, T.CIDTRAN, T.NUMTRAN, " );
+		sSQL.append( "T.BAIRTRAN, T.DDDFONETRAN, T.FONETRAN, T.FAXTRAN, T.CEPTRAN, ");
+		sSQL.append( "T.CONTTRAN,  T.CNPJTRAN, T.UFTRAN, T.CPFTRAN, T.TIPOTRAN FROM VDTRANSP T ORDER BY " + dl.getValor());
+		
+		try {
+			
+			dl.setVisible( true );
+			if ( dl.OK == false ) {
+				dl.dispose();
+				return;
+			}
+			
+			ps = con.prepareStatement( sSQL.toString() );
+			rs = ps.executeQuery();
+			
+	
+			dl.dispose();
+			
+			imprimeGrafico( rs, bVisualizar, sCab );
+			
+		}catch( SQLException e ){
+			
+			Funcoes.mensagemErro( this, "Erro ao buscar dados !\n" + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public void imprimeGrafico( final ResultSet rs, final boolean bVisualizar, final String sCab ){
+		
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+//		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDVENDA" ));
+		hParam.put( "FILTROS", sCab );
+		
+		FPrinterJob dlGr = new FPrinterJob( "relatorios/FRTrans.jasper", "Transportadoras", null, rs, hParam, this );
+		
+		if ( bVisualizar ) {
+			
+			dlGr.setVisible( true );
+		
+		}
+		else {		
+			try {				
+			
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );				
+			
+			} catch ( Exception err ) {					
+			
+					Funcoes.mensagemErro( this, "Erro na impressão do relatório de Transportadoras!\n" + err.getMessage(), true, con, err );
+			}
+		}
+	}
+	@ Override
+	public void actionPerformed( ActionEvent evt ) {
+
+		if( evt.getSource() == btPrevimp ){
+			
+			imprimir( true ) ;
+		}
+		super.actionPerformed(evt);
 	}
 }	  
    	  
