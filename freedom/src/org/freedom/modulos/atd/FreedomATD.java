@@ -64,7 +64,7 @@ public class FreedomATD extends AplicativoPD implements ActionListener {
 		addOpcao(100100000, TP_OPCAO_ITEM, "Clientes", "Clientes", 'l', 100104000, 2, true, FCliente.class);
 		addSeparador(100100000);
 		addOpcao(100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100200000, 1, false, null);
-		addOpcao(100200000, TP_OPCAO_ITEM, "Preferências Gerais", "Pref. Gerais", 'P', 100201000, 2, true, FPrefereAtend.class);
+		addOpcao(100200000, TP_OPCAO_ITEM, "Preferências Gerais", "Preferências Gerais", 'P', 100201000, 2, true, FPrefereAtend.class);
 		addSeparador(100300000);
 		addOpcao(100000000, TP_OPCAO_MENU, "Ferramentas", "", 'F', 100400000, 1, false, null);
 		addOpcao(100400000, TP_OPCAO_MENU, "Ajustes", "", 'A', 100401000, 1, false, null);
