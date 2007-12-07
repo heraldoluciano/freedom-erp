@@ -26,7 +26,10 @@ package org.freedom.modulos.atd;
 
 import java.sql.Connection;
 
+import javax.swing.JScrollPane;
+
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -44,6 +47,8 @@ public class FPrefereAtend extends FTabDados {
 	private JPanelPad pinSetor = null;
 
 	private JPanelPad pinConv = null;
+	
+	private JPanelPad pinTermRec = null;
 
 	private JPanelPad pinOrc = null;
 
@@ -122,6 +127,15 @@ public class FPrefereAtend extends FTabDados {
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextAreaPad txaCabTerm01 = new JTextAreaPad();
+	
+	private JTextAreaPad txaCabTerm02 = new JTextAreaPad();
+	
+	private JTextAreaPad txaRodTermR = new JTextAreaPad();
+	
+	//private JScrollPane spnObs = new JScrollPane( txaObs )
+	
 
 	private ListaCampos lcTabITAV = new ListaCampos( this, "TV" );
 
@@ -131,7 +145,7 @@ public class FPrefereAtend extends FTabDados {
 
 		super();
 		setTitulo( "Preferências do Atendimento" );
-		setAtribos( 50, 50, 355, 375 );
+		setAtribos( 50, 50, 400, 395 );
 
 		lcCampos.setMensInserir( false );
 
@@ -290,6 +304,17 @@ public class FPrefereAtend extends FTabDados {
 		adicDescFK( txtDescITTBV, 90, 150, 230, 20, "DescITTB", "Descrição da situação para aceite." );
 		adicCampo( txtCodVend, 7, 195, 80, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtNomeVend, true );
 		adicDescFK( txtNomeVend, 90, 195, 230, 20, "NomeVend", "Nome do comissionado padrão" );
+		
+		// Termo de recebimento
+		
+		pinTermRec = new JPanelPad( 330, 350 );
+		setPainel( pinTermRec );
+		adicTab( "Termo de Recebimento", pinTermRec );
+		
+		adicDBLiv( txaCabTerm01,7, 25, 300, 70, "CabTermR01", "Cabterm 01", false );
+		adicDBLiv( txaCabTerm02,7, 115, 300, 70, "CabTermR02", "Cabterm 02", false );
+		adicDBLiv( txaRodTermR,7, 205, 300, 70 ,"RodTermR", "Rodapé ", false );
+		
 
 		setListaCampos( false, "PREFERE2", "SG" );
 
