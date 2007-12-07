@@ -128,9 +128,9 @@ public class FPrefereAtend extends FTabDados {
 
 	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private JTextAreaPad txaCabTerm01 = new JTextAreaPad();
+	private JTextAreaPad txaCabTermR01 = new JTextAreaPad();
 	
-	private JTextAreaPad txaCabTerm02 = new JTextAreaPad();
+	private JTextAreaPad txaCabTermR02 = new JTextAreaPad();
 	
 	private JTextAreaPad txaRodTermR = new JTextAreaPad();
 	
@@ -311,8 +311,8 @@ public class FPrefereAtend extends FTabDados {
 		setPainel( pinTermRec );
 		adicTab( "Termo de Recebimento", pinTermRec );
 		
-		adicDBLiv( txaCabTerm01,7, 25, 300, 70, "CabTermR01", "Cabterm 01", false );
-		adicDBLiv( txaCabTerm02,7, 115, 300, 70, "CabTermR02", "Cabterm 02", false );
+		adicDBLiv( txaCabTermR01,7, 25, 300, 70, "CabTermR01", "Cabterm 01", false );
+		adicDBLiv( txaCabTermR02,7, 115, 300, 70, "CabTermR02", "Cabterm 02", false );
 		adicDBLiv( txaRodTermR,7, 205, 300, 70 ,"RodTermR", "Rodapé ", false );
 		
 
