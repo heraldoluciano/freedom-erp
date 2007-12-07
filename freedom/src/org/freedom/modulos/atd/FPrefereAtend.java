@@ -305,7 +305,7 @@ public class FPrefereAtend extends FTabDados {
 		adicCampo( txtCodVend, 7, 195, 80, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtNomeVend, true );
 		adicDescFK( txtNomeVend, 90, 195, 230, 20, "NomeVend", "Nome do comissionado padrão" );
 		
-		// Termo de recebimento
+		// Termos de recebimentos
 		
 		pinTermRec = new JPanelPad( 330, 350 );
 		setPainel( pinTermRec );
