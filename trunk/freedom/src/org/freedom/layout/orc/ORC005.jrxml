@@ -38,7 +38,7 @@
 	<queryString><![CDATA[SELECT FL.RAZFILIAL,
 ATC.NOMECONV, ATC.CNSCONV, ATC.IDENTIFICCONV, ATC.DTNASCCONV, ATC.sexoconv, ATC.maeconv, ATC.foneconv,ATC.DDDCONV,
 ATC.endconv,ATC.numconv, ATC.bairconv,ATC.cidconv,ATC.ufconv,ATC.cepconv,
-VEND.nomevend,VEND.cpfvend,P.DESCPROD,P.CODBARPROD,IT.QTDITORC,orc.dtorc,ATC.CODCONV,ATC.CPFCONV,ORC.TXT01  
+VEND.nomevend,VEND.cpfvend,P.DESCPROD,P.CODFABPROD,IT.QTDITORC,orc.dtorc,ATC.CODCONV,ATC.CPFCONV,ORC.TXT01  
 FROM vdorcamento ORC, SGFILIAL FL, ATCONVENIADO ATC, vdvendedor VEND,VDITORCAMENTO IT,EQPRODUTO P
 WHERE
 ORC.codemp = $P{CODEMP} AND ORC.CODFILIAL = $P{CODFILIAL} AND ORC.codorc = $P{CODORC} AND
@@ -66,7 +66,7 @@ IT.TIPOORC = 'O' AND IT.CODORC=orc.codorc AND IT.CODEMP=orc.codemp AND IT.CODFIL
 	<field name="NOMEVEND" class="java.lang.String"/>
 	<field name="CPFVEND" class="java.lang.String"/>
 	<field name="DESCPROD" class="java.lang.String"/>
-	<field name="CODBARPROD" class="java.lang.String"/>
+	<field name="CODFABPROD" class="java.lang.String"/>
 	<field name="QTDITORC" class="java.math.BigDecimal"/>
 	<field name="DTORC" class="java.sql.Date"/>
 	<field name="CODCONV" class="java.lang.Long"/>
@@ -1787,7 +1787,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<textElement>
 						<font fontName="Courier New" size="12"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODBARPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODFABPROD}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

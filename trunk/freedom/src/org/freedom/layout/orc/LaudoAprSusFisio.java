@@ -81,7 +81,7 @@ public class LaudoAprSusFisio extends LeiauteGR {
 
 		  String sSQL = "SELECT "+
 		                "IT.VLRPRODITORC/IT.QTDITORC,IT.CODPROD,"+
-		  	            " P.DESCPROD,P.CODBARPROD,IT.QTDITORC,IT.VLRDESCITORC,IT.VLRLIQITORC" +
+		  	            " DESCPROD,P.CODFABPROD,IT.QTDITORC,IT.VLRDESCITORC,IT.VLRLIQITORC" +
 		                " FROM VDITORCAMENTO IT, EQPRODUTO P WHERE"+
 						" P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD"+
 						" AND IT.TIPOORC = 'O' AND IT.CODORC=? AND IT.CODEMP=? AND IT.CODFILIAL=?";
@@ -95,7 +95,7 @@ public class LaudoAprSusFisio extends LeiauteGR {
 		  montaCab(rsCab);
 		  for (int i=1;(rs.next());i++) {
 			setFonte(fnConteudo);
-			drawTexto(Funcoes.setMascara(rs.getString("CODBARPROD") !=null ? rs.getString("CODBARPROD") : "","##.###.######-##"),9,iYPosProd);		
+			drawTexto(Funcoes.setMascara(rs.getString("CODFABPROD") !=null ? rs.getString("CODFABPROD") : "","##.###.######-##"),9,iYPosProd);		
 			drawTexto(rs.getString("DESCPROD"),109,iYPosProd);			  
 			iYPosProd = iYPosProd+29;		    	
 			if ((i%4)==0 && i < rsCab.getInt(1)) {
