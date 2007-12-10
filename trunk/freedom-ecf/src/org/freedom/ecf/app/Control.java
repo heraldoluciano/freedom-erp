@@ -1071,7 +1071,7 @@ public class Control {
 		boolean returnOfAction = true;
 		
 		if ( notIsModoDemostracao() ) {	
-			if ( texto != null || texto.trim().length() > 0 ) {	 
+			if ( texto != null && texto.trim().length() > 0 ) {	 
 				returnOfAction = decodeReturn( 
 					ecf.usaComprovanteNFiscalVinculado( texto ) );
 			}
