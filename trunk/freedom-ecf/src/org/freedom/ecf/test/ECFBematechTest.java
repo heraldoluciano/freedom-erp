@@ -206,6 +206,9 @@ public class ECFBematechTest extends TestCase {
 		
 		System.out.print( "retorno da ultima redução Z > " ); 
 		System.out.println( ecf.retornoUltimaReducao() );	
+		
+		System.out.print( "sub total > > " ); 
+		System.out.println( ecf.retornoSubTotal() );	
 	}
 
 	public void testComandosDeImpressaoDeCheques() {
