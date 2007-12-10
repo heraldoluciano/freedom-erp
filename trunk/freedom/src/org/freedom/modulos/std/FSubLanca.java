@@ -113,7 +113,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
     pnCab.remove(1); //Remove o navegador do cabeçalho
     
     setTitulo("Sub-Lançamentos");
-    setAtribos(20,1,615,480);
+    setAtribos(20,1,655,480);
 
 	Vector<String> vVals = new Vector<String>();
 	vVals.addElement("A");
@@ -129,7 +129,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
     txtVlrAtualLanca.setAtivo(false);
     
 	txtCodPlan.setTipo(JTextFieldPad.TP_STRING,13,0);
-    lcPlan.add(new GuardaCampo( txtCodPlanSub, "CodPlan", "Cód.planj.", ListaCampos.DB_PK, txtDescPlan, false));
+    lcPlan.add(new GuardaCampo( txtCodPlanSub, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, txtDescPlan, false));
     lcPlan.add(new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do planejamento", ListaCampos.DB_SI, false));
     lcPlan.setReadOnly(true);
     lcPlan.setQueryCommit(false);
@@ -175,15 +175,15 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
 	adicCampoInvisivel(txtCodFilialPlan, "CodFilialPN","Filial. Planejamento",ListaCampos.DB_SI, false);
     adicCampo(txtDataLanca, 90, 20, 97, 20,"DataLanca","Data",ListaCampos.DB_SI, true);
     adicCampo(txtDocLanca, 190, 20, 77, 20,"DocLanca","Doc.",ListaCampos.DB_SI, false);
-    adicCampo(txtHistLanca, 270, 20, 320, 20,"HistBLanca","Histório Bancário",ListaCampos.DB_SI, true);
+    adicCampo(txtHistLanca, 270, 20, 355, 20,"HistBLanca","Histório Bancário",ListaCampos.DB_SI, true);
     adicDB(cbTransf, 7, 60, 80, 20,"TransfLanca","Transferência", true);
     adic(new JLabelPad("Vlr. Lançamento"),95,40,100,20);
     adic(txtVlrAtualLanca,95,60,97,20);
-    adicDB(rgTipoLanca,210,60,379,28,"tipolanca","Tipo de lançamento", true);
+    adicDB(rgTipoLanca,210,60,414,28,"tipolanca","Tipo de lançamento", true);
     
     JPanelPad pnTxa = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
     pnTxa.add(spnTxa);
-    adic(pnTxa,7,95,583,50);
+    adic(pnTxa,7,95,618,50);
     adicDBLiv(txaHistLanca, "HistLanca", "Histórico descriminado", false);
     adic(btNovo,7,150,30,30);
 	adic(btSalvar,37,150,30,30);
@@ -193,14 +193,14 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
     setListaCampos(lcDet);
     setNavegador(navRod);
     adicCampoInvisivel(txtCodSubLanca, "CodSubLanca","Item",ListaCampos.DB_PK, false);
-    adicCampo(txtCodPlanSub, 7, 20, 80, 20,"CodPlan","Cód.planj.", ListaCampos.DB_FK, txtDescPlan, true);
-    adicDescFK(txtDescPlan, 90, 20, 247, 20, "DescPlan", "Descrição do plano de contas");
-	adicCampo(txtCodCC, 7, 60, 80, 20,"CodCC","Cód.c.c.", ListaCampos.DB_FK, txtDescCC, false);
+    adicCampo(txtCodPlanSub, 7, 20, 100, 20,"CodPlan","Cód.plan.", ListaCampos.DB_FK, txtDescPlan, true);
+    adicDescFK(txtDescPlan, 110, 20, 207, 20, "DescPlan", "Descrição do plano de contas");
+    
+    adicCampo(txtCodCC, 320, 20, 100, 20,"CodCC","Cód.c.c.", ListaCampos.DB_FK, txtDescCC, false);
 	adicCampoInvisivel(txtAnoCC, "AnoCC","Ano-base",ListaCampos.DB_FK, txtDescCC, false);
-	adicDescFK(txtDescCC, 90, 60, 197, 20, "DescCC", "Descrição do centro de custo");
-    adicCampo(txtVlrLanca,340,20,120,20, "VlrSubLanca","Valor",ListaCampos.DB_SI, true);
-	adicCampo(txtHistSubLanca,7,105,454,20,"HistSubLanca","Histórico do Lancamento",ListaCampos.DB_SI, false);
-
+	adicDescFK(txtDescCC, 423, 20, 207, 20, "DescCC", "Descrição do centro de custo");
+    adicCampo(txtVlrLanca,7,60,100,20, "VlrSubLanca"," Valor",ListaCampos.DB_SI, true);
+    adicCampo(txtHistSubLanca,110,60,521,20,"HistSubLanca","Histórico do Lancamento",ListaCampos.DB_SI, false);
 
 	txtCodCli.setRequerido(true);
     txtCodFor.setRequerido(true);
@@ -209,11 +209,11 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
 	txtCodFor.setVisible(false);
 	txtRazFor.setVisible(false); 
 	
-	lbCodCli = adicCampo(txtCodCli, 290, 60, 50, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, false);
-	lbRazCli = adicDescFK(txtRazCli, 343, 60, 247, 20, "RazCli", "Razão social do cliente"); 
+	lbCodCli = adicCampo(txtCodCli, 7, 105, 50, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, false);
+	lbRazCli = adicDescFK(txtRazCli, 60, 105, 357, 20, "RazCli", "Razão social do cliente"); 
 
-	lbCodFor = adicCampo(txtCodFor, 290, 60, 50, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, false);
-	lbRazFor = adicDescFK(txtRazFor, 343, 60, 247, 20, "RazFor", "Razão social do fornecedor"); 
+	lbCodFor = adicCampo(txtCodFor, 7, 105, 50, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, false);
+	lbRazFor = adicDescFK(txtRazFor, 60, 105, 357, 20, "RazFor", "Razão social do fornecedor"); 
 
     lbCodCli.setVisible(false);
     lbRazCli.setVisible(false);
@@ -224,8 +224,13 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
     setListaCampos( true, "SUBLANCA", "FN");
     montaTab();
     
-    tab.setTamColuna(100,1);
+    tab.setTamColuna(30,0);
+    tab.setTamColuna(95,1);
     tab.setTamColuna(200,2);
+    tab.setTamColuna(0,3);
+    tab.setTamColuna(0,4);
+    tab.setTamColuna(0,5);
+    tab.setTamColuna(200,7);      
 
     txtCodPlanSub.addFocusListener(this);    
     lcCampos.addPostListener(this);
