@@ -320,37 +320,14 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 			
 			if ( terminador ) {
 				String stmp = param;
-				if ( stmp.length() >= tamanho ) 
+				if ( stmp.length() >= tamanho ) {
 					stmp = ( stmp.substring( 0, param.length() - 2 ) );
+				}
 				tmp.append( (char) 0 + stmp + (Serial.OS_LINUX == Serial.getSistema() ? (char) 13 : (char) 10) );
 			}
 			else {
 				tmp.append( parseParam( param, tamanho ) );
 			}
-
-			/*if ( terminador ) {
-
-				if ( param.indexOf( String.valueOf( (char) 10 ) ) <= -1 ) {
-
-					if ( tamanho <= param.length() ) {
-						tmp.append( param.substring( 0, tamanho - 1 ) );
-					} else {
-						tmp.append( param );
-					}
-					if ( Serial.OS_LINUX == Serial.getSistema() ) {
-						int arg = tamanho - param.length();
-						tmp.append( replicate( String.valueOf( (char) 0 ), arg ) );
-					} else {
-						tmp.append( (char) 10 );
-					}
-				}
-			} else {
-				if ( tamanho < param.length() ) {
-					tmp.append( param.substring( 0, tamanho ) );
-				} else {
-					tmp.append( param );
-				}
-			}*/
 		}
 
 		return tmp.toString();
