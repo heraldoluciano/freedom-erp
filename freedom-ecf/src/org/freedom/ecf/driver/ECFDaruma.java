@@ -70,11 +70,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * O protocolo de comunicação com a impressora é estruturado <BR>
 	 * em blocos e possui a seguinte forma: <BR>
 	 * <BR>
-	 * STX - byte indicativo de inicio de transmissão. <BR>
-	 * NBL -byte nenos significativo, da soma do número de bytes que serão enviados. <BR>
-	 * NBH - byte mais significativo, da soma do número de bytes que serão enviados. <BR>
 	 * CMD - Sequência de bytes que compõe o comando e seus parâmetros. <BR>
-	 * CSL - byte menos significativo, da soma dos valores dos bytes que compõem o camando e seu parâmetros(CMD). <BR>
 	 * 
 	 * @param CMD
 	 *            comando a ser executado e seus parâmetros. <BR>
@@ -84,31 +80,14 @@ public class ECFDaruma extends AbstractECFDriver {
 
 		final int tamCMD = CMD.length;
 		final int tam = tamCMD + 1;
-		//int soma = 0;
-		//byte CSL = 0;
-		//byte CSH = 0;
-		//final byte NBL = (byte) ( tam % 256 );
-		//final byte NBH = (byte) ( tam / 256 );
 		byte[] retorno = new byte[ tam ];
-
-		//retorno[ 0 ] = STX;
-		//retorno[ 1 ] = NBL;
-		//retorno[ 2 ] = NBH;
-
 		for ( int i = 0; i < tam; i++ ) {
-			//soma += CMD[ i ];
 			if (i==(tam-1)) {
 				retorno[i] = 13;
 			} else {
 				retorno[ i ] = CMD[ i ];
 			}
 		}
-
-//		CSL = (byte) ( soma % 256 );
-//		CSH = (byte) ( soma / 256 );
-
-		//retorno[ retorno.length - 2 ] = CSL;
-		//retorno[ retorno.length - 1 ] = CSH;
 
 		return retorno;
 	}
