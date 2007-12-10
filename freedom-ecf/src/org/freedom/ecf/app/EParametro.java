@@ -15,7 +15,8 @@ public enum EParametro {
 	PARAM_ACRECIMO( "Acrécimo" ), 
 	PARAM_DEPARTAMENTO( "Departamento" ), 
 	PARAM_UNIDADE_MEDIDA( "Unidade de medida" ),
-	PARAM_FORMA_PAGAMENTO( "Forma de pagamento" );
+	PARAM_FORMA_PAGAMENTO( "Forma de pagamento" ),
+	PARAM_DOCUMENTO( "Número do documento" );
 
 	private final String name;
 
