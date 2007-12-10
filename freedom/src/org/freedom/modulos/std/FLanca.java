@@ -28,6 +28,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -102,7 +104,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
   public FLanca() {
   	super(false);
     setTitulo("Lançamentos Financeiros");
-    setAtribos(50,25,750,350);
+    setAtribos(50,25,767,350);
     
     Container c = getContentPane();
     
@@ -162,7 +164,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
     pnNav.add(btExcluir);
     pnNav.add(btEditar);
     
-    tab.adicColuna("Nº Lançamento");
+    tab.adicColuna("NºLanç.");
     tab.adicColuna("Data");
     tab.adicColuna("Tsf.");
     tab.adicColuna("Orig.");
@@ -171,14 +173,21 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
     tab.adicColuna("Valor");
     tab.adicColuna("Histórico");
     
-    tab.setTamColuna(100,0);
+    tab.setTamColuna(60,0);
     tab.setTamColuna( 70,1);
-    tab.setTamColuna( 40,2);
-    tab.setTamColuna( 55,3);
+    tab.setTamColuna( 20,2);
+    tab.setTamColuna( 30,3);
     tab.setTamColuna( 72,4);
     tab.setTamColuna( 65,5);
-    tab.setTamColuna(100,6);
-    tab.setTamColuna(250,7);
+    tab.setTamColuna(80,6);
+    tab.setTamColuna(342,7);
+    
+	tab.addMouseListener(new MouseAdapter() {
+		public void mouseClicked(MouseEvent mevt) {
+			if (mevt.getSource() == tab && mevt.getClickCount() == 2)
+				editar();
+			}
+	});
     
     btSair.addActionListener(this);
     btPrim.addActionListener(this);
