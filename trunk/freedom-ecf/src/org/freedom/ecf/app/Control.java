@@ -6,10 +6,12 @@ import static org.freedom.ecf.app.EParametro.PARAM_CODIGO;
 import static org.freedom.ecf.app.EParametro.PARAM_DEPARTAMENTO;
 import static org.freedom.ecf.app.EParametro.PARAM_DESCONTO;
 import static org.freedom.ecf.app.EParametro.PARAM_DESCRICAO;
+import static org.freedom.ecf.app.EParametro.PARAM_DOCUMENTO;
+import static org.freedom.ecf.app.EParametro.PARAM_FORMA_PAGAMENTO;
 import static org.freedom.ecf.app.EParametro.PARAM_QUANTIDADE;
 import static org.freedom.ecf.app.EParametro.PARAM_UNIDADE_MEDIDA;
 import static org.freedom.ecf.app.EParametro.PARAM_VALOR_UNITARIO;
-import static org.freedom.ecf.app.EParametro.PARAM_FORMA_PAGAMENTO;
+import static org.freedom.ecf.app.EStatusImpressora.*;
 import static org.freedom.ecf.driver.EStatus.RETORNO_OK;
 
 import java.math.BigDecimal;
@@ -249,11 +251,71 @@ public class Control {
 		boolean returnOfAction = true;
 		
 		if ( notIsModoDemostracao() ) {	
-			aliquota = aliquota.setScale( 2, BigDecimal.ROUND_HALF_UP );
-			String sAliquota = ecf.parseParam( aliquota.floatValue(), 4, 2 );
-			returnOfAction = decodeReturn( ecf.adicaoDeAliquotaTriburaria( sAliquota, tipoaliquota ) );
+			if ( aliquota == null || aliquota.floatValue() < 0.015f ) {
+				returnOfAction = false;
+				setMessageLog( "Aliquota inválida.[" + aliquota + "]" );
+			}
+			else {
+				aliquota = aliquota.setScale( 2, BigDecimal.ROUND_HALF_UP );
+				String sAliquota = ecf.parseParam( aliquota.floatValue(), 4, 2 );
+				returnOfAction = decodeReturn( ecf.adicaoDeAliquotaTriburaria( sAliquota, tipoaliquota ) );
+			}
 			if ( ! returnOfAction ) {
 				whiterLogError( "[PROGRAMA ALIQUOTA] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public boolean setHorarioDeVerao( final boolean horariodeverao ) {
+
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			if ( (!horariodeverao && isHorarioDeVerao()) 
+					|| (horariodeverao && !isHorarioDeVerao()) ) {
+				returnOfAction = decodeReturn( ecf.programaHorarioVerao() );	
+			}
+			if ( ! returnOfAction ) {
+				whiterLogError( "[PROGRAMA HORÁRIO DE VERÃO] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public boolean isHorarioDeVerao() {
+		
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			try {
+				returnOfAction = false;
+				String flags = ecf.retornoVariaveis( AbstractECFDriver.V_FLAG_FISCAL );
+				int iflag = Integer.parseInt( flags );
+				if ( iflag > 127 ) {
+					iflag -= 128;
+				}
+				if ( iflag > 63 ) {
+					iflag -= 64;
+				}
+				if ( iflag > 31 ) {
+					iflag -= 32;
+				}
+				if ( iflag > 15 ) {
+					iflag -= 16;
+				}
+				if ( iflag > 7 ) {
+					iflag -= 8;
+				}
+				if ( iflag > 3 ) {
+					iflag -= 4;
+					returnOfAction = true;				
+				}
+			} catch ( NumberFormatException e ) {
+				setMessageLog( e.getMessage() );
+				whiterLogError( "[HORÁRIO DE VERÃO] " );
 			}
 		}
 		
@@ -279,7 +341,7 @@ public class Control {
 		String returnOfAction = null;
 		
 		if ( notIsModoDemostracao() ) {	
-			returnOfAction = ecf.programaFormaPagamento( formapagamento );
+			returnOfAction = ecf.programaFormaPagamento( tiraAcentos( formapagamento ) );
 			if ( returnOfAction == null ) {
 				setMessageLog( "Forma de pagamento não encontrada/programada." );
 				whiterLogError( "[FORMA DE PAGAMENTO] " );
@@ -332,6 +394,22 @@ public class Control {
 			}
 			if ( !returnOfAction ) {
 				whiterLogError( "[SUPRIMENTO] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public Integer getNumeroDocumento() {
+		
+		Integer returnOfAction = null;
+		
+		if ( notIsModoDemostracao() ) {
+			try {
+				returnOfAction = Integer.parseInt( ecf.retornoNumeroCupom() );
+			} catch ( RuntimeException e ) {
+				setMessageLog( e.getMessage() );
+				whiterLogError( "[RETORNO DO COO] " );
 			}
 		}
 		
@@ -401,7 +479,7 @@ public class Control {
 		return returnOfAction;
 	}
 	
-	private boolean validaParamVenda( final EParametro arg0, final Object arg1, final char arg2 ) {
+	private boolean validaParametro( final EParametro arg0, final Object arg1, final char arg2 ) {
 		
 		boolean actionOK = true;
 
@@ -509,6 +587,13 @@ public class Control {
     				}
     				break;
     			}
+    			case PARAM_DOCUMENTO: {
+    				if ( ((Integer)arg1) <= 0 ) {
+        				setMessageLog( "Número do documento inválido.[" + arg1 +"]" );
+        				actionOK = false;
+    				}
+    				break;
+    			}
 			}			
 		}
 		
@@ -550,22 +635,22 @@ public class Control {
 		
 		if ( notIsModoDemostracao() ) {
 			boolean actionOK = true;
-			if ( ! validaParamVenda( PARAM_CODIGO, codigo, '0' ) ) {
+			if ( ! validaParametro( PARAM_CODIGO, codigo, '0' ) ) {
 				actionOK = false;
 			}
-			else if ( ! validaParamVenda( PARAM_DESCRICAO, descricao, '0' ) ) {
+			else if ( ! validaParametro( PARAM_DESCRICAO, descricao, '0' ) ) {
     			actionOK = false;
     		}
-			else if ( ! validaParamVenda( PARAM_ALIQUOTA, aliquota, '0' ) ) {
+			else if ( ! validaParametro( PARAM_ALIQUOTA, aliquota, '0' ) ) {
     			actionOK = false;
     		}
-			else if ( ! validaParamVenda( PARAM_QUANTIDADE, quantidade, tipoQuantidade ) ) {
+			else if ( ! validaParametro( PARAM_QUANTIDADE, quantidade, tipoQuantidade ) ) {
     			actionOK = false;
     		}
-			else if ( ! validaParamVenda( PARAM_VALOR_UNITARIO, valor, '0' ) ) {
+			else if ( ! validaParametro( PARAM_VALOR_UNITARIO, valor, '0' ) ) {
     			actionOK = false;
     		}
-			else if ( ! validaParamVenda( PARAM_DESCONTO, desconto, tipoDesconto ) ) {
+			else if ( ! validaParametro( PARAM_DESCONTO, desconto, tipoDesconto ) ) {
     			actionOK = false;
     		}
 			
@@ -652,31 +737,31 @@ public class Control {
 		
 		if ( notIsModoDemostracao() ) {	
 			boolean actionOK = true;
-			if ( ! validaParamVenda( PARAM_CODIGO, codigo, '0' ) ) {
+			if ( ! validaParametro( PARAM_CODIGO, codigo, '0' ) ) {
 				actionOK = false;
 			}
-			else if ( ! validaParamVenda( PARAM_DESCRICAO, descricao, '0' ) ) {
+			else if ( ! validaParametro( PARAM_DESCRICAO, descricao, '0' ) ) {
     			actionOK = false;
     		}
-			else if ( ! validaParamVenda( PARAM_ALIQUOTA, aliquota, '0' ) ) {
+			else if ( ! validaParametro( PARAM_ALIQUOTA, aliquota, '0' ) ) {
     			actionOK = false;
     		}
-			else if ( ! validaParamVenda( PARAM_VALOR_UNITARIO, valor, '0' ) ) {
+			else if ( ! validaParametro( PARAM_VALOR_UNITARIO, valor, '0' ) ) {
     			actionOK = false;
     		}
-			else if ( ! validaParamVenda( PARAM_QUANTIDADE, quantidade, AbstractECFDriver.QTD_DECIMAL ) ) {
+			else if ( ! validaParametro( PARAM_QUANTIDADE, quantidade, AbstractECFDriver.QTD_DECIMAL ) ) {
     			actionOK = false;
     		}
-			else if ( ! validaParamVenda( PARAM_ACRECIMO, acrescimo, AbstractECFDriver.ACRECIMO_VALOR ) ) {
+			else if ( ! validaParametro( PARAM_ACRECIMO, acrescimo, AbstractECFDriver.ACRECIMO_VALOR ) ) {
     			actionOK = false;
     		}
-			else if ( ! validaParamVenda( PARAM_DESCONTO, desconto, AbstractECFDriver.DESCONTO_VALOR ) ) {
+			else if ( ! validaParametro( PARAM_DESCONTO, desconto, AbstractECFDriver.DESCONTO_VALOR ) ) {
     			actionOK = false;
     		}
-			else if ( ! validaParamVenda( PARAM_DEPARTAMENTO, departamento, '0' ) ) {
+			else if ( ! validaParametro( PARAM_DEPARTAMENTO, departamento, '0' ) ) {
     			actionOK = false;
     		}
-			else if ( ! validaParamVenda( PARAM_UNIDADE_MEDIDA, unidadeMedida, '0' ) ) {
+			else if ( ! validaParametro( PARAM_UNIDADE_MEDIDA, unidadeMedida, '0' ) ) {
     			actionOK = false;
     		}
 			
@@ -720,6 +805,26 @@ public class Control {
 		return returnOfAction;
 	}
 	
+	public BigDecimal getSubTotal() {
+
+		BigDecimal returnOfAction = null;
+		
+		if ( notIsModoDemostracao() ) {	
+			try {
+				String subtotal = ecf.retornoSubTotal();
+				if ( subtotal!= null && subtotal.trim().length() == 14 ) {
+					subtotal = subtotal.substring( 0, 12 ) + "." + subtotal.substring( 12 );
+				}
+				returnOfAction = new BigDecimal( subtotal );
+			} catch ( RuntimeException e ) {
+				setMessageLog( e.getMessage() );
+				whiterLogError( "[CANCELAMENTO DE ITEM] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
 	public boolean cancelaItem() {
 		
 		return cancelaItem( 0 );
@@ -741,6 +846,25 @@ public class Control {
 		return returnOfAction;
 	}
 	
+	public boolean cancelaCupom() {
+
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			returnOfAction = decodeReturn( ecf.cancelaCupom() );
+			if ( !returnOfAction ) {
+				whiterLogError( "[CANCELAMENTO DE CUPOM] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public boolean iniciaFechamentoCupom() {
+		
+		return iniciaFechamentoCupom( AbstractECFDriver.DESCONTO_VALOR, new BigDecimal( "0.00" ) );
+	}
+	
 	public boolean iniciaFechamentoCupom( final char opcao, BigDecimal percentual ) {
 
 		boolean returnOfAction = true;
@@ -749,13 +873,13 @@ public class Control {
 			boolean actionOK = true;
 			if ( opcao == AbstractECFDriver.ACRECIMO_PERC
 					|| opcao == AbstractECFDriver.ACRECIMO_VALOR ) {
-				if ( ! validaParamVenda( PARAM_ACRECIMO, percentual, opcao ) ) {
+				if ( ! validaParametro( PARAM_ACRECIMO, percentual, opcao ) ) {
 	    			actionOK = false;
 	    		}
 			}
 			else if ( opcao == AbstractECFDriver.DESCONTO_PERC
 					|| opcao == AbstractECFDriver.DESCONTO_VALOR ) {
-				if ( ! validaParamVenda( PARAM_DESCONTO, percentual, opcao ) ) {
+				if ( ! validaParametro( PARAM_DESCONTO, percentual, opcao ) ) {
 	    			actionOK = false;
 	    		}
 			}
@@ -767,12 +891,25 @@ public class Control {
 				percentual = percentual.setScale( 2, BigDecimal.ROUND_HALF_UP );
 				returnOfAction = decodeReturn( ecf.iniciaFechamentoCupom( opcao, percentual.floatValue() ) );				
 			}
+			else {
+				returnOfAction = false;
+			}
 			if ( !returnOfAction ) {
 				whiterLogError( "[INICIA FECHAMENTO DE CUPOM] " );
 			}
 		}
 		
 		return returnOfAction;
+	}
+	
+	public boolean efetuaFormaPagamento( BigDecimal valor ) {
+		
+		return efetuaFormaPagamento( "Dinheiro", valor, null );
+	}
+	
+	public boolean efetuaFormaPagamento( final String formaPagamento, BigDecimal valor ) {
+		
+		return efetuaFormaPagamento( formaPagamento, valor, null );
 	}
 	
 	public boolean efetuaFormaPagamento( 
@@ -782,10 +919,10 @@ public class Control {
 		
 		if ( notIsModoDemostracao() ) {	
 			boolean actionOK = true;
-			if ( ! validaParamVenda( PARAM_FORMA_PAGAMENTO, formaPagamento, '0' ) ) {
+			if ( ! validaParametro( PARAM_FORMA_PAGAMENTO, formaPagamento, '0' ) ) {
     			actionOK = false;
 			}
-			else if ( ! validaParamVenda( PARAM_VALOR_UNITARIO, valor, '0' ) ) {
+			else if ( ! validaParametro( PARAM_VALOR_UNITARIO, valor, '0' ) ) {
     			actionOK = false;
 			}
 			if ( actionOK ) {
@@ -794,6 +931,9 @@ public class Control {
 				valor = valor.setScale( 2, BigDecimal.ROUND_HALF_UP );
 				returnOfAction = decodeReturn( 
 						ecf.efetuaFormaPagamento( sIndice, valor.floatValue(), descricaoAuxiliar ) );				
+			}
+			else {
+				returnOfAction = false;
 			}
 			if ( !returnOfAction ) {
 				whiterLogError( "[EFETUA FORMA DE PAGAMENTO] " );
@@ -816,7 +956,132 @@ public class Control {
 		
 		return returnOfAction;
 	}
+	
+	public boolean estornoFormaPagamento( 
+			final String pagamentoOrigem, final String pagamentoDestino, BigDecimal valor ) {
 
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			boolean actionOK = true;
+			if ( pagamentoOrigem == null || pagamentoOrigem.trim().length() == 0 ) {
+				setMessageLog( "Forma de pagamento de origem inválida.[" + pagamentoOrigem +"]" );
+    			actionOK = false;
+			}
+			else if ( pagamentoDestino == null || pagamentoDestino.trim().length() == 0 ) {
+				setMessageLog( "Forma de pagamento de destino inválida.[" + pagamentoDestino +"]" );
+    			actionOK = false;
+			}
+			else if ( valor == null || valor.floatValue() <= 0.004f ) {
+				setMessageLog( "Forma de pagamento de origem inválida.[" + pagamentoOrigem +"]" );
+    			actionOK = false;
+			}
+			if ( actionOK ) {
+				valor = valor.setScale( 2, BigDecimal.ROUND_HALF_UP );
+				returnOfAction = decodeReturn( 
+						ecf.estornoFormaPagamento( 
+								pagamentoOrigem, pagamentoDestino, valor.floatValue() ) );
+			}
+			else {
+				returnOfAction = false;
+			}
+			if ( !returnOfAction ) {
+				whiterLogError( "[ESTORNO DE FORMA DE PAGAMENTO] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public boolean relatorioGerencial( final String texto ) {
+
+
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			boolean actionOK = true;
+			if ( texto == null || texto.trim().length() == 0 ) {
+				setMessageLog( "Texto inválido.[" + texto +"]" );    			
+    			actionOK = false;
+			}
+			if ( actionOK ) {
+				returnOfAction = decodeReturn( ecf.relatorioGerencial( texto ) );
+			}
+			else {
+				returnOfAction = false;
+			}
+			if ( !returnOfAction ) {
+				whiterLogError( "[RELÁTORIO GERENCIAL] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public boolean fecharRelatorioGerencial() {
+
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			returnOfAction = decodeReturn( ecf.fechamentoRelatorioGerencial() );
+			if ( !returnOfAction ) {
+				whiterLogError( "[FECHAMENTO DO RELÁTORIO GERENCIAL] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public boolean abreComprovanteNaoFiscalVinculado(
+			final String formaPagamento, BigDecimal valor, final Integer documento ) {
+
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			boolean actionOK = true;
+			String formapagamentotmp = tiraAcentos( formaPagamento );
+			if ( ! validaParametro( PARAM_FORMA_PAGAMENTO, formapagamentotmp, '0' ) ) {    			
+    			actionOK = false;
+			}
+			else if ( ! validaParametro( PARAM_VALOR_UNITARIO, valor, '0' ) ) {    			
+    			actionOK = false;
+			} 
+			else if ( ! validaParametro( PARAM_DOCUMENTO, documento, '0' ) ) {	   			
+    			actionOK = false;
+			}
+			if ( actionOK ) {
+				returnOfAction = decodeReturn( 
+					ecf.abreComprovanteNFiscalVinculado( 
+							formapagamentotmp, valor.floatValue(), documento ) );
+			}
+			else {
+				returnOfAction = false;
+			}
+			if ( !returnOfAction ) {
+				whiterLogError( "[ABERTURA DE COMPROVANTE NÂO FISCAL VINCULADO] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public boolean usaComprovanteNaoFiscalVinculado(
+			final String texto ) {
+
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			if ( texto != null || texto.trim().length() > 0 ) {	 
+				returnOfAction = decodeReturn( 
+					ecf.usaComprovanteNFiscalVinculado( texto ) );
+			}
+			if ( !returnOfAction ) {
+				whiterLogError( "[USA DE COMPROVANTE NÂO FISCAL VINCULADO] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
 	
 	public boolean sangria( final BigDecimal valor ) {
 		
@@ -841,6 +1106,128 @@ public class Control {
 			}
 			if ( !returnOfAction ) {
 				whiterLogError( "[SANGRIA] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public boolean reducaoZ() {
+
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			returnOfAction = decodeReturn( ecf.reducaoZ() );
+			if ( !returnOfAction ) {
+				whiterLogError( "[REDUÇÃO Z] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public String getEstadoImpressora() {
+
+		String returnOfAction = null;
+		
+		if ( notIsModoDemostracao() ) {	
+			String tmp = ecf.getStatus();
+			if( tmp != null && tmp.length() > 0 ) {		
+				StringBuilder mensagem = new StringBuilder();
+				String[] status = tmp.split(","); 				
+				int st1 = Integer.parseInt( status[ 1 ] );
+				int st2 = Integer.parseInt( status[ 2 ] );				
+				if ( st1 >= 128 ) {
+					st1 -= 128;
+					mensagem.append( FIM_DE_PAPEL.getMensagem() );
+				}
+				if ( st1 >= 64 ) {
+					st1 -= 64;
+					mensagem.append( POUCO_PAPEL.getMensagem() );
+				}
+				if ( st1 >= 32 ) {
+					st1 -= 32;
+					mensagem.append( RELOGIO_ERROR );
+				}
+				if ( st1 >= 16 ) {
+					st1 -= 16;
+					mensagem.append( IMPRESSORA_EM_ERRO.getMensagem() );
+				}
+				if ( st1 >= 8 ) {
+					st1 -= 8;
+					mensagem.append( NO_ESC.getMensagem() );
+				}
+				if ( st1 >= 4 ) {
+					st1 -= 4;
+					mensagem.append( NO_COMMAND.getMensagem() );
+				}
+				if ( st1 >= 2 ) {
+					st1 -= 2;
+					mensagem.append( CUPOM_FISCAL_ABERTO.getMensagem() );
+				}
+				if ( st1 >= 1 ) {
+					st1 -= 1;
+					mensagem.append( NU_PARAMS_INVALIDO.getMensagem() );
+				}
+				
+				if ( mensagem.length() > 0 ) {
+					mensagem.append( "\n" );					
+				}
+				
+				if ( st2 >= 128 ) {
+					st2 -= 128;
+					mensagem.append( TP_PARAM_INVALIDO.getMensagem() );
+				}
+				if ( st2 >= 64 ) {
+					st2 -= 64;
+					mensagem.append( OUT_OF_MEMORY.getMensagem() );
+				}
+				if ( st2 >= 32 ) {
+					st2 -= 32;
+					mensagem.append( MEMORY_ERROR.getMensagem() );
+				}
+				if ( st2 >= 16 ) {
+					st2 -= 16;
+					mensagem.append( NO_ALIQUOTA.getMensagem() );
+				}
+				if ( st2 >= 8 ) {
+					st2 -= 8;
+					mensagem.append( OUT_OF_ALIQUOTA.getMensagem() );
+				}
+				if ( st2 >= 4 ) {
+					st2 -= 4;
+					mensagem.append( NO_ACESESS_CANCELAMENTO.getMensagem() );
+				}
+				if ( st2 >= 2 ) {
+					st2 -= 2;
+					mensagem.append( NO_CNPJ_IE.getMensagem() );
+				}
+				if ( st2 >= 1 ) {
+					st2 -= 1;
+					mensagem.append( COMMAND_NO_EXECUTE.getMensagem() );
+				}
+				
+				if ( mensagem.length() == 0 ) {
+					mensagem.append( IMPRESSORA_OK.getMensagem() );					
+				}
+				returnOfAction = mensagem.toString();
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public Integer getNumeroCaixa() {
+
+		Integer returnOfAction = null;
+		
+		if ( notIsModoDemostracao() ) {	
+			try {
+				String caixa = ( ecf.retornoVariaveis( AbstractECFDriver.V_NUM_CAIXA ) );
+				returnOfAction = Integer.parseInt( caixa );
+			} catch ( NumberFormatException e ) {
+				setMessageLog( e.getMessage() );
+				whiterLogError( "[NÚMERO DO CAIXA] " );
 			}
 		}
 		
@@ -920,14 +1307,16 @@ public class Control {
 	
 	// funções que devem ser esternas.
 
-	public String tiraAcentos( String sTexto ) {
+	public String tiraAcentos( final String arg ) {
 
 		String sRet = "";
-		char cVals[] = sTexto.toCharArray();
-		for ( int i = 0; i < cVals.length; i++ ) {
-			cVals[ i ] = tiraAcento( cVals[ i ] );
+		if ( arg != null && arg.trim().length() > 0 ) {
+			char cVals[] = arg.toCharArray();
+			for ( int i = 0; i < cVals.length; i++ ) {
+				cVals[ i ] = tiraAcento( cVals[ i ] );
+			}
+			sRet = new String( cVals );
 		}
-		sRet = new String( cVals );
 		
 		return sRet;
 	}
