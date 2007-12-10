@@ -245,25 +245,9 @@ public class ECFDaruma extends AbstractECFDriver {
 
 		}
 
-		/*
-		 * byte ack = 0; byte st1 = 0; byte st2 = 0;
-		 * 
-		 * if ( bytes != null ) {
-		 * 
-		 * ack = bytes[ 0 ];
-		 * 
-		 * if ( bytes.length > 3 ) {
-		 * 
-		 * st1 = bytes[ bytes.length - 2 ]; st2 = bytes[ bytes.length - 1 ];
-		 * 
-		 * 
-		 *  }
-		 * 
-		 * if ( ack == ACK ) { retorno = 1; } else {
-		 * 
-		 * retorno = -27; // Status da impressora diferente de 6,0,0 (ACK, ST1 e ST2) retorno = checkST1( st1 ); retorno = checkST2( st2 ); } }
-		 */
-
+	    checkST1(e1*10+e2);
+	    checkST2(w1*10+w2);
+	    
 		return retorno;
 	}
 
@@ -273,7 +257,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * @param ST1
 	 * @return retorno checado
 	 */
-	private int checkST1( final byte ST1 ) {
+	private int checkST1( final int ST1 ) {
 
 		int retorno = 0;
 		byte st1 = ST1;
@@ -313,7 +297,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * @param ST2
 	 * @return retorno checado
 	 */
-	private int checkST2( final byte ST2 ) {
+	private int checkST2( final int ST2 ) {
 
 		int retorno = 0;
 		byte st2 = ST2;
