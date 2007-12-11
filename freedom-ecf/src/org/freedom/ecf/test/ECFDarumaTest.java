@@ -148,13 +148,13 @@ public class ECFDarumaTest extends TestCase {
 		
 		ECFDaruma ecf = new ECFDaruma( "COM1" );
 		
-		System.out.print( "leituraX > " ); 
-		assertTrue( trataRetornoFuncao( ecf.leituraX() ) );		
+		//System.out.print( "leituraX > " ); 
+		//assertTrue( trataRetornoFuncao( ecf.leituraX() ) );		
 		
-		/*System.out.print( "leituraXSerial > " ); 
+		System.out.print( "leituraXSerial > " ); 
 		assertTrue( trataRetornoFuncao( ecf.leituraXSerial() ) );
 		System.out.println( new String( ecf.getBytesLidos() ) );
-		
+		/*
 		Calendar cal = Calendar.getInstance();
 		Date hoje = cal.getTime();
 		cal.set( Calendar.MONTH, cal.get( Calendar.MONTH ) - 1 );
