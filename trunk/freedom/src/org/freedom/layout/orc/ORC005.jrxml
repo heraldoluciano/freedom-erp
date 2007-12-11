@@ -283,7 +283,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						x="19"
 						y="190"
 						width="135"
-						height="7"
+						height="8"
 						key="staticText-24"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
@@ -1133,8 +1133,8 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						mode="Opaque"
 						x="309"
 						y="378"
-						width="52"
-						height="6"
+						width="55"
+						height="8"
 						key="staticText-45"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
