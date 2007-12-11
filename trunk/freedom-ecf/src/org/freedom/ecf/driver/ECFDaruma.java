@@ -206,7 +206,9 @@ public class ECFDaruma extends AbstractECFDriver {
 		byte w1 = 0;
 		byte w2 = 0;
 		byte[] bytesLidos;
+		
 		if ( bytes != null ) {
+			
 			if ( bytes.length > 0 ) {
 				del1 = bytes[ 0 ];
 				System.out.println( (char) del1 );
@@ -243,10 +245,9 @@ public class ECFDaruma extends AbstractECFDriver {
 				System.out.println( "Retorno: " + String.valueOf( bytesLidos ) );
 			}
 
+			retorno = checkST1(e1*10+e2);
+			retorno = checkST2(w1*10+w2);
 		}
-
-	    checkST1(e1*10+e2);
-	    checkST2(w1*10+w2);
 	    
 		return retorno;
 	}
@@ -257,10 +258,9 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * @param ST1
 	 * @return retorno checado
 	 */
-	private int checkST1( final int ST1 ) {
+	private int checkST1( int st1 ) {
 
 		int retorno = 0;
-		byte st1 = ST1;
 
 		if ( st1 > 127 ) {
 			st1 -= 128;
@@ -297,10 +297,9 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * @param ST2
 	 * @return retorno checado
 	 */
-	private int checkST2( final int ST2 ) {
+	private int checkST2( int st2 ) {
 
 		int retorno = 0;
-		byte st2 = ST2;
 
 		if ( st2 > 127 ) {
 			retorno = -2; // "Parâmetro inválido na função."
