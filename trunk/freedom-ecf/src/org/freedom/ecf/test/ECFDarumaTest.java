@@ -1,8 +1,6 @@
 package org.freedom.ecf.test;
 
-import java.util.Calendar;
-import java.util.Date;
-
+import static org.freedom.ecf.driver.EStatus.RETORNO_OK;
 import junit.framework.TestCase;
 
 import org.freedom.ecf.driver.ECFDaruma;
@@ -17,7 +15,7 @@ public class ECFDarumaTest extends TestCase {
 	public void testComandosDeInicializacao() {
 
 		ECFDaruma ecf = new ECFDaruma( "COM1" );
-
+		/*
 		assertTrue( trataRetornoFuncao( ecf.alteraSimboloMoeda( "R" ) ) );
 
 		assertTrue( trataRetornoFuncao( ecf.adicaoDeAliquotaTriburaria( "0001", ECFDaruma.ICMS ) ) );
@@ -32,50 +30,66 @@ public class ECFDarumaTest extends TestCase {
 
 		assertTrue( trataRetornoFuncao( ecf.programarLinhasEntreCupons( 5 ) ) );
 
-		assertTrue( trataRetornoFuncao( ecf.nomeiaDepartamento( 2, "Teste" ) ) );
+		assertTrue( trataRetornoFuncao( ecf.nomeiaDepartamento( 2, "Teste" ) ) );*/
+	}
+	
+	public void testCancelaCupom() {
+
+		ECFDaruma ecf = new ECFDaruma( "COM1" );
+
+		System.out.print( "cancelamento de Cupom > " );
+		assertTrue( trataRetornoFuncao( ecf, ecf.cancelaCupom() ) );		
 	}
 
 	public void testComandosDeCupomFiscal() {
 
 		ECFDaruma ecf = new ECFDaruma( "COM1" );
-
+		/*
 		System.out.print( "aberturaDeCupom > " );
-		assertTrue( trataRetornoFuncao( ecf.aberturaDeCupom() ) );
-
+		assertTrue( trataRetornoFuncao( ecf, ecf.aberturaDeCupom() ) );
+		*/
 		System.out.print( "aberturaDeCupom String > " );
-		assertTrue( trataRetornoFuncao( ecf.aberturaDeCupom( "00.000.000/0000-00 CNPJ e nome do Cliente" ) ) );
-
+		assertTrue( trataRetornoFuncao( ecf, ecf.aberturaDeCupom( 
+				"00.000.000/0000-00         " +
+				"Nome do Cliente                           " +
+				"Endereço do Cliente nº99" ) ) );
+		
+		System.out.print( "vendaItem > " );
+		assertTrue( trataRetornoFuncao( ecf, ecf.vendaItem( 
+				"0000000000001", "Produto Teste                ", "FF", 'I', 1f, 10f, 'D', 0f ) ) );
+		
+		/*
 		System.out.print( "programaUnidadeMedida > " );
-		assertTrue( trataRetornoFuncao( ecf.programaUnidadeMedida( "Kg" ) ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.programaUnidadeMedida( "Kg" ) ) );
 
 		System.out.print( "vendaItem > " );
-		assertTrue( trataRetornoFuncao( ecf.vendaItem( 
+		assertTrue( trataRetornoFuncao( ecf, ecf.vendaItem( 
 				"0000000000001", "Produto Teste                ", "FF", 'I', 1f, 10f, 'D', 0f ) ) );
 
 		System.out.print( "cancelaItemAnterior > " );
-		assertTrue( trataRetornoFuncao( ecf.cancelaItemAnterior() ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.cancelaItemAnterior() ) );
 
 		System.out.print( "aumentaDescItem > " ); 
-		assertTrue( trataRetornoFuncao( ecf.aumentaDescItem( 
+		assertTrue( trataRetornoFuncao( ecf, ecf.aumentaDescItem( 
 				"Descricao do item aumentada para 60 caracteres" ) ) );
 		 
 		System.out.print( "vendaItemTresCasas > " ); 
-		assertTrue( trataRetornoFuncao( ecf.vendaItemTresCasas( 
+		assertTrue( trataRetornoFuncao( ecf, ecf.vendaItemTresCasas( 
 				"1234567890002", "Produto Teste                ", "FF", 'I', 2f, 2.050f, 'D', 0.10f ) ) );
 		
 		System.out.print( "vendaItemDepartamento > " ); 
-		assertTrue( trataRetornoFuncao( ecf.vendaItemDepartamento( 
+		assertTrue( trataRetornoFuncao( ecf, ecf.vendaItemDepartamento( 
 				"FF", 1f, 10f, 0.50f, 0.50f, 2, "Kg", "1234567890003", "Descricao do produto" ) ) ); 
 		 
 		System.out.print( "cancelaItemGenerico 2 > " ); 
-		assertTrue( trataRetornoFuncao( ecf.cancelaItemGenerico( 2 ) ) );		
-
+		assertTrue( trataRetornoFuncao( ecf, ecf.cancelaItemGenerico( 2 ) ) );		
+		 */
 		System.out.print( "iniciaFechamentoCupom > " );
-		assertTrue( trataRetornoFuncao( ecf.iniciaFechamentoCupom( ECFDaruma.ACRECIMO_VALOR, 0.50f ) ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.iniciaFechamentoCupom( ECFDaruma.ACRECIMO_VALOR, 0.00f ) ) );
 
 		System.out.print( "efetuaFormaPagamento Dinheiro > " );
-		assertTrue( trataRetornoFuncao( ecf.efetuaFormaPagamento( "01", 5.00f, null ) ) );
-
+		assertTrue( trataRetornoFuncao( ecf, ecf.efetuaFormaPagamento( "01", 10.00f, null ) ) );
+		/*
 		System.out.print( "programaFormaPagamento > " ); 
 		String f2 = ecf.programaFormaPagamento( "Cheque          " ); 
 		System.out.println( f2 );
@@ -86,9 +100,9 @@ public class ECFDarumaTest extends TestCase {
 
 		System.out.print( "estornoFormaPagamento > " ); 
 		assertTrue( trataRetornoFuncao( ecf.estornoFormaPagamento( "Cheque          ", "Dinheiro", 5.50f ) ) );
-		
+		*/
 		System.out.print( "finalizaFechamentoCupom > " );
-		assertTrue( trataRetornoFuncao( ecf.finalizaFechamentoCupom( "Obrigado e volte sempre pra testar!" ) ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.finalizaFechamentoCupom( "Obrigado e volte sempre pra testar!" ) ) );
 
 		//System.out.print( "cancelaCupom > " ); 
 		//assertTrue( trataRetornoFuncao( ecf.cancelaCupom() ) );
@@ -98,7 +112,7 @@ public class ECFDarumaTest extends TestCase {
 
 		ECFDaruma ecf = new ECFDaruma( "COM1" );
 		
-		System.out.print( "relatorioGerencial > " ); 
+		/*System.out.print( "relatorioGerencial > " ); 
 		assertTrue( trataRetornoFuncao( ecf.relatorioGerencial( 
 				"Abrindo Relatorio Gerencial" ) ) );	
 		
@@ -127,7 +141,7 @@ public class ECFDarumaTest extends TestCase {
 				"Usando o Comprovante Nao fiscal Vinculado" ) ) );		
 
 		System.out.print( "fechamentoRelatorioGerencial > " ); 
-		assertTrue( trataRetornoFuncao( ecf.fechamentoRelatorioGerencial() ) );
+		assertTrue( trataRetornoFuncao( ecf.fechamentoRelatorioGerencial() ) );*/
 	}
 	
 	public void testComandosDeAutenticacao() {
@@ -135,26 +149,27 @@ public class ECFDarumaTest extends TestCase {
 		ECFDaruma ecf = new ECFDaruma( "COM1" );
 		
 		System.out.print( "programaCaracterParaAutenticacao > " ); 
-		//int [] sesc = {143,137,137,249,0,255,137,137,137,0,143,137,137,249,0,255,129,129 };
+		/*int [] sesc = {143,137,137,249,0,255,137,137,137,0,143,137,137,249,0,255,129,129 };
 		int [] sesc = {1,2,4,8,16,32,64,128,64,32,16,8,4,2,1,129,129,129 };
 		assertTrue( trataRetornoFuncao( ecf.programaCaracterParaAutenticacao( sesc ) ) );	
 		
 		testComandosDeCupomFiscal();
 		System.out.print( "autenticacaoDeDocumento > " ); 
-		assertTrue( trataRetornoFuncao( ecf.autenticacaoDeDocumento() ) );
+		assertTrue( trataRetornoFuncao( ecf.autenticacaoDeDocumento() ) );*/
 	}
 	
 	public void testComandosDeRelatoriosFiscais() {
 		
 		ECFDaruma ecf = new ECFDaruma( "COM1" );
 		
-		//System.out.print( "leituraX > " ); 
-		//assertTrue( trataRetornoFuncao( ecf.leituraX() ) );		
+		System.out.print( "leituraX > " ); 
+		assertTrue( trataRetornoFuncao( ecf, ecf.leituraX() ) );
 		
+		/*
 		System.out.print( "leituraXSerial > " ); 
 		assertTrue( trataRetornoFuncao( ecf.leituraXSerial() ) );
 		System.out.println( new String( ecf.getBytesLidos() ) );
-		/*
+		
 		Calendar cal = Calendar.getInstance();
 		Date hoje = cal.getTime();
 		cal.set( Calendar.MONTH, cal.get( Calendar.MONTH ) - 1 );
@@ -227,62 +242,17 @@ public class ECFDarumaTest extends TestCase {
 		
 	}
 	
-	public boolean trataRetornoFuncao( final int iRetorno ) {
+	public boolean trataRetornoFuncao( final ECFDaruma ecf, final int arg ) {
 
-		boolean bRetorno = false;
+		boolean returnOfAction = true;
 
-		String sMensagem = "";
+		String str = ecf.decodeReturnECF( arg ).getMessage();
 
-		switch ( iRetorno ) {
-
-		case -1:
-			sMensagem = "Erro na envocação do metodo!";
-			break;
-		case 0:
-			sMensagem = "Erro de comunicação física";
-			break;
-		case 1:
-			sMensagem = "";
-			break;
-		case -2:
-			sMensagem = "Parâmetro inválido na função.";
-			break;
-		case -3:
-			sMensagem = "Aliquota não programada";
-			break;
-		case -4:
-			sMensagem = "O arquivo de inicialização BEMAFI32.INI não foi encontrado no diretório de sistema do Windows";
-			break;
-		case -5:
-			sMensagem = "Erro ao abrir a porta de comunicação";
-			break;
-		case -8:
-			sMensagem = "Erro ao criar ou gravar no arquivo STATUS.TXT ou RETORNO.TXT";
-			break;
-		case -27:
-			sMensagem = "Status da impressora diferente de 6,0,0 (ACK, ST1 e ST2)";
-			break;
-		case -30:
-			sMensagem = "Função não compatível com a impressora YANCO";
-			break;
-		case -31:
-			sMensagem = "Forma de pagamento não finalizada";
-			break;
-		default:
-			sMensagem = "Retorno indefinido: " + iRetorno;
-			break;
-
+		if ( ! RETORNO_OK.getMessage().equals( str ) ) {
+			returnOfAction = false;
 		}
+		System.out.println( str );
 
-		if ( "".equals( sMensagem.trim() ) ) {
-			bRetorno = true;
-			sMensagem = "COMANDO EXECUTADO";
-		} else {
-			sMensagem = "[" + iRetorno + "] " + sMensagem;
-		}
-
-		System.out.println( sMensagem );
-
-		return bRetorno;
+		return returnOfAction;
 	}
 }
