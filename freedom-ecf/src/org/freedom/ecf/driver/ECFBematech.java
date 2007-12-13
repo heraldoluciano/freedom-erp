@@ -302,34 +302,34 @@ public class ECFBematech extends AbstractECFDriver {
 		switch ( arg ) {
 
 			case 0 :
-				status = ERRO_COMUNICACAO;
+				status = BEMA_ERRO_COMUNICACAO;
 				break;
 			case 1 :
 				status = RETORNO_OK;
 				break;
 			case -2 :
-				status = PARAMETRO_INVALIDO;
+				status = BEMA_PARAMETRO_INVALIDO;
 				break;
 			case -3 :
-				status = ALIQUOTA_NAO_PROGRAMADA;
+				status = BEMA_ALIQUOTA_NAO_PROGRAMADA;
 				break;
 			case -4 :
-				status = ARQ_INI_NAO_ENCONTRADO;
+				status = BEMA_ARQ_INI_NAO_ENCONTRADO;
 				break;
 			case -5 :
-				status = ERRO_ABRIR_PORTA;
+				status = BEMA_ERRO_ABRIR_PORTA;
 				break;
 			case -8 :
-				status = ERRO_GRAVAR_RETORNO;
+				status = BEMA_ERRO_GRAVAR_RETORNO;
 				break;
 			case -27 :
-				status = NAO_STATUS_600;
+				status = BEMA_NAO_STATUS_600;
 				break;
 			case -30 :
-				status = FUNCAO_NAO_COMPATIVEL;
+				status = BEMA_FUNCAO_NAO_COMPATIVEL;
 				break;
 			case -31 :
-				status = FORMA_PAGAMENTO_NAO_FINALIZADA;
+				status = BEMA_FORMA_PAGAMENTO_NAO_FINALIZADA;
 				break;
 			default :
 				EStatus stmp = RETORNO_INDEFINIDO;
