@@ -85,7 +85,7 @@ public class ControlTest extends TestCase {
 
 	public void testLeituraX() {
 		
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		Control control = new Control( "org.freedom.ecf.driver.ECFDaruma" );
 		
 		System.out.print( "leitura X > " );
 		assertTrue( control.leituraX() );	
