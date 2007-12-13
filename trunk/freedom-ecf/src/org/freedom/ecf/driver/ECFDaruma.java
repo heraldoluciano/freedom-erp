@@ -1,16 +1,6 @@
 
 package org.freedom.ecf.driver;
 
-import static org.freedom.ecf.driver.EStatus.ALIQUOTA_NAO_PROGRAMADA;
-import static org.freedom.ecf.driver.EStatus.ARQ_INI_NAO_ENCONTRADO;
-import static org.freedom.ecf.driver.EStatus.ERRO_ABRIR_PORTA;
-import static org.freedom.ecf.driver.EStatus.ERRO_COMUNICACAO;
-import static org.freedom.ecf.driver.EStatus.ERRO_GRAVAR_RETORNO;
-import static org.freedom.ecf.driver.EStatus.FORMA_PAGAMENTO_NAO_FINALIZADA;
-import static org.freedom.ecf.driver.EStatus.FUNCAO_NAO_COMPATIVEL;
-import static org.freedom.ecf.driver.EStatus.NAO_STATUS_600;
-import static org.freedom.ecf.driver.EStatus.PARAMETRO_INVALIDO;
-import static org.freedom.ecf.driver.EStatus.RETORNO_INDEFINIDO;
 import static org.freedom.ecf.driver.EStatus.RETORNO_OK;
 
 import java.util.Date;
@@ -197,7 +187,9 @@ public class ECFDaruma extends AbstractECFDriver {
 	 */
 	public int checkRetorno( final byte[] bytes ) {
 
-		int retorno = 1;
+		int retorno = 0;
+		int erro = 0;
+		int warning = 0;
 		byte del1 = 0;
 		byte del2 = 0;
 		byte cmd = 0;
@@ -211,42 +203,49 @@ public class ECFDaruma extends AbstractECFDriver {
 			
 			if ( bytes.length > 0 ) {
 				del1 = bytes[ 0 ];
-				System.out.println( (char) del1 );
+				//System.out.println( (char) del1 );
 			}
 			if ( bytes.length > 1 ) {
 				cmd = bytes[ 1 ];
-				System.out.println( (char) cmd );
+				//System.out.println( (char) cmd );
 			}
 			if ( bytes.length > 2 ) {
 				e1 = bytes[ 2 ];
-				System.out.println( (char) e1 );
+				//System.out.println( (char) e1 );
 			}
 			if ( bytes.length > 3 ) {
 				e2 = bytes[ 3 ];
-				System.out.println( (char) e2 );
+				//System.out.println( (char) e2 );
 			}
 			if ( bytes.length > 4 ) {
 				w1 = bytes[ 4 ];
-				System.out.println( (char) w1 );
+				//System.out.println( (char) w1 );
 			}
 			if ( bytes.length > 5 ) {
 				w2 = bytes[ 5 ];
-				System.out.println( (char) w2 );
+				//System.out.println( (char) w2 );
 			}
 			if ( bytes.length > 6 ) {
 				del2 = bytes[ bytes.length - 1 ];
-				System.out.println( (char) del2 );
+				//System.out.println( (char) del2 );
 
 			}
 			if ( bytes.length > 7 ) {
 				bytesLidos = new byte[ bytes.length - 6 ];
 				System.arraycopy( bytes, 4, bytesLidos, 0, bytesLidos.length );
 				setBytesLidos( bytesLidos );
-				System.out.println( "Retorno: " + String.valueOf( bytesLidos ) );
+				//System.out.println( "Retorno: " + String.valueOf( bytesLidos ) );
 			}
 
-			retorno = checkST1(e1*10+e2);
-			retorno = checkST2(w1*10+w2);
+			erro = checkError( e1, e2 );
+			warning = checkWarning( w1, w2 );
+			
+			if ( erro != 0 ) {
+				retorno = erro;
+			}
+			else if ( warning != 1000 ) {
+				retorno = warning;
+			}
 		}
 	    
 		return retorno;
@@ -258,35 +257,9 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * @param ST1
 	 * @return retorno checado
 	 */
-	private int checkST1( int st1 ) {
+	private int checkError( byte e1, byte e2 ) {
 
-		int retorno = 0;
-
-		if ( st1 > 127 ) {
-			st1 -= 128;
-		}
-		if ( st1 > 63 ) {
-			st1 -= 64;
-		}
-		if ( st1 > 31 ) {
-			st1 -= 32;
-		}
-		if ( st1 > 15 ) {
-			st1 -= 16;
-		}
-		if ( st1 > 7 ) {
-			st1 -= 8;
-		}
-		if ( st1 > 3 ) {
-			st1 -= 4;
-		}
-		if ( st1 > 1 ) {
-			st1 -= 2;
-		}
-		if ( st1 > 0 ) {
-			st1 -= 1;
-			retorno = -2; // "Parâmetro inválido na função. ou Número de parâmetros inválido na funçao"
-		}
+		int retorno = Integer.parseInt( "" + (char) e1 + (char) e2 );
 
 		return retorno;
 	}
@@ -297,36 +270,10 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * @param ST2
 	 * @return retorno checado
 	 */
-	private int checkST2( int st2 ) {
+	private int checkWarning( byte w1, byte w2 ) {
 
-		int retorno = 0;
-
-		if ( st2 > 127 ) {
-			retorno = -2; // "Parâmetro inválido na função."
-			st2 -= 128;
-		}
-		if ( st2 > 63 ) {
-			st2 -= 64;
-		}
-		if ( st2 > 31 ) {
-			st2 -= 32;
-		}
-		if ( st2 > 15 ) {
-			st2 -= 16;
-		}
-		if ( st2 > 7 ) {
-			st2 -= 8;
-		}
-		if ( st2 > 3 ) {
-			st2 -= 4;
-		}
-		if ( st2 > 1 ) {
-			st2 -= 2;
-		}
-		if ( st2 > 0 ) {
-			st2 -= 1;
-			retorno = -2; // "Parâmetro inválido na função. ou Número de parâmetros inválido na funçao"
-		}
+		// O Código na EStatus tem o 10 na frente para diferenciar dos de erros.
+		int retorno = Integer.parseInt( "10" + (char) w1 + (char) w2 );
 
 		return retorno;
 	}
@@ -335,43 +282,11 @@ public class ECFDaruma extends AbstractECFDriver {
 
 		EStatus status = RETORNO_OK;
 
-		switch ( arg ) {
-
-		case 0:
-			status = ERRO_COMUNICACAO;
-			break;
-		case 1:
-			status = RETORNO_OK;
-			break;
-		case -2:
-			status = PARAMETRO_INVALIDO;
-			break;
-		case -3:
-			status = ALIQUOTA_NAO_PROGRAMADA;
-			break;
-		case -4:
-			status = ARQ_INI_NAO_ENCONTRADO;
-			break;
-		case -5:
-			status = ERRO_ABRIR_PORTA;
-			break;
-		case -8:
-			status = ERRO_GRAVAR_RETORNO;
-			break;
-		case -27:
-			status = NAO_STATUS_600;
-			break;
-		case -30:
-			status = FUNCAO_NAO_COMPATIVEL;
-			break;
-		case -31:
-			status = FORMA_PAGAMENTO_NAO_FINALIZADA;
-			break;
-		default:
-			EStatus stmp = RETORNO_INDEFINIDO;
-			stmp.setMessage( "Retorno indefinido: " + arg );
-			status = stmp;
-			break;
+		for ( EStatus es : EStatus.values() ) {
+			if ( arg == es.getCode() ) {
+				status = es;
+				break;
+			}
 		}
 
 		return status;
@@ -581,10 +496,27 @@ public class ECFDaruma extends AbstractECFDriver {
 	 */
 	public int aberturaDeCupom( final String cnpj ) {
 
-		byte[] CMD = { ESC, 0 };
-		CMD = adicBytes( CMD, parseParam( cnpj, 29, false ).getBytes() );
+		int retorno = indendificacaoConsumidor( cnpj );
 
-		return executaCmd( CMD, 3 );
+		if ( retorno == 0 ) {
+			retorno = aberturaDeCupom();
+		}
+
+		return retorno;
+	}
+	
+	public int indendificacaoConsumidor( final String texto ) {
+
+		final char CCMD = (char) 208;
+		byte[] CMD = { ESC, (byte) CCMD };
+		
+		final StringBuffer buf = new StringBuffer();
+
+		buf.append( parseParam( texto, 153 ) );
+
+		CMD = adicBytes( CMD, buf.toString().getBytes() );
+
+		return executaCmd( CMD, 7 );
 	}
 
 	/**
@@ -966,9 +898,10 @@ public class ECFDaruma extends AbstractECFDriver {
 	 */
 	public int cancelaCupom() {
 
-		final byte[] CMD = { ESC, 14 };
+		final char CCMD = (char) 211;
+		byte[] CMD = { ESC, (byte) CCMD };
 
-		return executaCmd( CMD, 3 );
+		return executaCmd( CMD, 13 );
 	}
 
 	/**
