@@ -270,7 +270,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		
 		
 		/************************
-		 *  FNTIPOCOB - DETALE  *
+		 *  FNTIPOCOB - DETALHE *
 		 ************************/	
 		lcTipoCobItRec.add( new GuardaCampo( txtCodTipoCobItRec, "CodTipoCob", "Cód.Tip.Cob", ListaCampos.DB_PK, false ) );
 		lcTipoCobItRec.add( new GuardaCampo( txtDescTipoCobItRec, "DescTipoCob", "Descrição tipo de cobrança", ListaCampos.DB_SI, false ) );
@@ -348,9 +348,9 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		adic( new JLabelPad( "Razão social do cliente" ), 90, 0, 250, 20 );
 		adic( txtDescCli, 90, 20, 197, 20 );
 		adic( new JLabelPad( "Cód.p.pag." ), 290, 0, 250, 20 );
-		adic( txtCodPlanoPag, 290, 20, 77, 20 );
-		adic( new JLabelPad( "Descrição do plano de pagto." ), 370, 0, 250, 20 );
-		adic( txtDescPlanoPag, 370, 20, 200, 20 );
+		adic( txtCodPlanoPag, 290, 20, 80, 20 );
+		adic( new JLabelPad( "Descrição do plano de pagto." ), 373, 0, 250, 20 );
+		adic( txtDescPlanoPag, 373, 20, 200, 20 );
 		
 		adic( new JLabelPad( "Cod.Tip.Cob." ), 7, 40, 250, 20 );
 		adic( txtCodTipoCob, 7, 60, 80, 20 );
@@ -358,15 +358,17 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		adic( txtDescTipoCob, 90, 60, 197, 20 );
 		adic( new JLabelPad( "Cód.banco" ), 290, 40, 250, 20 );
 		adic( txtCodBanco, 290, 60, 80, 20 );
-		adic( new JLabelPad( "Descriçao do banco" ), 370, 40, 250, 20 );
-		adic( txtDescBanco, 370, 60, 200, 20 );
+		adic( new JLabelPad( "Descriçao do banco" ), 373, 40, 250, 20 );
+		adic( txtDescBanco, 373, 60, 200, 20 );
 		
 		adic( new JLabelPad( "Cod.Cart.Cob." ), 7, 80, 250, 20 );
 		adic( txtCodCartCob, 7, 100, 80, 20 );
 		adic( new JLabelPad( "Descrição da Carteira de Cob." ), 90, 80, 200, 20 );
-		adic( txtDescCartCob, 90, 100, 197, 20 );		
+		adic( txtDescCartCob, 90, 100, 197, 20 );
+		
 		adic( new JLabelPad( "Valor" ), 290, 80, 90, 20 );
 		adic( txtVlrParcRec, 290, 100, 90, 20 );
+		
 		adic( new JLabelPad( "Data de Emissão" ), 383, 80, 100, 20 );
 		adic( txtDtEmisRec, 383, 100, 100, 20 );
 		adic( new JLabelPad( "Doc." ), 486, 80, 80, 20 );
