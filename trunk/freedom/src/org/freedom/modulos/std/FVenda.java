@@ -318,7 +318,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private ListaCampos lcAlmox = new ListaCampos( this, "AX" );
 
 	private JTabbedPanePad tpnCab = new JTabbedPanePad();
-
+	
 	private boolean[] bPrefs = null;
 
 	private boolean bCtrl = false;
@@ -2227,10 +2227,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				lcVenda2.carregaDados();// Carrega os Totais
 			}
 			else if ( cevt.getListaCampos() == lcCampos ) {
-				String s = txtCodVenda.getVlrString();
+				String codvenda = txtCodVenda.getVlrString();
 				lcVenda2.carregaDados();// Carrega os Totais
-				txtCodVenda.setVlrString( s );
-				s = null;
+				txtCodVenda.setVlrString( codvenda );
+				codvenda = null;
 			}
 			else if ( cevt.getListaCampos() == lcVenda2 ) {
 				txtPercComisVenda.setAtivo( txtVlrComisVenda.floatValue() == 0 );
@@ -2622,8 +2622,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btFechaVenda ) {
-			fechaVenda();
+		if ( evt.getSource() == btFechaVenda ) { //xxx 			
+			if(lcCampos.carregaDados()) {
+				fechaVenda();
+			}
 		}
 		else if ( evt.getSource() == btConsPgto ) {
 			DLConsultaPgto dl = new DLConsultaPgto( this, con, txtCodCli.getVlrInteger().intValue() );
