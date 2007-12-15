@@ -230,7 +230,9 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Codifição de produto", "Codificação de produto", 'P', 700700800, 2, true, FRCodficProd.class );
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Etiquetas de código de barras", "Etiquetas de código de barras", 'E', 700700900, 2, true, FRCodbarProd.class );
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Ultimas compras/produto", "Ultimas compras/produto", 'E', 700701000, 2, true, FRCpProd.class );
-
+				addSeparador( 700000000 );
+		addOpcao( 700000000, TP_OPCAO_ITEM, "Transferencia de produtos ", "Tranferencia de produtos/almoxarifados", 'R', 700800000, 1, true, FTransfEstoque.class );
+		
 		addOpcao( -1, TP_OPCAO_MENU, "Fiscal", "", 'F', 800000000, 0, false, null );
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Gerar", "Gera Fiscal", 'G', 800100000, 1, true, FGeraFiscal.class );
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Regras CFOP", "Regras CFOP", 'R', 800200000, 1, true, FRegraFiscal.class );
