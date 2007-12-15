@@ -30,6 +30,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -593,6 +595,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		tabManut.adicColuna( "Categoria" ); // 17
 		tabManut.adicColuna( "Centro de custo" ); // 18
 		tabManut.adicColuna( "Observação" ); // 19
+		tabManut.adicColuna( "Tp.Cob." ); // 20
 
 		tabManut.setTamColuna( 0, 0 );
 		tabManut.setTamColuna( 80, 1 );
@@ -626,6 +629,15 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		btExecManut.addActionListener( this );
 		btEstManut.addActionListener( this );
 		tpn.addChangeListener( this );
+		
+		
+		tabManut.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent mevt) {
+				if (mevt.getSource() == tabManut && mevt.getClickCount() == 2)
+					editar();
+				}
+			});
+		
 	}
 
 	private void limpaConsulta() {
@@ -1026,7 +1038,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 				sSQL.append( "IT.OBSITPAG,IT.NPARCPAG,IT.VLRJUROSITPAG," );
 				sSQL.append( "(SELECT CO.DOCCOMPRA FROM CPCOMPRA CO " );
 				sSQL.append( "WHERE CO.CODCOMPRA=P.CODCOMPRA AND CO.CODEMP=P.CODEMPCP AND CO.CODFILIAL=P.CODFILIALCP)," );
-				sSQL.append( "IT.DTITPAG,IT.VLRADICITPAG,P.DOCPAG " );
+				sSQL.append( "IT.DTITPAG,IT.VLRADICITPAG,P.DOCPAG,P.CODTIPOCOB " );
 				sSQL.append( "FROM FNITPAGAR IT,FNPAGAR P,CPFORNECED F " );
 				sSQL.append( "WHERE P.CODPAG=IT.CODPAG AND F.CODFOR=P.CODFOR " );
 				sSQL.append( sWhereManut );
@@ -1087,6 +1099,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 						tabManut.setValor( rs.getString( 17 ) != null ? rs.getString( 17 ) : "", i, 17 );
 						tabManut.setValor( rs.getString( 19 ) != null ? rs.getString( 19 ) : "", i, 18 );
 						tabManut.setValor( rs.getString( "ObsItPag" ) != null ? rs.getString( "ObsItPag" ) : "", i, 19 );
+						tabManut.setValor( rs.getString( "CODTIPOCOB" ) != null ? rs.getString( "CODTIPOCOB" ) : "", i, 20 );
 						vCodPed.addElement( rs.getString( "CodCompra" ) );
 						vNumContas.addElement( rs.getString( "NumConta" ) != null ? rs.getString( "NumConta" ) : "" );
 						vCodPlans.addElement( rs.getString( "CodPlan" ) != null ? rs.getString( "CodPlan" ) : "" );
@@ -1412,7 +1425,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 					iCodPag = Integer.parseInt( (String) tabManut.getValor( iLin, 5 ) );
 					iNParcPag = Integer.parseInt( (String) tabManut.getValor( iLin, 6 ) );
 					
-					sVals = new String[ 13 ];
+					sVals = new String[ 14 ];
 					
 					dl = new DLEditaPag( this );
 					
@@ -1444,6 +1457,8 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 						
 						sVals[ 12 ] = (String) tabManut.getValor( iLin, 18 );
 					}
+					
+					sVals[ 13 ] = (String) tabManut.getValor( iLin, 20 );
 					
 					// SE o doccompra estiver em branco getvalor(8) quer dizer que o lançamento foi feito pelo usuário.
 					dl.setValores( sVals, "".equals( tabManut.getValor( iLin, 8 ).toString().trim() ) );

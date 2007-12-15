@@ -25,6 +25,8 @@ package org.freedom.modulos.std;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -81,18 +83,24 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 	private JTextFieldPad txtVlrAdic = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
 	private JTextFieldPad txtObs = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private final JTextFieldPad txtCodTipoCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private final JTextFieldFK txtDescTipoCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private ListaCampos lcConta = new ListaCampos( this );
 
 	private ListaCampos lcPlan = new ListaCampos( this );
 
 	private ListaCampos lcCC = new ListaCampos( this );
+	
+	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
 
 	public DLEditaPag( Component cOrig ) {
 
 		super( cOrig );
 		setTitulo( "Editar" );
-		setAtribos( 360, 380 );
+		setAtribos( 360, 420 );
 
 		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
@@ -126,6 +134,18 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		txtAnoCC.setFK( true );
 		txtAnoCC.setNomeCampo( "AnoCC" );
 
+		txtCodTipoCob.setNomeCampo( "CodTipoCob" );
+		lcTipoCob.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK, false ) );
+		lcTipoCob.add( new GuardaCampo( txtDescTipoCob, "DescTipoCob", "Descrição do tipo de cobrança.", ListaCampos.DB_SI, false ) );
+		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
+		lcTipoCob.setQueryCommit( false );
+		lcTipoCob.setReadOnly( true );
+		txtCodTipoCob.setTabelaExterna( lcTipoCob );
+		txtCodTipoCob.setListaCampos( lcTipoCob );
+		txtDescTipoCob.setListaCampos( lcTipoCob );
+		txtCodTipoCob.setFK( true );
+		
+			
 		txtCodFor.setAtivo( false );
 		txtRazFor.setAtivo( false );
 		txtDescConta.setAtivo( false );
@@ -148,24 +168,32 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		adic( txtCodCC, 7, 140, 100, 20 );
 		adic( new JLabelPad( "Descrição do centro de custo" ), 110, 120, 250, 20 );
 		adic( txtDescCC, 110, 140, 230, 20 );
-		adic( new JLabelPad( "Doc." ), 7, 160, 110, 20 );
-		adic( txtDoc, 7, 180, 110, 20 );
-		adic( new JLabelPad( "Emissão" ), 120, 160, 107, 20 );
-		adic( txtDtEmis, 120, 180, 107, 20 );
-		adic( new JLabelPad( "Vencimento" ), 230, 160, 110, 20 );
-		adic( txtDtVenc, 230, 180, 110, 20 );
-		adic( new JLabelPad( "Vlr.parc." ), 7, 200, 100, 20 );
-		adic( txtVlrParc, 7, 220, 100, 20 );
-		adic( new JLabelPad( "Vlr.juros." ), 110, 200, 67, 20 );
-		adic( txtVlrJuros, 110, 220, 67, 20 );
-		adic( new JLabelPad( "Vlr.desc." ), 180, 200, 77, 20 );
-		adic( txtVlrDesc, 180, 220, 77, 20 );
-		adic( new JLabelPad( "Vlr.adic." ), 260, 200, 80, 20 );
-		adic( txtVlrAdic, 260, 220, 80, 20 );
-		adic( new JLabelPad( "Observações" ), 7, 240, 200, 20 );
-		adic( txtObs, 7, 260, 333, 20 );
+		
+		adic( new JLabelPad( "Cod.Tp.Cob" ), 7, 160, 80, 20);
+		adic( txtCodTipoCob, 7, 180, 80, 20 );
+		adic( new JLabelPad("Descrição do tipo de cobrança"), 90, 160, 250, 20 );
+		adic(txtDescTipoCob, 90, 180, 250, 20 );
+			
+		adic( new JLabelPad( "Doc." ), 7, 200, 110, 20 );
+		adic( txtDoc, 7, 220, 110, 20 );
+		adic( new JLabelPad( "Emissão" ), 120, 200, 107, 20 );
+		adic( txtDtEmis, 120, 220, 107, 20 );
+		adic( new JLabelPad( "Vencimento" ), 230, 200, 110, 20 );
+		adic( txtDtVenc, 230, 220, 110, 20 );
+		adic( new JLabelPad( "Vlr.parc." ), 7, 240, 100, 20 );
+		adic( txtVlrParc, 7, 260, 100, 20 );
+		adic( new JLabelPad( "Vlr.juros." ), 110, 240, 67, 20 );
+		adic( txtVlrJuros, 110, 260, 67, 20 );
+		adic( new JLabelPad( "Vlr.desc." ), 180, 240, 77, 20 );
+		adic( txtVlrDesc, 180, 260, 77, 20 );
+		adic( new JLabelPad( "Vlr.adic." ), 260, 240, 80, 20 );
+		adic( txtVlrAdic, 260, 260, 80, 20 );
+				
+		adic( new JLabelPad( "Observações" ), 7, 280, 200, 20 );
+		adic( txtObs, 7, 300, 333, 20 );
 
 		lcCC.addCarregaListener( this );
+		
 	}
 
 	public void setValores( String[] sVals, boolean bLancaUsu ) {
@@ -183,12 +211,13 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		txtVlrDesc.setVlrString( sVals[ 10 ] );
 		txtVlrAdic.setVlrString( sVals[ 11 ] );
 		txtObs.setVlrString( sVals[ 12 ] );
+		txtCodTipoCob.setVlrString( sVals[ 13 ] );
 		txtVlrParc.setAtivo( bLancaUsu );
 	}
 
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 10 ];
+		String[] sRetorno = new String[ 11 ];
 		sRetorno[ 0 ] = txtCodConta.getVlrString();
 		sRetorno[ 1 ] = txtCodPlan.getVlrString();
 		sRetorno[ 2 ] = txtCodCC.getVlrString();
@@ -199,6 +228,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		sRetorno[ 7 ] = txtVlrDesc.getVlrString();
 		sRetorno[ 8 ] = txtDtVenc.getVlrString();
 		sRetorno[ 9 ] = txtObs.getVlrString();
+		sRetorno[ 10 ] = txtCodTipoCob.getVlrString();
 		return sRetorno;
 	}
 
@@ -266,6 +296,8 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		lcConta.carregaDados();
 		lcPlan.setConexao( cn );
 		lcPlan.carregaDados();
+		lcTipoCob.setConexao( cn );
+		lcTipoCob.carregaDados();
 		lcCC.setConexao( cn );
 		lcCC.carregaDados();
 	}

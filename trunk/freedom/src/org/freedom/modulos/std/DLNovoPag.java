@@ -57,7 +57,7 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 
 	private JPanelPad pnPag = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad pinCab = new JPanelPad( 580, 130 );
+	private JPanelPad pinCab = new JPanelPad( 580, 170 );
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -67,6 +67,10 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
+	private final JTextFieldPad txtCodTipoCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private final JTextFieldFK txtDescTipoCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
 	private JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -86,6 +90,10 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 	private JTextFieldPad txtDocPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextFieldPad txtObs = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private final JTextFieldPad txtCodTipoCobItPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private final JTextFieldFK txtDescTipoCobItPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private Tabela tabPag = new Tabela();
 
@@ -93,6 +101,8 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 
 	private ListaCampos lcPagar = new ListaCampos( this );
 
+	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
+	
 	private ListaCampos lcItPagar = new ListaCampos( this );
 
 	private ListaCampos lcFor = new ListaCampos( this, "FR" );
@@ -104,6 +114,8 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 	private Navegador navPagar = new Navegador( false );
 
 	private Navegador navItPagar = new Navegador( false );
+	
+	private final ListaCampos lcTipoCobItPag = new ListaCampos( this, "TC" );
 
 	public DLNovoPag( Component cOrig ) {
 
@@ -147,10 +159,24 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 		txtCodBanco.setFK( true );
 		txtCodBanco.setNomeCampo( "CodBanco" );
 
+		/***************
+		 *  FNTIPOCOB  *
+		 ***************/
+		lcTipoCob.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.Tip.Cob", ListaCampos.DB_PK, false ) );
+		lcTipoCob.add( new GuardaCampo( txtDescTipoCob, "DescTipoCob", "Descrição do tipo de cobrança", ListaCampos.DB_SI, false ) );		
+		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
+		lcTipoCob.setQueryCommit( false );
+		lcTipoCob.setReadOnly( true );
+		txtCodTipoCob.setTabelaExterna( lcTipoCob );
+		txtCodTipoCob.setFK( true );
+		txtCodTipoCob.setNomeCampo( "CodTipoCob" );
+				
+		
 		lcPagar.add( new GuardaCampo( txtCodPag, "CodPag", "Cód.pag.", ListaCampos.DB_PK, true ) );
 		lcPagar.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_FK, true ) );
 		lcPagar.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK, true ) );
 		lcPagar.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_FK, false ) );
+		lcPagar.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_FK, false ) );
 		lcPagar.add( new GuardaCampo( txtVlrParcPag, "VlrParcPag", "Valor da parc.", ListaCampos.DB_SI, false ) );
 		lcPagar.add( new GuardaCampo( txtDtEmisPag, "DataPag", "Dt.emissão", ListaCampos.DB_SI, true ) );
 		lcPagar.add( new GuardaCampo( txtDocPag, "DocPag", "N.documento", ListaCampos.DB_SI, true ) );
@@ -165,8 +191,8 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 		lcItPagar.setQueryCommit( false );
 		txtNParcPag.setListaCampos( lcItPagar );
 		txtVlrParcItPag.setListaCampos( lcItPagar );
-		txtDtVencItPag.setListaCampos( lcItPagar );
-
+		txtDtVencItPag.setListaCampos( lcItPagar );	
+		
 		lcItPagar.montaTab();
 		tabPag.addMouseListener( // Adiciona o mouse listener para que possa editar os itens.
 				new MouseAdapter() {
@@ -214,6 +240,7 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 		pnPag.add( spnTab, BorderLayout.CENTER );
 
 		setPainel( pinCab );
+		/*
 		adic( new JLabelPad( "Cód.for." ), 7, 0, 250, 20 );
 		adic( txtCodFor, 7, 20, 80, 20 );
 		adic( new JLabelPad( "Razão social do fornecedor" ), 90, 0, 250, 20 );
@@ -223,19 +250,69 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 		adic( new JLabelPad( "Descrição do plano de pagto." ), 370, 0, 250, 20 );
 		adic( txtDescPlanoPag, 370, 20, 200, 20 );
 		adic( new JLabelPad( "Cód.banco" ), 7, 40, 250, 20 );
+
 		adic( txtCodBanco, 7, 60, 80, 20 );
 		adic( new JLabelPad( "Descriçao do banco" ), 90, 40, 250, 20 );
 		adic( txtDescBanco, 90, 60, 197, 20 );
 		adic( new JLabelPad( "Valor" ), 290, 40, 107, 20 );
-		adic( txtVlrParcPag, 290, 60, 107, 20 );
+
+		adic( new JLabelPad( "Cod.Tip.Cob." ), 7, 40, 250, 20 );
+		adic( txtCodTipoCob, 7, 60, 80, 20 );
+		adic( new JLabelPad( "Descrição Tipo Cobrança" ), 90, 40, 200, 20 );
+		adic( txtDescTipoCob, 90, 60, 197, 20 );
+		adic( new JLabelPad( "Cód.banco" ), 290, 40, 250, 20 );
+		adic( txtCodBanco, 290, 60, 80, 20 );
+		adic( new JLabelPad( "Descriçao do banco" ), 370, 40, 250, 20 );
+		adic( txtDescBanco, 370, 60, 200, 20 );
+		
+		
+		adic( new JLabelPad( "Valor" ), 290, 80, 90, 20 );
+		adic( txtVlrParcPag, 290, 100, 90, 20 );
+		adic( new JLabelPad( "Data de Emissão" ), 383, 80, 100, 20 );
+		adic( txtDtEmisPag, 383, 100, 100, 20 );
+		adic( new JLabelPad( "Doc." ), 486, 80, 80, 20 );
+		adic( txtDocPag, 486, 100, 85, 20 );
+		
+		
+		adic( txtVlrParcPag, 290, 90, 107, 20 );
 		adic( new JLabelPad( "Data de Emissão" ), 400, 40, 100, 20 );
-		adic( txtDtEmisPag, 400, 60, 100, 20 );
+		adic( txtDtEmisPag, 400, 90, 100, 20 );
 		adic( new JLabelPad( "Doc." ), 7, 80, 80, 20 );
 		adic( txtDocPag, 7, 100, 80, 20 );
 		adic( new JLabelPad( "Observações" ), 90, 80, 300, 20 );
-		adic( txtObs, 90, 100, 300, 20 );
+		adic( txtObs, 90, 100, 300, 20 );*/
+		
+		adic( new JLabelPad( "Cód.for." ), 7, 0, 250, 20 );
+		adic( txtCodFor, 7, 20, 80, 20 );
+		adic( new JLabelPad( "Razão social do fornecedor" ), 90, 0, 250, 20 );
+		adic( txtDescFor, 90, 20, 197, 20 );
+		adic( new JLabelPad( "Cód.p.pag." ), 290, 0, 250, 20 );
+		adic( txtCodPlanoPag, 290, 20, 80, 20 );
+		adic( new JLabelPad( "Descrição do plano de pagto." ), 373, 0, 250, 20 );
+		adic( txtDescPlanoPag, 373, 20, 200, 20 );
+		
+		adic( new JLabelPad( "Cod.Tip.Cob." ), 7, 40, 250, 20 );
+		adic( txtCodTipoCob, 7, 60, 80, 20 );
+		adic( new JLabelPad( "Descrição Tipo Cobrança" ), 90, 40, 200, 20 );
+		adic( txtDescTipoCob, 90, 60, 197, 20 );
+		adic( new JLabelPad( "Cód.banco" ), 290, 40, 250, 20 );
+		adic( txtCodBanco, 290, 60, 80, 20 );
+		adic( new JLabelPad( "Descriçao do banco" ), 373, 40, 250, 20 );
+		adic( txtDescBanco, 373, 60, 200, 20 );
+			
+		adic( new JLabelPad( " Valor" ), 7, 80, 90, 20 );
+		adic( txtVlrParcPag, 7, 100, 90, 20 );
+		adic( new JLabelPad( "Data de Emissão" ), 100, 80, 100, 20 );
+		adic( txtDtEmisPag, 100, 100, 100, 20 );
+		adic( new JLabelPad( "Doc." ), 203, 80, 80, 20 );
+		adic( txtDocPag, 203, 100, 85, 20 );
+		
+		adic( new JLabelPad( "Observações" ), 7, 120, 300, 20 );
+		adic( txtObs, 7, 140, 565, 20 );
+		
 
 		lcPagar.addPostListener( this );
+
 	}
 
 	private void testaCodPag() { // Traz o verdadeiro número do codvenda através do generator do banco
@@ -312,6 +389,7 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 		super.setConexao( cn );
 		lcFor.setConexao( cn );
 		lcPlanoPag.setConexao( cn );
+		lcTipoCob.setConexao( cn );
 		lcPagar.setConexao( cn );
 		lcItPagar.setConexao( cn );
 		lcBanco.setConexao( cn );
