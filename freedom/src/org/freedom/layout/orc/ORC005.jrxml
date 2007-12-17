@@ -2191,11 +2191,11 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						x="422"
 						y="103"
 						width="84"
-						height="7"
+						height="8"
 						key="staticText-84"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Bitstream Vera Sans" size="5"/>
 					</textElement>
 				<text><![CDATA[9 - TELEFONE DE CONTATO]]></text>
 				</staticText>
@@ -2274,11 +2274,11 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						x="326"
 						y="149"
 						width="79"
-						height="7"
+						height="8"
 						key="staticText-89"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Bitstream Vera Sans" size="5"/>
 					</textElement>
 				<text><![CDATA[12 - CÓD.IBGE MUNICÍPIO CONTATO]]></text>
 				</staticText>
