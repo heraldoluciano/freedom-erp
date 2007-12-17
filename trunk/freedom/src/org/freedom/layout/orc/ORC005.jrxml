@@ -474,10 +474,10 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						x="172"
 						y="190"
 						width="135"
-						height="7"
+						height="8"
 						key="staticText-29"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement verticalAlignment="Middle">
 						<font fontName="Bitstream Vera Sans" size="6"/>
 					</textElement>
 				<text><![CDATA[16 - NOME DO PROCEDIMENTO PRINCIPAL]]></text>
@@ -1257,12 +1257,12 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						mode="Opaque"
 						x="277"
 						y="505"
-						width="79"
-						height="7"
+						width="87"
+						height="8"
 						key="staticText-51"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Bitstream Vera Sans" size="5"/>
 					</textElement>
 				<text><![CDATA[39-DATA DA SOLICITAÇÃO NASCIMENTO]]></text>
 				</staticText>
@@ -1380,8 +1380,8 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						height="7"
 						key="staticText-57"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Bitstream Vera Sans" size="5"/>
 					</textElement>
 				<text><![CDATA[44 - CÓD.ÓRGÃO EMISSOR]]></text>
 				</staticText>
@@ -2067,11 +2067,11 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						x="300"
 						y="80"
 						width="79"
-						height="7"
+						height="8"
 						key="staticText-79"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
+						<font fontName="Bitstream Vera Sans" size="5"/>
 					</textElement>
 				<text><![CDATA[6 - DATA DE NASCIMENTO]]></text>
 				</staticText>
@@ -2090,11 +2090,11 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						x="457"
 						y="80"
 						width="30"
-						height="7"
+						height="8"
 						key="staticText-80"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Bitstream Vera Sans" size="5"/>
 					</textElement>
 				<text><![CDATA[7 - SEXO]]></text>
 				</staticText>
