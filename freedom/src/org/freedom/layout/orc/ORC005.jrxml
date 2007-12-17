@@ -1955,9 +1955,9 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="460"
-						y="16"
+						y="15"
 						width="31"
-						height="7"
+						height="10"
 						key="staticText-75"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
