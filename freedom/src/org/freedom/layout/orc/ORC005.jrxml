@@ -1281,10 +1281,10 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						x="367"
 						y="505"
 						width="148"
-						height="7"
+						height="8"
 						key="staticText-52"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement verticalAlignment="Middle">
 						<font fontName="Bitstream Vera Sans" size="5"/>
 					</textElement>
 				<text><![CDATA[42-ASSINATURA E CARIMBO (N°REGISTRO DO CONSELHO)]]></text>
@@ -1577,10 +1577,10 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						x="399"
 						y="574"
 						width="86"
-						height="7"
+						height="8"
 						key="staticText-60"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement verticalAlignment="Middle">
 						<font fontName="Bitstream Vera Sans" size="5"/>
 					</textElement>
 				<text><![CDATA[49 - N° DA AUTORIZAÇÃO (APAC)]]></text>
@@ -1690,12 +1690,12 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="396"
-						y="647"
+						y="645"
 						width="100"
-						height="6"
+						height="9"
 						key="staticText-65"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement verticalAlignment="Middle">
 						<font fontName="Bitstream Vera Sans" size="5"/>
 					</textElement>
 				<text><![CDATA[50 - PERÍODO DE VALIDADE DA APAC]]></text>
@@ -1955,9 +1955,9 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="460"
-						y="15"
-						width="31"
-						height="10"
+						y="11"
+						width="40"
+						height="11"
 						key="staticText-75"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
@@ -2019,12 +2019,12 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="450"
-						y="57"
+						y="56"
 						width="72"
-						height="7"
+						height="8"
 						key="staticText-77"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement verticalAlignment="Middle">
 						<font fontName="Bitstream Vera Sans" size="6"/>
 					</textElement>
 				<text><![CDATA[4 - N° DO PRONTUARIO]]></text>
@@ -2042,13 +2042,13 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="42"
-						y="81"
+						y="80"
 						width="125"
-						height="7"
+						height="10"
 						key="staticText-78"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
+						<font fontName="Bitstream Vera Sans" size="5"/>
 					</textElement>
 				<text><![CDATA[5 - CARTÃO NACIONAL DE SAÚDE (CNS)]]></text>
 				</staticText>
@@ -2303,14 +2303,14 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="420"
+						x="414"
 						y="149"
 						width="23"
-						height="7"
+						height="10"
 						key="staticText-90"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Bitstream Vera Sans" size="5"/>
 					</textElement>
 				<text><![CDATA[13 - UF]]></text>
 				</staticText>
@@ -2722,9 +2722,9 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<reportElement
 						mode="Opaque"
 						x="458"
-						y="22"
+						y="19"
 						width="31"
-						height="7"
+						height="10"
 						key="staticText-69"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
