@@ -194,32 +194,42 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 				
 		tab.adicColuna("Cód.orc");
 		tab.adicColuna("Emissão.");
-		tab.adicColuna("Vcto.orc.");
-		tab.adicColuna("Cód.conv.");
-		tab.adicColuna("Nome do conveniado");
-		tab.adicColuna("Fone do conveniado");
-		tab.adicColuna("Valid.autoriz.");
-		tab.adicColuna("Num.autoriz");
-		tab.adicColuna("Cód.prod.");
-		tab.adicColuna("Cód.barra");
-		tab.adicColuna("Desc.prod.");
+		tab.adicColuna("Vcto.Orc.");
+		tab.adicColuna("Valid.Autoriz.");
+		tab.adicColuna("N.Autorização");
+		tab.adicColuna("Cod.Conv.");
+		tab.adicColuna("Nome do Conveniado");
+		tab.adicColuna("End.Conveniado");
+		tab.adicColuna("N.Resid.");
+		tab.adicColuna("Bairro");
+		tab.adicColuna("Cidade");
+		tab.adicColuna("DDD ");
+		tab.adicColuna("Fone ");
+		tab.adicColuna("Cod.Prod.");
+		tab.adicColuna("Cod.Barras");
+		tab.adicColuna("Desc.Produto");
 		tab.adicColuna("Qtd.");
-		tab.adicColuna("Valor.");
+		tab.adicColuna("Vlr.Item");
 		
 		tab.setTamColuna(70,0);
 		tab.setTamColuna(70,1);
 		tab.setTamColuna(70,2);
 		tab.setTamColuna(70,3);
-		tab.setTamColuna(150,4);
-		tab.setTamColuna(120,5);
-		tab.setTamColuna(110,6);
-		tab.setTamColuna(90,7);
-		tab.setTamColuna(90,8);
-		tab.setTamColuna(90,9);
-		tab.setTamColuna(200,10);
-		tab.setTamColuna(70,11);
-		tab.setTamColuna(70,12);		
-		
+		tab.setTamColuna(110,4);
+		tab.setTamColuna(70,5);
+		tab.setTamColuna(200,6);
+		tab.setTamColuna(200,7);
+		tab.setTamColuna(50,8);
+		tab.setTamColuna(100,9);
+		tab.setTamColuna(100,10);
+		tab.setTamColuna(50,11);
+		tab.setTamColuna(90,12);
+		tab.setTamColuna(70,13);
+		tab.setTamColuna(100,14);
+		tab.setTamColuna(250,15);
+		tab.setTamColuna(70,16);
+		tab.setTamColuna(70,17);
+			
 		btBusca.addActionListener(this);		
 		btPrevimp.addActionListener(this);			
 			
@@ -285,9 +295,9 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		}
 		try {
 			
-			sSQL="SELECT  O.CODORC,O.DTORC,O.DTVENCORC,"+
-				"O.CODCONV,C.NOMECONV,C.FONECONV , IT.VENCAUTORIZORC,IT.NUMAUTORIZORC,"+
-				"IT.CODPROD, P.CODBARPROD,P.DESCPROD,it.qtditorc, it.vlrliqitorc, "+
+			sSQL="SELECT  O.CODORC,O.DTORC,O.DTVENCORC,IT.VENCAUTORIZORC,IT.NUMAUTORIZORC,"+
+				"O.CODCONV,C.NOMECONV,c.endconv,C.NUMCONV, C.BAIRCONV, c.cidconv, C.DDDCONV, C.FONECONV , "+
+				"IT.CODPROD, P.CODBARPROD,P.DESCPROD,it.qtditorc, it.vlrliqitorc,     "+
 				"(SELECT EC.NOMEENC FROM ATENCAMINHADOR EC WHERE EC.CODENC=C.CODENC AND "+
 				"EC.CODEMP=C.CODEMPEC AND EC.CODFILIAL=C.CODFILIALEC) "+
 				"FROM VDORCAMENTO O,VDCLIENTE CL,"+
@@ -318,17 +328,22 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 				tab.setValor(String.valueOf(rs.getInt(1)), iLin, 0);
 				tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate(2)), iLin, 1);
 				tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate(3)), iLin, 2);
-				tab.setValor(String.valueOf(rs.getInt(4)), iLin,3);
+				tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate(4)), iLin, 3);
 				tab.setValor(rs.getString(5)!= null ? rs.getString(5) : "", iLin, 4);
-				tab.setValor(rs.getString(6)!= null ? Funcoes.setMascara(rs.getString(6),"####-####") : "", iLin, 5);
-				tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate(7)), iLin, 6);
-				tab.setValor(rs.getString(8)!= null ? rs.getString(8) : "", iLin, 7);
-				tab.setValor(String.valueOf(rs.getInt(9)), iLin,  8);
+				tab.setValor(String.valueOf(rs.getInt(6)), iLin,5);
+				tab.setValor(rs.getString(7)!= null ? rs.getString(7) : "", iLin, 6);
+				tab.setValor(rs.getString(8) != null ? rs.getString(8) : "", iLin, 7);
+				tab.setValor(String.valueOf(rs.getInt(9)), iLin,8);
 				tab.setValor(rs.getString(10) != null ? rs.getString(10) : "", iLin, 9);
 				tab.setValor(rs.getString(11) != null ? rs.getString(11) : "", iLin, 10);
-				tab.setValor(Funcoes.strDecimalToStrCurrency(2, rs.getString(12)), iLin, 11);
-				tab.setValor(Funcoes.strDecimalToStrCurrency(2, rs.getString(13)), iLin, 12);
-							//	tab.setValor(rs.getString(14) != null ? rs.getString(13) : "", iLin, 13);
+				tab.setValor(String.valueOf(rs.getInt(12)), iLin,11);
+				tab.setValor(rs.getString(13)!= null ? Funcoes.setMascara(rs.getString(13),"####-####") : "", iLin, 12);
+				tab.setValor(String.valueOf(rs.getInt(14)), iLin,13);
+				tab.setValor(String.valueOf(rs.getInt(15)), iLin,14);
+				tab.setValor(rs.getString(16)!= null ? rs.getString(16) : "", iLin, 15);
+				tab.setValor(rs.getString(17) != null ? rs.getString(17) : "", iLin, 16);
+				tab.setValor(rs.getString(18) != null ? rs.getString(18) : "", iLin, 17);
+				
 				bTotalLiq = bTotalLiq.add( new BigDecimal( rs.getString("vlrliqitorc")));
 				iLin++;
 				
@@ -366,34 +381,49 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 					imp.say(imp.pRow(),0, imp.comprimido());
 					imp.say(imp.pRow(),0, "|" + Funcoes.replicate("=",133) + "|");
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
-					imp.say(imp.pRow(),  0, "| N.ORC.");
-					imp.say(imp.pRow(), 14, "|  Emissão");
-					imp.say(imp.pRow(), 27, "|  Validade");
-					imp.say(imp.pRow(), 40, "| Autoriz.");
-					imp.say(imp.pRow(), 54, "| Nome");
-					imp.say(imp.pRow(), 82, "| Produto");
-					imp.say( imp.pRow(),115, " | Qtd" );
-					imp.say(imp.pRow(),124, "| Valor");	
-					//imp.say(imp.pRow(), 82, "| Encaminhador");
-	             	//imp.say(imp.pRow(), 97, "| Cidade");
-					//imp.say(imp.pRow(),119, "| Telefone");	
-					imp.say(imp.pRow(),135, "|");					
+					imp.say(imp.pRow(),  0, "|Cod.Orc.");
+					imp.say(imp.pRow(), 05, "|Emissão");
+					imp.say(imp.pRow(), 14, "|Vcto.Orc.");
+					imp.say(imp.pRow(), 24, "|Valid.Autoriz.");
+					imp.say(imp.pRow(), 40, "|N.Autorização");
+					imp.say(imp.pRow(), 53, "|Cod.Conv.");
+					imp.say(imp.pRow(), 64, "|Nome do Conveniado");
+					imp.say(imp.pRow(), 112,"|End.Conveniado");
+                    imp.say(imp.pRow(), 124,"|N.Resid."); 					
+					imp.say(imp.pRow(), 130,"|Bairro");
+					imp.say(imp.pRow(), 175,"|Cidade" );
+					imp.say(imp.pRow(), 190,"|DDD");
+					imp.say(imp.pRow(), 200,"|Fone");
+					imp.say(imp.pRow(), 215,"|Cod.Prod.");
+					imp.say(imp.pRow(), 235,"|Cod.Barras");
+					imp.say(imp.pRow(), 245,"|Desc.Prod.");
+					imp.say(imp.pRow(), 300,"|Qtd.");
+					imp.say(imp.pRow(), 315,"|Vlr.Item");
+					imp.say(imp.pRow(),180, "|");					
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
 				} 
 				imp.say(imp.pRow()+1, 0, imp.comprimido());
 				imp.say(imp.pRow(),  0, "| " + tab.getValor(iLin,0));
-				imp.say(imp.pRow(), 14, "| " + tab.getValor(iLin,1));
-				imp.say(imp.pRow(), 27, "| " + tab.getValor(iLin,6));
-				imp.say(imp.pRow(), 40, "| " + Funcoes.copy((String)tab.getValor(iLin,7),11));				
-				imp.say(imp.pRow(), 54, "| " + Funcoes.copy((String)tab.getValor(iLin,4),25));				
-				imp.say(imp.pRow(), 82, "| " + Funcoes.copy((String)tab.getValor(iLin,10),31));				
-					
-				imp.say(imp.pRow(), 116, "| " + Funcoes.copy((String)tab.getValor(iLin,11),5));
-				imp.say(imp.pRow(), 124, "| " + Funcoes.copy((String)tab.getValor(iLin,12),8));
-				
-			 
-				imp.say(imp.pRow(),135, "|");
+				imp.say(imp.pRow(), 05, "| " + tab.getValor(iLin,1));
+				imp.say(imp.pRow(), 14, "| " + tab.getValor(iLin,2));
+				imp.say(imp.pRow(), 24, "| " + tab.getValor(iLin,3));
+				imp.say(imp.pRow(), 40, "| " + Funcoes.copy((String)tab.getValor(iLin,4),11));				
+				imp.say(imp.pRow(), 53, "| " + Funcoes.copy((String)tab.getValor(iLin,5),25));				
+				imp.say(imp.pRow(), 64, "| " + Funcoes.copy((String)tab.getValor(iLin,6),25));
+				imp.say(imp.pRow(),112, "| " + Funcoes.copy((String)tab.getValor(iLin,7),25));
+				imp.say(imp.pRow(),124, "| " + tab.getValor(iLin,8));
+				imp.say(imp.pRow(),130, "| " + Funcoes.copy((String)tab.getValor(iLin,9),15));
+				imp.say(imp.pRow(),175, "| " + Funcoes.copy((String)tab.getValor(iLin,10),15));
+				imp.say(imp.pRow(),190, "| " + Funcoes.copy((String)tab.getValor(iLin,11),10));
+				imp.say(imp.pRow(),200, "| " + Funcoes.copy((String)tab.getValor(iLin,12),15));
+				imp.say(imp.pRow(),215, "| " + tab.getValor(iLin,13));
+				imp.say(imp.pRow(),235, "| " + tab.getValor(iLin,14));
+				imp.say(imp.pRow(),245, "| " + Funcoes.copy((String)tab.getValor(iLin,15),25));
+				imp.say(imp.pRow(),300, "| " + Funcoes.copy((String)tab.getValor(iLin,16),10));				
+				imp.say(imp.pRow(),315, "| " + Funcoes.copy((String)tab.getValor(iLin,17),10));
+								  
+				imp.say(imp.pRow(),185, "|");
 				
 								
 			}			
