@@ -225,6 +225,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private JButton btCarregaGridManut = new JButton( Icone.novo( "btExecuta.gif" ) );
 
 	private JButton btCarregaBaixas = new JButton( Icone.novo( "btConsBaixa.gif" ) );
+	
+	private JButton btCarregaBaixasMan = new JButton( Icone.novo( "btConsBaixa.gif" ) );
 
 	private JButton btBaixa = new JButton( Icone.novo( "btOk.gif" ) );
 
@@ -322,6 +324,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		btEstorno.setToolTipText( "Estorno" );
 		btCarregaGridManut.setToolTipText( "Executar consulta" );
 		btCarregaBaixas.setToolTipText( "Carrega baixas" );
+		btCarregaBaixasMan.setToolTipText( "Carrega baixas" );
 		btBaixa.setToolTipText( "Baixar" );
 		btSair.setToolTipText( "Sair" );
 		btCarregaVenda.setToolTipText( "Consulta venda" );
@@ -683,12 +686,13 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pinManut.adic( txtRazCliManut, 330, 120, 247, 20 );
 		pinManut.adic( new JLabelPad( "Data emissão " ), 580, 100, 100, 20 );
 		pinManut.adic( txtDtEmitManut, 580, 120, 100, 20 );
-
-		pinBotoesManut.adic( btBaixaManut, 3, 10, 30, 30 );
-		pinBotoesManut.adic( btEditManut, 3, 40, 30, 30 );
-		pinBotoesManut.adic( btNovoManut, 3, 70, 30, 30 );
-		pinBotoesManut.adic( btEstorno, 3, 100, 30, 30 );
-		pinBotoesManut.adic( btExcluirManut, 3, 130, 30, 30 );
+		
+		pinBotoesManut.adic( btCarregaBaixasMan, 3, 3, 30, 30 );
+		pinBotoesManut.adic( btBaixaManut, 3, 30, 30, 30 );
+		pinBotoesManut.adic( btEditManut, 3, 60, 30, 30 );
+		pinBotoesManut.adic( btNovoManut, 3, 90, 30, 30 );
+		pinBotoesManut.adic( btEstorno, 3, 120, 30, 30 );
+		pinBotoesManut.adic( btExcluirManut, 3, 150, 30, 30 );
 
 		tabManut.adicColuna( "" ); // 0
 		tabManut.adicColuna( "Dt.vencto." ); // 1
@@ -760,6 +764,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		btEstorno.addActionListener( this );
 		btBaixa.addActionListener( this );
 		btCarregaBaixas.addActionListener( this );
+		btCarregaBaixasMan.addActionListener( this );
 		tpn.addChangeListener( this );
 		
 		tabManut.addMouseListener(new MouseAdapter() {
@@ -1561,19 +1566,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			Funcoes.mensagemInforma( null, "Este lançamento não possui vínculo com uma venda!" );
 		}
 	}
+	
+	private void consBaixa( int codRec, int nparcItRec, BigDecimal vlrParc, BigDecimal vlrPago, BigDecimal vlrDesc, BigDecimal vlrJuros, BigDecimal vlrApag ) {
 
-	private void consBaixa() {
+		DLConsultaBaixa dl = new DLConsultaBaixa( this, con, codRec, nparcItRec );
 
-		int iLin = tabBaixa.getLinhaSel();
-		if ( iLin < 0 ) {
-			Funcoes.mensagemInforma( this, "Selecione uma parcela." );
-			return;
-		}
-
-		DLConsultaBaixa dl = new DLConsultaBaixa( this, con, txtCodRecBaixa.getVlrInteger().intValue(), Integer.parseInt( tabBaixa.getValor( iLin, 2 ).toString() ) );
-
-		dl.setValores( new BigDecimal[] { Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPARC.ordinal() ) ), Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ), Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRDESC.ordinal() ) ),
-				Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRJUROS.ordinal() ) ), Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRAPAG.ordinal() ) ) } );
+		dl.setValores( new BigDecimal[] { vlrParc , vlrPago , vlrDesc , vlrJuros, vlrApag } );
 
 		dl.setVisible( true );
 		dl.dispose();
@@ -2088,7 +2086,21 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			estorno();
 		}
 		else if ( evt.getSource() == btCarregaBaixas ) {
-			consBaixa();
+			consBaixa( txtCodRecBaixa.getVlrInteger().intValue(), Integer.parseInt( tabBaixa.getValor( tabBaixa.getLinhaSel(), 3 ).toString()),
+					Funcoes.strToBd( tabBaixa.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRPARC.ordinal())), 
+					Funcoes.strToBd( tabBaixa.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRPAGO.ordinal())),
+					Funcoes.strToBd( tabBaixa.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRDESC.ordinal())),
+					Funcoes.strToBd( tabBaixa.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRJUROS.ordinal())),
+					Funcoes.strToBd( tabBaixa.getValor( tabBaixa.getLinhaSel(), EColTabBaixa.VLRAPAG.ordinal())));
+			
+		}
+		else if ( evt.getSource() == btCarregaBaixasMan ) {
+			consBaixa( Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() ).toString()), Integer.parseInt( tabManut.getValor( tabManut.getLinhaSel(), 6 ).toString()),
+					Funcoes.strToBd( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.VLRPARC.ordinal())), 
+					Funcoes.strToBd( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.VLRPAGO.ordinal())),
+					Funcoes.strToBd( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.VLRDESC.ordinal())),
+					Funcoes.strToBd( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.VLRJUROS.ordinal())),
+					Funcoes.strToBd( tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.VLRAPAG.ordinal())));
 		}
 		else if ( evt.getSource() == btCarregaGridManut ) {
 			bBuscaAtual = true;
