@@ -51,9 +51,21 @@
 	<parameter name="COMPLEMP" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA[new String("www.apr.org.br / email: apr@apr.org.br")]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV
-FROM VDORCAMENTO O, VDITORCAMENTO IO, ATCONVENIADO CV
-WHERE O.CODEMP=5 AND O.CODFILIAL=1 AND O.CODORC=39006 AND 
+	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(5)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODORC" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(39006)]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[SELECT O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV, 
+P2.CABTERMR01 , P2.CABTERMR02, P2.RODTERMR
+FROM VDITORCAMENTO IO, ATCONVENIADO CV, VDORCAMENTO O
+LEFT OUTER JOIN SGPREFERE2 P2 ON
+P2.CODEMP=O.CODEMP AND P2.CODFILIAL=$P{CODFILIAL}
+WHERE O.CODEMP=$P{CODEMP} AND O.CODFILIAL=$P{CODFILIAL} AND O.CODORC=$P{CODORC} AND 
 IO.CODEMP=O.CODEMP AND IO.CODFILIAL=O.CODFILIAL AND 
 IO.CODORC=O.CODORC AND IO.SITENTITORC='N' AND
 IO.SITTERMRITORC='E' AND CV.CODEMP=O.CODEMPCV AND 
@@ -64,29 +76,32 @@ CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV]]></queryString>
 	<field name="CODORC" class="java.lang.Long"/>
 	<field name="NOMECONV" class="java.lang.String"/>
 	<field name="RGCONV" class="java.lang.String"/>
+	<field name="CABTERMR01" class="java.lang.String"/>
+	<field name="CABTERMR02" class="java.lang.String"/>
+	<field name="RODTERMR" class="java.lang.String"/>
 
 
 		<group  name="GERAL" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="54"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+			<band height="21"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="23"
-						y="6"
-						width="209"
+						x="9"
+						y="4"
+						width="526"
 						height="15"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMECONV}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CABTERMR02}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="14"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
@@ -105,8 +120,8 @@ CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV]]></queryString>
 						mode="Transparent"
 						x="4"
 						y="3"
-						width="70"
-						height="63"
+						width="82"
+						height="76"
 						forecolor="#FFFFFF"
 						backcolor="#FFFFFF"
 						key="image-1"/>
@@ -114,45 +129,13 @@ CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV]]></queryString>
 					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
 					<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
 				</image>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="79"
-						y="19"
-						width="397"
-						height="19"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="Empresa"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="440"
-						y="3"
-						width="92"
-						height="12"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="Data"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Times-Roman" pdfFontName="Times-Roman" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Opaque"
-						x="79"
-						y="3"
-						width="357"
-						height="13"
+						x="102"
+						y="4"
+						width="369"
+						height="75"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Titulo"/>
@@ -160,35 +143,7 @@ CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{TITULO}]]></textFieldExpression>
-				</textField>
-				<line direction="TopDown">
-					<reportElement
-						mode="Opaque"
-						x="0"
-						y="81"
-						width="535"
-						height="0"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="line-3"/>
-					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" />
-				</line>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Opaque"
-						x="77"
-						y="63"
-						width="397"
-						height="18"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="Emissor-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CABTERMR01}]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
@@ -197,7 +152,7 @@ CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="68"  isSplitAllowed="true" >
+			<band height="37"  isSplitAllowed="true" >
 			</band>
 		</detail>
 		<columnFooter>
@@ -205,44 +160,19 @@ CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV]]></queryString>
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="39"  isSplitAllowed="true" >
-				<line direction="TopDown">
+			<band height="20"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						mode="Opaque"
-						x="1"
+						x="19"
 						y="2"
-						width="533"
-						height="0"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="line-8"/>
-					<graphicElement stretchType="NoStretch" pen="2Point" fill="Solid" />
-				</line>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="17"
-						y="5"
 						width="502"
-						height="12"
-						key="textField-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ENDEMP}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="18"
-						y="22"
-						width="502"
-						height="12"
+						height="16"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{COMPLEMP}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RODTERMR}]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageFooter>
