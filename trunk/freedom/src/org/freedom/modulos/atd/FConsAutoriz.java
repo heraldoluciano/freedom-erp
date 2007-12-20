@@ -473,10 +473,10 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		}
 			
 		if("T".equals( rgTipo.getVlrString() )){
-			imprimiTexto( rs, bVisualizar, "Consulta Altorização" );
+			imprimiTexto( rs, bVisualizar, "" );
 		}else {
 				
-			imprimiGrafico( rs, bVisualizar, "Consulta Altorização" );
+			imprimiGrafico( rs, bVisualizar, "" );
 		}
 	}
 	
