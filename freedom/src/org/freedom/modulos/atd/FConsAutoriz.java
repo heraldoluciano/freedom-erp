@@ -155,8 +155,8 @@ public class FConsAutoriz extends FFilho implements ActionListener {
  		vVals1.addElement("T");
  		vVals1.addElement("G");
 		    
- 		rgTipo = new JRadioGroup<String, String>(1,2,vLabs1,vVals1);
- 		rgTipo.setVlrString("T");
+ 		rgTipo = new JRadioGroup<String, String>(2,1,vLabs1,vVals1);
+ 		rgTipo.setVlrString("G");
 
 		
 		getTela().add(pnCli,BorderLayout.CENTER);
@@ -207,6 +207,8 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		
 		pinCab.adic(new JLabelPad("Filtrar por:"),225,164,110,20);
 		pinCab.adic(gbVenc,225,183,220,55);
+		
+		pinCab.adic( rgTipo, 460, 183, 120, 55 );
 			
 		pinCab.adic(btBusca,440,90,140,30);
 		
@@ -267,6 +269,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 	 *
 	 */ 
 	private void carregaTabela() {
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sSQL = null;
@@ -277,6 +280,8 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		boolean bConv = (txtCodConv.getVlrInteger().intValue() > 0);
 		boolean bCli = (txtCodCli.getVlrInteger().intValue() > 0);
 		boolean bEnc = (txtCodEnc.getVlrInteger().intValue()> 0); 
+		
+		String sCab = "";
 		
 		if (cbVencidas.getVlrString().equals("S"))
 			sWhere = " AND IT.VENCAUTORIZORC < CAST ('today' AS DATE) "; 
@@ -369,28 +374,114 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 				
 				
 			}
-			
-	
-			
-			if (!con.getAutoCommit())
+			if (!con.getAutoCommit()){
 				con.commit();
+			}
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao carregar a tabela VDORÇAMENTO!\n"+err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
+	}
 		
-	//	 if("T".equals( rgTipo.getVlrString())){
+	public void imprimir( final boolean bVisualizar ) {
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL =  "";
+		String sWhere = "";
+		String sStatusOrc = "";
+		int iParam = 5;
+		
+		boolean bConv = (txtCodConv.getVlrInteger().intValue() > 0);
+		boolean bCli = (txtCodCli.getVlrInteger().intValue() > 0);
+		boolean bEnc = (txtCodEnc.getVlrInteger().intValue()> 0); 
+		
+		if (cbVencidas.getVlrString().equals("S"))
+			sWhere = " AND IT.VENCAUTORIZORC < CAST ('today' AS DATE) "; 
+		
+		if (cbCompleto.getVlrString().equals("S")) 
+			sStatusOrc = "'OC'";
+		if (cbLiberado.getVlrString().equals("S"))
+			sStatusOrc += (!sStatusOrc.equals("")?",":"")+"'OL'";
+		if (cbFaturado.getVlrString().equals("S"))
+			sStatusOrc += (!sStatusOrc.equals("")?",":"")+"'OV'";
+		if (!sStatusOrc.equals(""))
+			sWhere += " AND O.STATUSORC IN ("+sStatusOrc+") ";    
+		
+		if (gbVenc.getVlrString().equals("V"))
+			sWhere += " AND IT.VENCAUTORIZORC BETWEEN ? AND ?";
+		else
+			sWhere += " AND O.DTORC BETWEEN ? AND ?";
+		
+		if (bConv)
+			sWhere += " AND O.CODCONV=? AND O.CODEMPCV=O.CODEMP AND O.CODFILIALCV=O.CODFILIAL ";		  
+		if (bCli)  
+			sWhere += " AND O.CODCLI=? AND O.CODEMPCV=O.CODEMP AND CODFILIALCV=O.CODFILIAL ";			
+		if (bEnc)
+			sWhere += " AND O.CODCONV=C.CODCONV AND O.CODEMPCV=C.CODEMP AND O.CODFILIALCV=C.CODFILIAL " +
+					  "AND C.CODENC="+txtCodEnc.getVlrString()+" AND C.CODEMPEC=O.CODEMP AND C.CODFILIALEC="+lcEnc.getCodFilial()+"";
+				
+		if (!txtCid.getVlrString().equals(""))
+			sWhere += " AND C.CIDCONV  = '"+txtCid.getVlrString()+"'";
+		
+		if (!txtCodTpConv.getVlrString().trim().equals("")){
+			sWhere += "AND EXISTS(SELECT T2.CODTPCONV FROM ATTIPOCONV T2, ATCONVENIADO C2 WHERE " +
+					  "T2.CODEMP=C2.CODEMPTC AND T2.CODFILIAL=C2.CODFILIALTC AND T2.CODTPCONV=C2.CODTPCONV AND "+
 			
-		//	imprimeTexto( rs, bVisualizar, sCab.toString() );*/
+					  "C2.CODEMP=O.CODEMPCV AND C2.CODFILIAL=O.CODFILIALCV AND C2.CODCONV=O.CODCONV AND " +
+					  "T2.CODEMP="+Aplicativo.iCodEmp+" AND T2.CODFILIAL="+ListaCampos.getMasterFilial("ATTIPOCONV")+" AND " +
+	            	  "T2.CODTPCONV="+txtCodTpConv.getVlrString().trim()+" ) ";		
 		}
-		//else{
-		/*/imprimiGrafico( rs, bVisualizar, sCab.toString(); */
-	
-	
-
-
 		
-	public void imprimir(boolean bVisualizar) {
+		
+		try {
+		
+			sSQL="SELECT  O.CODORC,O.DTORC,O.DTVENCORC,IT.VENCAUTORIZORC,IT.NUMAUTORIZORC,"+
+				"O.CODCONV,C.NOMECONV,c.endconv,C.NUMCONV, C.BAIRCONV, c.cidconv, C.DDDCONV, C.FONECONV , "+
+				"IT.CODPROD, P.CODBARPROD,P.DESCPROD,it.qtditorc, it.vlrliqitorc,     "+
+				"(SELECT EC.NOMEENC FROM ATENCAMINHADOR EC WHERE EC.CODENC=C.CODENC AND "+
+				"EC.CODEMP=C.CODEMPEC AND EC.CODFILIAL=C.CODFILIALEC) "+
+				"FROM VDORCAMENTO O,VDCLIENTE CL,"+
+				"ATCONVENIADO C, EQPRODUTO P, VDITORCAMENTO IT WHERE O.CODEMP=? "+
+				"AND O.CODFILIAL=? AND O.TIPOORC='O' "+
+				"AND IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL " +
+				"AND IT.TIPOORC=O.TIPOORC "+ 
+				"AND CL.CODEMP=O.CODEMPCL AND CL.CODFILIAL=O.CODFILIALCL "+
+				"AND CL.CODCLI=O.CODCLI  AND C.CODEMP=O.CODEMPCV AND C.CODFILIAL=O.CODFILIALCV "+
+				"AND O.CODCONV=C.CODCONV "+					
+				"AND P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND " +
+				"P.CODFILIAL=IT.CODFILIALPD " +sWhere+" ORDER BY O.CODORC"; 
+		
+			
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,ListaCampos.getMasterFilial("VDORCAMENTO"));
+			ps.setDate(3,Funcoes.dateToSQLDate(txtDtIni.getVlrDate()));
+			ps.setDate(4,Funcoes.dateToSQLDate(txtDtFim.getVlrDate()));
+			
+			if (bConv)
+				ps.setInt(iParam++,txtCodConv.getVlrInteger().intValue());
+			if (bCli)
+				ps.setInt(iParam,txtCodCli.getVlrInteger().intValue());			
+				rs = ps.executeQuery();
+				
+				
+		}catch ( SQLException err ) {
+				
+			err.printStackTrace();
+			Funcoes.mensagemErro(this,"Erro ao buscar dados!"+err.getMessage(),true,con,err);      
+		}
+			
+		if("T".equals( rgTipo.getVlrString() )){
+			imprimiTexto( rs, bVisualizar, "Consulta Altorização" );
+		}else {
+				
+			imprimiGrafico( rs, bVisualizar, "Consulta Altorização" );
+		}
+	}
+	
+	private void imprimiTexto( final ResultSet rs, final boolean bVisualizar, final String sCab ){
+		
 		ImprimeOS imp = new ImprimeOS("",con);
 		int linPag = imp.verifLinPag()-1;
 		imp.montaCab();
@@ -398,13 +489,16 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 						
 		try {
 			imp.limpaPags();
+			
 			for (int iLin=0;iLin<tab.getNumLinhas();iLin++) {
+			
 				if (imp.pRow()>=linPag) {			
 					imp.say(imp.pRow() + 1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-",133) + "+");
 					imp.incPags();
 					imp.eject();
 				}
+				
 				if (imp.pRow()==0) {
 					imp.impCab(136, true);
 					imp.say(imp.pRow(),0, imp.comprimido());
@@ -465,19 +559,22 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 			imp.eject();			
 			imp.fechaGravacao();
 			
-			if(!con.getAutoCommit())
+			if(!con.getAutoCommit()){
 				con.commit();
-				
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro(this,"Erro consulta tabela de orçamentos!"+err.getMessage(),true,con,err);      
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Funcoes.mensagemInforma( this, "Erro ao imprimir relatório" );
 		}
 		
-		if (bVisualizar)
+		if (bVisualizar) {
 			imp.preview(this);
-		else 
+		}
+		else{ 
 			imp.print();
+		}
 	}
-private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar,  final String sCab ) {
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar,  final String sCab ) {
 		
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -487,7 +584,7 @@ private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar,  fin
 		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
 		hParam.put( "FILTROS", sCab );
 
-		dlGr = new FPrinterJob( "relatorios/FRConsAutoz.jasper", "Relatório de Orçamentos por período", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( "relatorios/FRConsAutoriz.jasper", "Relatório de Orçamentos por período", sCab, rs, hParam, this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -496,7 +593,7 @@ private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar,  fin
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório Orãmentos por periodo!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório Orçãmentos por periodo!" + err.getMessage(), true, con, err );
 			}
 		}
 }	
@@ -519,7 +616,7 @@ private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar,  fin
 				carregaTabela();
 		}
 		if (evt.getSource()==btPrevimp)
-			imprimir(true);
+			imprimir( true );
 	}
 		
 	public void setConexao(Connection cn) {
