@@ -32,10 +32,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
@@ -53,6 +57,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.FOrcamento;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
+import org.freedom.telas.FPrinterJob;
 
 public class FConsAutoriz extends FFilho implements ActionListener {
 	private static final long serialVersionUID = 1L;	
@@ -69,6 +74,12 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 	private JTextFieldPad txtCid = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
 	private JTextFieldPad txtCodTpConv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescTipoConv = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	
+	private Vector<String> vLabs1 = new Vector<String>();
+	private Vector<String> vVals1 = new Vector<String>();
+	private JRadioGroup<?, ?> rgTipo = null;
+
+	
 	
 	private JLabelPad lbBorda = new JLabelPad();
 	private JCheckBoxPad cbVencidas = new JCheckBoxPad("Vencidas","S","N");
@@ -138,6 +149,15 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		txtCodEnc.setFK(true);
 		lcEnc.setReadOnly(true);
 		lcEnc.montaSql(false, "ENCAMINHADOR", "AT");
+		
+		vLabs1.addElement("Texto");
+ 		vLabs1.addElement("Grafico"); 
+ 		vVals1.addElement("T");
+ 		vVals1.addElement("G");
+		    
+ 		rgTipo = new JRadioGroup<String, String>(1,2,vLabs1,vVals1);
+ 		rgTipo.setVlrString("T");
+
 		
 		getTela().add(pnCli,BorderLayout.CENTER);
 		pnCli.add(pinCab,BorderLayout.NORTH);
@@ -350,7 +370,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 				
 			}
 			
-		
+	
 			
 			if (!con.getAutoCommit())
 				con.commit();
@@ -358,10 +378,19 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 			Funcoes.mensagemErro(this,"Erro ao carregar a tabela VDORÇAMENTO!\n"+err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
-	}
+		
+	//	 if("T".equals( rgTipo.getVlrString())){
+			
+		//	imprimeTexto( rs, bVisualizar, sCab.toString() );*/
+		}
+		//else{
+		/*/imprimiGrafico( rs, bVisualizar, sCab.toString(); */
 	
 	
-	private void imprimir(boolean bVisualizar) {
+
+
+		
+	public void imprimir(boolean bVisualizar) {
 		ImprimeOS imp = new ImprimeOS("",con);
 		int linPag = imp.verifLinPag()-1;
 		imp.montaCab();
@@ -448,7 +477,29 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		else 
 			imp.print();
 	}
-	
+private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar,  final String sCab ) {
+		
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "FILTROS", sCab );
+
+		dlGr = new FPrinterJob( "relatorios/FRConsAutoz.jasper", "Relatório de Orçamentos por período", sCab, rs, hParam, this );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório Orãmentos por periodo!" + err.getMessage(), true, con, err );
+			}
+		}
+}	
 	private void abreOrc() {
 		int iCodOrc = ((Integer)tab.getValor(tab.getLinhaSel(),1)).intValue();
 		if (fPrim.temTela("Orcamento")==false) {
