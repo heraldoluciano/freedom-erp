@@ -105,13 +105,13 @@ E.CODEMP=P2.CODEMP]]></queryString>
 				<staticText>
 					<reportElement
 						x="4"
-						y="4"
+						y="5"
 						width="528"
 						height="16"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
-						<font/>
+						<font size="10" isUnderline="false"/>
 					</textElement>
 				<text><![CDATA[TERMO DE RECEBIMENTO]]></text>
 				</staticText>
@@ -142,11 +142,11 @@ E.CODEMP=P2.CODEMP]]></queryString>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="64"  isSplitAllowed="true" >
+			<band height="140"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="8"
-						y="43"
+						y="45"
 						width="288"
 						height="15"
 						key="staticText-4"/>
@@ -165,19 +165,41 @@ E.CODEMP=P2.CODEMP]]></queryString>
 						key="line-1"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="14"
-						y="9"
-						width="139"
-						height="13"
-						key="textField-6"/>
+						x="1"
+						y="6"
+						width="502"
+						height="16"
+						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DATAIMP}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement
+						x="7"
+						y="66"
+						width="288"
+						height="15"
+						key="staticText-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[CPF/RG ]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="50"
+						y="75"
+						width="233"
+						height="1"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 			</groupFooter>
 		</group>
@@ -245,7 +267,7 @@ E.CODEMP=P2.CODEMP]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="102"
+						x="100"
 						y="4"
 						width="369"
 						height="75"
@@ -253,8 +275,8 @@ E.CODEMP=P2.CODEMP]]></queryString>
 						backcolor="#FFFFFF"
 						key="Titulo"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="SansSerif" pdfFontName="Helvetica" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					<textElement textAlignment="Justified" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CABTERMR01}]]></textFieldExpression>
 				</textField>
@@ -300,19 +322,6 @@ E.CODEMP=P2.CODEMP]]></queryString>
 		</columnFooter>
 		<pageFooter>
 			<band height="20"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="19"
-						y="2"
-						width="502"
-						height="16"
-						key="textField-2"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DATAIMP}]]></textFieldExpression>
-				</textField>
 			</band>
 		</pageFooter>
 		<summary>
