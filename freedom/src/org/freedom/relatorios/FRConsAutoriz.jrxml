@@ -949,7 +949,7 @@ O.STATUSORC IN ('OC','OL','OV') AND O.DTORC BETWEEN '01.12.2007' AND '31.12.2007
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDITORC}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="745"
 						y="2"
