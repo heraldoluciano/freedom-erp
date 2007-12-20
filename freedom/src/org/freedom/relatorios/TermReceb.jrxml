@@ -60,6 +60,9 @@
 	<parameter name="CODORC" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(39006)]]></defaultValueExpression>
 	</parameter>
+	<parameter name="DATAIMP" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[new String("CURITBA, 19 DE DEZEMBRO DE 2007")]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV, 
 P2.CABTERMR01 , P2.CABTERMR02, P2.RODTERMR, IO.NUMAUTORIZORC, P.DESCPROD, 
 E.FOTOEMP, O.DTORC, E.CIDEMP
@@ -84,12 +87,15 @@ E.CODEMP=P2.CODEMP]]></queryString>
 	<field name="RODTERMR" class="java.lang.String"/>
 	<field name="NUMAUTORIZORC" class="java.lang.String"/>
 	<field name="DESCPROD" class="java.lang.String"/>
-	<field name="FOTOEMP" class="java.sql.Blob"/>
+	<field name="FOTOEMP" class="java.io.InputStream"/>
 	<field name="DTORC" class="java.sql.Date"/>
 	<field name="CIDEMP" class="java.lang.String"/>
 
 	<variable name="DATAIMP" class="java.lang.String" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[$F{CIDEMP}.trim()+", "+$F{DTORC}]]></variableExpression>
+	</variable>
+	<variable name="CABTERMR02IMP" class="java.lang.String" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$F{CABTERMR02}.replaceAll( "[NOMECONV]", $F{NOMECONV} )]]></variableExpression>
 	</variable>
 
 		<group  name="GERAL" >
@@ -131,7 +137,7 @@ E.CODEMP=P2.CODEMP]]></queryString>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CABTERMR02}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{CABTERMR02IMP}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>
@@ -170,7 +176,7 @@ E.CODEMP=P2.CODEMP]]></queryString>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$V{DATAIMP}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DATAIMP}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
@@ -234,7 +240,7 @@ E.CODEMP=P2.CODEMP]]></queryString>
 						key="image-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
-					<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
+					<imageExpression class="java.io.InputStream"><![CDATA[$F{FOTOEMP}]]></imageExpression>
 				</image>
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -305,7 +311,7 @@ E.CODEMP=P2.CODEMP]]></queryString>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RODTERMR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DATAIMP}]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageFooter>

@@ -112,19 +112,36 @@ public class FRTermReceb extends FRelatorio {
 			return;
 		}
 		
-		sql.append( "SELECT O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV ");
+		
+		
+		sql.append("SELECT O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV, "); 
+		sql.append("P2.CABTERMR01 , P2.CABTERMR02, P2.RODTERMR, IO.NUMAUTORIZORC, P.DESCPROD, "); 
+		sql.append("E.FOTOEMP, O.DTORC, E.CIDEMP ");
+		sql.append("FROM VDITORCAMENTO IO, ATCONVENIADO CV, SGEMPRESA E, EQPRODUTO P, VDORCAMENTO O ");
+		sql.append("LEFT OUTER JOIN SGPREFERE2 P2 ON ");
+		sql.append("P2.CODEMP=O.CODEMP AND P2.CODFILIAL=? ");
+		sql.append("WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODORC=? AND "); 
+		sql.append("IO.CODEMP=O.CODEMP AND IO.CODFILIAL=O.CODFILIAL AND "); 
+		sql.append("IO.CODORC=O.CODORC AND IO.SITENTITORC='N' AND ");
+		sql.append("IO.SITTERMRITORC='E' AND CV.CODEMP=O.CODEMPCV AND "); 
+		sql.append("CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV AND "); 
+		sql.append("P.CODEMP=IO.CODEMPPD AND P.CODFILIAL=IO.CODFILIALPD AND P.CODPROD=IO.CODPROD AND "); 
+		sql.append("E.CODEMP=P2.CODEMP");		
+		
+		/*sql.append( "SELECT O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV ");
 		sql.append( "FROM VDORCAMENTO O, VDITORCAMENTO IO, ATCONVENIADO CV ");
 		sql.append( "WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODORC=? AND "); 
 		sql.append( "IO.CODEMP=O.CODEMP AND IO.CODFILIAL=O.CODFILIAL AND "); 
 		sql.append( "IO.CODORC=O.CODORC AND IO.SITENTITORC='N' AND ");
 		sql.append( "IO.SITTERMRITORC='E' AND CV.CODEMP=O.CODEMPCV AND "); 
-		sql.append( "CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV" );
+		sql.append( "CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV" ); */
 		
 		try {
 			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ));
-			ps.setInt( 3, txtCodOrc.getVlrInteger());
+			ps.setInt( 1, ListaCampos.getMasterFilial( "SGPREFERE2" ));
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "VDORCAMENTO" ));
+			ps.setInt( 4, txtCodOrc.getVlrInteger());
 			rs = ps.executeQuery();
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Ocorreu um erro executando a consulta.\n"+e.getMessage() );
