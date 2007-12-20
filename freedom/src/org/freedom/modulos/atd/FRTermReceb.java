@@ -25,6 +25,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.crypto.spec.PSource;
 
@@ -107,6 +109,7 @@ public class FRTermReceb extends FRelatorio {
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		StringBuffer sql = new StringBuffer();
+		Map<String, Object> param = new HashMap<String,Object>();
 		if (txtCodOrc.getVlrInteger()==0) {
 			Funcoes.mensagemInforma( this, "Selecione um orçamento!" );
 			return;
@@ -128,6 +131,10 @@ public class FRTermReceb extends FRelatorio {
 		sql.append("P.CODEMP=IO.CODEMPPD AND P.CODFILIAL=IO.CODFILIALPD AND P.CODPROD=IO.CODPROD AND "); 
 		sql.append("E.CODEMP=P2.CODEMP");		
 		
+		param.put("CODEMP",Aplicativo.iCodEmp);
+		param.put( "CODORC", txtCodOrc.getVlrInteger() );
+		param.put( "DTORCIMP", "CURITIBA, "+txtDtOrc.getVlrDate() );
+		
 		/*sql.append( "SELECT O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV ");
 		sql.append( "FROM VDORCAMENTO O, VDITORCAMENTO IO, ATCONVENIADO CV ");
 		sql.append( "WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODORC=? AND "); 
@@ -148,8 +155,11 @@ public class FRTermReceb extends FRelatorio {
 			return;
 		}
 		
-		FPrinterJob dlGr = new FPrinterJob( "relatorios/TermReceb.jasper", "TERMO DE RECEBIMENTO", null, rs, null, this );
-
+		
+		//FPrinterJob dlGr = new FPrinterJob( , , null, rs, param, this, false )
+		//FPrinterJob dlGr = new FPrinterJob( "relatorios/FRComprasFor.jasper", "Relatório de Compras por fornecedor", "", rs, param, null );
+		//FPrinterJob dlGr = new FPrinterJob( "relatorios/TermReceb.jasper", "TERMO DE RECEBIMENTO", "", null, param, con);
+		FPrinterJob dlGr = null;
 		if ( b ) {
 			dlGr.setVisible( true );
 		}
