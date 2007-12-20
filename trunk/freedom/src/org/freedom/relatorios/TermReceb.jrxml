@@ -61,15 +61,18 @@
 		<defaultValueExpression ><![CDATA[new Integer(39006)]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV, 
-P2.CABTERMR01 , P2.CABTERMR02, P2.RODTERMR
-FROM VDITORCAMENTO IO, ATCONVENIADO CV, VDORCAMENTO O
+P2.CABTERMR01 , P2.CABTERMR02, P2.RODTERMR, IO.NUMAUTORIZORC, P.DESCPROD, 
+E.FOTOEMP, O.DTORC, E.CIDEMP
+FROM VDITORCAMENTO IO, ATCONVENIADO CV, SGEMPRESA E, EQPRODUTO P, VDORCAMENTO O
 LEFT OUTER JOIN SGPREFERE2 P2 ON
 P2.CODEMP=O.CODEMP AND P2.CODFILIAL=$P{CODFILIAL}
 WHERE O.CODEMP=$P{CODEMP} AND O.CODFILIAL=$P{CODFILIAL} AND O.CODORC=$P{CODORC} AND 
 IO.CODEMP=O.CODEMP AND IO.CODFILIAL=O.CODFILIAL AND 
 IO.CODORC=O.CODORC AND IO.SITENTITORC='N' AND
 IO.SITTERMRITORC='E' AND CV.CODEMP=O.CODEMPCV AND 
-CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV]]></queryString>
+CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV AND 
+P.CODEMP=IO.CODEMPPD AND P.CODFILIAL=IO.CODFILIALPD AND P.CODPROD=IO.CODPROD AND 
+E.CODEMP=P2.CODEMP]]></queryString>
 
 	<field name="CODEMP" class="java.lang.Long"/>
 	<field name="CODFILIAL" class="java.lang.Short"/>
@@ -79,16 +82,48 @@ CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV]]></queryString>
 	<field name="CABTERMR01" class="java.lang.String"/>
 	<field name="CABTERMR02" class="java.lang.String"/>
 	<field name="RODTERMR" class="java.lang.String"/>
+	<field name="NUMAUTORIZORC" class="java.lang.String"/>
+	<field name="DESCPROD" class="java.lang.String"/>
+	<field name="FOTOEMP" class="java.sql.Blob"/>
+	<field name="DTORC" class="java.sql.Date"/>
+	<field name="CIDEMP" class="java.lang.String"/>
 
+	<variable name="DATAIMP" class="java.lang.String" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$F{CIDEMP}.trim()+", "+$F{DTORC}]]></variableExpression>
+	</variable>
 
 		<group  name="GERAL" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
 			<band height="21"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="4"
+						y="4"
+						width="528"
+						height="16"
+						key="staticText-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<text><![CDATA[TERMO DE RECEBIMENTO]]></text>
+				</staticText>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="CAB" >
+			<groupExpression><![CDATA[]]></groupExpression>
+			<groupHeader>
+			<band height="20"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="9"
-						y="4"
+						x="6"
+						y="3"
 						width="526"
 						height="15"
 						key="textField-3"/>
@@ -101,7 +136,79 @@ CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV]]></queryString>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="64"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="8"
+						y="43"
+						width="288"
+						height="15"
+						key="staticText-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[ASS. PACIENTE/RESP.]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="7"
+						y="39"
+						width="289"
+						height="0"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="14"
+						y="9"
+						width="139"
+						height="13"
+						key="textField-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{DATAIMP}]]></textFieldExpression>
+				</textField>
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="CAB01" >
+			<groupExpression><![CDATA[]]></groupExpression>
+			<groupHeader>
+			<band height="21"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="7"
+						y="3"
+						width="56"
+						height="15"
+						key="staticText-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[APAC Nº]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="144"
+						y="3"
+						width="130"
+						height="15"
+						key="staticText-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[PRODUTO/SERVIÇO]]></text>
+				</staticText>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="2"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
@@ -152,7 +259,33 @@ CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="37"  isSplitAllowed="true" >
+			<band height="20"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="3"
+						y="2"
+						width="126"
+						height="16"
+						key="textField-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NUMAUTORIZORC}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="143"
+						y="2"
+						width="388"
+						height="16"
+						key="textField-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCPROD}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
