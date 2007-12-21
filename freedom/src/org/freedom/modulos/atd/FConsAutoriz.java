@@ -473,10 +473,10 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		}
 			
 		if("T".equals( rgTipo.getVlrString() )){
-			imprimiTexto( rs, bVisualizar, "" );
+			imprimiTexto( rs, bVisualizar, "Periodo de: " + txtDtIni.getVlrDate() + " a: " + txtDtFim.getVlrDate() );
 		}else {
 				
-			imprimiGrafico( rs, bVisualizar, "" );
+			imprimiGrafico( rs, bVisualizar, "Periodo de: " + txtDtIni.getVlrString() + " a: " + txtDtFim.getVlrString() );
 		}
 	}
 	
