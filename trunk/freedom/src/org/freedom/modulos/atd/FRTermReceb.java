@@ -109,7 +109,7 @@ public class FRTermReceb extends FRelatorio {
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		StringBuffer sql = new StringBuffer();
-		Map<String, Object> param = new HashMap<String,Object>();
+		Map<String, Object> hParam = new HashMap<String,Object>();
 		if (txtCodOrc.getVlrInteger()==0) {
 			Funcoes.mensagemInforma( this, "Selecione um orçamento!" );
 			return;
@@ -131,9 +131,9 @@ public class FRTermReceb extends FRelatorio {
 		sql.append("P.CODEMP=IO.CODEMPPD AND P.CODFILIAL=IO.CODFILIALPD AND P.CODPROD=IO.CODPROD AND "); 
 		sql.append("E.CODEMP=P2.CODEMP");		
 		
-		param.put("CODEMP",Aplicativo.iCodEmp);
-		param.put( "CODORC", txtCodOrc.getVlrInteger() );
-		param.put( "DTORCIMP", "CURITIBA, "+txtDtOrc.getVlrDate() );
+		hParam.put("CODEMP",Aplicativo.iCodEmp);
+		hParam.put( "CODORC", txtCodOrc.getVlrInteger() );
+		hParam.put( "DTORCIMP", "CURITIBA, "+txtDtOrc.getVlrDate() );
 		
 		/*sql.append( "SELECT O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV ");
 		sql.append( "FROM VDORCAMENTO O, VDITORCAMENTO IO, ATCONVENIADO CV ");
@@ -158,8 +158,7 @@ public class FRTermReceb extends FRelatorio {
 		
 		//FPrinterJob dlGr = new FPrinterJob( , , null, rs, param, this, false )
 		//FPrinterJob dlGr = new FPrinterJob( "relatorios/FRComprasFor.jasper", "Relatório de Compras por fornecedor", "", rs, param, null );
-		//FPrinterJob dlGr = new FPrinterJob( "relatorios/TermReceb.jasper", "TERMO DE RECEBIMENTO", "", null, param, con);
-		FPrinterJob dlGr = null;
+		FPrinterJob dlGr = new FPrinterJob( "relatorios/TermReceb.jasper", "TERMO DE RECEBIMENTO", "", this,  hParam);
 		if ( b ) {
 			dlGr.setVisible( true );
 		}
