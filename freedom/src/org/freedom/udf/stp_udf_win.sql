@@ -31,7 +31,7 @@ create procedure ChangePassword
  (user_name varchar(128), passwd varchar(32))
  as
   begin
-    if (((USER != 'SYSDBA') and (USER != :user_name)) or
+    if (((USER != 'SYSDBA') and (USER != UPPER(:user_name))) or
         (:user_name is null) or
         (:user_name = '') or
         (:passwd is null) or
