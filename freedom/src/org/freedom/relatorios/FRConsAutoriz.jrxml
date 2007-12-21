@@ -735,20 +735,20 @@ O.STATUSORC IN ('OC','OL','OV') AND O.DTORC BETWEEN '01.12.2007' AND '31.12.2007
 						mode="Transparent"
 						x="4"
 						y="3"
-						width="68"
-						height="76"
+						width="112"
+						height="82"
 						forecolor="#FFFFFF"
 						backcolor="#FFFFFF"
 						key="image-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
-					<imageExpression class="java.awt.Image"><![CDATA[]]></imageExpression>
+					<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
 				</image>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="79"
-						y="20"
+						x="128"
+						y="22"
 						width="397"
 						height="17"
 						forecolor="#000000"
@@ -763,8 +763,8 @@ O.STATUSORC IN ('OC','OL','OV') AND O.DTORC BETWEEN '01.12.2007' AND '31.12.2007
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="79"
-						y="41"
+						x="128"
+						y="43"
 						width="240"
 						height="15"
 						forecolor="#000000"
@@ -795,8 +795,8 @@ O.STATUSORC IN ('OC','OL','OV') AND O.DTORC BETWEEN '01.12.2007' AND '31.12.2007
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="79"
-						y="3"
+						x="128"
+						y="5"
 						width="357"
 						height="13"
 						forecolor="#000000"
@@ -811,8 +811,8 @@ O.STATUSORC IN ('OC','OL','OV') AND O.DTORC BETWEEN '01.12.2007' AND '31.12.2007
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="79"
-						y="58"
+						x="128"
+						y="60"
 						width="397"
 						height="24"
 						forecolor="#000000"
