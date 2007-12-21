@@ -212,7 +212,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		adicCampo( txtNomeUsu, 90, 20, 350, 20, "NomeUsu", "Nome do usuário", ListaCampos.DB_SI, true );
 		adicCampo( txtPNomeUsu, 7, 60, 180, 20, "PNomeUsu", "Primeiro nome", ListaCampos.DB_SI, true );
 		adicCampo( txtUNomeUsu, 190, 60, 250, 20, "UNomeUsu", "Último nome", ListaCampos.DB_SI, true );
-		adicCampo( txtIDGrpUsu, 7, 100, 70, 20, "IDGRPUSU", "ID.grupo", ListaCampos.DB_FK, false );
+		adicCampo( txtIDGrpUsu, 7, 100, 70, 20, "IDGRPUSU", "ID.grupo", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescGrup, 80, 100, 216, 20, "NOMEGRPUSU", "Descrição do grupo do usuário" );
 		adic( new JLabelPad( "Senha" ), 300, 80, 70, 20 );
 		adic( txpSenha, 300, 100, 70, 20 );
