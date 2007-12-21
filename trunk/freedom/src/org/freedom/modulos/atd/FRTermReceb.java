@@ -109,7 +109,7 @@ public class FRTermReceb extends FRelatorio {
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		StringBuffer sql = new StringBuffer();
-		Map<String, Object> hParam = new HashMap<String,Object>();
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		if (txtCodOrc.getVlrInteger()==0) {
 			Funcoes.mensagemInforma( this, "Selecione um orçamento!" );
 			return;
@@ -158,7 +158,7 @@ public class FRTermReceb extends FRelatorio {
 		
 		//FPrinterJob dlGr = new FPrinterJob( , , null, rs, param, this, false )
 		//FPrinterJob dlGr = new FPrinterJob( "relatorios/FRComprasFor.jasper", "Relatório de Compras por fornecedor", "", rs, param, null );
-		FPrinterJob dlGr = new FPrinterJob( "relatorios/TermReceb.jasper", "TERMO DE RECEBIMENTO", "", this,  hParam);
+		FPrinterJob dlGr = new FPrinterJob("relatorios/TermReceb.jasper","TERMO DE RECEBIMENTO","",this,hParam,con);
 		if ( b ) {
 			dlGr.setVisible( true );
 		}
