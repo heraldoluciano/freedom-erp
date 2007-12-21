@@ -178,6 +178,8 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 		txpSenha.setListaCampos( lcCampos );
 		txpConfirma.setListaCampos( lcCampos );
+		setBordaReq( txpSenha );
+		setBordaReq( txpConfirma );
 
 		lcGrup.add( new GuardaCampo( txtIDGrpUsu, "IDGRPUSU", "ID grupo", ListaCampos.DB_PK, false ) );
 		lcGrup.add( new GuardaCampo( txtDescGrup, "NOMEGRPUSU", "Descriçao do grupo", ListaCampos.DB_SI, false ) );
