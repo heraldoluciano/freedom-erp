@@ -133,7 +133,10 @@ public class FRTermReceb extends FRelatorio {
 		
 		hParam.put("CODEMP",Aplicativo.iCodEmp);
 		hParam.put( "CODORC", txtCodOrc.getVlrInteger() );
-		hParam.put( "DTORCIMP", "CURITIBA, "+txtDtOrc.getVlrDate() );
+		hParam.put( "DATAIMP", Funcoes.getDiaMes( txtDtOrc.getVlrDate() )+" DE "+
+				Funcoes.getMesExtenso(txtDtOrc.getVlrDate())+" DE "+
+				Funcoes.getAno( txtDtOrc.getVlrDate()) +".");
+		
 		
 		/*sql.append( "SELECT O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV ");
 		sql.append( "FROM VDORCAMENTO O, VDITORCAMENTO IO, ATCONVENIADO CV ");
