@@ -164,7 +164,7 @@ public class FVendedor extends FTabDados implements PostListener {
 		lcFuncao.setReadOnly( true );
 		lcFuncao.montaSql( false, "FUNCAO", "RH" );
 
-		lcClComis.add( new GuardaCampo( txtCodClComis, "CodClComis", "Cód.cl.comis.", ListaCampos.DB_PK, txtDescClComis, false ) );
+		lcClComis.add( new GuardaCampo( txtCodClComis, "CodClComis", "Cód.cl.comis.", ListaCampos.DB_PK, txtDescClComis, true ) );
 		lcClComis.add( new GuardaCampo( txtDescClComis, "DescClComis", "Descriçao da classificação da comissão", ListaCampos.DB_SI, false ) );
 		lcClComis.montaSql( false, "CLCOMIS", "VD" );
 		lcClComis.setQueryCommit( false );
