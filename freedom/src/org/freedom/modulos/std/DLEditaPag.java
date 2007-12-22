@@ -25,18 +25,15 @@ package org.freedom.modulos.std;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -48,59 +45,66 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	private final JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private JTextFieldPad txtRazFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldPad txtRazFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldPad txtCodConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	private final JTextFieldPad txtCodConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
-	private JTextFieldPad txtDescConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtDescConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private final JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
-	private JTextFieldPad txtDescPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtDescPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
+	private final JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
 
-	private JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
+	private final JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
-	private JTextFieldFK txtSiglaCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 10, 0 );
+	private final JTextFieldFK txtSiglaCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 10, 0 );
 
-	private JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtDoc = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	private final JTextFieldPad txtDoc = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
-	private JTextFieldPad txtDtEmis = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private final JTextFieldPad txtDtEmis = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtDtVenc = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private final JTextFieldPad txtDtVenc = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtVlrParc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrParc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JTextFieldPad txtVlrJuros = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrJuros = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JTextFieldPad txtVlrDesc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrDesc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JTextFieldPad txtVlrAdic = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrAdic = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JTextFieldPad txtObs = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
-	
+	private final JTextFieldPad txtObs = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+
 	private final JTextFieldPad txtCodTipoCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private final JTextFieldFK txtDescTipoCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private ListaCampos lcConta = new ListaCampos( this );
+	private final ListaCampos lcConta = new ListaCampos( this );
 
-	private ListaCampos lcPlan = new ListaCampos( this );
+	private final ListaCampos lcPlan = new ListaCampos( this );
 
-	private ListaCampos lcCC = new ListaCampos( this );
-	
+	private final ListaCampos lcCC = new ListaCampos( this );
+
 	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
+	
 
 	public DLEditaPag( Component cOrig ) {
 
 		super( cOrig );
 		setTitulo( "Editar" );
 		setAtribos( 360, 420 );
+
+		montaListaCampos();
+		montaTela();
+	}
+
+	private void montaListaCampos() {
 
 		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
@@ -134,6 +138,8 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		txtAnoCC.setFK( true );
 		txtAnoCC.setNomeCampo( "AnoCC" );
 
+		lcCC.addCarregaListener( this );
+
 		txtCodTipoCob.setNomeCampo( "CodTipoCob" );
 		lcTipoCob.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK, false ) );
 		lcTipoCob.add( new GuardaCampo( txtDescTipoCob, "DescTipoCob", "Descrição do tipo de cobrança.", ListaCampos.DB_SI, false ) );
@@ -144,8 +150,11 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		txtCodTipoCob.setListaCampos( lcTipoCob );
 		txtDescTipoCob.setListaCampos( lcTipoCob );
 		txtCodTipoCob.setFK( true );
-		
-			
+
+	}
+
+	private void montaTela() {
+
 		txtCodFor.setAtivo( false );
 		txtRazFor.setAtivo( false );
 		txtDescConta.setAtivo( false );
@@ -168,12 +177,10 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		adic( txtCodCC, 7, 140, 100, 20 );
 		adic( new JLabelPad( "Descrição do centro de custo" ), 110, 120, 250, 20 );
 		adic( txtDescCC, 110, 140, 230, 20 );
-		
-		adic( new JLabelPad( "Cod.Tp.Cob" ), 7, 160, 80, 20);
+		adic( new JLabelPad( "Cod.Tp.Cob" ), 7, 160, 80, 20 );
 		adic( txtCodTipoCob, 7, 180, 80, 20 );
-		adic( new JLabelPad("Descrição do tipo de cobrança"), 90, 160, 250, 20 );
-		adic(txtDescTipoCob, 90, 180, 250, 20 );
-			
+		adic( new JLabelPad( "Descrição do tipo de cobrança" ), 90, 160, 250, 20 );
+		adic( txtDescTipoCob, 90, 180, 250, 20 );
 		adic( new JLabelPad( "Doc." ), 7, 200, 110, 20 );
 		adic( txtDoc, 7, 220, 110, 20 );
 		adic( new JLabelPad( "Emissão" ), 120, 200, 107, 20 );
@@ -188,12 +195,9 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		adic( txtVlrDesc, 180, 260, 77, 20 );
 		adic( new JLabelPad( "Vlr.adic." ), 260, 240, 80, 20 );
 		adic( txtVlrAdic, 260, 260, 80, 20 );
-				
+
 		adic( new JLabelPad( "Observações" ), 7, 280, 200, 20 );
 		adic( txtObs, 7, 300, 333, 20 );
-
-		lcCC.addCarregaListener( this );
-		
 	}
 
 	public void setValores( String[] sVals, boolean bLancaUsu ) {
@@ -235,11 +239,9 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btOK && txtDtVenc.getVlrString().length() < 10 ) {
-				
 			Funcoes.mensagemInforma( this, "Data do vencimento é requerido!" );
 		}
 		else {
-			
 			super.actionPerformed( evt );
 		}
 	}
@@ -249,38 +251,36 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		int iRet = 0;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
 
 			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			
+
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
-			
 				iRet = rs.getInt( "ANOCENTROCUSTO" );
 			}
-			
+
 			rs.close();
 			ps.close();
-			
-			if ( ! con.getAutoCommit() ) {
+
+			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
 		}
-		
+
 		return iRet;
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcCC && txtAnoCC.getVlrInteger().intValue() == 0 ) {
-			
 			txtAnoCC.setVlrInteger( new Integer( buscaAnoBaseCC() ) );
 		}
 	}

@@ -594,8 +594,9 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		tabManut.adicColuna( "Conta" ); // 16
 		tabManut.adicColuna( "Categoria" ); // 17
 		tabManut.adicColuna( "Centro de custo" ); // 18
-		tabManut.adicColuna( "Observação" ); // 19
-		tabManut.adicColuna( "Tp.Cob." ); // 20
+		tabManut.adicColuna( "Tp.Cob." ); // 19
+		tabManut.adicColuna( "Descrição do tipo de cobrança" ); // 20
+		tabManut.adicColuna( "Observação" ); // 21
 
 		tabManut.setTamColuna( 0, 0 );
 		tabManut.setTamColuna( 80, 1 );
@@ -616,7 +617,9 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		tabManut.setTamColuna( 130, 16 );
 		tabManut.setTamColuna( 210, 17 );
 		tabManut.setTamColuna( 220, 18 );
-		tabManut.setTamColuna( 260, 19 );
+		tabManut.setTamColuna( 80, 19 );
+		tabManut.setTamColuna( 200, 20 );
+		tabManut.setTamColuna( 260, 21 );
 
 		lcFor.addCarregaListener( this );
 		lcPagBaixa.addCarregaListener( this );
@@ -1038,7 +1041,9 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 				sSQL.append( "IT.OBSITPAG,IT.NPARCPAG,IT.VLRJUROSITPAG," );
 				sSQL.append( "(SELECT CO.DOCCOMPRA FROM CPCOMPRA CO " );
 				sSQL.append( "WHERE CO.CODCOMPRA=P.CODCOMPRA AND CO.CODEMP=P.CODEMPCP AND CO.CODFILIAL=P.CODFILIALCP)," );
-				sSQL.append( "IT.DTITPAG,IT.VLRADICITPAG,P.DOCPAG,P.CODTIPOCOB " );
+				sSQL.append( "IT.DTITPAG,IT.VLRADICITPAG,P.DOCPAG,IT.CODTIPOCOB," );
+				sSQL.append( "(SELECT T.DESCTIPOCOB FROM FNTIPOCOB T " );
+				sSQL.append( "WHERE IT.CODEMPTC=T.CODEMP AND IT.CODFILIALTC=T.CODFILIAL AND IT.CODTIPOCOB=T.CODTIPOCOB) AS DESCTIPOCOB " );
 				sSQL.append( "FROM FNITPAGAR IT,FNPAGAR P,CPFORNECED F " );
 				sSQL.append( "WHERE P.CODPAG=IT.CODPAG AND F.CODFOR=P.CODFOR " );
 				sSQL.append( sWhereManut );
@@ -1098,8 +1103,9 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 						tabManut.setValor( rs.getString( 13 ) != null ? rs.getString( 13 ) : "", i, 16 );
 						tabManut.setValor( rs.getString( 17 ) != null ? rs.getString( 17 ) : "", i, 17 );
 						tabManut.setValor( rs.getString( 19 ) != null ? rs.getString( 19 ) : "", i, 18 );
-						tabManut.setValor( rs.getString( "ObsItPag" ) != null ? rs.getString( "ObsItPag" ) : "", i, 19 );
-						tabManut.setValor( rs.getString( "CODTIPOCOB" ) != null ? rs.getString( "CODTIPOCOB" ) : "", i, 20 );
+						tabManut.setValor( rs.getString( "CODTIPOCOB" ) != null ? rs.getString( "CODTIPOCOB" ) : "", i, 19 );
+						tabManut.setValor( rs.getString( "DESCTIPOCOB" ) != null ? rs.getString( "DESCTIPOCOB" ) : "", i, 20 );
+						tabManut.setValor( rs.getString( "ObsItPag" ) != null ? rs.getString( "ObsItPag" ) : "", i, 21 );
 						vCodPed.addElement( rs.getString( "CodCompra" ) );
 						vNumContas.addElement( rs.getString( "NumConta" ) != null ? rs.getString( "NumConta" ) : "" );
 						vCodPlans.addElement( rs.getString( "CodPlan" ) != null ? rs.getString( "CodPlan" ) : "" );
@@ -1179,7 +1185,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 				iCodPag = Integer.parseInt( (String) tabManut.getValor( iLin, 5 ) );
 				iNParcPag = Integer.parseInt( (String) tabManut.getValor( iLin, 6 ) );
 				
-				sVals = new String[ 12 ];
+				sVals = new String[ 13 ];
 				
 				sRelPlanPag = buscaRelPlanPag( Integer.parseInt( (String) tabManut.getValor( iLin, 5 ) ) );
 				sRets = null;
@@ -1195,25 +1201,20 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 				sVals[ 6 ] = (String) tabManut.getValor( iLin, 1 );
 				sVals[ 7 ] = (String) tabManut.getValor( iLin, 9 );
 				sVals[ 8 ] = Funcoes.dateToStrDate( new Date() );
+				sVals[ 9 ] = (String) tabManut.getValor( iLin, 11 );
 				sVals[ 10 ] = "".equals( vCodCCs.elementAt( iLin ) ) ? sRelPlanPag[ 3 ] : vCodCCs.elementAt( iLin );
+				sVals[ 11 ] = (String) tabManut.getValor( iLin, 19 );
 
 				if ( "".equals( ( (String) tabManut.getValor( iLin, 10 ) ).trim() ) ) {// Para verificar c jah esta pago testa se a data de pgto esta setada.
-					
-					if ( "".equals( ( (String) tabManut.getValor( iLin, 19 ) ).trim() ) ) {
-					
-						sVals[ 11 ] = "PAGAMENTO REF. A COMPRA: " + tabManut.getValor( iLin, 8 );
+					if ( "".equals( ( (String) tabManut.getValor( iLin, 21 ) ).trim() ) ) {					
+						sVals[ 12 ] = "PAGAMENTO REF. A COMPRA: " + tabManut.getValor( iLin, 8 );
 					}
-					else {
-					
-						sVals[ 11 ] = (String) tabManut.getValor( iLin, 19 );
+					else {					
+						sVals[ 12 ] = (String) tabManut.getValor( iLin, 21 );
 					}
-
-					sVals[ 9 ] = (String) tabManut.getValor( iLin, 11 );
 				}
-				else {
-					
-					sVals[ 11 ] = (String) tabManut.getValor( iLin, 19 );
-					sVals[ 9 ] = (String) tabManut.getValor( iLin, 11 );
+				else {					
+					sVals[ 12 ] = (String) tabManut.getValor( iLin, 21 );
 				}
 
 				dl.setValores( sVals );
@@ -1224,10 +1225,10 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 					
 					sRets = dl.getValores();
 					
-					sSQL.append( "UPDATE FNITPAGAR " );
-					sSQL.append( "SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
+					sSQL.append( "UPDATE FNITPAGAR SET " );
+					sSQL.append( "NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 					sSQL.append( "DOCLANCAITPAG=?,DTPAGOITPAG=?,VLRPAGOITPAG=?,ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?," );
-					sSQL.append( "OBSITPAG=?,STATUSITPAG='PP' " );
+					sSQL.append( "CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=?,OBSITPAG=?,STATUSITPAG='PP' " );
 					sSQL.append( "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
 
 					try {
@@ -1243,26 +1244,34 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 						ps.setDate( 8, Funcoes.strDateToSqlDate( sRets[ 3 ] ) );
 						ps.setBigDecimal( 9, Funcoes.strCurrencyToBigDecimal( sRets[ 4 ] ) );
 						
-						if ( "".equals( sRets[ 5 ].trim() ) ) {
-							
+						if ( "".equals( sRets[ 5 ].trim() ) ) {							
 							ps.setNull( 10, Types.INTEGER );
 							ps.setNull( 11, Types.CHAR );
 							ps.setNull( 12, Types.INTEGER );
 							ps.setNull( 13, Types.INTEGER );
 						}
-						else {
-							
+						else {							
 							ps.setInt( 10, iAnoCC );
 							ps.setString( 11, sRets[ 5 ] );
 							ps.setInt( 12, Aplicativo.iCodEmp );
 							ps.setInt( 13, ListaCampos.getMasterFilial( "FNCC" ) );
 						}
+						if ( "".equals( sRets[ 6 ].trim() ) ) {							
+							ps.setNull( 14, Types.INTEGER );
+							ps.setNull( 15, Types.INTEGER );
+							ps.setNull( 16, Types.INTEGER );
+						}
+						else {							
+							ps.setInt( 14, Integer.parseInt( sRets[ 6 ] ) );
+							ps.setInt( 15, Aplicativo.iCodEmp );
+							ps.setInt( 16, ListaCampos.getMasterFilial( "FNTIPOCOB" ) );
+						}
 						
-						ps.setString( 14, sRets[ 6 ] );
-						ps.setInt( 15, iCodPag );
-						ps.setInt( 16, iNParcPag );
-						ps.setInt( 17, Aplicativo.iCodEmp );
-						ps.setInt( 18, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+						ps.setString( 17, sRets[ 7 ] );
+						ps.setInt( 18, iCodPag );
+						ps.setInt( 19, iNParcPag );
+						ps.setInt( 20, Aplicativo.iCodEmp );
+						ps.setInt( 21, ListaCampos.getMasterFilial( "FNPAGAR" ) );
 						
 						ps.executeUpdate();
 						
@@ -1405,7 +1414,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 	private void editar() {
 
 		PreparedStatement ps = null;
-		StringBuffer sSQL = new StringBuffer();
+		StringBuffer sql = new StringBuffer();
 		String[] sVals = null;
 		String[] sRets = null;
 		DLEditaPag dl = null;
@@ -1442,23 +1451,19 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 					sVals[ 10 ] = (String) tabManut.getValor( iLin, 12 );
 					sVals[ 11 ] = (String) tabManut.getValor( iLin, 14 );
 					
-					if ( "".equals( ( (String) tabManut.getValor( iLin, 10 ) ).trim() ) ) {
-						
-						if ( "".equals( ( (String) tabManut.getValor( iLin, 19 ) ).trim() ) ) {
-						
+					if ( "".equals( ( (String) tabManut.getValor( iLin, 10 ) ).trim() ) ) {						
+						if ( "".equals( ( (String) tabManut.getValor( iLin, 2 ) ).trim() ) ) {						
 							sVals[ 12 ] = "PAGAMENTO REF. A COMPRA: " + tabManut.getValor( iLin, 8 );
 						}
-						else {
-						
-							sVals[ 12 ] = (String) tabManut.getValor( iLin, 19 );
+						else {						
+							sVals[ 12 ] = (String) tabManut.getValor( iLin, 21 );
 						}
 					}
-					else {
-						
+					else {						
 						sVals[ 12 ] = (String) tabManut.getValor( iLin, 18 );
 					}
 					
-					sVals[ 13 ] = (String) tabManut.getValor( iLin, 20 );
+					sVals[ 13 ] = (String) tabManut.getValor( iLin, 19 );
 					
 					// SE o doccompra estiver em branco getvalor(8) quer dizer que o lançamento foi feito pelo usuário.
 					dl.setValores( sVals, "".equals( tabManut.getValor( iLin, 8 ).toString().trim() ) );
@@ -1469,14 +1474,17 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 						
 						sRets = dl.getValores();
 						
-						sSQL.append( "UPDATE FNITPAGAR SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
-						sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITPAG =?,VLRPARCITPAG=?,VLRJUROSITPAG=?," );
-						sSQL.append( "VLRADICITPAG =?,VLRDESCITPAG=?,DTVENCITPAG=?,OBSITPAG=?" );
-						sSQL.append( " WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
+						sql.append( "UPDATE FNITPAGAR SET " );
+						sql.append( "NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?," );
+						sql.append( "CODFILIALPN=?,ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?," );
+						sql.append( "DOCLANCAITPAG=?,VLRPARCITPAG=?,VLRJUROSITPAG=?,VLRADICITPAG=?," );
+						sql.append( "VLRDESCITPAG=?,DTVENCITPAG=?,OBSITPAG=?," );
+						sql.append( "CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=? " );
+						sql.append( "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
 						
 						try {
 							
-							ps = con.prepareStatement( sSQL.toString() );
+							ps = con.prepareStatement( sql.toString() );
 							
 							if ( "".equals( sRets[ 0 ].trim() ) ) {
 								ps.setNull( 1, Types.CHAR );
@@ -1552,11 +1560,21 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 							else {
 								ps.setString( 17, sRets[ 9 ] );
 							}
+							if ( "".equals( sRets[ 10 ].trim() ) ) {
+								ps.setNull( 18, Types.INTEGER );
+								ps.setNull( 19, Types.INTEGER );
+								ps.setNull( 20, Types.INTEGER );
+							}
+							else {
+								ps.setInt( 18, Integer.parseInt( sRets[ 10 ] ) );
+								ps.setInt( 19, Aplicativo.iCodEmp );
+								ps.setInt( 20, ListaCampos.getMasterFilial( "FNTIPOCOB" ) );
+							}
 
-							ps.setInt( 18, iCodPag );
-							ps.setInt( 19, iNParcPag );
-							ps.setInt( 20, Aplicativo.iCodEmp );
-							ps.setInt( 21, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+							ps.setInt( 21, iCodPag );
+							ps.setInt( 22, iNParcPag );
+							ps.setInt( 23, Aplicativo.iCodEmp );
+							ps.setInt( 24, ListaCampos.getMasterFilial( "FNPAGAR" ) );
 							
 							ps.executeUpdate();
 							
@@ -1577,7 +1595,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 			e.printStackTrace();
 		} finally {
 			ps = null;
-			sSQL = null;
+			sql = null;
 			sVals = null;
 			sRets = null;
 			dl = null;
