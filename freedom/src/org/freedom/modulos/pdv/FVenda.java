@@ -2343,9 +2343,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			}
 			else { 
 				if ( ( caixaAberto() || FreedomPDV.pegaValorINI( con ) ) ) {
-					if ( iniVenda() ) {
-						super.setVisible( arg0 );						
-					}
+					iniVenda();
+					super.setVisible( arg0 );
 				}
 				else {
 					super.setVisible( ! arg0 );
