@@ -46,58 +46,65 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	private final JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private JTextFieldPad txtRazFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtRazFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtCodConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	private final JTextFieldPad txtCodConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
-	private JTextFieldPad txtDescConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtDescConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private final JTextFieldPad txtCodPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
-	private JTextFieldPad txtDescPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtDescPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
+	private final JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
 
-	private JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
+	private final JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
-	private JTextFieldFK txtSiglaCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 10, 0 );
+	private final JTextFieldFK txtSiglaCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 10, 0 );
 
-	private JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtDoc = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	private final JTextFieldPad txtDoc = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
-	private JTextFieldPad txtDtEmis = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private final JTextFieldPad txtDtEmis = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtDtVenc = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private final JTextFieldPad txtDtVenc = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtVlrParc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrParc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JTextFieldPad txtDtPagto = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private final JTextFieldPad txtDtPagto = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtVlrPago = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrPago = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JTextFieldPad txtObs = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtObs = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private ListaCampos lcConta = new ListaCampos( this );
+	private final JTextFieldPad txtCodTipoCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private ListaCampos lcPlan = new ListaCampos( this );
+	private final JTextFieldFK txtDescTipoCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private ListaCampos lcCC = new ListaCampos( this );
+	private final ListaCampos lcConta = new ListaCampos( this );
+
+	private final ListaCampos lcPlan = new ListaCampos( this );
+
+	private final ListaCampos lcCC = new ListaCampos( this );
+
+	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
+	
 
 	public DLBaixaPag( Component cOrig ) {
 
 		super( cOrig );
 		setTitulo( "Baixa" );
-		setAtribos( 380, 450 );
-
-		Funcoes.setBordReq( txtCodPlan );
-		Funcoes.setBordReq( txtCodConta );
-		Funcoes.setBordReq( txtDoc );
-		Funcoes.setBordReq( txtDtPagto );
-		Funcoes.setBordReq( txtVlrPago );
-		Funcoes.setBordReq( txtObs );
+		setAtribos( 360, 420 );
+		
+		montaListaCampos();
+		montaTela();
+		
+	}
+	
+	private void montaListaCampos() {
 
 		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição", ListaCampos.DB_SI, false ) );
@@ -131,6 +138,27 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		txtCodPlan.setFK( true );
 		txtCodPlan.setNomeCampo( "CodPlan" );
 
+		txtCodTipoCob.setNomeCampo( "CodTipoCob" );
+		lcTipoCob.add( new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK, false ) );
+		lcTipoCob.add( new GuardaCampo( txtDescTipoCob, "DescTipoCob", "Descrição do tipo de cobrança.", ListaCampos.DB_SI, false ) );
+		lcTipoCob.montaSql( false, "TIPOCOB", "FN" );
+		lcTipoCob.setQueryCommit( false );
+		lcTipoCob.setReadOnly( true );
+		txtCodTipoCob.setTabelaExterna( lcTipoCob );
+		txtCodTipoCob.setListaCampos( lcTipoCob );
+		txtDescTipoCob.setListaCampos( lcTipoCob );
+		txtCodTipoCob.setFK( true );
+	}
+	
+	private void montaTela() {
+
+		Funcoes.setBordReq( txtCodPlan );
+		Funcoes.setBordReq( txtCodConta );
+		Funcoes.setBordReq( txtDoc );
+		Funcoes.setBordReq( txtDtPagto );
+		Funcoes.setBordReq( txtVlrPago );
+		Funcoes.setBordReq( txtObs );
+
 		txtCodFor.setAtivo( false );
 		txtRazFor.setAtivo( false );
 		txtDescConta.setAtivo( false );
@@ -141,34 +169,40 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 		adic( new JLabelPad( "Cód.for." ), 7, 0, 80, 20 );
 		adic( txtCodFor, 7, 20, 80, 20 );
-		adic( new JLabelPad( "Razão do fornecedor" ), 90, 0, 200, 20 );
-		adic( txtRazFor, 90, 20, 200, 20 );
+		adic( new JLabelPad( "Razão do fornecedor" ), 90, 0, 250, 20 );
+		adic( txtRazFor, 90, 20, 250, 20 );
 		adic( new JLabelPad( "Cód.conta" ), 7, 40, 80, 20 );
 		adic( txtCodConta, 7, 60, 80, 20 );
-		adic( new JLabelPad( "Descrição da conta" ), 90, 40, 200, 20 );
-		adic( txtDescConta, 90, 60, 200, 20 );
+		adic( new JLabelPad( "Descrição da conta" ), 90, 40, 250, 20 );
+		adic( txtDescConta, 90, 60, 250, 20 );
 		adic( new JLabelPad( "Cód.ctg." ), 7, 80, 100, 20 );
 		adic( txtCodPlan, 7, 100, 100, 20 );
-		adic( new JLabelPad( "Descrição da categoria" ), 110, 80, 200, 20 );
-		adic( txtDescPlan, 110, 100, 200, 20 );
+		adic( new JLabelPad( "Descrição da categoria" ), 110, 80, 230, 20 );
+		adic( txtDescPlan, 110, 100, 230, 20 );
 		adic( new JLabelPad( "Cód.c.c." ), 7, 120, 100, 20 );
 		adic( txtCodCC, 7, 140, 100, 20 );
-		adic( new JLabelPad( "Descrição do centro de custo" ), 110, 120, 200, 20 );
-		adic( txtDescCC, 110, 140, 200, 20 );
-		adic( new JLabelPad( "Doc." ), 7, 160, 110, 20 );
-		adic( txtDoc, 7, 180, 110, 20 );
-		adic( new JLabelPad( "Emissão" ), 120, 160, 107, 20 );
-		adic( txtDtEmis, 120, 180, 107, 20 );
-		adic( new JLabelPad( "Vencimento" ), 230, 160, 110, 20 );
-		adic( txtDtVenc, 230, 180, 110, 20 );
-		adic( new JLabelPad( "Vlr. Parc." ), 7, 200, 110, 20 );
-		adic( txtVlrParc, 7, 220, 110, 20 );
-		adic( new JLabelPad( "Dt. Pagto." ), 120, 200, 107, 20 );
-		adic( txtDtPagto, 120, 220, 107, 20 );
-		adic( new JLabelPad( "Vlr. Pago" ), 230, 200, 110, 20 );
-		adic( txtVlrPago, 230, 220, 110, 20 );
-		adic( new JLabelPad( "Observações" ), 7, 240, 200, 20 );
-		adic( txtObs, 7, 260, 333, 20 );
+		adic( new JLabelPad( "Descrição do centro de custo" ), 110, 120, 230, 20 );
+		adic( txtDescCC, 110, 140, 230, 20 );
+		
+		adic( new JLabelPad( "Cod.Tp.Cob" ), 7, 160, 80, 20);
+		adic( txtCodTipoCob, 7, 180, 80, 20 );
+		adic( new JLabelPad("Descrição do tipo de cobrança"), 90, 160, 250, 20 );
+		adic(txtDescTipoCob, 90, 180, 250, 20 );
+		
+		adic( new JLabelPad( "Doc." ), 7, 200, 110, 20 );
+		adic( txtDoc, 7, 220, 110, 20 );
+		adic( new JLabelPad( "Emissão" ), 120, 200, 107, 20 );
+		adic( txtDtEmis, 120, 220, 107, 20 );
+		adic( new JLabelPad( "Vencimento" ), 230, 200, 110, 20 );
+		adic( txtDtVenc, 230, 220, 110, 20 );
+		adic( new JLabelPad( "Vlr. Parc." ), 7, 240, 110, 20 );
+		adic( txtVlrParc, 7, 260, 110, 20 );
+		adic( new JLabelPad( "Dt. Pagto." ), 120, 240, 107, 20 );
+		adic( txtDtPagto, 120, 260, 107, 20 );
+		adic( new JLabelPad( "Vlr. Pago" ), 230, 240, 110, 20 );
+		adic( txtVlrPago, 230, 260, 110, 20 );
+		adic( new JLabelPad( "Observações" ), 7, 280, 200, 20 );
+		adic( txtObs, 7, 300, 333, 20 );
 
 		lcCC.addCarregaListener( this );
 
@@ -187,13 +221,13 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		txtDtPagto.setVlrString( sVals[ 8 ] );
 		txtVlrPago.setVlrString( sVals[ 9 ] );
 		txtCodCC.setVlrString( sVals[ 10 ] );
-		txtObs.setVlrString( sVals[ 11 ] );
-
+		txtCodTipoCob.setVlrString( sVals[ 11 ] );
+		txtObs.setVlrString( sVals[ 12 ] );
 	}
 
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 7 ];
+		String[] sRetorno = new String[ 8 ];
 
 		sRetorno[ 0 ] = txtCodConta.getVlrString();
 		sRetorno[ 1 ] = txtCodPlan.getVlrString();
@@ -201,7 +235,8 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		sRetorno[ 3 ] = txtDtPagto.getVlrString();
 		sRetorno[ 4 ] = txtVlrPago.getVlrString();
 		sRetorno[ 5 ] = txtCodCC.getVlrString();
-		sRetorno[ 6 ] = txtObs.getVlrString();
+		sRetorno[ 6 ] = txtCodTipoCob.getVlrString();
+		sRetorno[ 7 ] = txtObs.getVlrString();
 
 		return sRetorno;
 
@@ -211,33 +246,26 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 		if ( evt.getSource() == btOK ) {
 
-			if ( txtCodConta.getVlrString().length() < 1 ) {
-				
+			if ( txtCodConta.getVlrString().length() < 1 ) {				
 				Funcoes.mensagemInforma( this, "Número da conta é requerido!" );
 			}
-			else if ( txtCodPlan.getVlrString().length() < 13 ) {
-				
+			else if ( txtCodPlan.getVlrString().length() < 13 ) {				
 				Funcoes.mensagemInforma( this, "Código da categoria é requerido!" );
 			}
-			else if ( txtDtPagto.getVlrString().length() < 10 ) {
-				
+			else if ( txtDtPagto.getVlrString().length() < 10 ) {				
 				Funcoes.mensagemInforma( this, "Data do pagamento é requerido!" );
 			}
-			else if ( txtVlrPago.getVlrString().length() < 4 ) {
-				
+			else if ( txtVlrPago.getVlrString().length() < 4 ) {				
 				Funcoes.mensagemInforma( this, "Valor pago é requerido!" );
 			}
-			else if ( txtVlrPago.getVlrDouble().doubleValue() <= 0.0 ) {	
-				
+			else if ( txtVlrPago.getVlrDouble().doubleValue() <= 0.0 ) {					
 				Funcoes.mensagemInforma( this, "Valor pago deve ser maior que zero!" );
 			}
-			else {
-				
+			else {				
 				super.actionPerformed( evt );
 			}
 		}
-		else {
-			
+		else {			
 			super.actionPerformed( evt );
 		}
 
@@ -257,8 +285,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 			rs = ps.executeQuery();
 
-			if ( rs.next() ) {
-			
+			if ( rs.next() ) {			
 				iRet = rs.getInt( "ANOCENTROCUSTO" );
 			}
 
@@ -281,14 +308,12 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 	public void beforeCarrega( CarregaEvent cevt ) {
 
-		if ( cevt.getListaCampos() == lcCC && txtAnoCC.getVlrInteger().intValue() == 0 ) {
-			
+		if ( cevt.getListaCampos() == lcCC && txtAnoCC.getVlrInteger().intValue() == 0 ) {			
 			txtAnoCC.setVlrInteger( new Integer( buscaAnoBaseCC() ) );
 		}
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
-
 	}
 
 	public void setConexao( Connection cn ) {
@@ -300,7 +325,8 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		lcPlan.carregaDados();
 		lcCC.setConexao( cn );
 		lcCC.carregaDados();
-
+		lcTipoCob.setConexao( cn );
+		lcTipoCob.carregaDados();
 	}
 
 }
