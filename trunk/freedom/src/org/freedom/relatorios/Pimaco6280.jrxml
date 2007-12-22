@@ -6,14 +6,14 @@
 		 columnCount="3"
 		 printOrder="Vertical"
 		 orientation="Portrait"
-		 pageWidth="595"
-		 pageHeight="842"
-		 columnWidth="178"
-		 columnSpacing="0"
-		 leftMargin="30"
-		 rightMargin="30"
-		 topMargin="20"
-		 bottomMargin="20"
+		 pageWidth="612"
+		 pageHeight="792"
+		 columnWidth="175"
+		 columnSpacing="22"
+		 leftMargin="28"
+		 rightMargin="14"
+		 topMargin="42"
+		 bottomMargin="28"
 		 whenNoDataType="NoPages"
 		 isTitleNewPage="false"
 		 isSummaryNewPage="false">
@@ -23,7 +23,9 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<queryString><![CDATA[select p.descprod, p.codbarprod, p.precobaseprod from eqproduto p where p.codmarca='CORT']]></queryString>
+	<queryString><![CDATA[select p.descprod, p.codbarprod, p.precobaseprod from eqproduto p, eqetiqprod e 
+where e.codemp=p.codemp and e.codfilial=p.codfilial and e.codprod=p.codprod and 
+e.nrconexao=1]]></queryString>
 
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="CODBARPROD" class="java.lang.String"/>
@@ -46,10 +48,10 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="65"  isSplitAllowed="true" >
+			<band height="72"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="4"
+						x="10"
 						y="38"
 						width="153"
 						height="11"
@@ -62,7 +64,7 @@
 				</textField>
 				<staticText>
 					<reportElement
-						x="4"
+						x="10"
 						y="51"
 						width="26"
 						height="11"
@@ -75,7 +77,7 @@
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="33"
+						x="39"
 						y="51"
 						width="96"
 						height="11"
@@ -89,7 +91,7 @@
 				<image  scaleImage="RetainShape" vAlign="Top" hAlign="Left" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="3"
+						x="9"
 						y="5"
 						width="152"
 						height="32"

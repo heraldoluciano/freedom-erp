@@ -502,8 +502,10 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 				if ( bVisualizar ) {
 
 					FPrinterJob dlGr = null;
-					dlGr = new FPrinterJob( getTpEtiquetas() , "Etiquetas", null, getEtiquetas(), null, this );
-					dlGr.setVisible( true );
+					if (!"".equals( getTpEtiquetas())) {
+						dlGr = new FPrinterJob( getTpEtiquetas() , "Etiquetas", null, getEtiquetas(), null, this );
+						dlGr.setVisible( true );
+					}
 				}
 				// impressão.
 				else {
