@@ -485,7 +485,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		
 		else if("6280".equals( cbEtiquetas.getVlrString())){
 			
-			retorno = "relatorios/Pimanco6280.jasper";
+			retorno = "relatorios/Pimaco6280.jasper";
 		}
 		
 		return retorno;
