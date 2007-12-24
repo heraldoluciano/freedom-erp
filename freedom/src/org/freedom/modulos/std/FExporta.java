@@ -120,9 +120,9 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 		btChecar.addActionListener( this );
 		btGerar.addActionListener( this );
-		btFile.addActionListener( this );
+		btFile.addActionListener( this );		
+		txtDtIni.addActionListener( this );
 		
-		txtDtIni.addFocusListener( this );
 		txtDtFim.addFocusListener( this );
 		
 		progress.setStringPainted( true );
@@ -292,7 +292,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		sql.append( "H.DESCHIST, S.DATASUBLANCA DATA, S.CODFILIAL " );
 		sql.append( "FROM FNSUBLANCA S, FNLANCA L, FNITPAGAR I, CPFORNECED F, FNCONTA CT, " );
 		sql.append( "FNHISTPAD H, FNPAGAR P " );
-		sql.append( "WHERE S.CODEMP=5 AND S.CODFILIAL=1 AND S.DATASUBLANCA BETWEEN '01.06.2007' AND '30.06.2007' AND " );
+		sql.append( "WHERE S.CODEMP=? AND S.CODFILIAL=? AND S.DATASUBLANCA BETWEEN ? AND ? AND " );
 		sql.append( "S.CODSUBLANCA<>0 AND " );
 		sql.append( "L.CODEMP=S.CODEMP AND L.CODFILIAL=S.CODFILIAL AND L.CODLANCA=S.CODLANCA AND " );
 		sql.append( "I.CODEMP=L.CODEMPPG AND I.CODFILIAL=L.CODFILIALPG AND I.CODPAG=L.CODPAG AND I.NPARCPAG=L.NPARCPAG AND " );
@@ -342,6 +342,26 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		sql.append( "CT.CODEMPPN=L.CODEMPPN AND CT.CODFILIALPN=L.CODFILIALPN AND CT.CODPLAN=L.CODPLAN AND " );
 		sql.append( "H.CODEMP=CT.CODEMPHP AND H.CODFILIAL=CT.CODFILIALHP AND H.CODHIST=CT.CODHIST AND " );
 		sql.append( "R.CODVENDA IS NULL " );
+		sql.append( "ORDER BY DATASUBLANCA" );
+							
+		return sql.toString();
+	}
+	
+	public static String getSqlLancamentosAvulcos() {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "SELECT P.CODCONTDEB CONTADEB, P.CODCONTCRED CONTACRED, " );
+		sql.append( "S.VLRSUBLANCA VALOR, ' ' SERIE, L.DOCLANCA DOC, " );
+		sql.append( "H.DESCHIST, S.DATASUBLANCA DATA, S.CODFILIAL " );
+		sql.append( "FROM FNSUBLANCA S, FNLANCA L, FNCONTA CT, FNPLANEJAMENTO P " );
+		sql.append( "LEFT OUTER JOIN FNHISTPAD H " );
+		sql.append( "ON H.CODEMP=P.CODEMPHP AND H.CODFILIAL=P.CODFILIALHP AND H.CODHIST=P.CODHIST " );
+		sql.append( "WHERE S.CODEMP=? AND S.CODFILIAL=? AND S.DATASUBLANCA BETWEEN ? AND ? AND " );
+		sql.append( "S.CODSUBLANCA<>0 AND L.CODEMP=S.CODEMP AND L.CODFILIAL=S.CODFILIAL AND L.CODLANCA=S.CODLANCA AND " );
+		sql.append( "L.CODPAG IS NULL AND L.CODREC IS NULL AND CT.CODEMPPN=L.CODEMPPN AND " );
+		sql.append( "CT.CODFILIALPN=L.CODFILIALPN AND CT.CODPLAN=L.CODPLAN AND " );
+		sql.append( "P.CODEMP=S.CODEMPPN AND P.CODFILIAL=S.CODFILIALPN AND P.CODPLAN=S.CODPLAN " );
 		sql.append( "ORDER BY DATASUBLANCA" );
 							
 		return sql.toString();
@@ -595,10 +615,8 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 	
 	private void getLayoutSafe() {
 		
-		try {
-								
+		try {								
 			for ( ETipo t : ETipo.values() ) {
-
 				executeSqlSafe( t, errosSafe );	
 			}
 		}
@@ -638,12 +656,12 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 				sb.setFilial( rs.getInt( "CODFILIAL" ) );
 				sb.setTipo( tipo );
 				
-				if ( sb.valido() ) {
+				formatSafe( sb, row );
 				
+				if ( sb.valido() ) {				
 					readrows.add( row.toString() );
 				}
-				else {
-					
+				else {					
 					erros.add( sb );
 				}
 			}
@@ -750,12 +768,15 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 			} );
 			th.start();
 		}
-		if ( e.getSource() == btChecar ) {
+		else if ( e.getSource() == btChecar ) {
 			checar();
 		}
 		else if ( e.getSource() == btFile ) {
-
 			getFile();
+		}
+		else if ( e.getSource() == txtDtIni ) {
+			btChecar.setEnabled( true );
+			btGerar.setEnabled( false );			
 		}
 	}
 
@@ -763,13 +784,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 	public void focusLost( FocusEvent e ) {
 
-		if ( e.getSource() == txtDtIni ) {
-			
-			btChecar.setEnabled( true );
-			btGerar.setEnabled( false );			
-		}
-		else if ( e.getSource() == txtDtFim ) {
-			
+		if ( e.getSource() == txtDtFim ) {			
 			btChecar.requestFocus();
 		}
 	}
@@ -789,7 +804,8 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		CONTAS_PAGAR( "Contas a pagar", getSqlContasPagar(), "FNPAGAR" ),
 		CONTAS_PAGAS( "Contas pagas", getSqlContasPagas(), "FNSUBLANCA" ),
 		CONTAS_RECEBER( "Contas a receber", getSqlContasReceber(), "FNRECEBER" ),
-		CONTAS_RECEBIDAS( "Contas recebidas", getSqlContasRecebidas(), "FNSUBLANCA" );
+		CONTAS_RECEBIDAS( "Contas recebidas", getSqlContasRecebidas(), "FNSUBLANCA" ),
+		LANCAMENTOS_AVULSOS( "Lançamentos avulsos", getSqlLancamentosAvulcos(), "FNSUBLANCA" );
 		
 		String descricao = "";
 		String tabela = "";
