@@ -19,7 +19,7 @@ del ..\disco\opt\freedom\bin\*.* /Q
 del ..\disco\opt\freedom\ini\*.* /Q
 del ..\disco\opt\firebird\dados\*.* /Q
 del ..\disco\disco.zip /Q
-7z x -o..\disco\opt\firebird\dados\ -tzip ..\..\dados\estrutura\freedom.zip
+7z x -o..\disco\opt\firebird\dados -tzip ..\..\dados\estrutura\freedom.zip
 copy ..\..\src\org\freedom\udf\udfinstall.bat ..\disco\opt\firebird\UDF
 copy ..\..\src\org\freedom\udf\stp_udf_win.sql ..\disco\opt\firebird\UDF
 copy ..\..\src\org\freedom\udf\stp_udf.dll ..\disco\opt\firebird\UDF
