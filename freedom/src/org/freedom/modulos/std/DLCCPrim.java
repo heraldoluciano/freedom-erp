@@ -60,6 +60,8 @@ public class DLCCPrim extends FFDialogo {
 	  txtSigla.setVlrString(sSigla);
     }
     txtDescCont.requestFocus();
+    
+    Funcoes.setBordReq( txtSigla );
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btOK) {
