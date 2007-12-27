@@ -181,7 +181,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		setBordaReq( txpSenha );
 		setBordaReq( txpConfirma );
 
-		lcGrup.add( new GuardaCampo( txtIDGrpUsu, "IDGRPUSU", "ID grupo", ListaCampos.DB_PK, false ) );
+		lcGrup.add( new GuardaCampo( txtIDGrpUsu, "IDGRPUSU", "ID grupo", ListaCampos.DB_PK, true ) );
 		lcGrup.add( new GuardaCampo( txtDescGrup, "NOMEGRPUSU", "Descriçao do grupo", ListaCampos.DB_SI, false ) );
 		lcGrup.montaSql( false, "GRPUSU", "SG" );
 		lcGrup.setQueryCommit( false );
@@ -264,6 +264,9 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 		btAdicEmp.addActionListener( this );
 		btDelEmp.addActionListener( this );
+		
+		super.setBordaReq( txpSenha );
+		super.setBordaReq( txpConfirma );
 
 	}
 
