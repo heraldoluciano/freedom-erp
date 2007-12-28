@@ -2,11 +2,29 @@
 package org.freedom.ecf.driver;
 
 public enum EStatus {
-
+	
 	RETORNO_OK( "RETORNO_OK" ),
 	RETORNO_INDEFINIDO( "Retorno indefinido: " ),
+	IMPRESSORA_OK( "Impressora OK" ),
 
 	// Status da impressora Bematech...
+	BEMA_FIM_DE_PAPEL( "Fim de papel." ),
+    BEMA_POUCO_PAPEL( "Pouco papel." ),
+    BEMA_RELOGIO_ERROR( "Erro no relógio." ),
+    BEMA_IMPRESSORA_EM_ERRO( "Impressora em erro." ),
+    BEMA_NO_ESC( "Primeiro dado do comando não foi ESC." ),
+    BEMA_NO_COMMAND( "Comando inexistente." ),
+    BEMA_CUPOM_FISCAL_ABERTO( "Cupom fiscal aberto." ),
+    BEMA_NU_PARAMS_INVALIDO( "Número de parâmetro de CMD inválido." ),
+    BEMA_TP_PARAM_INVALIDO( "Tipo de parâmetro de CMD inválido." ),
+    BEMA_OUT_OF_MEMORY( "Memória fiscal lotada." ),
+    BEMA_MEMORY_ERROR( "Erro na memória RAM CMOS não volátil." ),
+    BEMA_NO_ALIQUOTA( "Alíquota não programada." ),
+    BEMA_OUT_OF_ALIQUOTA( "Capacidade de alíquotas esgotada." ),
+    BEMA_NO_ACESESS_CANCELAMENTO( "Cancelamento não permitido." ),
+    BEMA_NO_CNPJ_IE( "CNPJ/IE do proprietário não programados." ),
+    BEMA_COMMAND_NO_EXECUTE( "Comando não executado." ),
+    
 	BEMA_ERRO_COMUNICACAO( 0, "Erro de comunicação física." ),
 	BEMA_PARAMETRO_INVALIDO( -2, "Parâmetro inválido na função." ),
 	BEMA_ALIQUOTA_NAO_PROGRAMADA( -3, "Aliquota não programada." ),
@@ -80,20 +98,85 @@ public enum EStatus {
 	DARUMA_WARNING_02( 1002, "Execute redução Z." ),
 	DARUMA_WARNING_04( 1004, "Queda de energia." ),
 	DARUMA_WARNING_10( 1010, "Bateria interna requer substituição." ),
-	DARUMA_WARNING_20( 1020, "Operação habilitada somente em MIT." );
+	DARUMA_WARNING_20( 1020, "Operação habilitada somente em MIT." ),
+	DARUMA_STATUS_S1_B3_0( 2130, 3, "Gaveta fechada." ),
+	DARUMA_STATUS_S1_B3_1( 2131, 3, "Gaveta aberta." ),
+	DARUMA_STATUS_S1_B1_0( 2110, 3, "Tampa fechada." ),
+	DARUMA_STATUS_S1_B1_1( 2111, 1, "Tampa aberta." ),
+	DARUMA_STATUS_S1_B0_0( 2100, 1, "Modo bobina não selecionado." ),
+	DARUMA_STATUS_S1_B0_1( 2101, 3, "Selecionado modo bobina." ),	
+	DARUMA_STATUS_S2_B3_0( 2230, 3, "Slip não selecionado." ),
+	DARUMA_STATUS_S2_B3_1( 2231, 3, "Slip presente." ),
+	DARUMA_STATUS_S2_B2_0( 2222, 1, "Sem documento em posição de autenticação." ),
+	DARUMA_STATUS_S2_B2_1( 2220, 2, "Documento posicionado para autenticação." ),
+	DARUMA_STATUS_S2_B1_0( 2210, 3, "Papel presente." ),
+	DARUMA_STATUS_S2_B1_1( 2211, 1, "Fim da bobina de papel." ),
+	DARUMA_STATUS_S2_B0_0( 2200, 3, "Bobina de papel OK." ),
+	DARUMA_STATUS_S2_B0_1( 2201, 2, "Near end detectado." ),	
+	DARUMA_STATUS_S3_B3_0( 2330, 2, "Modo manutenção." ),
+	DARUMA_STATUS_S3_B3_1( 2331, 3, "Modo operação." ),
+	DARUMA_STATUS_S3_B2_0( 2320, 3, "Estrape de operação fechado." ),
+	DARUMA_STATUS_S3_B2_1( 2321, 3, "Estrape de operação aberto." ),
+	DARUMA_STATUS_S3_B1_0( 2310, 3, "Impressora operacional." ),
+	DARUMA_STATUS_S3_B1_1( 2311, 1, "Impressora com erro Fiscal(Bloqueada)." ),
+	DARUMA_STATUS_S3_B0_0( 2300, 3, "Impressora On Line." ),
+	DARUMA_STATUS_S3_B0_1( 2301, 2, "Impressora Off Line." ),
+	DARUMA_STATUS_S4_B2_0( 2420, 3, "Impressão em operação." ),
+	DARUMA_STATUS_S4_B2_1( 2421, 1, "Redução Z de hoje já emitido." ),
+	DARUMA_STATUS_S4_B1_0( 2410, 1, "Leitura X do início do dia ainda não emitida." ),
+	DARUMA_STATUS_S4_B1_1( 2411, 1, "Leitura X do início do dia já emitida." ),
+	DARUMA_STATUS_S4_B0_0( 2400, 3, "Pode configurar a IF." ),
+	DARUMA_STATUS_S4_B0_1( 2401, 1, "Emitiu algum documento após a redução Z." ),
+	DARUMA_STATUS_S5_B3_0( 2530, 3, "Modo normal." ),
+	DARUMA_STATUS_S5_B3_1( 2531, 2, "Modo treinamento." ),
+	DARUMA_STATUS_S5_B2_0( 2520, 3, "MF presente." ),
+	DARUMA_STATUS_S5_B2_1( 2521, 3, "MF ausente ou não inicializada." ),
+	DARUMA_STATUS_S5_B1_0( 2510, 3, "Buffer de comunicação não vazio." ),
+	DARUMA_STATUS_S5_B1_1( 2511, 3, "Buffer de coumunicação vazio." ),
+	DARUMA_STATUS_S5_B0_0( 2500, 3, "Impressão em andamento." ),
+	DARUMA_STATUS_S5_B0_1( 2501, 3, "Impressão encerrada." ),
+	DARUMA_STATUS_S6_B3_0( 2630, 3, "Não imprimindo slip." ),
+	DARUMA_STATUS_S6_B3_1( 2631, 3, "Imprimindo slip." ),
+	DARUMA_STATUS_S6_B2_0( 2620, 1, "Não autenticado." ),
+	DARUMA_STATUS_S6_B2_1( 2621, 3, "Autenticado." ),
+	DARUMA_STATUS_S7_B3_0( 2730, 1, "Falha de energia." ),
+	DARUMA_STATUS_S7_B3_1( 2731, 3, "VAC superior a 90V." ),
+	DARUMA_STATUS_S7_B2_0( 2720, 3, "Substitua bateria do RTC." ),
+	DARUMA_STATUS_S7_B2_1( 2721, 3, "Bateria OK." ),
+	DARUMA_STATUS_S7_B0_0( 2700, 3, "MF de 1M Bytes." ),
+	DARUMA_STATUS_S7_B0_1( 2701, 3, "MF de 512K Bytes." ),
+	DARUMA_STATUS_S9_B3_0( 2930, 3, "Checksum da MF atualizado." ),
+	DARUMA_STATUS_S9_B3_1( 2931, 3, "Atualizando checksum da MF." ),
+	DARUMA_STATUS_S9_B0_0( 2900, 3, "Totalizador fiscais OK." ),
+	DARUMA_STATUS_S9_B0_1( 2901, 1, "Erro de consistência nos totalizadores fiscais." ),
+	DARUMA_STATUS_S10_B3_0( 21030, 3, "MF Ok." ),
+	DARUMA_STATUS_S10_B3_1( 21031, 1, "Erro na leitura da MF ou MF substituida." ),
+	DARUMA_STATUS_S10_B2_0( 21020, 3, "Gravação da MF Ok." ),
+	DARUMA_STATUS_S10_B2_1( 21021, 1, "Erro na gravação da MF." ),
+	DARUMA_STATUS_S10_B1_0( 21010, 3, "Relógio interno Ok." ),
+	DARUMA_STATUS_S10_B1_1( 21011, 1, "Erro no relógio interno." ),
+	DARUMA_STATUS_S10_B0_0( 21000, 3, "Clichê do proprietário Ok." ),
+	DARUMA_STATUS_S10_B0_1( 21001, 3, "Clichê do prorietário danificado." );
 	
 
 	private String message;
 	private int code;
+	private int relevanc;
 	
 
-	EStatus( final String arg ) {
-		this.message = arg;
+	EStatus( final String message ) {
+		this.message = message;
 	}
 	
-	EStatus( final int code, final String arg ) {
+	EStatus( final int code, final String message ) {
 		this.code = code;
-		this.message = arg;
+		this.message = message;
+	}
+	
+	EStatus( final int code, final int relevanc, final String message ) {
+		this.code = code;
+		this.message = message;
+		this.relevanc = relevanc;
 	}
 	
 	public void setMessage( final String arg ) {
@@ -106,5 +189,9 @@ public enum EStatus {
 
 	public int getCode() {
 		return this.code;
+	}
+	
+	public int getRelevanc() {
+		return this.relevanc;
 	}
 }
