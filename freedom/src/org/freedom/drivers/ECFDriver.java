@@ -444,7 +444,7 @@ public class ECFDriver {
 		}
 		else if ( !bModoDemo && ecf != null ) {
 			
-			String tmp = ecf.getStatus();
+			/*String tmp = ecf.getStatus();
 			
 			if( tmp != null && tmp.length() > 0 ) {
 				
@@ -522,7 +522,7 @@ public class ECFDriver {
 					st2 -= 1;
 					sMensagem += sSep + "Comando não executado.";
 				}
-			}
+			}*/
 			
 		}
 
