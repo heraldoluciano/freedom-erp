@@ -144,7 +144,7 @@ public class ControlTest extends TestCase {
 		
 		System.out.print( "verifica estado da impressora > " );
 		String tmp = null;
-		System.out.println( tmp = control.getEstadoImpressora() );
+		//System.out.println( tmp = control.getStatusImpressora() );
 		assertTrue( tmp != null );
 	}
 	
@@ -241,7 +241,7 @@ public class ControlTest extends TestCase {
 	
 	public void testCancelaCupom() {
 		
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		Control control = new Control( "org.freedom.ecf.driver.ECFDaruma" );
 
 		System.out.print( "cancelamento de cupom fiscal > " );
 		assertTrue( control.cancelaCupom() );
@@ -283,11 +283,20 @@ public class ControlTest extends TestCase {
 	
 	public void testReducaoZ() {
 
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		Control control = new Control( "org.freedom.ecf.driver.ECFDaruma" );
 
 		System.out.print( "redução Z > " );
 		assertTrue( control.reducaoZ() );
 		System.out.println( control.getMessageLog() );
+	}
+	
+	public void testReducaoZExecutada() {
+
+		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+
+		System.out.print( "redução Z executada > " );
+		boolean tmp = control.reducaoZExecutada();
+		System.out.print( tmp ? "sim" : "não" );
 	}
 
 	public void testSangria() {

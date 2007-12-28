@@ -3,6 +3,7 @@ package org.freedom.ecf.test;
 import static org.freedom.ecf.driver.EStatus.RETORNO_OK;
 import junit.framework.TestCase;
 
+import org.freedom.ecf.com.Serial;
 import org.freedom.ecf.driver.ECFDaruma;
 
 public class ECFDarumaTest extends TestCase {
@@ -83,13 +84,13 @@ public class ECFDarumaTest extends TestCase {
 		 
 		System.out.print( "cancelaItemGenerico 2 > " ); 
 		assertTrue( trataRetornoFuncao( ecf, ecf.cancelaItemGenerico( 2 ) ) );		
-		 */
+		 
 		System.out.print( "iniciaFechamentoCupom > " );
 		assertTrue( trataRetornoFuncao( ecf, ecf.iniciaFechamentoCupom( ECFDaruma.ACRECIMO_VALOR, 0.00f ) ) );
 
 		System.out.print( "efetuaFormaPagamento Dinheiro > " );
 		assertTrue( trataRetornoFuncao( ecf, ecf.efetuaFormaPagamento( "01", 10.00f, null ) ) );
-		/*
+		
 		System.out.print( "programaFormaPagamento > " ); 
 		String f2 = ecf.programaFormaPagamento( "Cheque          " ); 
 		System.out.println( f2 );
@@ -100,10 +101,11 @@ public class ECFDarumaTest extends TestCase {
 
 		System.out.print( "estornoFormaPagamento > " ); 
 		assertTrue( trataRetornoFuncao( ecf.estornoFormaPagamento( "Cheque          ", "Dinheiro", 5.50f ) ) );
-		*/
+		
 		System.out.print( "finalizaFechamentoCupom > " );
 		assertTrue( trataRetornoFuncao( ecf, ecf.finalizaFechamentoCupom( "Obrigado e volte sempre pra testar!" ) ) );
 
+*/
 		//System.out.print( "cancelaCupom > " ); 
 		//assertTrue( trataRetornoFuncao( ecf.cancelaCupom() ) );
 	}
@@ -240,6 +242,18 @@ public class ECFDarumaTest extends TestCase {
 		System.out.print( "retornoStatusCheque > " ); 
 		System.out.println( ecf.retornoStatusCheque() );
 		
+	}
+	
+	public void testGetStatus() {
+		try {
+			ECFDaruma ecf = new ECFDaruma( "COM1" );
+			
+			System.out.print( "retorno de status > " ); 
+			ecf.getStatus();		
+			System.out.println( new String( ecf.getBytesLidos() ) );
+		} catch ( RuntimeException e ) {
+			e.printStackTrace();
+		}
 	}
 	
 	public boolean trataRetornoFuncao( final ECFDaruma ecf, final int arg ) {
