@@ -140,19 +140,9 @@ public class FreedomPDV extends AplicativoPDV {
 		try {
 			AplicativoPDV.setLookAndFeel( "freedom.ini" );
 			FreedomPDV freedom = new FreedomPDV();
+			freedom.setECF();
 			freedom.show();
 			freedom.btVenda.doClick();
-			
-			/* Validação transferida para a abertura da tela de venda.
-			int result = FreedomPDV.abreCaixa( freedom.con );
-
-			if ( result == -1 ) {
-				FreedomPDV.killProg( 5, "Caixa não foi aberto. A aplicação será fechada!" );
-			}
-			else if ( result == 0 || result == 1 ) {
-				freedom.btVenda.doClick();
-			}
-			*/
 		} catch ( Throwable e ) {
 			Funcoes.criaTelaErro( "Erro de execução\n\n" + e.getMessage() );
 			e.printStackTrace();

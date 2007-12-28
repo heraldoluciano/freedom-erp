@@ -42,7 +42,6 @@ import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
@@ -58,7 +57,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.comutacao.Tef;
-import org.freedom.drivers.ECFDriver;
+import org.freedom.ecf.app.Control;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.modulos.std.DLFechaParcela;
@@ -205,10 +204,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 
 	private final Tabela tabRec = new Tabela();
 
-	private final ECFDriver ecf = new ECFDriver( !AplicativoPDV.usaEcfDriver() );
-
-	private Tef tef = null;
-
 	private String sTipoVenda = null;
 
 	private int iCodVenda = 0;
@@ -240,8 +235,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	//private Connection con = null;
 
 	private Object[] param;
-	
-	private int exec = 0;
+
+	private final Control ecf;
+
+	private Tef tef = null;
 	
 
 	/*
@@ -270,6 +267,11 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 		vLabs.addElement( "CIF" );
 		vLabs.addElement( "FOB" );
 		rgFreteVD = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
+		
+		ecf = new Control( 
+				AplicativoPDV.getEcfdriver(), 
+				AplicativoPDV.getPortaECF(), 
+				AplicativoPDV.bModoDemo );
 
 		montaListaCampos();
 
@@ -812,7 +814,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	private boolean finalizaTEF( Properties retTef ) {
 
 		boolean bRet = false;
-		boolean bLeituraX = false;
+		/*boolean bLeituraX = false;
 
 		Object sLinhas[] = tef.retImpTef( retTef );
 
@@ -929,7 +931,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 			recalcPago();
 
 			vTefsOK.remove( retTef );
-		}
+		}*/
 
 		return bRet;
 
@@ -1257,23 +1259,35 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 			lcVendedor.carregaDados();
 			lcClComis.carregaDados();
 
+			boolean exec = false;
+			
 			if ( execFechamento() ) {
-				
-				exec = 1;
-
-				if ( !AplicativoPDV.bModoDemo && ecf != null ) {
-
-					if ( ecf.fechaCupomFiscal( txtDescPlanoPag.getVlrString(), "", "", 0f, txtVlrPago.floatValue(), getMenssage() ) ) {
-
+				exec = true;
+				if ( ecf.iniciaFechamentoCupom() ) {
+					if ( txtVlrDinheiro.floatValue() > 0f ) {
+						if ( ! ecf.efetuaFormaPagamento( "Dinheiro", txtVlrDinheiro.getVlrBigDecimal() ) ) {
+							Funcoes.mensagemErro( this, ecf.getMessageLog() );
+							return;
+						}
+					}
+					if ( txtVlrCheque.floatValue() > 0f ) {
+						if ( ! ecf.efetuaFormaPagamento( "Cheque", txtVlrCheque.getVlrBigDecimal() ) ) {
+							Funcoes.mensagemErro( this, ecf.getMessageLog() );
+							return;
+						}
+					}
+					if ( txtVlrChequeElet.floatValue() > 0f ) {
+						if ( ! ecf.efetuaFormaPagamento( "Cartão", txtVlrChequeElet.getVlrBigDecimal() ) ) {
+							Funcoes.mensagemErro( this, ecf.getMessageLog() );
+							return;
+						}
+					}
+					if ( ecf.finalizaFechamentoCupom( getMenssage() ) ) {
 						if ( finalizaVenda() ) {
-
 							btCancel.setEnabled( false );
-
 							// Verifica se existe um comprovante de TEF para imprimir.
 							if ( vTefsOK.size() > 0 ) {
-
 								for ( int i = 0; i < vTefsOK.size(); i++ ) {
-
 									if ( finalizaTEF( vTefsOK.elementAt( i ) ) ) {
 										bRet = true;
 									}
@@ -1291,38 +1305,29 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 								bRet = execTroco();
 							}
 						}
-
-						ecf.abreGaveta();
-					}
-				}
-				else if ( AplicativoPDV.bModoDemo ) {
-
-					bRet = finalizaVenda();
-
-					if ( bRet ) {
-						btCancel.setEnabled( false );
-					}
-					if ( txtVlrTroco.floatValue() > 0 ) {
-						bRet = execTroco();
+						ecf.abrirGaveta();
+					} 
+					else {
+						Funcoes.mensagemErro( this, ecf.getMessageLog() );
+						return;
 					}
 				}
 			}
 
-			if ( ! bRet ) {
+			if ( !bRet ) {
 				return;
 			}
-			
-			if ( exec > 0 && bReceber ) {
+
+			if ( exec && bReceber ) {
 				tpn.setEnabledAt( 3, true );
 				tpn.setSelectedIndex( 3 );
 				bReceber = false;
 			}
-			else if ( exec > 0 && ! bReceber ) {
+			else if ( exec && !bReceber ) {
 				super.actionPerformed( evt );
-			} 
+			}
 		}
 		else {
-		
 			super.actionPerformed( evt );
 		}
 	}

@@ -41,7 +41,7 @@ import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.drivers.ECFDriver;
+import org.freedom.ecf.app.Control;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
@@ -52,17 +52,18 @@ public class DLFechaDia extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldFK txtDataHora = new JTextFieldFK( JTextFieldPad.TP_STRING, 16, 0 );
+	private final JTextFieldFK txtDataHora = new JTextFieldFK( JTextFieldPad.TP_STRING, 16, 0 );
 
-	private JTextFieldFK txtVlrCaixa = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	private final JTextFieldFK txtVlrCaixa = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
 
-	private JCheckBoxPad cbReducaoZ = new JCheckBoxPad( "Deseja executar a redução Z?", "S", "N" );
-
-	private ECFDriver ecf = new ECFDriver( ! AplicativoPDV.usaEcfDriver() );
+	private final JCheckBoxPad cbReducaoZ = new JCheckBoxPad( "Deseja executar a redução Z?", "S", "N" );
 	
 	private Date datacaixa = null;
 	
 	private boolean naoExecutouReducaoZ = false;
+	
+	private final Control ecf;
+	
 
 	public DLFechaDia() {
 
@@ -72,6 +73,11 @@ public class DLFechaDia extends FFDialogo {
 		setAtribos( 313, 170 );
 
 		cbReducaoZ.setVlrString( "N" );
+		
+		ecf = new Control( 
+				AplicativoPDV.getEcfdriver(), 
+				AplicativoPDV.getPortaECF(), 
+				AplicativoPDV.bModoDemo );
 	}
 	
 	private void montaTela() {
@@ -234,16 +240,18 @@ public class DLFechaDia extends FFDialogo {
 
 			if ( naoExecutouReducaoZ && txtVlrCaixa.getVlrBigDecimal().floatValue() > 0.0F ) {
 
-				if ( execSangria() && ! AplicativoPDV.bModoDemo ) {
-
-					ecf.sangria( txtVlrCaixa.getVlrBigDecimal() );
+				if ( execSangria() ) {
+					if ( ! ecf.sangria( txtVlrCaixa.getVlrBigDecimal() ) ) {
+						Funcoes.mensagemErro( this, ecf.getMessageLog() );
+						return;
+					}
 				}
 			}
 			
-			if ( ! AplicativoPDV.bModoDemo ) {
-			
-				ecf.leituraX();
-			}			
+			if ( ! ecf.leituraX() ) {
+				Funcoes.mensagemErro( this, ecf.getMessageLog() );
+				return;
+			}
 
 			if ( execFechamento( bReduz ) ) {
 
@@ -257,12 +265,10 @@ public class DLFechaDia extends FFDialogo {
 					if ( fiscal.getReducaoZ( Calendar.getInstance().getTime(), AplicativoPDV.iCodCaixa ) ) {
 
 						if ( ecf.reducaoZ() ) {
-
 							fiscal.salvaReducaoZ();
 						}
 						else {
-
-							Funcoes.mensagemErro( null, "Erro ao executar a redução Z!" );
+							Funcoes.mensagemErro( this, ecf.getMessageLog() );
 						}
 					}
 					else {
