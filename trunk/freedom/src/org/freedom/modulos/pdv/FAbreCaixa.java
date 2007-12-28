@@ -35,7 +35,7 @@ import java.util.Date;
 import javax.swing.JLabel;
 
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.drivers.ECFDriver;
+import org.freedom.ecf.app.Control;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
@@ -45,68 +45,78 @@ public class FAbreCaixa extends FDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtData = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private final JTextFieldPad txtData = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtValor = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 2 );
+	private final JTextFieldPad txtValor = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 2 );
 
-	private ECFDriver ecf = new ECFDriver( ! AplicativoPDV.usaEcfDriver() );
+	private final Control ecf;
 
 	private Connection con = null;
 
 	public FAbreCaixa() {
 
-		setTitulo( "Abrir Caixa", this.getClass().getName() );
-		setAtribos( 250, 110 );
+		setTitulo( "Abertura de Caixa", this.getClass().getName() );
+		setAtribos( 235, 140 );
+
+		montaTela();
 
 		txtData.setVlrDate( Calendar.getInstance().getTime() );
 		txtData.setAtivo( false );
 		txtValor.setVlrBigDecimal( new BigDecimal( 0 ) );
 
-		adic( new JLabel( "Data" ), 7, 5, 80, 15 );
-		adic( txtData, 7, 20, 80, 20 );
-		adic( new JLabel( "Valor" ), 90, 5, 100, 15 );
-		adic( txtValor, 90, 20, 100, 20 );
+		ecf = new Control( 
+				AplicativoPDV.getEcfdriver(), 
+				AplicativoPDV.getPortaECF(), 
+				AplicativoPDV.bModoDemo );
+		
+		btOK.addKeyListener( this );
+		btCancel.addKeyListener( this );
+	}
 
+	private void montaTela() {
+
+		adic( new JLabel( "Data" ), 10, 10, 90, 20 );
+		adic( txtData, 10, 30, 90, 20 );
+		adic( new JLabel( "Valor" ), 105, 10, 105, 20 );
+		adic( txtValor, 105, 30, 105, 20 );
 	}
 
 	private void dbAbrirCaixa() {
 
-		System.out.println( "Modo demo PDV: " + Aplicativo.bModoDemo );
-		
-		if ( AplicativoPDV.bECFTerm ) {
-			
-			ecf.leituraX();
-			
-			if ( txtValor.getVlrBigDecimal().floatValue() > 0.0f ) {
-				
-				ecf.suprimento( txtValor.getVlrBigDecimal() );
+		if ( ! ecf.leituraX() ) {
+			Funcoes.mensagemErro( this, ecf.getMessageLog() );
+			return;
+		}
+		if ( ! ecf.suprimento( txtValor.getVlrBigDecimal() ) ) {
+			Funcoes.mensagemErro( this, ecf.getMessageLog() );
+			return;
+		}
+
+		try {
+
+			PreparedStatement ps = con.prepareStatement( "EXECUTE PROCEDURE PVABRECAIXASP(?,?,?,?,?,?,?)" );
+
+			ps.setInt( 1, AplicativoPDV.iCodCaixa );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setBigDecimal( 4, txtValor.getVlrBigDecimal() );
+			ps.setDate( 5, Funcoes.dateToSQLDate( new Date() ) );
+			ps.setInt( 6, Aplicativo.iCodFilialPad );
+			ps.setString( 7, Aplicativo.strUsuario );
+			ps.execute();
+
+			ps.close();
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
 			}
 
-			try {
-			
-				PreparedStatement ps = con.prepareStatement( "EXECUTE PROCEDURE PVABRECAIXASP(?,?,?,?,?,?,?)" );
-				
-				ps.setInt( 1, AplicativoPDV.iCodCaixa );
-				ps.setInt( 2, Aplicativo.iCodFilial );
-				ps.setInt( 3, Aplicativo.iCodEmp );
-				ps.setBigDecimal( 4, txtValor.getVlrBigDecimal() );
-				ps.setDate( 5, Funcoes.dateToSQLDate( new Date() ) );
-				ps.setInt( 6, Aplicativo.iCodFilialPad );
-				ps.setString( 7, Aplicativo.strUsuario );
-				ps.execute();
-				
-				ps.close();
-				
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
-				
-			} catch ( SQLException err ) {
-				Funcoes.mensagemErro( this, "Erro ao abrir o caixa!\n" + err.getMessage(), true, con, err );
-			}
-			
-			ecf.abreGaveta();
-		}		
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro ao abrir o caixa!\n" + e.getMessage(), true, con, e );
+			e.printStackTrace();
+		}
+
+		ecf.abrirGaveta();
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
@@ -114,9 +124,8 @@ public class FAbreCaixa extends FDialogo {
 		if ( evt.getSource() == btOK ) {
 			dbAbrirCaixa();
 		}
-		
+
 		super.actionPerformed( evt );
-		
 	}
 
 	public void setConexao( Connection cn ) {
