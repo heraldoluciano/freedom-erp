@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.comm.SerialPort;
@@ -40,13 +41,17 @@ import org.freedom.ecf.com.Serial;
 
 public abstract class AbstractECFDriver implements SerialPortEventListener {
 
-	public static final byte ESC = 27;
-
 	public static final byte STX = 2;
+
+	public static final byte ENQ = 5;
 
 	public static final byte ACK = 6;
 
 	public static final byte NAK = 21;
+
+	public static final byte ESC = 27;
+	
+	public static final byte GS = 29;
 
 	public static final int TIMEOUT_ACK = 500;
 
@@ -456,7 +461,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public abstract int programaHorarioVerao();// 18
 
-	public abstract String getStatus();// 19;
+	public abstract List<EStatus> getStatus();// 19;
 
 	public abstract int relatorioGerencial( String texto );// 20
 
@@ -475,6 +480,8 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	public abstract String retornoSubTotal();// 29
 
 	public abstract String retornoNumeroCupom();// 30
+	
+	public abstract boolean retornoDocumentoAberto();
 
 	public abstract int cancelaItemGenerico( int item );// 31
 

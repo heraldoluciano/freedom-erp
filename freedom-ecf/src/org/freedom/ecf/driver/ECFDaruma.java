@@ -3,7 +3,13 @@ package org.freedom.ecf.driver;
 
 import static org.freedom.ecf.driver.EStatus.RETORNO_OK;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.freedom.ecf.com.Serial;
 
@@ -126,6 +132,10 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * @see org.freedom.ecf.driver.AbstractECFDriver#executaCmd(byte[], int)
 	 */
 	public int executaCmd( final byte[] CMD, final int tamRetorno ) {
+		return executaCmd( CMD, tamRetorno, true );
+	}
+	
+	public int executaCmd( final byte[] CMD, final int tamRetorno, final boolean checkcmd ) {
 
 		byte[] retorno = null;
 		byte[] cmd = null;
@@ -133,7 +143,9 @@ public class ECFDaruma extends AbstractECFDriver {
 		cmd = preparaCmd( CMD );
 		retorno = enviaCmd( cmd, tamRetorno );
 
-		return checkRetorno( retorno );
+		int cmdRetorno = checkcmd ? checkRetorno( retorno ) : checkRetorno2( retorno ); 
+		
+		return cmdRetorno;
 	}
 
 	/**
@@ -190,9 +202,6 @@ public class ECFDaruma extends AbstractECFDriver {
 		int retorno = 0;
 		int erro = 0;
 		int warning = 0;
-		byte del1 = 0;
-		byte del2 = 0;
-		byte cmd = 0;
 		byte e1 = 0;
 		byte e2 = 0;
 		byte w1 = 0;
@@ -201,40 +210,22 @@ public class ECFDaruma extends AbstractECFDriver {
 		
 		if ( bytes != null ) {
 			
-			if ( bytes.length > 0 ) {
-				del1 = bytes[ 0 ];
-				//System.out.println( (char) del1 );
-			}
-			if ( bytes.length > 1 ) {
-				cmd = bytes[ 1 ];
-				//System.out.println( (char) cmd );
-			}
 			if ( bytes.length > 2 ) {
 				e1 = bytes[ 2 ];
-				//System.out.println( (char) e1 );
 			}
 			if ( bytes.length > 3 ) {
 				e2 = bytes[ 3 ];
-				//System.out.println( (char) e2 );
 			}
 			if ( bytes.length > 4 ) {
 				w1 = bytes[ 4 ];
-				//System.out.println( (char) w1 );
 			}
 			if ( bytes.length > 5 ) {
 				w2 = bytes[ 5 ];
-				//System.out.println( (char) w2 );
-			}
-			if ( bytes.length > 6 ) {
-				del2 = bytes[ bytes.length - 1 ];
-				//System.out.println( (char) del2 );
-
 			}
 			if ( bytes.length > 7 ) {
 				bytesLidos = new byte[ bytes.length - 6 ];
 				System.arraycopy( bytes, 4, bytesLidos, 0, bytesLidos.length );
 				setBytesLidos( bytesLidos );
-				//System.out.println( "Retorno: " + String.valueOf( bytesLidos ) );
 			}
 
 			erro = checkError( e1, e2 );
@@ -245,6 +236,22 @@ public class ECFDaruma extends AbstractECFDriver {
 			}
 			else if ( warning != 1000 ) {
 				retorno = warning;
+			}
+		}
+	    
+		return retorno;
+	}
+	
+	public int checkRetorno2( final byte[] bytes ) {
+
+		int retorno = RETORNO_OK.getCode();
+		byte[] bytesLidos;
+		
+		if ( bytes != null ) {
+			if ( bytes.length > 2 ) {
+				bytesLidos = new byte[ bytes.length - 2 ];
+				System.arraycopy( bytes, 1, bytesLidos, 0, bytesLidos.length );
+				setBytesLidos( bytesLidos );
 			}
 		}
 	    
@@ -965,9 +972,15 @@ public class ECFDaruma extends AbstractECFDriver {
 	 */
 	public int reducaoZ() {
 
-		final byte[] CMD = { ESC, 5 };
+		final char CCMD = (char) 252;
+		byte[] CMD = { ESC, (byte) CCMD };
+		
+		final SimpleDateFormat sdt = new SimpleDateFormat( "ddMMyyHHmmss" );
+		final String time = sdt.format( Calendar.getInstance().getTime() );
+		
+		CMD = adicBytes( CMD, time.getBytes() );
 
-		return executaCmd( CMD, 3 );
+		return executaCmd( CMD, 13 );
 	}
 
 	/**
@@ -1244,29 +1257,66 @@ public class ECFDaruma extends AbstractECFDriver {
 
 	/**
 	 * Através deste comando é possível verificar o estado da impressora atual.<br>
-	 * A impressora envia 3 (três) bytes indicando seu estado.<br>
 	 * 
+	 * @see org.freedom.ecf.driver.EStatus
 	 * @return estado da impressora.<br>
-	 *         ACK<br>
-	 *         ST1<br>
-	 *         ST2<br>
 	 */
-	public String getStatus() {
+	public List<EStatus> getStatus() {
+		
+		final List<EStatus> status = new ArrayList<EStatus>();	
+		final byte[] CMD = { GS, ENQ };
+		executaCmd( CMD, 14, false );
+		
+		final String tmp = new String( getBytesLidos() );
+		final char[] chs = tmp.toCharArray();
+		final int value[][] = new int[16][4];
+		
+		value[0] = new int[] { 0, 0, 0, 0 };
+		value[1] = new int[] { 0, 0, 0, 1 };
+		value[2] = new int[] { 0, 0, 1, 0 };
+		value[3] = new int[] { 0, 0, 1, 1 };
+		value[4] = new int[] { 0, 1, 0, 0 };
+		value[5] = new int[] { 0, 1, 0, 1 };
+		value[6] = new int[] { 0, 1, 1, 0 };
+		value[7] = new int[] { 0, 1, 1, 1 };
+		value[8] = new int[] { 1, 0, 0, 0 };
+		value[9] = new int[] { 1, 0, 0, 1 };
+		value[10] = new int[] { 1, 0, 1, 0 };
+		value[11] = new int[] { 1, 0, 1, 1 };
+		value[12] = new int[] { 1, 1, 0, 0 };
+		value[13] = new int[] { 1, 1, 0, 1 };
+		value[14] = new int[] { 1, 1, 1, 0 };
+		value[15] = new int[] { 1, 1, 1, 1 };		
 
-		final byte[] CMD = preparaCmd( new byte[ ] { ESC, 19 } );
-
-		final byte[] ret = enviaCmd( CMD, 3 );
-
-		final StringBuffer retorno = new StringBuffer();
-
-		if ( ret != null && ret.length > 2 ) {
-
-			retorno.append( ret[ 0 ] + "," );
-			retorno.append( ret[ 1 ] + "," );
-			retorno.append( ret[ 2 ] );
+		int index = 1;
+		
+		final Map<String , EStatus> ms = new HashMap<String, EStatus>();
+		
+		for ( EStatus s : EStatus.values() ) {
+			if ( s.getCode() > 2000 ) {
+				ms.put( String.valueOf(s.getCode()), s );
+			}
+		}
+		
+		String key = "";
+		
+		for ( char ch : chs ) {
+			if ( index != 8 && index <= 10 ) {
+				for( int i=3; i >= 0 ; i--) {
+					key = "";
+					key += 2;
+					key += index;
+					key += i;
+					key += value[Integer.parseInt( String.valueOf( ch ), 16 )][i];
+					if ( ms.get( key ) != null ) {
+						status.add( ms.get( key ) );
+					}
+				}
+			}
+			index++;
 		}
 
-		return retorno.toString();
+		return status;
 	}
 
 	/**
@@ -1343,11 +1393,37 @@ public class ECFDaruma extends AbstractECFDriver {
 	 */
 	public String retornoNumeroCupom() {
 
-		final byte[] CMD = { ESC, 30 };
+		final char CCMD = (char) 239;
+		final byte[] CMD = { ESC, (byte) CCMD };
+		
+		executaCmd( CMD, 227 );
 
-		executaCmd( CMD, 6 );
-
-		return bcdToAsc( getBytesLidos() );
+		final String str = new String( getBytesLidos() );
+		String retorno = "99999998";
+				
+		if ( str != null && str.length() >=16 ) {
+			retorno =  str.substring( 8, 15 );
+		}
+		
+		return retorno;
+	}
+	
+	public boolean retornoDocumentoAberto() {		
+		
+		final char CCMD = (char) 235;
+		final byte[] CMD = { ESC, (byte) CCMD };
+		
+		executaCmd( CMD, 65 );
+		
+		final char[] chr = new String( getBytesLidos() ).toCharArray();
+		
+		if ( chr != null && chr.length >=3 ) {
+			if ( '1' == chr[2] ) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	/**

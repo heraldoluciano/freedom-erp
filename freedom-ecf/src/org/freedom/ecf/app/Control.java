@@ -11,17 +11,22 @@ import static org.freedom.ecf.app.EParametro.PARAM_FORMA_PAGAMENTO;
 import static org.freedom.ecf.app.EParametro.PARAM_QUANTIDADE;
 import static org.freedom.ecf.app.EParametro.PARAM_UNIDADE_MEDIDA;
 import static org.freedom.ecf.app.EParametro.PARAM_VALOR_UNITARIO;
-import static org.freedom.ecf.app.EStatusImpressora.*;
+import static org.freedom.ecf.driver.EStatus.IMPRESSORA_OK;
 import static org.freedom.ecf.driver.EStatus.RETORNO_OK;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.freedom.ecf.com.Serial;
 import org.freedom.ecf.driver.AbstractECFDriver;
+import org.freedom.ecf.driver.EStatus;
 import org.freedom.infra.components.LoggerManager;
 
 public class Control {
@@ -187,7 +192,7 @@ public class Control {
 		setModoDemostracao( mododemostracao );
 		
 		try {
-			logger = LoggerManager.getLogger( "log/freedom-ecf.log" );
+			logger = LoggerManager.getLogger( "log/freedomECF.log" );
 		} catch ( RuntimeException e ) {
 			e.printStackTrace();
 		}
@@ -351,6 +356,24 @@ public class Control {
 		return returnOfAction;
 	}
 	
+	public boolean abrirGaveta() {
+		return abrirGaveta( 205 );
+	}
+	
+	public boolean abrirGaveta( final int time ) {
+		
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			returnOfAction = decodeReturn( ecf.acionaGavetaDinheiro( time ) );
+			if ( ! returnOfAction ) {
+				whiterLogError( "[ABERTURA DE GAVETA] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
 	public boolean leituraX() {
 		
 		return leituraX( false );
@@ -402,7 +425,7 @@ public class Control {
 	
 	public Integer getNumeroDocumento() {
 		
-		Integer returnOfAction = null;
+		Integer returnOfAction = 99999998;
 		
 		if ( notIsModoDemostracao() ) {
 			try {
@@ -413,10 +436,10 @@ public class Control {
 			}
 		}
 		
-		return returnOfAction;
+		return returnOfAction++;
 	}
 	
-	public boolean abreCupom() {
+	public boolean abrirCupom() {
 		
 		return abreCupom( null );
 	}
@@ -510,7 +533,7 @@ public class Control {
     			}
     			case PARAM_ALIQUOTA: {
     				if ( ((BigDecimal)arg1).floatValue() <= 0.0f
-    						&& ((BigDecimal)arg1).floatValue() > 99.994f ) {
+    						|| ((BigDecimal)arg1).floatValue() > 99.994f ) {
         				setMessageLog( "Aliquota inválida.[" + arg1 +"]" );
         				actionOK = false;
     				}
@@ -1126,95 +1149,37 @@ public class Control {
 		return returnOfAction;
 	}
 	
-	public String getEstadoImpressora() {
-
-		String returnOfAction = null;
+	public boolean reducaoZExecutada() {
+		
+		boolean returnOfAction = true;
 		
 		if ( notIsModoDemostracao() ) {	
-			String tmp = ecf.getStatus();
-			if( tmp != null && tmp.length() > 0 ) {		
-				StringBuilder mensagem = new StringBuilder();
-				String[] status = tmp.split(","); 				
-				int st1 = Integer.parseInt( status[ 1 ] );
-				int st2 = Integer.parseInt( status[ 2 ] );				
-				if ( st1 >= 128 ) {
-					st1 -= 128;
-					mensagem.append( FIM_DE_PAPEL.getMensagem() );
-				}
-				if ( st1 >= 64 ) {
-					st1 -= 64;
-					mensagem.append( POUCO_PAPEL.getMensagem() );
-				}
-				if ( st1 >= 32 ) {
-					st1 -= 32;
-					mensagem.append( RELOGIO_ERROR );
-				}
-				if ( st1 >= 16 ) {
-					st1 -= 16;
-					mensagem.append( IMPRESSORA_EM_ERRO.getMensagem() );
-				}
-				if ( st1 >= 8 ) {
-					st1 -= 8;
-					mensagem.append( NO_ESC.getMensagem() );
-				}
-				if ( st1 >= 4 ) {
-					st1 -= 4;
-					mensagem.append( NO_COMMAND.getMensagem() );
-				}
-				if ( st1 >= 2 ) {
-					st1 -= 2;
-					mensagem.append( CUPOM_FISCAL_ABERTO.getMensagem() );
-				}
-				if ( st1 >= 1 ) {
-					st1 -= 1;
-					mensagem.append( NU_PARAMS_INVALIDO.getMensagem() );
-				}
+			try {
+				returnOfAction = false;
+				String strDataUltimaReducao = ecf.retornoVariaveis( AbstractECFDriver.V_DT_ULT_REDUCAO );
 				
-				if ( mensagem.length() > 0 ) {
-					mensagem.append( "\n" );					
-				}
+				final SimpleDateFormat sdf = new SimpleDateFormat( "ddMMyy", Locale.getDefault() );
+				Calendar dataUltimaReducao = Calendar.getInstance();
+				Calendar dataAtual = Calendar.getInstance();
 				
-				if ( st2 >= 128 ) {
-					st2 -= 128;
-					mensagem.append( TP_PARAM_INVALIDO.getMensagem() );
-				}
-				if ( st2 >= 64 ) {
-					st2 -= 64;
-					mensagem.append( OUT_OF_MEMORY.getMensagem() );
-				}
-				if ( st2 >= 32 ) {
-					st2 -= 32;
-					mensagem.append( MEMORY_ERROR.getMensagem() );
-				}
-				if ( st2 >= 16 ) {
-					st2 -= 16;
-					mensagem.append( NO_ALIQUOTA.getMensagem() );
-				}
-				if ( st2 >= 8 ) {
-					st2 -= 8;
-					mensagem.append( OUT_OF_ALIQUOTA.getMensagem() );
-				}
-				if ( st2 >= 4 ) {
-					st2 -= 4;
-					mensagem.append( NO_ACESESS_CANCELAMENTO.getMensagem() );
-				}
-				if ( st2 >= 2 ) {
-					st2 -= 2;
-					mensagem.append( NO_CNPJ_IE.getMensagem() );
-				}
-				if ( st2 >= 1 ) {
-					st2 -= 1;
-					mensagem.append( COMMAND_NO_EXECUTE.getMensagem() );
-				}
+				dataUltimaReducao.setTime( sdf.parse( strDataUltimaReducao ) );
+
+				dataAtual.set( Calendar.AM_PM, 0 );
+				dataAtual.set( Calendar.HOUR_OF_DAY, 0 );
+				dataAtual.set( Calendar.HOUR, 0 );
+				dataAtual.set( Calendar.MINUTE, 0 );
+				dataAtual.set( Calendar.SECOND, 0 );
+				dataAtual.set( Calendar.MILLISECOND, 0 );
 				
-				if ( mensagem.length() == 0 ) {
-					mensagem.append( IMPRESSORA_OK.getMensagem() );					
-				}
-				returnOfAction = mensagem.toString();
+				returnOfAction = dataUltimaReducao.compareTo( dataAtual ) == 0;
+				
+			} catch ( ParseException e ) {
+				setMessageLog( e.getMessage() );
+				whiterLogError( "[REDUÇÂO Z] " );
 			}
 		}
 		
-		return returnOfAction;
+		return returnOfAction;		
 	}
 	
 	public Integer getNumeroCaixa() {
@@ -1273,6 +1238,28 @@ public class Control {
 		}
 		
 		return indexAliquota;
+	}
+
+	public List<EStatus> getStatusImpressora() {
+	
+		List<EStatus> returnOfAction = null;
+		
+		if ( notIsModoDemostracao() ) {	
+			returnOfAction = ecf.getStatus();
+		}
+		
+		return returnOfAction;
+	}
+
+	public boolean isDocumentoAberto() {
+	
+		boolean returnOfAction = false;
+		
+		if ( notIsModoDemostracao() ) {	
+			returnOfAction = ecf.retornoDocumentoAberto();
+		}
+		
+		return returnOfAction;
 	}
 
 	/**
