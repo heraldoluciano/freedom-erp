@@ -345,7 +345,8 @@ public class NF035 extends Layout {
 						imp.say( 58, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRADICPED ) ) ) );
 						imp.say( 87, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRIPIPED ) ) ) );
 						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRLIQPED ) + 
-								cab.getFloat( NF.C_VLRADICPED ) )));
+								cab.getFloat( NF.C_VLRADICPED )  +
+								cab.getFloat( NF.C_VLRICMSPED ))));
 						iItImp = 0;
 					}
 					else {
