@@ -1302,7 +1302,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 				iCodPag = txtCodPagBaixa.getVlrInteger().intValue();
 				iNParcPag = Integer.parseInt( (String) tabBaixa.getValor( iLin, 2 ) );
 				
-				sVals = new String[ 12 ];
+				sVals = new String[ 13 ];
 				sRelPlanPag = buscaRelPlanPag( txtCodPagBaixa.getVlrInteger().intValue() );
 				
 				dl = new DLBaixaPag( this );
@@ -1335,6 +1335,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 					sVals[ 11 ] = (String) tabBaixa.getValor( iLin, 13 );
 					sVals[ 9 ] = (String) tabBaixa.getValor( iLin, 7 );
 				}
+				sVals[ 12 ] = (String) tabBaixa.getValor( iLin, 16 );
 
 				dl.setValores( sVals );
 				dl.setConexao( con );
