@@ -219,7 +219,7 @@ public class NF04 extends Layout {
 				imp.say( 105, String.valueOf(itens.getFloat(NF.C_QTDITPED)));          
 				imp.say( 106, Funcoes.strDecimalToStrCurrency(13,2,String.valueOf((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP))));
 				imp.say( 120, Funcoes.strDecimalToStrCurrency(13,2,String.valueOf(itens.getFloat(NF.C_VLRLIQITPED))));
-				imp.say( 136, ((int)itens.getFloat(NF.C_PERCICMSITPED))+"%");
+				imp.say( 136, (String.valueOf((int)itens.getFloat(NF.C_PERCICMSITPED))));
 				
 				iItImp++;
 				if ((iItImp == itens.getInt(NF.C_CONTAITENS)) || (imp.pRow() == MAXLINE - 1)) {
