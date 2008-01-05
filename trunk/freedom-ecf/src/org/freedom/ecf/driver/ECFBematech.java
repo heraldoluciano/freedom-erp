@@ -205,10 +205,9 @@ public class ECFBematech extends AbstractECFDriver {
 				setBytesLidos( bytesLidos );
 			}
 
-			if ( ack == ACK ) {
+			if ( ack == ACK && st1 == 0 && st2 == 0 ) {
 				retorno = 1;
 			} else {
-
 				retorno = -27; // Status da impressora diferente de 6,0,0 (ACK, ST1 e ST2)
 				retorno = checkST1( st1 );
 				retorno = checkST2( st2 );
@@ -270,7 +269,7 @@ public class ECFBematech extends AbstractECFDriver {
 		byte st2 = ST2;
 
 		if ( st2 > 127 ) {
-			retorno = -2; // "Parâmetro inválido na função."
+			retorno = -2;
 			st2 -= 128;
 		}
 		if ( st2 > 63 ) {
@@ -293,7 +292,7 @@ public class ECFBematech extends AbstractECFDriver {
 		}
 		if ( st2 > 0 ) {
 			st2 -= 1;
-			retorno = -2; // "Parâmetro inválido na função. ou Número de parâmetros inválido na funçao"
+			retorno = -2;
 		}
 
 		return retorno;
@@ -357,7 +356,18 @@ public class ECFBematech extends AbstractECFDriver {
 	public int alteraSimboloMoeda( final String simbolo ) {
 
 		byte[] CMD = { ESC, 1 };
-		CMD = adicBytes( CMD, parseParam( simbolo, 2, false ).getBytes() );
+		
+		final int tamanho = 2;
+		String tmp = simbolo.trim();
+		
+		if ( tamanho < tmp.length() ) {
+			tmp = tmp.substring( 0, tamanho );
+		} else {
+			tmp = replicate( " ", tamanho - tmp.length() );
+			tmp += simbolo;
+		}
+		
+		CMD = adicBytes( CMD, tmp.getBytes() );
 
 		return executaCmd( CMD, 3 );
 	}
@@ -380,6 +390,7 @@ public class ECFBematech extends AbstractECFDriver {
 		byte[] CMD = { ESC, 7 };
 
 		final StringBuffer buf = new StringBuffer();
+		
 		buf.append( parseParam( aliq, 4, false ) );
 
 		if ( ISS == opt ) {
@@ -1315,7 +1326,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		executaCmd( CMD, 36 );
 
-		return bcdToAsc( getBytesLidos() );
+		return bcdToAsc( getBytesLidos() ).substring( 1 );
 	}
 
 	/**
