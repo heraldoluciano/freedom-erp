@@ -25,6 +25,7 @@
 package org.freedom.modulos.pdv;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -35,7 +36,7 @@ import java.util.Date;
 import javax.swing.JLabel;
 
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.ecf.app.Control;
+import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
@@ -49,7 +50,7 @@ public class FAbreCaixa extends FDialogo {
 
 	private final JTextFieldPad txtValor = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 2 );
 
-	private final Control ecf;
+	private final ControllerECF ecf;
 
 	private Connection con = null;
 
@@ -64,7 +65,7 @@ public class FAbreCaixa extends FDialogo {
 		txtData.setAtivo( false );
 		txtValor.setVlrBigDecimal( new BigDecimal( 0 ) );
 
-		ecf = new Control( 
+		ecf = new ControllerECF( 
 				AplicativoPDV.getEcfdriver(), 
 				AplicativoPDV.getPortaECF(), 
 				AplicativoPDV.bModoDemo );
@@ -126,6 +127,20 @@ public class FAbreCaixa extends FDialogo {
 		}
 
 		super.actionPerformed( evt );
+	}
+
+	@ Override
+	public void keyPressed( KeyEvent e ) {
+
+		if ( e.getSource() == btOK && e.getKeyCode() == KeyEvent.VK_ENTER ) {
+			btOK.doClick();
+		}
+		else if ( e.getSource() == btCancel && e.getKeyCode() == KeyEvent.VK_ENTER ) {
+			btCancel.doClick();
+		}
+		else {
+			super.keyPressed( e );
+		}
 	}
 
 	public void setConexao( Connection cn ) {

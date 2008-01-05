@@ -25,6 +25,7 @@ package org.freedom.modulos.pdv;
  */
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -41,7 +42,7 @@ import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.ecf.app.Control;
+import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
@@ -62,7 +63,7 @@ public class DLFechaDia extends FFDialogo {
 	
 	private boolean naoExecutouReducaoZ = false;
 	
-	private final Control ecf;
+	private final ControllerECF ecf;
 	
 
 	public DLFechaDia() {
@@ -74,7 +75,7 @@ public class DLFechaDia extends FFDialogo {
 
 		cbReducaoZ.setVlrString( "N" );
 		
-		ecf = new Control( 
+		ecf = new ControllerECF( 
 				AplicativoPDV.getEcfdriver(), 
 				AplicativoPDV.getPortaECF(), 
 				AplicativoPDV.bModoDemo );
@@ -167,7 +168,7 @@ public class DLFechaDia extends FFDialogo {
 
 	private boolean execFechamento( boolean bReduz ) {
 
-		boolean bRet = false;
+		boolean actionReturn = false;
 		
 		try {
 
@@ -188,15 +189,16 @@ public class DLFechaDia extends FFDialogo {
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}			
+
+			Funcoes.mensagemInforma( null, "O caixa foi fechado." );
+			actionReturn = true;
 			
-			bRet = true;
-			
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( null, "Erro ao executar fechamento do caixa!\n" + err.getMessage(), true, con, err );
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( null, "Erro ao executar fechamento do caixa!\n" + e.getMessage(), true, con, e );
 			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao executar fechamento do caixa." );
 		}
 		
-		return bRet;
+		return actionReturn;
 		
 	}
 
@@ -235,80 +237,80 @@ public class DLFechaDia extends FFDialogo {
 	}
 
 	private void fechaCaixa( boolean bReduz ) {
-		
-		if ( AplicativoPDV.bECFTerm ) {
 
-			if ( naoExecutouReducaoZ && txtVlrCaixa.getVlrBigDecimal().floatValue() > 0.0F ) {
-
-				if ( execSangria() ) {
-					if ( ! ecf.sangria( txtVlrCaixa.getVlrBigDecimal() ) ) {
-						Funcoes.mensagemErro( this, ecf.getMessageLog() );
-						return;
-					}
-				}
-			}
-			
-			if ( ! ecf.leituraX() ) {
+		if ( execSangria() ) {
+			if ( !ecf.sangria( txtVlrCaixa.getVlrBigDecimal() ) ) {
 				Funcoes.mensagemErro( this, ecf.getMessageLog() );
 				return;
 			}
+		}
 
-			if ( execFechamento( bReduz ) ) {
+		if ( !ecf.leituraX() ) {
+			Funcoes.mensagemErro( this, ecf.getMessageLog() );
+			return;
+		}
 
-				Funcoes.mensagemInforma( null, "O caixa foi fechado." );
+		if ( execFechamento( bReduz ) ) {
 
-				if ( bReduz && !AplicativoPDV.bModoDemo ) {
+			if ( bReduz ) {
 
-					FLeFiscal fiscal = new FLeFiscal();
-					fiscal.setConexao( con );
+				FLeFiscal fiscal = new FLeFiscal();
+				fiscal.setConexao( con );
 
-					if ( fiscal.getReducaoZ( Calendar.getInstance().getTime(), AplicativoPDV.iCodCaixa ) ) {
-
-						if ( ecf.reducaoZ() ) {
-							fiscal.salvaReducaoZ();
-						}
-						else {
-							Funcoes.mensagemErro( this, ecf.getMessageLog() );
-						}
+				if ( fiscal.getReducaoZ( Calendar.getInstance().getTime(), AplicativoPDV.iCodCaixa ) ) {
+					if ( ecf.reducaoZ() ) {
+						fiscal.salvaReducaoZ();
 					}
 					else {
-
-						Funcoes.mensagemErro( null, "Erro ao executar a redução Z!" );
+						Funcoes.mensagemErro( this, ecf.getMessageLog() );
 					}
 				}
-			}					
+				else {
+					Funcoes.mensagemErro( null, "Erro ao executar a redução Z!" );
+				}
+			}
 		}
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btOK ) {
-			
-			if ( Funcoes.mensagemConfirma( null, "Confirma fechamento?" ) == JOptionPane.YES_OPTION ) {
-			
-				if ( cbReducaoZ.getVlrString().equals( "S" ) ) {
-				
-					if ( Funcoes.mensagemConfirma( null, "Atenção!\nSe for executada a 'Redução Z'\no caixa será fechado em definitivo!\nDeseja executar assim mesmo?" ) == JOptionPane.YES_OPTION ) {
-						
+		if ( evt.getSource() == btOK ) {			
+			if ( Funcoes.mensagemConfirma( null, "Confirma fechamento?" ) == JOptionPane.YES_OPTION ) {			
+				if ( cbReducaoZ.getVlrString().equals( "S" ) ) {				
+					if ( Funcoes.mensagemConfirma( null, 
+							"Atenção!\n" +
+							"Se for executada a 'Redução Z'\no caixa será fechado em definitivo!\n" +
+							"Deseja executar assim mesmo?" ) == JOptionPane.YES_OPTION ) {						
 						fechaCaixa( true );
 					}
-					else {
-						
+					else {						
 						return;
 					}
 				}
-				else {
-					
+				else {					
 					fechaCaixa( false );
 				}
 			}
-			else {
-				
+			else {				
 				return;
 			}
 		}
 		
 		super.actionPerformed( evt );
+	}
+
+	@ Override
+	public void keyPressed( KeyEvent e ) {
+
+		if ( e.getSource() == btOK && e.getKeyCode() == KeyEvent.VK_ENTER ) {
+			btOK.doClick();
+		}
+		else if ( e.getSource() == btCancel && e.getKeyCode() == KeyEvent.VK_ENTER ) {
+			btCancel.doClick();
+		}
+		else {
+			super.keyPressed( e );
+		}
 	}
 
 	public void setConexao( Connection cn ) {
