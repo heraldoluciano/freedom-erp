@@ -52,7 +52,7 @@ public class AplicativoPDV extends AplicativoPD {
 	    pluginVenda = getParameter( "pluginVenda" );
 	    
 	    setPortaECF( getParameter( "portaecf" ) );	    
-	    setEcfdriver( getParameter( "ecfdirver" ) );	
+	    setEcfdriver( getParameter( "ecfdriver" ) );	
 	}	
 
 	public static void setPortaECF( String porta ) {
