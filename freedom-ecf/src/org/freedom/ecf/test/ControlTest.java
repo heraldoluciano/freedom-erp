@@ -3,7 +3,7 @@ package org.freedom.ecf.test;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.freedom.ecf.app.Control;
+import org.freedom.ecf.app.ControllerECF;
 import org.freedom.ecf.driver.AbstractECFDriver;
 
 import junit.framework.TestCase;
@@ -18,9 +18,9 @@ public class ControlTest extends TestCase {
 	
 	public void testInstanciarControl() {
 		
-		Control control = null;
+		ControllerECF control = null;
 		try {
-			control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+			control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 		} catch ( IllegalArgumentException e ) {
 		} catch ( NullPointerException e ) {
 		}		
@@ -31,7 +31,7 @@ public class ControlTest extends TestCase {
 		
 		boolean assertresult = false;		
 		try {
-			new Control( "nome errado" );
+			new ControllerECF( "nome errado" );
 		} catch ( NullPointerException e ) {
 			assertresult = true;
 		}		
@@ -42,7 +42,7 @@ public class ControlTest extends TestCase {
 		
 		boolean assertresult = false;		
 		try {
-			new Control( null );
+			new ControllerECF( null );
 		} catch ( IllegalArgumentException e ) {
 			assertresult = true;
 		}		
@@ -53,7 +53,7 @@ public class ControlTest extends TestCase {
 		
 		boolean assertresult = false;		
 		try {
-			new Control( "" );
+			new ControllerECF( "" );
 		} catch ( IllegalArgumentException e ) {
 			assertresult = true;
 		}		
@@ -62,7 +62,7 @@ public class ControlTest extends TestCase {
 	
 	public void testProgramaHorarioVerao() {
 
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 		
 		System.out.print( "programando horário de verão > " );
 		assertTrue( control.setHorarioDeVerao( false ) );	
@@ -76,7 +76,7 @@ public class ControlTest extends TestCase {
 	
 	public void testNomeiaDepartamento() {
 
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 		
 		System.out.print( "nomeia deparatamento > " );
 		assertTrue( control.nomeiaDepartamento( 2, "Vestuario" ) );	
@@ -85,7 +85,7 @@ public class ControlTest extends TestCase {
 
 	public void testLeituraX() {
 		
-		Control control = new Control( "org.freedom.ecf.driver.ECFDaruma" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFDaruma" );
 		
 		System.out.print( "leitura X > " );
 		assertTrue( control.leituraX() );	
@@ -99,7 +99,7 @@ public class ControlTest extends TestCase {
 
 	public void testSuprimento() {
 		
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 		
 		System.out.println( "suprimento > " );
 		assertTrue( control.suprimento( new BigDecimal( "53.795" ) ) );
@@ -110,7 +110,7 @@ public class ControlTest extends TestCase {
 	
 	public void testNumeroDocumento() {
 
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 		
 		System.out.print( "número do documento > " );
 		Integer tmp = null;
@@ -120,7 +120,7 @@ public class ControlTest extends TestCase {
 	
 	public void testSubTotal() {
 
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 		
 		System.out.print( "sub total > " );
 		BigDecimal tmp = null;
@@ -130,7 +130,7 @@ public class ControlTest extends TestCase {
 	
 	public void testNumeroCaixa() {
 
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 		
 		System.out.print( "número do caixa > " );
 		Integer tmp = null;
@@ -140,7 +140,7 @@ public class ControlTest extends TestCase {
 	
 	public void testVerificaEstado() {
 
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 		
 		System.out.print( "verifica estado da impressora > " );
 		String tmp = null;
@@ -150,7 +150,7 @@ public class ControlTest extends TestCase {
 	
 	public void testCupomFiscal() {
 
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 		
 		System.out.print( "abre cupom fiscal > " );
 		assertTrue( control.abreCupom( "00.000.000/000-00" ) );
@@ -241,7 +241,7 @@ public class ControlTest extends TestCase {
 	
 	public void testCancelaCupom() {
 		
-		Control control = new Control( "org.freedom.ecf.driver.ECFDaruma" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 
 		System.out.print( "cancelamento de cupom fiscal > " );
 		assertTrue( control.cancelaCupom() );
@@ -250,7 +250,7 @@ public class ControlTest extends TestCase {
 	
 	public void testComprovanteNaoFiscalVinculado() {
 
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 		
 		testCupomFiscal();
 
@@ -270,7 +270,7 @@ public class ControlTest extends TestCase {
 	
 	public void testRelatorioGerencial() {
 
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 
 		System.out.print( "relatório gerencial > " );
 		assertTrue( control.relatorioGerencial( getMensagemTef() ) );
@@ -283,7 +283,7 @@ public class ControlTest extends TestCase {
 	
 	public void testReducaoZ() {
 
-		Control control = new Control( "org.freedom.ecf.driver.ECFDaruma" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFDaruma" );
 
 		System.out.print( "redução Z > " );
 		assertTrue( control.reducaoZ() );
@@ -292,7 +292,7 @@ public class ControlTest extends TestCase {
 	
 	public void testReducaoZExecutada() {
 
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 
 		System.out.print( "redução Z executada > " );
 		boolean tmp = control.reducaoZExecutada();
@@ -301,7 +301,7 @@ public class ControlTest extends TestCase {
 
 	public void testSangria() {
 
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 
 		System.out.println( "sangria > " );
 		assertTrue( control.sangria( new BigDecimal( "53.795" ) ) );
@@ -312,7 +312,7 @@ public class ControlTest extends TestCase {
 
 	public void testGetAllAliquotas() {
 
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 
 		List<String> aliquotas = control.getAllAliquotas();
 
@@ -323,12 +323,22 @@ public class ControlTest extends TestCase {
 
 	public void testGetIndexAliquota() {
 
-		Control control = new Control( "org.freedom.ecf.driver.ECFBematech" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 
 		assertTrue( control.getIndexAliquota( 18f ) != null );
 		assertTrue( control.getIndexAliquota( 20.18f ) == null );
 		assertTrue( control.getIndexAliquota( 200.185f ) == null );
 		assertTrue( control.getIndexAliquota( 0.01f ) != null );
+	}
+	
+	public void testProgramaMoeda() {
+
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
+		
+		System.out.print( "programa moeda > " );
+		assertTrue( control.programaMoeda( "TT", "Teste", "Testes" ) );
+		System.out.println( control.getMessageLog() );
+		
 	}
 	
 	private String getMensagemTef() {
