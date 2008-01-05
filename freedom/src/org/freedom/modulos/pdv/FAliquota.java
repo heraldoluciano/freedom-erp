@@ -28,9 +28,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -40,43 +39,58 @@ import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.Tabela;
-import org.freedom.drivers.ECFDriver;
+import org.freedom.ecf.app.ControllerECF;
+import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
-public class FAliquota extends FFDialogo implements ActionListener {
+public class FAliquota extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	private JPanelPad pinCab = new JPanelPad( 400, 60 );
+	private final JPanelPad pinCab = new JPanelPad( 400, 60 );
 
-	private JPanelPad pnCli = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private final JPanelPad pnCli = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JTextFieldPad txtAliquota = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 4, 2 );
+	private final JTextFieldPad txtAliquota = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 4, 2 );
 
-	private JButton btInsere = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private final JButton btInsere = new JButton( Icone.novo( "btExecuta.gif" ) );
 
-	private Tabela tab = new Tabela();
+	private final Tabela tab = new Tabela();
 
-	private JScrollPane spnTab = new JScrollPane( tab );
+	private final JScrollPane spnTab = new JScrollPane( tab );
 
-	private ECFDriver ecf = new ECFDriver( !AplicativoPDV.usaEcfDriver() );
-
-	//private String sAliquotas = "";
+	private final ControllerECF ecf;
 	
-	private Vector<String> vAliquotas = new Vector<String>();
+	private List<String> aliquotas;
+	
 
 	public FAliquota() {
 
 		setTitulo( "Ajusta aliquotas" );
 		setAtribos( 100, 150, 402, 270 );
-
+		
+		ecf = new ControllerECF( 
+				AplicativoPDV.getEcfdriver(), 
+				AplicativoPDV.getPortaECF(), 
+				AplicativoPDV.bModoDemo );
+		
+		montaTela();
+		
+		setToFrameLayout();
+		
+		carregaTabela();
+	}
+		
+	private void montaTela() {
+		
 		btInsere.setPreferredSize( new Dimension( 30, 30 ) );
 		btInsere.setToolTipText( "Insere alíquota" );
 		btInsere.addActionListener( this );
 
 		setPanel( pnCli );
+		
 		pnCli.add( spnTab, BorderLayout.CENTER );
 		pnCli.add( pinCab, BorderLayout.NORTH );
 
@@ -92,51 +106,33 @@ public class FAliquota extends FFDialogo implements ActionListener {
 		tab.setTamColuna( 130, 1 );
 		tab.setTamColuna( 130, 2 );
 		
-		tab.setFont( new Font( "Arial", Font.PLAIN, 12 ) );
-		
-		setToFrameLayout();
-		
-		carregaTabela();
-		
+		tab.setFont( new Font( "Arial", Font.PLAIN, 12 ) );		
 	}
 
 	private void insereAliquota() {
 
-		if ( ( txtAliquota.floatValue() <= 0 ) || ( txtAliquota.floatValue() > 99.99 ) ) {
-			Funcoes.mensagemErro( this, "Alíquota inválida" );
-			txtAliquota.requestFocus();
+		DecimalFormat df = new DecimalFormat( "00.00" );
+		String strAliquota = df.format( txtAliquota.getVlrBigDecimal().doubleValue() ).replaceAll( ",", "" );
+		
+		if ( aliquotas.contains( strAliquota ) ) {
+			Funcoes.mensagemErro( this, "Alíquota já foi cadastrada!" );
 		}
 		else {
-			
-			String sAliq = txtAliquota.getText().trim();
-			String sVal = Funcoes.strZero( txtAliquota.getVlrBigDecimal().intValue() + "", 2 ) + sAliq.substring( sAliq.length() - 2 );
-			
-			if ( vAliquotas.contains( sVal ) ) {
-				Funcoes.mensagemErro( this, "Alíquota já foi cadastrada!" );
+			if ( aliquotas.size() > 15 ) {
+				Funcoes.mensagemErro( this, "Quantidade maxima de aliquotas já foi atingida!" );
 			}
 			else {
-				if ( vAliquotas.size() > 15 ) {
-					Funcoes.mensagemErro( this, "Quantidade maxima de aliquotas já foi atingida!" );
-				}
-				else {
-					if ( AplicativoPDV.bECFTerm ) {
-						ecf.programaAliquotas( sVal, 0 );
-					}
-					carregaTabela();
-				}
-
+				if ( ! ecf.programaAliquota( txtAliquota.getVlrBigDecimal(), AbstractECFDriver.ICMS ) ) {
+					Funcoes.mensagemErro( this, ecf.getMessageLog() );
+				}					
+				carregaTabela();
 			}
 		}
-
 	}
 
 	private void carregaTabela() {
 		
-		if ( !AplicativoPDV.bECFTerm ) {
-			return;
-		}
-		
-		vAliquotas = getAliquotas( ecf );
+		aliquotas = ecf.getAllAliquotas();
 		
 		tab.limpa();
 		tab.adicLinha();
@@ -146,11 +142,15 @@ public class FAliquota extends FFDialogo implements ActionListener {
 		
 		int iRow = 0;
 		int iCol = 0;
-		int tamanho = vAliquotas.size();
+		int size = aliquotas.size();
 		
-		for ( int i=0; i < tamanho; i++ ) {
+		for ( int i=0; i < size; i++ ) {
 			
-			aliq = "T" + Funcoes.strZero( String.valueOf( i + 1 ), 2 ) + " = " + df.format( new Float( vAliquotas.elementAt( i ) ).floatValue() / 100 ) + " %";
+			aliq = 
+				"T" + 
+				Funcoes.strZero( String.valueOf( i + 1 ), 2 ) + 
+				" = " + 
+				df.format( new Float( aliquotas.get( i ) ).floatValue() / 100 ) + " %";
 			
 			tab.setValor( aliq, iRow, iCol++ );
 			
@@ -159,51 +159,14 @@ public class FAliquota extends FFDialogo implements ActionListener {
 				iCol = 0;
 				iRow++;
 				
-				if ( i < tamanho - 1 ) {
+				if ( i < size - 1 ) {
 					tab.adicLinha();
-				}
-				
-			}
-			
+				}				
+			}			
 		}
-
-	}
-	
-	public static Vector<String> getAliquotas( final ECFDriver ecf ) {
-		
-		final Vector<String> aliquotas = new Vector<String>();
-		
-		String sAliquotas = ( ecf.retornoAliquotas() ).trim();
-		
-		int tamanho = 0;
-		
-		if ( AplicativoPDV.usaEcfDriver() ) {
-			
-			tamanho = sAliquotas.length() / 4;
-			
-			for ( int i=0; i < tamanho; i++ ) {
-				
-				aliquotas.addElement( sAliquotas.substring( i * 4, ( i * 4 ) + 4 ) );
-				
-			}
-			
-		} else {
-			
-			tamanho = ( ( ( sAliquotas.length() ) + 1 ) / 5 );
-			
-			for ( int i=0; i < tamanho; i++ ) {
-				
-				aliquotas.addElement( i == 1 ? sAliquotas.substring( 0, 4 ) : sAliquotas.substring( ( i * 5 ) - 5, ( i * 5 ) - 1 ) );
-
-			}
-			
-			
-		}
-		
-		return aliquotas;
-		
 	}
 
+	@Override
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btInsere ) {

@@ -32,7 +32,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JLayeredPane;
 
 import org.freedom.componentes.JLabelPad;
-import org.freedom.drivers.ECFDriver;
+import org.freedom.ecf.app.ControllerECF;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
@@ -40,37 +40,44 @@ public class FLeituraX extends FFDialogo implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private JLayeredPane pn = new JLayeredPane();
+	private final JLayeredPane pn = new JLayeredPane();
 
-	private ECFDriver ecf = new ECFDriver( !AplicativoPDV.usaEcfDriver() );
+	private final ControllerECF ecf; 
+	
 
 	public FLeituraX() {
 
 		super();
 		
 		setAtribos( 400, 200 );
+		
+		ecf = new ControllerECF( 
+				AplicativoPDV.getEcfdriver(), 
+				AplicativoPDV.getPortaECF(), 
+				AplicativoPDV.bModoDemo );
 				
 		StringBuffer texto = new StringBuffer();
 		texto.append( "<HTML>" );
 		texto.append( "Impressão de leitura X.<BR><BR>" );
-		texto.append( "Pressione \" OK \" para confirmar a impressão.<BR>" );
-		texto.append( "Pressione \" CANCELAR \" para sair!<BR>" );
+		texto.append( "Pressione [ OK ] para confirmar a impressão.<BR>" );
+		texto.append( "Pressione [ CANCELAR ] para sair!<BR>" );
 		texto.append( "</HTML>" );
 		
 		JLabelPad label = new JLabelPad( texto.toString() );
 		label.setFont( new Font( "Arial", Font.PLAIN, 14 ) );
 		label.setForeground( Color.BLUE );
-		label.setBounds( 40, 20, 300, 100 );
+		label.setBounds( 40, 10, 300, 100 );
 		
 		pn.add( label );
 
 		c.add( pn );
 		
+		eUltimo();
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btOK && ecf != null ) {
+		if ( evt.getSource() == btOK ) {
 			ecf.leituraX();
 		}
 	

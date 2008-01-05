@@ -25,6 +25,7 @@
 package org.freedom.modulos.pdv;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 
 import org.freedom.componentes.GuardaCampo;
@@ -32,7 +33,7 @@ import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.drivers.ECFDriver;
+import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
@@ -41,21 +42,33 @@ public class FGravaMoeda extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtCodMoeda = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+	private final JTextFieldPad txtCodMoeda = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
-	private JTextFieldFK txtSingMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldFK txtSingMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldFK txtPlurMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldFK txtPlurMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private ECFDriver ecf = new ECFDriver( !AplicativoPDV.usaEcfDriver() );
+	private final ControllerECF ecf;
 
 	private ListaCampos lcMoeda = new ListaCampos( this, "" );
+	
 
 	public FGravaMoeda() {
 
 		setTitulo( "Ajusta moeda na impressora." );
 		setAtribos( 385, 180 );
 
+		ecf = new ControllerECF( 
+				AplicativoPDV.getEcfdriver(), 
+				AplicativoPDV.getPortaECF(), 
+				AplicativoPDV.bModoDemo );
+		
+		montaListaCampos();
+		montaTela();
+	}
+		
+	private void montaListaCampos() {
+		
 		txtCodMoeda.setTipo( JTextFieldPad.TP_STRING, 4, 0 );
 		lcMoeda.add( new GuardaCampo( txtCodMoeda, "CodMoeda", "Cód.moeda", ListaCampos.DB_PK, true ) );
 		lcMoeda.add( new GuardaCampo( txtSingMoeda, "SingMoeda", "Descrição da moeda", ListaCampos.DB_SI, false ) );
@@ -66,6 +79,9 @@ public class FGravaMoeda extends FFDialogo {
 		txtCodMoeda.setFK( true );
 		txtCodMoeda.setNomeCampo( "CodMoeda" );
 		txtCodMoeda.setTabelaExterna( lcMoeda );
+	}
+	
+	private void montaTela() {
 
 		adic( new JLabelPad( "Sigla" ), 7, 5, 50, 15 );
 		adic( txtCodMoeda, 7, 20, 50, 20 );
@@ -73,13 +89,17 @@ public class FGravaMoeda extends FFDialogo {
 		adic( txtSingMoeda, 60, 20, 147, 20 );
 		adic( new JLabelPad( "Nome slur." ), 210, 5, 150, 15 );
 		adic( txtPlurMoeda, 210, 20, 150, 20 );
-		adic( new JLabelPad( "<HTML>Este comando so será executado<BR>se não tiver havido movimentação no dia.</HTML>" ), 7, 45, 400, 40 );
+		adic( new JLabelPad( 
+				"<HTML>" +
+				"Este comando so será executado<BR>" +
+				"se não tiver havido movimentação no dia." +
+				"</HTML>" ), 7, 45, 400, 40 );
 	}
 
 	private void gravaMoeda() {
 
-		if ( AplicativoPDV.bECFTerm && ! ecf.programaMoeda( txtCodMoeda.getVlrString(), txtSingMoeda.getVlrString(), txtPlurMoeda.getVlrString() ) ) {
-			Funcoes.mensagemErro( this, "Erro ao gravar a moeda!!" );
+		if ( ! ecf.programaMoeda( txtCodMoeda.getVlrString(), txtSingMoeda.getVlrString(), txtPlurMoeda.getVlrString() ) ) {
+			Funcoes.mensagemErro( this, ecf.getMessageLog() );
 		}
 	}
 
@@ -89,6 +109,20 @@ public class FGravaMoeda extends FFDialogo {
 			gravaMoeda();
 		}
 		super.actionPerformed( evt );
+	}
+
+	@ Override
+	public void keyPressed( KeyEvent e ) {
+
+		if ( e.getSource() == btOK && e.getKeyCode() == KeyEvent.VK_ENTER ) {
+			btOK.doClick();
+		}
+		else if ( e.getSource() == btCancel && e.getKeyCode() == KeyEvent.VK_ENTER ) {
+			btCancel.doClick();
+		}
+		else {
+			super.keyPressed( e );
+		}
 	}
 
 	public void setConexao( Connection cn ) {
