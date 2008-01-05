@@ -57,7 +57,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.comutacao.Tef;
-import org.freedom.ecf.app.Control;
+import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.modulos.std.DLFechaParcela;
@@ -236,7 +236,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 
 	private Object[] param;
 
-	private final Control ecf;
+	private final ControllerECF ecf;
 
 	private Tef tef = null;
 	
@@ -268,7 +268,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 		vLabs.addElement( "FOB" );
 		rgFreteVD = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		
-		ecf = new Control( 
+		ecf = new ControllerECF( 
 				AplicativoPDV.getEcfdriver(), 
 				AplicativoPDV.getPortaECF(), 
 				AplicativoPDV.bModoDemo );
