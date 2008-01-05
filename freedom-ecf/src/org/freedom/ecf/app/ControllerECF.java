@@ -11,7 +11,6 @@ import static org.freedom.ecf.app.EParametro.PARAM_FORMA_PAGAMENTO;
 import static org.freedom.ecf.app.EParametro.PARAM_QUANTIDADE;
 import static org.freedom.ecf.app.EParametro.PARAM_UNIDADE_MEDIDA;
 import static org.freedom.ecf.app.EParametro.PARAM_VALOR_UNITARIO;
-import static org.freedom.ecf.driver.EStatus.IMPRESSORA_OK;
 import static org.freedom.ecf.driver.EStatus.RETORNO_OK;
 
 import java.math.BigDecimal;
@@ -29,7 +28,7 @@ import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.ecf.driver.EStatus;
 import org.freedom.infra.components.LoggerManager;
 
-public class Control {
+public class ControllerECF {
 		
 	private boolean modoDemostracao;	
 	
@@ -55,7 +54,7 @@ public class Control {
 	 * @throws NullPointerException
 	 *             caso o driver não consiga ser instânciado.
 	 */
-	public Control( final String ecfdriver ) 
+	public ControllerECF( final String ecfdriver ) 
 		throws IllegalArgumentException, NullPointerException {
 
 		this( ecfdriver, Serial.COM1, false );
@@ -76,7 +75,7 @@ public class Control {
 	 * @throws NullPointerException
 	 *             caso o driver não consiga ser instânciado.
 	 */
-	public Control( final String ecfdriver, final boolean mododemostracao ) 
+	public ControllerECF( final String ecfdriver, final boolean mododemostracao ) 
 		throws IllegalArgumentException, NullPointerException {
 
 		this( ecfdriver, Serial.COM1, mododemostracao );
@@ -96,7 +95,7 @@ public class Control {
 	 * @throws NullPointerException
 	 *             caso o driver não consiga ser instânciado.
 	 */
-	public Control( final String ecfdriver, final int porta ) 
+	public ControllerECF( final String ecfdriver, final int porta ) 
 		throws IllegalArgumentException, NullPointerException {
 
 		this( ecfdriver, porta, false );
@@ -117,7 +116,7 @@ public class Control {
 	 * @throws NullPointerException
 	 *             caso o driver não consiga ser instânciado.
 	 */
-	public Control( final String ecfdriver, final String porta ) 
+	public ControllerECF( final String ecfdriver, final String porta ) 
 		throws IllegalArgumentException, NullPointerException {
 
 		this( ecfdriver, Serial.convPorta( porta ), false );
@@ -140,7 +139,7 @@ public class Control {
 	 * @throws NullPointerException
 	 *             caso o driver não consiga ser instânciado.
 	 */
-	public Control( final String ecfdriver, final String porta, final boolean mododemostracao ) 
+	public ControllerECF( final String ecfdriver, final String porta, final boolean mododemostracao ) 
 		throws IllegalArgumentException, NullPointerException {
 
 		this( ecfdriver, Serial.convPorta( porta ), mododemostracao );
@@ -162,7 +161,7 @@ public class Control {
 	 * @throws NullPointerException
 	 *             caso o driver não consiga ser instânciado.
 	 */
-	public Control( final String ecfdriver, final int porta, final boolean mododemostracao ) 
+	public ControllerECF( final String ecfdriver, final int porta, final boolean mododemostracao ) 
 		throws IllegalArgumentException, NullPointerException {
 
 		if ( ecfdriver == null || ecfdriver.trim().length() == 0 ) {
@@ -210,18 +209,13 @@ public class Control {
 		return ! isModoDemostracao();
 	}
 	
-	private void setAliquotas() {
-		this.aliquotas = getAllAliquotas();
-	}
-	
 	public List<String> getAliquotas() {
 		
 		List<String> returnlist = null;
-		
-		if ( this.aliquotas != null ) {
-			returnlist = new ArrayList<String>();
-			Collections.copy( this.aliquotas, returnlist );
-		}
+
+		getAllAliquotas();
+		returnlist = new ArrayList<String>();
+		Collections.copy( aliquotas, returnlist );
 		
 		return returnlist;
 	}
@@ -267,6 +261,39 @@ public class Control {
 			}
 			if ( ! returnOfAction ) {
 				whiterLogError( "[PROGRAMA ALIQUOTA] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	public boolean programaMoeda( final String sigla, final String singular, final String plural ) {
+
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			if ( sigla == null || sigla.trim().length() == 0 ) {
+				returnOfAction = false;
+				setMessageLog( "Sigla inválida.[" + sigla + "]" );
+			}
+			else if ( singular == null || singular.trim().length() == 0 ) {
+				returnOfAction = false;
+				setMessageLog( "Descrição singular inválida.[" + singular + "]" );
+			}
+			else if ( plural == null || plural.trim().length() == 0 ) {
+				returnOfAction = false;
+				setMessageLog( "Descrição plural inválida.[" + plural + "]" );
+			}
+			else {
+				returnOfAction = decodeReturn( ecf.alteraSimboloMoeda( sigla.replace( '$', ' ' ) ) );
+				if ( returnOfAction ) {
+					returnOfAction = decodeReturn( ecf.programaMoedaSingular( singular ) );
+					if ( returnOfAction ) {
+						returnOfAction = decodeReturn( ecf.programaMoedaPlural( plural ) );
+					}
+				}
+			}
+			if ( ! returnOfAction ) {
+				whiterLogError( "[PROGRAMA MOEDA] " );
 			}
 		}
 		
@@ -537,6 +564,11 @@ public class Control {
         				setMessageLog( "Aliquota inválida.[" + arg1 +"]" );
         				actionOK = false;
     				}
+    				String strAliquota = getIndexAliquota( ((BigDecimal)arg1).floatValue() );
+					if ( strAliquota == null ) {
+						setMessageLog( "Aliquota não encontrada.[" + arg1 + "]" );
+						actionOK = false;
+					}
     				break;
     			}
     			case PARAM_TIPO_QUANTIDADE: {
@@ -1215,6 +1247,9 @@ public class Control {
 			}
 		}
 		
+		aliquotas = new ArrayList<String>();
+		Collections.copy( returnOfAction, aliquotas );
+		
 		return returnOfAction;
 	}
 	
@@ -1222,19 +1257,24 @@ public class Control {
 		
 		String indexAliquota = null;
 		
-		if ( arg > 0.0f && arg < 99.99f ) {
-			if ( this.aliquotas == null ) {
-				setAliquotas();
-			}
-			String tmp = ecf.floatToString( arg, 4, 2 );
-			int index = 1;
-			for ( String s : this.aliquotas ) {
-				if ( s.equals( tmp ) ) {
-					indexAliquota = ecf.strZero( String.valueOf( index ), 2 );
-					break;
+		try {
+			if ( arg > 0.0f && arg < 99.99f ) {
+				if ( aliquotas == null ) {
+					getAllAliquotas();
 				}
-				index++;
+				String tmp = ecf.floatToString( arg, 4, 2 );
+				int index = 1;
+				for ( String s : aliquotas ) {
+					if ( s.equals( tmp ) ) {
+						indexAliquota = ecf.strZero( String.valueOf( index ), 2 );
+						break;
+					}
+					index++;
+				}
 			}
+		}
+		finally {
+			System.gc();
 		}
 		
 		return indexAliquota;
