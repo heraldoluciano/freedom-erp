@@ -25,6 +25,7 @@
 package org.freedom.modulos.pdv;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -38,7 +39,7 @@ import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.drivers.ECFDriver;
+import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
@@ -48,125 +49,87 @@ public class FSangria extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldFK txtDataUOper = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
+	private final JTextFieldFK txtDataUOper = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldFK txtSaldoUOper = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldFK txtSaldoUOper = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldFK txtStatusUOper = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
+	private final JTextFieldFK txtStatusUOper = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
 
-	private JTextFieldFK txtUsuUOper = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
+	private final JTextFieldFK txtUsuUOper = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
 
-	private JTextFieldFK txtUsu = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
+	private final JTextFieldFK txtUsu = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
 
-	private JTextFieldFK txtData = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
+	private final JTextFieldFK txtData = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtValor = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtValor = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private ECFDriver ecf = new ECFDriver( !AplicativoPDV.usaEcfDriver() );
+	private final ControllerECF ecf;
+	
+	private char STATUS_OLD = '0';
+	
 
 	public FSangria() {
 
 		super( Aplicativo.telaPrincipal );
 		setTitulo( "Sangria de Caixa" );
-		setAtribos( 390, 275 );
+		setAtribos( 435, 270 );
+		
+		ecf = new ControllerECF( 
+				AplicativoPDV.getEcfdriver(), 
+				AplicativoPDV.getPortaECF(), 
+				AplicativoPDV.bModoDemo );
+		
+		montaTela();
+	}
+	
+	private void montaTela() {
 
-		adic( new JLabelPad( "Data da última operação" ), 7, 5, 150, 15 );
-		adic( txtDataUOper, 7, 20, 150, 20 );
-		adic( new JLabelPad( "Saldo atual" ), 160, 5, 97, 15 );
-		adic( txtSaldoUOper, 160, 20, 97, 20 );
-		adic( new JLabelPad( "Status atual" ), 260, 5, 100, 15 );
-		adic( txtStatusUOper, 260, 20, 100, 20 );
-		adic( new JLabelPad( "Último operador" ), 7, 40, 250, 20 );
-		adic( txtUsuUOper, 7, 60, 250, 20 );
+		adic( new JLabelPad( "Data da última operação" ), 7, 10, 200, 20 );
+		adic( txtDataUOper, 7, 30, 200, 20 );
+		adic( new JLabelPad( "Saldo atual do caixa" ), 210, 10, 200, 20 );
+		adic( txtSaldoUOper, 210, 30, 200, 20 );
+		
+		adic( new JLabelPad( "Último operador" ), 7, 50, 200, 20 );
+		adic( txtUsuUOper, 7, 70, 200, 20 );
+		adic( new JLabelPad( "Status atual do caixa" ), 210, 50, 200, 20 );
+		adic( txtStatusUOper, 210, 70, 200, 20 );
 
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 
-		adic( lbLinha, 7, 85, 365, 2 );
+		adic( lbLinha, 7, 109, 403, 2 );
 
-		adic( new JLabelPad( "Operador atual" ), 7, 90, 150, 20 );
-		adic( txtUsu, 7, 110, 200, 20 );
-		adic( new JLabelPad( "Data" ), 7, 130, 100, 20 );
-		adic( txtData, 7, 150, 100, 20 );
-		adic( new JLabelPad( "Valor" ), 110, 130, 100, 20 );
-		adic( txtValor, 110, 150, 100, 20 );
+		adic( new JLabelPad( "Operador atual" ), 7, 120, 200, 20 );
+		adic( txtUsu, 7, 140, 200, 20 );
+		adic( new JLabelPad( "Data" ), 210, 120, 100, 20 );
+		adic( txtData, 210, 140, 100, 20 );
+		adic( new JLabelPad( "Valor" ), 313, 120, 97, 20 );
+		adic( txtValor, 313, 140, 97, 20 );
 
 		txtUsu.setVlrString( Aplicativo.strUsuario );
 		txtData.setVlrDate( new Date() );
 		txtValor.setVlrBigDecimal( new BigDecimal( 0 ) );
-
 	}
 
-	private boolean verifCaixa() {
-
-		boolean bRetorno = false;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = null;
-		int iRet = -1;
+	private void loadInfoCaixa() {
 
 		try {
 
-			sSQL = "SELECT IRETORNO FROM PVVERIFCAIXASP (?,?,?,?,?,?)";
-			ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, AplicativoPDV.iCodCaixa );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, ListaCampos.getMasterFilial( "PVCAIXA" ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( new Date() ) );
-			ps.setInt( 5, Aplicativo.iCodFilial );
-			ps.setString( 6, Aplicativo.strUsuario );
-			rs = ps.executeQuery();
-			
-			if ( rs.next() ) {
-				iRet = rs.getInt( 1 );
-			}
-
-			rs.close();
-			ps.close();
-			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
-
-		} catch ( SQLException err ) {
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao verificar o caixa!!\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-
-		if ( iRet != 4 && iRet != 2 ) {
-			Funcoes.mensagemErro( this, "Caixa não esta aberto!!" );
-		}
-		else {
-			bRetorno = true;
-		}
-
-		return bRetorno;
-
-	}
-
-	private void carregaInfo() {
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = null;
-
-		try {
-
-			sSQL = "SELECT DDTAMOVRET, CTIPOMOV, NVLRSLDMOV, CIDUSU FROM PVRETMOVCAIXASP(?,?,?,?)";
-			ps = con.prepareStatement( sSQL );
+			PreparedStatement ps = con.prepareStatement( 
+					"SELECT DDTAMOVRET, CTIPOMOV, NVLRSLDMOV, CIDUSU FROM PVRETMOVCAIXASP(?,?,?,?)" );
 			ps.setInt( 1, AplicativoPDV.iCodCaixa );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "PVMOVCAIXA" ) );
 			ps.setDate( 4, Funcoes.dateToSQLDate( new Date() ) );
-			rs = ps.executeQuery();
+			
+			ResultSet rs = ps.executeQuery();
 			
 			if ( rs.next() ) {
+				
+				STATUS_OLD = rs.getString( "CTIPOMOV" ).toCharArray()[ 0 ];	
+
+				txtStatusUOper.setVlrString( Funcoes.transStatusECF( STATUS_OLD ) );
 				txtDataUOper.setVlrDate( rs.getDate( "DDTAMOVRET" ) );
-				txtStatusUOper.setVlrString( ecf.transStatus( rs.getString( "CTIPOMOV" ).toCharArray()[ 0 ] ) );
 				txtSaldoUOper.setVlrString( Funcoes.strDecimalToStrCurrency( 10, 2, rs.getString( "NVLRSLDMOV" ) ) );
 				txtUsuUOper.setVlrString( rs.getString( "CIDUSU" ) );
 			}
@@ -178,33 +141,22 @@ public class FSangria extends FFDialogo {
 				con.commit();
 			}
 
-		} catch ( SQLException err ) {
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro carregar informações do caixa!!\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro carregar informações do caixa!!\n" + e.getMessage(), true, con, e );
+		} 
 	}
 
-	private boolean execSangria() {
+	private void execSangria() {
 
-		boolean bRet = false;
-
-		if ( txtValor.doubleValue() <= 0 ) {
+		if ( txtValor.floatValue() <= 0.0f ) {
 			Funcoes.mensagemInforma( this, "Valor de sangria inválido!" );
-			return false;
+			return;
 		}
-
-		PreparedStatement ps = null;
-		String sSQL = null;
 
 		try {
 			
-			sSQL = "EXECUTE PROCEDURE PVSANGRIASP(?,?,?,?,?,?)";
-			ps = con.prepareStatement( sSQL );
+			PreparedStatement ps = con.prepareStatement( "EXECUTE PROCEDURE PVSANGRIASP(?,?,?,?,?,?)" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "PVMOVCAIXA" ) );
 			ps.setBigDecimal( 3, txtValor.getVlrBigDecimal() );
@@ -218,45 +170,64 @@ public class FSangria extends FFDialogo {
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
-
-			bRet = true;
+			
+			if ( ! ecf.sangria( txtValor.getVlrBigDecimal() ) ) {
+				Funcoes.mensagemErro( this, ecf.getMessageLog() );
+			}
+			if ( ! ecf.abrirGaveta() ) {
+				Funcoes.mensagemErro( this, ecf.getMessageLog() );
+			}
 
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao executar sangria!\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			sSQL = null;
 		}
-
-		return bRet;
-
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btOK ) {
-			if ( execSangria() && AplicativoPDV.bECFTerm ) {
-				ecf.sangria( txtValor.getVlrBigDecimal() );
-				ecf.abreGaveta();
-			}
-			else {
-				return;
-			}
+			execSangria();
 		}
 		
 		super.actionPerformed( evt );
+	}
+
+	@ Override
+	public void keyPressed( KeyEvent e ) {
+
+		if ( e.getSource() == btOK && e.getKeyCode() == KeyEvent.VK_ENTER ) {
+			btOK.doClick();
+		}
+		else if ( e.getSource() == btCancel && e.getKeyCode() == KeyEvent.VK_ENTER ) {
+			btCancel.doClick();
+		}
+		else {
+			super.keyPressed( e );
+		}
+	}
+
+	@ Override
+	public void setVisible( boolean arg ) {
+
+		if ( arg ) {
+			if ( STATUS_OLD == 'F' || STATUS_OLD == 'Z' ) {
+				Funcoes.mensagemErro( this, "Caixa Fechado!" );
+				super.setVisible( false );
+			}
+			else {
+				super.setVisible( true );
+			}
+		}
+		else {
+			super.setVisible( arg );
+		}
 	}
 
 	public void setConexao( Connection cn ) {
 
 		super.setConexao( cn );
 		
-		if ( verifCaixa() ) {
-			carregaInfo();
-		}
-		else {
-			setVisible( false );
-		}
+		loadInfoCaixa();
 	}
 }
