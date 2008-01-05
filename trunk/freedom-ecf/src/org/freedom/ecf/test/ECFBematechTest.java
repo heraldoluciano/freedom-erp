@@ -72,7 +72,7 @@ public class ECFBematechTest extends TestCase {
 		assertTrue( trataRetornoFuncao( ecf.cancelaItemGenerico( 2 ) ) );		
 
 		System.out.print( "iniciaFechamentoCupom > " );
-		assertTrue( trataRetornoFuncao( ecf.iniciaFechamentoCupom( ECFBematech.ACRECIMO_VALOR, 0.50f ) ) );
+		assertTrue( trataRetornoFuncao( ecf.iniciaFechamentoCupom( ECFBematech.ACRECIMO_VALOR, 0.0f ) ) );
 
 		System.out.print( "efetuaFormaPagamento Dinheiro > " );
 		assertTrue( trataRetornoFuncao( ecf.efetuaFormaPagamento( "01", 5.00f, null ) ) );
