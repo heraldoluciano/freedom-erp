@@ -385,7 +385,7 @@ public class FLeFiscal extends FTabDados {
 		
 		if ( AplicativoPDV.usaEcfDriver() ) {
 			
-			Vector<?> vAliquotas = FAliquota.getAliquotas( ecf );
+			/*Vector<?> vAliquotas = FAliquota.getAliquotas( ecf );
 			
 			for ( int i = 0; i < vAliquotas.size(); i++ ) {
 				
@@ -393,7 +393,7 @@ public class FLeFiscal extends FTabDados {
 				sAliquota = sAliquota.substring( 0, 2 ) + '.' + sAliquota.substring( 2 );
 				lcCampos.getCampo( "Aliq" + Funcoes.strZero( "" + ( i + 1 ), 2 ) ).setVlrDouble( new Double( sAliquota ) );
 			
-			}
+			}*/
 			
 		}
 		else {
