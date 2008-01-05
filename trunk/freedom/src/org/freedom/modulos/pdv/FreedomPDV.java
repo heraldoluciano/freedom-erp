@@ -101,16 +101,16 @@ public class FreedomPDV extends AplicativoPDV {
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Venda", "Venda", 'V', 200100000, 2, true, FVenda.class );
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Cancela venda", "Cancela Venda", 'C', 200200000, 2, true, DLCancCupom.class );
 			addSeparador( 200000000 );
-			addOpcao( 200000000, TP_OPCAO_ITEM, "Suprimento", "Suprimento de caixa", 'S', 200300000, 2, true, FSuprimento.class );
-			addOpcao( 200000000, TP_OPCAO_ITEM, "Sangria", "Sangria", 'G', 200400000, 2, true, FSangria.class );
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Suprimento", "Suprimento de caixa", 'u', 200300000, 2, true, FSuprimento.class );
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Sangria", "Sangria de caixa", 'S', 200400000, 2, true, FSangria.class );
 			addSeparador( 200000000 );
-			addOpcao( 200000000, TP_OPCAO_ITEM, "Aliquota", "Inserir Aliquota", 'Q', 200500000, 2, true, FAliquota.class );
-			addOpcao( 200000000, TP_OPCAO_ITEM, "Ajusta moeda", "Grava Moeda", 'J', 200600000, 2, true, FGravaMoeda.class );
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Aliquota", "Inserir Aliquota", 'A', 200500000, 2, true, FAliquota.class );
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Ajusta moeda", "Grava Moeda", 'M', 200600000, 2, true, FGravaMoeda.class );
 			addSeparador( 200000000 );
-			addOpcao( 200000000, TP_OPCAO_ITEM, "Ler memória fiscal", "Le Fiscal", 'L', 200700000, 2, true, FLeFiscal.class );
-			addOpcao( 200000000, TP_OPCAO_ITEM, "Leitura X", "Impressão de leitura X", 'i', 110800000, 2, true, FLeituraX.class );
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Ler memória fiscal", "Le Fiscal", 'F', 200700000, 2, true, FLeFiscal.class );
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Leitura X", "Impressão de leitura X", 'X', 110800000, 2, true, FLeituraX.class );
 			addSeparador( 200000000 );
-			addOpcao( 200000000, TP_OPCAO_ITEM, "Fechamento de Caixa", "Efetua um fechamento de caixa", 'f', 110800001, 2, true, DLFechaDia.class );
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Fechamento de Caixa", "Efetua um fechamento de caixa", 'C', 110800001, 2, true, DLFechaDia.class );
 
 		btVenda = addBotao( "barraVenda.gif", "Venda", "Venda", 200100000, FVenda.class );
 		addBotao( "btExcluir.gif", "Cancela venda", "Cancela Venda", 200200000, DLCancCupom.class );
