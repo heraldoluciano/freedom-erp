@@ -27,7 +27,7 @@ import java.sql.ResultSet;
 import java.util.Date;
 
 import org.freedom.componentes.ListaCampos;
-import org.freedom.ecf.app.Control;
+import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.pdv.FAbreCaixa;
 
@@ -89,7 +89,7 @@ public class AplicativoPDV extends AplicativoPD {
 		return tela.OK;
 	}
 
-	public static synchronized int abreCaixa( final Connection con, final Control ecf ) {
+	public static synchronized int abreCaixa( final Connection con, final ControllerECF ecf ) {
 
 		int result = -1;
 		PreparedStatement ps = null;
@@ -110,53 +110,54 @@ public class AplicativoPDV extends AplicativoPD {
 				
 				result = rs.getInt( 1 );
 				
-				switch ( result ) {
-					// caixa ok
-					case 0 : {
+				validacao : {
+					if ( result == 0 ) {
 						// verifica redução Z pois o caixa anterior pode não ter executado
 						// e executado por engano para abertura do novo caixa.
-						if ( ecf.reducaoZExecutada() ) {
+						/*if ( !Aplicativo.bModoDemo && ecf.reducaoZExecutada() ) {
 							result = 11;
 						}
-						else if ( ! pegaValorINI( con ) ) {
+						else*/ if ( ! pegaValorINI( con ) ) {
 							result = -1;
-							break;
+							break validacao;
+						}
+						else {
+							break validacao;							
 						}
 					}
 					// warnings
-					case 1: { 
+					if ( result == 1 ) { 
 						Funcoes.mensagemInforma( null, "Caixa já está aberto!" );
-						break;
+						break validacao;
 					}
-					case 2 : {
+					else if ( result == 2 ) {
 						Funcoes.mensagemInforma( null, "Caixa anterior fechado sem redução \"Z\"." +
 													 "\nA leitura da memória fiscal deverá ser feita pelo usuario." );
-						break;
+						break validacao;
 					}
-					case 3 : {
+					else if ( result == 3 ) {
 						Funcoes.mensagemInforma( null, "Caixa anterior não foi fechado!" +
 								                    "\nO caixa deverá ser fechado sem a excução da redução \"Z\"." +
 								                    "\nA leitura da memória fiscal deverá ser feita pelo usuario." );						
-						break;
+						break validacao;
 					}
 					// erros
-					case 11 : {
+					if ( result == 11 ) {
 						killProg( 1, "Já foi realizada leitura \"Z\" neste caixa hoje!" );
-						break;
+						break validacao;
 					}
-					case 12 : {
+					else if ( result == 12 ) {
 						killProg( 2, "Caixa foi aberto com outro usuário!" );
-						break;
+						break validacao ;
 					}
-					case 13 : {
+					else if ( result == 13 ) {
 						killProg( 3, "Tentativa de abertura de caixa retroativo!" );
-						break;
+						break validacao;
 					}
-					default : {
+					else {
 						killProg( 4, "Erro na ultima transacão de caixa." );
-						break;
-					}
-					
+						break validacao;
+					}					
 				}
 				
 				rs.close();

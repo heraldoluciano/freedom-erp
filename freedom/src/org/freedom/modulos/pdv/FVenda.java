@@ -69,7 +69,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.StatusBar;
 import org.freedom.componentes.Tabela;
 import org.freedom.comutacao.Tef;
-import org.freedom.ecf.app.Control;
+import org.freedom.ecf.app.ControllerECF;
 import org.freedom.ecf.driver.EStatus;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
@@ -286,7 +286,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private static AbstractControleVendaPDV pluginVenda;
 
-	private final Control ecf;
+	private final ControllerECF ecf;
 
 	private Tef tef = null;
 
@@ -352,7 +352,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 		lcProduto.addCarregaListener( this );
 		
-		ecf = new Control( 
+		ecf = new ControllerECF( 
 				AplicativoPDV.getEcfdriver(), 
 				AplicativoPDV.getPortaECF(), 
 				AplicativoPDV.bModoDemo );
@@ -1456,7 +1456,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		if ( status != null ) {
 			for ( EStatus s : status ) {
 				if ( s.getRelevanc() <=1 ) {
-					str += s.getMessage();
+					str += s.getMessage() + "<br>";
 				}
 			}
 			str = "<HTML><CENTER>" + str + "</CENTER></HTML>";
@@ -2349,7 +2349,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			}			
 		}
 		else {
-			Funcoes.mensagemInforma( null, 
+			FreedomPDV.killProg( 1, 
 					"Esta estação de trabalho não é um PDV!\n" +
 					"Verifique o cadastro desta estação de trabalho atravéz do modulo Standart." );
 		}

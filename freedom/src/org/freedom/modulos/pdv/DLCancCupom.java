@@ -56,7 +56,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.comutacao.Tef;
-import org.freedom.ecf.app.Control;
+import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
@@ -107,7 +107,7 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 
 	private String iCancItem = "";
 
-	private final Control ecf;
+	private final ControllerECF ecf;
 
 	private Tef tef = null;
 
@@ -117,7 +117,7 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 		setTitulo( "Cancela Venda", this.getClass().getName() );
 		setAtribos( 100, 150, 715, 300 );
 
-		ecf = new Control( 
+		ecf = new ControllerECF( 
 				AplicativoPDV.getEcfdriver(), 
 				AplicativoPDV.getPortaECF(), 
 				AplicativoPDV.bModoDemo );
