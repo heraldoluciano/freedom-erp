@@ -3561,6 +3561,34 @@ public class Funcoes {
 
 		return sValor;
 	}
+	
+	public static String transStatusECF( final char arg ) {
+
+		String actionReturn = "";
+		switch ( arg ) {
+			case 'A' :
+				actionReturn = "Aberto";
+				break;
+			case 'U' :
+				actionReturn = "Suprimento";
+				break;
+			case 'S' :
+				actionReturn = "Sangria";
+				break;
+			case 'V' :
+				actionReturn = "Venda";
+				break;
+			case 'F' :
+				actionReturn = "Fechado";
+				break;
+			case 'Z' :
+				actionReturn = "Fechado (com LeituraZ)";
+				break;
+			default :
+				actionReturn = "Não identificado";
+		}
+		return actionReturn;
+	}
 
 }
 
