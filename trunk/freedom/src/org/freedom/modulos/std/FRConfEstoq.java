@@ -190,11 +190,11 @@ public class FRConfEstoq extends FRelatorio {
 					imp.say(imp.pRow()+0,53,"| QTD.IV.");
 					imp.say(imp.pRow()+0,62,"| QTD.OP.");
 					imp.say(imp.pRow()+0,71,"| QTD.CP.");
-					imp.say(imp.pRow()+0,80,"| QTD.RM.");
-					imp.say(imp.pRow()+0,89,"| QTD.VD.");
-					imp.say(imp.pRow()+0,98,"| SLD.CA.");
-					imp.say(imp.pRow()+0,107,"| SLD.MP.");
-					imp.say(imp.pRow()+0,116,"| DIF.SD.");
+					//imp.say(imp.pRow()+0,80,"| QTD.RM.");
+					imp.say(imp.pRow()+0,80,"| QTD.VD.");
+					imp.say(imp.pRow()+0,89,"| SLD.CA.");
+					imp.say(imp.pRow()+0,98,"| SLD.MP.");
+					imp.say(imp.pRow()+0,107,"| DIF.SD.");
 					imp.say(imp.pRow()+0,135,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
@@ -215,11 +215,11 @@ public class FRConfEstoq extends FRelatorio {
   				imp.say(imp.pRow()+0,53,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDINVP")+"",8));
   				imp.say(imp.pRow()+0,62,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDFINALPRODOP")+"",8));
   				imp.say(imp.pRow()+0,71,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDITCOMPRA")+"",8));
-  				imp.say(imp.pRow()+0,80,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDITEXPRMA")+"",8));
-  				imp.say(imp.pRow()+0,89,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDITVENDA")+"",8));
-  				imp.say(imp.pRow()+0,98,"|"+Funcoes.adicEspacosEsquerda(deSldCalc+"",8));
-  				imp.say(imp.pRow()+0,107,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("SLDMOVPROD")+"",8));
-  				imp.say(imp.pRow()+0,116,"|"+Funcoes.adicEspacosEsquerda(deQtdDif+"",8));
+  			//	imp.say(imp.pRow()+0,80,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDITEXPRMA")+"",8));
+  				imp.say(imp.pRow()+0,80,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDITVENDA")+"",8));
+  				imp.say(imp.pRow()+0,89,"|"+Funcoes.adicEspacosEsquerda(deSldCalc+"",8));
+  				imp.say(imp.pRow()+0,98,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("SLDMOVPROD")+"",8));
+  				imp.say(imp.pRow()+0,107,"|"+Funcoes.adicEspacosEsquerda(deQtdDif+"",8));
   				imp.say(imp.pRow()+0,135,"|");
   				
   			}
