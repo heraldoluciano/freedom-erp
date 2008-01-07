@@ -314,7 +314,7 @@ public class ControlTest extends TestCase {
 
 		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 
-		List<String> aliquotas = control.getAllAliquotas();
+		List<String> aliquotas = control.getAliquotas();
 
 		for ( String s : aliquotas ) {
 			System.out.println( s );

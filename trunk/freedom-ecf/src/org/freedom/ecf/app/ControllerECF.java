@@ -18,7 +18,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -207,17 +206,6 @@ public class ControllerECF {
 	
 	public boolean notIsModoDemostracao() {
 		return ! isModoDemostracao();
-	}
-	
-	public List<String> getAliquotas() {
-		
-		List<String> returnlist = null;
-
-		getAllAliquotas();
-		returnlist = new ArrayList<String>();
-		Collections.copy( aliquotas, returnlist );
-		
-		return returnlist;
 	}
 	
 	public void setMessageLog( final String message ) {
@@ -1181,39 +1169,6 @@ public class ControllerECF {
 		return returnOfAction;
 	}
 	
-	public boolean reducaoZExecutada() {
-		
-		boolean returnOfAction = true;
-		
-		if ( notIsModoDemostracao() ) {	
-			try {
-				returnOfAction = false;
-				String strDataUltimaReducao = ecf.retornoVariaveis( AbstractECFDriver.V_DT_ULT_REDUCAO );
-				
-				final SimpleDateFormat sdf = new SimpleDateFormat( "ddMMyy", Locale.getDefault() );
-				Calendar dataUltimaReducao = Calendar.getInstance();
-				Calendar dataAtual = Calendar.getInstance();
-				
-				dataUltimaReducao.setTime( sdf.parse( strDataUltimaReducao ) );
-
-				dataAtual.set( Calendar.AM_PM, 0 );
-				dataAtual.set( Calendar.HOUR_OF_DAY, 0 );
-				dataAtual.set( Calendar.HOUR, 0 );
-				dataAtual.set( Calendar.MINUTE, 0 );
-				dataAtual.set( Calendar.SECOND, 0 );
-				dataAtual.set( Calendar.MILLISECOND, 0 );
-				
-				returnOfAction = dataUltimaReducao.compareTo( dataAtual ) == 0;
-				
-			} catch ( ParseException e ) {
-				setMessageLog( e.getMessage() );
-				whiterLogError( "[REDUÇÂO Z] " );
-			}
-		}
-		
-		return returnOfAction;		
-	}
-	
 	public Integer getNumeroCaixa() {
 
 		Integer returnOfAction = null;
@@ -1231,24 +1186,20 @@ public class ControllerECF {
 		return returnOfAction;
 	}
 	
-	public List<String> getAllAliquotas() {
+	public List<String> getAliquotas() {
 
 		List<String> returnOfAction = new ArrayList<String>();
 		
 		if ( notIsModoDemostracao() ) {	
 			String sAliquotas = ( ecf.retornoAliquotas() ).trim();
 			int tamanho = 0;
-			if ( sAliquotas != null && sAliquotas.trim().length() > 2 ) {
-				tamanho = Integer.parseInt( sAliquotas.trim().substring( 0, 2 ) );				
+			if ( sAliquotas != null  ) {
+				tamanho = sAliquotas.length() / 4;				
 			}			
-			String tmp = sAliquotas.trim().substring( 2 );
 			for ( int i=0; i < tamanho; i++ ) {				
-				returnOfAction.add( tmp.substring( i * 4, ( i * 4 ) + 4 ) );				
+				returnOfAction.add( sAliquotas.substring( i * 4, ( i * 4 ) + 4 ) );				
 			}
 		}
-		
-		aliquotas = new ArrayList<String>();
-		Collections.copy( returnOfAction, aliquotas );
 		
 		return returnOfAction;
 	}
@@ -1259,8 +1210,8 @@ public class ControllerECF {
 		
 		try {
 			if ( arg > 0.0f && arg < 99.99f ) {
-				if ( aliquotas == null ) {
-					getAllAliquotas();
+				if ( aliquotas == null || aliquotas.size() == 0 ) {
+					aliquotas = getAliquotas();
 				}
 				String tmp = ecf.floatToString( arg, 4, 2 );
 				int index = 1;
@@ -1278,6 +1229,181 @@ public class ControllerECF {
 		}
 		
 		return indexAliquota;
+	}
+	
+	public Integer getNumeroReducoesZ() {
+		
+		Integer returnOfAction = new Integer( "0" );
+		
+		if ( notIsModoDemostracao() ) {	
+			returnOfAction = new Integer( ecf.retornoVariaveis( AbstractECFDriver.V_REDUCOES ) );
+		}
+		
+		return returnOfAction;
+	}
+	
+	public Integer getNumeroCancelamentos() {
+		
+		Integer returnOfAction = new Integer( "0" );
+		
+		if ( notIsModoDemostracao() ) {	
+			returnOfAction = new Integer( ecf.retornoVariaveis( AbstractECFDriver.V_CUPONS_CANC ) );
+		}
+		
+		return returnOfAction;
+	}
+	
+	public BigDecimal getTotalCancelamentos() {
+		
+		BigDecimal returnOfAction = new BigDecimal( "0.00" );
+		
+		if ( notIsModoDemostracao() ) {	
+			String str = ecf.retornoVariaveis( AbstractECFDriver.V_CANCELAMENTOS );
+			final BigDecimal cem = new BigDecimal( "100.00" );
+			returnOfAction = new BigDecimal( str ).divide( cem );
+		}
+		
+		return returnOfAction;
+	}
+	
+	public BigDecimal getTotalDescontos() {
+		
+		BigDecimal returnOfAction = new BigDecimal( "0.00" );
+		
+		if ( notIsModoDemostracao() ) {	
+			String str = ecf.retornoVariaveis( AbstractECFDriver.V_DESCONTOS );
+			final BigDecimal cem = new BigDecimal( "100.00" );
+			returnOfAction = new BigDecimal( str ).divide( cem );
+		}
+		
+		return returnOfAction;
+	}
+	
+	public BigDecimal getTotalIsensao() {
+		
+		BigDecimal returnOfAction = new BigDecimal( "0.00" );
+		
+		if ( notIsModoDemostracao() ) {	
+			final List<BigDecimal> totalizadores = getTotalizadoresParciais();
+			returnOfAction = totalizadores.get( 0 );
+		}
+		
+		return returnOfAction;
+	}
+	
+	public BigDecimal getTotalNaoInsidencia() {
+		
+		BigDecimal returnOfAction = new BigDecimal( "0.00" );
+		
+		if ( notIsModoDemostracao() ) {	
+			final List<BigDecimal> totalizadores = getTotalizadoresParciais();
+			returnOfAction = totalizadores.get( 1 );
+		}
+		
+		return returnOfAction;
+	}
+	
+	public BigDecimal getTotalSubstituicao() {
+		
+		BigDecimal returnOfAction = new BigDecimal( "0.00" );
+		
+		if ( notIsModoDemostracao() ) {	
+			final List<BigDecimal> totalizadores = getTotalizadoresParciais();
+			returnOfAction = totalizadores.get( 2 );
+		}
+		
+		return returnOfAction;
+	}
+	
+	public BigDecimal getTotalSangria() {
+		
+		BigDecimal returnOfAction = new BigDecimal( "0.00" );
+		
+		if ( notIsModoDemostracao() ) {	
+			final List<BigDecimal> totalizadores = getTotalizadoresParciais();
+			returnOfAction = totalizadores.get( 3 );
+		}
+		
+		return returnOfAction;
+	}
+	
+	public BigDecimal getTotalSuprimento() {
+		
+		BigDecimal returnOfAction = new BigDecimal( "0.00" );
+		
+		if ( notIsModoDemostracao() ) {	
+			final List<BigDecimal> totalizadores = getTotalizadoresParciais();
+			returnOfAction = totalizadores.get( 4 );
+		}
+		
+		return returnOfAction;
+	}
+	
+	public BigDecimal getGrandeTotal() {
+		
+		BigDecimal returnOfAction = new BigDecimal( "0.00" );
+		
+		if ( notIsModoDemostracao() ) {	
+			final List<BigDecimal> totalizadores = getTotalizadoresParciais();
+			returnOfAction = totalizadores.get( 5 );
+		}
+		
+		return returnOfAction;
+	}
+	
+	public List<BigDecimal> getTotalizadoresFiscais() {
+		
+		List<BigDecimal> returnOfAction = new ArrayList<BigDecimal>();
+		
+		if ( notIsModoDemostracao() ) {	
+			final BigDecimal cem = new BigDecimal( "100.00" );
+			final String[] totalizadores = ecf.retornoTotalizadoresParciais().split( "," );
+			final String parciais = totalizadores[ 0 ];
+			String t = "";
+			for ( int i=0; i < 16; i++ ) {
+				t = parciais.substring( i*14, i*14+14 );
+				returnOfAction.add( new BigDecimal( t ).divide( cem ) );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public List<BigDecimal> getTotalizadoresNaoFiscais() {
+		
+		List<BigDecimal> returnOfAction = new ArrayList<BigDecimal>();
+		
+		if ( notIsModoDemostracao() ) {	
+			final BigDecimal cem = new BigDecimal( "100.00" );
+			final String[] totalizadores = ecf.retornoTotalizadoresParciais().split( "," );
+			final String parciais = totalizadores[ 4 ];
+			String t = "";
+			for ( int i=0; i < 9; i++ ) {
+				t = parciais.substring( i*14, i*14+14 );
+				returnOfAction.add( new BigDecimal( t ).divide( cem ) );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
+	public List<BigDecimal> getTotalizadoresParciais() {
+		
+		List<BigDecimal> returnOfAction = new ArrayList<BigDecimal>();
+		
+		if ( notIsModoDemostracao() ) {	
+			final BigDecimal cem = new BigDecimal( "100.00" );
+			final String[] totalizadores = ecf.retornoTotalizadoresParciais().split( "," );
+			int index = 0;
+			for ( String t : totalizadores ) {
+				if ( index != 0 && index != 4 ) {
+					returnOfAction.add( new BigDecimal( t ).divide( cem ) );
+				}
+				index++;
+			}
+		}
+		
+		return returnOfAction;
 	}
 
 	public List<EStatus> getStatusImpressora() {
@@ -1300,6 +1426,39 @@ public class ControllerECF {
 		}
 		
 		return returnOfAction;
+	}
+
+	public boolean reducaoZExecutada() {
+		
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			try {
+				returnOfAction = false;
+				String strDataUltimaReducao = ecf.retornoVariaveis( AbstractECFDriver.V_DT_ULT_REDUCAO );
+				
+				final SimpleDateFormat sdf = new SimpleDateFormat( "ddMMyy", Locale.getDefault() );
+				Calendar dataUltimaReducao = Calendar.getInstance();
+				Calendar dataAtual = Calendar.getInstance();
+				
+				dataUltimaReducao.setTime( sdf.parse( strDataUltimaReducao ) );
+	
+				dataAtual.set( Calendar.AM_PM, 0 );
+				dataAtual.set( Calendar.HOUR_OF_DAY, 0 );
+				dataAtual.set( Calendar.HOUR, 0 );
+				dataAtual.set( Calendar.MINUTE, 0 );
+				dataAtual.set( Calendar.SECOND, 0 );
+				dataAtual.set( Calendar.MILLISECOND, 0 );
+				
+				returnOfAction = dataUltimaReducao.compareTo( dataAtual ) == 0;
+				
+			} catch ( ParseException e ) {
+				setMessageLog( e.getMessage() );
+				whiterLogError( "[REDUÇÂO Z] " );
+			}
+		}
+		
+		return returnOfAction;		
 	}
 
 	/**
