@@ -110,6 +110,7 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 	private final ControllerECF ecf;
 
 	private Tef tef = null;
+	
 
 	public DLCancCupom() {
 
