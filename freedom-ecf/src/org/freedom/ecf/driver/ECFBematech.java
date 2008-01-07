@@ -1325,8 +1325,10 @@ public class ECFBematech extends AbstractECFDriver {
 		final byte[] CMD = { ESC, 26 };
 
 		executaCmd( CMD, 36 );
+		
+		final String aliquotas = bcdToAsc( getBytesLidos() );
 
-		return bcdToAsc( getBytesLidos() ).substring( 1 );
+		return aliquotas.substring( aliquotas.length() - 64 );
 	}
 
 	/**
