@@ -3,7 +3,6 @@ package org.freedom.ecf.test;
 import static org.freedom.ecf.driver.EStatus.RETORNO_OK;
 import junit.framework.TestCase;
 
-import org.freedom.ecf.com.Serial;
 import org.freedom.ecf.driver.ECFDaruma;
 
 public class ECFDarumaTest extends TestCase {
@@ -45,19 +44,22 @@ public class ECFDarumaTest extends TestCase {
 	public void testComandosDeCupomFiscal() {
 
 		ECFDaruma ecf = new ECFDaruma( "COM1" );
-		/*
+		
 		System.out.print( "aberturaDeCupom > " );
 		assertTrue( trataRetornoFuncao( ecf, ecf.aberturaDeCupom() ) );
-		*/
+		/*
 		System.out.print( "aberturaDeCupom String > " );
 		assertTrue( trataRetornoFuncao( ecf, ecf.aberturaDeCupom( 
 				"00.000.000/0000-00         " +
 				"Nome do Cliente                           " +
 				"Endereço do Cliente nº99" ) ) );
-		
+		*/
 		System.out.print( "vendaItem > " );
 		assertTrue( trataRetornoFuncao( ecf, ecf.vendaItem( 
 				"0000000000001", "Produto Teste                ", "FF", 'I', 1f, 10f, 'D', 0f ) ) );
+		
+		System.out.print( "subtotal > " );
+		System.out.println( ecf.retornoSubTotal() );
 		
 		/*
 		System.out.print( "programaUnidadeMedida > " );
