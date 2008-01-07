@@ -223,8 +223,8 @@ public class ECFDaruma extends AbstractECFDriver {
 				w2 = bytes[ 5 ];
 			}
 			if ( bytes.length > 7 ) {
-				bytesLidos = new byte[ bytes.length - 6 ];
-				System.arraycopy( bytes, 4, bytesLidos, 0, bytesLidos.length );
+				bytesLidos = new byte[ bytes.length - 7 ];
+				System.arraycopy( bytes, 6, bytesLidos, 0, bytesLidos.length );
 				setBytesLidos( bytesLidos );
 			}
 
@@ -299,185 +299,44 @@ public class ECFDaruma extends AbstractECFDriver {
 		return status;
 	}
 
-	/**
-	 * Através do comando 01, pode-se alterar o símbolo da moeda usando como tamanho de parâmetro<br>
-	 * dois caracteres ASCII alfanuméricos. Ex: “" R" (um espaço em branco e a letra R maiúscula).<br>
-	 * O símbolo monetário “$” já está programado, sendo assim, não precisa ser inserido.<br>
-	 * 
-	 * @param simbolo
-	 *            simboleo da moeda.<br>
-	 * @return estado da impressora.<br>
-	 */
 	public int alteraSimboloMoeda( final String simbolo ) {
 
-		byte[] CMD = { ESC, 1 };
-		CMD = adicBytes( CMD, parseParam( simbolo, 2, false ).getBytes() );
-
-		return executaCmd( CMD, 3 );
+		return -1;
 	}
 
-	/**
-	 * Poderá ser adicionado até 16 alíquotas tributárias.<br>
-	 * Sempre verifique se já exite alíquotas programadas, pois<br>
-	 * não é permitido alterar as alíquotas que já existem, nem removê-las, apenas adicioná-las.<br>
-	 * 
-	 * @param aliq
-	 *            percentual da alíquota.<br>
-	 * @param opt
-	 *            indica opção da alíquota, se é ICMS OU ISS.<br>
-	 * @see org.freedom.ecf.driver.AbstractECFDriver#ISS
-	 * @see org.freedom.ecf.driver.AbstractECFDriver#ICMS
-	 * @return estado da impressora.<br>
-	 */
 	public int adicaoDeAliquotaTriburaria( final String aliq, final char opt ) {
 
-		byte[] CMD = { ESC, 7 };
-
-		final StringBuffer buf = new StringBuffer();
-		buf.append( parseParam( aliq, 4, false ) );
-
-		if ( ISS == opt ) {
-			buf.append( opt );
-		}
-
-		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
-		return executaCmd( CMD, 3 );
+		return -1;
 	}
 
-	/**
-	 * Este comando deve ser utilizado após uma Redução Z.<br>
-	 * Para entrar no Horário de Verão, simplesmente envie este comando à impressora.<br>
-	 * Para sair d o Horário de Verão, você deverá esperar pelo menos 1 hora e em seguida enviar o comando.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int programaHorarioVerao() {
 
-		final byte[] CMD = { ESC, 18 };
-
-		return executaCmd( CMD, 3 );
+		return -1;
 	}
 
-	/**
-	 * Você poderá nomear até 50 (01 até 50) totalizadores não sujeitos para recebimentos,<br>
-	 * como no exemplo abaixo, está sendo nomeado ao primeiro totalizador (01) a "Conta de Luz".<br>
-	 * Estes totalizadores devem ser nomeados somente após uma Redução Z.<br>
-	 * 
-	 * @param indice
-	 *            indica a posição do totalizador.<br>
-	 * @param desc
-	 *            descrição do totalizador.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int nomeiaTotalizadorNaoSujeitoICMS( final int indice, final String desc ) {
 
-		byte[] CMD = { ESC, 40 };
-
-		final StringBuffer buf = new StringBuffer();
-
-		buf.append( parseParam( indice, 2 ) );
-		buf.append( parseParam( desc, 19, false ) );
-
-		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
-		return executaCmd( CMD, 3 );
+		return -1;
 	}
 
-	/**
-	 * Este comando define o tratamento de casas decimais.<br>
-	 * Como default, o formato é truncar. Caso queira arredondamento,<br>
-	 * utilize como parâmetro um número ímpar.<br>
-	 * 
-	 * Exemplo:<br>
-	 * <br>
-	 * <p style="background=#eeffee"> // para definir Arredondamento.<br>
-	 * programaTruncamentoArredondamento( '1' );<br>
-	 * </p>
-	 * <br>
-	 * 
-	 * @param opt
-	 *            definição de truncamento/arredondamento.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int programaTruncamentoArredondamento( final char opt ) {
 
-		byte[] CMD = { ESC, 39 };
-
-		CMD = adicBytes( CMD, parseParam( opt, 1 ).getBytes() );
-
-		return executaCmd( CMD, 3 );
+		return -1;
 	}
 
-	/**
-	 * Você poderá programar espaços entre as linhas do Cupom (em dots) através deste comando.<br>
-	 * Uma linha é igual a 8 dots.<br>
-	 * Este comando só será executado caso não tenha havido movimentação no dia, ou após a Redução Z.<br>
-	 * Este comando só está disponível para a impressora MP-40 FI II.<br>
-	 * 
-	 * @param espaco
-	 *            dots de espaçamento.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int programarEspacoEntreLinhas( final int espaco ) {
 
-		byte[] CMD = { ESC, 60 };
-
-		CMD = adicBytes( CMD, parseParam( (char) espaco ).getBytes() );
-
-		return executaCmd( CMD, 3 );
+		return -1;
 	}
 
-	/**
-	 * Você poderá programar o número de linhas entre os cupons.<br>
-	 * Este comando deve ser executado no início das operações,<br>
-	 * sendo que possibilita a impressão de um Relatório Gerêncial ou de um Comprovante Não Fiscal,<br>
-	 * logo após a impressão do Cupom Fiscal, sem espaços em branco.<br>
-	 * 
-	 * @param espaco
-	 *            número de linhas.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int programarLinhasEntreCupons( final int espaco ) {
 
-		byte[] CMD = { ESC, 61 };
-
-		CMD = adicBytes( CMD, parseParam( (char) espaco ).getBytes() );
-
-		return executaCmd( CMD, 3 );
+		return -1;
 	}
-
-	/**
-	 * O Departamento só será nomeado, caso não tenha havido movimentação no dia ou logo após uma Redução Z.<br>
-	 * Você poderá nomear até 20 Departamentos.<br>
-	 * O índice 01 é “Geral” e já vem programado na impressora. O tamanho do parâmetro é de 10 bytes.<br>
-	 * Este Departamento tem por finalidade armazenar, no dia, a quantidade e o valor de uma<br>
-	 * determinada venda, exemplo: departamento Vestuário (tudo que foi vendido de calças, camisas,<br>
-	 * blusas e etc), departamento Gasolina (tudo que foi vendido em gasolina) e etc.<br>
-	 * 
-	 * @param index
-	 *            indicador do departamento.<br>
-	 * @param descricao
-	 *            descrição do departamento.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
+	
 	public int nomeiaDepartamento( final int index, final String descricao ) {
 
-		byte[] CMD = { ESC, 65 };
-
-		final StringBuffer buf = new StringBuffer();
-
-		buf.append( parseParam( index, 2 ) );
-		buf.append( parseParam( descricao, 20, false ) );
-
-		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
-		return executaCmd( CMD, 3 );
+		return -1;
 	}
 
 	/**
@@ -535,7 +394,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * Exemplo:<br>
 	 * <br>
-	 * <p style="background=#000000"> // para definir a unidade de medida para o próximo item.<br>
+	 * <p style="background=#EEEEEE">// para definir a unidade de medida para o próximo item.<br>
 	 * programaUnidadeMedida( "Kg" );// Kilograma<br>
 	 * </p>
 	 * <br>
@@ -552,23 +411,11 @@ public class ECFDaruma extends AbstractECFDriver {
 		return 0;
 	}
 
-	/**
-	 * O próximo comando de Venda de Item imprimirá a Descrição com este tamanho.<br>
-	 * Este comando tem validade somente para a impressão de um Item,<br>
-	 * voltando ao padrão que é de 29 caracteres.<br>
-	 * 
-	 * @param descricao
-	 *            descrição do item.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int aumentaDescItem( final String descricao ) {
 
-		byte[] CMD = { ESC, 62, 52 };
+		setDescricaoDoProduto( descricao );
 
-		CMD = adicBytes( CMD, parseParam( descricao, 200 ).getBytes() );
-
-		return executaCmd( CMD, 3 );
+		return 0;
 	}
 
 	/**
@@ -709,76 +556,16 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 21 );
 	}
 
-	/**
-	 * Este comando executa a venda de item utilizando valor com três casas decimais.<br>
-	 * Para execução deste comando obrigatoriamente o cupom deve estar aberto.<br>
-	 * 
-	 * @param sitTrib
-	 *            situação tributária do item.<br>
-	 * @param valor
-	 *            valor do item.<br>
-	 * @param qtd
-	 *            quantidade do item.<br>
-	 * @param desconto
-	 *            valor do desconto no item<br>
-	 * @param acrescimo
-	 *            valor de acrécimo no item<br>
-	 * @param departamento
-	 *            indice do departamento<br>
-	 * @param unidade
-	 *            unidade de medida do item<br>
-	 * @param codProd
-	 *            código do produto.<br>
-	 * @param descProd
-	 *            descrição do produto.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int vendaItemDepartamento( final String sitTrib, final float valor, final float qtd, final float desconto, final float acrescimo, final int departamento, final String unidade, final String codProd, final String descProd ) {
 
-		byte[] CMD = { ESC, 63 };
-		/*
-		final StringBuffer buf = new StringBuffer( 312 );
-
-		buf.append( parseParam( sitTrib, 2, false ) );
-		buf.append( parseParam( valor, 9, 3 ) );
-		buf.append( parseParam( qtd, 7, 3 ) );
-		buf.append( parseParam( desconto, 10, 2 ) );
-		buf.append( parseParam( acrescimo, 10, 2 ) );
-		buf.append( parseParam( departamento, 2 ) );
-		buf.append( "00000000000000000000" );
-		buf.append( parseParam( unidade, 2, false ) );
-		buf.append( parseParam( codProd + (char) 0, 49, false ) );
-		buf.append( parseParam( descProd + (char) 0, 200, false ) );
-
-		CMD = adicBytes( CMD, buf.toString().getBytes() );*/
-
-		return executaCmd( CMD, 3 );
+		return -1;
 	}
 
-	/**
-	 * Este comando executa o cancelamento da venda do ultimo item.<br>
-	 * O item neste caso só poderá ser cancelado após a sua venda.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int cancelaItemAnterior() {
 
-		final byte[] CMD = { ESC, 13 };
-
-		return executaCmd( CMD, 3 );
+		return -1;
 	}
 
-	/**
-	 * Este comando executa o cancelamento da venda do item<br>
-	 * indicado pelo indice passado por parametro.<br>
-	 * O item neste caso só poderá ser cancelado após a sua venda.<br>
-	 * 
-	 * @param item
-	 *            indice do item a ser cancelado.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int cancelaItemGenerico( final int item ) {
 
 		final char CCMD = (char) 204;
@@ -793,18 +580,6 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 10 );
 	}
 
-	/**
-	 * Através deste comando, é dado o início ao fechamento do cupom.<br>
-	 * A impressora imprimirá o TOTAL das vendas. Os parâmetros que estão sendo passados<br>
-	 * por este exemplo são: opção de Desconto ( "D" ) ou de Acrécimo ( "A" ) e o Percentual.<br>
-	 * 
-	 * @param opt
-	 *            opção de Desconto ou Acrécimo.<br>
-	 * @param valor
-	 *            Percentual.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int iniciaFechamentoCupom( final char opt, final float valor ) {
 
 		/*
@@ -831,21 +606,6 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 19 );
 	}
 
-	/**
-	 * Através deste comando, é informado a Forma de Pagamento<br>
-	 * que o cliente usou para o pagamento da conta.<br>
-	 * Caso a Forma de Pagamento exceda o valor total do Cupom,<br>
-	 * não serão mais permitidas novas formas.<br>
-	 * 
-	 * @param indice
-	 *            indice da forma de pagamento.<br>
-	 * @param valor
-	 *            valor.<br>
-	 * @param descForma
-	 *            descrição complemetar para a forma de pagamento.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int efetuaFormaPagamento( final String indice, final float valor, final String descForma ) {
 
 		/*
@@ -867,16 +627,6 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 19 );
 	}
 
-	/**
-	 * Este comando fecha o Cupom, passando como parâmetro a mensagem promocional.<br>
-	 * Esta mensagem possui um tamanho máximo de 492 caracteres, sendo limitada em até 8 linhas.<br>
-	 * Se não houver nenhum item vendido, não será permitido o fechamento do Cupom.<br>
-	 * 
-	 * @param mensagem
-	 *            menssagem promocional de final de cupom.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int finalizaFechamentoCupom( final String mensagem ) {
 		
 		/*
@@ -896,13 +646,6 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 19 );
 	}
 
-	/**
-	 * Este comando estará habilitado para sua execução, em qualquer parte do cupom,<br>
-	 * desde que haja pelo menos um item vendido.<br>
-	 * Só é permitido o cancelamento do último cupom fiscal impresso.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int cancelaCupom() {
 
 		final char CCMD = (char) 211;
@@ -911,58 +654,14 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 13 );
 	}
 
-	/**
-	 * São permitidos até 49 formas de pagamento, no tamanho de 16 caracteres, sendo que a 01 será<br>
-	 * sempre “Dinheiro” (Default). Este comando poderá ser executado a qualquer hora do dia, retornando<br>
-	 * pela porta serial o índice da forma programada.<br>
-	 * Após a sua totalização na Redução Z todas as formas<br>
-	 * de pagamento programadas serão apagadas da impressora, permanecendo somente a forma 01<br>
-	 * (Dinheiro). É programado, apenas, uma forma por vez.<br>
-	 * 
-	 * @param descricao
-	 *            descrição da forma de pagamento.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public String programaFormaPagamento( final String descricao ) {
-
-		byte[] CMD = { ESC, 71 };
-
-		CMD = adicBytes( CMD, parseParam( descricao, 16 ).getBytes() );
-
-		executaCmd( CMD, 4 );
-
-		return new String( getBytesLidos() );
+		
+		return "-1";
 	}
 
-	/**
-	 * Este comando permite estornar valores de uma Forma de Pagamento e inserir em<br>
-	 * outra Forma de Pagamento.<br>
-	 * Observações: O valor a ser estornado não pode exceder o total da Forma de Pagamento de<br>
-	 * Origem. Este comando só será executado se o Cupom Fiscal estiver fechado.<br>
-	 * 
-	 * @param descOrigem
-	 *            descrição da forma de pagamento de origem.<br>
-	 * @param descDestino
-	 *            descrição da forma de pagamento de destino.<br>
-	 * @param valor
-	 *            valor a estornar.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int estornoFormaPagamento( final String descOrigem, final String descDestino, final float valor ) {
-
-		byte[] CMD = { ESC, 74 };
-
-		final StringBuffer buf = new StringBuffer();
-
-		buf.append( parseParam( descOrigem, 16, false ) );
-		buf.append( parseParam( descDestino, 16, false ) );
-		buf.append( parseParam( valor, 14, 2 ) );
-
-		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
-		return executaCmd( CMD, 3 );
+		
+		return -1;
 	}
 
 	/**
@@ -996,65 +695,6 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 13 );
 	}
 
-	/**
-	 * Executa a leitura da memoria fiscal entre datas, e pode ser impresso ou capturado na porta serial.<br>
-	 * 
-	 * @param dataIni
-	 *            data de inicio.<br>
-	 * @param dataFim
-	 *            data limite.<br>
-	 * @param tipo
-	 *            I para impressão e R para porta serial.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
-	public int leituraMemoriaFiscal( final Date dataIni, final Date dataFim, final char tipo ) {
-
-		byte[] CMD = { ESC, 8 };
-
-		final StringBuffer buf = new StringBuffer();
-
-		buf.append( parseParam( dataIni ) );
-		buf.append( parseParam( dataFim ) );
-		buf.append( tipo );
-
-		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
-		return executaCmd( CMD, 3 );
-	}
-
-	/**
-	 * Executa a leitura da memoria fiscal entre reduções, e pode ser impresso ou capturado na porta serial.<br>
-	 * 
-	 * @param ini
-	 *            data de inicio.<br>
-	 * @param fim
-	 *            data limite.<br>
-	 * @param tipo
-	 *            I para impressão e R para porta serial.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
-	public int leituraMemoriaFiscal( final int ini, final int fim, final char tipo ) {
-
-		byte[] CMD = { ESC, 8 };
-
-		final StringBuffer buf = new StringBuffer();
-
-		buf.append( parseParam( ini, 6 ) );
-		buf.append( parseParam( fim, 6 ) );
-		buf.append( tipo );
-
-		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
-		return executaCmd( CMD, 3 );
-	}
-
-	/**
-	 * Através deste comando, você obtem a Leitura X pela porta Serial.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int leituraXSerial() {
 
 		final char CCMD = (char) 251;
@@ -1063,200 +703,63 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 13 );
 	}
 
-	/**
-	 * Neste relatório é permitido a impressão de um texto qualquer, com no máximo 620 caracteres<br>
-	 * que poderá ser enviado várias vezes. Com a execução deste comando, a impressora imprimirá, antes,<br>
-	 * uma Leitura “X”. Este relatório está limitado a 10 (dez) minutos de duração. Se não for enviando o<br>
-	 * comando para fechar este relatório, após 10 minutos, a impressora fechará automaticamente.<br>
-	 * 
-	 * @param texto
-	 *            texto a ser impresso no relatório.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
-	public int relatorioGerencial( final String texto ) {
-
-		byte[] CMD = { ESC, 20 };
-
-		CMD = adicBytes( CMD, parseParam( texto, 620, true ).getBytes() );
-
-		return executaCmd( CMD, 3 );
+	public int leituraMemoriaFiscal( final Date dataIni, final Date dataFim, final char tipo ) {
+		
+		return -1;
 	}
 
-	/**
-	 * Este comando poderá ser usado para Fechar o Relatório Gerêncial e também o Comprovante<br>
-	 * Não Fiscal Vinculado.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
+	public int leituraMemoriaFiscal( final int ini, final int fim, final char tipo ) {
+
+		return -1;
+	}
+
+	public int relatorioGerencial( final String texto ) {
+		
+		return -1;
+	}
+
 	public int fechamentoRelatorioGerencial() {
 
-		final byte[] CMD = { ESC, 21 };
-
-		return executaCmd( CMD, 3 );
+		return -1;
 	}
-
-	/**
-	 * Este comprovante é usado em casos de Suprimento (entrada de dinheiro em caixa, usado<br>
-	 * normalmente no início do dia - Abertura de Caixa), Sangrias (retira de dinheiro do caixa) ou para<br>
-	 * Recebimentos não sujeitos ao ICMS.<br>
-	 * 
-	 * Obs.: No caso de recebimentos não sujeitos a ICMS o totalizador deve estar previamente programado.<br>
-	 * 
-	 * @param opt
-	 *            "SA" para sangria,<br>
-	 *            "SU" para suprimento ou<br>
-	 *            o indice o totalizador não sujeito a ICMS.<br>
-	 * @param valor
-	 *            valor do comprovante.<br>
-	 * @param formaPag
-	 *            forma de pagamento.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
+	
 	public int comprovanteNFiscalNVinculado( final String opt, final float valor, final String formaPag ) {
 
-		byte[] CMD = { ESC, 25 };
-
-		final StringBuffer buf = new StringBuffer();
-
-		buf.append( parseParam( opt, 2 ) );
-		buf.append( parseParam( valor, 14, 2 ) );
-		buf.append( parseParam( formaPag, 16 ) );
-
-		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
-		return executaCmd( CMD, 3 );
+		return -1;
 	}
 
-	/**
-	 * Só será executado logo após um Cupom Fiscal ou de um Comprovante Não Fiscal Não Vinculado<br>
-	 * (Recebimentos), além disto, a Forma de Pagamento deve ter sido utilizada no último Cupom. Este<br>
-	 * Comprovante é usado para a impressão do TEF (Transferência Eletrônica de Fundo) e também para<br>
-	 * compras à prazo.<br>
-	 * É possivél também vincular o comprovante não fiscal para um cupom já impresso através do COO<br>
-	 * (Contado de Ordem de Operação).<br>
-	 * 
-	 * Obs.: Não utilizado para a forma de pagamento "Dinheiro".<br>
-	 * 
-	 * @param formaPag
-	 *            forma de pagamento.<br>
-	 * @param valor
-	 *            valor do comprovante.<br>
-	 * @param doc
-	 *            número de COO.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int abreComprovanteNFiscalVinculado( final String formaPag, final float valor, final int doc ) {
 
-		byte[] CMD = { ESC, 66 };
-
-		final StringBuffer buf = new StringBuffer();
-
-		buf.append( parseParam( formaPag, 16, false ) );
-		buf.append( parseParam( valor, 14, 2 ) );
-		buf.append( parseParam( doc, 6 ) );
-
-		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
-		return executaCmd( CMD, 3 );
+		return -1;
 	}
 
-	/**
-	 * Este Comprovante pode ser usado para descrever melhor a Forma de Pagamento passado no<br>
-	 * Cupom Fiscal, pode ser passado até 620 caracteres. Este Comprovante possui 2 minutos de impressão,<br>
-	 * sendo que o comando poderá ser enviado várias vezes dentro deste tempo. Após estes 2 minutos o<br>
-	 * Comprovante fechará automaticamente, caso contrário deverá ser enviado o comando de Fechamento<br>
-	 * do Relatório Gerêncial.<br>
-	 * 
-	 * @param texto
-	 *            texto a ser impresso.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int usaComprovanteNFiscalVinculado( final String texto ) {
 
-		byte[] CMD = { ESC, 67 };
-
-		CMD = adicBytes( CMD, parseParam( texto, 620, false ).getBytes() );
-
-		return executaCmd( CMD, 3 );
+		return -1;
 	}
 
-	/**
-	 * Este comando deverá ser executado após um Recebimento Não Sujeito ao ICMS ou ao término<br>
-	 * de um Cupom Fiscal. A impressora irá aguardar 5 (cinco) segundos para que seja inserido o documento,<br>
-	 * caso contrário, a impressora retornará ao estado normal de operação, indicando o “status” de<br>
-	 * “comando não executado.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int autenticacaoDeDocumento() {
 
-		final byte[] CMD = { ESC, 16 };
-
-		return executaCmd( CMD, 3 );
+		return -1;
 	}
 
-	/**
-	 * Você poderá criar um caracter para a autenticação de seus documentos através deste comando.<br>
-	 * Cada byte é uma coluna, onde o bit menos significativo corresponde à agulha mais alta da<br>
-	 * cabeça de impressão. Será impresso: AUT: logo, data, loja, ECF, COO e o valor.<br>
-	 * 
-	 * @param caracteres
-	 *            caracteres para formatação da logo.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int programaCaracterParaAutenticacao( final int[] caracteres ) {
-
-		byte[] CMD = { ESC, 64 };
-
-		byte[] bytes = new byte[ caracteres.length ];
-		for ( int i = 0; i < caracteres.length; i++ ) {
-			bytes[ i ] = (byte) ( caracteres[ i ] - 128 );
-		}
-		CMD = adicBytes( CMD, bytes );
-
-		return executaCmd( CMD, 3 );
+		
+		return -1;
 	}
 
-	/**
-	 * Este comando executa a abertura da gaveta de dinheiro, no tempo(em milisegundos)<br>
-	 * passado pro parametro.<br>
-	 * 
-	 * @param time
-	 *            tempo para abertura da gaveta.<br>
-	 * 
-	 * @return estado da impressora.<br>
-	 */
 	public int acionaGavetaDinheiro( final int time ) {
 
-		final byte[] CMD = { ESC, 22, (byte) time };
-
-		return executaCmd( CMD, 3 );
+		return -1;
 	}
 
-	/**
-	 * Verifica o estado da Gaveta atual, se a mesma está aberta ou fechada. Neste caso,<br>
-	 * deverá ler a porta de comunicação da impressora.<br>
-	 * 
-	 * @return estado da gaveta de dinheiro.<br>
-	 *         00 - Sensor em Nível Zero.<br>
-	 *         FF - Sensor em Nível Um.<br>
-	 */
 	public String retornoEstadoGavetaDinheiro() {
 
-		final byte[] CMD = { ESC, 23 };
-
-		executaCmd( CMD, 4 );
-
-		return bcdToAsc( getBytesLidos() );
+		return "-1";
 	}
 
 	/**
-	 * Através deste comando é possível verificar o estado da impressora atual.<br>
+	 * Através deste comando é possível verificar o estado atual da impressora.<br>
 	 * 
 	 * @see org.freedom.ecf.driver.EStatus
 	 * @return estado da impressora.<br>
@@ -1290,7 +793,7 @@ public class ECFDaruma extends AbstractECFDriver {
 
 		int index = 1;
 		
-		final Map<String , EStatus> ms = new HashMap<String, EStatus>();
+		final Map<String, EStatus> ms = new HashMap<String, EStatus>();
 		
 		for ( EStatus s : EStatus.values() ) {
 			if ( s.getCode() > 2000 ) {
@@ -1319,70 +822,24 @@ public class ECFDaruma extends AbstractECFDriver {
 		return status;
 	}
 
-	/**
-	 * Retorna as alíquotas programadas, atualmente, na Impressora.<br>
-	 * 
-	 * @return string concatenda com as aliquotas programadas(cada aliquota tem quatro digitos)<br>
-	 */
 	public String retornoAliquotas() {
 
-		final byte[] CMD = { ESC, 26 };
-
-		executaCmd( CMD, 36 );
-
-		return bcdToAsc( getBytesLidos() );
+		return "-1";
 	}
 
-	/**
-	 * Através deste comando são retornados, via serial:<br>
-	 * <br>
-	 * Totalizadores Parciais Tributados : 112 bytes<br>
-	 * Isenção : 7 bytes<br>
-	 * Não Incidência : 7 bytes<br>
-	 * Substituição : 7 bytes<br>
-	 * Totalizadores Não Sujeitos ao ICMS : 63 bytes<br>
-	 * Sangria : 7 bytes<br>
-	 * Suprimentos : 7 bytes<br>
-	 * Grande Total : 9 bytes<br>
-	 * <br>
-	 * 
-	 * @return totalizadores parciais<br>
-	 */
 	public String retornoTotalizadoresParciais() {
 
-		final byte[] CMD = { ESC, 27 };
-
-		executaCmd( CMD, 222 );
-
-		final int[] tam = { 224, 14, 14, 14, 126, 14, 14, 18 };
-		final String totalizadores = bcdToAsc( getBytesLidos() );
-		final StringBuffer retorno = new StringBuffer();
-		int index = 0;
-
-		for ( int i = 0; i < tam.length; i++ ) {
-
-			if ( i > 0 ) {
-				retorno.append( ',' );
-			}
-
-			retorno.append( totalizadores.substring( index, ( index + tam[ i ] ) ) );
-			index += tam[ i ];
-		}
-
-		return retorno.toString();
+		return "-1";
 	}
 
-	/**
-	 * Retorna o subtotal do cupom do último cupom.<br>
-	 * 
-	 * @return subtotal<br>
-	 */
 	public String retornoSubTotal() {
 
-		final byte[] CMD = { ESC, 29 };
-
-		executaCmd( CMD, 10 );
-		return bcdToAsc( getBytesLidos() );
+		final char CCMD = (char) 205;
+		final byte[] CMD = { ESC, (byte) CCMD };
+		
+		executaCmd( CMD, 19 );
+		
+		return new String( getBytesLidos() );
 	}
 
 	/**
