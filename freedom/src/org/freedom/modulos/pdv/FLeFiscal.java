@@ -33,11 +33,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
@@ -47,7 +48,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
-import org.freedom.drivers.ECFDriver;
+import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
@@ -57,156 +58,171 @@ public class FLeFiscal extends FTabDados {
 
 	private static final long serialVersionUID = 1L;
 
-	private JPanelPad pinCab = new JPanelPad( 0, 60 );
+	private final JPanelPad pinCab = new JPanelPad( 0, 60 );
 
-	private JPanelPad pinGeral = new JPanelPad();
+	private final JPanelPad pinGeral = new JPanelPad();
 
-	private JPanelPad pinAliq = new JPanelPad();
+	private final JPanelPad pinAliq = new JPanelPad();
 
-	private JPanelPad pinTrib = new JPanelPad();
+	private final JPanelPad pinTrib = new JPanelPad();
 
-	private JPanelPad pinTributado = new JPanelPad();
+	private final JPanelPad pinTributado = new JPanelPad();
 
-	private JPanelPad pinIsen = new JPanelPad();
+	private final JPanelPad pinIsen = new JPanelPad();
 
-	private JPanelPad pinIsento = new JPanelPad();
+	private final JPanelPad pinIsento = new JPanelPad();
 
-	private JPanelPad pnMapa = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	private final JPanelPad pnMapa = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
-	private JTextFieldPad txtDataX = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private final JTextFieldPad txtDataX = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtNumTermX = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtNumTermX = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtDescTermX = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldFK txtDescTermX = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtAliq1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	private final JTextFieldPad txtAliq1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtAliq2 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	private final JTextFieldPad txtAliq2 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtAliq3 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	private final JTextFieldPad txtAliq3 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtAliq4 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	private final JTextFieldPad txtAliq4 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtAliq5 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	private final JTextFieldPad txtAliq5 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtAliq6 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	private final JTextFieldPad txtAliq6 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtAliq7 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	private final JTextFieldPad txtAliq7 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtAliq8 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	private final JTextFieldPad txtAliq8 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtAliq9 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	private final JTextFieldPad txtAliq9 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtAliq10 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	private final JTextFieldPad txtAliq10 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtAliq11 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	private final JTextFieldPad txtAliq11 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtAliq12 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	private final JTextFieldPad txtAliq12 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtAliq13 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	private final JTextFieldPad txtAliq13 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtAliq14 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	private final JTextFieldPad txtAliq14 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtAliq15 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	private final JTextFieldPad txtAliq15 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtAliq16 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
+	private final JTextFieldPad txtAliq16 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
-	private JTextFieldPad txtT1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtT1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtT2 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtT2 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtT3 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtT3 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtT4 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtT4 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtT5 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtT5 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtT6 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtT6 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtT7 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtT7 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtT8 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtT8 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtT9 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtT9 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtT10 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtT10 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtT11 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtT11 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtT12 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtT12 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtT13 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtT13 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtT14 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtT14 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtT15 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtT15 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtT16 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtT16 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtTN1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtTN1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtTN2 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtTN2 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtTN3 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtTN3 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtTN4 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtTN4 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtTN5 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtTN5 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtTN6 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtTN6 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtTN7 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtTN7 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtTN8 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtTN8 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtTN9 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtTN9 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtTSangria = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtTSangria = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtPrimCupom = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtPrimCupom = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtTSuprimento = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtTSuprimento = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtUltCupom = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtUltCupom = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtTotal = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtTotal = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtCanc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCanc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtVlrCanc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtVlrCanc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtRed = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtRed = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtVlrDesc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtVlrDesc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtSequencia = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtSequencia = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtVlrIsento = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 16, 2 );
+	private final JTextFieldPad txtVlrIsento = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 16, 2 );
 
-	private JTextFieldPad txtVlrNI = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 16, 2 );
+	private final JTextFieldPad txtVlrNI = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 16, 2 );
 
-	private JTextFieldPad txtVlrSubst = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 16, 2 );
+	private final JTextFieldPad txtVlrSubst = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 16, 2 );
 
-	private JTextFieldPad txtVlrContabil = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 16, 2 );
+	private final JTextFieldPad txtVlrContabil = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 16, 2 );
 
-	private Tabela tab = new Tabela();
+	private final JButton btExec = new JButton( Icone.novo( "btExecuta.gif" ) );
 
-	private JScrollPane spnTab = new JScrollPane( tab );
+	private final Tabela tab = new Tabela();
 
-	private ListaCampos lcCaixa = new ListaCampos( this, "" );
+	private final JScrollPane spnTab = new JScrollPane( tab );
 
-	private JButton btExec = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private final ListaCampos lcCaixa = new ListaCampos( this, "" );
 
-	private ECFDriver ecf = new ECFDriver( !AplicativoPDV.usaEcfDriver() );
+	private final ControllerECF ecf;
+	
 
 	public FLeFiscal() {
 
 		super();
 		setTitulo( "Leitura de memória fiscal" );
 		setAtribos( 60, 60, 540, 470 );
+		
+		ecf = new ControllerECF( 
+				AplicativoPDV.getEcfdriver(), 
+				AplicativoPDV.getPortaECF(), 
+				AplicativoPDV.bModoDemo );
+		
+		montaListaCampos();
+		montaTela();
+		montaTabela();
 
+		btExec.addActionListener( this );
+		
 		txtPrimCupom.setAtivo( false );
 		txtRed.setAtivo( false );
+	}
+	
+	private void montaListaCampos() {
 
 		lcCaixa.add( new GuardaCampo( txtNumTermX, "CodCaixa", "Cód.caixa", ListaCampos.DB_PK, true ) );
 		lcCaixa.add( new GuardaCampo( txtDescTermX, "DescCaixa", "Descrição do caixa", ListaCampos.DB_SI, false ) );
@@ -214,6 +230,9 @@ public class FLeFiscal extends FTabDados {
 		lcCaixa.setQueryCommit( false );
 		lcCaixa.setReadOnly( true );
 		txtNumTermX.setTabelaExterna( lcCaixa );
+	}
+	
+	private void montaTela() {
 
 		pnCliente.add( pinCab, BorderLayout.NORTH );
 
@@ -226,7 +245,7 @@ public class FLeFiscal extends FTabDados {
 		adicTab( "Geral", pinGeral );
 		setPainel( pinGeral );
 
-		JLabelPad lbAliq = new JLabelPad( " Aliquotas ICMS" );
+		JLabelPad lbAliq = new JLabelPad( "Aliquotas ICMS", SwingConstants.CENTER );
 		lbAliq.setOpaque( true );
 
 		adic( lbAliq, 15, 5, 90, 15 );
@@ -252,10 +271,12 @@ public class FLeFiscal extends FTabDados {
 
 		setPainel( pinGeral );
 
-		JLabelPad lbLinha = new JLabelPad( "" );
+		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
-		JLabelPad lbContadores = new JLabelPad( "  Contadores:" );
+		
+		JLabelPad lbContadores = new JLabelPad( "Contadores:", SwingConstants.CENTER );
 		lbContadores.setOpaque( true );
+		
 		adic( lbContadores, 15, 125, 100, 15 );
 		adic( lbLinha, 7, 130, 500, 2 );
 
@@ -265,10 +286,12 @@ public class FLeFiscal extends FTabDados {
 		adicCampo( txtRed, 265, 160, 82, 20, "NumRedLX", "Reduções", ListaCampos.DB_SI, false );
 		adicCampo( txtSequencia, 350, 160, 80, 20, "ContaLX", "Contador", ListaCampos.DB_SI, false );
 
-		JLabelPad lbLinha2 = new JLabelPad( "" );
+		JLabelPad lbLinha2 = new JLabelPad();
 		lbLinha2.setBorder( BorderFactory.createEtchedBorder() );
-		JLabelPad lbContadores2 = new JLabelPad( "  Totalizadores:" );
+		
+		JLabelPad lbContadores2 = new JLabelPad( "Totalizadores:", SwingConstants.CENTER );
 		lbContadores2.setOpaque( true );
+		
 		adic( lbContadores2, 15, 195, 100, 15 );
 		adic( lbLinha2, 7, 200, 500, 2 );
 
@@ -282,7 +305,7 @@ public class FLeFiscal extends FTabDados {
 		adicTab( "Tributado", pinTributado );
 		setPainel( pinTributado );
 
-		JLabelPad lbTrib = new JLabelPad( "  Valor dos totalizadores de ICMS." );
+		JLabelPad lbTrib = new JLabelPad( "Valor dos totalizadores de ICMS.", SwingConstants.CENTER );
 		lbTrib.setOpaque( true );
 
 		adic( lbTrib, 15, 5, 200, 15 );
@@ -309,7 +332,7 @@ public class FLeFiscal extends FTabDados {
 		adicTab( "Isento", pinIsento );
 		setPainel( pinIsento );
 
-		JLabelPad lbIsento = new JLabelPad( "  Valor dos totalizadores não sujeitos ao ICMS." );
+		JLabelPad lbIsento = new JLabelPad( "Valor dos totalizadores não sujeitos ao ICMS.", SwingConstants.CENTER );
 		lbIsento.setOpaque( true );
 
 		adic( lbIsento, 15, 5, 280, 15 );
@@ -335,11 +358,6 @@ public class FLeFiscal extends FTabDados {
 
 		pnMapa.add( spnTab );
 		adicTab( "Mapa fiscal", pnMapa );
-
-		montaTabela();
-
-		btExec.addActionListener( this );
-
 	}
 
 	private void montaTabela() {
@@ -378,63 +396,87 @@ public class FLeFiscal extends FTabDados {
 		tab.setTamColuna( 80, 14 );
 		tab.setTamColuna( 100, 15 );
 	}
-
-	private void buscaAliquotas() {
-
-		String sAliquota = "";
+	
+	private void loadAll() {
 		
-		if ( AplicativoPDV.usaEcfDriver() ) {
-			
-			/*Vector<?> vAliquotas = FAliquota.getAliquotas( ecf );
-			
-			for ( int i = 0; i < vAliquotas.size(); i++ ) {
-				
-				sAliquota = (String)vAliquotas.elementAt( i );
-				sAliquota = sAliquota.substring( 0, 2 ) + '.' + sAliquota.substring( 2 );
-				lcCampos.getCampo( "Aliq" + Funcoes.strZero( "" + ( i + 1 ), 2 ) ).setVlrDouble( new Double( sAliquota ) );
-			
-			}*/
-			
-		}
-		else {
-			
-			String sAliquotas = ecf.retornoAliquotas().trim();
-			
-			int iTot = ( ( ( sAliquotas.length() ) + 1 ) / 5 );
-			
-			for ( int i = 1; i <= iTot; i++ ) {
-				
-				sAliquota = sAliquotas.substring( ( 5 * i ) - 5, ( 5 * i ) - 3 ) + "." + sAliquotas.substring( ( 5 * i ) - 3, ( 5 * i ) - 1 );
-				lcCampos.getCampo( "Aliq" + Funcoes.strZero( "" + ( i ), 2 ) ).setVlrDouble( new Double( sAliquota ) );
-			
-			}
-			
-		}
-		
+		loadAliquotas();
+		loadContadores();
+		loadTotalizadoresFiscais();
+		loadTotalizadoresNaoFiscais();
+		loadTotalizadores();
 	}
 
-	private void carregaContadores() {
+	private void loadAliquotas() {
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSqlPrimCupom = "SELECT FIRST 1 DOCVENDA FROM VDVENDA WHERE CODEMP=? AND CODFILIAL=? AND CODEMPCX=? AND CODFILIALCX=? AND CODCAIXA=? AND DTEMITVENDA=? AND TIPOVENDA='E' ORDER BY DTEMITVENDA,DOCVENDA";
+		List<String> aliquotas = ecf.getAliquotas();
+
+		String aliquota = null;
+		JTextFieldPad field = null;
+		int index = 1;
+		
+		for ( String str : aliquotas ) {
+			aliquota = str.substring( 0, 2 ) + "." + str.substring( 2 );
+			field = lcCampos.getCampo( "Aliq" + Funcoes.strZero( String.valueOf( index ), 2 ) );
+			if ( field != null ) {
+				field.setVlrBigDecimal( new BigDecimal( aliquota ) );
+			}
+			index++;
+		}
+	}
+
+	private void loadContadores() {
 
 		try {
 			
-			ps = con.prepareStatement( sSqlPrimCupom );
+			StringBuilder sql = new StringBuilder();
+			sql.append( "SELECT FIRST 1 DOCVENDA AS PRIMEIRO FROM VDVENDA " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND " );
+			sql.append( "CODEMPCX=? AND CODFILIALCX=? AND CODCAIXA=? AND " );
+			sql.append( "DTEMITVENDA=? AND TIPOVENDA='E' " );
+			sql.append( "ORDER BY DOCVENDA" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
 			ps.setInt( 3, Aplicativo.iCodEmp );
 			ps.setInt( 4, Aplicativo.iCodFilial );
 			ps.setInt( 5, AplicativoPDV.iCodCaixa );
 			ps.setDate( 6, Funcoes.dateToSQLDate( txtDataX.getVlrDate() ) );
+			
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				txtPrimCupom.setVlrInteger( rs.getInt( "PRIMEIRO" ) );
+			}
+			else {
+				txtPrimCupom.setVlrInteger( 0 );
+			}
+			
+			rs.close();
+			ps.close();
+			
+			sql = new StringBuilder();
+			sql.append( "SELECT FIRST 1 DOCVENDA AS ULTIMO FROM VDVENDA " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND " );
+			sql.append( "CODEMPCX=? AND CODFILIALCX=? AND CODCAIXA=? AND " );
+			sql.append( "DTEMITVENDA=? AND TIPOVENDA='E' " );
+			sql.append( "ORDER BY CODVENDA DESC" );
+			
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, Aplicativo.iCodFilial );
+			ps.setInt( 5, AplicativoPDV.iCodCaixa );
+			ps.setDate( 6, Funcoes.dateToSQLDate( txtDataX.getVlrDate() ) );
+			
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				txtPrimCupom.setVlrInteger( new Integer( rs.getInt( "DOCVENDA" ) ) );
+				txtUltCupom.setVlrInteger( rs.getInt( "ULTIMO" ) );
 			}
 			else {
-				txtPrimCupom.setVlrInteger( new Integer( 0 ) );
+				txtUltCupom.setVlrInteger( 0 );
 			}
 			
 			rs.close();
@@ -444,61 +486,66 @@ public class FLeFiscal extends FTabDados {
 				con.commit();
 			}
 			
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar primeiro cupom!\n" + err.getMessage(), true, con, err );
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar primeiro cupom!\n" + e.getMessage(), true, con, e );
 		}
 
-		txtRed.setVlrInteger( new Integer( ecf.numeroReducoes() ) );
-		txtUltCupom.setVlrInteger( new Integer( ecf.numeroCupom() - 1 ) );
-		txtCanc.setVlrInteger( new Integer( ecf.numeroCancelados() ) );
-		
+		txtRed.setVlrInteger( ecf.getNumeroReducoesZ() );
+		txtCanc.setVlrInteger( ecf.getNumeroCancelamentos() );
+		txtSequencia.setVlrInteger( ecf.getNumeroDocumento() );		
 	}
 
-	private void carregaTotalizadores() {
-
-		if ( AplicativoPDV.bECFTerm && !AplicativoPDV.bModoDemo ) {
-
-			String sTotalizadores[] = ecf.retornoTotalizadores().trim().split( "," );
-			String sTot = "";
-
-			sTot = sTotalizadores[ 5 ].substring( 0, 12 ) + "." + sTotalizadores[ 5 ].substring( 12 );
-			txtTSangria.setVlrDouble( new Double( sTot ) );
-			sTot = sTotalizadores[ 6 ].substring( 0, 12 ) + "." + sTotalizadores[ 6 ].substring( 12 );
-			txtTSuprimento.setVlrDouble( new Double( sTot ) );
-			txtVlrCanc.setVlrDouble( new Double( ecf.cancelamentos() ) );
-			txtVlrDesc.setVlrDouble( new Double( ecf.descontos() ) );
-			sTot = sTotalizadores[ 7 ].substring( 0, 16 ) + "." + sTotalizadores[ 7 ].substring( 16 );
-			txtTotal.setVlrBigDecimal( new BigDecimal( sTot ) );
-
-			// Totalizadores fiscais:
-			for ( int i = 0; i < ( 224 - 13 ); i += 14 ) {
-				sTot = sTotalizadores[ 0 ].substring( i, i + 12 ) + "." + sTotalizadores[ 0 ].substring( i + 12, i + 14 );
-				lcCampos.getCampo( "TT" + Funcoes.strZero( "" + ( ( i / 14 ) + 1 ), 2 ) ).setVlrDouble( new Double( sTot ) );
+	private void loadTotalizadores() {
+		
+		txtTSuprimento.setVlrBigDecimal( ecf.getTotalSuprimento() );
+		txtTSangria.setVlrBigDecimal( ecf.getTotalSangria() );
+		txtVlrCanc.setVlrBigDecimal( ecf.getTotalCancelamentos() );
+		txtVlrDesc.setVlrBigDecimal( ecf.getTotalDescontos() );
+		txtTotal.setVlrBigDecimal( ecf.getGrandeTotal() );
+		txtVlrContabil.setVlrBigDecimal( new BigDecimal( txtVlrIsento.floatValue() + txtVlrNI.floatValue() + txtVlrSubst.floatValue() ) );
+	}
+	
+	private void loadTotalizadoresFiscais() {
+		
+		List<BigDecimal> totalizadores = ecf.getTotalizadoresFiscais();
+		
+		JTextFieldPad field = null;
+		int index = 1;
+		
+		for ( BigDecimal totalizador : totalizadores ) {
+			field = lcCampos.getCampo( "TT" + Funcoes.strZero( String.valueOf( index ), 2 ) );
+			if ( field != null ) {
+				field.setVlrBigDecimal( totalizador );
 			}
-
-			// Totalizadores não fiscais:
-			for ( int i = 0; i < ( 126 - 13 ); i += 14 ) {
-				sTot = sTotalizadores[ 4 ].substring( i, i + 12 ) + "." + sTotalizadores[ 4 ].substring( i + 12, i + 14 );
-				lcCampos.getCampo( "TN" + ( ( i / 14 ) + 1 ) ).setVlrDouble( new Double( sTot ) );
-			}
-			sTot = sTotalizadores[ 1 ].substring( 0, 12 ) + "." + sTotalizadores[ 1 ].substring( 12 );
-			txtVlrIsento.setVlrDouble( new Double( sTot ) );
-			sTot = sTotalizadores[ 2 ].substring( 0, 12 ) + "." + sTotalizadores[ 2 ].substring( 12 );
-			txtVlrNI.setVlrDouble( new Double( sTot ) );
-			sTot = sTotalizadores[ 3 ].substring( 0, 12 ) + "." + sTotalizadores[ 3 ].substring( 12 );
-			txtVlrSubst.setVlrDouble( new Double( sTot ) );
-
-			txtVlrContabil.setVlrBigDecimal( new BigDecimal( txtVlrIsento.floatValue() + txtVlrNI.floatValue() + txtVlrSubst.floatValue() ) );
-
+			index++;
 		}
+	}
+
+	private void loadTotalizadoresNaoFiscais() {
+		
+		List<BigDecimal> totalizadores = ecf.getTotalizadoresNaoFiscais();
+		
+		JTextFieldPad field = null;
+		int index = 1;
+		
+		for ( BigDecimal totalizador : totalizadores ) {
+			field = lcCampos.getCampo( "TN" + index );
+			if ( field != null ) {
+				field.setVlrBigDecimal( totalizador );
+			}
+			index++;
+		}
+		
+		txtVlrIsento.setVlrBigDecimal( ecf.getTotalIsensao() );
+		txtVlrNI.setVlrBigDecimal( ecf.getTotalNaoInsidencia() );
+		txtVlrSubst.setVlrBigDecimal( ecf.getTotalSubstituicao() );
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btExec ) {
-			buscaAliquotas();
-			carregaContadores();
-			carregaTotalizadores();
+			loadAll();
 		}
 		
 		super.actionPerformed( evt );
@@ -512,9 +559,8 @@ public class FLeFiscal extends FTabDados {
 			txtDataX.setVlrDate( data );
 			txtNumTermX.setVlrInteger( new Integer( codCaixa ) );
 			lcCaixa.carregaDados();
-			buscaAliquotas();
-			carregaContadores();
-			carregaTotalizadores();
+			
+			loadAll();
 
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( null, "Erro ao gravar Redução Z\n" + e.getMessage() );
@@ -523,13 +569,11 @@ public class FLeFiscal extends FTabDados {
 		}
 
 		return true;
-
 	}
 	
 	public boolean salvaReducaoZ() {
 		
-		return lcCampos.post();
-		
+		return lcCampos.post();		
 	}
 
 	public void setConexao( Connection cn ) {

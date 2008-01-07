@@ -248,8 +248,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private Vector<Object> vCacheItem = new Vector<Object>();
 
-	private Vector<String> vAliquotas = null;
-
 	private Font fntTotalItem = null;
 
 	private Font fntTotalCupom = null;
@@ -1770,14 +1768,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		}
 		
 		return sDesc;
-	}
-
-	public String getPosAliquota( float ftAliquota ) {
-		
-		String sAliquota = Funcoes.transValor( String.valueOf( ftAliquota ), 4, 2, true );
-		String sRetorno = Funcoes.strZero( String.valueOf( vAliquotas.indexOf( sAliquota ) + 1 ), 2 );
-
-		return sRetorno;
 	}
 
 	private int getTipoMov() {

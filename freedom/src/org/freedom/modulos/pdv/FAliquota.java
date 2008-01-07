@@ -132,7 +132,7 @@ public class FAliquota extends FFDialogo {
 
 	private void carregaTabela() {
 		
-		aliquotas = ecf.getAllAliquotas();
+		aliquotas = ecf.getAliquotas();
 		
 		tab.limpa();
 		tab.adicLinha();
