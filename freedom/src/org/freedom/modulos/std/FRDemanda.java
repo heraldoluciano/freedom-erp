@@ -197,9 +197,24 @@ public class FRDemanda extends FRelatorio {
         sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
         sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
     }
+    //
     
+    //
     if (txtCodGrup.getText().trim().length() > 0) {
-            sWhere += " AND P.CODGRUP LIKE '"+txtCodGrup.getText().trim()+"%'";
+    	
+    	/** @version 08/01/2008 <BR>
+    	 * Implementação realizada por 
+    	 * @author Setpoint Informática Ltda./Diego Manoel (diego.manoel@gmail.com) <BR>
+    	 * Revisado e "commitado" por Anderson Sanchez (Setpoint Informática Ltda)    	
+    	 */
+    	
+    	if (!sWhere.trim().equals("")){
+    		sWhere += " AND ";
+    	}
+        
+    	/****************************************/
+    	
+    	sWhere += " P.CODGRUP LIKE '"+txtCodGrup.getText().trim()+"%'";
             String sTmp = "GRUPO: "+txtDescGrup.getText().trim();
             sCab += "\n"+imp.comprimido();
             sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
