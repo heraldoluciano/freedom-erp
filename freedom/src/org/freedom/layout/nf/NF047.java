@@ -240,6 +240,7 @@ public class NF047 extends Layout {
 					imp.say(91, Funcoes.strDecimalToStrCurrency( 4, 0, String.valueOf( itens.getFloat( NF.C_QTDITPED ) ) ) );
 					imp.say(98, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) / itens.getFloat( NF.C_QTDITPED ) ) ) );
 					imp.say(115, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) ) ) );
+					imp.say(128, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( itens.getFloat( NF.C_VLRDESCITPED ) ) ) );
 					imp.say(141, Funcoes.strDecimalToStrCurrency( 5, 2, String.valueOf( itens.getFloat( NF.C_PERCICMSITPED ) ) ) );
 					imp.say(148, Funcoes.strDecimalToStrCurrency( 5, 2, String.valueOf( itens.getFloat( NF.C_PERCIPIITPED ) ) ) );					
 					imp.say(154, Funcoes.strDecimalToStrCurrency( 6, 2, String.valueOf( itens.getFloat( NF.C_VLRIPIITPED ) ) ) );
