@@ -416,6 +416,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcFor.addCarregaListener( this );
 		lcSerie.addCarregaListener( this );
 		lcProd.addCarregaListener( this );
+		lcProd2.addCarregaListener( this );
 		lcFisc.addCarregaListener( this );
 		lcNat.addCarregaListener( this );
 		lcLote.addCarregaListener( this );
@@ -1331,13 +1332,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	public void beforeCarrega( CarregaEvent cevt ) {
 
 		if ( lcDet.getStatus() != ListaCampos.LCS_INSERT ) {
-			if ( cevt.getListaCampos() == lcProd ) {
-				lcProd.cancLerCampo( 4, true ); // Código da Classificação Fiscal
+			if ( (cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2) ) {
+				cevt.getListaCampos().cancLerCampo( 4, true ); // Código da Classificação Fiscal
 			}
 		}
 		else {
-			if ( cevt.getListaCampos() == lcProd ) {
-				lcProd.cancLerCampo( 4, false ); // Código da Classificação Fiscal
+			if ( (cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2) ) {
+				cevt.getListaCampos().cancLerCampo( 4, false ); // Código da Classificação Fiscal
 				if ( buscaVlrUltCompra )
 					getVlrUltimaCompra();
 			}
@@ -1352,7 +1353,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
-		if ( cevt.getListaCampos() == lcProd ) {
+		if ( (cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2) ) {
 			if ( txtCLoteProd.getText().trim().equals( "N" ) ) {
 				txtCodLote.setAtivo( false );// Desativa o Cógigo do lote por o
 				// produto
