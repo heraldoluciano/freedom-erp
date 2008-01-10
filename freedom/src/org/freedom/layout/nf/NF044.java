@@ -347,15 +347,19 @@ public class NF044 extends Layout {
 					}
 
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 2, frete.getString( NF.C_ENDTRANSP ).trim() + ", " + frete.getInt( NF.C_NUMTRANSP ) );
-					imp.say( 74, frete.getString( NF.C_CIDTRANSP ) );
-					imp.say( 105, frete.getString( NF.C_UFTRANSP ) );
-
-					if ( frete.getString( NF.C_TIPOTRANSP ).equals( "C" ) ) {
-						imp.say( 121, cab.getString( NF.C_INSCEMIT ) );
+					if (frete.getString(NF.C_ENDTRANSP)!=null) {
+						imp.say( 2, frete.getString( NF.C_ENDTRANSP ).trim() + ", " + frete.getInt( NF.C_NUMTRANSP ) );
+						imp.say( 74, frete.getString( NF.C_CIDTRANSP ) );
+						imp.say( 105, frete.getString( NF.C_UFTRANSP ) );
 					}
-					else {
-						imp.say( 121, frete.getString( NF.C_INSCTRANSP ) );
+
+					if ( frete.getString( NF.C_TIPOTRANSP )!=null) {
+						if ( frete.getString( NF.C_TIPOTRANSP ).equals( "C" ) ) {
+							imp.say( 121, cab.getString( NF.C_INSCEMIT ) );
+						}
+						else {
+							imp.say( 121, frete.getString( NF.C_INSCTRANSP ) );
+						}
 					}
 
 					imp.pulaLinha( 2, imp.comprimido() );
