@@ -24,6 +24,8 @@ package org.freedom.layout.nf;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
@@ -62,8 +64,9 @@ public class NF047 extends Layout {
 		String[] sVals = new String[ 9 ];
 		String[] sDuplics = new String[ 9 ];
 		Vector<String> vObsVenda = new Vector<String>();
-		Vector<String> vClfisc = new Vector<String>();
-		Vector<String> vSigla = new Vector<String>();
+		Map<String, String> clfiscal = new HashMap<String, String>();
+		//Vector<String> vClfisc = new Vector<String>();
+		//Vector<String> vSigla = new Vector<String>();
 		Vector<?> vDescServ = new Vector<Object>();
 		Vector<Object[]> vServico = new Vector<Object[]>();
 		Calendar cHora = Calendar.getInstance();
@@ -103,7 +106,7 @@ public class NF047 extends Layout {
 
 			imp.limpaPags();
 
-			vClfisc.addElement( "" );
+			//vClfisc.addElement( "" );
 
 			while ( itens.next() ) {
 
@@ -202,9 +205,14 @@ public class NF047 extends Layout {
 				// Definição da sigla para a classificação fiscal
 
 				sCodfisc = itens.getString( NF.C_CODFISC );
-				sSigla = "";
+				if ( clfiscal.get( sCodfisc )==null ) {
+					clfiscal.put(sCodfisc, String.valueOf( (char) ( 65 + clfiscal.size() ) ) );
+				}
+				
+				sSigla = clfiscal.get(sCodfisc);
 
-				if ( !sCodfisc.equals( "" ) ) {
+				
+				/*if ( !sCodfisc.equals( "" ) ) {
 					for ( int i = 0; i < vClfisc.size(); i++ ) {
 						if ( vClfisc.elementAt( i ) != null ) {
 							if ( sCodfisc.equals( vClfisc.elementAt( i ) ) ) {
@@ -221,7 +229,7 @@ public class NF047 extends Layout {
 						sSigla = String.valueOf( (char) ( 63 + vClfisc.size() ) );
 						vSigla.addElement( sSigla + " = " + sCodfisc );
 					}
-				}
+				}*/
 
 				// Fim da classificação fiscal
 
@@ -240,7 +248,7 @@ public class NF047 extends Layout {
 					imp.say(91, Funcoes.strDecimalToStrCurrency( 4, 0, String.valueOf( itens.getFloat( NF.C_QTDITPED ) ) ) );
 					imp.say(98, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) / itens.getFloat( NF.C_QTDITPED ) ) ) );
 					imp.say(115, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) ) ) );
-					imp.say(128, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( itens.getFloat( NF.C_VLRDESCITPED ) ) ) );
+					imp.say(128, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( itens.getFloat( NF.C_VLRDESCITPROD ) ) ) );
 					imp.say(141, Funcoes.strDecimalToStrCurrency( 5, 2, String.valueOf( itens.getFloat( NF.C_PERCICMSITPED ) ) ) );
 					imp.say(148, Funcoes.strDecimalToStrCurrency( 5, 2, String.valueOf( itens.getFloat( NF.C_PERCIPIITPED ) ) ) );					
 					imp.say(154, Funcoes.strDecimalToStrCurrency( 6, 2, String.valueOf( itens.getFloat( NF.C_VLRIPIITPED ) ) ) );
@@ -355,13 +363,29 @@ public class NF047 extends Layout {
 					vObsVenda = Funcoes.strToVectorSilabas( ( sDescFisc.length() > 0 ? sDescFisc + "\n" : "" ) + sObsVenda, 100 );
 					vObsVenda.addElement( "PRAZO DE PAGAMENTO: "+cab.getString( NF.C_DESCPLANOPAG ) );
 
-					sizeObs = vSigla.size();
+					//sizeObs = vSigla.size();
+					sizeObs = clfiscal.size();
 					sizeObs = vObsVenda.size() > sizeObs ? vObsVenda.size() : sizeObs;
 
 					imp.pulaLinha( 1, imp.comprimido() );
 					int colCl = 0;
 					int linCl = 0;
+					Object[] codclfiscal = clfiscal.keySet().toArray();
+					Object[] posclfiscal = clfiscal.values().toArray(); 
 					for ( int i=0; i<6; i++ ) {
+						if (i<posclfiscal.length) {
+							if (i==0) {
+								imp.pulaLinha( 1, imp.comprimido() );
+								linCl ++;
+							}
+							imp.say( colCl , String.valueOf(posclfiscal[i])+" = "+String.valueOf( codclfiscal[i] ) );
+							colCl += 20;
+						}
+						if (colCl==60) {
+							colCl = 0;
+						}
+					}
+/*					for ( int i=0; i<6; i++ ) {
 						if (i<vSigla.size()) {
 							if (i==0) {
 								imp.pulaLinha( 1, imp.comprimido() );
@@ -373,7 +397,9 @@ public class NF047 extends Layout {
 						if (colCl==60) {
 							colCl = 0;
 						}
-					}
+					} */
+					linCl ++;
+					imp.pulaLinha( 1, imp.comprimido() );
 					for ( int i = 0; i < 4; i++ ) {
 						if ( i<vObsVenda.size() ) {
 							imp.say( 0, Funcoes.copy( (String) vObsVenda.elementAt( i ), 40 ) );
