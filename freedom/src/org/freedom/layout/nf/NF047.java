@@ -360,7 +360,7 @@ public class NF047 extends Layout {
 
 					// Imprime observação e classificações fiscais
 
-					vObsVenda = Funcoes.strToVectorSilabas( ( sDescFisc.length() > 0 ? sDescFisc + "\n" : "" ) + sObsVenda, 100 );
+					vObsVenda = Funcoes.strToVectorSilabas( ( sDescFisc.length() > 0 ? sDescFisc + "\n" : "" ) + sObsVenda, 70 );
 					vObsVenda.addElement( "PRAZO DE PAGAMENTO: "+cab.getString( NF.C_DESCPLANOPAG ) );
 
 					//sizeObs = vSigla.size();
@@ -402,7 +402,7 @@ public class NF047 extends Layout {
 					imp.pulaLinha( 1, imp.comprimido() );
 					for ( int i = 0; i < 4; i++ ) {
 						if ( i<vObsVenda.size() ) {
-							imp.say( 0, Funcoes.copy( (String) vObsVenda.elementAt( i ), 40 ) );
+							imp.say( 0, Funcoes.copy( (String) vObsVenda.elementAt( i ), 70 ) );
 						}
 						imp.pulaLinha( 1, imp.comprimido() );
 						linCl ++;
