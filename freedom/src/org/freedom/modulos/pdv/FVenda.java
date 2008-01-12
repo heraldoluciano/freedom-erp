@@ -323,13 +323,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		txtQtdadeItem.setSoLeitura( true );
 		txtValorTotalItem.setSoLeitura( true );
 		txtValorTotalCupom.setSoLeitura( true );
-		
-		addKeyListener( this );
-
-		txtCodProd.addKeyListener( this );
-		txtQtdade.addKeyListener( this );
-		txtPercDescItOrc.addKeyListener( this );
-		txtVlrDescItOrc.addKeyListener( this );
 
 		btF3.addActionListener( this );
 		btCtrlF3.addActionListener( this );
@@ -341,6 +334,14 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		btF9.addActionListener( this );
 		btF10.addActionListener( this );
 		btF11.addActionListener( this );
+		
+		addKeyListener( this );
+
+		txtCodProd.addKeyListener( this );
+		txtQtdade.addKeyListener( this );
+		txtPercDescItOrc.addKeyListener( this );
+		txtVlrDescItOrc.addKeyListener( this );
+		txtCodLote.addKeyListener( this );
 
 		txtQtdade.addFocusListener( this );
 		txtPercDescItOrc.addFocusListener( this );
@@ -2087,6 +2088,24 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		sbVenda.setDescEst( getDescEst() );
 	}
 	
+	private synchronized void actionCodProd() {
+		
+		if ( "S".equals( txtTelaAdicPDV.getVlrString().trim() ) && pluginVenda != null ) {
+			
+			if ( pluginVenda.beforeVendaItem() ) {				
+				actionPostVendaForStatus();
+			}
+			if ( pluginVenda.afterVendaItem() ) {
+				
+				txtTelaAdicPDV.setVlrString( "" );
+				txtCodProd.setVlrString( "" );
+				txtQtdade.setVlrString( "" );
+				txtPreco.setVlrString( "" );
+				txtCodConv.setVlrString( "" );
+			}
+		}
+	}
+	
 	private synchronized void actionQtdade() {
 
 		if ( txtCodProd.getVlrString().length() == 0 ) {		
@@ -2105,24 +2124,22 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	
 	private synchronized void actionVlrDescItProd() {
 		
-		actionPostVendaForStatus();
+		if ( txtCodLote.isEnabled() ) {
+			txtCodLote.requestFocus();
+		}
+		else {
+			actionPostVendaForStatus();
+		}
 	}
 	
-	private synchronized void actionCodProd() {
+	private synchronized void actionCodLote() {
 		
-		if ( "S".equals( txtTelaAdicPDV.getVlrString().trim() ) && pluginVenda != null ) {
-			
-			if ( pluginVenda.beforeVendaItem() ) {				
-				actionPostVendaForStatus();
-			}
-			if ( pluginVenda.afterVendaItem() ) {
-				
-				txtTelaAdicPDV.setVlrString( "" );
-				txtCodProd.setVlrString( "" );
-				txtQtdade.setVlrString( "" );
-				txtPreco.setVlrString( "" );
-				txtCodConv.setVlrString( "" );
-			}
+		if ( txtCodLote.getText().trim().length() == 0 ) {
+			Funcoes.mensagemErro( this, "Lote não informado!" );
+			txtCodLote.requestFocus();
+		}
+		else {
+			actionPostVendaForStatus();
 		}
 	}
 	
@@ -2259,14 +2276,17 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				break;
 		}
 		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {	
-			if ( kevt.getSource() == txtQtdade ) {				
+			if ( kevt.getSource() == txtCodProd ) {				
+				actionCodProd();
+			}
+			else if ( kevt.getSource() == txtQtdade ) {				
 				actionQtdade();
 			}
 			else if ( kevt.getSource() == txtVlrDescItOrc ) {				
 				actionVlrDescItProd();
 			}
-			else if ( kevt.getSource() == txtCodProd ) {				
-				actionCodProd();
+			else if ( kevt.getSource() == txtCodLote ) {
+				actionCodLote();
 			}
 		}
 	}
@@ -2278,7 +2298,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 		if ( fevt.getSource() == txtPercDescItOrc ) {
 			
-			if ( txtPercDescItOrc.getText().trim().length() < 1 ) {
+			if ( txtPercDescItOrc.getText().trim().length() == 0 ) {
 				
 				txtVlrDescItOrc.setAtivo( true );
 				txtVlrDescItOrc.requestFocus();
@@ -2292,11 +2312,16 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 									.divide( new BigDecimal( "100" ), 2, BigDecimal.ROUND_HALF_UP ) ) );
 				txtVlrDescItOrc.setAtivo( false );
 				
-				actionPostVendaForStatus();
+				if ( txtCodLote.isEnabled() ) {
+					txtCodLote.requestFocus();
+				}
+				else {
+					actionPostVendaForStatus();
+				}
 			}
 		}
 		else if ( fevt.getSource() == txtVlrDescItOrc ) {
-			if ( txtVlrDescItOrc.getText().trim().length() < 1 ) {				
+			if ( txtVlrDescItOrc.getText().trim().length() == 0 ) {				
 				txtPercDescItOrc.setAtivo( true );
 			}
 			else if ( txtVlrDescItOrc.getAtivo() ) {				
