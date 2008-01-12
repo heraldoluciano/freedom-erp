@@ -206,25 +206,25 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 	private JTextFieldPad txtDiasVencOrc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private final String opcoes = "    Opções";
+	private final String opcoes = "Opções";
 
-	private JLabelPad lbVendOpcoes = new JLabelPad( opcoes );
+	private JLabelPad lbVendOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
 	
-	private JLabelPad lbCompOpcoes = new JLabelPad( opcoes );
+	private JLabelPad lbCompOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
 
-	private JLabelPad lbGeralOpcoes = new JLabelPad( opcoes );
+	private JLabelPad lbGeralOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
 
-	private JLabelPad lbOrcOpcoes = new JLabelPad( opcoes );
+	private JLabelPad lbOrcOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
 
-	private JLabelPad lbEstOpcoes = new JLabelPad( opcoes );
+	private JLabelPad lbEstOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
 
-	private JLabelPad lbProdOpcoes = new JLabelPad( opcoes );
+	private JLabelPad lbProdOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
 
-	private JLabelPad lbFinOpcoes = new JLabelPad( opcoes );
+	private JLabelPad lbFinOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
 
-	private JLabelPad lbCtbOpcoes = new JLabelPad( opcoes );
+	private JLabelPad lbCtbOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
 
-	private JLabelPad lbPrcOpcoes = new JLabelPad( opcoes );
+	private JLabelPad lbPrcOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
 
 	private JLabelPad lbOrcCont = new JLabelPad();
 
@@ -353,6 +353,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private JCheckBoxPad cbUsaImgOrc = null;
 	
 	private JCheckBoxPad cbUsaNomeVendOrc = null;
+
+	private JCheckBoxPad cbConsCPFCli = null;
 
 	private JCheckBoxPad cbConsIECli = null;
 
@@ -690,6 +692,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbUsaImgOrc.setVlrString( "N" );
 		cbUsaNomeVendOrc = new JCheckBoxPad( "Usar nome do comissionado no orçamento?", "S", "N" );
 		cbUsaNomeVendOrc.setVlrString( "N" );
+		cbConsCPFCli = new JCheckBoxPad( "Validar CPF no cliente?", "S", "N" );
+		cbConsCPFCli.setVlrString( "S" );
 		cbConsIECli = new JCheckBoxPad( "Validar IE no cliente?", "S", "N" );
 		cbConsIECli.setVlrString( "S" );
 		cbConsIEFor = new JCheckBoxPad( "Validar IE do fornecedor?", "S", "N" );
@@ -780,15 +784,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicCampo( txtCasasDec, 7, 140, 100, 20, "CasasDec", "Demais", ListaCampos.DB_SI, true );
 		lbGeralOpcoes.setOpaque( true );
 		adic( lbGeralOpcoes, 170, 5, 90, 20 );
-		adic( pinOpcoesGeral, 160, 15, 560, 185 );
+		adic( pinOpcoesGeral, 160, 15, 560, 200 );
 		setPainel( pinOpcoesGeral );
 		adicDB( cbRgCliObrig, 7, 20, 180, 20, "RgCliObrig", "", true );
 		adicDB( cbCliMesmoCnpj, 7, 40, 250, 20, "CliMesmoCnpj", "", true );
 		adicDB( cbCnpjCliObrig, 7, 60, 300, 20, "CnpjObrigCli", "", true );
 		adicDB( cbCnpjForObrig, 7, 80, 400, 20, "CnpjForObrig", "", true );
 		adicDB( cbInscEstForObrig, 7, 100, 400, 20, "InscEstForObrig", "", true );
-		adicDB( cbConsIECli, 7, 120, 400, 20, "ConsisteIECli", "", true );
-		adicDB( cbConsIEFor, 7, 140, 400, 20, "ConsisteIEFor", "", true );
+		adicDB( cbConsCPFCli, 7, 120, 400, 20, "ConsistCPFCli", "", true );
+		adicDB( cbConsIECli, 7, 140, 400, 20, "ConsisteIECli", "", true );
+		adicDB( cbConsIEFor, 7, 160, 400, 20, "ConsisteIEFor", "", true );
 
 		// Venda
 
