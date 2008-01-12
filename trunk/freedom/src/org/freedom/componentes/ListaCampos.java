@@ -280,6 +280,9 @@ public class ListaCampos extends Container implements PostListener,
 	private int iOrdemT = 1;
 	
 	private String sSchema = ""; // Schema/Owner da tabela
+	
+	private boolean validarcpf = true;
+	
 
 	public int getCodEmp() {
 		return iCodEmp;
@@ -315,6 +318,14 @@ public class ListaCampos extends Container implements PostListener,
 			setState(LCS_WRITE_READ);
 			setState(LCS_NONE);
 		}
+	}
+	
+	public boolean isValidarcpf() {	
+		return validarcpf;
+	}
+	
+	public void setValidarcpf( boolean validacpf ) {	
+		this.validarcpf = validacpf;
 	}
 
 	/**
@@ -2151,7 +2162,7 @@ public class ListaCampos extends Container implements PostListener,
 									return false;
 								}
 							} 
-							else if (comp.getCampo().getMascara() == JTextFieldPad.MC_CPF) {
+							else if (comp.getCampo().getMascara() == JTextFieldPad.MC_CPF && isValidarcpf()) {
 								if (!Funcoes.ValidaCPF(comp.getCampo().getVlrString())) {
 									Funcoes.mensagemErro(cOwner,"CPF inválido!");
 									comp.getCampo().requestFocus();

@@ -663,7 +663,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtIncraCli, 313, 340, 187, 20, "IncraCli", "Incra", ListaCampos.DB_SI, false );
 		adicCampo( txtEmailCli, 7, 380, 245, 20, "EmailCli", "E-Mail", ListaCampos.DB_SI, false );
 		adicCampo( txtSiteCli, 255, 380, 220, 20, "SiteCli", "Site", ListaCampos.DB_SI, false );
-		adic(btFirefox, 480, 380, 20, 20 );
+		adic( btFirefox, 480, 380, 20, 20 );
 		txtCpfCli.setMascara( JTextFieldPad.MC_CPF );
 		txtCnpjCli.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepCli.setMascara( JTextFieldPad.MC_CEP );
@@ -795,6 +795,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		pnObs1.add( pnObs1_2, BorderLayout.SOUTH );
 
 		setListaCampos( true, "CLIENTE", "VD" );
+		lcCampos.setValidarcpf( bPref[ 5 ] );
 
 		// Fornecedor:
 
@@ -1865,14 +1866,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private boolean[] getPrefere() {
 
-		boolean[] bRet = new boolean[ 5 ];
+		boolean[] bRet = new boolean[ 6 ];
 		String sSQL = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
 		try {
 			
-			sSQL = "SELECT SETORVENDA,RGCLIOBRIG,CLIMESMOCNPJ,CNPJOBRIGCLI,CONSISTEIECLI FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			sSQL = "SELECT SETORVENDA,RGCLIOBRIG,CLIMESMOCNPJ,CNPJOBRIGCLI,CONSISTEIECLI,CONSISTCPFCLI FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 
 			try {
 				ps = con.prepareStatement( sSQL );
@@ -1887,6 +1888,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 					bRet[ 2 ] = "S".equals( rs.getString( "CLIMESMOCNPJ" ) );
 					bRet[ 3 ] = "S".equals( rs.getString( "CLIMESMOCNPJ" ) );
 					bRet[ 4 ] = "S".equals( rs.getString( "CONSISTEIECLI" ) );
+					bRet[ 5 ] = "S".equals( rs.getString( "CONSISTCPFCLI" ) );
 				}
 				
 				rs.close();
@@ -3575,35 +3577,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 	}
 
-	public void setConexao( Connection cn ) {
-
-		super.setConexao( cn );
-		bPref = getPrefere();
-
-		montaTela();
-
-		lcTipoCli.setConexao( cn );
-		lcTipoFiscCli.setConexao( cn );
-		lcClas.setConexao( cn );
-		lcVend.setConexao( cn );
-		lcPlanoPag.setConexao( cn );
-		lcTran.setConexao( cn );
-		lcTipoCob.setConexao( cn );
-		lcBanco.setConexao( cn );
-		lcPesq.setConexao( cn );
-		lcFor.setConexao( con );
-		lcCliFor.setConexao( con );
-		lcPais.setConexao( con );
-		lcMetaVend.setConexao( con );
-		lcHistorico.setConexao( con );
-		lcCartCob.setConexao( con );
-		
-		if ( lcSetor != null ) {
-			lcSetor.setConexao( con );
-		}
-
-	}
-
 	public void beforePost( PostEvent pevt ) {
 
 		if ( rgPessoa.getVlrString().compareTo( "F" ) == 0 ) {
@@ -3677,6 +3650,35 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				this.btSair.doClick();
 			}
 		}
+	}
+
+	public void setConexao( Connection cn ) {
+	
+		super.setConexao( cn );
+		bPref = getPrefere();
+	
+		montaTela();
+	
+		lcTipoCli.setConexao( cn );
+		lcTipoFiscCli.setConexao( cn );
+		lcClas.setConexao( cn );
+		lcVend.setConexao( cn );
+		lcPlanoPag.setConexao( cn );
+		lcTran.setConexao( cn );
+		lcTipoCob.setConexao( cn );
+		lcBanco.setConexao( cn );
+		lcPesq.setConexao( cn );
+		lcFor.setConexao( con );
+		lcCliFor.setConexao( con );
+		lcPais.setConexao( con );
+		lcMetaVend.setConexao( con );
+		lcHistorico.setConexao( con );
+		lcCartCob.setConexao( con );
+		
+		if ( lcSetor != null ) {
+			lcSetor.setConexao( con );
+		}
+	
 	}
 
 }
