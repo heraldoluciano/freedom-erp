@@ -239,9 +239,11 @@ public class DLFechaDia extends FFDialogo {
 	private void fechaCaixa( boolean bReduz ) {
 
 		if ( execSangria() ) {
-			if ( !ecf.sangria( txtVlrCaixa.getVlrBigDecimal() ) ) {
-				Funcoes.mensagemErro( this, ecf.getMessageLog() );
-				return;
+			if ( naoExecutouReducaoZ ) {
+				if ( !ecf.sangria( txtVlrCaixa.getVlrBigDecimal() ) ) {
+					Funcoes.mensagemErro( this, ecf.getMessageLog() );
+					return;
+				}
 			}
 		}
 
