@@ -733,6 +733,17 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		setListaCampos( true, "PRODUTO", "EQ" );
 
+		// Medidas
+
+		setPainel( pinMedidas, pnMedidas );
+		adicTab( "Medidas", pnMedidas );
+		adicCampo( txtPesoBrutProd, 7, 20, 90, 20, "PesoBrutProd", "Peso bruto", ListaCampos.DB_SI, false );
+		adicCampo( txtPesoLiqProd, 100, 20, 87, 20, "PesoLiqProd", "Peso líquido", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrDens, 7, 60, 87, 20, "VlrDensidade", "Densidade", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrConcent, 100, 60, 87, 20, "VlrConcent", "Concentração", ListaCampos.DB_SI, false );
+		setListaCampos( true, "PRODUTO", "EQ" );
+		
+		
 		// Preço
 
 		setPainel( pinRodPreco, pnPreco );
@@ -1051,14 +1062,6 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		txtCodProd.requestFocus();
 		btExp.addActionListener( this );
 		
-		// Medidas
-
-		setPainel( pinMedidas, pnMedidas );
-		adicTab( "Medidas", pnMedidas );
-		adicCampo( txtPesoBrutProd, 7, 20, 90, 20, "PesoBrutProd", "Peso bruto", ListaCampos.DB_SI, false );
-		adicCampo( txtPesoLiqProd, 100, 20, 87, 20, "PesoLiqProd", "Peso líquido", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrDens, 7, 60, 87, 20, "VlrDensisade", "Densidade", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrConcent, 100, 60, 87, 20, "VlrConcent", "Concentração", ListaCampos.DB_SI, false );
 		
 
 	}
