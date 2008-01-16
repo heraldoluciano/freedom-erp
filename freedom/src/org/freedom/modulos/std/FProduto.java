@@ -737,8 +737,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		setPainel( pinMedidas, pnMedidas );
 		adicTab( "Medidas", pnMedidas );
-		adicCampo( txtPesoBrutProd, 7, 20, 90, 20, "PesoBrutProd", "Peso bruto", ListaCampos.DB_SI, false );
-		adicCampo( txtPesoLiqProd, 100, 20, 87, 20, "PesoLiqProd", "Peso líquido", ListaCampos.DB_SI, false );
+		adicCampo( txtPesoBrutProd, 7, 20, 90, 20, "PesoBrutProd", "Peso bruto", ListaCampos.DB_SI, true );
+		adicCampo( txtPesoLiqProd, 100, 20, 87, 20, "PesoLiqProd", "Peso líquido", ListaCampos.DB_SI, true );
 		adicCampo( txtVlrDens, 7, 60, 87, 20, "VlrDensidade", "Densidade", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrConcent, 100, 60, 87, 20, "VlrConcent", "Concentração", ListaCampos.DB_SI, false );
 		setListaCampos( true, "PRODUTO", "EQ" );
