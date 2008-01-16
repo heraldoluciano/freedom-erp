@@ -1911,8 +1911,9 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				ResultSet rs = ps.executeQuery();
 
 				if ( rs.next() ) {
-					retorno[ 0 ] = rs.getBigDecimal( "COMISPROD" );
-					retorno[ 1 ] = ( rs.getBigDecimal( "COMISPROD" )
+					retorno[ 0 ] = rs.getBigDecimal( "COMISPROD" ) != null ? 
+							rs.getBigDecimal( "COMISPROD" ) : new BigDecimal( "0.00" );
+					retorno[ 1 ] = ( retorno[ 0 ]
 							.multiply( txtPreco.getVlrBigDecimal() ) )
 								.divide( new BigDecimal( 100 ), 
 										AplicativoPDV.casasDecFin, 
@@ -2124,7 +2125,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	
 	private synchronized void actionVlrDescItProd() {
 		
-		if ( txtCodLote.isEnabled() ) {
+		if ( txtCodLote.isEditable() ) {
 			txtCodLote.requestFocus();
 		}
 		else {
@@ -2312,7 +2313,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 									.divide( new BigDecimal( "100" ), 2, BigDecimal.ROUND_HALF_UP ) ) );
 				txtVlrDescItOrc.setAtivo( false );
 				
-				if ( txtCodLote.isEnabled() ) {
+				if ( txtCodLote.isEditable() ) {
 					txtCodLote.requestFocus();
 				}
 				else {
