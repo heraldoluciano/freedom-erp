@@ -94,6 +94,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JPanelPad pnCodAltProd = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pnCodAcess = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JPanelPad pnMedidas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pnLote = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -140,6 +142,10 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JTextFieldPad txtCodBarProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldPad txtCodFabProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	
+	private JTextFieldPad txtVlrDens = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15,  casasDec );
+	
+	private JTextFieldPad txtVlrConcent = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
 	private JTextFieldPad txtComisProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, casasDecFin );
 
@@ -346,6 +352,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JPanelPad pinRodCodAltProd = new JPanelPad( 650, 80 );
 
 	private JPanelPad pinRodCodAcess = new JPanelPad( 650, 120 );
+	
+	private JPanelPad pinMedidas = new JPanelPad( 650, 120 );
 
 	private JPanelPad pinRodLote = new JPanelPad( 650, 120 );
 
@@ -648,20 +656,18 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicCampo( txtRefProd, 80, 20, 70, 20, "RefProd", "Referência", ListaCampos.DB_SI, true );
 		adicCampo( txtDescProd, 153, 20, 360, 20, "DescProd", "Descrição do produto", ListaCampos.DB_SI, true );
 		adicDB( rgTipo, 520, 20, 130, 140, "TipoProd", "Fluxo:", true );
-		adicCampo( txtDescAuxProd, 7, 60, 250, 20, "DescAuxProd", "Descrição auxiliar", ListaCampos.DB_SI, false );
-		adicCampo( txtCodMoeda, 259, 60, 70, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescMoeda, 332, 60, 181, 20, "SingMoeda", "Descrição da moeda" );
-		adicCampo( txtCodBarProd, 7, 100, 125, 20, "CodBarProd", "Código de barras", ListaCampos.DB_SI, true );
-		adic( btCodBar, 135, 100, 20, 20 );
-		adicCampo( txtCodFabProd, 160, 100, 100, 20, "CodFabProd", "Cód. fabricante", ListaCampos.DB_SI, true );
-		adicCampo( txtCodAlmox, 263, 100, 70, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescAlmox, 336, 100, 176, 20, "DescAlmox", "Descrição do almoxarifado" );
-		adicCampo( txtPesoBrutProd, 7, 140, 90, 20, "PesoBrutProd", "Peso bruto", ListaCampos.DB_SI, true );
-		adicCampo( txtPesoLiqProd, 100, 140, 87, 20, "PesoLiqProd", "Peso líquido", ListaCampos.DB_SI, true );
-		adicCampo( txtPrecoBaseProd, 190, 140, 97, 20, "PrecoBaseProd", "Preço base", ListaCampos.DB_SI, true );
-		adicCampo( txtComisProd, 290, 140, 77, 20, "ComisProd", "% Comissão", ListaCampos.DB_SI, true );
-		adicCampo( txtQtdMinProd, 370, 140, 67, 20, "QtdMinProd", "Qtd.min.", ListaCampos.DB_SI, true );
-		adicCampo( txtQtdMaxProd, 440, 140, 72, 20, "QtdMaxProd", "Qtd.máx.", ListaCampos.DB_SI, true );
+		adicCampo( txtDescAuxProd, 7, 60, 220, 20, "DescAuxProd", "Descrição auxiliar", ListaCampos.DB_SI, false );
+		adicCampo( txtCodMoeda, 229, 60, 80, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescMoeda, 312, 60, 201, 20, "SingMoeda", "Descrição da moeda" );
+		adicCampo( txtCodBarProd, 7, 100, 170, 20, "CodBarProd", "Código de barras", ListaCampos.DB_SI, true );
+		adic( btCodBar, 190, 100, 20, 20 );
+		adicCampo( txtCodAlmox, 229, 100, 80, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescAlmox, 312, 100, 201, 20, "DescAlmox", "Descrição do almoxarifado" );
+		adicCampo( txtCodFabProd, 7, 140, 120, 20, "CodFabProd", "Cód. fabricante", ListaCampos.DB_SI, true );
+		adicCampo( txtPrecoBaseProd, 130, 140, 97, 20, "PrecoBaseProd", "Preço base", ListaCampos.DB_SI, true );
+		adicCampo( txtComisProd, 230, 140, 77, 20, "ComisProd", "% Comissão", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdMinProd, 310, 140, 97, 20, "QtdMinProd", "Qtd.min.", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdMaxProd, 410, 140, 103, 20, "QtdMaxProd", "Qtd.máx.", ListaCampos.DB_SI, true );
 		adicCampo( txtLocalProd, 7, 180, 165, 20, "LocalProd", "Local armz.", ListaCampos.DB_SI, false );
 		
 		btCodBar.setToolTipText( "Gera cód. barras" ); 
@@ -1044,6 +1050,16 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		txtCodProd.requestFocus();
 		btExp.addActionListener( this );
+		
+		// Medidas
+
+		setPainel( pinMedidas, pnMedidas );
+		adicTab( "Medidas", pnMedidas );
+		adicCampo( txtPesoBrutProd, 7, 20, 90, 20, "PesoBrutProd", "Peso bruto", ListaCampos.DB_SI, false );
+		adicCampo( txtPesoLiqProd, 100, 20, 87, 20, "PesoLiqProd", "Peso líquido", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrDens, 7, 60, 87, 20, "VlrDensisade", "Densidade", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrConcent, 100, 60, 87, 20, "VlrConcent", "Concentração", ListaCampos.DB_SI, false );
+		
 
 	}
 
@@ -1054,7 +1070,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		String sSQL = "";
 		int iCodAlmox = 0;
 		int iParam = 1;
-	
+	 
 		String sCodProd = null;
 		String sFiltro = "";
 	
