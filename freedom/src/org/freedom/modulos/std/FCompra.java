@@ -131,6 +131,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
+	private JTextFieldPad txtCodAlmoxProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
 	private JTextFieldPad txtCodFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldPad txtTipoFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
@@ -140,6 +142,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtTpRedIcmsFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtCodUn = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+
+	private JTextFieldPad txtCustoPEPSProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	
+	private JTextFieldPad txtCustoMPMProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
 	private JTextFieldPad txtVlrIPICompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
@@ -155,7 +161,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JTextFieldPad txtVlrIPIItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
-	private JTextFieldPad txtCustoItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	private JTextFieldPad txtCustoItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
 	private JTextFieldPad txtAliqIPIFisc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
 
@@ -184,6 +190,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldFK txtDescNat = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtDescLote = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldFK txtDescAlmox = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodBarProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
@@ -217,7 +225,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private ListaCampos lcCompra2 = new ListaCampos( this );
 
-	private ListaCampos lcAlmox = new ListaCampos( this, "AX" );
+	private ListaCampos lcAlmoxItem = new ListaCampos( this, "AX" );
+
+	private ListaCampos lcAlmoxProd = new ListaCampos( this, "AX" );
 
 	private String sOrdNota = "";
 
@@ -312,6 +322,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcProd.add( new GuardaCampo( txtCodBarProd, "CodBarProd", "Cod.Barra", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodFabProd, "CodFabProd", "Cod.Fabricante", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodUn, "CodUnid", "Unidade", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtCodAlmoxProd, "CodAlmox", "Unidade", ListaCampos.DB_SI, false ) );
 
 		txtCodUn.setAtivo( false );
 		lcProd.setWhereAdic( "ATIVOPROD='S'" );
@@ -328,6 +339,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcProd2.add( new GuardaCampo( txtCodBarProd, "CodBarProd", "Cod.Barra", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodFabProd, "CodFabProd", "Cod.Fabricante", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodUn, "CodUnid", "Unidade", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtCodAlmoxProd, "CodAlmox", "Unidade", ListaCampos.DB_SI, false ) );
 
 		txtRefProd.setNomeCampo( "RefProd" );
 		txtRefProd.setListaCampos( lcDet );
@@ -350,13 +362,21 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		txtDescLote.setNomeCampo( "VenctoLote" );
 		txtDescLote.setLabel( "Vencimento" );
 
-		// FK de Almoxarifado
+		// FK de Almoxarifado Produto
 
-		lcAlmox.add( new GuardaCampo( txtCodAlmoxItCompra, "codalmox", "Cod.Almox.", ListaCampos.DB_PK, false ) );
-		lcAlmox.montaSql( false, "ALMOX", "EQ" );
-		lcAlmox.setQueryCommit( false );
-		lcAlmox.setReadOnly( true );
-		txtCodAlmoxItCompra.setTabelaExterna( lcAlmox );
+		lcAlmoxProd.add( new GuardaCampo( txtCodAlmoxProd, "codalmox", "Cod.Almox.", ListaCampos.DB_PK, false ) );
+		lcAlmoxProd.montaSql( false, "ALMOX", "EQ" );
+		lcAlmoxProd.setQueryCommit( false );
+		lcAlmoxProd.setReadOnly( true );
+		txtCodAlmoxItCompra.setTabelaExterna( lcAlmoxProd );
+
+		// FK de Almoxarifado Item
+
+		lcAlmoxItem.add( new GuardaCampo( txtCodAlmoxItCompra, "codalmox", "Cod.Almox.", ListaCampos.DB_PK, false ) );
+		lcAlmoxItem.montaSql( false, "ALMOX", "EQ" );
+		lcAlmoxItem.setQueryCommit( false );
+		lcAlmoxItem.setReadOnly( true );
+		txtCodAlmoxItCompra.setTabelaExterna( lcAlmoxItem );
 
 		lcNat.add( new GuardaCampo( txtCodNat, "CodNat", "CFOP", ListaCampos.DB_PK, false ) );
 		lcNat.add( new GuardaCampo( txtDescNat, "DescNat", "Descrição da CFOP", ListaCampos.DB_SI, false ) );
@@ -424,6 +444,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcLote.addCarregaListener( this );
 		lcDet.addCarregaListener( this );
 		lcTipoMov.addCarregaListener( this );
+		lcAlmoxProd.addCarregaListener( this );
 		lcCampos.addInsertListener( this );
 		lcCampos.addPostListener( this );
 		lcDet.addPostListener( this );
@@ -469,7 +490,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		adicCampoInvisivel( txtCodAlmoxItCompra, "codalmox", "Cod.Almox", ListaCampos.DB_FK, false );
 
-		txtQtdItCompra.setBuscaAdic( new DLBuscaEstoq( lcDet, lcAlmox, lcProd, con, "qtditcompra" ) );
+		txtQtdItCompra.setBuscaAdic( new DLBuscaEstoq( lcDet, lcAlmoxItem, lcProd, con, "qtditcompra" ) );
 
 		adicCampo( txtPrecoItCompra, 540, 20, 67, 20, "PrecoItCompra", "Preço", ListaCampos.DB_SI, true );
 		adicCampo( txtPercDescItCompra, 610, 20, 57, 20, "PercDescItCompra", "% Desc.", ListaCampos.DB_SI, false );
@@ -796,6 +817,43 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			calcImpostos( true );
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar percentual de ICMS!\n" + err.getMessage(), true, con, err );
+		}
+	}
+	
+	private void getCustoProd() {
+		
+		try {
+			PreparedStatement ps = con.prepareStatement( "SELECT NCUSTOPEPS, NCUSTOMPM FROM EQPRODUTOSP01(?,?,?,?,?,?)" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps.setInt( 3, txtCodProd.getVlrInteger().intValue() );
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, ListaCampos.getMasterFilial( "EQALMOX" ) );
+			ps.setInt( 6, txtCodAlmoxProd.getVlrInteger().intValue() );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {				
+				txtCustoPEPSProd.setVlrBigDecimal( rs.getBigDecimal( "NCUSTOPEPS" ) );
+				txtCustoMPMProd.setVlrBigDecimal( rs.getBigDecimal( "NCUSTOMPM" ) );
+				
+				if ( true ) {
+					txtCustoItCompra.setVlrBigDecimal( txtCustoMPMProd.getVlrBigDecimal() );		
+				}
+				else {
+					txtCustoItCompra.setVlrBigDecimal( txtCustoPEPSProd.getVlrBigDecimal() );		
+				}
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar custo do produto.", true, con, e );
 		}
 	}
 
@@ -1382,14 +1440,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		if ( (cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2) ) {
 			if ( txtCLoteProd.getText().trim().equals( "N" ) ) {
 				txtCodLote.setAtivo( false );// Desativa o Cógigo do lote por o
-				// produto
-				// não possuir lote
+				// produto não possuir lote
 			}
 			else if ( txtCLoteProd.getText().trim().equals( "S" ) ) {
 				txtCodLote.setAtivo( true );// Ativa o Cógigo do Lote pois o
-				// produto tem
-				// lote
+				// produto tem lote
 			}
+			lcAlmoxProd.carregaDados();
 		}
 		else if ( ( cevt.getListaCampos() == lcFisc ) && ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
 			getCFOP();
@@ -1405,8 +1462,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			txtCodCompra.setVlrString( s );
 		}
 		else if ( cevt.getListaCampos() == lcSerie ) {
-			if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && ( cbSeqNfTipoMov.getVlrString().equals( "S" ) ) )
+			if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && ( cbSeqNfTipoMov.getVlrString().equals( "S" ) ) ) {
 				txtDocCompra.setVlrInteger( new Integer( txtDocSerie.getVlrInteger().intValue() + 1 ) );
+			}
 		}
 		else if ( cevt.getListaCampos() == lcNat ) {
 			if ( ( cevt.ok ) & ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
@@ -1414,11 +1472,20 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 		}
 		else if ( cevt.getListaCampos() == lcTipoMov ) {
-			if ( cbSeqNfTipoMov.getVlrString().equals( "S" ) )
+			if ( cbSeqNfTipoMov.getVlrString().equals( "S" ) ) {
 				txtDocCompra.setAtivo( false );
-			else
+			}
+			else {
 				txtDocCompra.setAtivo( true );
+			}
 		}
+		else if ( cevt.getListaCampos() == lcAlmoxProd &&
+				lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
+			if ( habilitaCusto ) {
+				getCustoProd();
+			}
+		}
+		
 		if ( txtStatusCompra.getVlrString().trim().length() > 0 && ( txtStatusCompra.getVlrString().trim().equals( "C2" ) || txtStatusCompra.getVlrString().trim().equals( "C3" ) ) ) {
 			lbStatus.setText( "NOTA RECEBIDA" );
 			lbStatus.setBackground( new Color( 45, 190, 60 ) );
@@ -1437,13 +1504,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
-
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
 
-		txtDtEntCompra.setVlrDate( new Date() );
-		txtDtEmitCompra.setVlrDate( new Date() );
+		if ( ievt.getListaCampos() == lcCampos ) {
+			txtDtEntCompra.setVlrDate( new Date() );
+			txtDtEmitCompra.setVlrDate( new Date() );			
+		}
 	}
 
 	public void beforePost( PostEvent pevt ) {
@@ -1482,7 +1550,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcLote.setConexao( cn );
 		lcFisc.setConexao( cn );
 		lcCompra2.setConexao( cn );
-		lcAlmox.setConexao( cn );
+		lcAlmoxItem.setConexao( cn );
+		lcAlmoxProd.setConexao( cn );
 		getPrefere();
 		montaDetalhe();
 	}
