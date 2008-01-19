@@ -227,6 +227,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private boolean buscaVlrUltCompra = false;
 
+	private boolean habilitaCusto = false;
+
 	public FCompra() {
 
 		setTitulo( "Compra" );
@@ -456,7 +458,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
 			adicCampo( txtCodProd, 40, 20, 67, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
 		}
-		txtCustoItCompra.setSoLeitura( true );
+		
+		txtCustoItCompra.setSoLeitura( ! habilitaCusto );
+		
 		adicDescFK( txtDescProd, 110, 20, 197, 20, "DescProd", "Descrição do produto" );
 		adic( new JLabelPad( "Unidade" ), 310, 0, 60, 20 );
 		adic( txtCodUn, 310, 20, 60, 20 );
@@ -469,7 +473,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		adicCampo( txtPrecoItCompra, 540, 20, 67, 20, "PrecoItCompra", "Preço", ListaCampos.DB_SI, true );
 		adicCampo( txtPercDescItCompra, 610, 20, 57, 20, "PercDescItCompra", "% Desc.", ListaCampos.DB_SI, false );
+		
 		adicCampo( txtVlrDescItCompra, 670, 20, 67, 20, "VlrDescItCompra", "V. Desc.", ListaCampos.DB_SI, false );
+		
 		adicCampo( txtCustoItCompra, 650, 60, 85, 20, "CustoItCompra", "Custo Estoq.", ListaCampos.DB_SI, false );
 		adicCampo( txtCodNat, 7, 60, 67, 20, "CodNat", "CFOP", ListaCampos.DB_FK, txtDescNat, true );
 		adicDescFK( txtDescNat, 80, 60, 197, 20, "DescNat", "Descrição da CFOP" );
@@ -793,37 +799,32 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 	}
 
-	private boolean getPrefere() {
-
-		boolean bRetorno = false;
-		String sSQL = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+	private void getPrefere() {
+		
 		try {
 
-			sSQL = "SELECT USAREFPROD, ORDNOTA, BLOQCOMPRA, BUSCAVLRULTCOMPRA " + "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-
-			ps = con.prepareStatement( sSQL );
+			PreparedStatement ps = con.prepareStatement( 
+					"SELECT USAREFPROD,ORDNOTA,BLOQCOMPRA,BUSCAVLRULTCOMPRA,CUSTOCOMPRA " + 
+					"FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			rs = ps.executeQuery();
+			
+			ResultSet rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
 				comref = rs.getString( "USAREFPROD" ).trim().equals( "S" );
 				podeBloq = rs.getString( "BLOQCOMPRA" ).trim().equals( "S" );
 				buscaVlrUltCompra = rs.getString( "BUSCAVLRULTCOMPRA" ).trim().equals( "S" );
 				sOrdNota = rs.getString( "ORDNOTA" );
+				habilitaCusto = rs.getString( "CUSTOCOMPRA" ).trim().equals( "S" );
 			}
-			if ( !con.getAutoCommit() )
+			if ( !con.getAutoCommit() ){
 				con.commit();
-
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
-		} finally {
-			sSQL = null;
-			ps = null;
-			rs = null;
-		}
-		return bRetorno;
+			}
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + e.getMessage(), true, con, e );
+		} 
 	}
 
 	private void getVlrUltimaCompra() {
@@ -1291,22 +1292,47 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 					txtCodItCompra.requestFocus();
 				}
 			}
-			else if ( kevt.getSource() == txtVlrLiqItCompra ) {// Talvez este
-				// possa ser
-				// o ultimo campo do
-				// itvenda.
-				if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
-					lcDet.post();
-					lcDet.limpaCampos( true );
-					lcDet.setState( ListaCampos.LCS_NONE );
-					if ( comref )
-						txtRefProd.requestFocus();
-					else
-						txtCodProd.requestFocus();
+			else if ( kevt.getSource() == txtVlrLiqItCompra ) {
+				// É o último se o custo não estiver habilitado.
+				if ( ! habilitaCusto ) {
+					if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
+						lcDet.post();
+						lcDet.limpaCampos( true );
+						lcDet.setState( ListaCampos.LCS_NONE );
+						if ( comref ) {
+							txtRefProd.requestFocus();
+						}
+						else {
+							txtCodProd.requestFocus();
+						}
+					}
+					else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
+						lcDet.post();
+						txtCodItCompra.requestFocus();
+					}
 				}
-				else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
-					lcDet.post();
-					txtCodItCompra.requestFocus();
+				else  {
+					txtCustoItCompra.requestFocus();
+				}
+			}
+			else if ( kevt.getSource() == txtCustoItCompra ) {
+				// É o último se estiver habilitado.
+				if ( habilitaCusto ) {
+					if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
+						lcDet.post();
+						lcDet.limpaCampos( true );
+						lcDet.setState( ListaCampos.LCS_NONE );
+						if ( comref ) {
+							txtRefProd.requestFocus();
+						}
+						else {
+							txtCodProd.requestFocus();
+						}
+					}
+					else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
+						lcDet.post();
+						txtCodItCompra.requestFocus();
+					}
 				}
 			}
 		}
