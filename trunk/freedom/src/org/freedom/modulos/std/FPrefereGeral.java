@@ -348,6 +348,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 	private JCheckBoxPad cbBuscaVlrUltCompra = null;
 
+	private JCheckBoxPad cbHabiitaCustoCompra = null;
+
 	private JCheckBoxPad cbUsaPrecoZero = null;
 
 	private JCheckBoxPad cbUsaImgOrc = null;
@@ -686,6 +688,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbUsaLoteOrc.setVlrString( "N" );
 		cbBuscaVlrUltCompra = new JCheckBoxPad( "Busca valor da ultima compra?", "S", "N" );
 		cbBuscaVlrUltCompra.setVlrString( "N" );
+		cbHabiitaCustoCompra = new JCheckBoxPad( "Habilita campo de custo na compra?", "S", "N" );
+		cbHabiitaCustoCompra.setVlrString( "N" );
 		cbUsaPrecoZero = new JCheckBoxPad( "Permite preço de produto Zero?", "S", "N" );
 		cbUsaPrecoZero.setVlrString( "N" );
 		cbUsaImgOrc = new JCheckBoxPad( "Usar imagem de assinatura no orçamento?", "S", "N" );
@@ -993,11 +997,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDescFK( txtDescTipoMov8, 100, 65, 300, 20, "DescTipoMov", "Descrição do tp.mov. para RMA" );
 
 		adic( lbEstOpcoes, 17, 90, 70, 20 );
-		adic( lbEstCont, 7, 100, 393, 110 );
+		adic( lbEstCont, 7, 100, 393, 130 );
 		adicDB( cbContEstoq, 17, 115, 250, 20, "ContEstoq", "", true );
 		adicDB( cbMultiAlmox, 17, 135, 250, 20, "MultiAlmox", "", true );
 		adicDB( cbBloqCompra, 17, 155, 300, 20, "BloqCompra", "", true );
-		adicDB( cbBuscaVlrUltCompra, 10, 175, 300, 20, "BuscaVlrUltCompra", "", true );
+		adicDB( cbBuscaVlrUltCompra, 17, 175, 300, 20, "BuscaVlrUltCompra", "", true );
+		adicDB( cbHabiitaCustoCompra, 17, 195, 300, 20, "CustoCompra", "", true );
 
 		nav.setAtivo( 0, false );
 		lcCampos.setPodeExc( false );
