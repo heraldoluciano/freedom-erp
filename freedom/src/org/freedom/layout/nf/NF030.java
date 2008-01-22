@@ -32,6 +32,7 @@ import org.freedom.layout.componentes.Layout;
 public class NF030 extends Layout {
 
 	public boolean imprimir( NF nf, ImprimeOS imp ) {
+		
 
 		boolean retorno = super.imprimir( nf, imp );
 		boolean bjatem = false;
