@@ -170,9 +170,16 @@ public class FRVendasFisico extends FRelatorio {
 		StringBuffer sSQL = new StringBuffer();
 		StringBuffer sCab = new StringBuffer();
 		StringBuffer sWhere = new StringBuffer();
-		String sWhere1 = null;
-		String sWhere2 = null;
-		String sWhere3 = null;
+    	
+		/** @version 24/01/2008 <BR>
+    	 * "Inicialização de variáveis com valor branco" - Implementação realizada por 
+    	 * @author Pedro Henrique (pedro.enrique.contech@gmail.com) <BR>
+    	 * Revisado e "commitado" por Anderson Sanchez (Setpoint Informática Ltda)    	
+    	 */
+		
+		String sWhere1 = "";
+		String sWhere2 = "";
+		String sWhere3 = "";
 		
 		try {
 
