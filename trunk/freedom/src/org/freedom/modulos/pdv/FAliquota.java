@@ -65,6 +65,8 @@ public class FAliquota extends FFDialogo {
 	
 	private List<String> aliquotas;
 	
+	private int sizeAliquotas;
+	
 
 	public FAliquota() {
 
@@ -118,7 +120,7 @@ public class FAliquota extends FFDialogo {
 			Funcoes.mensagemErro( this, "Alíquota já foi cadastrada!" );
 		}
 		else {
-			if ( aliquotas.size() > 15 ) {
+			if ( sizeAliquotas > 15 ) {
 				Funcoes.mensagemErro( this, "Quantidade maxima de aliquotas já foi atingida!" );
 			}
 			else {
@@ -135,7 +137,7 @@ public class FAliquota extends FFDialogo {
 		aliquotas = ecf.getAliquotas();
 		
 		tab.limpa();
-		tab.adicLinha();
+		sizeAliquotas = 0;
 		
 		String aliq = null;
 		DecimalFormat df = new DecimalFormat( "00.00" );
@@ -144,25 +146,38 @@ public class FAliquota extends FFDialogo {
 		int iCol = 0;
 		int size = aliquotas.size();
 		
+		float aliquota = 0.0f;
+		
 		for ( int i=0; i < size; i++ ) {
 			
-			aliq = 
-				"T" + 
-				Funcoes.strZero( String.valueOf( i + 1 ), 2 ) + 
-				" = " + 
-				df.format( new Float( aliquotas.get( i ) ).floatValue() / 100 ) + " %";
+			aliquota = new Float( aliquotas.get( i ) ).floatValue();
 			
-			tab.setValor( aliq, iRow, iCol++ );
-			
-			if ( iCol == 3 ) {
+			if ( aliquota > 0.0f ) {
 				
-				iCol = 0;
-				iRow++;
-				
-				if ( i < size - 1 ) {
+				if ( iRow == 0 ) {
 					tab.adicLinha();
-				}				
-			}			
+				}
+				
+				aliq = 
+					"T" + 
+					Funcoes.strZero( String.valueOf( i + 1 ), 2 ) + 
+					" = " + 
+					df.format( aliquota / 100 ) + " %";
+				
+				tab.setValor( aliq, iRow, iCol++ );
+				
+				if ( iCol == 3 ) {
+					
+					iCol = 0;
+					iRow++;
+					
+					if ( i < size - 1 ) {
+						tab.adicLinha();
+					}				
+				}		
+				
+				sizeAliquotas++;
+			}
 		}
 	}
 
