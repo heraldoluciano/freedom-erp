@@ -1132,6 +1132,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 						txtCodProd.getVlrString().trim(), 
 						txtDescProd.getVlrString().trim(), 
 						txtAliqIcms.getVlrBigDecimal(), 
+						txtTipoFisc.getVlrString().trim(),
 						txtQtdade.getVlrBigDecimal(), 
 						txtPreco.getVlrBigDecimal(), 
 						txtVlrDescItOrc.getVlrBigDecimal() ) ) {
