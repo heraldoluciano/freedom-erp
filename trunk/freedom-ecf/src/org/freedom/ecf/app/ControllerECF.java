@@ -657,7 +657,18 @@ public class ControllerECF {
 			final BigDecimal quantidade, final BigDecimal valor, final BigDecimal desconto ) {
 		
 		return vendaItem( 
-				codigo, descricao, aliquota,  
+				codigo, descricao, aliquota, null,  
+				AbstractECFDriver.QTD_DECIMAL, quantidade, 
+				AbstractECFDriver.DUAS_CASAS_DECIMAIS, valor, 
+				AbstractECFDriver.DESCONTO_VALOR, desconto );
+	}
+	
+	public boolean vendaItem (
+			final String codigo, final String descricao, final BigDecimal aliquota, final String tipoAliquota,
+			final BigDecimal quantidade, final BigDecimal valor, final BigDecimal desconto ) {
+		
+		return vendaItem( 
+				codigo, descricao, aliquota, tipoAliquota,  
 				AbstractECFDriver.QTD_DECIMAL, quantidade, 
 				AbstractECFDriver.DUAS_CASAS_DECIMAIS, valor, 
 				AbstractECFDriver.DESCONTO_VALOR, desconto );
@@ -667,6 +678,7 @@ public class ControllerECF {
 			final String codigo, 
 			final String descricao, 
 			BigDecimal aliquota, 
+			final String tipoAliquota,
 			final char tipoQuantidade,
 			BigDecimal quantidade, 
 			final int casasDecimais,
@@ -684,9 +696,6 @@ public class ControllerECF {
 			else if ( ! validaParametro( PARAM_DESCRICAO, descricao, '0' ) ) {
     			actionOK = false;
     		}
-			else if ( ! validaParametro( PARAM_ALIQUOTA, aliquota, '0' ) ) {
-    			actionOK = false;
-    		}
 			else if ( ! validaParametro( PARAM_QUANTIDADE, quantidade, tipoQuantidade ) ) {
     			actionOK = false;
     		}
@@ -696,9 +705,24 @@ public class ControllerECF {
 			else if ( ! validaParametro( PARAM_DESCONTO, desconto, tipoDesconto ) ) {
     			actionOK = false;
     		}
+			else { 
+				if ( tipoAliquota != null ) {
+					if ( ! AbstractECFDriver.ALQ_INTEGRAL.equals( tipoAliquota )
+							|| ! AbstractECFDriver.ALQ_ISENTA.equals( tipoAliquota ) 
+								|| ! AbstractECFDriver.ALQ_SUBSTITUICAO.equals( tipoAliquota ) 
+									|| ! AbstractECFDriver.ALQ_NAO_INSIDE.equals( tipoAliquota ) ) {
+						actionOK = false;
+					}
+				}
+				else if ( ! validaParametro( PARAM_ALIQUOTA, aliquota, '0' ) ) {
+					actionOK = false;
+				}
+    		}
 			
 			if ( actionOK ) {
-				String strAliquota = getIndexAliquota( aliquota.floatValue() );
+				String strAliquota = tipoAliquota != null 
+								? tipoAliquota 
+										: getIndexAliquota( aliquota.floatValue() );
 				quantidade = tipoQuantidade == AbstractECFDriver.QTD_INTEIRO 
 								? new BigDecimal( quantidade.intValue() )
 										: quantidade.setScale( 3, BigDecimal.ROUND_HALF_UP ) ;
@@ -769,6 +793,7 @@ public class ControllerECF {
 			 final String codigo, 
 			 final String descricao, 
 			 final BigDecimal aliquota, 
+			 final String tipoAliquota,
 			 BigDecimal valor, 
 			 BigDecimal quantidade, 
 			 final BigDecimal acrescimo, 
@@ -784,9 +809,6 @@ public class ControllerECF {
 				actionOK = false;
 			}
 			else if ( ! validaParametro( PARAM_DESCRICAO, descricao, '0' ) ) {
-    			actionOK = false;
-    		}
-			else if ( ! validaParametro( PARAM_ALIQUOTA, aliquota, '0' ) ) {
     			actionOK = false;
     		}
 			else if ( ! validaParametro( PARAM_VALOR_UNITARIO, valor, '0' ) ) {
@@ -807,9 +829,24 @@ public class ControllerECF {
 			else if ( ! validaParametro( PARAM_UNIDADE_MEDIDA, unidadeMedida, '0' ) ) {
     			actionOK = false;
     		}
+			else { 
+				if ( tipoAliquota != null ) {
+					if ( ! AbstractECFDriver.ALQ_INTEGRAL.equals( tipoAliquota )
+							|| ! AbstractECFDriver.ALQ_ISENTA.equals( tipoAliquota ) 
+								|| ! AbstractECFDriver.ALQ_SUBSTITUICAO.equals( tipoAliquota ) 
+									|| ! AbstractECFDriver.ALQ_NAO_INSIDE.equals( tipoAliquota ) ) {
+						actionOK = false;
+					}
+				}
+				else if ( ! validaParametro( PARAM_ALIQUOTA, aliquota, '0' ) ) {
+					actionOK = false;
+				}
+    		}
 			
 			if ( actionOK ) {
-				String strAliquota = getIndexAliquota( aliquota.floatValue() );
+				String strAliquota = tipoAliquota != null 
+                				? tipoAliquota 
+                						: getIndexAliquota( aliquota.floatValue() );
 				quantidade = quantidade.setScale( 3, BigDecimal.ROUND_HALF_UP ) ;
 				desconto = desconto.setScale( 2, BigDecimal.ROUND_HALF_UP );
 				int countWhite = 0;

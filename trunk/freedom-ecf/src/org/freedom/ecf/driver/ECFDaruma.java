@@ -37,9 +37,13 @@ public class ECFDaruma extends AbstractECFDriver {
 	
 	private static final char CEND = (char) 255;
 	
+	private static Map<String, String> formasDePagamento;	
+	
 	private String descricaoDoProduto;
 	
 	private String unidadeDeMedida;
+	
+	private int indexItemAtual = 0;
 
 	/**
 	 * Construtor da classe ECFDaruma. <BR>
@@ -59,8 +63,9 @@ public class ECFDaruma extends AbstractECFDriver {
 	 */
 	public ECFDaruma( final int com ) {
 
-		super();
-		ativaPorta( com );
+		this();
+		ativaPorta( com );		
+		setFormasDePagamento( retornoFormasDePagamento() );
 	}
 
 	/**
@@ -73,10 +78,17 @@ public class ECFDaruma extends AbstractECFDriver {
 	 */
 	public ECFDaruma( final String port ) {
 
-		super();
-		ativaPorta( Serial.convPorta( port ) );
+		this( Serial.convPorta( port ) );
+	}	
+	
+	public static Map<String, String> getFormasDePagamento() {	
+		return formasDePagamento;
 	}
 	
+	public static void setFormasDePagamento( Map<String, String> formasDePagamento ) {	
+		ECFDaruma.formasDePagamento = formasDePagamento;
+	}
+
 	public String getDescricaoDoProduto() {	
 		return descricaoDoProduto;
 	}
@@ -91,6 +103,14 @@ public class ECFDaruma extends AbstractECFDriver {
 	
 	public void setUnidadeDeMedida( String unidadeDeMedida ) {	
 		this.unidadeDeMedida = unidadeDeMedida;
+	}
+	
+	public int getIndexItemAtual() {	
+		return indexItemAtual;
+	}
+	
+	public void setIndexItemAtual( int indexItemAtual ) {	
+		this.indexItemAtual = indexItemAtual;
 	}
 
 	/**
@@ -348,6 +368,8 @@ public class ECFDaruma extends AbstractECFDriver {
 
 		final char CCMD = (char) 200;
 		final byte[] CMD = { ESC, (byte) CCMD };
+		
+		setIndexItemAtual( 0 );
 
 		return executaCmd( CMD, 13 );
 	}
@@ -483,8 +505,14 @@ public class ECFDaruma extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 		CMD = adicBytes( CMD, new byte[]{ (byte)CEND } );
+		
+		final int returnCommand = executaCmd( CMD, 21 );
+		
+		if ( returnCommand == RETORNO_OK.getCode() ) {
+			 indexItemAtual++;
+		}
 
-		return executaCmd( CMD, 21 );
+		return returnCommand;
 	}
 
 	/**
@@ -552,8 +580,14 @@ public class ECFDaruma extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 		CMD = adicBytes( CMD, new byte[]{ (byte)CEND } );
+		
+		final int returnCommand = executaCmd( CMD, 21 );
+		
+		if ( returnCommand == RETORNO_OK.getCode() ) {
+			 indexItemAtual++;
+		}
 
-		return executaCmd( CMD, 21 );
+		return returnCommand;
 	}
 
 	public int vendaItemDepartamento( final String sitTrib, final float valor, final float qtd, final float desconto, final float acrescimo, final int departamento, final String unidade, final String codProd, final String descProd ) {
@@ -562,8 +596,10 @@ public class ECFDaruma extends AbstractECFDriver {
 	}
 
 	public int cancelaItemAnterior() {
-
-		return -1;
+		
+		final int returnCommand = cancelaItemGenerico( getIndexItemAtual() );
+		
+		return returnCommand;
 	}
 
 	public int cancelaItemGenerico( final int item ) {
@@ -656,12 +692,98 @@ public class ECFDaruma extends AbstractECFDriver {
 
 	public String programaFormaPagamento( final String descricao ) {
 		
-		return "-1";
+		String indexFormaDePagamento = null;
+
+		if ( descricao != null && "Dinheiro".equals( descricao ) ) {
+			indexFormaDePagamento = "01";
+		} 
+		else {
+			
+			String formaDePagamento = null;
+			String indexFirstNull = null;
+			
+			for ( int index = 51; index <= 66; index++ ) {
+				formaDePagamento = getFormasDePagamento().get( String.valueOf( index ) );
+				if ( formaDePagamento != null && descricao != null && 
+						descricao.trim().equals( formaDePagamento.trim() ) ) {
+					indexFormaDePagamento = String.valueOf( index );
+					break;
+				}
+				else if ( indexFirstNull == null && "ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ".equals( formaDePagamento ) ) {
+					indexFirstNull = String.valueOf( index );
+				}
+			}
+
+			if ( indexFormaDePagamento == null && descricao != null ) {
+				final char CCMD = (char) 222;
+				byte[] CMD = { ESC, (byte) CCMD };
+
+				final StringBuffer buf = new StringBuffer();
+				buf.append( indexFirstNull );
+				buf.append( parseParam( descricao, 21 ) );
+
+				CMD = adicBytes( CMD, buf.toString().getBytes() );
+				
+				executaCmd( CMD, 9 );
+				
+				indexFormaDePagamento = new String( getBytesLidos() );
+			}
+		}
+		
+		return indexFormaDePagamento;
 	}
 
-	public int estornoFormaPagamento( final String descOrigem, final String descDestino, final float valor ) {
+	public int estornoFormaPagamento( final String descricaoOrigem, final String descricaoDestino, final float valor ) {
 		
-		return -1;
+		String indexFormaDePagamentoOrigem = null;
+		String indexFormaDePagamentoDestino = null;
+
+		if ( descricaoOrigem != null && "Dinheiro".equals( descricaoOrigem ) ) {
+			indexFormaDePagamentoOrigem = "01";
+		} 
+		else {
+			
+			String formaDePagamentoOrigem = null;
+			
+			for ( int index = 51; index <= 66; index++ ) {
+				formaDePagamentoOrigem = getFormasDePagamento().get( String.valueOf( index ) );
+				if ( formaDePagamentoOrigem != null && descricaoOrigem != null && 
+						descricaoOrigem.trim().equals( formaDePagamentoOrigem.trim() ) ) {
+					indexFormaDePagamentoOrigem = String.valueOf( index );
+					break;
+				}
+			}
+		}
+		
+		if ( descricaoDestino != null && "Dinheiro".equals( descricaoDestino ) ) {
+			indexFormaDePagamentoDestino = "01";
+		} 
+		else {
+			
+			String formaDePagamentoDestino = null;
+			
+			for ( int index = 51; index <= 66; index++ ) {
+				formaDePagamentoDestino = getFormasDePagamento().get( String.valueOf( index ) );
+				if ( formaDePagamentoDestino != null && descricaoDestino != null && 
+						descricaoDestino.trim().equals( formaDePagamentoDestino.trim() ) ) {
+					indexFormaDePagamentoDestino = String.valueOf( index );
+					break;
+				}
+			}
+		}
+		
+		final char CCMD = (char) 219;
+		byte[] CMD = { ESC, (byte) CCMD };
+
+		final StringBuffer buf = new StringBuffer();
+		buf.append( indexFormaDePagamentoOrigem );
+		buf.append( indexFormaDePagamentoDestino );
+		buf.append( parseParam( Integer.parseInt( retornoNumeroCupom() ), 6 ) );
+		buf.append( parseParam( valor , 12, 2 ) );
+		
+		CMD = adicBytes( CMD, buf.toString().getBytes() );
+
+		return executaCmd( CMD, 17 );
 	}
 
 	/**
@@ -825,6 +947,33 @@ public class ECFDaruma extends AbstractECFDriver {
 	public String retornoAliquotas() {
 
 		return "-1";
+	}
+	
+	public Map<String, String> retornoFormasDePagamento() {
+
+		final char CCMD = (char) 234;
+		final byte[] CMD = { ESC, (byte) CCMD };
+		
+		executaCmd( CMD, 1431 );
+
+		Map<String, String> returnAction = new HashMap<String, String>();
+		final String[] keys = { 
+				"01","02","03","04","05","06","07","08",
+				"09","10","11","12","12","14","15","16",
+				"51","52","53","54","55","56","57","58",
+				"59","60","61","62","62","64","65","66" };
+		final String returnCommand = new String( getBytesLidos() );
+		int offset = 714;
+		if ( returnCommand != null && returnCommand.length() > 714 ) {
+			for ( int i=0; i < 32; i++ ) {
+				returnAction.put( keys[ i ], returnCommand.substring( offset+1, offset+=22 ) );
+			}			
+		}
+		else {
+			return null;
+		}
+		
+		return returnAction;
 	}
 
 	public String retornoTotalizadoresParciais() {

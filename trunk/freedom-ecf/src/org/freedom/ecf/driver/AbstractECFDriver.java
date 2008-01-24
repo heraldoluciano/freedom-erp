@@ -69,6 +69,14 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public static final char QTD_DECIMAL = 'D';
 
+	public static final String ALQ_ISENTA = "II";
+
+	public static final String ALQ_SUBSTITUICAO = "FF";
+
+	public static final String ALQ_NAO_INSIDE = "NN";
+
+	public static final String ALQ_INTEGRAL = "TT";
+
 	public static final char IMPRESSAO = 'I';
 
 	public static final char RETORNO = 'R';
@@ -239,11 +247,9 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 		entrada = Serial.getInstance().getEntrada();
 
 		try {
-
 			if ( event.getEventType() == SerialPortEvent.DATA_AVAILABLE ) {
 
 				retorno = new byte[ entrada.available() ];
-				// System.out.println("Evento available");
 
 				if ( retorno != null ) {
 
@@ -252,24 +258,18 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 					if ( buffer == null ) {
 						bufferTmp = retorno;
 					} else {
-
 						leuEvento = true;
-						// System.out.println("leu evento");
 						tmp = buffer;
 						bufferTmp = new byte[ tmp.length + retorno.length ];
 
 						for ( int i = 0; i < bufferTmp.length; i++ ) {
-
 							if ( i < tmp.length ) {
 								bufferTmp[ i ] = tmp[ i ];
 							} else {
 								bufferTmp[ i ] = retorno[ i - tmp.length ];
 							}
-							// System.out.println("buffer "+bufferTmp[i]);
-
 						}
 					}
-
 					buffer = bufferTmp;
 				}
 			}
