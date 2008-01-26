@@ -111,7 +111,10 @@ public class FreedomPDV extends AplicativoPDV {
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Leitura X", "Impressão de leitura X", 'X', 110800000, 2, true, FLeituraX.class );
 			addSeparador( 200000000 );
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Fechamento de Caixa", "Efetua um fechamento de caixa", 'C', 110800001, 2, true, DLFechaDia.class );
-
+		addOpcao( -1, TP_OPCAO_MENU, "Receber", "", 'P', 300000000, 1, false, null );
+			addOpcao( 300000000, TP_OPCAO_ITEM, "Receber", "Receber", 'V', 300100000, 2, true, FManutRec.class );
+			
+			
 		btVenda = addBotao( "barraVenda.gif", "Venda", "Venda", 200100000, FVenda.class );
 		addBotao( "btExcluir.gif", "Cancela venda", "Cancela Venda", 200200000, DLCancCupom.class );
 		addBotao( "barraFornecedor.gif", "Suprimento", "Suprimento de caixa", 200300000, FSuprimento.class );
