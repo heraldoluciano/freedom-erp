@@ -44,7 +44,7 @@ public class NF020 extends Layout {
 		final int MAXPROD = 12;
 		int iNumNota = 0;
 		int iItImp = 0;
-		int iProdImp = 0;
+		int iProdImp = 0; 
 		int iContaFrete = 0;
 		int iLinPag = imp.verifLinPag( "NF" );
 		int sizeObs = 0;
