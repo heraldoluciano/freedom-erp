@@ -169,9 +169,7 @@ public class ControlTest extends TestCase {
 		*/
 		System.out.print( "venda item > " );
 		assertTrue( control.vendaItem( 
-				"1", "PRODUTO TESTE", new BigDecimal( "18" ), AbstractECFDriver.QTD_INTEIRO,
-				new BigDecimal( "1" ), AbstractECFDriver.DUAS_CASAS_DECIMAIS, new BigDecimal( "23.99" ),
-				AbstractECFDriver.DESCONTO_PERC, new BigDecimal( "0" ) ) );
+				"1", "PRODUTO TESTE", new BigDecimal( "18" ), new BigDecimal( "1" ), new BigDecimal( "20.0" ) ) );
 		System.out.println( control.getMessageLog() );
 		/*
 		System.out.print( "venda item > " );
@@ -212,21 +210,21 @@ public class ControlTest extends TestCase {
 		assertTrue( control.iniciaFechamentoCupom( 
 				AbstractECFDriver.DESCONTO_VALOR, new BigDecimal( "3.99" ) ) );
 		System.out.println( control.getMessageLog() );
-		/*
-		System.out.print( "efetua forma de pagamento Dinheiro > " );
-		assertTrue( control.efetuaFormaPagamento( new BigDecimal( "10" ) ) );
-		System.out.println( control.getMessageLog() );
 		
+		System.out.print( "efetua forma de pagamento Dinheiro > " );
+		assertTrue( control.efetuaFormaPagamento( new BigDecimal( "20" ) ) );
+		System.out.println( control.getMessageLog() );
+		/*
 		System.out.print( "efetua forma de pagamento Cheque > " );
 		assertTrue( control.efetuaFormaPagamento( "Cheque", new BigDecimal( "35" ), "Cheque de terceiro" ) );
 		System.out.println( control.getMessageLog() );
-		*/
+		
 		System.out.print( "efetua forma de pagamento Cartão > " );
 		assertTrue( control.efetuaFormaPagamento( "Cartão", new BigDecimal( "20" ) ) );
 		System.out.println( control.getMessageLog() );
-		
+		*/
 		System.out.print( "finaliza cupom > " );
-		assertTrue( control.finalizaFechamentoCupom( "Obrigado e volte sempre!" ) );
+		assertTrue( control.finalizaFechamentoCupom( " Obrigado e volte sempre!" ) );
 		System.out.println( control.getMessageLog() );
 		/*
 		System.out.print( "cancelamento de cupom> " );
