@@ -22,6 +22,7 @@
 
 package org.freedom.modulos.std;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
@@ -32,7 +33,9 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
@@ -48,11 +51,19 @@ public class FRVendCliProd extends FRelatorio {
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
+	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private ListaCampos lcCli = new ListaCampos( this, "CL" );
+	
 	public FRVendCliProd(){
 		
 		setTitulo( "Ultimas Vendas de Cliente/Produto" );
-		setAtribos( 50, 50, 345, 190 );
+		setAtribos( 50, 50, 350, 200 );
+	
 		montaTela();
+		montaListaCampos();
 		
 	}
 	
@@ -63,18 +74,33 @@ public class FRVendCliProd extends FRelatorio {
 		JLabelPad lbPeriodo = new JLabelPad( "Periodo:", SwingConstants.CENTER );
 		lbPeriodo.setOpaque( true );
 
-		adic( lbPeriodo, 15, 5, 80, 20 );
-		adic( lbLinha, 7, 15, 303, 40 );
-		
-		adic( new JLabelPad( "De:", SwingConstants.CENTER ), 10, 25, 40, 20 );
-		adic( txtDataini, 50, 25, 100, 20 );
-		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 150, 25, 45, 20 );
-		adic( txtDatafim, 195, 25, 100, 20 );
+		adic( lbPeriodo, 15, 10, 80, 20 );
+		adic( lbLinha, 7, 25, 303, 40 );
+
+		adic( new JLabelPad( "De:", SwingConstants.CENTER ), 10, 35, 40, 20 );
+		adic( txtDataini, 50, 35, 100, 20 );
+		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 150, 35, 45, 20 );
+		adic( txtDatafim, 195, 35, 100, 20 );
+		adic( new JLabelPad("Cód.Cli"),7, 75, 70, 20 );
+		adic( txtCodCli, 7, 95, 70, 20 );
+		adic( new JLabelPad("Razão social do cliente"), 80, 75, 170, 20 );
+		adic( txtRazCli, 80, 95, 230, 20 );
 		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
+	}
+	
+	private void montaListaCampos(){
+		
+		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
+		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
+		txtCodCli.setTabelaExterna( lcCli );
+		txtCodCli.setNomeCampo( "CodCli" );
+		txtCodCli.setFK( true );
+		lcCli.setReadOnly( true );
+		lcCli.montaSql( false, "CLIENTE", "VD" );
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -88,9 +114,13 @@ public class FRVendCliProd extends FRelatorio {
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
 		StringBuffer sCab = new StringBuffer();
+		StringBuffer sWhere = new StringBuffer();
 		
 		sCab.append( "de : " + txtDataini.getVlrDate() + "Até : " + txtDatafim.getVlrDate()  );
 	
+		if( txtRazCli.getVlrString().trim().length() > 0 ){
+			sWhere.append( "AND C.CODCLI=" + txtCodCli.getVlrInteger());
+		}
 		
 		try {
 			
@@ -106,6 +136,7 @@ public class FRVendCliProd extends FRelatorio {
 			sSQL.append( "P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " );
 			sSQL.append( "P.CODPROD=IV.CODPROD AND " ); 
 			sSQL.append( "V.DTEMITVENDA BETWEEN ? AND ? " );
+			sSQL.append( sWhere );
 			sSQL.append( "GROUP BY C.RAZCLI, V.CODCLI, P.DESCPROD, IV.CODPROD " );
 			
 			ps = con.prepareStatement( sSQL.toString() );
@@ -152,4 +183,9 @@ public class FRVendCliProd extends FRelatorio {
 		}
 	}
 
+	public void setConexao( Connection cn ) {
+
+		super.setConexao( cn );
+		lcCli.setConexao( con );
+	}
 }
