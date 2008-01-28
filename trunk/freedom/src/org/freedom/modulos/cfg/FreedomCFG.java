@@ -53,7 +53,10 @@ public class FreedomCFG extends AplicativoPD {
 				addOpcao( 100100000, TP_OPCAO_MENU, "Fluxos", "", 'F', 100104000, 2, false, null );
 					addOpcao( 100104000, TP_OPCAO_ITEM, "Processos", "Processos", 'P', 100104100, 3, true, FProcesso.class );
 					addOpcao( 100104000, TP_OPCAO_ITEM, "Fluxos", "Cadastro de fluxos", 'F', 100104110, 3, true, FFluxo.class );
-
+				
+				addOpcao( 100100000, TP_OPCAO_MENU, "Outras tabelas genéricas", "", 's', 100105000, 2, false, null );
+					addOpcao( 100105000, TP_OPCAO_ITEM, "Estados civis", "Estados civis", 'i', 100105100, 3, true, FEstadoCivil.class );
+					
 		addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'e', 100200000, 1, false, null );
 			addOpcao( 100200000, TP_OPCAO_ITEM, "Ajuste de Sequencia", "Ajusta sequencia", 'A', 100201000, 2, true, FAjustaSeq.class );
 
