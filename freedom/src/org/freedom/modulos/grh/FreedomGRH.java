@@ -29,6 +29,7 @@
 package org.freedom.modulos.grh;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.cfg.FEstadoCivil;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrincipalPD;
@@ -45,13 +46,22 @@ public class FreedomGRH extends AplicativoPD {
 				false, null);
 		addOpcao(100100000, TP_OPCAO_ITEM, "Empregados", "Empregados", 'E',
 				100101000, 2, true, FEmpregado.class);
-		addOpcao(100100000, TP_OPCAO_ITEM, "Turnos", "Turnos", 'R', 100102000,
+		addOpcao(100100000, TP_OPCAO_ITEM, "Turnos", "Turnos", 'r', 100102000,
 				2, true, FTurnos.class);
 		addOpcao(100100000, TP_OPCAO_ITEM, "Funçao", "Função", 'F', 100103000,
 				2, true, FFuncao.class);
 		addOpcao(100100000, TP_OPCAO_ITEM, "Departamento", "Departamento", 'D',
 				100104000, 2, true, FDepto.class);
-
+		addSeparador(100100000);
+		addOpcao(100100000, TP_OPCAO_ITEM, "Area", "Area", 'a',
+				100105000, 2, true, FArea.class);
+		addOpcao(100100000, TP_OPCAO_ITEM, "Nível/Curso", "Nível/Curso", 'N',
+				100106000, 2, true, FNivelCurso.class);
+		addSeparador(100100000);
+		addOpcao( 100100000, TP_OPCAO_ITEM, "Estados civis", "Estados civis", 'i', 
+				100107000, 2, true, FEstadoCivil.class );
+		
+		
 		addBotao("barraConveniados.gif", "Empregados", "Empregados", 100101000,
 				FEmpregado.class);
 
