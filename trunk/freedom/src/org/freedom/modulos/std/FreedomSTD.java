@@ -200,13 +200,13 @@ public class FreedomSTD extends AplicativoPD {
 			addSeparador( 600000000 );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Reprocessa saldo", "Reprocessamento de saldos", 'R', 601200000, 1, true, FProcessaSL.class );
 			addSeparador( 600000000 );
-			addOpcao( 600000000, TP_OPCAO_MENU, "Listagens", "", 's', 601300000, 1, false, null );
+			addOpcao( 600000000, TP_OPCAO_MENU, "Listagens", "Fluxo de Caixa", 'F', 601300000, 1, false, null );
 				addOpcao( 601300000, TP_OPCAO_ITEM, "Extrato", "Extrato", 'E', 601301000, 2, true, FRExtrato.class );
 				addOpcao( 601300000, TP_OPCAO_ITEM, "Balancete", "Balancete", 'B', 601302000, 2, true, FRBalancete.class );
 				addOpcao( 601300000, TP_OPCAO_ITEM, "Relatório financeiro por C.C.", "Relatorio Financeiro por C.C.", 'R', 601303000, 2, true, FRCentroCusto.class );
 				addOpcao( 601300000, TP_OPCAO_ITEM, "Razão financeiro", "Razão financeiro", 'z', 601304000, 2, true, FRRazaoFin.class );
 				addOpcao( 601300000, TP_OPCAO_ITEM, "Fluxo de caixa", "", 'F', 601305000, 2, true, FRFluxoCaixa.class );
-				addOpcao( 601300000, TP_OPCAO_ITEM, "Ponto de equilibrio", "", 'q', 601306000, 2, true, FRPontoEqui.class );
+				addOpcao( 601300000, TP_OPCAO_ITEM, "Ponto de equilibrio", "Ponto de equilibrio", 'q', 601306000, 2, true, FRPontoEqui.class );
 			addOpcao( 600000000, TP_OPCAO_MENU, "Gráficos", "Fluxo de caixa", 'G', 601400000, 1, false, null );
 				addOpcao( 601400000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'G', 601401000, 2, true, FRBalanceteGrafico.class );
 				addOpcao( 601400000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'f', 601402000, 2, true, FRGraficoCC.class );
