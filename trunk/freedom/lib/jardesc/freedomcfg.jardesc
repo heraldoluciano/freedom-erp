@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
 <jardesc>
     <jar path="freedom/lib/freedomcfg.jar"/>
     <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomcfg.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
