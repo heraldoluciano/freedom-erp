@@ -25,8 +25,10 @@ package org.freedom.modulos.std;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
@@ -34,7 +36,9 @@ import javax.swing.SwingConstants;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -57,10 +61,16 @@ public class FRVendCliProd extends FRelatorio {
 	
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
 	
+	private Vector<String> vLabs = new Vector<String>();
+	
+	private Vector<String> vVals = new Vector<String>();
+	
+	private JRadioGroup<?, ?> rgTipo = null;
+	
 	public FRVendCliProd(){
 		
 		setTitulo( "Ultimas Vendas de Cliente/Produto" );
-		setAtribos( 50, 50, 350, 200 );
+		setAtribos( 50, 50, 340, 300 );
 	
 		montaTela();
 		montaListaCampos();
@@ -73,18 +83,27 @@ public class FRVendCliProd extends FRelatorio {
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 		JLabelPad lbPeriodo = new JLabelPad( "Periodo:", SwingConstants.CENTER );
 		lbPeriodo.setOpaque( true );
+		 
+		vLabs.addElement("Texto");
+		vLabs.addElement("Grafico");
+		vVals.addElement("T");
+		vVals.addElement("G");
+		
+		rgTipo = new JRadioGroup<String, String>(1,2,vLabs,vVals);
+		rgTipo.setVlrString("G");
 
 		adic( lbPeriodo, 15, 10, 80, 20 );
-		adic( lbLinha, 7, 25, 303, 40 );
+		adic( lbLinha, 7, 25, 295, 40 );
 
-		adic( new JLabelPad( "De:", SwingConstants.CENTER ), 10, 35, 40, 20 );
-		adic( txtDataini, 50, 35, 100, 20 );
-		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 150, 35, 45, 20 );
-		adic( txtDatafim, 195, 35, 100, 20 );
+		adic( new JLabelPad( "De:", SwingConstants.CENTER ), 7, 35, 40, 20 );
+		adic( txtDataini, 47, 35, 100, 20 );
+		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 147, 35, 45, 20 );
+		adic( txtDatafim, 193, 35, 100, 20 );
 		adic( new JLabelPad("Cód.Cli"),7, 75, 70, 20 );
 		adic( txtCodCli, 7, 95, 70, 20 );
 		adic( new JLabelPad("Razão social do cliente"), 80, 75, 170, 20 );
-		adic( txtRazCli, 80, 95, 230, 20 );
+		adic( txtRazCli, 80, 95, 220, 20 );
+		adic( rgTipo, 10, 170, 290, 30 );
 		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -147,7 +166,11 @@ public class FRVendCliProd extends FRelatorio {
 			ps.setDate( 4, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
 			rs = ps.executeQuery();
 			
-			imprimiGrafico( bVisualizar, rs, sCab.toString() );
+			if( "G".equals( rgTipo.getVlrString())) {
+				imprimiGrafico( bVisualizar, rs, sCab.toString() );
+			}else{
+				imprimiTexto( bVisualizar, rs, sCab.toString() );
+			}
 
 			if ( !con.getAutoCommit() ) {
 				con.commit();
@@ -156,6 +179,81 @@ public class FRVendCliProd extends FRelatorio {
 		} catch ( Exception e ) {
 			e.printStackTrace();
 			Funcoes.mensagemInforma( this, "Erro ao buscar dados da venda!" );
+		}
+	}
+	
+	public void imprimiTexto( final boolean bVisualizar, final ResultSet rs, final String sCab ){
+		
+		PreparedStatement ps = null;
+		StringBuffer sSQL = new StringBuffer();
+		ImprimeOS imp = null;
+		int linPag = 0;
+		String sLinFina = Funcoes.replicate( "-", 133 );
+		String sLinDupla = Funcoes.replicate( "=", 133 );
+		
+		try {
+			
+			imp = new ImprimeOS( "", con );
+			linPag = imp.verifLinPag() - 1;
+			imp.verifLinPag();
+			imp.montaCab();
+			imp.setTitulo( "Relatório de Vendas por cliente/produto" );
+			imp.addSubTitulo( "RELATORIO DE VENDAS POR CLIENTE/PRODUTO   -   PERIODO DE :" + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
+			imp.limpaPags();
+			
+			if ( sCab.length() > 0 ) {
+				
+				imp.addSubTitulo( sCab );
+			}
+			while ( rs.next() ) {
+				
+				if ( imp.pRow() >= linPag - 1 ) {
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "+" + sLinFina + "+" );
+					imp.incPags();
+					imp.eject();
+				}
+
+				if ( imp.pRow() == 0 ) {
+					imp.impCab( 136, true );
+					imp.pulaLinha( 0, imp.comprimido() );
+					imp.say( 0, "|" + sLinFina + "|" );
+				
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "|" );
+					imp.say( 15, "CLIENTE" );
+					imp.say( 37, "|" );
+					imp.say( 50, "PRODUTO" );
+					imp.say( 72, "|" );
+					imp.say( 79, "VLR. UNIT." );
+					imp.say( 94, "|" );
+					imp.say( 100, "DT.ULT.COMPRA" );
+					imp.say( 120, "|" );
+					imp.say( 126, "DOC." );
+					imp.say( 135, "|" );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "|" + sLinFina + "|" );
+				}
+				
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "|" );
+				
+				imp.say( 3, rs.getString( "RAZCLI" ) != null ? rs.getString( "RAZCLI" ) : "" );
+				
+				
+			} 
+		}catch ( SQLException err ) {
+			
+			Funcoes.mensagemErro( this, "Erro ao imprmir relatório texto!\n" + err.getMessage(), true, con, err );
+		}
+
+		if ( bVisualizar ){
+			
+			imp.preview( this );
+		}		
+		else{
+			
+			imp.print();
 		}
 	}
 	
