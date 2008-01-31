@@ -71,112 +71,15 @@ GROUP BY C.RAZCLI, V.CODCLI, P.DESCPROD, IV.CODPROD]]></queryString>
 	<field name="SERIE" class="java.lang.String"/>
 	<field name="PRECOVENDA" class="java.math.BigDecimal"/>
 
+	<variable name="PRINTCLI" class="java.lang.Integer" resetType="Group" incrementType="Column" resetGroup="CLIENTE" calculation="Sum">
+		<variableExpression><![CDATA[new Integer(String.valueOf($V{PRINTCLI}.intValue()+1))]]></variableExpression>
+		<initialValueExpression><![CDATA[new Integer("0")]]></initialValueExpression>
+	</variable>
 
 		<group  name="CLIENTE" >
 			<groupExpression><![CDATA[$F{CODCLI}]]></groupExpression>
 			<groupHeader>
-			<band height="17"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="2"
-						y="2"
-						width="43"
-						height="13"
-						key="textField-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODCLI}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="52"
-						y="2"
-						width="153"
-						height="13"
-						key="textField-2"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZCLI}.trim()]]></textFieldExpression>
-				</textField>
-				<line direction="TopDown">
-					<reportElement
-						x="538"
-						y="0"
-						width="0"
-						height="17"
-						key="line-3"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="0"
-						width="0"
-						height="17"
-						key="line-7"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="47"
-						y="0"
-						width="0"
-						height="17"
-						key="line-14"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="207"
-						y="0"
-						width="0"
-						height="17"
-						key="line-15"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="372"
-						y="0"
-						width="0"
-						height="17"
-						key="line-16"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="426"
-						y="0"
-						width="0"
-						height="17"
-						key="line-17"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="487"
-						y="0"
-						width="0"
-						height="17"
-						key="line-18"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="BottomUp">
-					<reportElement
-						mode="Opaque"
-						x="0"
-						y="16"
-						width="539"
-						height="0"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="line-24"/>
-					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" />
-				</line>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -320,22 +223,22 @@ GROUP BY C.RAZCLI, V.CODCLI, P.DESCPROD, IV.CODPROD]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="49"
+						x="50"
 						y="72"
-						width="156"
+						width="155"
 						height="12"
 						key="staticText-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<text><![CDATA[Razão social]]></text>
+				<text><![CDATA[Razão social do cliente]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="208"
+						x="210"
 						y="72"
-						width="161"
+						width="160"
 						height="12"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -359,7 +262,7 @@ GROUP BY C.RAZCLI, V.CODCLI, P.DESCPROD, IV.CODPROD]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="429"
+						x="430"
 						y="72"
 						width="54"
 						height="12"
@@ -372,7 +275,7 @@ GROUP BY C.RAZCLI, V.CODCLI, P.DESCPROD, IV.CODPROD]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="489"
+						x="491"
 						y="72"
 						width="45"
 						height="12"
@@ -457,9 +360,39 @@ GROUP BY C.RAZCLI, V.CODCLI, P.DESCPROD, IV.CODPROD]]></queryString>
 			<band height="16"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="211"
+						x="2"
 						y="1"
-						width="158"
+						width="43"
+						height="13"
+						key="textField-1">
+							<printWhenExpression><![CDATA[new Boolean($V{PRINTCLI}.intValue()==1)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODCLI}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="50"
+						y="1"
+						width="155"
+						height="13"
+						key="textField-2">
+							<printWhenExpression><![CDATA[new Boolean($V{PRINTCLI}.intValue()==1)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZCLI}.trim()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="210"
+						y="1"
+						width="160"
 						height="13"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -483,7 +416,7 @@ GROUP BY C.RAZCLI, V.CODCLI, P.DESCPROD, IV.CODPROD]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="429"
+						x="430"
 						y="1"
 						width="54"
 						height="13"
@@ -496,7 +429,7 @@ GROUP BY C.RAZCLI, V.CODCLI, P.DESCPROD, IV.CODPROD]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="489"
+						x="491"
 						y="1"
 						width="44"
 						height="13"
