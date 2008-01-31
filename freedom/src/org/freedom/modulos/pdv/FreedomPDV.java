@@ -107,12 +107,12 @@ public class FreedomPDV extends AplicativoPDV {
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Aliquota", "Inserir Aliquota", 'A', 200500000, 2, true, FAliquota.class );
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Ajusta moeda", "Grava Moeda", 'M', 200600000, 2, true, FGravaMoeda.class );
 			addSeparador( 200000000 );
-			addOpcao( 200000000, TP_OPCAO_ITEM, "Ler memória fiscal", "Le Fiscal", 'F', 200700000, 2, true, FLeFiscal.class );
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Ler memória fiscal", "Le Fiscal", 'L', 200700000, 2, true, FLeFiscal.class );
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Leitura X", "Impressão de leitura X", 'X', 110800000, 2, true, FLeituraX.class );
 			addSeparador( 200000000 );
-			addOpcao( 200000000, TP_OPCAO_ITEM, "Fechamento de Caixa", "Efetua um fechamento de caixa", 'C', 110800001, 2, true, DLFechaDia.class );
-		addOpcao( -1, TP_OPCAO_MENU, "Receber", "", 'P', 300000000, 1, false, null );
-			addOpcao( 300000000, TP_OPCAO_ITEM, "Receber", "Receber", 'V', 300100000, 2, true, FManutRec.class );
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Fechamento de Caixa", "Efetua um fechamento de caixa", 'F', 110800001, 2, true, DLFechaDia.class );
+		addOpcao( -1, TP_OPCAO_MENU, "Receber", "", 'R', 300000000, 1, false, null );
+			addOpcao( 300000000, TP_OPCAO_ITEM, "Receber", "Receber", 'R', 300100000, 2, true, FManutRec.class );
 			
 			
 		btVenda = addBotao( "barraVenda.gif", "Venda", "Venda", 200100000, FVenda.class );
