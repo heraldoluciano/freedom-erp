@@ -38,8 +38,7 @@ COALESCE(O.OBSITORC , P.DESCPROD) DESCPROD,ORC.VLRDESCORC,ORC.VLRADICORC,ORC.VLR
 FROM VDITORCAMENTO O, EQPRODUTO P, VDORCAMENTO ORC 
 WHERE ORC.CODEMP=$P{CODEMP} AND ORC.CODFILIAL=$P{CODFILIAL} AND ORC.CODORC=$P{CODORC} 
 AND O.CODEMP=ORC.CODEMP AND O.CODFILIAL=ORC.CODFILIAL AND O.CODORC=ORC.CODORC 
-AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD
-]]></queryString>
+AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]></queryString>
 
 	<field name="CODPROD" class="java.lang.Long"/>
 	<field name="QTDITORC" class="java.math.BigDecimal"/>
@@ -513,11 +512,11 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCPROD}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.00;###0.00-" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="298"
 						y="1"
-						width="33"
+						width="35"
 						height="17"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
