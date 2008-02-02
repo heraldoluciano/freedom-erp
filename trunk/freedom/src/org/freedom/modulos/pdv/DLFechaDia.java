@@ -110,8 +110,7 @@ public class DLFechaDia extends FFDialogo {
 			ps.setString( 6, AplicativoPDV.strUsuario );
 			ResultSet rs = ps.executeQuery();
 			
-			if ( rs.next() ) {
-				
+			if ( rs.next() ) {				
 				procedureresult = rs.getInt( 1 );	
 			}
 			
