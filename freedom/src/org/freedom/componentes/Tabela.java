@@ -26,8 +26,10 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultCellEditor;
@@ -58,7 +60,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 
 	TabelaEditListener edlis = this;
 
-	TabelaSelListener seLis = this;
+	List<TabelaSelListener> seLis = new ArrayList<TabelaSelListener>();
 
 	public Tabela() {
 
@@ -127,7 +129,16 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 
 	public void addTabelaSelListener( TabelaSelListener tl ) {
 
-		seLis = tl;
+		if ( tl != null ) {
+			seLis.add( tl );	
+		}
+	}
+
+	public void removeTabelaSelListener( TabelaSelListener tl ) {
+
+		if ( tl != null ) {
+			seLis.remove( tl );	
+		}
 	}
 
 	public void adicLinha() {
@@ -304,8 +315,10 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 
 	public void valueChanged( ListSelectionEvent levt ) {
 
-		if ( seLis != null && getLinhaSel() >= 0 )
+		if ( seLis != null && getLinhaSel() >= 0 ) {
 			fireValorSelAlterado();
+		}
+		
 		super.valueChanged( levt );
 	}
 
@@ -316,7 +329,9 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 
 	public void fireValorSelAlterado() {
 
-		seLis.valorAlterado( new TabelaSelEvent( this ) );
+		for ( TabelaSelListener tl : seLis ) {
+			tl.valorAlterado( new TabelaSelEvent( this ) );
+		}		
 	}
 
 	public void valorAlterado( TabelaEditEvent tevt ) {
