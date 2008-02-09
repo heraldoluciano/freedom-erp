@@ -66,8 +66,6 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 	private JTextFieldPad txtDescPlan = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	// private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
-	// private JTextFieldFK txtDescBanco = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
 
 	private JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
@@ -218,6 +216,8 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		txtPercJuros.addFocusListener( this );
 		txtVlrJuros.addFocusListener( this );
 		txtVlrJuros.addEditListener( this );
+		
+		//eUltimo();
 	}
 
 	private void calcDesc() {

@@ -42,7 +42,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -1605,48 +1604,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		}
 	}
 
-	private boolean caixaAberto() {
-		
-		boolean result = false;
-		
-		try {
-			
-			PreparedStatement ps = con.prepareStatement( 
-				"SELECT FIRST 1 DTAMOV FROM PVMOVCAIXA WHERE CODEMP=? AND CODFILIAL=? AND CODCAIXA=? ORDER BY DTAMOV DESC, NROMOV DESC" );
-			
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setInt( 3, AplicativoPDV.iCodCaixa );
-			ResultSet rs = ps.executeQuery();
-			
-			if ( rs.next() ) {
-				
-				Calendar hoje = Calendar.getInstance();
-				Calendar diacaixa = Calendar.getInstance();
-				diacaixa.setTime( Funcoes.sqlDateToDate( rs.getDate( "DTAMOV" ) ) );
-				
-				if ( hoje.get( Calendar.YEAR ) == diacaixa.get( Calendar.YEAR ) 
-						&& hoje.get( Calendar.MONTH ) == diacaixa.get( Calendar.MONTH )
-							&& hoje.get( Calendar.DAY_OF_MONTH ) == diacaixa.get( Calendar.DAY_OF_MONTH ) ) { 		
-					result = true;
-				}
-			}
-			
-			rs.close();
-			ps.close();
-			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
-			
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( null, "Não foi possível buscar o saldo atual.\n" + err.getMessage(), true, con, err );
-			err.printStackTrace();
-		}
-		
-		return result;
-	}
-
 	public synchronized void setFocusProd() {
 
 		if ( txtCodProd.isFocusable() ) {
@@ -2348,7 +2305,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 					dispose();
 				}
 				else { 
-					if ( ( caixaAberto() || FreedomPDV.pegaValorINI( con ) ) ) {
+					if ( AplicativoPDV.caixaAberto( con ) || FreedomPDV.pegaValorINI( con ) ) {
 						iniVenda();
 						super.setVisible( arg0 );
 					}
