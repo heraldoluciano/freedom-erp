@@ -1,5 +1,5 @@
 /**
- * @version 25/01/2008 <BR>
+ * @version 25/02/2008 <BR>
  * @author Setpoint Informática Ltda./Reginaldo Garcia Heua <BR>
  * 
  * Projeto: Freedom <BR>
@@ -27,7 +27,6 @@ package org.freedom.modulos.pdv;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -42,8 +41,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
-import org.freedom.acao.CarregaEvent;
-import org.freedom.acao.CarregaListener;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
 import org.freedom.bmps.Icone;
@@ -63,7 +60,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
-public class FManutRec extends FFDialogo implements ActionListener, TabelaSelListener, CarregaListener {
+public class FManutRec extends FFDialogo implements TabelaSelListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -170,19 +167,21 @@ public class FManutRec extends FFDialogo implements ActionListener, TabelaSelLis
 		setTitulo( "Receber" );
 		setAtribos( 792, 480 );
 
-		ecf = new ControllerECF( AplicativoPDV.getEcfdriver(), AplicativoPDV.getPortaECF(), AplicativoPDV.bModoDemo );
+		ecf = new ControllerECF( 
+				AplicativoPDV.getEcfdriver(), 
+				AplicativoPDV.getPortaECF(), 
+				AplicativoPDV.bModoDemo );
 
 		montaListaCampos();
 		montaTela();
 		montaTabela();
-
-		lcRecBaixa.addCarregaListener( this );
-		lcCliBaixa.addCarregaListener( this );
 		
 		btCarregaBaixas.addActionListener( this );
 		btBaixa.addActionListener( this );
 		btApaga.addActionListener( this );
 		
+		txtCodRecBaixa.addKeyListener( this );
+		txtCodCliBaixa.addKeyListener( this );
 		tabBaixa.addKeyListener( this );
 		
 		tabBaixa.addTabelaSelListener( this );
@@ -346,6 +345,8 @@ public class FManutRec extends FFDialogo implements ActionListener, TabelaSelLis
 	}
 
 	private void limpaConsulta() {
+		
+		carregavel = true;				
 
 		txtDoc.setVlrString( "" );
 		txtSerie.setVlrString( "" );
@@ -391,11 +392,6 @@ public class FManutRec extends FFDialogo implements ActionListener, TabelaSelLis
 			
 			porCliente = txtCodCliBaixa.getVlrInteger() > 0 && txtCodRecBaixa.getVlrInteger() == 0;
 			
-			if ( ! porCliente && txtCodRecBaixa.getVlrInteger() == 0 ) {
-				limpaConsulta();
-				return false;
-			}
-
 			StringBuffer sSQL = new StringBuffer();
 			sSQL.append( "SELECT IR.DTVENCITREC,IR.STATUSITREC,R.CODREC,IR.DOCLANCAITREC," );
 			sSQL.append( "R.CODVENDA,IR.VLRPARCITREC,IR.DTPAGOITREC,IR.VLRPAGOITREC," );
@@ -413,7 +409,7 @@ public class FManutRec extends FFDialogo implements ActionListener, TabelaSelLis
 			sSQL.append( "IR.CODBANCO " );
 			sSQL.append( "FROM FNITRECEBER IR,FNRECEBER R " );
 			sSQL.append( "WHERE IR.CODREC=R.CODREC AND IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND " );
-			
+			sSQL.append( "NOT IR.STATUSITREC='RP' AND NOT IR.VLRAPAGITREC=0 AND " );
 			if ( porCliente ) {
 				sSQL.append( "R.CODCLI=? AND " );
 			}
@@ -470,8 +466,45 @@ public class FManutRec extends FFDialogo implements ActionListener, TabelaSelLis
 				
 				txtCodBancoBaixa.setVlrString( rs.getString( "CODBANCO" ) );
 			}
-
+			
 			lcBancoBaixa.carregaDados();
+			
+			if ( porCliente && tabBaixa.getNumLinhas() == 0 ) { 
+				Funcoes.mensagemInforma( this, "Não há pagamentos pendentes para este cliente!" );
+				limpaConsulta();
+				return false;
+			}
+			else if ( tabBaixa.getNumLinhas() == 0 ) {				
+				rs.close();
+				ps.close();
+
+				if ( !con.getAutoCommit() ) {
+					con.commit();
+				}
+				
+				sSQL = new StringBuffer();
+				sSQL.append( "SELECT IR.STATUSITREC, IR.VLRAPAGITREC " );
+				sSQL.append( "FROM FNITRECEBER IR,FNRECEBER R " );
+				sSQL.append( "WHERE IR.CODREC=R.CODREC AND IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND " );
+				sSQL.append( "R.CODREC=? AND R.CODEMP=? AND R.CODFILIAL=? " );
+				sSQL.append( "ORDER BY IR.DTVENCITREC,IR.STATUSITREC" );
+
+				ps = con.prepareStatement( sSQL.toString() );
+				ps.setInt( 1, porCliente ? txtCodCliBaixa.getVlrInteger() : txtCodRecBaixa.getVlrInteger() );
+				ps.setInt( 2, Aplicativo.iCodEmp );
+				ps.setInt( 3, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+				
+				rs = ps.executeQuery();
+				
+				if ( rs.next() ) {
+					if ( "RP".equals( rs.getString( "STATUSITREC" ) ) && 
+							0.0f == ( rs.getBigDecimal( "VLRAPAGITREC" ) != null ? rs.getBigDecimal( "VLRAPAGITREC" ).floatValue() : 1f ) ) {
+						Funcoes.mensagemInforma( this, "Parcela já foi paga!" );
+						limpaConsulta();
+						return false;
+					}
+				}						
+			}
 			
 			rs.close();
 			ps.close();
@@ -506,7 +539,7 @@ public class FManutRec extends FFDialogo implements ActionListener, TabelaSelLis
 			imgStatusAt = ( (ImageIcon) tabBaixa.getValor( tabBaixa.getLinhaSel(), 0 ) );
 
 			if ( imgStatusAt == imgPago ) {
-				Funcoes.mensagemInforma( this, "Parcela já foi baixada!" );
+				Funcoes.mensagemInforma( this, "Parcela já foi paga!" );
 				return;
 			}
 
@@ -598,7 +631,20 @@ public class FManutRec extends FFDialogo implements ActionListener, TabelaSelLis
 					if ( !con.getAutoCommit() ) {
 						con.commit();
 					}
-				} catch ( SQLException err ) {
+										
+					if ( ecf.suprimento( (BigDecimal) sRets[ 4 ], "Recebimento" ) ) {
+// >>>>>>>>>>>>>>>		// validar aqui se autentica documento... no lugar do true ai de baixo...
+						if ( true ) {
+							if ( ! ecf.autenticarDocumento() ) {
+								Funcoes.mensagemErro( this, ecf.getMessageLog() );
+							}
+						}
+					}
+					else {
+						Funcoes.mensagemErro( this, ecf.getMessageLog() );
+					}
+					
+				} catch ( Exception err ) {
 					Funcoes.mensagemErro( this, "Erro ao baixar parcela!\n" + err.getMessage(), true, con, err );
 				}
 				
@@ -624,7 +670,14 @@ public class FManutRec extends FFDialogo implements ActionListener, TabelaSelLis
     public void keyPressed( KeyEvent e ) {
 
 		if ( e.getKeyCode() == KeyEvent.VK_ENTER ) {
-			if ( e.getSource() == tabBaixa ) {
+			if ( e.getSource() == txtCodRecBaixa || e.getSource() == txtCodCliBaixa ) {
+				if ( carregaGridBaixa() ) {
+					txtCodRecBaixa.setSoLeitura( true );	
+					txtCodCliBaixa.setSoLeitura( true );			
+					tabBaixa.requestFocus();
+				}
+			}
+			else if ( e.getSource() == tabBaixa ) {
 				tabBaixa.removeTabelaSelListener( this );
 				baixar();
 				tabBaixa.addTabelaSelListener( this );
@@ -640,7 +693,7 @@ public class FManutRec extends FFDialogo implements ActionListener, TabelaSelLis
 	public void valorAlterado( TabelaSelEvent e ) {
 
 		if ( e.getTabela() == tabBaixa ) {
-			if ( tabBaixa.getNumLinhas() > -1 ) {
+			if ( tabBaixa.getNumLinhas() > 0 ) {
 				carregavel = false;				
 				txtCodRecBaixa.setVlrInteger( (Integer) tabBaixa.getValueAt( tabBaixa.getLinhaSel(), EColTabBaixa.CODREC.ordinal() ) );
 				lcRecBaixa.carregaDados();				
@@ -648,17 +701,38 @@ public class FManutRec extends FFDialogo implements ActionListener, TabelaSelLis
 			}
 		}
 	}
-
-	public void beforeCarrega( CarregaEvent cevt ) { }
-
-	public void afterCarrega( CarregaEvent cevt ) {
 	
-		if ( cevt.getListaCampos() == lcRecBaixa || cevt.getListaCampos() == lcCliBaixa ) {	
-			if ( carregaGridBaixa() ) {
-				txtCodRecBaixa.setSoLeitura( true );	
-				txtCodCliBaixa.setSoLeitura( true );			
-				tabBaixa.requestFocus();
+	public void setVisible( boolean arg0 ) {
+		
+		if ( FreedomPDV.bECFTerm ) {
+	
+			if ( arg0 ) {
+				
+				int result = FreedomPDV.abreCaixa( con, ecf );
+	
+				if ( result == -1 ) {
+					FreedomPDV.killProg( 5, "Caixa não foi aberto. A aplicação será fechada!" );
+				}
+				else if ( result == 3 ) {
+					dispose();
+				}
+				else { 
+					if ( AplicativoPDV.caixaAberto( con ) || FreedomPDV.pegaValorINI( con ) ) {
+						super.setVisible( arg0 );
+					}
+					else {
+						super.setVisible( ! arg0 );
+					}
+				}
 			}
+			else {			
+				super.setVisible( arg0 );
+			}			
+		}
+		else {
+			FreedomPDV.killProg( 1, 
+					"Esta estação de trabalho não é um PDV!\n" +
+					"Verifique o cadastro desta estação de trabalho atravéz do modulo Standart." );
 		}
 	}
 

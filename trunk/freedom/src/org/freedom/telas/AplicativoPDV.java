@@ -24,6 +24,8 @@ package org.freedom.telas;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.freedom.componentes.ListaCampos;
@@ -174,6 +176,48 @@ public class AplicativoPDV extends AplicativoPD {
 			
 		} catch ( Exception err ) {
 			killProg( 6, "Erro abrir o caixa!\n" + err.getMessage() );
+		}
+		
+		return result;
+	}
+
+	public synchronized static boolean caixaAberto( final Connection con ) {
+		
+		boolean result = false;
+		
+		try {
+			
+			PreparedStatement ps = con.prepareStatement( 
+				"SELECT FIRST 1 DTAMOV FROM PVMOVCAIXA WHERE CODEMP=? AND CODFILIAL=? AND CODCAIXA=? ORDER BY DTAMOV DESC, NROMOV DESC" );
+			
+			ps.setInt( 1, iCodEmp );
+			ps.setInt( 2, iCodFilial );
+			ps.setInt( 3, iCodCaixa );
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				Calendar hoje = Calendar.getInstance();
+				Calendar diacaixa = Calendar.getInstance();
+				diacaixa.setTime( Funcoes.sqlDateToDate( rs.getDate( "DTAMOV" ) ) );
+				
+				if ( hoje.get( Calendar.YEAR ) == diacaixa.get( Calendar.YEAR ) 
+						&& hoje.get( Calendar.MONTH ) == diacaixa.get( Calendar.MONTH )
+							&& hoje.get( Calendar.DAY_OF_MONTH ) == diacaixa.get( Calendar.DAY_OF_MONTH ) ) { 		
+					result = true;
+				}
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( null, "Não foi possível buscar o saldo atual.\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
 		}
 		
 		return result;
