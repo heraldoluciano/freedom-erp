@@ -1206,6 +1206,20 @@ public class ControllerECF {
 		return returnOfAction;
 	}
 	
+	public boolean autenticarDocumento() {
+
+		boolean returnOfAction = true;
+		
+		if ( notIsModoDemostracao() ) {	
+			returnOfAction = decodeReturn( ecf.autenticacaoDeDocumento() );
+			if ( !returnOfAction ) {
+				whiterLogError( "[AUTENTICAÇÃO] " );
+			}
+		}
+		
+		return returnOfAction;
+	}
+	
 	public Integer getNumeroCaixa() {
 
 		Integer returnOfAction = null;
