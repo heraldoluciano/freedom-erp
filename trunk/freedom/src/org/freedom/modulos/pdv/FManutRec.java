@@ -100,6 +100,8 @@ public class FManutRec extends FFDialogo implements TabelaSelListener {
 
 	private JTextFieldFK txtRazCliBaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
+	private JTextFieldFK txtCPFCliBaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 11, 0 );
+
 	private JTextFieldFK txtDescBancoBaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtDtEmisBaixa = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
@@ -208,12 +210,14 @@ public class FManutRec extends FFDialogo implements TabelaSelListener {
 
 		lcCliBaixa.add( new GuardaCampo( txtCodCliBaixa, "CodCli", "Cód.cli", ListaCampos.DB_PK, false ) );
 		lcCliBaixa.add( new GuardaCampo( txtRazCliBaixa, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
+		lcCliBaixa.add( new GuardaCampo( txtCPFCliBaixa, "CPFCli", "CPF", ListaCampos.DB_SI, false ) );
 		lcCliBaixa.montaSql( false, "CLIENTE", "VD" );
 		lcCliBaixa.setQueryCommit( false );
 		lcCliBaixa.setReadOnly( true );
 		txtCodCliBaixa.setTabelaExterna( lcCliBaixa );
 		txtCodCliBaixa.setFK( true );
 		txtCodCliBaixa.setNomeCampo( "CodCli" );
+		txtCPFCliBaixa.setMascara( JTextFieldPad.MC_CPF );
 
 		lcVendaBaixa.add( new GuardaCampo( txtCodVendaBaixa, "CodVenda", "Cód.venda", ListaCampos.DB_PK, false ) );
 		lcVendaBaixa.add( new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, false ) );
@@ -518,8 +522,10 @@ public class FManutRec extends FFDialogo implements TabelaSelListener {
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao montar a tabela de baixa!\n" + err.getMessage(), true, con, err );
-		} 
-		
+		} finally {
+			System.gc();
+		}
+
 		return actionReturn;
 	}
 
