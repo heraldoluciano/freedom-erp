@@ -407,28 +407,51 @@ AND PD.CODEMP=7 AND PD.CODFILIAL=1 AND PD.codprod=11]]></queryString>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="21"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
 		<group  name="detcp" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="137"  isSplitAllowed="true" >
+			<band height="39"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
 						x="2"
-						y="7"
+						y="0"
 						width="531"
-						height="127"
-						key="subreport-1"/>
+						height="36"
+						key="subreport-1"
+						stretchType="RelativeToBandHeight"/>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "MovProdContrDetCP.jasper"]]></subreportExpression>
 				</subreport>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="27"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="prodfinal" >
+			<groupExpression><![CDATA[]]></groupExpression>
+			<groupHeader>
+			<band height="41"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="2"
+						y="3"
+						width="531"
+						height="33"
+						key="subreport-2"
+						stretchType="RelativeToBandHeight"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "MovProdContrDetFinal.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
@@ -489,7 +512,7 @@ AND PD.CODEMP=7 AND PD.CODFILIAL=1 AND PD.codprod=11]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="23"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</detail>
 		<columnFooter>
