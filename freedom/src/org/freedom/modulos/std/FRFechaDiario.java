@@ -38,7 +38,7 @@ public class FRFechaDiario extends FRelatorio{
 
 	private ListaCampos lcCaixa = new ListaCampos( this );
 	
-	private JRadioGroup<?, ?> rgTipo = null;
+	private JRadioGroup<String, String> rgTipo = null;
 	
 	public FRFechaDiario(){
 		
