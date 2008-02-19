@@ -210,7 +210,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JTextFieldPad txtCodTran = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 	
-	private JTextFieldPad txtRazTran = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldFK txtRazTran = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	
 	private JLabelPad lbStatus = new JLabelPad();
 
@@ -260,9 +260,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		setTitulo( "Compra" );
 		setAtribos( 15, 10, 760, 430 );
 		
+
+	}
+
+	public void montaTela() {
 		pnCliCab.add( tpnCab );
 		tpnCab.addTab( "Compra", pinCabCompra );
-	
+		if( abaTransp.equals( "S" ) ){
+			tpnCab.addTab( "Tranportadora", pinCabTransp );
+		}
 		pnMaster.remove( 2 );
 		pnGImp.removeAll();
 		pnGImp.setLayout( new GridLayout( 1, 4 ) );
@@ -321,6 +327,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcPlanoPag.setReadOnly( true );
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
 
+		lcTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false ) );
+		lcTran.add( new GuardaCampo( txtRazTran, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, false ) );
+		lcTran.montaSql( false, "TRANSP", "VD" );
+		lcTran.setQueryCommit( false );
+		lcTran.setReadOnly( true );
+		txtCodTran.setTabelaExterna( lcTran );
+		
 		lcFisc.add( new GuardaCampo( txtCodFisc, "CodFisc", "Código", ListaCampos.DB_PK, false ) );
 		lcFisc.add( new GuardaCampo( txtDescFisc, "DescFisc", "Descrição", ListaCampos.DB_SI, false ) );
 		lcFisc.add( new GuardaCampo( txtTipoFisc, "TipoFisc", "Tipo", ListaCampos.DB_SI, false ) );
@@ -413,16 +426,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcCompra2.montaSql( false, "COMPRA", "CP" );
 		lcCompra2.setQueryCommit( false );
 		lcCompra2.setReadOnly( true );
-		
-		txtCodTran.setNomeCampo( "CodTran" );
-		lcTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false ) );
-		lcTran.add( new GuardaCampo( txtRazTran, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, false ) );
-		txtRazTran.setListaCampos( lcTran );
-		txtCodTran.setTabelaExterna( lcTran );
-		txtCodTran.setFK( true );
-		lcTran.montaSql( false, "TRANSP", "VD" );
-		lcTran.setQueryCommit( false );
-		lcTran.setReadOnly( true );
 
 		btFechaCompra.setToolTipText( "Fechar a Compra (F4)" );
 
@@ -448,10 +451,21 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicDescFK( txtDescPlanoPag, 386, 60, 245, 20, "DescPlanoPag", "Descrição do plano de pagto." );
 		adicCampoInvisivel( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, false );
 		adic( lbStatus, 638, 60, 95, 20 );
-		// lcCampos.setWhereAdic("FLAG IN "+
-		// projetos.freedom.Freedom.carregaFiltro(con,org.freedom.telas.Aplicativo.strCodEmp));
+		
+		if( abaTransp.equals( "S" ) ){
+			setListaCampos( lcCampos );
+			setPainel( pinCabTransp );
+			//adicCampo( new JLabelPad("Cód.Trasp"), 7, 5, 60, 20 );
+			adicCampo( txtCodTran, 7, 25, 70, 20, "Codtran", "Cód.transp.", ListaCampos.DB_FK, false );
+			//pinCabTransp.adic( new JLabelPad("Razão social da transportadora"), 80, 5, 205, 20 );
+			adicDescFK( txtRazTran, 80, 25, 205, 20, "Raztran", "Razão social da transportadora" );
+			//pinCabTransp.adic( txtRazTran, 80, 25, 205, 20 );
+		}
 		setListaCampos( true, "COMPRA", "CP" );
 		lcCampos.setQueryInsert( false );
+
+		// lcCampos.setWhereAdic("FLAG IN "+
+		// projetos.freedom.Freedom.carregaFiltro(con,org.freedom.telas.Aplicativo.strCodEmp)); */
 
 		btFechaCompra.addActionListener( this );
 		btImp.addActionListener( this );
@@ -487,15 +501,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lbStatus.setVisible( false );
 
 		setImprimir( true );
-	}
-	
-	private void montaTabForn(){
 		
-		tpnCab.addTab( "Tranportadora", pinCabTransp );
-		pinCabTransp.adic( new JLabelPad("Cód.Trasp"), 7, 5, 60, 20 );
-		pinCabTransp.adic( txtCodTran, 7, 25, 70, 20 );
-		pinCabTransp.adic( new JLabelPad("Razão social da transportadora"), 80, 5, 205, 20 );
-		pinCabTransp.adic( txtRazTran, 80, 25, 205, 20 );
 	}
 
 	private void montaDetalhe() {
@@ -917,11 +923,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				sOrdNota = rs.getString( "ORDNOTA" );
 				habilitaCusto = rs.getString( "CUSTOCOMPRA" ).trim().equals( "S" );
 				abaTransp = rs.getString( "TABTRANSPCP");
-				
-				if( abaTransp.equals( "S" ) ){
-					
-					montaTabForn();
-				}
 			}
 			if ( !con.getAutoCommit() ){
 				con.commit();
@@ -1602,6 +1603,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcAlmoxProd.setConexao( cn );
 		lcTran.setConexao( cn );
 		getPrefere();
+		montaTela();
 		montaDetalhe();
 	}
+
 }
