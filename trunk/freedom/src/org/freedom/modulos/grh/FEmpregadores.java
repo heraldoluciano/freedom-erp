@@ -121,12 +121,12 @@ public class FEmpregadores extends FTabDados {
 
 		adicCampo( txtCodEmpr, 7, 20, 100, 20, "CodEmpr", "Cód.empregador", ListaCampos.DB_PK, true );		
 		adicCampo( txtNomeEmpr, 110, 20, 220, 20, "NomeEmpr", "Nome do empregador", ListaCampos.DB_SI, true );
-		adicDB( cbAtivo, 343, 20, 57, 20, "AtivoFor", "", true );				
+		adicDB( cbAtivo, 343, 20, 57, 20, "AtivoEmpr", "", true );				
 		adicCampo( txtCNPJEmpr, 7, 60, 195, 20, "CNPJEmpr", "CNPJ", ListaCampos.DB_SI, false );		
 		adicCampo( txtINSCEmpr, 205, 60, 195, 20, "INSCEmpr", "INSC", ListaCampos.DB_SI, false );		
 		adicCampo( txtEndEmpr, 7, 100, 323, 20, "EndEmpr", "Endereço", ListaCampos.DB_SI, false );		
 		adicCampo( txtNumEmpr, 333, 100, 67, 20, "NumEmpr", "Número", ListaCampos.DB_SI, false );		
-		adicCampo( txtBairroEmpr, 7, 140, 145, 20, "BairroEmpr", "Bairro", ListaCampos.DB_SI, false );		
+		adicCampo( txtBairroEmpr, 7, 140, 145, 20, "BairEmpr", "Bairro", ListaCampos.DB_SI, false );		
 		adicCampo( txtCidEmpr, 155, 140, 145, 20, "CidEmpr", "Cidade", ListaCampos.DB_SI, false );		
 		adicCampo( txtUfEmpr, 303, 140, 27, 20, "UfEmpr", "UF", ListaCampos.DB_SI, false );		
 		adicCampo( txtCepEmpr, 333, 140, 67, 20, "CepEmpr", "CEP", ListaCampos.DB_SI, false );
@@ -134,10 +134,10 @@ public class FEmpregadores extends FTabDados {
 		adicCampo( txtFoneEmpr, 50, 180, 120, 20, "FoneEmpr", "Fone", ListaCampos.DB_SI, false );		
 		adicCampo( txtRamalEmpr, 173, 180, 60, 20, "RamalEmpr", "Ramal", ListaCampos.DB_SI, false );		
 		adicCampo( txtDDDFaxEmpr, 236, 180, 40, 20, "DDDFaxEmpr", "DDD", ListaCampos.DB_SI, false );		
-		adicCampo( txtFaxEmpr, 279, 180, 121, 20, "DDDFaxEmpr", "Fax", ListaCampos.DB_SI, false );		
+		adicCampo( txtFaxEmpr, 279, 180, 121, 20, "FaxEmpr", "Fax", ListaCampos.DB_SI, false );		
 		adicCampo( txtDDDCelEmpr, 7, 220, 40, 20, "DDDCelEmpr", "DDD", ListaCampos.DB_SI, false );		
 		adicCampo( txtCelEmpr, 50, 220, 120, 20, "CelEmpr", "Celular", ListaCampos.DB_SI, false );
-		adicCampo( txtContatoEmpr, 173, 220, 227, 20, "ContatoEmpr", "Contato", ListaCampos.DB_SI, false );			
+		adicCampo( txtContatoEmpr, 173, 220, 227, 20, "ContEmpr", "Contato", ListaCampos.DB_SI, false );			
 		adicCampo( txtEmailEmpr, 7, 260, 393, 20, "EmailEmpr", "e-mail", ListaCampos.DB_SI, false );
 		adicCampo( txtSiteEmpr, 7, 300, 363, 20, "SiteEmpr", "site", ListaCampos.DB_SI, false );
 		adic( btFirefox, 380, 300, 20, 20 );
