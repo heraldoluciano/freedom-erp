@@ -458,7 +458,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			//adicCampo( new JLabelPad("Cód.Trasp"), 7, 5, 60, 20 );
 			adicCampo( txtCodTran, 7, 25, 70, 20, "Codtran", "Cód.transp.", ListaCampos.DB_FK, false );
 			//pinCabTransp.adic( new JLabelPad("Razão social da transportadora"), 80, 5, 205, 20 );
-			adicDescFK( txtRazTran, 80, 25, 205, 20, "Raztran", "Razão social da transportadora" );
+			adicDescFK( txtRazTran, 80, 25, 250, 20, "Raztran", "Razão social da transportadora" );
 			//pinCabTransp.adic( txtRazTran, 80, 25, 205, 20 );
 		}
 		setListaCampos( true, "COMPRA", "CP" );
