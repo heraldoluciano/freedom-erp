@@ -37,32 +37,32 @@ public class FCurso extends FDados {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtCodCurso = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodCurso = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
-	private JTextFieldPad txtDescCurso = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
+	private final JTextFieldPad txtDescCurso = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
 	
-	private JTextFieldPad txtIntituicaoCurso = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
+	private final JTextFieldPad txtIntituicaoCurso = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 	
-	private JTextFieldPad txtDuracaoCurso = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	private final JTextFieldPad txtDuracaoCurso = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
-	private JTextAreaPad txtConteudoCurso = new JTextAreaPad( 1000 );
+	private final JTextAreaPad txtConteudoCurso = new JTextAreaPad( 1000 );
 
-	private JTextFieldPad txtCodNivel = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodNivel = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtDescNivel = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
+	private final JTextFieldFK txtDescNivel = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
-	private JTextFieldPad txtCodArea = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodArea = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtDescArea = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
+	private final JTextFieldFK txtDescArea = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
-	private ListaCampos lcNivel = new ListaCampos( this, "NC" );
+	private final ListaCampos lcNivel = new ListaCampos( this, "NC" );
 
-	private ListaCampos lcArea = new ListaCampos( this, "AR" );
+	private final ListaCampos lcArea = new ListaCampos( this, "AR" );
 	
 
 	public FCurso() {
 
-		super();
+		super( false );
 		setTitulo( "Cadastro de Cursos" );
 		setAtribos( 50, 50, 425, 400 );
 

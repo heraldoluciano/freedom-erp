@@ -32,9 +32,9 @@ public class FNivelCurso extends FDados {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtCodNivelCurso = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	private final JTextFieldPad txtCodNivelCurso = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
-	private JTextFieldPad txtDescNivelCurso = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
+	private final JTextFieldPad txtDescNivelCurso = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
 
 	public FNivelCurso() {
 

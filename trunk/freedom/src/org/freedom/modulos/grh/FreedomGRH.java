@@ -39,16 +39,17 @@ public class FreedomGRH extends AplicativoPD {
 
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 		addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "Empregados", "Empregados", 'E', 100100100, 2, true, FEmpregado.class );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "Turnos", "Turnos", 'T', 100100200, 2, true, FTurnos.class );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "Funçao", "Função", 'F', 100100300, 2, true, FFuncao.class );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "Departamento", "Departamento", 'D', 100100400, 2, true, FDepto.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Turnos", "Turnos", 'T', 100100100, 2, true, FTurnos.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Funçao", "Função", 'F', 100100200, 2, true, FFuncao.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Departamento", "Departamento", 'D', 100100300, 2, true, FDepto.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Empregados", "Empregados", 'E', 100100400, 2, true, FEmpregado.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Empregadores", "Empregadores", 'p', 100100500, 2, true, FEmpregadores.class );
 			addSeparador( 100100000 );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "Area", "Area", 'A', 100100500, 2, true, FArea.class );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "Nível/Curso", "Nível/Curso", 'N', 100100600, 2, true, FNivelCurso.class );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "Curso", "Curso", 'C', 100100700, 2, true, FCurso.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Area", "Area", 'A', 100100600, 2, true, FArea.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Nível/Curso", "Nível/Curso", 'N', 100100700, 2, true, FNivelCurso.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Curso", "Curso", 'C', 1001007800, 2, true, FCurso.class );
 			addSeparador( 100100000 );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "Estados civis", "Estados civis", 's', 100100800, 2, true, FEstadoCivil.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Estados civis", "Estados civis", 's', 100100900, 2, true, FEstadoCivil.class );
 
 		addBotao( "barraConveniados.gif", "Empregados", "Empregados", 100101000, FEmpregado.class );
 
@@ -75,7 +76,7 @@ public class FreedomGRH extends AplicativoPD {
 			FreedomGRH freedom = new FreedomGRH();
 			freedom.show();
 		} catch ( Throwable e ) {
-			Funcoes.criaTelaErro( "Erro de execução" );
+			Funcoes.criaTelaErro( "Erro de execução\n\n" + e.getMessage() );
 			e.printStackTrace();
 		}
 	}
