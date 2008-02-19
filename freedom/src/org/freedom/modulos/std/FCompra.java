@@ -56,6 +56,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -78,8 +79,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JPanelPad pinCab = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
+	
+	private JPanelPad pinCabCompra = new JPanelPad();
+	
+	private JPanelPad pinCabTransp = new JPanelPad();
 
 	private JPanelPad pinTot = new JPanelPad( 200, 200 );
+	
+	private JTabbedPanePad tpnCab = new JTabbedPanePad();
 
 	private JPanelPad pnTot = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
@@ -201,6 +208,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JTextFieldPad txtCodAlmoxItCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
+	private JTextFieldPad txtCodTran = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+	
+	private JTextFieldPad txtRazTran = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+	
 	private JLabelPad lbStatus = new JLabelPad();
 
 	private JCheckBoxPad cbSeqNfTipoMov = new JCheckBoxPad( "Aloc.NF", "S", "N" );
@@ -228,6 +239,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private ListaCampos lcAlmoxItem = new ListaCampos( this, "AX" );
 
 	private ListaCampos lcAlmoxProd = new ListaCampos( this, "AX" );
+	
+	private final ListaCampos lcTran = new ListaCampos( this, "TN" );
 
 	private String sOrdNota = "";
 
@@ -238,12 +251,18 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private boolean buscaVlrUltCompra = false;
 
 	private boolean habilitaCusto = false;
+	
+	private String abaTransp = "";
 
 	public FCompra() {
 
+		
 		setTitulo( "Compra" );
 		setAtribos( 15, 10, 760, 430 );
-
+		
+		pnCliCab.add( tpnCab );
+		tpnCab.addTab( "Compra", pinCabCompra );
+	
 		pnMaster.remove( 2 );
 		pnGImp.removeAll();
 		pnGImp.setLayout( new GridLayout( 1, 4 ) );
@@ -394,6 +413,16 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcCompra2.montaSql( false, "COMPRA", "CP" );
 		lcCompra2.setQueryCommit( false );
 		lcCompra2.setReadOnly( true );
+		
+		txtCodTran.setNomeCampo( "CodTran" );
+		lcTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false ) );
+		lcTran.add( new GuardaCampo( txtRazTran, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, false ) );
+		txtRazTran.setListaCampos( lcTran );
+		txtCodTran.setTabelaExterna( lcTran );
+		txtCodTran.setFK( true );
+		lcTran.montaSql( false, "TRANSP", "VD" );
+		lcTran.setQueryCommit( false );
+		lcTran.setReadOnly( true );
 
 		btFechaCompra.setToolTipText( "Fechar a Compra (F4)" );
 
@@ -403,8 +432,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		pinCab = new JPanelPad( 740, 130 );
 		setListaCampos( lcCampos );
-		setAltCab( 130 );
-		setPainel( pinCab, pnCliCab );
+		setAltCab( 160 );
+		setPainel( pinCabCompra );
+		
 		adicCampo( txtCodCompra, 7, 20, 100, 20, "CodCompra", "Nº Compra", ListaCampos.DB_PK, true );
 		adicCampo( txtCodTipoMov, 110, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
 		adicDescFK( txtDescTipoMov, 190, 20, 207, 20, "DescTipoMov", "Descrição do tipo de movimento" );
@@ -449,6 +479,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcCampos.addPostListener( this );
 		lcDet.addPostListener( this );
 		btObs.addActionListener( this );
+		txtCodPlanoPag.addActionListener( this );
 
 		lbStatus.setForeground( Color.WHITE );
 		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
@@ -456,6 +487,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lbStatus.setVisible( false );
 
 		setImprimir( true );
+	}
+	
+	private void montaTabForn(){
+		
+		tpnCab.addTab( "Tranportadora", pinCabTransp );
+		pinCabTransp.adic( new JLabelPad("Cód.Trasp"), 7, 5, 60, 20 );
+		pinCabTransp.adic( txtCodTran, 7, 25, 70, 20 );
+		pinCabTransp.adic( new JLabelPad("Razão social da transportadora"), 80, 5, 205, 20 );
+		pinCabTransp.adic( txtRazTran, 80, 25, 205, 20 );
 	}
 
 	private void montaDetalhe() {
@@ -543,6 +583,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		tab.setTamColuna( 70, 18 );
 		tab.setTamColuna( 80, 19 );
 		tab.setTamColuna( 90, 20 );
+		
 	}
 
 	private void adicIPI() {
@@ -862,7 +903,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		try {
 
 			PreparedStatement ps = con.prepareStatement( 
-					"SELECT USAREFPROD,ORDNOTA,BLOQCOMPRA,BUSCAVLRULTCOMPRA,CUSTOCOMPRA " + 
+					"SELECT USAREFPROD,ORDNOTA,BLOQCOMPRA,BUSCAVLRULTCOMPRA,CUSTOCOMPRA, TABTRANSPCP " + 
 					"FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
@@ -875,6 +916,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				buscaVlrUltCompra = rs.getString( "BUSCAVLRULTCOMPRA" ).trim().equals( "S" );
 				sOrdNota = rs.getString( "ORDNOTA" );
 				habilitaCusto = rs.getString( "CUSTOCOMPRA" ).trim().equals( "S" );
+				abaTransp = rs.getString( "TABTRANSPCP");
+				
+				if( abaTransp.equals( "S" ) ){
+					
+					montaTabForn();
+				}
 			}
 			if ( !con.getAutoCommit() ){
 				con.commit();
@@ -1397,8 +1444,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		else if ( kevt.getKeyCode() == KeyEvent.VK_F4 ) {
 			btFechaCompra.doClick();
 		}
-		if ( kevt.getSource() == txtRefProd )
+		if ( kevt.getSource() == txtRefProd ){
 			lcDet.edit();
+		}
 
 		super.keyPressed( kevt );
 	}
@@ -1552,6 +1600,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcCompra2.setConexao( cn );
 		lcAlmoxItem.setConexao( cn );
 		lcAlmoxProd.setConexao( cn );
+		lcTran.setConexao( cn );
 		getPrefere();
 		montaDetalhe();
 	}

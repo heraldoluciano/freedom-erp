@@ -287,6 +287,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private JCheckBoxPad cbEstLotNeg = null;
 	
 	private JCheckBoxPad cbUsaRefCompra = null;
+	
+	private JCheckBoxPad cbTransAbaCp = null;
 
 	private JCheckBoxPad cbEstNeg = null;
 
@@ -705,7 +707,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbUsaRefCompra = new JCheckBoxPad ("Usa referência na compra? ", "S", "N" );
 		cbUsaRefCompra.setVlrString( "N" );
 		cbAdicCodOrcObsPed = new JCheckBoxPad( "Adicionar códigos de orçamentos na observação do pedido?", "S", "N" );
-		cbAdicCodOrcObsPed.setVlrString( "N" );				
+		cbAdicCodOrcObsPed.setVlrString( "N" );	
+		cbTransAbaCp = new JCheckBoxPad( "Aba transp. na tela de compras?", "S", "N" );
+		cbTransAbaCp.setVlrString( "N" );	
 
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
@@ -788,7 +792,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicCampo( txtCasasDec, 7, 140, 100, 20, "CasasDec", "Demais", ListaCampos.DB_SI, true );
 		lbGeralOpcoes.setOpaque( true );
 		adic( lbGeralOpcoes, 170, 5, 90, 20 );
-		adic( pinOpcoesGeral, 160, 15, 560, 200 );
+		adic( pinOpcoesGeral, 160, 15, 550, 220 );
 		setPainel( pinOpcoesGeral );
 		adicDB( cbRgCliObrig, 7, 20, 180, 20, "RgCliObrig", "", true );
 		adicDB( cbCliMesmoCnpj, 7, 40, 250, 20, "CliMesmoCnpj", "", true );
@@ -798,7 +802,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDB( cbConsCPFCli, 7, 120, 400, 20, "ConsistCPFCli", "", true );
 		adicDB( cbConsIECli, 7, 140, 400, 20, "ConsisteIECli", "", true );
 		adicDB( cbConsIEFor, 7, 160, 400, 20, "ConsisteIEFor", "", true );
-
+		
 		// Venda
 
 		setPainel( pinVenda );
@@ -848,14 +852,15 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		// Compra
 		
 		
-		//setPainel( pinCompra );
-		//adicTab( "Compras", pinCompra );
+		setPainel( pinCompra );
+		adicTab( "Compras", pinCompra );
 
-		//lbCompOpcoes.setOpaque( true );
-		//adic( lbCompOpcoes, 10, 5, 70, 20 );
-		//adic( pinCompras, 7, 15, 280, 50 );
-		//setPainel( pinCompras );
-		//adicDB( cbUsaRefCompra, 7, 7, 200, 20, "UsaRefProd", "",false );
+		lbCompOpcoes.setOpaque( true );
+		adic( lbCompOpcoes, 10, 5, 70, 20 );
+		adic( pinCompras, 7, 15, 290, 65 );
+		setPainel( pinCompras );
+		adicDB( cbUsaRefCompra, 7, 7, 200, 20, "UsaRefProd", "",false );
+		adicDB( cbTransAbaCp, 7, 30, 250, 20, "TabTranspCp", "",false );
 		
 		// Preço
 
