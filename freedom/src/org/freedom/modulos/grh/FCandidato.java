@@ -149,7 +149,7 @@ public class FCandidato extends FTabDados {
 
 	private final ListaCampos lcEstadoCivil = new ListaCampos( this, "ES" );
 
-	private final ListaCampos lcCurso = new ListaCampos( this );
+	private final ListaCampos lcCurso = new ListaCampos( this, "CS" );
 
 	private final ListaCampos lcCursoCand = new ListaCampos( this );
 
@@ -174,9 +174,9 @@ public class FCandidato extends FTabDados {
 		setTitulo( "Cadastro de Candidatos" );
 		setAtribos( 50, 50, 430, 520 );
 		
-		//lcCursoCand.setMaster( lcCampos );
-		//lcCampos.adicDetalhe( lcCursoCand );
-		//lcCursoCand.setTabela( tabCurso );
+		lcCursoCand.setMaster( lcCampos );
+		lcCampos.adicDetalhe( lcCursoCand );
+		lcCursoCand.setTabela( tabCurso );
 
 		lcAtribuicaoCand.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcAtribuicaoCand );
@@ -300,7 +300,7 @@ public class FCandidato extends FTabDados {
 		// Fim da aba outros empregos
 		
 		// Aba cursos		
-		/*
+		
 		adicTab( "Cursos", panelCurso ); 
 		setPainel( panelCurso );		
 
@@ -317,10 +317,12 @@ public class FCandidato extends FTabDados {
 		adicDescFK( txtDescCursoCand, 100, 20, 300, 20, "DescCurso", "Descrição do curso" );
 		adic( navCurso, 0, 50, 270, 25 );		
 		setListaCampos( false, "CANDIDATOCURSO", "RH" );
-		lcCurso.setQueryInsert( false );
-		lcCurso.setQueryCommit( false );
-		lcCurso.montaTab();
-		*/
+		lcCursoCand.setQueryInsert( false );
+		lcCursoCand.setQueryCommit( false );
+		lcCursoCand.montaTab();
+		
+		tabCurso.setTamColuna( 335, 1 );
+		
 		// Fim da aba cursos
 		
 		// Aba atribuições
@@ -329,7 +331,7 @@ public class FCandidato extends FTabDados {
 		
 		setListaCampos( lcAtribuicaoCand );
 		setNavegador( navAtribuicao );
-		//navAtribuicao.setAtivo( 6, false );
+		navAtribuicao.setAtivo( 6, false );
 
 		panelAtribuicao.add( new JScrollPane( tabAtribuicao ), BorderLayout.CENTER );
 		panelAtribuicao.add( panelAtribuicaoCampos, BorderLayout.SOUTH );
