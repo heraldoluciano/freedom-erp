@@ -85,7 +85,7 @@ public class FCandidato extends FTabDados {
 
 	private final JTextFieldPad txtPretensaoCand = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );	
 
-	private final JTextFieldPad txtCodEstCivilCand = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodEstCivilCand = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
 	private final JTextFieldFK txtDescEstCivilCand = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
@@ -133,7 +133,9 @@ public class FCandidato extends FTabDados {
 	
 	// FUNÇÕES
 
-	private final JTextFieldPad txtCodFuncaoCand = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
+	private final JTextFieldPad txtSeqFuncaoCand = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private final JTextFieldPad txtCodFuncaoCand = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private final JTextFieldFK txtDescFuncaoCand = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
@@ -149,9 +151,15 @@ public class FCandidato extends FTabDados {
 
 	private final ListaCampos lcCurso = new ListaCampos( this );
 
-	private final ListaCampos lcAtribuicao = new ListaCampos( this );
+	private final ListaCampos lcCursoCand = new ListaCampos( this );
 
-	private final ListaCampos lcFuncao = new ListaCampos( this );
+	private final ListaCampos lcAtribuicao = new ListaCampos( this, "AT" );
+
+	private final ListaCampos lcAtribuicaoCand = new ListaCampos( this );
+
+	private final ListaCampos lcFuncao = new ListaCampos( this, "FC" );
+
+	private final ListaCampos lcFuncaoCand = new ListaCampos( this );
 
 	private final Navegador navCurso = new Navegador( true );
 
@@ -166,17 +174,17 @@ public class FCandidato extends FTabDados {
 		setTitulo( "Cadastro de Candidatos" );
 		setAtribos( 50, 50, 430, 520 );
 		
-		//lcCurso.setMaster( lcCampos );
-		//lcCampos.adicDetalhe( lcCurso );
-		//lcCurso.setTabela( tabCurso );
+		//lcCursoCand.setMaster( lcCampos );
+		//lcCampos.adicDetalhe( lcCursoCand );
+		//lcCursoCand.setTabela( tabCurso );
 
-		lcAtribuicao.setMaster( lcCampos );
-		lcCampos.adicDetalhe( lcAtribuicao );
-		lcAtribuicao.setTabela( tabAtribuicao );
+		lcAtribuicaoCand.setMaster( lcCampos );
+		lcCampos.adicDetalhe( lcAtribuicaoCand );
+		lcAtribuicaoCand.setTabela( tabAtribuicao );
 
-		lcFuncao.setMaster( lcCampos );
-		lcCampos.adicDetalhe( lcFuncao );
-		lcFuncao.setTabela( tabFuncao );
+		lcFuncaoCand.setMaster( lcCampos );
+		lcCampos.adicDetalhe( lcFuncaoCand );
+		lcFuncaoCand.setTabela( tabFuncao );
 
 		montaRadioGroups();
 		montaListaCampos();
@@ -208,29 +216,35 @@ public class FCandidato extends FTabDados {
 		lcEstadoCivil.setReadOnly( true );
 		txtCodEstCivilCand.setTabelaExterna( lcEstadoCivil );
 
-		lcCurso.add( new GuardaCampo( txtCodCursoCand, "CodCurso", "Cód.curso", ListaCampos.DB_PK, null, false ) );
+		lcCurso.add( new GuardaCampo( txtCodCursoCand, "CodCurso", "Cód.curso", ListaCampos.DB_PK, txtDescCursoCand, false ) );
 		lcCurso.add( new GuardaCampo( txtDescCursoCand, "DescCurso", "Descrição do curso", ListaCampos.DB_SI, false ) );
 		lcCurso.montaSql( false, "CURSO", "RH" );
 		lcCurso.setReadOnly( true );
 		lcCurso.setQueryCommit( false );
-		txtCodCursoCand.setListaCampos( lcCurso );
 		txtCodCursoCand.setTabelaExterna( lcCurso );
+		txtCodCursoCand.setFK( true );
+		txtCodCursoCand.setListaCampos( lcCurso );
+		txtDescCursoCand.setListaCampos( lcCurso );
 
-		lcAtribuicao.add( new GuardaCampo( txtCodAtribCand, "CodAtrib", "Cód.atrib.", ListaCampos.DB_PK, null, false ) );
+		lcAtribuicao.add( new GuardaCampo( txtCodAtribCand, "CodAtrib", "Cód.atrib.", ListaCampos.DB_PK, txtDescAtribCand, false ) );
 		lcAtribuicao.add( new GuardaCampo( txtDescAtribCand, "DescAtrib", "Descrição da atribuição", ListaCampos.DB_SI, false ) );
 		lcAtribuicao.montaSql( false, "ATRIBUICAO", "AT" );
 		lcAtribuicao.setReadOnly( true );
 		lcAtribuicao.setQueryCommit( false );
-		txtCodAtribCand.setListaCampos( lcAtribuicao );
 		txtCodAtribCand.setTabelaExterna( lcAtribuicao );
+		txtCodAtribCand.setFK( true );
+		txtCodAtribCand.setListaCampos( lcAtribuicao );
+		txtDescAtribCand.setListaCampos( lcAtribuicao );
 
-		lcFuncao.add( new GuardaCampo( txtCodFuncaoCand, "CodFunc", "Cód.função", ListaCampos.DB_PK, null, false ) );
+		lcFuncao.add( new GuardaCampo( txtCodFuncaoCand, "CodFunc", "Cód.função", ListaCampos.DB_PK, txtDescFuncaoCand, false ) );
 		lcFuncao.add( new GuardaCampo( txtDescFuncaoCand, "DescFunc", "Descrição da função", ListaCampos.DB_SI, false ) );
 		lcFuncao.montaSql( false, "FUNCAO", "RH" );
 		lcFuncao.setReadOnly( true );
 		lcFuncao.setQueryCommit( false );
-		txtCodFuncaoCand.setListaCampos( lcFuncao );
 		txtCodFuncaoCand.setTabelaExterna( lcFuncao );
+		txtCodFuncaoCand.setFK( true );
+		txtCodFuncaoCand.setListaCampos( lcFuncao );
+		txtDescFuncaoCand.setListaCampos( lcFuncao );
 	}
 	
 	private void montaTela() {		
@@ -290,7 +304,7 @@ public class FCandidato extends FTabDados {
 		adicTab( "Cursos", panelCurso ); 
 		setPainel( panelCurso );		
 
-		setListaCampos( lcCurso );
+		setListaCampos( lcCursoCand );
 		setNavegador( navCurso );
 		navCurso.setAtivo( 6, false );
 
@@ -313,22 +327,24 @@ public class FCandidato extends FTabDados {
 		
 		adicTab( "Atribuições", panelAtribuicao ); 
 		
-		setListaCampos( lcAtribuicao );
+		setListaCampos( lcAtribuicaoCand );
 		setNavegador( navAtribuicao );
-		navAtribuicao.setAtivo( 6, false );
+		//navAtribuicao.setAtivo( 6, false );
 
 		panelAtribuicao.add( new JScrollPane( tabAtribuicao ), BorderLayout.CENTER );
 		panelAtribuicao.add( panelAtribuicaoCampos, BorderLayout.SOUTH );
 		
 		setPainel( panelAtribuicaoCampos );
 		
-		adicCampo( txtCodAtribCand, 7, 20, 90, 20, "CodAtrib", "Cód.atrib.", ListaCampos.DB_PK, false );		
+		adicCampo( txtCodAtribCand, 7, 20, 90, 20, "CodAtrib", "Cód.atrib.", ListaCampos.DB_PF, txtDescAtribCand, false );		
 		adicDescFK( txtDescAtribCand, 100, 20, 300, 20, "DescAtrib", "Descrição da atribuição" );
 		adic( navAtribuicao, 0, 50, 270, 25 );		
 		setListaCampos( false, "CANDIDATOATRIB", "RH" );
-		lcAtribuicao.setQueryInsert( false );
-		lcAtribuicao.setQueryCommit( false );
-		lcAtribuicao.montaTab();
+		lcAtribuicaoCand.setQueryInsert( false );
+		lcAtribuicaoCand.setQueryCommit( false );
+		lcAtribuicaoCand.montaTab();
+		
+		tabAtribuicao.setTamColuna( 335, 1 );
 		
 		// Fim da aba atribuições
 		
@@ -336,7 +352,7 @@ public class FCandidato extends FTabDados {
 		
 		adicTab( "Funções", panelFuncao ); 
 		
-		setListaCampos( lcFuncao );
+		setListaCampos( lcFuncaoCand );
 		setNavegador( navFuncao );
 		navFuncao.setAtivo( 6, false );
 
@@ -345,13 +361,17 @@ public class FCandidato extends FTabDados {
 		
 		setPainel( panelFuncaoCampos );
 		
-		adicCampo( txtCodFuncaoCand, 7, 20, 90, 20, "CodFunc", "Cód.função", ListaCampos.DB_PK, false );		
-		adicDescFK( txtDescFuncaoCand, 100, 20, 300, 20, "DescFunc", "Descrição da função" );
+		adicCampo( txtSeqFuncaoCand, 7, 20, 40, 20, "SeqCandFunc", "Seq.", ListaCampos.DB_PK, false );
+		adicCampo( txtCodFuncaoCand, 50, 20, 90, 20, "CodFunc", "Cód.função", ListaCampos.DB_PF, txtDescFuncaoCand, false );		
+		adicDescFK( txtDescFuncaoCand, 143, 20, 257, 20, "DescFunc", "Descrição da função" );
 		adic( navFuncao, 0, 50, 270, 25 );		
 		setListaCampos( false, "CANDIDATOFUNC", "RH" );
-		lcFuncao.setQueryInsert( false );
-		lcFuncao.setQueryCommit( false );
-		lcFuncao.montaTab();
+		lcFuncaoCand.setQueryInsert( false );
+		lcFuncaoCand.setQueryCommit( false );
+		lcFuncaoCand.montaTab();
+
+		tabFuncao.setTamColuna( 35, 0 );
+		tabFuncao.setTamColuna( 300, 2 );
 		
 		// Fim da aba atribuições
 	}
@@ -363,5 +383,8 @@ public class FCandidato extends FTabDados {
 		lcCurso.setConexao( cn );
 		lcAtribuicao.setConexao( cn );
 		lcFuncao.setConexao( cn );
+		lcCursoCand.setConexao( cn );
+		lcAtribuicaoCand.setConexao( cn );
+		lcFuncaoCand.setConexao( cn );
 	}
 }
