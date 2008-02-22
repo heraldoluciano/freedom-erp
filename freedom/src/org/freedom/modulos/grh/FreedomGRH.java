@@ -52,7 +52,9 @@ public class FreedomGRH extends AplicativoPD {
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Curso", "Curso", 'u', 100100900, 2, true, FCurso.class );
 			addSeparador( 100100000 );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Estados civis", "Estados civis", 's', 100101000, 2, true, FEstadoCivil.class );
-
+			addSeparador( 100100000 );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Vagas", "Vagas", 'V', 100101100, 2, true, FVaga.class );
+			
 		addBotao( "barraConveniados.gif", "Empregados", "Empregados", 100100500, FEmpregado.class );
 		addBotao( "barraGrupo.gif", "Candidatos", "Candidatos", 100100100, FCandidato.class );
 

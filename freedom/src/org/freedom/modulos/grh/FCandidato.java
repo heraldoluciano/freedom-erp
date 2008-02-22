@@ -263,7 +263,7 @@ public class FCandidato extends FTabDados {
 		adicCampo( txtCodCand, 7, 20, 90, 20, "CodCand", "Cód.candidato", ListaCampos.DB_PK, true );		
 		adicCampo( txtNomeCand, 100, 20, 300, 20, "NomeCand", "Nome do candidato", ListaCampos.DB_SI, true );		
 		adicDB( rgSexo, 7, 60, 393, 30, "SexoCand", "Sexo", false );	
-		adicCampo( txtCPFCand, 7, 110, 195, 20, "CpfCli", "CPF", ListaCampos.DB_SI, false );		
+		adicCampo( txtCPFCand, 7, 110, 195, 20, "CpfCand", "CPF", ListaCampos.DB_SI, false );		
 		adicCampo( txtRGCand, 205, 110, 195, 20, "RgCand", "RG", ListaCampos.DB_SI, false );	
 		adicCampo( txtPISPasepCand, 7, 150, 195, 20, "PISPasepCand", "PIS/Pasep", ListaCampos.DB_SI, false );		
 		adicCampo( txtCTPSCand, 205, 150, 195, 20, "CTPSCand", "CTPS", ListaCampos.DB_SI, false );	
