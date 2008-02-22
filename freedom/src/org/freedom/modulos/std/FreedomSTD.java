@@ -231,6 +231,7 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Codifição de produto", "Codificação de produto", 'P', 700700800, 2, true, FRCodficProd.class );
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Etiquetas de código de barras", "Etiquetas de código de barras", 'E', 700700900, 2, true, FRCodbarProd.class );
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Ultimas compras/produto", "Ultimas compras/produto", 'E', 700701000, 2, true, FRCpProd.class );
+				addOpcao( 700700000, TP_OPCAO_ITEM, "Movimentação de Produto Controlado", "Movimentação de Produto Controlado", 'M', 700702000, 2, true, FRMovProdCont.class );
 				addSeparador( 700000000 );
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Transferencia de produtos ", "Tranferencia de produtos/almoxarifados", 'R', 700800000, 1, true, FTransfEstoque.class );
 		
