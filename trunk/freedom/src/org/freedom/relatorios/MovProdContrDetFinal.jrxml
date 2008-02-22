@@ -59,7 +59,7 @@ and eq.qtdmovprod>0]]></queryString>
 					<reportElement
 						x="13"
 						y="2"
-						width="528"
+						width="520"
 						height="13"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -68,6 +68,51 @@ and eq.qtdmovprod>0]]></queryString>
 					</textElement>
 				<text><![CDATA[PRODUTO FINAL OBTIDO:]]></text>
 				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="15"
+						width="535"
+						height="0"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="1"
+						width="1"
+						height="0"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="535"
+						y="2"
+						width="1"
+						height="14"
+						key="line-15"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="1"
+						width="536"
+						height="0"
+						key="line-18"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="2"
+						width="1"
+						height="14"
+						key="line-19"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -75,12 +120,12 @@ and eq.qtdmovprod>0]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="59"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+			<band height="60"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="92"
 						y="2"
-						width="167"
+						width="252"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -107,11 +152,11 @@ and eq.qtdmovprod>0]]></queryString>
 					</textElement>
 				<text><![CDATA[Produto:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="92"
 						y="16"
-						width="167"
+						width="252"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -138,11 +183,11 @@ and eq.qtdmovprod>0]]></queryString>
 					</textElement>
 				<text><![CDATA[Densidade:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="92"
 						y="30"
-						width="167"
+						width="252"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -169,11 +214,11 @@ and eq.qtdmovprod>0]]></queryString>
 					</textElement>
 				<text><![CDATA[Qdade:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="92"
 						y="44"
-						width="167"
+						width="252"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -200,24 +245,24 @@ and eq.qtdmovprod>0]]></queryString>
 					</textElement>
 				<text><![CDATA[Concentração Final:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="270"
-						y="25"
+						x="373"
+						y="30"
 						width="35"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{FORMULA}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
-						x="266"
+						x="371"
 						y="2"
 						width="42"
 						height="11"
@@ -231,26 +276,26 @@ and eq.qtdmovprod>0]]></queryString>
 					</textElement>
 				<text><![CDATA[% Fórmula]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00;#,##0.00-" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;#,##0.00-" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="329"
-						y="25"
-						width="46"
+						x="432"
+						y="30"
+						width="78"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right">
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDMOVPROD}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
-						x="317"
-						y="2"
-						width="72"
+						x="432"
+						y="3"
+						width="78"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -262,6 +307,96 @@ and eq.qtdmovprod>0]]></queryString>
 					</textElement>
 				<text><![CDATA[Qdade. Utilizada:]]></text>
 				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="423"
+						y="0"
+						width="0"
+						height="59"
+						key="line-5"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="535"
+						y="0"
+						width="1"
+						height="59"
+						key="line-6"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="353"
+						y="0"
+						width="0"
+						height="59"
+						key="line-7"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="14"
+						width="536"
+						height="0"
+						key="line-9"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="28"
+						width="353"
+						height="0"
+						key="line-10"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="42"
+						width="353"
+						height="0"
+						key="line-11"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="90"
+						y="0"
+						width="0"
+						height="59"
+						key="line-12"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="1"
+						height="59"
+						key="line-13"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="58"
+						width="1"
+						height="0"
+						key="line-16"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="59"
+						width="535"
+						height="0"
+						key="line-17"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</detail>
 		<columnFooter>
