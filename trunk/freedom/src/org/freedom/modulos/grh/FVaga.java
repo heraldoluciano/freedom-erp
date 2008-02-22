@@ -34,6 +34,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
 public class FVaga extends FTabDados {
@@ -65,10 +66,10 @@ public class FVaga extends FTabDados {
 	private final JTextFieldPad txtCodTurnoVaga = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );	
 	
 	private final JTextFieldFK txtDescTurnoVaga = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
-			
-	private final JTextFieldPad txtFaixaSalIni = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+				
+	private final JTextFieldPad txtFaixaSalIni = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 	
-	private final JTextFieldPad txtFaixaSalFim = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtFaixaSalFim = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 	
 	private final JTextFieldPad txtCodCursoVaga = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 	
@@ -126,7 +127,7 @@ public class FVaga extends FTabDados {
 
 		super( false );
 		setTitulo( "Cadastro de Vagas" );
-		setAtribos( 50, 50, 550, 400 );
+		setAtribos( 50, 50, 550, 270 );
 		
 		lcVagaAtribuicaoQ.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcVagaAtribuicaoQ );
@@ -213,16 +214,16 @@ public class FVaga extends FTabDados {
 		adicCampo( txtCodVaga, 7, 20, 90, 20, "CodVaga", "Cód.Vaga", ListaCampos.DB_PK, true );		
 		
 		adicCampo( txtCodEmpr, 100, 20, 87, 20, "CodEmpr", "Cód.Empreg.", ListaCampos.DB_FK, txtNomeEmpr, true );		
-		adicDescFK( txtNomeEmpr, 190, 20, 300, 20, "NomeEmpr", "Nome do empregador" );
+		adicDescFK( txtNomeEmpr, 190, 20, 330, 20, "NomeEmpr", "Nome do empregador" );
 		
 		adicCampo( txtCodFuncaoVaga, 7, 60, 90, 20, "CodFunc", "Cód.Função", ListaCampos.DB_FK, txtDescFuncaoVaga, true );		
-		adicDescFK( txtDescFuncaoVaga, 100, 60, 300, 20, "DescFunc", "Nome da função" );
+		adicDescFK( txtDescFuncaoVaga, 100, 60, 420, 20, "DescFunc", "Nome da função" );
 		
 		adicCampo( txtCodTurnoVaga, 7, 100, 90, 20, "CodTurno", "Cód.Turno", ListaCampos.DB_FK, txtDescTurnoVaga, true );		
-		adicDescFK( txtDescTurnoVaga, 100, 100, 300, 20, "DescTurno", "Descrição do turno" );			
+		adicDescFK( txtDescTurnoVaga, 100, 100, 420, 20, "DescTurno", "Descrição do turno" );			
 
-		adicCampo( txtFaixaSalIni, 7, 140, 150, 20, "FaixaSalIni", "Inicial", ListaCampos.DB_SI, false );		
-		adicCampo( txtFaixaSalFim, 160, 140, 150, 20, "FaixaSalFim", "Final", ListaCampos.DB_SI, false );
+		adicCampo( txtFaixaSalIni, 7, 140, 150, 20, "FaixaSalIni", "Salário inicial", ListaCampos.DB_SI, false );		
+		adicCampo( txtFaixaSalFim, 160, 140, 150, 20, "FaixaSalFim", "Salário final", ListaCampos.DB_SI, false );
 				
 		// Fim da aba geral
 						

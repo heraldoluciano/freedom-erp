@@ -55,8 +55,12 @@ public class FreedomGRH extends AplicativoPD {
 			addSeparador( 100100000 );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Vagas", "Vagas", 'V', 100101100, 2, true, FVaga.class );
 			
+		addBotao( "btForneced.gif", "Empregadores", "Empregadores", 100100600, FEmpregadores.class );
 		addBotao( "barraConveniados.gif", "Empregados", "Empregados", 100100500, FEmpregado.class );
 		addBotao( "barraGrupo.gif", "Candidatos", "Candidatos", 100100100, FCandidato.class );
+		addBotao( "btTarefas.gif", "Cursos", "Cursos", 100100900, FCurso.class );
+		addBotao( "btNovo.gif", "Vagas", "Vagas", 100101100, FVaga.class );
+		
 
 		ajustaMenu();
 
