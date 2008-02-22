@@ -269,14 +269,14 @@ public class FCandidato extends FTabDados {
 		adicCampo( txtCTPSCand, 205, 150, 195, 20, "CTPSCand", "CTPS", ListaCampos.DB_SI, false );	
 		adicCampo( txtSSPCand, 7, 190, 90, 20, "SSPCand", "SSP", ListaCampos.DB_SI, false );		
 		adicCampo( txtTituloCand, 100, 190, 150, 20, "TitEleitCand", "Titulo de eleitor", ListaCampos.DB_SI, false );	
-		adicCampo( txtPretensaoCand, 253, 190, 147, 20, "PretensaoSal", "Pretensão", ListaCampos.DB_SI, false );		
+		adicCampo( txtPretensaoCand, 253, 190, 147, 20, "PretensaoSal", "Pretensão salarial", ListaCampos.DB_SI, false );		
 		adicCampo( txtCodEstCivilCand, 7, 230, 90, 20, "CodEstCivil", "Cód.est.cívil", ListaCampos.DB_FK, txtDescEstCivilCand, false );		
 		adicDescFK( txtDescEstCivilCand, 100, 230, 300, 20, "DescEstCivil", "Descrição do estado cívil" );			
 		adicCampo( txtEndCand, 7, 270, 323, 20, "EndCand", "Endereço", ListaCampos.DB_SI, false );		
 		adicCampo( txtNumCand, 333, 270, 67, 20, "NumCand", "Número", ListaCampos.DB_SI, false );		
 		adicCampo( txtBairroCand, 7, 310, 145, 20, "BairCand", "Bairro", ListaCampos.DB_SI, false );		
-		adicCampo( txtCidCand, 155, 310, 175, 20, "CidCand", "Cidade", ListaCampos.DB_SI, false );		
-		//adicCampo( txtUfCand, 303, 310, 27, 20, "UfCand", "UF", ListaCampos.DB_SI, false );		
+		adicCampo( txtCidCand, 155, 310, 145, 20, "CidCand", "Cidade", ListaCampos.DB_SI, false );		
+		adicCampo( txtUfCand, 303, 310, 27, 20, "UfCand", "UF", ListaCampos.DB_SI, false );		
 		adicCampo( txtCepCand, 333, 310, 67, 20, "CepCand", "CEP", ListaCampos.DB_SI, false );
 		adicCampo( txtDDDCand, 7, 350, 60, 20, "DDDCand", "DDD", ListaCampos.DB_SI, false );		
 		adicCampo( txtFoneCand, 70, 350, 117, 20, "FoneCand", "Fone", ListaCampos.DB_SI, false );	
