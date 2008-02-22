@@ -1,6 +1,7 @@
 package org.freedom.modulos.std;
 
 
+import java.sql.Connection;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
@@ -8,7 +9,9 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
@@ -24,12 +27,19 @@ public class FRMovProdCont extends FRelatorio {
 	
 	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	
+	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+
+	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private ListaCampos lcProduto = new ListaCampos( this );
+	
 	public FRMovProdCont(){
 		
 		setTitulo(" Relatório de Movimentação Produto Controlado ");
-		setAtribos( 50, 50, 345, 150 );
+		setAtribos( 50, 50, 345, 200 );
 		
 		montaTela();
+		montaListaCampos();
 	}
 	private void montaTela(){
 		
@@ -45,6 +55,10 @@ public class FRMovProdCont extends FRelatorio {
 		adic( txtDataini, 40, 25, 97, 20 );
 		adic( new JLabelPad("Até:"), 152, 25, 37, 20 );
 		adic( txtDatafim, 190 ,25, 100, 20 );
+		adic( new JLabelPad("Cód.Prod"), 5, 55, 70, 20 );
+		adic( txtCodProd, 5, 75, 70, 20 );
+		adic( new JLabelPad("Descrição do produto"), 78, 55, 200, 20 );
+		adic( txtDescProd, 78, 75, 225, 20 );
 	}
 
 	public void imprimiGrafico(  final boolean bVisualizar,  String sCab ) {
@@ -59,6 +73,7 @@ public class FRMovProdCont extends FRelatorio {
 		hParam.put( "FILTROS", sCab );
 		hParam.put( "DATAINI", txtDataini.getVlrDate()  );
 		hParam.put( "DATAFIM", txtDatafim.getVlrDate() );
+		hParam.put( "CODPROD", txtCodProd.getVlrInteger() );
 		
 		dlGr = new FPrinterJob( "relatorios/MovProdContr.jasper", "Relatório de Movimentação Produto Controlado", sCab, this, hParam, con ); 
 
@@ -74,6 +89,17 @@ public class FRMovProdCont extends FRelatorio {
 		}
 	}
 
+	private void montaListaCampos(){
+		
+		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.produto", ListaCampos.DB_PK, true ) );
+		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		txtCodProd.setTabelaExterna( lcProduto );
+		txtCodProd.setNomeCampo( "CodProd" );
+		txtCodProd.setFK( true );
+		lcProduto.setReadOnly( true );
+		lcProduto.montaSql( false, "PRODUTO", "EQ" );
+	}
+	
 	public void imprimir( boolean b ) {
 
 		String sCab = "";
@@ -83,4 +109,9 @@ public class FRMovProdCont extends FRelatorio {
 		imprimiGrafico( true,  sCab );
 	}
 
+	public void setConexao(Connection cn) {
+		
+		super.setConexao( cn );
+		lcProduto.setConexao( cn );
+	}
 }
