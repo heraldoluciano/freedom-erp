@@ -106,7 +106,7 @@ public class FRMovProdCont extends FRelatorio {
 
 		sCab = "Relatório de Movimentação de Produto" + "\n" + "Policia federal CPQ-DPF" ;
 		
-		imprimiGrafico( true,  sCab );
+		imprimiGrafico( b,  sCab );
 	}
 
 	public void setConexao(Connection cn) {
