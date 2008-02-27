@@ -685,9 +685,9 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 			
 			if ( rs.next() ) {
 				
-				txtVlrTotCompr.setVlrString( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( 1 ) ) );
-				txtVlrTotPago.setVlrString( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( 2 ) ) );
-				txtVlrTotAberto.setVlrString( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( 3 ) ) );
+				txtVlrTotCompr.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( 1 ) ) );
+				txtVlrTotPago.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( 2 ) ) );
+				txtVlrTotAberto.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( 3 ) ) );
 				txtPrimCompr.setVlrString( rs.getDate( 4 ) == null ? "" : Funcoes.sqlDateToStrDate( rs.getDate( 4 ) ) );
 				txtUltCompr.setVlrString( rs.getDate( 5 ) == null ? "" : Funcoes.sqlDateToStrDate( rs.getDate( 5 ) ) );
 			}
@@ -831,9 +831,9 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 				tabConsulta.setValor( rs.getString( "DocPag" ) == null ? "" : rs.getString( "DocPag" ), i, 3 );
 				tabConsulta.setValor( String.valueOf( rs.getInt( "CodCompra" ) ), i, 4 );
 				tabConsulta.setValor( rs.getDate( "DataPag" ) == null ? "" : Funcoes.sqlDateToStrDate( rs.getDate( "DataPag" ) ), i, 5 );
-				tabConsulta.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrParcItPag" ) ), i, 6 );
+				tabConsulta.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrParcItPag" ) ), i, 6 );
 				tabConsulta.setValor( rs.getDate( "DtPagoItPag" ) == null ? "" : Funcoes.sqlDateToStrDate( rs.getDate( "DtPagoItPag" ) ), i, 7 );
-				tabConsulta.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrPagoItPag" ) ), i, 8 );
+				tabConsulta.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrPagoItPag" ) ), i, 8 );
 				tabConsulta.setValor( new Integer( rs.getInt( 9 ) ), i, 9 );
 				tabConsulta.setValor( rs.getString( "ObsPag" ) == null ? "" : rs.getString( "ObsPag" ), i, 10 );
 				tabConsulta.setValor( rs.getString( 11 ) == null ? "" : rs.getString( 11 ), i, 11 );
@@ -920,10 +920,10 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 				tabBaixa.setValor( String.valueOf( rs.getInt( "CodCompra" ) ), i, 4 );
 				tabBaixa.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrParcItPag" ) ), i, 5 );
 				tabBaixa.setValor( rs.getDate( "DtPagoItPag" ) == null ? "" : Funcoes.sqlDateToStrDate( rs.getDate( "DtPagoItPag" ) ), i, 6 );
-				tabBaixa.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrPagoItPag" ) ), i, 7 );
-				tabBaixa.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrDescItPag" ) ), i, 8 );
-				tabBaixa.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrJurosItPag" ) ), i, 9 );
-				tabBaixa.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrApagItPag" ) ), i, 10 );
+				tabBaixa.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrPagoItPag" ) ), i, 7 );
+				tabBaixa.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrDescItPag" ) ), i, 8 );
+				tabBaixa.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrJurosItPag" ) ), i, 9 );
+				tabBaixa.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrApagItPag" ) ), i, 10 );
 				tabBaixa.setValor( rs.getString( 12 ) == null ? "" : rs.getString( 12 ), i, 11 );
 				tabBaixa.setValor( rs.getString( 14 ) == null ? "" : rs.getString( 14 ), i, 12 );
 				tabBaixa.setValor( rs.getString( 16 ) == null ? "" : rs.getString( 16 ), i, 13 );
@@ -1093,13 +1093,13 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 						tabManut.setValor( ( rs.getString( "DocLancaItPag" ) != null ? rs.getString( "DocLancaItPag" ) : 
 							( rs.getString( "DocPag" ) != null ? rs.getString( "DocPag" ) + "/" + rs.getString( "NParcPag" ) : "" ) ), i, 7 );
 						tabManut.setValor( Funcoes.copy( rs.getString( 23 ), 0, 10 ).trim(), i, 8 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrParcItPag" ) ), i, 9 );
+						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrParcItPag" ) ), i, 9 );
 						tabManut.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DtPagoItPag" ) ), i, 10 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrPagoItPag" ) ), i, 11 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrDescItPag" ) ), i, 12 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrJurosItPag" ) ), i, 13 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrAdicItPag" ) ), i, 14 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrApagItPag" ) ), i, 15 );
+						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrPagoItPag" ) ), i, 11 );
+						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrDescItPag" ) ), i, 12 );
+						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrJurosItPag" ) ), i, 13 );
+						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrAdicItPag" ) ), i, 14 );
+						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrApagItPag" ) ), i, 15 );
 						tabManut.setValor( rs.getString( 13 ) != null ? rs.getString( 13 ) : "", i, 16 );
 						tabManut.setValor( rs.getString( 17 ) != null ? rs.getString( 17 ) : "", i, 17 );
 						tabManut.setValor( rs.getString( 19 ) != null ? rs.getString( 19 ) : "", i, 18 );
