@@ -23,11 +23,16 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
+	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="CODPROD" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="DATAINI" isForPrompting="false" class="java.util.Date"/>
+	<parameter name="DATAFIM" isForPrompting="false" class="java.util.Date"/>
 	<queryString><![CDATA[SELECT eq.codemp,pd.descprod,pd.vlrdensidade,pd.vlrconcent,
  EQ.qtdmovprod,op.qtdfinalprodop, qtdmovprod/qtdfinalprodop * 100 as formula
 FROM eqmovprod EQ,
  eqtipomov tm, eqitrma itr, eqrma rma,  ppop op, eqproduto pd
-WHERE eq.codemp=7 and eq.codfilial=1 and eq.codprod=1 AND EQ.dtmovprod BETWEEN '2005-11-01' AND '2005-11-30'
+WHERE eq.codemp=$P{CODEMP} and eq.codfilial=$P{CODFILIAL} and eq.codprod=$P{CODPROD} AND EQ.dtmovprod BETWEEN $P{DATAINI} AND $P{DATAFIM}
 and tm.codemp=eq.codemptm and tm.codfilial=eq.codfilialtm and tm.codtipomov=eq.codtipomov
 and tm.tipomov='RM'
 and itr.codemp=eq.codemprm and itr.codfilial=eq.codfilialrm and itr.coditrma=eq.coditrma
@@ -120,7 +125,7 @@ and eq.qtdmovprod>0]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="60"  isSplitAllowed="true" >
+			<band height="64"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="92"
