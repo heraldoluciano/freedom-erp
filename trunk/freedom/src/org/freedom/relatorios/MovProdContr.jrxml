@@ -27,20 +27,21 @@
 		<defaultValueExpression ><![CDATA["C:/opt/eclipse/workspace/freedom/src/org/freedom/relatorios/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="DATAINI" isForPrompting="false" class="java.util.Date"/>
-	<parameter name="DATAFIM" isForPrompting="false" class="java.util.Date"/>
-	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer"/>
-	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer"/>
-	<parameter name="CODPROD" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="DATAINI" isForPrompting="true" class="java.util.Date"/>
+	<parameter name="DATAFIM" isForPrompting="true" class="java.util.Date"/>
+	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer"/>
+	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer"/>
+	<parameter name="CODPROD" isForPrompting="true" class="java.lang.Integer"/>
+	<parameter name="DATAANT" isForPrompting="true" class="java.util.Date"/>
 	<queryString><![CDATA[select PD.descprod, PD.vlrdensidade, PD.vlrconcent, UN.descunid,
 (select sldprod from eqcustoprodsp(PD.CODEMP,PD.CODFILIAL,PD.codprod,
-   $P{DATAFIM},'P',PD.codempax,PD.codfilialax,PD.codalmox,'S') ) as saldoant,
+   $P{DATAANT},'P',PD.codempax,PD.codfilialax,PD.codalmox,'S') ) as saldoant,
 (SELECT sum(EQ.qtdmovprod) FROM eqmovprod EQ, eqtipomov tm
-WHERE EQ.codprod=11 AND EQ.dtmovprod BETWEEN $P{DATAINI} AND $P{DATAFIM}
+WHERE EQ.codprod=$P{CODPROD} AND EQ.dtmovprod BETWEEN $P{DATAINI} AND $P{DATAFIM}
 and tm.codemp=eq.codemptm and tm.codfilial=eq.codfilialtm and tm.codtipomov=eq.codtipomov
 and tm.tipomov='RM') as utilizacao ,
 (SELECT sum(EQ.qtdmovprod) FROM eqmovprod EQ, eqtipomov tm
-WHERE EQ.codprod=11 AND EQ.dtmovprod BETWEEN $P{DATAINI} AND $P{DATAFIM}
+WHERE EQ.codprod=$P{CODPROD} AND EQ.dtmovprod BETWEEN $P{DATAINI} AND $P{DATAFIM}
 and tm.codemp=eq.codemptm and tm.codfilial=eq.codfilialtm and tm.codtipomov=eq.codtipomov
 and tm.tipomov='CP') as compras,
 (select sldprod from eqcustoprodsp(PD.CODEMP,PD.CODFILIAL,PD.codprod,
@@ -429,6 +430,21 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 						height="36"
 						key="subreport-1"
 						stretchType="RelativeToBandHeight"/>
+					<subreportParameter  name="CODEMP">
+						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODFILIAL">
+						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODPROD">
+						<subreportParameterExpression><![CDATA[$P{CODPROD}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="DATAINI">
+						<subreportParameterExpression><![CDATA[$P{DATAINI}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="DATAFIM">
+						<subreportParameterExpression><![CDATA[$P{DATAFIM}]]></subreportParameterExpression>
+					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "MovProdContrDetCP.jasper"]]></subreportExpression>
 				</subreport>
@@ -451,6 +467,21 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 						height="33"
 						key="subreport-2"
 						stretchType="RelativeToBandHeight"/>
+					<subreportParameter  name="CODEMP">
+						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODFILIAL">
+						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODPROD">
+						<subreportParameterExpression><![CDATA[$P{CODPROD}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="DATAINI">
+						<subreportParameterExpression><![CDATA[$P{DATAINI}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="DATAFIM">
+						<subreportParameterExpression><![CDATA[$P{DATAFIM}]]></subreportParameterExpression>
+					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "MovProdContrDetFinal.jasper"]]></subreportExpression>
 				</subreport>

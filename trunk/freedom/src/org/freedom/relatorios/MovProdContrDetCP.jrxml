@@ -23,10 +23,15 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
+	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer"/>
+	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer"/>
+	<parameter name="CODPROD" isForPrompting="true" class="java.lang.Integer"/>
+	<parameter name="DATAINI" isForPrompting="true" class="java.util.Date"/>
+	<parameter name="DATAFIM" isForPrompting="true" class="java.util.Date"/>
 	<queryString><![CDATA[SELECT fr.cnpjfor,tr.cnpjtran, extract(day from eq.dtmovprod) as diacompra,eq.codnat,EQ.qtdmovprod,eq.docmovprod
 FROM eqmovprod EQ, eqtipomov tm,cpforneced fr,cpcompra cp left outer join vdtransp tr on
 tr.codemp=cp.codemptn and tr.codfilial=cp.codfilialtn and tr.codtran=cp.codtran
-WHERE eq.codemp=7 and eq.codfilial=1 and EQ.codprod=1 AND EQ.dtmovprod BETWEEN '2005-11-01' AND '2005-12-30'
+WHERE eq.codemp=$P{CODEMP} and eq.codfilial=$P{CODFILIAL} and EQ.codprod=$P{CODPROD} AND EQ.dtmovprod BETWEEN $P{DATAINI} AND $P{DATAFIM}
 and tm.codemp=eq.codemptm and tm.codfilial=eq.codfilialtm and tm.codtipomov=eq.codtipomov
 and tm.tipomov='CP'
 and cp.codemp=eq.codempcp and cp.codfilial=eq.codfilialcp and cp.codcompra=eq.codcompra
