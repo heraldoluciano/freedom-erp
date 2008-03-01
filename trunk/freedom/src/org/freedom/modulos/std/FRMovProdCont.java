@@ -2,6 +2,9 @@ package org.freedom.modulos.std;
 
 
 import java.sql.Connection;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
@@ -62,15 +65,20 @@ public class FRMovProdCont extends FRelatorio {
 	}
 
 	public void imprimiGrafico(  final boolean bVisualizar,  String sCab ) {
-
+		GregorianCalendar gcAnterior = new GregorianCalendar();
+		Date dtAnterior = null;
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
-		
+
+		gcAnterior.setTime(txtDataini.getVlrDate());
+		gcAnterior.set( Calendar.DAY_OF_MONTH, ( gcAnterior.get( Calendar.DAY_OF_MONTH ) - 1 ) );
+		dtAnterior = gcAnterior.getTime();
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
 		hParam.put( "FILTROS", sCab );
+		hParam.put( "DATAANT", dtAnterior );
 		hParam.put( "DATAINI", txtDataini.getVlrDate()  );
 		hParam.put( "DATAFIM", txtDatafim.getVlrDate() );
 		hParam.put( "CODPROD", txtCodProd.getVlrInteger() );
