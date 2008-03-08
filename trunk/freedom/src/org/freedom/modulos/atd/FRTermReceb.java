@@ -26,10 +26,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Map;
-
-import javax.crypto.spec.PSource;
-
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
