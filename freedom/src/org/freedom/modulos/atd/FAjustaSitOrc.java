@@ -22,9 +22,6 @@
 
 package org.freedom.modulos.atd;
 
-import org.freedom.telas.FDados;
-
-
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.util.Vector;
@@ -32,12 +29,11 @@ import java.util.Vector;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Navegador;
+import org.freedom.telas.FDados;
 
 
 public class FAjustaSitOrc extends FDados implements ActionListener, CarregaListener {

@@ -14,7 +14,7 @@ public class ECFDarumaTest extends TestCase {
 
 	public void testComandosDeInicializacao() {
 
-		ECFDaruma ecf = new ECFDaruma( "COM1" );
+		//ECFDaruma ecf = new ECFDaruma( "COM1" );
 		/*
 		assertTrue( trataRetornoFuncao( ecf.alteraSimboloMoeda( "R" ) ) );
 
@@ -114,7 +114,7 @@ public class ECFDarumaTest extends TestCase {
 	
 	public void testComandosDeOperacoesNaoFiscais() {
 
-		ECFDaruma ecf = new ECFDaruma( "COM1" );
+		//ECFDaruma ecf = new ECFDaruma( "COM1" );
 		
 		/*System.out.print( "relatorioGerencial > " ); 
 		assertTrue( trataRetornoFuncao( ecf.relatorioGerencial( 
@@ -150,7 +150,7 @@ public class ECFDarumaTest extends TestCase {
 	
 	public void testComandosDeAutenticacao() {
 		
-		ECFDaruma ecf = new ECFDaruma( "COM1" );
+		//ECFDaruma ecf = new ECFDaruma( "COM1" );
 		
 		System.out.print( "programaCaracterParaAutenticacao > " ); 
 		/*int [] sesc = {143,137,137,249,0,255,137,137,137,0,143,137,137,249,0,255,129,129 };

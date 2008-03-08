@@ -29,6 +29,7 @@ import org.freedom.layout.componentes.Layout;
 
 public class NF04 extends Layout {
 	
+	@SuppressWarnings("unchecked")
 	public boolean imprimir(NF nf,ImprimeOS imp) {
 	
 		boolean retorno = super.imprimir(nf, imp);

@@ -26,14 +26,12 @@ package org.freedom.modulos.atd;
 
 import java.sql.Connection;
 
-import javax.swing.JScrollPane;
-
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FTabDados;
 
 public class FPrefereAtend extends FTabDados {

@@ -165,10 +165,6 @@ public enum EStatus {
 	private int relevanc;
 	
 
-	EStatus( final String message ) {
-		this.message = message;
-	}
-	
 	EStatus( final int code, final String message ) {
 		this.code = code;
 		this.message = message;

@@ -140,7 +140,7 @@ public class ControlTest extends TestCase {
 	
 	public void testVerificaEstado() {
 
-		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
+		//ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
 		
 		System.out.print( "verifica estado da impressora > " );
 		String tmp = null;
