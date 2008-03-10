@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="GraficoReceberPeriodo"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Landscape"
+		 pageWidth="842"
+		 pageHeight="595"
+		 columnWidth="782"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="2" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<subDataset name="RECEBIMENTOS" >
+
+		<parameter name="DTINI" isForPrompting="false" class="java.util.Date">
+			<defaultValueExpression ><![CDATA[new java.util.Date()]]></defaultValueExpression>
+		</parameter>
+		<parameter name="DTFIM" isForPrompting="false" class="java.util.Date">
+			<defaultValueExpression ><![CDATA[new java.util.Date()]]></defaultValueExpression>
+		</parameter>
+		<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
+			<defaultValueExpression ><![CDATA[new Integer("4")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Short">
+			<defaultValueExpression ><![CDATA[new Short("1")]]></defaultValueExpression>
+		</parameter>
+		<parameter name="TOTAL" isForPrompting="false" class="java.math.BigDecimal">
+			<defaultValueExpression ><![CDATA[new BigDecimal("0.00")]]></defaultValueExpression>
+		</parameter>
+		<queryString><![CDATA[SELECT
+  SUM( IR.VLRITREC ) AS VALOR,
+  ((IR.DTVENCITREC-IR.DTITREC)/30)*30 AS PERIODO
+FROM
+  FNITRECEBER IR
+WHERE
+  IR.CODEMP=$P{CODEMP} AND IR.CODFILIAL=$P{CODFILIAL} AND
+  IR.DTITREC BETWEEN $P{DTINI} AND $P{DTFIM}
+GROUP BY
+  2
+ORDER BY
+  2]]></queryString>
+
+		<field name="VALOR" class="java.math.BigDecimal"/>
+		<field name="PERIODO" class="java.lang.Long"/>
+
+	</subDataset>
+
+	<parameter name="DTINI" isForPrompting="true" class="java.util.Date">
+		<defaultValueExpression ><![CDATA[new java.util.Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DTFIM" isForPrompting="true" class="java.util.Date">
+		<defaultValueExpression ><![CDATA[new java.util.Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer("4")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Short">
+		<defaultValueExpression ><![CDATA[new Short("1")]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[SELECT
+  SUM( IR.VLRITREC ) AS TOTAL
+FROM
+  FNITRECEBER IR
+WHERE
+  IR.CODEMP=$P{CODEMP} AND IR.CODFILIAL=$P{CODFILIAL} AND
+  IR.DTITREC BETWEEN $P{DTINI} AND $P{DTFIM}]]></queryString>
+
+	<field name="TOTAL" class="java.math.BigDecimal"/>
+
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="50"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="500"  isSplitAllowed="true" >
+				<stackedBar3DChart>
+					<chart  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="0"
+						width="782"
+						height="500"
+						key="element-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+						<chartLegend textColor="#000000" backgroundColor="#FFFFFF" >
+					</chartLegend>
+					</chart>
+					<categoryDataset>
+						<dataset >
+							<datasetRun subDataset="RECEBIMENTOS">
+								<datasetParameter  name="DTINI">
+									<datasetParameterExpression><![CDATA[$P{DTINI}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter  name="DTFIM">
+									<datasetParameterExpression><![CDATA[$P{DTFIM}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter  name="TOTAL">
+									<datasetParameterExpression><![CDATA[$F{TOTAL}]]></datasetParameterExpression>
+								</datasetParameter>
+								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							</datasetRun>
+						</dataset>
+						<categorySeries>
+							<seriesExpression><![CDATA[$F{PERIODO}]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{PERIODO}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{VALOR}]]></valueExpression>
+							<labelExpression><![CDATA[$F{VALOR}.setScale( 2, BigDecimal.ROUND_HALF_UP ).toString() + 
+" - " +
+($F{VALOR}.multiply(new BigDecimal("100.00")).divide($P{TOTAL})).setScale( 2, BigDecimal.ROUND_HALF_UP ).toString() + 
+"%"]]></labelExpression>
+				<itemHyperlink >
+				</itemHyperlink>
+						</categorySeries>
+					</categoryDataset>
+					<bar3DPlot isShowLabels="true" yOffset="7.0" >
+						<plot orientation="Horizontal" backgroundAlpha="0.5" foregroundAlpha="1.0" labelRotation="1.0" />
+						<categoryAxisFormat>
+							<axisFormat labelColor="#000066" >
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</valueAxisFormat>
+					</bar3DPlot>
+				</stackedBar3DChart>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>
