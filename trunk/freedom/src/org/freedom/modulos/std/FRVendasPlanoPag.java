@@ -54,35 +54,43 @@ public class FRVendasPlanoPag extends FRelatorio {
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JCheckBoxPad cbDesc = new JCheckBoxPad( "Ordenar decrescente ?", "S", "N" );
+	private JCheckBoxPad cbDesc = new JCheckBoxPad( "Ordenar decrescente ?", "DESC", "" );
 
-	private JRadioGroup<?, ?> rgOrdem = null;
+	private JRadioGroup<String, String> rgOrdem = null;
 
-	private JRadioGroup<?, ?> rgFaturados = null;
+	private JRadioGroup<String, String> rgFaturados = null;
 
-	private JRadioGroup<?, ?> rgFinanceiro = null;
+	private JRadioGroup<String, String> rgFinanceiro = null;
 
 	public FRVendasPlanoPag() {
 
+		super( false );
 		setTitulo( "Vendas por plano de pagamento" );
-		setAtribos( 80, 80, 340, 340 );
+		setAtribos( 80, 80, 330, 310 );
+
+		montaRadioGrups();
+		montaTela();
 
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 
-		
+		cbDesc.setVlrString( "DESC" );
+	}
+
+	private void montaRadioGrups() {
+
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
 
 		vLabs.addElement( "Plano de pagamento" );
 		vLabs.addElement( "Valor" );
-		vVals.addElement( "P" );
-		vVals.addElement( "V" );
+		vVals.addElement( "P.CODPLANOPAG" );
+		vVals.addElement( "3" );
 
 		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
-		rgOrdem.setVlrString( "V" );
+		rgOrdem.setVlrString( "3" );
 
 		Vector<String> vLabs2 = new Vector<String>();
 		Vector<String> vVals2 = new Vector<String>();
@@ -107,31 +115,30 @@ public class FRVendasPlanoPag extends FRelatorio {
 		vVals3.addElement( "A" );
 		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabs3, vVals3 );
 		rgFinanceiro.setVlrString( "S" );
+	}
 
-		cbDesc.setVlrString( "S" );
+	private void montaTela() {
 
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
-		JLabelPad lbPeriodo = new JLabelPad( "Periodo:" , SwingConstants.CENTER );
+		JLabelPad lbPeriodo = new JLabelPad( "Periodo:", SwingConstants.CENTER );
 		lbPeriodo.setOpaque( true );
-		
-		adic( lbPeriodo,7, 1, 80, 20 );
-		adic( lbLinha,5, 10, 300, 45 );
-		
-		adic( new JLabelPad("De:"), 10, 25, 30, 20 );
-		adic( txtDataini, 40, 25, 97, 20 );
-		adic( new JLabelPad("Até:"), 152, 25, 37, 20 );
-		adic( txtDatafim, 190 ,25, 100, 20 );
-		adic( new JLabelPad( "Ordem" ), 7, 60, 50, 20 );
-		adic( rgOrdem, 7, 80, 300, 30 );
-		adic( cbDesc, 7, 120, 250, 20 );
-		adic( rgFaturados, 7, 150, 145, 70 );
-		adic( rgFinanceiro, 160, 150, 145, 70 );
 
+		adic( lbPeriodo, 17, 10, 80, 20 );
+		adic( lbLinha, 7, 20, 300, 45 );
+
+		adic( txtDataini, 17, 35, 125, 20 );
+		adic( new JLabelPad( "à", SwingConstants.CENTER ), 142, 35, 30, 20 );
+		adic( txtDatafim, 172, 35, 125, 20 );
+		adic( new JLabelPad( "Ordem" ), 7, 70, 50, 20 );
+		adic( rgOrdem, 7, 90, 300, 30 );
+		adic( cbDesc, 7, 125, 300, 20 );
+		adic( rgFaturados, 7, 160, 145, 70 );
+		adic( rgFinanceiro, 160, 160, 145, 70 );
 	}
 
 	public void imprimir( boolean bVisualizar ) {
-		
+
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
@@ -141,12 +148,11 @@ public class FRVendasPlanoPag extends FRelatorio {
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
 		StringBuffer sCab = new StringBuffer();
-		String sOrdem = "";
 		String sWhere1 = null;
 		String sWhere2 = null;
 
 		try {
-			
+
 			if ( rgFaturados.getVlrString().equals( "S" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
 				sCab.append( "FATURADO" );
@@ -180,39 +186,31 @@ public class FRVendasPlanoPag extends FRelatorio {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
 			}
 
- 			//if ( rgOrdem.getVlrString().equals( "P" ) ) {
-			//	sOrdem = "S".equals( cbDesc.getVlrString() ) ? "C.RAZCLI DESC, V.CODCLI DESC, C.FONECLI DESC" : "C.RAZCLI, V.CODCLI, C.FONECLI";
-			//}
-			//else if ( rgOrdem.getVlrString().equals( "V" ) ) {
-			//	sOrdem = "S".equals( cbDesc.getVlrString() ) ? "5 DESC" : "5";
-			//}
-
-			
 			sSQL.append( "SELECT P.CODPLANOPAG, P.DESCPLANOPAG, SUM( V.VLRLIQVENDA ) AS VALORVD " );
-			sSQL.append( "FROM FNPLANOPAG P, VDVENDA V, EQTIPOMOV TM  " );
+			sSQL.append( "FROM FNPLANOPAG P, VDVENDA V, EQTIPOMOV TM " );
 			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND P.CODPLANOPAG=V.CODPLANOPAG AND " );
 			sSQL.append( "V.CODEMPPG=P.CODEMP AND V.CODFILIALPG=P.CODFILIAL AND " );
 			sSQL.append( "V.CODEMPTM=TM.CODEMP AND V.CODFILIALTM=TM.CODFILIAL AND V.CODTIPOMOV=TM.CODTIPOMOV AND " );
-			sSQL.append( "NOT SUBSTR(V.STATUSVENDA,1,1)='C' AND " );	
-			sSQL.append( "P.CODFILIALPN=V.CODFILIAL AND V.DTEMITVENDA BETWEEN ? AND ? " );
+			sSQL.append( "NOT SUBSTR(V.STATUSVENDA,1,1)='C' AND " );
+			sSQL.append( "V.DTEMITVENDA BETWEEN ? AND ? " );
 			sSQL.append( sWhere1 );
 			sSQL.append( sWhere2 );
 			sSQL.append( "GROUP BY P.CODPLANOPAG, P.DESCPLANOPAG " );
-			sSQL.append( "ORDER BY P.CODPLANOPAG " );
-
+			sSQL.append( "ORDER BY " );
+			sSQL.append( rgOrdem.getVlrString() + " " + cbDesc.getVlrString() );
+			
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
 			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			rs = ps.executeQuery();
-			
+
 			imprimirGrafico( bVisualizar, rs, sCab.toString() );
-			
+
 			rs.close();
 			ps.close();
-			
-			
+
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
@@ -220,7 +218,7 @@ public class FRVendasPlanoPag extends FRelatorio {
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao montar relatório de plano de pagamento!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
-		} 
+		}
 	}
 
 	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
