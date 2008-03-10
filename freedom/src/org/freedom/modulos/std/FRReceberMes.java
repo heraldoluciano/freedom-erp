@@ -82,7 +82,7 @@ public class FRReceberMes extends FRelatorio {
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
-		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+		hParam.put( "CODFILIAL", new Short( String.valueOf( ListaCampos.getMasterFilial( "FNITRECEBER" ) ) ) );
 		hParam.put( "DTINI", txtDataini.getVlrDate() );
 		hParam.put( "DTFIM", txtDatafim.getVlrDate() );
 
