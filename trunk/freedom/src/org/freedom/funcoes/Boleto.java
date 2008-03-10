@@ -11,7 +11,7 @@ public class Boleto {
 			final String dvbanco, final Long fatvenc, final BigDecimal vlrtitulo, 
 			final String convenio, final Long rec, final Long nparc, 
 			final String agencia, final String conta, final String carteira, 
-			final String modalidade){
+			final String modalidade){ 
 		
 		final StringBuffer barcode = new StringBuffer();
 		final StringBuffer parte1 = new StringBuffer();
