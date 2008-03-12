@@ -331,7 +331,32 @@ public class ECFDaruma extends AbstractECFDriver {
 
 	public int programaHorarioVerao() {
 
-		return -1;
+		final char CCMD = (char) 228;
+		byte[] CMD = { ESC, (byte) CCMD };
+		
+		final StringBuffer buf = new StringBuffer();
+
+		buf.append( "xx" );
+		buf.append( horarioVeraoAtivo() ? 0 : 1 );
+		buf.append( "xxxxxxxxxxxxxxxxx" );
+
+		CMD = adicBytes( CMD, buf.toString().getBytes() );
+
+		return executaCmd( CMD, 7 );
+	}
+
+	private boolean horarioVeraoAtivo() {
+
+		final char CCMD = (char) 229;
+		final byte[] CMD = { ESC, (byte) CCMD };
+		
+		executaCmd( CMD, 33 );
+		final String retorno = new String( getBytesLidos() );
+		
+		boolean ativo = ( retorno.length() > 2 && retorno.charAt( 2 ) == '1' );
+		System.out.println( retorno );
+		
+		return ativo;
 	}
 
 	public int nomeiaTotalizadorNaoSujeitoICMS( final int indice, final String desc ) {

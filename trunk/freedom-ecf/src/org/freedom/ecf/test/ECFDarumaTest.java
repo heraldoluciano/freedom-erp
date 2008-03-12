@@ -14,14 +14,14 @@ public class ECFDarumaTest extends TestCase {
 
 	public void testComandosDeInicializacao() {
 
-		//ECFDaruma ecf = new ECFDaruma( "COM1" );
+		ECFDaruma ecf = new ECFDaruma( "COM1" );
 		/*
 		assertTrue( trataRetornoFuncao( ecf.alteraSimboloMoeda( "R" ) ) );
 
 		assertTrue( trataRetornoFuncao( ecf.adicaoDeAliquotaTriburaria( "0001", ECFDaruma.ICMS ) ) );
-
-		assertTrue( trataRetornoFuncao( ecf.programaHorarioVerao() ) );
-
+		*/
+		assertTrue( trataRetornoFuncao( ecf, ecf.programaHorarioVerao() ) );
+		/*
 		assertTrue( trataRetornoFuncao( ecf.nomeiaTotalizadorNaoSujeitoICMS( 4, "Totalizador teste" ) ) );
 
 		assertTrue( trataRetornoFuncao( ecf.programaTruncamentoArredondamento( '1' ) ) );
@@ -165,11 +165,11 @@ public class ECFDarumaTest extends TestCase {
 	public void testComandosDeRelatoriosFiscais() {
 		
 		ECFDaruma ecf = new ECFDaruma( "COM1" );
-		
+
+		/*
 		System.out.print( "leituraX > " ); 
 		assertTrue( trataRetornoFuncao( ecf, ecf.leituraX() ) );
 		
-		/*
 		System.out.print( "leituraXSerial > " ); 
 		assertTrue( trataRetornoFuncao( ecf.leituraXSerial() ) );
 		System.out.println( new String( ecf.getBytesLidos() ) );
@@ -194,9 +194,9 @@ public class ECFDarumaTest extends TestCase {
 		System.out.print( "leituraMemoriaFiscal redução retorno > " ); 
 		assertTrue( trataRetornoFuncao( ecf.leituraMemoriaFiscal( 605, 610, ECFDaruma.RETORNO ) ) );
 		System.out.println( new String( ecf.getBytesLidos() ) );
-
+		*/
 		System.out.print( "reducaoZ > " );  
-		assertTrue( trataRetornoFuncao( ecf.reducaoZ() ) ); */
+		assertTrue( trataRetornoFuncao( ecf, ecf.reducaoZ() ) ); 
 	}
 
 	public void testComandosDeInformacoesDaImpressora() {
