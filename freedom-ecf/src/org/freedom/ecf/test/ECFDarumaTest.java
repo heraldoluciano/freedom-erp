@@ -19,9 +19,9 @@ public class ECFDarumaTest extends TestCase {
 		assertTrue( trataRetornoFuncao( ecf.alteraSimboloMoeda( "R" ) ) );
 
 		assertTrue( trataRetornoFuncao( ecf.adicaoDeAliquotaTriburaria( "0001", ECFDaruma.ICMS ) ) );
-		*/
+		
 		assertTrue( trataRetornoFuncao( ecf, ecf.programaHorarioVerao() ) );
-		/*
+		
 		assertTrue( trataRetornoFuncao( ecf.nomeiaTotalizadorNaoSujeitoICMS( 4, "Totalizador teste" ) ) );
 
 		assertTrue( trataRetornoFuncao( ecf.programaTruncamentoArredondamento( '1' ) ) );
@@ -57,11 +57,10 @@ public class ECFDarumaTest extends TestCase {
 		System.out.print( "vendaItem > " );
 		assertTrue( trataRetornoFuncao( ecf, ecf.vendaItem( 
 				"0000000000001", "Produto Teste                ", "FF", 'I', 1f, 10f, 'D', 0f ) ) );
-		
+		/*
 		System.out.print( "subtotal > " );
 		System.out.println( ecf.retornoSubTotal() );
 		
-		/*
 		System.out.print( "programaUnidadeMedida > " );
 		assertTrue( trataRetornoFuncao( ecf, ecf.programaUnidadeMedida( "Kg" ) ) );
 
@@ -86,66 +85,69 @@ public class ECFDarumaTest extends TestCase {
 		 
 		System.out.print( "cancelaItemGenerico 2 > " ); 
 		assertTrue( trataRetornoFuncao( ecf, ecf.cancelaItemGenerico( 2 ) ) );		
-		 
+		*/
 		System.out.print( "iniciaFechamentoCupom > " );
 		assertTrue( trataRetornoFuncao( ecf, ecf.iniciaFechamentoCupom( ECFDaruma.ACRECIMO_VALOR, 0.00f ) ) );
-
+		/*
 		System.out.print( "efetuaFormaPagamento Dinheiro > " );
 		assertTrue( trataRetornoFuncao( ecf, ecf.efetuaFormaPagamento( "01", 10.00f, null ) ) );
-		
+		*/
 		System.out.print( "programaFormaPagamento > " ); 
 		String f2 = ecf.programaFormaPagamento( "Cheque          " ); 
 		System.out.println( f2 );
 		assertTrue( ! "".equals( f2 ) );
 
 		System.out.print( "efetuaFormaPagamento Cheque > " ); 
-		assertTrue( trataRetornoFuncao( ecf.efetuaFormaPagamento( f2, 5.50f, "Cheque          " ) ) );
-
+		assertTrue( trataRetornoFuncao( ecf, ecf.efetuaFormaPagamento( f2, 10f, "Cheque" ) ) );
+		/*
 		System.out.print( "estornoFormaPagamento > " ); 
-		assertTrue( trataRetornoFuncao( ecf.estornoFormaPagamento( "Cheque          ", "Dinheiro", 5.50f ) ) );
-		
+		assertTrue( trataRetornoFuncao( ecf, ecf.estornoFormaPagamento( "Cheque          ", "Dinheiro", 5.50f ) ) );
+		*/
 		System.out.print( "finalizaFechamentoCupom > " );
 		assertTrue( trataRetornoFuncao( ecf, ecf.finalizaFechamentoCupom( "Obrigado e volte sempre pra testar!" ) ) );
 
-*/
+
 		//System.out.print( "cancelaCupom > " ); 
 		//assertTrue( trataRetornoFuncao( ecf.cancelaCupom() ) );
 	}
 	
 	public void testComandosDeOperacoesNaoFiscais() {
 
-		//ECFDaruma ecf = new ECFDaruma( "COM1" );
-		
-		/*System.out.print( "relatorioGerencial > " ); 
-		assertTrue( trataRetornoFuncao( ecf.relatorioGerencial( 
-				"Abrindo Relatorio Gerencial" ) ) );	
+		ECFDaruma ecf = new ECFDaruma( "COM1" );
+		/*	
+		System.out.print( "relatorioGerencial > " ); 
+		assertTrue( trataRetornoFuncao( ecf, ecf.relatorioGerencial( 
+				"Abrindo Relatorio Gerencial                   \n" ) ) );	
 		
 		System.out.print( "relatorioGerencial usando > " ); 
-		assertTrue( trataRetornoFuncao( ecf.relatorioGerencial( 
-				"Utilizando Relatorio Gerencial" ) ) );	
+		assertTrue( trataRetornoFuncao( ecf, ecf.relatorioGerencial( 
+				"Utilizando Relatorio Gerencial                \n" ) ) );	
 		
 		System.out.print( "fechamentoRelatorioGerencial > " ); 
-		assertTrue( trataRetornoFuncao( ecf.fechamentoRelatorioGerencial() ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.fechamentoRelatorioGerencial() ) );
+		*/
 		
 		System.out.print( "comprovanteNFiscalNVinculado suprimento > " ); 
-		assertTrue( trataRetornoFuncao( ecf.comprovanteNFiscalNVinculado( ECFDaruma.SUPRIMENTO, 50f, "Dinheiro        " ) ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.comprovanteNFiscalNVinculado( ECFDaruma.SUPRIMENTO, 50f, "Dinheiro        " ) ) );
 		
 		System.out.print( "comprovanteNFiscalNVinculado sangria > " ); 
-		assertTrue( trataRetornoFuncao( ecf.comprovanteNFiscalNVinculado( ECFDaruma.SANGRIA, 45f, "Dinheiro        " ) ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.comprovanteNFiscalNVinculado( ECFDaruma.SANGRIA, 45f, "Dinheiro        " ) ) );
 		
 		System.out.print( "comprovanteNFiscalNVinculado não ICMS > " ); 
-		assertTrue( trataRetornoFuncao( ecf.comprovanteNFiscalNVinculado( "02", 35f, "Dinheiro        " ) ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.comprovanteNFiscalNVinculado( "02", 35f, "Dinheiro        " ) ) );
 		
+		/*
 		testComandosDeCupomFiscal();
 		System.out.print( "abreComprovanteNFiscalVinculado > " ); 
-		assertTrue( trataRetornoFuncao( ecf.abreComprovanteNFiscalVinculado( "Cheque          ", 5.5f, Integer.parseInt( ecf.retornoNumeroCupom() ) ) ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.abreComprovanteNFiscalVinculado( "Cheque          ", 10f, Integer.parseInt( ecf.retornoNumeroCupom() ) ) ) );
 		
 		System.out.print( "usaComprovanteNFiscalVinculado > " ); 
-		assertTrue( trataRetornoFuncao( ecf.usaComprovanteNFiscalVinculado( 
-				"Usando o Comprovante Nao fiscal Vinculado" ) ) );		
+		assertTrue( trataRetornoFuncao( ecf, ecf.usaComprovanteNFiscalVinculado( 
+				"Comprovante \nTeste\nteste\nteste..." ) ) );		
 
 		System.out.print( "fechamentoRelatorioGerencial > " ); 
-		assertTrue( trataRetornoFuncao( ecf.fechamentoRelatorioGerencial() ) );*/
+		assertTrue( trataRetornoFuncao( ecf, ecf.fechamentoRelatorioGerencial() ) );
+		*/
 	}
 	
 	public void testComandosDeAutenticacao() {
@@ -166,10 +168,10 @@ public class ECFDarumaTest extends TestCase {
 		
 		ECFDaruma ecf = new ECFDaruma( "COM1" );
 
-		/*
+		
 		System.out.print( "leituraX > " ); 
 		assertTrue( trataRetornoFuncao( ecf, ecf.leituraX() ) );
-		
+		/*
 		System.out.print( "leituraXSerial > " ); 
 		assertTrue( trataRetornoFuncao( ecf.leituraXSerial() ) );
 		System.out.println( new String( ecf.getBytesLidos() ) );
@@ -194,9 +196,9 @@ public class ECFDarumaTest extends TestCase {
 		System.out.print( "leituraMemoriaFiscal redução retorno > " ); 
 		assertTrue( trataRetornoFuncao( ecf.leituraMemoriaFiscal( 605, 610, ECFDaruma.RETORNO ) ) );
 		System.out.println( new String( ecf.getBytesLidos() ) );
-		*/
+		
 		System.out.print( "reducaoZ > " );  
-		assertTrue( trataRetornoFuncao( ecf, ecf.reducaoZ() ) ); 
+		assertTrue( trataRetornoFuncao( ecf, ecf.reducaoZ() ) ); */
 	}
 
 	public void testComandosDeInformacoesDaImpressora() {
