@@ -44,6 +44,8 @@ public class ECFDaruma extends AbstractECFDriver {
 	private String unidadeDeMedida;
 	
 	private int indexItemAtual = 0;
+	
+	private boolean relatorioGerencialAberto = false;
 
 	/**
 	 * Construtor da classe ECFDaruma. <BR>
@@ -691,7 +693,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	public int finalizaFechamentoCupom( final String mensagem ) {
 		
 		/*
-		 * Fechamento de cupom fiscal com mesagem promociola.
+		 * Fechamento de cupom fiscal com mesagem promocional.
 		 */
 
 		final char CCMD = (char) 209;
@@ -862,27 +864,90 @@ public class ECFDaruma extends AbstractECFDriver {
 
 	public int relatorioGerencial( final String texto ) {
 		
-		return -1;
+		if ( ! relatorioGerencialAberto ) {
+    		final char CCMD = (char) 210;
+    		byte[] CMD = { ESC, (byte) CCMD };
+    
+    		final StringBuffer buf = new StringBuffer();
+    		buf.append( parseParam( 1, 2 ) );
+    		
+    		CMD = adicBytes( CMD, buf.toString().getBytes() );
+    		
+    		executaCmd( CMD, 15 );
+    		
+    		relatorioGerencialAberto = true;
+		}
+
+		return usaComprovanteNFiscalVinculado( texto );
 	}
 
 	public int fechamentoRelatorioGerencial() {
-
-		return -1;
+		
+		final char CCMD = (char) 216;
+		byte[] CMD = { ESC, (byte) CCMD };
+		
+		relatorioGerencialAberto = false;
+		
+		return executaCmd( CMD, 7 );
 	}
 	
 	public int comprovanteNFiscalNVinculado( final String opt, final float valor, final String formaPag ) {
 
-		return -1;
+		final char CCMD = (char) 212;
+		byte[] CMD = { ESC, (byte) CCMD };
+
+		final StringBuffer buf = new StringBuffer();
+		/*buf.append( programaFormaPagamento( formaPag ) );
+		buf.append( parseParam( doc, 6 ) );
+		buf.append( parseParam( valor, 12, 2 ) );*/
+
+		CMD = adicBytes( CMD, buf.toString().getBytes() );
+
+		return executaCmd( CMD, 15 );
 	}
 
 	public int abreComprovanteNFiscalVinculado( final String formaPag, final float valor, final int doc ) {
 
-		return -1;
+		final char CCMD = (char) 213;
+		byte[] CMD = { ESC, (byte) CCMD };
+
+		final StringBuffer buf = new StringBuffer();
+		buf.append( programaFormaPagamento( formaPag ) );
+		buf.append( parseParam( doc, 6 ) );
+		buf.append( parseParam( valor, 12, 2 ) );
+
+		CMD = adicBytes( CMD, buf.toString().getBytes() );
+
+		return executaCmd( CMD, 15 );
 	}
 
 	public int usaComprovanteNFiscalVinculado( final String texto ) {
+		
+		final char CCMD = (char) 215;
+		byte[] CMD = { ESC, (byte) CCMD };
+		byte[] CMDT = null;
+	
+		final char[] str = texto.toCharArray();
+		String tmp = "";
+		int ret = 0;
+		int index = 0;
+		
+		for ( int i=0; i < str.length; i++ ) {
+			if ( index++ == 47 || i == str.length || str[ i ] == 10 ) {
+				CMDT = adicBytes( CMD, parseParam( tmp, 48 ).getBytes() );
+				ret = executaCmd( CMDT, 7 );
+				if ( EStatus.RETORNO_OK != decodeReturnECF( ret ) ) {
+					return ret;
+				}
+				tmp = "";
+				index = 0;
+			}			
+			if( str[ i ] != 10 ) {
+				tmp += String.valueOf( str[ i ] );
+			}
+		}
 
-		return -1;
+		return ret;
 	}
 
 	public int autenticacaoDeDocumento() {
@@ -1033,7 +1098,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		String retorno = "99999998";
 				
 		if ( str != null && str.length() >=16 ) {
-			retorno =  str.substring( 8, 15 );
+			retorno =  str.substring( 2, 8 );
 		}
 		
 		return retorno;
