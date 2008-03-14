@@ -413,8 +413,8 @@ public class FRComissoes extends FRelatorio {
 						imp.say(imp.pRow() + 0, 108, "|    %");
 						imp.say(imp.pRow() + 0, 114, "| VLR.PAGO");
 								imp.say(imp.pRow() + 0, 124, "| DT.PGTO.");							
-							} 
-					else {
+							
+					} else {
 							
 						imp.say(imp.pRow() + 0, 0, "| CLIENTE");
 						imp.say(imp.pRow() + 0, 24, "|  DUPLIC.");							
@@ -531,7 +531,7 @@ public class FRComissoes extends FRelatorio {
 			}
 		} catch ( Exception e ) {
 		
-			
+			e.printStackTrace();
 		}
 		if (bVisualizar) {
 			imp.preview(this);
