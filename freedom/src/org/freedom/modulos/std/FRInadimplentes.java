@@ -28,154 +28,266 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Vector;
+
+import javax.swing.BorderFactory;
+import javax.swing.SwingConstants;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRInadimplentes extends FRelatorio {
+	
 	private static final long serialVersionUID = 1L;
 
-  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-  private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0); 
-  private JCheckBoxPad cbParcial = new JCheckBoxPad("Considerar recebimento parcial?","S","N");
-  
-  private ListaCampos lcVend = new ListaCampos(this);
-  
-  public FRInadimplentes() {
-    setTitulo("Inadimplentes");
-    setAtribos(80,80,330,220);
-   
-	GregorianCalendar cPeriodo = new GregorianCalendar();
-    txtDatafim.setVlrDate(cPeriodo.getTime());
-	cPeriodo.set(Calendar.DAY_OF_MONTH,cPeriodo.get(Calendar.DAY_OF_MONTH)-30);
-	txtDataini.setVlrDate(cPeriodo.getTime());
-
-    adic(new JLabelPad("Periodo:"),7,5,120,20);
-    adic(new JLabelPad("De:"),7,25,30,20);
-    adic(txtDataini,40,25,97,20);
-    adic(new JLabelPad("Até:"),140,25,25,20);
-    adic(txtDatafim,170,25,100,20);
-    adic(cbParcial, 05,50,250,20);
-    
-  	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false));
-  	lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false));
-  	lcVend.montaSql(false, "VENDEDOR", "VD");    
-  	lcVend.setQueryCommit(false);
-  	lcVend.setReadOnly(true);
-  	txtCodVend.setNomeCampo("CodVend");
-	txtCodVend.setFK(true);
-  	txtCodVend.setTabelaExterna(lcVend);
  
-  	adic(new JLabelPad("Cód.comiss."),7,78,200,20);
-	adic(txtCodVend,7,98,70,20);
-	adic(new JLabelPad("Nome do comissionado"),80,78,200,20);
-	adic(txtDescVend,80,98,199,20);
-    
-  }
-  public void setConexao(Connection cn) {
-    super.setConexao(cn);
-    lcVend.setConexao(con);
-    
-  }
-
-  public void imprimir(boolean bVisualizar) {
-  	
-  	 String sWhere = "";
-	 String sCab="";
-	 String sFiltro = "'R1'";
+	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  
+	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  
+	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  
+	private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0); 
+  
+	private JCheckBoxPad cbParcial = new JCheckBoxPad("Considerar recebimento parcial?","S","N");
+  
+	private ListaCampos lcVend = new ListaCampos( this );
 	
-	 if (txtCodVend.getText().trim().length() > 0) {
-		sWhere += " AND R.CODVEND = "+txtCodVend.getText().trim();
-		sCab = "COMISS.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
-		sWhere += " AND R.CODEMPVD="+Aplicativo.iCodEmp+" AND R.CODFILIALVD="+lcVend.getCodFilial();
+	private Vector<String> vVals1 = new Vector<String>();
+	
+	private Vector<String> vLabs1 = new Vector<String>();
+	
+	private JRadioGroup<?, ?> rgTipoRel = null;
+  
+
+	public FRInadimplentes() {
+    
+		setTitulo("Inadimplentes");
+		setAtribos( 80, 80, 330, 240 );
+   
+		GregorianCalendar cPeriodo = new GregorianCalendar();
+		txtDatafim.setVlrDate(cPeriodo.getTime());
+		cPeriodo.set(Calendar.DAY_OF_MONTH,cPeriodo.get(Calendar.DAY_OF_MONTH)-30);
+		txtDataini.setVlrDate(cPeriodo.getTime());
+		
+		montaListaCampos();
+		montaTela();
+
 	}
 	
+	public void montaTela(){
+		
+		vVals1.addElement("G");
+		vVals1.addElement("T");
+		vLabs1.addElement("Grafico");
+		vLabs1.addElement("Texto");
+		rgTipoRel = new JRadioGroup<String, String>(1, 2, vLabs1, vVals1 );
+		rgTipoRel.setVlrString("G");
+		
+		JLabelPad lbLinha = new JLabelPad();
+		lbLinha.setBorder(BorderFactory.createEtchedBorder());
+		JLabelPad lbPeriodo = new JLabelPad("Periodo:" , SwingConstants.CENTER );
+		lbPeriodo.setOpaque(true);
+		
+		adic( lbPeriodo, 7, 1, 80, 20 );
+		adic( lbLinha, 5, 10, 300, 45 );
+		
+		adic( new JLabelPad("De:"), 10, 25, 30, 20 );
+		adic( txtDataini, 40, 25, 97, 20 );
+		adic( new JLabelPad("Até:"), 152, 25, 37, 20 );
+		adic( txtDatafim, 190, 25, 100, 20 );
+    	
+  		adic(new JLabelPad("Cód.comiss."), 7, 55, 200, 20 );
+  		adic(txtCodVend, 7, 75, 70, 20 );
+  		adic(new JLabelPad("Nome do comissionado"), 80, 55, 200, 20 );
+  		adic(txtDescVend, 80, 75, 199, 20 );
+  		adic( rgTipoRel, 7, 100, 300, 30 );
+  		adic(cbParcial, 05, 135, 250, 20 );
+	}
+	
+	public void montaListaCampos(){
+		
+		lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false));
+    	lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false));
+    	lcVend.montaSql(false, "VENDEDOR", "VD");    
+    	lcVend.setQueryCommit(false);
+  		lcVend.setReadOnly(true);
+  		txtCodVend.setNomeCampo("CodVend");
+  		txtCodVend.setFK(true);
+  		txtCodVend.setTabelaExterna(lcVend);
+	}
+ 
+	public void setConexao(Connection cn) {
+		
+		super.setConexao(cn);
+		lcVend.setConexao(con);
+ 
+	}
 
-    if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
-		Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
-      return;
-    }
+ 
+	public void imprimir(boolean bVisualizar) {
+  	
+		String sWhere = "";
+		String sCab= "";
+		String sFiltro = "'R1'";
+	
+	
+		if ( txtCodVend.getText().trim().length() > 0 ) {
+	
+			sWhere += " AND R.CODVEND = "+txtCodVend.getText().trim();
+			sCab = "COMISS.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
+			sWhere += " AND R.CODEMPVD="+Aplicativo.iCodEmp+" AND R.CODFILIALVD="+lcVend.getCodFilial();
+		}
+    
+		if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
+		
+			Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
+			return;
+		}
 
-    if ("S".equals(cbParcial.getVlrString())) {
-    	sFiltro += ",'RL'";
-    }
-    ImprimeOS imp = new ImprimeOS("",con);
-    int linPag = imp.verifLinPag()-1;
+		if ("S".equals(cbParcial.getVlrString())) {
     
-    BigDecimal bTotalDev = new BigDecimal("0");
-    int iNumLanca = 0;
-        
-    String sDataini = "";
-    String sDatafim = "";
+			sFiltro += ",'RL'";
+		}
     
-    sDataini = txtDataini.getVlrString();
-    sDatafim = txtDatafim.getVlrString();
-    
-    String sSQL = "SELECT IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,"+
-                  "R.CODCLI,C.RAZCLI,IT.VLRPARCITREC,C.FONECLI,C.DDDCLI,"+
-                  "IT.DTITREC,(SELECT V.STATUSVENDA FROM VDVENDA V"+
-                  " WHERE V.FLAG IN "+
-                  AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+" AND V.CODVENDA=R.CODVENDA),"+
-                  "R.DOCREC,R.CODREC,R.CODVENDA"+
-                  " FROM FNITRECEBER IT,FNRECEBER R,VDCLIENTE C"+
-                  " WHERE R.FLAG IN "+
-                  AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+" AND IT.DTVENCITREC BETWEEN ? AND ? AND"+
-                  " R.CODREC = IT.CODREC AND IT.STATUSITREC IN ("+sFiltro+") AND"+
-                  " C.CODCLI=R.CODCLI AND R.CODEMPCL=C.CODEMP AND R.CODFILIALCL=C.CODFILIAL AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL "+sWhere+" ORDER BY IT.DTVENCITREC,C.RAZCLI";
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    try {
-      ps = con.prepareStatement(sSQL);
-      ps.setDate(1,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
-      ps.setDate(2,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
-      rs = ps.executeQuery();
-      imp.limpaPags();
-      
-      while ( rs.next() ) {
-      	
-		 if (imp.pRow() == linPag) {
-	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	                imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
-	                imp.eject();
-	        	imp.incPags();
-	         }
-	         if (imp.pRow()==0) {
-	         	imp.montaCab();
-	          	imp.setTitulo("Relatório de Inadimplentes");
-	          	imp.addSubTitulo("RELATORIO DE INADIMPLENTES   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
-		          if (sCab.length() > 0) {
-		      	  	imp.addSubTitulo(sCab);
-		      	  }
+		String sSQL = "SELECT IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,"+
+					"R.CODCLI,C.RAZCLI,IT.VLRPARCITREC,C.FONECLI,C.DDDCLI,"+
+					"IT.DTITREC,(SELECT V.STATUSVENDA FROM VDVENDA V"+
+					" WHERE V.FLAG IN "+
+					AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+" AND V.CODVENDA=R.CODVENDA),"+
+					"R.DOCREC,R.CODREC,R.CODVENDA"+
+					" FROM FNITRECEBER IT,FNRECEBER R,VDCLIENTE C"+
+					" WHERE R.FLAG IN "+
+					AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+" AND IT.DTVENCITREC BETWEEN ? AND ? AND"+
+					" R.CODREC = IT.CODREC AND IT.STATUSITREC IN ("+sFiltro+") AND"+
+					" C.CODCLI=R.CODCLI AND R.CODEMPCL=C.CODEMP AND R.CODFILIALCL=C.CODFILIAL AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL "+sWhere+" ORDER BY IT.DTVENCITREC,C.RAZCLI";
+   
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+   
+		try {
+		
+			ps = con.prepareStatement(sSQL);
+			ps.setDate(1,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
+			ps.setDate(2,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
+			rs = ps.executeQuery();
+		
+			
+		}catch ( SQLException err ) {
+			Funcoes.mensagemErro(this,"Erro consulta ao relatório de inadimplentes!\n"+err.getMessage(),true,con,err);      
+		}
+		
+		if( "T".equals( rgTipoRel.getVlrString() )){
+			
+			imprimiTexto( rs, bVisualizar, sCab );
+		}
+		else{
+			
+			imprimiGrafico( rs, bVisualizar, sCab );
+		}
+	}
+	
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar,  final String sCab ) {
+		
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "FILTROS", sCab );
+
+		dlGr = new FPrinterJob( "relatorios/FRInadimplentes.jasper", "Relatório de Inadimplentes", sCab, rs, hParam, this );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de Inadimplentes!" + err.getMessage(), true, con, err );
+			}
+		}
+	}
+	
+	private void imprimiTexto( final ResultSet rs, final boolean bVisualizar,  final String sCab ) {
+		
+
+		ImprimeOS imp = null;
+		int linPag = 0;
+		BigDecimal bTotalDev = new BigDecimal("0");
+		int iNumLanca = 0;
+		
+		try {
+			
+			boolean hasData = false;
+			
+			imp = new ImprimeOS("",con);
+			linPag = imp.verifLinPag()-1;
+			imp.montaCab();
+			imp.setTitulo("Relatório de Compras");
+			imp.addSubTitulo("RELATORIO DE COMISSOES - PERIODO DE " + txtDataini.getVlrDate() + " ATE " + txtDatafim.getVlrDate());
+			imp.addSubTitulo( sCab.toString() );
+			imp.limpaPags();		
+			
+			while ( rs.next() ) {
+				 
+				if (imp.pRow() == linPag) {
+	                
+					imp.say(imp.pRow()+1,0,""+imp.comprimido());
+					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+					imp.eject();
+					imp.incPags();
+	        
+				}
+    		
+				if (imp.pRow()==0) {
+	         	
+					imp.montaCab();
+					imp.setTitulo("Relatório de Inadimplentes");
+					imp.addSubTitulo("RELATORIO DE INADIMPLENTES   -   PERIODO DE :"+ txtDataini.getVlrDate()+ " ATE: "+ txtDatafim.getVlrDate() );
+		        
+	          	if (sCab.length() > 0) {
+	          		
+	          		imp.addSubTitulo(sCab);
+	          	}
+	          
 	          	imp.impCab(136, true);
-	          	          
-	          imp.say(imp.pRow()+0,0,""+imp.comprimido());
-	          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
-	          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	          imp.say(imp.pRow()+0,0,"| Vencto.");
-	          imp.say(imp.pRow()+0,13,"|Vlr. da Parc.");
-	          imp.say(imp.pRow()+0,27,"|Doc.    ");
-	          imp.say(imp.pRow()+0,39,"|N.Lancto");
-	          imp.say(imp.pRow()+0,48,"|N.Pedido");
-	          imp.say(imp.pRow()+0,57,"|Data Emis.");
-	          imp.say(imp.pRow()+0,68,"|Devedor");
-	          imp.say(imp.pRow()+0,119,"|Telefone");
-	          imp.say(imp.pRow()+0,135,"|");
-	          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
-	        }
-	        imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	          	
+	          	imp.say(imp.pRow()+0,0,""+imp.comprimido());
+	          	imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+	          	imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	          	imp.say(imp.pRow()+0,0,"| Vencto.");
+	          	imp.say(imp.pRow()+0,13,"|Vlr. da Parc.");
+	          	imp.say(imp.pRow()+0,27,"|Doc.    ");
+	          	imp.say(imp.pRow()+0,39,"|N.Lancto");
+	          	imp.say(imp.pRow()+0,48,"|N.Pedido");
+	          	imp.say(imp.pRow()+0,57,"|Data Emis.");
+	          	imp.say(imp.pRow()+0,68,"|Devedor");
+	          	imp.say(imp.pRow()+0,119,"|Telefone");
+	          	imp.say(imp.pRow()+0,135,"|");
+	          	imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	          	imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+	        
+    		}
+	        
+    		imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	        imp.say(imp.pRow()+0,0,"|");
 	        imp.say(imp.pRow()+0,2,Funcoes.sqlDateToStrDate(rs.getDate("DtVencItRec"))+"");
 	        imp.say(imp.pRow()+0,13,"|"+Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrparcItRec")));
@@ -189,40 +301,40 @@ public class FRInadimplentes extends FRelatorio {
 	        imp.say(imp.pRow()+0,119,"|"+(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
 	  				   (rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : "").trim());
 	        imp.say(imp.pRow()+0,135,"|");
+	      
 	        bTotalDev = bTotalDev.add(new BigDecimal(rs.getString("VlrParcItRec")));
 	        iNumLanca++;
-	      }
-	      imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	      imp.say(imp.pRow(),0,"+"+Funcoes.replicate("=",133)+"+");
-	      imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	      imp.say(imp.pRow()+0,0,"|");
-	      imp.say(imp.pRow()+0,40,"Totais Gerais->    Lançamentos: "+Funcoes.strZero(""+iNumLanca,5)+
-	        "     Total a Receber: "+Funcoes.strDecimalToStrCurrency(13,2,""+bTotalDev));
-	      imp.say(imp.pRow(),135,"|");
+	   
+    	}
+	     
+    	imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	    imp.say(imp.pRow(),0,"+"+Funcoes.replicate("=",133)+"+");
+	    imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	    imp.say(imp.pRow()+0,0,"|");
+	    imp.say(imp.pRow()+0,40,"Totais Gerais->    Lançamentos: "+Funcoes.strZero(""+iNumLanca,5)+
+	    "     Total a Receber: "+Funcoes.strDecimalToStrCurrency(13,2,""+bTotalDev));
+	    imp.say(imp.pRow(),135,"|");
 	
-	      imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
+	    imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
 	      
-	      
-	      imp.eject();
-	      
-	      imp.fechaGravacao();
-      
-//      rs.close();
-//      ps.close();
-      if (!con.getAutoCommit())
-      	con.commit();
-//      dl.dispose();
-    }  
-    catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta ao relatório de inadimplentes!\n"+err.getMessage(),true,con,err);      
-    }
+	    imp.eject();
+	    imp.fechaGravacao();
+     
+	    if (!con.getAutoCommit()){
+	    	con.commit();
+		}  
     
-    if (bVisualizar) {
-      imp.preview(this);
-    }
-    else {
-      imp.print();
-    }
-  }
+		if (bVisualizar) {
+			imp.preview(this);
+		}
+		else {
+			imp.print();
+		
+		}
+
+		}catch( Exception err ){
+			err.printStackTrace();
+		}
+	}
 }
