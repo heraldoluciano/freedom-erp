@@ -134,7 +134,7 @@ public class ECFDarumaTest extends TestCase {
 		assertTrue( trataRetornoFuncao( ecf, ecf.comprovanteNFiscalNVinculado( ECFDaruma.SANGRIA, 45f, "Dinheiro        " ) ) );
 		
 		System.out.print( "comprovanteNFiscalNVinculado não ICMS > " ); 
-		assertTrue( trataRetornoFuncao( ecf, ecf.comprovanteNFiscalNVinculado( "02", 35f, "Dinheiro        " ) ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.comprovanteNFiscalNVinculado( "03", 35f, "Dinheiro        " ) ) );
 		
 		/*
 		testComandosDeCupomFiscal();
@@ -196,9 +196,9 @@ public class ECFDarumaTest extends TestCase {
 		System.out.print( "leituraMemoriaFiscal redução retorno > " ); 
 		assertTrue( trataRetornoFuncao( ecf.leituraMemoriaFiscal( 605, 610, ECFDaruma.RETORNO ) ) );
 		System.out.println( new String( ecf.getBytesLidos() ) );
-		
-		System.out.print( "reducaoZ > " );  
-		assertTrue( trataRetornoFuncao( ecf, ecf.reducaoZ() ) ); */
+		*/
+		//System.out.print( "reducaoZ > " );  
+		//assertTrue( trataRetornoFuncao( ecf, ecf.reducaoZ() ) );
 	}
 
 	public void testComandosDeInformacoesDaImpressora() {
