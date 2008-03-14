@@ -356,14 +356,28 @@ public class ECFDaruma extends AbstractECFDriver {
 		final String retorno = new String( getBytesLidos() );
 		
 		boolean ativo = ( retorno.length() > 2 && retorno.charAt( 2 ) == '1' );
-		System.out.println( retorno );
 		
 		return ativo;
 	}
-
+	
 	public int nomeiaTotalizadorNaoSujeitoICMS( final int indice, final String desc ) {
+		return nomeiaTotalizadorNaoSujeitoICMS( '+', indice, desc );
+	}
 
-		return -1;
+	private int nomeiaTotalizadorNaoSujeitoICMS( final char tipo, final int indice, final String desc ) {
+
+		final char CCMD = (char) 223;
+		byte[] CMD = { ESC, (byte) CCMD };
+		
+		final StringBuffer buf = new StringBuffer();
+
+		buf.append( tipo );
+		buf.append( parseParam( indice, 2 ) );
+		buf.append( parseParam( desc, 21 ) );
+
+		CMD = adicBytes( CMD, buf.toString().getBytes() );
+		
+		return executaCmd( CMD, 33 );
 	}
 
 	public int programaTruncamentoArredondamento( final char opt ) {
@@ -893,17 +907,70 @@ public class ECFDaruma extends AbstractECFDriver {
 	
 	public int comprovanteNFiscalNVinculado( final String opt, final float valor, final String formaPag ) {
 
+		final char ccmd = (char) 234;
+		final byte[] cmd = { ESC, (byte) ccmd };
+		
+		executaCmd( cmd, 1431 );
+
+		// verifica os comprovantes não fiscais não vinculados
+		final List<String> cnfnv = new ArrayList<String>();
+		final String returnCommand = new String( getBytesLidos() );
+		int offset = 26;
+		if ( returnCommand != null && returnCommand.length() > 26 ) {
+			String tmp = null;
+			for ( int i=0; i < 16; i++ ) {
+				tmp = returnCommand.substring( offset, offset+=22 );
+				if ( !"+ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ".equals( tmp ) ) {
+					cnfnv.add( tmp );	
+				}
+			}			
+		}
+		
+		String id = opt;
+		
+		// procura o indíce da sangria, se não encontrar cria.
+		if ( AbstractECFDriver.SANGRIA.equals( opt ) ) {
+			int index = 0;
+			for( String s : cnfnv ) {
+				index++;
+				if ( "-SANGRIA".equals( s.trim() ) ) {
+					id = parseParam( index, 2 );
+					break;
+				}
+			}
+			if ( index == cnfnv.size() ) {
+				id = parseParam( nomeiaTotalizadorNaoSujeitoICMS( '-', cnfnv.size(), "SANGRIA" ), 2 );
+			}
+		}
+		// procura o indíce da suprimento, se não encontrar cria.
+		else if ( AbstractECFDriver.SUPRIMENTO.equals( opt ) ) {
+			int index = 0;
+			for( String s : cnfnv ) {
+				index++;
+				if ( "+SUPRIMENTO".equals( s.trim() ) ) {
+					id = parseParam( index, 2 );
+					break;
+				}
+			}
+			if ( index == cnfnv.size() && cnfnv.size() > 0 ) {
+				id = parseParam( nomeiaTotalizadorNaoSujeitoICMS( '+', cnfnv.size(), "SUPRIMENTO" ), 2 );
+			}
+		}
+		
 		final char CCMD = (char) 212;
 		byte[] CMD = { ESC, (byte) CCMD };
 
 		final StringBuffer buf = new StringBuffer();
-		/*buf.append( programaFormaPagamento( formaPag ) );
-		buf.append( parseParam( doc, 6 ) );
-		buf.append( parseParam( valor, 12, 2 ) );*/
+		buf.append( parseParam( id, 2 ) );
+		buf.append( 1 );
+		buf.append( parseParam( 0f, 12, 2 ) );
+		buf.append( parseParam( valor, 12, 2 ) );
+		buf.append( parseParam( " ", 40 ) );
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
+		CMD = adicBytes( CMD, new byte[]{ (byte)CEND } );
 
-		return executaCmd( CMD, 15 );
+		return executaCmd( CMD, 27 );
 	}
 
 	public int abreComprovanteNFiscalVinculado( final String formaPag, final float valor, final int doc ) {
