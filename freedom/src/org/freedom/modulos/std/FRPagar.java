@@ -37,11 +37,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.JLabelPad;
 
@@ -56,6 +59,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRPagar extends FRelatorio {
@@ -69,6 +73,8 @@ public class FRPagar extends FRelatorio {
 	private JRadioGroup<?, ?> cbFiltro = null;
 
 	private JRadioGroup<?, ?> cbOrderm = null;
+	
+	private JRadioGroup<?, ?> rgTipoRel = null;
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -91,7 +97,7 @@ public class FRPagar extends FRelatorio {
 	public FRPagar() {
 
 		setTitulo( "Contas a Pagar" );
-		setAtribos( 80, 80, 410, 355 );
+		setAtribos( 80, 80, 410, 440 );
 		
 		montaListaCampos();
 		montaCheckBox();
@@ -120,17 +126,18 @@ public class FRPagar extends FRelatorio {
 		adic( new JLabelPad( "Filtro:" ), 7, 45, 360, 20 );
 		adic( cbFiltro, 7, 65, 360, 30 );
 		adic( new JLabelPad( "Ordem:" ), 7, 95, 360, 20 );
-		adic( cbOrderm, 7, 115, 360, 30 );		
-		adic( new JLabelPad( "Cód.for." ), 7, 150, 80, 20 );
-		adic( txtCodFor, 7, 170, 80, 20 );
-		adic( new JLabelPad( "Razão social do fornecedor" ), 90, 150, 300, 20 );
-		adic( txtRazFor, 90, 170, 277, 20 );
-		adic( new JLabelPad( "Cód.pl.pag." ), 7, 190, 80, 20 );
-		adic( txtCodPlanoPag, 7, 210, 80, 20 );
-		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 190, 300, 20 );
-		adic( txtDescPlanoPag, 90, 210, 277, 20 );
-		adic( cbObs, 7, 235, 360, 20 );
-		adic( cbParPar, 7, 255, 360, 20 );
+		adic( cbOrderm, 7, 115, 360, 30 );	
+		adic( rgTipoRel , 7, 150, 360, 30 );
+		adic( new JLabelPad( "Cód.for." ), 7, 180, 80, 20 );
+		adic( txtCodFor, 7, 200, 80, 20 );
+		adic( new JLabelPad( "Razão social do fornecedor" ), 90, 180, 300, 20 );
+		adic( txtRazFor, 90, 200, 277, 20 );
+		adic( new JLabelPad( "Cód.pl.pag." ), 7, 223, 80, 20 );
+		adic( txtCodPlanoPag, 7, 245, 80, 20 );
+		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 223, 300, 20 );
+		adic( txtDescPlanoPag, 90, 245, 277, 20 );
+		adic( cbObs, 7, 270, 385, 20 );
+		adic( cbParPar, 7, 295, 360, 20 );
 
 		btExp.setToolTipText( "Exporta para aquivo no formato csv." );
 		btExp.setPreferredSize( new Dimension( 40, 28 ) );
@@ -179,6 +186,15 @@ public class FRPagar extends FRelatorio {
 		vVals1.addElement( "V" );
 		vVals1.addElement( "P" );
 		cbOrderm = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
+		
+		Vector<String> vVals2 = new Vector<String>();
+		Vector<String> vLabs2 = new Vector<String>();
+		vVals2.addElement("G");
+		vVals2.addElement("T");
+		vLabs2.addElement("Grafico");
+		vLabs2.addElement("Texto");
+		rgTipoRel = new JRadioGroup<String, String>(1, 2, vLabs2, vVals2 );
+		rgTipoRel.setVlrString("G");
 	}
 
 	public void exportaTXT() {
@@ -244,7 +260,7 @@ public class FRPagar extends FRelatorio {
 			Funcoes.mensagemInforma( this, "Não há informações para exportar!" );
 		}
 	}
-
+	
 	public ResultSet getResultSet() {
 
 		PreparedStatement ps = null;
@@ -303,13 +319,94 @@ public class FRPagar extends FRelatorio {
 		return rs;
 	}
 
+
 	public void imprimir( boolean bVisualizar ) {
 
-		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
-			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
-			return;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sFiltroPag = cbFiltro.getVlrString();
+		String sCab = "";
+		
+		StringBuilder sql = new StringBuilder();
+		
+		if ( sFiltroPag.equals( "N" ) ) {
+			sCab = " RELATÓRIO DE CONTAS A PAGAR ";
+		}
+		else if ( sFiltroPag.equals( "P" ) ) {
+			sCab = " RELATÓRIO DE CONTAS PAGAS ";
+		}
+		else if ( sFiltroPag.equals( "A" ) ) {
+			sCab = " RELATÓRIO DE CONTAS A PAGAR / PAGAS ";
 		}
 
+		
+		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
+			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
+			return ;
+		}
+		
+
+		sql.append( "SELECT IT.DTVENCITPAG,IT.NPARCPAG,P.CODCOMPRA,P.CODFOR,F.RAZFOR," ); 
+		sql.append( "IT.VLRPARCITPAG,IT.VLRPAGOITPAG,IT.VLRAPAGITPAG,IT.DTPAGOITPAG,"  );
+		sql.append( "(SELECT C.STATUSCOMPRA FROM CPCOMPRA C WHERE C.FLAG IN " );
+		sql.append( AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
+		sql.append( " AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA),"  );
+		sql.append( "P.DOCPAG,IT.OBSITPAG, " );
+		sql.append( "(SELECT C.DTEMITCOMPRA FROM CPCOMPRA C WHERE C.FLAG IN " );
+		sql.append( AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
+		sql.append( " AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA) AS DTEMITCOMPRA "  );
+		sql.append( "FROM FNITPAGAR IT,FNPAGAR P,CPFORNECED F " );
+		sql.append( "WHERE P.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
+		sql.append( " AND IT.CODEMP = P.CODEMP AND IT.CODFILIAL=P.CODFILIAL AND "  );
+		sql.append( "P".equals( cbFiltro.getVlrString() ) ? "IT.DTPAGOITPAG" : "IT.DTVENCITPAG" );
+		sql.append( " BETWEEN ? AND ? AND IT.STATUSITPAG IN (?,?) AND P.CODPAG=IT.CODPAG AND " );
+		sql.append( "F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND F.CODFOR=P.CODFOR "  );
+		sql.append( "".equals( txtCodFor.getVlrString() ) ? "" : " AND P.CODFOR=" + txtCodFor.getVlrString() );
+		sql.append( "".equals( txtCodPlanoPag.getVlrString() ) ? "" : " AND P.CODPLANOPAG=" + txtCodPlanoPag.getVlrString() );
+		sql.append( " AND P.CODEMP=? AND P.CODFILIAL=? " );
+		sql.append( "ORDER BY " + 
+				( "V".equals( cbOrderm.getVlrString() ) ? "IT.DTVENCITPAG" : "IT.DTPAGOITPAG" ) + ",F.RAZFOR" );
+
+		try {
+
+			ps = con.prepareStatement( sql.toString() );
+			ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			
+			if ( sFiltroPag.equals( "N" ) ) {
+				ps.setString( 3, "P1" );
+				ps.setString( 4, "P1" );
+			}
+			else if ( sFiltroPag.equals( "P" ) ) {
+				ps.setString( 3, "PP" );
+				ps.setString( 4, "PP" );
+			}
+			else if ( sFiltroPag.equals( "A" ) ) {
+				ps.setString( 3, "P1" );
+				ps.setString( 4, "PP" );
+			}
+			ps.setInt( 5, Aplicativo.iCodEmp );
+			ps.setInt( 6, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+
+			rs = ps.executeQuery();
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+		
+		sCab += "   Periodo de: " + txtDataini.getVlrString() + "  Até:  " + txtDatafim.getVlrString();
+		
+		if("T".equals( rgTipoRel.getVlrString())){
+			
+			imprimiTexto( rs, bVisualizar, sCab );
+		}
+		else{
+			imprimiGrafico( rs, bVisualizar, sCab ); 
+		}
+	}
+
+	public void imprimiTexto(  ResultSet rs, boolean bVisualizar, String sCab ) {
+		
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
 		boolean bFimDia = false;
@@ -333,8 +430,6 @@ public class FRPagar extends FRelatorio {
 		else if ( sFiltroPag.equals( "A" ) ) {
 			sPag = "A PAGAR/PAGAS";
 		}
-
-		ResultSet rs = getResultSet();
 
 		try {
 
@@ -482,6 +577,30 @@ public class FRPagar extends FRelatorio {
 		}
 		else {
 			imp.print();
+		}
+	}
+	
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar,  final String sCab ) {
+
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "FILTROS", sCab );
+
+		dlGr = new FPrinterJob( "relatorios/FRPagar.jasper", "Relatório de Pagar/Pagas", sCab, rs, hParam, this );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de Pagar/Pagas!" + err.getMessage(), true, con, err );
+			}
 		}
 	}
 
