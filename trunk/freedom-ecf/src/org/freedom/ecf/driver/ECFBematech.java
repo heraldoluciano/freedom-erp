@@ -415,6 +415,34 @@ public class ECFBematech extends AbstractECFDriver {
 
 		return executaCmd( CMD, 3 );
 	}
+	
+	public boolean isHorarioVerao() {
+		
+		boolean returnOfAction = false;
+		String flags = retornoVariaveis( AbstractECFDriver.V_FLAG_FISCAL );
+		int iflag = Integer.parseInt( flags );
+		if ( iflag > 127 ) {
+			iflag -= 128;
+		}
+		if ( iflag > 63 ) {
+			iflag -= 64;
+		}
+		if ( iflag > 31 ) {
+			iflag -= 32;
+		}
+		if ( iflag > 15 ) {
+			iflag -= 16;
+		}
+		if ( iflag > 7 ) {
+			iflag -= 8;
+		}
+		if ( iflag > 3 ) {
+			iflag -= 4;
+			returnOfAction = true;				
+		}
+		
+		return returnOfAction;
+	}
 
 	/**
 	 * Você poderá nomear até 50 (01 até 50) totalizadores não sujeitos para recebimentos,<br>
