@@ -368,7 +368,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
              "SUM(IV.VLRIPIITVENDA) "+
              "FROM VDVENDA V,VDITVENDA IV, EQTIPOMOV TM, VDCLIENTE C "+
              "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND " +
-             "V.CODEMP=? AND V.CODFILIAL=? AND "+
+             "V.CODEMP=? AND V.CODFILIAL=? AND IV.TIPOVENDA=V.TIPOVENDA AND "+
              "IV.CODVENDA=V.CODVENDA AND IV.CODEMP=V.CODEMP AND " +
              "IV.CODFILIAL=V.CODFILIAL AND "+
              "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " +
