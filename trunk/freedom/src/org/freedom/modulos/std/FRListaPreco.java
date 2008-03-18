@@ -78,6 +78,7 @@ public class FRListaPreco extends FRelatorio {
 	private JTextFieldPad txtDescPlanoPag6 = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtDescPlanoPag7 = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
     private JCheckBoxPad cbAgrupar = new JCheckBoxPad("Agrupar por grupo?","S","N");
+    private JCheckBoxPad cbInativos = new JCheckBoxPad("só Ativos?","S","N");
 	private JRadioGroup<?, ?> rgTipo = null;
 	private JRadioGroup<?, ?> rgOrdem = null;
 	private Vector<String> vLabs = new Vector<String>(2);
@@ -269,7 +270,9 @@ public class FRListaPreco extends FRelatorio {
 		pinPlan.adic(txtCodPlanoPag7,7,150,80,20);
 		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (7)"),90,130,250,20);
 		pinPlan.adic(txtDescPlanoPag7,90,150,200,20);
-        pinPlan.adic(cbAgrupar,310,150,200,20);        
+        pinPlan.adic(cbAgrupar,310,140,200,20); 
+        pinPlan.adic(cbInativos,310,160,200,20); 
+        
         
 	}	
 
@@ -360,6 +363,9 @@ public class FRListaPreco extends FRelatorio {
 			sWhere += " AND PP.CODTAB = '"+txtCodTabPreco.getText().trim()+"'";
 			imp.addSubTitulo("TABELA: "+txtDescTabPreco.getText().trim());
 		}
+		if( cbInativos.getVlrString().equals( "S" )){
+    		sWhere += " AND P.ATIVOPROD=" + "'" + "S" + "'" ;
+    	}
 		
 		try {
 			
@@ -575,6 +581,9 @@ public class FRListaPreco extends FRelatorio {
         	}
         	if(txtCodGrup.getVlrString().trim().length() > 0) {
         		sWhere += " AND P.CODGRUP LIKE '" + txtCodGrup.getVlrString().trim() + "%'";
+        	}
+        	if( cbInativos.getVlrString().equals( "S" )){
+        		sWhere += " AND P.ATIVOPROD=" + "'" + "S" + "'" ;
         	}
     		
     		sSQL = "SELECT PP.CODPROD, P.DESCPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.CODUNID, PP.PRECOPROD " +
