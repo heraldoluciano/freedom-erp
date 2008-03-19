@@ -163,36 +163,39 @@ public class ControllerECF {
 	public ControllerECF( final String ecfdriver, final int porta, final boolean mododemostracao ) 
 		throws IllegalArgumentException, NullPointerException {
 
-		if ( ecfdriver == null || ecfdriver.trim().length() == 0 ) {
-			throw new IllegalArgumentException( "Driver de impressora fiscal invalido." );
-		}
-
-		try {
-			Object obj = Class.forName( ecfdriver ).newInstance();
-			if ( obj instanceof AbstractECFDriver ) {
-				this.ecf = (AbstractECFDriver) obj;
-				this.ecf.ativaPorta( porta > 0 ? porta : Serial.COM1 );
-			}
-		} catch ( ClassNotFoundException e ) {
-			e.printStackTrace();
-		} catch ( InstantiationException e ) {
-			e.printStackTrace();
-		} catch ( IllegalAccessException e ) {
-			e.printStackTrace();
-		}
-
-		if ( this.ecf == null ) {
-			throw new NullPointerException( 
-					"Não foi possível carregar o driver da impressora.\n" 
-					+ ecfdriver );
-		}
-
-		setModoDemostracao( mododemostracao );
-		
 		try {
 			logger = LoggerManager.getLogger( "log/freedomECF.log" );
 		} catch ( RuntimeException e ) {
 			e.printStackTrace();
+		}
+		
+		setModoDemostracao( mododemostracao );
+		
+		if ( notIsModoDemostracao() ) {
+
+			if ( ecfdriver == null || ecfdriver.trim().length() == 0 ) {
+				throw new IllegalArgumentException( "Driver de impressora fiscal invalido." );
+			}
+		
+			try {
+				Object obj = Class.forName( ecfdriver ).newInstance();
+				if ( obj instanceof AbstractECFDriver ) {
+					this.ecf = (AbstractECFDriver) obj;
+					this.ecf.ativaPorta( porta > 0 ? porta : Serial.COM1 );
+				}
+			} catch ( ClassNotFoundException e ) {
+				e.printStackTrace();
+			} catch ( InstantiationException e ) {
+				e.printStackTrace();
+			} catch ( IllegalAccessException e ) {
+				e.printStackTrace();
+			}
+		
+			if ( this.ecf == null ) {
+				throw new NullPointerException( 
+						"Não foi possível carregar o driver da impressora.\n" 
+						+ ecfdriver );
+			}			
 		}
 	}
 	
