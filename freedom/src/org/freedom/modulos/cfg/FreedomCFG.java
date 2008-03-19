@@ -25,6 +25,7 @@
 package org.freedom.modulos.cfg;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.pdv.FLeFiscal;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrincipalPD;
