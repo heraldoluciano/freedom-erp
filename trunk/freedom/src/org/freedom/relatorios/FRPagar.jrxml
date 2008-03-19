@@ -42,7 +42,7 @@
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
-	<parameter name="ORDEM" isForPrompting="false" class="java.lang.String">
+	<parameter name="ORDEM" isForPrompting="true" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["V"]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT IT.DTVENCITPAG,IT.NPARCPAG,P.CODCOMPRA,P.CODFOR,F.RAZFOR,IT.VLRPARCITPAG,
@@ -78,11 +78,26 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]></queryString>
 	<variable name="TOT_VLRABERTO" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRAPAGITPAG}]]></variableExpression>
 	</variable>
-	<variable name="SDTVENCITPAG" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[$F{DTVENCITPAG}==null?"":$F{DTVENCITPAG}.toString()]]></variableExpression>
+	<variable name="DATAORDEM" class="java.util.Date" resetType="None" calculation="Nothing">
+		<variableExpression><![CDATA[$P{ORDEM}.equals( "V" ) ? $F{DTVENCITPAG} : $F{DTPAGOITPAG}]]></variableExpression>
 	</variable>
-	<variable name="SDTPAGOITPAG" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[$F{DTPAGOITPAG}==null?"":$F{DTPAGOITPAG}.toString()]]></variableExpression>
+	<variable name="TITULOVENC" class="java.lang.String" resetType="None" calculation="Nothing">
+		<variableExpression><![CDATA[$P{ORDEM}.equals( "V" ) ? "Vencimento" : "Data Pgto."]]></variableExpression>
+	</variable>
+	<variable name="TITULOPAG" class="java.lang.String" resetType="None" calculation="Nothing">
+		<variableExpression><![CDATA[$P{ORDEM}.equals( "V" ) ? "Data Pgto." : "Vencimento"]]></variableExpression>
+	</variable>
+	<variable name="DATAPAG" class="java.util.Date" resetType="None" calculation="Nothing">
+		<variableExpression><![CDATA[$P{ORDEM}.equals( "V" ) ? $F{DTPAGOITPAG} : $F{DTVENCITPAG}]]></variableExpression>
+	</variable>
+	<variable name="TOT_GER_PARC" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$V{TOT_VLRPARC}]]></variableExpression>
+	</variable>
+	<variable name="TOT_GER_VLRPGTO" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$V{TOT_VLRPAGO}]]></variableExpression>
+	</variable>
+	<variable name="TOT_GER_ABERTO" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$V{TOT_VLRABERTO}]]></variableExpression>
 	</variable>
 
 		<group  name="GERAL" >
@@ -102,14 +117,138 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]></queryString>
 						key="line-21"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="297"
+						y="2"
+						width="52"
+						height="12"
+						key="textField-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOT_GER_PARC}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="354"
+						y="2"
+						width="52"
+						height="12"
+						key="textField-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOT_GER_VLRPGTO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="412"
+						y="2"
+						width="52"
+						height="12"
+						key="textField-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOT_GER_ABERTO}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="292"
+						y="0"
+						width="0"
+						height="18"
+						key="line-34"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="351"
+						y="0"
+						width="0"
+						height="18"
+						key="line-35"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="409"
+						y="0"
+						width="0"
+						height="18"
+						key="line-36"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="466"
+						y="0"
+						width="0"
+						height="18"
+						key="line-37"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="292"
+						y="17"
+						width="174"
+						height="0"
+						key="line-38"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="167"
+						y="2"
+						width="68"
+						height="12"
+						key="staticText-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Totais geral:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="236"
+						y="0"
+						width="0"
+						height="18"
+						key="line-39"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="165"
+						y="0"
+						width="0"
+						height="18"
+						key="line-40"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="165"
+						y="17"
+						width="72"
+						height="0"
+						key="line-41"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 			</groupFooter>
 		</group>
 		<group  name="COMPRAS" >
-			<groupExpression><![CDATA[$P{ORDEM}.equals("V")?$V{SDTVENCITPAG}:$V{SDTPAGOITPAG}]]></groupExpression>
+			<groupExpression><![CDATA[$V{DATAORDEM}]]></groupExpression>
 			<groupHeader>
 			<band height="16"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="2"
 						y="2"
@@ -120,7 +259,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTVENCITPAG}]]></textFieldExpression>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$V{DATAORDEM}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -184,7 +323,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]></queryString>
 					</textElement>
 				<text><![CDATA[Totais do dia:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="237"
 						y="4"
@@ -195,7 +334,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTVENCITPAG}]]></textFieldExpression>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$V{DATAORDEM}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -435,19 +574,6 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]></queryString>
 				</textField>
 				<staticText>
 					<reportElement
-						x="2"
-						y="87"
-						width="59"
-						height="14"
-						key="staticText-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Vencimento]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
 						x="65"
 						y="87"
 						width="171"
@@ -510,19 +636,6 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]></queryString>
 						<font size="8"/>
 					</textElement>
 				<text><![CDATA[Vlr.Aberto]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="468"
-						y="87"
-						width="68"
-						height="14"
-						key="staticText-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Data pgto.]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -614,6 +727,32 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]></queryString>
 						key="line-10"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="3"
+						y="87"
+						width="58"
+						height="12"
+						key="textField-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{TITULOVENC}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="472"
+						y="87"
+						width="58"
+						height="12"
+						key="textField-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{TITULOPAG}]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -724,7 +863,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTPAGOITPAG}]]></textFieldExpression>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$V{DATAPAG}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
