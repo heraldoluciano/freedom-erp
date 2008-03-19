@@ -42,6 +42,9 @@
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
+	<parameter name="ORDEM" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["V"]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT IT.DTVENCITPAG,IT.NPARCPAG,P.CODCOMPRA,P.CODFOR,F.RAZFOR,IT.VLRPARCITPAG,
 IT.VLRPAGOITPAG,IT.VLRAPAGITPAG,IT.DTPAGOITPAG,(SELECT C.STATUSCOMPRA FROM CPCOMPRA C WHERE 
 C.FLAG IN ('S','N') AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND 
@@ -51,10 +54,7 @@ C.CODCOMPRA=P.CODCOMPRA) AS DTEMITCOMPRA FROM FNITPAGAR IT,FNPAGAR P,CPFORNECED 
 P.FLAG IN ('S','N') AND IT.CODEMP = P.CODEMP AND IT.CODFILIAL=P.CODFILIAL AND 
 IT.DTVENCITPAG BETWEEN '01.01.2006' AND '31.01.2008' AND IT.STATUSITPAG IN ('P1','PP') AND P.CODPAG=IT.CODPAG AND 
 F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND F.CODFOR=P.CODFOR  AND P.CODEMP=4 AND 
-P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR
-
-
-]]></queryString>
+P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]></queryString>
 
 	<field name="DTVENCITPAG" class="java.sql.Date"/>
 	<field name="NPARCPAG" class="java.lang.Long"/>
@@ -78,6 +78,12 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR
 	<variable name="TOT_VLRABERTO" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRAPAGITPAG}]]></variableExpression>
 	</variable>
+	<variable name="SDTVENCITPAG" class="java.lang.String" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$F{DTVENCITPAG}==null?"":$F{DTVENCITPAG}.toString()]]></variableExpression>
+	</variable>
+	<variable name="SDTPAGOITPAG" class="java.lang.String" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$F{DTPAGOITPAG}==null?"":$F{DTPAGOITPAG}.toString()]]></variableExpression>
+	</variable>
 
 		<group  name="GERAL" >
 			<groupExpression><![CDATA[]]></groupExpression>
@@ -100,7 +106,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR
 			</groupFooter>
 		</group>
 		<group  name="COMPRAS" >
-			<groupExpression><![CDATA[$F{DTVENCITPAG}]]></groupExpression>
+			<groupExpression><![CDATA[$P{ORDEM}.equals("V")?$V{SDTVENCITPAG}:$V{SDTPAGOITPAG}]]></groupExpression>
 			<groupHeader>
 			<band height="16"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
