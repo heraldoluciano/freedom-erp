@@ -26,21 +26,12 @@ package org.freedom.modulos.cfg;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -48,10 +39,6 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
-import org.freedom.ecf.app.ControllerECF;
-import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FTabDados;
 
 public class FLeFiscal extends FTabDados {
@@ -190,8 +177,6 @@ public class FLeFiscal extends FTabDados {
 
 	private final JTextFieldPad txtVlrContabil = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 16, 2 );
 
-	private final JButton btExec = new JButton( Icone.novo( "btExecuta.gif" ) );
-
 	private final Tabela tab = new Tabela();
 
 	private final JScrollPane spnTab = new JScrollPane( tab );
@@ -208,11 +193,6 @@ public class FLeFiscal extends FTabDados {
 		montaListaCampos();
 		montaTela();
 		montaTabela();
-
-		btExec.addActionListener( this );
-		
-		txtPrimCupom.setAtivo( false );
-		txtRed.setAtivo( false );
 	}
 	
 	private void montaListaCampos() {
@@ -233,7 +213,6 @@ public class FLeFiscal extends FTabDados {
 		adicCampo( txtDataX, 7, 20, 100, 20, "Dtlx", "Data da leitura", ListaCampos.DB_PK, true );
 		adicCampo( txtNumTermX, 110, 20, 77, 20, "CodCaixa", "Cód.caixa", ListaCampos.DB_PF, true );
 		adicDescFK( txtDescTermX, 190, 20, 240, 20, "DescCaixa", "Descrição do caixa/máquina" );
-		adic( btExec, 470, 10, 30, 30 );
 
 		adicTab( "Geral", pinGeral );
 		setPainel( pinGeral );
@@ -388,29 +367,6 @@ public class FLeFiscal extends FTabDados {
 		tab.setTamColuna( 100, 13 );
 		tab.setTamColuna( 80, 14 );
 		tab.setTamColuna( 100, 15 );
-	}
-
-	private boolean getReducaoZ( Date data, int codCaixa ) {
-
-		try {
-
-			lcCampos.insert( false );
-			txtDataX.setVlrDate( data );
-			txtNumTermX.setVlrInteger( new Integer( codCaixa ) );
-			lcCaixa.carregaDados();
-			
-		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro ao gravar Redução Z\n" + e.getMessage() );
-			e.printStackTrace();
-			return false;
-		}
-
-		return true;
-	}
-	
-	private boolean salvaReducaoZ() {
-		
-		return lcCampos.post();		
 	}
 
 	public void setConexao( Connection cn ) {
