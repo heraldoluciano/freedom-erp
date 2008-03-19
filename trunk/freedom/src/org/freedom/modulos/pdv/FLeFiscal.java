@@ -200,6 +200,8 @@ public class FLeFiscal extends FTabDados {
 
 	private final ControllerECF ecf;
 	
+	private boolean moduloPDV = false;
+	
 
 	public FLeFiscal() {
 
@@ -215,11 +217,15 @@ public class FLeFiscal extends FTabDados {
 		montaListaCampos();
 		montaTela();
 		montaTabela();
+		
+		moduloPDV = Aplicativo.sNomeModulo.equals( "Ponto de Venda" );
 
 		btExec.addActionListener( this );
 		
-		txtPrimCupom.setAtivo( false );
-		txtRed.setAtivo( false );
+		btExec.setVisible( moduloPDV );
+		
+		txtPrimCupom.setAtivo( ! moduloPDV );
+		txtRed.setAtivo( ! moduloPDV );
 	}
 	
 	private void montaListaCampos() {
@@ -399,28 +405,34 @@ public class FLeFiscal extends FTabDados {
 	
 	private void loadAll() {
 		
-		loadAliquotas();
-		loadContadores();
-		loadTotalizadoresFiscais();
-		loadTotalizadoresNaoFiscais();
-		loadTotalizadores();
+		if ( moduloPDV ) {
+			
+			loadAliquotas();
+			loadContadores();
+			loadTotalizadoresFiscais();
+			loadTotalizadoresNaoFiscais();
+			loadTotalizadores();	
+		}
 	}
 
 	private void loadAliquotas() {
 
-		List<String> aliquotas = ecf.getAliquotas();
-
-		String aliquota = null;
-		JTextFieldPad field = null;
-		int index = 1;
-		
-		for ( String str : aliquotas ) {
-			aliquota = str.substring( 0, 2 ) + "." + str.substring( 2 );
-			field = lcCampos.getCampo( "Aliq" + Funcoes.strZero( String.valueOf( index ), 2 ) );
-			if ( field != null ) {
-				field.setVlrBigDecimal( new BigDecimal( aliquota ) );
+		if ( moduloPDV ) {
+			
+			List<String> aliquotas = ecf.getAliquotas();
+	
+			String aliquota = null;
+			JTextFieldPad field = null;
+			int index = 1;
+			
+			for ( String str : aliquotas ) {
+				aliquota = str.substring( 0, 2 ) + "." + str.substring( 2 );
+				field = lcCampos.getCampo( "Aliq" + Funcoes.strZero( String.valueOf( index ), 2 ) );
+				if ( field != null ) {
+					field.setVlrBigDecimal( new BigDecimal( aliquota ) );
+				}
+				index++;
 			}
-			index++;
 		}
 	}
 
@@ -490,61 +502,73 @@ public class FLeFiscal extends FTabDados {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar primeiro cupom!\n" + e.getMessage(), true, con, e );
 		}
-
-		txtRed.setVlrInteger( ecf.getNumeroReducoesZ() );
-		txtCanc.setVlrInteger( ecf.getNumeroCancelamentos() );
-		txtSequencia.setVlrInteger( ecf.getNumeroDocumento() );		
+		
+		if ( moduloPDV ) {
+				
+			txtRed.setVlrInteger( ecf.getNumeroReducoesZ() );
+			txtCanc.setVlrInteger( ecf.getNumeroCancelamentos() );
+			txtSequencia.setVlrInteger( ecf.getNumeroDocumento() );
+		}
 	}
 
 	private void loadTotalizadores() {
 		
-		txtTSuprimento.setVlrBigDecimal( ecf.getTotalSuprimento() );
-		txtTSangria.setVlrBigDecimal( ecf.getTotalSangria() );
-		txtVlrCanc.setVlrBigDecimal( ecf.getTotalCancelamentos() );
-		txtVlrDesc.setVlrBigDecimal( ecf.getTotalDescontos() );
-		txtTotal.setVlrBigDecimal( ecf.getGrandeTotal() );
-		txtVlrContabil.setVlrBigDecimal( new BigDecimal( txtVlrIsento.floatValue() + txtVlrNI.floatValue() + txtVlrSubst.floatValue() ) );
+		if ( moduloPDV ) {
+				
+			txtTSuprimento.setVlrBigDecimal( ecf.getTotalSuprimento() );
+			txtTSangria.setVlrBigDecimal( ecf.getTotalSangria() );
+			txtVlrCanc.setVlrBigDecimal( ecf.getTotalCancelamentos() );
+			txtVlrDesc.setVlrBigDecimal( ecf.getTotalDescontos() );
+			txtTotal.setVlrBigDecimal( ecf.getGrandeTotal() );
+			txtVlrContabil.setVlrBigDecimal( new BigDecimal( txtVlrIsento.floatValue() + txtVlrNI.floatValue() + txtVlrSubst.floatValue() ) );
+		}
 	}
 	
 	private void loadTotalizadoresFiscais() {
 		
-		List<BigDecimal> totalizadores = ecf.getTotalizadoresFiscais();
-		
-		JTextFieldPad field = null;
-		int index = 1;
-		
-		for ( BigDecimal totalizador : totalizadores ) {
-			field = lcCampos.getCampo( "TT" + Funcoes.strZero( String.valueOf( index ), 2 ) );
-			if ( field != null ) {
-				field.setVlrBigDecimal( totalizador );
+		if ( moduloPDV ) {
+				
+			List<BigDecimal> totalizadores = ecf.getTotalizadoresFiscais();
+			
+			JTextFieldPad field = null;
+			int index = 1;
+			
+			for ( BigDecimal totalizador : totalizadores ) {
+				field = lcCampos.getCampo( "TT" + Funcoes.strZero( String.valueOf( index ), 2 ) );
+				if ( field != null ) {
+					field.setVlrBigDecimal( totalizador );
+				}
+				index++;
 			}
-			index++;
 		}
 	}
 
 	private void loadTotalizadoresNaoFiscais() {
 		
-		List<BigDecimal> totalizadores = ecf.getTotalizadoresNaoFiscais();
-		
-		JTextFieldPad field = null;
-		int index = 1;
-		
-		for ( BigDecimal totalizador : totalizadores ) {
-			field = lcCampos.getCampo( "TN" + index );
-			if ( field != null ) {
-				field.setVlrBigDecimal( totalizador );
+		if ( moduloPDV ) {
+				
+			List<BigDecimal> totalizadores = ecf.getTotalizadoresNaoFiscais();
+			
+			JTextFieldPad field = null;
+			int index = 1;
+			
+			for ( BigDecimal totalizador : totalizadores ) {
+				field = lcCampos.getCampo( "TN" + index );
+				if ( field != null ) {
+					field.setVlrBigDecimal( totalizador );
+				}
+				index++;
 			}
-			index++;
+			
+			txtVlrIsento.setVlrBigDecimal( ecf.getTotalIsensao() );
+			txtVlrNI.setVlrBigDecimal( ecf.getTotalNaoInsidencia() );
+			txtVlrSubst.setVlrBigDecimal( ecf.getTotalSubstituicao() );
 		}
-		
-		txtVlrIsento.setVlrBigDecimal( ecf.getTotalIsensao() );
-		txtVlrNI.setVlrBigDecimal( ecf.getTotalNaoInsidencia() );
-		txtVlrSubst.setVlrBigDecimal( ecf.getTotalSubstituicao() );
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btExec ) {
+		if ( moduloPDV && evt.getSource() == btExec ) {
 			loadAll();
 		}
 		
@@ -553,6 +577,10 @@ public class FLeFiscal extends FTabDados {
 
 	public boolean getReducaoZ( Date data, int codCaixa ) {
 
+		if ( ! moduloPDV ) {
+			return false;
+		}
+		
 		try {
 
 			lcCampos.insert( false );
@@ -573,7 +601,7 @@ public class FLeFiscal extends FTabDados {
 	
 	public boolean salvaReducaoZ() {
 		
-		return lcCampos.post();		
+		return moduloPDV ? lcCampos.post() : false;		
 	}
 
 	public void setConexao( Connection cn ) {
