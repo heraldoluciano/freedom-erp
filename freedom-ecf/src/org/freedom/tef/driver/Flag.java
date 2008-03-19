@@ -78,7 +78,7 @@ public class Flag {
 	public static void loadParametrosOfInitiation( final File fileParametrosOfInitiation )
 		throws Exception {
 		
-		if ( fileParametrosOfInitiation == null && ! fileParametrosOfInitiation.exists() ) {
+		if ( fileParametrosOfInitiation == null || ! fileParametrosOfInitiation.exists() ) {
 			throw new NullPointerException( "Arquivo de mapeamento de bandeiras não especificado!" );
 		}
 		
