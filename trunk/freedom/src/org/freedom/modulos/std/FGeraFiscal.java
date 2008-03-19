@@ -72,6 +72,13 @@ public class FGeraFiscal extends FFilho implements ActionListener {
   private int iTotCompras = 0;
   private int iTotVendas = 0;
   private JLabelPad lbAnd = new JLabelPad("Aguardando:");
+  
+  private enum EColSaida {
+	   DTEMIT, DTSAIDA, NATOPER, CODEMIT, UF, ESPECIE, MODNOTA, SERIE,
+	   DOC, DOCFIM, PERCICMS, PERCIPI, VLRCONTABIL, VLRBASEICMS, VLRICMS,
+	   VLRISENTAS, VLROUTRAS, VLRBASEIPI, VLRIPI, E1, F1, E2, F2, E3, F3
+  }
+  
   public FGeraFiscal() {
   	super(false);
     setTitulo("Gerar Livros Fiscais");      
@@ -169,6 +176,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
     tab2.adicColuna("Mod.nota");
     tab2.adicColuna("Série");
     tab2.adicColuna("Doc.");
+    tab2.adicColuna( "Doc.Fim" );
     tab2.adicColuna("%Icms");
     tab2.adicColuna("%Ipi");
     tab2.adicColuna("V.contabil");
@@ -184,31 +192,57 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 	tab2.adicColuna("F2");
 	tab2.adicColuna("E3");
 	tab2.adicColuna("F3");
-    
-    tab2.setTamColuna(100,0);
-    tab2.setTamColuna(100,1);
-    tab2.setTamColuna(70,2);
-    tab2.setTamColuna(70,3);
-    tab2.setTamColuna(40,4);
-    tab2.setTamColuna(70,5);
-    tab2.setTamColuna(80,6);
-    tab2.setTamColuna(50,7);
-    tab2.setTamColuna(70,8);
-    tab2.setTamColuna(70,9);
-    tab2.setTamColuna(70,10);
-    tab2.setTamColuna(100,11);
-    tab2.setTamColuna(100,12);
-    tab2.setTamColuna(100,13);
-    tab2.setTamColuna(100,14);
-    tab2.setTamColuna(100,15);
-    tab2.setTamColuna(100,16);
-    tab2.setTamColuna(100,17);
-	tab2.setTamColuna(20,18);
-	tab2.setTamColuna(20,19);
-	tab2.setTamColuna(20,20);
-	tab2.setTamColuna(20,21);
-	tab2.setTamColuna(20,22);
-	tab2.setTamColuna(20,23);
+
+/*    tab2.adicColuna("Dt.emissão");
+    tab2.adicColuna("Dt.saída");
+    tab2.adicColuna("Nat.oper.");
+    tab2.adicColuna("Cód.For.");
+    tab2.adicColuna("UF.");
+    tab2.adicColuna("Espécie");
+    tab2.adicColuna("Mod.nota");
+    tab2.adicColuna("Série");
+    tab2.adicColuna("Doc.");
+    tab2.adicColuna("%Icms");
+    tab2.adicColuna("%Ipi");
+    tab2.adicColuna("V.contabil");
+    tab2.adicColuna("V.base Icms");
+    tab2.adicColuna("V.Icms");
+    tab2.adicColuna("V.isentas");
+    tab2.adicColuna("V.outras");
+    tab2.adicColuna("V.base Ipi");
+    tab2.adicColuna("V.Ipi");
+	tab2.adicColuna("E1");
+	tab2.adicColuna("F1");
+	tab2.adicColuna("E2");
+	tab2.adicColuna("F2");
+	tab2.adicColuna("E3");
+	tab2.adicColuna("F3");
+	*/
+    tab2.setTamColuna(100,EColSaida.DTEMIT.ordinal());
+    tab2.setTamColuna(100,EColSaida.DTSAIDA.ordinal());
+    tab2.setTamColuna(70,EColSaida.NATOPER.ordinal());
+    tab2.setTamColuna(70,EColSaida.CODEMIT.ordinal());
+    tab2.setTamColuna(40,EColSaida.UF.ordinal());
+    tab2.setTamColuna(70,EColSaida.ESPECIE.ordinal());
+    tab2.setTamColuna(80,EColSaida.MODNOTA.ordinal());
+    tab2.setTamColuna(50,EColSaida.SERIE.ordinal());
+    tab2.setTamColuna(70,EColSaida.DOC.ordinal());
+    tab2.setTamColuna(70,EColSaida.DOCFIM.ordinal());
+    tab2.setTamColuna(70,EColSaida.PERCICMS.ordinal());
+    tab2.setTamColuna(70,EColSaida.PERCIPI.ordinal());
+    tab2.setTamColuna(100,EColSaida.VLRCONTABIL.ordinal());
+    tab2.setTamColuna(100,EColSaida.VLRBASEICMS.ordinal());
+    tab2.setTamColuna(100,EColSaida.VLRICMS.ordinal());
+    tab2.setTamColuna(100,EColSaida.VLRISENTAS.ordinal());
+    tab2.setTamColuna(100,EColSaida.VLROUTRAS.ordinal());
+    tab2.setTamColuna(100,EColSaida.VLRBASEIPI.ordinal());
+    tab2.setTamColuna(100,EColSaida.VLRIPI.ordinal());
+	tab2.setTamColuna(20,EColSaida.E1.ordinal());
+	tab2.setTamColuna(20,EColSaida.F1.ordinal());
+	tab2.setTamColuna(20,EColSaida.E2.ordinal());
+	tab2.setTamColuna(20,EColSaida.F2.ordinal());
+	tab2.setTamColuna(20,EColSaida.E3.ordinal());
+	tab2.setTamColuna(20,EColSaida.F3.ordinal());
 
     colocaMes();   
     btVisual.addActionListener(this);
@@ -356,30 +390,116 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 
       if (cbSaida.getVlrString().equals("S")) {
       
-        sSQL = "SELECT V.DTEMITVENDA,V.DTSAIDAVENDA,IV.CODNAT,"+
+        sSQL = "SELECT V.TIPOVENDA, V.DTEMITVENDA,V.DTSAIDAVENDA,IV.CODNAT,"+
              "V.CODCLI,C.UFCLI,TM.ESPECIETIPOMOV,TM.CODMODNOTA,"+
-             "V.SERIE,V.DOCVENDA,IV.PERCICMSITVENDA,IV.PERCIPIITVENDA," +
+             "V.SERIE,V.DOCVENDA, V.DOCVENDA DOCFIM, IV.PERCICMSITVENDA,IV.PERCIPIITVENDA," +
              "V.CODEMPCL,V.CODFILIALCL," +
              "IV.CODEMPNT,IV.CODFILIALNT," +
              "TM.CODEMPMN,TM.CODFILIALMN,"+
-             "SUM(IV.VLRPRODITVENDA),SUM(IV.VLRBASEICMSITVENDA),"+
-             "SUM(IV.VLRICMSITVENDA),SUM(IV.VLRISENTASITVENDA),"+
-             "SUM(IV.VLROUTRASITVENDA),SUM(IV.VLRBASEIPIITVENDA),"+
-             "SUM(IV.VLRIPIITVENDA) "+
+             "SUM(IV.VLRPRODITVENDA) VLRCONTABILITVENDA," +
+             "SUM(IV.VLRBASEICMSITVENDA) VLRBASEICMSITVENDA,"+
+             "SUM(IV.VLRICMSITVENDA) VLRICMSITVENDA, " +
+             "SUM(IV.VLRISENTASITVENDA) VLRISENTASITVENDA, "+
+             "SUM(IV.VLROUTRASITVENDA) VLROUTRASITVENDA, " +
+             "SUM(IV.VLRBASEIPIITVENDA) VLRBASEIPIITVENDA, "+
+             "SUM(IV.VLRIPIITVENDA) VLRIPIITVENDA "+
              "FROM VDVENDA V,VDITVENDA IV, EQTIPOMOV TM, VDCLIENTE C "+
              "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND " +
-             "V.CODEMP=? AND V.CODFILIAL=? AND IV.TIPOVENDA=V.TIPOVENDA AND "+
+             "V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND " +
+             "IV.TIPOVENDA=V.TIPOVENDA AND "+
              "IV.CODVENDA=V.CODVENDA AND IV.CODEMP=V.CODEMP AND " +
              "IV.CODFILIAL=V.CODFILIAL AND "+
              "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " +
              "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND "+
              "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL "+
+
              "GROUP BY V.DTEMITVENDA,V.DTSAIDAVENDA,IV.CODNAT,"+
              "V.CODCLI,C.UFCLI,TM.ESPECIETIPOMOV,TM.CODMODNOTA,"+
              "V.SERIE,V.DOCVENDA,IV.PERCICMSITVENDA,IV.PERCIPIITVENDA,"+
 			 "V.CODEMPCL,V.CODFILIALCL," +
 			 "IV.CODEMPNT,IV.CODFILIALNT," +
-			 "TM.CODEMPMN,TM.CODFILIALMN";
+			 "TM.CODEMPMN,TM.CODFILIALMN" +
+			 
+			 "UNION " +
+             
+			 // Parei aqui
+             
+             "SELECT V.TIPOVENDA,V.DTEMITVENDA, V.DTSAIDAVENDA, IV.CODNAT, " +
+             "V.CODCLI, C.UFCLI, TM.ESPECIETIOMOV, TM.CODMODNOTA, " +
+             "V.SERIE, L.PRIMCUPOMLX DOCVENDA, L.ULTCUPOMLX DOCFIM, " + 
+             "IV.PERCICMSITVENDA, CF.ALIQLFISC, TM.SERIE, V.CODCLI CODEMIT, " + 
+             "L.PRIMCUPOMLX PRIMCUPOM, " + 
+             "L.ULTCUPOMLX ULTCUPOM, " + 
+             "SUM(CASE WHEN (CF.TIPOFISC='TT' AND (CF.REDFISC<=0 OR CF.REDFISC IS NULL)) " + 
+             "THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0 " + 
+             "THEN (IV.VLRLIQITVENDA)-((IV.VLRLIQITVENDA)*CF.REDFISC/100) ELSE NULL END ) AS BASECALCICMS, " + 
+             "SUM(CASE WHEN (CF.TIPOFISC='II' AND ( CF.REDFISC<=0 OR CF.REDFISC IS NULL)) " + 
+             "THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0 " + 
+             "THEN (IV.VLRLIQITVENDA)-(CASE WHEN (CF.TIPOFISC='TT' AND (CF.REDFISC<=0 OR CF.REDFISC IS NULL)) " + 
+             "THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0 THEN (IV.VLRLIQITVENDA)-((IV.VLRLIQITVENDA)*CF.REDFISC/100) " + 
+             "ELSE NULL END ) ELSE NULL  END) AS VLRISENTAS, " + 
+             "SUM(CASE WHEN CF.TIPOFISC='TT' AND (CF.REDFISC=0 OR CF.REDFISC IS NULL) " + 
+             "THEN IV.VLRLIQITVENDA*IV.PERCICMSITVENDA/100  WHEN CF.REDFISC>0 " + 
+             "THEN ((IV.VLRLIQITVENDA)-(IV.VLRLIQITVENDA*CF.REDFISC/100))* " + 
+             "CF.ALIQLFISC/100 ELSE NULL END) VLRICMS,SUM(CASE WHEN (CF.TIPOFISC " + 
+             "IN ('NN','FF')) THEN IV.VLRLIQITVENDA " + 
+             "WHEN (CF.TIPOFISC IN ('II','TT')) OR (CF.REDFISC>0) OR (CF.REDFISC IS NOT NULL) " + 
+             "THEN NULL ELSE IV.VLRLIQITVENDA END) VLROUTRAS,SUM(IV.VLRLIQITVENDA) AS VLRCONTABIL " + 
+             "FROM  VDITVENDA  IV, EQPRODUTO P, EQTIPOMOV TM, LFCLFISCAL CF, VDVENDA V " + 
+             "LEFT OUTER JOIN PVLEITURAX L ON " + 
+             "  L.CODEMP=V.CODEMPCX AND L.CODFILIAL=V.CODFILIALCX AND " + 
+             "  L.CODCAIXA=V.CODCAIXA AND L.DTLX=V.DTEMITVENDA " + 
+             "WHERE TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND " + 
+             "TM.FISCALTIPOMOV='S' AND V.CODEMP=5 AND " + 
+             "SUBSTRING(V.STATUSVENDA FROM 1 FOR 1)<>'C' AND V.TIPOVENDA='E' AND " + 
+             "V.DTEMITVENDA BETWEEN '2007-11-01' AND '2007-11-30' AND IV.CODEMP=V.CODEMP AND " + 
+             "IV.CODVENDA=V.CODVENDA AND ( IV.CANCITVENDA IS NULL OR IV.CANCITVENDA<>'S' ) AND " + 
+             "P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD AND " + 
+             "CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.CODFISC=P.CODFISC " + 
+             "GROUP BY V.TIPOVENDA,V.DTEMITVENDA,V.CODCAIXA,IV.CODNAT,CF.REDFISC, " + 
+             "IV.PERCICMSITVENDA,CF.ALIQLFISC, TM.SERIE, V.CODCLI, L.PRIMCUPOMLX, L.ULTCUPOMLX " + 
+             "ORDER BY V.CODEMP, V.DTEMITVENDA,V.CODCAIXA,IV.CODNAT,CF.REDFISC, " + 
+             "IV.PERCICMSITVENDA,CF.ALIQLFISC " ;
+             
+             
+             
+        
+        /*
+         * SELECT V.CODEMP,V.DTEMITVENDA,V.CODCAIXA,IV.CODNAT, CF.REDFISC,
+IV.PERCICMSITVENDA, CF.ALIQLFISC, TM.SERIE, V.CODCLI CODEMIT,
+L.PRIMCUPOMLX PRIMCUPOM,
+L.ULTCUPOMLX ULTCUPOM,
+SUM(CASE WHEN (CF.TIPOFISC='TT' AND (CF.REDFISC<=0 OR CF.REDFISC IS NULL))
+THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0
+THEN (IV.VLRLIQITVENDA)-((IV.VLRLIQITVENDA)*CF.REDFISC/100) ELSE NULL END ) AS BASECALCICMS,
+SUM(CASE WHEN (CF.TIPOFISC='II' AND ( CF.REDFISC<=0 OR CF.REDFISC IS NULL))
+THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0
+THEN (IV.VLRLIQITVENDA)-(CASE WHEN (CF.TIPOFISC='TT' AND (CF.REDFISC<=0 OR CF.REDFISC IS NULL))
+THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0 THEN (IV.VLRLIQITVENDA)-((IV.VLRLIQITVENDA)*CF.REDFISC/100)
+ELSE NULL END ) ELSE NULL  END) AS VLRISENTAS,
+SUM(CASE WHEN CF.TIPOFISC='TT' AND (CF.REDFISC=0 OR CF.REDFISC IS NULL)
+THEN IV.VLRLIQITVENDA*IV.PERCICMSITVENDA/100  WHEN CF.REDFISC>0
+THEN ((IV.VLRLIQITVENDA)-(IV.VLRLIQITVENDA*CF.REDFISC/100))*
+CF.ALIQLFISC/100 ELSE NULL END) VLRICMS,SUM(CASE WHEN (CF.TIPOFISC
+IN ('NN','FF')) THEN IV.VLRLIQITVENDA
+WHEN (CF.TIPOFISC IN ('II','TT')) OR (CF.REDFISC>0) OR (CF.REDFISC IS NOT NULL)
+THEN NULL ELSE IV.VLRLIQITVENDA END) VLROUTRAS,SUM(IV.VLRLIQITVENDA) AS VLRCONTABIL
+FROM  VDITVENDA  IV, EQPRODUTO P, EQTIPOMOV TM, LFCLFISCAL CF, VDVENDA V
+LEFT OUTER JOIN PVLEITURAX L ON
+  L.CODEMP=V.CODEMPCX AND L.CODFILIAL=V.CODFILIALCX AND
+  L.CODCAIXA=V.CODCAIXA AND L.DTLX=V.DTEMITVENDA
+WHERE TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND
+TM.FISCALTIPOMOV='S' AND V.CODEMP=5 AND
+SUBSTRING(V.STATUSVENDA FROM 1 FOR 1)<>'C' AND V.TIPOVENDA='E' AND
+V.DTEMITVENDA BETWEEN '2007-11-01' AND '2007-11-30' AND IV.CODEMP=V.CODEMP AND
+IV.CODVENDA=V.CODVENDA AND ( IV.CANCITVENDA IS NULL OR IV.CANCITVENDA<>'S' ) AND
+P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD AND
+CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.CODFISC=P.CODFISC
+GROUP BY V.CODEMP,V.DTEMITVENDA,V.CODCAIXA,IV.CODNAT,CF.REDFISC,
+IV.PERCICMSITVENDA,CF.ALIQLFISC, TM.SERIE, V.CODCLI, L.PRIMCUPOMLX, L.ULTCUPOMLX
+ORDER BY V.CODEMP, V.DTEMITVENDA,V.CODCAIXA,IV.CODNAT,CF.REDFISC,
+IV.PERCICMSITVENDA,CF.ALIQLFISC
+         * */
 
         PreparedStatement ps2 = con.prepareStatement(sSQL);
         ps2.setDate(1,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
@@ -391,30 +511,36 @@ public class FGeraFiscal extends FFilho implements ActionListener {
         tab2.limpa();
         while (rs2.next()) {
           tab2.adicLinha();
-          tab2.setValor(Funcoes.sqlDateToStrDate(rs2.getDate(1)),iTotVendas,0);
-          tab2.setValor(Funcoes.sqlDateToStrDate(rs2.getDate(2)),iTotVendas,1);
-          tab2.setValor(rs2.getString(3)!=null?rs2.getString(3):"",iTotVendas,2);
-          tab2.setValor(""+rs2.getInt(4),iTotVendas,3);
-          tab2.setValor(rs2.getString(5)!=null?rs2.getString(5):"",iTotVendas,4);
-          tab2.setValor(rs2.getString(6)!=null?rs2.getString(6):"",iTotVendas,5);
-          tab2.setValor(""+rs2.getInt(7),iTotVendas,6);
-          tab2.setValor(rs2.getString(8)!=null?rs2.getString(8):"",iTotVendas,7);
-          tab2.setValor(""+rs2.getInt(9),iTotVendas,8);
-          tab2.setValor(Funcoes.strDecimalToStrCurrency(6,2,rs2.getString(10)),iTotVendas,9);
-          tab2.setValor(Funcoes.strDecimalToStrCurrency(6,2,rs2.getString(11)),iTotVendas,10);
-          tab2.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString(18)),iTotVendas,11);
-          tab2.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString(19)),iTotVendas,12);
-          tab2.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString(20)),iTotVendas,13);
-          tab2.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString(21)),iTotVendas,14);
-          tab2.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString(22)),iTotVendas,15);
-          tab2.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString(23)),iTotVendas,16);
-          tab2.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString(24)),iTotVendas,17);
-		  tab2.setValor(""+rs2.getInt(12),iTotVendas,18);
-		  tab2.setValor(""+rs2.getInt(13),iTotVendas,19);
-		  tab2.setValor(""+rs2.getInt(14),iTotVendas,20);
-		  tab2.setValor(""+rs2.getInt(15),iTotVendas,21);
-		  tab2.setValor(""+rs2.getInt(16),iTotVendas,22);
-		  tab2.setValor(""+rs2.getInt(17),iTotVendas,23);
+          /*	   0 DTEMIT, 1DTSAIDA, 2NATOPER, 3CODEMIT, 4UF, 5ESPECIE, 6MODNOTA, 7SERIE,
+	   8DOC, 9PERCICMS, 10PERCIPI,11 VLRCONTABIL,12 VLRBASEICMS,13 VLRICMS,
+	   14VLRISENTAS, 15VLROUTRAS, 16VLRBASEIPI, 17VLRIPI,18 E1, 19F1, 20 E2, 21 F2, 22 E3, 23 F3
+
+           * */
+          tab2.setValor(Funcoes.sqlDateToStrDate(rs2.getDate("DTEMITVENDA")),iTotVendas,EColSaida.DTEMIT.ordinal());
+          tab2.setValor(Funcoes.sqlDateToStrDate(rs2.getDate("DTSAIDAVENDA")),iTotVendas,EColSaida.DTSAIDA.ordinal());
+          tab2.setValor(rs2.getString("CODNAT")!=null?rs2.getString("CODNAT"):"",iTotVendas,EColSaida.NATOPER.ordinal());
+          tab2.setValor(""+rs2.getInt("CODCLI"),iTotVendas,EColSaida.CODEMIT.ordinal());
+          tab2.setValor(rs2.getString("UFCLI")!=null?rs2.getString("UFCLI"):"",iTotVendas,EColSaida.UF.ordinal());
+          tab2.setValor(rs2.getString("ESPECIETIPOMOV")!=null?rs2.getString("ESPECIETIPOMOV"):"",iTotVendas,EColSaida.ESPECIE.ordinal());
+          tab2.setValor(""+rs2.getInt("CODMODNOTA"),iTotVendas,EColSaida.MODNOTA.ordinal());
+          tab2.setValor(rs2.getString("SERIE")!=null?rs2.getString("SERIE"):"",iTotVendas,EColSaida.SERIE.ordinal());
+          tab2.setValor(""+rs2.getInt("DOCVENDA"),iTotVendas,EColSaida.DOC.ordinal());
+          tab2.setValor(""+rs2.getInt("DOCFIM"),iTotVendas,EColSaida.DOCFIM.ordinal());
+          tab2.setValor(Funcoes.strDecimalToStrCurrency(6,2,rs2.getString("PERCICMSITVENDA")),iTotVendas,EColSaida.PERCICMS.ordinal());
+          tab2.setValor(Funcoes.strDecimalToStrCurrency(6,2,rs2.getString("PERCIPIITVENDA")),iTotVendas,EColSaida.PERCIPI.ordinal());
+          tab2.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString("VLRCONTABILITVENDA")),iTotVendas,EColSaida.VLRCONTABIL.ordinal());
+          tab2.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString("VLRBASEICMSITVENDA")),iTotVendas,EColSaida.VLRBASEICMS.ordinal());
+          tab2.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString("VLRICMSITVENDA")),iTotVendas,EColSaida.VLRICMS.ordinal());
+          tab2.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString("VLRISENTASITVENDA")),iTotVendas,EColSaida.VLRISENTAS.ordinal());
+          tab2.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString("VLROUTRASITVENDA")),iTotVendas,EColSaida.VLROUTRAS.ordinal());
+          tab2.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString("VLRBASEIPIITVENDA")),iTotVendas,EColSaida.VLRBASEIPI.ordinal());
+          tab2.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString("VLRIPIITVENDA")),iTotVendas,EColSaida.VLRIPI.ordinal());
+		  tab2.setValor(""+rs2.getInt("CODEMPCL"),iTotVendas,EColSaida.E1.ordinal());
+		  tab2.setValor(""+rs2.getInt("CODFILIALCL"),iTotVendas,EColSaida.F1.ordinal());
+		  tab2.setValor(""+rs2.getInt("CODEMPNT"),iTotVendas,EColSaida.E2.ordinal());
+		  tab2.setValor(""+rs2.getInt("CODFILIALNT"),iTotVendas,EColSaida.F2.ordinal());
+		  tab2.setValor(""+rs2.getInt("CODEMPMN"),iTotVendas,EColSaida.E3.ordinal());
+		  tab2.setValor(""+rs2.getInt("CODFILIALMN"),iTotVendas,EColSaida.F3.ordinal());
           iTotVendas++;
         }
 //        rs2.close();
@@ -599,62 +725,71 @@ public class FGeraFiscal extends FFilho implements ActionListener {
     
     for (int i=0; i<iTotVendas ; i++) {
       try {
+          /*	   0 DTEMIT, 1DTSAIDA, 2NATOPER, 3CODEMIT, 4UF, 5ESPECIE, 6MODNOTA, 7SERIE,
+   	   8DOC, 9PERCICMS, 10PERCIPI,11 VLRCONTABIL,12 VLRBASEICMS,13 VLRICMS,
+   	   14VLRISENTAS, 15VLROUTRAS, 16VLRBASEIPI, 17VLRIPI,18 E1, 19F1, 20 E2, 21 F2, 22 E3, 23 F3
+*/
          psI = con.prepareStatement(sSql);
          psI.setInt(1,Aplicativo.iCodEmp);
          psI.setInt(2,ListaCampos.getMasterFilial("LFLIVROFISCAL"));
          psI.setString(3,"S");
-         psI.setString(4,((""+tab2.getValor(i,0)).substring(6,10)+(""+tab2.getValor(i,0)).substring(3,5)).trim());
+         psI.setString(4,((""+tab2.getValor(i,EColSaida.DTEMIT.ordinal())).substring(6,10)+
+        		  (""+tab2.getValor(i,EColSaida.DTEMIT.ordinal())).substring(3,5)).trim());
          psI.setInt(5,i);
-         psI.setInt(6,(tab2.getValor(i,3)+"").equals("")?0:Integer.parseInt((tab2.getValor(i,3)+"")));
-         psI.setString(7,tab2.getValor(i,7)+"");
-         psI.setInt(8,(tab2.getValor(i,8)+"").equals("")?0:Integer.parseInt((tab2.getValor(i,8)+"")));
-         psI.setDate(9,Funcoes.strDateToSqlDate(tab2.getValor(i,0)+""));
-         psI.setDate(10,Funcoes.strDateToSqlDate(tab2.getValor(i,1)+""));
-         psI.setString(11,tab2.getValor(i,2)+"");
-         psI.setInt(12,(tab2.getValor(i,8)+"").equals("")?0:Integer.parseInt((tab2.getValor(i,8)+"")));
+         psI.setInt(6,(tab2.getValor(i,EColSaida.CODEMIT.ordinal())+"").equals("")?0:
+        	 Integer.parseInt((tab2.getValor(i,EColSaida.CODEMIT.ordinal())+"")));
+         psI.setString(7,tab2.getValor(i,EColSaida.SERIE.ordinal())+"");
+         psI.setInt(8,(tab2.getValor(i,EColSaida.DOC.ordinal())+"").equals("")?0:
+        	 Integer.parseInt((tab2.getValor(i,EColSaida.DOC.ordinal())+"")));
+         psI.setDate(9,Funcoes.strDateToSqlDate(tab2.getValor(i,EColSaida.DTEMIT.ordinal())+""));
+         psI.setDate(10,Funcoes.strDateToSqlDate(tab2.getValor(i,EColSaida.DTSAIDA.ordinal())+""));
+         psI.setString(11,tab2.getValor(i,EColSaida.NATOPER.ordinal())+"");
+         psI.setInt(12,(tab2.getValor(i,EColSaida.DOCFIM.ordinal())+"").equals("")?0:
+        	 Integer.parseInt((tab2.getValor(i,EColSaida.DOCFIM.ordinal())+"")));
          
-         psI.setString(13,Funcoes.adicionaEspacos(tab2.getValor(i,5)+"",3));
-         psI.setString(14,tab2.getValor(i,4)+"");
-         psI.setBigDecimal(15,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,11)+"")); // VLRCONTABIL
-         psI.setBigDecimal(16,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,12)+"")); // VLRBASEICMS
-         psI.setBigDecimal(17,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,9)+"")); // ALIQICMS
-         psI.setBigDecimal(18,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,13)+"")); // VLRICMS
-         psI.setBigDecimal(19,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,14)+"")); // VLRISENTAS ICMS
-         psI.setBigDecimal(20,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,15)+"")); // VLROUTRAS ICMS
-         psI.setBigDecimal(21,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,16)+"")); // VLRBASEIPI    
-         psI.setBigDecimal(22,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,10)+"")); // ALIQIPI
-         psI.setBigDecimal(23,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,17)+"")); // VLRIPI
+         psI.setString(13,Funcoes.adicionaEspacos(tab2.getValor(i,EColSaida.ESPECIE.ordinal())+"",3));
+         psI.setString(14,tab2.getValor(i,EColSaida.UF.ordinal())+"");
+         psI.setBigDecimal(15,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,EColSaida.VLRCONTABIL.ordinal())+"")); // VLRCONTABIL
+         psI.setBigDecimal(16,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,EColSaida.VLRBASEICMS.ordinal())+"")); // VLRBASEICMS
+         psI.setBigDecimal(17,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,EColSaida.PERCICMS.ordinal())+"")); // ALIQICMS
+         psI.setBigDecimal(18,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,EColSaida.VLRICMS.ordinal())+"")); // VLRICMS
+         psI.setBigDecimal(19,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,EColSaida.VLRISENTAS.ordinal())+"")); // VLRISENTAS ICMS
+         psI.setBigDecimal(20,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,EColSaida.VLROUTRAS.ordinal())+"")); // VLROUTRAS ICMS
+         psI.setBigDecimal(21,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,EColSaida.VLRBASEIPI.ordinal())+"")); // VLRBASEIPI    
+         psI.setBigDecimal(22,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,EColSaida.PERCIPI.ordinal())+"")); // ALIQIPI
+         psI.setBigDecimal(23,Funcoes.strCurrencyToBigDecimal(tab2.getValor(i,EColSaida.VLRIPI.ordinal())+"")); // VLRIPI
          psI.setBigDecimal(24,Funcoes.strCurrencyToBigDecimal("0")); // VLRISENTAS IPI
          psI.setBigDecimal(25,Funcoes.strCurrencyToBigDecimal("0")); // VLRIOUTRAS IPI 
-         psI.setInt(26,(tab2.getValor(i,6)+"").equals("")?0:Integer.parseInt((tab2.getValor(i,6)+""))); // MODELO DE NOTA FISCAL 
-		if ( (!(tab2.getValor(i,18)+"").equals("")) || 
-			 (!(tab2.getValor(i,18)+"").equals("0")) )
-			psI.setInt(27,Integer.parseInt(tab2.getValor(i,18)+"")); // CODEMPET 
+         psI.setInt(26,(tab2.getValor(i,EColSaida.MODNOTA.ordinal())+"").equals("")?0:
+        	 Integer.parseInt((tab2.getValor(i,EColSaida.MODNOTA.ordinal())+""))); // MODELO DE NOTA FISCAL 
+		if ( (!(tab2.getValor(i,EColSaida.E1.ordinal())+"").equals("")) || 
+			 (!(tab2.getValor(i,EColSaida.E1.ordinal())+"").equals("0")) )
+			psI.setInt(27,Integer.parseInt(tab2.getValor(i,EColSaida.E1.ordinal())+"")); // CODEMPET 
 		else 
 			psI.setNull(27,Types.INTEGER); 
-		if ( (!(tab2.getValor(i,19)+"").equals("")) || 
-			(!(tab2.getValor(i,19)+"").equals("0")) )
-		   psI.setInt(28,Integer.parseInt(tab2.getValor(i,19)+"")); // CODFILIALET 
+		if ( (!(tab2.getValor(i,EColSaida.F1.ordinal())+"").equals("")) || 
+			(!(tab2.getValor(i,EColSaida.F1.ordinal())+"").equals("0")) )
+		   psI.setInt(28,Integer.parseInt(tab2.getValor(i,EColSaida.F1.ordinal())+"")); // CODFILIALET 
 		else 
 		   psI.setNull(28,Types.INTEGER); 
-		if ( (!(tab2.getValor(i,20)+"").equals("")) || 
-			(!(tab2.getValor(i,20)+"").equals("0")) )
-		   psI.setInt(29,Integer.parseInt(tab2.getValor(i,20)+"")); // CODEMPNT 
+		if ( (!(tab2.getValor(i,EColSaida.E2.ordinal())+"").equals("")) || 
+			(!(tab2.getValor(i,EColSaida.E2.ordinal())+"").equals("0")) )
+		   psI.setInt(29,Integer.parseInt(tab2.getValor(i,EColSaida.E2.ordinal())+"")); // CODEMPNT 
 		else 
 			psI.setNull(29,Types.INTEGER); 
-		if ( (!(tab2.getValor(i,21)+"").equals("")) || 
-			(!(tab2.getValor(i,21)+"").equals("0")) )
-		   psI.setInt(30,Integer.parseInt(tab2.getValor(i,21)+"")); // CODFILIALNT 
+		if ( (!(tab2.getValor(i,EColSaida.F2.ordinal())+"").equals("")) || 
+			(!(tab2.getValor(i,EColSaida.F2.ordinal())+"").equals("0")) )
+		   psI.setInt(30,Integer.parseInt(tab2.getValor(i,EColSaida.F2.ordinal())+"")); // CODFILIALNT 
 		else 
 			psI.setNull(30,Types.INTEGER); 
-		if ( (!(tab2.getValor(i,22)+"").equals("")) || 
-			(!(tab2.getValor(i,22)+"").equals("0")) )
-		   psI.setInt(31,Integer.parseInt(tab2.getValor(i,22)+"")); // CODEMPMN 
+		if ( (!(tab2.getValor(i,EColSaida.E3.ordinal())+"").equals("")) || 
+			(!(tab2.getValor(i,EColSaida.E3.ordinal())+"").equals("0")) )
+		   psI.setInt(31,Integer.parseInt(tab2.getValor(i,EColSaida.E3.ordinal())+"")); // CODEMPMN 
 		else 
 			psI.setNull(31,Types.INTEGER); 
-		if ( (!(tab2.getValor(i,23)+"").equals("")) || 
-			(!(tab2.getValor(i,23)+"").equals("0")) )
-		   psI.setInt(32,Integer.parseInt(tab2.getValor(i,23)+"")); // CODFILIALMN 
+		if ( (!(tab2.getValor(i,EColSaida.F3.ordinal())+"").equals("")) || 
+			(!(tab2.getValor(i,EColSaida.F3.ordinal())+"").equals("0")) )
+		   psI.setInt(32,Integer.parseInt(tab2.getValor(i,EColSaida.F3.ordinal())+"")); // CODFILIALMN 
 		else 
 		   psI.setNull(32,Types.INTEGER); 
 		psI.executeUpdate();     
