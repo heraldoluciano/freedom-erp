@@ -28,6 +28,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
+
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.componentes.LeiauteGR;
@@ -148,6 +149,7 @@ public class OrcMCraft extends LeiauteGR {
 		  if (!rsCab.next())
 		    return;
 		  montaCab(rsCab);
+		  montaCabecalho();
 		  
 		  int iCodPg = rsCab.getInt("CODPLANOPAG");
 		  int iCodEmpPg = rsCab.getInt("CODEMPPG");
@@ -183,11 +185,13 @@ public class OrcMCraft extends LeiauteGR {
 		  ps.setInt(3,ListaCampos.getMasterFilial("VDORCAMENTO"));
 		  rs = ps.executeQuery();
 		  for (int i=1;(rs.next());i++) {
-	  		int iY2 = iYPosProd;
+	  	
+			int iY2 = iYPosProd;
 	  		setFonte(fnCabCliIta);
 	  		String sVal = Funcoes.strDecimalToStrCurrency(2,rs.getString("VLRLIQITORC"));
 	  		drawTexto(sVal,470,iYPosProd+5,getFontMetrics(fnCabCliIta).stringWidth(sVal),AL_DIR);
 	  		bigTot = bigTot.add(new BigDecimal(rs.getString("VLRLIQITORC")));
+	  		
 	  		if (rs.getString("ObsItOrc")!=null) {		   
 		  		setFonte(fnCabCliIta);    	
 		  		iY2 = impLabelSilabas(rs.getString("ObsItOrc"),iSaltoProd,60,350,iYPosProd+3,rsCab)-5;
@@ -228,11 +232,56 @@ public class OrcMCraft extends LeiauteGR {
 
 	    finaliza();
 	}
-	private void montaCab(ResultSet rs) {
-	  try {		  
+	
+	private void montaCabecalho() {
+		
+		StringBuilder sSQL = new StringBuilder();
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		
+		sSQL.append( "SELECT E.ENDFILIAL, E.CNPJFILIAL, E.FONEFILIAL, E.RAZFILIAL FROM SGFILIAL E " );
+		sSQL.append( "WHERE E.CODEMP=? AND E.CODFILIAL=? ");
+		
+		try {
 
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGFILIAL" ) );
+			
+			rs = ps.executeQuery();
+			
+	
+		}catch( SQLException err )	{
+		
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar dados da empresa" );
+		}
+		
+		try {
+			
+			while ( rs.next() ){
+			
+				drawTexto(rs.getString( "RAZFILIAL" ),60,40);
+				drawTexto("Endereço:",60,60);
+				drawTexto(rs.getString( "ENDFILIAL" ),120,60);
+				drawTexto("Telefone:",60,80);
+				drawTexto(rs.getString( "FONEFILIAL" ),120,80);
+				drawTexto("CNPJ:",60,100);
+				drawTexto(rs.getString( "CNPJFILIAL" ),120,100);
+				
+			}
+			
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void montaCab(ResultSet rs) {
+	
+		try {		 
+		
 		setFonte(fnTitulo);
-		drawTexto("ORÇAMENTO",200,120);
+		drawTexto("ORÇAMENTO",200,130);
 				
 		setFonte(fnCabCliIta); 
 		drawTexto(rs.getString("CidFilial").trim()+", "+Funcoes.dateToStrExtenso(new Date()),60,160);
