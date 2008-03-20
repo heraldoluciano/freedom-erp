@@ -296,49 +296,12 @@ public class ControllerECF {
 		boolean returnOfAction = true;
 		
 		if ( notIsModoDemostracao() ) {	
-			if ( (!horariodeverao && isHorarioDeVerao()) 
-					|| (horariodeverao && !isHorarioDeVerao()) ) {
+			if ( (!horariodeverao && ecf.isHorarioVerao() ) 
+					|| (horariodeverao && !ecf.isHorarioVerao() ) ) {
 				returnOfAction = decodeReturn( ecf.programaHorarioVerao() );	
 			}
 			if ( ! returnOfAction ) {
 				whiterLogError( "[PROGRAMA HORÁRIO DE VERÃO] " );
-			}
-		}
-		
-		return returnOfAction;
-	}
-	
-	public boolean isHorarioDeVerao() {
-		
-		boolean returnOfAction = true;
-		
-		if ( notIsModoDemostracao() ) {	
-			try {
-				returnOfAction = false;
-				String flags = ecf.retornoVariaveis( AbstractECFDriver.V_FLAG_FISCAL );
-				int iflag = Integer.parseInt( flags );
-				if ( iflag > 127 ) {
-					iflag -= 128;
-				}
-				if ( iflag > 63 ) {
-					iflag -= 64;
-				}
-				if ( iflag > 31 ) {
-					iflag -= 32;
-				}
-				if ( iflag > 15 ) {
-					iflag -= 16;
-				}
-				if ( iflag > 7 ) {
-					iflag -= 8;
-				}
-				if ( iflag > 3 ) {
-					iflag -= 4;
-					returnOfAction = true;				
-				}
-			} catch ( NumberFormatException e ) {
-				setMessageLog( e.getMessage() );
-				whiterLogError( "[HORÁRIO DE VERÃO] " );
 			}
 		}
 		
