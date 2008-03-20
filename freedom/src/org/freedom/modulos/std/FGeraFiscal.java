@@ -170,7 +170,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
     tab2.adicColuna("Dt.emissão");
     tab2.adicColuna("Dt.saída");
     tab2.adicColuna("Nat.oper.");
-    tab2.adicColuna("Cód.For.");
+    tab2.adicColuna("Cód.cli.");
     tab2.adicColuna("UF.");
     tab2.adicColuna("Espécie");
     tab2.adicColuna("Mod.nota");
@@ -193,31 +193,6 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 	tab2.adicColuna("E3");
 	tab2.adicColuna("F3");
 
-/*    tab2.adicColuna("Dt.emissão");
-    tab2.adicColuna("Dt.saída");
-    tab2.adicColuna("Nat.oper.");
-    tab2.adicColuna("Cód.For.");
-    tab2.adicColuna("UF.");
-    tab2.adicColuna("Espécie");
-    tab2.adicColuna("Mod.nota");
-    tab2.adicColuna("Série");
-    tab2.adicColuna("Doc.");
-    tab2.adicColuna("%Icms");
-    tab2.adicColuna("%Ipi");
-    tab2.adicColuna("V.contabil");
-    tab2.adicColuna("V.base Icms");
-    tab2.adicColuna("V.Icms");
-    tab2.adicColuna("V.isentas");
-    tab2.adicColuna("V.outras");
-    tab2.adicColuna("V.base Ipi");
-    tab2.adicColuna("V.Ipi");
-	tab2.adicColuna("E1");
-	tab2.adicColuna("F1");
-	tab2.adicColuna("E2");
-	tab2.adicColuna("F2");
-	tab2.adicColuna("E3");
-	tab2.adicColuna("F3");
-	*/
     tab2.setTamColuna(100,EColSaida.DTEMIT.ordinal());
     tab2.setTamColuna(100,EColSaida.DTSAIDA.ordinal());
     tab2.setTamColuna(70,EColSaida.NATOPER.ordinal());
@@ -264,32 +239,6 @@ public class FGeraFiscal extends FFilho implements ActionListener {
   	
   }
   
-/*  private void colocaTrimestre() {
-    int iMesAtual = 0;
-    GregorianCalendar cData = new GregorianCalendar();
-    GregorianCalendar cDataIni = new GregorianCalendar();
-    GregorianCalendar cDataFim = new GregorianCalendar();
-    iMesAtual = cData.get(Calendar.MONTH)+1;
-    if (iMesAtual < 4) {
-      cDataIni = new GregorianCalendar(cData.get(Calendar.YEAR)-1,10-1,1);
-      cDataFim = new GregorianCalendar(cData.get(Calendar.YEAR)-1,12-1,31);
-    }
-    else if ((iMesAtual > 3) & (iMesAtual < 7)) {
-      cDataIni = new GregorianCalendar(cData.get(Calendar.YEAR),1-1,1);
-      cDataFim = new GregorianCalendar(cData.get(Calendar.YEAR),3-1,31);
-    }
-    else if ((iMesAtual > 6) & (iMesAtual < 10)) {
-      cDataIni = new GregorianCalendar(cData.get(Calendar.YEAR),4-1,1);
-      cDataFim = new GregorianCalendar(cData.get(Calendar.YEAR),6-1,30);
-    }
-    else if (iMesAtual > 9) {
-      cDataIni = new GregorianCalendar(cData.get(Calendar.YEAR),7-1,1);
-      cDataFim = new GregorianCalendar(cData.get(Calendar.YEAR),9-1,30);
-    }
-    txtDataini.setVlrDate(cDataIni.getTime());
-    txtDatafim.setVlrDate(cDataFim.getTime());
-    
-  } */
   public void iniGerar() {
     Thread th = new Thread(
       new Runnable() {
@@ -392,7 +341,8 @@ public class FGeraFiscal extends FFilho implements ActionListener {
       
         sSQL = "SELECT V.TIPOVENDA, V.DTEMITVENDA,V.DTSAIDAVENDA,IV.CODNAT,"+
              "V.CODCLI,C.UFCLI,TM.ESPECIETIPOMOV,TM.CODMODNOTA,"+
-             "V.SERIE,V.DOCVENDA, V.DOCVENDA DOCFIM, IV.PERCICMSITVENDA,IV.PERCIPIITVENDA," +
+             "V.SERIE,V.DOCVENDA, V.DOCVENDA DOCFIM, IV.PERCICMSITVENDA, " +
+             "IV.PERCICMSITVENDA ALIQLFISC, IV.PERCIPIITVENDA," +
              "V.CODEMPCL,V.CODFILIALCL," +
              "IV.CODEMPNT,IV.CODFILIALNT," +
              "TM.CODEMPMN,TM.CODFILIALMN,"+
@@ -403,119 +353,92 @@ public class FGeraFiscal extends FFilho implements ActionListener {
              "SUM(IV.VLROUTRASITVENDA) VLROUTRASITVENDA, " +
              "SUM(IV.VLRBASEIPIITVENDA) VLRBASEIPIITVENDA, "+
              "SUM(IV.VLRIPIITVENDA) VLRIPIITVENDA "+
-             "FROM VDVENDA V,VDITVENDA IV, EQTIPOMOV TM, VDCLIENTE C "+
+             "FROM VDVENDA V,VDITVENDA IV, EQTIPOMOV TM, VDCLIENTE C, EQPRODUTO P, LFCLFISCAL CF "+
              "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND " +
              "V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND " +
              "IV.TIPOVENDA=V.TIPOVENDA AND "+
              "IV.CODVENDA=V.CODVENDA AND IV.CODEMP=V.CODEMP AND " +
              "IV.CODFILIAL=V.CODFILIAL AND "+
              "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " +
-             "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND "+
+             "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND " +
+             "P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " +
+             "P.CODPROD=IV.CODPROD AND " +
+             "CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND " +
+             "CF.CODFISC=P.CODFISC AND  "+
              "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL "+
 
-             "GROUP BY V.DTEMITVENDA,V.DTSAIDAVENDA,IV.CODNAT,"+
+             "GROUP BY V.TIPOVENDA, V.DTEMITVENDA,V.DTSAIDAVENDA,IV.CODNAT,"+
              "V.CODCLI,C.UFCLI,TM.ESPECIETIPOMOV,TM.CODMODNOTA,"+
-             "V.SERIE,V.DOCVENDA,IV.PERCICMSITVENDA,IV.PERCIPIITVENDA,"+
-			 "V.CODEMPCL,V.CODFILIALCL," +
-			 "IV.CODEMPNT,IV.CODFILIALNT," +
-			 "TM.CODEMPMN,TM.CODFILIALMN" +
+             "V.SERIE,V.DOCVENDA, V.DOCVENDA, IV.PERCICMSITVENDA, " +
+             "IV.PERCICMSITVENDA, IV.PERCIPIITVENDA," +
+             "V.CODEMPCL,V.CODFILIALCL," +
+             "IV.CODEMPNT,IV.CODFILIALNT," +
+             "TM.CODEMPMN,TM.CODFILIALMN " +
 			 
 			 "UNION " +
              
 			 // Parei aqui
              
              "SELECT V.TIPOVENDA,V.DTEMITVENDA, V.DTSAIDAVENDA, IV.CODNAT, " +
-             "V.CODCLI, C.UFCLI, TM.ESPECIETIOMOV, TM.CODMODNOTA, " +
+             "V.CODCLI, C.UFCLI, TM.ESPECIETIPOMOV, TM.CODMODNOTA, " +
              "V.SERIE, L.PRIMCUPOMLX DOCVENDA, L.ULTCUPOMLX DOCFIM, " + 
-             "IV.PERCICMSITVENDA, CF.ALIQLFISC, TM.SERIE, V.CODCLI CODEMIT, " + 
-             "L.PRIMCUPOMLX PRIMCUPOM, " + 
-             "L.ULTCUPOMLX ULTCUPOM, " + 
+             "IV.PERCICMSITVENDA, CF.ALIQLFISC, IV.PERCIPIITVENDA, " + 
+             "V.CODEMPCL,V.CODFILIALCL," +
+             "IV.CODEMPNT,IV.CODFILIALNT," +
+             "TM.CODEMPMN,TM.CODFILIALMN,"+             
+             "SUM(IV.VLRLIQITVENDA) VLRCONTABILITVENDA, "+ 
              "SUM(CASE WHEN (CF.TIPOFISC='TT' AND (CF.REDFISC<=0 OR CF.REDFISC IS NULL)) " + 
              "THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0 " + 
-             "THEN (IV.VLRLIQITVENDA)-((IV.VLRLIQITVENDA)*CF.REDFISC/100) ELSE NULL END ) AS BASECALCICMS, " + 
+             "THEN (IV.VLRLIQITVENDA)-((IV.VLRLIQITVENDA)*CF.REDFISC/100) ELSE NULL END ) VLRBASEICMSITVENDA, " +
+             "SUM(CASE WHEN CF.TIPOFISC='TT' AND (CF.REDFISC=0 OR CF.REDFISC IS NULL) " + 
+             "THEN IV.VLRLIQITVENDA*IV.PERCICMSITVENDA/100  WHEN CF.REDFISC>0 " + 
+             "THEN ((IV.VLRLIQITVENDA)-(IV.VLRLIQITVENDA*CF.REDFISC/100))* " + 
+             "CF.ALIQLFISC/100 ELSE NULL END) VLRICMSITVENDA, " +             
              "SUM(CASE WHEN (CF.TIPOFISC='II' AND ( CF.REDFISC<=0 OR CF.REDFISC IS NULL)) " + 
              "THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0 " + 
              "THEN (IV.VLRLIQITVENDA)-(CASE WHEN (CF.TIPOFISC='TT' AND (CF.REDFISC<=0 OR CF.REDFISC IS NULL)) " + 
              "THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0 THEN (IV.VLRLIQITVENDA)-((IV.VLRLIQITVENDA)*CF.REDFISC/100) " + 
-             "ELSE NULL END ) ELSE NULL  END) AS VLRISENTAS, " + 
-             "SUM(CASE WHEN CF.TIPOFISC='TT' AND (CF.REDFISC=0 OR CF.REDFISC IS NULL) " + 
-             "THEN IV.VLRLIQITVENDA*IV.PERCICMSITVENDA/100  WHEN CF.REDFISC>0 " + 
-             "THEN ((IV.VLRLIQITVENDA)-(IV.VLRLIQITVENDA*CF.REDFISC/100))* " + 
-             "CF.ALIQLFISC/100 ELSE NULL END) VLRICMS,SUM(CASE WHEN (CF.TIPOFISC " + 
-             "IN ('NN','FF')) THEN IV.VLRLIQITVENDA " + 
+             "ELSE NULL END ) ELSE NULL  END) AS VLRISENTASITVENDA, " + 
+             "SUM(CASE WHEN (CF.TIPOFISC IN ('NN','FF')) THEN IV.VLRLIQITVENDA " + 
              "WHEN (CF.TIPOFISC IN ('II','TT')) OR (CF.REDFISC>0) OR (CF.REDFISC IS NOT NULL) " + 
-             "THEN NULL ELSE IV.VLRLIQITVENDA END) VLROUTRAS,SUM(IV.VLRLIQITVENDA) AS VLRCONTABIL " + 
-             "FROM  VDITVENDA  IV, EQPRODUTO P, EQTIPOMOV TM, LFCLFISCAL CF, VDVENDA V " + 
+             "THEN NULL ELSE IV.VLRLIQITVENDA END) VLROUTRASITVENDA, " + 
+             "SUM(IV.VLRBASEIPIITVENDA) VLRBASEIPIITVENDA, "+
+             "SUM(IV.VLRIPIITVENDA) VLRIPIITVENDA "+
+             "FROM  VDITVENDA  IV, EQPRODUTO P, VDCLIENTE C, EQTIPOMOV TM, LFCLFISCAL CF, VDVENDA V " + 
              "LEFT OUTER JOIN PVLEITURAX L ON " + 
              "  L.CODEMP=V.CODEMPCX AND L.CODFILIAL=V.CODFILIALCX AND " + 
              "  L.CODCAIXA=V.CODCAIXA AND L.DTLX=V.DTEMITVENDA " + 
              "WHERE TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND " + 
-             "TM.FISCALTIPOMOV='S' AND V.CODEMP=5 AND " + 
+             "TM.FISCALTIPOMOV='S' AND V.CODEMP=? AND V.CODFILIAL=? AND " + 
              "SUBSTRING(V.STATUSVENDA FROM 1 FOR 1)<>'C' AND V.TIPOVENDA='E' AND " + 
-             "V.DTEMITVENDA BETWEEN '2007-11-01' AND '2007-11-30' AND IV.CODEMP=V.CODEMP AND " + 
+             "V.DTEMITVENDA BETWEEN ? AND ? AND IV.CODEMP=V.CODEMP AND " + 
              "IV.CODVENDA=V.CODVENDA AND ( IV.CANCITVENDA IS NULL OR IV.CANCITVENDA<>'S' ) AND " + 
              "P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD AND " + 
-             "CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.CODFISC=P.CODFISC " + 
-             "GROUP BY V.TIPOVENDA,V.DTEMITVENDA,V.CODCAIXA,IV.CODNAT,CF.REDFISC, " + 
-             "IV.PERCICMSITVENDA,CF.ALIQLFISC, TM.SERIE, V.CODCLI, L.PRIMCUPOMLX, L.ULTCUPOMLX " + 
-             "ORDER BY V.CODEMP, V.DTEMITVENDA,V.CODCAIXA,IV.CODNAT,CF.REDFISC, " + 
-             "IV.PERCICMSITVENDA,CF.ALIQLFISC " ;
-             
-             
-             
-        
-        /*
-         * SELECT V.CODEMP,V.DTEMITVENDA,V.CODCAIXA,IV.CODNAT, CF.REDFISC,
-IV.PERCICMSITVENDA, CF.ALIQLFISC, TM.SERIE, V.CODCLI CODEMIT,
-L.PRIMCUPOMLX PRIMCUPOM,
-L.ULTCUPOMLX ULTCUPOM,
-SUM(CASE WHEN (CF.TIPOFISC='TT' AND (CF.REDFISC<=0 OR CF.REDFISC IS NULL))
-THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0
-THEN (IV.VLRLIQITVENDA)-((IV.VLRLIQITVENDA)*CF.REDFISC/100) ELSE NULL END ) AS BASECALCICMS,
-SUM(CASE WHEN (CF.TIPOFISC='II' AND ( CF.REDFISC<=0 OR CF.REDFISC IS NULL))
-THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0
-THEN (IV.VLRLIQITVENDA)-(CASE WHEN (CF.TIPOFISC='TT' AND (CF.REDFISC<=0 OR CF.REDFISC IS NULL))
-THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0 THEN (IV.VLRLIQITVENDA)-((IV.VLRLIQITVENDA)*CF.REDFISC/100)
-ELSE NULL END ) ELSE NULL  END) AS VLRISENTAS,
-SUM(CASE WHEN CF.TIPOFISC='TT' AND (CF.REDFISC=0 OR CF.REDFISC IS NULL)
-THEN IV.VLRLIQITVENDA*IV.PERCICMSITVENDA/100  WHEN CF.REDFISC>0
-THEN ((IV.VLRLIQITVENDA)-(IV.VLRLIQITVENDA*CF.REDFISC/100))*
-CF.ALIQLFISC/100 ELSE NULL END) VLRICMS,SUM(CASE WHEN (CF.TIPOFISC
-IN ('NN','FF')) THEN IV.VLRLIQITVENDA
-WHEN (CF.TIPOFISC IN ('II','TT')) OR (CF.REDFISC>0) OR (CF.REDFISC IS NOT NULL)
-THEN NULL ELSE IV.VLRLIQITVENDA END) VLROUTRAS,SUM(IV.VLRLIQITVENDA) AS VLRCONTABIL
-FROM  VDITVENDA  IV, EQPRODUTO P, EQTIPOMOV TM, LFCLFISCAL CF, VDVENDA V
-LEFT OUTER JOIN PVLEITURAX L ON
-  L.CODEMP=V.CODEMPCX AND L.CODFILIAL=V.CODFILIALCX AND
-  L.CODCAIXA=V.CODCAIXA AND L.DTLX=V.DTEMITVENDA
-WHERE TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND
-TM.FISCALTIPOMOV='S' AND V.CODEMP=5 AND
-SUBSTRING(V.STATUSVENDA FROM 1 FOR 1)<>'C' AND V.TIPOVENDA='E' AND
-V.DTEMITVENDA BETWEEN '2007-11-01' AND '2007-11-30' AND IV.CODEMP=V.CODEMP AND
-IV.CODVENDA=V.CODVENDA AND ( IV.CANCITVENDA IS NULL OR IV.CANCITVENDA<>'S' ) AND
-P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD AND
-CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.CODFISC=P.CODFISC
-GROUP BY V.CODEMP,V.DTEMITVENDA,V.CODCAIXA,IV.CODNAT,CF.REDFISC,
-IV.PERCICMSITVENDA,CF.ALIQLFISC, TM.SERIE, V.CODCLI, L.PRIMCUPOMLX, L.ULTCUPOMLX
-ORDER BY V.CODEMP, V.DTEMITVENDA,V.CODCAIXA,IV.CODNAT,CF.REDFISC,
-IV.PERCICMSITVENDA,CF.ALIQLFISC
-         * */
+             "CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.CODFISC=P.CODFISC AND " +
+             "C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " + 
+             "GROUP BY V.TIPOVENDA,V.DTEMITVENDA, V.DTSAIDAVENDA, IV.CODNAT, " +
+             "V.CODCLI, C.UFCLI, TM.ESPECIETIPOMOV, TM.CODMODNOTA, " +
+             "V.SERIE, L.PRIMCUPOMLX, L.ULTCUPOMLX, " + 
+             "IV.PERCICMSITVENDA, CF.ALIQLFISC, IV.PERCIPIITVENDA, " + 
+             "V.CODEMPCL,V.CODFILIALCL," +
+             "IV.CODEMPNT,IV.CODFILIALNT," +
+             "TM.CODEMPMN,TM.CODFILIALMN" ;
 
         PreparedStatement ps2 = con.prepareStatement(sSQL);
         ps2.setDate(1,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
         ps2.setDate(2,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
         ps2.setInt(3,Aplicativo.iCodEmp);
         ps2.setInt(4,ListaCampos.getMasterFilial("VDVENDA"));
+        ps2.setInt(5,Aplicativo.iCodEmp);
+        ps2.setInt(6,ListaCampos.getMasterFilial("VDVENDA"));
+        ps2.setDate(7,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
+        ps2.setDate(8,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
+        
         ResultSet rs2 = ps2.executeQuery();
         iTotVendas = 0;
         tab2.limpa();
         while (rs2.next()) {
           tab2.adicLinha();
-          /*	   0 DTEMIT, 1DTSAIDA, 2NATOPER, 3CODEMIT, 4UF, 5ESPECIE, 6MODNOTA, 7SERIE,
-	   8DOC, 9PERCICMS, 10PERCIPI,11 VLRCONTABIL,12 VLRBASEICMS,13 VLRICMS,
-	   14VLRISENTAS, 15VLROUTRAS, 16VLRBASEIPI, 17VLRIPI,18 E1, 19F1, 20 E2, 21 F2, 22 E3, 23 F3
-
-           * */
           tab2.setValor(Funcoes.sqlDateToStrDate(rs2.getDate("DTEMITVENDA")),iTotVendas,EColSaida.DTEMIT.ordinal());
           tab2.setValor(Funcoes.sqlDateToStrDate(rs2.getDate("DTSAIDAVENDA")),iTotVendas,EColSaida.DTSAIDA.ordinal());
           tab2.setValor(rs2.getString("CODNAT")!=null?rs2.getString("CODNAT"):"",iTotVendas,EColSaida.NATOPER.ordinal());
@@ -725,10 +648,6 @@ IV.PERCICMSITVENDA,CF.ALIQLFISC
     
     for (int i=0; i<iTotVendas ; i++) {
       try {
-          /*	   0 DTEMIT, 1DTSAIDA, 2NATOPER, 3CODEMIT, 4UF, 5ESPECIE, 6MODNOTA, 7SERIE,
-   	   8DOC, 9PERCICMS, 10PERCIPI,11 VLRCONTABIL,12 VLRBASEICMS,13 VLRICMS,
-   	   14VLRISENTAS, 15VLROUTRAS, 16VLRBASEIPI, 17VLRIPI,18 E1, 19F1, 20 E2, 21 F2, 22 E3, 23 F3
-*/
          psI = con.prepareStatement(sSql);
          psI.setInt(1,Aplicativo.iCodEmp);
          psI.setInt(2,ListaCampos.getMasterFilial("LFLIVROFISCAL"));
