@@ -171,40 +171,6 @@ public class ECFDaruma extends AbstractECFDriver {
 	}
 
 	/**
-	 * Converte o retorno dos comandos do formato BCD para ASCII. <BR>
-	 * 
-	 * @param bcdParam
-	 *            Retorno a ser convertido. <BR>
-	 * @return String com o resultado da converção. <BR>
-	 */
-	private String bcdToAsc( final byte[] bcdParam ) {
-
-		final StringBuffer retorno = new StringBuffer();
-
-		int bcd = 0;
-		byte byteBH = 0;
-		byte byteBL = 0;
-
-		for ( int i = 0; i < bcdParam.length; i++ ) {
-
-			bcd = bcdParam[ i ];
-
-			// Ajuste dos bytes para o padrão de cálculo (o java trabalha com bytes de -128 a 127)
-			if ( bcd < 0 ) {
-				bcd += 256;
-			}
-
-			byteBH = (byte) ( bcd / 16 );
-			byteBL = (byte) ( bcd % 16 );
-
-			retorno.append( byteBH );
-			retorno.append( byteBL );
-		}
-
-		return retorno.toString();
-	}
-
-	/**
 	 * Formata os retorna enviado pela impressora <BR>
 	 * separando o STATUS do estado da impressora dos dados do retorno, onde <BR>
 	 * ACK (06) - byte indicativo de recebimento correto. <BR>
@@ -302,7 +268,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	private int checkWarning( byte w1, byte w2 ) {
 
 		// O Código na EStatus tem o 10 na frente para diferenciar dos de erros.
-		int retorno = Integer.parseInt( "10" + (char) w1 + (char) w2 );
+		int retorno = Integer.parseInt( ("10" + (char) w1 + (char) w2).trim() );
 
 		return retorno;
 	}
@@ -323,12 +289,22 @@ public class ECFDaruma extends AbstractECFDriver {
 
 	public int alteraSimboloMoeda( final String simbolo ) {
 
-		return -1;
+		return -1; // IMPLEMENTAR
 	}
 
 	public int adicaoDeAliquotaTriburaria( final String aliq, final char opt ) {
 
-		return -1;
+		final char CCMD = (char) 220;
+		byte[] CMD = { ESC, (byte) CCMD };
+		
+		final StringBuffer buf = new StringBuffer();
+
+		buf.append( AbstractECFDriver.ISS == opt ? "S" : "C" );
+		buf.append( parseParam( aliq, 4, false ) );
+
+		CMD = adicBytes( CMD, buf.toString().getBytes() );
+
+		return executaCmd( CMD, 8 );
 	}
 
 	public int programaHorarioVerao() {
@@ -339,7 +315,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		final StringBuffer buf = new StringBuffer();
 
 		buf.append( "xx" );
-		buf.append( horarioVeraoAtivo() ? 0 : 1 );
+		buf.append( isHorarioVerao() ? 0 : 1 );
 		buf.append( "xxxxxxxxxxxxxxxxx" );
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
@@ -347,7 +323,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 7 );
 	}
 
-	private boolean horarioVeraoAtivo() {
+	public boolean isHorarioVerao() {
 
 		final char CCMD = (char) 229;
 		final byte[] CMD = { ESC, (byte) CCMD };
@@ -382,22 +358,22 @@ public class ECFDaruma extends AbstractECFDriver {
 
 	public int programaTruncamentoArredondamento( final char opt ) {
 
-		return -1;
+		return -1; // ainda não utilizada pela controller.
 	}
 
 	public int programarEspacoEntreLinhas( final int espaco ) {
 
-		return -1;
+		return -1; // ainda não utilizada pela controller.
 	}
 
 	public int programarLinhasEntreCupons( final int espaco ) {
 
-		return -1;
+		return -1; // ainda não utilizada pela controller.
 	}
 	
 	public int nomeiaDepartamento( final int index, final String descricao ) {
 
-		return -1;
+		return -1; // ainda não utilizada pela controller.
 	}
 
 	/**
@@ -504,7 +480,14 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int vendaItem( final String codProd, final String descProd, final String aliquota, final char tpqtd, final float qtd, final float valor, final char tpdesc, final float desconto ) {
+	public int vendaItem( final String codProd, 
+						  final String descProd, 
+						  final String aliquota, 
+						  final char tpqtd, 
+						  final float qtd, 
+						  final float valor, 
+						  final char tpdesc, 
+						  final float desconto ) {
 
 		/*
 		 * Descrição de produto.
@@ -579,7 +562,14 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int vendaItemTresCasas( final String codProd, final String descProd, final String aliquota, final char tpqtd, final float qtd, final float valor, final char tpdesc, final float desconto ) {
+	public int vendaItemTresCasas( final String codProd, 
+								   final String descProd, 
+								   final String aliquota, 
+								   final char tpqtd, 
+								   final float qtd, 
+								   final float valor, 
+								   final char tpdesc, 
+								   final float desconto ) {
 
 		/*
 		 * Descrição de produto.
@@ -631,7 +621,15 @@ public class ECFDaruma extends AbstractECFDriver {
 		return returnCommand;
 	}
 
-	public int vendaItemDepartamento( final String sitTrib, final float valor, final float qtd, final float desconto, final float acrescimo, final int departamento, final String unidade, final String codProd, final String descProd ) {
+	public int vendaItemDepartamento( final String sitTrib, 
+									  final float valor, 
+									  final float qtd, 
+									  final float desconto, 
+									  final float acrescimo, 
+									  final int departamento, 
+									  final String unidade, 
+									  final String codProd, 
+									  final String descProd ) {
 
 		return -1;
 	}
@@ -867,13 +865,33 @@ public class ECFDaruma extends AbstractECFDriver {
 	}
 
 	public int leituraMemoriaFiscal( final Date dataIni, final Date dataFim, final char tipo ) {
+
+		final char CCMD = (char) 251;
+		byte[] CMD = { ESC, (byte) CCMD };
+
+		final StringBuffer buf = new StringBuffer();
+		buf.append( AbstractECFDriver.IMPRESSAO == tipo ? "x" : "s" );
+		buf.append( parseParam( dataIni ) );
+		buf.append( parseParam( dataFim ) );
 		
-		return -1;
+		CMD = adicBytes( CMD, buf.toString().getBytes() );
+		
+		return executaCmd( CMD, 15, AbstractECFDriver.IMPRESSAO == tipo );
 	}
 
 	public int leituraMemoriaFiscal( final int ini, final int fim, final char tipo ) {
 
-		return -1;
+		final char CCMD = (char) 251;
+		byte[] CMD = { ESC, (byte) CCMD };
+
+		final StringBuffer buf = new StringBuffer();
+		buf.append( AbstractECFDriver.IMPRESSAO == tipo ? "x" : "s" );
+		buf.append( parseParam( ini, 6 ) );
+		buf.append( parseParam( fim, 6 ) );
+		
+		CMD = adicBytes( CMD, buf.toString().getBytes() );
+		
+		return executaCmd( CMD, 15, AbstractECFDriver.IMPRESSAO == tipo );
 	}
 
 	public int relatorioGerencial( final String texto ) {
@@ -1028,8 +1046,11 @@ public class ECFDaruma extends AbstractECFDriver {
 	}
 
 	public int acionaGavetaDinheiro( final int time ) {
+		//*** sem gaveta pra testar.
+		final char CCMD = 'p';
+		byte[] CMD = { ESC, (byte) CCMD, 1, 0, 0 };
 
-		return -1;
+		return executaCmd( CMD, 7 );
 	}
 
 	public String retornoEstadoGavetaDinheiro() {
@@ -1103,7 +1124,22 @@ public class ECFDaruma extends AbstractECFDriver {
 
 	public String retornoAliquotas() {
 
-		return "-1";
+		final char CCMD = (char) 231;
+		final byte[] CMD = { ESC, (byte) CCMD };
+		
+		executaCmd( CMD, 94 );
+		
+		final String aliquotas = new String( getBytesLidos() );
+		final StringBuffer retorno = new StringBuffer();
+		char[] chs = aliquotas.toCharArray();
+		
+		for ( char c : chs ) {
+			if ( Character.isDigit( c ) ) {
+				retorno.append( c );
+			}
+		}		
+			
+		return retorno.toString();
 	}
 	
 	public Map<String, String> retornoFormasDePagamento() {
@@ -1133,9 +1169,50 @@ public class ECFDaruma extends AbstractECFDriver {
 		return returnAction;
 	}
 
+	/**
+	 * Através deste comando são retornados, via serial:<br>
+	 * <br>
+	 * Totalizadores Parciais Tributados : 112 bytes<br>
+	 * Isenção : 7 bytes<br>
+	 * Não Incidência : 7 bytes<br>
+	 * Substituição : 7 bytes<br>
+	 * Totalizadores Não Sujeitos ao ICMS : 63 bytes<br>
+	 * Sangria : 7 bytes<br>
+	 * Suprimentos : 7 bytes<br>
+	 * Grande Total : 9 bytes<br>
+	 * <br>
+	 * 
+	 * @return totalizadores parciais<br>
+	 */
 	public String retornoTotalizadoresParciais() {
+		
+		String retorno = "";
+		
+		char CCMD = (char) 236;
+		byte[] CMD = { ESC, (byte) CCMD };
+		
+		executaCmd( CMD, 400 );
 
-		return "-1";
+		String tmp = new String( getBytesLidos() );
+		String parciaisTributados = "NNN";
+		String isencao = tmp.substring( 134, 148 );
+		String naoInsidencia = tmp.substring( 148, 162 );
+		String substituicao = tmp.substring( 120, 134 );
+		String naoSujeitosAIcms = "NNN";
+		String sangria = "NNN";
+		String suprimento = "NNN";
+		String grandeTotal = tmp.substring( 18, 36 );
+		
+		retorno =   parciaisTributados
+			+ "," + isencao
+			+ "," + naoInsidencia
+			+ "," + substituicao
+			+ "," + naoSujeitosAIcms
+			+ "," + sangria
+			+ "," + suprimento
+			+ "," + grandeTotal;
+
+		return retorno; 
 	}
 
 	public String retornoSubTotal() {
@@ -1192,181 +1269,6 @@ public class ECFDaruma extends AbstractECFDriver {
 	/**
 	 * Retorna a imformação da impressora comforme o parametro especificado.<br>
 	 * 
-	 * <table border=1>
-	 * <tr>
-	 * <td><b>paramtro<b></td>
-	 * <td><b>variável<b></td>
-	 * <td><b>tamanho<b></td>
-	 * </tr>
-	 * <tr>
-	 * <td>0</td>
-	 * <td>número de serie</td>
-	 * <td>15 caracteres ASCII</td>
-	 * </tr>
-	 * <tr>
-	 * <td>1</td>
-	 * <td>Versão do FIRMWARE</td>
-	 * <td>2 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>2</td>
-	 * <td>CNPJ/IE</td>
-	 * <td>33 caracteres ASCII</td>
-	 * </tr>
-	 * <tr>
-	 * <td>3</td>
-	 * <td>Grande Total</td>
-	 * <td>9 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>4</td>
-	 * <td>Cancelamentos</td>
-	 * <td>7 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>5</td>
-	 * <td>Descontos</td>
-	 * <td>7 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>6</td>
-	 * <td>Contador Seqüêncial</td>
-	 * <td>3 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>7</td>
-	 * <td>Número de Operações Não Fiscais</td>
-	 * <td>3 bytes</td>
-	 * <tr>
-	 * <tr>
-	 * <td>8</td>
-	 * <td>Número de Cupons Cancelados</td>
-	 * <td>2 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>9</td>
-	 * <td>Número de Reduções</td>
-	 * <td>2 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>10</td>
-	 * <td>Número de Intervenções Técnicas</td>
-	 * <td>2 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>11</td>
-	 * <td>Número de Intervenções Técnicas</td>
-	 * <td>2 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>12</td>
-	 * <td>Número do Último Item Vendido</td>
-	 * <td>2 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>13</td>
-	 * <td>Cliche do Proprietário</td>
-	 * <td>186 caracteres ASCII</td>
-	 * </tr>
-	 * <tr>
-	 * <td>14</td>
-	 * <td>Número do Caixa</td>
-	 * <td>2 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>15</td>
-	 * <td>Nümero da Loja</td>
-	 * <td>2 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>16</td>
-	 * <td>Moeda</td>
-	 * <td>2 caracteres ASCII</td>
-	 * </tr>
-	 * <tr>
-	 * <td>17</td>
-	 * <td>FLAGS FISCAIS</td>
-	 * <td>1 byte</td>
-	 * </tr>
-	 * <tr>
-	 * <td>18</td>
-	 * <td>Minutos Ligada</td>
-	 * <td>2 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>19</td>
-	 * <td>Minutos Imprimindo</td>
-	 * <td>2 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>20</td>
-	 * <td>FLAG de Intervenção Técnica</td>
-	 * <td>1 byte</td>
-	 * </tr>
-	 * <tr>
-	 * <td>21</td>
-	 * <td>FLAG de EPROM Conectada</td>
-	 * <td>1 byte</td>
-	 * </tr>
-	 * <tr>
-	 * <td>22</td>
-	 * <td>Valor Pago no Último Cupom</td>
-	 * <td>7 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>23</td>
-	 * <td>Data e Hora Atual(DDMMAAHHMMSS)</td>
-	 * <td>6 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>24</td>
-	 * <td>Contadores dos Totalizadores Não Sujeitos ao ICMS</td>
-	 * <td>9 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>25</td>
-	 * <td>Descrição dos Totalizadores Nao Sujeitos ao ICMS</td>
-	 * <td>9 totalizadores com 19 caracteres</td>
-	 * </tr>
-	 * <tr>
-	 * <td>26</td>
-	 * <td>Data da Última Redução (DDMMAA)</td>
-	 * <td>3 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>27</td>
-	 * <td>Data do Movimento (DDMMAA)</td>
-	 * <td>3 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>28</td>
-	 * <td>FLAG de Truncamento</td>
-	 * <td>1 byte</td>
-	 * </tr>
-	 * <tr>
-	 * <td>29</td>
-	 * <td>FLAG de Vinculação ao ISS</td>
-	 * <td>2 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>30</td>
-	 * <td>Totalizador de Acréscimo</td>
-	 * <td>7 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>31</td>
-	 * <td>Contador de Bilhete de Passagem</td>
-	 * <td>3 bytes</td>
-	 * </tr>
-	 * <tr>
-	 * <td>32</td>
-	 * <td>Formas de Pagamento</td>
-	 * <td></td>
-	 * </tr>
-	 * </table> <br>
-	 * Para mais informações consulte a documentação da impressora.<br>
-	 * <br>
-	 * 
 	 * @param var
 	 *            indicação da informação.<br>
 	 * 
@@ -1374,18 +1276,36 @@ public class ECFDaruma extends AbstractECFDriver {
 	 */
 	public String retornoVariaveis( final char var ) {
 
-		final byte[] CMD = { ESC, 35, (byte) var };
-		/*
-		 * o tamanho dos bytes de retorno varia conforme o parametro.
-		 */
-		executaCmd( CMD, 0 );
-
-		String retorno = "";
-
-		if ( var == V_NUM_SERIE || var == V_CNPJ_IE || var == V_CLICHE || var == V_MOEDA || var == V_DEPARTAMENTOS ) {
-			retorno = new String( getBytesLidos() );
-		} else {
-			retorno = bcdToAsc( getBytesLidos() );
+		String retorno = "-1";
+		
+		if ( var == V_NUM_CAIXA ) {
+			final char CCMD = (char) 233;
+			final byte[] CMD = { ESC, (byte) CCMD };			
+			executaCmd( CMD, 57 );
+			String tmp = new String( getBytesLidos() );
+			if ( tmp != null && tmp.trim().length() > 22 ) {
+				retorno = tmp.substring( 22, 26 );	
+			}
+		}
+		else if ( var == V_REDUCOES || var == V_CUPONS_CANC || var == V_DESCONTOS || var == V_CANCELAMENTOS ) {
+			final char CCMD = (char) 237;
+			final byte[] CMD = { ESC, (byte) CCMD };			
+			executaCmd( CMD, 1008 );
+			String tmp = new String( getBytesLidos() );
+			if ( var == V_CUPONS_CANC && tmp != null && tmp.trim().length() > 24 ) {
+				retorno = tmp.substring( 18, 24 );	
+			}
+			else if ( var == V_REDUCOES && tmp != null && tmp.trim().length() > 54 ) {
+				retorno = tmp.substring( 48, 54 );
+			}
+			else if ( var == V_DESCONTOS && tmp != null && tmp.trim().length() > 952 ) {
+				retorno = tmp.substring( 938, 952 );
+			}
+			else if ( var == V_CANCELAMENTOS && tmp != null && tmp.trim().length() > 966 ) {
+				retorno = tmp.substring( 952, 966 );
+			}
+		}
+		else if ( var == V_DT_ULT_REDUCAO ) {
 		}
 
 		return retorno;
@@ -1399,11 +1319,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 */
 	public String retornoEstadoPapel() {
 
-		final byte[] CMD = { ESC, 62, 54 };
-
-		executaCmd( CMD, 5 );
-
-		return bcdToAsc( getBytesLidos() );
+		return "-1"; // ainda não utilizada pela controller.
 	}
 
 	/**
@@ -1413,11 +1329,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 */
 	public String retornoUltimaReducao() {
 
-		final byte[] CMD = { ESC, 62, 55 };
-
-		executaCmd( CMD, 308 );
-
-		return bcdToAsc( getBytesLidos() );
+		return "-1"; // ainda não utilizada pela controller.
 	}
 
 	/**
@@ -1431,15 +1343,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 */
 	public int programaMoedaSingular( final String nomeSingular ) {
 
-		byte[] CMD = { ESC, 58 };
-
-		final StringBuffer buf = new StringBuffer();
-
-		buf.append( parseParam( nomeSingular, 19, false ) );
-
-		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
-		return executaCmd( CMD, 3 );
+		return -1; // IMPLEMENTAR
 	}
 
 	/**
@@ -1453,15 +1357,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 */
 	public int programaMoedaPlural( final String nomePlurar ) {
 
-		byte[] CMD = { ESC, 59 };
-
-		final StringBuffer buf = new StringBuffer();
-
-		buf.append( parseParam( nomePlurar, 19, false ) );
-
-		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
-		return executaCmd( CMD, 3 );
+		return -1; // IMPLEMENTAR
 	}
 
 	/**
@@ -1472,11 +1368,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 */
 	public String retornoStatusCheque() {
 
-		byte[] CMD = { ESC, 62, 48 };
-
-		executaCmd( CMD, 3 );
-
-		return bcdToAsc( getBytesLidos() );
+		return "-1"; // ainda não utilizada pela controller.
 	}
 
 	/**
@@ -1486,9 +1378,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 */
 	public int cancelaImpressaoCheque() {
 
-		byte[] CMD = { ESC, 62, 49 };
-
-		return executaCmd( CMD, 3 );
+		return -1; // ainda não utilizada pela controller.
 	}
 
 	/**
@@ -1512,60 +1402,20 @@ public class ECFDaruma extends AbstractECFDriver {
 	 */
 	public int imprimeCheque( final float valor, final String favorecido, final String localidade, final int dia, final int mes, final int ano ) {
 
-		byte[] CMD = { ESC, 57 };
-
-		final StringBuffer buf = new StringBuffer();
-
-		buf.append( parseParam( valor, 14, 2 ) );
-		buf.append( parseParam( favorecido, 45, false ) );
-		buf.append( parseParam( localidade, 27, false ) );
-		buf.append( parseParam( dia, 2 ) );
-		buf.append( parseParam( mes, 2 ) );
-		buf.append( parseParam( ano, 4 ) );
-
-		CMD = adicBytes( CMD, buf.toString().getBytes() );
-
-		final byte[] posicoes = { 55, 10, 1, 6, 18, 50, 54, 71, 2, 5, 8, 10, 12, 0 };
-
-		CMD = adicBytes( CMD, posicoes );
-
-		return executaCmd( CMD, 3 );
+		return -1; // ainda não utilizada pela controller.
 	}
 
 	public void aguardaImpressao() {
-
-		byte[] CMD = { ESC, 19 };
-		byte[] retorno = new byte[ 1 ];
-		CMD = preparaCmd( CMD );
-
-		while ( retorno.length < 2 ) {
-
-			// depois que entra do laço e ocorre algum erro no envio do comando
-			// a condição de retorno == null valida o laço
-			// tornando ele um laço infinito...
-
-			retorno = enviaCmd( CMD, 3 );
-
-			try {
-				Thread.sleep( 100 );
-			} catch ( InterruptedException e ) {
-			}
-		}
+		 // ainda não utilizada pela controller.
 	}
 
 	public int habilitaCupomAdicional( final char opt ) {
-
-		byte[] CMD = { ESC, 68 };
-
-		CMD = adicBytes( CMD, parseParam( opt, 1 ).getBytes() );
-
-		return executaCmd( CMD, 3 );
+		
+		return -1; // ainda não utilizada pela controller.
 	}
 
 	public int resetErro() {
 
-		final byte[] CMD = { ESC, 70 };
-
-		return executaCmd( CMD, 3 );
+		return -1; // ainda não utilizada pela controller.
 	}
 }
