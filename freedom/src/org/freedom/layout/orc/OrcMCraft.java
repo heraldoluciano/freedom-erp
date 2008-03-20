@@ -190,6 +190,9 @@ public class OrcMCraft extends LeiauteGR {
 	  		setFonte(fnCabCliIta);
 	  		String sVal = Funcoes.strDecimalToStrCurrency(2,rs.getString("VLRLIQITORC"));
 	  		drawTexto(sVal,470,iYPosProd+5,getFontMetrics(fnCabCliIta).stringWidth(sVal),AL_DIR);
+	  		String sVal1 = Funcoes.strDecimalToStrCurrency(2,rs.getString("QTDITORC"));
+	  		drawTexto(sVal1,350,iYPosProd+5,getFontMetrics(fnCabCliIta).stringWidth(sVal1),AL_DIR);
+	  		
 	  		bigTot = bigTot.add(new BigDecimal(rs.getString("VLRLIQITORC")));
 	  		
 	  		if (rs.getString("ObsItOrc")!=null) {		   
@@ -267,7 +270,9 @@ public class OrcMCraft extends LeiauteGR {
 				drawTexto("Telefone:",60,80);
 				drawTexto(rs.getString( "FONEFILIAL" ),120,80);
 				drawTexto("CNPJ:",60,100);
-				drawTexto(rs.getString( "CNPJFILIAL" ),120,100);
+				drawTexto(rs.getString( "CNPJFILIAL" ).substring( 0,2 ) + "." + rs.getString( "CNPJFILIAL" ).substring( 2,5 ) + 
+						"." + rs.getString( "CNPJFILIAL" ).substring( 5,8 ) + "/" + rs.getString( "CNPJFILIAL" ).substring( 8,12 ) + "-" +
+						rs.getString( "CNPJFILIAL" ).substring( 12,14 ) ,120,100);
 				
 			}
 			
