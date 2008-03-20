@@ -219,6 +219,7 @@ public class FSintegra extends FFilho implements ActionListener {
 	private void gerar() {
 
 		String sSql = "";
+		String serieecf = "";
 		StringBuffer sBuffer = new StringBuffer();
 		int iTot50 = 0;
 		int iTot54 = 0;
@@ -270,6 +271,8 @@ public class FSintegra extends FFilho implements ActionListener {
 
 		try {
 
+			serieecf = getSerieECF();
+
 			sSql = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 			ps = con.prepareStatement( sSql );
 			ps.setInt( 1, iCodEmp );
@@ -291,10 +294,11 @@ public class FSintegra extends FFilho implements ActionListener {
 
 		geraRegistro10e11();
 
-		iTot50 = geraRegistro50();
-		iTot54 = geraRegistro54();
+
+		iTot50 = geraRegistro50(serieecf);
+		iTot54 = geraRegistro54(serieecf);
 		iTot60 = geraRegistro60();
-		iTot61 = geraRegistro61();
+		iTot61 = geraRegistro61(serieecf);
 		iTot75 = geraRegistro75();
 
 		iTotreg = iTot50 + iTot54 + iTot60 + iTot61 + iTot75 + 3;
@@ -398,9 +402,11 @@ public class FSintegra extends FFilho implements ActionListener {
 
 	}
 
-	private int geraRegistro50() {
+	private int geraRegistro50(String serieecf) {
 
 		PreparedStatement ps;
+		String cnpjcli = "";
+		String insccli = "";
 		ResultSet rs;
 		StringBuffer sSql = new StringBuffer();
 		StringBuffer sBuffer = new StringBuffer();
@@ -470,26 +476,27 @@ public class FSintegra extends FFilho implements ActionListener {
 			if ( "S".equals( cbSaida.getVlrString() ) ) {
 
 				// REGISTRO 50 LIVROS FISCAIS DE SAIDA
-
+				
 				sSql.delete( 0, sSql.length() );
 
 				sSql.append( "SELECT LF.TIPOLF,LF.ANOMESLF,LF.ESPECIELF,LF.DOCINILF," );
 				sSql.append( "LF.DOCFIMLF,LF.SERIELF,LF.CODEMITLF,LF.UFLF,LF.DTEMITLF," );
 				sSql.append( "LF.DTESLF,LF.VLRCONTABILLF,LF.VLRBASEICMSLF,LF.ALIQICMSLF," );
 				sSql.append( "LF.VLRICMSLF,LF.VLRISENTASICMSLF,LF.VLROUTRASICMSLF," );
-				sSql.append( "LF.CODNAT,LF.CODMODNOTA,C.CNPJCLI,C.INSCCLI " );
+				sSql.append( "LF.CODNAT,LF.CODMODNOTA,C.CNPJCLI,C.INSCCLI, C.PESSOACLI, C.CPFCLI " );
 				sSql.append( "FROM LFLIVROFISCAL LF,VDCLIENTE C " );
 				sSql.append( "WHERE LF.DTEMITLF BETWEEN ? AND ? " );
 				sSql.append( "AND LF.CODEMP=? AND LF.CODFILIAL=? " );
 				sSql.append( "AND C.CODCLI=LF.CODEMITLF AND C.CODEMP=LF.CODEMPET " );
 				sSql.append( "AND C.CODFILIAL=LF.CODFILIALET AND C.PESSOACLI='J' " );
-				sSql.append( "AND LF.TIPOLF='S' " );
+				sSql.append( "AND LF.TIPOLF='S' AND LF.SERIELF<>? " );
 				sSql.append( "ORDER BY LF.DTEMITLF" );
 				ps = con.prepareStatement( sSql.toString() );
 				ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 				ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 				ps.setInt( 3, iCodEmp );
 				ps.setInt( 4, ListaCampos.getMasterFilial( "LFLIVROFISCAL" ) );
+				ps.setString( 5, serieecf );
 				rs = ps.executeQuery();
 
 				lbAnd.setText( "Gerando Saídas..." );
@@ -497,10 +504,16 @@ public class FSintegra extends FFilho implements ActionListener {
 				while ( rs.next() ) {
 
 					sBuffer.delete( 0, sBuffer.length() );
-
+					if ("F".equals(rs.getString( "PESSOACLI" ))) {
+						cnpjcli =  Funcoes.replicate( "0", 14 );// rs.getString( "CPFCLI" );
+						insccli = Funcoes.replicate( "0", 14 );
+					} else {
+						cnpjcli = rs.getString( "CNPJCLI" );
+						insccli = rs.getString( "INSCCLI" );
+					}
 					/* 01 */sBuffer.append( "50" );
-					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CNPJCLI" ), 14 ) );
-					/* 03 */sBuffer.append( Funcoes.adicionaEspacos( Funcoes.limpaString( rs.getString( "INSCCLI" ) ), 14 ) );
+					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( cnpjcli, 14 ) );
+					/* 03 */sBuffer.append( Funcoes.adicionaEspacos( Funcoes.limpaString( insccli ), 14 ) );
 					/* 04 */sBuffer.append( Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate( rs.getDate( "DTEMITLF" ) ) ) );
 					/* 05 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "UFLF" ), 2 ) );
 					/* 06 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "CODMODNOTA" ) ), 2 ) );
@@ -537,13 +550,38 @@ public class FSintegra extends FFilho implements ActionListener {
 
 	}
 
-	private int geraRegistro54() {
+	private String getSerieECF() throws SQLException {
+		String serie = "";
+		StringBuffer sql = new StringBuffer();
+		ResultSet rs;
+		PreparedStatement ps;
+		sql.append( "SELECT TM.SERIE FROM SGPREFERE4 P, EQTIPOMOV TM " );
+		sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND  " );
+		sql.append( "TM.CODEMP=P.CODEMPTM AND TM.CODFILIAL=P.CODFILIALTM AND  " );
+		sql.append( "TM.CODTIPOMOV=P.CODTIPOMOV " );
+		ps = con.prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE4" ) );
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			serie = rs.getString( "SERIE" );
+		}
+		rs.close();
+		ps.close();
+		if (!con.getAutoCommit()) {
+			con.commit();
+		}
+        return serie;
+	}
+	
+	private int geraRegistro54(String serieecf) {
 
 		PreparedStatement ps;
 		ResultSet rs;
 		StringBuffer sSql = new StringBuffer();
 		StringBuffer sBuffer = new StringBuffer();
 		String sConvenio = rgConvenio.getVlrString();
+		String cnpjcli = "";
 		String sDocTmp = "";
 		int iOrdem = 0;
 		int cont = 0;
@@ -625,7 +663,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSql.delete( 0, sSql.length() );
 
 				sSql.append( "SELECT V.DTSAIDAVENDA,V.DOCVENDA,IV.CODITVENDA,V.CODCLI," );
-				sSql.append( "C.UFCLI,C.CNPJCLI,IV.CODNAT,IV.CODPROD,P.REFPROD," );
+				sSql.append( "C.UFCLI, C.PESSOACLI, C.CNPJCLI, C.CPFCLI, IV.CODNAT,IV.CODPROD,P.REFPROD," );
 				sSql.append( "V.DTEMITVENDA,V.SERIE,TM.CODMODNOTA,IV.PERCICMSITVENDA," );
 				sSql.append( "IV.QTDITVENDA,IV.VLRLIQITVENDA,IV.VLRBASEICMSITVENDA," );
 				sSql.append( "IV.PERCICMSITVENDA,IV.VLRBASEICMSITVENDA,IV.VLRIPIITVENDA," );
@@ -636,6 +674,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSql.append( "AND IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.TIPOVENDA=V.TIPOVENDA ");
 				sSql.append( "AND IV.CODVENDA=V.CODVENDA AND TM.CODTIPOMOV=V.CODTIPOMOV " );
 				sSql.append( "AND C.CODCLI=V.CODCLI AND P.CODPROD=IV.CODPROD AND TM.FISCALTIPOMOV='S' " );
+				sSql.append( "AND C.PESSOACLI='J' ");
 				sSql.append( "AND CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC " );
 				sSql.append( "ORDER BY V.DTEMITVENDA,V.DOCVENDA,IV.CODITVENDA" );
 
@@ -657,9 +696,15 @@ public class FSintegra extends FFilho implements ActionListener {
 					}
 
 					sBuffer.delete( 0, sBuffer.length() );
+					
+					if ("F".equals(rs.getString( "PESSOACLI" ))) {
+						cnpjcli =  Funcoes.replicate( "0", 14 );// rs.getString( "CPFCLI" );
+					} else {
+						cnpjcli = rs.getString( "CNPJCLI" );
+					}
 
 					/* 01 */sBuffer.append( "54" );
-					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CNPJCLI" ), 14 ) );
+					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( cnpjcli, 14 ) );
 					/* 03 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getString( "CODMODNOTA" ) == null ? 0 : rs.getInt( "CODMODNOTA" ) ), 2 ) );
 					/* 04 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIE" ), 3 ) );
 					/* 05 */sBuffer.append( ( sConvenio.equals( "1" ) ? Funcoes.replicate( " ", 2 ) : "" ) ); // Sub serie
@@ -875,7 +920,7 @@ public class FSintegra extends FFilho implements ActionListener {
 
 	}
 
-	private int geraRegistro61() {
+	private int geraRegistro61(String serieecf) {
 
 		PreparedStatement ps;
 		ResultSet rs;
@@ -898,7 +943,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSql.append( "FROM LFLIVROFISCAL LF,VDCLIENTE C " );
 				sSql.append( "WHERE LF.DTEMITLF BETWEEN ? AND ? AND LF.CODEMP=? AND LF.CODFILIAL=? AND " );
 				sSql.append( "C.CODCLI=LF.CODEMITLF AND C.CODEMP=LF.CODEMPET AND C.CODFILIAL=LF.CODFILIALET AND " );
-				sSql.append( "LF.TIPOLF='S' AND C.PESSOACLI='F' " );
+				sSql.append( "LF.TIPOLF='S' AND C.PESSOACLI='F' AND LF.SERIELF<>? " );
 				sSql.append( "ORDER BY LF.DTEMITLF" );
 
 				ps = con.prepareStatement( sSql.toString() );
@@ -906,6 +951,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 				ps.setInt( 3, iCodEmp );
 				ps.setInt( 4, ListaCampos.getMasterFilial( "LFLIVROFISCAL" ) );
+				ps.setString( 5, serieecf );
 				rs = ps.executeQuery();
 
 				lbAnd.setText( "Gerando NF Saída (Consumidor)..." );
@@ -982,24 +1028,59 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSqlConsumidor = "";
 
 				if ( cbEntrada.getVlrString().equals( "S" ) ) // IC.PERCICMSITCOMPRA
-					sSqlEntrada = "SELECT IC.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC,0)," + "COALESCE(CF.ALIQLFISC,0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB " + "FROM CPCOMPRA C,CPITCOMPRA IC,EQTIPOMOV TM,EQPRODUTO P,LFCLFISCAL CF, CPFORNECED F "
-							+ "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND C.CODEMP=? AND C.CODFILIAL=? AND " + "IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND " + "TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND "
-							+ "P.CODPROD=IC.CODPROD AND P.CODEMP=IC.CODEMPPD AND P.CODFILIAL=IC.CODFILIALPD AND " + "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND "
-							+ "F.CODFOR=C.CODFOR AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.PESSOAFOR='J' AND " + "TM.FISCALTIPOMOV='S' ";
+					sSqlEntrada = "SELECT IC.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC,0)," + 
+						"COALESCE(CF.ALIQLFISC,0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB " + 
+						"FROM CPCOMPRA C,CPITCOMPRA IC,EQTIPOMOV TM,EQPRODUTO P,LFCLFISCAL CF, CPFORNECED F " + 
+						"WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND C.CODEMP=? AND C.CODFILIAL=? AND " + 
+						"IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND " + 
+						"TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND "
+							+ "P.CODPROD=IC.CODPROD AND P.CODEMP=IC.CODEMPPD AND P.CODFILIAL=IC.CODFILIALPD AND " + 
+							"CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND "	+ 
+							"F.CODFOR=C.CODFOR AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.PESSOAFOR='J' AND " + 
+							"TM.FISCALTIPOMOV='S' ";
 
 				if ( cbSaida.getVlrString().equals( "S" ) ) // IV.PERCICMSITVENDA
-					sSqlSaida = "SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC,0)," + "COALESCE(CF.ALIQLFISC,0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB " + "FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFCLFISCAL CF "
-							+ "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND " + "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND "
-							+
-							// "C.PESSOACLI='J' AND "+
-							"IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND " + "IV.CODFILIAL=V.CODFILIAL AND " + "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " + "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND "
-							+ "P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " + "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC ";
+					sSqlSaida = "SELECT IV.CODPROD,P.REFPROD,P.DESCPROD," +
+						"COALESCE((CASE WHEN V.TIPOVENDA='V' THEN IV.PERCIPIITVENDA ELSE CF.ALIQIPIFISC END),0), " + 
+						"COALESCE((CASE WHEN V.TIPOVENDA='V' THEN IV.PERCICMSITVENDA ELSE CF.ALIQLFISC END),0)," +
+						"P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB " + 
+						"FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFCLFISCAL CF " +
+						"WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND " + 
+						"C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND "	+
+						"IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND " + 
+						"IV.CODFILIAL=V.CODFILIAL AND " + 
+						"TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " + 
+						"TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND " + 
+						"( (C.PESSOACLI='J' AND V.TIPOVENDA='V') OR (V.TIPOVENDA='E') ) AND " +
+						"P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " + 
+						"CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC "; /* +
+						"UNION " +
+						"SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC,0)," + 
+						"COALESCE(CF.ALIQLFISC,0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB " + 
+						"FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFCLFISCAL CF " +
+						"WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND " + 
+						"C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND "	+
+						"IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND " + 
+						"IV.CODFILIAL=V.CODFILIAL AND " + 
+						"TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " + 
+						"TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND " + 
+						"V.TIPOVENDA='V' AND " +
+						"P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " + 
+						"CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC"; */
 
 				if ( cbConsumidor.getVlrString().equals( "S" ) && ( sConvenio.equals( "1" ) ) ) // IV.PERCICMSITVENDA
-					sSqlConsumidor = "SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC,0)," + "COALESCE(CF.ALIQLFISC,0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB " + "FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFCLFISCAL CF "
-							+ "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND " + "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " + "C.PESSOACLI='F' AND " + "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND "
-							+ "IV.CODFILIAL=V.CODFILIAL AND " + "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " + "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND " + "P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND "
-							+ "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC ";
+					sSqlConsumidor = "SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC,0)," + 
+						"COALESCE(CF.ALIQLFISC,0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB " + 
+						"FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFCLFISCAL CF " + 
+						"WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND " + 
+						"C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " + 
+						"C.PESSOACLI='F' AND V.TIPOVENDA='V' AND " + 
+						"IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND " + 
+						"IV.CODFILIAL=V.CODFILIAL AND " + 
+						"TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " + 
+						"TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND " + 
+						"P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND "	+ 
+						"CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC ";
 
 				if ( !sSqlEntrada.equals( "" ) )
 					sSql.append( sSqlEntrada );
@@ -1025,6 +1106,10 @@ public class FSintegra extends FFilho implements ActionListener {
 					ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 					ps.setInt( iParam++, iCodEmp );
 					ps.setInt( iParam++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+					/*ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+					ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+					ps.setInt( iParam++, iCodEmp );
+					ps.setInt( iParam++, ListaCampos.getMasterFilial( "VDVENDA" ) ); */					
 				}
 				if ( !sSqlConsumidor.equals( "" ) ) {
 					ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
