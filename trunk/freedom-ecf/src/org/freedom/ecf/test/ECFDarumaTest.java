@@ -1,8 +1,13 @@
 package org.freedom.ecf.test;
 
 import static org.freedom.ecf.driver.EStatus.RETORNO_OK;
+
+import java.util.Calendar;
+import java.util.Date;
+
 import junit.framework.TestCase;
 
+import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.ecf.driver.ECFDaruma;
 
 public class ECFDarumaTest extends TestCase {
@@ -16,21 +21,21 @@ public class ECFDarumaTest extends TestCase {
 
 		ECFDaruma ecf = new ECFDaruma( "COM1" );
 		/*
-		assertTrue( trataRetornoFuncao( ecf.alteraSimboloMoeda( "R" ) ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.alteraSimboloMoeda( "R" ) ) );
 
-		assertTrue( trataRetornoFuncao( ecf.adicaoDeAliquotaTriburaria( "0001", ECFDaruma.ICMS ) ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.adicaoDeAliquotaTriburaria( "1200", ECFDaruma.ICMS ) ) );
 		
 		assertTrue( trataRetornoFuncao( ecf, ecf.programaHorarioVerao() ) );
 		
-		assertTrue( trataRetornoFuncao( ecf.nomeiaTotalizadorNaoSujeitoICMS( 4, "Totalizador teste" ) ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.nomeiaTotalizadorNaoSujeitoICMS( 4, "Totalizador teste" ) ) );
 
-		assertTrue( trataRetornoFuncao( ecf.programaTruncamentoArredondamento( '1' ) ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.programaTruncamentoArredondamento( '1' ) ) );
 
-		assertTrue( trataRetornoFuncao( ecf.programarEspacoEntreLinhas( 8 ) ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.programarEspacoEntreLinhas( 8 ) ) );
 
-		assertTrue( trataRetornoFuncao( ecf.programarLinhasEntreCupons( 5 ) ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.programarLinhasEntreCupons( 5 ) ) );
 
-		assertTrue( trataRetornoFuncao( ecf.nomeiaDepartamento( 2, "Teste" ) ) );*/
+		assertTrue( trataRetornoFuncao( ecf, ecf.nomeiaDepartamento( 2, "Teste" ) ) );*/
 	}
 	
 	public void testCancelaCupom() {
@@ -167,9 +172,8 @@ public class ECFDarumaTest extends TestCase {
 	public void testComandosDeRelatoriosFiscais() {
 		
 		ECFDaruma ecf = new ECFDaruma( "COM1" );
-
 		
-		System.out.print( "leituraX > " ); 
+		//System.out.print( "leituraX > " ); 
 		assertTrue( trataRetornoFuncao( ecf, ecf.leituraX() ) );
 		/*
 		System.out.print( "leituraXSerial > " ); 
@@ -181,51 +185,53 @@ public class ECFDarumaTest extends TestCase {
 		cal.set( Calendar.MONTH, cal.get( Calendar.MONTH ) - 1 );
 		Date antes = cal.getTime();
 		
-		System.out.print( "leituraMemoriaFiscal data > " );
-		assertTrue( trataRetornoFuncao( ecf.leituraMemoriaFiscal( antes, hoje, ECFDaruma.IMPRESSAO ) ) );
-		System.out.println( new String( ecf.getBytesLidos() ) );
+		//System.out.print( "leituraMemoriaFiscal data > " );
+		//assertTrue( trataRetornoFuncao( ecf, ecf.leituraMemoriaFiscal( antes, hoje, ECFDaruma.IMPRESSAO ) ) );
+		//System.out.println( new String( ecf.getBytesLidos() ) );
 		
 		System.out.print( "leituraMemoriaFiscal data retorno > " );
-		assertTrue( trataRetornoFuncao( ecf.leituraMemoriaFiscal( antes, hoje, ECFDaruma.RETORNO ) ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.leituraMemoriaFiscal( antes, hoje, ECFDaruma.RETORNO ) ) );
 		System.out.println( new String( ecf.getBytesLidos() ) );
 		
 		System.out.print( "leituraMemoriaFiscal redução > " ); 
-		assertTrue( trataRetornoFuncao( ecf.leituraMemoriaFiscal( 605, 610, ECFDaruma.IMPRESSAO ) ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.leituraMemoriaFiscal( 605, 610, ECFDaruma.IMPRESSAO ) ) );
 		System.out.println( new String( ecf.getBytesLidos() ) );
 		
 		System.out.print( "leituraMemoriaFiscal redução retorno > " ); 
-		assertTrue( trataRetornoFuncao( ecf.leituraMemoriaFiscal( 605, 610, ECFDaruma.RETORNO ) ) );
-		System.out.println( new String( ecf.getBytesLidos() ) );
-		*/
-		//System.out.print( "reducaoZ > " );  
-		//assertTrue( trataRetornoFuncao( ecf, ecf.reducaoZ() ) );
+		assertTrue( trataRetornoFuncao( ecf, ecf.leituraMemoriaFiscal( 605, 610, ECFDaruma.RETORNO ) ) );
+		System.out.println( new String( ecf.getBytesLidos() ) );*/
+				
+		System.out.print( "reducaoZ > " );  
+		assertTrue( trataRetornoFuncao( ecf, ecf.reducaoZ() ) );
+		System.out.print( "leituraX > " ); 
+		assertTrue( trataRetornoFuncao( ecf, ecf.leituraX() ) );
 	}
 
 	public void testComandosDeInformacoesDaImpressora() {
 
 		ECFDaruma ecf = new ECFDaruma( "COM1" );
 		
-		System.out.print( "leitura do estado > " ); 
-		System.out.println( ecf.getStatus() );	
+		//System.out.print( "leitura do estado > " ); 
+		//System.out.println( ecf.getStatus() );	
 		
-		System.out.print( "retorno de aliquotas > " ); 
-		System.out.println( ecf.retornoAliquotas() );	
+		//System.out.print( "retorno de aliquotas > " ); 
+		//System.out.println( ecf.retornoAliquotas() );	
 		
 		System.out.print( "retorno de totalizadores parcias > " ); 
 		System.out.println( ecf.retornoTotalizadoresParciais() );	
 		
-		System.out.print( "retorno de número do cupom > " ); 
-		System.out.println( ecf.retornoNumeroCupom() );	
+		//System.out.print( "retorno de número do cupom > " ); 
+		//System.out.println( ecf.retornoNumeroCupom() );	
 		
-		System.out.println( "retorno de variáveis > " ); 
-		System.out.println( "\tGrande total > " + ecf.retornoVariaveis( ECFDaruma.V_GRANDE_TOTAL ) );
-		System.out.println( "\tFlags Fiscais > " + ecf.retornoVariaveis( ECFDaruma.V_FLAG_FISCAL ) );
+		//System.out.println( "retorno de variáveis > " ); 
+		//System.out.println( "\tGrande total > " + ecf.retornoVariaveis( ECFDaruma.V_GRANDE_TOTAL ) );
+		//System.out.println( "\tFlags Fiscais > " + ecf.retornoVariaveis( ECFDaruma.V_FLAG_FISCAL ) );
 		
-		System.out.print( "retorno do estado do papel > " ); 
-		System.out.println( ecf.retornoEstadoPapel() );	
+		//System.out.print( "retorno do estado do papel > " ); 
+		//System.out.println( ecf.retornoEstadoPapel() );	
 		
-		System.out.print( "retorno da ultima redução Z > " ); 
-		System.out.println( ecf.retornoUltimaReducao() );	
+		//System.out.print( "retorno da ultima redução Z > " ); 
+		//System.out.println( ecf.retornoUltimaReducao() );	
 	}
 
 	public void testComandosDeImpressaoDeCheques() {
@@ -237,15 +243,26 @@ public class ECFDarumaTest extends TestCase {
 		
 		System.out.print( "programaMoedaPlural > " ); 
 		assertTrue( trataRetornoFuncao( ecf.programaMoedaPlural( "Reais" ) ) );
-		*/
+		
 		System.out.print( "imprimeCheque > " ); 
 		System.out.println( ecf.imprimeCheque( 
 				1.30f, "Favorecido                                   ", 
 				"Localidade                 ", 19, 11, 2007 ) );
 		
 		System.out.print( "retornoStatusCheque > " ); 
-		System.out.println( ecf.retornoStatusCheque() );
+		System.out.println( ecf.retornoStatusCheque() );*/
 		
+	}
+	
+	public void testVariaveis() {
+		
+		ECFDaruma ecf = new ECFDaruma( "COM1" );
+		
+		System.out.println( "Número do caixa > " + ecf.retornoVariaveis( AbstractECFDriver.V_NUM_CAIXA ) );
+		System.out.println( "Cancelamentos > " + ecf.retornoVariaveis( AbstractECFDriver.V_CUPONS_CANC ) );
+		System.out.println( "Última redução > " + ecf.retornoVariaveis( AbstractECFDriver.V_REDUCOES ) );
+		System.out.println( "Total Cancelamentos > " + ecf.retornoVariaveis( AbstractECFDriver.V_CANCELAMENTOS ) );
+		System.out.println( "Total Descontos > " + ecf.retornoVariaveis( AbstractECFDriver.V_DESCONTOS ) );
 	}
 	
 	public void testGetStatus() {

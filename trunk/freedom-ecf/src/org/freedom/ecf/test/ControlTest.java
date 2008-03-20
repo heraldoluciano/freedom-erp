@@ -67,11 +67,6 @@ public class ControlTest extends TestCase {
 		System.out.print( "programando horário de verão > " );
 		assertTrue( control.setHorarioDeVerao( false ) );	
 		System.out.println( control.getMessageLog() );
-		
-		System.out.print( "é horario de verão > " );
-		boolean tmp = control.isHorarioDeVerao();
-		System.out.println( tmp );
-		assertTrue( tmp );	
 	}
 	
 	public void testNomeiaDepartamento() {
@@ -310,7 +305,7 @@ public class ControlTest extends TestCase {
 
 	public void testGetAllAliquotas() {
 
-		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFBematech" );
+		ControllerECF control = new ControllerECF( "org.freedom.ecf.driver.ECFDaruma" );
 
 		List<String> aliquotas = control.getAliquotas();
 

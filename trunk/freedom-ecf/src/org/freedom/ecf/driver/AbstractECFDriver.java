@@ -461,6 +461,8 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public abstract int programaHorarioVerao();// 18
 
+	public abstract boolean isHorarioVerao();// 18
+
 	public abstract List<EStatus> getStatus();// 19;
 
 	public abstract int relatorioGerencial( String texto );// 20
