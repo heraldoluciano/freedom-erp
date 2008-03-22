@@ -498,6 +498,7 @@ private static final long serialVersionUID = 1L;
 		String sCodgrupFiltro = null;
 		String sLinhaFina = Funcoes.replicate("-", 133);
 		String sLinhaLarga = Funcoes.replicate("=", 133);
+		Integer iCodAlmox = null;
 		double deTotal = 0;
 		Date dtEstoq = null;
 		Object[] oVals = null;
@@ -522,6 +523,7 @@ private static final long serialVersionUID = 1L;
 			sCodgrupFiltro = (String) oVals[1];
 			sDivGrupo = (String) oVals[2];
 			dtEstoq = (Date) oVals[3];
+			iCodAlmox = (Integer) oVals[4];
 
 			if (sDivGrupo.equals("S"))
 				sOrdemGrupo = "P.CODGRUP,";
@@ -549,7 +551,7 @@ private static final long serialVersionUID = 1L;
 			}
 
 			sSQL = "SELECT P.CODPROD,P.REFPROD,P.DESCPROD,P.CODGRUP, P.SALDO, P.CUSTO, P.VLRESTOQ "
-					+ "FROM EQRELINVPRODSP(?,?,?,?,?,?,?) P "
+					+ "FROM EQRELINVPRODSP(?,?,?,?,?,?,?,?,?,?) P "
 					+ "ORDER BY "
 					+ sOrdem;
 
@@ -568,6 +570,11 @@ private static final long serialVersionUID = 1L;
 			else
 				ps.setString(6, sCodgrupFiltro);
 			ps.setDate(7, Funcoes.dateToSQLDate(Funcoes.dateToSQLDate(dtEstoq)));
+			
+			ps.setInt(8, Aplicativo.iCodEmp);
+			ps.setInt(9, ListaCampos.getMasterFilial("EQALMOX"));
+			ps.setInt(10, iCodAlmox);
+						
 			rs = ps.executeQuery();
 			
 			imp.limpaPags();
