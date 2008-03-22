@@ -23,13 +23,14 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer"/>
-	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer"/>
-	<parameter name="CODPROD" isForPrompting="false" class="java.lang.Integer"/>
-	<parameter name="DATAINI" isForPrompting="false" class="java.util.Date"/>
-	<parameter name="DATAFIM" isForPrompting="false" class="java.util.Date"/>
+	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer"/>
+	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer"/>
+	<parameter name="CODPROD" isForPrompting="true" class="java.lang.Integer"/>
+	<parameter name="DATAINI" isForPrompting="true" class="java.util.Date"/>
+	<parameter name="DATAFIM" isForPrompting="true" class="java.util.Date"/>
 	<queryString><![CDATA[SELECT eq.codemp,pd.descprod,pd.vlrdensidade,pd.vlrconcent,
- EQ.qtdmovprod,op.qtdfinalprodop, qtdmovprod/qtdfinalprodop * 100 as formula
+ EQ.qtdmovprod,op.qtdfinalprodop, 
+ (case when qtdfinalprodop=0 then 0 else qtdmovprod/qtdfinalprodop * 100 end) as formula
 FROM eqmovprod EQ,
  eqtipomov tm, eqitrma itr, eqrma rma,  ppop op, eqproduto pd
 WHERE eq.codemp=$P{CODEMP} and eq.codfilial=$P{CODFILIAL} and eq.codprod=$P{CODPROD} AND EQ.dtmovprod BETWEEN $P{DATAINI} AND $P{DATAFIM}
@@ -125,7 +126,7 @@ and eq.qtdmovprod>0]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="64"  isSplitAllowed="true" >
+			<band height="59"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="92"
@@ -222,7 +223,7 @@ and eq.qtdmovprod>0]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="92"
-						y="44"
+						y="45"
 						width="252"
 						height="11"
 						forecolor="#000000"
@@ -237,7 +238,7 @@ and eq.qtdmovprod>0]]></queryString>
 				<staticText>
 					<reportElement
 						x="13"
-						y="44"
+						y="45"
 						width="74"
 						height="11"
 						forecolor="#000000"
@@ -252,9 +253,9 @@ and eq.qtdmovprod>0]]></queryString>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="373"
+						x="353"
 						y="30"
-						width="35"
+						width="70"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -267,9 +268,9 @@ and eq.qtdmovprod>0]]></queryString>
 				</textField>
 				<staticText>
 					<reportElement
-						x="371"
+						x="353"
 						y="2"
-						width="42"
+						width="70"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -283,9 +284,9 @@ and eq.qtdmovprod>0]]></queryString>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;#,##0.00-" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="432"
+						x="423"
 						y="30"
-						width="78"
+						width="112"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -298,9 +299,9 @@ and eq.qtdmovprod>0]]></queryString>
 				</textField>
 				<staticText>
 					<reportElement
-						x="432"
-						y="3"
-						width="78"
+						x="423"
+						y="2"
+						width="112"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -396,7 +397,7 @@ and eq.qtdmovprod>0]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="59"
+						y="58"
 						width="535"
 						height="0"
 						key="line-17"/>
