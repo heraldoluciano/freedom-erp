@@ -421,12 +421,12 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 		<group  name="detcp" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="39"  isSplitAllowed="true" >
+			<band height="36"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
-						x="2"
+						x="0"
 						y="0"
-						width="524"
+						width="536"
 						height="36"
 						key="subreport-1"
 						stretchType="RelativeToBandHeight"/>
@@ -458,12 +458,12 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 		<group  name="prodfinal" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="41"  isSplitAllowed="true" >
+			<band height="33"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
-						x="2"
-						y="3"
-						width="531"
+						x="0"
+						y="0"
+						width="536"
 						height="33"
 						key="subreport-2"
 						stretchType="RelativeToBandHeight"/>

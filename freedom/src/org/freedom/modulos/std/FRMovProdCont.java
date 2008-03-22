@@ -1,6 +1,5 @@
 package org.freedom.modulos.std;
 
-
 import java.sql.Connection;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,54 +22,62 @@ import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRMovProdCont extends FRelatorio {
-	
+
 	private static final long serialVersionUID = 1L;
-	
-	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-	
-	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-	
+
+	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private ListaCampos lcProduto = new ListaCampos( this );
-	
-	public FRMovProdCont(){
-		
-		setTitulo(" Relatório de Movimentação Produto Controlado ");
-		setAtribos( 50, 50, 345, 200 );
-		
+
+	public FRMovProdCont() {
+
+		super( false );
+		setTitulo( " Relatório de Movimentação Produto Controlado " );
+		setAtribos( 50, 50, 335, 210 );
+
 		montaTela();
 		montaListaCampos();
-	}
-	private void montaTela(){
 		
-		JLabelPad lbLinha = new JLabelPad();
-		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
-		JLabelPad lbPeriodo = new JLabelPad( "Periodo:" , SwingConstants.CENTER );
-		lbPeriodo.setOpaque( true );
-		
-		adic( lbPeriodo,7, 1, 80, 20 );
-		adic( lbLinha,5, 10, 300, 45 );
-		
-		adic( new JLabelPad("De:"), 10, 25, 30, 20 );
-		adic( txtDataini, 40, 25, 97, 20 );
-		adic( new JLabelPad("Até:"), 152, 25, 37, 20 );
-		adic( txtDatafim, 190 ,25, 100, 20 );
-		adic( new JLabelPad("Cód.Prod"), 5, 55, 70, 20 );
-		adic( txtCodProd, 5, 75, 70, 20 );
-		adic( new JLabelPad("Descrição do produto"), 78, 55, 200, 20 );
-		adic( txtDescProd, 78, 75, 225, 20 );
+		Calendar cal = Calendar.getInstance();
+		txtDatafim.setVlrDate( cal.getTime() );
+		cal.set( Calendar.DAY_OF_MONTH, 1 );
+		txtDataini.setVlrDate( cal.getTime() );
 	}
 
-	public void imprimiGrafico(  final boolean bVisualizar,  String sCab ) {
+	private void montaTela() {
+
+		JLabelPad lbLinha = new JLabelPad();
+		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
+		JLabelPad lbPeriodo = new JLabelPad( "Periodo:", SwingConstants.CENTER );
+		lbPeriodo.setOpaque( true );
+
+		adic( lbPeriodo, 17, 10, 80, 20 );
+		adic( lbLinha, 7, 20, 307, 45 );
+
+		adic( new JLabelPad( "De:", SwingConstants.CENTER ), 17, 35, 30, 20 );
+		adic( txtDataini, 47, 35, 110, 20 );
+		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 157, 35, 30, 20 );
+		adic( txtDatafim, 187, 35, 110, 20 );
+		adic( new JLabelPad( "Cód.Prod" ), 7, 80, 80, 20 );
+		adic( txtCodProd, 7, 100, 80, 20 );
+		adic( new JLabelPad( "Descrição do produto" ), 90, 80, 200, 20 );
+		adic( txtDescProd, 90, 100, 223, 20 );
+	}
+
+	public void imprimiGrafico( final boolean bVisualizar, String sCab ) {
+
 		GregorianCalendar gcAnterior = new GregorianCalendar();
 		Date dtAnterior = null;
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
-		gcAnterior.setTime(txtDataini.getVlrDate());
+		gcAnterior.setTime( txtDataini.getVlrDate() );
 		gcAnterior.set( Calendar.DAY_OF_MONTH, ( gcAnterior.get( Calendar.DAY_OF_MONTH ) - 1 ) );
 		dtAnterior = gcAnterior.getTime();
 
@@ -79,11 +86,11 @@ public class FRMovProdCont extends FRelatorio {
 		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
 		hParam.put( "FILTROS", sCab );
 		hParam.put( "DATAANT", dtAnterior );
-		hParam.put( "DATAINI", txtDataini.getVlrDate()  );
+		hParam.put( "DATAINI", txtDataini.getVlrDate() );
 		hParam.put( "DATAFIM", txtDatafim.getVlrDate() );
 		hParam.put( "CODPROD", txtCodProd.getVlrInteger() );
-		
-		dlGr = new FPrinterJob( "relatorios/MovProdContr.jasper", "Relatório de Movimentação Produto Controlado", sCab, this, hParam, con ); 
+
+		dlGr = new FPrinterJob( "relatorios/MovProdContr.jasper", "Relatório de Movimentação Produto Controlado", sCab, this, hParam, con );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -97,8 +104,8 @@ public class FRMovProdCont extends FRelatorio {
 		}
 	}
 
-	private void montaListaCampos(){
-		
+	private void montaListaCampos() {
+
 		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.produto", ListaCampos.DB_PK, true ) );
 		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		txtCodProd.setTabelaExterna( lcProduto );
@@ -107,18 +114,18 @@ public class FRMovProdCont extends FRelatorio {
 		lcProduto.setReadOnly( true );
 		lcProduto.montaSql( false, "PRODUTO", "EQ" );
 	}
-	
+
 	public void imprimir( boolean b ) {
 
 		String sCab = "";
 
-		sCab = "Relatório de Movimentação de Produto" + "\n" + "Policia federal CPQ-DPF" ;
-		
-		imprimiGrafico( b,  sCab );
+		sCab = "Relatório de Movimentação de Produto" + "\n" + "Policia federal CPQ-DPF";
+
+		imprimiGrafico( b, sCab );
 	}
 
-	public void setConexao(Connection cn) {
-		
+	public void setConexao( Connection cn ) {
+
 		super.setConexao( cn );
 		lcProduto.setConexao( cn );
 	}
