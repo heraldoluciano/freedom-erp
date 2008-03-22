@@ -45,17 +45,23 @@ public class DLRInventario extends FFDialogo {
   private JRadioGroup<?, ?> rgOrdem = null;
   private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
   private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtCodAlmox = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+  private JTextFieldFK txtDescAlmox = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private JLabelPad lbGrup = new JLabelPad("Cód.grupo");
   private JLabelPad lbDescGrup = new JLabelPad("Descrição do grupo");
+  private JLabelPad lbCodAlmox = new JLabelPad("Cód.Almox");
+  private JLabelPad lbDescAlmox = new JLabelPad("Desc.Almoxarifado");  
   private Vector<String> vLabs = new Vector<String>();
   private Vector<String> vVals = new Vector<String>();
   private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private ListaCampos lcGrup = new ListaCampos(this);
+  private ListaCampos lcAlmox = new ListaCampos(this);
+
   public DLRInventario(Connection cn,Component cOrig) {
   	super(cOrig);
     setTitulo("Posição do estoque");
-    setAtribos(310,250);
+    setAtribos(310, 310);
     vLabs.addElement("Código");
     vLabs.addElement("Descrição");
     vVals.addElement("C");
@@ -63,7 +69,6 @@ public class DLRInventario extends FFDialogo {
     rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
     rgOrdem.setVlrString("D");
     
-
     lcGrup.add(new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK,false));
     lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false));
     lcGrup.montaSql(false, "GRUPO", "EQ");
@@ -73,6 +78,15 @@ public class DLRInventario extends FFDialogo {
     txtCodGrup.setNomeCampo("CodGrup");
     lcGrup.setConexao(cn);
     
+	lcAlmox.add( new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, true ) );
+	lcAlmox.add( new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almoxarifado", ListaCampos.DB_SI, false ) );
+	lcAlmox.montaSql( false, "ALMOX", "EQ" );
+	lcAlmox.setReadOnly(true);
+    txtCodAlmox.setTabelaExterna(lcAlmox);
+    txtCodAlmox.setFK(true);
+    txtCodAlmox.setNomeCampo("CodAlmox");
+    lcAlmox.setConexao(cn);
+
     txtData.setRequerido(true);
 
     GregorianCalendar cal = new GregorianCalendar();
@@ -84,9 +98,18 @@ public class DLRInventario extends FFDialogo {
     adic(txtCodGrup,7,60,80,20);
     adic(lbDescGrup,90,40,280,20);
     adic(txtDescGrup,90,60,200,20);
+    
+       
     adic(lbOrdem,7,80,80,20);
     adic(rgOrdem,7,100,280,30);
     adic(cbGrupo,7,130,280,20);
+    
+    adic(lbCodAlmox,7,150,280,20);
+    adic(txtCodAlmox,7,170,80,20);
+    adic(lbDescAlmox,90,150,280,20);
+    adic(txtDescAlmox,90,170,200,20);
+              
+    
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btOK) {
@@ -95,6 +118,11 @@ public class DLRInventario extends FFDialogo {
         txtData.requestFocus();
         return;
       }
+      if (txtCodAlmox.getVlrInteger().intValue()==0 || txtCodAlmox.getVlrInteger()==null) {
+          Funcoes.mensagemErro(null,"Almoxarifado em branco !");
+          txtCodAlmox.requestFocus();
+          return;
+        }
     }
     super.actionPerformed(evt);
   }
@@ -107,6 +135,7 @@ public class DLRInventario extends FFDialogo {
     oRetorno[1] = txtCodGrup.getVlrString();
     oRetorno[2] = cbGrupo.getVlrString();
     oRetorno[3] = txtData.getVlrDate();
+    oRetorno[4] = txtCodAlmox.getVlrInteger();
     return oRetorno;
   }
 }
