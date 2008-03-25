@@ -21,6 +21,8 @@ package org.freedom.tef.app;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.freedom.infra.components.LoggerManager;
@@ -40,9 +42,9 @@ public class ControllerTef {
 	
 	private int typeTef = TEF_TEXT; // default TEF text.
 	
-	private String messageLog;
-	
 	private Logger logger;
+	
+	private List<ControllerTefListener> controllerTefListeners;
 	
 	
 	public ControllerTef() {		
@@ -115,7 +117,7 @@ public class ControllerTef {
 		return typeTef;
 	}
 	
-	public void setTypeTef( int typeTef ) throws IllegalArgumentException {
+	public void setTypeTef( final int typeTef ) throws IllegalArgumentException {
 		
 		if ( TEF_TEXT == typeTef || TEF_DEDICATED == typeTef ) {
 			this.typeTef = typeTef;
@@ -123,18 +125,49 @@ public class ControllerTef {
 		else {
 			throw new IllegalArgumentException( "Tipo de gerenciamento de TEF inválido!" );
 		}		
-	}	
-	
-	public String getMessageLog() {	
-		return messageLog;
 	}
 	
-	private void setMessageLog( String messageLog ) {	
-		this.messageLog = messageLog;
+	public ControllerTefListener addControllerMessageListener( final ControllerTefListener listener ) {
+		
+		if ( listener == null ) {
+			return listener;
+		}
+		
+		if ( this.controllerTefListeners == null ) {
+			this.controllerTefListeners = new ArrayList<ControllerTefListener>();
+		}
+		
+		this.controllerTefListeners.add( listener );
+	
+		return listener;
+	}
+	
+	public void removeControllerMessageListeners( final ControllerTefListener listener ) {
+		
+		if ( listener == null || this.controllerTefListeners == null ) {
+			return;
+		}
+	
+		this.controllerTefListeners.remove( listener );
+	}
+	
+	private boolean fireControllerTefEvent( final String message, 
+			                                final int option ) {			
+		boolean tefMessage = false;
+		
+		ControllerTefEvent controllerTefEvent = new ControllerTefEvent( this, option, message );
+		
+		for ( ControllerTefListener listener : this.controllerTefListeners ) {
+			tefMessage = listener.actionTef( controllerTefEvent );
+			if ( ! tefMessage ) {
+				break;
+			}
+		}
+		
+		return tefMessage;
 	}
 
-	private void whiterLogError( final String message ) {
-		
+	private void whiterLogError( final String message ) {		
 		if ( logger != null ) {
 			logger.error( message );
 		}
@@ -146,6 +179,20 @@ public class ControllerTef {
 	// ***                                                                    *** \\	
 	// ************************************************************************** \\
 	
+	/**
+	 * Este método faz a requisição de pagamento para o gerenciador padrão TEF<br>
+	 * atráves da criação do arquivo com os parametros da requisição e<br>
+	 * verifica o recebimento da requisição atráves da leitura do arquivo de retorno<br>
+	 * e transmite a mensagem caso haja para ControllerMessageListener com ControllerMessageEvent.<br>
+	 * <br>
+	 * Após a execução deste é necessária a execução da impressão do comprovante.
+	 * 
+	 * @param numberDoc
+	 * @param value
+	 * @param flagName
+	 * 
+	 * @return verdadeiro para envio correto da requisição e recebimento correto do retorno. 
+	 */
 	public boolean requestSale( final Integer numberDoc,
 			                    final BigDecimal value,
 			                    final String flagName ) {
@@ -153,16 +200,104 @@ public class ControllerTef {
 		boolean actionReturn = false;
 		
 		if ( TEF_TEXT == getTypeTef() ) {
-			try {
-    			setMessageLog( null );
-    			TextTef textTef = TextTefFactore.createTextTef( getTextTefProperties(), 
-    															flagName, 
-    															getFileParametrosOfInitiation() );	
-				actionReturn = textTef.isActive() ? textTef.requestSale( numberDoc, value ) : false;				
-			} catch ( Exception e ) {
-				e.printStackTrace();
-				setMessageLog( "Erro ao solicitar venda:\n" + e.getMessage() );
-				whiterLogError( getMessageLog() );
+			actionReturn = requestSaleTextTef( numberDoc, value, flagName );
+		}
+		
+		return actionReturn;
+	}
+	
+	private boolean requestSaleTextTef( final Integer numberDoc,
+                                        final BigDecimal value,
+                                        final String flagName ) {
+
+		boolean actionReturn = false;
+		
+		try {
+			TextTef textTef = TextTefFactore.createTextTef( getTextTefProperties(), 
+															flagName, 
+															getFileParametrosOfInitiation() );	
+			// verifica se está ativo e faz a requisição e
+			// verifica se houve resposta.
+			if ( textTef.isActive() 
+					&& textTef.requestSale( numberDoc, value ) 
+						&& textTef.readResponseSale() ) {
+					
+				String messageOperator = textTef.get( TextTefProperties.MESSAGE_OPERATOR, "" );
+				
+				// avisa para os ouvintes a menssagem do campo 030-000.
+				if ( messageOperator.trim().length() > 0 ) {
+					fireControllerTefEvent( messageOperator, ControllerTefEvent.WARNING );
+				}
+				
+				// invoca método para lançar eventos de impressão do comprovante.
+				if ( voucherTextTef( textTef ) ) {
+					textTef.confirmationOfSale();
+				}
+				
+				actionReturn = true;
+			}
+			else {
+				fireControllerTefEvent( "TEF não está ativo!", ControllerTefEvent.END_PRINT );
+			}
+			
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			String etmp = "Erro ao solicitar venda:\n" + e.getMessage();
+			fireControllerTefEvent( etmp, ControllerTefEvent.END_PRINT );
+			whiterLogError( etmp );
+		}
+		
+		return actionReturn;
+	}
+	
+	private boolean voucherTextTef( final TextTef textTef ) throws Exception {
+
+		boolean voucherTextTef = false;
+		
+		if ( textTef != null ) {
+		
+    		int amountLines = Integer.parseInt( textTef.get( TextTefProperties.AMOUNT_LINES, "0" ) );
+    		
+    		if ( amountLines > 0 ) {
+    			if ( fireControllerTefEvent( null, ControllerTefEvent.BEGIN_PRINT )
+    						&& printVoucherTextTef( textTef ) 
+    								&& fireControllerTefEvent( null, ControllerTefEvent.END_PRINT ) ) {
+    				voucherTextTef = true;
+    			}
+    		}
+		}
+		
+		return voucherTextTef;
+	}
+		
+	private boolean printVoucherTextTef( final TextTef textTef ) throws Exception {
+
+		boolean actionReturn = false;
+			
+		List<String> responseToPrint = textTef.getResponseToPrint();
+		
+		if ( responseToPrint != null && responseToPrint.size() > 0 ) {	
+			
+			int numberTickets = 1; // alterar para variável parametrizavél.
+
+			tickets : while ( numberTickets-- > 0 ) {
+				for ( String message : responseToPrint ) {
+					
+					actionReturn = fireControllerTefEvent( message, ControllerTefEvent.PRINT );
+					
+					if ( ! actionReturn ) {
+						if ( fireControllerTefEvent( "Impressora não responde, tentar novamente?", 
+								                     ControllerTefEvent.CONFIRM ) ) {
+							fireControllerTefEvent( null, ControllerTefEvent.RE_PRINT );
+							actionReturn = printVoucherTextTef( textTef );
+							break tickets;
+						}
+						else {
+							actionReturn = textTef.notConfirmationOfSale();
+							break tickets;							
+						}
+					}
+				}
 			}
 		}
 		

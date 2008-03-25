@@ -45,7 +45,7 @@ public class TextTefProperties extends Properties {
 
     public static final String ARQ_ACTIVE = "Ativo.001";
 
-    public static final String ARQ_STATUS = "IntPos.sts";
+    public static final String ARQ_STATUS = "IntPos.STS";
 
     public static final String HEADER = "000-000";
 
@@ -83,11 +83,11 @@ public class TextTefProperties extends Properties {
 
     public static final String RESPONSE_TO_PRINT = "029-"; 
 
-    public static final String MENSAGE_OPERATOR = "030-000";
+    public static final String MESSAGE_OPERATOR = "030-000";
 
     public static final String ADMINISTRATOR = "040-000";
 
-    public static final String EOT = "999-999"; 
+    public static final String TRAILER = "999-999"; 
     
     {
 		keysList.add( PATH_SEND );
@@ -115,9 +115,9 @@ public class TextTefProperties extends Properties {
 		keysList.add( FINISHING );
 		keysList.add( AMOUNT_LINES );
 		keysList.add( RESPONSE_TO_PRINT );
-		keysList.add( MENSAGE_OPERATOR );
+		keysList.add( MESSAGE_OPERATOR );
 		keysList.add( ADMINISTRATOR );
-		keysList.add( EOT );
+		keysList.add( TRAILER );
     }
 	
 	
@@ -158,9 +158,9 @@ public class TextTefProperties extends Properties {
 		setProperty( FINISHING, "" );
 		setProperty( AMOUNT_LINES, "" );
 		setProperty( RESPONSE_TO_PRINT, "" );
-		setProperty( MENSAGE_OPERATOR, "" );
+		setProperty( MESSAGE_OPERATOR, "" );
 		setProperty( ADMINISTRATOR, "" );
-		setProperty( EOT, "" );
+		setProperty( TRAILER, "" );
 	}
 	
 	/**
@@ -168,14 +168,15 @@ public class TextTefProperties extends Properties {
 	 * @param key	Chave a ser validada.
 	 * @return		Verdadeiro para a chave pré-definida e falso para chaves não especificadas.
 	 */
-	public boolean validateTextTefPropertie( final Object key ) {
+	public boolean validateTextTefPropertie( final String key ) {
 		
-		if ( key == null ) {
+		if ( key == null && key.trim().length() > 6 ) {
 			return false;
 		}
 		
 		for ( String k : keysList ) {
-			if ( k.equals( key ) ) {
+			if ( k.equals( key ) 
+					|| ( k.equals( RESPONSE_TO_PRINT ) && k.equals(key.substring( 0, 4 )) ) ) {
 				return true;
 			}
 		}
@@ -197,18 +198,18 @@ public class TextTefProperties extends Properties {
 	
 	/**
 	 * Implementa uma chamada de método simplificada para {@link #getProperty(String)}<br>
-	 * somente se a validação com {@link #validateTextTefPropertie(Object)} for positiva.<br>
+	 * somente se a validação com {@link #validateTextTefPropertie(String)} for positiva.<br>
 	 * @param key	Chave de referencia ao objeto desejado.
 	 * @return		Objeto referente a chave informada.
 	 * @see			#set(String, String)
 	 * @see			#getProperty(String)
-	 * @see			#validateTextTefPropertie(Object)
+	 * @see			#validateTextTefPropertie(String)
 	 */
 	public String get( final String key ) {
 		
 		String stringReturn = null;
 		
-		if ( validateTextTefPropertie( key ) ) {
+ 		if ( validateTextTefPropertie( key ) ) {
 			
 			stringReturn = super.getProperty( key );
 		}
@@ -222,13 +223,13 @@ public class TextTefProperties extends Properties {
 	
 	/**
 	 * Implementa uma chamada de método simplificada para {@link #setProperty(String, String)}<br>
-	 * somente se a validação com {@link #validateTextTefPropertie(Object)} for positiva.<br>
+	 * somente se a validação com {@link #validateTextTefPropertie(String)} for positiva.<br>
 	 * @param key	Chave de referencia ao objeto desejado.
 	 * @param value Objeto a ser referenciado pela chave informada.
 	 * @return		Objeto referente a chave informada.
 	 * @see			#get(String)
 	 * @see			#setProperty(String, String)
-	 * @see			#validateTextTefPropertie(Object)
+	 * @see			#validateTextTefPropertie(String)
 	 */
 	public String set( final String key, final String value ) {
 		
@@ -240,7 +241,8 @@ public class TextTefProperties extends Properties {
 			super.setProperty( key, value );
 		}
 		else {
-			throw new IllegalArgumentException( "Chave de propriedade inválida!" );
+			throw new IllegalArgumentException( 
+					"Chave de propriedade não definida! [ " + key + " ] value [ " + value + " ]" );
 		}
 		
 		return value;

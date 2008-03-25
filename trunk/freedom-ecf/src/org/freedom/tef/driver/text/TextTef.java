@@ -20,10 +20,13 @@ package org.freedom.tef.driver.text;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 
 
 public abstract class TextTef {
+	
+	public static final String ATV = "ATV";
 	
 	public static final String ADM = "ADM";
 	
@@ -31,11 +34,15 @@ public abstract class TextTef {
 	
 	public static final String CHQ = "CHQ";
 	
-	public static final String CNC = "CNC";
-	
 	public static final String CRT = "CRT";
 	
+	public static final String CNC = "CNC";
+	
+	public static final String CNF = "CNF";
+	
 	public static final String PRE = "PRE";
+	
+	public static final String NCN = "NCN";
 	
 	private TextTefProperties textTefProperties;
 
@@ -68,13 +75,15 @@ public abstract class TextTef {
 		if ( textTefProperties == null ) {
 			throw new NullPointerException( "Properties para TEF não especificadas!" );
 		}		
-		if ( validateTextTefProperties( textTefProperties ) ) {
-			this.textTefProperties = textTefProperties;
-		}
+		this.textTefProperties = textTefProperties;
 	}
 
 	public String get( String key ) throws Exception {
-		return getTextTefProperties() != null ? getTextTefProperties().get( key ) : null;
+		return getTextTefProperties() != null ? getTextTefProperties().getProperty( key ) : null;
+	}
+
+	public String get( String key, String valueDefault ) throws Exception {
+		return getTextTefProperties() != null ? getTextTefProperties().getProperty( key, valueDefault ) : null;
 	}
 
 	public String set( String key, String value ) throws Exception {
@@ -87,14 +96,19 @@ public abstract class TextTef {
 	}
 	
 	abstract protected void initializeTextTef() throws Exception ;
-
-	abstract protected boolean validateTextTefProperties( final TextTefProperties textTefProperties )
-		throws Exception;
 	
 	abstract public boolean isActive() throws Exception;
 	
 	abstract public boolean requestSale( final Integer numberDoc, 
 			                             final BigDecimal value ) throws Exception;
+	
+	abstract public boolean readResponseSale() throws Exception;
+	
+	abstract public List<String> getResponseToPrint() throws Exception;
+	
+	abstract public boolean confirmationOfSale() throws Exception;
+	
+	abstract public boolean notConfirmationOfSale() throws Exception;
 	
 	abstract public boolean requestCancel( final String nsu,
 										   final String rede,
@@ -102,6 +116,4 @@ public abstract class TextTef {
 										   final BigDecimal value ) throws Exception;
 	
 	abstract public boolean requestAdministrator() throws Exception;
-	
-	abstract public boolean readResponseToPrint() throws Exception;
 }
