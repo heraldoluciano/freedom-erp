@@ -832,7 +832,7 @@ public class FSintegra extends FFilho implements ActionListener {
 							fValor = rs.getFloat( sCampo );
 						}
 
-						if ( sAliq == null )
+						if ( ( sAliq == null ) || (fValor==0)) 
 							continue;
 
 						/* 01 */sBuffer.append( "60" );
