@@ -3546,11 +3546,11 @@ public class Funcoes {
 
 		//    System.out.println("sValor: "+sValor);
 		if (sValor.indexOf(",") >= 0)
-			sValor = sValor.replaceAll(",", "");
+			sValor = sValor.replaceAll("\\,", "");
 		//    System.out.println("sValor: "+sValor);
 
 		if (sValor.indexOf(".") >= 0)
-			sValor = sValor.replaceAll(".", "");
+			sValor = sValor.replaceAll("\\.", "");
 		//    System.out.println("sValor: "+sValor);
 
 		if (bZeroEsq)
