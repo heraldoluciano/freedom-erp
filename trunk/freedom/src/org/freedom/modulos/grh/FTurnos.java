@@ -26,16 +26,18 @@ package org.freedom.modulos.grh;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Vector;
-import org.freedom.componentes.ImprimeOS;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
+import org.freedom.telas.FPrinterJob;
 
 public class FTurnos extends FDados implements ActionListener {
 
@@ -117,86 +119,25 @@ public class FTurnos extends FDados implements ActionListener {
 	}
 
 	private void imprimir( boolean bVisualizar ) {
+		
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
-		ImprimeOS imp = new ImprimeOS( "", con );
-		int linPag = imp.verifLinPag() - 1;
-		int iTot = 0;
-		imp.montaCab();
-		imp.setTitulo( "Relatório de turnos" );
-		DLRFTurnos dl = new DLRFTurnos();
-		dl.setVisible( true );
-		if ( dl.OK == false ) {
-			dl.dispose();
-			return;
-		}
-		String sSQL = 
-			  "SELECT CODTURNO, DESCTURNO, NHSTURNO, HINITURNO, HINIINTTURNO, HFIMINTTURNO, HFIMTURNO, TIPOTURNO " 
-			+ "FROM RHTURNOPK ORDER BY " + dl.getValor();
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RHDEPTO" ) );
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement( sSQL );
-			rs = ps.executeQuery();
-			imp.limpaPags();
-			while ( rs.next() ) {
-				if ( imp.pRow() == 0 ) {
-					imp.impCab( 80, false );
-					imp.say( imp.pRow() + 0, 0, "" + imp.normal() );
-					imp.say( imp.pRow() + 1, 0, "" );
-					imp.say( imp.pRow() + 0, 2, "Cód.turno" );
-					imp.say( imp.pRow() + 0, 14, "Descrição do turno" );
-					imp.say( imp.pRow() + 0, 5, "H/S" );
-					imp.say( imp.pRow() + 0, 4, "Ent." );
-					imp.say( imp.pRow() + 0, 2, "Ent.int." );
-					imp.say( imp.pRow() + 0, 2, "Fim.int." );
-					imp.say( imp.pRow() + 0, 2, "Fim." );
-					imp.say( imp.pRow() + 0, 2, "Tipo turno" );
-					imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-					imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "-", 80 ) );
-				}
-				imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-				imp.say( imp.pRow() + 0, 2, rs.getString( "CodTurno" ) );
-				imp.say( imp.pRow() + 0, 14, rs.getString( "DescTurno" ).substring( 0, 18 ) );
-				imp.say( imp.pRow() + 0, 5, rs.getString( "NhsTurno" ) );
-				imp.say( imp.pRow() + 0, 12, rs.getString( "HIniTurno" ) );
-				imp.say( imp.pRow() + 0, 5, rs.getString( "HIniIntTurno" ) );
-				imp.say( imp.pRow() + 0, 6, rs.getString( "HFimIntTurno" ) );
-				imp.say( imp.pRow() + 0, 3, rs.getString( "HFimTurno" ) );
-				imp.say( imp.pRow() + 0, 13, rs.getString( "TipoTurno" ) );
-
-				if ( imp.pRow() >= linPag ) {
-					imp.incPags();
-					imp.eject();
-				}
-			}
-
-			imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-			imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "=", 80 ) );
-			imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-			imp.say( imp.pRow() + 0, 0, "|" );
-			imp.say( imp.pRow() + 0, 71, Funcoes.alinhaDir( iTot, 8 ) );
-			imp.say( imp.pRow() + 0, 80, "|" );
-			imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-			imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "=", 80 ) );
-			imp.eject();
-
-			imp.fechaGravacao();
-
-			// rs.close();
-			// ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
-			dl.dispose();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro consulta tabela de funcionários!\n" + err.getMessage(), true, con, err );
-		}
+		dlGr = new FPrinterJob( "relatorios/grhTurnos.jasper", "Lista de Turnos", "", this, hParam, con, null, false );
 
 		if ( bVisualizar ) {
-			imp.preview( this );
+			dlGr.setVisible( true );
 		}
 		else {
-			imp.print();
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception e ) {
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro na geração do relátorio!" + e.getMessage(), true, con, e );
+			}
 		}
 	}
 }

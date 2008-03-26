@@ -24,9 +24,17 @@
 
 package org.freedom.modulos.grh;
 
+import java.awt.event.ActionEvent;
+import java.util.HashMap;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
+import org.freedom.telas.FPrinterJob;
 
 public class FArea extends FDados {
 
@@ -40,11 +48,13 @@ public class FArea extends FDados {
 
 		super();
 		setTitulo( "Cadastro de Areas" );
-		setAtribos( 50, 50, 380, 135 );
+		setAtribos( 50, 50, 360, 125 );
 
 		montaTela();
-		
-		setImprimir( false );
+				
+		btImp.addActionListener( this );
+		btPrevimp.addActionListener( this );		
+		setImprimir( true );
 	}
 
 	private void montaTela() {
@@ -53,5 +63,40 @@ public class FArea extends FDados {
 		adicCampo( txtDescArea, 80, 20, 250, 20, "DescArea", "Descrição da area", ListaCampos.DB_SI, true );
 		setListaCampos( true, "AREA", "RH" );
 		lcCampos.setQueryInsert( false );
+	}
+
+	public void actionPerformed( ActionEvent evt ) {
+
+		if ( evt.getSource() == btPrevimp ) {
+			imprimir( true );
+		}
+		else if ( evt.getSource() == btImp ) {
+			imprimir( false );
+		}
+		
+		super.actionPerformed( evt );
+	}
+
+	private void imprimir( boolean bVisualizar ) {
+		
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RHAREA" ) );
+
+		dlGr = new FPrinterJob( "relatorios/grhArea.jasper", "Lista de Áreas", "", this, hParam, con, null, false );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception e ) {
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro na geração do relátorio!" + e.getMessage(), true, con, e );
+			}
+		}
 	}
 }

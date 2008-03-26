@@ -26,9 +26,12 @@ package org.freedom.modulos.grh;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JCheckBoxPad;
@@ -38,6 +41,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FTabDados;
 
 public class FEmpregadores extends FTabDados {
@@ -103,9 +107,11 @@ public class FEmpregadores extends FTabDados {
 
 		montaTela();
 		
-		btFirefox.addActionListener( this );
+		btFirefox.addActionListener( this );		
+		btImp.addActionListener( this );
+		btPrevimp.addActionListener( this );
 
-		setImprimir( false );
+		setImprimir( true );
 	}
 	
 	private void montaTela() {		
@@ -164,6 +170,35 @@ public class FEmpregadores extends FTabDados {
 	    	else {
 	    		Funcoes.mensagemInforma( this, "Informe o Site do Cliente! " );
 	    	}
+		}
+		else if ( e.getSource() == btPrevimp ) {
+			imprimir( true );
+		}
+		else if ( e.getSource() == btImp ) {
+			imprimir( false );
+		}
+	}
+
+	private void imprimir( boolean bVisualizar ) {
+		
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RHDEPTO" ) );
+
+		dlGr = new FPrinterJob( "relatorios/grhEmpregador.jasper", "Lista de Empregadores", "", this, hParam, con, null, false );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception e ) {
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro na geração do relátorio!" + e.getMessage(), true, con, e );
+			}
 		}
 	}
 }

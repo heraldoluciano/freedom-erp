@@ -26,24 +26,25 @@ package org.freedom.modulos.grh;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.HashMap;
 
-import org.freedom.componentes.ImprimeOS;
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
+import org.freedom.telas.FPrinterJob;
 
 
 public class FDepto extends FDados implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private final JTextFieldPad txtCod = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	private final JTextFieldPad txtCodDepto = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
-	private final JTextFieldPad txtDesc = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldPad txtDescDepto = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
 	public FDepto() {
 
@@ -62,8 +63,8 @@ public class FDepto extends FDados implements ActionListener {
 	
 	private void montaTela() {
 
-		adicCampo( txtCod, 7, 20, 70, 20, "CodDep", "Cód.dep.", ListaCampos.DB_PK, true );
-		adicCampo( txtDesc, 80, 20, 240, 20, "DescDep", "Descrição do departamento", ListaCampos.DB_SI, true );
+		adicCampo( txtCodDepto, 7, 20, 70, 20, "CodDep", "Cód.dep.", ListaCampos.DB_PK, true );
+		adicCampo( txtDescDepto, 80, 20, 240, 20, "DescDep", "Descrição do departamento", ListaCampos.DB_SI, true );
 		setListaCampos( true, "DEPTO", "RH" );		
 	}
 
@@ -80,72 +81,25 @@ public class FDepto extends FDados implements ActionListener {
 	}
 
 	private void imprimir( boolean bVisualizar ) {
+		
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
-		ImprimeOS imp = new ImprimeOS( "", con );
-		int linPag = imp.verifLinPag() - 1;
-		int iTot = 0;
-		imp.montaCab();
-		imp.setTitulo( "Relatório de tipos de departamentos" );
-		DLRDepto dl = new DLRDepto();
-		dl.setVisible( true );
-		if ( dl.OK == false ) {
-			dl.dispose();
-			return;
-		}
-		String sSQL = "SELECT CODDEP,DESCDEP FROM RHDEPTO ORDER BY " + dl.getValor();
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RHDEPTO" ) );
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement( sSQL );
-			rs = ps.executeQuery();
-			imp.limpaPags();
-			while ( rs.next() ) {
-				if ( imp.pRow() == 0 ) {
-					imp.impCab( 80, false );
-					imp.say( imp.pRow() + 0, 0, "" + imp.normal() );
-					imp.say( imp.pRow() + 0, 0, "" );
-					imp.say( imp.pRow() + 0, 2, "Cód.dep." );
-					imp.say( imp.pRow() + 0, 20, "Descrição" );
-					imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-					imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "-", 80 ) );
-				}
-				imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-				imp.say( imp.pRow() + 0, 2, rs.getString( "CodDep" ) );
-				imp.say( imp.pRow() + 0, 20, rs.getString( "DescDep" ) );
-
-				if ( imp.pRow() >= linPag ) {
-					imp.incPags();
-					imp.eject();
-				}
-			}
-
-			imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-			imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "=", 80 ) );
-			imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-			imp.say( imp.pRow() + 0, 0, "|" );
-			imp.say( imp.pRow() + 0, 71, Funcoes.alinhaDir( iTot, 8 ) );
-			imp.say( imp.pRow() + 0, 80, "|" );
-			imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-			imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "=", 80 ) );
-			imp.eject();
-
-			imp.fechaGravacao();
-
-			// rs.close();
-			// ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
-			dl.dispose();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro consulta tabela de departamentos!\n" + err.getMessage(), true, con, err );
-		}
+		dlGr = new FPrinterJob( "relatorios/grhDepartamento.jasper", "Lista de Departamentos", "", this, hParam, con, null, false );
 
 		if ( bVisualizar ) {
-			imp.preview( this );
+			dlGr.setVisible( true );
 		}
 		else {
-			imp.print();
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception e ) {
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro na geração do relátorio!" + e.getMessage(), true, con, e );
+			}
 		}
 	}
 }
