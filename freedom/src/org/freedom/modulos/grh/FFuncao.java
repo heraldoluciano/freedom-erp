@@ -24,31 +24,33 @@
 
 package org.freedom.modulos.grh;
 
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.ImprimeOS;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
+import org.freedom.telas.FPrinterJob;
 
 public class FFuncao extends FDados implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private final JTextFieldPad txtCod = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	private final JTextFieldPad txtCodFunc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
-	private final JTextFieldPad txtDesc = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldPad txtDescFunc = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 	
 
 	public FFuncao() {
 
 		super();
 		setTitulo( "Cadastro de funções" );
-		setAtribos( 50, 50, 350, 125 );
+		setAtribos( 50, 50, 360, 125 );
 		
 		montaTela();
 		
@@ -60,8 +62,8 @@ public class FFuncao extends FDados implements ActionListener {
 	
 	private void montaTela() {
 
-		adicCampo( txtCod, 7, 20, 70, 20, "CodFunc", "Cód.func.", ListaCampos.DB_PK, true );
-		adicCampo( txtDesc, 80, 20, 240, 20, "DescFunc", "Descrição da função", ListaCampos.DB_SI, true );
+		adicCampo( txtCodFunc, 7, 20, 70, 20, "CodFunc", "Cód.func.", ListaCampos.DB_PK, true );
+		adicCampo( txtDescFunc, 80, 20, 250, 20, "DescFunc", "Descrição da função", ListaCampos.DB_SI, true );
 		setListaCampos( true, "FUNCAO", "RH" );		
 		lcCampos.setQueryInsert( false );
 	}
@@ -79,72 +81,25 @@ public class FFuncao extends FDados implements ActionListener {
 	}
 
 	private void imprimir( boolean bVisualizar ) {
+		
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
-		ImprimeOS imp = new ImprimeOS( "", con );
-		int linPag = imp.verifLinPag() - 1;
-		int iTot = 0;
-		imp.montaCab();
-		imp.setTitulo( "Relatório de tipos de funcionários" );
-		DLRFuncao dl = new DLRFuncao();
-		dl.setVisible( true );
-		if ( dl.OK == false ) {
-			dl.dispose();
-			return;
-		}
-		String sSQL = "SELECT CODFUNC,DESCFUNC FROM RHFUNCAO ORDER BY " + dl.getValor();
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RHFUNCAO" ) );
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement( sSQL );
-			rs = ps.executeQuery();
-			imp.limpaPags();
-			while ( rs.next() ) {
-				if ( imp.pRow() == 0 ) {
-					imp.impCab( 80, false );
-					imp.say( imp.pRow() + 0, 0, "" + imp.normal() );
-					imp.say( imp.pRow() + 0, 0, "" );
-					imp.say( imp.pRow() + 0, 2, "Cód.func." );
-					imp.say( imp.pRow() + 0, 20, "Descrição" );
-					imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-					imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "-", 79 ) );
-				}
-				imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-				imp.say( imp.pRow() + 0, 2, rs.getString( "CodFunc" ) );
-				imp.say( imp.pRow() + 0, 20, rs.getString( "DescFunc" ) );
-
-				if ( imp.pRow() >= linPag ) {
-					imp.incPags();
-					imp.eject();
-				}
-			}
-
-			imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-			imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "=", 79 ) );
-			imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-			imp.say( imp.pRow() + 0, 0, "|" );
-			imp.say( imp.pRow() + 0, 71, Funcoes.alinhaDir( iTot, 8 ) );
-			imp.say( imp.pRow() + 0, 79, "|" );
-			imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
-			imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "=", 79 ) );
-			imp.eject();
-
-			imp.fechaGravacao();
-
-			// rs.close();
-			// ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
-			dl.dispose();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro consulta tabela de funcionários!\n" + err.getMessage(), true, con, err );
-		}
+		dlGr = new FPrinterJob( "relatorios/grhFuncao.jasper", "Lista de Funções", "", this, hParam, con, null, false );
 
 		if ( bVisualizar ) {
-			imp.preview( this );
+			dlGr.setVisible( true );
 		}
 		else {
-			imp.print();
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception e ) {
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro na geração do relátorio!" + e.getMessage(), true, con, e );
+			}
 		}
 	}
 }
