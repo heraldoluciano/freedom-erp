@@ -263,7 +263,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{PRAZOENTORC}.toString()+" dias"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{PRAZOENTORC}.intValue()==0 ? "Á Combinar " : $F{PRAZOENTORC}.intValue()+" dias"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
