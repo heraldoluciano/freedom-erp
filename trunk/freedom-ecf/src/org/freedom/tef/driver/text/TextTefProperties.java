@@ -170,7 +170,7 @@ public class TextTefProperties extends Properties {
 	 */
 	public boolean validateTextTefPropertie( final String key ) {
 		
-		if ( key == null && key.trim().length() > 6 ) {
+		if ( key == null || key.trim().length() > 6 ) {
 			return false;
 		}
 		
