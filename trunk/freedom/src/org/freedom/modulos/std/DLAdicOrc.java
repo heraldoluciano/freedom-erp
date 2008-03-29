@@ -313,6 +313,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		tab.adicColuna( "Tp.Agr." );
 		tab.adicColuna( "Agr." );
 		tab.adicColuna( "Valor agr." );
+		tab.adicColuna( "Cód.orc." );
 
 		tab.setTamColuna( 35, 0 );
 		tab.setTamColuna( 35, 1 );
@@ -325,6 +326,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		tab.setTamColuna( 50, 8 );
 		tab.setTamColuna( 50, 9 );
 		tab.setTamColuna( 100, 10 );
+		tab.setTamColuna( 50, 11 );
 
 
 		tab.setColunaEditavel( 0, true );
@@ -398,6 +400,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 						vVals.addElement( "" );
 						vVals.addElement( "" );
 						vVals.addElement( "0,00" );
+						vVals.addElement( rs.getInt( "CodOrc" ) );
 						fValProd += rs.getFloat( "VlrProdItOrc" );
 						fValDesc += rs.getFloat( "VlrDescItOrc" );
 						fValLiq += rs.getFloat( "VlrLiqItOrc" );
@@ -450,7 +453,8 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		String sSQL = null;
 		boolean bPrim = true;
 		int iCodVenda = 0;
-		int[] iVals = null;
+		int[] iValsVec = null; 
+
 		StringBuffer obs = new StringBuffer();		
 		DLCriaVendaOrc diag = null;
 
@@ -475,21 +479,23 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 					return false;
 
 				// STD
+														
 				if ( sTipoVenda.equals( "V" ) ) {
 										
-					for ( int i = 0; i < vValidos.size(); i++ ) {
+//					for ( int i = 0; i < vValidos.size() ; i++ ) {
+					for ( int i = 0; i < tab.getNumLinhas() ; i++ ) {
 						if ( ! ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() )
 							continue;
 
-						iVals = (int[]) vValidos.elementAt( i );
+						iValsVec = (int[]) vValidos.elementAt( i );
 
 						if(prefs[2]){
 							if(bPrim) {
 								obs.append( "Orçamentos:\n" );
-								obs.append( iVals[0] );
+								obs.append( iValsVec[0] );
 							}
 							else {
-							    obs.append( iVals[0] );	
+							    obs.append( iValsVec[0] );	
 							}
 							
 							if(vValidos.size()>1 && (vValidos.size()!=i+1)) {									
@@ -505,7 +511,8 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 							try {
 								sSQL = "SELECT IRET FROM VDADICVENDAORCSP(?,?,?,?,?)";
 								ps = con.prepareStatement( sSQL );
-								ps.setInt( 1, iVals[ 0 ] );
+//								ps.setInt( 1, iValsVector[ 0 ] );
+								ps.setInt( 1, new Integer(tab.getValor( i, 11 ).toString())); 
 								ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 								ps.setInt( 3, Aplicativo.iCodEmp );
 								ps.setString( 4, sTipoVenda );
@@ -516,7 +523,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 									iCodVenda = rs.getInt( 1 );
 
 								rs.close();
-								ps.close();																
+								ps.close();										
 								
 							} 
 							catch ( SQLException err ) {
@@ -530,19 +537,21 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 								err.printStackTrace();
 								return false;
 							}
+							catch (Exception e) {
+								Funcoes.mensagemErro( this, "Erro genérico ao gerar venda!\n" + e.getMessage(), true, con, e );
+							}
 							bPrim = false;
 						}
 						try {
 							sSQL = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?,?,?,?)";
 							ps2 = con.prepareStatement( sSQL );
 							ps2.setInt( 1, Aplicativo.iCodFilial );
-							ps2.setInt( 2, iCodVenda );
-							ps2.setInt( 3, iVals[ 0 ] );
-							ps2.setInt( 4, iVals[ 1 ] );
+							ps2.setInt( 2, iCodVenda );					
+							ps2.setInt( 3, new Integer(tab.getValor( i, 11 ).toString()));
+							ps2.setInt( 4, new Integer(tab.getValor( i, 1 ).toString()));
 							ps2.setInt( 5, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 							ps2.setInt( 6, Aplicativo.iCodEmp );
-							ps2.setString( 7, sTipoVenda );
-							
+							ps2.setString( 7, sTipoVenda );							
 							ps2.setString( 8, tab.getValor( i, POS_TPAGR ).toString());
 							ps2.setFloat( 9, new Float(Funcoes.strCurrencyToDouble(tab.getValor( i, POS_QTD ).toString())));
 							
@@ -553,7 +562,8 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 							Funcoes.mensagemErro( this, "Erro ao gerar itvenda: '" + ( i + 1 ) + "'!\n" + err.getMessage(), true, con, err );
 							try {
 								con.rollback();
-							} catch ( SQLException err1 ) {
+							} 
+							catch ( SQLException err1 ) {
 							}
 							return false;
 						}
@@ -576,12 +586,12 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 				}
 				// PDV
 				else if ( sTipoVenda.equals( "E" ) ) {
-					iVals = (int[]) vValidos.elementAt( 0 );
+					iValsVec = (int[]) vValidos.elementAt( 0 );
 
-					if ( vendaPDV.montaVendaOrc( iVals[ 0 ] ) ) {// Gera a venda
+					if ( vendaPDV.montaVendaOrc( iValsVec[ 0 ] ) ) {// Gera a venda
 						for ( int i = 0; i < vValidos.size(); i++ ) {
-							iVals = (int[]) vValidos.elementAt( i );
-							vendaPDV.adicItemOrc( iVals[ 1 ] );// Adiciona os itens
+							iValsVec = (int[]) vValidos.elementAt( i );
+							vendaPDV.adicItemOrc( iValsVec[ 1 ] );// Adiciona os itens
 						}
 					}
 					dispose();
@@ -598,7 +608,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 			ps2 = null;
 			rs = null;
 			sSQL = null;
-			iVals = null;
+			iValsVec = null;
 			diag = null;
 		}
 
@@ -752,8 +762,9 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		int pos = 0;
 		try {			
 			for ( int i = 0; i < linhas; i++ ) {
-				if ( ! ( (Boolean) ltab.getValor( i, 0 ) ).booleanValue() ) {
+				if ( ! ( (Boolean) ltab.getValor( i, 0 ) ).booleanValue() ) { //xxx
 					ltab.tiraLinha( i );
+					vValidos.remove( i );
 					i--;
 				}					
 			}									
@@ -919,7 +930,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		}		
 		else if ( evt.getSource() == btTudoOrc )
 			carregaTudo( tabOrc );
-		else if ( evt.getSource() == btNadaOrc )
+		else if ( evt.getSource() == btNadaOrc ) 
 			carregaNada( tabOrc );
 		else if ( evt.getSource() == btTudoIt )
 			carregaTudo( tab );
@@ -939,7 +950,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 
 		txtCodConv.setAtivo( false );
 		txtCodCli.setAtivo( false );
-		lcCli.limpaCampos( true );
+		lcCli.limpaCampos( true ); 
 		lcConv.limpaCampos( true );
 	}
 
