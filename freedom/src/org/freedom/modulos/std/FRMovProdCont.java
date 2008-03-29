@@ -2,8 +2,6 @@ package org.freedom.modulos.std;
 
 import java.sql.Connection;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
@@ -35,6 +33,7 @@ public class FRMovProdCont extends FRelatorio {
 
 	private ListaCampos lcProduto = new ListaCampos( this );
 
+
 	public FRMovProdCont() {
 
 		super( false );
@@ -56,6 +55,19 @@ public class FRMovProdCont extends FRelatorio {
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 		JLabelPad lbPeriodo = new JLabelPad( "Periodo:", SwingConstants.CENTER );
 		lbPeriodo.setOpaque( true );
+		
+		adic( lbPeriodo, 17, 10, 80, 20 );
+		adic( lbLinha, 7, 20, 330, 45 );
+
+		adic( new JLabelPad( "De:" ), 17, 35, 30, 20 );
+		adic( txtDataini, 47, 35, 125, 20 );
+		adic( new JLabelPad( "à", SwingConstants.CENTER ), 172, 35, 30, 20 );
+		adic( txtDatafim, 202, 35, 125, 20 );
+
+		adic( new JLabelPad( "Cód.Prod" ), 7, 80, 80, 20 );
+		adic( txtCodProd, 7, 100, 80, 20 );
+		adic( new JLabelPad( "Descrição do produto" ), 90, 80, 250, 20 );
+		adic( txtDescProd, 90, 100, 247, 20 );
 
 		adic( lbPeriodo, 17, 10, 80, 20 );
 		adic( lbLinha, 7, 20, 307, 45 );
@@ -72,20 +84,18 @@ public class FRMovProdCont extends FRelatorio {
 
 	public void imprimiGrafico( final boolean bVisualizar, String sCab ) {
 
-		GregorianCalendar gcAnterior = new GregorianCalendar();
-		Date dtAnterior = null;
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
-		gcAnterior.setTime( txtDataini.getVlrDate() );
-		gcAnterior.set( Calendar.DAY_OF_MONTH, ( gcAnterior.get( Calendar.DAY_OF_MONTH ) - 1 ) );
-		dtAnterior = gcAnterior.getTime();
+		Calendar anterior = Calendar.getInstance();
+		anterior.setTime( txtDataini.getVlrDate() );
+		anterior.set( Calendar.DAY_OF_MONTH, anterior.get( Calendar.DAY_OF_MONTH ) - 1 );
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
 		hParam.put( "FILTROS", sCab );
-		hParam.put( "DATAANT", dtAnterior );
+		hParam.put( "DATAANT", anterior.getTime() );
 		hParam.put( "DATAINI", txtDataini.getVlrDate() );
 		hParam.put( "DATAFIM", txtDatafim.getVlrDate() );
 		hParam.put( "CODPROD", txtCodProd.getVlrInteger() );
