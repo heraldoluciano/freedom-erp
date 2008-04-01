@@ -1,11 +1,10 @@
 /**
- * @version 12/12/2003 <BR>
- * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
+ * @version 31/03/2008 <BR>
  *
  * Projeto: Freedom <BR>
  *  
  * Pacote: org.freedom.modulos.std <BR>
- * Classe: @(#)FAprovaOrc.java <BR>
+ * Classe: @(#)FGerencVagas.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -16,7 +15,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Aprovação de orçamento.
+ * Gerenciamento de vagas.
  * 
  */
 
@@ -33,16 +32,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Vector;
 
-import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.TabelaEditEvent;
@@ -50,10 +43,11 @@ import org.freedom.acao.TabelaEditListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -65,29 +59,29 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 	private static final long serialVersionUID = 1L;
 
 	private JPanelPad pinCab = new JPanelPad(0,80);
-	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextFieldPad txtCodVaga = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	private JTextFieldFK txtCodCli = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
-	private JTextFieldFK txtNomeCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-	private JTextFieldFK txtDtOrc = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
-	private JTextFieldFK txtDtVal = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
-	private JTextFieldPad txtVlrAceito = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,2);
-	private JTextFieldPad txtVlrAprovado = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,2);
-	private JTextFieldPad txtTotal = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,2);
+	private final JTextFieldFK txtCodEmpr = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );	
+	private final JTextFieldFK txtNomeEmpr = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
+	private final JTextFieldFK txtCodFunc = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );	
+	private final JTextFieldFK txtDescFunc = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
+
 	private Tabela tab = new Tabela();
 	private JButton btCalc = new JButton(Icone.novo("btExecuta.gif"));
 	private JButton btOk = new JButton(Icone.novo("btOk.gif"));
 	private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
 	private ImageIcon imgEditaCampo = Icone.novo("clEditar.gif");
 	private JScrollPane spnTab = new JScrollPane(tab);
-	private ListaCampos lcOrc = new ListaCampos(this);
-	private ListaCampos lcCli = new ListaCampos(this,"CL");
-	private JCheckBoxPad cbTodos = new JCheckBoxPad("Aprovar todos os ítens.","S","N");
-	private JCheckBoxPad cbEmit = new JCheckBoxPad("Buscar ítens emitidos.","S","N");
+	private ListaCampos lcVaga = new ListaCampos(this);
+	private ListaCampos lcEmpregador = new ListaCampos(this,"EM");
+	private ListaCampos lcFuncao = new ListaCampos(this,"FC");
+	private JCheckBoxPad cbQualificacoes = new JCheckBoxPad("Qualificações","S","N");
+		
+	
 	BigDecimal bVlrAceito = new BigDecimal("0");
 	BigDecimal bVlrAprovado = new BigDecimal("0");
 	BigDecimal bVlrTotal = new BigDecimal("0");
-	boolean bRecalcula = true;	
+
 	public FGerencVagas() {
 		super(false);
 		setTitulo("Gerenciamento de vagas");
@@ -102,99 +96,88 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 
 		JPanelPad pinRod = new JPanelPad(685,50);
 			
-		lcOrc.add(new GuardaCampo( txtCodVaga, "CodOrc", "N. orçamento",ListaCampos.DB_PK , null, false));		
-		lcOrc.add(new GuardaCampo( txtCodCli, "CodCli","Cód.cli.",ListaCampos.DB_FK, null, false));
-		lcOrc.add(new GuardaCampo( txtDtOrc, "DtOrc","Data",ListaCampos.DB_SI, null, false));
-		lcOrc.add(new GuardaCampo( txtDtVal, "DtVencOrc","Validade", ListaCampos.DB_SI , null, false));
+		lcVaga.add(new GuardaCampo( txtCodVaga, "CodVaga", "Cód.Vaga",ListaCampos.DB_PK , null, false));		
+		lcVaga.add(new GuardaCampo( txtCodEmpr, "CodEmpr","Cód.Empr.",ListaCampos.DB_FK, null, false));
+		lcVaga.add(new GuardaCampo( txtCodFunc, "CodFunc","Cód.Func.",ListaCampos.DB_FK, null, false));
 
-		lcOrc.montaSql(false,"ORCAMENTO","VD");
-		lcOrc.setQueryCommit(false);
-		lcOrc.setReadOnly(true);		
+		lcVaga.montaSql(false,"VAGA","RH");
+		lcVaga.setQueryCommit(false);
+		lcVaga.setReadOnly(true);		
 
-		txtCodVaga.setNomeCampo("CodOrc");
+		txtCodVaga.setNomeCampo("CodVaga");
 		txtCodVaga.setPK(true);
-		txtCodVaga.setListaCampos(lcOrc);
+		txtCodVaga.setListaCampos(lcVaga);
 		
-	    txtVlrAceito.setAtivo(false);
-	    txtVlrAprovado.setAtivo(false);
-	    txtTotal.setAtivo(false);	
 		
-		//FK Cliente
-		lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Código", ListaCampos.DB_PK, null, false));
-		lcCli.add(new GuardaCampo( txtNomeCli, "NomeCli", "Nome", ListaCampos.DB_SI, null, false));
-		lcCli.montaSql(false, "CLIENTE","VD");    
-		lcCli.setQueryCommit(false);
-		lcCli.setReadOnly(true);
-		txtCodCli.setTabelaExterna(lcCli);
+		//FK Empregador
+		lcEmpregador.add(new GuardaCampo( txtCodEmpr, "CodEmpr", "Código", ListaCampos.DB_PK, null, false));
+		lcEmpregador.add(new GuardaCampo( txtNomeEmpr, "NomeEmpr", "Empregador", ListaCampos.DB_SI, null, false));
+		lcEmpregador.montaSql(false, "EMPREGADOR","RH");    
+		lcEmpregador.setQueryCommit(false);
+		lcEmpregador.setReadOnly(true);
+		txtCodEmpr.setTabelaExterna(lcEmpregador);
+		
+		//FK Funcao
+		lcFuncao.add(new GuardaCampo( txtCodFunc, "CodFunc", "Código", ListaCampos.DB_PK, null, false));
+		lcFuncao.add(new GuardaCampo( txtDescFunc, "DescFunc", "Função", ListaCampos.DB_SI, null, false));
+		lcFuncao.montaSql(false, "FUNCAO","RH");    
+		lcFuncao.setQueryCommit(false);
+		lcFuncao.setReadOnly(true);
+		txtCodFunc.setTabelaExterna(lcFuncao);
 
-		pinCab.adic(new JLabelPad("N. orçamento"),7,0,120,20);
+		pinCab.adic(new JLabelPad("Cód.Vaga"),7,0,120,20);
 		pinCab.adic(txtCodVaga,7,20,85,20);
-		pinCab.adic(new JLabelPad("Cód.cli."),95,0,250,20);
-		pinCab.adic(txtCodCli,95,20,50,20);
-		pinCab.adic(new JLabelPad("Razão do cliente"),148,0,250,20);
-		pinCab.adic(txtNomeCli,148,20,203,20);
-		pinCab.adic(new JLabelPad("Data"),354,0,75,20);
-		pinCab.adic(txtDtOrc,354,20,83,20);
-		pinCab.adic(new JLabelPad("Validade"),440,0,75,20);
-		pinCab.adic(txtDtVal,440,20,83,20);
 		
-		cbTodos.setVlrString("N");
-		pinCab.adic(cbTodos,7,45,200,20);
-		pinCab.adic(cbEmit,210,45,200,20);
+		pinCab.adic(new JLabelPad("Cód.Empr."),95,0,60,20);
+		pinCab.adic(txtCodEmpr,95,20,60,20);
+		pinCab.adic(new JLabelPad("Empregador"),158,0,203,20);
+		pinCab.adic(txtNomeEmpr,158,20,203,20);
 		
+		pinCab.adic(new JLabelPad("Cód.Func."),364,0,60,20);
+		pinCab.adic(txtCodFunc,364,20,60,20);
+		pinCab.adic(new JLabelPad("Função"),427,0,250,20);
+		pinCab.adic(txtDescFunc,427,20,203,20);
+					
+		cbQualificacoes.setVlrString("N");
+		pinCab.adic(cbQualificacoes,7,45,200,20);
+				
 		pinRod.adic(btCalc,10,10,57,30);
 		pinRod.adic(btOk,70,10,57,30);
 		pinRod.adic(btSair,660,10,100,30);
-		
-		pinRod.adic(txtVlrAceito,140,20,97,20);
-		pinRod.adic(txtVlrAprovado,240,20,97,20);
-		pinRod.adic(txtTotal,340,20,100,20);
-		
-		pinRod.adic(new JLabelPad("Vlr. aceito"),140,0,97,20);
-		pinRod.adic(new JLabelPad("Vlr. aprov."),240,0,97,20);
-		pinRod.adic(new JLabelPad("Vlr. total"),340,0,100,20);
-    
-		getTela().add(pnCli,BorderLayout.CENTER);
-		pnCli.add(pinCab,BorderLayout.NORTH);
-		pnCli.add(pinRod,BorderLayout.SOUTH);
-		pnCli.add(spnTab,BorderLayout.CENTER);
+					
+		getTela().add(pnCab,BorderLayout.CENTER);
+		pnCab.add(pinCab,BorderLayout.NORTH);
+		pnCab.add(pinRod,BorderLayout.SOUTH);
+		pnCab.add(spnTab,BorderLayout.CENTER);
 
-		tab.adicColuna("Aceite");
-		tab.adicColuna("Aprov.");
-		tab.adicColuna("Ítem");
-		tab.adicColuna("Cód.orc.");
-        tab.adicColuna("e descrição do produto");
-		tab.adicColuna("Qtd.");
-		tab.adicColuna("V.Unit.");
-		tab.adicColuna("V.Tot.");
-		tab.adicColuna("");
-		tab.adicColuna("Autoriz.");
-		tab.adicColuna("Validade");
-			
-		tab.setTamColuna(35,0);
-		tab.setTamColuna(35,1);
-		tab.setTamColuna(35,2);
-		tab.setTamColuna(50,3);
-		tab.setTamColuna(220,4);
+		tab.adicColuna("Cód.");
+		tab.adicColuna("Nome");
+		tab.adicColuna("Fone");
+		tab.adicColuna("Qualificações");
+		tab.adicColuna("Restrições");
+        tab.adicColuna("Cursos");
+		tab.adicColuna("Experiência");
+		tab.adicColuna("Salário");
+
+		tab.setTamColuna(60,0);
+		tab.setTamColuna(200,1);
+		tab.setTamColuna(80,2);
+		tab.setTamColuna(60,3);
+		tab.setTamColuna(60,4);
 		tab.setTamColuna(60,5);
-		tab.setTamColuna(70,6);
-		tab.setTamColuna(70,7);
-		tab.setTamColuna(20,8);
-		tab.setTamColuna(70,9);
-		tab.setTamColuna(100,10);
+		tab.setTamColuna(60,6);
+		tab.setTamColuna(80,7);
 		
-		tab.setColunaEditavel(0,true);
-		tab.setColunaEditavel(1,true);
-		tab.setColunaEditavel(9,true);
-		tab.setColunaEditavel(10,true);
+		//tab.setColunaEditavel(0,true);
 		
-		tab.setDefaultEditor(String.class,new DefaultCellEditor(new JTextFieldPad(JTextFieldPad.TP_STRING,15,0)));
+//		tab.setDefaultEditor(String.class,new DefaultCellEditor(new JTextFieldPad(JTextFieldPad.TP_STRING,15,0)));
 		
-		cbTodos.addMouseListener(
+		cbQualificacoes.addMouseListener(
 		  new MouseAdapter() {
 			public void mouseClicked(MouseEvent mevt) {
-				if (mevt.getSource()==cbTodos && mevt.getClickCount()==1)
-				  aprovarTudo();
+				if (mevt.getSource()==cbQualificacoes && mevt.getClickCount()==1){
+					
+				}
 			}
 		  }
 		);		
@@ -210,258 +193,102 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		);	
 	}
     
-	public void aprovar() {
-		PreparedStatement ps = null;
-		PreparedStatement ps2 = null;
-		String sSQL = null;
-		String sStatusAt = null;
-		boolean bAtStOrc = false;
-		try {
-
-			if (tab.getRowCount() <= 0) {
-				Funcoes.mensagemInforma(this,"Não ha nenhum ítem para ser aprovado");
-				return;
-			}
-
-			/* TIRADO O UPDATE EM EMITITORC PARA NÃO PERMITIR A EMISÃO DO MESMO ITEM MAIS DE UMA VEZ
-			 * 
-			 * sSQL = "UPDATE VDITORCAMENTO SET ACEITEITORC=?, APROVITORC=?, NUMAUTORIZORC=?, 
-			 * VENCAUTORIZORC=?, EMITITORC='N' WHERE "+
-			 * "CODEMP=? AND CODFILIAL=? AND CODITORC=? AND CODORC=?";*/
-			
-			sSQL = "UPDATE VDITORCAMENTO SET ACEITEITORC=?, APROVITORC=?, NUMAUTORIZORC=?, VENCAUTORIZORC=? "+
-			  	   "WHERE CODEMP=? AND CODFILIAL=? AND CODITORC=? AND CODORC=?";
-			
-			bAtStOrc = false;
-			sStatusAt = "OC";
-			try {
-				ps = con.prepareStatement(sSQL);			
-				for (int iLin=0;iLin<tab.getRowCount();iLin++) {
-				
-					if (tab.getValor(iLin,0).equals(new Boolean("true"))){ 
-				  	  ps.setString(1,"S");	  	
-					}
-					else {
-				  	  ps.setString(1,"N");
-					}    
-					if (tab.getValor(iLin,1).equals(new Boolean("true"))) 
-					  ps.setString(2,"S");		  	
-					else
-					  ps.setString(2,"N");
-				
-					if (tab.getValor(iLin,0).equals(new Boolean("true")) &&
-					   tab.getValor(iLin,1).equals(new Boolean("true"))) {
-					   bAtStOrc = true;
-					   sStatusAt = "OL";	
-					}
-					else if (!sStatusAt.equals("OL")) {
-					   bAtStOrc = true;
-					}
-					ps.setString(3,tab.getValor(iLin,9).toString().trim());  
-					ps.setDate(4,Funcoes.dateToSQLDate((Date)tab.getValor(iLin,10)));
-					ps.setInt(5,Aplicativo.iCodEmp);
-					ps.setInt(6,Aplicativo.iCodFilial);
-					ps.setInt(7,Integer.parseInt(tab.getValor(iLin,2).toString()));
-			    	ps.setInt(8,txtCodVaga.getVlrInteger().intValue()); 
-			    
-			    	ps.execute(); 
-				}
-				if (!con.getAutoCommit())
-					con.commit();
-			
-			}
-			catch (SQLException err) {
-				Funcoes.mensagemErro(this,"Erro ao atualizar a tabela ITORCAMENTO!\n"+err.getMessage(),true,con,err);
-			}
-			
-			try {
-				sSQL = "UPDATE VDORCAMENTO SET STATUSORC=? WHERE "+
-				 	   "CODEMP=? AND CODFILIAL=? AND CODORC=?";
-					
-				ps2 = con.prepareStatement(sSQL);
-								
-				ps2.setString(1,sStatusAt);
-				ps2.setInt(2,Aplicativo.iCodEmp);
-				ps2.setInt(3,Aplicativo.iCodFilial);
-				ps2.setInt(4,txtCodVaga.getVlrInteger().intValue()); 
-				if (bAtStOrc) { 
-				  ps2.execute();
-				  if (!con.getAutoCommit())
-				  	con.commit();
-				  Funcoes.mensagemInforma( this, "Orçamento Aprovado com Sucesso");
-				}
-			}
-			catch (SQLException err) {
-				Funcoes.mensagemErro(this,"Erro ao atualizar a tabela ORCAMENTO!\n"+err.getMessage(),true,con,err);
-			}
-			
-			tab.addTabelaEditListener(this);
-			bRecalcula = true;	
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			ps = null;
-			ps2 = null;
-			sSQL = null;	
-			sStatusAt = null;
-			bAtStOrc = false;		
-		}
-	}	
-	
 	public void montaTab(){ 
-		bRecalcula = false;
-		String sSQL = "SELECT IT.CODPROD,P.DESCPROD,IT.QTDITORC,(IT.QTDITORC*IT.PRECOITORC)-O.VLRDESCITORC,"+
-					  "IT.VLRLIQITORC,IT.NUMAUTORIZORC,IT.ACEITEITORC,IT.APROVITORC,IT.CODITORC,IT.VENCAUTORIZORC " +
-		              "FROM VDITORCAMENTO IT, EQPRODUTO P, VDORCAMENTO O  WHERE  "+
-		              "P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD "+
-		              "AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC=? AND O.CODORC=IT.CODORC AND " +
-		              "O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND IT.EMITITORC=? AND NOT O.STATUSORC = '*'";
-		bVlrAceito = new BigDecimal("0.0");
-		bVlrAprovado = new BigDecimal("0.0");
-		bVlrTotal = new BigDecimal("0.0");
+
+		StringBuffer sql = new StringBuffer();
 		
-		StringDireita strdQtd = null;
-		StringDireita strdVlrAceite = null;
-		StringDireita strdVlrAprovado = null;
-	
+		sql.append( "SELECT CD.CODCAND,CD.NOMECAND,CD.FONECAND,PRETENSAOSAL, " );
+		sql.append( "(SELECT COUNT(*) FROM RHCANDIDATOATRIB ATQ WHERE ATQ.CODEMP=CD.CODEMP " );
+		sql.append( "AND ATQ.CODFILIAL=CD.CODFILIAL AND ATQ.CODCAND=CD.CODCAND " );
+		sql.append( "AND ATQ.CODATRIB IN " );
+		sql.append( "(SELECT ATVQ.CODATRIB FROM RHVAGAATRIBQUALI ATVQ ");
+		sql.append( "WHERE ATVQ.CODEMP=? AND ATVQ.CODFILIAL=? AND ATVQ.CODVAGA=?) ) AS QUALIFICACOES, " );
+		sql.append( "(SELECT COUNT(*) FROM RHCANDIDATOATRIB ATR WHERE ATR.CODEMP=CD.CODEMP " );
+		sql.append( "AND ATR.CODFILIAL=CD.CODFILIAL AND ATR.CODCAND=CD.CODCAND " );
+		sql.append( "AND ATR.CODATRIB IN " );
+		sql.append( "(SELECT ATVR.CODATRIB FROM RHVAGAATRIBREST ATVR " );
+		sql.append( "WHERE ATVR.CODEMP=? AND ATVR.CODFILIAL=? AND ATVR.CODVAGA=?) ) AS RESTRICOES, " );
+		sql.append( "(SELECT COUNT(*) FROM RHCANDIDATOCURSO CU WHERE CU.CODEMP=CD.CODEMP " );
+		sql.append( "AND CU.CODFILIAL=CD.CODFILIAL AND CU.CODCAND=CD.CODCAND " );
+		sql.append( "AND CU.CODCURSO IN " );
+		sql.append( "(SELECT VC.CODCURSO FROM RHVAGACURSO VC " );				
+		sql.append( "WHERE VC.CODEMP=? AND VC.CODFILIAL=? AND VC.CODVAGA=? ) ) AS CURSOS, " );                
+		sql.append( "(SELECT COUNT(*) FROM RHCANDIDATOFUNC FU WHERE FU.CODEMP=CD.CODEMP " );            
+		sql.append( "AND FU.CODFILIAL=CD.CODFILIAL AND FU.CODCAND=CD.CODCAND AND FU.CODFUNC=? ) AS EXPERIENCIA ");
+		sql.append( "FROM RHCANDIDATO CD" );
+ 
 		tab.limpa();
 		
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			System.out.println("SQL:" + sql.toString());
+			
+			PreparedStatement ps = con.prepareStatement(sql.toString());
+			
 			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,Aplicativo.iCodFilial);
+			ps.setInt(2,ListaCampos.getMasterFilial( "ATATRIBUICAO" ));
 			ps.setInt(3,txtCodVaga.getVlrInteger().intValue());
-			ps.setString(4,cbEmit.getVlrString());
+			
+			ps.setInt(4,Aplicativo.iCodEmp);
+			ps.setInt(5,ListaCampos.getMasterFilial( "ATATRIBUICAO" ));
+			ps.setInt(6,txtCodVaga.getVlrInteger().intValue());
+			
+			ps.setInt(7,Aplicativo.iCodEmp);
+			ps.setInt(8,ListaCampos.getMasterFilial( "RHCURSO" ));
+			ps.setInt(9,txtCodVaga.getVlrInteger().intValue());
+			
+			ps.setInt(10,txtCodFunc.getVlrInteger().intValue());						
+			
+//			ps.setString(4,cbQualificacoes.getVlrString());
 			
 			ResultSet rs = ps.executeQuery();
-			tab.limpa();
-			
+						
 			while (rs.next()) {
 			    Vector<Object> vVals = new Vector<Object>();
-				
-				if (rs.getString(7).trim().equals("S")) {
-					vVals.addElement(new Boolean(true));	
-					bVlrAceito = bVlrAceito.add(new BigDecimal(rs.getString(4)));
-				}				    
-				else 
-					vVals.addElement(new Boolean(false));
-					
-				if (rs.getString(8).trim().equals("S")) {
-					vVals.addElement(new Boolean(true));	
-					bVlrAprovado = bVlrAprovado.add(new BigDecimal(rs.getString(4)));
-				}
-				else
-					vVals.addElement(new Boolean(false));
-				
-				vVals.addElement(rs.getString(9));
-				vVals.addElement(rs.getString(1));
-				vVals.addElement(rs.getString(2));
-				
-				strdQtd 	    = new StringDireita(Funcoes.strDecimalToStrCurrency(2,rs.getString(3)));
-				strdVlrAceite   = new StringDireita(Funcoes.strDecimalToStrCurrency(2,rs.getString(4)));
-				strdVlrAprovado = new StringDireita(Funcoes.strDecimalToStrCurrency(2,rs.getString(5)));
-				
-				vVals.addElement(strdQtd);
-				vVals.addElement(strdVlrAceite);
-				vVals.addElement(strdVlrAprovado);
-				
-				vVals.addElement(imgEditaCampo);
-				vVals.addElement(rs.getString(6) != null ? (rs.getString(6).trim()) : "");
-				
-				
-				if (rs.getDate("VENCAUTORIZORC") == null) {
-				  GregorianCalendar cPadrao = new GregorianCalendar();
-				  cPadrao.set(Calendar.DATE,cPadrao.get(Calendar.DATE)+60);
-				  vVals.addElement(cPadrao.getTime());
-				}
-				else
-				  vVals.addElement(Funcoes.sqlDateToDate(rs.getDate("VENCAUTORIZORC")));
-				
-				
-				bVlrTotal = bVlrTotal.add(new BigDecimal(rs.getString(4)));
-
-				txtVlrAceito.setVlrBigDecimal(bVlrAceito);
-				txtVlrAprovado.setVlrBigDecimal(bVlrAprovado);
-				txtTotal.setVlrBigDecimal(bVlrTotal);
-				
-				tab.adicLinha(vVals);
-				
+			    vVals.addElement( rs.getString( "CODCAND" ) );
+			    vVals.addElement( rs.getString( "NOMECAND" ) );
+			    vVals.addElement( rs.getString( "FONECAND" ) );
+			    vVals.addElement( rs.getString( "QUALIFICACOES" ) );
+			    vVals.addElement( rs.getString( "RESTRICOES" ) );
+			    vVals.addElement( rs.getString( "CURSOS" ) );
+			    vVals.addElement( rs.getString( "EXPERIENCIA" ) );
+			    vVals.addElement( rs.getString( "PRETENSAOSAL" ) );
+			    
+				tab.adicLinha(vVals);				
 			}
 			if (!con.getAutoCommit())
 				con.commit();
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao carregar a tabela ITORCAMENTO!\n"+err.getMessage(),true,con,err);
+			Funcoes.mensagemErro(this,"Erro ao consultar candidatos!\n"+err.getMessage(),true,con,err);
 		}
 		tab.addTabelaEditListener(this);
-		bRecalcula = true;	
 	}
 	
-	public void aprovarTudo(){ 
-	    int iLin = 0;
-        if (cbTodos.getVlrString()=="S") {
-          while (iLin<tab.getRowCount()) {
-		    bRecalcula = false;
-		    tab.setValor(new Boolean(true),iLin,0);
-		    tab.setValor(new Boolean(true),iLin,1);
-		    if (tab.getValor(iLin,9).toString().trim().equals("")) 
-		      tab.setValor("000000",iLin,9);
-		    iLin++;
-          }
-		  bRecalcula = true;
-		}
-	}
-
-	public void recalcula() {
-		int iLin = 0;
-		bVlrAceito = new BigDecimal("0.0");
-		bVlrAprovado = new BigDecimal("0.0");
-		bVlrTotal = new BigDecimal("0.0");
-		
-		while (iLin<tab.getRowCount()) {
-		  if (tab.getValor(iLin,0).equals(new Boolean("true"))) {
-		  	bVlrAceito = bVlrAceito.add(Funcoes.strCurrencyToBigDecimal(tab.getValor(iLin,6).toString()));		  	
-		  }
-		  if (tab.getValor(iLin,1).equals(new Boolean("true"))) {
-			bVlrAprovado = bVlrAprovado.add(Funcoes.strCurrencyToBigDecimal(tab.getValor(iLin,7).toString()));		  	
-		  } 
-		  iLin++;	
-		}
-		txtVlrAceito.setVlrBigDecimal(bVlrAceito);
-		txtVlrAprovado.setVlrBigDecimal(bVlrAprovado);
-		txtTotal.setVlrBigDecimal(bVlrTotal);
-	}
-
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
-		lcCli.setConexao(con);
-		lcOrc.setConexao(con);
+		lcVaga.setConexao(con);
+		lcEmpregador.setConexao(con);
+		lcFuncao.setConexao(con);
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
-	  if (evt.getSource() == btCalc) 
-	  	montaTab();
-	  else if (evt.getSource() == btSair)
-	    dispose();
-	  else if (evt.getSource() == btOk)
-	    if (Funcoes.mensagemConfirma(this, "Confirma os status para os ítens do orçamento?")==0 ) 
-	      aprovar();   
-	}
-
-	public void valorAlterado(TabelaEditEvent evt) {
-        if (bRecalcula) {
-          if ((tab.getColunaEditada()<2)) {
-			  recalcula();		
-          }
-        }
-		if (bRecalcula) {
-		  if (tab.getValor(tab.getLinhaEditada(),0).equals(new Boolean("false")) &&
-		 	  tab.getValor(tab.getLinhaEditada(),1).equals(new Boolean("false")) &&
-			 (tab.getValor(tab.getLinhaEditada(),9).toString().trim()!="")) 
-			  tab.setValor("",tab.getLinhaEditada(),9);		  
+		if (evt.getSource() == btCalc) {
+			montaTab();
+		}
+		else if (evt.getSource() == btSair) {
+			dispose();
+		}
+		else if (evt.getSource() == btOk) {
+			if (Funcoes.mensagemConfirma(this, "Confirma?")==0 ) {
+	    	
+			}
 		}
 	}
 
+	public void valorAlterado(TabelaEditEvent evt) {
+/*		if ((tab.getColunaEditada()<2)) {
 
+          }*/
+    }
 
 }
