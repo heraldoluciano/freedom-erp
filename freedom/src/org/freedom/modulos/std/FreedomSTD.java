@@ -218,7 +218,7 @@ public class FreedomSTD extends AplicativoPD {
 			addOpcao( 700000000, TP_OPCAO_ITEM, "Inventário", "Inventário", 'I', 700200000, 1, true, FInventario.class );
 			addOpcao( 700000000, TP_OPCAO_ITEM, "Consulta estoque", "Consulta", 'C', 700300000, 1, true, FConsulta.class );
 			addOpcao( 700000000, TP_OPCAO_ITEM, "Consulta produto", "Consulta produto", 'P', 700400000, 1, true, FConsProd.class );
-			addOpcao( 700000000, TP_OPCAO_ITEM, "Tipos de movimentos", "Tipo de Movimento", 'T', 700500000, 1, true, FTipoMov.class );
+			addOpcao( 700000000, TP_OPCAO_ITEM, "Tipos de movimentos", "Tipo de Movimento", 'M', 700500000, 1, true, FTipoMov.class );
 			addSeparador( 700000000 );
 			addOpcao( 700000000, TP_OPCAO_ITEM, "Reprocessa estoque", "Reprocessa estoque", 'R', 700600000, 1, true, FProcessaEQ.class );
 			addSeparador( 700000000 );
@@ -235,7 +235,8 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Ultimas compras/produto", "Ultimas compras/produto", 'E', 700701000, 2, true, FRCpProd.class );
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Movimentação de Produto Controlado", "Movimentação de Produto Controlado", 'M', 700702000, 2, true, FRMovProdCont.class );
 				addSeparador( 700000000 );
-		addOpcao( 700000000, TP_OPCAO_ITEM, "Transferencia de produtos ", "Tranferencia de produtos/almoxarifados", 'R', 700800000, 1, true, FTransfEstoque.class );
+			addOpcao( 700000000, TP_OPCAO_ITEM, "Transferencia de produtos", "Tranferencia de produtos/almoxarifados", 'T', 700800000, 1, true, FTransfEstoque.class );
+			addOpcao( 700000000, TP_OPCAO_ITEM, "Exportar/Importar Saldo", "Exportar/Importar Saldo", 'x', 700900000, 1, true, FExpImpEstoq.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Fiscal", "", 'F', 800000000, 0, false, null );
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Gerar", "Gera Fiscal", 'G', 800100000, 1, true, FGeraFiscal.class );
