@@ -55,6 +55,9 @@ public class FreedomGRH extends AplicativoPD {
 			addSeparador( 100100000 );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Vagas", "Vagas", 'V', 100101100, 2, true, FVaga.class );
 			
+		addOpcao( -1, TP_OPCAO_MENU, "Vagas", "", 'V', 200000000, 0, false, null );	
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Gerenciamento", "Gerenciamento de Vagas", 'T', 200100000, 1, true, FGerencVagas.class );
+		
 		addBotao( "btForneced.gif", "Empregadores", "Empregadores", 100100600, FEmpregadores.class );
 		addBotao( "barraConveniados.gif", "Empregados", "Empregados", 100100500, FEmpregado.class );
 		addBotao( "barraGrupo.gif", "Candidatos", "Candidatos", 100100100, FCandidato.class );
