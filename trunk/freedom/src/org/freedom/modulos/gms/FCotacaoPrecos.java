@@ -123,6 +123,11 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	private JTextFieldPad txtCodFabProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,40, 0);
 	private JTextFieldPad txtCodCCUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
+   	private JTextFieldPad txtVlrFreteItCompra = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDecFin);
+	private JTextFieldPad txtPercIpiItCompra = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 9, casasDec);
+	private JTextFieldPad txtVlrLiqItCompra = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDecFin);
+	private JTextFieldPad txtVlrBaseIpiItCompra = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDecFin);
+	private JTextFieldPad txtVlrIpiItCompra = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDecFin);
 	private JTextAreaPad txaMotivoCancCot = new JTextAreaPad();
 	private JTextAreaPad txaMotivoCotAbaixo = new JTextAreaPad();
 	private Tabela tabCot = new Tabela();
@@ -498,7 +503,17 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				ListaCampos.DB_SI, false);
 		adicCampoInvisivel(txtSituacaoItComp, "SitCompItSol", "Sit.Cot.It.Sol.",
 				ListaCampos.DB_SI, false);
-	
+		adicCampo(txtVlrFreteItCompra, 187, 60, 87, 20, "VlrFreteItCompra", "Val.Frete.It.",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtPercIpiItCompra, 277, 60, 87, 20, "PercIpiItCompra", "Perc.IPI.It.",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtVlrLiqItCompra, 367, 60, 87, 20, "VlrLiqItCompra", "Val.Liq.It.",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtVlrBaseIpiItCompra, 457, 60, 87, 20, "VlrBaseIpiItCompra", "Val.Base.IPI.It.",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtVlrIpiItCompra, 547, 60, 87, 20, "VlrIpiItCompra", "Val.IPI.It.",
+				ListaCampos.DB_SI, false);
+		
 		lcCotacao.montaSql(true, "COTACAO", "CP");
 		lcCotacao.montaTab();
 
@@ -511,6 +526,11 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		tab.setTamColuna(70, 6);
 		tab.setTamColuna(70, 7);
 		tab.setTamColuna(70, 8);
+		tab.setTamColuna(70, 9);
+		tab.setTamColuna(70, 10);
+		tab.setTamColuna(70, 11);
+		tab.setTamColuna(70, 12);
+		tab.setTamColuna(70, 13);
 
 		btMotivoAbaixo.setEnabled(false);
 
