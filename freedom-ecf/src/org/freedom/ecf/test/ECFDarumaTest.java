@@ -1,10 +1,6 @@
 package org.freedom.ecf.test;
 
 import static org.freedom.ecf.driver.EStatus.RETORNO_OK;
-
-import java.util.Calendar;
-import java.util.Date;
-
 import junit.framework.TestCase;
 
 import org.freedom.ecf.driver.AbstractECFDriver;
@@ -18,9 +14,9 @@ public class ECFDarumaTest extends TestCase {
 	}
 
 	public void testComandosDeInicializacao() {
-
-		ECFDaruma ecf = new ECFDaruma( "COM1" );
 		/*
+		ECFDaruma ecf = new ECFDaruma( "COM1" );
+		
 		assertTrue( trataRetornoFuncao( ecf, ecf.alteraSimboloMoeda( "R" ) ) );
 
 		assertTrue( trataRetornoFuncao( ecf, ecf.adicaoDeAliquotaTriburaria( "1200", ECFDaruma.ICMS ) ) );
@@ -235,9 +231,9 @@ public class ECFDarumaTest extends TestCase {
 	}
 
 	public void testComandosDeImpressaoDeCheques() {
-
-		ECFDaruma ecf = new ECFDaruma( "COM1" );
 		/*
+		ECFDaruma ecf = new ECFDaruma( "COM1" );
+		
 		System.out.print( "programaMoedaSingular > " ); 
 		assertTrue( trataRetornoFuncao( ecf.programaMoedaSingular( "Real" ) ) );
 		

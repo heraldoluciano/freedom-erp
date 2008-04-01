@@ -83,6 +83,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JPanelPad pinCabCompra = new JPanelPad();
 	
 	private JPanelPad pinCabTransp = new JPanelPad();
+	
+	private JPanelPad pinCabSolCompra = new JPanelPad();
 
 	private JPanelPad pinTot = new JPanelPad( 200, 200 );
 	
@@ -212,6 +214,18 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	
 	private JTextFieldFK txtRazTran = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	
+	private JTextFieldPad txtCodSol = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+	
+	private JTextFieldPad txtIDUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,13, 0);
+	
+	private JTextFieldPad txtDtEmitSolicitacao = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	
+	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,19, 0);
+	
+	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
+	
+	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10, 0);
+	
 	private JLabelPad lbStatus = new JLabelPad();
 
 	private JCheckBoxPad cbSeqNfTipoMov = new JCheckBoxPad( "Aloc.NF", "S", "N" );
@@ -240,6 +254,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private ListaCampos lcAlmoxProd = new ListaCampos( this, "AX" );
 	
+	private ListaCampos lcSolCompra = new ListaCampos( this, "SOL" );
+	
 	private final ListaCampos lcTran = new ListaCampos( this, "TN" );
 
 	private String sOrdNota = "";
@@ -253,6 +269,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private boolean habilitaCusto = false;
 	
 	private String abaTransp = "";
+	
+	private String abaSolCompra = "S";
 
 	public FCompra() {
 
@@ -269,6 +287,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		if( abaTransp.equals( "S" ) ){
 			tpnCab.addTab( "Tranportadora", pinCabTransp );
 		}
+		tpnCab.addTab( "Solicitação de Compra", pinCabSolCompra );
 		pnMaster.remove( 2 );
 		pnGImp.removeAll();
 		pnGImp.setLayout( new GridLayout( 1, 4 ) );
@@ -333,6 +352,17 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcTran.setQueryCommit( false );
 		lcTran.setReadOnly( true );
 		txtCodTran.setTabelaExterna( lcTran );
+		
+		lcSolCompra.add( new GuardaCampo( txtCodSol, "CodSol", "Cód.sol.", ListaCampos.DB_PK, false ) );
+		lcSolCompra.add( new GuardaCampo( txtIDUsu, "IDUsu", "Cód.Usu.", ListaCampos.DB_SI, false ) );
+		lcSolCompra.add( new GuardaCampo( txtDtEmitSolicitacao, "Dt.Emit.Solicitacao", "Razão social da transportadora", ListaCampos.DB_SI, false ) );
+		lcSolCompra.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.CC", ListaCampos.DB_SI, false ) );
+		lcSolCompra.add( new GuardaCampo( txtDescCC, "DescCC", "Desc.CC", ListaCampos.DB_SI, false ) );
+		lcSolCompra.add( new GuardaCampo( txtAnoCC, "AnoCC", "Ano.CC", ListaCampos.DB_SI, false ) );
+		lcSolCompra.montaSql( false, "SOLICITACAO", "CP" );
+		lcSolCompra.setQueryCommit( false );
+		lcSolCompra.setReadOnly( true );
+		txtCodSol.setTabelaExterna( lcSolCompra );
 		
 		lcFisc.add( new GuardaCampo( txtCodFisc, "CodFisc", "Código", ListaCampos.DB_PK, false ) );
 		lcFisc.add( new GuardaCampo( txtDescFisc, "DescFisc", "Descrição", ListaCampos.DB_SI, false ) );
@@ -461,6 +491,30 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			adicDescFK( txtRazTran, 80, 25, 250, 20, "Raztran", "Razão social da transportadora" );
 			//pinCabTransp.adic( txtRazTran, 80, 25, 205, 20 );
 		}
+		
+		if( abaSolCompra.equals("S") ){
+			setListaCampos(lcCampos );
+			setPainel(pinCabSolCompra );
+			adicCampo(txtCodSol, 7, 25, 70, 20, "CodSol", "Cód.sol.", ListaCampos.DB_FK, false );
+			adicCampo(txtIDUsu, 451, 20, 80, 20, "IdUsu", "Id do usuário",
+					ListaCampos.DB_FK, true);
+			adicCampo(txtDtEmitSolicitacao, 539, 20, 86, 20, "DtEmitSol",
+					"Data da Sol.", ListaCampos.DB_SI, true);
+			adicDescFKInvisivel(txtDescCC, "DescCC", "Descrição do centro de custos");
+			adicCampo(txtCodCC, 80, 20, 130, 20, "CodCC", "Cód.CC.", ListaCampos.DB_FK,
+					txtDescCC, true);
+			adicCampo(txtAnoCC, 213, 20, 70, 20, "AnoCC", "Ano CC.", ListaCampos.DB_FK,
+					true);
+			adicDescFK(txtDescCC, 286, 20, 162, 20, "DescCC", "Descrição do centro de custos");
+			
+			txtCodSol.setNaoEditavel(true);
+			txtIDUsu.setNaoEditavel(true);
+			txtDtEmitSolicitacao.setNaoEditavel(true);
+			txtDescCC.setNaoEditavel(true);
+			txtCodCC.setNaoEditavel(true);
+			txtAnoCC.setNaoEditavel(true);
+		}
+		
 		setListaCampos( true, "COMPRA", "CP" );
 		lcCampos.setQueryInsert( false );
 
@@ -1602,6 +1656,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcAlmoxItem.setConexao( cn );
 		lcAlmoxProd.setConexao( cn );
 		lcTran.setConexao( cn );
+		lcSolCompra.setConexao( cn );
 		getPrefere();
 		montaTela();
 		montaDetalhe();
