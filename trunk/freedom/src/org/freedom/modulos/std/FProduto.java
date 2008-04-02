@@ -147,6 +147,12 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	
 	private JTextFieldPad txtVlrConcent = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
+	private JTextFieldPad txtVlrCompri = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	
+	private JTextFieldPad txtVlrLarg = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	
+	private JTextFieldPad txtVlrEspess = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	
 	private JTextFieldPad txtComisProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, casasDecFin );
 
 	private JTextFieldPad txtPesoLiqProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
@@ -737,11 +743,15 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		setPainel( pinMedidas, pnMedidas );
 		adicTab( "Medidas", pnMedidas );
-		adicCampo( txtPesoBrutProd, 7, 20, 90, 20, "PesoBrutProd", "Peso bruto", ListaCampos.DB_SI, true );
-		adicCampo( txtPesoLiqProd, 100, 20, 87, 20, "PesoLiqProd", "Peso líquido", ListaCampos.DB_SI, true );
-		adicCampo( txtVlrDens, 7, 60, 87, 20, "VlrDensidade", "Densidade", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrConcent, 100, 60, 87, 20, "VlrConcent", "Concentração", ListaCampos.DB_SI, false );
+		adicCampo( txtPesoBrutProd, 7, 20, 110, 20, "PesoBrutProd", "Peso bruto", ListaCampos.DB_SI, true );
+		adicCampo( txtPesoLiqProd, 120, 20, 107, 20, "PesoLiqProd", "Peso líquido", ListaCampos.DB_SI, true );
+		adicCampo( txtVlrDens, 7, 60, 107, 20, "VlrDensidade", "Densidade", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrConcent, 120, 60, 107, 20, "VlrConcent", "Concentração", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrCompri, 7, 100, 106, 20, "Comprimento", "Comprimento(cm)", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrLarg, 120, 100, 107, 20, "Largura", "Largura(cm)", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrEspess, 235, 100, 118, 20, "Espessura", "Espessura(cm)", ListaCampos.DB_SI, false );
 		setListaCampos( true, "PRODUTO", "EQ" );
+		
 		
 		
 		// Preço
