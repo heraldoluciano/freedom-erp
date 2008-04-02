@@ -248,12 +248,13 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 		try {
 
 			FileDialog fileDialog = new FileDialog( Aplicativo.telaPrincipal, "Selecionar diretorio." );
+			fileDialog.setFile( "*.txt" );
 			fileDialog.setVisible( true );
 
 			if ( fileDialog.getDirectory() != null ) {
 
 				if ( EXPORTAR == rgModo.getVlrInteger() ) {
-					txtDiretorio.setVlrString( fileDialog.getDirectory() );
+					txtDiretorio.setVlrString( fileDialog.getDirectory() + fileDialog.getFile() );
 					btBuscarProdutos.setEnabled( true );
 					status.setString( "Buscar produtos para exportação ..." );
 				}
@@ -363,7 +364,7 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 		
 		try {
 			
-			File file = new File( txtDiretorio.getVlrString().trim() + "produtos.txt" );
+			File file = new File( txtDiretorio.getVlrString().trim() );
 			file.createNewFile();
 			FileWriter fw = new FileWriter( file );
 			BufferedWriter bw = new BufferedWriter( fw );
