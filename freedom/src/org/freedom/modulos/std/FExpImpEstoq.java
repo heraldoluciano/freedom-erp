@@ -26,6 +26,7 @@
 package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
@@ -51,6 +52,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -68,6 +70,7 @@ import org.freedom.componentes.ProcessoSec;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FFilho;
 
 public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupListener {
@@ -104,6 +107,8 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 
 	private final JButton btInventario = new JButton( "Executar Inventário" );
 
+	private final JButton btProdutosInvalidos = new JButton( "Listar inválidos" );
+
 	private final JButton btDirtorio = new JButton( "..." );
 
 	private final JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
@@ -111,6 +116,8 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 	private final JProgressBar status = new JProgressBar();
 	
 	private List<String> produtos = new ArrayList<String>();
+	
+	private List<Object[]> produtosInvalidos = new ArrayList<Object[]>();
 
 
 	public FExpImpEstoq() {
@@ -125,6 +132,7 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 		btExeportar.addActionListener( this );
 		btImportar.addActionListener( this );
 		btInventario.addActionListener( this );
+		btProdutosInvalidos.addActionListener( this );
 		btDirtorio.addActionListener( this );
 		btSair.addActionListener( this );
 		
@@ -144,6 +152,7 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 		btExeportar.setVisible( true );
 		btImportar.setVisible( false );
 		btInventario.setVisible( false );
+		btProdutosInvalidos.setVisible( false );
 	}
 	
 	private void montaRadioGrupos() {
@@ -157,8 +166,8 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 		rgModo = new JRadioGroup<String, Integer>( 1, 2, labs, vals );
 		
 		Vector<String> labs1 = new Vector<String>();
-		labs1.add( "Ativo" );
-		labs1.add( "Inativo" );
+		labs1.add( "Ativos" );
+		labs1.add( "Inativos" );
 		labs1.add( "Ambos" );
 		Vector<String> vals1 = new Vector<String>();
 		vals1.add( "A" );
@@ -209,6 +218,7 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 		btBuscarProdutos.setPreferredSize( new Dimension( 150, 30 ) );
 		btImportar.setPreferredSize( new Dimension( 120, 30 ) );
 		btInventario.setPreferredSize( new Dimension( 150, 30 ) );
+		btProdutosInvalidos.setPreferredSize( new Dimension( 120, 30 ) );
 
 		panelRodape.setPreferredSize( new Dimension( 100, 44 ) );
 		panelRodape.setBorder( BorderFactory.createEtchedBorder() );
@@ -233,6 +243,7 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 		panelBotoes.add( btExeportar );		
 		panelBotoes.add( btImportar );
 		panelBotoes.add( btInventario );
+		panelBotoes.add( btProdutosInvalidos );
 
 		panelSair.add( btSair );
 
@@ -255,13 +266,15 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 
 				if ( EXPORTAR == rgModo.getVlrInteger() ) {
 					txtDiretorio.setVlrString( fileDialog.getDirectory() + fileDialog.getFile() );
-					btBuscarProdutos.setEnabled( true );
 					status.setString( "Buscar produtos para exportação ..." );
+					btBuscarProdutos.setEnabled( true );
+					btBuscarProdutos.requestFocus();
 				}
 				else if ( IMPORTAR == rgModo.getVlrInteger() ) {
 					txtDiretorio.setVlrString( fileDialog.getDirectory() + fileDialog.getFile() );
-					btImportar.setEnabled( true );
 					status.setString( "Importar produtos do arquivo " + fileDialog.getFile() + " ..." );
+					btImportar.setEnabled( true );
+					btImportar.requestFocus();
 				}
 			}
 			else {
@@ -321,9 +334,9 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 			while ( rs.next() ) {
 				
 				tmp.delete( 0, tmp.length() );
-				tmp.append( df1.format( rs.getInt( "CODPROD" ) ) + "," );
-				tmp.append( df2.format( rs.getBigDecimal( "PRECOBASEPROD" ) ).replace( ',', '.' ) + "," );
-				tmp.append( Funcoes.copy( rs.getString( "DESCPROD" ).trim(), 30 ) + "," );
+				tmp.append( df1.format( rs.getInt( "CODPROD" ) ) + ";" );
+				tmp.append( df2.format( rs.getBigDecimal( "PRECOBASEPROD" ) ).replace( ',', '.' ) + ";" );
+				tmp.append( Funcoes.copy( rs.getString( "DESCPROD" ).trim(), 30 ) + ";" );
 				tmp.append( df2.format( rs.getBigDecimal( "SLDLIQPROD" ) ).replace( ',', '.' ) );
 				
 				tabProdutos.adicLinha( new Object[] {
@@ -338,10 +351,13 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 			
 			status.setString( "Carregandos " + produtos.size() + " produtos para exportação..." );
 			
-			txtDiretorio.setEnabled( false );
-			btDirtorio.setEnabled( false );
-			btBuscarProdutos.setEnabled( false );
-			btExeportar.setEnabled( true );
+			if ( produtos.size() > 0 ) {
+				txtDiretorio.setEnabled( false );
+				btDirtorio.setEnabled( false );
+				btBuscarProdutos.setEnabled( false );
+				btExeportar.setEnabled( true );
+				btExeportar.requestFocus();
+			}
 			
 			rs.close();
 			ps.close();
@@ -396,9 +412,13 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 		
 		try {			
 			
-			File file = new File( txtDiretorio.getVlrString().trim() );
+			File file = new File( txtDiretorio.getVlrString().trim() );	
 
-			if ( file.exists() ) {
+			if ( file.exists() ) {		
+
+				txtDiretorio.setEnabled( false );
+				btDirtorio.setEnabled( false );
+				btImportar.setEnabled( false );
 
 				FileReader fileReader = new FileReader( file );
 				
@@ -417,7 +437,11 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 					}
 				}
 				
+				bufferedReader.close();
+
+				produtosInvalidos = new ArrayList<Object[]>();
 				Object[] elementos = new Object[ 4 ];
+				String[] campos = null;
 				
 				tabProdutos.limpa();
 				
@@ -425,27 +449,53 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 				status.setMaximum( saldoImportacao.size() );
 				int indice = 1;				
 				Integer codprod = null;
+				BigDecimal custo = null;
 				
 				for ( String linha : saldoImportacao ) {
 					
+					/*
 					codprod = Integer.parseInt( linha.substring( 0, 8 ) );
-					
+					custo = getCusto( codprod );
 					elementos[ 0 ] = codprod;
 					elementos[ 1 ] = linha.substring( 18, 48 );
-					elementos[ 2 ] = getCusto( codprod );
+					elementos[ 2 ] = custo;
 					elementos[ 3 ] = new BigDecimal( linha.substring( 49, 57 ).trim() ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
+					*/
 					
-					tabProdutos.adicLinha( elementos );
+					campos = linha.split( ";" );
+
+					codprod = Integer.parseInt( campos[ 0 ] );
+					custo = getCusto( codprod );
+					
+					elementos = new Object[ 4 ];
+					elementos[ 0 ] = codprod;
+					elementos[ 1 ] = campos[ 2 ];
+					elementos[ 2 ] = custo;
+					elementos[ 3 ] = new BigDecimal( campos[ 3 ] ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );					
+					
+					if ( custo.floatValue() > 0 ) {
+						tabProdutos.adicLinha( elementos );
+					}
+					else {
+						produtosInvalidos.add( elementos );
+					}
 					
 					status.setValue( indice++ );
 				}
 				
-				status.setString( "Saldos de produtos carragados ..." );
+				status.setString( tabProdutos.getNumLinhas() + " de produtos carragados ..." );
 
-				txtDiretorio.setEnabled( false );
-				btDirtorio.setEnabled( false );
-				btImportar.setEnabled( false );
-				btInventario.setEnabled( true );
+				if ( tabProdutos.getNumLinhas() > 0 ) {
+					btInventario.setEnabled( true );
+					btInventario.requestFocus();
+				}
+				
+				if ( produtosInvalidos.size() > 0 ) {
+					btProdutosInvalidos.setVisible( true );
+				}
+			}
+			else {
+				Funcoes.mensagemErro( this, "Arquivo não encontrado!" );
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -649,19 +699,29 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 		
 		return codInventario;
 	}
+	
+	private void showInvalidos() {
+		
+		if ( produtosInvalidos != null && produtosInvalidos.size() > 0 ) {
 
-	public void actionPerformed( ActionEvent evt ) {
+			Invalidos invalidos = new Invalidos( this, produtosInvalidos );
+			invalidos.montaTabela();
+			invalidos.setVisible( true );
+		}
+	}
 
-		if ( evt.getSource() == btSair ) {
+	public void actionPerformed( ActionEvent e ) {
+
+		if ( e.getSource() == btSair ) {
 			dispose();
 		}
-		else if ( evt.getSource() == btDirtorio ) {
+		else if ( e.getSource() == btDirtorio ) {
 			getDiretorio();
 		}
-		else if ( evt.getSource() == btBuscarProdutos ) {
+		else if ( e.getSource() == btBuscarProdutos ) {
 			carregaProdutosExportacao();
 		}
-		else if ( evt.getSource() == btExeportar ) {
+		else if ( e.getSource() == btExeportar ) {
 			ProcessoSec pSec = new ProcessoSec( 500, new Processo() {
 				public void run() {
 					status.updateUI();
@@ -673,7 +733,7 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 			} );
 			pSec.iniciar();
 		}
-		else if ( evt.getSource() == btImportar ) {
+		else if ( e.getSource() == btImportar ) {
 			ProcessoSec pSec = new ProcessoSec( 500, new Processo() {
 				public void run() {
 					status.updateUI();
@@ -685,7 +745,7 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 			} );
 			pSec.iniciar();
 		}
-		else if ( evt.getSource() == btInventario ) {
+		else if ( e.getSource() == btInventario ) {
 			ProcessoSec pSec = new ProcessoSec( 500, new Processo() {
 				public void run() {
 					status.updateUI();
@@ -697,20 +757,29 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 			} );
 			pSec.iniciar();
 		}
+		else if ( e.getSource() == btProdutosInvalidos ) {
+			showInvalidos();
+		}
 	}
 
 	public void valorAlterado( RadioGroupEvent e ) {
 
 		if ( e.getSource() == rgModo ) {
+
+			produtos = null;
+			produtosInvalidos = null;
+			
+			tabProdutos.limpa();
 			
 			txtDiretorio.setVlrString( "" );
 			txtDiretorio.setEnabled( true );
 			btDirtorio.setEnabled( true );
-			tabProdutos.limpa();
+			
 			btBuscarProdutos.setEnabled( false );
 			btExeportar.setEnabled( false );
 			btImportar.setEnabled( false );
 			btInventario.setEnabled( false );
+			btProdutosInvalidos.setVisible( false );
 
 			if ( e.getIndice() == 0 ) {			
 				status.setString( "Selecione a local do arquivo e exportação ..." );
@@ -728,14 +797,136 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 			}
 		}
 		else if ( ( e.getSource() == rgFiltro1 || e.getSource() == rgFiltro2 ) 
-						&& !txtDiretorio.isEnabled() ) {
-			btBuscarProdutos.setEnabled( true );
+						&& !txtDiretorio.isEnabled()
+							&& EXPORTAR == rgModo.getVlrInteger() ) {
+			tabProdutos.limpa();
 			btExeportar.setEnabled( false );
+			btBuscarProdutos.setEnabled( true );
+			btBuscarProdutos.requestFocus();
+			status.setString( "Buscar produtos para exportação ..." );
 		}
 	}
 
 	public void setConexao( Connection cn ) {
 
 		super.setConexao( cn );
+	}
+
+	private class Invalidos extends FFDialogo {
+
+		private static final long serialVersionUID = 1l;
+
+		private final JPanelPad panelInvalidos = new JPanelPad();
+
+		private final JPanelPad panelBotaoTXT = new JPanelPad( JPanelPad.TP_JPANEL, new FlowLayout( FlowLayout.CENTER, 6, 4 ) );
+		
+		private final Tabela tabInvalidos = new Tabela();
+
+		private final JButton btTexto = new JButton( "Exportar para TXT", Icone.novo( "btTXT.gif" ) );
+		
+		private final List<Object[]> invalidos;
+		
+
+		Invalidos( final Component cOrig, final List<Object[]> invalidos ) {
+
+			super( cOrig );
+			setTitulo( "Itens Inválidos" );
+			setAtribos( 520, 250 );
+			setLocationRelativeTo( cOrig );
+			setDefaultCloseOperation( JInternalFrame.DISPOSE_ON_CLOSE );
+			
+			this.invalidos = invalidos;
+			
+			montaTela();
+			
+			btTexto.addActionListener( this );
+		}
+		
+		private void montaTela() {
+			
+			getContentPane().setLayout( new BorderLayout() );
+			
+			tabInvalidos.adicColuna( "Código" );
+			tabInvalidos.adicColuna( "Descrição" );
+			tabInvalidos.adicColuna( "Custo" );
+			tabInvalidos.adicColuna( "Saldo" );		
+			tabInvalidos.setTamColuna( 70, 0 );
+			tabInvalidos.setTamColuna( 250, 1 );
+			tabInvalidos.setTamColuna( 70, 0 );
+			tabInvalidos.setTamColuna( 70, 0 );	
+			
+			panelInvalidos.adic( new JScrollPane( tabInvalidos ), 7, 10, 490, 150 );
+			
+			btTexto.setPreferredSize( new Dimension( 200, 30 ) );
+			
+			panelBotaoTXT.setPreferredSize( new Dimension( 520, 40 ) );
+			panelBotaoTXT.add( btTexto );
+			
+			getContentPane().add( panelInvalidos, BorderLayout.CENTER );
+			getContentPane().add( panelBotaoTXT, BorderLayout.SOUTH );
+		}
+		
+		private void montaTabela() {
+			
+			if ( invalidos != null && invalidos.size() > 0 ) {
+				
+				tabInvalidos.limpa();
+				
+				for ( Object[] line : invalidos ) {
+					tabInvalidos.adicLinha( line );
+				}
+			}
+		}
+		
+		private void exportar() {
+			
+			if ( invalidos == null ) {
+				return;
+			}
+			
+			try {
+				
+				String localFile = null;
+				
+				FileDialog fileDialog = new FileDialog( Aplicativo.telaPrincipal, "Selecionar diretorio." );
+				fileDialog.setFile( "*.txt" );
+				fileDialog.setVisible( true );
+
+				if ( fileDialog.getDirectory() != null ) {
+
+					localFile = fileDialog.getDirectory() + fileDialog.getFile();
+				}
+				
+				File file = new File( localFile );
+				file.createNewFile();
+				FileWriter fw = new FileWriter( file );
+				BufferedWriter bw = new BufferedWriter( fw );
+								
+				for ( Object[] campos : invalidos ) {
+					bw.write( String.valueOf( campos[ 0 ] ) + ";" );
+					bw.write( String.valueOf( campos[ 2 ] ) + ";" );
+					bw.write( String.valueOf( campos[ 1 ] ) + ";" );
+					bw.write( campos[ 3 ] + "\n" );
+				}
+				
+				bw.flush();
+				bw.close();
+				
+				Funcoes.mensagemInforma( this, "Itens inválidos salvos." );
+				
+				this.dispose();
+				
+			} catch ( IOException e ) {
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro ao exportar produtos!\n" + e.getMessage(), true, con, e );
+			}		
+		}
+
+		public void actionPerformed( ActionEvent e ) {
+
+			if ( e.getSource() == btTexto ) {
+				exportar();
+			}
+		}
 	}
 }
