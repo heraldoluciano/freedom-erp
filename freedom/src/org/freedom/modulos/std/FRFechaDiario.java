@@ -161,8 +161,8 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "V.CODCAIXA, C.DESCCAIXA, V.IDUSUINS, " );
 			sSQL.append( "V.CODPLANOPAG, P.DESCPLANOPAG, V.CODVENDA PEDIDO, V.DOCVENDA DOC," );
 			sSQL.append( " VO.NOMEVEND, VC.CODORC, VC.CODITORC, " );
-			sSQL.append( "SUM(IO.VLRLIQITORC) VALORORC, " );
-			sSQL.append( "SUM(IV.VLRLIQITVENDA) VALOR, IV.CANCITVENDA AS CANCELADO " );
+			sSQL.append( "SUM(IO.VLRLIQITORC) VALORORC, " ); 
+			sSQL.append( "SUM(IV.VLRLIQITVENDA) VALOR " );
 			sSQL.append( "FROM PVCAIXA C, EQTIPOMOV M, FNPLANOPAG P, VDVENDEDOR VO, " );
 			sSQL.append( "VDVENDA V, VDITVENDA IV " );
 			sSQL.append( "LEFT OUTER JOIN VDVENDAORC VC ON " );
@@ -192,7 +192,7 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND " );
 			sSQL.append( "P.CODPLANOPAG=V.CODPLANOPAG AND VO.CODEMP=V.CODEMPVD AND " );
 			sSQL.append( "VO.CODFILIAL=V.CODFILIALVD AND VO.CODVEND=V.CODVEND " );
-			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17 " );
+			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 " );
 			sSQL.append( "UNION " );
 			sSQL.append( "SELECT CAST('B' AS CHAR(1)) TIPOLANCA, CP.DTEMITCOMPRA DATA, " );
 			sSQL.append( "CP.CODTIPOMOV, M.DESCTIPOMOV, " );
@@ -202,7 +202,7 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "0 CODORC, " );
 			sSQL.append( "0 CODITORC, " );
 			sSQL.append( "SUM(0) VALORORC, " );
-			sSQL.append( "SUM(CP.VLRLIQCOMPRA*-1) VALOR, 'N' AS CANCELADO " );
+			sSQL.append( "SUM(CP.VLRLIQCOMPRA*-1) VALOR " );
 			sSQL.append( "FROM CPCOMPRA CP, EQTIPOMOV M, FNPLANOPAG P " );
 			sSQL.append( "WHERE CP.CODEMP=? AND CP.CODFILIAL=? AND " );
 			sSQL.append( "CP.DTEMITCOMPRA BETWEEN ? AND ? AND " );
@@ -213,8 +213,8 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "M.CODTIPOMOV=CP.CODTIPOMOV AND M.TIPOMOV='DV' AND " );
 			sSQL.append( "P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND " );
 			sSQL.append( "P.CODPLANOPAG=CP.CODPLANOPAG " );
-			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17 " );
-			sSQL.append( "ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17 " );
+			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 " );
+			sSQL.append( "ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 " );
 		}
 
 		return sSQL.toString();
