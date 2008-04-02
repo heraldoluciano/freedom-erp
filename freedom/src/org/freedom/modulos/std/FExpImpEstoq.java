@@ -54,6 +54,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import org.freedom.acao.Processo;
 import org.freedom.acao.RadioGroupEvent;
@@ -87,7 +88,11 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 
 	private final JTextFieldPad txtDiretorio = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 	
-	private final JRadioGroup<String, Integer> rgOpcao;
+	private JRadioGroup<String, Integer> rgModo;
+
+	private JRadioGroup<String, String> rgFiltro1;
+
+	private JRadioGroup<String, String> rgFiltro2;
 	
 	private final Tabela tabProdutos = new Tabela();
 
@@ -111,15 +116,10 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 	public FExpImpEstoq() {
 
 		super( false );
-		setAtribos( 100, 100, 520, 440 );
-		
-		Vector<String> labs = new Vector<String>();
-		labs.add( "Exportar" );
-		labs.add( "Importar" );
-		Vector<Integer> vals = new Vector<Integer>();
-		vals.add( EXPORTAR );
-		vals.add( IMPORTAR );
-		rgOpcao = new JRadioGroup<String, Integer>( 1, 2, labs, vals );
+		setAtribos( 50, 50, 520, 450 );
+
+		montaRadioGrupos();
+		montaTela();
 
 		btBuscarProdutos.addActionListener( this );
 		btExeportar.addActionListener( this );
@@ -128,12 +128,12 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 		btDirtorio.addActionListener( this );
 		btSair.addActionListener( this );
 		
-		rgOpcao.addRadioGroupListener( this );
+		rgModo.addRadioGroupListener( this );
+		rgFiltro1.addRadioGroupListener( this );
+		rgFiltro2.addRadioGroupListener( this );
 			
 		status.setStringPainted( true );
 		status.setString( "Selecione a local do arquivo e exportação ..." );
-
-		montaTela();
 
 		btBuscarProdutos.setEnabled( false );
 		btExeportar.setEnabled( false );
@@ -145,18 +145,63 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 		btImportar.setVisible( false );
 		btInventario.setVisible( false );
 	}
+	
+	private void montaRadioGrupos() {
+		
+		Vector<String> labs = new Vector<String>();
+		labs.add( "Exportar" );
+		labs.add( "Importar" );
+		Vector<Integer> vals = new Vector<Integer>();
+		vals.add( EXPORTAR );
+		vals.add( IMPORTAR );
+		rgModo = new JRadioGroup<String, Integer>( 1, 2, labs, vals );
+		
+		Vector<String> labs1 = new Vector<String>();
+		labs1.add( "Ativo" );
+		labs1.add( "Inativo" );
+		labs1.add( "Ambos" );
+		Vector<String> vals1 = new Vector<String>();
+		vals1.add( "A" );
+		vals1.add( "I" );
+		vals1.add( "T" );
+		rgFiltro1 = new JRadioGroup<String, String>( 1, 3, labs1, vals1 );
+		
+		Vector<String> labs2 = new Vector<String>();
+		labs2.add( "Compra" );
+		labs2.add( "Venda" );
+		labs2.add( "Ambos" );
+		Vector<String> vals2 = new Vector<String>();
+		vals2.add( "C" );
+		vals2.add( "V" );
+		vals2.add( "T" );
+		rgFiltro2 = new JRadioGroup<String, String>( 1, 3, labs2, vals2 );
+		
+		rgModo.setVlrInteger( EXPORTAR );
+		rgFiltro1.setVlrString( "A" );
+		rgFiltro2.setVlrString( "T" );
+	}
 
 	private void montaTela() {
 
 		getContentPane().setLayout( new BorderLayout() );
 		
+		JLabel filtros = new JLabel( "Filtros de produtos", SwingConstants.CENTER );
+		JLabel linha = new JLabel();
+		
+		// ----- Parametros
+		
+		filtros.setOpaque( true );
+		linha.setBorder( BorderFactory.createEtchedBorder() );
+		
+		rgFiltro1.setBorder( BorderFactory.createEmptyBorder() );
+		rgFiltro2.setBorder( BorderFactory.createEmptyBorder() );
+		
 		tabProdutos.adicColuna( "Código" );
 		tabProdutos.adicColuna( "Descrição" );
 		tabProdutos.adicColuna( "Preço/Custo" );
-		tabProdutos.adicColuna( "Saldo" );
-		
+		tabProdutos.adicColuna( "Saldo" );		
 		tabProdutos.setTamColuna( 70, 0 );
-		tabProdutos.setTamColuna( 245, 1 );
+		tabProdutos.setTamColuna( 250, 1 );
 		tabProdutos.setTamColuna( 70, 0 );
 		tabProdutos.setTamColuna( 70, 0 );		
 
@@ -168,12 +213,21 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 		panelRodape.setPreferredSize( new Dimension( 100, 44 ) );
 		panelRodape.setBorder( BorderFactory.createEtchedBorder() );
 		
-		panelImportacao.adic( rgOpcao, 10, 10, 484, 30 );
-		panelImportacao.adic( new JLabel( "Local da arquivo" ), 10, 50, 350, 20 );
-		panelImportacao.adic( txtDiretorio, 10, 70, 450, 20 );
-		panelImportacao.adic( btDirtorio, 470, 68, 24, 24 );				
-		panelImportacao.adic( new JScrollPane( tabProdutos ), 10, 110, 484, 200 );
-		panelImportacao.adic( status, 10, 320, 484, 20 );
+		// ----- Fim dos parametros
+		
+		panelImportacao.adic( rgModo, 7, 10, 490, 30 );		
+		
+		panelImportacao.adic( new JLabel( "Local da arquivo" ), 7, 45, 350, 20 );
+		panelImportacao.adic( txtDiretorio, 7, 65, 460, 20 );
+		panelImportacao.adic( btDirtorio, 477, 65, 20, 20 );
+		
+		panelImportacao.adic( filtros, 17, 85, 120, 20 );
+		panelImportacao.adic( linha, 7, 95, 490, 75 );		
+		panelImportacao.adic( rgFiltro1, 37, 105, 470, 30 );
+		panelImportacao.adic( rgFiltro2, 37, 135, 470, 30 );
+		
+		panelImportacao.adic( new JScrollPane( tabProdutos ), 7, 180, 490, 150 );
+		panelImportacao.adic( status, 7, 340, 490, 20 );
 
 		panelBotoes.add( btBuscarProdutos );
 		panelBotoes.add( btExeportar );		
@@ -198,12 +252,12 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 
 			if ( fileDialog.getDirectory() != null ) {
 
-				if ( EXPORTAR == rgOpcao.getVlrInteger() ) {
+				if ( EXPORTAR == rgModo.getVlrInteger() ) {
 					txtDiretorio.setVlrString( fileDialog.getDirectory() );
 					btBuscarProdutos.setEnabled( true );
 					status.setString( "Buscar produtos para exportação ..." );
 				}
-				else if ( IMPORTAR == rgOpcao.getVlrInteger() ) {
+				else if ( IMPORTAR == rgModo.getVlrInteger() ) {
 					txtDiretorio.setVlrString( fileDialog.getDirectory() + fileDialog.getFile() );
 					btImportar.setEnabled( true );
 					status.setString( "Importar produtos do arquivo " + fileDialog.getFile() + " ..." );
@@ -226,10 +280,29 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 	
 			status.setString( "Carregando produtos para exportação ..." );
 			
+			String filtro1 = "";
+			String filtro2 = "";
+			
+			if ( "A".equals( rgFiltro1.getVlrString() ) ) {
+				filtro1 = " AND P.ATIVOPROD='S' ";
+			}
+			else if ( "I".equals( rgFiltro1.getVlrString() ) ) {
+				filtro1 = " AND P.ATIVOPROD='N' ";
+			}
+			
+			if ( "C".equals( rgFiltro2.getVlrString() ) ) {
+				filtro2 = "AND P.CVPROD='C' ";
+			}
+			else if ( "V".equals( rgFiltro2.getVlrString() ) ) {
+				filtro2 = "AND P.CVPROD='V' ";
+			}
+			
 			StringBuilder sql = new StringBuilder();
 			sql.append( "SELECT P.CODPROD, P.DESCPROD, P.PRECOBASEPROD, P.SLDLIQPROD " );
 			sql.append( "FROM EQPRODUTO P " );
-			sql.append( "WHERE P.CODEMP=? AND CODFILIAL=? AND CLOTEPROD='N'" );
+			sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CLOTEPROD='N' " );
+			sql.append( filtro1 );
+			sql.append( filtro2 );
 			sql.append( "ORDER BY P.CODPROD" );
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -515,7 +588,7 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 			Funcoes.mensagemErro( this, "Erro ao realizar inventáros!\n" + e.getMessage(), true, con, e );
 			try {
 				con.rollback();
-				rgOpcao.setVlrInteger( IMPORTAR );
+				rgModo.setVlrInteger( IMPORTAR );
 			} catch ( SQLException e1 ) {
 				e1.printStackTrace();
 			}
@@ -627,28 +700,36 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 
 	public void valorAlterado( RadioGroupEvent e ) {
 
-		txtDiretorio.setVlrString( "" );
-		txtDiretorio.setEnabled( true );
-		btDirtorio.setEnabled( true );
-		tabProdutos.limpa();
-		btBuscarProdutos.setEnabled( false );
-		btExeportar.setEnabled( false );
-		btImportar.setEnabled( false );
-		btInventario.setEnabled( false );
+		if ( e.getSource() == rgModo ) {
+			
+			txtDiretorio.setVlrString( "" );
+			txtDiretorio.setEnabled( true );
+			btDirtorio.setEnabled( true );
+			tabProdutos.limpa();
+			btBuscarProdutos.setEnabled( false );
+			btExeportar.setEnabled( false );
+			btImportar.setEnabled( false );
+			btInventario.setEnabled( false );
 
-		if ( e.getIndice() == 0 ) {			
-			status.setString( "Selecione a local do arquivo e exportação ..." );
-			btBuscarProdutos.setVisible( true );
-			btExeportar.setVisible( true );
-			btImportar.setVisible( false );
-			btInventario.setVisible( false );
+			if ( e.getIndice() == 0 ) {			
+				status.setString( "Selecione a local do arquivo e exportação ..." );
+				btBuscarProdutos.setVisible( true );
+				btExeportar.setVisible( true );
+				btImportar.setVisible( false );
+				btInventario.setVisible( false );
+			}
+			else if ( e.getIndice() == 1 ) {			
+				status.setString( "Selecione a local do arquivo e importação ..." );
+				btBuscarProdutos.setVisible( false );
+				btExeportar.setVisible( false );
+				btImportar.setVisible( true );
+				btInventario.setVisible( true );
+			}
 		}
-		else if ( e.getIndice() == 1 ) {			
-			status.setString( "Selecione a local do arquivo e importação ..." );
-			btBuscarProdutos.setVisible( false );
-			btExeportar.setVisible( false );
-			btImportar.setVisible( true );
-			btInventario.setVisible( true );
+		else if ( ( e.getSource() == rgFiltro1 || e.getSource() == rgFiltro2 ) 
+						&& !txtDiretorio.isEnabled() ) {
+			btBuscarProdutos.setEnabled( true );
+			btExeportar.setEnabled( false );
 		}
 	}
 
