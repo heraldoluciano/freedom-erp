@@ -226,6 +226,6 @@ public class JRadioGroup<S, T> extends JPanel implements ActionListener, KeyList
 
 	private void fireValorAlterado( JRadioButton rb, int ind ) {
 
-		rgLis.valorAlterado( new RadioGroupEvent( rb, ind ) );
+		rgLis.valorAlterado( new RadioGroupEvent( rb, ind, this ) );
 	}
 }
