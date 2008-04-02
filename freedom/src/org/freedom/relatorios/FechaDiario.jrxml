@@ -48,7 +48,7 @@
 	<queryString><![CDATA[SELECT CAST('A' AS CHAR(1)) TIPOLANCA, V.DTSAIDAVENDA DATA, 
 V.CODTIPOMOV, M.DESCTIPOMOV, 
 V.CODCAIXA, C.DESCCAIXA, V.IDUSUINS,
-V.CODPLANOPAG, P.DESCPLANOPAG, SUM(V.VLRLIQVENDA) VALOR
+V.CODPLANOPAG, P.DESCPLANOPAG, SUM(V.VLRLIQVENDA) VALOR, V.STATUSVENDA AS CANCELADO
 FROM VDVENDA V, PVCAIXA C, EQTIPOMOV M, FNPLANOPAG P
 WHERE V.CODEMP=42 AND V.CODFILIAL=1 AND
 V.DTEMITVENDA='27.08.2007' AND
@@ -58,12 +58,12 @@ M.CODEMP=V.CODEMPTM AND M.CODFILIAL=V.CODFILIALTM AND
 M.CODTIPOMOV=V.CODTIPOMOV AND
 P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND
 P.CODPLANOPAG=V.CODPLANOPAG
-GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9
+GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 11
 UNION
 SELECT CAST('B' AS CHAR(1)) TIPO, CP.DTEMITCOMPRA DATA, 
 CP.CODTIPOMOV, M.DESCTIPOMOV, 0 CODCAIXA,
 CAST ( NULL AS CHAR(40)) DESCCAIXA, CP.IDUSUINS,
-CP.CODPLANOPAG, P.DESCPLANOPAG, SUM(CP.VLRLIQCOMPRA*-1) VALOR
+CP.CODPLANOPAG, P.DESCPLANOPAG, SUM(CP.VLRLIQCOMPRA*-1) VALOR, 'NN' AS CANCELADO
 FROM CPCOMPRA CP, EQTIPOMOV M, FNPLANOPAG P
 WHERE CP.CODEMP=42 AND CP.CODFILIAL=1 AND
 CP.DTEMITCOMPRA='27.08.2007' AND
@@ -71,8 +71,8 @@ M.CODEMP=CP.CODEMPTM AND M.CODFILIAL=CP.CODFILIALTM AND
 M.CODTIPOMOV=CP.CODTIPOMOV AND M.TIPOMOV='DV' AND
 P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND
 P.CODPLANOPAG=CP.CODPLANOPAG
-GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9
-ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
+GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 11
+ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 11]]></queryString>
 
 	<field name="TIPOLANCA" class="java.lang.String"/>
 	<field name="DATA" class="java.sql.Date"/>
@@ -84,15 +84,16 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 	<field name="CODPLANOPAG" class="java.lang.Long"/>
 	<field name="DESCPLANOPAG" class="java.lang.String"/>
 	<field name="VALOR" class="java.math.BigDecimal"/>
+	<field name="CANCELADO" class="java.lang.String"/>
 
 	<variable name="SUBTOTAL_CAIXA" class="java.math.BigDecimal" resetType="Group" resetGroup="CAIXA_DATA" calculation="Sum">
-		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
+		<variableExpression><![CDATA[($F{CANCELADO}==null || $F{CANCELADO}.indexOf("C")==-1) ? $F{VALOR} : new BigDecimal("0.00")]]></variableExpression>
 	</variable>
 	<variable name="TOTAL_GERAL" class="java.math.BigDecimal" resetType="Group" resetGroup="GERAL" calculation="Sum">
-		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
+		<variableExpression><![CDATA[($F{CANCELADO}==null || $F{CANCELADO}.indexOf("C")==-1) ? $F{VALOR} : new BigDecimal("0.00")]]></variableExpression>
 	</variable>
 	<variable name="SUBTOTAL_TIPOMOV" class="java.math.BigDecimal" resetType="Group" resetGroup="TIPOMOV_DATA" calculation="Sum">
-		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
+		<variableExpression><![CDATA[($F{CANCELADO}==null || $F{CANCELADO}.indexOf("C")==-1) ? $F{VALOR} : new BigDecimal("0.00")]]></variableExpression>
 	</variable>
 
 		<group  name="GERAL" >
