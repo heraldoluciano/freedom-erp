@@ -55,19 +55,6 @@ public class FRMovProdCont extends FRelatorio {
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 		JLabelPad lbPeriodo = new JLabelPad( "Periodo:", SwingConstants.CENTER );
 		lbPeriodo.setOpaque( true );
-		
-		adic( lbPeriodo, 17, 10, 80, 20 );
-		adic( lbLinha, 7, 20, 330, 45 );
-
-		adic( new JLabelPad( "De:" ), 17, 35, 30, 20 );
-		adic( txtDataini, 47, 35, 125, 20 );
-		adic( new JLabelPad( "à", SwingConstants.CENTER ), 172, 35, 30, 20 );
-		adic( txtDatafim, 202, 35, 125, 20 );
-
-		adic( new JLabelPad( "Cód.Prod" ), 7, 80, 80, 20 );
-		adic( txtCodProd, 7, 100, 80, 20 );
-		adic( new JLabelPad( "Descrição do produto" ), 90, 80, 250, 20 );
-		adic( txtDescProd, 90, 100, 247, 20 );
 
 		adic( lbPeriodo, 17, 10, 80, 20 );
 		adic( lbLinha, 7, 20, 307, 45 );
