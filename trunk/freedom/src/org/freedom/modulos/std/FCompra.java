@@ -287,7 +287,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		if( abaTransp.equals( "S" ) ){
 			tpnCab.addTab( "Tranportadora", pinCabTransp );
 		}
-		tpnCab.addTab( "Solicitação de Compra", pinCabSolCompra );
+		if( "S".equals(abaSolCompra)) {
+			tpnCab.addTab( "Solicitação de Compra", pinCabSolCompra );
+		}
 		pnMaster.remove( 2 );
 		pnGImp.removeAll();
 		pnGImp.setLayout( new GridLayout( 1, 4 ) );
@@ -491,9 +493,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			adicDescFK( txtRazTran, 80, 25, 250, 20, "Raztran", "Razão social da transportadora" );
 			//pinCabTransp.adic( txtRazTran, 80, 25, 205, 20 );
 		}
+
+		setListaCampos( true, "COMPRA", "CP" );
+		lcCampos.setQueryInsert( false );
 		
-		if( abaSolCompra.equals("S") ){
-			setListaCampos(lcCampos );
+		if( "S".equals(abaSolCompra) ){
+			setListaCampos(lcSolCompra );
 			setPainel(pinCabSolCompra );
 			adicCampo(txtCodSol, 7, 25, 70, 20, "CodSol", "Cód.sol.", ListaCampos.DB_FK, false );
 			adicCampo(txtIDUsu, 451, 20, 80, 20, "IdUsu", "Id do usuário",
@@ -514,9 +519,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			txtCodCC.setNaoEditavel(true);
 			txtAnoCC.setNaoEditavel(true);
 		}
-		
-		setListaCampos( true, "COMPRA", "CP" );
-		lcCampos.setQueryInsert( false );
 
 		// lcCampos.setWhereAdic("FLAG IN "+
 		// projetos.freedom.Freedom.carregaFiltro(con,org.freedom.telas.Aplicativo.strCodEmp)); */
@@ -963,7 +965,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		try {
 
 			PreparedStatement ps = con.prepareStatement( 
-					"SELECT USAREFPROD,ORDNOTA,BLOQCOMPRA,BUSCAVLRULTCOMPRA,CUSTOCOMPRA, TABTRANSPCP " + 
+					"SELECT USAREFPROD,ORDNOTA,BLOQCOMPRA,BUSCAVLRULTCOMPRA,CUSTOCOMPRA, " +
+					"TABTRANSPCP, TABSOLCP " + 
 					"FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
