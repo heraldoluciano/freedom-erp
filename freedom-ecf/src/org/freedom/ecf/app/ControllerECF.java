@@ -672,11 +672,10 @@ public class ControllerECF {
     			actionOK = false;
     		}
 			else { 
-				if ( tipoAliquota != null ) {
-					if ( ! AbstractECFDriver.ALQ_INTEGRAL.equals( tipoAliquota )
-							|| ! AbstractECFDriver.ALQ_ISENTA.equals( tipoAliquota ) 
-								|| ! AbstractECFDriver.ALQ_SUBSTITUICAO.equals( tipoAliquota ) 
-									|| ! AbstractECFDriver.ALQ_NAO_INSIDE.equals( tipoAliquota ) ) {
+				if ( tipoAliquota != null && (! AbstractECFDriver.ALQ_INTEGRAL.equals( tipoAliquota )) ) {
+					if ( ! AbstractECFDriver.ALQ_ISENTA.equals( tipoAliquota ) 
+							|| ! AbstractECFDriver.ALQ_SUBSTITUICAO.equals( tipoAliquota ) 
+								|| ! AbstractECFDriver.ALQ_NAO_INSIDE.equals( tipoAliquota ) ) {
 						actionOK = false;
 					}
 				}
@@ -686,7 +685,7 @@ public class ControllerECF {
     		}
 			
 			if ( actionOK ) {
-				String strAliquota = tipoAliquota != null 
+				String strAliquota = tipoAliquota != null && (! AbstractECFDriver.ALQ_INTEGRAL.equals( tipoAliquota )) 
 								? tipoAliquota 
 										: getIndexAliquota( aliquota.floatValue() );
 				quantidade = tipoQuantidade == AbstractECFDriver.QTD_INTEIRO 
