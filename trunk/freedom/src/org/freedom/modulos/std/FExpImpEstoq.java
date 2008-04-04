@@ -580,13 +580,15 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 			sql.append( "(CODEMP, CODFILIAL, CODINVPROD, " );
 			sql.append( "CODEMPPD, CODFILIALPD, CODPROD, " );
 			sql.append( "CODEMPTM, CODFILIALTM, CODTIPOMOV, " );
-			sql.append( "DATAINVP, QTDINVP, PRECOINVP, " );
+			sql.append( "DATAINVP, QTDINVP, SLDATUALINVP, SLDDIGINVP, PRECOINVP, " );
 			sql.append( "CODEMPAX, CODFILIALAX, CODALMOX) " );
-			sql.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " );
+			sql.append( "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) " );
 
 			final Integer tipoMovimentoInventario = getTipoMovimentoInventario();
 			final Date hoje = Funcoes.dateToSQLDate( Calendar.getInstance().getTime() );
 			Integer codprod = null;
+			BigDecimal saldoAtual = null;
+			BigDecimal novoSaldo = null;
 			BigDecimal quantidade = null;
 			BigDecimal custo = null;
 			
@@ -598,7 +600,9 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 			for ( int i = 0; i < tamanhoTabela; i++ ) {
 								
 				codprod = (Integer) tabProdutos.getValor( i, 0 );
-				quantidade = (BigDecimal) tabProdutos.getValor( i, 3 );
+				saldoAtual = getSaldoAtual( codprod );
+				novoSaldo = (BigDecimal) tabProdutos.getValor( i, 3 );
+				quantidade = novoSaldo.subtract( saldoAtual );
 				custo = (BigDecimal) tabProdutos.getValor( i, 2 );
 				
 				codInventario = getCodInventario();
@@ -616,10 +620,12 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 				ps.setInt( 9, tipoMovimentoInventario ); // código do tipo de movimento de inventário.
 				ps.setDate( 10, hoje );
 				ps.setBigDecimal( 11, quantidade );
-				ps.setBigDecimal( 12, custo );
-				ps.setInt( 13, Aplicativo.iCodEmp );
-				ps.setInt( 14, ListaCampos.getMasterFilial( "EQALMOX" ) );
-				ps.setInt( 15, codAlmoarifado );	
+				ps.setBigDecimal( 12, saldoAtual );
+				ps.setBigDecimal( 13, novoSaldo );
+				ps.setBigDecimal( 14, custo );
+				ps.setInt( 15, Aplicativo.iCodEmp );
+				ps.setInt( 16, ListaCampos.getMasterFilial( "EQALMOX" ) );
+				ps.setInt( 17, codAlmoarifado );	
 				ps.execute();
 				
 				status.setValue( i+1 );
@@ -698,6 +704,37 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 		}
 		
 		return codInventario;
+	}
+	
+	private BigDecimal getSaldoAtual( final Integer codprod ) throws Exception {
+		
+		BigDecimal saldoAtual = new BigDecimal( "0.00" );
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append( "SELECT NSALDOAX FROM EQPRODUTOSP01(?,?,?,?,?,?)" );
+		
+		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+		ps.setInt( 3, codprod );
+		ps.setInt( 4, Aplicativo.iCodEmp );
+		ps.setInt( 5, ListaCampos.getMasterFilial( "EQALMOX" ) );
+		ps.setInt( 6, getAlmoxarifado( codprod ) );
+		
+		ResultSet rs = ps.executeQuery();
+		
+		if ( rs.next() ) {
+			saldoAtual = rs.getBigDecimal( "NSALDOAX" ) != null ? rs.getBigDecimal( "NSALDOAX" ) : saldoAtual;
+		}
+		
+		rs.close();
+		ps.close();
+		
+		if ( ! con.getAutoCommit() ) {
+			con.commit();
+		}
+		
+		return saldoAtual.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
 	}
 	
 	private void showInvalidos() {
