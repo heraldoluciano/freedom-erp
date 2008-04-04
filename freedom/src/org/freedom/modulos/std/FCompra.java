@@ -268,9 +268,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private boolean habilitaCusto = false;
 	
-	private String abaTransp = "";
+	private String abaTransp = "N";
 	
-	private String abaSolCompra = "S";
+	private String abaSolCompra = "N";
 
 	public FCompra() {
 
@@ -977,6 +977,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				sOrdNota = rs.getString( "ORDNOTA" );
 				habilitaCusto = rs.getString( "CUSTOCOMPRA" ).trim().equals( "S" );
 				abaTransp = rs.getString( "TABTRANSPCP");
+				abaSolCompra = rs.getString( "TABSOLCP" );
 			}
 			if ( !con.getAutoCommit() ){
 				con.commit();
