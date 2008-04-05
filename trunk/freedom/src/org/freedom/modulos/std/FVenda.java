@@ -608,7 +608,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcProd.add( new GuardaCampo( txtPercComItVenda, "ComisProd", "% Comis.", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtSldLiqProd, "SldLiqProd", "Saldo", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtVerifProd, "VerifProd", "Verif. custo", ListaCampos.DB_SI, false ) );
-		lcProd.setWhereAdic( "ATIVOPROD='S' AND TIPOPROD IN ('P','S','F'" + ( bPrefs[ 8 ] ? ",'M'" : "" ) + ")" );
+
+		String sWhereAdicProd = "ATIVOPROD='S' AND TIPOPROD IN ('P','S','F'" + ( bPrefs[ 8 ] ? ",'M'" : "" ) + ")";
+				
+		lcProd.setWhereAdic( sWhereAdicProd );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
@@ -628,7 +631,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcProd2.add( new GuardaCampo( txtVerifProd, "VerifProd", "Verif. custo", ListaCampos.DB_SI, false ) );
 		txtRefProd.setNomeCampo( "RefProd" );
 		txtRefProd.setListaCampos( lcDet );
-		lcProd2.setWhereAdic( "ATIVOPROD='S' AND TIPOPROD IN ('P','S','F'" + ( bPrefs[ 8 ] ? ",'M'" : "" ) + ")" );
+		lcProd2.setWhereAdic( sWhereAdicProd );
 		lcProd2.montaSql( false, "PRODUTO", "EQ" );
 		lcProd2.setQueryCommit( false );
 		lcProd2.setReadOnly( true );
