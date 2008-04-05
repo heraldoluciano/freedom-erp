@@ -429,7 +429,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcProd.add( new GuardaCampo( txtSldLiqProd, "SldLiqProd", "Saldo", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodAlmoxItOrc, "CodAlmox", "Cód.almox.", ListaCampos.DB_SI, txtDescAlmoxItOrc, false ) );
 		lcProd.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
-		lcProd.setWhereAdic( "ATIVOPROD='S'" );
+		
+		String sWhereAdicProd = "ATIVOPROD='S' AND TIPOPROD IN ('P','S','F'" + ( (Boolean)oPrefs[ PrefOrc.VENDAMATPRIM.ordinal() ] ? ",'M'" : "" ) + ")";
+				
+		lcProd.setWhereAdic( sWhereAdicProd );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
@@ -446,7 +449,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcProd2.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
 		txtRefProd.setNomeCampo( "RefProd" );
 		txtRefProd.setListaCampos( lcDet );
-		lcProd2.setWhereAdic( "ATIVOPROD='S'" );
+		lcProd2.setWhereAdic( sWhereAdicProd );
 		lcProd2.montaSql( false, "PRODUTO", "EQ" );
 		lcProd2.setQueryCommit( false );
 		lcProd2.setReadOnly( true );
@@ -1513,7 +1516,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	}
 
 	private enum PrefOrc {USAREFPROD, USALIQREL, TIPOPRECOCUSTO, CODTIPOMOV2, DESCCOMPPED, USAORCSEQ, 
-		OBSCLIVEND, RECALCPCORC, USABUSCAGENPROD, USALOTEORC, CONTESTOQ, TITORCTXT01  } ;
+		OBSCLIVEND, RECALCPCORC, USABUSCAGENPROD, USALOTEORC, CONTESTOQ, TITORCTXT01, VENDAMATPRIM  } ;
 	
 	private Object[] prefs() {
 
@@ -1523,7 +1526,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		ResultSet rs = null;
 		try {
 			sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,P4.USALOTEORC,P.CONTESTOQ," + 
-			  "P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ,P.OBSCLIVEND,P.RECALCPCORC,P4.USABUSCAGENPROD,P.TITORCTXT01 " +
+			  "P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ,P.OBSCLIVEND,P.RECALCPCORC,P4.USABUSCAGENPROD,P.TITORCTXT01,P.VENDAMATPRIM " +
 			  "FROM SGPREFERE1 P, SGPREFERE4 P4 " + "WHERE P.CODEMP=? AND P.CODFILIAL=? " + 
 			  "AND P4.CODEMP=P.CODEMP AND P4.CODFILIAL=P.CODFILIAL";
 			ps = con.prepareStatement( sSQL );
@@ -1553,6 +1556,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				oRetorno[ PrefOrc.TITORCTXT01.ordinal() ] = rs.getString( "TitOrcTxt01" );
 				if ( oRetorno[ PrefOrc.TITORCTXT01.ordinal() ] == null )
 					oRetorno[ PrefOrc.TITORCTXT01.ordinal() ] = "";
+				
+				oRetorno[ PrefOrc.VENDAMATPRIM.ordinal() ] = "S".equals( rs.getString( "VendaMatPrim" ) );
 				
 				sOrdNota = rs.getString( "OrdNota" );
 
@@ -1875,4 +1880,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				txtCodProd.setBuscaGenProd( new DLCodProd( cn, null ) );
 		}
 	}
+	
+	
+	
+	
 }
