@@ -53,6 +53,8 @@ public class FCancVenda extends FFilho implements ActionListener {
 	private JTextFieldPad txtSerie = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
 	private JTextFieldPad txtVlrLiqVenda = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
 	private JTextFieldPad txtStatusVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+	private JTextFieldPad txtBloqVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
+	private JTextFieldPad txtTipoVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
 	private JButton btCancelar = new JButton("Cancelar",Icone.novo("btCancelar.gif"));
 	private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
 	private ListaCampos lcVenda = new ListaCampos(this);
@@ -71,6 +73,8 @@ public class FCancVenda extends FFilho implements ActionListener {
 		lcVenda.add(new GuardaCampo( txtCodVenda,  "CodVenda", "Cód.Venda", ListaCampos.DB_PK, null, false));
 		lcVenda.add(new GuardaCampo( txtDocVenda, "DocVenda", "Documento", ListaCampos.DB_SI, null, false));
 		lcVenda.add(new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, null, false));
+	    lcVenda.add(new GuardaCampo( txtBloqVenda, "BloqVenda", "Bloqueio", ListaCampos.DB_SI, false));
+	    lcVenda.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.venda", ListaCampos.DB_SI, false));	    
 		lcVenda.add(new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "V. Liq.", ListaCampos.DB_SI, null, false));
 		lcVenda.add(new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, null, false));
 		lcVenda.montaSql(false, "VENDA", "VD");
@@ -120,8 +124,8 @@ public class FCancVenda extends FFilho implements ActionListener {
 		
 		else if ( "VPD".indexOf( sStatus.substring(0,1)) !=-1 ) {
 			
-			if (Funcoes.mensagemConfirma(null, "Deseja realmente cancelar esta venda?") ==
-												JOptionPane.YES_OPTION ) {
+			if (Funcoes.mensagemConfirma(null, "Deseja realmente cancelar esta venda?") == JOptionPane.YES_OPTION ) {
+																
 				PreparedStatement ps = null;
 				String sSQL = "UPDATE VDVENDA SET STATUSVENDA = 'C"+sStatus.substring(0,1)+"' " +
 							  "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'";
@@ -139,10 +143,14 @@ public class FCancVenda extends FFilho implements ActionListener {
 						con.commit();
 					
 					bRet = true;
+					
+					FCancVendaOrc.cancelar( con, iCodVenda, txtTipoVenda.getVlrString(), txtStatusVenda.getVlrString(), txtBloqVenda.getVlrString() );										
 				
-				} catch(SQLException err) {
+				} 
+				catch(SQLException err) {
 					Funcoes.mensagemErro(null,"Erro ao cancelar a venda!\n"+err.getMessage(),true,con,err);
-				} finally {
+				} 
+				finally {
 					ps = null;
 					sSQL = null;
 				}
