@@ -58,14 +58,17 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 
 	private static final long serialVersionUID = 1L;
 
-	private JPanelPad pinCab = new JPanelPad(0,80);
+	private JPanelPad pinCab = new JPanelPad( 0, 94 );
 	private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextFieldPad txtCodVaga = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private final JTextFieldFK txtCodEmpr = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );	
 	private final JTextFieldFK txtNomeEmpr = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 	private final JTextFieldFK txtCodFunc = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );	
 	private final JTextFieldFK txtDescFunc = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
-
+	private final JTextFieldFK txtFaixaSalIni = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldFK txtFaixaSalFim = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	
+	
 	private Tabela tab = new Tabela();
 	private JButton btCalc = new JButton(Icone.novo("btExecuta.gif"));
 	private JButton btOk = new JButton(Icone.novo("btOk.gif"));
@@ -75,18 +78,40 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 	private ListaCampos lcVaga = new ListaCampos(this);
 	private ListaCampos lcEmpregador = new ListaCampos(this,"EM");
 	private ListaCampos lcFuncao = new ListaCampos(this,"FC");
-	private JCheckBoxPad cbQualificacoes = new JCheckBoxPad("Qualificações","S","N");
-		
+
+	private JCheckBoxPad cbQualificacoes = new JCheckBoxPad("Qualificações",new Boolean(true),new Boolean(false));
+	private JCheckBoxPad cbRestricoes = new JCheckBoxPad("Restrições",new Boolean(true),new Boolean(false));
+	private JCheckBoxPad cbCursos = new JCheckBoxPad("Cursos",new Boolean(true),new Boolean(false));
+	private JCheckBoxPad cbExperiencia = new JCheckBoxPad("Experiencia",new Boolean(true),new Boolean(false));
+	private JCheckBoxPad cbFaixaSalarial = new JCheckBoxPad("Faixa salarial",new Boolean(true),new Boolean(false));
 	
 	BigDecimal bVlrAceito = new BigDecimal("0");
 	BigDecimal bVlrAprovado = new BigDecimal("0");
 	BigDecimal bVlrTotal = new BigDecimal("0");
+	
+	private JLabelPad lbFiltros = new JLabelPad( " Filtros" );
+	private JPanelPad pinFiltros = new JPanelPad( 300, 150 );
+	private JPanelPad pinLbFiltros = new JPanelPad( 53, 15 );
 
 	public FGerencVagas() {
 		super(false);
 		setTitulo("Gerenciamento de vagas");
 		setAtribos(15,30,796,380);
 
+		/*cbQualificacoes.setVlrString("S");
+		cbRestricoes.setVlrString("S");
+		cbCursos.setVlrString("S");
+		cbExperiencia.setVlrString( "S" );
+		cbFaixaSalarial.setVlrString( "S" );*/
+		
+		cbQualificacoes.setVlrBoolean( new Boolean(true) );
+		cbRestricoes.setVlrBoolean( new Boolean(true) );
+		cbCursos.setVlrBoolean( new Boolean(true) );
+		cbExperiencia.setVlrBoolean( new Boolean(true) );
+		cbFaixaSalarial.setVlrBoolean( new Boolean(true) );
+
+		
+		
 		btCalc.setToolTipText("Recarregar ítens");
 		btOk.setToolTipText("Confirmar aprovação");
 		
@@ -99,6 +124,8 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		lcVaga.add(new GuardaCampo( txtCodVaga, "CodVaga", "Cód.Vaga",ListaCampos.DB_PK , null, false));		
 		lcVaga.add(new GuardaCampo( txtCodEmpr, "CodEmpr","Cód.Empr.",ListaCampos.DB_FK, null, false));
 		lcVaga.add(new GuardaCampo( txtCodFunc, "CodFunc","Cód.Func.",ListaCampos.DB_FK, null, false));
+		lcVaga.add(new GuardaCampo( txtFaixaSalIni, "FaixaSalIni","Inicial",ListaCampos.DB_SI, null, false));
+		lcVaga.add(new GuardaCampo( txtFaixaSalFim, "FaixaSalFim","Inicial",ListaCampos.DB_SI, null, false));
 
 		lcVaga.montaSql(false,"VAGA","RH");
 		lcVaga.setQueryCommit(false);
@@ -125,25 +152,40 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		lcFuncao.setReadOnly(true);
 		txtCodFunc.setTabelaExterna(lcFuncao);
 
-		pinCab.adic(new JLabelPad("Cód.Vaga"),7,0,120,20);
-		pinCab.adic(txtCodVaga,7,20,85,20);
+		pinCab.adic(new JLabelPad("Cód.Vaga"),7,0,60,20);
+		pinCab.adic(txtCodVaga,7,20,60,20);
 		
-		pinCab.adic(new JLabelPad("Cód.Empr."),95,0,60,20);
-		pinCab.adic(txtCodEmpr,95,20,60,20);
-		pinCab.adic(new JLabelPad("Empregador"),158,0,203,20);
-		pinCab.adic(txtNomeEmpr,158,20,203,20);
+		pinCab.adic(new JLabelPad("Cód.Empr."),70,0,60,20);
+		pinCab.adic(txtCodEmpr,70,20,60,20);
 		
-		pinCab.adic(new JLabelPad("Cód.Func."),364,0,60,20);
-		pinCab.adic(txtCodFunc,364,20,60,20);
-		pinCab.adic(new JLabelPad("Função"),427,0,250,20);
-		pinCab.adic(txtDescFunc,427,20,203,20);
-					
-		cbQualificacoes.setVlrString("N");
-		pinCab.adic(cbQualificacoes,7,45,200,20);
-				
-		pinRod.adic(btCalc,10,10,57,30);
-		pinRod.adic(btOk,70,10,57,30);
-		pinRod.adic(btSair,660,10,100,30);
+		pinCab.adic(new JLabelPad("Empregador"),133,0,230,20);
+		pinCab.adic(txtNomeEmpr,133,20,230,20);
+		
+		pinCab.adic(new JLabelPad("Cód.Func."),7,40,60,20);
+		pinCab.adic(txtCodFunc,7,60,60,20);
+		
+		pinCab.adic(new JLabelPad("Função"),70,40,230,20);
+		pinCab.adic(txtDescFunc,70,60,293,20);
+								
+		pinLbFiltros.adic( lbFiltros, 0, 0, 80, 15 );
+		pinLbFiltros.tiraBorda();
+
+		pinCab.adic( pinLbFiltros, 375, 4, 55, 15 );
+		pinCab.adic( pinFiltros, 372, 12, 300, 69 );
+			
+		pinFiltros.adic( cbQualificacoes, 3, 7, 130, 18 );
+		pinFiltros.adic( cbRestricoes, 3, 25, 130, 18 );
+		pinFiltros.adic( cbFaixaSalarial, 3, 43, 130, 18 );
+		pinFiltros.adic (txtFaixaSalIni,136,43,50,18);
+		pinFiltros.adic (txtFaixaSalFim,189,43,50,18);
+		
+		
+		pinFiltros.adic( cbCursos, 136, 7, 130, 18 );
+		pinFiltros.adic( cbExperiencia, 136, 25, 130, 18 );
+		
+//		pinRod.adic(btCalc,10,10,57,30);
+//		pinRod.adic(btOk,70,10,57,30);
+//		pinRod.adic(btSair,660,10,100,30);
 					
 		getTela().add(pnCab,BorderLayout.CENTER);
 		pnCab.add(pinCab,BorderLayout.NORTH);
@@ -153,19 +195,19 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		tab.adicColuna("Cód.");
 		tab.adicColuna("Nome");
 		tab.adicColuna("Fone");
-		tab.adicColuna("Qualificações");
-		tab.adicColuna("Restrições");
+		tab.adicColuna("Qualif.");
+		tab.adicColuna("Restr.");
         tab.adicColuna("Cursos");
-		tab.adicColuna("Experiência");
+		tab.adicColuna("Exp.");
 		tab.adicColuna("Salário");
 
-		tab.setTamColuna(60,0);
-		tab.setTamColuna(200,1);
+		tab.setTamColuna(55,0);
+		tab.setTamColuna(250,1);
 		tab.setTamColuna(80,2);
-		tab.setTamColuna(60,3);
-		tab.setTamColuna(60,4);
-		tab.setTamColuna(60,5);
-		tab.setTamColuna(60,6);
+		tab.setTamColuna(55,3);
+		tab.setTamColuna(55,4);
+		tab.setTamColuna(55,5);
+		tab.setTamColuna(55,6);
 		tab.setTamColuna(80,7);
 		
 		//tab.setColunaEditavel(0,true);
@@ -195,28 +237,51 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
     
 	public void montaTab(){ 
 
-		StringBuffer sql = new StringBuffer();
+		StringBuffer sql = new StringBuffer();		
+		StringBuffer where = new StringBuffer();
+		boolean and = false;
 		
-		sql.append( "SELECT CD.CODCAND,CD.NOMECAND,CD.FONECAND,PRETENSAOSAL, " );
-		sql.append( "(SELECT COUNT(*) FROM RHCANDIDATOATRIB ATQ WHERE ATQ.CODEMP=CD.CODEMP " );
-		sql.append( "AND ATQ.CODFILIAL=CD.CODFILIAL AND ATQ.CODCAND=CD.CODCAND " );
-		sql.append( "AND ATQ.CODATRIB IN " );
-		sql.append( "(SELECT ATVQ.CODATRIB FROM RHVAGAATRIBQUALI ATVQ ");
-		sql.append( "WHERE ATVQ.CODEMP=? AND ATVQ.CODFILIAL=? AND ATVQ.CODVAGA=?) ) AS QUALIFICACOES, " );
-		sql.append( "(SELECT COUNT(*) FROM RHCANDIDATOATRIB ATR WHERE ATR.CODEMP=CD.CODEMP " );
-		sql.append( "AND ATR.CODFILIAL=CD.CODFILIAL AND ATR.CODCAND=CD.CODCAND " );
-		sql.append( "AND ATR.CODATRIB IN " );
-		sql.append( "(SELECT ATVR.CODATRIB FROM RHVAGAATRIBREST ATVR " );
-		sql.append( "WHERE ATVR.CODEMP=? AND ATVR.CODFILIAL=? AND ATVR.CODVAGA=?) ) AS RESTRICOES, " );
-		sql.append( "(SELECT COUNT(*) FROM RHCANDIDATOCURSO CU WHERE CU.CODEMP=CD.CODEMP " );
-		sql.append( "AND CU.CODFILIAL=CD.CODFILIAL AND CU.CODCAND=CD.CODCAND " );
-		sql.append( "AND CU.CODCURSO IN " );
-		sql.append( "(SELECT VC.CODCURSO FROM RHVAGACURSO VC " );				
-		sql.append( "WHERE VC.CODEMP=? AND VC.CODFILIAL=? AND VC.CODVAGA=? ) ) AS CURSOS, " );                
-		sql.append( "(SELECT COUNT(*) FROM RHCANDIDATOFUNC FU WHERE FU.CODEMP=CD.CODEMP " );            
-		sql.append( "AND FU.CODFILIAL=CD.CODFILIAL AND FU.CODCAND=CD.CODCAND AND FU.CODFUNC=? ) AS EXPERIENCIA ");
-		sql.append( "FROM RHCANDIDATO CD" );
- 
+		
+		 
+		
+		sql.append( "SELECT CODCAND,NOMECAND,FONECAND,PRETENSAOSAL,QUALIFICACOES,RESTRICOES,CURSOS,EXPERIENCIA " );
+		sql.append( "FROM RHLISTACANDVAGASP(?,?,?,?)" );
+				
+		if(cbQualificacoes.getVlrBoolean() || cbCursos.getVlrBoolean() ||
+		   cbExperiencia.getVlrBoolean() || cbFaixaSalarial.getVlrBoolean() ||
+		   cbRestricoes.getVlrBoolean() ) {
+		
+			where.append( " WHERE " );
+		
+		}
+		
+		
+		if(cbQualificacoes.getVlrBoolean()) {
+			where.append("QUALIFICACOES > 0 " );
+			and = true;
+		}
+		
+		if(cbCursos.getVlrBoolean()) {
+			where.append( (and ? " AND " : "" ) + ( "CURSOS > 0 " ) );
+			and = true;
+		}
+
+		if(cbExperiencia.getVlrBoolean()) {
+			where.append( (and ? " AND " : "" ) + ( "EXPERIENCIA > 0 " ) );
+			and = true;
+		}
+
+		if(cbRestricoes.getVlrBoolean()) {
+			where.append( ( and ? " AND " : "" ) + ( "RESTRICOES > 0 " ) );
+			and = true;
+		}
+
+		if(cbFaixaSalarial.getVlrBoolean()) {
+			where.append( (and ? " AND " : "" ) + ( "PRETENSAOSAL BETWEEN  ? AND ? " ) );			
+		}
+		
+		sql.append( where );
+		
 		tab.limpa();
 		
 		try {
@@ -226,19 +291,14 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 			
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial( "ATATRIBUICAO" ));
-			ps.setInt(3,txtCodVaga.getVlrInteger().intValue());
+			ps.setInt(3,txtCodVaga.getVlrInteger().intValue());					
+			ps.setInt(4,txtCodFunc.getVlrInteger().intValue());						
 			
-			ps.setInt(4,Aplicativo.iCodEmp);
-			ps.setInt(5,ListaCampos.getMasterFilial( "ATATRIBUICAO" ));
-			ps.setInt(6,txtCodVaga.getVlrInteger().intValue());
+			if(cbFaixaSalarial.getVlrBoolean()) {
+				ps.setDouble( 5, txtFaixaSalIni.getVlrDouble() );
+				ps.setDouble( 6, txtFaixaSalFim.getVlrDouble() );				
+			}
 			
-			ps.setInt(7,Aplicativo.iCodEmp);
-			ps.setInt(8,ListaCampos.getMasterFilial( "RHCURSO" ));
-			ps.setInt(9,txtCodVaga.getVlrInteger().intValue());
-			
-			ps.setInt(10,txtCodFunc.getVlrInteger().intValue());						
-			
-//			ps.setString(4,cbQualificacoes.getVlrString());
 			
 			ResultSet rs = ps.executeQuery();
 						
