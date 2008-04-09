@@ -209,13 +209,28 @@ public class NF006 extends Layout {
 				// Fim da classificação fiscal
 
 				// Imprime os dados do item no corpo da nota
-
+				
+			
 				if ( !"S".equals( itens.getString( NF.C_TIPOPROD ) ) ) {
 
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 2, itens.getString( NF.C_REFPROD ) );
-					imp.say( 10, Funcoes.copy( itens.getString( NF.C_DESCPROD ).trim(), 50 ) );
-					imp.say( 61, sSigla );
+					Vector<?> vDesc = Funcoes.strToVectorSilabas(itens.getString( NF.C_OBSITPED )== null || itens.getString( NF.C_OBSITPED ).equals("") ? (itens.getString(NF.C_DESCPROD).trim()): itens.getString(NF.C_OBSITPED),46);
+			        String sDesc = "";
+					
+			        for (int iConta=0;( (iConta < 20) && (vDesc.size()>iConta) );iConta++){
+						
+			        	if (!vDesc.elementAt(iConta).toString().equals(""))
+							sDesc = vDesc.elementAt(iConta).toString();
+						else
+							
+						sDesc = "";
+			        
+			        	imp.pulaLinha( 1, imp.comprimido() );
+			        	imp.say( 10, sDesc );
+					}
+					
+			        imp.say( 61, sSigla );
 					imp.say( 64, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 0, 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 0, 2 ) );
 					imp.say( 70, Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) );
 					imp.say( 75, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( itens.getFloat( NF.C_QTDITPED ) ) ) );
