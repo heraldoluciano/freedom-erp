@@ -63,6 +63,7 @@ public class NF006 extends Layout {
 		Vector<String> vSigla = new Vector<String>();
 		Vector<?> vDescServ = new Vector<Object>();
 		Vector<Object[]> vServico = new Vector<Object[]>();
+		imp.setImpEject( false );
 
 		try {
 
@@ -425,7 +426,7 @@ public class NF006 extends Layout {
 
 					// Imprime canhoto
 
-					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( imp.pRow()+3, 0, imp.comprimido() );
 					imp.say( 128, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido() );
