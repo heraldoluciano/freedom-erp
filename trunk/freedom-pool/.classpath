@@ -5,5 +5,6 @@
 	<classpathentry kind="var" path="TOMCAT_HOME/common/lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.13.jar"/>
 	<classpathentry kind="lib" path="lib/toplink-essentials.jar"/>
+	<classpathentry exported="true" kind="lib" path="ImportedClasses"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
