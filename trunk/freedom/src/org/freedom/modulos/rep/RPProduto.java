@@ -81,6 +81,8 @@ public class RPProduto extends FDados implements ActionListener {
 
 	private final JTextFieldPad txtPreco3 = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 	
+	private final JTextFieldPad txtPrecoCusto = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
 	private final ListaCampos lcGrupo = new ListaCampos( this, "GP" );
 	
 	private final ListaCampos lcUnidade = new ListaCampos( this, "UD" );
@@ -153,6 +155,7 @@ public class RPProduto extends FDados implements ActionListener {
 		adicCampo( txtPreco1, 7, 110, 100, 20, "PrecoProd1", "Preço 1", ListaCampos.DB_SI, false );
 		adicCampo( txtPreco2, 110, 110, 100, 20, "PrecoProd2", "Preço 2", ListaCampos.DB_SI, false );
 		adicCampo( txtPreco3, 213, 110, 100, 20, "PrecoProd3", "Preço 3", ListaCampos.DB_SI, false );
+		adicCampo( txtPrecoCusto, 316, 110, 100, 20, "PrecoCusto", "Preço de Custo", ListaCampos.DB_SI, false );
 		
 		adicCampo( txtPercIPI, 7, 150, 100, 20, "PercIPIProd", "% IPI", ListaCampos.DB_SI, false );
 		adicCampo( txtComiss, 110, 150, 100, 20, "ComisProd", "% Comissão", ListaCampos.DB_SI, false );
