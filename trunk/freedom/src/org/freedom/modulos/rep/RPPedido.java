@@ -173,6 +173,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	private final JTextFieldPad txtRecTotPed = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtPagTotPed = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
+	private final JTextFieldPad txtPercItLucro = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtObsPed = new JTextFieldPad( JTextFieldPad.TP_STRING, 500, 0 );
 
@@ -492,12 +494,14 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		}
 		
 		adicDescFK( txtDescProd, 153, 15, 246, 20, "DescProd", "Descrição do produto" );
-		adicCampo( txtQtdItem, 402, 15, 92, 20, "QtdItPed", "Qtd.", ListaCampos.DB_SI, true );
-		adicCampo( txtPrecoItem, 497, 15, 94, 20, "PrecoItPed", "Preço", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdItem, 402, 15, 48, 20, "QtdItPed", "Qtd.", ListaCampos.DB_SI, true );
+		adicCampo( txtPrecoItem, 453, 15, 94, 20, "PrecoItPed", "Preço", ListaCampos.DB_SI, true );
 		adicCampoInvisivel( txtVlrItem, "VlrItPed", "Valor item", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrLiqItem, "VlrLiqItPed", "Liquido", ListaCampos.DB_SI, false );
-		adicCampo( txtPercIPIItem, 594, 15, 72, 20, "PercIPIItPed", "% IPI", ListaCampos.DB_SI, false );
+		adicCampo( txtPercIPIItem, 550, 15, 62, 20, "PercIPIItPed", "% IPI", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrIPIItem, "VlrIPIItPed", "Valor IPI", ListaCampos.DB_SI, false );
+		adicCampo( txtPercItLucro, 615, 15, 58, 20, "PercItlucro", "% Lucro", ListaCampos.DB_SI, false );
+		
 
 		adicCampo( txtPercDescItem, 7, 55, 70, 20, "PercDescItPed", "% Desconto", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrDescItem, "VlrDescItPed", "Vlr. Desconto", ListaCampos.DB_SI, false );
@@ -513,6 +517,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		adic( txtRazForItem, 402, 55, 264, 20 );
 
 		txtCodForItem.setAtivo( false );
+		txtPercItLucro.setAtivo( false );
 
 		btObsPed.setToolTipText( "Observação do pedido" );
 		btEmailPed.setToolTipText( "Enviar pedido por e-mail" );
@@ -592,6 +597,17 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		if ( txtPercPagItem.getVlrBigDecimal() != null && txtVlrItem.getVlrBigDecimal() != null ) {
 			txtVlrPagItem.setVlrBigDecimal( ( txtVlrItem.getVlrBigDecimal().divide( bdCem ) ).multiply( txtPercPagItem.getVlrBigDecimal() ) );
 		}
+	}
+	
+	private double calcPercItLucro(){
+		
+		double teste = 0;
+		
+		if( txtVlrItem.getVlrBigDecimal() != null ){
+			
+		}
+		
+		return teste;
 	}
 	
 	private void loadProduto() {
