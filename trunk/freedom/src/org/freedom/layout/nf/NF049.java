@@ -65,6 +65,7 @@ public class NF049 extends Layout {
 		Vector<String> vSigla = new Vector<String>();
 		Vector<?> vDescServ = new Vector<Object>();
 		Vector<Object[]> vServico = new Vector<Object[]>();
+		BigDecimal vlricmsorig = new BigDecimal(0);
 
 		try {
 
@@ -202,7 +203,7 @@ public class NF049 extends Layout {
 
 				// Imprime os dados do item no corpo da nota
 				
-				BigDecimal vlricmsorig = new BigDecimal(0);
+				
 
 				if ( !"S".equals( itens.getString( NF.C_TIPOPROD ) ) ) {
 
