@@ -31,6 +31,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -130,6 +131,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private final JTextFieldPad txtPrecoItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
+	private final JTextFieldPad txtPrecoCustoProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
 	private final JTextFieldPad txtVlrItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtPercIPIItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 8, Aplicativo.casasDec );
@@ -229,6 +232,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcCliente.addCarregaListener( this );
 		lcProduto.addCarregaListener( this );
 		lcReferencia.addCarregaListener( this );
+		txtPrecoItem.addKeyListener( this );
 
 		lcCampos.addInsertListener( this );
 		lcDet.addInsertListener( this );
@@ -364,6 +368,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProduto.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
 		lcProduto.add( new GuardaCampo( txtCodForItem, "CodFor", "Cód.for.", ListaCampos.DB_SI, false ) );
+		lcProduto.add( new GuardaCampo( txtPrecoCustoProd, "precocusto", "Preco.Custo", ListaCampos.DB_SI, false));
 		lcProduto.montaSql( false, "PRODUTO", "RP" );
 		lcProduto.setReadOnly( true );
 		txtCodProd.setTabelaExterna( lcProduto );
@@ -599,17 +604,29 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		}
 	}
 	
-	private double calcPercItLucro(){
+	private BigDecimal calcPercItLucro(){
 		
-		double teste = 0;
+		BigDecimal percLucro = new BigDecimal(0);
+		BigDecimal precoCusto = txtPrecoCustoProd.getVlrBigDecimal();
+		BigDecimal precoVenda = txtPrecoItem.getVlrBigDecimal();
 		
-		if( txtVlrItem.getVlrBigDecimal() != null ){
+		try {
+			
+			percLucro = (((precoVenda.subtract( precoCusto)).multiply( new BigDecimal(100)).divide( precoVenda )));
+			System.out.println( percLucro );
+			percLucro.setScale( 2, BigDecimal.ROUND_CEILING );
+			
+			txtPercItLucro.setVlrBigDecimal( percLucro );
 			
 		}
+		catch ( Exception e ) {
+			
+			e.printStackTrace();
+		}
 		
-		return teste;
+		return percLucro;
 	}
-	
+		
 	private void loadProduto() {
 		
 		try {
@@ -902,6 +919,17 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		super.actionPerformed( e );
 	}
 
+	public void keyPressed( KeyEvent kevt ) {
+		
+		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
+			
+			if ( kevt.getSource() == txtPrecoItem ) {
+				
+				calcPercItLucro();
+			}
+		}
+	}
+	
 	public void focusGained( FocusEvent e ) { }
 
 	public void focusLost( FocusEvent e ) {
