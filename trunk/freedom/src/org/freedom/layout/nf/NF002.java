@@ -83,28 +83,28 @@ public class NF002 extends Leiaute {
 					imp.say(imp.pRow()+1,0,imp.comprimido());
 					imp.say(imp.pRow()+1,0,imp.comprimido());
 				
-					//imp.say(imp.pRow(),91,"Pis:");
-					//imp.say(imp.pRow(),99,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRPISVENDA")));
-				//	imp.say(imp.pRow(),111,"Cofins:");
-				//	imp.say(imp.pRow(),121,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRCOFINSVENDA")));
-				//	imp.say(imp.pRow()+1,0,imp.comprimido());
-				//	imp.say(imp.pRow(),40,"1 - I.S.S.");
-				//	imp.say(imp.pRow(),91,"IR:");
-				//	imp.say(imp.pRow(),99,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRIRVENDA")));
-				//	imp.say(imp.pRow(),111,"C.Social:");
-				//	imp.say(imp.pRow(),121,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRCSOCIALVENDA")));
-				//	imp.say(imp.pRow()+1,0,imp.comprimido());
-				//	imp.say(imp.pRow(),91,"B.Imp.:");
-				//	imp.say(imp.pRow(),99,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRBASEISSVENDA")));
-				//	imp.say(imp.pRow(),111,"T.Imp.:");
+					imp.say(imp.pRow(),64,"Pis:");
+					imp.say(imp.pRow(),72,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRPISVENDA")));
+					imp.say(imp.pRow(),84,"Cofins:");
+					imp.say(imp.pRow(),94,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRCOFINSVENDA")));
+					imp.say(imp.pRow()+1,0,imp.comprimido());
+					imp.say(imp.pRow(),40,"1 - I.S.S.");
+					imp.say(imp.pRow(),64,"IR:");
+					imp.say(imp.pRow(),72,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRIRVENDA")));
+					imp.say(imp.pRow(),84,"C.Social:");
+					imp.say(imp.pRow(),94,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRCSOCIALVENDA")));
+					imp.say(imp.pRow()+1,0,imp.comprimido());
+					imp.say(imp.pRow(),64,"B.Imp.:");
+					imp.say(imp.pRow(),72,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRBASEISSVENDA")));
+					imp.say(imp.pRow(),84,"T.Imp.:");
 					
-				//	imp.say(imp.pRow(),128,Funcoes.strDecimalToStrCurrency(10,2,""+(
-				//			rs.getDouble("VLRPISVENDA")+
-				//			rs.getDouble("VLRCOFINSVENDA")+
-				//			rs.getDouble("VLRIRVENDA")+
-				//			rs.getDouble("VLRCSOCIALVENDA")
+					imp.say(imp.pRow(),94,Funcoes.strDecimalToStrCurrency(10,2,""+(
+							rs.getDouble("VLRPISVENDA")+
+							rs.getDouble("VLRCOFINSVENDA")+
+							rs.getDouble("VLRIRVENDA")+
+							rs.getDouble("VLRCSOCIALVENDA")
 					
-				//	)));
+					)));
           
 					imp.say(imp.pRow()+1,0,imp.comprimido());
 					imp.say(imp.pRow(),128,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRLIQVENDA")));
