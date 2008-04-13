@@ -25,8 +25,14 @@
 package org.freedom.modulos.grh;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.sql.Connection;
+import java.util.HashMap;
+
 import javax.swing.JScrollPane;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -34,7 +40,9 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
+import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FTabDados;
 
 public class FVaga extends FTabDados {
@@ -144,7 +152,10 @@ public class FVaga extends FTabDados {
 		montaListaCampos();
 		montaTela();
 		
-		setImprimir( false );
+		btImp.addActionListener( this );
+		btPrevimp.addActionListener( this );
+
+		setImprimir( true );
 	}
 	
 	private void montaListaCampos() {
@@ -306,6 +317,42 @@ public class FVaga extends FTabDados {
 		
 		// Fim da aba cursos
 		
+	}
+
+	@ Override
+	public void actionPerformed( ActionEvent e ) {
+
+		super.actionPerformed( e );
+		
+		if ( e.getSource() == btPrevimp ) {
+			imprimir( true );
+		}
+		else if ( e.getSource() == btImp ) {
+			imprimir( false );
+		}
+	}
+
+	private void imprimir( boolean bVisualizar ) {
+		
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RHVAGA" ) );
+
+		dlGr = new FPrinterJob( "relatorios/grhVagas.jasper", "Lista de Vagas", "", this, hParam, con, null, false );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception e ) {
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro na geração do relátorio!" + e.getMessage(), true, con, e );
+			}
+		}
 	}
 
 	public void setConexao( Connection cn ) {
