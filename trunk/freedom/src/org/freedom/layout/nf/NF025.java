@@ -236,7 +236,9 @@ public class NF025 extends Layout {
 
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
-						imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRICMSPED ) ) ) );
+						imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( 
+																				cab.getFloat( NF.C_VLRICMSPED ) +
+								                                               ("S".equals( frete.getString( NF.C_ADICFRETEBASEICM ) ) ? frete.getFloat( NF.C_VLRICMSFRETEVD ) : 0f ) ) ) );
 						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) ) ) );
 						imp.pulaLinha( 2, imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( frete.getFloat( NF.C_VLRFRETEPED ) ) ) );

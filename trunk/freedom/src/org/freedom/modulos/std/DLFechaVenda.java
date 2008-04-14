@@ -30,6 +30,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
@@ -79,8 +80,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	
 	private final int ABA_COMISSAO = 4;
 
-	private final int casasDec = Aplicativo.casasDec;
-
 	private final JTabbedPanePad tpn = new JTabbedPanePad();
 
 	private final JPanelPad pinFecha = new JPanelPad( 400, 300 );
@@ -119,15 +118,19 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private final JTextFieldPad txtConhecFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
-	private final JTextFieldPad txtQtdFreteVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private final JTextFieldPad txtQtdFreteVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
 
-	private final JTextFieldPad txtPesoBrutVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private final JTextFieldPad txtPesoBrutVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
 
-	private final JTextFieldPad txtPesoLiqVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private final JTextFieldPad txtPesoLiqVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
 
 	private final JTextFieldPad txtEspFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private final JTextFieldPad txtMarcaFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+
+	private final JTextFieldFK txtVlrIcmsFreteVD = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+
+	private final JTextFieldPad txtPercIcmsFreteVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtCodAuxV = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -207,6 +210,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private final JCheckBoxPad cbAdicFrete = new JCheckBoxPad( "adiciona valor do frete na nota?", "S", "N" );
 
+	private final JCheckBoxPad cbAdicICMSFrete = new JCheckBoxPad( "adiciona valor do frete na base de ICMS?", "S", "N" );
+
 	private final JRadioGroup<?, ?> rgFreteVD;
 
 	private final ListaCampos lcVenda = new ListaCampos( this );
@@ -261,7 +266,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		setConexao( cn );
 		iCodVendaFecha = iCodVenda.intValue();
 		setTitulo( "Fechar Venda" );
-		setAtribos( 395, 450 );
+		setAtribos( 395, 450 );		
+
+		bPrefs = prefs();
 
 		lcItReceber.setMaster( lcReceber );
 		lcReceber.adicDetalhe( lcItReceber );
@@ -429,6 +436,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcFreteVD.add( new GuardaCampo( txtEspFreteVD, "EspFreteVD", "Esp.fiscal", ListaCampos.DB_SI, true ) );
 		lcFreteVD.add( new GuardaCampo( txtMarcaFreteVD, "MarcaFreteVD", "Marca", ListaCampos.DB_SI, true ) );
 		lcFreteVD.add( new GuardaCampo( cbAdicFrete, "AdicFreteVD", "frete na nota", ListaCampos.DB_SI, true ) );
+		lcFreteVD.add( new GuardaCampo( cbAdicICMSFrete, "AdicFreteBaseICM", "frete no icms", ListaCampos.DB_SI, true ) );
+		lcFreteVD.add( new GuardaCampo( txtPercIcmsFreteVD, "AliqICMSFreteVD", "aliquota", ListaCampos.DB_SI, false ) );
+		lcFreteVD.add( new GuardaCampo( txtVlrIcmsFreteVD, "VlrIcmsFreteVD", "valor icms", ListaCampos.DB_SI, false ) );
 		lcFreteVD.montaSql( false, "FRETEVD", "VD" );
 		lcFreteVD.setConexao( cn );	
 		rgFreteVD.setListaCampos( lcFreteVD );
@@ -443,9 +453,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtConhecFreteVD.setListaCampos( lcFreteVD );
 		txtCodTran.setListaCampos( lcFreteVD );
 		cbAdicFrete.setListaCampos( lcFreteVD );
+		cbAdicICMSFrete.setListaCampos( lcFreteVD );
+		txtPercIcmsFreteVD.setListaCampos( lcFreteVD );
+		txtVlrIcmsFreteVD.setListaCampos( lcFreteVD );
 		txtPlacaFreteVD.setStrMascara("###-####");	
 		
 		cbAdicFrete.setVlrString( "S" );
+		cbAdicICMSFrete.setVlrString( "N" );
 
 		lcAuxVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.venda", ListaCampos.DB_PK, false ) );
 		lcAuxVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK, false ) );
@@ -520,24 +534,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcComis.setQueryCommit( false );
 		lcComis.montaTab();
 		lcComis.setConexao( cn );
-		
-		
-		/*		
-		 *
-		 * 		txtCodCartCob.setListaCampos( lcCartCob );
-		txtDescCartCob.setListaCampos( lcCartCob );
-
-		 * lcCartCobItRec.add( new GuardaCampo( txtCodCartCobItRec, "CodCartCob", "Cód.Cart.Cob.", ListaCampos.DB_PK, false ) );
-		//lcCartCob.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PF, false ) );
-		lcCartCobItRec.add( new GuardaCampo( txtDescCartCobItRec, "DescCartCob", "Descrição da carteira de cobrança", ListaCampos.DB_SI, false ) );
-		lcCartCobItRec.montaSql( false, "CARTCOB", "FN" );
-		lcCartCobItRec.setQueryCommit( false );
-		lcCartCobItRec.setReadOnly( true );
-		lcCartCobItRec.setConexao( cn );
-		txtCodCartCobItRec.setTabelaExterna( lcCartCobItRec );
-		txtCodCartCobItRec.setFK( true );
-		txtCodCartCobItRec.setNomeCampo( "CodCartCob" );	
-*/
 
 		tabComis.addMouseListener( this );
 
@@ -547,8 +543,15 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		
 		getDadosCli();
 
-		// Carrega o frete
+		cbImpNot.addCheckBoxListener( this );
+		cbImpPed.addCheckBoxListener( this );
+		cbImpBol.addCheckBoxListener( this );
+		cbImpRec.addCheckBoxListener( this );
+		cbReImpNot.addCheckBoxListener( this );
+		cbAdicICMSFrete.addCheckBoxListener( this );
 
+		// Carrega o frete
+		
 		lcFreteVD.setReadOnly( true );
 		if ( lcFreteVD.carregaDados() ) {
 			lcFreteVD.setReadOnly( false );
@@ -568,12 +571,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		else {
 			txtCodAuxV.setVlrInteger( new Integer( 1 ) );
 		}
-
-		cbImpNot.addCheckBoxListener( this );
-		cbImpPed.addCheckBoxListener( this );
-		cbImpBol.addCheckBoxListener( this );
-		cbImpRec.addCheckBoxListener( this );
-		cbReImpNot.addCheckBoxListener( this );
 		
 		setPainel( pinFecha );
 		adic( new JLabelPad( "Cód.p.pg." ), 7, 0, 100, 20 );
@@ -638,7 +635,15 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		adic( txtEspFreteVD, 7, 190, 175, 20 );
 		adic( new JLabelPad( "Marca" ), 185, 170, 175, 20 );
 		adic( txtMarcaFreteVD, 185, 190, 175, 20 );
-
+		
+		if ( bPrefs[3] ) {
+			adic( cbAdicICMSFrete, 7, 220, 300, 30 );
+			adic( new JLabelPad( "% icms" ), 7, 250, 86, 20 );
+			adic( txtPercIcmsFreteVD, 7, 270, 86, 20 );
+			adic( new JLabelPad( "Valor do icms do frete" ), 96, 250, 175, 20 );
+			adic( txtVlrIcmsFreteVD, 96, 270, 175, 20 );
+		}
+		
 		Funcoes.setBordReq( rgFreteVD );
 		Funcoes.setBordReq( txtPlacaFreteVD );
 		Funcoes.setBordReq( txtUFFreteVD );
@@ -661,7 +666,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		adic( txtCidCliAuxV, 7, 60, 300, 20 );
 		adic( new JLabelPad( "UF" ), 310, 40, 40, 20 );
 		adic( txtUFCliAuxV, 310, 60, 40, 20 );
-		// adic(txtCodAuxV,310,80,40,20);
 
 		if ( txtVlrDescItVenda.getVlrBigDecimal().doubleValue() > 0 ) {
 			txtPercDescVenda.setAtivo( false );
@@ -677,6 +681,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtVlrDescVenda.addFocusListener( this );
 		txtPercAdicVenda.addFocusListener( this );
 		txtVlrAdicVenda.addFocusListener( this );
+		txtVlrFreteVD.addFocusListener( this );
 
 		cbImpPed.setVlrString( impPed );
 		cbImpNot.setVlrString( impNf );
@@ -684,12 +689,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		cbImpRec.setVlrString( impRec );
 		cbReImpNot.setVlrString( reImpNf );
 
-		bPrefs = prefs();
 		lcVenda.edit();
-		
-		//lcItReceber.addCarregaListener( this );
-		
-		
 	}
 
 	private void calcPeso() {
@@ -708,8 +708,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			sSQL.append( "FROM VDITVENDA I,EQPRODUTO P " );
 			sSQL.append( "WHERE I.CODVENDA=? AND I.CODEMP=? AND I.CODFILIAL=? AND I.TIPOVENDA=? AND P.CODPROD=I.CODPROD" );
 			
-			
-
 			lcFreteVD.edit();
 			txtCodTran.setVlrInteger( new Integer( getCodTran() ) );
 			lcTran.carregaDados();
@@ -791,42 +789,29 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private void gravaVenda() {
 
-		if ( "N".equals( cbReImpNot.getVlrString() ) ) {
-			
-			txtPlacaFreteVD.getVlrString();
-			
-			if ( lcFreteVD.getStatus() == ListaCampos.LCS_EDIT || lcFreteVD.getStatus() == ListaCampos.LCS_INSERT ) {
-			
+		if ( "N".equals( cbReImpNot.getVlrString() ) ) {			
+			txtPlacaFreteVD.getVlrString();			
+			if ( lcFreteVD.getStatus() == ListaCampos.LCS_EDIT || lcFreteVD.getStatus() == ListaCampos.LCS_INSERT ) {			
 				lcFreteVD.post();
 			}
-
-			lcVenda.edit();
-			
-			if ( "S".equals( cbImpNot.getVlrString() ) ) {
-			
+			lcVenda.edit();			
+			if ( "S".equals( cbImpNot.getVlrString() ) ) {			
 				txtStatusVenda.setVlrString( "V2" );
 			}
-			else if ( "P".equals( txtStatusVenda.getVlrString().substring( 0, 1 ) ) ) {
-			
+			else if ( "P".equals( txtStatusVenda.getVlrString().substring( 0, 1 ) ) ) {			
 				txtStatusVenda.setVlrString( "P2" );
 			}
-			else if ( "V".equals( txtStatusVenda.getVlrString().substring( 0, 1 ) ) ) {
-			
+			else if ( "V".equals( txtStatusVenda.getVlrString().substring( 0, 1 ) ) ) {			
 				txtStatusVenda.setVlrString( "V2" );
-			}
-			
+			}			
 			lcVenda.post();
-
-			if ( lcAuxVenda.getStatus() == ListaCampos.LCS_EDIT || lcAuxVenda.getStatus() == ListaCampos.LCS_INSERT ) {
-			
+			if ( lcAuxVenda.getStatus() == ListaCampos.LCS_EDIT || lcAuxVenda.getStatus() == ListaCampos.LCS_INSERT ) {			
 				lcAuxVenda.post();
 			}
 		}
 		
-		int iCodRec = getCodRec();
-		
-		if ( iCodRec > 0 ) {
-			
+		int iCodRec = getCodRec();		
+		if ( iCodRec > 0 ) {			
 			txtCodRec.setVlrInteger( new Integer( iCodRec ) );
 			if ("S".equals( cbImpRec.getVlrString())) {
 				gravaImpRecibo( iCodRec, 1, new Boolean(true) );
@@ -1045,13 +1030,14 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private boolean[] prefs() {
 
-		boolean[] bRetorno = new boolean[ 3 ];
+		boolean[] bRetorno = new boolean[ 4 ];
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
 		try {
 			
-			ps = con.prepareStatement( "SELECT TABFRETEVD,TABADICVD,VERIFALTPARCVENDA FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps = con.prepareStatement( 
+					"SELECT TABFRETEVD,TABADICVD,VERIFALTPARCVENDA,ADICFRETEBASEICM FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			
@@ -1059,9 +1045,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			
 			if ( rs.next() ) {
 			
-				bRetorno[ 0 ] = rs.getString( "TabFreteVD" ).trim().equals( "S" );
-				bRetorno[ 1 ] = rs.getString( "TabAdicVD" ).trim().equals( "S" );
-				bRetorno[ 2 ] = rs.getString( "VerifAltParcVenda" ).trim().equals( "S" );
+				bRetorno[ 0 ] = rs.getString( "TABFRETEVD" ).trim().equals( "S" );
+				bRetorno[ 1 ] = rs.getString( "TABADICVD" ).trim().equals( "S" );
+				bRetorno[ 2 ] = rs.getString( "VERIFALTPARCVENDA" ).trim().equals( "S" );
+				bRetorno[ 3 ] = rs.getString( "ADICFRETEBASEICM" ).trim().equals( "S" );
 			}
 			
 			rs.close();
@@ -1228,10 +1215,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			ps.setInt( 3, iCodVendaFecha );
 			rs = ps.executeQuery();
 			
-			if ( rs.next() ) {
-			
-				if ( ! "".equals( rs.getString( 1 ) ) && rs.getString( 1 ) != null ) {
-				
+			if ( rs.next() ) {			
+				if ( ! "".equals( rs.getString( 1 ) ) && rs.getString( 1 ) != null ) {				
 					rgFreteVD.setVlrString( rs.getString( 1 ).equals( "F" ) ? "F" : "C" );
 				}
 			}
@@ -1320,11 +1305,17 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		return sRetorno;
 	}
 	
-
+	private void calculaIcmsFrete() {
+		if ( "S".equals( cbAdicICMSFrete.getVlrString() ) ) {
+			BigDecimal icms = 
+				txtVlrFreteVD.getVlrBigDecimal().divide( new BigDecimal( "100.00" ) ).multiply( txtPercIcmsFreteVD.getVlrBigDecimal() );
+			txtVlrIcmsFreteVD.setVlrBigDecimal( icms );
+		}
+	}
+	
 	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btOK ) {
-			
+		if ( evt.getSource() == btOK ) {			
 			if ( prox() ) {				
 				super.actionPerformed( evt );				
 			}
@@ -1336,20 +1327,16 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	public void focusLost( FocusEvent fevt ) {
 
-		if ( fevt.getSource() == txtPercDescVenda ) {
-			
-			if ( txtPercDescVenda.getText().trim().length() < 1 ) {
-			
+		if ( fevt.getSource() == txtPercDescVenda ) {			
+			if ( txtPercDescVenda.getText().trim().length() < 1 ) {			
 				txtVlrDescVenda.setAtivo( true );
 			}
-			else {
-				
+			else {				
 				txtVlrDescVenda.setVlrBigDecimal( txtVlrProdVenda.getVlrBigDecimal().multiply( txtPercDescVenda.getVlrBigDecimal() ).divide( new BigDecimal( "100" ), 3, BigDecimal.ROUND_HALF_UP ) );
 				txtVlrDescVenda.setAtivo( false );
 			}
 		}
-		if ( fevt.getSource() == txtPercAdicVenda ) {
-			
+		else if ( fevt.getSource() == txtPercAdicVenda ) {			
 			if ( txtPercAdicVenda.getText().trim().length() < 1 ) {
 				txtVlrAdicVenda.setAtivo( true );
 			}
@@ -1357,6 +1344,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				txtVlrAdicVenda.setVlrBigDecimal( txtVlrProdVenda.getVlrBigDecimal().multiply( txtPercAdicVenda.getVlrBigDecimal() ).divide( new BigDecimal( "100" ), 3, BigDecimal.ROUND_HALF_UP ) );
 				txtVlrAdicVenda.setAtivo( false );
 			}
+		}
+		else if ( fevt.getSource() == txtVlrFreteVD ) {
+			calculaIcmsFrete();
 		}
 	}
 
@@ -1366,19 +1356,15 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		
 		Tabela tab = (Tabela) mevt.getSource();
 		String imprecibo = "N";
-		if ( mevt.getClickCount() == 1) {
-			
+		if ( mevt.getClickCount() == 1) {			
 			gravaImpRecibo( txtCodRec.getVlrInteger(), (Integer) tabRec.getValor( tabRec.getLinhaSel(), 0 ),
-					(Boolean) tabRec.getValor( tabRec.getLinhaSel(), 1 ) );
-			
+					(Boolean) tabRec.getValor( tabRec.getLinhaSel(), 1 ) );			
 		}
 		else if ( mevt.getClickCount() == 2 ) {			
 			if ( tab == tabRec && tabRec.getLinhaSel() >= 0 ) {
-				if ( bPrefs[ 2 ] ) {
-					
+				if ( bPrefs[ 2 ] ) {					
 					FPassword fpw = new FPassword( this, FPassword.ALT_PARC_VENDA, null, con );
-					fpw.execShow();
-					
+					fpw.execShow();					
 					if ( fpw.OK ) {					
 						alteraRec();
 					}					
@@ -1392,7 +1378,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				alteraComis();
 			}
 		}
-
 	}
 
 	public void mouseEntered( MouseEvent e ) { }
@@ -1415,8 +1400,16 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		}
 		else if ( ( evt.getCheckBox() == cbImpNot ) || ( evt.getCheckBox() == cbImpBol ) || 
 				( evt.getCheckBox() == cbImpRec ) || ( evt.getCheckBox() == cbImpPed ) ) {
-			if ( ( (JCheckBoxPad) evt.getCheckBox() ).getVlrString().equals( "S" ) )
+			if ( ( (JCheckBoxPad) evt.getCheckBox() ).getVlrString().equals( "S" ) ) {
 				cbReImpNot.setVlrString( "N" );
+			}
+		}
+		else if ( evt.getCheckBox() == cbAdicICMSFrete ) {
+			txtPercIcmsFreteVD.setEditable( "S".equals( cbAdicICMSFrete.getVlrString() ) );
+			if ( "N".equals( cbAdicICMSFrete.getVlrString() ) ) {
+				txtPercIcmsFreteVD.setVlrString( "" );
+				txtVlrIcmsFreteVD.setVlrString( "" );
+			}
 		}
 	}
 
@@ -1430,4 +1423,16 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		}
 	}
 
+	@Override
+    public void keyPressed( KeyEvent e ) {
+		if ( e.getKeyCode() == KeyEvent.VK_ENTER && 
+				e.getSource() == txtPercIcmsFreteVD && 
+					txtVlrFreteVD.getVlrBigDecimal() != null && 
+						txtVlrFreteVD.getVlrBigDecimal().floatValue() > 0 ) {
+			calculaIcmsFrete();
+		}
+		else {
+			super.keyPressed( e );
+		}
+    }
 }

@@ -267,7 +267,7 @@ public class NFSaida extends NF {
 			sql.append( "T.ENDTRAN, T.NUMTRAN, T.CIDTRAN, T.UFTRAN , F.TIPOFRETEVD, F.PLACAFRETEVD, " );
 			sql.append( "F.UFFRETEVD, F.QTDFRETEVD, F.ESPFRETEVD, F.MARCAFRETEVD, F.PESOBRUTVD, F.PESOLIQVD, " );
 			sql.append( "(CASE WHEN V.VLRFRETEVENDA<=0 THEN F.VLRFRETEVD ELSE V.VLRFRETEVENDA END) VLRFRETEVENDA, ");
-			sql.append( "F.CONHECFRETEVD, T.CPFTRAN " );
+			sql.append( "F.CONHECFRETEVD, T.CPFTRAN, F.ADICFRETEBASEICM, F.ALIQICMSFRETEVD, F.VLRICMSFRETEVD " );
 			sql.append( "FROM VDTRANSP T, VDFRETEVD F, VDVENDA V " );
 			sql.append( "WHERE T.CODEMP=F.CODEMPTN AND T.CODFILIAL=F.CODFILIALTN AND T.CODTRAN=F.CODTRAN " );
 			sql.append( "AND F.CODEMP=V.CODEMP AND F.CODFILIAL=V.CODFILIAL AND F.CODVENDA=V.CODVENDA AND F.TIPOVENDA=V.TIPOVENDA " );
@@ -278,7 +278,7 @@ public class NFSaida extends NF {
 			ps.setInt( 3, ( (Integer) parans.elementAt( 2 ) ).intValue() );
 			rs = ps.executeQuery();
 			sql.delete( 0, sql.length() );
-			frete = new TabVector( 21 );
+			frete = new TabVector( 24 );
 			while ( rs.next() ) {
 				frete.addRow();
 				frete.setInt( C_CODTRAN, rs.getInt( "CODTRAN" ) );
@@ -302,6 +302,9 @@ public class NFSaida extends NF {
 				frete.setFloat( C_VLRFRETEPED, rs.getFloat( "VLRFRETEVENDA" ) );
 				frete.setString( C_CONHECFRETEPED, ( rs.getString( "CONHECFRETEVD" ) != null ? rs.getString( "CONHECFRETEVD" ) : "" ) );
 				frete.setString( C_CPFTRANSP, ( rs.getString( "CPFTRAN" ) != null ? rs.getString( "CPFTRAN" ) : "" ) );
+				frete.setString( C_ADICFRETEBASEICM, ( rs.getString( "ADICFRETEBASEICM" ) != null ? rs.getString( "ADICFRETEBASEICM" ) : "" ) );
+				frete.setFloat( C_ALIQICMSFRETEVD, rs.getFloat( "ALIQICMSFRETEVD" ) );
+				frete.setFloat( C_VLRICMSFRETEVD, rs.getFloat( "VLRICMSFRETEVD" ) );
 			}
 			rs.close();
 			ps.close();
