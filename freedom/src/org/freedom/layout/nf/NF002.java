@@ -122,7 +122,7 @@ public class NF002 extends Leiaute {
 					imp.say(imp.pRow()+1,7,sObs[5]);
 					imp.say(imp.pRow()+1,7,sObs[6]);
 					imp.say(imp.pRow()+1,7,sObs[7]);
-					imp.eject();
+					imp.say(imp.pRow()+5,0,imp.comprimido());
 					imp.setPrc(0,0);
 					iItImp = 0;
 
