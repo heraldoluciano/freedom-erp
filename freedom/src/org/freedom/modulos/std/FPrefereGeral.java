@@ -302,6 +302,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 	private JCheckBoxPad cbIcmsVenda = null;
 
+	private JCheckBoxPad cbIcmsFrete = null;
+
 	private JCheckBoxPad cbComisPDupl = null;
 
 	private JCheckBoxPad cbCustosSICMS = null;
@@ -616,12 +618,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbBloqVenda.setVlrString( "N" );
 		cbBloqCompra = new JCheckBoxPad( "Bloquear compra após finalizar?", "S", "N" );
 		cbBloqCompra.setVlrString( "N" );
-		cbNatVenda = new JCheckBoxPad( "Habil. campo CFOP ?", "S", "N" );
+		cbNatVenda = new JCheckBoxPad( "Habilitar campo CFOP ?", "S", "N" );
 		cbNatVenda.setVlrString( "S" );
-		cbIPIVenda = new JCheckBoxPad( "Habil. campo IPI ?", "S", "N" );
+		cbIPIVenda = new JCheckBoxPad( "Habilitar campo IPI ?", "S", "N" );
 		cbIPIVenda.setVlrString( "S" );
-		cbIcmsVenda = new JCheckBoxPad( "Habil. campos de ICMS ?", "S", "N" );
+		cbIcmsVenda = new JCheckBoxPad( "Habilitar campos de ICMS ?", "S", "N" );
 		cbIcmsVenda.setVlrString( "N" );
+		cbIcmsFrete = new JCheckBoxPad( "Habilitar campos de ICMS para Frete ?", "S", "N" );
+		cbIcmsFrete.setVlrString( "N" );
 		cbComisPDupl = new JCheckBoxPad( "Calcula comissão com base nas duplicatas?", "S", "N" );
 		cbComisPDupl.setVlrString( "S" );
 		cbObsCliVend = new JCheckBoxPad( "Mostrar observações do cliente na venda e orçamento?", "S", "N" );
@@ -826,7 +830,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 		lbVendOpcoes.setOpaque( true );
 		adic( lbVendOpcoes, 357, 5, 70, 20 );
-		adic( pinOpcoesVenda, 348, 15, 380, 340 );
+		adic( pinOpcoesVenda, 348, 15, 470, 370 );
 		setPainel( pinOpcoesVenda );
 		
 		adicDB( cbUsaPedSeq, 5, 10, 160, 20, "UsaPedSeq", "", true );
@@ -845,13 +849,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDB( cbVerifAltParVenda, 5, 270, 350, 20, "VerifAltParcVenda", "", true );
 		adicDB( cbUsaPrecoZero, 5, 290, 350, 20, "UsaPrecoZero", "", true );
 		adicDB( cbUsaClasComis, 5, 310, 160, 20, "UsaClasComis", "", true );
+		adicDB( cbIcmsFrete, 5, 330, 300, 20, "AdicFreteBaseICM", "", true );
 		
-		adicDB( cbTabFreteVd, 205, 10, 160, 20, "TabFreteVd", "", true );
-		adicDB( cbTabAdicVd, 205, 30, 160, 20, "TabAdicVd", "", true );
-		adicDB( cbUsaDescEspelho, 205, 50, 160, 20, "UsaLiqRel", "", true );
-		adicDB( cbIPIVenda, 205, 70, 160, 20, "IPIVenda", "", true );
-		adicDB( cbNatVenda, 205, 90, 160, 20, "NatVenda", "", true );
-		adicDB( cbIcmsVenda, 205, 110, 170, 20, "IcmsVenda", "", true );
+		adicDB( cbTabFreteVd, 270, 10, 180, 20, "TabFreteVd", "", true );
+		adicDB( cbTabAdicVd, 270, 30, 180, 20, "TabAdicVd", "", true );
+		adicDB( cbUsaDescEspelho, 270, 50, 180, 20, "UsaLiqRel", "", true );
+		adicDB( cbIPIVenda, 270, 70, 180, 20, "IPIVenda", "", true );
+		adicDB( cbNatVenda, 270, 90, 180, 20, "NatVenda", "", true );
+		adicDB( cbIcmsVenda, 270, 110, 180, 20, "IcmsVenda", "", true );
 		
 		// Compra
 		
@@ -860,12 +865,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicTab( "Compras", pinCompra );
 
 		lbCompOpcoes.setOpaque( true );
-		adic( lbCompOpcoes, 10, 5, 70, 20 );
+		adic( lbCompOpcoes, 17, 5, 70, 20 );
 		adic( pinCompras, 7, 15, 290, 100 );
 		setPainel( pinCompras );
-		adicDB( cbUsaRefCompra, 7, 7, 200, 20, "UsaRefProd", "",false );
-		adicDB( cbTransAbaCp, 7, 30, 250, 20, "TabTranspCp", "",false );
-		adicDB( cbTabSolCp, 7, 53, 250, 20, "TabSolCp", "",false );
+		adicDB( cbUsaRefCompra, 7, 15, 200, 20, "UsaRefProd", "",false );
+		adicDB( cbTransAbaCp, 7, 35, 250, 20, "TabTranspCp", "",false );
+		adicDB( cbTabSolCp, 7, 55, 250, 20, "TabSolCp", "",false );
 		
 		// Preço
 
