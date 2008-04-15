@@ -100,6 +100,10 @@ public class VisaTextTef extends TextTef  {
 		
 		isActive = send( request, fileTemp, fileSend ) && existFileStatus( ATV, indentification );
 		
+		if ( isActive && fileStatus.exists() ) {
+			fileStatus.delete();
+		}
+		
 		return isActive;
 	}
 
@@ -201,7 +205,7 @@ public class VisaTextTef extends TextTef  {
 		
 		boolean confirmationOfSale = send( request, fileTemp, fileSend );
 		
-		if ( confirmationOfSale ) {
+		if ( confirmationOfSale && existFileStatus( CNF, indentification ) ) {
 			if ( fileStatus.exists() ) {
 				fileStatus.delete();
 			}
@@ -229,7 +233,7 @@ public class VisaTextTef extends TextTef  {
 		
 		boolean notConfirmationOfSale = send( request, fileTemp, fileSend );
 		
-		if ( notConfirmationOfSale ) {
+		if ( notConfirmationOfSale && existFileStatus( NCN, indentification )  ) {
 			if ( fileStatus.exists() ) {
 				fileStatus.delete();
 			}
@@ -239,15 +243,32 @@ public class VisaTextTef extends TextTef  {
 	}
 
 	@Override
+	public synchronized boolean requestAdministrator() throws Exception {
+		
+		boolean requestAdministrator = false;
+		incrementIndentificationActual();
+		
+		List<String> request = new ArrayList<String>();
+		
+		request.add( HEADER          + " = " + ADM );
+		request.add( INDENTIFICATION + " = " + indentification );
+		request.add( TRAILER         + " = " + 0 );
+		
+		requestAdministrator = 
+			send( request, fileTemp, fileSend ) && existFileStatus( ADM, indentification );
+		
+		if ( requestAdministrator && fileStatus.exists() ) {
+			fileStatus.delete();
+		}
+		
+		return requestAdministrator;
+	}
+
+	@Override
 	public synchronized boolean requestCancel( final String nsu, 
             							 	   final String rede, 
             								   final Date data, 
             								   final BigDecimal value ) throws Exception {
-		return false;
-	}
-
-	@Override
-	public synchronized boolean requestAdministrator() throws Exception {
 		return false;
 	}
 
