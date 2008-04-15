@@ -176,9 +176,9 @@ public class FCandidato extends FTabDados {
 
 	public FCandidato() {
 
-		super( false );
+		super( true );
 		setTitulo( "Cadastro de Candidatos" );
-		setAtribos( 50, 50, 430, 520 );
+		setAtribos( 50, 50, 450, 520 );
 		
 		lcCursoCand.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcCursoCand );
