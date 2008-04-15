@@ -29,6 +29,7 @@ import java.util.Vector;
 import javax.swing.JLabel;
 
 import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
