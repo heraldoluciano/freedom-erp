@@ -110,10 +110,10 @@ public abstract class TextTef {
 	
 	abstract public boolean notConfirmationOfSale() throws Exception;
 	
+	abstract public boolean requestAdministrator() throws Exception;
+	
 	abstract public boolean requestCancel( final String nsu,
 										   final String rede,
 									       final Date data,
 										   final BigDecimal value ) throws Exception;
-	
-	abstract public boolean requestAdministrator() throws Exception;
 }
