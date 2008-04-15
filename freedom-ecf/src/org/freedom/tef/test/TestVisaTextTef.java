@@ -2,9 +2,6 @@ package org.freedom.tef.test;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.List;
-
-import javax.swing.JOptionPane;
 
 import junit.framework.TestCase;
 
@@ -68,24 +65,30 @@ public class TestVisaTextTef extends TestCase {
 			TextTef textTef = TextTefFactore.createTextTef( getTextTefProperties(), "VISA" );
 			
 			ok = textTef.requestSale( 2, new BigDecimal( "9.99" ) );
-			
-			if ( ok ) {
-				String message = textTef.getTextTefProperties().
-									getProperty( TextTefProperties.MESSAGE_OPERATOR );
-				JOptionPane.showMessageDialog( null, message );
-				
-				List<String> responseToPrint = textTef.getResponseToPrint();
-				
-				for ( String s : responseToPrint ) {
-					System.out.println( s );
-				}
-			}
 		
 		} catch ( Exception e ) {
 			e.printStackTrace();
 			ok = false;
 		}
 		assertTrue( ok );
+	}
+	
+	public void testRequestAdministrator() {
+		
+		boolean ok = true;
+
+		try {
+
+			Flag.loadParametrosOfInitiation( new File( "C:\\bandeiras.ini" ) );			
+			TextTef textTef = TextTefFactore.createTextTef( getTextTefProperties(), "VISA" );
+			
+			ok = textTef.requestAdministrator();
+		
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			ok = false;
+		}
+		assertTrue( ok );		
 	}
 
 	private TextTefProperties getTextTefProperties() {	
