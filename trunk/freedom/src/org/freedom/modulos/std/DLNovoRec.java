@@ -440,7 +440,8 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 	
 	private void alteraRec() {
 		
-		lcReceber.carregaDados();
+//		lcReceber.carregaDados();
+//		lcItReceber.carregaDados();
 		lcItReceber.edit();
 		
 		DLFechaParcela dl = new DLFechaParcela( this, con ); 
