@@ -21,7 +21,6 @@ package org.freedom.tef.app;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -29,6 +28,9 @@ import org.freedom.infra.components.LoggerManager;
 import org.freedom.tef.driver.text.TextTef;
 import org.freedom.tef.driver.text.TextTefFactore;
 import org.freedom.tef.driver.text.TextTefProperties;
+
+import static org.freedom.tef.driver.text.TextTefProperties.*;
+import static org.freedom.tef.app.ControllerTefEvent.*;
 
 public class ControllerTef {
 	
@@ -44,7 +46,7 @@ public class ControllerTef {
 	
 	private Logger logger;
 	
-	private List<ControllerTefListener> controllerTefListeners;
+	private ControllerTefListener controllerTefListeners;
 	
 	
 	public ControllerTef() {		
@@ -79,10 +81,8 @@ public class ControllerTef {
 		
 		final TextTefProperties textTefProperties = new TextTefProperties();
 		
-		textTefProperties.set( TextTefProperties.PATH_SEND, 
-                               getDefaultTextTefProperties().get( TextTefProperties.PATH_SEND ) );
-		textTefProperties.set( TextTefProperties.PATH_RESPONSE, 
-                               getDefaultTextTefProperties().get( TextTefProperties.PATH_RESPONSE ) );
+		textTefProperties.set( PATH_SEND, getDefaultTextTefProperties().get( PATH_SEND ) );
+		textTefProperties.set( PATH_RESPONSE, getDefaultTextTefProperties().get( PATH_RESPONSE ) );
 		
 		return textTefProperties;
 	}
@@ -127,41 +127,23 @@ public class ControllerTef {
 		}		
 	}
 	
-	public ControllerTefListener addControllerMessageListener( final ControllerTefListener listener ) {
+	public ControllerTefListener setControllerMessageListener( final ControllerTefListener listener ) {
 		
-		if ( listener == null ) {
-			return listener;
-		}
-		
-		if ( this.controllerTefListeners == null ) {
-			this.controllerTefListeners = new ArrayList<ControllerTefListener>();
-		}
-		
-		this.controllerTefListeners.add( listener );
-	
-		return listener;
+		return this.controllerTefListeners = listener;
 	}
 	
-	public void removeControllerMessageListeners( final ControllerTefListener listener ) {
-		
-		if ( listener == null || this.controllerTefListeners == null ) {
-			return;
-		}
-	
-		this.controllerTefListeners.remove( listener );
+	private boolean fireControllerTefEvent( final int option ) {
+		return fireControllerTefEvent( option, null );
 	}
 	
-	private boolean fireControllerTefEvent( final String message, 
-			                                final int option ) {			
+	private boolean fireControllerTefEvent( final int option, 
+			                                final String message ) {			
 		boolean tefMessage = false;
 		
 		ControllerTefEvent controllerTefEvent = new ControllerTefEvent( this, option, message );
 		
-		for ( ControllerTefListener listener : this.controllerTefListeners ) {
-			tefMessage = listener.actionTef( controllerTefEvent );
-			if ( ! tefMessage ) {
-				break;
-			}
+		if ( this.controllerTefListeners != null ) {
+			tefMessage = this.controllerTefListeners.actionTef( controllerTefEvent );
 		}
 		
 		return tefMessage;
@@ -209,7 +191,6 @@ public class ControllerTef {
 	private boolean requestSaleTextTef( final Integer numberDoc,
                                         final BigDecimal value,
                                         final String flagName ) {
-
 		boolean actionReturn = false;
 		
 		try {
@@ -222,28 +203,26 @@ public class ControllerTef {
 					&& textTef.requestSale( numberDoc, value ) 
 						&& textTef.readResponseSale() ) {
 					
-				String messageOperator = textTef.get( TextTefProperties.MESSAGE_OPERATOR, "" );
+				String messageOperator = textTef.get( MESSAGE_OPERATOR, "" );
 				
 				// avisa para os ouvintes a menssagem do campo 030-000.
 				if ( messageOperator.trim().length() > 0 ) {
-					fireControllerTefEvent( messageOperator, ControllerTefEvent.WARNING );
+					fireControllerTefEvent( WARNING, messageOperator );
 				}
 				
 				// invoca método para lançar eventos de impressão do comprovante.
 				if ( voucherTextTef( textTef ) ) {
-					textTef.confirmationOfSale();
+					actionReturn = textTef.confirmationOfSale();
 				}
-				
-				actionReturn = true;
 			}
 			else {
-				fireControllerTefEvent( "TEF não está ativo!", ControllerTefEvent.END_PRINT );
+				fireControllerTefEvent( END_PRINT, "TEF não está ativo!" );
 			}
 			
 		} catch ( Exception e ) {
 			e.printStackTrace();
 			String etmp = "Erro ao solicitar venda:\n" + e.getMessage();
-			fireControllerTefEvent( etmp, ControllerTefEvent.END_PRINT );
+			fireControllerTefEvent( END_PRINT, etmp );
 			whiterLogError( etmp );
 		}
 		
@@ -256,12 +235,16 @@ public class ControllerTef {
 		
 		if ( textTef != null ) {
 		
-    		int amountLines = Integer.parseInt( textTef.get( TextTefProperties.AMOUNT_LINES, "0" ) );
+    		int amountLines = Integer.parseInt( textTef.get( AMOUNT_LINES, "0" ) );
     		
+    		// verifica a quantidade de linhas do comprovante tef para invocar a impressão.
     		if ( amountLines > 0 ) {
-    			if ( fireControllerTefEvent( null, ControllerTefEvent.BEGIN_PRINT )
+    			
+    			// lança os eventos de inicio e fim da impressão do comprovante tef,
+    			// invocando o método printVoucherTextTef entre tais eventos.
+    			if ( fireControllerTefEvent( BEGIN_PRINT )
     						&& printVoucherTextTef( textTef ) 
-    								&& fireControllerTefEvent( null, ControllerTefEvent.END_PRINT ) ) {
+    								&& fireControllerTefEvent( END_PRINT ) ) {
     				voucherTextTef = true;
     			}
     		}
@@ -274,6 +257,7 @@ public class ControllerTef {
 
 		boolean actionReturn = false;
 			
+		// recupera a lista de linhas do comprovante tef.
 		List<String> responseToPrint = textTef.getResponseToPrint();
 		
 		if ( responseToPrint != null && responseToPrint.size() > 0 ) {	
@@ -283,12 +267,15 @@ public class ControllerTef {
 			tickets : while ( numberTickets-- > 0 ) {
 				for ( String message : responseToPrint ) {
 					
-					actionReturn = fireControllerTefEvent( message, ControllerTefEvent.PRINT );
+					// aciona evento para que, a aplicação
+					// envie o comando de impressão para impressora fiscal.
+					actionReturn = fireControllerTefEvent( PRINT, message );
 					
+					// em caso de falha na impressão o processo deve ser reiniciado
+					// dependendo de, confirmação do operador, requisitada pela aplicação.
 					if ( ! actionReturn ) {
-						if ( fireControllerTefEvent( "Impressora não responde, tentar novamente?", 
-								                     ControllerTefEvent.CONFIRM ) ) {
-							fireControllerTefEvent( null, ControllerTefEvent.RE_PRINT );
+						if ( fireControllerTefEvent( CONFIRM, "Impressora não responde, tentar novamente?" ) ) {
+							fireControllerTefEvent( RE_PRINT );
 							actionReturn = printVoucherTextTef( textTef );
 							break tickets;
 						}
