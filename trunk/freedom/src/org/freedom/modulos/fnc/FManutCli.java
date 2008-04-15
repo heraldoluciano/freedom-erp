@@ -29,7 +29,8 @@ import java.util.Vector;
 import javax.swing.JLabel;
 
 import org.freedom.acao.CarregaEvent;
-import org.freedom.acao.CarregaListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
@@ -44,7 +45,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
-public class FManutCli extends FDados implements RadioGroupListener, PostListener, CarregaListener {
+public class FManutCli extends FDados implements RadioGroupListener, PostListener, InsertListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -95,6 +96,7 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		vVals.add( "01" );
 		vVals.add( "02" );
 		rgTipoFebraban = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
+		rgTipoFebraban.setVlrString( "01" );
 
 		vLabs1.add( "Débito em folha" );
 		vLabs1.add( "Débito em conta" );
@@ -102,9 +104,7 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		vVals1.add( "02" );
 		rgSubTipoFebraban = new JRadioGroup<String, String>( 2, 1, vLabs1, vVals1 );
 		rgSubTipoFebraban.setVlrString( "02" );
-		rgTipoFebraban.setVlrString( "01" );
 		txtConta.setEnabled( false );
-		
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
 		lcBanco.montaSql( false, "BANCO", "FN" );
@@ -124,7 +124,7 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		rgTipoFebraban.addRadioGroupListener( this );
 		
 		lcCampos.addPostListener( this );
-		
+		lcCampos.addInsertListener( this );
 		//txtIdentificacao.setAtivo( false );
 	}
 
@@ -194,9 +194,9 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 			else {
 				txtConta.setEnabled( true );
 			}
-			lcCampos.limpaCampos( true ); 
+			lcCampos.limpaCampos( true );
 			txtTipoFebraban.setVlrString( (String) vVals.elementAt( evt.getIndice() ) );
-		} 
+		}
 	}
 
 	public void setConexao( Connection cn ) {
@@ -205,7 +205,6 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		lcBanco.setConexao( cn );
 		lcCliente.setConexao( cn );
 	}
-	
 	public void afterCarrega( CarregaEvent e ) { 
 		if ( e.getListaCampos() == lcCampos ) {
 			if(rgTipoFebraban.getVlrString().equals( "01" )) {
@@ -220,8 +219,18 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 	public void beforeCarrega( CarregaEvent e ) {
 
 	}
-	
-	
-	
+
+	public void afterInsert( InsertEvent ievt ) {
+
+		if( ievt.getListaCampos() == lcCampos ){
+			
+			txtTipoFebraban.setVlrString( "01" );
+		}
+		
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+		
+	}
 
 }
