@@ -16,6 +16,8 @@ import sun.misc.MessageUtils;
 
 
 public class TestControllerTef extends TestCase implements ControllerTefListener {
+	
+	private int countRowPrint = 0;
 
 	public TestControllerTef( String name ) {
 
@@ -28,12 +30,10 @@ public class TestControllerTef extends TestCase implements ControllerTefListener
 
 		try {		
 			
-			ControllerTef controllerTef = new ControllerTef(
-					getTextTefProperties(),
-					new File( "C:\\bandeiras.ini" ),
-					ControllerTef.TEF_TEXT );
-			
-			controllerTef.addControllerMessageListener( this );
+			ControllerTef controllerTef = new ControllerTef( getTextTefProperties(),
+					                                         new File( "C:\\bandeiras.ini" ),
+					                                         ControllerTef.TEF_TEXT );			
+			controllerTef.setControllerMessageListener( this );
 			
 			ok = controllerTef.requestSale( 2, new BigDecimal( "9.99" ), "VISA" );
 			
@@ -77,7 +77,10 @@ public class TestControllerTef extends TestCase implements ControllerTefListener
 		}	
 		else if ( event.getAction() == ControllerTefEvent.PRINT ) {
 			MessageUtils.out( event.getMessage() );
-			actionTef = false;
+			actionTef = countRowPrint++ < 9 ;
+			if ( ! actionTef ) {
+				countRowPrint = 0;
+			}
 		}	
 		else if ( event.getAction() == ControllerTefEvent.END_PRINT ) {
 			MessageUtils.out( "[ Término da impressão do comprovante ] ...\nFechar Comprovante não Fiscal Vinculado." );
