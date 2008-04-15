@@ -28,6 +28,8 @@ import java.util.Vector;
 
 import javax.swing.JLabel;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
@@ -42,7 +44,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
-public class FManutCli extends FDados implements RadioGroupListener, PostListener {
+public class FManutCli extends FDados implements RadioGroupListener, PostListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -100,7 +102,9 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		vVals1.add( "02" );
 		rgSubTipoFebraban = new JRadioGroup<String, String>( 2, 1, vLabs1, vVals1 );
 		rgSubTipoFebraban.setVlrString( "02" );
-
+		rgTipoFebraban.setVlrString( "01" );
+		txtConta.setEnabled( false );
+		
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
 		lcBanco.montaSql( false, "BANCO", "FN" );
@@ -184,9 +188,15 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 	public void valorAlterado( RadioGroupEvent evt ) {
 
 		if ( evt.getIndice() >= 0 ) {
-			lcCampos.limpaCampos( true );
+			if(rgTipoFebraban.getVlrString().equals( "01" )) {
+				txtConta.setEnabled( false );
+			}
+			else {
+				txtConta.setEnabled( true );
+			}
+			lcCampos.limpaCampos( true ); 
 			txtTipoFebraban.setVlrString( (String) vVals.elementAt( evt.getIndice() ) );
-		}
+		} 
 	}
 
 	public void setConexao( Connection cn ) {
@@ -195,5 +205,23 @@ public class FManutCli extends FDados implements RadioGroupListener, PostListene
 		lcBanco.setConexao( cn );
 		lcCliente.setConexao( cn );
 	}
+	
+	public void afterCarrega( CarregaEvent e ) { 
+		if ( e.getListaCampos() == lcCampos ) {
+			if(rgTipoFebraban.getVlrString().equals( "01" )) {
+				txtConta.setEnabled( false );				
+			}
+			else {
+				txtConta.setEnabled( true );
+			}
+		}
+	}
+
+	public void beforeCarrega( CarregaEvent e ) {
+
+	}
+	
+	
+	
 
 }
