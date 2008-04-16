@@ -56,6 +56,8 @@ public class FCandidato extends FTabDados {
 	private final JPanelPad panelGeral = new JPanelPad();
 	
 	private final JPanelPad panelOutrosEmpregos = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+
+	private final JPanelPad panelOBS = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 	
 	private final JPanelPad panelCurso = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
@@ -119,6 +121,8 @@ public class FCandidato extends FTabDados {
 	
 	private final JTextAreaPad txaOutrosempregos = new JTextAreaPad( 1000 );
 	
+	private final JTextAreaPad txaOBS = new JTextAreaPad( 1000 );
+	
 	// FIM GERAL.
 	
 	// CURSOS
@@ -178,7 +182,7 @@ public class FCandidato extends FTabDados {
 
 		super( true );
 		setTitulo( "Cadastro de Candidatos" );
-		setAtribos( 50, 50, 450, 520 );
+		setAtribos( 50, 50, 550, 520 );
 		
 		lcCursoCand.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcCursoCand );
@@ -307,6 +311,24 @@ public class FCandidato extends FTabDados {
 		lcCampos.setQueryInsert( false );
 		
 		// Fim da aba outros empregos
+
+		// Aba outros OBS 
+		
+		adicTab( "Observações gerais", panelOBS ); 
+		setPainel( panelOBS );
+
+		adicDBLiv( txaOBS, "OBSCAND", "Observações", false );
+		panelOBS.add( new JScrollPane( txaOBS ) );
+
+		setListaCampos( true, "CANDIDATO", "RH" );
+		lcCampos.setQueryInsert( false );
+		
+		// Fim da aba outros empregos
+
+		
+		
+		
+		
 		
 		// Aba cursos		
 		
