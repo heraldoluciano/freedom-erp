@@ -291,6 +291,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private JCheckBoxPad cbTransAbaCp = null;
 
 	private JCheckBoxPad cbTabSolCp = null;
+	
+	private JCheckBoxPad cbPrecoRel = null;
 
 	private JCheckBoxPad cbEstNeg = null;
 
@@ -718,6 +720,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbTransAbaCp.setVlrString( "N" );	
 		cbTabSolCp = new JCheckBoxPad( "Aba solicitação na tela de compras?", "S", "N" );
 		cbTabSolCp.setVlrString( "N" );	
+		cbPrecoRel = new JCheckBoxPad( "Mostra preço de compra nos relatórios?", "S", "N" );
+		cbPrecoRel.setVlrString( "S" );
 
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
@@ -866,11 +870,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 		lbCompOpcoes.setOpaque( true );
 		adic( lbCompOpcoes, 17, 5, 70, 20 );
-		adic( pinCompras, 7, 15, 290, 100 );
+		adic( pinCompras, 7, 15, 300, 120 );
 		setPainel( pinCompras );
 		adicDB( cbUsaRefCompra, 7, 15, 200, 20, "UsaRefProd", "",false );
 		adicDB( cbTransAbaCp, 7, 35, 250, 20, "TabTranspCp", "",false );
 		adicDB( cbTabSolCp, 7, 55, 250, 20, "TabSolCp", "",false );
+		adicDB( cbPrecoRel, 7, 75, 270, 20, "PrecoCpRel", "",false );
 		
 		// Preço
 
