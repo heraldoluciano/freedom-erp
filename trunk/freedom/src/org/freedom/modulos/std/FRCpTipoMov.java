@@ -201,7 +201,7 @@ public class FRCpTipoMov extends FRelatorio {
 			
 			sSQL = "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, " +
 				   "F.NOMEFOR, PG.DESCPLANOPAG,  "+
-				   "IT.CODITCOMPRA, IT.CODPROD, PD.DESCPROD, PD.PRECOBASEPROD, IT.CODLOTE, IT.QTDITCOMPRA, "+
+				   "IT.CODITCOMPRA, IT.CODPROD, PD.DESCPROD, PD.PRECOBASEPROD, IT.CODLOTE, IT.QTDITCOMPRA, IT.PRECOITCOMPRA, "+
 				   "(IT.QTDITCOMPRA*PD.PRECOBASEPROD) VLRLIQITCOMPRA, " +
 				   "(SELECT SUM(PD2.PRECOBASEPROD*IT2.QTDITCOMPRA) " +
 				   "FROM EQPRODUTO PD2, CPITCOMPRA IT2 " +
@@ -247,6 +247,46 @@ public class FRCpTipoMov extends FRelatorio {
 			System.gc();
 		}	
 	}
+	
+	private boolean getPrefere(){
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sSQL = new StringBuffer();
+	
+		boolean retorno = false;
+		
+		try {
+			
+			sSQL.append("SELECT PRECOCPREL " );
+			sSQL.append("FROM SGPREFERE1 " );
+			sSQL.append("WHERE CODEMP=? AND CODFILIAL=?");
+	
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			
+			rs = ps.executeQuery();
+			
+			if( rs.next() ){
+				
+				if( "S".equals( rs.getString( "PRECOCPREL" ) )){
+				
+					retorno = true;
+				}
+				else {
+					retorno = false;
+				}
+			}
+			
+		} catch ( Exception e ) {
+			
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar preferencias!" +  e.getMessage() );
+		}
+		return retorno;
+	}
+	
 	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sCab ){
 	
 		String sSQL = null;
@@ -327,7 +367,12 @@ public class FRCpTipoMov extends FRelatorio {
 				imp.say(imp.pRow(), 22, "| " + (rs.getString("DESCPROD") != null ? rs.getString("DESCPROD") : ""));
 				imp.say(imp.pRow(), 75, "| " + (rs.getString("CODLOTE") != null ? rs.getString("CODLOTE") : ""));
 				imp.say(imp.pRow(), 91, "| " + Funcoes.strDecimalToStrCurrency(8,Aplicativo.casasDec,(rs.getString("QTDITCOMPRA") != null ? rs.getString("QTDITCOMPRA") : "")));
-				imp.say(imp.pRow(), 102, "| " + (rs.getString("PRECOBASEPROD") != null ? rs.getString("PRECOBASEPROD") : ""));
+				if( getPrefere() ){
+					imp.say(imp.pRow(), 102, "| " + (rs.getString("PRECOITCOMPRA") != null ? rs.getString("PRECOITCOMPRA") : ""));
+				}else{
+					imp.say(imp.pRow(), 102, "| " + (rs.getString("PRECOBASEPROD") != null ? rs.getString("PRECOBASEPROD") : ""));
+				
+				}
 				imp.say(imp.pRow(),117, "| " + Funcoes.strDecimalToStrCurrency(10,2,(rs.getString("VLRLIQITCOMPRA") != null ? rs.getString("VLRLIQITCOMPRA") : "")));
 				imp.say(imp.pRow(),135, "|");	
 				
