@@ -34,11 +34,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -63,6 +66,7 @@ import org.freedom.modulos.std.DLRPedido;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FObservacao;
+import org.freedom.telas.FPrinterJob;
 
 public class FRma extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener {
 
@@ -912,15 +916,20 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		DLRPedido dl = new DLRPedido( sOrdRMA, true );
+		
+		dl.setConexao( con );
 		dl.setVisible( true );
+
 		if ( dl.OK == false ) {
 			dl.dispose();
 			return;
 		}
-		imp.verifLinPag();
-		imp.montaCab();
-		imp.setTitulo( "Impressão de RMA" );
+		
+		try {
+			
 		String sSQL = "SELECT  (SELECT COUNT(IT.CODITRMA) FROM EQITRMA IT " + " WHERE IT.CODEMP=R.CODEMP AND IT.CODFILIAL = R.CODFILIAL AND IT.CODRMA=R.CODRMA)," + "R.CODRMA,R.DTINS,R.SITRMA,R.MOTIVORMA,R.IDUSU,R.IDUSUAPROV,R.IDUSUEXP,R.DTAAPROVRMA,R.DTAEXPRMA,R.MOTIVOCANCRMA,"
 				+ "I.CODPROD, I.QTDITRMA, I.QTDAPROVITRMA, I.QTDEXPITRMA, I.SITITRMA," + "I.SITITRMA,I.SITAPROVITRMA,I.SITEXPITRMA,I.CODITRMA," + "P.REFPROD,P.DESCPROD, P.CODUNID, UND.DESCUNID," + "A.CODALMOX, A.DESCALMOX, CC.CODCC, CC.ANOCC, CC.DESCCC,"
 				+ "(SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUAPROV)," + "(SELECT C.DESCCC FROM FNCC C, SGUSUARIO U " + "WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC " + " AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUAPROV),"
@@ -928,11 +937,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 				+ " I.MOTIVOCANCITRMA, I.CODPROD , R.CODOP, R.SEQOP" + " FROM EQRMA R, EQITRMA I, EQALMOX A, FNCC CC, EQPRODUTO P, EQUNIDADE UND" + " WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODRMA=?" + " AND P.CODUNID = UND.CODUNID"
 				+ " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND I.CODRMA=R.CODRMA" + " AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD" + " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL "
 				+ " AND CC.CODEMP=R.CODEMPCC AND CC.CODFILIAL=R.CODFILIALCC AND CC.CODCC=R.CODCC" + " AND A.CODEMP=I.CODEMPAX AND A.CODFILIAL=I.CODFILIALAX AND A.CODALMOX=I.CODALMOX " + " ORDER BY R.CODRMA,P." + dl.getValor() + ";";
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
+			
 			ps = con.prepareStatement( sSQL );
 
 			ps.setInt( 1, lcCampos.getCodEmp() );
@@ -941,12 +946,43 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 			rs = ps.executeQuery();
 
-			imp.limpaPags();
+			if( "G".equals( dl.getTipo() )){
+				imprimirGrafico( bVisualizar, rs, "", dl.ehResumido()) ;
+			
+			}else{
+				imprimirTexto( bVisualizar, rs, "", dl.ehResumido() );
+			}
+		
+			rs.close();
+			ps.close();
 
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			}catch (Exception e) {
+	
+				e.printStackTrace();
+			}
+	
+	}
+	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sCab, boolean isResum ){
+		
+		ImprimeOS imp = null;
+		int linPag = 0;		
+		
+		try {
+			
+			imp = new ImprimeOS("",con);
+			linPag = imp.verifLinPag()-1;
+			imp.montaCab();
+			imp.setTitulo( "Impressão de RMA" );
+			imp.limpaPags();
+			
 			while ( rs.next() ) {
+			
 				if ( imp.pRow() >= ( linPag - 1 ) ) {
-					imp.incPags();
 					imp.eject();
+					imp.incPags();
 				}
 				if ( imp.pRow() == 0 ) {
 					imp.impCab( 136, true );
@@ -1009,11 +1045,13 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 					imp.say( imp.pRow() + 0, 2, "Item" );
 					imp.say( imp.pRow() + 0, 8, "Referencia" );
 					imp.say( imp.pRow() + 0, 22, "Descrição dos produtos" );
-					if ( dl.ehResumido() ) {
+				
+					if ( isResum ) {
 						imp.say( imp.pRow() + 0, 60, "Qtd.aprov." );
 						imp.say( imp.pRow() + 0, 75, "Qtd.exp." );
 						imp.say( imp.pRow() + 0, 90, "Unid" );
 					}
+				
 					else {
 						imp.say( imp.pRow() + 0, 60, "Qtd.req." );
 						imp.say( imp.pRow() + 0, 75, "Qtd.aprov." );
@@ -1032,7 +1070,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 				imp.say( imp.pRow() + 0, 2, rs.getString( "CODITRMA" ) );
 				imp.say( imp.pRow() + 0, 8, rs.getString( "REFPROD" ) );
 				imp.say( imp.pRow() + 0, 22, rs.getString( "DESCPROD" ).substring( 0, 37 ) );
-				if ( dl.ehResumido() ) {
+				if ( isResum ) {
 					imp.say( imp.pRow() + 0, 60, "" + rs.getDouble( "QTDAPROVITRMA" ) );
 					imp.say( imp.pRow() + 0, 75, "" + rs.getDouble( "QTDEXPITRMA" ) );
 					imp.say( imp.pRow() + 0, 90, "" + rs.getString( "DESCUNID" ) );
@@ -1081,6 +1119,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 				imp.say( imp.pRow() + 0, 1, "|" );
 				imp.say( imp.pRow() + 0, 4, "ITENS NÃO EXPEDIDOS:" );
 				imp.say( imp.pRow() + 0, 136, "|" );
+			
 				for ( int i = 0; vProdCan.size() > i; i++ ) {
 					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 					imp.say( imp.pRow() + 0, 1, "|" );
@@ -1099,23 +1138,44 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 			imp.say( imp.pRow() + 0, 52, Funcoes.replicate( "_", 41 ) );
 			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 			imp.say( imp.pRow() + 0, 62, "Ass. do requisitante" );
-
-			imp.eject();
-
+			
+			imp.eject();		 
 			imp.fechaGravacao();
-
-			if ( !con.getAutoCommit() )
-				con.commit();
-			dl.dispose();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao consultar RMA!" + err.getMessage(), true, con, err );
+	            
+			if (bVisualizar)
+				imp.preview(this);
+			
+			else
+				imp.print();
+			
+		} catch ( Exception e ) {
+			e.printStackTrace();
 		}
+		
+	}
+	
+	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, boolean isResum ) {
 
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+		
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "EQRMA" ));
+		hParam.put( "RAZAOEMP" , Aplicativo.sEmpSis );
+		hParam.put( "FILTROS", sCab );
+		hParam.put( "RESUMIDO", new Boolean( isResum ) );
+
+		dlGr = new FPrinterJob( "relatorios/FRRma.jasper", "Requisição de material", sCab, rs, hParam, this );
+		
 		if ( bVisualizar ) {
-			imp.preview( this );
+			dlGr.setVisible( true );
 		}
 		else {
-			imp.print();
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de Requisição de material!" + err.getMessage(), true, con, err );
+			}
 		}
 	}
 
