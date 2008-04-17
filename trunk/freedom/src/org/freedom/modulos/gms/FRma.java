@@ -50,6 +50,7 @@ import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.CustosProd;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JLabelPad;
@@ -729,7 +730,12 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		}
 
 		if ( ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) && ( ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) || ( ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) ) ) {
-			txtPrecoItRma.setVlrDouble( txtCustoMPMProd.getVlrDouble() );
+//			txtPrecoItRma.setVlrDouble( txtCustoMPMProd.getVlrDouble() );
+			
+			CustosProd custo = new CustosProd(txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(),con);
+			txtPrecoItRma.setVlrBigDecimal( custo.getCustoMPMProd() );
+
+			
 		}
 
 		if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) {
