@@ -37,25 +37,58 @@ public class DLRPedido extends FFDialogo {
 	private static final long serialVersionUID = 1L;
 	private JRadioGroup<?, ?> rgOrdem = null;
 	private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
+	private JLabelPad lbTipo = new JLabelPad("Tipo:");
 	private JCheckBox cbxResumido = new JCheckBox("Relatório Resumido"); 
 	private Vector<String> vLabs = new Vector<String>();
 	private Vector<String> vVals = new Vector<String>();
+	private JRadioGroup<?, ?> rgTipo = null;
 	
 	public DLRPedido(String OrdNota, boolean RelResumido) {
+		
 		setTitulo("Ordem do Relatório");
-		setAtribos(350,160);
+		setAtribos(355,220);
 		vLabs.addElement("Código");
 		vLabs.addElement("Descrição");
 		vLabs.addElement("Marca");
 		vVals.addElement("C");
 		vVals.addElement("D");
 		vVals.addElement("M");
+		
 		rgOrdem = new JRadioGroup<String, String>(1,2,vLabs,vVals);
 		rgOrdem.setVlrString(OrdNota);
+		
+		Vector<String> vLabs = new Vector<String>();
+		Vector<String> vVals = new Vector<String>();
+		
+		vLabs.addElement( "Grafico" );
+		vLabs.addElement( "Texto" );
+		vVals.addElement( "G" );
+		vVals.addElement( "T" );
+		
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
+		rgTipo.setVlrString( "T" );
+		
 		if (RelResumido)
-		adic(cbxResumido, 7, 55, 180, 15);
-		adic(lbOrdem,7,0,80,15);
-		adic(rgOrdem,7,20,330,30);
+		adic(lbTipo,7,0,80,15);
+		adic(rgTipo ,7,20,330,30);
+		adic(lbOrdem,7,60,80,15);
+		adic(rgOrdem,7,75,330,30);
+		adic(cbxResumido, 7, 110, 180, 15);
+	}
+	
+	public String getTipo(){
+		
+		String tipo = "";
+		
+		if("G".equals( rgTipo.getVlrString() )){
+			
+			tipo = "G";
+			
+		}else{
+			tipo = "T";
+		}
+		
+		return tipo;
 	}
 	  
 	public boolean ehResumido() {
@@ -63,6 +96,7 @@ public class DLRPedido extends FFDialogo {
 	}
 	  
 	public String getValor() {
+		
 		String sRetorno = "";
 		if (rgOrdem.getVlrString().compareTo("C") == 0 )
 			sRetorno = getComRef();
