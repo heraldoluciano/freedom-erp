@@ -271,7 +271,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private int CODTIPOMOV = 0;
 
-	private int CODORC = 0;
+	private int CODORCMASTER = 0;
 
 	private int CODCLI = 0;
 
@@ -626,7 +626,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		}
 	}
 
-	public synchronized void adicItemOrc( int iCodItOrc ) {
+	public synchronized void adicItemOrc( int[] iCodItOrc ) {
 
 		try {
 
@@ -638,8 +638,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, AplicativoPDV.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "ORCAMENTO" ) );
-			ps.setInt( 3, CODORC );
-			ps.setInt( 4, iCodItOrc );
+			ps.setInt( 3, iCodItOrc[0] );
+			ps.setInt( 4, iCodItOrc[1] );
 			
 			ResultSet rs = ps.executeQuery();
 
@@ -669,8 +669,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 					PreparedStatement ps2 = con.prepareStatement( sql.toString() );
 					ps2.setInt( 1, AplicativoPDV.iCodEmp );
 					ps2.setInt( 2, ListaCampos.getMasterFilial( "ORCAMENTO" ) );
-					ps2.setInt( 3, CODORC );
-					ps2.setInt( 4, iCodItOrc );
+					ps2.setInt( 3, iCodItOrc[0] );
+					ps2.setInt( 4, iCodItOrc[1] );
 					ps2.setInt( 5, ListaCampos.getMasterFilial( "VDVENDA" ) );
 					ps2.setInt( 6, txtCodVenda.getVlrInteger().intValue() );
 					ps2.setInt( 7, iCodItVenda );
@@ -1292,7 +1292,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private synchronized boolean iniVenda( int codCli, int codPlanoPag, int vend ) {
 
-		CODORC = 0;
+		CODORCMASTER = 0;
 		
 		int iseq = getCodSeqCaixa();
 		
@@ -1398,7 +1398,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 		try {
 			
-			CODORC = 0;
+			CODORCMASTER = 0;
 			
 			Vector<Integer> vArgs = new Vector<Integer>();
 
@@ -1434,7 +1434,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				lcVendedor.carregaDados();
 				lcClComis.carregaDados();
 
-				CODORC = arg;
+				CODORCMASTER = arg;
 			}
 
 		} catch ( SQLException e ) {
@@ -1504,7 +1504,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			param[ 10 ] = null;
 		}
 		
-		param[ 11 ] = new Boolean( CODORC > 0 );
+		param[ 11 ] = new Boolean( CODORCMASTER > 0 );
 		param[ 12 ] = txtCodVend.getVlrInteger();
 
 		carregaPesoFrete = false;
@@ -1561,8 +1561,36 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	}
 
 	private void trocaCli() {
+		
+		int codcliant = txtCodCli.getVlrInteger();
 
-		txtCodCli.mostraDLF2FK();
+		try {
+			
+			txtCodCli.mostraDLF2FK();
+			
+			int codclinovo = txtCodCli.getVlrInteger();
+			
+			if ( codcliant != codclinovo ) {
+				
+				PreparedStatement ps = con.prepareStatement( 
+						"UPDATE VDVENDA SET CODCLI=? WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'" );
+				ps.setInt( 1, codclinovo );
+				ps.setInt( 2, Aplicativo.iCodEmp );
+				ps.setInt( 3, ListaCampos.getMasterFilial( "VDVENDA" ) );
+				ps.setInt( 4, txtCodVenda.getVlrInteger() );
+				ps.executeUpdate();
+				ps.close();
+				
+				if ( !con.getAutoCommit() ) {
+					con.commit();
+				}	
+			}
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao trocar cliente!\n" + e.getMessage(), true, con, e );
+		} finally {
+			lcVenda.carregaDados();
+		}
 	}
 
 	private void buscaPreco() {
@@ -1834,7 +1862,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );
-				ps.setInt( 3, CODORC );
+				ps.setInt( 3, CODORCMASTER );
 				ps.setInt( 4, iCodItOrc );
 				
 				ResultSet rs = ps.executeQuery();
