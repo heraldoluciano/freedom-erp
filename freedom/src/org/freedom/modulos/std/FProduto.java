@@ -28,7 +28,6 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,10 +37,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -58,9 +54,12 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.CustosProd;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -1630,67 +1629,24 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	public void beforeCarrega( CarregaEvent cevt ) {
 	
 	}
-
+	
 	public void afterCarrega( CarregaEvent cevt ) {
-		
-		if ( cevt.getListaCampos() == lcCampos ) {
-	
-			txtAlmox.setVlrString( txtDescAlmox.getVlrString() );
-	
-			if ( txtCodProd.getVlrInteger().intValue() != 0 ) {				
-	
-				String sSQL = null;
-				ResultSet rs = null;
-				PreparedStatement ps = null;
-				
-				try {
-					
-					buscaEstoque();
-					
-					sSQL = "SELECT NCUSTOPEPS, NCUSTOMPM, NCUSTOMPMAX, NCUSTOPEPSAX FROM EQPRODUTOSP01(?,?,?,?,?,?)";
-					
-					ps = con.prepareStatement( sSQL );
-					ps.setInt( 1, Aplicativo.iCodEmp );
-					ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-					ps.setInt( 3, txtCodProd.getVlrInteger().intValue() );
-					ps.setInt( 4, Aplicativo.iCodEmp );
-					ps.setInt( 5, ListaCampos.getMasterFilial( "EQALMOX" ) );
-					ps.setInt( 6, txtCodAlmox.getVlrInteger().intValue() );
-					rs = ps.executeQuery();
-					
-					if ( rs.next() ) {
-						txtCustoPEPSProd.setVlrBigDecimal( new BigDecimal( rs.getFloat( "NCUSTOPEPS" ) ) );
-						txtCustoMPMProd.setVlrBigDecimal( new BigDecimal( rs.getFloat( "NCUSTOMPM" ) ) );
-						txtCustoPEPSAlmox.setVlrBigDecimal( new BigDecimal( rs.getFloat( "NCUSTOPEPSAX" ) ) );
-						txtCustoMPMAlmox.setVlrBigDecimal( new BigDecimal( rs.getFloat( "NCUSTOMPMAX" ) ) );
-					}
-					
-					rs.close();
-					ps.close();
-					
-					if ( !con.getAutoCommit() ) {
-						con.commit();
-					}
-					
-				} catch ( SQLException e ) {
-					Funcoes.mensagemErro( this, "Não foi possível carregar o valor de custo PEPS!\n" + e.getMessage() );
-				} finally {
-					rs = null;
-					ps = null;
-					sSQL = null;
-				}
-				
-			}
+		try {		
+			buscaEstoque();
+			CustosProd custos = new CustosProd(txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(), con );
+			
+			txtCustoPEPSProd.setVlrBigDecimal( custos.getCustoPEPSProd() );
+			txtCustoMPMProd.setVlrBigDecimal( custos.getCustoMPMProd() );
+			txtCustoPEPSAlmox.setVlrBigDecimal( custos.getCustoPEPSAlmox() );
+			txtCustoMPMAlmox.setVlrBigDecimal( custos.getCustoMPMAlmox() );
+			
 			
 		}
-		else if ( cevt.getListaCampos() == lcProdAcesso ) {
-			habAcesso( false, 0 );
-			if ( txtCodPA.getVlrInteger().intValue() != 0 ) {
-				habAcesso( true, ( rgPA.getVlrString().equalsIgnoreCase( "RMA" ) ? 1 : 2 ) );
-			}
-		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}		
 	}
-
+	
 	public void beforeEdit( EditEvent eevt ) {
 
 	}
@@ -1765,3 +1721,6 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	}
 
 }
+
+
+
