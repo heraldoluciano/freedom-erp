@@ -591,7 +591,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 					if ( vendaPDV.montaVendaOrc( iValsVec[ 0 ] ) ) {// Gera a venda
 						for ( int i = 0; i < vValidos.size(); i++ ) {
 							iValsVec = (int[]) vValidos.elementAt( i );
-							vendaPDV.adicItemOrc( iValsVec[ 1 ] );// Adiciona os itens
+							vendaPDV.adicItemOrc( iValsVec );// Adiciona os itens
 						}
 					}
 					dispose();
