@@ -62,10 +62,13 @@ public class FRDemanda extends FRelatorio {
   private ListaCampos lcGrup = new ListaCampos(this);
   private ListaCampos lcMarca = new ListaCampos(this);
   private JCheckBoxPad cbGrupo = new JCheckBoxPad("Dividir por grupo","S","N");
+  private JCheckBoxPad cbSemMovEnt = new JCheckBoxPad("movimentação de entrada?","S","N");
+  private JCheckBoxPad cbSemMovSaida = new JCheckBoxPad("movimentação de saída?","S","N");
+  private JCheckBoxPad cbSemMovSaldo = new JCheckBoxPad("movimentação de saldo?","S","N");
 
   public FRDemanda() {
     setTitulo("Relatório de Demanda");
-    setAtribos(80,80,340,280);
+    setAtribos(80,80,340,330);
     vLabs.addElement("Código");
     vLabs.addElement("Descrição");
     vVals.addElement("C");
@@ -112,7 +115,10 @@ public class FRDemanda extends FRelatorio {
     adic(lbDescGrup,90,80,250,20);
     adic(txtDescGrup,90,100,197,20);
     adic(rgOrdem,7,130,250,30);
-    adic(cbGrupo,7,170,250,20);
+    adic(cbGrupo,7,175,250,20);
+    adic(cbSemMovEnt,7,195,250,20);
+    adic(cbSemMovSaida,7,215,250,20);
+    adic(cbSemMovSaldo,7,235,250,20);
   }
 
   
@@ -146,6 +152,7 @@ public class FRDemanda extends FRelatorio {
     String sCampo = "";
     String sCab = "";
     String sWhere = "";
+    String sWhereMov = "";
     String sOrdenado = "";
     String sOrdemGrupo = "";
     String sDivGrupo = "";
@@ -162,27 +169,46 @@ public class FRDemanda extends FRelatorio {
     sDivGrupo = cbGrupo.getVlrString();
 
     if (sDivGrupo.equals("S")) {
-      sOrdemGrupo = "P.CODGRUP,";
+    
+    	sOrdemGrupo = "P.CODGRUP,";
     }
     else {
       sOrdemGrupo = "";
     }
+   
     bComRef = comRef();
     sCampo = bComRef ? "REFPROD" : "CODPROD";   
+  
     if (sOrdem.equals("C")) {
-      if (bComRef) {
-        sOrdem = sOrdemGrupo+"P.REFPROD";
-        sOrdenado = "ORDENADO POR REFERENCIA";
+    
+    	if (bComRef) {
+    		sOrdem = sOrdemGrupo+"P.REFPROD";
+    		sOrdenado = "ORDENADO POR REFERENCIA";
       }
-      else {
-        sOrdem = sOrdemGrupo+"P.CODPROD";
-        sOrdenado = "ORDENADO POR CODIGO";
-      }
+    	else {
+    		sOrdem = sOrdemGrupo+"P.CODPROD";
+    		sOrdenado = "ORDENADO POR CODIGO";
+     
+    	}
     }
     else {
-      sOrdem = sOrdemGrupo+"P.DESCPROD";
-      sOrdenado = "ORDENADO POR DESCRICAO"; 
+    	sOrdem = sOrdemGrupo+"P.DESCPROD";
+    	sOrdenado = "ORDENADO POR DESCRICAO"; 
     }
+    
+    if( "S".equals( cbSemMovEnt.getVlrString() )){
+    
+    	sWhereMov += "WHERE (P.VLRCOMPRAS + P.VLRDEVSAI + P.VLROUTENT) > 0";
+    }
+    if( "S".equals( cbSemMovSaida.getVlrString() )){
+    	
+    	sWhereMov += "WHERE (P.VLRVENDAS + P.VLRDEVENT + P.VLROUSAI) > 0";
+    }
+    if( "S".equals( cbSemMovSaldo.getVlrString() )){
+    	
+    	sWhereMov += "WHERE p.sldfim>0";
+    }
+    
     sOrdenado = "|"+Funcoes.replicate(" ",67-(sOrdenado.length()/2))+sOrdenado;
     sOrdenado += Funcoes.replicate(" ",133-sOrdenado.length())+" |";
     
@@ -197,9 +223,7 @@ public class FRDemanda extends FRelatorio {
         sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
         sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
     }
-    //
     
-    //
     if (txtCodGrup.getText().trim().length() > 0) {
     	
     	/** @version 08/01/2008 <BR>
@@ -236,7 +260,7 @@ public class FRDemanda extends FRelatorio {
        "P.SLDINI, P.VLRCOMPRAS, P.VLRDEVENT, P.VLROUTENT, " +
        "P.VLRVENDAS, P.VLRDEVSAI, P.VLROUTSAI, P.SLDFIM "+
        "FROM EQRELDEMANDASP (?, ?, ?, ?, ?) P " +
-       sWhere+" ORDER BY "+sOrdem;
+       sWhere+sWhereMov+" ORDER BY "+sOrdem;
                   
     try {
       PreparedStatement ps = con.prepareStatement(sSQL);
