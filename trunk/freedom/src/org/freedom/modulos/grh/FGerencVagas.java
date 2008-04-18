@@ -277,7 +277,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		}
 
 		if(cbFaixaSalarial.getVlrBoolean()) {
-			where.append( (and ? " AND " : "" ) + ( "PRETENSAOSAL BETWEEN  ? AND ? " ) );			
+			where.append( (and ? " AND " : "" ) + ( "((PRETENSAOSAL BETWEEN  ? AND ? ) OR (PRETENSAOSAL IS NULL))" ) );			
 		}
 		
 		sql.append( where );

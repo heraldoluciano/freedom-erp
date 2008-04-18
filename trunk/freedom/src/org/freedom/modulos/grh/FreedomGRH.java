@@ -35,7 +35,7 @@ public class FreedomGRH extends AplicativoPD {
 
 	public FreedomGRH() {
 
-		super( "iconAtendimento32.gif", "splashGRH.jpg", 1, "Freedom", 9, "Gestão de Recursos Humandos", null, new FPrincipalPD( null, "bgFreedom2.jpg" ), LoginPD.class );
+		super( "iconAtendimento32.gif", "splashGRH.jpg", 1, "Freedom", 9, "Gestão de Recursos Humanos", null, new FPrincipalPD( null, "bgFreedom2.jpg" ), LoginPD.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 		addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
@@ -52,17 +52,19 @@ public class FreedomGRH extends AplicativoPD {
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Curso", "Curso", 'u', 100100900, 2, true, FCurso.class );
 			addSeparador( 100100000 );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Estados civis", "Estados civis", 's', 100101000, 2, true, FEstadoCivil.class );
-			addSeparador( 100100000 );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "Vagas", "Vagas", 'V', 100101100, 2, true, FVaga.class );
 			
 		addOpcao( -1, TP_OPCAO_MENU, "Vagas", "", 'V', 200000000, 0, false, null );	
-			addOpcao( 200000000, TP_OPCAO_ITEM, "Gerenciamento", "Gerenciamento de Vagas", 'T', 200100000, 1, true, FGerencVagas.class );
-		
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Cadastro de vagas", "Cadastro de vagas", 'V', 200100000, 1, true, FVaga.class );
+			addSeparador( 200000000 );
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Gerenciamento de vagas", "Gerenciamento de Vagas", 'T', 200200000, 1, true, FGerencVagas.class );
+			
+			
 		addBotao( "btForneced.gif", "Empregadores", "Empregadores", 100100600, FEmpregadores.class );
 		addBotao( "barraConveniados.gif", "Empregados", "Empregados", 100100500, FEmpregado.class );
 		addBotao( "barraGrupo.gif", "Candidatos", "Candidatos", 100100100, FCandidato.class );
 		addBotao( "btTarefas.gif", "Cursos", "Cursos", 100100900, FCurso.class );
-		addBotao( "btNovo.gif", "Vagas", "Vagas", 100101100, FVaga.class );
+		addBotao( "btNovo.gif", "Cadastro de vagas", "Cadatro de vagas", 100101100, FVaga.class );
+		addBotao( "btpESQUISA.gif", "Gerenciamento de vagas", "Gerenciamento de vagas", 200100000, FGerencVagas.class );
 		
 
 		ajustaMenu();
