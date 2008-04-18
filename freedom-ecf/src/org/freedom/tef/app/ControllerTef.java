@@ -107,7 +107,7 @@ public class ControllerTef {
 	public void setFileParametrosOfInitiation( final File fileParametrosOfInitiation ) {	
 		
 		if ( fileParametrosOfInitiation == null ) {
-			throw new NullPointerException( "Parametros de inicialização não especificados!" );
+			throw new NullPointerException( "Arquivo de parametros de inicialização inválido!" );
 		}
 		
 		this.fileParametrosOfInitiation = fileParametrosOfInitiation;
@@ -280,7 +280,7 @@ public class ControllerTef {
 							break tickets;
 						}
 						else {
-							actionReturn = textTef.notConfirmationOfSale();
+							actionReturn = textTef.noConfirmationOfSale();
 							break tickets;							
 						}
 					}

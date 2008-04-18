@@ -57,15 +57,7 @@ public abstract class TextTef {
     protected File fileActive;
 	
 	
-	public TextTef() {
-		super();
-	}
-	
-	public TextTef( final TextTefProperties textTefProperties ) throws Exception {
-		this();
-		setTextTefProperties( textTefProperties );
-		initializeTextTef();
-	}
+	public TextTef() {}
 	
 	public TextTefProperties getTextTefProperties() {			
 		return textTefProperties;
@@ -90,7 +82,7 @@ public abstract class TextTef {
 		return getTextTefProperties() != null ? getTextTefProperties().set( key, value ) : null;
 	}
 
-	protected void initializeTextTef( final TextTefProperties textTefProperties ) throws Exception {
+	public void initializeTextTef( final TextTefProperties textTefProperties ) throws Exception {
 		setTextTefProperties( textTefProperties );
 		initializeTextTef();
 	}
@@ -108,7 +100,7 @@ public abstract class TextTef {
 	
 	abstract public boolean confirmationOfSale() throws Exception;
 	
-	abstract public boolean notConfirmationOfSale() throws Exception;
+	abstract public boolean noConfirmationOfSale() throws Exception;
 	
 	abstract public boolean requestAdministrator() throws Exception;
 	

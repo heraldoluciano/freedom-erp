@@ -14,7 +14,7 @@
  * @version 1.0 (beta), 05/03/2008 <br>
  * <br>
  * @see org.freedom.tef.text.TextTef <br>
- * @see org.freedom.tef.text.TextTefProperties <br>
+ * @see org.freedom.tef.text.TestTextTefProperties <br>
  * @see org.freedom.tef.Flag <br>
  */
 
@@ -27,11 +27,9 @@ import org.freedom.tef.driver.Flag;
 
 public final class TextTefFactore {
 	
-	
-	private TextTefFactore() {}
-	
 	/**
 	 * Sobrecarrega {@link #createTextTef(TextTefProperties, String, File)} <br>
+	 * Deve ser efetuado o mapeamento das Flags anteriormente. <br>
 	 * 
 	 * @see #createTextTef(TextTefProperties, String, File)
 	 * 
@@ -84,7 +82,9 @@ public final class TextTefFactore {
 				
 		TextTef textTef = null;
 		
-		if ( fileParametrosOfInitiation != null && ! Flag.isLoadTextTefFlagsMaps() ) {
+		if ( ! Flag.isLoadTextTefFlagsMaps() ) {
+			// Não é necessário tratar fileParametrosOfInitiation,
+			// pois Flag.loadParametrosOfInitiation já o faz.
 			Flag.loadParametrosOfInitiation( fileParametrosOfInitiation );
 		}
 		
@@ -97,14 +97,8 @@ public final class TextTefFactore {
 				if ( textTef != null ) {
 					textTef.initializeTextTef( textTefProperties );
 				}
-				else {
-					throw new Exception( "Não foi possivél criar objeto para TEF!" );
-				}
-			} catch ( InstantiationException e ) {
-				e.printStackTrace();
-				throw new Exception( "Não foi possivél criar objeto para TEF!", e );
-			} catch ( IllegalAccessException e ) {
-				e.printStackTrace();
+			} catch ( Exception e ) {
+				System.out.println( "[  ERROR  ] " + e.getMessage() );
 				throw new Exception( "Não foi possivél criar objeto para TEF!", e );
 			}
 		}

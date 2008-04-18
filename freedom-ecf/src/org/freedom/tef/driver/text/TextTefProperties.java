@@ -170,18 +170,21 @@ public class TextTefProperties extends Properties {
 	 */
 	public boolean validateTextTefPropertie( final String key ) {
 		
-		if ( key == null || key.trim().length() == 0 ) {
-			return false;
-		}
+		boolean validate = false;
 		
-		for ( String k : keysList ) {
-			if ( k.equals( key ) 
-					|| ( k.equals( RESPONSE_TO_PRINT ) && k.equals(key.substring( 0, 4 )) ) ) {
-				return true;
+		if ( key != null && key.trim().length() > 0 ) {
+			if ( key.trim().length() > 3 && RESPONSE_TO_PRINT.equals( key.substring( 0, 4 ) ) ) {
+				validate = true;
+			}
+			for ( String k : keysList ) {
+				if ( k.equals( key ) ) {
+					validate = true;
+					break;
+				}
 			}
 		}
 		
-		return false;
+		return validate;
 	}
 	
 	/**
@@ -197,11 +200,10 @@ public class TextTefProperties extends Properties {
 	}
 	
 	/**
-	 * Implementa uma chamada de método simplificada para {@link #getProperty(String)}<br>
+	 * Implementa uma chamada de método simplificada para {@link #getProperty(String)},<br>
 	 * somente se a validação com {@link #validateTextTefPropertie(String)} for positiva.<br>
 	 * @param key	Chave de referencia ao objeto desejado.
 	 * @return		Objeto referente a chave informada.
-	 * @see			#set(String, String)
 	 * @see			#getProperty(String)
 	 * @see			#validateTextTefPropertie(String)
 	 */
@@ -209,8 +211,7 @@ public class TextTefProperties extends Properties {
 		
 		String stringReturn = null;
 		
- 		if ( validateTextTefPropertie( key ) ) {
-			
+ 		if ( validateTextTefPropertie( key ) ) {			
 			stringReturn = super.getProperty( key );
 		}
 		else {
@@ -222,12 +223,11 @@ public class TextTefProperties extends Properties {
 
 	
 	/**
-	 * Implementa uma chamada de método simplificada para {@link #setProperty(String, String)}<br>
+	 * Implementa uma chamada de método simplificada para {@link #setProperty(String, String)},<br>
 	 * somente se a validação com {@link #validateTextTefPropertie(String)} for positiva.<br>
 	 * @param key	Chave de referencia ao objeto desejado.
 	 * @param value Objeto a ser referenciado pela chave informada.
 	 * @return		Objeto referente a chave informada.
-	 * @see			#get(String)
 	 * @see			#setProperty(String, String)
 	 * @see			#validateTextTefPropertie(String)
 	 */
@@ -242,17 +242,30 @@ public class TextTefProperties extends Properties {
 		}
 		else {
 			throw new IllegalArgumentException( 
-					"Chave de propriedade não definida! [ " + key + " ] value [ " + value + " ]" );
+					"Chave de propriedade inválida! [ " + key + " = " + value + " ]" );
 		}
 		
 		return value;
 	}
 
+	/**
+	 * Redireciona o processamento para {@link #get(String)}.<br>
+	 * @param key	Chave de referencia ao objeto desejado.
+	 * @return		Objeto referente a chave informada.
+	 * @see			#getProperty(String)
+	 */
 	@Override
 	public String getProperty( String key ) {
 		return get( key );
 	}
 
+	/**
+	 * Redireciona o processamento para {@link #set(String, String)}.<br>
+	 * @param key	Chave de referencia ao objeto desejado.
+	 * @param value Objeto a ser referenciado pela chave informada.
+	 * @return		Objeto referente a chave informada.
+	 * @see			#setProperty(String, String)
+	 */
 	@Override
 	public synchronized Object setProperty( String key, String value ) {
 		return set( key, value );

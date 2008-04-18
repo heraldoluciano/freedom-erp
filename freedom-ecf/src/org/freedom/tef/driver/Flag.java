@@ -31,10 +31,6 @@ public class Flag {
 	
 	private static boolean loadTextTefFlagsMaps = false;
 	
-	
-	private Flag() {		
-	}
-	
 	/**
 	 *  
 	 * @return Mapa de [ Nome de Bandeira ] X [ Classe de funções TEF ]. 
@@ -54,6 +50,10 @@ public class Flag {
 	 */
 	public static boolean isLoadTextTefFlagsMaps() {	
 		return loadTextTefFlagsMaps;
+	}
+	
+	public static void setLoadTextTefFlagsMaps( final boolean loadTextTefFlagsMaps ) {	
+		Flag.loadTextTefFlagsMaps = loadTextTefFlagsMaps;
 	}
 
 	/**
@@ -95,6 +95,8 @@ public class Flag {
 	@SuppressWarnings("unchecked")
 	private static void loadTextTefFlagsMap( final File fileParametrosOfInitiation ) throws Exception {
 		
+		setLoadTextTefFlagsMaps( false );
+		
 		FileReader reader = new FileReader( fileParametrosOfInitiation );
 		BufferedReader buffered = new BufferedReader( reader );
 		
@@ -115,25 +117,24 @@ public class Flag {
 				else if ( '#' == line.charAt( 0 ) ) {
 					continue;
 				}
-				else if ( line.length() > 1 
-						&& ( '/' == line.charAt( 0 ) && '/' == line.charAt( 1 ) ) ) {
+				else if ( line.length() > 1 && ( '/' == line.charAt( 0 ) && '/' == line.charAt( 1 ) ) ) {
 					continue;
 				}
 				
 				is = line.indexOf( '=' );
 				
-				if ( is > -1 ) {
-					
+				if ( is > -1 ) {					
 					name = line.substring( 0, is );
-					sclass = line.length() > is ? line.substring( is + 1 ) : "";
-					
+					sclass = line.substring( is + 1 );					
 					try {
 						getTextTefFlagsMap().put( name, (Class<TextTef>) Class.forName( sclass ) );
-					} catch ( ClassCastException e ) {} // Ignorar diferentes de TextTef.
+					} catch ( ClassNotFoundException e ) {
+						System.out.println( "[  ERROR  ] " + e.getMessage() );
+					}
 				}
 			}
+			
+			setLoadTextTefFlagsMaps( getTextTefFlagsMap().size() > 0 );
 		}
-		
-		loadTextTefFlagsMaps = true;
 	}
 }
