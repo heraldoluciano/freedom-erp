@@ -19,6 +19,24 @@
 
 package org.freedom.tef.driver.text;
 
+import static org.freedom.tef.driver.text.TextTefProperties.AMOUNT_LINES;
+import static org.freedom.tef.driver.text.TextTefProperties.ARQ_ACTIVE;
+import static org.freedom.tef.driver.text.TextTefProperties.ARQ_RESPONSE;
+import static org.freedom.tef.driver.text.TextTefProperties.ARQ_SEND;
+import static org.freedom.tef.driver.text.TextTefProperties.ARQ_STATUS;
+import static org.freedom.tef.driver.text.TextTefProperties.ARQ_TMP;
+import static org.freedom.tef.driver.text.TextTefProperties.DOCUMENT;
+import static org.freedom.tef.driver.text.TextTefProperties.FINISHING;
+import static org.freedom.tef.driver.text.TextTefProperties.HEADER;
+import static org.freedom.tef.driver.text.TextTefProperties.INDENTIFICATION;
+import static org.freedom.tef.driver.text.TextTefProperties.NET_NAME;
+import static org.freedom.tef.driver.text.TextTefProperties.NSU;
+import static org.freedom.tef.driver.text.TextTefProperties.PATH_RESPONSE;
+import static org.freedom.tef.driver.text.TextTefProperties.PATH_SEND;
+import static org.freedom.tef.driver.text.TextTefProperties.RESPONSE_TO_PRINT;
+import static org.freedom.tef.driver.text.TextTefProperties.TRAILER;
+import static org.freedom.tef.driver.text.TextTefProperties.VALUE;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -31,10 +49,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
-
-import sun.misc.MessageUtils;
-
-import static org.freedom.tef.driver.text.TextTefProperties.*;
 
 
 public class VisaTextTef extends TextTef  {
@@ -49,11 +63,6 @@ public class VisaTextTef extends TextTef  {
 	public VisaTextTef() {
 		
 		super();
-	}
-	
-	public VisaTextTef( final TextTefProperties textTefProperties ) throws Exception {
-		
-		super( textTefProperties );
 	}
 
 	@Override
@@ -125,7 +134,7 @@ public class VisaTextTef extends TextTef  {
 		request.add( VALUE           + " = " + df.format( value ) );
 		request.add( TRAILER         + " = " + 0 );
 				
-		return send( request, fileTemp, fileSend ) && existFileStatus( CRT, indentification );
+		return send( request, fileTemp, fileSend ) & existFileStatus( CRT, indentification );
 	}
 
 	public synchronized boolean readResponseSale() throws Exception {
@@ -215,7 +224,7 @@ public class VisaTextTef extends TextTef  {
 	}
 
 	@Override
-	public synchronized boolean notConfirmationOfSale() throws Exception {
+	public synchronized boolean noConfirmationOfSale() throws Exception {
 		
 		if ( fileResponse.exists() ) {
 			fileResponse.delete();
@@ -269,6 +278,8 @@ public class VisaTextTef extends TextTef  {
             							 	   final String rede, 
             								   final Date data, 
             								   final BigDecimal value ) throws Exception {
+		
+		
 		return false;
 	}
 
@@ -317,7 +328,7 @@ public class VisaTextTef extends TextTef  {
 				try {
 					set( key, properties.getProperty( key, "" ) );
 				} catch ( IllegalArgumentException err ) {
-					MessageUtils.err( err.getMessage() );
+					System.out.println( "" + err.getMessage() );
 				}
 			}
 		}
