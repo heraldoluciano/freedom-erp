@@ -18,76 +18,105 @@ public class TestVisaTextTef extends TestCase {
 		super( name );
 	}
 
-	public void testCreateVisaTextTef() {
+	public void testCreateVisaTextTef1() {
 		
-		boolean ok = true;
+		boolean ok = false;
 
 		try {
-			
-			// testado instanciar pela fabrica  OK
-			// testado verificar se está ativo (#isActive())  OK  obs.: verificar condições para "ATIVO"
-
 			Flag.loadParametrosOfInitiation( new File( "C:\\bandeiras.ini" ) );			
-			TextTefFactore.createTextTef( getTextTefProperties(), "VISA" );
+			TextTef textTef = TextTefFactore.createTextTef( getTextTefProperties(), "VISA" );
 		
+			ok = textTef != null;
 		} catch ( Exception e ) {
 			e.printStackTrace();
-			ok = false;
 		}
+		
+		assertTrue( ok );
+	}
+
+	public void testCreateVisaTextTef2() {
+		
+		boolean ok = false;
+
+		try {
+			TextTef textTef = TextTefFactore.createTextTef( getTextTefProperties(), "VISA", new File( "C:\\bandeiras.ini" ) );		
+			ok = textTef != null;
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+		
+		assertTrue( ok );
+	}
+
+	public void testCreateVisaTextTef3() {
+		
+		boolean ok = false;
+
+		try {
+			TextTef textTef = TextTefFactore.createTextTef( getTextTefProperties(), "VISA", "C:\\bandeiras.ini" );		
+			ok = textTef != null;
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+		
 		assertTrue( ok );
 	}
 	
 	public void testIsActive() {
 		
-		boolean ok = true;
+		boolean ok = false;
 
 		try {
-
 			Flag.loadParametrosOfInitiation( new File( "C:\\bandeiras.ini" ) );			
 			TextTef textTef = TextTefFactore.createTextTef( getTextTefProperties(), "VISA" );
 			
-			ok = textTef.isActive();
-		
+			ok = textTef.isActive();		
 		} catch ( Exception e ) {
 			e.printStackTrace();
-			ok = false;
 		}
 		assertTrue( ok );		
 	}
 
 	public void testRequestSale() {
 		
-		boolean ok = true;
+		boolean ok = false;
+		String message = "";
 
 		try {
-
 			Flag.loadParametrosOfInitiation( new File( "C:\\bandeiras.ini" ) );			
 			TextTef textTef = TextTefFactore.createTextTef( getTextTefProperties(), "VISA" );
 			
 			ok = textTef.requestSale( 2, new BigDecimal( "9.99" ) );
-		
+			
+			if ( ok ) {
+				message = "\n[ CONFIRMATION OF SALE ]";
+				ok = textTef.confirmationOfSale();
+			} 
+			else {
+				message = "\n[ NOT CONFIRMATION OF SALE ]";
+				ok = textTef.noConfirmationOfSale();
+			}		
 		} catch ( Exception e ) {
+			System.out.println( "[ ERROR ] ... Erro ao testar requestSale( mumberDoc, valor )." + message );
 			e.printStackTrace();
-			ok = false;
 		}
+		
 		assertTrue( ok );
 	}
 	
 	public void testRequestAdministrator() {
 		
-		boolean ok = true;
+		boolean ok = false;
 
 		try {
-
 			Flag.loadParametrosOfInitiation( new File( "C:\\bandeiras.ini" ) );			
 			TextTef textTef = TextTefFactore.createTextTef( getTextTefProperties(), "VISA" );
 			
-			ok = textTef.requestAdministrator();
-		
+			ok = textTef.requestAdministrator();		
 		} catch ( Exception e ) {
 			e.printStackTrace();
-			ok = false;
 		}
+		
 		assertTrue( ok );		
 	}
 
