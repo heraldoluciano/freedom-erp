@@ -36,6 +36,7 @@ import javax.swing.JScrollPane;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
@@ -100,6 +101,8 @@ public class FCandidato extends FTabDados {
 	private final JTextFieldPad txtEndCand = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private final JTextFieldPad txtNumCand = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private final JTextFieldPad txtNroFilhos = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
 	private final JTextFieldPad txtBairroCand = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 	
@@ -177,12 +180,16 @@ public class FCandidato extends FTabDados {
 
 	private final Navegador navFuncao = new Navegador( true );
 	
-
+	private JCheckBoxPad cbIsencTransp = new JCheckBoxPad("Possui isenção tarifaria","S","N");
+	
 	public FCandidato() {
 
 		super( true );
 		setTitulo( "Cadastro de Candidatos" );
-		setAtribos( 50, 50, 550, 520 );
+		setAtribos( 50, 50, 560, 400 );
+		
+		cbIsencTransp.setVlrString( "N" );
+//		txtNroFilhos.setVlrInteger( new Integer(0) );
 		
 		lcCursoCand.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcCursoCand );
@@ -216,7 +223,8 @@ public class FCandidato extends FTabDados {
 		vVals.addElement( "M" );
 		vVals.addElement( "F" );
 		
-		rgSexo = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
+		rgSexo = new JRadioGroup<String, String>( 2, 1, vLabs, vVals );
+		
 		rgSexo.setVlrString( "M" );
 	}
 	
@@ -267,41 +275,54 @@ public class FCandidato extends FTabDados {
 		txtCepCand.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneCand.setMascara( JTextFieldPad.MC_FONE );
 		txtCelCand.setMascara( JTextFieldPad.MC_FONE );
-		
+				
 		// Aba geral
 		
 		adicTab( "Geral", panelGeral ); 
 		setPainel( panelGeral );
 
-		adicCampo( txtCodCand, 7, 20, 90, 20, "CodCand", "Cód.candidato", ListaCampos.DB_PK, true );		
-		adicCampo( txtNomeCand, 100, 20, 300, 20, "NomeCand", "Nome do candidato", ListaCampos.DB_SI, true );		
-		adicDB( rgSexo, 7, 60, 393, 30, "SexoCand", "Sexo", false );	
-		adicCampo( txtCPFCand, 7, 110, 195, 20, "CpfCand", "CPF", ListaCampos.DB_SI, false );		
-		adicCampo( txtRGCand, 205, 110, 195, 20, "RgCand", "RG", ListaCampos.DB_SI, false );	
-		adicCampo( txtPISPasepCand, 7, 150, 195, 20, "PISPasepCand", "PIS/Pasep", ListaCampos.DB_SI, false );		
-		adicCampo( txtCTPSCand, 205, 150, 195, 20, "CTPSCand", "CTPS", ListaCampos.DB_SI, false );	
-		adicCampo( txtSSPCand, 7, 190, 90, 20, "SSPCand", "SSP", ListaCampos.DB_SI, false );		
-		adicCampo( txtTituloCand, 100, 190, 150, 20, "TitEleitCand", "Titulo de eleitor", ListaCampos.DB_SI, false );	
-		adicCampo( txtPretensaoCand, 253, 190, 147, 20, "PretensaoSal", "Pretensão salarial", ListaCampos.DB_SI, false );		
-		adicCampo( txtCodEstCivilCand, 7, 230, 90, 20, "CodEstCivil", "Cód.est.cívil", ListaCampos.DB_FK, txtDescEstCivilCand, false );		
-		adicDescFK( txtDescEstCivilCand, 100, 230, 300, 20, "DescEstCivil", "Descrição do estado cívil" );			
-		adicCampo( txtEndCand, 7, 270, 323, 20, "EndCand", "Endereço", ListaCampos.DB_SI, false );		
-		adicCampo( txtNumCand, 333, 270, 67, 20, "NumCand", "Número", ListaCampos.DB_SI, false );		
-		adicCampo( txtBairroCand, 7, 310, 145, 20, "BairCand", "Bairro", ListaCampos.DB_SI, false );		
-		adicCampo( txtCidCand, 155, 310, 145, 20, "CidCand", "Cidade", ListaCampos.DB_SI, false );		
-		adicCampo( txtUfCand, 303, 310, 27, 20, "UfCand", "UF", ListaCampos.DB_SI, false );		
-		adicCampo( txtCepCand, 333, 310, 67, 20, "CepCand", "CEP", ListaCampos.DB_SI, false );
-		adicCampo( txtDDDCand, 7, 350, 60, 20, "DDDCand", "DDD", ListaCampos.DB_SI, false );		
-		adicCampo( txtFoneCand, 70, 350, 117, 20, "FoneCand", "Fone", ListaCampos.DB_SI, false );	
-		adicCampo( txtCelCand, 190, 350, 110, 20, "CelCand", "Celular", ListaCampos.DB_SI, false );	
-		adicCampo( txtNascimentoCand, 303, 350, 97, 20, "DtNascCand", "Nascimento", ListaCampos.DB_SI, false );			
-		adicCampo( txtEmailCand, 7, 390, 393, 20, "EmailCand", "e-mail", ListaCampos.DB_SI, false );
+		adicCampo( txtCodCand, 7, 20, 70, 20, "CodCand", "Cód.Cand.", ListaCampos.DB_PK, true );		
+		adicCampo( txtNomeCand, 80, 20, 310, 20, "NomeCand", "Nome do candidato", ListaCampos.DB_SI, true );		
+		
+		adicDB( rgSexo, 394, 20, 122, 61, "SexoCand", "Sexo", false );	
+
+		adicCampo( txtCodEstCivilCand, 7, 60, 70, 20, "CodEstCivil", "Cód.Civil", ListaCampos.DB_FK, txtDescEstCivilCand, false );		
+		adicDescFK( txtDescEstCivilCand, 80, 60, 310, 20, "DescEstCivil", "Descrição do estado civil" );			
+
+		adicCampo( txtRGCand, 7, 100, 140, 20, "RgCand", "RG", ListaCampos.DB_SI, false );		
+		adicCampo( txtSSPCand, 150, 100, 70, 20, "SSPCand", "SSP", ListaCampos.DB_SI, false );
+
+		adicCampo( txtCPFCand, 223, 100, 140, 20, "CpfCand", "CPF", ListaCampos.DB_SI, false );
+		adicCampo( txtTituloCand, 366, 100, 150, 20, "TitEleitCand", "Titulo de eleitor", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtPISPasepCand, 7, 140, 140, 20, "PISPasepCand", "PIS/Pasep", ListaCampos.DB_SI, false );		
+		adicCampo( txtCTPSCand, 150, 140, 205, 20, "CTPSCand", "CTPS", ListaCampos.DB_SI, false );	
+
+		adicDB( cbIsencTransp, 358, 140, 200, 20, "IsencTransp", "Transporte", false );
+		
+		adicCampo( txtNascimentoCand, 7, 180, 100, 20, "DtNascCand", "Dt. Nascimento", ListaCampos.DB_SI, false );		
+		adicCampo( txtPretensaoCand, 110, 180, 100, 20, "PretensaoSal", "Pret. salarial", ListaCampos.DB_SI, false );		
+		adicCampo( txtNroFilhos, 213, 180, 80, 20, "NroFilhos", "Nro. Filhos", ListaCampos.DB_SI, false );
+
+		adicCampo( txtDDDCand, 296, 180, 35, 20, "DDDCand", "DDD", ListaCampos.DB_SI, false );		
+		adicCampo( txtFoneCand, 334, 180, 89, 20, "FoneCand", "Fone", ListaCampos.DB_SI, false );	
+		adicCampo( txtCelCand, 426, 180, 90, 20, "CelCand", "Celular", ListaCampos.DB_SI, false );	
+			
+		adicCampo( txtEndCand, 7, 220, 311, 20, "EndCand", "Endereço", ListaCampos.DB_SI, false );		
+		adicCampo( txtNumCand, 321, 220, 47, 20, "NumCand", "Número", ListaCampos.DB_SI, false );				
+		adicCampo( txtBairroCand, 371, 220, 145, 20, "BairCand", "Bairro", ListaCampos.DB_SI, false );		
+		
+		adicCampo( txtCidCand, 7, 260, 145, 20, "CidCand", "Cidade", ListaCampos.DB_SI, false );		
+		adicCampo( txtUfCand, 155, 260, 27, 20, "UfCand", "UF", ListaCampos.DB_SI, false );		
+		adicCampo( txtCepCand, 185, 260, 67, 20, "CepCand", "CEP", ListaCampos.DB_SI, false );					
+		adicCampo( txtEmailCand, 255, 260, 261, 20, "EmailCand", "e-mail", ListaCampos.DB_SI, false );
+		
 		
 		// Fim da aba geral
 		
 		// Aba outros empregos
 				
-		adicTab( "Outros empregos", panelOutrosEmpregos ); 
+		adicTab( "Empregos", panelOutrosEmpregos ); 
 		setPainel( panelOutrosEmpregos );
 
 		adicDBLiv( txaOutrosempregos, "OutrosEmpregos", "Outros empregos", false );
@@ -314,7 +335,7 @@ public class FCandidato extends FTabDados {
 
 		// Aba outros OBS 
 		
-		adicTab( "Observações gerais", panelOBS ); 
+		adicTab( "Observações", panelOBS ); 
 		setPainel( panelOBS );
 
 		adicDBLiv( txaOBS, "OBSCAND", "Observações", false );
@@ -324,11 +345,6 @@ public class FCandidato extends FTabDados {
 		lcCampos.setQueryInsert( false );
 		
 		// Fim da aba outros empregos
-
-		
-		
-		
-		
 		
 		// Aba cursos		
 		
@@ -370,7 +386,7 @@ public class FCandidato extends FTabDados {
 		setPainel( panelAtribuicaoCampos );
 		
 		adicCampo( txtCodAtribCand, 7, 20, 90, 20, "CodAtrib", "Cód.atrib.", ListaCampos.DB_PF, txtDescAtribCand, false );		
-		adicDescFK( txtDescAtribCand, 100, 20, 300, 20, "DescAtrib", "Descrição da atribuição" );
+		adicDescFK( txtDescAtribCand, 100, 20, 400, 20, "DescAtrib", "Descrição da atribuição" );
 		adic( navAtribuicao, 0, 50, 270, 25 );		
 		setListaCampos( false, "CANDIDATOATRIB", "RH" );
 		lcAtribuicaoCand.setQueryInsert( false );
@@ -396,7 +412,7 @@ public class FCandidato extends FTabDados {
 		
 		adicCampo( txtSeqFuncaoCand, 7, 20, 40, 20, "SeqCandFunc", "Seq.", ListaCampos.DB_PK, false );
 		adicCampo( txtCodFuncaoCand, 50, 20, 90, 20, "CodFunc", "Cód.função", ListaCampos.DB_PF, txtDescFuncaoCand, false );		
-		adicDescFK( txtDescFuncaoCand, 143, 20, 257, 20, "DescFunc", "Descrição da função" );
+		adicDescFK( txtDescFuncaoCand, 143, 20, 357, 20, "DescFunc", "Descrição da função" );
 		adic( navFuncao, 0, 50, 270, 25 );		
 		setListaCampos( false, "CANDIDATOFUNC", "RH" );
 		lcFuncaoCand.setQueryInsert( false );
