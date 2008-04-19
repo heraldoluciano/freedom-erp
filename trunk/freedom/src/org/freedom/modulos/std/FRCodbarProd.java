@@ -63,39 +63,40 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	private final JPanelPad pnCampos = new JPanelPad( 600, 95 );
 
-	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JPanelPad pnBotoesGrid = new JPanelPad( 35, 200 );
 
-	private JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JPanelPad pnGrid = new JPanelPad( 600, 200 );
 
-	private JTextFieldPad txtCodBarProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private JTextFieldPad txtQtdPod = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	private final JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JButton btExecuta = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private final JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JButton btSelectCompra = new JButton( Icone.novo( "btPesquisa.gif" ) );
+	private final JTextFieldPad txtCodBarProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JButton btExcluir = new JButton( Icone.novo( "btCancelar.gif" ) );
-
-	private JButton btExcluirTudo = new JButton( Icone.novo( "btNada.gif" ) );
-
-	private Tabela tabGrid = new Tabela();
-
-	private JScrollPane spnGrid = new JScrollPane( tabGrid );
-
-	private ListaCampos lcProduto = new ListaCampos( this );
-
-	private JPanelPad pnCampos = new JPanelPad( 600, 95 );
-
-	private JPanelPad pnBotoesGrid = new JPanelPad( 35, 200 );
-
-	private JPanelPad pnGrid = new JPanelPad( 600, 200 );
+	private final JTextFieldPad txtQtdPod = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JComboBox cbSel = null;
 	
 	private JComboBoxPad cbEtiquetas = null;
+
+	private final JButton btExecuta = new JButton( Icone.novo( "btExecuta.gif" ) );
+
+	private final JButton btSelectCompra = new JButton( Icone.novo( "btPesquisa.gif" ) );
+
+	private final JButton btExcluir = new JButton( Icone.novo( "btCancelar.gif" ) );
+
+	private final JButton btExcluirTudo = new JButton( Icone.novo( "btNada.gif" ) );
+
+	private final Tabela tabGrid = new Tabela();
+
+	private final JScrollPane spnGrid = new JScrollPane( tabGrid );
+
+	private final ListaCampos lcProduto = new ListaCampos( this );
+	
 
 	public FRCodbarProd() {
 
@@ -134,26 +135,18 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		c.add( pnGrid, BorderLayout.CENTER );
 		c.add( pnBotoesGrid, BorderLayout.EAST );
 		c.add( spnGrid );
-
 		
 		Vector<String> vLabsCtb = new Vector<String>();
-		Vector<String> vValsCtb = new Vector<String>();
+		Vector<Integer> vValsCtb = new Vector<Integer>();
 		vLabsCtb.addElement( "<--Selecione-->" );
 		vLabsCtb.addElement( "Pimaco 6280" );
-		vLabsCtb.addElement( "Etiquetas 01" );
-		vLabsCtb.addElement( "Etiquetas 02" );
-		vLabsCtb.addElement( "Etiquetas 03" );
-		vLabsCtb.addElement( "Etiquetas 04" );
-		
-		vValsCtb.addElement( "00" );
-		vValsCtb.addElement( "6280" );
-		vValsCtb.addElement( "01" );
-		vValsCtb.addElement( "02" );
-		vValsCtb.addElement( "03" );
-		vValsCtb.addElement( "04" );
-		
+		vLabsCtb.addElement( "Argox OS-214" );		
+		vValsCtb.addElement( EEtiqueta.NONE.ordinal() );
+		vValsCtb.addElement( EEtiqueta.PIMANCO_6280.ordinal() );
+		vValsCtb.addElement( EEtiqueta.ARGOX_OS214.ordinal() );		
 	
 		cbEtiquetas = new JComboBoxPad( vLabsCtb, vValsCtb, JComboBoxPad.TP_STRING, 2, 0 );
+		
 		
 		pnCampos.adic( cbEtiquetas, 7, 60, 200, 20 );
 		
@@ -473,23 +466,22 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 		return buffer;
 	}
-	
-	private String getTpEtiquetas(){
-		
-		String retorno = "";
-		
-		if( "00".equals( cbEtiquetas.getVlrString() )){
-		
-			Funcoes.mensagemInforma( this, "Selecione um modelo de etiqueta!" ); 
+
+	private EEtiqueta getTpEtiquetas() {
+
+		EEtiqueta etiqueta = EEtiqueta.NONE;
+
+		if ( EEtiqueta.NONE.ordinal() == cbEtiquetas.getVlrInteger() ) {
+			Funcoes.mensagemInforma( this, "Selecione um modelo de etiqueta!" );
 		}
-		
-		else if("6280".equals( cbEtiquetas.getVlrString())){
-			
-			retorno = "relatorios/Pimaco6280.jasper";
+		else if ( EEtiqueta.PIMANCO_6280.ordinal() == cbEtiquetas.getVlrInteger() ) {
+			etiqueta = EEtiqueta.PIMANCO_6280;
 		}
-		
-		return retorno;
-		
+		else if ( EEtiqueta.ARGOX_OS214.ordinal() == cbEtiquetas.getVlrInteger() ) {
+			etiqueta = EEtiqueta.ARGOX_OS214;
+		}
+
+		return etiqueta;
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -497,23 +489,24 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		if ( removeEtiquetas() ) {
 
 			if ( persistEtiquetas() ) {
+				
+				EEtiqueta etiqueta = getTpEtiquetas();
 
-				// visualização.
 				if ( bVisualizar ) {
-
-					FPrinterJob dlGr = null;
-					if (!"".equals( getTpEtiquetas())) {
-						dlGr = new FPrinterJob( getTpEtiquetas() , "Etiquetas", null, getEtiquetas(), null, this );
-						dlGr.setVisible( true );
+					if ( etiqueta.tipo == EEtiqueta.JASPER ) {
+						FPrinterJob dlGr = null;
+						if (!"".equals( getTpEtiquetas())) {
+							dlGr = new FPrinterJob( etiqueta.local , "Etiquetas", null, getEtiquetas(), null, this );
+							dlGr.setVisible( true );
+						}
 					}
 				}
-				// impressão.
 				else {
 					
-					if ( true ) {
+					if ( etiqueta.tipo == EEtiqueta.JASPER ) {
 						try {
 							FPrinterJob dlGr = null;
-							dlGr = new FPrinterJob( getTpEtiquetas(), "Etiquetas", null, getEtiquetas(), null, this );
+							dlGr = new FPrinterJob( etiqueta.local, "Etiquetas", null, getEtiquetas(), null, this );
 							JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 						} catch ( Exception err ) {
 							Funcoes.mensagemErro( this, "Erro na impressão de Etiquetas!" + err.getMessage(), true, con, err );
@@ -522,12 +515,11 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 					// impressora de etiquetas
 					else {
 
-						ImprimeOS imp = new ImprimeOS( "", con );
+						ImprimeOS imp = new ImprimeOS( "", con, "ET", false );
 						Object[] etiquetas = montaEtiquetas();
-						//imp.gravaTexto( etiquetas[ 1 ].toString() );
-						//imp.fechaGravacao();	
-						//imp.preview( this );					
-						//imp.print();
+						imp.gravaTexto( etiquetas[ 1 ].toString() );
+						imp.fechaGravacao();	
+						imp.print();
 					}
 				}
 			}
@@ -588,5 +580,23 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	private enum EProduto {
 
 		CODPROD, DESCPROD, QTDPROD
+	}
+
+	private enum EEtiqueta {
+
+		NONE( 0, "" ), 
+		PIMANCO_6280( 0, "relatorios/Pimaco6280.jasper" ), 
+		ARGOX_OS214( 1, "" );
+
+		final static int JASPER = 0;
+		final static int ETIQUETA = 1;
+		int tipo;
+		String local;
+
+		EEtiqueta( int tipo, String local ) {
+
+			this.tipo = tipo;
+			this.local = local;
+		}
 	}
 }
