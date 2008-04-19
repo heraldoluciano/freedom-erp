@@ -61,14 +61,14 @@ public class FRDemanda extends FRelatorio {
   private Vector<String> vVals = new Vector<String>(2);
   private ListaCampos lcGrup = new ListaCampos(this);
   private ListaCampos lcMarca = new ListaCampos(this);
-  private JCheckBoxPad cbGrupo = new JCheckBoxPad("Dividir por grupo","S","N");
-  private JCheckBoxPad cbSemMovEnt = new JCheckBoxPad("movimentação de entrada?","S","N");
-  private JCheckBoxPad cbSemMovSaida = new JCheckBoxPad("movimentação de saída?","S","N");
-  private JCheckBoxPad cbSemMovSaldo = new JCheckBoxPad("movimentação de saldo?","S","N");
+  private JCheckBoxPad cbGrupo = new JCheckBoxPad("Dividir por grupo.","S","N");
+  private JCheckBoxPad cbSemMovEnt = new JCheckBoxPad("Só com movimentação de entrada.","S","N");
+  private JCheckBoxPad cbSemMovSaida = new JCheckBoxPad("Só com movimentação de saída.","S","N");
+  private JCheckBoxPad cbSemMovSaldo = new JCheckBoxPad("Só com saldo.","S","N");
 
   public FRDemanda() {
     setTitulo("Relatório de Demanda");
-    setAtribos(80,80,340,330);
+    setAtribos(140,40,330,340);
     vLabs.addElement("Código");
     vLabs.addElement("Descrição");
     vVals.addElement("C");
@@ -152,7 +152,7 @@ public class FRDemanda extends FRelatorio {
     String sCampo = "";
     String sCab = "";
     String sWhere = "";
-    String sWhereMov = "";
+//    String sWhereMov = "";
     String sOrdenado = "";
     String sOrdemGrupo = "";
     String sDivGrupo = "";
@@ -197,16 +197,19 @@ public class FRDemanda extends FRelatorio {
     }
     
     if( "S".equals( cbSemMovEnt.getVlrString() )){
-    
-    	sWhereMov += "WHERE (P.VLRCOMPRAS + P.VLRDEVSAI + P.VLROUTENT) > 0";
+    	if (!sWhere.trim().equals("")) 
+    		sWhere += " AND ";    	    	
+    	sWhere += " (P.VLRCOMPRAS + P.VLRDEVSAI + P.VLROUTENT) > 0";
     }
     if( "S".equals( cbSemMovSaida.getVlrString() )){
-    	
-    	sWhereMov += "WHERE (P.VLRVENDAS + P.VLRDEVENT + P.VLROUSAI) > 0";
+    	if (!sWhere.trim().equals("")) 
+    		sWhere += " AND ";    	    	    	
+    	sWhere += " (P.VLRVENDAS + P.VLRDEVENT + P.VLROUTSAI) > 0";
     }
     if( "S".equals( cbSemMovSaldo.getVlrString() )){
-    	
-    	sWhereMov += "WHERE p.sldfim>0";
+    	if (!sWhere.trim().equals("")) 
+    		sWhere += " AND ";    	    	    	
+    	sWhere += " p.sldfim>0";
     }
     
     sOrdenado = "|"+Funcoes.replicate(" ",67-(sOrdenado.length()/2))+sOrdenado;
@@ -260,11 +263,11 @@ public class FRDemanda extends FRelatorio {
        "P.SLDINI, P.VLRCOMPRAS, P.VLRDEVENT, P.VLROUTENT, " +
        "P.VLRVENDAS, P.VLRDEVSAI, P.VLROUTSAI, P.SLDFIM "+
        "FROM EQRELDEMANDASP (?, ?, ?, ?, ?) P " +
-       sWhere+sWhereMov+" ORDER BY "+sOrdem;
+       sWhere + " ORDER BY " + sOrdem;
                   
     try {
       PreparedStatement ps = con.prepareStatement(sSQL);
-
+      
       ps.setInt(1,Aplicativo.iCodEmp);
       ps.setInt(2,ListaCampos.getMasterFilial("EQMOVPROD"));
       ps.setInt(3,ListaCampos.getMasterFilial("EQPRODUTO"));
