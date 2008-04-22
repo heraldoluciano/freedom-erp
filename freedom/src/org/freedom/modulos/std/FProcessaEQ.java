@@ -335,7 +335,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 		                      "IV.QTDITVENDA QTDPROC, IV.VLRLIQITVENDA CUSTOPROC, " +
 		                      "IV.CODEMPAX, IV.CODFILIALAX, IV.CODALMOX " +
 		                      "FROM VDVENDA V ,VDITVENDA IV " +
-		                      "WHERE IV.CODVENDA=V.CODVENDA AND "+
+		                      "WHERE IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA = V.TIPOVENDA AND "+
 		                      "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND "+
 		                      "IV.QTDITVENDA > 0 AND "+
 		                      "V.CODEMP=? AND V.CODFILIAL=? AND IV.CODPROD = ?"+sWhereVenda;
