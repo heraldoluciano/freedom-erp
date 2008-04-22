@@ -19,7 +19,6 @@ package org.freedom.tef.driver.text;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 
@@ -81,31 +80,115 @@ public abstract class TextTef {
 	public String set( String key, String value ) throws Exception {
 		return getTextTefProperties() != null ? getTextTefProperties().set( key, value ) : null;
 	}
+	
+	/**
+	 * Padroniza a inicialização dos parametros necessessários para o correto funcionamento do Objeto TEF.
+	 * 
+	 * @throws Exception
+	 */
+	abstract public void initializeTextTef() throws Exception ;
 
+	/**
+	 * Agiliza o processo de instanciação do Objeto TEF,<br>
+	 * definindo as propriedades, e também, invocando a inicialização do objeto com {@link #initializeTextTef()}
+	 * 
+	 * @see 	#setTextTefProperties(TextTefProperties)
+	 * @see 	TextTefProperties
+	 * 
+	 * @param 	textTefProperties 	Lista de propriedades
+	 * 
+	 * @throws 	Exception
+	 */
 	public void initializeTextTef( final TextTefProperties textTefProperties ) throws Exception {
 		setTextTefProperties( textTefProperties );
 		initializeTextTef();
 	}
 	
-	abstract protected void initializeTextTef() throws Exception ;
+	/**
+	 * Verifica se o gerenciador padrão está ativo.
+	 * 
+	 * @return	Verdadeiro para gerenciador padrão ativo.
+	 * 
+	 * @throws Exception
+	 */
+	abstract public boolean standardManagerActive() throws Exception;
 	
-	abstract public boolean isActive() throws Exception;
-	
+	/**
+	 * Executa a requisição de venda.
+	 * 
+	 * @param numberDoc 	Número do documento fiscal vinculado.
+	 * @param value			Valor da transação.
+	 * 
+	 * @return	Verdadeiro para sucesso na requisição.
+	 * 
+	 * @throws Exception
+	 */
 	abstract public boolean requestSale( final Integer numberDoc, 
 			                             final BigDecimal value ) throws Exception;
 	
-	abstract public boolean readResponseSale() throws Exception;
-	
-	abstract public List<String> getResponseToPrint() throws Exception;
-	
-	abstract public boolean confirmationOfSale() throws Exception;
-	
-	abstract public boolean noConfirmationOfSale() throws Exception;
-	
+	/**
+	 * Executa o acionamento das funções administrativas do gerenciador padrão.
+	 * 
+	 * @return	Verdadeiro para sucesso no acionamento.
+	 * 
+	 * @throws Exception
+	 */
 	abstract public boolean requestAdministrator() throws Exception;
 	
-	abstract public boolean requestCancel( final String nsu,
-										   final String rede,
-									       final Date data,
+	/**
+	 * Executa a requisição do cancelamento de transação TEF.
+	 * 
+	 * @param rede		Nome da rede
+	 * @param nsu		Número da transação ( Número Sequencial Único )
+	 * @param data		Data da transação
+	 * @param hora		Hora da transação
+	 * @param value		Valor da trasação
+	 * 
+	 * @return Verdadeiro para o sucesso no cancelamento.
+	 * 
+	 * @throws Exception
+	 */
+	abstract public boolean requestCancel( final String rede,
+			                               final String nsu,
+									       final String data,
+									       final String hora,
 										   final BigDecimal value ) throws Exception;
+	
+	/**
+	 * Faz a leitura do arquivo de resposta.
+	 * 
+	 * @param header	Valor do campo header para comparação do arquivo a qual a resposta se refere.
+	 * 
+	 * @return	Verdadeiro para correta leitura do arquivo.
+	 * 
+	 * @throws Exception
+	 */
+	abstract public boolean readResponse( final String header ) throws Exception;
+	
+	/**
+	 * Monta uma lista, com as linhas, a serem impressas no comprovante TEF ( campos 029- ... ) .<br>
+	 * 
+	 * @return	Lista com comprovante TEF.
+	 * 
+	 * @throws Exception
+	 */
+	abstract public List<String> getResponseToPrint() throws Exception;
+	
+	/**
+	 * Executa a requisição de confirmação da impressão do comprovante TEF.
+	 * 
+	 * @return	Verdadeiro para sucesso na confimação.
+	 * 
+	 * @throws Exception
+	 */
+	abstract public boolean confirmation() throws Exception;
+	
+	/**
+	 * Executa a requisição da não confirmação da impressão do comprovante TEF.
+	 * 
+	 * @return	Verdadeiro para sucesso da não confirmação.
+	 * 
+	 * @throws Exception
+	 */
+	abstract public boolean noConfirmation() throws Exception;
 }
