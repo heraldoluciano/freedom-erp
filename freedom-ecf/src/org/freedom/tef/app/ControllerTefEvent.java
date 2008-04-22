@@ -3,6 +3,8 @@ package org.freedom.tef.app;
 
 public class ControllerTefEvent {
 	
+	public static final int NONE = 0;
+	
 	public static final int ERROR = 100;
 	
 	public static final int WARNING = 101;
@@ -24,20 +26,18 @@ public class ControllerTefEvent {
 	private String message;
 	
 	public ControllerTefEvent() {
-		super();
+		this( null, NONE, null );
 	}
 	
 	public ControllerTefEvent( final ControllerTef controllerTef, 
 			                   final int action ) {
-		this();
-		this.controllerTef = controllerTef;
-		this.action = action;
+		this( controllerTef, action, null );
 	}
 	
 	public ControllerTefEvent( final ControllerTef controllerTef, 
 			                   final int action,
 			                   final String message ) {
-		this();
+		super();
 		this.controllerTef = controllerTef;
 		this.action = action;
 		this.message = message;
