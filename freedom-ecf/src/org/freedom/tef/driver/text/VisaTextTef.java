@@ -25,9 +25,11 @@ import static org.freedom.tef.driver.text.TextTefProperties.ARQ_RESPONSE;
 import static org.freedom.tef.driver.text.TextTefProperties.ARQ_SEND;
 import static org.freedom.tef.driver.text.TextTefProperties.ARQ_STATUS;
 import static org.freedom.tef.driver.text.TextTefProperties.ARQ_TMP;
+import static org.freedom.tef.driver.text.TextTefProperties.DATE_VOUCHER;
 import static org.freedom.tef.driver.text.TextTefProperties.DOCUMENT;
 import static org.freedom.tef.driver.text.TextTefProperties.FINISHING;
 import static org.freedom.tef.driver.text.TextTefProperties.HEADER;
+import static org.freedom.tef.driver.text.TextTefProperties.HOUR_VOUCHER;
 import static org.freedom.tef.driver.text.TextTefProperties.INDENTIFICATION;
 import static org.freedom.tef.driver.text.TextTefProperties.NET_NAME;
 import static org.freedom.tef.driver.text.TextTefProperties.NSU;
@@ -45,7 +47,6 @@ import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
@@ -66,7 +67,7 @@ public class VisaTextTef extends TextTef  {
 	}
 
 	@Override
-	protected synchronized void initializeTextTef() throws Exception {
+	public synchronized void initializeTextTef() throws Exception {
 		
 		if ( getTextTefProperties() == null ) {
 			throw new NullPointerException( "Properties para TEF não especificadas!" );
@@ -85,18 +86,17 @@ public class VisaTextTef extends TextTef  {
         	fileStatus   = new File( get( PATH_RESPONSE ) + "/" + get( ARQ_STATUS ) ) ;
         	fileActive   = new File( get( PATH_RESPONSE ) + "/" + get( ARQ_ACTIVE ) ) ;
         	
-        	if ( ! isActive() ) {
+        	if ( ! standardManagerActive() ) {
         		throw new Exception( "Gerenciador TEF não está ativo!" );
         	}
-        	/*else if ( existActiveTEF( ADM, fileResponse, 1, null ) ) {
-        		readReturn();
-        		// nao confirmar();
+        	/*else if ( tem transação pendente ) {
+        	 * não confirmar...
         	}*/
 		}
 	}
 
 	@Override
-	public synchronized boolean isActive() throws Exception {
+	public synchronized boolean standardManagerActive() throws Exception {
 		
 		boolean isActive = false;
 		incrementIndentificationActual();
@@ -124,8 +124,8 @@ public class VisaTextTef extends TextTef  {
 		}
 			
 		incrementIndentificationActual();
-		final DecimalFormat df = new DecimalFormat( "0.00" );
 		
+		final DecimalFormat df = new DecimalFormat( "0.00" );		
 		List<String> request = new ArrayList<String>();
 		
 		request.add( HEADER          + " = " + CRT );
@@ -134,10 +134,69 @@ public class VisaTextTef extends TextTef  {
 		request.add( VALUE           + " = " + df.format( value ) );
 		request.add( TRAILER         + " = " + 0 );
 				
-		return send( request, fileTemp, fileSend ) & existFileStatus( CRT, indentification );
+		return send( request, fileTemp, fileSend ) && existFileStatus( CRT, indentification );
 	}
 
-	public synchronized boolean readResponseSale() throws Exception {
+	@Override
+	public synchronized boolean requestAdministrator() throws Exception {
+		
+		boolean requestAdministrator = false;
+		incrementIndentificationActual();
+		
+		List<String> request = new ArrayList<String>();
+		
+		request.add( HEADER          + " = " + ADM );
+		request.add( INDENTIFICATION + " = " + indentification );
+		request.add( TRAILER         + " = " + 0 );
+		
+		requestAdministrator = 
+			send( request, fileTemp, fileSend ) && existFileStatus( ADM, indentification );
+		
+		if ( requestAdministrator && fileStatus.exists() ) {
+			fileStatus.delete();
+		}
+		
+		return requestAdministrator;
+	}
+
+	/**
+	 * Este método não está completamente implementado.<br>
+	 * Em testes com gerenciador padrão Cliente Sitef, ocorreu erro 101, ainda não resolvido.<br>
+	 */
+	@Override
+	@Deprecated
+	public synchronized boolean requestCancel( final String rede, 
+	        							 	   final String nsu, 
+	        								   final String date, 
+	        								   final String hora, 
+	        								   final BigDecimal value ) throws Exception {
+		
+		boolean requestCancel = false;
+		incrementIndentificationActual();
+		
+		final DecimalFormat df = new DecimalFormat( "0.00" );			
+		List<String> request = new ArrayList<String>();
+		
+		request.add( HEADER          + " = " + NCN );
+		request.add( INDENTIFICATION + " = " + indentification );
+		request.add( VALUE           + " = " + df.format( value ) );
+		request.add( NET_NAME        + " = " + rede );
+		request.add( NSU             + " = " + nsu );
+		request.add( DATE_VOUCHER    + " = " + date );
+		request.add( HOUR_VOUCHER    + " = " + hora );		
+		request.add( TRAILER         + " = " + 0 );
+		
+		requestCancel = 
+			send( request, fileTemp, fileSend ) && existFileStatus( NCN, indentification );
+		
+		if ( requestCancel && fileStatus.exists() ) {
+			fileStatus.delete();
+		}
+		
+		return requestCancel;
+	}
+
+	public synchronized boolean readResponse( final String header ) throws Exception {
 	    
 		boolean readresponse = false;
 	    long indentific = -1;
@@ -147,7 +206,7 @@ public class VisaTextTef extends TextTef  {
 	    while ( indentific != indentification && changes-- > 0 ) {			
 	    	
 	    	// aguardando recebimento do arquivo IntPos.001
-	    	if ( existFileResponse( CRT, indentification ) ) {
+	    	if ( existFileResponse( header, indentification ) ) {
 	    	
 	    		// Obtém dados do arquivo IntPos.001
 			    loadTextTefPropertie( fileResponse );
@@ -196,7 +255,7 @@ public class VisaTextTef extends TextTef  {
 	}
 
 	@Override
-	public synchronized boolean confirmationOfSale() throws Exception {
+	public synchronized boolean confirmation() throws Exception {
 		
 		if ( fileResponse.exists() ) {
 			fileResponse.delete();
@@ -215,8 +274,13 @@ public class VisaTextTef extends TextTef  {
 		boolean confirmationOfSale = send( request, fileTemp, fileSend );
 		
 		if ( confirmationOfSale && existFileStatus( CNF, indentification ) ) {
+			// Apagando arquivo de status ...
 			if ( fileStatus.exists() ) {
 				fileStatus.delete();
+			}
+			// Apagando arquivo de resposta ...
+			if ( fileResponse.exists() ) {
+				fileResponse.delete();
 			}
 		}
 				
@@ -224,7 +288,7 @@ public class VisaTextTef extends TextTef  {
 	}
 
 	@Override
-	public synchronized boolean noConfirmationOfSale() throws Exception {
+	public synchronized boolean noConfirmation() throws Exception {
 		
 		if ( fileResponse.exists() ) {
 			fileResponse.delete();
@@ -243,44 +307,17 @@ public class VisaTextTef extends TextTef  {
 		boolean notConfirmationOfSale = send( request, fileTemp, fileSend );
 		
 		if ( notConfirmationOfSale && existFileStatus( NCN, indentification )  ) {
+			// Apagando arquivo de status ...
 			if ( fileStatus.exists() ) {
 				fileStatus.delete();
+			}
+			// Apagando arquivo de resposta ...
+			if ( fileResponse.exists() ) {
+				fileResponse.delete();
 			}
 		}
 				
 		return notConfirmationOfSale;
-	}
-
-	@Override
-	public synchronized boolean requestAdministrator() throws Exception {
-		
-		boolean requestAdministrator = false;
-		incrementIndentificationActual();
-		
-		List<String> request = new ArrayList<String>();
-		
-		request.add( HEADER          + " = " + ADM );
-		request.add( INDENTIFICATION + " = " + indentification );
-		request.add( TRAILER         + " = " + 0 );
-		
-		requestAdministrator = 
-			send( request, fileTemp, fileSend ) && existFileStatus( ADM, indentification );
-		
-		if ( requestAdministrator && fileStatus.exists() ) {
-			fileStatus.delete();
-		}
-		
-		return requestAdministrator;
-	}
-
-	@Override
-	public synchronized boolean requestCancel( final String nsu, 
-            							 	   final String rede, 
-            								   final Date data, 
-            								   final BigDecimal value ) throws Exception {
-		
-		
-		return false;
 	}
 
 	private synchronized long incrementIndentificationActual() {
