@@ -99,7 +99,7 @@ public final class TextTefFactore {
 				}
 			} catch ( Exception e ) {
 				System.out.println( "[  ERROR  ] " + e.getMessage() );
-				throw new Exception( "Não foi possivél criar objeto para TEF!", e );
+				throw new Exception( "Não foi possivél criar objeto para TEF!\n" + e.getMessage(), e );
 			}
 		}
 		else {
