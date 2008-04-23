@@ -348,8 +348,7 @@ public class NF035 extends Layout {
 						
 						if (nf.getTipoNF() == NF.TPNF_ENTRADA) {
 							imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRLIQPED ) + 
-									cab.getFloat( NF.C_VLRADICPED )  +
-									cab.getFloat( NF.C_VLRICMSPED ))));
+									cab.getFloat( NF.C_VLRADICPED ))));
 						}
 						else{
 							imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRLIQPED ) )));
