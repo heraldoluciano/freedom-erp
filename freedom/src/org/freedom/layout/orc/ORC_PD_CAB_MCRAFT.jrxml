@@ -34,7 +34,7 @@
 		<defaultValueExpression ><![CDATA["Usuario vazio"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="LOGOEMP" isForPrompting="false" class="java.io.InputStream"/>
-	<queryString><![CDATA[SELECT RAZEMP,FONEEMP,FAXEMP,FOTOEMP, CNPJEMP
+	<queryString><![CDATA[SELECT RAZEMP,FONEEMP,FAXEMP,FOTOEMP, CNPJEMP, ENDEMP,EMAILEMP, WWWEMP, NUMEMP
 FROM SGEMPRESA 
 WHERE CODEMP=$P{CODEMP}]]></queryString>
 
@@ -43,6 +43,10 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 	<field name="FAXEMP" class="java.lang.String"/>
 	<field name="FOTOEMP" class="java.io.InputStream"/>
 	<field name="CNPJEMP" class="java.lang.String"/>
+	<field name="ENDEMP" class="java.lang.String"/>
+	<field name="EMAILEMP" class="java.lang.String"/>
+	<field name="WWWEMP" class="java.lang.String"/>
+	<field name="NUMEMP" class="java.lang.Long"/>
 
 	<variable name="CNPJEMPF" class="java.lang.String" resetType="None" calculation="Nothing">
 		<variableExpression><![CDATA[( $F{CNPJEMP} != null && $F{CNPJEMP}.length()>12 ? 
@@ -58,7 +62,7 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 			</band>
 		</title>
 		<pageHeader>
-			<band height="44"  isSplitAllowed="true" >
+			<band height="64"  isSplitAllowed="true" >
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
@@ -92,9 +96,9 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="294"
-						y="28"
-						width="100"
+						x="287"
+						y="27"
+						width="116"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -107,9 +111,9 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="103"
-						y="28"
-						width="184"
+						x="104"
+						y="27"
+						width="181"
 						height="11"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -121,9 +125,9 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="417"
-						y="28"
-						width="100"
+						x="409"
+						y="27"
+						width="144"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -133,6 +137,61 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Fax : " + ($F{FAXEMP}!=null?$F{FAXEMP}.substring(0,4) + "-" + $F{FAXEMP}.substring(4):"")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="104"
+						y="41"
+						width="119"
+						height="11"
+						key="textField-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Endereço: " + $F{ENDEMP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="409"
+						y="42"
+						width="144"
+						height="11"
+						key="textField-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Email:" + $F{EMAILEMP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="287"
+						y="41"
+						width="116"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Empresa-7"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Site:  " + $F{WWWEMP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="229"
+						y="41"
+						width="55"
+						height="11"
+						key="textField-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["n° "+$F{NUMEMP}.toString()]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>

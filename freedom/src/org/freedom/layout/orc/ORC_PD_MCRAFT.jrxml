@@ -27,7 +27,7 @@
 		<defaultValueExpression ><![CDATA["\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\layout\\orc\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(4)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(6)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
@@ -87,13 +87,13 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 			</band>
 		</background>
 		<title>
-			<band height="41"  isSplitAllowed="true" >
+			<band height="56"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
 						x="3"
 						y="0"
 						width="532"
-						height="38"
+						height="54"
 						key="subreport-1"/>
 					<subreportParameter  name="CODEMP">
 						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
@@ -106,7 +106,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 						x="535"
 						y="0"
 						width="0"
-						height="41"
+						height="56"
 						key="line-15"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -114,18 +114,9 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 					<reportElement
 						x="0"
 						y="0"
-						width="0"
-						height="41"
+						width="1"
+						height="56"
 						key="line-16"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="40"
-						width="535"
-						height="0"
-						key="line-17"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
@@ -137,10 +128,28 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 						key="line-18"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="55"
+						width="535"
+						height="0"
+						key="line-22"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</title>
 		<pageHeader>
 			<band height="20"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="535"
+						height="0"
+						key="line-17"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 				<staticText>
 					<reportElement
 						x="0"
@@ -150,7 +159,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false"/>
+						<font pdfFontName="Helvetica-Bold" size="11" isBold="true" isItalic="false"/>
 					</textElement>
 				<text><![CDATA[ORÇAMENTO]]></text>
 				</staticText>
@@ -179,15 +188,6 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 						width="535"
 						height="0"
 						key="line-21"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="0"
-						width="535"
-						height="0"
-						key="line-22"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -545,7 +545,7 @@ descriminados.]]></text>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="50"  isSplitAllowed="true" >
+			<band height="55"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="21"

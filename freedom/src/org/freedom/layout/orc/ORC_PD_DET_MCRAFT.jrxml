@@ -65,9 +65,9 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 			<band height="24"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="3"
+						x="43"
 						y="4"
-						width="290"
+						width="250"
 						height="18"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -191,6 +191,19 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						key="line-19"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<staticText>
+					<reportElement
+						x="3"
+						y="4"
+						width="37"
+						height="18"
+						key="staticText-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Cod.]]></text>
+				</staticText>
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -255,6 +268,15 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						width="68"
 						height="0"
 						key="line-24"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="1"
+						width="535"
+						height="0"
+						key="line-26"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -371,15 +393,6 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="0"
-						y="1"
-						width="535"
-						height="0"
-						key="line-8"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
 						x="467"
 						y="0"
 						width="1"
@@ -410,9 +423,9 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 			<band height="20"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="3"
+						x="43"
 						y="1"
-						width="290"
+						width="250"
 						height="17"
 						key="textField-3"
 						stretchType="RelativeToTallestObject"/>
@@ -541,6 +554,20 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						key="line-15"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="3"
+						y="1"
+						width="37"
+						height="17"
+						key="textField-13"
+						stretchType="RelativeToTallestObject"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODPROD}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
