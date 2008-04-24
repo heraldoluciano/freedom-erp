@@ -84,14 +84,7 @@ public class VisaTextTef extends TextTef  {
         	fileSend     = new File( get( PATH_SEND )     + "/" + get( ARQ_SEND ) ) ;
         	fileResponse = new File( get( PATH_RESPONSE ) + "/" + get( ARQ_RESPONSE ) ) ;
         	fileStatus   = new File( get( PATH_RESPONSE ) + "/" + get( ARQ_STATUS ) ) ;
-        	fileActive   = new File( get( PATH_RESPONSE ) + "/" + get( ARQ_ACTIVE ) ) ;
-        	
-        	if ( ! standardManagerActive() ) {
-        		throw new Exception( "Gerenciador TEF não está ativo!" );
-        	}
-        	/*else if ( tem transação pendente ) {
-        	 * não confirmar...
-        	}*/
+        	fileActive   = new File( get( PATH_RESPONSE ) + "/" + get( ARQ_ACTIVE ) ) ;        	
 		}
 	}
 

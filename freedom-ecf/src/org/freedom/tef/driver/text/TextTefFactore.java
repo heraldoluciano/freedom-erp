@@ -97,6 +97,9 @@ public final class TextTefFactore {
 				if ( textTef != null ) {
 					textTef.initializeTextTef( textTefProperties );
 				}
+			} catch ( ClassCastException e ) {
+				System.out.println( "[  ERROR  ] " + e.getMessage() );
+				Flag.getTextTefFlagsMap().remove( flagName );
 			} catch ( Exception e ) {
 				System.out.println( "[  ERROR  ] " + e.getMessage() );
 				throw new Exception( "Não foi possivél criar objeto para TEF!\n" + e.getMessage(), e );
