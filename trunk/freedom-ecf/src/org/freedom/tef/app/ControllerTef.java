@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.freedom.infra.components.LoggerManager;
+import org.freedom.tef.driver.Flag;
 import org.freedom.tef.driver.text.TextTef;
 import org.freedom.tef.driver.text.TextTefFactore;
 import org.freedom.tef.driver.text.TextTefProperties;
@@ -45,7 +46,7 @@ public class ControllerTef {
 
 	private static final int VOUCHER_OK = 1;
 	
-	private File fileParametrosOfInitiation;
+	private File fileFlagsMap;
 	
 	private TextTefProperties defaultTextTefProperties;
 	
@@ -91,7 +92,7 @@ public class ControllerTef {
 	                                     final int typeTef ) throws Exception {
 		
 		setDefaultTextTefProperties( textTefProperties );
-		setFileParametrosOfInitiation( fileParametrosOfInitiation );
+		setFileFlagsMap( fileParametrosOfInitiation );
 		setTypeTef( typeTef );
 	}
 
@@ -118,17 +119,17 @@ public class ControllerTef {
 		this.defaultTextTefProperties = defaultTextTefProperties;
 	}
 	
-	public File getFileParametrosOfInitiation() {	
-		return fileParametrosOfInitiation;
+	public File getFileFlagsMap() {	
+		return fileFlagsMap;
 	}
 	
-	public void setFileParametrosOfInitiation( final File fileParametrosOfInitiation ) {	
+	public void setFileFlagsMap( final File fileFlagsMap ) {	
 		
-		if ( fileParametrosOfInitiation == null ) {
+		if ( fileFlagsMap == null ) {
 			throw new NullPointerException( "Arquivo de parametros de inicialização inválido!" );
 		}
 		
-		this.fileParametrosOfInitiation = fileParametrosOfInitiation;
+		this.fileFlagsMap = fileFlagsMap;
 	}
 
 	public int getTypeTef() {	
@@ -180,6 +181,29 @@ public class ControllerTef {
 	// ************************************************************************** \\
 	
 	/**
+	 * Verifica se o gerenciador padrão de TEF está ativo.<br>
+	 * 
+	 * @return	Verdadeiro para gerenciador padrão ativo.
+	 * 
+	 * @throws 	Exception
+	 */
+	public boolean standardManagerActive() throws Exception {
+		
+		Flag.loadParametrosOfInitiation( getFileFlagsMap() );
+		Object[] flags = Flag.getTextTefFlagsMap().keySet().toArray();		
+		TextTef textTef = null;		
+		
+		for ( Object flagName : flags ) {
+			textTef = TextTefFactore.createTextTef( getTextTefProperties(), (String)flagName );
+			if ( textTef != null ) {
+				break; 
+			}
+		}
+		
+		return standardManagerActive( textTef );
+	}
+
+	/**
 	 * Este método faz a requisição de pagamento para o gerenciador padrão TEF. <br>
 	 * 
 	 * @param numberDoc		Número do documento.
@@ -220,6 +244,30 @@ public class ControllerTef {
 	}
 	
 	/**
+	 * Verifica se o gerenciador padrão de TEF está ativo,<br>
+	 * do contrário envia menssagem para ouvinte.<br>
+	 * 
+	 * @param 	textTef		Objeto de TEF.
+	 * 
+	 * @return	Verdadeiro para gerenciador padrão ativo.
+	 * 
+	 * @throws 	Exception
+	 */
+	private boolean standardManagerActive( final TextTef textTef ) throws Exception {
+		
+		boolean active = false;
+		
+		if ( TEF_TEXT == getTypeTef() && textTef != null ) {
+			active = textTef.standardManagerActive();
+			if ( ! active  ) {
+				fireControllerTefEvent( ERROR, "TEF não está ativo!" );
+			}
+		}
+		
+		return active;
+	}
+
+	/**
 	 * Efetua a requisição de venda para TEF Texto,<br>
 	 * atráves da criação do arquivo com os parâmetros da requisição e<br>
 	 * verifica o recebimento da requisição atráves da leitura do arquivo de retorno<br>
@@ -242,7 +290,7 @@ public class ControllerTef {
 		try {
 			TextTef textTef = TextTefFactore.createTextTef( getTextTefProperties(), 
 															flagName, 
-															getFileParametrosOfInitiation() );	
+															getFileFlagsMap() );	
 			if ( ! standardManagerActive( textTef ) ) {
 				return actionReturn;
 			}
@@ -291,7 +339,7 @@ public class ControllerTef {
 		try {
 			TextTef textTef = TextTefFactore.createTextTef( getTextTefProperties(), 
 															flagName, 
-															getFileParametrosOfInitiation() );	
+															getFileFlagsMap() );	
 			if ( ! standardManagerActive( textTef ) ) {
 				return actionReturn;
 			}
@@ -323,28 +371,6 @@ public class ControllerTef {
 		}
 		
 		return actionReturn;
-	}
-	
-	/**
-	 * Verifica se o gerenciador padrão de TEF está ativo,<br>
-	 * do contrário envia menssagem para ouvinte.<br>
-	 * 
-	 * @param 	textTef		Objeto de TEF.
-	 * 
-	 * @return	Verdadeiro para gerenciador padrão ativo.
-	 * 
-	 * @throws 	Exception
-	 */
-	private boolean standardManagerActive( final TextTef textTef ) throws Exception {
-		
-		boolean active = true;
-		
-		if ( textTef != null && ! textTef.standardManagerActive() ) {
-			active = false;
-			fireControllerTefEvent( ERROR, "TEF não está ativo!" );
-		}
-		
-		return active;
 	}
 	
 	/**
