@@ -1045,7 +1045,7 @@ public class ControllerECF {
 		
 		if ( notIsModoDemostracao() ) {	
 			boolean actionOK = true;
-			if ( texto == null || texto.trim().length() == 0 ) {
+			if ( texto == null ) {
 				setMessageLog( "Texto inválido.[" + texto +"]" );    			
     			actionOK = false;
 			}
