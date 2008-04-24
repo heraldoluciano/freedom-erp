@@ -117,9 +117,11 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public static String strDriver = "";
 
-	public static String strTefEnv = "";
+	public static String tefSend = "";
 
-	public static String strTefRet = "";
+	public static String tefRequest = "";
+
+	public static String tefFlags = "";
 
 	public static TabObjeto tbObjetos = null;
 
