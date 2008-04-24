@@ -120,70 +120,68 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 
 	public void iniConexao() {
 
-		String sAutoCommit = getParameter( "autocommit" );
-		try {
-			strBanco = getParameter( "banco" );
-			strDriver = getParameter( "driver" );
-			if ( sAutoCommit == null )
-				sAutoCommit = "N";
-			if ( sAutoCommit.trim().equals( "" ) )
-				sAutoCommit = "N";
-			if ( sAutoCommit.toUpperCase().equals( "S" ) )
-				bAutoCommit = true;
+		strBanco = getParameter( "banco" );
+		strDriver = getParameter( "driver" );
+		bAutoCommit = "S".toUpperCase().equals( getParameter( "autocommit" ) );
 
-			strTemp = getParameter( "temp" );
-			strOS = getParameter( "os" ).toLowerCase();
-			strBrowser = getParameter( "browser" );
-			strTefEnv = getParameter( "tef_path_envio" );
-			strTefRet = getParameter( "tef_path_retorno" );
-			strCharSetRel = getParameter( "charSetRel" );
-			if ( ( strCharSetRel == null ) || ( "".equals( strCharSetRel ) ) ) {
-				strCharSetRel = "ISO8859-1";
-			}
-
-			try {
-				iCodEmp = Integer.parseInt( getParameter( "codemp" ) );
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( null, "Não foi possível carregar o parâmetro 'codemp'\n" + err.getMessage(), true, con, err );
-			}
-
-			try {
-				if ( !getParameter( "codfilial" ).equals( "" ) )
-					iCodFilialParam = Integer.parseInt( getParameter( "codfilial" ) );
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( null, "Não foi possível carregar o parâmetro 'codfilialparam'\n" + err.getMessage(), true, con, err );
-			}
-
-			try {
-				iNumEst = Integer.parseInt( getParameter( "numterm" ) );
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( null, "Não foi possível carregar o parâmetro 'numterm'\n" + err.getMessage(), true, con, err );
-			}
-			if ( strBanco == null ) {
-				Funcoes.mensagemInforma( null, "Parametro banco nao foi preenchido" );
-				return;
-			}
-			if ( strDriver == null ) {
-				Funcoes.mensagemInforma( null, "Parametro driver nao foi preenchido" );
-				return;
-			}
-			con = conexao();
-			if ( con == null )
-				System.exit( 1 );
-			try {
-				con.setAutoCommit( bAutoCommit );
-				// con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-				con.setTransactionIsolation( Connection.TRANSACTION_READ_COMMITTED );
-			} catch ( SQLException err ) {
-				Funcoes.mensagemErro( null, err.getMessage() );
-			}
-			tbObjetos = new TabObjeto();
-			tbObjetos.montaLista( con, iCodEmp, "SGOBJETO", "TB" );
-
-			empresa = new ObjetoEmpresa( con );
-		} finally {
-			sAutoCommit = null;
+		strCharSetRel = getParameter( "charSetRel" );
+		if ( strCharSetRel == null || "".equals( strCharSetRel ) ) {
+			strCharSetRel = "ISO8859-1";
 		}
+
+		strTemp = getParameter( "temp" );
+		strOS = getParameter( "os" ).toLowerCase();
+		strBrowser = getParameter( "browser" );
+
+		tefSend = getParameter( "tef_path_send" );
+		tefRequest = getParameter( "tef_path_request" );
+		tefFlags = getParameter( "tef_path_flags" );
+
+		try {
+			iCodEmp = Integer.parseInt( getParameter( "codemp" ) );
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( null, "Não foi possível carregar o parâmetro 'codemp'\n" + err.getMessage(), true, con, err );
+		}
+
+		try {
+			if ( !getParameter( "codfilial" ).equals( "" ) ) {
+				iCodFilialParam = Integer.parseInt( getParameter( "codfilial" ) );
+			}
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( null, "Não foi possível carregar o parâmetro 'codfilialparam'\n" + err.getMessage(), true, con, err );
+		}
+
+		try {
+			iNumEst = Integer.parseInt( getParameter( "numterm" ) );
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( null, "Não foi possível carregar o parâmetro 'numterm'\n" + err.getMessage(), true, con, err );
+		}
+		
+		if ( strBanco == null ) {
+			Funcoes.mensagemInforma( null, "Parametro banco nao foi preenchido" );
+			return;
+		}
+		if ( strDriver == null ) {
+			Funcoes.mensagemInforma( null, "Parametro driver nao foi preenchido" );
+			return;
+		}
+		
+		con = conexao();
+		if ( con == null ) {
+			System.exit( 1 );
+		}
+		try {
+			con.setAutoCommit( bAutoCommit );
+			// con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			con.setTransactionIsolation( Connection.TRANSACTION_READ_COMMITTED );
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( null, err.getMessage() );
+		}
+		
+		tbObjetos = new TabObjeto();
+		tbObjetos.montaLista( con, iCodEmp, "SGOBJETO", "TB" );
+
+		empresa = new ObjetoEmpresa( con );
 	}
 
 	public static int[] gravaLog( String sClas, String sTipo, String sDesc, String sObs, Connection con ) {
