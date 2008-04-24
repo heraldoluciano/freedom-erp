@@ -244,7 +244,7 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 		}
 
 		if ( tef == null && AplicativoPDV.bTEFTerm ) {
-			tef = new Tef( Aplicativo.strTefEnv, Aplicativo.strTefRet );
+			tef = new Tef( Aplicativo.tefSend, Aplicativo.tefRequest );
 		}
 
 		Properties retTef = tef.solicCancelamento( sNSU.trim(), sRede.trim(), dTrans, bigVlr );

@@ -356,7 +356,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				AplicativoPDV.bModoDemo );
 
 		if ( AplicativoPDV.bTEFTerm ) {
-			tef = new Tef( Aplicativo.strTefEnv, Aplicativo.strTefRet );
+			tef = new Tef( Aplicativo.tefSend, Aplicativo.tefRequest );
 		}
 
 		setPrimeiroFoco( txtCodProd );
