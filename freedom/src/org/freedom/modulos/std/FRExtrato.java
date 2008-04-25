@@ -28,20 +28,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRExtrato extends FRelatorio {
@@ -57,11 +63,13 @@ public class FRExtrato extends FRelatorio {
 	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private ListaCampos lcConta = new ListaCampos( this );
+	
+	private JRadioGroup<?, ?> rgTipoRel = null;
 
 	public FRExtrato() {
 
 		setTitulo( "Extrato" );
-		setAtribos( 80, 80, 350, 200 );
+		setAtribos( 80, 80, 350, 250 );
 
 		txtCodConta.setRequerido( true );
 		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.conta", ListaCampos.DB_PK, false ) );
@@ -71,6 +79,15 @@ public class FRExtrato extends FRelatorio {
 		txtCodConta.setTabelaExterna( lcConta );
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );
+		
+		Vector<String> vVals2 = new Vector<String>();
+		Vector<String> vLabs2 = new Vector<String>();
+		vVals2.addElement("G");
+		vVals2.addElement("T");
+		vLabs2.addElement("Grafico");
+		vLabs2.addElement("Texto");
+		rgTipoRel = new JRadioGroup<String, String>(1, 2, vLabs2, vVals2 );
+		rgTipoRel.setVlrString("G");
 
 		JLabel periodo = new JLabel( "Período", SwingConstants.CENTER );
 		periodo.setOpaque( true );
@@ -82,11 +99,13 @@ public class FRExtrato extends FRelatorio {
 		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 35, 40, 20 );
 		adic( txtDatafim, 175, 35, 110, 20 );
 		
-		adic( new JLabelPad( "Nº conta" ), 7, 75, 80, 20 );		
-		adic( txtCodConta, 7, 95, 90, 20 );
-		adic( new JLabelPad( "Descrição da conta" ), 100, 75, 200, 20 );
-		adic( txtDescConta, 100, 95, 200, 20 );
-
+		
+		adic( rgTipoRel, 7, 70, 295, 30 );
+		adic( new JLabelPad( "Nº conta" ), 7, 100, 80, 20 );		
+		adic( txtCodConta, 7, 120, 90, 20 );
+		adic( new JLabelPad( "Descrição da conta" ), 100, 100, 200, 20 );
+		adic( txtDescConta, 100, 120, 200, 20 );
+		
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
@@ -101,6 +120,9 @@ public class FRExtrato extends FRelatorio {
 
 	public void imprimir( boolean bVisualizar ) {
 
+		String sCodConta = txtCodConta.getVlrString();
+		ResultSet rs = null;
+			
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
@@ -109,40 +131,25 @@ public class FRExtrato extends FRelatorio {
 			Funcoes.mensagemInforma( this, "Número da conta é requerido!" );
 			return;
 		}
+	
+			
+		StringBuilder sSQL = new StringBuilder();
+
+		sSQL.append( "SELECT S.DATASL,L.HISTBLANCA,L.DOCLANCA,SL.VLRSUBLANCA,S.SALDOSL FROM FNSALDOLANCA S," );
+		sSQL.append( "FNLANCA L,FNCONTA C, FNSUBLANCA SL WHERE L.FLAG IN " );
+		sSQL.append( AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
+		sSQL.append( " AND C.CODEMP=? AND C.CODFILIAL=? AND C.NUMCONTA=? " );
+		sSQL.append( "AND L.CODEMP=? AND L.CODFILIAL=? AND L.CODLANCA=SL.CODLANCA " );
+		sSQL.append( "AND S.CODPLAN=SL.CODPLAN AND S.CODEMP=SL.CODEMPPN AND S.CODFILIAL=SL.CODFILIALPN " );
+		sSQL.append( "AND SL.DATASUBLANCA BETWEEN ? AND ? AND S.DATASL=SL.DATASUBLANCA " );
+		sSQL.append( "AND SL.CODPLAN=C.CODPLAN AND SL.CODEMPPN=C.CODEMPPN AND SL.CODFILIALPN=C.CODFILIALPN " );
+		sSQL.append( "AND SL.CODEMP=? AND SL.CODFILIAL=? ORDER BY S.DATASL,L.CODLANCA" );
+
 		
-		String sCodConta = txtCodConta.getVlrString();
-		String sDataLanca = "";
-		String sConta = "";
-		String linhafina = Funcoes.replicate( "-", 133 );
-		BigDecimal bTotal = new BigDecimal( "0" );
-		BigDecimal bSaldo = new BigDecimal( "0" );
-		BigDecimal bSaldoLinha = new BigDecimal( "0" );
-		BigDecimal bVlrDeb = new BigDecimal( "0" );
-		BigDecimal bVlrCred = new BigDecimal( "0" );
-		BigDecimal bVlrTotDeb = new BigDecimal( "0" );
-		BigDecimal bVlrTotCred = new BigDecimal( "0" );
-		BigDecimal bAnt = buscaSaldoAnt();
-		ImprimeOS imp = new ImprimeOS( "", con );
-		boolean bPrim = true;
-		int linPag = imp.verifLinPag() - 1;
-
-
 		try {
-
-			imp.setTitulo( "Extrato Bancário" );
-			StringBuilder sSQL = new StringBuilder();   
-				
-			sSQL.append( "SELECT S.DATASL,L.HISTBLANCA,L.DOCLANCA,SL.VLRSUBLANCA,S.SALDOSL FROM FNSALDOLANCA S," ); 
-			sSQL.append( "FNLANCA L,FNCONTA C, FNSUBLANCA SL WHERE L.FLAG IN " );
-			sSQL.append( AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) ); 
-			sSQL.append( " AND C.CODEMP=? AND C.CODFILIAL=? AND C.NUMCONTA=? " );
-			sSQL.append( "AND L.CODEMP=? AND L.CODFILIAL=? AND L.CODLANCA=SL.CODLANCA " );
-			sSQL.append( "AND S.CODPLAN=SL.CODPLAN AND S.CODEMP=SL.CODEMPPN AND S.CODFILIAL=SL.CODFILIALPN " ); 
-			sSQL.append( "AND SL.DATASUBLANCA BETWEEN ? AND ? AND S.DATASL=SL.DATASUBLANCA " );
-			sSQL.append( "AND SL.CODPLAN=C.CODPLAN AND SL.CODEMPPN=C.CODEMPPN AND SL.CODFILIALPN=C.CODFILIALPN " ); 
-			sSQL.append( "AND SL.CODEMP=? AND SL.CODFILIAL=? ORDER BY S.DATASL,L.CODLANCA" );
 			
 			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
+			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNCONTA" ) );
 			ps.setString( 3, sCodConta );
@@ -152,20 +159,91 @@ public class FRExtrato extends FRelatorio {
 			ps.setDate( 7, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			ps.setInt( 8, Aplicativo.iCodEmp );
 			ps.setInt( 9, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+
+			 rs = ps.executeQuery();
 			
+		} catch ( Exception e ) {
+			
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar dados " + e.getMessage());
+		}
+		
+		if("T".equals( rgTipoRel.getVlrString())){
+			
+			imprimiTexto( rs, bVisualizar, "" );
+		}
+		else{
+			imprimiGrafico( rs, bVisualizar, "" ); 
+		}
+		
+	} 
+
+	private BigDecimal buscaSaldoAnt() {
+
+		BigDecimal bigRetorno = new BigDecimal( "0.00" );
+		StringBuilder sSQL = new StringBuilder(); 
+			
+		sSQL.append( "SELECT S.SALDOSL FROM FNSALDOLANCA S, FNCONTA C " );
+		sSQL.append( "WHERE C.NUMCONTA=? AND C.CODEMP=? AND C.CODFILIAL=? " ); 
+		sSQL.append( "AND S.CODEMP=C.CODEMPPN AND S.CODFILIAL=C.CODFILIALPN " );
+		sSQL.append( "AND S.CODPLAN=C.CODPLAN AND S.DATASL=" );
+		sSQL.append( "(SELECT MAX(S1.DATASL) FROM FNSALDOLANCA S1 " );
+		sSQL.append( "WHERE S1.DATASL < ? AND S1.CODPLAN=S.CODPLAN " );
+		sSQL.append( "AND S1.CODEMP=S.CODEMP AND S1.CODFILIAL=S.CODFILIAL)" );
+		
+		try {
+			
+			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
+			ps.setString( 1, txtCodConta.getVlrString() );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
+			ps.setDate( 4, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ResultSet rs = ps.executeQuery();
+			if ( rs.next() ) {
+				bigRetorno = new BigDecimal( rs.getString( "SaldoSL" ) );
+			}
+			rs.close();
+			ps.close();
 			
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar saldo anterior!\n" + e.getMessage(), true, con, e );
+		}
+		return bigRetorno;
+	}
+	
+	public void imprimiTexto(  ResultSet rs, boolean bVisualizar, String sCab ) {
+		
+		BigDecimal bTotal = new BigDecimal( "0" );
+		BigDecimal bSaldo = new BigDecimal( "0" );
+		BigDecimal bSaldoLinha = new BigDecimal( "0" );
+		BigDecimal bVlrDeb = new BigDecimal( "0" );
+		BigDecimal bVlrCred = new BigDecimal( "0" );
+		BigDecimal bVlrTotDeb = new BigDecimal( "0" );
+		BigDecimal bVlrTotCred = new BigDecimal( "0" );
+		BigDecimal bAnt = buscaSaldoAnt();
+		ImprimeOS imp = new ImprimeOS( "", con );
+		String linhafina = Funcoes.replicate( "-", 133 );
+		String sDataLanca = "";
+		String sConta = "";
+		String sCodConta = txtCodConta.getVlrString();
+		
+		
+		boolean bPrim = true;
+		int linPag = imp.verifLinPag() - 1;
+		
+		try {
+
 			imp.limpaPags();
 			imp.setTitulo( "Extrato Bancário" );
 			imp.addSubTitulo( "EXTRATO BANCÁRIO" );
-
 			sConta = "CONTA: " + sCodConta + " - " + txtDescConta.getVlrString();
-			
 			imp.addSubTitulo( sConta );
-
+			
 			while ( rs.next() ) {
 				
 				if ( ! bPrim ) {
+				
 					if ( ! ( sDataLanca.equals( rs.getString( "DataSL" ) ) ) ) {
 						bTotal = new BigDecimal( rs.getString( "SaldoSL" ) );
 					}
@@ -255,15 +333,17 @@ public class FRExtrato extends FRelatorio {
 
 			imp.eject();
 			imp.fechaGravacao();
-
+			
+			
+			rs.close();
 			if ( ! con.getAutoCommit() ) {
 				con.commit();
 			}
+			
 		} catch ( Exception e ) {
+			
 			e.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro consulta tabela de preços!\n" + e.getMessage(), true, con, e );
 		}
-
 		if ( bVisualizar ) {
 			imp.preview( this );
 		}
@@ -271,40 +351,30 @@ public class FRExtrato extends FRelatorio {
 			imp.print();
 		}
 	}
+	
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar,  final String sCab ) {
 
-	private BigDecimal buscaSaldoAnt() {
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+		BigDecimal bAnt = buscaSaldoAnt();
 
-		BigDecimal bigRetorno = new BigDecimal( "0.00" );
-		StringBuilder sSQL = new StringBuilder(); 
-			
-		sSQL.append( "SELECT S.SALDOSL FROM FNSALDOLANCA S, FNCONTA C " );
-		sSQL.append( "WHERE C.NUMCONTA=? AND C.CODEMP=? AND C.CODFILIAL=? " ); 
-		sSQL.append( "AND S.CODEMP=C.CODEMPPN AND S.CODFILIAL=C.CODFILIALPN " );
-		sSQL.append( "AND S.CODPLAN=C.CODPLAN AND S.DATASL=" );
-		sSQL.append( "(SELECT MAX(S1.DATASL) FROM FNSALDOLANCA S1 " );
-		sSQL.append( "WHERE S1.DATASL < ? AND S1.CODPLAN=S.CODPLAN " );
-		sSQL.append( "AND S1.CODEMP=S.CODEMP AND S1.CODFILIAL=S.CODFILIAL)" );
-		
-		try {
-			
-			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
-			ps.setString( 1, txtCodConta.getVlrString() );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ResultSet rs = ps.executeQuery();
-			if ( rs.next() ) {
-				bigRetorno = new BigDecimal( rs.getString( "SaldoSL" ) );
-			}
-			rs.close();
-			ps.close();
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
-		} catch ( Exception e ) {
-			e.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao buscar saldo anterior!\n" + e.getMessage(), true, con, e );
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNCONTA" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "FILTROS", sCab );
+		hParam.put( "SALDO_ANT", bAnt );
+
+		dlGr = new FPrinterJob( "relatorios/Extrato.jasper", "Extrato de contas", sCab, rs, hParam, this );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
 		}
-		return bigRetorno;
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de Extratos de contas!" + err.getMessage(), true, con, err );
+			}
+		}
 	}
 }
