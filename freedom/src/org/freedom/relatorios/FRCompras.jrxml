@@ -68,7 +68,7 @@ IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN
 	<field name="VLRLIQITCOMPRA" class="java.math.BigDecimal"/>
 	<field name="VLRDESCITCOMPRA" class="java.math.BigDecimal"/>
 
-	<variable name="TOTAL_COMPRAS" class="java.math.BigDecimal" resetType="None" incrementType="Group" incrementGroup="COMPRAS" calculation="Sum">
+	<variable name="TOTAL_COMPRAS" class="java.math.BigDecimal" resetType="Report" incrementType="Group" incrementGroup="COMPRAS" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRLIQCOMPRA}]]></variableExpression>
 	</variable>
 
