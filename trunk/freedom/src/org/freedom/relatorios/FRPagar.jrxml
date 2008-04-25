@@ -91,13 +91,13 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]></queryString>
 		<variableExpression><![CDATA[$P{ORDEM}.equals( "V" ) ? $F{DTPAGOITPAG} : $F{DTVENCITPAG}]]></variableExpression>
 	</variable>
 	<variable name="TOT_GER_PARC" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[$V{TOT_VLRPARC}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRPARCITPAG}]]></variableExpression>
 	</variable>
 	<variable name="TOT_GER_VLRPGTO" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[$V{TOT_VLRPAGO}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRPAGOITPAG}]]></variableExpression>
 	</variable>
 	<variable name="TOT_GER_ABERTO" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[$V{TOT_VLRABERTO}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRAPAGITPAG}]]></variableExpression>
 	</variable>
 
 		<group  name="GERAL" >
