@@ -43,7 +43,7 @@
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
 	<parameter name="SALDO_ANT" isForPrompting="true" class="java.math.BigDecimal">
-		<defaultValueExpression ><![CDATA[new BigDecimal(10)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new BigDecimal(0)]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT S.DATASL,L.HISTBLANCA,L.DOCLANCA,SL.VLRSUBLANCA,S.SALDOSL
  FROM FNSALDOLANCA S,FNLANCA L,FNCONTA C, FNSUBLANCA SL WHERE
@@ -74,7 +74,6 @@ SL.CODFILIAL=1 ORDER BY S.DATASL,L.CODLANCA]]></queryString>
 	</variable>
 	<variable name="TOT_SALDO" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRSUBLANCA}]]></variableExpression>
-		<initialValueExpression><![CDATA[$P{SALDO_ANT}]]></initialValueExpression>
 	</variable>
 
 		<group  name="GERAL" >
@@ -264,10 +263,10 @@ SL.CODFILIAL=1 ORDER BY S.DATASL,L.CODLANCA]]></queryString>
 				</line>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="467"
-						y="23"
-						width="66"
-						height="13"
+						x="469"
+						y="22"
+						width="65"
+						height="14"
 						key="textField-9"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -317,7 +316,7 @@ SL.CODFILIAL=1 ORDER BY S.DATASL,L.CODLANCA]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="468"
-						y="3"
+						y="4"
 						width="66"
 						height="13"
 						key="textField-8"/>
@@ -325,7 +324,7 @@ SL.CODFILIAL=1 ORDER BY S.DATASL,L.CODLANCA]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOT_SALDO}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOT_SALDO}.add($P{SALDO_ANT})]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
@@ -544,7 +543,7 @@ SL.CODFILIAL=1 ORDER BY S.DATASL,L.CODLANCA]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{HISTBLANCA}.trim()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="469"
 						y="3"
@@ -555,7 +554,7 @@ SL.CODFILIAL=1 ORDER BY S.DATASL,L.CODLANCA]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOT_SALDO}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOT_SALDO}.add($P{SALDO_ANT})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
