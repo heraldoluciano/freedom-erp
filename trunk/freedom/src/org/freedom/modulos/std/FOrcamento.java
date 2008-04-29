@@ -1303,6 +1303,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				hParam.put( "CODEMP", Aplicativo.iCodEmp );					
 				hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 				hParam.put( "CODFILIALPF", ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+				hParam.put( "CIDADEDIAMESANO", Funcoes.getCidadeDiaMesAnoExtenso( Funcoes.getCidadeFilial( con ), new Date() ) );
 								
 				hParam.put( "SUBREPORT_DIR", "org/freedom/layout/orc/"); 
 				
