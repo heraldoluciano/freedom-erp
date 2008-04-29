@@ -545,7 +545,7 @@ descriminados.]]></text>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="55"  isSplitAllowed="true" >
+			<band height="50"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="21"
@@ -619,7 +619,7 @@ descriminados.]]></text>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="152"
-						y="81"
+						y="79"
 						width="245"
 						height="16"
 						key="textField-13"/>
@@ -655,6 +655,19 @@ descriminados.]]></text>
 				<text><![CDATA[A validade do orçamento é de 15 dias.Após esta data, os preços e demais condições,
 ficarão sujeitos a alterações, por ocasião da confirmação do pedido]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="10"
+						y="79"
+						width="96"
+						height="17"
+						key="textField-21"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				</textField>
 			</band>
 		</summary>
 </jasperReport>
