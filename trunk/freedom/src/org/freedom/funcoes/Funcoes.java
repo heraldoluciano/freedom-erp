@@ -467,15 +467,10 @@ public class Funcoes {
 		return retorno;
 	}
 	
-	public static String getCidadeMesAnoExtenso(String cidade, Date data) {		
+	public static String getCidadeDiaMesAnoExtenso(String cidade, Date data) {		
 		String retorno = "";
 		try {
-			retorno = cidade + ", " +getDiaMes( data ) + " de " + getMesExtenso( data );
-			
-			
-			
-			
-			
+			retorno = cidade + ", " +getDiaMes( data ) + " de " + getMesExtenso( data ) + " de " + getAno( data );
 		}
 		catch (Exception e) {
 			e.printStackTrace();
