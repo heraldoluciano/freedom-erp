@@ -385,6 +385,26 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 			</band>
 			</groupFooter>
 		</group>
+		<group  name="linha" >
+			<groupExpression><![CDATA[]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="2"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="1"
+						width="536"
+						height="0"
+						key="line-28"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+			</groupFooter>
+		</group>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -403,15 +423,6 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 		</columnHeader>
 		<detail>
 			<band height="20"  isSplitAllowed="true" >
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="19"
-						width="535"
-						height="0"
-						key="line-28"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="49"
