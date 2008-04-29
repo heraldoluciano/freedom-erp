@@ -42,6 +42,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -63,6 +65,8 @@ import javax.swing.JOptionPane;
 
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.ListaCampos;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
@@ -467,10 +471,46 @@ public class Funcoes {
 		return retorno;
 	}
 	
+	public static String getCidadeFilial( final Connection con ) {
+
+		String cidade = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sSQL = new StringBuilder();
+
+		try {
+
+			sSQL.append( "SELECT CIDFILIAL FROM SGFILIAL WHERE CODEMP=? AND CODFILIAL=?" );
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGFILIAL" ) );
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+
+				cidade = rs.getString( "CIDFILIAL" ) != null ? rs.getString( "CIDFILIAL" ).trim() : null;
+			}
+
+			rs.close();
+			ps.close();
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( null, "Erro ao buscar cidade da filial!\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+
+		return cidade;
+	}
+	
 	public static String getCidadeDiaMesAnoExtenso(String cidade, Date data) {		
 		String retorno = "";
 		try {
-			retorno = cidade + ", " +getDiaMes( data ) + " de " + getMesExtenso( data ) + " de " + getAno( data );
+			
+			retorno = cidade + ", " +getDiaMes( data ) + " de " + (getMesExtenso( data ).toLowerCase()) + " de " + getAno( data );
 		}
 		catch (Exception e) {
 			e.printStackTrace();

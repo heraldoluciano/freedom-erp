@@ -38,7 +38,7 @@
 	<parameter name="CODORC" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(107)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CIDADEDIAMES" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="CIDADEDIAMESANO" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT O.CODCLI, O.OBSORC, O.PRAZOENTORC, O.PRAZOENTORC, C.CIDCLI, C.ENDCLI,
 C.FONECLI, C.BAIRCLI, C.UFCLI, DDDCLI, C.NUMCLI, C.RAZCLI, O.CODORC, O.DTORC, 
 O.DTVENCORC, PP.DESCPLANOPAG, E.RAZEMP,C.CONTCLI, P1.USANOMEVENDORC, C.CNPJCLI,
@@ -597,7 +597,7 @@ descriminados.]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="150"
-						y="76"
+						y="97"
 						width="239"
 						height="0"
 						key="line-14"/>
@@ -606,7 +606,7 @@ descriminados.]]></text>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="152"
-						y="79"
+						y="100"
 						width="245"
 						height="16"
 						key="textField-13"/>
@@ -620,7 +620,7 @@ descriminados.]]></text>
 					<reportElement
 						mode="Transparent"
 						x="167"
-						y="44"
+						y="65"
 						width="200"
 						height="30"
 						key="image-1"/>
@@ -644,16 +644,16 @@ ficarão sujeitos a alterações, por ocasião da confirmação do pedido]]></te
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="10"
-						y="79"
-						width="96"
+						x="4"
+						y="38"
+						width="523"
 						height="17"
 						key="textField-21"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CIDADEDIAMESANO} + "."]]></textFieldExpression>
 				</textField>
 			</band>
 		</summary>
