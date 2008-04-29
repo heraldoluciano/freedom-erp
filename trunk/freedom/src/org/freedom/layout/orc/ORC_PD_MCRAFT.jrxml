@@ -27,7 +27,7 @@
 		<defaultValueExpression ><![CDATA["\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\layout\\orc\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(6)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(5)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
@@ -216,7 +216,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="8"/>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODORC}]]></textFieldExpression>
 				</textField>

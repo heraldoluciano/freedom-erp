@@ -24,13 +24,13 @@
 	<import value="net.sf.jasperreports.engine.data.*" />
 
 	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(4)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(5)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODORC" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(110)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(53)]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT P.CODPROD, O.QTDITORC, O.VLRPRODITORC, O.VLRLIQITORC, O.VLRDESCITORC, O.QTDITORC,
 O.PRECOITORC, P.CODBARPROD, O.CODORC, P.CODUNID,
@@ -204,6 +204,15 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 					</textElement>
 				<text><![CDATA[Cod.]]></text>
 				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="42"
+						y="0"
+						width="1"
+						height="24"
+						key="line-30"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -373,15 +382,6 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						key="line-20"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="0"
-						width="535"
-						height="0"
-						key="line-28"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 			</band>
 			</groupFooter>
 		</group>
@@ -403,11 +403,20 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 		</columnHeader>
 		<detail>
 			<band height="20"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="19"
+						width="535"
+						height="0"
+						key="line-28"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="43"
+						x="49"
 						y="1"
-						width="250"
+						width="243"
 						height="17"
 						key="textField-3"
 						stretchType="RelativeToTallestObject"/>
@@ -550,6 +559,15 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 					</textElement>
 				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODPROD}]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="42"
+						y="0"
+						width="1"
+						height="20"
+						key="line-29"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</detail>
 		<columnFooter>
