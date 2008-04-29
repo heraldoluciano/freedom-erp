@@ -461,9 +461,25 @@ public class Funcoes {
 
 	public static int getMes(Date data ) {
 		int retorno = 1;
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setGregorianChange( data );
+		GregorianCalendar cal = new GregorianCalendar();		
+		cal.setGregorianChange( data );		
 		retorno = cal.get( Calendar.MONTH )+1;
+		return retorno;
+	}
+	
+	public static String getCidadeMesAnoExtenso(String cidade, Date data) {		
+		String retorno = "";
+		try {
+			retorno = cidade + ", " +getDiaMes( data ) + " de " + getMesExtenso( data );
+			
+			
+			
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		return retorno;
 	}
 	
