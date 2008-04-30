@@ -508,8 +508,9 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						y="0"
 						width="1"
 						height="20"
-						key="line-2"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-2"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -517,8 +518,9 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						y="0"
 						width="1"
 						height="20"
-						key="line-4"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-4"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -526,8 +528,9 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						y="0"
 						width="1"
 						height="20"
-						key="line-11"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-11"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -535,8 +538,9 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						y="0"
 						width="1"
 						height="20"
-						key="line-12"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-12"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -544,8 +548,9 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						y="0"
 						width="1"
 						height="20"
-						key="line-13"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-13"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -553,8 +558,9 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						y="0"
 						width="1"
 						height="20"
-						key="line-15"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-15"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -576,8 +582,9 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						y="0"
 						width="1"
 						height="20"
-						key="line-29"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-29"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 			</band>
 		</detail>
