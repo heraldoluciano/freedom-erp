@@ -806,7 +806,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="461"
+						x="444"
 						y="60"
 						width="31"
 						height="15"
@@ -819,7 +819,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="507"
+						x="488"
 						y="61"
 						width="31"
 						height="15"
@@ -1684,7 +1684,7 @@
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="23"  isSplitAllowed="true" >
+			<band height="19"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
