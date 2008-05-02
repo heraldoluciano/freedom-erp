@@ -77,7 +77,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 	<field name="USANOMEVENDORC" class="java.lang.String"/>
 	<field name="CNPJCLI" class="java.lang.String"/>
 	<field name="NOMEASS" class="java.lang.String"/>
-	<field name="IMGASS" class="java.sql.Blob"/>
+	<field name="IMGASS" class="java.io.InputStream"/>
 	<field name="CODCONV" class="java.lang.Long"/>
 	<field name="NOMECONV" class="java.lang.String"/>
 	<field name="CODTPCONV" class="java.lang.Long"/>
@@ -88,13 +88,13 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 			</band>
 		</background>
 		<title>
-			<band height="56"  isSplitAllowed="true" >
+			<band height="73"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
-						x="3"
+						x="0"
 						y="0"
-						width="532"
-						height="54"
+						width="535"
+						height="73"
 						key="subreport-1"/>
 					<subreportParameter  name="CODEMP">
 						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
@@ -107,7 +107,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 						x="535"
 						y="0"
 						width="0"
-						height="56"
+						height="73"
 						key="line-15"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -116,7 +116,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 						x="0"
 						y="0"
 						width="1"
-						height="56"
+						height="73"
 						key="line-16"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -132,7 +132,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="55"
+						y="72"
 						width="535"
 						height="0"
 						key="line-22"/>

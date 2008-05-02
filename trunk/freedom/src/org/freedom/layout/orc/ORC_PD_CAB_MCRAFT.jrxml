@@ -34,8 +34,9 @@
 		<defaultValueExpression ><![CDATA["Usuario vazio"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="LOGOEMP" isForPrompting="false" class="java.io.InputStream"/>
-	<queryString><![CDATA[SELECT RAZEMP,FONEEMP,FAXEMP,FOTOEMP, CNPJEMP, ENDEMP,EMAILEMP, WWWEMP, NUMEMP
-FROM SGEMPRESA 
+	<queryString><![CDATA[SELECT RAZEMP,FONEEMP,FAXEMP,FOTOEMP, CNPJEMP, ENDEMP,EMAILEMP, WWWEMP, BAIREMP,CIDEMP,CEPEMP,
+NUMEMP
+FROM SGEMPRESA
 WHERE CODEMP=$P{CODEMP}]]></queryString>
 
 	<field name="RAZEMP" class="java.lang.String"/>
@@ -46,6 +47,9 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 	<field name="ENDEMP" class="java.lang.String"/>
 	<field name="EMAILEMP" class="java.lang.String"/>
 	<field name="WWWEMP" class="java.lang.String"/>
+	<field name="BAIREMP" class="java.lang.String"/>
+	<field name="CIDEMP" class="java.lang.String"/>
+	<field name="CEPEMP" class="java.lang.String"/>
 	<field name="NUMEMP" class="java.lang.Long"/>
 
 	<variable name="CNPJEMPF" class="java.lang.String" resetType="None" calculation="Nothing">
@@ -62,7 +66,7 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 			</band>
 		</title>
 		<pageHeader>
-			<band height="64"  isSplitAllowed="true" >
+			<band height="71"  isSplitAllowed="true" >
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
@@ -127,7 +131,7 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 						mode="Opaque"
 						x="409"
 						y="27"
-						width="144"
+						width="150"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -153,9 +157,9 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="381"
-						y="41"
-						width="172"
+						x="326"
+						y="55"
+						width="233"
 						height="11"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -167,9 +171,9 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="263"
-						y="41"
-						width="116"
+						x="104"
+						y="55"
+						width="216"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -192,6 +196,32 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 						<font fontName="Arial" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["n° "+$F{NUMEMP}.toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="287"
+						y="41"
+						width="117"
+						height="11"
+						key="textField-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Cidade: " +$F{CIDEMP}.trim()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="409"
+						y="41"
+						width="150"
+						height="11"
+						key="textField-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["CEP:" + $F{CEPEMP}.substring(0,2) + "." +  $F{CEPEMP}.substring(2, 5) + "-" +  $F{CEPEMP}.substring(5, 8)]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
