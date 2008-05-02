@@ -142,7 +142,7 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 					<reportElement
 						x="104"
 						y="41"
-						width="119"
+						width="114"
 						height="11"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -153,9 +153,9 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="409"
-						y="42"
-						width="144"
+						x="381"
+						y="41"
+						width="172"
 						height="11"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -167,7 +167,7 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="287"
+						x="263"
 						y="41"
 						width="116"
 						height="11"
@@ -182,9 +182,9 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="229"
+						x="220"
 						y="41"
-						width="55"
+						width="41"
 						height="11"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
