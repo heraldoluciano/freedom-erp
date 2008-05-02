@@ -86,6 +86,7 @@ public class FRMovProdCont extends FRelatorio {
 		hParam.put( "DATAINI", txtDataini.getVlrDate() );
 		hParam.put( "DATAFIM", txtDatafim.getVlrDate() );
 		hParam.put( "CODPROD", txtCodProd.getVlrInteger() );
+		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
 
 		dlGr = new FPrinterJob( "relatorios/MovProdContr.jasper", "Relatório de Movimentação Produto Controlado", sCab, this, hParam, con );
 
