@@ -63,11 +63,11 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 		<group  name="dados_mov" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="164"  isSplitAllowed="true" >
+			<band height="179"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="2"
-						y="2"
+						y="17"
 						width="120"
 						height="13"
 						key="staticText-2"/>
@@ -80,7 +80,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="137"
-						y="2"
+						y="17"
 						width="201"
 						height="12"
 						key="textField-1"/>
@@ -93,7 +93,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<staticText>
 					<reportElement
 						x="2"
-						y="20"
+						y="35"
 						width="120"
 						height="13"
 						key="staticText-3"/>
@@ -106,7 +106,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<staticText>
 					<reportElement
 						x="2"
-						y="38"
+						y="53"
 						width="120"
 						height="13"
 						key="staticText-4"/>
@@ -119,7 +119,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<staticText>
 					<reportElement
 						x="2"
-						y="56"
+						y="71"
 						width="120"
 						height="13"
 						key="staticText-5"/>
@@ -132,7 +132,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="137"
-						y="20"
+						y="35"
 						width="201"
 						height="12"
 						key="textField-2"/>
@@ -145,7 +145,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="137"
-						y="39"
+						y="54"
 						width="201"
 						height="12"
 						key="textField-3"/>
@@ -158,7 +158,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="136"
-						y="58"
+						y="73"
 						width="201"
 						height="12"
 						key="textField-4"/>
@@ -171,7 +171,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="72"
+						y="87"
 						width="535"
 						height="0"
 						key="line-1"/>
@@ -180,7 +180,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="1"
+						y="16"
 						width="535"
 						height="0"
 						key="line-2"/>
@@ -189,7 +189,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<line direction="TopDown">
 					<reportElement
 						x="535"
-						y="1"
+						y="16"
 						width="0"
 						height="162"
 						key="line-6"/>
@@ -198,7 +198,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="1"
+						y="16"
 						width="0"
 						height="161"
 						key="line-7"/>
@@ -207,7 +207,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<line direction="TopDown">
 					<reportElement
 						x="128"
-						y="1"
+						y="16"
 						width="0"
 						height="72"
 						key="line-8"/>
@@ -216,7 +216,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="17"
+						y="32"
 						width="535"
 						height="0"
 						key="line-9"/>
@@ -225,7 +225,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="35"
+						y="50"
 						width="535"
 						height="0"
 						key="line-10"/>
@@ -234,7 +234,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="53"
+						y="68"
 						width="535"
 						height="0"
 						key="line-11"/>
@@ -243,7 +243,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<staticText>
 					<reportElement
 						x="220"
-						y="75"
+						y="90"
 						width="103"
 						height="13"
 						key="staticText-6"/>
@@ -256,7 +256,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<staticText>
 					<reportElement
 						x="2"
-						y="91"
+						y="106"
 						width="120"
 						height="13"
 						key="staticText-7"/>
@@ -269,7 +269,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="137"
-						y="91"
+						y="106"
 						width="201"
 						height="12"
 						key="textField-5"/>
@@ -282,7 +282,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<staticText>
 					<reportElement
 						x="2"
-						y="109"
+						y="124"
 						width="120"
 						height="13"
 						key="staticText-8"/>
@@ -295,7 +295,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<staticText>
 					<reportElement
 						x="2"
-						y="127"
+						y="142"
 						width="120"
 						height="13"
 						key="staticText-9"/>
@@ -308,7 +308,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<staticText>
 					<reportElement
 						x="2"
-						y="145"
+						y="160"
 						width="120"
 						height="13"
 						key="staticText-10"/>
@@ -321,7 +321,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="137"
-						y="109"
+						y="124"
 						width="201"
 						height="12"
 						key="textField-6"/>
@@ -334,7 +334,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="137"
-						y="128"
+						y="143"
 						width="201"
 						height="12"
 						key="textField-7"/>
@@ -347,7 +347,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="136"
-						y="147"
+						y="162"
 						width="201"
 						height="12"
 						key="textField-8"/>
@@ -360,7 +360,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="162"
+						y="177"
 						width="535"
 						height="0"
 						key="line-12"/>
@@ -369,7 +369,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="90"
+						y="105"
 						width="535"
 						height="0"
 						key="line-13"/>
@@ -378,7 +378,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<line direction="TopDown">
 					<reportElement
 						x="128"
-						y="90"
+						y="105"
 						width="0"
 						height="72"
 						key="line-14"/>
@@ -387,7 +387,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="106"
+						y="121"
 						width="535"
 						height="0"
 						key="line-15"/>
@@ -396,7 +396,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="124"
+						y="139"
 						width="535"
 						height="0"
 						key="line-16"/>
@@ -405,10 +405,50 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="142"
+						y="157"
 						width="535"
 						height="0"
 						key="line-17"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="220"
+						y="2"
+						width="103"
+						height="13"
+						key="staticText-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[DADOS:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="535"
+						height="0"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="535"
+						y="0"
+						width="0"
+						height="16"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="0"
+						height="16"
+						key="line-5"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -505,53 +545,13 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="50"  isSplitAllowed="true" >
-				<staticText>
-					<reportElement
-						x="220"
-						y="35"
-						width="103"
-						height="13"
-						key="staticText-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<text><![CDATA[DADOS:]]></text>
-				</staticText>
-				<line direction="TopDown">
+			<band height="34"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="34"
-						width="535"
-						height="0"
-						key="line-3"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="535"
-						y="34"
-						width="0"
-						height="16"
-						key="line-4"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="34"
-						width="0"
-						height="16"
-						key="line-5"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="16"
-						y="1"
-						width="503"
-						height="32"
+						y="0"
+						width="536"
+						height="34"
 						key="textField-9"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
