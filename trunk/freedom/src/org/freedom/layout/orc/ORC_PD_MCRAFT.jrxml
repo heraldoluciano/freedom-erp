@@ -650,7 +650,7 @@ ficarão sujeitos a alterações, por ocasião da confirmação do pedido]]></te
 						height="17"
 						key="textField-21"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{CIDADEDIAMESANO} + "."]]></textFieldExpression>
