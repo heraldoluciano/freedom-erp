@@ -141,6 +141,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private final JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private final JTextFieldPad txtCodCaixa = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
 	private final JTextFieldPad txtTipoVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private final JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -438,6 +440,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		lcVenda.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, true ) );
 		lcVenda.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, false ) );
 		lcVenda.add( new GuardaCampo( txtCodClComis, "CodClComis", "Cód.cl.comiss.", ListaCampos.DB_FK, false ) );
+		lcVenda.add( new GuardaCampo( txtCodCaixa, "CodCaixa", "Cód. caixa", ListaCampos.DB_SI, false ) );
 		lcVenda.montaSql( false, "VENDA", "VD" );
 		txtCodVenda.setListaCampos( lcVenda );
 		txtCodVenda.setPK( true );
@@ -1302,6 +1305,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		}
 		
 		lcVenda.insert( false );
+		txtCodCaixa.setVlrInteger( Aplicativo.iCodFilial );
 		txtCodVenda.setVlrInteger( iseq );
 		txtTipoVenda.setVlrString( "E" );
 		txtCodCli.setVlrInteger( new Integer( codCli ) );
@@ -1321,7 +1325,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		lcVendedor.carregaDados();
 		lcClComis.carregaDados();
 		txtDtEmitVenda.setVlrDate( new Date() );
-		txtDtSaidaVenda.setVlrDate( new Date() );
+		txtDtSaidaVenda.setVlrDate( new Date() );		
 
 		txtNumeroCupom.setVlrInteger( ecf.getNumeroDocumento() );
 
