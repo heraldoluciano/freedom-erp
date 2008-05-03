@@ -32,8 +32,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.sql.Connection;
 import java.util.Map;
 import java.util.Vector;
 
@@ -55,7 +53,6 @@ import org.freedom.tef.app.ControllerTefEvent;
 import org.freedom.tef.app.ControllerTefListener;
 import org.freedom.tef.driver.Flag;
 import org.freedom.tef.driver.text.TextTef;
-import org.freedom.tef.driver.text.TextTefProperties;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFilho;
 
@@ -85,7 +82,7 @@ public class FAdmTef extends FFilho implements ControllerTefListener, ActionList
 
 	private final ControllerECF ecf;
 
-	private final ControllerTef tef = new ControllerTef();
+	private ControllerTef tef;
 	
 	private boolean open = false;
 	
@@ -95,14 +92,33 @@ public class FAdmTef extends FFilho implements ControllerTefListener, ActionList
 		super( false );
 		setTitulo( "Administração TEF" );
 		setAtribos( 100, 100, 335, 210 );
-
+		
 		ecf = new ControllerECF( 
 				AplicativoPDV.getEcfdriver(), 
 				AplicativoPDV.getPortaECF(), 
 				AplicativoPDV.bModoDemo );
 
-		btCommand.addActionListener( this );
-		btSair.addActionListener( this );
+		if ( AplicativoPDV.bTEFTerm ) {
+			
+			try {
+				tef = AplicativoPDV.getControllerTef();
+				tef.setControllerMessageListener( this );
+				if ( tef.standardManagerActive() ) {
+					montaComboBox();
+					montaTela();
+					open = true;
+				}
+			} catch ( Exception e ) {
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, e.getMessage() );
+			}
+
+			btCommand.addActionListener( this );
+			btSair.addActionListener( this );
+		}
+		else {
+			Funcoes.mensagemInforma( null, "Esta estação de trabalho não está habilitada para TEF." );
+		}
 	}
 
 	private void montaTela() {
@@ -162,29 +178,6 @@ public class FAdmTef extends FFilho implements ControllerTefListener, ActionList
 		cbBandeiras = new JComboBoxPad( vLabs1, vVals1, JTextFieldPad.TP_STRING, 2, 0 );
 	}
 
-	private boolean initControllerTef() {
-
-		boolean initControllerTef = true;
-
-		final TextTefProperties textTefProperties = new TextTefProperties();
-		textTefProperties.set( TextTefProperties.PATH_SEND, AplicativoPDV.tefSend );
-		textTefProperties.set( TextTefProperties.PATH_RESPONSE, AplicativoPDV.tefRequest );
-
-		try {
-			tef.initializeControllerTef( textTefProperties, new File( AplicativoPDV.tefFlags ), ControllerTef.TEF_TEXT );
-			tef.setControllerMessageListener( this );
-			if ( !tef.standardManagerActive() ) {
-				initControllerTef = false;
-			}
-		} catch ( Exception e ) {
-			e.printStackTrace();
-			Funcoes.mensagemErro( this, e.getMessage(), true, con, e );
-			initControllerTef = false;
-		}
-
-		return initControllerTef;
-	}
-
 	private void invokeAdminTef() {
 
 		if ( "".equals( cbBandeiras.getVlrString() ) ) {
@@ -219,7 +212,6 @@ public class FAdmTef extends FFilho implements ControllerTefListener, ActionList
 		boolean actionTef = false;
 
 		if ( e.getAction() == ControllerTefEvent.BEGIN_PRINT ) {
-			// actionTef = ecf.leituraX();
 			actionTef = true;
 		}
 		else if ( e.getAction() == ControllerTefEvent.PRINT ) {
@@ -234,8 +226,6 @@ public class FAdmTef extends FFilho implements ControllerTefListener, ActionList
 		else if ( e.getAction() == ControllerTefEvent.CONFIRM ) {
 			actionTef = Funcoes.mensagemConfirma( this, e.getMessage() ) == JOptionPane.YES_OPTION;
 		}
-		
-		System.out.println( "[ADM action] " + e.getMessage() );
 
 		return actionTef;
 	}
@@ -245,25 +235,11 @@ public class FAdmTef extends FFilho implements ControllerTefListener, ActionList
 		if ( evt.getSource() == btSair ) {
 			dispose();
 		}
-		else if ( evt.getSource() == btCommand ) {
-			
-			lbWarnig.setText( "" );
-			
+		else if ( evt.getSource() == btCommand ) {			
+			lbWarnig.setText( "" );			
 			if ( ADM.equals( cbComando.getVlrString() ) ) {
 				invokeAdminTef();
 			}
-		}
-	}
-
-	@ Override
-	public void setConexao( Connection cn ) {
-
-		super.setConexao( cn );
-		
-		if ( initControllerTef() ) {
-			montaComboBox();
-			montaTela();
-			open = true;
 		}
 	}
 

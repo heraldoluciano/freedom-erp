@@ -21,6 +21,7 @@
  */
 package org.freedom.telas;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,6 +33,8 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.pdv.FAbreCaixa;
+import org.freedom.tef.app.ControllerTef;
+import org.freedom.tef.driver.text.TextTefProperties;
 
 public class AplicativoPDV extends AplicativoPD {
 
@@ -46,6 +49,8 @@ public class AplicativoPDV extends AplicativoPD {
 	private static String portaECF = "COM1" ;
 	
 	private static String pluginVenda;
+	
+	private static ControllerTef controllerTef = null;
 
 
 	public AplicativoPDV(String sIcone, String sSplash, int iCodSis, String sDescSis, int iCodModu, String sDescModu, String sDirImagem) {
@@ -78,10 +83,6 @@ public class AplicativoPDV extends AplicativoPD {
 		return ecfdriver!=null;		
 	}
 
-	public static String getPluginVenda() {		
-		return pluginVenda;
-	}
-	
 	public synchronized static boolean pegaValorINI( final Connection con ) {
 
 		FAbreCaixa tela = new FAbreCaixa();
@@ -272,6 +273,29 @@ public class AplicativoPDV extends AplicativoPD {
 			killProg( 6, "Erro ao verificar o caixa!\n" + err.getMessage() );
 		}
 
+	}
+	
+	public static void setControllerTef( final ControllerTef controllerTef ) {
+		AplicativoPDV.controllerTef = controllerTef;
+	}
+	
+	public static ControllerTef getControllerTef() throws Exception {
+		
+		if ( controllerTef == null ) {
+			controllerTef = new ControllerTef();
+			
+			final TextTefProperties textTefProperties = new TextTefProperties();
+			textTefProperties.set( TextTefProperties.PATH_SEND, AplicativoPDV.tefSend );
+			textTefProperties.set( TextTefProperties.PATH_RESPONSE, AplicativoPDV.tefRequest );
+			
+			controllerTef.initializeControllerTef( textTefProperties, new File( AplicativoPDV.tefFlags ), ControllerTef.TEF_TEXT );
+		}
+
+		return controllerTef;
+	}
+
+	public static String getPluginVenda() {		
+		return pluginVenda;
 	}
 
 }

@@ -287,8 +287,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private final ControllerECF ecf;
 
-	private Tef tef = null;
-
 	
 	public FVenda() {
 
@@ -356,10 +354,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				AplicativoPDV.getEcfdriver(), 
 				AplicativoPDV.getPortaECF(), 
 				AplicativoPDV.bModoDemo );
-
-		if ( AplicativoPDV.bTEFTerm ) {
-			tef = new Tef( Aplicativo.tefSend, Aplicativo.tefRequest );
-		}
 
 		setPrimeiroFoco( txtCodProd );
 	}
@@ -977,11 +971,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		}
 
 		DLFechaVenda fecha = new DLFechaVenda( paramFecha() );
-
-		if ( tef != null ) {
-			fecha.setTef( tef );
-		}
-
 		fecha.setVisible( true );
 
 		if ( fecha.OK ) {
@@ -1325,7 +1314,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		lcVendedor.carregaDados();
 		lcClComis.carregaDados();
 		txtDtEmitVenda.setVlrDate( new Date() );
-		txtDtSaidaVenda.setVlrDate( new Date() );		
+		txtDtSaidaVenda.setVlrDate( new Date() );
 
 		txtNumeroCupom.setVlrInteger( ecf.getNumeroDocumento() );
 
