@@ -802,7 +802,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<text><![CDATA[DATA]]></text>
+				<text><![CDATA[ DATA]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -841,7 +841,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<text><![CDATA[No. do OÇ]]></text>
+				<text><![CDATA[ No. do OÇ]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
