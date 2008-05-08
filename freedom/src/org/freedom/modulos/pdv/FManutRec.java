@@ -158,7 +158,7 @@ public class FManutRec extends FFDialogo implements TabelaSelListener {
 
 	private ImageIcon imgColuna = null;
 
-	private int iAnoCC = 0;
+	private int anoBase;
 	
 	private boolean carregavel = true;
 	
@@ -615,7 +615,7 @@ public class FManutRec extends FFDialogo implements TabelaSelListener {
 						ps.setNull( 10, Types.INTEGER );
 					}
 					else {
-						ps.setInt( 7, iAnoCC );
+						ps.setInt( 7, anoBase );
 						ps.setString( 8, (String) sRets[ 7 ] );
 						ps.setInt( 9, Aplicativo.iCodEmp );
 						ps.setInt( 10, ListaCampos.getMasterFilial( "FNCC" ) );
@@ -652,6 +652,7 @@ public class FManutRec extends FFDialogo implements TabelaSelListener {
 					
 				} catch ( Exception err ) {
 					Funcoes.mensagemErro( this, "Erro ao baixar parcela!\n" + err.getMessage(), true, con, err );
+					err.printStackTrace();
 				}
 				
 			}
@@ -659,6 +660,30 @@ public class FManutRec extends FFDialogo implements TabelaSelListener {
 			dl.dispose();
 			carregaGridBaixa();
 		}
+	}
+	
+	private int getAnoBaseCC() {
+
+		int anobase = 0;
+
+		try {
+			PreparedStatement ps = con.prepareStatement( "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			ResultSet rs = ps.executeQuery();
+			if ( rs.next() ) {
+				anobase = rs.getInt( "ANOCENTROCUSTO" );
+			}
+			rs.close();
+			ps.close();
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
+		} 
+
+		return anobase;
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
@@ -749,6 +774,8 @@ public class FManutRec extends FFDialogo implements TabelaSelListener {
 		lcVendaBaixa.setConexao( cn );
 		lcBancoBaixa.setConexao( cn );
 		lcRecBaixa.setConexao( cn );
+		
+		anoBase = getAnoBaseCC();
 	}
 
 	private enum EColTabBaixa {
