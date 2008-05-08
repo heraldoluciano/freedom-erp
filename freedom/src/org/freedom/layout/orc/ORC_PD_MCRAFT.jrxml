@@ -236,9 +236,9 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="296"
+						x="290"
 						y="18"
-						width="68"
+						width="77"
 						height="12"
 						key="staticText-11"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -288,9 +288,9 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 				</textField>
 				<staticText>
 					<reportElement
-						x="297"
+						x="290"
 						y="48"
-						width="68"
+						width="77"
 						height="14"
 						key="staticText-12"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -301,9 +301,9 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="296"
-						y="34"
-						width="68"
+						x="290"
+						y="33"
+						width="77"
 						height="12"
 						key="staticText-13"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -323,7 +323,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{PRAZOENTORC}.intValue()==0 ? "Á Combinar " : $F{PRAZOENTORC}.intValue()+" dias"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{PRAZOENTORC}.intValue()==0 ? "Á Combinar " : $F{PRAZOENTORC}.intValue()+ " dias "]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -493,7 +493,7 @@ descriminados.]]></text>
 				</textField>
 				<staticText>
 					<reportElement
-						x="297"
+						x="289"
 						y="2"
 						width="68"
 						height="12"
