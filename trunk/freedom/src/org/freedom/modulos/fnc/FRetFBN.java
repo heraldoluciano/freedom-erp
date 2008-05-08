@@ -444,7 +444,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 					args[ EParcela.CODPLAN.ordinal() ] = (String) tab.getValor( row, EColTab.CODPLAN.ordinal() );
 					args[ EParcela.CODCC.ordinal() ] = (String) tab.getValor( row, EColTab.CODCC.ordinal() );
 					args[ EParcela.DOCLANCAITREC.ordinal() ] = (String) tab.getValor( row, EColTab.DOCREC.ordinal() );
-					args[ EParcela.DTPAGOITREC.ordinal() ] = (Date) tab.getValor( row, EColTab.DTPAG.ordinal() );
+					args[ EParcela.DTPAGOITREC.ordinal() ] = Funcoes.strDateToDate( (String) tab.getValor( row, EColTab.DTPAG.ordinal() ) );
 					args[ EParcela.VLRPAGOITREC.ordinal() ] = Funcoes.strToBd( tab.getValor( row, EColTab.VLRPAG.ordinal() ) );
 					args[ EParcela.VLRDESCITREC.ordinal() ] = Funcoes.strToBd(  tab.getValor( row, EColTab.VLRDESC.ordinal() ) );
 					args[ EParcela.VLRJUROSITREC.ordinal() ] = Funcoes.strToBd( tab.getValor( row, EColTab.VLRJUROS.ordinal() ) );
