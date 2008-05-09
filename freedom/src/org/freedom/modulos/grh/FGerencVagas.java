@@ -27,6 +27,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -53,8 +54,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
-
-public class FGerencVagas extends FFilho implements ActionListener, TabelaEditListener {
+public class FGerencVagas extends FFilho implements ActionListener, TabelaEditListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -67,11 +67,10 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 	private final JTextFieldFK txtDescFunc = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 	private final JTextFieldFK txtFaixaSalIni = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 	private final JTextFieldFK txtFaixaSalFim = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
-	
-	
+		
 	private Tabela tab = new Tabela();
-	private JButton btCalc = new JButton(Icone.novo("btExecuta.gif"));
-	private JButton btOk = new JButton(Icone.novo("btOk.gif"));
+	private JButton btRefresh = new JButton(Icone.novo("btExecuta.gif"));
+//	private JButton btOk = new JButton(Icone.novo("btOk.gif"));
 	private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
 	private ImageIcon imgEditaCampo = Icone.novo("clEditar.gif");
 	private JScrollPane spnTab = new JScrollPane(tab);
@@ -85,14 +84,16 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 	private JCheckBoxPad cbExperiencia = new JCheckBoxPad("Experiencia",new Boolean(true),new Boolean(false));
 	private JCheckBoxPad cbFaixaSalarial = new JCheckBoxPad("Faixa salarial",new Boolean(true),new Boolean(false));
 	
-	BigDecimal bVlrAceito = new BigDecimal("0");
-	BigDecimal bVlrAprovado = new BigDecimal("0");
-	BigDecimal bVlrTotal = new BigDecimal("0");
+	private final JCheckBoxPad cbSelecionado = new JCheckBoxPad( "Seleção", "S", "N" );
+	
+	private BigDecimal bVlrAceito = new BigDecimal("0");
+	private BigDecimal bVlrAprovado = new BigDecimal("0");
+	private BigDecimal bVlrTotal = new BigDecimal("0");
 	
 	private JLabelPad lbFiltros = new JLabelPad( " Filtros" );
 	private JPanelPad pinFiltros = new JPanelPad( 300, 150 );
 	private JPanelPad pinLbFiltros = new JPanelPad( 53, 15 );
-
+	
 	public FGerencVagas() {
 		super(false);
 		setTitulo("Gerenciamento de vagas");
@@ -104,22 +105,23 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		cbExperiencia.setVlrString( "S" );
 		cbFaixaSalarial.setVlrString( "S" );*/
 		
+		
+		
 		cbQualificacoes.setVlrBoolean( new Boolean(true) );
 		cbRestricoes.setVlrBoolean( new Boolean(true) );
 		cbCursos.setVlrBoolean( new Boolean(true) );
 		cbExperiencia.setVlrBoolean( new Boolean(true) );
 		cbFaixaSalarial.setVlrBoolean( new Boolean(true) );
 
+		btRefresh.setToolTipText( "Refazer consulta" );		
+
+//		btOk.setToolTipText("Confirmar aprovação");
 		
-		
-		btCalc.setToolTipText("Recarregar ítens");
-		btOk.setToolTipText("Confirmar aprovação");
-		
-		btCalc.addActionListener(this);
-		btOk.addActionListener(this);
+		btRefresh.addActionListener(this);
+//		btOk.addActionListener(this);
 		btSair.addActionListener(this);
 
-		JPanelPad pinRod = new JPanelPad(685,50);
+		JPanelPad pinRod = new JPanelPad(685,39);
 			
 		lcVaga.add(new GuardaCampo( txtCodVaga, "CodVaga", "Cód.Vaga",ListaCampos.DB_PK , null, false));		
 		lcVaga.add(new GuardaCampo( txtCodEmpr, "CodEmpr","Cód.Empr.",ListaCampos.DB_FK, null, false));
@@ -172,6 +174,9 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 
 		pinCab.adic( pinLbFiltros, 375, 4, 55, 15 );
 		pinCab.adic( pinFiltros, 372, 12, 300, 69 );
+		
+		pinCab.adic (btRefresh,745,12,30,68);
+		
 			
 		pinFiltros.adic( cbQualificacoes, 3, 7, 130, 18 );
 		pinFiltros.adic( cbRestricoes, 3, 25, 130, 18 );
@@ -185,13 +190,14 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		
 //		pinRod.adic(btCalc,10,10,57,30);
 //		pinRod.adic(btOk,70,10,57,30);
-//		pinRod.adic(btSair,660,10,100,30);
+		pinRod.adic(btSair,675,2,100,30);
 					
 		getTela().add(pnCab,BorderLayout.CENTER);
 		pnCab.add(pinCab,BorderLayout.NORTH);
 		pnCab.add(pinRod,BorderLayout.SOUTH);
 		pnCab.add(spnTab,BorderLayout.CENTER);
 
+		tab.adicColuna("S/N");
 		tab.adicColuna("Cód.");
 		tab.adicColuna("Nome");
 		tab.adicColuna("Fone");
@@ -200,15 +206,19 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
         tab.adicColuna("Cursos");
 		tab.adicColuna("Exp.");
 		tab.adicColuna("Salário");
-
-		tab.setTamColuna(55,0);
-		tab.setTamColuna(250,1);
-		tab.setTamColuna(80,2);
-		tab.setTamColuna(55,3);
+		
+		tab.setTamColuna(30,0);
+		tab.setTamColuna(55,1);
+		tab.setTamColuna(250,2);
+		tab.setTamColuna(80,3);
 		tab.setTamColuna(55,4);
 		tab.setTamColuna(55,5);
 		tab.setTamColuna(55,6);
-		tab.setTamColuna(80,7);
+		tab.setTamColuna(55,7);
+		tab.setTamColuna(80,8);
+		
+		tab.setColunaEditavel( 0, true );		
+		tab.addMouseListener( this );
 		
 		//tab.setColunaEditavel(0,true);
 		
@@ -228,7 +238,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		  new KeyAdapter() {
 		    public void keyPressed(KeyEvent kevt) {
 		    	if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-		    		montaTab();
+//		    		montaTab();
 		    	}
 		    }
 		  }
@@ -304,6 +314,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 						
 			while (rs.next()) {
 			    Vector<Object> vVals = new Vector<Object>();
+			    vVals.addElement( new Boolean( false ) );
 			    vVals.addElement( rs.getString( "CODCAND" ) );
 			    vVals.addElement( rs.getString( "NOMECAND" ) );
 			    vVals.addElement( rs.getString( "FONECAND" ) );
@@ -311,7 +322,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 			    vVals.addElement( rs.getString( "RESTRICOES" ) );
 			    vVals.addElement( rs.getString( "CURSOS" ) );
 			    vVals.addElement( rs.getString( "EXPERIENCIA" ) );
-			    vVals.addElement( rs.getString( "PRETENSAOSAL" ) );
+			    vVals.addElement( (rs.getString( "PRETENSAOSAL" ) == null) ? "" : rs.getString( "PRETENSAOSAL" ) );
 			    
 				tab.adicLinha(vVals);				
 			}
@@ -332,16 +343,11 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
-		if (evt.getSource() == btCalc) {
+		if (evt.getSource() == btRefresh) {
 			montaTab();
 		}
 		else if (evt.getSource() == btSair) {
 			dispose();
-		}
-		else if (evt.getSource() == btOk) {
-			if (Funcoes.mensagemConfirma(this, "Confirma?")==0 ) {
-	    	
-			}
 		}
 	}
 
@@ -350,5 +356,26 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 
           }*/
     }
+	
+	public void mouseClicked( MouseEvent mevt ) {
+		
+		Tabela tabEv = (Tabela) mevt.getSource();
+	
+		if ( mevt.getClickCount() == 1) {			
+		}
+		else if ( mevt.getClickCount() == 2 ) {			
+			if ( tabEv == tab && tabEv.getLinhaSel() >= 0 ) {
+				Funcoes.mensagemInforma( this, "Candidato selecionado!" );
+			}
+		}
+	}
+
+	public void mouseEntered( MouseEvent e ) { }
+
+	public void mouseExited( MouseEvent e ) { }
+
+	public void mousePressed( MouseEvent e ) { }
+
+	public void mouseReleased( MouseEvent e ) { }
 
 }
