@@ -1305,6 +1305,11 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 			imp.addSubTitulo( "MARCA = " + sValores[ 10 ] );
 		}
 
+		if ( sValores[ 13 ].length() > 0 && !"T".equals( sValores[ 13 ] ) ) {
+			sWhere.append( sWhere.length() > 0 ? " AND " : "" );
+			sWhere.append( "TIPOPROD = '" + sValores[ 13 ] + "'" );
+		}
+
 		if ( "C".equals( sValores[ 6 ] ) ) {
 			
 			sSQL.append( "SELECT CODPROD,REFPROD, CODALMOX, DESCPROD,CODUNID, CODMARCA,TIPOPROD,CODGRUP,CODBARPROD," );
@@ -1528,7 +1533,9 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	
 		if ( sPrefs[eprefs.TIPOCODBAR.ordinal()].equals( "1" ) ){
 			
-			codbarras = ean.novoEAN13( sPrefs[eprefs.CODPAISEMP.ordinal()], sPrefs[eprefs.CODEANEMP.ordinal()],txtCodProd.getVlrInteger().toString() );
+			codbarras = ean.novoEAN13( sPrefs[eprefs.CODPAISEMP.ordinal()], 
+									   sPrefs[eprefs.CODEANEMP.ordinal()],
+									   txtCodProd.getVlrInteger().toString() );
 			txtCodBarProd.setVlrString( codbarras );
 			
 		} else if (sPrefs[eprefs.TIPOCODBAR.ordinal()].equals( "2" ) ){
@@ -1586,9 +1593,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		}
 	}
 
-	public void edit( EditEvent eevt ) {
-	
-	}
+	public void edit( EditEvent eevt ) { }
 
 	public void valorAlterado( CheckBoxEvent cbevt ) {
 	
@@ -1622,13 +1627,10 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		}
 		else {
 			txtCodCaixa.setAtivo( false );
-		}
-	
+		}	
 	}
 
-	public void beforeCarrega( CarregaEvent cevt ) {
-	
-	}
+	public void beforeCarrega( CarregaEvent cevt ) { }
 	
 	public void afterCarrega( CarregaEvent cevt ) {
 		try {		
@@ -1638,30 +1640,24 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 			txtCustoPEPSProd.setVlrBigDecimal( custos.getCustoPEPSProd() );
 			txtCustoMPMProd.setVlrBigDecimal( custos.getCustoMPMProd() );
 			txtCustoPEPSAlmox.setVlrBigDecimal( custos.getCustoPEPSAlmox() );
-			txtCustoMPMAlmox.setVlrBigDecimal( custos.getCustoMPMAlmox() );
-			
-			
+			txtCustoMPMAlmox.setVlrBigDecimal( custos.getCustoMPMAlmox() );			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}		
 	}
 	
-	public void beforeEdit( EditEvent eevt ) {
-
-	}
+	public void beforeEdit( EditEvent eevt ) { }
 
 	public void afterEdit( EditEvent eevt ) {
 	
 		if ( imFotoProd.foiAlterado() ) {
-			txtLargFotoProd.setVlrString( "" + imFotoProd.getLargura() );
-			txtAltFotoProd.setVlrString( "" + imFotoProd.getAltura() );
+			txtLargFotoProd.setVlrString( String.valueOf( imFotoProd.getLargura() ) );
+			txtAltFotoProd.setVlrString( String.valueOf( imFotoProd.getAltura() ) );
 		}
 	}
 
-	public void beforeInsert( InsertEvent eevt ) {
-	
-	}
+	public void beforeInsert( InsertEvent eevt ) { }
 
 	public void afterInsert( InsertEvent ievt ) {
 	
@@ -1683,9 +1679,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		}
 	}
 
-	public void afterPost( PostEvent pevt ) {
-	
-	}
+	public void afterPost( PostEvent pevt ) { }
 
 	public void setConexao( Connection cn ) {
 	
@@ -1719,8 +1713,4 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcCodAltProd.setConexao( cn );
 		lcProdAcesso.setConexao( cn );
 	}
-
 }
-
-
-

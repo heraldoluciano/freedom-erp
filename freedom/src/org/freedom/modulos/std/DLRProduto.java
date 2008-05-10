@@ -28,6 +28,7 @@ import java.util.Vector;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
@@ -71,6 +72,8 @@ public class DLRProduto extends FFDialogo {
 	private JTextFieldPad txtSiglaMarca = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JCheckBoxPad cbAtivoProd = new JCheckBoxPad( "Somente Ativos", "S", "N" );
+	
+	private JComboBoxPad cbTipo;
 
 	private ListaCampos lcAlmox = new ListaCampos( this );
 
@@ -85,6 +88,11 @@ public class DLRProduto extends FFDialogo {
 	private Vector<String> vLabsModo = new Vector<String>();
 
 	private Vector<String> vValsModo = new Vector<String>();
+
+	private Vector<String> vLabsTipo = new Vector<String>();
+
+	private Vector<Object> vValsTipo = new Vector<Object>();
+	
 
 	public DLRProduto( Connection cn ) {
 
@@ -104,6 +112,22 @@ public class DLRProduto extends FFDialogo {
 		vValsModo.addElement( "C" );
 		rgModo = new JRadioGroup<String, String>( 1, 2, vLabsModo, vValsModo );
 		rgModo.setVlrString( "R" );
+		
+		vValsTipo.addElement( "T" );
+		vValsTipo.addElement( "P" );
+		vValsTipo.addElement( "S" );
+		vValsTipo.addElement( "F" );
+		vValsTipo.addElement( "M" );
+		vValsTipo.addElement( "O" );
+		vValsTipo.addElement( "C" );
+		vLabsTipo.addElement( "Todos" );
+		vLabsTipo.addElement( "Comércio" );
+		vLabsTipo.addElement( "Serviço" );
+		vLabsTipo.addElement( "Fabricação" );
+		vLabsTipo.addElement( "Mat.prima" );
+		vLabsTipo.addElement( "Patrimonio" );
+		vLabsTipo.addElement( "Consumo" );
+		cbTipo = new JComboBoxPad( vLabsTipo, vValsTipo, JComboBoxPad.TP_STRING, 1, 0 );
 
 		lcAlmox.add( new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, false ) );
 		lcAlmox.add( new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almoxarifado", ListaCampos.DB_SI, false ) );
@@ -137,9 +161,10 @@ public class DLRProduto extends FFDialogo {
 		adic( new JLabelPad( "Modo do relatório:" ), 7, 60, 120, 20 );
 		adic( rgModo, 7, 80, 260, 30 );
 
-		JLabelPad lbSel01 = new JLabelPad( "   Selecão por descrição:" );
-		lbSel01.setOpaque( true );
-		adic( lbSel01, 10, 115, 146, 20 );
+		adic( new JLabelPad( "Fluxo:" ), 270, 60, 120, 20 );
+		adic( cbTipo, 270, 82, 170, 24 );
+
+		adic( new JLabelPad( "Selecão por descrição:" ), 7, 115, 146, 20 );
 		
 		pinSelec.adic( new JLabelPad( "De:" ), 7, 5, 30, 20 );
 		pinSelec.adic( txtDe, 7, 25, 243, 20 );
@@ -147,9 +172,7 @@ public class DLRProduto extends FFDialogo {
 		pinSelec.adic( txtA, 7, 65, 243, 20 );
 		adic( pinSelec, 7, 135, 260, 100 );
 
-		JLabelPad lbSel02 = new JLabelPad( "   Selecão por código:" );
-		lbSel02.setOpaque( true );
-		adic( lbSel02, 275, 115, 128, 20 );
+		adic( new JLabelPad( "Selecão por código:" ), 270, 115, 128, 20 );
 		
 		pinSelec2.adic( new JLabelPad( "De:" ), 7, 5, 30, 20 );
 		pinSelec2.adic( txtDe2, 7, 25, 153, 20 );
@@ -178,25 +201,26 @@ public class DLRProduto extends FFDialogo {
 
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 13 ];
+		String[] sRetorno = new String[ 14 ];
 		if ( rgOrdem.getVlrString().compareTo( "C" ) == 0 ) {
 			sRetorno[ 0 ] = "CODPROD";
 		}
 		else if ( rgOrdem.getVlrString().compareTo( "D" ) == 0 ) {
 			sRetorno[ 0 ] = "DESCPROD";
 		}
-		sRetorno[ 1 ] = txtDe.getText();
-		sRetorno[ 2 ] = txtA.getText();
+		sRetorno[ 1 ] = txtDe.getVlrString();
+		sRetorno[ 2 ] = txtA.getVlrString();
 		sRetorno[ 3 ] = cbAtivoProd.getVlrString();
 		sRetorno[ 4 ] = txtCodForn.getVlrString();
 		sRetorno[ 5 ] = txtDescForn.getVlrString();
 		sRetorno[ 6 ] = rgModo.getVlrString();
-		sRetorno[ 7 ] = txtCodAlmox.getText();
-		sRetorno[ 8 ] = txtDescAlmox.getText();
+		sRetorno[ 7 ] = txtCodAlmox.getVlrString();
+		sRetorno[ 8 ] = txtDescAlmox.getVlrString();
 		sRetorno[ 9 ] = txtCodMarca.getVlrString();
-		sRetorno[ 10 ] = txtDescMarca.getText();
-		sRetorno[ 11 ] = txtDe2.getText();
-		sRetorno[ 12 ] = txtA2.getText();
+		sRetorno[ 10 ] = txtDescMarca.getVlrString();
+		sRetorno[ 11 ] = txtDe2.getVlrString();
+		sRetorno[ 12 ] = txtA2.getVlrString();
+		sRetorno[ 13 ] = cbTipo.getVlrString();
 
 		return sRetorno;
 	}
