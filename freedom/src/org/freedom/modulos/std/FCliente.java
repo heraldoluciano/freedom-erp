@@ -73,6 +73,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
+import org.freedom.componentes.PainelImagem;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FConveniado;
@@ -300,6 +301,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 
+	private PainelImagem fotoCli = new PainelImagem( 65000 );
+
+	private PainelImagem imgAssCli = new PainelImagem( 65000 );
+
 	private Vector<String> vPessoaLab = new Vector<String>();
 
 	private Vector<String> vPessoaVal = new Vector<String>();
@@ -349,6 +354,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JPanelPad pinMetaVend = new JPanelPad( 0, 160 );
 
 	private JPanelPad pnMetaVend = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
+	private JPanelPad pinImages = new JPanelPad();
 
 	private Tabela tbObsData = new Tabela();
 
@@ -448,31 +455,29 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JButton btGrpCli = new JButton( Icone.novo( "btCliente.gif" ) );
 
-	private String sBtGeraHist = "btExecuta2.gif";
+	private JButton btSetaQtdJan = new JButton( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdJan = new JButton( Icone.novo( sBtGeraHist ) );
+	private JButton btSetaQtdFev = new JButton( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdFev = new JButton( Icone.novo( sBtGeraHist ) );
+	private JButton btSetaQtdMar = new JButton( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdMar = new JButton( Icone.novo( sBtGeraHist ) );
+	private JButton btSetaQtdAbr = new JButton( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdAbr = new JButton( Icone.novo( sBtGeraHist ) );
+	private JButton btSetaQtdMai = new JButton( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdMai = new JButton( Icone.novo( sBtGeraHist ) );
+	private JButton btSetaQtdJun = new JButton( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdJun = new JButton( Icone.novo( sBtGeraHist ) );
+	private JButton btSetaQtdJul = new JButton( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdJul = new JButton( Icone.novo( sBtGeraHist ) );
+	private JButton btSetaQtdAgo = new JButton( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdAgo = new JButton( Icone.novo( sBtGeraHist ) );
+	private JButton btSetaQtdSet = new JButton( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdSet = new JButton( Icone.novo( sBtGeraHist ) );
+	private JButton btSetaQtdOut = new JButton( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdOut = new JButton( Icone.novo( sBtGeraHist ) );
+	private JButton btSetaQtdNov = new JButton( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdNov = new JButton( Icone.novo( sBtGeraHist ) );
-
-	private JButton btSetaQtdDez = new JButton( Icone.novo( sBtGeraHist ) );
+	private JButton btSetaQtdDez = new JButton( Icone.novo( "btExecuta2.gif" ) );
 
 	private JButton btMudaTudo = new JButton( "Alterar todos", Icone.novo( "btExecuta.gif" ) );
 
@@ -500,7 +505,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		super();
 		setTitulo( "Cadastro de Clientes" );
-		setAtribos( 50, 20, 580, 560 );
+		setAtribos( 50, 20, 540, 560 );
 
 		lcCliFor.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcCliFor );
@@ -793,7 +798,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		pnObs1_2.add( pnObs1_2_2, BorderLayout.CENTER );
 		pnObs1.add( pnObs1_1, BorderLayout.CENTER );
 		pnObs1.add( pnObs1_2, BorderLayout.SOUTH );
+		
 
+		adicTab( "Imagens", pinImages );
+		setPainel( pinImages );
+		adicDB( fotoCli, 10, 30, 200, 270, "FotoCli", "Foto ( 200 pixel X 270 pixel )", false );
+		adicDB( imgAssCli, 10, 330, 340, 85, "ImgAssCli", "Assinatura ( 340 pixel X 85 pixel )", false );
+
+		
 		setListaCampos( true, "CLIENTE", "VD" );
 		lcCampos.setValidarcpf( bPref[ 5 ] );
 
@@ -1109,7 +1121,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		lcCampos.addCarregaListener( this );
-		tbObsData.addTabelaSelListener( this );
+		tbObsData.addTabelaSelListener( this );		
 
 	}
 
