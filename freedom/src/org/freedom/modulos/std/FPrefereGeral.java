@@ -870,12 +870,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 		lbCompOpcoes.setOpaque( true );
 		adic( lbCompOpcoes, 17, 5, 70, 20 );
-		adic( pinCompras, 7, 15, 300, 120 );
+		adic( pinCompras, 7, 15, 300, 140 );
 		setPainel( pinCompras );
 		adicDB( cbUsaRefCompra, 7, 15, 200, 20, "UsaRefProd", "",false );
 		adicDB( cbTransAbaCp, 7, 35, 250, 20, "TabTranspCp", "",false );
 		adicDB( cbTabSolCp, 7, 55, 250, 20, "TabSolCp", "",false );
 		adicDB( cbPrecoRel, 7, 75, 270, 20, "PrecoCpRel", "",false );
+		adicDB( cbHabiitaCustoCompra, 7, 95, 300, 20, "CustoCompra", "", true );
 		
 		// Preço
 
@@ -1017,12 +1018,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDescFK( txtDescTipoMov8, 100, 65, 300, 20, "DescTipoMov", "Descrição do tp.mov. para RMA" );
 
 		adic( lbEstOpcoes, 17, 90, 70, 20 );
-		adic( lbEstCont, 7, 100, 393, 130 );
+		adic( lbEstCont, 7, 100, 393, 110 );
 		adicDB( cbContEstoq, 17, 115, 250, 20, "ContEstoq", "", true );
 		adicDB( cbMultiAlmox, 17, 135, 250, 20, "MultiAlmox", "", true );
 		adicDB( cbBloqCompra, 17, 155, 300, 20, "BloqCompra", "", true );
 		adicDB( cbBuscaVlrUltCompra, 17, 175, 300, 20, "BuscaVlrUltCompra", "", true );
-		adicDB( cbHabiitaCustoCompra, 17, 195, 300, 20, "CustoCompra", "", true );
 
 		nav.setAtivo( 0, false );
 		lcCampos.setPodeExc( false );
