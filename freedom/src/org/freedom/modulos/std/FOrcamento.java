@@ -1252,6 +1252,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		String sSql = "SELECT CLASSTPCONV FROM ATTIPOCONV WHERE CODEMP=? AND CODFILIAL=? AND CODTPCONV=?";
 		String sClassOrc = "";
+		String sDescOrc = "";
 		
 		LeiauteGR leiOrc = null;
 		String[] split;
@@ -1269,7 +1270,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				}
 			}
 			else {
-				sSql = "SELECT CLASSORC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+				sSql = "SELECT CLASSORC, DESCORC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 				sClassOrc = "";
 				PreparedStatement ps2 = null;
 				ResultSet rs2 = null;
@@ -1283,6 +1284,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 					if ( rs2.next() ) {
 						if ( rs2.getString( "CLASSORC" ) != null ) {
 							sClassOrc = rs2.getString( "CLASSORC" ).trim();
+							sDescOrc = rs2.getString( "DESCORC" ).trim(); 
 							rs2.close();
 							ps2.close();
 						}
@@ -1314,13 +1316,15 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 					sClassOrc = "ORC_PD.jasper";
 				} else {
 					String[] vClassOrc = sClassOrc.split( "\\," );
+					String[] vDescOrd = sDescOrc.split( "\\," );
 					if ( vClassOrc.length>1 ) {
 					
 						FSelOrc fS = new FSelOrc();
-						sClassOrc = fS.seleciona( vClassOrc );
+						sClassOrc = fS.seleciona( vClassOrc, vDescOrd );
 					
 						if ( sClassOrc == null ) {
 							
+							return;
 						
 						}
 					}
