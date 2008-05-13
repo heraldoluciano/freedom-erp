@@ -1247,12 +1247,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 	}
 
+	
 	public void imprimeGrafico( boolean bVisualizar ) {
 
 		String sSql = "SELECT CLASSTPCONV FROM ATTIPOCONV WHERE CODEMP=? AND CODFILIAL=? AND CODTPCONV=?";
 		String sClassOrc = "";
 		
 		LeiauteGR leiOrc = null;
+		String[] split;
 		
 		try {
 			
@@ -1298,6 +1300,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 		try {
 			if ( ("".equals( sClassOrc.trim() )) || ( sClassOrc.indexOf( "jasper" ) > -1 )) {
+				
 				HashMap<String, Object> hParam = new HashMap<String, Object>();
 				hParam.put( "CODORC", txtCodOrc.getVlrInteger() );
 				hParam.put( "CODEMP", Aplicativo.iCodEmp );					
@@ -1309,10 +1312,23 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				
 				if ("".equals( sClassOrc.trim() ) ) {
 					sClassOrc = "ORC_PD.jasper";
+				} else {
+					String[] vClassOrc = sClassOrc.split( "\\," );
+					if ( vClassOrc.length>1 ) {
+					
+						FSelOrc fS = new FSelOrc();
+						sClassOrc = fS.seleciona( vClassOrc );
+					
+						if ( sClassOrc == null ) {
+							
+						
+						}
+					}
 				}
 				
 				EmailBean mail = Aplicativo.getEmailBean();				
 				mail.setPara( EmailBean.getEmailCli( txtCodCli.getVlrInteger(), con ) );
+				
 				
 				FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + sClassOrc , null, null, this, hParam, con, mail );
 

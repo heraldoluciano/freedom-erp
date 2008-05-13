@@ -142,7 +142,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 	private JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
-	private JTextFieldPad txtDescClassOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	private JTextFieldPad txtDescClassOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldPad txtTitOrcTxt01 = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
