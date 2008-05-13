@@ -34,8 +34,6 @@ public class FSelOrc extends FDialogo{
 
 	private static final long serialVersionUID = 1L;
 	
-	FDialogo dl = new FDialogo();
-	
 	String retorno = null;
 
 	JRadioGroup<?, ?> Rgrel = null;
@@ -45,10 +43,7 @@ public class FSelOrc extends FDialogo{
 	Vector<String> vVals = new Vector<String>();
 	
 	public FSelOrc(){
-		
-		dl.setAtribos( 200, 200, 300, 150 );
-		dl.setVisible( true );
-		montaTela();
+		setAtribos( 200, 200, 300, 150 );
 	}
 	
 	public String seleciona( String[] arg ){
@@ -59,17 +54,19 @@ public class FSelOrc extends FDialogo{
 			vVals.addElement( arg[i].trim() );
 		}
 		Rgrel = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
+		montaTela();
+		setVisible( true );
 		
-		if( dl.OK ){
+		if(OK ){
 			retorno = Rgrel.getVlrString();
-		}
+	    }
 		
 		return retorno;
 	}
+
 	public void montaTela(){
-		
-		
 		adic( new JLabelPad("Escolha o relatório: "),7, 5,  150, 10);
 		adic( Rgrel, 7, 10, 150, 30 );
 	}
+	
 }
