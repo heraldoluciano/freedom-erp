@@ -28,9 +28,9 @@ import java.util.Vector;
 
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
-import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
-public class FSelOrc extends FDialogo{
+public class FSelOrc extends FFDialogo{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -42,22 +42,29 @@ public class FSelOrc extends FDialogo{
 	
 	Vector<String> vVals = new Vector<String>();
 	
+	int tamanho = 0;
+	
 	public FSelOrc(){
-		setAtribos( 200, 200, 300, 150 );
+		setAtribos( 300, 220 );
 	}
 	
-	public String seleciona( String[] arg ){
+	public String seleciona( String[] arg, String[] desc ){
+		
+		tamanho = arg.length;
 		
 		for(int i=0; i<arg.length; i++){
-			
-			vLabs.addElement( arg[i].trim() );
+			if (i<desc.length) {
+				vLabs.addElement( desc[i].trim() );
+			} else {
+				vLabs.addElement( arg[i].trim() );
+			}
 			vVals.addElement( arg[i].trim() );
 		}
-		Rgrel = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
+		Rgrel = new JRadioGroup<String, String>( arg.length, 1, vLabs, vVals );
 		montaTela();
 		setVisible( true );
 		
-		if(OK ){
+		if( OK ){
 			retorno = Rgrel.getVlrString();
 	    }
 		
@@ -66,7 +73,7 @@ public class FSelOrc extends FDialogo{
 
 	public void montaTela(){
 		adic( new JLabelPad("Escolha o relatório: "),7, 5,  150, 10);
-		adic( Rgrel, 7, 10, 150, 30 );
+		adic( Rgrel, 7, 25, 250, 70 );
 	}
 	
 }

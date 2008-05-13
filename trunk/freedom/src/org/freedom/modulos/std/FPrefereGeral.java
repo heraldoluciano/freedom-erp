@@ -143,6 +143,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
 	private JTextFieldPad txtDescClassOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
+	
+	private JTextFieldPad txtDescOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldPad txtTitOrcTxt01 = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
@@ -906,9 +908,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicCampo( txtCodTipoMov2, 7, 25, 90, 20, "CodTipoMov2", "Cod.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
 		adicDescFK( txtDescTipoMov2, 100, 25, 300, 20, "DescTipoMov", "Tipo de movimento para orçamentos." );
 		adicCampo( txtDescClassOrc, 403, 25, 250, 20, "ClassOrc", "Classe padrão para orçamento.", ListaCampos.DB_SI, false );
-		adicCampo( txtTitOrcTxt01, 403, 65, 250, 20, "TitOrcTxt01", "Título para campo TXT01", ListaCampos.DB_SI, false );
-		adicCampo( txtCodMens, 7, 185, 90, 20, "CodMensOrc", "Cód.mens", ListaCampos.DB_FK, txtDescMens, true );
-		adicDescFK( txtDescMens, 100, 185, 300, 20, "mens", " Mensagem" );
+		adicCampo( txtDescOrc, 403, 65, 250, 20, "DescOrc", "Descrição do titulo do orçamento.", ListaCampos.DB_SI, false );
+	//	adicCampo( txtTitOrcTxt01, 403, 65, 250, 20, "TitOrcTxt01", "Título para campo TXT01", ListaCampos.DB_SI, false );
+	//	adicCampo( txtCodMens, 7, 185, 90, 20, "CodMensOrc", "Cód.mens", ListaCampos.DB_FK, txtDescMens, true );
+	//	adicDescFK( txtDescMens, 100, 185, 300, 20, "mens", " Mensagem" );
 		
 		adicDB( rgTipoValidOrc, 403, 185, 250, 30, "tipovalidorc", "Validade na impressão", true );
 		adicDB( cbUsaOrcSeq, 460, 225, 160, 20, "UsaOrcSeq", "", true );
