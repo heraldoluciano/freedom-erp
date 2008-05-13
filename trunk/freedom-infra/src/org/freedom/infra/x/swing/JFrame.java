@@ -44,7 +44,7 @@ public class JFrame extends javax.swing.JFrame {
 	 */
 	private void initialize() {
 
-		this.setSize( new Dimension( 408, 185 ) );
+		this.setSize( new Dimension( 400, 200 ) );
 
 	}
 
