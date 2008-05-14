@@ -396,7 +396,7 @@ public class FRBoleto extends FRelatorio {
 					if ( rs.getInt( 1 ) > 1 )
 						sTxa = sTxa.replaceAll( "\\[A]", "" + ( (char) ( rs.getInt( "NParcItRec" ) + 64 ) ) );
 				}
-				if ( ( sCampo = rs.getInt( 1 ) + "" ) != null )
+				if ( ( sCampo = rs.getInt( "PARCS" ) + "" ) != null )
 					sTxa = sTxa.replaceAll( "\\[T]", "/" + Funcoes.copy( sCampo, 0, 2 ) );
 				if ( ( sCampo = rs.getString( "VlrParcItRec" ) ) != null && rs.getDouble( "VlrParcItRec" ) != 0 ) {
 					sTxa = sTxa.replaceAll( "\\[VALOR_DOCUMEN]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
