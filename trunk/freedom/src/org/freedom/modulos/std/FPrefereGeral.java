@@ -432,7 +432,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		
 		
 		setTitulo( "Preferências Gerais" );
-		setAtribos( 30, 40, 850, 490 );
+		setAtribos( 30, 40, 850, 545 );
 
 		lcCampos.setMensInserir( false );
 		lcPrefere3.setMensInserir( false );
@@ -909,17 +909,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDescFK( txtDescTipoMov2, 100, 25, 300, 20, "DescTipoMov", "Tipo de movimento para orçamentos." );
 		adicCampo( txtDescClassOrc, 403, 25, 250, 20, "ClassOrc", "Classe padrão para orçamento.", ListaCampos.DB_SI, false );
 		adicCampo( txtDescOrc, 403, 65, 250, 20, "DescOrc", "Descrição do titulo do orçamento.", ListaCampos.DB_SI, false );
-	//	adicCampo( txtTitOrcTxt01, 403, 65, 250, 20, "TitOrcTxt01", "Título para campo TXT01", ListaCampos.DB_SI, false );
-	//	adicCampo( txtCodMens, 7, 185, 90, 20, "CodMensOrc", "Cód.mens", ListaCampos.DB_FK, txtDescMens, true );
-	//	adicDescFK( txtDescMens, 100, 185, 300, 20, "mens", " Mensagem" );
+		adicCampo( txtTitOrcTxt01, 403, 105, 250, 20, "TitOrcTxt01", "Título para campo TXT01", ListaCampos.DB_SI, false );
+		adicCampo( txtCodMens, 7, 185, 90, 20, "CodMensOrc", "Cód.mens", ListaCampos.DB_FK, txtDescMens, true );
+		adicDescFK( txtDescMens, 100, 185, 300, 20, "mens", " Mensagem" );
 		
-		adicDB( rgTipoValidOrc, 403, 185, 250, 30, "tipovalidorc", "Validade na impressão", true );
-		adicDB( cbUsaOrcSeq, 460, 225, 160, 20, "UsaOrcSeq", "", true );
-		adicDB( cbReCalcOrc, 10, 255, 250, 20, "ReCalcPCOrc", "", true );
-		adicDB( cbUsaImgOrc, 10, 315, 300, 20, "UsaImgAssOrc", "", true );
-		adicDB( cbUsaNomeVendOrc, 10, 335, 300, 20, "UsaNomeVendOrc", "", true );
-		adicDB( cbAdicCodOrcObsPed, 10, 355, 400, 20, "ADICORCOBSPED", "", false );
-		adicDB( imgAssOrc, 460, 285, 250, 95, "ImgAssOrc", "Assinatura", false );
+		adicDB( rgTipoValidOrc, 403, 225, 250, 30, "tipovalidorc", "Validade na impressão", true );
+		adicDB( cbUsaOrcSeq, 460, 275, 160, 20, "UsaOrcSeq", "", true );
+		adicDB( cbReCalcOrc, 10, 295, 250, 20, "ReCalcPCOrc", "", true );
+		adicDB( cbUsaImgOrc, 10, 355, 300, 20, "UsaImgAssOrc", "", true );
+		adicDB( cbUsaNomeVendOrc, 10, 375, 300, 20, "UsaNomeVendOrc", "", true );
+		adicDB( cbAdicCodOrcObsPed, 10, 395, 400, 20, "ADICORCOBSPED", "", false );
+		adicDB( imgAssOrc, 460, 325, 250, 95, "ImgAssOrc", "Assinatura", false );
 		
 		// Financeiro
 
@@ -1071,14 +1071,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDescFK( txtDescPlanoPag2, 100, 105, 300, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
 		adicCampo( txtCodCli, 7, 145, 90, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, txtDescCli, false );
 		adicDescFK( txtDescCli, 100, 145, 300, 20, "NomeCli", "Nome do cliente" );
-		adicCampo( txtPrazo, 403, 105, 250, 20, "Prazo", "Prazo de Entrega do Orçamento", ListaCampos.DB_SI, false );
-		adicCampo( txtDiasVencOrc, 403, 145, 250, 20, "DiasVencOrc", "Dias p/ vencimento do orçamento", ListaCampos.DB_SI, false );
+		adicCampo( txtPrazo, 403, 145, 250, 20, "Prazo", "Prazo de Entrega do Orçamento", ListaCampos.DB_SI, false );
+		adicCampo( txtDiasVencOrc, 403, 185, 250, 20, "DiasVencOrc", "Dias p/ vencimento do orçamento", ListaCampos.DB_SI, false );
 		
-		adic( lbOrcOpcoes, 17, 205, 70, 20 );
-		adic( lbOrcCont, 7, 220, 720, 170 );		
-		adicDB( cbAprovOrc, 10, 235, 350, 20, "AprovOrc", "", true );
-		adicDB( cbUsaBuscGenProdORC, 10, 275, 350, 20, "USABUSCAGENPROD", "", false );
-		adicDB( cbUsaLoteOrc, 10, 295, 300, 20, "USALOTEORC", "", false );
+		adic( lbOrcOpcoes, 17, 255, 70, 20 );
+		adic( lbOrcCont, 7, 265, 720, 170 );		
+		adicDB( cbAprovOrc, 10, 275, 350, 20, "AprovOrc", "", true );
+		adicDB( cbUsaBuscGenProdORC, 10, 315, 350, 20, "USABUSCAGENPROD", "", false );
+		adicDB( cbUsaLoteOrc, 10, 335, 300, 20, "USALOTEORC", "", false );
 		setListaCampos( false, "PREFERE4", "SG" );
 
 		// Email
