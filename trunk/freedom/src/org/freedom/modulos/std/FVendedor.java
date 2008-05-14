@@ -117,6 +117,10 @@ public class FVendedor extends FTabDados implements PostListener {
 	private JTextFieldPad txtCodFunc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescFunc = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtCodTipoVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescTipoVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodClComis = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -139,6 +143,8 @@ public class FVendedor extends FTabDados implements PostListener {
 	private ListaCampos lcClComis = new ListaCampos( this, "CM" );
 
 	private ListaCampos lcFuncao = new ListaCampos( this, "FU" );
+	
+	private ListaCampos lcTipoComis = new ListaCampos( this, "TV" );
 
 	public FVendedor() {
 
@@ -164,12 +170,23 @@ public class FVendedor extends FTabDados implements PostListener {
 		lcFuncao.setReadOnly( true );
 		lcFuncao.montaSql( false, "FUNCAO", "RH" );
 
+		
 		lcClComis.add( new GuardaCampo( txtCodClComis, "CodClComis", "Cód.cl.comis.", ListaCampos.DB_PK, txtDescClComis, true ) );
 		lcClComis.add( new GuardaCampo( txtDescClComis, "DescClComis", "Descriçao da classificação da comissão", ListaCampos.DB_SI, false ) );
 		lcClComis.montaSql( false, "CLCOMIS", "VD" );
 		lcClComis.setQueryCommit( false );
 		lcClComis.setReadOnly( true );
 		txtCodClComis.setTabelaExterna( lcClComis );
+		
+		lcTipoComis.add( new GuardaCampo( txtCodTipoVend, "CodTipoVend", "Cód.tp.vend", ListaCampos.DB_PK, txtDescTipoVend, true ) );
+		lcTipoComis.add( new GuardaCampo( txtDescTipoVend, "DescTipoVend", "Descrição tipo de venda", ListaCampos.DB_SI, false ) );
+
+		txtCodTipoVend.setTabelaExterna( lcTipoComis );
+		txtCodTipoVend.setNomeCampo( "CodTipoVend" );
+		txtCodTipoVend.setFK( true );
+		lcTipoComis.setQueryCommit( false );
+		lcTipoComis.setReadOnly( true );
+		lcTipoComis.montaSql( false, "TIPOVEND", "VD" );
 
 		setPainel( pinComiss );
 		adicTab( "Comissionado", pinComiss );
@@ -204,7 +221,9 @@ public class FVendedor extends FTabDados implements PostListener {
 		adicDescFK( txtDescClComis, 110, 340, 262, 20, "DescClComis", "Descrição da Classificacao da comissão" );
 		adicCampo( txtCodFunc, 7, 380, 100, 20, "CodFunc", "Cód.função", ListaCampos.DB_FK, txtDescFunc, false );
 		adicDescFK( txtDescFunc, 110, 380, 262, 20, "DescFunc", "Descrição da função" );
-
+		adicCampo( txtCodTipoVend, 7, 420, 100, 20, "CodTipoVend", "Cód.tp.vend", ListaCampos.DB_FK, txtDescTipoVend, false );
+		adicDescFK( txtDescTipoVend, 110, 420, 262, 20, "DescTipoVend", "Descrição do tipo de comissionado" );
+		
 		txtCpfVend.setMascara( JTextFieldPad.MC_CPF );
 		txtCnpjVend.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepVend.setMascara( JTextFieldPad.MC_CEP );
@@ -433,6 +452,7 @@ public class FVendedor extends FTabDados implements PostListener {
 		lcClComis.setConexao( cn );
 		lcPlan.setConexao( cn );
 		lcFuncao.setConexao( cn );
+		lcTipoComis.setConexao( cn );
 		setListaCampos( true, "VENDEDOR", "VD" );
 	}
 
