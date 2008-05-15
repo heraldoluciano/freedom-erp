@@ -45,12 +45,12 @@ public class FSelOrc extends FFDialogo{
 	int tamanho = 0;
 	
 	public FSelOrc(){
+		
+		setTitulo( "Layouts","Layouts" );
 		setAtribos( 300, 220 );
 	}
 	
 	public String seleciona( String[] arg, String[] desc ){
-		
-		tamanho = arg.length;
 		
 		for(int i=0; i<arg.length; i++){
 			if (i<desc.length) {
@@ -61,8 +61,10 @@ public class FSelOrc extends FFDialogo{
 			vVals.addElement( arg[i].trim() );
 		}
 		Rgrel = new JRadioGroup<String, String>( arg.length, 1, vLabs, vVals );
+		tamanho = arg.length;
 		montaTela();
 		setVisible( true );
+		
 		
 		if( OK ){
 			retorno = Rgrel.getVlrString();
@@ -72,8 +74,8 @@ public class FSelOrc extends FFDialogo{
 	}
 
 	public void montaTela(){
-		adic( new JLabelPad("Escolha o relatório: "),7, 5,  150, 10);
-		adic( Rgrel, 7, 25, 250, 70 );
+		
+		adic( new JLabelPad("Escolha o Layout: "),7, 5,  150, 10);
+		adic( Rgrel, 7, 25, 250, tamanho + 75 );
 	}
-	
 }
