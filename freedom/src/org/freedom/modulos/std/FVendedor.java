@@ -178,7 +178,7 @@ public class FVendedor extends FTabDados implements PostListener {
 		lcClComis.setReadOnly( true );
 		txtCodClComis.setTabelaExterna( lcClComis );
 		
-		lcTipoComis.add( new GuardaCampo( txtCodTipoVend, "CodTipoVend", "Cód.tp.vend", ListaCampos.DB_PK, txtDescTipoVend, true ) );
+		lcTipoComis.add( new GuardaCampo( txtCodTipoVend, "CodTipoVend", "Cód.tp.comis.", ListaCampos.DB_PK, txtDescTipoVend, true ) );
 		lcTipoComis.add( new GuardaCampo( txtDescTipoVend, "DescTipoVend", "Descrição tipo de venda", ListaCampos.DB_SI, false ) );
 
 		txtCodTipoVend.setTabelaExterna( lcTipoComis );
