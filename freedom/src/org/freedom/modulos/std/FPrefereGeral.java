@@ -376,6 +376,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	
 	private JCheckBoxPad cbAdicCodOrcObsPed = null;
 	
+	private JCheckBoxPad cbMultiComis = null;
+
 	private JRadioGroup<?, ?> rgCodBar = null;
 	
 	private PainelImagem imgAssOrc = new PainelImagem( 65000 );
@@ -717,7 +719,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbUsaRefCompra = new JCheckBoxPad ("Usa referência na compra? ", "S", "N" );
 		cbUsaRefCompra.setVlrString( "N" );
 		cbAdicCodOrcObsPed = new JCheckBoxPad( "Adicionar códigos de orçamentos na observação do pedido?", "S", "N" );
-		cbAdicCodOrcObsPed.setVlrString( "N" );	
+		cbAdicCodOrcObsPed.setVlrString( "N" );
+		cbMultiComis = new JCheckBoxPad( "Multi-comissionado?", "S", "N" );
+		cbMultiComis.setVlrString( "N" );
 		cbTransAbaCp = new JCheckBoxPad( "Aba transp. na tela de compras?", "S", "N" );
 		cbTransAbaCp.setVlrString( "N" );	
 		cbTabSolCp = new JCheckBoxPad( "Aba solicitação na tela de compras?", "S", "N" );
@@ -845,7 +849,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDB( cbPrazoEnt, 5, 70, 200, 20, "UsaTabPE", "", true );
 		adicDB( cbDiasPEData, 5, 90, 200, 20, "DIASPEDT", "", true );
 		adicDB( cbReCalcVenda, 5, 110, 200, 20, "ReCalcPCVenda", "", true );
-		adicDB( cbVendaMatPrim, 5, 130, 300, 20, "VendaMatPrim", "", true );
+		adicDB( cbVendaMatPrim, 5, 130, 250, 20, "VendaMatPrim", "", true );
 		adicDB( cbTravaTMNFVD, 5, 150, 300, 20, "TravaTMNFVD", "", true );
 		adicDB( cbBloqVenda, 5, 170, 300, 20, "BloqVenda", "", true );
 		adicDB( cbComisPDupl, 5, 190, 300, 20, "ComisPDupl", "", true );
@@ -863,6 +867,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDB( cbIPIVenda, 270, 70, 180, 20, "IPIVenda", "", true );
 		adicDB( cbNatVenda, 270, 90, 180, 20, "NatVenda", "", true );
 		adicDB( cbIcmsVenda, 270, 110, 180, 20, "IcmsVenda", "", true );
+		adicDB( cbMultiComis, 270, 130, 180, 20, "MultiComis", "", true);
 		
 		// Compra
 		

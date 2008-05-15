@@ -27,11 +27,8 @@ import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import javax.swing.JButton;
-
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-import org.freedom.bmps.Icone;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -52,9 +49,9 @@ public class FTipoVend extends FDados {
 
 		super();
 		setAtribos( 50, 50, 350, 165 );
-		setTitulo( "Cadastro de tipos de comissionado" );
-		adicCampo( txtCodTipoVenda, 7, 20, 70, 20, "CODTIPOVEND", "Cód.tp.vend", ListaCampos.DB_PK, true );
-		adicCampo( txtDescTipoVenda, 80, 20, 250, 20, "DESCTIPOVEND", "Descrição do tipo de comissionado", ListaCampos.DB_PK, true );
+		setTitulo( "Cadastro de Tipos de Comissionados" );
+		adicCampo( txtCodTipoVenda, 7, 20, 70, 20, "CODTIPOVEND", "Cód.tp.comis.", ListaCampos.DB_PK, true );
+		adicCampo( txtDescTipoVenda, 80, 20, 250, 20, "DESCTIPOVEND", "Descrição do tipo de comissionado", ListaCampos.DB_SI, true );
 		setListaCampos( true, "TIPOVEND", "VD" );
 		setImprimir( true );
 		btImp.addActionListener( this );
@@ -90,7 +87,7 @@ public class FTipoVend extends FDados {
 			sSQL = "SELECT CODTIPOVEND, DESCTIPOVEND FROM VDTIPOVEND WHERE CODEMP=? AND CODFILIAL=? ORDER BY " + dl.getOrdem();
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDTIPOVEND" ) );
 			rs = ps.executeQuery();
 
 			if ( "T".equals( dl.getTipo() ) ) {
@@ -118,7 +115,7 @@ public class FTipoVend extends FDados {
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
 		imp.montaCab();
-		imp.setTitulo( "Relatório de Tipo de Comissionado" );
+		imp.setTitulo( "Relatório de Tipos de Comissionados" );
 
 		try {
 
