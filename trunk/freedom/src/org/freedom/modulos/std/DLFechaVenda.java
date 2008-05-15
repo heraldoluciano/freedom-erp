@@ -729,10 +729,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			
 			if ( rs.next() ) {
 				
-				bLiq = new BigDecimal( rs.getString( 1 ) != null ? rs.getString( 1 ) : "0" );
-				bBrut = new BigDecimal( rs.getString( 2 ) != null ? rs.getString( 2 ) : "0" );
-				bLiq = bLiq.setScale( 3 );
-				bBrut = bBrut.setScale( 3 );
+				bLiq = new BigDecimal( rs.getString( "TOTPESOLIQ" ) != null ? rs.getString( "TOTPESOLIQ" ) : "0" );
+				bBrut = new BigDecimal( rs.getString( "TOTPESOBRUT" ) != null ? rs.getString( "TOTPESOBRUT" ) : "0" );
+				bLiq = bLiq.setScale( Aplicativo.casasDec );
+				bBrut = bBrut.setScale( Aplicativo.casasDec );
 				txtPesoLiqVD.setVlrBigDecimal( bLiq );
 				txtPesoBrutVD.setVlrBigDecimal( bBrut );
 			}
