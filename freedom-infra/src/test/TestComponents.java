@@ -8,17 +8,14 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
+import org.freedom.infra.util.text.DecimalDocument;
 import org.freedom.infra.x.UIMaker.Button;
 import org.freedom.infra.x.UIMaker.Label;
 import org.freedom.infra.x.UIMaker.Panel;
+import org.freedom.infra.x.UIMaker.TextField;
 import org.freedom.infra.x.UIMaker.effect.Effect;
 import org.freedom.infra.x.UIMaker.effect.Fade;
-import org.freedom.infra.x.util.text.DecimalDocument;
-import org.freedom.infra.x.util.text.IntegerDocument;
-import org.freedom.infra.x.util.text.Mask;
-import org.freedom.infra.x.util.text.StringDocument;
 
 public class TestComponents extends JFrame {
 
@@ -34,7 +31,7 @@ public class TestComponents extends JFrame {
 
 	private Panel panel02 = null;
 
-	private JTextField textField01 = null;
+	private TextField textField01 = null;
 
 	/**
 	 * This is the default constructor
@@ -69,9 +66,9 @@ public class TestComponents extends JFrame {
 			jContentPane.setLayout(null);
 			//jContentPane.setBackground( Color.ORANGE );
 			jContentPane.add(getTextField01(), null);
-			/*jContentPane.add(getBotao01(), null);
+			jContentPane.add(getBotao01(), null);
 			jContentPane.add(getPanel01(), null);
-			jContentPane.add(getPanel02(), null);
+			/*jContentPane.add(getPanel02(), null);
 			jContentPane.add(getLabel01(), null);*/
 		}
 		return jContentPane;
@@ -81,7 +78,7 @@ public class TestComponents extends JFrame {
 	
 		if ( botao01 == null ) {
 			botao01 = new Button();
-			botao01.setBounds(new Rectangle(15, 15, 120, 69));
+			botao01.setBounds(new Rectangle(50, 10, 120, 70));
 			botao01.setPressedIcon(new ImageIcon(getClass().getResource("/test/botao_1_press.jpg")));
 			botao01.setIcon(new ImageIcon(getClass().getResource("/test/botao_1.jpg")));
 			botao01.setBorderPainted( true );
@@ -90,11 +87,13 @@ public class TestComponents extends JFrame {
 					/*Effect effect = new ShineInBorder( 
 							panel01, ShineInBorder.SPEED_FAST, Color.WHITE, Color.ORANGE );*/
 					Effect effect = new Fade( panel01 );
-					((Fade)effect).setMaxAlfa( 1f );
+					((Fade)effect).setMaxAlfa( 0.5f );
 					((Fade)effect).setColor( Color.BLACK );
-					((Fade)effect).addComponent( panel02 );
-					((Fade)effect).setAction( Fade.ACTION_OUT );
+					((Fade)effect).setAction( Fade.ACTION_IN );
 					effect.doStart();
+					/*getLabel01().setValue( new Integer( 55 ) );
+					JOptionPane.showMessageDialog( jContentPane, getTextField01().getValue() + "\n" + 
+							getTextField01().getValue().getClass().getName() );*/
 				}
 			} );
 			
@@ -124,11 +123,11 @@ public class TestComponents extends JFrame {
 	private Panel getPanel01() {
 	
 		if ( panel01 == null ) {
-			panel01 = new Panel( );
-			panel01.setBounds(new Rectangle(25, 196, 358, 134));
+			panel01 = new Panel(  );
+			panel01.setBounds(new Rectangle(40, 90, 400, 200));
 			Label teste = new Label( "Teste de label" );
-			teste.setBorder( BorderFactory.createEtchedBorder() );
-			panel01.add( teste , 10, 5, 120, 20 );
+			panel01.add( teste , 10, 10, 120, 20 );
+			panel01.setWallpaper( new ImageIcon(getClass().getResource("/test/botao_1.jpg")).getImage() );
 		}
 		return panel01;
 	}
@@ -145,7 +144,7 @@ public class TestComponents extends JFrame {
 			panel02.setBounds(new Rectangle(60, 100, 150, 800));
 			Label teste = new Label( "TESTE DE LABEL 02" );
 			teste.setBorder( BorderFactory.createEtchedBorder() );
-			panel02.add( teste , 10, 5, 120, 20 );
+			panel02.add( teste , 10, 10, 120, 30 );
 			panel02.setArc( 25, 25 );
 			panel02.setBackground( Color.BLACK );
 			panel02.setOpaque( true );
@@ -158,12 +157,16 @@ public class TestComponents extends JFrame {
 	 * 	
 	 * @return javax.swing.JTextField	
 	 */
-	private JTextField getTextField01() {
+	private TextField getTextField01() {
 	
 		if ( textField01 == null ) {
-			textField01 = new JTextField();
-			textField01.setBounds( 50, 50, 200, 30 );
-			textField01.setDocument( new IntegerDocument( 8 ) );
+			textField01 = new TextField( new DecimalDocument( 8, 2 ) );
+			//textField01 = new TextField( new IntegerDocument() );
+			textField01.setBounds( 20, 100, 200, 30 );
+			textField01.setAlfaColor( 0.7f, Color.BLUE );
+			textField01.setArc( 30, 30 );
+			textField01.setForeground( Color.WHITE );
+			//textField01.setFocusable( false );
 		}
 		return textField01;
 	}
