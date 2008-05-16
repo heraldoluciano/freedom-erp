@@ -1,4 +1,3 @@
-
 package org.freedom.infra.x.UIMaker;
 
 import java.awt.AlphaComposite;
@@ -6,19 +5,20 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.LayoutManager;
+import java.awt.Insets;
 import java.awt.Rectangle;
 
-import org.freedom.infra.x.swing.FDPanel;
+import javax.swing.BorderFactory;
+import javax.swing.text.Document;
 
-public class Panel extends FDPanel {
+import org.freedom.infra.x.swing.FDTextField;
 
+
+public class TextField extends FDTextField {
+	
 	private static final long serialVersionUID = 1l;
 	
 	public static final float ALFA_NONE = -1f;
-	
-	private Image wallpaper;
 
 	private float alfa = ALFA_NONE;
 	
@@ -27,32 +27,67 @@ public class Panel extends FDPanel {
 	private int arcHeight; 
 	
 
-	public Panel() {
-		super();
-	}
-	
-	public Panel( final LayoutManager layout ) {
-		super( layout );
+	public TextField() {
+
+		this( null, null, 0 );
 	}
 
-	public Panel( final float alfa ) {
+	public TextField( Document doc ) {
 
-		this();
-		setAlfa( alfa );
+		this( doc, null, 0 );
 	}
 
-	public Panel( final float alfa, final Color color ) {
+	public TextField( String text ) {
 
-		this();
+		this( null, text, 0 );
+	}
+
+	public TextField( int columns ) {
+
+		this( null, null, columns );
+	}
+
+	public TextField( String text, int columns ) {
+
+		this( null, text, columns );
+	}
+
+	public TextField( Document doc, String text, int columns ) {
+
+		super( doc, text, columns );
+	}
+
+	public TextField( float alfa ) {
+
+		this( alfa, null, 0, 0 );
+	}
+
+	public TextField( float alfa, Color color ) {
+
+		this( alfa, color, 0, 0 );
+	}
+
+	public TextField( float alfa, int arcWidth, int arcHeight ) {
+
+		this( alfa, null, arcWidth, arcHeight );
+	}
+
+	public TextField( float alfa, int arcWidthHeigth ) {
+
+		this( alfa, null, arcWidthHeigth, arcWidthHeigth );
+	}
+
+	public TextField( float alfa, Color color, int arcWidthHeigth ) {
+
+		this( alfa, color, arcWidthHeigth, arcWidthHeigth );
+	}
+
+	public TextField( float alfa, Color color, int arcWidth, int arcHeight ) {
+
+		this( null, null, 0 );
+
 		setAlfaColor( alfa, color );
-	}
-	
-	public Image getWallpaper() {	
-		return wallpaper;
-	}
-	
-	public void setWallpaper( Image wallpaper ) {	
-		this.wallpaper = wallpaper;
+		setArc( arcWidth, arcHeight );
 	}
 
 	public float getAlfa() {
@@ -77,6 +112,9 @@ public class Panel extends FDPanel {
 	
 	public void setArcWidth( int arcWidth ) {	
 		this.arcWidth = arcWidth;
+		Insets it = getBorder().getBorderInsets( this );
+		setBorder( BorderFactory.createEmptyBorder( 
+				it.top, arcWidth/2, it.bottom, arcWidth/2 ) );
 	}
 	
 	public int getArcHeight() {	
@@ -85,37 +123,29 @@ public class Panel extends FDPanel {
 	
 	public void setArcHeight( int arcHeight ) {	
 		this.arcHeight = arcHeight;
+		Insets it = getBorder().getBorderInsets( this );
+		setBorder( BorderFactory.createEmptyBorder( 
+				it.top, arcHeight/2, it.bottom, arcHeight/2 ) );
 	}
 	
 	public void setArc( int arcWidth, int arcHeight ) {	
 		setArcWidth( arcWidth );
 		setArcHeight( arcHeight );
 	}
-
+	
 	@Override
-	public void paint( Graphics g ) {
+	protected void paintComponent( Graphics g ) {
 		
-		paintWallpaper( g ); 
-
 		if ( alfa > ALFA_NONE ) {
 			paintAlfa( g );
 		}
-		else if ( ( arcWidth > 0 || arcHeight > 0 ) && isOpaque() ) {			
-			paintArc( g );
+		else if ( ( arcWidth > 0 || arcHeight > 0 ) ) {
+			paintArc( g );	
 		}
-
-		super.paint( g );
-	}
-	
-	private void paintWallpaper( Graphics g ) {
 		
-		if ( wallpaper == null ) {
-			return;
-		}
-
-		g.drawImage( wallpaper, 0, 0, getWidth(), getHeight(), this );
+		super.paintComponent( g );
 	}
-	
+
 	private void paintAlfa( Graphics g ) {
 		
 		setOpaque( false );
@@ -123,6 +153,7 @@ public class Panel extends FDPanel {
 		Graphics2D g2d = (Graphics2D) g;
 
 		Composite oldComposite = g2d.getComposite();
+		Color oldforeground = getForeground();
 
 		AlphaComposite alphaComposite = AlphaComposite.getInstance( AlphaComposite.SRC_OVER, alfa );
 		g2d.setComposite( alphaComposite );
@@ -132,7 +163,7 @@ public class Panel extends FDPanel {
 		if ( c == null ) {
 			c = Color.lightGray;
 		}
-		g.setColor( c );
+		g2d.setColor( c );
 		if ( r != null ) {
 			g.fillRoundRect( r.x, r.y, r.width, r.height, 
 					arcWidth >= 0 ? arcWidth : 0, arcHeight >= 0 ? arcHeight : 0 );
@@ -143,11 +174,13 @@ public class Panel extends FDPanel {
 		}
 
 		g2d.setComposite( oldComposite );
+		g2d.setColor( oldforeground );
 	}
 	
-	private void paintArc( Graphics g ) {
-
+	private Graphics paintArc( Graphics g ) {
+		
 		setOpaque( false );
+		setBorder( BorderFactory.createEmptyBorder() );
 		
 		Rectangle r = g.getClipBounds();
 		Color c = getBackground();
@@ -164,7 +197,7 @@ public class Panel extends FDPanel {
 					arcWidth >= 0 ? arcWidth : 0, arcHeight >= 0 ? arcHeight : 0 );
 		}
 		
-		setOpaque( false );
+		return g;
 	}
 
 }

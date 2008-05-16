@@ -2,6 +2,7 @@
 package org.freedom.infra.x.swing;
 
 import java.awt.Dimension;
+import java.awt.LayoutManager;
 import java.awt.Point;
 
 import javax.swing.JComponent;
@@ -13,6 +14,12 @@ public class FDPanel extends JLayeredPane {
 	
 
 	public FDPanel() {
+		super();
+	}
+	
+	public FDPanel( LayoutManager layout ) {
+		super();
+		setLayout( layout );
 	}
 
 	public void add( final JComponent component,
