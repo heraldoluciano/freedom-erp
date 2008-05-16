@@ -51,7 +51,7 @@
 	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT O.CODCLI, C.RAZCLI, O.CODVEND, VD.NOMEVEND, O.CODORC, O.DTORC
+	<queryString><![CDATA[SELECT O.CODCLI, C.RAZCLI, O.CODVEND, VD.NOMEVEND, O.CODORC, O.DTORC,CONTCLI
 FROM VDORCAMENTO O, VDCLIENTE C, VDVENDEDOR VD
 WHERE O.CODEMP=$P{CODEMP} AND O.CODFILIAL=$P{CODFILIAL} AND CODORC=$P{CODORC} AND C.CODCLI=O.CODCLI AND
 C.CODEMP=O.CODEMPCL AND C.CODFILIAL=O.CODFILIALCL AND VD.CODVEND=O.CODVEND AND
@@ -63,6 +63,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 	<field name="NOMEVEND" class="java.lang.String"/>
 	<field name="CODORC" class="java.lang.Long"/>
 	<field name="DTORC" class="java.sql.Date"/>
+	<field name="CONTCLI" class="java.lang.String"/>
 
 
 		<group  name="GERAL" >
@@ -400,7 +401,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 					<textElement>
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Responsavel: " +$F{CODVEND}.toString() + " - "+$F{NOMEVEND}.trim()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Responsavel: " +$F{CONTCLI}.toString()]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>
