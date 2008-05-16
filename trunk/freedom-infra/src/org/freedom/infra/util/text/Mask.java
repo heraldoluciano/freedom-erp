@@ -1,4 +1,4 @@
-package org.freedom.infra.x.util.text;
+package org.freedom.infra.util.text;
 
 
 public class Mask {

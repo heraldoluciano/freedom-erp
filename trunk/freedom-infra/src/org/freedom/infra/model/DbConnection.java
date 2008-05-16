@@ -1,4 +1,4 @@
-package org.freedom.infra.db;
+package org.freedom.infra.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

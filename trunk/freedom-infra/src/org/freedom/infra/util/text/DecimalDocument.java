@@ -1,12 +1,11 @@
 
-package org.freedom.infra.x.util.text;
+package org.freedom.infra.util.text;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.GapContent;
-import javax.swing.text.PlainDocument;
 
-public class DecimalDocument extends PlainDocument {
+public class DecimalDocument extends Document {
 
 	private static final long serialVersionUID = 1l;
 
@@ -15,6 +14,8 @@ public class DecimalDocument extends PlainDocument {
 	private int index = 0;
 
 	private int precision = 0;
+	
+	private int indexDecimal = -1;
 
 	public DecimalDocument() {
 
@@ -52,11 +53,10 @@ public class DecimalDocument extends PlainDocument {
 	public void insertString( final int offs, final String str, final AttributeSet a ) throws BadLocationException {
 
 		StringBuilder newstr = new StringBuilder( mask != null ? formaterMask( str, offs ) : str );
-
 		super.insertString( offs, newstr.toString(), a );
-
 	}
 
+	
 	@Override
 	public void remove( final int offs, final int len ) throws BadLocationException {
 
@@ -89,7 +89,7 @@ public class DecimalDocument extends PlainDocument {
 
 			final char[] value = str.toCharArray();
 
-			final int indexDecimal = getText( 0, getLength() ).indexOf( Mask.DECIMAL );
+			indexDecimal = getText( 0, getLength() ).indexOf( Mask.DECIMAL );
 			int decimalCount = 0;
 
 			if ( indexDecimal > -1 && indexDecimal < ( mask.length() - 1 ) ) {
@@ -99,7 +99,7 @@ public class DecimalDocument extends PlainDocument {
 
 			for ( int i = 0; i < value.length; i++ ) {
 
-				formaterMaskAux( value[i], offs, newstr, decimalCount, indexDecimal );
+				formaterMaskAux( value[i], offs, newstr, decimalCount );
 			}
 		}
 		catch ( Exception e ) {
@@ -112,8 +112,7 @@ public class DecimalDocument extends PlainDocument {
 	private void formaterMaskAux( char value, 
 			                      int offs, 
 			                      StringBuilder str, 
-			                      int decimalCount, 
-			                      int indexDecimal ) throws BadLocationException {
+			                      int decimalCount ) throws BadLocationException {
 				
 		if ( index >= mask.length() ) {
 			if ( ! formaterMaskAuxNegative( value, offs, str ) ) {
@@ -127,7 +126,7 @@ public class DecimalDocument extends PlainDocument {
 					&& formaterMaskAuxDecimal( value, offs, str, decimalCount ) ) {
 			// refectore para diminuir a complexdade.
 		}
-		else if ( formaterMaskAuxDigit( value, offs, str, indexDecimal, decimalCount ) ) {
+		else if ( formaterMaskAuxDigit( value, offs, str, decimalCount ) ) {
 			// refectore para diminuir a complexdade.
 		}
 	}
@@ -176,14 +175,15 @@ public class DecimalDocument extends PlainDocument {
 				
 		boolean decimal = false;
 		
-		if ( value == Mask.DECIMAL || value == '.' 
-				&& decimalCount < precision 
-					&& Character.isDigit( value ) ) {
-			if ( offs == 0 || ( getText( 0, 1 ).charAt( 0 ) == Mask.NEGATIVE && offs == 1 ) ) {
+		if ( ( value == Mask.DECIMAL || value == '.' ) 
+				&& decimalCount < precision && indexDecimal == -1 ) {
+			if ( getLength()+str.length() == 0 
+					|| str.length() > 0 && str.charAt( 0 ) == Mask.NEGATIVE ) {
 				str.append( '0' );
 				index++;
 			}
-			str.append( value );
+			str.append( Mask.DECIMAL );
+			indexDecimal = index;
 			index++;
 			decimal = true;
 		}
@@ -191,11 +191,11 @@ public class DecimalDocument extends PlainDocument {
 		return decimal;
 	}
 	
-	private boolean formaterMaskAuxDigit( char value, int offs, StringBuilder str, int indexDecimal, int decimalCount ) throws BadLocationException {
+	private boolean formaterMaskAuxDigit( char value, int offs, StringBuilder str, int decimalCount ) throws BadLocationException {
 		
 		if ( Character.isDigit( value ) ) {
 			int size =
-				getText( 0, indexDecimal > -1 ? indexDecimal : 0 ).length() + 
+				getText( 0, indexDecimal > -1 ? (indexDecimal<getLength()?indexDecimal:getLength()) : 0 ).length() + 
 				precision + 1; // soma um por conta do separador decimal.
 			
 			if ( ( decimalCount < precision && offs > indexDecimal ) 

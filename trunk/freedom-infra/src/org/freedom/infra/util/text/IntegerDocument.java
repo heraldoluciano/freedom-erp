@@ -1,12 +1,11 @@
 
-package org.freedom.infra.x.util.text;
+package org.freedom.infra.util.text;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.GapContent;
-import javax.swing.text.PlainDocument;
 
-public class IntegerDocument extends PlainDocument {
+public class IntegerDocument extends Document {
 
 	private static final long serialVersionUID = 1l;
 
