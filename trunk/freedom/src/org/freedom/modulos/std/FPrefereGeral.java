@@ -277,6 +277,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private JCheckBoxPad cbJurosPosCalc = null;
 
 	private JCheckBoxPad cbRgCliObrig = null;
+	
+	private JCheckBoxPad cbUsuAtivCli = null;
 
 	private JCheckBoxPad cbCliMesmoCnpj = null;
 
@@ -660,6 +662,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbAprovOrc.setVlrString( "N" );
 		cbRgCliObrig = new JCheckBoxPad( "RG. do cliente obrigatório?", "S", "N" );
 		cbRgCliObrig.setVlrString( "S" );
+		cbUsuAtivCli = new JCheckBoxPad( "Acesso para ativação de cliente por usuário?", "S", "N");
+		cbUsuAtivCli.setVlrString( "N" );
 		cbCliMesmoCnpj = new JCheckBoxPad( "Permitir clientes com mesmo CNPJ ?", "S", "N" );
 		cbCliMesmoCnpj.setVlrString( "N" );
 		cbCnpjCliObrig = new JCheckBoxPad( "CNPJ obrigatório para o cadastro de clientes ?", "S", "N" );
@@ -818,8 +822,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDB( cbCnpjForObrig, 7, 80, 400, 20, "CnpjForObrig", "", true );
 		adicDB( cbInscEstForObrig, 7, 100, 400, 20, "InscEstForObrig", "", true );
 		adicDB( cbConsCPFCli, 7, 120, 400, 20, "ConsistCPFCli", "", true );
-		adicDB( cbConsIECli, 7, 140, 400, 20, "ConsisteIECli", "", true );
-		adicDB( cbConsIEFor, 7, 160, 400, 20, "ConsisteIEFor", "", true );
+		adicDB( cbUsuAtivCli, 7, 140, 400, 20, "UsuAtivCli", "", true );
+		adicDB( cbConsIECli, 7, 160, 400, 20, "ConsisteIECli", "", true );
+		adicDB( cbConsIEFor, 7, 180, 400, 20, "ConsisteIEFor", "", true );
 		
 		// Venda
 

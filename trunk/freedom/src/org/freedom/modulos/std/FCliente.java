@@ -635,7 +635,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		adicDB( rgPessoa, 400, 20, 100, 60, "PessoaCli", "Pessoa", true );
 		rgPessoa.setVlrString( "J" );
-
+		
+        cbAtivo.setEnabled(bPref[6]);
+        
 		adicDB( cbAtivo, 7, 60, 70, 20, "AtivoCli", "Ativo", true );
 		adicCampo( txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_FK, txtDescTipoCli, true );
 		adicDescFK( txtDescTipoCli, 90, 100, 237, 20, "DescTipoCli", "Descrição do tipo de cliente" );
@@ -1878,19 +1880,30 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private boolean[] getPrefere() {
 
-		boolean[] bRet = new boolean[ 6 ];
+		boolean[] bRet = new boolean[ 7 ];
 		String sSQL = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
 		try {
 			
-			sSQL = "SELECT SETORVENDA,RGCLIOBRIG,CLIMESMOCNPJ,CNPJOBRIGCLI,CONSISTEIECLI,CONSISTCPFCLI FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			sSQL = "SELECT P.SETORVENDA, P.RGCLIOBRIG, P.CLIMESMOCNPJ, P.CNPJOBRIGCLI," +
+					"P.CONSISTEIECLI, P.CONSISTCPFCLI, " +
+					"(CASE WHEN P.USUATIVCLI='N' THEN 'S' " +
+					"WHEN P.USUATIVCLI='S' AND U.ATIVCLI='S' THEN 'S' " +
+					"ELSE 'N' " +
+					"END) HABATIVCLI  " +
+					"FROM SGPREFERE1 P LEFT OUTER JOIN SGUSUARIO U " +
+					"ON U.CODEMP=? AND U.CODFILIAL=? AND U.IDUSU=? "+
+					"WHERE P.CODEMP=? AND P.CODFILIAL=?";
 
 			try {
 				ps = con.prepareStatement( sSQL );
 				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, Aplicativo.iCodFilial );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "SGUSUARIO" ) );
+				ps.setString( 3, Aplicativo.strUsuario.toLowerCase() );
+				ps.setInt( 4, Aplicativo.iCodEmp );
+				ps.setInt( 5, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 				rs = ps.executeQuery();
 				
 				if ( rs.next() ) {
@@ -1901,6 +1914,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 					bRet[ 3 ] = "S".equals( rs.getString( "CLIMESMOCNPJ" ) );
 					bRet[ 4 ] = "S".equals( rs.getString( "CONSISTEIECLI" ) );
 					bRet[ 5 ] = "S".equals( rs.getString( "CONSISTCPFCLI" ) );
+					bRet[ 6 ] = "S".equals( rs.getString( "HABATIVCLI" ) );
 				}
 				
 				rs.close();
@@ -3585,7 +3599,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	public void afterInsert( InsertEvent ievt ) {
 
 		if ( ievt.getListaCampos() == lcCampos ) {
-			cbAtivo.setVlrString( "S" );
+			if (bPref[6]) {
+				cbAtivo.setVlrString( "S" );
+			} else {
+				cbAtivo.setVlrString( "N" );
+			}
 		}
 	}
 

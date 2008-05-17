@@ -88,7 +88,9 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	private JCheckBoxPad cbCompra = new JCheckBoxPad( "Permite fazer compras", "S", "N" );
 
 	private JCheckBoxPad cbReceita = new JCheckBoxPad( "Permite vendas de produto com receita", "S", "N" );
-
+	
+	private JCheckBoxPad cbAtivCli = new JCheckBoxPad( "Permite ativação de clientes", "S", "N" );
+	
 	private JList lsDisp = new JList();
 
 	private JList lsEmp = new JList();
@@ -243,13 +245,14 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		adicDB( cbAbreGaveta, 7, 70, 350, 20, "AbreGavetaUsu", "", false );
 		adicDB( cbAlmoxarife, 7, 90, 350, 20, "AlmoxarifeUsu", "", false );
 		adicDB( cbCompra, 7, 110, 350, 20, "ComprasUsu", "", false );
+		adicDB( cbAtivCli, 7, 130, 350, 20, "AtivCli", "", true );
 
 		txtCodAlmox.setRequerido( cbAlmoxarife.isSelected() );
 
-		adicCampo( txtCodAlmox, 7, 150, 100, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescAlmox, 110, 150, 330, 20, "DescAlmox", "Descrição do almoxarifado" );
-		adicDB( rgAprovaSolicitacao, 7, 210, 210, 80, "AprovCPSolicitacaoUsu", "Aprova solicitação", false );
-		adicDB( rgAprovaRMA, 230, 210, 210, 80, "AprovRMAUsu", "Aprova RMA", false );
+		adicCampo( txtCodAlmox, 7, 170, 100, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescAlmox, 110, 170, 330, 20, "DescAlmox", "Descrição do almoxarifado" );
+		adicDB( rgAprovaSolicitacao, 7, 230, 210, 80, "AprovCPSolicitacaoUsu", "Aprova solicitação", false );
+		adicDB( rgAprovaRMA, 230, 230, 210, 80, "AprovRMAUsu", "Aprova RMA", false );
 
 		setListaCampos( false, "USUARIO", "SG" );
 		lcCampos.setQueryInsert( false );
@@ -583,6 +586,8 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 		carregaDisp();
 		carregaAcesso();
+		cbAtivCli.setVlrString( "N" );
+		
 	}
 
 	public void beforePost( PostEvent pevt ) {
