@@ -181,31 +181,33 @@ public class EtiquetaPPLA {
 	 * Armazena no buffer de comandos o comando de escrita de texto<br>
 	 * formatando o comando com parametros previamente definidos<br> 
 	 * <br> 
-	 * - Ordinance<br> 
-	 * - Font<br> 
-	 * - Horizontal multiplier<br> 
-	 * - Vertical multiplier<br> 
-	 * - Subtype font<br> 
-	 * <br>
+	 * <li>Ordinance</li>
+	 * <li>Font</li>
+	 * <li>Horizontal multiplier </li>
+	 * <li>Vertical multiplier</li>
+	 * <li>Subtype font</li>
+	 * <br><br>
 	 * e os passados por parametro na assinatura do metodo.<br>
 	 * 
-	 * @param arg0
+	 * @param y
 	 *            posição Y
-	 * @param arg1
+	 * @param x
 	 *            posição X
-	 * @param arg2
+	 * @param texto
 	 *            texto
 	 */
-	public void printString( int arg0, int arg1, String arg2 ) {
+	public void printString( int y, int x, String texto ) {
 
 		addCommand( getOrdinance() );
 		addCommand( getFont() );
 		addCommand( getHorizontal_multiplier() );
 		addCommand( getVertical_multiplier() );
 		addCommand( charToStrZero( getSubtype_font().getCommand(), 3 ) );
-		addCommand( intToStrZero( arg0 ) );
-		addCommand( intToStrZero( arg1 ) );
-		addCommand( arg2 );
+		addCommand( intToStrZero( y ) );
+		addCommand( intToStrZero( x ) );
+		addCommand( texto );
+		addCommand( CR );
+		close();
 	}
 
 	/**
@@ -219,25 +221,39 @@ public class EtiquetaPPLA {
 	 * <br>
 	 * e os passados por parametro na assinatura do metodo.<br>
 	 * 
-	 * @param arg0
+	 * @param altura
 	 *            Altura do código de barras.
-	 * @param arg1
+	 * @param y
 	 *            posição Y
-	 * @param arg2
+	 * @param x
 	 *            posição X
-	 * @param arg3
+	 * @param dados
 	 *            dados para o código.
 	 */
-	public void printBarCode( int arg0, int arg1, int arg2, String arg3 ) {
+	public void printBarCode( int altura, int y, int x, String dados ) {
 
 		addCommand( getOrdinance() );
 		addCommand( getBarcode_type() );
 		addCommand( getBarcode_b_w() );
 		addCommand( getBarcode_b_f() );
-		addCommand( intToStrZero( arg0, 3 ) );
-		addCommand( intToStrZero( arg1 ) );
-		addCommand( intToStrZero( arg2 ) );
-		addCommand( arg3 );
+		addCommand( intToStrZero( altura, 3 ) );
+		addCommand( intToStrZero( y ) );
+		addCommand( intToStrZero( x ) );
+		addCommand( dados );
+		close();
+	}
+	
+	public void printCopy( int repeticoes ) {
+
+		if ( repeticoes > 0 ) {
+			addCommand( STX );
+			addCommand( E );
+			addCommand( intToStrZero( repeticoes - 1 , 3 ) );
+			addCommand( CR );
+			addCommand( STX );
+			addCommand( G );
+			addCommand( CR );
+		}
 	}
 
 	/**
@@ -253,9 +269,6 @@ public class EtiquetaPPLA {
 	 * @return String contendo o script de comando para impressão.
 	 */
 	public String command() {
-
-		// Fecha o script antes de retorna-lo.
-		close();
 
 		return this.command.toString();
 	}
@@ -339,6 +352,8 @@ public class EtiquetaPPLA {
 		CR( 0x0D ),
 
 		E( 0x45 ),
+
+		G( 0x47 ),
 
 		L( 0x4C ),
 
