@@ -24,7 +24,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.freedom.infra.components.LoggerManager;
+import org.freedom.infra.beans.LoggerManager;
 import org.freedom.tef.driver.Flag;
 import org.freedom.tef.driver.text.TextTef;
 import org.freedom.tef.driver.text.TextTefFactore;
