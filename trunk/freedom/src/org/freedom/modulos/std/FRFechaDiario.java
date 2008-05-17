@@ -151,6 +151,19 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND " );
 			sSQL.append( "P.CODPLANOPAG=CP.CODPLANOPAG " );
 			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
+			sSQL.append( "UNION " );
+			sSQL.append( "SELECT CAST('C' AS CHAR(1)) TIPOLANCA, IR.DTPAGOITREC, " );
+			sSQL.append( "99 CODTIPOMOV, CAST( 'RECEBIMENTO' AS CHAR(40) ) DESCTIPOMOV, " );
+			sSQL.append( "99 CODCAIXA, CAST( null AS CHAR(40) ) DESCCAIXA, IR.IDUSUALT, " );
+			sSQL.append( "R.CODPLANOPAG, P.DESCPLANOPAG, IR.VLRPAGOITREC VALOR " );
+			sSQL.append( "FROM FNITRECEBER IR, FNRECEBER R, FNPLANOPAG P " );
+			sSQL.append( "WHERE IR.CODEMP=? AND IR.CODFILIAL=? AND IR.PDVITREC='S' AND IR.STATUSITREC='RP' AND " );
+			sSQL.append( "IR.DTPAGOITREC BETWEEN ? AND ? AND " );
+			sSQL.append( "IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND " );
+			sSQL.append( "R.CODEMPPG=P.CODEMP AND R.CODFILIALPG=P.CODFILIAL AND R.CODPLANOPAG=P.CODPLANOPAG " );
+			if ( !"".equals( idusu ) ) {
+				sSQL.append( " CP.IDUSUINS=? AND " );
+			}
 			sSQL.append( "ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
 
 		}
@@ -214,6 +227,23 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND " );
 			sSQL.append( "P.CODPLANOPAG=CP.CODPLANOPAG " );
 			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 " );
+			sSQL.append( "UNION " );
+			sSQL.append( "SELECT CAST('C' AS CHAR(1)) TIPOLANCA, IR.DTPAGOITREC DATA, " );
+			sSQL.append( "99 CODTIPOMOV, CAST( 'RECEBIMENTO' AS CHAR(40) ) DESCTIPOMOV, " );
+			sSQL.append( "99 CODCAIXA, CAST( null AS CHAR(40) ) DESCCAIXA, IR.IDUSUALT IDUSUINS, " );
+			sSQL.append( "R.CODPLANOPAG, P.DESCPLANOPAG, IR.CODREC PEDIDO, IR.NPARCITREC DOC, " );
+			sSQL.append( "VD.NOMEVEND, " );
+			sSQL.append( "0 CODORC, 0 CODITORC, CAST(0 AS BIGINT) VALORORC, " );
+			sSQL.append( "IR.VLRPAGOITREC VALOR " );
+			sSQL.append( "FROM FNITRECEBER IR, FNRECEBER R, FNPLANOPAG P, VDVENDEDOR VD " );
+			sSQL.append( "WHERE IR.CODEMP=? AND IR.CODFILIAL=? AND " );
+			sSQL.append( "IR.DTPAGOITREC BETWEEN ? AND ? AND IR.PDVITREC='S' AND IR.STATUSITREC='RP' AND " );
+			if ( !"".equals( idusu ) ) {
+				sSQL.append( " CP.IDUSUINS=? AND " );
+			}
+			sSQL.append( "IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND " );
+			sSQL.append( "R.CODEMPPG=P.CODEMP AND R.CODFILIALPG=P.CODFILIAL AND R.CODPLANOPAG=P.CODPLANOPAG AND " );
+			sSQL.append( "VD.CODEMP=R.CODEMPVD AND VD.CODFILIAL=R.CODFILIALVD AND VD.CODVEND=R.CODVEND " );
 			sSQL.append( "ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 " );
 		}
 
@@ -291,6 +321,14 @@ public class FRFechaDiario extends FRelatorio {
 			if ( !"".equals( idusu ) ) {
 				ps.setString( param++, idusu );
 			}
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataIni.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataFim.getVlrDate() ) );
+			if ( !"".equals( idusu ) ) {
+				ps.setString( param++, idusu );
+			}
+			
 			rs = ps.executeQuery();
 
 			imp.setTitulo( "Fechamento diário" );

@@ -41,6 +41,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
 import org.freedom.bmps.Icone;
@@ -60,7 +62,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
-public class FManutRec extends FFDialogo implements TabelaSelListener {
+public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -162,6 +164,8 @@ public class FManutRec extends FFDialogo implements TabelaSelListener {
 	
 	private boolean carregavel = true;
 	
+	private boolean porCliente = false;
+	
 
 	public FManutRec() {
 
@@ -185,6 +189,9 @@ public class FManutRec extends FFDialogo implements TabelaSelListener {
 		txtCodRecBaixa.addKeyListener( this );
 		txtCodCliBaixa.addKeyListener( this );
 		tabBaixa.addKeyListener( this );
+		
+		lcRecBaixa.addCarregaListener( this );
+		lcCliBaixa.addCarregaListener( this );
 		
 		tabBaixa.addTabelaSelListener( this );
 	}
@@ -350,7 +357,7 @@ public class FManutRec extends FFDialogo implements TabelaSelListener {
 
 	private void limpaConsulta() {
 		
-		carregavel = true;				
+		carregavel = true;	
 
 		txtDoc.setVlrString( "" );
 		txtSerie.setVlrString( "" );
@@ -385,16 +392,13 @@ public class FManutRec extends FFDialogo implements TabelaSelListener {
 		}
 		
 		boolean actionReturn = false;
-		boolean porCliente = false;
 		
 		float bdVlrAReceber = 0.0f;
 		float bdVlrPago = 0.0f;
 
 		try {
 
-			tabBaixa.limpa();
-			
-			porCliente = txtCodCliBaixa.getVlrInteger() > 0 && txtCodRecBaixa.getVlrInteger() == 0;
+			tabBaixa.limpa();			
 			
 			StringBuffer sSQL = new StringBuffer();
 			sSQL.append( "SELECT IR.DTVENCITREC,IR.STATUSITREC,R.CODREC,IR.DOCLANCAITREC," );
@@ -595,7 +599,7 @@ public class FManutRec extends FFDialogo implements TabelaSelListener {
 
 				sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 				sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?," );
-				sSQL.append( "VLRDESCITREC=?,VLRJUROSITREC=?,OBSITREC=?,STATUSITREC='RP' " );
+				sSQL.append( "VLRDESCITREC=?,VLRJUROSITREC=?,OBSITREC=?,STATUSITREC='RP',PDVITREC='S' " );
 				sSQL.append( "WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
 
 				try {
@@ -686,6 +690,25 @@ public class FManutRec extends FFDialogo implements TabelaSelListener {
 		return anobase;
 	}
 
+	public void beforeCarrega( CarregaEvent e ) { }
+
+	public void afterCarrega( CarregaEvent e ) {
+		
+		if ( e.getListaCampos() == lcRecBaixa || e.getListaCampos() == lcCliBaixa ) {
+			if ( tabBaixa.getNumLinhas() == 0 ) {
+				porCliente = txtCodCliBaixa.getVlrInteger() > 0 && txtCodRecBaixa.getVlrInteger() == 0;
+				if ( carregaGridBaixa() ) {
+					txtCodRecBaixa.setSoLeitura( true );	
+					txtCodCliBaixa.setSoLeitura( true );
+				}
+				else {
+					limpaConsulta();
+				}				
+			}
+			tabBaixa.requestFocus();
+		}
+	}
+
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btBaixa ) {
@@ -701,14 +724,7 @@ public class FManutRec extends FFDialogo implements TabelaSelListener {
     public void keyPressed( KeyEvent e ) {
 
 		if ( e.getKeyCode() == KeyEvent.VK_ENTER ) {
-			if ( e.getSource() == txtCodRecBaixa || e.getSource() == txtCodCliBaixa ) {
-				if ( carregaGridBaixa() ) {
-					txtCodRecBaixa.setSoLeitura( true );	
-					txtCodCliBaixa.setSoLeitura( true );			
-					tabBaixa.requestFocus();
-				}
-			}
-			else if ( e.getSource() == tabBaixa ) {
+			if ( e.getSource() == tabBaixa ) {
 				tabBaixa.removeTabelaSelListener( this );
 				baixar();
 				tabBaixa.addTabelaSelListener( this );
