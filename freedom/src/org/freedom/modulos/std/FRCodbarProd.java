@@ -519,7 +519,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 						Object[] etiquetas = montaEtiquetas();
 						imp.gravaTexto( etiquetas[ 1 ].toString() );
 						imp.fechaGravacao();	
-						imp.print();
+						imp.preview( this );
 					}
 				}
 			}
