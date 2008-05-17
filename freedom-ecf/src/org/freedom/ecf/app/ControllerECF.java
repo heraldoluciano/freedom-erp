@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
 import org.freedom.ecf.com.Serial;
 import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.ecf.driver.EStatus;
-import org.freedom.infra.components.LoggerManager;
+import org.freedom.infra.beans.LoggerManager;
 
 public class ControllerECF {
 		
