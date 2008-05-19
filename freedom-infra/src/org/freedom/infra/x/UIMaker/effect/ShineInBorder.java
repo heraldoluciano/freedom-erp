@@ -26,7 +26,7 @@ public class ShineInBorder extends EffectStandard {
 		
 	private final Map<JComponent,Border> oldBorders;
 	
-	private Color[] colors;
+	private Color[] colors = new Color[SIZE];
 	
 	private int countColor = 0;
 	
@@ -107,7 +107,6 @@ public class ShineInBorder extends EffectStandard {
 	private void setColors( final Color colorBegin, final Color colorEnd ) {
 		
 		if ( colorBegin != null && colorEnd != null ) {
-			colors = new Color[SIZE];
 			int re = colorEnd.getRed();
 			int ge = colorEnd.getGreen();
 			int be = colorEnd.getBlue();

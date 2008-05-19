@@ -16,6 +16,8 @@ import org.freedom.infra.x.UIMaker.Panel;
 import org.freedom.infra.x.UIMaker.TextField;
 import org.freedom.infra.x.UIMaker.effect.Effect;
 import org.freedom.infra.x.UIMaker.effect.Fade;
+import org.freedom.infra.x.UIMaker.effect.SetEffect;
+import org.freedom.infra.x.UIMaker.effect.ShineInBorder;
 
 public class TestComponents extends JFrame {
 
@@ -40,6 +42,9 @@ public class TestComponents extends JFrame {
 
 		super();
 		initialize();
+		setLocationRelativeTo( null );
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setVisible(true);
 	}
 
 	/**
@@ -64,7 +69,7 @@ public class TestComponents extends JFrame {
 		if ( jContentPane == null ) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(null);
-			//jContentPane.setBackground( Color.ORANGE );
+			jContentPane.setBackground( Color.BLACK );
 			jContentPane.add(getTextField01(), null);
 			jContentPane.add(getBotao01(), null);
 			jContentPane.add(getPanel01(), null);
@@ -84,13 +89,17 @@ public class TestComponents extends JFrame {
 			botao01.setBorderPainted( true );
 			botao01.addActionListener( new java.awt.event.ActionListener() {
 				public void actionPerformed( java.awt.event.ActionEvent e ) {
-					/*Effect effect = new ShineInBorder( 
-							panel01, ShineInBorder.SPEED_FAST, Color.WHITE, Color.ORANGE );*/
-					Effect effect = new Fade( panel01 );
-					((Fade)effect).setMaxAlfa( 0.5f );
-					((Fade)effect).setColor( Color.BLACK );
-					((Fade)effect).setAction( Fade.ACTION_IN );
-					effect.doStart();
+					Effect effect1 = new ShineInBorder( 
+							panel01, ShineInBorder.SPEED_FAST );
+					Effect effect2 = new Fade( panel01 );
+					((Fade)effect2).setMaxAlfa( 0.8f );
+					((Fade)effect2).setColor( Color.ORANGE );
+					((Fade)effect2).setAction( Fade.ACTION_OUT );
+					
+					SetEffect set = new SetEffect();
+					set.addComponent( effect1 );
+					set.addComponent( effect2 );
+					set.doStart();
 					/*getLabel01().setValue( new Integer( 55 ) );
 					JOptionPane.showMessageDialog( jContentPane, getTextField01().getValue() + "\n" + 
 							getTextField01().getValue().getClass().getName() );*/
@@ -163,12 +172,15 @@ public class TestComponents extends JFrame {
 			textField01 = new TextField( new DecimalDocument( 8, 2 ) );
 			//textField01 = new TextField( new IntegerDocument() );
 			textField01.setBounds( 20, 100, 200, 30 );
-			textField01.setAlfaColor( 0.7f, Color.BLUE );
-			textField01.setArc( 30, 30 );
+			textField01.setAlfaColor( 0.5f, Color.BLUE );
 			textField01.setForeground( Color.WHITE );
 			//textField01.setFocusable( false );
 		}
 		return textField01;
+	}
+	
+	public static void main( String[] args ) {
+	    new TestComponents();
 	}
 
 }  //  @jve:decl-index=0:visual-constraint="187,10"
