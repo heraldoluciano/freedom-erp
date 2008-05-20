@@ -51,7 +51,7 @@ V.CODCAIXA, C.DESCCAIXA, V.IDUSUINS,
 V.CODPLANOPAG, P.DESCPLANOPAG, SUM(V.VLRLIQVENDA) VALOR
 FROM VDVENDA V, PVCAIXA C, EQTIPOMOV M, FNPLANOPAG P
 WHERE V.CODEMP=42 AND V.CODFILIAL=1 AND
-V.DTEMITVENDA='27.08.2007' AND
+V.DTEMITVENDA='2008-05-20' AND
 C.CODEMP=V.CODEMPCX AND C.CODFILIAL=V.CODFILIALCX AND
 C.CODCAIXA=V.CODCAIXA AND
 M.CODEMP=V.CODEMPTM AND M.CODFILIAL=V.CODFILIALTM AND
@@ -66,12 +66,22 @@ CAST ( NULL AS CHAR(40)) DESCCAIXA, CP.IDUSUINS,
 CP.CODPLANOPAG, P.DESCPLANOPAG, SUM(CP.VLRLIQCOMPRA*-1) VALOR
 FROM CPCOMPRA CP, EQTIPOMOV M, FNPLANOPAG P
 WHERE CP.CODEMP=42 AND CP.CODFILIAL=1 AND
-CP.DTEMITCOMPRA='27.08.2007' AND
+CP.DTEMITCOMPRA='2008-05-20' AND
 M.CODEMP=CP.CODEMPTM AND M.CODFILIAL=CP.CODFILIALTM AND
 M.CODTIPOMOV=CP.CODTIPOMOV AND M.TIPOMOV='DV' AND
 P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND
 P.CODPLANOPAG=CP.CODPLANOPAG
 GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9
+UNION
+SELECT CAST('C' AS CHAR(1)) TIPOLANCA, IR.DTPAGOITREC,
+99 CODTIPOMOV, CAST( 'RECEBIMENTO' AS CHAR(40) ) DESCTIPOMOV,
+99 CODCAIXA, CAST( null AS CHAR(40) ) DESCCAIXA, IR.IDUSUALT,
+R.CODPLANOPAG, P.DESCPLANOPAG, IR.VLRPAGOITREC VALOR
+FROM FNITRECEBER IR, FNRECEBER R, FNPLANOPAG P
+WHERE IR.CODEMP=42 AND IR.CODFILIAL=1 AND IR.PDVITREC='S' AND IR.STATUSITREC='RP' AND
+IR.DTPAGOITREC BETWEEN '2008-05-20' AND '2008-05-20' AND
+IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND
+R.CODEMPPG=P.CODEMP AND R.CODFILIALPG=P.CODFILIAL AND R.CODPLANOPAG=P.CODPLANOPAG
 ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 
 	<field name="TIPOLANCA" class="java.lang.String"/>
@@ -147,7 +157,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 					<textElement>
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOMOV}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTIPOMOV} == null ? "Recebimento" : $F{DESCTIPOMOV}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -339,7 +349,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="195"
+						x="95"
 						y="100"
 						width="100"
 						height="12"
@@ -494,6 +504,19 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 						key="line-12"/>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" />
 				</line>
+				<staticText>
+					<reportElement
+						x="195"
+						y="100"
+						width="200"
+						height="12"
+						key="staticText-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Plano de pagamento]]></text>
+				</staticText>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -517,7 +540,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="195"
+						x="95"
 						y="1"
 						width="100"
 						height="12"
@@ -527,6 +550,19 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9]]></queryString>
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{IDUSUINS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="195"
+						y="1"
+						width="200"
+						height="12"
+						key="textField-25"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCPLANOPAG}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

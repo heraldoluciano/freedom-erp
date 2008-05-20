@@ -153,9 +153,9 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
 			sSQL.append( "UNION " );
 			sSQL.append( "SELECT CAST('C' AS CHAR(1)) TIPOLANCA, IR.DTPAGOITREC, " );
-			sSQL.append( "99 CODTIPOMOV, CAST( 'RECEBIMENTO' AS CHAR(40) ) DESCTIPOMOV, " );
-			sSQL.append( "99 CODCAIXA, CAST( null AS CHAR(40) ) DESCCAIXA, IR.IDUSUALT, " );
-			sSQL.append( "R.CODPLANOPAG, P.DESCPLANOPAG, IR.VLRPAGOITREC VALOR " );
+			sSQL.append( "9999 CODTIPOMOV, CAST( null AS CHAR(40) ) DESCTIPOMOV, " );
+			sSQL.append( "40 CODCAIXA, CAST( null AS CHAR(40) ) DESCCAIXA, IR.IDUSUALT, " );
+			sSQL.append( "R.CODPLANOPAG, P.DESCPLANOPAG, SUM(IR.VLRPAGOITREC) VALOR " );
 			sSQL.append( "FROM FNITRECEBER IR, FNRECEBER R, FNPLANOPAG P " );
 			sSQL.append( "WHERE IR.CODEMP=? AND IR.CODFILIAL=? AND IR.PDVITREC='S' AND IR.STATUSITREC='RP' AND " );
 			sSQL.append( "IR.DTPAGOITREC BETWEEN ? AND ? AND " );
@@ -164,6 +164,7 @@ public class FRFechaDiario extends FRelatorio {
 			if ( !"".equals( idusu ) ) {
 				sSQL.append( " CP.IDUSUINS=? AND " );
 			}
+			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
 			sSQL.append( "ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
 
 		}
