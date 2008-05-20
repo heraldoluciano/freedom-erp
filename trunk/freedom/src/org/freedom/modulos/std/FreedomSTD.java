@@ -55,6 +55,7 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 100102000, TP_OPCAO_ITEM, "Classif. de Comissões", "Classificação de Comissões", 'P', 100102030, 3, true, FCLComis.class );
 				addOpcao( 100102000, TP_OPCAO_ITEM, "Funções", "Funções", 'F', 100102040, 3, true, FFuncao.class );
 				addOpcao( 100102000, TP_OPCAO_ITEM, "Tipo de Comissionado", "Tipo de Comissionado", 'F', 100102050, 3, true, FTipoVend.class );
+				addOpcao( 100102000, TP_OPCAO_ITEM, "Regras de Comissionamento", "Regras de Comissionamento", 'R', 100102060, 3, true, FRegraComiss.class );
 			addOpcao( 100100000, TP_OPCAO_MENU, "Atendente", "", 'A', 100103000, 2, false, null );
 				addOpcao( 100103000, TP_OPCAO_ITEM, "Atendente", "Atendente", 'e', 100103010, 3, true, FAtendente.class );
 				addOpcao( 100103000, TP_OPCAO_ITEM, "Tipo de Atendente", "Tipo de Atendente", 'i', 100103020, 4, true, FTipoAtend.class );	
@@ -186,8 +187,8 @@ public class FreedomSTD extends AplicativoPD {
 				
 		addOpcao( -1, TP_OPCAO_MENU, "Financeiro", "", 'F', 600000000, 0, false, null );
 			addOpcao( 600000000, TP_OPCAO_MENU, "Boleto/Recibo", "", 'B', 600100000, 1, false, null );
-				addOpcao( 600100000, TP_OPCAO_ITEM, "Modelo", "Modelo de boleto/recibo", 'M', 600110000, 2, true, FModBoleto.class );
-				addOpcao( 600100000, TP_OPCAO_ITEM, "Imprimir", "Boleto/Recibo", 'I', 600120000, 2, true, FRBoleto.class );
+				addOpcao( 600100000, TP_OPCAO_ITEM, "Modelo", "Modelo de boleto/recibo", 'M', 600101000, 2, true, FModBoleto.class );
+				addOpcao( 600100000, TP_OPCAO_ITEM, "Imprimir", "Boleto/Recibo", 'I', 600102000, 2, true, FRBoleto.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Banco", "Banco", 'a', 600200000, 1, true, FBanco.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Carteira de cobrança", "Carteira de cobrança", 'n', 600300000, 1, true, FCartCob.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Planejamento", "Planejamento", 'P', 600400000, 1, true, FPlanejamento.class );
@@ -198,21 +199,22 @@ public class FreedomSTD extends AplicativoPD {
 			addSeparador( 600000000 );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Tipo de crédito", "Tipo de crédito", 'L', 600900000, 1, true, FTipoCred.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Liberação de crédito", "Liberação de crédito", 'i', 601000000, 1, true, FLiberaCredito.class );
+			addOpcao( 600000000, TP_OPCAO_ITEM, "Tipo de Restrição", "Tipo de Restrição", 's', 601100000, 1, true, FNTipoRestr.class );
 			addSeparador( 600000000 );
-			addOpcao( 600000000, TP_OPCAO_ITEM, "Tabela de juros", "Tabelas de juros", 'T', 601100000, 1, true, FTabJuros.class );
+			addOpcao( 600000000, TP_OPCAO_ITEM, "Tabela de juros", "Tabelas de juros", 'T', 601200000, 1, true, FTabJuros.class );
 			addSeparador( 600000000 );
-			addOpcao( 600000000, TP_OPCAO_ITEM, "Reprocessa saldo", "Reprocessamento de saldos", 'R', 601200000, 1, true, FProcessaSL.class );
+			addOpcao( 600000000, TP_OPCAO_ITEM, "Reprocessa saldo", "Reprocessamento de saldos", 'R', 601300000, 1, true, FProcessaSL.class );
 			addSeparador( 600000000 );
-			addOpcao( 600000000, TP_OPCAO_MENU, "Listagens", "Fluxo de Caixa", 'F', 601300000, 1, false, null );
-				addOpcao( 601300000, TP_OPCAO_ITEM, "Extrato", "Extrato", 'E', 601301000, 2, true, FRExtrato.class );
-				addOpcao( 601300000, TP_OPCAO_ITEM, "Balancete", "Balancete", 'B', 601302000, 2, true, FRBalancete.class );
-				addOpcao( 601300000, TP_OPCAO_ITEM, "Relatório financeiro por C.C.", "Relatorio Financeiro por C.C.", 'R', 601303000, 2, true, FRCentroCusto.class );
-				addOpcao( 601300000, TP_OPCAO_ITEM, "Razão financeiro", "Razão financeiro", 'z', 601304000, 2, true, FRRazaoFin.class );
-				addOpcao( 601300000, TP_OPCAO_ITEM, "Fluxo de caixa", "", 'F', 601305000, 2, true, FRFluxoCaixa.class );
-				addOpcao( 601300000, TP_OPCAO_ITEM, "Ponto de equilibrio", "Ponto de equilibrio", 'q', 601306000, 2, true, FRPontoEqui.class );
-			addOpcao( 600000000, TP_OPCAO_MENU, "Gráficos", "Fluxo de caixa", 'G', 601400000, 1, false, null );
-				addOpcao( 601400000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'G', 601401000, 2, true, FRBalanceteGrafico.class );
-				addOpcao( 601400000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'f', 601402000, 2, true, FRGraficoCC.class );
+			addOpcao( 600000000, TP_OPCAO_MENU, "Listagens", "", 'L', 601400000, 1, false, null );
+				addOpcao( 601400000, TP_OPCAO_ITEM, "Extrato", "Extrato", 'E', 601401000, 2, true, FRExtrato.class );
+				addOpcao( 601400000, TP_OPCAO_ITEM, "Balancete", "Balancete", 'B', 601402000, 2, true, FRBalancete.class );
+				addOpcao( 601400000, TP_OPCAO_ITEM, "Relatório financeiro por C.C.", "Relatorio Financeiro por C.C.", 'R', 601403000, 2, true, FRCentroCusto.class );
+				addOpcao( 601400000, TP_OPCAO_ITEM, "Razão financeiro", "Razão financeiro", 'z', 601404000, 2, true, FRRazaoFin.class );
+				addOpcao( 601400000, TP_OPCAO_ITEM, "Fluxo de caixa", "", 'F', 601405000, 2, true, FRFluxoCaixa.class );
+				addOpcao( 601400000, TP_OPCAO_ITEM, "Ponto de equilibrio", "Ponto de equilibrio", 'q', 601406000, 2, true, FRPontoEqui.class );
+			addOpcao( 600000000, TP_OPCAO_MENU, "Gráficos", "Fluxo de caixa", 'G', 601500000, 1, false, null );
+				addOpcao( 601500000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'G', 601501000, 2, true, FRBalanceteGrafico.class );
+				addOpcao( 601500000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'f', 601502000, 2, true, FRGraficoCC.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Estoque", "", 'E', 700000000, 0, false, null );
 			addOpcao( 700000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 700100000, 1, true, FKardex.class );
