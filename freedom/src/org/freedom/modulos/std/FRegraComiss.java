@@ -55,7 +55,7 @@ public class FRegraComiss extends FDetalhe {
 	
 	private JCheckBoxPad cbObrig = new JCheckBoxPad("Sim","S","N");
 	
-	private ListaCampos lcTipoVend = new ListaCampos(this);
+	private ListaCampos lcTipoVend = new ListaCampos(this, "TV");
 	
 	public FRegraComiss () {
 		
@@ -85,12 +85,11 @@ public class FRegraComiss extends FDetalhe {
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
 		setNavegador( navRod );
-		adicCampo( txtCodTipoVend, 7, 25, 110, 20,"CodTipoVend","Cód.tipo.vend", ListaCampos.DB_PF,true);
-		adicDescFK( txtDescTipoVend, 120, 25, 220, 20, "DescTipoVend", "Descrição do tipo de comissionado");
-		adicCampo( txtPercComis, 343, 25, 55, 20,"PercComisItRc","% Comis", ListaCampos.DB_SI,true);
-		adicCampo( txtSeqComis, 401, 25, 60, 20,"SeqItRc","Sequência", ListaCampos.DB_PK,true);
-		adicDB( cbObrig, 475, 25, 87, 20, "ObrigItRc", "Obrigatório?",true);
-		
+		adicCampo( txtSeqComis, 7, 25, 60, 20,"SeqItRc","Sequência", ListaCampos.DB_PK,true);
+		adicCampo( txtCodTipoVend, 70, 25, 110, 20,"CodTipoVend","Cód.tipo.vend", ListaCampos.DB_FK,true);
+		adicDescFK( txtDescTipoVend, 183, 25, 220, 20, "DescTipoVend", "Descrição do tipo de comissionado");
+		adicCampo( txtPercComis, 406, 25, 55, 20,"PercComisItRc","% Comis", ListaCampos.DB_SI,true);
+		adicDB( cbObrig, 461, 25, 87, 20, "ObrigItRc", "Obrigatório?",true);
 		setListaCampos( false, "ITREGRACOMIS", "VD");
         lcDet.setQueryInsert(false);
 		
