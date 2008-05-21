@@ -160,9 +160,9 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "WHERE IR.CODEMP=? AND IR.CODFILIAL=? AND IR.PDVITREC='S' AND IR.STATUSITREC='RP' AND " );
 			sSQL.append( "IR.DTPAGOITREC BETWEEN ? AND ? AND " );
 			sSQL.append( "IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND " );
-			sSQL.append( "R.CODEMPPG=P.CODEMP AND R.CODFILIALPG=P.CODFILIAL AND R.CODPLANOPAG=P.CODPLANOPAG AND " ); // ADICIONADO AND NO FINAL DA LINHA
+			sSQL.append( "R.CODEMPPG=P.CODEMP AND R.CODFILIALPG=P.CODFILIAL AND R.CODPLANOPAG=P.CODPLANOPAG " ); // ADICIONADO AND NO FINAL DA LINHA
 			if ( !"".equals( idusu ) ) {
-				sSQL.append( " IR.IDUSUINS=?" ); // AO INVÉS DE CP.IDUSUINS, FOI COLOCADO IR.IDUSUINS
+				sSQL.append( "AND IR.IDUSUINS=? " ); // AO INVÉS DE CP.IDUSUINS, FOI COLOCADO IR.IDUSUINS
 			}
 			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
 			sSQL.append( "ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
@@ -193,7 +193,7 @@ public class FRFechaDiario extends FRelatorio {
 				sCab.append( " - Caixa: " + codcaixa );
 			}
 			if ( !"".equals( idusu ) ) {
-				sSQL.append( " C.IDUSUINS=? AND " ); //AO INVÉS DE V.IDUSUINS, FOI COLOCADO C.IDUSUINS
+				sSQL.append( " V.IDUSUINS=? AND " ); 
 				sCab.append( " - Usuário: " + idusu );
 			}
 
