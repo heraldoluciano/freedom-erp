@@ -22,11 +22,8 @@
 
 package org.freedom.modulos.std;
 import java.sql.Connection;
-import java.util.Vector;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -51,7 +48,7 @@ public class FRegraComiss extends FDetalhe {
 	
 	private JTextFieldPad txtPercComis = new JTextFieldPad(JTextFieldPad.TP_INTEGER,7,0);
 	
-	private JTextFieldPad txtSeqComis = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+	private JTextFieldPad txtSeqComis = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	
 	private JCheckBoxPad cbObrig = new JCheckBoxPad("Sim","S","N");
 	
@@ -65,13 +62,12 @@ public class FRegraComiss extends FDetalhe {
 		pinCab = new JPanelPad(440,70);
 		setListaCampos(lcCampos);
 		setPainel( pinCab, pnCliCab);
-		adicCampo(txtCodRegrComis, 7, 20, 100, 20,"CodRegrComis","Cód.Reg.Comiss", ListaCampos.DB_PK,true);
+		adicCampo(txtCodRegrComis, 7, 20, 100, 20,"CodRegrComis","Cód.regra", ListaCampos.DB_PK,true);
 		adicCampo(txtDescRegrComis, 110, 20, 220, 20,"DescRegrComis","Descrição da regra de comissionado", ListaCampos.DB_SI, true);
 		setListaCampos( true, "REGRACOMIS", "VD");
-        lcCampos.setQueryInsert(false);
+        lcCampos.setQueryInsert(true);
 
-		lcTipoVend.setUsaME(false);
-		lcTipoVend.add(new GuardaCampo( txtCodTipoVend, "CodTipoVend", "Cód.tipo.vend",  ListaCampos.DB_PK, false));
+		lcTipoVend.add(new GuardaCampo( txtCodTipoVend, "CodTipoVend", "Cód.tp.comis.",  ListaCampos.DB_PK, false));
 		lcTipoVend.add(new GuardaCampo( txtDescTipoVend, "DescTipoVend", "Descrição do tipo de comissionado",  ListaCampos.DB_SI, false));
 		lcTipoVend.montaSql(false, "TIPOVEND", "VD");    
 		lcTipoVend.setQueryCommit(false);
@@ -85,13 +81,13 @@ public class FRegraComiss extends FDetalhe {
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
 		setNavegador( navRod );
-		adicCampo( txtSeqComis, 7, 25, 60, 20,"SeqItRc","Sequência", ListaCampos.DB_PK,true);
-		adicCampo( txtCodTipoVend, 70, 25, 110, 20,"CodTipoVend","Cód.tipo.vend", ListaCampos.DB_FK,true);
+		adicCampo( txtSeqComis, 7, 25, 60, 20,"SeqItRc","Item", ListaCampos.DB_PK,true);
+		adicCampo( txtCodTipoVend, 70, 25, 110, 20,"CodTipoVend","Cód.tp.comis.", ListaCampos.DB_FK, txtDescTipoVend, true);
 		adicDescFK( txtDescTipoVend, 183, 25, 220, 20, "DescTipoVend", "Descrição do tipo de comissionado");
 		adicCampo( txtPercComis, 406, 25, 55, 20,"PercComisItRc","% Comis", ListaCampos.DB_SI,true);
 		adicDB( cbObrig, 461, 25, 87, 20, "ObrigItRc", "Obrigatório?",true);
-		setListaCampos( false, "ITREGRACOMIS", "VD");
-        lcDet.setQueryInsert(false);
+		setListaCampos( true, "ITREGRACOMIS", "VD");
+        lcDet.setQueryInsert(true);
 		
         montaTab();
 		
