@@ -75,7 +75,7 @@ public class FRegraComiss extends FDetalhe {
 		txtCodTipoVend.setTabelaExterna(lcTipoVend);
 		
 
-		setAltDet(90);
+		setAltDet(80);
 		
 		pinDet = new JPanelPad(600,90);
 		setPainel( pinDet, pnDet );
