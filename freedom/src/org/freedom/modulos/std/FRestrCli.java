@@ -85,7 +85,7 @@ public class FRestrCli extends FDetalhe implements CarregaListener, InsertListen
 		
 
 		adicCampo( txtCodCli, 7, 20, 100, 20,"Codcli","Cód.cli", ListaCampos.DB_PF,true);
-		adicCampo( txtRazCli, 110, 20, 220, 20,"Razcli","Razão social", ListaCampos.DB_SI, false);  
+		adicCampo( txtRazCli, 110, 20, 300, 20,"Razcli","Razão social", ListaCampos.DB_SI, false);  
 		setListaCampos( true, "CLIENTE", "VD" );
 		lcCampos.setQueryCommit(false);
 		lcCampos.setReadOnly(true);
@@ -116,7 +116,6 @@ public class FRestrCli extends FDetalhe implements CarregaListener, InsertListen
 		adicCampo( txtDataCancRestr, 7, 100, 100, 20, "DtCancRestr", "Data canc.", ListaCampos.DB_SI, false );
 		adicDBLiv( txaObs, 113, 60, 450, 60,"ObsRestr","Observação",false);
 		adic( new JLabelPad ("Observação"), 113, 40, 200, 20 );
-	   // adic(spnObs, 113, 60, 450, 60 );
 		setListaCampos( true, "RESTRICAO", "FN" );
 		lcDet.setQueryInsert( true );
 		
@@ -131,6 +130,7 @@ public class FRestrCli extends FDetalhe implements CarregaListener, InsertListen
 		lcTipoRestr.addCarregaListener( this );
 		lcDet.addCarregaListener( this );
 		lcDet.addInsertListener( this );
+		lcCampos.addCarregaListener( this );
 	}
 	
 	public void setConexao(Connection con) {
