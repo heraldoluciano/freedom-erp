@@ -48,10 +48,10 @@ public class FTipoVend extends FDados {
 	public FTipoVend() {
 
 		super();
-		setAtribos( 50, 50, 350, 165 );
+		setAtribos( 50, 50, 365, 120 );
 		setTitulo( "Cadastro de Tipos de Comissionados" );
-		adicCampo( txtCodTipoVenda, 7, 20, 70, 20, "CODTIPOVEND", "Cód.tp.comis.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescTipoVenda, 80, 20, 250, 20, "DESCTIPOVEND", "Descrição do tipo de comissionado", ListaCampos.DB_SI, true );
+		adicCampo( txtCodTipoVenda, 7, 20, 80, 20, "CODTIPOVEND", "Cód.tp.comis.", ListaCampos.DB_PK, true );
+		adicCampo( txtDescTipoVenda, 90, 20, 250, 20, "DESCTIPOVEND", "Descrição do tipo de comissionado", ListaCampos.DB_SI, true );
 		setListaCampos( true, "TIPOVEND", "VD" );
 		setImprimir( true );
 		btImp.addActionListener( this );
