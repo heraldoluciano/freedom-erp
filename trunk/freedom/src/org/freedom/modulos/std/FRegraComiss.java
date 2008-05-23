@@ -81,15 +81,16 @@ public class FRegraComiss extends FDetalhe {
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
 		setNavegador( navRod );
-		adicCampo( txtSeqComis, 7, 25, 60, 20,"SeqItRc","Item", ListaCampos.DB_PK,true);
-		adicCampo( txtCodTipoVend, 70, 25, 110, 20,"CodTipoVend","Cód.tp.comis.", ListaCampos.DB_FK, txtDescTipoVend, true);
-		adicDescFK( txtDescTipoVend, 183, 25, 220, 20, "DescTipoVend", "Descrição do tipo de comissionado");
+		adicCampo( txtSeqComis, 7, 25, 30, 20,"SeqItRc","Item", ListaCampos.DB_PK,true);
+		adicCampo( txtCodTipoVend, 40, 25, 80, 20,"CodTipoVend","Cód.tp.comis.", ListaCampos.DB_FK, txtDescTipoVend, true);
+		adicDescFK( txtDescTipoVend, 123, 25, 280, 20, "DescTipoVend", "Descrição do tipo de comissionado");
 		adicCampo( txtPercComis, 406, 25, 55, 20,"PercComisItRc","% Comis", ListaCampos.DB_SI,true);
 		adicDB( cbObrig, 461, 25, 87, 20, "ObrigItRc", "Obrigatório?",true);
 		setListaCampos( true, "ITREGRACOMIS", "VD");
         lcDet.setQueryInsert(true);
 		
         montaTab();
+        tab.setTamColuna( 220, 2 );
 		
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
