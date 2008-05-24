@@ -18,35 +18,36 @@
  */
 package org.freedom.funcoes;
 
-import static org.freedom.funcoes.EtiquetaPPLA.CMD.*;
+import static org.freedom.funcoes.Command.CR;
+import static org.freedom.funcoes.Command.E;
+import static org.freedom.funcoes.Command.G;
+import static org.freedom.funcoes.Command.L;
+import static org.freedom.funcoes.Command.STX;
 
 public class EtiquetaPPLA {
 
 	private StringBuilder command = new StringBuilder();
 
-	private CMD ordinance = ORDINANCE_DEFAULT;
+	private Command ordinance = Command.ORDINANCE_DEFAULT;
 
-	private CMD font = FONT_DEFAULT;
+	private Command font = Command.FONT_DEFAULT;
 
-	private CMD subtype_font = SUBTYPE_FONT_DEFAULT;
+	private Command subtype_font = Command.SUBTYPE_FONT_DEFAULT;
 
-	private CMD horizontal_multiplier = HORIZONTAL_MULTIPLIER_DEFAULT;
+	private Command horizontal_multiplier = Command.HORIZONTAL_MULTIPLIER_DEFAULT;
 
-	private CMD vertical_multiplier = VERTICAL_MULTIPLIER_DEFAULT;
+	private Command vertical_multiplier = Command.VERTICAL_MULTIPLIER_DEFAULT;
 	
-	private CMD barcode_type = BARCODE_A;
+	private Command barcode_type = Command.BARCODE_A;
 	
-	private CMD barcode_b_w = BARCODE_WIDE_BAR_DEFAULT;
+	private Command barcode_b_w = Command.BARCODE_WIDE_BAR_DEFAULT;
 	
-	private CMD barcode_b_f = BARCODE_FINE_BAR_DEFAULT;
+	private Command barcode_b_f = Command.BARCODE_FINE_BAR_DEFAULT;
 
 	/**
 	 * Contrutor padrão para EtiquetaPPLA.
 	 */
 	public EtiquetaPPLA() {
-
-		// Inicia o script na criação do objeto.
-		open();
 	}
 
 	/**
@@ -62,82 +63,97 @@ public class EtiquetaPPLA {
 		return this.command;
 	}
 
-	public CMD getFont() {
+	public Command getFont() {
 
 		return font;
 	}
 
-	public void setFont( CMD font ) {
+	public void setFont( Command font ) {
 
 		this.font = font;
 	}
 
-	public CMD getHorizontal_multiplier() {
+	public Command getHorizontal_multiplier() {
 
 		return horizontal_multiplier;
 	}
 
-	public void setHorizontal_multiplier( CMD horizontal_multiplier ) {
+	public void setHorizontal_multiplier( Command horizontal_multiplier ) {
 
 		this.horizontal_multiplier = horizontal_multiplier;
 	}
 
-	public CMD getOrdinance() {
+	public void setHorizontal_multiplier( int horizontal_multiplier ) {
+
+		this.horizontal_multiplier = new Command( horizontal_multiplier );
+	}
+
+	public Command getOrdinance() {
 
 		return ordinance;
 	}
 
-	public void setOrdinance( CMD ordinance ) {
+	public void setOrdinance( Command ordinance ) {
 
 		this.ordinance = ordinance;
 	}
 
-	public CMD getSubtype_font() {
+	public Command getSubtype_font() {
 
 		return subtype_font;
 	}
 
-	public void setSubtype_font( CMD subtype_font ) {
+	public void setSubtype_font( Command subtype_font ) {
 
 		this.subtype_font = subtype_font;
 	}
 
-	public CMD getVertical_multiplier() {
+	public Command getVertical_multiplier() {
 
 		return vertical_multiplier;
 	}
 
-	public void setVertical_multiplier( CMD vertical_multiplier ) {
+	public void setVertical_multiplier( Command vertical_multiplier ) {
 
 		this.vertical_multiplier = vertical_multiplier;
 	}
 	
-	public CMD getBarcode_b_f() {
+	public Command getBarcode_b_f() {
 	
 		return barcode_b_f;
 	}
 	
-	public void setBarcode_b_f( CMD barcode_b_f ) {
+	public void setBarcode_b_f( Command barcode_b_f ) {
 	
 		this.barcode_b_f = barcode_b_f;
 	}
 	
-	public CMD getBarcode_b_w() {
+	public void setBarcode_b_f( int barcode_b_f ) {
+	
+		this.barcode_b_f = new Command( barcode_b_f );
+	}
+	
+	public Command getBarcode_b_w() {
 	
 		return barcode_b_w;
 	}
 	
-	public void setBarcode_b_w( CMD barcode_b_l ) {
+	public void setBarcode_b_w( Command barcode_b_l ) {
 	
 		this.barcode_b_w = barcode_b_l;
 	}
 	
-	public CMD getBarcode_type() {
+	public void setBarcode_b_w( int barcode_b_l ) {
+	
+		this.barcode_b_w = new Command( barcode_b_l );
+	}
+	
+	public Command getBarcode_type() {
 	
 		return barcode_type;
 	}
 	
-	public void setBarcode_type( CMD barcode_type ) {
+	public void setBarcode_type( Command barcode_type ) {
 	
 		this.barcode_type = barcode_type;
 	}
@@ -147,11 +163,11 @@ public class EtiquetaPPLA {
 	 * 
 	 * @param arg
 	 *            Comando descrito atraves da enumeração de comandos<br>
-	 *            org.freedom.funcoes.EtiquetaPPLA.CMD.<br>
+	 *            org.freedom.funcoes.EtiquetaPPLA.Command.<br>
 	 * 
-	 * @see org.freedom.funcoes.EtiquetaPPLA.CMD
+	 * @see org.freedom.funcoes.EtiquetaPPLA.Command
 	 */
-	public void addCommand( CMD arg ) {
+	public void addCommand( Command arg ) {
 
 		getCommand().append( arg.getCommand() );
 	}
@@ -170,7 +186,7 @@ public class EtiquetaPPLA {
 	/**
 	 * Comando de abertura de script.
 	 */
-	private void open() {
+	public void open() {
 
 		addCommand( STX );
 		addCommand( L );
@@ -196,7 +212,7 @@ public class EtiquetaPPLA {
 	 * @param texto
 	 *            texto
 	 */
-	public void printString( int y, int x, String texto ) {
+	public void appendString( int y, int x, String texto ) {
 
 		addCommand( getOrdinance() );
 		addCommand( getFont() );
@@ -205,9 +221,8 @@ public class EtiquetaPPLA {
 		addCommand( charToStrZero( getSubtype_font().getCommand(), 3 ) );
 		addCommand( intToStrZero( y ) );
 		addCommand( intToStrZero( x ) );
-		addCommand( texto );
+		addCommand( texto );		
 		addCommand( CR );
-		close();
 	}
 
 	/**
@@ -230,7 +245,7 @@ public class EtiquetaPPLA {
 	 * @param dados
 	 *            dados para o código.
 	 */
-	public void printBarCode( int altura, int y, int x, String dados ) {
+	public void appendBarCode( int altura, int y, int x, String dados ) {
 
 		addCommand( getOrdinance() );
 		addCommand( getBarcode_type() );
@@ -243,7 +258,7 @@ public class EtiquetaPPLA {
 		close();
 	}
 	
-	public void printCopy( int repeticoes ) {
+	public void appendCopy( int repeticoes ) {
 
 		if ( repeticoes > 0 ) {
 			addCommand( STX );
@@ -259,7 +274,7 @@ public class EtiquetaPPLA {
 	/**
 	 * Comando de fechamento de script.
 	 */
-	private void close() {
+	public void close() {
 
 		addCommand( E );
 		addCommand( CR );
@@ -336,70 +351,5 @@ public class EtiquetaPPLA {
 		buffer.append( arg );
 
 		return buffer.toString();
-	}
-
-	/**
-	 * Enumera os comandos utilizados na criação de script para<br>
-	 * impressão de etiquetas utilizando a linguagem PPLA.
-	 * 
-	 * @author Alex Rodrigues
-	 * @version 0.0.1.0
-	 */
-	public enum CMD {
-
-		STX( 0x02 ),
-
-		CR( 0x0D ),
-
-		E( 0x45 ),
-
-		G( 0x47 ),
-
-		L( 0x4C ),
-
-		ORDINANCE_DEFAULT( 0x31 ),
-
-		ORDINANCE_ROTATION_270( 0x32 ),
-
-		ORDINANCE_ROTATION_180( 0x33 ),
-
-		ORDINANCE_ROTATION_90( 0x34 ),
-		
-		// Fonts ...
-
-		FONT_DEFAULT( 0x32 ),
-
-		SUBTYPE_FONT_DEFAULT( 0x30 ),
-
-		HORIZONTAL_MULTIPLIER_DEFAULT( 0x31 ),
-
-		VERTICAL_MULTIPLIER_DEFAULT( 0x31 ),
-		
-		// Barcode ...
-		
-		BARCODE_A( 'A' ),
-		
-		BARCODE_WIDE_BAR_DEFAULT( 0x35 ),
-		
-		BARCODE_FINE_BAR_DEFAULT( 0x32 );
-
-		/**
-		 * Armazena o valor hexadecimal do comando.
-		 */
-		private int command;
-
-		private CMD( int command ) {
-
-			this.command = command;
-		}
-
-		/**
-		 * 
-		 * @return inteiro com o valor hexadecimal do comando.
-		 */
-		public char getCommand() {
-
-			return (char) this.command;
-		}
 	}
 }
