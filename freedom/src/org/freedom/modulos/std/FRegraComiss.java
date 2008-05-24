@@ -46,7 +46,7 @@ public class FRegraComiss extends FDetalhe {
 	
 	private JTextFieldFK txtDescTipoVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	
-	private JTextFieldPad txtPercComis = new JTextFieldPad(JTextFieldPad.TP_INTEGER,7,0);
+	private JTextFieldPad txtPercComis = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,7,3);
 	
 	private JTextFieldPad txtSeqComis = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	
@@ -62,8 +62,8 @@ public class FRegraComiss extends FDetalhe {
 		pinCab = new JPanelPad(440,70);
 		setListaCampos(lcCampos);
 		setPainel( pinCab, pnCliCab);
-		adicCampo(txtCodRegrComis, 7, 20, 100, 20,"CodRegrComis","Cód.regra", ListaCampos.DB_PK,true);
-		adicCampo(txtDescRegrComis, 110, 20, 220, 20,"DescRegrComis","Descrição da regra de comissionado", ListaCampos.DB_SI, true);
+		adicCampo(txtCodRegrComis, 7, 20, 80, 20,"CodRegrComis","Cód.regra", ListaCampos.DB_PK,true);
+		adicCampo(txtDescRegrComis, 90, 20, 300, 20,"DescRegrComis","Descrição da regra de comissionamento", ListaCampos.DB_SI, true);
 		setListaCampos( true, "REGRACOMIS", "VD");
         lcCampos.setQueryInsert(true);
 
@@ -84,7 +84,7 @@ public class FRegraComiss extends FDetalhe {
 		adicCampo( txtSeqComis, 7, 25, 30, 20,"SeqItRc","Item", ListaCampos.DB_PK,true);
 		adicCampo( txtCodTipoVend, 40, 25, 80, 20,"CodTipoVend","Cód.tp.comis.", ListaCampos.DB_FK, txtDescTipoVend, true);
 		adicDescFK( txtDescTipoVend, 123, 25, 280, 20, "DescTipoVend", "Descrição do tipo de comissionado");
-		adicCampo( txtPercComis, 406, 25, 55, 20,"PercComisItRc","% Comis", ListaCampos.DB_SI,true);
+		adicCampo( txtPercComis, 406, 25, 55, 20,"PercComisItRc","% Comis.", ListaCampos.DB_SI,true);
 		adicDB( cbObrig, 461, 25, 87, 20, "ObrigItRc", "Obrigatório?",true);
 		setListaCampos( true, "ITREGRACOMIS", "VD");
         lcDet.setQueryInsert(true);
