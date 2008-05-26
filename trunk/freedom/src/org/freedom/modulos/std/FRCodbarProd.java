@@ -454,7 +454,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 				etiqueta = new EtiquetaPPLA();
 
-				etiqueta.printString( 100, 50, rs.getString( "DESCPROD" ) );
+				etiqueta.appendString( 100, 50, rs.getString( "DESCPROD" ) );
 
 				bufferImprimir.append( etiqueta.command() );
 			}
