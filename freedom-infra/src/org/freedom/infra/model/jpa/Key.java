@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+@interface KeyOptions {
+	String name();
+	String value();
+}
 public class Key implements Serializable {
 
 	/**
@@ -16,7 +20,7 @@ public class Key implements Serializable {
 	private String internalKey = null;
 	
 	public Key(Object[][] keys) {
-		setKeys(keys);
+		setKeys( keys);
 	}
 
 	public Object[][] getKeys() {
@@ -30,16 +34,16 @@ public class Key implements Serializable {
 			for (int i=0; i<keys.length; i++) {
 			   Object key = keys[i][COL_KEY];	
 			   Object value = keys[i][COL_VALUE];
-			   try {
-				   Method method = this.getClass().getMethod("set" + key, value.getClass());
-				   method.invoke(this, value);
+			   /*try {
+				   Method method = obj.getClass().getMethod("set" + key, value.getClass());
+				   method.invoke(obj, value);
 			   } catch (NoSuchMethodException e) {
 				   e.printStackTrace(); 
 			   } catch (InvocationTargetException e) {
 				   e.printStackTrace();
 			   } catch (IllegalAccessException e) {
 				   e.printStackTrace();
-			   }
+			   }*/
                buffer.append(value.toString());
                buffer.append(" ");
 			}

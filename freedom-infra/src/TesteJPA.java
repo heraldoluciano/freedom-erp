@@ -8,6 +8,10 @@ public class TesteJPA {
 	/**
 	 * @param args
 	 */
+	
+	//@KeyOption();
+	private  String teste;
+	
 	public static void main(String[] args) {
 		Map<String, Object> m1 = new HashMap<String, Object>();
 		Map<String, Object> m2 = new HashMap<String, Object>();
@@ -18,12 +22,13 @@ public class TesteJPA {
 		m2.put("1",1);
 		m2.put("2",2);
 		
-		Object[][] i = {{1,2,3,4},{1,2,3,4}};
+		Object[][] i = {{"Teste","1"},{"Teste2","2"}};
 		
-		Key key1 = new Key( i );
-		//Key key2 = new Key();
+		//TesteJPA.TesteKey key1 = new TesteJPA().new TesteKey( i ); 
+		//TesteJPA.TesteKey key2 = new TesteJPA().new TesteKey( i );
 		
-		System.out.println(key1.hashCode());
+		
+		//System.out.println(key1.hashCode());
 		//System.out.println(key2.hashCode());
 		
 		String st1 = new String("123");
@@ -32,10 +37,27 @@ public class TesteJPA {
 		System.out.println(st1.hashCode());
 		System.out.println(st2.hashCode());
 		
-		System.out.println(key1.getInternalKey().hashCode());
+//		System.out.println(key1.getInternalKey().hashCode());
 //		System.out.println(key2.getInternalKey().hashCode());
 
 
 	}
+	
+	
+	/*class TesteKey extends Key {
+		private String teste = null;
+		private String teste2 = null;
+
+	//	public TesteKey(Object[][] keys) {
+			//super(TesteJPA.TesteKey.class, keys);
+		//}
+		
+		protected void setTeste(String teste) {
+			this.teste = teste;
+		}
+		protected void setTeste2(String teste2) {
+			this.teste2 = teste2;
+		}
+	}*/
 
 }
