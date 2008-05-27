@@ -14,10 +14,8 @@ public class Key implements Serializable {
 	private Object[] keys = null;
 	private String internalKey = null;
 	
-	public Key() {
-		
-	}
 	public Key(Object... keys) {
+		super();
 		setKeys( keys);
 	}
 
