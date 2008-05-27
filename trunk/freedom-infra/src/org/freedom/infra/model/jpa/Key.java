@@ -14,7 +14,10 @@ public class Key implements Serializable {
 	private Object[] keys = null;
 	private String internalKey = null;
 	
-	public Key(Object[] keys) {
+	public Key() {
+		
+	}
+	public Key(Object... keys) {
 		setKeys( keys);
 	}
 
@@ -57,8 +60,8 @@ public class Key implements Serializable {
 		this.internalKey = internalKey;
 	}
 	
-	/*public boolean equals(Object o) {
-		return (internalKey.equals(encodeKey(o)));
-	}*/
+	public boolean equals(Object o) {
+		return ((o instanceof Key) && (internalKey.equals(((Key) o).getInternalKey())));
+	}
 
 }

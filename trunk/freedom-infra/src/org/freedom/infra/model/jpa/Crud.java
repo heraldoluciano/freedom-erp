@@ -1,4 +1,6 @@
 package org.freedom.infra.model.jpa;
+import java.lang.reflect.Method;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -24,72 +26,75 @@ public class Crud {
 		 }
 	}
 	
-	/*public void persist() {
+	public void persist(Object object) {
 		try {	
-			
-			Entidade ent = (Entidade) objeto;
-			
-			System.out.println("CIDADE TESTE:" + ent.getCidade());
 			
 			tx.begin();
 			
-			manager.persist( objeto );
+			em.persist( object );
 						
 			tx.commit();
 			 
 		}
 		catch ( RuntimeException e ) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 			tx.rollback();
 		}
 	}
 	
-	public void remove(PersistObject obj) {
+	public void remove(PersistObject object) {
 
 		try {
-			Objeto tmp = (Objeto) manager.find(objeto.getClass(), ((Objeto) objeto).getChave());
+			Object tmp = em.find(object.getClass(), ((PersistObject) object).getKey());
 			
 			tx.begin();
 			
-            manager.remove( tmp );
-            
-            objeto = tmp;
+            em.remove( tmp );
             
 			tx.commit();
 						
 		}
 		catch ( RuntimeException e ) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 			tx.rollback();
 		}
 
 	}
 	
-	public void find() {
-		
+	public PersistObject find(PersistObject argobj) {
+		PersistObject object = null;
 		try {
 			
-			Constructor ct = objeto.getClass().getConstructor(null);			
-			Objeto objtst = (Objeto) ct.newInstance(null);			
-			Method mt = objtst.getClass().getMethod("getChave");			
-			Object chave = mt.invoke(objeto,null);
+			Method mt = argobj.getClass().getMethod("getKey");			
+			Key key = (Key) mt.invoke(argobj,null);
+
+			object = (PersistObject) find(argobj.getClass(), key);
+		}
+		catch ( Exception e ) {
+			LOGGER.error(e.getMessage(), e);
+			tx.rollback();
+		}
+		
+		return object;
+	}
+	
+	public PersistObject find(Class<? extends PersistObject> clas, Key key) {
+		
+		PersistObject object = null;
+		try {
 			
 			tx.begin();
+
+			object = em.find(clas, key);
 			
-			objtst = manager.find(objtst.getClass(), chave );			
-			objeto = objtst;
-								
 			tx.commit(); 
-			
-//			manager.flush();
-//			manager.close();
 			
 		}
 		catch ( Exception e ) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 			tx.rollback();
 		}
-
+        return object;
 	}
-	*/
+	
 }
