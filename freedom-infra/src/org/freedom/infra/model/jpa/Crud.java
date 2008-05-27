@@ -5,15 +5,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
+import org.freedom.infra.beans.LoggerManager;
 
 public class Crud {
 	private EntityManagerFactory emf = null;
 	private EntityManager em = null;
 	private EntityTransaction tx = null;
-	private static final Logger LOGGER = Logger.
-    	getLogger("org.freedom.infra.model.jpa.EnityManager");
+	private static final Logger LOGGER = LoggerManager.getLogger("org.freedom.infra.model.jpa.Crud");
+	
 	public Crud(String persistUnit) {
 		 if (emf==null) {
 			try {
@@ -21,17 +23,26 @@ public class Crud {
 				em = emf.createEntityManager();
 				tx = em.getTransaction();
 			} catch (Exception e) {
-				LOGGER.error(e.getMessage(), e);
+				e.printStackTrace();
+				//LOGGER.error(e.getMessage(), e);
 			}
 		 }
 	}
 	
+	public EntityTransaction getTransaction() {
+		return this.tx;
+	}
+	
 	public void persist(Object object) {
-		try {	
+		try 
+		{	
+			tx = em.getTransaction();
 			
 			tx.begin();
 			
-			em.persist( object );
+			Object tmp = em.merge( object );
+			
+			em.persist( tmp );
 						
 			tx.commit();
 			 
@@ -46,6 +57,8 @@ public class Crud {
 
 		try {
 			Object tmp = em.find(object.getClass(), ((PersistObject) object).getKey());
+			
+			tx = em.getTransaction();
 			
 			tx.begin();
 			
@@ -78,10 +91,16 @@ public class Crud {
 		return object;
 	}
 	
+	public Query createQuery(String sql) {
+		return em.createQuery(sql);
+	}
+	
 	public PersistObject find(Class<? extends PersistObject> clas, Key key) {
 		
 		PersistObject object = null;
 		try {
+			
+			tx = em.getTransaction();
 			
 			tx.begin();
 
