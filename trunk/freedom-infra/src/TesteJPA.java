@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 import org.freedom.infra.model.jpa.Key;
+import org.freedom.infra.model.jpa.KeyField;
 
 
 public class TesteJPA {
@@ -9,8 +10,8 @@ public class TesteJPA {
 	 * @param args
 	 */
 	
-	//@KeyOption();
-	private  String teste;
+	@KeyField(name="teste")
+	private  String teste="Teste1";
 	
 	public static void main(String[] args) {
 		Map<String, Object> m1 = new HashMap<String, Object>();
