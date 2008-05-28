@@ -83,6 +83,27 @@ public class ShineInBorder extends EffectStandard {
 		}
 	}
 
+	public void setColors( final Color colorBegin, final Color colorEnd ) {
+		
+		if ( colorBegin != null && colorEnd != null ) {
+			int re = colorEnd.getRed();
+			int ge = colorEnd.getGreen();
+			int be = colorEnd.getBlue();
+			int r = colorBegin.getRed() - re;
+			int g = colorBegin.getGreen() - ge;
+			int b = colorBegin.getBlue() - be;
+			colors[0] = colorBegin;
+			colors[1] = new Color( re+(r/3*2), ge+(g/3*2), be+(b/3*2) );
+			colors[2] = new Color( re+(r/3), ge+(g/3), be+(b/3) );
+			colors[3] = colorEnd;
+		}
+		else {
+			for ( int i=0; i < SIZE; i++ ) {
+				colors[i] = Color.WHITE;
+			}
+		}
+	}
+
 	private void effect() {		
 		if ( getComponents().size() > 0 ) {
 			if ( countEffect > 0 ) {
@@ -104,27 +125,6 @@ public class ShineInBorder extends EffectStandard {
 		}
 	}
 
-	private void setColors( final Color colorBegin, final Color colorEnd ) {
-		
-		if ( colorBegin != null && colorEnd != null ) {
-			int re = colorEnd.getRed();
-			int ge = colorEnd.getGreen();
-			int be = colorEnd.getBlue();
-			int r = colorBegin.getRed() - re;
-			int g = colorBegin.getGreen() - ge;
-			int b = colorBegin.getBlue() - be;
-			colors[0] = colorBegin;
-			colors[1] = new Color( re+(r/3*2), ge+(g/3*2), be+(b/3*2) );
-			colors[2] = new Color( re+(r/3), ge+(g/3), be+(b/3) );
-			colors[3] = colorEnd;
-		}
-		else {
-			for ( int i=0; i < SIZE; i++ ) {
-				colors[i] = Color.WHITE;
-			}
-		}
-	}
-
 	public void doStart() {
 		if ( timer != null && !timer.isRunning() ) {
 			timer.start();
@@ -135,6 +135,10 @@ public class ShineInBorder extends EffectStandard {
 		if ( timer != null && timer.isRunning() ) {
 			timer.stop();
 		}
+	}
+	
+	public boolean isRunning() {
+		return timer.isRunning();
 	}
 
 	@Override
