@@ -147,7 +147,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private final JTextFieldPad txtVlrAdicItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
-	private final JTextFieldPad txtPercRedItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 8, Aplicativo.casasDec );
+	private final JTextFieldPad txtPercRecItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 8, Aplicativo.casasDec );
 
 	private final JTextFieldPad txtVlrRecItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
@@ -512,7 +512,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		adicCampoInvisivel( txtVlrDescItem, "VlrDescItPed", "Vlr. Desconto", ListaCampos.DB_SI, false );
 		adicCampo( txtPercAdicItem, 80, 55, 70, 20, "PercAdicItPed", "% Acrécimo", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrAdicItem, "VlrAdicItPed", "Vlr. Adicional", ListaCampos.DB_SI, false );
-		adicCampo( txtPercRedItem, 153, 55, 80, 20, "PercRecItPed", "% Receber", ListaCampos.DB_SI, false );
+		adicCampo( txtPercRecItem, 153, 55, 80, 20, "PercRecItPed", "% Receber", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrRecItem, "VlrRecItPed", "Vlr. Receber", ListaCampos.DB_SI, false );
 		adicCampo( txtPercPagItem, 236, 55, 80, 20, "PercPagItPed", "% Pagar", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrPagItem, "VlrPagItPed", "Vlr. Pagar", ListaCampos.DB_SI, false );
@@ -592,8 +592,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private void calculaValorRecebimento() {
 
-		if ( txtPercRedItem.getVlrBigDecimal() != null && txtVlrItem.getVlrBigDecimal() != null ) {
-			txtVlrRecItem.setVlrBigDecimal( ( txtVlrItem.getVlrBigDecimal().divide( bdCem ) ).multiply( txtPercRedItem.getVlrBigDecimal() ) );
+		if ( txtPercRecItem.getVlrBigDecimal() != null && txtVlrItem.getVlrBigDecimal() != null ) {
+			txtVlrRecItem.setVlrBigDecimal( ( txtVlrItem.getVlrBigDecimal().divide( bdCem ) ).multiply( txtPercRecItem.getVlrBigDecimal() ) );
 		}
 	}
 
@@ -632,7 +632,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		try {
 
 			PreparedStatement ps = con.prepareStatement( 
-					"SELECT PRECOPROD1, PERCIPIPROD FROM RPPRODUTO WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?" );
+					"SELECT PRECOPROD1, PERCIPIPROD, COMISPROD FROM RPPRODUTO WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "RPPRODUTO" ) );
 			ps.setInt( 3, txtCodProd.getVlrInteger() );
@@ -642,11 +642,32 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 				
 				txtPrecoItem.setVlrBigDecimal( rs.getBigDecimal( "PRECOPROD1" ) == null ? new BigDecimal( "0" ) : rs.getBigDecimal( "PRECOPROD1" ) );
 				txtPercIPIItem.setVlrBigDecimal( rs.getBigDecimal( "PERCIPIPROD" ) == null ? new BigDecimal( "0" ) : rs.getBigDecimal( "PERCIPIPROD" ) );
+				txtPercRecItem.setVlrBigDecimal( rs.getBigDecimal( "COMISPROD" ) == null ? new BigDecimal( "0" ) : rs.getBigDecimal( "COMISPROD" ) );
 			}			
 
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
+			
+			rs.close();
+			ps.close();
+			
+			ps = con.prepareStatement( "SELECT PERCCOMIS FROM RPVENDEDOR WHERE CODEMP=? AND CODFILIAL=? AND CODVEND=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "RPVENDEDOR" ) );
+			ps.setInt( 3, txtCodVend.getVlrInteger() );
+			rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				BigDecimal perccomis = rs.getBigDecimal( "PERCCOMIS" ) == null ? new BigDecimal( "0" ) : rs.getBigDecimal( "PERCCOMIS" );
+				txtPercPagItem.setVlrBigDecimal( txtPercRecItem.getVlrBigDecimal().divide( new BigDecimal( "100" ) ).multiply( perccomis ) );
+			}			
+		
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar produto!\n" + e.getMessage() );
 			e.printStackTrace();
