@@ -93,7 +93,7 @@ public class Panel extends FDPanel {
 	}
 
 	@Override
-	public void paint( Graphics g ) {
+	public void paintComponent( Graphics g ) {
 		
 		paintWallpaper( g ); 
 
@@ -104,7 +104,7 @@ public class Panel extends FDPanel {
 			paintArc( g );
 		}
 
-		super.paint( g );
+		super.paintComponent( g );
 	}
 	
 	private void paintWallpaper( Graphics g ) {
