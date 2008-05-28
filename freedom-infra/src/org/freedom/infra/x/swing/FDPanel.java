@@ -7,6 +7,7 @@ import java.awt.Point;
 
 import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
+import java.awt.Color;
 
 public class FDPanel extends JLayeredPane {
 
@@ -15,11 +16,21 @@ public class FDPanel extends JLayeredPane {
 
 	public FDPanel() {
 		super();
+		initialize();
 	}
 	
 	public FDPanel( LayoutManager layout ) {
 		super();
+		initialize();
 		setLayout( layout );
+	}
+
+	/**
+	 * This method initializes this
+	 * 
+	 */
+	private void initialize() {
+        this.setSize(new Dimension(98, 18));
 	}
 
 	public void add( final JComponent component,
@@ -39,4 +50,4 @@ public class FDPanel extends JLayeredPane {
 		add( component, point.x, point.y, dimension.width, dimension.height );
 	}
 
-}
+}  //  @jve:decl-index=0:visual-constraint="10,10"
