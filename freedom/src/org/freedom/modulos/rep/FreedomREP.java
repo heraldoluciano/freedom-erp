@@ -65,7 +65,7 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 
 		addOpcao( -1, TP_OPCAO_MENU, "Vendas", "", 'V', 200000000, 0, false, null );
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Pedidos", "Pedidos", 'P', 200100000, 1, true, RPPedido.class );
-			//addOpcao( 200000000, TP_OPCAO_ITEM, "Notas", "Notas", 'N', 200200000, 1, true, RPNota.class );
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Faturamento", "Faturamento", 'F', 200200000, 1, true, RPFaturamento.class );
 			addSeparador( 200000000 );
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Consuta de pedidos", "Consuta de pedidos", 'C', 200300000, 1, true, RPConsPedido.class );
 
@@ -77,23 +77,16 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Relatorios", "", 'l', 500000000, 0, false, null );
 			addOpcao( 500000000, TP_OPCAO_MENU, "Vendas", "", 'V', 500100000, 1, false, null );
-			addOpcao( 500100000, TP_OPCAO_ITEM, "Pedidos", "Pedidos", 'P', 500101000, 2, true, RelPedido.class );
+				addOpcao( 500100000, TP_OPCAO_ITEM, "Pedidos", "Pedidos", 'P', 500101000, 2, true, RelPedido.class );
 				addOpcao( 500100000, TP_OPCAO_ITEM, "Resumo Diario", "Resumo Diario", 'R', 500102000, 2, true, RelResumoDiario.class );
 				addOpcao( 500100000, TP_OPCAO_ITEM, "Histórico de clientes", "Histórico de clientes", 'H', 500103000, 2, true, RelHistoricoCliente.class );
-				//addSeparador( 500100000 );
 				addOpcao( 500100000, TP_OPCAO_ITEM, "Produtos por clientes", "Produtos por clientes", 'P', 500104000, 2, true, RelProdutoCliente.class );
-				//addOpcao( 500100000, TP_OPCAO_ITEM, "Relação de Notas", "Relação de Notas", 'N', 500105000, 2, true, null );
 				addSeparador( 500100000 );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 500107000, 2, true, RelEvolucaoVendas.class );
+				addOpcao( 500100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 500105000, 2, true, RelEvolucaoVendas.class );
 			addOpcao( 500000000, TP_OPCAO_MENU, "Clientes", "", 'C', 500200000, 1, false, null );
 				addOpcao( 500200000, TP_OPCAO_ITEM, "Clientes", "Clientes", 'C', 500201000, 2, true, RelCliente.class );
 				addOpcao( 500200000, TP_OPCAO_ITEM, "Tipos de cliente", "Tipos de cliente", 'T', 500202000, 2, true, RelTipoCli.class );
 				addOpcao( 500200000, TP_OPCAO_ITEM, "Contatos", "Contatos", 'o', 500203000, 2, true, RelContato.class );
-				//addOpcao( 500200000, TP_OPCAO_ITEM, "Etiquetas", "Etiquetas", 'E', 500204000, 2, true, null );
-			//addOpcao( 500000000, TP_OPCAO_MENU, "Pagar", "", 'P', 500300000, 1, false, null );
-			//	addOpcao( 500300000, TP_OPCAO_ITEM, "Pagar / Pagas", "Pagar / Pagas", 'C', 500301000, 2, true, null );
-			//addOpcao( 500000000, TP_OPCAO_MENU, "Receber", "", 'R', 500400000, 1, false, null );
-			//	addOpcao( 500400000, TP_OPCAO_ITEM, "Receber / Recebidas", "Receber / Recebidas", 'C', 500401000, 2, true, null );
 			addSeparador( 500000000 );
 			addOpcao( 500000000, TP_OPCAO_ITEM, "Vendedores", "Vendedores", 'V', 500500000, 1, true, RelVendedor.class );
 			addOpcao( 500000000, TP_OPCAO_ITEM, "Fornecedores", "Fornecedores", 'F', 500600000, 1, true, RelFornecedor.class );
@@ -105,9 +98,6 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 			addBotao( "btForneced.gif", "Fornecedor", "Fornecedor", 100105000, RPFornecedor.class );
 			addBotao( "btProduto.gif", "Produtos", "Produtos", 100108000, RPProduto.class );
 			addBotao( "btOP.gif", "Pedidos", "Pedidos", 200100000, RPPedido.class );
-			//addBotao( "btSaida.gif", "Notas", "Notas", 200200000, RPNota.class );
-			//addBotao( "btContaPagar.gif", "Pagar", "Pagar", 300100000, RPPagar.class );
-			//addBotao( "btContaReceber.gif", "Receber", "Receber", 400100000, RPReceber.class );
 		
 		ajustaMenu();
 
