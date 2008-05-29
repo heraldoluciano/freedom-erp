@@ -240,14 +240,16 @@ public class Fade extends EffectStandard {
 
 	@Override
 	public void addComponent( JComponent component ) {
+		
 		if ( component instanceof Panel ) {
 			if ( component != null ) {
 				components.add( component );
 			}	
 		}
-		else {
+		else if ( component != null ) {
 			throw new IllegalArgumentException( 
 					"Efeito valido somente para org.freedom.infra.x.UIMaker.Panel !" );
+			// Implementar interface para alteração do alfa.
 		}
 	}
 	

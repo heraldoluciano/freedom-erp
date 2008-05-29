@@ -14,9 +14,9 @@ import javax.swing.border.Border;
 
 public class ShineInBorder extends EffectStandard {
 	
-	public static final int SPEED_FAST = 100;
+	public static final int SPEED_FAST = 50;
 	
-	public static final int SPEED_NORMAL = 200;
+	public static final int SPEED_NORMAL = 100;
 	
 	public static final int SPEED_HARD = 300;
 	
