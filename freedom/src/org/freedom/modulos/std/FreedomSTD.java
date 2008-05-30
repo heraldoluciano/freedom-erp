@@ -97,19 +97,20 @@ public class FreedomSTD extends AplicativoPD {
 	
 			addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'F', 100200000, 1, false, null );
 				addOpcao( 100200000, TP_OPCAO_ITEM, "Alteração de numero de nota", "Alteração de doc", 'A', 100210000, 2, true, FTrocaDoc.class );
-				addOpcao( 100200000, TP_OPCAO_ITEM, "Alteração de numero do recibo", "Alteração do numero do recibo", 'P', 100280000, 2, true, FAlteraRecibo.class );
-				addOpcao( 100200000, TP_OPCAO_MENU, "Exportar", "Exportar", 'E', 100220000, 2, false, null );
-					addOpcao( 100220000, TP_OPCAO_ITEM, "Contabil/Livros Fiscais", "Contabil/Livros Fiscais", 'C', 100220100, 3, true, FExporta.class );
-					addOpcao( 100220000, TP_OPCAO_ITEM, "SVV", "SVV", 'S', 100220200, 3, true, FSVV.class );
-				addOpcao( 100200000, TP_OPCAO_MENU, "Etiquetas", "", 't', 100230000, 2, false, null );
-					addOpcao( 100230000, TP_OPCAO_ITEM, "Modelo", "Modelo de etiquetas", 'M', 100230100, 3, true, FModEtiqueta.class );
-					addOpcao( 100230000, TP_OPCAO_ITEM, "Imprimir", "Etiquetas", 'I', 100230200, 3, true, FREtiqueta.class ); // LOM
-				addOpcao( 100200000, TP_OPCAO_ITEM, "Imp. tabelas de fornecedores", "Imp. tabelas de fornecedores", 'I', 100240000, 2, true, FImpTabFor.class );
-				addOpcao( 100200000, TP_OPCAO_ITEM, "Ajuste do item do orçamento", "Ajuste do item do orçamento", 'A', 100250000, 2, true, FStatusItOrc.class );
-				addOpcao( 100200000, TP_OPCAO_MENU, "Bloqueios e desbloqueios", "", 'B', 100260000, 2, false, null );
-					addOpcao( 100260000, TP_OPCAO_ITEM, "Compras", "Bloqueio e desbloqueio de compras", 'C', 100260100, 3, true, FBloqCompra.class );
-					addOpcao( 100260000, TP_OPCAO_ITEM, "Vendas", "Bloqueio e desbloqueio de vendas", 'V', 100260200, 3, true, FBloqVenda.class );
-				addOpcao( 100200000, TP_OPCAO_ITEM, "Canc. de vínc. venda x orçamento", "Canc. de vínc. venda x orçamento", 'v', 100270000, 2, true, FCancVendaOrc.class );
+				addOpcao( 100200000, TP_OPCAO_ITEM, "Alteração de numero do recibo", "Alteração do numero do recibo", 'P', 100220000, 2, true, FAlteraRecibo.class );
+				addOpcao( 100200000, TP_OPCAO_ITEM, "Alteração cliente/receber", "Alteração cliente/receber", 'R', 100230000, 2, true, FAlteraCliRec.class );
+				addOpcao( 100200000, TP_OPCAO_MENU, "Exportar", "Exportar", 'E', 100240000, 2, false, null );
+					addOpcao( 100240000, TP_OPCAO_ITEM, "Contabil/Livros Fiscais", "Contabil/Livros Fiscais", 'C', 100230100, 3, true, FExporta.class );
+					addOpcao( 100240000, TP_OPCAO_ITEM, "SVV", "SVV", 'S', 100240200, 3, true, FSVV.class );
+				addOpcao( 100200000, TP_OPCAO_MENU, "Etiquetas", "", 't', 100250000, 2, false, null );
+					addOpcao( 100250000, TP_OPCAO_ITEM, "Modelo", "Modelo de etiquetas", 'M', 100250100, 3, true, FModEtiqueta.class );
+					addOpcao( 100250000, TP_OPCAO_ITEM, "Imprimir", "Etiquetas", 'I', 100250200, 3, true, FREtiqueta.class ); // LOM
+				addOpcao( 100200000, TP_OPCAO_ITEM, "Imp. tabelas de fornecedores", "Imp. tabelas de fornecedores", 'I', 100260000, 2, true, FImpTabFor.class );
+				addOpcao( 100200000, TP_OPCAO_ITEM, "Ajuste do item do orçamento", "Ajuste do item do orçamento", 'A', 100270000, 2, true, FStatusItOrc.class );
+				addOpcao( 100200000, TP_OPCAO_MENU, "Bloqueios e desbloqueios", "", 'B', 100280000, 2, false, null );
+					addOpcao( 100280000, TP_OPCAO_ITEM, "Compras", "Bloqueio e desbloqueio de compras", 'C', 100280100, 3, true, FBloqCompra.class );
+					addOpcao( 100280000, TP_OPCAO_ITEM, "Vendas", "Bloqueio e desbloqueio de vendas", 'V', 100280200, 3, true, FBloqVenda.class );
+				addOpcao( 100200000, TP_OPCAO_ITEM, "Canc. de vínc. venda x orçamento", "Canc. de vínc. venda x orçamento", 'v', 100290000, 2, true, FCancVendaOrc.class );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100300000, 1, false, null );
 				addOpcao( 100300000, TP_OPCAO_ITEM, "Preferências gerais", "Preferências Gerais", 'g', 100310000, 2, true, FPrefereGeral.class );
 				addOpcao( 100300000, TP_OPCAO_ITEM, "Série de NFs", "Série de NFs", 'N', 100320000, 2, true, FSerie.class );
