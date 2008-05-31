@@ -287,13 +287,9 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 		int conexao = -1;
 
-		StringBuilder sql = new StringBuilder();
-
-		sql.append( "SELECT CURRENT_CONNECTION FROM SGEMPRESA E WHERE E.CODEMP=?" );
-
 		try {
 
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			PreparedStatement ps = con.prepareStatement( "SELECT CURRENT_CONNECTION FROM SGEMPRESA E WHERE E.CODEMP=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 
 			ResultSet rs = ps.executeQuery();
@@ -321,13 +317,9 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 		boolean retorno = false;
 
-		StringBuilder sql = new StringBuilder();
-
-		sql.append( "DELETE FROM EQETIQPROD E WHERE E.NRCONEXAO=?" );
-
 		try {
 
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			PreparedStatement ps = con.prepareStatement( "DELETE FROM EQETIQPROD E WHERE E.NRCONEXAO=?" );
 			ps.setInt( 1, getNrConexao() );
 
 			int exec = ps.executeUpdate();
