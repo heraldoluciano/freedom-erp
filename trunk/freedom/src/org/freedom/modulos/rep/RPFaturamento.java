@@ -41,6 +41,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
@@ -50,6 +51,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
+import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
 
@@ -283,7 +285,12 @@ public class RPFaturamento extends FDialogo {
 		gerarComissao.setEnabled( false );
 	}
 	
-	private void carregaTabela() {
+	private void carregaTabela() {		
+
+		buscarItens.setEnabled( false );
+		gerarFaturamento.setEnabled( false );
+		salvarFaturamento.setEnabled( false );
+		gerarComissao.setEnabled( false );
 		
 		tab.limpa();
 				
@@ -293,6 +300,8 @@ public class RPFaturamento extends FDialogo {
 			for( Object[] row : rows ) {			
 				tab.adicLinha( row );
 			}
+			
+			gerarComissao.setEnabled( true );
 		}	
 		else {
 			
@@ -392,19 +401,87 @@ public class RPFaturamento extends FDialogo {
 		
 		return itens;
 	}
+	
+	private void buscarItens() {
+		
+		tab.limpa();			
+		List<Object[]> rows = getItensPedido();		
+		
+		if ( rows.size() > 0 ) {
+			
+			for( Object[] row : rows ) {			
+				tab.adicLinha( row );
+			}
+			
+			buscarItens.setEnabled( false );
+			gerarFaturamento.setEnabled( true );
+		}
+	}
+	
+	private void gerarFaturamento() {
+	
+		int opt = Funcoes.mensagemConfirma( null, 
+				"Caso não tenha sido alterado a quantidade faturada para o item,\n" +
+				"o faturamento será criado com a quantidade do pedido." );
+		
+		if ( opt == JOptionPane.OK_OPTION ) {
+			
+			StringBuilder insert = new StringBuilder();
+			insert.append( "INSERT INTO RPFATURAMENTO " );
+			insert.append( "(CODEMP, CODFILIAL, CODPED, CODITPED, " );
+			insert.append( "QTDFATURADO, VLRFATURADO, QTDPENDENTE, " );
+			insert.append( "PERCCOMISFAT, VLRCOMISFAT, DTFATURADO ) " );
+			insert.append( "VALUES" );
+			insert.append( "(?,?,?,?,?,?,?,?,?,?)" );
+			
+			PreparedStatement ps;
+			int parameterIndex;
+
+			try {
+				for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+
+					parameterIndex = 1;
+					ps = con.prepareStatement( insert.toString() );
+					ps.setInt( parameterIndex++, AplicativoRep.iCodEmp );
+					ps.setInt( parameterIndex++, ListaCampos.getMasterFilial( "RPFATURAMENTO" ) );
+					ps.setInt( parameterIndex++, txtCodPed.getVlrInteger() );
+					ps.setInt( parameterIndex++, (Integer) tab.getValor( i, 1 ) );
+					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, 4 ) );
+					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, 6 ) );
+					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, 5 ) );
+					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, 8 ) );
+					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, 7 ) );
+					ps.setDate( parameterIndex++, Funcoes.dateToSQLDate( Calendar.getInstance().getTime() ) );
+
+					ps.executeUpdate();
+				}
+				
+				Funcoes.mensagemInforma( null, "Faturamento criado para pedido " + txtCodPed.getVlrInteger() );
+				gerarComissao.setEnabled( true );
+				
+				if ( !con.getAutoCommit() ) {
+					con.commit();
+				}
+			} catch ( Exception e ) {				
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro ao gerar faturamento!\n" + e.getMessage() );
+				
+				try {
+					con.rollback();
+				} catch ( SQLException e1 ) {
+					e1.printStackTrace();
+				}
+			}
+		}
+	}
 
 	public void actionPerformed( ActionEvent e ) {
 		
 		if ( e.getSource() == buscarItens ) {
-			tab.limpa();			
-			List<Object[]> rows = getItensPedido();			
-			if ( rows.size() > 0 ) {
-				for( Object[] row : rows ) {			
-					tab.adicLinha( row );
-				}
-				buscarItens.setEnabled( false );
-				gerarFaturamento.setEnabled( true );
-			}	
+			buscarItens();	
+		}
+		if ( e.getSource() == gerarFaturamento ) {
+			gerarFaturamento();
 		}
 		else {
 			super.actionPerformed( e );
@@ -413,13 +490,7 @@ public class RPFaturamento extends FDialogo {
 
 	public void keyPressed( KeyEvent e ) {
 
-		if ( e.getSource() == txtCodPed && e.getKeyCode() == KeyEvent.VK_ENTER ) {	
-
-			buscarItens.setEnabled( false );
-			gerarFaturamento.setEnabled( false );
-			salvarFaturamento.setEnabled( false );
-			gerarComissao.setEnabled( false );
-			
+		if ( e.getSource() == txtCodPed && e.getKeyCode() == KeyEvent.VK_ENTER ) {				
 			carregaTabela();
 		}
 		else {
