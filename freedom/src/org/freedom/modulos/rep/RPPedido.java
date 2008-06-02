@@ -177,6 +177,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private final JTextFieldPad txtPagTotPed = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 	
+	private final JTextFieldPad txtPercTotLucro = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
 	private final JTextFieldPad txtPercItLucro = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtObsPed = new JTextFieldPad( JTextFieldPad.TP_STRING, 500, 0 );
@@ -452,20 +454,22 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 		panelTotaisItens.setPreferredSize( new Dimension( 300, 65 ) );
 		panelTotaisItens.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(), "Totais" ) );
-		panelTotaisItens.adic( new JLabel( "Pedido" ), 7, 0, 91, 15 );
-		panelTotaisItens.adic( txtVlrLiqPed, 7, 15, 91, 20 );
-		panelTotaisItens.adic( new JLabel( "Itens" ), 101, 0, 91, 15 );
-		panelTotaisItens.adic( txtQdtTotPed, 101, 15, 91, 20 );
-		panelTotaisItens.adic( new JLabel( "IPI" ), 195, 0, 91, 15 );
-		panelTotaisItens.adic( txtIPITotPed, 195, 15, 91, 20 );
-		panelTotaisItens.adic( new JLabel( "Desconto" ), 289, 0, 91, 15 );
-		panelTotaisItens.adic( txtDescTotPed, 289, 15, 91, 20 );
-		panelTotaisItens.adic( new JLabel( "Adicional" ), 383, 0, 91, 15 );
-		panelTotaisItens.adic( txtAdicTotPed, 383, 15, 91, 20 );
-		panelTotaisItens.adic( new JLabel( "Receber" ), 477, 0, 91, 15 );
-		panelTotaisItens.adic( txtRecTotPed, 477, 15, 91, 20 );
-		panelTotaisItens.adic( new JLabel( "Pagar" ), 571, 0, 91, 15 );
-		panelTotaisItens.adic( txtPagTotPed, 571, 15, 97, 20 );
+		panelTotaisItens.adic( new JLabel( "Pedido" ), 7, 0, 80, 15 );
+		panelTotaisItens.adic( txtVlrLiqPed, 7, 15, 80, 20 );
+		panelTotaisItens.adic( new JLabel( "Itens" ), 90, 0, 80, 15 );
+		panelTotaisItens.adic( txtQdtTotPed, 90, 15, 80, 20 );
+		panelTotaisItens.adic( new JLabel( "IPI" ), 173, 0, 80, 15 );
+		panelTotaisItens.adic( txtIPITotPed, 173, 15, 80, 20 );
+		panelTotaisItens.adic( new JLabel( "Desconto" ), 256, 0, 80, 15 );
+		panelTotaisItens.adic( txtDescTotPed, 256, 15, 80, 20 );
+		panelTotaisItens.adic( new JLabel( "Adicional" ), 339, 0, 80, 15 );
+		panelTotaisItens.adic( txtAdicTotPed, 339, 15, 80, 20 );
+		panelTotaisItens.adic( new JLabel( "Receber" ), 422, 0, 80, 15 );
+		panelTotaisItens.adic( txtRecTotPed, 422, 15, 80, 20 );
+		panelTotaisItens.adic( new JLabel( "Pagar" ), 505, 0, 80, 15 );
+		panelTotaisItens.adic( txtPagTotPed, 505, 15, 80, 20 );
+		panelTotaisItens.adic( new JLabel( "Total lucro" ), 588, 0, 80, 15 );
+		panelTotaisItens.adic( txtPercTotLucro, 588, 15, 80, 20 );
 
 		txtVlrLiqPed.setAtivo( false );
 		txtVlrTotPed.setAtivo( false );
@@ -475,6 +479,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		txtAdicTotPed.setAtivo( false );
 		txtRecTotPed.setAtivo( false );
 		txtPagTotPed.setAtivo( false );
+		txtPercTotLucro.setAtivo( false );
 
 		setAltDet( 175 );
 		setPainel( panelCamposItens, panelItens );
