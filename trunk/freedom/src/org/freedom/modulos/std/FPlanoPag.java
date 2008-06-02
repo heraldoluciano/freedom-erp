@@ -93,7 +93,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 	
 	private JCheckBoxPad cbAtivo = null;
 	
-	private JRadioGroup<?, ?> rgCV = null;
+	private JRadioGroup<String, String> rgCV = null;
 	
 	private Vector<String> vLabsCV = new Vector<String>();
 
@@ -175,12 +175,11 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		adicDescFK( txtDescCC, 470, 60, 225, 20, "DescCC", "Descrição do centro de custo" );
 		adicCampoInvisivel( txtAnoCC, "AnoCC", "Ano.C.C.", ListaCampos.DB_SI, false );
 		adicCampo( txtCodTbJ, 7, 100, 70, 20,"CodTbJ","Cód.tb.juros", ListaCampos.DB_FK, false );
-		adicDescFK (txtDescTbJ, 80, 100, 217, 20, "DescTbJ", "Descrição da tabela de juros" );
+		adicDescFK( txtDescTbJ, 80, 100, 217, 20, "DescTbJ", "Descrição da tabela de juros" );
 		adicCampo( txtPercDesc, 300, 100, 70, 20, "PercDesc", "% Desconto", ListaCampos.DB_SI, false );
-		adicDB( cbAutoBaixa, 4, 120, 300, 20, "AutoBaixaPlanoPag", "", false ); 
-		adicDB( cbApOrcPlanoPag, 4, 140, 250, 20, "ApOrcPlanoPag", "", true ); 
-		adicDB( rgCV, 373, 104, 320, 37, "CVPlanoPag", "Cadastro para:", true );
-		adicDB( cbAtivo, 4, 160, 250, 20, "AtivoPlanoPag", "", true ); 
+		adicDB( rgCV, 7, 140, 363, 37, "CVPlanoPag", "Cadastro para:", true );
+		adicDB( cbApOrcPlanoPag, 380, 140, 250, 20, "ApOrcPlanoPag", "", true ); 
+		adicDB( cbAtivo, 380, 160, 250, 20, "AtivoPlanoPag", "", true ); 
 		
 		
 		setListaCampos( true, "PLANOPAG", "FN" );
@@ -196,6 +195,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		adicCampo( txtPercItemPag, 70, 20, 97, 20, "PercPag", "Percento", ListaCampos.DB_SI, true );
 		adicCampo( txtDiasItemPag, 170, 20, 57, 20, "DiasPag", "Dias", ListaCampos.DB_SI, false );
 		adicCampo( txtDescItemPag, 230, 20, 143, 20, "DescParcPag", "Descrição", ListaCampos.DB_SI, false );
+		adicDB( cbAutoBaixa, 380, 20, 300, 20, "AutoBaixaParc", "", false ); 
 
 		setListaCampos( true, "PARCPAG", "FN" );
 		lcDet.setQueryInsert( false );
