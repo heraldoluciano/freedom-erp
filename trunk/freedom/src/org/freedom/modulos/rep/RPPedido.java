@@ -468,8 +468,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		panelTotaisItens.adic( txtRecTotPed, 422, 15, 80, 20 );
 		panelTotaisItens.adic( new JLabel( "Pagar" ), 505, 0, 80, 15 );
 		panelTotaisItens.adic( txtPagTotPed, 505, 15, 80, 20 );
-		panelTotaisItens.adic( new JLabel( "Total lucro" ), 588, 0, 80, 15 );
-		panelTotaisItens.adic( txtPercTotLucro, 588, 15, 80, 20 );
+		panelTotaisItens.adic( new JLabel( " % Total lucro" ), 588, 0, 80, 15 );
+		panelTotaisItens.adic( txtPercTotLucro, 588, 15, 85, 20 );
 
 		txtVlrLiqPed.setAtivo( false );
 		txtVlrTotPed.setAtivo( false );
@@ -609,7 +609,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		}
 	}
 	
-	private BigDecimal calcPercItLucro(){
+	private void calcPercItLucro(){
 		
 		BigDecimal percLucro = new BigDecimal(0);
 		BigDecimal precoCusto = txtPrecoCustoProd.getVlrBigDecimal();
@@ -617,9 +617,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		
 		try {
 			
-			percLucro = (((precoVenda.subtract( precoCusto)).multiply( new BigDecimal(100)).divide( precoVenda )));
+			percLucro = (((precoVenda.subtract( precoCusto )).multiply( new BigDecimal(100)).divide( precoVenda )));
 			System.out.println( percLucro );
-			percLucro.setScale( 2, BigDecimal.ROUND_CEILING );
+			percLucro.setScale( 2, BigDecimal.ROUND_HALF_UP );
 			
 			txtPercItLucro.setVlrBigDecimal( percLucro );
 			
@@ -628,8 +628,34 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			
 			e.printStackTrace();
 		}
+	}
+	
+	private void calcTotLucro(){
 		
-		return percLucro;
+		BigDecimal totalLucro = new BigDecimal(0);
+		StringBuilder sSQL = new StringBuilder();
+		
+		sSQL.append( "SELECT ( SUM(COALESCE(PERCITLUCRO,0)* IT.VLRLIQITPED) / SUM(VLRLIQITPED)) FROM RPITPEDIDO IT WHERE IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODPED=?" );
+		
+		try {
+			
+			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "RPITPEDIDO" ) );
+			ps.setInt( 3, txtCodPed.getVlrInteger() );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if( rs.next() ){
+				
+				txtPercTotLucro.setVlrBigDecimal( rs.getBigDecimal( 1 ) );
+			}
+			
+		} catch ( SQLException err ) {
+		
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao calcular Total de Lucro!" );
+		}
 	}
 		
 	private void loadProduto() {
@@ -851,7 +877,11 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 				loadProduto();
 			}
+		}if ( e.getListaCampos() == lcCampos ){
+			
+			calcTotLucro();
 		}
+		
 	}
 
 	public void beforeCarrega( CarregaEvent e ) {
