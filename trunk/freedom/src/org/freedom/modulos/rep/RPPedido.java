@@ -33,6 +33,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -611,14 +612,13 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	
 	private void calcPercItLucro(){
 		
-		BigDecimal percLucro = new BigDecimal(0);
+		BigDecimal percLucro = new BigDecimal("0.00");
 		BigDecimal precoCusto = txtPrecoCustoProd.getVlrBigDecimal();
 		BigDecimal precoVenda = txtPrecoItem.getVlrBigDecimal();
 		
 		try {
-			
-			percLucro = (((precoVenda.subtract( precoCusto )).multiply( new BigDecimal(100)).divide( precoVenda )));
-			System.out.println( percLucro );
+						
+			percLucro = ((precoVenda.subtract( precoCusto )).divide( precoVenda, new MathContext( 10 ) ).multiply( bdCem ));
 			percLucro.setScale( 2, BigDecimal.ROUND_HALF_UP );
 			
 			txtPercItLucro.setVlrBigDecimal( percLucro );
@@ -648,7 +648,14 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			
 			if( rs.next() ){
 				
-				txtPercTotLucro.setVlrBigDecimal( rs.getBigDecimal( 1 ) );
+				if( txtPercTotLucro.getVlrBigDecimal() == null ){
+					
+					txtPercTotLucro.setVlrBigDecimal( new BigDecimal(0) );
+				
+				}else{
+				
+					txtPercTotLucro.setVlrBigDecimal( rs.getBigDecimal( 1 )!=null ? rs.getBigDecimal( 1 ) : new BigDecimal( "0.00" ) );
+				}
 			}
 			
 		} catch ( SQLException err ) {
@@ -859,11 +866,13 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		if ( e.getListaCampos() == lcDet ) {
 			lcProduto.carregaDados();
 			lcPedido.carregaDados();
+			
 		}
 		else if ( e.getListaCampos() == lcCampos ) {
 			String s = txtCodPed.getVlrString();
 			lcPedido.carregaDados();
 			txtCodPed.setVlrString( s );
+			calcTotLucro(); 
 		}
 		else if ( e.getListaCampos() == lcCliente ) {
 			lcVendedor.carregaDados();
@@ -877,11 +886,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 				loadProduto();
 			}
-		}if ( e.getListaCampos() == lcCampos ){
-			
-			calcTotLucro();
 		}
-		
 	}
 
 	public void beforeCarrega( CarregaEvent e ) {
@@ -907,7 +912,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			else {
 				
 				txtCodProd.requestFocus();
-			}
+			}	
+			
 		}
 	}
 
@@ -929,7 +935,10 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 				txtCodProd.requestFocus();
 			}
 		}
-		
+		else if( e.getListaCampos() == lcDet ){
+			
+			calcTotLucro();
+		}
 		super.afterPost( e );
 	}
 
