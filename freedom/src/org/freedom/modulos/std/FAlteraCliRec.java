@@ -30,13 +30,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.SwingConstants;
 
-
-import org.freedom.acao.RadioGroupEvent;
-import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
@@ -90,8 +85,18 @@ public class FAlteraCliRec extends FFilho implements ActionListener {
 		setTitulo( "Alteração de cliente/receber" );
 		setAtribos( 50, 50, 370, 230 );
 		
-		montaTela();
+		vLabs1.addElement( "Venda" );
+		vLabs1.addElement( "ECF" );
+		vVals1.addElement( "V" );
+		vVals1.addElement( "E" );
+
+		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
+		rgTipo.setVlrString( "E" );
+
+	
 		montaListaCampos();
+		montaTela();
+		
 		btTrocaDoc.addActionListener( this );
 		
 	}
@@ -106,14 +111,7 @@ public class FAlteraCliRec extends FFilho implements ActionListener {
 		c.add( pnRod, BorderLayout.SOUTH );
 		c.add( pinCli, BorderLayout.CENTER );
 
-		vLabs1.addElement( "Venda" );
-		vLabs1.addElement( "ECF" );
-		vVals1.addElement( "V" );
-		vVals1.addElement( "E" );
-
-		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
-		rgTipo.setVlrString( "E" );
-
+	
 		pinCli.adic( rgTipo, 7, 7, 330, 30 );
 		pinCli.adic( new JLabelPad( "Pedido:" ), 7, 40, 80, 20 );
 		pinCli.adic( txtCodVenda, 7, 60, 80, 20 );
@@ -250,7 +248,6 @@ public class FAlteraCliRec extends FFilho implements ActionListener {
 			alteraReceber(  txtCodCli.getVlrInteger().intValue(), rgTipo.getVlrString(), txtCodVenda.getVlrInteger().intValue() );
 			alteraEManut( "N" );
 			
-			
 			Funcoes.mensagemInforma( this, "Cliente alterado com sucesso!" );
 			
 		} catch ( SQLException e ) {
@@ -285,6 +282,5 @@ public class FAlteraCliRec extends FFilho implements ActionListener {
 			
 			alteraCli();
 		}
-		
 	}
 }
