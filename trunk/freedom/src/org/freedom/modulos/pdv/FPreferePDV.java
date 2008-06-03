@@ -28,6 +28,7 @@ import java.sql.Connection;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
@@ -127,7 +128,7 @@ public class FPreferePDV extends FTabDados {
 
 		JLabel lbBorda = new JLabel();
 		lbBorda.setBorder( BorderFactory.createEtchedBorder() );
-		JLabel lbOpcoes = new JLabelPad( "   Opções" );
+		JLabel lbOpcoes = new JLabelPad( "Opções", SwingConstants.CENTER );
 		lbOpcoes.setOpaque( true );
 
 		adic( lbOpcoes, 15, 135, 60, 20 );
