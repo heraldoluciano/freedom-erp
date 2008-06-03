@@ -67,7 +67,6 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.StatusBar;
 import org.freedom.componentes.Tabela;
-import org.freedom.comutacao.Tef;
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.ecf.driver.EStatus;
 import org.freedom.funcoes.Funcoes;
@@ -254,6 +253,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	private Font fntTotalCupom = null;
 
 	private Object[] pref = new Object[ 3 ];
+	
+	private boolean obrigaOrcamento = false;
 
 	private boolean trocouCli = false;
 
@@ -332,7 +333,18 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		btF8.addActionListener( this );
 		btF9.addActionListener( this );
 		btF10.addActionListener( this );
-		btF11.addActionListener( this );
+		btF11.addActionListener( this );		
+
+		btF3.addKeyListener( this );
+		btCtrlF3.addKeyListener( this );
+		btF4.addKeyListener( this );
+		btF5.addKeyListener( this );
+		btF6.addKeyListener( this );
+		btF7.addKeyListener( this );
+		btF8.addKeyListener( this );
+		btF9.addKeyListener( this );
+		btF10.addKeyListener( this );
+		btF11.addKeyListener( this );
 		
 		addKeyListener( this );
 
@@ -1169,6 +1181,25 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 		return true;
 	}
+	
+	private void invalidaParaNaoOrcamento() {
+					
+		txtCodProd.setAtivo( false );
+		txtQtdade.setAtivo( false );
+		txtPreco.setAtivo( false );
+		txtPercDescItOrc.setAtivo( false );
+		txtVlrDescItOrc.setAtivo( false );
+		txtTotalItem.setAtivo( false );
+		txtBaseCalc.setAtivo( false );
+		txtCodLote.setAtivo( false );
+		txtAliqIcms.setAtivo( false );
+		txtValorIcms.setAtivo( false );
+		
+		Funcoes.mensagemInforma( null, "Este caixa somente está habilitado à efetuar vendas de orçamentos!" );
+		
+		btF11.requestFocus();
+		
+	}
 
 	private synchronized boolean checkVendaAberta() {
 
@@ -1275,8 +1306,9 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	private synchronized boolean iniVenda() {
 
 		if ( checkVendaAberta() ) {
-
-			return iniVenda( CODCLI, PLANOPAG, CODVEND );
+			if ( ! obrigaOrcamento ) {
+				return iniVenda( CODCLI, PLANOPAG, CODVEND );
+			}
 		}
 		
 		return false;
@@ -2015,6 +2047,38 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 		return retorno;
 	}
+	
+	private boolean getObrigatorioOrcamento() {
+		
+		boolean result = false;
+		
+		try {
+			
+			PreparedStatement ps = con.prepareStatement( "SELECT ORCCAIXA FROM PVCAIXA WHERE CODEMP=? AND CODFILIAL=? AND CODCAIXA=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PVCAIXA" ) );
+			ps.setInt( 3, AplicativoPDV.iCodCaixa );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				
+				result = "S".equals( rs.getString( "ORCCAIXA" ) );
+			}
+
+			rs.close();
+			ps.close();
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + e.getMessage(), true, con, e );
+		}
+		
+		return result;
+	}
 
 	private Object prefs( int index ) {
 
@@ -2075,8 +2139,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			if ( pluginVenda.beforeVendaItem() ) {				
 				actionPostVendaForStatus();
 			}
-			if ( pluginVenda.afterVendaItem() ) {
-				
+			if ( pluginVenda.afterVendaItem() ) {				
 				txtTelaAdicPDV.setVlrString( "" );
 				txtCodProd.setVlrString( "" );
 				txtQtdade.setVlrString( "" );
@@ -2174,11 +2237,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.freedom.acao.PostListener#beforePost(org.freedom.acao.PostEvent)
-	 */
 	public synchronized void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btF3 ) {
@@ -2311,11 +2369,11 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	}
 
 	// O botão sair execute este método para sair:
-	public void setVisible( boolean arg0 ) {
+	public void setVisible( boolean show ) {
 		
 		if ( FreedomPDV.bECFTerm ) {
 	
-			if ( arg0 ) {
+			if ( show ) {
 				
 				int result = FreedomPDV.abreCaixa( con, ecf );
 	
@@ -2328,10 +2386,13 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				else { 
 					if ( AplicativoPDV.caixaAberto( con ) || FreedomPDV.pegaValorINI( con ) ) {
 						iniVenda();
-						super.setVisible( arg0 );
+						if ( obrigaOrcamento ) {
+							invalidaParaNaoOrcamento();
+						}						
+						super.setVisible( true );
 					}
 					else {
-						super.setVisible( ! arg0 );
+						super.setVisible( false );
 					}
 				}
 			}
@@ -2340,7 +2401,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 					Funcoes.mensagemInforma( null, "Cupom fiscal está aberto!" );
 					return;
 				}				
-				super.setVisible( arg0 );
+				super.setVisible( false );
 			}			
 		}
 		else {
@@ -2367,6 +2428,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		lcConv.setConexao( con );
 		
 		loadStatusBar();
+		
+		obrigaOrcamento = getObrigatorioOrcamento();
 
 		CODTIPOMOV = getTipoMov();
 		CODCLI = getCodCli();
