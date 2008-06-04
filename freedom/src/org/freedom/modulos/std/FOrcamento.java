@@ -1362,6 +1362,36 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			err.printStackTrace();
 		}
 	}
+	
+	private void imprimiGraficoPad( boolean bVisualizar ){
+		
+	FPrinterJob dlGr = null;
+	HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+	hParam.put( "CODORC", txtCodOrc.getVlrInteger() );
+	hParam.put( "CODEMP", Aplicativo.iCodEmp );					
+	hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+	hParam.put( "CODFILIALPF", ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+	hParam.put( "CIDADEDIAMESANO", Funcoes.getCidadeDiaMesAnoExtenso( Funcoes.getCidadeFilial( con ), new Date() ) );
+	hParam.put( "SUBREPORT_DIR", "org/freedom/layout/orc/"); 
+	
+	EmailBean mail = Aplicativo.getEmailBean();				
+	mail.setPara( EmailBean.getEmailCli( txtCodCli.getVlrInteger(), con ) );
+
+	dlGr = new FPrinterJob( "layout/orc/ORC_PD.jasper", null, null, this, hParam, con, mail );
+
+	if ( bVisualizar ) {
+		
+		dlGr.setVisible( true );
+	}
+	else {
+		try {
+			JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( this, "Erro na impressão de Orçamento!" + err.getMessage(), true, con, err );
+		}
+	}
+}
 
 	public void imprimeTexto( boolean bVisualizar, String sOrdem ) {
 
@@ -1705,10 +1735,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		else if ( evt.getSource() == btImp )
 			imprimir( false );
 		else if ( evt.getSource() == btOrc ) {
-			ImprimeOrc imp = new ImprimeOrc( txtCodOrc.getVlrInteger().intValue() );
-			imp.setConexao( con );
-			dl = new FPrinterJob( imp, this );
-			dl.setVisible( true );
+			
+			imprimiGraficoPad( true );
+			
+			//ImprimeOrc imp = new ImprimeOrc( txtCodOrc.getVlrInteger().intValue() );
+			//imp.setConexao( con );
+			//dl = new FPrinterJob( imp, this );
+			//dl.setVisible( true );
 		}
 		else if ( evt.getSource() == btOrcTst ) {
 			LeiauteGR leiOrc = null;
