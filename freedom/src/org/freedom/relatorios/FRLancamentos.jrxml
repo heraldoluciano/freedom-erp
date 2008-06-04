@@ -227,7 +227,7 @@ ORDER BY
 			<band height="31"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="325"
+						x="308"
 						y="2"
 						width="55"
 						height="12"
