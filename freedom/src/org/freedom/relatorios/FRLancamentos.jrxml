@@ -53,7 +53,7 @@ LEFT OUTER JOIN FNCC CC ON CC.CODEMP=SL.CODEMPCC AND CC.CODFILIAL=SL.CODFILIALCC
 LEFT OUTER JOIN FNCONTA C ON PL.CODEMP=SL.CODEMPPN AND PL.CODFILIAL=SL.CODFILIALPN AND PL.CODPLAN=SL.CODPLAN AND
   C.CODEMPPN=PL.CODEMP AND C.CODFILIALPN=PL.CODFILIAL AND C.CODPLAN=PL.CODPLAN
 WHERE
-  SL.CODEMP=42 AND SL.CODFILIAL=1 AND SL.DATASUBLANCA BETWEEN '2008-01-01' AND '2008-01-31'
+  SL.CODEMP=42 AND SL.CODFILIAL=1 AND SL.DATASUBLANCA BETWEEN '2008-05-05' AND '2008-05-10'
 ORDER BY
   SL.CODPLAN, SL.DATASUBLANCA]]></queryString>
 
@@ -115,7 +115,7 @@ ORDER BY
 					<reportElement
 						x="71"
 						y="23"
-						width="193"
+						width="186"
 						height="15"
 						key="staticText-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -126,9 +126,9 @@ ORDER BY
 				</staticText>
 				<staticText>
 					<reportElement
-						x="265"
+						x="259"
 						y="23"
-						width="54"
+						width="44"
 						height="15"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -139,7 +139,7 @@ ORDER BY
 				</staticText>
 				<staticText>
 					<reportElement
-						x="323"
+						x="308"
 						y="23"
 						width="54"
 						height="15"
@@ -152,7 +152,7 @@ ORDER BY
 				</staticText>
 				<staticText>
 					<reportElement
-						x="380"
+						x="366"
 						y="23"
 						width="97"
 						height="15"
@@ -165,9 +165,9 @@ ORDER BY
 				</staticText>
 				<staticText>
 					<reportElement
-						x="479"
+						x="467"
 						y="23"
-						width="59"
+						width="69"
 						height="15"
 						key="staticText-6"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -402,7 +402,7 @@ ORDER BY
 		</columnHeader>
 		<detail>
 			<band height="22"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" pattern="MM/dd/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="2"
 						y="5"
@@ -415,13 +415,14 @@ ORDER BY
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DATASUBLANCA}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="70"
 						y="5"
-						width="190"
+						width="182"
 						height="13"
-						key="textField-3"/>
+						key="textField-3"
+						stretchType="RelativeToTallestObject"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="9"/>
@@ -430,9 +431,9 @@ ORDER BY
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="265"
+						x="259"
 						y="5"
-						width="54"
+						width="44"
 						height="13"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -443,7 +444,7 @@ ORDER BY
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="324"
+						x="308"
 						y="5"
 						width="54"
 						height="13"
@@ -454,26 +455,28 @@ ORDER BY
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRSUBLANCA}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="382"
+						x="369"
 						y="5"
 						width="95"
 						height="13"
-						key="textField-6"/>
+						key="textField-6"
+						stretchType="RelativeToTallestObject"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCCC}.trim()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="480"
+						x="468"
 						y="5"
-						width="57"
+						width="69"
 						height="13"
-						key="textField-7"/>
+						key="textField-7"
+						stretchType="RelativeToTallestObject"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="9"/>
@@ -486,8 +489,9 @@ ORDER BY
 						y="0"
 						width="0"
 						height="22"
-						key="line-5"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-5"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -495,8 +499,9 @@ ORDER BY
 						y="0"
 						width="0"
 						height="22"
-						key="line-6"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-6"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -504,44 +509,49 @@ ORDER BY
 						y="0"
 						width="0"
 						height="22"
-						key="line-7"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-7"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="478"
+						x="465"
 						y="0"
 						width="0"
 						height="22"
-						key="line-8"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-8"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="380"
+						x="364"
 						y="0"
 						width="0"
 						height="22"
-						key="line-9"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-9"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="321"
+						x="305"
 						y="0"
 						width="0"
 						height="22"
-						key="line-10"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-10"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="264"
+						x="256"
 						y="0"
 						width="0"
 						height="22"
-						key="line-13"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-13"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 			</band>
 		</detail>
