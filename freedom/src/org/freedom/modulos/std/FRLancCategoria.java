@@ -81,13 +81,17 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 		
 		StringBuilder sSQL = new StringBuilder();
 		ResultSet rs = null;
+		StringBuilder sCab = new StringBuilder();
 		
+			
 		
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
 		}
+		
+		sCab.append( "Periodo: " + txtDataini.getVlrDate() + "Até " + txtDatafim.getVlrDate() ); 
 		
 		sSQL.append( " SELECT SL.CODPLAN, PL.DESCPLAN, SL.DATASUBLANCA, SL.HISTSUBLANCA, L.DOCLANCA, SL.VLRSUBLANCA,CC.DESCCC, C.DESCCONTA " );
 		sSQL.append( "FROM FNSUBLANCA SL " );
@@ -115,7 +119,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 			Funcoes.mensagemErro( this, "Erro ao buscar dados " + e.getMessage());
 		}
 		
-		imprimiGrafico( rs, bVisualizar, "" );
+		imprimiGrafico( rs, bVisualizar, sCab.toString() );
 	}
 		private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar,  final String sCab ) {
 
