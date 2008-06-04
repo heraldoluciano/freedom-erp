@@ -64,7 +64,7 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 						mode="Transparent"
 						x="0"
 						y="3"
-						width="178"
+						width="142"
 						height="41"
 						forecolor="#FFFFFF"
 						backcolor="#FFFFFF"
