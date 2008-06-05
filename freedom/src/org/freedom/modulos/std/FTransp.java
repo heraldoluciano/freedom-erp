@@ -79,40 +79,42 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener,I
   public FTransp () {
   	super();
     setTitulo("Cadastro de Tranportadoras");
-    setAtribos( 50, 50, 436, 440);
+    setAtribos( 50, 50, 440, 440);
     
     lcCampos.addInsertListener(this);
     lcCampos.addPostListener(this);
 	 
-	vTipoTransp.addElement("Transp.");
+	vTipoTransp.addElement("Transportadora");
 	vTipoTransp.addElement("Cliente");
+	vTipoTransp.addElement("Fornecedor");
 	vTipoTranspVal.addElement("T");
 	vTipoTranspVal.addElement("C");
-	rgTipoTransp = new JRadioGroup<String, String>( 2, 1, vTipoTransp, vTipoTranspVal);
+	vTipoTranspVal.addElement("F");
+	rgTipoTransp = new JRadioGroup<String, String>( 3, 1, vTipoTransp, vTipoTranspVal);
 	rgTipoTransp.setVlrString("T");
 	
 	
     adicCampo(txtCodTran, 7, 20, 70, 20, "CodTran", "Cód.tran.", ListaCampos.DB_PK, true);
-    adicCampo(txtRazTran, 80, 20, 205,20, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, true);
-	adicDB(rgTipoTransp, 290, 20, 84,61, "TipoTran", "Tipo", true);
-    adicCampo(txtNomeTran, 7, 60, 278,20, "NomeTran", "Nome fantasia", ListaCampos.DB_SI, true);
-    adicCampo(txtCnpjTran, 7, 100, 181, 20, "CnpjTran", "Cnpj", ListaCampos.DB_SI, false);
-    adicCampo(txtInscTran, 192, 100, 181, 20, "InscTran", "Inscrição Estadual", ListaCampos.DB_SI, false);
-	adicCampo( txtCpfTran, 7, 140, 170, 20, "CpfTran", "CPF", ListaCampos.DB_SI, false );
-    adicCampo(txtEndTran, 7, 180, 260, 20, "EndTran", "Endereço", ListaCampos.DB_SI, false);
-    adicCampo(txtNumTran, 270, 180, 50, 20, "NumTran", "Num.", ListaCampos.DB_SI, false);
-    adicCampo(txtComplTran, 323, 180, 49, 20, "ComplTran", "Compl.", ListaCampos.DB_SI, false);
-    adicCampo(txtBairTran, 7, 220, 120, 20, "BairTran", "Bairro", ListaCampos.DB_SI, false);
-    adicCampo(txtCidTran, 130, 220, 120, 20, "CidTran", "Cidade", ListaCampos.DB_SI, false);
-    adicCampo(txtCepTran, 253, 220, 80, 20, "CepTran", "Cep", ListaCampos.DB_SI, false);
-    adicCampo(txtUFTran, 336, 220, 36, 20, "UFTran", "UF", ListaCampos.DB_SI, false);
+    adicCampo(txtRazTran, 80, 20, 205, 20, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, true);
+	adicDB(rgTipoTransp, 290, 20, 129,100, "TipoTran", "Tipo", true);
+    adicCampo(txtNomeTran, 7, 60, 278, 20, "NomeTran", "Nome fantasia", ListaCampos.DB_SI, true);
+    adicCampo(txtCnpjTran, 7, 100, 125, 20, "CnpjTran", "Cnpj", ListaCampos.DB_SI, false);
+    adicCampo(txtInscTran, 135, 100, 150, 20, "InscTran", "Inscrição Estadual", ListaCampos.DB_SI, false);
+	adicCampo(txtCpfTran, 7, 140, 170, 20, "CpfTran", "CPF", ListaCampos.DB_SI, false );
+    adicCampo(txtEndTran, 7, 180, 290, 20, "EndTran", "Endereço", ListaCampos.DB_SI, false);
+    adicCampo(txtNumTran, 300, 180, 56, 20, "NumTran", "Num.", ListaCampos.DB_SI, false);
+    adicCampo(txtComplTran, 359, 180, 60, 20, "ComplTran", "Compl.", ListaCampos.DB_SI, false);
+    adicCampo(txtBairTran, 7, 220, 125, 20, "BairTran", "Bairro", ListaCampos.DB_SI, false);
+    adicCampo(txtCidTran, 135, 220, 130, 20, "CidTran", "Cidade", ListaCampos.DB_SI, false);
+    adicCampo(txtCepTran, 268, 220, 90, 20, "CepTran", "Cep", ListaCampos.DB_SI, false);
+    adicCampo(txtUFTran, 361, 220, 59, 20, "UFTran", "UF", ListaCampos.DB_SI, false);
     adicCampo(txtDDDFoneTran, 7, 260, 80, 20, "DDDFoneTran", "DDD", ListaCampos.DB_SI, false);
-    adicCampo(txtFoneTran, 90, 260, 98, 20, "FoneTran", "Telefone", ListaCampos.DB_SI, false);
-    adicCampo(txtDDDFaxTran, 191, 260, 80, 20, "DDDFaxTran", "DDD", ListaCampos.DB_SI, false);
-    adicCampo(txtFaxTran, 273, 260, 100, 20, "FaxTran", "Fax", ListaCampos.DB_SI, false);
-    adicCampo(txtContTran,7,300,223,20,"Conttran","Contato", ListaCampos.DB_SI, false);
-    adicCampo(txtDDDCelTran,233,300,40,20,"DDDCelTran","DDD", ListaCampos.DB_SI, false);
-    adicCampo(txtCelTran,276,300,96,20,"Celtran","Celular",ListaCampos.DB_SI, false);
+    adicCampo(txtFoneTran, 90, 260, 110, 20, "FoneTran", "Telefone", ListaCampos.DB_SI, false);
+    adicCampo(txtDDDFaxTran, 203, 260, 80, 20, "DDDFaxTran", "DDD", ListaCampos.DB_SI, false);
+    adicCampo(txtFaxTran, 286, 260, 134, 20, "FaxTran", "Fax", ListaCampos.DB_SI, false);
+    adicCampo(txtContTran, 7, 300, 240, 20,"Conttran","Contato", ListaCampos.DB_SI, false);
+    adicCampo(txtDDDCelTran, 250, 300, 50, 20,"DDDCelTran","DDD", ListaCampos.DB_SI, false);
+    adicCampo(txtCelTran, 303, 300, 117, 20,"Celtran","Celular",ListaCampos.DB_SI, false);
 
     txtCnpjTran.setMascara(JTextFieldPad.MC_CNPJ);
 	txtCpfTran.setMascara( JTextFieldPad.MC_CPF );
