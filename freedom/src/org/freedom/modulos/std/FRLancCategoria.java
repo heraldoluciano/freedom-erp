@@ -82,7 +82,6 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 		StringBuilder sSQL = new StringBuilder();
 		ResultSet rs = null;
 		StringBuilder sCab = new StringBuilder();
-		
 			
 		
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
@@ -91,7 +90,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 			return;
 		}
 		
-		sCab.append( "Periodo: " + txtDataini.getVlrDate() + "Até " + txtDatafim.getVlrDate() ); 
+		sCab.append( "Periodo: " + txtDataini.getVlrString() + " " + " Até " + " " + txtDatafim.getVlrString() ); 
 		
 		sSQL.append( " SELECT SL.CODPLAN, PL.DESCPLAN, SL.DATASUBLANCA, SL.HISTSUBLANCA, L.DOCLANCA, SL.VLRSUBLANCA,CC.DESCCC, C.DESCCONTA " );
 		sSQL.append( "FROM FNSUBLANCA SL " );
