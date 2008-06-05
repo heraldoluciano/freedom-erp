@@ -421,8 +421,9 @@ public class RPFaturamento extends FDialogo {
 	private void gerarFaturamento() {
 	
 		int opt = Funcoes.mensagemConfirma( null, 
-				"Caso não tenha sido alterado a quantidade faturada para o item,\n" +
-				"o faturamento será criado com a quantidade do pedido." );
+				//"Caso não tenha sido alterado a quantidade faturada para o item,\n" +
+				//"o faturamento será criado com a quantidade do pedido." );
+				"Confirma o faturamento?" );
 		
 		if ( opt == JOptionPane.OK_OPTION ) {
 			
@@ -455,9 +456,12 @@ public class RPFaturamento extends FDialogo {
 
 					ps.executeUpdate();
 				}
+
+				gerarFaturamento.setEnabled( false );
+				gerarComissao.setEnabled( true );
 				
 				Funcoes.mensagemInforma( null, "Faturamento criado para pedido " + txtCodPed.getVlrInteger() );
-				gerarComissao.setEnabled( true );
+				
 				
 				if ( !con.getAutoCommit() ) {
 					con.commit();
@@ -474,14 +478,77 @@ public class RPFaturamento extends FDialogo {
 			}
 		}
 	}
+	
+	private void gerarComissao() {
+	
+		int opt = Funcoes.mensagemConfirma( null, 
+				//"Caso não tenha sido alterado a quantidade faturada para o item,\n" +
+				//"o faturamento será criado com a quantidade do pedido." );
+				"Confirma gerar comissões para o vendedor " + txtNomeVend.getVlrString().trim() + "?" );
+		
+		if ( opt == JOptionPane.OK_OPTION ) {
+			
+			StringBuilder insert = new StringBuilder();
+			insert.append( "INSERT INTO RPCOMISSAO " );
+			insert.append( "(CODEMP, CODFILIAL, CODPED, CODITPED, " );
+			insert.append( "CODEMPVD, CODFILIALVD, CODVEND, VLRCOMISS ) " );
+			insert.append( "VALUES" );
+			insert.append( "(?,?,?,?,?,?,?,?,)" );
+			
+			PreparedStatement ps;
+			int parameterIndex;
+
+			try {
+				for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+
+					parameterIndex = 1;
+					ps = con.prepareStatement( insert.toString() );
+					ps.setInt( parameterIndex++, AplicativoRep.iCodEmp );
+					ps.setInt( parameterIndex++, ListaCampos.getMasterFilial( "RPFATURAMENTO" ) );
+					ps.setInt( parameterIndex++, txtCodPed.getVlrInteger() );
+					ps.setInt( parameterIndex++, AplicativoRep.iCodEmp );
+					ps.setInt( parameterIndex++, ListaCampos.getMasterFilial( "RPCOMISSAO" )  );
+					ps.setInt( parameterIndex++, txtCodVend.getVlrInteger() );
+					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, 8 ) );
+
+					ps.executeUpdate();
+				}
+				
+				Funcoes.mensagemInforma( null, "Comissão gerada para " + txtNomeVend.getVlrString().trim() );
+				
+				buscarItens.setEnabled( false );
+				gerarFaturamento.setEnabled( false );
+				salvarFaturamento.setEnabled( false );
+				gerarComissao.setEnabled( false );
+				
+				tab.limpa();				
+				
+				if ( !con.getAutoCommit() ) {
+					con.commit();
+				}
+			} catch ( Exception e ) {				
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro ao gerar comissão!\n" + e.getMessage() );
+				
+				try {
+					con.rollback();
+				} catch ( SQLException e1 ) {
+					e1.printStackTrace();
+				}
+			}
+		}
+	}
 
 	public void actionPerformed( ActionEvent e ) {
 		
 		if ( e.getSource() == buscarItens ) {
 			buscarItens();	
 		}
-		if ( e.getSource() == gerarFaturamento ) {
+		else if ( e.getSource() == gerarFaturamento ) {
 			gerarFaturamento();
+		}
+		else if ( e.getSource() == gerarComissao ) {
+			gerarComissao();
 		}
 		else {
 			super.actionPerformed( e );
