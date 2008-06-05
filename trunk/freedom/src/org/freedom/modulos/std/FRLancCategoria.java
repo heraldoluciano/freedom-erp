@@ -186,7 +186,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 		
 		if( ! "".equals( txtCodConta.getVlrString() )){
 			
-			sWhere.append( "AND " );
+			sWhere.append( "AND C.CODEMP=? AND C.CODFILIAL=? AND C.NUMCONTA=? " );
 			
 		}
 		
@@ -202,8 +202,8 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 		sSQL.append( "LEFT OUTER JOIN FNPLANEJAMENTO PL ON PL.CODEMP=SL.CODEMPPN AND PL.CODFILIAL=SL.CODFILIALPN AND PL.CODPLAN=SL.CODPLAN " );
 		sSQL.append( "LEFT OUTER JOIN FNLANCA L ON L.CODEMP=SL.CODEMP AND L.CODFILIAL=SL.CODFILIAL AND L.CODLANCA=SL.CODLANCA " );
 		sSQL.append( "LEFT OUTER JOIN FNCC CC ON CC.CODEMP=SL.CODEMPCC AND CC.CODFILIAL=SL.CODFILIALCC AND CC.CODCC=SL.CODCC AND CC.ANOCC=SL.ANOCC " );
-		sSQL.append( "LEFT OUTER JOIN FNCONTA C ON PL.CODEMP=SL.CODEMPPN AND PL.CODFILIAL=SL.CODFILIALPN AND PL.CODPLAN=SL.CODPLAN AND " );
-		sSQL.append( "C.CODEMPPN=PL.CODEMP AND C.CODFILIALPN=PL.CODFILIAL AND C.CODPLAN=PL.CODPLAN " );
+		sSQL.append( "LEFT OUTER JOIN FNPLANEJAMENTO PL2 ON PL2.CODEMP=L.CODEMPPN AND PL2.CODFILIAL=L.CODFILIALPN AND PL2.CODPLAN=L.CODPLAN " );
+		sSQL.append( "LEFT OUTER JOIN FNCONTA C ON C.CODEMPPN=PL2.CODEMP AND C.CODFILIALPN=PL2.CODFILIAL AND C.CODPLAN=PL2.CODPLAN " );
 		sSQL.append( "WHERE SL.CODEMP=? AND SL.CODFILIAL=? AND SL.DATASUBLANCA BETWEEN ? AND ? " );
 		sSQL.append( sWhere.toString() );
 		sSQL.append( "ORDER BY SL.CODPLAN, SL.DATASUBLANCA" );
@@ -211,10 +211,19 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 		try {
 			
 			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			
+		
+			if( ! "".equals( txtCodConta.getVlrString() )){
+				
+				sWhere.append( "AND C.CODEMP=? AND C.CODFILIAL=? AND C.NUMCONTA=? " );
+				
+			}
+			
 			
 			rs = ps.executeQuery();
 			
