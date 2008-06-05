@@ -143,7 +143,6 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 		
 		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
-		lcConta.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cod.plan.", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setReadOnly( true );
 		txtCodConta.setTabelaExterna( lcConta );
@@ -157,7 +156,6 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 		lcPlan.add(new GuardaCampo(txtCodPlan, "CodPlan", "Cód.plan",ListaCampos.DB_PK, false));
 		lcPlan.add(new GuardaCampo(txtDescPlan, "DescPlan","Descrição do planejamento", ListaCampos.DB_SI, false));
 		lcPlan.montaSql(false, "PLANEJAMENTO", "FN");
-		lcPlan.setWhereAdic("NIVELPLAN=6");
 		lcPlan.setReadOnly(true);
 		txtCodPlan.setTabelaExterna(lcPlan);
 		txtCodPlan.setFK(true);
@@ -170,6 +168,8 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 		ResultSet rs = null;
 		StringBuilder sCab = new StringBuilder();
 		StringBuilder sWhere = new StringBuilder();
+		int iParam = 1;
+		String sCodPlan = txtCodPlan.getVlrString().trim();
 			
 		
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
@@ -187,12 +187,13 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 		if( ! "".equals( txtCodConta.getVlrString() )){
 			
 			sWhere.append( "AND C.CODEMP=? AND C.CODFILIAL=? AND C.NUMCONTA=? " );
-			
+			sCab.append( " Conta:  " + txtCodConta.getVlrString() + " " + txtDescConta.getVlrString() );
 		}
 		
 		if( ! "".equals( txtCodPlan.getVlrString() )){
 			
-			sWhere.append( " AND SL.CODPLAN= " + txtCodPlan.getVlrString() );
+			sWhere.append( "AND SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODPLAN LIKE ?" );
+			sCab.append( " Planejamento:  " + txtCodPlan.getVlrString() + " " + txtDescPlan.getVlrString() );
 		}
 
 		sCab.append( "  Periodo: " + txtDataini.getVlrString() + " " + " Até " + " " + txtDatafim.getVlrString() ); 
@@ -211,20 +212,30 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 		try {
 			
 			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
-			int param = 1;
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
-			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			
 		
+			ps.setInt( iParam++, Aplicativo.iCodEmp );
+			ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+			ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			
 			if( ! "".equals( txtCodConta.getVlrString() )){
+				ps.setInt( iParam++, Aplicativo.iCodEmp );
+				ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNCONTA" ) );
+				ps.setString( iParam++, txtCodConta.getVlrString() );
+			}
+
+			if( ! "".equals( txtCodPlan.getVlrString() )){
 				
-				sWhere.append( "AND C.CODEMP=? AND C.CODFILIAL=? AND C.NUMCONTA=? " );
+				if( sCodPlan.indexOf( "%" )== -1 ){
+					if( sCodPlan.length() < 13 ){
+						sCodPlan +=  "%";
+					}
+				}
+				ps.setInt( iParam++, Aplicativo.iCodEmp );
+				ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+				ps.setString( iParam++, sCodPlan  );
 				
 			}
-			
-			
 			rs = ps.executeQuery();
 			
 		} catch ( Exception e ) {
