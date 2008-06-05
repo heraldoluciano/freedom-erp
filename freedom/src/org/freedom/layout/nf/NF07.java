@@ -271,6 +271,11 @@ public class NF07 extends Layout {
 					imp.pulaLinha( ( MAXLINE + 2 ) - imp.pRow(), imp.comprimido());
 					
 					//	Imprime totais ...
+					if (iContaFrete == 0){
+						frete.next();
+						iContaFrete++;
+					}
+
 					
 					if (iItImp == itens.getInt(NF.C_CONTAITENS)) {        
 
@@ -303,10 +308,6 @@ public class NF07 extends Layout {
 					
 					//	Imprime informações do frete ...
 					
-					if (iContaFrete == 0){
-						frete.next();
-						iContaFrete++;
-					}
 					
 					imp.pulaLinha( 3, imp.comprimido());
 					imp.say(  2, frete.getString(NF.C_RAZTRANSP));
