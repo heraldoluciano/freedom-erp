@@ -77,7 +77,7 @@ ORDER BY
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="23"  isSplitAllowed="true" >
+			<band height="6"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
@@ -224,7 +224,7 @@ ORDER BY
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="31"  isSplitAllowed="true" >
+			<band height="20"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="307"
@@ -299,7 +299,7 @@ ORDER BY
 			</band>
 		</title>
 		<pageHeader>
-			<band height="100"  isSplitAllowed="true" >
+			<band height="79"  isSplitAllowed="true" >
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
@@ -384,7 +384,7 @@ ORDER BY
 						x="79"
 						y="58"
 						width="397"
-						height="24"
+						height="19"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor-1"/>
