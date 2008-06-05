@@ -28,7 +28,12 @@
 	<parameter name="CODPROD" isForPrompting="true" class="java.lang.Integer"/>
 	<parameter name="DATAINI" isForPrompting="true" class="java.util.Date"/>
 	<parameter name="DATAFIM" isForPrompting="true" class="java.util.Date"/>
-	<queryString><![CDATA[SELECT fr.cnpjfor,tr.cnpjtran, extract(day from eq.dtmovprod) as diacompra,eq.codnat,EQ.qtdmovprod,eq.docmovprod
+	<queryString><![CDATA[SELECT fr.cnpjfor,
+case tr.tipotran
+when 'T' then tr.cnpjtran
+when 'F' then fr.cnpjfor
+end as cnpjtran
+, extract(day from eq.dtmovprod) as diacompra,eq.codnat,EQ.qtdmovprod,eq.docmovprod
 FROM eqmovprod EQ, eqtipomov tm,cpforneced fr,cpcompra cp left outer join vdtransp tr on
 tr.codemp=cp.codemptn and tr.codfilial=cp.codfilialtn and tr.codtran=cp.codtran
 WHERE eq.codemp=$P{CODEMP} and eq.codfilial=$P{CODFILIAL} and EQ.codprod=$P{CODPROD} AND EQ.dtmovprod BETWEEN $P{DATAINI} AND $P{DATAFIM}
