@@ -77,8 +77,8 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 	<field name="CONTCLI" class="java.lang.String"/>
 	<field name="USANOMEVENDORC" class="java.lang.String"/>
 	<field name="CNPJCLI" class="java.lang.String"/>
-	<field name="NOMEASS" class="java.lang.String"/>
-	<field name="IMGASS" class="java.sql.Blob"/>
+	<field name="NOMEASS" class="java.io.InputStream"/>
+	<field name="IMGASS" class="java.io.InputStream"/>
 	<field name="CODCONV" class="java.lang.Long"/>
 	<field name="NOMECONV" class="java.lang.String"/>
 	<field name="CODTPCONV" class="java.lang.Long"/>
@@ -307,7 +307,7 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="129"  isSplitAllowed="true" >
+			<band height="146"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="3"
@@ -363,7 +363,7 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 				<line direction="TopDown">
 					<reportElement
 						x="151"
-						y="106"
+						y="127"
 						width="239"
 						height="0"
 						key="line-1"/>
@@ -372,7 +372,7 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="110"
+						y="130"
 						width="535"
 						height="16"
 						key="textField-21"/>
@@ -386,7 +386,7 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 					<reportElement
 						mode="Transparent"
 						x="151"
-						y="73"
+						y="78"
 						width="239"
 						height="30"
 						key="image-1"/>
