@@ -37,6 +37,7 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.TabelaEditEvent;
@@ -71,6 +72,8 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 	private Tabela tab = new Tabela();
 	private JButton btRefresh = new JButton(Icone.novo("btExecuta.gif"));
 //	private JButton btOk = new JButton(Icone.novo("btOk.gif"));
+	private JButton btEncaminharCand = new JButton("Encaminhar", Icone.novo("btEncaminharCand.gif"));
+	private JButton btEfetivarCand = new JButton("Efetivar", Icone.novo("btEfetivarCand.gif"));
 	private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
 	private ImageIcon imgEditaCampo = Icone.novo("clEditar.gif");
 	private JScrollPane spnTab = new JScrollPane(tab);
@@ -114,11 +117,13 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		cbFaixaSalarial.setVlrBoolean( new Boolean(true) );
 
 		btRefresh.setToolTipText( "Refazer consulta" );		
-
+		btEncaminharCand.setToolTipText( "Encaminhar candidatos" );
+		btEfetivarCand.setToolTipText( "Efetivar candidatos" );
 //		btOk.setToolTipText("Confirmar aprovação");
 		
 		btRefresh.addActionListener(this);
-//		btOk.addActionListener(this);
+		btEncaminharCand.addActionListener(this);
+		btEfetivarCand.addActionListener(this);
 		btSair.addActionListener(this);
 
 		JPanelPad pinRod = new JPanelPad(685,39);
@@ -182,14 +187,13 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		pinFiltros.adic( cbRestricoes, 3, 25, 130, 18 );
 		pinFiltros.adic( cbFaixaSalarial, 3, 43, 130, 18 );
 		pinFiltros.adic (txtFaixaSalIni,136,43,50,18);
-		pinFiltros.adic (txtFaixaSalFim,189,43,50,18);
-		
+		pinFiltros.adic (txtFaixaSalFim,189,43,50,18);		
 		
 		pinFiltros.adic( cbCursos, 136, 7, 130, 18 );
 		pinFiltros.adic( cbExperiencia, 136, 25, 130, 18 );
 		
-//		pinRod.adic(btCalc,10,10,57,30);
-//		pinRod.adic(btOk,70,10,57,30);
+		pinRod.adic(btEncaminharCand,5,2,140,30);
+		pinRod.adic(btEfetivarCand,148,2,130,30);
 		pinRod.adic(btSair,675,2,100,30);
 					
 		getTela().add(pnCab,BorderLayout.CENTER);
@@ -206,6 +210,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
         tab.adicColuna("Cursos");
 		tab.adicColuna("Exp.");
 		tab.adicColuna("Salário");
+		tab.adicColuna("");
 		
 		tab.setTamColuna(30,0);
 		tab.setTamColuna(55,1);
@@ -216,6 +221,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		tab.setTamColuna(55,6);
 		tab.setTamColuna(55,7);
 		tab.setTamColuna(80,8);
+		tab.setTamColuna(20,9);
 		
 		tab.setColunaEditavel( 0, true );		
 		tab.addMouseListener( this );
@@ -251,10 +257,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		StringBuffer where = new StringBuffer();
 		boolean and = false;
 		
-		
-		 
-		
-		sql.append( "SELECT CODCAND,NOMECAND,FONECAND,PRETENSAOSAL,QUALIFICACOES,RESTRICOES,CURSOS,EXPERIENCIA " );
+		sql.append( "SELECT CODCAND,NOMECAND,FONECAND,PRETENSAOSAL,QUALIFICACOES,RESTRICOES,CURSOS,EXPERIENCIA,STATUS " );
 		sql.append( "FROM RHLISTACANDVAGASP(?,?,?,?)" );
 				
 		if(cbQualificacoes.getVlrBoolean() || cbCursos.getVlrBoolean() ||
@@ -264,8 +267,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 			where.append( " WHERE " );
 		
 		}
-		
-		
+				
 		if(cbQualificacoes.getVlrBoolean()) {
 			where.append("QUALIFICACOES > 0 " );
 			and = true;
@@ -308,8 +310,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 				ps.setDouble( 5, txtFaixaSalIni.getVlrDouble() );
 				ps.setDouble( 6, txtFaixaSalFim.getVlrDouble() );				
 			}
-			
-			
+						
 			ResultSet rs = ps.executeQuery();
 						
 			while (rs.next()) {
@@ -323,6 +324,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 			    vVals.addElement( rs.getString( "CURSOS" ) );
 			    vVals.addElement( rs.getString( "EXPERIENCIA" ) );
 			    vVals.addElement( (rs.getString( "PRETENSAOSAL" ) == null) ? "" : rs.getString( "PRETENSAOSAL" ) );
+			    vVals.addElement( rs.getString( "STATUS" ) );
 			    
 				tab.adicLinha(vVals);				
 			}
@@ -346,6 +348,12 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		if (evt.getSource() == btRefresh) {
 			montaTab();
 		}
+		else if (evt.getSource() == btEncaminharCand) {
+			encaminharCandidato();
+		}
+		else if (evt.getSource() == btEfetivarCand) {
+			efetivarCandidato();
+		}
 		else if (evt.getSource() == btSair) {
 			dispose();
 		}
@@ -356,6 +364,116 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 
           }*/
     }
+	
+	private void encaminharCandidato() {
+		StringBuffer sql = new StringBuffer();
+		PreparedStatement ps = null;
+		int encaminhados = 0;		
+		
+		try {		
+			
+			if( Funcoes.mensagemConfirma( this, "Confirma o encaminhamento do(s) candidato(s) para a vaga?") == JOptionPane.YES_NO_OPTION ) {
+
+				sql.append( "INSERT INTO RHVAGACANDIDATO(CODEMP,CODFILIAL,CODVAGA,CODEMPCA,CODFILIALCA,CODCAND,STVAGACAND) " );
+				sql.append( "VALUES(?,?,?,?,?,?,?)" );	
+
+				for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+	
+					if ( ! ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() )
+						continue;
+					
+					if( (tab.getValor( i, 9 ).toString().equals( "EF" )) ) { 
+						Funcoes.mensagemInforma( this, "O candidato " + tab.getValor( i, 2 ).toString().trim() 
+								+ " nao pode ser encaminhado, pois ja foi efetivado na vaga!" );	
+						continue;					
+					}
+														
+					ps = con.prepareStatement( sql.toString() );
+					ps.setInt( 1, Aplicativo.iCodEmp );
+					ps.setInt( 2, ListaCampos.getMasterFilial( "RHVAGACANDIDATO" ) );
+					ps.setInt( 3, txtCodVaga.getVlrInteger().intValue() );
+					ps.setInt( 4, Aplicativo.iCodEmp );
+					ps.setInt( 5, ListaCampos.getMasterFilial( "RHCANDIDATO" ) );
+					ps.setInt( 6, new Integer(tab.getValor( i, 1 ).toString()) );
+					ps.setString( 7, "EN" );
+					
+					encaminhados += ps.executeUpdate();
+					
+					ps.close();			
+					if ( !con.getAutoCommit() ) {
+						con.commit();
+					}
+				}
+				
+				Funcoes.mensagemInforma( this, encaminhados > 0 ? 
+						( encaminhados + " candidatos encaminhado" + ( encaminhados > 1 ? "s" : "" ) + " com sucesso!"):
+					    ( "Nenhum candidato foi encaminhado para vaga! " ) ) ;				
+			}
+			
+			montaTab();
+			
+		}
+		catch (Exception e) {
+			Funcoes.mensagemErro( this, "Erro ao encaminhar candidatos!\n" + e.getMessage(), true, con, e );
+			e.printStackTrace();
+		}		
+	}
+
+	private void efetivarCandidato() {
+		StringBuffer sql = new StringBuffer();
+		PreparedStatement ps = null;
+		int efetivados = 0;
+		
+		try {
+			
+			if( Funcoes.mensagemConfirma( this, "Confirma a efetivaçao do(s) candidato(s) na vaga?") == JOptionPane.YES_NO_OPTION ) {
+			
+				sql.append( "UPDATE RHVAGACANDIDATO SET STVAGACAND='EF' " );
+				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODVAGA=? " );
+				sql.append( "AND CODEMPCA=? AND CODFILIALCA=? AND CODCAND=? AND STVAGACAND='EN' " );	
+
+				for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+	
+					if ( ! ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() )
+						continue;
+				
+					if( ! (tab.getValor( i, 9 ).toString().equals( "EN" )) ) { 
+						Funcoes.mensagemInforma( this, "O candidato " + tab.getValor( i, 2 ).toString().trim() 
+								+ " deve ser encaminhado antes de efetivado!" );	
+						continue;					
+					}
+												
+					ps = con.prepareStatement( sql.toString() );
+					ps.setInt( 1, Aplicativo.iCodEmp );
+					ps.setInt( 2, ListaCampos.getMasterFilial( "RHVAGACANDIDATO" ) );
+					ps.setInt( 3, txtCodVaga.getVlrInteger().intValue() );
+					ps.setInt( 4, Aplicativo.iCodEmp );
+					ps.setInt( 5, ListaCampos.getMasterFilial( "RHCANDIDATO" ) );
+					ps.setInt( 6, new Integer(tab.getValor( i, 1 ).toString()) );
+									
+					efetivados += ps.executeUpdate();
+					
+					ps.close();			
+					if ( !con.getAutoCommit() ) {
+						con.commit();
+					}
+				}
+				
+				Funcoes.mensagemInforma( this, efetivados > 0 ? 
+						( efetivados + " candidatos efetivado" + ( efetivados > 1 ? "s" : "" ) + " com sucesso!"):
+					    ( "Nenhum candidato foi efetivado na vaga! " ) ) ;
+				
+			}
+			
+			montaTab();
+			
+		}
+		catch (Exception e) {
+			Funcoes.mensagemErro( this, "Erro ao efetivar candidatos!\n" + e.getMessage(), true, con, e );
+			e.printStackTrace();
+		}		
+	}
+	
 	
 	public void mouseClicked( MouseEvent mevt ) {
 		
