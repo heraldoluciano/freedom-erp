@@ -77,7 +77,7 @@ ORDER BY
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="6"  isSplitAllowed="true" >
+			<band height="8"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
@@ -224,7 +224,7 @@ ORDER BY
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="20"  isSplitAllowed="true" >
+			<band height="23"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="307"
@@ -401,11 +401,11 @@ ORDER BY
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="22"  isSplitAllowed="true" >
+			<band height="16"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="2"
-						y="5"
+						y="1"
 						width="61"
 						height="13"
 						key="textField-2"/>
@@ -418,7 +418,7 @@ ORDER BY
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="70"
-						y="5"
+						y="1"
 						width="182"
 						height="13"
 						key="textField-3"
@@ -432,7 +432,7 @@ ORDER BY
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="259"
-						y="5"
+						y="1"
 						width="44"
 						height="13"
 						key="textField-4"/>
@@ -445,7 +445,7 @@ ORDER BY
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="308"
-						y="5"
+						y="1"
 						width="54"
 						height="13"
 						key="textField-5"/>
@@ -458,7 +458,7 @@ ORDER BY
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="369"
-						y="5"
+						y="1"
 						width="95"
 						height="13"
 						key="textField-6"
@@ -472,7 +472,7 @@ ORDER BY
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="468"
-						y="5"
+						y="1"
 						width="69"
 						height="13"
 						key="textField-7"
@@ -488,7 +488,7 @@ ORDER BY
 						x="66"
 						y="0"
 						width="0"
-						height="22"
+						height="16"
 						key="line-5"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -498,7 +498,7 @@ ORDER BY
 						x="0"
 						y="0"
 						width="0"
-						height="22"
+						height="16"
 						key="line-6"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -508,7 +508,7 @@ ORDER BY
 						x="539"
 						y="0"
 						width="0"
-						height="22"
+						height="16"
 						key="line-7"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -518,7 +518,7 @@ ORDER BY
 						x="465"
 						y="0"
 						width="0"
-						height="22"
+						height="16"
 						key="line-8"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -528,7 +528,7 @@ ORDER BY
 						x="364"
 						y="0"
 						width="0"
-						height="22"
+						height="16"
 						key="line-9"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -538,7 +538,7 @@ ORDER BY
 						x="305"
 						y="0"
 						width="0"
-						height="22"
+						height="16"
 						key="line-10"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -548,7 +548,7 @@ ORDER BY
 						x="256"
 						y="0"
 						width="0"
-						height="22"
+						height="16"
 						key="line-13"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
