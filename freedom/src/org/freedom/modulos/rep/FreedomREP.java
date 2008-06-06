@@ -65,9 +65,11 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 
 		addOpcao( -1, TP_OPCAO_MENU, "Vendas", "", 'V', 200000000, 0, false, null );
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Pedidos", "Pedidos", 'P', 200100000, 1, true, RPPedido.class );
-			addOpcao( 200000000, TP_OPCAO_ITEM, "Faturamento", "Faturamento", 'F', 200200000, 1, true, RPFaturamento.class );
 			addSeparador( 200000000 );
-			addOpcao( 200000000, TP_OPCAO_ITEM, "Consuta de pedidos", "Consuta de pedidos", 'C', 200300000, 1, true, RPConsPedido.class );
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Consuta de pedidos", "Consuta de pedidos", 'C', 200200000, 1, true, RPConsPedido.class );
+			addSeparador( 200000000 );
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Faturamento", "Faturamento", 'F', 200300000, 1, true, RPFaturamento.class );
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Manutenção de Comissão", "Manutenção de Comissão", 'M', 200400000, 1, true, RPComissao.class );
 
 		//addOpcao( -1, TP_OPCAO_MENU, "Pagar", "Pagar", 'P', 300000000, 0, false, null );
 		//	addOpcao( 300000000, TP_OPCAO_ITEM, "Pagar", "Pagar", 'P', 300100000, 1, true, RPPagar.class );

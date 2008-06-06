@@ -294,19 +294,21 @@ public class RPFaturamento extends FDialogo {
 		
 		tab.limpa();
 				
-		List<Object[]> rows = getFaturamento();
-		
-		if ( rows.size() > 0 ) {
-			for( Object[] row : rows ) {			
-				tab.adicLinha( row );
+		if ( txtCodPed.getVlrInteger() > 0 ) {
+			List<Object[]> rows = getFaturamento();
+			
+			if ( rows != null ) {
+				if ( rows.size() > 0 ) {
+					for( Object[] row : rows ) {			
+						tab.adicLinha( row );
+					}				
+					gerarComissao.setEnabled( true );
+				}	
+				else {				
+					buscarItens.setEnabled( true );
+				}	
 			}
-			
-			gerarComissao.setEnabled( true );
-		}	
-		else {
-			
-			buscarItens.setEnabled( true );
-		}		
+		}
 	}
 	
 	private List<Object[]> getFaturamento() {
@@ -314,8 +316,37 @@ public class RPFaturamento extends FDialogo {
 		List<Object[]> itens = new ArrayList<Object[]>();
 		
 		try {
-			StringBuilder sql = new StringBuilder();
+			StringBuilder sql = new StringBuilder();			
+
+			sql.append( "SELECT CODVEND FROM RPCOMISSAO C " );
+			sql.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? AND C.CODPED=? " );
 			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "RPCOMISSAO" ) );
+			ps.setInt( 3, txtCodPed.getVlrInteger() );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			boolean retornar = rs.next();
+			
+			rs.close();
+			ps.close();
+			
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
+			}
+			
+			if ( retornar ) {
+				Funcoes.mensagemErro( this, "Comissão já criada para este pedido!" );
+				txtCodPed.setText( "0" );
+				lcPedido.carregaDados();
+				carregaTabela();
+				return null;
+			}
+			
+			
+			sql = new StringBuilder();
 			sql.append( "SELECT" );
 			sql.append( "  F.CODITPED, F.QTDFATURADO, F.VLRFATURADO, F.QTDPENDENTE, F.PERCCOMISFAT, F.VLRCOMISFAT, F.DTFATURADO, F.STATUSFAT," ); 
 			sql.append( "  I.CODITPED, I.CODPROD, PD.DESCPROD, I.QTDITPED " );
@@ -324,15 +355,17 @@ public class RPFaturamento extends FDialogo {
 			sql.append( "WHERE" );
 			sql.append( "  F.CODEMP=? AND F.CODFILIAL=? AND F.CODPED=? AND" );
 			sql.append( "  I.CODEMP=F.CODEMP AND I.CODFILIAL=F.CODFILIAL AND I.CODPED=F.CODPED AND I.CODITPED=F.CODITPED AND" );
-			sql.append( "  PD.CODEMP=I.CODEMPPD AND PD.CODFILIAL=I.CODFILIALPD AND PD.CODPROD=I.CODPROD " );
+			sql.append( "  PD.CODEMP=I.CODEMPPD AND PD.CODFILIAL=I.CODFILIALPD AND PD.CODPROD=I.CODPROD AND " );
+			sql.append( "  NOT EXISTS (SELECT CODVEND FROM RPCOMISSAO C " );
+			sql.append( "              WHERE C.CODEMP=F.CODEMP AND C.CODFILIAL=F.CODFILIAL AND C.CODPED=F.CODPED AND C.CODITPED=F.CODITPED ) " );
 			sql.append( "ORDER BY I.CODITPED" );
 			
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "RPFATURAMENTO" ) );
 			ps.setInt( 3, txtCodPed.getVlrInteger() );
 			
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			
 			while( rs.next() ) {
 				
@@ -348,6 +381,13 @@ public class RPFaturamento extends FDialogo {
 						rs.getBigDecimal( "PERCCOMISFAT" ).setScale( AplicativoRep.casasDec, BigDecimal.ROUND_HALF_UP ),
 						rs.getDate( "DTFATURADO" )
 				} );
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( ! con.getAutoCommit() ) {
+				con.commit();
 			}
 		} catch ( SQLException e ) {
 			e.printStackTrace();
@@ -492,39 +532,46 @@ public class RPFaturamento extends FDialogo {
 			insert.append( "INSERT INTO RPCOMISSAO " );
 			insert.append( "(CODEMP, CODFILIAL, CODPED, CODITPED, " );
 			insert.append( "CODEMPVD, CODFILIALVD, CODVEND, VLRCOMISS ) " );
-			insert.append( "VALUES" );
-			insert.append( "(?,?,?,?,?,?,?,?,)" );
+			insert.append( "VALUES " );
+			insert.append( "(?,?,?,?,?,?,?,?)" );
 			
 			PreparedStatement ps;
 			int parameterIndex;
+			boolean gerou = false;
 
 			try {
 				for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 
-					parameterIndex = 1;
-					ps = con.prepareStatement( insert.toString() );
-					ps.setInt( parameterIndex++, AplicativoRep.iCodEmp );
-					ps.setInt( parameterIndex++, ListaCampos.getMasterFilial( "RPFATURAMENTO" ) );
-					ps.setInt( parameterIndex++, txtCodPed.getVlrInteger() );
-					ps.setInt( parameterIndex++, AplicativoRep.iCodEmp );
-					ps.setInt( parameterIndex++, ListaCampos.getMasterFilial( "RPCOMISSAO" )  );
-					ps.setInt( parameterIndex++, txtCodVend.getVlrInteger() );
-					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, 8 ) );
-
-					ps.executeUpdate();
+					if (((BigDecimal) tab.getValor( i, 8 )).floatValue() > 0 ) {
+						parameterIndex = 1;
+						ps = con.prepareStatement( insert.toString() );
+						ps.setInt( parameterIndex++, AplicativoRep.iCodEmp );
+						ps.setInt( parameterIndex++, ListaCampos.getMasterFilial( "RPFATURAMENTO" ) );
+						ps.setInt( parameterIndex++, txtCodPed.getVlrInteger() );
+						ps.setInt( parameterIndex++, (Integer) tab.getValor( i, 1 ) );
+						ps.setInt( parameterIndex++, AplicativoRep.iCodEmp );
+						ps.setInt( parameterIndex++, ListaCampos.getMasterFilial( "RPCOMISSAO" )  );
+						ps.setInt( parameterIndex++, txtCodVend.getVlrInteger() );
+						ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, 8 ) );
+	
+						ps.executeUpdate();
+						gerou = true;
+					}
 				}
 				
-				Funcoes.mensagemInforma( null, "Comissão gerada para " + txtNomeVend.getVlrString().trim() );
-				
-				buscarItens.setEnabled( false );
-				gerarFaturamento.setEnabled( false );
-				salvarFaturamento.setEnabled( false );
-				gerarComissao.setEnabled( false );
-				
-				tab.limpa();				
-				
-				if ( !con.getAutoCommit() ) {
-					con.commit();
+				if ( gerou ) {
+					Funcoes.mensagemInforma( null, "Comissão gerada para " + txtNomeVend.getVlrString().trim() );
+					
+					txtCodPed.setText( "0" );
+					lcPedido.carregaDados();
+					carregaTabela();
+					
+					if ( !con.getAutoCommit() ) {
+						con.commit();
+					}
+				}
+				else {
+					Funcoes.mensagemInforma( null, "Não foi possivél gerar comissão!\nVerifique os valores das comissões dos itens." );
 				}
 			} catch ( Exception e ) {				
 				e.printStackTrace();
