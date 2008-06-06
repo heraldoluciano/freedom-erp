@@ -170,6 +170,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 		StringBuilder sWhere = new StringBuilder();
 		int iParam = 1;
 		String sCodPlan = txtCodPlan.getVlrString().trim();
+		String sCodCC = txtCodCC.getVlrString().trim();
 			
 		
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
@@ -180,7 +181,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 		
 		if( ! "".equals( txtCodCC.getVlrString().trim() )){
 			
-			sWhere.append( "AND SL.CODCC= " + txtCodCC.getVlrString() );
+			sWhere.append( "AND SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODCC LIKE? " );
 			sCab.append( " Centro de custo:  " + txtCodCC.getVlrString() + "  " + txtDescCC.getVlrString() );
 		}
 		
@@ -217,6 +218,19 @@ public class FRLancCategoria extends FRelatorio implements ActionListener{
 			ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
 			ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			
+			if( ! "".equals( txtCodCC.getVlrString() )){
+				
+				if( sCodCC.indexOf( "%" )== -1 ){
+					if( sCodCC.length() < 13 ){
+						sCodCC +=  "%";
+					}
+				}
+				ps.setInt( iParam++, Aplicativo.iCodEmp );
+				ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+				ps.setString( iParam++, sCodCC  );
+				
+			}
 			
 			if( ! "".equals( txtCodConta.getVlrString() )){
 				ps.setInt( iParam++, Aplicativo.iCodEmp );
