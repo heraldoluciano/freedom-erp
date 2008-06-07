@@ -945,7 +945,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			sSQL.append( "FROM FNRECEBER R,FNITRECEBER IT " );
 			sSQL.append( "WHERE R.CODCLI=? AND R.CODEMP=? AND R.CODFILIAL=? AND IT.CODREC=R.CODREC " );
 			sSQL.append( "AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL " );
-			sSQL.append( "ORDER BY R.CODREC,IT.NPARCITREC" );
+			sSQL.append( "ORDER BY IT.DTVENCITREC DESC,R.CODREC,IT.NPARCITREC" );
 
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, txtCodCli.getVlrInteger().intValue() );
