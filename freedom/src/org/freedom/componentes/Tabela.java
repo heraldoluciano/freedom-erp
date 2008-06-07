@@ -172,6 +172,13 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 		ContaLinhas++;
 	}
 
+	public void setColunaInvisivel(int icol) {
+		this.getColumnModel().getColumn(icol).setMaxWidth(0);
+		this.getColumnModel().getColumn(icol).setMinWidth(0);
+		this.getTableHeader().getColumnModel().getColumn(icol).setMaxWidth(0);
+		this.getTableHeader().getColumnModel().getColumn(icol).setMinWidth(0);
+	}
+	
 	public int pesqLinha( int iCol, String sTexto ) {
 
 		int iRetorno = -1;
