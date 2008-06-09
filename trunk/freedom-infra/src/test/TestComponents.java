@@ -97,8 +97,8 @@ public class TestComponents extends JFrame {
 					((Fade)effect2).setAction( Fade.ACTION_OUT );
 					
 					SetEffect set = new SetEffect();
-					//set.addComponent( effect1 );
-					//set.addComponent( effect2 );
+					//set.addEffect( effect1 );
+					set.addEffect( effect2 );
 					set.doStart();
 					/*getLabel01().setValue( new Integer( 55 ) );
 					JOptionPane.showMessageDialog( jContentPane, getTextField01().getValue() + "\n" + 

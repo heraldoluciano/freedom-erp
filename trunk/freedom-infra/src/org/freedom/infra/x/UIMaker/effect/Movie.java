@@ -1,12 +1,19 @@
 package org.freedom.infra.x.UIMaker.effect;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.Timer;
 
 
 public class Movie extends EffectStandard {
+	
+	public static final String START = "START";
+	
+	public static final String STOP = "STOP";
 	
 	public static final int UP = 11;
 	
@@ -15,6 +22,8 @@ public class Movie extends EffectStandard {
 	public static final int LEFT = 13;
 	
 	public static final int RIGHT = 14;
+	
+	private final List<ActionListener> actionListeners = new ArrayList<ActionListener>();
 	
 	private final Timer timer;
 	
@@ -46,6 +55,24 @@ public class Movie extends EffectStandard {
 		this.speed = speed;
 		this.jump = jump;
 		this.passage = passage;
+	}
+	
+	public void addActionListener( ActionListener actionListener ) {		
+		if ( actionListener != null ) {
+			actionListeners.add( actionListener );
+		}
+	}
+	
+	public void removeActionListener( ActionListener actionListener ) {		
+		if ( actionListener != null ) {
+			actionListeners.remove( actionListener );
+		}
+	}
+	
+	private void fireActionListener( String command ) {		
+		for ( ActionListener a : actionListeners ) {
+			a.actionPerformed( new ActionEvent( this, 0, command ) );
+		}
 	}
 	
 	public int getDirection() {
@@ -131,13 +158,19 @@ public class Movie extends EffectStandard {
 	public void doStart() {
 		if ( timer != null && !timer.isRunning() ) {
 			indexPassage = 0;
+			
+			fireActionListener( START );
+			
 			timer.start();
 		}
 	}
 
 	public void doStop() {
 		if ( timer != null && timer.isRunning() ) {
+			
 			timer.stop();
+			
+			fireActionListener( STOP );
 		}
 	}
 
