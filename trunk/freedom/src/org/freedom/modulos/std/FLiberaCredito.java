@@ -84,7 +84,12 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
     private JButton btBusca = new JButton(Icone.novo("btExecuta.gif"));
     private Tabela tab = new Tabela();
     private JScrollPane spnTab = new JScrollPane(tab);
-	public FLiberaCredito() {
+    private ListaCampos lcVenda = new ListaCampos( this, "VD" );
+    public JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtDataVenda = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
+	private JTextFieldFK txtTipoVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
+
+    public FLiberaCredito() {
 		super();
 		setTitulo("Liberação de crédito");
 		setAtribos(10,10,680,430);
@@ -108,10 +113,21 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
     	txtCodTpCred.setTabelaExterna(lcTipoCred);
     	txtCodTpCred.setNomeCampo("CodTpCred");
     	
+		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, true ) );
+		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "Doc.", ListaCampos.DB_SI, false ) );
+		lcVenda.add( new GuardaCampo( txtDataVenda, "DtEmitVenda", "Data", ListaCampos.DB_SI, false ) );
+		lcVenda.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_FK, true ) );
+		lcVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo Venda", ListaCampos.DB_SI, false ) );
+		lcVenda.setReadOnly( true );
+		lcVenda.montaSql( false, "VENDA", "VD" );
+		txtCodVenda.setTabelaExterna( lcVenda );
+		txtCodVenda.setFK( true );
+		txtCodVenda.setNomeCampo( "CodVenda" );
+    	
  	 // Adicionando elementos no painel superior da tela (Cabeçalho)
  	    setPainel(pinCab,pnCliente);
 	    adicCampo(txtCodLib, 7, 20, 80, 20, "CodLCred", "Nº liberação", ListaCampos.DB_PK, true);
-		adicCampo(txtCodVenda, 90, 20, 77, 20, "CodVenda", "Pedido", ListaCampos.DB_SI, true);
+		adicCampo(txtCodVenda, 90, 20, 77, 20, "CodVenda", "Pedido", ListaCampos.DB_FK, true);
 		adicCampo(txtCodCli, 170, 20, 77, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, true);
 	    adicDescFK(txtRazCli, 250, 20, 200, 20, "RazCli", "Razão social do cliente");
 		adic(new JLabelPad("Cód.tp.créd."), 7, 40, 80, 20);
@@ -278,6 +294,7 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
         super.setConexao(cn);
 	    lcCli.setConexao(cn);
         lcTipoCred.setConexao(cn);
+        lcVenda.setConexao( cn );
 	}
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == btBusca) {
