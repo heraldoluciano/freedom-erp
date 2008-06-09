@@ -87,8 +87,9 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
     private ListaCampos lcVenda = new ListaCampos( this, "VD" );
     public JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 	private JTextFieldFK txtDataVenda = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
-	private JTextFieldFK txtTipoVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
-
+	private JTextFieldPad txtTipoVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	private JTextFieldPad txtTipoVenda1 = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
     public FLiberaCredito() {
 		super();
 		setTitulo("Liberação de crédito");
@@ -130,6 +131,7 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
 		adicCampo(txtCodVenda, 90, 20, 77, 20, "CodVenda", "Pedido", ListaCampos.DB_FK, true);
 		adicCampo(txtCodCli, 170, 20, 77, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, true);
 	    adicDescFK(txtRazCli, 250, 20, 200, 20, "RazCli", "Razão social do cliente");
+	    adicCampo( txtTipoVenda1, 457, 20, 50, 20, "TipoVenda", "Tipo", ListaCampos.DB_SI, true );
 		adic(new JLabelPad("Cód.tp.créd."), 7, 40, 80, 20);
 		adic(txtCodTpCred, 7, 60, 80, 20);
 		adicDescFK(txtDescTpCred, 90, 60, 197, 20, "DescTpCred", "Descrição do tipo de crédito");
