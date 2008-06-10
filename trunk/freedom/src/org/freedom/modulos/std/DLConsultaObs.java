@@ -57,11 +57,11 @@ public class DLConsultaObs extends FFDialogo implements ActionListener, TabelaSe
   private ListaCampos lcCliente = new ListaCampos(this);
   public DLConsultaObs(Component cOrig,ResultSet rs,Connection cn) {
   	super(cOrig);
-    setTitulo("Consulta de Observçes de clientes!");
-    setAtribos(300,300);
+    setTitulo("Consulta de Observções de clientes!");
+    setAtribos(300,350);
     
     c.add(spnTab,BorderLayout.CENTER);
-	c.add(pinConsulta,BorderLayout.SOUTH);
+	c.add(pinConsulta,BorderLayout.NORTH);
     
     txtCodCli.setAtivo(false);
     txaObs.setEditable(false);
