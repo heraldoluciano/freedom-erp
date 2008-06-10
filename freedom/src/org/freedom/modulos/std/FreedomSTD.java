@@ -265,6 +265,8 @@ public class FreedomSTD extends AplicativoPD {
 		addBotao( "btEstoque.gif", "Consulta estoque", "Consulta", 700300000, FConsulta.class );
 		addBotao( "btProduto.gif", "Cadastro de produtos", "Produtos", 100130070, FProduto.class );
 		addBotao( "btEstProduto.gif", "Consulta produto", "Consulta produto", 700400000, FConsProd.class );
+		addBotao( "btAprovaOrc2.gif", "Liberação de crédito", "Liberação de crédito", 601100000, FLiberaCredito.class );
+		
 		// addBotao("btEmprestimo.gif","Cadastro de similaridades",100120080);
 
 		ajustaMenu();

@@ -655,7 +655,7 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 
 		super();
 		setTitulo( "Ficha cadastral/Crédito por cliente" );
-		setAtribos( 10, 10, 650, 470 );
+		setAtribos( 10, 10, 650, 540 );
 
 		txtFoneCli.setMascara( JTextFieldPad.MC_FONE );
 		txtFoneCob.setMascara( JTextFieldPad.MC_FONE );
