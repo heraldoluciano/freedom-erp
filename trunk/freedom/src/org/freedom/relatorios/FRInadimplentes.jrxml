@@ -149,7 +149,7 @@ IT.CODFILIAL=R.CODFILIAL  ORDER BY IT.DTVENCITREC,C.RAZCLI]]></queryString>
 					<reportElement
 						x="346"
 						y="5"
-						width="130"
+						width="121"
 						height="12"
 						key="staticText-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -160,9 +160,9 @@ IT.CODFILIAL=R.CODFILIAL  ORDER BY IT.DTVENCITREC,C.RAZCLI]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="478"
+						x="468"
 						y="5"
-						width="59"
+						width="69"
 						height="12"
 						key="staticText-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -263,7 +263,7 @@ IT.CODFILIAL=R.CODFILIAL  ORDER BY IT.DTVENCITREC,C.RAZCLI]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="476"
+						x="466"
 						y="0"
 						width="0"
 						height="20"
@@ -435,7 +435,7 @@ IT.CODFILIAL=R.CODFILIAL  ORDER BY IT.DTVENCITREC,C.RAZCLI]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{DOCREC}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DOCREC}.toString().trim() + "-" + $F{NPARCITREC}.toString().trim()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -480,7 +480,7 @@ IT.CODFILIAL=R.CODFILIAL  ORDER BY IT.DTVENCITREC,C.RAZCLI]]></queryString>
 					<reportElement
 						x="346"
 						y="3"
-						width="130"
+						width="121"
 						height="12"
 						key="textField-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -491,16 +491,16 @@ IT.CODFILIAL=R.CODFILIAL  ORDER BY IT.DTVENCITREC,C.RAZCLI]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="478"
+						x="468"
 						y="3"
-						width="59"
+						width="69"
 						height="12"
 						key="textField-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[( $F{FONECLI} != null ? $F{FONECLI}.substring(0,4) + "-" + $F{FONECLI}.substring(4,8) : "" )]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[( $F{FONECLI} != null ? "( " + $F{DDDCLI}.substring(0,4)+" )"+ $F{FONECLI}.substring(0,4) + "-" + $F{FONECLI}.substring(4,8) : "" )]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -522,7 +522,7 @@ IT.CODFILIAL=R.CODFILIAL  ORDER BY IT.DTVENCITREC,C.RAZCLI]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="476"
+						x="466"
 						y="0"
 						width="0"
 						height="19"
