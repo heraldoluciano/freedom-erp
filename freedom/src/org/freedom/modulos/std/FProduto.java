@@ -54,7 +54,7 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.CustosProd;
+import org.freedom.componentes.ObjetoCustosProd;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -1635,7 +1635,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	public void afterCarrega( CarregaEvent cevt ) {
 		try {		
 			buscaEstoque();
-			CustosProd custos = new CustosProd(txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(), con );
+			ObjetoCustosProd custos = new ObjetoCustosProd(txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(), con );
 			
 			txtCustoPEPSProd.setVlrBigDecimal( custos.getCustoPEPSProd() );
 			txtCustoMPMProd.setVlrBigDecimal( custos.getCustoMPMProd() );
