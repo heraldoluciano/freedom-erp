@@ -53,7 +53,7 @@ public class FDLabel extends JLabel implements Component {
 		
 		getField().setValue( value );		
 		
-		super.setText( String.valueOf( value ) );		
+		super.setText( value.toString() );		
 	}
 
 	@Override
