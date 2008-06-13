@@ -8,9 +8,9 @@
  * Classe:
  * @(#)FPrefereGeral.java <BR>
  * 
- * Este programa ï¿½ licenciado de acordo com a LPG-PC (Licenï¿½a Pï¿½blica Geral para Programas de Computador), <BR>
+ * Este programa é licenciado de acordo com a LPG-PC (Licenï¿½a Pï¿½blica Geral para Programas de Computador), <BR>
  * versï¿½o 2.1.0 ou qualquer versï¿½o posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAï¿½ï¿½ES, DISTRIBUIï¿½ï¿½ES e REPRODUï¿½ï¿½ES deste Programa. <BR>
+ * A LPG-PC deve acompanhar todas PUBLICAï¿½ï¿½ES, DISTRIBUIï¿½ï¿½ES e REPRODUÇÕES deste Programa. <BR>
  * Caso uma cï¿½pia da LPG-PC nï¿½o esteja disponï¿½vel junto com este Programa, vocï¿½ pode contatar <BR>
  * o LICENCIADOR ou entï¿½o pegar uma cï¿½pia em: <BR>
  * Licenï¿½a: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
@@ -18,7 +18,7 @@
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Tela de cadastro das preferï¿½ncias do sistema. Esse cadastro ï¿½ utilizado para parametrizar o sistema de acordo com as necessidades especï¿½ficas da empresa.
+ * Tela de cadastro das preferências do sistema. Esse cadastro ï¿½ utilizado para parametrizar o sistema de acordo com as necessidades especï¿½ficas da empresa.
  * 
  */
 
@@ -97,9 +97,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private JTextFieldFK txtDescMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodTabJuros = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
+	
 	private JTextFieldFK txtDescTabJuros = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldPad txtCodHistRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescHistRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+
+	private JTextFieldPad txtCodHistPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescHistPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+	
 	private JTextFieldPad txtCodMarca = new JTextFieldPad( JTextFieldPad.TP_STRING, 6, 0 );
 
 	private JTextFieldFK txtDescMarca = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -387,6 +395,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private ListaCampos lcMoeda = new ListaCampos( this, "MO" );
 
 	private ListaCampos lcTabJuros = new ListaCampos( this, "TJ" );
+	
+	private ListaCampos lcHistRec = new ListaCampos( this, "HISTREC" );
+	
+	private ListaCampos lcHistPag = new ListaCampos( this, "HISTPAG" );
 
 	private ListaCampos lcMarca = new ListaCampos( this, "MC" );
 
@@ -449,6 +461,20 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		lcMoeda.setReadOnly( true );
 		txtCodMoeda.setTabelaExterna( lcMoeda );
 
+		lcHistRec.add( new GuardaCampo( txtCodHistRec, "CodHist", "Cód.Hist.Rec.", ListaCampos.DB_PK, false ) );
+		lcHistRec.add( new GuardaCampo( txtDescHistRec, "DescHist", "Descrição do histórico", ListaCampos.DB_SI, false ) );
+		lcHistRec.montaSql( false, "HISTPAD", "FN" );
+		lcHistRec.setQueryCommit( false );
+		lcHistRec.setReadOnly( true );
+		txtCodHistRec.setTabelaExterna( lcHistRec );
+
+		lcHistPag.add( new GuardaCampo( txtCodHistPag, "CodHist", "Cód.Hist.Pag.", ListaCampos.DB_PK, false ) );
+		lcHistPag.add( new GuardaCampo( txtDescHistPag, "DescHist", "Descrição do histórico", ListaCampos.DB_SI, false ) );
+		lcHistPag.montaSql( false, "HISTPAD", "FN" );
+		lcHistPag.setQueryCommit( false );
+		lcHistPag.setReadOnly( true );
+		txtCodHistPag.setTabelaExterna( lcHistPag );
+		
 		lcTabJuros.add( new GuardaCampo( txtCodTabJuros, "CodTbj", "Cód.tb.jur.", ListaCampos.DB_PK, false ) );
 		lcTabJuros.add( new GuardaCampo( txtDescTabJuros, "DescTbJ", "Descrição da tabela de juros", ListaCampos.DB_SI, false ) );
 		lcTabJuros.montaSql( false, "TBJUROS", "FN" );
@@ -944,13 +970,20 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDB( rgLibCred, 7, 70, 310, 80, "PrefCred", "Verificação de crédito", true );
 
 		adic( lbFinOpcoes, 17, 150, 70, 20 );
-		adic( lbFinCont, 7, 160, 393, 140 );
+		adic( lbFinCont, 7, 160, 425, 220 );
 		adicDB( cbAltItReceberImp, 17, 175, 310, 20, "AtBancoImpBol", "", true );
 		adicDB( cbLibGeral, 17, 200, 310, 20, "LCredGlobal", "", true );
 		adicDB( cbJurosPosCalc, 17, 225, 310, 20, "JurosPosCalc", "", true );
-		adicCampo( txtCodTabJuros, 20, 265, 80, 20, "CodTbj", "Cód.tab.jr.", ListaCampos.DB_FK, txtDescTabJuros, false );
-		adicDescFK( txtDescTabJuros, 100, 265, 286, 20, "DescTbj", "Descrição da tabela de juros." );
 		
+		adicCampo( txtCodTabJuros, 20, 265, 80, 20, "CodTbj", "Cód.tab.jr.", ListaCampos.DB_FK, txtDescTabJuros, false );
+		adicDescFK( txtDescTabJuros, 100, 265, 320, 20, "DescTbj", "Descrição da tabela de juros." );
+		
+		adicCampo( txtCodHistRec, 20, 305, 80, 20, "CodHistRec", "Cód.Hist.Rec.", ListaCampos.DB_FK, txtDescHistRec, false );
+		adicDescFK( txtDescHistRec, 100, 305, 320, 20, "DescHist", "Descrição do histórico padrão para contas a receber" );
+
+		adicCampo( txtCodHistPag, 20, 345, 80, 20, "CodHistPag", "Cód.Hist.Pag.", ListaCampos.DB_FK, txtDescHistPag, false );
+		adicDescFK( txtDescHistPag, 100, 345, 320, 20, "DescHist", "Descrição do histórico padrão para contas a pagar" );
+
 		// Contabil
 
 		setPainel( pinCtb );
@@ -1043,6 +1076,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 		setListaCampos( false, "PREFERE1", "SG" );
 
+		txtCodHistRec.setNomeCampo( "CodHist" ); // Acerto o nome para que o
+		// ListaCampos naum confunda
+		// com a FK.
+		
+		txtCodHistPag.setNomeCampo( "CodHist" ); // Acerto o nome para que o
+		// ListaCampos naum confunda
+		// com a FK.
+		
 		txtCodTipoMov2.setNomeCampo( "CodTipoMov" ); // Acerto o nome para que o
 		// ListaCampos naum confunda
 		// com a FK.
@@ -1253,6 +1294,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		lcPDV.setConexao( cn );
 		lcPrefere3.setConexao( cn );
 		lcMens.setConexao( cn );
+		lcHistPag.setConexao( cn );
+		lcHistRec.setConexao( cn );
 		lcCampos.carregaDados();
 
 	}
