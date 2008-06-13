@@ -1,5 +1,5 @@
 /**
- * @version 05/2007 <BR>
+ * @version 05/2008 <BR>
  * @author Setpoint Informática Ltda.<BR>
  * @author Alex Rodrigues<BR>
  * 
@@ -7,7 +7,7 @@
  * 
  * Pacote: org.freedom.modulos.rep <BR>
  * Classe:
- * @(#)RPNota.java <BR>
+ * @(#)RPFaturamento.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
