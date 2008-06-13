@@ -1,5 +1,7 @@
 package org.freedom.infra.beans;
 
+import java.math.BigDecimal;
+
 import org.freedom.infra.util.text.Mask;
 
 
@@ -47,19 +49,19 @@ public class Field {
 		return integer ;
 	}
 
-	public Float toFloat() {
+	public BigDecimal toBigDecimal() {
 		
-		Float floatvalue = null;
+		BigDecimal bigdecimalvalue = null;
 		try {
 			if ( value != null ) {
-				floatvalue = new Float( value.toString().replace( "\\.", "" ).replace( ',', '.' ) );
+				bigdecimalvalue = new BigDecimal( value.toString().replace( "\\.", "" ).replace( ',', '.' ) );
 			}
 		}
-		catch ( NumberFormatException e ) {
+		catch ( Exception e ) {
 			e.printStackTrace();
 		}
 		
-		return floatvalue ;
+		return bigdecimalvalue ;
 	}
 
 }
