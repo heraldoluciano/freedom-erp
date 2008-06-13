@@ -195,7 +195,7 @@ public class FreedomSTD extends AplicativoPD {
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Planejamento", "Planejamento", 'P', 600400000, 1, true, FPlanejamento.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Centro de custo", "Centro de Custos", 'C', 600500000, 1, true, FCentroCusto.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Contas", "Contas", 'o', 600600000, 1, true, FConta.class );
-			addOpcao( 600000000, TP_OPCAO_ITEM, "Historico", "Historico", 't', 600700000, 1, true, FHistPad.class );
+			addOpcao( 600000000, TP_OPCAO_ITEM, "Histórico", "Histórico", 't', 600700000, 1, true, FHistPad.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Lançamentos", "Lançamentos", 'L', 600800000, 1, true, FLanca.class );
 			addSeparador( 600000000 );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Tipo de crédito", "Tipo de crédito", 'L', 600900000, 1, true, FTipoCred.class );
