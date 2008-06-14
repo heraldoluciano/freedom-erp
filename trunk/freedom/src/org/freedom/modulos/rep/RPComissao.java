@@ -27,31 +27,45 @@ package org.freedom.modulos.rep;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.FDialogo;
 import org.freedom.telas.FFilho;
+import org.freedom.telas.FPrinterJob;
 
-public class RPComissao extends FFilho implements ActionListener {
+public class RPComissao extends FFilho implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -60,6 +74,14 @@ public class RPComissao extends FFilho implements ActionListener {
 	private final JPanelPad panelCampos = new JPanelPad();
 	
 	private final JPanelPad panelTabela = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private final JPanelPad panelLegenda = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 0, 3 ) );
+	
+	private final JPanelPad panelPrint = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
+
+	private final JPanelPad panelCenterRodape = new JPanelPad( JPanelPad.TP_JPANEL, new FlowLayout( FlowLayout.CENTER, 0, 0 ) );
+	
+	private final JPanelPad panelRodape;
 
 	private final JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
@@ -76,8 +98,20 @@ public class RPComissao extends FFilho implements ActionListener {
 	private final JCheckBoxPad cbPagas = new JCheckBoxPad( "Pagas", "S", "N" );
 	
 	private final JButton btPesquisar = new JButton( "Pesquisar", Icone.novo( "btObs.gif" ) );
+
+	private final JButton btImp = new JButton( Icone.novo( "btImprime.gif" ) );
+
+	private final JButton btPrevimp = new JButton( Icone.novo( "btPrevimp.gif" ) );
 	
 	private final Tabela tabConsulta = new Tabela();
+
+	private final ImageIcon imgNaoPago = Icone.novo( "clVencido.gif" );
+
+	private final ImageIcon imgPago = Icone.novo( "clPago.gif" );
+
+	private final ImageIcon imgPagoParcial = Icone.novo( "clPagoParcial.gif" );
+
+	private ImageIcon imgColuna = null;
 	
 	private final ListaCampos lcVendedor = new ListaCampos( this, "" );
 	
@@ -87,10 +121,10 @@ public class RPComissao extends FFilho implements ActionListener {
 		super( false );
 		setTitulo( "Manutenção de Comissões" );
 		setAtribos( 50, 50, 700, 400 );
-		
+
+		panelRodape = adicBotaoSair();
 		montaListaCampos();		
 		montaTela();
-		adicBotaoSair();
 		
 		Calendar cal = Calendar.getInstance();			
 		txtDtFim.setVlrDate( cal.getTime() );		
@@ -98,6 +132,13 @@ public class RPComissao extends FFilho implements ActionListener {
 		txtDtIni.setVlrDate( cal.getTime() );	
 		
 		btPesquisar.addActionListener( this );
+		
+		btImp.setToolTipText( "Imprimir (Ctrl + I)" );
+		btPrevimp.setToolTipText( "Visualizar Impressão (Ctrl + P)" );
+		btImp.addActionListener( this );
+		btPrevimp.addActionListener( this );
+		
+		tabConsulta.addMouseListener( this );
 	}
 	
 	private void montaListaCampos() {
@@ -159,6 +200,20 @@ public class RPComissao extends FFilho implements ActionListener {
 		panelConsulta.add( panelTabela, BorderLayout.CENTER );
 				
 		pnCliente.add( panelConsulta, BorderLayout.CENTER );
+
+
+		panelLegenda.add( new JLabelPad( "Não Pago", imgNaoPago, SwingConstants.CENTER ) );
+		panelLegenda.add( new JLabelPad( "Pago Parcial", imgPagoParcial, SwingConstants.CENTER ) );
+		panelLegenda.add( new JLabelPad( "Pago", imgPago, SwingConstants.CENTER ) );
+		panelRodape.add( panelLegenda, BorderLayout.WEST );		
+
+		panelPrint.setPreferredSize( new Dimension( 80, 28 ) );
+		panelPrint.add( btImp );
+		panelPrint.add( btPrevimp );
+		
+		panelCenterRodape.add( panelPrint );
+
+		panelRodape.add( panelCenterRodape, BorderLayout.CENTER );
 		
 		tabConsulta.adicColuna( "" );
 		tabConsulta.adicColuna( "Pedido" );
@@ -167,16 +222,14 @@ public class RPComissao extends FFilho implements ActionListener {
 		tabConsulta.adicColuna( "Pago" );
 		tabConsulta.adicColuna( "Em aberto" );
 		tabConsulta.adicColuna( "Pagamento" );
-		tabConsulta.adicColuna( "" );
 		
-		tabConsulta.setTamColuna( 30, EConsulta.STATUS.ordinal() );
-		tabConsulta.setTamColuna( 80, EConsulta.PEDIDO.ordinal() );
-		tabConsulta.setTamColuna( 40, EConsulta.ITEM.ordinal() );
+		tabConsulta.setTamColuna( 20, EConsulta.STATUS.ordinal() );
+		tabConsulta.setTamColuna( 100, EConsulta.PEDIDO.ordinal() );
+		tabConsulta.setTamColuna( 60, EConsulta.ITEM.ordinal() );
 		tabConsulta.setTamColuna( 120, EConsulta.VALORCOMISS.ordinal() );
 		tabConsulta.setTamColuna( 120, EConsulta.VALORPAGO.ordinal() );
 		tabConsulta.setTamColuna( 120, EConsulta.VALORABERTO.ordinal() );
 		tabConsulta.setTamColuna( 120, EConsulta.DATA.ordinal() );
-		tabConsulta.setTamColuna( 30, EConsulta.SEL.ordinal() );
 	}
 	
 	private void carregaTabela() {
@@ -194,33 +247,72 @@ public class RPComissao extends FFilho implements ActionListener {
 			}
 		}
 		
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
 		try {
 			
 			tabConsulta.limpa();
 			
-			/*StringBuilder sql = new StringBuilder();
+			String status = "";
 			
-			sql.append( "SELECT P.CODPED, P.DATAPED, P.VLRLIQPED " );
-			sql.append( "FROM RPPEDIDO P " );
-			sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.DATAPED BETWEEN ? AND ? " );
-			sql.append( " ORDER BY DATAPED, CODPED, VLRLIQPED DESC " );
+			if ( "S".equals( cbNaoPagas.getVlrString() ) ) {
+				status += "'PE'";
+			}
+			if ( "S".equals( cbPagasParcial.getVlrString() ) ) {
+				status += status.length()>0 ? ",'PP'" : "'PP'";
+			}
+			if ( "S".equals( cbPagas.getVlrString() ) ) {
+				status += status.length()>0 ? ",'CF'" : "'CF'";
+			}
 			
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "RPCOTMOEDA" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
-			rs = ps.executeQuery();
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append( "SELECT " );
+			sql.append( "  C.CODPED, C.CODITPED, C.STATUSCOMISS," );
+			sql.append( "  C.VLRCOMISS, COALESCE(C.VLRPAGO,0) VLRPAGO, C.VLRCOMISS-COALESCE(C.VLRPAGO,0) VLRABERTO, C.DTPAGO " );
+			sql.append( "FROM RPCOMISSAO C, RPFATURAMENTO F " );
+			sql.append( "WHERE " );
+			sql.append( "  C.CODEMP=? AND C.CODFILIAL=? AND C.CODEMPVD=C.CODEMP AND C.CODFILIALVD=C.CODFILIAL AND C.CODVEND=? AND " );
+			sql.append( "  F.CODEMP=C.CODEMP AND F.CODFILIAL=C.CODFILIAL AND F.CODPED=C.CODPED AND F.CODITPED=C.CODITPED AND " );
+			sql.append( "  STATUSCOMISS IN (" + status + ") AND (" );
+			sql.append( "  C.DTPAGO BETWEEN ? AND ? " );
+			if ( "S".equals( cbNaoPagas.getVlrString() ) ) {
+				sql.append( "  OR F.DTFATURADO BETWEEN ? AND ? " );
+			}
+			sql.append( "  ) " );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			int param=1;
+			ps.setInt( param++, AplicativoRep.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "RPCOMISSAO" ) );
+			ps.setInt( param++, txtCodVend.getVlrInteger() );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
+			if ( "S".equals( cbNaoPagas.getVlrString() ) ) {
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
+			}
+			
+			ResultSet rs = ps.executeQuery();
 			
 			for ( int i=0; rs.next(); i++ ) {
 				
+				if ( "PE".equals( rs.getString( "STATUSCOMISS" ) ) ) {
+					imgColuna = imgNaoPago;
+				}
+				else if ( "PP".equals( rs.getString( "STATUSCOMISS" ) ) ) {
+					imgColuna = imgPagoParcial;
+				}
+				else if ( "CF".equals( rs.getString( "STATUSCOMISS" ) ) ) {
+					imgColuna = imgPago;
+				}
+				
 				tabConsulta.adicLinha();
+				tabConsulta.setValor( imgColuna, i, EConsulta.STATUS.ordinal() );
 				tabConsulta.setValor( rs.getInt( "CODPED" ), i, EConsulta.PEDIDO.ordinal() );
-				tabConsulta.setValor( rs.getDate( "DATAPED" ), i, EConsulta.EMISSAO.ordinal() );
-				tabConsulta.setValor( rs.getBigDecimal( "VLRLIQPED" ), i, EConsulta.VALOR.ordinal() );				
+				tabConsulta.setValor( rs.getInt( "CODITPED" ), i, EConsulta.ITEM.ordinal() );
+				tabConsulta.setValor( rs.getBigDecimal( "VLRCOMISS" ).setScale( AplicativoRep.casasDecFin, BigDecimal.ROUND_HALF_UP ), i, EConsulta.VALORCOMISS.ordinal() );	
+				tabConsulta.setValor( rs.getBigDecimal( "VLRPAGO" ).setScale( AplicativoRep.casasDecFin, BigDecimal.ROUND_HALF_UP ), i, EConsulta.VALORPAGO.ordinal() );	
+				tabConsulta.setValor( rs.getBigDecimal( "VLRABERTO" ).setScale( AplicativoRep.casasDecFin, BigDecimal.ROUND_HALF_UP ), i, EConsulta.VALORABERTO.ordinal() );	
+				tabConsulta.setValor( rs.getDate( "DTPAGO" )!=null?Funcoes.dateToStrDate( rs.getDate( "DTPAGO" ) ):null, i, EConsulta.DATA.ordinal() );		
 			}
 			
 			rs.close();
@@ -228,21 +320,164 @@ public class RPComissao extends FFilho implements ActionListener {
 			
 			if ( ! con.getAutoCommit() ) {
 				con.commit();
-			}*/
+			}
 			
 		} catch ( Exception e ) {
-			Funcoes.mensagemErro( this, "erro ao carregar tabela!" , true, con, e );
 			e.printStackTrace();
+			Funcoes.mensagemErro( this, "erro ao carregar tabela!" , true, con, e );
 		}		
+	}
+	
+	private void alteraComissao() {
+		
+		if ( tabConsulta.getLinhaSel() >= 0 ) {
+			Integer codped = (Integer) tabConsulta.getValor( tabConsulta.getLinhaSel(), EConsulta.PEDIDO.ordinal() );
+			Integer item = (Integer) tabConsulta.getValor( tabConsulta.getLinhaSel(), EConsulta.ITEM.ordinal() );
+			
+			DLAlterComiss dl = new DLAlterComiss();
+			dl.setVisible( true );
+			
+			if ( dl.OK ) {
+				
+				try {
+					
+					StringBuilder sql = new StringBuilder();
+					
+					sql.append( "UPDATE RPCOMISSAO SET " );
+					sql.append( "  VLRPAGO=?, DTPAGO=? " );
+					sql.append( "WHERE " );
+					sql.append( "  CODEMP=? AND CODFILIAL=? AND CODPED=? AND CODITPED=? AND " );
+					sql.append( "  CODEMPVD=CODEMP AND CODFILIALVD=CODFILIAL AND CODVEND=? " );
+					
+					
+					PreparedStatement ps = con.prepareStatement( sql.toString() );
+					int param=1;
+					ps.setBigDecimal( param++, dl.getValor() );
+					if ( dl.getData()!= null ) {
+						ps.setDate( param++, Funcoes.dateToSQLDate( dl.getData() ) );
+					} else {
+						ps.setNull( param++, Types.DATE );
+					}
+					ps.setInt( param++, AplicativoRep.iCodEmp );
+					ps.setInt( param++, ListaCampos.getMasterFilial( "RPCOMISSAO" ) );
+					ps.setInt( param++, codped );
+					ps.setInt( param++, item );
+					ps.setInt( param++, txtCodVend.getVlrInteger() );
+					ps.executeUpdate();
+					ps.close();
+					
+					if ( ! con.getAutoCommit() ) {
+						con.commit();
+					}
+					
+					carregaTabela();
+				} catch ( Exception e ) {
+					e.printStackTrace();
+					Funcoes.mensagemErro( this, "erro ao alterar comissão!" , true, con, e );
+				}		
+			}
+			
+			dl.dispose();
+		}
+	}
+	
+	public void imprimir( boolean visualizar ) {
+
+		try {
+			
+			String status = "";
+			
+			if ( "S".equals( cbNaoPagas.getVlrString() ) ) {
+				status += "'PE'";
+			}
+			if ( "S".equals( cbPagasParcial.getVlrString() ) ) {
+				status += status.length()>0 ? ",'PP'" : "'PP'";
+			}
+			if ( "S".equals( cbPagas.getVlrString() ) ) {
+				status += status.length()>0 ? ",'CF'" : "'CF'";
+			}
+			
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append( "SELECT " );
+			sql.append( "  C.CODPED, C.CODITPED, C.STATUSCOMISS," );
+			sql.append( "  C.VLRCOMISS, COALESCE(C.VLRPAGO,0) VLRPAGO, C.VLRCOMISS-COALESCE(C.VLRPAGO,0) VLRABERTO, C.DTPAGO " );
+			sql.append( "FROM RPCOMISSAO C, RPFATURAMENTO F " );
+			sql.append( "WHERE " );
+			sql.append( "  C.CODEMP=? AND C.CODFILIAL=? AND C.CODEMPVD=C.CODEMP AND C.CODFILIALVD=C.CODFILIAL AND C.CODVEND=? AND " );
+			sql.append( "  F.CODEMP=C.CODEMP AND F.CODFILIAL=C.CODFILIAL AND F.CODPED=C.CODPED AND F.CODITPED=C.CODITPED AND " );
+			sql.append( "  STATUSCOMISS IN (" + status + ") AND (" );
+			sql.append( "  C.DTPAGO BETWEEN ? AND ? " );
+			if ( "S".equals( cbNaoPagas.getVlrString() ) ) {
+				sql.append( "  OR F.DTFATURADO BETWEEN ? AND ? " );
+			}
+			sql.append( "  ) " );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			int param=1;
+			ps.setInt( param++, AplicativoRep.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "RPCOMISSAO" ) );
+			ps.setInt( param++, txtCodVend.getVlrInteger() );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
+			if ( "S".equals( cbNaoPagas.getVlrString() ) ) {
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
+			}
+			
+			ResultSet rs = ps.executeQuery();
+			
+			HashMap<String,Object> hParam = new HashMap<String, Object>();
+
+			hParam.put( "CODEMP", AplicativoRep.iCodEmp );
+			hParam.put( "NOMEVEND", txtNomeVend.getVlrString() );
+			hParam.put( "DTINI", txtDtIni.getVlrDate() );
+			hParam.put( "DTFIM", txtDtFim.getVlrDate() );
+			hParam.put( "REPORT_CONNECTION", con );
+			
+			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpcomissoes.jasper", "COMISSÕES", null, rs, hParam, this );
+
+			if ( visualizar ) {
+				dlGr.setVisible( true );
+			}
+			else {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			}
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+
 	}
 
 	public void actionPerformed( ActionEvent e ) {
 
-		if ( e.getSource() == btPesquisar ) {
-			
+		if ( e.getSource() == btPesquisar ) {			
 			carregaTabela();
 		}
+		else if ( e.getSource() == btImp ) {			
+			imprimir( false );
+		}
+		else if ( e.getSource() == btPrevimp ) {			
+			imprimir( true );
+		}
 	}
+
+	public void mouseClicked( MouseEvent e ) {
+		
+		if ( e.getClickCount() == 2 && e.getSource() == tabConsulta ) {
+			
+			alteraComissao();
+		}
+	}
+
+	public void mouseEntered( MouseEvent e ) { }
+
+	public void mouseExited( MouseEvent e ) { }
+
+	public void mousePressed( MouseEvent e ) { }
+
+	public void mouseReleased( MouseEvent e ) { }
 
 	public void setConexao( Connection cn ) {
 
@@ -260,5 +495,39 @@ public class RPComissao extends FFilho implements ActionListener {
 		VALORABERTO,
 		DATA,
 		SEL
+	}
+	
+	private class DLAlterComiss extends FDialogo {
+
+		private static final long serialVersionUID = 1L;
+		
+		private final JTextFieldPad txtValor = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, AplicativoRep.casasDecFin );
+		
+		private final JTextFieldPad txtData = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+				
+		
+		public DLAlterComiss() {
+			
+			super();
+			setAtribos( 230, 180 );
+			
+			Date data = null;
+			data = Funcoes.strDateToDate( (String) tabConsulta.getValor( tabConsulta.getLinhaSel(), EConsulta.DATA.ordinal() ) );
+			txtValor.setVlrBigDecimal( (BigDecimal) tabConsulta.getValor( tabConsulta.getLinhaSel(), EConsulta.VALORPAGO.ordinal() ) );
+			txtData.setVlrDate( data != null ? data : Calendar.getInstance().getTime() );
+			
+			adic( new JLabel( "Valor da comissão" ), 10, 10, 190, 20 );
+			adic( txtValor, 10, 30, 200, 20 );
+			adic( new JLabel( "Data da comissão" ), 10, 50, 190, 20 );
+			adic( txtData, 10, 70, 200, 20 );
+		}
+		
+		private BigDecimal getValor() { 
+			return txtValor.getVlrBigDecimal();
+		}
+		
+		private Date getData() { 
+			return txtData.getVlrString().trim().length()>0 ? txtData.getVlrDate() : null;
+		}
 	}
 }
