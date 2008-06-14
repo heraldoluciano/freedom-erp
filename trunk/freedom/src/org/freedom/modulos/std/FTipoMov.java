@@ -133,6 +133,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 	private JCheckBoxPad chbVlrMFinTipoMov = new JCheckBoxPad( "Permitir valor das parcelas menor que o total?", "S", "N" );
 
+	private JCheckBoxPad chbMComisTipoMov = new JCheckBoxPad( "Múltiplos comissionados ?", "S", "N" );
+	
 	private Navegador navRestricoes = new Navegador( true );
 
 	private ListaCampos lcRestricoes = new ListaCampos( this, "" );
@@ -157,7 +159,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 		super();
 		setTitulo( "Cadastro de Tipos de Movimento" );
-		setAtribos( 50, 40, 427, 580 );
+		setAtribos( 50, 40, 720, 400 );
 
 		lcRestricoes.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcRestricoes );
@@ -235,34 +237,35 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		adicTab( "Geral", pinCamposGeral );
 
 		adicCampo( txtCodTipoMov, 7, 20, 80, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescTipoMov, 90, 20, 307, 20, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, true );
-		adicCampo( txtCodModNota, 7, 60, 80, 20, "CodModNota", "Cód.mod.nota", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescModNota, 90, 60, 307, 20, "DescModNota", "Descrição do modelo de nota" );
-		adicCampo( txtCodSerie, 7, 100, 80, 20, "Serie", "Série", ListaCampos.DB_FK, txtDescSerie, true );
-		adicDescFK( txtDescSerie, 90, 100, 307, 20, "DocSerie", "Documento atual" );
-		adicCampo( txtCodTab, 7, 140, 80, 20, "CodTab", "Cód.tp.pc.", ListaCampos.DB_FK, txtDescTab, false );
-		adicDescFK( txtDescTab, 90, 140, 307, 20, "DescTab", "Descrição da tab. de preços" );
-		adicCampo( txtCodTipoMov2, 7, 180, 80, 20, "CodTipoMovTM", "Cód.mov.nf.", ListaCampos.DB_FK, txtDescTipoMov2, false );
-		adicDescFK( txtDescTipoMov2, 90, 180, 307, 20, "DescTipoMov", "Descrição do movimento para nota." );
-		adicDB( rgESTipoMov, 7, 220, 290, 30, "ESTipoMov", "Fluxo", true );
-		adicDB( rgTipoFrete, 307, 220, 90, 60, "CTipoFrete", "Tipo frete", false );
-		adicDB( chbFiscalTipoMov, 7, 270, 100, 20, "FiscalTipoMov", "Fiscal", true );
-		adicDB( chbEstoqTipoMov, 128, 270, 80, 20, "EstoqTipoMov", "Estoque", true );
-		adicDB( chbSomaTipoMov, 238, 270, 69, 20, "SomaVdTipoMov", "Financeiro", true );
-		adicDB( cbTipoMov, 7, 315, 290, 30, "TipoMov", "Tipo de movimento", true );
-		adicCampo( txtEspecieTipomov, 305, 320, 92, 24, "EspecieTipomov", "Espécie", ListaCampos.DB_SI, true );
-		adicDB( chbImpPedTipoMov, 16, 390, 55, 20, "ImpPedTipoMov", "Imp.ped.", true );
-		adicDB( chbImpNfTipoMov, 74, 390, 55, 20, "ImpNfTipoMov", "Imp.NF", true );
-		adicDB( chbImpBolTipoMov, 132, 390, 55, 20, "ImpBolTipoMov", "Imp.bol.", true );
-		adicDB( chbImpRecTipoMov, 190, 390, 55, 20, "ImpRecTipoMov", "Imp.rec.", true );
-		adicDB( chbReImpNfTipoMov, 248, 390, 55, 20, "ReImpNfTipoMov", "Reimp.NF", true );
-		adicDB( chbSeqNfTipoMov, 306, 390, 70, 20, "SeqNfTipoMov", "Aloca Nº.NF", true );
-		adicDB( chbVlrMFinTipoMov, 13, 430, 400, 20, "VlrMFinTipoMov", "", true );
-		adicDB( chbRestritoTipoMov, 13, 450, 240, 20, "TUSUTIPOMOV", "", true );
+		adicCampo( txtDescTipoMov, 90, 20, 250, 20, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, true );
+		adicCampo( txtCodModNota, 343, 20, 80, 20, "CodModNota", "Cód.mod.nota", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescModNota, 426, 20, 250, 20, "DescModNota", "Descrição do modelo de nota" );
+		adicCampo( txtCodSerie, 7, 60, 80, 20, "Serie", "Série", ListaCampos.DB_FK, txtDescSerie, true );
+		adicDescFK( txtDescSerie, 90, 60, 250, 20, "DocSerie", "Documento atual" );
+		adicCampo( txtCodTab, 343, 60, 80, 20, "CodTab", "Cód.tp.pc.", ListaCampos.DB_FK, txtDescTab, false );
+		adicDescFK( txtDescTab, 426, 60, 250, 20, "DescTab", "Descrição da tab. de preços" );
+		adicCampo( txtCodTipoMov2, 7, 100, 80, 20, "CodTipoMovTM", "Cód.mov.nf.", ListaCampos.DB_FK, txtDescTipoMov2, false );
+		adicDescFK( txtDescTipoMov2, 90, 100, 250, 20, "DescTipoMov", "Descrição do movimento para nota." );
+		adicDB( rgESTipoMov, 343, 100, 333, 30, "ESTipoMov", "Fluxo", true );
+		adicDB( rgTipoFrete, 7, 140, 90, 50, "CTipoFrete", "Tipo frete", false );
+		adicDB( chbFiscalTipoMov, 107, 160, 60, 20, "FiscalTipoMov", "Fiscal", true );
+		adicDB( chbEstoqTipoMov, 178, 160, 60, 20, "EstoqTipoMov", "Estoque", true );
+		adicDB( chbSomaTipoMov, 268, 160, 70, 20, "SomaVdTipoMov", "Financeiro", true );
+		adicDB( cbTipoMov, 343, 155, 250, 30, "TipoMov", "Tipo de movimento", true );
+		adicCampo( txtEspecieTipomov, 596, 160, 80, 24, "EspecieTipomov", "Espécie", ListaCampos.DB_SI, true );
+		adicDB( chbImpPedTipoMov, 16, 230, 55, 20, "ImpPedTipoMov", "Imp.ped.", true );
+		adicDB( chbImpNfTipoMov, 74, 230, 55, 20, "ImpNfTipoMov", "Imp.NF", true );
+		adicDB( chbImpBolTipoMov, 132, 230, 55, 20, "ImpBolTipoMov", "Imp.bol.", true );
+		adicDB( chbImpRecTipoMov, 190, 230, 55, 20, "ImpRecTipoMov", "Imp.rec.", true );
+		adicDB( chbReImpNfTipoMov, 248, 230, 55, 20, "ReImpNfTipoMov", "Reimp.NF", true );
+		adicDB( chbSeqNfTipoMov, 306, 230, 70, 20, "SeqNfTipoMov", "Aloca Nº.NF", true );
+		adicDB( chbVlrMFinTipoMov, 390, 200, 300, 20, "VlrMFinTipoMov", "", true );
+		adicDB( chbRestritoTipoMov, 390, 220, 240, 20, "TUSUTIPOMOV", "", true );
+		adicDB( chbMComisTipoMov, 390, 240, 240, 20, "MComisTipoMov", "", true );
 
 		lbInfoPadImp.setOpaque( true );
-		adic( lbInfoPadImp, 15, 353, 230, 15 );
-		adic( pinInfoPadImp, 7, 360, 390, 60 );
+		adic( lbInfoPadImp, 15, 193, 230, 15 );
+		adic( pinInfoPadImp, 7, 200, 380, 60 );
 		chbRestritoTipoMov.addCheckBoxListener( this );
 
 		// pinLbPadImp.adic(lbInfoPadImp, 0, 0, 220, 15);
@@ -310,6 +313,11 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 		if ( !bPrefs[ 0 ] ) {
 			chbEstoqTipoMov.setVlrString( "N" );
+		}
+		if ( bPrefs[ 0 ] ) {
+			chbMComisTipoMov.setVlrString( "S" );
+		} else {
+			chbMComisTipoMov.setVlrString( "N" );
 		}
 
 	}
@@ -412,12 +420,12 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 	private boolean[] prefs() {
 
-		boolean[] bRetorno = new boolean[ 1 ];
+		boolean[] bRetorno = new boolean[ 2 ];
 		String sSQL = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			sSQL = "SELECT CONTESTOQ FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			sSQL = "SELECT CONTESTOQ, MULTICOMIS FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
@@ -425,9 +433,16 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 			bRetorno[ 0 ] = true;
 			if ( rs.next() ) {
 				bRetorno[ 0 ] = true;
-				if ( rs.getString( "CONTESTOQ" ) != null )
-					if ( rs.getString( "CONTESTOQ" ).trim().equals( "N" ) )
-						bRetorno[ 0 ] = false;
+				if ( "S".equals(rs.getString( "CONTESTOQ" )) ) {
+					bRetorno[ 0 ] = true;
+				} else {
+					bRetorno[ 0 ] = false;
+				}
+				if ( "S".equals(rs.getString( "MULTICOMIS" )) ) {
+					bRetorno[ 1 ] = true;
+				} else {
+					bRetorno[ 1 ] = false;
+				}
 			}
 			rs.close();
 			ps.close();
