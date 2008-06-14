@@ -84,7 +84,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 
 	private JTextFieldFK txtDescCaixa = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtCodUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	private JTextFieldPad txtIdUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldFK txtNomeUsu = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -162,11 +162,11 @@ public class FConsOrc extends FFilho implements ActionListener {
 		lcCaixa.setReadOnly( true );
 		lcCaixa.montaSql( false, "CAIXA", "PV" );
 
-		lcUsu.add( new GuardaCampo( txtCodUsu, "IDUsu", "id usu.", ListaCampos.DB_PK, null, false ) );
+		lcUsu.add( new GuardaCampo( txtIdUsu, "IDUsu", "id usu.", ListaCampos.DB_PK, null, false ) );
 		lcUsu.add( new GuardaCampo( txtNomeUsu, "NomeUsu", "Nome do usuario", ListaCampos.DB_SI, null, false ) );
-		txtCodUsu.setTabelaExterna( lcUsu );
-		txtCodUsu.setNomeCampo( "CodCli" );
-		txtCodUsu.setFK( true );
+		txtIdUsu.setTabelaExterna( lcUsu );
+		txtIdUsu.setNomeCampo( "CodCli" );
+		txtIdUsu.setFK( true );
 		lcUsu.setReadOnly( true );
 		lcUsu.montaSql( false, "USUARIO", "SG" );
 
@@ -222,15 +222,15 @@ public class FConsOrc extends FFilho implements ActionListener {
 		pinCab.adic( new JLabel( "Nome do comissionado" ), 360, 50, 220, 20 );
 		pinCab.adic( txtNomeComis, 360, 70, 220, 20 );
 
-		pinCab.adic( new JLabel( "Cód.caixa" ), 280, 90, 77, 20 );
+		/*pinCab.adic( new JLabel( "Cód.caixa" ), 280, 90, 77, 20 );
 		pinCab.adic( txtCodCaixa, 280, 110, 77, 20 );
 		pinCab.adic( new JLabel( "Descrição do caixa" ), 360, 90, 220, 20 );
-		pinCab.adic( txtDescCaixa, 360, 110, 220, 20 );
+		pinCab.adic( txtDescCaixa, 360, 110, 220, 20 );*/
 
-		pinCab.adic( new JLabel( "id.usuario" ), 280, 130, 77, 20 );
-		pinCab.adic( txtCodUsu, 280, 150, 77, 20 );
-		pinCab.adic( new JLabel( "Nome do usuario" ), 360, 130, 220, 20 );
-		pinCab.adic( txtNomeUsu, 360, 150, 220, 20 );
+		pinCab.adic( new JLabel( "id.usuario" ), 280, 90, 77, 20 );
+		pinCab.adic( txtIdUsu, 280, 110, 77, 20 );
+		pinCab.adic( new JLabel( "Nome do usuario" ), 360, 90, 220, 20 );
+		pinCab.adic( txtNomeUsu, 360, 110, 220, 20 );
 
 		pinCab.adic( btBusca, 280, 185, 145, 30 );
 		pinCab.adic( btPrevimp, 437, 185, 145, 30 );
@@ -290,92 +290,105 @@ public class FConsOrc extends FFilho implements ActionListener {
 
 	private void carregaTabela() {
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = null;
-		String sSQLFatura = null;
-		String sWhere = "";
+		StringBuilder sql = new StringBuilder();
+		StringBuilder where = new StringBuilder();		
+		String status = "";
+		
 		boolean bUsaOr = false;
 		boolean bUsaWhere = false;
-		boolean bCli = ( txtCodCli.getVlrInteger().intValue() > 0 );
+		boolean cliente = txtCodCli.getVlrInteger().intValue() > 0;
+		boolean comissionado = txtCodComis.getVlrInteger().intValue() > 0;
+		boolean caixa = txtCodCaixa.getVlrInteger().intValue() > 0;
+		boolean usuario = txtIdUsu.getVlrString().trim().length() > 0;
 
+		where.append( " AND " + ("V".equals( gbVenc.getVlrString() ) ? "DTVENCORC " : "DTORC ") + "BETWEEN ? AND ?" );
+
+		if ( !txtValorMenor.getVlrString().equals( "" ) && !txtValorMaior.getVlrString().equals( "" ) ) {
+			where.append( " AND IT.VLRLIQITORC >= " + txtValorMenor.getVlrBigDecimal() );
+			where.append( " AND IT.VLRLIQITORC <= " + txtValorMaior.getVlrBigDecimal() );
+		}
+		
 		if ( cbAberto.getVlrString().equals( "S" ) ) {
-			bUsaWhere = true;
-			sWhere = " STATUSORC IN ('OA','*') ";
+			status += "'OA','*'";
 		}
-
 		if ( cbCompleto.getVlrString().equals( "S" ) ) {
-			if ( sWhere.trim().equals( "" ) )
-				sWhere = " STATUSORC ='OC'";
-			else {
-				sWhere = sWhere + " OR STATUSORC ='OC'";
-				bUsaOr = true;
-			}
-			bUsaWhere = true;
+			status += status.length()>0 ? ",'OC'" : "'OC'";
 		}
-
 		if ( cbLiberado.getVlrString().equals( "S" ) ) {
-			if ( sWhere.trim().equals( "" ) )
-				sWhere = " STATUSORC ='OL' AND IT.APROVITORC='S' AND IT.EMITITORC='N'";
-			else {
-				sWhere = sWhere + " OR STATUSORC ='OL'";
-				bUsaOr = true;
-			}
-			bUsaWhere = true;
+			status += status.length()>0 ? ",'OL'" : "'OL'";
+			//" STATUSORC ='OL' AND IT.APROVITORC='S' AND IT.EMITITORC='N'";
 		}
-
 		if ( cbFaturado.getVlrString().equals( "S" ) ) {
-			if ( sWhere.trim().equals( "" ) )
-				sWhere = " (STATUSORC ='OV' OR IT.EMITITORC='S')";
-			else {
-				sWhere = sWhere + " OR STATUSORC ='OV'";
-				bUsaOr = true;
-			}
-			bUsaWhere = true;
+			status += status.length()>0 ? ",'OV'" : "'OV'";
+			//sWhere = " (STATUSORC ='OV' OR IT.EMITITORC='S')";
+		}
+		
+		status = "".equals( status ) ? "''" : status;
+		status = " AND O.STATUSORC IN(" + status + ") ";
+		
+		where.append( status );
+
+		if ( cliente ) {
+			where.append( " AND O.CODEMPCL=? AND O.CODFILIALCL=? AND O.CODCLI=? " );
+		}
+		if ( comissionado ) {
+			where.append( " AND O.CODEMPVD=? AND O.CODFILIALVD=? AND O.CODVEND=? " );
+		}
+		//if ( caixa ) {
+		//	where.append( " AND ?=(SELECT ) " );
+		//}
+		if ( usuario ) {
+			where.append( " AND O.IDUSUINS=? " );
 		}
 
-		if ( bUsaWhere && bUsaOr )
-			sWhere = " AND (" + sWhere + ")";
-		else if ( bUsaWhere )
-			sWhere = " AND " + sWhere;
-		else
-			sWhere = " AND STATUSORC=''";
+		sql.append( "SELECT" );
+		sql.append( "  O.STATUSORC,O.CODORC,O.DTORC,O.DTVENCORC," );
+		sql.append( "  O.CODCLI,CL.NOMECLI,CL.FONECLI,IT.VENCAUTORIZORC,IT.NUMAUTORIZORC," ); 
+		sql.append( "  CL.CIDCLI,IT.APROVITORC,IT.VLRLIQITORC," );
+		sql.append( "  VO.CODVENDA,VD.DOCVENDA,IVD.VLRLIQITVENDA " ); 
+		sql.append( "FROM" );
+		sql.append( "  VDORCAMENTO O, VDCLIENTE CL, VDITORCAMENTO IT " );
+		sql.append( "  LEFT OUTER JOIN VDVENDAORC VO ON VO.CODORC=IT.CODORC AND VO.CODEMPOR=IT.CODEMP AND VO.CODFILIALOR=IT.CODFILIAL AND VO.CODITORC=IT.CODITORC " ); 
+		sql.append( "  LEFT OUTER JOIN VDVENDA VD ON VD.CODEMP=VO.CODEMP AND VD.CODFILIAL=VO.CODFILIAL AND VD.TIPOVENDA=VO.TIPOVENDA AND VD.CODVENDA=VO.CODVENDA " ); 
+		sql.append( "  LEFT OUTER JOIN VDITVENDA IVD ON IVD.CODEMP=VD.CODEMP AND IVD.CODFILIAL=VD.CODFILIAL AND IVD.TIPOVENDA=VD.TIPOVENDA AND IVD.CODVENDA=VD.CODVENDA AND IVD.CODITVENDA=VO.CODITVENDA " );
+		sql.append( "WHERE" );
+		sql.append( "  O.CODEMP=? AND O.CODFILIAL=? AND O.TIPOORC='O' AND " ); 
+		sql.append( "  IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND IT.TIPOORC=O.TIPOORC AND " ); 
+		sql.append( "  CL.CODEMP=O.CODEMPCL AND CL.CODFILIAL=O.CODFILIALCL AND CL.CODCLI=O.CODCLI " ); 
+		sql.append( where );
+		sql.append( "ORDER BY 2" );
 
-		if ( gbVenc.getVlrString().equals( "V" ) )
-			sWhere += " AND DTVENCORC BETWEEN ? AND ?";
-		else
-			sWhere += " AND DTORC BETWEEN ? AND ?";
-
-		if ( bCli )
-			sWhere += " AND O.CODCLI=? AND O.CODEMPCL=? AND O.CODFILIALCL=? ";
-
-		if ( !txtValorMenor.getVlrString().equals( "" ) ) {
-			if ( !txtValorMaior.getVlrString().equals( "" ) ) {
-				sWhere += " AND IT.VLRLIQITORC >= " + txtValorMenor.getVlrBigDecimal();
-				sWhere += " AND IT.VLRLIQITORC<= " + txtValorMaior.getVlrBigDecimal();
-			}
-		}
-
-		sSQL = "SELECT O.STATUSORC,O.CODORC,O.DTORC,O.DTVENCORC, " + "O.CODCLI,CL.NOMECLI,CL.FONECLI , IT.VENCAUTORIZORC,IT.NUMAUTORIZORC," + "CL.CIDCLI,IT.APROVITORC,IT.VLRLIQITORC, " + "VO.CODVENDA, VD.DOCVENDA , IVD.VLRLIQITVENDA " + "FROM  VDORCAMENTO O,VDCLIENTE CL, VDITORCAMENTO IT "
-				+ "LEFT OUTER JOIN VDVENDAORC VO ON " + "VO.CODORC=IT.CODORC AND VO.CODEMPOR=IT.CODEMP AND VO.CODFILIALOR=IT.CODFILIAL AND " + "VO.CODITORC=IT.CODITORC " + "LEFT OUTER JOIN VDVENDA VD ON " + "VD.CODEMP=VO.CODEMP AND VD.CODFILIAL=VO.CODFILIAL AND "
-				+ "VD.TIPOVENDA=VO.TIPOVENDA AND VD.CODVENDA=VO.CODVENDA " + "LEFT OUTER JOIN VDITVENDA IVD ON " + "IVD.CODEMP=VD.CODEMP AND IVD.CODFILIAL=VD.CODFILIAL AND " + "IVD.TIPOVENDA=VD.TIPOVENDA AND IVD.CODVENDA=VD.CODVENDA AND " + "IVD.CODITVENDA=VO.CODITVENDA " + "WHERE O.CODEMP=? AND "
-				+ "O.CODFILIAL=? AND O.TIPOORC='O' AND " + "IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND " + "IT.TIPOORC=O.TIPOORC AND " + "CL.CODEMP=O.CODEMPCL AND CL.CODFILIAL=O.CODFILIALCL AND " + "CL.CODCLI=O.CODCLI" + sWhere + " ORDER BY 2";
-
-		// System.out.println("Query completa:"+sSQL);
 		try {
-			ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+						
+			int param = 1;
+			
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
 
-			if ( bCli ) {
-				ps.setInt( 5, txtCodCli.getVlrInteger().intValue() );
-				ps.setInt( 6, Aplicativo.iCodEmp );
-				ps.setInt( 7, lcCli.getCodFilial() );
+			if ( cliente ) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, lcCli.getCodFilial() );
+				ps.setInt( param++, txtCodCli.getVlrInteger().intValue() );
+			}
+			if ( comissionado ) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, lcComis.getCodFilial() );
+				ps.setInt( param++, txtCodComis.getVlrInteger().intValue() );
+			}
+			/*if ( caixa ) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, lcCaixa.getCodFilial() );
+				ps.setInt( param++, txtCodCaixa.getVlrInteger().intValue() );
+			}*/
+			if ( usuario ) {
+				ps.setInt( param++, txtIdUsu.getVlrInteger().intValue() );
 			}
 
-			rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 			int iLin = 0;
 
 			tab.limpa();
@@ -393,20 +406,14 @@ public class FConsOrc extends FFilho implements ActionListener {
 				tab.setValor( rs.getString( 9 ) != null ? rs.getString( 9 ) : "", iLin, 8 );
 				tab.setValor( rs.getString( 10 ) != null ? rs.getString( 10 ) : "", iLin, 10 );
 				tab.setValor( rs.getString( 7 ) != null ? rs.getString( 7 ).trim() : "", iLin, 11 );
-				// tab.setValor(Funcoes.strDecimalToStrCurrency(2, rs.getString(15) != null ? rs.getString(15) : ""), iLin, 12);
 				iLin++;
 			}
-			if ( !con.getAutoCommit() )
+			if ( !con.getAutoCommit() ) {
 				con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela VDORÇAMENTO!\n" + err.getMessage(), true, con, err );
-			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-			sSQLFatura = null;
-			sWhere = "";
+			}
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao pesquisar orçamentos!\n" + e.getMessage(), true, con, e );
 		}
 	}
 
