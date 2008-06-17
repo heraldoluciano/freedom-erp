@@ -39,6 +39,8 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -62,15 +64,18 @@ import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.ObjetoHistorico;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FManutPag extends FFilho implements ActionListener,  CarregaListener, ChangeListener {
-
+	
 	private static final long serialVersionUID = 1L;
 
+	private static final String HISTORICO_PADRAO = "PAGAMENTO REF. A COMPRA: <DOCUMENTO>";
+	
 	private JPanelPad pnLegenda = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 0, 4 ) );
 
 	private JPanelPad pnTabConsulta = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -258,6 +263,8 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 	private int iNParcPag = 0;
 
 	private int iAnoCC = 0;
+	
+	private Map prefere = null;
 
 	public FManutPag() {
 
@@ -590,7 +597,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		tabManut.adicColuna( "Valor desc." ); // 12
 		tabManut.adicColuna( "Valor juros" ); // 13
 		tabManut.adicColuna( "Valor adic" ); // 14
-		tabManut.adicColuna( "Valro aberto" ); // 15
+		tabManut.adicColuna( "Valor aberto" ); // 15
 		tabManut.adicColuna( "Conta" ); // 16
 		tabManut.adicColuna( "Categoria" ); // 17
 		tabManut.adicColuna( "Centro de custo" ); // 18
@@ -1168,8 +1175,23 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		String[] sRets = null;
 		DLBaixaPag dl = null;
 		ImageIcon imgStatusAt = null;
+		ObjetoHistorico historico = null;
+		Integer codhistpag = null;
+		
 		
 		try {
+			
+			codhistpag = (Integer) prefere.get( "codhistpag" );
+			
+			if(codhistpag != 0) {
+				historico = new ObjetoHistorico(codhistpag,con);
+			}
+			else {
+				historico = new ObjetoHistorico();
+				historico.setHistoricocodificado( HISTORICO_PADRAO );
+			}
+			
+			
 			if ( ( cOrig == 'M' ) & ( tabManut.getLinhaSel() > -1 ) ) { // Quando a função eh chamada da tab MANUTENÇÂO
 
 				imgStatusAt = ( (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), 0 ) );
@@ -1206,9 +1228,13 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 				sVals[ 11 ] = (String) tabManut.getValor( iLin, 19 );
 
 				if ( "".equals( ( (String) tabManut.getValor( iLin, 10 ) ).trim() ) ) {// Para verificar c jah esta pago testa se a data de pgto esta setada.
-					if ( "".equals( ( (String) tabManut.getValor( iLin, 21 ) ).trim() ) ) {					
-						sVals[ 12 ] = "PAGAMENTO REF. A COMPRA: " + tabManut.getValor( iLin, 8 );
-					}
+					if ( "".equals( ( (String) tabManut.getValor( iLin, 21 ) ).trim() ) ) {
+						historico.setData( Funcoes.strDateToDate( tabManut.getValor( iLin, 1 ).toString() ) );
+						historico.setDocumento( tabManut.getValor( iLin, 8 ).toString().trim() );					
+						historico.setPortador( tabManut.getValor( iLin, 4 ).toString().trim() );
+						historico.setValor( Funcoes.strToBd( tabManut.getValor( iLin, 15).toString() ));					
+						sVals[ 12 ] = historico.getHistoricodecodificado(); 										
+					}				
 					else {					
 						sVals[ 12 ] = (String) tabManut.getValor( iLin, 21 );
 					}
@@ -1320,13 +1346,15 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 				if ( "".equals( ( (String) tabBaixa.getValor( iLin, 6 ) ).trim() ) ) {
 					
-					if ( "".equals( ( (String) tabBaixa.getValor( iLin, 13 ) ).trim() ) ) {
-					
-						sVals[ 11 ] = "PAGAMENTO REF. A COMPRA: " + txtCodCompraBaixa.getVlrString();
-					}
-					else {
-					
-						sVals[ 11 ] = (String) tabBaixa.getValor( iLin, 13 );
+					if ( "".equals( ( (String) tabBaixa.getValor( iLin, 14 ) ).trim() ) ) {
+						historico.setData( txtDtEmisBaixa.getVlrDate() );
+						historico.setDocumento( sVals[ 4 ] );					
+						historico.setPortador( sVals[ 1 ] );
+						historico.setValor( Funcoes.strToBd( tabBaixa.getValor( iLin, 5 ).toString() ));					
+						sVals[ 12 ] = historico.getHistoricodecodificado(); 										
+					}				
+					else {					
+						sVals[ 12 ] = (String) tabBaixa.getValor( iLin, 14 );
 					}
 					
 					sVals[ 9 ] = (String) tabBaixa.getValor( iLin, 5 );
@@ -1335,7 +1363,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 					sVals[ 11 ] = (String) tabBaixa.getValor( iLin, 13 );
 					sVals[ 9 ] = (String) tabBaixa.getValor( iLin, 7 );
 				}
-				sVals[ 12 ] = (String) tabBaixa.getValor( iLin, 16 );
+//				sVals[ 12 ] = (String) tabBaixa.getValor( iLin, 16 );xx
 
 				dl.setValores( sVals );
 				dl.setConexao( con );
@@ -1421,10 +1449,22 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		DLEditaPag dl = null;
 		ImageIcon imgStatusAt = null;
 		int iLin;
+		ObjetoHistorico historico = null;
+		Integer codhistpag = null;
 		
 		try {
 			
 			if ( tabManut.getLinhaSel() > -1 ) {
+			
+				codhistpag = (Integer) prefere.get( "codhistpag" );
+				
+				if(codhistpag != 0) {
+					historico = new ObjetoHistorico(codhistpag,con);
+				}
+				else {
+					historico = new ObjetoHistorico();
+					historico.setHistoricocodificado( HISTORICO_PADRAO );
+				}				
 				
 				imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), 0 );
 				
@@ -1453,9 +1493,13 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 					sVals[ 11 ] = (String) tabManut.getValor( iLin, 14 );
 					
 					if ( "".equals( ( (String) tabManut.getValor( iLin, 10 ) ).trim() ) ) {						
-						if ( "".equals( ( (String) tabManut.getValor( iLin, 2 ) ).trim() ) ) {						
-							sVals[ 12 ] = "PAGAMENTO REF. A COMPRA: " + tabManut.getValor( iLin, 8 );
-						}
+						if ( "".equals( ( (String) tabManut.getValor( iLin, 21 ) ).trim() ) ) {
+							historico.setData( Funcoes.strDateToDate( tabManut.getValor( iLin, 1 ).toString() ) );
+							historico.setDocumento( tabManut.getValor( iLin, 8 ).toString().trim() );					
+							historico.setPortador( tabManut.getValor( iLin, 4 ).toString().trim() );
+							historico.setValor( Funcoes.strToBd( tabManut.getValor( iLin, 15).toString() ));					
+							sVals[ 12 ] = historico.getHistoricodecodificado(); 										
+						}						
 						else {						
 							sVals[ 12 ] = (String) tabManut.getValor( iLin, 21 );
 						}
@@ -1594,7 +1638,8 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
-		} finally {
+		} 
+		finally {
 			ps = null;
 			sql = null;
 			sVals = null;
@@ -1794,7 +1839,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		return retorno;
 	}
 
-	private int buscaAnoBaseCC() {
+/*	private int buscaAnoBaseCC() {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1827,6 +1872,48 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		}
 		
 		return iRet;
+	}*/
+	
+	private Map getPrefere() {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer anocc = null;
+		Integer codhistpag = null;
+		
+		Map<String, Integer> retorno = new HashMap<String, Integer>();
+
+		try {
+
+			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO,CODHISTPAG FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				anocc = rs.getInt( "ANOCENTROCUSTO" );
+				codhistpag = rs.getInt( "CODHISTPAG" );				
+			}
+			
+			retorno.put("codhistpag", codhistpag);
+			retorno.put("anocc", anocc);
+
+			rs.close();
+			ps.close();
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+		} 
+		catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
+		} 
+		finally {
+			ps = null;
+			rs = null;
+		}
+		return retorno;
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
@@ -1895,7 +1982,10 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		lcCompraBaixa.setConexao( cn );
 		lcBancoBaixa.setConexao( cn );
 		lcPagBaixa.setConexao( cn );
-		iAnoCC = buscaAnoBaseCC();
+		prefere = getPrefere();
+		
+		iAnoCC = (Integer) prefere.get( "anocc" );
+		
 	}
 
 }
