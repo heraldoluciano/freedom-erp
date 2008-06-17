@@ -15,9 +15,10 @@ public class ObjetoHistorico {
 	private String documento;
 	private String portador;
 	private BigDecimal valor;
-	private String serie;
+//	private String serie;
 	private Date data;
 	private String historicodecodificado;
+	private boolean isDecoded = false;
 	
 	public ObjetoHistorico() {
 		super();
@@ -32,7 +33,7 @@ public class ObjetoHistorico {
 			ps = con.prepareStatement( "SELECT TXAHISTPAD FROM FNHISTPAD WHERE CODEMP=? AND CODFILIAL=? AND CODHIST=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNHISTPAD" ) );
-			ps.setInt( 2, codhist );
+			ps.setInt( 3, codhist );
 
 			rs = ps.executeQuery();
 
@@ -60,15 +61,22 @@ public class ObjetoHistorico {
 			
 			try {
 				
-				String tmp = historicocodificado;
-								
+				String tmp = historicocodificado;			
+				
+				String vlr = "0,00";
+				
+				if(getValor()!=null) {
+					vlr = Funcoes.bdToStr( getValor() ).toString();
+				}
+				
 				tmp = tmp.replaceAll( "<DOCUMENTO>", getDocumento() != null ? getDocumento() : "" );				
-				tmp = tmp.replaceAll( "<VALOR>", getValor() != null ? String.valueOf( getValor() ) :  "0.00"  ) ;
-				tmp = tmp.replaceAll( "<SERIE>", getSerie() != null ? getSerie() : "" );
+				tmp = tmp.replaceAll( "<VALOR>", vlr ) ;								
+//				tmp = tmp.replaceAll( "<SERIE>", getSerie() != null ? getSerie() : "" );
 				tmp = tmp.replaceAll( "<DATA>", getData() !=null ? Funcoes.dateToStrDate( getData() ) : "");
 				tmp = tmp.replaceAll( "<PORTADOR>", getPortador() != null ? getPortador() : "" );
 				
 				decoded = tmp;
+				isDecoded = true;
 			}
 			catch ( Exception e ) {
 				e.printStackTrace();
@@ -102,7 +110,7 @@ public class ObjetoHistorico {
 		this.documento = documento;
 	}
 
-	
+	/*
 	public String getSerie() {
 	
 		return serie;
@@ -113,7 +121,7 @@ public class ObjetoHistorico {
 	
 		this.serie = serie;
 	}
-
+	 */
 	
 	public BigDecimal getValor() {
 	
@@ -140,14 +148,12 @@ public class ObjetoHistorico {
 		this.historicocodificado = historicocodificado;
 	}
 
-
-	
 	public String getHistoricodecodificado() {
-		decodeHistorico();
+		if(!isDecoded) {
+			decodeHistorico();
+		}
 		return historicodecodificado;
 	}
-
-
 	
 	public void setHistoricodecodificado( String historicodecodificado ) {
 	
