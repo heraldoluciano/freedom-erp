@@ -102,7 +102,7 @@ public class FHistPad extends FTabDados implements ActionListener, JComboBoxList
 		Vector<String> vLabs = new Vector<String>();
 		vLabs.addElement( "<--Selecione-->" );
 		vLabs.addElement( "Portador" );
-		vLabs.addElement( "Série" );		
+//		vLabs.addElement( "Série" );		
 		vLabs.addElement( "Valor" );
 		vLabs.addElement( "Número do documento" );
 		vLabs.addElement( "Data" );
@@ -110,7 +110,7 @@ public class FHistPad extends FTabDados implements ActionListener, JComboBoxList
 		Vector<String> vVals = new Vector<String>();
 		vVals.addElement( "" );
 		vVals.addElement( "<PORTADOR>" );
-		vVals.addElement( "<SERIE>" );
+//		vVals.addElement( "<SERIE>" );
 		vVals.addElement( "<VALOR>" );
 		vVals.addElement( "<DOCUMENTO>" );
 		vVals.addElement( "<DATA>" );
