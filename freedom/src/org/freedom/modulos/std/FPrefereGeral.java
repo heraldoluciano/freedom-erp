@@ -121,8 +121,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private JTextFieldFK txtDescFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodTipoFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipoFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtDescTipoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -405,6 +409,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private ListaCampos lcGrupo = new ListaCampos( this, "GP" );
 
 	private ListaCampos lcTipoFor = new ListaCampos( this, "TF" );
+	
+	private ListaCampos lcTipoCli = new ListaCampos( this, "TC" );
 
 	private ListaCampos lcFor = new ListaCampos( this, "FR" );
 
@@ -510,6 +516,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		lcTipoFor.setReadOnly( true );
 		txtCodTipoFor.setTabelaExterna( lcTipoFor );
 
+		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, false ) );
+		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false ) );
+		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
+		lcTipoCli.setQueryCommit( false );
+		lcTipoCli.setReadOnly( true );
+		txtCodTipoCli.setTabelaExterna( lcTipoCli );
+		
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
@@ -631,7 +644,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		lcMens.setQueryCommit( false );
 		lcMens.setReadOnly( true );
 		txtCodMens.setTabelaExterna( lcMens );
-
+		
 		cbUsaRefProd = new JCheckBoxPad( "Usar referência?", "S", "N" );
 		cbUsaRefProd.setVlrString( "N" );
 		cbUsaPedSeq = new JCheckBoxPad( "Pedido sequencial?", "S", "N" );
@@ -1017,6 +1030,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDescFK( txtDescTipoFor, 100, 25, 300, 20, "DescTipoFor", "Descrição do tipo de fornecedor" );
 		adicCampo( txtCodTipoMov5, 7, 65, 90, 20, "CodTipoMov5", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
 		adicDescFK( txtDescTipoMov5, 100, 65, 300, 20, "DescTipoMov", "Descrição do tipo de movimento" );
+		adicCampo( txtCodTipoCli, 7, 105, 90, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_FK, txtDescTipoCli, false );
+		adicDescFK( txtDescTipoCli, 100, 105, 300, 20, "DescTipoCli", "Descrição do tipo de Cliente" );
 
 		// Produto
 		setPainel( pinProd );
@@ -1296,7 +1311,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		lcMens.setConexao( cn );
 		lcHistPag.setConexao( cn );
 		lcHistRec.setConexao( cn );
+		lcTipoCli.setConexao( cn );
 		lcCampos.carregaDados();
+		
 
 	}
 
