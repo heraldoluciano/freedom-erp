@@ -1194,7 +1194,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		lcForCli.add( new GuardaCampo( txtEndForCli, "EndFor", "Endereço do fornecedor", ListaCampos.DB_SI, false ) );
 		lcForCli.add( new GuardaCampo( txtNumForCli, "NumFor", "Nº Fornecedor", ListaCampos.DB_SI, false ) );
 		lcForCli.add( new GuardaCampo( txtBairForCli, "BairFor", "Bairro", ListaCampos.DB_SI, false ) );
-		
 		lcForCli.montaSql( false, "FORNECED", "CP" );
 		lcForCli.setReadOnly( true );
 		lcForCli.setQueryCommit( false );
@@ -1260,7 +1259,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			
 			Funcoes.mensagemInforma( this, "Selecione um cliente! " );
 		}
-		
+
 		codFor = pesqFor();
 		
 		if( codFor != 0 ){
@@ -1281,8 +1280,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 					txtCodForCli.setVlrInteger( codFor );
 					lcForCli.carregaDados();
 					lcClixFor.carregaDados();
-					setValores();
 					Funcoes.mensagemInforma( this, "Fornecedor inserido com sucesso!" );
+					setValores();
 						
 				}
 			}
@@ -1309,8 +1308,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				codigo = rs.getInt( 1 ) + 1;
 			}
 			
-		} catch ( Exception e ) {
+		} catch ( SQLException err ) {
 			
+			err.printStackTrace();
+			Funcoes.mensagemInforma( this, "Erro ao buscar último fornecedor!" + err.getMessage());  
 		}
 		
 		return codigo;
@@ -1336,7 +1337,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			ps.setString( 4, txtRazCli.getVlrString() );
 			ps.setInt( 5, Aplicativo.iCodEmp );
 			ps.setInt( 6, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-			ps.setInt( 7, (Integer)bPref.get("CODTIPOFORCLI") );
+			ps.setInt( 7, (Integer)bPref.get("CODTIPOFOR") );
 			ps.setInt( 8, Aplicativo.iCodEmp );
 			ps.setInt( 9, ListaCampos.getMasterFilial( "CPFORNECED" ) );
 			ps.setInt( 10, Aplicativo.iCodEmp );
@@ -2170,7 +2171,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			sSQL.append( "(CASE WHEN P.USUATIVCLI='N' THEN 'S' " );
 			sSQL.append( "WHEN P.USUATIVCLI='S' AND U.ATIVCLI='S' THEN 'S' " );
 			sSQL.append( "ELSE 'N' " );
-			sSQL.append( "END) HABATIVCLI, COALESCE (P.CODTIPOFORCLI,0) CODTIPOFORCLI " );
+			sSQL.append( "END) HABATIVCLI, COALESCE (P.CODTIPOFOR,0) CODTIPOFOR " );
 			sSQL.append( "FROM SGPREFERE1 P LEFT OUTER JOIN SGUSUARIO U " );
 			sSQL.append( "ON U.CODEMP=? AND U.CODFILIAL=? AND U.IDUSU=? ");
 			sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?");
@@ -2195,7 +2196,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 					retorno.put( "CONSISTEIECLI", new Boolean( "S".equals( rs.getString( "CONSISTEIECLI" ) ) ) );
 					retorno.put( "CONSISTCPFCLI", new Boolean( "S".equals( rs.getString( "CONSISTCPFCLI" ) ) ) );
 					retorno.put( "HABATIVCLI", new Boolean( "S".equals( rs.getString( "HABATIVCLI" ) ) ) );
-					retorno.put( "CODTIPOFORCLI", rs.getInt( "CODTIPOFORCLI" ));
+					retorno.put( "CODTIPOFOR", rs.getInt( "CODTIPOFOR" ));
 					
 				}
 				
