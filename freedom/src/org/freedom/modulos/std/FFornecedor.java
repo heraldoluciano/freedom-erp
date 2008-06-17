@@ -32,6 +32,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import org.freedom.bmps.Icone;
@@ -174,7 +176,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	
 	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "firefox.gif" ));
 
-	private boolean[] prefs = null;
+	private Map<String, Object> prefs = null;
 	
 	private String sURLBanco = null;
 	
@@ -453,7 +455,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			ps.setString( 5, txtRazFor.getVlrString() );
 			ps.setString( 6, "S" );
 			ps.setString( 7, rgPessoa.getVlrString() );
-			ps.setInt( 8, 1 ); //PREFERENCIAS
+			ps.setInt( 8, (Integer)prefs.get("CODTIPOCLI") );
 			ps.setInt( 9, Aplicativo.iCodEmp );
 			ps.setInt( 10, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			ps.setString( 11, txtCnpjFor.getVlrString() );
@@ -801,12 +803,12 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 		if ( rgPessoa.getVlrString().equals( "J" ) ) {
 			txtCnpjFor.setEnabled( true );
-			if ( prefs[ 0 ] )
+			if ( (Boolean)prefs.get( "CNPJFOROBRIG" ))
 				setBordaReq( txtCnpjFor );
 			else
 				setBordaPad( txtCnpjFor );
 			txtInscFor.setEnabled( true );
-			if ( prefs[ 1 ] )
+			if ( (Boolean)prefs.get( "INSCESTFOROBRIG" ))
 				setBordaReq( txtInscFor );
 			else
 				setBordaPad( txtInscFor );
@@ -863,13 +865,13 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 		if ( rgPessoa.getVlrString().equals( "F" ) )
 			return;
-		else if ( ( txtCnpjFor.getVlrString().trim().equals( "" ) ) && ( prefs[ 0 ] ) ) {
+		else if ( ( txtCnpjFor.getVlrString().trim().equals( "" ) ) && ( (Boolean)prefs.get( "CNPJFOROBRIG" ))) {
 			pevt.cancela();
 			Funcoes.mensagemInforma( this, "Campo CNPJ é requerido! ! !" );
 			txtCnpjFor.requestFocus();
 			return;
 		}
-		else if ( ( txtInscFor.getVlrString().trim().equals( "" ) ) && ( prefs[ 1 ] ) ) {
+		else if ( ( txtInscFor.getVlrString().trim().equals( "" ) ) && ( (Boolean)prefs.get( "INSCESTFOROBRIG" )) ) {
 			if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION )
 				pevt.cancela();
 			txtInscFor.setVlrString( "ISENTO" );
@@ -885,7 +887,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			txtUFFor.requestFocus();
 			return;
 		}
-		else if ( prefs[ 2 ] ) { 
+		else if ( (Boolean)prefs.get( "CONSISTEIEFOR" ) ) { 
 			if ( ! Funcoes.vIE( txtInscFor.getText(), txtUFFor.getText() ) ) {
 				pevt.cancela();
 				Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
@@ -924,41 +926,55 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	}
 	
-	private boolean[] getPrefs() {
+	private Map<String, Object> getPrefs() {
 
-		boolean[] bRet = new boolean[ 3 ];
-		String sSQL = null;
+		Map<String, Object> retorno = new HashMap<String, Object>();
+		StringBuilder sSQL = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		
 		try {
-			bRet[ 0 ] = true;
-			bRet[ 1 ] = true;
-			sSQL = "SELECT CNPJFOROBRIG, INSCESTFOROBRIG, CONSISTEIEFOR FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			
+			retorno.put( "CNPJFOROBRIG", new Boolean(true));
+			retorno.put( "INSCESTFOROBRIG", new Boolean(true));
+		
+			sSQL.append( "SELECT CNPJFOROBRIG, INSCESTFOROBRIG, CONSISTEIEFOR, CODTIPOCLI FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			
 			try {
-				ps = con.prepareStatement( sSQL );
+				
+				ps = con.prepareStatement( sSQL.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, Aplicativo.iCodFilial );
 				rs = ps.executeQuery();
+				
 				if ( rs.next() ) {
-					bRet[ 0 ] = "S".equals( rs.getString( "CNPJFOROBRIG" ) );
-					bRet[ 1 ] = "S".equals( rs.getString( "INSCESTFOROBRIG" ) );
-					bRet[ 2 ] = "S".equals( rs.getString( "CONSISTEIEFOR" ) );
+				
+					retorno.put( "CNPJFOROBRIG", new Boolean( "S".equals( rs.getString( "CNPJFOROBRIG" ))));
+					retorno.put( "INSCESTFOROBRIG", new Boolean( "S".equals( rs.getString( "INSCESTFOROBRIG" ))));
+					retorno.put( "CONSISTEIEFOR", new Boolean( "S".equals( rs.getString( "CONSISTEIEFOR" ))));
+					retorno.put( "CODTIPOCLI", rs.getInt( "CODTIPOCLI" ) );
+					
 				}
+			
 				rs.close();
 				ps.close();
+				
 				if ( !con.getAutoCommit() ) {
 					con.commit();
 				}
+				
 			} catch ( SQLException err ) {
+				
 				Funcoes.mensagemErro( this, "Erro ao verificar preferências!\n" + err.getMessage(), true, con, err );
 				err.printStackTrace();
 			}
 		} finally {
+			
 			sSQL = null;
 			ps = null;
 			rs = null;
 		}
-		return bRet;
+		return retorno;
 	}
 
 }
