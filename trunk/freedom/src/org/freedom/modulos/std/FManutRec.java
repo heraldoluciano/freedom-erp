@@ -40,6 +40,8 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -62,6 +64,7 @@ import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.ObjetoHistorico;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.DLBaixaRec.EColBaixa;
@@ -70,6 +73,7 @@ import org.freedom.modulos.std.DLEditaRec.EColEdit;
 import org.freedom.modulos.std.DLEditaRec.EColRet;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
+
 
 public class FManutRec extends FFilho implements ActionListener, CarregaListener, ChangeListener {
 
@@ -260,23 +264,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private ListaCampos lcBancoBaixa = new ListaCampos( this, "BC" );
 
-	// private Vector vCodRec = new Vector();
-
-	// private Vector vNParcItRec = new Vector();
-
 	private Vector<?> vNParcBaixa = new Vector<Object>();
-
-	// private Vector vCodPed = new Vector();
-
-	// private Vector vNumContas = new Vector();
-
-	// private Vector vCodPlans = new Vector();
-
-	// private Vector vCodCCs = new Vector();
-
-	// private Vector vCodBOs = new Vector();
-
-	// private Vector vDtEmiss = new Vector();
 
 	private Vector<String> vValsData = new Vector<String>();
 
@@ -302,11 +290,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	boolean bBuscaAtual = true;
 
-	// int iCodRec = 0;
-
-	// int iNParcItRec = 0;
-
-	int iAnoCC = 0;
+	int iAnoCC = 0;	
+	
+	private Map prefere = null; 
 
 	public FManutRec() {
 
@@ -1349,6 +1335,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			sRet[ EColEdit.VLRDESC.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRDESC.ordinal() ) );
 			sRet[ EColEdit.VLRPARC.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPARC.ordinal() ) );
 
+			
+			//  Implementação para utilização de histórico dinâmico xxx
+						
+			
 			if ( "".equals( String.valueOf( tabManut.getValor( iLin, EColTabManut.OBS.ordinal() ) ).trim() ) ) {
 				sRet[ EColEdit.OBS.ordinal() ] = "PAGAMENTO REF. A VENDA: " + tabManut.getValor( iLin, EColTabManut.DOCVENDA.ordinal() );
 			}
@@ -1600,9 +1590,24 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		ImageIcon imgStatusAt = null;
 		int iCodRec = 0;
 		int iNParcItRec = 0;
+		ObjetoHistorico historico = null;
+		Integer codhistrec = null;
 
 		try {
 
+			
+		//	xxx Implementar carregamento de historico dinamico ou não em função das preferencias.
+			
+			codhistrec = (Integer) prefere.get( "codhistrec" );
+			
+			if(codhistrec!=null) {
+				historico = new ObjetoHistorico(codhistrec,con);
+			}
+			else {
+				historico = new ObjetoHistorico();
+				historico.setHistoricocodificado( "RECEBIMENTO REF. AO PED.: <DOCUMENTO>" );
+			}
+						
 			if ( ( 'M' == cOrig ) & ( tabManut.getLinhaSel() > -1 ) ) {
 
 				imgStatusAt = ( (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.IMGSTATUS.ordinal() ) );
@@ -1653,9 +1658,14 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					sVals[ EColBaixa.DTPGTO.ordinal() ] = tabManut.getValor( iLin, EColTabManut.DTPAGTO.ordinal() );
 					sVals[ EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() ) );
 				}
+
+				//
+				
 				if ( "".trim().equals( tabManut.getValor( iLin, EColTabManut.OBS.ordinal() ) ) ) {
 					sVals[ EColBaixa.OBS.ordinal() ] = "RECEBIMENTO REF. AO PED.: " + tabManut.getValor( iLin, EColTabManut.DOCVENDA.ordinal() );
 				}
+				
+				
 				else {
 					sVals[ EColBaixa.OBS.ordinal() ] = (String) tabManut.getValor( iLin, EColTabManut.OBS.ordinal() );
 				}
@@ -2025,24 +2035,30 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		return retorno;
 	}
 	
-	private int getAnoBaseCC() {
+	private Map getPrefere() {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		int iRet = 0;
+		Integer anocc = null;
+		Integer codhistrec = null;
+		
+		Map<String, Integer> retorno = new HashMap<String, Integer>();
 
 		try {
 
-			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO,CODHISTREC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-
-				iRet = rs.getInt( "ANOCENTROCUSTO" );
+				anocc = rs.getInt( "ANOCENTROCUSTO" );
+				codhistrec = rs.getInt( "CODHISTREC" );				
 			}
+			
+			retorno.put("codhistrec", codhistrec);
+			retorno.put("anocc", anocc);
 
 			rs.close();
 			ps.close();
@@ -2050,13 +2066,15 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
-		} catch ( SQLException err ) {
+		} 
+		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
-		} finally {
+		} 
+		finally {
 			ps = null;
 			rs = null;
 		}
-		return iRet;
+		return retorno;
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
@@ -2157,6 +2175,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		lcBancoBaixa.setConexao( cn );
 		lcRecBaixa.setConexao( cn );
 		lcRecManut.setConexao( cn );
-		iAnoCC = getAnoBaseCC();
+		
+		prefere = getPrefere();
+		
+		iAnoCC = (Integer) prefere.get( "anocc" );
+		
+		
 	}
 }
