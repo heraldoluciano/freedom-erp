@@ -1190,7 +1190,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		lcForCli.add( new GuardaCampo( txtcpfForCli, "CpfFor", "CPF", ListaCampos.DB_SI, false ) );
 		lcForCli.add( new GuardaCampo( txtinscForCli, "InscFor", "Inscrição Estadual", ListaCampos.DB_SI, false ) );
 		lcForCli.add( new GuardaCampo( txtrgForCli, "RgFor", "RG", ListaCampos.DB_SI, false ) );
-		lcForCli.add( new GuardaCampo( txtcnpjForCli, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
+		lcForCli.add( new GuardaCampo( txtCnpjForCli, "CnpjFor", "CNPJ", ListaCampos.DB_SI, false ) );
 		lcForCli.add( new GuardaCampo( txtEndForCli, "EndFor", "Endereço do fornecedor", ListaCampos.DB_SI, false ) );
 		lcForCli.add( new GuardaCampo( txtNumForCli, "NumFor", "Nº Fornecedor", ListaCampos.DB_SI, false ) );
 		lcForCli.add( new GuardaCampo( txtBairForCli, "BairFor", "Bairro", ListaCampos.DB_SI, false ) );
@@ -1219,12 +1219,12 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adic( txtNumForCli , 450, 60, 45, 20 );
 		adic( new JLabelPad("CNPJ"), 7, 80, 160, 20 );
 		adic( txtCnpjForCli, 7, 100, 160, 20 );
-		txtcpfForCli.setMascara(  JTextFieldPad.MC_CPF );
 		adic( new JLabelPad("Inscrição Estadual"), 170, 80, 200, 20 );
 		adic( txtinscForCli, 170, 100, 142, 20 );
 		adic( new JLabelPad("CPF"), 315, 80, 200, 20 );
 		adic( txtcpfForCli, 315, 100, 180, 20 );
 		txtcpfForCli.setMascara(  JTextFieldPad.MC_CPF );
+		txtCnpjForCli.setMascara(  JTextFieldPad.MC_CNPJ );
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -1243,7 +1243,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		txtcpfForCli.setVlrInteger( txtCpfCli.getVlrInteger() );
 		txtinscForCli.setVlrString( txtInscCli.getVlrString() );
 		txtrgForCli.setVlrInteger( txtRgCli.getVlrInteger() );
-		txtcnpjForCli.setVlrInteger( txtCnpjCli.getVlrInteger() );
+		txtCnpjForCli.setVlrInteger( txtCnpjCli.getVlrInteger() );
 		txtEndForCli.setVlrString( txtEndCli.getVlrString() );
 		txtNumForCli.setVlrInteger( txtNumCli.getVlrInteger() );
 		txtBairForCli.setVlrString( txtBairCli.getVlrString() );
@@ -1325,8 +1325,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		
 		sSQL.append( "INSERT INTO CPFORNECED " );
 		sSQL.append( "( CODEMP, CODFILIAL, CODFOR, RAZFOR, CODEMPTF, CODFILIALTF, CODTIPOFOR, CODEMPBO, CODFILIALBO, CODEMPHP, " ); 
-		sSQL.append( "CODFILIALHP, NOMEFOR, PESSOAFOR ) " );
-		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,? ) " );
+		sSQL.append( "CODFILIALHP, NOMEFOR, PESSOAFOR, CNPJFOR, CPFFOR, INSCFOR, ENDFOR, NUMFOR, BAIRFOR ) " );
+		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) " );
 		
 		try {
 			
@@ -1344,6 +1344,12 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			ps.setInt( 11, ListaCampos.getMasterFilial( "CPFORNECED" ) );
 			ps.setString( 12, txtNomeCli.getVlrString() );
 			ps.setString( 13, rgPessoa.getVlrString() );
+			ps.setString( 14, txtCnpjCli.getVlrString() );
+			ps.setString( 15, txtCpfCli.getVlrString() );
+			ps.setString( 16, txtInscCli.getVlrString() );
+			ps.setString( 17, txtEndCli.getVlrString() );
+			ps.setInt( 18, txtNumCli.getVlrInteger() );
+			ps.setString( 19, txtBairCli.getVlrString() );
 			
 			ps.executeUpdate();
 			
