@@ -24,6 +24,7 @@
 
 package org.freedom.modulos.std;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,6 +37,7 @@ import java.util.Vector;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JPanelPad;
 
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
@@ -49,11 +51,14 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.Navegador;
+import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FAndamento;
@@ -66,6 +71,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	private JPanelPad panelDados = new JPanelPad();
 
 	private JPanelPad panelObservacao = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	
+	private JPanelPad panelFornecedCli = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -126,6 +133,28 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	private JTextFieldPad txtCodHistPad = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldFK txtDescHistPad = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
+	
+	private JTextFieldFK txtNomeForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtcnpjForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 14, 0 );
+	
+	private JTextFieldFK txtcpfForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 11, 0 );
+	
+	private JTextFieldFK txtBairForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
+	
+	private JTextFieldFK txtEndForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtNumForCli = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtinscForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 15, 0 );
+	
+	private JTextFieldFK txtCnpjForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 15, 0 );
+	
+	private JTextFieldFK txtrgForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 10, 0 );
+	
+	private JTextFieldPad txtCodForCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 
@@ -148,13 +177,35 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	private boolean[] prefs = null;
 	
 	private String sURLBanco = null;
+	
+	private Navegador navForCli = new Navegador( true );
+	
+	private JPanelPad pnForCli = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JPanelPad pinForCli = new JPanelPad( 0, 80 );
+	
+	private JPanelPad pinBtFor = new JPanelPad( 0, 30 );
+	
+	private JButton btBuscaFor = new JButton(Icone.novo("btPesquisa.gif"));
+	
+	private ListaCampos lcForCli = new ListaCampos( this );
+	
+	private Tabela tabCliFor = new Tabela();
+	
+	private JScrollPane spnTabCliFor = new JScrollPane( tabCliFor );
+	
+	private ListaCampos lcForxCli = new ListaCampos( this, "FR" );
+	
 
 	public FFornecedor() {
 
 		super();
 		setTitulo( "Cadastro de Fornecedores" );
-		setAtribos( 50, 20, 480, 550 );
+		setAtribos( 50, 20, 530, 550 );
 		setImprimir( true );
+		lcForCli.setMaster( lcCampos );
+		lcCampos.adicDetalhe( lcForCli );
+		lcForCli.setTabela( tabCliFor );
 	}
 
 	private void montaTela() {
@@ -220,17 +271,81 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		adicDescFK( txtDescHistPad, 90, 420, 356, 20, "DescHist", "Descrição do historico padrão" );
 		adic(btFirefox, 430, 300, 20, 20 );
 		btFirefox.setToolTipText( "Acessar Site" );
-		
+			
 		adicTab( "Observações", panelObservacao );
 		adicDBLiv( txaObs, "ObsFor", "Observações", false );
 		panelObservacao.add( spnObs );
 		
 		setListaCampos( true, "FORNECED", "CP" );
 		lcCampos.setQueryInsert( false );
-
+		
+		 /************************
+		 * Fornecedor x Cliente  *
+		 ************************/
+		
+		setPainel( pinForCli, pnForCli );
+		adicTab( "Fornecedor x Cliente", pnForCli );	
+		setListaCampos( lcForCli );
+		
+		pnForCli.add( pinForCli, BorderLayout.CENTER );
+		pnForCli.add( pinBtFor, BorderLayout.SOUTH );
+		pinBtFor.adic( navForCli, 0, 0, 270, 25 );
+		setNavegador( navForCli );
+		
+		navForCli.setAtivo( 0, false );
+		navForCli.setAtivo( 1, false );
+		navForCli.setAtivo( 2, false );
+		navForCli.setAtivo( 3, false );
+		navForCli.setAtivo( 4, false );
+		navForCli.setAtivo( 6, false );
+		navForCli.setAtivo( 8, true );
+		
+		lcForxCli.add( new GuardaCampo( txtCodForCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, null, true ) );
+		lcForxCli.add( new GuardaCampo( txtDescForCli, "RazCli", "Razão social do Cliente", ListaCampos.DB_SI, false ) );
+		lcForxCli.add( new GuardaCampo( txtNomeForCli, "NomeCli", "Nome do Cliente", ListaCampos.DB_SI, false ) );
+		lcForxCli.add( new GuardaCampo( txtcpfForCli, "CpfCli", "CPF", ListaCampos.DB_SI, false ) );
+		lcForxCli.add( new GuardaCampo( txtinscForCli, "InscCli", "Inscrição Estadual", ListaCampos.DB_SI, false ) );
+		lcForxCli.add( new GuardaCampo( txtrgForCli, "RgCli", "RG", ListaCampos.DB_SI, false ) );
+		lcForxCli.add( new GuardaCampo( txtCnpjForCli, "CnpjCli", "CNPJ", ListaCampos.DB_SI, false ) );
+		lcForxCli.add( new GuardaCampo( txtEndForCli, "EndCli", "Endereço", ListaCampos.DB_SI, false ) );
+		lcForxCli.add( new GuardaCampo( txtNumForCli, "NumCli", "Nº", ListaCampos.DB_SI, false ) );
+		lcForxCli.add( new GuardaCampo( txtBairForCli, "BairCli", "Bairro", ListaCampos.DB_SI, false ) );
+		lcForxCli.montaSql( false, "CLIENTE", "VD" );
+		lcForxCli.setReadOnly( true );
+		lcForxCli.setQueryCommit( false );
+		txtCodForCli.setListaCampos( lcForxCli );
+		txtCodForCli.setTabelaExterna( lcForxCli );
+		
+		adic( btBuscaFor, 7, 7, 30, 30 );
+		btBuscaFor.setToolTipText("Buscar fornecedor");
+		adicCampo( txtCodForCli, 50, 20, 55, 20, "CodCli", "Cód.Cli", ListaCampos.DB_PF, txtDescForCli,  true );
+		adicDescFK( txtDescForCli, 110, 20, 200, 20, "RazCli", "Razão social do Cliente" );
+		setListaCampos( false, "CLIFOR", "EQ" );		
+		lcForCli.montaTab();
+		lcForCli.setQueryInsert( false );
+		lcForCli.setQueryCommit( false );
+		
+		adic( new JLabelPad("Nome"), 313, 0, 200, 20 );
+		adic( txtNomeForCli, 313, 20, 180, 20 );
+		adic( new JLabelPad("Endereço"), 7, 40, 200, 20 );
+		adic( txtEndForCli , 7, 60, 305, 20 );
+		adic( new JLabelPad("Bairro"), 315, 40, 120, 20 );
+		adic( txtBairForCli , 315, 60, 131, 20 );
+		adic( new JLabelPad("Nº"), 450, 40, 200, 20 );
+		adic( txtNumForCli , 450, 60, 45, 20 );
+		adic( new JLabelPad("CNPJ"), 7, 80, 160, 20 );
+		adic( txtCnpjForCli, 7, 100, 160, 20 );
+		adic( new JLabelPad("Inscrição Estadual"), 170, 80, 200, 20 );
+		adic( txtinscForCli, 170, 100, 142, 20 );
+		adic( new JLabelPad("CPF"), 315, 80, 200, 20 );
+		adic( txtcpfForCli, 315, 100, 180, 20 );
+		txtcpfForCli.setMascara(  JTextFieldPad.MC_CPF );
+		txtCnpjForCli.setMascara(  JTextFieldPad.MC_CNPJ );
+	
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btFirefox.addActionListener( this );
+		btBuscaFor.addActionListener( this );
 		
 		txtCnpjFor.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepFor.setMascara( JTextFieldPad.MC_CEP );
@@ -239,6 +354,175 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	}
 	
+	private void setValores(){
+		
+		txtNomeForCli.setVlrString( txtNomeFor.getVlrString() );
+		txtcpfForCli.setVlrInteger( txtCpfFor.getVlrInteger() );
+		txtinscForCli.setVlrString( txtInscFor.getVlrString() );
+		txtrgForCli.setVlrInteger( txtRgFor.getVlrInteger() );
+		txtCnpjForCli.setVlrInteger( txtCnpjFor.getVlrInteger() );
+		txtEndForCli.setVlrString( txtEndFor.getVlrString() );
+		txtNumForCli.setVlrInteger( txtNumFor.getVlrInteger() );
+		txtBairForCli.setVlrString( txtBairFor.getVlrString() );
+		
+	}
+	private void fazBusca(){ 
+		
+		String sCodCli = txtCodFor.getVlrString();
+		int codFor = 0;
+		
+		if( "".equals( sCodCli ) ){
+			
+			Funcoes.mensagemInforma( this, "Selecione um fornecedor! " );
+		}
+
+		codFor = pesqCli();
+		
+		if( codFor != 0 ){
+
+			txtCodForCli.setVlrInteger( codFor );
+			setValores();
+            lcForCli.carregaDados();
+			lcForxCli.carregaDados();
+			
+		} else {
+			
+			if ( Funcoes.mensagemConfirma( this, "Não foi encontrado nenhum cliente equivalente!\n" +
+					"Dejeja replicar os dados do fornecedor automaticamente?" ) == JOptionPane.YES_OPTION ) {
+				codFor = inserirCli();
+				
+				if ( codFor!=0 ) {
+					
+					txtCodForCli.setVlrInteger( codFor );
+					lcForCli.carregaDados();
+					lcForxCli.carregaDados();
+					Funcoes.mensagemInforma( this, "Cliente inserido com sucesso!" );
+					setValores();
+						
+				}
+			}
+		}
+	}
+	private int getCodCli(){ 
+		
+		int codigo = 0;
+		StringBuilder sSQL = new StringBuilder();
+		PreparedStatement ps = null;
+		
+		sSQL.append( "SELECT MAX( C.CODCLI ) FROM VDCLIENTE C WHERE C.CODEMP=? AND C.CODFILIAL=?" );
+		
+		try {
+			
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ResultSet rs  = ps.executeQuery(); 
+			
+			if( rs.next() ){
+			
+				codigo = rs.getInt( 1 ) + 1;
+			}
+			
+		} catch ( SQLException err ) {
+			
+			err.printStackTrace();
+			Funcoes.mensagemInforma( this, "Erro ao buscar último cliente!" + err.getMessage());  
+		}
+		
+		return codigo;
+	}
+	
+	private int inserirCli() { 
+		
+		int codcli = getCodCli();
+		StringBuilder sSQL = new StringBuilder();
+		PreparedStatement ps = null;
+		
+		sSQL.append( "INSERT INTO VDCLIENTE " );
+		sSQL.append( "( CODEMP, CODFILIAL, CODCLI, NOMECLI, RAZCLI, ATIVOCLI, PESSOACLI, CODTIPOCLI, CODEMPTI, CODFILIALTI, " );
+		sSQL.append( "CNPJCLI, INSCCLI, CPFCLI, ENDCLI, NUMCLI, BAIRCLI )" );
+		sSQL.append( "VALUES( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) " );
+		
+		try {
+			
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setInt( 3, codcli );
+			ps.setString( 4, txtNomeFor.getVlrString() );
+			ps.setString( 5, txtRazFor.getVlrString() );
+			ps.setString( 6, "S" );
+			ps.setString( 7, rgPessoa.getVlrString() );
+			ps.setInt( 8, 1 ); //PREFERENCIAS
+			ps.setInt( 9, Aplicativo.iCodEmp );
+			ps.setInt( 10, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setString( 11, txtCnpjFor.getVlrString() );
+			ps.setString( 12, txtInscFor.getVlrString() );
+			ps.setString( 13, txtCpfFor.getVlrString() );
+			ps.setString( 14, txtEndFor.getVlrString() );
+			ps.setInt( 15, txtNumFor.getVlrInteger() );
+			ps.setString( 16, txtBairFor.getVlrString() );
+			
+			
+			ps.executeUpdate();
+			
+			if (!con.getAutoCommit()){
+				con.commit();
+			
+			}
+		} catch ( SQLException  e ) {
+			
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao inserir Cliente" + e.getMessage() );
+		}
+		
+		return codcli;
+	}
+	
+	private int pesqCli() { // OK
+		
+		int codfor = 0;
+		StringBuilder sSql = new StringBuilder();
+		String chave = null;
+		PreparedStatement ps = null;
+		
+		if ( "J".equals(rgPessoa.getVlrString()) ) {
+			
+			sSql.append( "SELECT CODCLI FROM VDCLIENTE C WHERE C.CODEMP=? AND C.CODFILIAL=? AND CNPJCLI=? " );
+			chave = txtCnpjFor.getVlrString();
+			
+		} else {
+			
+			sSql.append( "SELECT CODCLI FROM VDCLIENTE C WHERE C.CODEMP=? AND C.CODFILIAL=? AND CPFCLI=? " );
+			chave = txtCpfFor.getVlrString();
+			
+		}
+		try {
+			
+			ps = con.prepareStatement( sSql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ));
+			ps.setString( 3, chave );
+			ResultSet rs = ps.executeQuery();
+		
+			if( rs.next() ){
+			
+				codfor = rs.getInt( "CODCLI" ); 
+			}
+
+			if (!con.getAutoCommit()){
+				con.commit();
+		     }
+		
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao pesquisar cliente! " + e.getMessage() );
+		}
+		
+		return codfor;
+		
+	}
 
 	private void imprimir( boolean bVisualizar ) {
 
@@ -569,6 +853,10 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		    	else
 		    		Funcoes.mensagemInforma( this, "Informe o Site do Fornecedor! " );
 		    }
+		 if( evt.getSource() == btBuscaFor ){
+			 
+			 fazBusca();
+		 }
 	}
 
 	public void beforePost( PostEvent pevt ) {
@@ -616,6 +904,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		super.setConexao( cn );
 		lcTipoFor.setConexao( cn );
 		lcHistorico.setConexao( cn );
+		lcForCli.setConexao( cn );
+		lcForxCli.setConexao( cn );
 		prefs = getPrefs();
 		montaTela();
 	}
