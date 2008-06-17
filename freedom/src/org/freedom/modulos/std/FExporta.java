@@ -188,7 +188,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append( "SELECT F.CODFOR CODIGO, F.CODCONTDEB CONTADEB, F.CODCONTCRED CONTACRED, C.VLRLIQCOMPRA VALOR," );
-		sql.append( "C.SERIE, C.DOCCOMPRA DOC, H.DESCHIST, C.DTENTCOMPRA DATA, C.CODFILIAL " );
+		sql.append( "C.SERIE, C.DOCCOMPRA DOC, H.TXAHISTPAD, C.DTENTCOMPRA DATA, C.CODFILIAL " );
 		sql.append( "FROM CPCOMPRA C, EQTIPOMOV T, CPFORNECED F " );
 		sql.append( "LEFT OUTER JOIN FNHISTPAD H " );
 		sql.append( "ON H.CODEMP=F.CODEMPHP AND H.CODFILIAL=F.CODFILIALHP AND H.CODHIST=F.CODHIST " );
@@ -207,7 +207,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		
 		sql.append( "SELECT CT.CODCONTDEB CONTADEB, CT.CODCONTCRED CONTACRED," );
 		sql.append( "S.VLRSUBLANCA VALOR, C.SERIE, C.DOCCOMPRA DOC," );
-		sql.append( "H.DESCHIST, S.DATASUBLANCA DATA, S.CODFILIAL " );
+		sql.append( "H.TXAHISTPAD, S.DATASUBLANCA DATA, S.CODFILIAL " );
 		sql.append( "FROM FNSUBLANCA S, FNLANCA L, FNITPAGAR I, CPFORNECED F, FNCONTA CT," );
 		sql.append( "FNHISTPAD H, FNPAGAR P, CPCOMPRA C " );
 		sql.append( "WHERE S.CODEMP=? AND S.CODFILIAL=? AND S.DATASUBLANCA BETWEEN ? AND ? AND " );
@@ -229,7 +229,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append( "SELECT C.CODCLI CODIGO, C.CODCONTDEB CONTADEB, C.CODCONTCRED CONTACRED, V.VLRLIQVENDA VALOR," );
-		sql.append( "V.SERIE, V.DOCVENDA DOC, H.DESCHIST, V.DTEMITVENDA DATA, C.CODFILIAL " );
+		sql.append( "V.SERIE, V.DOCVENDA DOC, H.TXAHISTPAD, V.DTEMITVENDA DATA, C.CODFILIAL " );
 		sql.append( "FROM VDVENDA V, EQTIPOMOV T, VDCLIENTE C " );
 		sql.append( "LEFT OUTER JOIN FNHISTPAD H " );
 		sql.append( "ON H.CODEMP=C.CODEMPHP AND H.CODFILIAL=C.CODFILIALHP AND H.CODHIST=C.CODHIST " );
@@ -249,7 +249,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		
 		sql.append( "SELECT CT.CODCONTDEB CONTADEB, C.CODCONTDEB CONTACRED," );
 		sql.append( "(S.VLRSUBLANCA*-1) VALOR, V.SERIE, V.DOCVENDA DOC," );
-		sql.append( "H.DESCHIST, S.DATASUBLANCA DATA, S.CODFILIAL " );
+		sql.append( "H.TXAHISTPAD, S.DATASUBLANCA DATA, S.CODFILIAL " );
 		sql.append( "FROM FNSUBLANCA S, FNLANCA L, FNITRECEBER I, VDCLIENTE C, FNCONTA CT," );
 		sql.append( "FNHISTPAD H, FNRECEBER R, VDVENDA V " );
 		sql.append( "WHERE S.CODEMP=? AND S.CODFILIAL=? AND S.DATASUBLANCA BETWEEN ? AND ? AND " );
@@ -271,7 +271,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append( "SELECT F.CODFOR CODIGO, F.CODCONTDEB CONTADEB, F.CODCONTCRED CONTACRED, P.VLRPARCPAG VALOR," );
-		sql.append( "' ' SERIE, P.DOCPAG DOC, H.DESCHIST, P.DATAPAG DATA, P.CODFILIAL " );
+		sql.append( "' ' SERIE, P.DOCPAG DOC, H.TXAHISTPAD, P.DATAPAG DATA, P.CODFILIAL " );
 		sql.append( "FROM FNPAGAR P, CPFORNECED F " );
 		sql.append( "LEFT OUTER JOIN FNHISTPAD H " );
 		sql.append( "ON H.CODEMP=F.CODEMPHP AND H.CODFILIAL=F.CODFILIALHP AND H.CODHIST=F.CODHIST " );
@@ -289,7 +289,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		
 		sql.append( "SELECT CT.CODCONTDEB CONTADEB, CT.CODCONTCRED CONTACRED," );
 		sql.append( "S.VLRSUBLANCA VALOR, ' ' SERIE, P.DOCPAG DOC," );
-		sql.append( "H.DESCHIST, S.DATASUBLANCA DATA, S.CODFILIAL " );
+		sql.append( "H.TXAHISTPAD, S.DATASUBLANCA DATA, S.CODFILIAL " );
 		sql.append( "FROM FNSUBLANCA S, FNLANCA L, FNITPAGAR I, CPFORNECED F, FNCONTA CT, " );
 		sql.append( "FNHISTPAD H, FNPAGAR P " );
 		sql.append( "WHERE S.CODEMP=? AND S.CODFILIAL=? AND S.DATASUBLANCA BETWEEN ? AND ? AND " );
@@ -312,7 +312,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		
 		sql.append( "SELECT C.CODCLI CODIGO, C.CODCONTDEB CONTADEB, C.CODCONTCRED CONTACRED," );
 		sql.append( "R.VLRPARCREC VALOR," );
-		sql.append( "' ' SERIE, R.DOCREC DOC, H.DESCHIST, R.DATAREC DATA, R.CODFILIAL " );
+		sql.append( "' ' SERIE, R.DOCREC DOC, H.TXAHISTPAD, R.DATAREC DATA, R.CODFILIAL " );
 		sql.append( "FROM FNRECEBER R, VDCLIENTE C " );
 		sql.append( "LEFT OUTER JOIN FNHISTPAD H " );
 		sql.append( "ON H.CODEMP=C.CODEMPHP AND H.CODFILIAL=C.CODFILIALHP AND H.CODHIST=C.CODHIST " );
@@ -330,7 +330,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		
 		sql.append( "SELECT CT.CODCONTDEB CONTADEB, C.CODCONTDEB CONTACRED," );
 		sql.append( "(S.VLRSUBLANCA*-1) VALOR, ' ' SERIE, R.DOCREC DOC," );
-		sql.append( "H.DESCHIST, S.DATASUBLANCA DATA, S.CODFILIAL " );
+		sql.append( "H.TXAHISTPAD, S.DATASUBLANCA DATA, S.CODFILIAL " );
 		sql.append( "FROM FNSUBLANCA S, FNLANCA L, FNITRECEBER I, VDCLIENTE C, FNCONTA CT, " );
 		sql.append( "FNHISTPAD H, FNRECEBER R " );
 		sql.append( "WHERE S.CODEMP=? AND S.CODFILIAL=? AND S.DATASUBLANCA BETWEEN ? AND ? AND " );
@@ -353,7 +353,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		
 		sql.append( "SELECT P.CODCONTDEB CONTADEB, P.CODCONTCRED CONTACRED, " );
 		sql.append( "S.VLRSUBLANCA VALOR, ' ' SERIE, L.DOCLANCA DOC, " );
-		sql.append( "H.DESCHIST, S.DATASUBLANCA DATA, S.CODFILIAL " );
+		sql.append( "H.TXAHISTPAD, S.DATASUBLANCA DATA, S.CODFILIAL " );
 		sql.append( "FROM FNSUBLANCA S, FNLANCA L, FNCONTA CT, FNPLANEJAMENTO P " );
 		sql.append( "LEFT OUTER JOIN FNHISTPAD H " );
 		sql.append( "ON H.CODEMP=P.CODEMPHP AND H.CODFILIAL=P.CODFILIALHP AND H.CODHIST=P.CODHIST " );
@@ -651,7 +651,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 				sb.setContacred( rs.getString( "CONTACRED" ) );
 				sb.setValor( rs.getBigDecimal( "VALOR" ) );
 				sb.setDocumento( rs.getString( "DOC" ) );
-				sb.setHistorico( decodeHistorico( rs, rs.getString( "DESCHIST" ) ) );
+				sb.setHistorico( decodeHistorico( rs, rs.getString( "TXAHISTPAD" ) ) );
 				sb.setData( rs.getDate( "DATA" ) );
 				sb.setFilial( rs.getInt( "CODFILIAL" ) );
 				sb.setTipo( tipo );
