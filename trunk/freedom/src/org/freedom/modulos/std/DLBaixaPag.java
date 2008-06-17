@@ -78,7 +78,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 	private final JTextFieldPad txtVlrPago = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
 
-	private final JTextFieldPad txtObs = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtObs = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
 
 	private final JTextFieldPad txtCodTipoCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -90,8 +90,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 	private final ListaCampos lcCC = new ListaCampos( this );
 
-	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
-	
+	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );	
 
 	public DLBaixaPag( Component cOrig ) {
 
