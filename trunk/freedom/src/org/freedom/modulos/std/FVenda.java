@@ -47,10 +47,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
-
 import javax.swing.JButton;
 import javax.swing.JTextField;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
@@ -76,7 +74,6 @@ import org.freedom.layout.componentes.Layout;
 import org.freedom.layout.componentes.Leiaute;
 import org.freedom.layout.componentes.NFSaida;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FPassword;
 
 public class FVenda extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener {
@@ -2534,8 +2531,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 	
 	private boolean consultaCredito() {
-		
-		
+
 		try {
 			// Liberação de crédito:
 			String sSQL = "EXECUTE PROCEDURE FNLIBCREDSP(?,?,?,?,?,?,?,?);";
@@ -2553,8 +2549,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
-			
-			
 		} 
 		catch ( SQLException err ) {
 			err.printStackTrace();
