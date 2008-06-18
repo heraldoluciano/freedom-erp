@@ -20,9 +20,9 @@ public abstract class Aplication {
 	public Aplication() {
 		
 		super();
-		
-		init();	
-		initParameters();		
+
+		initParameters();	
+		init();		
 		show();	
 	}
 	
@@ -32,7 +32,7 @@ public abstract class Aplication {
 
 		try {
 			if ( fileIni == null ) {
-				fileIni = new File( System.getProperty( "INIT_FILE", "" ) ) ;
+				fileIni = new File( System.getProperty( "ARQINI", "" ) ) ;
 			}
 			
 			if ( fileIni != null && fileIni.exists() ) {
