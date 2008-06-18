@@ -41,6 +41,7 @@ import org.freedom.modulos.std.FManutPag;
 import org.freedom.modulos.std.FManutRec;
 import org.freedom.modulos.std.FModBoleto;
 import org.freedom.modulos.std.FMoeda;
+import org.freedom.modulos.std.FNTipoRestr;
 import org.freedom.modulos.std.FPapel;
 import org.freedom.modulos.std.FPlanejamento;
 import org.freedom.modulos.std.FPlanoPag;
@@ -60,6 +61,7 @@ import org.freedom.modulos.std.FRRazFor;
 import org.freedom.modulos.std.FRRazaoFin;
 import org.freedom.modulos.std.FRReceber;
 import org.freedom.modulos.std.FRReceberSetor;
+import org.freedom.modulos.std.FRestrCli;
 import org.freedom.modulos.std.FSetor;
 import org.freedom.modulos.std.FTipoCli;
 import org.freedom.modulos.std.FTipoCob;
@@ -86,6 +88,7 @@ public class FreedomFNC extends AplicativoPD {
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Classificação de clientes", "Classifição de Clientes", 'f', 100101040, 3, true, FClasCli.class );
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Clientes", "Clientes", 'C', 100101050, 3, true, FCliente.class );
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Crédito por cliente", "Crédito por cliente", 'r', 100101060, 3, true, FCredCli.class );
+
 				addSeparador( 100100000 );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Moeda", "Moeda", 'M', 100102000, 2, true, FMoeda.class );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Banco", "Banco", 'B', 100103000, 2, true, FBanco.class );
@@ -147,18 +150,28 @@ public class FreedomFNC extends AplicativoPD {
 			addSeparador( 400000000 );
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Tipo de crédito", "Tipo de crédito", 'T', 400800000, 1, true, FTipoCred.class );
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Liberação de crédito", "Liberação de crédito", 'b', 400900000, 1, true, FLiberaCredito.class );
+
+			addOpcao( 400000000, TP_OPCAO_ITEM, "Tipo de Restrição", "Tipo de Restrição", 's', 401000000, 1, true, FNTipoRestr.class );
+			addOpcao( 400000000, TP_OPCAO_ITEM, "Restrição de clientes", "Restrição de clientes", 'r', 401100000, 1, true, FRestrCli.class );
+
+
 			addSeparador( 400000000 );
+			
+			
+			
+			
+			
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Reprocessa saldo", "Reprocessamento de saldos", 'R', 401000000, 1, true, FProcessaSL.class );
 			addSeparador( 400000000 );
-			addOpcao( 400000000, TP_OPCAO_MENU, "Listagens", "", 's', 401100000, 1, false, null );
-				addOpcao( 401100000, TP_OPCAO_ITEM, "Extrato", "Extrato", 'E', 401101000, 2, true, FRExtrato.class );
-				addOpcao( 401100000, TP_OPCAO_ITEM, "Balancete", "Balancete", 'B', 401102000, 2, true, FRBalancete.class );
-				addOpcao( 401100000, TP_OPCAO_ITEM, "Relatório financeiro por C.C.", "Relatorio Financeiro por C.C.", 'R', 401103000, 2, true, FRCentroCusto.class );
-				addOpcao( 401100000, TP_OPCAO_ITEM, "Razão financeiro", "Razão financeiro", 'z', 401104000, 2, true, FRRazaoFin.class );
-				addOpcao( 401100000, TP_OPCAO_ITEM, "Fluxo de caixa", "Fluxo de caixa", 'F', 401105000, 2, true, FRFluxoCaixa.class );	
-			addOpcao( 400000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 401200000, 1, false, null );
-				addOpcao( 401200000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'B', 401201000, 2, true, FRBalanceteGrafico.class );
-				addOpcao( 401200000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'F', 401202000, 2, true, FRGraficoCC.class );
+			addOpcao( 400000000, TP_OPCAO_MENU, "Listagens", "", 's', 401200000, 1, false, null );
+				addOpcao( 401200000, TP_OPCAO_ITEM, "Extrato", "Extrato", 'E', 401201000, 2, true, FRExtrato.class );
+				addOpcao( 401200000, TP_OPCAO_ITEM, "Balancete", "Balancete", 'B', 401202000, 2, true, FRBalancete.class );
+				addOpcao( 401200000, TP_OPCAO_ITEM, "Relatório financeiro por C.C.", "Relatorio Financeiro por C.C.", 'R', 401203000, 2, true, FRCentroCusto.class );
+				addOpcao( 401200000, TP_OPCAO_ITEM, "Razão financeiro", "Razão financeiro", 'z', 401204000, 2, true, FRRazaoFin.class );
+				addOpcao( 401200000, TP_OPCAO_ITEM, "Fluxo de caixa", "Fluxo de caixa", 'F', 401205000, 2, true, FRFluxoCaixa.class );	
+			addOpcao( 400000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 401300000, 1, false, null );
+				addOpcao( 401300000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'B', 401201000, 2, true, FRBalanceteGrafico.class );
+				addOpcao( 401300000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'F', 401202000, 2, true, FRGraficoCC.class );
 
 		addBotao( "barraUsuario.gif", "Cliente", "Clientes", 100101050, FCliente.class );
 		addBotao( "btContaPagar.gif", "Contas a pagar", "Manutenção de contas a pagar", 200100000, FManutPag.class );
