@@ -417,7 +417,7 @@ public class ControllerECF {
 			}
 		}
 		
-		return returnOfAction++;
+		return returnOfAction;
 	}
 	
 	public boolean abrirCupom() {

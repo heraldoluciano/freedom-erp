@@ -25,7 +25,7 @@ import java.io.File;
 import org.freedom.tef.driver.Flag;
 
 
-public final class TextTefFactore {
+public final class TextTefFactory {
 	
 	/**
 	 * Sobrecarrega {@link #createTextTef(TextTefProperties, String, File)} <br>

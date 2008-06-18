@@ -14,7 +14,7 @@
  * @version 1.0 (beta), 05/03/2008 <br>
  * <br>
  * @see org.freedom.tef.text.TextTef <br>
- * @see org.freedom.tef.text.TextTefFactore <br>
+ * @see org.freedom.tef.text.TextTefFactory <br>
  */
 
 package org.freedom.tef.app;
@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 import org.freedom.infra.beans.LoggerManager;
 import org.freedom.tef.driver.Flag;
 import org.freedom.tef.driver.text.TextTef;
-import org.freedom.tef.driver.text.TextTefFactore;
+import org.freedom.tef.driver.text.TextTefFactory;
 import org.freedom.tef.driver.text.TextTefProperties;
 
 import static org.freedom.tef.driver.text.TextTef.*;
@@ -194,7 +194,7 @@ public class ControllerTef {
 		TextTef textTef = null;		
 		
 		for ( Object flagName : flags ) {
-			textTef = TextTefFactore.createTextTef( getTextTefProperties(), (String)flagName );
+			textTef = TextTefFactory.createTextTef( getTextTefProperties(), (String)flagName );
 			if ( textTef != null ) {
 				break; 
 			}
@@ -288,7 +288,7 @@ public class ControllerTef {
 		boolean actionReturn = false;
 		
 		try {
-			TextTef textTef = TextTefFactore.createTextTef( getTextTefProperties(), 
+			TextTef textTef = TextTefFactory.createTextTef( getTextTefProperties(), 
 															flagName, 
 															getFileFlagsMap() );	
 			if ( ! standardManagerActive( textTef ) ) {
@@ -337,7 +337,7 @@ public class ControllerTef {
 		boolean actionReturn = false;
 		
 		try {
-			TextTef textTef = TextTefFactore.createTextTef( getTextTefProperties(), 
+			TextTef textTef = TextTefFactory.createTextTef( getTextTefProperties(), 
 															flagName, 
 															getFileFlagsMap() );	
 			if ( ! standardManagerActive( textTef ) ) {
