@@ -41,6 +41,11 @@ public class Crud {
 
 		return this.tx;
 	}
+	
+	public EntityManager getEm() {
+	
+		return em;
+	}
 
 	public void persist( Object object ) {
 
