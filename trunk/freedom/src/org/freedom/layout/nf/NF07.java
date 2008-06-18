@@ -234,7 +234,7 @@ public class NF07 extends Layout {
 				imp.say(  0, Funcoes.alinhaCentro(itens.getInt(NF.C_CODPROD),5) );
 				imp.say(  7, Funcoes.copy(itens.getString(NF.C_DESCPROD).trim(), 23) );
 				imp.say( 32, itens.getString(NF.C_CODLOTE) );
-				imp.say( 49, Funcoes.dateToStrDate(itens.getDate(NF.C_VENCLOTE)));
+				imp.say( 49, itens.getDate(NF.C_VENCLOTE) == null ? "" : Funcoes.dateToStrDate(itens.getDate(NF.C_VENCLOTE) ));
 				imp.say( 61, Funcoes.copy(itens.getString(NF.C_CODUNID),4));
 				imp.say( 66, Funcoes.strDecimalToStrCurrency( 9,0,String.valueOf(itens.getFloat(NF.C_QTDITPED))));
 				imp.say( 78, sSigla );
