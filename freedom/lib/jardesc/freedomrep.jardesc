@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
 <jardesc>
     <jar path="freedom/lib/freedomrep.jar"/>
     <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomrep.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
@@ -16,16 +16,15 @@
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpproduto.jasper"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAgenda.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpclientecomp.jasper"/>
-        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.components"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.rep"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLRTipoAtendo.java"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rppedidoresum.jasper"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpevolucaovendaspizza.jasper"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
-        <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpresumodiario.jasper"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/cabecariopaisagem.jasper"/>
+        <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpresumodiario.jasper"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpclienteresum.jasper"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpevolucaovendaslinha.jasper"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/pedido001.jasper"/>
@@ -35,13 +34,15 @@
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpfornecedorcomp.jasper"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpfornecedorresum.jasper"/>
-        <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpcontato.jasper"/>
+        <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpcomissoes.jasper"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rptipocli.jasper"/>
+        <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpcontato.jasper"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/cabecario.jasper"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpgrupo.jasper"/>
-        <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rppedidocomp.jasper"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/pedido.jasper"/>
+        <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rppedidocomp.jasper"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpvendedor.jasper"/>
+        <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpprodutocliente.jasper"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLCodProd.java"/>
     </selectedElements>
 </jardesc>
