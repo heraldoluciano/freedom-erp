@@ -79,9 +79,11 @@ public class FPrincipal2 extends FPrincipal implements ActionListener, MouseList
 		if ( con != null ) {
 			try {
 				remConFilial();
-				con.close();
-			} catch ( java.sql.SQLException e ) {
-				Funcoes.mensagemErro(null, "Não foi possível fechar a conexao com o banco de dados!" );
+				con.close();				
+			} 
+			catch ( java.sql.SQLException e ) {
+				System.out.println("Não foi possível fechar a conexao com o banco de dados!");
+//				Funcoes.mensagemErro(null, "Não foi possível fechar a conexao com o banco de dados!" );
 			}
 		}
 		System.exit( 0 );

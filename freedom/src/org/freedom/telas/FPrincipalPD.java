@@ -78,7 +78,8 @@ public class FPrincipalPD extends FPrincipal implements ActionListener, MouseLis
 				remConFilial();
 				con.close();
 			} catch ( java.sql.SQLException e ) {
-				Funcoes.mensagemErro( null, "Não foi possível fechar a conexao com o banco de dados!" );
+				System.out.println("Não foi possível fechar a conexao com o banco de dados!");
+//				Funcoes.mensagemErro( null, "Não foi possível fechar a conexao com o banco de dados!" );
 			}
 		}
 		System.exit( 0 );
