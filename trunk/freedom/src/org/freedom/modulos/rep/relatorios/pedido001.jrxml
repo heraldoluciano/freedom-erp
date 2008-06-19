@@ -55,7 +55,7 @@
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="ORDERBY" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["CODITPED"]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA["CODITPROD"]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT 
 IT.CODITPED,IT.CODPED,P.DATAPED,P.CODCLI,C.RAZCLI,P.CODVEND,V.NOMEVEND,P.CODPLANOPAG,PG.DESCPLANOPAG,
@@ -1317,7 +1317,7 @@ $F{FONETRAN}.substring(4)
 					</textElement>
 				<text><![CDATA[Itens]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="###0.0000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="310"
 						y="31"
@@ -1347,7 +1347,7 @@ $F{FONETRAN}.substring(4)
 					</textElement>
 				<text><![CDATA[Pedido]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="###0.0000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="50"
 						y="31"
@@ -1501,7 +1501,7 @@ $F{FONETRAN}.substring(4)
 					</textElement>
 				<text><![CDATA[Produtos]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="###0.0000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="180"
 						y="31"
@@ -1544,7 +1544,7 @@ $F{FONETRAN}.substring(4)
 					</textElement>
 				<text><![CDATA[Cubagem]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="445"
 						y="31"
@@ -1655,7 +1655,7 @@ $F{FONETRAN}.substring(4)
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Short"><![CDATA[$F{CODITPED}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1670,7 +1670,7 @@ $F{FONETRAN}.substring(4)
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCPROD}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="343"
 						y="2"
@@ -1683,7 +1683,7 @@ $F{FONETRAN}.substring(4)
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDITPED}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.0000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="387"
 						y="2"
@@ -1696,7 +1696,7 @@ $F{FONETRAN}.substring(4)
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{PRECOITPED}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.0000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="441"
 						y="2"
@@ -1709,7 +1709,7 @@ $F{FONETRAN}.substring(4)
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRLIQITPED}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="505"
 						y="2"

@@ -118,7 +118,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 						mode="Transparent"
 						x="5"
 						y="20"
-						width="70"
+						width="117"
 						height="65"
 						forecolor="#FFFFFF"
 						backcolor="#FFFFFF"
@@ -130,9 +130,9 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="80"
+						x="130"
 						y="25"
-						width="357"
+						width="307"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -214,9 +214,9 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="80"
+						x="130"
 						y="55"
-						width="240"
+						width="190"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -262,9 +262,9 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="80"
+						x="130"
 						y="70"
-						width="240"
+						width="190"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -289,7 +289,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Fone : " + ($F{FONEEMP}!=null?$F{FONEEMP}.substring(0,4) + "-" + $F{FONEEMP}.substring(4):"")]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Fone : 41-" + ($F{FONEEMP}!=null?$F{FONEEMP}.substring(0,4) + "-" + $F{FONEEMP}.substring(4):"")]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -306,7 +306,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["CEP : " + ($F{CEPEMP} != null ? 
-$F{CEPEMP}.trim().substring(0,4) + "-" + $F{CEPEMP}.trim().substring(5)
+$F{CEPEMP}.trim().substring(0,5) + "-" + $F{CEPEMP}.trim().substring(5)
 : "")]]></textFieldExpression>
 				</textField>
 			</band>
