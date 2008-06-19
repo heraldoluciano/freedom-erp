@@ -135,14 +135,23 @@ public class FRRazCli extends FRelatorio {
 			sSQL.append( " CAST( ' " );
 			sSQL.append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) );
 			
+			/**
+			 * Tipo A = Saldo anteiror
+			 * Busca na FNRECEBER todos as vendas com valor financeiro a receber (VLRREC)
+			 */
 			sSQL.append( "' AS DATE) DATA, 'A' TIPO, " );
 			sSQL.append( "0 DOC, (COALESCE( ( SELECT SUM(R.VLRREC) FROM FNRECEBER R WHERE " );
 			sSQL.append( "R.CODEMP=? AND R.CODFILIAL=? AND R.CODEMPCL=C.CODEMP AND " );
 			sSQL.append( "R.CODFILIALCL=C.CODFILIAL AND R.CODCLI=C.CODCLI AND R.DATAREC < ? ),0) - " );
-
+			/**
+			 *  Subtrai o valor pago do saldo anterior
+			 */
 			sSQL.append( "COALESCE( ( SELECT SUM(L.VLRLANCA) FROM FNLANCA L WHERE  " );
-			sSQL.append( " L.CODEMPCL=? AND L.CODFILIALCL=? AND L.CODCLI=C.CODCLI ");
-			sSQL.append( " AND L.DATALANCA < ? ), 0) )" );
+			sSQL.append( " L.CODEMPCL=C.CODEMP AND L.CODFILIALCL=C.CODFILIAL AND L.CODCLI=C.CODCLI ");
+			sSQL.append( " L.CODEMP=? AND L.CODFILIAL=? AND L.DATALANCA < ? ), 0) )" );
+			/**
+			 * Subtrai as devoluções do saldo anterior
+			 */
 						
 			/*
 			sSQL.append( "COALESCE( ( SELECT SUM(L.VLRLANCA) FROM FNLANCA L, FNRECEBER R WHERE L.CODEMPRC=R.CODEMP AND " );
@@ -188,7 +197,7 @@ public class FRRazCli extends FRelatorio {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) ); // 3
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 4
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 5
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) ); // 6
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 6
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 7
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 8
 			ps.setInt( param++, ListaCampos.getMasterFilial( "VDCLIENTE" ) ); // 9
