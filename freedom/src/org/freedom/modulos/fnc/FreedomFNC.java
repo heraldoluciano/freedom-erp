@@ -61,6 +61,7 @@ import org.freedom.modulos.std.FRRazFor;
 import org.freedom.modulos.std.FRRazaoFin;
 import org.freedom.modulos.std.FRReceber;
 import org.freedom.modulos.std.FRReceberSetor;
+import org.freedom.modulos.std.FRRestricao;
 import org.freedom.modulos.std.FRestrCli;
 import org.freedom.modulos.std.FSetor;
 import org.freedom.modulos.std.FTipoCli;
@@ -164,6 +165,7 @@ public class FreedomFNC extends AplicativoPD {
 				addOpcao( 401200000, TP_OPCAO_ITEM, "Relatório financeiro por C.C.", "Relatorio Financeiro por C.C.", 'R', 401203000, 2, true, FRCentroCusto.class );
 				addOpcao( 401200000, TP_OPCAO_ITEM, "Razão financeiro", "Razão financeiro", 'z', 401204000, 2, true, FRRazaoFin.class );
 				addOpcao( 401200000, TP_OPCAO_ITEM, "Fluxo de caixa", "Fluxo de caixa", 'F', 401205000, 2, true, FRFluxoCaixa.class );	
+				addOpcao( 401200000, TP_OPCAO_ITEM, "Restrição/clientes", "Restrição/clientes", 'R', 401206000, 2, true, FRRestricao.class );	
 			addOpcao( 400000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 401300000, 1, false, null );
 				addOpcao( 401300000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'B', 401201000, 2, true, FRBalanceteGrafico.class );
 				addOpcao( 401300000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'F', 401202000, 2, true, FRGraficoCC.class );
