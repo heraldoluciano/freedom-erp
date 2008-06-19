@@ -128,24 +128,34 @@ public class FRRazFor extends FRelatorio {
 				sCab.append( "FORNECEDOR - " + txtDescFor.getVlrString() );
 			}
 
+			
 			sSQL.append( "SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
 			sSQL.append( "CAST( '" );
 			sSQL.append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) );
-			sSQL.append( "' AS DATE) DATA, 'A' TIPO, 0 DOC, " );
+			/**
+			 * Tipo A = Saldo anterior
+			 * Busca na FNPAGAR todas as compras com valor financeiro a pagar (VLRPAG)
+			 */
+			sSQL.append( "' AS DATE) DATA, 'A' TIPO, 0 DOC, 0.00 VLRDEB, " );
 			sSQL.append( "(COALESCE( ( SELECT SUM(P.VLRPAG) " );
 			sSQL.append( "FROM FNPAGAR P " );
 			sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND " );
 			sSQL.append( "P.CODEMPFR=F.CODEMP AND P.CODFILIALFR=F.CODFILIAL AND " );
 			sSQL.append( "P.CODFOR=F.CODFOR AND " );
 			sSQL.append( "P.DATAPAG < ? ),0) + " );
+			/**
+			 *  Subtrai o valor pago do saldo anterior
+			 *  O sinal do lanca é invertido, então o sinal + está subtraindo
+			 */
 			sSQL.append( "COALESCE( ( SELECT SUM(L.VLRLANCA) " );
-			sSQL.append( "FROM FNLANCA L, FNPAGAR P " );
-			sSQL.append( "WHERE L.CODEMPPG=P.CODEMP AND L.CODFILIALPG=P.CODFILIAL AND " );
-			sSQL.append( "L.CODPAG=P.CODPAG AND P.CODEMPFR=F.CODEMP AND P.CODFILIALFR=F.CODFILIAL AND " );
-			sSQL.append( "P.CODFOR=F.CODFOR AND " );
-			sSQL.append( "P.CODEMP=? AND P.CODFILIAL=? AND " );
+			sSQL.append( "FROM FNLANCA L " );
+			sSQL.append( "WHERE L.CODEMPFR=F.CODEMP AND L.CODFILIALFR=F.CODFILIAL AND " );
+			sSQL.append( "L.CODFOR=F.CODFOR AND " );
+			sSQL.append( "L.CODEMP=? AND L.CODFILIAL=? AND " );
 			sSQL.append( "L.DATALANCA < ? ), 0) " );
-			sSQL.append( ") VALOR " );
+			sSQL.append( ") VLRCRED " );
+			
+			
 			sSQL.append( "FROM CPFORNECED F " );
 			sSQL.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND " );
 			if ( codfor != 0 ) {
@@ -155,16 +165,22 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( "WHERE P2.CODEMP=? AND P2.CODFILIAL=? AND " );
 			sSQL.append( "P2.CODEMPFR=F.CODEMP AND P2.CODFILIALFR=F.CODFILIAL AND " );
 			sSQL.append( "P2.CODFOR=F.CODFOR AND DATAPAG BETWEEN ? AND ? )" );
-			sSQL.append( "OR EXISTS (SELECT * FROM FNLANCA L2, FNPAGAR P2 " );
-			sSQL.append( "WHERE L2.CODEMPPG=P2.CODEMP AND L2.CODFILIALPG=P2.CODFILIAL AND " );
-			sSQL.append( "L2.CODPAG=P2.CODPAG AND F.CODEMP=P2.CODEMPFR AND " );
-			sSQL.append( "F.CODFILIAL=P2.CODFILIALFR AND F.CODFOR=P2.CODFOR AND " );
-			sSQL.append( "P2.CODEMP=? AND P2.CODFILIAL=? AND " );
+			sSQL.append( "OR EXISTS (SELECT * FROM FNLANCA L2 " );
+			sSQL.append( "WHERE F.CODEMP=L2.CODEMPFR AND " );
+			sSQL.append( "F.CODFILIAL=L2.CODFILIALFR AND F.CODFOR=L2.CODFOR AND " );
+			sSQL.append( "L2.CODEMP=? AND L2.CODFILIAL=? AND " );
 			sSQL.append( "L2.DATALANCA BETWEEN ? AND ?" );
 			sSQL.append( ") ) " );
+			/**
+			 * Fim da query do saldo anterior
+			 */
+			
+			/**
+			 * Query das compras 
+			 */
 			sSQL.append( "UNION " );
 			sSQL.append( "SELECT P.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
-			sSQL.append( "P.DATAPAG DATA, 'C' TIPO, P.DOCPAG DOC, P.VLRPAG VALOR " );
+			sSQL.append( "P.DATAPAG DATA, 'C' TIPO, P.DOCPAG DOC, (P.VLRPARCPAG-P.VLRREC)*-1 VLRDEB, P.VLRPAG VLRCRED " );
 			sSQL.append( "FROM FNPAGAR P, CPFORNECED F " );
 			sSQL.append( "WHERE F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
 			sSQL.append( "F.CODFOR=P.CODFOR AND " );
@@ -173,17 +189,20 @@ public class FRRazFor extends FRelatorio {
 				sSQL.append( "F.CODFOR=? AND " );
 			}
 			sSQL.append( "P.DATAPAG BETWEEN ? AND ? " );
+			
+			/**
+			 * Query dos pagamentos 
+			 */
 			sSQL.append( "UNION " );
 			sSQL.append( "SELECT P.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
-			sSQL.append( "L.DATALANCA DATA, 'P' TIPO, P.DOCPAG DOC, L.VLRLANCA " );
-			sSQL.append( "FROM FNLANCA L, FNPAGAR P, CPFORNECED F " );
-			sSQL.append( "WHERE L.CODEMPPG=P.CODEMP AND L.CODFILIALPG=P.CODFILIAL AND " );
-			sSQL.append( "L.CODPAG=P.CODPAG AND F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
-			sSQL.append( "F.CODFOR=P.CODFOR AND " );
+			sSQL.append( "L.DATALANCA DATA, 'P' TIPO, P.DOCPAG DOC, L.VLRLANCA VLRDEB, 0.00 VLRCRED " );
+			sSQL.append( "FROM FNLANCA L, CPFORNECED F " );
+			sSQL.append( "WHERE F.CODEMP=L.CODEMPFR AND F.CODFILIAL=L.CODFILIALFR AND " );
+			sSQL.append( "F.CODFOR=L.CODFOR AND " );
 			if ( codfor != 0 ) {
 				sSQL.append( "F.CODFOR=? AND " );
 			}
-			sSQL.append( "P.CODEMP=? AND P.CODFILIAL=? AND " );
+			sSQL.append( "L.CODEMP=? AND L.CODFILIAL=? AND " );
 			sSQL.append( "L.DATALANCA BETWEEN ? AND ? " );
 			sSQL.append( "ORDER BY 1, 2, 3, 4, 5" );
 
@@ -193,7 +212,7 @@ public class FRRazFor extends FRelatorio {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 3
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 4
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 5
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 6
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 6
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 7
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 8
 			ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) ); // 9
@@ -205,7 +224,7 @@ public class FRRazFor extends FRelatorio {
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 13
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 14
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 15
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 16
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 16
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 17
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 18
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 19
@@ -219,7 +238,7 @@ public class FRRazFor extends FRelatorio {
 				ps.setInt( param++, codfor ); // 24
 			}
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 25
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 26
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 26
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 27
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 28
 			rs = ps.executeQuery();
