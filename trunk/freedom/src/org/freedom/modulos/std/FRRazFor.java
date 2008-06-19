@@ -180,7 +180,7 @@ public class FRRazFor extends FRelatorio {
 			 */
 			sSQL.append( "UNION " );
 			sSQL.append( "SELECT P.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
-			sSQL.append( "P.DATAPAG DATA, 'C' TIPO, P.DOCPAG DOC, (P.VLRPARCPAG-P.VLRREC)*-1 VLRDEB, P.VLRPAG VLRCRED " );
+			sSQL.append( "P.DATAPAG DATA, 'C' TIPO, P.DOCPAG DOC, (P.VLRPARCPAG-P.VLRPAG)*-1 VLRDEB, P.VLRPAG VLRCRED " );
 			sSQL.append( "FROM FNPAGAR P, CPFORNECED F " );
 			sSQL.append( "WHERE F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
 			sSQL.append( "F.CODFOR=P.CODFOR AND " );
@@ -194,10 +194,11 @@ public class FRRazFor extends FRelatorio {
 			 * Query dos pagamentos 
 			 */
 			sSQL.append( "UNION " );
-			sSQL.append( "SELECT P.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
-			sSQL.append( "L.DATALANCA DATA, 'P' TIPO, P.DOCPAG DOC, L.VLRLANCA VLRDEB, 0.00 VLRCRED " );
-			sSQL.append( "FROM FNLANCA L, CPFORNECED F " );
+			sSQL.append( "SELECT L.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
+			sSQL.append( "L.DATALANCA DATA, 'P' TIPO, P.DOCPAG DOC, L.VLRLANCA VLRDEB, 0.00 VLRCRED " ); 
+			sSQL.append( "FROM FNLANCA L, CPFORNECED F, FNPAGAR P " );
 			sSQL.append( "WHERE F.CODEMP=L.CODEMPFR AND F.CODFILIAL=L.CODFILIALFR AND " );
+			sSQL.append(  "P.CODEMP=L.CODEMPPG AND P.CODFILIAL=L.CODFILIALPG AND P.CODPAG=L.CODPAG AND " );
 			sSQL.append( "F.CODFOR=L.CODFOR AND " );
 			if ( codfor != 0 ) {
 				sSQL.append( "F.CODFOR=? AND " );
