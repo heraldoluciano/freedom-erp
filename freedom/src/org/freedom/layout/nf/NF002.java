@@ -21,6 +21,7 @@
 package org.freedom.layout.nf;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
@@ -33,7 +34,7 @@ public class NF002 extends Leiaute {
 		String[] sObs = new String[8];
 		boolean bRetorno;
 		int iItImp = 0;
-
+		String sDesc = "";
    
 		try {
    
@@ -57,8 +58,27 @@ public class NF002 extends Leiaute {
 					imp.say(imp.pRow(),132,Funcoes.copy(rs.getString("UFCLI"),0,2));
 					//imp.say(imp.pRow(),102,Funcoes.dateToStrDate(rs.getDate("DTEMITVENDA"))); colocar para cima
 					imp.say(imp.pRow()+3,0,"");
+					
 				}
-				imp.say(imp.pRow()+1,6,Funcoes.copy(rs.getString("CODPROD"),0,5)+"-"+Funcoes.copy(rs.getString("DESCPROD"),0,30));
+				
+				imp.say(imp.pRow()+4,"");
+				Vector<?> vDesc = Funcoes.strToVectorSilabas(rs.getString("OBSITVENDA" )== null || 
+						rs.getString( "OBSITVENDA" ).equals("") ? 
+						(rs.getString("DESCPROD").trim()): rs.getString("OBSITVENDA"),46);
+				
+				 for (int iConta=0;( (iConta < 20) && (vDesc.size()>iConta) );iConta++){
+						
+			        	if (!vDesc.elementAt(iConta).toString().equals("")){
+							sDesc = vDesc.elementAt(iConta).toString();
+			        	}
+						else{
+							sDesc = "";
+						}
+			        	imp.pulaLinha( 1, imp.comprimido() );
+			        	imp.say(imp.pRow(),6, sDesc);
+			        	
+				 }
+				 
 				imp.say(imp.pRow(),75,Funcoes.copy(rs.getString("CODUNID"),0,4));
 				imp.say(imp.pRow(),84,Funcoes.strDecimalToStrCurrency(3,2,rs.getString("QtdItVenda")));
 				imp.say(imp.pRow(),89,Funcoes.strDecimalToStrCurrency(13,2,rs.getString("PRECOITVENDA")));
