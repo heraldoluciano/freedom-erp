@@ -127,18 +127,31 @@ public class FRRazCli extends FRelatorio {
 			if ( codcli != 0 ) {
 				sCab.append( "CLIENTE - " + txtDescCli.getVlrString() );
 			}
-
+			
+			
+						
+			
 			sSQL.append( " SELECT C.CODCLI CODEMIT, C.RAZCLI RAZEMIT, " );
 			sSQL.append( " CAST( ' " );
 			sSQL.append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) );
+			
 			sSQL.append( "' AS DATE) DATA, 'A' TIPO, " );
 			sSQL.append( "0 DOC, (COALESCE( ( SELECT SUM(R.VLRREC) FROM FNRECEBER R WHERE " );
 			sSQL.append( "R.CODEMP=? AND R.CODFILIAL=? AND R.CODEMPCL=C.CODEMP AND " );
 			sSQL.append( "R.CODFILIALCL=C.CODFILIAL AND R.CODCLI=C.CODCLI AND R.DATAREC < ? ),0) - " );
+
+			sSQL.append( "COALESCE( ( SELECT SUM(L.VLRLANCA) FROM FNLANCA L WHERE  " );
+			sSQL.append( " L.CODEMPCL=? AND L.CODFILIALCL=? AND L.CODCLI=C.CODCLI ");
+			sSQL.append( " AND L.DATALANCA < ? ), 0) )" );
+						
+			/*
 			sSQL.append( "COALESCE( ( SELECT SUM(L.VLRLANCA) FROM FNLANCA L, FNRECEBER R WHERE L.CODEMPRC=R.CODEMP AND " );
 			sSQL.append( "L.CODFILIALRC=R.CODFILIAL AND L.CODREC=R.CODREC AND " );
 			sSQL.append( "R.CODEMPCL=C.CODEMP AND R.CODFILIALCL=C.CODFILIAL AND " );
-			sSQL.append( "R.CODCLI=C.CODCLI AND R.CODEMP=? AND R.CODFILIAL=? AND L.DATALANCA < ? ), 0) ) VLRDEB, 0.00 VLRCRED " );
+			sSQL.append( "R.CODCLI=C.CODCLI AND R.CODEMP=? AND R.CODFILIAL=? AND L.DATALANCA < ? ), 0) ) "); 
+			*/
+			
+			sSQL.append( "VLRDEB, 0.00 VLRCRED " );
 			sSQL.append( "FROM VDCLIENTE C WHERE C.CODEMP=? AND C.CODFILIAL=? AND " );
 			if ( codcli != 0 ) {
 				sSQL.append( "C.CODCLI=? AND " );
@@ -170,7 +183,7 @@ public class FRRazCli extends FRelatorio {
 			sSQL.append( "ORDER BY 1, 2, 3, 4, 5 " );
 
 			ps = con.prepareStatement( sSQL.toString() );
-			// ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDataini.getVlrString() )); // 1
+
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 2
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) ); // 3
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 4
@@ -204,8 +217,11 @@ public class FRRazCli extends FRelatorio {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) ); // 26
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 27
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 28
+			
+			System.out.println("QUERY" + sSQL.toString());
+			
 			rs = ps.executeQuery();
-
+			
 			imprimiGrafico( bVisualizar, rs, sCab.toString() );
 
 			rs.close();
