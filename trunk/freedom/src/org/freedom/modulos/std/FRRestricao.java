@@ -3,11 +3,13 @@ package org.freedom.modulos.std;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Vector;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -26,21 +28,39 @@ public class FRRestricao extends FRelatorio{
 	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private ListaCampos lcCli = new ListaCampos( this );
+	
+	private Vector<String> vLabs1 = new Vector<String>();
+	
+	private Vector<String> vVals1 = new Vector<String>();
+	
+	private JRadioGroup<?, ?> rgTipo = null;
 
 	public FRRestricao(){
 		
 		setTitulo( "Relatório de clientes com restrição" );
-		setAtribos( 80, 30, 350, 150 );
+		setAtribos( 80, 30, 350, 200 );
 		montaTela();
 		montaListaCampos();
 	}
 	
 	private void montaTela(){
 		
+		vLabs1.addElement("Canceladas");
+ 		vLabs1.addElement("Ativas"); 
+ 		vLabs1.addElement("Ambas"); 
+ 		vVals1.addElement("C");
+ 		vVals1.addElement("A");
+ 		vVals1.addElement("M");
+		    
+ 		rgTipo = new JRadioGroup<String, String>(1,3,vLabs1,vVals1);
+ 		rgTipo.setVlrString("M");
+		
 		adic( new JLabelPad("Cód.Cli"), 7, 5, 70, 20 ); 
 		adic( txtCodCli, 7, 25, 70, 20 ); 
 		adic( new JLabelPad("Nome do Cliente"),80, 5, 250, 20 );
 		adic( txtNomeCli, 80, 25, 240, 20 );
+		adic( rgTipo, 7, 55, 310, 35 );
+	
 		
 	}
 	
@@ -61,6 +81,7 @@ public class FRRestricao extends FRelatorio{
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
 		StringBuffer sWhere = new StringBuffer();
+		StringBuffer sWhere1 = new StringBuffer();
 		StringBuffer sFiltros = new StringBuffer();
 		int iparam = 1;
 		
@@ -71,16 +92,26 @@ public class FRRestricao extends FRelatorio{
 			sFiltros.append( "Cliente: " + txtNomeCli.getVlrString() );
 		}
 		
+		if( "C".equals( rgTipo.getVlrString())){
+			
+			sWhere1.append( "AND FR.SITRESTR='C'" );
+		}
+		if( "A".equals( rgTipo.getVlrString())){
+			
+			sWhere1.append( "AND FR.SITRESTR='I'" );
+		}
+		
 		sSQL.append( "SELECT FR.CODCLI, V.RAZCLI, FR.CODTPRESTR, FT.DESCTPRESTR, FR.DTRESTR, FR.DTCANCRESTR, " );
 		sSQL.append( "FR.OBSRESTR FROM FNRESTRICAO FR, VDCLIENTE V, FNTIPORESTR FT WHERE " );
 		sSQL.append( "FR.CODEMP=? AND FR.CODFILIAL=? AND " );
 		sSQL.append( "FR.CODCLI=V.CODCLI AND FT.CODTPRESTR=FR.CODTPRESTR AND " );
 		sSQL.append( "FT.CODEMP=FR.CODEMPTR AND FT.CODFILIAL=FR.CODFILIALTR " );
+		sSQL.append( sWhere1.toString() );
 		
 		if(!"".equals( txtCodCli.getVlrString())){
 			sSQL.append( sWhere.toString() );
 		}
-		
+			
 		try {
 			
 			ps = con.prepareStatement( sSQL.toString() );
