@@ -58,7 +58,7 @@ public class FRRestricao extends FRelatorio{
 		adic( new JLabelPad("Cód.Cli"), 7, 5, 70, 20 ); 
 		adic( txtCodCli, 7, 25, 70, 20 ); 
 		adic( new JLabelPad("Nome do Cliente"),80, 5, 250, 20 );
-		adic( txtNomeCli, 80, 25, 240, 20 );
+		adic( txtNomeCli, 80, 25, 235, 20 );
 		adic( rgTipo, 7, 55, 310, 35 );
 	
 		
