@@ -128,13 +128,9 @@ public class FRRazCli extends FRelatorio {
 				sCab.append( "CLIENTE - " + txtDescCli.getVlrString() );
 			}
 			
-			
-						
-			
 			sSQL.append( " SELECT C.CODCLI CODEMIT, C.RAZCLI RAZEMIT, " );
 			sSQL.append( " CAST( ' " );
 			sSQL.append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) );
-			
 			/**
 			 * Tipo A = Saldo anteiror
 			 * Busca na FNRECEBER todos as vendas com valor financeiro a receber (VLRREC)
@@ -144,7 +140,7 @@ public class FRRazCli extends FRelatorio {
 			sSQL.append( "R.CODEMP=? AND R.CODFILIAL=? AND R.CODEMPCL=C.CODEMP AND " );
 			sSQL.append( "R.CODFILIALCL=C.CODFILIAL AND R.CODCLI=C.CODCLI AND R.DATAREC < ? ),0) - " );
 			/**
-			 *  Subtrai o valor pago do saldo anterior
+			 *  Subtrai o valor recebido do saldo anterior
 			 */
 			sSQL.append( "COALESCE( ( SELECT SUM(L.VLRLANCA) FROM FNLANCA L WHERE  " );
 			sSQL.append( " L.CODEMPCL=C.CODEMP AND L.CODFILIALCL=C.CODFILIAL AND L.CODCLI=C.CODCLI ");
@@ -171,6 +167,14 @@ public class FRRazCli extends FRelatorio {
 			sSQL.append( "WHERE L2.CODEMPRC=R2.CODEMP AND L2.CODFILIALRC=R2.CODFILIAL AND " );
 			sSQL.append( "L2.CODREC=R2.CODREC AND C.CODEMP=R2.CODEMPCL AND C.CODFILIAL=R2.CODFILIALCL AND " );
 			sSQL.append( "C.CODCLI=R2.CODCLI AND R2.CODEMP=? AND R2.CODFILIAL=? AND L2.DATALANCA BETWEEN ?  AND ?) ) " );
+			
+			/**
+			 * Fim da query de saldo anterior
+			 */
+			
+			/**
+			 * Query das vendas 
+			 */
 			sSQL.append( "UNION SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, R.DATAREC DATA, 'Q' TIPO, R.DOCREC DOC, " );
 			sSQL.append( "R.VLRPARCREC VLRDEB, (R.VLRPARCREC-R.VLRREC)*-1 VLRCRED FROM FNRECEBER R, VDCLIENTE C WHERE C.CODEMP=R.CODEMPCL AND " );
 			sSQL.append( "C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND R.CODEMP=? AND " );
@@ -179,8 +183,13 @@ public class FRRazCli extends FRelatorio {
 				sSQL.append( "C.CODCLI=? AND " );
 			}
 			sSQL.append( "R.DATAREC BETWEEN ? AND ? " );
+			
+			/**
+			 * Query dos recebimentos 
+			 */
 			sSQL.append( "UNION SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, L.DATALANCA DATA, " );
-			sSQL.append( " 'R' TIPO, R.DOCREC DOC, 0.00 VLRDEB, (L.VLRLANCA * -1) VLRCRED FROM FNLANCA L, FNRECEBER R, VDCLIENTE C " );
+			sSQL.append( " 'R' TIPO, R.DOCREC DOC, 0.00 VLRDEB, (L.VLRLANCA * -1) VLRCRED ");
+			sSQL.append( "FROM FNLANCA L, FNRECEBER R, VDCLIENTE C " );
 			sSQL.append( "WHERE L.CODEMPRC=R.CODEMP AND L.CODFILIALRC=R.CODFILIAL AND " );
 			sSQL.append( "L.CODREC=R.CODREC AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND " );
 			sSQL.append( "C.CODCLI=R.CODCLI AND " );
