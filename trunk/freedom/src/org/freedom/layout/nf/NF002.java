@@ -50,7 +50,7 @@ public class NF002 extends Leiaute {
 					imp.say(imp.pRow(),6,Funcoes.copy(rs.getString("CODCLI"),0,6)+"- "+Funcoes.copy(rs.getString("RAZCLI"),0,40));
 					imp.say(imp.pRow(),106,Funcoes.setMascara(Funcoes.copy(rs.getString("CNPJCLI"),0,14),"##.###.###/####-##"));
 					imp.say(imp.pRow()+3,0,imp.comprimido());
-					imp.say(imp.pRow(),6,Funcoes.copy(rs.getString("ENDCLI"),0,30));
+					imp.say(imp.pRow(),6,Funcoes.copy(rs.getString("ENDCLI").trim() +" , " + rs.getString( "NUMCLI" ).trim(),0,30));
 					imp.say(imp.pRow(),106,Funcoes.copy(rs.getString("INSCCLI"),0,30));
 					imp.say(imp.pRow()+2,0,imp.comprimido());
 					imp.say(imp.pRow(),58,Funcoes.copy(rs.getString("CEPCLI"),0,9));
