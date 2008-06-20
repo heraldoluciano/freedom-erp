@@ -143,7 +143,7 @@ public class FRRazCli extends FRelatorio {
 			 *  Subtrai o valor recebido do saldo anterior
 			 */
 			sSQL.append( "COALESCE( ( SELECT SUM(L.VLRLANCA) FROM FNLANCA L WHERE  " );
-			sSQL.append( " L.CODEMPCL=C.CODEMP AND L.CODFILIALCL=C.CODFILIAL AND L.CODCLI=C.CODCLI ");
+			sSQL.append( " L.CODEMPCL=C.CODEMP AND L.CODFILIALCL=C.CODFILIAL AND L.CODCLI=C.CODCLI AND ");
 			sSQL.append( " L.CODEMP=? AND L.CODFILIAL=? AND L.DATALANCA < ? ), 0) )" );
 			/**
 			 * Subtrai as devoluções do saldo anterior
