@@ -335,7 +335,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 			    vVals.addElement( new Boolean( false ) );
 			    vVals.addElement( rs.getString( "CODCAND" ) );
 			    vVals.addElement( rs.getString( "NOMECAND" ) );
-			    vVals.addElement( rs.getString( "FONECAND" ) );
+			    vVals.addElement( (rs.getString( "FONECAND" ) == null) ? "" : rs.getString( "FONECAND" ));
 			    vVals.addElement( rs.getString( "QUALIFICACOES" ) );
 			    vVals.addElement( rs.getString( "RESTRICOES" ) );
 			    vVals.addElement( rs.getString( "CURSOS" ) );
@@ -512,7 +512,9 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		}
 		else if ( mevt.getClickCount() == 2 ) {			
 			if ( tabEv == tab && tabEv.getLinhaSel() >= 0 ) {
-				Funcoes.mensagemInforma( this, "Candidato selecionado!" );
+				
+				tab.setValor( !((Boolean) tab.getValor( tab.getLinhaSel(), 0 )).booleanValue(), tab.getLinhaSel(), 0 ); 
+				
 			}
 		}
 	}

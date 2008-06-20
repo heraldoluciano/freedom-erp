@@ -64,9 +64,9 @@ public class FCandidato extends FTabDados {
 	
 	private final JPanelPad panelCursoCampos = new JPanelPad( 0, 80 );
 	
-	private final JPanelPad panelAtribuicao = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private final JPanelPad panelCaracteristica = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
-	private final JPanelPad panelAtribuicaoCampos = new JPanelPad( 0, 80 );
+	private final JPanelPad panelCaracteristicaCampos = new JPanelPad( 0, 80 );
 	
 	private final JPanelPad panelFuncao = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
@@ -136,13 +136,13 @@ public class FCandidato extends FTabDados {
 	
 	// FIM CURSOS
 	
-	// ATRIBUIÇÕES
+	// CARACTERISTICAS
 
-	private final JTextFieldPad txtCodAtribCand = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
+	private final JTextFieldPad txtCodCaracCand = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 	
-	private final JTextFieldFK txtDescAtribCand = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldFK txtDescCaracCand = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	// FIM ATRIBUIÇÕES.
+	// FIM CARACTERISTICAS
 	
 	// FUNÇÕES
 
@@ -156,7 +156,7 @@ public class FCandidato extends FTabDados {
 
 	private final Tabela tabCurso = new Tabela();
 
-	private final Tabela tabAtribuicao = new Tabela();
+	private final Tabela tabCaracteristica = new Tabela();
 
 	private final Tabela tabFuncao = new Tabela();
 
@@ -166,9 +166,9 @@ public class FCandidato extends FTabDados {
 
 	private final ListaCampos lcCursoCand = new ListaCampos( this );
 
-	private final ListaCampos lcAtribuicao = new ListaCampos( this, "AT" );
+	private final ListaCampos lcCaracteristica = new ListaCampos( this, "CT" );
 
-	private final ListaCampos lcAtribuicaoCand = new ListaCampos( this );
+	private final ListaCampos lcCaracteristicaCand = new ListaCampos( this );
 
 	private final ListaCampos lcFuncao = new ListaCampos( this, "FC" );
 
@@ -176,7 +176,7 @@ public class FCandidato extends FTabDados {
 
 	private final Navegador navCurso = new Navegador( true );
 
-	private final Navegador navAtribuicao = new Navegador( true );
+	private final Navegador navCaracteristica = new Navegador( true );
 
 	private final Navegador navFuncao = new Navegador( true );
 	
@@ -195,9 +195,9 @@ public class FCandidato extends FTabDados {
 		lcCampos.adicDetalhe( lcCursoCand );
 		lcCursoCand.setTabela( tabCurso );
 
-		lcAtribuicaoCand.setMaster( lcCampos );
-		lcCampos.adicDetalhe( lcAtribuicaoCand );
-		lcAtribuicaoCand.setTabela( tabAtribuicao );
+		lcCaracteristicaCand.setMaster( lcCampos );
+		lcCampos.adicDetalhe( lcCaracteristicaCand );
+		lcCaracteristicaCand.setTabela( tabCaracteristica );
 
 		lcFuncaoCand.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcFuncaoCand );
@@ -247,15 +247,15 @@ public class FCandidato extends FTabDados {
 		txtCodCursoCand.setListaCampos( lcCurso );
 		txtDescCursoCand.setListaCampos( lcCurso );
 
-		lcAtribuicao.add( new GuardaCampo( txtCodAtribCand, "CodAtrib", "Cód.atrib.", ListaCampos.DB_PK, txtDescAtribCand, false ) );
-		lcAtribuicao.add( new GuardaCampo( txtDescAtribCand, "DescAtrib", "Descrição da atribuição", ListaCampos.DB_SI, false ) );
-		lcAtribuicao.montaSql( false, "ATRIBUICAO", "AT" );
-		lcAtribuicao.setReadOnly( true );
-		lcAtribuicao.setQueryCommit( false );
-		txtCodAtribCand.setTabelaExterna( lcAtribuicao );
-		txtCodAtribCand.setFK( true );
-		txtCodAtribCand.setListaCampos( lcAtribuicao );
-		txtDescAtribCand.setListaCampos( lcAtribuicao );
+		lcCaracteristica.add( new GuardaCampo( txtCodCaracCand, "CodCarac", "Cód.Carac.", ListaCampos.DB_PK, txtDescCaracCand, false ) );
+		lcCaracteristica.add( new GuardaCampo( txtDescCaracCand, "DescCarac", "Descrição da característica", ListaCampos.DB_SI, false ) );
+		lcCaracteristica.montaSql( false, "Caracteristica", "RH" );
+		lcCaracteristica.setReadOnly( true );
+		lcCaracteristica.setQueryCommit( false );
+		txtCodCaracCand.setTabelaExterna( lcCaracteristica );
+		txtCodCaracCand.setFK( true );
+		txtCodCaracCand.setListaCampos( lcCaracteristica );
+		txtDescCaracCand.setListaCampos( lcCaracteristica );
 
 		lcFuncao.add( new GuardaCampo( txtCodFuncaoCand, "CodFunc", "Cód.função", ListaCampos.DB_PK, txtDescFuncaoCand, false ) );
 		lcFuncao.add( new GuardaCampo( txtDescFuncaoCand, "DescFunc", "Descrição da função", ListaCampos.DB_SI, false ) );
@@ -372,30 +372,30 @@ public class FCandidato extends FTabDados {
 		
 		// Fim da aba cursos
 		
-		// Aba atribuições
+		// Aba Características
 		
-		adicTab( "Atribuições", panelAtribuicao ); 
+		adicTab( "Características", panelCaracteristica ); 
 		
-		setListaCampos( lcAtribuicaoCand );
-		setNavegador( navAtribuicao );
-		navAtribuicao.setAtivo( 6, false );
+		setListaCampos( lcCaracteristicaCand );
+		setNavegador( navCaracteristica );
+		navCaracteristica.setAtivo( 6, false );
 
-		panelAtribuicao.add( new JScrollPane( tabAtribuicao ), BorderLayout.CENTER );
-		panelAtribuicao.add( panelAtribuicaoCampos, BorderLayout.SOUTH );
+		panelCaracteristica.add( new JScrollPane( tabCaracteristica ), BorderLayout.CENTER );
+		panelCaracteristica.add( panelCaracteristicaCampos, BorderLayout.SOUTH );
 		
-		setPainel( panelAtribuicaoCampos );
+		setPainel( panelCaracteristicaCampos );
 		
-		adicCampo( txtCodAtribCand, 7, 20, 90, 20, "CodAtrib", "Cód.atrib.", ListaCampos.DB_PF, txtDescAtribCand, false );		
-		adicDescFK( txtDescAtribCand, 100, 20, 400, 20, "DescAtrib", "Descrição da atribuição" );
-		adic( navAtribuicao, 0, 50, 270, 25 );		
-		setListaCampos( false, "CANDIDATOATRIB", "RH" );
-		lcAtribuicaoCand.setQueryInsert( false );
-		lcAtribuicaoCand.setQueryCommit( false );
-		lcAtribuicaoCand.montaTab();
+		adicCampo( txtCodCaracCand, 7, 20, 90, 20, "CodCarac", "Cód.Carac.", ListaCampos.DB_PF, txtDescCaracCand, false );		
+		adicDescFK( txtDescCaracCand, 100, 20, 400, 20, "DescCarac", "Descrição da característica" );
+		adic( navCaracteristica, 0, 50, 270, 25 );		
+		setListaCampos( false, "CANDIDATOCARAC", "RH" );
+		lcCaracteristicaCand.setQueryInsert( false );
+		lcCaracteristicaCand.setQueryCommit( false );
+		lcCaracteristicaCand.montaTab();
 		
-		tabAtribuicao.setTamColuna( 335, 1 );
+		tabCaracteristica.setTamColuna( 335, 1 );
 		
-		// Fim da aba atribuições
+		// Fim da aba características
 		
 		// Aba funções
 		
@@ -422,7 +422,7 @@ public class FCandidato extends FTabDados {
 		tabFuncao.setTamColuna( 35, 0 );
 		tabFuncao.setTamColuna( 300, 2 );
 		
-		// Fim da aba atribuições
+		// Fim da aba características
 	}
 
 	@ Override
@@ -466,10 +466,10 @@ public class FCandidato extends FTabDados {
 		super.setConexao( cn );
 		lcEstadoCivil.setConexao( cn );
 		lcCurso.setConexao( cn );
-		lcAtribuicao.setConexao( cn );
+		lcCaracteristica.setConexao( cn );
 		lcFuncao.setConexao( cn );
 		lcCursoCand.setConexao( cn );
-		lcAtribuicaoCand.setConexao( cn );
+		lcCaracteristicaCand.setConexao( cn );
 		lcFuncaoCand.setConexao( cn );
 	}
 }

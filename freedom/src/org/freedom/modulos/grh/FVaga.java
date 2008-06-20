@@ -55,13 +55,13 @@ public class FVaga extends FTabDados {
 	
 	private final JPanelPad panelCursoCampos = new JPanelPad( 0, 80 );
 	
-	private final JPanelPad panelAtribQuali = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private final JPanelPad panelCaracQuali = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
-	private final JPanelPad panelAtribQualiCampos = new JPanelPad( 0, 80 );
+	private final JPanelPad panelCaracQualiCampos = new JPanelPad( 0, 80 );
 
-	private final JPanelPad panelAtribRestr = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private final JPanelPad panelCaracRestr = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
-	private final JPanelPad panelAtribRestrCampos = new JPanelPad( 0, 80 );
+	private final JPanelPad panelCaracRestrCampos = new JPanelPad( 0, 80 );
 		
 	// GERAL
 
@@ -83,13 +83,13 @@ public class FVaga extends FTabDados {
 	
 	private final JTextFieldFK txtDescCursoVaga = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private final JTextFieldPad txtCodAtribVagaQ = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
+	private final JTextFieldPad txtCodCaracVagaQ = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 	
-	private final JTextFieldFK txtDescAtribVagaQ = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldFK txtDescCaracVagaQ = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 			
-	private final JTextFieldPad txtCodAtribVagaR = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
+	private final JTextFieldPad txtCodCaracVagaR = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 	
-	private final JTextFieldFK txtDescAtribVagaR = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldFK txtDescCaracVagaR = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private final JTextFieldPad txtCodFuncaoVaga = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 	
@@ -98,9 +98,9 @@ public class FVaga extends FTabDados {
 
 	private final Tabela tabCurso = new Tabela();
 
-	private final Tabela tabAtribuicaoQ = new Tabela();
+	private final Tabela tabCaracteristicaQ = new Tabela();
 
-	private final Tabela tabAtribuicaoR = new Tabela();
+	private final Tabela tabCaracteristicaR = new Tabela();
 
 	private final Tabela tabFuncao = new Tabela();
 
@@ -112,21 +112,21 @@ public class FVaga extends FTabDados {
 	
 	private final ListaCampos lcTurno = new ListaCampos( this, "TN" );
 
-	private final ListaCampos lcVagaAtribuicaoQ = new ListaCampos( this );
+	private final ListaCampos lcVagaCaracteristicaQ = new ListaCampos( this );
 	
-	private final ListaCampos lcVagaAtribuicaoR = new ListaCampos( this );
+	private final ListaCampos lcVagaCaracteristicaR = new ListaCampos( this );
 	
-	private final ListaCampos lcAtribuicaoQ = new ListaCampos( this, "AT" );
+	private final ListaCampos lcCaracteristicaQ = new ListaCampos( this, "CT" );
 	
-	private final ListaCampos lcAtribuicaoR = new ListaCampos( this, "AT" );
+	private final ListaCampos lcCaracteristicaR = new ListaCampos( this, "CT" );
 
 	private final ListaCampos lcFuncao = new ListaCampos( this, "FC" );
 
 	private final Navegador navCurso = new Navegador( true );
 
-	private final Navegador navAtribuicaoQ = new Navegador( true );
+	private final Navegador navCaracteristicaQ = new Navegador( true );
 	
-	private final Navegador navAtribuicaoR = new Navegador( true );
+	private final Navegador navCaracteristicaR = new Navegador( true );
 
 	private final Navegador navFuncao = new Navegador( true );
 	
@@ -135,15 +135,15 @@ public class FVaga extends FTabDados {
 
 		super( false );
 		setTitulo( "Cadastro de Vagas" );
-		setAtribos( 50, 50, 550, 270 );
+		setAtribos( 50, 50, 580, 270 );
 		
-		lcVagaAtribuicaoQ.setMaster( lcCampos );
-		lcCampos.adicDetalhe( lcVagaAtribuicaoQ );
-		lcVagaAtribuicaoQ.setTabela( tabAtribuicaoQ );
+		lcVagaCaracteristicaQ.setMaster( lcCampos );
+		lcCampos.adicDetalhe( lcVagaCaracteristicaQ );
+		lcVagaCaracteristicaQ.setTabela( tabCaracteristicaQ );
 
-		lcVagaAtribuicaoR.setMaster( lcCampos );
-		lcCampos.adicDetalhe( lcVagaAtribuicaoR );
-		lcVagaAtribuicaoR.setTabela( tabAtribuicaoR );
+		lcVagaCaracteristicaR.setMaster( lcCampos );
+		lcCampos.adicDetalhe( lcVagaCaracteristicaR );
+		lcVagaCaracteristicaR.setTabela( tabCaracteristicaR );
 		
 		lcVagaCurso.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcVagaCurso );
@@ -192,26 +192,26 @@ public class FVaga extends FTabDados {
 		txtCodCursoVaga.setListaCampos( lcCurso );
 		txtDescCursoVaga.setListaCampos( lcCurso );
 		
-		lcAtribuicaoQ.add( new GuardaCampo( txtCodAtribVagaQ, "CodAtrib", "Cód.Atrib.", ListaCampos.DB_PK, null, false ) );
-		lcAtribuicaoQ.add( new GuardaCampo( txtDescAtribVagaQ, "DescAtrib", "Descrição da atribuição", ListaCampos.DB_SI, false ) );
-		lcAtribuicaoQ.montaSql( false, "ATRIBUICAO", "AT" );
-		lcAtribuicaoQ.setReadOnly( true );
-		lcAtribuicaoQ.setQueryCommit( false );
-		txtCodAtribVagaQ.setTabelaExterna( lcAtribuicaoQ );
-		txtCodAtribVagaQ.setFK( true );
-		txtCodAtribVagaQ.setListaCampos( lcAtribuicaoQ );
-		txtDescAtribVagaQ.setListaCampos( lcAtribuicaoQ );
+		lcCaracteristicaQ.add( new GuardaCampo( txtCodCaracVagaQ, "CodCarac", "Cód.Carac.", ListaCampos.DB_PK, null, false ) );
+		lcCaracteristicaQ.add( new GuardaCampo( txtDescCaracVagaQ, "DescCarac", "Descrição da característica", ListaCampos.DB_SI, false ) );
+		lcCaracteristicaQ.montaSql( false, "Caracteristica", "RH" );
+		lcCaracteristicaQ.setReadOnly( true );
+		lcCaracteristicaQ.setQueryCommit( false );
+		txtCodCaracVagaQ.setTabelaExterna( lcCaracteristicaQ );
+		txtCodCaracVagaQ.setFK( true );
+		txtCodCaracVagaQ.setListaCampos( lcCaracteristicaQ );
+		txtDescCaracVagaQ.setListaCampos( lcCaracteristicaQ );
 		
-		lcAtribuicaoR.add( new GuardaCampo( txtCodAtribVagaR, "CodAtrib", "Cód.Atrib.", ListaCampos.DB_PK, null, false ) );
-		lcAtribuicaoR.add( new GuardaCampo( txtDescAtribVagaR, "DescAtrib", "Descrição da atribuição", ListaCampos.DB_SI, false ) );
-		lcAtribuicaoR.montaSql( false, "ATRIBUICAO", "AT" );
-		lcAtribuicaoR.setReadOnly( true );
-		lcAtribuicaoR.setQueryCommit( false );
-		txtCodAtribVagaR.setListaCampos( lcAtribuicaoR );
-		txtCodAtribVagaR.setTabelaExterna( lcAtribuicaoR );
-		txtCodAtribVagaR.setFK( true );
-		txtCodAtribVagaR.setListaCampos( lcAtribuicaoR );
-		txtDescAtribVagaR.setListaCampos( lcAtribuicaoR );
+		lcCaracteristicaR.add( new GuardaCampo( txtCodCaracVagaR, "CodCarac", "Cód.Carac.", ListaCampos.DB_PK, null, false ) );
+		lcCaracteristicaR.add( new GuardaCampo( txtDescCaracVagaR, "DescCarac", "Descrição da característica", ListaCampos.DB_SI, false ) );
+		lcCaracteristicaR.montaSql( false, "Caracteristica", "RH" );
+		lcCaracteristicaR.setReadOnly( true );
+		lcCaracteristicaR.setQueryCommit( false );
+		txtCodCaracVagaR.setListaCampos( lcCaracteristicaR );
+		txtCodCaracVagaR.setTabelaExterna( lcCaracteristicaR );
+		txtCodCaracVagaR.setFK( true );
+		txtCodCaracVagaR.setListaCampos( lcCaracteristicaR );
+		txtDescCaracVagaR.setListaCampos( lcCaracteristicaR );
 		
 	}
 	
@@ -241,64 +241,64 @@ public class FVaga extends FTabDados {
 		setListaCampos( true, "VAGA", "RH" );
 		lcCampos.setQueryInsert( false );
 		
-		// Aba atribuições Qualificativas
+		// Aba características Qualificativas
 		
-		adicTab( "Atribuições Qualificativas", panelAtribQuali ); 
+		adicTab( " Características Qualificativas", panelCaracQuali ); 
 		
-		setListaCampos( lcVagaAtribuicaoQ );
-		setNavegador( navAtribuicaoQ );
-		//navAtribuicaoQ.setAtivo( 6, false );
+		setListaCampos( lcVagaCaracteristicaQ );
+		setNavegador( navCaracteristicaQ );
+		//navCaracteristicaQ.setAtivo( 6, false );
 
-		panelAtribQuali.add( new JScrollPane( tabAtribuicaoQ ), BorderLayout.CENTER );
-		panelAtribQuali.add( panelAtribQualiCampos, BorderLayout.SOUTH );
+		panelCaracQuali.add( new JScrollPane( tabCaracteristicaQ ), BorderLayout.CENTER );
+		panelCaracQuali.add( panelCaracQualiCampos, BorderLayout.SOUTH );
 		
-		setPainel( panelAtribQualiCampos );
+		setPainel( panelCaracQualiCampos );
 		
-		adicCampo( txtCodAtribVagaQ, 7, 20, 90, 20, "CodAtrib", "Cód.atrib.", ListaCampos.DB_PF, txtDescAtribVagaQ, false );		
-		adicDescFK( txtDescAtribVagaQ, 100, 20, 300, 20, "DescAtrib", "Descrição da atribuição" );
-		adic( navAtribuicaoQ, 0, 50, 270, 25 );		
-		setListaCampos( false, "VAGAATRIBQUALI", "RH" );
-		lcVagaAtribuicaoQ.setQueryInsert( false );
-		lcVagaAtribuicaoQ.setQueryCommit( false );
-		lcVagaAtribuicaoQ.montaTab();
+		adicCampo( txtCodCaracVagaQ, 7, 20, 90, 20, "CodCarac", "Cód.atrib.", ListaCampos.DB_PF, txtDescCaracVagaQ, false );		
+		adicDescFK( txtDescCaracVagaQ, 100, 20, 300, 20, "DescCarac", "Descrição da característica" );
+		adic( navCaracteristicaQ, 0, 50, 270, 25 );		
+		setListaCampos( false, "VAGACARACQUALI", "RH" );
+		lcVagaCaracteristicaQ.setQueryInsert( false );
+		lcVagaCaracteristicaQ.setQueryCommit( false );
+		lcVagaCaracteristicaQ.montaTab();
 		
-		tabAtribuicaoQ.setTamColuna( 335, 1 );
+		tabCaracteristicaQ.setTamColuna( 335, 1 );
 		
-		// Fim da aba atribuições qualificativas
+		// Fim da aba características qualificativas
 		
 		
-		// Aba atribuições Restritivas
+		// Aba características Restritivas
 		
-		adicTab( "Atribuições Restritivas", panelAtribRestr ); 
+		adicTab( "Características Restritivas", panelCaracRestr ); 
 		
-		setListaCampos( lcVagaAtribuicaoR );
-		setNavegador( navAtribuicaoR );
-		//navAtribuicaoR.setAtivo( 6, false );
+		setListaCampos( lcVagaCaracteristicaR );
+		setNavegador( navCaracteristicaR );
+		//navCaracteristicaR.setAtivo( 6, false );
 
-		panelAtribRestr.add( new JScrollPane( tabAtribuicaoR ), BorderLayout.CENTER );
-		panelAtribRestr.add( panelAtribRestrCampos, BorderLayout.SOUTH );
+		panelCaracRestr.add( new JScrollPane( tabCaracteristicaR ), BorderLayout.CENTER );
+		panelCaracRestr.add( panelCaracRestrCampos, BorderLayout.SOUTH );
 		
-		setPainel( panelAtribRestrCampos );
+		setPainel( panelCaracRestrCampos );
 		
-		adicCampo( txtCodAtribVagaR, 7, 20, 90, 20, "CodAtrib", "Cód.atrib.", ListaCampos.DB_PF, txtDescAtribVagaR, false );		
-		adicDescFK( txtDescAtribVagaR, 100, 20, 300, 20, "DescAtrib", "Descrição da atribuição" );
-		adic( navAtribuicaoR, 0, 50, 270, 25 );		
-		setListaCampos( false, "VAGAATRIBREST", "RH" );
-		lcVagaAtribuicaoR.setQueryInsert( false );
-		lcVagaAtribuicaoR.setQueryCommit( false );
-		lcVagaAtribuicaoR.montaTab();
+		adicCampo( txtCodCaracVagaR, 7, 20, 90, 20, "CodCarac", "Cód.atrib.", ListaCampos.DB_PF, txtDescCaracVagaR, false );		
+		adicDescFK( txtDescCaracVagaR, 100, 20, 300, 20, "DescCarac", "Descrição da característica" );
+		adic( navCaracteristicaR, 0, 50, 270, 25 );		
+		setListaCampos( false, "VAGACARACREST", "RH" );
+		lcVagaCaracteristicaR.setQueryInsert( false );
+		lcVagaCaracteristicaR.setQueryCommit( false );
+		lcVagaCaracteristicaR.montaTab();
 		
-		tabAtribuicaoR.setTamColuna( 335, 1 );
+		tabCaracteristicaR.setTamColuna( 335, 1 );
 
 		
-		// Fim da aba atribuições restritivas
+		// Fim da aba características restritivas
 		
 		// Aba cursos		
 		
 		adicTab( "Cursos requeridos", panelCurso ); 
 		setListaCampos( lcVagaCurso );
 		setNavegador( navCurso );
-		//navAtribuicaoR.setAtivo( 6, false );
+		//navCaracteristicaR.setAtivo( 6, false );
 
 		panelCurso.add( new JScrollPane( tabCurso ), BorderLayout.CENTER );
 		panelCurso.add( panelCursoCampos, BorderLayout.SOUTH );
@@ -362,10 +362,10 @@ public class FVaga extends FTabDados {
 		lcCurso.setConexao( cn );
 		lcVagaCurso.setConexao( cn );
 		lcTurno.setConexao( cn );
-		lcVagaAtribuicaoQ.setConexao( cn );
-		lcVagaAtribuicaoR.setConexao( cn );
-		lcAtribuicaoQ.setConexao( cn );
-		lcAtribuicaoR.setConexao( cn );
+		lcVagaCaracteristicaQ.setConexao( cn );
+		lcVagaCaracteristicaR.setConexao( cn );
+		lcCaracteristicaQ.setConexao( cn );
+		lcCaracteristicaR.setConexao( cn );
 		lcFuncao.setConexao( cn );
 	}
 }
