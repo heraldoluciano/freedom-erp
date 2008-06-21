@@ -28,13 +28,19 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPanelPad;
@@ -50,7 +56,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FTabDados;
 
-public class FCandidato extends FTabDados {
+public class FCandidato extends FTabDados implements CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -71,6 +77,10 @@ public class FCandidato extends FTabDados {
 	private final JPanelPad panelFuncao = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private final JPanelPad panelFuncaoCampos = new JPanelPad( 0, 80 );
+
+	private final JPanelPad panelHistorico = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private final JPanelPad panelHistoricoCampos = new JPanelPad( 0, 80 );	
 	
 	// GERAL
 
@@ -160,6 +170,10 @@ public class FCandidato extends FTabDados {
 
 	private final Tabela tabFuncao = new Tabela();
 
+	private final Tabela tabHistorico = new Tabela();
+	
+	private JScrollPane spnTabHistorico = new JScrollPane(tabHistorico);
+	
 	private final ListaCampos lcEstadoCivil = new ListaCampos( this, "ES" );
 
 	private final ListaCampos lcCurso = new ListaCampos( this, "CS" );
@@ -181,6 +195,10 @@ public class FCandidato extends FTabDados {
 	private final Navegador navFuncao = new Navegador( true );
 	
 	private JCheckBoxPad cbIsencTransp = new JCheckBoxPad("Possui isenção tarifaria","S","N");
+	
+	private ImageIcon imgEncaminhado = Icone.novo( "clEncaminhado.gif" );
+	private ImageIcon imgDisponivel = Icone.novo( "clDisponivel.gif" );
+	private ImageIcon imgEfetivado = Icone.novo( "clEfetivado.gif" );
 	
 	public FCandidato() {
 
@@ -211,6 +229,8 @@ public class FCandidato extends FTabDados {
 		btPrevimp.addActionListener( this );
 
 		setImprimir( true );
+		
+		lcCampos.addCarregaListener( this );
 	}
 	
 	private void montaRadioGroups() {
@@ -422,9 +442,84 @@ public class FCandidato extends FTabDados {
 		tabFuncao.setTamColuna( 35, 0 );
 		tabFuncao.setTamColuna( 300, 2 );
 		
-		// Fim da aba características
+		// Fim da aba funções
+		
+		// Aba Histórico
+		
+		adicTab( "Histórico", panelHistorico ); 
+		
+		tabHistorico.adicColuna("");
+		tabHistorico.adicColuna("Data");
+		tabHistorico.adicColuna("Função");
+		tabHistorico.adicColuna("Empresa");
+		
+		tabHistorico.setTamColuna(30,0);
+		tabHistorico.setTamColuna(70,1);
+		tabHistorico.setTamColuna(200,2);
+		tabHistorico.setTamColuna(220,3);
+	
+		panelHistorico.add( spnTabHistorico );
+		
+		// Fim da aba histórico
+				
 	}
 
+	private void montaTabHistorico() {
+		StringBuffer sql = new StringBuffer();
+		
+		try {
+			sql.append( "SELECT CS.stcand, CS.dtstatus,FU.descfunc,EM.nomeempr" );
+			sql.append( " FROM rhcandidatostatus CS, rhvagacandidato VC, rhvaga VG, rhempregador EM, rhfuncao FU" );
+			sql.append( " WHERE CS.codemp=? AND CS.codfilial=? AND CS.codcand=?" );
+			sql.append( " AND VC.codemp=CS.codempvg AND VC.codfilial=CS.codfilialvg AND VC.codvaga=CS.codvaga" );
+			sql.append( " AND VC.codempca=CS.codemp AND VC.codfilialca=CS.codfilial AND VC.codcand=CS.codcand" );
+			sql.append( " AND VG.codemp=CS.codempvg AND VG.codfilial=CS.codfilialvg AND VG.codvaga=CS.codvaga" );
+			sql.append( " AND EM.codemp=VG.codempem AND EM.codfilial=VG.codfilialem AND EM.codempr=VG.codempr" );
+			sql.append( " AND FU.codemp=VG.codempfc AND FU.codfilial=VG.codfilialfc AND FU.codfunc=VG.codfunc" );
+			
+			PreparedStatement ps = con.prepareStatement(sql.toString());
+			
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,ListaCampos.getMasterFilial( "RHCANDIDATOSTATUS" ));
+			ps.setInt(3,txtCodCand.getVlrInteger().intValue());					
+						
+			ResultSet rs = ps.executeQuery();
+			
+			tabHistorico.limpa();
+			
+			while (rs.next()) {
+				Vector<Object> vVals = new Vector<Object>();
+
+				if(rs.getString("STCAND").equals( "EN" )) {
+					vVals.addElement( imgEncaminhado );
+				}
+				else if(rs.getString("STCAND").equals( "EF" )) {
+					vVals.addElement( imgEfetivado );
+				}
+				else {
+					vVals.addElement( imgDisponivel );	
+				}
+					
+			    vVals.addElement( rs.getDate( "DTSTATUS" ) );
+			    vVals.addElement( rs.getString( "DESCFUNC" )==null ? "" : rs.getString( "DESCFUNC" ) );
+			    vVals.addElement( rs.getString( "NOMEEMPR" )==null ? "" : rs.getString( "NOMEEMPR" ) );
+			    
+			    
+			    //			    vVals.addElement( imgStatus );
+			    
+				tabHistorico.adicLinha(vVals);				
+			}
+			
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
 	@ Override
 	public void actionPerformed( ActionEvent e ) {
 
@@ -471,5 +566,17 @@ public class FCandidato extends FTabDados {
 		lcCursoCand.setConexao( cn );
 		lcCaracteristicaCand.setConexao( cn );
 		lcFuncaoCand.setConexao( cn );
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+		if ( cevt.getListaCampos() == lcCampos ) {
+			montaTabHistorico();
+		}
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 }
