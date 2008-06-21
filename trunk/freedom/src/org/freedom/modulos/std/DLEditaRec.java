@@ -78,11 +78,13 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 
 	private JTextFieldPad txtDtVenc = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtVlrJuros = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private JTextFieldPad txtVlrJuros = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtVlrDesc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private JTextFieldPad txtVlrDesc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtVlrParc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private JTextFieldPad txtVlrDev = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+
+	private JTextFieldPad txtVlrParc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtObs = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
 	
@@ -107,16 +109,16 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
 	
 	public enum EColEdit{CODCLI, RAZCLI, NUMCONTA, CODPLAN, CODCC, DOC, DTEMIS, DTVENC,
-		VLRJUROS, VLRDESC, VLRPARC, OBS, CODBANCO, CODTPCOB, DESCTPCOB,CODCARTCOB, DESCCARTCOB};
+		VLRJUROS, VLRDESC, VLRDEVOLUCAO, VLRPARC, OBS, CODBANCO, CODTPCOB, DESCTPCOB,CODCARTCOB, DESCCARTCOB };
 
-	public enum EColRet{ NUMCONTA, CODPLAN, CODCC, DOC, VLRJUROS, VLRDESC, 
-		DTVENC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB};		
+	public enum EColRet{ NUMCONTA, CODPLAN, CODCC, DOC, VLRJUROS, VLRDESC, VLRDEVOLUCAO,
+		DTVENC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB };		
 
 	public DLEditaRec( Component cOrig, final boolean bEdita ) {
 
 		super( cOrig );
 		setTitulo( bEdita?"Editar":"Visualizar" );
-		setAtribos( 380, 510 );
+		setAtribos( 365, 500 );
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
 		lcBanco.add( new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
@@ -233,12 +235,14 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		adic( new JLabelPad( "Vencimento" ), 230, 280, 110, 20 );
 		adic( txtDtVenc, 230, 300, 110, 20 );
 		
-		adic( new JLabelPad( "Vlr.juros." ), 7, 320, 110, 20 );
-		adic( txtVlrJuros, 7, 340, 110, 20 );
-		adic( new JLabelPad( "Vlr.desc." ), 120, 320, 107, 20 );
-		adic( txtVlrDesc, 120, 340, 107, 20 );
-		adic( new JLabelPad( "Vlr.parcela" ), 230, 320, 110, 20 );
-		adic( txtVlrParc, 230, 340, 110, 20 );
+		adic( new JLabelPad( "Vlr.juros." ), 7, 320, 81, 20 );
+		adic( txtVlrJuros, 7, 340, 81, 20 );
+		adic( new JLabelPad( "Vlr.desc." ), 91, 320, 81, 20 );
+		adic( txtVlrDesc, 91, 340, 81, 20 );
+		adic( new JLabelPad( "Vlr.devolução" ), 175, 320, 81, 20 );
+		adic( txtVlrDev, 175, 340, 81, 20 );
+		adic( new JLabelPad( "Vlr.parcela" ), 259, 320, 81, 20 );
+		adic( txtVlrParc, 259, 340, 81, 20 );
 		
 		adic( new JLabelPad( "Observações" ), 7, 360, 240, 20 );
 		adic( txtObs, 7, 380, 333, 20 );
@@ -263,9 +267,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 			txtVlrJuros.setAtivo( bEdita );
 			txtVlrParc.setAtivo( bEdita );
 			btOK.setVisible( bEdita );
-		}
-		
-		
+		}		
 	}
 
 	public void setValores( Object[] sVals ) {
@@ -280,25 +282,26 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		txtDtVenc.setVlrDate( (Date) sVals[ EColEdit.DTVENC.ordinal() ] );
 		txtVlrJuros.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRJUROS.ordinal() ] );
 		txtVlrDesc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRDESC.ordinal() ] );
+		txtVlrDev.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRDEVOLUCAO.ordinal()] );		
 		txtVlrParc.setVlrBigDecimal( (BigDecimal) sVals[ EColEdit.VLRPARC.ordinal() ] );
 		txtObs.setVlrString( (String) sVals[ EColEdit.OBS.ordinal() ] );
 		txtCodBanco.setVlrString((String) sVals[ EColEdit.CODBANCO.ordinal() ] );
 		txtCodTipoCob.setVlrString( ( String) sVals[ EColEdit.CODTPCOB.ordinal() ] );
 		txtDescTipoCob.setVlrString( (String) sVals[ EColEdit.DESCTPCOB.ordinal()] );
 		txtCodCartCob.setVlrString( ( String) sVals[ EColEdit.CODCARTCOB.ordinal() ] );
-		txtDescCartCob.setVlrString( (String) sVals[ EColEdit.DESCCARTCOB.ordinal()] );
-		
+		txtDescCartCob.setVlrString( (String) sVals[ EColEdit.DESCCARTCOB.ordinal()] );		
 	}
 
 	public Object[] getValores() {
 
-		Object[] oRetorno = new Object[ 13 ];
+		Object[] oRetorno = new Object[ EColRet.values().length ];
 		oRetorno[ EColRet.NUMCONTA.ordinal() ] = txtCodConta.getVlrString();
 		oRetorno[ EColRet.CODPLAN.ordinal() ] = txtCodPlan.getVlrString();
 		oRetorno[ EColRet.CODCC.ordinal() ] = txtCodCC.getVlrString();
 		oRetorno[ EColRet.DOC.ordinal() ] = txtDoc.getVlrString();
 		oRetorno[ EColRet.VLRJUROS.ordinal() ] = txtVlrJuros.getVlrBigDecimal();
 		oRetorno[ EColRet.VLRDESC.ordinal() ] = txtVlrDesc.getVlrBigDecimal();
+		oRetorno[ EColRet.VLRDEVOLUCAO.ordinal() ] = txtVlrDev.getVlrBigDecimal();
 		oRetorno[ EColRet.DTVENC.ordinal() ] = txtDtVenc.getVlrDate();
 		oRetorno[ EColRet.OBS.ordinal() ] = txtObs.getVlrString();
 		oRetorno[ EColRet.CODBANCO.ordinal() ] = txtCodBanco.getVlrString();
@@ -311,12 +314,10 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btOK && txtDtVenc.getVlrString().length() < 10 ) {
-				
+		if ( evt.getSource() == btOK && txtDtVenc.getVlrString().length() < 10 ) {				
 			Funcoes.mensagemInforma( this, "Data do vencimento é requerido!" );
 		}
-		else {
-			
+		else {			
 			super.actionPerformed( evt );
 		}
 	}
@@ -324,19 +325,16 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 	private int buscaAnoBaseCC() {
 
 		int iRet = 0;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		
 		try {
 			
-			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			PreparedStatement ps = con.prepareStatement( "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			
-			rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 			
-			if ( rs.next() ) {
-			
+			if ( rs.next() ) {			
 				iRet = rs.getInt( "ANOCENTROCUSTO" );
 			}
 			
@@ -349,25 +347,18 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
-		} finally {
-			rs = null;
-			ps = null;
-		}
+		} 
 		
 		return iRet;
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
-
-		if ( cevt.getListaCampos() == lcCC && txtAnoCC.getVlrInteger().intValue() == 0 ) {
-			
+		if ( cevt.getListaCampos() == lcCC && txtAnoCC.getVlrInteger().intValue() == 0 ) {			
 			txtAnoCC.setVlrInteger( new Integer( buscaAnoBaseCC() ) );
 		}
 	}
 
-	public void afterCarrega( CarregaEvent cevt ) {
-
-	}
+	public void afterCarrega( CarregaEvent cevt ) { }
 
 	public void setConexao( Connection cn ) {
 
