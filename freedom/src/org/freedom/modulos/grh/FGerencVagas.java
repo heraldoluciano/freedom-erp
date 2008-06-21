@@ -44,8 +44,6 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.bmps.Icone;
@@ -60,7 +58,6 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.telas.FPrinterJob;
 
 public class FGerencVagas extends FFilho implements ActionListener, TabelaEditListener, MouseListener {
 
@@ -607,28 +604,5 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 	public void mousePressed( MouseEvent e ) { }
 
 	public void mouseReleased( MouseEvent e ) { }
-	
-	private void imprimir( boolean bVisualizar ) {
-		
-		FPrinterJob dlGr = null;
-		HashMap<String, Object> hParam = new HashMap<String, Object>();
-
-		hParam.put( "CODEMP", Aplicativo.iCodEmp );
-		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RHCANDIDATOFUNC" ) );
-
-		dlGr = new FPrinterJob( "relatorios/grhGerencVaga.jasper", "Resumo de atividades", "", this, hParam, con, null, false );
-
-		if ( bVisualizar ) {
-			dlGr.setVisible( true );
-		}
-		else {
-			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
-			} catch ( Exception e ) {
-				e.printStackTrace();
-				Funcoes.mensagemErro( this, "Erro na geração do relátorio!" + e.getMessage(), true, con, e );
-			}
-		}
-	}
 
 }
