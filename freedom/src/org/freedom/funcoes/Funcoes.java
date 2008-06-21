@@ -467,7 +467,7 @@ public class Funcoes {
 		int retorno = 1;
 		GregorianCalendar cal = new GregorianCalendar();		
 		cal.setGregorianChange( data );		
-		retorno = cal.get( Calendar.MONTH )+1;
+		retorno = cal.get( Calendar.MONTH );
 		return retorno;
 	}
 	
