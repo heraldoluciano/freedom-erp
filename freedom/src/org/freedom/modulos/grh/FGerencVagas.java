@@ -100,10 +100,11 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 	private JPanelPad pinLbFiltros = new JPanelPad( 53, 15 );
 	private Map<String,String> status = new HashMap<String, String>();
 	
-	private ImageIcon imgIndiponivel = Icone.novo( "clVencido.gif" );
-	private ImageIcon imgDisponivel = Icone.novo( "clPago.gif" );
-	private ImageIcon imgOcupado = Icone.novo( "clNaoVencido.gif" );
-	
+	private ImageIcon imgIndiponivel = Icone.novo( "clIndisponivel.gif" );
+	private ImageIcon imgDisponivel = Icone.novo( "clDisponivel.gif" );
+	private ImageIcon imgOcupado = Icone.novo( "clIndisponivelParc.gif" );
+	private ImageIcon imgEfetivar = Icone.novo( "clEfetivar.gif" );
+	private ImageIcon imgEfetivado = Icone.novo( "clEfetivado.gif" );
 	private ImageIcon imgStatus = null;
 	
 	public FGerencVagas() {
@@ -321,8 +322,14 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 			    if(rs.getString( "STCAND" ).equals( "DI" ) && rs.getString( "STVAGACAND" ).equals( "DI" )) {
 			    	imgStatus = imgDisponivel;
 			    }
-			    else if (rs.getString( "STVAGACAND" ).equals( "EF" ) || rs.getString( "STVAGACAND" ).equals( "EN" )) {
+			    else if (rs.getString( "STVAGACAND" ).equals( "EF" )){  
+			    	imgStatus = imgEfetivado;
+			    }
+			    else if (rs.getString( "STCAND" ).equals( "EF" ) ){  
 			    	imgStatus = imgIndiponivel;
+			    }
+			    else if (rs.getString( "STVAGACAND" ).equals( "EN" )){
+			    	imgStatus = imgEfetivar;
 			    }
 			    else if(rs.getString( "STVAGACAND" ).equals( "DI" )){
 			    	imgStatus = imgOcupado;
