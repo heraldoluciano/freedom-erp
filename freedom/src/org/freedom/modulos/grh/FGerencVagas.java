@@ -21,6 +21,8 @@
 
 package org.freedom.modulos.grh;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -42,6 +44,8 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.bmps.Icone;
@@ -56,6 +60,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
+import org.freedom.telas.FPrinterJob;
 
 public class FGerencVagas extends FFilho implements ActionListener, TabelaEditListener, MouseListener {
 
@@ -85,10 +90,11 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 	private JCheckBoxPad cbQualificacoes = new JCheckBoxPad("Qualificações",new Boolean(true),new Boolean(false));
 	private JCheckBoxPad cbRestricoes = new JCheckBoxPad("Restrições",new Boolean(true),new Boolean(false));
 	private JCheckBoxPad cbCursos = new JCheckBoxPad("Cursos",new Boolean(true),new Boolean(false));
-	private JCheckBoxPad cbExperiencia = new JCheckBoxPad("Experiencia",new Boolean(true),new Boolean(false));
-	private JCheckBoxPad cbFaixaSalarial = new JCheckBoxPad("Faixa salarial",new Boolean(true),new Boolean(false));
-	private JCheckBoxPad cbDisponibilidade = new JCheckBoxPad("Disponiveis",new Boolean(true),new Boolean(false));
-		
+	private JCheckBoxPad cbExperiencia = new JCheckBoxPad("Experiência",new Boolean(true),new Boolean(false));
+	private JCheckBoxPad cbFaixaSalarial = new JCheckBoxPad("Faixa salarial de:",new Boolean(true),new Boolean(false));
+	private JCheckBoxPad cbDisponibilidade = new JCheckBoxPad("Disponíveis",new Boolean(true),new Boolean(false));
+	private JCheckBoxPad cbEnvolvimento = new JCheckBoxPad("Envolvidos",new Boolean(true),new Boolean(false));	
+	
 	private final JCheckBoxPad cbSelecionado = new JCheckBoxPad( "Seleção", "S", "N" );
 	
 	private BigDecimal bVlrAceito = new BigDecimal("0");
@@ -103,14 +109,40 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 	private ImageIcon imgIndiponivel = Icone.novo( "clIndisponivel.gif" );
 	private ImageIcon imgDisponivel = Icone.novo( "clDisponivel.gif" );
 	private ImageIcon imgOcupado = Icone.novo( "clIndisponivelParc.gif" );
-	private ImageIcon imgEfetivar = Icone.novo( "clEfetivar.gif" );
+	private ImageIcon imgEncaminhado = Icone.novo( "clEfetivar.gif" );
 	private ImageIcon imgEfetivado = Icone.novo( "clEfetivado.gif" );
 	private ImageIcon imgStatus = null;
+	
+	private Font fontLegenda =  new Font("Arial", Font.PLAIN, 9);		
+	private Color corLegenda = new Color(120,120,120); 
+	
+	private JLabelPad lbTxtIndisponivel = new JLabelPad("Indisponível");
+	private JLabelPad lbTxtOcupado = new JLabelPad("Ocupado");
+	private JLabelPad lbTxtDisponivel = new JLabelPad("Disponível");
+	private JLabelPad lbTxtEncaminhado = new JLabelPad("Encaminhado");
+	private JLabelPad lbTxtEfetivado = new JLabelPad("Efetivado");
+	
+	private JLabelPad lbImgIndisponivel = new JLabelPad(imgIndiponivel);
+	private JLabelPad lbImgDisponivel = new JLabelPad(imgDisponivel);
+	private JLabelPad lbImgOcupado = new JLabelPad(imgOcupado);
+	private JLabelPad lbImgEncaminhado = new JLabelPad(imgEncaminhado);
+	private JLabelPad lbImgEfetivado = new JLabelPad(imgEfetivado);
+	
+
+	
 	
 	public FGerencVagas() {
 		super(false);
 		setTitulo("Gerenciamento de vagas");
 		setAtribos(15,30,796,380);
+
+		txtFaixaSalIni.setForeground( new Color(10,95,0) );
+		txtFaixaSalIni.setBackground( new Color(240,240,240) );
+		txtFaixaSalIni.setBorder( null );
+		
+		txtFaixaSalFim.setForeground( new Color(255,0,0) );
+		txtFaixaSalFim.setBackground( new Color(240,240,240) );
+		txtFaixaSalFim.setBorder( null );
 
 		status.put( "DI", "Disponivel" );
 		status.put( "EN", "Encaminhado" );
@@ -181,19 +213,56 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 					
 		pinFiltros.adic( cbQualificacoes, 3, 7, 130, 18 );
 		pinFiltros.adic( cbRestricoes, 3, 25, 130, 18 );
-		pinFiltros.adic( cbFaixaSalarial, 3, 43, 130, 18 );
+		pinFiltros.adic( cbFaixaSalarial, 3, 43, 120, 18 );
 				
 		pinFiltros.adic( cbCursos, 136, 7, 80, 18 );
-		pinFiltros.adic( cbExperiencia, 136, 25, 130, 18 );
-		pinFiltros.adic (txtFaixaSalIni,136,43,50,18);
-		pinFiltros.adic (txtFaixaSalFim,189,43,50,18);		
+		pinFiltros.adic( cbExperiencia, 136, 25, 100, 18 );
+		pinFiltros.adic (txtFaixaSalIni,125,43,60,18); 
+		pinFiltros.adic( new JLabelPad("à"), 191, 43, 8, 18 );
+		pinFiltros.adic (txtFaixaSalFim,203,43,60,18);		
 		
-		pinFiltros.adic( cbDisponibilidade, 250, 7, 230, 18 );
+		pinFiltros.adic( cbDisponibilidade, 250, 7, 230, 18 );		
+		pinFiltros.adic( cbEnvolvimento, 250, 25, 230, 18 );
 		
 		pinRod.adic(btEncaminharCand,5,2,140,30);
 		pinRod.adic(btEfetivarCand,148,2,130,30);
 		pinRod.adic(btSair,675,2,100,30);
-					
+		
+		// Adicionando legenda
+		
+		lbTxtIndisponivel.setFont(fontLegenda);
+		lbTxtOcupado.setFont(fontLegenda);
+		lbTxtEncaminhado.setFont(fontLegenda);
+		lbTxtEfetivado.setFont(fontLegenda);
+		lbTxtDisponivel.setFont(fontLegenda);
+		
+		lbTxtIndisponivel.setForeground( corLegenda );
+		lbTxtOcupado.setForeground( corLegenda );
+		lbTxtEncaminhado.setForeground( corLegenda );
+		lbTxtEfetivado.setForeground( corLegenda );
+		lbTxtDisponivel.setForeground( corLegenda );
+		
+		lbImgIndisponivel.setToolTipText( "Candidato indisponível, \njá foi efetivado em outra vaga." );
+		lbImgOcupado.setToolTipText( "Candidato ocupado, \njá foi encaminhado para outra outra vaga." );
+		lbImgEncaminhado.setToolTipText( "Candidato encaminhado, \njá foi encaminhado para esta vaga." );
+		lbImgEfetivado.setToolTipText( "Candidato efetivado, \njá foi efetivado para esta vaga." );
+		lbImgDisponivel.setToolTipText( "Candidato disponível, \npode ser encaminhado e/ou efetivado para esta vaga." );
+						
+		pinRod.adic(lbImgIndisponivel,300,6,20,20);
+		pinRod.adic(lbTxtIndisponivel,320,6,100,20);
+
+		pinRod.adic(lbImgOcupado,370,6,20,20);
+		pinRod.adic(lbTxtOcupado,390,6,100,20);
+
+		pinRod.adic(lbImgEncaminhado,430,6,20,20);
+		pinRod.adic(lbTxtEncaminhado,450,6,100,20);
+
+		pinRod.adic(lbImgEfetivado,510,6,20,20);
+		pinRod.adic(lbTxtEfetivado,530,6,100,20);
+
+		pinRod.adic(lbImgDisponivel,580,6,20,20);
+		pinRod.adic(lbTxtDisponivel,600,6,100,20);
+	
 		getTela().add(pnCab,BorderLayout.CENTER);
 		pnCab.add(pinCab,BorderLayout.NORTH);
 		pnCab.add(pinRod,BorderLayout.SOUTH);
@@ -263,7 +332,8 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 				
 		if(cbQualificacoes.getVlrBoolean() || cbCursos.getVlrBoolean() ||
 		   cbExperiencia.getVlrBoolean() || cbFaixaSalarial.getVlrBoolean() ||
-		   cbRestricoes.getVlrBoolean() || cbDisponibilidade.getVlrBoolean() ) {
+		   cbRestricoes.getVlrBoolean() || cbDisponibilidade.getVlrBoolean() || 
+		   cbEnvolvimento.getVlrBoolean()) {
 		
 			where.append( " WHERE " );
 		
@@ -295,6 +365,10 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		
 		if(cbDisponibilidade.getVlrBoolean()) {
 			where.append( (and ? " AND " : "" ) + ( "(STVAGACAND='DI' AND STCAND='DI') " ) );			
+		}
+		
+		if(cbEnvolvimento.getVlrBoolean()) {
+			where.append( (and ? " AND " : "" ) + ( "(STVAGACAND='EN' OR STVAGACAND='EF') " ) );			
 		}
 		
 		sql.append( where );
@@ -329,7 +403,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 			    	imgStatus = imgIndiponivel;
 			    }
 			    else if (rs.getString( "STVAGACAND" ).equals( "EN" )){
-			    	imgStatus = imgEfetivar;
+			    	imgStatus = imgEncaminhado;
 			    }
 			    else if(rs.getString( "STVAGACAND" ).equals( "DI" )){
 			    	imgStatus = imgOcupado;
@@ -533,5 +607,28 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 	public void mousePressed( MouseEvent e ) { }
 
 	public void mouseReleased( MouseEvent e ) { }
+	
+	private void imprimir( boolean bVisualizar ) {
+		
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RHCANDIDATOFUNC" ) );
+
+		dlGr = new FPrinterJob( "relatorios/grhGerencVaga.jasper", "Resumo de atividades", "", this, hParam, con, null, false );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception e ) {
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro na geração do relátorio!" + e.getMessage(), true, con, e );
+			}
+		}
+	}
 
 }
