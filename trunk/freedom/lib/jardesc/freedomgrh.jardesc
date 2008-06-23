@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jardesc>
     <jar path="freedom/lib/freedomgrh.jar"/>
     <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomgrh.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
@@ -11,8 +11,9 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAgenda.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
