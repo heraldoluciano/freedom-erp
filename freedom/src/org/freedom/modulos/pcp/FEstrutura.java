@@ -93,6 +93,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener,
 	private JCheckBoxPad cbRmaAutoItEst = new JCheckBoxPad("Sim","S","N");
 	private JCheckBoxPad cbAtiva = new JCheckBoxPad("Sim","S","N");
 	private JCheckBoxPad cbGLoteOPP = new JCheckBoxPad("Sim","S","N");
+	private JCheckBoxPad cbOpDensidade = new JCheckBoxPad( "Usa densidade na OP?", "S", "N" );
 	private JTextAreaPad txaModoPreparo = new JTextAreaPad();
 	private Tabela tabItens = new Tabela();
 	private Tabela tabDist = new Tabela(); 
@@ -110,7 +111,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener,
 	
 	public FEstrutura() { 
 		setTitulo("Estrutura de produtos");
-		setAtribos( 50, 20, 625, 550);
+		setAtribos( 50, 20, 670, 550);
 		setAltCab(170);
 		
 		pnMaster.remove(spTab);
@@ -190,6 +191,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener,
 		adicCampo(txtCodModLote,7,100,80,20,"CodModLote","Cód.Mod.Lote",ListaCampos.DB_FK,txtDescModLote,false);
 		adicDescFK(txtDescModLote, 90, 100, 297, 20, "DescModLote", "Descrição do modelo do lote");
 		adicCampo(txtNroDiasValid,390,100,100,20,"NroDiasValid","Dias de validade",ListaCampos.DB_SI,false);
+		adicDB( cbOpDensidade, 493, 100, 250, 20, "USADENSIDADEOP", "", true );
 		
 		setListaCampos( false, "ESTRUTURA", "PP");
 		lcCampos.setQueryInsert(false);
