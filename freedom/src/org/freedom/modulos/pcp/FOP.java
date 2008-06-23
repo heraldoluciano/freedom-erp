@@ -42,6 +42,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -104,6 +105,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	private JTextFieldPad txtCodProdDet = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtRefProdDet = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	
+	private JTextFieldPad txtUsaDensidadeOP = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtRefProdEst = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
@@ -112,6 +115,10 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	private JTextFieldPad txtDtFabProd = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtQtdPrevProdOP = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	
+	private JTextFieldPad txtQtdSugProdOP = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	
+	private JTextFieldFK txtVlrDensidade = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 	
 	private JTextFieldPad txtQtdFinalProdOP = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
@@ -191,8 +198,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 	private JButton btDistrb = new JButton( "Distribuição", Icone.novo( "btDistOP.gif" ) );
 
-	private boolean bPrefs[] = null;
-
 	private FPrinterJob dl = null;
 
 	private ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
@@ -236,6 +241,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	private boolean bBuscaRMA = false;
 
 	private boolean bBuscaOPS = false;
+	
+	private HashMap prefere = null;
 
 	public FOP() {
 
@@ -246,7 +253,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 		btRatearItem.setBorder( BorderFactory.createEmptyBorder() );
 		setTitulo( "Cadastro de Ordens de produção" );
-		setAtribos( 15, 10, 640, 580 );
+		setAtribos( 15, 10, 700, 580 );
 		setAltCab( 200 );
 
 		pnMaster.remove( spTab );
@@ -264,7 +271,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		btRatearItem.setToolTipText( "Ratear ítem" );
 		btDistrb.setToolTipText( "Distribuição" );
 
-		pinCab.adic( pinBotCab, 500, 2, 115, 159 );
+		pinCab.adic( pinBotCab, 560, 2, 115, 159 );
 		pinBotCab.adic( btFase, 0, 0, 110, 30 );
 		pinBotCab.adic( btRMA, 0, 31, 110, 30 );
 		pinBotCab.adic( btExecuta, 0, 62, 110, 30 );
@@ -323,7 +330,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		lcProdEstCod.add( new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI, false ) );
 		lcProdEstCod.add( new GuardaCampo( txtCodModLote, "CodModLote", "Modelo de Lote", ListaCampos.DB_FK, false ) );
 		lcProdEstCod.add( new GuardaCampo( txtNroDiasValid, "NroDiasValid", "Dias de validade", ListaCampos.DB_SI, false ) );
-
+		lcProdEstCod.add( new GuardaCampo( txtUsaDensidadeOP, "UsaDensidadeOp", "Usa Densidade", ListaCampos.DB_SI, false ) );
+		
 		lcProdEstCod.setWhereAdic( "ATIVOEST='S'" );
 		lcProdEstCod.montaSql( false, "ESTRUTURA", "PP" );
 		lcProdEstCod.setQueryCommit( false );
@@ -339,6 +347,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		lcProdEstRef.add( new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI, false ) );
 		lcProdEstRef.add( new GuardaCampo( txtCodModLote, "CodModLote", "Modelo de Lote", ListaCampos.DB_FK, false ) );
 		lcProdEstRef.add( new GuardaCampo( txtNroDiasValid, "NroDiasValid", "Dias de validade", ListaCampos.DB_SI, false ) );
+		lcProdEstRef.add( new GuardaCampo( txtUsaDensidadeOP, "UsaDensidadeOp", "Usa Densidade", ListaCampos.DB_SI, false ) );		
+
 		lcProdEstRef.setWhereAdic( "ATIVOEST='S'" );
 		lcProdEstRef.montaSql( false, "ESTRUTURA", "PP" );
 		lcProdEstRef.setQueryCommit( false );
@@ -353,10 +363,10 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		adicCampo( txtCodOP, 7, 20, 70, 20, "CodOP", "Nº OP.", ListaCampos.DB_PK, true );
 		adicCampo( txtSeqOP, 80, 20, 60, 20, "SeqOP", "Seq. OP.", ListaCampos.DB_PK, true );
 		adicCampo( txtCodTpMov, 143, 20, 70, 20, "CodTipoMov", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
-		adicDescFK( txtDescTipoMov, 216, 20, 198, 20, "DescTipoMov", "Cód.Tp.Mov." );
-		adicCampo( txtDtFabProd, 417, 20, 75, 20, "dtfabrop", "Dt.Fabric.", ListaCampos.DB_SI, true );
+		adicDescFK( txtDescTipoMov, 216, 20, 258, 20, "DescTipoMov", "Cód.Tp.Mov." );
+		adicCampo( txtDtFabProd, 477, 20, 75, 20, "dtfabrop", "Dt.Fabric.", ListaCampos.DB_SI, true );
 
-		if ( !bPrefs[ 0 ] ) {
+		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
 			adicCampo( txtCodProdEst, 7, 60, 70, 20, "codprod", "Cód.prod.", ListaCampos.DB_FK, txtDescEst, true );
 			adicCampoInvisivel( txtRefProdEst, "RefProd", "Ref.prod.", ListaCampos.DB_FK, null, true );
 		}
@@ -365,25 +375,28 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			adicCampoInvisivel( txtCodProdEst, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescEst, true );
 			txtRefProdEst.setFK( true );
 		}
-
+		
 		adicCampo( txtSeqEst, 80, 60, 60, 20, "seqest", "Seq.Est.", ListaCampos.DB_FK, txtDescEst, true );
 		adicDescFK( txtDescEst, 143, 60, 184, 20, "descprod", "Descrição da estrutura" );
 		adicDescFK( txtQtdEst, 330, 60, 80, 20, "qtdest", "Qtd.est." );
-		adicCampo( txtQtdPrevProdOP, 413, 60, 80, 20, "qtdprevprodop", "Quantidade", ListaCampos.DB_SI, true );
-		adicCampo( txtCodAlmoxEst, 7, 100, 70, 20, "codalmox", "Cód.Almox.", ListaCampos.DB_FK, txtDescAlmoxEst, true );
-		adicDescFK( txtDescAlmoxEst, 80, 100, 247, 20, "descalmox", "Descrição do almoxarifado" );
-		adicCampo( txtCodLoteProdEst, 330, 100, 80, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLoteProdEst, false );
-		adicDescFKInvisivel( txtDescLoteProdEst, "VenctoLote", "Vencto.Lote" );
-		adicCampo( txtDtValidOP, 413, 100, 80, 20, "dtvalidpdop", "Dt. validade", ListaCampos.DB_SI, false );
-				
-		txtQtdFinalProdOP.setAtivo( false );
-		txtQtdFinalProdOP.tiraBorda();
-		txtQtdFinalProdOP.setForeground( new Color(255,0,0) );
-		txtQtdFinalProdOP.setFont(new Font("Dialog", Font.BOLD, 14));
-		txtQtdFinalProdOP.setHorizontalAlignment( SwingConstants.LEFT );
-				
-		adicCampo( txtQtdFinalProdOP, 7, 140, 110, 20, "qtdfinalprodop", "Qtd.Produzida", ListaCampos.DB_SI, false );
 		
+		pinCab.adic( new JLabelPad("Densid."), 413,40 ,57 ,20 );
+		pinCab.adic( txtVlrDensidade, 413, 60, 57, 20 ); // xxx
+//		pinDados.adic( txtQtdFinalProdOP, 413, 60, 80, 20 ); // xxx
+
+		formataCampoLimpo( txtQtdPrevProdOP, new Color(0,0,255) );
+		formataCampoLimpo( txtQtdFinalProdOP, new Color(255,0,0) );
+		
+		adicCampo( txtQtdSugProdOP, 473, 60, 80, 20, "qtdsugprodop", "Qtd.Sugerida", ListaCampos.DB_SI, true );		
+		adicCampo( txtQtdPrevProdOP, 7, 140, 110, 20, "qtdprevprodop", "Qtd.prevista", ListaCampos.DB_SI, false );
+		adicCampo( txtQtdFinalProdOP, 120, 140, 110, 20, "qtdfinalprodop", "Qtd.Produzida", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtCodAlmoxEst, 7, 100, 70, 20, "codalmox", "Cód.Almox.", ListaCampos.DB_FK, txtDescAlmoxEst, true );
+		adicDescFK( txtDescAlmoxEst, 80, 100, 307, 20, "descalmox", "Descrição do almoxarifado" );
+		adicCampo( txtCodLoteProdEst, 390, 100, 80, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLoteProdEst, false );
+		adicDescFKInvisivel( txtDescLoteProdEst, "VenctoLote", "Vencto.Lote" );
+		adicCampo( txtDtValidOP, 473, 100, 80, 20, "dtvalidpdop", "Dt. validade", ListaCampos.DB_SI, false );
+				
 		setListaCampos( true, "OP", "PP" );
 
 		txtCodTpMov.setAtivo( false );
@@ -413,7 +426,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		btRatearItem.addActionListener( this );
 		btDistrb.addActionListener( this );
 
-		txtQtdPrevProdOP.addFocusListener( this );
+		txtQtdSugProdOP.addFocusListener( this );
 
 		montaDet();
 
@@ -504,6 +517,19 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 	}
 
+	private void formataCampoLimpo(JTextFieldPad campo, Color cor) {
+		try {
+			campo.setAtivo( false );
+			campo.tiraBorda();
+			campo.setForeground( cor );
+			campo.setFont(new Font("Dialog", Font.BOLD, 14));
+			campo.setHorizontalAlignment( SwingConstants.LEFT );						
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void montaDet() {
 
 		setAltDet( 60 );
@@ -551,7 +577,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		setNavegador( navRod );
 
 		adicCampo( txtSeqItOp, 7, 20, 50, 20, "seqitop", "Seq.", ListaCampos.DB_PK, true );
-		if ( !bPrefs[ 0 ] ) {
+		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
 			adicCampo( txtCodProdDet, 60, 20, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true );
 			txtCodProdDet.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProdDetCod.getWhereAdic() ) );
 		}
@@ -802,27 +828,32 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		}
 	}
 
-	public void setUsaLote() {
+	public void carregaProduto() {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = "SELECT CLOTEPROD FROM EQPRODUTO WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?";
+		String sSQL = "SELECT CLOTEPROD,VLRDENSIDADE FROM EQPRODUTO WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?";
 		try {
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 			ps.setInt( 3, txtCodProdEst.getVlrInteger().intValue() );
 			rs = ps.executeQuery();
-			if ( rs.next() )
-				txtUsaLoteEst.setVlrString( rs.getString( 1 ) );
+
+			if ( rs.next() ) {
+				txtUsaLoteEst.setVlrString( rs.getString( "CLOTEPROD" ) );
+				txtVlrDensidade.setVlrBigDecimal( rs.getBigDecimal( "VLRDENSIDADE" ) == null ? new BigDecimal(1) : rs.getBigDecimal( "VLRDENSIDADE" ) );				
+			}
 
 			rs.close();
 			ps.close();
 			if ( !con.getAutoCommit() )
 				con.commit();
-		} catch ( SQLException err ) {
+		} 
+		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar obrigatoriedade de lote no produto!\n", true, con, err );
-		} finally {
+		} 
+		finally {
 			ps = null;
 			rs = null;
 			sSQL = null;
@@ -839,8 +870,14 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		try {
 
 			tabSimu.limpa();
-
-			// é selecionada o sequencia do item apenas para melhorar a ordenaçao.
+			
+			if(txtUsaDensidadeOP.getVlrString().equals( "S" )) {
+				txtQtdPrevProdOP.setVlrBigDecimal( txtQtdSugProdOP.getVlrBigDecimal().multiply( txtVlrDensidade.getVlrBigDecimal() ) );
+			}
+			else {
+				txtQtdPrevProdOP.setVlrBigDecimal( txtQtdSugProdOP.getVlrBigDecimal() );
+			}
+			
 			sSQL = "SELECT IT.CODFASE, IT.SEQITEST, IT.CODPRODPD, P.DESCPROD, " + "P.CODUNID, IT.QTDITEST, P.SLDLIQPROD, IT.RMAAUTOITEST " + "FROM PPESTRUTURA E, PPITESTRUTURA IT, EQPRODUTO P " + "WHERE E.CODEMP=? AND E.CODFILIAL=? AND E.CODPROD=? AND E.SEQEST=? "
 					+ "AND E.CODEMP=IT.CODEMP AND E.CODFILIAL=IT.CODFILIAL " + "AND E.CODPROD=IT.CODPROD AND E.SEQEST=IT.SEQEST " + "AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPRODPD " + "ORDER BY IT.CODFASE, IT.SEQITEST";
 
@@ -1150,7 +1187,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 					txtQtdDigRat.setVlrString( "" );
 					txtLoteRat.setVlrString( "" );
-				} catch ( Exception err ) {
+				} 
+				catch ( Exception err ) {
 					Funcoes.mensagemErro( Aplicativo.framePrinc, "Valor inválido!" );
 					err.printStackTrace();
 					return;
@@ -1351,7 +1389,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			sValores[ 5 ] = txtDescEst.getVlrString();
 			sValores[ 6 ] = txtQtdFinalProdOP.getVlrBigDecimal();
 
-			DLDistrib dl = new DLDistrib( con, this, bPrefs[ 0 ] );
+			DLDistrib dl = new DLDistrib( con, this, (Boolean) prefere.get( "USAREFPROD" ) );
 			dl.carregaCampos( sValores );
 			dl.carregaTabela( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue() );
 			dl.setVisible( true );
@@ -1388,7 +1426,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			if ( ( ! ( (JTextFieldPad) arg0.getSource() ).getVlrString().trim().equals( "" ) ) && ( txtSeqOP.getVlrString().trim().equals( "" ) ) )
 				txtSeqOP.setVlrInteger( new Integer( 0 ) );
 		}
-		else if ( arg0.getSource() == txtQtdPrevProdOP && txtQtdPrevProdOP.getVlrString().trim().length() > 0 ) {
+		else if ( arg0.getSource() == txtQtdSugProdOP && txtQtdSugProdOP.getVlrString().trim().length() > 0 ) {
 			simularOP();
 		}
 
@@ -1429,9 +1467,9 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		}
 
 		if ( ( cevt.getListaCampos() == lcProdEstCod ) || ( cevt.getListaCampos() == lcProdEstRef ) ) {
-			setUsaLote();
+			carregaProduto();
 			if ( txtQtdPrevProdOP.getVlrString().equals( "" ) )
-				txtQtdPrevProdOP.setVlrDouble( txtQtdEst.getVlrDouble() );
+				txtQtdSugProdOP.setVlrDouble( txtQtdEst.getVlrDouble() );
 
 			if ( ( txtCodLoteProdEst.getVlrString().equals( "" ) ) && ( txtUsaLoteEst.getVlrString().equals( "S" ) ) ) {
 				txtCodLoteProdEst.setVlrString( getLote( lcProdEstCod, txtCodProdEst, false ) );
@@ -1512,21 +1550,31 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 	}
 
-	private boolean[] prefs( Connection con ) {
-
+	private HashMap getPrefere( Connection con ) {
+		HashMap<String, Boolean> retorno = new HashMap<String,Boolean>();		
 		boolean[] bRetorno = new boolean[ 1 ];
-		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		StringBuffer sql = new StringBuffer();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
+			
+			sql.append("SELECT P1.USAREFPROD FROM SGPREFERE1 P1,SGPREFERE5 P5 ");
+			sql.append("WHERE P1.CODEMP=? AND P1.CODFILIAL=? ");
+			sql.append("AND P5.CODEMP=? AND P5.CODFILIAL=?");
+			
 			bRetorno[ 0 ] = false;
-			ps = con.prepareStatement( sSQL );
+			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "SGPREFERE5" ) );
+
 			rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
-				bRetorno[ 0 ] = rs.getString( "UsaRefProd" ).trim().equals( "S" );
+				retorno.put("USAREFPROD", new Boolean(rs.getString( "USAREFPROD" ).trim().equals( "S" )));				
 			}
+			
 			rs.close();
 			ps.close();
 			if ( !con.getAutoCommit() )
@@ -1534,18 +1582,20 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
-		} finally {
+		} 
+		finally {
 			ps = null;
 			rs = null;
-			sSQL = null;
+			sql = null;
 		}
-		return bRetorno;
+		return retorno;
 	}
 
 	public void setConexao( Connection cn ) {
 
 		super.setConexao( cn );
-		bPrefs = prefs( cn );
+//		bPrefs = prefs( cn );
+		prefere = getPrefere( cn );
 		montaTela();
 		lcProdEstCod.setConexao( cn );
 		lcProdEstRef.setConexao( cn );
