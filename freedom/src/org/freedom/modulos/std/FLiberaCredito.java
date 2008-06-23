@@ -80,7 +80,8 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 	private ListaCampos lcCli = new ListaCampos(this,"CL");
     private ListaCampos lcTipoCred = new ListaCampos(this,"TR");
 	private JPanelPad pinCab = new JPanelPad(0,140);
-    private JPanelPad pinCli = new JPanelPad(0,200);	
+    private JPanelPad pinCli = new JPanelPad( new BorderLayout());	
+    private JPanelPad pnTotais = new JPanelPad( 250, 200 );
     private Tabela tab = new Tabela();
     private JScrollPane spnTab = new JScrollPane(tab);
     private ListaCampos lcVenda = new ListaCampos( this, "VD" );
@@ -162,22 +163,24 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		
 		setListaCampos( true, "LIBCRED", "FN");
 
-		pinCli.adic(new JLabelPad("Informações para análise"),7,0,200,20);
-		pinCli.adic(new JLabelPad("Valor do crédito:"),7,30,120,20);
-		pinCli.adic(txtVlrCredito,130,30,100,20);				
-		pinCli.adic(new JLabelPad("Valor em aberto:"),7,60,120,20);
-		pinCli.adic(txtVlrAberto,130,60,100,20);
-		pinCli.adic(new JLabelPad("Valor do pedido:"),7,90,120,20);
-		pinCli.adic(txtVlrLiqPed,130,90,100,20);
-		pinCli.adic(new JLabelPad("Valor a liberar:"),7,120,120,20);
-		pinCli.adic(txtVlrALiberar,130,120,100,20);		
-		pinCli.adic(new JLabelPad("Duplicatas em aberto"),260,0,200,20);
-        pinCli.adic(spnTab,260,30,360,140);
+		pnTotais.adic(new JLabelPad("Informações para análise"),7,0,200,20);
+		pnTotais.adic(new JLabelPad("Valor do crédito:"),7,30,120,20);
+		pnTotais.adic(txtVlrCredito,130,30,100,20);				
+		pnTotais.adic(new JLabelPad("Valor em aberto:"),7,60,120,20);
+		pnTotais.adic(txtVlrAberto,130,60,100,20);
+		pnTotais.adic(new JLabelPad("Valor do pedido:"),7,90,120,20);
+		pnTotais.adic(txtVlrLiqPed,130,90,100,20);
+		pnTotais.adic(new JLabelPad("Valor a liberar:"),7,120,120,20);
+		pnTotais.adic(txtVlrALiberar,130,120,100,20);		
+		//pinCli.adic(new JLabelPad("Duplicatas em aberto"),260,0,200,20);
+		pinCli.add( spnTab, BorderLayout.CENTER );
+		//spnTab.add( pinCli, BorderLayout.CENTER );
         
  	 // Adicionando elementos no painel inferior da tela (Rodapé)
 
 		pnCliente.add(pinCab,BorderLayout.NORTH);
         pnCliente.add(pinCli,BorderLayout.CENTER);
+        pinCli.add( pnTotais, BorderLayout.EAST );
 
         tab.adicColuna("Vencto.");
 		tab.adicColuna("Valor");
