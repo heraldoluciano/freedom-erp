@@ -54,14 +54,12 @@ public class FPrefereProd extends FTabDados {
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JComboBoxPad cbSitRMAOP = null;
-
-	private JCheckBoxPad cbOpDensidade = new JCheckBoxPad( "Usa densidade na OP?", "S", "N" );
 	
 	public FPrefereProd() {
 
 		super();
 		setTitulo( "Preferências de Produção" );
-		setAtribos( 50, 50, 540, 450 );
+		setAtribos( 50, 50, 540, 350 );
 		montaListaCampos();
 		montaTela();
 
@@ -92,11 +90,7 @@ public class FPrefereProd extends FTabDados {
 		JPanelPad pinOp = new JPanelPad();
 		JLabelPad lbOP = new JLabelPad( " Informações padrão para OP." );
 		lbOP.setOpaque( true );
-		
-		JPanelPad pinOrdemP = new JPanelPad();
-		JLabelPad lbOrdemP = new JLabelPad( "Preferências OP" );
-		lbOrdemP.setOpaque( true );
-		
+			
 		adic( lbRespon, 12, 10, 200, 20 );
 		adic( pinRespon, 7, 20, 250, 150 );
 		setPainel( pinRespon );
@@ -114,14 +108,6 @@ public class FPrefereProd extends FTabDados {
 		adicCampo( txtCodTipoMov, 7, 70, 50, 20, "CODTIPOMOV", "Cd.TM.", ListaCampos.DB_FK, txtDescTipoMov, true );
 		adicDescFK( txtDescTipoMov, 60, 70, 175, 20, "DESCTIPOMOV", "Descrição do tipo de mov." );
 		adicDB( cbSitRMAOP, 7, 110, 230, 20, "SITRMAOP", "Situação padrão para RMA", false );
-		setListaCampos( false, "PREFERE5", "SG" );
-		
-		setPainel( pinGeral );
-		adic( lbOrdemP, 14, 170, 170, 20 );
-		adic( pinOrdemP, 7, 180, 250, 150 );
-		setPainel( pinOrdemP );
-	
-		adicDB( cbOpDensidade, 7, 15, 250, 20, "USADENSIDADEOP", "", true );
 		setListaCampos( false, "PREFERE5", "SG" );
 
 		nav.setAtivo( 0, false );
