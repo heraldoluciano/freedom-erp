@@ -24,7 +24,6 @@ package org.freedom.modulos.pcp;
 import java.sql.Connection;
 import java.util.Vector;
 import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
