@@ -52,9 +52,9 @@ public class FEmpregado extends FDados {
 
 	private final JTextFieldPad txtDesc = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private final ListaCampos lcFuncao = new ListaCampos( this, "FU" );
+	private final ListaCampos lcFuncao = new ListaCampos( this, "FO" );
 
-	private final ListaCampos lcTurno = new ListaCampos( this, "TU" );
+	private final ListaCampos lcTurno = new ListaCampos( this, "TO" );
 
 	private final ListaCampos lcDepto = new ListaCampos( this, "DP" );
 	
