@@ -367,12 +367,13 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		adicCampo( txtDtFabProd, 477, 20, 75, 20, "dtfabrop", "Dt.Fabric.", ListaCampos.DB_SI, true );
 
 		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
-			adicCampo( txtCodProdEst, 7, 60, 70, 20, "codprod", "Cód.prod.", ListaCampos.DB_FK, txtDescEst, true );
-			adicCampoInvisivel( txtRefProdEst, "RefProd", "Ref.prod.", ListaCampos.DB_FK, null, true );
-		}
-		else {
 			adicCampo( txtRefProdEst, 7, 60, 70, 20, "refprod", "Referência", ListaCampos.DB_FK, true );
 			adicCampoInvisivel( txtCodProdEst, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescEst, true );
+			txtCodProdEst.setFK( true );
+		}
+		else {
+			adicCampo( txtCodProdEst, 7, 60, 70, 20, "codprod", "Cód.prod.", ListaCampos.DB_FK, txtDescEst, true );
+			adicCampoInvisivel( txtRefProdEst, "RefProd", "Ref.prod.", ListaCampos.DB_FK, null, true );
 			txtRefProdEst.setFK( true );
 		}
 		
@@ -392,8 +393,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		adicCampo( txtQtdFinalProdOP, 120, 140, 110, 20, "qtdfinalprodop", "Qtd.Produzida", ListaCampos.DB_SI, false );
 		
 		adicCampo( txtCodAlmoxEst, 7, 100, 70, 20, "codalmox", "Cód.Almox.", ListaCampos.DB_FK, txtDescAlmoxEst, true );
-		adicDescFK( txtDescAlmoxEst, 80, 100, 307, 20, "descalmox", "Descrição do almoxarifado" );
-		adicCampo( txtCodLoteProdEst, 390, 100, 80, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLoteProdEst, false );
+		adicDescFK( txtDescAlmoxEst, 80, 100, 300, 20, "descalmox", "Descrição do almoxarifado" );
+		adicCampo( txtCodLoteProdEst, 383, 100, 87, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLoteProdEst, false );
 		adicDescFKInvisivel( txtDescLoteProdEst, "VenctoLote", "Vencto.Lote" );
 		adicCampo( txtDtValidOP, 473, 100, 80, 20, "dtvalidpdop", "Dt. validade", ListaCampos.DB_SI, false );
 				
@@ -427,6 +428,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		btDistrb.addActionListener( this );
 
 		txtQtdSugProdOP.addFocusListener( this );
+		txtSeqEst.addFocusListener( this );
 
 		montaDet();
 
@@ -1420,14 +1422,22 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 	}
 
-	public void focusLost( FocusEvent arg0 ) {
+	public void focusLost( FocusEvent campo ) {
 
-		if ( arg0.getSource() == txtCodOP ) {
-			if ( ( ! ( (JTextFieldPad) arg0.getSource() ).getVlrString().trim().equals( "" ) ) && ( txtSeqOP.getVlrString().trim().equals( "" ) ) )
+		if ( campo.getSource() == txtCodOP ) {
+			if ( ( ! ( (JTextFieldPad) campo.getSource() ).getVlrString().trim().equals( "" ) ) && ( txtSeqOP.getVlrString().trim().equals( "" ) ) )
 				txtSeqOP.setVlrInteger( new Integer( 0 ) );
 		}
-		else if ( arg0.getSource() == txtQtdSugProdOP && txtQtdSugProdOP.getVlrString().trim().length() > 0 ) {
+		else if ( campo.getSource() == txtQtdSugProdOP && txtQtdSugProdOP.getVlrString().trim().length() > 0 ) {
 			simularOP();
+		}
+		else if (campo.getSource() == txtSeqEst) {
+			if((Boolean) prefere.get( "USAREFPROD" )){
+				lcProdEstRef.carregaDados();
+			}
+			else {
+				lcProdEstCod.carregaDados();
+			}
 		}
 
 	}
@@ -1542,7 +1552,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	}
 
 	public void beforeCancel( CancelEvent cevt ) {
-
 		txtCodProdEst.setAtivo( false );
 	}
 
@@ -1594,7 +1603,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	public void setConexao( Connection cn ) {
 
 		super.setConexao( cn );
-//		bPrefs = prefs( cn );
 		prefere = getPrefere( cn );
 		montaTela();
 		lcProdEstCod.setConexao( cn );
