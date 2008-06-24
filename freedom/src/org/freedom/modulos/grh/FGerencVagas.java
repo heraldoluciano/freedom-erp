@@ -125,9 +125,6 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 	private JLabelPad lbImgEncaminhado = new JLabelPad(imgEncaminhado);
 	private JLabelPad lbImgEfetivado = new JLabelPad(imgEfetivado);
 	
-
-	
-	
 	public FGerencVagas() {
 		super(false);
 		setTitulo("Gerenciamento de vagas");
@@ -357,11 +354,13 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		}
 
 		if(cbFaixaSalarial.getVlrBoolean()) {
-			where.append( (and ? " AND " : "" ) + ( "((PRETENSAOSAL BETWEEN  ? AND ? ) OR (PRETENSAOSAL IS NULL))" ) );			
+			where.append( (and ? " AND " : "" ) + ( "((PRETENSAOSAL BETWEEN  ? AND ? ) OR (PRETENSAOSAL IS NULL))" ) );
+			and = true;
 		}
 		
 		if(cbDisponibilidade.getVlrBoolean()) {
-			where.append( (and ? " AND " : "" ) + ( "(STVAGACAND='DI' AND STCAND='DI') " ) );			
+			where.append( (and ? " AND " : "" ) + ( "(STVAGACAND='DI' AND STCAND='DI') " ) );
+			and = true;
 		}
 		
 		if(cbEnvolvimento.getVlrBoolean()) {
@@ -388,7 +387,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 			}
 						
 			ResultSet rs = ps.executeQuery();
-						
+			System.out.println("SQL:" + sql.toString());			
 			while (rs.next()) {
 			    if(rs.getString( "STCAND" ).equals( "DI" ) && rs.getString( "STVAGACAND" ).equals( "DI" )) {
 			    	imgStatus = imgDisponivel;
