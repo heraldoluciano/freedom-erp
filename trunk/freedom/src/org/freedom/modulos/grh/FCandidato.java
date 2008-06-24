@@ -279,7 +279,7 @@ public class FCandidato extends FTabDados implements CarregaListener {
 
 		lcFuncao.add( new GuardaCampo( txtCodFuncaoCand, "CodFunc", "Cód.função", ListaCampos.DB_PK, txtDescFuncaoCand, false ) );
 		lcFuncao.add( new GuardaCampo( txtDescFuncaoCand, "DescFunc", "Descrição da função", ListaCampos.DB_SI, false ) );
-		lcFuncao.montaSql( false, "FUNCAO", "RH" );
+		lcFuncao.montaSql( true, "FUNCAO", "RH" );
 		lcFuncao.setReadOnly( true );
 		lcFuncao.setQueryCommit( false );
 		txtCodFuncaoCand.setTabelaExterna( lcFuncao );
@@ -430,12 +430,13 @@ public class FCandidato extends FTabDados implements CarregaListener {
 		
 		setPainel( panelFuncaoCampos );
 		
-		adicCampo( txtSeqFuncaoCand, 7, 20, 40, 20, "SeqCandFunc", "Seq.", ListaCampos.DB_PK, false );
-		adicCampo( txtCodFuncaoCand, 50, 20, 90, 20, "CodFunc", "Cód.função", ListaCampos.DB_PF, txtDescFuncaoCand, false );		
+		adicCampo( txtSeqFuncaoCand, 7, 20, 40, 20, "SeqCandFunc", "Seq.", ListaCampos.DB_PK, true );
+		adicCampo( txtCodFuncaoCand, 50, 20, 90, 20, "CodFunc", "Cód.função", ListaCampos.DB_PF, txtDescFuncaoCand, true );		
 		adicDescFK( txtDescFuncaoCand, 143, 20, 357, 20, "DescFunc", "Descrição da função" );
 		adic( navFuncao, 0, 50, 270, 25 );		
 		setListaCampos( false, "CANDIDATOFUNC", "RH" );
-		lcFuncaoCand.setQueryInsert( false );
+		lcFuncaoCand.setQueryInsert( true );
+		lcFuncaoCand.setPodeIns( true );
 		lcFuncaoCand.setQueryCommit( false );
 		lcFuncaoCand.montaTab();
 
