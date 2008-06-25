@@ -1,6 +1,8 @@
 
 package org.freedom.infra.model.jpa;
 
+import java.util.Map;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -21,10 +23,18 @@ public class Crud {
 	private static final Logger LOGGER = LoggerManager.getLogger( "org.freedom.infra.model.jpa.Crud" );
 
 	public Crud( String persistUnit ) {
+		this(persistUnit, null);
+	}
+	
+	public Crud( String persistUnit, Map properties ) {
 
 		if ( emf == null ) {
 			try {
-				emf = Persistence.createEntityManagerFactory( persistUnit );
+				if (properties==null) {
+					emf = Persistence.createEntityManagerFactory( persistUnit );
+				} else {
+					emf = Persistence.createEntityManagerFactory( persistUnit, properties );
+				}
 				em = emf.createEntityManager();
 				tx = em.getTransaction();
 			}
