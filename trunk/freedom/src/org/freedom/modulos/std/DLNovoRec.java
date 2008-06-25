@@ -52,6 +52,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.fnc.DLRestrCli;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
@@ -145,10 +146,13 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 
 	private final Navegador navItRec = new Navegador( false );
 	
+	private Component owner = null; 
+	
 
 	public DLNovoRec( Component cOrig ) {
 
 		super( cOrig );
+		this.owner = cOrig;
 		setTitulo( "Novo" );
 		setAtribos( 600, 350 );
 
@@ -184,7 +188,9 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 
 		lcReceber.addPostListener( this );
 		lcTipoCob.addCarregaListener( this );
+		//lcCli.addCarregaListener( this );
 		txtCodTipoCob.addFocusListener( this );
+	
 	}
 	
 	private void montaListaCampos() {
@@ -503,6 +509,7 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 			txtCodCli.requestFocus();
 			return false;
 		}
+		
 		if ( txtCodPlanoPag.getVlrString().trim().length() == 0 ) {
 			Funcoes.mensagemErro( this, "Cód.p.pag. é requerido!" );
 			txtCodPlanoPag.requestFocus();
@@ -535,7 +542,6 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 			txtDocRec.requestFocus();
 			return false;
 		}
-		
 		return true;
 	}
 	
@@ -560,9 +566,16 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 				&& "S".equalsIgnoreCase( txtObrigCart.getVlrString() ) ) {
 			txtCodBanco.setRequerido( true );
 			txtCodCartCob.setRequerido( true );
-		}
+		} 
+		/*else if (e.getListaCampos() == lcCli ) {
+			mostraRestricao();
+		}*/
 	}
 
+	private boolean mostraRestricao() {
+	    return DLRestrCli.execRestrCli( this.owner, con, txtCodCli.getVlrInteger()  );	
+	}
+	
 	public void beforeCarrega( CarregaEvent e ) { }
 	
 	public void beforePost( PostEvent evt ) {
@@ -580,6 +593,9 @@ public class DLNovoRec extends FFDialogo implements CarregaListener, PostListene
 		if ( evt.getSource() == btOK ) {
 			if ( isValido() ) {				
 				if ( lcReceber.getStatus() == ListaCampos.LCS_INSERT ) {
+					if ( !mostraRestricao() ) {
+						return;
+					}
 					if ( lcReceber.post() ) {
 						setCarteira();
 					}
