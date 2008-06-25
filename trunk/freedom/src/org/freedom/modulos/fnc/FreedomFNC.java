@@ -41,7 +41,7 @@ import org.freedom.modulos.std.FManutPag;
 import org.freedom.modulos.std.FManutRec;
 import org.freedom.modulos.std.FModBoleto;
 import org.freedom.modulos.std.FMoeda;
-import org.freedom.modulos.std.FNTipoRestr;
+import org.freedom.modulos.std.FTipoRestr;
 import org.freedom.modulos.std.FPapel;
 import org.freedom.modulos.std.FPlanejamento;
 import org.freedom.modulos.std.FPlanoPag;
@@ -152,7 +152,7 @@ public class FreedomFNC extends AplicativoPD {
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Tipo de crédito", "Tipo de crédito", 'T', 400800000, 1, true, FTipoCred.class );
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Liberação de crédito", "Liberação de crédito", 'b', 400900000, 1, true, FLiberaCredito.class );
 
-			addOpcao( 400000000, TP_OPCAO_ITEM, "Tipo de Restrição", "Tipo de Restrição", 's', 401000000, 1, true, FNTipoRestr.class );
+			addOpcao( 400000000, TP_OPCAO_ITEM, "Tipo de Restrição", "Tipo de Restrição", 's', 401000000, 1, true, FTipoRestr.class );
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Restrição de clientes", "Restrição de clientes", 'r', 401100000, 1, true, FRestrCli.class );
 
 			addSeparador( 400000000 );

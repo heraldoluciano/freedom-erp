@@ -25,6 +25,7 @@ package org.freedom.modulos.std;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
@@ -36,22 +37,25 @@ import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class FNTipoRestr extends FDados {
+public class FTipoRestr extends FDados {
 
 	private static final long serialVersionUID = 1L;
 
 	private JTextFieldPad txtCodTipoRest = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtDescTipoRest = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JCheckBoxPad cbBloqTpRestr = new JCheckBoxPad( "Restrição com bloqueio.", "S", "N");
 
-	public FNTipoRestr() {
+	public FTipoRestr() {
 
 		super();
-		setAtribos( 50, 50, 370, 120 );
+		setAtribos( 50, 50, 370, 150 );
 		setTitulo( "Tipo de Restrição" );
 
 		adicCampo( txtCodTipoRest, 7, 20, 70, 20, "CODTPRESTR", "Cód.rest.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescTipoRest, 80, 20, 250, 20, "DESCTPRESTR", "Descrição da Restrição", ListaCampos.DB_SI, true );
+		adicDB( cbBloqTpRestr, 7, 40, 250, 30, "BloqTpRestr", "", true );
 		setListaCampos( true, "TIPORESTR", "FN" );
 		setImprimir( true );
 
