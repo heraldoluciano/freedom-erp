@@ -27,6 +27,7 @@ package org.freedom.modulos.std;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FAtendente;
 import org.freedom.modulos.atd.FTipoAtend;
+import org.freedom.modulos.cfg.FFeriados;
 import org.freedom.modulos.fnc.FCartCob;
 import org.freedom.modulos.fnc.FHistPad;
 import org.freedom.modulos.grh.FFuncao;
@@ -65,7 +66,7 @@ public class FreedomSTD extends AplicativoPD {
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de cobrança", "Tipo de cobrança", 'o', 100114000, 2, true, FTipoCob.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Plano de pagamento", "Plano de pagamento", 's', 100115000, 2, true, FPlanoPag.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Prazo de entrega", "Prazo de entrega", 'e', 100116000, 2, true, FPrazoEnt.class );
-			// addOpcao(100100000,TP_OPCAO_ITEM,"Tipo de expositor",'x',100116000,2,true, FTipoExp.class);
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Cadastro de feriados", "Cadastro de feriados", 'e', 100117000, 2, true, FFeriados.class );
 			addSeparador( 100100000 );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Transportadora", "Transportadora", 'p', 100117000, 2, true, FTransp.class );
 			addSeparador( 100100000 );
