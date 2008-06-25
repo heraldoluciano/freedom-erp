@@ -89,13 +89,14 @@ public class FreedomFNC extends AplicativoPD {
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Classificação de clientes", "Classifição de Clientes", 'f', 100101040, 3, true, FClasCli.class );
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Clientes", "Clientes", 'C', 100101050, 3, true, FCliente.class );
 					addOpcao( 100101000, TP_OPCAO_ITEM, "Crédito por cliente", "Crédito por cliente", 'r', 100101060, 3, true, FCredCli.class );
-
+				
 				addSeparador( 100100000 );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Moeda", "Moeda", 'M', 100102000, 2, true, FMoeda.class );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Banco", "Banco", 'B', 100103000, 2, true, FBanco.class );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de cobrança", "TipoCob", 'T', 100104000, 2, true, FTipoCob.class );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Carteira de cobrança", "Carteira de cobrança", 'C', 100105000, 2, true, FCartCob.class );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Plano de pagamento", "PlanoPag", 'P', 100106000, 2, true, FPlanoPag.class );
+				addOpcao( 100100000, TP_OPCAO_ITEM, "Feriados bancarios", "Feriados bancarios", 'F', 100107000, 2, true, FFeriados.class );
 				addSeparador( 100100000 );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de fornecedor", "TipoFor", 'i', 100107000, 2, true, FTipoFor.class );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Fornecedor", "Fornecedor", 'F', 100108000, 2, true, FFornecedor.class );
