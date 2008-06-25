@@ -43,9 +43,12 @@ import net.sf.nachocalendar.tasks.TaskCalendarFactory;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.DeleteEvent;
+import org.freedom.acao.DeleteListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
 import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
@@ -58,7 +61,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
-public class FFeriados extends FTabDados implements ActionListener, MouseListener, KeyListener, InsertListener {
+public class FFeriados extends FTabDados implements PostListener, DeleteListener, MouseListener {
 
 
 	private enum EcolFeriado{
@@ -96,14 +99,13 @@ public class FFeriados extends FTabDados implements ActionListener, MouseListene
 		
 		tabData.addMouseListener( this );
 		tabData.addKeyListener( this );
+		lcCampos.addDeleteListener( this );
 		
 	}
 
 	private void montaTela() {
 		
-		
-		nav.setAtivo( 1, false );
-		
+			
 		tabData.adicColuna( "Data Feriado" );
 		tabData.adicColuna( "Descrição do Feriado" );
 		tabData.adicColuna( "Bancário" );
@@ -131,19 +133,27 @@ public class FFeriados extends FTabDados implements ActionListener, MouseListene
 		StringBuilder sSQL = new StringBuilder();
 		ResultSet rs = null;
 		PreparedStatement ps = null;
+		int anoatual = Funcoes.getAno( new Date() );
+		Date dataini = Funcoes.encodeDate( anoatual, 1, 1 );
+		Date datafim = Funcoes.encodeDate( anoatual, 12, 31 );
 		
 		
 		try {
 			
 			sSQL.append( "SELECT F.DATAFER, F.DESCFER, F.BANCFER, F.TRABFER ");
-			sSQL.append( "FROM SGFERIADO F WHERE F.CODEMP=? AND F.CODFILIAL=? " );
+			sSQL.append( "FROM SGFERIADO F ");
+			sSQL.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND " );
+			sSQL.append( "DATAFER BETWEEN ? AND ? " );
 			sSQL.append( "ORDER BY F.DATAFER DESC" );
-			
 			
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGFERIADO" ) );
+			ps.setDate( 3, Funcoes.dateToSQLDate( dataini ) );
+			ps.setDate( 4, Funcoes.dateToSQLDate( datafim ) );
 			rs = ps.executeQuery();
+			
+			tabData.limpa();
 			
 			 for (int i=0; rs.next(); i++) {
 				 
@@ -172,100 +182,22 @@ public class FFeriados extends FTabDados implements ActionListener, MouseListene
 	private void editar(){
 			
 		txtData.setVlrDate( (Date) tabData.getValor( tabData.getLinhaSel(), EcolFeriado.DATAFER.ordinal() ) );
-		txaDescFer.setVlrString( (String) tabData.getValor( tabData.getLinhaSel(), EcolFeriado.DESCFER.ordinal() ) );
-		cbBanc.setVlrString( (String) tabData.getValor( tabData.getLinhaSel(), EcolFeriado.BANCFER.ordinal() ) );
-		cbTrabFer.setVlrString( (String) tabData.getValor( tabData.getLinhaSel(), EcolFeriado.TRABFER.ordinal() ) );
+		lcCampos.carregaDados();
 		
 	}
 	
-	private void deleta(){
-		
-		StringBuilder sSQL = new StringBuilder();
-		ResultSet rs = null;
-		PreparedStatement ps = null;
-		
-		if( tabData.getLinhaSel() > -1 ){
-			
-			try {
-				
-				sSQL.append( "DELETE FROM SGFERIADO F WHERE F.DATAFER=? AND F.CODEMP=? AND F.CODFILIAL=?" );
-				
-				ps = con.prepareStatement( sSQL.toString() );
-				ps.setDate( 1,  (java.sql.Date) tabData.getValor( tabData.getLinhaSel() , EcolFeriado.DATAFER.ordinal() ) );
-				ps.setInt( 2, Aplicativo.iCodEmp );
-				ps.setInt( 3, ListaCampos.getMasterFilial( "SGFERIADO" ) );
-				ps.executeUpdate();
-				
-				tabData.delLinha( tabData.getLinhaSel() );
-				Funcoes.mensagemInforma( this, "Deletado com sucesso!" );
-				
-				 
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-					
-				}
-				
-			} catch ( SQLException e ) {
-				
-				e.printStackTrace();
-				Funcoes.mensagemErro( this, "Erro ao deletar registro!" + e.getMessage() );
-			}
-			
-		}else{
-			
-			Funcoes.mensagemInforma( this, "Selecione uma linha no grid!" );
-		}
-	}
-
 	public void afterPost( PostEvent pevt ) {
 		
 		super.afterPost(pevt);
+		montaTab();
 	}
 	
 	public void beforePost( PostEvent pevt ) {
 
 		super.beforePost(pevt);
 		
-		if( tabData.getNumLinhas() > 0 ){
-			
-			tabData.limpa();
-			montaTab();
-			
-		}else{
-		
-			montaTab();
-		}
 	}
 	
-	public void actionPerformed( ActionEvent evt ) {
-
-		super.actionPerformed(evt);
-		
-	//	if( evt.getSource() == bt ){
-			
-			if( tabData.getNumLinhas() > 0 ){
-			
-				tabData.limpa();
-				montaTab();
-				
-			}else{
-			
-				montaTab();
-			}
-		}
-//	}
-	
-	public void keyPressed( KeyEvent kevt ) {
-
-		super.keyPressed(kevt);
-		
-		if( kevt.getKeyCode() == KeyEvent.VK_DELETE ){
-			if( kevt.getSource() == tabData ){
-				deleta();
-			}
-		}
-	}
-
 	public void setConexao( Connection cn ) {
 		super.setConexao( cn );
 		montaTab();
@@ -288,7 +220,15 @@ public class FFeriados extends FTabDados implements ActionListener, MouseListene
 
 	public void mouseReleased( MouseEvent e ) {}
 
-	public void afterInsert( InsertEvent ievt ) {}
+	public void afterDelete( DeleteEvent devt ) {
+		if (devt.getListaCampos()==lcCampos) {
+			montaTab();
+		}
+	}
 
-	public void beforeInsert( InsertEvent ievt ) {}
+	public void beforeDelete( DeleteEvent devt ) {
+
+		
+	}
+
 }
