@@ -24,10 +24,7 @@ package org.freedom.modulos.fnc;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Connection;
@@ -35,25 +32,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import net.sf.nachocalendar.components.DateField;
-import net.sf.nachocalendar.tasks.TaskCalendarFactory;
-
-import org.freedom.acao.CarregaEvent;
-import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
 import org.freedom.acao.DeleteListener;
-import org.freedom.acao.InsertEvent;
-import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
-import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
