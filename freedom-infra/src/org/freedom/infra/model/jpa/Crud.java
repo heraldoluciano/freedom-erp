@@ -1,8 +1,6 @@
 
 package org.freedom.infra.model.jpa;
 
-import java.lang.reflect.Method;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -47,14 +45,18 @@ public class Crud {
 		return em;
 	}
 
-	public void persist( Object object ) {
+	public void persist( PersistObject entity ) {
 
 		try {
 			tx = em.getTransaction();
 
 			tx.begin();
+			
+			Key keyback = entity.getKey();
 
-			Object tmp = em.merge( object );
+			PersistObject tmp = em.merge( entity );
+			
+			tmp.setKey( keyback );
 
 			em.persist( tmp );
 
@@ -90,25 +92,6 @@ public class Crud {
 
 	}
 
-	public PersistObject find( PersistObject argobj ) {
-
-		PersistObject object = null;
-		try {
-
-			Method mt = argobj.getClass().getMethod( "getKey" );
-			Key key = (Key) mt.invoke( argobj, null );
-
-			object = (PersistObject) find( argobj.getClass(), key );
-		}
-		catch ( Exception e ) {
-			e.printStackTrace();
-			LOGGER.error( e.getMessage(), e );
-			tx.rollback();
-		}
-
-		return object;
-	}
-
 	public Query createQuery( String sql ) {
 
 		return em.createQuery( sql );
@@ -127,8 +110,12 @@ public class Crud {
 			tx = em.getTransaction();
 
 			tx.begin();
+			
+			Key keyback = key;
 
 			object = em.find( clas, key );
+			
+			object.setKey( keyback );
 
 			// REVISAR
 			// SEM ESTE, NÃO ESTAVA ATUALIZANDO.
@@ -141,6 +128,23 @@ public class Crud {
 			LOGGER.error( e.getMessage(), e );
 			tx.rollback();
 		}
+		return object;
+	}
+
+	public PersistObject find( PersistObject argobj ) {
+	
+		PersistObject object = null;
+		
+		if ( argobj != null ) {			
+			try {				
+				object = find( argobj.getClass(), argobj.getKey() );
+			}
+			catch ( Exception e ) {
+				e.printStackTrace();
+				LOGGER.error( e.getMessage(), e );
+			}
+		}
+	
 		return object;
 	}
 

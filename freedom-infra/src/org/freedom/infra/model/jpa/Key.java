@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public class Key implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	protected static final long serialVersionUID = 1L;
 
 	public static final int COL_KEY = 0;
 

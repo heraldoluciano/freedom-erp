@@ -74,5 +74,9 @@ public abstract class Aplication {
 	public Object getPropertie( Object propertie ) {
 		return properties.get( propertie );
 	}
+	
+	public Object putPropertie( String name, Object propertie ) {
+		return properties.put( name, propertie );
+	}
 
 }
