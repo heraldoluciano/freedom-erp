@@ -201,7 +201,7 @@ public class FreedomSTD extends AplicativoPD {
 			addSeparador( 600000000 );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Tipo de crédito", "Tipo de crédito", 'L', 600900000, 1, true, FTipoCred.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Liberação de crédito", "Liberação de crédito", 'i', 601000000, 1, true, FLiberaCredito.class );
-			addOpcao( 600000000, TP_OPCAO_ITEM, "Tipo de Restrição", "Tipo de Restrição", 's', 601100000, 1, true, FNTipoRestr.class );
+			addOpcao( 600000000, TP_OPCAO_ITEM, "Tipo de Restrição", "Tipo de Restrição", 's', 601100000, 1, true, FTipoRestr.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Restrição de clientes", "Restrição de clientes", 'r', 601200000, 1, true, FRestrCli.class );
 			addSeparador( 600000000 );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Tabela de juros", "Tabelas de juros", 'T', 601200000, 1, true, FTabJuros.class );
