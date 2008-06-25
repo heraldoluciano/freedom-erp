@@ -90,6 +90,10 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTextFieldPad txtQtdEst = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtSeqItem = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JCheckBoxPad cbQtdVariavelItem = new JCheckBoxPad( "Sim", "S", "N" );
+	
+	private JCheckBoxPad cbQtdVariavelDistrib = new JCheckBoxPad( "Sim", "S", "N" );	
 
 	private JTextFieldPad txtSeqDistrib = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -292,7 +296,12 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicCampo( txtCodProdItem, 50, 20, 77, 20, "CodProdPD", "Cód.prod.", ListaCampos.DB_FK, txtDescProdItem, true );
 		adicDescFK( txtDescProdItem, 130, 20, 327, 20, "DescProd", "Descrição do produto" );
 		adicCampo( txtQtdMat, 460, 20, 60, 20, "QtdItEst", "Qtd.", ListaCampos.DB_SI, true );
-		adicDB( cbRmaAutoItEst, 460, 60, 120, 20, "RmaAutoItEst", "RMA", true );
+	
+		adicDB( cbRmaAutoItEst, 7, 60, 60, 20, "RmaAutoItEst", "RMA", true );
+		
+		adicDB( cbQtdVariavelItem, 130, 60, 70, 20, "QtdVariavel", "Qtd. variável", true );
+		
+	
 		setListaCampos( true, "ITESTRUTURA", "PP" );
 		lcDetItens.setQueryInsert( false );
 		txtCodProdItem.setNomeCampo( "CodProd" );
