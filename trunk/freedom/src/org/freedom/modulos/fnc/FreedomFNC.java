@@ -25,6 +25,7 @@
 package org.freedom.modulos.fnc;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.cfg.FFeriados;
 import org.freedom.modulos.std.FBanco;
 import org.freedom.modulos.std.FCentroCusto;
 import org.freedom.modulos.std.FClasCli;
