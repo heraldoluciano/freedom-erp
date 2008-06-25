@@ -27,8 +27,8 @@
         <file path="/freedom/src/org/freedom/relatorios/RegistroSaida.jrxml"/>
         <file path="/freedom/src/org/freedom/relatorios/filtros.jrxml"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLPlanAnal.java"/>
-        <file path="/freedom/src/org/freedom/relatorios/cabecario.jrxml"/>
         <file path="/freedom/src/org/freedom/relatorios/receberSetor.jrxml"/>
+        <file path="/freedom/src/org/freedom/relatorios/cabecario.jrxml"/>
         <file path="/freedom/src/org/freedom/images/ba0011.gif"/>
         <file path="/freedom/src/org/freedom/images/lgFreedom2.jpg"/>
         <file path="/freedom/src/org/freedom/images/btAtualMenu.gif"/>
@@ -43,8 +43,8 @@
         <file path="/freedom/src/org/freedom/relatorios/CpProd.jrxml"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLNovoRec.java"/>
         <file path="/freedom/src/org/freedom/images/btSimilar.gif"/>
-        <file path="/freedom/src/org/freedom/images/btPdvGravaMoeda.gif"/>
         <file path="/freedom/src/org/freedom/images/splashGMS.jpg"/>
+        <file path="/freedom/src/org/freedom/images/btPdvGravaMoeda.gif"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLAnalBanc.java"/>
         <file path="/freedom/src/org/freedom/images/ba1010.gif"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRClasCli.java"/>
@@ -75,19 +75,19 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoCli.java"/>
         <file path="/freedom/src/org/freedom/images/splashFNC.jpg"/>
         <file path="/freedom/src/org/freedom/relatorios/CodficProd.jrxml"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRReceber.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLCCSin.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FEmpresa.java"/>
-        <file path="/freedom/src/org/freedom/images/barraUsuario.gif"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLCCSin.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRReceber.java"/>
         <file path="/freedom/src/org/freedom/images/btProx.gif"/>
+        <file path="/freedom/src/org/freedom/images/barraUsuario.gif"/>
         <file path="/freedom/src/org/freedom/relatorios/ResumoDiarioResumido.jrxml"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRExtrato.java"/>
         <file path="/freedom/src/org/freedom/images/btPdvFechaCaixa.gif"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBaixaPag.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
         <file path="/freedom/src/org/freedom/relatorios/CpTipoMov.jrxml"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FPlanoPag.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FConta.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FPlanoPag.java"/>
         <file path="/freedom/src/org/freedom/images/clUser.gif"/>
         <file path="/freedom/src/org/freedom/images/btEnviarMail.gif"/>
         <file path="/freedom/src/org/freedom/images/ba0001.gif"/>
@@ -120,6 +120,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLConsultaObs.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FItNatoper.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FFeriados.java"/>
         <file path="/freedom/src/org/freedom/images/btPdvFechaVenda.gif"/>
         <file path="/freedom/src/org/freedom/images/btPrim.gif"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLConsultaVenda.java"/>
@@ -148,12 +149,12 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.componentes"/>
         <file path="/freedom/src/org/freedom/relatorios/RegistroEntrada.jrxml"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLFechaPag.java"/>
-        <file path="/freedom/src/org/freedom/images/ba1001.gif"/>
         <file path="/freedom/src/org/freedom/images/btPdf.gif"/>
+        <file path="/freedom/src/org/freedom/images/ba1001.gif"/>
         <file path="/freedom/src/org/freedom/images/ba1111.gif"/>
-        <file path="/freedom/src/org/freedom/images/btPdvGaveta.gif"/>
-        <file path="/freedom/src/org/freedom/images/btAnt.gif"/>
         <file path="/freedom/src/org/freedom/images/btFisio.gif"/>
+        <file path="/freedom/src/org/freedom/images/btAnt.gif"/>
+        <file path="/freedom/src/org/freedom/images/btPdvGaveta.gif"/>
         <file path="/freedom/src/org/freedom/relatorios/ResumoDiarioDetalhado.jasper"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FManutRec.java"/>
         <file path="/freedom/src/org/freedom/images/btFechaVenda.gif"/>
@@ -171,8 +172,8 @@
         <file path="/freedom/src/org/freedom/images/logosus.gif"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FPrefereGeral.java"/>
         <file path="/freedom/src/org/freedom/images/btPrevimp.gif"/>
-        <file path="/freedom/src/org/freedom/images/clNaoVencido.gif"/>
         <file path="/freedom/src/org/freedom/images/graficoPizza.gif"/>
+        <file path="/freedom/src/org/freedom/images/clNaoVencido.gif"/>
         <file path="/freedom/src/org/freedom/images/btImprime.gif"/>
         <file path="/freedom/src/org/freedom/images/btSus.gif"/>
         <file path="/freedom/src/org/freedom/images/statusbarPc.gif"/>
@@ -183,8 +184,8 @@
         <file path="/freedom/src/org/freedom/relatorios/CodficProdGrup.jasper"/>
         <file path="/freedom/src/org/freedom/images/ba0010.gif"/>
         <file path="/freedom/src/org/freedom/relatorios/cabecario.jasper"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLPlanPrim.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoFor.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLPlanPrim.java"/>
         <file path="/freedom/src/org/freedom/images/barraAtendentes.gif"/>
         <file path="/freedom/src/org/freedom/images/clPago.gif"/>
         <file path="/freedom/src/org/freedom/relatorios/FRRazFor.jrxml"/>
@@ -193,8 +194,8 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FModBoleto.java"/>
         <file path="/freedom/src/org/freedom/images/load_0.gif"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRBordero.java"/>
-        <file path="/freedom/src/org/freedom/images/btExecuta.gif"/>
         <file path="/freedom/src/org/freedom/images/iconStandart16.gif"/>
+        <file path="/freedom/src/org/freedom/images/btExecuta.gif"/>
         <file path="/freedom/src/org/freedom/images/btTXT.gif"/>
         <file path="/freedom/src/org/freedom/images/barraVenda.gif"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRTipoFor.java"/>
@@ -203,8 +204,8 @@
         <file path="/freedom/src/org/freedom/images/lgSTP.jpg"/>
         <file path="/freedom/src/org/freedom/images/iconRep32.gif"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRInadimplentes.java"/>
-        <file path="/freedom/src/org/freedom/relatorios/boleto.jasper"/>
         <file path="/freedom/src/org/freedom/relatorios/VendasCliente.jrxml"/>
+        <file path="/freedom/src/org/freedom/relatorios/boleto.jasper"/>
         <file path="/freedom/src/org/freedom/relatorios/CpProd.jasper"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FPlanejamento.java"/>
         <file path="/freedom/src/org/freedom/images/splashConf.jpg"/>
@@ -214,15 +215,15 @@
         <file path="/freedom/src/org/freedom/images/btConsBaixa.gif"/>
         <file path="/freedom/src/org/freedom/images/freedomstd.ico"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRLancaExp.java"/>
-        <file path="/freedom/src/org/freedom/images/btEstProduto2.gif"/>
         <file path="/freedom/src/org/freedom/relatorios/VendasFisico.jasper"/>
+        <file path="/freedom/src/org/freedom/images/btEstProduto2.gif"/>
         <file path="/freedom/src/org/freedom/images/splashPCP.jpg"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRRestricao.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FLanca.java"/>
         <file path="/freedom/src/org/freedom/images/btCancelar.gif"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FPapel.java"/>
-        <file path="/freedom/src/org/freedom/images/btFluxo.gif"/>
         <file path="/freedom/src/org/freedom/images/graficoLinha.gif"/>
+        <file path="/freedom/src/org/freedom/images/btFluxo.gif"/>
         <file path="/freedom/src/org/freedom/images/ba1101.gif"/>
         <file path="/freedom/src/org/freedom/images/btOk.gif"/>
         <file path="/freedom/src/org/freedom/images/prior_sem.gif"/>
@@ -269,8 +270,8 @@
         <file path="/freedom/src/org/freedom/relatorios/FuncComis.jasper"/>
         <file path="/freedom/src/org/freedom/images/ba1110.gif"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRDemanda.java"/>
-        <file path="/freedom/src/org/freedom/images/btZoomPag.gif"/>
         <file path="/freedom/src/org/freedom/images/barraAcesso.gif"/>
+        <file path="/freedom/src/org/freedom/images/btZoomPag.gif"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FBanco.java"/>
         <file path="/freedom/src/org/freedom/images/load_3.gif"/>
         <file path="/freedom/src/org/freedom/images/bgFreedom2.jpg"/>
@@ -394,10 +395,10 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRComissoes.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
         <file path="/freedom/src/org/freedom/images/barraEstoque.gif"/>
-        <file path="/freedom/src/org/freedom/images/btVenda.gif"/>
         <file path="/freedom/src/org/freedom/images/btNovo.gif"/>
-        <file path="/freedom/src/org/freedom/images/statusbarTime.gif"/>
+        <file path="/freedom/src/org/freedom/images/btVenda.gif"/>
         <file path="/freedom/src/org/freedom/images/btZoomIn.gif"/>
+        <file path="/freedom/src/org/freedom/images/statusbarTime.gif"/>
         <file path="/freedom/src/org/freedom/images/ba0000.gif"/>
         <file path="/freedom/src/org/freedom/images/firefox.gif"/>
         <file path="/freedom/src/org/freedom/relatorios/CodficProdGrup.jrxml"/>
