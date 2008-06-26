@@ -295,13 +295,11 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicCampo( txtSeqItem, 7, 20, 40, 20, "SeqItEst", "Item", ListaCampos.DB_PK, true );
 		adicCampo( txtCodProdItem, 50, 20, 77, 20, "CodProdPD", "Cód.prod.", ListaCampos.DB_FK, txtDescProdItem, true );
 		adicDescFK( txtDescProdItem, 130, 20, 327, 20, "DescProd", "Descrição do produto" );
-		adicCampo( txtQtdMat, 460, 20, 60, 20, "QtdItEst", "Qtd.", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdMat, 460, 20, 100, 20, "QtdItEst", "Qtd.", ListaCampos.DB_SI, true );
 	
-		adicDB( cbRmaAutoItEst, 7, 60, 60, 20, "RmaAutoItEst", "RMA", true );
-		
-		adicDB( cbQtdVariavelItem, 130, 60, 70, 20, "QtdVariavel", "Qtd. variável", true );
-		
-	
+		adicDB( cbRmaAutoItEst, 7, 60, 60, 20, "RmaAutoItEst", "RMA", true );		
+		adicDB( cbQtdVariavelItem, 80, 60, 70, 20, "QtdVariavel", "Qtd.variável", true );
+			
 		setListaCampos( true, "ITESTRUTURA", "PP" );
 		lcDetItens.setQueryInsert( false );
 		txtCodProdItem.setNomeCampo( "CodProd" );
@@ -334,6 +332,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicCampo( txtSeqDistrib, 7, 20, 60, 20, "seqde", "Seq.", ListaCampos.DB_PK, true );
 		adicCampo( txtCodProdDistrib, 70, 20, 77, 20, "CodProdDe", "Cód.prod.", ListaCampos.DB_FK, true );
 		adicCampo( txtSeqEstDistrib, 150, 20, 77, 20, "SeqEstDe", "Seq.Est", ListaCampos.DB_FK, txtDescEstDistrib, true );
+		adicDB( cbQtdVariavelDistrib, 7, 60, 70, 20, "QtdVariavel", "Qtd.variável", true );
 		adicDescFK( txtDescEstDistrib, 230, 20, 277, 20, "DescEst", "Descrição da estrutura" );
 		setListaCampos( true, "DISTRIB", "PP" );
 		lcDetDistrib.setQueryInsert( false );
@@ -360,22 +359,31 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcDetDistrib.addCarregaListener( this );
 		lcFase.addCarregaListener( this );
 
-		tab.setTamColuna( 45, 0 );
-		tab.setTamColuna( 60, 1 );
-		tab.setTamColuna( 200, 2 );
-		tab.setTamColuna( 150, 5 );
+		tab.setTamColuna( 35, 0 );
+		tab.setTamColuna( 50, 1 );
+		tab.setTamColuna( 230, 2 );
+		tab.setTamColuna( 80, 3 );
+		tab.setTamColuna( 70, 4 );
+		tab.setTamColuna( 250, 5 );
+		tab.setTamColuna( 60, 6 );
+		tab.setTamColuna( 150, 7 );
 
-		tabItens.setTamColuna( 45, 0 );
+//		Tabela Itens X Fase
+		
+		tabItens.setTamColuna( 35, 0 );
 		tabItens.setTamColuna( 60, 1 );
-		tabItens.setTamColuna( 200, 2 );
-		tabItens.setTamColuna( 0, 5 );
-		tabItens.setTamColuna( 150, 7 );
-		tabItens.setTamColuna( 30, 8 );
+		tabItens.setTamColuna( 340, 2 );
+		tabItens.setTamColuna( 80, 3 );
+		tabItens.setTamColuna( 40, 4 );
+		tabItens.setTamColuna( 75, 5 );
 
-		tabDist.setTamColuna( 45, 0 );
+//		Tabela Distribuicao X Fase		
+		
+		tabDist.setTamColuna( 35, 0 );
 		tabDist.setTamColuna( 60, 1 );
-		tabDist.setTamColuna( 60, 2 );
-		tabDist.setTamColuna( 300, 3 );
+		tabDist.setTamColuna( 50, 2 );
+		tabDist.setTamColuna( 370, 3 );
+		tabItens.setTamColuna( 75, 4 );
 
 		cbRmaAutoItEst.setEnabled( false );
 		setAltDet( 190 );
