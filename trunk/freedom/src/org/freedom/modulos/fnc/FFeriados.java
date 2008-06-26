@@ -35,6 +35,8 @@ import java.util.Date;
 import javax.swing.JScrollPane;
 import org.freedom.acao.DeleteEvent;
 import org.freedom.acao.DeleteListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.JCheckBoxPad;
@@ -46,7 +48,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
-public class FFeriados extends FTabDados implements PostListener, DeleteListener, MouseListener {
+public class FFeriados extends FTabDados implements PostListener, DeleteListener, MouseListener, InsertListener{
 
 
 	private enum EcolFeriado{
@@ -78,6 +80,7 @@ public class FFeriados extends FTabDados implements PostListener, DeleteListener
 	
 	public FFeriados() {
 
+		super();
 		setTitulo( "Cadastro de Feriados" );
 		setAtribos( 50, 50, 600, 300 );
 		montaTela();
@@ -85,6 +88,10 @@ public class FFeriados extends FTabDados implements PostListener, DeleteListener
 		tabData.addMouseListener( this );
 		tabData.addKeyListener( this );
 		lcCampos.addDeleteListener( this );
+		lcCampos.addInsertListener( this );
+		
+		cbBanc.setVlrString( "S" );
+		cbTrabFer.setVlrString( "S" );
 		
 	}
 
@@ -211,9 +218,16 @@ public class FFeriados extends FTabDados implements PostListener, DeleteListener
 		}
 	}
 
-	public void beforeDelete( DeleteEvent devt ) {
+	public void beforeDelete( DeleteEvent devt ) {}
 
+	public void afterInsert( InsertEvent ievt ) {
+
+		if( ievt.getListaCampos() == lcCampos ){
+			cbBanc.setVlrString( "S" );
+			cbTrabFer.setVlrString( "S" );
+		}
 		
 	}
 
+	public void beforeInsert( InsertEvent ievt ) {}
 }
