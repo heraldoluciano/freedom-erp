@@ -44,7 +44,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -53,7 +52,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
 import org.freedom.acao.CarregaEvent;
@@ -242,7 +240,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 	private boolean bBuscaOPS = false;
 	
-	private HashMap prefere = null;
+	@SuppressWarnings("unchecked")
+	private HashMap<String, Object> prefere = null;
 
 	public FOP() {
 
@@ -1559,8 +1558,9 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 	}
 
-	private HashMap getPrefere( Connection con ) {
-		HashMap<String, Boolean> retorno = new HashMap<String,Boolean>();		
+	@SuppressWarnings("unchecked")
+	private HashMap<String, Object> getPrefere( Connection con ) { 
+		HashMap<String, Object> retorno = new HashMap<String,Object>();		
 		boolean[] bRetorno = new boolean[ 1 ];
 		StringBuffer sql = new StringBuffer();
 		PreparedStatement ps = null;
