@@ -408,8 +408,10 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 
 	public void afterInsert( InsertEvent ievt ) {
 
-		txtNumParc.setEditable( true );
-		rgRegraVenc.setVlrString( "N" );
+		if( ievt.getListaCampos() == lcCampos ){
+			txtNumParc.setEditable( true );
+			rgRegraVenc.setVlrString( "N" );
+		}
 	}
 
 	public void setConexao( Connection cn ) {
