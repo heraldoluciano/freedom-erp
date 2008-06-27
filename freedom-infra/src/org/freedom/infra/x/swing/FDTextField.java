@@ -60,7 +60,7 @@ public class FDTextField extends JTextField implements Component {
 
 	public void setValue( Object obj ) {		
 		field.setValue( obj );
-		super.setText( field.toString() );
+		super.setText( obj == null ? "" : field.toString() );
 	}
 
 	@Override
