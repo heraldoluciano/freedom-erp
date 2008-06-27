@@ -259,7 +259,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		
 		adic( lbPeriodo, 10, 150, 150, 20 );
 		adic( lbLinha, 5, 160, 360, 95 );
-		adicDB( rgRegraVenc, 15, 175, 330, 37, "CVPlanoPag", "", true );
+		adicDB( rgRegraVenc, 15, 175, 330, 37, "RegrVctoPlanoPag", "", true );
 		adicDB( cbSabado, 20, 215, 80, 20, "RvSabPlanoPag", "", true ); 
 		adicDB( cbDomingo, 140, 215, 100, 20, "RvDomPlanoPag", "", true ); 
 		adicDB( cbFeriado, 265, 215, 80, 20, "RvFerPlanoPag", "", true ); 
