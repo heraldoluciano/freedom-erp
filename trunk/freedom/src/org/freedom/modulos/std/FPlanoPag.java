@@ -245,8 +245,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		adic( lbRegra, 380, 150, 200, 20 );
 		adic( lbLinha1, 370, 160, 370, 95 );
 		adicDB( rgRV, 380, 175, 340, 37, "RvDiaPlanoPag", "", true );
-		adic( new JLabelPad("Dia"), 380, 210, 50, 20 );
-		adic( txtDiaVctoPPag, 380, 230, 50, 20 );
+		adicCampo( txtDiaVctoPPag,380, 230, 50, 20, "DiaVctoPlanoPag", "Dia", ListaCampos.DB_SI, true );
 		
 		/***********************
 		 * Regra de vencimento *
