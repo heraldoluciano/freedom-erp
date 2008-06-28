@@ -655,9 +655,11 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			ps.close();
 			if ( !con.getAutoCommit() )
 				con.commit();
-		} catch ( SQLException err ) {
+		} 
+		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar lote!\n" + err );
-		} finally {
+		} 
+		finally {
 			ps = null;
 			rs = null;
 			sSQL = null;
@@ -756,8 +758,14 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		// AND OP.SEQOP!=?
 		try {
 
-			sSQL = "SELECT OP.CODOP,OP.seqop,PD.codprod,OP.SEQEST,PD.descprod,ET.DESCEST, " + "OP.qtdprevprodop,OP.qtdfinalprodop,OP.dtfabrop,OP.sitop " + "FROM PPOP OP, EQPRODUTO PD,ppestrutura ET where "
-					+ "ET.codemp=OP.codemppd AND ET.codfilial=OP.codfilialpd AND ET.codprod=OP.codprod AND ET.seqest = OP.seqest and " + "PD.codemp = OP.codemppd AND PD.codfilial=OP.codfilialpd AND PD.codprod=OP.codprod and " + "OP.CODEMP=? AND OP.CODFILIAL=? AND OP.CODOP=? ORDER BY OP.SEQOP";
+			sSQL = "SELECT OP.CODOP,OP.seqop,PD.codprod,OP.SEQEST,PD.descprod,ET.DESCEST, " 
+				 + "OP.qtdprevprodop,OP.qtdfinalprodop,OP.dtfabrop,OP.sitop " + "FROM PPOP OP, "
+				 + "EQPRODUTO PD,ppestrutura ET "
+				 + "WHERE ET.codemp=OP.codemppd AND ET.codfilial=OP.codfilialpd AND ET.codprod=OP.codprod "
+				 + "AND ET.seqest=OP.seqest and PD.codemp=OP.codemppd AND PD.codfilial=OP.codfilialpd "
+				 + "AND PD.codprod=OP.codprod and OP.CODEMP=? AND OP.CODFILIAL=? AND OP.CODOP=? "
+				 + "ORDER BY OP.SEQOP";
+			
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, lcCampos.getCodEmp() );
 			ps.setInt( 2, lcCampos.getCodFilial() );
@@ -788,10 +796,12 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 			if ( !con.getAutoCommit() )
 				con.commit();
-		} catch ( SQLException err ) {
+		} 
+		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela EQRMA!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
-		} finally {
+		} 
+		finally {
 			ps = null;
 			rs = null;
 			sSQL = null;
@@ -799,11 +809,11 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	}
 
 	private void getTipoMov() {
-
 		if ( txtCodTpMov.getVlrString().equals( "" ) ) {
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 			String sSQL = "SELECT CODTIPOMOV FROM SGPREFERE5 WHERE CODEMP=? AND CODFILIAL=?";
+
 			try {
 				ps = con.prepareStatement( sSQL );
 				ps.setInt( 1, Aplicativo.iCodEmp );
@@ -819,9 +829,11 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				}
 				rs.close();
 				ps.close();
-			} catch ( SQLException err ) {
+			} 
+			catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao buscar documento de preferências!\n" + err.getMessage() );
-			} finally {
+			} 
+			finally {
 				ps = null;
 				rs = null;
 				sSQL = null;
@@ -1048,12 +1060,15 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				rs.close();
 				ps.close();
 			}
-		} catch ( SQLException ex ) {
+		} 
+		catch ( SQLException ex ) {
 			Funcoes.mensagemErro( this, "Erro ao verificar condições para RMA\n" + ex.getMessage() );
 			ex.printStackTrace();
-		} catch ( Exception ex ) {
+		} 
+		catch ( Exception ex ) {
 			ex.printStackTrace();
-		} finally {
+		} 
+		finally {
 			codProd = null;
 			sUsaLote = null;
 			sSQL = null;

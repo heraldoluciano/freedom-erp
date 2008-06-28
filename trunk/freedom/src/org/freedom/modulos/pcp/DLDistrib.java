@@ -442,8 +442,8 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 		  
 		  sql = "INSERT INTO PPOP (CODEMP,CODFILIAL,CODOP,SEQOP,CODEMPPD,CODFILIALPD,CODPROD,SEQEST,DTFABROP," +
 		  		"QTDPREVPRODOP,QTDFINALPRODOP,DTVALIDPDOP,CODEMPLE,CODFILIALLE,CODLOTE,CODEMPTM,CODFILIALTM,CODTIPOMOV," +
-		  		"CODEMPAX,CODFILIALAX,CODALMOX,CODEMPOPM,CODFILIALOPM,CODOPM,SEQOPM,QTDDISTIOP)" +
-		  		" VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		  		"CODEMPAX,CODFILIALAX,CODALMOX,CODEMPOPM,CODFILIALOPM,CODOPM,SEQOPM,QTDDISTIOP,QTDSUGPRODOP)" +
+		  		" VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		  ps = con.prepareStatement(sql);
 		  ps.setInt(1,Aplicativo.iCodEmp);
 		  ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
@@ -471,6 +471,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 		  ps.setInt(24,txtCodOP.getVlrInteger().intValue()); // CODOP Principal
 		  ps.setInt(25,txtSeqOP.getVlrInteger().intValue()); // SEQOP Principal
 		  ps.setFloat(26,((BigDecimal)op.elementAt(9)).floatValue()); // Qtdade distribuída
+		  ps.setFloat(27,((BigDecimal)op.elementAt(7)).floatValue()); // Qtdade sugerida
 		  
 		  ps.executeUpdate();
 		  ps.close();
@@ -494,3 +495,4 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   }
   
 }
+
