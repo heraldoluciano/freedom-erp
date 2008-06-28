@@ -367,6 +367,9 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		tab.setTamColuna( 0, 5 );
 		tab.setTamColuna( 60, 6 );
 		tab.setTamColuna( 0, 7 );
+		
+		tab.setColunaInvisivel( 5 );
+		tab.setColunaInvisivel( 7 );
 
 //		Tabela Itens X Fase
 		
