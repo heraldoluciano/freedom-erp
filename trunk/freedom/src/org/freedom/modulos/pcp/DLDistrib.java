@@ -35,6 +35,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.componentes.JLabelPad;
@@ -58,6 +59,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	private JTextFieldPad txtSeqEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	private JTextFieldPad txtDescEst = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtQtdDist = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,casasDec);
+	private JTextFieldPad txtQtdPrev = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,casasDec);
 	private JTextFieldPad txtQtdDistpOp = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,casasDec);
 	private JTextFieldPad txtQtdProd = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,casasDec);
 	private JPanelPad pnDistrib = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
@@ -80,31 +82,35 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
     
     setPainel(pinCab);
     
-    adic(new JLabelPad("Nº.OP."),7,0,100,20);
-    adic(txtCodOP,7,20,100,20);
-    adic(new JLabelPad("Seq.OP."),110,0,100,20);
-    adic(txtSeqOP,110,20,100,20);
+    adic(new JLabelPad("Nº.OP."),7,0,80,20);
+    adic(txtCodOP,7,20,80,20);
+    adic(new JLabelPad("Seq.OP."),90,0,80,20);
+    adic(txtSeqOP,90,20,80,20);
     if(bPref){
-	    adic(new JLabelPad("Referência"),213,0,100,20);
-	    adic(txtRefProdEst,213,20,100,20);
+	    adic(new JLabelPad("Referência"),173,0,80,20);
+	    adic(txtRefProdEst,173,20,80,20);
     }
     else{
-    	adic(new JLabelPad("Cód.prod"),213,0,100,20);
-	    adic(txtCodProdEst,213,20,100,20);
+    	adic(new JLabelPad("Cód.prod."),173,0,80,20);
+	    adic(txtCodProdEst,173,20,80,20);
     }	    
-    adic(new JLabelPad("Qtd.produzida"),316,0,100,20);
-    adic(txtQtdProd,316,20,100,20);
-    
-    adic(new JLabelPad("Qtd.dist."),419,0,100,20);
-    adic(txtQtdDistpOp,419,20,100,20);
 
-    adic(new JLabelPad("Qtd.dist.at."),522,0,100,20);
-    adic(txtQtdDist,522,20,100,20);
+    adic(new JLabelPad("Qtd.prev."),256,0,80,20);
+    adic(txtQtdPrev,256,20,80,20);
     
-    adic(new JLabelPad("Seq.Est."),7,40,100,20);
-    adic(txtSeqEst,7,60,100,20);
-    adic(new JLabelPad("Descrição da estrutura principal"),110,40,200,20);
-    adic(txtDescEst,110,60,300,20);
+    adic(new JLabelPad("Qtd.prod."),339,0,80,20);
+    adic(txtQtdProd,339,20,80,20);
+    
+    adic(new JLabelPad("Qtd.dist."),422,0,80,20);
+    adic(txtQtdDistpOp,422,20,80,20);
+
+    adic(new JLabelPad("Qtd.dist.at."),505,0,80,20);
+    adic(txtQtdDist,505,20,80,20);
+    
+    adic(new JLabelPad("Seq.Est."),7,40,80,20);
+    adic(txtSeqEst,7,60,80,20);
+    adic(new JLabelPad("Descrição da estrutura principal"),90,40,250,20);
+    adic(txtDescEst,90,60,300,20);
     
 	txtCodOP.setAtivo(false);
 	txtSeqOP.setAtivo(false);
@@ -112,35 +118,40 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	txtRefProdEst.setAtivo(false);
 	txtSeqEst.setAtivo(false); 
 	txtDescEst.setAtivo(false);
-	txtQtdProd.setAtivo(false); 
+	txtQtdProd.setAtivo(false);
+	txtQtdPrev.setAtivo(false);
 	txtQtdDist.setAtivo(false);
 	txtQtdDistpOp.setAtivo(false);
    
-    tabDistrib.adicColuna("Seq.fase");//0
-    tabDistrib.adicColuna("Cód.fase");//1
-    tabDistrib.adicColuna("Descrição da fase");//2
-    tabDistrib.adicColuna("Seq.dist.");//3
+    tabDistrib.adicColuna(""); // seq.fase 0
+    tabDistrib.adicColuna("");// cod fase 1
+    tabDistrib.adicColuna("");// Descrição da fase 2
+    tabDistrib.adicColuna("Seq.");//3
     tabDistrib.adicColuna("Cód.prod.");//4
     tabDistrib.adicColuna("Descrição da estrutura");//5
-    tabDistrib.adicColuna("Seq.est.dist.");//6
+    tabDistrib.adicColuna("");// Seq.est.dist. 6
     tabDistrib.adicColuna("Qtd.distrib");//7
     tabDistrib.adicColuna("Fator conv.");//8
     tabDistrib.adicColuna("Qtd.final");//9
     tabDistrib.adicColuna("Lote");//10
     tabDistrib.adicColuna("Validate");//11
-    tabDistrib.adicColuna("Cód.almox");//12
+    tabDistrib.adicColuna("");// Cód.almox 12
     tabDistrib.adicColuna("");//13 
     tabDistrib.adicColuna("");//14
     
-    tabDistrib.setTamColuna(60,0);
-    tabDistrib.setTamColuna(60,1);
-    tabDistrib.setTamColuna(140,2);
-    tabDistrib.setTamColuna(60,3);
+    tabDistrib.setTamColuna(40,3);
     tabDistrib.setTamColuna(70,4);
-    tabDistrib.setTamColuna(160,5);
-    tabDistrib.setTamColuna(70,6);
+    tabDistrib.setTamColuna(250,5);
     tabDistrib.setTamColuna(60,7);
     tabDistrib.setTamColuna(60,10);
+    
+	tabDistrib.setColunaInvisivel( 0 );
+	tabDistrib.setColunaInvisivel( 1 );
+	tabDistrib.setColunaInvisivel( 2 );
+	tabDistrib.setColunaInvisivel( 6 );
+	tabDistrib.setColunaInvisivel( 12 );
+	tabDistrib.setColunaInvisivel( 13 );
+	tabDistrib.setColunaInvisivel( 14 );
        
     tabDistrib.addMouseListener(this);
     //btOK.addActionListener(this);
@@ -164,7 +175,9 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   	    float ftQtddig = 0;
   	    float ftQtddist = 0;
   	    float ftQtddistp = 0;
-  	    float ftQtdprod = 0;
+ 	    float ftQtdprod = 0;
+  	    float ftQtdprev = 0;
+  	    float ftQtdutil = 0;
   	    float ftFator = 0;
   	    float ftFinal = 0;
   	    String sDescProd = null;
@@ -190,12 +203,32 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 						ftQtddig = ( (BigDecimal) dl.getValor(0)).floatValue(); // Quantidade digitada
 						ftQtddist = getSomaTab(); // Quantidade que já foi distribuida(soma do valor total)
 						ftQtdprod = txtQtdProd.getVlrBigDecimal().floatValue(); // Quantida produzida
+						ftQtdprev = txtQtdPrev.getVlrBigDecimal().floatValue(); // Quantida prevista
+
 						ftFinal = ftQtddig*ftFator; // valor total
 				  		
 						if(ftQtddig>0){
-							if (ftQtdprod<(ftQtddist+ftQtddistp+ftFinal-(ftQtdant*ftFator))) {
-								Funcoes.mensagemInforma(this, "Quantidade inválida! \nQuantida total de distribuição ultrapassa quantidade produzida!");
-								ftQtdade = (ftQtdprod - ftQtddistp - ftQtddist )/ftFator + ftQtdant;
+							
+							if(ftQtdprod == 0) {
+								
+								int iresposta = Funcoes.mensagemConfirma( null, "Quantidade final produzida é inexistente!\n" 
+															  			  + "Deseja realizar a distribuição a partir da quantidade prevista?" );
+								
+								if(iresposta == JOptionPane.YES_OPTION) {
+									ftQtdutil = ftQtdprev;									
+								}
+								else if ( iresposta == JOptionPane.NO_OPTION ) {
+									ftQtdutil = ftQtdprod;									
+								}
+								
+							}
+							else {
+								ftQtdutil = ftQtdprod;
+							}
+							
+							if (ftQtdutil<(ftQtddist+ftQtddistp+ftFinal-(ftQtdant*ftFator))) {
+								Funcoes.mensagemInforma(this, "Quantidade inválida! \nQuantidade total de distribuição ultrapassa a quantidade disponível para distribuição!");
+								ftQtdade = (ftQtdutil - ftQtddistp - ftQtddist )/ftFator + ftQtdant;
 							}
 							else {
 								tabDistrib.setValor(new BigDecimal(ftQtddig),iLinha,7);
@@ -351,7 +384,8 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	txtSeqEst.setVlrInteger((Integer) sValores[4]); 
 	txtDescEst.setVlrString((String) sValores[5]);
 	txtQtdProd.setVlrBigDecimal((BigDecimal) sValores[6]); 
-	txtQtdDist.setVlrBigDecimal(new BigDecimal(0));
+	txtQtdPrev.setVlrBigDecimal((BigDecimal) sValores[7]);
+	txtQtdDist.setVlrBigDecimal(new BigDecimal(0));	
   }
   
   private int buscaTipoMov(){

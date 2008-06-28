@@ -1396,7 +1396,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			ratearItem( true );
 		else if ( evt.getSource() == btDistrb ) {
 			lcCampos.carregaDados();
-			Object[] sValores = new Object[ 7 ];
+			Object[] sValores = new Object[ 8 ];
 			sValores[ 0 ] = txtCodOP.getVlrInteger();
 			sValores[ 1 ] = txtSeqOP.getVlrInteger();
 			sValores[ 2 ] = txtCodProdEst.getVlrInteger();
@@ -1404,6 +1404,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			sValores[ 4 ] = txtSeqEst.getVlrInteger();
 			sValores[ 5 ] = txtDescEst.getVlrString();
 			sValores[ 6 ] = txtQtdFinalProdOP.getVlrBigDecimal();
+			sValores[ 7 ] = txtQtdPrevProdOP.getVlrBigDecimal();
 
 			DLDistrib dl = new DLDistrib( con, this, (Boolean) prefere.get( "USAREFPROD" ) );
 			dl.carregaCampos( sValores );
