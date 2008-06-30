@@ -21,12 +21,16 @@
  */
 
 package org.freedom.modulos.pcp;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+
+import javax.swing.BorderFactory;
+import javax.swing.JScrollPane;
 
 
 
@@ -54,8 +58,11 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 
 	private static final long serialVersionUID = 1L;
 	private JPanelPad pinCab = new JPanelPad();
-	private JPanelPad pinDet = new JPanelPad();
+	private JPanelPad pinDet = new JPanelPad( new GridLayout(2,1));
+	private JPanelPad pinDetFasesInstrucao = new JPanelPad( new GridLayout( 1, 1 ) );
+	private JPanelPad pinDetFasesCampos = new JPanelPad();
 	private JTextAreaPad txaObs = new JTextAreaPad();
+	private JScrollPane spnFase = new JScrollPane( txaObs );
 	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtCodProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
@@ -137,11 +144,11 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		adicCampo(txtCodOP, 7, 20, 80, 20,"CodOP","Nº.OP", ListaCampos.DB_PK, true);
 		adicCampo(txtSeqOP, 90, 20, 60, 20,"SeqOP","Seq.OP", ListaCampos.DB_PK, true);
 		adicCampo(txtCodProd, 153, 20, 77, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescProd, true);
-		adicDescFK(txtDescProd, 233, 20, 147, 20, "DescProd", "Descrição do produto");
-		adicCampo(txtQtdPrevOP, 383, 20, 87, 20,"QtdPrevProdOP","Qtd.prevista", ListaCampos.DB_SI, true);
-		adicCampo(txtQtdFinalOP, 473, 20, 100, 20,"QtdFinalProdOP","Qtd.produzida", ListaCampos.DB_SI, true);
-		adicCampo(txtDtEmit, 7, 60, 100, 20,"DtEmitOP","Emissão", ListaCampos.DB_SI, true);
-		adicCampo(txtDtValid, 110, 60, 100, 20,"DtValidPDOP","Valid.prod.", ListaCampos.DB_SI, true);
+		adicDescFK(txtDescProd, 233, 20, 330, 20, "DescProd", "Descrição do produto");
+		adicCampo(txtDtEmit, 7, 60, 110, 20,"DtEmitOP","Emissão", ListaCampos.DB_SI, true);
+		adicCampo(txtDtValid, 120, 60, 110, 20,"DtValidPDOP","Valid.prod.", ListaCampos.DB_SI, true);
+		adicCampo(txtQtdPrevOP, 233, 60, 87, 20,"QtdPrevProdOP","Qtd.prevista", ListaCampos.DB_SI, true);
+		adicCampo(txtQtdFinalOP, 323, 60, 100, 20,"QtdFinalProdOP","Qtd.produzida", ListaCampos.DB_SI, true);
 		adicCampoInvisivel(txtJustificqtdprod,"JUSTFICQTDPROD","Justificativa",ListaCampos.DB_SI,false);
 		adicCampoInvisivel(txtDtFabProd,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true);
 		
@@ -166,24 +173,36 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		txtCodRec.setTabelaExterna(lcRec);
 		txtDescRec.setListaCampos(lcRec);
 		
-		pinDet = new JPanelPad(590,180);
+		//pinDet = new JPanelPad(590,180);
 		setPainel( pinDet, pnDet);
+		pinDet.add( pinDetFasesCampos );
+		setPainel( pinDetFasesCampos );
 		setListaCampos(lcDet);
 		setNavegador(navRod);
-		adicCampo(txtNumSeqOf, 7, 20, 40, 20,"SeqOf","Item",ListaCampos.DB_PK,true);
-		adicCampo(txtCodFase, 50, 20, 77, 20,"CodFase","Cód.fase", ListaCampos.DB_FK, txtDescFase, true);
-		adicDescFK(txtDescFase, 130, 20, 227, 20,"DescFase", "Descrição da fase");
-		adicCampo(txtTempoOf, 360, 20, 100, 20,"TempoOf","Tempo (Seg.)",ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtCodTpRec,"CodTpRec", "Cód.tp.rec.", ListaCampos.DB_SI, false);
-		adicCampo(txtCodRec, 7, 60, 60, 20,"CodRecP","Cód.rec.", ListaCampos.DB_FK, txtDescRec, false);
-		adicDescFK(txtDescRec, 70, 60, 200, 20, "DescRecP", "Descrição do recurso");
 		
+		adicCampo(txtNumSeqOf, 5, 20, 40, 20,"SeqOf","Item",ListaCampos.DB_PK,true);
+		adicCampo(txtCodFase, 48, 20, 77, 20,"CodFase","Cód.fase", ListaCampos.DB_FK, txtDescFase, true);
+		adicDescFK(txtDescFase, 128, 20, 227, 20,"DescFase", "Descrição da fase");
+		adicCampo(txtTempoOf, 358, 20, 100, 20,"TempoOf","Tempo (Seg.)",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtCodTpRec,"CodTpRec", "Cód.tp.rec.", ListaCampos.DB_SI, false);
+		adicCampo(txtCodRec, 7, 55, 60, 20,"CodRecP","Cód.rec.", ListaCampos.DB_FK, txtDescRec, false);
+		adicDescFK(txtDescRec, 70, 55, 390, 20, "DescRecP", "Descrição do recurso");
+		
+		pinDet.add( pinDetFasesInstrucao );
+		setPainel( pinDetFasesInstrucao );
+		GridLayout gi = (GridLayout)pinDetFasesInstrucao.getLayout();
+		gi.setHgap( 10 );
+		gi.setVgap( 10 );
+
+		pinDetFasesInstrucao.setBorder( BorderFactory.createTitledBorder( 
+				BorderFactory.createEtchedBorder(), "Instruções" ) );
+		adicDBLiv( txaObs, "ObsFS", "Observações", false );
+		pinDetFasesInstrucao.add( spnFase );
 		if (bExecuta){
 			adicCampo(txtDataIniProdFs, 273, 60, 80, 20,"DataIniProdFs","Data ínicial", ListaCampos.DB_SI, false);
 			adicCampo(txtHIniProdFs, 356, 60, 80, 20,"HIniProdFs","Hora ínicial", ListaCampos.DB_SI, false);
 			adicCampo(txtDataFimProdFs, 439, 60, 80, 20,"DataFimProdFs","Data final", ListaCampos.DB_SI, false);
 			adicCampo(txtHFimProdFs, 522, 60, 80, 20,"HFimProdFs","Hora final", ListaCampos.DB_SI, false);
-			adicDBLiv(txaObs, 7, 100, 591, 52,"ObsFS", "Observações",false);
 		}
 		
 		adicCampoInvisivel(txtSitFS,"SITFS", "Situação da fase", ListaCampos.DB_SI, false);
