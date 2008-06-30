@@ -25,6 +25,7 @@
 package org.freedom.modulos.grh;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
@@ -33,8 +34,10 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
@@ -43,6 +46,7 @@ import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
@@ -78,9 +82,17 @@ public class FCandidato extends FTabDados implements CarregaListener {
 	
 	private final JPanelPad panelFuncaoCampos = new JPanelPad( 0, 80 );
 
-	private final JPanelPad panelHistorico = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private final JPanelPad panelHistorico = new JPanelPad( new BorderLayout());
 	
-	private final JPanelPad panelHistoricoCampos = new JPanelPad( 0, 80 );	
+	private final JPanelPad pnHistorico = new JPanelPad( new BorderLayout() );
+	
+	private final JPanelPad pnStatus = new JPanelPad( 0, 500 );
+	
+	private Vector<String> vLabs = new Vector<String>();
+	
+	private Vector<String> vVals = new Vector<String>();
+	
+	private JRadioGroup<?, ?> rgStatus = null;
 	
 	// GERAL
 
@@ -222,6 +234,7 @@ public class FCandidato extends FTabDados implements CarregaListener {
 		lcFuncaoCand.setTabela( tabFuncao );
 
 		montaRadioGroups();
+		montaRadioStatus();
 		montaListaCampos();
 		montaTela();
 		
@@ -246,6 +259,26 @@ public class FCandidato extends FTabDados implements CarregaListener {
 		rgSexo = new JRadioGroup<String, String>( 2, 1, vLabs, vVals );
 		
 		rgSexo.setVlrString( "M" );
+		
+	}
+	
+	private void montaRadioStatus(){
+		
+		vLabs.addElement("Inativo");
+		vLabs.addElement("Disponivel");
+ 		vLabs.addElement("Encaminhado"); 
+ 		vLabs.addElement("Eliminado de seleção"); 
+ 		vLabs.addElement("Efetivado");
+ 		vLabs.addElement("Empregado"); 
+ 		vVals.addElement("IN");
+ 		vVals.addElement("DI");
+ 		vVals.addElement("EN");
+ 		vVals.addElement("EL");
+ 		vVals.addElement("EF");
+ 		vVals.addElement("EM");
+		    
+ 		rgStatus = new JRadioGroup<String, String>( 2, 3, vLabs, vVals );
+ 		rgStatus.setVlrString("DI");
 	}
 	
 	private void montaListaCampos() {
@@ -305,7 +338,11 @@ public class FCandidato extends FTabDados implements CarregaListener {
 		adicCampo( txtNomeCand, 80, 20, 310, 20, "NomeCand", "Nome do candidato", ListaCampos.DB_SI, true );		
 		
 		adicDB( rgSexo, 394, 20, 122, 61, "SexoCand", "Sexo", false );	
+				
+ 		setPainel( pnStatus );
+		adicDB( rgStatus, 7, 25, 520, 60, "STCAND","Situação atual do candidato", false );
 
+		setPainel( panelGeral );
 		adicCampo( txtCodEstCivilCand, 7, 60, 70, 20, "CodEstCivil", "Cód.Civil", ListaCampos.DB_FK, txtDescEstCivilCand, false );		
 		adicDescFK( txtDescEstCivilCand, 80, 60, 310, 20, "DescEstCivil", "Descrição do estado civil" );			
 
@@ -448,6 +485,10 @@ public class FCandidato extends FTabDados implements CarregaListener {
 		// Aba Histórico
 		
 		adicTab( "Histórico", panelHistorico ); 
+				
+		panelHistorico.add( pnHistorico, BorderLayout.NORTH );
+		setPainel( pnHistorico );
+		pnHistorico.setPreferredSize( new Dimension( 0, 205 ));
 		
 		tabHistorico.adicColuna("");
 		tabHistorico.adicColuna("Data");
@@ -459,7 +500,10 @@ public class FCandidato extends FTabDados implements CarregaListener {
 		tabHistorico.setTamColuna(200,2);
 		tabHistorico.setTamColuna(220,3);
 	
-		panelHistorico.add( spnTabHistorico );
+		pnHistorico.add( spnTabHistorico );
+		
+		setPainel( pnStatus );
+		panelHistorico.add( pnStatus, BorderLayout.CENTER );
 		
 		// Fim da aba histórico
 				
