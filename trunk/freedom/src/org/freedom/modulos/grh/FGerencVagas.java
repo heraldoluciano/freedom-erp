@@ -323,7 +323,9 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		
 		sql.append( "SELECT CODCAND,NOMECAND,FONECAND,PRETENSAOSAL,QUALIFICACOES,RESTRICOES,CURSOS,EXPERIENCIA,STVAGACAND,STCAND " );
 		sql.append( "FROM RHLISTACANDVAGASP(?,?,?,?)" );
-				
+		where.append( " WHERE STCAND<>'IN' " );
+		
+		/*				
 		if(cbQualificacoes.getVlrBoolean() || cbCursos.getVlrBoolean() ||
 		   cbExperiencia.getVlrBoolean() || cbFaixaSalarial.getVlrBoolean() ||
 		   cbRestricoes.getVlrBoolean() || cbDisponibilidade.getVlrBoolean() || 
@@ -331,7 +333,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		
 			where.append( " WHERE " );
 		
-		}
+		}*/
 				
 		if(cbQualificacoes.getVlrBoolean()) {
 			where.append("QUALIFICACOES > 0 " );
