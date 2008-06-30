@@ -195,24 +195,32 @@ public class FConsRMA extends FFilho implements ActionListener {
 		JLabelPad lbStatus = new JLabelPad(" Filtrar:");
 		lbStatus.setOpaque(true);
 
-		pinCab.adic(new JLabelPad("Período:"), 7, 5, 50, 20);
-		pinCab.adic(txtDtIni, 7, 25, 95, 20);
-		pinCab.adic(new JLabelPad("Até"), 111, 25, 27, 20);
-		pinCab.adic(txtDtFim, 139, 25, 95, 20);
+		JLabelPad lbLin = new JLabelPad();
+		lbLin.setBorder(BorderFactory.createEtchedBorder());
+		JLabelPad lbPeriodo = new JLabelPad("Periodo:", SwingConstants.CENTER );
+		lbPeriodo.setOpaque(true);
+		
+		pinCab.adic( lbPeriodo, 10, 5, 80, 18 );
+		pinCab.adic( lbLin, 7, 10, 280, 50 );
+		
+		pinCab.adic( new JLabelPad("De"), 15, 25, 27, 20 );
+		pinCab.adic( txtDtIni, 35, 25, 95, 20 );
+		pinCab.adic( new JLabelPad("Até"), 135, 25, 27, 20 );
+		pinCab.adic( txtDtFim, 160, 25, 95, 20 );
 
-		pinCab.adic(new JLabelPad("Cód.c.c."), 237, 5, 70, 20);
-		pinCab.adic(txtCodCC, 237, 25, 140, 20);
-		pinCab.adic(new JLabelPad("Centro de custo"), 380, 5, 410, 20);
-		pinCab.adic(txtDescCC, 380, 25, 180, 20);
+		pinCab.adic(new JLabelPad("Cód.c.c."), 290, 5, 70, 20 );
+		pinCab.adic(txtCodCC, 290, 25, 130, 20 );
+		pinCab.adic(new JLabelPad("Centro de custo"), 427, 5, 410, 20 );
+		pinCab.adic(txtDescCC, 427, 25, 210, 20 );
 
-		pinCab.adic(new JLabelPad("Cód.usu."), 7, 48, 70, 20);
-		pinCab.adic(txtCodUsu, 7, 70, 70, 20);
-		pinCab.adic(new JLabelPad("Nome do usuário"), 80, 48, 153, 20);
-		pinCab.adic(txtNomeUsu, 80, 70, 153, 20);
-		pinCab.adic(new JLabelPad("Cód. OP."),237, 48, 153, 20);
-		pinCab.adic(txtCodOP, 237, 70, 100, 20);
-		pinCab.adic(new JLabelPad("Seq. OP."),340, 48, 153, 20);
-		pinCab.adic(txtSeqOP, 340, 70, 100, 20);
+		pinCab.adic(new JLabelPad("Cód.usu."), 7, 58, 70, 20);
+		pinCab.adic(txtCodUsu, 7, 80, 70, 20);
+		pinCab.adic(new JLabelPad("Nome do usuário"), 80, 58, 153, 20);
+		pinCab.adic(txtNomeUsu, 80, 80, 206, 20);
+		pinCab.adic(new JLabelPad("Cód. OP."),290, 58, 153, 20);
+		pinCab.adic(txtCodOP, 290, 80, 100, 20);
+		pinCab.adic(new JLabelPad("Seq. OP."),393, 58, 153, 20);
+		pinCab.adic(txtSeqOP, 393, 80, 100, 20);
 
 		pinCab.adic(lbStatus, 15, 100, 50, 18);
 		pinCab.adic(lbLinha2, 7, 110, 373, 66);
