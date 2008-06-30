@@ -33,11 +33,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
-
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
+
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
@@ -46,7 +44,6 @@ import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
