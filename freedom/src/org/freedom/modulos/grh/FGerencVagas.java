@@ -319,7 +319,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 
 		StringBuffer sql = new StringBuffer();		
 		StringBuffer where = new StringBuffer();
-		boolean and = false;
+		boolean and = true;
 		
 		sql.append( "SELECT CODCAND,NOMECAND,FONECAND,PRETENSAOSAL,QUALIFICACOES,RESTRICOES,CURSOS,EXPERIENCIA,STVAGACAND,STCAND " );
 		sql.append( "FROM RHLISTACANDVAGASP(?,?,?,?)" );
