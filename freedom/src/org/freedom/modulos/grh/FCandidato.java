@@ -208,6 +208,7 @@ public class FCandidato extends FTabDados implements CarregaListener {
 	private ImageIcon imgEncaminhado = Icone.novo( "clEncaminhado.gif" );
 	private ImageIcon imgDisponivel = Icone.novo( "clDisponivel.gif" );
 	private ImageIcon imgEfetivado = Icone.novo( "clEfetivado.gif" );
+	private ImageIcon imgInativo = Icone.novo( "clInativo.gif" );
 	
 	public FCandidato() {
 
@@ -510,15 +511,20 @@ public class FCandidato extends FTabDados implements CarregaListener {
 		StringBuffer sql = new StringBuffer();
 		
 		try {
-			sql.append( "SELECT CS.stcand, CS.dtstatus,FU.descfunc,EM.nomeempr" );
-			sql.append( " FROM rhcandidatostatus CS, rhvagacandidato VC, rhvaga VG, rhempregador EM, rhfuncao FU" );
-			sql.append( " WHERE CS.codemp=? AND CS.codfilial=? AND CS.codcand=?" );
-			sql.append( " AND VC.codemp=CS.codempvg AND VC.codfilial=CS.codfilialvg AND VC.codvaga=CS.codvaga" );
-			sql.append( " AND VC.codempca=CS.codemp AND VC.codfilialca=CS.codfilial AND VC.codcand=CS.codcand" );
-			sql.append( " AND VG.codemp=CS.codempvg AND VG.codfilial=CS.codfilialvg AND VG.codvaga=CS.codvaga" );
-			sql.append( " AND EM.codemp=VG.codempem AND EM.codfilial=VG.codfilialem AND EM.codempr=VG.codempr" );
-			sql.append( " AND FU.codemp=VG.codempfc AND FU.codfilial=VG.codfilialfc AND FU.codfunc=VG.codfunc" );
 			
+			sql.append( "SELECT CS.stcand, CS.dtstatus, coalesce(fu.descfunc,'') as descfunc," );
+			sql.append( "coalesce(EM.nomeempr,'') as nomeempr " );
+			sql.append( "FROM rhcandidatostatus CS full outer join rhvagacandidato vc on " );			
+		    sql.append( "VC.codemp=CS.codempvg AND VC.codfilial=CS.codfilialvg AND VC.codvaga=CS.codvaga " );
+			sql.append( "AND VC.codempca=CS.codemp AND VC.codfilialca=CS.codfilial AND VC.codcand=CS.codcand " );
+   		    sql.append( "left outer join rhvaga vg on " );
+			sql.append( "VG.codemp=CS.codempvg AND VG.codfilial=CS.codfilialvg AND VG.codvaga=CS.codvaga " );
+   		    sql.append( "left outer join rhempregador em on " );
+   		    sql.append( "EM.codemp=VG.codempem AND EM.codfilial=VG.codfilialem AND EM.codempr=VG.codempr " );
+			sql.append( "left outer join rhfuncao fu on " );
+			sql.append( "FU.codemp=VG.codempfc AND FU.codfilial=VG.codfilialfc AND FU.codfunc=VG.codfunc " );
+			sql.append( "where CS.codemp=? AND CS.codfilial=? AND CS.codcand=?" );
+					
 			PreparedStatement ps = con.prepareStatement(sql.toString());
 			
 			ps.setInt(1,Aplicativo.iCodEmp);
@@ -537,6 +543,9 @@ public class FCandidato extends FTabDados implements CarregaListener {
 				}
 				else if(rs.getString("STCAND").equals( "EF" )) {
 					vVals.addElement( imgEfetivado );
+				}
+				else if(rs.getString("STCAND").equals( "IN" )) {
+					vVals.addElement( imgInativo );
 				}
 				else {
 					vVals.addElement( imgDisponivel );	
