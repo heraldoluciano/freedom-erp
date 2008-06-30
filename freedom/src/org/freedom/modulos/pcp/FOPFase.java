@@ -228,16 +228,43 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	     
 	}
 	  
+	// Atualiza a quantidade de insumos proporcionalmente à quantidade final produzida. 
+	
+	public void atualizaQtdPropItem () {
+		PreparedStatement ps = null;
+		StringBuffer sql = new StringBuffer();
+		ResultSet rs = null;
+		
+		try {
+			sql.append( "UPDATE PPITOP IT " );
+			sql.append( "SET QTDITOP=QTDITOP*COALESCE() " );
+			
+			ps = con.prepareStatement(sql.toString());
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
+			ps.setInt(3,txtCodProd.getVlrInteger().intValue()); 
+			ps.setInt(4,iSeqEst);	
+			ps.setInt(5,txtCodFase.getVlrInteger().intValue());		
+			rs = ps.executeQuery();
+			
+			if (rs.next()) {
+			
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void atualizaOP(){
 		PreparedStatement ps = null;
 		String sSQL = null;
 		
 		try {
 			  		
-			//if(txtJustificqtdprod.getVlrString().trim().length()<0)
-			//txtJustificqtdprod.setVlrString(" ");
-			
-			sSQL = "UPDATE PPOP SET QtdFinalProdOP=?, JUSTFICQTDPROD=? WHERE CODOP=? AND SEQOP=? AND CODEMP=? AND CODFILIAL=?";
+			sSQL = "UPDATE PPOP SET QtdFinalProdOP=?, JUSTFICQTDPROD=? "
+				 + "WHERE CODOP=? AND SEQOP=? AND CODEMP=? AND CODFILIAL=?";
 			
 			ps = con.prepareStatement(sSQL);
 			ps.setDouble(1,txtQtdFinalOP.getVlrDouble().doubleValue());
@@ -249,59 +276,22 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 			ps.executeUpdate();
 			    
 			ps.close();
+		
 			if(!con.getAutoCommit())
 				con.commit();
 		  	
-		} catch(Exception err) {
+		} 
+		catch(Exception err) {
 			err.printStackTrace();
 			Funcoes.mensagemErro(this, "Erro ao atualizar quantidade produzida na OP.!\n",true,con,err);  		
-		} finally {
+		} 
+		finally {
 			ps = null;
 			sSQL = null;
 		}
 	}
-
-	/*  private void carregaTipoRec() {
-	  	PreparedStatement ps = null;
-	  	ResultSet rs = null;
-	  	String sql = null;
-	  	try {
-	  		sql = "SELECT EF.CODTIPOREC FROM PPESTRUFASE EF, PPOP OP " +
-	  				"WHERE OP.CODEMP=? AND OP.CODFILIAL=? AND OP.CODOP=? AND " +
-	  				"OP.SEQOP=? AND EF.CODEMP=OP.CODEMPPD AND " +
-	  				"EF.CODFILIAL=OP.CODFILIALPD AND EF.CODPROD=OP.CODPROD AND " +
-	  				"EF.SEQEST=OP.SEQEST AND SEQEF=? AND CODEMPFS=? AND " +
-	  				"CODFILIALFS=? AND CODFASE=?";
-	  		ps = con.prepareStatement(sql);
-	  		ps.setInt(1,Aplicativo.iCodEmp);
-	  		ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
-	  		ps.setInt(3,txtCodOP.getVlrInteger().intValue());
-	  		ps.setInt(4,txtSeqOP.getVlrInteger().intValue());
-	  		ps.setInt(5,txtNumSeqOf.getVlrInteger().intValue());
-	  		ps.setInt(6,Aplicativo.iCodEmp);
-	  		ps.setInt(7,ListaCampos.getMasterFilial("PPFASE"));
-	  		ps.setInt(8,txtCodFase.getVlrInteger().intValue());
-	  		
-	  		rs.close();
-	  		ps.close();
-	  	}
-	  	catch (SQLException e) {
-	  		
-	  	}
-	  	finally {
-	  		rs = null;
-	  		ps = null;
-	  		sql = null;
-	  	}
-	  	
-	  }*/
 	
 	public boolean getFinalizaProcesso(){
-		/*String sSQL = "select ef.finalizaop from ppestrufase ef, ppopfase pf, ppop op where "+
-		"ef.codemp = pf.codemp and ef.codfilial = pf.codfilial and "+
-		"ef.codempfs = pf.codempfs and ef.codfilialfs = pf.codfilialfs and ef.codfase = pf.codfase "+
-		"and pf.codemp = op.codemp and pf.codfilial = op.codfilial and pf.codop = op.codop and pf.seqof = ? "+
-		"and op.codemp=? and op.codfilial=? and op.codop=? and op.seqop=?";*/	
 	
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -333,10 +323,12 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 			if(!con.getAutoCommit())
 				con.commit();
 			
-		} catch (SQLException err) {
+		} 
+		catch (SQLException err) {
 			err.printStackTrace();
 			Funcoes.mensagemErro(this, "Erro ao verificar se fase finaliza processo!\n",true,con,err);
-		} finally {
+		} 
+		finally {
 			ps = null;
 			rs = null;
 			sSQL = null;
@@ -369,44 +361,8 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 				txtHFimProdFs.setAtivo(true);
 				txaObs.setEnabled(true);    		  		
 			}
-			//lcRec.setWhereAdic("CODTIPOREC="+txtCodTpRec.getVlrString());
 		}
 	}
-	
-	/*  private void carregaTipoRec() {
-	  	PreparedStatement ps = null;
-	  	ResultSet rs = null;
-	  	String sql = null;
-	  	try {
-	  		sql = "SELECT EF.CODTIPOREC FROM PPESTRUFASE EF, PPOP OP " +
-	  				"WHERE OP.CODEMP=? AND OP.CODFILIAL=? AND OP.CODOP=? AND " +
-	  				"OP.SEQOP=? AND EF.CODEMP=OP.CODEMPPD AND " +
-	  				"EF.CODFILIAL=OP.CODFILIALPD AND EF.CODPROD=OP.CODPROD AND " +
-	  				"EF.SEQEST=OP.SEQEST AND SEQEF=? AND CODEMPFS=? AND " +
-	  				"CODFILIALFS=? AND CODFASE=?";
-	  		ps = con.prepareStatement(sql);
-	  		ps.setInt(1,Aplicativo.iCodEmp);
-	  		ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
-	  		ps.setInt(3,txtCodOP.getVlrInteger().intValue());
-	  		ps.setInt(4,txtSeqOP.getVlrInteger().intValue());
-	  		ps.setInt(5,txtNumSeqOf.getVlrInteger().intValue());
-	  		ps.setInt(6,Aplicativo.iCodEmp);
-	  		ps.setInt(7,ListaCampos.getMasterFilial("PPFASE"));
-	  		ps.setInt(8,txtCodFase.getVlrInteger().intValue());
-	  		
-	  		rs.close();
-	  		ps.close();
-	  	}
-	  	catch (SQLException e) {
-	  		
-	  	}
-	  	finally {
-	  		rs = null;
-	  		ps = null;
-	  		sql = null;
-	  	}
-	  	
-	  }*/
 	
 	public void afterInsert(InsertEvent ievt) { }
 
@@ -435,15 +391,13 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 
 	public void afterCancel(CancelEvent cevt) { }
 	  
-	public void setConexao(Connection cn) {
-		
+	public void setConexao(Connection cn) {		
 		super.setConexao(cn);
 		lcProd.setConexao(cn);
 		lcFase.setConexao(cn);
 		lcRec.setConexao(cn);
 		txtCodOP.setVlrInteger(new Integer(iCodOP));
 		txtSeqOP.setVlrInteger(new Integer(iSeqOP));
-		lcCampos.carregaDados();
-		
+		lcCampos.carregaDados();		
 	}        
 }
