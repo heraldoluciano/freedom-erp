@@ -131,13 +131,13 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private JTextFieldPad txtTempoEf = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JCheckBoxPad cbFinaliza = new JCheckBoxPad( "Sim", "S", "N" );
+	private JCheckBoxPad cbFinaliza = new JCheckBoxPad( "Finaliza", "S", "N" );
 
 	private JCheckBoxPad cbRmaAutoItEst = new JCheckBoxPad( "Sim", "S", "N" );
 
-	private JCheckBoxPad cbAtiva = new JCheckBoxPad( "Sim", "S", "N" );
+	private JCheckBoxPad cbAtiva = new JCheckBoxPad( "Ativa", "S", "N" );
 
-	private JCheckBoxPad cbGLoteOPP = new JCheckBoxPad( "Sim", "S", "N" );
+	private JCheckBoxPad cbGLoteOPP = new JCheckBoxPad( "Mod.lote da OP principal", "S", "N" );
 
 	private JCheckBoxPad cbOpDensidade = new JCheckBoxPad( "Usa densidade na OP?", "S", "N" );
 
@@ -243,17 +243,17 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		txtDescModLote.setListaCampos( lcModLote );
 
 		adicCampo( txtCodProdEst, 7, 20, 80, 20, "CodProd", "Cód.prod.", ListaCampos.DB_PF, txtDescProdEst, true );
-		adicDescFK( txtDescProdEst, 90, 20, 372, 20, "DescProd", "Descrição do produto" );
-		adicCampo( txtSeqEst, 465, 20, 78, 20, "SeqEst", "Seq.Est.", ListaCampos.DB_PF, true );// era pra ser DB_PF, mas ta dando erro.
+		adicDescFK( txtDescProdEst, 90, 20, 297, 20, "DescProd", "Descrição do produto" );
+		adicCampo( txtSeqEst, 390, 20, 85, 20, "SeqEst", "Seq.Est.", ListaCampos.DB_PF, true );// era pra ser DB_PF, mas ta dando erro.
 		adicCampo( txtQtdEst, 7, 60, 80, 20, "QtdEst", "Quantidade", ListaCampos.DB_SI, true );
 		adicCampo( txtDescEst, 90, 60, 297, 20, "DescEst", "Descrição", ListaCampos.DB_SI, true );
 		adicCampoInvisivel( txtRefProdEst, "RefProd", "Ref.prod.", ListaCampos.DB_SI, false );
-		adicDB( cbAtiva, 392, 60, 50, 20, "ATIVOEST", "Ativa", true );
-		adicDB( cbGLoteOPP, 445, 60, 160, 20, "GLOTEOPP", "Mod.lote da OP principal", true );
+		adicDB( cbAtiva, 485, 20, 80, 20, "ATIVOEST", "", true );
+		adicDB( cbGLoteOPP, 485, 40, 160, 20, "GLOTEOPP", "", true );
 		adicCampo( txtCodModLote, 7, 100, 80, 20, "CodModLote", "Cód.Mod.Lote", ListaCampos.DB_FK, txtDescModLote, false );
 		adicDescFK( txtDescModLote, 90, 100, 297, 20, "DescModLote", "Descrição do modelo do lote" );
-		adicCampo( txtNroDiasValid, 390, 100, 100, 20, "NroDiasValid", "Dias de validade", ListaCampos.DB_SI, false );
-		adicDB( cbOpDensidade, 493, 100, 250, 20, "USADENSIDADEOP", "", true );
+		adicCampo( txtNroDiasValid, 390, 60, 85, 20, "NroDiasValid", "Dias de valid.", ListaCampos.DB_SI, false );
+		adicDB( cbOpDensidade, 485, 60, 250, 20, "USADENSIDADEOP", "", true );
 
 		setListaCampos( false, "ESTRUTURA", "PP" );
 		lcCampos.setQueryInsert( false );
@@ -275,11 +275,11 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 		adicCampo( txtSeqEfEst, 7, 20, 40, 20, "SeqEf", "Item", ListaCampos.DB_PK, true );
 		adicCampo( txtCodFase, 50, 20, 77, 20, "CodFase", "Cód.fase", ListaCampos.DB_PF, txtDescFase, true );
-		adicDescFK( txtDescFase, 130, 20, 277, 20, "DescFase", "Descrição da fase" );
-		adicCampo( txtTempoEf, 410, 20, 100, 20, "TempoEf", "Tempo(Seg)", ListaCampos.DB_SI, true );
+		adicDescFK( txtDescFase, 130, 20, 310, 20, "DescFase", "Descrição da fase" );
+		adicCampo( txtTempoEf, 450, 20, 80, 20, "TempoEf", "Tempo(Seg)", ListaCampos.DB_SI, true );
 		adicCampo( txtCodTpRec, 7, 60, 80, 20, "CodTpRec", "Cód.tp.rec.", ListaCampos.DB_FK, txtDescTpRec, true );
 		adicDescFK( txtDescTpRec, 90, 60, 350, 20, "DescTpRec", "Desc. tipo de recurso" );
-		adicDB( cbFinaliza, 445, 60, 80, 20, "FINALIZAOP", "Finaliza", true );
+		adicDB( cbFinaliza, 533, 20, 80, 20, "FINALIZAOP", "", true );
 		//adic( new JLabelPad( "Instruções" ), 7, 80, 100, 20 );
 		
 		setPainel( pinDetFasesInstrucao );
