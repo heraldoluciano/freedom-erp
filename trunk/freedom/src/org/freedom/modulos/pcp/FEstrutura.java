@@ -34,6 +34,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -45,7 +46,6 @@ import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextAreaPad;
@@ -65,9 +65,13 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private JPanelPad pinCab = new JPanelPad();
 
-	private JPanelPad pinDetFases = new JPanelPad();
+	private JPanelPad pinDetFases = new JPanelPad( new GridLayout( 2, 1 ) );
 
-	private JPanelPad pinDetItens = new JPanelPad();
+	private JPanelPad pinDetFasesCampos = new JPanelPad();
+
+	private JPanelPad pinDetFasesInstrucao = new JPanelPad( new GridLayout( 1, 1 ) );
+
+	private JPanelPad pinDetItens = new JPanelPad( 590, 110 );
 
 	private JPanelPad pinDetDistrib = new JPanelPad();
 
@@ -263,7 +267,10 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcTipoRec.setReadOnly( true );
 		txtCodTpRec.setTabelaExterna( lcTipoRec );
 
-		setPainel( pinDetFases );
+		setPainel( pinDetFases, pnDet );
+		pinDetFases.add( pinDetFasesCampos );
+		pinDetFases.add( pinDetFasesInstrucao );
+		setPainel( pinDetFasesCampos );
 		setListaCampos( lcDet );
 
 		adicCampo( txtSeqEfEst, 7, 20, 40, 20, "SeqEf", "Item", ListaCampos.DB_PK, true );
@@ -273,10 +280,17 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicCampo( txtCodTpRec, 7, 60, 80, 20, "CodTpRec", "Cód.tp.rec.", ListaCampos.DB_FK, txtDescTpRec, true );
 		adicDescFK( txtDescTpRec, 90, 60, 350, 20, "DescTpRec", "Desc. tipo de recurso" );
 		adicDB( cbFinaliza, 445, 60, 80, 20, "FINALIZAOP", "Finaliza", true );
+		//adic( new JLabelPad( "Instruções" ), 7, 80, 100, 20 );
+		
+		setPainel( pinDetFasesInstrucao );
+		GridLayout gi = (GridLayout)pinDetFasesInstrucao.getLayout();
+		gi.setHgap( 10 );
+		gi.setVgap( 10 );
 
+		pinDetFasesInstrucao.setBorder( BorderFactory.createTitledBorder( 
+				BorderFactory.createEtchedBorder(), "Instruções" ) );
 		adicDBLiv( txaModoPreparo, "Instrucoes", "Instruções", false );
-		adic( new JLabelPad( "Instruções" ), 7, 80, 100, 20 );
-		adic( spnModoPreparo, 7, 100, 510, 70 );
+		pinDetFasesInstrucao.add( spnModoPreparo );
 
 		setListaCampos( true, "ESTRUFASE", "PP" );
 		lcDet.setQueryInsert( false );
@@ -285,7 +299,6 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 		// Detalhe Itens
 
-		pinDetItens = new JPanelPad( 590, 110 );
 		setPainel( pinDetItens );
 		setListaCampos( lcDetItens );
 		setNavegador( navRod );
@@ -341,7 +354,9 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 		// Fim Detalhe Distribuição
 
+		setAltDet( 210 );
 		setPainel( pinDetFases, pnDet );
+		setListaCampos( lcDet );		
 		lcDet.montaTab();
 		lcDetItens.montaTab();
 
@@ -609,7 +624,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 		if ( ( (JTabbedPanePad) ( cevt.getSource() ) ) == tpnAbas ) {
 			if ( tpnAbas.getSelectedIndex() == 0 ) {
-				setAltDet( 190 );
+				setAltDet( 200 );
 				pnDet.removeAll();
 				setPainel( pinDetFases, pnDet );
 				setListaCampos( lcDet );
