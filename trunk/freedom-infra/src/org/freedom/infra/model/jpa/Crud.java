@@ -8,9 +8,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-
 import org.apache.log4j.Logger;
-import org.freedom.infra.beans.LoggerManager;
+import org.freedom.infra.util.logger.FreedomLogger;
 
 public class Crud {
 
@@ -20,14 +19,17 @@ public class Crud {
 
 	private EntityTransaction tx = null;
 
-	private static final Logger LOGGER = LoggerManager.getLogger( "org.freedom.infra.model.jpa.Crud" );
+	private static Logger LOGGER = null; 
 
 	public Crud( String persistUnit ) {
 		this(persistUnit, null);
 	}
 	
 	public Crud( String persistUnit, Map properties ) {
-
+		
+		LOGGER = FreedomLogger.getLogger(this.getClass(), FreedomLogger.LOGGER_JPA);
+		
+				
 		if ( emf == null ) {
 			try {
 				if (properties==null) {
@@ -40,7 +42,7 @@ public class Crud {
 			}
 			catch ( Exception e ) {
 				e.printStackTrace();
-				// LOGGER.error(e.getMessage(), e);
+				LOGGER.error(e.getMessage(), e);
 			}
 		}
 	}
