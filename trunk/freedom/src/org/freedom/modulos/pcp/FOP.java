@@ -188,7 +188,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 	private JButton btRMA = new JButton( "RMA", Icone.novo( "btRma.gif" ) );
 
-	private JButton btExecuta = new JButton( "Finaliza", Icone.novo( "btOP.gif" ) );
+	private JButton btFinaliza = new JButton( "Finaliza", Icone.novo( "btOP.gif" ) );
 
 	private JButton btLote = new JButton( "Lote", Icone.novo( "btSimilar.gif" ) );
 
@@ -265,7 +265,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 		btFase.setToolTipText( "Fases da produção" );
 		btRMA.setToolTipText( "Gera ou exibe RMA." );
-		btExecuta.setToolTipText( "Processo de produção" );
+		btFinaliza.setToolTipText( "Processo de produção" ); 
 		btLote.setToolTipText( "Cadastra lote" );
 		btRatearItem.setToolTipText( "Ratear ítem" );
 		btDistrb.setToolTipText( "Distribuição" );
@@ -273,7 +273,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		pinCab.adic( pinBotCab, 560, 2, 115, 159 );
 		pinBotCab.adic( btFase, 0, 0, 110, 30 );
 		pinBotCab.adic( btRMA, 0, 31, 110, 30 );
-		pinBotCab.adic( btExecuta, 0, 62, 110, 30 );
+		pinBotCab.adic( btFinaliza, 0, 62, 110, 30 );
 		pinBotCab.adic( btLote, 0, 93, 110, 30 );
 		pinBotCab.adic( btDistrb, 0, 124, 110, 30 );
 
@@ -419,7 +419,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 		btFase.addActionListener( this );
 		btRMA.addActionListener( this );
-		btExecuta.addActionListener( this );
+		btFinaliza.addActionListener( this );
 		btLote.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -602,7 +602,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 		btFase.setEnabled( false );
 		btRMA.setEnabled( false );
-		btExecuta.setEnabled( false );
+		btFinaliza.setEnabled( false );
 		btLote.setEnabled( false );
 		btDistrb.setEnabled( false );
 
@@ -962,7 +962,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		}
 	}
 
-	public void executaOP() {
+	public void finalizaOP() {
 
 		if ( fPrim.temTela( "OP x Fases" ) == false ) {
 			FOPFase tela = new FOPFase( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue(), txtSeqEst.getVlrInteger().intValue(), true );
@@ -1388,8 +1388,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			abreFase();
 		else if ( evt.getSource() == btRMA )
 			geraRMA();
-		else if ( evt.getSource() == btExecuta )
-			executaOP();
+		else if ( evt.getSource() == btFinaliza )
+			finalizaOP();
 		else if ( evt.getSource() == btLote )
 			gravaLote( true );
 		else if ( evt.getSource() == btRatearItem )
@@ -1484,7 +1484,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		if ( cevt.getListaCampos() == lcCampos ) {
 			btFase.setEnabled( ( lcCampos.getStatus() != ListaCampos.LCS_NONE ) && ( lcCampos.getStatus() != ListaCampos.LCS_INSERT ) );
 			btRMA.setEnabled( ( lcCampos.getStatus() != ListaCampos.LCS_NONE ) && ( lcCampos.getStatus() != ListaCampos.LCS_INSERT ) && liberaRMA() );
-			btExecuta.setEnabled( ( lcCampos.getStatus() != ListaCampos.LCS_NONE ) && ( lcCampos.getStatus() != ListaCampos.LCS_INSERT ) );
+			btFinaliza.setEnabled( ( lcCampos.getStatus() != ListaCampos.LCS_NONE ) && ( lcCampos.getStatus() != ListaCampos.LCS_INSERT ) );
 			btDistrb.setEnabled( ( lcCampos.getStatus() != ListaCampos.LCS_NONE ) && ( lcCampos.getStatus() != ListaCampos.LCS_INSERT ) );
 			bBuscaRMA = true;
 			bBuscaOPS = true;
