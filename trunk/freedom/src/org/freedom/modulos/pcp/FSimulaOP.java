@@ -121,7 +121,7 @@ public class FSimulaOP extends FDados implements ActionListener, CarregaListener
 		pnEst.adic( new JLabelPad( "Saldo" ), 320, 50, 80, 20 );
 		pnEst.adic( txtSaldoProd, 320, 70, 80, 20 );		
 		
-		pnEst.adic( btGerar, 443, 65, 120, 30 );
+		pnEst.adic( btGerar, 405, 65, 120, 30 );
 		
 		
 		tab.adicColuna("Fase");//0
