@@ -226,8 +226,8 @@ public class FRVendasGeral extends FRelatorio {
 
 		sSQL.append( "SELECT V.DTSAIDAVENDA,V.CODVENDA,V.SERIE,V.STATUSVENDA,V.DOCVENDA," );
 		sSQL.append( "V.DTEMITVENDA,V.VLRPRODVENDA,V.VLRLIQVENDA,V.CODPLANOPAG,P.DESCPLANOPAG," );
-		sSQL.append( "V.VLRCOMISVENDA,V.VLRDESCVENDA,V.VLRDESCITVENDA,V.CODCLI,C.RAZCLI " );
-		sSQL.append( "FROM VDVENDA V,VDCLIENTE C,FNPLANOPAG P, EQTIPOMOV TM " );
+		sSQL.append( "V.VLRCOMISVENDA,V.VLRDESCVENDA,V.VLRDESCITVENDA,V.VLRFRETEVENDA,V.CODCLI,C.RAZCLI " );
+		sSQL.append( "FROM VDVENDA V,VDCLIENTE C,FNPLANOPAG P,EQTIPOMOV TM " );
 		sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? " );
 		sSQL.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
 		sSQL.append( "AND P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG " );
@@ -242,7 +242,6 @@ public class FRVendasGeral extends FRelatorio {
 
 			
 		try {
-			
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
@@ -274,6 +273,7 @@ public class FRVendasGeral extends FRelatorio {
 		BigDecimal bTotalVal = null;
 		BigDecimal bTotalDesc = null;
 		BigDecimal bTotalLiq = null;
+		BigDecimal bTotalAcres = null;
 		String sDatasaidavenda = null;
 		
 		try {
@@ -282,6 +282,7 @@ public class FRVendasGeral extends FRelatorio {
 			bTotalVal = new BigDecimal( "0" );
 			bTotalDesc = new BigDecimal( "0" );
 			bTotalLiq = new BigDecimal( "0" );
+			bTotalAcres = new BigDecimal( "0" );
 			
 			imp = new ImprimeOS( "", con );
 			linPag = imp.verifLinPag() - 1;
@@ -339,13 +340,24 @@ public class FRVendasGeral extends FRelatorio {
 					imp.say( imp.pRow(), 135, "|" );
 				}
 
-				if ( rs.getString( "VlrProdVenda" ) != null )
+				if ( rs.getString( "VlrProdVenda" ) != null ){
+					
 					bTotalVal = bTotalVal.add( new BigDecimal( rs.getString( "VlrProdVenda" ) ) );
-				if ( rs.getString( "VlrDescvenda" ) != null )
+				}
+				if ( rs.getString( "VlrDescvenda" ) != null ){
+					
 					bTotalDesc = bTotalDesc.add( new BigDecimal( rs.getDouble( "VlrDescVenda" ) > 0 ? rs.getDouble( "VlrDescVenda" ) : rs.getDouble( "VlrDescItVenda" ) ) );
-				if ( rs.getString( "VlrLiqVenda" ) != null )
+				}
+				if ( rs.getString( "VlrLiqVenda" ) != null ){
+						
 					bTotalLiq = bTotalLiq.add( new BigDecimal( rs.getString( "VlrLiqVenda" ) ) );
-
+				}
+				if ( rs.getString( "VlrFreteVenda" ) != null ){
+					
+					bTotalAcres = bTotalAcres.add( new BigDecimal( rs.getString( "VlrFreteVenda" ) ) );
+				}
+				
+				
 				sDatasaidavenda = rs.getString( "dtsaidavenda" );
 			}
 
@@ -353,7 +365,23 @@ public class FRVendasGeral extends FRelatorio {
 			imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 			imp.say( imp.pRow(), 0, "|" );
-			imp.say( imp.pRow(), 64, " Total Geral    | " + Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalVal ) + " |" + Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalDesc ) + " |" + Funcoes.strDecimalToStrCurrency( 11, 2, "" + bTotalLiq ) + "  |" );
+			imp.say( imp.pRow(), 100, "Total Geral:");
+			imp.say( imp.pRow(), 115, Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalVal ));
+			imp.say( imp.pRow(), 135, "|" );
+			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
+			imp.say( imp.pRow(), 0, "|" );
+			imp.say( imp.pRow(), 100, "-Desconto:");
+			imp.say( imp.pRow(), 115, Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalDesc ));
+			imp.say( imp.pRow(), 135, "|" );
+			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
+			imp.say( imp.pRow(), 0, "|" );
+			imp.say( imp.pRow(), 100, "+Acressimo:");
+			imp.say( imp.pRow(), 115, Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalAcres ));
+			imp.say( imp.pRow(), 135, "|" );
+			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
+			imp.say( imp.pRow(), 0, "|" );
+			imp.say( imp.pRow(), 100, "=Valor liquido:");
+			imp.say( imp.pRow(), 115, Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalLiq ));
 			imp.say( imp.pRow(), 135, "|" );
 			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
 			imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
