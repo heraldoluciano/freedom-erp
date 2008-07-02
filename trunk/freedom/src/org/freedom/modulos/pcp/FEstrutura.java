@@ -97,7 +97,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	
 	private JCheckBoxPad cbQtdVariavelItem = new JCheckBoxPad( "Sim", "S", "N" );
 	
-	private JCheckBoxPad cbQtdVariavelDistrib = new JCheckBoxPad( "Sim", "S", "N" );	
+//	private JCheckBoxPad cbQtdVariavelDistrib = new JCheckBoxPad( "Sim", "S", "N" );	
 
 	private JTextFieldPad txtSeqDistrib = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -345,7 +345,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicCampo( txtSeqDistrib, 7, 20, 60, 20, "seqde", "Seq.", ListaCampos.DB_PK, true );
 		adicCampo( txtCodProdDistrib, 70, 20, 77, 20, "CodProdDe", "Cód.prod.", ListaCampos.DB_FK, true );
 		adicCampo( txtSeqEstDistrib, 150, 20, 77, 20, "SeqEstDe", "Seq.Est", ListaCampos.DB_FK, txtDescEstDistrib, true );
-		adicDB( cbQtdVariavelDistrib, 7, 60, 70, 20, "QtdVariavel", "Qtd.variável", true );
+//		adicDB( cbQtdVariavelDistrib, 7, 60, 70, 20, "QtdVariavel", "Qtd.variável", true );
 		adicDescFK( txtDescEstDistrib, 230, 20, 277, 20, "DescEst", "Descrição da estrutura" );
 		setListaCampos( true, "DISTRIB", "PP" );
 		lcDetDistrib.setQueryInsert( false );
