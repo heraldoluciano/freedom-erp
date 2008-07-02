@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
 import org.freedom.ecf.com.Serial;
 import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.ecf.driver.EStatus;
-import org.freedom.infra.beans.LoggerManager;
 
 public class ControllerECF {
 		
@@ -164,7 +163,7 @@ public class ControllerECF {
 		throws IllegalArgumentException, NullPointerException {
 
 		try {
-			logger = LoggerManager.getLogger( "log/freedomECF.log" );
+//			logger = LoggerManager.getLogger( "log/freedomECF.log" ); ANDERSON IMPLEMENTAR NOVO LOGGER
 		} catch ( RuntimeException e ) {
 			e.printStackTrace();
 		}
