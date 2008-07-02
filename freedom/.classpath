@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/activation.jar"/>
-	<classpathentry kind="lib" path="lib/firebirdsql-full.jar"/>
 	<classpathentry kind="lib" path="lib/mail.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/liquidlnf.jar"/>
@@ -22,5 +21,6 @@
 	<classpathentry kind="lib" path="lib/itext.jar"/>
 	<classpathentry kind="lib" path="lib/ireport.jar"/>
 	<classpathentry kind="lib" path="lib/barbecue.jar"/>
+	<classpathentry kind="lib" path="lib/jaybird-full.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
