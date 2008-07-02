@@ -226,37 +226,8 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		lcRec.addCarregaListener(this);
 		lcDet.addPostListener(this);
 	     
-	}
-	  
-	// Atualiza a quantidade de insumos proporcionalmente à quantidade final produzida. 
-	
-	public void atualizaQtdPropItem () {
-		PreparedStatement ps = null;
-		StringBuffer sql = new StringBuffer();
-		ResultSet rs = null;
-		
-		try {
-			sql.append( "UPDATE PPITOP IT " );
-			sql.append( "SET QTDITOP=QTDITOP*COALESCE() " );
-			
-			ps = con.prepareStatement(sql.toString());
-			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
-			ps.setInt(3,txtCodProd.getVlrInteger().intValue()); 
-			ps.setInt(4,iSeqEst);	
-			ps.setInt(5,txtCodFase.getVlrInteger().intValue());		
-			rs = ps.executeQuery();
-			
-			if (rs.next()) {
-			
-			}
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
+	}	  
+
 	public void atualizaOP(){
 		PreparedStatement ps = null;
 		String sSQL = null;
