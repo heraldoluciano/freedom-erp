@@ -19,20 +19,29 @@
 
 package org.freedom.tef.app;
 
+import static org.freedom.tef.app.ControllerTefEvent.BEGIN_PRINT;
+import static org.freedom.tef.app.ControllerTefEvent.CONFIRM;
+import static org.freedom.tef.app.ControllerTefEvent.END_PRINT;
+import static org.freedom.tef.app.ControllerTefEvent.ERROR;
+import static org.freedom.tef.app.ControllerTefEvent.PRINT;
+import static org.freedom.tef.app.ControllerTefEvent.RE_PRINT;
+import static org.freedom.tef.app.ControllerTefEvent.WARNING;
+import static org.freedom.tef.driver.text.TextTef.ADM;
+import static org.freedom.tef.driver.text.TextTef.CRT;
+import static org.freedom.tef.driver.text.TextTefProperties.AMOUNT_LINES;
+import static org.freedom.tef.driver.text.TextTefProperties.MESSAGE_OPERATOR;
+import static org.freedom.tef.driver.text.TextTefProperties.PATH_RESPONSE;
+import static org.freedom.tef.driver.text.TextTefProperties.PATH_SEND;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.freedom.infra.beans.LoggerManager;
 import org.freedom.tef.driver.Flag;
 import org.freedom.tef.driver.text.TextTef;
 import org.freedom.tef.driver.text.TextTefFactory;
 import org.freedom.tef.driver.text.TextTefProperties;
-
-import static org.freedom.tef.driver.text.TextTef.*;
-import static org.freedom.tef.driver.text.TextTefProperties.*;
-import static org.freedom.tef.app.ControllerTefEvent.*;
 
 public class ControllerTef {
 	
@@ -64,7 +73,7 @@ public class ControllerTef {
 		super();
 		
 		try {
-			logger = LoggerManager.getLogger( "log/freedomTEF.log" );
+//			logger = LoggerManager.getLogger( "log/freedomTEF.log" );  ANDERSON Implementar novo log.
 		} catch ( RuntimeException e ) {
 			e.printStackTrace();
 		}
