@@ -956,7 +956,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	private void abreFase() {
 
 		if ( fPrim.temTela( "OP x Fases" ) == false ) {
-			FOPFase tela = new FOPFase( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue(), txtSeqEst.getVlrInteger().intValue(), false );
+			FOPFase tela = new FOPFase( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue(), txtSeqEst.getVlrInteger().intValue(), true );
 			fPrim.criatela( "OP x Fases", tela, con );
 			tela.setConexao( con );
 		}
@@ -965,7 +965,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	public void finalizaOP() {
 
 		if ( fPrim.temTela( "OP x Fases" ) == false ) {
-			FOPFase tela = new FOPFase( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue(), txtSeqEst.getVlrInteger().intValue(), true );
+			FOPFase tela = new FOPFase( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue(), txtSeqEst.getVlrInteger().intValue(), false );
 			fPrim.criatela( "OP x Fases", tela, con );
 			tela.setConexao( con );
 		}
