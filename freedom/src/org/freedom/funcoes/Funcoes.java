@@ -576,10 +576,10 @@ public class Funcoes {
 	//Retorna a data sem os valores de hora minuto e segundo, para comparação real de data apenas
 	//utilizando as funções before, after e compareTo.
 	public static Date getDataPura(Date dtantes) {
-		Date ret = new Date();
-		Calendar cal = new GregorianCalendar();
-		try {									
-			cal.set( getAno( dtantes  ), getMes( dtantes  ), Funcoes.getDiaMes( dtantes  ), 0, 0, 0 );
+		Date ret = null;		
+		try {
+			Calendar cal = new GregorianCalendar();
+			cal.set( getAno( dtantes  ), getMes( dtantes  ), getDiaMes( dtantes  ), 0, 0, 0 );
 			ret = cal.getTime();			
 		}
 		catch (Exception e) {

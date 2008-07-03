@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -257,16 +258,38 @@ public class FAgendProd extends FFilho implements ActionListener{
 			tab.limpa();
 			
 			for( int i=0; rs.next(); i++ ){
+				Date dtfab = Funcoes.sqlDateToDate( rs.getDate( "DTFABROP" )) ;
+				Date atual = new Date() ;
+
+				Calendar clfab = new GregorianCalendar();
+				Calendar clAtual = new GregorianCalendar();
+				clAtual.setTime( Funcoes.getDataPura( new Date() ) );
+				clfab.setTimeInMillis( dtfab.getTime() );
+				
+								
+//				int maldicao = dtfab.compareTo( atual );
+				int maldicao = clfab.compareTo( clAtual );
+				
+				System.out.println("Comparação:" + maldicao);
+				
+				System.out.println("OP:" + rs.getString( "CODOP" ));
+				System.out.println("Data de fabricação: " + clfab.getTimeInMillis() );
+				System.out.println("Data de hoje: " + clAtual.getTimeInMillis());
+				System.out.println("Fabricacao anterior à data atual? " + maldicao);
 				
 				if( rs.getString( "SITOP" ).equals( "PE" )){
-					if ( Funcoes.getDataPura( rs.getDate( "DTFABROP" )).before( Funcoes.getDataPura( new Date() ))) {
+					 
+					if ( maldicao<0 ) {
 						imgStatus = imgAtrasado; 
-					}else{
-						imgStatus = imgPendente;
 					}
-				}else if( rs.getString( "SITOP" ).equals( "CA" ) ){
+					else{
+						imgStatus = imgPendente;					
+					}
+				}
+				else if( rs.getString( "SITOP" ).equals( "CA" ) ){
 					imgStatus = imgCancelado;
-				}else if( rs.getString( "SITOP" ).equals( "FN" )){
+				}
+				else if( rs.getString( "SITOP" ).equals( "FN" )){
 					imgStatus = imgFinalizada;
 				}
 								
