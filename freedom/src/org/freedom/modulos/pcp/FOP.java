@@ -251,7 +251,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 
 		btRatearItem.setBorder( BorderFactory.createEmptyBorder() );
-		setTitulo( "Cadastro de Ordens de produção" );
+		setTitulo( "Ordens de produção" );
 		setAtribos( 15, 10, 700, 580 );
 		setAltCab( 200 );
 
