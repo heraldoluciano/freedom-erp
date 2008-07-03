@@ -21,6 +21,7 @@
  */
 
 package org.freedom.modulos.pcp;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -52,7 +53,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 
 	private static final long serialVersionUID = 1L;
 	private JPanelPad pinCab = new JPanelPad();
-	private JPanelPad pinDet = new JPanelPad( new GridLayout(2,1));
+	private JPanelPad pinDet = new JPanelPad(new GridLayout( 2, 1 ));
 	private JPanelPad pinDetFasesInstrucao = new JPanelPad( new GridLayout( 1, 1 ) );
 	private JPanelPad pinDetFasesCampos = new JPanelPad();
 	private JTextAreaPad txaObs = new JTextAreaPad();
@@ -91,14 +92,14 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		setTitulo("Fases da OP");
 		
 		if(bExecuta){
-		    setAtribos( 70, 40, 630, 470);
+		    setAtribos( 70, 40, 660, 470);
 		    setAltCab(130);
-		    setAltDet(170);
+		    setAltDet(180);
 		}        
 		else {
-		    setAtribos( 70, 40, 630, 470);
+		    setAtribos( 70, 40, 660, 470);
 		    setAltCab(130);
-		    setAltDet(100);
+		    setAltDet(180);
 		}
 		
 		this.iCodOP = iCodOP;
@@ -167,20 +168,20 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		txtCodRec.setTabelaExterna(lcRec);
 		txtDescRec.setListaCampos(lcRec);
 		
-		//pinDet = new JPanelPad(590,180);
 		setPainel( pinDet, pnDet);
 		pinDet.add( pinDetFasesCampos );
 		setPainel( pinDetFasesCampos );
 		setListaCampos(lcDet);
 		setNavegador(navRod);
 		
+		
 		adicCampo(txtNumSeqOf, 5, 20, 40, 20,"SeqOf","Item",ListaCampos.DB_PK,true);
 		adicCampo(txtCodFase, 48, 20, 77, 20,"CodFase","Cód.fase", ListaCampos.DB_FK, txtDescFase, true);
 		adicDescFK(txtDescFase, 128, 20, 227, 20,"DescFase", "Descrição da fase");
 		adicCampo(txtTempoOf, 358, 20, 100, 20,"TempoOf","Tempo (Seg.)",ListaCampos.DB_SI, false);
 		adicCampoInvisivel(txtCodTpRec,"CodTpRec", "Cód.tp.rec.", ListaCampos.DB_SI, false);
-		adicCampo(txtCodRec, 7, 55, 60, 20,"CodRecP","Cód.rec.", ListaCampos.DB_FK, txtDescRec, false);
-		adicDescFK(txtDescRec, 70, 55, 390, 20, "DescRecP", "Descrição do recurso");
+		adicCampo(txtCodRec, 7, 60, 60, 20,"CodRecP","Cód.rec.", ListaCampos.DB_FK, txtDescRec, false);
+		adicDescFK(txtDescRec, 70, 60, 390, 20, "DescRecP", "Descrição do recurso");
 		
 		pinDet.add( pinDetFasesInstrucao );
 		setPainel( pinDetFasesInstrucao );
@@ -193,10 +194,11 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		adicDBLiv( txaObs, "ObsFS", "Observações", false );
 		pinDetFasesInstrucao.add( spnFase );
 		if (bExecuta){
-			adicCampo(txtDataIniProdFs, 273, 60, 80, 20,"DataIniProdFs","Data ínicial", ListaCampos.DB_SI, false);
-			adicCampo(txtHIniProdFs, 356, 60, 80, 20,"HIniProdFs","Hora ínicial", ListaCampos.DB_SI, false);
-			adicCampo(txtDataFimProdFs, 439, 60, 80, 20,"DataFimProdFs","Data final", ListaCampos.DB_SI, false);
-			adicCampo(txtHFimProdFs, 522, 60, 80, 20,"HFimProdFs","Hora final", ListaCampos.DB_SI, false);
+			setPainel( pinDetFasesCampos );
+			adicCampo(txtDataIniProdFs, 470, 20, 80, 20,"DataIniProdFs","Data ínicial", ListaCampos.DB_SI, false);
+			adicCampo(txtHIniProdFs, 553, 20, 80, 20,"HIniProdFs","Hora ínicial", ListaCampos.DB_SI, false);
+			adicCampo(txtDataFimProdFs, 470, 60, 80, 20,"DataFimProdFs","Data final", ListaCampos.DB_SI, false);
+			adicCampo(txtHFimProdFs, 553, 60, 80, 20,"HFimProdFs","Hora final", ListaCampos.DB_SI, false);
 		}
 		
 		adicCampoInvisivel(txtSitFS,"SITFS", "Situação da fase", ListaCampos.DB_SI, false);
