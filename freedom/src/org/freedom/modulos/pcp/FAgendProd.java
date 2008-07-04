@@ -9,15 +9,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
@@ -29,7 +26,6 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-
 
 public class FAgendProd extends FFilho implements ActionListener{
 
@@ -57,9 +53,9 @@ public class FAgendProd extends FFilho implements ActionListener{
 	
 	private JButton btFiltrar = new JButton( Icone.novo( "btExecuta.gif" ) );
 	
-	private JButton btNovaOp = new JButton( Icone.novo( "btNovo.gif" ) );
+	private JButton btNovaOp = new JButton( "Nova O.P.", Icone.novo( "btNovo.gif" ) );
 
-	private JRadioGroup<?, ?> rgFiltro = null;
+	private JRadioGroup<?, ?> rgFiltro = null; 
 	
 	private Vector<String> vValsData = new Vector<String>();
 
@@ -93,9 +89,9 @@ public class FAgendProd extends FFilho implements ActionListener{
 	
 	private ImageIcon imgFinalizada = Icone.novo( "clEfetivado.gif" );
 	
-	private ImageIcon imgAtrasado = Icone.novo( "clInativo.gif" );
+	private ImageIcon imgAtrasado = Icone.novo( "clVencido.gif" );
 	
-	private ImageIcon imgCancelado = Icone.novo( "clVencido.gif" );
+	private ImageIcon imgCancelado = Icone.novo( "clCancelado.gif" );
 	
 	private JLabelPad lbImgPendente = new JLabelPad( imgPendente );
 	
@@ -127,6 +123,7 @@ public class FAgendProd extends FFilho implements ActionListener{
 		getTela().add( pnCab, BorderLayout.CENTER );
 		pnCab.add( pinCab, BorderLayout.NORTH );
 		pnCab.add( spnTab, BorderLayout.CENTER );
+		
 		pnRod.add( pnBotoes, BorderLayout.CENTER );
 		
 		JLabelPad lbLinha = new JLabelPad();
@@ -165,23 +162,25 @@ public class FAgendProd extends FFilho implements ActionListener{
 
 		lbTxtPendente.setFont( fontLegenda );
 		lbTxtFinalizada.setFont( fontLegenda );
-		lbTxtAtrasado.setFont( fontLegenda );
 		lbTxtCancelado.setFont( fontLegenda );
+		lbTxtAtrasado.setFont( fontLegenda );
 		lbTxtPendente.setForeground( corLegenda );
 		lbTxtFinalizada.setForeground( corLegenda );
 		lbTxtAtrasado.setForeground( corLegenda );
 		lbTxtCancelado.setForeground( corLegenda );
 		
-		pnBotoes.adic( btNovaOp, 10, 0, 30, 25 );
-		pnBotoes.adic( lbTxtFinalizada, 100, 6, 80, 20 );
-		pnBotoes.adic( lbImgFinalizada, 80, 6, 20, 20 );
-		pnBotoes.adic( lbImgPendente, 160, 6, 20, 20 );
-		pnBotoes.adic( lbTxtPendente, 180, 6, 80, 20 );
-		pnBotoes.adic( lbImgAtrasado, 240, 6, 20, 20 );
-		pnBotoes.adic( lbTxtAtrasado, 260, 6, 90, 20 );
-		pnBotoes.adic( lbImgCancelado, 320, 6, 20, 20 ); 
-		pnBotoes.adic( lbTxtCancelado, 340, 6, 90, 20 );
+		pnBotoes.adic( btNovaOp, 10, 0, 130, 25 );
 		
+		pnBotoes.adic( lbImgPendente, 160, 4, 20, 20 );
+		pnBotoes.adic( lbTxtPendente, 180, 4, 80, 20 );
+		pnBotoes.adic( lbImgAtrasado, 240, 4, 20, 20 );
+		pnBotoes.adic( lbTxtAtrasado, 260, 4, 90, 20 );
+		pnBotoes.adic( lbImgCancelado, 320, 4, 20, 20 ); 
+		pnBotoes.adic( lbTxtCancelado, 340, 4, 90, 20 );
+		
+		pnBotoes.adic( lbTxtFinalizada, 420, 4, 80, 20 );
+		pnBotoes.adic( lbImgFinalizada, 400, 4, 20, 20 );
+
 		tab.adicColuna( "" );
 		tab.adicColuna( "Data Emissão" );
 		tab.adicColuna( "Data Fabricação" );
@@ -196,12 +195,15 @@ public class FAgendProd extends FFilho implements ActionListener{
 		tab.setTamColuna( 100, ecolAgendamentos.DTEMITOP.ordinal() );
 		tab.setTamColuna( 100, ecolAgendamentos.DTFABROP.ordinal() );
 		tab.setTamColuna( 300, ecolAgendamentos.DESCEST.ordinal() );
-	
-		
+			
 		Calendar cPeriodo = Calendar.getInstance();
-	    txtDatafim.setVlrDate(cPeriodo.getTime());
-		cPeriodo.set(Calendar.DAY_OF_MONTH,cPeriodo.get(Calendar.DAY_OF_MONTH)-30);
-		txtDataini.setVlrDate(cPeriodo.getTime());
+		
+	    txtDataini.setVlrDate(cPeriodo.getTime());
+	    
+		cPeriodo.set(Calendar.DAY_OF_MONTH,cPeriodo.get(Calendar.DAY_OF_MONTH)+30);
+		
+		
+		txtDatafim.setVlrDate(cPeriodo.getTime());
 		
 		txtDataini.setRequerido( true );
 		txtDatafim.setRequerido( true );
@@ -257,29 +259,17 @@ public class FAgendProd extends FFilho implements ActionListener{
 						
 			tab.limpa();
 			
+			boolean atrasado = false;
 			for( int i=0; rs.next(); i++ ){
-				Date dtfab = Funcoes.sqlDateToDate( rs.getDate( "DTFABROP" )) ;
-				Date atual = new Date() ;
 
-				Calendar clfab = new GregorianCalendar();
-				Calendar clAtual = new GregorianCalendar();
-				clAtual.setTime( Funcoes.getDataPura( new Date() ) );
-				clfab.setTimeInMillis( dtfab.getTime() );
+				Date dtfab = Funcoes.getDataPura( Funcoes.sqlDateToDate( rs.getDate( "DTFABROP" ))) ;
+				Date dtatual = Funcoes.getDataPura( new Date() ) ;
 				
-								
-//				int maldicao = dtfab.compareTo( atual );
-				int maldicao = clfab.compareTo( clAtual );
-				
-				System.out.println("Comparação:" + maldicao);
-				
-				System.out.println("OP:" + rs.getString( "CODOP" ));
-				System.out.println("Data de fabricação: " + clfab.getTimeInMillis() );
-				System.out.println("Data de hoje: " + clAtual.getTimeInMillis());
-				System.out.println("Fabricacao anterior à data atual? " + maldicao);
+				atrasado = dtfab.before( dtatual );
 				
 				if( rs.getString( "SITOP" ).equals( "PE" )){
 					 
-					if ( maldicao<0 ) {
+					if ( atrasado ) {
 						imgStatus = imgAtrasado; 
 					}
 					else{

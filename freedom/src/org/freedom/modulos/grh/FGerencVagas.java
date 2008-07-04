@@ -101,6 +101,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 	private JLabelPad lbFiltros = new JLabelPad( " Filtros" );
 	private JPanelPad pinFiltros = new JPanelPad( 300, 150 );
 	private JPanelPad pinLbFiltros = new JPanelPad( 53, 15 );
+	private JPanelPad pinRod = new JPanelPad(685,39);
 	private Map<String,String> status = new HashMap<String, String>();
 	
 	private ImageIcon imgIndiponivel = Icone.novo( "clIndisponivel.gif" );
@@ -151,8 +152,6 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 		btEfetivarCand.addActionListener(this);
 		btSair.addActionListener(this);
 
-		JPanelPad pinRod = new JPanelPad(685,39);
-			
 		lcVaga.add(new GuardaCampo( txtCodVaga, "CodVaga", "Cód.Vaga",ListaCampos.DB_PK , null, false));		
 		lcVaga.add(new GuardaCampo( txtCodEmpr, "CodEmpr","Cód.Empr.",ListaCampos.DB_FK, null, false));
 		lcVaga.add(new GuardaCampo( txtCodFunc, "CodFunc","Cód.Func.",ListaCampos.DB_FK, null, false));
