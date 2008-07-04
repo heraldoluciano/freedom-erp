@@ -35,6 +35,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpfornecedorresum.jasper"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpcomissoes.jasper"/>
+        <file path="/freedom/src/org/freedom/modulos/rep/relatorios/cabecario_clean.jasper"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rptipocli.jasper"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/rpcontato.jasper"/>
         <file path="/freedom/src/org/freedom/modulos/rep/relatorios/cabecario.jasper"/>

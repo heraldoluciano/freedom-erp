@@ -58,9 +58,9 @@ public class RPPlanoPag extends FDetalhe implements CarregaListener, InsertListe
 
 	private final JTextFieldPad txtDiasItemPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private final JTextFieldPad txtPercItemPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
+	private final JTextFieldPad txtPercItemPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, AplicativoRep.casasDec );
 
-	private final JTextFieldPad txtJurosParcPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
+	private final JTextFieldPad txtJurosParcPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, AplicativoRep.casasDec );
 
 	private final JTextFieldPad txtDescItemPag = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 	
@@ -138,21 +138,22 @@ public class RPPlanoPag extends FDetalhe implements CarregaListener, InsertListe
 		
 		boolean retorno = false;
 		
-		BigDecimal total = new BigDecimal( "0.00" );
+		float total = 0f;
+		BigDecimal cem = new BigDecimal( "100" ).setScale( AplicativoRep.casasDec, BigDecimal.ROUND_HALF_UP );
 		
 		for ( int i=0; i < tab.getNumLinhas(); i++ ) {
 			
 			if ( txtNumItemPag.getVlrInteger().intValue() != (Integer) tab.getValor( i, 0 ) ) {
 
-				total = total.add( new BigDecimal( ( (String) tab.getValor( i, 2 ) ).replace( ',', '.' ) ).setScale( 5, BigDecimal.ROUND_HALF_UP ) );	
+				total += new BigDecimal( ( (String) tab.getValor( i, 2 ) ).replace( ',', '.' ) ).floatValue();	
 			}
 			else {
 				
-				total = total.add( new BigDecimal( txtPercItemPag.getVlrString().replace( ',', '.' ) ) );
+				total += txtPercItemPag.getVlrBigDecimal().floatValue();
 			}
 		}
 		
-		if ( total.floatValue() == 100.00000 ) {
+		if ( total == cem.floatValue() ) {
 			retorno = true;
 		}
 		
@@ -179,10 +180,10 @@ public class RPPlanoPag extends FDetalhe implements CarregaListener, InsertListe
 	public void beforePost( PostEvent e ) {
 
 		if ( e.getListaCampos() == lcDet ) {
-			if ( ! verificaPercParcelas() ) {
+			/*if ( ! verificaPercParcelas() ) {
 				lcDet.cancelPost();
 				Funcoes.mensagemErro( this, "Porcentagem das parcelas devem totalizar 100%!" );
-			}
+			}*/
 		}
 		
 		super.beforePost( e );
