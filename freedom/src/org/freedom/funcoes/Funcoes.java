@@ -450,7 +450,7 @@ public class Funcoes {
 	public static int getDiaMes(Date data) {
 		int retorno = 1;
 		GregorianCalendar cal = new GregorianCalendar();
-		cal.setGregorianChange( data );
+		cal.setTime( data );
 		retorno = cal.get( Calendar.DAY_OF_MONTH );
 		return retorno;
 	}
@@ -458,7 +458,7 @@ public class Funcoes {
 	public static int getAno(Date data ) {
 		int retorno = 1;
 		GregorianCalendar cal = new GregorianCalendar();
-		cal.setGregorianChange( data );
+		cal.setTime( data );
 		retorno = cal.get( Calendar.YEAR );
 		return retorno;
 	}
@@ -466,7 +466,7 @@ public class Funcoes {
 	public static int getMes(Date data ) {
 		int retorno = 1;
 		GregorianCalendar cal = new GregorianCalendar();		
-		cal.setGregorianChange( data );		
+		cal.setTime( data );		
 		retorno = cal.get( Calendar.MONTH );
 		return retorno;
 	}
@@ -580,6 +580,7 @@ public class Funcoes {
 		try {
 			Calendar cal = new GregorianCalendar();
 			cal.set( getAno( dtantes  ), getMes( dtantes  ), getDiaMes( dtantes  ), 0, 0, 0 );
+			cal.set(Calendar.MILLISECOND,0);
 			ret = cal.getTime();			
 		}
 		catch (Exception e) {
