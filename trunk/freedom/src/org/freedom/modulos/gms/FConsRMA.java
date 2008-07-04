@@ -192,7 +192,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		JLabelPad lbLinha2 = new JLabelPad();
 		lbLinha2.setBorder(BorderFactory.createEtchedBorder());
-		JLabelPad lbStatus = new JLabelPad(" Filtrar:");
+		JLabelPad lbStatus = new JLabelPad("Filtrar:" ,SwingConstants.CENTER );
 		lbStatus.setOpaque(true);
 
 		JLabelPad lbLin = new JLabelPad();
