@@ -184,11 +184,11 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 	private ListaCampos lcModLote = new ListaCampos( this, "ML" );
 
-	private JButton btFase = new JButton( "Fases", Icone.novo( "btFechaVenda.gif" ) );
-
-	private JButton btRMA = new JButton( "RMA", Icone.novo( "btRma.gif" ) );
+//	private JButton btFase = new JButton( "Fases", Icone.novo( "btFechaVenda.gif" ) );
 
 	private JButton btFinaliza = new JButton( "Finaliza", Icone.novo( "btOP.gif" ) );
+	
+	private JButton btRMA = new JButton( "RMA", Icone.novo( "btRma.gif" ) );
 
 	private JButton btLote = new JButton( "Lote", Icone.novo( "btSimilar.gif" ) );
 
@@ -263,20 +263,19 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		tpnAbas.addTab( "OP's relacionadas", spOPS );
 		pnMaster.add( tpnAbas, BorderLayout.CENTER );
 
-		btFase.setToolTipText( "Fases da produção" );
-		btRMA.setToolTipText( "Gera ou exibe RMA." );
-		btFinaliza.setToolTipText( "Processo de produção" ); 
+		btFinaliza.setToolTipText( "Processo de produção" );
+		btRMA.setToolTipText( "Gera ou exibe RMA." );		 
 		btLote.setToolTipText( "Cadastra lote" );
 		btRatearItem.setToolTipText( "Ratear ítem" );
 		btDistrb.setToolTipText( "Distribuição" );
 
 		pinCab.adic( pinBotCab, 560, 2, 115, 159 );
-		pinBotCab.adic( btFase, 0, 0, 110, 30 );
+	
+		pinBotCab.adic( btLote, 0, 0, 110, 30 );
 		pinBotCab.adic( btRMA, 0, 31, 110, 30 );
-		pinBotCab.adic( btFinaliza, 0, 62, 110, 30 );
-		pinBotCab.adic( btLote, 0, 93, 110, 30 );
-		pinBotCab.adic( btDistrb, 0, 124, 110, 30 );
-
+		pinBotCab.adic( btDistrb, 0, 62, 110, 30 );
+		pinBotCab.adic( btFinaliza, 0, 93, 110, 30 );
+		
 		lcModLote.add( new GuardaCampo( txtCodModLote, "CodModLote", "Cod.Mod.Lote", ListaCampos.DB_PK, txtDescModLote, false ) );
 		lcModLote.add( new GuardaCampo( txtDescModLote, "DescModLote", "Descrição do modelo de lote", ListaCampos.DB_SI, false ) );
 		lcModLote.add( new GuardaCampo( txtModLote, "txaModLote", "Corpo", ListaCampos.DB_SI, false ) );
@@ -417,9 +416,9 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		lcCampos.addCancelListener( this );
 		lcDet.addCancelListener( this );
 
-		btFase.addActionListener( this );
-		btRMA.addActionListener( this );
 		btFinaliza.addActionListener( this );
+		
+		btRMA.addActionListener( this );
 		btLote.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -600,9 +599,9 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 		adic( btRatearItem, 572, 20, 20, 20 );
 
-		btFase.setEnabled( false );
-		btRMA.setEnabled( false );
 		btFinaliza.setEnabled( false );
+		
+		btRMA.setEnabled( false );
 		btLote.setEnabled( false );
 		btDistrb.setEnabled( false );
 
@@ -952,20 +951,20 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	private void abreOps() {
 
 	}
-
+/*
 	private void abreFase() {
 
 		if ( fPrim.temTela( "OP x Fases" ) == false ) {
-			FOPFase tela = new FOPFase( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue(), txtSeqEst.getVlrInteger().intValue(), true );
+			FOPFase tela = new FOPFase( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue(), txtSeqEst.getVlrInteger().intValue(),true );
 			fPrim.criatela( "OP x Fases", tela, con );
 			tela.setConexao( con );
 		}
-	}
+	}*/
 
 	public void finalizaOP() {
 
 		if ( fPrim.temTela( "OP x Fases" ) == false ) {
-			FOPFase tela = new FOPFase( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue(), txtSeqEst.getVlrInteger().intValue(), false );
+			FOPFase tela = new FOPFase( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue(), txtSeqEst.getVlrInteger().intValue() );
 			fPrim.criatela( "OP x Fases", tela, con );
 			tela.setConexao( con );
 		}
@@ -1384,12 +1383,12 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			imprimir( false );
 		else if ( evt.getSource() == btPrevimp )
 			imprimir( true );
-		else if ( evt.getSource() == btFase )
-			abreFase();
-		else if ( evt.getSource() == btRMA )
-			geraRMA();
+/*		else if ( evt.getSource() == btFase )
+			abreFase();*/
 		else if ( evt.getSource() == btFinaliza )
 			finalizaOP();
+		else if ( evt.getSource() == btRMA )
+			geraRMA();
 		else if ( evt.getSource() == btLote )
 			gravaLote( true );
 		else if ( evt.getSource() == btRatearItem )
@@ -1482,7 +1481,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcCampos ) {
-			btFase.setEnabled( ( lcCampos.getStatus() != ListaCampos.LCS_NONE ) && ( lcCampos.getStatus() != ListaCampos.LCS_INSERT ) );
 			btRMA.setEnabled( ( lcCampos.getStatus() != ListaCampos.LCS_NONE ) && ( lcCampos.getStatus() != ListaCampos.LCS_INSERT ) && liberaRMA() );
 			btFinaliza.setEnabled( ( lcCampos.getStatus() != ListaCampos.LCS_NONE ) && ( lcCampos.getStatus() != ListaCampos.LCS_INSERT ) );
 			btDistrb.setEnabled( ( lcCampos.getStatus() != ListaCampos.LCS_NONE ) && ( lcCampos.getStatus() != ListaCampos.LCS_INSERT ) );
@@ -1542,27 +1540,28 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		
 	}
 	public void afterPost( PostEvent pevt ) {
-
-		if ( lcCampos.getStatusAnt() == ListaCampos.LCS_INSERT )
+		if ( lcCampos.getStatusAnt() == ListaCampos.LCS_INSERT ) {
 			txtCodProdEst.setAtivo( false );
-		if ( pevt.getListaCampos() == lcCampos ) {
-			if ( tpnAbas.getSelectedIndex() == 0 )
-				tpnAbas.setSelectedIndex( 1 );
 		}
-		else if ( pevt.getListaCampos() == lcDet )
+		if ( pevt.getListaCampos() == lcCampos ) {
+			if ( tpnAbas.getSelectedIndex() == 0 ) {
+				tpnAbas.setSelectedIndex( 1 );
+			}
+		}
+		else if ( pevt.getListaCampos() == lcDet ) {
 			btRMA.setEnabled( liberaRMA() );
-		btFase.setEnabled( ( lcCampos.getStatus() != ListaCampos.LCS_NONE ) && ( lcCampos.getStatus() != ListaCampos.LCS_INSERT ) );
+		}
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
-
 		if ( ievt.getListaCampos() == lcCampos ) {
 			getTipoMov();
 			txtCodTpMov.setVlrInteger( iCodTpMov );
 			lcTipoMov.carregaDados();
 			txtDtFabProd.setVlrDate( new Date() );
-			if ( txtSeqOP.getVlrString().trim().equals( "" ) )
+			if ( txtSeqOP.getVlrString().trim().equals( "" ) ) {
 				txtSeqOP.setVlrInteger( new Integer( 0 ) );
+			}
 		}
 	}
 
