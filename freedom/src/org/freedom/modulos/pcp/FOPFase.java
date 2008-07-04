@@ -87,21 +87,10 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	private int iSeqOP;
 	private int iSeqEst;
 	
-	public FOPFase(int iCodOP,int iSeqOP,int iSeqEst,boolean bExecuta) {
+	public FOPFase(int iCodOP,int iSeqOP,int iSeqEst) { //,boolean bExecuta
 		
 		setTitulo("Fases da OP");
-		
-		if(bExecuta){
-		    setAtribos( 70, 40, 660, 470);
-		    setAltCab(130);
-		    setAltDet(180);
-		}        
-		else {
-		    setAtribos( 70, 40, 660, 470);
-		    setAltCab(130);
-		    setAltDet(180);
-		}
-		
+				
 		this.iCodOP = iCodOP;
 		this.iSeqOP = iSeqOP;
 		this.iSeqEst = iSeqEst;
@@ -115,12 +104,12 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		txtTempoOf.setAtivo(false);
 		txtSeqOP.setAtivo(false);
 		
-		if(bExecuta) {
+//		if(bExecuta) {
 			txtCodFase.setAtivo(false);
 			txtNumSeqOf.setAtivo(false);
 			txtCodRec.setAtivo(false);
 			txtTempoOf.setAtivo(false);
-		}
+//		}
 		
 		pinCab = new JPanelPad(500,90);
 		setListaCampos(lcCampos);
@@ -193,13 +182,14 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 				BorderFactory.createEtchedBorder(), "Instruções" ) );
 		adicDBLiv( txaObs, "ObsFS", "Observações", false );
 		pinDetFasesInstrucao.add( spnFase );
-		if (bExecuta){
+
+//		if (bExecuta){
 			setPainel( pinDetFasesCampos );
 			adicCampo(txtDataIniProdFs, 470, 20, 80, 20,"DataIniProdFs","Data ínicial", ListaCampos.DB_SI, false);
 			adicCampo(txtHIniProdFs, 553, 20, 80, 20,"HIniProdFs","Hora ínicial", ListaCampos.DB_SI, false);
 			adicCampo(txtDataFimProdFs, 470, 60, 80, 20,"DataFimProdFs","Data final", ListaCampos.DB_SI, false);
 			adicCampo(txtHFimProdFs, 553, 60, 80, 20,"HFimProdFs","Hora final", ListaCampos.DB_SI, false);
-		}
+//		}
 		
 		adicCampoInvisivel(txtSitFS,"SITFS", "Situação da fase", ListaCampos.DB_SI, false);
 		setListaCampos( true, "OPFASE", "PP");
