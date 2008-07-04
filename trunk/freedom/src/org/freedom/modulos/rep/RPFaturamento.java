@@ -432,6 +432,18 @@ public class RPFaturamento extends FDialogo {
 						rs.getBigDecimal( "VLRPAGITPED" ).setScale( AplicativoRep.casasDecFin, BigDecimal.ROUND_HALF_UP ),
 						rs.getBigDecimal( "PERCPAGITPED" ).setScale( AplicativoRep.casasDec, BigDecimal.ROUND_HALF_UP ),
 						Calendar.getInstance().getTime()
+						
+						/*
+						STATUS,
+						ITEM,
+						CODPROD,
+						DESCPROD,
+						QTDFATURADA,
+						QDTPENDENTE,
+						VLRFATURADO,
+						VLRCOMIS,
+						PERCCOMIS,
+						DATAFAT;*/
 				} );
 			}
 			
@@ -486,12 +498,12 @@ public class RPFaturamento extends FDialogo {
 					ps.setInt( parameterIndex++, AplicativoRep.iCodEmp );
 					ps.setInt( parameterIndex++, ListaCampos.getMasterFilial( "RPFATURAMENTO" ) );
 					ps.setInt( parameterIndex++, txtCodPed.getVlrInteger() );
-					ps.setInt( parameterIndex++, (Integer) tab.getValor( i, 1 ) );
-					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, 4 ) );
-					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, 6 ) );
-					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, 5 ) );
-					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, 8 ) );
-					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, 7 ) );
+					ps.setInt( parameterIndex++, (Integer) tab.getValor( i, ETabNota.ITEM.ordinal() ) );
+					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, ETabNota.QTDFATURADA.ordinal() ) );
+					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, ETabNota.VLRFATURADO.ordinal() ) );
+					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, ETabNota.QDTPENDENTE.ordinal() ) );
+					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, ETabNota.PERCCOMIS.ordinal() ) );
+					ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, ETabNota.VLRCOMIS.ordinal() ) );
 					ps.setDate( parameterIndex++, Funcoes.dateToSQLDate( Calendar.getInstance().getTime() ) );
 
 					ps.executeUpdate();
@@ -546,13 +558,13 @@ public class RPFaturamento extends FDialogo {
 						parameterIndex = 1;
 						ps = con.prepareStatement( insert.toString() );
 						ps.setInt( parameterIndex++, AplicativoRep.iCodEmp );
-						ps.setInt( parameterIndex++, ListaCampos.getMasterFilial( "RPFATURAMENTO" ) );
+						ps.setInt( parameterIndex++, ListaCampos.getMasterFilial( "RPCOMISSAO" ) );
 						ps.setInt( parameterIndex++, txtCodPed.getVlrInteger() );
-						ps.setInt( parameterIndex++, (Integer) tab.getValor( i, 1 ) );
+						ps.setInt( parameterIndex++, (Integer) tab.getValor( i, ETabNota.ITEM.ordinal() ) );
 						ps.setInt( parameterIndex++, AplicativoRep.iCodEmp );
-						ps.setInt( parameterIndex++, ListaCampos.getMasterFilial( "RPCOMISSAO" )  );
+						ps.setInt( parameterIndex++, ListaCampos.getMasterFilial( "RPVENDEDOR" )  );
 						ps.setInt( parameterIndex++, txtCodVend.getVlrInteger() );
-						ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, 8 ) );
+						ps.setBigDecimal( parameterIndex++, (BigDecimal) tab.getValor( i, ETabNota.VLRCOMIS.ordinal() ) );
 	
 						ps.executeUpdate();
 						gerou = true;
