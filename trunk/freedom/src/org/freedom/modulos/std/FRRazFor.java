@@ -137,7 +137,7 @@ public class FRRazFor extends FRelatorio {
 			 * Busca na FNPAGAR todas as compras com valor financeiro a pagar (VLRPAG)
 			 */
 			sSQL.append( "' AS DATE) DATA, 'A' TIPO, 0 DOC, 0.00 VLRDEB, " );
-			sSQL.append( "(COALESCE( ( SELECT SUM(P.VLRPAG) " );
+			sSQL.append( "(COALESCE( ( SELECT SUM(P.VLRPARCPAG-P.VLRDESCPAG+P.VLRMULTAPAG+P.VLRJUROSPAG) " );
 			sSQL.append( "FROM FNPAGAR P " );
 			sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND " );
 			sSQL.append( "P.CODEMPFR=F.CODEMP AND P.CODFILIALFR=F.CODFILIAL AND " );
@@ -152,15 +152,29 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( "WHERE L.CODEMPFR=F.CODEMP AND L.CODFILIALFR=F.CODFILIAL AND " );
 			sSQL.append( "L.CODFOR=F.CODFOR AND " );
 			sSQL.append( "L.CODEMP=? AND L.CODFILIAL=? AND " );
-			sSQL.append( "L.DATALANCA < ? ), 0) " );
-			sSQL.append( ") VLRCRED " );
-			
-			
+			sSQL.append( "L.DATALANCA < ? ), 0) -  " );
+			/**
+			 *  Subtrai o valor das devoluções do saldo anterior
+			 */
+			sSQL.append(  "( COALESCE( ( SELECT SUM(VD.VLRLIQVENDA) ");
+            sSQL.append(  "FROM VDVENDA VD, EQTIPOMOV TM, EQCLIFOR CF ");
+            sSQL.append(  "WHERE VD.CODEMP=? AND VD.CODFILIAL=? AND  TM.CODEMP=VD.CODEMPTM AND ");
+            sSQL.append(  "TM.CODFILIAL=VD.CODFILIALTM AND TM.ESTIPOMOV='S' AND TM.TIPOMOV='DV' AND ");
+            sSQL.append(  "TM.CODTIPOMOV=VD.CODTIPOMOV AND CF.CODEMPFR=F.CODEMP AND ");
+            sSQL.append(  "CF.CODFILIALFR=F.CODFILIAL AND CF.CODFOR=F.CODFOR AND VD.CODEMPCL=CF.CODEMP AND ");
+            sSQL.append(  "VD.CODFILIALCL=CF.CODFILIAL AND VD.CODCLI=CF.CODCLI AND VD.DTEMITVENDA < ? ),0) ) ) " );
+			sSQL.append( " VLRCRED " );
+			/**
+			 * Filtro do fornecedor
+			 */			
 			sSQL.append( "FROM CPFORNECED F " );
 			sSQL.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND " );
 			if ( codfor != 0 ) {
 				sSQL.append( "F.CODFOR=? AND " );
 			}
+			/**
+			 * Verifica a existência dos valores
+			 */			
 			sSQL.append( "( EXISTS (SELECT * FROM FNPAGAR P2 " );
 			sSQL.append( "WHERE P2.CODEMP=? AND P2.CODFILIAL=? AND " );
 			sSQL.append( "P2.CODEMPFR=F.CODEMP AND P2.CODFILIALFR=F.CODFILIAL AND " );
@@ -169,8 +183,14 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( "WHERE F.CODEMP=L2.CODEMPFR AND " );
 			sSQL.append( "F.CODFILIAL=L2.CODFILIALFR AND F.CODFOR=L2.CODFOR AND " );
 			sSQL.append( "L2.CODEMP=? AND L2.CODFILIAL=? AND " );
-			sSQL.append( "L2.DATALANCA BETWEEN ? AND ?" );
-			sSQL.append( ") ) " );
+			sSQL.append( "L2.DATALANCA BETWEEN ? AND ? ) OR " );
+			sSQL.append( " EXISTS (SELECT * FROM VDVENDA VD, EQTIPOMOV TM, EQCLIFOR CF ");
+            sSQL.append( "WHERE VD.CODEMP=? AND VD.CODFILIAL=? AND TM.CODEMP=VD.CODEMPTM AND ");
+            sSQL.append( "TM.CODFILIAL=VD.CODFILIALTM AND TM.CODTIPOMOV=VD.CODTIPOMOV AND ");
+            sSQL.append( "TM.ESTIPOMOV='S' AND TM.TIPOMOV='DV' AND ");
+            sSQL.append( "CF.CODEMPFR=F.CODEMP AND CF.CODFILIALFR=F.CODFILIAL AND CF.CODFOR=F.CODFOR AND ");
+            sSQL.append( "VD.CODEMPCL=CF.CODEMP AND VD.CODFILIALCL=CF.CODFILIAL AND ");
+            sSQL.append( "VD.CODCLI=CF.CODCLI AND VD.DTEMITVENDA BETWEEN ? AND ? ) ) " );			
 			/**
 			 * Fim da query do saldo anterior
 			 */
@@ -180,7 +200,8 @@ public class FRRazFor extends FRelatorio {
 			 */
 			sSQL.append( "UNION " );
 			sSQL.append( "SELECT P.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
-			sSQL.append( "P.DATAPAG DATA, 'C' TIPO, P.DOCPAG DOC, (P.VLRPARCPAG-P.VLRPAG)*-1 VLRDEB, P.VLRPAG VLRCRED " );
+			sSQL.append( "P.DATAPAG DATA, 'C' TIPO, P.DOCPAG DOC, ");
+			sSQL.append( "(P.VLRDESCPAG-P.VLRMULTAPAG-P.VLRJUROSPAG)*-1 VLRDEB, P.VLRPARCPAG VLRCRED " );
 			sSQL.append( "FROM FNPAGAR P, CPFORNECED F " );
 			sSQL.append( "WHERE F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
 			sSQL.append( "F.CODFOR=P.CODFOR AND " );
@@ -205,43 +226,80 @@ public class FRRazFor extends FRelatorio {
 			}
 			sSQL.append( "L.CODEMP=? AND L.CODFILIAL=? AND " );
 			sSQL.append( "L.DATALANCA BETWEEN ? AND ? " );
+			/**
+			 * Query das devoluções 
+			 */
+			sSQL.append( "UNION SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, VD.DTEMITVENDA DATA, " );
+			sSQL.append( " 'Z' TIPO, VD.DOCVENDA DOC, VD.VLRLIQVENDA VLRCRED, 0.00 VLRDEB ");
+			sSQL.append( "FROM VDVENDA VD, EQTIPOMOV TM, EQCLIFOR CF, CPFORNECED F " );
+			sSQL.append( "WHERE TM.CODEMP=VD.CODEMPTM AND TM.CODFILIAL=VD.CODFILIALTM AND ");
+			sSQL.append( "TM.CODTIPOMOV=VD.CODTIPOMOV AND TM.ESTIPOMOV='S' AND TM.TIPOMOV='DV' AND ");
+            sSQL.append( "CF.CODEMPFR=F.CODEMP AND CF.CODFILIALFR=F.CODFILIAL AND CF.CODFOR=F.CODFOR AND ");
+            sSQL.append( "VD.CODEMPCL=CF.CODEMP AND VD.CODFILIALCL=CF.CODFILIAL AND ");
+            sSQL.append( "VD.CODCLI=CF.CODCLI AND " );
+			if ( codfor != 0 ) {
+				sSQL.append( "F.CODFOR=? AND " );
+			}
+			sSQL.append( "VD.CODEMP=? AND VD.CODFILIAL=? AND " );
+			sSQL.append( "VD.DTEMITVENDA BETWEEN ? AND ? " ); 
+			
 			sSQL.append( "ORDER BY 1, 2, 3, 4, 5" );
 
 			ps = con.prepareStatement( sSQL.toString() );
-			// ps.setDate( param++ , Funcoes.strDateToSqlDate( txtDataini.getVlrString() )); // 1
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 2
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 3
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 4
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 5
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 6
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 7
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 8
-			ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) ); // 9
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 1
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 2
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 3
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 5
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 6
+			// Parametros do saldo de devoluções
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 7
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) ); // 8
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 9			
+			//
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 10
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) ); // 11
 			if ( codfor != 0 ) {
-				ps.setInt( param++, codfor ); // 10
+				ps.setInt( param++, codfor ); // 12
 			}
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 11
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 12
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 13
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 14
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 15
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 16
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 17
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 18
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 19
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 20
-			if ( codfor != 0 ) {
-				ps.setInt( param++, codfor ); // 21
-			}
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 22
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 23
-			if ( codfor != 0 ) {
-				ps.setInt( param++, codfor ); // 24
-			}
+			// Parametros do exists
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 13
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 14
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 15
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 16
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 17
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 18
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 19
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 20
+			// Parametros do exists referente ao saldo de devoluções
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 21
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) ); // 22
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 23
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 24
+			//
 			ps.setInt( param++, Aplicativo.iCodEmp ); // 25
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 26
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 27
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 28
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 26
+			if ( codfor != 0 ) {
+				ps.setInt( param++, codfor ); // 27
+			}
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 28
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 29
+			if ( codfor != 0 ) {
+				ps.setInt( param++, codfor ); // 30
+			}
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 31
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNLANCA" ) ); // 32
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 33
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 34
+            // Parâmetros das devoluções
+			if ( codfor != 0 ) {
+				ps.setInt( param++, codfor ); // 35
+			}
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 36
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) ); // 37
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 38
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 39
+			
 			rs = ps.executeQuery();
 
 			imprimiGrafico( bVisualizar, rs, sCab.toString() );
