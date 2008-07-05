@@ -61,8 +61,7 @@ F.RAZFOR RAZEMIT, L.DATALANCA DATA, 'P' TIPO, P.DOCPAG DOC, L.VLRLANCA VLRDEB, 0
 FROM FNLANCA L, CPFORNECED F, FNPAGAR P WHERE F.CODEMP=L.CODEMPFR AND F.CODFILIAL=L.CODFILIALFR AND 
 P.CODEMP=L.CODEMPPG AND P.CODFILIAL=L.CODFILIALPG AND P.CODPAG=L.CODPAG AND F.CODFOR=L.CODFOR AND 
 F.CODFOR=1 AND L.CODEMP=25 AND L.CODFILIAL=1 AND L.DATALANCA BETWEEN '2008-1-1' AND '2008-1-30' 
-ORDER BY 1, 2, 3, 4, 5
-]]></queryString>
+ORDER BY 1, 2, 3, 4, 5]]></queryString>
 
 	<field name="CODEMIT" class="java.lang.Long"/>
 	<field name="RAZEMIT" class="java.lang.String"/>
@@ -73,7 +72,7 @@ ORDER BY 1, 2, 3, 4, 5
 	<field name="VLRCRED" class="java.math.BigDecimal"/>
 
 	<variable name="DESCTIPO" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[("A".equals($F{TIPO})?"SALDO INICIAL":("Q".equals($F{TIPO})?"VENDA":"RECEBIMENTO"))]]></variableExpression>
+		<variableExpression><![CDATA[("A".equals($F{TIPO})?"SALDO INICIAL":("Q".equals($F{TIPO})?"VENDA":("Z".equals($F{TIPO})?"DEVOLUÇÃO":"RECEBIMENTO")))]]></variableExpression>
 	</variable>
 	<variable name="SALDOFOR" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRDEB}.add($F{VLRCRED})]]></variableExpression>
