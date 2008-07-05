@@ -77,6 +77,8 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 
 	private final JTextFieldPad txtVlrDesc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
+	private final JTextFieldPad txtVlrDev = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+
 	private final JTextFieldPad txtVlrAdic = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
 	private final JTextFieldPad txtObs = new JTextFieldPad( JTextFieldPad.TP_STRING, 250, 0 );
@@ -181,20 +183,24 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		adic( txtCodTipoCob, 7, 180, 80, 20 );
 		adic( new JLabelPad( "Descrição do tipo de cobrança" ), 90, 160, 250, 20 );
 		adic( txtDescTipoCob, 90, 180, 250, 20 );
-		adic( new JLabelPad( "Doc." ), 7, 200, 110, 20 );
-		adic( txtDoc, 7, 220, 110, 20 );
-		adic( new JLabelPad( "Emissão" ), 120, 200, 107, 20 );
-		adic( txtDtEmis, 120, 220, 107, 20 );
-		adic( new JLabelPad( "Vencimento" ), 230, 200, 110, 20 );
-		adic( txtDtVenc, 230, 220, 110, 20 );
-		adic( new JLabelPad( "Vlr.parc." ), 7, 240, 100, 20 );
-		adic( txtVlrParc, 7, 260, 100, 20 );
-		adic( new JLabelPad( "Vlr.juros." ), 110, 240, 67, 20 );
-		adic( txtVlrJuros, 110, 260, 67, 20 );
-		adic( new JLabelPad( "Vlr.desc." ), 180, 240, 77, 20 );
-		adic( txtVlrDesc, 180, 260, 77, 20 );
-		adic( new JLabelPad( "Vlr.adic." ), 260, 240, 80, 20 );
-		adic( txtVlrAdic, 260, 260, 80, 20 );
+		
+		adic( new JLabelPad( "Doc." ), 7, 200, 81, 20 );
+		adic( txtDoc, 7, 220, 81, 20 );
+		adic( new JLabelPad( "Emissão" ), 91, 200, 81, 20 );
+		adic( txtDtEmis, 91, 220, 81, 20 );
+		adic( new JLabelPad( "Vencimento" ), 175, 200, 81, 20 );
+		adic( txtDtVenc, 175, 220, 81, 20 );
+		adic( new JLabelPad( "Vlr.parcela" ), 259, 200, 81, 20 );
+		adic( txtVlrParc, 259, 220, 81, 20 );
+		
+		adic( new JLabelPad( "Vlr.desc." ), 7, 240, 81, 20 );
+		adic( txtVlrDesc, 7, 260, 81, 20 );
+		adic( new JLabelPad( "Vlr.juros." ), 91, 240, 81, 20 );
+		adic( txtVlrJuros, 91, 260, 81, 20 );
+		adic( new JLabelPad( "Vlr.devolução" ), 175, 240, 81, 20 );
+		adic( txtVlrDev, 175, 260, 81, 20 );
+		adic( new JLabelPad( "Vlr.adicional" ), 259, 240, 81, 20 );
+		adic( txtVlrAdic, 259, 260, 81, 20 );
 
 		adic( new JLabelPad( "Observações" ), 7, 280, 200, 20 );
 		adic( txtObs, 7, 300, 333, 20 );
@@ -216,12 +222,13 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		txtVlrAdic.setVlrString( sVals[ 11 ] );
 		txtObs.setVlrString( sVals[ 12 ] );
 		txtCodTipoCob.setVlrString( sVals[ 13 ] );
+		txtVlrDev.setVlrString( sVals[ 14 ] );
 		txtVlrParc.setAtivo( bLancaUsu );
 	}
 
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 11 ];
+		String[] sRetorno = new String[ 12 ];
 		sRetorno[ 0 ] = txtCodConta.getVlrString();
 		sRetorno[ 1 ] = txtCodPlan.getVlrString();
 		sRetorno[ 2 ] = txtCodCC.getVlrString();
@@ -233,6 +240,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		sRetorno[ 8 ] = txtDtVenc.getVlrString();
 		sRetorno[ 9 ] = txtObs.getVlrString();
 		sRetorno[ 10 ] = txtCodTipoCob.getVlrString();
+		sRetorno[ 11 ] = txtVlrDev.getVlrString();
 		return sRetorno;
 	}
 
