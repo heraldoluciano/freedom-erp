@@ -596,14 +596,15 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		tabManut.adicColuna( "Valor pago" ); // 11
 		tabManut.adicColuna( "Valor desc." ); // 12
 		tabManut.adicColuna( "Valor juros" ); // 13
-		tabManut.adicColuna( "Valor adic" ); // 14
-		tabManut.adicColuna( "Valor aberto" ); // 15
-		tabManut.adicColuna( "Conta" ); // 16
-		tabManut.adicColuna( "Categoria" ); // 17
-		tabManut.adicColuna( "Centro de custo" ); // 18
-		tabManut.adicColuna( "Tp.Cob." ); // 19
-		tabManut.adicColuna( "Descrição do tipo de cobrança" ); // 20
-		tabManut.adicColuna( "Observação" ); // 21
+		tabManut.adicColuna( "Valor devolução" ); // 14
+		tabManut.adicColuna( "Valor adic" ); // 15
+		tabManut.adicColuna( "Valor aberto" ); // 16
+		tabManut.adicColuna( "Conta" ); // 17
+		tabManut.adicColuna( "Categoria" ); // 18
+		tabManut.adicColuna( "Centro de custo" ); // 19
+		tabManut.adicColuna( "Tp.Cob." ); // 20
+		tabManut.adicColuna( "Descrição do tipo de cobrança" ); // 21
+		tabManut.adicColuna( "Observação" ); // 22
 
 		tabManut.setTamColuna( 0, 0 );
 		tabManut.setTamColuna( 80, 1 );
@@ -621,12 +622,13 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		tabManut.setTamColuna( 100, 13 );
 		tabManut.setTamColuna( 100, 14 );
 		tabManut.setTamColuna( 100, 15 );
-		tabManut.setTamColuna( 130, 16 );
-		tabManut.setTamColuna( 210, 17 );
-		tabManut.setTamColuna( 220, 18 );
-		tabManut.setTamColuna( 80, 19 );
-		tabManut.setTamColuna( 200, 20 );
-		tabManut.setTamColuna( 260, 21 );
+		tabManut.setTamColuna( 100, 16 );
+		tabManut.setTamColuna( 130, 17 );
+		tabManut.setTamColuna( 210, 18 );
+		tabManut.setTamColuna( 220, 19 );
+		tabManut.setTamColuna( 80, 20 );
+		tabManut.setTamColuna( 200, 21 );
+		tabManut.setTamColuna( 260, 22 );
 
 		lcFor.addCarregaListener( this );
 		lcPagBaixa.addCarregaListener( this );
@@ -1050,7 +1052,8 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 				sSQL.append( "WHERE CO.CODCOMPRA=P.CODCOMPRA AND CO.CODEMP=P.CODEMPCP AND CO.CODFILIAL=P.CODFILIALCP)," );
 				sSQL.append( "IT.DTITPAG,IT.VLRADICITPAG,P.DOCPAG,IT.CODTIPOCOB," );
 				sSQL.append( "(SELECT T.DESCTIPOCOB FROM FNTIPOCOB T " );
-				sSQL.append( "WHERE IT.CODEMPTC=T.CODEMP AND IT.CODFILIALTC=T.CODFILIAL AND IT.CODTIPOCOB=T.CODTIPOCOB) AS DESCTIPOCOB " );
+				sSQL.append( "WHERE IT.CODEMPTC=T.CODEMP AND IT.CODFILIALTC=T.CODFILIAL AND IT.CODTIPOCOB=T.CODTIPOCOB) AS DESCTIPOCOB, " );
+				sSQL.append( "IT.VLRDEVITPAG " );
 				sSQL.append( "FROM FNITPAGAR IT,FNPAGAR P,CPFORNECED F " );
 				sSQL.append( "WHERE P.CODPAG=IT.CODPAG AND F.CODFOR=P.CODFOR " );
 				sSQL.append( sWhereManut );
@@ -1105,14 +1108,15 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrPagoItPag" ) ), i, 11 );
 						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrDescItPag" ) ), i, 12 );
 						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrJurosItPag" ) ), i, 13 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrAdicItPag" ) ), i, 14 );
-						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrApagItPag" ) ), i, 15 );
-						tabManut.setValor( rs.getString( 13 ) != null ? rs.getString( 13 ) : "", i, 16 );
-						tabManut.setValor( rs.getString( 17 ) != null ? rs.getString( 17 ) : "", i, 17 );
-						tabManut.setValor( rs.getString( 19 ) != null ? rs.getString( 19 ) : "", i, 18 );
-						tabManut.setValor( rs.getString( "CODTIPOCOB" ) != null ? rs.getString( "CODTIPOCOB" ) : "", i, 19 );
-						tabManut.setValor( rs.getString( "DESCTIPOCOB" ) != null ? rs.getString( "DESCTIPOCOB" ) : "", i, 20 );
-						tabManut.setValor( rs.getString( "ObsItPag" ) != null ? rs.getString( "ObsItPag" ) : "", i, 21 );
+						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrDevItPag" ) ), i, 14 );
+						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrAdicItPag" ) ), i, 15 );
+						tabManut.setValor( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDec, rs.getString( "VlrApagItPag" ) ), i, 16 );
+						tabManut.setValor( rs.getString( 13 ) != null ? rs.getString( 13 ) : "", i, 17 );
+						tabManut.setValor( rs.getString( 17 ) != null ? rs.getString( 17 ) : "", i, 18 );
+						tabManut.setValor( rs.getString( 19 ) != null ? rs.getString( 19 ) : "", i, 19 );
+						tabManut.setValor( rs.getString( "CODTIPOCOB" ) != null ? rs.getString( "CODTIPOCOB" ) : "", i, 20 );
+						tabManut.setValor( rs.getString( "DESCTIPOCOB" ) != null ? rs.getString( "DESCTIPOCOB" ) : "", i, 21 );
+						tabManut.setValor( rs.getString( "ObsItPag" ) != null ? rs.getString( "ObsItPag" ) : "", i, 22 );
 						vCodPed.addElement( rs.getString( "CodCompra" ) );
 						vNumContas.addElement( rs.getString( "NumConta" ) != null ? rs.getString( "NumConta" ) : "" );
 						vCodPlans.addElement( rs.getString( "CodPlan" ) != null ? rs.getString( "CodPlan" ) : "" );
@@ -1225,22 +1229,22 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 				sVals[ 8 ] = Funcoes.dateToStrDate( new Date() );
 				sVals[ 9 ] = (String) tabManut.getValor( iLin, 11 );
 				sVals[ 10 ] = "".equals( vCodCCs.elementAt( iLin ) ) ? sRelPlanPag[ 3 ] : vCodCCs.elementAt( iLin );
-				sVals[ 11 ] = (String) tabManut.getValor( iLin, 19 );
+				sVals[ 11 ] = (String) tabManut.getValor( iLin, 20 );
 
 				if ( "".equals( ( (String) tabManut.getValor( iLin, 10 ) ).trim() ) ) {// Para verificar c jah esta pago testa se a data de pgto esta setada.
-					if ( "".equals( ( (String) tabManut.getValor( iLin, 21 ) ).trim() ) ) {
+					if ( "".equals( ( (String) tabManut.getValor( iLin, 22 ) ).trim() ) ) {
 						historico.setData( Funcoes.strDateToDate( tabManut.getValor( iLin, 1 ).toString() ) );
 						historico.setDocumento( tabManut.getValor( iLin, 8 ).toString().trim() );					
 						historico.setPortador( tabManut.getValor( iLin, 4 ).toString().trim() );
-						historico.setValor( Funcoes.strToBd( tabManut.getValor( iLin, 15).toString() ));					
+						historico.setValor( Funcoes.strToBd( tabManut.getValor( iLin, 16).toString() ));					
 						sVals[ 12 ] = historico.getHistoricodecodificado(); 										
 					}				
 					else {					
-						sVals[ 12 ] = (String) tabManut.getValor( iLin, 21 );
+						sVals[ 12 ] = (String) tabManut.getValor( iLin, 22 );
 					}
 				}
 				else {					
-					sVals[ 12 ] = (String) tabManut.getValor( iLin, 21 );
+					sVals[ 12 ] = (String) tabManut.getValor( iLin, 22 );
 				}
 
 				dl.setValores( sVals );
@@ -1475,7 +1479,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 					iCodPag = Integer.parseInt( (String) tabManut.getValor( iLin, 5 ) );
 					iNParcPag = Integer.parseInt( (String) tabManut.getValor( iLin, 6 ) );
 					
-					sVals = new String[ 14 ];
+					sVals = new String[ 15 ];
 					
 					dl = new DLEditaPag( this );
 					
@@ -1490,25 +1494,26 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 					sVals[ 8 ] = (String) tabManut.getValor( iLin, 9 );
 					sVals[ 9 ] = (String) tabManut.getValor( iLin, 13 );
 					sVals[ 10 ] = (String) tabManut.getValor( iLin, 12 );
-					sVals[ 11 ] = (String) tabManut.getValor( iLin, 14 );
+					sVals[ 11 ] = (String) tabManut.getValor( iLin, 15 );
 					
 					if ( "".equals( ( (String) tabManut.getValor( iLin, 10 ) ).trim() ) ) {						
-						if ( "".equals( ( (String) tabManut.getValor( iLin, 21 ) ).trim() ) ) {
+						if ( "".equals( ( (String) tabManut.getValor( iLin, 22 ) ).trim() ) ) {
 							historico.setData( Funcoes.strDateToDate( tabManut.getValor( iLin, 1 ).toString() ) );
 							historico.setDocumento( tabManut.getValor( iLin, 8 ).toString().trim() );					
 							historico.setPortador( tabManut.getValor( iLin, 4 ).toString().trim() );
-							historico.setValor( Funcoes.strToBd( tabManut.getValor( iLin, 15).toString() ));					
+							historico.setValor( Funcoes.strToBd( tabManut.getValor( iLin, 16).toString() ));					
 							sVals[ 12 ] = historico.getHistoricodecodificado(); 										
 						}						
 						else {						
-							sVals[ 12 ] = (String) tabManut.getValor( iLin, 21 );
+							sVals[ 12 ] = (String) tabManut.getValor( iLin, 22 );
 						}
 					}
 					else {						
-						sVals[ 12 ] = (String) tabManut.getValor( iLin, 18 );
+						sVals[ 12 ] = (String) tabManut.getValor( iLin, 19 );
 					}
 					
-					sVals[ 13 ] = (String) tabManut.getValor( iLin, 19 );
+					sVals[ 13 ] = (String) tabManut.getValor( iLin, 20 );
+					sVals[ 14 ] = (String) tabManut.getValor( iLin, 14 );
 					
 					// SE o doccompra estiver em branco getvalor(8) quer dizer que o lançamento foi feito pelo usuário.
 					dl.setValores( sVals, "".equals( tabManut.getValor( iLin, 8 ).toString().trim() ) );
@@ -1524,7 +1529,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 						sql.append( "CODFILIALPN=?,ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?," );
 						sql.append( "DOCLANCAITPAG=?,VLRPARCITPAG=?,VLRJUROSITPAG=?,VLRADICITPAG=?," );
 						sql.append( "VLRDESCITPAG=?,DTVENCITPAG=?,OBSITPAG=?," );
-						sql.append( "CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=? " );
+						sql.append( "CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=?,VLRDEVITPAG=? " );
 						sql.append( "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
 						
 						try {
@@ -1615,11 +1620,17 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 								ps.setInt( 19, Aplicativo.iCodEmp );
 								ps.setInt( 20, ListaCampos.getMasterFilial( "FNTIPOCOB" ) );
 							}
+							if ( "".equals( sRets[ 11 ].trim() ) ) {
+								ps.setNull( 21, Types.DECIMAL );
+							}
+							else {
+								ps.setBigDecimal( 21, Funcoes.strCurrencyToBigDecimal( sRets[ 11 ] ) );
+							}
 
-							ps.setInt( 21, iCodPag );
-							ps.setInt( 22, iNParcPag );
-							ps.setInt( 23, Aplicativo.iCodEmp );
-							ps.setInt( 24, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+							ps.setInt( 22, iCodPag );
+							ps.setInt( 23, iNParcPag );
+							ps.setInt( 24, Aplicativo.iCodEmp );
+							ps.setInt( 25, ListaCampos.getMasterFilial( "FNPAGAR" ) );
 							
 							ps.executeUpdate();
 							
