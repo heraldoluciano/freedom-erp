@@ -38,6 +38,7 @@ import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
+import org.freedom.acao.PostEvent;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
@@ -103,6 +104,10 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 	private JTextFieldFK txtNomeUsu = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldPad txtCodRegraComis = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescRegraComis = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
 	private JLabelPad lbInfoPadImp = new JLabelPad( "   Padrões para fechamento de venda" );
 
 	private JRadioGroup<?, ?> rgESTipoMov = null;
@@ -149,6 +154,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 	private ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
 
+	private ListaCampos lcRegraComis = new ListaCampos( this, "RC" );
+
 	private Vector<String> vVals = new Vector<String>();
 
 	private Vector<String> vLabs = new Vector<String>();
@@ -159,7 +166,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 		super();
 		setTitulo( "Cadastro de Tipos de Movimento" );
-		setAtribos( 50, 40, 720, 400 );
+		setAtribos( 50, 40, 720, 410 );
 
 		lcRestricoes.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcRestricoes );
@@ -201,6 +208,15 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		txtIDUsu.setFK( true );
 		txtIDUsu.setNomeCampo( "IDUsu" );
 		txtIDUsu.setTabelaExterna( lcUsu );
+
+		lcRegraComis.add( new GuardaCampo( txtCodRegraComis, "CodRegrComis", "Cód.rg.comis.", ListaCampos.DB_PK, txtDescRegraComis, false ) );
+		lcRegraComis.add( new GuardaCampo( txtDescRegraComis, "DescRegrComis", "Descrição da regra do comissionado", ListaCampos.DB_SI, false ) );
+		lcRegraComis.montaSql( false, "REGRACOMIS", "VD" );
+		lcRegraComis.setQueryCommit( false );
+		lcRegraComis.setReadOnly( true );
+		txtCodRegraComis.setFK( true );
+		txtCodRegraComis.setNomeCampo( "IDUsu" );
+		txtCodRegraComis.setTabelaExterna( lcRegraComis );
 
 		cbTipoMov = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_STRING, 2, 0 );
 		
@@ -262,11 +278,17 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		adicDB( chbVlrMFinTipoMov, 390, 200, 300, 20, "VlrMFinTipoMov", "", true );
 		adicDB( chbRestritoTipoMov, 390, 220, 240, 20, "TUSUTIPOMOV", "", true );
 		adicDB( chbMComisTipoMov, 390, 240, 240, 20, "MComisTipoMov", "", true );
+		
+		adicCampo( txtCodRegraComis, 7, 280, 80, 20, "CodRegrComis", "Cód.rg.comis.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescRegraComis, 90, 280, 250, 20, "DescRegrComis", "Descrição da regra de comissionado" );
+		
+		txtCodRegraComis.setAtivo( false );
 
 		lbInfoPadImp.setOpaque( true );
 		adic( lbInfoPadImp, 15, 193, 230, 15 );
 		adic( pinInfoPadImp, 7, 200, 380, 60 );
 		chbRestritoTipoMov.addCheckBoxListener( this );
+		chbMComisTipoMov.addCheckBoxListener( this );
 
 		// pinLbPadImp.adic(lbInfoPadImp, 0, 0, 220, 15);
 		// pinLbPadImp.tiraBorda();
@@ -314,12 +336,22 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		if ( !bPrefs[ 0 ] ) {
 			chbEstoqTipoMov.setVlrString( "N" );
 		}
-		if ( bPrefs[ 0 ] ) {
+		if ( bPrefs[ 1 ] ) {
 			chbMComisTipoMov.setVlrString( "S" );
 		} else {
 			chbMComisTipoMov.setVlrString( "N" );
 		}
 
+	}
+
+	public void beforePost( PostEvent pevt ) {
+
+		if ( txtCodRegraComis.getAtivo() && txtCodRegraComis.getVlrInteger()==0 ) {
+			Funcoes.mensagemErro( this, "Campo Cód.rg.comis. é requerido!" );
+			pevt.cancela();
+		}
+		
+		super.beforePost(pevt);
 	}
 
 	private void montaCbTipoMov( String ES ) {
@@ -390,6 +422,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		lcTab.setConexao( cn );
 		lcRestricoes.setConexao( cn );
 		lcUsu.setConexao( cn );
+		lcRegraComis.setConexao( cn );
 		bPrefs = prefs();
 		chbEstoqTipoMov.setEnabled( bPrefs[ 0 ] ); // Habilita controle de estoque de acordo com o preferências
 	}
@@ -403,18 +436,32 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		montaCbTipoMov( rgESTipoMov.getVlrString() );
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.freedom.acao.CheckBoxListener#valorAlterado(org.freedom.acao.CheckBoxEvent)
-	 */
 	public void valorAlterado( CheckBoxEvent evt ) {
 
-		if ( evt.getCheckBox() == chbRestritoTipoMov )
-			if ( evt.getCheckBox().isSelected() )
+		if ( evt.getCheckBox() == chbRestritoTipoMov ) {
+			if ( evt.getCheckBox().isSelected() ) {
 				removeTab( "Restrições de Usuário", pnRestricoes );
-			else
+			}
+			else {
 				adicTab( "Restrições de Usuário", pnRestricoes );
+			}
+		}
+		else if ( evt.getCheckBox() == chbMComisTipoMov ) {
+			
+			if ( bPrefs[1] ) {
+				chbMComisTipoMov.setEnabled( true );
+				txtCodRegraComis.setRequerido( evt.getCheckBox().isSelected() );
+				txtCodRegraComis.setAtivo( evt.getCheckBox().isSelected() );
+				if ( ! evt.getCheckBox().isSelected()  ) {
+					txtCodRegraComis.setVlrInteger( 0 );
+					lcRegraComis.carregaDados();
+				}
+			}
+			else {
+				chbMComisTipoMov.setSelected( false );
+				chbMComisTipoMov.setEnabled( false );
+			}
+		}
 
 	}
 

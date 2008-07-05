@@ -2651,6 +2651,15 @@ public class ListaCampos extends Container implements PostListener,
 				else if (((GuardaCampo) getComponent(i - iContaDesc)).getTipo() == JTextFieldPad.TP_INTEGER) {
 					vVals.addElement(((GuardaCampo) getComponent(i - iContaDesc)).getVlrInteger());
 				} 
+				// *********
+				else if (((GuardaCampo) getComponent(i - iContaDesc)).getComponente() instanceof JCheckBoxPad){
+					if ("S".equals(((GuardaCampo) getComponent(i - iContaDesc)).getVlr())) {
+						vVals.addElement( new Boolean(true) );	
+					} else {
+						vVals.addElement( new Boolean(false) );
+					}
+				}
+				// **********
 				else {
 					vVals.addElement(((GuardaCampo) getComponent(i - iContaDesc)).getVlrString());
 				}
