@@ -1,6 +1,8 @@
 
 package org.freedom.infra.model.jpa;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -9,6 +11,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import org.apache.log4j.Logger;
+import org.freedom.infra.util.crypt.SimpleCrypt;
+import org.freedom.infra.util.ini.ManagerIni;
 import org.freedom.infra.util.logger.FreedomLogger;
 
 public class Crud {
@@ -20,15 +24,21 @@ public class Crud {
 	private EntityTransaction tx = null;
 
 	private static Logger LOGGER = null; 
+	
+	public static int PERSIST_FRAMEWORK_TOPLINK = 1;
 
 	public Crud( String persistUnit ) {
 		this(persistUnit, null);
 	}
 	
-	public Crud( String persistUnit, Map properties ) {
+	public Crud( int persistFramework, String persistUnit, String initFile, 
+			String sessionName, String userParam, String passwordParam) {
+		this( persistUnit, getParamsDB( persistFramework, initFile, sessionName, userParam, passwordParam) );
+		
+	}
+	public Crud( String persistUnit, Map<String, String> properties ) {
 		
 		LOGGER = FreedomLogger.getLogger(this.getClass(), FreedomLogger.LOGGER_JPA);
-		
 				
 		if ( emf == null ) {
 			try {
@@ -47,6 +57,29 @@ public class Crud {
 		}
 	}
 
+	private static Map<String, String> getParamsDB(final int persistFramework, 
+			final String initFile, final String sessionName, final String userParam, 
+			final String passwordParam) {
+		
+		Map<String, String> result = new HashMap<String, String>();
+		
+		String username = null;
+		String password = null;
+		try {
+			ManagerIni ini = ManagerIni.createManagerIniFile( initFile );
+			username = ini.getProperty( sessionName, userParam );
+			password = SimpleCrypt.decrypt( ini.getProperty( sessionName, password ) );
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		if ( persistFramework == PERSIST_FRAMEWORK_TOPLINK ) {
+			result.put("toplink.jdbc.user", username);
+			result.put("toplink.jdbc.password", password);
+		}
+		return result;
+	}
+	
 	public EntityTransaction getTransaction() {
 
 		return this.tx;

@@ -161,7 +161,7 @@ public class ManagerIni {
 		sessions.put( sessionName, session );
 	}
 	
-	public String getProperite( String session, String key ) {
+	public String getProperty( String session, String key ) {
 		
 		String value = null;
 		
@@ -171,7 +171,7 @@ public class ManagerIni {
 		return value;
 	}
 	
-	public void setProperite( String session, String key, String value ) {
+	public void setProperty( String session, String key, String value ) {
 				
 		Properties p = sessions.get( session );
 		p.setProperty( key, value );
