@@ -107,6 +107,9 @@ public class FAgendProd extends FFilho implements ActionListener{
 	
 	private Color corLegenda = new Color( 120, 120, 120 ); 
 	
+
+	FOP f;
+	
 	public FAgendProd( ) {
 
 		super( true );
@@ -310,7 +313,6 @@ public class FAgendProd extends FFilho implements ActionListener{
 			
 		}else if( e.getSource() == btNovaOp ){
 			
-			FOP f;
 			if ( Aplicativo.telaPrincipal.temTela( "Ordens de produção" ) == false ) {
 				f = new FOP();
 				Aplicativo.telaPrincipal.criatela( "Ordens de produção", f, con );
