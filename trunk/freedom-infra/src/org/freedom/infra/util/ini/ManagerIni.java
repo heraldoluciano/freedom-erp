@@ -166,7 +166,9 @@ public class ManagerIni {
 		String value = null;
 		
 		Properties p = sessions.get( session );
-		value = p.getProperty( key );
+		if ( p != null && key != null ) {
+			value = p.getProperty( key );
+		}
 		
 		return value;
 	}
@@ -176,50 +178,4 @@ public class ManagerIni {
 		Properties p = sessions.get( session );
 		p.setProperty( key, value );
 	}
-	/*
-	public static void main( String[] arg ) {
-		
-		
-		try {
-			ManagerIni mi = ManagerIni.createManagerIniFile( "C:\\teste.ini" );
-			
-			for ( Object v : mi.getSession( "bandeiras" ).values() ) {
-				System.out.println( v );
-			}
-			
-			for ( Object v : mi.getSession( "teste" ).values() ) {
-				System.out.println( v );
-			}
-			
-			for ( Object v : mi.getSession( "totem" ).values() ) {
-				System.out.println( v );
-			}
-			
-			mi.setProperite( "teste", "t1", "alterado teste 1" );
-			mi.setProperite( "teste", "t2", "teste 2" );
-			
-			mi.postProperties();
-			
-			mi.readFile();
-			
-			FileReader reader = new FileReader( mi.file );
-			BufferedReader buffered = new BufferedReader( reader );
-			
-			if ( buffered != null ) {
-				
-				String line = "";
-
-				while ( ( line = buffered.readLine() ) != null ) {
-					
-					System.out.println( line );
-				}
-			}
-			
-		}
-		catch ( IOException e ) {
-			e.printStackTrace();
-		}
-		
-		System.exit( 0 );
-	}*/
 }

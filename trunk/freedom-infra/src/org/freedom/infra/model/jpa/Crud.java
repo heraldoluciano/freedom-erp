@@ -68,7 +68,7 @@ public class Crud {
 		try {
 			ManagerIni ini = ManagerIni.createManagerIniFile( initFile );
 			username = ini.getProperty( sessionName, userParam );
-			password = SimpleCrypt.decrypt( ini.getProperty( sessionName, password ) );
+			password = SimpleCrypt.decrypt( ini.getProperty( sessionName, passwordParam ) );
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
