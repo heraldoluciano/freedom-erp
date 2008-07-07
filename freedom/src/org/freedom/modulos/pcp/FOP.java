@@ -243,14 +243,21 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	@SuppressWarnings("unchecked")
 	private HashMap<String, Object> prefere = null;
 
-	public FOP() {
+	public FOP( int codOp, int seqOp ) {
 
+		txtCodOP.setVlrInteger( codOp );
+		txtSeqOP.setVlrInteger( seqOp );
+	}
+	
+	public FOP(){
+		
 	}
 
 	private void montaTela() {
 
 
 		btRatearItem.setBorder( BorderFactory.createEmptyBorder() );
+		setName( "Ordens de produção" );
 		setTitulo( "Ordens de produção" );
 		setAtribos( 15, 10, 700, 580 );
 		setAltCab( 200 );
@@ -1630,5 +1637,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		lcLoteProdEst.setConexao( cn );
 		lcAlmoxEst.setConexao( cn );
 		lcModLote.setConexao( cn );
+		lcCampos.carregaDados();
+		
 	}
 }
