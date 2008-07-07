@@ -1,3 +1,23 @@
+/**
+ * @version 07/07/2008 <BR>
+ * @author Setpoint Informática Ltda./Reginaldo Garcia Heua <BR>
+ *
+ * Projeto: Freedom <BR>
+ *  
+ * Pacote: org.freedom.modulos.pcp <BR>
+ * Classe: @(#)FAgendProd.java <BR>
+ * 
+ * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
+ * versão 2.1.0 ou qualquer versão posterior. <BR>
+ * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
+ * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
+ * o LICENCIADOR ou então pegar uma cópia em: <BR>
+ * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
+ * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * de acordo com os termos da LPG-PC <BR> <BR>
+ *
+ * Comentários sobre a classe...
+ */
 package org.freedom.modulos.pcp;
 
 import java.awt.BorderLayout;
@@ -5,6 +25,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
@@ -27,7 +49,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
-public class FAgendProd extends FFilho implements ActionListener{
+public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -35,7 +57,7 @@ public class FAgendProd extends FFilho implements ActionListener{
 	private enum ecolAgendamentos{
 	
 		SITOP, DTEMITOP, DTFABROP, CODOP, SEQOP, DESCEST, 
-		TEMPOTOT, TEMPOFIN, FASEATUAL, TOTFASES
+		QTDSUG, QTDPREV, QTDTOTAL, TEMPOTOTAL, TOTALFASE
 
 	};
 	
@@ -190,9 +212,11 @@ public class FAgendProd extends FFilho implements ActionListener{
 		tab.adicColuna( "Cód.Op" );
 		tab.adicColuna( "Seq.Op" );
 		tab.adicColuna( "Descrição do produto" );
-		tab.adicColuna( "Qtd." );
+		tab.adicColuna( "Qtd sug." );
+		tab.adicColuna( "Qtd prev." );
+		tab.adicColuna( "Qtd tot." );
 		tab.adicColuna( "Tempo total" );
-		tab.adicColuna( "Fase Op." );
+		tab.adicColuna( "Total de fases" );
 		
 		tab.setTamColuna( 10, ecolAgendamentos.SITOP.ordinal() );
 		tab.setTamColuna( 100, ecolAgendamentos.DTEMITOP.ordinal() );
@@ -213,6 +237,7 @@ public class FAgendProd extends FFilho implements ActionListener{
 		
 		btFiltrar.addActionListener( this );
 		btNovaOp.addActionListener( this );
+		tab.addMouseListener( this );
 	}
 	
 	private void montaGrid(){
@@ -227,6 +252,7 @@ public class FAgendProd extends FFilho implements ActionListener{
 		StringBuffer sWhere = new StringBuffer();	
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		String sData = "";
 		
 		if( "S".equals( cbCancelada.getVlrString())){
 			
@@ -244,12 +270,22 @@ public class FAgendProd extends FFilho implements ActionListener{
 			
 			sWhere.append( " AND SITOP='PE'" );
 		}
+		if( "F".equals( rgFiltro.getVlrString() )){
+			sData = "DTFABROP";
+		}
+		else if( "E".equals( rgFiltro.getVlrString() )){
+			sData = "DTEMITOP";
+		}
 		
-		sSQL.append( "SELECT SITOP,DTEMITOP,DTFABROP,CODOP,SEQOP,DESCEST,TEMPOFIN*100/TEMPOTOT,FASEATUAL,TOTFASES FROM PPLISTAOPVW01 " );
-		sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND DTFABROP BETWEEN ? AND ?" );
+		sSQL.append( "SELECT SITOP,DTEMITOP,DTFABROP,CODOP,SEQOP,DESCEST, " );
+		sSQL.append( "CAST( QTDSUG AS DECIMAL(15,2)) QTDSUG," );
+		sSQL.append( "CAST( QTDPREV AS DECIMAL(15,2)) QTDPREV," );
+		sSQL.append( "CAST( QTDFINAL AS DECIMAL(15,2)) QTDFINAL," );
+		sSQL.append( "CAST((TEMPOFIN*100/TEMPOTOT) AS DECIMAL (15,2)) TEMPO, ");
+		sSQL.append( "FASEATUAL,TOTFASES FROM PPLISTAOPVW01 " );
+		sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND "+sData+" BETWEEN ? AND ? " );
 		sSQL.append( sWhere.toString() );
-		
-		System.out.println(sSQL.toString());
+	
 		
 		try {
 			
@@ -293,7 +329,11 @@ public class FAgendProd extends FFilho implements ActionListener{
 				tab.setValor( rs.getInt( "CODOP" ), i, ecolAgendamentos.CODOP.ordinal() );
 				tab.setValor( rs.getInt( "SEQOP" ), i, ecolAgendamentos.SEQOP.ordinal() );
 				tab.setValor( rs.getString( "DESCEST" ), i, ecolAgendamentos.DESCEST.ordinal() );
-				tab.setValor( rs.getString( "DESCEST" ), i, ecolAgendamentos.DESCEST.ordinal() );
+				tab.setValor( rs.getBigDecimal( "QTDSUG" ), i, ecolAgendamentos.QTDSUG.ordinal() );
+				tab.setValor( rs.getBigDecimal( "QTDPREV" ), i, ecolAgendamentos.QTDPREV.ordinal() );		
+				tab.setValor( rs.getBigDecimal( "QTDFINAL" ), i, ecolAgendamentos.QTDTOTAL.ordinal() );
+				tab.setValor( rs.getBigDecimal( "TEMPO" ) + "%", i, ecolAgendamentos.TEMPOTOTAL.ordinal() ); 
+				tab.setValor( rs.getBigDecimal( "FASEATUAL" ) + "/" + rs.getBigDecimal( "TOTFASES" ), i, ecolAgendamentos.TOTALFASE.ordinal() );
 				
 			}
 			
@@ -319,4 +359,32 @@ public class FAgendProd extends FFilho implements ActionListener{
 			}		
 		}
 	}
+
+	public void mouseClicked( MouseEvent mevt ) {
+
+		Tabela tabEv = (Tabela) mevt.getSource();
+		
+		 if ( mevt.getClickCount() == 2 ) {		
+			 
+			 Integer codOp =   (Integer) tab.getValor( tab.getLinhaSel(), ecolAgendamentos.CODOP.ordinal());
+			 Integer seqOp = (Integer) tab.getValor( tab.getLinhaSel(), ecolAgendamentos.SEQOP.ordinal());
+			
+			if ( tabEv == tab && tabEv.getLinhaSel() >= 0 ) {
+				
+				if ( Aplicativo.telaPrincipal.temTela( "Ordens de produção" ) == false ) {
+					
+					f = new FOP( codOp, seqOp );
+					Aplicativo.telaPrincipal.criatela( "Ordens de produção", f, con );
+				}
+			}
+		}
+	}
+
+	public void mouseEntered( MouseEvent e ) {}
+
+	public void mouseExited( MouseEvent e ) {}
+
+	public void mousePressed( MouseEvent e ) {}
+
+	public void mouseReleased( MouseEvent e ) {}
 }
