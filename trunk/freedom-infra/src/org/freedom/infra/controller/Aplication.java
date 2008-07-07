@@ -1,23 +1,20 @@
 package org.freedom.infra.controller;
 
 import java.awt.Window;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
+
+import org.freedom.infra.util.ini.ManagerIni;
 
 
 public abstract class Aplication {
 
 	private Window window;
 	
-	private File fileIni;
-	
-	private final Properties properties = new Properties();	
+	private Properties properties;	
 	
 	
-	public Aplication() {
+	public Aplication() throws IOException {
 		
 		super();
 
@@ -28,25 +25,10 @@ public abstract class Aplication {
 	
 	protected abstract void init();
 	
-	protected void initParameters() {
+	protected void initParameters() throws IOException {
 
-		try {
-			if ( fileIni == null ) {
-				fileIni = new File( System.getProperty( "ARQINI", "" ) ) ;
-			}
-			
-			if ( fileIni != null && fileIni.exists() ) {
-				FileInputStream fis = new FileInputStream( fileIni );
-				properties.load( fis );
-				fis.close();
-			}
-		}
-		catch ( FileNotFoundException e ) {
-			e.printStackTrace();
-		}
-		catch ( IOException e ) {
-			e.printStackTrace();
-		}
+		ManagerIni mi = ManagerIni.createManagerIniParameter();
+		properties = mi.getSession( "totem" );
 	}
 	
 	protected void show() {		
@@ -61,14 +43,6 @@ public abstract class Aplication {
 	
 	public void setWindow( Window window ) {	
 		this.window = window;
-	}
-	
-	public File getFileIni() {	
-		return fileIni;
-	}
-	
-	public void setFileIni( File fileIni ) {	
-		this.fileIni = fileIni;
 	}
 	
 	public Object getPropertie( Object propertie ) {
