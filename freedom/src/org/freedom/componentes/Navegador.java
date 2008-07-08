@@ -34,6 +34,17 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
   public  JButton btEditar = new JButton(Icone.novo("btEditar.gif"));
   public  JButton btSalvar = new JButton(Icone.novo("btSalvar.gif"));
   public  JButton btCancelar = new JButton(Icone.novo("btCancelar.gif"));
+  
+  public static int BT_PRIMEIRO = 0;
+  public static int BT_ANTERIOR = 1;
+  public static int BT_PROXIMO = 2;
+  public static int BT_ULTIMO = 3;
+  public static int BT_NOVO = 4;
+  public static int BT_EXCLUIR = 5;
+  public static int BT_EDITAR = 6;
+  public static int BT_SALVAR = 7;
+  public static int BT_CANCELAR = 8;
+  
   public  JButton btPrim = null;
   public  JButton btAnt = null;
   public  JButton btProx = null;
