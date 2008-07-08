@@ -82,6 +82,7 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 		    }		    
 		}	
 	}
+	
 	public void focusGained(FocusEvent fevt){ }
 
 	public double getValor() {
