@@ -68,6 +68,7 @@ import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.componentes.LeiauteGR;
@@ -376,7 +377,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		adicCampo( txtCodOP, 7, 20, 70, 20, "CodOP", "Nº OP.", ListaCampos.DB_PK, true );
 		adicCampo( txtSeqOP, 80, 20, 60, 20, "SeqOP", "Seq. OP.", ListaCampos.DB_PK, true );
 		adicCampo( txtCodTpMov, 143, 20, 70, 20, "CodTipoMov", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
-		adicDescFK( txtDescTipoMov, 216, 20, 258, 20, "DescTipoMov", "Cód.Tp.Mov." );
+		adicDescFK( txtDescTipoMov, 216, 20, 258, 20, "DescTipoMov", "Descrição do tipo de movimento" );
 		adicCampo( txtDtFabProd, 477, 20, 75, 20, "dtfabrop", "Dt.Fabric.", ListaCampos.DB_SI, true );
 
 		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
@@ -1635,6 +1636,12 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				btCancela.setEnabled( true );
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false ); 
+				
+				navRod.setAtivo( Navegador.BT_NOVO, true );
+				navRod.setAtivo( Navegador.BT_EDITAR, true );
+				navRod.setAtivo( Navegador.BT_EXCLUIR, true );
+				navRod.setAtivo( Navegador.BT_SALVAR, true );
+				
 			}
 			else if(sitop.equals( "FN" )) {
 				btLote.setEnabled( false );
@@ -1653,6 +1660,11 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				
 				tpnAbas.setSelectedIndex( 1 );
 				
+				navRod.setAtivo( Navegador.BT_NOVO, false );
+				navRod.setAtivo( Navegador.BT_EDITAR, false );
+				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
+				navRod.setAtivo( Navegador.BT_SALVAR, false );
+				
 			}
 			else if(sitop.equals( "CA" )) {
 				btLote.setEnabled( false );
@@ -1668,6 +1680,26 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				txtDtValidOP.setAtivo( false );
 				txtDtFabProd.setAtivo( false );
 				txtCodAlmoxEst.setAtivo( false );
+				
+				navRod.setAtivo( Navegador.BT_NOVO, false );
+				navRod.setAtivo( Navegador.BT_EDITAR, false );
+				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
+				navRod.setAtivo( Navegador.BT_SALVAR, false );
+			}
+			else if(sitop.equals( "" )) {
+				btLote.setEnabled( false );
+				btRMA.setEnabled( false );
+				btFinaliza.setEnabled( false );
+				btDistrb.setEnabled( false );
+				btCancela.setEnabled( false );
+				
+				txtCodProdEst.setAtivo( true );
+				txtSeqEst.setAtivo( true );
+				txtQtdSugProdOP.setAtivo( true );
+				txtCodLoteProdEst.setAtivo( true );
+				txtDtValidOP.setAtivo( true );
+				txtDtFabProd.setAtivo( true );
+				txtCodAlmoxEst.setAtivo( true );
 			}
 
 		}
@@ -1762,11 +1794,16 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				
 	}
 
-	public void beforeInsert( InsertEvent ievt ) {}
+	public void beforeInsert( InsertEvent ievt ) {
+		lcCampos.limpaCampos( false );
+		
+		bloqueiaOp();
+	}
 
 	public void beforePost( PostEvent pevt) {
 		if(!(txtQtdFinalProdOP.getVlrBigDecimal().compareTo( new BigDecimal(0) )>0)) {
 			txtQtdFinalProdOP.setVlrBigDecimal( new BigDecimal(0) );
+			txtSitOp.setVlrString( "PE" );
 		}
 		
 	}
