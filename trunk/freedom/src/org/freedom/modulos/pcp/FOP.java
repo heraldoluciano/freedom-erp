@@ -189,8 +189,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 	private ListaCampos lcModLote = new ListaCampos( this, "ML" );
 
-//	private JButton btFase = new JButton( "Fases", Icone.novo( "btFechaVenda.gif" ) );
-
 	private JButton btFinaliza = new JButton( "Finaliza", Icone.novo( "btOP.gif" ) );
 	
 	private JButton btCancela = new JButton( "Cancela", Icone.novo( "btCancelar.gif" ) );
@@ -247,6 +245,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 	private boolean bBuscaOPS = false;
 	
+	private boolean bnovo = false;
+	
 	@SuppressWarnings("unchecked")
 	private HashMap<String, Object> prefere = null;
 
@@ -258,6 +258,10 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	
 	public FOP(){
 		
+	}
+	
+	public FOP(boolean bnovo){
+		this.bnovo = bnovo;
 	}
 
 	private void montaTela() {
@@ -540,7 +544,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		txtCodOP.addFocusListener( this );
 		txtSeqOP.addKeyListener( this );
 		setImprimir( true );
-
+		
 	}
 
 	private void formataCampoLimpo(JTextFieldPad campo, Color cor) {
@@ -1623,19 +1627,28 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		boolean rma = false;
 		
 		try {
-			
+
 			sitop = txtSitOp.getVlrString();
 			lote = existeLote( con, txtCodProdEst.getVlrInteger(), txtCodLoteProdEst.getVlrString() );
-			rma = faltaRma();
+			rma = faltaRma() && liberaRMA();
 			
 			if(sitop.equals( "PE" )) {
 				btLote.setEnabled( !lote );
-				btRMA.setEnabled( true );
+				btRMA.setEnabled( rma );
 				btFinaliza.setEnabled( true );
 				btDistrb.setEnabled( true );
 				btCancela.setEnabled( true );
+				
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false ); 
+				
+				txtQtdSugProdOP.setAtivo( true );
+				txtCodLoteProdEst.setAtivo( true );
+				txtDtValidOP.setAtivo( true );
+				txtDtFabProd.setAtivo( true );
+				txtCodAlmoxEst.setAtivo( true );
+				
+				txtCodLoteProdDet.setAtivo( true );
 				
 				navRod.setAtivo( Navegador.BT_NOVO, true );
 				navRod.setAtivo( Navegador.BT_EDITAR, true );
@@ -1658,12 +1671,16 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				txtDtFabProd.setAtivo( false );
 				txtCodAlmoxEst.setAtivo( false );
 				
+				txtCodLoteProdDet.setAtivo( false );
+				
 				tpnAbas.setSelectedIndex( 1 );
 				
 				navRod.setAtivo( Navegador.BT_NOVO, false );
 				navRod.setAtivo( Navegador.BT_EDITAR, false );
 				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
 				navRod.setAtivo( Navegador.BT_SALVAR, false );
+				
+				
 				
 			}
 			else if(sitop.equals( "CA" )) {
@@ -1681,6 +1698,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				txtDtFabProd.setAtivo( false );
 				txtCodAlmoxEst.setAtivo( false );
 				
+				txtCodLoteProdDet.setAtivo( false );
+				
 				navRod.setAtivo( Navegador.BT_NOVO, false );
 				navRod.setAtivo( Navegador.BT_EDITAR, false );
 				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
@@ -1694,12 +1713,15 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				btCancela.setEnabled( false );
 				
 				txtCodProdEst.setAtivo( true );
-				txtSeqEst.setAtivo( true );
+				txtSeqEst.setAtivo( true ); 
+				
 				txtQtdSugProdOP.setAtivo( true );
 				txtCodLoteProdEst.setAtivo( true );
 				txtDtValidOP.setAtivo( true );
 				txtDtFabProd.setAtivo( true );
 				txtCodAlmoxEst.setAtivo( true );
+				
+				txtCodLoteProdDet.setAtivo( true );
 			}
 
 		}
@@ -1713,10 +1735,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		try {
 			if ( cevt.getListaCampos() == lcCampos ) {
 				bloqueiaOp();
-/*				btRMA.setEnabled( ( lcCampos.getStatus() != ListaCampos.LCS_NONE ) && ( lcCampos.getStatus() != ListaCampos.LCS_INSERT ) && liberaRMA() );
-				btFinaliza.setEnabled( ( lcCampos.getStatus() != ListaCampos.LCS_NONE ) && ( lcCampos.getStatus() != ListaCampos.LCS_INSERT ) );
-				btDistrb.setEnabled( ( lcCampos.getStatus() != ListaCampos.LCS_NONE ) && ( lcCampos.getStatus() != ListaCampos.LCS_INSERT ) );
-	*/			
+
 				bBuscaRMA = true;
 				bBuscaOPS = true;
 				tabSimu.limpa();
@@ -1899,6 +1918,9 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		lcAlmoxEst.setConexao( cn );
 		lcModLote.setConexao( cn );
 		lcCampos.carregaDados();
+		
+		if(bnovo)
+			lcCampos.insert( true );
 		
 	}
 }

@@ -32,6 +32,7 @@ import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -136,7 +137,7 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 	public FAgendProd( ) {
 
 		super( true );
-		setAtribos( 50, 50, 800, 450 );
+		setAtribos( 50, 50, 810, 470 );
 		
 		montaTela();
 		
@@ -208,26 +209,26 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		pnBotoes.adic( lbImgFinalizada, 400, 4, 20, 20 );
 
 		tab.adicColuna( "" );
-		tab.adicColuna( "Dt. Emissão" );
-		tab.adicColuna( "Dt. Fabricação" );
-		tab.adicColuna( "Cód.Op" );
+		tab.adicColuna( "Emissão" );
+		tab.adicColuna( "Fabricação" );
+		tab.adicColuna( "O.P." );
 		tab.adicColuna( "Seq." );
 		tab.adicColuna( "Descrição do produto" );
 		tab.adicColuna( "Qtd sug." );
 		tab.adicColuna( "Qtd prev." );
 		tab.adicColuna( "Qtd tot." );
-		tab.adicColuna( "Tempo" );
-		tab.adicColuna( "Fases" );
+		tab.adicColuna( "Concl." );
+		tab.adicColuna( "Fase" );
 		
 		tab.setTamColuna( 10, ecolAgendamentos.SITOP.ordinal() );
-		tab.setTamColuna( 90, ecolAgendamentos.DTEMITOP.ordinal() );
-		tab.setTamColuna( 90, ecolAgendamentos.DTFABROP.ordinal() );
-		tab.setTamColuna( 60, ecolAgendamentos.CODOP.ordinal() );
-		tab.setTamColuna( 35, ecolAgendamentos.SEQOP.ordinal() );
+		tab.setTamColuna( 68, ecolAgendamentos.DTEMITOP.ordinal() );
+		tab.setTamColuna( 68, ecolAgendamentos.DTFABROP.ordinal() );
+		tab.setTamColuna( 50, ecolAgendamentos.CODOP.ordinal() );
+		tab.setTamColuna( 30, ecolAgendamentos.SEQOP.ordinal() );
 		tab.setTamColuna( 65, ecolAgendamentos.QTDSUG.ordinal() );
 		tab.setTamColuna( 65, ecolAgendamentos.QTDPREV.ordinal() );
 		tab.setTamColuna( 65, ecolAgendamentos.QTDTOTAL.ordinal() );
-		tab.setTamColuna( 300, ecolAgendamentos.DESCEST.ordinal() );
+		tab.setTamColuna( 270, ecolAgendamentos.DESCEST.ordinal() );
 		tab.setTamColuna( 40, ecolAgendamentos.TOTALFASE.ordinal() );
 		tab.setTamColuna( 55, ecolAgendamentos.TEMPOTOTAL.ordinal() );
 			
@@ -339,8 +340,8 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 				tab.setValor( rs.getString( "DESCEST" ), i, ecolAgendamentos.DESCEST.ordinal() );
 				tab.setValor( rs.getBigDecimal( "QTDSUG" ), i, ecolAgendamentos.QTDSUG.ordinal() );
 				tab.setValor( rs.getBigDecimal( "QTDPREV" ), i, ecolAgendamentos.QTDPREV.ordinal() );		
-				tab.setValor( rs.getBigDecimal( "QTDFINAL" ), i, ecolAgendamentos.QTDTOTAL.ordinal() );
-				tab.setValor( rs.getBigDecimal( "TEMPO" ) + "%", i, ecolAgendamentos.TEMPOTOTAL.ordinal() ); 
+				tab.setValor( rs.getBigDecimal( "QTDFINAL" ), i, ecolAgendamentos.QTDTOTAL.ordinal() );			
+				tab.setValor( rs.getBigDecimal( "TEMPO" ) + "%", i, ecolAgendamentos.TEMPOTOTAL.ordinal() );							
 				tab.setValor( rs.getBigDecimal( "FASEATUAL" ) + "/" + rs.getBigDecimal( "TOTFASES" ), i, ecolAgendamentos.TOTALFASE.ordinal() );
 				
 			}
@@ -362,7 +363,7 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		}else if( e.getSource() == btNovaOp ){
 			
 			if ( Aplicativo.telaPrincipal.temTela( "Ordens de produção" ) == false ) {
-				f = new FOP();
+				f = new FOP(true);
 				Aplicativo.telaPrincipal.criatela( "Ordens de produção", f, con );
 			}		
 		}
