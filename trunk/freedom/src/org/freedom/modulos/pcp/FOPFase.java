@@ -216,8 +216,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		tab.setColunaInvisivel( 5 );
 		tab.setColunaInvisivel( 6 );
 		tab.setColunaInvisivel( 7 );
-		
-		    
+				    
 		lcCampos.addCarregaListener(this);
 		lcDet.addCarregaListener(this);
 		lcFase.addCarregaListener(this);
@@ -233,7 +232,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		
 		try {
 			  		
-			sql.append( "UPDATE PPOP SET QTDFINALPRODOP=?, JUSTFICQTDPROD=?,DTFABROP=? " );
+			sql.append( "UPDATE PPOP SET QTDFINALPRODOP=?, JUSTFICQTDPROD=? " );
 			sql.append( "WHERE CODOP=? AND SEQOP=? AND CODEMP=? AND CODFILIAL=? " );
 			
 			ps = con.prepareStatement(sql.toString());

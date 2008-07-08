@@ -97,7 +97,7 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
     }
     
     public void ok(){
-    	if ((txtQtdPrevOP.getVlrDouble().doubleValue() != getValor()) &&(txaJustifcQtdProd.getVlrString().equals(""))){
+    	if ((txtQtdPrevOP.getVlrDouble().doubleValue() != getValor()) && (txaJustifcQtdProd.getVlrString().equals(""))){
 	        Funcoes.mensagemErro(this,"Quantidade produzida difere da quantidade prevista.\nJustifique.");
     	    return;
     	}
