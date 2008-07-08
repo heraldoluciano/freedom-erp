@@ -90,7 +90,11 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	public FOPFase(int iCodOP,int iSeqOP,int iSeqEst) { //,boolean bExecuta
 		
 		setTitulo("Fases da OP");
-				
+		
+	    setAtribos( 70, 40, 660, 470);
+	    setAltCab(130);
+	    setAltDet(180);
+		
 		this.iCodOP = iCodOP;
 		this.iSeqOP = iSeqOP;
 		this.iSeqEst = iSeqEst;
@@ -165,9 +169,9 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		
 		
 		adicCampo(txtNumSeqOf, 5, 20, 40, 20,"SeqOf","Item",ListaCampos.DB_PK,true);
-		adicCampo(txtCodFase, 48, 20, 77, 20,"CodFase","Cód.fase", ListaCampos.DB_FK, txtDescFase, true);
+		adicCampo(txtCodFase, 48, 20, 77, 20,"CodFase","Cd.fase", ListaCampos.DB_FK, txtDescFase, true);
 		adicDescFK(txtDescFase, 128, 20, 227, 20,"DescFase", "Descrição da fase");
-		adicCampo(txtTempoOf, 358, 20, 100, 20,"TempoOf","Tempo (Seg.)",ListaCampos.DB_SI, false);
+		adicCampo(txtTempoOf, 358, 20, 100, 20,"TempoOf","Tempo",ListaCampos.DB_SI, false);
 		adicCampoInvisivel(txtCodTpRec,"CodTpRec", "Cód.tp.rec.", ListaCampos.DB_SI, false);
 		adicCampo(txtCodRec, 7, 60, 60, 20,"CodRecP","Cód.rec.", ListaCampos.DB_FK, txtDescRec, false);
 		adicDescFK(txtDescRec, 70, 60, 390, 20, "DescRecP", "Descrição do recurso");
@@ -185,25 +189,34 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 
 //		if (bExecuta){
 			setPainel( pinDetFasesCampos );
-			adicCampo(txtDataIniProdFs, 470, 20, 80, 20,"DataIniProdFs","Data ínicial", ListaCampos.DB_SI, false);
-			adicCampo(txtHIniProdFs, 553, 20, 80, 20,"HIniProdFs","Hora ínicial", ListaCampos.DB_SI, false);
-			adicCampo(txtDataFimProdFs, 470, 60, 80, 20,"DataFimProdFs","Data final", ListaCampos.DB_SI, false);
-			adicCampo(txtHFimProdFs, 553, 60, 80, 20,"HFimProdFs","Hora final", ListaCampos.DB_SI, false);
+			adicCampo(txtDataIniProdFs, 470, 20, 80, 20,"DataIniProdFs","Dt.inicial", ListaCampos.DB_SI, false);
+			adicCampo(txtHIniProdFs, 553, 20, 80, 20,"HIniProdFs","Hr.inicial", ListaCampos.DB_SI, false);
+			adicCampo(txtDataFimProdFs, 470, 60, 80, 20,"DataFimProdFs","Dt.final", ListaCampos.DB_SI, false);
+			adicCampo(txtHFimProdFs, 553, 60, 80, 20,"HFimProdFs","Hr.final", ListaCampos.DB_SI, false);
 //		}
 		
-		adicCampoInvisivel(txtSitFS,"SITFS", "Situação da fase", ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtSitFS,"SITFS", "Sit.", ListaCampos.DB_SI, false);
 		setListaCampos( true, "OPFASE", "PP");
 		lcDet.setQueryInsert(true);
 		montaTab();
 		    
 		lcCampos.setReadOnly(true);
 		
-		tab.setTamColuna(50,0);
-		tab.setTamColuna(50,1);
-		tab.setTamColuna(200,2);
-		tab.setTamColuna(100,3);
-		tab.setTamColuna(50,4);
-		tab.setTamColuna(200,5);
+		tab.setTamColuna(30,0); // Item
+		tab.setTamColuna(50,1); // CodFase
+		tab.setTamColuna(230,2); // Desc.Fase		
+		tab.setTamColuna(55,3); // Tempo
+		tab.setTamColuna(70,8); // Dt. Inicial
+		tab.setTamColuna(55,9); // Hr.Inicial
+		tab.setTamColuna(70,10); //Dt. Final
+		tab.setTamColuna(55,11); //Hr. Final
+		tab.setTamColuna(25,12); //Situação
+		
+		tab.setColunaInvisivel( 4 );
+		tab.setColunaInvisivel( 5 );
+		tab.setColunaInvisivel( 6 );
+		tab.setColunaInvisivel( 7 );
+		
 		    
 		lcCampos.addCarregaListener(this);
 		lcDet.addCarregaListener(this);
@@ -216,14 +229,14 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 
 	public void atualizaOP(){
 		PreparedStatement ps = null;
-		String sSQL = null;
+		StringBuffer sql = new StringBuffer();
 		
 		try {
 			  		
-			sSQL = "UPDATE PPOP SET QtdFinalProdOP=?, JUSTFICQTDPROD=? "
-				 + "WHERE CODOP=? AND SEQOP=? AND CODEMP=? AND CODFILIAL=?";
+			sql.append( "UPDATE PPOP SET QTDFINALPRODOP=?, JUSTFICQTDPROD=?,DTFABROP=? " );
+			sql.append( "WHERE CODOP=? AND SEQOP=? AND CODEMP=? AND CODFILIAL=? " );
 			
-			ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sql.toString());
 			ps.setDouble(1,txtQtdFinalOP.getVlrDouble().doubleValue());
 			ps.setString(2,txtJustificqtdprod.getVlrString());
 			ps.setInt(3,txtCodOP.getVlrInteger().intValue());
@@ -232,10 +245,9 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 			ps.setInt(6,ListaCampos.getMasterFilial("PPOP"));
 			ps.executeUpdate();
 			    
-			ps.close();
-		
-			if(!con.getAutoCommit())
+			if(!con.getAutoCommit()) {
 				con.commit();
+			}
 		  	
 		} 
 		catch(Exception err) {
@@ -244,7 +256,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		} 
 		finally {
 			ps = null;
-			sSQL = null;
+			sql = null;
 		}
 	}
 	
@@ -334,6 +346,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 					pevt.cancela(); 
 				else {
 					txtQtdFinalOP.setVlrDouble(new Double(dl.getValor()));
+
 					txtJustificqtdprod.setVlrString(dl.getObs());
 					atualizaOP();
 				}
