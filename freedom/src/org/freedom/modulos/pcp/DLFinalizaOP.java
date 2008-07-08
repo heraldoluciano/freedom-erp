@@ -47,11 +47,12 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
         txtQtdPrevOP.setVlrString(sQtdPrevOp);
         txtQtdFinalOP.setVlrString(sQtdPrevOp);
 		setTitulo("Finalização da OP.");
-		setAtribos(250,150);
+		setAtribos(250,190);
 		
 		txtQtdPrevOP.setAtivo(false);
 		adic(new JLabelPad("Qtd. prevista:"),7,5,100,20);
 		adic(txtQtdPrevOP,7,25,110,20);
+		
 		adic(new JLabelPad("Qtd. produzida:"),120,5,100,20);
 		adic(txtQtdFinalOP,120,25,110,20); 
 		
