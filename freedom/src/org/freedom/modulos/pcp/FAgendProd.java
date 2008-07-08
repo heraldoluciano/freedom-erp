@@ -37,6 +37,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
@@ -394,4 +395,5 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 	public void mousePressed( MouseEvent e ) {}
 
 	public void mouseReleased( MouseEvent e ) {}
+
 }
