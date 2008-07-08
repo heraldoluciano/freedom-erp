@@ -207,21 +207,28 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		pnBotoes.adic( lbImgFinalizada, 400, 4, 20, 20 );
 
 		tab.adicColuna( "" );
-		tab.adicColuna( "Data Emissão" );
-		tab.adicColuna( "Data Fabricação" );
+		tab.adicColuna( "Dt. Emissão" );
+		tab.adicColuna( "Dt. Fabricação" );
 		tab.adicColuna( "Cód.Op" );
-		tab.adicColuna( "Seq.Op" );
+		tab.adicColuna( "Seq." );
 		tab.adicColuna( "Descrição do produto" );
 		tab.adicColuna( "Qtd sug." );
 		tab.adicColuna( "Qtd prev." );
 		tab.adicColuna( "Qtd tot." );
-		tab.adicColuna( "Tempo total" );
-		tab.adicColuna( "Total de fases" );
+		tab.adicColuna( "Tempo" );
+		tab.adicColuna( "Fases" );
 		
 		tab.setTamColuna( 10, ecolAgendamentos.SITOP.ordinal() );
-		tab.setTamColuna( 100, ecolAgendamentos.DTEMITOP.ordinal() );
-		tab.setTamColuna( 100, ecolAgendamentos.DTFABROP.ordinal() );
+		tab.setTamColuna( 90, ecolAgendamentos.DTEMITOP.ordinal() );
+		tab.setTamColuna( 90, ecolAgendamentos.DTFABROP.ordinal() );
+		tab.setTamColuna( 60, ecolAgendamentos.CODOP.ordinal() );
+		tab.setTamColuna( 35, ecolAgendamentos.SEQOP.ordinal() );
+		tab.setTamColuna( 65, ecolAgendamentos.QTDSUG.ordinal() );
+		tab.setTamColuna( 65, ecolAgendamentos.QTDPREV.ordinal() );
+		tab.setTamColuna( 65, ecolAgendamentos.QTDTOTAL.ordinal() );
 		tab.setTamColuna( 300, ecolAgendamentos.DESCEST.ordinal() );
+		tab.setTamColuna( 40, ecolAgendamentos.TOTALFASE.ordinal() );
+		tab.setTamColuna( 55, ecolAgendamentos.TEMPOTOTAL.ordinal() );
 			
 		Calendar cPeriodo = Calendar.getInstance();
 		
