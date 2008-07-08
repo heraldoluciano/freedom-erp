@@ -1474,7 +1474,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		else if ( evt.getSource() == btDistrb ) {
 			distribuicao();
 		}
-		else if ( evt.getSource() == btDistrb ) {
+		else if ( evt.getSource() == btCancela ) {
 			cancelaOP();
 		}
 	}
@@ -1504,6 +1504,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				if(!con.getAutoCommit()) {
 					con.commit();
 				}
+				lcCampos.carregaDados();
 			}
 		} 
 		catch ( Exception e ) {
@@ -1630,6 +1631,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				btFinaliza.setEnabled( false );
 				btDistrb.setEnabled( false );
 				btCancela.setEnabled( true );
+				
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false );
 				txtQtdSugProdOP.setAtivo( false );
@@ -1638,6 +1640,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				txtDtFabProd.setAtivo( false );
 				txtCodAlmoxEst.setAtivo( false );
 				
+				tpnAbas.setSelectedIndex( 1 );
+				
 			}
 			else if(sitop.equals( "CA" )) {
 				btLote.setEnabled( false );
@@ -1645,8 +1649,14 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				btFinaliza.setEnabled( false );
 				btDistrb.setEnabled( false );
 				btCancela.setEnabled( false );
+
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false );
+				txtQtdSugProdOP.setAtivo( false );
+				txtCodLoteProdEst.setAtivo( false );
+				txtDtValidOP.setAtivo( false );
+				txtDtFabProd.setAtivo( false );
+				txtCodAlmoxEst.setAtivo( false );
 			}
 
 		}
