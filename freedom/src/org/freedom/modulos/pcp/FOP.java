@@ -87,6 +87,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	private JPanelPad pinCab = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
+	
+	private JLabelPad lbStatus = new JLabelPad();
 
 	private JTabbedPanePad tpnAbas = new JTabbedPanePad();
 
@@ -409,7 +411,9 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		adicDescFKInvisivel( txtDescLoteProdEst, "VenctoLote", "Vencto.Lote" );
 		adicCampo( txtDtValidOP, 473, 100, 80, 20, "dtvalidpdop", "Dt. validade", ListaCampos.DB_SI, false );
 		
-		adicCampo( txtSitOp, 473,140,50,20, "sitop", "sit.op.", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtSitOp, "sitop", "sit.op.", ListaCampos.DB_SI, false );
+		
+		pinCab.adic( lbStatus, 383, 140, 85, 20 );
 				
 		setListaCampos( true, "OP", "PP" );
 
@@ -453,7 +457,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		tabSimu.adicColuna( "Compsição" );// 4
 		tabSimu.adicColuna( "Saldo" );// 5
 		tabSimu.adicColuna( "Utilizado" );// 6
-		tabSimu.adicColuna( "rma" );// 7
+		tabSimu.adicColuna( "Rma?" );// 7
 
 		tabSimu.setTamColuna( 40, 0 );
 		tabSimu.setTamColuna( 70, 1 );
@@ -462,7 +466,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		tabSimu.setTamColuna( 80, 4 );
 		tabSimu.setTamColuna( 80, 5 );
 		tabSimu.setTamColuna( 80, 6 );
-		tabSimu.setTamColuna( 30, 7 );
+		tabSimu.setTamColuna( 35, 7 );
 
 		tabRMA.adicColuna( "" );// 0
 		tabRMA.adicColuna( "Cód.rma." );// 1
@@ -479,8 +483,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		tabRMA.adicColuna( "Saldo" );// 12
 
 		tabRMA.setTamColuna( 13, 0 );
-		tabRMA.setTamColuna( 80, 1 );
-		tabRMA.setTamColuna( 80, 2 );
+		tabRMA.setTamColuna( 70, 1 );
+		tabRMA.setTamColuna( 70, 2 );
 		tabRMA.setTamColuna( 180, 3 );
 		tabRMA.setTamColuna( 50, 4 );
 		tabRMA.setTamColuna( 50, 5 );
@@ -501,12 +505,17 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		tabOPS.adicColuna( "Descrição da estrutura" );// 6
 
 		tabOPS.setTamColuna( 13, 0 );
-		tabOPS.setTamColuna( 70, 1 );
-		tabOPS.setTamColuna( 70, 2 );
+		tabOPS.setTamColuna( 60, 1 );
+		tabOPS.setTamColuna( 50, 2 );
 		tabOPS.setTamColuna( 70, 3 );
 		tabOPS.setTamColuna( 70, 4 );
-		tabOPS.setTamColuna( 200, 5 );
+		tabOPS.setTamColuna( 250, 5 );
 		tabOPS.setTamColuna( 200, 6 );
+		
+		lbStatus.setForeground( Color.WHITE );
+		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
+		lbStatus.setOpaque( true );
+		lbStatus.setVisible( false );
 
 		tabRMA.addMouseListener( new MouseAdapter() {
 
@@ -606,10 +615,10 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		}
 		adicDescFK( txtDescProdDet, 133, 20, 250, 20, "descprod", "Descrição do produto" );
 		adicCampo( txtCodLoteProdDet, 386, 20, 90, 20, "codlote", "Lote", ListaCampos.DB_FK, false );
-		adicCampo( txtQtdItOp, 479, 20, 90, 20, "qtditop", "Quantidade", ListaCampos.DB_SI, false );
+		adicCampo( txtQtdItOp, 479, 20, 90, 20, "qtditop", "Qtd.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtQtdCopiaItOp, "qtdcopiaitop", "Qtd. rateada", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodLoteProdRat, "codloterat", "lote rateado", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtGeraRMAAut, "GERARMA", "Gera Rma", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtGeraRMAAut, "GERARMA", "Rma?", ListaCampos.DB_SI, false );
 		setListaCampos( true, "ITOP", "PP" );
 		lcDet.setQueryInsert( false );
 
@@ -626,8 +635,10 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		tab.setTamColuna( 55, 0 );
 		tab.setTamColuna( 70, 1 );
 		tab.setTamColuna( 200, 2 );
-		tab.setTamColuna( 100, 3 );
-		tab.setTamColuna( 0, 4 );
+		tab.setTamColuna( 70, 3 );
+		tab.setTamColuna( 60, 5 );
+		tab.setTamColuna( 35, 8 );
+		tab.setColunaInvisivel( 4 );
 	}
 
 	private BigDecimal getQtdTotal( BigDecimal arg ) {
@@ -1724,10 +1735,31 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				}
 			}
 			
+			if ( txtSitOp.getVlrString().trim().length() > 0 && txtSitOp.getVlrString().equals( "CA" ) ) {
+				lbStatus.setText( " CANCELADA" );
+				lbStatus.setBackground( Color.RED );
+				lbStatus.setVisible( true );
+			}
+			else if ( txtSitOp.getVlrString().trim().length() > 0 && txtSitOp.getVlrString().equals( "FN" ) ) {
+				lbStatus.setText( " FINALIZADA" );
+				lbStatus.setBackground( new Color( 45, 190, 60 ) );
+				lbStatus.setVisible( true );
+			}
+			else if ( txtSitOp.getVlrString().trim().length() > 0 && ( txtSitOp.getVlrString().trim().equals( "PE" ))) {
+				lbStatus.setText( " PENDENTE" );
+				lbStatus.setBackground( Color.BLUE );
+				lbStatus.setVisible( true );
+			}
+			else {
+				lbStatus.setVisible( false );
+			}
+			
 		}
 		catch (Exception e) {
+			
 			e.printStackTrace();
 		}
+				
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {}
