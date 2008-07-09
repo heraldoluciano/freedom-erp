@@ -21,6 +21,7 @@
  */
 
 package org.freedom.modulos.std;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -95,70 +96,29 @@ public class FRConfEstoq extends FRelatorio {
   	int linPag = 0;
   	PreparedStatement ps = null;
   	ResultSet rs = null;
-  	double deSldCalc = 0;
-  	double deQtdDif = 0;
+  	BigDecimal beSldCalc = new BigDecimal(0);
+  	BigDecimal beQtdDif = new BigDecimal(0);
 
   	try {
   		
   		imp = new ImprimeOS("",con);
   		linPag = imp.verifLinPag()-1;
   		imp.setTitulo("Relatorio de Conferência de Estoque por Produto");
-
-  		sSql = "SELECT P.DESCPROD,P.CODPROD,P.REFPROD,P.SLDLIQPROD,"+
-			"(SELECT SUM(QTDINVP) FROM EQINVPROD IT WHERE IT.CODEMPPD=P.CODEMP AND " +
-			  "IT.CODFILIALPD=P.CODFILIAL AND IT.CODPROD=P.CODPROD ) QTDINVP, "+
-			"(SELECT SUM(QTDITCOMPRA) FROM CPITCOMPRA IC, CPCOMPRA C, EQTIPOMOV TM " +
-			" WHERE IC.CODEMPPD=P.CODEMP AND IC.CODFILIALPD=P.CODFILIAL AND IC.CODPROD=P.CODPROD AND " +
-			" C.CODCOMPRA=IC.CODCOMPRA AND C.CODEMP=IC.CODEMP AND C.CODFILIAL=IC.CODFILIAL AND " +
-			" TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM "+sWhere+
-			") QTDITCOMPRA, "+
-			"(SELECT SUM(QTDFINALPRODOP) FROM PPOP O, EQTIPOMOV TM " +
-			" WHERE O.CODEMPPD=P.CODEMP AND O.CODFILIALPD=P.CODFILIAL AND O.CODPROD=P.CODPROD AND " +
-			" TM.CODTIPOMOV=O.CODTIPOMOV AND TM.CODEMP=O.CODEMPTM AND TM.CODFILIAL=O.CODFILIALTM "+sWhere+
-			") QTDFINALPRODOP, "+
-			"(SELECT SUM(QTDEXPITRMA) FROM EQRMA R, EQITRMA IR, EQTIPOMOV TM " +
-			" WHERE IR.CODEMPPD=P.CODEMP AND IR.CODFILIALPD=P.CODFILIAL AND IR.CODPROD=P.CODPROD AND " +
-			" R.CODRMA=IR.CODRMA AND R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND " +
-			" TM.CODTIPOMOV=R.CODTIPOMOV AND TM.CODEMP=R.CODEMPTM AND TM.CODFILIAL=R.CODFILIALTM "+sWhere+
-			") QTDEXPITRMA, "+
-			"(SELECT SUM(QTDITVENDA) FROM VDITVENDA IV, VDVENDA V, EQTIPOMOV TM " +
-			" WHERE IV.CODEMPPD=P.CODEMP AND IV.CODFILIALPD=P.CODFILIAL AND IV.CODPROD=P.CODPROD AND " +
-			" V.CODVENDA=IV.CODVENDA AND V.TIPOVENDA=IV.TIPOVENDA AND V.CODEMP=IV.CODEMP AND " +
-			"V.CODFILIAL=IV.CODFILIAL AND (NOT SUBSTR(V.STATUSVENDA,1,1)='C') AND " +
-			"TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " +
-			"TM.CODFILIAL=V.CODFILIALTM "+sWhere+") QTDITVENDA," +
-			"(SELECT FIRST 1 M.SLDMOVPROD FROM EQMOVPROD M" +
-			" WHERE M.CODEMPPD=P.CODEMP AND M.CODFILIALPD=P.CODFILIAL AND " +
-			" M.CODPROD=P.CODPROD ORDER BY M.DTMOVPROD DESC, M.CODMOVPROD DESC ) SLDMOVPROD "+
-			"FROM EQPRODUTO P WHERE P.CODEMP=? AND P.CODFILIAL=? " +
-			(cbAtivo.getVlrString().equals("S")?"AND P.ATIVOPROD='S' ":"")+
-			"AND ( ( NOT P.SLDLIQPROD=( SELECT FIRST 1 M.SLDMOVPROD FROM EQMOVPROD M" +
-			" WHERE M.CODEMPPD=P.CODEMP AND M.CODFILIALPD=P.CODFILIAL AND " +
-			" M.CODPROD=P.CODPROD ORDER BY M.DTMOVPROD DESC, M.CODMOVPROD DESC ) ) OR" +
-			" ( NOT P.SLDLIQPROD=( "+
-			"( COALESCE((SELECT SUM(QTDINVP) FROM EQINVPROD IT WHERE IT.CODEMPPD=P.CODEMP AND " +
-			  "IT.CODFILIALPD=P.CODFILIAL AND IT.CODPROD=P.CODPROD),0 )) + " +
-			"( COALESCE((SELECT SUM(QTDITCOMPRA) FROM CPITCOMPRA IC, CPCOMPRA C, EQTIPOMOV TM " +
-			" WHERE IC.CODEMPPD=P.CODEMP AND IC.CODFILIALPD=P.CODFILIAL AND IC.CODPROD=P.CODPROD AND " +
-			" C.CODCOMPRA=IC.CODCOMPRA AND C.CODEMP=IC.CODEMP AND C.CODFILIAL=IC.CODFILIAL AND " +
-			" TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM "+sWhere+"),0 )) + " +
-			"( COALESCE((SELECT SUM(QTDFINALPRODOP) FROM PPOP O, EQTIPOMOV TM " +
-			" WHERE O.CODEMPPD=P.CODEMP AND O.CODFILIALPD=P.CODFILIAL AND O.CODPROD=P.CODPROD AND " +
-			" TM.CODTIPOMOV=O.CODTIPOMOV AND TM.CODEMP=O.CODEMPTM AND TM.CODFILIAL=O.CODFILIALTM "+sWhere+"),0 )) - " + 
-			"( COALESCE((SELECT SUM(QTDEXPITRMA) FROM EQRMA R, EQITRMA IR, EQTIPOMOV TM " +
-			" WHERE IR.CODEMPPD=P.CODEMP AND IR.CODFILIALPD=P.CODFILIAL AND IR.CODPROD=P.CODPROD AND " +
-			" R.CODRMA=IR.CODRMA AND R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND " +
-			" TM.CODTIPOMOV=R.CODTIPOMOV AND TM.CODEMP=R.CODEMPTM AND TM.CODFILIAL=R.CODFILIALTM "+sWhere+"),0 )) - " +
-			"( COALESCE((SELECT SUM(QTDITVENDA) FROM VDITVENDA IV, VDVENDA V, EQTIPOMOV TM " +
-			" WHERE IV.CODEMPPD=P.CODEMP AND IV.CODFILIALPD=P.CODFILIAL AND IV.CODPROD=P.CODPROD AND " +
-			" V.CODVENDA=IV.CODVENDA AND V.TIPOVENDA=IV.TIPOVENDA AND V.CODEMP=IV.CODEMP AND " +
-			"V.CODFILIAL=IV.CODFILIAL AND (NOT SUBSTR(V.STATUSVENDA,1,1)='C') AND " +
-			"TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " +
-			"TM.CODFILIAL=V.CODFILIALTM "+sWhere+"),0))"+
-			")) ) ORDER BY P.DESCPROD" ;
+  		
+  		sSql = "SELECT DESCPROD, CODPROD, REFPROD, SLDLIQPROD, QTDINVP, QTDITCOMPRA, " +
+  				"QTDFINALPRODOP, QTDEXPITRMA, QTDITVENDA, SLDMOVPROD, SLDLIQPRODAX " +
+  				"FROM EQCONFESTOQVW01 " +
+  				"WHERE CODEMP=? AND CODFILIAL=? AND "+(cbAtivo.getVlrString().equals("S")?"ATIVOPROD='S' AND ":"") +
+  				"( ( ( QTDINVP + QTDITCOMPRA + QTDFINALPRODOP - QTDEXPITRMA - QTDITVENDA) <> SLDLIQPROD ) OR " +
+  				"( (QTDINVP + QTDITCOMPRA + QTDFINALPRODOP - QTDEXPITRMA - QTDITVENDA) <> SLDMOVPROD) OR " +
+  				"( (QTDINVP + QTDITCOMPRA + QTDFINALPRODOP - QTDEXPITRMA - QTDITVENDA) <> SLDLIQPRODAX) OR " +
+  				"(SLDLIQPROD<>SLDMOVPROD) OR (SLDLIQPRODAX<>SLDMOVPROD) )";
+  		
+  		
   		System.out.println(sSql);
   		
   		try {
+  			
   			ps = con.prepareStatement(sSql);
   			ps.setInt(1,Aplicativo.iCodEmp);
   			ps.setInt(2,ListaCampos.getMasterFilial("EQPRODUTO"));
@@ -201,25 +161,30 @@ public class FRConfEstoq extends FRelatorio {
 					
 				}
 				
-	  			deSldCalc = rs.getDouble("QTDINVP") + rs.getDouble("QTDITCOMPRA") +
-	  			   rs.getDouble("QTDFINALPRODOP") - rs.getDouble("QTDEXPITRMA") - 
-	  			   rs.getDouble("QTDITVENDA"); 
-	  			deQtdDif = deSldCalc - rs.getDouble("SLDLIQPROD") ;
-	  			if (deQtdDif==0) {
-	  				deQtdDif = rs.getDouble("SLDMOVPROD") - rs.getDouble("SLDLIQPROD");
+	  			beSldCalc = rs.getBigDecimal("QTDINVP").add( rs.getBigDecimal("QTDITCOMPRA") );
+	  			beSldCalc = beSldCalc.add( rs.getBigDecimal("QTDFINALPRODOP") );
+	  			beSldCalc = beSldCalc.subtract( rs.getBigDecimal("QTDEXPITRMA") );
+	  			beSldCalc = beSldCalc.subtract( rs.getBigDecimal("QTDITVENDA") );
+	  			
+	  				  		
+	  			beQtdDif = beSldCalc.subtract( rs.getBigDecimal("SLDLIQPROD") ) ;
+	  			
+	  			if ( beQtdDif.doubleValue() == 0 ) {
+	  				beQtdDif = rs.getBigDecimal( "SLDMOVPROD").subtract( rs.getBigDecimal( "SLDLIQPROD") );
 	  			}
-  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
+  				
+	  			imp.say(imp.pRow()+1,0,""+imp.comprimido());
   				imp.say(imp.pRow()+0,0,"|"+Funcoes.adicionaEspacos(rs.getString("DESCPROD"),30));
   				imp.say(imp.pRow()+0,32,"|"+Funcoes.adicionaEspacos(rs.getString("CODPROD"),10));
-  				imp.say(imp.pRow()+0,44,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("SLDLIQPROD")+"",8));
-  				imp.say(imp.pRow()+0,53,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDINVP")+"",8));
-  				imp.say(imp.pRow()+0,62,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDFINALPRODOP")+"",8));
-  				imp.say(imp.pRow()+0,71,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDITCOMPRA")+"",8));
+  				imp.say(imp.pRow()+0,44,"|"+Funcoes.alinhaDir( Funcoes.bdToStr(rs.getBigDecimal("SLDLIQPROD")).toString(),6));
+  				imp.say(imp.pRow()+0,53,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(rs.getBigDecimal("QTDINVP")).toString(),6));
+  				imp.say(imp.pRow()+0,62,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(rs.getBigDecimal("QTDFINALPRODOP")).toString(),6));
+  				imp.say(imp.pRow()+0,71,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(rs.getBigDecimal("QTDITCOMPRA")).toString(),6));
   			//	imp.say(imp.pRow()+0,80,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDITEXPRMA")+"",8));
-  				imp.say(imp.pRow()+0,80,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDITVENDA")+"",8));
-  				imp.say(imp.pRow()+0,89,"|"+Funcoes.adicEspacosEsquerda(deSldCalc+"",8));
-  				imp.say(imp.pRow()+0,98,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("SLDMOVPROD")+"",8));
-  				imp.say(imp.pRow()+0,107,"|"+Funcoes.adicEspacosEsquerda(deQtdDif+"",8));
+  				imp.say(imp.pRow()+0,80,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(rs.getBigDecimal("QTDITVENDA")).toString(),6));
+  				imp.say(imp.pRow()+0,89,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(beSldCalc).toString(),6));
+  				imp.say(imp.pRow()+0,98,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(rs.getBigDecimal("SLDMOVPROD")).toString(),6));
+  				imp.say(imp.pRow()+0,107,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(beQtdDif).toString(),6));
   				imp.say(imp.pRow()+0,135,"|");
   				
   			}
@@ -254,8 +219,8 @@ public class FRConfEstoq extends FRelatorio {
   		imp = null;
   		ps = null;
   		rs = null;
-  	  	deSldCalc = 0;
-  	  	deQtdDif = 0;
+  	  	beSldCalc = null;
+  	  	beQtdDif = null;
   	}
   	
   }
