@@ -223,12 +223,12 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		tab.setTamColuna( 10, ecolAgendamentos.SITOP.ordinal() );
 		tab.setTamColuna( 68, ecolAgendamentos.DTEMITOP.ordinal() );
 		tab.setTamColuna( 68, ecolAgendamentos.DTFABROP.ordinal() );
-		tab.setTamColuna( 50, ecolAgendamentos.CODOP.ordinal() );
-		tab.setTamColuna( 30, ecolAgendamentos.SEQOP.ordinal() );
-		tab.setTamColuna( 65, ecolAgendamentos.QTDSUG.ordinal() );
-		tab.setTamColuna( 65, ecolAgendamentos.QTDPREV.ordinal() );
-		tab.setTamColuna( 65, ecolAgendamentos.QTDTOTAL.ordinal() );
+		tab.setTamColuna( 45, ecolAgendamentos.CODOP.ordinal() );
+		tab.setTamColuna( 28, ecolAgendamentos.SEQOP.ordinal() );
 		tab.setTamColuna( 270, ecolAgendamentos.DESCEST.ordinal() );
+		tab.setTamColuna( 62, ecolAgendamentos.QTDSUG.ordinal() );
+		tab.setTamColuna( 62, ecolAgendamentos.QTDPREV.ordinal() );
+		tab.setTamColuna( 62, ecolAgendamentos.QTDTOTAL.ordinal() );		
 		tab.setTamColuna( 40, ecolAgendamentos.TOTALFASE.ordinal() );
 		tab.setTamColuna( 55, ecolAgendamentos.TEMPOTOTAL.ordinal() );
 			
@@ -346,7 +346,12 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 				
 			}
 			
-		} catch ( Exception e ) {
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
+		} 
+		catch ( Exception e ) {
 			
 			Funcoes.mensagemInforma( this, "Erro ao montar grid " + e.getMessage() );
 			e.printStackTrace();
@@ -354,18 +359,21 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 	}
 
 	public void actionPerformed( ActionEvent e ) {
-
-	
-		if( e.getSource() == btFiltrar ){
-		
-			montaGrid();
-			
-		}else if( e.getSource() == btNovaOp ){
-			
-			if ( Aplicativo.telaPrincipal.temTela( "Ordens de produção" ) == false ) {
-				f = new FOP(true);
-				Aplicativo.telaPrincipal.criatela( "Ordens de produção", f, con );
-			}		
+		try {
+			if( e.getSource() == btFiltrar ){		
+				montaGrid();			
+			}
+			else if( e.getSource() == btNovaOp ){
+				
+				if ( Aplicativo.telaPrincipal.temTela( "Ordens de produção" ) == false ) {
+					f = new FOP(true);
+					f.setTelaPrim( Aplicativo.telaPrincipal ); 
+					Aplicativo.telaPrincipal.criatela( "Ordens de produção", f, con );
+				}		
+			}
+		}
+		catch (Exception err) {
+			Funcoes.mensagemErro( null, "Erro ao abrir OP!\n", true, con, err );
 		}
 	}
 
