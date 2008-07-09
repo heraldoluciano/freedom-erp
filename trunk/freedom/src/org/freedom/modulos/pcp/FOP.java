@@ -1650,12 +1650,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			dl.carregaTabela( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue() );
 			dl.setVisible( true );
 		
-			if ( dl.OK ) {
-				dl.dispose();
-			}
-			else {
-				dl.dispose();
-			}			
+			dl.dispose();
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
