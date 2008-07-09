@@ -90,6 +90,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	public FOPFase(int iCodOP,int iSeqOP,int iSeqEst) { //,boolean bExecuta
 		
 		setTitulo("Fases da OP");
+		setName( "Fases da OP" );
 		
 	    setAtribos( 70, 40, 660, 470);
 	    setAltCab(130);

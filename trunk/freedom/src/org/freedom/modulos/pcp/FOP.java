@@ -265,8 +265,11 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	}
 
 	private void montaTela() {
-
-
+		
+		if(fPrim == null) {
+			setTelaPrim( Aplicativo.telaPrincipal );
+		}
+		
 		btRatearItem.setBorder( BorderFactory.createEmptyBorder() );
 		setName( "Ordens de produção" );
 		setTitulo( "Ordens de produção" );
@@ -685,8 +688,11 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() )
+			
+			if ( !con.getAutoCommit() ) {
 				con.commit();
+			}
+		
 		} 
 		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar lote!\n" + err );
@@ -776,8 +782,10 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 			}
 
-			if ( !con.getAutoCommit() )
+			if ( !con.getAutoCommit() ) {
 				con.commit();
+			}
+
 		} 
 		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela EQRMA!\n" + err.getMessage(), true, con, err );
@@ -976,8 +984,10 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() )
+			if ( !con.getAutoCommit() ) {
 				con.commit();
+			}
+
 
 		} catch ( SQLException e ) {
 			e.printStackTrace();
@@ -1009,15 +1019,17 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	}
 
 	public void finalizaOP() {
-		if ( fPrim.temTela( "OP x Fases" ) == false ) {
+		
+		if ( fPrim.temTela( "Fases da OP" ) == false ) {
 			int codop = txtCodOP.getVlrInteger().intValue();
 			int seqop = txtSeqOP.getVlrInteger().intValue();
 			int seqest = txtSeqEst.getVlrInteger().intValue();
 			
 			FOPFase tela = new FOPFase(codop , seqop, seqest );
-			fPrim.criatela( "OP x Fases", tela, con );
+			fPrim.criatela( "Fases da OP", tela, con );
 			tela.setConexao( con );
 		}
+		
 	}
 
 	private boolean temSldLote() {
@@ -1030,8 +1042,11 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		int iSldNeg = 0;
 		int iTemp = 0;
 		float fSldLote = 0f;
+		
 		try {
+			
 			sSQL = "SELECT SLDLOTE FROM EQLOTE " + "WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND CODLOTE=? ";
+			
 			for ( int i = 0; i < tab.getRowCount(); i++ ) {
 				ps = con.prepareStatement( sSQL );
 				ps.setInt( 1, Aplicativo.iCodEmp );
@@ -1039,14 +1054,23 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				ps.setInt( 3, ( (Integer) tab.getValor( i, 1 ) ).intValue() );
 				ps.setString( 4, (String) tab.getValor( i, 3 ) );
 				rs = ps.executeQuery();
-				if ( rs.next() )
+				
+				if ( rs.next() ) {
 					fSldLote = rs.getFloat( "SLDLOTE" );
+				}
+				
 				if ( ( fSldLote < ( Funcoes.strCurrencyToBigDecimal( (String) tab.getValor( i, 5 ) ).floatValue() ) ) && ( ! ( (String) tab.getValor( i, 3 ) ).equals( "" ) ) ) {
 					iSldNeg++;
 					sSaida += "\nProduto: " + tab.getValor( i, 1 ) + Funcoes.replicate( " ", 20 ) + "Lote: " + tab.getValor( i, 3 );
 				}
+				
 				rs.close();
 				ps.close();
+
+			}
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
 			}
 
 			if ( iSldNeg > 0 ) {
@@ -1058,13 +1082,16 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			}
 			else
 				bRet = true;
-		} catch ( SQLException e ) {
+		} 
+		catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro ao verificar quantidade de Lote\n" + e.getMessage(), true, con, e );
 			e.printStackTrace();
-		} catch ( Exception e ) {
+		} 
+		catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao verificar quantidade de Lote\n" + e.getMessage(), true, con, e );
 			e.printStackTrace();
-		} finally {
+		} 
+		finally {
 			rs = null;
 			ps = null;
 			sSQL = null;
@@ -1109,6 +1136,11 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				rs.close();
 				ps.close();
 			}
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
 		} 
 		catch ( SQLException ex ) {
 			Funcoes.mensagemErro( this, "Erro ao verificar condições para RMA\n" + ex.getMessage() );
@@ -1166,7 +1198,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	public void geraRMA() {
 
 		String sSQL = null;
-		PreparedStatement ps = null;
+//		PreparedStatement ps = null;
 		ResultSet rs = null;
 		ResultSet rs2 = null;
 		PreparedStatement ps2 = null;
@@ -1195,6 +1227,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 							ps2.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
 							ps2.execute();
 							ps2.close();
+							
 							if ( !con.getAutoCommit() )
 								con.commit();
 
@@ -1215,7 +1248,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 									Funcoes.mensagemInforma( this, "Foram geradas as seguintes RMA:\n" + sRma );
 
 								rs2.close();
-							} catch ( Exception err ) {
+							} 
+							catch ( Exception err ) {
 								Funcoes.mensagemErro( this, "Erro ao buscar RMA criada", true, con, err );
 								err.printStackTrace();
 							}
@@ -1229,16 +1263,19 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			else {
 				Funcoes.mensagemInforma( this, "Não há itens para gerar RMA.\n " + "Os itens não geram RMA automaticamente\n" + "ou o processo de geração de RMA já foi efetuado." );
 			}
-			rs.close();
-			ps.close();
-			if ( !con.getAutoCommit() )
+			
+			rs.close();			
+							
+			if ( !con.getAutoCommit() ) {
 				con.commit();
-		} catch ( Exception err ) {
+			}
+		} 
+		catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar RMA", true, con, err );
 			err.printStackTrace();
-		} finally {
+		} 
+		finally {
 			sSQL = null;
-			ps = null;
 			rs = null;
 			rs2 = null;
 			ps2 = null;
@@ -1495,32 +1532,97 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		}
 	}
 
-	private void cancelaOP() {		
+	// Busca Numero de ops relacioadas
+	private int getQtdOPS() {
+		int ret = 0;
 		StringBuffer sql = new StringBuffer();
 		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			
+			sql.append( "select count(*) from ppop opr " );
+			sql.append( "where opr.codemp=? and opr.codfilial=? and opr.codop=? ");
+			sql.append( "and opr.seqop<>?");
+					
+			ps = con.prepareStatement( sql.toString() );
+			
+			ps.setInt( 1, lcCampos.getCodEmp() );
+			ps.setInt( 2, lcCampos.getCodFilial());
+			ps.setInt( 3, txtCodOP.getVlrInteger().intValue() );
+			ps.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				ret = rs.getInt( 1 );
+			}
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
+		}
+		catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro ao buscar O.P's. relacionadas!", true, con, e );
+		}
+		return ret;
+	}
+	
+	private void cancelaOP() {		
+		StringBuffer sql = new StringBuffer();
+		PreparedStatement ps1 = null;
+		PreparedStatement ps2 = null;
 		
 		try {
 			
 			if( Funcoes.mensagemConfirma( null, "Confirma o cancelamento da O.P.?" ) == JOptionPane.OK_OPTION ) {
-			
+				int qtdops = getQtdOPS();
+				
+				if(qtdops>0) {
+					
+					if( Funcoes.mensagemConfirma( null, "Existe" + (qtdops>1?"m ":" ") + qtdops + " Ordem" + (qtdops>1?"s ":" ") 
+												 	  + "de Produção ativa" + (qtdops>1?"s ":" ") + ", vinculadas a esta O.P!\n" 
+												 	  + "Deseja cancelar também?" ) == JOptionPane.OK_OPTION ) {
+						
+						sql.append( "update ppop opr set opr.sitop='CA' " );
+						sql.append( "where opr.codemp=? and opr.codfilial=? and opr.codop=? ");
+						sql.append( "and opr.seqop<>?");	
+						
+						ps1 = con.prepareStatement( sql.toString() );
+						
+						ps1.setInt( 1, lcCampos.getCodEmp() );
+						ps1.setInt( 2, lcCampos.getCodFilial());
+						ps1.setInt( 3, txtCodOP.getVlrInteger().intValue() );
+						ps1.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
+						
+						ps1.executeUpdate();
+						ps1.close();
+						
+					}
+				}
+				
+				sql.delete( 0, sql.length() );
+				
 				sql.append( "UPDATE PPOP SET SITOP='CA' " );
 				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
 							
-				ps = con.prepareStatement(sql.toString());
+				ps2 = con.prepareStatement(sql.toString());
 				
-				ps.setInt( 1, lcCampos.getCodEmp() );
-				ps.setInt( 2, lcCampos.getCodFilial() );
-				ps.setInt( 3, txtCodOP.getVlrInteger().intValue() );
-				ps.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
+				ps2.setInt( 1, lcCampos.getCodEmp() );
+				ps2.setInt( 2, lcCampos.getCodFilial() );
+				ps2.setInt( 3, txtCodOP.getVlrInteger().intValue() );
+				ps2.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
 				
-				ps.executeUpdate();
-				    
-				ps.close();
+				ps2.executeUpdate();				    
+				ps2.close();
 			
 				if(!con.getAutoCommit()) {
 					con.commit();
 				}
+				
 				lcCampos.carregaDados();
+				
 			}
 		} 
 		catch ( Exception e ) {
@@ -1660,7 +1762,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				btLote.setEnabled( false );
 				btRMA.setEnabled( rma );
 				btFinaliza.setEnabled( false );
-				btDistrb.setEnabled( false );
+				btDistrb.setEnabled( true );
 				btCancela.setEnabled( true );
 				
 				txtCodProdEst.setAtivo( false );
