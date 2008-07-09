@@ -129,31 +129,31 @@ public class NF035LX extends Layout {
 						imp.say( 104, "X" );
 					}
 					else {
-						imp.say( 105, "X" );
+						imp.say( 96, "X" );
 					}
 
-					imp.say( 128, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
+					imp.say( 130, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					imp.pulaLinha( 5, imp.comprimido() );
-					imp.say( 2, sNat[ 0 ] );
-					imp.say( 53, sNat[ 1 ] );
+					imp.say( 0, sNat[ 0 ] );
+					imp.say( 44, sNat[ 1 ] );
 					imp.pulaLinha( 3, imp.comprimido() );
 					imp.say( 2, sValsCli[ 1 ] );
-					imp.say( 104, !sValsCli[ 0 ].equals( "" ) ? Funcoes.setMascara( sValsCli[ 0 ], "###.###.###-##" ) : Funcoes.setMascara( cab.getString( NF.C_CNPJEMIT ), "##.###.###/####-##" ) );
-					//imp.say( 128, ( cab.getDate( NF.C_DTEMITPED ) != null ? Funcoes.dateToStrDate( cab.getDate( NF.C_DTEMITPED ) ) : "" ) );
+					imp.say( 95, !sValsCli[ 0 ].equals( "" ) ? Funcoes.setMascara( sValsCli[ 0 ], "###.###.###-##" ) : Funcoes.setMascara( cab.getString( NF.C_CNPJEMIT ), "##.###.###/####-##" ) );
+					imp.say( 128, ( cab.getDate( NF.C_DTEMITPED ) != null ? Funcoes.dateToStrDate( cab.getDate( NF.C_DTEMITPED ) ) : "" ) );
 					imp.pulaLinha( 2, imp.comprimido() );
-					imp.say( 2, Funcoes.copy( cab.getString( NF.C_ENDEMIT ), 0, 50 ).trim() + ", " + Funcoes.copy( cab.getString( NF.C_NUMEMIT ), 0, 6 ).trim() + " - " + Funcoes.copy( cab.getString( NF.C_COMPLEMIT ), 0, 9 ).trim() );
-					imp.say( 87, Funcoes.copy( cab.getString( NF.C_BAIREMIT ), 0, 23 ) );
-					imp.say( 124, Funcoes.setMascara( cab.getString( NF.C_CEPEMIT ), "#####-###" ) );
+					imp.say( 0, Funcoes.copy( cab.getString( NF.C_ENDEMIT ), 0, 50 ).trim() + ", " + Funcoes.copy( cab.getString( NF.C_NUMEMIT ), 0, 6 ).trim() + " - " + Funcoes.copy( cab.getString( NF.C_COMPLEMIT ), 0, 9 ).trim() );
+					imp.say( 78, Funcoes.copy( cab.getString( NF.C_BAIREMIT ), 0, 23 ) );
+					imp.say( 115, Funcoes.setMascara( cab.getString( NF.C_CEPEMIT ), "#####-###" ) );
 
 					if ( !itens.getString( NF.C_IMPDTSAIDA ).equals( "N" ) ) {
-					//	imp.say( 130, ( cab.getDate( NF.C_DTSAIDA ) != null ? Funcoes.dateToStrDate( cab.getDate( NF.C_DTSAIDA ) ) : "" ) );
+						imp.say( 128, ( cab.getDate( NF.C_DTSAIDA ) != null ? Funcoes.dateToStrDate( cab.getDate( NF.C_DTSAIDA ) ) : "" ) );
 					}
 
 					imp.pulaLinha( 2, imp.comprimido() );
-					imp.say( 2, sValsCli[ 2 ] );
+					imp.say( 0, sValsCli[ 2 ] );
 					imp.say( 65, ( !cab.getString( NF.C_DDDEMIT ).equals( "" ) ? "(" + cab.getString( NF.C_DDDEMIT ) + ")" : "" ) + ( !cab.getString( NF.C_FONEEMIT ).equals( "" ) ? Funcoes.setMascara( cab.getString( NF.C_FONEEMIT ).trim(), "####-####" ) : "" ).trim() );
-					imp.say( 98, sValsCli[ 3 ] );
+					imp.say( 89, sValsCli[ 3 ] );
 					imp.say( 105, !cab.getString( NF.C_RGEMIT ).equals( "" ) ? cab.getString( NF.C_RGEMIT ) : cab.getString( NF.C_INSCEMIT ) );
 
 					// Fim do cabeçalho
@@ -161,35 +161,35 @@ public class NF035LX extends Layout {
 					// Imprime dados da fatura
 
 					imp.pulaLinha( 3, imp.comprimido() );
-					imp.say( 4, sDuplics[ 0 ] );
-					imp.say( 20, sVals[ 0 ] );
-					imp.say( 36, sVencs[ 0 ] );
-					imp.say( 50, sDuplics[ 1 ] );
-					imp.say( 65, sVals[ 1 ] );
-					imp.say( 80, sVencs[ 1 ] );
-					imp.say( 94, sDuplics[ 2 ] );
-					imp.say( 110, sVals[ 2 ] );
-					imp.say( 125, sVencs[ 2 ] );
+					imp.say( 0, sDuplics[ 0 ] );
+					imp.say( 15, sVals[ 0 ] );
+					imp.say( 32, sVencs[ 0 ] );
+					imp.say( 47, sDuplics[ 1 ] );
+					imp.say( 66, sVals[ 1 ] );
+					imp.say( 85, sVencs[ 1 ] );
+					imp.say( 101, sDuplics[ 2 ] );
+					imp.say( 116, sVals[ 2 ] );
+					imp.say( 132, sVencs[ 2 ] );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 4, sDuplics[ 3 ] );
-					imp.say( 20, sVals[ 3 ] );
-					imp.say( 36, sVencs[ 3 ] );
-					imp.say( 50, sDuplics[ 4 ] );
-					imp.say( 65, sVals[ 4 ] );
-					imp.say( 80, sVencs[ 4 ] );
-					imp.say( 94, sDuplics[ 5 ] );
-					imp.say( 110, sVals[ 5 ] );
-					imp.say( 125, sVencs[ 5 ] );
+					imp.say( 0, sDuplics[ 3 ] );
+					imp.say( 15, sVals[ 3 ] );
+					imp.say( 32, sVencs[ 3 ] );
+					imp.say( 47, sDuplics[ 4 ] );
+					imp.say( 66, sVals[ 4 ] );
+					imp.say( 85, sVencs[ 4 ] );
+					imp.say( 101, sDuplics[ 5 ] );
+					imp.say( 116, sVals[ 5 ] );
+					imp.say( 132, sVencs[ 5 ] );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 4, sDuplics[ 6 ] );
-					imp.say( 20, sVals[ 6 ] );
-					imp.say( 36, sVencs[ 6 ] );
-					imp.say( 50, sDuplics[ 7 ] );
-					imp.say( 65, sVals[ 7 ] );
-					imp.say( 80, sVencs[ 7 ] );
-					imp.say( 94, sDuplics[ 8 ] );
-					imp.say( 110, sVals[ 8 ] );
-					imp.say( 125, sVencs[ 8 ] );
+					imp.say( 0, sDuplics[ 6 ] );
+					imp.say( 15, sVals[ 6 ] );
+					imp.say( 32, sVencs[ 6 ] );
+					imp.say( 47, sDuplics[ 7 ] );
+					imp.say( 66, sVals[ 7 ] );
+					imp.say( 85, sVencs[ 7 ] );
+					imp.say( 101, sDuplics[ 8 ] );
+					imp.say( 116, sVals[ 8 ] );
+					imp.say( 132, sVencs[ 8 ] );
 					imp.pulaLinha( 2, imp.comprimido() );
 
 					// Fim dos dados da fatura
@@ -239,17 +239,17 @@ public class NF035LX extends Layout {
 				if ( !"S".equals( itens.getString( NF.C_TIPOPROD ) ) ) {
 
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 2, itens.getString( NF.C_REFPROD ) );
+					imp.say( 0, itens.getString( NF.C_REFPROD ) );
 					imp.say( 17, Funcoes.copy( itens.getString( NF.C_DESCPROD ).trim(), 48 ) );
-					imp.say( 78, sSigla );
-					imp.say( 82, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 0, 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 0, 2 ) );
-					imp.say( 88, Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) );
-					imp.say( 96, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( itens.getFloat( NF.C_QTDITPED ) ) ) );
-					imp.say( 108, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) / itens.getFloat( NF.C_QTDITPED ) ) ) );
-					imp.say( 120, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) ) ) );
-					//imp.say( 120, ( (int) itens.getFloat( NF.C_PERCICMSITPED ) ) + "%" );
-				//	imp.say( 125, ( (int) itens.getFloat( NF.C_PERCIPIITPED ) ) + "%" );
-				//	imp.say( 130, Funcoes.strDecimalToStrCurrency( 6, 2, String.valueOf( itens.getFloat( NF.C_VLRIPIITPED ) ) ) );
+					imp.say( 69, sSigla );
+					imp.say( 76, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 0, 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 0, 2 ) );
+					imp.say( 83, Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) );
+					imp.say( 87, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( itens.getFloat( NF.C_QTDITPED ) ) ) );
+					imp.say( 99, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) / itens.getFloat( NF.C_QTDITPED ) ) ) );
+					imp.say( 115, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) ) ) );
+					imp.say( 130, ( (int) itens.getFloat( NF.C_PERCICMSITPED ) ) + "%" );
+					imp.say( 134, ( (int) itens.getFloat( NF.C_PERCIPIITPED ) ) + "%" );
+					imp.say( 138, Funcoes.strDecimalToStrCurrency( 6, 2, String.valueOf( itens.getFloat( NF.C_VLRIPIITPED ) ) ) );
 					iProdImp++;
 				}
 				else {
@@ -337,34 +337,34 @@ public class NF035LX extends Layout {
 
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
 						imp.pulaLinha( 47 - imp.pRow(), imp.comprimido() );
-						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
+						imp.say( 0, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
 						imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRICMSPED ) ) ) );
-						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) - cab.getFloat( NF.C_BASEISS ) ) ) );
+						imp.say( 120, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) - cab.getFloat( NF.C_BASEISS ) ) ) );
 						imp.pulaLinha( 2, imp.comprimido() );
-						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( frete.getFloat( NF.C_VLRFRETEPED ) ) ) );
+						imp.say( 0, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( frete.getFloat( NF.C_VLRFRETEPED ) ) ) );
 						imp.say( 58, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRADICPED ) ) ) );
 						imp.say( 87, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRIPIPED ) ) ) );
 						
 						
 						if (nf.getTipoNF() == NF.TPNF_ENTRADA) {
-							imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRLIQPED ) + 
+							imp.say( 120, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRLIQPED ) + 
 									cab.getFloat( NF.C_VLRADICPED ))));
 						}
 						else{
-							imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRLIQPED ) )));
+							imp.say( 120, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRLIQPED ) )));
 						}
 						iItImp = 0;
 					}
 					else {
 						imp.pulaLinha( 47 - imp.pRow(), imp.comprimido() );
-						imp.say( 4, "********************" );
+						imp.say( 0, "********************" );
 						imp.say( 32, "********************" );
-						imp.say( 114, "********************" );
+						imp.say( 120, "********************" );
 						imp.pulaLinha( 2, imp.comprimido() );
-						imp.say( 4, "********************" );
+						imp.say( 0, "********************" );
 						imp.say( 58, "********************" );
 						imp.say( 87, "********************" );
-						imp.say( 114, "********************" );
+						imp.say( 120, "********************" );
 					}
 
 					// Fim da impressão dos totais
@@ -372,40 +372,40 @@ public class NF035LX extends Layout {
 					// Imprime informações do frete
 
 					imp.pulaLinha( 3, imp.comprimido() );
-					imp.say( 2, frete.getString( NF.C_RAZTRANSP ) );
-					imp.say( 89, "C".equals(frete.getString( NF.C_TIPOFRETE ) ) ? "1" : "2" );
-					imp.say( 93, frete.getString( NF.C_PLACAFRETE ) );
-					imp.say( 111, frete.getString( NF.C_UFFRETE ) );
+					imp.say( 0, frete.getString( NF.C_RAZTRANSP ) );
+					imp.say( 93, "C".equals(frete.getString( NF.C_TIPOFRETE ) ) ? "1" : "2" );
+					imp.say( 102, frete.getString( NF.C_PLACAFRETE ) );
+					imp.say( 119, frete.getString( NF.C_UFFRETE ) );
 
 					if ( "C".equals(frete.getString( NF.C_TIPOTRANSP ) ) ) {
-						imp.say( 116, Funcoes.setMascara( cab.getString( NF.C_CNPJEMIT ), "##.###.###/####-##" ) );
+						imp.say( 128, Funcoes.setMascara( cab.getString( NF.C_CNPJEMIT ), "##.###.###/####-##" ) );
 					} else {
 						if ("".equals( frete.getString( NF.C_CNPJTRANSP ) )) {
-							imp.say( 116, Funcoes.setMascara( frete.getString( NF.C_CPFTRANSP ), "###.###.###-##" ) );
+							imp.say( 128, Funcoes.setMascara( frete.getString( NF.C_CPFTRANSP ), "###.###.###-##" ) );
 						} else {
-							imp.say( 116, Funcoes.setMascara( frete.getString( NF.C_CNPJTRANSP ), "##.###.###/####-##" ) );
+							imp.say( 128, Funcoes.setMascara( frete.getString( NF.C_CNPJTRANSP ), "##.###.###/####-##" ) );
 						}
 					}
 
 					imp.pulaLinha( 2, imp.comprimido() );
-					imp.say( 2, frete.getString( NF.C_ENDTRANSP ).trim() + ", " + frete.getInt( NF.C_NUMTRANSP ) );
-					imp.say( 76, frete.getString( NF.C_CIDTRANSP ) );
-					imp.say( 111, frete.getString( NF.C_UFTRANSP ) );
+					imp.say( 0, frete.getString( NF.C_ENDTRANSP ).trim() + ", " + frete.getInt( NF.C_NUMTRANSP ) );
+					imp.say( 88, frete.getString( NF.C_CIDTRANSP ) );
+					imp.say( 119, frete.getString( NF.C_UFTRANSP ) );
 
 					if ( frete.getString( NF.C_TIPOTRANSP ).equals( "C" ) ) {
-						imp.say( 116, cab.getString( NF.C_INSCEMIT ) );
+						imp.say( 128, cab.getString( NF.C_INSCEMIT ) );
 					}
 					else {
-						imp.say( 116, frete.getString( NF.C_INSCTRANSP ) );
+						imp.say( 128, frete.getString( NF.C_INSCTRANSP ) );
 					}
 
 					imp.pulaLinha( 2, imp.comprimido() );
-					imp.say( 6, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( frete.getString( NF.C_QTDFRETE ) ) ) );
-					imp.say( 20, Funcoes.copy( frete.getString( NF.C_ESPFRETE ), 27 ) );
-					imp.say( 49, Funcoes.copy( frete.getString( NF.C_MARCAFRETE ), 22 ) );
+					imp.say( 0, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( frete.getString( NF.C_QTDFRETE ) ) ) );
+					imp.say( 25, Funcoes.copy( frete.getString( NF.C_ESPFRETE ), 27 ) );
+					imp.say( 56, Funcoes.copy( frete.getString( NF.C_MARCAFRETE ), 22 ) );
 					imp.say( 76, Funcoes.copy( frete.getString( NF.C_CONHECFRETEPED ), 20 ) );
-					imp.say( 108, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getFloat( NF.C_PESOBRUTO ) ) ) );
-					imp.say( 124, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getFloat( NF.C_PESOLIQ ) ) ) );
+					imp.say( 110, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getFloat( NF.C_PESOBRUTO ) ) ) );
+					imp.say( 130, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getFloat( NF.C_PESOLIQ ) ) ) );
 					imp.pulaLinha( 1, imp.comprimido() );
 
 					// Fim da impressão do frete
@@ -438,7 +438,7 @@ public class NF035LX extends Layout {
 					// Imprime canhoto
 
 					imp.pulaLinha( 4, imp.comprimido() );
-					imp.say( 128, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
+					imp.say( 130, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
 
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido() );
 					imp.setPrc( 0, 0 );
