@@ -147,14 +147,14 @@ public class FRConfEstoq extends FRelatorio {
 					imp.say(imp.pRow()+0,0,"| DESCRICAO DO PRODUTO");
 					imp.say(imp.pRow()+0,32,"| CODIGO");
 					imp.say(imp.pRow()+0,44,"| SALDO ");
-					imp.say(imp.pRow()+0,53,"| QTD.IV.");
-					imp.say(imp.pRow()+0,62,"| QTD.OP.");
-					imp.say(imp.pRow()+0,71,"| QTD.CP.");
-					//imp.say(imp.pRow()+0,80,"| QTD.RM.");
-					imp.say(imp.pRow()+0,80,"| QTD.VD.");
-					imp.say(imp.pRow()+0,89,"| SLD.CA.");
-					imp.say(imp.pRow()+0,98,"| SLD.MP.");
-					imp.say(imp.pRow()+0,107,"| DIF.SD.");
+					imp.say(imp.pRow()+0,54,"| QTD.IV.");
+					imp.say(imp.pRow()+0,64,"| QTD.OP.");
+					imp.say(imp.pRow()+0,74,"| QTD.CP.");
+					imp.say(imp.pRow()+0,84,"| QTD.RM.");
+					imp.say(imp.pRow()+0,94,"| QTD.VD.");
+					imp.say(imp.pRow()+0,104,"| SLD.CA.");
+					imp.say(imp.pRow()+0,114,"| SLD.MP.");
+					imp.say(imp.pRow()+0,124,"| DIF.SD.");
 					imp.say(imp.pRow()+0,135,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
@@ -176,15 +176,15 @@ public class FRConfEstoq extends FRelatorio {
 	  			imp.say(imp.pRow()+1,0,""+imp.comprimido());
   				imp.say(imp.pRow()+0,0,"|"+Funcoes.adicionaEspacos(rs.getString("DESCPROD"),30));
   				imp.say(imp.pRow()+0,32,"|"+Funcoes.adicionaEspacos(rs.getString("CODPROD"),10));
-  				imp.say(imp.pRow()+0,44,"|"+Funcoes.alinhaDir( Funcoes.bdToStr(rs.getBigDecimal("SLDLIQPROD")).toString(),6));
-  				imp.say(imp.pRow()+0,53,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(rs.getBigDecimal("QTDINVP")).toString(),6));
-  				imp.say(imp.pRow()+0,62,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(rs.getBigDecimal("QTDFINALPRODOP")).toString(),6));
-  				imp.say(imp.pRow()+0,71,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(rs.getBigDecimal("QTDITCOMPRA")).toString(),6));
-  			//	imp.say(imp.pRow()+0,80,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDITEXPRMA")+"",8));
-  				imp.say(imp.pRow()+0,80,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(rs.getBigDecimal("QTDITVENDA")).toString(),6));
-  				imp.say(imp.pRow()+0,89,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(beSldCalc).toString(),6));
-  				imp.say(imp.pRow()+0,98,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(rs.getBigDecimal("SLDMOVPROD")).toString(),6));
-  				imp.say(imp.pRow()+0,107,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(beQtdDif).toString(),6));
+  				imp.say(imp.pRow()+0,44,"|"+Funcoes.alinhaDir( Funcoes.bdToStr(rs.getBigDecimal("SLDLIQPROD")).toString(),8));
+  				imp.say(imp.pRow()+0,54,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(rs.getBigDecimal("QTDINVP")).toString(),8));
+  				imp.say(imp.pRow()+0,64,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(rs.getBigDecimal("QTDFINALPRODOP")).toString(),8));
+  				imp.say(imp.pRow()+0,74,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(rs.getBigDecimal("QTDITCOMPRA")).toString(),8));
+  				imp.say(imp.pRow()+0,84,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("QTDEXPITRMA")+"",8));
+  				imp.say(imp.pRow()+0,94,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(rs.getBigDecimal("QTDITVENDA")).toString(),8));
+  				imp.say(imp.pRow()+0,104,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(beSldCalc).toString(),8));
+  				imp.say(imp.pRow()+0,114,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(rs.getBigDecimal("SLDMOVPROD")).toString(),8));
+  				imp.say(imp.pRow()+0,124,"|"+Funcoes.alinhaDir(Funcoes.bdToStr(beQtdDif).toString(),8));
   				imp.say(imp.pRow()+0,135,"|");
   				
   			}
