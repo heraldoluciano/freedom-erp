@@ -73,7 +73,7 @@ public class FGerencVagas extends FFilho implements ActionListener, TabelaEditLi
 	private final JTextFieldFK txtFaixaSalIni = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 	private final JTextFieldFK txtFaixaSalFim = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 		
-	private Tabela tab = new Tabela();
+	private Tabela tab = new Tabela(); 
 	private JButton btRefresh = new JButton(Icone.novo("btExecuta.gif"));
 	private JButton btEncaminharCand = new JButton("Encaminhar", Icone.novo("btEncaminharCand.gif"));
 	private JButton btEfetivarCand = new JButton("Efetivar", Icone.novo("btEfetivarCand.gif"));
