@@ -79,7 +79,6 @@ import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FPrinterJob;
 
-import com.sun.org.apache.xml.internal.utils.IntVector;
 
 public class FOP extends FDetalhe implements ChangeListener, PostListener, CancelListener, InsertListener, ActionListener, CarregaListener, KeyListener, FocusListener {
 
@@ -249,6 +248,14 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	
 	private boolean bnovo = false;
 	
+	// painel
+	
+	private JPanelPad pinLb = new JPanelPad();
+	
+	private JLabelPad lSitOp = null;
+	
+	private String SitOp = "";
+	
 	@SuppressWarnings("unchecked")
 	private HashMap<String, Object> prefere = null;
 
@@ -275,8 +282,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		btRatearItem.setBorder( BorderFactory.createEmptyBorder() );
 		setName( "Ordens de produção" );
 		setTitulo( "Ordens de produção" );
-		setAtribos( 15, 10, 700, 580 );
-		setAltCab( 200 );
+		setAtribos( 15, 10, 700, 600 );
+		setAltCab( 230 );
 
 		pnMaster.remove( spTab );
 
@@ -422,8 +429,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		adicCampo( txtDtValidOP, 473, 100, 80, 20, "dtvalidpdop", "Dt. validade", ListaCampos.DB_SI, false );
 		
 		adicCampoInvisivel( txtSitOp, "sitop", "sit.op.", ListaCampos.DB_SI, false );
-		
-		pinCab.adic( lbStatus, 383, 140, 85, 20 );
 				
 		setListaCampos( true, "OP", "PP" );
 
@@ -521,11 +526,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		tabOPS.setTamColuna( 70, 4 );
 		tabOPS.setTamColuna( 250, 5 );
 		tabOPS.setTamColuna( 200, 6 );
-		
-		lbStatus.setForeground( Color.WHITE );
-		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
-		lbStatus.setOpaque( true );
-		lbStatus.setVisible( false );
+
 
 		tabRMA.addMouseListener( new MouseAdapter() {
 
@@ -545,11 +546,16 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			}
 		} );
 
+
+		lSitOp = new JLabelPad();
+		lSitOp.setForeground( Color.WHITE );
+		pinLb.adic( lSitOp, 30, 0, 110, 20 );
+		pinCab.adic( pinLb, 560, 161, 114, 24 );
+		
 		tpnAbas.addChangeListener( this );
 		txtCodOP.addFocusListener( this );
 		txtSeqOP.addKeyListener( this );
 		setImprimir( true );
-		
 	}
 
 	private void formataCampoLimpo(JTextFieldPad campo, Color cor) {
@@ -567,7 +573,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	
 	private void montaDet() {
 
-		setAltDet( 60 );
+		setAltDet( 50 );
 		pinDet = new JPanelPad( 440, 50 );
 		setPainel( pinDet, pnDet );
 
@@ -649,6 +655,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		tab.setTamColuna( 60, 5 );
 		tab.setTamColuna( 35, 8 );
 		tab.setColunaInvisivel( 4 );
+	
 	}
 
 	private BigDecimal getQtdTotal( BigDecimal arg ) {
@@ -1866,6 +1873,9 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	}
 	
 	public void afterCarrega( CarregaEvent cevt ) {
+	
+		String sSitOp = txtSitOp.getVlrString();
+		
 		try {
 			if ( cevt.getListaCampos() == lcCampos ) {
 				bloqueiaOp();
@@ -1874,6 +1884,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				bBuscaOPS = true;
 				tabSimu.limpa();
 			}
+			
+		
 	
 			if ( ( cevt.getListaCampos() == lcProdEstCod ) || ( cevt.getListaCampos() == lcProdEstRef ) ) {
 				
@@ -1920,23 +1932,31 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				}
 			}
 			
-			if ( txtSitOp.getVlrString().trim().length() > 0 && txtSitOp.getVlrString().equals( "CA" ) ) {
-				lbStatus.setText( " CANCELADA" );
-				lbStatus.setBackground( Color.RED );
-				lbStatus.setVisible( true );
+			if ( sSitOp.equals( "CA" ) ) {
+						
+				SitOp = "Cancelado";
+				lSitOp.setText( SitOp );
+				pinLb.setBackground( cor( 250, 50, 50 ) );
+				
 			}
-			else if ( txtSitOp.getVlrString().trim().length() > 0 && txtSitOp.getVlrString().equals( "FN" ) ) {
-				lbStatus.setText( " FINALIZADA" );
-				lbStatus.setBackground( new Color( 45, 190, 60 ) );
-				lbStatus.setVisible( true );
+			else if ( sSitOp.equals( "FN" ) ) {
+				
+				SitOp = "Finalizada";
+				System.out.println("FINALIZADA");
+				lSitOp.setText( SitOp );
+				pinLb.setBackground( cor( 0, 170, 30 ) );
+				
 			}
-			else if ( txtSitOp.getVlrString().trim().length() > 0 && ( txtSitOp.getVlrString().trim().equals( "PE" ))) {
-				lbStatus.setText( " PENDENTE" );
-				lbStatus.setBackground( Color.BLUE );
-				lbStatus.setVisible( true );
+			else if ( sSitOp.equals( "PE" )) {
+				
+				SitOp = "Pendente";
+				lSitOp.setText( SitOp );
+				pinLb.setBackground( cor( 255, 204, 51 ) );
+			
 			}
 			else {
-				lbStatus.setVisible( false );
+				lSitOp.setVisible( false );
+				pinLb.setBackground( Color.WHITE );
 			}
 			
 		}
@@ -1944,7 +1964,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			
 			e.printStackTrace();
 		}
-				
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
@@ -2056,5 +2075,10 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		if(bnovo)
 			lcCampos.insert( true );
 		
+	}
+	public Color cor( int r, int g, int b ) {
+
+		Color color = new Color( r, g, b );
+		return color;
 	}
 }
