@@ -1769,7 +1769,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	}
 
 	private void bloqueiaOp() {
-
 		String sitop = null;
 		boolean lote = false;
 		boolean rma = false;
@@ -1808,11 +1807,11 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 				if ( dtfab.before( dtatual ) ) {
 					SitOp = "Atrasada";
-					pinLb.setBackground( cor( 255, 0, 0 ) );
+					pinLb.setBackground( cor( 210, 50, 30 ) );
 				}
 				else {
 					SitOp = "Pendente";
-					pinLb.setBackground( cor( 255, 204, 51 ) );
+					pinLb.setBackground( cor( 240, 180, 10 ) );
 				}
 
 				lSitOp.setText( SitOp );
@@ -1871,7 +1870,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 				SitOp = "Cancelada";
 				lSitOp.setText( SitOp );
-				pinLb.setBackground( cor( 250, 50, 51 ) );
+				
+				pinLb.setBackground( cor( 210, 50, 30 ) );
 
 			}
 			else if ( sitop.equals( "" ) ) {
@@ -1916,8 +1916,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				tabSimu.limpa();
 			}
 			
-		
-	
 			if ( ( cevt.getListaCampos() == lcProdEstCod ) || ( cevt.getListaCampos() == lcProdEstRef ) ) {
 				
 				carregaProduto();
@@ -1970,8 +1968,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
-		lcCampos.limpaCampos( false );
-		
+		lcCampos.limpaCampos( false );		
 		bloqueiaOp();
 	}
 
@@ -1983,9 +1980,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		
 	}
 	public void afterPost( PostEvent pevt ) {
-/*		if ( lcCampos.getStatusAnt() == ListaCampos.LCS_INSERT ) {
-			txtCodProdEst.setAtivo( false );
-		}*/
 		if ( pevt.getListaCampos() == lcCampos ) {
 			if ( tpnAbas.getSelectedIndex() == 0 ) {
 				tpnAbas.setSelectedIndex( 1 );
@@ -2008,13 +2002,9 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		}
 	}
 
-	public void beforeCancel( CancelEvent cevt ) {
-//		txtCodProdEst.setAtivo( false );
-	}
+	public void beforeCancel( CancelEvent cevt ) { }
 
-	public void afterCancel( CancelEvent cevt ) {
-
-	}
+	public void afterCancel( CancelEvent cevt ) { }
 
 	@SuppressWarnings("unchecked")
 	private HashMap<String, Object> getPrefere( Connection con ) { 
@@ -2044,9 +2034,12 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() )
+			
+			if ( !con.getAutoCommit() ) {
 				con.commit();
-		} catch ( SQLException err ) {
+			}
+		} 
+		catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
 		} 
