@@ -37,7 +37,6 @@ import org.freedom.acao.PostEvent;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
 
 public class RPPlanoPag extends FDetalhe implements CarregaListener, InsertListener, DeleteListener {
