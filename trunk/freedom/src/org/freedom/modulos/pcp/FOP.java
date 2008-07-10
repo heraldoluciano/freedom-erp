@@ -79,6 +79,8 @@ import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FPrinterJob;
 
+import com.sun.org.apache.xml.internal.utils.IntVector;
+
 public class FOP extends FDetalhe implements ChangeListener, PostListener, CancelListener, InsertListener, ActionListener, CarregaListener, KeyListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
@@ -1015,6 +1017,17 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	}
 
 	private void abreOps() {
+		try {
+			Integer codop = ((Integer) tabOPS.getValor( tabOPS.getLinhaSel(), 1 ) ); 
+			Integer seqop = ((Integer) tabOPS.getValor( tabOPS.getLinhaSel(), 2 ) );
+			
+			txtCodOP.setVlrInteger( codop );
+			txtSeqOP.setVlrInteger( seqop );
+			lcCampos.carregaDados();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
