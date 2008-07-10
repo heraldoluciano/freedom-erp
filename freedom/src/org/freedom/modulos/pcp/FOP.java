@@ -1,5 +1,4 @@
 /**
- * @version 25/03/2004 <BR>
  * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
  * 
  * Projeto: Freedom <BR>
@@ -117,6 +116,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	private JTextFieldPad txtDtFabProd = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtQtdPrevProdOP = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	
+	private JTextFieldPad txtQtdDistOp = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 	
 	private JTextFieldPad txtQtdSugProdOP = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 	
@@ -283,7 +284,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		setName( "Ordens de produção" );
 		setTitulo( "Ordens de produção" );
 		setAtribos( 15, 10, 700, 600 );
-		setAltCab( 230 );
+		setAltCab( 225 );
 
 		pnMaster.remove( spTab );
 
@@ -393,8 +394,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		adicCampo( txtCodOP, 7, 20, 70, 20, "CodOP", "Nº OP.", ListaCampos.DB_PK, true );
 		adicCampo( txtSeqOP, 80, 20, 60, 20, "SeqOP", "Seq. OP.", ListaCampos.DB_PK, true );
 		adicCampo( txtCodTpMov, 143, 20, 70, 20, "CodTipoMov", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
-		adicDescFK( txtDescTipoMov, 216, 20, 258, 20, "DescTipoMov", "Descrição do tipo de movimento" );
-		adicCampo( txtDtFabProd, 477, 20, 75, 20, "dtfabrop", "Dt.Fabric.", ListaCampos.DB_SI, true );
+		adicDescFK( txtDescTipoMov, 216, 20, 250, 20, "DescTipoMov", "Descrição do tipo de movimento" );
+		adicCampo( txtDtFabProd, 470, 20, 80, 20, "dtfabrop", "Dt.Fabric.", ListaCampos.DB_SI, true );
 
 		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
 			adicCampo( txtRefProdEst, 7, 60, 70, 20, "refprod", "Referência", ListaCampos.DB_FK, true );
@@ -408,19 +409,33 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		}
 		
 		adicCampo( txtSeqEst, 80, 60, 60, 20, "seqest", "Seq.Est.", ListaCampos.DB_FK, txtDescEst, true );
-		adicDescFK( txtDescEst, 143, 60, 184, 20, "descprod", "Descrição da estrutura" );
-		adicDescFK( txtQtdEst, 330, 60, 80, 20, "qtdest", "Qtd.est." );
+		adicDescFK( txtDescEst, 143, 60, 238, 20, "descprod", "Descrição da estrutura" );
+		adicDescFK( txtQtdEst, 383, 60, 85, 20, "qtdest", "Qtd.est." );
 		
-		pinCab.adic( new JLabelPad("Densid."), 413,40 ,57 ,20 );
-		pinCab.adic( txtVlrDensidade, 413, 60, 57, 20 ); // xxx
+		pinCab.adic( new JLabelPad("Densid."), 470,40 ,100 ,20 );
+		pinCab.adic( txtVlrDensidade, 470, 60, 80, 20 ); // xxx
 //		pinDados.adic( txtQtdFinalProdOP, 413, 60, 80, 20 ); // xxx
 
 		formataCampoLimpo( txtQtdPrevProdOP, new Color(0,0,255) );
 		formataCampoLimpo( txtQtdFinalProdOP, new Color(255,0,0) );
+		formataCampoLimpo( txtQtdDistOp, new Color(255,0,0) );
 		
-		adicCampo( txtQtdSugProdOP, 473, 60, 80, 20, "qtdsugprodop", "Qtd.Sugerida", ListaCampos.DB_SI, true );		
-		adicCampo( txtQtdPrevProdOP, 7, 140, 110, 20, "qtdprevprodop", "Qtd.prevista", ListaCampos.DB_SI, false );
-		adicCampo( txtQtdFinalProdOP, 120, 140, 110, 20, "qtdfinalprodop", "Qtd.Produzida", ListaCampos.DB_SI, false );
+		JLabelPad lbLinha = new JLabelPad();
+		lbLinha.setBorder(BorderFactory.createEtchedBorder());
+		JLabelPad lbPeriodo = new JLabelPad("Quantidades:" , SwingConstants.CENTER );
+		lbPeriodo.setOpaque(true);
+		
+		adic(lbPeriodo,7, 125, 80, 20 );
+		adic(lbLinha,5, 135, 550, 50 );
+		
+		adic( new JLabelPad("Sugerida"), 10, 150, 80, 20 );
+		adicCampo( txtQtdSugProdOP, 65, 150, 80, 20, "qtdsugprodop", "", ListaCampos.DB_SI, true );		//Qtd.Sugerida
+		adic( new JLabelPad("Prevista"), 150, 150, 80, 20 );
+		adicCampo( txtQtdPrevProdOP, 200, 150, 80, 20, "qtdprevprodop", "", ListaCampos.DB_SI, false ); //Qtd.prevista
+		adic( new JLabelPad("Realizada"), 285, 150, 80, 20 );
+		adicCampo( txtQtdFinalProdOP, 345, 150, 80, 20, "QTDDISTPOP", "", ListaCampos.DB_SI, false ); //Qtd.prevista
+		adic( new JLabelPad("Distr."), 428, 150, 80, 20 );
+		adicCampo( txtQtdDistOp, 465, 150, 80, 20, "qtdfinalprodop", "", ListaCampos.DB_SI, false ); //Qtd.Produzida
 		
 		adicCampo( txtCodAlmoxEst, 7, 100, 70, 20, "codalmox", "Cód.Almox.", ListaCampos.DB_FK, txtDescAlmoxEst, true );
 		adicDescFK( txtDescAlmoxEst, 80, 100, 300, 20, "descalmox", "Descrição do almoxarifado" );
@@ -550,7 +565,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		lSitOp = new JLabelPad();
 		lSitOp.setForeground( Color.WHITE );
 		pinLb.adic( lSitOp, 30, 0, 110, 20 );
-		pinCab.adic( pinLb, 560, 161, 114, 24 );
+		pinCab.adic( pinLb, 560, 160, 114, 24 );
 		
 		tpnAbas.addChangeListener( this );
 		txtCodOP.addFocusListener( this );
@@ -561,10 +576,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	private void formataCampoLimpo(JTextFieldPad campo, Color cor) {
 		try {
 			campo.setAtivo( false );
-			campo.tiraBorda();
-			campo.setForeground( cor );
-			campo.setFont(new Font("Dialog", Font.BOLD, 14));
-			campo.setHorizontalAlignment( SwingConstants.LEFT );						
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -1763,47 +1775,62 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	}
 
 	private void bloqueiaOp() {
+
 		String sitop = null;
 		boolean lote = false;
 		boolean rma = false;
-		
+
 		try {
 
 			sitop = txtSitOp.getVlrString();
 			lote = existeLote( con, txtCodProdEst.getVlrInteger(), txtCodLoteProdEst.getVlrString() );
 			rma = faltaRma() && liberaRMA();
-			
-			if(sitop.equals( "PE" )) {
+
+			if ( sitop.equals( "PE" ) ) {
 				btLote.setEnabled( !lote );
 				btRMA.setEnabled( rma );
 				btFinaliza.setEnabled( true );
 				btDistrb.setEnabled( true );
 				btCancela.setEnabled( true );
-				
+
 				txtCodProdEst.setAtivo( false );
-				txtSeqEst.setAtivo( false ); 
-				
+				txtSeqEst.setAtivo( false );
+
 				txtQtdSugProdOP.setAtivo( true );
 				txtCodLoteProdEst.setAtivo( true );
 				txtDtValidOP.setAtivo( true );
 				txtDtFabProd.setAtivo( true );
 				txtCodAlmoxEst.setAtivo( true );
-				
+
 				txtCodLoteProdDet.setAtivo( true );
-				
+
 				navRod.setAtivo( Navegador.BT_NOVO, true );
 				navRod.setAtivo( Navegador.BT_EDITAR, true );
 				navRod.setAtivo( Navegador.BT_EXCLUIR, true );
 				navRod.setAtivo( Navegador.BT_SALVAR, true );
-				
+
+				Date dtfab = Funcoes.getDataPura( txtDtFabProd.getVlrDate() ) ;
+				Date dtatual = Funcoes.getDataPura( new Date() ) ;
+
+				if ( dtfab.before( dtatual ) ) {
+					SitOp = "Atrasada";
+					pinLb.setBackground( cor( 255, 0, 0 ) );
+				}
+				else {
+					SitOp = "Pendente";
+					pinLb.setBackground( cor( 255, 204, 51 ) );
+				}
+
+				lSitOp.setText( SitOp );
+
 			}
-			else if(sitop.equals( "FN" )) {
+			else if ( sitop.equals( "FN" ) ) {
 				btLote.setEnabled( false );
 				btRMA.setEnabled( rma );
 				btFinaliza.setEnabled( false );
 				btDistrb.setEnabled( true );
 				btCancela.setEnabled( true );
-				
+
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false );
 				txtQtdSugProdOP.setAtivo( false );
@@ -1811,20 +1838,22 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				txtDtValidOP.setAtivo( false );
 				txtDtFabProd.setAtivo( false );
 				txtCodAlmoxEst.setAtivo( false );
-				
+
 				txtCodLoteProdDet.setAtivo( false );
-				
+
 				tpnAbas.setSelectedIndex( 1 );
-				
+
 				navRod.setAtivo( Navegador.BT_NOVO, false );
 				navRod.setAtivo( Navegador.BT_EDITAR, false );
 				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
 				navRod.setAtivo( Navegador.BT_SALVAR, false );
-				
-				
-				
+
+				SitOp = "Finalizada";
+				lSitOp.setText( SitOp );
+				pinLb.setBackground( cor( 0, 170, 30 ) );
+
 			}
-			else if(sitop.equals( "CA" )) {
+			else if ( sitop.equals( "CA" ) ) {
 				btLote.setEnabled( false );
 				btRMA.setEnabled( false );
 				btFinaliza.setEnabled( false );
@@ -1838,38 +1867,45 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				txtDtValidOP.setAtivo( false );
 				txtDtFabProd.setAtivo( false );
 				txtCodAlmoxEst.setAtivo( false );
-				
+
 				txtCodLoteProdDet.setAtivo( false );
-				
+
 				navRod.setAtivo( Navegador.BT_NOVO, false );
 				navRod.setAtivo( Navegador.BT_EDITAR, false );
 				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
 				navRod.setAtivo( Navegador.BT_SALVAR, false );
+
+				SitOp = "Cancelada";
+				lSitOp.setText( SitOp );
+				pinLb.setBackground( cor( 250, 50, 51 ) );
+
 			}
-			else if(sitop.equals( "" )) {
+			else if ( sitop.equals( "" ) ) {
 				btLote.setEnabled( false );
 				btRMA.setEnabled( false );
 				btFinaliza.setEnabled( false );
 				btDistrb.setEnabled( false );
 				btCancela.setEnabled( false );
-				
+
 				txtCodProdEst.setAtivo( true );
-				txtSeqEst.setAtivo( true ); 
-				
+				txtSeqEst.setAtivo( true );
+
 				txtQtdSugProdOP.setAtivo( true );
 				txtCodLoteProdEst.setAtivo( true );
 				txtDtValidOP.setAtivo( true );
 				txtDtFabProd.setAtivo( true );
 				txtCodAlmoxEst.setAtivo( true );
-				
+
 				txtCodLoteProdDet.setAtivo( true );
+
+				lSitOp.setVisible( false );
+				pinLb.setBackground( Color.WHITE );
 			}
 
+		} catch ( Exception e ) {
+			e.printStackTrace();
 		}
-		catch (Exception e) {
-			e.printStackTrace(); 
-		}
-		
+
 	}
 	
 	public void afterCarrega( CarregaEvent cevt ) {
@@ -1931,34 +1967,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 					btLote.setEnabled( true );
 				}
 			}
-			
-			if ( sSitOp.equals( "CA" ) ) {
-						
-				SitOp = "Cancelado";
-				lSitOp.setText( SitOp );
-				pinLb.setBackground( cor( 250, 50, 50 ) );
-				
-			}
-			else if ( sSitOp.equals( "FN" ) ) {
-				
-				SitOp = "Finalizada";
-				System.out.println("FINALIZADA");
-				lSitOp.setText( SitOp );
-				pinLb.setBackground( cor( 0, 170, 30 ) );
-				
-			}
-			else if ( sSitOp.equals( "PE" )) {
-				
-				SitOp = "Pendente";
-				lSitOp.setText( SitOp );
-				pinLb.setBackground( cor( 255, 204, 51 ) );
-			
-			}
-			else {
-				lSitOp.setVisible( false );
-				pinLb.setBackground( Color.WHITE );
-			}
-			
 		}
 		catch (Exception e) {
 			
