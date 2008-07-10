@@ -4,9 +4,9 @@
     <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomstd.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
-    <manifest generateManifest="true" mainClassHandleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FreedomSTD.java[FreedomSTD" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
-        <sealing sealJar="true">
-            <packagesToSeal/>
+    <manifest generateManifest="true" mainClassHandleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FreedomSTD.java[FreedomSTD" manifestLocation="/freedom/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="false">
+        <sealing sealJar="false">
+            <packagesToSeal/>            
             <packagesToUnSeal/>
         </sealing>
     </manifest>
@@ -48,8 +48,8 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes{Teste.java"/>
         <file path="/freedom/src/org/freedom/images/btAtualMenu.gif"/>
         <file path="/freedom/src/org/freedom/images/freedompdv.ico"/>
-        <file path="/freedom/src/org/freedom/images/btFluxo.gif"/>
         <file path="/freedom/src/org/freedom/images/graficoLinha.gif"/>
+        <file path="/freedom/src/org/freedom/images/btFluxo.gif"/>
         <file path="/freedom/src/org/freedom/images/ba1101.gif"/>
         <file path="/freedom/src/org/freedom/relatorios/FRComissoes.jasper"/>
         <file path="/freedom/src/org/freedom/images/btOk.gif"/>
