@@ -1183,6 +1183,29 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		return rs;
 	}
 	
+	private ResultSet temDistrib() {
+		StringBuffer sql = new StringBuffer();
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		
+		try {
+			sql.append( "SELECT count(*) FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND GERARMA='S'" );
+			
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPITOP" ) );
+			ps.setInt( 3, txtCodOP.getVlrInteger().intValue() );
+			ps.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
+			
+			rs = ps.executeQuery();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return rs;
+	}
+	
 	private boolean faltaRma() {
 		boolean ret = true;
 		

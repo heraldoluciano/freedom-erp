@@ -43,11 +43,14 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 	private JLabelPad lJustifcQtdProd = new JLabelPad("Justificativa");
     boolean bJust = false;
 	public DLFinalizaOP(Component cOrig,String sQtdPrevOp) {
+		
 		super(cOrig);
+		
         txtQtdPrevOP.setVlrString(sQtdPrevOp);
         txtQtdFinalOP.setVlrString(sQtdPrevOp);
+        
 		setTitulo("Finalização da OP.");
-		setAtribos(250,190);
+		setAtribos(250,140);
 		
 		txtQtdPrevOP.setAtivo(false);
 		adic(new JLabelPad("Qtd. prevista:"),7,5,100,20);
