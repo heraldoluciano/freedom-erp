@@ -323,7 +323,8 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 				txtDataFimProdFs.setAtivo(false);
 				txtHFimProdFs.setAtivo(false);
 				txaObs.setEnabled(false);    	
-			} else {
+			} 
+			else {
 				txtDataIniProdFs.setAtivo(true);
 				txtHIniProdFs.setAtivo(true);
 				txtDataFimProdFs.setAtivo(true);
