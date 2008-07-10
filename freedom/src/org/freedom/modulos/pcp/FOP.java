@@ -25,7 +25,6 @@ package org.freedom.modulos.pcp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -43,6 +42,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -51,6 +51,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
 import org.freedom.acao.CarregaEvent;
@@ -253,6 +254,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	
 	private JPanelPad pinLb = new JPanelPad();
 	
+	private JPanelPad pinQuantidades = new JPanelPad();
+	
 	private JLabelPad lSitOp = null;
 	
 	private String SitOp = "";
@@ -284,7 +287,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		setName( "Ordens de produção" );
 		setTitulo( "Ordens de produção" );
 		setAtribos( 15, 10, 700, 600 );
-		setAltCab( 225 );
+		setAltCab( 227 );
 
 		pnMaster.remove( spTab );
 
@@ -301,6 +304,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		btDistrb.setToolTipText( "Distribuição" );
 		btCancela.setToolTipText( "Cancela O.P." );
 
+		pinCab.adic( pinQuantidades, 5, 130, 550, 55 );
 		pinCab.adic( pinBotCab, 560, 2, 115, 159 );
 	
 		pinBotCab.adic( btLote, 0, 0, 110, 30 );
@@ -327,7 +331,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 		// FK de Lotes
 		lcLoteProdEst.add( new GuardaCampo( txtCodLoteProdEst, "CodLote", "Lote", ListaCampos.DB_PK, txtDescLoteProdEst, false ) );
-		lcLoteProdEst.add( new GuardaCampo( txtDescLoteProdEst, "VenctoLote", "Dt.vencto.", ListaCampos.DB_SI, false ) );
+		lcLoteProdEst.add( new GuardaCampo( txtDescLoteProdEst, "VenctoLote", "Dt.Vencimento", ListaCampos.DB_SI, false ) );
 		lcLoteProdEst.add( new GuardaCampo( txtSldLiqProd, "SldLiqLote", "Saldo", ListaCampos.DB_SI, false ) );
 		lcLoteProdEst.montaSql( false, "LOTE", "EQ" );
 		lcLoteProdEst.setQueryCommit( false );
@@ -338,7 +342,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		txtLoteRat.setNomeCampo( "CodLote" );
 		txtLoteRat.setFK( true );
 		lcLoteProdRat.add( new GuardaCampo( txtLoteRat, "CodLote", "Lote", ListaCampos.DB_PK, txtVencLoteRat, false ) );
-		lcLoteProdRat.add( new GuardaCampo( txtVencLoteRat, "VenctoLote", "Dt.vencto.", ListaCampos.DB_SI, false ) );
+		lcLoteProdRat.add( new GuardaCampo( txtVencLoteRat, "VenctoLote", "Dt.Vencimento", ListaCampos.DB_SI, false ) );
 		lcLoteProdRat.add( new GuardaCampo( txtSldLoteRat, "SldLiqLote", "Saldo", ListaCampos.DB_SI, false ) );
 		lcLoteProdRat.setDinWhereAdic( "CODPROD=#N", txtCodProdDet );
 		lcLoteProdRat.montaSql( false, "LOTE", "EQ" );
@@ -394,8 +398,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		adicCampo( txtCodOP, 7, 20, 70, 20, "CodOP", "Nº OP.", ListaCampos.DB_PK, true );
 		adicCampo( txtSeqOP, 80, 20, 60, 20, "SeqOP", "Seq. OP.", ListaCampos.DB_PK, true );
 		adicCampo( txtCodTpMov, 143, 20, 70, 20, "CodTipoMov", "Cód.Tp.Mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
-		adicDescFK( txtDescTipoMov, 216, 20, 250, 20, "DescTipoMov", "Descrição do tipo de movimento" );
-		adicCampo( txtDtFabProd, 470, 20, 80, 20, "dtfabrop", "Dt.Fabric.", ListaCampos.DB_SI, true );
+		adicDescFK( txtDescTipoMov, 216, 20, 256, 20, "DescTipoMov", "Descrição do tipo de movimento" );
+		adicCampo( txtDtFabProd, 475, 20, 80, 20, "dtfabrop", "Dt.Fabricação", ListaCampos.DB_SI, true );
 
 		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
 			adicCampo( txtRefProdEst, 7, 60, 70, 20, "refprod", "Referência", ListaCampos.DB_FK, true );
@@ -409,42 +413,32 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		}
 		
 		adicCampo( txtSeqEst, 80, 60, 60, 20, "seqest", "Seq.Est.", ListaCampos.DB_FK, txtDescEst, true );
-		adicDescFK( txtDescEst, 143, 60, 238, 20, "descprod", "Descrição da estrutura" );
-		adicDescFK( txtQtdEst, 383, 60, 85, 20, "qtdest", "Qtd.est." );
+		adicDescFK( txtDescEst, 143, 60, 241, 20, "descprod", "Descrição da estrutura" );
+		adicDescFK( txtQtdEst, 387, 60, 85, 20, "qtdest", "Qtd.Estrutura" );
 		
-		pinCab.adic( new JLabelPad("Densid."), 470,40 ,100 ,20 );
-		pinCab.adic( txtVlrDensidade, 470, 60, 80, 20 ); // xxx
-//		pinDados.adic( txtQtdFinalProdOP, 413, 60, 80, 20 ); // xxx
+		pinCab.adic( new JLabelPad("Densidade"), 475, 40 , 80 ,20 );
+		pinCab.adic( txtVlrDensidade, 475, 60, 80, 20 ); 
 
 		formataCampoLimpo( txtQtdPrevProdOP, new Color(0,0,255) );
 		formataCampoLimpo( txtQtdFinalProdOP, new Color(255,0,0) );
 		formataCampoLimpo( txtQtdDistOp, new Color(255,0,0) );
 		
-		JLabelPad lbLinha = new JLabelPad();
-		lbLinha.setBorder(BorderFactory.createEtchedBorder());
-		JLabelPad lbPeriodo = new JLabelPad("Quantidades:" , SwingConstants.CENTER );
-		lbPeriodo.setOpaque(true);
-		
-		adic(lbPeriodo,7, 125, 80, 20 );
-		adic(lbLinha,5, 135, 550, 50 );
-		
-		adic( new JLabelPad("Sugerida"), 10, 150, 80, 20 );
-		adicCampo( txtQtdSugProdOP, 65, 150, 80, 20, "qtdsugprodop", "", ListaCampos.DB_SI, true );		//Qtd.Sugerida
-		adic( new JLabelPad("Prevista"), 150, 150, 80, 20 );
-		adicCampo( txtQtdPrevProdOP, 200, 150, 80, 20, "qtdprevprodop", "", ListaCampos.DB_SI, false ); //Qtd.prevista
-		adic( new JLabelPad("Realizada"), 285, 150, 80, 20 );
-		adicCampo( txtQtdFinalProdOP, 345, 150, 80, 20, "QTDDISTPOP", "", ListaCampos.DB_SI, false ); //Qtd.prevista
-		adic( new JLabelPad("Distr."), 428, 150, 80, 20 );
-		adicCampo( txtQtdDistOp, 465, 150, 80, 20, "qtdfinalprodop", "", ListaCampos.DB_SI, false ); //Qtd.Produzida
 		
 		adicCampo( txtCodAlmoxEst, 7, 100, 70, 20, "codalmox", "Cód.Almox.", ListaCampos.DB_FK, txtDescAlmoxEst, true );
-		adicDescFK( txtDescAlmoxEst, 80, 100, 300, 20, "descalmox", "Descrição do almoxarifado" );
-		adicCampo( txtCodLoteProdEst, 383, 100, 87, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLoteProdEst, false );
+		adicDescFK( txtDescAlmoxEst, 80, 100, 303, 20, "descalmox", "Descrição do almoxarifado" );
+		adicCampo( txtCodLoteProdEst, 386, 100, 87, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLoteProdEst, false );
 		adicDescFKInvisivel( txtDescLoteProdEst, "VenctoLote", "Vencto.Lote" );
-		adicCampo( txtDtValidOP, 473, 100, 80, 20, "dtvalidpdop", "Dt. validade", ListaCampos.DB_SI, false );
+		adicCampo( txtDtValidOP, 475, 100, 80, 20, "dtvalidpdop", "Dt.Validade", ListaCampos.DB_SI, false );
 		
 		adicCampoInvisivel( txtSitOp, "sitop", "sit.op.", ListaCampos.DB_SI, false );
-				
+
+		setPainel( pinQuantidades );
+
+		adicCampo( txtQtdSugProdOP, 7, 20, 130, 20, "qtdsugprodop", "Qtd. Sugerida", ListaCampos.DB_SI, true );		//Qtd.Sugerida
+		adicCampo( txtQtdPrevProdOP, 140, 20, 130, 20, "qtdprevprodop", "Qtd. Prevista", ListaCampos.DB_SI, false ); //Qtd.prevista
+		adicCampo( txtQtdFinalProdOP, 273, 20, 130, 20, "QTDDISTPOP", "Qtd. Realizada", ListaCampos.DB_SI, false ); //Qtd.prevista
+		adicCampo( txtQtdDistOp, 406, 20, 130, 20, "qtdfinalprodop", "Qtd. Distribuida", ListaCampos.DB_SI, false ); //Qtd.Produzida
+		
 		setListaCampos( true, "OP", "PP" );
 
 		txtCodTpMov.setAtivo( false );
@@ -484,7 +478,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		tabSimu.adicColuna( "Cód.prod" );// 1
 		tabSimu.adicColuna( "Descrição do produto" );// 2
 		tabSimu.adicColuna( "und." );// 3
-		tabSimu.adicColuna( "Compsição" );// 4
+		tabSimu.adicColuna( "Composição" );// 4
 		tabSimu.adicColuna( "Saldo" );// 5
 		tabSimu.adicColuna( "Utilizado" );// 6
 		tabSimu.adicColuna( "Rma?" );// 7
@@ -565,7 +559,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		lSitOp = new JLabelPad();
 		lSitOp.setForeground( Color.WHITE );
 		pinLb.adic( lSitOp, 30, 0, 110, 20 );
-		pinCab.adic( pinLb, 560, 160, 114, 24 );
+		pinCab.adic( pinLb, 560, 161, 114, 24 );
 		
 		tpnAbas.addChangeListener( this );
 		txtCodOP.addFocusListener( this );
@@ -585,8 +579,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	
 	private void montaDet() {
 
-		setAltDet( 50 );
-		pinDet = new JPanelPad( 440, 50 );
+		setAltDet( 60 );
+		pinDet = new JPanelPad( 440, 60 );
 		setPainel( pinDet, pnDet );
 
 		txtCodLoteProdDet.setAtivo( true );
@@ -1781,7 +1775,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		boolean rma = false;
 
 		try {
-
+			
 			sitop = txtSitOp.getVlrString();
 			lote = existeLote( con, txtCodProdEst.getVlrInteger(), txtCodLoteProdEst.getVlrString() );
 			rma = faltaRma() && liberaRMA();
@@ -1898,8 +1892,9 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 				txtCodLoteProdDet.setAtivo( true );
 
-				lSitOp.setVisible( false );
-				pinLb.setBackground( Color.WHITE );
+				SitOp = "";
+				lSitOp.setText( SitOp );
+				pinLb.setBackground( cor( 238, 238, 238) );
 			}
 
 		} catch ( Exception e ) {
