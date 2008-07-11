@@ -33,6 +33,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -360,9 +361,6 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 
 	private void carregar() {
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Vector<Object> vVals = null;
 		float fValProd = 0;
 		float fValDesc = 0;
 		float fValLiq = 0;
@@ -370,25 +368,58 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		try {
 			tab.limpa();
 			vValidos.clear();
-
+			
+			Vector<Vector<String>> vorcs = new Vector<Vector<String>>();
+			Vector<String> vcodorcs = new Vector<String>();
+			vorcs.add( vcodorcs );
+			
+			int count = 0;
+			
 			for ( int i = 0; i < tabOrc.getNumLinhas(); i++ ) {
 
-				if ( ! ( (Boolean) tabOrc.getValor( i, 0 ) ).booleanValue() )
+				if ( ! ( (Boolean) tabOrc.getValor( i, 0 ) ).booleanValue() ) {
 					continue;
+				}
+				
+				vcodorcs.add( String.valueOf( tabOrc.getValor( i, 1 ) ) );
+				count++;
+				
+				if ( count == 1000 ) {
+					vcodorcs = new Vector<String>();
+					vorcs.add( vcodorcs );
+					count = 0;
+				}
+			}			
+			
+			try {
+				
 
-				StringBuilder sql = new StringBuilder();
-				sql.append( "SELECT IT.CODORC,IT.CODITORC,IT.CODPROD,P.DESCPROD," ); 
-				sql.append( "IT.QTDITORC,IT.PRECOITORC,IT.VLRDESCITORC,IT.VLRLIQITORC," );
-				sql.append( "IT.VLRPRODITORC FROM VDITORCAMENTO IT, EQPRODUTO P " );
-				sql.append( "WHERE P.CODPROD=IT.CODPROD AND P.CODFILIAL=IT.CODFILIALPD " );
-				sql.append( "AND P.CODEMP=IT.CODEMPPD AND IT.ACEITEITORC='S' AND IT.EMITITORC='N' " ); 
-				sql.append( "AND IT.APROVITORC='S' AND IT.CODORC=? AND IT.CODFILIAL=? AND it.CODEMP=?" );
-				try {
-					ps = con.prepareStatement( sql.toString() );
-					ps.setInt( 1, ( (Integer) tabOrc.getValor( i, 1 ) ).intValue() );
+				for ( Vector<String> v : vorcs ) {
+					
+					String scodorcs = "";
+					
+					for ( int i = 0; i < v.size(); i++ ) {
+						if ( scodorcs.length() > 0 ) {
+							scodorcs += ",";
+						}						
+						scodorcs += v.get( i );
+					}	
+					
+					StringBuilder sql = new StringBuilder();
+					sql.append( "SELECT IT.CODORC,IT.CODITORC,IT.CODPROD,P.DESCPROD," ); 
+					sql.append( "IT.QTDITORC,IT.PRECOITORC,IT.VLRDESCITORC,IT.VLRLIQITORC," );
+					sql.append( "IT.VLRPRODITORC FROM VDITORCAMENTO IT, EQPRODUTO P " );
+					sql.append( "WHERE P.CODPROD=IT.CODPROD AND P.CODFILIAL=IT.CODFILIALPD " );
+					sql.append( "AND P.CODEMP=IT.CODEMPPD AND IT.ACEITEITORC='S' AND IT.EMITITORC='N' " ); 
+					sql.append( "AND IT.APROVITORC='S' AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC IN " );
+					sql.append( "(" + scodorcs + ")" );
+					
+					Vector<Object> vVals = null;
+					
+					PreparedStatement ps = con.prepareStatement( sql.toString() );
+					ps.setInt( 1, Aplicativo.iCodEmp );
 					ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
-					ps.setInt( 3, Aplicativo.iCodEmp );
-					rs = ps.executeQuery();
+					ResultSet rs = ps.executeQuery();
 					while ( rs.next() ) {
 						vVals = new Vector<Object>();
 						vVals.addElement( new Boolean( "true" ) );
@@ -410,14 +441,22 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 						vValidos.addElement( new int[] { rs.getInt( "CodOrc" ), rs.getInt( "CodItOrc" ) } );
 						tab.adicLinha( vVals );
 					}
-					txtVlrProd.setVlrBigDecimal( new BigDecimal( fValProd ) );
-					txtVlrDesc.setVlrBigDecimal( new BigDecimal( fValDesc ) );
-					txtVlrLiq.setVlrBigDecimal( new BigDecimal( fValLiq ) );
-				} catch ( SQLException err ) {
-					Funcoes.mensagemErro( this, "Erro ao processar ítem '" + i + "'!\n" + err.getMessage(), true, con, err );
-					err.printStackTrace();
+					
+					if ( ! con.getAutoCommit() ) {
+						con.commit();
+					}
 				}
+			} catch ( SQLException err ) {
+				//Funcoes.mensagemErro( this, "Erro ao processar ítem '" + i + "'!\n" + err.getMessage(), true, con, err );
+				err.printStackTrace();
 			}
+			
+
+			txtVlrProd.setVlrBigDecimal( new BigDecimal( fValProd ) );
+			txtVlrDesc.setVlrBigDecimal( new BigDecimal( fValDesc ) );
+			txtVlrLiq.setVlrBigDecimal( new BigDecimal( fValLiq ) );
+			
+			
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -632,7 +671,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 
 			if ( txtCodOrc.getVlrInteger().intValue() > 0 ) {
 				iCod = txtCodOrc.getVlrInteger().intValue();
-				sWhere = ", VDCLIENTE C WHERE O.CODORC = ? AND O.CODFILIAL = ? AND O.CODEMP = ? " + "AND C.CODEMP=O.CODEMPCL AND C.CODFILIAL=O.CODFILIALCL AND C.CODCLI=O.CODCLI ";
+				sWhere = ", VDCLIENTE C WHERE O.CODORC = ? AND O.CODFILIAL = ? AND O.CODEMP = ? AND C.CODEMP=O.CODEMPCL AND C.CODFILIAL=O.CODFILIALCL AND C.CODCLI=O.CODCLI ";
 				bOrc = true;
 			}
 			else {
@@ -643,7 +682,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 						txtCodCli.requestFocus();
 						return;
 					}
-					sWhere = ", VDCLIENTE C WHERE C.CODCLI=? AND C.CODFILIAL=? AND C.CODEMP=?" + " AND O.CODCLI=C.CODCLI AND O.CODFILIALCL=C.CODFILIAL AND O.CODEMPCL=C.CODEMP AND O.STATUSORC='OL'";
+					sWhere = ", VDCLIENTE C WHERE C.CODCLI=? AND C.CODFILIAL=? AND C.CODEMP=? AND O.CODCLI=C.CODCLI AND O.CODFILIALCL=C.CODFILIAL AND O.CODEMPCL=C.CODEMP AND O.STATUSORC='OL'";
 				}
 				else if ( rgBusca.getVlrString().equals( "O" ) && txtCodConv.getText().trim().length() > 0 ) {
 					iCod = txtCodConv.getVlrInteger().intValue();
@@ -652,7 +691,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 						txtCodConv.requestFocus();
 						return;
 					}
-					sWhere = ", ATCONVENIADO C WHERE C.CODCONV=? AND C.CODFILIAL=? AND C.CODEMP=?" + " AND O.CODCONV=C.CODCONV AND O.CODFILIALCV=C.CODFILIAL AND O.CODEMPCV=C.CODEMP AND O.STATUSORC='OL'";
+					sWhere = ", ATCONVENIADO C WHERE C.CODCONV=? AND C.CODFILIAL=? AND C.CODEMP=? AND O.CODCONV=C.CODCONV AND O.CODFILIALCV=C.CODFILIAL AND O.CODEMPCV=C.CODEMP AND O.STATUSORC='OL'";
 					bConv = true;
 				}
 				else if ( iCod == -1 ) {
