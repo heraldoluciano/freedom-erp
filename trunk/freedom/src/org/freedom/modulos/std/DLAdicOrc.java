@@ -64,6 +64,8 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 	
 	private final int POS_PRECO = 5;
 	
+	private final int POS_DESC = 6;
+	
 	private final int POS_VLRLIQ = 7;
 	
 	private final int POS_TPAGR = 8;
@@ -463,7 +465,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 			if ( tab.getNumLinhas() > 0 ) {
 				
 				boolean usaPedSeq = prefs[ 0 ];
-				diag = new DLCriaVendaOrc( usaPedSeq, sTipoVenda );
+				diag = new DLCriaVendaOrc( !usaPedSeq, sTipoVenda );
 				
 				if ( sTipoVenda.equals( "V" ) && !usaPedSeq ) {
 					diag.setNewCodVenda( Integer.parseInt( vendaSTD.lcCampos.getNovoCodigo() ) );
@@ -543,7 +545,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 							bPrim = false;
 						}
 						try {
-							sSQL = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?,?,?,?)";
+							sSQL = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?,?,?,?,?)";
 							ps2 = con.prepareStatement( sSQL );
 							ps2.setInt( 1, Aplicativo.iCodFilial );
 							ps2.setInt( 2, iCodVenda );					
@@ -554,6 +556,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 							ps2.setString( 7, sTipoVenda );							
 							ps2.setString( 8, tab.getValor( i, POS_TPAGR ).toString());
 							ps2.setFloat( 9, new Float(Funcoes.strCurrencyToDouble(tab.getValor( i, POS_QTD ).toString())));
+							ps2.setFloat( 10, new Float(Funcoes.strCurrencyToDouble(tab.getValor( i, POS_DESC ).toString())));
 							
 							ps2.execute();
 							ps2.close();
@@ -825,7 +828,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 	
 	private void agrupaItens() {
 		Integer codprodpai = null;	
-		Float vlrliqnovopai = null;
+		Float vlrdescnovopai = new Float(0);
 		Float qtdatupai = null;
 		Float qtdnovopai = new Float(0);
 		Float precopai = null;
@@ -833,27 +836,34 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 				
 		try {	
 			limpaNaoSelecionados( tab );
+			
+			int linhaPai = -1;
 						
 			for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
 				codprodpai = new Integer(tab.getValor( i, POS_CODPROD ).toString());								
 				qtdatupai = new Float( Funcoes.strCurrencyToDouble( tab.getValor( i, POS_QTD ).toString()));
 				precopai = new Float( Funcoes.strCurrencyToDouble(tab.getValor( i, POS_PRECO ).toString()));
 				tpagr = tab.getValor( i, POS_TPAGR ).toString();
+				vlrdescnovopai +=  new Float( Funcoes.strCurrencyToDouble(tab.getValor( i, POS_DESC ).toString())); 
 				
 				if(tpagr.equals( "" )) {
 					qtdnovopai = qtdatupai;
-					qtdnovopai += marcaFilhos( i+1, codprodpai, precopai );					
-					vlrliqnovopai = new Float( precopai * qtdnovopai );					
+					qtdnovopai += marcaFilhos( i+1, codprodpai, precopai );										
 					
 					if( qtdatupai.compareTo( qtdnovopai )!= 0 ) {
 						tab.setValor( "P", i, POS_TPAGR );
-						tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, qtdnovopai.toString()), i, POS_QTD );
+						tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf(qtdnovopai)), i, POS_QTD );
+						linhaPai = i;
 					}
 					else {
 						tab.setValor( "N", i, POS_TPAGR );					
 					}
 				}					
 			}	
+			
+			if ( linhaPai > -1 ) {
+				tab.setValor( Funcoes.strDecimalToStrCurrencyd( 2, String.valueOf(vlrdescnovopai)), linhaPai, POS_DESC );
+			}
 //			limpaFilhos( tab );
 		}
 		catch(Exception e) {
