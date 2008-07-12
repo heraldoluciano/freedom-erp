@@ -235,7 +235,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
         if ( bPrefs[POS_PREFS.MULTICOMIS.ordinal()] ) {
         	numComissionados = getNumComissionados();
         	if (numComissionados>0) { 
-        		ctrlmc = new CtrlMultiComis(con, numComissionados, txtCodVend);
+        		ctrlmc = new CtrlMultiComis(this, con, numComissionados, 
+        				txtTipoVenda, txtCodVenda, txtCodVend, "VENDACOMIS");
         		ctrlmc.loadRegraComis( codregrcomis );
         	}
         }
@@ -754,9 +755,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		int[] cols = {7, 360} ;
 		int x, y, alt, larg = 0;
  	    ItemComis[] listComis = null;
-		/*		adicCampo( txtCodVend, 7, 20, 80, 20, "CodVend", "Cód.comis.", ListaCampos.DB_FK, txtDescVend, true );
-		adicDescFK( txtDescVend, 90, 20, 197, 20, "NomeVend", "Nome do comissionado" );
-		 * */
 		if ( numComissionados > 0 ) {
 			if ( bPrefs[ POS_PREFS.USACLASCOMIS.ordinal()]) {
 				row = 40;
@@ -765,12 +763,21 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		   listComis = ctrlmc.getListComis();
 		   for (ItemComis itemcomis: listComis) {
 			   if (itemcomis!=null) {
-				   adic(itemcomis.getLbCodvend(), cols[col], row+5, 80, 10);
+				   setListaCampos( itemcomis.getLcVendaComis() );
+				   adicCampo(itemcomis.getTxtCodvend(),cols[col], row+20 , 80, 20, 
+						   itemcomis.getTxtCodvend().getNomeCampo(), itemcomis.getLbCodvend().getText(), 
+						   ListaCampos.DB_FK, itemcomis.getTxtNomevend(), "S".equals(itemcomis.getObrigitrc()) );
+				   adicDescFK( itemcomis.getTxtNomevend(), cols[col] + 83, row+20 , 200, 20, 
+						   itemcomis.getTxtNomevend().getNomeCampo(), itemcomis.getLbNomevend().getText() );
+				   adicCampo(itemcomis.getTxtPerccomis(), cols[col] + 286, row+20 , 55, 20, 
+						   itemcomis.getTxtPerccomis().getNomeCampo(), itemcomis.getLbPercvend().getText(),
+						   ListaCampos.DB_SI, "S".equals(itemcomis.getObrigitrc()));
+				   /*adic(itemcomis.getLbCodvend(), cols[col], row+5, 80, 10);
 				   adic(itemcomis.getTxtCodvend(), cols[col], row+20 , 80, 20);
 				   adic(itemcomis.getLbNomevend(), cols[col] + 83, row+5, 200, 10);
 				   adic(itemcomis.getTxtNomevend(), cols[col] + 83, row+20 , 200, 20);
 				   adic(itemcomis.getLbPercvend(), cols[col] + 286, row+5, 55, 10);
-				   adic(itemcomis.getTxtPerccomis(), cols[col] + 286, row+20 , 55, 20);
+				   adic(itemcomis.getTxtPerccomis(), cols[col] + 286, row+20 , 55, 20); */ 
 				   if (col==0) {
 					   col = 1;
 				   } else {
