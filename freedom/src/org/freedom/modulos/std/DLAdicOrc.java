@@ -1021,7 +1021,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		}
 		else if (evt.getSource() == btResetOrc) {
 			tabOrc.limpa();
-			tab.limpa();
+			tab.limpa(); 
 		}
 		else if (evt.getSource() == btResetItOrc) {
 			tab.limpa();
@@ -1079,7 +1079,6 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 	}
 	
 	public void firstFocus() {
-
 		txtCodOrc.requestFocus();
 	}
 
