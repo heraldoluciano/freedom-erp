@@ -28,7 +28,7 @@ public class CtrlMultiComis {
 		private JTextFieldPad txtCodvend = null;
 		private JTextFieldFK txtNomevend = null;
 		private JTextFieldPad txtPerccomis = null;
-		private JLabelPad lbCodvend = new JLabelPad("Cod.comis.");
+		private JLabelPad lbCodvend = new JLabelPad("Cód.comis.");
 		private JLabelPad lbNomevend = new JLabelPad("Nome do comissionado");
 		private JLabelPad lbPercvend = new JLabelPad("% comis.");
 		public ItemComis() {
@@ -47,6 +47,7 @@ public class CtrlMultiComis {
 		}
 		public void setObrigitrc( String obrigitrc ) {
 			this.obrigitrc = obrigitrc;
+			txtCodvend.setRequerido( "S".equals(obrigitrc) );
 		}
 		public void setEnabled(final boolean enabled) {
 			txtCodvend.setEnabled( enabled );
