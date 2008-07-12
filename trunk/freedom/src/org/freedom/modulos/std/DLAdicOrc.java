@@ -33,7 +33,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -85,7 +84,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 
 	private JScrollPane spnTabOrc = new JScrollPane( tabOrc );
 
-	private JPanelPad pinCab = new JPanelPad( 0, 100 );
+	private JPanelPad pinCab = new JPanelPad( 0, 65 );
 
 	private JPanelPad pnRod = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -144,6 +143,10 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 	private JButton btAgruparItens = new JButton( Icone.novo( "btAdic2.gif" ) );
 
 	private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+	
+	private JButton btResetOrc = new JButton( Icone.novo( "btReset.gif" ) );
+	
+	private JButton btResetItOrc = new JButton( Icone.novo( "btReset.gif" ) );
 
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
 
@@ -158,24 +161,35 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 	private org.freedom.modulos.std.FVenda vendaSTD = null;
 
 	private org.freedom.modulos.pdv.FVenda vendaPDV = null;
+	
+	private JLabelPad lbNomeCli = new JLabelPad( "Razão social do cliente" );
+	
+	private JLabelPad lbNomeConv = new JLabelPad( "Nome do conveniado" );
+	
+	private JLabelPad lbCodCli = new JLabelPad( "Cód.Cli." );
+	
+	private JLabelPad lbCodConv = new JLabelPad( "Cód.Conv." );
 
 	private boolean[] prefs;
 
 	public DLAdicOrc( Object vd, String tipo ) {
-
-		// Monta a tela
-		// super(false);
+		
 		super();
+		
 		sTipoVenda = tipo;
-		if ( sTipoVenda.equals( "V" ) )
+
+		if ( sTipoVenda.equals( "V" ) ) {
 			vendaSTD = (org.freedom.modulos.std.FVenda) vd;
-		else if ( sTipoVenda.equals( "E" ) )
+		}
+		else if ( sTipoVenda.equals( "E" ) ) {
 			vendaPDV = (org.freedom.modulos.pdv.FVenda) vd;
+		}
 
 		setTitulo( "Nova venda de orçamento", this.getClass().getName() );
-		setAtribos( 705, 470 );
+		setAtribos( 750, 480 );
 
-		// Container c = getTela();
+		ocultaConveniado();
+		
 		c.setLayout( new BorderLayout() );
 		c.add( pnRod, BorderLayout.SOUTH );
 		c.add( pnCli, BorderLayout.CENTER );
@@ -212,23 +226,25 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		Vector<String> vLabs = new Vector<String>();
 		vLabs.addElement( "Cliente" );
 		vLabs.addElement( "Conveniado" );
-		rgBusca = new JRadioGroup<String, String>( 2, 1, vLabs, vVals );
+		rgBusca = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 
 		pinCab.adic( new JLabelPad( "Nº orçamento" ), 7, 5, 90, 20 );
 		pinCab.adic( txtCodOrc, 7, 25, 90, 20 );
-		pinCab.adic( new JLabelPad( "Cód.cli." ), 100, 5, 70, 20 );
+		pinCab.adic( lbCodCli, 100, 5, 70, 20 );
 		pinCab.adic( txtCodCli, 100, 25, 70, 20 );
-		pinCab.adic( new JLabelPad( "Razão social do cliente" ), 173, 5, 200, 20 );
-		pinCab.adic( txtNomeCli, 173, 25, 200, 20 );
-		pinCab.adic( new JLabelPad( "Cód.conv." ), 100, 45, 70, 20 );
-		pinCab.adic( txtCodConv, 100, 65, 70, 20 );
-		pinCab.adic( new JLabelPad( "Nome do conveniado" ), 173, 45, 200, 20 );
-		pinCab.adic( txtNomeConv, 173, 65, 200, 20 );
+		pinCab.adic( lbNomeCli, 173, 5, 245, 20 );
+		pinCab.adic( txtNomeCli, 173, 25, 245, 20 );
 
-		pinCab.adic( new JLabelPad( "Buscar por:" ), 385, 5, 120, 20 );
-		pinCab.adic( rgBusca, 385, 25, 120, 60 );
+		pinCab.adic( lbCodConv, 100, 5, 70, 20 );
+		pinCab.adic( txtCodConv, 100, 25, 70, 20 );
+		pinCab.adic( lbNomeConv, 173, 5, 245, 20 );
+		pinCab.adic( txtNomeConv, 173, 25, 245, 20 );
+		
+		pinCab.adic( new JLabelPad( "Buscar por:" ), 421, 5, 200, 20 );
+		
+		pinCab.adic( rgBusca, 421, 25, 210, 31 );
 
-		pinCab.adic( btBusca, 520, 35, 150, 40 );
+		pinCab.adic( btBusca, 632, 25, 100, 30 ); 
 
 		pnRod.setPreferredSize( new Dimension( 600, 50 ) );
 
@@ -250,27 +266,28 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		pinRod.adic( new JLabelPad( "Vlr.liq." ), 210, 0, 97, 20 );
 		pinRod.adic( txtVlrLiq, 210, 20, 97, 20 );
 
-		pnTabOrc.setPreferredSize( new Dimension( 600, 130 ) );
+		pnTabOrc.setPreferredSize( new Dimension( 600, 133 ) );
 
 		pnTabOrc.add( spnTabOrc, BorderLayout.CENTER );
 		pnTabOrc.add( pinBtSelOrc, BorderLayout.EAST );
 
-		pinBtSelOrc.adic( btTudoOrc, 5, 5, 30, 30 );
-		pinBtSelOrc.adic( btNadaOrc, 5, 38, 30, 30 );
-		pinBtSelOrc.adic( btExec, 5, 71, 30, 30 );
+		pinBtSelOrc.adic( btTudoOrc, 3, 3, 30, 30 );
+		pinBtSelOrc.adic( btNadaOrc, 3, 34, 30, 30 );
+		pinBtSelOrc.adic( btResetOrc, 3, 65, 30, 30 );		
+		pinBtSelOrc.adic( btExec, 3, 96, 30, 30 );
 
 		pnCliTab.add( spnTab, BorderLayout.CENTER );
 		pnCliTab.add( pinBtSel, BorderLayout.EAST );
 
-		pinBtSel.adic( btTudoIt, 5, 5, 30, 30 );
-		pinBtSel.adic( btNadaIt, 5, 38, 30, 30 );
-		pinBtSel.adic( btGerar, 5, 71, 30, 30 );
-		pinBtSel.adic( btAgruparItens,5,104,30,30);
+		pinBtSel.adic( btTudoIt, 3, 3, 30, 30 );
+		pinBtSel.adic( btNadaIt, 3, 34, 30, 30 );
+		pinBtSel.adic( btResetItOrc, 3, 65, 30, 30 );
+		pinBtSel.adic( btAgruparItens, 3, 96, 30, 30 );
+		pinBtSel.adic( btGerar,3,127,30,30);
 
 		pnCli.add( pnTabOrc, BorderLayout.NORTH );
 		pnCli.add( pnCliTab, BorderLayout.CENTER );
 
-		txtCodConv.setAtivo( false );
 		txtVlrProd.setAtivo( false );
 		txtVlrDesc.setAtivo( false );
 		txtVlrLiq.setAtivo( false );
@@ -294,10 +311,10 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		tabOrc.adicColuna( "Valor total" );
 		tabOrc.adicColuna( "Valor liberado" );
 
-		tabOrc.setTamColuna( 30, 0 );
+		tabOrc.setTamColuna( 25, 0 );
 		tabOrc.setTamColuna( 60, 1 );
 		tabOrc.setTamColuna( 60, 2 );
-		tabOrc.setTamColuna( 160, 3 );
+		tabOrc.setTamColuna( 210, 3 );
 		tabOrc.setTamColuna( 60, 4 );
 		tabOrc.setTamColuna( 60, 5 );
 		tabOrc.setTamColuna( 100, 6 );
@@ -318,17 +335,22 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		tab.adicColuna( "Valor agr." );
 		tab.adicColuna( "Cód.orc." );
 
-		tab.setTamColuna( 35, 0 );
-		tab.setTamColuna( 35, 1 );
-		tab.setTamColuna( 80, 2 );
-		tab.setTamColuna( 160, 3 );
-		tab.setTamColuna( 50, 4 );
-		tab.setTamColuna( 90, 5 );
-		tab.setTamColuna( 100, 6 );
-		tab.setTamColuna( 100, 7 );
-		tab.setTamColuna( 50, 8 );
-		tab.setTamColuna( 50, 9 );
-		tab.setTamColuna( 100, 10 );
+		tab.setTamColuna( 25, 0 ); 
+		tab.setTamColuna( 30, 1 );
+		tab.setTamColuna( 60, 2 );
+		tab.setTamColuna( 190, 3 );
+		tab.setTamColuna( 40, 4 );
+		tab.setTamColuna( 70, 5 );
+		tab.setTamColuna( 70, 6 );
+		tab.setTamColuna( 70, 7 );
+		
+		tab.setColunaInvisivel( 8 );
+		tab.setColunaInvisivel( 9 );
+		
+//		tab.setTamColuna( 50, 8 );
+//		tab.setTamColuna( 50, 9 );X
+		
+		tab.setTamColuna( 70, 10 );
 		tab.setTamColuna( 50, 11 );
 
 
@@ -350,6 +372,8 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 		btNadaOrc.addActionListener( this );
 		btTudoIt.addActionListener( this );
 		btNadaIt.addActionListener( this );
+		btResetOrc.addActionListener( this );
+		btResetItOrc.addActionListener( this );
 
 		rgBusca.addRadioGroupListener( this );
 
@@ -473,7 +497,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 			
 			PreparedStatement ps2 = con.prepareStatement(sSql);
 							
-			ps2.setString(1,obs.toString());
+			ps2.setString(1,obs.toString().length()>10000?obs.toString().substring( 0,10000 ):obs.toString());
 			ps2.setInt(2,Aplicativo.iCodEmp);
 			ps2.setInt(3,Aplicativo.iCodFilial);
 			ps2.setInt(4,iCodVenda); 
@@ -482,7 +506,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 			
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao atualizar a tabela ORCAMENTO!\n"+err.getMessage(),true,con,err);
+			Funcoes.mensagemErro(this,"Erro ao atualizar observações da venda!\n"+err.getMessage(),true,con,err);
 		}
 	}
 	
@@ -610,10 +634,9 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 							return false;
 						}
 						
-						atualizaObsPed(obs,iCodVenda);
-						
 					}
 					try {
+						atualizaObsPed(obs,iCodVenda);
 						if ( !con.getAutoCommit() )
 							con.commit();
 						carregar();
@@ -952,12 +975,15 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btSair )
+		if ( evt.getSource() == btSair ){
 			dispose();
-		else if ( evt.getSource() == btBusca )
+		}
+		else if ( evt.getSource() == btBusca ) {
 			buscar();
-		else if ( evt.getSource() == btExec )
+		}
+		else if ( evt.getSource() == btExec ) {
 			carregar();
+		}
 		else if ( evt.getSource() == btGerar ) {
 			if ( !gerar() ) {
 				try {
@@ -977,18 +1003,30 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 				Funcoes.mensagemErro( this, "Erro ao realizar agrupamento de ítens!!\n" + err.getMessage(), true, con, err );
 			}
 		}		
-		else if ( evt.getSource() == btTudoOrc )
+		else if ( evt.getSource() == btTudoOrc ) {
 			carregaTudo( tabOrc );
-		else if ( evt.getSource() == btNadaOrc ) 
+		}
+		else if ( evt.getSource() == btNadaOrc ) { 
 			carregaNada( tabOrc );
-		else if ( evt.getSource() == btTudoIt )
+		}
+		else if ( evt.getSource() == btTudoIt ) {
 			carregaTudo( tab );
-		else if ( evt.getSource() == btNadaIt )
+		}
+		else if ( evt.getSource() == btNadaIt ) {
 			carregaNada( tab );
+		}
 		else if ( evt.getSource() == txtCodOrc ) {
 			if ( txtCodOrc.getVlrInteger().intValue() > 0 )
 				btBusca.requestFocus();
 		}
+		else if (evt.getSource() == btResetOrc) {
+			tabOrc.limpa();
+			tab.limpa();
+		}
+		else if (evt.getSource() == btResetItOrc) {
+			tab.limpa();
+		}
+		
 	}
 
 	public void beforeCarrega( CarregaEvent e ) {
@@ -1004,20 +1042,42 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 	}
 
 	public void valorAlterado( RadioGroupEvent rgevt ) {
-
 		if ( rgBusca.getVlrString().equals( "O" ) ) {
-			txtCodConv.setAtivo( true );
-			txtCodCli.setAtivo( false );
-			lcCli.limpaCampos( true );
+			ocultaCliente();
 		}
 		else if ( rgBusca.getVlrString().equals( "L" ) ) {
-			txtCodConv.setAtivo( false );
-			txtCodCli.setAtivo( true );
-			lcConv.limpaCampos( true );
+			ocultaConveniado();
 		}
 		lcOrc.limpaCampos( true );
 	}
 
+	public void ocultaConveniado() {
+		lcConv.limpaCampos( true );
+		
+		txtCodCli.setVisible( true );
+		txtNomeCli.setVisible( true );
+		lbCodCli.setVisible( true );
+		lbNomeCli.setVisible( true );		
+		txtCodConv.setVisible( false );
+		txtNomeConv.setVisible( false );		
+		lbCodConv.setVisible( false );
+		lbNomeConv.setVisible( false );		
+	}
+	
+	public void ocultaCliente() {
+		lcCli.limpaCampos( true );
+		
+		txtCodCli.setVisible( false );
+		txtNomeCli.setVisible( false );
+		lbCodCli.setVisible( false );
+		lbNomeCli.setVisible( false );					
+		txtCodConv.setVisible( true );
+		txtNomeConv.setVisible( true );		
+		lbCodConv.setVisible( true );
+		lbNomeConv.setVisible( true );
+		
+	}
+	
 	public void firstFocus() {
 
 		txtCodOrc.requestFocus();
