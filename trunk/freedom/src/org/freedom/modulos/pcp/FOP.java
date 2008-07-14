@@ -434,9 +434,11 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 		setPainel( pinQuantidades );
 
+		
 		adicCampo( txtQtdSugProdOP, 7, 20, 130, 20, "qtdsugprodop", "Qtd. Sugerida", ListaCampos.DB_SI, true );		//Qtd.Sugerida
 		adicCampo( txtQtdPrevProdOP, 140, 20, 130, 20, "qtdprevprodop", "Qtd. Prevista", ListaCampos.DB_SI, false ); //Qtd.prevista
 		adicCampo( txtQtdFinalProdOP, 273, 20, 130, 20, "QTDDISTPOP", "Qtd. Realizada", ListaCampos.DB_SI, false ); //Qtd.prevista
+		txtQtdDistOp.setSoLeitura( true );
 		adicCampo( txtQtdDistOp, 406, 20, 130, 20, "qtdfinalprodop", "Qtd. Distribuida", ListaCampos.DB_SI, false ); //Qtd.Produzida
 		
 		setListaCampos( true, "OP", "PP" );
