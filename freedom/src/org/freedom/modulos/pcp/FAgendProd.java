@@ -261,23 +261,28 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		StringBuffer sWhere = new StringBuffer();	
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		boolean or = false;
 		String sData = "";
 		
 		if( "S".equals( cbCancelada.getVlrString())){
 			
-			sWhere.append( " AND SITOP='CA'" );
+			sWhere.append( (or ? "OR" : "" )+ " SITOP='CA' " );
+			or = true;
 		}
 		if( "S".equals( cbFinalizada.getVlrString())){
 			
-			sWhere.append( " AND SITOP='FN'" );
+			sWhere.append( (or ? "OR" : "") + " SITOP='FN' " );
+			or = true;
 		}
 		if( "S".equals( cbAtrasada.getVlrString() )){
 			
-			sWhere.append( " AND (SITOP='PE' AND DTFABROP < CAST( 'NOW' AS DATE ))" );
+			sWhere.append( (or ? "OR" : "") + " (SITOP='PE' AND DTFABROP < CAST( 'NOW' AS DATE )) " );
+			or = true;
 		}
 		if( "S".equals( cbPendente.getVlrString() )){
 			
-			sWhere.append( " AND SITOP='PE'" );
+			sWhere.append( (or ? "OR" : "") + "  SITOP='PE' " );
+			or = true;
 		}
 		if( "F".equals( rgFiltro.getVlrString() )){
 			sData = "DTFABROP";
@@ -292,9 +297,9 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		sSQL.append( "CAST( QTDFINAL AS DECIMAL(15,2)) QTDFINAL," );
 		sSQL.append( "CAST((TEMPOFIN*100/TEMPOTOT) AS DECIMAL (15,2)) TEMPO, ");
 		sSQL.append( "FASEATUAL,TOTFASES FROM PPLISTAOPVW01 " );
-		sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND "+sData+" BETWEEN ? AND ? " );
+		sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND "+sData+" BETWEEN ? AND ? AND " );
 		sSQL.append( sWhere.toString() );
-	
+		System.out.println(sSQL.toString());
 		
 		try {
 			
@@ -354,6 +359,7 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		catch ( Exception e ) {
 			
 			Funcoes.mensagemInforma( this, "Erro ao montar grid " + e.getMessage() );
+			
 			e.printStackTrace();
 		}
 	}
