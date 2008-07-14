@@ -3,7 +3,10 @@ package org.freedom.modulos.pcp;
 import javax.swing.JScrollPane;
 
 import org.freedom.componentes.JTextAreaPad;
+import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
+
+import com.lowagie.tools.plugins.Txt2Pdf;
 
 
 public class DLJustCanc extends FFDialogo {
@@ -34,4 +37,13 @@ public class DLJustCanc extends FFDialogo {
 		}
 		return sRet;
 	}
+    public void ok(){
+    	if ((txaJustCanc.getVlrString().equals(""))){
+	        Funcoes.mensagemErro(this,"Informe o motivo do cancelamento!");
+    	    return;
+    	}
+    	else{
+    	    super.ok();
+	    }
+    }
 }
