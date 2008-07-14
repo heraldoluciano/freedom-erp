@@ -1620,63 +1620,82 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		return ret;
 	}
 	
-	private void cancelaOP() {		
+	private void cancelaOP() {
+
 		StringBuffer sql = new StringBuffer();
 		PreparedStatement ps1 = null;
 		PreparedStatement ps2 = null;
-		
+		DLJustCanc dl = null;
+
 		try {
-			
-			if( Funcoes.mensagemConfirma( null, "Confirma o cancelamento da O.P.?" ) == JOptionPane.OK_OPTION ) {
-				int qtdops = getQtdOPS();
+
+			if ( Funcoes.mensagemConfirma( null, "Confirma o cancelamento da O.P.?" ) == JOptionPane.OK_OPTION ) {
 				
-				if(qtdops>0) {
+				dl = new DLJustCanc(); 
+				dl.setVisible( true );
+				
+				if ( dl.OK ) {
 					
-					if( Funcoes.mensagemConfirma( null, "Existe" + (qtdops>1?"m ":" ") + qtdops + " Ordem" + (qtdops>1?"s ":" ") 
-												 	  + "de Produção ativa" + (qtdops>1?"s ":" ") + ", vinculadas a esta O.P!\n" 
-												 	  + "Deseja cancelar também?" ) == JOptionPane.OK_OPTION ) {
+					if( dl.getValor() == "" ){
 						
-						sql.append( "update ppop opr set opr.sitop='CA' " );
-						sql.append( "where opr.codemp=? and opr.codfilial=? and opr.codop=? ");
-						sql.append( "and opr.seqop<>?");	
-						
-						ps1 = con.prepareStatement( sql.toString() );
-						
-						ps1.setInt( 1, lcCampos.getCodEmp() );
-						ps1.setInt( 2, lcCampos.getCodFilial());
-						ps1.setInt( 3, txtCodOP.getVlrInteger().intValue() );
-						ps1.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
-						
-						ps1.executeUpdate();
-						ps1.close();
+						Funcoes.mensagemInforma( this, "Informe o motivo do cancelamento!" );
+						dl.setVisible( true );
 						
 					}
+				
+					else{
+						int qtdops = getQtdOPS();
+
+						if ( qtdops > 0 ) {
+
+							if ( Funcoes.mensagemConfirma( null, "Existe" + ( qtdops > 1 ? "m " : " " ) + qtdops + " Ordem" + ( qtdops > 1 ? "s " : " " ) + "de Produção ativa" + ( qtdops > 1 ? "s " : " " ) + ", vinculadas a esta O.P!\n" + "Deseja cancelar também?" ) == JOptionPane.OK_OPTION ) {
+
+								sql.append( "update ppop opr set opr.sitop='CA' " );
+								sql.append( "where opr.codemp=? and opr.codfilial=? and opr.codop=? " );
+								sql.append( "and opr.seqop<>?" );
+
+								ps1 = con.prepareStatement( sql.toString() );
+
+								ps1.setInt( 1, lcCampos.getCodEmp() );
+								ps1.setInt( 2, lcCampos.getCodFilial() );
+								ps1.setInt( 3, txtCodOP.getVlrInteger().intValue() );
+								ps1.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
+
+								ps1.executeUpdate();
+								ps1.close();
+
+							}
+						}
+
+						sql.delete( 0, sql.length() );
+
+						sql.append( "UPDATE PPOP SET SITOP='CA', JUSTIFICCANC=? " );
+						sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
+
+						ps2 = con.prepareStatement( sql.toString() );
+
+						ps2.setString( 1, dl.getValor() );
+						ps2.setInt( 2, lcCampos.getCodEmp() );
+						ps2.setInt( 3, lcCampos.getCodFilial() );
+						ps2.setInt( 4, txtCodOP.getVlrInteger().intValue() );
+						ps2.setInt( 5, txtSeqOP.getVlrInteger().intValue() );
+
+						ps2.executeUpdate();
+						ps2.close();
+
+						if ( !con.getAutoCommit() ) {
+							con.commit();
+						}
+
+						lcCampos.carregaDados();
+
+					}
 				}
-				
-				sql.delete( 0, sql.length() );
-				
-				sql.append( "UPDATE PPOP SET SITOP='CA' " );
-				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
-							
-				ps2 = con.prepareStatement(sql.toString());
-				
-				ps2.setInt( 1, lcCampos.getCodEmp() );
-				ps2.setInt( 2, lcCampos.getCodFilial() );
-				ps2.setInt( 3, txtCodOP.getVlrInteger().intValue() );
-				ps2.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
-				
-				ps2.executeUpdate();				    
-				ps2.close();
-			
-				if(!con.getAutoCommit()) {
-					con.commit();
+				else{
+					dl.cancel();
 				}
-				
-				lcCampos.carregaDados();
-				
 			}
-		} 
-		catch ( Exception e ) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
