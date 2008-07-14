@@ -1636,14 +1636,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				
 				if ( dl.OK ) {
 					
-					if( dl.getValor() == "" ){
-						
-						Funcoes.mensagemInforma( this, "Informe o motivo do cancelamento!" );
-						dl.setVisible( true );
-						
-					}
-				
-					else{
 						int qtdops = getQtdOPS();
 
 						if ( qtdops > 0 ) {
@@ -1664,32 +1656,33 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 								ps1.executeUpdate();
 								ps1.close();
 
-							}
 						}
-
-						sql.delete( 0, sql.length() );
-
-						sql.append( "UPDATE PPOP SET SITOP='CA', JUSTIFICCANC=? " );
-						sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
-
-						ps2 = con.prepareStatement( sql.toString() );
-
-						ps2.setString( 1, dl.getValor() );
-						ps2.setInt( 2, lcCampos.getCodEmp() );
-						ps2.setInt( 3, lcCampos.getCodFilial() );
-						ps2.setInt( 4, txtCodOP.getVlrInteger().intValue() );
-						ps2.setInt( 5, txtSeqOP.getVlrInteger().intValue() );
-
-						ps2.executeUpdate();
-						ps2.close();
-
-						if ( !con.getAutoCommit() ) {
-							con.commit();
-						}
-
-						lcCampos.carregaDados();
-
 					}
+						
+					sql.delete( 0, sql.length() );
+
+					sql.append( "UPDATE PPOP SET SITOP='CA', JUSTIFICCANC=? " );
+					sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
+
+					ps2 = con.prepareStatement( sql.toString() );
+
+					ps2.setString( 1, dl.getValor() );
+					ps2.setInt( 2, lcCampos.getCodEmp() );
+					ps2.setInt( 3, lcCampos.getCodFilial() );
+					ps2.setInt( 4, txtCodOP.getVlrInteger().intValue() );
+					ps2.setInt( 5, txtSeqOP.getVlrInteger().intValue() );
+
+					ps2.executeUpdate();
+					ps2.close();
+					
+			
+					if ( !con.getAutoCommit() ) {
+						con.commit();
+					}
+					
+					lcCampos.carregaDados();
+					
+						
 				}
 				else{
 					dl.cancel();
