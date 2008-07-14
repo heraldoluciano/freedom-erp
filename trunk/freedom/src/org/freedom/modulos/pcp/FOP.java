@@ -1642,16 +1642,17 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 							if ( Funcoes.mensagemConfirma( null, "Existe" + ( qtdops > 1 ? "m " : " " ) + qtdops + " Ordem" + ( qtdops > 1 ? "s " : " " ) + "de Produção ativa" + ( qtdops > 1 ? "s " : " " ) + ", vinculadas a esta O.P!\n" + "Deseja cancelar também?" ) == JOptionPane.OK_OPTION ) {
 
-								sql.append( "update ppop opr set opr.sitop='CA' " );
+								sql.append( "update ppop opr set opr.sitop='CA', JUSTIFICCANC=? " );
 								sql.append( "where opr.codemp=? and opr.codfilial=? and opr.codop=? " );
 								sql.append( "and opr.seqop<>?" );
 
 								ps1 = con.prepareStatement( sql.toString() );
 
-								ps1.setInt( 1, lcCampos.getCodEmp() );
-								ps1.setInt( 2, lcCampos.getCodFilial() );
-								ps1.setInt( 3, txtCodOP.getVlrInteger().intValue() );
-								ps1.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
+								ps1.setString( 1, dl.getValor() );
+								ps1.setInt( 2, lcCampos.getCodEmp() );
+								ps1.setInt( 3, lcCampos.getCodFilial() );
+								ps1.setInt( 4, txtCodOP.getVlrInteger().intValue() );
+								ps1.setInt( 5, txtSeqOP.getVlrInteger().intValue() );
 
 								ps1.executeUpdate();
 								ps1.close();
@@ -1681,7 +1682,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 					}
 					
 					lcCampos.carregaDados();
-					
 						
 				}
 				else{
