@@ -45,6 +45,8 @@ public class DLObsJust extends FFDialogo{
 	
 	private JTextAreaPad txaJustCanc = new JTextAreaPad();
 	
+	private JTextFieldPad txtHoraCanc = new JTextFieldPad( JTextFieldPad.TP_TIME , 8,0 ); 
+	
 	private JScrollPane scrJus = new JScrollPane( txaJustCanc );
 	
 	private JTextFieldPad txtIdUsuCanc = new JTextFieldPad( JTextFieldPad.TP_STRING,  8, 0 );
@@ -60,13 +62,17 @@ public class DLObsJust extends FFDialogo{
 		setAtribos( 350, 230 );
 		adic( new JLabelPad( "Dt.canc." ), 7, 10, 70, 20 );
 		adic( txtDtCanc, 7, 30, 70, 20 );
-		adic( new JLabelPad("Id.Usu."), 80, 10, 70, 20 );
-		adic( txtIdUsuCanc, 80, 30, 70, 20 );
+		adic( new JLabelPad("Hora canc."), 80, 10, 70, 20 );
+		adic( txtHoraCanc, 80, 30, 70, 20 );
+		adic( new JLabelPad("Id.Usu."), 153, 10, 70, 20 );
+		adic( txtIdUsuCanc, 153, 30, 70, 20 );
 		adic( scrJus, 7, 60, 300, 70 );
+	
 		
 		txtDtCanc.setSoLeitura( true );
 		txtIdUsuCanc.setSoLeitura( true );
 		txaJustCanc.setEnabled( false );
+		txtHoraCanc.setSoLeitura( true );
 		
 		btCancel.setVisible( false ); 
 		
@@ -79,7 +85,7 @@ public class DLObsJust extends FFDialogo{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
-		sSQL.append( "SELECT P.JUSTIFICCANC, P.DTCANC, P.IDUSUCANC FROM PPOP P WHERE " );
+		sSQL.append( "SELECT P.JUSTIFICCANC, P.DTCANC, P.HCANC, P.IDUSUCANC FROM PPOP P WHERE " );
 		sSQL.append( "P.CODEMP=? AND CODFILIAL=? AND P.SEQOP=? AND P.CODOP=? ");
 		
 		try {
@@ -96,6 +102,7 @@ public class DLObsJust extends FFDialogo{
 				txtDtCanc.setVlrDate( rs.getDate( "DTCANC" ) );
 				txaJustCanc.setVlrString( rs.getString( "JUSTIFICCANC" ) );
 				txtIdUsuCanc.setVlrString( rs.getString( "IDUSUCANC" ) );
+				txtHoraCanc.setVlrTime( rs.getTime( "HCANC" ) );
 				
 			}
 			
