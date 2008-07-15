@@ -56,9 +56,9 @@ public class DLObsJust extends FFDialogo{
 		setConexao( cn );
 		setTitulo( "Motivo do cancelamento" );
 		setAtribos( 350, 230 );
-		adic( new JLabelPad( "Dt.canc" ), 7, 10, 70, 20 );
+		adic( new JLabelPad( "Dt.canc." ), 7, 10, 70, 20 );
 		adic( txtDtCanc, 7, 30, 70, 20 );
-		adic( new JLabelPad("Id.Usu"), 80, 10, 70, 20 );
+		adic( new JLabelPad("Id.Usu."), 80, 10, 70, 20 );
 		adic( txtIdUsuCanc, 80, 30, 70, 20 );
 		adic( scrJus, 7, 60, 300, 70 );
 		
