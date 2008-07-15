@@ -652,7 +652,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 				navRod.setListaCampos( lcDetItens );
 				navRod.setAtivo( 6, true );
 			}
-			else if ( tpnAbas.getSelectedIndex() == 2 ) {
+			else if ( tpnAbas.getSelectedIndex() == 3 ) {
 				setAltDet( 110 );
 				pnDet.removeAll();
 				setPainel( pinDetDistrib, pnDet );
