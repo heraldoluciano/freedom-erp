@@ -68,6 +68,8 @@ public class DLObsJust extends FFDialogo{
 		txtIdUsuCanc.setSoLeitura( true );
 		txaJustCanc.setEnabled( false );
 		
+		btCancel.setVisible( false ); 
+		
 		buscaObs( seqOp, codOp );
 	}
 	
