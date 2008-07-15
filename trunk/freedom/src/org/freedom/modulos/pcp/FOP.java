@@ -1872,6 +1872,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 			}
 			else if ( sitop.equals( "CA" ) ) {
+
 				btLote.setEnabled( false );
 				btRMA.setEnabled( false );
 				btFinaliza.setEnabled( false );
@@ -1887,17 +1888,19 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				txtCodAlmoxEst.setAtivo( false );
 
 				txtCodLoteProdDet.setAtivo( false );
-
+				
+				
 				navRod.setAtivo( Navegador.BT_NOVO, false );
 				navRod.setAtivo( Navegador.BT_EDITAR, false );
 				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
 				navRod.setAtivo( Navegador.BT_SALVAR, false );
+				
 				btObs.setVisible( true );
 				SitOp = "Cancelada";
 				lSitOp.setText( SitOp );
 				
 				pinLb.setBackground( cor( 210, 50, 30 ) );
-
+			
 			}
 			else if ( sitop.equals( "" ) ) {
 				btLote.setEnabled( false );
