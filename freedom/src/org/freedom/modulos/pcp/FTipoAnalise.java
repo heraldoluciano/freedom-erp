@@ -24,12 +24,14 @@ public class FTipoAnalise extends FDados {
 	
 	private JTextFieldFK txtDescUnid = new JTextFieldFK( JTextFieldPad.TP_STRING, 15, 0 );
 	
+	private JTextFieldPad txtMetodo = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
+	
 	ListaCampos lcUnid = new ListaCampos( this, "UD" );
 
 	public FTipoAnalise(){
 	
 		setTitulo( "Tipos de Analise" );
-		setAtribos( 50, 50, 350, 250 );
+		setAtribos( 50, 50, 350, 280 );
 		montaListaCampos();
 		montaTela();
 		
@@ -41,16 +43,16 @@ public class FTipoAnalise extends FDados {
 		adicCampo( txtDescTpAnalise, 80, 20, 245, 20, "DescTpAnalise", "Descrição do tipo de analise", ListaCampos.DB_SI, true );
 		adicCampo( txtCodUnid, 7, 65, 70, 20, "CodUnid", "Cód.Unid", ListaCampos.DB_FK, txtDescUnid, false );
 		adicDescFK( txtDescUnid, 80, 65, 245, 20, "DescUnid", "Descrição da Unidade" );
-		adicDB( txaObsTpAnalise, 7, 110, 320, 50, "ObsTpAnalise", "Observação", false );
+		adicCampo( txtMetodo, 7, 105, 320, 20, "metodo", "Método Analítico", ListaCampos.DB_SI, false );
+		adicDB( txaObsTpAnalise, 7, 150, 320, 50, "ObsTpAnalise", "Observação", false );
 				
 		setListaCampos( true, "TIPOANALISE", "PP" );
 		
-	
-	}
+		}
 	
 	private void montaListaCampos(){
 		
-		lcUnid.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cód.Unidade", ListaCampos.DB_PK, null, true ) );
+		lcUnid.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cód.Unidade", ListaCampos.DB_PK, null, false ) );
 		lcUnid.add( new GuardaCampo( txtDescUnid, "DescUnid", "Descrição da unidade", ListaCampos.DB_SI, false ) );
 		lcUnid.montaSql( false, "UNIDADE", "EQ" );
 		lcUnid.setReadOnly( true );
