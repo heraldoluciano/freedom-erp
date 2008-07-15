@@ -79,6 +79,8 @@ import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FPrinterJob;
 
+import com.birosoft.liquid.XTraScrollBarUI;
+
 
 public class FOP extends FDetalhe implements ChangeListener, PostListener, CancelListener, InsertListener, ActionListener, CarregaListener, KeyListener, FocusListener {
 
@@ -203,6 +205,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	private JButton btRatearItem = new JButton( "", Icone.novo( "btAdic2.gif" ) );
 
 	private JButton btDistrb = new JButton( "Distribuição", Icone.novo( "btDistOP.gif" ) );
+	
+	private JButton btObs = new JButton( Icone.novo( "btObs.gif" ) );
 
 	private FPrinterJob dl = null;
 
@@ -288,6 +292,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		setTitulo( "Ordens de produção" );
 		setAtribos( 15, 10, 700, 600 );
 		setAltCab( 227 );
+		btObs.setVisible( false ); 
 
 		pnMaster.remove( spTab );
 
@@ -303,7 +308,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		btRatearItem.setToolTipText( "Ratear ítem" );
 		btDistrb.setToolTipText( "Distribuição" );
 		btCancela.setToolTipText( "Cancela O.P." );
-
+		btObs.setToolTipText( "Motivo do cancelamento" );
+		
 		pinCab.adic( pinQuantidades, 5, 130, 550, 55 );
 		pinCab.adic( pinBotCab, 560, 2, 115, 159 );
 	
@@ -312,6 +318,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		pinBotCab.adic( btDistrb, 0, 62, 110, 30 );
 		pinBotCab.adic( btFinaliza, 0, 93, 110, 30 );
 		pinBotCab.adic( btCancela, 0, 124, 110, 30 );
+		pnNavCab.add( btObs, BorderLayout.EAST );
 		
 		lcModLote.add( new GuardaCampo( txtCodModLote, "CodModLote", "Cod.Mod.Lote", ListaCampos.DB_PK, txtDescModLote, false ) );
 		lcModLote.add( new GuardaCampo( txtDescModLote, "DescModLote", "Descrição do modelo de lote", ListaCampos.DB_SI, false ) );
@@ -462,6 +469,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		lcDet.addCancelListener( this );
 
 		btFinaliza.addActionListener( this );
+		btObs.addActionListener( this );
 		
 		btRMA.addActionListener( this );
 		btLote.addActionListener( this );
@@ -1580,6 +1588,9 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		}
 		else if ( evt.getSource() == btCancela ) {
 			cancelaOP();
+		}else if( evt.getSource() == btObs ){
+			DLObsJust dl = new DLObsJust( con, txtSeqOP.getVlrInteger(), txtCodOP.getVlrInteger() );
+			dl.setVisible( true );
 		}
 	}
 
@@ -1810,7 +1821,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				txtCodAlmoxEst.setAtivo( true );
 
 				txtCodLoteProdDet.setAtivo( true );
-
+				btObs.setVisible( false );
 				navRod.setAtivo( Navegador.BT_NOVO, true );
 				navRod.setAtivo( Navegador.BT_EDITAR, true );
 				navRod.setAtivo( Navegador.BT_EXCLUIR, true );
@@ -1849,7 +1860,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				txtCodLoteProdDet.setAtivo( false );
 
 				tpnAbas.setSelectedIndex( 1 );
-
+				btObs.setVisible( false );
 				navRod.setAtivo( Navegador.BT_NOVO, false );
 				navRod.setAtivo( Navegador.BT_EDITAR, false );
 				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
@@ -1881,7 +1892,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				navRod.setAtivo( Navegador.BT_EDITAR, false );
 				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
 				navRod.setAtivo( Navegador.BT_SALVAR, false );
-
+				btObs.setVisible( true );
 				SitOp = "Cancelada";
 				lSitOp.setText( SitOp );
 				
@@ -1903,7 +1914,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				txtDtValidOP.setAtivo( true );
 				txtDtFabProd.setAtivo( true );
 				txtCodAlmoxEst.setAtivo( true );
-
+				btObs.setVisible( false );
 				txtCodLoteProdDet.setAtivo( true );
 
 				SitOp = "";
