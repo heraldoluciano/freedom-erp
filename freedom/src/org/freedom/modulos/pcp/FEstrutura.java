@@ -88,6 +88,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTextFieldPad txtCodFase = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescFase = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtTipoFase = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtDescEst = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -146,8 +148,12 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private Tabela tabItens = new Tabela();
 
 	private Tabela tabDist = new Tabela();
+	
+	private Tabela tabQuali = new Tabela();
 
 	private JScrollPane spItens = new JScrollPane( tabItens );
+	
+	private JScrollPane spQuali = new JScrollPane( tabQuali );
 
 	private JScrollPane spDist = new JScrollPane( tabDist );
 
@@ -181,7 +187,9 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 		tpnAbas.addTab( "Fases", spTab );
 		tpnAbas.addTab( "Itens X Fase", spItens );
+		tpnAbas.addTab( "Controle de qualidade", spQuali );
 		tpnAbas.addTab( "Distribuição X Fase", spDist );
+		
 
 		pnMaster.add( tpnAbas, BorderLayout.CENTER );
 
@@ -227,6 +235,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 		lcFase.add( new GuardaCampo( txtCodFase, "CodFase", "Cód.fase", ListaCampos.DB_PK, true ) );
 		lcFase.add( new GuardaCampo( txtDescFase, "DescFase", "Descrição da fase", ListaCampos.DB_SI, false ) );
+		lcFase.add( new GuardaCampo( txtTipoFase, "TipoFase", "Tipo da fase", ListaCampos.DB_SI, false ) );
 		lcFase.montaSql( false, "FASE", "PP" );
 		lcFase.setQueryCommit( false );
 		lcFase.setReadOnly( true );
@@ -276,12 +285,14 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicCampo( txtSeqEfEst, 7, 20, 40, 20, "SeqEf", "Item", ListaCampos.DB_PK, true );
 		adicCampo( txtCodFase, 50, 20, 77, 20, "CodFase", "Cód.fase", ListaCampos.DB_PF, txtDescFase, true );
 		adicDescFK( txtDescFase, 130, 20, 310, 20, "DescFase", "Descrição da fase" );
+
 		adicCampo( txtTempoEf, 450, 20, 80, 20, "TempoEf", "Tempo(Seg)", ListaCampos.DB_SI, true );
 		adicCampo( txtCodTpRec, 7, 60, 80, 20, "CodTpRec", "Cód.tp.rec.", ListaCampos.DB_FK, txtDescTpRec, true );
 		adicDescFK( txtDescTpRec, 90, 60, 350, 20, "DescTpRec", "Desc. tipo de recurso" );
-		adicDB( cbFinaliza, 533, 20, 80, 20, "FINALIZAOP", "", true );
-		//adic( new JLabelPad( "Instruções" ), 7, 80, 100, 20 );
+		adicDescFKInvisivel( txtTipoFase, "TipoFase", "Tipo da fase" );
 		
+		adicDB( cbFinaliza, 533, 20, 80, 20, "FINALIZAOP", "", true );
+
 		setPainel( pinDetFasesInstrucao );
 		GridLayout gi = (GridLayout)pinDetFasesInstrucao.getLayout();
 		gi.setHgap( 10 );
@@ -673,13 +684,28 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 			}
 		}
 		else if ( cevt.getListaCampos() == lcDet ) {
-			if ( !cbFinaliza.getStatus() )
-				tpnAbas.setEnabledAt( 2, false );
-			else
-				tpnAbas.setEnabledAt( 2, true );
+			bloqueiaAbas();
 		}
 	}
 
+	private void bloqueiaAbas() {
+		
+		if ( cbFinaliza.getStatus() ) {
+			tpnAbas.setEnabledAt( 3, true );
+		}
+		else {
+			tpnAbas.setEnabledAt( 3, false );
+		}
+		
+		if(txtTipoFase.getVlrString().equals( "CQ" )){
+			tpnAbas.setEnabledAt( 2, true );
+		}
+		else {
+			tpnAbas.setEnabledAt( 2, false );
+		}
+		
+	}
+	
 	public void beforeCarrega( CarregaEvent cevt ) {
 
 	}
@@ -691,10 +717,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 				tpnAbas.setSelectedIndex( 1 );
 		}
 		else if ( pevt.getListaCampos() == lcDet ) {
-			if ( !cbFinaliza.getStatus() )
-				tpnAbas.setEnabledAt( 2, false );
-			else
-				tpnAbas.setEnabledAt( 2, true );
+			bloqueiaAbas();
 		}
 	}
 
