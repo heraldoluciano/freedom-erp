@@ -1,5 +1,6 @@
 /**
- * @author Setpoint Informática Ltda./Reginaldo Garcia Heua <BR>
+ * @author Setpoint Informática Ltda.
+ * @author Reginaldo Garcia Heua <BR>
  * 
  * Projeto: Freedom <BR>
  * 
@@ -57,7 +58,7 @@ public class DLJustCanc extends FFDialogo {
 	}
     public void ok(){
     	if ((txaJustCanc.getVlrString().equals(""))){
-	        Funcoes.mensagemErro(this,"Informe o motivo do cancelamento!");
+	        Funcoes.mensagemInforma(this,"Informe o motivo do cancelamento!");
     	    return;
     	}
     	else{
