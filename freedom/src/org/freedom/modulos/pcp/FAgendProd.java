@@ -93,6 +93,10 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 	
 	private JCheckBoxPad cbAtrasada = new JCheckBoxPad( "Atrasada", "S", "N" );
 	
+	private JCheckBoxPad cbPrincipal = new JCheckBoxPad( "Principal", "S", "N" );
+	
+	private JCheckBoxPad cbRelacionada = new JCheckBoxPad( "Relacionadas", "S", "N" );
+	
 	private Vector<String> vValsStatus = new Vector<String>();
 
 	private Vector<String> vLabsStatus = new Vector<String>();
@@ -137,7 +141,7 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 	public FAgendProd( ) {
 
 		super( true );
-		setAtribos( 50, 50, 810, 470 );
+		setAtribos( 50, 50, 830, 470 );
 		
 		montaTela();
 		
@@ -174,7 +178,7 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		pinCab.adic( lbPeriodo, 7, 05, 80, 20 );
 		pinCab.adic( lbLinha, 5, 20, 280, 50 );
 		pinCab.adic( lbStatus1, 473, 7, 80, 20 );
-		pinCab.adic( lbLinhaStatus, 470, 20, 200, 50 );
+		pinCab.adic( lbLinhaStatus, 470, 20, 305, 50 );
 		pinCab.adic( new JLabelPad("De:"), 10, 35, 30, 20 );
 		pinCab.adic( txtDataini, 35, 35, 97, 20 );
 		pinCab.adic( new JLabelPad("Até:"), 140, 35, 37, 20 );
@@ -183,9 +187,12 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		pinCab.adic( cbFinalizada, 485, 45, 90, 20 );
 		pinCab.adic( cbPendente, 573, 25, 90, 20 );
 		pinCab.adic( cbAtrasada, 573, 45, 90, 20 );
+		pinCab.adic( cbPrincipal, 666, 25, 90, 20 );
+		pinCab.adic( cbRelacionada, 666, 45, 105, 20 );
+		
 		pinCab.adic( new JLabelPad("Filtrar por: "), 300, 1, 80, 20 );
 		pinCab.adic( rgFiltro, 300, 20, 150, 50 );
-		pinCab.adic( btFiltrar, 680, 20, 30, 50 );
+		pinCab.adic( btFiltrar, 780, 20, 30, 50 );
 
 		lbTxtPendente.setFont( fontLegenda );
 		lbTxtFinalizada.setFont( fontLegenda );
@@ -259,10 +266,14 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		
 		StringBuffer sSQL = new StringBuffer();	
 		StringBuffer sWhere = new StringBuffer();	
+		StringBuffer sWhere2 = new StringBuffer();
+		StringBuilder sOrderBy = new StringBuilder(); 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		boolean or = false;
+		boolean order = false;
 		String sData = "";
+		
 		
 		if( "S".equals( cbCancelada.getVlrString())){
 			
@@ -290,15 +301,31 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		else if( "E".equals( rgFiltro.getVlrString() )){
 			sData = "DTEMITOP";
 		}
+		if( "S".equals( cbPrincipal.getVlrString() ) && !"S".equals( cbRelacionada.getVlrString() )){
+			
+			sWhere2.append( " AND SEQOP=0" );
+		}
+		if( "S".equals( cbRelacionada.getVlrString() )){
+				
+			sOrderBy.append( "AND SEQOP<>0 ORDER BY CODOP, SEQOP"  );
+			order = true;
+		
+		}if( "S".equals( cbPrincipal.getVlrString() ) && "S".equals( cbRelacionada.getVlrString()  ) ){
+			
+			sOrderBy.append( order ? "" : "AND SEQOP<>0 ORDER BY CODOP, SEQOP" );
+		}
 		
 		sSQL.append( "SELECT SITOP,DTEMITOP,DTFABROP,CODOP,SEQOP,DESCEST, " );
 		sSQL.append( "CAST( QTDSUG AS DECIMAL(15,2)) QTDSUG," );
 		sSQL.append( "CAST( QTDPREV AS DECIMAL(15,2)) QTDPREV," );
 		sSQL.append( "CAST( QTDFINAL AS DECIMAL(15,2)) QTDFINAL," );
-		sSQL.append( "CAST((TEMPOFIN*100/TEMPOTOT) AS DECIMAL (15,2)) TEMPO, ");
+		sSQL.append( "CAST((TEMPOFIN*100/( CASE WHEN COALESCE(TEMPOTOT,0)=0 THEN 1 ELSE TEMPOTOT END  )) AS DECIMAL (15,2)) TEMPO, ");
 		sSQL.append( "FASEATUAL,TOTFASES FROM PPLISTAOPVW01 " );
-		sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND "+sData+" BETWEEN ? AND ? AND " );
+		sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND "+sData+" BETWEEN ? AND ?" );
+		sSQL.append( or ? "AND" : "" );
 		sSQL.append( sWhere.toString() );
+		sSQL.append( sWhere2.toString() );
+		sSQL.append( sOrderBy.toString() );	
 		System.out.println(sSQL.toString());
 		
 		try {
