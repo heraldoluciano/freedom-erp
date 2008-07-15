@@ -1,11 +1,14 @@
 package org.freedom.modulos.util;
 
 import java.awt.Component;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -18,27 +21,35 @@ public class CtrlMultiComis {
 	private int numComissionados = 1;
 	private Connection con = null; 
 	private ItemComis[] listComis = null;
+	private String cpTipovenda = null;
+	private String cpCodvenda = null;
 	private JTextFieldPad txtTipovendaPrinc = null;
 	private JTextFieldPad txtCodvendaPrinc = null;
-	private JTextFieldPad txtCodvendPrinc;
+	private JTextFieldPad txtCodvendPrinc = null;
+	private ListaCampos lcMaster = null;
 	private Component owner = null; 
 	private String vendacomis = null;
 	
 	public CtrlMultiComis(final java.awt.Component owner, final Connection con, 
-			final int numComissionados, final JTextFieldPad txtTipovenda, 
-			final JTextFieldPad txtCodvenda, final JTextFieldPad txtCodvendPrinc, 
-			final String vendacomis) {
+			final ListaCampos lcMaster,	final int numComissionados, 
+			final String cpTipovenda, final String cpCodvenda, 
+			final JTextFieldPad txtTipovenda, final JTextFieldPad txtCodvenda, 
+			final JTextFieldPad txtCodvendPrinc, final String vendacomis) {
 		this.con = con;
+		this.cpTipovenda = cpTipovenda;
+		this.cpCodvenda = cpCodvenda;
 		this.txtTipovendaPrinc = txtTipovenda;
 		this.txtCodvendaPrinc = txtCodvenda;
 		this.numComissionados = numComissionados;
 		this.txtCodvendPrinc = txtCodvendPrinc;
 		this.owner = owner;
 		this.vendacomis = vendacomis;
+		this.lcMaster = lcMaster;
 	}
 	
-	public class ItemComis {
+	public class ItemComis implements InsertListener {
 		private int seqitrc = 0;
+		private float perccomis = 0;
 		private String obrigitrc = null;
 		private JTextFieldPad txtTipovenda = null;
 		private JTextFieldPad txtCodvenda = null;
@@ -54,14 +65,17 @@ public class CtrlMultiComis {
 		public ItemComis() {
 			lcVend.setConexao( con );
 			lcVendaComis.setConexao( con );
+			lcVendaComis.setMaster( lcMaster );
+			lcMaster.adicDetalhe( lcVendaComis );
 			txtTipovenda = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
 			txtCodvenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 			txtSeqvc = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 			txtCodvend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 			txtNomevend = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 			txtPerccomis = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 7, Aplicativo.casasDecFin );
-			lcVendaComis.add(  new GuardaCampo( txtTipovenda, "Tipovenda", "Tipo venda", ListaCampos.DB_PF, true)  );
-			lcVendaComis.add(  new GuardaCampo( txtCodvenda, "Codvenda", "Cód.venda", ListaCampos.DB_PF, true)  );
+			txtCodvend.setNomeCampo( "codvend" );
+			txtTipovenda.setNomeCampo( cpTipovenda );
+			txtCodvenda.setNomeCampo( cpCodvenda );
 			lcVend.add( new GuardaCampo( txtCodvend, "Codvend", "Cód.comis.", ListaCampos.DB_PK,  false ) );
 			lcVend.add( new GuardaCampo( txtNomevend, "Nomevend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 			lcVend.setWhereAdic( "ATIVOCOMIS='S'" );
@@ -69,7 +83,7 @@ public class CtrlMultiComis {
 			lcVend.setQueryCommit( false );
 			lcVend.setReadOnly( true );
 			txtCodvend.setTabelaExterna( lcVend );
-			//txtCodvend.setPKFK( true, true );
+			lcVendaComis.addInsertListener( this );
 		}
 		public int getSeqitrc() {
 			return seqitrc;
@@ -147,6 +161,48 @@ public class CtrlMultiComis {
 		
 			this.lcVendaComis = lcVendaComis;
 		}
+		
+		public JTextFieldPad getTxtTipovenda() {
+		
+			return txtTipovenda;
+		}
+		
+		public void setTxtTipovenda( JTextFieldPad txtTipovenda ) {
+		
+			this.txtTipovenda = txtTipovenda;
+		}
+		
+		public JTextFieldPad getTxtCodvenda() {
+		
+			return txtCodvenda;
+		}
+		
+		public void setTxtCodvenda( JTextFieldPad txtCodvenda ) {
+		
+			this.txtCodvenda = txtCodvenda;
+		}
+		
+		public float getPerccomis() {
+		
+			return perccomis;
+		}
+		
+		public void setPerccomis( float perccomis ) {
+		
+			this.perccomis = perccomis;
+		}
+		public void afterInsert( InsertEvent ievt ) {
+
+			if ( ievt.getListaCampos()==lcVendaComis ) {
+				txtPerccomis.setVlrBigDecimal( new BigDecimal(getPerccomis()) );
+			}
+			
+		}
+		public void beforeInsert( InsertEvent ievt ) {
+
+			// TODO Auto-generated method stub
+			
+		}
 	}
 	
 	public ItemComis[] getListComis() {
@@ -175,7 +231,7 @@ public class CtrlMultiComis {
 				listComis[ pos ].setEnabled( true );
 				listComis[ pos ].setSeqitrc( rs.getInt( "SEQITRC" ) );
 				listComis[ pos ].setObrigitrc( rs.getString( "OBRIGITRC" ) );
-				listComis[ pos ].getTxtPerccomis().setVlrBigDecimal( rs.getBigDecimal( "PERCCOMISITRC" ) );
+				listComis[ pos ].setPerccomis( rs.getFloat( "PERCCOMISITRC" ) );
 				pos ++;
 			}
 			for (int i=pos; i<numComissionados; i++) {

@@ -2408,15 +2408,19 @@ public class ListaCampos extends Container implements PostListener,
 			bInsert = false;
 		}
 		if (bInsert) {
-			if (bMaster) {
+			if ( bMaster )  {
 				for (int i = 0; i < vLcDetalhe.size(); i++) {
-					vLcDetalhe.elementAt(i).getTab().limpa();
+					if (vLcDetalhe.elementAt(i).getTab()!=null) {
+						vLcDetalhe.elementAt(i).getTab().limpa();
+					}
 					vLcDetalhe.elementAt(i).limpaCampos(true);
-					String sNameDet = vLcDetalhe.elementAt(i).nvLC.getName();
-					String sNameMaster = this.nvLC.getName();
-					if (!((sNameDet == null) || (sNameMaster == null))) {
-						if (!sNameDet.equals(sNameMaster))
-							vLcDetalhe.elementAt(i).setState(LCS_NONE);
+					if (vLcDetalhe.elementAt(i).nvLC!=null) { 
+						String sNameDet = vLcDetalhe.elementAt(i).nvLC.getName();
+						String sNameMaster = this.nvLC.getName();
+						if (!((sNameDet == null) || (sNameMaster == null))) {
+							if (!sNameDet.equals(sNameMaster))
+								vLcDetalhe.elementAt(i).setState(LCS_NONE);
+						}
 					}
 				}
 			}
