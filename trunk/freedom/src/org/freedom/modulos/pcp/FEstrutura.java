@@ -72,6 +72,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JPanelPad pinDetFasesInstrucao = new JPanelPad( new GridLayout( 1, 1 ) );
 
 	private JPanelPad pinDetItens = new JPanelPad( 590, 110 );
+	
+	private JPanelPad pinDetEstrAnalise = new JPanelPad( 590, 110 );
 
 	private JPanelPad pinDetDistrib = new JPanelPad();
 
@@ -132,6 +134,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTextFieldFK txtDescTpRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtTempoEf = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodEstAnalise = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JCheckBoxPad cbFinaliza = new JCheckBoxPad( "Finaliza", "S", "N" );
 
@@ -146,6 +150,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTextAreaPad txaModoPreparo = new JTextAreaPad();
 
 	private Tabela tabItens = new Tabela();
+	
+	private Tabela tabEstru = new Tabela();
 
 	private Tabela tabDist = new Tabela();
 	
@@ -156,6 +162,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JScrollPane spQuali = new JScrollPane( tabQuali );
 
 	private JScrollPane spDist = new JScrollPane( tabDist );
+	
+	private JScrollPane spEstru = new JScrollPane( tabEstru );
 
 	private JScrollPane spnModoPreparo = new JScrollPane( txaModoPreparo );
 
@@ -168,6 +176,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private ListaCampos lcModLote = new ListaCampos( this, "ML" );
 
 	private ListaCampos lcDetItens = new ListaCampos( this );
+	
+	private ListaCampos lcDetEstr = new ListaCampos( this );
 
 	private ListaCampos lcDetDistrib = new ListaCampos( this );
 
@@ -203,6 +213,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 		lcDetItens.setMaster( lcDet );
 		lcDet.adicDetalhe( lcDetItens );
+		lcEstDistrib.setMaster( lcDet );
+		lcDet.adicDetalhe( lcEstDistrib );
 		lcDetDistrib.setMaster( lcDet );
 		lcDet.adicDetalhe( lcDetDistrib );
 
@@ -364,12 +376,27 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcDetDistrib.montaTab();
 
 		// Fim Detalhe Distribuição
-
+			
 		setAltDet( 210 );
 		setPainel( pinDetFases, pnDet );
 		setListaCampos( lcDet );		
 		lcDet.montaTab();
 		lcDetItens.montaTab();
+		
+	// Controle de Qualidade
+		
+		setPainel( pinDetEstrAnalise );
+		setListaCampos( lcDetEstr );
+		setNavegador( navRod );
+	
+		
+		adicCampo( txtCodEstAnalise, 10, 20, 70, 20, "CODESTANALISE", "Cód.Est.An.", ListaCampos.DB_PK, true );
+		
+		
+		setListaCampos( true, "ESTRUANALISE", "PP" );
+		lcDetEstr.setQueryInsert( false );
+		lcDetEstr.setTabela( tabQuali );
+		lcDetEstr.montaTab();
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -647,6 +674,15 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 				setAltDet( 110 );
 				pnDet.removeAll();
 				setPainel( pinDetItens, pnDet );
+				setListaCampos( lcDetItens );
+				pnDet.repaint();
+				navRod.setListaCampos( lcDetItens );
+				navRod.setAtivo( 6, true );
+			}
+			else if ( tpnAbas.getSelectedIndex() == 2 ) {
+				setAltDet( 110 );
+				pnDet.removeAll();
+				setPainel( pinDetEstrAnalise, pnDet );
 				setListaCampos( lcDetItens );
 				pnDet.repaint();
 				navRod.setListaCampos( lcDetItens );
