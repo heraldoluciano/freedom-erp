@@ -107,7 +107,7 @@ public class DLObsJust extends FFDialogo{
 			}
 			
 		} catch ( SQLException err ) {
-
+			
 			err.printStackTrace();
 		}
 	}
