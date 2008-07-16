@@ -2277,6 +2277,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		ResultSet rsTipoMov = null;
 
 		if ( pevt.getListaCampos() == lcCampos ) {
+			if ( (numComissionados>0) && (ctrlmc!=null) ) {
+				if (!ctrlmc.validaItens()) {
+					pevt.cancela();
+					return;
+				}
+			}
 			if ( podeReCalcPreco() && lcDet.getStatus() == ListaCampos.LCS_READ_ONLY ) {
 				calcVlrItem( "VDVENDA", true );
 				lcDet.carregaDados();
@@ -2367,6 +2373,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			if ( bPrefs[ POS_PREFS.TRAVATMNFVD.ordinal() ] ) {
 				txtFiscalTipoMov1.setText( "S" );
 				txtFiscalTipoMov2.setText( "N" );
+			}
+			if ( (numComissionados>0) && (ctrlmc!=null) && (pevt.ok) ) {
+				ctrlmc.salvaItens();
 			}
 		}
 	}
