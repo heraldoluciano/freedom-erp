@@ -7,13 +7,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
+import org.freedom.acao.PostEvent;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 
 public class CtrlMultiComis {
@@ -47,7 +51,7 @@ public class CtrlMultiComis {
 		this.lcMaster = lcMaster;
 	}
 	
-	public class ItemComis implements InsertListener {
+	public class ItemComis implements InsertListener, CarregaListener {
 		private int seqitrc = 0;
 		private float perccomis = 0;
 		private String obrigitrc = null;
@@ -84,6 +88,7 @@ public class CtrlMultiComis {
 			lcVend.setReadOnly( true );
 			txtCodvend.setTabelaExterna( lcVend );
 			lcVendaComis.addInsertListener( this );
+			//lcMaster.addPostListener( this );
 		}
 		public int getSeqitrc() {
 			return seqitrc;
@@ -192,16 +197,30 @@ public class CtrlMultiComis {
 			this.perccomis = perccomis;
 		}
 		public void afterInsert( InsertEvent ievt ) {
-
 			if ( ievt.getListaCampos()==lcVendaComis ) {
 				txtPerccomis.setVlrBigDecimal( new BigDecimal(getPerccomis()) );
 			}
-			
 		}
 		public void beforeInsert( InsertEvent ievt ) {
 
-			// TODO Auto-generated method stub
+		}
+		public void afterPost( PostEvent pevt ) {
+			if ( pevt.getListaCampos()==lcMaster) {
+				salvaItens();
+			}
+		}
+		public void beforePost( PostEvent pevt ) {
+			if ( pevt.getListaCampos()==lcMaster ) {
+				if (!validaItens()) {
+					pevt.cancela();
+					return;
+				}
+			}
+		}
+		public void afterCarrega( CarregaEvent cevt ) {
 			
+		}
+		public void beforeCarrega( CarregaEvent cevt ) {
 		}
 	}
 	
@@ -243,4 +262,50 @@ public class CtrlMultiComis {
 			e.printStackTrace();
 		}
 	}
+
+	public boolean validaItens() {
+		boolean result = true;
+		if (listComis!=null) {
+			for (ItemComis itemcomis: listComis) {
+				if ( (itemcomis!=null) ) { 
+					if ( ("S".equals(itemcomis.getObrigitrc()) ) && 
+						 (itemcomis.getTxtCodvend().isEnabled() ) ) {
+						if ("".equals( itemcomis.getTxtCodvend().getVlrString() )) {
+						    Funcoes.mensagemInforma( owner, "Preencha o comissionado!" );
+						    itemcomis.getTxtCodvend().requestFocus();
+							result = false;
+							break;
+						}
+						if ("".equals( itemcomis.getTxtPerccomis().getVlrString() )) {
+						    Funcoes.mensagemInforma( owner, "Preencha o % de comissao!" );
+						    itemcomis.getTxtCodvend().requestFocus();
+							result = false;
+							break;
+						}
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	public void salvaItens() {
+		if (listComis!=null) {
+			for (ItemComis itemcomis: listComis) {
+				if ( (itemcomis!=null) ) { 
+					if ( ("S".equals(itemcomis.getObrigitrc()) ) && 
+						 (itemcomis.getTxtCodvend().isEnabled() ) ) {
+						if ( (itemcomis.getLcVendaComis().getStatus()==ListaCampos.LCS_EDIT) || 
+							 (itemcomis.getLcVendaComis().getStatus()==ListaCampos.LCS_INSERT)) {
+							itemcomis.getTxtTipovenda().setVlrString( lcMaster.getCampo( cpTipovenda ).getVlrString() );
+							itemcomis.getTxtCodvend().setVlrInteger( lcMaster.getCampo( cpCodvenda ).getVlrInteger() );
+							itemcomis.getTxtSeqvc().setVlrInteger( itemcomis.getSeqitrc() );
+							itemcomis.getLcVendaComis().post();
+						}
+					}
+				}
+			}
+		}
+	}
+
 }
