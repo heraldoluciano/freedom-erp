@@ -41,6 +41,8 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
@@ -57,7 +59,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FTabDados;
 
-public class FCandidato extends FTabDados implements CarregaListener {
+public class FCandidato extends FTabDados implements CarregaListener, PostListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -209,6 +211,8 @@ public class FCandidato extends FTabDados implements CarregaListener {
 	private ImageIcon imgDisponivel = Icone.novo( "clDisponivel.gif" );
 	private ImageIcon imgEfetivado = Icone.novo( "clEfetivado.gif" );
 	private ImageIcon imgInativo = Icone.novo( "clInativo.gif" );
+	private ImageIcon imgEntrevistado = Icone.novo( "clEntrevistado.gif" );
+	private ImageIcon imgDesligado = Icone.novo( "clDesligado.gif" );
 	
 	public FCandidato() {
 
@@ -238,10 +242,11 @@ public class FCandidato extends FTabDados implements CarregaListener {
 		
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
-
+				
 		setImprimir( true );
 		
 		lcCampos.addCarregaListener( this );
+		lcCampos.addPostListener( this );
 	}
 	
 	private void montaRadioGroups() {
@@ -264,18 +269,23 @@ public class FCandidato extends FTabDados implements CarregaListener {
 		
 		vLabs.addElement("Inativo");
 		vLabs.addElement("Disponivel");
- 		vLabs.addElement("Encaminhado"); 
- 		vLabs.addElement("Eliminado de seleção"); 
+ 		vLabs.addElement("Encaminhado");
  		vLabs.addElement("Efetivado");
- 		vLabs.addElement("Empregado"); 
+ 		vLabs.addElement("Eliminado de seleção"); 
+ 		
+ 		vLabs.addElement("Empregado");
+ 		vLabs.addElement("Entrevistado"); 
+ 		vLabs.addElement("Desligado");
  		vVals.addElement("IN");
  		vVals.addElement("DI");
  		vVals.addElement("EN");
- 		vVals.addElement("EL");
  		vVals.addElement("EF");
+ 		vVals.addElement("EL"); 		
  		vVals.addElement("EM");
+ 		vVals.addElement("EV");
+ 		vVals.addElement("DL");
 		    
- 		rgStatus = new JRadioGroup<String, String>( 2, 3, vLabs, vVals );
+ 		rgStatus = new JRadioGroup<String, String>( 2, 4, vLabs, vVals );
  		rgStatus.setVlrString("DI");
 	}
 	
@@ -547,6 +557,13 @@ public class FCandidato extends FTabDados implements CarregaListener {
 				else if(rs.getString("STCAND").equals( "IN" )) {
 					vVals.addElement( imgInativo );
 				}
+				else if(rs.getString("STCAND").equals( "EV" )) {
+					vVals.addElement( imgEntrevistado );
+				}
+				else if(rs.getString("STCAND").equals( "DL" )) {
+					vVals.addElement( imgDesligado );
+				}				
+
 				else {
 					vVals.addElement( imgDisponivel );	
 				}
@@ -556,7 +573,7 @@ public class FCandidato extends FTabDados implements CarregaListener {
 			    vVals.addElement( rs.getString( "NOMEEMPR" )==null ? "" : rs.getString( "NOMEEMPR" ) );
 			    
 			    
-			    //			    vVals.addElement( imgStatus );
+ //			    vVals.addElement( imgStatus );
 			    
 				tabHistorico.adicLinha(vVals);				
 			}
@@ -618,10 +635,30 @@ public class FCandidato extends FTabDados implements CarregaListener {
 		lcCaracteristicaCand.setConexao( cn );
 		lcFuncaoCand.setConexao( cn );
 	}
-
+	
+	private void bloqueiaStatus() {
+		if(rgStatus.getVlrString().equals( "DI" )) {
+			rgStatus.setAtivo( true );				
+		}
+		else if(rgStatus.getVlrString().equals( "DL" )) {
+			rgStatus.setAtivo( false );		
+			rgStatus.setAtivo( 0, true );
+			rgStatus.setAtivo( 6, true );
+			rgStatus.setAtivo( 1, true );
+			
+		}
+		else {
+			rgStatus.setAtivo( false );		
+			rgStatus.setAtivo( 0, true );
+			rgStatus.setAtivo( 4, true );
+			rgStatus.setAtivo( 7, true );
+		}
+	}
+	
 	public void afterCarrega( CarregaEvent cevt ) {
 		if ( cevt.getListaCampos() == lcCampos ) {
 			montaTabHistorico();
+			bloqueiaStatus();
 		}
 	}
 
@@ -630,4 +667,14 @@ public class FCandidato extends FTabDados implements CarregaListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void afterPost( PostEvent pevt ) {
+		if ( pevt.getListaCampos() == lcCampos ) {
+//			montaTabHistorico();
+//			bloqueiaStatus();
+			lcCampos.carregaDados();
+		}
+	}
+
+	
 }
