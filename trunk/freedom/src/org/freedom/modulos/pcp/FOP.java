@@ -79,8 +79,6 @@ import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FPrinterJob;
 
-import com.birosoft.liquid.XTraScrollBarUI;
-
 
 public class FOP extends FDetalhe implements ChangeListener, PostListener, CancelListener, InsertListener, ActionListener, CarregaListener, KeyListener, FocusListener {
 
@@ -91,6 +89,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	private JPanelPad pinCab = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
+	
+	private JPanelPad pinStatus = new JPanelPad( 150, 20 );
 	
 	private JLabelPad lbStatus = new JLabelPad();
 
@@ -194,17 +194,19 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 	private ListaCampos lcModLote = new ListaCampos( this, "ML" );
 
-	private JButton btFinaliza = new JButton( "Finaliza", Icone.novo( "btOP.gif" ) );
+	private JButton btFinaliza = new JButton(Icone.novo( "btFinalizaOP.gif" ) );
 	
-	private JButton btCancela = new JButton( "Cancela", Icone.novo( "btCancelar.gif" ) );
+	private JButton btCancela = new JButton(Icone.novo( "btCancelar.gif" ) );
 	
-	private JButton btRMA = new JButton( "RMA", Icone.novo( "btRma.gif" ) );
+	private JButton btRMA = new JButton( Icone.novo( "btRma.gif" ) );
 
-	private JButton btLote = new JButton( "Lote", Icone.novo( "btSimilar.gif" ) );
+	private JButton btLote = new JButton(  Icone.novo( "btSimilar.gif" ) );
 
 	private JButton btRatearItem = new JButton( "", Icone.novo( "btAdic2.gif" ) );
 
-	private JButton btDistrb = new JButton( "Distribuição", Icone.novo( "btDistOP.gif" ) );
+	private JButton btDistrb = new JButton(  Icone.novo( "btDistOP.gif" ) );
+	
+	private JButton btContrQuali = new JButton(  Icone.novo( "btCQ.gif" ) );
 	
 	private JButton btObs = new JButton( Icone.novo( "btObs.gif" ) );
 
@@ -218,7 +220,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 	private Integer iCodTpMov = null;
 
-	private JPanelPad pinBotCab = new JPanelPad( 104, 96 );
+	private JPanelPad pinBotCab = new JPanelPad( 104, 33 );
 
 	private ListaCampos lcAlmoxEst = new ListaCampos( this, "AX" );
 
@@ -290,8 +292,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		btRatearItem.setBorder( BorderFactory.createEmptyBorder() );
 		setName( "Ordens de produção" );
 		setTitulo( "Ordens de produção" );
-		setAtribos( 15, 10, 700, 600 );
-		setAltCab( 227 );
+		setAtribos( 15, 10, 620, 600 );
+		setAltCab( 238 );
 		btObs.setVisible( false ); 
 
 		pnMaster.remove( spTab );
@@ -307,18 +309,23 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		btLote.setToolTipText( "Cadastra lote" );
 		btRatearItem.setToolTipText( "Ratear ítem" );
 		btDistrb.setToolTipText( "Distribuição" );
+		btContrQuali.setToolTipText( "Controle de qualidade" );
 		btCancela.setToolTipText( "Cancela O.P." );
 		btObs.setToolTipText( "Motivo do cancelamento" );
 		
-		pinCab.adic( pinQuantidades, 5, 130, 550, 55 );
-		pinCab.adic( pinBotCab, 560, 2, 115, 159 );
+		pinCab.adic( pinQuantidades, 5, 130, 550, 65 );
+		pinCab.adic( pinBotCab, 560, 5, 35, 190 );
 	
-		pinBotCab.adic( btLote, 0, 0, 110, 30 );
-		pinBotCab.adic( btRMA, 0, 31, 110, 30 );
-		pinBotCab.adic( btDistrb, 0, 62, 110, 30 );
-		pinBotCab.adic( btFinaliza, 0, 93, 110, 30 );
-		pinBotCab.adic( btCancela, 0, 124, 110, 30 );
-		pnNavCab.add( btObs, BorderLayout.EAST );
+		pinBotCab.adic( btLote, 0, 0, 30, 30 );
+		pinBotCab.adic( btRMA, 0, 31, 30, 30 );
+		pinBotCab.adic( btContrQuali, 0, 62, 30, 30 );
+		pinBotCab.adic( btDistrb, 0, 93, 30, 30 );
+		pinBotCab.adic( btFinaliza, 0, 124, 30, 30 );
+		pinBotCab.adic( btCancela, 0, 155, 30, 30 );
+		pnNavCab.add( pinStatus, BorderLayout.EAST );
+		pinStatus.tiraBorda();
+		pinStatus.adic( pinLb, 38, 0, 110, 25 );
+		pinStatus.adic( btObs, 0, 0, 35, 25 );
 		
 		lcModLote.add( new GuardaCampo( txtCodModLote, "CodModLote", "Cod.Mod.Lote", ListaCampos.DB_PK, txtDescModLote, false ) );
 		lcModLote.add( new GuardaCampo( txtDescModLote, "DescModLote", "Descrição do modelo de lote", ListaCampos.DB_SI, false ) );
@@ -471,6 +478,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		btFinaliza.addActionListener( this );
 		btObs.addActionListener( this );
 		
+		btContrQuali.addActionListener( this );
 		btRMA.addActionListener( this );
 		btLote.addActionListener( this );
 		btImp.addActionListener( this );
@@ -569,7 +577,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		lSitOp = new JLabelPad();
 		lSitOp.setForeground( Color.WHITE );
 		pinLb.adic( lSitOp, 30, 0, 110, 20 );
-		pinCab.adic( pinLb, 560, 161, 114, 24 );
 		
 		tpnAbas.addChangeListener( this );
 		txtCodOP.addFocusListener( this );
@@ -662,6 +669,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		btLote.setEnabled( false );
 		btDistrb.setEnabled( false );
 		btCancela.setEnabled( false );
+		btContrQuali.setEnabled( false );
 
 		montaTab();
 		tab.setTamColuna( 55, 0 );
@@ -1592,6 +1600,9 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			DLObsJust dl = new DLObsJust( con, txtSeqOP.getVlrInteger(), txtCodOP.getVlrInteger() );
 			dl.setVisible( true );
 		}
+		else if( evt.getSource() == btContrQuali ){
+			contrQualidade();
+		}
 	}
 
 	// Busca Numero de ops relacioadas
@@ -1728,10 +1739,39 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			
 		}
 		catch (Exception e) {
+			
 			e.printStackTrace();
 		}		
 	}
 	
+	private void contrQualidade(){
+		
+		Object[] sValores = new Object[ 8 ];
+		
+		try {
+		
+			lcCampos.carregaDados();
+			
+			sValores[ 0 ] = txtCodOP.getVlrInteger();
+			sValores[ 1 ] = txtSeqOP.getVlrInteger();
+			sValores[ 2 ] = txtCodProdEst.getVlrInteger();
+			sValores[ 3 ] = txtRefProdEst.getVlrString();
+			sValores[ 4 ] = txtSeqEst.getVlrInteger();
+			sValores[ 5 ] = txtDescEst.getVlrString();
+			sValores[ 6 ] = txtQtdFinalProdOP.getVlrBigDecimal();
+			sValores[ 7 ] = txtQtdPrevProdOP.getVlrBigDecimal();
+		
+			DLContrQualidade dl = new DLContrQualidade( con , (Boolean) prefere.get( "USAREFPROD" ) );
+			dl.carregaCampos( sValores );
+			dl.carregaTabela( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue() );
+			dl.setVisible( true );
+					
+		}catch (Exception e) {
+			
+			e.printStackTrace();
+			
+		}	
+	}
 	public void keyPressed( KeyEvent kevt ) {
 
 		if ( kevt.getSource() == txtSeqOP )
@@ -1810,6 +1850,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				btFinaliza.setEnabled( true );
 				btDistrb.setEnabled( true );
 				btCancela.setEnabled( true );
+				btContrQuali.setEnabled( true );
 
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false );
@@ -1848,6 +1889,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				btFinaliza.setEnabled( false );
 				btDistrb.setEnabled( true );
 				btCancela.setEnabled( true );
+				btContrQuali.setEnabled( false );
 
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false );
@@ -1878,6 +1920,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				btFinaliza.setEnabled( false );
 				btDistrb.setEnabled( false );
 				btCancela.setEnabled( false );
+				btContrQuali.setEnabled( false );
 
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false );
@@ -1908,6 +1951,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				btFinaliza.setEnabled( false );
 				btDistrb.setEnabled( false );
 				btCancela.setEnabled( false );
+				btContrQuali.setEnabled( true );
 
 				txtCodProdEst.setAtivo( true );
 				txtSeqEst.setAtivo( true );
