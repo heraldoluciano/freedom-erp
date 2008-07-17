@@ -83,7 +83,7 @@ public class FHistPad extends FTabDados implements ActionListener, JComboBoxList
 		setPainel( panelCampos );
 				
 		adicCampo( txtCodHist, 7, 20, 70, 20, "CodHist", "Cód.hist.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescHist, 80, 20, 330, 20, "DescHist", "Descrição do historico", ListaCampos.DB_SI, true );
+		adicCampo( txtDescHist, 80, 20, 330, 20, "DescHist", "Descrição do histórico", ListaCampos.DB_SI, true );
 		adicDBLiv( txaHistPad, "TxaHistPad", "Corpo", false );
 		setListaCampos( true, "HISTPAD", "FN" );
 		
