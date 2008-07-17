@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import org.freedom.ecf.com.Serial;
 import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.ecf.driver.EStatus;
+import org.freedom.ecf.driver.STResult;
 
 public class ControllerECF {
 		
@@ -218,12 +219,12 @@ public class ControllerECF {
 		return this.messageLog;
 	}
 
-	public boolean decodeReturn( final int arg ) {
+	public boolean decodeReturn( final STResult arg ) {
 
 		boolean returnOfAction = true;
 
 		setMessageLog( RETORNO_OK.getMessage() );
-		String str = ecf.decodeReturnECF( arg ).getMessage();
+		String str = ecf.decodeReturnECF( arg.getFirstCode() ).getMessage();
 
 		if ( ! RETORNO_OK.getMessage().equals( str ) ) {
 			returnOfAction = false;

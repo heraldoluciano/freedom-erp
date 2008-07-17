@@ -429,51 +429,51 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public abstract byte[] preparaCmd( byte[] CMD );
 
-	public abstract int executaCmd( byte[] CMD, int tamRetorno );
+	public abstract STResult executaCmd( byte[] CMD, int tamRetorno );
 
-	public abstract int checkRetorno( byte[] bytes );
+	public abstract STResult checkRetorno( byte[] bytes );
 	
 	public abstract EStatus decodeReturnECF( final int arg );
 
-	public abstract int aberturaDeCupom();// 0
+	public abstract STResult aberturaDeCupom();// 0
 
-	public abstract int aberturaDeCupom( String cnpj );// 0
+	public abstract STResult aberturaDeCupom( String cnpj );// 0
 
-	public abstract int alteraSimboloMoeda( String simbolo );// 1
+	public abstract STResult alteraSimboloMoeda( String simbolo );// 1
 
-	public abstract int leituraX();// 5
+	public abstract STResult leituraX();// 5
 
-	public abstract int reducaoZ();// 6
+	public abstract STResult reducaoZ();// 6
 
-	public abstract int adicaoDeAliquotaTriburaria( String aliq, char opt );// 7
+	public abstract STResult adicaoDeAliquotaTriburaria( String aliq, char opt );// 7
 
-	public abstract int leituraMemoriaFiscal( Date dataIni, Date dataFim, char tipo );// 8
+	public abstract STResult leituraMemoriaFiscal( Date dataIni, Date dataFim, char tipo );// 8
 
-	public abstract int leituraMemoriaFiscal( int ini, int fim, char tipo );// 8
+	public abstract STResult leituraMemoriaFiscal( int ini, int fim, char tipo );// 8
 
-	public abstract int vendaItem( String codProd, String descProd, String aliquota, char tpqtd, float qtd, float valor, char tpdesc, float desconto );// 9
+	public abstract STResult vendaItem( String codProd, String descProd, String aliquota, char tpqtd, float qtd, float valor, char tpdesc, float desconto );// 9
 
-	public abstract int cancelaItemAnterior();// 13
+	public abstract STResult cancelaItemAnterior();// 13
 
-	public abstract int cancelaCupom();// 14
+	public abstract STResult cancelaCupom();// 14
 
-	public abstract int autenticacaoDeDocumento();// 16
+	public abstract STResult autenticacaoDeDocumento();// 16
 
-	public abstract int programaHorarioVerao();// 18
+	public abstract STResult programaHorarioVerao();// 18
 
 	public abstract boolean isHorarioVerao();// 18
 
 	public abstract List<EStatus> getStatus();// 19;
 
-	public abstract int relatorioGerencial( String texto );// 20
+	public abstract STResult relatorioGerencial( String texto );// 20
 
-	public abstract int fechamentoRelatorioGerencial();// 21
+	public abstract STResult fechamentoRelatorioGerencial();// 21
 
-	public abstract int acionaGavetaDinheiro( int time );// 22
+	public abstract STResult acionaGavetaDinheiro( int time );// 22
 
 	public abstract String retornoEstadoGavetaDinheiro();// 23
 
-	public abstract int comprovanteNFiscalNVinculado( String opt, float valor, String formaPag );// 25
+	public abstract STResult comprovanteNFiscalNVinculado( String opt, float valor, String formaPag );// 25
 
 	public abstract String retornoAliquotas();// 26
 
@@ -485,62 +485,62 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	
 	public abstract boolean retornoDocumentoAberto();
 
-	public abstract int cancelaItemGenerico( int item );// 31
+	public abstract STResult cancelaItemGenerico( int item );// 31
 
-	public abstract int iniciaFechamentoCupom( char opt, float percentual );// 32
+	public abstract STResult iniciaFechamentoCupom( char opt, float percentual );// 32
 
-	public abstract int finalizaFechamentoCupom( String mensagem );// 34
+	public abstract STResult finalizaFechamentoCupom( String mensagem );// 34
 
 	public abstract String retornoVariaveis( char var );// 35
 
-	public abstract int programaTruncamentoArredondamento( char opt );// 39
+	public abstract STResult programaTruncamentoArredondamento( char opt );// 39
 
-	public abstract int nomeiaTotalizadorNaoSujeitoICMS( int indice, String desc );// 40
+	public abstract STResult nomeiaTotalizadorNaoSujeitoICMS( int indice, String desc );// 40
 
-	public abstract int vendaItemTresCasas( String codProd, String descProd, String aliquota, char tpqtd, float qtd, float valor, char tpdesc, float desconto );// 56
+	public abstract STResult vendaItemTresCasas( String codProd, String descProd, String aliquota, char tpqtd, float qtd, float valor, char tpdesc, float desconto );// 56
 	
-	public abstract int imprimeCheque( final float valor, final String favorecido, final String localidade, final int dia , final int mes, final int ano ); // 57
+	public abstract STResult imprimeCheque( final float valor, final String favorecido, final String localidade, final int dia , final int mes, final int ano ); // 57
 
-	public abstract int programaMoedaSingular( String nomeSingular );// 58
+	public abstract STResult programaMoedaSingular( String nomeSingular );// 58
 
-	public abstract int programaMoedaPlural( String nomePlurar );// 59
+	public abstract STResult programaMoedaPlural( String nomePlurar );// 59
 
-	public abstract int programarEspacoEntreLinhas( int espaco );// 60
+	public abstract STResult programarEspacoEntreLinhas( int espaco );// 60
 
-	public abstract int programarLinhasEntreCupons( int espaco );// 61
+	public abstract STResult programarLinhasEntreCupons( int espaco );// 61
 	
 	public abstract String retornoStatusCheque();// 62 48
 	
-	public abstract int cancelaImpressaoCheque();// 62 49
+	public abstract STResult cancelaImpressaoCheque();// 62 49
 
-	public abstract int programaUnidadeMedida( String descUnid );// 62 51
+	public abstract STResult programaUnidadeMedida( String descUnid );// 62 51
 
-	public abstract int aumentaDescItem( String descricao );// 62 52
+	public abstract STResult aumentaDescItem( String descricao );// 62 52
 
 	public abstract String retornoEstadoPapel();// 62 54
 
 	public abstract String retornoUltimaReducao();// 62 55
 
-	public abstract int vendaItemDepartamento( String sitTrib, float valor, float qtd, float desconto, float acrescimo, int departamento, String unidade, String codProd, String descProd );// 63
+	public abstract STResult vendaItemDepartamento( String sitTrib, float valor, float qtd, float desconto, float acrescimo, int departamento, String unidade, String codProd, String descProd );// 63
 
-	public abstract int programaCaracterParaAutenticacao( int[] caracteres );// 64
+	public abstract STResult programaCaracterParaAutenticacao( int[] caracteres );// 64
 
-	public abstract int nomeiaDepartamento( int index, String descricao );// 65
+	public abstract STResult nomeiaDepartamento( int index, String descricao );// 65
 
-	public abstract int abreComprovanteNFiscalVinculado( String formaPag, float valor, int doc );// 66
+	public abstract STResult abreComprovanteNFiscalVinculado( String formaPag, float valor, int doc );// 66
 
-	public abstract int usaComprovanteNFiscalVinculado( String texto );// 67
+	public abstract STResult usaComprovanteNFiscalVinculado( String texto );// 67
 
-	public abstract int habilitaCupomAdicional( char opt );// 68
+	public abstract STResult habilitaCupomAdicional( char opt );// 68
 
-	public abstract int leituraXSerial();// 69
+	public abstract STResult leituraXSerial();// 69
 
-	public abstract int resetErro();// 70
+	public abstract STResult resetErro();// 70
 
 	public abstract String programaFormaPagamento( String descricao );// 71
 
-	public abstract int efetuaFormaPagamento( String indice, float valor, String descForma );// 72
+	public abstract STResult efetuaFormaPagamento( String indice, float valor, String descForma );// 72
 
-	public abstract int estornoFormaPagamento( String descOrigem, String descDestino, float valor );// 74
+	public abstract STResult estornoFormaPagamento( String descOrigem, String descDestino, float valor );// 74
 
 }

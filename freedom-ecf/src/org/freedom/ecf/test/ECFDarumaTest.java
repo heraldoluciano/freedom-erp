@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 
 import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.ecf.driver.ECFDaruma;
+import org.freedom.ecf.driver.STResult;
 
 public class ECFDarumaTest extends TestCase {
 
@@ -273,11 +274,11 @@ public class ECFDarumaTest extends TestCase {
 		}
 	}
 	
-	public boolean trataRetornoFuncao( final ECFDaruma ecf, final int arg ) {
+	public boolean trataRetornoFuncao( final ECFDaruma ecf, final STResult arg ) {
 
 		boolean returnOfAction = true;
 
-		String str = ecf.decodeReturnECF( arg ).getMessage();
+		String str = ecf.decodeReturnECF( arg.getFirstCode() ).getMessage();
 
 		if ( ! RETORNO_OK.getMessage().equals( str ) ) {
 			returnOfAction = false;

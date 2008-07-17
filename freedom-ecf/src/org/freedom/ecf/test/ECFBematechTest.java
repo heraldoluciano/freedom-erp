@@ -7,6 +7,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import org.freedom.ecf.driver.ECFBematech;
+import org.freedom.ecf.driver.STResult;
 
 public class ECFBematechTest extends TestCase {
 
@@ -231,11 +232,14 @@ public class ECFBematechTest extends TestCase {
 		
 	}
 	
-	public boolean trataRetornoFuncao( final int iRetorno ) {
+	public boolean trataRetornoFuncao( final STResult result ) {
 
 		boolean bRetorno = false;
 
 		String sMensagem = "";
+		
+		int iRetorno = result.getFirstCode();
+		
 
 		switch ( iRetorno ) {
 
