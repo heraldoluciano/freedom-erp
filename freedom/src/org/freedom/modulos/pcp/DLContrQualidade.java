@@ -119,16 +119,25 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 		txtQtdDist.setAtivo( false );
 		txtQtdDistpOp.setAtivo( false );
 		
+		tabControl.adicColuna( "" );
 		tabControl.adicColuna( "Seq.op.cq" );
 		tabControl.adicColuna( "Cod.Estr.Análise" );
 		tabControl.adicColuna( "Desc.Estr.Análise" );
+		tabControl.adicColuna( "Vlr.Mín" );
+		tabControl.adicColuna( "Vlr.Máx." );
 		tabControl.adicColuna( "Valor aferido" );
 		tabControl.adicColuna( "Desc.Aferido" );
 		tabControl.adicColuna( "Tipo" );
 	
-		tabControl.setTamColuna( 100, 1 );
-		tabControl.setTamColuna( 270, 2 );
-		tabControl.setTamColuna( 200, 4 );
+		tabControl.setTamColuna( 10, 0 );
+		tabControl.setTamColuna( 20, 1 );
+		tabControl.setTamColuna( 50, 2 );
+		tabControl.setTamColuna( 200, 3 );
+		tabControl.setTamColuna( 70, 4 );
+		tabControl.setTamColuna( 70, 5 );
+		tabControl.setTamColuna( 80, 6 );
+		tabControl.setTamColuna( 150, 7 );
+		tabControl.setTamColuna( 30, 8 );
 		
 		tabControl.addMouseListener( this );
 	}
@@ -140,7 +149,8 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 		StringBuilder sSQL = new StringBuilder();
 		Vector<Object> vLinha = null;
 		 
-		sSQL.append( "SELECT PQ.SEQOPCQ, PQ.CODESTANALISE, PQ.VLRAFER, PQ.DESCAFER, PA.DESCTPANALISE, PA.TIPOEXPEC " );
+		sSQL.append( "SELECT PQ.SEQOPCQ, PQ.CODESTANALISE, PQ.VLRAFER, PQ.DESCAFER, PA.DESCTPANALISE, PA.TIPOEXPEC, " );
+		sSQL.append( "PE.VLRMIN, PE.VLRMAX " );
 		sSQL.append( "FROM PPOPCQ PQ, PPESTRUANALISE PE, PPTIPOANALISE PA WHERE PQ.CODEMP=? AND PQ.CODFILIAL=? AND " );
 		sSQL.append( "PQ.CODOP=? AND PQ.SEQOP=? AND PE.CODEMP=PQ.CODEMPEA AND " );
 		sSQL.append( "PE.CODFILIAL=PQ.CODFILIALEA AND PE.CODESTANALISE=PQ.CODESTANALISE AND " );
@@ -161,12 +171,14 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 	  		  
 	  		 tabControl.adicLinha();
 	  		 
-	  		 tabControl.setValor( rs.getInt( "SEQOPCQ" ), i, 0 );
-	  		 tabControl.setValor( rs.getInt( "CODESTANALISE" ), i, 1 );
-	  		 tabControl.setValor( rs.getString( "DESCTPANALISE" ), i, 2 );
-	  		 tabControl.setValor( rs.getBigDecimal( "VLRAFER" ), i, 3 );
-	  		 tabControl.setValor( rs.getString( "DESCAFER" ), i, 4 );
-	  		 tabControl.setValor( rs.getString( "TIPOEXPEC" ), i, 5 );
+	  		 tabControl.setValor( rs.getInt( "SEQOPCQ" ), i, 1 );
+	  		 tabControl.setValor( rs.getInt( "CODESTANALISE" ), i, 2 );
+	  		 tabControl.setValor( rs.getString( "DESCTPANALISE" ), i, 3 );
+	  		 tabControl.setValor( rs.getBigDecimal( "VLRMIN" ), i, 4 );
+	  		 tabControl.setValor( rs.getBigDecimal( "VLRMAX" ), i, 5 );
+	  		 tabControl.setValor( rs.getBigDecimal( "VLRAFER" ), i, 6 );
+	  		 tabControl.setValor( rs.getString( "DESCAFER" ), i, 7 );
+	  		 tabControl.setValor( rs.getString( "TIPOEXPEC" ), i, 8 );
 	  	  }
 	  	  
 	  	  rs.close();
@@ -189,25 +201,28 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 		
 		try {
 			
-			String sDescAnalise = (String)tabControl.getValor( iLinha, 2 );
-			String sTipo = (String)tabControl.getValor( iLinha, 5 );
+			String sDescAnalise = (String)tabControl.getValor( iLinha, 3 );
+			BigDecimal bVlrMin = (BigDecimal)tabControl.getValor( iLinha, 4 ) == null ? new BigDecimal(0) : (BigDecimal)tabControl.getValor( iLinha, 4 );
+			BigDecimal bVlrMax = (BigDecimal)tabControl.getValor( iLinha, 5 ) == null ? new BigDecimal(0) : (BigDecimal)tabControl.getValor( iLinha, 5 );
+			BigDecimal bVlrAfer = (BigDecimal)tabControl.getValor( iLinha, 6 ) == null ? new BigDecimal(0) : (BigDecimal)tabControl.getValor( iLinha, 6 )  ; 
+			String sAfer = (String)tabControl.getValor( iLinha, 7 ); 
+			String sTipo = (String)tabControl.getValor( iLinha, 8 );
+			
 			String sUpdate = "";
 			
-			DLFechaQual dl = new DLFechaQual( sDescAnalise, sTipo );
+			DLFechaQual dl = new DLFechaQual( sDescAnalise, sTipo, bVlrMin, bVlrMax, bVlrAfer, sAfer );
 			dl.setVisible( true );
 			
 			if( "MM".equals( sTipo )){
 				sUpdate = " VLRAFER=? ";
 			}
 			else if( "DT".equals( sTipo )){
-				sUpdate = "DESCAFER=? ";
+				sUpdate = " DESCAFER=? ";
 			}
 			
 			HashMap<String, Object> hsRet = dl.getValor();
 			
 			if( dl.OK ){
-				
-				
 				
 				sSQL.append( "UPDATE PPOPCQ SET" + sUpdate + "WHERE " );
 				sSQL.append( "CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND SEQOPCQ=?" );
@@ -229,7 +244,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 				ps.setInt( 3, ListaCampos.getMasterFilial( "PPOPCQ" ) );
 				ps.setInt( 4, txtCodOP.getVlrInteger() );
 				ps.setInt( 5, txtSeqOP.getVlrInteger() );
-				ps.setInt( 6, (Integer) tabControl.getValor( iLinha, 0 ) );
+				ps.setInt( 6, (Integer) tabControl.getValor( iLinha, 1 ) );
 				
 				ps.executeUpdate();
 
@@ -243,6 +258,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 			}
 		} catch ( Exception e ) {
 			
+			e.getMessage();
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao salvar aferimento!" );
 		}
