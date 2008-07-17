@@ -80,6 +80,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	private JTextFieldPad txtDataFimProdFs = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
 	private JTextFieldPad txtHFimProdFs = new JTextFieldPad(JTextFieldPad.TP_TIME,8,0);
 	private JTextFieldPad txtSitFS = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+	private JTextFieldFK txtTpFase = new JTextFieldFK(JTextFieldPad.TP_STRING,2,0);
 	private ListaCampos lcProd = new ListaCampos(this,"PD");
 	private ListaCampos lcFase = new ListaCampos(this,"FS");
 	private ListaCampos lcRec = new ListaCampos(this,"RP");
@@ -146,6 +147,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		    
 		lcFase.add(new GuardaCampo( txtCodFase,"CodFase", "Cód.fase", ListaCampos.DB_PK, true));
 		lcFase.add(new GuardaCampo( txtDescFase, "DescFase", "Descrição da fase", ListaCampos.DB_SI, false));
+		lcFase.add(new GuardaCampo( txtTpFase, "TipoFase", "Tipo", ListaCampos.DB_SI, false ));
 		lcFase.montaSql(false, "FASE", "PP");
 		lcFase.setQueryCommit(false);
 		lcFase.setReadOnly(true);
@@ -172,6 +174,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		adicCampo(txtNumSeqOf, 5, 20, 40, 20,"SeqOf","Item",ListaCampos.DB_PK,true);
 		adicCampo(txtCodFase, 48, 20, 77, 20,"CodFase","Cd.fase", ListaCampos.DB_FK, txtDescFase, true);
 		adicDescFK(txtDescFase, 128, 20, 227, 20,"DescFase", "Descrição da fase");
+		adicDescFKInvisivel( txtTpFase, "DescFase", "Descrição da fase");
 		adicCampo(txtTempoOf, 358, 20, 100, 20,"TempoOf","Tempo",ListaCampos.DB_SI, false);
 		adicCampoInvisivel(txtCodTpRec,"CodTpRec", "Cód.tp.rec.", ListaCampos.DB_SI, false);
 		adicCampo(txtCodRec, 7, 60, 60, 20,"CodRecP","Cód.rec.", ListaCampos.DB_FK, txtDescRec, false);
@@ -260,6 +263,40 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		}
 	}
 	
+	private boolean CQOk(){
+		
+		boolean ret = true;
+		String sTipo = txtTpFase.getVlrString();
+		StringBuffer sSQL = new StringBuffer();
+		PreparedStatement ps = null;
+		
+		if( sTipo.equals( "CQ" )){
+			
+			sSQL.append( "SELECT COUNT(*) FROM PPOPCQ WHERE CODEMP=? AND CODFILIAL=? AND STATUS='PE'" );
+			
+			try {
+				
+				ps = con.prepareStatement( sSQL.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPCQ" ) );
+				
+				ResultSet rs = ps.executeQuery();
+				
+				if( rs.next() && rs.getInt( 1 ) == 0 ){
+					ret = true;
+				}
+				else{
+					ret = false;
+				}
+					
+			} catch ( SQLException e ) {
+				
+				e.printStackTrace();
+			}
+		}
+		return ret;
+	}
+	
 	public boolean getFinalizaProcesso(){
 	
 		PreparedStatement ps = null;
@@ -268,36 +305,34 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		String sFinaliza = null;
 		boolean bRet = false;
 		
+			
 		try {
-			
-			sSQL = "SELECT FINALIZAOP FROM PPESTRUFASE "+
-				   "WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND SEQEST=? AND CODFASE=?";	
-			
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
-			ps.setInt(3,txtCodProd.getVlrInteger().intValue()); 
-			ps.setInt(4,iSeqEst);	
-			ps.setInt(5,txtCodFase.getVlrInteger().intValue());		
+
+			sSQL = "SELECT FINALIZAOP FROM PPESTRUFASE " + "WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND SEQEST=? AND CODFASE=?";
+
+			ps = con.prepareStatement( sSQL );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setInt( 3, txtCodProd.getVlrInteger().intValue() );
+			ps.setInt( 4, iSeqEst );
+			ps.setInt( 5, txtCodFase.getVlrInteger().intValue() );
 			rs = ps.executeQuery();
-			if (rs.next()) {
-				sFinaliza = rs.getString(1);
-				if (sFinaliza != null)
-					if(sFinaliza.equals("S"))
+			if ( rs.next() ) {
+				sFinaliza = rs.getString( 1 );
+				if ( sFinaliza != null )
+					if ( sFinaliza.equals( "S" ) )
 						bRet = true;
 			}
-			
+
 			rs.close();
 			ps.close();
-			if(!con.getAutoCommit())
+			if ( !con.getAutoCommit() )
 				con.commit();
-			
-		} 
-		catch (SQLException err) {
+
+		} catch ( SQLException err ) {
 			err.printStackTrace();
-			Funcoes.mensagemErro(this, "Erro ao verificar se fase finaliza processo!\n",true,con,err);
-		} 
-		finally {
+			Funcoes.mensagemErro( this, "Erro ao verificar se fase finaliza processo!\n", true, con, err );
+		} finally {
 			ps = null;
 			rs = null;
 			sSQL = null;
@@ -340,6 +375,13 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 
 	public void beforePost(PostEvent pevt) {
 		if(pevt.getListaCampos()==lcDet) {
+			
+			if( !CQOk() ){
+				Funcoes.mensagemErro( this, "Não foi possível finalizar a fase.\nExistem análises pendentes!" );
+				pevt.cancela();
+				return;
+			}
+			
 			if(getFinalizaProcesso() && (txtSitFS.getVlrString().equals("PE"))){
 				DLFinalizaOP dl = new DLFinalizaOP(this,txtQtdPrevOP.getVlrString());
 				dl.setVisible(true);

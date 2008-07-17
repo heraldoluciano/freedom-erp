@@ -20,10 +20,12 @@
  */
 package org.freedom.modulos.pcp;
 
+
 import java.math.BigDecimal;
 import java.util.HashMap;
-
+import java.util.Vector;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -44,6 +46,12 @@ public class DLFechaQual extends FFDialogo {
 		
 	private JTextFieldPad txtVlrMax = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
 	
+	private Vector<String> vLabs1 = new Vector<String>();
+	
+	private Vector<String> vVals1 = new Vector<String>();
+	
+	private JRadioGroup<?, ?> rgTipo = null;
+	
 	String tipo = "";
 	
 	public DLFechaQual( String sDescAnalise, String sTipo, BigDecimal bVlrMin, BigDecimal bVlrMax, BigDecimal vlrAfer, String sAfer ){
@@ -57,9 +65,22 @@ public class DLFechaQual extends FFDialogo {
 		tipo = sTipo;
 		
 		if( "DT".equals( sTipo )){
+			 
+			vLabs1.addElement("Pendente");
+	 		vLabs1.addElement("Recusada");
+	 		vLabs1.addElement("Aprovada");
+	 		vVals1.addElement("PE");
+	 		vVals1.addElement("RC");
+	 		vVals1.addElement("AP");
+			    
+	 		rgTipo = new JRadioGroup<String, String>( 1, 3, vLabs1, vVals1 );
+	 		rgTipo.setVlrString("T");
 			
 			adic( new JLabelPad("Aferição"), 7, 45, 200, 20 );
-			adic( txtDescAfer, 7, 65, 200, 20 );
+			adic( txtDescAfer, 7, 65, 310, 20 );
+			adic( rgTipo, 7, 95, 310, 30 );
+			rgTipo.setVlrString( "PE" );			
+			
 			txtDescAfer.setRequerido( true );
 			txtDescAfer.setVlrString( sAfer );
 		}
@@ -85,6 +106,13 @@ public class DLFechaQual extends FFDialogo {
 		txtDescEst.setAtivo( false );
 	
 	}
+	
+	public String getStatus(){
+	
+		return rgTipo.getVlrString();
+		
+	}
+	
 	public HashMap<String, Object> getValor(){
 			
 		HashMap<String, Object> hRet = new HashMap<String, Object>();
