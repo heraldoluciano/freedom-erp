@@ -203,9 +203,11 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 				sUpdate = "DESCAFER=? ";
 			}
 			
+			HashMap<String, Object> hsRet = dl.getValor();
+			
 			if( dl.OK ){
 				
-				HashMap<String, Object> hsRet = dl.getValor();
+				
 				
 				sSQL.append( "UPDATE PPOPCQ SET" + sUpdate + "WHERE " );
 				sSQL.append( "CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND SEQOPCQ=?" );
@@ -214,8 +216,8 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 				
 				if( "MM".equals( sTipo )){
 					
-					int vlrAfer = (Integer)hsRet.get( "VLRAFER" );
-					ps.setInt( 1, vlrAfer );
+					BigDecimal vlrAfer = (BigDecimal)hsRet.get( "VLRAFER" );
+					ps.setBigDecimal( 1, vlrAfer );
 				}
 				else if( "DT".equals( sTipo )){
 					
@@ -227,7 +229,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 				ps.setInt( 3, ListaCampos.getMasterFilial( "PPOPCQ" ) );
 				ps.setInt( 4, txtCodOP.getVlrInteger() );
 				ps.setInt( 5, txtSeqOP.getVlrInteger() );
-				ps.setInt( 6, iLinha );
+				ps.setInt( 6, (Integer) tabControl.getValor( iLinha, 0 ) );
 				
 				ps.executeUpdate();
 
