@@ -2222,10 +2222,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				String codvenda = txtCodVenda.getVlrString();
 				lcVenda2.carregaDados();// Carrega os Totais
 				txtCodVenda.setVlrString( codvenda );
-				codvenda = null;
 				if ( (numComissionados>0) && (ctrlmc!=null) ) {
-					ctrlmc.loadVendaComis( txtCodRegrComis.getVlrInteger().intValue() );
+					ctrlmc.loadVendaComis( "V", Integer.parseInt( codvenda ) );
 				}
+				codvenda = null;
 			}
 			else if ( cevt.getListaCampos() == lcVenda2 ) {
 				txtPercComisVenda.setAtivo( txtVlrComisVenda.floatValue() == 0 );

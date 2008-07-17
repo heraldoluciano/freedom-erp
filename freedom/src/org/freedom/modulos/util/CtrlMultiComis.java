@@ -91,7 +91,7 @@ public class CtrlMultiComis {
 		}
 	}
 
-	public void loadVendaComis( final int codregrcomis) {
+	public void loadVendaComis( final String tipovenda, final int codvenda) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int pos = 0;
@@ -105,12 +105,12 @@ public class CtrlMultiComis {
 			ps = con.prepareStatement( "SELECT VC.SEQVC, VC.CODREGRCOMIS, " +
 					"VC.SEQITRC, VC.CODVEND, VC.PERCVC " +
 					"FROM VDVENDACOMIS VC " +
-					"WHERE VC.CODEMP=? AND VC.CODFILIAL=? AND" +
+					"WHERE VC.CODEMP=? AND VC.CODFILIAL=? AND " +
 					"VC."+cpTipovenda+"=? AND VC."+cpCodvenda+"=?");
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITREGRACOMIS" ) );
-			ps.setString( 3, lcMaster.getCampo( cpTipovenda ).getVlrString() );
-			ps.setInt( 4, lcMaster.getCampo( cpCodvenda ).getVlrInteger().intValue() );
+			ps.setString( 3, tipovenda );
+			ps.setInt( 4, codvenda );
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				listComis[ pos ].getTxtSeqvc().setVlrInteger( rs.getInt( "SEQVC" ) );
