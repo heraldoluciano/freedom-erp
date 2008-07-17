@@ -2,6 +2,9 @@ package org.freedom.modulos.pcp;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
@@ -12,8 +15,11 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
@@ -23,7 +29,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
-public class DLContrQualidade extends FFDialogo implements MouseListener{
+public class DLContrQualidade extends FFDialogo implements MouseListener, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -55,7 +61,41 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 
 	private JTextFieldPad txtQtdProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 
+	private JLabelPad lbTxtPendente = new JLabelPad("Pendente");
+	
+	private JLabelPad lbTxtFinalizada = new JLabelPad("Aprovada");
+	
+	private JLabelPad lbTxtAtrasado = new JLabelPad("Recusada");
+	
+	private ImageIcon imgPendente = Icone.novo( "clIndisponivelParc.gif" );
+	
+	private ImageIcon imgAprovada = Icone.novo( "clEfetivado.gif" );
+	
+	private ImageIcon imgRecusado = Icone.novo( "clVencido.gif" );
+	
+	private JLabelPad lbImgPendente = new JLabelPad( imgPendente );
+	
+	private JLabelPad lbImgFinalizada = new JLabelPad( imgAprovada );
+	
+	private JLabelPad lbImgAtrasado = new JLabelPad( imgRecusado );
+	
+	private JPanelPad pnBot = new JPanelPad( 580, 30 );
+	
+	private ImageIcon imgStatus = null;
+	
+	private Font fontLegenda =  new Font( "Arial", Font.PLAIN, 9 );	
+
 	String sEstAnalise = "";
+	
+	public JButton btOK = new JButton("OK", Icone.novo("btOk.gif"));
+	
+	private enum EcolPPOPCQ{
+	
+		STATUS, SEQOPCQ, CODESTANALISE, DESCTPANALISE, VLRMIN ,
+		VLRMAX, VLRAFER, DESCAFER, TIPOEXPEC
+	
+	};
+	
 	
 	public DLContrQualidade( Connection con, boolean bPref ) {
 
@@ -63,6 +103,12 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 		setAtribos( 610, 380 );
 		setConexao( con );
 		montaTela( bPref );
+		
+		lbTxtPendente.setFont( fontLegenda );
+		lbTxtFinalizada.setFont( fontLegenda );
+		lbTxtAtrasado.setFont( fontLegenda );
+		
+		btOK.addActionListener( this );
 	}
 
 	private void montaTela( boolean bPref ) {
@@ -107,7 +153,20 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 		
 		adic( new JLabelPad( "Descrição da estrutura principal" ), 90, 40, 250, 20 );
 		adic( txtDescEst, 90, 60, 330, 20 );
+		
+		pnBotoes.removeAll();
+		pnBotoes.add( pnBot );
+		pnBot.tiraBorda();
+		
+		pnBot.adic( lbImgPendente, 7, 4, 20, 20 );
+		pnBot.adic( lbTxtPendente, 25, 4, 80, 20 );
+		pnBot.adic( lbImgAtrasado, 75, 4, 20, 20 );
+		pnBot.adic( lbTxtAtrasado, 95, 4, 90, 20 );
+		pnBot.adic( lbTxtFinalizada, 165, 4, 80, 20 );
+		pnBot.adic( lbImgFinalizada, 145, 4, 20, 20 );
+		pnBot.adic( btOK, 470, 0, 110, 30 );
 
+		 
 		txtCodOP.setAtivo( false );
 		txtSeqOP.setAtivo( false );
 		txtCodProdEst.setAtivo( false );
@@ -129,15 +188,15 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 		tabControl.adicColuna( "Desc.Aferido" );
 		tabControl.adicColuna( "Tipo" );
 	
-		tabControl.setTamColuna( 10, 0 );
-		tabControl.setTamColuna( 20, 1 );
-		tabControl.setTamColuna( 50, 2 );
-		tabControl.setTamColuna( 200, 3 );
-		tabControl.setTamColuna( 70, 4 );
-		tabControl.setTamColuna( 70, 5 );
-		tabControl.setTamColuna( 80, 6 );
-		tabControl.setTamColuna( 150, 7 );
-		tabControl.setTamColuna( 30, 8 );
+		tabControl.setTamColuna( 10, EcolPPOPCQ.STATUS.ordinal());
+		tabControl.setTamColuna( 20, EcolPPOPCQ.SEQOPCQ.ordinal());
+		tabControl.setTamColuna( 50, EcolPPOPCQ.CODESTANALISE.ordinal());
+		tabControl.setTamColuna( 200,EcolPPOPCQ.DESCTPANALISE.ordinal());
+		tabControl.setTamColuna( 70, EcolPPOPCQ.VLRMIN.ordinal());
+		tabControl.setTamColuna( 70, EcolPPOPCQ.VLRMAX.ordinal());
+		tabControl.setTamColuna( 80, EcolPPOPCQ.VLRAFER.ordinal());
+		tabControl.setTamColuna( 150,EcolPPOPCQ.DESCAFER.ordinal());
+		tabControl.setTamColuna( 30, EcolPPOPCQ.TIPOEXPEC.ordinal());
 		
 		tabControl.addMouseListener( this );
 	}
@@ -150,7 +209,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 		Vector<Object> vLinha = null;
 		 
 		sSQL.append( "SELECT PQ.SEQOPCQ, PQ.CODESTANALISE, PQ.VLRAFER, PQ.DESCAFER, PA.DESCTPANALISE, PA.TIPOEXPEC, " );
-		sSQL.append( "PE.VLRMIN, PE.VLRMAX " );
+		sSQL.append( "PE.VLRMIN, PE.VLRMAX, PQ.STATUS " );
 		sSQL.append( "FROM PPOPCQ PQ, PPESTRUANALISE PE, PPTIPOANALISE PA WHERE PQ.CODEMP=? AND PQ.CODFILIAL=? AND " );
 		sSQL.append( "PQ.CODOP=? AND PQ.SEQOP=? AND PE.CODEMP=PQ.CODEMPEA AND " );
 		sSQL.append( "PE.CODFILIAL=PQ.CODFILIALEA AND PE.CODESTANALISE=PQ.CODESTANALISE AND " );
@@ -167,19 +226,32 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 
 	  	  	rs = ps.executeQuery();
 			
-	  	  for( int i=0; rs.next(); i++ ){
-	  		  
-	  		 tabControl.adicLinha();
-	  		 
-	  		 tabControl.setValor( rs.getInt( "SEQOPCQ" ), i, 1 );
-	  		 tabControl.setValor( rs.getInt( "CODESTANALISE" ), i, 2 );
-	  		 tabControl.setValor( rs.getString( "DESCTPANALISE" ), i, 3 );
-	  		 tabControl.setValor( rs.getBigDecimal( "VLRMIN" ), i, 4 );
-	  		 tabControl.setValor( rs.getBigDecimal( "VLRMAX" ), i, 5 );
-	  		 tabControl.setValor( rs.getBigDecimal( "VLRAFER" ), i, 6 );
-	  		 tabControl.setValor( rs.getString( "DESCAFER" ), i, 7 );
-	  		 tabControl.setValor( rs.getString( "TIPOEXPEC" ), i, 8 );
-	  	  }
+	  	  for ( int i = 0; rs.next(); i++ ) {
+
+
+				if( rs.getString( "STATUS" ).equals( "PE" )){
+					imgStatus = imgPendente;
+				}
+				else if( rs.getString( "STATUS" ).equals( "AP" )){
+					imgStatus = imgAprovada;
+				}
+				else if( rs.getString( "STATUS" ).equals( "RC" )){
+					imgStatus = imgRecusado;
+				}
+				
+				tabControl.adicLinha();
+
+				tabControl.setValor( imgStatus, i, EcolPPOPCQ.STATUS.ordinal() );
+				tabControl.setValor( rs.getInt( "SEQOPCQ" ), i, EcolPPOPCQ.SEQOPCQ.ordinal() );
+				tabControl.setValor( rs.getInt( "CODESTANALISE" ), i, EcolPPOPCQ.CODESTANALISE.ordinal() );
+				tabControl.setValor( rs.getString( "DESCTPANALISE" ), i, EcolPPOPCQ.DESCTPANALISE.ordinal() );
+				tabControl.setValor( rs.getBigDecimal( "VLRMIN" ), i, EcolPPOPCQ.VLRMIN.ordinal() );
+				tabControl.setValor( rs.getBigDecimal( "VLRMAX" ), i, EcolPPOPCQ.VLRMAX.ordinal() );
+				tabControl.setValor( rs.getBigDecimal( "VLRAFER" ), i, EcolPPOPCQ.VLRAFER.ordinal() );
+				tabControl.setValor( rs.getString( "DESCAFER" ), i, EcolPPOPCQ.DESCAFER.ordinal() );
+				tabControl.setValor( rs.getString( "TIPOEXPEC" ), i, EcolPPOPCQ.TIPOEXPEC.ordinal() );
+
+			}
 	  	  
 	  	  rs.close();
 	  	  ps.close();
@@ -201,12 +273,15 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 		
 		try {
 			
-			String sDescAnalise = (String)tabControl.getValor( iLinha, 3 );
-			BigDecimal bVlrMin = (tabControl.getValor( iLinha, 4 ) == null || tabControl.getValor( iLinha, 4 ).equals( "" )) ? new BigDecimal(0) : (BigDecimal) tabControl.getValor( iLinha, 4 );
-			BigDecimal bVlrMax = (tabControl.getValor( iLinha, 5 ) == null || tabControl.getValor( iLinha, 5 ).equals( "" )) ? new BigDecimal(0) : (BigDecimal) tabControl.getValor( iLinha, 5 );
-			BigDecimal bVlrAfer = (tabControl.getValor( iLinha, 6 ) == null || tabControl.getValor( iLinha, 6 ).equals( "" )) ? new BigDecimal(0) : (BigDecimal) tabControl.getValor( iLinha, 6 )  ; 
-			String sAfer = (String)tabControl.getValor( iLinha, 7 ); 
-			String sTipo = (String)tabControl.getValor( iLinha, 8 );
+			String sDescAnalise = (String)tabControl.getValor( iLinha,  EcolPPOPCQ.DESCTPANALISE.ordinal()  );
+			BigDecimal bVlrMin = tabControl.getValor( iLinha,EcolPPOPCQ.VLRMIN.ordinal() ) == null || tabControl.getValor( iLinha,EcolPPOPCQ.VLRMIN.ordinal() ).equals( "" ) ? 
+					new BigDecimal(0) : (BigDecimal)tabControl.getValor( iLinha, EcolPPOPCQ.VLRMIN.ordinal() );
+			BigDecimal bVlrMax = tabControl.getValor( iLinha, EcolPPOPCQ.VLRMAX.ordinal() ) == null || tabControl.getValor( iLinha,EcolPPOPCQ.VLRMAX.ordinal() ).equals( "" ) ?
+					new BigDecimal(0) : (BigDecimal)tabControl.getValor( iLinha, EcolPPOPCQ.VLRMAX.ordinal() );
+			BigDecimal bVlrAfer =tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() ) == null || tabControl.getValor( iLinha,EcolPPOPCQ.VLRAFER.ordinal() ).equals( "" ) ? 
+					new BigDecimal(0) : (BigDecimal)tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() )  ; 
+			String sAfer = (String)tabControl.getValor( iLinha, EcolPPOPCQ.DESCAFER.ordinal() ); 
+			String sTipo = (String)tabControl.getValor( iLinha, EcolPPOPCQ.TIPOEXPEC.ordinal() );
 			
 			String sUpdate = "";
 			
@@ -244,7 +319,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 				ps.setInt( 3, ListaCampos.getMasterFilial( "PPOPCQ" ) );
 				ps.setInt( 4, txtCodOP.getVlrInteger() );
 				ps.setInt( 5, txtSeqOP.getVlrInteger() );
-				ps.setInt( 6, (Integer) tabControl.getValor( iLinha, 1 ) );
+				ps.setInt( 6, (Integer) tabControl.getValor( iLinha, EcolPPOPCQ.SEQOPCQ.ordinal() ) );
 				
 				ps.executeUpdate();
 
@@ -276,6 +351,17 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 		txtQtdPrev.setVlrBigDecimal((BigDecimal) sValores[7]);
 		txtQtdDist.setVlrBigDecimal(new BigDecimal(0));	
 		
+	}
+
+
+	public void actionPerformed( ActionEvent evt ) {
+
+		super.actionPerformed(evt);
+		
+		if( evt.getSource() == btOK ){
+			
+			dispose();
+		}
 	}
 
 	public void mouseClicked( MouseEvent mevt ) {
