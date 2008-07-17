@@ -33,12 +33,12 @@ public class DLFechaQual extends FFDialogo {
 		
 		adic( new JLabelPad("Descrição da analise"), 7, 5, 200, 20 );
 		adic( txtDescEst, 7, 25, 310, 20 );
-		adic( new JLabelPad("Aferição"), 7, 85, 200, 20 );
 		
 		tipo = sTipo;
 		
 		if( "DT".equals( sTipo )){
 			
+			adic( new JLabelPad("Aferição"), 7, 45, 200, 20 );
 			adic( txtDescAfer, 7, 65, 200, 20 );
 			txtDescAfer.setRequerido( true );
 			txtDescAfer.setVlrString( sAfer );
@@ -49,6 +49,7 @@ public class DLFechaQual extends FFDialogo {
 			adic( txtVlrMin, 7, 65, 70, 20 );
 			adic( new JLabelPad("Vlr.Máx."), 80, 45, 70, 20 );
 			adic( txtVlrMax , 80, 65, 70, 20 );
+			adic( new JLabelPad("Aferição"), 7, 85, 200, 20 );
 			adic( txtVlrAfer, 7, 105, 70, 20 );
 			
 			txtVlrMin.setSoLeitura( true );
