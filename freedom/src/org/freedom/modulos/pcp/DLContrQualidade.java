@@ -227,7 +227,10 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		ResultSet rs = null;
 		StringBuilder sSQL = new StringBuilder();
 		Vector<Object> vLinha = null;
-		 
+		BigDecimal bVlrAfer = null;
+		BigDecimal bVlrMin = null;
+		BigDecimal bVlrmax = null;
+		
 		sSQL.append( "SELECT PQ.SEQOPCQ, PQ.CODESTANALISE, PQ.VLRAFER, PQ.DESCAFER, PA.DESCTPANALISE, PA.TIPOEXPEC, " );
 		sSQL.append( "PE.VLRMIN, PE.VLRMAX, PQ.STATUS " );
 		sSQL.append( "FROM PPOPCQ PQ, PPESTRUANALISE PE, PPTIPOANALISE PA WHERE PQ.CODEMP=? AND PQ.CODFILIAL=? AND " );
@@ -245,9 +248,9 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		  	ps.setInt( 4, iSeqop );
 
 	  	  	rs = ps.executeQuery();
-			
-	  	  for ( int i = 0; rs.next(); i++ ) {
-
+	  	  	
+	  	  	int i = 0;
+	  	    while ( rs.next() ) {
 
 				if( rs.getString( "STATUS" ).equals( "PE" )){
 					imgStatus = imgPendente;
@@ -258,7 +261,33 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 				else if( rs.getString( "STATUS" ).equals( "RC" )){
 					imgStatus = imgRecusado;
 				}
+			
 				
+				bVlrAfer = rs.getBigDecimal( "VLRAFER" );
+				bVlrMin = rs.getBigDecimal( "VLRMIN" );
+				bVlrmax = rs.getBigDecimal( "VLRMAX" );
+				
+				
+				if( rs.getString( "TIPOEXPEC" ).equals( "MM" )){
+					
+					if ( ( bVlrAfer == null ) ) {
+						bVlrAfer = new BigDecimal(0); 
+						imgStatus = imgPendente;
+						
+					} 
+					else {
+						if( bVlrAfer.compareTo( bVlrMin ) < 0 || bVlrAfer.compareTo( bVlrmax ) > 0 ) {	
+							imgStatus = imgRecusado;
+						}
+						else if (bVlrAfer.compareTo( bVlrMin ) >= 0  &&  bVlrAfer.compareTo( bVlrmax ) <= 0 ){					
+							imgStatus = imgAprovada;
+						}
+						else{					
+							imgStatus = imgPendente;
+						}
+					}
+				}
+					
 				tabControl.adicLinha();
 
 				tabControl.setValor( imgStatus, i, EcolPPOPCQ.STATUS.ordinal() );
@@ -270,13 +299,14 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 				tabControl.setValor( rs.getBigDecimal( "VLRAFER" ), i, EcolPPOPCQ.VLRAFER.ordinal() );
 				tabControl.setValor( rs.getString( "DESCAFER" ), i, EcolPPOPCQ.DESCAFER.ordinal() );
 				tabControl.setValor( rs.getString( "TIPOEXPEC" ), i, EcolPPOPCQ.TIPOEXPEC.ordinal() );
+				i++;
 
-			}
+		   }
 	  	  
 	  	  rs.close();
 	  	  ps.close();
 	  	  
-	  	  	if (!con.getAutoCommit()){
+     	 	if (!con.getAutoCommit()){
 	  	  		con.commit();
 	  	  	
 	  	  }
@@ -300,6 +330,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 					new BigDecimal(0) : (BigDecimal)tabControl.getValor( iLinha, EcolPPOPCQ.VLRMAX.ordinal() );
 			BigDecimal bVlrAfer =tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() ) == null || tabControl.getValor( iLinha,EcolPPOPCQ.VLRAFER.ordinal() ).equals( "" ) ? 
 					new BigDecimal(0) : (BigDecimal)tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() )  ; 
+			
 			String sAfer = (String)tabControl.getValor( iLinha, EcolPPOPCQ.DESCAFER.ordinal() ); 
 			String sTipo = (String)tabControl.getValor( iLinha, EcolPPOPCQ.TIPOEXPEC.ordinal() );
 			
@@ -312,7 +343,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 				sUpdate = " VLRAFER=? ";
 			}
 			else if( "DT".equals( sTipo )){
-				sUpdate = " DESCAFER=? ";
+				sUpdate = " DESCAFER=?, STATUS=? ";
 			}
 			
 			HashMap<String, Object> hsRet = dl.getValor();
@@ -328,18 +359,23 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 					
 					BigDecimal vlrAfer = (BigDecimal)hsRet.get( "VLRAFER" );
 					ps.setBigDecimal( 1, vlrAfer );
+					ps.setInt( 2, Aplicativo.iCodEmp );
+					ps.setInt( 3, ListaCampos.getMasterFilial( "PPOPCQ" ) );
+					ps.setInt( 4, txtCodOP.getVlrInteger() );
+					ps.setInt( 5, txtSeqOP.getVlrInteger() );
+					ps.setInt( 6, (Integer) tabControl.getValor( iLinha, EcolPPOPCQ.SEQOPCQ.ordinal() ) );
 				}
 				else if( "DT".equals( sTipo )){
 					
 					String descAfer = (String)hsRet.get( "DESCAFER" );
 					ps.setString( 1, descAfer ); 
+					ps.setString( 2, dl.getStatus() );
+					ps.setInt( 3, Aplicativo.iCodEmp );
+					ps.setInt( 4, ListaCampos.getMasterFilial( "PPOPCQ" ) );
+					ps.setInt( 5, txtCodOP.getVlrInteger() );
+					ps.setInt( 6, txtSeqOP.getVlrInteger() );
+					ps.setInt( 7, (Integer) tabControl.getValor( iLinha, EcolPPOPCQ.SEQOPCQ.ordinal() ) );
 				}
-				
-				ps.setInt( 2, Aplicativo.iCodEmp );
-				ps.setInt( 3, ListaCampos.getMasterFilial( "PPOPCQ" ) );
-				ps.setInt( 4, txtCodOP.getVlrInteger() );
-				ps.setInt( 5, txtSeqOP.getVlrInteger() );
-				ps.setInt( 6, (Integer) tabControl.getValor( iLinha, EcolPPOPCQ.SEQOPCQ.ordinal() ) );
 				
 				ps.executeUpdate();
 
