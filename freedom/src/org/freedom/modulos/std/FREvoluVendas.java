@@ -111,7 +111,7 @@ public class FREvoluVendas extends FRelatorio {
 		cPeriodo.set( Calendar.MONTH, 11 );
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 
-		adic( new JLabelPad( "Periodo:" ), 7, 5, 120, 20 );
+		adic( new JLabelPad( "Período:" ), 7, 5, 120, 20 );
 		adic( new JLabelPad( "De:" ), 7, 25, 30, 20 );
 		adic( txtDataini, 40, 25, 97, 20 );
 		adic( new JLabelPad( "A:" ), 140, 25, 17, 20 );
