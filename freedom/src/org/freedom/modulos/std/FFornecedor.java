@@ -270,7 +270,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		adicCampo( txtCodContDeb, 155, 380, 145, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
 		adicCampo( txtCodContCred, 303, 380, 147, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
 		adicCampo( txtCodHistPad, 7, 420, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
-		adicDescFK( txtDescHistPad, 90, 420, 356, 20, "DescHist", "Descrição do historico padrão" );
+		adicDescFK( txtDescHistPad, 90, 420, 356, 20, "DescHist", "Descrição do histórico padrão" );
 		adic(btFirefox, 430, 300, 20, 20 );
 		btFirefox.setToolTipText( "Acessar Site" );
 			
