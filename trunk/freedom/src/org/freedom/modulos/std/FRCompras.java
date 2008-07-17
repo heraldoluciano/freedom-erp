@@ -97,7 +97,7 @@ public class FRCompras extends FRelatorio {
 		
 		 
 		vLabs1.addElement("Texto");
- 		vLabs1.addElement("Grafico"); 
+ 		vLabs1.addElement("Gráfico"); 
  		vVals1.addElement("T");
  		vVals1.addElement("G");
 		    
@@ -106,7 +106,7 @@ public class FRCompras extends FRelatorio {
 
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
-		JLabelPad lbPeriodo = new JLabelPad("Periodo:" , SwingConstants.CENTER );
+		JLabelPad lbPeriodo = new JLabelPad("Período:" , SwingConstants.CENTER );
 		lbPeriodo.setOpaque(true);
 		
 		adic(lbPeriodo,7, 1, 80, 20 );
