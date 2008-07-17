@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.ecf.driver.ECFBematech;
+import org.freedom.ecf.driver.STResult;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.AplicativoPDV;
@@ -755,7 +756,7 @@ public class ECFDriver {
 
 	}
 
-	public boolean trataRetornoFuncao( final int iRetorno ) {
+	public boolean trataRetornoFuncao( final STResult result ) {
 
 		boolean bRetorno = true;
 
@@ -763,6 +764,8 @@ public class ECFDriver {
 
 		sMensErroLog = "";
 
+		int iRetorno = result.getFirstCode();
+		
 		switch ( iRetorno ) {
 
 			case 0 :
