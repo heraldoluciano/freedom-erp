@@ -153,11 +153,11 @@ public class ECFDaruma extends AbstractECFDriver {
 	 *            comando a ser executado e seus parâmetros. <BR>
 	 * @see org.freedom.ecf.driver.AbstractECFDriver#executaCmd(byte[], int)
 	 */
-	public int executaCmd( final byte[] CMD, final int tamRetorno ) {
+	public STResult executaCmd( final byte[] CMD, final int tamRetorno ) {
 		return executaCmd( CMD, tamRetorno, true );
 	}
 	
-	public int executaCmd( final byte[] CMD, final int tamRetorno, final boolean checkcmd ) {
+	public STResult executaCmd( final byte[] CMD, final int tamRetorno, final boolean checkcmd ) {
 
 		byte[] retorno = null;
 		byte[] cmd = null;
@@ -165,7 +165,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		cmd = preparaCmd( CMD );
 		retorno = enviaCmd( cmd, tamRetorno );
 
-		int cmdRetorno = checkcmd ? checkRetorno( retorno ) : checkRetorno2( retorno ); 
+		STResult cmdRetorno = checkcmd ? checkRetorno( retorno ) : checkRetorno2( retorno ); 
 		
 		return cmdRetorno;
 	}
@@ -185,9 +185,9 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * @return retorno indece para a mensagem.
 	 * @see org.freedom.ecf.driver.AbstractECFDriver#checkRetorno(byte[])
 	 */
-	public int checkRetorno( final byte[] bytes ) {
+	public STResult checkRetorno( final byte[] bytes ) {
 
-		int retorno = 0;
+		STResult result = new STResult();
 		int erro = 0;
 		int warning = 0;
 		byte e1 = 0;
@@ -220,19 +220,20 @@ public class ECFDaruma extends AbstractECFDriver {
 			warning = checkWarning( w1, w2 );
 			
 			if ( erro != 0 ) {
-				retorno = erro;
+				result.add(result.new ItemResult(true, erro, ""));
 			}
 			else if ( warning != 1000 ) {
-				retorno = warning;
+				result.add(result.new ItemResult(false, warning, ""));
 			}
 		}
 	    
-		return retorno;
+		return result;
 	}
 	
-	public int checkRetorno2( final byte[] bytes ) {
+	public STResult checkRetorno2( final byte[] bytes ) {
 
-		int retorno = RETORNO_OK.getCode();
+		STResult result = new STResult();
+		result.add(result.new ItemResult(false, RETORNO_OK.getCode(), RETORNO_OK.getMessage() ));
 		byte[] bytesLidos;
 		
 		if ( bytes != null ) {
@@ -243,7 +244,7 @@ public class ECFDaruma extends AbstractECFDriver {
 			}
 		}
 	    
-		return retorno;
+		return result;
 	}
 
 	/**
@@ -287,12 +288,11 @@ public class ECFDaruma extends AbstractECFDriver {
 		return status;
 	}
 
-	public int alteraSimboloMoeda( final String simbolo ) {
-
-		return -1; // IMPLEMENTAR
+	public STResult alteraSimboloMoeda( final String simbolo ) {
+		return STResult.getInstanceNotImplemented();
 	}
 
-	public int adicaoDeAliquotaTriburaria( final String aliq, final char opt ) {
+	public STResult adicaoDeAliquotaTriburaria( final String aliq, final char opt ) {
 
 		final char CCMD = (char) 220;
 		byte[] CMD = { ESC, (byte) CCMD };
@@ -307,7 +307,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 8 );
 	}
 
-	public int programaHorarioVerao() {
+	public STResult programaHorarioVerao() {
 
 		final char CCMD = (char) 228;
 		byte[] CMD = { ESC, (byte) CCMD };
@@ -336,11 +336,11 @@ public class ECFDaruma extends AbstractECFDriver {
 		return ativo;
 	}
 	
-	public int nomeiaTotalizadorNaoSujeitoICMS( final int indice, final String desc ) {
+	public STResult nomeiaTotalizadorNaoSujeitoICMS( final int indice, final String desc ) {
 		return nomeiaTotalizadorNaoSujeitoICMS( '+', indice, desc );
 	}
 
-	private int nomeiaTotalizadorNaoSujeitoICMS( final char tipo, final int indice, final String desc ) {
+	private STResult nomeiaTotalizadorNaoSujeitoICMS( final char tipo, final int indice, final String desc ) {
 
 		final char CCMD = (char) 223;
 		byte[] CMD = { ESC, (byte) CCMD };
@@ -356,24 +356,25 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 33 );
 	}
 
-	public int programaTruncamentoArredondamento( final char opt ) {
-
-		return -1; // ainda não utilizada pela controller.
+	public STResult programaTruncamentoArredondamento( final char opt ) {
+		// ainda não utilizada pela controller.
+		return STResult.getInstanceNotImplemented();
 	}
 
-	public int programarEspacoEntreLinhas( final int espaco ) {
-
-		return -1; // ainda não utilizada pela controller.
+	public STResult programarEspacoEntreLinhas( final int espaco ) {
+		// ainda não utilizada pela controller.
+		return STResult.getInstanceNotImplemented();
 	}
 
-	public int programarLinhasEntreCupons( final int espaco ) {
-
-		return -1; // ainda não utilizada pela controller.
+	public STResult programarLinhasEntreCupons( final int espaco ) {
+		// ainda não utilizada pela controller.
+		return STResult.getInstanceNotImplemented();
 	}
 	
-	public int nomeiaDepartamento( final int index, final String descricao ) {
+	public STResult nomeiaDepartamento( final int index, final String descricao ) {
 
-		return -1; // ainda não utilizada pela controller.
+		// ainda não utilizada pela controller.
+		return STResult.getInstanceNotImplemented();
 	}
 
 	/**
@@ -381,7 +382,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int aberturaDeCupom() {
+	public STResult aberturaDeCupom() {
 
 		final char CCMD = (char) 200;
 		final byte[] CMD = { ESC, (byte) CCMD };
@@ -399,18 +400,18 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int aberturaDeCupom( final String cnpj ) {
+	public STResult aberturaDeCupom( final String cnpj ) {
 
-		int retorno = indendificacaoConsumidor( cnpj );
+		STResult result = indendificacaoConsumidor( cnpj );
 
-		if ( retorno == 0 ) {
-			retorno = aberturaDeCupom();
+		if ( !result.isMetError() ) {
+			result = aberturaDeCupom();
 		}
 
-		return retorno;
+		return result;
 	}
 	
-	public int indendificacaoConsumidor( final String texto ) {
+	public STResult indendificacaoConsumidor( final String texto ) {
 
 		final char CCMD = (char) 208;
 		byte[] CMD = { ESC, (byte) CCMD };
@@ -443,18 +444,18 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int programaUnidadeMedida( final String descUnid ) {
+	public STResult programaUnidadeMedida( final String descUnid ) {
 		
 		setUnidadeDeMedida( descUnid );
 		
-		return 0;
+		return STResult.getInstanceOk();
 	}
 
-	public int aumentaDescItem( final String descricao ) {
+	public STResult aumentaDescItem( final String descricao ) {
 
 		setDescricaoDoProduto( descricao );
 
-		return 0;
+		return STResult.getInstanceOk();
 	}
 
 	/**
@@ -480,7 +481,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int vendaItem( final String codProd, 
+	public STResult vendaItem( final String codProd, 
 						  final String descProd, 
 						  final String aliquota, 
 						  final char tpqtd, 
@@ -530,13 +531,13 @@ public class ECFDaruma extends AbstractECFDriver {
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 		CMD = adicBytes( CMD, new byte[]{ (byte)CEND } );
 		
-		final int returnCommand = executaCmd( CMD, 21 );
+		final STResult result = executaCmd( CMD, 21 );
 		
-		if ( returnCommand == RETORNO_OK.getCode() ) {
+		if ( result.isCode( RETORNO_OK.getCode() ) ) {
 			 indexItemAtual++;
 		}
 
-		return returnCommand;
+		return result;
 	}
 
 	/**
@@ -562,7 +563,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int vendaItemTresCasas( final String codProd, 
+	public STResult vendaItemTresCasas( final String codProd, 
 								   final String descProd, 
 								   final String aliquota, 
 								   final char tpqtd, 
@@ -612,16 +613,16 @@ public class ECFDaruma extends AbstractECFDriver {
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 		CMD = adicBytes( CMD, new byte[]{ (byte)CEND } );
 		
-		final int returnCommand = executaCmd( CMD, 21 );
+		final STResult result = executaCmd( CMD, 21 );
 		
-		if ( returnCommand == RETORNO_OK.getCode() ) {
+		if ( result.isCode( RETORNO_OK.getCode()) ) {
 			 indexItemAtual++;
 		}
 
-		return returnCommand;
+		return result;
 	}
 
-	public int vendaItemDepartamento( final String sitTrib, 
+	public STResult vendaItemDepartamento( final String sitTrib, 
 									  final float valor, 
 									  final float qtd, 
 									  final float desconto, 
@@ -631,17 +632,17 @@ public class ECFDaruma extends AbstractECFDriver {
 									  final String codProd, 
 									  final String descProd ) {
 
-		return -1;
+		return STResult.getInstanceNotImplemented();
 	}
 
-	public int cancelaItemAnterior() {
+	public STResult cancelaItemAnterior() {
 		
-		final int returnCommand = cancelaItemGenerico( getIndexItemAtual() );
+		final STResult result = cancelaItemGenerico( getIndexItemAtual() );
 		
-		return returnCommand;
+		return result;
 	}
 
-	public int cancelaItemGenerico( final int item ) {
+	public STResult cancelaItemGenerico( final int item ) {
 
 		final char CCMD = (char) 204;
 		byte[] CMD = { ESC, (byte) CCMD };
@@ -655,7 +656,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 10 );
 	}
 
-	public int iniciaFechamentoCupom( final char opt, final float valor ) {
+	public STResult iniciaFechamentoCupom( final char opt, final float valor ) {
 
 		/*
 		 * Totalização de Cupom Fiscal.
@@ -681,7 +682,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 19 );
 	}
 
-	public int efetuaFormaPagamento( final String indice, final float valor, final String descForma ) {
+	public STResult efetuaFormaPagamento( final String indice, final float valor, final String descForma ) {
 
 		/*
 		 * Descrição da forma de pagamento.
@@ -702,7 +703,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 19 );
 	}
 
-	public int finalizaFechamentoCupom( final String mensagem ) {
+	public STResult finalizaFechamentoCupom( final String mensagem ) {
 		
 		/*
 		 * Fechamento de cupom fiscal com mesagem promocional.
@@ -721,7 +722,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 19 );
 	}
 
-	public int cancelaCupom() {
+	public STResult cancelaCupom() {
 
 		final char CCMD = (char) 211;
 		byte[] CMD = { ESC, (byte) CCMD };
@@ -772,7 +773,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return indexFormaDePagamento;
 	}
 
-	public int estornoFormaPagamento( final String descricaoOrigem, final String descricaoDestino, final float valor ) {
+	public STResult estornoFormaPagamento( final String descricaoOrigem, final String descricaoDestino, final float valor ) {
 		
 		String indexFormaDePagamentoOrigem = null;
 		String indexFormaDePagamentoDestino = null;
@@ -830,7 +831,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int reducaoZ() {
+	public STResult reducaoZ() {
 
 		final char CCMD = (char) 252;
 		byte[] CMD = { ESC, (byte) CCMD };
@@ -848,7 +849,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int leituraX() {
+	public STResult leituraX() {
 
 		final char CCMD = (char) 250;
 		final byte[] CMD = { ESC, (byte) CCMD };
@@ -856,7 +857,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 13 );
 	}
 
-	public int leituraXSerial() {
+	public STResult leituraXSerial() {
 
 		final char CCMD = (char) 251;
 		final byte[] CMD = { ESC, (byte) CCMD };
@@ -864,7 +865,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 13 );
 	}
 
-	public int leituraMemoriaFiscal( final Date dataIni, final Date dataFim, final char tipo ) {
+	public STResult leituraMemoriaFiscal( final Date dataIni, final Date dataFim, final char tipo ) {
 
 		final char CCMD = (char) 251;
 		byte[] CMD = { ESC, (byte) CCMD };
@@ -879,7 +880,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 15, AbstractECFDriver.IMPRESSAO == tipo );
 	}
 
-	public int leituraMemoriaFiscal( final int ini, final int fim, final char tipo ) {
+	public STResult leituraMemoriaFiscal( final int ini, final int fim, final char tipo ) {
 
 		final char CCMD = (char) 251;
 		byte[] CMD = { ESC, (byte) CCMD };
@@ -894,7 +895,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 15, AbstractECFDriver.IMPRESSAO == tipo );
 	}
 
-	public int relatorioGerencial( final String texto ) {
+	public STResult relatorioGerencial( final String texto ) {
 		
 		if ( ! relatorioGerencialAberto ) {
     		final char CCMD = (char) 210;
@@ -913,7 +914,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return usaComprovanteNFiscalVinculado( texto );
 	}
 
-	public int fechamentoRelatorioGerencial() {
+	public STResult fechamentoRelatorioGerencial() {
 		
 		final char CCMD = (char) 216;
 		byte[] CMD = { ESC, (byte) CCMD };
@@ -923,7 +924,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 7 );
 	}
 	
-	public int comprovanteNFiscalNVinculado( final String opt, final float valor, final String formaPag ) {
+	public STResult comprovanteNFiscalNVinculado( final String opt, final float valor, final String formaPag ) {
 
 		final char ccmd = (char) 234;
 		final byte[] cmd = { ESC, (byte) ccmd };
@@ -957,7 +958,7 @@ public class ECFDaruma extends AbstractECFDriver {
 				}
 			}
 			if ( index == cnfnv.size() ) {
-				id = parseParam( nomeiaTotalizadorNaoSujeitoICMS( '-', cnfnv.size(), "SANGRIA" ), 2 );
+				id = parseParam( nomeiaTotalizadorNaoSujeitoICMS( '-', cnfnv.size(), "SANGRIA" ).getFirstCode(), 2 );
 			}
 		}
 		// procura o indíce da suprimento, se não encontrar cria.
@@ -971,7 +972,7 @@ public class ECFDaruma extends AbstractECFDriver {
 				}
 			}
 			if ( index == cnfnv.size() && cnfnv.size() > 0 ) {
-				id = parseParam( nomeiaTotalizadorNaoSujeitoICMS( '+', cnfnv.size(), "SUPRIMENTO" ), 2 );
+				id = parseParam( nomeiaTotalizadorNaoSujeitoICMS( '+', cnfnv.size(), "SUPRIMENTO" ).getFirstCode(), 2 );
 			}
 		}
 		
@@ -991,7 +992,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 27 );
 	}
 
-	public int abreComprovanteNFiscalVinculado( final String formaPag, final float valor, final int doc ) {
+	public STResult abreComprovanteNFiscalVinculado( final String formaPag, final float valor, final int doc ) {
 
 		final char CCMD = (char) 213;
 		byte[] CMD = { ESC, (byte) CCMD };
@@ -1006,7 +1007,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 15 );
 	}
 
-	public int usaComprovanteNFiscalVinculado( final String texto ) {
+	public STResult usaComprovanteNFiscalVinculado( final String texto ) {
 		
 		final char CCMD = (char) 215;
 		byte[] CMD = { ESC, (byte) CCMD };
@@ -1014,15 +1015,15 @@ public class ECFDaruma extends AbstractECFDriver {
 	
 		final char[] str = texto.toCharArray();
 		String tmp = "";
-		int ret = 0;
+		STResult result = STResult.getInstanceOk();
 		int index = 0;
 		
 		for ( int i=0; i < str.length; i++ ) {
 			if ( index++ == 47 || i == str.length || str[ i ] == 10 ) {
 				CMDT = adicBytes( CMD, parseParam( tmp, 48 ).getBytes() );
-				ret = executaCmd( CMDT, 7 );
-				if ( EStatus.RETORNO_OK != decodeReturnECF( ret ) ) {
-					return ret;
+				result = executaCmd( CMDT, 7 );
+				if ( EStatus.RETORNO_OK != decodeReturnECF( result.getFirstCode() ) ) {
+					return result;
 				}
 				tmp = "";
 				index = 0;
@@ -1032,20 +1033,19 @@ public class ECFDaruma extends AbstractECFDriver {
 			}
 		}
 
-		return ret;
+		return result;
 	}
 
-	public int autenticacaoDeDocumento() {
-
-		return -1;
+	public STResult autenticacaoDeDocumento() {
+		return STResult.getInstanceNotImplemented();
 	}
 
-	public int programaCaracterParaAutenticacao( final int[] caracteres ) {
+	public STResult programaCaracterParaAutenticacao( final int[] caracteres ) {
 		
-		return -1;
+		return STResult.getInstanceNotImplemented();
 	}
 
-	public int acionaGavetaDinheiro( final int time ) {
+	public STResult acionaGavetaDinheiro( final int time ) {
 		//*** sem gaveta pra testar.
 		final char CCMD = 'p';
 		byte[] CMD = { ESC, (byte) CCMD, 1, 0, 0 };
@@ -1341,9 +1341,8 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int programaMoedaSingular( final String nomeSingular ) {
-
-		return -1; // IMPLEMENTAR
+	public STResult programaMoedaSingular( final String nomeSingular ) {
+		return STResult.getInstanceNotImplemented();
 	}
 
 	/**
@@ -1355,9 +1354,8 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int programaMoedaPlural( final String nomePlurar ) {
-
-		return -1; // IMPLEMENTAR
+	public STResult programaMoedaPlural( final String nomePlurar ) {
+		return STResult.getInstanceNotImplemented();
 	}
 
 	/**
@@ -1367,8 +1365,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * @return estado da impressora.<br>
 	 */
 	public String retornoStatusCheque() {
-
-		return "-1"; // ainda não utilizada pela controller.
+		return "-1";
 	}
 
 	/**
@@ -1376,9 +1373,8 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int cancelaImpressaoCheque() {
-
-		return -1; // ainda não utilizada pela controller.
+	public STResult cancelaImpressaoCheque() {
+		return STResult.getInstanceNotImplemented();
 	}
 
 	/**
@@ -1400,22 +1396,19 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int imprimeCheque( final float valor, final String favorecido, final String localidade, final int dia, final int mes, final int ano ) {
-
-		return -1; // ainda não utilizada pela controller.
+	public STResult imprimeCheque( final float valor, final String favorecido, final String localidade, final int dia, final int mes, final int ano ) {
+		return STResult.getInstanceNotImplemented();
 	}
 
 	public void aguardaImpressao() {
 		 // ainda não utilizada pela controller.
 	}
 
-	public int habilitaCupomAdicional( final char opt ) {
-		
-		return -1; // ainda não utilizada pela controller.
+	public STResult habilitaCupomAdicional( final char opt ) {
+		return STResult.getInstanceNotImplemented();
 	}
 
-	public int resetErro() {
-
-		return -1; // ainda não utilizada pela controller.
+	public STResult resetErro() {
+		return STResult.getInstanceNotImplemented();
 	}
 }

@@ -124,7 +124,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 *            comando a ser executado e seus parâmetros. <BR>
 	 * @see org.freedom.ecf.driver.AbstractECFDriver#executaCmd(byte[], int)
 	 */
-	public int executaCmd( final byte[] CMD, final int tamRetorno ) {
+	public STResult executaCmd( final byte[] CMD, final int tamRetorno ) {
 
 		byte[] retorno = null;
 		byte[] cmd = null;
@@ -184,9 +184,9 @@ public class ECFBematech extends AbstractECFDriver {
 	 * @return retorno indece para a mensagem.
 	 * @see org.freedom.ecf.driver.AbstractECFDriver#checkRetorno(byte[])
 	 */
-	public int checkRetorno( final byte[] bytes ) {
+	public STResult checkRetorno( final byte[] bytes ) {
 
-		int retorno = 0;
+		STResult result = new STResult();
 		byte ack = 0;
 		byte st1 = 0;
 		byte st2 = 0;
@@ -206,15 +206,15 @@ public class ECFBematech extends AbstractECFDriver {
 			}
 
 			if ( ack == ACK && st1 == 0 && st2 == 0 ) {
-				retorno = 1;
+				result.add( result.new ItemResult(false, 1, "Sem alertas") );
 			} else {
-				retorno = -27; // Status da impressora diferente de 6,0,0 (ACK, ST1 e ST2)
-				retorno = checkST1( st1 );
-				retorno = checkST2( st2 );
+				//retorno = -27; // Status da impressora diferente de 6,0,0 (ACK, ST1 e ST2)
+				//retorno = checkST1( st1 );
+				//retorno = checkST2( st2 );
 			}
 		}
 
-		return retorno;
+		return result;
 	}
 
 	/**
@@ -223,10 +223,10 @@ public class ECFBematech extends AbstractECFDriver {
 	 * @param ST1
 	 * @return retorno checado
 	 */
-	private int checkST1( final byte ST1 ) {
+	private STResult checkST1( final byte ST1 ) {
 
-		int retorno = 0;
 		int st1 = ST1;
+		STResult result = new STResult();
 
 		// compatibilização do valor de byte de retorno.
 		if ( st1 < 0 ) {
@@ -256,10 +256,10 @@ public class ECFBematech extends AbstractECFDriver {
 		}
 		if ( st1 > 0 ) {
 			st1 -= 1;
-			retorno = -2; // "Parâmetro inválido na função. ou Número de parâmetros inválido na funçao"
+			result.add( result.new ItemResult(true, -2, "Parâmetro inválido na função. ou Número de parâmetros inválido na funçao") );  
 		}
 
-		return retorno;
+		return result;
 	}
 
 	/**
@@ -363,7 +363,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 *            simboleo da moeda.<br>
 	 * @return estado da impressora.<br>
 	 */
-	public int alteraSimboloMoeda( final String simbolo ) {
+	public STResult alteraSimboloMoeda( final String simbolo ) {
 
 		byte[] CMD = { ESC, 1 };
 		
@@ -395,7 +395,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * @see org.freedom.ecf.driver.AbstractECFDriver#ICMS
 	 * @return estado da impressora.<br>
 	 */
-	public int adicaoDeAliquotaTriburaria( final String aliq, final char opt ) {
+	public STResult adicaoDeAliquotaTriburaria( final String aliq, final char opt ) {
 
 		byte[] CMD = { ESC, 7 };
 
@@ -419,7 +419,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int programaHorarioVerao() {
+	public STResult programaHorarioVerao() {
 
 		final byte[] CMD = { ESC, 18 };
 
@@ -466,7 +466,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int nomeiaTotalizadorNaoSujeitoICMS( final int indice, final String desc ) {
+	public STResult nomeiaTotalizadorNaoSujeitoICMS( final int indice, final String desc ) {
 
 		byte[] CMD = { ESC, 40 };
 
@@ -497,7 +497,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int programaTruncamentoArredondamento( final char opt ) {
+	public STResult programaTruncamentoArredondamento( final char opt ) {
 
 		byte[] CMD = { ESC, 39 };
 
@@ -517,7 +517,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int programarEspacoEntreLinhas( final int espaco ) {
+	public STResult programarEspacoEntreLinhas( final int espaco ) {
 
 		byte[] CMD = { ESC, 60 };
 
@@ -537,7 +537,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int programarLinhasEntreCupons( final int espaco ) {
+	public STResult programarLinhasEntreCupons( final int espaco ) {
 
 		byte[] CMD = { ESC, 61 };
 
@@ -561,7 +561,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int nomeiaDepartamento( final int index, final String descricao ) {
+	public STResult nomeiaDepartamento( final int index, final String descricao ) {
 
 		byte[] CMD = { ESC, 65 };
 
@@ -580,7 +580,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int aberturaDeCupom() {
+	public STResult aberturaDeCupom() {
 
 		final byte[] CMD = { ESC, 0 };
 
@@ -595,7 +595,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int aberturaDeCupom( final String cnpj ) {
+	public STResult aberturaDeCupom( final String cnpj ) {
 
 		byte[] CMD = { ESC, 0 };
 		CMD = adicBytes( CMD, parseParam( cnpj, 29, false ).getBytes() );
@@ -622,7 +622,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int programaUnidadeMedida( final String descUnid ) {
+	public STResult programaUnidadeMedida( final String descUnid ) {
 
 		byte[] CMD = { ESC, 62, 51 };
 
@@ -641,7 +641,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int aumentaDescItem( final String descricao ) {
+	public STResult aumentaDescItem( final String descricao ) {
 
 		byte[] CMD = { ESC, 62, 52 };
 
@@ -673,7 +673,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int vendaItem( final String codProd, final String descProd, final String aliquota, final char tpqtd, final float qtd, final float valor, final char tpdesc, final float desconto ) {
+	public STResult vendaItem( final String codProd, final String descProd, final String aliquota, final char tpqtd, final float qtd, final float valor, final char tpdesc, final float desconto ) {
 
 		byte[] CMD = { ESC, 9 };
 
@@ -724,7 +724,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int vendaItemTresCasas( final String codProd, final String descProd, final String aliquota, final char tpqtd, final float qtd, final float valor, final char tpdesc, final float desconto ) {
+	public STResult vendaItemTresCasas( final String codProd, final String descProd, final String aliquota, final char tpqtd, final float qtd, final float valor, final char tpdesc, final float desconto ) {
 
 		byte[] CMD = { ESC, 56 };
 
@@ -779,7 +779,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int vendaItemDepartamento( final String sitTrib, final float valor, final float qtd, final float desconto, final float acrescimo, final int departamento, final String unidade, final String codProd, final String descProd ) {
+	public STResult vendaItemDepartamento( final String sitTrib, final float valor, final float qtd, final float desconto, final float acrescimo, final int departamento, final String unidade, final String codProd, final String descProd ) {
 
 		byte[] CMD = { ESC, 63 };
 
@@ -807,7 +807,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int cancelaItemAnterior() {
+	public STResult cancelaItemAnterior() {
 
 		final byte[] CMD = { ESC, 13 };
 
@@ -824,7 +824,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int cancelaItemGenerico( final int item ) {
+	public STResult cancelaItemGenerico( final int item ) {
 
 		byte[] CMD = { ESC, 31 };
 
@@ -845,7 +845,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int iniciaFechamentoCupom( final char opt, final float valor ) {
+	public STResult iniciaFechamentoCupom( final char opt, final float valor ) {
 
 		byte[] CMD = { ESC, 32 };
 
@@ -880,7 +880,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int efetuaFormaPagamento( final String indice, final float valor, final String descForma ) {
+	public STResult efetuaFormaPagamento( final String indice, final float valor, final String descForma ) {
 
 		byte[] CMD = { ESC, 72 };
 
@@ -905,7 +905,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int finalizaFechamentoCupom( final String mensagem ) {
+	public STResult finalizaFechamentoCupom( final String mensagem ) {
 
 		byte[] CMD = { ESC, 34, ESC };
 		CMD = adicBytes( CMD, parseParam( mensagem, 492, true ).getBytes() );
@@ -920,7 +920,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int cancelaCupom() {
+	public STResult cancelaCupom() {
 
 		final byte[] CMD = { ESC, 14 };
 
@@ -966,7 +966,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int estornoFormaPagamento( final String descOrigem, final String descDestino, final float valor ) {
+	public STResult estornoFormaPagamento( final String descOrigem, final String descDestino, final float valor ) {
 
 		byte[] CMD = { ESC, 74 };
 
@@ -986,7 +986,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int reducaoZ() {
+	public STResult reducaoZ() {
 
 		final byte[] CMD = { ESC, 5 };
 
@@ -998,7 +998,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int leituraX() {
+	public STResult leituraX() {
 
 		final byte[] CMD = { ESC, 6 };
 
@@ -1017,7 +1017,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int leituraMemoriaFiscal( final Date dataIni, final Date dataFim, final char tipo ) {
+	public STResult leituraMemoriaFiscal( final Date dataIni, final Date dataFim, final char tipo ) {
 
 		byte[] CMD = { ESC, 8 };
 
@@ -1044,7 +1044,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int leituraMemoriaFiscal( final int ini, final int fim, final char tipo ) {
+	public STResult leituraMemoriaFiscal( final int ini, final int fim, final char tipo ) {
 
 		byte[] CMD = { ESC, 8 };
 
@@ -1064,7 +1064,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int leituraXSerial() {
+	public STResult leituraXSerial() {
 
 		final byte[] CMD = { ESC, 69 };
 
@@ -1082,7 +1082,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int relatorioGerencial( final String texto ) {
+	public STResult relatorioGerencial( final String texto ) {
 
 		byte[] CMD = { ESC, 20 };
 
@@ -1097,7 +1097,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int fechamentoRelatorioGerencial() {
+	public STResult fechamentoRelatorioGerencial() {
 
 		final byte[] CMD = { ESC, 21 };
 
@@ -1122,7 +1122,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int comprovanteNFiscalNVinculado( final String opt, final float valor, final String formaPag ) {
+	public STResult comprovanteNFiscalNVinculado( final String opt, final float valor, final String formaPag ) {
 
 		byte[] CMD = { ESC, 25 };
 
@@ -1156,7 +1156,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int abreComprovanteNFiscalVinculado( final String formaPag, final float valor, final int doc ) {
+	public STResult abreComprovanteNFiscalVinculado( final String formaPag, final float valor, final int doc ) {
 
 		byte[] CMD = { ESC, 66 };
 
@@ -1183,7 +1183,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int usaComprovanteNFiscalVinculado( final String texto ) {
+	public STResult usaComprovanteNFiscalVinculado( final String texto ) {
 
 		byte[] CMD = { ESC, 67 };
 
@@ -1200,7 +1200,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int autenticacaoDeDocumento() {
+	public STResult autenticacaoDeDocumento() {
 
 		final byte[] CMD = { ESC, 16 };
 
@@ -1217,7 +1217,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int programaCaracterParaAutenticacao( final int[] caracteres ) {
+	public STResult programaCaracterParaAutenticacao( final int[] caracteres ) {
 
 		byte[] CMD = { ESC, 64 };
 
@@ -1240,7 +1240,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int acionaGavetaDinheiro( final int time ) {
+	public STResult acionaGavetaDinheiro( final int time ) {
 
 		final byte[] CMD = { ESC, 22, (byte) time };
 
@@ -1696,7 +1696,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int programaMoedaSingular( final String nomeSingular ) {
+	public STResult programaMoedaSingular( final String nomeSingular ) {
 
 		byte[] CMD = { ESC, 58 };
 
@@ -1718,7 +1718,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int programaMoedaPlural( final String nomePlurar ) {
+	public STResult programaMoedaPlural( final String nomePlurar ) {
 
 		byte[] CMD = { ESC, 59 };
 
@@ -1751,7 +1751,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int cancelaImpressaoCheque() {
+	public STResult cancelaImpressaoCheque() {
 
 		byte[] CMD = { ESC, 62, 49 };
 		
@@ -1777,7 +1777,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public int imprimeCheque( final float valor, final String favorecido, final String localidade, final int dia, final int mes, final int ano ) {
+	public STResult imprimeCheque( final float valor, final String favorecido, final String localidade, final int dia, final int mes, final int ano ) {
 
 		byte[] CMD = { ESC, 57 };
 
@@ -1820,7 +1820,7 @@ public class ECFBematech extends AbstractECFDriver {
 		}
 	}
 
-	public int habilitaCupomAdicional( final char opt ) {
+	public STResult habilitaCupomAdicional( final char opt ) {
 
 		byte[] CMD = { ESC, 68 };
 
@@ -1829,7 +1829,7 @@ public class ECFBematech extends AbstractECFDriver {
 		return executaCmd( CMD, 3 );
 	}
 
-	public int resetErro() {
+	public STResult resetErro() {
 
 		final byte[] CMD = { ESC, 70 };
 
