@@ -636,7 +636,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		
 		montaMultiComis();
 		
-		setListaCampos( lcCampos );
+		//setListaCampos( lcCampos );
 
 		setPainel( pinCabFiscal );
 
@@ -766,7 +766,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		   listComis = ctrlmc.getListComis();
 		   for (ItemComis itemcomis: listComis) {
 			   if (itemcomis!=null) {
-				   setListaCampos( itemcomis.getLcVendaComis() );
+				   /*setListaCampos( itemcomis.getLcVendaComis() );
 				   adicCampoInvisivel( itemcomis.getTxtTipovenda(), itemcomis.getTxtTipovenda().getNomeCampo(), 
 						   "Tipo", ListaCampos.DB_PK, true );
 				   adicCampoInvisivel( itemcomis.getTxtCodvenda(), itemcomis.getTxtCodvenda().getNomeCampo(), 
@@ -781,12 +781,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				   adicCampo(itemcomis.getTxtPerccomis(), cols[col] + 286, row+20 , 55, 20, 
 						   itemcomis.getTxtPerccomis().getNomeCampo(), itemcomis.getLbPercvend().getText(),
 						   ListaCampos.DB_SI, "S".equals(itemcomis.getObrigitrc()));
-				   /*adic(itemcomis.getLbCodvend(), cols[col], row+5, 80, 10);
+				   */
+				   adic(itemcomis.getLbCodvend(), cols[col], row+5, 80, 10);
 				   adic(itemcomis.getTxtCodvend(), cols[col], row+20 , 80, 20);
 				   adic(itemcomis.getLbNomevend(), cols[col] + 83, row+5, 200, 10);
 				   adic(itemcomis.getTxtNomevend(), cols[col] + 83, row+20 , 200, 20);
 				   adic(itemcomis.getLbPercvend(), cols[col] + 286, row+5, 55, 10);
-				   adic(itemcomis.getTxtPerccomis(), cols[col] + 286, row+20 , 55, 20); */ 
+				   adic(itemcomis.getTxtPerccomis(), cols[col] + 286, row+20 , 55, 20);  
 				   if (col==0) {
 					   col = 1;
 				   } else {
@@ -2222,6 +2223,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				lcVenda2.carregaDados();// Carrega os Totais
 				txtCodVenda.setVlrString( codvenda );
 				codvenda = null;
+				if ( (numComissionados>0) && (ctrlmc!=null) ) {
+					ctrlmc.loadVendaComis( txtCodRegrComis.getVlrInteger().intValue() );
+				}
 			}
 			else if ( cevt.getListaCampos() == lcVenda2 ) {
 				txtPercComisVenda.setAtivo( txtVlrComisVenda.floatValue() == 0 );
@@ -2375,7 +2379,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				txtFiscalTipoMov2.setText( "N" );
 			}
 			if ( (numComissionados>0) && (ctrlmc!=null) && (pevt.ok) ) {
-				ctrlmc.salvaItens();
+				//ctrlmc.salvaItens();
 			}
 		}
 	}
@@ -2400,6 +2404,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}
 			txtDtSaidaVenda.setVlrDate( new Date() );
 			txtDtEmitVenda.setVlrDate( new Date() );
+			if ( (numComissionados>0) && (ctrlmc!=null) ) {
+				ctrlmc.loadRegraComis( txtCodRegrComis.getVlrInteger().intValue() );
+			}
 		}
 		else if ( ievt.getListaCampos() == lcDet ) {
 			focusCodprod();
