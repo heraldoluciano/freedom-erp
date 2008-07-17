@@ -50,6 +50,11 @@ public class DLFechaQual extends FFDialogo {
 	
 	}
 
+	private void getValorTeste() {
+		Funcoes.mensagemInforma( null, "Valor do campo:" + txtVlrAfer.getVlrInteger() );
+		
+	}
+	
 	public HashMap<String, Object> getValor(){
 			
 		HashMap<String, Object> hRet = new HashMap<String, Object>();
@@ -57,7 +62,7 @@ public class DLFechaQual extends FFDialogo {
 		try {
 				
 			hRet.put( "DESCAFER", txtDescAfer.getVlrString() );
-			hRet.put( "VLRAFER", txtVlrAfer.getVlrInteger() );
+			hRet.put( "VLRAFER", txtVlrAfer.getVlrBigDecimal() );
 		
 			
 		} catch ( Exception e ) {
@@ -70,16 +75,18 @@ public class DLFechaQual extends FFDialogo {
 	}
 	
 	public void ok() {
-
+	//	getValorTeste();
 		 if( "DT".equals( tipo )){
 			
 			 if ( ( txtDescAfer.getVlrString().equals( "" ) ) ) {
 					Funcoes.mensagemInforma( this, "Informe a descrição!" );
 					return;
-			}else{
+			}
+			 else{
 				super.ok();
 			}
-		}else if( "MM".equals( tipo ) ){				
+		}
+		 else if( "MM".equals( tipo ) ){				
 			
 			if ( ( txtVlrAfer.getVlrString().equals( "" ) ) ) {
 				Funcoes.mensagemInforma( this, "Informe o valor!" );
