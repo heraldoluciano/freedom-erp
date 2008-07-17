@@ -903,6 +903,40 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			sql = null;
 		}
 	}
+	
+	private boolean temCQ(){
+		
+		boolean ret = true;
+		StringBuffer sSQL = new StringBuffer();
+		PreparedStatement ps = null;
+			
+			
+		sSQL.append( "SELECT COUNT(*) FROM PPOPCQ WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
+			
+			try {
+
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPCQ" ) );
+			ps.setInt( 3, txtCodOP.getVlrInteger() );
+			ps.setInt( 4, txtSeqOP.getVlrInteger() );
+
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() && rs.getInt( 1 ) == 0 ) {
+				ret = true;
+			}
+			else {
+				ret = false;
+			}
+
+		} catch ( SQLException e ) {
+
+			e.printStackTrace();
+		}
+
+		return ret;
+	}
 
 	private void getTipoMov() {
 		if ( txtCodTpMov.getVlrString().equals( "" ) ) {
@@ -1843,14 +1877,16 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			sitop = txtSitOp.getVlrString();
 			lote = existeLote( con, txtCodProdEst.getVlrInteger(), txtCodLoteProdEst.getVlrString() );
 			rma = faltaRma() && liberaRMA();
+			
+			btContrQuali.setEnabled( !temCQ() );
 
 			if ( sitop.equals( "PE" ) ) {
+				
 				btLote.setEnabled( !lote );
 				btRMA.setEnabled( rma );
 				btFinaliza.setEnabled( true );
 				btDistrb.setEnabled( true );
 				btCancela.setEnabled( true );
-				btContrQuali.setEnabled( true );
 
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false );
@@ -1884,12 +1920,12 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 			}
 			else if ( sitop.equals( "FN" ) ) {
+	
 				btLote.setEnabled( false );
 				btRMA.setEnabled( rma );
 				btFinaliza.setEnabled( false );
 				btDistrb.setEnabled( true );
 				btCancela.setEnabled( true );
-				btContrQuali.setEnabled( false );
 
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false );
@@ -1920,7 +1956,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				btFinaliza.setEnabled( false );
 				btDistrb.setEnabled( false );
 				btCancela.setEnabled( false );
-				btContrQuali.setEnabled( false );
 
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false );
@@ -1951,7 +1986,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				btFinaliza.setEnabled( false );
 				btDistrb.setEnabled( false );
 				btCancela.setEnabled( false );
-				btContrQuali.setEnabled( true );
 
 				txtCodProdEst.setAtivo( true );
 				txtSeqEst.setAtivo( true );
