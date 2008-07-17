@@ -261,32 +261,6 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 				else if( rs.getString( "STATUS" ).equals( "RC" )){
 					imgStatus = imgRecusado;
 				}
-			
-				
-				bVlrAfer = rs.getBigDecimal( "VLRAFER" );
-				bVlrMin = rs.getBigDecimal( "VLRMIN" );
-				bVlrmax = rs.getBigDecimal( "VLRMAX" );
-				
-				
-				if( rs.getString( "TIPOEXPEC" ).equals( "MM" )){
-					
-					if ( ( bVlrAfer == null ) ) {
-						bVlrAfer = new BigDecimal(0); 
-						imgStatus = imgPendente;
-						
-					} 
-					else {
-						if( bVlrAfer.compareTo( bVlrMin ) < 0 || bVlrAfer.compareTo( bVlrmax ) > 0 ) {	
-							imgStatus = imgRecusado;
-						}
-						else if (bVlrAfer.compareTo( bVlrMin ) >= 0  &&  bVlrAfer.compareTo( bVlrmax ) <= 0 ){					
-							imgStatus = imgAprovada;
-						}
-						else{					
-							imgStatus = imgPendente;
-						}
-					}
-				}
 					
 				tabControl.adicLinha();
 
@@ -330,7 +304,8 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 					new BigDecimal(0) : (BigDecimal)tabControl.getValor( iLinha, EcolPPOPCQ.VLRMAX.ordinal() );
 			BigDecimal bVlrAfer =tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() ) == null || tabControl.getValor( iLinha,EcolPPOPCQ.VLRAFER.ordinal() ).equals( "" ) ? 
 					new BigDecimal(0) : (BigDecimal)tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() )  ; 
-			
+						
+			String status = "PE";
 			String sAfer = (String)tabControl.getValor( iLinha, EcolPPOPCQ.DESCAFER.ordinal() ); 
 			String sTipo = (String)tabControl.getValor( iLinha, EcolPPOPCQ.TIPOEXPEC.ordinal() );
 			
@@ -340,13 +315,14 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 			dl.setVisible( true );
 			
 			if( "MM".equals( sTipo )){
-				sUpdate = " VLRAFER=? ";
+				sUpdate = " VLRAFER=?, STATUS=?";
 			}
 			else if( "DT".equals( sTipo )){
 				sUpdate = " DESCAFER=?, STATUS=? ";
 			}
 			
 			HashMap<String, Object> hsRet = dl.getValor();
+			BigDecimal bValor = (BigDecimal)hsRet.get( "VLRAFER" );
 			
 			if( dl.OK ){
 				
@@ -356,14 +332,31 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 				ps = con.prepareStatement( sSQL.toString() );
 				
 				if( "MM".equals( sTipo )){
+						
+					if ( ( bValor == null ) ) {
+
+						bValor = new BigDecimal( 0 );
+	
+					}
+					else {
+						if ( bValor.compareTo( bVlrMin ) < 0 || bValor.compareTo( bVlrMax ) > 0 ) {
+							status = "RC";
+						}
+						else if ( bValor.compareTo( bVlrMin ) >= 0 && bValor.compareTo( bVlrMax ) <= 0 ) {
+							status = "AP";
+						}
+					}
 					
 					BigDecimal vlrAfer = (BigDecimal)hsRet.get( "VLRAFER" );
 					ps.setBigDecimal( 1, vlrAfer );
-					ps.setInt( 2, Aplicativo.iCodEmp );
-					ps.setInt( 3, ListaCampos.getMasterFilial( "PPOPCQ" ) );
-					ps.setInt( 4, txtCodOP.getVlrInteger() );
-					ps.setInt( 5, txtSeqOP.getVlrInteger() );
-					ps.setInt( 6, (Integer) tabControl.getValor( iLinha, EcolPPOPCQ.SEQOPCQ.ordinal() ) );
+					ps.setString( 2, status );
+					ps.setInt( 3, Aplicativo.iCodEmp );
+					ps.setInt( 4, ListaCampos.getMasterFilial( "PPOPCQ" ) );
+					ps.setInt( 5, txtCodOP.getVlrInteger() );
+					ps.setInt( 6, txtSeqOP.getVlrInteger() );
+					ps.setInt( 7, (Integer) tabControl.getValor( iLinha, EcolPPOPCQ.SEQOPCQ.ordinal() ) );
+					
+					
 				}
 				else if( "DT".equals( sTipo )){
 					

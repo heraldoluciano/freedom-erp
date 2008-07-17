@@ -263,7 +263,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		}
 	}
 	
-	private boolean CQOk(){
+	private boolean temCQ(){
 		
 		boolean ret = true;
 		String sTipo = txtTpFase.getVlrString();
@@ -272,13 +272,15 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		
 		if( sTipo.equals( "CQ" )){
 			
-			sSQL.append( "SELECT COUNT(*) FROM PPOPCQ WHERE CODEMP=? AND CODFILIAL=? AND STATUS='PE'" );
+			sSQL.append( "SELECT COUNT(*) FROM PPOPCQ WHERE CODEMP=? AND CODFILIAL=? AND STATUS='PE' AND CODOP=? AND SEQOP=?"  );
 			
 			try {
 				
 				ps = con.prepareStatement( sSQL.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPCQ" ) );
+				ps.setInt( 3, txtCodOP.getVlrInteger() );
+				ps.setInt( 4, txtSeqOP.getVlrInteger() );
 				
 				ResultSet rs = ps.executeQuery();
 				
@@ -293,6 +295,9 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 				
 				e.printStackTrace();
 			}
+		}
+		else{
+			return true;
 		}
 		return ret;
 	}
@@ -376,7 +381,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	public void beforePost(PostEvent pevt) {
 		if(pevt.getListaCampos()==lcDet) {
 			
-			if( !CQOk() ){
+			if( !temCQ() ){
 				Funcoes.mensagemErro( this, "Não foi possível finalizar a fase.\nExistem análises pendentes!" );
 				pevt.cancela();
 				return;
