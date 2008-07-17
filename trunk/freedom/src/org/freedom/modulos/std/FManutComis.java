@@ -62,7 +62,7 @@ public class FManutComis extends FFilho implements ActionListener {
 
 	private JPanelPad pinLabel = new JPanelPad( 50, 20 );
 
-	private JLabelPad lbPeriodo = new JLabelPad( " Periodo" );
+	private JLabelPad lbPeriodo = new JLabelPad( " Período" );
 
 	private JLabelPad lbDe = new JLabelPad( "De:" );
 
