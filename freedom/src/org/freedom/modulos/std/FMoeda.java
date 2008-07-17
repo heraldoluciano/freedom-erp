@@ -99,7 +99,7 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
 		adicTab( "Geral", pinGeral );
 		vValsTipo.addElement( "I" );
 		vValsTipo.addElement( "C" );
-		vLabsTipo.addElement( "Indice de valores" );
+		vLabsTipo.addElement( "Índice de valores" );
 		vLabsTipo.addElement( "Moeda corrente" );
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabsTipo, vValsTipo );
 		rgTipo.addRadioGroupListener( this );
