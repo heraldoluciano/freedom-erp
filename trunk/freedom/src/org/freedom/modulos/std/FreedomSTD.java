@@ -139,7 +139,7 @@ public class FreedomSTD extends AplicativoPD {
 			//addOpcao( 300000000, TP_OPCAO_ITEM, "Devolução de vendas", "Devolução de vendas", 'D', 300300000, 1, true, FDevolucao.class );
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Lançamento de Frete", "Lançamento de Frete", 'L', 300400000, 1, true, FFrete.class );
 			addSeparador( 300000000 );
-			addOpcao( 300000000, TP_OPCAO_ITEM, "Aprova orçamento", "Aprova Orcamento", 'A', 300500000, 1, true, FAprovaOrc.class );
+			addOpcao( 300000000, TP_OPCAO_ITEM, "Aprova orçamento", "Aprova Orçamento", 'A', 300500000, 1, true, FAprovaOrc.class );
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Orçamento", "Orçamento", 'O', 300600000, 1, true, FOrcamento.class );
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Pesquisa Orçamento", "Pesquisa Orçamento", 'P', 300700000, 1, true, FConsOrc.class );
 			addSeparador( 300000000 );
@@ -170,7 +170,7 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 301200000, TP_OPCAO_ITEM, "Preços", "Consulta de preços", 'P', 301210000, 2, true, FConsPreco.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Pagar", "", 'P', 400000000, 0, false, null );
-			addOpcao( 400000000, TP_OPCAO_ITEM, "Comissão", "Comissao", 'C', 400100000, 1, true, FManutComis.class );
+			addOpcao( 400000000, TP_OPCAO_ITEM, "Comissão", "Comissão", 'C', 400100000, 1, true, FManutComis.class );
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Manutenção", "Manutenção de contas a pagar", 'M', 400200000, 1, true, FManutPag.class );
 			addOpcao( 400000000, TP_OPCAO_MENU, "Listagens", "", 's', 400300000, 1, false, null );
 				addOpcao( 400300000, TP_OPCAO_ITEM, "Pagar/Pagas", "Pagar/Pagas", 'P', 400410000, 2, true, FRPagar.class );
@@ -244,7 +244,7 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Ultimas compras/produto", "Ultimas compras/produto", 'E', 700701000, 2, true, FRCpProd.class );
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Movimentação de Produto Controlado", "Movimentação de Produto Controlado", 'M', 700702000, 2, true, FRMovProdCont.class );
 				addSeparador( 700000000 );
-			addOpcao( 700000000, TP_OPCAO_ITEM, "Transferencia de produtos", "Tranferencia de produtos/almoxarifados", 'T', 700800000, 1, true, FTransfEstoque.class );
+			addOpcao( 700000000, TP_OPCAO_ITEM, "Transferência de produtos", "Tranferência de produtos/almoxarifados", 'T', 700800000, 1, true, FTransfEstoque.class );
 			addOpcao( 700000000, TP_OPCAO_ITEM, "Exportar/Importar Saldo", "Exportar/Importar Saldo", 'x', 700900000, 1, true, FExpImpEstoq.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Fiscal", "", 'F', 800000000, 0, false, null );
