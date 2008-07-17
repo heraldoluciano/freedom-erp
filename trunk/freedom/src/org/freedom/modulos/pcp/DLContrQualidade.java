@@ -55,7 +55,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 
 	private JPanelPad pnControl = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad pinCab = new JPanelPad( 400, 60 );
+	private JPanelPad pinCab = new JPanelPad( 400, 45 );
 
 	private Tabela tabControl = new Tabela();
 
@@ -109,6 +109,8 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 	
 	public JButton btOK = new JButton("OK", Icone.novo("btOk.gif"));
 	
+	public JButton btACorretiva = new JButton( "Ações corretivas", Icone.novo("btAcoesCorretivas.gif"));
+	
 	private enum EcolPPOPCQ{
 	
 		STATUS, SEQOPCQ, CODESTANALISE, DESCTPANALISE, VLRMIN ,
@@ -129,6 +131,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		lbTxtAtrasado.setFont( fontLegenda );
 		
 		btOK.addActionListener( this );
+		btACorretiva.addActionListener( this );
 	}
 
 	private void montaTela( boolean bPref ) {
@@ -178,15 +181,15 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		pnBotoes.add( pnBot );
 		pnBot.tiraBorda();
 		
-		pnBot.adic( lbImgPendente, 7, 4, 20, 20 );
-		pnBot.adic( lbTxtPendente, 25, 4, 80, 20 );
-		pnBot.adic( lbImgAtrasado, 75, 4, 20, 20 );
-		pnBot.adic( lbTxtAtrasado, 95, 4, 90, 20 );
-		pnBot.adic( lbTxtFinalizada, 165, 4, 80, 20 );
-		pnBot.adic( lbImgFinalizada, 145, 4, 20, 20 );
+		pnBot.adic( lbImgPendente, 180, 4, 20, 20 );
+		pnBot.adic( lbTxtPendente, 200, 4, 80, 20 );
+		pnBot.adic( lbImgAtrasado, 245, 4, 20, 20 );
+		pnBot.adic( lbTxtAtrasado, 265, 4, 90, 20 );
+		pnBot.adic( lbTxtFinalizada, 330, 4, 80, 20 );
+		pnBot.adic( lbImgFinalizada, 310, 4, 20, 20 );
 		pnBot.adic( btOK, 470, 0, 110, 30 );
-
-		 
+		pnBot.adic( btACorretiva, 0, 0, 170, 30 );
+		
 		txtCodOP.setAtivo( false );
 		txtSeqOP.setAtivo( false );
 		txtCodProdEst.setAtivo( false );
@@ -220,7 +223,6 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		
 		tabControl.addMouseListener( this );
 	}
-	 
 	public void carregaTabela( int iCodop, int iSeqop ) {
 	
 		PreparedStatement ps = null;
@@ -230,6 +232,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		BigDecimal bVlrAfer = null;
 		BigDecimal bVlrMin = null;
 		BigDecimal bVlrmax = null;
+		boolean ablBt = false;
 		
 		sSQL.append( "SELECT PQ.SEQOPCQ, PQ.CODESTANALISE, PQ.VLRAFER, PQ.DESCAFER, PA.DESCTPANALISE, PA.TIPOEXPEC, " );
 		sSQL.append( "PE.VLRMIN, PE.VLRMAX, PQ.STATUS " );
@@ -260,6 +263,9 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 				}
 				else if( rs.getString( "STATUS" ).equals( "RC" )){
 					imgStatus = imgRecusado;
+					if( !ablBt ){
+						ablBt = true;
+					}
 				}
 					
 				tabControl.adicLinha();
@@ -276,7 +282,8 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 				i++;
 
 		   }
-	  	  
+	  	  btACorretiva.setEnabled( ablBt );
+		
 	  	  rs.close();
 	  	  ps.close();
 	  	  
@@ -402,6 +409,11 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		
 	}
 
+	private void acoesCorretivas(){
+		
+		DLAcoesCorretivas dl = new DLAcoesCorretivas();
+		dl.setVisible( true );
+	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
@@ -410,6 +422,10 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		if( evt.getSource() == btOK ){
 			
 			dispose();
+		}
+		else if( evt.getSource() == btACorretiva ){
+			
+			acoesCorretivas();
 		}
 	}
 
