@@ -226,7 +226,12 @@ public class ECFBematech extends AbstractECFDriver {
 	private int checkST1( final byte ST1 ) {
 
 		int retorno = 0;
-		byte st1 = ST1;
+		int st1 = ST1;
+
+		// compatibilização do valor de byte de retorno.
+		if ( st1 < 0 ) {
+			st1 += 128;
+		}
 
 		if ( st1 > 127 ) {
 			st1 -= 128;
@@ -266,8 +271,13 @@ public class ECFBematech extends AbstractECFDriver {
 	private int checkST2( final byte ST2 ) {
 
 		int retorno = 0;
-		byte st2 = ST2;
+		int st2 = ST2;
 
+		// compatibilização do valor de byte de retorno.
+		if ( st2 < 0 ) {
+			st2 += 128;
+		}
+		
 		if ( st2 > 127 ) {
 			retorno = -2;
 			st2 -= 128;
