@@ -523,7 +523,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		txtDatainiManut.setVlrDate( new Date() );
 		txtDatafimManut.setVlrDate( new Date() );
 
-		pinManut.adic( new JLabelPad( "Periodo" ), 7, 0, 200, 20 );
+		pinManut.adic( new JLabelPad( "Período" ), 7, 0, 200, 20 );
 		pinManut.adic( txtDatainiManut, 7, 20, 100, 20 );
 		pinManut.adic( new JLabelPad( "até" ), 113, 20, 27, 20 );
 		pinManut.adic( txtDatafimManut, 140, 20, 100, 20 );
