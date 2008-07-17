@@ -110,6 +110,10 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTextFieldFK txtDescProdItem = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodProdDistrib = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtVlrMin = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
+	
+	private JTextFieldPad txtVlrMax = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
 
 	private JTextFieldPad txtQtdMat = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
@@ -136,6 +140,12 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTextFieldPad txtTempoEf = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldPad txtCodEstAnalise = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodTpAnalise = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private JTextFieldFK txtDescTpAnalise = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtTpExp = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JCheckBoxPad cbFinaliza = new JCheckBoxPad( "Finaliza", "S", "N" );
 
@@ -177,13 +187,15 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private ListaCampos lcDetItens = new ListaCampos( this );
 	
-	private ListaCampos lcDetEstr = new ListaCampos( this );
+	private ListaCampos lcDetEstrAnalise = new ListaCampos( this );
 
 	private ListaCampos lcDetDistrib = new ListaCampos( this );
 
 	private ListaCampos lcEstDistrib = new ListaCampos( this, "DE" );
 
 	private ListaCampos lcTipoRec = new ListaCampos( this, "TR" );
+	
+	private ListaCampos lcTpAnalise = new ListaCampos( this, "TA" );
 	
 
 	public FEstrutura() {
@@ -217,6 +229,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcDet.adicDetalhe( lcEstDistrib );
 		lcDetDistrib.setMaster( lcDet );
 		lcDet.adicDetalhe( lcDetDistrib );
+		lcDetEstrAnalise.setMaster( lcDet );
+		lcDet.adicDetalhe( lcDetEstrAnalise );
 
 		pinCab = new JPanelPad( 500, 90 );
 		setListaCampos( lcCampos );
@@ -383,21 +397,39 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcDet.montaTab();
 		lcDetItens.montaTab();
 		
-	// Controle de Qualidade
+		// Controle de Qualidade
 		
 		setPainel( pinDetEstrAnalise );
-		setListaCampos( lcDetEstr );
-		setNavegador( navRod );
-	
+		setListaCampos( lcDetEstrAnalise );
+		setNavegador( navRod );	
 		
-		adicCampo( txtCodEstAnalise, 10, 20, 70, 20, "CODESTANALISE", "Cód.Est.An.", ListaCampos.DB_PK, true );
+		lcTpAnalise.add( new GuardaCampo( txtCodTpAnalise, "CodTpAnalise", "Cód.Tp.Análise", ListaCampos.DB_PK, null, false ) );
+		lcTpAnalise.add( new GuardaCampo( txtDescTpAnalise, "DescTpAnalise", "Descrição da Análise", ListaCampos.DB_SI, false ) );
+		lcTpAnalise.add( new GuardaCampo( txtTpExp, "TipoExpec", "Tipo expecificação", ListaCampos.DB_SI, false ) );
+		lcTpAnalise.montaSql( false, "TIPOANALISE", "PP" );
+		lcTpAnalise.setReadOnly( true );
+		lcTpAnalise.setQueryCommit( false );
+		txtCodTpAnalise.setListaCampos( lcTpAnalise );
+		txtCodTpAnalise.setTabelaExterna( lcTpAnalise );
+	
+		adicCampo( txtCodEstAnalise, 7, 20, 70, 20, "CODESTANALISE", "Cód.Est.An.", ListaCampos.DB_PK, true );	
+		adicCampo( txtCodTpAnalise, 80, 20, 70, 20, "CodTpAnalise", "Cód.Tp.An", ListaCampos.DB_FK, txtDescTpAnalise, true );
+		adicDescFK( txtDescTpAnalise, 155, 20, 300, 20, "DescTpAnalise", "Descrição da análise" );
+		adicDescFKInvisivel( txtTpExp, "TipoExpec", "TipoExpec" );
+		adicCampo( txtVlrMax, 7, 65, 70, 20, "VlrMax", "Vlr.Máx.", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrMin, 80, 65, 70, 20, "VlrMin", "Vlr.Min.", ListaCampos.DB_SI, false );
 		
 		
 		setListaCampos( true, "ESTRUANALISE", "PP" );
-		lcDetEstr.setQueryInsert( false );
-		lcDetEstr.setTabela( tabQuali );
-		lcDetEstr.montaTab();
-
+		lcDetEstrAnalise.setQueryInsert( true );
+		lcDetEstrAnalise.setTabela( tabQuali );
+		lcDetEstrAnalise.montaTab();
+		
+		//lcDetEstrAnalise.add( new GuardaCampo( txtCodProdEst, "CodProd", "Cód.prod.", ListaCampos.DB_FK, false ));
+		 
+		// fim controle de qualidade
+		
+		
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 
@@ -411,7 +443,12 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcProdItem.addCarregaListener( this );
 		lcDetDistrib.addCarregaListener( this );
 		lcFase.addCarregaListener( this );
+		lcTpAnalise.addCarregaListener( this );
 
+		tabQuali.setTamColuna( 250, 2 );
+		
+		
+		
 		tab.setTamColuna( 35, 0 );
 		tab.setTamColuna( 50, 1 );
 		tab.setTamColuna( 230, 2 );
@@ -685,7 +722,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 				setPainel( pinDetEstrAnalise, pnDet );
 				setListaCampos( lcDetItens );
 				pnDet.repaint();
-				navRod.setListaCampos( lcDetItens );
+				navRod.setListaCampos( lcDetEstrAnalise );
 				navRod.setAtivo( 6, true );
 			}
 			else if ( tpnAbas.getSelectedIndex() == 3 ) {
@@ -721,6 +758,15 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		}
 		else if ( cevt.getListaCampos() == lcDet ) {
 			bloqueiaAbas();
+		}
+		if( cevt.getListaCampos() == lcTpAnalise ){
+			if( "MM".equals( txtTpExp.getVlrString())){
+				txtVlrMax.setEnabled( true );
+				txtVlrMin.setEnabled( true );
+			}else if( "DT".equals( txtTpExp.getVlrString())){
+				txtVlrMax.setEnabled( false );
+				txtVlrMin.setEnabled( false );
+			}
 		}
 	}
 
@@ -768,5 +814,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcDetDistrib.setConexao( cn );
 		lcDetItens.setConexao( cn );
 		lcEstDistrib.setConexao( cn );
+		lcTpAnalise.setConexao( cn ); 
+		lcDetEstrAnalise.setConexao( cn );
 	}
 }
