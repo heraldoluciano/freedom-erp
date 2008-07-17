@@ -202,9 +202,9 @@ public class DLContrQualidade extends FFDialogo implements MouseListener{
 		try {
 			
 			String sDescAnalise = (String)tabControl.getValor( iLinha, 3 );
-			BigDecimal bVlrMin = (BigDecimal)tabControl.getValor( iLinha, 4 ) == null ? new BigDecimal(0) : (BigDecimal)tabControl.getValor( iLinha, 4 );
-			BigDecimal bVlrMax = (BigDecimal)tabControl.getValor( iLinha, 5 ) == null ? new BigDecimal(0) : (BigDecimal)tabControl.getValor( iLinha, 5 );
-			BigDecimal bVlrAfer = (BigDecimal)tabControl.getValor( iLinha, 6 ) == null ? new BigDecimal(0) : (BigDecimal)tabControl.getValor( iLinha, 6 )  ; 
+			BigDecimal bVlrMin = (tabControl.getValor( iLinha, 4 ) == null || tabControl.getValor( iLinha, 4 ).equals( "" )) ? new BigDecimal(0) : (BigDecimal) tabControl.getValor( iLinha, 4 );
+			BigDecimal bVlrMax = (tabControl.getValor( iLinha, 5 ) == null || tabControl.getValor( iLinha, 5 ).equals( "" )) ? new BigDecimal(0) : (BigDecimal) tabControl.getValor( iLinha, 5 );
+			BigDecimal bVlrAfer = (tabControl.getValor( iLinha, 6 ) == null || tabControl.getValor( iLinha, 6 ).equals( "" )) ? new BigDecimal(0) : (BigDecimal) tabControl.getValor( iLinha, 6 )  ; 
 			String sAfer = (String)tabControl.getValor( iLinha, 7 ); 
 			String sTipo = (String)tabControl.getValor( iLinha, 8 );
 			
