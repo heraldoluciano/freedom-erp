@@ -1,5 +1,6 @@
 package org.freedom.modulos.pcp;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import org.freedom.componentes.JLabelPad;
@@ -19,16 +20,20 @@ public class DLFechaQual extends FFDialogo {
 	
 	private JTextFieldPad txtVlrAfer = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
 	
+	private JTextFieldPad txtVlrMin = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
+		
+	private JTextFieldPad txtVlrMax = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
+	
 	String tipo = "";
 	
-	public DLFechaQual( String sDescAnalise, String sTipo ){
+	public DLFechaQual( String sDescAnalise, String sTipo, BigDecimal bVlrMin, BigDecimal bVlrMax, BigDecimal vlrAfer, String sAfer ){
 		
 		setTitulo( "Qualidade" );
-		setAtribos( 350, 200 );
+		setAtribos( 350, 220 );
 		
 		adic( new JLabelPad("Descrição da analise"), 7, 5, 200, 20 );
 		adic( txtDescEst, 7, 25, 310, 20 );
-		adic( new JLabelPad("Aferição"), 7, 45, 200, 20 );
+		adic( new JLabelPad("Aferição"), 7, 85, 200, 20 );
 		
 		tipo = sTipo;
 		
@@ -36,25 +41,29 @@ public class DLFechaQual extends FFDialogo {
 			
 			adic( txtDescAfer, 7, 65, 200, 20 );
 			txtDescAfer.setRequerido( true );
+			txtDescAfer.setVlrString( sAfer );
 		}
 		else if( "MM".equals( sTipo ) ){
 			
-			adic( txtVlrAfer, 7, 65, 70, 20 );
+			adic( new JLabelPad("Vlr.Mín."), 7, 45, 70, 20 );
+			adic( txtVlrMin, 7, 65, 70, 20 );
+			adic( new JLabelPad("Vlr.Máx."), 80, 45, 70, 20 );
+			adic( txtVlrMax , 80, 65, 70, 20 );
+			adic( txtVlrAfer, 7, 105, 70, 20 );
+			
+			txtVlrMin.setSoLeitura( true );
+			txtVlrMax.setSoLeitura( true );
 			txtVlrAfer.setRequerido( true );
+			
+			txtVlrMin.setVlrBigDecimal( bVlrMin );
+			txtVlrMax.setVlrBigDecimal( bVlrMax );
+			txtVlrAfer.setVlrBigDecimal( vlrAfer == null ? new BigDecimal(0) : vlrAfer);
 		}
 		
 		txtDescEst.setVlrString( sDescAnalise );
-		
 		txtDescEst.setAtivo( false );
 	
-	
 	}
-
-	private void getValorTeste() {
-		Funcoes.mensagemInforma( null, "Valor do campo:" + txtVlrAfer.getVlrInteger() );
-		
-	}
-	
 	public HashMap<String, Object> getValor(){
 			
 		HashMap<String, Object> hRet = new HashMap<String, Object>();
@@ -75,7 +84,7 @@ public class DLFechaQual extends FFDialogo {
 	}
 	
 	public void ok() {
-	//	getValorTeste();
+	
 		 if( "DT".equals( tipo )){
 			
 			 if ( ( txtDescAfer.getVlrString().equals( "" ) ) ) {
