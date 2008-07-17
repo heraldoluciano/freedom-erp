@@ -132,7 +132,7 @@ public class FRComissoes extends FRelatorio {
 		
 		vVals1.addElement("G");
 		vVals1.addElement("T");
-		vLabs1.addElement("Grafico");
+		vLabs1.addElement("Gráfico");
 		vLabs1.addElement("Texto");
 		rgTipoRel = new JRadioGroup<String, String>(2, 2, vLabs1, vVals1 );
 		rgTipoRel.setVlrString("G");
@@ -151,7 +151,7 @@ public class FRComissoes extends FRelatorio {
 		
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
-		JLabelPad lbPeriodo = new JLabelPad("Periodo:" , SwingConstants.CENTER );
+		JLabelPad lbPeriodo = new JLabelPad("Período:" , SwingConstants.CENTER );
 		lbPeriodo.setOpaque(true);
 		
 		adic( lbPeriodo, 7, 1, 80, 20 );
