@@ -81,6 +81,11 @@ public class CtrlMultiComis {
 				listComis[ i ].setEnabled( false );
 			}
 			
+			rs.close();
+			ps.close();
+			if (!con.getAutoCommit()) {
+				con.commit();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -122,7 +127,11 @@ public class CtrlMultiComis {
 					itemcomis.getLcVend().carregaDados();
 				}
 			}
-			
+			rs.close();
+			ps.close();
+			if (!con.getAutoCommit()) {
+				con.commit();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
