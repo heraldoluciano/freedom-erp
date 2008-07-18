@@ -74,7 +74,7 @@ public class FRPontoEqui extends FRelatorio {
 		txtCodCC.setNomeCampo("CodCC");
 		txtSiglaCC.setListaCampos(lcCC);
 		
-		adic(new JLabelPad("Periodo:"),7,5,120,20);
+		adic(new JLabelPad("Período:"),7,5,120,20);
 		adic(new JLabelPad("De:"),7,25,30,20);
 		adic(txtDataini,40,25,117,20);
 		adic(new JLabelPad("Até:"),160,25,22,20);
