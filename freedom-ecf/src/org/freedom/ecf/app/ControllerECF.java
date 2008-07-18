@@ -178,7 +178,7 @@ public class ControllerECF {
 			}
 		
 			try {
-				Object obj = Class.forName( ecfdriver ).newInstance();
+				Object obj = Class.forName( ecfdriver.trim() ).newInstance();
 				if ( obj instanceof AbstractECFDriver ) {
 					this.ecf = (AbstractECFDriver) obj;
 					this.ecf.ativaPorta( porta > 0 ? porta : Serial.COM1 );
