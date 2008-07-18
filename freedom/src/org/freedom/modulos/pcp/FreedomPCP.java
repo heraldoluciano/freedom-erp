@@ -83,6 +83,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 					addOpcao(100102000, TP_OPCAO_ITEM, "Modelos de Lote", "Modelo de lote",'E', 100102050, 2, true, FModLote.class);
 					addOpcao(100102000, TP_OPCAO_ITEM, "Tipo de Analise", "Tipo de Analise",'A', 100102060, 2, true, FTipoAnalise.class);
 					
+					
 		    addOpcao(100000000, TP_OPCAO_MENU, "Preferências", "", 'F', 110100000,1, false, null);
 				addOpcao(110100000, TP_OPCAO_ITEM, "Preferências de Produção","Preferências de Produção", 'u', 110105000, 2, true,FPrefereProd.class);
 			
@@ -90,12 +91,15 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 			addOpcao(200000000, TP_OPCAO_ITEM, "Ordens de produção","Ordens de produção", 'O', 200100000, 1, true, FOP.class);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Simulação de OP","Simulação de OP", 'S', 200200000, 1, true, FSimulaOP.class);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Agendamento de produção","Agendamento de produção", 'S', 200300000, 1, true, FAgendProd.class);
-			addSeparador(200000000);			
+			addSeparador(200000000);	
 			addOpcao(200000000, TP_OPCAO_ITEM, "Requisição de material", "Requisição de material", 'R',200300000, 1, true, FRma.class);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Pesquisa requisição de material", "Pesquisa requisição de material", 'P',200400000, 1, true, FConsRMA.class);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Pesquisa RMA por item", "Pesquisa RMA por item", 'i',200500000, 1, true, FConsRmaItem.class);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Baixa RMA via Cód.Barras","Baixa RMA", 'B', 200600000, 1, true,FBaixaRMACodBar.class);
-
+			addSeparador(200000000);
+			addOpcao(200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200700000,1, false, null);
+			addOpcao(200700000, TP_OPCAO_ITEM, "Certificação de análise","Certificação de análise", 'C', 200700000, 1, true,FRCertAnalise.class);
+			
 			addOpcao(-1, TP_OPCAO_MENU, "Estoque", "", 'E', 400000000, 0, false,null);
 			addOpcao(400000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 400100000,1, true, FKardex.class);
 			addOpcao(400000000, TP_OPCAO_ITEM, "Inventário", "Inventário", 'I',	400200000, 1, true, FInventario.class);
