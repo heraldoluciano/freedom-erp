@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
+import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -65,7 +66,7 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 	
 	private final JButton btDescarte = new JButton( "Descarte" );
 	
-	private final ListaCampos lcAcaoCorretiva = new ListaCampos( this );
+	private final EMs m;
 	
 	private boolean bPref = false;
 	
@@ -77,6 +78,8 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 		setTitulo( "Acão corretiva - " + m.getDescription() );
 		setAtribos( 635, 555 );
 		setConexao( con );
+		
+		this.m = m;
 		
 		txtCodOP.setVlrInteger( (Integer) keys[ 0 ] );
 		txtSeqOP.setVlrInteger( (Integer) keys[ 1 ] );
@@ -161,6 +164,8 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 	
 	private void montaAnalises() {
 		
+		panelItensAnalises.removeAll();
+		
 		carregaAnalises();
 		
 		int y = 5;
@@ -175,6 +180,8 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 	private void carregaAnalises() {
 		
 		try {
+			
+			analises.clear();
 
 			StringBuilder sql = new StringBuilder();
 			sql.append( "SELECT C.SEQOPCQ, T.DESCTPANALISE " );
@@ -239,6 +246,86 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 		return usarRef;
 	}
 	
+	private void postCorrecao() {
+				
+		try {
+			
+			Integer newCodCorrecao = null;
+			
+			PreparedStatement ps = con.prepareStatement( 
+					"SELECT MAX(SEQAC) FROM PPOPACAOCORRET WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPACAOCORRET" ) );
+			ps.setInt( 3, txtCodOP.getVlrInteger() );
+			ps.setInt( 4, txtSeqOP.getVlrInteger() );
+
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				newCodCorrecao = rs.getInt( 1 );
+			}
+
+			rs.close();
+			ps.close();
+
+			if ( newCodCorrecao != null ) {
+				StringBuilder sql = new StringBuilder();
+				sql.append( "INSERT INTO PPOPACAOCORRET " );
+				sql.append( "( CODEMP, CODFILIAL, CODOP, SEQOP, SEQAC, TPCAUSA, OBSCAUSA, TPACAO, OBSACAO ) " );
+				sql.append( "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )" );
+				
+				ps = con.prepareStatement( sql.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPACAOCORRET" ) );
+				ps.setInt( 3, txtCodOP.getVlrInteger() );
+				ps.setInt( 4, txtSeqOP.getVlrInteger() );
+				ps.setInt( 5, newCodCorrecao );
+				ps.setString( 6, m.getCode() );
+				ps.setString( 7, txaCausa.getVlrString() );
+				ps.setString( 8, rgSolucao.getVlrString() );
+				ps.setString( 9, txaAcao.getVlrString() );
+				ps.execute();
+				ps.close();
+				
+				String strAnalises = "";
+				
+				for ( Entry<Integer, JCheckBoxPad> ek : analises.entrySet() ) {
+					if ( strAnalises.trim().length() > 0 ) {
+						strAnalises += ",";
+					}
+					JCheckBoxPad cb = ek.getValue();
+					if ( "S".equals( cb.getVlrString() ) ) {
+						strAnalises += String.valueOf( ek.getKey() );
+					}
+				}
+				
+				sql = new StringBuilder();
+				sql.append( "INSERT INTO PPOPACAOCORRET " );
+				sql.append( "( CODEMP, CODFILIAL, CODOP, SEQOP, SEQAC, TPCAUSA, OBSCAUSA, TPACAO, OBSACAO ) " );
+				sql.append( "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )" );
+				
+				ps = con.prepareStatement( sql.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPACAOCORRET" ) );
+				ps.setInt( 3, txtCodOP.getVlrInteger() );
+				ps.setInt( 4, txtSeqOP.getVlrInteger() );
+				ps.setInt( 5, newCodCorrecao );
+				ps.setString( 6, m.getCode() );
+				ps.setString( 7, txaCausa.getVlrString() );
+				ps.setString( 8, rgSolucao.getVlrString() );
+				ps.setString( 9, txaAcao.getVlrString() );
+			}
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao carregar analises!\n" + err.getMessage(), true, con, err );
+		}		
+	}
+	
 	public void valorAlterado( RadioGroupEvent e ) {
 
 		if ( e.getSource() == rgSolucao ) {
@@ -254,17 +341,23 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 
 	enum EMs {		
 		
-		MATERIAIS( "Materiais" ), 
-		MAQUINA( "Máquinas" ), 
-		METODO( "Métodos" ), 
-		MEIO_AMBIENTE( "Meio Ambiente" ), 
-		MAO_DE_OBRA( "Mão-de-obra" ), 
-		MEDIDA( "Medidas" );	
+		MATERIAIS( "1M", "Materiais" ), 
+		MAQUINA( "2M", "Máquinas" ), 
+		METODO( "3M", "Métodos" ), 
+		MEIO_AMBIENTE( "4M", "Meio Ambiente" ), 
+		MAO_DE_OBRA( "5M", "Mão-de-obra" ), 
+		MEDIDA( "6M", "Medidas" );	
 		
 		private String description;
+		private String code;
 		
-		EMs( String description ) {
+		EMs( String code, String description ) {
+			this.code = code;
 			this.description = description;
+		}
+		
+		public String getCode() {
+			return this.code;
 		}
 		
 		public String getDescription() {
