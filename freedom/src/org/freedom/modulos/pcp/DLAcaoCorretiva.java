@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,7 +32,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 
-public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
+public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -102,6 +104,7 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 		montaTela();
 		
 		rgSolucao.addRadioGroupListener( this );
+		btInclusao.addActionListener( this );
 		
 		rgSolucao.setVlrString( "II" );
 	}
@@ -326,6 +329,17 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 		}		
 	}
 	
+	public void actionPerformed( ActionEvent evt ) {
+
+		super.actionPerformed(evt);
+		
+		if( evt.getSource() == btInclusao ){
+		
+			DLInsereInsumo dl = new DLInsereInsumo();
+			dl.setVisible( true );
+		}
+	}
+
 	public void valorAlterado( RadioGroupEvent e ) {
 
 		if ( e.getSource() == rgSolucao ) {
