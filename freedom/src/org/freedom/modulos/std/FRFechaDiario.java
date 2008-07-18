@@ -152,7 +152,7 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "P.CODPLANOPAG=CP.CODPLANOPAG " );
 			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
 			sSQL.append( "UNION " );
-			sSQL.append( "SELECT CAST('C' AS CHAR(1)) TIPOLANCA, IR.DTPAGOITREC, " );
+			sSQL.append( "SELECT CAST('C' AS CHAR(1)) TIPOLANCA, IR.DTPAGOITREC DATA, " );
 			sSQL.append( "9999 CODTIPOMOV, CAST( null AS CHAR(40) ) DESCTIPOMOV, " );
 			sSQL.append( "40 CODCAIXA, CAST( null AS CHAR(40) ) DESCCAIXA, IR.IDUSUALT, " );
 			sSQL.append( "R.CODPLANOPAG, P.DESCPLANOPAG, SUM(IR.VLRPAGOITREC) VALOR " );
