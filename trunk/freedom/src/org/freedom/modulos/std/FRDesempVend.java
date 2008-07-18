@@ -91,7 +91,7 @@ public class FRDesempVend extends FRelatorio {
 
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
-		JLabelPad lbPeriodo = new JLabelPad( "Periodo:", SwingConstants.CENTER );
+		JLabelPad lbPeriodo = new JLabelPad( "Período:", SwingConstants.CENTER );
 		lbPeriodo.setOpaque( true );
 
 		adic( lbPeriodo, 17, 10, 80, 20 );
