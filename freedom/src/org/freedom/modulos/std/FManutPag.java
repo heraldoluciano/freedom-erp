@@ -331,7 +331,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 		pinConsulta.adic( txtRazFor, 90, 20, 217, 20 );
 		pinConsulta.adic( new JLabelPad( "Primeira compra" ), 310, 0, 98, 20 );
 		pinConsulta.adic( txtPrimCompr, 310, 20, 98, 20 );
-		pinConsulta.adic( new JLabelPad( "Ultima compra" ), 411, 0, 97, 20 );
+		pinConsulta.adic( new JLabelPad( "Última compra" ), 411, 0, 97, 20 );
 		pinConsulta.adic( txtUltCompr, 411, 20, 100, 20 );
 		pinConsulta.adic( new JLabelPad( "Data" ), 7, 40, 98, 20 );
 		pinConsulta.adic( txtDataMaxFat, 7, 60, 98, 20 );
