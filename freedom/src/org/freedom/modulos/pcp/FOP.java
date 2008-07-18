@@ -937,6 +937,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 
 		return ret;
 	}
+	
+	
 
 	private void getTipoMov() {
 		if ( txtCodTpMov.getVlrString().equals( "" ) ) {
@@ -1261,27 +1263,51 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		return rs;
 	}
 	
-	private ResultSet temDistrib() {
+	private boolean temDistrib() {
 		StringBuffer sql = new StringBuffer();
-		ResultSet rs = null;
+		boolean ret = false;
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 		
 		try {
-			sql.append( "SELECT count(*) FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND GERARMA='S'" );
+			sql.append( "SELECT count(*) FROM PPDISTRIB D, PPOP O, PPESTRUTURA ED, PPFASE F," );
+			sql.append( "PPITESTRUTURA ID, PPESTRUTURA E , EQPRODUTO PD " );
+			sql.append( "WHERE " );
+			sql.append( "D.CODEMP=O.CODEMPPD AND D.CODFILIAL=O.CODFILIALPD " );
+			sql.append( "AND D.CODPROD=O.CODPROD AND D.SEQEST=O.SEQEST " );
+			sql.append( "AND ED.CODEMP=D.CODEMPDE AND ED.CODFILIAL=D.CODFILIALDE " );
+			sql.append( "AND ED.CODPROD=D.CODPRODDE AND ED.SEQEST=D.SEQESTDE " );
+			sql.append( "AND F.CODEMP=D.CODEMPFS AND F.CODFILIAL=D.CODFILIALFS " );
+			sql.append( "AND F.CODFASE=D.CODFASE AND ID.CODEMP=ED.CODEMP " );
+			sql.append( "AND ID.CODFILIAL=ED.CODFILIAL AND ID.CODPROD=ED.CODPROD " );
+			sql.append( "AND ID.SEQEST=ED.SEQEST AND ID.CODEMPPD=D.CODEMP " );
+			sql.append( "AND ID.CODFILIALPD=D.CODFILIAL AND ID.CODPRODPD=D.CODPROD " );
+			sql.append( "AND E.CODEMP=D.CODEMP AND E.CODFILIAL=D.CODFILIAL " );
+			sql.append( "AND E.CODPROD=D.CODPROD AND E.SEQEST=D.SEQEST " );
+			sql.append( "AND D.CODEMPDE=PD.CODEMP AND D.CODFILIALDE=PD.CODFILIAL " );
+			sql.append( "AND D.CODPRODDE=pd.codprod AND O.CODEMP=? AND O.CODFILIAL=? " );
+			sql.append( "AND O.CODOP=? AND O.SEQOP=?" );
 			
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "PPITOP" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPDISTRIB" ) );
 			ps.setInt( 3, txtCodOP.getVlrInteger().intValue() );
 			ps.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
 			
 			rs = ps.executeQuery();
+			
+			if ( rs.next() && rs.getInt( 1 ) == 0 ) {
+				ret = true;
+			}
+			else {
+				ret = false;
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return rs;
+		return ret;
 	}
 	
 	private boolean faltaRma() {
@@ -1879,13 +1905,14 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			rma = faltaRma() && liberaRMA();
 			
 			btContrQuali.setEnabled( !temCQ() );
+			btDistrb.setEnabled( !temDistrib() );
 
 			if ( sitop.equals( "PE" ) ) {
 				
 				btLote.setEnabled( !lote );
 				btRMA.setEnabled( rma );
 				btFinaliza.setEnabled( true );
-				btDistrb.setEnabled( true );
+//				btDistrb.setEnabled( true );
 				btCancela.setEnabled( true );
 
 				txtCodProdEst.setAtivo( false );
@@ -1924,7 +1951,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				btLote.setEnabled( false );
 				btRMA.setEnabled( rma );
 				btFinaliza.setEnabled( false );
-				btDistrb.setEnabled( true );
+//				btDistrb.setEnabled( true );
 				btCancela.setEnabled( true );
 
 				txtCodProdEst.setAtivo( false );
@@ -1984,7 +2011,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 				btLote.setEnabled( false );
 				btRMA.setEnabled( false );
 				btFinaliza.setEnabled( false );
-				btDistrb.setEnabled( false );
+//				btDistrb.setEnabled( false );
 				btCancela.setEnabled( false );
 
 				txtCodProdEst.setAtivo( true );
