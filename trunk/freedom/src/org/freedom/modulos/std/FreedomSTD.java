@@ -215,7 +215,7 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 601400000, TP_OPCAO_ITEM, "Relatório financeiro por C.C.", "Relatorio Financeiro por C.C.", 'R', 601403000, 2, true, FRCentroCusto.class );
 				addOpcao( 601400000, TP_OPCAO_ITEM, "Razão financeiro", "Razão financeiro", 'z', 601404000, 2, true, FRRazaoFin.class );
 				addOpcao( 601400000, TP_OPCAO_ITEM, "Fluxo de caixa", "", 'F', 601405000, 2, true, FRFluxoCaixa.class );
-				addOpcao( 601400000, TP_OPCAO_ITEM, "Ponto de equilibrio", "Ponto de equilibrio", 'q', 601406000, 2, true, FRPontoEqui.class );
+				addOpcao( 601400000, TP_OPCAO_ITEM, "Ponto de equilíbrio", "Ponto de equilíbrio", 'q', 601406000, 2, true, FRPontoEqui.class );
 				addOpcao( 601400000, TP_OPCAO_ITEM, "Lançamentos por categoria", "Lançamentos por categoria", 'q', 601407000, 2, true, FRLancCategoria.class );
 				addOpcao( 601400000, TP_OPCAO_ITEM, "Restrição/clientes", "Restrição/clientes", 'C', 601408000, 1, true, FRRestricao.class );
 			addOpcao( 600000000, TP_OPCAO_MENU, "Gráficos", "Fluxo de caixa", 'G', 601500000, 1, false, null );
