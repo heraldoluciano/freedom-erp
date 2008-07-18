@@ -205,7 +205,7 @@ public class FConta extends FTabDados implements CheckBoxListener {
 		adicCampo( txtCodContDeb, 7, 20, 150, 20, "CodContDeb", "Cód.cont.débito", ListaCampos.DB_SI, false );
 		adicCampo( txtCodContCred, 160, 20, 150, 20, "CodContCred", "Cód.cont.crédito", ListaCampos.DB_SI, false );
 		adicCampo( txtCodHistPad, 7, 60, 80, 20, "CodHist", "Cód.hist.", ListaCampos.DB_FK, txtDescHistPad, false );
-		adicDescFK( txtDescHistPad, 90, 60, 300, 20, "DescHist", "Descrição do historico padrão" );		
+		adicDescFK( txtDescHistPad, 90, 60, 300, 20, "DescHist", "Descrição do histórico padrão" );		
 
 		setListaCampos( false, "CONTA", "FN" );
 		lcCampos.setQueryInsert( false );
