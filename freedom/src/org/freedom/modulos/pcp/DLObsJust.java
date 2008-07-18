@@ -71,7 +71,7 @@ public class DLObsJust extends FFDialogo{
 		
 		txtDtCanc.setSoLeitura( true );
 		txtIdUsuCanc.setSoLeitura( true );
-		txaJustCanc.setEnabled( false );
+		txaJustCanc.setEditable( false );
 		txtHoraCanc.setSoLeitura( true );
 		
 		btCancel.setVisible( false ); 
