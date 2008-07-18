@@ -157,7 +157,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		vValsRV.addElement( "U" );
 		vLabsRV.addElement( "Automático" );
 		vLabsRV.addElement( "Dia fixo" );
-		vLabsRV.addElement( "Dia util" );
+		vLabsRV.addElement( "Dia útil" );
 		rgRV = new JRadioGroup<String, String>( 1, 3, vLabsRV, vValsRV );
 		rgRV.setVlrString( "A" );
 		
@@ -173,7 +173,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 		cbAtivo.setVlrString( "S" );
 		
-		cbSabado = new JCheckBoxPad( "Sabado", "S", "N" );
+		cbSabado = new JCheckBoxPad( "Sábado", "S", "N" );
 	
 		cbDomingo = new JCheckBoxPad( "Domingo", "S", "N" );
 
