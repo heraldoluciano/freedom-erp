@@ -30,6 +30,7 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.PainelImagem;
 import org.freedom.telas.FTabDados;
 
 public class FPrefereProd extends FTabDados {
@@ -53,6 +54,10 @@ public class FPrefereProd extends FTabDados {
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JComboBoxPad cbSitRMAOP = null;
+	
+	private PainelImagem imgAssOrc = new PainelImagem( 65000 );
+	
+	private JPanelPad pinAss = new JPanelPad( 470, 300 );
 	
 	public FPrefereProd() {
 
@@ -107,8 +112,13 @@ public class FPrefereProd extends FTabDados {
 		adicCampo( txtCodTipoMov, 7, 70, 50, 20, "CODTIPOMOV", "Cd.TM.", ListaCampos.DB_FK, txtDescTipoMov, true );
 		adicDescFK( txtDescTipoMov, 60, 70, 175, 20, "DESCTIPOMOV", "Descrição do tipo de mov." );
 		adicDB( cbSitRMAOP, 7, 110, 230, 20, "SITRMAOP", "Situação padrão para RMA", false );
-		setListaCampos( false, "PREFERE5", "SG" );
 
+		setPainel( pinAss );
+		adicTab( "Assinatura", pinAss );
+		adicDB( imgAssOrc, 15, 30, 340, 85, "ImgAssResp", "Assinatura do responsável técnico ( 340 pixel X 85 pixel )", true );
+		
+		setListaCampos( false, "PREFERE5", "SG" );
+		
 		nav.setAtivo( 0, false );
 		nav.setAtivo( 1, false );
 		
