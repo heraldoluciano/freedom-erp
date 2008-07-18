@@ -20,6 +20,8 @@
  */
 package org.freedom.modulos.pcp;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.Connection;
 import java.util.HashMap;
 
@@ -35,8 +37,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
-public class FRCertAnalise extends FRelatorio{
+public class FRCertAnalise extends FRelatorio implements KeyListener{
 	
+
 	private static final long serialVersionUID = 1L;
 
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -59,7 +62,7 @@ public class FRCertAnalise extends FRelatorio{
 	
 	private JTextFieldPad txtCodPed = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
-	private JTextFieldFK txtCodCli = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 10, 0 );
+	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
@@ -81,6 +84,8 @@ public class FRCertAnalise extends FRelatorio{
 		
 		montaListaCampos();
 		montaTela();
+		
+		txtCodPed.addKeyListener( this );
 	}
 	
 	private void montaTela(){
@@ -101,7 +106,7 @@ public class FRCertAnalise extends FRelatorio{
 		adic( txtCodLote, 85, 115, 100, 20 );
 		adic( new JLabelPad("Dt.Lote"), 188, 95, 90, 20 );
 		adic( txtDtIniLote, 188, 115, 80, 20 );
-		adic( new JLabelPad("Dt.Venc.Lt"), 250, 95, 80, 20 );
+		adic( new JLabelPad("Dt.Venc.Lt"), 273, 95, 80, 20 );
 		adic( txtDtVencLote, 273, 115, 85, 20 );
 		
 
@@ -128,7 +133,7 @@ public class FRCertAnalise extends FRelatorio{
  		 **************/
          
          lcLote.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.Prod", ListaCampos.DB_PF, false ));
-         lcLote.add( new GuardaCampo( txtCodLote, "CodLote", "Cód.lote", ListaCampos.DB_PK, false ));
+         lcLote.add( new GuardaCampo( txtCodLote, "CodLote", "Cód.lote", ListaCampos.DB_PK, true ));
          lcLote.add( new GuardaCampo( txtDtVencLote, "VenctoLote", "Vencimento do lote", ListaCampos.DB_SI, false ));
          lcLote.add( new GuardaCampo( txtDtIniLote, "DIniLote", "Data do lote", ListaCampos.DB_SI, false ));
          txtCodLote.setTabelaExterna(lcLote);
@@ -207,6 +212,31 @@ public class FRCertAnalise extends FRelatorio{
 		}
 	}
 	
+	public void keyPressed( KeyEvent kevt ) {
+
+		super.keyPressed(kevt);
+		
+		try {
+			
+			if( kevt.getSource() == txtCodPed ){
+				if( !txtCodPed.getVlrString().equals( "" )){
+					if( kevt.getKeyCode() == KeyEvent.VK_ENTER ){
+						txtCodCli.setEditable( false );
+						
+					}
+				}
+				else{
+					txtCodCli.setEditable( true );
+				}
+			}
+			
+		} catch ( Exception e ) {
+			System.out.println("Pedido Nullo!!!");
+			e.printStackTrace();
+		}
+		
+	}
+
 	public void setConexao( Connection cn ){
 		
 		super.setConexao( cn );
