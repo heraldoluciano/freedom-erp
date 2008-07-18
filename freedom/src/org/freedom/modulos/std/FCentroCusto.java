@@ -63,7 +63,7 @@ public class FCentroCusto extends FFilho 	implements ActionListener, MouseListen
 	private JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1, 4, 2, 0));
 	private JPanelPad pnImp = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1, 2, 0, 0));
 	private JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
-	private JButton btPrim = new JButton("Nivel 1", Icone.novo("btNovo.gif"));
+	private JButton btPrim = new JButton("Nível 1", Icone.novo("btNovo.gif"));
 	private JButton btSint = new JButton("Sintética", Icone.novo("btNovo.gif"));
 	private JButton btAnal = new JButton("Analítica", Icone.novo("btNovo.gif"));
 	private JButton btImp = new JButton(Icone.novo("btImprime.gif"));
