@@ -217,7 +217,7 @@ public class FRListaPreco extends FRelatorio {
 		pinTipo.adic(new JLabelPad("Ordem"),300,5,100,15);
 		pinTipo.adic(rgOrdem,300,22,270,30);
 
-		pnOpt.add(new JLabelPad("    Opçôes de filtros"));
+		pnOpt.add(new JLabelPad("    Opções de filtros"));
 		adic(pnOpt,10,85,150,20);
 		adic(pinOpt,5,95,595,100);
 
