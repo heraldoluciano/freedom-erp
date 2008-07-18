@@ -99,13 +99,13 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 	
 	private JLabelPad lbImgAtrasado = new JLabelPad( imgRecusado );
 	
-	private JPanelPad pnBot = new JPanelPad( 580, 30 );
+	private JPanelPad pnBot = new JPanelPad( 410, 30 );
 	
 	private ImageIcon imgStatus = null;
 	
 	private Font fontLegenda =  new Font( "Arial", Font.PLAIN, 9 );	
 
-	String sEstAnalise = "";
+	private String sEstAnalise = "";
 	
 	public JButton btOK = new JButton("OK", Icone.novo("btOk.gif"));
 	
@@ -177,18 +177,19 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		adic( new JLabelPad( "Descrição da estrutura principal" ), 90, 40, 250, 20 );
 		adic( txtDescEst, 90, 60, 330, 20 );
 		
-		pnBotoes.removeAll();
-		pnBotoes.add( pnBot );
-		pnBot.tiraBorda();
-		
+		pnRodape.removeAll();
+		pnRodape.add( pnBot, BorderLayout.WEST );
+		pnBot.tiraBorda();		
+		pnBot.adic( btACorretiva, 0, 0, 170, 30 );
 		pnBot.adic( lbImgPendente, 180, 4, 20, 20 );
 		pnBot.adic( lbTxtPendente, 200, 4, 80, 20 );
 		pnBot.adic( lbImgAtrasado, 245, 4, 20, 20 );
 		pnBot.adic( lbTxtAtrasado, 265, 4, 90, 20 );
-		pnBot.adic( lbTxtFinalizada, 330, 4, 80, 20 );
 		pnBot.adic( lbImgFinalizada, 310, 4, 20, 20 );
-		pnBot.adic( btOK, 470, 0, 110, 30 );
-		pnBot.adic( btACorretiva, 0, 0, 170, 30 );
+		pnBot.adic( lbTxtFinalizada, 330, 4, 80, 20 );
+
+		btOK.setPreferredSize( new Dimension( 110, 30 ) );		
+		pnRodape.add( btOK, BorderLayout.EAST );
 		
 		txtCodOP.setAtivo( false );
 		txtSeqOP.setAtivo( false );
@@ -411,7 +412,16 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 
 	private void acoesCorretivas(){
 		
-		DLAcoesCorretivas dl = new DLAcoesCorretivas();
+		Object[] keys = new Object[6];
+		
+		keys[0] = txtCodOP.getVlrInteger(); 
+		keys[1] = txtSeqOP.getVlrInteger(); 
+		keys[2] = txtCodProdEst.getVlrInteger(); 
+		keys[3] = txtRefProdEst.getVlrString(); 
+		keys[4] = txtSeqEst.getVlrInteger(); 
+		keys[5] = txtDescEst.getVlrString();
+		
+		DLAcoesCorretivas dl = new DLAcoesCorretivas( con, keys );
 		dl.setVisible( true );
 	}
 
