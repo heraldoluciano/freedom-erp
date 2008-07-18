@@ -21,7 +21,6 @@
 package org.freedom.modulos.pcp;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.util.HashMap;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -177,8 +176,7 @@ public class FRCertAnalise extends FRelatorio{
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
-		hParam.put( "FILTROS", sCab );
+		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );		
 		hParam.put( "CODLOTE", txtCodLote.getVlrString() );
 		hParam.put( "PRODUTO", txtDescProd.getVlrString() );
 		hParam.put( "FABRICACAO", txtDtIniLote.getVlrDate() );
@@ -188,8 +186,8 @@ public class FRCertAnalise extends FRelatorio{
 		hParam.put( "CODCLI", txtCodCli.getVlrInteger() );
 		hParam.put( "DESCCLI", txtRazCli.getVlrString() );
 
-		dlGr = new FPrinterJob( "relatorios/FRCertAnalise.jasper", "Certificação de Análise", sCab, null, hParam, this );
-
+		dlGr = new FPrinterJob("relatorios/FRCertAnalise.jasper", "Certificado de Análise", "", this, hParam, con);
+		
 		if ( bVisualizar ) {
 			
 			dlGr.setVisible( true );
