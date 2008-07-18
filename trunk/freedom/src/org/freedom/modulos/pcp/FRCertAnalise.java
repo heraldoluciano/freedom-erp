@@ -63,6 +63,8 @@ public class FRCertAnalise extends FRelatorio{
 	
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
+	private JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
     private ListaCampos lcProd = new ListaCampos( this, ""  );
     
     private ListaCampos lcLote = new ListaCampos( this, "" );
@@ -143,6 +145,7 @@ public class FRCertAnalise extends FRelatorio{
          lcPedido.add( new GuardaCampo( txtCodPed, "CodVenda", "Cód.ped.", ListaCampos.DB_PK, false ));
          lcPedido.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.Cli", ListaCampos.DB_FK, false ));
          lcPedido.add( new GuardaCampo( txtDtEmitPed, "DtEmitVenda", "Dt.Emissão", ListaCampos.DB_FK, false ));
+         lcPedido.add( new GuardaCampo( txtDocVenda, "DocVenda", "Doc.Venda", ListaCampos.DB_SI, false ));
          txtCodPed.setTabelaExterna( lcPedido );
          txtCodPed.setNomeCampo( "CodVenda" );
          txtCodPed.setFK(true);
@@ -186,6 +189,7 @@ public class FRCertAnalise extends FRelatorio{
 		hParam.put( "CODCLI", txtCodCli.getVlrInteger() );
 		hParam.put( "RAZCLI", txtRazCli.getVlrString() );
 		hParam.put( "CODPROD", txtCodProd.getVlrInteger().toString() );
+		hParam.put( "DOCVENDA", txtDocVenda.getVlrInteger() );
 		
 
 		dlGr = new FPrinterJob("relatorios/FRCertAnalise.jasper", "Certificado de Análise", "", this, hParam, con);
