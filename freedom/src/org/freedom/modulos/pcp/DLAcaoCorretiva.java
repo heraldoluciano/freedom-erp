@@ -335,7 +335,7 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener, Ac
 		
 		if( evt.getSource() == btInclusao ){
 		
-			DLInsereInsumo dl = new DLInsereInsumo();
+			DLInsereInsumo dl = new DLInsereInsumo( con );
 			dl.setVisible( true );
 		}
 	}
