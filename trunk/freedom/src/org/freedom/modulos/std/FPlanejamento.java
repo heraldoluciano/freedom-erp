@@ -323,6 +323,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 		String sCodPai = String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ).trim();
 		String sDescPai = String.valueOf( tab.getValor( tab.getLinhaSel(), 2 ) ).trim();
 		String sTipoFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), 3 ) ).trim();
+		String sFinPlanP = String.valueOf( tab.getValor( tab.getLinhaSel(), 4 ) ).trim();
 		
 		if ( sCodPai.length() == 13 ) {
 			Funcoes.mensagemInforma( this, "Não é possível criar uma conta analítica de outra conta analítica! ! !" );
@@ -462,7 +463,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			}
 		}
 		else if ( "DR".indexOf( sTipoFilho ) >= 0 ) {
-			DLPlanAnal dl = new DLPlanAnal( this, sCodPai, sDescPai, sCodFilho, null, sTipoFilho, "", null, null, 0 );
+			DLPlanAnal dl = new DLPlanAnal( this, sCodPai, sDescPai, sCodFilho, null, sTipoFilho, "", null, null, 0, sFinPlanP );
 			dl.setConexao( con );
 			dl.setVisible( true );
 			if ( !dl.OK ) {
@@ -659,7 +660,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 		}
 		
 		DLPlanAnal dl = new DLPlanAnal( 
-				this, sCodPai, sDescPai, sCodFilho, sDescFilho, sTipoFilho, sFinPlan, sCodContCred, sCodContDeb, iCodHist );
+				this, sCodPai, sDescPai, sCodFilho, sDescFilho, sTipoFilho, sFinPlan, sCodContCred, sCodContDeb, iCodHist, sFinPlan );
 		dl.setConexao( con );
 		dl.setVisible( true );
 		if ( !dl.OK ) {
