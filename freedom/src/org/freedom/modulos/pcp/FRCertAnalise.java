@@ -178,13 +178,15 @@ public class FRCertAnalise extends FRelatorio{
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );		
 		hParam.put( "CODLOTE", txtCodLote.getVlrString() );
-		hParam.put( "PRODUTO", txtDescProd.getVlrString() );
+		hParam.put( "DESCPROD", txtDescProd.getVlrString() );
 		hParam.put( "FABRICACAO", txtDtIniLote.getVlrDate() );
 		hParam.put( "VALIDADE", txtDtIniLote.getVlrDate() );
 		hParam.put( "NF", txtCodPed.getVlrInteger() );
 		hParam.put( "EMITNF", txtDtEmitPed.getVlrDate() );
 		hParam.put( "CODCLI", txtCodCli.getVlrInteger() );
-		hParam.put( "DESCCLI", txtRazCli.getVlrString() );
+		hParam.put( "RAZCLI", txtRazCli.getVlrString() );
+		hParam.put( "CODPROD", txtCodProd.getVlrInteger().toString() );
+		
 
 		dlGr = new FPrinterJob("relatorios/FRCertAnalise.jasper", "Certificado de Análise", "", this, hParam, con);
 		
