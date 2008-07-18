@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,7 +31,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 
-public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener, ActionListener {
+public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -70,6 +69,10 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener, Ac
 	
 	private final EMs m;
 	
+	private final Object[] keys;
+	
+	private final Object[] keysItens;
+	
 	private boolean bPref = false;
 	
 	private HashMap<Integer, JCheckBoxPad> analises = new HashMap<Integer, JCheckBoxPad>();
@@ -83,12 +86,18 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener, Ac
 		
 		this.m = m;
 		
+		this.keys = keys;
+		
 		txtCodOP.setVlrInteger( (Integer) keys[ 0 ] );
 		txtSeqOP.setVlrInteger( (Integer) keys[ 1 ] );
 		txtCodProdEst.setVlrInteger( (Integer) keys[ 2 ] );
 		txtRefProdEst.setVlrString( (String) keys[ 3 ] );
 		txtSeqEst.setVlrInteger( (Integer) keys[ 4 ] );
 		txtDescEst.setVlrString( (String) keys[ 5 ] );
+		
+		keysItens = new Object[ 4 ];
+		keysItens[ 0 ] = (Integer) keys[ 0 ];
+		keysItens[ 1 ] = (Integer) keys[ 1 ];
 		
 		Vector<String> vLabs = new Vector<String>();
 		vLabs.add( "Inclusão de Insumos" );
@@ -103,8 +112,10 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener, Ac
 		montaAnalises();
 		montaTela();
 		
-		rgSolucao.addRadioGroupListener( this );
 		btInclusao.addActionListener( this );
+		btDescarte.addActionListener( this );
+		
+		rgSolucao.addRadioGroupListener( this );
 		
 		rgSolucao.setVlrString( "II" );
 	}
@@ -167,7 +178,9 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener, Ac
 	
 	private void montaAnalises() {
 		
-		panelItensAnalises.removeAll();
+		for ( JCheckBoxPad cb : analises.values() ) {
+			panelItensAnalises.remove( cb );
+		}
 		
 		carregaAnalises();
 		
@@ -178,6 +191,7 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener, Ac
 		}		
 		
 		panelItensAnalises.setPreferredSize( new Dimension( 500, y+5 ) );
+		panelAnalises.setVisible( true );
 	}
 	
 	private void carregaAnalises() {
@@ -194,7 +208,7 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener, Ac
 			sql.append( "  C.CODEMP=? AND C.CODFILIAL=? AND C.CODOP=? AND C.SEQOP=? AND" );
 			sql.append( "  E.CODEMP=C.CODEMPEA AND E.CODFILIAL=C.CODFILIALEA AND E.CODESTANALISE=C.CODESTANALISE AND" );
 			sql.append( "  T.CODEMP=E.CODEMPTA AND T.CODFILIAL=E.CODFILIALTA AND T.CODTPANALISE=E.CODTPANALISE AND" );
-			sql.append( "  C.STATUS='RC'" );
+			sql.append( "  C.STATUS='RC' AND C.SEQAC IS NULL" );
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -249,7 +263,32 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener, Ac
 		return usarRef;
 	}
 	
-	private void postCorrecao() {
+	private boolean postCorrecao() {
+		
+		boolean valido = false;
+		for ( Entry<Integer, JCheckBoxPad> ek : analises.entrySet() ) {
+			JCheckBoxPad cb = ek.getValue();
+			if ( "S".equals( cb.getVlrString() ) ) {
+				valido = true;
+				keysItens[ 2 ] = ek.getKey();
+				break;
+			}
+		}
+		
+		if ( ! valido ) {
+			Funcoes.mensagemInforma( this, "Selecione as analises para aplicar a correção!" );
+			return false;
+		}
+		
+		if ( txaCausa.getVlrString().trim().length() == 0 ) {
+			Funcoes.mensagemInforma( this, "Informe as causas!" );
+			return false;
+		}
+		
+		if ( txaAcao.getVlrString().trim().length() == 0 ) {
+			Funcoes.mensagemInforma( this, "Detalhe a ação corretiva!" );
+			return false;
+		}
 				
 		try {
 			
@@ -266,7 +305,7 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener, Ac
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				newCodCorrecao = rs.getInt( 1 );
+				newCodCorrecao = rs.getInt( 1 ) + 1;
 			}
 
 			rs.close();
@@ -291,52 +330,64 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener, Ac
 				ps.execute();
 				ps.close();
 				
+				keysItens[3] = newCodCorrecao;
+				
 				String strAnalises = "";
 				
 				for ( Entry<Integer, JCheckBoxPad> ek : analises.entrySet() ) {
-					if ( strAnalises.trim().length() > 0 ) {
-						strAnalises += ",";
-					}
 					JCheckBoxPad cb = ek.getValue();
 					if ( "S".equals( cb.getVlrString() ) ) {
+						if ( strAnalises.trim().length() > 0 ) {
+							strAnalises += ",";
+						}
 						strAnalises += String.valueOf( ek.getKey() );
 					}
 				}
 				
 				sql = new StringBuilder();
-				sql.append( "INSERT INTO PPOPACAOCORRET " );
-				sql.append( "( CODEMP, CODFILIAL, CODOP, SEQOP, SEQAC, TPCAUSA, OBSCAUSA, TPACAO, OBSACAO ) " );
-				sql.append( "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )" );
+				sql.append( "UPDATE PPOPCQ SET SEQAC=? " );
+				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND SEQOPCQ IN ( " + strAnalises + " )" );
 				
 				ps = con.prepareStatement( sql.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPACAOCORRET" ) );
-				ps.setInt( 3, txtCodOP.getVlrInteger() );
-				ps.setInt( 4, txtSeqOP.getVlrInteger() );
-				ps.setInt( 5, newCodCorrecao );
-				ps.setString( 6, m.getCode() );
-				ps.setString( 7, txaCausa.getVlrString() );
-				ps.setString( 8, rgSolucao.getVlrString() );
-				ps.setString( 9, txaAcao.getVlrString() );
+				ps.setInt( 1, newCodCorrecao );
+				ps.setInt( 2, Aplicativo.iCodEmp );
+				ps.setInt( 3, ListaCampos.getMasterFilial( "PPOPACAOCORRET" ) );
+				ps.setInt( 4, txtCodOP.getVlrInteger() );
+				ps.setInt( 5, txtSeqOP.getVlrInteger() );
+				ps.executeUpdate();
+				ps.close();
+				
+				montaAnalises();
+				
+				Funcoes.mensagemInforma( this, "Ação corretiva aplicada com sucesso!" );
 			}
 
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
-		} catch ( SQLException err ) {
+		} catch ( Exception err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar analises!\n" + err.getMessage(), true, con, err );
+			valido = false;
 		}		
+		
+		return valido;
 	}
 	
-	public void actionPerformed( ActionEvent evt ) {
+	@ Override
+	public void actionPerformed( ActionEvent e ) {
 
-		super.actionPerformed(evt);
-		
-		if( evt.getSource() == btInclusao ){
-		
-			DLInsereInsumo dl = new DLInsereInsumo( con );
-			dl.setVisible( true );
+		if ( e.getSource() == btInclusao ) {			
+			if ( postCorrecao() ) {
+				DLInsereInsumo dl = new DLInsereInsumo( con, keysItens );
+				dl.setVisible( true );
+			}			
+		}
+		else if ( e.getSource() == btDescarte ) {
+			
+		}
+		else {
+			super.actionPerformed( e );
 		}
 	}
 

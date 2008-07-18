@@ -1,18 +1,20 @@
 package org.freedom.modulos.pcp;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -20,6 +22,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 
@@ -28,68 +31,89 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	
-	private JPanelPad pnControl = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private final JPanelPad pnControl = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad pinCab = new JPanelPad( 400, 45 );
+	private final JPanelPad pinCab = new JPanelPad( 400, 70 );
 	
-	private Tabela tabInsumos = new Tabela();
-
-	private JScrollPane spnTabInsumos = new JScrollPane( tabInsumos );
+	private final Tabela tabInsumos = new Tabela();
 	
-	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private final JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 	 
-	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
-	private JTextFieldPad txtQtd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtQtd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
-	private JTextFieldPad txtLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
+	private final JTextFieldPad txtLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 	
-	public JButton btInserir = new JButton( Icone.novo("btGerar.gif"));
+	private final JCheckBoxPad cbRma = new JCheckBoxPad( "", "S", "N" );
+	
+	private final JButton btInserir = new JButton( Icone.novo("btGerar.gif"));
 
-	private ListaCampos lcProd = new ListaCampos( this, ""  );
+	private final ListaCampos lcProd = new ListaCampos( this, ""  );
 	
-	int iLinha = 0;
+	private int iLinha = 0;
+	
+	private final Object[] keys;
 	
 	private enum eInsert {
 	
-		CODPROD, DESCPROD, QTD, LOTE
+		CODPROD, REFERENCIA, DESCPROD, QTD, LOTE, RMA
 	};
 	
 	
-	public DLInsereInsumo( Connection con ){
+	public DLInsereInsumo( Connection con, Object[] keys ){
 		
-		setTitulo( "" );
-		setAtribos( 630, 430 );
+		setTitulo( "Inserção de itens" );
+		setAtribos( 625, 300 );
 		setConexao( con );
+		
+		this.keys = keys;
 		
 		montaListaCampos();
 		montaTela();
 	}
 	
+	private void montaListaCampos(){
+		  
+		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
+		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false ) );
+		txtCodProd.setTabelaExterna( lcProd );
+		txtCodProd.setNomeCampo( "CodProd" );
+		txtCodProd.setFK( true );
+		lcProd.setReadOnly( true );
+		lcProd.montaSql( false, "PRODUTO", "EQ" );
+	}
+
 	private void montaTela(){
 		
-		pinCab.setPreferredSize( new Dimension( 400, 100 ) );
 		pnControl.add( pinCab, BorderLayout.NORTH );
-		pnControl.add( spnTabInsumos, BorderLayout.CENTER );
+		pnControl.add( new JScrollPane( tabInsumos ), BorderLayout.CENTER );
 		c.add( pnControl, BorderLayout.CENTER );
 		
 		tabInsumos.adicColuna( "Cód.Prod" );
+		tabInsumos.adicColuna( "Ref.Prod" );
 		tabInsumos.adicColuna( "Descrição do produto" );
 		tabInsumos.adicColuna( "Qtd." );
 		tabInsumos.adicColuna( "Lote" );
+		tabInsumos.adicColuna( "RMA" );
 		
 		tabInsumos.setTamColuna( 350, eInsert.DESCPROD.ordinal() );
 		
 		setPainel( pinCab );
-		adic( new JLabelPad("Cód.Prod"), 7, 5, 70, 20 );
-		adic( txtCodProd, 7, 25, 70, 20 );
-		adic( new JLabelPad("Descrição do produto"), 80, 5, 250, 20 );
-		adic( txtDescProd, 80, 25, 300, 20 );
-		adic( new JLabelPad("Qtd."), 383, 5, 50, 20 );
-		adic( txtQtd, 383, 25, 50, 20 );
-		adic( new JLabelPad("Lote"), 440, 5, 50, 20 );
-		adic( txtLote, 440, 25, 100, 20 );
-		adic( btInserir, 550, 25, 35, 35 );
+		adic( new JLabelPad( "Cód.Prod" ), 7, 10, 90, 20 );
+		adic( txtCodProd, 7, 30, 90, 20 );
+		adic( new JLabelPad( "Descrição do produto" ), 100, 10, 250, 20 );
+		adic( txtDescProd, 100, 30, 250, 20 );
+		adic( new JLabelPad( "Qtd." ), 353, 10, 60, 20 );
+		adic( txtQtd, 353, 30, 60, 20 );
+		adic( new JLabelPad( "Lote" ), 416, 10, 50, 20 );
+		adic( txtLote, 416, 30, 100, 20 );
+		adic( new JLabelPad( "RMA" ), 529, 10, 30, 20 );
+		adic( cbRma, 529, 30, 30, 20 );
+		adic( btInserir, 570, 25, 30, 30 );
 		
 		txtCodProd.setRequerido( true );
 		txtQtd.setRequerido( true );
@@ -98,70 +122,198 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 		
 	}
 	
-	private void insertGrid( int codprod, String descprod, BigDecimal qtd ){
+	private void insertGrid( int codprod, String descprod, BigDecimal qtd, String referencia, boolean rma ){
 		
-		int pos = -1;
+		int linha = -1;
 
 		if ( codprod == 0 ) {
-
 			Funcoes.mensagemInforma( this, "Produto não encontrado!" );
 			txtCodProd.requestFocus();
 			return;
 		}
 
 		for ( int i = 0; i < tabInsumos.getNumLinhas(); i++ ) {
-
 			if ( codprod == ( (Integer) tabInsumos.getValor( i, eInsert.CODPROD.ordinal() ) ).intValue() ) {
-				pos = i;
-				qtd = qtd.add( (BigDecimal) tabInsumos.getValor( i, eInsert.QTD.ordinal() ) );
+				linha = i;
+				qtd = qtd.add( (BigDecimal) tabInsumos.getValor( i, eInsert.QTD.ordinal() ) );	
 				
 				break;
 			}
 		}
 
-		if ( pos == -1 ) {
-
+		if ( linha == -1 ) {
 			tabInsumos.adicLinha();
-			pos = tabInsumos.getNumLinhas() - 1;
+			linha = tabInsumos.getNumLinhas() - 1;
 		}
 
-		tabInsumos.setValor( codprod, pos, eInsert.CODPROD.ordinal() );
-		tabInsumos.setValor( descprod, pos, eInsert.DESCPROD.ordinal() );
-		tabInsumos.setValor( qtd, pos, eInsert.QTD.ordinal() );
+		tabInsumos.setValor( codprod, linha, eInsert.CODPROD.ordinal() );
+		tabInsumos.setValor( referencia, linha, eInsert.REFERENCIA.ordinal() );
+		tabInsumos.setValor( descprod, linha, eInsert.DESCPROD.ordinal() );
+		tabInsumos.setValor( qtd, linha, eInsert.QTD.ordinal() );
+		tabInsumos.setValor( rma, linha, eInsert.RMA.ordinal() );
 	}
 	
 	private void limpaCampo(){
 		
 		txtCodProd.setVlrString( "" );
 		txtDescProd.setVlrString( "" );
-		txtQtd.setVlrString( "" );
-		
+		txtQtd.setVlrString( "" );		
+		cbRma.setVlrString( "N" );
 	}
 	
-	public void actionPerformed( ActionEvent evt ) {
-
-		super.actionPerformed(evt);
+	private void postItens() {
 		
-		if( evt.getSource() == btInserir ){
+		try {
 			
-			insertGrid( txtCodProd.getVlrInteger(), txtDescProd.getVlrString(), txtQtd.getVlrBigDecimal() );
+			Integer fase = getCodFase();
+			
+			Integer newCodItOp = getNewCodItOp();
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append( "INSERT INTO PPITOP " );
+			sql.append( "(CODEMP, CODFILIAL, CODOP, SEQOP, SEQITOP," );
+			sql.append( " CODEMPPD, CODFILIALPD, CODPROD, QTDITOP," );
+			sql.append( " CODEMPFS, CODFILIALFS, CODFASE," );
+			sql.append( " CODEMPLE, CODFILIALLE, CODLOTE," );
+			sql.append( " REFPROD, GERARMA, SEQAC) " );
+			sql.append( "VALUES " );
+			sql.append( "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
+
+			PreparedStatement ps = null;
+			
+			for ( int i = 0; i < tabInsumos.getNumLinhas(); i++ ) {
+
+				ps = con.prepareStatement( sql.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+				ps.setInt( 3, (Integer)keys[ 0 ] );
+				ps.setInt( 4, (Integer)keys[ 1 ] );
+				ps.setInt( 5, newCodItOp );
+				ps.setInt( 6, Aplicativo.iCodEmp );
+				ps.setInt( 7, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+				ps.setInt( 8, (Integer)tabInsumos.getValor( i, eInsert.CODPROD.ordinal() ) );
+				ps.setBigDecimal( 9, (BigDecimal)tabInsumos.getValor( i, eInsert.QTD.ordinal() ) );
+				ps.setInt( 10, Aplicativo.iCodEmp );
+				ps.setInt( 11, ListaCampos.getMasterFilial( "PPOPFASE" ) );
+				ps.setInt( 12, fase );
+				ps.setInt( 13, Aplicativo.iCodEmp );
+				ps.setInt( 14, ListaCampos.getMasterFilial( "EQLOTE" ) );
+				ps.setString( 15, (String)tabInsumos.getValor( i, eInsert.LOTE.ordinal() ) );
+				ps.setString( 16, (String)tabInsumos.getValor( i, eInsert.REFERENCIA.ordinal() ) );
+				ps.setString( 17, (Boolean)tabInsumos.getValor( i, eInsert.RMA.ordinal() ) ? "S" : "N" );
+				ps.setInt( 18, (Integer)keys[ 3 ] );
+			}
+
+			ps.close();
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao inserir itens!\n" + err.getMessage(), true, con, err );
 		}
 	}
+	
+	private Integer getCodFase() {
+		
+		Integer fase = null;
+		
+		try {
 
-	private void montaListaCampos(){
-		  
-		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
-		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		txtCodProd.setTabelaExterna( lcProd );
-		txtCodProd.setNomeCampo( "CodProd" );
-		txtCodProd.setFK( true );
-		lcProd.setReadOnly( true );
-		lcProd.montaSql( false, "PRODUTO", "EQ" );
+			StringBuilder sql = new StringBuilder();
+			sql.append( "SELECT F.CODFASE " );
+			sql.append( "FROM" );
+			sql.append( "  PPOPFASE F, PPOPCQ O, PPESTRUANALISE A " );
+			sql.append( "WHERE" );
+			sql.append( "  F.CODEMP=A.CODEMPFS AND F.CODFILIAL=A.CODFILIALFS AND F.CODFASE=A.CODFASE AND" );
+			sql.append( "  A.CODEMP=O.CODEMPEA AND A.CODFILIAL=O.CODFILIALEA AND A.CODESTANALISE=O.CODESTANALISE AND" );
+			sql.append( "  O.CODEMP=? AND O.CODFILIAL=? AND O.CODOP=? AND O.SEQOP=? AND O.SEQOPCQ=?" );
+
+			PreparedStatement ps = con.prepareStatement( "SELECT P1.USAREFPROD FROM SGPREFERE1 P1 WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			ps.setInt( 3, (Integer)keys[ 0 ] );
+			ps.setInt( 4, (Integer)keys[ 1 ] );
+			ps.setInt( 5, (Integer)keys[ 2 ] );
+			
+			ResultSet rs = ps.executeQuery();
+
+			while( rs.next() ) {
+				fase = rs.getInt( "CODFASE" );
+			}
+
+			ps.close();
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar fase!\n" + err.getMessage(), true, con, err );
+		}
+		
+		return fase;
 	}
 	
+	private Integer getNewCodItOp() {
+		
+		Integer itop = null;
+		
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			sql.append( "SELECT MAX(SEQITOP) FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
+
+			PreparedStatement ps = con.prepareStatement( "SELECT P1.USAREFPROD FROM SGPREFERE1 P1 WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			ps.setInt( 3, (Integer)keys[ 0 ] );
+			ps.setInt( 4, (Integer)keys[ 1 ] );
+			
+			ResultSet rs = ps.executeQuery();
+
+			if( rs.next() ) {
+				itop = rs.getInt( 1 );
+			}
+
+			ps.close();
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar código do item da op!\n" + err.getMessage(), true, con, err );
+		}
+		
+		return itop;
+	}
+	
+	@ Override
+	public void ok() {
+
+		// TODO Auto-generated method stub
+		super.ok();
+	}
+
 	public void setConexao( Connection con ){
 		
 		super.setConexao( con );
 		lcProd.setConexao( con );
+	}
+
+	public void actionPerformed( ActionEvent evt ) {
+	
+		super.actionPerformed(evt);
+		
+		if( evt.getSource() == btInserir ){			
+			insertGrid( 
+					txtCodProd.getVlrInteger(), 
+					txtDescProd.getVlrString(), 
+					txtQtd.getVlrBigDecimal(), 
+					txtRefProd.getVlrString(), 
+					cbRma.isSelected() );
+		}
 	}
 }
