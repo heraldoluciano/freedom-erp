@@ -114,13 +114,13 @@ public class FRCpTipoMov extends FRelatorio {
 		
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
-		JLabelPad lbPeriodo = new JLabelPad("   	Periodo:");
+		JLabelPad lbPeriodo = new JLabelPad("   	Período:");
 		lbPeriodo.setOpaque(true);
 
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
 		
-		vLabs.addElement( "Grafico" );
+		vLabs.addElement( "Gráfico" );
 		vLabs.addElement( "Texto" );
 		vVals.addElement( "G" );
 		vVals.addElement( "T" );
