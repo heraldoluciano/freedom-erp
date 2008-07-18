@@ -42,7 +42,9 @@
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
-	<parameter name="CODLOTE" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="CODLOTE" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	</parameter>
 	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
@@ -59,7 +61,7 @@
 	<parameter name="DESCPROD" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="CODPROD" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="DOCVENDA" isForPrompting="false" class="java.lang.Integer"/>
-	<queryString><![CDATA[select ta.desctpanalise,ta.metodo,ea.vlrmin,ea.vlrmax,cq.vlrafer,cq.descafer,pf.nomeresp,pf.identprofresp
+	<queryString><![CDATA[select ta.desctpanalise,ta.metodo,ea.vlrmin,ea.vlrmax,cq.vlrafer,cq.descafer,pf.nomeresp,pf.identprofresp,pf.imgassresp
 from ppopcq cq, ppestruanalise ea, pptipoanalise ta, sgprefere5 pf, ppop op0, ppop opx
 where
 ta.codemp=ea.codempta and ta.codfilial=ea.codfilialta and ta.codtpanalise=ea.codtpanalise
@@ -78,6 +80,7 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 	<field name="DESCAFER" class="java.lang.String"/>
 	<field name="NOMERESP" class="java.lang.String"/>
 	<field name="IDENTPROFRESP" class="java.lang.String"/>
+	<field name="IMGASSRESP" class="java.io.InputStream"/>
 
 
 		<group  name="GERAL" >
@@ -142,7 +145,9 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 						y="99"
 						width="70"
 						height="17"
-						key="staticText-5"/>
+						key="staticText-5">
+							<printWhenExpression><![CDATA[new Boolean($P{DOCVENDA}!=null)]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
@@ -155,7 +160,9 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 						y="118"
 						width="70"
 						height="17"
-						key="staticText-6"/>
+						key="staticText-6">
+							<printWhenExpression><![CDATA[new Boolean($P{DOCVENDA}!=null)]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
@@ -528,7 +535,7 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Nº " + $P{CODPROD}.toString()+$P{CODCLI}.toString() + $P{NF}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Nº " + ($P{CODPROD}==null?"000":$P{CODPROD}.toString()) + ($P{CODCLI}==null?"000":$P{CODCLI}.toString()) + ($P{NF}==null?"000":$P{NF}.toString())]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -674,7 +681,9 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 						y="0"
 						width="0"
 						height="18"
-						key="line-13"/>
+						key="line-13">
+							<printWhenExpression><![CDATA[new Boolean($F{VLRMIN}!=null)]]></printWhenExpression>
+						</reportElement>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
@@ -695,6 +704,19 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 						key="line-15"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="229"
+						y="2"
+						width="103"
+						height="12"
+						key="textField-21"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Oblique" size="9" isItalic="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCAFER}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
@@ -706,7 +728,7 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 				<staticText>
 					<reportElement
 						x="1"
-						y="99"
+						y="101"
 						width="421"
 						height="9"
 						key="staticText-15"/>
@@ -719,7 +741,7 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 				<line direction="TopDown">
 					<reportElement
 						x="98"
-						y="10"
+						y="35"
 						width="240"
 						height="0"
 						key="line-19"/>
@@ -728,7 +750,7 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="3"
-						y="12"
+						y="36"
 						width="419"
 						height="13"
 						key="textField-19"/>
@@ -741,7 +763,7 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="3"
-						y="25"
+						y="49"
 						width="419"
 						height="13"
 						key="textField-20"/>
@@ -754,9 +776,9 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 				<staticText>
 					<reportElement
 						x="2"
-						y="63"
+						y="81"
 						width="419"
-						height="22"
+						height="12"
 						key="staticText-19"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -764,6 +786,18 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 					</textElement>
 				<text><![CDATA[CERTIFICADO EMITIDO VIA SISTEMA INTEGRADO COM APROVAÇÃO ELETRÔNICA]]></text>
 				</staticText>
+				<image  vAlign="Middle" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="101"
+						y="2"
+						width="239"
+						height="30"
+						key="image-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.io.InputStream"><![CDATA[$F{IMGASSRESP}]]></imageExpression>
+				</image>
 			</band>
 		</pageFooter>
 		<summary>
