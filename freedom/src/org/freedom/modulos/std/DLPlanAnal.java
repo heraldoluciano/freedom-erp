@@ -89,7 +89,7 @@ public class DLPlanAnal extends FFDialogo {
 
 	public DLPlanAnal( Component cOrig, String sCodPai, String sDescPai, 
 			String sCod, String sDesc, String sTipo, String sFin,
-			String sCodContCred, String sCodContDeb, int iCodHist ) {
+			String sCodContCred, String sCodContDeb, int iCodHist, String sFinalidade ) {
 
 		super( cOrig );
 		setTitulo( "Planejamento financeiro (Conta Analítica)" );
@@ -109,7 +109,8 @@ public class DLPlanAnal extends FFDialogo {
 		txtCodAnal.setVlrString( sCod );	
 		txtCodContCred.setVlrString( sCodContCred );	
 		txtCodContDeb.setVlrString( sCodContDeb );	
-		txtCodHistPad.setVlrInteger( iCodHist );		
+		txtCodHistPad.setVlrInteger( iCodHist );	
+		rgFinPlan.setVlrString( sFinalidade );
 
 		rgTipoPlan.setVlrString( sTipo );
 		

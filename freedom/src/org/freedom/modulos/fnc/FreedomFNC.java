@@ -97,7 +97,7 @@ public class FreedomFNC extends AplicativoPD {
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de cobrança", "TipoCob", 'T', 100104000, 2, true, FTipoCob.class );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Carteira de cobrança", "Carteira de cobrança", 'C', 100105000, 2, true, FCartCob.class );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Plano de pagamento", "PlanoPag", 'P', 100106000, 2, true, FPlanoPag.class );
-				addOpcao( 100100000, TP_OPCAO_ITEM, "Feriados bancarios", "Feriados bancarios", 'F', 100107000, 2, true, FFeriados.class );
+				addOpcao( 100100000, TP_OPCAO_ITEM, "Feriados", "Feriados", 'F', 100107000, 2, true, FFeriados.class );
 				addSeparador( 100100000 );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de fornecedor", "TipoFor", 'i', 100107000, 2, true, FTipoFor.class );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Fornecedor", "Fornecedor", 'F', 100108000, 2, true, FFornecedor.class );
