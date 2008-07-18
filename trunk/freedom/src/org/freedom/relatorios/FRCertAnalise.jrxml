@@ -58,6 +58,7 @@
 	<parameter name="RAZCLI" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="DESCPROD" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="CODPROD" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="DOCVENDA" isForPrompting="false" class="java.lang.Integer"/>
 	<queryString><![CDATA[select ta.desctpanalise,ta.metodo,ea.vlrmin,ea.vlrmax,cq.vlrafer,cq.descafer,pf.nomeresp,pf.identprofresp
 from ppopcq cq, ppestruanalise ea, pptipoanalise ta, sgprefere5 pf, ppop op0, ppop opx
 where
@@ -250,7 +251,7 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica" size="9" isBold="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$P{NF}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$P{DOCVENDA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
