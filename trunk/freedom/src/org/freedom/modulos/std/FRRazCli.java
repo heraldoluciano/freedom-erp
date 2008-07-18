@@ -72,7 +72,7 @@ public class FRRazCli extends FRelatorio {
 
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
-		JLabelPad lbPeriodo = new JLabelPad( "Periodo:", SwingConstants.CENTER );
+		JLabelPad lbPeriodo = new JLabelPad( "Período:", SwingConstants.CENTER );
 		lbPeriodo.setOpaque( true );
 
 		adic( lbPeriodo, 15, 5, 80, 20 );
