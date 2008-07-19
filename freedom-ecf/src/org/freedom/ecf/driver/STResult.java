@@ -42,6 +42,15 @@ public class STResult {
 			listResult.add( status );
 		}
 	}
+
+	public void addAll( STResult stresult ) {
+
+		if ( stresult != null ) {
+			for ( Status status : stresult.listResult ) {
+				add( status );
+			}
+		}
+	}
 	
 	public boolean isCode(final int code) {
 		boolean result = false;
@@ -66,4 +75,15 @@ public class STResult {
 		return result;
 	}
 	
+	public String getMessages() {
+		
+		StringBuilder messages = new StringBuilder();
+		
+		for ( Status status : listResult ) {
+			messages.append( status.getMessage() );
+			messages.append( "\n" );
+		}
+		
+		return messages.toString();
+	}
 }

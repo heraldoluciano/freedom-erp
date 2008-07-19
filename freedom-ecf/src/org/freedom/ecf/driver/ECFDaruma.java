@@ -1,8 +1,6 @@
 
 package org.freedom.ecf.driver;
 
-import static org.freedom.ecf.driver.EStatus.RETORNO_OK;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,7 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.freedom.ecf.com.Serial;
 
 /**
@@ -220,10 +217,10 @@ public class ECFDaruma extends AbstractECFDriver {
 			warning = checkWarning( w1, w2 );
 			
 			if ( erro != 0 ) {
-				result.add(result.new ItemResult(true, erro, ""));
+				result.add( StatusDaruma.getStatusDaruma( erro ) );
 			}
 			else if ( warning != 1000 ) {
-				result.add(result.new ItemResult(false, warning, ""));
+				result.add( StatusDaruma.getStatusDaruma( warning ) );
 			}
 		}
 	    
@@ -232,8 +229,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	
 	public STResult checkRetorno2( final byte[] bytes ) {
 
-		STResult result = new STResult();
-		//result.add(result.new ItemResult(false, RETORNO_OK.getCode(), RETORNO_OK.getMessage() ));
+		STResult result = STResult.getInstanceOk();
 		byte[] bytesLidos;
 		
 		if ( bytes != null ) {
@@ -272,20 +268,6 @@ public class ECFDaruma extends AbstractECFDriver {
 		int retorno = Integer.parseInt( ("10" + (char) w1 + (char) w2).trim() );
 
 		return retorno;
-	}
-
-	public EStatus decodeReturnECF( final int arg ) {
-
-		EStatus status = RETORNO_OK;
-
-		for ( EStatus es : EStatus.values() ) {
-			if ( arg == es.getCode() ) {
-				status = es;
-				break;
-			}
-		}
-
-		return status;
 	}
 
 	public STResult alteraSimboloMoeda( final String simbolo ) {
@@ -533,7 +515,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		
 		final STResult result = executaCmd( CMD, 21 );
 		
-		if ( result.isCode( RETORNO_OK.getCode() ) ) {
+		if ( ! result.isInError() ) {
 			 indexItemAtual++;
 		}
 
@@ -615,7 +597,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		
 		final STResult result = executaCmd( CMD, 21 );
 		
-		if ( result.isCode( RETORNO_OK.getCode()) ) {
+		if ( ! result.isInError() ) {
 			 indexItemAtual++;
 		}
 
@@ -1022,7 +1004,7 @@ public class ECFDaruma extends AbstractECFDriver {
 			if ( index++ == 47 || i == str.length || str[ i ] == 10 ) {
 				CMDT = adicBytes( CMD, parseParam( tmp, 48 ).getBytes() );
 				result = executaCmd( CMDT, 7 );
-				if ( EStatus.RETORNO_OK != decodeReturnECF( result.getFirstCode() ) ) {
+				if ( result.isInError() ) {
 					return result;
 				}
 				tmp = "";

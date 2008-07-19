@@ -1,14 +1,26 @@
 
 package org.freedom.ecf.driver;
 
-import static org.freedom.ecf.driver.EStatus.*;
-import static org.freedom.ecf.driver.EStatus.RETORNO_INDEFINIDO;
-import static org.freedom.ecf.driver.EStatus.RETORNO_OK;
-
+import static org.freedom.ecf.driver.EStatus.BEMA_COMMAND_NO_EXECUTE;
+import static org.freedom.ecf.driver.EStatus.BEMA_CUPOM_FISCAL_ABERTO;
+import static org.freedom.ecf.driver.EStatus.BEMA_FIM_DE_PAPEL;
+import static org.freedom.ecf.driver.EStatus.BEMA_IMPRESSORA_EM_ERRO;
+import static org.freedom.ecf.driver.EStatus.BEMA_MEMORY_ERROR;
+import static org.freedom.ecf.driver.EStatus.BEMA_NO_ACESESS_CANCELAMENTO;
+import static org.freedom.ecf.driver.EStatus.BEMA_NO_ALIQUOTA;
+import static org.freedom.ecf.driver.EStatus.BEMA_NO_CNPJ_IE;
+import static org.freedom.ecf.driver.EStatus.BEMA_NO_COMMAND;
+import static org.freedom.ecf.driver.EStatus.BEMA_NO_ESC;
+import static org.freedom.ecf.driver.EStatus.BEMA_NU_PARAMS_INVALIDO;
+import static org.freedom.ecf.driver.EStatus.BEMA_OUT_OF_ALIQUOTA;
+import static org.freedom.ecf.driver.EStatus.BEMA_OUT_OF_MEMORY;
+import static org.freedom.ecf.driver.EStatus.BEMA_POUCO_PAPEL;
+import static org.freedom.ecf.driver.EStatus.BEMA_RELOGIO_ERROR;
+import static org.freedom.ecf.driver.EStatus.BEMA_TP_PARAM_INVALIDO;
+import static org.freedom.ecf.driver.EStatus.IMPRESSORA_OK;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.freedom.ecf.com.Serial;
 
 /**
@@ -208,9 +220,8 @@ public class ECFBematech extends AbstractECFDriver {
 			if ( ack == ACK && st1 == 0 && st2 == 0 ) {
 				result = STResult.getInstanceOk();
 			} else {
-				//retorno = -27; // Status da impressora diferente de 6,0,0 (ACK, ST1 e ST2)
-				//retorno = checkST1( st1 );
-				//retorno = checkST2( st2 );
+				result.addAll( checkST1( st1 ) );
+				result.addAll( checkST2( st2 ) );
 			}
 		}
 
@@ -235,35 +246,35 @@ public class ECFBematech extends AbstractECFDriver {
 
 		if ( st1 > 127 ) {
 			st1 -= 128;
-			result.add( StatusBematech.BEMA_PARAMETRO_INVALIDO );  
+			result.add( StatusBematech.BEMA_FIM_DE_PAPEL );  
 		}
 		if ( st1 > 63 ) {
 			st1 -= 64;
-			result.add( StatusBematech.BEMA_PARAMETRO_INVALIDO );  
+			result.add( StatusBematech.BEMA_POUCO_PAPEL );  
 		}
 		if ( st1 > 31 ) {
 			st1 -= 32;
-			result.add( StatusBematech.BEMA_PARAMETRO_INVALIDO );  
+			result.add( StatusBematech.BEMA_RELOGIO_ERROR );  
 		}
 		if ( st1 > 15 ) {
 			st1 -= 16;
-			result.add( StatusBematech.BEMA_PARAMETRO_INVALIDO );  
+			result.add( StatusBematech.BEMA_IMPRESSORA_EM_ERRO );  
 		}
 		if ( st1 > 7 ) {
 			st1 -= 8;
-			result.add( StatusBematech.BEMA_PARAMETRO_INVALIDO );  
+			result.add( StatusBematech.BEMA_NO_ESC );  
 		}
 		if ( st1 > 3 ) {
 			st1 -= 4;
-			result.add( StatusBematech.BEMA_PARAMETRO_INVALIDO );  
+			result.add( StatusBematech.BEMA_NO_COMMAND );  
 		}
 		if ( st1 > 1 ) {
 			st1 -= 2;
-			result.add( StatusBematech.BEMA_PARAMETRO_INVALIDO );  
+			result.add( StatusBematech.BEMA_CUPOM_FISCAL_ABERTO );  
 		}
 		if ( st1 > 0 ) {
 			st1 -= 1;
-			result.add( StatusBematech.BEMA_PARAMETRO_INVALIDO );  
+			result.add( StatusBematech.BEMA_NU_PARAMS_INVALIDO );  
 		}
 
 		return result;
@@ -275,10 +286,10 @@ public class ECFBematech extends AbstractECFDriver {
 	 * @param ST2
 	 * @return retorno checado
 	 */
-	private int checkST2( final byte ST2 ) {
+	private STResult checkST2( final byte ST2 ) {
 
-		int retorno = 0;
 		int st2 = ST2;
+		STResult result = new STResult();
 
 		// compatibilização do valor de byte de retorno.
 		if ( st2 < 0 ) {
@@ -286,79 +297,39 @@ public class ECFBematech extends AbstractECFDriver {
 		}
 		
 		if ( st2 > 127 ) {
-			retorno = -2;
 			st2 -= 128;
+			result.add( StatusBematech.BEMA_TP_PARAM_INVALIDO ); 
 		}
 		if ( st2 > 63 ) {
 			st2 -= 64;
+			result.add( StatusBematech.BEMA_OUT_OF_MEMORY ); 
 		}
 		if ( st2 > 31 ) {
 			st2 -= 32;
+			result.add( StatusBematech.BEMA_MEMORY_ERROR ); 
 		}
 		if ( st2 > 15 ) {
 			st2 -= 16;
+			result.add( StatusBematech.BEMA_NO_ALIQUOTA ); 
 		}
 		if ( st2 > 7 ) {
 			st2 -= 8;
+			result.add( StatusBematech.BEMA_OUT_OF_ALIQUOTA ); 
 		}
 		if ( st2 > 3 ) {
 			st2 -= 4;
+			result.add( StatusBematech.BEMA_NO_ACESESS_CANCELAMENTO ); 
 		}
 		if ( st2 > 1 ) {
 			st2 -= 2;
+			result.add( StatusBematech.BEMA_NO_CNPJ_IE ); 
 		}
 		if ( st2 > 0 ) {
 			st2 -= 1;
-			retorno = -2;
+			result.add( StatusBematech.BEMA_COMMAND_NO_EXECUTE ); 
 		}
 
-		return retorno;
-	}
-	
-	public EStatus decodeReturnECF( final int arg ) {
-
-		EStatus status = RETORNO_OK;
-
-		switch ( arg ) {
-
-			case 0 :
-				status = BEMA_ERRO_COMUNICACAO;
-				break;
-			case 1 :
-				status = RETORNO_OK;
-				break;
-			case -2 :
-				status = BEMA_PARAMETRO_INVALIDO;
-				break;
-			case -3 :
-				status = BEMA_ALIQUOTA_NAO_PROGRAMADA;
-				break;
-			case -4 :
-				status = BEMA_ARQ_INI_NAO_ENCONTRADO;
-				break;
-			case -5 :
-				status = BEMA_ERRO_ABRIR_PORTA;
-				break;
-			case -8 :
-				status = BEMA_ERRO_GRAVAR_RETORNO;
-				break;
-			case -27 :
-				status = BEMA_NAO_STATUS_600;
-				break;
-			case -30 :
-				status = BEMA_FUNCAO_NAO_COMPATIVEL;
-				break;
-			case -31 :
-				status = BEMA_FORMA_PAGAMENTO_NAO_FINALIZADA;
-				break;
-			default :
-				EStatus stmp = RETORNO_INDEFINIDO;
-				stmp.setMessage( "Retorno indefinido: " + arg );
-				status = stmp;
-				break;
-		}
-		
-		return status;
+		return result;
 	}
 
 	/**
