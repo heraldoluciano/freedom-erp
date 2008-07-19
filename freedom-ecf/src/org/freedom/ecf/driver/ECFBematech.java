@@ -206,7 +206,7 @@ public class ECFBematech extends AbstractECFDriver {
 			}
 
 			if ( ack == ACK && st1 == 0 && st2 == 0 ) {
-				result.add( result.new ItemResult(false, 1, "Sem alertas") );
+				result = STResult.getInstanceOk();
 			} else {
 				//retorno = -27; // Status da impressora diferente de 6,0,0 (ACK, ST1 e ST2)
 				//retorno = checkST1( st1 );
@@ -235,28 +235,35 @@ public class ECFBematech extends AbstractECFDriver {
 
 		if ( st1 > 127 ) {
 			st1 -= 128;
+			result.add( StatusBematech.BEMA_PARAMETRO_INVALIDO );  
 		}
 		if ( st1 > 63 ) {
 			st1 -= 64;
+			result.add( StatusBematech.BEMA_PARAMETRO_INVALIDO );  
 		}
 		if ( st1 > 31 ) {
 			st1 -= 32;
+			result.add( StatusBematech.BEMA_PARAMETRO_INVALIDO );  
 		}
 		if ( st1 > 15 ) {
 			st1 -= 16;
+			result.add( StatusBematech.BEMA_PARAMETRO_INVALIDO );  
 		}
 		if ( st1 > 7 ) {
 			st1 -= 8;
+			result.add( StatusBematech.BEMA_PARAMETRO_INVALIDO );  
 		}
 		if ( st1 > 3 ) {
 			st1 -= 4;
+			result.add( StatusBematech.BEMA_PARAMETRO_INVALIDO );  
 		}
 		if ( st1 > 1 ) {
 			st1 -= 2;
+			result.add( StatusBematech.BEMA_PARAMETRO_INVALIDO );  
 		}
 		if ( st1 > 0 ) {
 			st1 -= 1;
-			result.add( result.new ItemResult(true, -2, "Parâmetro inválido na função. ou Número de parâmetros inválido na funçao") );  
+			result.add( StatusBematech.BEMA_PARAMETRO_INVALIDO );  
 		}
 
 		return result;
