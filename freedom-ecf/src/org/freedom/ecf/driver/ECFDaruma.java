@@ -1046,9 +1046,9 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * @see org.freedom.ecf.driver.EStatus
 	 * @return estado da impressora.<br>
 	 */
-	public List<EStatus> getStatus() {
+	public String getStatus() {
 		
-		final List<EStatus> status = new ArrayList<EStatus>();	
+		final StringBuilder status = new StringBuilder();	
 		final byte[] CMD = { GS, ENQ };
 		executaCmd( CMD, 14, false );
 		
@@ -1075,15 +1075,8 @@ public class ECFDaruma extends AbstractECFDriver {
 
 		int index = 1;
 		
-		final Map<String, EStatus> ms = new HashMap<String, EStatus>();
-		
-		for ( EStatus s : EStatus.values() ) {
-			if ( s.getCode() > 2000 ) {
-				ms.put( String.valueOf(s.getCode()), s );
-			}
-		}
-		
 		String key = "";
+		StatusDaruma statusDaruma = null;
 		
 		for ( char ch : chs ) {
 			if ( index != 8 && index <= 10 ) {
@@ -1093,15 +1086,16 @@ public class ECFDaruma extends AbstractECFDriver {
 					key += index;
 					key += i;
 					key += value[Integer.parseInt( String.valueOf( ch ), 16 )][i];
-					if ( ms.get( key ) != null ) {
-						status.add( ms.get( key ) );
+					statusDaruma = StatusDaruma.getStatusDaruma( Integer.parseInt( key ) );
+					if ( statusDaruma != null ) {
+						status.append( statusDaruma.getMessage() + "\n" );
 					}
 				}
 			}
 			index++;
 		}
 
-		return status;
+		return status.toString();
 	}
 
 	public String retornoAliquotas() {

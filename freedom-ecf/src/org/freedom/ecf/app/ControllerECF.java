@@ -21,7 +21,6 @@ import java.util.Locale;
 import org.apache.log4j.Logger;
 import org.freedom.ecf.com.Serial;
 import org.freedom.ecf.driver.AbstractECFDriver;
-import org.freedom.ecf.driver.EStatus;
 import org.freedom.ecf.driver.STResult;
 
 public class ControllerECF {
@@ -1416,9 +1415,9 @@ public class ControllerECF {
 		return returnOfAction;
 	}
 
-	public List<EStatus> getStatusImpressora() {
+	public String getStatusImpressora() {
 	
-		List<EStatus> returnOfAction = null;
+		String returnOfAction = "";
 		
 		if ( notIsModoDemostracao() ) {	
 			returnOfAction = ecf.getStatus();
