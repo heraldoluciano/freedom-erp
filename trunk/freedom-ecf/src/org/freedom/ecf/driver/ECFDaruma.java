@@ -233,7 +233,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	public STResult checkRetorno2( final byte[] bytes ) {
 
 		STResult result = new STResult();
-		result.add(result.new ItemResult(false, RETORNO_OK.getCode(), RETORNO_OK.getMessage() ));
+		//result.add(result.new ItemResult(false, RETORNO_OK.getCode(), RETORNO_OK.getMessage() ));
 		byte[] bytesLidos;
 		
 		if ( bytes != null ) {
@@ -404,7 +404,7 @@ public class ECFDaruma extends AbstractECFDriver {
 
 		STResult result = indendificacaoConsumidor( cnpj );
 
-		if ( !result.isMetError() ) {
+		if ( !result.isInError() ) {
 			result = aberturaDeCupom();
 		}
 
