@@ -1,26 +1,7 @@
 
 package org.freedom.ecf.driver;
 
-import static org.freedom.ecf.driver.EStatus.BEMA_COMMAND_NO_EXECUTE;
-import static org.freedom.ecf.driver.EStatus.BEMA_CUPOM_FISCAL_ABERTO;
-import static org.freedom.ecf.driver.EStatus.BEMA_FIM_DE_PAPEL;
-import static org.freedom.ecf.driver.EStatus.BEMA_IMPRESSORA_EM_ERRO;
-import static org.freedom.ecf.driver.EStatus.BEMA_MEMORY_ERROR;
-import static org.freedom.ecf.driver.EStatus.BEMA_NO_ACESESS_CANCELAMENTO;
-import static org.freedom.ecf.driver.EStatus.BEMA_NO_ALIQUOTA;
-import static org.freedom.ecf.driver.EStatus.BEMA_NO_CNPJ_IE;
-import static org.freedom.ecf.driver.EStatus.BEMA_NO_COMMAND;
-import static org.freedom.ecf.driver.EStatus.BEMA_NO_ESC;
-import static org.freedom.ecf.driver.EStatus.BEMA_NU_PARAMS_INVALIDO;
-import static org.freedom.ecf.driver.EStatus.BEMA_OUT_OF_ALIQUOTA;
-import static org.freedom.ecf.driver.EStatus.BEMA_OUT_OF_MEMORY;
-import static org.freedom.ecf.driver.EStatus.BEMA_POUCO_PAPEL;
-import static org.freedom.ecf.driver.EStatus.BEMA_RELOGIO_ERROR;
-import static org.freedom.ecf.driver.EStatus.BEMA_TP_PARAM_INVALIDO;
-import static org.freedom.ecf.driver.EStatus.IMPRESSORA_OK;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import org.freedom.ecf.com.Serial;
 
 /**
@@ -1248,87 +1229,13 @@ public class ECFBematech extends AbstractECFDriver {
 	 * @see org.freedom.ecf.driver.EStatus
 	 * @return estado da impressora.<br>
 	 */
-	public List<EStatus> getStatus() {
+	public String getStatus() {
 
-		final byte[] CMD = preparaCmd( new byte[ ] { ESC, 19 } );
+		final byte[] CMD = { ESC, 19 };
 
-		final byte[] ret = enviaCmd( CMD, 3 );
+		STResult stresult = executaCmd( CMD, 3 );	
 
-		List<EStatus> returnOfAction = new ArrayList<EStatus>();
-
-		int st1 = ret[ 1 ];
-		int st2 = ret[ 2 ];
-
-		if ( st1 >= 128 ) {
-			st1 -= 128;
-			returnOfAction.add( BEMA_FIM_DE_PAPEL );
-		}
-		if ( st1 >= 64 ) {
-			st1 -= 64;
-			returnOfAction.add( BEMA_POUCO_PAPEL );
-		}
-		if ( st1 >= 32 ) {
-			st1 -= 32;
-			returnOfAction.add( BEMA_RELOGIO_ERROR );
-		}
-		if ( st1 >= 16 ) {
-			st1 -= 16;
-			returnOfAction.add( BEMA_IMPRESSORA_EM_ERRO );
-		}
-		if ( st1 >= 8 ) {
-			st1 -= 8;
-			returnOfAction.add( BEMA_NO_ESC );
-		}
-		if ( st1 >= 4 ) {
-			st1 -= 4;
-			returnOfAction.add( BEMA_NO_COMMAND );
-		}
-		if ( st1 >= 2 ) {
-			st1 -= 2;
-			returnOfAction.add( BEMA_CUPOM_FISCAL_ABERTO );
-		}
-		if ( st1 >= 1 ) {
-			st1 -= 1;
-			returnOfAction.add( BEMA_NU_PARAMS_INVALIDO );
-		}
-
-		if ( st2 >= 128 ) {
-			st2 -= 128;
-			returnOfAction.add( BEMA_TP_PARAM_INVALIDO );
-		}
-		if ( st2 >= 64 ) {
-			st2 -= 64;
-			returnOfAction.add( BEMA_OUT_OF_MEMORY );
-		}
-		if ( st2 >= 32 ) {
-			st2 -= 32;
-			returnOfAction.add( BEMA_MEMORY_ERROR );
-		}
-		if ( st2 >= 16 ) {
-			st2 -= 16;
-			returnOfAction.add( BEMA_NO_ALIQUOTA );
-		}
-		if ( st2 >= 8 ) {
-			st2 -= 8;
-			returnOfAction.add( BEMA_OUT_OF_ALIQUOTA );
-		}
-		if ( st2 >= 4 ) {
-			st2 -= 4;
-			returnOfAction.add( BEMA_NO_ACESESS_CANCELAMENTO );
-		}
-		if ( st2 >= 2 ) {
-			st2 -= 2;
-			returnOfAction.add( BEMA_NO_CNPJ_IE );
-		}
-		if ( st2 >= 1 ) {
-			st2 -= 1;
-			returnOfAction.add( BEMA_COMMAND_NO_EXECUTE );
-		}
-		if ( returnOfAction.size() == 0 ) {
-			returnOfAction.add( IMPRESSORA_OK );
-		}
-
-		return returnOfAction;
+		return stresult.getMessages();
 	}
 
 	/**
@@ -1416,16 +1323,9 @@ public class ECFBematech extends AbstractECFDriver {
 	
 	public boolean retornoDocumentoAberto() {
 		
-		List<EStatus> status = getStatus();
-		if ( status != null ) {
-			for ( EStatus s : status ) {
-				if ( s == EStatus.BEMA_CUPOM_FISCAL_ABERTO ) {
-					return true;
-				}
-			}
-		}
-		
-		return false;
+		String status = getStatus();
+			
+		return status.indexOf( StatusBematech.BEMA_CUPOM_FISCAL_ABERTO.getMessage() ) > -1;
 	}
 
 	/**
