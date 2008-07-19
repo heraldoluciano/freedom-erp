@@ -1,6 +1,9 @@
 
 package org.freedom.ecf.driver;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StatusDaruma implements Status {
 
 	public static final StatusDaruma DARUMA_ERROR_01 = new StatusDaruma( 1, RELEVANC_ERRO, "Comando habilitado somente em modo manutenção." );
@@ -244,12 +247,155 @@ public class StatusDaruma implements Status {
 	public static final StatusDaruma DARUMA_STATUS_S10_B0_0 = new StatusDaruma( 21000, RELEVANC_MESSAGE, "Clichê do proprietário Ok." );
 
 	public static final StatusDaruma DARUMA_STATUS_S10_B0_1 = new StatusDaruma( 21001, RELEVANC_MESSAGE, "Clichê do prorietário danificado." );
+	
+	private static final List<StatusDaruma> statusList = new ArrayList<StatusDaruma>();
 
 	private String message;
 
 	private int code;
 
 	private int relevanc;
+	
+	
+	static {
+		
+		statusList.add( DARUMA_ERROR_01 );
+		statusList.add( DARUMA_ERROR_02 );
+		statusList.add( DARUMA_ERROR_03 );
+		statusList.add( DARUMA_ERROR_04 );
+		statusList.add( DARUMA_ERROR_05 );
+		statusList.add( DARUMA_ERROR_06 );
+		statusList.add( DARUMA_ERROR_07 );
+		statusList.add( DARUMA_ERROR_08 );
+		statusList.add( DARUMA_ERROR_09 );
+		statusList.add( DARUMA_ERROR_10 );
+		statusList.add( DARUMA_ERROR_11 );
+		statusList.add( DARUMA_ERROR_12 );
+		statusList.add( DARUMA_ERROR_13 );
+		statusList.add( DARUMA_ERROR_14 );
+		statusList.add( DARUMA_ERROR_15 );
+		statusList.add( DARUMA_ERROR_16 );
+		statusList.add( DARUMA_ERROR_17 );
+		statusList.add( DARUMA_ERROR_18 );
+		statusList.add( DARUMA_ERROR_19 );
+		statusList.add( DARUMA_ERROR_20 );
+		statusList.add( DARUMA_ERROR_21 );
+		statusList.add( DARUMA_ERROR_22 );
+		statusList.add( DARUMA_ERROR_23 );
+		statusList.add( DARUMA_ERROR_24 );
+		statusList.add( DARUMA_ERROR_25 );
+		statusList.add( DARUMA_ERROR_26 );
+		statusList.add( DARUMA_ERROR_27 );
+		statusList.add( DARUMA_ERROR_28 );
+		statusList.add( DARUMA_ERROR_29 );
+		statusList.add( DARUMA_ERROR_30 );
+		statusList.add( DARUMA_ERROR_31 );
+		statusList.add( DARUMA_ERROR_32 );
+		statusList.add( DARUMA_ERROR_33 );
+		statusList.add( DARUMA_ERROR_34 );
+		statusList.add( DARUMA_ERROR_35 );
+		statusList.add( DARUMA_ERROR_36 );
+		statusList.add( DARUMA_ERROR_38 );
+		statusList.add( DARUMA_ERROR_39 );
+		statusList.add( DARUMA_ERROR_40 );
+		statusList.add( DARUMA_ERROR_41 );
+		statusList.add( DARUMA_ERROR_42 );
+		statusList.add( DARUMA_ERROR_43 );
+		statusList.add( DARUMA_ERROR_44 );
+		statusList.add( DARUMA_ERROR_45 );
+		statusList.add( DARUMA_ERROR_47 );
+		statusList.add( DARUMA_ERROR_48 );
+		statusList.add( DARUMA_ERROR_49 );
+		statusList.add( DARUMA_ERROR_50 );
+		statusList.add( DARUMA_ERROR_61 );
+		statusList.add( DARUMA_ERROR_70 );
+		statusList.add( DARUMA_ERROR_80 );
+		statusList.add( DARUMA_ERROR_81 );
+		statusList.add( DARUMA_ERROR_82 );
+		statusList.add( DARUMA_ERROR_83 );
+		statusList.add( DARUMA_ERROR_84 );
+		statusList.add( DARUMA_ERROR_86 );
+		statusList.add( DARUMA_ERROR_87 );
+		statusList.add( DARUMA_ERROR_88 );
+		statusList.add( DARUMA_WARNING_01 );
+		statusList.add( DARUMA_WARNING_02 );
+		statusList.add( DARUMA_WARNING_04 );
+		statusList.add( DARUMA_WARNING_10 );
+		statusList.add( DARUMA_WARNING_20 );
+		statusList.add( DARUMA_STATUS_S1_B3_0 );
+		statusList.add( DARUMA_STATUS_S1_B3_1 );
+		statusList.add( DARUMA_STATUS_S1_B1_0 );
+		statusList.add( DARUMA_STATUS_S1_B1_1 );
+		statusList.add( DARUMA_STATUS_S1_B0_0 );
+		statusList.add( DARUMA_STATUS_S1_B0_1 );
+		statusList.add( DARUMA_STATUS_S2_B3_0 );
+		statusList.add( DARUMA_STATUS_S2_B3_1 );
+		statusList.add( DARUMA_STATUS_S2_B2_0 );
+		statusList.add( DARUMA_STATUS_S2_B2_1 );
+		statusList.add( DARUMA_STATUS_S2_B1_0 );
+		statusList.add( DARUMA_STATUS_S2_B1_1 );
+		statusList.add( DARUMA_STATUS_S2_B0_0 );
+		statusList.add( DARUMA_STATUS_S2_B0_1 );
+		statusList.add( DARUMA_STATUS_S3_B3_0 );
+		statusList.add( DARUMA_STATUS_S3_B3_1 );
+		statusList.add( DARUMA_STATUS_S3_B2_0 );
+		statusList.add( DARUMA_STATUS_S3_B2_1 );
+		statusList.add( DARUMA_STATUS_S3_B1_0 );
+		statusList.add( DARUMA_STATUS_S3_B1_1 );
+		statusList.add( DARUMA_STATUS_S3_B0_0 );
+		statusList.add( DARUMA_STATUS_S3_B0_1 );
+		statusList.add( DARUMA_STATUS_S4_B2_0 );
+		statusList.add( DARUMA_STATUS_S4_B2_1 );
+		statusList.add( DARUMA_STATUS_S4_B1_0 );
+		statusList.add( DARUMA_STATUS_S4_B1_1 );
+		statusList.add( DARUMA_STATUS_S4_B0_0 );
+		statusList.add( DARUMA_STATUS_S4_B0_1 );
+		statusList.add( DARUMA_STATUS_S5_B3_0 );
+		statusList.add( DARUMA_STATUS_S5_B3_1 );
+		statusList.add( DARUMA_STATUS_S5_B2_0 );
+		statusList.add( DARUMA_STATUS_S5_B2_1 );
+		statusList.add( DARUMA_STATUS_S5_B1_0 );
+		statusList.add( DARUMA_STATUS_S5_B1_1 );
+		statusList.add( DARUMA_STATUS_S5_B0_0 );
+		statusList.add( DARUMA_STATUS_S5_B0_1 );
+		statusList.add( DARUMA_STATUS_S6_B3_0 );
+		statusList.add( DARUMA_STATUS_S6_B3_1 );
+		statusList.add( DARUMA_STATUS_S6_B2_0 );
+		statusList.add( DARUMA_STATUS_S6_B2_1 );
+		statusList.add( DARUMA_STATUS_S7_B3_0 );
+		statusList.add( DARUMA_STATUS_S7_B3_1 );
+		statusList.add( DARUMA_STATUS_S7_B2_0 );
+		statusList.add( DARUMA_STATUS_S7_B2_1 );
+		statusList.add( DARUMA_STATUS_S7_B0_0 );
+		statusList.add( DARUMA_STATUS_S7_B0_1 );
+		statusList.add( DARUMA_STATUS_S9_B3_0 );
+		statusList.add( DARUMA_STATUS_S9_B3_1 );
+		statusList.add( DARUMA_STATUS_S9_B0_0 );
+		statusList.add( DARUMA_STATUS_S9_B0_1 );
+		statusList.add( DARUMA_STATUS_S10_B3_0 );
+		statusList.add( DARUMA_STATUS_S10_B3_1 );
+		statusList.add( DARUMA_STATUS_S10_B2_0 );
+		statusList.add( DARUMA_STATUS_S10_B2_1 );
+		statusList.add( DARUMA_STATUS_S10_B1_0 );
+		statusList.add( DARUMA_STATUS_S10_B1_1 );
+		statusList.add( DARUMA_STATUS_S10_B0_0 );
+		statusList.add( DARUMA_STATUS_S10_B0_1 );
+	}
+	
+	public static StatusDaruma getStatusDaruma( int code ) {
+		
+		StatusDaruma statusDaruma = null;
+		
+		for ( StatusDaruma sd : statusList ) {
+			if ( sd.getCode() == code ) {
+				statusDaruma = sd;
+				break;
+			}
+		}
+		
+		return statusDaruma;
+	}
+	
 
 	public StatusDaruma( int code, int relevanc, String message ) {
 

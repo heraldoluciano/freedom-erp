@@ -11,8 +11,6 @@ import static org.freedom.ecf.app.EParametro.PARAM_FORMA_PAGAMENTO;
 import static org.freedom.ecf.app.EParametro.PARAM_QUANTIDADE;
 import static org.freedom.ecf.app.EParametro.PARAM_UNIDADE_MEDIDA;
 import static org.freedom.ecf.app.EParametro.PARAM_VALOR_UNITARIO;
-import static org.freedom.ecf.driver.EStatus.RETORNO_OK;
-
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-
 import org.apache.log4j.Logger;
 import org.freedom.ecf.com.Serial;
 import org.freedom.ecf.driver.AbstractECFDriver;
@@ -219,16 +216,13 @@ public class ControllerECF {
 		return this.messageLog;
 	}
 
-	public boolean decodeReturn( final STResult arg ) {
+	public boolean decodeReturn( final STResult strresult ) {
 
-		boolean returnOfAction = true;
+		boolean returnOfAction = false;
 
-		setMessageLog( RETORNO_OK.getMessage() );
-		String str = ecf.decodeReturnECF( arg.getFirstCode() ).getMessage();
-
-		if ( ! RETORNO_OK.getMessage().equals( str ) ) {
-			returnOfAction = false;
-			setMessageLog( str );
+		if ( strresult != null ) {			
+			returnOfAction = !strresult.isInError();
+			setMessageLog( strresult.getMessages() );
 		}
 
 		return returnOfAction;
