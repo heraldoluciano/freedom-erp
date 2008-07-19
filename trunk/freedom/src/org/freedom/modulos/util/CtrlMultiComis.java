@@ -8,6 +8,8 @@ import java.sql.SQLException;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.EditEvent;
+import org.freedom.acao.EditListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -182,7 +184,7 @@ public class CtrlMultiComis {
 		}
 	}
 	
-	public class ItemComis implements CarregaListener {
+	public class ItemComis implements CarregaListener, EditListener {
 		private int seqitrc = 0;
 		private float perccomis = 0;
 		private String obrigitrc = null;
@@ -219,6 +221,8 @@ public class CtrlMultiComis {
 			lcVend.setReadOnly( true );
 			txtCodvend.setFK( true );
 			txtCodvend.setTabelaExterna( lcVend );
+			txtCodvend.addEditListener( this );
+			lcVend.addCarregaListener( this );
 			//lcVendaComis.addInsertListener( this );
 			//lcVendaComis.setQueryCommit( false );
 
@@ -353,9 +357,24 @@ public class CtrlMultiComis {
 			}
 		}*/
 		public void afterCarrega( CarregaEvent cevt ) {
-			
+			if ( (cevt.getListaCampos()==lcVend) && (lcMaster!=null) ) {
+			   	
+			}
 		}
 		public void beforeCarrega( CarregaEvent cevt ) {
+		}
+		public void afterEdit( EditEvent eevt ) {
+			if (eevt.getSource()==txtCodvend) {
+				if ( (lcMaster!=null) && (lcMaster.getStatus()==ListaCampos.LCS_NONE) ) {
+					lcMaster.edit();
+				}
+			}
+		}
+		public void beforeEdit( EditEvent eevt ) {
+
+		}
+		public void edit( EditEvent eevt ) {
+			
 		}
 	}
 	
