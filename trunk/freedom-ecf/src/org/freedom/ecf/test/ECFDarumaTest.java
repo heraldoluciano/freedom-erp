@@ -1,8 +1,6 @@
 package org.freedom.ecf.test;
 
-import static org.freedom.ecf.driver.EStatus.RETORNO_OK;
 import junit.framework.TestCase;
-
 import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.ecf.driver.ECFDaruma;
 import org.freedom.ecf.driver.STResult;
@@ -276,14 +274,8 @@ public class ECFDarumaTest extends TestCase {
 	
 	public boolean trataRetornoFuncao( final ECFDaruma ecf, final STResult arg ) {
 
-		boolean returnOfAction = true;
-
-		String str = ecf.decodeReturnECF( arg.getFirstCode() ).getMessage();
-
-		if ( ! RETORNO_OK.getMessage().equals( str ) ) {
-			returnOfAction = false;
-		}
-		System.out.println( str );
+		boolean returnOfAction = !arg.isInError();
+		System.out.println( arg.getMessages() );
 
 		return returnOfAction;
 	}
