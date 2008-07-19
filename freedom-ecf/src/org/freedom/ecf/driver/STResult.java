@@ -45,24 +45,25 @@ public class STResult {
 	
 	public boolean isCode(final int code) {
 		boolean result = false;
-		/*if (listResult!=null) {
-			for (ItemResult itemresult: listResult) {
+		if (listResult!=null) {
+			for (Status itemresult: listResult) {
 				if ( (itemresult!=null) && (itemresult.getCode()==code) ) {
 					result = true;
 					break;
 				}
 			}
-		}*/
+		}
 		return result;
 	}
 	
 	public int getFirstCode() {
 		int result = 0;
-		/*if ((listResult!=null) && (!listResult.isEmpty())) {
+		if ((listResult!=null) && (!listResult.isEmpty())) {
 			if (listResult.get( 0 )!=null) {
 				result = listResult.get( 0 ).getCode();
 			}
-		}*/
+		}
 		return result;
 	}
+	
 }
