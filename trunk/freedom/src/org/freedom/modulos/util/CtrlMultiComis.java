@@ -1,6 +1,7 @@
 package org.freedom.modulos.util;
 
 import java.awt.Component;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,8 +9,9 @@ import java.sql.SQLException;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
-import org.freedom.acao.EditEvent;
-import org.freedom.acao.EditListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
+import org.freedom.acao.PostEvent;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -48,143 +50,8 @@ public class CtrlMultiComis {
 		this.vendacomis = vendacomis;
 		this.lcMaster = lcMaster;
 	}
-
-	public ItemComis[] getListComis() {
-		return this.listComis;
-	}
-
-	public void loadRegraComis( final int codregrcomis) {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		int pos = 0;
-		if (listComis == null) {
-			listComis = new ItemComis[numComissionados];
-			for (int i=0; i<numComissionados; i++) {
-				listComis[ i ] = new ItemComis();
-			}
-		}
-		try {
-			ps = con.prepareStatement( "SELECT IR.SEQITRC, IR.OBRIGITRC, IR.PERCCOMISITRC " +
-					"FROM VDITREGRACOMIS IR " +
-					"WHERE IR.CODEMP=? AND IR.CODFILIAL=? AND IR.CODREGRCOMIS=? ");
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITREGRACOMIS" ) );
-			ps.setInt( 3, codregrcomis );
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				listComis[ pos ].setEnabled( true );
-				listComis[ pos ].setSeqitrc( rs.getInt( "SEQITRC" ) );
-				listComis[ pos ].setObrigitrc( rs.getString( "OBRIGITRC" ) );
-				listComis[ pos ].setPerccomis( rs.getFloat( "PERCCOMISITRC" ) );
-				pos ++;
-			}
-			for (int i=pos; i<numComissionados; i++) {
-				listComis[ i ].limpa();
-				listComis[ i ].setEnabled( false );
-			}
-			
-			rs.close();
-			ps.close();
-			if (!con.getAutoCommit()) {
-				con.commit();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void loadVendaComis( final String tipovenda, final int codvenda) {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		int pos = 0;
-		if (listComis == null) {
-			listComis = new ItemComis[numComissionados];
-			for (int i=0; i<numComissionados; i++) {
-				listComis[ i ] = new ItemComis();
-			}
-		}
-		try {
-			ps = con.prepareStatement( "SELECT VC.SEQVC, VC.CODREGRCOMIS, " +
-					"VC.SEQITRC, VC.CODVEND, VC.PERCVC " +
-					"FROM VDVENDACOMIS VC " +
-					"WHERE VC.CODEMP=? AND VC.CODFILIAL=? AND " +
-					"VC."+cpTipovenda+"=? AND VC."+cpCodvenda+"=?");
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITREGRACOMIS" ) );
-			ps.setString( 3, tipovenda );
-			ps.setInt( 4, codvenda );
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				listComis[ pos ].getTxtSeqvc().setVlrInteger( rs.getInt( "SEQVC" ) );
-				listComis[ pos ].setSeqitrc( rs.getInt( "SEQITRC" ) );
-				listComis[ pos ].getTxtTipovenda().setVlrString(lcMaster.getCampo( cpTipovenda ).getVlrString() );
-				listComis[ pos ].getTxtPerccomis().setVlrBigDecimal( rs.getBigDecimal( "PERCVC" ) );
-				pos ++;
-			}
-			for (int i=pos; i<numComissionados; i++) {
-				listComis[ i ].limpa();
-			}
-			for (ItemComis itemcomis: listComis) {
-				if (itemcomis!=null) {
-					itemcomis.getLcVend().carregaDados();
-				}
-			}
-			rs.close();
-			ps.close();
-			if (!con.getAutoCommit()) {
-				con.commit();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 	
-	public boolean validaItens() {
-		boolean result = true;
-		if (listComis!=null) {
-			for (ItemComis itemcomis: listComis) {
-				if ( (itemcomis!=null) ) { 
-					if ( ("S".equals(itemcomis.getObrigitrc()) ) && 
-						 (itemcomis.getTxtCodvend().isEnabled() ) ) {
-						if ("".equals( itemcomis.getTxtCodvend().getVlrString() )) {
-						    Funcoes.mensagemInforma( owner, "Preencha o comissionado!" );
-						    itemcomis.getTxtCodvend().requestFocus();
-							result = false;
-							break;
-						}
-						if ("".equals( itemcomis.getTxtPerccomis().getVlrString() )) {
-						    Funcoes.mensagemInforma( owner, "Preencha o % de comissao!" );
-						    itemcomis.getTxtCodvend().requestFocus();
-							result = false;
-							break;
-						}
-					}
-				}
-			}
-		}
-		return result;
-	}
-	
-	public void salvaItens() {
-		if (listComis!=null) {
-			for (ItemComis itemcomis: listComis) {
-				if ( (itemcomis!=null) ) { 
-					if ( ("S".equals(itemcomis.getObrigitrc()) ) && 
-						 (itemcomis.getTxtCodvend().isEnabled() ) ) {
-						/*if ( (itemcomis.getLcVendaComis().getStatus()==ListaCampos.LCS_EDIT) || 
-							 (itemcomis.getLcVendaComis().getStatus()==ListaCampos.LCS_INSERT)) {
-							//itemcomis.getTxtTipovenda().setVlrString( lcMaster.getCampo( cpTipovenda ).getVlrString() );
-							//itemcomis.getTxtCodvend().setVlrInteger( lcMaster.getCampo( cpCodvenda ).getVlrInteger() );
-							itemcomis.getTxtSeqvc().setVlrInteger( itemcomis.getSeqitrc() );
-							itemcomis.getLcVendaComis().post();
-						}*/
-					}
-				}
-			}
-		}
-	}
-	
-	public class ItemComis implements CarregaListener, EditListener {
+	public class ItemComis implements InsertListener, CarregaListener {
 		private int seqitrc = 0;
 		private float perccomis = 0;
 		private String obrigitrc = null;
@@ -198,12 +65,12 @@ public class CtrlMultiComis {
 		private JLabelPad lbNomevend = new JLabelPad("Nome do comissionado");
 		private JLabelPad lbPercvend = new JLabelPad("% comis.");
 		private ListaCampos lcVend = new ListaCampos(owner, "VD");
-		//private ListaCampos lcVendaComis = new ListaCampos(owner, "VC");
+		private ListaCampos lcVendaComis = new ListaCampos(owner, "VC");
 		public ItemComis() {
 			lcVend.setConexao( con );
-			//lcVendaComis.setConexao( con );
-			//lcVendaComis.setMaster( lcMaster );
-			//lcMaster.adicDetalhe( lcVendaComis );
+			lcVendaComis.setConexao( con );
+			lcVendaComis.setMaster( lcMaster );
+			lcMaster.adicDetalhe( lcVendaComis );
 			txtTipovenda = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
 			txtCodvenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 			txtSeqvc = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
@@ -217,17 +84,55 @@ public class CtrlMultiComis {
 			lcVend.add( new GuardaCampo( txtNomevend, "Nomevend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 			lcVend.setWhereAdic( "ATIVOCOMIS='S'" );
 			lcVend.montaSql( false, "VENDEDOR", "VD" );
-			lcVend.setQueryCommit( true );
+			lcVend.setQueryCommit( false );
 			lcVend.setReadOnly( true );
-			txtCodvend.setFK( true );
 			txtCodvend.setTabelaExterna( lcVend );
-			txtCodvend.addEditListener( this );
-			lcVend.addCarregaListener( this );
-			//lcVendaComis.addInsertListener( this );
-			//lcVendaComis.setQueryCommit( false );
-
+			lcVendaComis.addInsertListener( this );
 			//lcMaster.addPostListener( this );
 		}
+		
+		public void loadVendaComis( final int codregrcomis) {
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			int pos = 0;
+			if (listComis == null) {
+				listComis = new ItemComis[numComissionados];
+				for (int i=0; i<numComissionados; i++) {
+					listComis[ i ] = new ItemComis();
+				}
+			}
+			try {
+				ps = con.prepareStatement( "SELECT VC.SEQVC, VC.CODREGRCOMIS, " +
+						"VC.SEQITRC, VC.CODVEND, VC.PERCVC " +
+						"FROM VDVENDACOMIS VC " +
+						"WHERE VC.CODEMP=? AND VC.CODFILIAL=? AND" +
+						"VC."+cpTipovenda+"=? AND VC."+cpCodvenda+"=?");
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "VDITREGRACOMIS" ) );
+				ps.setString( 3, lcMaster.getCampo( cpTipovenda ).getVlrString() );
+				ps.setInt( 4, lcMaster.getCampo( cpCodvenda ).getVlrInteger().intValue() );
+				rs = ps.executeQuery();
+				while (rs.next()) {
+					listComis[ pos ].getTxtSeqvc().setVlrInteger( rs.getInt( "SEQVC" ) );
+					listComis[ pos ].setSeqitrc( rs.getInt( "SEQITRC" ) );
+					listComis[ pos ].getTxtTipovenda().setVlrString(lcMaster.getCampo( cpTipovenda ).getVlrString() );
+					listComis[ pos ].getTxtPerccomis().setVlrBigDecimal( rs.getBigDecimal( "PERCVC" ) );
+					pos ++;
+				}
+				for (int i=pos; i<numComissionados; i++) {
+					listComis[ i ].limpa();
+				}
+				for (ItemComis itemcomis: listComis) {
+					if (itemcomis!=null) {
+//						itemcomis.getLcVend().carregaDados();
+					}
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 		public int getSeqitrc() {
 			return seqitrc;
 		}
@@ -239,8 +144,10 @@ public class CtrlMultiComis {
 		}
 		public void setObrigitrc( String obrigitrc ) {
 			this.obrigitrc = obrigitrc;
-			txtCodvend.setRequerido( "S".equals(obrigitrc) );
-			txtPerccomis.setRequerido( "S".equals(obrigitrc) );
+			if ( "S".equals(obrigitrc) ) {
+				txtCodvend.setRequerido( true );
+				txtPerccomis.setRequerido( true );
+			}
 		}
 		public void setEnabled(final boolean enabled) {
 			txtCodvend.setEnabled( enabled );
@@ -296,13 +203,14 @@ public class CtrlMultiComis {
 			this.txtSeqvc = txtSeqvc;
 		}
 		
-		public ListaCampos getLcVend() {
+		public ListaCampos getLcVendaComis() {
 		
-			return lcVend;
+			return lcVendaComis;
 		}
 		
-		public void setLcVendaComis( ListaCampos lcVend ) {
-			this.lcVend = lcVend;
+		public void setLcVendaComis( ListaCampos lcVendaComis ) {
+		
+			this.lcVendaComis = lcVendaComis;
 		}
 		
 		public JTextFieldPad getTxtTipovenda() {
@@ -334,7 +242,6 @@ public class CtrlMultiComis {
 		
 			this.perccomis = perccomis;
 		}
-		/*
 		public void afterInsert( InsertEvent ievt ) {
 			if ( ievt.getListaCampos()==lcVendaComis ) {
 				txtPerccomis.setVlrBigDecimal( new BigDecimal(getPerccomis()) );
@@ -355,28 +262,96 @@ public class CtrlMultiComis {
 					return;
 				}
 			}
-		}*/
+		}
 		public void afterCarrega( CarregaEvent cevt ) {
-			if ( (cevt.getListaCampos()==lcVend) && (lcMaster!=null) ) {
-			   	
-			}
+			
 		}
 		public void beforeCarrega( CarregaEvent cevt ) {
 		}
-		public void afterEdit( EditEvent eevt ) {
-			if (eevt.getSource()==txtCodvend) {
-				if ( (lcMaster!=null) && (lcMaster.getStatus()==ListaCampos.LCS_NONE) ) {
-					lcMaster.edit();
+	}
+	
+	public ItemComis[] getListComis() {
+		return this.listComis;
+	}
+
+	public void loadRegraComis( final int codregrcomis) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int pos = 0;
+		if (listComis == null) {
+			listComis = new ItemComis[numComissionados];
+			for (int i=0; i<numComissionados; i++) {
+				listComis[ i ] = new ItemComis();
+			}
+		}
+		try {
+			ps = con.prepareStatement( "SELECT IR.SEQITRC, IR.OBRIGITRC, IR.PERCCOMISITRC " +
+					"FROM VDITREGRACOMIS IR " +
+					"WHERE IR.CODEMP=? AND IR.CODFILIAL=? AND IR.CODREGRCOMIS=? ");
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITREGRACOMIS" ) );
+			ps.setInt( 3, codregrcomis );
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				listComis[ pos ].setEnabled( true );
+				listComis[ pos ].setSeqitrc( rs.getInt( "SEQITRC" ) );
+				listComis[ pos ].setObrigitrc( rs.getString( "OBRIGITRC" ) );
+				listComis[ pos ].setPerccomis( rs.getFloat( "PERCCOMISITRC" ) );
+				pos ++;
+			}
+			for (int i=pos; i<numComissionados; i++) {
+				listComis[ i ].limpa();
+				listComis[ i ].setEnabled( false );
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public boolean validaItens() {
+		boolean result = true;
+		if (listComis!=null) {
+			for (ItemComis itemcomis: listComis) {
+				if ( (itemcomis!=null) ) { 
+					if ( ("S".equals(itemcomis.getObrigitrc()) ) && 
+						 (itemcomis.getTxtCodvend().isEnabled() ) ) {
+						if ("".equals( itemcomis.getTxtCodvend().getVlrString() )) {
+						    Funcoes.mensagemInforma( owner, "Preencha o comissionado!" );
+						    itemcomis.getTxtCodvend().requestFocus();
+							result = false;
+							break;
+						}
+						if ("".equals( itemcomis.getTxtPerccomis().getVlrString() )) {
+						    Funcoes.mensagemInforma( owner, "Preencha o % de comissao!" );
+						    itemcomis.getTxtCodvend().requestFocus();
+							result = false;
+							break;
+						}
+					}
 				}
 			}
 		}
-		public void beforeEdit( EditEvent eevt ) {
-
-		}
-		public void edit( EditEvent eevt ) {
-			
-		}
+		return result;
 	}
 	
+	public void salvaItens() {
+		if (listComis!=null) {
+			for (ItemComis itemcomis: listComis) {
+				if ( (itemcomis!=null) ) { 
+					if ( ("S".equals(itemcomis.getObrigitrc()) ) && 
+						 (itemcomis.getTxtCodvend().isEnabled() ) ) {
+						if ( (itemcomis.getLcVendaComis().getStatus()==ListaCampos.LCS_EDIT) || 
+							 (itemcomis.getLcVendaComis().getStatus()==ListaCampos.LCS_INSERT)) {
+							itemcomis.getTxtTipovenda().setVlrString( lcMaster.getCampo( cpTipovenda ).getVlrString() );
+							itemcomis.getTxtCodvend().setVlrInteger( lcMaster.getCampo( cpCodvenda ).getVlrInteger() );
+							itemcomis.getTxtSeqvc().setVlrInteger( itemcomis.getSeqitrc() );
+							itemcomis.getLcVendaComis().post();
+						}
+					}
+				}
+			}
+		}
+	}
 
 }
