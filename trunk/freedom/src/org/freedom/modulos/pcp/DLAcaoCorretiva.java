@@ -278,8 +278,9 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 
 		boolean valido = false;
 		Integer newCodCorrecao = null;
-		String sqlmax = "SELECT MAX(SEQAC) + 1 FROM PPOPACAOCORRET WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?";
-				
+		String sqlmaxac = "SELECT MAX(SEQAC) ROM PPOPACAOCORRET WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?";
+		String sqlmaxcq = "SELECT MAX(SEQOPCQ) + 1 FROM PPOPCQ WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?";
+		
 		try {
 			
 			for ( Entry<Integer, JCheckBoxPad> ek : analises.entrySet() ) {
@@ -306,7 +307,7 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 				return false;
 			}
 			
-			PreparedStatement ps = con.prepareStatement( sqlmax );
+			PreparedStatement ps = con.prepareStatement( sqlmaxac );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPACAOCORRET" ) );
@@ -316,7 +317,7 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				newCodCorrecao = rs.getInt( 1 );
+				newCodCorrecao = rs.getInt( 1 ) + 1;
 			}
 
 			rs.close();
@@ -377,7 +378,7 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 				sql.append( "INSERT INTO PPOPCQ (CODEMP,CODFILIAL,CODOP,SEQOP,SEQOPCQ," );
 				sql.append( "CODEMPEA,CODFILIALEA,CODESTANALISE) " );
 				sql.append( "SELECT CODEMP,CODFILIAL,CODOP,SEQOP,(");
-				sql.append( sqlmax );
+				sql.append( sqlmaxcq );
 				sql.append( "),CODEMPEA,CODFILIALEA,CODESTANALISE " );
 				sql.append( "FROM PPOPCQ ");
 				sql.append(	"WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND " );
