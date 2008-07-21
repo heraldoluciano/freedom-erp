@@ -87,11 +87,17 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 	
 	private JLabelPad lbTxtAtrasado = new JLabelPad("Recusada");
 	
+	private JLabelPad lbTxtCorrigido = new JLabelPad("Corrigido");
+	
 	private ImageIcon imgPendente = Icone.novo( "clIndisponivelParc.gif" );
 	
 	private ImageIcon imgAprovada = Icone.novo( "clEfetivado.gif" );
 	
 	private ImageIcon imgRecusado = Icone.novo( "clVencido.gif" );
+	
+	private ImageIcon imgCorrigidas = Icone.novo( "clPagoParcial.gif" );
+	
+	private JLabelPad lbImgCorrigido = new JLabelPad( imgCorrigidas );
 	
 	private JLabelPad lbImgPendente = new JLabelPad( imgPendente );
 	
@@ -99,7 +105,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 	
 	private JLabelPad lbImgAtrasado = new JLabelPad( imgRecusado );
 	
-	private JPanelPad pnBot = new JPanelPad( 410, 30 );
+	private JPanelPad pnBot = new JPanelPad( 480, 30 );
 	
 	private ImageIcon imgStatus = null;
 	
@@ -109,12 +115,14 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 	
 	public JButton btOK = new JButton("OK", Icone.novo("btOk.gif"));
 	
-	public JButton btACorretiva = new JButton( "Ações corretivas", Icone.novo("btAcoesCorretivas.gif"));
+	public JButton btACorretiva = new JButton( "Nova ação", Icone.novo("btAcoesCorretivas.gif"));
+	
+	public JButton btAbreAcao = new JButton( "Abre ação", Icone.novo("btAcoesCorretivas.gif"));
 	
 	private enum EcolPPOPCQ{
 	
 		STATUS, SEQOPCQ, CODESTANALISE, DESCTPANALISE, VLRMIN ,
-		VLRMAX, VLRAFER, DESCAFER, TIPOEXPEC
+		VLRMAX, VLRAFER, DESCAFER, TIPOEXPEC, SEQAC
 	
 	};
 	
@@ -129,9 +137,11 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		lbTxtPendente.setFont( fontLegenda );
 		lbTxtFinalizada.setFont( fontLegenda );
 		lbTxtAtrasado.setFont( fontLegenda );
+		lbTxtCorrigido.setFont( fontLegenda );
 		
 		btOK.addActionListener( this );
 		btACorretiva.addActionListener( this );
+		btAbreAcao.addActionListener( this );
 	}
 
 	private void montaTela( boolean bPref ) {
@@ -180,17 +190,20 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		pnRodape.removeAll();
 		pnRodape.add( pnBot, BorderLayout.WEST );
 		pnBot.tiraBorda();		
-		pnBot.adic( btACorretiva, 0, 0, 170, 30 );
-		pnBot.adic( lbImgPendente, 180, 4, 20, 20 );
-		pnBot.adic( lbTxtPendente, 200, 4, 80, 20 );
-		pnBot.adic( lbImgAtrasado, 245, 4, 20, 20 );
-		pnBot.adic( lbTxtAtrasado, 265, 4, 90, 20 );
-		pnBot.adic( lbImgFinalizada, 310, 4, 20, 20 );
-		pnBot.adic( lbTxtFinalizada, 330, 4, 80, 20 );
+		pnBot.adic( btACorretiva, 0, 0, 120, 30 );
+		pnBot.adic( btAbreAcao, 123, 0, 100, 30 );
+		pnBot.adic( lbImgPendente, 220, 4, 20, 20 );
+		pnBot.adic( lbTxtPendente, 240, 4, 80, 20 );
+		pnBot.adic( lbImgAtrasado, 285, 4, 20, 20 );
+		pnBot.adic( lbTxtAtrasado, 305, 4, 90, 20 );
+		pnBot.adic( lbImgFinalizada, 350, 4, 20, 20 );
+		pnBot.adic( lbTxtFinalizada, 370, 4, 80, 20 );
+		pnBot.adic( lbImgCorrigido, 410, 4, 20, 20 );
+		pnBot.adic( lbTxtCorrigido, 430, 4, 150, 20 );
 
 		btOK.setPreferredSize( new Dimension( 110, 30 ) );		
 		pnRodape.add( btOK, BorderLayout.EAST );
-		
+	
 		txtCodOP.setAtivo( false );
 		txtSeqOP.setAtivo( false );
 		txtCodProdEst.setAtivo( false );
@@ -211,6 +224,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		tabControl.adicColuna( "Valor aferido" );
 		tabControl.adicColuna( "Desc.Aferido" );
 		tabControl.adicColuna( "Tipo" );
+		tabControl.adicColuna( "SEQAC" );
 	
 		tabControl.setTamColuna( 10, EcolPPOPCQ.STATUS.ordinal());
 		tabControl.setTamColuna( 20, EcolPPOPCQ.SEQOPCQ.ordinal());
@@ -234,9 +248,10 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		BigDecimal bVlrMin = null;
 		BigDecimal bVlrmax = null;
 		boolean ablBt = false;
+		boolean ablBtVis = false;
 		
 		sSQL.append( "SELECT PQ.SEQOPCQ, PQ.CODESTANALISE, PQ.VLRAFER, PQ.DESCAFER, PA.DESCTPANALISE, PA.TIPOEXPEC, " );
-		sSQL.append( "PE.VLRMIN, PE.VLRMAX, PQ.STATUS " );
+		sSQL.append( "PE.VLRMIN, PE.VLRMAX, PQ.STATUS, PQ.SEQAC " );
 		sSQL.append( "FROM PPOPCQ PQ, PPESTRUANALISE PE, PPTIPOANALISE PA WHERE PQ.CODEMP=? AND PQ.CODFILIAL=? AND " );
 		sSQL.append( "PQ.CODOP=? AND PQ.SEQOP=? AND PE.CODEMP=PQ.CODEMPEA AND " );
 		sSQL.append( "PE.CODFILIAL=PQ.CODFILIALEA AND PE.CODESTANALISE=PQ.CODESTANALISE AND " );
@@ -268,6 +283,12 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 						ablBt = true;
 					}
 				}
+				if( rs.getInt( "SEQAC" ) > 0 ){
+					imgStatus = imgCorrigidas;
+					if( !ablBtVis ){
+						ablBtVis = true;
+					}
+				}
 					
 				tabControl.adicLinha();
 
@@ -280,10 +301,12 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 				tabControl.setValor( rs.getBigDecimal( "VLRAFER" ), i, EcolPPOPCQ.VLRAFER.ordinal() );
 				tabControl.setValor( rs.getString( "DESCAFER" ), i, EcolPPOPCQ.DESCAFER.ordinal() );
 				tabControl.setValor( rs.getString( "TIPOEXPEC" ), i, EcolPPOPCQ.TIPOEXPEC.ordinal() );
+				tabControl.setValor( rs.getInt( "SEQAC" ), i, EcolPPOPCQ.SEQAC.ordinal() );
 				i++;
 
 		   }
 	  	  btACorretiva.setEnabled( ablBt );
+	  	  btAbreAcao.setEnabled( ablBtVis );
 		
 	  	  rs.close();
 	  	  ps.close();
@@ -424,7 +447,63 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		DLAcoesCorretivas dl = new DLAcoesCorretivas( con, keys );
 		dl.setVisible( true );
 	}
-
+	
+	private void acaoCorretiva(){
+		
+		Object[] keys = new Object[8];
+		
+		StringBuffer sql = new StringBuffer();
+		PreparedStatement ps = null; 
+		String obs  = "";
+		String acao = "";
+		
+		if( tabControl.getLinhaSel() < 0 ){
+			Funcoes.mensagemInforma( this, "Selecione uma ação no grid!" ); 
+			return;
+		}
+		
+		sql.append( "SELECT A.OBSACAO, A.OBSCAUSA FROM PPOPACAOCORRET A WHERE A.CODEMP=? AND ");
+		sql.append( "A.CODFILIAL=? AND A.CODOP=? AND A.SEQOP=? AND A.SEQAC=?" );
+		
+		try {
+			
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp  );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPACAOCORRENT" ) );
+			ps.setInt( 3, txtCodOP.getVlrInteger() );
+			ps.setInt( 4, txtSeqOP.getVlrInteger() );
+			ps.setInt( 5, (Integer)tabControl.getValor( tabControl.getLinhaSel(), EcolPPOPCQ.SEQAC.ordinal() ));
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if( rs.next() ){
+				
+				acao = rs.getString( "OBSACAO" );
+				obs = rs.getString( "OBSCAUSA" );
+				
+			}
+			
+		} catch ( SQLException e ) {
+			
+			e.printStackTrace();
+		}
+		
+		keys[0] = txtCodOP.getVlrInteger(); 
+		keys[1] = txtSeqOP.getVlrInteger(); 
+		keys[2] = txtCodProdEst.getVlrInteger(); 
+		keys[3] = txtRefProdEst.getVlrString(); 
+		keys[4] = txtSeqEst.getVlrInteger(); 
+		keys[5] = txtDescEst.getVlrString();
+		keys[6] = acao;
+		keys[7] = obs;
+		
+		
+		DLAcaoCorretiva dl = new DLAcaoCorretiva( con, keys );
+		dl.setVisible( true );
+		
+		
+	}
+	
 	public void actionPerformed( ActionEvent evt ) {
 
 		super.actionPerformed(evt);
@@ -436,6 +515,10 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		else if( evt.getSource() == btACorretiva ){
 			
 			acoesCorretivas();
+		}
+		else if( evt.getSource() == btAbreAcao ){
+			
+			acaoCorretiva(); 
 		}
 	}
 
