@@ -1,11 +1,12 @@
 /**
  * @version 17/07/2008 <BR>
  * @author Setpoint Informática Ltda./Reginaldo Garcia Heua <BR>
- *
+ * 
  * Projeto: Freedom <BR>
- *  
+ * 
  * Pacote: org.freedom.modulos.pcp <BR>
- * Classe: @(#)DLContrQualidade.java <BR>
+ * Classe:
+ * @(#)DLContrQualidade.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -14,14 +15,16 @@
  * o LICENCIADOR ou então pegar uma cópia em: <BR>
  * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
- *
+ * de acordo com os termos da LPG-PC <BR>
+ * <BR>
+ * 
  * Comentários sobre a classe...
  */
 package org.freedom.modulos.pcp;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -81,64 +84,64 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 
 	private JTextFieldPad txtQtdProd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 
-	private JLabelPad lbTxtPendente = new JLabelPad("Pendente");
-	
-	private JLabelPad lbTxtFinalizada = new JLabelPad("Aprovada");
-	
-	private JLabelPad lbTxtAtrasado = new JLabelPad("Recusada");
-	
-	private JLabelPad lbTxtCorrigido = new JLabelPad("Corrigido");
-	
+	private JLabelPad lbTxtPendente = new JLabelPad( "Pendente" );
+
+	private JLabelPad lbTxtFinalizada = new JLabelPad( "Aprovada" );
+
+	private JLabelPad lbTxtAtrasado = new JLabelPad( "Recusada" );
+
+	private JLabelPad lbTxtCorrigido = new JLabelPad( "Corrigido" );
+
 	private ImageIcon imgPendente = Icone.novo( "clIndisponivelParc.gif" );
-	
+
 	private ImageIcon imgAprovada = Icone.novo( "clEfetivado.gif" );
-	
+
 	private ImageIcon imgRecusado = Icone.novo( "clVencido.gif" );
-	
+
 	private ImageIcon imgCorrigidas = Icone.novo( "clPagoParcial.gif" );
-	
+
 	private JLabelPad lbImgCorrigido = new JLabelPad( imgCorrigidas );
-	
+
 	private JLabelPad lbImgPendente = new JLabelPad( imgPendente );
-	
+
 	private JLabelPad lbImgFinalizada = new JLabelPad( imgAprovada );
-	
+
 	private JLabelPad lbImgAtrasado = new JLabelPad( imgRecusado );
-	
-	private JPanelPad pnBot = new JPanelPad( 480, 30 );
-	
+
+	private JPanelPad pnBot = new JPanelPad( new FlowLayout( FlowLayout.LEFT, 5, 5 ) );
+
+	private JPanelPad pnBotSair = new JPanelPad( new FlowLayout( FlowLayout.LEFT, 5, 5 ) );
+
 	private ImageIcon imgStatus = null;
-	
-	private Font fontLegenda =  new Font( "Arial", Font.PLAIN, 9 );	
+
+	private Font fontLegenda = new Font( "Arial", Font.PLAIN, 9 );
 
 	private String sEstAnalise = "";
-	
-	public JButton btOK = new JButton("OK", Icone.novo("btOk.gif"));
-	
-	public JButton btACorretiva = new JButton( "Nova ação", Icone.novo("btAcoesCorretivas.gif"));
-	
-	public JButton btAbreAcao = new JButton( "Abre ação", Icone.novo("btAcoesCorretivas.gif"));
-	
-	private enum EcolPPOPCQ{
-	
-		STATUS, SEQOPCQ, CODESTANALISE, DESCTPANALISE, VLRMIN ,
-		VLRMAX, VLRAFER, DESCAFER, TIPOEXPEC, SEQAC
-	
+
+	public JButton btOK = new JButton( "OK", Icone.novo( "btOk.gif" ) );
+
+	public JButton btACorretiva = new JButton( "Nova ação", Icone.novo( "btAcoesCorretivas.gif" ) );
+
+	public JButton btAbreAcao = new JButton( "Abre ação", Icone.novo( "btAcoesCorretivas.gif" ) );
+
+	private enum EcolPPOPCQ {
+
+		STATUS, SEQOPCQ, CODESTANALISE, DESCTPANALISE, VLRMIN, VLRMAX, VLRAFER, DESCAFER, TIPOEXPEC, SEQAC
+
 	};
-	
-	
+
 	public DLContrQualidade( Connection con, boolean bPref ) {
 
 		setTitulo( "Controle de qualidade" );
-		setAtribos( 610, 380 );
+		setAtribos( 640, 380 );
 		setConexao( con );
 		montaTela( bPref );
-		
+
 		lbTxtPendente.setFont( fontLegenda );
 		lbTxtFinalizada.setFont( fontLegenda );
 		lbTxtAtrasado.setFont( fontLegenda );
 		lbTxtCorrigido.setFont( fontLegenda );
-		
+
 		btOK.addActionListener( this );
 		btACorretiva.addActionListener( this );
 		btAbreAcao.addActionListener( this );
@@ -155,20 +158,19 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 
 		adic( new JLabelPad( "Nº.OP." ), 7, 0, 80, 20 );
 		adic( txtCodOP, 7, 20, 80, 20 );
-		
+
 		adic( new JLabelPad( "Seq.OP." ), 90, 0, 80, 20 );
 		adic( txtSeqOP, 90, 20, 80, 20 );
-		
-		 if( bPref ){
-			    
-			 adic( new JLabelPad("Referência"), 173, 0, 80, 20 );
-			 adic( txtRefProdEst, 173, 20, 80, 20 );
-		 }
-		 else{
-			 adic( new JLabelPad("Cód.prod."), 173, 0, 80, 20 );
-			 adic( txtCodProdEst, 173, 20, 80, 20 );
-		 }	 
-		
+
+		if ( bPref ) {
+			adic( new JLabelPad( "Referência" ), 173, 0, 80, 20 );
+			adic( txtRefProdEst, 173, 20, 80, 20 );
+		}
+		else {
+			adic( new JLabelPad( "Cód.prod." ), 173, 0, 80, 20 );
+			adic( txtCodProdEst, 173, 20, 80, 20 );
+		}
+
 		adic( new JLabelPad( "Qtd.prev." ), 256, 0, 80, 20 );
 		adic( txtQtdPrev, 256, 20, 80, 20 );
 
@@ -183,27 +185,28 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 
 		adic( new JLabelPad( "Seq.Est." ), 7, 40, 80, 20 );
 		adic( txtSeqEst, 7, 60, 80, 20 );
-		
+
 		adic( new JLabelPad( "Descrição da estrutura principal" ), 90, 40, 250, 20 );
 		adic( txtDescEst, 90, 60, 330, 20 );
-		
+
 		pnRodape.removeAll();
 		pnRodape.add( pnBot, BorderLayout.WEST );
-		pnBot.tiraBorda();		
-		pnBot.adic( btACorretiva, 0, 0, 120, 30 );
-		pnBot.adic( btAbreAcao, 123, 0, 100, 30 );
-		pnBot.adic( lbImgPendente, 220, 4, 20, 20 );
-		pnBot.adic( lbTxtPendente, 240, 4, 80, 20 );
-		pnBot.adic( lbImgAtrasado, 285, 4, 20, 20 );
-		pnBot.adic( lbTxtAtrasado, 305, 4, 90, 20 );
-		pnBot.adic( lbImgFinalizada, 350, 4, 20, 20 );
-		pnBot.adic( lbTxtFinalizada, 370, 4, 80, 20 );
-		pnBot.adic( lbImgCorrigido, 410, 4, 20, 20 );
-		pnBot.adic( lbTxtCorrigido, 430, 4, 150, 20 );
+		pnBot.tiraBorda();
+		pnBot.add( btACorretiva );
+		pnBot.add( btAbreAcao );
+		pnBot.add( lbImgPendente );
+		pnBot.add( lbTxtPendente );
+		pnBot.add( lbImgAtrasado );
+		pnBot.add( lbTxtAtrasado );
+		pnBot.add( lbImgFinalizada );
+		pnBot.add( lbTxtFinalizada );
+		pnBot.add( lbImgCorrigido );
+		pnBot.add( lbTxtCorrigido );
 
-		btOK.setPreferredSize( new Dimension( 110, 30 ) );		
-		pnRodape.add( btOK, BorderLayout.EAST );
-	
+		btOK.setPreferredSize( new Dimension( 80, 30 ) );
+		pnBotSair.add( btOK );
+		pnRodape.add( pnBotSair, BorderLayout.EAST );
+
 		txtCodOP.setAtivo( false );
 		txtSeqOP.setAtivo( false );
 		txtCodProdEst.setAtivo( false );
@@ -214,7 +217,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		txtQtdPrev.setAtivo( false );
 		txtQtdDist.setAtivo( false );
 		txtQtdDistpOp.setAtivo( false );
-		
+
 		tabControl.adicColuna( "" );
 		tabControl.adicColuna( "Seq.op.cq" );
 		tabControl.adicColuna( "Cod.Estr.Análise" );
@@ -225,21 +228,22 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		tabControl.adicColuna( "Desc.Aferido" );
 		tabControl.adicColuna( "Tipo" );
 		tabControl.adicColuna( "SEQAC" );
-	
-		tabControl.setTamColuna( 10, EcolPPOPCQ.STATUS.ordinal());
-		tabControl.setTamColuna( 20, EcolPPOPCQ.SEQOPCQ.ordinal());
-		tabControl.setTamColuna( 50, EcolPPOPCQ.CODESTANALISE.ordinal());
-		tabControl.setTamColuna( 200,EcolPPOPCQ.DESCTPANALISE.ordinal());
-		tabControl.setTamColuna( 70, EcolPPOPCQ.VLRMIN.ordinal());
-		tabControl.setTamColuna( 70, EcolPPOPCQ.VLRMAX.ordinal());
-		tabControl.setTamColuna( 80, EcolPPOPCQ.VLRAFER.ordinal());
-		tabControl.setTamColuna( 150,EcolPPOPCQ.DESCAFER.ordinal());
-		tabControl.setTamColuna( 30, EcolPPOPCQ.TIPOEXPEC.ordinal());
-		
+
+		tabControl.setTamColuna( 10, EcolPPOPCQ.STATUS.ordinal() );
+		tabControl.setTamColuna( 20, EcolPPOPCQ.SEQOPCQ.ordinal() );
+		tabControl.setTamColuna( 50, EcolPPOPCQ.CODESTANALISE.ordinal() );
+		tabControl.setTamColuna( 200, EcolPPOPCQ.DESCTPANALISE.ordinal() );
+		tabControl.setTamColuna( 70, EcolPPOPCQ.VLRMIN.ordinal() );
+		tabControl.setTamColuna( 70, EcolPPOPCQ.VLRMAX.ordinal() );
+		tabControl.setTamColuna( 80, EcolPPOPCQ.VLRAFER.ordinal() );
+		tabControl.setTamColuna( 150, EcolPPOPCQ.DESCAFER.ordinal() );
+		tabControl.setTamColuna( 30, EcolPPOPCQ.TIPOEXPEC.ordinal() );
+
 		tabControl.addMouseListener( this );
 	}
+
 	public void carregaTabela( int iCodop, int iSeqop ) {
-	
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sSQL = new StringBuilder();
@@ -249,47 +253,47 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		BigDecimal bVlrmax = null;
 		boolean ablBt = false;
 		boolean ablBtVis = false;
-		
+
 		sSQL.append( "SELECT PQ.SEQOPCQ, PQ.CODESTANALISE, PQ.VLRAFER, PQ.DESCAFER, PA.DESCTPANALISE, PA.TIPOEXPEC, " );
 		sSQL.append( "PE.VLRMIN, PE.VLRMAX, PQ.STATUS, PQ.SEQAC " );
 		sSQL.append( "FROM PPOPCQ PQ, PPESTRUANALISE PE, PPTIPOANALISE PA WHERE PQ.CODEMP=? AND PQ.CODFILIAL=? AND " );
 		sSQL.append( "PQ.CODOP=? AND PQ.SEQOP=? AND PE.CODEMP=PQ.CODEMPEA AND " );
 		sSQL.append( "PE.CODFILIAL=PQ.CODFILIALEA AND PE.CODESTANALISE=PQ.CODESTANALISE AND " );
 		sSQL.append( "PA.CODEMP=PE.CODEMPTA AND PA.CODFILIAL=PE.CODFILIALTA AND " );
-		sSQL.append( "PA.CODTPANALISE=PE.CODTPANALISE" );		
-	
+		sSQL.append( "PA.CODTPANALISE=PE.CODTPANALISE" );
+
 		try {
-			
-		  	ps = con.prepareStatement( sSQL.toString() );
-		  	ps.setInt( 1, Aplicativo.iCodEmp );
-		  	ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPCQ" ) );
-		  	ps.setInt( 3, iCodop );
-		  	ps.setInt( 4, iSeqop );
 
-	  	  	rs = ps.executeQuery();
-	  	  	
-	  	  	int i = 0;
-	  	    while ( rs.next() ) {
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPCQ" ) );
+			ps.setInt( 3, iCodop );
+			ps.setInt( 4, iSeqop );
 
-				if( rs.getString( "STATUS" ).equals( "PE" )){
+			rs = ps.executeQuery();
+
+			int i = 0;
+			while ( rs.next() ) {
+
+				if ( rs.getString( "STATUS" ).equals( "PE" ) ) {
 					imgStatus = imgPendente;
 				}
-				else if( rs.getString( "STATUS" ).equals( "AP" )){
+				else if ( rs.getString( "STATUS" ).equals( "AP" ) ) {
 					imgStatus = imgAprovada;
 				}
-				else if( rs.getString( "STATUS" ).equals( "RC" )){
+				else if ( rs.getString( "STATUS" ).equals( "RC" ) ) {
 					imgStatus = imgRecusado;
-					if( !ablBt ){
+					if ( !ablBt ) {
 						ablBt = true;
 					}
 				}
-				if( rs.getInt( "SEQAC" ) > 0 ){
+				if ( rs.getInt( "SEQAC" ) > 0 ) {
 					imgStatus = imgCorrigidas;
-					if( !ablBtVis ){
+					if ( !ablBtVis ) {
 						ablBtVis = true;
 					}
 				}
-					
+
 				tabControl.adicLinha();
 
 				tabControl.setValor( imgStatus, i, EcolPPOPCQ.STATUS.ordinal() );
@@ -304,70 +308,65 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 				tabControl.setValor( rs.getInt( "SEQAC" ), i, EcolPPOPCQ.SEQAC.ordinal() );
 				i++;
 
-		   }
-	  	  btACorretiva.setEnabled( ablBt );
-	  	  btAbreAcao.setEnabled( ablBtVis );
-		
-	  	  rs.close();
-	  	  ps.close();
-	  	  
-     	 	if (!con.getAutoCommit()){
-	  	  		con.commit();
-	  	  	
-	  	  }
+			}
+			btACorretiva.setEnabled( ablBt );
+			btAbreAcao.setEnabled( ablBtVis );
+
+			rs.close();
+			ps.close();
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+
+			}
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 		}
 	}
-	
-	private void alteraQual(){
-		
+
+	private void alteraQual() {
+
 		int iLinha = tabControl.getLinhaSel();
 		StringBuffer sSQL = new StringBuffer();
 		PreparedStatement ps = null;
-		
+
 		try {
-			
-			String sDescAnalise = (String)tabControl.getValor( iLinha,  EcolPPOPCQ.DESCTPANALISE.ordinal()  );
-			BigDecimal bVlrMin = tabControl.getValor( iLinha,EcolPPOPCQ.VLRMIN.ordinal() ) == null || tabControl.getValor( iLinha,EcolPPOPCQ.VLRMIN.ordinal() ).equals( "" ) ? 
-					new BigDecimal(0) : (BigDecimal)tabControl.getValor( iLinha, EcolPPOPCQ.VLRMIN.ordinal() );
-			BigDecimal bVlrMax = tabControl.getValor( iLinha, EcolPPOPCQ.VLRMAX.ordinal() ) == null || tabControl.getValor( iLinha,EcolPPOPCQ.VLRMAX.ordinal() ).equals( "" ) ?
-					new BigDecimal(0) : (BigDecimal)tabControl.getValor( iLinha, EcolPPOPCQ.VLRMAX.ordinal() );
-			BigDecimal bVlrAfer =tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() ) == null || tabControl.getValor( iLinha,EcolPPOPCQ.VLRAFER.ordinal() ).equals( "" ) ? 
-					new BigDecimal(0) : (BigDecimal)tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() )  ; 
-						
+
+			String sDescAnalise = (String) tabControl.getValor( iLinha, EcolPPOPCQ.DESCTPANALISE.ordinal() );
+			BigDecimal bVlrMin = tabControl.getValor( iLinha, EcolPPOPCQ.VLRMIN.ordinal() ) == null || tabControl.getValor( iLinha, EcolPPOPCQ.VLRMIN.ordinal() ).equals( "" ) ? new BigDecimal( 0 ) : (BigDecimal) tabControl.getValor( iLinha, EcolPPOPCQ.VLRMIN.ordinal() );
+			BigDecimal bVlrMax = tabControl.getValor( iLinha, EcolPPOPCQ.VLRMAX.ordinal() ) == null || tabControl.getValor( iLinha, EcolPPOPCQ.VLRMAX.ordinal() ).equals( "" ) ? new BigDecimal( 0 ) : (BigDecimal) tabControl.getValor( iLinha, EcolPPOPCQ.VLRMAX.ordinal() );
+			BigDecimal bVlrAfer = tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() ) == null || tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() ).equals( "" ) ? new BigDecimal( 0 ) : (BigDecimal) tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() );
+
 			String status = "PE";
-			String sAfer = (String)tabControl.getValor( iLinha, EcolPPOPCQ.DESCAFER.ordinal() ); 
-			String sTipo = (String)tabControl.getValor( iLinha, EcolPPOPCQ.TIPOEXPEC.ordinal() );
-			
+			String sAfer = (String) tabControl.getValor( iLinha, EcolPPOPCQ.DESCAFER.ordinal() );
+			String sTipo = (String) tabControl.getValor( iLinha, EcolPPOPCQ.TIPOEXPEC.ordinal() );
+
 			String sUpdate = "";
-			
+
 			DLFechaQual dl = new DLFechaQual( sDescAnalise, sTipo, bVlrMin, bVlrMax, bVlrAfer, sAfer );
 			dl.setVisible( true );
-			
-			if( "MM".equals( sTipo )){
+
+			if ( "MM".equals( sTipo ) ) {
 				sUpdate = " VLRAFER=?, STATUS=?";
 			}
-			else if( "DT".equals( sTipo )){
+			else if ( "DT".equals( sTipo ) ) {
 				sUpdate = " DESCAFER=?, STATUS=? ";
 			}
-			
+
 			HashMap<String, Object> hsRet = dl.getValor();
-			BigDecimal bValor = (BigDecimal)hsRet.get( "VLRAFER" );
-			
-			if( dl.OK ){
-				
+			BigDecimal bValor = (BigDecimal) hsRet.get( "VLRAFER" );
+
+			if ( dl.OK ) {
+
 				sSQL.append( "UPDATE PPOPCQ SET" + sUpdate + "WHERE " );
 				sSQL.append( "CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND SEQOPCQ=?" );
-				
-				ps = con.prepareStatement( sSQL.toString() );
-				
-				if( "MM".equals( sTipo )){
-						
-					if ( ( bValor == null ) ) {
 
+				ps = con.prepareStatement( sSQL.toString() );
+
+				if ( "MM".equals( sTipo ) ) {
+
+					if ( ( bValor == null ) ) {
 						bValor = new BigDecimal( 0 );
-	
 					}
 					else {
 						if ( bValor.compareTo( bVlrMin ) < 0 || bValor.compareTo( bVlrMax ) > 0 ) {
@@ -377,8 +376,8 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 							status = "AP";
 						}
 					}
-					
-					BigDecimal vlrAfer = (BigDecimal)hsRet.get( "VLRAFER" );
+
+					BigDecimal vlrAfer = (BigDecimal) hsRet.get( "VLRAFER" );
 					ps.setBigDecimal( 1, vlrAfer );
 					ps.setString( 2, status );
 					ps.setInt( 3, Aplicativo.iCodEmp );
@@ -386,13 +385,12 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 					ps.setInt( 5, txtCodOP.getVlrInteger() );
 					ps.setInt( 6, txtSeqOP.getVlrInteger() );
 					ps.setInt( 7, (Integer) tabControl.getValor( iLinha, EcolPPOPCQ.SEQOPCQ.ordinal() ) );
-					
-					
+
 				}
-				else if( "DT".equals( sTipo )){
-					
-					String descAfer = (String)hsRet.get( "DESCAFER" );
-					ps.setString( 1, descAfer ); 
+				else if ( "DT".equals( sTipo ) ) {
+
+					String descAfer = (String) hsRet.get( "DESCAFER" );
+					ps.setString( 1, descAfer );
 					ps.setString( 2, dl.getStatus() );
 					ps.setInt( 3, Aplicativo.iCodEmp );
 					ps.setInt( 4, ListaCampos.getMasterFilial( "PPOPCQ" ) );
@@ -400,143 +398,98 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 					ps.setInt( 6, txtSeqOP.getVlrInteger() );
 					ps.setInt( 7, (Integer) tabControl.getValor( iLinha, EcolPPOPCQ.SEQOPCQ.ordinal() ) );
 				}
-				
+
 				ps.executeUpdate();
 
 				if ( !con.getAutoCommit() ) {
 					con.commit();
 				}
-				
+
 				tabControl.limpa();
 				carregaTabela( txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger() );
-				
+
 			}
 		} catch ( Exception e ) {
-			
+
 			e.getMessage();
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao salvar aferimento!" );
 		}
 	}
-	
-	public void carregaCampos(Object[] sValores){
-		
-		txtCodOP.setVlrInteger((Integer) sValores[0]); 
-		txtSeqOP.setVlrInteger((Integer) sValores[1]); 
-		txtCodProdEst.setVlrInteger((Integer) sValores[2]); 
-		txtRefProdEst.setVlrString((String) sValores[3]); 
-		txtSeqEst.setVlrInteger((Integer) sValores[4]); 
-		txtDescEst.setVlrString((String) sValores[5]);
-		txtQtdProd.setVlrBigDecimal((BigDecimal) sValores[6]); 
-		txtQtdPrev.setVlrBigDecimal((BigDecimal) sValores[7]);
-		txtQtdDist.setVlrBigDecimal(new BigDecimal(0));	
-		
+
+	public void carregaCampos( Object[] sValores ) {
+
+		txtCodOP.setVlrInteger( (Integer) sValores[ 0 ] );
+		txtSeqOP.setVlrInteger( (Integer) sValores[ 1 ] );
+		txtCodProdEst.setVlrInteger( (Integer) sValores[ 2 ] );
+		txtRefProdEst.setVlrString( (String) sValores[ 3 ] );
+		txtSeqEst.setVlrInteger( (Integer) sValores[ 4 ] );
+		txtDescEst.setVlrString( (String) sValores[ 5 ] );
+		txtQtdProd.setVlrBigDecimal( (BigDecimal) sValores[ 6 ] );
+		txtQtdPrev.setVlrBigDecimal( (BigDecimal) sValores[ 7 ] );
+		txtQtdDist.setVlrBigDecimal( new BigDecimal( 0 ) );
 	}
 
-	private void acoesCorretivas(){
+	private void acaoCorretiva( int linhaSel ) {
+
+		Object[] keys = new Object[ 8 ];
+		Integer ac = (Integer)
+			(linhaSel >= 0 && tabControl.getValor( linhaSel, EcolPPOPCQ.SEQAC.ordinal() ) != null ? tabControl.getValor( linhaSel, EcolPPOPCQ.SEQAC.ordinal() ) : 0 );
 		
-		Object[] keys = new Object[6];
-		
-		keys[0] = txtCodOP.getVlrInteger(); 
-		keys[1] = txtSeqOP.getVlrInteger(); 
-		keys[2] = txtCodProdEst.getVlrInteger(); 
-		keys[3] = txtRefProdEst.getVlrString(); 
-		keys[4] = txtSeqEst.getVlrInteger(); 
-		keys[5] = txtDescEst.getVlrString();
-		
-		DLAcoesCorretivas dl = new DLAcoesCorretivas( con, keys );
-		dl.setVisible( true );
-	}
-	
-	private void acaoCorretiva(){
-		
-		Object[] keys = new Object[8];
-		
-		StringBuffer sql = new StringBuffer();
-		PreparedStatement ps = null; 
-		String obs  = "";
-		String acao = "";
-		
-		if( tabControl.getLinhaSel() < 0 ){
-			Funcoes.mensagemInforma( this, "Selecione uma ação no grid!" ); 
-			return;
+		keys[ DLAcaoCorretiva.EAc.CODOP.ordinal() ] = txtCodOP.getVlrInteger();
+		keys[ DLAcaoCorretiva.EAc.SEQOP.ordinal() ] = txtSeqOP.getVlrInteger();
+		keys[ DLAcaoCorretiva.EAc.SEQOPAC.ordinal() ] = ac;
+		keys[ DLAcaoCorretiva.EAc.CODPRODEST.ordinal() ] = txtCodProdEst.getVlrInteger();
+		keys[ DLAcaoCorretiva.EAc.REFPRODEST.ordinal() ] = txtRefProdEst.getVlrString();
+		keys[ DLAcaoCorretiva.EAc.SEQEST.ordinal() ] = txtSeqEst.getVlrInteger();
+		keys[ DLAcaoCorretiva.EAc.DESCEST.ordinal() ] = txtDescEst.getVlrString();
+
+		if ( ac > 0 ) {			
+			DLAcaoCorretiva dl = new DLAcaoCorretiva( con, keys );
+			dl.setVisible( true );
 		}
-		
-		sql.append( "SELECT A.OBSACAO, A.OBSCAUSA FROM PPOPACAOCORRET A WHERE A.CODEMP=? AND ");
-		sql.append( "A.CODFILIAL=? AND A.CODOP=? AND A.SEQOP=? AND A.SEQAC=?" );
-		
-		try {
-			
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp  );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPACAOCORRENT" ) );
-			ps.setInt( 3, txtCodOP.getVlrInteger() );
-			ps.setInt( 4, txtSeqOP.getVlrInteger() );
-			ps.setInt( 5, (Integer)tabControl.getValor( tabControl.getLinhaSel(), EcolPPOPCQ.SEQAC.ordinal() ));
-			
-			ResultSet rs = ps.executeQuery();
-			
-			if( rs.next() ){
-				
-				acao = rs.getString( "OBSACAO" );
-				obs = rs.getString( "OBSCAUSA" );
-				
-			}
-			
-		} catch ( SQLException e ) {
-			
-			e.printStackTrace();
+		else {			
+			DLAcoesCorretivas dl = new DLAcoesCorretivas( con, keys );
+			dl.setVisible( true );
 		}
-		
-		keys[0] = txtCodOP.getVlrInteger(); 
-		keys[1] = txtSeqOP.getVlrInteger(); 
-		keys[2] = txtCodProdEst.getVlrInteger(); 
-		keys[3] = txtRefProdEst.getVlrString(); 
-		keys[4] = txtSeqEst.getVlrInteger(); 
-		keys[5] = txtDescEst.getVlrString();
-		keys[6] = acao;
-		keys[7] = obs;
-		
-		
-		DLAcaoCorretiva dl = new DLAcaoCorretiva( con, keys );
-		dl.setVisible( true );
-		
-		
+
 	}
-	
+
 	public void actionPerformed( ActionEvent evt ) {
 
-		super.actionPerformed(evt);
-		
-		if( evt.getSource() == btOK ){
-			
+		super.actionPerformed( evt );
+
+		if ( evt.getSource() == btOK ) {
 			dispose();
 		}
-		else if( evt.getSource() == btACorretiva ){
-			
-			acoesCorretivas();
+		else if ( evt.getSource() == btACorretiva ) {
+			acaoCorretiva( -1 );
 		}
-		else if( evt.getSource() == btAbreAcao ){
-			
-			acaoCorretiva(); 
+		else if ( evt.getSource() == btAbreAcao ) {
+			if ( tabControl.getLinhaSel() < 0 ) {
+				Funcoes.mensagemInforma( this, "Selecione uma ação no grid!" );
+				return;
+			}
+			else {
+				acaoCorretiva( tabControl.getLinhaSel() );
+			}
 		}
 	}
 
 	public void mouseClicked( MouseEvent mevt ) {
-	
-		 if ( mevt.getClickCount() == 2 ) {
-			
-			 if ( mevt.getSource() == tabControl && tabControl.getLinhaSel() >= 0 )
-				
+
+		if ( mevt.getClickCount() == 2 ) {
+			if ( mevt.getSource() == tabControl && tabControl.getLinhaSel() >= 0 ) {
 				alteraQual();
+			}
 		}
 	}
 
-	public void mouseEntered( MouseEvent e ) {}
+	public void mouseEntered( MouseEvent e ) { }
 
-	public void mouseExited( MouseEvent e ) {}
+	public void mouseExited( MouseEvent e ) { }
 
-	public void mousePressed( MouseEvent e ) {}
+	public void mousePressed( MouseEvent e ) { }
 
-	public void mouseReleased( MouseEvent e ) {}
+	public void mouseReleased( MouseEvent e ) { }
 }
