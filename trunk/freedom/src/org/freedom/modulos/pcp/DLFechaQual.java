@@ -57,27 +57,29 @@ public class DLFechaQual extends FFDialogo {
 	public DLFechaQual( String sDescAnalise, String sTipo, BigDecimal bVlrMin, BigDecimal bVlrMax, BigDecimal vlrAfer, String sAfer, String status, boolean editable ) {
 
 		setTitulo( "Qualidade" );
-		setAtribos( 350, 220 );
+		setAtribos( 390, 220 );
 
-		adic( new JLabelPad( "Descrição da analise" ), 7, 5, 200, 20 );
-		adic( txtDescEst, 7, 25, 310, 20 );
+		adic( new JLabelPad( "Descrição da analise" ), 7, 5, 360, 20 );
+		adic( txtDescEst, 7, 25, 360, 20 );
 
 		tipo = sTipo;
 
 		vLabs1.addElement( "Pendente" );
 		vLabs1.addElement( "Recusada" );
 		vLabs1.addElement( "Aprovada" );
+		vLabs1.addElement( "Corrigida" );
 		vVals1.addElement( "PE" );
 		vVals1.addElement( "RC" );
 		vVals1.addElement( "AP" );
+		vVals1.addElement( "CO" );
 
 		rgTipo = new JRadioGroup<String, String>( 1, 3, vLabs1, vVals1 );
 
 		if ( "DT".equals( sTipo ) ) {
 
-			adic( new JLabelPad( "Aferição" ), 7, 45, 200, 20 );
-			adic( txtDescAfer, 7, 65, 310, 20 );
-			adic( rgTipo, 7, 95, 310, 30 );
+			adic( new JLabelPad( "Aferição" ), 7, 45, 360, 20 );
+			adic( txtDescAfer, 7, 65, 360, 20 );
+			adic( rgTipo, 7, 95, 360, 30 );
 			rgTipo.setVlrString( status );
 
 			txtDescAfer.setRequerido( true );
@@ -89,7 +91,7 @@ public class DLFechaQual extends FFDialogo {
 			adic( txtVlrMin, 7, 65, 70, 20 );
 			adic( new JLabelPad( "Vlr.Máx." ), 80, 45, 70, 20 );
 			adic( txtVlrMax, 80, 65, 70, 20 );
-			adic( new JLabelPad( "Aferição" ), 7, 85, 200, 20 );
+			adic( new JLabelPad( "Aferição" ), 7, 85, 210, 20 );
 			adic( txtVlrAfer, 7, 105, 70, 20 );
 
 			txtVlrMin.setSoLeitura( true );
