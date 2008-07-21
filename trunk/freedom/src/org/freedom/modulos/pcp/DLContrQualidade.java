@@ -462,10 +462,16 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		if ( ac > 0 ) {			
 			DLAcaoCorretiva dl = new DLAcaoCorretiva( con, keys );
 			dl.setVisible( true );
+			if ( dl.OK ) {
+				ok();
+			}
 		}
 		else {			
 			DLAcoesCorretivas dl = new DLAcoesCorretivas( con, keys );
 			dl.setVisible( true );
+			if ( dl.OK ) {
+				ok();
+			}
 		}
 
 	}

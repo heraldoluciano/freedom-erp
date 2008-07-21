@@ -479,6 +479,9 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 			if ( postCorrecao() ) {
 				DLInsereInsumo dl = new DLInsereInsumo( con, keysItens );
 				dl.setVisible( true );
+				if ( dl.OK ) {
+					ok();					
+				}
 			}			
 		}
 		else if ( e.getSource() == btDescarte ) {
