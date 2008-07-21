@@ -3,6 +3,8 @@ package org.freedom.modulos.pcp;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +28,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 
-public class DLInsereInsumo extends FFDialogo implements ActionListener{
+public class DLInsereInsumo extends FFDialogo implements ActionListener, KeyListener{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -78,6 +80,9 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 		
 		montaListaCampos();
 		montaTela();
+		
+		txtQtd.addKeyListener( this );
+		
 	}
 	
 	private void montaListaCampos(){
@@ -100,7 +105,7 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 		 *************/
 
 		lcLote.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.Prod", ListaCampos.DB_PF, false ) );
-		lcLote.add( new GuardaCampo( txtLote, "CodLote", "Cód.lote", ListaCampos.DB_PK, true ) );
+		lcLote.add( new GuardaCampo( txtLote, "CodLote", "Cód.lote", ListaCampos.DB_PK, false ) );
 		lcLote.add( new GuardaCampo( txtDtVencLote, "VenctoLote", "Vencimento do lote", ListaCampos.DB_SI, false ) );
 		lcLote.add( new GuardaCampo( txtDtIniLote, "DIniLote", "Data do lote", ListaCampos.DB_SI, false ) );
 		txtLote.setTabelaExterna( lcLote );
@@ -149,13 +154,19 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 	private void insertGrid( int codprod, String descprod, BigDecimal qtd, String referencia, boolean rma ){
 		
 		int linha = -1;
-
+		
 		if ( codprod == 0 ) {
 			Funcoes.mensagemInforma( this, "Produto não encontrado!" );
 			txtCodProd.requestFocus();
 			return;
 		}
-
+		if( "S".equals( temLote() )){
+			if( txtLote.getVlrString().equals( "" )){
+				Funcoes.mensagemInforma( this, "Informe o lote!" );
+				return;
+			} 
+		}
+		
 		for ( int i = 0; i < tabInsumos.getNumLinhas(); i++ ) {
 			if ( codprod == ( (Integer) tabInsumos.getValor( i, eInsert.CODPROD.ordinal() ) ).intValue() ) {
 				linha = i;
@@ -173,6 +184,7 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 		tabInsumos.setValor( codprod, linha, eInsert.CODPROD.ordinal() );
 		tabInsumos.setValor( referencia, linha, eInsert.REFERENCIA.ordinal() );
 		tabInsumos.setValor( descprod, linha, eInsert.DESCPROD.ordinal() );
+		tabInsumos.setValor( txtLote.getVlrInteger(), linha, eInsert.LOTE.ordinal() );
 		tabInsumos.setValor( qtd, linha, eInsert.QTD.ordinal() );
 		tabInsumos.setValor( rma, linha, eInsert.RMA.ordinal() );
 	}
@@ -280,6 +292,37 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 		return fase;
 	}
 	
+	private String temLote(){
+		
+		String ret = "";
+		StringBuffer sql = new StringBuffer();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		sql.append( "SELECT P.CLOTEPROD FROM EQPRODUTO P WHERE CODPROD=? AND CODEMP=? AND CODFILIAL=?" );
+		
+		try {
+			
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, txtCodProd.getVlrInteger() );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+						
+			rs = ps.executeQuery();
+			
+			if( rs.next() ){
+				
+				ret = rs.getString( "CLOTEPROD" );
+			}
+			
+		} catch ( SQLException e ) {
+		
+			e.printStackTrace();
+		}
+		
+		return ret;
+	}
+	
 	private Integer getNewCodItOp() {
 		
 		Integer itop = null;
@@ -327,12 +370,29 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 		lcProd.setConexao( con );
 		lcLote.setConexao( con );
 	}
+	
+	public void keyPressed( KeyEvent kevt ) {
+
+		super.keyPressed(kevt);
+		
+		if( kevt.getSource() == txtQtd ){
+			if( kevt.getKeyCode() == KeyEvent.VK_ENTER ){
+				if( "S".equals( temLote() )){
+					txtLote.setRequerido( true );
+				}
+				else{
+					txtLote.setRequerido( false ); 
+				}
+			}
+		}
+	}
+
 
 	public void actionPerformed( ActionEvent evt ) {
 	
 		super.actionPerformed(evt);
 		
-		if( evt.getSource() == btInserir ){			
+		if( evt.getSource() == btInserir ){		
 			insertGrid( 
 					txtCodProd.getVlrInteger(), 
 					txtDescProd.getVlrString(), 

@@ -450,10 +450,10 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btInclusao ) {			
-			/*if ( postCorrecao() ) {
+		//	if ( postCorrecao() ) {
 				DLInsereInsumo dl = new DLInsereInsumo( con, keysItens );
 				dl.setVisible( true );
-			}	*/		
+		//	}			
 		}
 		else if ( e.getSource() == btDescarte ) {
 			
