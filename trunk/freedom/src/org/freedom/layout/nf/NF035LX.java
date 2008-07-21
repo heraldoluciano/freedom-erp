@@ -65,6 +65,7 @@ public class NF035LX extends Layout {
 		Vector<String> vSigla = new Vector<String>();
 		Vector<?> vDescServ = new Vector<Object>();
 		Vector<Object[]> vServico = new Vector<Object[]>();
+		imp.setImpEject( false );
 
 		try {
 
@@ -134,7 +135,7 @@ public class NF035LX extends Layout {
 
 					imp.say( 145, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
 
-					imp.pulaLinha( 5, imp.comprimido() );
+					imp.pulaLinha( 4, imp.comprimido() );
 					imp.say( 0, sNat[ 0 ] );
 					imp.say( 51, sNat[ 1 ] );
 					imp.pulaLinha( 3, imp.comprimido() );
@@ -299,12 +300,12 @@ public class NF035LX extends Layout {
 									
 									imp.say( 4, (String) vDescServ.elementAt( i ) );
 									if ( i == 0 ) {
-										imp.say( 87, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( (BigDecimal) vServico.get( indexServ )[ 1 ] ) ) );
-										imp.say( 100, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( (BigDecimal) vServico.get( indexServ )[ 2 ] ) ) );
+										imp.say( 97, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( (BigDecimal) vServico.get( indexServ )[ 1 ] ) ) );
+										imp.say( 113, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( (BigDecimal) vServico.get( indexServ )[ 2 ] ) ) );
 									}
 									
 									if ( bvlriss && row == 6 ) {
-										imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_VLRISS ) ) ) );
+										imp.say( 133, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_VLRISS ) ) ) );
 										bvlriss = false;
 									}
 
@@ -320,12 +321,12 @@ public class NF035LX extends Layout {
 							}
 							
 							if ( bvlriss && row == 6 ) {
-								imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_VLRISS ) ) ) );
+								imp.say( 133, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_VLRISS ) ) ) );
 								bvlriss = false;
 							}
 						}
 
-						imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_BASEISS ) ) ) );
+						imp.say( 133, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( cab.getFloat( NF.C_BASEISS ) ) ) );
 					}
 
 					// Imprime totais
@@ -336,7 +337,7 @@ public class NF035LX extends Layout {
 					}
 
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
-						imp.pulaLinha( 47 - imp.pRow(), imp.comprimido() );
+						imp.pulaLinha( 46 - imp.pRow(), imp.comprimido() );
 						imp.say( 0, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
 						imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRICMSPED ) ) ) );
 						imp.say( 120, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) - cab.getFloat( NF.C_BASEISS ) ) ) );
@@ -406,7 +407,7 @@ public class NF035LX extends Layout {
 					imp.say( 76, Funcoes.copy( frete.getString( NF.C_CONHECFRETEPED ), 20 ) );
 					imp.say( 120, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getFloat( NF.C_PESOBRUTO ) ) ) );
 					imp.say( 140, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getFloat( NF.C_PESOLIQ ) ) ) );
-					imp.pulaLinha( 1, imp.comprimido() );
+					imp.pulaLinha( 2, imp.comprimido() );
 
 					// Fim da impressão do frete
 
