@@ -419,7 +419,7 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 			sSQL.append( "WHERE IR.CODREC=R.CODREC AND IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND " );
 			sSQL.append( "NOT IR.STATUSITREC='RP' AND NOT IR.VLRAPAGITREC=0 AND " );
 			if ( porCliente ) {
-				sSQL.append( "R.CODCLI=? AND " );
+				sSQL.append( "R.CODCLI=? AND R.CODVENDA IS NOT NULL AND " );
 			}
 			else {
 				sSQL.append( "R.CODREC=? AND " );
@@ -435,6 +435,14 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 			ResultSet rs = ps.executeQuery();
 
 			for ( int i = 0; rs.next(); i++ ) {
+							
+				if ( txtCodVendaBaixa.getVlrInteger() == 0 && !porCliente ) {
+					Funcoes.mensagemInforma( this, 
+							"Este recebimento não é originário de uma venda\n" +
+							"e não poderá ser recebido por este modulo." );
+					limpaConsulta();
+					return false;
+				}
 
 				bdVlrAReceber = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrApagItRec" ) ).floatValue();
 				bdVlrPago = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrPagoItRec" ) ).floatValue();
@@ -695,17 +703,7 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 	public void afterCarrega( CarregaEvent e ) {
 		
 		if ( e.getListaCampos() == lcRecBaixa || e.getListaCampos() == lcCliBaixa ) {
-			if ( tabBaixa.getNumLinhas() == 0 ) {
-				porCliente = txtCodCliBaixa.getVlrInteger() > 0 && txtCodRecBaixa.getVlrInteger() == 0;
-				if ( carregaGridBaixa() ) {
-					txtCodRecBaixa.setSoLeitura( true );	
-					txtCodCliBaixa.setSoLeitura( true );
-				}
-				else {
-					limpaConsulta();
-				}				
-			}
-			tabBaixa.requestFocus();
+			
 		}
 	}
 
@@ -728,6 +726,19 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 				tabBaixa.removeTabelaSelListener( this );
 				baixar();
 				tabBaixa.addTabelaSelListener( this );
+			}
+			else if ( e.getSource() == txtCodRecBaixa || e.getSource() == txtCodCliBaixa ) {
+				if ( tabBaixa.getNumLinhas() == 0 ) {
+					porCliente = txtCodCliBaixa.getVlrInteger() > 0 && txtCodRecBaixa.getVlrInteger() == 0;
+					if ( carregaGridBaixa() ) {
+						txtCodRecBaixa.setSoLeitura( true );	
+						txtCodCliBaixa.setSoLeitura( true );
+						tabBaixa.requestFocus();
+					}
+					else {
+						limpaConsulta();
+					}				
+				}
 			}
 		}
 		else if ( e.getKeyCode() == KeyEvent.VK_ESCAPE ) {
