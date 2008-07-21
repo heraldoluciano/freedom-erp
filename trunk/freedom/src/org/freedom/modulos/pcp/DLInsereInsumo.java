@@ -161,7 +161,7 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 		cbRma.setVlrString( "N" );
 	}
 	
-	private void postItens() {
+	protected void postItens() {
 		
 		try {
 			
