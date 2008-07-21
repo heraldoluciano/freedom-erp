@@ -28,7 +28,6 @@ import org.freedom.telas.FFDialogo;
 
 public class DLInsereInsumo extends FFDialogo implements ActionListener{
 
-
 	private static final long serialVersionUID = 1L;
 	
 	private final JPanelPad pnControl = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -47,6 +46,10 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 	
 	private final JTextFieldPad txtLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 	
+	private JTextFieldFK txtDtIniLote = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldFK txtDtVencLote = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
+	
 	private final JCheckBoxPad cbRma = new JCheckBoxPad( "", "S", "N" );
 	
 	private final JButton btInserir = new JButton( Icone.novo("btGerar.gif"));
@@ -56,6 +59,8 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 	private int iLinha = 0;
 	
 	private final Object[] keys;
+	
+	private ListaCampos lcLote = new ListaCampos( this, "" );
 	
 	private enum eInsert {
 	
@@ -76,6 +81,10 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 	}
 	
 	private void montaListaCampos(){
+		
+		/*************
+		 *  Produto  *
+		 *************/
 		  
 		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
@@ -85,6 +94,21 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 		txtCodProd.setFK( true );
 		lcProd.setReadOnly( true );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
+		
+		/*************
+		 *   Lote    *
+		 *************/
+
+		lcLote.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.Prod", ListaCampos.DB_PF, false ) );
+		lcLote.add( new GuardaCampo( txtLote, "CodLote", "Cód.lote", ListaCampos.DB_PK, true ) );
+		lcLote.add( new GuardaCampo( txtDtVencLote, "VenctoLote", "Vencimento do lote", ListaCampos.DB_SI, false ) );
+		lcLote.add( new GuardaCampo( txtDtIniLote, "DIniLote", "Data do lote", ListaCampos.DB_SI, false ) );
+		txtLote.setTabelaExterna( lcLote );
+		txtLote.setNomeCampo( "CodLote" );
+		txtLote.setFK( true );
+		lcLote.setReadOnly( true );
+		lcLote.setDinWhereAdic( "CODPROD = #N", txtCodProd );
+		lcLote.montaSql( false, "LOTE", "EQ" );
 	}
 
 	private void montaTela(){
@@ -301,6 +325,7 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 		
 		super.setConexao( con );
 		lcProd.setConexao( con );
+		lcLote.setConexao( con );
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
