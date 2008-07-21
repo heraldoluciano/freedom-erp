@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,7 +27,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 
-public class DLInsereInsumo extends FFDialogo implements ActionListener, KeyListener{
+public class DLInsereInsumo extends FFDialogo implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -80,9 +79,6 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener, KeyList
 		
 		montaListaCampos();
 		montaTela();
-		
-		txtQtd.addKeyListener( this );
-		
 	}
 	
 	private void montaListaCampos(){
@@ -105,7 +101,7 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener, KeyList
 		 *************/
 
 		lcLote.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.Prod", ListaCampos.DB_PF, false ) );
-		lcLote.add( new GuardaCampo( txtLote, "CodLote", "Cód.lote", ListaCampos.DB_PK, false ) );
+		lcLote.add( new GuardaCampo( txtLote, "CodLote", "Cód.lote", ListaCampos.DB_PK, true ) );
 		lcLote.add( new GuardaCampo( txtDtVencLote, "VenctoLote", "Vencimento do lote", ListaCampos.DB_SI, false ) );
 		lcLote.add( new GuardaCampo( txtDtIniLote, "DIniLote", "Data do lote", ListaCampos.DB_SI, false ) );
 		txtLote.setTabelaExterna( lcLote );
@@ -151,10 +147,10 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener, KeyList
 		
 	}
 	
-	private void insertGrid( int codprod, String descprod, BigDecimal qtd, String referencia, boolean rma ){
+	private void insertGrid( int codprod, String descprod, BigDecimal qtd, String referencia, String lote, boolean rma ){
 		
 		int linha = -1;
-		
+
 		if ( codprod == 0 ) {
 			Funcoes.mensagemInforma( this, "Produto não encontrado!" );
 			txtCodProd.requestFocus();
@@ -184,8 +180,8 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener, KeyList
 		tabInsumos.setValor( codprod, linha, eInsert.CODPROD.ordinal() );
 		tabInsumos.setValor( referencia, linha, eInsert.REFERENCIA.ordinal() );
 		tabInsumos.setValor( descprod, linha, eInsert.DESCPROD.ordinal() );
-		tabInsumos.setValor( txtLote.getVlrInteger(), linha, eInsert.LOTE.ordinal() );
 		tabInsumos.setValor( qtd, linha, eInsert.QTD.ordinal() );
+		tabInsumos.setValor( lote, linha, eInsert.LOTE.ordinal() );
 		tabInsumos.setValor( rma, linha, eInsert.RMA.ordinal() );
 	}
 	
@@ -203,7 +199,7 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener, KeyList
 			
 			Integer fase = getCodFase();
 			
-			Integer newCodItOp = getNewCodItOp();
+			Integer newCodItOp = 0;
 			
 			StringBuilder sql = new StringBuilder();
 			sql.append( "INSERT INTO PPITOP " );
@@ -218,6 +214,8 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener, KeyList
 			PreparedStatement ps = null;
 			
 			for ( int i = 0; i < tabInsumos.getNumLinhas(); i++ ) {
+				
+				newCodItOp = getNewCodItOp();
 
 				ps = con.prepareStatement( sql.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
@@ -238,6 +236,8 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener, KeyList
 				ps.setString( 16, (String)tabInsumos.getValor( i, eInsert.REFERENCIA.ordinal() ) );
 				ps.setString( 17, (Boolean)tabInsumos.getValor( i, eInsert.RMA.ordinal() ) ? "S" : "N" );
 				ps.setInt( 18, (Integer)keys[ 3 ] );
+				
+				ps.executeUpdate();
 			}
 
 			ps.close();
@@ -266,16 +266,16 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener, KeyList
 			sql.append( "  A.CODEMP=O.CODEMPEA AND A.CODFILIAL=O.CODFILIALEA AND A.CODESTANALISE=O.CODESTANALISE AND" );
 			sql.append( "  O.CODEMP=? AND O.CODFILIAL=? AND O.CODOP=? AND O.SEQOP=? AND O.SEQOPCQ=?" );
 
-			PreparedStatement ps = con.prepareStatement( "SELECT P1.USAREFPROD FROM SGPREFERE1 P1 WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPFASE" ) );
 			ps.setInt( 3, (Integer)keys[ 0 ] );
 			ps.setInt( 4, (Integer)keys[ 1 ] );
 			ps.setInt( 5, (Integer)keys[ 2 ] );
 			
 			ResultSet rs = ps.executeQuery();
 
-			while( rs.next() ) {
+			if( rs.next() ) {
 				fase = rs.getInt( "CODFASE" );
 			}
 
@@ -332,7 +332,7 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener, KeyList
 			StringBuilder sql = new StringBuilder();
 			sql.append( "SELECT MAX(SEQITOP) FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
 
-			PreparedStatement ps = con.prepareStatement( "SELECT P1.USAREFPROD FROM SGPREFERE1 P1 WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			ps.setInt( 3, (Integer)keys[ 0 ] );
@@ -341,7 +341,7 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener, KeyList
 			ResultSet rs = ps.executeQuery();
 
 			if( rs.next() ) {
-				itop = rs.getInt( 1 );
+				itop = rs.getInt( 1 )+1;
 			}
 
 			ps.close();
@@ -360,7 +360,8 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener, KeyList
 	@ Override
 	public void ok() {
 
-		// TODO Auto-generated method stub
+		postItens();
+		
 		super.ok();
 	}
 
@@ -371,12 +372,12 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener, KeyList
 		lcLote.setConexao( con );
 	}
 	
-	public void keyPressed( KeyEvent kevt ) {
+	public void keyPressed( KeyEvent e ) {
 
-		super.keyPressed(kevt);
+		super.keyPressed(e);
 		
-		if( kevt.getSource() == txtQtd ){
-			if( kevt.getKeyCode() == KeyEvent.VK_ENTER ){
+		if( e.getSource() == txtQtd ){
+			if( e.getKeyCode() == KeyEvent.VK_ENTER ){
 				if( "S".equals( temLote() )){
 					txtLote.setRequerido( true );
 				}
@@ -387,17 +388,17 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener, KeyList
 		}
 	}
 
-
 	public void actionPerformed( ActionEvent evt ) {
 	
 		super.actionPerformed(evt);
 		
-		if( evt.getSource() == btInserir ){		
+		if( evt.getSource() == btInserir ){			
 			insertGrid( 
 					txtCodProd.getVlrInteger(), 
 					txtDescProd.getVlrString(), 
 					txtQtd.getVlrBigDecimal(), 
 					txtRefProd.getVlrString(), 
+					txtLote.getVlrString(), 
 					cbRma.isSelected() );
 		}
 	}
