@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
@@ -68,9 +69,10 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 	
 	private final JTextAreaPad txaAcao = new JTextAreaPad();
 	
-	private final JButton btInclusao = new JButton( "Inclusão" );
+	private final JButton btInclusao = new JButton( "Inclusão", Icone.novo( "btAdicInsumo.gif" ) );
 	
-	private final JButton btDescarte = new JButton( "Descarte" );
+	private final JButton btDescarte = new JButton( "Descarte", Icone.novo( "btDescartarProducao.gif" ) );
+
 
 	private final ListaCampos lcAcao = new ListaCampos( this, "PD" );
 	
@@ -207,8 +209,8 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 		panelAcao.add( new JScrollPane( txaAcao ) );
 		adic( panelAcao, 7, 350, 602, 110 );
 				
-		btInclusao.setPreferredSize( new Dimension( 100, 30 ) );
-		btDescarte.setPreferredSize( new Dimension( 100, 30 ) );
+		btInclusao.setPreferredSize( new Dimension( 130, 30 ) );
+		btDescarte.setPreferredSize( new Dimension( 130, 30 ) );
 
 		panelBotoes.add( btInclusao );
 		panelBotoes.add( btDescarte );
