@@ -275,38 +275,38 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 	}
 	
 	private boolean postCorrecao() {
-		
+
 		boolean valido = false;
-		for ( Entry<Integer, JCheckBoxPad> ek : analises.entrySet() ) {
-			JCheckBoxPad cb = ek.getValue();
-			if ( "S".equals( cb.getVlrString() ) ) {
-				valido = true;
-				keysItens[ 2 ] = ek.getKey();
-				break;
-			}
-		}
-		
-		if ( ! valido ) {
-			Funcoes.mensagemInforma( this, "Selecione as analises para aplicar a correção!" );
-			return false;
-		}
-		
-		if ( txaCausa.getVlrString().trim().length() == 0 ) {
-			Funcoes.mensagemInforma( this, "Informe as causas!" );
-			return false;
-		}
-		
-		if ( txaAcao.getVlrString().trim().length() == 0 ) {
-			Funcoes.mensagemInforma( this, "Detalhe a ação corretiva!" );
-			return false;
-		}
+		Integer newCodCorrecao = null;
+		String sqlmax = "SELECT MAX(SEQAC) + 1 FROM PPOPACAOCORRET WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?";
 				
 		try {
 			
-			Integer newCodCorrecao = null;
+			for ( Entry<Integer, JCheckBoxPad> ek : analises.entrySet() ) {
+				JCheckBoxPad cb = ek.getValue();
+				if ( "S".equals( cb.getVlrString() ) ) {
+					valido = true;
+					keysItens[ 2 ] = ek.getKey();
+					break;
+				}
+			}
 			
-			PreparedStatement ps = con.prepareStatement( 
-					"SELECT MAX(SEQAC) FROM PPOPACAOCORRET WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
+			if ( ! valido ) {
+				Funcoes.mensagemInforma( this, "Selecione as analises para aplicar a correção!" );
+				return false;
+			}
+			
+			if ( txaCausa.getVlrString().trim().length() == 0 ) {
+				Funcoes.mensagemInforma( this, "Informe as causas!" );
+				return false;
+			}
+			
+			if ( txaAcao.getVlrString().trim().length() == 0 ) {
+				Funcoes.mensagemInforma( this, "Detalhe a ação corretiva!" );
+				return false;
+			}
+			
+			PreparedStatement ps = con.prepareStatement( sqlmax );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPACAOCORRET" ) );
@@ -316,7 +316,7 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				newCodCorrecao = rs.getInt( 1 ) + 1;
+				newCodCorrecao = rs.getInt( 1 );
 			}
 
 			rs.close();
@@ -354,7 +354,8 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 						strAnalises += String.valueOf( ek.getKey() );
 					}
 				}
-				
+
+				// Atualiza Status
 				sql = new StringBuilder();
 				sql.append( "UPDATE PPOPCQ SET SEQAC=? " );
 				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND SEQOPCQ IN ( " + strAnalises + " )" );
@@ -365,6 +366,37 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 				ps.setInt( 3, ListaCampos.getMasterFilial( "PPOPACAOCORRET" ) );
 				ps.setInt( 4, txtCodOP.getVlrInteger() );
 				ps.setInt( 5, txtSeqOP.getVlrInteger() );
+
+				ps.executeUpdate();
+				ps.close();
+				
+				// Insere novas analises após correção
+				
+				sql.delete( 0, sql.length() );
+				
+				sql.append( "INSERT INTO PPOPCQ (CODEMP,CODFILIAL,CODOP,SEQOP,SEQOPCQ," );
+				sql.append( "CODEMPEA,CODFILIALEA,CODESTANALISE) " );
+				sql.append( "SELECT CODEMP,CODFILIAL,CODOP,SEQOP,(");
+				sql.append( sqlmax );
+				sql.append( "),CODEMPEA,CODFILIALEA,CODESTANALISE " );
+				sql.append( "FROM PPOPCQ ");
+				sql.append(	"WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND " );
+				sql.append( "SEQOP=? AND SEQOPCQ IN ( " + strAnalises + " )" );
+				
+				System.out.println(sql.toString());
+				
+				ps = con.prepareStatement( sql.toString() );
+				
+				ps = con.prepareStatement( sql.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPCQ" ) );
+				ps.setInt( 3, txtCodOP.getVlrInteger() );
+				ps.setInt( 4, txtSeqOP.getVlrInteger() );
+				ps.setInt( 5, Aplicativo.iCodEmp );
+				ps.setInt( 6, ListaCampos.getMasterFilial( "PPOPCQ" ) );
+				ps.setInt( 7, txtCodOP.getVlrInteger() );
+				ps.setInt( 8, txtSeqOP.getVlrInteger() );
+
 				ps.executeUpdate();
 				ps.close();
 				
@@ -373,12 +405,19 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 				Funcoes.mensagemInforma( this, "Ação corretiva aplicada com sucesso!" );
 			}
 
-			if ( !con.getAutoCommit() ) {
+			if ( !con.getAutoCommit() ) { 
 				con.commit();
+			}			
+		} 
+		catch ( Exception err ) {
+			try {
+				con.rollback();
 			}
-		} catch ( Exception err ) {
+			catch (SQLException e) {
+				System.out.println("Erro ao realizar rollback!\n" + err.getMessage());
+			}
 			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao carregar analises!\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro ao atualizar analises!\n" + err.getMessage(), true, con, err );
 			valido = false;
 		}		
 		
