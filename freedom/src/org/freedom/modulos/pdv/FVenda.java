@@ -44,7 +44,6 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
@@ -68,7 +67,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.StatusBar;
 import org.freedom.componentes.Tabela;
 import org.freedom.ecf.app.ControllerECF;
-import org.freedom.ecf.driver.EStatus;
+import org.freedom.ecf.driver.StatusStandart;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.modulos.std.DLAdicOrc;
@@ -1474,18 +1473,11 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private void mostraInfoImp() {
 
-		List<EStatus> status = ecf.getStatusImpressora();
-		String str = "";
-
-		if ( status != null ) {
-			for ( EStatus s : status ) {
-				if ( s.getRelevanc() <=1 ) {
-					str += s.getMessage() + "<br>";
-				}
-			}
-			str = "<HTML><CENTER>" + str + "</CENTER></HTML>";
-		}
-
+		String status = ecf.getStatusImpressora();
+		status = status.replace( StatusStandart.RETORNO_OK.getMessage()+"\n", "" );
+		
+		String str = "<HTML><CENTER>" + status + "</CENTER></HTML>";
+		
 		lbAvisoImp.setText( str );
 	}
 
