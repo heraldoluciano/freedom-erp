@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
+import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -43,13 +44,13 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 	
 	private final JPanelPad panelAcao = new JPanelPad( new GridLayout( 1, 1 ) );
 	
-	private final JPanelPad panelBotoes = new JPanelPad( new FlowLayout( FlowLayout.CENTER, 10, 10 ) );
+	private final JPanelPad panelBotoes = new JPanelPad( new FlowLayout( FlowLayout.CENTER, 0, 0 ) );
 
 	private final JTextFieldPad txtCodOP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtSeqOP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private final JTextFieldPad txtSeqOPAC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtSeqAC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtCodProdEst = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -81,6 +82,8 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 	
 	private boolean bPref = false;
 	
+	private boolean podeAbrir = true;
+	
 	private HashMap<Integer, JCheckBoxPad> analises = new HashMap<Integer, JCheckBoxPad>();
 	
 
@@ -100,15 +103,15 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 
 		txtCodOP.setVlrInteger( (Integer) keys[ EAc.CODOP.ordinal() ] );
 		txtSeqOP.setVlrInteger( (Integer) keys[ EAc.SEQOP.ordinal() ] );
-		txtSeqOPAC.setVlrInteger( (Integer) keys[ EAc.SEQOPAC.ordinal() ] );
+		txtSeqAC.setVlrInteger( (Integer) keys[ EAc.SEQOPAC.ordinal() ] );
 		txtCodProdEst.setVlrInteger( (Integer) keys[ EAc.CODPRODEST.ordinal() ] );
 		txtRefProdEst.setVlrString( (String) keys[ EAc.REFPRODEST.ordinal() ] );
 		txtSeqEst.setVlrInteger( (Integer) keys[ EAc.SEQEST.ordinal() ] );
 		txtDescEst.setVlrString( (String) keys[ EAc.DESCEST.ordinal() ] );
 		
 		keysItens = new Object[ 4 ];
-		keysItens[ 0 ] = (Integer) keys[ 0 ];
-		keysItens[ 1 ] = (Integer) keys[ 1 ];
+		keysItens[ 0 ] = (Integer) keys[ EAc.CODOP.ordinal() ];
+		keysItens[ 1 ] = (Integer) keys[ EAc.SEQOP.ordinal() ];
 		
 		Vector<String> vLabs = new Vector<String>();
 		vLabs.add( "Inclusão de Insumos" );
@@ -119,9 +122,9 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 		rgSolucao = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		
 		bPref = getUsaRef();
-		
-		montaAnalises();
+
 		montaListaCampos();
+		montaAnalises();
 		montaTela();
 		
 		btInclusao.addActionListener( this );
@@ -129,27 +132,33 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 		
 		rgSolucao.addRadioGroupListener( this );
 		
-		rgSolucao.setVlrString( "II" );
+		rgSolucao.setVlrString( "II" );		
 		
-		txaAcao.setEnabled( false );
-		txaCausa.setEnabled( false );
+		if ( txtSeqAC.getVlrInteger() > 0 ) {
+			lcAcao.carregaDados();
+			txaAcao.setEditable( false );
+			txaCausa.setEditable( false );
+			rgSolucao.setAtivo( false );
+			btInclusao.setEnabled( false );
+			btDescarte.setEnabled( false );
+		}
 	}
 	
 	private void montaListaCampos() {
 		
 		lcAcao.add( new GuardaCampo( txtCodOP, "CodOp", "Cód.op.", ListaCampos.DB_PK, true ) );
 		lcAcao.add( new GuardaCampo( txtSeqOP, "SeqOp", "Seq.op.", ListaCampos.DB_PK, true ) );
-		lcAcao.add( new GuardaCampo( txtSeqOPAC, "SeqOpAc", "Seq.ação", ListaCampos.DB_PK, true ) );
+		lcAcao.add( new GuardaCampo( txtSeqAC, "SeqAc", "Seq.ação", ListaCampos.DB_PK, true ) );
 		lcAcao.add( new GuardaCampo( txtTpCausa, "TpCausa", "Tipo causa", ListaCampos.DB_SI, false ) );
 		lcAcao.add( new GuardaCampo( txaCausa, "ObsCausa", "Obs. causa", ListaCampos.DB_SI, false ) );
 		lcAcao.add( new GuardaCampo( rgSolucao, "TpAcao", "Tipo ação", ListaCampos.DB_SI, false ) );
 		lcAcao.add( new GuardaCampo( txaAcao, "ObsAcao", "Obs. ação", ListaCampos.DB_SI, false ) );		
 		lcAcao.montaSql( false, "OPACAOCORRET", "PP" );
 		lcAcao.setQueryCommit( false );
-		lcAcao.setReadOnly( true );
 		txtCodOP.setTabelaExterna( lcAcao );
 		txtSeqOP.setTabelaExterna( lcAcao );
-		txtSeqOPAC.setTabelaExterna( lcAcao );
+		txtSeqAC.setTabelaExterna( lcAcao );
+		lcAcao.setConexao( con );
 	}
 	
 	private void montaTela() {		
@@ -204,8 +213,8 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 		panelBotoes.add( btInclusao );
 		panelBotoes.add( btDescarte );
 		
+		pnRodape = adicBotaoSair();
 		pnRodape.add( panelBotoes, BorderLayout.WEST );
-		
 	}
 	
 	private void montaAnalises() {
@@ -216,10 +225,19 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 		
 		carregaAnalises();
 		
+		if ( analises.isEmpty() ) {
+			podeAbrir = false;
+			return;
+		}
+		
 		int y = 5;
 		for ( JCheckBoxPad cb : analises.values() ) {
 			panelItensAnalises.adic( cb, 10, y, 500, 20 );
 			y+=20;
+			if ( txtSeqAC.getVlrInteger() > 0 ) {
+				cb.setSelected( true );
+				cb.setEnabled( false );
+			}
 		}		
 		
 		panelItensAnalises.setPreferredSize( new Dimension( 500, y+5 ) );
@@ -239,14 +257,22 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 			sql.append( "WHERE" );
 			sql.append( "  C.CODEMP=? AND C.CODFILIAL=? AND C.CODOP=? AND C.SEQOP=? AND" );
 			sql.append( "  E.CODEMP=C.CODEMPEA AND E.CODFILIAL=C.CODFILIALEA AND E.CODESTANALISE=C.CODESTANALISE AND" );
-			sql.append( "  T.CODEMP=E.CODEMPTA AND T.CODFILIAL=E.CODFILIALTA AND T.CODTPANALISE=E.CODTPANALISE AND" );
-			sql.append( "  C.STATUS='RC' AND C.SEQAC IS NULL" );
+			sql.append( "  T.CODEMP=E.CODEMPTA AND T.CODFILIAL=E.CODFILIALTA AND T.CODTPANALISE=E.CODTPANALISE " );
+			
+			if ( txtSeqAC.getVlrInteger() > 0 ) {
+				sql.append( "  AND C.SEQAC=?" );	
+			} else {
+				sql.append( "  AND C.STATUS='RC' AND C.SEQAC IS NULL" );	
+			}
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPCQ" ) );
 			ps.setInt( 3, txtCodOP.getVlrInteger() );
 			ps.setInt( 4, txtSeqOP.getVlrInteger() );
+			if ( txtSeqAC.getVlrInteger() > 0 ) {
+				ps.setInt( 5, txtSeqAC.getVlrInteger() );	
+			}
 
 			ResultSet rs = ps.executeQuery();
 
@@ -295,11 +321,11 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 		return usarRef;
 	}
 	
-	/*private boolean postCorrecao() {
+	private boolean postCorrecao() {
 
 		boolean valido = false;
 		Integer newCodCorrecao = null;
-		String sqlmaxac = "SELECT MAX(SEQAC) ROM PPOPACAOCORRET WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?";
+		String sqlmaxac = "SELECT MAX(SEQAC) FROM PPOPACAOCORRET WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?";
 		String sqlmaxcq = "SELECT MAX(SEQOPCQ) + 1 FROM PPOPCQ WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?";
 		
 		try {
@@ -338,13 +364,15 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				newCodCorrecao = rs.getInt( 1 ) + 1;
+				newCodCorrecao = rs.getInt( 1 ) + 1;				
+				keysItens[3] = newCodCorrecao;
 			}
 
 			rs.close();
 			ps.close();
 
 			if ( newCodCorrecao != null ) {
+
 				StringBuilder sql = new StringBuilder();
 				sql.append( "INSERT INTO PPOPACAOCORRET " );
 				sql.append( "( CODEMP, CODFILIAL, CODOP, SEQOP, SEQAC, TPCAUSA, OBSCAUSA, TPACAO, OBSACAO ) " );
@@ -362,8 +390,6 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 				ps.setString( 9, txaAcao.getVlrString() );
 				ps.execute();
 				ps.close();
-				
-				keysItens[3] = newCodCorrecao;
 				
 				String strAnalises = "";
 				
@@ -444,16 +470,16 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 		}		
 		
 		return valido;
-	}*/
+	}
 	
 	@ Override
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btInclusao ) {			
-		//	if ( postCorrecao() ) {
+			if ( postCorrecao() ) {
 				DLInsereInsumo dl = new DLInsereInsumo( con, keysItens );
 				dl.setVisible( true );
-		//	}			
+			}			
 		}
 		else if ( e.getSource() == btDescarte ) {
 			
@@ -475,7 +501,7 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 			}
 		}		
 	}
-	
+
 	enum EAc {
 
 		CODOP, SEQOP, SEQOPAC, CODPRODEST, REFPRODEST, SEQEST, DESCEST;
