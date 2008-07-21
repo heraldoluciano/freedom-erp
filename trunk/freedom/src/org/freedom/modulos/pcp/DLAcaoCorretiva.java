@@ -67,7 +67,7 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 	
 	private final JButton btDescarte = new JButton( "Descarte" );
 	
-	private final EMs m;
+	private EMs m;
 	
 	private final Object[] keys;
 	
@@ -76,15 +76,12 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 	private boolean bPref = false;
 	
 	private HashMap<Integer, JCheckBoxPad> analises = new HashMap<Integer, JCheckBoxPad>();
-	
 
-	public DLAcaoCorretiva( Connection con, EMs m, Object[] keys ) {
+	public DLAcaoCorretiva( Connection con, Object[] keys ){
 		
-		setTitulo( "Acão corretiva - " + m.getDescription() );
+		setTitulo( "Acão corretiva" );
 		setAtribos( 635, 555 );
 		setConexao( con );
-		
-		this.m = m;
 		
 		this.keys = keys;
 		
@@ -94,6 +91,8 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 		txtRefProdEst.setVlrString( (String) keys[ 3 ] );
 		txtSeqEst.setVlrInteger( (Integer) keys[ 4 ] );
 		txtDescEst.setVlrString( (String) keys[ 5 ] );
+		txaAcao.setVlrString( (String) keys[ 6 ] );
+		txaCausa.setVlrString( (String) keys[ 7 ] );
 		
 		keysItens = new Object[ 4 ];
 		keysItens[ 0 ] = (Integer) keys[ 0 ];
@@ -118,6 +117,18 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 		rgSolucao.addRadioGroupListener( this );
 		
 		rgSolucao.setVlrString( "II" );
+		
+		txaAcao.setEnabled( false );
+		txaCausa.setEnabled( false );
+		
+	}
+	
+	public DLAcaoCorretiva( Connection con, EMs m, Object[] keys ) {		
+
+		this( con, keys );
+		setTitulo( "Acão corretiva - " + m.getDescription() );
+		
+		this.m = m;
 	}
 	
 	private void montaTela() {		
