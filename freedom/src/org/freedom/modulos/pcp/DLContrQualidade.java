@@ -479,7 +479,9 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 	public void mouseClicked( MouseEvent mevt ) {
 
 		if ( mevt.getClickCount() == 2 ) {
-			if ( mevt.getSource() == tabControl && tabControl.getLinhaSel() >= 0 ) {
+			if ( mevt.getSource() == tabControl && tabControl.getLinhaSel() >= 0 &&
+					"PE".equals( tabControl.getValor( tabControl.getLinhaSel(), EcolPPOPCQ.STATUS.ordinal() ))){
+				
 				alteraQual();
 			}
 		}
