@@ -324,7 +324,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		}
 	}
 
-	private void alteraQual() {
+	private void alteraQual( boolean editable ) {
 
 		int iLinha = tabControl.getLinhaSel();
 		StringBuffer sSQL = new StringBuffer();
@@ -338,12 +338,26 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 			BigDecimal bVlrAfer = tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() ) == null || tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() ).equals( "" ) ? new BigDecimal( 0 ) : (BigDecimal) tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() );
 
 			String status = "PE";
+			
+			if ( imgPendente.equals( tabControl.getValor( tabControl.getLinhaSel(), EcolPPOPCQ.STATUS.ordinal() ) ) ) {
+				status = "PE";
+			}
+			else if ( imgAprovada.equals( tabControl.getValor( tabControl.getLinhaSel(), EcolPPOPCQ.STATUS.ordinal() ) ) ) {
+				status = "AP";
+			}
+			else if ( imgRecusado.equals( tabControl.getValor( tabControl.getLinhaSel(), EcolPPOPCQ.STATUS.ordinal() ) ) ) {
+				status = "RC";
+			}
+			else if ( imgCorrigidas.equals( tabControl.getValor( tabControl.getLinhaSel(), EcolPPOPCQ.STATUS.ordinal() ) ) ) {
+				status = "AP";
+			}
+			
 			String sAfer = (String) tabControl.getValor( iLinha, EcolPPOPCQ.DESCAFER.ordinal() );
 			String sTipo = (String) tabControl.getValor( iLinha, EcolPPOPCQ.TIPOEXPEC.ordinal() );
 
 			String sUpdate = "";
 
-			DLFechaQual dl = new DLFechaQual( sDescAnalise, sTipo, bVlrMin, bVlrMax, bVlrAfer, sAfer );
+			DLFechaQual dl = new DLFechaQual( sDescAnalise, sTipo, bVlrMin, bVlrMax, bVlrAfer, sAfer, status, editable );
 			dl.setVisible( true );
 
 			if ( "MM".equals( sTipo ) ) {
@@ -356,7 +370,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 			HashMap<String, Object> hsRet = dl.getValor();
 			BigDecimal bValor = (BigDecimal) hsRet.get( "VLRAFER" );
 
-			if ( dl.OK ) {
+			if ( dl.OK && editable ) {
 
 				sSQL.append( "UPDATE PPOPCQ SET" + sUpdate + "WHERE " );
 				sSQL.append( "CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND SEQOPCQ=?" );
@@ -367,6 +381,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 
 					if ( ( bValor == null ) ) {
 						bValor = new BigDecimal( 0 );
+						status = "PE";
 					}
 					else {
 						if ( bValor.compareTo( bVlrMin ) < 0 || bValor.compareTo( bVlrMax ) > 0 ) {
@@ -479,10 +494,8 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 	public void mouseClicked( MouseEvent mevt ) {
 
 		if ( mevt.getClickCount() == 2 ) {
-			if ( mevt.getSource() == tabControl && tabControl.getLinhaSel() >= 0 &&
-					"PE".equals( tabControl.getValor( tabControl.getLinhaSel(), EcolPPOPCQ.STATUS.ordinal() ))){
-				
-				alteraQual();
+			if ( mevt.getSource() == tabControl && tabControl.getLinhaSel() >= 0 ) {				
+				alteraQual( imgPendente.equals( tabControl.getValor( tabControl.getLinhaSel(), EcolPPOPCQ.STATUS.ordinal() ) ) );
 			}
 		}
 	}
