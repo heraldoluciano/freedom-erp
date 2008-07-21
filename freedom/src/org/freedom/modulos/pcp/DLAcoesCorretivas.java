@@ -81,6 +81,9 @@ public class DLAcoesCorretivas extends FFDialogo implements MouseListener {
 		if ( m != null ) {
 			DLAcaoCorretiva acaoCorretiva = new DLAcaoCorretiva( con, m, keys );
 			acaoCorretiva.setVisible( true );
+			if ( acaoCorretiva.OK ) {
+				ok();
+			}
 		}
 	}
 

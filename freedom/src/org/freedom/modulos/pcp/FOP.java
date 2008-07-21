@@ -26,11 +26,9 @@ package org.freedom.modulos.pcp;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
@@ -59,7 +57,8 @@ import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
-import org.freedom.acao.PostListener;
+import org.freedom.acao.TabelaEditEvent;
+import org.freedom.acao.TabelaEditListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
@@ -80,7 +79,7 @@ import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FPrinterJob;
 
 
-public class FOP extends FDetalhe implements ChangeListener, PostListener, CancelListener, InsertListener, ActionListener, CarregaListener, KeyListener, FocusListener {
+public class FOP extends FDetalhe implements ChangeListener, CancelListener, InsertListener, CarregaListener, FocusListener, TabelaEditListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -145,6 +144,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 	private JTextFieldPad txtCodLoteProdEst = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldPad txtGeraRMAAut = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+
+	private JTextFieldPad txtSeqAc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescLoteProdEst = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -658,6 +659,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 		adicCampoInvisivel( txtQtdCopiaItOp, "qtdcopiaitop", "Qtd. rateada", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodLoteProdRat, "codloterat", "lote rateado", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtGeraRMAAut, "GERARMA", "Rma?", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtSeqAc, "SeqAc", "Ação", ListaCampos.DB_SI, false );
 		setListaCampos( true, "ITOP", "PP" );
 		lcDet.setQueryInsert( false );
 
@@ -1825,7 +1827,9 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			dl.carregaCampos( sValores );
 			dl.carregaTabela( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue() );
 			dl.setVisible( true );
-					
+			if ( dl.OK ) {
+				lcCampos.carregaDados();
+			}					
 		}catch (Exception e) {
 			
 			e.printStackTrace();
@@ -2182,6 +2186,15 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener, Cance
 			sql = null;
 		}
 		return retorno;
+	}
+
+	public void valorAlterado( TabelaEditEvent e ) {
+
+		if ( e.getTabela() == tab ) {
+			if ( tab.getValor( tab.getNumColunas()-1, 8 ) != null ) {
+				// alterar cor....
+			}
+		}		
 	}
 
 	public void setConexao( Connection cn ) {
