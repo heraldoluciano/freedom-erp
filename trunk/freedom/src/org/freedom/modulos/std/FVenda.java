@@ -2222,6 +2222,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				String codvenda = txtCodVenda.getVlrString();
 				lcVenda2.carregaDados();// Carrega os Totais
 				txtCodVenda.setVlrString( codvenda );
+				if ( (numComissionados>0) && (ctrlmc!=null) ) {
+					ctrlmc.loadVendaComis( txtTipoVenda.getVlrString(), 
+							txtCodVenda.getVlrInteger().intValue(), 
+							txtCodRegrComis.getVlrInteger().intValue() );
+				}
 				codvenda = null;
 			}
 			else if ( cevt.getListaCampos() == lcVenda2 ) {
@@ -2376,7 +2381,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				txtFiscalTipoMov2.setText( "N" );
 			}
 			if ( (numComissionados>0) && (ctrlmc!=null) && (pevt.ok) ) {
-				ctrlmc.salvaItens();
+				ctrlmc.salvaItens(txtTipoVenda.getVlrString(), txtCodVenda.getVlrInteger().intValue());
 			}
 		}
 	}
@@ -2434,10 +2439,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				// post no venda e pula para o campo
 				// adequado no item.
 				if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
-					focusIni();
-					focusCodprod();
-					lcCampos.post();
-					lcDet.edit();
+					if ( (numComissionados>0) && (ctrlmc!=null) && (ctrlmc.isEnabled()) ) {
+						focusIni(); 
+						focusCodprod();
+						lcCampos.post();
+						lcDet.edit();
+					}
 				}
 				else if ( lcCampos.getStatus() == ListaCampos.LCS_EDIT ) {
 					lcCampos.post();

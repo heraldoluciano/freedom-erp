@@ -20,13 +20,15 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 
-public class CtrlMultiComis {
+public class CtrlMultiComis implements CarregaListener {
     
 	private int numComissionados = 1;
 	private Connection con = null; 
 	private ItemComis[] listComis = null;
 	private String cpTipovenda = null;
 	private String cpCodvenda = null;
+	private int codvenda = -1;
+	private String tipovenda = "";
 	private JTextFieldPad txtTipovendaPrinc = null;
 	private JTextFieldPad txtCodvendaPrinc = null;
 	private JTextFieldPad txtCodvendPrinc = null;
@@ -49,8 +51,68 @@ public class CtrlMultiComis {
 		this.owner = owner;
 		this.vendacomis = vendacomis;
 		this.lcMaster = lcMaster;
+		if (lcMaster!=null) {
+			lcMaster.addCarregaListener( this );
+		}
+			
 	}
 	
+	public boolean isEnabled() {
+		boolean result = false;
+		if (listComis!=null) {
+			for (ItemComis itemcomis: listComis) {
+				if ( (itemcomis!=null) && (itemcomis.getTxtCodvend().isEnabled()) ) {
+					result = true;
+					break;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public void loadVendaComis( final String tipovenda, final int codvenda, final int codregrcomis) {
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int pos = 0;
+		if (listComis == null) {
+			listComis = new ItemComis[numComissionados];
+			for (int i=0; i<numComissionados; i++) {
+				listComis[ i ] = new ItemComis();
+			}
+		}
+		try {
+			ps = con.prepareStatement( "SELECT VC.SEQVC, VC.CODREGRCOMIS, " +
+					"VC.SEQITRC, VC.CODVEND, VC.PERCVC " +
+					"FROM VDVENDACOMIS VC " +
+					"WHERE VC.CODEMP=? AND VC.CODFILIAL=? AND " +
+					"VC."+cpTipovenda+"=? AND VC."+cpCodvenda+"=?");
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITREGRACOMIS" ) );
+			ps.setString( 3, tipovenda );
+			ps.setInt( 4, codvenda );
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				listComis[ pos ].getTxtSeqvc().setVlrInteger( rs.getInt( "SEQVC" ) );
+				listComis[ pos ].setSeqitrc( rs.getInt( "SEQITRC" ) );
+				listComis[ pos ].getTxtTipovenda().setVlrString(lcMaster.getCampo( cpTipovenda ).getVlrString() );
+				listComis[ pos ].getTxtPerccomis().setVlrBigDecimal( rs.getBigDecimal( "PERCVC" ) );
+				pos ++;
+			}
+			for (int i=pos; i<numComissionados; i++) {
+				listComis[ i ].limpa();
+			}
+			for (ItemComis itemcomis: listComis) {
+				if (itemcomis!=null) {
+//					itemcomis.getLcVend().carregaDados();
+				}
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public class ItemComis implements InsertListener, CarregaListener {
 		private int seqitrc = 0;
 		private float perccomis = 0;
@@ -91,47 +153,6 @@ public class CtrlMultiComis {
 			//lcMaster.addPostListener( this );
 		}
 		
-		public void loadVendaComis( final int codregrcomis) {
-			PreparedStatement ps = null;
-			ResultSet rs = null;
-			int pos = 0;
-			if (listComis == null) {
-				listComis = new ItemComis[numComissionados];
-				for (int i=0; i<numComissionados; i++) {
-					listComis[ i ] = new ItemComis();
-				}
-			}
-			try {
-				ps = con.prepareStatement( "SELECT VC.SEQVC, VC.CODREGRCOMIS, " +
-						"VC.SEQITRC, VC.CODVEND, VC.PERCVC " +
-						"FROM VDVENDACOMIS VC " +
-						"WHERE VC.CODEMP=? AND VC.CODFILIAL=? AND" +
-						"VC."+cpTipovenda+"=? AND VC."+cpCodvenda+"=?");
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "VDITREGRACOMIS" ) );
-				ps.setString( 3, lcMaster.getCampo( cpTipovenda ).getVlrString() );
-				ps.setInt( 4, lcMaster.getCampo( cpCodvenda ).getVlrInteger().intValue() );
-				rs = ps.executeQuery();
-				while (rs.next()) {
-					listComis[ pos ].getTxtSeqvc().setVlrInteger( rs.getInt( "SEQVC" ) );
-					listComis[ pos ].setSeqitrc( rs.getInt( "SEQITRC" ) );
-					listComis[ pos ].getTxtTipovenda().setVlrString(lcMaster.getCampo( cpTipovenda ).getVlrString() );
-					listComis[ pos ].getTxtPerccomis().setVlrBigDecimal( rs.getBigDecimal( "PERCVC" ) );
-					pos ++;
-				}
-				for (int i=pos; i<numComissionados; i++) {
-					listComis[ i ].limpa();
-				}
-				for (ItemComis itemcomis: listComis) {
-					if (itemcomis!=null) {
-//						itemcomis.getLcVend().carregaDados();
-					}
-				}
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
 
 		public int getSeqitrc() {
 			return seqitrc;
@@ -252,19 +273,17 @@ public class CtrlMultiComis {
 		}
 		public void afterPost( PostEvent pevt ) {
 			if ( pevt.getListaCampos()==lcMaster) {
-				salvaItens();
 			}
 		}
 		public void beforePost( PostEvent pevt ) {
 			if ( pevt.getListaCampos()==lcMaster ) {
-				if (!validaItens()) {
+/*				if (!validaItens()) {
 					pevt.cancela();
 					return;
-				}
+				} */
 			}
 		}
 		public void afterCarrega( CarregaEvent cevt ) {
-			
 		}
 		public void beforeCarrega( CarregaEvent cevt ) {
 		}
@@ -335,7 +354,7 @@ public class CtrlMultiComis {
 		return result;
 	}
 	
-	public void salvaItens() {
+	public void salvaItens(final String tipovenda, final int codvenda) {
 		if (listComis!=null) {
 			for (ItemComis itemcomis: listComis) {
 				if ( (itemcomis!=null) ) { 
@@ -343,8 +362,8 @@ public class CtrlMultiComis {
 						 (itemcomis.getTxtCodvend().isEnabled() ) ) {
 						if ( (itemcomis.getLcVendaComis().getStatus()==ListaCampos.LCS_EDIT) || 
 							 (itemcomis.getLcVendaComis().getStatus()==ListaCampos.LCS_INSERT)) {
-							itemcomis.getTxtTipovenda().setVlrString( lcMaster.getCampo( cpTipovenda ).getVlrString() );
-							itemcomis.getTxtCodvend().setVlrInteger( lcMaster.getCampo( cpCodvenda ).getVlrInteger() );
+							itemcomis.getTxtTipovenda().setVlrString( tipovenda );
+							itemcomis.getTxtCodvend().setVlrInteger( codvenda );
 							itemcomis.getTxtSeqvc().setVlrInteger( itemcomis.getSeqitrc() );
 							itemcomis.getLcVendaComis().post();
 						}
@@ -352,6 +371,17 @@ public class CtrlMultiComis {
 				}
 			}
 		}
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+
+		
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 
 }
