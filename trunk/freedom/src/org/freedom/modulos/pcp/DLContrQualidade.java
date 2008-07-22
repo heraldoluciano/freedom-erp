@@ -232,14 +232,18 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		tabControl.setTamColuna( 10, EcolPPOPCQ.STATUS.ordinal() );
 		tabControl.setTamColuna( 20, EcolPPOPCQ.SEQOPCQ.ordinal() );
 		tabControl.setTamColuna( 50, EcolPPOPCQ.CODESTANALISE.ordinal() );
-		tabControl.setTamColuna( 200, EcolPPOPCQ.DESCTPANALISE.ordinal() );
+		tabControl.setTamColuna( 185, EcolPPOPCQ.DESCTPANALISE.ordinal() );
 		tabControl.setTamColuna( 70, EcolPPOPCQ.VLRMIN.ordinal() );
 		tabControl.setTamColuna( 70, EcolPPOPCQ.VLRMAX.ordinal() );
-		tabControl.setTamColuna( 80, EcolPPOPCQ.VLRAFER.ordinal() );
-		tabControl.setTamColuna( 150, EcolPPOPCQ.DESCAFER.ordinal() );
+		tabControl.setTamColuna( 75, EcolPPOPCQ.VLRAFER.ordinal() );
+		tabControl.setTamColuna( 140, EcolPPOPCQ.DESCAFER.ordinal() );
 		tabControl.setTamColuna( 30, EcolPPOPCQ.TIPOEXPEC.ordinal() );
 
 		tabControl.addMouseListener( this );
+		
+		tabControl.setColunaInvisivel( 8 );
+		tabControl.setColunaInvisivel( 9 );
+		
 	}
 
 	public void carregaTabela( int iCodop, int iSeqop ) {
