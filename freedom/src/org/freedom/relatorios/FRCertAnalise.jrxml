@@ -61,6 +61,7 @@
 	<parameter name="DESCPROD" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="CODPROD" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="DOCVENDA" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="NUMCERT" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[select ta.desctpanalise,ta.metodo,ea.vlrmin,ea.vlrmax,cq.vlrafer,cq.descafer,pf.nomeresp,pf.identprofresp,pf.imgassresp
 from ppopcq cq, ppestruanalise ea, pptipoanalise ta, sgprefere5 pf, ppop op0, ppop opx
 where
@@ -70,7 +71,7 @@ and cq.codemp=op0.codemp and cq.codfilial=op0.codfilial and cq.codop=op0.codop a
 and cq.status='AP'
 and op0.codemp = opx.codemp and op0.codfilial=opx.codfilial and op0.codop=opx.codop and op0.seqop=0
 and pf.codemp = op0.codemp and pf.codfilial=op0.codfilial
-and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{CODLOTE}]]></queryString>
+and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{CODLOTE} and 1=2]]></queryString>
 
 	<field name="DESCTPANALISE" class="java.lang.String"/>
 	<field name="METODO" class="java.lang.String"/>
@@ -180,7 +181,7 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[  Cód.Cli]]></text>
+				<text><![CDATA[  Cód.Cli:]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -488,9 +489,9 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 			<band height="27"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="5"
+						x="1"
 						y="2"
-						width="196"
+						width="186"
 						height="17"
 						key="staticText-17"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -526,16 +527,16 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="219"
+						x="187"
 						y="5"
-						width="72"
+						width="107"
 						height="11"
 						key="textField-18"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Nº " + ($P{CODPROD}==null?"000":$P{CODPROD}.toString()) + ($P{CODCLI}==null?"000":$P{CODCLI}.toString()) + ($P{NF}==null?"000":$P{NF}.toString())]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Nº " + $P{NUMCERT}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
