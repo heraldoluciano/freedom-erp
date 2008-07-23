@@ -23,6 +23,9 @@ package org.freedom.modulos.pcp;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -174,10 +177,75 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
 
 	public void imprimir( boolean b ) {
 		
-		imprimiGrafico( b, "" );
+		StringBuffer sql = new StringBuffer();
+		StringBuffer bNumCert = new StringBuffer();
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		int iCodProd = 0;
+		String descProd = "";
+		
+		try {
+			
+			sql.append( "select op0.codprod, pd.descprod " );
+			sql.append( "from ppop op0,eqproduto pd, ppop opx " );
+			sql.append( "where " );
+			sql.append( "pd.codemp=op0.codemppd and pd.codfilial=op0.codfilialpd and pd.codprod=op0.codprod " );
+			sql.append( "and op0.codemp = opx.codemp and op0.codfilial=opx.codfilial and op0.codop=opx.codop and op0.seqop=0 " );
+			sql.append( "and opx.codemp=? and opx.codfilial=? and opx.codlote=? " );
+
+		
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setString( 3, txtCodLote.getVlrString() );
+			rs = ps.executeQuery();
+			
+			if( rs.next() ){				
+				iCodProd = rs.getInt( "codprod" );
+				descProd = rs.getString( "descprod" );
+			}
+			
+			sql.delete( 0, sql.length() );
+			
+			sql.append( "select ta.desctpanalise,ta.metodo,ea.vlrmin,ea.vlrmax,cq.vlrafer,cq.descafer,pf.nomeresp,pf.identprofresp,pf.imgassresp, " );
+			sql.append( "op0.codprod, pd.descprod " );
+			sql.append( "from ppopcq cq, ppestruanalise ea, pptipoanalise ta, sgprefere5 pf, ppop op0, ppop opx, eqproduto pd " );
+			sql.append( "where " );
+			sql.append( "ta.codemp=ea.codempta and ta.codfilial=ea.codfilialta and ta.codtpanalise=ea.codtpanalise " );
+			sql.append( "and cq.codempea=ea.codemp and cq.codfilialea=ea.codfilial and cq.codestanalise=ea.codestanalise " );
+			sql.append( "and cq.codemp=op0.codemp and cq.codfilial=op0.codfilial and cq.codop=op0.codop and cq.seqop=op0.seqop " );
+			sql.append( "and cq.status='AP' " );
+			sql.append( "and op0.codemp = opx.codemp and op0.codfilial=opx.codfilial and op0.codop=opx.codop and op0.seqop=0 " );
+			sql.append( "and pf.codemp = op0.codemp and pf.codfilial=op0.codfilial " );
+			sql.append( "and pd.codemp=op0.codemppd and pd.codfilial=op0.codfilialpd and pd.codprod=op0.codprod " );
+			sql.append( "and opx.codemp=? and opx.codfilial=? and opx.codlote=? " );			
+			
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPCQ" ) );
+			ps.setString( 3, txtCodLote.getVlrString() );
+			rs = ps.executeQuery();
+			
+			bNumCert.append( iCodProd );
+			bNumCert.append( Funcoes.strZero( txtCodCli.getVlrString().trim(), 4 ));
+			
+			if( txtDocVenda.getVlrInteger() != 0 && txtDocVenda.getVlrInteger() != null ){
+				
+				bNumCert.append( txtDocVenda.getVlrInteger() );
+			}
+			
+			
+		} catch ( SQLException e ) {
+			
+			Funcoes.mensagemErro( this, "Erro ao montar relatório" );
+			e.getMessage();
+			e.printStackTrace();
+		}
+		
+		imprimiGrafico( b, rs, "", bNumCert.toString(), descProd );
 	}
 	
-	private void imprimiGrafico(  final boolean bVisualizar,  final String sCab ) {
+	private void imprimiGrafico(  final boolean bVisualizar,  ResultSet rs,  final String sCab, String numCert, String descProd  ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -185,8 +253,8 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );		
-		hParam.put( "CODLOTE", txtCodLote.getVlrString() );
-		hParam.put( "DESCPROD", txtDescProd.getVlrString() );
+	    hParam.put( "CODLOTE", txtCodLote.getVlrString() );
+		hParam.put( "DESCPROD", descProd );
 		hParam.put( "FABRICACAO", txtDtIniLote.getVlrDate() );
 		hParam.put( "VALIDADE", txtDtIniLote.getVlrDate() );
 		hParam.put( "NF", txtCodPed.getVlrInteger() );
@@ -195,9 +263,10 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
 		hParam.put( "RAZCLI", txtRazCli.getVlrString() );
 		hParam.put( "CODPROD", txtCodProd.getVlrInteger().toString() );
 		hParam.put( "DOCVENDA", txtDocVenda.getVlrInteger() );
-		
 
-		dlGr = new FPrinterJob("relatorios/FRCertAnalise.jasper", "Certificado de Análise", "", this, hParam, con);
+		hParam.put( "NUMCERT", numCert );
+
+		dlGr = new FPrinterJob("relatorios/FRCertAnalise.jasper", "Certificado de Análise", "", rs, hParam, this );
 		
 		if ( bVisualizar ) {
 			

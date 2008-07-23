@@ -48,7 +48,7 @@ public class FTipoAnalise extends FDados {
 	private void montaTela(){
 		
 		vLabs1.addElement("Mínimo e Máximo");
- 		vLabs1.addElement("Descrito"); 
+ 		vLabs1.addElement("Descritivo"); 
  		vVals1.addElement("MM");
  		vVals1.addElement("DT");
 		    
