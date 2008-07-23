@@ -252,15 +252,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 	private JLabelPad lbPrcCont = new JLabelPad();
 
-	private JRadioGroup<?, ?> rgTipoValidOrc = null;
+	private JRadioGroup<String, String> rgTipoValidOrc = null;
 
-	private JRadioGroup<?, ?> rgTipoPrecoCusto = null;
+	private JRadioGroup<String, String> rgTipoPrecoCusto = null;
 
-	private JRadioGroup<?, ?> rgSetorVenda = null;
+	private JRadioGroup<String, String> rgSetorVenda = null;
 
-	private JRadioGroup<?, ?> rgOrdNota = null;
+	private JRadioGroup<String, String> rgOrdNota = null;
 
-	private JRadioGroup<?, ?> rgLibCred = null;
+	private JRadioGroup<String, String> rgLibCred = null;
+
+	private JRadioGroup<String, String> rgCodBar = null;
 
 	private JComboBoxPad cbSisContabil = null;
 
@@ -386,13 +388,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 	private JCheckBoxPad cbConsIEFor = null;
 
-	private JCheckBoxPad cbAltItReceberImp = null;
+	private JCheckBoxPad cbAltItRecImpBol = null;
+
+	private JCheckBoxPad cbEstItRecAltDtVenc = null;
 	
 	private JCheckBoxPad cbAdicCodOrcObsPed = null;
 	
 	private JCheckBoxPad cbMultiComis = null;
-
-	private JRadioGroup<?, ?> rgCodBar = null;
 	
 	private PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
@@ -725,8 +727,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbLibGeral.setVlrString( "S" );
 		cbJurosPosCalc = new JCheckBoxPad( "Juros pós-calculado?", "S", "N" );
 		cbJurosPosCalc.setVlrString( "N" );
-		cbAltItReceberImp = new JCheckBoxPad( "Atualiza parcela na impressão do boleto?", "S", "N" );
-		cbAltItReceberImp.setVlrString( "N" );
+		cbAltItRecImpBol = new JCheckBoxPad( "Atualiza parcela na impressão do boleto?", "S", "N" );
+		cbAltItRecImpBol.setVlrString( "N" );
+		cbEstItRecAltDtVenc = new JCheckBoxPad( "Estorna parcela na alteração da data de vencimento?", "S", "N" );
+		cbEstItRecAltDtVenc.setVlrString( "N" );
 		cbVerifAltParVenda = new JCheckBoxPad( "Verificar usuario para alterar parcelas?", "S", "N" );
 		cbVerifAltParVenda.setVlrString( "N" );
 		cbUsaBuscGenProd = new JCheckBoxPad( "Busca generica do código do produto?", "S", "N" );
@@ -983,19 +987,20 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDB( rgLibCred, 7, 70, 310, 80, "PrefCred", "Verificação de crédito", true );
 
 		adic( lbFinOpcoes, 17, 150, 70, 20 );
-		adic( lbFinCont, 7, 160, 425, 220 );
-		adicDB( cbAltItReceberImp, 17, 175, 310, 20, "AtBancoImpBol", "", true );
+		adic( lbFinCont, 7, 160, 425, 250 );
+		adicDB( cbAltItRecImpBol, 17, 175, 310, 20, "AtBancoImpBol", "", true );
 		adicDB( cbLibGeral, 17, 200, 310, 20, "LCredGlobal", "", true );
 		adicDB( cbJurosPosCalc, 17, 225, 310, 20, "JurosPosCalc", "", true );
+		adicDB( cbEstItRecAltDtVenc, 17, 250, 400, 20, "EstItRecAltDtVenc", "", true );
 		
-		adicCampo( txtCodTabJuros, 20, 265, 80, 20, "CodTbj", "Cód.tab.jr.", ListaCampos.DB_FK, txtDescTabJuros, false );
-		adicDescFK( txtDescTabJuros, 100, 265, 320, 20, "DescTbj", "Descrição da tabela de juros." );
+		adicCampo( txtCodTabJuros, 20, 295, 80, 20, "CodTbj", "Cód.tab.jr.", ListaCampos.DB_FK, txtDescTabJuros, false );
+		adicDescFK( txtDescTabJuros, 100, 295, 320, 20, "DescTbj", "Descrição da tabela de juros." );
 		
-		adicCampo( txtCodHistRec, 20, 305, 80, 20, "CodHistRec", "Cód.Hist.Rec.", ListaCampos.DB_FK, txtDescHistRec, false );
-		adicDescFK( txtDescHistRec, 100, 305, 320, 20, "DescHist", "Descrição do histórico padrão para contas a receber" );
+		adicCampo( txtCodHistRec, 20, 335, 80, 20, "CodHistRec", "Cód.Hist.Rec.", ListaCampos.DB_FK, txtDescHistRec, false );
+		adicDescFK( txtDescHistRec, 100, 335, 320, 20, "DescHist", "Descrição do histórico padrão para contas a receber" );
 
-		adicCampo( txtCodHistPag, 20, 345, 80, 20, "CodHistPag", "Cód.Hist.Pag.", ListaCampos.DB_FK, txtDescHistPag, false );
-		adicDescFK( txtDescHistPag, 100, 345, 320, 20, "DescHist", "Descrição do histórico padrão para contas a pagar" );
+		adicCampo( txtCodHistPag, 20, 375, 80, 20, "CodHistPag", "Cód.Hist.Pag.", ListaCampos.DB_FK, txtDescHistPag, false );
+		adicDescFK( txtDescHistPag, 100, 375, 320, 20, "DescHist", "Descrição do histórico padrão para contas a pagar" );
 
 		// Contabil
 
