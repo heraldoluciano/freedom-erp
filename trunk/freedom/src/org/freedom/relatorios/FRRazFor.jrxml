@@ -72,10 +72,12 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 	<field name="VLRCRED" class="java.math.BigDecimal"/>
 
 	<variable name="DESCTIPO" class="java.lang.String" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[("A".equals($F{TIPO})?"SALDO INICIAL":("Q".equals($F{TIPO})?"VENDA":("Z".equals($F{TIPO})?"DEVOLUÇÃO":"RECEBIMENTO")))]]></variableExpression>
+		<variableExpression><![CDATA[("A".equals($F{TIPO})?"SALDO INICIAL":
+("C".equals($F{TIPO})?"COMPRA":
+("Z".equals($F{TIPO})?"DEVOLUÇÃO":"PAGAMENTO")))]]></variableExpression>
 	</variable>
 	<variable name="SALDOFOR" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRDEB}.add($F{VLRCRED})]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRDEB}.multiply(new BigDecimal("-1")).add($F{VLRCRED})]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="SALDOGERAL" class="java.math.BigDecimal" resetType="Group" resetGroup="GERAL" calculation="Sum">
@@ -206,7 +208,7 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALCREDITO}.multiply( new BigDecimal(-1))]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALCREDITO}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -407,7 +409,7 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALCREDITOFOR}.multiply( new BigDecimal(-1))]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALCREDITOFOR}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -840,7 +842,7 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRCREDITO}.equals(new BigDecimal(0))?null:$V{VLRCREDITO}.multiply( new BigDecimal(-1))]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRCREDITO}.equals(new BigDecimal(0))?null:$V{VLRCREDITO}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

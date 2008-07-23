@@ -61,6 +61,7 @@ public class FRRazFor extends FRelatorio {
 
 	public FRRazFor() {
 
+		super( false );
 		setTitulo( "Compras por Razão" );
 		setAtribos( 50, 50, 340, 195 );
 
@@ -102,7 +103,6 @@ public class FRRazFor extends FRelatorio {
 		txtCodFor.setFK( true );
 		lcFor.setReadOnly( true );
 		lcFor.montaSql( false, "FORNECED", "CP" );
-
 	}
 
 	@ Override
@@ -127,7 +127,6 @@ public class FRRazFor extends FRelatorio {
 			if ( codfor != 0 ) {
 				sCab.append( "FORNECEDOR - " + txtDescFor.getVlrString() );
 			}
-
 			
 			sSQL.append( "SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
 			sSQL.append( "CAST( '" );
@@ -201,7 +200,7 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( "UNION " );
 			sSQL.append( "SELECT P.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
 			sSQL.append( "P.DATAPAG DATA, 'C' TIPO, P.DOCPAG DOC, ");
-			sSQL.append( "(P.VLRDESCPAG-P.VLRMULTAPAG-P.VLRJUROSPAG)*-1 VLRDEB, P.VLRPARCPAG VLRCRED " );
+			sSQL.append( "(P.VLRDESCPAG-P.VLRMULTAPAG-P.VLRJUROSPAG) VLRDEB, P.VLRPARCPAG VLRCRED " );
 			sSQL.append( "FROM FNPAGAR P, CPFORNECED F " );
 			sSQL.append( "WHERE F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
 			sSQL.append( "F.CODFOR=P.CODFOR AND " );
@@ -216,7 +215,7 @@ public class FRRazFor extends FRelatorio {
 			 */
 			sSQL.append( "UNION " );
 			sSQL.append( "SELECT L.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
-			sSQL.append( "L.DATALANCA DATA, 'P' TIPO, P.DOCPAG DOC, L.VLRLANCA VLRDEB, 0.00 VLRCRED " ); 
+			sSQL.append( "L.DATALANCA DATA, 'P' TIPO, P.DOCPAG DOC, L.VLRLANCA*-1 VLRDEB, 0.00 VLRCRED " ); 
 			sSQL.append( "FROM FNLANCA L, CPFORNECED F, FNPAGAR P " );
 			sSQL.append( "WHERE F.CODEMP=L.CODEMPFR AND F.CODFILIAL=L.CODFILIALFR AND " );
 			sSQL.append(  "P.CODEMP=L.CODEMPPG AND P.CODFILIAL=L.CODFILIALPG AND P.CODPAG=L.CODPAG AND " );
@@ -230,7 +229,7 @@ public class FRRazFor extends FRelatorio {
 			 * Query das devoluções 
 			 */
 			sSQL.append( "UNION SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, VD.DTEMITVENDA DATA, " );
-			sSQL.append( " 'Z' TIPO, VD.DOCVENDA DOC, VD.VLRLIQVENDA VLRCRED, 0.00 VLRDEB ");
+			sSQL.append( " 'Z' TIPO, VD.DOCVENDA DOC, 0.00 VLRCRED, VD.VLRLIQVENDA VLRDEB ");
 			sSQL.append( "FROM VDVENDA VD, EQTIPOMOV TM, EQCLIFOR CF, CPFORNECED F " );
 			sSQL.append( "WHERE TM.CODEMP=VD.CODEMPTM AND TM.CODFILIAL=VD.CODFILIALTM AND ");
 			sSQL.append( "TM.CODTIPOMOV=VD.CODTIPOMOV AND TM.ESTIPOMOV='S' AND TM.TIPOMOV='DV' AND ");
