@@ -1350,17 +1350,20 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		Object[] sRets = null;
 		DLEditaRec dl = null;
 		ImageIcon imgStatusAt = null;
+		BigDecimal vlrPago = new BigDecimal(0);
 		int iCodRec = 0;
 		int iNParcItRec = 0;
 
 		try {
+			int iLin = tabManut.getLinhaSel();
 
 			if ( tabManut.getLinhaSel() > -1 ) {
 
-				imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.IMGSTATUS.ordinal() );
-
-				if ( imgStatusAt != imgPago ) {
-					int iLin = tabManut.getLinhaSel();
+				imgStatusAt = (ImageIcon) tabManut.getValor( iLin, EColTabManut.IMGSTATUS.ordinal() );
+				vlrPago = Funcoes.strToBd( tabManut.getValor(  iLin, EColTabManut.VLRPAGO.ordinal() ));
+				
+				if ( imgStatusAt != imgPago || !vlrPago.equals( new BigDecimal(0))) {
+				
 					iCodRec = (Integer) tabManut.getValor( iLin, EColTabManut.CODREC.ordinal() );
 					iNParcItRec = (Integer) tabManut.getValor( iLin, EColTabManut.NPARCITREC.ordinal() );
 
