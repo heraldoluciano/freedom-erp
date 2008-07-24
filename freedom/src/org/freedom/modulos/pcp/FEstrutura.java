@@ -101,6 +101,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	
 	private JCheckBoxPad cbQtdVariavelItem = new JCheckBoxPad( "Sim", "S", "N" );
 	
+	private JCheckBoxPad cbEmitCert = new JCheckBoxPad( "Certificado?", "S", "N" );
+	
 //	private JCheckBoxPad cbQtdVariavelDistrib = new JCheckBoxPad( "Sim", "S", "N" );	
 
 	private JTextFieldPad txtSeqDistrib = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -418,6 +420,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicDescFKInvisivel( txtTpExp, "TipoExpec", "TipoExpec" );
 		adicCampo( txtVlrMax, 7, 65, 70, 20, "VlrMax", "Vlr.Máx.", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrMin, 80, 65, 70, 20, "VlrMin", "Vlr.Min.", ListaCampos.DB_SI, false );
+		adicDB( cbEmitCert, 153, 65, 100, 20, "EmitCert", "", true );
 		
 		
 		setListaCampos( true, "ESTRUANALISE", "PP" );

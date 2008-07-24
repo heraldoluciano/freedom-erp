@@ -214,7 +214,7 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
 			sql.append( "ta.codemp=ea.codempta and ta.codfilial=ea.codfilialta and ta.codtpanalise=ea.codtpanalise " );
 			sql.append( "and cq.codempea=ea.codemp and cq.codfilialea=ea.codfilial and cq.codestanalise=ea.codestanalise " );
 			sql.append( "and cq.codemp=op0.codemp and cq.codfilial=op0.codfilial and cq.codop=op0.codop and cq.seqop=op0.seqop " );
-			sql.append( "and cq.status='AP' " );
+			sql.append( "and cq.status='AP' and ea.emitcert='S' " );
 			sql.append( "and op0.codemp = opx.codemp and op0.codfilial=opx.codfilial and op0.codop=opx.codop and op0.seqop=0 " );
 			sql.append( "and pf.codemp = op0.codemp and pf.codfilial=op0.codfilial " );
 			sql.append( "and pd.codemp=op0.codemppd and pd.codfilial=op0.codfilialpd and pd.codprod=op0.codprod " );
