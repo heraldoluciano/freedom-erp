@@ -227,8 +227,6 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 		lcDetItens.setMaster( lcDet );
 		lcDet.adicDetalhe( lcDetItens );
-		lcEstDistrib.setMaster( lcDet );
-		lcDet.adicDetalhe( lcEstDistrib );
 		lcDetDistrib.setMaster( lcDet );
 		lcDet.adicDetalhe( lcDetDistrib );
 		lcDetEstrAnalise.setMaster( lcDet );
