@@ -310,7 +310,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		tpnAbas.addTab( "OP's relacionadas", spOPS );
 		pnMaster.add( tpnAbas, BorderLayout.CENTER );
 
-		btFinaliza.setToolTipText( "Processo de produção" );
+		btFinaliza.setToolTipText( "Fases/Finalização" );
 		btRMA.setToolTipText( "Gera ou exibe RMA." );		 
 		btLote.setToolTipText( "Cadastra lote" );
 		btRatearItem.setToolTipText( "Ratear ítem" );
