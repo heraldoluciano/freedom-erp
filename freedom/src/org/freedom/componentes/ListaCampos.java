@@ -928,13 +928,18 @@ public class ListaCampos extends Container implements PostListener,
 			try {
 				for (int i = 0; i < lcM.getComponentCount(); i++) {
 					if (((GuardaCampo) lcM.getComponent(i)).ehPK()) {
-						if (((GuardaCampo) lcM.getComponent(i)).getTipo() == JTextFieldPad.TP_INTEGER) {
-							sqlMax.setInt(iParamMax, ((GuardaCampo) lcM.getComponent(i)).getVlrInteger().intValue());
-							iParamMax++;
-						} 
-						else {
-							sqlMax.setString(iParamMax, ((GuardaCampo) lcM.getComponent(i)).getVlrString());
-							iParamMax++;
+						
+						if( Funcoes.contaChar( sSQLMax, '?' )>=iParamMax ) {
+													
+							if (((GuardaCampo) lcM.getComponent(i)).getTipo() == JTextFieldPad.TP_INTEGER) {
+								sqlMax.setInt(iParamMax, ((GuardaCampo) lcM.getComponent(i)).getVlrInteger().intValue());
+								iParamMax++;
+							} 
+							else {
+								sqlMax.setString(iParamMax, ((GuardaCampo) lcM.getComponent(i)).getVlrString());
+								iParamMax++;
+							}
+						
 						}
 					}
 				}
