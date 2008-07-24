@@ -2893,6 +2893,9 @@ public class ListaCampos extends Container implements PostListener,
 		return sTabela;
 	}
 
+	public void setSQLMax(String sql) {
+		this.sSQLMax = sql;
+	}
 	
 	/**
 	 * @return Returns the sSchema.
