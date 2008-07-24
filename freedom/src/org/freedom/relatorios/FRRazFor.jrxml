@@ -81,7 +81,7 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="SALDOGERAL" class="java.math.BigDecimal" resetType="Group" resetGroup="GERAL" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRDEB}.add($F{VLRCRED})]]></variableExpression>
+		<variableExpression><![CDATA[$F{VLRDEB}.multiply(new BigDecimal("-1")).add($F{VLRCRED})]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<variable name="VLRDEBITO" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
