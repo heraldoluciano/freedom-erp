@@ -421,12 +421,14 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicCampo( txtVlrMax, 7, 65, 70, 20, "VlrMax", "Vlr.Máx.", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrMin, 80, 65, 70, 20, "VlrMin", "Vlr.Min.", ListaCampos.DB_SI, false );
 		adicDB( cbEmitCert, 153, 65, 100, 20, "EmitCert", "", true );
-		
-		
+				
 		setListaCampos( true, "ESTRUANALISE", "PP" );
 		lcDetEstrAnalise.setQueryInsert( true );
+		
 		lcDetEstrAnalise.setTabela( tabQuali );
 		lcDetEstrAnalise.montaTab();
+		
+		lcDetEstrAnalise.setSQLMax( "SELECT MAX(CODESTANALISE) FROM PPESTRUANALISE WHERE CODEMP=? AND CODFILIAL=? " );
 		
 		//lcDetEstrAnalise.add( new GuardaCampo( txtCodProdEst, "CodProd", "Cód.prod.", ListaCampos.DB_FK, false ));
 		 
