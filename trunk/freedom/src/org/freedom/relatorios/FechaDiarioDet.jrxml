@@ -5,10 +5,10 @@
 		 name="FechaDiarioDet"
 		 columnCount="1"
 		 printOrder="Vertical"
-		 orientation="Portrait"
-		 pageWidth="595"
-		 pageHeight="842"
-		 columnWidth="535"
+		 orientation="Landscape"
+		 pageWidth="842"
+		 pageHeight="595"
+		 columnWidth="782"
 		 columnSpacing="0"
 		 leftMargin="30"
 		 rightMargin="30"
@@ -45,52 +45,54 @@
 	<parameter name="COMREF" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["N"]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT CAST('A' AS CHAR(1)) TIPOLANCA, V.DTSAIDAVENDA DATA,
-V.CODTIPOMOV, M.DESCTIPOMOV,
-V.CODCAIXA, C.DESCCAIXA, V.IDUSUINS,
-V.CODPLANOPAG, P.DESCPLANOPAG, V.CODVENDA PEDIDO, V.DOCVENDA DOC,
-VO.NOMEVEND, VC.CODORC, VC.CODITORC, SUM(IO.VLRLIQITORC) VALORORC,
-SUM(IV.VLRLIQITVENDA) VALOR
-FROM PVCAIXA C, EQTIPOMOV M, FNPLANOPAG P, VDVENDEDOR VO,
-VDVENDA V, VDITVENDA IV
-LEFT OUTER JOIN VDVENDAORC VC ON
-VC.CODEMP=IV.CODEMP AND VC.CODFILIAL=IV.CODFILIAL AND
-VC.CODVENDA=IV.CODVENDA AND
-VC.TIPOVENDA=IV.TIPOVENDA AND VC.CODITVENDA=IV.CODITVENDA
-LEFT OUTER JOIN VDITORCAMENTO IO ON
-IO.CODEMP=VC.CODEMPOR AND IO.CODFILIAL=VC.CODFILIALOR AND
-IO.CODORC=VC.CODORC AND IO.CODITORC=VC.CODITORC
-WHERE V.CODEMP=42 AND V.CODFILIAL=1 AND
-V.DTEMITVENDA='27.08.2007' AND
-IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND
-IV.TIPOVENDA=V.TIPOVENDA AND IV.CODVENDA=V.CODVENDA AND
-C.CODEMP=V.CODEMPCX AND C.CODFILIAL=V.CODFILIALCX AND
-C.CODCAIXA=V.CODCAIXA AND
-M.CODEMP=V.CODEMPTM AND M.CODFILIAL=V.CODFILIALTM AND
-M.CODTIPOMOV=V.CODTIPOMOV AND
-P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND
-P.CODPLANOPAG=V.CODPLANOPAG AND VO.CODEMP=V.CODEMPVD AND
+	<queryString><![CDATA[SELECT CAST('A' AS CHAR(1)) TIPOLANCA, V.DTSAIDAVENDA DATA, V.CODTIPOMOV, M.DESCTIPOMOV,
+V.CODCAIXA, C.DESCCAIXA, V.IDUSUINS, V.CODPLANOPAG, P.DESCPLANOPAG, V.CODVENDA PEDIDO,
+V.DOCVENDA DOC, VO.NOMEVEND, VC.CODORC, VC.CODITORC, V.CODCLI CODEMIT, CL.RAZCLI RAZEMIT,
+SUM(IO.VLRLIQITORC) VALORORC, SUM(IV.VLRLIQITVENDA) VALOR FROM PVCAIXA C, EQTIPOMOV M,
+FNPLANOPAG P, VDVENDEDOR VO, VDVENDA V, VDCLIENTE CL, VDITVENDA IV
+LEFT OUTER JOIN
+VDVENDAORC VC ON VC.CODEMP=IV.CODEMP AND VC.CODFILIAL=IV.CODFILIAL AND VC.TIPOVENDA=IV.TIPOVENDA AND
+VC.CODVENDA=IV.CODVENDA AND VC.CODITVENDA=IV.CODITVENDA
+LEFT OUTER JOIN
+VDITORCAMENTO IO ON IO.CODEMP=VC.CODEMPOR AND IO.CODFILIAL=VC.CODFILIALOR AND IO.CODORC=VC.CODORC AND
+IO.CODITORC=VC.CODITORC WHERE V.CODEMP=42 AND V.CODFILIAL=1 AND
+V.DTEMITVENDA BETWEEN '01.01.2008' AND '02.01.2008' AND CL.CODEMP=V.CODEMPCL AND
+CL.CODFILIAL=V.CODFILIALCL AND CL.CODCLI=V.CODCLI AND V.CODEMPCX=42 AND V.CODFILIALCX=1 AND
+V.CODCAIXA=1 AND IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.TIPOVENDA=V.TIPOVENDA AND
+IV.CODVENDA=V.CODVENDA AND C.CODEMP=V.CODEMPCX AND C.CODFILIAL=V.CODFILIALCX AND
+C.CODCAIXA=V.CODCAIXA AND M.CODEMP=V.CODEMPTM AND M.CODFILIAL=V.CODFILIALTM AND
+M.CODTIPOMOV=V.CODTIPOMOV AND M.SOMAVDTIPOMOV='S' AND P.CODEMP=V.CODEMPPG AND
+P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG AND VO.CODEMP=V.CODEMPVD AND
 VO.CODFILIAL=V.CODFILIALVD AND VO.CODVEND=V.CODVEND
-GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
-UNION
-SELECT CAST('B' AS CHAR(1)) TIPO, CP.DTEMITCOMPRA DATA,
-CP.CODTIPOMOV, M.DESCTIPOMOV, 0 CODCAIXA,
-CAST ( NULL AS CHAR(40)) DESCCAIXA, CP.IDUSUINS,
-CP.CODPLANOPAG, P.DESCPLANOPAG, CP.CODCOMPRA PEDIDO, CP.DOCCOMPRA DOC,
-CAST ( NULL AS CHAR(40)) NOMEVEND,
-0 CODORC,
-0 CODITORC,
-SUM( 0 ) VALORORC,
-SUM(CP.VLRLIQCOMPRA*-1) VALOR
-FROM CPCOMPRA CP, EQTIPOMOV M, FNPLANOPAG P
+GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+UNION ALL
+SELECT CAST('B' AS CHAR(1)) TIPOLANCA, CP.DTENTCOMPRA DATA, CP.CODTIPOMOV, M.DESCTIPOMOV, 0 CODCAIXA,
+CAST( null AS CHAR(40) ) DESCCAIXA, CP.IDUSUINS, CP.CODPLANOPAG, P.DESCPLANOPAG,
+CP.CODCOMPRA PEDIDO, CP.DOCCOMPRA DOC,
+CAST ( NULL AS CHAR(40)) NOMEVEND, 0 CODORC, 0 CODITORC, CP.CODFOR CODEMIT, F.RAZFOR RAZEMIT,
+CAST(0 AS DECIMAL(15,5)) VALORORC, SUM(CP.VLRLIQCOMPRA*-1) VALOR
+FROM CPCOMPRA CP, CPFORNECED F, EQTIPOMOV M, FNPLANOPAG P
 WHERE CP.CODEMP=42 AND CP.CODFILIAL=1 AND
-CP.DTEMITCOMPRA='27.08.2007' AND
-M.CODEMP=CP.CODEMPTM AND M.CODFILIAL=CP.CODFILIALTM AND
-M.CODTIPOMOV=CP.CODTIPOMOV AND M.TIPOMOV='DV' AND
-P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND
-P.CODPLANOPAG=CP.CODPLANOPAG
-GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
-ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
+CP.DTENTCOMPRA BETWEEN '02.01.2008' AND '02.01.2008' AND
+F.CODEMP=CP.CODEMPFR AND F.CODFILIAL=CP.CODFILIALFR AND F.CODFOR=CP.CODFOR AND
+M.CODEMP=CP.CODEMPTM AND M.CODFILIAL=CP.CODFILIALTM AND M.CODTIPOMOV=CP.CODTIPOMOV AND M.TIPOMOV='DV' AND
+P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND P.CODPLANOPAG=CP.CODPLANOPAG
+GROUP BY 2, 3, 4, 7, 8, 9, 10, 11, 15, 16
+UNION ALL
+SELECT CAST('C' AS CHAR(1)) TIPOLANCA, L.DATALANCA DATA, 99 CODTIPOMOV,
+CAST( 'RECEBIMENTO' AS CHAR(40) ) DESCTIPOMOV, 99 CODCAIXA,
+CAST( null AS CHAR(40) ) DESCCAIXA, IR.IDUSUALT IDUSUINS, R.CODPLANOPAG,
+P.DESCPLANOPAG, IR.CODREC PEDIDO, IR.NPARCITREC DOC, VD.NOMEVEND, 0 CODORC,
+0 CODITORC, R.CODCLI CODEMIT, CL.RAZCLI RAZEMIT,
+CAST(0 AS DECIMAL(15,5)) VALORORC, IR.VLRPAGOITREC VALOR
+FROM FNLANCA L, VDCLIENTE CL, FNITRECEBER IR, FNRECEBER R, FNPLANOPAG P, VDVENDEDOR VD WHERE
+IR.CODEMP=42 AND IR.CODFILIAL=1 AND L.CODEMPRC=IR.CODEMP AND L.CODFILIALRC=IR.CODFILIAL AND
+L.CODREC=IR.CODREC AND L.NPARCITREC=IR.NPARCITREC AND L.DATALANCA BETWEEN '01.01.2008' AND '02.01.2008' AND
+L.PDVITREC='S' AND IR.STATUSITREC='RP' AND CL.CODEMP=R.CODEMPCL AND CL.CODFILIAL=R.CODFILIALCL AND
+CL.CODCLI=R.CODCLI AND IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND
+R.CODEMPPG=P.CODEMP AND R.CODFILIALPG=P.CODFILIAL AND R.CODPLANOPAG=P.CODPLANOPAG AND
+VD.CODEMP=R.CODEMPVD AND VD.CODFILIAL=R.CODFILIALVD AND VD.CODVEND=R.CODVEND
+]]></queryString>
 
 	<field name="TIPOLANCA" class="java.lang.String"/>
 	<field name="DATA" class="java.sql.Date"/>
@@ -106,6 +108,8 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 	<field name="NOMEVEND" class="java.lang.String"/>
 	<field name="CODORC" class="java.lang.Long"/>
 	<field name="CODITORC" class="java.lang.Long"/>
+	<field name="CODEMIT" class="java.lang.Long"/>
+	<field name="RAZEMIT" class="java.lang.String"/>
 	<field name="VALORORC" class="java.math.BigDecimal"/>
 	<field name="VALOR" class="java.math.BigDecimal"/>
 
@@ -145,7 +149,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="464"
+						x="712"
 						y="2"
 						width="70"
 						height="12"
@@ -178,9 +182,9 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="260"
+						x="364"
 						y="1"
-						width="40"
+						width="50"
 						height="12"
 						key="textField-18"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -210,7 +214,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 					<reportElement
 						x="0"
 						y="20"
-						width="535"
+						width="782"
 						height="0"
 						key="line-11"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -230,7 +234,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="464"
+						x="712"
 						y="3"
 						width="70"
 						height="12"
@@ -243,7 +247,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="464"
+						x="712"
 						y="1"
 						width="70"
 						height="0"
@@ -259,7 +263,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 			<band height="14"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="210"
+						x="365"
 						y="1"
 						width="50"
 						height="12"
@@ -302,7 +306,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="464"
+						x="712"
 						y="3"
 						width="70"
 						height="12"
@@ -315,7 +319,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="464"
+						x="712"
 						y="1"
 						width="70"
 						height="0"
@@ -361,7 +365,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="464"
+						x="712"
 						y="3"
 						width="70"
 						height="12"
@@ -374,7 +378,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="464"
+						x="712"
 						y="1"
 						width="70"
 						height="0"
@@ -435,7 +439,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="464"
+						x="712"
 						y="98"
 						width="70"
 						height="12"
@@ -474,7 +478,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="212"
+						x="470"
 						y="98"
 						width="50"
 						height="12"
@@ -487,7 +491,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="265"
+						x="523"
 						y="98"
 						width="40"
 						height="12"
@@ -500,7 +504,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="308"
+						x="566"
 						y="98"
 						width="40"
 						height="12"
@@ -513,7 +517,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="351"
+						x="611"
 						y="98"
 						width="40"
 						height="12"
@@ -526,13 +530,13 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="394"
+						x="657"
 						y="98"
-						width="67"
+						width="52"
 						height="12"
 						key="staticText-15"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Center">
 						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Vlr.orc]]></text>
@@ -620,7 +624,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 						mode="Opaque"
 						x="0"
 						y="81"
-						width="535"
+						width="782"
 						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -648,13 +652,39 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 						mode="Opaque"
 						x="0"
 						y="113"
-						width="535"
+						width="782"
 						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-13"/>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" />
 				</line>
+				<staticText>
+					<reportElement
+						x="212"
+						y="98"
+						width="202"
+						height="12"
+						key="staticText-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Cliente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="417"
+						y="98"
+						width="50"
+						height="12"
+						key="staticText-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[N° Parcela]]></text>
+				</staticText>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -665,7 +695,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 			<band height="16"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="464"
+						x="712"
 						y="2"
 						width="70"
 						height="12"
@@ -691,7 +721,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="212"
+						x="470"
 						y="2"
 						width="50"
 						height="12"
@@ -704,7 +734,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="265"
+						x="523"
 						y="2"
 						width="40"
 						height="12"
@@ -717,7 +747,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="308"
+						x="566"
 						y="2"
 						width="40"
 						height="12"
@@ -730,7 +760,7 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="351"
+						x="611"
 						y="2"
 						width="40"
 						height="12"
@@ -743,9 +773,9 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="394"
+						x="657"
 						y="2"
-						width="67"
+						width="52"
 						height="12"
 						key="textField-32"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -766,6 +796,19 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCPLANOPAG}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="212"
+						y="2"
+						width="201"
+						height="12"
+						key="textField-34"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZEMIT}.trim()]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
@@ -810,9 +853,9 @@ ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="1"
+						x="0"
 						y="2"
-						width="533"
+						width="782"
 						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
