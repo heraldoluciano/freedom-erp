@@ -26,6 +26,7 @@ package org.freedom.modulos.pdv;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
@@ -40,6 +41,7 @@ import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -157,6 +159,8 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 	private ImageIcon imgPagoParcial = Icone.novo( "clPagoParcial.gif" );
 
 	private ImageIcon imgNaoVencido = Icone.novo( "clNaoVencido.gif" );
+	
+	private JPanelPad pnLegenda = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 0, 4 ) );
 
 	private ImageIcon imgColuna = null;
 
@@ -261,7 +265,14 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 		pnTabBaixa.add( pnBotoes, BorderLayout.SOUTH );
 		pnBotoes.add( pnBtOk, BorderLayout.EAST );
 		pnBtOk.add( pnBtCancel, BorderLayout.EAST );
+		pnBotoes.add( pnLegenda, BorderLayout.WEST );
 
+		pnLegenda.add( new JLabelPad( "Vencido", imgVencido, SwingConstants.CENTER ) );
+		pnLegenda.add( new JLabelPad( "Parcial", imgPagoParcial, SwingConstants.CENTER ) );
+		pnLegenda.add( new JLabelPad( "Pago", imgPago, SwingConstants.CENTER ) );
+		pnLegenda.add( new JLabelPad( "À vencer", imgNaoVencido, SwingConstants.CENTER ) );
+
+		
 		pnBtOk.add( btOK );
 		pnBtCancel.add( btCancel );
 
