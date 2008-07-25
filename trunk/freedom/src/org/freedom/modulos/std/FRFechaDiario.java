@@ -135,7 +135,7 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND " );
 			sSQL.append( "P.CODPLANOPAG=V.CODPLANOPAG " );
 			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
-			sSQL.append( "UNION " );
+			sSQL.append( "UNION ALL " );
 			sSQL.append( "SELECT CAST('B' AS CHAR(1)) TIPOLANCA, CP.DTEMITCOMPRA DATA, " );
 			sSQL.append( "CP.CODTIPOMOV, M.DESCTIPOMOV, " );
 			sSQL.append( "40 CODCAIXA, CAST( null AS CHAR(40) ) DESCCAIXA, CP.IDUSUINS, " );
@@ -151,7 +151,7 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND " );
 			sSQL.append( "P.CODPLANOPAG=CP.CODPLANOPAG " );
 			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 " );
-			sSQL.append( "UNION " );
+			sSQL.append( "UNION ALL " );
 			sSQL.append( "SELECT CAST('C' AS CHAR(1)) TIPOLANCA, L.DATALANCA DATA, " );
 			sSQL.append( "9999 CODTIPOMOV, CAST( null AS CHAR(40) ) DESCTIPOMOV, " );
 			sSQL.append( "40 CODCAIXA, CAST( null AS CHAR(40) ) DESCCAIXA, IR.IDUSUALT, " );
@@ -211,7 +211,7 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "P.CODPLANOPAG=V.CODPLANOPAG AND VO.CODEMP=V.CODEMPVD AND " );
 			sSQL.append( "VO.CODFILIAL=V.CODFILIALVD AND VO.CODVEND=V.CODVEND " );
 			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 " );
-			sSQL.append( "UNION " );
+			sSQL.append( "UNION ALL " );
 			sSQL.append( "SELECT CAST('B' AS CHAR(1)) TIPOLANCA, CP.DTEMITCOMPRA DATA, " );
 			sSQL.append( "CP.CODTIPOMOV, M.DESCTIPOMOV, " );
 			sSQL.append( "0 CODCAIXA, CAST( null AS CHAR(40) ) DESCCAIXA, CP.IDUSUINS, " );
@@ -235,7 +235,7 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND " );
 			sSQL.append( "P.CODPLANOPAG=CP.CODPLANOPAG " );
 			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 " );
-			sSQL.append( "UNION " );
+			sSQL.append( "UNION ALL " );
 			sSQL.append( "SELECT CAST('C' AS CHAR(1)) TIPOLANCA, L.DATALANCA DATA, " );
 			sSQL.append( "99 CODTIPOMOV, CAST( 'RECEBIMENTO' AS CHAR(40) ) DESCTIPOMOV, " );
 			sSQL.append( "99 CODCAIXA, CAST( null AS CHAR(40) ) DESCCAIXA, IR.IDUSUALT IDUSUINS, " );
