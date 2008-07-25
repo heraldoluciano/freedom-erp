@@ -112,6 +112,7 @@ public class FRFechaDiario extends FRelatorio {
 		sCab.append( "Período: " + txtDataIni.getVlrString() + " à " + txtDataFim.getVlrString() );
 
 		if ( "R".equals( rgTipo.getVlrString() ) ) {
+			
 
 			sSQL.append( "SELECT CAST('A' AS CHAR(1)) TIPOLANCA, V.DTSAIDAVENDA DATA, " );
 			sSQL.append( "V.CODTIPOMOV, M.DESCTIPOMOV, " );
@@ -210,7 +211,7 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND " );
 			sSQL.append( "P.CODPLANOPAG=V.CODPLANOPAG AND VO.CODEMP=V.CODEMPVD AND " );
 			sSQL.append( "VO.CODFILIAL=V.CODFILIALVD AND VO.CODVEND=V.CODVEND " );
-			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 " );
+			sSQL.append( "GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 " );
 			sSQL.append( "UNION ALL " );
 			sSQL.append( "SELECT CAST('B' AS CHAR(1)) TIPOLANCA, CP.DTEMITCOMPRA DATA, " );
 			sSQL.append( "CP.CODTIPOMOV, M.DESCTIPOMOV, " );
@@ -234,7 +235,7 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "M.CODTIPOMOV=CP.CODTIPOMOV AND M.TIPOMOV='DV' AND " );
 			sSQL.append( "P.CODEMP=CP.CODEMPPG AND P.CODFILIAL=CP.CODFILIALPG AND " );
 			sSQL.append( "P.CODPLANOPAG=CP.CODPLANOPAG " );
-			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 " );
+			sSQL.append( "GROUP BY 2, 3, 4, 7, 8, 9, 10, 11, 15, 16 " );
 			sSQL.append( "UNION ALL " );
 			sSQL.append( "SELECT CAST('C' AS CHAR(1)) TIPOLANCA, L.DATALANCA DATA, " );
 			sSQL.append( "99 CODTIPOMOV, CAST( 'RECEBIMENTO' AS CHAR(40) ) DESCTIPOMOV, " );
@@ -256,7 +257,6 @@ public class FRFechaDiario extends FRelatorio {
 			sSQL.append( "IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND " );
 			sSQL.append( "R.CODEMPPG=P.CODEMP AND R.CODFILIALPG=P.CODFILIAL AND R.CODPLANOPAG=P.CODPLANOPAG AND " );
 			sSQL.append( "VD.CODEMP=R.CODEMPVD AND VD.CODFILIAL=R.CODFILIALVD AND VD.CODVEND=R.CODVEND " );
-			sSQL.append( "ORDER BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 " );
 		}
 
 		return sSQL.toString();
