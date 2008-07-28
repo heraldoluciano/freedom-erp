@@ -91,8 +91,7 @@ L.CODREC=IR.CODREC AND L.NPARCITREC=IR.NPARCITREC AND L.DATALANCA BETWEEN '01.01
 L.PDVITREC='S' AND IR.STATUSITREC='RP' AND CL.CODEMP=R.CODEMPCL AND CL.CODFILIAL=R.CODFILIALCL AND
 CL.CODCLI=R.CODCLI AND IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND
 R.CODEMPPG=P.CODEMP AND R.CODFILIALPG=P.CODFILIAL AND R.CODPLANOPAG=P.CODPLANOPAG AND
-VD.CODEMP=R.CODEMPVD AND VD.CODFILIAL=R.CODFILIALVD AND VD.CODVEND=R.CODVEND
-]]></queryString>
+VD.CODEMP=R.CODEMPVD AND VD.CODFILIAL=R.CODFILIALVD AND VD.CODVEND=R.CODVEND]]></queryString>
 
 	<field name="TIPOLANCA" class="java.lang.String"/>
 	<field name="DATA" class="java.sql.Date"/>
@@ -478,7 +477,7 @@ VD.CODEMP=R.CODEMPVD AND VD.CODFILIAL=R.CODFILIALVD AND VD.CODVEND=R.CODVEND
 				</staticText>
 				<staticText>
 					<reportElement
-						x="470"
+						x="456"
 						y="98"
 						width="50"
 						height="12"
@@ -491,16 +490,16 @@ VD.CODEMP=R.CODEMPVD AND VD.CODFILIAL=R.CODFILIALVD AND VD.CODVEND=R.CODVEND
 				</staticText>
 				<staticText>
 					<reportElement
-						x="523"
+						x="510"
 						y="98"
-						width="40"
+						width="53"
 						height="12"
 						key="staticText-11"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Doc.]]></text>
+				<text><![CDATA[Doc./NºParc.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -663,7 +662,7 @@ VD.CODEMP=R.CODEMPVD AND VD.CODFILIAL=R.CODFILIALVD AND VD.CODVEND=R.CODVEND
 					<reportElement
 						x="212"
 						y="98"
-						width="202"
+						width="243"
 						height="12"
 						key="staticText-16"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -671,19 +670,6 @@ VD.CODEMP=R.CODEMPVD AND VD.CODFILIAL=R.CODFILIALVD AND VD.CODVEND=R.CODVEND
 						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Cliente]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="417"
-						y="98"
-						width="50"
-						height="12"
-						key="staticText-17"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
-					</textElement>
-				<text><![CDATA[N° Parcela]]></text>
 				</staticText>
 			</band>
 		</pageHeader>
@@ -721,7 +707,7 @@ VD.CODEMP=R.CODEMPVD AND VD.CODFILIAL=R.CODFILIALVD AND VD.CODVEND=R.CODVEND
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="470"
+						x="456"
 						y="2"
 						width="50"
 						height="12"
@@ -734,9 +720,9 @@ VD.CODEMP=R.CODEMPVD AND VD.CODFILIAL=R.CODFILIALVD AND VD.CODVEND=R.CODVEND
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="523"
+						x="510"
 						y="2"
-						width="40"
+						width="53"
 						height="12"
 						key="textField-28"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -801,7 +787,7 @@ VD.CODEMP=R.CODEMPVD AND VD.CODFILIAL=R.CODFILIALVD AND VD.CODVEND=R.CODVEND
 					<reportElement
 						x="212"
 						y="2"
-						width="201"
+						width="242"
 						height="12"
 						key="textField-34"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
