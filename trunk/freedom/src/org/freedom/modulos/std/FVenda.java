@@ -904,8 +904,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		    
 		    setListaCampos( itemcomis.getLcVendaComis() );
 		    adicCampoInvisivel( itemcomis.getTxtTipovenda(), itemcomis.getTxtTipovenda().getNomeCampo(), "Tipo", ListaCampos.DB_PK, true );
-		    adicCampoInvisivel( itemcomis.getTxtCodvenda(), itemcomis.getTxtCodvenda().getNomeCampo(), "Pedido", ListaCampos.DB_PK, true );
 		    adicCampoInvisivel( itemcomis.getTxtSeqvc(), itemcomis.getTxtSeqvc().getNomeCampo(), "Seq.", ListaCampos.DB_PK, true );
+		    adicCampoInvisivel( itemcomis.getTxtCodRegra(), itemcomis.getTxtCodRegra().getNomeCampo(), "Cód.rg.comis.", ListaCampos.DB_FK, true );
+		    adicCampoInvisivel( itemcomis.getTxtSeqRegra(), itemcomis.getTxtSeqRegra().getNomeCampo(), "Seq.rg.comis.", ListaCampos.DB_FK, true );
 		    adicCampo( itemcomis.getTxtCodvend(), cols[ col ], row + 20, 80, 20, itemcomis.getTxtCodvend().getNomeCampo(), itemcomis.getLbCodvend().getText(), ListaCampos.DB_FK, itemcomis.getTxtNomevend(), "S".equals( itemcomis.getObrigitrc() ) );
 		    adicDescFK( itemcomis.getTxtNomevend(), cols[ col ] + 83, row + 20, 200, 20, itemcomis.getTxtNomevend().getNomeCampo(), itemcomis.getLbNomevend().getText() );
 		    adicCampo( itemcomis.getTxtPerccomis(), cols[ col ] + 286, row + 20, 55, 20, itemcomis.getTxtPerccomis().getNomeCampo(), itemcomis.getLbPercvend().getText(), ListaCampos.DB_SI, "S".equals( itemcomis.getObrigitrc() ) );
@@ -2254,12 +2255,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		codregrcomis = txtCodRegrComis.getVlrInteger().intValue();
 		ctrlmc.loadRegraComis( codregrcomis );
 	    } 
-	    else if ( ( cevt.getListaCampos() == lcFisc ) && ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
+	    else if ( cevt.getListaCampos() == lcFisc && lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 		getCFOP();
 		getTratTrib();
 	    } 
 	    else if ( cevt.getListaCampos() == lcNat ) {
-		if ( ( cevt.ok   ) & ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
+		if ( cevt.ok & lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 		    getICMS();
 		}
 	    } 
@@ -2270,11 +2271,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		String codvenda = txtCodVenda.getVlrString();
 		lcVenda2.carregaDados();// Carrega os Totais
 		txtCodVenda.setVlrString( codvenda );
-		if ( numComissionados > 0 && ctrlmc != null ) {
-		    ctrlmc.loadVendaComis( 
-			    txtTipoVenda.getVlrString(), txtCodVenda.getVlrInteger().intValue(), txtCodRegrComis.getVlrInteger().intValue() );
-		}
 		codvenda = null;
+		if ( numComissionados > 0 && ctrlmc != null &&
+			( lcCampos.getStatus() != ListaCampos.LCS_EDIT  
+				&& lcCampos.getStatus() != ListaCampos.LCS_INSERT ) ) {
+		    ctrlmc.loadVendaComis( "V", txtCodVenda.getVlrInteger().intValue() );
+		}
 	    } 
 	    else if ( cevt.getListaCampos() == lcVenda2 ) {
 		txtPercComisVenda.setAtivo( txtVlrComisVenda.floatValue() == 0 );
@@ -2452,6 +2454,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	    }
 	    txtDtSaidaVenda.setVlrDate( new Date() );
 	    txtDtEmitVenda.setVlrDate( new Date() );
+	    
+	    if ( ctrlmc != null ) {
+		ctrlmc.setSave( false );
+	    }
 	} 
 	else if ( e.getListaCampos() == lcDet ) {
 	    focusCodprod();

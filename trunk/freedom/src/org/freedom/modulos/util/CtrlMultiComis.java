@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -41,6 +43,9 @@ public class CtrlMultiComis implements CarregaListener {
     private ListaCampos lcMaster = null;
 
     private Component owner = null;
+    
+    private boolean save = true;
+    
 
     public CtrlMultiComis( final Component owner, 
 	                   final Connection con, 
@@ -63,6 +68,14 @@ public class CtrlMultiComis implements CarregaListener {
 	}
     }
 
+    public boolean isSave() {
+        return save;
+    }
+
+    public void setSave( boolean save ) {
+        this.save = save;
+    }
+
     public boolean isEnabled() {
 	
 	boolean result = false;
@@ -78,7 +91,7 @@ public class CtrlMultiComis implements CarregaListener {
 	return false;
     }
 
-    public void loadVendaComis( final String tipovenda, final int codvenda, final int codregrcomis ) {
+    public void loadVendaComis( final String tipovenda, final int codvenda ) {
 	
 	if ( listComis == null ) {
 	    
@@ -92,8 +105,7 @@ public class CtrlMultiComis implements CarregaListener {
 	try {
 	    
 	    PreparedStatement ps = con.prepareStatement( 
-		    "SELECT VC.SEQVC, VC.CODREGRCOMIS, VC.SEQITRC, VC.CODVEND, VC.PERCVC " + 
-		    "FROM VDVENDACOMIS VC " + 
+		    "SELECT VC.SEQVC FROM VDVENDACOMIS VC " + 
 		    "WHERE VC.CODEMP=? AND VC.CODFILIAL=? AND VC.TIPOVENDA=? AND VC.CODVENDA=?" );
 	    ps.setInt( 1, Aplicativo.iCodEmp );
 	    ps.setInt( 2, ListaCampos.getMasterFilial( "VDITREGRACOMIS" ) );
@@ -101,23 +113,37 @@ public class CtrlMultiComis implements CarregaListener {
 	    ps.setInt( 4, codvenda );
 
 	    ResultSet rs = ps.executeQuery();
+	    
+	    List<Integer> seqs = new ArrayList<Integer>();
 
-	    int pos = 0;
 	    while ( rs.next() ) {
-		listComis[ pos ].getTxtSeqvc().setVlrInteger( rs.getInt( "SEQVC" ) );
-		listComis[ pos ].setSeqitrc( rs.getInt( "SEQITRC" ) );
-		listComis[ pos ].getTxtTipovenda().setVlrString( lcMaster.getCampo( "TIPOVENDA" ).getVlrString() );
-		listComis[ pos ].getTxtPerccomis().setVlrBigDecimal( rs.getBigDecimal( "PERCVC" ) );
+		seqs.add( rs.getInt( "SEQVC" ) );
+	    }
+	    
+	    rs.close();
+	    ps.close();
+	    
+	    if ( !con.getAutoCommit() ) {
+		con.commit();
+	    }
+	    
+	    int pos = 0;
+	    for ( Integer seqvc : seqs ) {
+		listComis[ pos ].getTxtTipovenda().setVlrString( tipovenda );
+		listComis[ pos ].getTxtCodvenda().setVlrInteger( codvenda );
+		listComis[ pos ].getTxtSeqvc().setVlrInteger( seqvc );
+		listComis[ pos ].getLcVendaComis().carregaDados();
 		pos++;
 	    }
 
 	    for ( int i = pos; i < numComissionados; i++ ) {
 		listComis[ i ].limpa();
+		listComis[ i ].getLcVend().carregaDados();
 	    }
 
 	    for ( ItemComis itemcomis : listComis ) {
 		if ( itemcomis != null ) {
-		    // itemcomis.getLcVend().carregaDados();
+		    itemcomis.getLcVend().carregaDados();
 		}
 	    }
 
@@ -156,6 +182,7 @@ public class CtrlMultiComis implements CarregaListener {
 	    int pos = 0;
 	    while ( rs.next() ) {
 		listComis[ pos ].setEnabled( true );
+		listComis[ pos ].setCodregrcomis( codregrcomis );
 		listComis[ pos ].setSeqitrc( rs.getInt( "SEQITRC" ) );
 		listComis[ pos ].setObrigitrc( rs.getString( "OBRIGITRC" ) );
 		listComis[ pos ].setPerccomis( rs.getFloat( "PERCCOMISITRC" ) );
@@ -200,20 +227,30 @@ public class CtrlMultiComis implements CarregaListener {
 	return result;
     }
 
-    public void salvaItens( final String tipovenda, final int codvenda ) {
+    public void salvaItens( final String tipovenda, 
+	                    final int codvenda ) {
 	
 	if ( listComis != null ) {
-	    
-	    for ( ItemComis itemcomis : listComis ) {
-		
+	    for ( ItemComis itemcomis : listComis ) {		
 		if ( ( itemcomis != null ) ) {
+		    
 		    if ( "S".equals( itemcomis.getObrigitrc() ) && itemcomis.getTxtCodvend().isEnabled() ) {
 			if ( itemcomis.getLcVendaComis().getStatus() == ListaCampos.LCS_EDIT  
 				|| itemcomis.getLcVendaComis().getStatus() == ListaCampos.LCS_INSERT ) {
 			    itemcomis.getTxtTipovenda().setVlrString( tipovenda );
-			    itemcomis.getTxtCodvend().setVlrInteger( codvenda );
+			    itemcomis.getTxtCodvenda().setVlrInteger( codvenda );
 			    itemcomis.getTxtSeqvc().setVlrInteger( itemcomis.getSeqitrc() );
-			    itemcomis.getLcVendaComis().post();
+
+			    /*System.out.println( "codvenda  = " + itemcomis.getTxtCodvenda().getVlrString() );
+			    System.out.println( "tipovenda = " + itemcomis.getTxtTipovenda().getVlrString() );
+			    System.out.println( "sequencia = " + itemcomis.getTxtSeqvc().getVlrString() );
+			    System.out.println( "codregra  = " + itemcomis.getTxtCodRegra().getVlrString() );
+			    System.out.println( "seqregra  = " + itemcomis.getTxtSeqRegra().getVlrString() );
+			    System.out.println( "codvend   = " + itemcomis.getTxtCodvend().getVlrString() );
+			    System.out.println( "nomevend  = " + itemcomis.getTxtNomevend().getVlrString() );
+			    System.out.println( "perccomis = " + itemcomis.getTxtPerccomis().getVlrString() );*/
+			    
+			    setSave( itemcomis.getLcVendaComis().post() );
 			}
 		    }
 		}
@@ -226,6 +263,8 @@ public class CtrlMultiComis implements CarregaListener {
     public void beforeCarrega( CarregaEvent cevt ) { }
 
     public class ItemComis implements InsertListener, CarregaListener {
+        
+        private int codregrcomis = 0;
         
         private int seqitrc = 0;
     
@@ -243,43 +282,71 @@ public class CtrlMultiComis implements CarregaListener {
     
         private final JTextFieldFK txtNomevend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
     
+        private final JTextFieldPad txtCodRegra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+    
+        private final JTextFieldPad txtSeqRegra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+    
         private final JTextFieldPad txtPerccomis = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 7, Aplicativo.casasDecFin );
     
-        private JLabelPad lbCodvend = new JLabelPad( "Cód.comis." );
+        private final JLabelPad lbCodvend = new JLabelPad( "Cód.comis." );
     
-        private JLabelPad lbNomevend = new JLabelPad( "Nome do comissionado" );
+        private final JLabelPad lbNomevend = new JLabelPad( "Nome do comissionado" );
     
-        private JLabelPad lbPercvend = new JLabelPad( "% comis." );
+        private final JLabelPad lbPercvend = new JLabelPad( "% comis." );
     
-        private ListaCampos lcVend = new ListaCampos( owner, "VD" );
+        private final ListaCampos lcVend = new ListaCampos( owner, "VD" );
     
-        private ListaCampos lcVendaComis = new ListaCampos( owner, "VC" );
+        private final ListaCampos lcRegraComis = new ListaCampos( owner, "RC" );
+    
+        private final ListaCampos lcVendaComis = new ListaCampos( owner, "VC" );
     
         public ItemComis() {
-            
-            lcVendaComis.setMaster( lcMaster );
-            lcMaster.adicDetalhe( lcVendaComis );
             
             txtTipovenda.setNomeCampo( "TIPOVENDA" );
             txtCodvenda.setNomeCampo( "CODVENDA" );
             txtSeqvc.setNomeCampo( "SEQVC" );
             txtPerccomis.setNomeCampo( "PERCVC" );
             
-            txtCodvend.setNomeCampo( "codvend" );
-            
-            lcVend.add( new GuardaCampo( txtCodvend, "Codvend", "Cód.comis.", ListaCampos.DB_PK, false ) );
-            lcVend.add( new GuardaCampo( txtNomevend, "Nomevend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
-            lcVend.add( new GuardaCampo( txtPerccomis, "Perccomis", "% Comiss.", ListaCampos.DB_SI, false ) );
+            txtCodvend.setNomeCampo( "CODVEND" );
+            txtCodvend.setFK( true );
+            lcVend.add( new GuardaCampo( txtCodvend, "CodVend", "Cód.comis.", ListaCampos.DB_PK, false ) );
+            lcVend.add( new GuardaCampo( txtNomevend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
+            lcVend.add( new GuardaCampo( txtPerccomis, "PercComVend", "% Comiss.", ListaCampos.DB_SI, false ) );
             lcVend.setWhereAdic( "ATIVOCOMIS='S'" );
             lcVend.montaSql( false, "VENDEDOR", "VD" );
             lcVend.setQueryCommit( false );
+            lcVend.setPodeIns( false );
             lcVend.setReadOnly( true );
             txtCodvend.setTabelaExterna( lcVend );
             
-            lcVendaComis.addInsertListener( this );
+            txtCodRegra.setNomeCampo( "CODREGRCOMIS" );
+            txtSeqRegra.setNomeCampo( "SEQITRC" );
+            lcRegraComis.add( new GuardaCampo( txtCodRegra, "CodRegrComis", "Cód.rg.comis.", ListaCampos.DB_PK, false ) );
+            txtSeqRegra.add( new GuardaCampo( txtSeqRegra, "SeqItRc", "Seq.rg.comis.", ListaCampos.DB_PK, false ) );
+            lcRegraComis.montaSql( false, "ITREGRACOMIS", "VD" );
+            lcRegraComis.setQueryCommit( false );
+            lcRegraComis.setPodeIns( false );
+            lcRegraComis.setReadOnly( true );
+            txtCodRegra.setTabelaExterna( lcRegraComis );
+            txtSeqRegra.setTabelaExterna( lcRegraComis );
             
-            lcVend.setConexao( con );
+            lcVendaComis.setMaster( lcMaster );
+            lcMaster.adicDetalhe( lcVendaComis );
+            
             lcVendaComis.setConexao( con );
+            lcVend.setConexao( con );
+            lcRegraComis.setConexao( con );
+            
+            lcVendaComis.addInsertListener( this );
+            lcVend.addCarregaListener( this );
+        }
+    
+        public int getCodregrcomis() {
+            return codregrcomis;
+        }
+    
+        public void setCodregrcomis( int codregrcomis ) {
+            this.codregrcomis = codregrcomis;
         }
     
         public int getSeqitrc() {
@@ -319,20 +386,20 @@ public class CtrlMultiComis implements CarregaListener {
             return txtNomevend;
         }
     
-        public JLabelPad getLbCodvend() {
+        public JTextFieldPad getTxtCodRegra() {
+	    return txtCodRegra;
+	}
+
+	public JTextFieldPad getTxtSeqRegra() {
+	    return txtSeqRegra;
+	}
+
+	public JLabelPad getLbCodvend() {
             return lbCodvend;
-        }
-    
-        public void setLbCodvend( JLabelPad lbCodvend ) {
-            this.lbCodvend = lbCodvend;
         }
     
         public JLabelPad getLbNomevend() {
             return lbNomevend;
-        }
-    
-        public void setLbNomevend( JLabelPad lbNomevend ) {
-            this.lbNomevend = lbNomevend;
         }
     
         public JTextFieldPad getTxtPerccomis() {
@@ -343,10 +410,6 @@ public class CtrlMultiComis implements CarregaListener {
             return lbPercvend;
         }
     
-        public void setLbPercvend( JLabelPad lbPercvend ) {
-            this.lbPercvend = lbPercvend;
-        }
-    
         public JTextFieldPad getTxtSeqvc() {    
             return txtSeqvc;
         }
@@ -355,8 +418,8 @@ public class CtrlMultiComis implements CarregaListener {
             return lcVendaComis;
         }
     
-        public void setLcVendaComis( ListaCampos lcVendaComis ) {    
-            this.lcVendaComis = lcVendaComis;
+        public ListaCampos getLcVend() {    
+            return lcVend;
         }
     
         public JTextFieldPad getTxtTipovenda() {    
@@ -375,27 +438,35 @@ public class CtrlMultiComis implements CarregaListener {
             this.perccomis = perccomis;
         }
     
-        public void afterInsert( InsertEvent ievt ) {
-            if ( ievt.getListaCampos() == lcVendaComis ) {
+        public void afterInsert( InsertEvent e ) {
+           /* if ( e.getListaCampos() == lcVendaComis ) {
         	txtPerccomis.setVlrBigDecimal( new BigDecimal( getPerccomis() ) );
+            }*/
+        }
+    
+        public void beforeInsert( InsertEvent e ) { }
+    
+        public void afterPost( PostEvent e ) {
+            if ( e.getListaCampos() == lcMaster ) {
             }
         }
     
-        public void beforeInsert( InsertEvent ievt ) { }
-    
-        public void afterPost( PostEvent pevt ) {
-            if ( pevt.getListaCampos() == lcMaster ) {
+        public void beforePost( PostEvent e ) {
+            if ( e.getListaCampos() == lcMaster ) {
             }
         }
     
-        public void beforePost( PostEvent pevt ) {
-            if ( pevt.getListaCampos() == lcMaster ) {
+        public void afterCarrega( CarregaEvent e ) {
+            if ( e.getListaCampos() == lcVend ) {
+        	txtPerccomis.setVlrBigDecimal( new BigDecimal( getPerccomis() ) );
+        	
+        	txtCodRegra.setVlrInteger( codregrcomis );
+        	txtSeqRegra.setVlrInteger( seqitrc );
+        	lcRegraComis.carregaDados();
             }
         }
     
-        public void afterCarrega( CarregaEvent cevt ) { }
-    
-        public void beforeCarrega( CarregaEvent cevt ) { }
+        public void beforeCarrega( CarregaEvent e ) { }
     }
 
 }
