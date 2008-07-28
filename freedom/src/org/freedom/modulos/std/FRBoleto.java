@@ -68,16 +68,28 @@ public class FRBoleto extends FRelatorio {
 	private JTextFieldFK txtClassModBol = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	public JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	public JTextFieldPad txtCodVenda2 = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtTipoVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldFK txtTipoVenda2 = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
 
 	public JTextFieldFK txtDocVenda = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDataVenda = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	public JTextFieldFK txtDocVenda2 = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDataVenda2 = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodCli2 = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtRazCli2 = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtParc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -102,8 +114,12 @@ public class FRBoleto extends FRelatorio {
 	private ListaCampos lcModBol = new ListaCampos( this );
 
 	private ListaCampos lcVenda = new ListaCampos( this );
+	
+	private ListaCampos lcVenda2 = new ListaCampos( this );
 
 	private ListaCampos lcCli = new ListaCampos( this );
+	
+	private ListaCampos lcCli2 = new ListaCampos( this );
 
 	private ListaCampos lcBanco = new ListaCampos( this );
 
@@ -134,7 +150,7 @@ public class FRBoleto extends FRelatorio {
 	public FRBoleto( JInternalFrame fExt ) {
 
 		setTitulo( "Impressão de boleto/recibo" );
-		setAtribos( 80, 80, 545, 375 );
+		setAtribos( 80, 80, 545, 385 );
 
 		this.fExt = fExt;
 
@@ -152,8 +168,8 @@ public class FRBoleto extends FRelatorio {
 	private void montaListaCampos() {
 
 		/********************
-         * MODELO DE BOLETO *
-         ********************/
+		 * MODELO DE BOLETO *
+		 ********************/
 
 		lcModBol.add( new GuardaCampo( txtCodModBol, "CodModBol", "Cód.mod.", ListaCampos.DB_PK, true ) );
 		lcModBol.add( new GuardaCampo( txtDescModBol, "DescModBol", "Descrição do modelo de boleto", ListaCampos.DB_SI, false ) );
@@ -166,8 +182,8 @@ public class FRBoleto extends FRelatorio {
 		txtCodModBol.setNomeCampo( "CodModBol" );
 
 		/*********
-         * VENDA *
-         *********/
+		 * VENDA *
+		 *********/
 
 		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, false ) );
 		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "Doc.", ListaCampos.DB_SI, false ) );
@@ -181,20 +197,45 @@ public class FRBoleto extends FRelatorio {
 		txtCodVenda.setTabelaExterna( lcVenda );
 		txtCodVenda.setFK( true );
 		txtCodVenda.setNomeCampo( "CodVenda" );
-
+		
 		/***********
-         * CLIENTE *
-         ***********/
+		 * CLIENTE *
+		 ***********/
 
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.setReadOnly( true );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		txtCodCli.setTabelaExterna( lcCli );
+		
+		/************
+		 * VENDA 2  *
+		 ************/
+
+		lcVenda2.add( new GuardaCampo( txtCodVenda2, "CodVenda", "Cód.venda", ListaCampos.DB_PK, false ) );
+		lcVenda2.add( new GuardaCampo( txtDocVenda2, "DocVenda", "Doc.", ListaCampos.DB_SI, false ) );
+		lcVenda2.add( new GuardaCampo( txtDataVenda2, "DtEmitVenda", "Data", ListaCampos.DB_SI, false ) );
+		lcVenda2.add( new GuardaCampo( txtCodCli2, "CodCli", "Cód.cli.", ListaCampos.DB_FK, true ) );
+		lcVenda2.add( new GuardaCampo( txtTipoVenda2, "TipoVenda", "Tipo Venda", ListaCampos.DB_SI, false ) );
+		lcVenda2.setReadOnly( true );
+		lcVenda2.montaSql( false, "VENDA", "VD" );
+		txtCodVenda2.setTabelaExterna( lcVenda2 );
+		txtCodVenda2.setFK( true );
+		txtCodVenda2.setNomeCampo( "CodVenda" );
+		
+		/*************
+		 * CLIENTE 2 *
+		 *************/
+
+		lcCli2.add( new GuardaCampo( txtCodCli2, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
+		lcCli2.add( new GuardaCampo( txtRazCli2, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
+		lcCli2.setReadOnly( true );
+		lcCli2.montaSql( false, "CLIENTE", "VD" );
+		txtCodCli2.setTabelaExterna( lcCli2 );
 
 		/*********
-         * BANCO *
-         *********/
+		 * BANCO *
+		 *********/
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
@@ -206,8 +247,8 @@ public class FRBoleto extends FRelatorio {
 		txtCodBanco.setListaCampos( lcBanco );
 
 		/********************
-         * TIPO DE COBRANÇA *
-         ********************/
+		 * TIPO DE COBRANÇA *
+		 ********************/
 
 		lcTipoCob.add( new GuardaCampo( txtCodTpCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK, false ) );
 		lcTipoCob.add( new GuardaCampo( txtDescTpCob, "DescTipoCob", "Descrição do tipo de cobrança", ListaCampos.DB_SI, false ) );
@@ -219,8 +260,8 @@ public class FRBoleto extends FRelatorio {
 		txtCodTpCob.setListaCampos( lcTipoCob );
 		
 		/************************
-         * CARTEIRA DE COBRANÇA *
-         ************************/
+		 * CARTEIRA DE COBRANÇA *
+		 ************************/
 		
 		txtCodCartCob.setNomeCampo( "CodCartCob" );
 		lcCartCob.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_PK, false ) );
@@ -243,7 +284,7 @@ public class FRBoleto extends FRelatorio {
 		adic( txtCodModBol, 7, 20, 80, 20 );
 		adic( new JLabelPad( "Descrição do modelo" ), 90, 0, 300, 20 );
 		adic( txtDescModBol, 90, 20, 300, 20 );
-		adic( new JLabelPad( "Pedido" ), 7, 40, 80, 20 );
+		adic( new JLabelPad( "Pedido de" ), 7, 40, 80, 20 );
 		adic( txtCodVenda, 7, 60, 80, 20 );
 		adic( new JLabelPad( "Doc." ), 90, 40, 97, 20 );
 		adic( txtDocVenda, 90, 60, 97, 20 );
@@ -251,32 +292,40 @@ public class FRBoleto extends FRelatorio {
 		adic( txtDataVenda, 190, 60, 97, 20 );
 		adic( new JLabelPad( "Cliente" ), 290, 40, 230, 20 );
 		adic( txtRazCli, 290, 60, 230, 20 );
-		adic( new JLabelPad( "Nro.parcela" ), 7, 80, 80, 20 );
-		adic( txtParc, 7, 100, 80, 20 );
-		adic( new JLabelPad( "Cód.banco" ), 90, 80, 80, 20 );
-		adic( txtCodBanco, 90, 100, 80, 20 );
-		adic( new JLabelPad( "Nome do banco" ), 173, 80, 348, 20 );
-		adic( txtNomeBanco, 173, 100, 348, 20 );
-		adic( new JLabelPad( "Cód.tp.cob." ), 7, 120, 300, 20 );
-		adic( txtCodTpCob, 7, 140, 80, 20 );
-		adic( new JLabelPad( "Descrição do tipo de cobrança" ), 90, 120, 430, 20 );
-		adic( txtDescTpCob, 90, 140, 430, 20 );
+		adic( new JLabelPad("Pedido até"), 7, 80, 80, 20 );
+		adic( txtCodVenda2, 7, 100, 80, 20 );
+		adic( new JLabelPad( "Doc." ), 90, 80, 97, 20 );
+		adic( txtDocVenda2, 90, 100, 97, 20 );
+		adic( new JLabelPad( "Data" ), 190, 80, 97, 20 );
+		adic( txtDataVenda2, 190, 100, 97, 20 );
+		adic( new JLabelPad( "Cliente" ), 290, 80, 230, 20 );
+		adic( txtRazCli2, 290, 100, 230, 20 );
+		adic( new JLabelPad( "Nro.parcela" ), 7, 120, 80, 20 );
+		adic( txtParc, 7, 140, 80, 20 );
+		adic( new JLabelPad( "Cód.banco" ), 90, 120, 80, 20 );
+		adic( txtCodBanco, 90, 140, 80, 20 );
+		adic( new JLabelPad( "Nome do banco" ), 173, 120, 348, 20 );
+		adic( txtNomeBanco, 173, 140, 348, 20 );
+		adic( new JLabelPad( "Cód.tp.cob." ), 7, 160, 300, 20 );
+		adic( txtCodTpCob, 7, 180, 80, 20 );
+		adic( new JLabelPad( "Descrição do tipo de cobrança" ), 90, 160, 430, 20 );
+		adic( txtDescTpCob, 90, 180, 430, 20 );
 
-		adic( new JLabelPad( "Cód.cart.cob." ), 7, 160, 80, 20 );
-		adic( txtCodCartCob, 7, 180, 80, 20 );
-		adic( new JLabelPad( "Descrição da carteira de cobrança" ), 90, 160, 430, 20 );
-		adic( txtDescCartCob, 90, 180, 430, 20 );
+		adic( new JLabelPad( "Cód.cart.cob." ), 7, 200, 80, 20 );
+		adic( txtCodCartCob, 7, 220, 80, 20 );
+		adic( new JLabelPad( "Descrição da carteira de cobrança" ), 90, 200, 430, 20 );
+		adic( txtDescCartCob, 90, 220, 430, 20 );
 		
 		JLabel periodo = new JLabel( "Período (Emissão)", SwingConstants.CENTER );
 		periodo.setOpaque( true );
 		
-		adic( periodo, 25, 210, 150, 20 );
+		adic( periodo, 25, 250, 150, 20 );
 		JLabel borda = new JLabel();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
-		adic( borda, 7, 220, 300, 45 );
-		adic( txtDtIni, 25, 235, 110, 20 );
-		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 235, 40, 20 );
-		adic( txtDtFim, 175, 235, 110, 20 );
+		adic( borda, 7, 260, 300, 45 );
+		adic( txtDtIni, 25, 275, 110, 20 );
+		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 275, 40, 20 );
+		adic( txtDtFim, 175, 275, 110, 20 );
 
 		// adic( cbTipoImp, 390, 180, 150, 30);
 	}
@@ -750,6 +799,7 @@ public class FRBoleto extends FRelatorio {
 	public void imprimir( boolean bVisualizar ) {
 
  		final int codvenda = txtCodVenda.getVlrInteger().intValue();
+ 		final int codvenda2 = txtCodVenda2.getVlrInteger().intValue();
 		final int nparc = txtParc.getVlrInteger().intValue();
 		final String codbanco = txtCodBanco.getVlrString().trim();
 		final int codtipocob = txtCodTpCob.getVlrInteger().intValue();
@@ -779,10 +829,15 @@ public class FRBoleto extends FRelatorio {
 			ImprimeOS imp = null;
 
 			sWhere.append( "MB.CODEMP=? AND MB.CODFILIAL=? AND MB.CODMODBOL=? AND " );
-			if ( codvenda != 0 ) {
+			
+			if( codvenda != 0 && codvenda2 != 0 ){
+			    sWhere.append( "R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA BETWEEN ? AND ? " );
+			}
+			
+			if ( codvenda != 0 && codvenda2 == 0 ) {
 				sWhere.append( "R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA=? " );
 			}
-			else {
+			else if (codvenda == 0 && codvenda2 == 0 ){
 				sWhere.append( "V.DTEMITVENDA BETWEEN ? AND ? " );
 			}
 			if ( !"".equals( codbanco ) ) {
@@ -890,7 +945,26 @@ public class FRBoleto extends FRelatorio {
 
 			strDebug = strDebug.replaceFirst( "\\?", txtCodModBol.getVlrInteger().intValue() + "" );
 
-			if ( codvenda != 0 ) {
+			if( codvenda != 0 && codvenda2 != 0 ){
+			    
+			    ps.setInt( param++, Aplicativo.iCodEmp );
+
+			    strDebug = strDebug.replaceFirst( "\\?", Aplicativo.iCodEmp + "" );
+
+			    ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+
+			    strDebug = strDebug.replaceFirst( "\\?", ListaCampos.getMasterFilial( "VDVENDA" ) + "" );
+
+			    ps.setInt( param++, txtCodVenda.getVlrInteger().intValue() );
+
+			    strDebug = strDebug.replaceFirst( "\\?", txtCodVenda.getVlrInteger().intValue() + "" );
+			    
+			    ps.setInt( param++, txtCodVenda2.getVlrInteger().intValue() );
+
+			    strDebug = strDebug.replaceFirst( "\\?", txtCodVenda2.getVlrInteger().intValue() + "" );
+			}
+			
+			if ( codvenda != 0 && codvenda2 == 0 ) {
 				ps.setInt( param++, Aplicativo.iCodEmp );
 
 				strDebug = strDebug.replaceFirst( "\\?", Aplicativo.iCodEmp + "" );
@@ -904,7 +978,7 @@ public class FRBoleto extends FRelatorio {
 				strDebug = strDebug.replaceFirst( "\\?", txtCodVenda.getVlrInteger().intValue() + "" );
 
 			}
-			else {
+			else if( codvenda == 0 && codvenda2 == 0 ){
 				ps.setDate( param++, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
 
 				strDebug = strDebug.replaceFirst( "\\?", Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) + "" );
@@ -1043,8 +1117,10 @@ public class FRBoleto extends FRelatorio {
 		lcModBol.setConexao( cn );
 		lcVenda.setConexao( cn );
 		lcCli.setConexao( cn );
+		lcCli2.setConexao( cn );
 		lcBanco.setConexao( cn );
 		lcTipoCob.setConexao( cn );
+		lcVenda2.setConexao( cn );
 		lcCartCob.setConexao( con );
 		sInfoMoeda = getMoeda();
 		
