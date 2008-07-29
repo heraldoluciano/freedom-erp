@@ -65,34 +65,53 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 	private static final long serialVersionUID = 1L;
 	
 	private JPanelPad pinCandVagas =  new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	private JPanelPad pinVagasCand = new JPanelPad( 680, 200 );
-	
-	private JPanelPad pinCab = new JPanelPad( 0, 94 );
-	private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+//	private JPanelPad pinVagasCand = new JPanelPad( 680, 200 );
+	private JPanelPad pinVagasCand = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout()); 
+	private JPanelPad pinCabVaga = new JPanelPad( 0, 94 );
+	private JPanelPad pinCabCand = new JPanelPad( 0, 94 );
+	private JPanelPad pnCabVaga = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnCabCand = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextFieldPad txtCodVaga = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtCodCand = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private final JTextFieldFK txtNomeCand = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 	private final JTextFieldFK txtCodEmpr = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );	
 	private final JTextFieldFK txtNomeEmpr = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 	private final JTextFieldFK txtCodFunc = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );	
 	private final JTextFieldFK txtDescFunc = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
-	private final JTextFieldFK txtFaixaSalIni = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
-	private final JTextFieldFK txtFaixaSalFim = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
-		
-	private Tabela tab = new Tabela(); 
-	private JButton btRefresh = new JButton(Icone.novo("btExecuta.gif"));
+	private final JTextFieldFK txtFaixaSalIniVaga = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldFK txtFaixaSalFimVaga = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
+
+	private final JTextFieldFK txtFaixaSalIniCand = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldFK txtFaixaSalFimCand = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
+
+	private Tabela tabCand = new Tabela(); 
+	private Tabela tabVagas = new Tabela();
+	private JButton btRefreshCand = new JButton(Icone.novo("btExecuta.gif"));
+	private JButton btRefreshVagas = new JButton(Icone.novo("btExecuta.gif"));
 	private JButton btEncaminharCand = new JButton("Encaminhar", Icone.novo("btEncaminharCand.gif"));
 	private JButton btEfetivarCand = new JButton("Efetivar", Icone.novo("btEfetivarCand.gif"));
-//	private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
 	private ImageIcon imgEditaCampo = Icone.novo("clEditar.gif");
-	private JScrollPane spnTab = new JScrollPane(tab);
+	private JScrollPane spnTabCand = new JScrollPane(tabCand);
+	private JScrollPane spnTabVagas = new JScrollPane(tabVagas);
 	private ListaCampos lcVaga = new ListaCampos(this);
+	private ListaCampos lcCandidato = new ListaCampos(this);
 	private ListaCampos lcEmpregador = new ListaCampos(this,"EM");
 	private ListaCampos lcFuncao = new ListaCampos(this,"FC");
 
-	private JCheckBoxPad cbQualificacoes = new JCheckBoxPad("Qualificações",new Boolean(true),new Boolean(false));
-	private JCheckBoxPad cbRestricoes = new JCheckBoxPad("Restrições",new Boolean(true),new Boolean(false));
-	private JCheckBoxPad cbCursos = new JCheckBoxPad("Cursos",new Boolean(true),new Boolean(false));
-	private JCheckBoxPad cbExperiencia = new JCheckBoxPad("Experiência",new Boolean(true),new Boolean(false));
-	private JCheckBoxPad cbFaixaSalarial = new JCheckBoxPad("Faixa salarial de:",new Boolean(true),new Boolean(false));
+	private JCheckBoxPad cbQualificacoesVaga = new JCheckBoxPad("Qualificações",new Boolean(true),new Boolean(false));
+	private JCheckBoxPad cbRestricoesVaga = new JCheckBoxPad("Restrições",new Boolean(true),new Boolean(false));
+	private JCheckBoxPad cbQualificacoesCand = new JCheckBoxPad("Qualificações",new Boolean(true),new Boolean(false));
+	private JCheckBoxPad cbRestricoesCand = new JCheckBoxPad("Restrições",new Boolean(true),new Boolean(false));
+
+	
+	private JCheckBoxPad cbCursosVaga = new JCheckBoxPad("Cursos",new Boolean(true),new Boolean(false));
+	private JCheckBoxPad cbExperienciaVaga = new JCheckBoxPad("Experiência",new Boolean(true),new Boolean(false));
+	private JCheckBoxPad cbCursosCand = new JCheckBoxPad("Cursos",new Boolean(true),new Boolean(false));
+	private JCheckBoxPad cbExperienciaCand = new JCheckBoxPad("Experiência",new Boolean(true),new Boolean(false));
+
+	
+	private JCheckBoxPad cbFaixaSalarialVaga = new JCheckBoxPad("Faixa salarial de:",new Boolean(true),new Boolean(false));
+	private JCheckBoxPad cbFaixaSalarialCand = new JCheckBoxPad("Faixa salarial de:",new Boolean(true),new Boolean(false));
 	private JCheckBoxPad cbDisponibilidade = new JCheckBoxPad("Disponíveis",new Boolean(true),new Boolean(false));
 	private JCheckBoxPad cbEntrevistados = new JCheckBoxPad("Entrevistados",new Boolean(true),new Boolean(false));
 	private JCheckBoxPad cbEnvolvimento = new JCheckBoxPad("Envolvidos",new Boolean(true),new Boolean(false));	
@@ -103,9 +122,12 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 	private BigDecimal bVlrAprovado = new BigDecimal("0");
 	private BigDecimal bVlrTotal = new BigDecimal("0");
 	
-	private JLabelPad lbFiltros = new JLabelPad( " Filtros" );
-	private JPanelPad pinFiltros = new JPanelPad( 300, 150 );
-	private JPanelPad pinLbFiltros = new JPanelPad( 53, 15 );
+	private JLabelPad lbFiltrosCand = new JLabelPad( " Filtros" );
+	private JLabelPad lbFiltrosVaga = new JLabelPad( " Filtros" );
+	private JPanelPad pinFiltrosCand = new JPanelPad( 300, 150 );
+	private JPanelPad pinFiltrosVaga = new JPanelPad( 300, 150 );
+	private JPanelPad pinLbFiltrosCand = new JPanelPad( 53, 15 );
+	private JPanelPad pinLbFiltrosVaga = new JPanelPad( 53, 15 );
 	private JPanelPad pinRod = new JPanelPad(685,39);
 	private Map<String,String> status = new HashMap<String, String>();
 	
@@ -141,37 +163,29 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 		setTitulo("Gerenciamento de vagas");
 		setAtribos(15,30,796,380);
 
-		pnBordRod.remove( pnRod );
-		pnBordRod.remove( pnRodape );
+	
 		
-		pnBordRod.setPreferredSize(new Dimension(450, 43));
-		
-		txtFaixaSalIni.setForeground( new Color(10,95,0) );
-		txtFaixaSalIni.setBackground( new Color(240,240,240) );
-		txtFaixaSalIni.setBorder( null );
-		
-		txtFaixaSalFim.setForeground( new Color(255,0,0) );
-		txtFaixaSalFim.setBackground( new Color(240,240,240) );
-		txtFaixaSalFim.setBorder( null );
 
-		status.put( "DI", "Disponivel" );
-		status.put( "EN", "Encaminhado" );
-		status.put( "EF", "Efetivado" );
-		
-		btRefresh.setToolTipText( "Refazer consulta" );		
-		btEncaminharCand.setToolTipText( "Encaminhar candidatos" );
-		btEfetivarCand.setToolTipText( "Efetivar candidatos" );
-		
-		btRefresh.addActionListener(this);
-		btEncaminharCand.addActionListener(this);
-		btEfetivarCand.addActionListener(this);
-		btSair.addActionListener(this);
 
+
+		montaListaCampos();
+		montaTela();
+		montaListeners();
+	
+	
+		
+		
+		
+	}
+	
+	private void montaListaCampos() {
+
+		//VAGA
 		lcVaga.add(new GuardaCampo( txtCodVaga, "CodVaga", "Cód.Vaga",ListaCampos.DB_PK , null, false));		
 		lcVaga.add(new GuardaCampo( txtCodEmpr, "CodEmpr","Cód.Empr.",ListaCampos.DB_FK, null, false));
 		lcVaga.add(new GuardaCampo( txtCodFunc, "CodFunc","Cód.Func.",ListaCampos.DB_FK, null, false));
-		lcVaga.add(new GuardaCampo( txtFaixaSalIni, "FaixaSalIni","Inicial",ListaCampos.DB_SI, null, false));
-		lcVaga.add(new GuardaCampo( txtFaixaSalFim, "FaixaSalFim","Inicial",ListaCampos.DB_SI, null, false));
+		lcVaga.add(new GuardaCampo( txtFaixaSalIniVaga, "FaixaSalIni","Inicial",ListaCampos.DB_SI, null, false));
+		lcVaga.add(new GuardaCampo( txtFaixaSalFimVaga, "FaixaSalFim","Inicial",ListaCampos.DB_SI, null, false));
 
 		lcVaga.montaSql(false,"VAGA","RH");
 		lcVaga.setQueryCommit(false);
@@ -196,42 +210,91 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 		lcFuncao.setQueryCommit(false);
 		lcFuncao.setReadOnly(true);
 		txtCodFunc.setTabelaExterna(lcFuncao);
-			
-		pinCab.adic(new JLabelPad("Cód.Vaga"),7,0,60,20);
-		pinCab.adic(txtCodVaga,7,20,60,20);
-		
-		pinCab.adic(new JLabelPad("Cód.Empr."),70,0,60,20);
-		pinCab.adic(txtCodEmpr,70,20,60,20);
-		
-		pinCab.adic(new JLabelPad("Empregador"),133,0,230,20);
-		pinCab.adic(txtNomeEmpr,133,20,230,20);
-		
-		pinCab.adic(new JLabelPad("Cód.Func."),7,40,60,20);
-		pinCab.adic(txtCodFunc,7,60,60,20);
-		
-		pinCab.adic(new JLabelPad("Função"),70,40,230,20);
-		pinCab.adic(txtDescFunc,70,60,293,20);
-								
-		pinLbFiltros.adic( lbFiltros, 0, 0, 80, 15 );
-		pinLbFiltros.tiraBorda();
 
-		pinCab.adic( pinLbFiltros, 375, 4, 55, 15 );
-		pinCab.adic( pinFiltros, 372, 12, 370, 69 );		
-		pinCab.adic (btRefresh,745,12,30,68);
-					
-		pinFiltros.adic( cbQualificacoes, 3, 7, 130, 18 );
-		pinFiltros.adic( cbRestricoes, 3, 25, 130, 18 );
-		pinFiltros.adic( cbFaixaSalarial, 3, 43, 120, 18 );
-				
-		pinFiltros.adic( cbCursos, 136, 7, 80, 18 );
-		pinFiltros.adic( cbExperiencia, 136, 25, 100, 18 );
-		pinFiltros.adic (txtFaixaSalIni,125,43,60,18); 
-		pinFiltros.adic( new JLabelPad("à"), 191, 43, 8, 18 );
-		pinFiltros.adic (txtFaixaSalFim,203,43,50,18);		
 		
-		pinFiltros.adic( cbDisponibilidade, 255, 7, 230, 18 );		
-		pinFiltros.adic( cbEnvolvimento, 255, 25, 230, 18 );
-		pinFiltros.adic( cbEntrevistados, 255, 43, 230, 18 );
+		//Candidatos		
+		lcCandidato.add(new GuardaCampo( txtCodCand, "CodCand", "Cód.Cand.", ListaCampos.DB_PK , null, false));		
+		lcCandidato.add(new GuardaCampo( txtNomeCand, "NomeCand","Nome", ListaCampos.DB_SI, null, false));
+		
+		lcCandidato.montaSql(false,"CANDIDATO","RH");
+		lcCandidato.setQueryCommit(false);
+		lcCandidato.setReadOnly(true);		
+		
+		txtCodCand.setTabelaExterna(lcCandidato);	
+		txtCodCand.setNomeCampo("CodCand");
+		txtCodCand.setPK(true);
+		txtCodCand.setListaCampos(lcCandidato);
+		
+	}
+
+	private void montaTela() {
+		
+		pnBordRod.remove( pnRod );
+		pnBordRod.remove( pnRodape );
+		
+		pnBordRod.setPreferredSize(new Dimension(450, 43));
+		
+		txtFaixaSalIniVaga.setForeground( new Color(10,95,0) );
+		txtFaixaSalIniVaga.setBackground( new Color(240,240,240) );
+		txtFaixaSalIniVaga.setBorder( null );
+		
+		txtFaixaSalFimVaga.setForeground( new Color(255,0,0) );
+		txtFaixaSalFimVaga.setBackground( new Color(240,240,240) );
+		txtFaixaSalFimVaga.setBorder( null );
+
+		txtFaixaSalIniCand.setForeground( new Color(10,95,0) );
+		txtFaixaSalIniCand.setBackground( new Color(240,240,240) );
+		txtFaixaSalIniCand.setBorder( null );
+		
+		txtFaixaSalFimCand.setForeground( new Color(255,0,0) );
+		txtFaixaSalFimCand.setBackground( new Color(240,240,240) );
+		txtFaixaSalFimCand.setBorder( null );
+
+		status.put( "DI", "Disponivel" );
+		status.put( "EN", "Encaminhado" );
+		status.put( "EF", "Efetivado" );
+		
+		btRefreshCand.setToolTipText( "Refazer consulta de candidados" );		
+		btRefreshVagas.setToolTipText( "Refazer consulta de vagas" );
+		
+		btEncaminharCand.setToolTipText( "Encaminhar candidatos" );
+		btEfetivarCand.setToolTipText( "Efetivar candidatos" );
+		
+		pinCabVaga.adic(new JLabelPad("Cód.Vaga"),7,0,60,20);
+		pinCabVaga.adic(txtCodVaga,7,20,60,20);
+		
+		pinCabVaga.adic(new JLabelPad("Cód.Empr."),70,0,60,20);
+		pinCabVaga.adic(txtCodEmpr,70,20,60,20);
+		
+		pinCabVaga.adic(new JLabelPad("Empregador"),133,0,230,20);
+		pinCabVaga.adic(txtNomeEmpr,133,20,230,20);
+		
+		pinCabVaga.adic(new JLabelPad("Cód.Func."),7,40,60,20);
+		pinCabVaga.adic(txtCodFunc,7,60,60,20);
+		
+		pinCabVaga.adic(new JLabelPad("Função"),70,40,230,20);
+		pinCabVaga.adic(txtDescFunc,70,60,293,20);
+								
+		pinLbFiltrosVaga.adic( lbFiltrosVaga, 0, 0, 80, 15 );
+		pinLbFiltrosVaga.tiraBorda();
+
+		pinCabVaga.adic( pinLbFiltrosVaga, 375, 4, 55, 15 );
+		pinCabVaga.adic( pinFiltrosVaga, 372, 12, 370, 69 );		
+		pinCabVaga.adic (btRefreshCand,745,12,30,68);
+					
+		pinFiltrosVaga.adic( cbQualificacoesVaga, 3, 7, 130, 18 );
+		pinFiltrosVaga.adic( cbRestricoesVaga, 3, 25, 130, 18 );
+		pinFiltrosVaga.adic( cbFaixaSalarialVaga, 3, 43, 120, 18 );
+				
+		pinFiltrosVaga.adic( cbCursosVaga, 136, 7, 80, 18 );
+		pinFiltrosVaga.adic( cbExperienciaVaga, 136, 25, 100, 18 );
+		pinFiltrosVaga.adic (txtFaixaSalIniVaga,125,43,60,18); 
+		pinFiltrosVaga.adic( new JLabelPad("à"), 191, 43, 8, 18 );
+		pinFiltrosVaga.adic (txtFaixaSalFimVaga,203,43,50,18);		
+		
+		pinFiltrosVaga.adic( cbDisponibilidade, 255, 7, 230, 18 );		
+		pinFiltrosVaga.adic( cbEnvolvimento, 255, 25, 230, 18 );
+		pinFiltrosVaga.adic( cbEntrevistados, 255, 43, 230, 18 );
 		
 		pinRod.adic(btEncaminharCand,5,2,140,30);
 		pinRod.adic(btEfetivarCand,148,2,130,30);
@@ -280,74 +343,117 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 
 		setPainel( pinCandVagas );
 		
-		pinCandVagas.add(pnCab);
+		pinCandVagas.add(pnCabVaga);
 		
-		pnCab.add(pinCab,BorderLayout.NORTH);
-//		pnCab.add(pinRod,BorderLayout.SOUTH);
-		pnCab.add(spnTab,BorderLayout.CENTER);
+		pnCabVaga.add(pinCabVaga, BorderLayout.NORTH);
+		pnCabVaga.add(spnTabCand, BorderLayout.CENTER);
 
 		pnBordRod.add( pinRod );
-		
-		tab.adicColuna("S/N");
-		tab.adicColuna("Cód.");
-		tab.adicColuna("Nome");
-		tab.adicColuna("Fone");
-		tab.adicColuna("Qualif.");
-		tab.adicColuna("Restr.");
-        tab.adicColuna("Cursos");
-		tab.adicColuna("Exp.");
-		tab.adicColuna("Salário");
-		tab.adicColuna("");
-		tab.adicColuna("");
-		tab.adicColuna("");
-		
-		tab.setTamColuna(30,0);
-		tab.setTamColuna(55,1);
-		tab.setTamColuna(250,2);
-		tab.setTamColuna(80,3);
-		tab.setTamColuna(55,4);
-		tab.setTamColuna(55,5);
-		tab.setTamColuna(55,6);
-		tab.setTamColuna(55,7);
-		tab.setTamColuna(80,8);
-		tab.setTamColuna(0,9);
-		tab.setTamColuna(0,10);
-		tab.setTamColuna(20,11);
-		
-		tab.setColunaInvisivel( 9 );
-		tab.setColunaInvisivel( 10 );
-				
-		tab.setColunaEditavel( 0, true );		
-		tab.addMouseListener( this );
-				
-		cbQualificacoes.addMouseListener(
-		  new MouseAdapter() {
-			public void mouseClicked(MouseEvent mevt) {
-				if (mevt.getSource()==cbQualificacoes && mevt.getClickCount()==1){
-					
-				}
-			}
-		  }
-		);		
-		
-		txtCodVaga.addKeyListener(
-		  new KeyAdapter() {
-		    public void keyPressed(KeyEvent kevt) {
-		    	if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-//		    		montaTab();
-		    	}
-		    }
-		  }
-		);	
-		
 		
 		adicTab( "Candidatos para vagas", pinCandVagas );
 		adicTab( "Vagas para candidatos", pinVagasCand );
 		
+		pnCabCand.add(pinCabCand, BorderLayout.NORTH );
+		pinVagasCand.add(pnCabCand);	
+		
+		pinCabCand.adic(new JLabelPad("Cód.Cand"),7,0,60,20);
+		pinCabCand.adic(txtCodCand,7,20,60,20);
+		
+		pinCabCand.adic(new JLabelPad("Nome do candidato"),70,0,300,20);
+		pinCabCand.adic(txtNomeCand,70,20,300,20);
+		
+		pinLbFiltrosCand.adic( lbFiltrosCand, 0, 0, 80, 15 );
+		pinLbFiltrosCand.tiraBorda();
+
+		pinCabCand.adic( pinLbFiltrosCand, 375, 4, 55, 15 );
+		pinCabCand.adic( pinFiltrosCand, 372, 12, 370, 69 );		
+
+		pinCabCand.adic (btRefreshVagas,745,12,30,68);
+					
+		pinFiltrosCand.adic( cbQualificacoesCand, 3, 7, 130, 18 );
+		pinFiltrosCand.adic( cbRestricoesCand, 3, 25, 130, 18 );
+		pinFiltrosCand.adic( cbFaixaSalarialCand, 3, 43, 120, 18 );
+				
+		pinFiltrosCand.adic( cbCursosCand, 136, 7, 80, 18 );
+		pinFiltrosCand.adic( cbExperienciaCand, 136, 25, 100, 18 );
+		pinFiltrosCand.adic (txtFaixaSalIniCand,125,43,60,18); 
+		pinFiltrosCand.adic( new JLabelPad("à"), 191, 43, 8, 18 );
+		pinFiltrosCand.adic (txtFaixaSalFimCand,203,43,50,18);		
+		
+	
+		
+		
+		
+		
+		montaTab();
+
+	}
+	
+	private void montaListeners() {
+		btRefreshCand.addActionListener(this);
+		btEncaminharCand.addActionListener(this);
+		btEfetivarCand.addActionListener(this);
+		btSair.addActionListener(this);
+		
+		cbQualificacoesVaga.addMouseListener(
+				  new MouseAdapter() {
+					public void mouseClicked(MouseEvent mevt) {
+						if (mevt.getSource()==cbQualificacoesVaga && mevt.getClickCount()==1){
+							
+						}
+					}
+				  }
+				);		
+				
+				txtCodVaga.addKeyListener(
+				  new KeyAdapter() {
+				    public void keyPressed(KeyEvent kevt) {
+				    	if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
+//				    		montaTab();
+				    	}
+				    }
+				  }
+				);	
 		
 	}
-    
-	public void montaTab(){ 
+	
+	private void montaTab() {
+		
+		tabCand.adicColuna("S/N");
+		tabCand.adicColuna("Cód.");
+		tabCand.adicColuna("Nome");
+		tabCand.adicColuna("Fone");
+		tabCand.adicColuna("Qualif.");
+		tabCand.adicColuna("Restr.");
+		tabCand.adicColuna("Cursos");
+		tabCand.adicColuna("Exp.");
+		tabCand.adicColuna("Salário");
+		tabCand.adicColuna("");
+		tabCand.adicColuna("");
+		tabCand.adicColuna("");
+		
+		tabCand.setTamColuna(30,0);
+		tabCand.setTamColuna(55,1);
+		tabCand.setTamColuna(250,2);
+		tabCand.setTamColuna(80,3);
+		tabCand.setTamColuna(55,4);
+		tabCand.setTamColuna(55,5);
+		tabCand.setTamColuna(55,6);
+		tabCand.setTamColuna(55,7);
+		tabCand.setTamColuna(80,8);
+		tabCand.setTamColuna(0,9);
+		tabCand.setTamColuna(0,10);
+		tabCand.setTamColuna(20,11);
+		
+		tabCand.setColunaInvisivel( 9 );
+		tabCand.setColunaInvisivel( 10 );
+				
+		tabCand.setColunaEditavel( 0, true );		
+		tabCand.addMouseListener( this );
+		
+	}
+	
+	private void carregaTabCand(){ 
 
 		StringBuffer sql = new StringBuffer();		
 		StringBuffer where = new StringBuffer();
@@ -357,37 +463,27 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 		sql.append( "FROM RHLISTACANDVAGASP(?,?,?,?)" );
 		where.append( " WHERE STCAND<>'IN' " );
 		
-		/*				
-		if(cbQualificacoes.getVlrBoolean() || cbCursos.getVlrBoolean() ||
-		   cbExperiencia.getVlrBoolean() || cbFaixaSalarial.getVlrBoolean() ||
-		   cbRestricoes.getVlrBoolean() || cbDisponibilidade.getVlrBoolean() || 
-		   cbEnvolvimento.getVlrBoolean()) {
-		
-			where.append( " WHERE " );
-		
-		}*/
-				
-		if(cbQualificacoes.getVlrBoolean()) {
+		if(cbQualificacoesVaga.getVlrBoolean()) {
 			where.append("QUALIFICACOES > 0 " );
 			and = true;
 		}
 		
-		if(cbCursos.getVlrBoolean()) {
+		if(cbCursosVaga.getVlrBoolean()) {
 			where.append( (and ? " AND " : "" ) + ( "CURSOS > 0 " ) );
 			and = true;
 		}
 
-		if(cbExperiencia.getVlrBoolean()) {
+		if(cbExperienciaVaga.getVlrBoolean()) {
 			where.append( (and ? " AND " : "" ) + ( "EXPERIENCIA > 0 " ) );
 			and = true;
 		}
 
-		if(cbRestricoes.getVlrBoolean()) {
+		if(cbRestricoesVaga.getVlrBoolean()) {
 			where.append( ( and ? " AND " : "" ) + ( "RESTRICOES > 0 " ) );
 			and = true;
 		}
 
-		if(cbFaixaSalarial.getVlrBoolean()) {
+		if(cbFaixaSalarialVaga.getVlrBoolean()) {
 			where.append( (and ? " AND " : "" ) + ( "((PRETENSAOSAL BETWEEN  ? AND ? ) OR (PRETENSAOSAL IS NULL))" ) );
 			and = true;
 		}
@@ -406,12 +502,9 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 			where.append( (and ? " AND " : "" ) + ( " STCAND='EV' " ) );			
 		}
 
-		
-		
-		
 		sql.append( where );
 		
-		tab.limpa();
+		tabCand.limpa();
 		
 		try {
 			System.out.println("SQL:" + sql.toString());
@@ -423,9 +516,9 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 			ps.setInt(3,txtCodVaga.getVlrInteger().intValue());					
 			ps.setInt(4,txtCodFunc.getVlrInteger().intValue());						
 			
-			if(cbFaixaSalarial.getVlrBoolean()) {
-				ps.setDouble( 5, txtFaixaSalIni.getVlrDouble() );
-				ps.setDouble( 6, txtFaixaSalFim.getVlrDouble() );				
+			if(cbFaixaSalarialVaga.getVlrBoolean()) {
+				ps.setDouble( 5, txtFaixaSalIniVaga.getVlrDouble() );
+				ps.setDouble( 6, txtFaixaSalFimVaga.getVlrDouble() );				
 			}
 						
 			ResultSet rs = ps.executeQuery();
@@ -468,7 +561,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 			    vVals.addElement( rs.getString( "STCAND" ) );
 			    vVals.addElement( imgStatus );
 			    
-				tab.adicLinha(vVals);				
+			    tabCand.adicLinha(vVals);				
 				
 			}
 			if (!con.getAutoCommit())
@@ -477,7 +570,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 		catch (SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao consultar candidatos!\n"+err.getMessage(),true,con,err);
 		}
-		tab.addTabelaEditListener(this);
+		tabCand.addTabelaEditListener(this);
 	}
 	
 	public void setConexao(Connection cn) {
@@ -485,11 +578,12 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 		lcVaga.setConexao(con);
 		lcEmpregador.setConexao(con);
 		lcFuncao.setConexao(con);
+		lcCandidato.setConexao(con);
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
-		if (evt.getSource() == btRefresh) {
-			montaTab();
+		if (evt.getSource() == btRefreshCand) {
+			carregaTabCand();
 		}
 		else if (evt.getSource() == btEncaminharCand) {
 			encaminharCandidato();
@@ -503,7 +597,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 	}
 
 	public void valorAlterado(TabelaEditEvent evt) {
-/*		if ((tab.getColunaEditada()<2)) {
+/*		if ((tabCand.getColunaEditada()<2)) {
 
           }*/
     }
@@ -520,21 +614,21 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 				sql.append( "INSERT INTO RHVAGACANDIDATO(CODEMP,CODFILIAL,CODVAGA,CODEMPCA,CODFILIALCA,CODCAND,STVAGACAND) " );
 				sql.append( "VALUES(?,?,?,?,?,?,?)" );	
 
-				for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+				for ( int i = 0; i < tabCand.getNumLinhas(); i++ ) {
 	
-					if ( ! ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() )
+					if ( ! ( (Boolean) tabCand.getValor( i, 0 ) ).booleanValue() )
 						continue;
 					
-					if( (tab.getValor( i, 9 ).toString().equals( "EF" )) ) { 
-						Funcoes.mensagemInforma( this, "O candidato " + tab.getValor( i, 2 ).toString().trim() 
+					if( (tabCand.getValor( i, 9 ).toString().equals( "EF" )) ) { 
+						Funcoes.mensagemInforma( this, "O candidato " + tabCand.getValor( i, 2 ).toString().trim() 
 								+ " nao pode ser encaminhado, pois ja foi efetivado na vaga!" );	
 						continue;					
 					}
 					
-					if( (tab.getValor( i, 9 ).toString().equals( "DI" )) && ( ! tab.getValor( i, 10 ).toString().equals( "DI" )) ) { 
+					if( (tabCand.getValor( i, 9 ).toString().equals( "DI" )) && ( ! tabCand.getValor( i, 10 ).toString().equals( "DI" )) ) { 
 						
-						if( Funcoes.mensagemConfirma( this, "O candidato " + tab.getValor( i, 2 ).toString().trim() 
-								+ " ja foi " + status.get(tab.getValor( i, 10 ).toString()).toLowerCase()+ " em outra vaga.\n"
+						if( Funcoes.mensagemConfirma( this, "O candidato " + tabCand.getValor( i, 2 ).toString().trim() 
+								+ " ja foi " + status.get(tabCand.getValor( i, 10 ).toString()).toLowerCase()+ " em outra vaga.\n"
 								+ " Confirma seu encaminhamento?") == JOptionPane.NO_OPTION) 						
 							continue;	
 						
@@ -547,7 +641,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 					ps.setInt( 3, txtCodVaga.getVlrInteger().intValue() );
 					ps.setInt( 4, Aplicativo.iCodEmp );
 					ps.setInt( 5, ListaCampos.getMasterFilial( "RHCANDIDATO" ) );
-					ps.setInt( 6, new Integer(tab.getValor( i, 1 ).toString()) );
+					ps.setInt( 6, new Integer(tabCand.getValor( i, 1 ).toString()) );
 					ps.setString( 7, "EN" );
 					
 					encaminhados += ps.executeUpdate();
@@ -563,7 +657,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 					    ( "Nenhum candidato foi encaminhado para vaga! " ) ) ;				
 			}
 			
-			montaTab();
+			carregaTabCand();
 			
 		}
 		catch (Exception e) {
@@ -585,13 +679,13 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODVAGA=? " );
 				sql.append( "AND CODEMPCA=? AND CODFILIALCA=? AND CODCAND=? AND STVAGACAND='EN' " );	
 
-				for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+				for ( int i = 0; i < tabCand.getNumLinhas(); i++ ) {
 	
-					if ( ! ( (Boolean) tab.getValor( i, 0 ) ).booleanValue() )
+					if ( ! ( (Boolean) tabCand.getValor( i, 0 ) ).booleanValue() )
 						continue;
 				
-					if( ! (tab.getValor( i, 9 ).toString().equals( "EN" )) ) { 
-						Funcoes.mensagemInforma( this, "O candidato " + tab.getValor( i, 2 ).toString().trim() 
+					if( ! (tabCand.getValor( i, 9 ).toString().equals( "EN" )) ) { 
+						Funcoes.mensagemInforma( this, "O candidato " + tabCand.getValor( i, 2 ).toString().trim() 
 								+ " deve ser encaminhado antes de efetivado!" );	
 						continue;					
 					}
@@ -602,7 +696,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 					ps.setInt( 3, txtCodVaga.getVlrInteger().intValue() );
 					ps.setInt( 4, Aplicativo.iCodEmp );
 					ps.setInt( 5, ListaCampos.getMasterFilial( "RHCANDIDATO" ) );
-					ps.setInt( 6, new Integer(tab.getValor( i, 1 ).toString()) );
+					ps.setInt( 6, new Integer(tabCand.getValor( i, 1 ).toString()) );
 									
 					efetivados += ps.executeUpdate();
 					
@@ -618,7 +712,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 				
 			}
 			
-			montaTab();
+			carregaTabCand();
 			
 		}
 		catch (Exception e) {
@@ -634,9 +728,9 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 		if ( mevt.getClickCount() == 1) {			
 		}
 		else if ( mevt.getClickCount() == 2 ) {			
-			if ( tabEv == tab && tabEv.getLinhaSel() >= 0 ) {
+			if ( tabEv == tabCand && tabEv.getLinhaSel() >= 0 ) {
 				
-				tab.setValor( !((Boolean) tab.getValor( tab.getLinhaSel(), 0 )).booleanValue(), tab.getLinhaSel(), 0 ); 
+				tabCand.setValor( !((Boolean) tabCand.getValor( tabCand.getLinhaSel(), 0 )).booleanValue(), tabCand.getLinhaSel(), 0 ); 
 				
 			}
 		}
