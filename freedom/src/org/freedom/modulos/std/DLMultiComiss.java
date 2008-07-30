@@ -109,6 +109,9 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 	
 	private void montaTela(){
 		
+		nvRodape.setAtivo( 1, false );
+		nvRodape.setAtivo( 0, false );
+		
 		pinCab.setPreferredSize( new Dimension( 400, 50 ) );
 		spnComiss.setPreferredSize( new Dimension( 400, 180 ) );
 		pnComiss.add( spnComiss, BorderLayout.NORTH );
@@ -272,7 +275,10 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 			if ( mevt.getSource() == tabComiss && tabComiss.getLinhaSel() >= 0 ) {	
 				setVlrCampos();
 				lcVendaComis.carregaDados();
+				lcVendaComis.edit();
 				txtCodVend.requestFocus();
+				nvRodape.setAtivo( 2, false );
+				nvRodape.setAtivo( 3, true );
 			}
 		}
 	}
