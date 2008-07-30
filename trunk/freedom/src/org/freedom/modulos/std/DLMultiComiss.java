@@ -272,6 +272,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 			if ( mevt.getSource() == tabComiss && tabComiss.getLinhaSel() >= 0 ) {	
 				setVlrCampos();
 				lcVendaComis.carregaDados();
+				txtCodVend.requestFocus();
 			}
 		}
 	}
