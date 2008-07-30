@@ -33,6 +33,8 @@ import java.sql.SQLException;
 
 import javax.swing.JScrollPane;
 
+import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -45,7 +47,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
-public class DLMultiComiss extends FFDialogo implements MouseListener {
+public class DLMultiComiss extends FFDialogo implements MouseListener, PostListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -81,20 +83,26 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 	
 	private Navegador nvRodape = new Navegador( false );
 	
+	private Integer codvenda = null;
+	
 	
 	private enum eComiss {
 	
-		SEQ, DESCCOMIS, CODVEND, DESCVEND, PERCCOMISS, CODVENDA, TIPOVENDA  ;
+		SEQ, DESCTPCOMIS, CODVEND, DESCVEND, PERCCOMISS, CODVENDA, TIPOVENDA  ;
 	};
 
-	public DLMultiComiss( Connection con, int codVenda ){
+	public DLMultiComiss( Connection con, int codvenda ){
 	
 		setAtribos( 600, 350 );
-		setTitulo( "Multi-Comissionados" );		
+		setTitulo( "Multi-Comissionados" );
+		
+		this.codvenda = codvenda;
+		
 		montaListaCampos();
 		setConexao( con );
 		montaTela();
-		montaTab( codVenda );		
+		montaTab();		
+	
 		
 		tabComiss.addMouseListener( this );
 	}
@@ -111,18 +119,22 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 		pnRodape.add( pnBot, BorderLayout.WEST );
 		
 		tabComiss.adicColuna( "seq." );
-		tabComiss.adicColuna( "Descrição da regra de comissionamento" );
+		tabComiss.adicColuna( "Tipo de comissionado" );
 		tabComiss.adicColuna( "Cod.Vend" );
-		tabComiss.adicColuna( "Nome do vendedor" );
-		tabComiss.adicColuna( "% comiss" );
+		tabComiss.adicColuna( "Vendedor" );
+		tabComiss.adicColuna( "% Comis." );
 		tabComiss.adicColuna( "Cód.Venda" );
 		tabComiss.adicColuna( "Tipo Venda" );
 		
 		
-		tabComiss.setTamColuna( 50, eComiss.SEQ.ordinal() );
-		tabComiss.setTamColuna( 250, eComiss.DESCCOMIS.ordinal() );
+//		tabComiss.setTamColuna( 50, eComiss.SEQ.ordinal() );
+		tabComiss.setTamColuna( 200, eComiss.DESCTPCOMIS.ordinal() );
 		tabComiss.setTamColuna( 200, eComiss.DESCVEND.ordinal() );
 		tabComiss.setTamColuna( 70, eComiss.PERCCOMISS.ordinal() );
+	
+		tabComiss.setColunaInvisivel( eComiss.SEQ.ordinal() );
+		tabComiss.setColunaInvisivel( eComiss.CODVENDA.ordinal() );
+		tabComiss.setColunaInvisivel( eComiss.TIPOVENDA.ordinal() );
 		
 		setPainel( pinCab );
 		
@@ -163,59 +175,66 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 		lcVendaComis.montaSql( false, "VENDACOMIS", "VD" );
 		lcVendaComis.setQueryCommit( false );
 		lcVendaComis.setReadOnly( false );
-//		txtCodVend.setTabelaExterna( lcVendedor );
 		
 		lcVendaComis.setNavegador( nvRodape );
 		
-		
-//		System.out.println( "SELECT: " + lcVendaComis.getsq  );
+		lcVendaComis.addPostListener( this );
 		
 	}
 	
 	private void setVlrCampos(){
-		
-		if( !"".equals( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.CODVEND.ordinal() ).toString())){
+
+		try {
 			
-			txtCodVend.setVlrInteger( new Integer( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.CODVEND.ordinal() ).toString()));
-		}	
+			if( !"".equals( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.CODVEND.ordinal() ).toString())){			
+				txtCodVend.setVlrInteger( new Integer( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.CODVEND.ordinal() ).toString()));
+			}	
 		
-		txtCodVenda.setVlrInteger( new Integer( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.CODVENDA.ordinal()).toString()));
-		txtTipoVenda.setVlrString( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.TIPOVENDA.ordinal() ).toString());
-		txtSeqVenda.setVlrInteger( new Integer( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.SEQ.ordinal() ).toString()) );
+			txtCodVenda.setVlrInteger( new Integer( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.CODVENDA.ordinal()).toString()));
+			txtTipoVenda.setVlrString( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.TIPOVENDA.ordinal() ).toString());
+			txtSeqVenda.setVlrInteger( new Integer( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.SEQ.ordinal() ).toString()) );
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
-	private void montaTab( int codVenda ){
+	private void montaTab(){
 		
 		StringBuffer sql = new StringBuffer();
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		
-		sql.append( "SELECT VC.SEQVC, VC.CODVEND, TV.DESCTIPOVEND, VC.CODVEND, VE.NOMEVEND, VC.PERCVC, VC.CODVENDA, VC.TIPOVENDA " );
-		sql.append( "FROM VDITREGRACOMIS RC, VDTIPOVEND TV, VDVENDACOMIS VC " );
-		sql.append( "LEFT OUTER JOIN VDVENDEDOR VE ON " );
-		sql.append( "VE.CODEMP=VC.CODEMPVD AND VE.CODFILIAL=VC.CODFILIALVD AND VC.CODVEND=VE.CODVEND " );
-		sql.append( "WHERE " );
-		sql.append( "RC.CODEMP=VC.CODEMPRC AND RC.CODFILIAL=VC.CODFILIALRC AND RC.CODREGRCOMIS=VC.CODREGRCOMIS " );
-		sql.append( "AND RC.SEQITRC=VC.SEQITRC " );
-		sql.append( "AND TV.CODEMP=RC.CODEMPTV AND TV.CODFILIAL=RC.CODFILIALTV AND TV.CODTIPOVEND=RC.CODTIPOVEND " );
-		sql.append( "AND VC.CODEMP=? AND VC.CODFILIAL=? AND VC.TIPOVENDA='V' AND VC.CODVENDA=?" );
-		
 		try {
+
+			sql.append( "SELECT VC.SEQVC, VC.CODVEND, TV.DESCTIPOVEND, VC.CODVEND, VE.NOMEVEND, VC.PERCVC, VC.CODVENDA, VC.TIPOVENDA " );
+			sql.append( "FROM VDITREGRACOMIS RC, VDTIPOVEND TV, VDVENDACOMIS VC " );
+			sql.append( "LEFT OUTER JOIN VDVENDEDOR VE ON " );
+			sql.append( "VE.CODEMP=VC.CODEMPVD AND VE.CODFILIAL=VC.CODFILIALVD AND VC.CODVEND=VE.CODVEND " );
+			sql.append( "WHERE " );
+			sql.append( "RC.CODEMP=VC.CODEMPRC AND RC.CODFILIAL=VC.CODFILIALRC AND RC.CODREGRCOMIS=VC.CODREGRCOMIS " );
+			sql.append( "AND RC.SEQITRC=VC.SEQITRC " );
+			sql.append( "AND TV.CODEMP=RC.CODEMPTV AND TV.CODFILIAL=RC.CODFILIALTV AND TV.CODTIPOVEND=RC.CODTIPOVEND " );
+			sql.append( "AND VC.CODEMP=? AND VC.CODFILIAL=? AND VC.TIPOVENDA='V' AND VC.CODVENDA=?" );
 			
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDREGRACOMIS" ) );
-			ps.setInt( 3, codVenda );
+			ps.setInt( 3, codvenda );
 			
 			rs = ps.executeQuery();
 			
 			int i = 0;
+
+			tabComiss.limpa();
+			
 			while( rs.next() ){
 				
 				tabComiss.adicLinha();
 				
 				tabComiss.setValor( rs.getString( "SEQVC" ) != null ?  rs.getString( "SEQVC" ) : "", i, eComiss.SEQ.ordinal() );
-				tabComiss.setValor( rs.getString( "DESCTIPOVEND" ) != null ? rs.getString( "DESCTIPOVEND" ) : "" , i, eComiss.DESCCOMIS.ordinal() );
+				tabComiss.setValor( rs.getString( "DESCTIPOVEND" ) != null ? rs.getString( "DESCTIPOVEND" ) : "" , i, eComiss.DESCTPCOMIS.ordinal() );
 				tabComiss.setValor( rs.getString( "CODVEND" ) != null ? rs.getString( "CODVEND" ) : ""  , i, eComiss.CODVEND.ordinal() );
 				tabComiss.setValor( rs.getString( "NOMEVEND" ) != null ? rs.getString( "NOMEVEND" ) : "", i, eComiss.DESCVEND.ordinal() );
 				tabComiss.setValor( rs.getString( "PERCVC" ) != null ? rs.getString( "PERCVC" ) : "", i, eComiss.PERCCOMISS.ordinal() );
@@ -230,21 +249,21 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 
 			if ( !con.getAutoCommit() ) {
 				con.commit();
-
 			}
-		} catch ( SQLException e ) {
+		} 
+		catch ( SQLException e ) {
 			
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao montar tabela!", true, con, e );
 			
 		}
 	}
-	public void setConexao( Connection con ){
+	public void setConexao( Connection con ){		
 		
-//		super.setConexao( con );
-		this.con = con;
+		super.setConexao( con );
 		lcVendedor.setConexao( con );
 		lcVendaComis.setConexao( con );
+		
 	}
 
 	public void mouseClicked( MouseEvent mevt ) {
@@ -264,4 +283,16 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 	public void mousePressed( MouseEvent e ) {}
 
 	public void mouseReleased( MouseEvent e ) {}
+
+	public void afterPost( PostEvent pevt ) {
+		if ( pevt.getListaCampos() == lcVendaComis ) {
+			montaTab();
+		}
+	}
+
+	public void beforePost( PostEvent pevt ) {
+
+		// TODO Auto-generated method stub
+		
+	}
 }
