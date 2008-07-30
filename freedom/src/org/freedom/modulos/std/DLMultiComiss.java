@@ -84,7 +84,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 	
 	private enum eComiss {
 	
-		SEQ, DESCCOMIS, DESCVEND, PERCCOMISS ;
+		SEQ, DESCCOMIS, CODVEND, DESCVEND, PERCCOMISS, CODVENDA, TIPOVENDA  ;
 	};
 
 	public DLMultiComiss( Connection con, int codVenda ){
@@ -95,6 +95,8 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 		montaListaCampos();
 		montaTela();
 		montaTab( codVenda );		
+		
+		tabComiss.addMouseListener( this );
 	}
 	
 	private void montaTela(){
@@ -110,8 +112,12 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 		
 		tabComiss.adicColuna( "seq." );
 		tabComiss.adicColuna( "Descrição da regra de comissionamento" );
+		tabComiss.adicColuna( "Cod.Vend" );
 		tabComiss.adicColuna( "Nome do vendedor" );
 		tabComiss.adicColuna( "% comiss" );
+		tabComiss.adicColuna( "Cód.Venda" );
+		tabComiss.adicColuna( "Tipo Venda" );
+		
 		
 		tabComiss.setTamColuna( 50, eComiss.SEQ.ordinal() );
 		tabComiss.setTamColuna( 250, eComiss.DESCCOMIS.ordinal() );
@@ -124,6 +130,8 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 		adic( txtCodVend, 7, 25, 70, 20 );
 		adic( new JLabelPad("Nome do vendedor"), 80, 5, 250, 20 );
 		adic( txtDescVend, 80, 25, 250, 20 );
+		adic( new JLabelPad("% comis."), 333, 5, 70, 20 );
+		adic( txtPercComisVenda, 333, 25, 70, 20 );
 		
 		pnBot.tiraBorda();
 		
@@ -147,7 +155,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 			
 		lcVendaComis.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.Venda", ListaCampos.DB_PK, false ) );
 		lcVendaComis.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo", ListaCampos.DB_PK, false ) );
-		lcVendaComis.add( new GuardaCampo( txtSeqVenda, "SeqVd", "seq.", ListaCampos.DB_PK, false ) );
+		lcVendaComis.add( new GuardaCampo( txtSeqVenda, "SeqVc", "seq.", ListaCampos.DB_PK, false ) );
 		lcVendaComis.montaSql( false, "VENDACOMIS", "VD" );
 		lcVendaComis.setQueryCommit( false );
 		lcVendaComis.setReadOnly( true );
@@ -158,6 +166,14 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 	
 	private void setVlrCampos(){
 		
+		if( !"".equals( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.CODVEND.ordinal() ).toString())){
+			
+			txtCodVend.setVlrInteger( new Integer( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.CODVEND.ordinal() ).toString()));
+		}	
+		
+		txtCodVenda.setVlrInteger( new Integer( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.CODVENDA.ordinal()).toString()));
+		txtTipoVenda.setVlrString( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.TIPOVENDA.ordinal() ).toString());
+		txtSeqVenda.setVlrInteger( new Integer( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.SEQ.ordinal() ).toString()) );
 	}
 	
 	private void montaTab( int codVenda ){
@@ -166,7 +182,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		
-		sql.append( "SELECT VC.SEQVC, VC.CODVEND, TV.DESCTIPOVEND, VC.CODVEND, VE.NOMEVEND, VC.PERCVC " );
+		sql.append( "SELECT VC.SEQVC, VC.CODVEND, TV.DESCTIPOVEND, VC.CODVEND, VE.NOMEVEND, VC.PERCVC, VC.CODVENDA, VC.TIPOVENDA " );
 		sql.append( "FROM VDITREGRACOMIS RC, VDTIPOVEND TV, VDVENDACOMIS VC " );
 		sql.append( "LEFT OUTER JOIN VDVENDEDOR VE ON " );
 		sql.append( "VE.CODEMP=VC.CODEMPVD AND VE.CODFILIAL=VC.CODFILIALVD AND VC.CODVEND=VE.CODVEND " );
@@ -192,8 +208,12 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 				
 				tabComiss.setValor( rs.getString( "SEQVC" ) != null ?  rs.getString( "SEQVC" ) : "", i, eComiss.SEQ.ordinal() );
 				tabComiss.setValor( rs.getString( "DESCTIPOVEND" ) != null ? rs.getString( "DESCTIPOVEND" ) : "" , i, eComiss.DESCCOMIS.ordinal() );
+				tabComiss.setValor( rs.getString( "CODVEND" ) != null ? rs.getString( "CODVEND" ) : ""  , i, eComiss.CODVEND.ordinal() );
 				tabComiss.setValor( rs.getString( "NOMEVEND" ) != null ? rs.getString( "NOMEVEND" ) : "", i, eComiss.DESCVEND.ordinal() );
 				tabComiss.setValor( rs.getString( "PERCVC" ) != null ? rs.getString( "PERCVC" ) : "", i, eComiss.PERCCOMISS.ordinal() );
+				tabComiss.setValor( rs.getString( "CODVENDA" ) != null ? rs.getString( "CODVENDA" ) : ""  , i, eComiss.CODVENDA.ordinal() );
+				tabComiss.setValor( rs.getString( "TIPOVENDA" ) != null ? rs.getString( "TIPOVENDA" ) : ""  , i, eComiss.TIPOVENDA.ordinal() );
+				
 				i++;
 			}
 			
@@ -223,6 +243,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 		if ( mevt.getClickCount() == 2 ) {
 			if ( mevt.getSource() == tabComiss && tabComiss.getLinhaSel() >= 0 ) {	
 				setVlrCampos();
+				lcVendaComis.carregaDados();
 			}
 		}
 	}
