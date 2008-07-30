@@ -57,9 +57,9 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 
 	private JScrollPane spnComiss = new JScrollPane( tabComiss );
 	
-	private ListaCampos lcVendedor = new ListaCampos( this );
+	private ListaCampos lcVendedor = new ListaCampos( this,"VD" );
 	
-	private ListaCampos lcVendaComis = new ListaCampos( this );
+	private ListaCampos lcVendaComis = new ListaCampos( this,"" );
 	
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
@@ -90,9 +90,9 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 	public DLMultiComiss( Connection con, int codVenda ){
 	
 		setAtribos( 600, 350 );
-		setTitulo( "Multi-Comissionados" );
-		setConexao( con );
+		setTitulo( "Multi-Comissionados" );		
 		montaListaCampos();
+		setConexao( con );
 		montaTela();
 		montaTab( codVenda );		
 		
@@ -141,11 +141,13 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 		pnBot.add( nvRodape );
 		nvRodape.setListaCampos( lcVendaComis );
 		
+		
+		
 	}
 	
 	private void montaListaCampos(){
 		
-		lcVendedor.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.Venda", ListaCampos.DB_PK, true ) );
+		lcVendedor.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.Vend.", ListaCampos.DB_PK, true ) );
 		lcVendedor.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		lcVendedor.setWhereAdic( "ATIVOCOMIS='S'" );
 		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
@@ -156,11 +158,17 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 		lcVendaComis.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.Venda", ListaCampos.DB_PK, false ) );
 		lcVendaComis.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo", ListaCampos.DB_PK, false ) );
 		lcVendaComis.add( new GuardaCampo( txtSeqVenda, "SeqVc", "seq.", ListaCampos.DB_PK, false ) );
+		lcVendaComis.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.Vend.", ListaCampos.DB_FK, false ) );
+		lcVendaComis.add( new GuardaCampo( txtPercComisVenda, "Percvc", "%.Comiss.", ListaCampos.DB_SI, true ) );
 		lcVendaComis.montaSql( false, "VENDACOMIS", "VD" );
 		lcVendaComis.setQueryCommit( false );
-		lcVendaComis.setReadOnly( true );
-		txtCodVend.setTabelaExterna( lcVendedor );
+		lcVendaComis.setReadOnly( false );
+//		txtCodVend.setTabelaExterna( lcVendedor );
+		
 		lcVendaComis.setNavegador( nvRodape );
+		
+		
+//		System.out.println( "SELECT: " + lcVendaComis.getsq  );
 		
 	}
 	
@@ -233,7 +241,8 @@ public class DLMultiComiss extends FFDialogo implements MouseListener {
 	}
 	public void setConexao( Connection con ){
 		
-		super.setConexao( con );
+//		super.setConexao( con );
+		this.con = con;
 		lcVendedor.setConexao( con );
 		lcVendaComis.setConexao( con );
 	}
