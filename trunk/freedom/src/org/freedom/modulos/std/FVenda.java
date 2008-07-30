@@ -94,6 +94,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JPanelPad pnCenter = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	private JButton btObs = new JButton( Icone.novo( "btObs.gif" ) );
 	private JButton btFechaVenda = new JButton( Icone.novo( "btOk.gif" ) );
+	private JButton btComiss = new JButton( Icone.novo( "btGerar.gif" ) );
 	private JButton btConsPgto = new JButton( Icone.novo( "btConsPgto.gif" ) );
 	private JButton btAdicOrc = new JButton( "Busca Orçamento", Icone.novo( "btOrcVenda.gif" ) );
 	private JButton btAltComis = new JButton( Icone.novo( "btEditar.gif" ) );
@@ -239,7 +240,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
         				"TIPOVENDA", "CODVENDA", txtTipoVenda, txtCodVenda,
         				txtCodVend, "VENDACOMIS");
         		ctrlmc.loadRegraComis( codregrcomis );
-        	}
+        	
+        		}
         }
         
 		pnCliCab.add( tpnCab );
@@ -263,6 +265,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		   spnCabComis = new JScrollPane(pinCabComis);
   		   spnCabComis.setVerticalScrollBarPolicy( JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED );
 		   spnCabComis.setHorizontalScrollBarPolicy( JScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
+		   
+		   pinCabComis.adic( btComiss, 5, 5, 100, 50 );
+		   
 		   tpnCab.addTab( "Comissão", spnCabComis );
 		} else {
 		   pinCabComis = new JPanelPad(750,altcabcomis);
@@ -468,6 +473,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btAltComis.addActionListener( this );
+		btComiss.addActionListener( this );
 
 		txtPercDescItVenda.addFocusListener( this );
 		txtVlrDescItVenda.addFocusListener( this );
@@ -2676,6 +2682,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			e.printStackTrace();
 		}
 	}
+	
+	private void abreComissVend(){
+		
+		DLMultiComiss dl = new DLMultiComiss( con, txtCodVenda.getVlrInteger() );
+		dl.setVisible( true );
+	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
@@ -2703,6 +2715,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 		else if ( evt.getSource() == btAltComis ) {
 			altComisVend();
+		}else if( evt.getSource() == btComiss ){
+			abreComissVend();
 		}
 
 		super.actionPerformed( evt );
