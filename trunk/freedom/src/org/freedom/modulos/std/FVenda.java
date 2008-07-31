@@ -47,9 +47,11 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
+
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
@@ -75,7 +77,6 @@ import org.freedom.layout.componentes.Layout;
 import org.freedom.layout.componentes.Leiaute;
 import org.freedom.layout.componentes.NFSaida;
 import org.freedom.modulos.util.CtrlMultiComis;
-import org.freedom.modulos.util.CtrlMultiComis.ItemComis;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPassword;
 
@@ -83,7 +84,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private static final long serialVersionUID = 1L;
 	private JPanelPad pinCabVenda = new JPanelPad();
-	private int altcabcomis = 80;
+//	private int altcabcomis = 80;
 	private int aumentacabcomis = -2;
 	private JPanelPad pinCabComis = null;
 	private JScrollPane spnCabComis = null;
@@ -94,7 +95,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JPanelPad pnCenter = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	private JButton btObs = new JButton( Icone.novo( "btObs.gif" ) );
 	private JButton btFechaVenda = new JButton( Icone.novo( "btOk.gif" ) );
-	private JButton btComiss = new JButton( Icone.novo( "btGerar.gif" ) );
+	private JButton btComiss = new JButton( "Multi Comiss.", Icone.novo( "btMultiComis.gif" ) );
 	private JButton btConsPgto = new JButton( Icone.novo( "btConsPgto.gif" ) );
 	private JButton btAdicOrc = new JButton( "Busca Orçamento", Icone.novo( "btOrcVenda.gif" ) );
 	private JButton btAltComis = new JButton( Icone.novo( "btEditar.gif" ) );
@@ -234,26 +235,26 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
         if ( bPrefs[POS_PREFS.MULTICOMIS.ordinal()] ) {
         	numComissionados = getNumComissionados();
-        	if (numComissionados>0) { 
+/*        	if (numComissionados>0) {
         		ctrlmc = new CtrlMultiComis(this, con, lcCampos, 
         				numComissionados,
         				"TIPOVENDA", "CODVENDA", txtTipoVenda, txtCodVenda,
         				txtCodVend, "VENDACOMIS");
-        		ctrlmc.loadRegraComis( codregrcomis );
-        	
-        		}
+        		ctrlmc.loadRegraComis( codregrcomis );       
+        	}*/
         }
         
 		pnCliCab.add( tpnCab );
-		/*
-		 * , 
-			, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
-		 */
-		//spnCabComis.setHorizontalScrollBar( null );
+
 		pinCabVenda.setFirstFocus( txtCodVenda );
 		tpnCab.addTab( "Venda", pinCabVenda );
+		
+		pinCabComis = new JPanelPad(750,70);
+		
 		if (numComissionados>0) {
-		   if (bPrefs[POS_PREFS.USACLASCOMIS.ordinal()]) {
+			
+		}
+/*		   if (bPrefs[POS_PREFS.USACLASCOMIS.ordinal()]) {
 			   aumentacabcomis ++;   
 		   }
 		   aumentacabcomis += numComissionados;
@@ -266,13 +267,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
   		   spnCabComis.setVerticalScrollBarPolicy( JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED );
 		   spnCabComis.setHorizontalScrollBarPolicy( JScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
 		   
-		   pinCabComis.adic( btComiss, 5, 5, 100, 50 );
-		   
+		   */
+			
+		   pinCabComis.adic( btComiss, 600, 12, 140, 30 );
+		 /*  
 		   tpnCab.addTab( "Comissão", spnCabComis );
-		} else {
-		   pinCabComis = new JPanelPad(750,altcabcomis);
+		} 
+		else {*/
+		   
  	       tpnCab.addTab( "Comissão", pinCabComis );
-		}
+//		}
+ 	       
 		tpnCab.addTab( "Fiscal", pinCabFiscal );
 
 		btAdicOrc.setPreferredSize( new Dimension( 180, 0 ) );
@@ -640,7 +645,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		
 		adicCampoInvisivel( txtStatusVenda, "StatusVenda", "Sit.", ListaCampos.DB_SI, false );
 		
-		montaMultiComis();
+//		montaMultiComis();
 		
 		setListaCampos( lcCampos );
 		setNavegador(lcCampos.getNavegador());
@@ -759,7 +764,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		tab.setAutoRol( true );
 	}
 
-	private void montaMultiComis() {
+/*	private void montaMultiComis() {
 		int row = 0;
 		int col = 1;
 		int[] cols = {7, 360} ;
@@ -792,21 +797,21 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						   itemcomis.getTxtPerccomis().getNomeCampo(), itemcomis.getLbPercvend().getText(),
 						   ListaCampos.DB_SI, "S".equals(itemcomis.getObrigitrc()));
    				   setListaCampos( false, "VENDACOMIS", "VD" );
-
+*/
 				   /*adic(itemcomis.getLbCodvend(), cols[col], row+5, 80, 10);
 				   adic(itemcomis.getTxtCodvend(), cols[col], row+20 , 80, 20);
 				   adic(itemcomis.getLbNomevend(), cols[col] + 83, row+5, 200, 10);
 				   adic(itemcomis.getTxtNomevend(), cols[col] + 83, row+20 , 200, 20);
 				   adic(itemcomis.getLbPercvend(), cols[col] + 286, row+5, 55, 10);
 				   adic(itemcomis.getTxtPerccomis(), cols[col] + 286, row+20 , 55, 20); */ 
-				   if (col==0) {
+/*				   if (col==0) {
 					   col = 1;
 				   } else {
 					   row+=40 ;
 					   col=0;
 				   }
-			   }
-		   }
+			   }*/
+	//	   }
 		   //Rectangle rtgle = pinCabComis.getBounds();
 		   //rtgle.height = rtgle.height + 40;
 		   //spnCabComis.repaint();
@@ -816,8 +821,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		   //pinCabComis.setSize( new Dimension( (int) rtgle.getWidth(), (int) rtgle.getHeight()+200 ) );
 		   //pinCabComis.setBounds(  );
 		   //
-		}
-	}
+//		}
+//	} 
+	
 	
 	private int getNumComissionados() {
 	   PreparedStatement ps = null;
@@ -2213,11 +2219,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					calcVlrItem( null, false );
 				}
 			}
-			else if ( ( cevt.getListaCampos() == lcTipoMov ) && (numComissionados>0) && 
+/*			else if ( ( cevt.getListaCampos() == lcTipoMov ) && (numComissionados>0) && 
 				(codregrcomis!=txtCodRegrComis.getVlrInteger().intValue()) ) {
 				codregrcomis = txtCodRegrComis.getVlrInteger().intValue();
 				ctrlmc.loadRegraComis( codregrcomis );
-			}
+			}*/
 			else if ( ( cevt.getListaCampos() == lcFisc ) && ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
 				getCFOP();
 				getTratTrib();
@@ -2234,11 +2240,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				String codvenda = txtCodVenda.getVlrString();
 				lcVenda2.carregaDados();// Carrega os Totais
 				txtCodVenda.setVlrString( codvenda );
-				if ( (numComissionados>0) && (ctrlmc!=null) ) {
+/*				if ( (numComissionados>0) && (ctrlmc!=null) ) {
 					ctrlmc.loadVendaComis( "V", 
 							txtCodVenda.getVlrInteger().intValue(), 
 							txtCodRegrComis.getVlrInteger().intValue() );
-				}
+				}*/
 				codvenda = null;
 			}
 			else if ( cevt.getListaCampos() == lcVenda2 ) {
@@ -2295,14 +2301,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		ResultSet rsTipoMov = null;
 
 		if ( pevt.getListaCampos() == lcCampos ) {
-			if ( (numComissionados>0) && (ctrlmc!=null) ) {
+/*			if ( (numComissionados>0) && (ctrlmc!=null) ) {
 				if (!ctrlmc.validaItens()) {
 					pevt.cancela();
 					return;
 				} else if (lcCampos.getStatus()==ListaCampos.LCS_EDIT) {
 				    ctrlmc.salvaItens( "V", txtCodVenda.getVlrInteger().intValue(), txtCodRegrComis.getVlrInteger().intValue() );
 				}
-			}
+			}*/
 			if ( podeReCalcPreco() && lcDet.getStatus() == ListaCampos.LCS_READ_ONLY ) {
 				calcVlrItem( "VDVENDA", true );
 				lcDet.carregaDados();
@@ -2394,10 +2400,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				txtFiscalTipoMov1.setText( "S" );
 				txtFiscalTipoMov2.setText( "N" );
 			}
-			if ( (numComissionados>0) && (ctrlmc!=null) && (pevt.ok) ) {
+/*			if ( (numComissionados>0) && (ctrlmc!=null) && (pevt.ok) ) {
 			        ctrlmc.salvaItens( "V", txtCodVenda.getVlrInteger().intValue(), txtCodRegrComis.getVlrInteger().intValue() );
 				//ctrlmc.salvaVendaComis( "V", txtCodVenda.getVlrInteger().intValue(), txtCodRegrComis.getVlrInteger().intValue());
-			}
+			}*/
 		}
 	}
 
@@ -2454,12 +2460,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				// post no venda e pula para o campo
 				// adequado no item.
 				if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
-					if ( (numComissionados>0) && (ctrlmc!=null) && (ctrlmc.isEnabled()) ) {
+/*					if ( (numComissionados>0) && (ctrlmc!=null) && (ctrlmc.isEnabled()) ) {
 						focusIni(); 
 						focusCodprod();
 						lcCampos.post();
 						lcDet.edit();
-					}
+					}*/
 				}
 				else if ( lcCampos.getStatus() == ListaCampos.LCS_EDIT ) {
 					lcCampos.post();
