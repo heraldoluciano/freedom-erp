@@ -24,6 +24,8 @@ package org.freedom.modulos.std;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Connection;
@@ -31,10 +33,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -47,7 +51,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
-public class DLMultiComiss extends FFDialogo implements MouseListener, PostListener {
+public class DLMultiComiss extends FFDialogo implements MouseListener, PostListener, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -84,16 +88,17 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 	private Navegador nvRodape = new Navegador( false );
 	
 	private Integer codvenda = null;
-	
+	 
+	public JButton btSair = new JButton( "Sair", Icone.novo("btSair.gif"));
 	
 	private enum eComiss {
 	
-		SEQ, DESCTPCOMIS, CODVEND, DESCVEND, PERCCOMISS, CODVENDA, TIPOVENDA  ;
+		SEQ, DESCTPCOMIS, CODVEND, DESCVEND, PERCCOMISS, CODVENDA, TIPOVENDA, OBRIGATORIO ;
 	};
 
 	public DLMultiComiss( Connection con, int codvenda ){
 	
-		setAtribos( 600, 350 );
+		setAtribos( 620, 350 );
 		setTitulo( "Multi-Comissionados" );
 		
 		this.codvenda = codvenda;
@@ -105,6 +110,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 	
 		
 		tabComiss.addMouseListener( this );
+		btSair.addActionListener( this );
 	}
 	
 	private void montaTela(){
@@ -119,6 +125,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		c.add( pnComiss, BorderLayout.CENTER );
 		
 		pnRodape.removeAll();
+		pnRodape.setPreferredSize( new Dimension(300,40));
 		pnRodape.add( pnBot, BorderLayout.WEST );
 		
 		tabComiss.adicColuna( "seq." );
@@ -128,12 +135,12 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		tabComiss.adicColuna( "% Comis." );
 		tabComiss.adicColuna( "Cód.Venda" );
 		tabComiss.adicColuna( "Tipo Venda" );
-		
-		
-//		tabComiss.setTamColuna( 50, eComiss.SEQ.ordinal() );
+		tabComiss.adicColuna( "Obrigatório?" );
+
 		tabComiss.setTamColuna( 200, eComiss.DESCTPCOMIS.ordinal() );
 		tabComiss.setTamColuna( 200, eComiss.DESCVEND.ordinal() );
 		tabComiss.setTamColuna( 70, eComiss.PERCCOMISS.ordinal() );
+		tabComiss.setTamColuna( 60, eComiss.CODVEND.ordinal() );
 	
 		tabComiss.setColunaInvisivel( eComiss.SEQ.ordinal() );
 		tabComiss.setColunaInvisivel( eComiss.CODVENDA.ordinal() );
@@ -150,12 +157,11 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		
 		pnBot.tiraBorda();
 		
-		pnBotSair.add( btOK );
+		pnBotSair.add( btSair );
 		pnRodape.add( pnBotSair, BorderLayout.EAST );
 		
 		pnBot.add( nvRodape );
 		nvRodape.setListaCampos( lcVendaComis );
-		
 		
 		
 	}
@@ -211,7 +217,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		
 		try {
 
-			sql.append( "SELECT VC.SEQVC, VC.CODVEND, TV.DESCTIPOVEND, VC.CODVEND, VE.NOMEVEND, VC.PERCVC, VC.CODVENDA, VC.TIPOVENDA " );
+			sql.append( "SELECT VC.SEQVC, VC.CODVEND, TV.DESCTIPOVEND, VC.CODVEND, VE.NOMEVEND, VC.PERCVC, VC.CODVENDA, VC.TIPOVENDA, RC.OBRIGITRC " );
 			sql.append( "FROM VDITREGRACOMIS RC, VDTIPOVEND TV, VDVENDACOMIS VC " );
 			sql.append( "LEFT OUTER JOIN VDVENDEDOR VE ON " );
 			sql.append( "VE.CODEMP=VC.CODEMPVD AND VE.CODFILIAL=VC.CODFILIALVD AND VC.CODVEND=VE.CODVEND " );
@@ -243,7 +249,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 				tabComiss.setValor( rs.getString( "PERCVC" ) != null ? rs.getString( "PERCVC" ) : "", i, eComiss.PERCCOMISS.ordinal() );
 				tabComiss.setValor( rs.getString( "CODVENDA" ) != null ? rs.getString( "CODVENDA" ) : ""  , i, eComiss.CODVENDA.ordinal() );
 				tabComiss.setValor( rs.getString( "TIPOVENDA" ) != null ? rs.getString( "TIPOVENDA" ) : ""  , i, eComiss.TIPOVENDA.ordinal() );
-				
+				tabComiss.setValor( rs.getString( "OBRIGITRC" ), i, eComiss.OBRIGATORIO.ordinal() ); 
 				i++;
 			}
 			
@@ -296,10 +302,15 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 			montaTab();
 		}
 	}
+	public void beforePost( PostEvent pevt ) {}
+	
+	public void actionPerformed( ActionEvent evt ) {
 
-	public void beforePost( PostEvent pevt ) {
-
-		// TODO Auto-generated method stub
+		super.actionPerformed( evt );
 		
+		if( evt.getSource() == btSair ){
+			
+			dispose();
+		}
 	}
 }
