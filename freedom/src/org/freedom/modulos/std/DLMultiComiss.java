@@ -28,11 +28,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
@@ -65,7 +67,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 	
 	private ListaCampos lcVendedor = new ListaCampos( this,"VD" );
 	
-	private ListaCampos lcVendaComis = new ListaCampos( this,"" );
+	private ListaCampos lcVendaComis = new ListaCampos( null,"" );
 	
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
@@ -91,9 +93,15 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 	 
 	public JButton btSair = new JButton( "Sair", Icone.novo("btSair.gif"));
 	
+	private ImageIcon imgObrigatorio = Icone.novo( "clObrigatorio.gif" );
+	
+	private ImageIcon imgNObrigatorio = Icone.novo( "clNaoObrigatorio.gif" );
+	
+	private ImageIcon imgStatus = null;
+	
 	private enum eComiss {
 	
-		SEQ, DESCTPCOMIS, CODVEND, DESCVEND, PERCCOMISS, CODVENDA, TIPOVENDA, OBRIGATORIO ;
+		OBRIGATORIO, SEQ, DESCTPCOMIS, CODVEND, DESCVEND, PERCCOMISS, CODVENDA, TIPOVENDA ;
 	};
 
 	public DLMultiComiss( Connection con, int codvenda ){
@@ -128,6 +136,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		pnRodape.setPreferredSize( new Dimension(300,40));
 		pnRodape.add( pnBot, BorderLayout.WEST );
 		
+		tabComiss.adicColuna( "" );
 		tabComiss.adicColuna( "seq." );
 		tabComiss.adicColuna( "Tipo de comissionado" );
 		tabComiss.adicColuna( "Cod.Vend" );
@@ -135,9 +144,10 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		tabComiss.adicColuna( "% Comis." );
 		tabComiss.adicColuna( "Cód.Venda" );
 		tabComiss.adicColuna( "Tipo Venda" );
-		tabComiss.adicColuna( "Obrigatório?" );
+		
 
-		tabComiss.setTamColuna( 200, eComiss.DESCTPCOMIS.ordinal() );
+		tabComiss.setTamColuna( 20, eComiss.OBRIGATORIO.ordinal() );
+		tabComiss.setTamColuna( 250, eComiss.DESCTPCOMIS.ordinal() );
 		tabComiss.setTamColuna( 200, eComiss.DESCVEND.ordinal() );
 		tabComiss.setTamColuna( 70, eComiss.PERCCOMISS.ordinal() );
 		tabComiss.setTamColuna( 60, eComiss.CODVEND.ordinal() );
@@ -242,6 +252,16 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 				
 				tabComiss.adicLinha();
 				
+				if( "S".equals( rs.getString( "OBRIGITRC" ) )){
+					
+					imgStatus = imgObrigatorio;
+					
+				}else if( "N".equals( rs.getString( "OBRIGITRC" ) )){
+					
+					imgStatus = imgNObrigatorio;
+				}
+				
+				tabComiss.setValor( imgStatus, i, eComiss.OBRIGATORIO.ordinal() ); 
 				tabComiss.setValor( rs.getString( "SEQVC" ) != null ?  rs.getString( "SEQVC" ) : "", i, eComiss.SEQ.ordinal() );
 				tabComiss.setValor( rs.getString( "DESCTIPOVEND" ) != null ? rs.getString( "DESCTIPOVEND" ) : "" , i, eComiss.DESCTPCOMIS.ordinal() );
 				tabComiss.setValor( rs.getString( "CODVEND" ) != null ? rs.getString( "CODVEND" ) : ""  , i, eComiss.CODVEND.ordinal() );
@@ -249,7 +269,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 				tabComiss.setValor( rs.getString( "PERCVC" ) != null ? rs.getString( "PERCVC" ) : "", i, eComiss.PERCCOMISS.ordinal() );
 				tabComiss.setValor( rs.getString( "CODVENDA" ) != null ? rs.getString( "CODVENDA" ) : ""  , i, eComiss.CODVENDA.ordinal() );
 				tabComiss.setValor( rs.getString( "TIPOVENDA" ) != null ? rs.getString( "TIPOVENDA" ) : ""  , i, eComiss.TIPOVENDA.ordinal() );
-				tabComiss.setValor( rs.getString( "OBRIGITRC" ), i, eComiss.OBRIGATORIO.ordinal() ); 
+						
 				i++;
 			}
 			
@@ -281,9 +301,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 			if ( mevt.getSource() == tabComiss && tabComiss.getLinhaSel() >= 0 ) {	
 				setVlrCampos();
 				lcVendaComis.carregaDados();
-				lcVendaComis.edit();
 				txtCodVend.requestFocus();
-				nvRodape.setAtivo( 2, false );
 				nvRodape.setAtivo( 3, true );
 			}
 		}
