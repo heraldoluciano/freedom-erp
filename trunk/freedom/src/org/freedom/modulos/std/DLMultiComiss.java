@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,6 +37,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
+import org.freedom.acao.EditEvent;
+import org.freedom.acao.EditListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
@@ -53,7 +54,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
-public class DLMultiComiss extends FFDialogo implements MouseListener, PostListener, ActionListener {
+public class DLMultiComiss extends FFDialogo implements MouseListener, PostListener, ActionListener, EditListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -95,6 +96,8 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 	
 	private ImageIcon imgObrigatorio = Icone.novo( "clObrigatorio.gif" );
 	
+	private ImageIcon imgObrigatorioCompleto = Icone.novo( "clObrigatorioCompleto.gif" );
+	
 	private ImageIcon imgNObrigatorio = Icone.novo( "clNaoObrigatorio.gif" );
 	
 	private ImageIcon imgStatus = null;
@@ -123,8 +126,11 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 	
 	private void montaTela(){
 		
-		nvRodape.setAtivo( 1, false );
 		nvRodape.setAtivo( 0, false );
+		nvRodape.setAtivo( 1, false ); 	
+		nvRodape.setAtivo( 2, false );
+		nvRodape.setAtivo( 3, false );
+		nvRodape.setAtivo( 4, false );
 		
 		pinCab.setPreferredSize( new Dimension( 400, 50 ) );
 		spnComiss.setPreferredSize( new Dimension( 400, 180 ) );
@@ -145,7 +151,6 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		tabComiss.adicColuna( "Cód.Venda" );
 		tabComiss.adicColuna( "Tipo Venda" );
 		
-
 		tabComiss.setTamColuna( 20, eComiss.OBRIGATORIO.ordinal() );
 		tabComiss.setTamColuna( 250, eComiss.DESCTPCOMIS.ordinal() );
 		tabComiss.setTamColuna( 200, eComiss.DESCVEND.ordinal() );
@@ -198,6 +203,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		lcVendaComis.setNavegador( nvRodape );
 		
 		lcVendaComis.addPostListener( this );
+		lcVendaComis.addEditListener( this );
 		
 	}
 	
@@ -252,13 +258,14 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 				
 				tabComiss.adicLinha();
 				
-				if( "S".equals( rs.getString( "OBRIGITRC" ) )){
-					
-					imgStatus = imgObrigatorio;
-					
-				}else if( "N".equals( rs.getString( "OBRIGITRC" ) )){
-					
+				if( "S".equals( rs.getString( "OBRIGITRC" ) )){					
+					imgStatus = imgObrigatorio;					
+				}
+				else if( "N".equals( rs.getString( "OBRIGITRC" ) )){				
 					imgStatus = imgNObrigatorio;
+				}
+				if(rs.getString( "CODVEND" ) != null) {
+					imgStatus = imgObrigatorioCompleto;
 				}
 				
 				tabComiss.setValor( imgStatus, i, eComiss.OBRIGATORIO.ordinal() ); 
@@ -302,7 +309,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 				setVlrCampos();
 				lcVendaComis.carregaDados();
 				txtCodVend.requestFocus();
-				nvRodape.setAtivo( 3, true );
+				nvRodape.setAtivo( 2, true );
 			}
 		}
 	}
@@ -330,5 +337,27 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 			
 			dispose();
 		}
+	}
+
+	public void afterEdit( EditEvent eevt ) {
+		System.out.println("teste2");
+		nvRodape.setAtivo( 3, true );
+		nvRodape.setAtivo( 4, true );
+		
+		
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void beforeEdit( EditEvent eevt ) {
+		System.out.println("teste");
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void edit( EditEvent eevt ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 }

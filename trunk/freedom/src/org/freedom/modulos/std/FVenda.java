@@ -49,6 +49,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
@@ -85,7 +86,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private static final long serialVersionUID = 1L;
 	private JPanelPad pinCabVenda = new JPanelPad();
 //	private int altcabcomis = 80;
-	private int aumentacabcomis = -2;
+//	private int aumentacabcomis = -2;
 	private JPanelPad pinCabComis = null;
 	private JScrollPane spnCabComis = null;
 	private JPanelPad pinCabFiscal = new JPanelPad();
@@ -762,6 +763,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		tab.setTamColuna( 80, iIniRef++ );
 		tab.setTamColuna( 90, iIniRef++ );
 		tab.setAutoRol( true );
+		
+		btComiss.setVisible( false );
 	}
 
 /*	private void montaMultiComis() {
@@ -829,24 +832,43 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	   PreparedStatement ps = null;
 	   ResultSet rs = null;
 	   int result = 0;
+	   StringBuffer sql = new StringBuffer();
 	   try {
-		  ps = con.prepareStatement( "SELECT FIRST 1 RC.CODREGRCOMIS, COUNT(*) " +
-		  		"FROM VDREGRACOMIS RC, VDITREGRACOMIS IRC " +
-		  		"WHERE IRC.CODEMP=RC.CODEMP AND IRC.CODFILIAL=RC.CODFILIAL AND " +
-		  		"IRC.CODREGRCOMIS=RC.CODREGRCOMIS AND RC.CODEMP=? AND RC.CODFILIAL=? " +
-		  		"GROUP BY 1 ORDER BY 2 DESC" );
-		  ps.setInt( 1, Aplicativo.iCodEmp );
-		  ps.setInt( 2, ListaCampos.getMasterFilial( "VDREGRACOMIS" ) );
-		  rs = ps.executeQuery();
-		  if (rs.next()) {
-			  result = rs.getInt( 2 );
-		  }
-		  rs.close();
-		  ps.close();
-		  if (!con.getAutoCommit()) {
-			  con.commit();
-		  }
-	   } catch (SQLException e) {
+		   
+		   if(txtCodTipoMov.getVlrInteger()==null || txtCodTipoMov.getVlrInteger()==0) {
+			   return 0;
+		   }
+		   
+		   sql.append( "SELECT FIRST 1 RC.CODREGRCOMIS, COUNT(*) " );
+		   sql.append( "FROM VDREGRACOMIS RC, VDITREGRACOMIS IRC, EQTIPOMOV TM " );
+		   sql.append( "WHERE IRC.CODEMP=RC.CODEMP AND IRC.CODFILIAL=RC.CODFILIAL " );
+		   sql.append( "AND IRC.CODREGRCOMIS=RC.CODREGRCOMIS AND RC.CODEMP=? AND RC.CODFILIAL=? " );
+		   sql.append( "AND RC.CODEMP=TM.CODEMPRC AND RC.CODFILIAL=TM.CODFILIALRC AND RC.CODREGRCOMIS=TM.CODREGRCOMIS " );
+		   sql.append( "AND TM.CODEMP=? AND TM.CODFILIAL=? AND TM.CODTIPOMOV=? " );
+		   sql.append( "GROUP BY 1 ORDER BY 2 DESC" );
+		   		  
+		   ps = con.prepareStatement( sql.toString() );
+		  
+		   ps.setInt( 1, Aplicativo.iCodEmp );
+		   ps.setInt( 2, ListaCampos.getMasterFilial( "VDREGRACOMIS" ) );
+		   ps.setInt( 3, Aplicativo.iCodEmp );
+		   ps.setInt( 4, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
+		   ps.setInt( 5, txtCodTipoMov.getVlrInteger() );
+		   
+		   rs = ps.executeQuery();
+		   
+		   if (rs.next()) {
+			   result = rs.getInt( 2 );
+		   }
+		   
+		   rs.close();
+		   ps.close();
+		   
+		   if (!con.getAutoCommit()) {
+			   con.commit();
+		   }
+	   } 
+	   catch (SQLException e) {
 		   e.printStackTrace();
 	   }
 	   return result;
@@ -2224,6 +2246,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				codregrcomis = txtCodRegrComis.getVlrInteger().intValue();
 				ctrlmc.loadRegraComis( codregrcomis );
 			}*/
+			
+			else if ( ( cevt.getListaCampos() == lcTipoMov ) ) { 
+				abilitaMultiComis();
+			}
+						
 			else if ( ( cevt.getListaCampos() == lcFisc ) && ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
 				getCFOP();
 				getTratTrib();
@@ -2295,6 +2322,22 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 	}
 
+	private void abilitaMultiComis() {
+		try {
+			numComissionados = getNumComissionados();
+			
+			if( numComissionados > 0) {
+				btComiss.setVisible( true );
+			}
+			else {
+				btComiss.setVisible( false );
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void beforePost( PostEvent pevt ) {
 
 		PreparedStatement psTipoMov = null;
@@ -2408,16 +2451,25 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
-
-		lbStatus.setForeground( Color.WHITE );
-		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
-		lbStatus.setOpaque( true );
-		lbStatus.setVisible( false );
+		try {
+			
+			lbStatus.setForeground( Color.WHITE );
+			lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
+			lbStatus.setOpaque( true );
+			lbStatus.setVisible( false );
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
 
 		if ( ievt.getListaCampos() == lcCampos ) {
+			
+			abilitaMultiComis();
+			
 			if ( bPrefs[ POS_PREFS.USAPEDSEQ.ordinal() ] ) {
 				txtCodVenda.setVlrInteger( testaCodPK( "VDVENDA" ) );
 			}
@@ -2589,11 +2641,79 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		
 	}
 	
+	private boolean consisteComisObrig() {
+		
+		   PreparedStatement ps = null;
+		   ResultSet rs = null;
+		   boolean retorno = false;
+		   StringBuffer sql = new StringBuffer();
+		   
+		   try {
+			   
+			   sql.append( "SELECT COUNT(*) " );
+			   sql.append( "FROM VDVENDACOMIS VC, VDITREGRACOMIS RC " );
+			   sql.append( "WHERE VC.CODEMP=? AND VC.CODFILIAL=? AND VC.CODVENDA=? AND VC.TIPOVENDA='V' " );
+			   sql.append( "AND RC.CODEMP=VC.CODEMPRC AND RC.CODFILIAL=VC.CODFILIALRC " );
+			   sql.append( "AND RC.CODREGRCOMIS=VC.CODREGRCOMIS AND RC.SEQITRC=VC.SEQITRC " );
+			   sql.append( "AND RC.OBRIGITRC='S' AND VC.CODVEND IS NULL" );
+			   		  
+			   ps = con.prepareStatement( sql.toString() );
+			  
+			   ps.setInt( 1, Aplicativo.iCodEmp );
+			   ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDACOMIS" ) );
+			   ps.setInt( 3, txtCodVenda.getVlrInteger() );
+			   
+			   rs = ps.executeQuery();
+			   
+			   if (rs.next()) {
+				   if ( rs.getInt( 1 ) > 0 ) {
+					   retorno = false;
+				   }
+				   else {
+					   retorno = true;
+				   }
+			   }
+			   
+			   rs.close();
+			   ps.close();
+			   
+			   if (!con.getAutoCommit()) {
+				   con.commit();
+			   }
+			   
+		   }		   
+		   catch (SQLException e) {
+			   e.printStackTrace();
+		   }
+		   
+		   return retorno;
+		   
+	}
+	
 	private void fechaVenda() {
 		try {
 					
 			if(consultaCredito()){
 						
+				if(numComissionados>0) {
+					if(!consisteComisObrig()) {
+						
+						StringBuffer mens = new StringBuffer();
+						
+						mens.append("Não é possível finalizar a venda!\n");
+						mens.append("Existem comissionados obrigatórios não informados.\n");
+						mens.append("Deseja informar os comissionados agora?\n");
+						
+						if( Funcoes.mensagemConfirma( this, mens.toString() )==JOptionPane.YES_OPTION ) {
+							abreComissVend();
+						}
+						else {
+							return;
+						}	
+						
+					}					
+				}
+				
 				List<Integer> lsParcRecibo = null;
 				String[] sValores = null;
 				
