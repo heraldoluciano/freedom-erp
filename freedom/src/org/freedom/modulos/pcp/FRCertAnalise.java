@@ -207,11 +207,13 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
 			
 			sql.delete( 0, sql.length() );
 			
-			sql.append( "select ta.desctpanalise,ta.metodo,ea.vlrmin,ea.vlrmax,cq.vlrafer,cq.descafer,pf.nomeresp,pf.identprofresp,pf.imgassresp, " );
-			sql.append( "op0.codprod, pd.descprod " );
-			sql.append( "from ppopcq cq, ppestruanalise ea, pptipoanalise ta, sgprefere5 pf, ppop op0, ppop opx, eqproduto pd " );
+			sql.append( "select ta.desctpanalise,ea.vlrmin,ea.vlrmax,cq.vlrafer,cq.descafer,pf.nomeresp,pf.identprofresp,pf.imgassresp, " );
+			sql.append( "op0.codprod, pd.descprod, pm.descmtanalise, ea.especificacao " );
+			sql.append( "from ppopcq cq, ppestruanalise ea, pptipoanalise ta, sgprefere5 pf, ppop op0, ppop opx, eqproduto pd, ppmetodoanalise pm " );
 			sql.append( "where " );
 			sql.append( "ta.codemp=ea.codempta and ta.codfilial=ea.codfilialta and ta.codtpanalise=ea.codtpanalise " );
+			sql.append( "and pm.codemp=ta.codempma and pm.codfilial=ta.codfilialma " );
+			sql.append( "and pm.codmtanalise=ta.codmtanalise " );
 			sql.append( "and cq.codempea=ea.codemp and cq.codfilialea=ea.codfilial and cq.codestanalise=ea.codestanalise " );
 			sql.append( "and cq.codemp=op0.codemp and cq.codfilial=op0.codfilial and cq.codop=op0.codop and cq.seqop=op0.seqop " );
 			sql.append( "and cq.status='AP' and ea.emitcert='S' " );
