@@ -4,7 +4,6 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
@@ -12,7 +11,7 @@ import java.util.Properties;
 import org.freedom.infra.util.ini.ManagerIni;
 
 import SoftwareExpress.SiTef.jCliSiTefI;
-
+	
 
 public class DedicateTef {
 	
@@ -26,27 +25,29 @@ public class DedicateTef {
 	
 	private jCliSiTefI clientesitef;
 	
+	private DedicateTefListener dedicateTefListener;
+	
 	private static DedicateTef instance;
 	
 	
-	public static DedicateTef getInstance() {
+	public static DedicateTef getInstance( DedicateTefListener dedicateTefListener ) throws Exception {
 
 		if ( instance == null ) {
-			instance = new DedicateTef();
+			instance = new DedicateTef( dedicateTefListener );
 		}
 		
 		return instance;
 	}
 	
-	public static DedicateTef getInstance( String file ) {
+	public static DedicateTef getInstance( String file, DedicateTefListener dedicateTefListener ) throws Exception {
 		
-		return getInstance( new File( file ) );
+		return getInstance( new File( file ), dedicateTefListener );
 	}
 	
-	public static DedicateTef getInstance( File file ) {
+	public static DedicateTef getInstance( File file, DedicateTefListener dedicateTefListener ) throws Exception {
 
 		if ( file.exists() ) {
-			instance = new DedicateTef( file );
+			instance = new DedicateTef( file, dedicateTefListener );
 		}
 		else {
 			instance = null;
@@ -55,68 +56,221 @@ public class DedicateTef {
 		return instance;
 	}
 	
-	private DedicateTef() {
-
-		this( new File( System.getProperty( ManagerIni.FILE_INIT_DEFAULT ) ) );
+	public DedicateTefListener getDedicateTefListener() {	
+		return dedicateTefListener;
 	}
 	
-	private DedicateTef( File file ) throws IllegalArgumentException {
+	private DedicateTef( DedicateTefListener dedicateTefListener ) throws Exception {
+
+		this( new File( System.getProperty( ManagerIni.FILE_INIT_DEFAULT ) ), dedicateTefListener );
+	}
+	
+	private DedicateTef( File file, DedicateTefListener dedicateTefListener ) throws Exception {
 		
 		if ( file == null || !file.exists() ) {
 			throw new IllegalArgumentException( "Arquivo de parametros não existente." );
 		}
+		if ( dedicateTefListener == null ) {
+			throw new IllegalArgumentException( "Ouvinte de eventos nulo." );
+		}
 
-		try {
-			ManagerIni mi = ManagerIni.createManagerIniFile( file );
-			properties = mi.getSession( "DedicateTef" );
-			
-			clientesitef = new jCliSiTefI();
-					
-			clientesitef.SetEnderecoSiTef( properties.getProperty( ENDERECO_TCP ) );
-			clientesitef.SetCodigoLoja( properties.getProperty( EMPRESA ) );
-			clientesitef.SetNumeroTerminal( properties.getProperty( TERMINAL ) );
-			clientesitef.SetConfiguraResultado( 0 );			  
-			
-			int r = clientesitef.ConfiguraIntSiTefInterativo();
-			
-			if ( r != 0 ) {
-				System.out.println( "ERRO " + r + " na ConfiguraIntSiTefInterativo!" );
+		ManagerIni mi = ManagerIni.createManagerIniFile( file );
+		properties = mi.getSession( "DedicateTef" );
+		
+		this.dedicateTefListener = dedicateTefListener;
+		
+		clientesitef = new jCliSiTefI();		  
+		
+		int r = clientesitef.ConfiguraIntSiTefInterativo( properties.getProperty( ENDERECO_TCP ),
+				                                          properties.getProperty( EMPRESA ),
+				                                          properties.getProperty( TERMINAL ) );
+		
+		if ( ! checkConfiguraIntSiTefInterativo( r ) ) {
+			throw new Exception( "Erro ao configurar tef + [ ConfiguraIntSiTefInterativo() : " + r + " ]" );
+		} 
+	}	
+	
+	private boolean checkConfiguraIntSiTefInterativo( int result ) {
+		
+		boolean checked = false;
+
+		check : {
+			if ( result == 1 ) {
+				dedicateTefListener.actionCommand( 
+						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+								              "Endereço IP inválido ou não resolvido." ) );
+				break check;
+    		} 
+			else if ( result == 2 ) {
+				dedicateTefListener.actionCommand( 
+						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+								              "Código da loja inválido." ) );
+				break check;
+    		} 
+			else if ( result == 3 ) {
+				dedicateTefListener.actionCommand( 
+						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+								              "Código do terminal inválido." ) );
+				break check;
+    		} 
+			else if ( result == 6 ) {
+				dedicateTefListener.actionCommand( 
+						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+								              "Erro na inicialização TCP/IP." ) );
+				break check;
+    		} 
+			else if ( result == 7 ) {
+				dedicateTefListener.actionCommand( 
+						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+								              "Falta de memória." ) );
+				break check;
+    		} 
+			else if ( result == 8 ) {
+				dedicateTefListener.actionCommand( 
+						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+								              "Não encontrou a dll CliSiTef ou ela está com problemas." ) );
+				break check;
+    		} 
+			else {
+				checked = true;
+    		} 
+		}
+
+		return checked;
+	}
+
+	private boolean checkStandart( int result ) {
+		
+		boolean checked = false;
+	
+		check : {
+			if ( result > 0 && result < 10000 ) {
+				dedicateTefListener.actionCommand( 
+						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+								              "Negada pelo autorizador." ) );
+				break check;
+			} 
+			else if ( result == -1 ) {
+				dedicateTefListener.actionCommand( 
+						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+								              "Modulo não inicializado." ) );
+				break check;
+			} 
+			else if ( result == -2 ) {
+				dedicateTefListener.actionCommand( 
+						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+								              "Operação cancelada pelo operador." ) );
+				break check;
+			} 
+			else if ( result == -3 ) {
+				dedicateTefListener.actionCommand( 
+						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+								              "Fornecida uma modalidade inválida." ) );
+				break check;
+			} 
+			else if ( result == -4 ) {
+				dedicateTefListener.actionCommand( 
+						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+								              "Falta de memória para rodar a função." ) );
+				break check;
+			} 
+			else if ( result == -5 ) {
+				dedicateTefListener.actionCommand( 
+						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+								              "Sem comunicação com o SiTef." ) );
+				break check;
+			} 
+			else if ( result < 0 ) {
+				dedicateTefListener.actionCommand( 
+						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+								              "Erro interno não mapeado." ) );
+				break check;
+			} 
+			else {
+				checked = true;
 			} 
 		}
-		catch ( Exception e ) {
-			e.printStackTrace();
-		}
+	
+		return checked;
+	}
+
+	public boolean checkPinPad() {
+		
+		int result = clientesitef.VerificaPresencaPinPad();
+		
+		return result == 1;
 	}
 	
-	public long requestSale( BigDecimal value, Integer docNumber, Date dateHour, String operator ) {
+	public boolean readCard( String message ) {
 		
-		long requestsale = 0;
+		clientesitef.SetMsgDisplay( message );
+		int result = clientesitef.LeCartaoInterativo();
+		
+		return checkStandart( result );
+	}
+	
+	public boolean requestSale( BigDecimal value, Integer docNumber, Date dateHour, String operator ) {
+		
+		boolean requestsale = false;
 		
 		DecimalFormat df = new DecimalFormat( "0.00" );
-		
 		SimpleDateFormat sdf1 = new SimpleDateFormat( "yyyyMMdd", Locale.getDefault() );
 		SimpleDateFormat sdf2 = new SimpleDateFormat( "HHmmss", Locale.getDefault() );
 		String date = sdf1.format( dateHour );
 		String hour = sdf2.format( dateHour );
 		
-		clientesitef.SetModalidade( 0 );
-		clientesitef.SetValor( df.format( value.doubleValue() ) );
-		clientesitef.SetNumeroCuponFiscal( String.valueOf( docNumber ) );
-		clientesitef.SetDataFiscal( date);
-		clientesitef.SetHorario( hour );
-		clientesitef.SetOperador( operator );
-		clientesitef.SetRestricoes( "" );
-		clientesitef.IniciaFuncaoSiTefInterativo();
+		int result = clientesitef.IniciaFuncaoSiTefInterativo( Modalidade.DEBITO.getCode() ,
+                                                        	   df.format( value.doubleValue() ) ,
+                                                        	   String.valueOf( docNumber ) ,
+                                                        	   date ,
+                                                        	   hour ,
+                                                        	   operator );
 		
+		if ( !checkStandart( result ) ) {
+			//return requestsale;
+		}
+		
+		while ( true ) {
+
+			System.out.println( "Antes ..." );
+			System.out.println( "ProximoComando = " + clientesitef.GetProximoComando() );
+			System.out.println( "TipoCampo = " + clientesitef.GetTipoCampo() );
+			System.out.println( "TamanhoMinimo = " + clientesitef.GetTamanhoMinimo() );
+			System.out.println( "TamanhoMaximo = " + clientesitef.GetTamanhoMaximo() );
+			System.out.println( "Buffer = " + clientesitef.GetBuffer() );
+			
+			result = clientesitef.ContinuaFuncaoSiTefInterativo();
+			
+			System.out.println( "Depois ..." );
+			System.out.println( "ProximoComando = " + clientesitef.GetProximoComando() );
+			System.out.println( "TipoCampo = " + clientesitef.GetTipoCampo() );
+			System.out.println( "TamanhoMinimo = " + clientesitef.GetTamanhoMinimo() );
+			System.out.println( "TamanhoMaximo = " + clientesitef.GetTamanhoMaximo() );
+			System.out.println( "Buffer = " + clientesitef.GetBuffer() );
+						
+			if ( result == 0 ) {
+				requestsale = true;
+				break;
+			}
+			else if ( checkStandart( result ) ) {
+				actionCommand( clientesitef.GetProximoComando() );
+			}
+			else {
+				return false;
+			}
+		}
+
 		return requestsale;
 	}
 	
-	public static void main( String[] args ) {
+	private void actionCommand( final int nextCommand ) {
 		
-		DedicateTef tef = DedicateTef.getInstance();
-		
-		tef.requestSale( new BigDecimal( "15.748" ), 123456, Calendar.getInstance().getTime(), "teste" );
-		
-		System.exit( 0 );
+		if ( dedicateTefListener != null ) {
+    		if ( nextCommand == DedicatedAction.REMOVER_CABECALHO_MENU.code() ) {
+    			dedicateTefListener.actionCommand( 
+    					new DedicateTefEvent( dedicateTefListener, DedicatedAction.REMOVER_CABECALHO_MENU, 
+    							              clientesitef.GetBuffer().trim() ) );
+    		} 				
+		}
 	}
 }
