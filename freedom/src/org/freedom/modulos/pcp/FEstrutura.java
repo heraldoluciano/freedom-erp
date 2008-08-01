@@ -416,8 +416,9 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicCampo( txtCodTpAnalise, 80, 20, 70, 20, "CodTpAnalise", "Cód.Tp.An", ListaCampos.DB_FK, txtDescTpAnalise, true );
 		adicDescFK( txtDescTpAnalise, 155, 20, 300, 20, "DescTpAnalise", "Descrição da análise" );
 		adicDescFKInvisivel( txtTpExp, "TipoExpec", "TipoExpec" );
-		adicCampo( txtVlrMax, 7, 65, 70, 20, "VlrMax", "Vlr.Máx.", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrMin, 80, 65, 70, 20, "VlrMin", "Vlr.Min.", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrMin, 7, 65, 70, 20, "VlrMin", "Vlr.Min.", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrMax, 80, 65, 70, 20, "VlrMax", "Vlr.Máx.", ListaCampos.DB_SI, false );
+		//adicCampo( txtVlrMin, 80, 65, 70, 20, "VlrMin", "Vlr.Min.", ListaCampos.DB_SI, false );
 		adicDB( cbEmitCert, 153, 65, 100, 20, "EmitCert", "", true );
 				
 		setListaCampos( true, "ESTRUANALISE", "PP" );
@@ -764,11 +765,13 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		}
 		if( cevt.getListaCampos() == lcTpAnalise ){
 			if( "MM".equals( txtTpExp.getVlrString())){
-				txtVlrMax.setEnabled( true );
 				txtVlrMin.setEnabled( true );
+				txtVlrMax.setEnabled( true );
+				
 			}else if( "DT".equals( txtTpExp.getVlrString())){
-				txtVlrMax.setEnabled( false );
 				txtVlrMin.setEnabled( false );
+				txtVlrMax.setEnabled( false );
+				
 			}
 		}
 	}
