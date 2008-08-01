@@ -89,7 +89,7 @@ public class FTipoAnalise extends FDados {
 		adicDescFK( txtDescUnid, 110, 65, 300, 20, "DescUnid", "Descrição da Unidade" );
 		adicCampo( txtCodMetodo, 7, 105, 100, 20, "CodMtAnalise", "Cód.Método", ListaCampos.DB_FK, txtDescMetodo, true );
 		adicDescFK( txtDescMetodo, 110, 105, 300, 20, "DescMtAnalise", "Descrição do método analítico" );
-		adicDB( txaObsTpAnalise, 7, 200, 402, 50, "ObsTpAnalise", "Observação", false );
+		adicDB( txaObsTpAnalise, 7, 200, 402, 50, "ObsTpAnalise", "Observações", false );
 		adicDB( rgTipo, 7, 150, 402, 30, "TipoExpec", "Tipo de expecificação", true );
 		setListaCampos( true, "TIPOANALISE", "PP" );
 		
