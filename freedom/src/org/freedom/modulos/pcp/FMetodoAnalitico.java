@@ -52,7 +52,7 @@ public class FMetodoAnalitico extends FDados {
 		
 		adicCampo( txtCodMtAnalise, 7, 20, 70, 20, "CodMtAnalise", "Cód.Método", ListaCampos.DB_PK, true );
 		adicCampo( txtDescMtAnalise, 80, 20, 260, 20, "DescMtAnalise", "Descrição do método analítico", ListaCampos.DB_SI, true );
-		adicDB( txaObsMtAnalise, 7, 60, 335, 80, "ObsMtAnalise", "Observação do método", false );
+		adicDB( txaObsMtAnalise, 7, 60, 335, 80, "ObsMtAnalise", "Observações", false );
 		
 		setListaCampos( true, "METODOANALISE", "PP" );
 	
