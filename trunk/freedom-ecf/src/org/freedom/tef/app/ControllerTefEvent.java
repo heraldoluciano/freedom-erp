@@ -3,39 +3,19 @@ package org.freedom.tef.app;
 
 public class ControllerTefEvent {
 	
-	public static final int NONE = 0;
-	
-	public static final int ERROR = 100;
-	
-	public static final int WARNING = 101;
-	
-	public static final int CONFIRM = 102;
-	
-	public static final int BEGIN_PRINT = 200;
-	
-	public static final int PRINT = 201;
-	
-	public static final int END_PRINT = 202;
-	
-	public static final int RE_PRINT = 203;
-	
 	private ControllerTef controllerTef;
 
-	private int action;
+	private TefAction action;
 	
 	private String message;
 	
-	public ControllerTefEvent() {
-		this( null, NONE, null );
-	}
-	
 	public ControllerTefEvent( final ControllerTef controllerTef, 
-			                   final int action ) {
+			                   final TefAction action ) {
 		this( controllerTef, action, null );
 	}
 	
 	public ControllerTefEvent( final ControllerTef controllerTef, 
-			                   final int action,
+			                   final TefAction action,
 			                   final String message ) {
 		super();
 		this.controllerTef = controllerTef;
@@ -43,27 +23,15 @@ public class ControllerTefEvent {
 		this.message = message;
 	}
 	
-	public ControllerTef getControllerTef() {	
+	public ControllerTef getSource() {	
 		return controllerTef;
 	}
 	
-	public void setControllerTef( final ControllerTef controllerTef ) {	
-		this.controllerTef = controllerTef;
-	}
-	
-	public int getAction() {	
+	public TefAction getAction() {	
 		return action;
-	}
-	
-	public void setAction( final int action ) {	
-		this.action = action;
 	}
 	
 	public String getMessage() {	
 		return message;
-	}
-	
-	public void setMessage( final String message ) {	
-		this.message = message;
 	}
 }
