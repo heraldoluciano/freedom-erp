@@ -70,7 +70,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
   private JTextFieldPad txtCodPlan = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtCodEmpPlan = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodFilialPlan = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtHistLanca = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtHistLanca = new JTextFieldPad(JTextFieldPad.TP_STRING,100,0);
   private JTextFieldPad txtHistSubLanca=new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodPlanSub = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldFK  txtDescPlan = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);

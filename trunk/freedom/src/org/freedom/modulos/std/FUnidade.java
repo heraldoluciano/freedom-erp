@@ -26,7 +26,6 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
@@ -35,16 +34,19 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
 public class FUnidade extends FDados implements ActionListener{
+	
 	private static final long serialVersionUID = 1L;
-	private JTextFieldPad txtCodUnidade = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
-	private JTextFieldPad txtDescUnidade= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+
+	private JTextFieldPad txtCodUnidade = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
+	
+	private JTextFieldPad txtDescUnidade= new JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
 	
 	public FUnidade () {
 		super();
 		setTitulo("Cadastro de Unidades");
-		setAtribos( 50, 50, 350, 125);
-		adicCampo(txtCodUnidade, 7, 20, 70, 20,"CodUnid","Cód.unid.",ListaCampos.DB_PK, true);
-		adicCampo(txtDescUnidade, 80, 20, 250, 20,"DescUnid","Descrição da unidade",ListaCampos.DB_SI, true);
+		setAtribos( 50, 50, 450, 125);
+		adicCampo(txtCodUnidade, 7, 20, 110, 20,"CodUnid","Cód.unid.",ListaCampos.DB_PK, true);
+		adicCampo(txtDescUnidade, 120, 20, 300, 20,"DescUnid","Descrição da unidade",ListaCampos.DB_SI, true);
 		setListaCampos( true, "UNIDADE", "EQ");
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
@@ -70,6 +72,7 @@ public class FUnidade extends FDados implements ActionListener{
 		
 		dl = new DLRUnidade();
 		dl.setVisible(true);
+
 		if (dl.OK == false) {
 			dl.dispose();
 			return;
@@ -83,10 +86,10 @@ public class FUnidade extends FDados implements ActionListener{
 			imp.setTitulo("Relatório de Unidades");
 			imp.limpaPags();
 			
-			sSQL = "SELECT CODUNID,DESCUNID " +
-				   "FROM EQUNIDADE " +
-				   "WHERE CODEMP=? AND CODFILIAL=? " +
-				   "ORDER BY "+ dl.getValor();
+			sSQL = "SELECT CODUNID,DESCUNID " 
+				+  "FROM EQUNIDADE " 
+				+  "WHERE CODEMP=? AND CODFILIAL=? " 
+				+  "ORDER BY "+ dl.getValor();
 			
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
@@ -96,7 +99,7 @@ public class FUnidade extends FDados implements ActionListener{
 				if (imp.pRow()==0) {
 					imp.impCab(80, false);
 					imp.say(imp.pRow(), 0, imp.normal());
-					imp.say(imp.pRow(), 2, "Cód.inid.");
+					imp.say(imp.pRow(), 2, "Cód.unid.");
 					imp.say(imp.pRow(), 30, "Descrição");
 					imp.say(imp.pRow() + 1, 0, imp.normal());
 					imp.say(imp.pRow(), 0, Funcoes.replicate("-",79));

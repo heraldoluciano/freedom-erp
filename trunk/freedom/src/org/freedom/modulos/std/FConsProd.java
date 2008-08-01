@@ -88,8 +88,8 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
     private JTextFieldFK txtPrecoBaseProd = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,2);
     private JTextFieldPad txtLocalProd = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
-    private JTextFieldPad txtCodUnid = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
-    private JTextFieldFK txtDescUnid = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+    private JTextFieldPad txtCodUnid = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
+    private JTextFieldFK txtDescUnid = new JTextFieldFK(JTextFieldPad.TP_STRING,60,0);
     private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
     private JTextFieldFK txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);    
     private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
