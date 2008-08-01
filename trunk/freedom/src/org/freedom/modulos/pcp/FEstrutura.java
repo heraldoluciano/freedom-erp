@@ -59,6 +59,7 @@ import org.freedom.telas.FDetalhe;
 
 public class FEstrutura extends FDetalhe implements ChangeListener, ActionListener, CarregaListener, PostListener {
 
+	
 	private static final long serialVersionUID = 1L;
 
 	private int casasDec = Aplicativo.casasDec;
@@ -116,6 +117,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTextFieldPad txtVlrMin = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
 	
 	private JTextFieldPad txtVlrMax = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
+	
+	private JTextFieldPad txtEspecificacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtQtdMat = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
@@ -418,8 +421,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicDescFKInvisivel( txtTpExp, "TipoExpec", "TipoExpec" );
 		adicCampo( txtVlrMin, 7, 65, 70, 20, "VlrMin", "Vlr.Min.", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrMax, 80, 65, 70, 20, "VlrMax", "Vlr.Máx.", ListaCampos.DB_SI, false );
-		//adicCampo( txtVlrMin, 80, 65, 70, 20, "VlrMin", "Vlr.Min.", ListaCampos.DB_SI, false );
-		adicDB( cbEmitCert, 153, 65, 100, 20, "EmitCert", "", true );
+		adicCampo( txtEspecificacao, 153, 65, 300, 20, "Especificacao", "Especificação", ListaCampos.DB_SI, false );
+		adicDB( cbEmitCert, 456, 65, 100, 20, "EmitCert", "", true );
 				
 		setListaCampos( true, "ESTRUANALISE", "PP" );
 		lcDetEstrAnalise.setQueryInsert( true );
@@ -448,6 +451,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcDetDistrib.addCarregaListener( this );
 		lcFase.addCarregaListener( this );
 		lcTpAnalise.addCarregaListener( this );
+		lcDetEstrAnalise.addPostListener( this );
 
 		tabQuali.setTamColuna( 250, 2 );
 		
@@ -767,10 +771,18 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 			if( "MM".equals( txtTpExp.getVlrString())){
 				txtVlrMin.setEnabled( true );
 				txtVlrMax.setEnabled( true );
+				txtVlrMin.setRequerido( true );
+				txtVlrMax.setRequerido( true );
+				txtEspecificacao.setEnabled( false ); 
+				txtEspecificacao.setRequerido( false );
 				
 			}else if( "DT".equals( txtTpExp.getVlrString())){
 				txtVlrMin.setEnabled( false );
 				txtVlrMax.setEnabled( false );
+				txtVlrMin.setRequerido( false );
+				txtVlrMax.setRequerido( false );
+				txtEspecificacao.setEnabled( true );
+				txtEspecificacao.setRequerido( true );
 				
 			}
 		}
@@ -794,9 +806,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		
 	}
 	
-	public void beforeCarrega( CarregaEvent cevt ) {
-
-	}
+	public void beforeCarrega( CarregaEvent cevt ) {}
 
 	public void afterPost( PostEvent pevt ) {
 
@@ -806,6 +816,28 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		}
 		else if ( pevt.getListaCampos() == lcDet ) {
 			bloqueiaAbas();
+		}
+	}
+	
+	public void beforePost( PostEvent pevt ) {
+
+		super.beforePost( pevt );
+		
+		if( pevt.getListaCampos() == lcDetEstrAnalise ){
+			if( "MM".equals( txtTpExp.getVlrString())){
+				if( txtVlrMin.getVlrInteger() == 0 || txtVlrMax.getVlrInteger() == 0){
+					Funcoes.mensagemInforma( this, "Informe os valores!" );
+					pevt.cancela();
+					return;
+				}
+				
+			}else if( "DT".equals( txtTpExp.getVlrString())){
+				if("".equals( txtEspecificacao.getVlrString())){
+					Funcoes.mensagemInforma( this, "Informe a descrição!" );
+					pevt.cancela();
+					return;
+				}
+			}	
 		}
 	}
 
