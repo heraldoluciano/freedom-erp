@@ -532,15 +532,17 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 
 	public Date getVlrDate() {
 		String sRetorno = "";
-		GregorianCalendar cRetorno = new GregorianCalendar(0,0,0);
+		GregorianCalendar cRetorno = null;
 		if (getText().length() > 0) {
 			sRetorno = transData(getText());
 			try {
 				int iAno = Integer.parseInt(sRetorno.substring(6));
 				int iMes = Integer.parseInt(sRetorno.substring(3,5));
 				int iDia = Integer.parseInt(sRetorno.substring(0,2));
+				cRetorno = new GregorianCalendar(0,0,0);
 				cRetorno.set(iAno,iMes-1,iDia);
-			} catch (Exception err) {
+			} 
+			catch (Exception err) {
 				cRetorno = null;
 			}
 		}
