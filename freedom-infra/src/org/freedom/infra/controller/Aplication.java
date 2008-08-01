@@ -28,7 +28,7 @@ public abstract class Aplication {
 	protected void initParameters() throws IOException {
 
 		ManagerIni mi = ManagerIni.createManagerIniParameter();
-		properties = mi.getSession( "totem" );
+		properties = mi.getSession( "Aplication" );
 	}
 	
 	protected void show() {		
