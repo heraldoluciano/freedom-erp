@@ -112,7 +112,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private JTextFieldPad txtSituacaoItAprov = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtSituacaoItComp = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtSituacaoIt = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtCodUnid = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	private JTextFieldPad txtCodUnid = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
 	//private JTextFieldFK txtDescUnid = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private JRadioGroup<?, ?> rgPriod = null;
 	private Vector<String> vLabsTipo = new Vector<String>();

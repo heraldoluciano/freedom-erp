@@ -113,8 +113,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	private JTextFieldPad txtCodCot = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5, 0);
 	private JTextFieldPad txtDtCot = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JTextFieldPad txtIdUsuCot = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
-	private JTextFieldPad txtCodUnid = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
-	private JTextFieldFK txtDescUnid = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);			
+	private JTextFieldPad txtCodUnid = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+	private JTextFieldFK txtDescUnid = new JTextFieldFK(JTextFieldPad.TP_STRING, 60, 0);			
 	private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8, 0);
 	private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
 	private JTextFieldPad txtQtdCot = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15, casasDec);
