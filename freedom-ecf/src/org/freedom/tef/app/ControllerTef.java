@@ -19,13 +19,10 @@
 
 package org.freedom.tef.app;
 
-import static org.freedom.tef.app.ControllerTefEvent.BEGIN_PRINT;
-import static org.freedom.tef.app.ControllerTefEvent.CONFIRM;
-import static org.freedom.tef.app.ControllerTefEvent.END_PRINT;
-import static org.freedom.tef.app.ControllerTefEvent.ERROR;
-import static org.freedom.tef.app.ControllerTefEvent.PRINT;
-import static org.freedom.tef.app.ControllerTefEvent.RE_PRINT;
-import static org.freedom.tef.app.ControllerTefEvent.WARNING;
+import org.freedom.tef.driver.dedicate.DedicateTef;
+import org.freedom.tef.driver.dedicate.DedicateTefEvent;
+import org.freedom.tef.driver.dedicate.DedicateTefListener;
+import org.freedom.tef.driver.text.TextTefAction;
 import static org.freedom.tef.driver.text.TextTef.ADM;
 import static org.freedom.tef.driver.text.TextTef.CRT;
 import static org.freedom.tef.driver.text.TextTefProperties.AMOUNT_LINES;
@@ -43,7 +40,7 @@ import org.freedom.tef.driver.text.TextTef;
 import org.freedom.tef.driver.text.TextTefFactory;
 import org.freedom.tef.driver.text.TextTefProperties;
 
-public class ControllerTef {
+public class ControllerTef implements DedicateTefListener {
 	
 	public static final int TEF_TEXT = 0;
 	
@@ -55,11 +52,11 @@ public class ControllerTef {
 
 	private static final int VOUCHER_OK = 1;
 	
+	private int typeTef = TEF_TEXT; // default TEF text.
+	
 	private File fileFlagsMap;
 	
 	private TextTefProperties defaultTextTefProperties;
-	
-	private int typeTef = TEF_TEXT; // default TEF text.
 	
 	private int numberOfTickets = 1;
 	
@@ -155,23 +152,21 @@ public class ControllerTef {
 		}		
 	}
 	
-	public ControllerTefListener setControllerMessageListener( final ControllerTefListener listener ) {
-		
+	public ControllerTefListener setControllerMessageListener( final ControllerTefListener listener ) {		
 		return this.controllerTefListener = listener;
 	}
 	
-	private boolean fireControllerTefEvent( final int option ) {
+	private boolean fireControllerTefEvent( final TefAction option ) {
 		return fireControllerTefEvent( option, null );
 	}
 	
-	private boolean fireControllerTefEvent( final int option, 
+	private boolean fireControllerTefEvent( final TefAction option, 
 			                                final String message ) {			
 		boolean tefMessage = false;
 		
-		ControllerTefEvent controllerTefEvent = new ControllerTefEvent( this, option, message );
-		
 		if ( this.controllerTefListener != null ) {
-			tefMessage = this.controllerTefListener.actionTef( controllerTefEvent );
+			tefMessage = this.controllerTefListener.actionTef( 
+							new ControllerTefEvent( this, option, message ) );
 		}
 		
 		return tefMessage;
@@ -217,18 +212,21 @@ public class ControllerTef {
 	 * 
 	 * @param numberDoc		Número do documento.
 	 * @param value			Valor da pagamento.
-	 * @param flagName		Nome da bandeira.
+	 * @param arg			Nome da bandeira(Text) / Nome do operador(Dedicated).
 	 * 
 	 * @return verdadeiro para envio correto da requisição e recebimento correto do retorno. 
 	 */
 	public boolean requestSale( final Integer numberDoc,
 			                    final BigDecimal value,
-			                    final String flagName ) {
+			                    final String arg ) {
 		
 		boolean actionReturn = false;
 		
 		if ( TEF_TEXT == getTypeTef() ) {
-			actionReturn = requestSaleTextTef( numberDoc, value, flagName );
+			actionReturn = requestSaleTextTef( numberDoc, value, arg );
+		}
+		else if ( TEF_DEDICATED == getTypeTef() ) {
+			actionReturn = requestSaleDedicatedTef( numberDoc, value, arg );
 		}
 		
 		return actionReturn;
@@ -250,7 +248,11 @@ public class ControllerTef {
 		}
 		
 		return actionReturn;
-	}
+	}	
+	
+	// ************************************************************************** \\
+	// ***                          INICIO  TEF  TEXTO                        *** \\	
+	// ************************************************************************** \\
 	
 	/**
 	 * Verifica se o gerenciador padrão de TEF está ativo,<br>
@@ -269,7 +271,7 @@ public class ControllerTef {
 		if ( TEF_TEXT == getTypeTef() && textTef != null ) {
 			active = textTef.standardManagerActive();
 			if ( ! active  ) {
-				fireControllerTefEvent( ERROR, "TEF não está ativo!" );
+				fireControllerTefEvent( TextTefAction.ERROR, "TEF não está ativo!" );
 			}
 		}
 		
@@ -311,7 +313,7 @@ public class ControllerTef {
 				
 				// avisa para os ouvintes a menssagem do campo 030-000.
 				if ( messageOperator.trim().length() > 0 ) {
-					fireControllerTefEvent( WARNING, messageOperator );
+					fireControllerTefEvent( TextTefAction.WARNING, messageOperator );
 				}
 				
 				// invoca método para lançar eventos de impressão do comprovante.
@@ -325,7 +327,7 @@ public class ControllerTef {
 			
 		} catch ( Exception e ) {
 			String etmp = "Erro ao solicitar venda:\n" + e.getMessage();
-			fireControllerTefEvent( ERROR, etmp );
+			fireControllerTefEvent( TextTefAction.ERROR, etmp );
 			whiterLogError( etmp );
 		}
 		
@@ -360,7 +362,7 @@ public class ControllerTef {
 				
 				// avisa para o ouvinte a menssagem do campo 030-000.
 				if ( messageOperator.trim().length() > 0 ) {
-					fireControllerTefEvent( WARNING, messageOperator );
+					fireControllerTefEvent( TextTefAction.WARNING, messageOperator );
 				}
 				
 				// invoca método para lançar eventos de impressão do comprovante.
@@ -375,7 +377,7 @@ public class ControllerTef {
 			
 		} catch ( Exception e ) {
 			String etmp = "Erro ao acionar ADM:\n" + e.getMessage();
-			fireControllerTefEvent( ERROR, etmp );
+			fireControllerTefEvent( TextTefAction.ERROR, etmp );
 			whiterLogError( etmp );
 		}
 		
@@ -397,7 +399,7 @@ public class ControllerTef {
 		boolean active = false;
 		
 		if ( textTef != null ) {
-			fireControllerTefEvent( WARNING, "Transação não efetuada. Favor reter o Cupom." );
+			fireControllerTefEvent( TextTefAction.WARNING, "Transação não efetuada. Favor reter o Cupom." );
 			active = textTef.noConfirmation();
 		}
 		
@@ -456,10 +458,10 @@ public class ControllerTef {
 		// Testa começo da impressão até o sucesso,
 		// e tenta a retomado do processo, ápos confirmação da aplicação,
 		// do contrário para o processo.
-		boolean beginPrint = fireControllerTefEvent( BEGIN_PRINT );
+		boolean beginPrint = fireControllerTefEvent( TextTefAction.BEGIN_PRINT );
 		while ( !beginPrint ) {
-			if ( fireControllerTefEvent( CONFIRM, "Impressora não responde, tentar novamente?" ) ) {
-				beginPrint = fireControllerTefEvent( BEGIN_PRINT );
+			if ( fireControllerTefEvent( TextTefAction.CONFIRM, "Impressora não responde, tentar novamente?" ) ) {
+				beginPrint = fireControllerTefEvent( TextTefAction.BEGIN_PRINT );
 			} else {
 				return false;
 			}
@@ -470,8 +472,8 @@ public class ControllerTef {
 		// do contrário para o processo.
 		boolean printVoucher = printVoucherTextTef( textTef );
 		while ( !printVoucher ) {
-			if ( fireControllerTefEvent( CONFIRM, "Impressora não responde, tentar novamente?" ) ) {
-				if ( fireControllerTefEvent( RE_PRINT ) ) {
+			if ( fireControllerTefEvent( TextTefAction.CONFIRM, "Impressora não responde, tentar novamente?" ) ) {
+				if ( fireControllerTefEvent( TextTefAction.RE_PRINT ) ) {
 					printVoucher = printVoucherTextTef( textTef );
 				}
 			} else {
@@ -482,12 +484,12 @@ public class ControllerTef {
 		// Testa final impressão até o sucesso,
 		// e tenta a retomado do processo, ápos confirmação da aplicação,
 		// do contrário para o processo.
-		boolean endPrint = fireControllerTefEvent( END_PRINT );
+		boolean endPrint = fireControllerTefEvent( TextTefAction.END_PRINT );
 		while ( !endPrint ) {
-			if ( fireControllerTefEvent( CONFIRM, "Impressora não responde, tentar novamente?" ) ) {
-				if ( fireControllerTefEvent( RE_PRINT ) && 
+			if ( fireControllerTefEvent( TextTefAction.CONFIRM, "Impressora não responde, tentar novamente?" ) ) {
+				if ( fireControllerTefEvent( TextTefAction.RE_PRINT ) && 
 						printVoucherTextTef( textTef ) ) {
-					endPrint = fireControllerTefEvent( END_PRINT );
+					endPrint = fireControllerTefEvent( TextTefAction.END_PRINT );
 				}
 			} else {
 				return false;
@@ -527,7 +529,7 @@ public class ControllerTef {
 					
 					// aciona evento para que, a aplicação
 					// envie o comando de impressão para impressora fiscal.
-					actionReturn = fireControllerTefEvent( PRINT, message );
+					actionReturn = fireControllerTefEvent( TextTefAction.PRINT, message );
 					
 					if ( ! actionReturn ) {
 						break tickets;	
@@ -538,4 +540,35 @@ public class ControllerTef {
 		
 		return actionReturn;
 	}
+
+	// ************************************************************************** \\
+	// ***                           FIM  TEF  TEXTO                          *** \\	
+	// ************************************************************************** \\
+
+	// ************************************************************************** \\
+	// ***                        INICIO  TEF  DEDICADO                       *** \\	
+	// ************************************************************************** \\
+	
+	private boolean requestSaleDedicatedTef( final Integer numberDoc,
+                                             final BigDecimal value,
+                                             final String operador ) {
+		boolean actionReturn = false;
+		
+		try {
+			DedicateTef dedicateTef = DedicateTef.getInstance( this );
+		}
+		catch ( Exception e ) {
+			e.printStackTrace();
+		}
+		
+		return actionReturn;
+	}
+
+	public void actionCommand( DedicateTefEvent e ) {
+		fireControllerTefEvent( e.getAction(), e.getMessage() );
+	}
+
+	// ************************************************************************** \\
+	// ***                         FIM   TEF  DEDICADO                        *** \\	
+	// ************************************************************************** \\
 }
