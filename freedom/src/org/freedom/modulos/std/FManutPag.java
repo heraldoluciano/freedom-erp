@@ -1411,7 +1411,7 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 						ps.setString( 11, sRets[ 2 ] );
 						ps.setDate( 12, Funcoes.strDateToSqlDate( sRets[ 3 ] ) );
 						ps.setBigDecimal( 13, Funcoes.strCurrencyToBigDecimal( sRets[ 4 ] ) );
-						ps.setString( 14, sRets[ 6 ] );
+						ps.setString( 14, sRets[ 7 ] );
 						ps.setInt( 15, iCodPag );
 						ps.setInt( 16, iNParcPag );
 						ps.setInt( 17, Aplicativo.iCodEmp );
