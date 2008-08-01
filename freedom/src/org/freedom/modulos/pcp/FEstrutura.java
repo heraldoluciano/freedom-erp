@@ -825,17 +825,15 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		
 		if( pevt.getListaCampos() == lcDetEstrAnalise ){
 			if( "MM".equals( txtTpExp.getVlrString())){
-				if( txtVlrMin.getVlrInteger() == 0 || txtVlrMax.getVlrInteger() == 0){
+				if( txtVlrMin.getVlrString().equals( "0" )  || txtVlrMax.getVlrInteger().equals( "0" ) ){
 					Funcoes.mensagemInforma( this, "Informe os valores!" );
 					pevt.cancela();
-					return;
 				}
 				
 			}else if( "DT".equals( txtTpExp.getVlrString())){
 				if("".equals( txtEspecificacao.getVlrString())){
 					Funcoes.mensagemInforma( this, "Informe a descrição!" );
 					pevt.cancela();
-					return;
 				}
 			}	
 		}
