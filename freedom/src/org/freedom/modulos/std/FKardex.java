@@ -68,7 +68,7 @@ public class FKardex extends FRelatorio implements ActionListener {
         private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
         private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
         private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-        private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+        private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
         private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
         private JTextFieldPad txtCodFabProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
         private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
