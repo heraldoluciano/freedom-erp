@@ -40,7 +40,7 @@ public class DLLote extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-  private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+  private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDataINILote = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtVenctoLote = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
