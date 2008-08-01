@@ -257,12 +257,12 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
 		hParam.put( "DESCPROD", descProd );
 		hParam.put( "FABRICACAO", txtDtIniLote.getVlrDate() );
 		hParam.put( "VALIDADE", txtDtIniLote.getVlrDate() );
-		hParam.put( "NF", txtCodPed.getVlrInteger() );
+		hParam.put( "NF", txtCodPed.getVlrInteger() == 0 ? null : txtCodPed.getVlrInteger() );
 		hParam.put( "EMITNF", txtDtEmitPed.getVlrDate() );
-		hParam.put( "CODCLI", txtCodCli.getVlrInteger() );
-		hParam.put( "RAZCLI", txtRazCli.getVlrString() );
+		hParam.put( "CODCLI", txtCodCli.getVlrInteger() == 0 ? null : txtCodCli.getVlrInteger() );
+		hParam.put( "RAZCLI", txtRazCli.getVlrString().equals( "" ) ? null : txtRazCli.getVlrString() );
 		hParam.put( "CODPROD", txtCodProd.getVlrInteger().toString() );
-		hParam.put( "DOCVENDA", txtDocVenda.getVlrInteger() );
+		hParam.put( "DOCVENDA", txtDocVenda.getVlrInteger() == 0 ? null : txtDocVenda.getVlrInteger() );
 
 		hParam.put( "NUMCERT", numCert );
 
