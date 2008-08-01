@@ -22,9 +22,9 @@ public class FTipoAnalise extends FDados {
 	
 	private JTextAreaPad txaObsTpAnalise = new JTextAreaPad();
 	
-	private JTextFieldPad txtCodUnid = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	private JTextFieldPad txtCodUnid = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
-	private JTextFieldFK txtDescUnid = new JTextFieldFK( JTextFieldPad.TP_STRING, 15, 0 );
+	private JTextFieldFK txtDescUnid = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 	
 	private JTextFieldPad txtMetodo = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 	
@@ -39,7 +39,7 @@ public class FTipoAnalise extends FDados {
 	public FTipoAnalise(){
 	
 		setTitulo( "Tipos de Analise" );
-		setAtribos( 50, 50, 350, 330 );
+		setAtribos( 50, 50, 435, 330 );
 		montaListaCampos();
 		montaTela();
 		
@@ -55,13 +55,13 @@ public class FTipoAnalise extends FDados {
  		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
  		rgTipo.setVlrString("MM");
  		
- 		adicCampo( txtCodTpAnalise, 7, 20, 70, 20 , "CodTpAnalise", "Cód.Tp.An.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescTpAnalise, 80, 20, 245, 20, "DescTpAnalise", "Descrição do tipo de analise", ListaCampos.DB_SI, true );
-		adicCampo( txtCodUnid, 7, 65, 70, 20, "CodUnid", "Cód.Unid", ListaCampos.DB_FK, txtDescUnid, false );
-		adicDescFK( txtDescUnid, 80, 65, 245, 20, "DescUnid", "Descrição da Unidade" );
-		adicCampo( txtMetodo, 7, 105, 320, 20, "metodo", "Método Analítico", ListaCampos.DB_SI, true );
-		adicDB( txaObsTpAnalise, 7, 200, 320, 50, "ObsTpAnalise", "Observação", false );
-		adicDB( rgTipo, 7, 150, 320, 30, "TipoExpec", "Tipo de expecificação", true );
+ 		adicCampo( txtCodTpAnalise, 7, 20, 100, 20 , "CodTpAnalise", "Cód.Tp.An.", ListaCampos.DB_PK, true );
+		adicCampo( txtDescTpAnalise, 110, 20, 300, 20, "DescTpAnalise", "Descrição do tipo de analise", ListaCampos.DB_SI, true );
+		adicCampo( txtCodUnid, 7, 65, 100, 20, "CodUnid", "Cód.Unid", ListaCampos.DB_FK, txtDescUnid, false );
+		adicDescFK( txtDescUnid, 110, 65, 300, 20, "DescUnid", "Descrição da Unidade" );
+		adicCampo( txtMetodo, 7, 105, 402, 20, "metodo", "Método Analítico", ListaCampos.DB_SI, true );
+		adicDB( txaObsTpAnalise, 7, 200, 402, 50, "ObsTpAnalise", "Observação", false );
+		adicDB( rgTipo, 7, 150, 402, 30, "TipoExpec", "Tipo de expecificação", true );
 		setListaCampos( true, "TIPOANALISE", "PP" );
 		
 	}
