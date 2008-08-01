@@ -10,6 +10,9 @@ import junit.framework.TestCase;
 import org.freedom.tef.app.ControllerTef;
 import org.freedom.tef.app.ControllerTefEvent;
 import org.freedom.tef.app.ControllerTefListener;
+import org.freedom.tef.driver.dedicate.DedicateTef;
+import org.freedom.tef.driver.dedicate.DedicatedAction;
+import org.freedom.tef.driver.text.TextTefAction;
 import org.freedom.tef.driver.text.TextTefProperties;
 
 
@@ -85,24 +88,24 @@ public class TestControllerTef extends TestCase implements ControllerTefListener
 		
 		boolean actionTef = false;
 
-		if ( event.getAction() == ControllerTefEvent.WARNING ) {
+		if ( event.getAction() == TextTefAction.WARNING ) {
 			System.out.println( "\n[ WARNING ] " + event.getMessage() + "\n" );
 			actionTef = true;
 		}	
-		else if ( event.getAction() == ControllerTefEvent.ERROR ) {
+		else if ( event.getAction() == TextTefAction.ERROR ) {
 			System.out.println( "\n[  ERROR  ] " + event.getMessage() + "\n" );
 			actionTef = true;
 		}		
-		else if ( event.getAction() == ControllerTefEvent.CONFIRM ) {
+		else if ( event.getAction() == TextTefAction.CONFIRM ) {
 			int option = JOptionPane.showConfirmDialog( null, event.getMessage(), "CONFIM", JOptionPane.YES_NO_OPTION, JOptionPane.CANCEL_OPTION );
 			System.out.println( "[ option ] " + ( option == JOptionPane.YES_OPTION ) );
 			actionTef = option == JOptionPane.YES_OPTION;
 		}	
-		else if ( event.getAction() == ControllerTefEvent.BEGIN_PRINT ) {
+		else if ( event.getAction() == TextTefAction.BEGIN_PRINT ) {
 			System.out.println( "[ Início da impressão do comprovante ] ...\nAbrir Comprovante não Fiscal Vinculado." );
 			actionTef = true;
 		}	
-		else if ( event.getAction() == ControllerTefEvent.PRINT ) {
+		else if ( event.getAction() == TextTefAction.PRINT ) {
 			System.out.println( event.getMessage() );
 			actionTef = true;
 			/*actionTef = countRowPrint++ < 9 ;
@@ -110,9 +113,13 @@ public class TestControllerTef extends TestCase implements ControllerTefListener
 				countRowPrint = 0;
 			}*/
 		}	
-		else if ( event.getAction() == ControllerTefEvent.END_PRINT ) {
+		else if ( event.getAction().equals( TextTefAction.END_PRINT ) ) {
 			System.out.println( "[ Término da impressão do comprovante ] ...\nFechar Comprovante não Fiscal Vinculado." );
 			actionTef = true;
+		}
+		else if ( event.getAction().equals( DedicatedAction.ERRO ) ) {
+			JOptionPane.showMessageDialog( null, event.getMessage() );
+			actionTef = false;
 		}
 		
 		return actionTef;
