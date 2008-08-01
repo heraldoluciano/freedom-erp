@@ -62,19 +62,24 @@
 	<parameter name="CODPROD" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="DOCVENDA" isForPrompting="false" class="java.lang.Integer"/>
 	<parameter name="NUMCERT" isForPrompting="false" class="java.lang.String"/>
-	<queryString><![CDATA[select ta.desctpanalise,ta.metodo,ea.vlrmin,ea.vlrmax,cq.vlrafer,cq.descafer,pf.nomeresp,pf.identprofresp,pf.imgassresp
-from ppopcq cq, ppestruanalise ea, pptipoanalise ta, sgprefere5 pf, ppop op0, ppop opx
-where
-ta.codemp=ea.codempta and ta.codfilial=ea.codfilialta and ta.codtpanalise=ea.codtpanalise
+	<queryString><![CDATA[select ta.desctpanalise,ea.vlrmin,ea.vlrmax,cq.vlrafer,
+cq.descafer,pf.nomeresp,pf.identprofresp,pf.imgassresp,
+op0.codprod, pd.descprod, pm.descmtanalise, ea.especificacao
+from ppopcq cq, ppestruanalise ea, pptipoanalise ta,
+sgprefere5 pf, ppop op0, ppop opx, eqproduto pd, ppmetodoanalise pm
+where ta.codemp=ea.codempta and ta.codfilial=ea.codfilialta and ta.codtpanalise=ea.codtpanalise
+and pm.codemp=ta.codempma and pm.codfilial=ta.codfilialma
+and pm.codmtanalise=ta.codmtanalise
 and cq.codempea=ea.codemp and cq.codfilialea=ea.codfilial and cq.codestanalise=ea.codestanalise
-and cq.codemp=op0.codemp and cq.codfilial=op0.codfilial and cq.codop=op0.codop and cq.seqop=op0.seqop
-and cq.status='AP'
-and op0.codemp = opx.codemp and op0.codfilial=opx.codfilial and op0.codop=opx.codop and op0.seqop=0
-and pf.codemp = op0.codemp and pf.codfilial=op0.codfilial
-and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{CODLOTE} and 1=2]]></queryString>
+and cq.codemp=op0.codemp and cq.codfilial=op0.codfilial and cq.codop=op0.codop
+and cq.seqop=op0.seqop and cq.status='AP' and ea.emitcert='S'
+and op0.codemp = opx.codemp and op0.codfilial=opx.codfilial
+and op0.codop=opx.codop and op0.seqop=0 and pf.codemp = op0.codemp
+and pf.codfilial=op0.codfilial and pd.codemp=op0.codemppd
+and pd.codfilial=op0.codfilialpd and pd.codprod=op0.codprod
+and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=52723078104]]></queryString>
 
 	<field name="DESCTPANALISE" class="java.lang.String"/>
-	<field name="METODO" class="java.lang.String"/>
 	<field name="VLRMIN" class="java.math.BigDecimal"/>
 	<field name="VLRMAX" class="java.math.BigDecimal"/>
 	<field name="VLRAFER" class="java.math.BigDecimal"/>
@@ -82,6 +87,10 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 	<field name="NOMERESP" class="java.lang.String"/>
 	<field name="IDENTPROFRESP" class="java.lang.String"/>
 	<field name="IMGASSRESP" class="java.io.InputStream"/>
+	<field name="CODPROD" class="java.lang.Long"/>
+	<field name="DESCPROD" class="java.lang.String"/>
+	<field name="DESCMTANALISE" class="java.lang.String"/>
+	<field name="ESPECIFICACAO" class="java.lang.String"/>
 
 
 		<group  name="GERAL" >
@@ -609,7 +618,7 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 					<textElement textAlignment="Center">
 						<font pdfFontName="Helvetica-Oblique" size="9" isItalic="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{METODO}.trim()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCMTANALISE}.trim()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -648,7 +657,7 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Oblique" size="9" isItalic="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{VLRAFER} == null ? "OK" : $F{VLRAFER}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{VLRAFER} == null ? "Em conformidade" : $F{DESCAFER}.toString()]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -718,15 +727,15 @@ and opx.codemp=$P{CODEMP} and opx.codfilial=$P{CODFILIAL} and opx.codlote=$P{COD
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="229"
-						y="2"
+						y="3"
 						width="103"
 						height="12"
 						key="textField-21"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Oblique" size="9" isItalic="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCAFER}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ESPECIFICACAO}.trim()]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
