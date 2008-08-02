@@ -132,9 +132,9 @@ public class TestVisaTextTef extends TestCase {
 			Flag.loadParametrosOfInitiation( new File( "C:\\bandeiras.ini" ) );			
 			TextTef textTef = TextTefFactory.createTextTef( getTextTefProperties(), "VISA" );
 			
-			ok = textTef.requestCancel( 
+			/*ok = textTef.requestCancel( 
 					"RedeShop", "220014", dtf.format( new Date() ), "144118",  new BigDecimal( "9.99" ) );
-			ok = textTef.confirmation();
+			ok = textTef.confirmation();*/
 			
 		} catch ( Exception e ) {
 			e.printStackTrace();
