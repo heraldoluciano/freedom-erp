@@ -38,7 +38,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -55,15 +54,18 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
-import org.freedom.comutacao.Tef;
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
+import org.freedom.tef.app.ControllerTef;
+import org.freedom.tef.app.ControllerTefEvent;
+import org.freedom.tef.app.ControllerTefListener;
+import org.freedom.tef.driver.text.TextTefAction;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FDialogo;
 
-public class DLCancCupom extends FDialogo implements ActionListener, MouseListener, KeyListener {
+public class DLCancCupom extends FDialogo implements ControllerTefListener, ActionListener, MouseListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -95,8 +97,6 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 
 	private final ListaCampos lcVenda = new ListaCampos( this, "VD" );
 
-	private Properties ppCompTef;
-
 	private final ImageIcon imgCanc = Icone.novo( "clVencido.gif" );
 
 	private final ImageIcon imgPago = Icone.novo( "clPago.gif" );
@@ -109,7 +109,7 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 
 	private final ControllerECF ecf;
 
-	private Tef tef = null;
+	private ControllerTef tef;
 	
 
 	public DLCancCupom() {
@@ -136,6 +136,16 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 		tab.addKeyListener( this );
 
 		cbInteira.setVlrString( "N" );
+		
+		if ( AplicativoPDV.bTEFTerm ) {
+			try {
+				tef = AplicativoPDV.getControllerTef();
+				tef.setControllerMessageListener( this );
+			} catch ( Exception e ) {
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, e.getMessage() );
+			}
+		}
 
 		setToFrameLayout();
 	}
@@ -201,10 +211,8 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 		tab.setTamColuna( 50, 8 );
 	}
 
-	private Properties processaTef() {
+	private boolean processaTef() {
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		String sSQL = null;
 		String sNSU = null;
 		String sRede = null;
@@ -213,14 +221,20 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 
 		try {
 
-			sSQL = "SELECT NSUTEF,REDETEF,DTTRANSTEF,VLRTEF " + "FROM VDTEF " + "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
+			sSQL = 
+				"SELECT NSUTEF,REDETEF,DTTRANSTEF,VLRTEF " + 
+				"FROM VDTEF " + 
+				"WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
 
-			ps = con.prepareStatement( sSQL );
+			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDTEF" ) );
 			ps.setInt( 3, txtVenda.getVlrInteger().intValue() );
-			rs = ps.executeQuery();
+			
+			ResultSet rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
+			
 				sNSU = rs.getString( "NSUTEF" );
 				sRede = rs.getString( "REDETEF" );
 				dTrans = Funcoes.sqlDateToDate( rs.getDate( "DTTRANSTEF" ) );
@@ -237,24 +251,10 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao buscar tef vinculado no banco: " + err.getMessage() );
+			return false;
 		}
-
-		if ( sNSU == null ) {
-			return null;
-		}
-
-		if ( tef == null && AplicativoPDV.bTEFTerm ) {
-			tef = new Tef( Aplicativo.tefSend, Aplicativo.tefRequest );
-		}
-
-		Properties retTef = tef.solicCancelamento( sNSU.trim(), sRede.trim(), dTrans, bigVlr );
-
-		if ( retTef == null || !tef.validaTef( retTef ) ) {
-			return null;
-		}
-
-		return retTef;
-
+		
+		return tef.requestCancel( sNSU.trim(), sRede.trim(), dTrans, null, bigVlr, "" );
 	}
 
 	private boolean cancVenda() {
@@ -263,7 +263,7 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 		PreparedStatement ps = null;
 
 		if ( isVendaComTef() ) {
-			if ( ( ppCompTef = processaTef() ) == null ) {
+			if ( processaTef() ) {
 				Funcoes.mensagemInforma( this, "Não foi possível processar o cancelamento de TEF" );
 				return false;
 			}
@@ -362,17 +362,14 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 	private void executaCanc() {
 
 		if ( cbInteira.getVlrString().equals( "S" ) ) {
-			if ( Funcoes.mensagemConfirma( null, "Deseja realmente cancelar o cupom?" ) == JOptionPane.YES_OPTION ) {
-				if ( tab.getNumLinhas() <= 0 ) {
-					Funcoes.mensagemErro( null, "Não a mais itens na venda\nEla não pode ser cancelada!" );
-					return;
-				}
-				if ( cancVenda() ) {
-					if ( AplicativoPDV.bECFTerm ) {
-						if ( ecf.cancelaCupom() ) {
-							bCancCupom = ppCompTef == null || finalizaTEF( ppCompTef );
-							btOK.doClick();
-						}
+			if ( tab.getNumLinhas() <= 0 ) {
+				Funcoes.mensagemErro( null, "Não a mais itens na venda\nEla não pode ser cancelada!" );
+				return;
+			}
+			if ( Funcoes.mensagemConfirma( null, "Deseja realmente cancelar o cupom?" ) == JOptionPane.YES_OPTION ) {				
+				if ( ecf.cancelaCupom() ) {
+					if ( cancVenda() ) {
+						btOK.doClick();
 					}
 				}
 			}
@@ -405,37 +402,40 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 
 	private void carregaTabela() {
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = null;
-		int iRow = 0;
-
 		try {
 
-			sSQL = "SELECT IT.CODITVENDA,P.DESCPROD,IT.QTDITVENDA," + "IT.VLRBASEICMSITVENDA,IT.VLRICMSITVENDA,IT.VLRPRODITVENDA " + "FROM VDITVENDA IT, EQPRODUTO P " + "WHERE IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODVENDA=? AND IT.TIPOVENDA='E' "
-					+ "AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPROD " + "AND (NOT IT.CANCITVENDA='S' OR IT.CANCITVENDA IS NULL) " + "ORDER BY CODITVENDA";
+			StringBuilder sql = new StringBuilder();  
+			sql.append( "SELECT IT.CODITVENDA,P.DESCPROD,IT.QTDITVENDA," ); 
+			sql.append( "IT.VLRBASEICMSITVENDA,IT.VLRICMSITVENDA,IT.VLRPRODITVENDA " ); 
+			sql.append( "FROM VDITVENDA IT, EQPRODUTO P " );
+			sql.append( "WHERE IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODVENDA=? AND IT.TIPOVENDA='E' AND " );
+			sql.append( "P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPROD AND " );
+			sql.append( "(NOT IT.CANCITVENDA='S' OR IT.CANCITVENDA IS NULL) " );
+			sql.append( "ORDER BY CODITVENDA" );
 
-			ps = con.prepareStatement( sSQL );
-			ps = con.prepareStatement( sSQL );
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITVENDA" ) );
 			ps.setInt( 3, txtVenda.getVlrInteger().intValue() );
-			rs = ps.executeQuery();
+			
+			ResultSet rs = ps.executeQuery();
 
 			tab.limpa();
 			imgColuna = imgPago;
+			int row = 0;
 
 			while ( rs.next() ) {
+				
 				tab.adicLinha();
-				tab.setValor( imgColuna, iRow, 0 );
-				tab.setValor( String.valueOf( rs.getInt( "CODITVENDA" ) ), iRow, 1 );
-				tab.setValor( rs.getString( "DESCPROD" ), iRow, 2 );
-				tab.setValor( Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( rs.getDouble( "QTDITVENDA" ) ) ), iRow, 3 );
-				tab.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( rs.getDouble( "VLRBASEICMSITVENDA" ) ) ), iRow, 4 );
-				tab.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( rs.getDouble( "VLRICMSITVENDA" ) ) ), iRow, 5 );
-				tab.setValor( Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( rs.getDouble( "VLRPRODITVENDA" ) ) ), iRow, 6 );
-				tab.setValor( Funcoes.strDecimalToStrCurrency( 23, 2, String.valueOf( rs.getDouble( "VLRPRODITVENDA" ) * rs.getDouble( "QTDITVENDA" ) ) ), iRow, 7 );
-				iRow++;
+				tab.setValor( imgColuna, row, 0 );
+				tab.setValor( String.valueOf( rs.getInt( "CODITVENDA" ) ), row, 1 );
+				tab.setValor( rs.getString( "DESCPROD" ), row, 2 );
+				tab.setValor( Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( rs.getDouble( "QTDITVENDA" ) ) ), row, 3 );
+				tab.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( rs.getDouble( "VLRBASEICMSITVENDA" ) ) ), row, 4 );
+				tab.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( rs.getDouble( "VLRICMSITVENDA" ) ) ), row, 5 );
+				tab.setValor( Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( rs.getDouble( "VLRPRODITVENDA" ) ) ), row, 6 );
+				tab.setValor( Funcoes.strDecimalToStrCurrency( 23, 2, String.valueOf( rs.getDouble( "VLRPRODITVENDA" ) * rs.getDouble( "QTDITVENDA" ) ) ), row, 7 );
+				row++;
 			}
 
 			rs.close();
@@ -445,20 +445,13 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 				con.commit();
 			}
 
-		} catch ( SQLException err ) {
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro carregar ítens da venda!\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro carregar ítens da venda!\n" + e.getMessage(), true, con, e );
+		} 
 	}
 
 	private void marcaItem( int iItem ) {
-
-		// carregaTabela();
 
 		if ( (ImageIcon) tab.getValor( iItem, 0 ) == imgCanc ) {
 			imgColuna = imgPago;
@@ -468,61 +461,21 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 		}
 
 		tab.setValor( imgColuna, iItem, 0 );
-
-	}
-
-	private boolean finalizaTEF( Properties retTef ) {
-
-		boolean bRet = false;
-		/*Object sLinhas[] = tef.retImpTef( retTef );
-		String sComprovante = "";
-
-		// verifica se ha linhas a serem impressas, caso contrário sai sem
-		// imprimir nada.
-		if ( sLinhas.length == 0 ) {
-			return true;
-		}
-
-		for ( int i = 0; i < sLinhas.length; i++ ) {
-			sComprovante += sLinhas[ i ] + "\n";
-		}
-
-		while ( !bRet ) {
-			if ( !ecf.relatorioGerencialTef( sComprovante ) ) {
-				bRet = false;
-			}
-			else {
-				if ( !ecf.fechaRelatorioGerencial() ) {
-					bRet = false;
-				}
-				else {
-					bRet = true;
-				}
-			}
-		}
-
-		tef.confirmaCNF( retTef );*/
-
-		return bRet;
-
 	}
 
 	private boolean isVendaComTef() {
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = null;
+		
 		int iRet = 0;
 
 		try {
 
-			sSQL = "SELECT COUNT(*) FROM VDTEF WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
-
-			ps = con.prepareStatement( sSQL );
+			PreparedStatement ps = con.prepareStatement( 
+					"SELECT COUNT(*) FROM VDTEF WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDTEF" ) );
 			ps.setInt( 3, txtVenda.getVlrInteger().intValue() );
-			rs = ps.executeQuery();
+			
+			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
 				iRet = rs.getInt( 1 );
@@ -534,18 +487,12 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
-
-		} catch ( SQLException err ) {
-			err.printStackTrace();
-			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao verificar tef vinculado no banco: " + err.getMessage() );
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao verificar tef vinculado no banco: " + e.getMessage() );
 		}
 
 		return iRet > 0;
-
 	}
 
 	public boolean isCancCupom() {
@@ -559,14 +506,11 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 
 		try {
 			tmp = iCancItem.substring( 1 ).split( "," );
-		} catch ( Exception e ) {
-			// ignora o erro
-		}
+		} catch ( Exception e ) { }
 
 		int[] ret = new int[ tmp.length ];
 
 		for ( int i = 0; i < ret.length; i++ ) {
-
 			ret[ i ] = Integer.parseInt( tmp[ i ] );
 
 		}
@@ -579,59 +523,76 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 		txtVenda.setVlrInteger( new Integer( iCodVenda ) );
 	}
 
-	public void actionPerformed( ActionEvent evt ) {
+	public boolean actionTef( final ControllerTefEvent e ) {
 
-		if ( evt.getSource() == btCanc ) {
+		boolean actionTef = false;
+
+		if ( e.getAction() == TextTefAction.WARNING ) {
+// ***************	lbWarnig.setText( e.getMessage() );
+			actionTef = true;
+		}
+		else if ( e.getAction() == TextTefAction.ERROR ) {
+			Funcoes.mensagemErro( null, e.getMessage() );
+			actionTef = true;
+		}
+		else if ( e.getAction() == TextTefAction.BEGIN_PRINT ) {
+			actionTef = true;
+		}
+		else if ( e.getAction() == TextTefAction.PRINT ) {
+			actionTef = ecf.relatorioGerencial( e.getMessage() );
+		}
+		else if ( e.getAction() == TextTefAction.END_PRINT ) {
+			actionTef = ecf.fecharRelatorioGerencial();
+		}
+		else if ( e.getAction() == TextTefAction.RE_PRINT ) {
+			actionTef = ecf.fecharRelatorioGerencial();
+		}
+		else if ( e.getAction() == TextTefAction.CONFIRM ) {
+			actionTef = Funcoes.mensagemConfirma( this, e.getMessage() ) == JOptionPane.YES_OPTION;
+		}
+
+		return actionTef;
+	}
+
+	public void actionPerformed( ActionEvent e ) {
+
+		if ( e.getSource() == btCanc ) {
 			executaCanc();
 			carregaTabela();
 		}
-		else if ( evt.getSource() == btExec ) {
+		else if ( e.getSource() == btExec ) {
 			carregaTabela();
 		}
 
-		super.actionPerformed( evt );
+		super.actionPerformed( e );
 	}
 
-	public void mouseEntered( MouseEvent mevt ) {
+	public void mouseEntered( MouseEvent e ) { }
 
-	}
+	public void mouseExited( MouseEvent e ) { }
 
-	public void mouseExited( MouseEvent mevt ) {
+	public void mousePressed( MouseEvent e ) { }
 
-	}
+	public void mouseReleased( MouseEvent e ) { }
 
-	public void mousePressed( MouseEvent mevt ) {
+	public void mouseClicked( MouseEvent e ) {
 
-	}
-
-	public void mouseReleased( MouseEvent mevt ) {
-
-	}
-
-	public void mouseClicked( MouseEvent mevt ) {
-
-		if ( mevt.getClickCount() == 2 && tab.getLinhaSel() >= 0 ) {
+		if ( e.getClickCount() == 2 && tab.getLinhaSel() >= 0 ) {
 			marcaItem( tab.getLinhaSel() );
 		}
-
 	}
 
-	public void keyTyped( KeyEvent kevt ) {
+	public void keyTyped( KeyEvent e ) { }
 
-	}
+	public void keyReleased( KeyEvent e ) { }
 
-	public void keyReleased( KeyEvent kevt ) {
+	public void keyPressed( KeyEvent e ) {
 
-	}
-
-	public void keyPressed( KeyEvent kevt ) {
-
-		if ( ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) || ( kevt.getKeyCode() == KeyEvent.VK_SPACE ) ) {
-			if ( ( kevt.getSource() == tab ) && ( tab.getLinhaSel() >= 0 ) ) {
+		if ( e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_SPACE ) {
+			if ( e.getSource() == tab && tab.getLinhaSel() >= 0 ) {
 				marcaItem( tab.getLinhaSel() );
 			}
 		}
-
 	}
 
 	public void setConexao( Connection cn ) {
