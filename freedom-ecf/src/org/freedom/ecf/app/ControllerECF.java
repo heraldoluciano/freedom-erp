@@ -221,7 +221,9 @@ public class ControllerECF {
 
 		if ( strresult != null ) {			
 			returnOfAction = !strresult.isInError();
-			setMessageLog( strresult.getMessages() );
+			if ( strresult.isInError() ) {
+				setMessageLog( strresult.getMessages() );
+			}
 		}
 
 		return returnOfAction;
@@ -667,8 +669,9 @@ public class ControllerECF {
 			else { 
 				if ( tipoAliquota != null && (! AbstractECFDriver.ALQ_INTEGRAL.equals( tipoAliquota )) ) {
 					if ( ! AbstractECFDriver.ALQ_ISENTA.equals( tipoAliquota ) 
-							|| ! AbstractECFDriver.ALQ_SUBSTITUICAO.equals( tipoAliquota ) 
-								|| ! AbstractECFDriver.ALQ_NAO_INSIDE.equals( tipoAliquota ) ) {
+							&& ! AbstractECFDriver.ALQ_SUBSTITUICAO.equals( tipoAliquota ) 
+								&& ! AbstractECFDriver.ALQ_NAO_INSIDE.equals( tipoAliquota ) ) {
+						setMessageLog( "Tipo de aliquota inválido.[" + tipoAliquota +"]" );
 						actionOK = false;
 					}
 				}
