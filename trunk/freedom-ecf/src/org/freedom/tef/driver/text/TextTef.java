@@ -19,6 +19,7 @@ package org.freedom.tef.driver.text;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 
@@ -150,7 +151,7 @@ public abstract class TextTef {
 	 */
 	abstract public boolean requestCancel( final String rede,
 			                               final String nsu,
-									       final String data,
+									       final Date data,
 									       final String hora,
 										   final BigDecimal value ) throws Exception;
 	

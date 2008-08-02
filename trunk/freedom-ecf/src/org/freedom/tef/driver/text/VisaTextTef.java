@@ -47,6 +47,7 @@ import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
@@ -157,10 +158,9 @@ public class VisaTextTef extends TextTef  {
 	 * Em testes com gerenciador padrão Cliente Sitef, ocorreu erro 101, ainda não resolvido.<br>
 	 */
 	@Override
-	@Deprecated
 	public synchronized boolean requestCancel( final String rede, 
 	        							 	   final String nsu, 
-	        								   final String date, 
+	        								   final Date date, 
 	        								   final String hora, 
 	        								   final BigDecimal value ) throws Exception {
 		
@@ -170,7 +170,7 @@ public class VisaTextTef extends TextTef  {
 		final DecimalFormat df = new DecimalFormat( "0.00" );			
 		List<String> request = new ArrayList<String>();
 		
-		request.add( HEADER          + " = " + NCN );
+		request.add( HEADER          + " = " + CNC );
 		request.add( INDENTIFICATION + " = " + indentification );
 		request.add( VALUE           + " = " + df.format( value ) );
 		request.add( NET_NAME        + " = " + rede );
@@ -180,7 +180,7 @@ public class VisaTextTef extends TextTef  {
 		request.add( TRAILER         + " = " + 0 );
 		
 		requestCancel = 
-			send( request, fileTemp, fileSend ) && existFileStatus( NCN, indentification );
+			send( request, fileTemp, fileSend ) && existFileStatus( CNC, indentification );
 		
 		if ( requestCancel && fileStatus.exists() ) {
 			fileStatus.delete();

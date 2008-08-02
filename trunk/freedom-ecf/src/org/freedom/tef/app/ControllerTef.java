@@ -19,24 +19,24 @@
 
 package org.freedom.tef.app;
 
-import org.freedom.tef.driver.dedicate.DedicateTef;
-import org.freedom.tef.driver.dedicate.DedicateTefEvent;
-import org.freedom.tef.driver.dedicate.DedicateTefListener;
-import org.freedom.tef.driver.text.TextTefAction;
 import static org.freedom.tef.driver.text.TextTef.ADM;
+import static org.freedom.tef.driver.text.TextTef.CNC;
 import static org.freedom.tef.driver.text.TextTef.CRT;
 import static org.freedom.tef.driver.text.TextTefProperties.AMOUNT_LINES;
 import static org.freedom.tef.driver.text.TextTefProperties.MESSAGE_OPERATOR;
 import static org.freedom.tef.driver.text.TextTefProperties.PATH_RESPONSE;
 import static org.freedom.tef.driver.text.TextTefProperties.PATH_SEND;
-
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.freedom.tef.driver.Flag;
+import org.freedom.tef.driver.dedicate.DedicateTef;
+import org.freedom.tef.driver.dedicate.DedicateTefEvent;
+import org.freedom.tef.driver.dedicate.DedicateTefListener;
 import org.freedom.tef.driver.text.TextTef;
+import org.freedom.tef.driver.text.TextTefAction;
 import org.freedom.tef.driver.text.TextTefFactory;
 import org.freedom.tef.driver.text.TextTefProperties;
 
@@ -193,18 +193,22 @@ public class ControllerTef implements DedicateTefListener {
 	 */
 	public boolean standardManagerActive() throws Exception {
 		
-		Flag.loadParametrosOfInitiation( getFileFlagsMap() );
-		Object[] flags = Flag.getTextTefFlagsMap().keySet().toArray();		
-		TextTef textTef = null;		
-		
-		for ( Object flagName : flags ) {
-			textTef = TextTefFactory.createTextTef( getTextTefProperties(), (String)flagName );
-			if ( textTef != null ) {
-				break; 
+		if ( TEF_TEXT == getTypeTef() ) {			
+			Flag.loadParametrosOfInitiation( getFileFlagsMap() );
+			Object[] flags = Flag.getTextTefFlagsMap().keySet().toArray();		
+			TextTef textTef = null;		
+			
+			for ( Object flagName : flags ) {
+				textTef = TextTefFactory.createTextTef( getTextTefProperties(), (String)flagName );
+				if ( textTef != null ) {
+					break; 
+				}
 			}
+			return standardManagerActive( textTef );
 		}
-		
-		return standardManagerActive( textTef );
+		else {
+			return false;
+		}		
 	}
 
 	/**
@@ -233,7 +237,7 @@ public class ControllerTef implements DedicateTefListener {
 	}
 
 	/**
-	 * Este método faz a requisição das funções administrativas do gerenciador padrão TEF. <br>
+	 * Este método faz a requisição das funções administrativas de TEF. <br>
 	 * 
 	 * @param flagName		Nome da bandeira.
 	 * 
@@ -245,6 +249,34 @@ public class ControllerTef implements DedicateTefListener {
 		
 		if ( TEF_TEXT == getTypeTef() ) {
 			actionReturn = requestAdministratorTextTef( flagName );
+		}
+		
+		return actionReturn;
+	}	
+
+	/**
+	 * Este método faz a requisição de cancelamento. <br>
+	 * 
+	 * @param rede			Rede da transação
+	 * @param nsu			NSU da transação.
+	 * @param date			Data da transação
+	 * @param hour			Hora da transação.
+	 * @param value			Valor da transação.
+	 * @param flagName		Nome da bandeira.
+	 * 
+	 * @return verdadeiro para envio correto da requisição e recebimento correto do retorno. 
+	 */
+	public boolean requestCancel( final String rede,
+                                  final String nsu,
+                                  final Date date,
+                                  final String hour,
+                                  final BigDecimal value,
+                                  final String flagName ) {
+		
+		boolean actionReturn = false;
+		
+		if ( TEF_TEXT == getTypeTef() ) {
+			actionReturn = requestCancelTextTef( rede, nsu, date, hour, value, flagName );
 		}
 		
 		return actionReturn;
@@ -377,6 +409,54 @@ public class ControllerTef implements DedicateTefListener {
 			
 		} catch ( Exception e ) {
 			String etmp = "Erro ao acionar ADM:\n" + e.getMessage();
+			fireControllerTefEvent( TextTefAction.ERROR, etmp );
+			whiterLogError( etmp );
+		}
+		
+		return actionReturn;
+	}
+	
+	/**
+	 */
+	private boolean requestCancelTextTef( final String rede,
+                                          final String nsu,
+                                          final Date date,
+                                          final String hour,
+                                          final BigDecimal value,
+                                          final String flagName ) {
+		
+		boolean actionReturn = false;
+		
+		try {
+			TextTef textTef = TextTefFactory.createTextTef( getTextTefProperties(), 
+															flagName, 
+															getFileFlagsMap() );	
+			if ( ! standardManagerActive( textTef ) ) {
+				return actionReturn;
+			}
+						
+			
+			if ( textTef.requestCancel( rede, nsu, date, hour, value ) && textTef.readResponse( CNC ) ) {
+					
+				String messageOperator = textTef.get( MESSAGE_OPERATOR, "" );
+				
+				// avisa para o ouvinte a menssagem do campo 030-000.
+				if ( messageOperator.trim().length() > 0 ) {
+					fireControllerTefEvent( TextTefAction.WARNING, messageOperator );
+				}
+				
+				// invoca método para lançar eventos de impressão do comprovante.
+				int voucher = voucherTextTef( textTef );
+				if ( voucher == VOUCHER_OK ) {
+					actionReturn = textTef.confirmation();
+				}
+				else if ( voucher == VOUCHER_ERROR ) {
+					actionReturn = noConfirmation( textTef );					
+				}
+			}
+			
+		} catch ( Exception e ) {
+			String etmp = "Erro ao acionar CNC:\n" + e.getMessage();
 			fireControllerTefEvent( TextTefAction.ERROR, etmp );
 			whiterLogError( etmp );
 		}
@@ -551,11 +631,12 @@ public class ControllerTef implements DedicateTefListener {
 	
 	private boolean requestSaleDedicatedTef( final Integer numberDoc,
                                              final BigDecimal value,
-                                             final String operador ) {
+                                             final String operator ) {
 		boolean actionReturn = false;
 		
 		try {
 			DedicateTef dedicateTef = DedicateTef.getInstance( this );
+			dedicateTef.requestSale( value, numberDoc, null/*dateHour*/, operator );
 		}
 		catch ( Exception e ) {
 			e.printStackTrace();
