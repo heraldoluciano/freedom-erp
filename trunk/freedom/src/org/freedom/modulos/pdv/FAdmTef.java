@@ -53,6 +53,7 @@ import org.freedom.tef.app.ControllerTefEvent;
 import org.freedom.tef.app.ControllerTefListener;
 import org.freedom.tef.driver.Flag;
 import org.freedom.tef.driver.text.TextTef;
+import org.freedom.tef.driver.text.TextTefAction;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFilho;
 
@@ -192,11 +193,11 @@ public class FAdmTef extends FFilho implements ControllerTefListener, ActionList
 
 		boolean actionTef = false;
 
-		if ( e.getAction() == ControllerTefEvent.WARNING ) {
+		if ( e.getAction() == TextTefAction.WARNING ) {
 			lbWarnig.setText( e.getMessage() );
 			actionTef = true;
 		}
-		else if ( e.getAction() == ControllerTefEvent.ERROR ) {
+		else if ( e.getAction() == TextTefAction.ERROR ) {
 			Funcoes.mensagemErro( null, e.getMessage() );
 			actionTef = true;
 		}
@@ -211,19 +212,19 @@ public class FAdmTef extends FFilho implements ControllerTefListener, ActionList
 
 		boolean actionTef = false;
 
-		if ( e.getAction() == ControllerTefEvent.BEGIN_PRINT ) {
+		if ( e.getAction() == TextTefAction.BEGIN_PRINT ) {
 			actionTef = true;
 		}
-		else if ( e.getAction() == ControllerTefEvent.PRINT ) {
+		else if ( e.getAction() == TextTefAction.PRINT ) {
 			actionTef = ecf.relatorioGerencial( e.getMessage() );
 		}
-		else if ( e.getAction() == ControllerTefEvent.END_PRINT ) {
+		else if ( e.getAction() == TextTefAction.END_PRINT ) {
 			actionTef = ecf.fecharRelatorioGerencial();
 		}
-		else if ( e.getAction() == ControllerTefEvent.RE_PRINT ) {
+		else if ( e.getAction() == TextTefAction.RE_PRINT ) {
 			actionTef = ecf.fecharRelatorioGerencial();
 		}
-		else if ( e.getAction() == ControllerTefEvent.CONFIRM ) {
+		else if ( e.getAction() == TextTefAction.CONFIRM ) {
 			actionTef = Funcoes.mensagemConfirma( this, e.getMessage() ) == JOptionPane.YES_OPTION;
 		}
 
