@@ -32,15 +32,15 @@ import java.util.Date;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.freedom.tef.driver.Flag;
-import org.freedom.tef.driver.dedicate.DedicateTef;
-import org.freedom.tef.driver.dedicate.DedicateTefEvent;
-import org.freedom.tef.driver.dedicate.DedicateTefListener;
+import org.freedom.tef.driver.dedicate.DedicatedTef;
+import org.freedom.tef.driver.dedicate.DedicatedTefEvent;
+import org.freedom.tef.driver.dedicate.DedicatedTefListener;
 import org.freedom.tef.driver.text.TextTef;
 import org.freedom.tef.driver.text.TextTefAction;
 import org.freedom.tef.driver.text.TextTefFactory;
 import org.freedom.tef.driver.text.TextTefProperties;
 
-public class ControllerTef implements DedicateTefListener {
+public class ControllerTef implements DedicatedTefListener {
 	
 	public static final int TEF_TEXT = 0;
 	
@@ -635,7 +635,7 @@ public class ControllerTef implements DedicateTefListener {
 		boolean actionReturn = false;
 		
 		try {
-			DedicateTef dedicateTef = DedicateTef.getInstance( this );
+			DedicatedTef dedicateTef = DedicatedTef.getInstance( this );
 			dedicateTef.requestSale( value, numberDoc, null/*dateHour*/, operator );
 		}
 		catch ( Exception e ) {
@@ -645,7 +645,7 @@ public class ControllerTef implements DedicateTefListener {
 		return actionReturn;
 	}
 
-	public void actionCommand( DedicateTefEvent e ) {
+	public void actionCommand( DedicatedTefEvent e ) {
 		fireControllerTefEvent( e.getAction(), e.getMessage() );
 	}
 

@@ -1,7 +1,7 @@
 package org.freedom.tef.driver.dedicate;
 
 
-public enum Modalidade {
+public enum Modality {
 	
 	CHEQUE( 0, "Cheque" ),
 	DEBITO( 1, "Débito" ),
@@ -14,7 +14,7 @@ public enum Modalidade {
 	
 	private String name;
 	
-	private Modalidade( Integer code, String name ) {
+	private Modality( Integer code, String name ) {
 		this.code = code;
 		this.name = name;
 	}

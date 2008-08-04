@@ -16,11 +16,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import org.freedom.tef.driver.dedicate.DedicatedAction;
-import org.freedom.tef.driver.dedicate.DedicateTef;
-import org.freedom.tef.driver.dedicate.DedicateTefEvent;
-import org.freedom.tef.driver.dedicate.DedicateTefListener;
+import org.freedom.tef.driver.dedicate.DedicatedTef;
+import org.freedom.tef.driver.dedicate.DedicatedTefEvent;
+import org.freedom.tef.driver.dedicate.DedicatedTefListener;
 
-public class TesteTef extends JFrame implements DedicateTefListener, ActionListener {
+public class TesteTef extends JFrame implements DedicatedTefListener, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,7 +34,7 @@ public class TesteTef extends JFrame implements DedicateTefListener, ActionListe
 
 	private JButton action = null;
 
-	private DedicateTef tef;
+	private DedicatedTef tef;
 
 	private JButton ler_cartao = null;
 
@@ -48,7 +48,7 @@ public class TesteTef extends JFrame implements DedicateTefListener, ActionListe
 		setDefaultCloseOperation( DISPOSE_ON_CLOSE );
 		setLocationRelativeTo( this );
 		
-		tef = DedicateTef.getInstance( "totem.ini", this );		
+		tef = DedicatedTef.getInstance( "totem.ini", this );		
 	}
 
 	private void initialize() {
@@ -62,21 +62,21 @@ public class TesteTef extends JFrame implements DedicateTefListener, ActionListe
 
 		if ( jContentPane == null ) {
 			cliente = new JLabel();
-			cliente.setText( "menssatem para cliente" );
+			cliente.setText( "menssagem para cliente" );
 			cliente.setBackground( Color.darkGray );
 			cliente.setForeground( Color.white );
 			cliente.setHorizontalAlignment( SwingConstants.CENTER );
 			cliente.setOpaque( true );
 			cliente.setBounds( new Rectangle( 10, 120, 470, 60 ) );
 			operador = new JLabel();
-			operador.setText( "menssatem para operador" );
+			operador.setText( "menssagem para operador" );
 			operador.setBackground( Color.darkGray );
 			operador.setForeground( Color.white );
 			operador.setHorizontalAlignment( SwingConstants.CENTER );
 			operador.setOpaque( true );
 			operador.setBounds( new Rectangle( 10, 50, 470, 60 ) );
 			cabecalho = new JLabel();
-			cabecalho.setText( "Cabeçalho do Menu" );
+			cabecalho.setText( "Cabeçario do Menu" );
 			cabecalho.setBackground( Color.darkGray );
 			cabecalho.setForeground( Color.white );
 			cabecalho.setHorizontalAlignment( SwingConstants.CENTER );
@@ -104,7 +104,7 @@ public class TesteTef extends JFrame implements DedicateTefListener, ActionListe
 		return action;
 	}
 
-	public void actionCommand( DedicateTefEvent e ) {
+	public void actionCommand( DedicatedTefEvent e ) {
 
 		if ( e.getSource() == this ) {
 			if ( e.getAction() == DedicatedAction.ERRO ) {
