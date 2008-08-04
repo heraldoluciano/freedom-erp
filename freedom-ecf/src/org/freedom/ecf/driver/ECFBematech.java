@@ -205,6 +205,9 @@ public class ECFBematech extends AbstractECFDriver {
 				result.addAll( checkST2( st2 ) );
 			}
 		}
+		else {
+			result = STResult.getInstanceNotComunication();
+		}
 
 		return result;
 	}

@@ -22,6 +22,13 @@ public class STResult {
 		return result;
 	}
 
+	public static STResult getInstanceNotComunication() {
+
+		STResult result = new STResult();
+		result.add( StatusStandart.IMPRESSORA_SEM_COMUNICACAO );
+		return result;
+	}
+
 	public static STResult getInstanceOk() {
 
 		STResult result = new STResult();
