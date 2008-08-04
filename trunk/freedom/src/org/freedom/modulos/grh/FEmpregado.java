@@ -28,7 +28,6 @@ import java.sql.Connection;
 import java.util.Vector;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JComboBoxPad;
-import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
