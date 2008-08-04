@@ -25,6 +25,7 @@ package org.freedom.modulos.pcp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -224,6 +225,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private Integer iCodTpMov = null;
 
 	private JPanelPad pinBotCab = new JPanelPad( 104, 33 );
+	
+	private JPanelPad pnBtObs = new JPanelPad();
 
 	private ListaCampos lcAlmoxEst = new ListaCampos( this, "AX" );
 
@@ -663,6 +666,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		//adic( btObs2, 600, 30, 30, 30 );
 
 		btFinaliza.setEnabled( false );
+		pnBtObs.setPreferredSize( new Dimension(30,30));
+		pnGImp.setPreferredSize( new Dimension(110, 26));
 		pnGImp.add( btObs2 );
 
 		btRMA.setEnabled( false );
@@ -1672,8 +1677,58 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private void observacao() {
 		
-		FObservacao dl = new FObservacao("Observação");
+		StringBuffer sSQL = new StringBuffer();
+		StringBuffer sSQLupdate = new StringBuffer();
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		String sObs = "";
+		
+		sSQL.append( "SELECT P.OBSOP FROM PPOP P WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODOP=? AND P.SEQOP=? " );
+		sSQLupdate.append( "UPDATE PPOP SET OBSOP=? WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
+		
+		try {
+			
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setInt( 3, txtCodOP.getVlrInteger() );
+			ps.setInt( 4, txtSeqOP.getVlrInteger() );
+			rs = ps.executeQuery();
+			
+			if( rs.next() ){
+				sObs = rs.getString( "OBSOP" );
+			}
+			
+		} catch ( SQLException err ) {
+			
+			err.printStackTrace();
+		}
+		
+		FObservacao dl = new FObservacao( sObs );
 		dl.setVisible( true );
+		
+		if( dl.OK ){
+			
+			try {
+				ps = con.prepareStatement( sSQLupdate.toString() );
+				ps.setString( 1, dl.getTexto() );
+				ps.setInt( 2, Aplicativo.iCodEmp );
+				ps.setInt( 3, ListaCampos.getMasterFilial( "PPOP" ) );
+				ps.setInt( 4, txtCodOP.getVlrInteger() );
+				ps.setInt( 5, txtSeqOP.getVlrInteger() );
+				
+				ps.executeUpdate();
+
+				ps.close();
+
+				if ( !con.getAutoCommit() ) {
+					con.commit();
+				}
+				
+			} catch ( SQLException err ) {
+				Funcoes.mensagemErro( this, "Erro ao inserir observação na OP!\n" + err.getMessage(), true, con, err );
+			}
+		}
 	}
 
 	// Busca Numero de ops relacioadas
