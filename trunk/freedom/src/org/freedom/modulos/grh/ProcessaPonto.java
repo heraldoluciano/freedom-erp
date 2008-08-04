@@ -56,7 +56,7 @@ public class ProcessaPonto extends JFrame implements ActionListener {
 	
 	private JLabel label;
 	
-	private Connection con = null;
+	private static Connection con = null;
 	
 	public ProcessaPonto() {
 		super();
@@ -107,7 +107,7 @@ public class ProcessaPonto extends JFrame implements ActionListener {
 				
 	}
 	
-	private void carregaInfo( String sUsu, String sSenha ){
+	private void carregaInfo(){
 		
 		String Sstatus = "";
 		String sFoto = "";
@@ -120,32 +120,31 @@ public class ProcessaPonto extends JFrame implements ActionListener {
 			
 		try {
 			
-			con = getConexao( sUsu, sSenha );
+			if (con!=null) {
 			
-			if (con==null) {
-				System.out.println("conexão nula");
-			}
-			
-			ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( 1, 5 );
-			ps.setInt( 2, 1 );
-			ps.setInt( 3, 1 );
-			
-			rs = ps.executeQuery();
-			
-			if( rs.next() ){
+				ps = con.prepareStatement( sSQL.toString() );
+				ps.setInt( 1, 5 );
+				ps.setInt( 2, 1 );
+				ps.setInt( 3, 1 );
 				
-				txtNome.setVlrString( rs.getString( "NOMEEMPR") );
+				rs = ps.executeQuery();
 				
-				Blob bVal = rs.getBlob(2);
-				if (bVal != null) {
-					lbFoto.setVlrBytes(bVal.getBinaryStream());
+				if( rs.next() ){
+					
+					txtNome.setVlrString( rs.getString( "NOMEEMPR") );
+					
+					Blob bVal = rs.getBlob(2);
+					if (bVal != null) {
+						lbFoto.setVlrBytes(bVal.getBinaryStream());
+					}
+					
 				}
-				
-//				lbFoto = new JLabelPad( Icone.novo( rs.getBytes( "FOTOEMPR" )));
 			}
-			
-		} catch ( Exception e ) {
+			else {
+				System.out.println("CONEXÃO NULA!");
+			}			
+		} 
+		catch ( Exception e ) {
 			
 			e.printStackTrace();
 		}
@@ -186,8 +185,15 @@ public class ProcessaPonto extends JFrame implements ActionListener {
 	
 	public static void main( String[] args ) {		
 	
-		ProcessaPonto pp =  new ProcessaPonto();
-		pp.carregaInfo( "SYSDBA", "masterkey" );
+		try {
+			ProcessaPonto pp =  new ProcessaPonto();		
+			con = getConexao( "SYSDBA", "masterkey" );		
+			pp.carregaInfo(  );
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	private static Connection getConexao( String sUsu, String sSenha ) {
