@@ -13,7 +13,7 @@ import org.freedom.infra.util.ini.ManagerIni;
 import SoftwareExpress.SiTef.jCliSiTefI;
 	
 
-public class DedicateTef {
+public class DedicatedTef {
 	
 	public static final String ENDERECO_TCP = "ENDERECO_TCP";
 	
@@ -25,29 +25,29 @@ public class DedicateTef {
 	
 	private jCliSiTefI clientesitef;
 	
-	private DedicateTefListener dedicateTefListener;
+	private DedicatedTefListener dedicateTefListener;
 	
-	private static DedicateTef instance;
+	private static DedicatedTef instance;
 	
 	
-	public static DedicateTef getInstance( DedicateTefListener dedicateTefListener ) throws Exception {
+	public static DedicatedTef getInstance( DedicatedTefListener dedicateTefListener ) throws Exception {
 
 		if ( instance == null ) {
-			instance = new DedicateTef( dedicateTefListener );
+			instance = new DedicatedTef( dedicateTefListener );
 		}
 		
 		return instance;
 	}
 	
-	public static DedicateTef getInstance( String file, DedicateTefListener dedicateTefListener ) throws Exception {
+	public static DedicatedTef getInstance( String file, DedicatedTefListener dedicateTefListener ) throws Exception {
 		
 		return getInstance( new File( file ), dedicateTefListener );
 	}
 	
-	public static DedicateTef getInstance( File file, DedicateTefListener dedicateTefListener ) throws Exception {
+	public static DedicatedTef getInstance( File file, DedicatedTefListener dedicateTefListener ) throws Exception {
 
 		if ( file.exists() ) {
-			instance = new DedicateTef( file, dedicateTefListener );
+			instance = new DedicatedTef( file, dedicateTefListener );
 		}
 		else {
 			instance = null;
@@ -56,16 +56,16 @@ public class DedicateTef {
 		return instance;
 	}
 	
-	public DedicateTefListener getDedicateTefListener() {	
+	public DedicatedTefListener getDedicateTefListener() {	
 		return dedicateTefListener;
 	}
 	
-	private DedicateTef( DedicateTefListener dedicateTefListener ) throws Exception {
+	private DedicatedTef( DedicatedTefListener dedicateTefListener ) throws Exception {
 
 		this( new File( System.getProperty( ManagerIni.FILE_INIT_DEFAULT ) ), dedicateTefListener );
 	}
 	
-	private DedicateTef( File file, DedicateTefListener dedicateTefListener ) throws Exception {
+	private DedicatedTef( File file, DedicatedTefListener dedicateTefListener ) throws Exception {
 		
 		if ( file == null || !file.exists() ) {
 			throw new IllegalArgumentException( "Arquivo de parametros não existente." );
@@ -97,43 +97,47 @@ public class DedicateTef {
 		check : {
 			if ( result == 1 ) {
 				dedicateTefListener.actionCommand( 
-						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
 								              "Endereço IP inválido ou não resolvido." ) );
 				break check;
     		} 
 			else if ( result == 2 ) {
 				dedicateTefListener.actionCommand( 
-						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
 								              "Código da loja inválido." ) );
 				break check;
     		} 
 			else if ( result == 3 ) {
 				dedicateTefListener.actionCommand( 
-						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
 								              "Código do terminal inválido." ) );
 				break check;
     		} 
 			else if ( result == 6 ) {
 				dedicateTefListener.actionCommand( 
-						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
 								              "Erro na inicialização TCP/IP." ) );
 				break check;
     		} 
 			else if ( result == 7 ) {
 				dedicateTefListener.actionCommand( 
-						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
 								              "Falta de memória." ) );
 				break check;
     		} 
 			else if ( result == 8 ) {
 				dedicateTefListener.actionCommand( 
-						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
 								              "Não encontrou a dll CliSiTef ou ela está com problemas." ) );
 				break check;
     		} 
 			else {
 				checked = true;
     		} 
+		}
+		
+		if ( ! checked ) {
+			System.out.println( "buffer= " + clientesitef.GetBuffer() );
 		}
 
 		return checked;
@@ -146,49 +150,53 @@ public class DedicateTef {
 		check : {
 			if ( result > 0 && result < 10000 ) {
 				dedicateTefListener.actionCommand( 
-						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
 								              "Negada pelo autorizador." ) );
 				break check;
 			} 
 			else if ( result == -1 ) {
 				dedicateTefListener.actionCommand( 
-						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
 								              "Modulo não inicializado." ) );
 				break check;
 			} 
 			else if ( result == -2 ) {
 				dedicateTefListener.actionCommand( 
-						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
 								              "Operação cancelada pelo operador." ) );
 				break check;
 			} 
 			else if ( result == -3 ) {
 				dedicateTefListener.actionCommand( 
-						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
 								              "Fornecida uma modalidade inválida." ) );
 				break check;
 			} 
 			else if ( result == -4 ) {
 				dedicateTefListener.actionCommand( 
-						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
 								              "Falta de memória para rodar a função." ) );
 				break check;
 			} 
 			else if ( result == -5 ) {
 				dedicateTefListener.actionCommand( 
-						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
 								              "Sem comunicação com o SiTef." ) );
 				break check;
 			} 
 			else if ( result < 0 ) {
 				dedicateTefListener.actionCommand( 
-						new DedicateTefEvent( dedicateTefListener, DedicatedAction.ERRO,
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
 								              "Erro interno não mapeado." ) );
 				break check;
 			} 
 			else {
 				checked = true;
 			} 
+		}
+		
+		if ( ! checked ) {
+			System.out.println( "buffer= " + clientesitef.GetBuffer() );
 		}
 	
 		return checked;
@@ -219,7 +227,7 @@ public class DedicateTef {
 		String date = sdf1.format( dateHour );
 		String hour = sdf2.format( dateHour );
 		
-		int result = clientesitef.IniciaFuncaoSiTefInterativo( Modalidade.DEBITO.getCode() ,
+		int result = clientesitef.IniciaFuncaoSiTefInterativo( Modality.DEBITO.getCode() ,
                                                         	   df.format( value.doubleValue() ) ,
                                                         	   String.valueOf( docNumber ) ,
                                                         	   date ,
@@ -268,7 +276,7 @@ public class DedicateTef {
 		if ( dedicateTefListener != null ) {
     		if ( nextCommand == DedicatedAction.REMOVER_CABECALHO_MENU.code() ) {
     			dedicateTefListener.actionCommand( 
-    					new DedicateTefEvent( dedicateTefListener, DedicatedAction.REMOVER_CABECALHO_MENU, 
+    					new DedicatedTefEvent( dedicateTefListener, DedicatedAction.REMOVER_CABECALHO_MENU, 
     							              clientesitef.GetBuffer().trim() ) );
     		} 				
 		}

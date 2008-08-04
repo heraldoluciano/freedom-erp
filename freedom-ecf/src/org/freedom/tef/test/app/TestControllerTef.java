@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 import org.freedom.tef.app.ControllerTef;
 import org.freedom.tef.app.ControllerTefEvent;
 import org.freedom.tef.app.ControllerTefListener;
-import org.freedom.tef.driver.dedicate.DedicateTef;
+import org.freedom.tef.driver.dedicate.DedicatedTef;
 import org.freedom.tef.driver.dedicate.DedicatedAction;
 import org.freedom.tef.driver.text.TextTefAction;
 import org.freedom.tef.driver.text.TextTefProperties;

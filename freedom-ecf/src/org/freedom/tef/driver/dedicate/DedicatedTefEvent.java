@@ -4,20 +4,20 @@ import org.freedom.tef.app.TefAction;
 
 
 
-public class DedicateTefEvent {
+public class DedicatedTefEvent {
 	
-	private DedicateTefListener dedicateTefListener;
+	private DedicatedTefListener dedicateTefListener;
 
 	private TefAction action;
 	
 	private String message;
 	
-	public DedicateTefEvent( final DedicateTefListener dedicateTefListener, 
+	public DedicatedTefEvent( final DedicatedTefListener dedicateTefListener, 
 			                 final TefAction action ) { 
 		this( dedicateTefListener, action, null );
 	}	
 	
-	public DedicateTefEvent( final DedicateTefListener dedicateTefListener, 
+	public DedicatedTefEvent( final DedicatedTefListener dedicateTefListener, 
 			                 final TefAction action,
 			                 final String message ) { 
 		super();
@@ -26,7 +26,7 @@ public class DedicateTefEvent {
 		this.message = message;
 	}	
 	
-	public DedicateTefListener getSource() {	
+	public DedicatedTefListener getSource() {	
 		return dedicateTefListener;
 	}
 
