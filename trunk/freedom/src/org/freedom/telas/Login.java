@@ -221,7 +221,8 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 			params.put("password", sSenha);
 			cRetorno = DriverManager.getConnection(strBanco, params);
 			cRetorno.setAutoCommit(false);
-		} catch (java.sql.SQLException e) {
+		} 
+		catch (java.sql.SQLException e) {
 			if (e.getErrorCode() == 335544472)
 				System.out.println("Nome do usuário ou senha inválidos ! ! !");
 			else                                                                             
