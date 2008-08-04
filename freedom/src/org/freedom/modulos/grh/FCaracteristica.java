@@ -34,7 +34,6 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.modulos.atd.DLRTipoConv;
 import org.freedom.telas.FDados;
 
 public class FCaracteristica extends FDados implements ActionListener {
