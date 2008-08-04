@@ -10,6 +10,8 @@ public final class StatusStandart implements Status {
 	public final static StatusStandart RETORNO_INDEFINIDO = new StatusStandart( 101, RELEVANC_ERRO, "Retorno indefinido: " );
 
 	public final static StatusStandart FUNCAO_NAO_IMPLEMENTADA = new StatusStandart( -1, RELEVANC_ERRO, "Comando não implementado pelo driver de comunicação." );
+	
+	public final static StatusStandart IMPRESSORA_SEM_COMUNICACAO = new StatusStandart( -1, RELEVANC_ERRO, "Impressora não responde." );
 
 	private String message;
 
