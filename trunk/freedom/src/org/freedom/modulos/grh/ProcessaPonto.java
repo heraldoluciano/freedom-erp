@@ -4,19 +4,19 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.PainelImagem;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.infra.x.swing.JFrame;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.Login;
 import java.awt.event.*;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -31,10 +31,8 @@ public class ProcessaPonto extends JFrame implements ActionListener {
 	private JPanelPad pnFoto = new JPanelPad( );
 	
 	private JPanelPad pnCampos = new JPanelPad();
-	
-	private PainelImagem ImgFoto = new PainelImagem( 65000 );
-	
-	private JTextFieldPad txtCodBar = new JTextFieldPad( JTextFieldPad.TP_STRING , 30, 0);
+		
+	private JTextFieldPad txtCodMatricula = new JTextFieldPad( JTextFieldPad.TP_STRING , 30, 0);
 	
 	private JTextFieldPad txtData = new JTextFieldPad( JTextFieldPad.TP_DATE , 12, 0);
 	
@@ -46,9 +44,13 @@ public class ProcessaPonto extends JFrame implements ActionListener {
 	
 	private JLabelPad lbLogo =  new JLabelPad( Icone.novo( "bannerPonto.jpg" ) );
 	
+	private JLabelPad lbFoto = null;
+	
 	private javax.swing.Timer timer;
 	
 	private JLabel label;
+	
+	private Connection con = null;
 	
 	public ProcessaPonto() {
 		super();
@@ -66,25 +68,22 @@ public class ProcessaPonto extends JFrame implements ActionListener {
 		this.setResizable( false );
 		montaTela();
 		disparaRelogio();
-		
 	}
 	
 	private void montaTela(){
 		
 		add( pnGeral );
 	
-	
 		pnLogo.setPreferredSize( new Dimension( 400, 50 ) );
 		pnGeral.add( pnLogo, BorderLayout.NORTH );
 		pnLogo.add( lbLogo, BorderLayout.CENTER );
 		pnFoto.setPreferredSize( new Dimension( 100, 50 ) );
 		pnGeral.add( pnFoto, BorderLayout.EAST );
-		pnFoto.adic( ImgFoto, 0, 0, 95, 115 );
 		pnCampos.setPreferredSize( new Dimension( 410, 100 ) );
 		pnGeral.add( pnCampos, BorderLayout.WEST );		
 	
-		pnCampos.adic( new JLabelPad("Código de barras"), 7, 5, 300, 20 );
-		pnCampos.adic( txtCodBar, 7, 25, 200, 20 );
+		pnCampos.adic( new JLabelPad("Matricula"), 7, 5, 300, 20 );
+		pnCampos.adic( txtCodMatricula, 7, 25, 200, 20 );
 		pnCampos.adic( new JLabelPad("Nome"), 7, 45, 300, 20 );
 		txtNome.setEditable( false );
 		pnCampos.adic( txtNome, 7, 65, 200, 20 );
@@ -92,7 +91,7 @@ public class ProcessaPonto extends JFrame implements ActionListener {
 		pnCampos.adic( txtData, 210, 25, 80, 20 );		
 		txtData.setVlrDate( new Date() );
 		txtData.setEditable( false );
-		txtCodBar.requestFocus();
+		txtCodMatricula.requestFocus();
 	
 		pnCampos.adic( new JLabelPad("Horário"), 300, 5, 80, 20 );
 		label = new JLabel();
@@ -102,13 +101,48 @@ public class ProcessaPonto extends JFrame implements ActionListener {
 				
 	}
 	
-	private void carregaInfo(){
+	private void carregaInfo( String sUsu, String sSenha ){
 		
-		String status = null;
+		String Sstatus = "";
+		String sFoto = "";
+		StringBuffer sSQL = new StringBuffer();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		
+		sSQL.append( "SELECT NOMECAND, FOTOEMPR FROM RHCANDIDATO " );
+		sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND MATEMPR=?" );
+			
+		try {
+			
+			con = getConexao( sUsu, sSenha );
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "RHCANDIDATO" ) );
+			ps.setInt( 3, 1 );
+			
+			rs = ps.executeQuery();
+			
+			if( rs.next() ){
+				
+				txtNome.setVlrString( "NOMECAND" );
+				//lbFoto = new JLabelPad( Icone.novo( rs.getString( "FOTOEMPR" )));
+			}
+			
+		} catch ( Exception e ) {
+			
+			e.printStackTrace();
+		}
 		
-		lbStatus = new JLabelPad( Icone.novo( status + ".jpg" ) );
+		lbStatus = new JLabelPad( Icone.novo( Sstatus + ".jpg" ) );
+		pnCampos.adic( lbStatus, 320, 65, 50, 50 );
+		//pnFoto.adic( lbFoto, 0, 0, 95, 115 );
 		
+	}
+	
+	private void limpaInfo(){
+		
+		txtCodMatricula.setVlrString( "" );
+		txtNome.setVlrString( "" );
 	}
 	
 	private  void disparaRelogio() {		
@@ -124,7 +158,7 @@ public class ProcessaPonto extends JFrame implements ActionListener {
 	
 	public void actionPerformed( ActionEvent e ) {
 		
-		if (e.getSource()==timer) {
+		if( e.getSource() == timer ) {
 			GregorianCalendar calendario = new GregorianCalendar();
 			int h = calendario.get( GregorianCalendar.HOUR_OF_DAY );
 			int m = calendario.get( GregorianCalendar.MINUTE );
@@ -132,12 +166,12 @@ public class ProcessaPonto extends JFrame implements ActionListener {
 			String hora = ( ( h < 10 ) ? "0" : "" ) + h + ":" + ( ( m < 10 ) ? "0" : "" ) + m + ":" + ( ( s < 10 ) ? "0" : "" ) + s;
 			label.setText( hora );
 		}
-		
 	}
 	
 	public static void main( String[] args ) {		
 	
-		new ProcessaPonto();
+		ProcessaPonto pp =  new ProcessaPonto();
+		pp.carregaInfo( "SYSDBA", "masterkey" );
 	}
 	
 	private static Connection getConexao( String sUsu, String sSenha ) {
