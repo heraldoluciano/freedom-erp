@@ -3,22 +3,26 @@ package org.freedom.modulos.grh;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.PainelImagem;
 import org.freedom.infra.x.swing.JFrame;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.Login;
-import java.awt.event.*;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 public class ProcessaPonto extends JFrame implements ActionListener {
 	
@@ -44,7 +48,9 @@ public class ProcessaPonto extends JFrame implements ActionListener {
 	
 	private JLabelPad lbLogo =  new JLabelPad( Icone.novo( "bannerPonto.jpg" ) );
 	
-	private JLabelPad lbFoto = null;
+//	private JLabelPad lbFoto = null;
+	
+	private PainelImagem lbFoto = new PainelImagem( 65000 );
 	
 	private javax.swing.Timer timer;
 	
@@ -109,23 +115,34 @@ public class ProcessaPonto extends JFrame implements ActionListener {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
-		sSQL.append( "SELECT NOMECAND, FOTOEMPR FROM RHCANDIDATO " );
+		sSQL.append( "SELECT NOMEEMPR, FOTOEMPR FROM RHEMPREGADO " );
 		sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND MATEMPR=?" );
 			
 		try {
 			
 			con = getConexao( sUsu, sSenha );
+			
+			if (con==null) {
+				System.out.println("conexão nula");
+			}
+			
 			ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "RHCANDIDATO" ) );
+			ps.setInt( 1, 5 );
+			ps.setInt( 2, 1 );
 			ps.setInt( 3, 1 );
 			
 			rs = ps.executeQuery();
 			
 			if( rs.next() ){
 				
-				txtNome.setVlrString( "NOMECAND" );
-				//lbFoto = new JLabelPad( Icone.novo( rs.getString( "FOTOEMPR" )));
+				txtNome.setVlrString( rs.getString( "NOMEEMPR") );
+				
+				Blob bVal = rs.getBlob(2);
+				if (bVal != null) {
+					lbFoto.setVlrBytes(bVal.getBinaryStream());
+				}
+				
+//				lbFoto = new JLabelPad( Icone.novo( rs.getBytes( "FOTOEMPR" )));
 			}
 			
 		} catch ( Exception e ) {
@@ -133,9 +150,8 @@ public class ProcessaPonto extends JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 		
-		lbStatus = new JLabelPad( Icone.novo( Sstatus + ".jpg" ) );
-		pnCampos.adic( lbStatus, 320, 65, 50, 50 );
-		//pnFoto.adic( lbFoto, 0, 0, 95, 115 );
+		//pnCampos.adic( lbStatus, 320, 65, 50, 50 );
+		pnFoto.adic( lbFoto, 0, 0, 95, 115 );
 		
 	}
 	
@@ -178,9 +194,10 @@ public class ProcessaPonto extends JFrame implements ActionListener {
 
 		Connection con = null;
 		try {
+			Aplicativo.setLookAndFeel( null );
 			String strBanco = Aplicativo.getParameter( "banco" );
 			String strDriver = Aplicativo.getParameter( "driver" );
-			Login.getConexao( strBanco, strDriver, sUsu, sSenha );
+			con = Login.getConexao( strBanco, strDriver, sUsu, sSenha );
 		} 
 		catch ( Exception e ) {
 			e.printStackTrace();
