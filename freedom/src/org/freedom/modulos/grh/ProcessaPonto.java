@@ -15,8 +15,8 @@ import java.sql.ResultSet;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JLabelPad;
@@ -27,6 +27,9 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.x.swing.JFrame;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.Login;
+import org.jfree.ui.Align;
+
+import bizcal.web.util.Border;
 
 public class ProcessaPonto extends JFrame implements ActionListener, KeyListener {
 	
@@ -35,32 +38,32 @@ public class ProcessaPonto extends JFrame implements ActionListener, KeyListener
 	private JPanelPad pnGeral = new JPanelPad( new BorderLayout());
 	
 	private JPanelPad pnLogo = new JPanelPad( new BorderLayout() );
-	
+
 	private JPanelPad pnFoto = new JPanelPad( );
 	
 	private JPanelPad pnCampos = new JPanelPad();
 		
-	private JTextFieldPad txtCodMatricula = new JTextFieldPad( JTextFieldPad.TP_STRING , 30, 0);
+	private JTextFieldPad txtMatricula = new JTextFieldPad( JTextFieldPad.TP_STRING , 30, 0);
 	
 	private JTextFieldPad txtData = new JTextFieldPad( JTextFieldPad.TP_DATE , 12, 0);
 	
-	private JTextFieldPad txtHorario = new JTextFieldPad( JTextFieldPad.TP_TIME , 20, 0);
+	private JTextFieldPad txtRelogio = new JTextFieldPad( JTextFieldPad.TP_TIME , 20, 0);
 		
 	private JLabelPad lbStatus = null;
 	
 	private JLabelPad lbLogo =  new JLabelPad( Icone.novo( "bannerPonto.jpg" ) );
 	
-//	private JLabelPad lbFoto = null;
-	
-	private PainelImagem lbFoto = new PainelImagem( 260000 );
+	private PainelImagem piFoto = new PainelImagem( 260000 );
 	
 	private javax.swing.Timer timer;
 	
-	private JLabel label;
+//	private JLabel lbRelogio = new JLabel();
 	
-	private JLabel lbApelido;
+	private JTextFieldPad txtApelido = new JTextFieldPad( JTextFieldPad.TP_STRING , 30, 0);
 	
 	private static Connection con = null;
+	
+	private Font fntPad01 = new Font( "Arial", Font.BOLD, 16 );
 	
 	public ProcessaPonto() {
 		super();
@@ -69,47 +72,75 @@ public class ProcessaPonto extends JFrame implements ActionListener, KeyListener
 	
 	private void initialize() {		
 		
-		this.setSize( new Dimension( 510, 200 ) );
+		this.setSize( new Dimension( 508, 325 ) );
 		this.setAlwaysOnTop( true );
 		this.setTitle( "Ponto eletrônico" );
 		this.setLocation( 200, 200 );
 		this.setVisible( true );
 		this.setDefaultCloseOperation( DISPOSE_ON_CLOSE );	
-		//this.setResizable( false );
+
 		montaTela();
 		disparaRelogio();
 		
-		txtCodMatricula.addKeyListener( this );
+		txtMatricula.addKeyListener( this );
 	}
 	
 	private void montaTela(){
 		
 		add( pnGeral );
 	
-		pnLogo.setPreferredSize( new Dimension( 400, 50 ) );
+//		JPanel panel = new JPanel();
+		
+		txtMatricula.setFont( fntPad01 );
+		
+		txtApelido.setFont( fntPad01 );
+		txtApelido.setHorizontalAlignment( Align.CENTER );
+//		txtApelido.setBackground( new Color(227,227,227) );
+		txtApelido.setBackground( Color.WHITE );
+		
+		txtRelogio.setFont( fntPad01 );
+		txtData.setFont( fntPad01 );
+		
+		txtData.setBorder( null );
+		txtRelogio.setBorder( null );
+		txtApelido.setBorder( BorderFactory.createLineBorder( Color.BLACK, 1 ) );
+		
+		txtApelido.setForeground( Color.BLUE );
+		
+		pnLogo.setPreferredSize( new Dimension( 510, 50 ) );
+		
 		pnGeral.add( pnLogo, BorderLayout.NORTH );
-		pnLogo.add( lbLogo, BorderLayout.CENTER );
-		pnFoto.setPreferredSize( new Dimension( 100, 50 ) );
+		
+		pnLogo.add( lbLogo, BorderLayout.CENTER ) ;
+				
+		pnFoto.setPreferredSize( new Dimension( 154, 200 ) );
 		pnGeral.add( pnFoto, BorderLayout.EAST );
 		pnCampos.setPreferredSize( new Dimension( 410, 100 ) );
 		pnGeral.add( pnCampos, BorderLayout.WEST );		
 	
 		pnCampos.adic( new JLabelPad("Matricula"), 7, 5, 300, 20 );
-		pnCampos.adic( txtCodMatricula, 7, 25, 150, 30 );
-		lbApelido = new JLabel();
-		pnCampos.adic( lbApelido, 7, 65, 150, 20 );
-		lbApelido.setFont( new Font( "Arial", Font.BOLD, 16 ) );	
-		lbApelido.setForeground( Color.BLUE );
-		pnCampos.adic( txtData, 210, 25, 80, 20 );		
+
+		pnCampos.adic( txtMatricula, 7, 25, 150, 30 );		
+
+		pnCampos.adic( txtData, 180, 30, 85, 20 );
+		pnCampos.adic( txtRelogio,  265, 30, 75, 20  );
+				
+		pnFoto.adic( piFoto, 5, 5, 142, 189 );
+		
+		pnFoto.setBorder( BorderFactory.createLineBorder( Color.LIGHT_GRAY, 1 ) );		
+		
+		piFoto.setBorder( BorderFactory.createLineBorder( Color.BLACK, 1 ) );
+		
+		pnFoto.setBackground( Color.WHITE );
+		pnFoto.adic(txtApelido, 5, 205, 142, 26);
+		
 		txtData.setVlrDate( new Date() );
+		
 		txtData.setEditable( false );
-		txtCodMatricula.requestFocus();
-	
-		label = new JLabel();
-		label.setFont( new Font( "Arial", Font.BOLD, 16 ) );
-		JPanel panel = new JPanel();
-		pnCampos.adic( label,  300, 75, 90, 20  );	
-		pnFoto.adic( lbFoto, 0, 0, 95, 115 );
+		txtRelogio.setEditable( false );
+		txtApelido.setEditable( false );
+		
+		txtMatricula.requestFocus();
 				
 	}
 	
@@ -132,17 +163,17 @@ public class ProcessaPonto extends JFrame implements ActionListener, KeyListener
 				ps = con.prepareStatement( sSQL.toString() );
 				ps.setInt( 1, 5 );
 				ps.setInt( 2, 1 );
-				ps.setInt( 3, txtCodMatricula.getVlrInteger() );
+				ps.setInt( 3, txtMatricula.getVlrInteger() );
 				
 				rs = ps.executeQuery();
 				
 				if( rs.next() ){
 					
-					lbApelido.setText( rs.getString( "APELIDOEMPR") );
+					txtApelido.setVlrString( rs.getString( "APELIDOEMPR") );
 					
 					Blob bVal = rs.getBlob(2);
 					if (bVal != null) {
-						lbFoto.setVlrBytes(bVal.getBinaryStream());
+						piFoto.setVlrBytes(bVal.getBinaryStream());
 					}
 					bRet = true;
 				}
@@ -179,7 +210,7 @@ public class ProcessaPonto extends JFrame implements ActionListener, KeyListener
 			int m = calendario.get( GregorianCalendar.MINUTE );
 			int s = calendario.get( GregorianCalendar.SECOND );
 			String hora = ( ( h < 10 ) ? "0" : "" ) + h + ":" + ( ( m < 10 ) ? "0" : "" ) + m + ":" + ( ( s < 10 ) ? "0" : "" ) + s;
-			label.setText( hora );
+			txtRelogio.setVlrString( hora );
 		}
 	}
 	
@@ -188,7 +219,6 @@ public class ProcessaPonto extends JFrame implements ActionListener, KeyListener
 		try {
 			ProcessaPonto pp =  new ProcessaPonto();		
 			con = getConexao( "SYSDBA", "masterkey" );		
-			//pp.carregaInfo();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -219,16 +249,16 @@ public class ProcessaPonto extends JFrame implements ActionListener, KeyListener
 
 	public void keyPressed( KeyEvent e ) {
 
-		if( e.getSource() == txtCodMatricula ){
+		if( e.getSource() == txtMatricula ){
 			if( e.getKeyCode() == KeyEvent.VK_ENTER ){
 				
 				if( carregaInfo() ){
-					txtCodMatricula.requestFocus();
+					txtMatricula.requestFocus();
 				//	insertPonto();
 					
 				}else{
 					Funcoes.mensagemInforma( null, "Matricula não encontrada!" );
-					txtCodMatricula.requestFocus();
+					txtMatricula.requestFocus();
 				}
 			}
 		}		
