@@ -39,14 +39,17 @@ public class FUnidade extends FDados implements ActionListener{
 
 	private JTextFieldPad txtCodUnidade = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
 	
-	private JTextFieldPad txtDescUnidade= new JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
+	private JTextFieldPad txtDescUnidade = new JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
+	
+	private JTextFieldPad txtCasasDec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	
 	public FUnidade () {
 		super();
 		setTitulo("Cadastro de Unidades");
-		setAtribos( 50, 50, 450, 125);
+		setAtribos( 50, 50, 450, 160);
 		adicCampo(txtCodUnidade, 7, 20, 110, 20,"CodUnid","Cód.unid.",ListaCampos.DB_PK, true);
 		adicCampo(txtDescUnidade, 120, 20, 300, 20,"DescUnid","Descrição da unidade",ListaCampos.DB_SI, true);
+		adicCampo(txtCasasDec, 7, 60, 110, 20,"CasasDec","Casas decimais",ListaCampos.DB_SI, true);
 		setListaCampos( true, "UNIDADE", "EQ");
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
