@@ -109,6 +109,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		tipoCampo = tipo;    
 	}
 	
+	public void setDecimal(int dec) {
+		iDecimal = dec;
+	}
+	
 	public boolean isFocusable() {
 		return (bAtivo);
 	}
