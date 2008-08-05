@@ -647,7 +647,7 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Oblique" size="9" isItalic="true"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRMAX}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRMAX}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
