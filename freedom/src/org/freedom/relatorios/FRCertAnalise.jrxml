@@ -88,11 +88,11 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 	<field name="DESCAFER" class="java.lang.String"/>
 	<field name="NOMERESP" class="java.lang.String"/>
 	<field name="IDENTPROFRESP" class="java.lang.String"/>
-	<field name="IMGASSRESP" class="java.sql.Blob"/>
+	<field name="IMGASSRESP" class="java.io.InputStream"/>
 	<field name="CODPROD" class="java.lang.Long"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="DESCMTANALISE" class="java.lang.String"/>
-	<field name="CASASDEC" class="java.lang.Short"/>
+	<field name="CASASDEC" class="java.lang.Integer"/>
 	<field name="ESPECIFICACAO" class="java.lang.String"/>
 
 
@@ -634,7 +634,7 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Oblique" size="9" isItalic="true"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRMIN}.setScale($F{CASASDEC},BigDecimal.ROUND_UNNECESSARY)]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
