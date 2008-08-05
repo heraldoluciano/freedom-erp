@@ -497,6 +497,8 @@ public class FRBoleto extends FRelatorio {
 					sTxa = sTxa.replaceAll( "\\[TOTAL_PARCELAS]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
 				if ( ( sCampo = rs.getString( "NomeVend" ) ) != null || ( sCampo = rs.getString( "NomeVend" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[_______COMISSIONADO1_______]", sCampo.trim() );
+				if ( ( sCampo = rs.getString( "NomeVend2" ) ) != null || ( sCampo = rs.getString( "NomeVend2" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[_______COMISSIONADO2_______]", sCampo.trim() );
 				
 				// Aplicar campos especiais de dados:
 
@@ -898,7 +900,7 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "WHERE VA.CODEMP=V.CODEMP AND VA.CODFILIAL=V.CODFILIAL AND " );
 			sSQL.append( "VA.CODORC =(SELECT FIRST 1 VO.CODORC FROM VDVENDAORC VO " );
 			sSQL.append( "WHERE VO.CODEMP=V.CODEMP AND VO.CODFILIAL=VO.CODFILIAL AND " );
-			sSQL.append( "VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA)) AS OBSORC " );
+			sSQL.append( "VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA)) AS OBSORC, VD2.nomevend NOMEVEND2 " );
 /*			sql.append( "SELECT F.RAZFILIAL, C.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, " );
 			sql.append( "MB.INSTPAGMODBOL, B.IMGBOLBANCO, IM.CONVCOB " );
 			sql.append( "FROM SGFILIAL F, FNCONTA C, FNMODBOLETO MB, FNBANCO B, FNITMODBOLETO IM " );
@@ -910,9 +912,14 @@ public class FRBoleto extends FRelatorio {
 			sql.append( "C.CODEMP=MB.CODEMPCC AND C.CODFILIAL=MB.CODFILIALCC AND C.NUMCONTA=MB.NUMCONTA AND " );
 			sql.append( "B.CODEMPMB=MB.CODEMP AND B.CODFILIALMB=MB.CODFILIAL AND B.CODMODBOL=MB.CODMODBOL" );
 */
-			sSQL.append( "FROM VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, " );
+			sSQL.append( "FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, " );
 			sSQL.append( "FNMODBOLETO MB, FNITMODBOLETO IM, VDITVENDA IV, LFNATOPER N,  FNITRECEBER ITR, ");
-			sSQL.append( "SGFILIAL F, FNCONTA CT, VDVENDEDOR VD " );
+			sSQL.append( "SGFILIAL F, FNCONTA CT, VDVENDEDOR VD, VDVENDA V left outer join vdvendacomis vc " );
+			sSQL.append( "on vc.codemp = v.codemp and vc.codfilial=v.codfilial and vc.codvenda=v.codvenda and vc.tipovenda=v.tipovenda " );
+			sSQL.append( "and vc.seqvc=(select min(vc2.seqvc) from vdvendacomis vc2 where vc2.codemp = v.codemp and vc2.codfilial=v.codfilial " );
+			sSQL.append( "and vc2.codvenda=v.codvenda and vc2.tipovenda=v.tipovenda) " );
+			sSQL.append( "left outer join vdvendedor vd2 on "); 
+			sSQL.append( "vd2.codemp = vc.codempvd and vd2.codfilial=vc.codfilialvd and vd2.codvend=vc.codvend " );
 			sSQL.append( "WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND " );
 			sSQL.append( "V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND " );
 			sSQL.append( "F.CODEMP=R.CODEMP AND F.CODFILIAL=R.CODFILIAL AND ");
@@ -935,6 +942,8 @@ public class FRBoleto extends FRelatorio {
 
 			String strDebug = sSQL.toString();
 
+			System.out.println(sSQL.toString());
+			
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( param++, Aplicativo.iCodEmp );
 
