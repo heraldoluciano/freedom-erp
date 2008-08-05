@@ -51,9 +51,7 @@ public class ProcessaPonto extends JFrame implements ActionListener, KeyListener
 	private PainelImagem piFoto = new PainelImagem( 260000 );
 	
 	private javax.swing.Timer timer;
-	
-//	private JLabel lbRelogio = new JLabel();
-	
+		
 	private JTextFieldPad txtApelido = new JTextFieldPad( JTextFieldPad.TP_STRING , 30, 0);
 	
 	private static Connection con = null;
@@ -83,14 +81,11 @@ public class ProcessaPonto extends JFrame implements ActionListener, KeyListener
 	private void montaTela(){
 		
 		add( pnGeral );
-	
-//		JPanel panel = new JPanel();
 		
 		txtMatricula.setFont( fntPad01 );
 		
 		txtApelido.setFont( fntPad01 );
 		txtApelido.setHorizontalAlignment( Align.CENTER );
-//		txtApelido.setBackground( new Color(227,227,227) );
 		txtApelido.setBackground( Color.WHITE );
 		txtMatricula.setBorder( BorderFactory.createLineBorder( Color.BLACK, 1 ) );
 		piFoto.setBorder( null );
