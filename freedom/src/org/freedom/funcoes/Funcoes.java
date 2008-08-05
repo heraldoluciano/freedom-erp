@@ -44,6 +44,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -504,6 +505,33 @@ public class Funcoes {
 		}
 
 		return cidade;
+	}
+	
+	public static String getCasasDecUnid( String codUnid, Connection con ){
+		
+		String casasDec = "";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sSQL = new StringBuilder();
+		
+		try {
+			
+			sSQL.append( "SELECT CASASDEC FROM EQUNIDADE WHERE CODEMP=? AND CODFILIAL=? AND CODUNID=?" );
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQUNIDADE" ) );
+			ps.setString( 3, codUnid );
+			rs = ps.executeQuery();
+			
+			if( rs.next() ){
+				casasDec = rs.getString( "CASASDEC" );
+			}
+			
+		} catch ( SQLException  e ) {
+			e.printStackTrace();
+		}
+		
+		return casasDec;
 	}
 	
 	public static String getCidadeDiaMesAnoExtenso(String cidade, Date data) {		
