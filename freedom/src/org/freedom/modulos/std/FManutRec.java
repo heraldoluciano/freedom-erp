@@ -181,11 +181,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JTextFieldPad txtTotRecBaixa = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldPad txtTotAbertoBaixa = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldPad txtTotAbertoBaixa = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15,  Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtTotPagoBaixa = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldPad txtTotPagoBaixa = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15,  Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtJurosBaixa = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldPad txtJurosBaixa = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15,  Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtDatainiManut = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -821,9 +821,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 			if ( rs.next() ) {
 
-				txtVlrTotCompr.setVlrString( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( 1 ) ) );
-				txtVlrTotPago.setVlrString( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( 2 ) ) );
-				txtVlrTotAberto.setVlrString( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( 3 ) ) );
+				txtVlrTotCompr.setVlrString( Funcoes.strDecimalToStrCurrency( 15,  Aplicativo.casasDecFin, rs.getString( 1 ) ) );
+				txtVlrTotPago.setVlrString( Funcoes.strDecimalToStrCurrency( 15,  Aplicativo.casasDecFin, rs.getString( 2 ) ) );
+				txtVlrTotAberto.setVlrString( Funcoes.strDecimalToStrCurrency( 15,  Aplicativo.casasDecFin, rs.getString( 3 ) ) );
 				txtPrimCompr.setVlrString( rs.getDate( 4 ) != null ? Funcoes.sqlDateToStrDate( rs.getDate( 4 ) ) : "" );
 				txtUltCompr.setVlrString( rs.getDate( 5 ) != null ? Funcoes.sqlDateToStrDate( rs.getDate( 5 ) ) : "" );
 			}
@@ -851,7 +851,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			rs1 = ps1.executeQuery();
 
 			if ( rs1.next() ) {
-				txtVlrMaxFat.setVlrString( Funcoes.strDecimalToStrCurrency( 15, 2, rs1.getString( 1 ) ) );
+				txtVlrMaxFat.setVlrString( Funcoes.strDecimalToStrCurrency( 15,  Aplicativo.casasDecFin, rs1.getString( 1 ) ) );
 				txtDataMaxFat.setVlrString( Funcoes.sqlDateToStrDate( rs1.getDate( "DATAREC" ) ) );
 			}
 
@@ -879,7 +879,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 			if ( rs2.next() ) {
 				txtDataMaxAcum.setVlrString( Funcoes.strMes( rs2.getInt( 1 ) ) + " de " + rs2.getInt( 3 ) );
-				txtVlrMaxAcum.setVlrString( Funcoes.strDecimalToStrCurrency( 15, 2, rs2.getString( 2 ) ) );
+				txtVlrMaxAcum.setVlrString( Funcoes.strDecimalToStrCurrency( 15,  Aplicativo.casasDecFin, rs2.getString( 2 ) ) );
 			}
 
 			rs2.close();
