@@ -271,6 +271,8 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vLabs.addElement( "Mês de emissão" );
 		vLabs.addElement( "Ano de emissão" );
 		vLabs.addElement( "Total das parcelas" );
+		vLabs.addElement( "Comissionado 1" );
+		vLabs.addElement( "Comissionado 2" );
 				
 
 		Vector<String> vVals = new Vector<String>();
@@ -313,6 +315,8 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		vVals.addElement( "[MES_E]" );
 		vVals.addElement( "[ANO_E]" );
 		vVals.addElement( "[TOTAL_PARCELAS]" );
+		vVals.addElement( "[_______COMISSIONADO1_______]" );
+		vVals.addElement( "[_______COMISSIONADO2_______]" );
 		
 
 		cbCamposDin = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_STRING, 50, 0 );
