@@ -151,7 +151,11 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTextFieldFK txtDescTpAnalise = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private JTextFieldFK txtTpExp = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldPad txtCodUnid = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
+	private JTextFieldFK txtCasasDec = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
 	private JCheckBoxPad cbFinaliza = new JCheckBoxPad( "Finaliza", "S", "N" );
 
 	private JCheckBoxPad cbRmaAutoItEst = new JCheckBoxPad( "Sim", "S", "N" );
@@ -201,6 +205,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private ListaCampos lcTipoRec = new ListaCampos( this, "TR" );
 	
 	private ListaCampos lcTpAnalise = new ListaCampos( this, "TA" );
+	
+	private ListaCampos lcUnid = new ListaCampos( this, "UD" );
 	
 
 	public FEstrutura() {
@@ -409,15 +415,28 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcTpAnalise.add( new GuardaCampo( txtCodTpAnalise, "CodTpAnalise", "Cód.Tp.Análise", ListaCampos.DB_PK, null, false ) );
 		lcTpAnalise.add( new GuardaCampo( txtDescTpAnalise, "DescTpAnalise", "Descrição da Análise", ListaCampos.DB_SI, false ) );
 		lcTpAnalise.add( new GuardaCampo( txtTpExp, "TipoExpec", "Tipo expecificação", ListaCampos.DB_SI, false ) );
+		lcTpAnalise.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cód.Unid.", ListaCampos.DB_FK, txtCasasDec, false ) );
+		
 		lcTpAnalise.montaSql( false, "TIPOANALISE", "PP" );
 		lcTpAnalise.setReadOnly( true );
 		lcTpAnalise.setQueryCommit( false );
 		txtCodTpAnalise.setListaCampos( lcTpAnalise );
 		txtCodTpAnalise.setTabelaExterna( lcTpAnalise );
-	
+
+		lcUnid.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cód.unid.", ListaCampos.DB_PK, true ) );
+		lcUnid.add( new GuardaCampo( txtCasasDec, "CasasDec", "Cód.unid.", ListaCampos.DB_SI, true ) );
+		lcUnid.montaSql( false, "UNIDADE", "EQ" );
+		lcUnid.setReadOnly( true );
+		lcUnid.setQueryCommit( false );
+		txtCodUnid.setTabelaExterna( lcUnid );
+				
 		adicCampo( txtCodEstAnalise, 7, 20, 70, 20, "CODESTANALISE", "Cód.Est.An.", ListaCampos.DB_PK, true );	
 		adicCampo( txtCodTpAnalise, 80, 20, 70, 20, "CodTpAnalise", "Cód.Tp.An", ListaCampos.DB_FK, txtDescTpAnalise, true );
 		adicDescFK( txtDescTpAnalise, 155, 20, 300, 20, "DescTpAnalise", "Descrição da análise" );
+		
+/*		adic( txtCodUnid, 458, 20, 50, 20 );
+		adic( txtCasasDec, 511, 20, 50, 20 );*/
+		
 		adicDescFKInvisivel( txtTpExp, "TipoExpec", "TipoExpec" );
 		adicCampo( txtVlrMin, 7, 65, 70, 20, "VlrMin", "Vlr.Min.", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrMax, 80, 65, 70, 20, "VlrMax", "Vlr.Máx.", ListaCampos.DB_SI, false );
@@ -451,11 +470,10 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcDetDistrib.addCarregaListener( this );
 		lcFase.addCarregaListener( this );
 		lcTpAnalise.addCarregaListener( this );
+		lcUnid.addCarregaListener( this );
 		lcDetEstrAnalise.addPostListener( this );
 
 		tabQuali.setTamColuna( 250, 2 );
-		
-		
 		
 		tab.setTamColuna( 35, 0 );
 		tab.setTamColuna( 50, 1 );
@@ -774,18 +792,23 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 				txtVlrMin.setRequerido( true );
 				txtVlrMax.setRequerido( true );
 				txtEspecificacao.setEnabled( false ); 
-				txtEspecificacao.setRequerido( false );
-				
-			}else if( "DT".equals( txtTpExp.getVlrString())){
+				txtEspecificacao.setRequerido( false );								
+			}
+			else if( "DT".equals( txtTpExp.getVlrString())){
 				txtVlrMin.setEnabled( false );
 				txtVlrMax.setEnabled( false );
 				txtVlrMin.setRequerido( false );
 				txtVlrMax.setRequerido( false );
 				txtEspecificacao.setEnabled( true );
-				txtEspecificacao.setRequerido( true );
-				
+				txtEspecificacao.setRequerido( true );				
 			}
 		}
+		if( cevt.getListaCampos() == lcUnid ){				
+			txtVlrMin.setDecimal( txtCasasDec.getVlrInteger() );
+			txtVlrMax.setDecimal( txtCasasDec.getVlrInteger() );
+		}
+
+		
 	}
 
 	private void bloqueiaAbas() {
@@ -852,5 +875,6 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		lcEstDistrib.setConexao( cn );
 		lcTpAnalise.setConexao( cn ); 
 		lcDetEstrAnalise.setConexao( cn );
+		lcUnid.setConexao( cn );
 	}
 }
