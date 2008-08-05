@@ -92,6 +92,8 @@ public class ProcessaPonto extends JFrame implements ActionListener, KeyListener
 		txtApelido.setHorizontalAlignment( Align.CENTER );
 //		txtApelido.setBackground( new Color(227,227,227) );
 		txtApelido.setBackground( Color.WHITE );
+		txtMatricula.setBorder( BorderFactory.createLineBorder( Color.BLACK, 1 ) );
+		piFoto.setBorder( null );
 		
 		txtRelogio.setFont( fntPad01 );
 		txtData.setFont( fntPad01 );
@@ -115,7 +117,7 @@ public class ProcessaPonto extends JFrame implements ActionListener, KeyListener
 	
 		pnCampos.adic( new JLabelPad("Matricula"), 7, 5, 300, 20 );
 
-		pnCampos.adic( txtMatricula, 7, 25, 150, 30 );		
+		pnCampos.adic( txtMatricula, 7, 25, 150, 26 );		
 
 		pnCampos.adic( txtData, 180, 30, 85, 20 );
 		pnCampos.adic( txtRelogio,  265, 30, 75, 20  );
