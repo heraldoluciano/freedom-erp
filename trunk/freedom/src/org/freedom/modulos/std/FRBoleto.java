@@ -495,6 +495,8 @@ public class FRBoleto extends FRelatorio {
 					sTxa = sTxa.replaceAll( "\\[CODVENDA]", Funcoes.copy( sCampo, 0, 10 ) );
 				if ( ( sCampo = rs.getString( "VlrApagRec" ) ) != null && rs.getDouble( "VlrApagRec" ) != 0 )
 					sTxa = sTxa.replaceAll( "\\[TOTAL_PARCELAS]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
+				if ( ( sCampo = rs.getString( "NomeVend" ) ) != null || ( sCampo = rs.getString( "NomeVend" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[_______COMISSIONADO1_______]", sCampo.trim() );
 				
 				// Aplicar campos especiais de dados:
 
