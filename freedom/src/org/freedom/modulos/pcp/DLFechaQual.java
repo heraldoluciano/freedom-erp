@@ -23,10 +23,12 @@
 package org.freedom.modulos.pcp;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Vector;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
+import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -53,15 +55,24 @@ public class DLFechaQual extends FFDialogo {
 	private JRadioGroup<?, ?> rgTipo = null;
 
 	String tipo = "";
+		
+	private JTextFieldPad txtCodUnid = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
-	public DLFechaQual( String sDescAnalise, String sTipo, BigDecimal bVlrMin, BigDecimal bVlrMax, BigDecimal vlrAfer, String sAfer, String status, boolean editable ) {
+	private JTextFieldFK txtCasasDec = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+
+	public DLFechaQual( String sDescAnalise, String sTipo, BigDecimal bVlrMin, BigDecimal bVlrMax, BigDecimal vlrAfer, String sAfer, String status, boolean editable, String codUnid, Connection con ) {
 
 		setTitulo( "Qualidade" );
 		setAtribos( 390, 220 );
-
+		
 		adic( new JLabelPad( "Descrição da analise" ), 7, 5, 360, 20 );
 		adic( txtDescEst, 7, 25, 360, 20 );
-
+		
+		txtVlrMin.setDecimal( Integer.valueOf( Funcoes.getCasasDecUnid( codUnid, con )));
+		txtVlrMax.setDecimal( Integer.valueOf( Funcoes.getCasasDecUnid( codUnid, con )));
+		txtVlrAfer.setDecimal( Integer.valueOf( Funcoes.getCasasDecUnid( codUnid, con )));
+		
 		tipo = sTipo;
 
 		vLabs1.addElement( "Pendente" );
@@ -93,6 +104,8 @@ public class DLFechaQual extends FFDialogo {
 			adic( txtVlrMax, 80, 65, 70, 20 );
 			adic( new JLabelPad( "Aferição" ), 7, 85, 210, 20 );
 			adic( txtVlrAfer, 7, 105, 70, 20 );
+			adic( txtCodUnid, 7, 155, 70, 20 );
+			adic( txtCasasDec, 80, 155, 70, 20 );
 
 			txtVlrMin.setSoLeitura( true );
 			txtVlrMax.setSoLeitura( true );
@@ -133,6 +146,14 @@ public class DLFechaQual extends FFDialogo {
 		return hRet;
 	}
 
+	private int casasDec(){
+		
+		int ret =0;
+		
+		
+		return ret;
+		
+	}
 	public void ok() {
 
 		if ( "DT".equals( tipo ) ) {

@@ -208,8 +208,8 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
 			sql.delete( 0, sql.length() );
 			
 			sql.append( "select ta.desctpanalise,ea.vlrmin,ea.vlrmax,cq.vlrafer,cq.descafer,pf.nomeresp,pf.identprofresp,pf.imgassresp, " );
-			sql.append( "op0.codprod, pd.descprod, pm.descmtanalise, ea.especificacao " );
-			sql.append( "from ppopcq cq, ppestruanalise ea, pptipoanalise ta, sgprefere5 pf, ppop op0, ppop opx, eqproduto pd, ppmetodoanalise pm " );
+			sql.append( "op0.codprod, pd.descprod, pm.descmtanalise, ea.especificacao, eq.casasdec " );
+			sql.append( "from ppopcq cq, ppestruanalise ea, pptipoanalise ta, sgprefere5 pf, ppop op0, ppop opx, eqproduto pd, ppmetodoanalise pm, equnidade eq " );
 			sql.append( "where " );
 			sql.append( "ta.codemp=ea.codempta and ta.codfilial=ea.codfilialta and ta.codtpanalise=ea.codtpanalise " );
 			sql.append( "and pm.codemp=ta.codempma and pm.codfilial=ta.codfilialma " );
@@ -220,6 +220,8 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
 			sql.append( "and op0.codemp = opx.codemp and op0.codfilial=opx.codfilial and op0.codop=opx.codop and op0.seqop=0 " );
 			sql.append( "and pf.codemp = op0.codemp and pf.codfilial=op0.codfilial " );
 			sql.append( "and pd.codemp=op0.codemppd and pd.codfilial=op0.codfilialpd and pd.codprod=op0.codprod " );
+			sql.append( "and eq.codemp=ta.codempud and eq.codfilial=ta.codfilialud " );
+			sql.append( "and eq.codunid=ta.codunid " );
 			sql.append( "and opx.codemp=? and opx.codfilial=? and opx.codlote=? " );			
 			
 			ps = con.prepareStatement( sql.toString() );

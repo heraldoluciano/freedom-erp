@@ -126,7 +126,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 
 	private enum EcolPPOPCQ {
 
-		STATUS, SEQOPCQ, CODESTANALISE, DESCTPANALISE, VLRMIN, VLRMAX, VLRAFER, DESCAFER, TIPOEXPEC, SEQAC
+		STATUS, SEQOPCQ, CODESTANALISE, DESCTPANALISE, VLRMIN, VLRMAX, VLRAFER, DESCAFER, TIPOEXPEC, SEQAC, CODUNID
 
 	};
 
@@ -228,6 +228,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		tabControl.adicColuna( "Desc.Aferido" );
 		tabControl.adicColuna( "Tipo" );
 		tabControl.adicColuna( "SEQAC" );
+		tabControl.adicColuna( "Cod.Unid." );
 
 		tabControl.setTamColuna( 10, EcolPPOPCQ.STATUS.ordinal() );
 		tabControl.setTamColuna( 20, EcolPPOPCQ.SEQOPCQ.ordinal() );
@@ -238,6 +239,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		tabControl.setTamColuna( 75, EcolPPOPCQ.VLRAFER.ordinal() );
 		tabControl.setTamColuna( 140, EcolPPOPCQ.DESCAFER.ordinal() );
 		tabControl.setTamColuna( 30, EcolPPOPCQ.TIPOEXPEC.ordinal() );
+		tabControl.setTamColuna( 70, EcolPPOPCQ.CODUNID.ordinal() );
 
 		tabControl.addMouseListener( this );
 		
@@ -259,7 +261,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		boolean ablBtVis = false;
 
 		sSQL.append( "SELECT PQ.SEQOPCQ, PQ.CODESTANALISE, PQ.VLRAFER, PQ.DESCAFER, PA.DESCTPANALISE, PA.TIPOEXPEC, " );
-		sSQL.append( "PE.VLRMIN, PE.VLRMAX, PQ.STATUS, PQ.SEQAC " );
+		sSQL.append( "PE.VLRMIN, PE.VLRMAX, PQ.STATUS, PQ.SEQAC, PA.CODUNID " );
 		sSQL.append( "FROM PPOPCQ PQ, PPESTRUANALISE PE, PPTIPOANALISE PA WHERE PQ.CODEMP=? AND PQ.CODFILIAL=? AND " );
 		sSQL.append( "PQ.CODOP=? AND PQ.SEQOP=? AND PE.CODEMP=PQ.CODEMPEA AND " );
 		sSQL.append( "PE.CODFILIAL=PQ.CODFILIALEA AND PE.CODESTANALISE=PQ.CODESTANALISE AND " );
@@ -310,6 +312,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 				tabControl.setValor( rs.getString( "DESCAFER" ), i, EcolPPOPCQ.DESCAFER.ordinal() );
 				tabControl.setValor( rs.getString( "TIPOEXPEC" ), i, EcolPPOPCQ.TIPOEXPEC.ordinal() );
 				tabControl.setValor( rs.getInt( "SEQAC" ), i, EcolPPOPCQ.SEQAC.ordinal() );
+				tabControl.setValor( rs.getString( "CODUNID" ), i, EcolPPOPCQ.CODUNID.ordinal() );
 				i++;
 
 			}
@@ -340,7 +343,8 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 			BigDecimal bVlrMin = tabControl.getValor( iLinha, EcolPPOPCQ.VLRMIN.ordinal() ) == null || tabControl.getValor( iLinha, EcolPPOPCQ.VLRMIN.ordinal() ).equals( "" ) ? new BigDecimal( 0 ) : (BigDecimal) tabControl.getValor( iLinha, EcolPPOPCQ.VLRMIN.ordinal() );
 			BigDecimal bVlrMax = tabControl.getValor( iLinha, EcolPPOPCQ.VLRMAX.ordinal() ) == null || tabControl.getValor( iLinha, EcolPPOPCQ.VLRMAX.ordinal() ).equals( "" ) ? new BigDecimal( 0 ) : (BigDecimal) tabControl.getValor( iLinha, EcolPPOPCQ.VLRMAX.ordinal() );
 			BigDecimal bVlrAfer = tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() ) == null || tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() ).equals( "" ) ? new BigDecimal( 0 ) : (BigDecimal) tabControl.getValor( iLinha, EcolPPOPCQ.VLRAFER.ordinal() );
-
+			String sUnidade = (String) tabControl.getValor( iLinha, EcolPPOPCQ.CODUNID.ordinal() );
+			
 			String status = "PE";
 			
 			if ( imgPendente.equals( tabControl.getValor( tabControl.getLinhaSel(), EcolPPOPCQ.STATUS.ordinal() ) ) ) {
@@ -361,7 +365,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 
 			String sUpdate = "";
 
-			DLFechaQual dl = new DLFechaQual( sDescAnalise, sTipo, bVlrMin, bVlrMax, bVlrAfer, sAfer, status, editable );
+			DLFechaQual dl = new DLFechaQual( sDescAnalise, sTipo, bVlrMin, bVlrMax, bVlrAfer, sAfer, status, editable, sUnidade, con );
 			dl.setVisible( true );
 
 			if ( "MM".equals( sTipo ) ) {
