@@ -14,10 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -28,8 +25,6 @@ import org.freedom.infra.x.swing.JFrame;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.Login;
 import org.jfree.ui.Align;
-
-import bizcal.web.util.Border;
 
 public class ProcessaPonto extends JFrame implements ActionListener, KeyListener {
 	
