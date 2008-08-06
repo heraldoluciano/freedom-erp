@@ -26,7 +26,6 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRSaldoLote.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.atd"/>
-        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.components"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FKardex.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoAgenda.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.nf"/>
@@ -37,8 +36,8 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.pd"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FProduto.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FConsRMA.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRMovProd.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRInvPeps.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.componentes"/>
@@ -55,6 +54,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FUnidade.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.orc"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRVencLote.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FMarca.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRConfEstoq.java"/>
