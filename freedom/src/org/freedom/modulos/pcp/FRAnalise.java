@@ -6,12 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.HashMap;
-
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
-
 import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -69,7 +66,6 @@ public class FRAnalise extends FRelatorio {
 		adic( txtCodProd, 7, 75, 70, 20 );
 		adic( new JLabelPad("Descrição do produto"), 83, 55, 200, 20 );
 		adic( txtDescProd, 83, 75, 220, 20 );
-		
 		
 		Calendar cPeriodo = Calendar.getInstance();
 	    txtDatafim.setVlrDate( cPeriodo.getTime() );
