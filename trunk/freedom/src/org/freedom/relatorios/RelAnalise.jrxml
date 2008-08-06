@@ -662,7 +662,7 @@ and eq.codemp=ta.codempud and eq.codfilial=ta.codfilialud and eq.codunid=ta.codu
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTPANALISE}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="212"
 						y="1"
@@ -675,13 +675,12 @@ and eq.codemp=ta.codempud and eq.codfilial=ta.codfilialud and eq.codunid=ta.codu
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{VLRMAX}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toString()+
 " - " +
-$F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toString()
-]]></textFieldExpression>
+$F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="309"
-						y="2"
+						y="1"
 						width="57"
 						height="12"
 						key="textField-9"/>
@@ -689,7 +688,7 @@ $F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toStri
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRAFER}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRAFER}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -707,7 +706,7 @@ $F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toStri
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="302"
-						y="0"
+						y="1"
 						width="74"
 						height="12"
 						key="textField-11"/>
