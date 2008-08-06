@@ -110,7 +110,7 @@ public class FPrefereProd extends FTabDados {
 
 		adic( lbOP, 272, 10, 200, 20 );
 		adic( pinOp, 267, 20, 250, 150 );
-		adic( new JLabelPad("N° dias p/ descarte C.P"), 10, 170, 150, 20 );
+		adic( new JLabelPad("N° meses p/ descarte C.P"), 10, 170, 150, 20 );
 		adicCampo( txtNDiaMes, 10, 190, 80, 20, "MESESDESCCP", "", ListaCampos.DB_SI, false );
 		setPainel( pinOp );
 
