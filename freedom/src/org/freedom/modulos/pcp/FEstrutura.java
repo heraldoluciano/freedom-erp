@@ -157,6 +157,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTextFieldFK txtCasasDec = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
 	private JCheckBoxPad cbFinaliza = new JCheckBoxPad( "Finaliza", "S", "N" );
+	
+	private JCheckBoxPad cbCProva = new JCheckBoxPad( "Sim", "S", "N" );
 
 	private JCheckBoxPad cbRmaAutoItEst = new JCheckBoxPad( "Sim", "S", "N" );
 
@@ -214,7 +216,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		setTitulo( "Estrutura de produtos" );
 		setAtribos( 50, 20, 670, 550 );
 		setAltCab( 170 );
-
+		
 		pnMaster.remove( spTab );
 		pnMaster.remove( pnDet );
 
@@ -358,6 +360,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	
 		adicDB( cbRmaAutoItEst, 7, 60, 60, 20, "RmaAutoItEst", "RMA", true );		
 		adicDB( cbQtdVariavelItem, 80, 60, 70, 20, "QtdVariavel", "Qtd.variável", true );
+		adicDB( cbCProva, 160, 60, 140, 20, "CPROVA", "Contra prova?", true );
 			
 		setListaCampos( true, "ITESTRUTURA", "PP" );
 		lcDetItens.setQueryInsert( false );
@@ -822,9 +825,11 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		
 		if(txtTipoFase.getVlrString().equals( "CQ" )){
 			tpnAbas.setEnabledAt( 2, true );
+			cbCProva.setEnabled( true );
 		}
 		else {
 			tpnAbas.setEnabledAt( 2, false );
+			cbCProva.setEnabled( false );
 		}
 		
 	}
