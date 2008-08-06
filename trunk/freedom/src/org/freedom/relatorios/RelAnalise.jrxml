@@ -57,10 +57,12 @@
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String">
 		<parameterDescription><![CDATA[Filtros utilizados no relatorio]]></parameterDescription>
 	</parameter>
+	<parameter name="DESCPROD" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="CODPROD" isForPrompting="false" class="java.lang.Integer"/>
 	<queryString><![CDATA[select op.codprod,pd.descprod,op.codlote,op.dtfabrop,op.dtvalidpdop,
 ta.desctpanalise,ea.vlrmin,ea.vlrmax,ea.especificacao,cq.vlrafer,cq.descafer,pr.imgassresp,cq.dtins,
-op.codop
-from ppopcq cq, ppop op,ppestruanalise ea,pptipoanalise ta, sgprefere5 pr,eqproduto pd
+op.codop, eq.casasdec
+from ppopcq cq, ppop op,ppestruanalise ea,pptipoanalise ta, sgprefere5 pr,eqproduto pd, equnidade eq
 where
 op.codemp = 7 and op.codfilial=1 and op.codprod=505 and op.seqop=cq.seqop
 and cq.codemp=op.codemp and cq.codfilial=op.codfilial and cq.codop=op.codop and cq.seqop=op.seqop
@@ -70,7 +72,8 @@ and ea.seqest=op.seqest
 and ta.codemp=ea.codempta and ta.codfilial=ea.codfilialta and ta.codtpanalise=ea.codtpanalise
 and ea.codestanalise=cq.codestanalise
 and cq.status='AP'
-and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod]]></queryString>
+and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod
+and eq.codemp=ta.codempud and eq.codfilial=ta.codfilialud and eq.codunid=ta.codunid]]></queryString>
 
 	<field name="CODPROD" class="java.lang.Long"/>
 	<field name="DESCPROD" class="java.lang.String"/>
@@ -86,25 +89,17 @@ and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codp
 	<field name="IMGASSRESP" class="java.io.InputStream"/>
 	<field name="DTINS" class="java.sql.Date"/>
 	<field name="CODOP" class="java.lang.Long"/>
+	<field name="CASASDEC" class="java.lang.Short"/>
 
 
 		<group  name="GERAL" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
 			<band height="19"  isSplitAllowed="true" >
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="18"
-						width="535"
-						height="0"
-						key="line-6"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="27"  isSplitAllowed="true" >
+			<band height="21"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
@@ -389,10 +384,19 @@ and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codp
 						key="line-21"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="535"
+						height="0"
+						key="line-22"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="37"  isSplitAllowed="true" >
+			<band height="25"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
@@ -405,14 +409,14 @@ and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codp
 			</band>
 		</title>
 		<pageHeader>
-			<band height="105"  isSplitAllowed="true" >
+			<band height="119"  isSplitAllowed="true" >
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="4"
 						y="3"
 						width="70"
-						height="63"
+						height="52"
 						forecolor="#FFFFFF"
 						backcolor="#FFFFFF"
 						key="image-1"/>
@@ -426,7 +430,7 @@ and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codp
 						x="79"
 						y="17"
 						width="397"
-						height="22"
+						height="14"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Empresa"/>
@@ -440,9 +444,9 @@ and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codp
 					<reportElement
 						mode="Opaque"
 						x="79"
-						y="43"
+						y="52"
 						width="240"
-						height="21"
+						height="14"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Emissor"/>
@@ -484,6 +488,159 @@ and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codp
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{TITULO}]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="67"
+						width="0"
+						height="52"
+						key="line-23"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="535"
+						y="66"
+						width="0"
+						height="53"
+						key="line-24"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="66"
+						width="535"
+						height="0"
+						key="line-25"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="118"
+						width="535"
+						height="0"
+						key="line-26"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="84"
+						width="535"
+						height="0"
+						key="line-27"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="101"
+						width="535"
+						height="0"
+						key="line-28"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="93"
+						y="84"
+						width="0"
+						height="17"
+						key="line-29"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="93"
+						y="100"
+						width="0"
+						height="19"
+						key="line-30"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="2"
+						y="86"
+						width="89"
+						height="13"
+						key="staticText-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[ PRODUTO:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="2"
+						y="103"
+						width="89"
+						height="13"
+						key="staticText-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[ CÓDIGO:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="95"
+						y="86"
+						width="396"
+						height="13"
+						key="textField-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DESCPROD}.trim()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="96"
+						y="103"
+						width="81"
+						height="13"
+						key="textField-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$P{CODPROD}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="70"
+						width="530"
+						height="13"
+						key="textField-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["FAPA " + $P{CODPROD}.toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="79"
+						y="33"
+						width="399"
+						height="17"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Emissor-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{FILTROS}.toString()]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -503,7 +660,7 @@ and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codp
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[ $F{DESCTPANALISE}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTPANALISE}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -516,7 +673,10 @@ and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codp
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{VLRMIN}.toString() + " - " + $F{VLRMAX}.toString() ]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{VLRMAX}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toString()+
+" - " +
+$F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toString()
+]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -533,8 +693,8 @@ and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codp
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="211"
-						y="0"
+						x="212"
+						y="1"
 						width="84"
 						height="12"
 						key="textField-10"/>
