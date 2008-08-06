@@ -204,7 +204,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private JButton btLote = new JButton( Icone.novo( "btSimilar.gif" ) );
 
-	private JButton btRatearItem = new JButton( "", Icone.novo( "btAdic2.gif" ) );
+	private JButton btRatearItem = new JButton( Icone.novo( "btAdic2.gif" ) );
 
 	private JButton btDistrb = new JButton( Icone.novo( "btDistOP.gif" ) );
 
@@ -1440,13 +1440,14 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					diag.setVisible( true );
 
 					if ( diag.OK ) {
-						if ( ! ( "" + txtQtdDigRat.getVlrBigDecimal() ).equals( "" ) && !txtLoteRat.getVlrString().equals( "" ) ) {
+						if ( !"".equals(String.valueOf(txtQtdDigRat.getVlrBigDecimal())) && !"".equals(txtLoteRat.getVlrString()) ) {
 							bdQtdDigitada = txtQtdDigRat.getVlrBigDecimal();
 							sCodLote = txtLoteRat.getVlrString();
 
 							bdVlrNova = txtQtdItOp.getVlrBigDecimal().subtract( bdQtdDigitada );
 
-							if ( ( bdVlrNova.compareTo( txtQtdItOp.getVlrBigDecimal() ) > 0 ) || ( bdVlrNova.compareTo( new BigDecimal( 0 ) ) <= 0 ) ) {
+							if ( bdVlrNova.compareTo( txtQtdItOp.getVlrBigDecimal() ) > 0 
+									|| bdVlrNova.compareTo( new BigDecimal( 0 ) ) <= 0 ) {
 								Funcoes.mensagemErro( Aplicativo.framePrinc, "Quantidade inválida!" );
 								ratearItem( false );
 							}
@@ -1662,7 +1663,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		else if ( evt.getSource() == btObs2 ) {
 			observacao();
 		}
-
 		else if ( evt.getSource() == btCancela ) {
 			cancelaOP();
 		}
