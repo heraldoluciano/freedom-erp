@@ -24,6 +24,7 @@ package org.freedom.modulos.pcp;
 import java.sql.Connection;
 import java.util.Vector;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -59,6 +60,9 @@ public class FPrefereProd extends FTabDados {
 	
 	private JPanelPad pinAss = new JPanelPad( 470, 300 );
 	
+	private JTextFieldPad txtNDiaMes = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	
 	public FPrefereProd() {
 
 		super();
@@ -83,7 +87,6 @@ public class FPrefereProd extends FTabDados {
 		vVals.addElement( "AF" );
 
 		cbSitRMAOP = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_STRING, 2, 0 );
-
 		setPainel( pinGeral );
 		adicTab( "Geral", pinGeral );
 
@@ -102,10 +105,13 @@ public class FPrefereProd extends FTabDados {
 		adicCampo( txtNomeResp, 7, 30, 230, 20, "NOMERESP", "Nome do reponsável", ListaCampos.DB_SI, false );
 		adicCampo( txtIdentProfResp, 7, 70, 230, 20, "IDENTPROFRESP", "Indent.prof.", ListaCampos.DB_SI, false );
 		adicCampo( txtCargoResp, 7, 110, 230, 20, "CARGORESP", "Cargo", ListaCampos.DB_SI, false );
+		
 		setPainel( pinGeral );
 
 		adic( lbOP, 272, 10, 200, 20 );
 		adic( pinOp, 267, 20, 250, 150 );
+		adic( new JLabelPad("N° dias p/ descarte C.P"), 10, 170, 150, 20 );
+		adicCampo( txtNDiaMes, 10, 190, 80, 20, "MESESDESCCP", "", ListaCampos.DB_SI, false );
 		setPainel( pinOp );
 
 		adicCampo( txtClass, 7, 30, 230, 20, "CLASSOP", "Classe padrão para O.P.", ListaCampos.DB_SI, false );
@@ -116,7 +122,6 @@ public class FPrefereProd extends FTabDados {
 		setPainel( pinAss );
 		adicTab( "Assinatura", pinAss );
 		adicDB( imgAssOrc, 15, 30, 340, 85, "ImgAssResp", "Assinatura do responsável técnico ( 340 pixel X 85 pixel )", true );
-		
 		setListaCampos( false, "PREFERE5", "SG" );
 		
 		nav.setAtivo( 0, false );
