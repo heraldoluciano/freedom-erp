@@ -66,7 +66,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 
 	private JScrollPane spnComiss = new JScrollPane( tabComiss );
 	
-	private ListaCampos lcVendedor = new ListaCampos( this,"VD" );
+	private ListaCampos lcVendedor = new ListaCampos( this, "VD" );
 	
 	private ListaCampos lcVendaComis = new ListaCampos( null,"" );
 	
@@ -115,13 +115,16 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		this.codvenda = codvenda;
 		
 		montaListaCampos();
+
 		setConexao( con );
+		
 		montaTela();
 		montaTab();		
-	
 		
 		tabComiss.addMouseListener( this );
 		btSair.addActionListener( this );
+		
+		txtCodVend.requestFocus();
 	}
 	
 	private void montaTela(){
@@ -187,19 +190,21 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		lcVendedor.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
 		lcVendedor.setWhereAdic( "ATIVOCOMIS='S'" );
 		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
-		lcVendedor.setQueryCommit( false );
 		lcVendedor.setReadOnly( true );
 		txtCodVend.setTabelaExterna( lcVendedor );
+		txtCodVend.setListaCampos( lcVendedor );
+		txtCodVend.setNomeCampo( "CodVend" );
+		txtCodVend.setFK( true );
+		
 			
 		lcVendaComis.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.Venda", ListaCampos.DB_PK, false ) );
 		lcVendaComis.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo", ListaCampos.DB_PK, false ) );
 		lcVendaComis.add( new GuardaCampo( txtSeqVenda, "SeqVc", "seq.", ListaCampos.DB_PK, false ) );
-		lcVendaComis.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.Vend.", ListaCampos.DB_FK, false ) );
+		lcVendaComis.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.Vend.", ListaCampos.DB_FK, true ) );
 		lcVendaComis.add( new GuardaCampo( txtPercComisVenda, "Percvc", "%.Comiss.", ListaCampos.DB_SI, true ) );
 		lcVendaComis.montaSql( false, "VENDACOMIS", "VD" );
 		lcVendaComis.setQueryCommit( false );
 		lcVendaComis.setReadOnly( false );
-		
 		lcVendaComis.setNavegador( nvRodape );
 		
 		lcVendaComis.addPostListener( this );
