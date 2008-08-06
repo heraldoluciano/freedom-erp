@@ -235,6 +235,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		StringBuffer sql = new StringBuffer();
 		ResultSet rs = null;
 		PreparedStatement ps = null;
+		txtCodVend.requestFocus();
 		
 		try {
 
@@ -283,7 +284,8 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 				tabComiss.setValor( rs.getString( "TIPOVENDA" ) != null ? rs.getString( "TIPOVENDA" ) : ""  , i, eComiss.TIPOVENDA.ordinal() );
 						
 				i++;
-			}
+			}		
+			
 			
 			rs.close();
 			ps.close();
@@ -330,6 +332,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 	public void afterPost( PostEvent pevt ) {
 		if ( pevt.getListaCampos() == lcVendaComis ) {
 			montaTab();
+			txtCodVend.requestFocus();
 		}
 	}
 	public void beforePost( PostEvent pevt ) {}
@@ -348,10 +351,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		System.out.println("teste2");
 		nvRodape.setAtivo( 3, true );
 		nvRodape.setAtivo( 4, true );
-		
-		
-		// TODO Auto-generated method stub
-		
+			
 	}
 
 	public void beforeEdit( EditEvent eevt ) {
