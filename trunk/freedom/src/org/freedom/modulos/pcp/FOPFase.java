@@ -23,6 +23,7 @@
 package org.freedom.modulos.pcp;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,6 +31,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
@@ -39,7 +41,9 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -50,6 +54,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class FOPFase extends FDetalhe implements PostListener,CancelListener,InsertListener,ActionListener,CarregaListener {
+
 
 	private static final long serialVersionUID = 1L;
 	private JPanelPad pinCab = new JPanelPad();
@@ -81,6 +86,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	private JTextFieldPad txtHFimProdFs = new JTextFieldPad(JTextFieldPad.TP_TIME,8,0);
 	private JTextFieldPad txtSitFS = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldFK txtTpFase = new JTextFieldFK(JTextFieldPad.TP_STRING,2,0);
+	private JButton btContraProva = new JButton( Icone.novo( "btFinalizaOP.gif" ) );
 	private ListaCampos lcProd = new ListaCampos(this,"PD");
 	private ListaCampos lcFase = new ListaCampos(this,"FS");
 	private ListaCampos lcRec = new ListaCampos(this,"RP");
@@ -141,6 +147,8 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		adicCampo(txtQtdFinalOP, 323, 60, 100, 20,"QtdFinalProdOP","Qtd.produzida", ListaCampos.DB_SI, true);
 		adicCampoInvisivel(txtJustificqtdprod,"JUSTFICQTDPROD","Justificativa",ListaCampos.DB_SI,false);
 		adicCampoInvisivel(txtDtFabProd,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true);
+		adic(new JLabelPad("Retenção de Contra-Prova"), 479,65,200,20);
+		adic(btContraProva, 446,60,30,30);
 		
 		setListaCampos( false, "OP", "PP");
 		lcCampos.setQueryInsert(false);
@@ -227,6 +235,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		lcProd.addCarregaListener(this);
 		lcRec.addCarregaListener(this);
 		lcDet.addPostListener(this);
+		btContraProva.addActionListener( this );
 	     
 	}	  
 
@@ -372,6 +381,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 				txaObs.setEnabled(true);    		  		
 			}
 		}
+		btContraProva.setEnabled( !temCQ() );
 	}
 	
 	public void afterInsert(InsertEvent ievt) { }
@@ -402,6 +412,22 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 			}
 		}
 	}
+
+	public void actionPerformed( ActionEvent evt ) {
+
+		super.actionPerformed( evt );
+		
+		if( evt.getSource() == btContraProva ){
+			
+			if ( Aplicativo.telaPrincipal.temTela( "Contra-Prova" ) == false ) {
+				
+				FContraProva f = new FContraProva( txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger() );
+				Aplicativo.telaPrincipal.criatela( "Contra-Prova", f, con );
+			}
+			
+			
+		}
+	}
 	
 	public void afterPost(PostEvent pevt) { }
 	    
@@ -416,6 +442,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		lcRec.setConexao(cn);
 		txtCodOP.setVlrInteger(new Integer(iCodOP));
 		txtSeqOP.setVlrInteger(new Integer(iSeqOP));
-		lcCampos.carregaDados();		
-	}        
+		lcCampos.carregaDados();	
+		
+		}        
 }

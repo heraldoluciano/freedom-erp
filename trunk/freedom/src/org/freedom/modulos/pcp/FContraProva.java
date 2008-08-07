@@ -70,6 +70,24 @@ public class FContraProva extends FDetalhe {
 	
 	private ListaCampos lcOp = new ListaCampos( this, "" );
 	
+	
+	public FContraProva( int codOp, int seqOp ){
+		
+		this();
+		txtCodOp.setVlrInteger( codOp );
+		txtSeqOp.setVlrInteger( seqOp );
+		txtCodRetCp.setEditable( false );
+		txtCodOp.setEditable( false );
+		txtSeqOp.setEditable( false );
+		txtDtDesc.setEditable( false );
+		txtDtRet.setEditable( false );
+		txtCodProd.setEditable( false );
+		txtQtdItRet.setEditable( false );
+		txtCodRetCpIt.setEditable( false );
+		
+		
+	}
+	
 	public FContraProva(){
 		
 		setAtribos( 50, 50, 450, 350 );
