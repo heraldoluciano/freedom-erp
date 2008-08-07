@@ -1,5 +1,5 @@
 /**
- * @version 05/08/2008 <BR>
+ * @version 7/08/2008 <BR>
  * @author Setpoint Informática Ltda.
  * @author Reginaldo Garcia Heua <BR>
  * 
@@ -7,7 +7,7 @@
  * 
  * Pacote: org.freedom.modulos.pcp <BR>
  * Classe:
- * @(#)FRAnalise.java <BR>
+ * @(#)FRContraProva.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -31,11 +31,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -44,7 +49,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
-public class FRAnalise extends FRelatorio {
+
+public class FRContraProva extends FRelatorio{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -62,18 +68,34 @@ public class FRAnalise extends FRelatorio {
 	
 	private ListaCampos lcProd = new ListaCampos( this, ""  );
 	
-
-	public FRAnalise(){
-				
+	private Vector<String> vLabs1 = new Vector<String>();
+	
+	private Vector<String> vVals1 = new Vector<String>();
+	
+	private JRadioGroup<?, ?> rgTipo = null;
+	
+	public FRContraProva(){
+		
 		super( false );
-		setTitulo( "Análises" );
-		setAtribos( 50, 50, 350, 200 );
+		setTitulo( "Contra-Provas" );
+		setAtribos( 50, 50, 350, 230 );
 		
 		montaTela();
 		montaListaCampos();
+		
 	}
 	
 	private void montaTela(){
+		
+		vLabs1.addElement("Validade");
+ 		vLabs1.addElement("Retenção"); 
+ 		vLabs1.addElement("Descarte"); 
+ 		vVals1.addElement("V");
+ 		vVals1.addElement("R");
+ 		vVals1.addElement("D");
+		    
+ 		rgTipo = new JRadioGroup<String, String>( 1, 3, vLabs1, vVals1 );
+ 		rgTipo.setVlrString("T");
 		
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
@@ -83,14 +105,16 @@ public class FRAnalise extends FRelatorio {
 		adic( lbPeriodo,7, 1, 80, 20 );
 		adic( lbLinha,5, 10, 300, 45 );
 		
+		
 		adic( new JLabelPad("De:"), 10, 25, 30, 20 );
 		adic( txtDataini, 40, 25, 97, 20 );
 		adic( new JLabelPad("Até:"),152, 25, 37, 20 );
 		adic( txtDatafim, 190, 25, 100, 20 );
-		adic( new JLabelPad("Cód.Prod"), 7, 55, 80, 20 );
-		adic( txtCodProd, 7, 75, 70, 20 );
-		adic( new JLabelPad("Descrição do produto"), 83, 55, 200, 20 );
-		adic( txtDescProd, 83, 75, 220, 20 );
+		adic( rgTipo, 5, 65, 300, 35 );
+		adic( new JLabelPad("Cód.Prod"), 7, 105, 80, 20 );
+		adic( txtCodProd, 7, 125, 70, 20 );
+		adic( new JLabelPad("Descrição do produto"), 83, 105, 200, 20 );
+		adic( txtDescProd, 83, 125, 220, 20 );
 		
 		Calendar cPeriodo = Calendar.getInstance();
 	    txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -104,7 +128,7 @@ public class FRAnalise extends FRelatorio {
 		 *  Produto   * 
 		 **************/
 		
-		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
+		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		txtCodProd.setTabelaExterna( lcProd );
@@ -114,55 +138,62 @@ public class FRAnalise extends FRelatorio {
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 
 	}
-	
-	public void imprimir( boolean b ) {
+
+	public void imprimir( boolean bVisualizar ) {
 
 		StringBuffer sql = new StringBuffer();
-		StringBuffer sWhere = new StringBuffer();
-		StringBuffer sCab = new StringBuffer();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		StringBuffer data = new StringBuffer();
+		StringBuffer sCab = new StringBuffer();
+		StringBuffer sWhere = new StringBuffer();
 		
 		try {
-		
+			
 			if( txtCodProd.getVlrInteger() > 0 ){
 				
-				sWhere.append( "and op.codprod= " + txtCodProd.getVlrInteger() );
+				sWhere.append( "and ep.codprod= " + txtCodProd.getVlrString() );
 			}
 			
-			sql.append( "select op.codprod,pd.descprod,op.codlote,op.dtfabrop,op.dtvalidpdop, " );
-			sql.append( "ta.desctpanalise,ea.vlrmin,ea.vlrmax,ea.especificacao,cq.vlrafer,cq.descafer,pr.imgassresp,cq.dtins, " );
-			sql.append( "op.codop, eq.casasdec " );
-			sql.append( "from ppopcq cq, ppop op,ppestruanalise ea,pptipoanalise ta, sgprefere5 pr,eqproduto pd, equnidade eq " );
+			if( "V".equals( rgTipo.getVlrString())){
+				
+				data.append( "el.venctolote "  );
+				sCab.append( "Filtrado por Vencimento: " + txtDataini.getVlrString() + " até " + txtDatafim.getVlrString() );
+			}
+			else if( "R".equals( rgTipo.getVlrString() )){
+				
+				data.append( "pr.dtretencao " );
+				sCab.append( "Filtrado por Retenção: " + txtDataini.getVlrString() + " até " + txtDatafim.getVlrString() );
+			}
+			else if( "D".equals( rgTipo.getVlrString() )){
+				
+				data.append( "pr.dtdescarte " );
+				sCab.append( "Filtrado por Descarte: " + txtDataini.getVlrString() + " até " + txtDatafim.getVlrString() );
+			}
+			
+			sql.append( "select op.codprod, pr.codop, ep.descprod, pr.seqop,  pr.dtretencao, pr.dtdescarte, " );
+			sql.append( "el.codlote, el.venctolote " );
+			sql.append( "from ppretcp pr, ppop op, eqproduto ep, eqlote el " );
 			sql.append( "where " );
-			sql.append( "op.codemp = ? and op.codfilial=? and op.seqop=cq.seqop " );
-			sql.append( "and cq.codemp=op.codemp and cq.codfilial=op.codfilial and cq.codop=op.codop and cq.seqop=op.seqop " );
-			sql.append( "and pr.codemp=7 and pr.codfilial=1 " );
-			sql.append( "and ea.codemp=op.codemppd and ea.codfilial=op.codfilialpd and ea.codprod=op.codprod " );
-			sql.append( "and ea.seqest=op.seqest " );
-			sql.append( "and ta.codemp=ea.codempta and ta.codfilial=ea.codfilialta and ta.codtpanalise=ea.codtpanalise " );
-			sql.append( "and ea.codestanalise=cq.codestanalise " );
-			sql.append( "and cq.status='AP' " );
-			sql.append( "and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod " );
-			sql.append( "and eq.codemp=ta.codempud and eq.codfilial=ta.codfilialud and eq.codunid=ta.codunid " );
-			sql.append( "and op.dtfabrop between ? and ? " );
+			sql.append( "op.codop=pr.codop and op.seqop=pr.seqop " );
+			sql.append( "and ep.codprod=op.codprod and el.codemp=op.codemple and el.codfilial=op.codfilialle " );
+			sql.append( "and el.codlote=op.codlote " );
+			sql.append( "and pr.codemp=? and pr.codfilial=? and " + data.toString() + " between ? and ?" );
 			sql.append( sWhere.toString() );
 			
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "ppop" ) );
 			ps.setDate( 3, Funcoes.strDateToSqlDate( txtDataini.getVlrString()));
 			ps.setDate( 4, Funcoes.strDateToSqlDate( txtDatafim.getVlrString()));
 			rs = ps.executeQuery();
 			
-			sCab.append( "Perido: " + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
-			
-			imprimiGrafico( rs, b, sCab.toString() );
+			imprimiGrafico( rs, bVisualizar, sCab.toString() );
 			
 		} catch ( SQLException err ) {
 			
 			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao buscar análises", true, con, err );
+			Funcoes.mensagemErro( this, "Erro ao buscar dados de Contra-Provas" );
 		}
 	}
 	
@@ -175,10 +206,8 @@ public class FRAnalise extends FRelatorio {
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
 		hParam.put( "FILTROS", sCab );
-		hParam.put( "DESCPROD", txtDescProd.getVlrString() );
-		hParam.put( "CODPROD",  txtCodProd.getVlrInteger()== 0 ? null : txtCodProd.getVlrInteger() );
 
-		dlGr = new FPrinterJob( "relatorios/RelAnalise.jasper", "Relatório de Análises", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( "relatorios/RelContraProva.jasper", "Relatório de Contra-Provas", sCab, rs, hParam, this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -187,10 +216,11 @@ public class FRAnalise extends FRelatorio {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de Relatório de Análises!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão de Relatório de Contra-Provas!" + err.getMessage(), true, con, err );
 			}
 		}
 	}
+	
 	
 	public void setConexao( Connection con ){
 		

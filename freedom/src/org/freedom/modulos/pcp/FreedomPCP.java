@@ -103,6 +103,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 			addOpcao(200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200900000,1, false, null);
 				addOpcao(200900000, TP_OPCAO_ITEM, "Certificação de análise","Certificação de análise", 'C', 200900100, 1, true,FRCertAnalise.class);
 				addOpcao(200900000, TP_OPCAO_ITEM, "Análises","Análises", 'C', 200900200, 1, true, FRAnalise.class);
+				addOpcao(200900000, TP_OPCAO_ITEM, "Contra-Provas","Contra-Provas", 'C', 200900300, 1, true, FRContraProva.class);
 			
 			addOpcao(-1, TP_OPCAO_MENU, "Estoque", "", 'E', 400000000, 0, false,null);
 			addOpcao(400000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 400100000,1, true, FKardex.class);
