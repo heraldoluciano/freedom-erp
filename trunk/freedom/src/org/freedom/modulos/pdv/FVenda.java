@@ -1347,7 +1347,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		txtDtEmitVenda.setVlrDate( new Date() );
 		txtDtSaidaVenda.setVlrDate( new Date() );
 
-		txtNumeroCupom.setVlrInteger( ecf.getNumeroDocumento() );
+		txtNumeroCupom.setVlrInteger( ecf.getNumeroDocumento()+1 );
 
 		tbItem.limpa();
 		mostraInfoImp();
