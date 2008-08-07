@@ -61,7 +61,7 @@ public class FFase extends FDados implements ActionListener {
             
     adicCampo(txtCodFase, 7, 20, 70, 20,"CodFase","Cód.fase", ListaCampos.DB_PK, true);
     adicCampo(txtDescFase, 80, 20, 230, 20,"DescFase","Descrição da fase", ListaCampos.DB_SI, true);
-    adicDB(cbTipo,7,60,140,24,"tipoFase","Tipo de fase", true);
+    adicDB(cbTipo,7,60,230,24,"tipoFase","Tipo de fase", true);
     setListaCampos( true, "FASE", "PP");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
