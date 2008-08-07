@@ -655,15 +655,12 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 						y="2"
 						width="87"
 						height="12"
-						key="textField-13">
-							<printWhenExpression><![CDATA[new Boolean($F{VLRAFER}!=null)]]></printWhenExpression>
-						</reportElement>
+						key="textField-13"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Oblique" size="9" isItalic="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Em conformidade"
-]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRAFER}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
