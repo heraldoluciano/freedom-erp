@@ -37,9 +37,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -276,8 +278,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private String SitOp = "";
 
-	@ SuppressWarnings ( "unchecked" )
 	private HashMap<String, Object> prefere = null;
+	
+	private boolean AUTO_OP = true;
+	
 
 	public FOP( int codOp, int seqOp ) {
 
@@ -1139,38 +1143,39 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private boolean temSldLote() {
 
 		boolean bRet = false;
-		ResultSet rs = null;
-		PreparedStatement ps = null;
-		String sSQL = null;
-		String sSaida = "";
-		int iSldNeg = 0;
-		int iTemp = 0;
-		float fSldLote = 0f;
 
 		try {
+			
+			String sSaida = "";
+			int iSldNeg = 0;
+			int iTemp = 0;
+			float fSldLote = 0f;
 
-			sSQL = "SELECT SLDLOTE FROM EQLOTE " + "WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND CODLOTE=? ";
+			String sSQL = "SELECT SLDLOTE FROM EQLOTE WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND CODLOTE=? ";
 
 			for ( int i = 0; i < tab.getRowCount(); i++ ) {
-				ps = con.prepareStatement( sSQL );
+				
+				PreparedStatement ps = con.prepareStatement( sSQL );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, Aplicativo.iCodFilial );
 				ps.setInt( 3, ( (Integer) tab.getValor( i, 1 ) ).intValue() );
 				ps.setString( 4, (String) tab.getValor( i, 3 ) );
-				rs = ps.executeQuery();
+				
+				ResultSet rs = ps.executeQuery();
 
 				if ( rs.next() ) {
 					fSldLote = rs.getFloat( "SLDLOTE" );
 				}
 
-				if ( ( fSldLote < ( Funcoes.strCurrencyToBigDecimal( (String) tab.getValor( i, 5 ) ).floatValue() ) ) && ( ! ( (String) tab.getValor( i, 3 ) ).equals( "" ) ) ) {
+				if ( fSldLote < Funcoes.strCurrencyToBigDecimal((String)tab.getValor( i, 5 )).
+						        subtract( Funcoes.strCurrencyToBigDecimal((String)tab.getValor( i, 6 )) ).floatValue()
+						&& ! "".equals((String) tab.getValor( i, 3 )) ) {
 					iSldNeg++;
 					sSaida += "\nProduto: " + tab.getValor( i, 1 ) + Funcoes.replicate( " ", 20 ) + "Lote: " + tab.getValor( i, 3 );
 				}
 
 				rs.close();
 				ps.close();
-
 			}
 
 			if ( !con.getAutoCommit() ) {
@@ -1178,28 +1183,30 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			}
 
 			if ( iSldNeg > 0 ) {
+				
+				if ( AUTO_OP ) {
+					return false;
+				}
+				
 				iTemp = Funcoes.mensagemConfirma( this, "Estes lotes possuem saldo menor que a quantidade solicitada." + sSaida + "\n\nDeseja gerar RMA com lote sem saldo?" );
-				if ( iTemp == JOptionPane.NO_OPTION )
+				if ( iTemp == JOptionPane.NO_OPTION ) {
 					bRet = false;
-				else if ( iTemp == JOptionPane.YES_OPTION )
+				}
+				else if ( iTemp == JOptionPane.YES_OPTION ) {
 					bRet = true;
+				}
 			}
-			else
+			else {
 				bRet = true;
+			}
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro ao verificar quantidade de Lote\n" + e.getMessage(), true, con, e );
 			e.printStackTrace();
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao verificar quantidade de Lote\n" + e.getMessage(), true, con, e );
 			e.printStackTrace();
-		} finally {
-			rs = null;
-			ps = null;
-			sSQL = null;
-			iSldNeg = 0;
-			fSldLote = 0;
-			iTemp = 0;
-		}
+		} 
+		
 		return bRet;
 	}
 
@@ -1343,28 +1350,21 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	public void geraRMA() {
 
 		String sSQL = null;
-		//		PreparedStatement ps = null;
 		ResultSet rs = null;
 		ResultSet rs2 = null;
 		PreparedStatement ps2 = null;
 		PreparedStatement ps3 = null;
+		
 		try {
-
-			/*
-			 sSQL = "SELECT GERARMA FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND GERARMA='S'";
-			 ps = con.prepareStatement( sSQL );
-			 ps.setInt( 1, Aplicativo.iCodEmp );
-			 ps.setInt( 2, ListaCampos.getMasterFilial( "PPITOP" ) );
-			 ps.setInt( 3, txtCodOP.getVlrInteger().intValue() );
-			 ps.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
-			 rs = ps.executeQuery();*/
 
 			rs = itensRma();
 
 			if ( rs.next() ) {
 				try {
 					if ( temSldLote() ) {
-						if ( Funcoes.mensagemConfirma( this, "Confirma a geração de RMA para a OP:" + txtCodOP.getVlrString() + " SEQ:" + txtSeqOP.getVlrString() + "?" ) == JOptionPane.YES_OPTION ) {
+						boolean confirmar = AUTO_OP ? AUTO_OP : Funcoes.mensagemConfirma( this, 
+								"Confirma a geração de RMA para a OP:" + txtCodOP.getVlrString() + " SEQ:" + txtSeqOP.getVlrString() + "?" ) == JOptionPane.YES_OPTION;
+						if ( confirmar ) {
 							ps2 = con.prepareStatement( "EXECUTE PROCEDURE EQGERARMASP(?,?,?,?)" );
 							ps2.setInt( 1, Aplicativo.iCodEmp );
 							ps2.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
@@ -1373,11 +1373,13 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 							ps2.execute();
 							ps2.close();
 
-							if ( !con.getAutoCommit() )
+							if ( !con.getAutoCommit() ) {
 								con.commit();
+							}
 
 							try {
-								ps3 = con.prepareStatement( "SELECT CODRMA FROM EQRMA WHERE CODEMP=? AND CODFILIAL=? AND " + "CODEMPOF=CODEMP AND CODFILIALOF=? AND CODOP=? AND SEQOP=?" );
+								ps3 = con.prepareStatement( 
+										"SELECT CODRMA FROM EQRMA WHERE CODEMP=? AND CODFILIAL=? AND CODEMPOF=CODEMP AND CODFILIALOF=? AND CODOP=? AND SEQOP=?" );
 								ps3.setInt( 1, Aplicativo.iCodEmp );
 								ps3.setInt( 2, ListaCampos.getMasterFilial( "PPITOP" ) );
 								ps3.setInt( 3, ListaCampos.getMasterFilial( "PPOP" ) );
@@ -1389,8 +1391,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 								while ( rs2.next() ) {
 									sRma += rs2.getString( 1 ) + " - ";
 								}
-								if ( sRma.length() > 0 )
+								if ( sRma.length() > 0 ) {
 									Funcoes.mensagemInforma( this, "Foram geradas as seguintes RMA:\n" + sRma );
+								}
 
 								rs2.close();
 							} catch ( Exception err ) {
@@ -1398,6 +1401,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 								err.printStackTrace();
 							}
 						}
+					}
+					else if ( AUTO_OP ) {
+						// MARCAR OP COMO COM PROBLEMAS
+						Funcoes.mensagemErro( this, "Sem saldo de lote para OP!" );
 					}
 				} catch ( Exception err ) {
 					Funcoes.mensagemErro( this, "Erro ao criar RMA", true, con, err );
@@ -1425,7 +1432,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
-	public void ratearItem( boolean bPergunta ) {
+	private void ratearItem( boolean bPergunta ) {
 
 		boolean bResposta = true;
 		BigDecimal bdVlrNova = null;
@@ -1489,6 +1496,167 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
+	private void ratearOp() {
+
+		try {
+			HashMap<Integer, List<String>> lotes = new HashMap<Integer, List<String>>();
+			Integer seq;
+			Integer codprod;
+			String lote;
+			BigDecimal quantidade;
+			BigDecimal novaquantidade;
+					
+			for ( int row=0; row < tab.getNumLinhas(); row++ ) {
+			
+				seq = (Integer)tab.getValor( row, 0 );
+				codprod = (Integer)tab.getValor( row, 1 );
+				lote = (String)tab.getValor( row, 3 );
+				quantidade = Funcoes.strCurrencyToBigDecimal((String)tab.getValor( row, 5 ));
+				
+				
+				if ( lotes.get( codprod ) == null ) {
+					lotes.put( codprod, new ArrayList<String>() );	
+				}
+				
+				novaquantidade = verificaSaldoLote( codprod, lote, quantidade );
+				
+				if ( novaquantidade.floatValue() > 0 ) {
+					lotes.get( codprod ).add( lote );
+					rateiaItemSemSaldo( seq, codprod, novaquantidade, lotes.get( codprod ) );	
+					lcCampos.carregaDados();
+				}
+			}
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+	}
+	
+	private BigDecimal verificaSaldoLote( Integer codprod, String lote, BigDecimal quantidade ) throws Exception {
+		
+		BigDecimal novaquantidade = new BigDecimal( "0.00" );
+		BigDecimal saldolote = new BigDecimal( "0.00" );
+
+		StringBuilder sql = new StringBuilder();
+
+		sql.append( "SELECT L.SLDLOTE FROM EQLOTE L " );
+		sql.append( "WHERE L.CODEMP=? AND L.CODFILIAL=? AND L.CODPROD=? AND L.CODLOTE=? " );
+
+		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "EQLOTE" ) );
+		ps.setInt( 3, codprod );
+		ps.setString( 4, lote );
+
+		ResultSet rs = ps.executeQuery();
+
+		if ( rs.next() ) {
+			saldolote = rs.getBigDecimal( "SLDLOTE" );
+		}
+
+		rs.close();
+		ps.close();
+
+		if ( !con.getAutoCommit() ) {
+			con.commit();
+		}
+
+		if ( quantidade.max( saldolote ) == quantidade ) {
+			novaquantidade = quantidade.subtract( saldolote );
+		}
+		
+		return novaquantidade;
+	}
+
+	private void rateiaItemSemSaldo( Integer seq, Integer codprod, BigDecimal quantidade, List<String> lotesutilizados ) throws Exception {
+		
+		boolean novorateio = false;
+		
+		String lotes = "";
+		
+		for ( int i=0; i < lotesutilizados.size(); i++ ) {
+			if ( i > 0 ) {
+				lotes += ",";
+			}
+			lotes += lotesutilizados.get(i);
+		}
+		
+		String lote = null;
+		BigDecimal saldo = new BigDecimal( "0.00" );
+
+		StringBuilder sql = new StringBuilder();		
+		sql.append( "SELECT FIRST 1 L.CODLOTE, L.SLDLOTE " );
+		sql.append( "FROM EQLOTE L " );
+		sql.append( "WHERE L.CODEMP=? AND L.CODFILIAL=? AND L.CODPROD=? AND " );
+		sql.append( "L.SLDLIQLOTE>0 AND L.VENCTOLOTE>=cast('today' as date) AND " );
+		sql.append( "NOT L.CODLOTE IN ( " + lotes + " ) " );
+		sql.append( "ORDER BY L.VENCTOLOTE, L.CODLOTE " );
+		
+		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "EQLOTE" ) );
+		ps.setInt( 3, codprod );
+		
+		ResultSet rs = ps.executeQuery();
+		
+		if ( rs.next() ) {
+			lote = rs.getString( "CODLOTE" );
+			saldo = rs.getBigDecimal( "SLDLOTE" );
+		}
+
+		rs.close();
+		ps.close();
+		
+		if ( !con.getAutoCommit() ) {
+			con.commit();
+		}
+		
+		if ( saldo.floatValue() > 0 ) {
+			if ( quantidade.max( saldo ) == quantidade ) {
+				novorateio = true;
+			}
+			
+			sql = new StringBuilder();		
+			sql.append( "UPDATE PPITOP SET QTDCOPIAITOP=?, CODLOTERAT=? " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND SEQITOP=?" );
+			
+			ps = con.prepareStatement( sql.toString() );
+			ps.setBigDecimal( 1, quantidade );
+			ps.setString( 2, lote );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "PPITOP" ) );
+			ps.setInt( 5, txtCodOP.getVlrInteger() );
+			ps.setInt( 6, txtSeqOP.getVlrInteger() );
+			ps.setInt( 7, seq );
+			
+			ps.executeUpdate();
+			ps.close();
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
+			if ( novorateio ) {
+				sql = new StringBuilder();		
+				sql.append( "SELECT MAX(SEQITOP) FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
+				
+				ps = con.prepareStatement( sql.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "PPITOP" ) );
+				ps.setInt( 3, txtCodOP.getVlrInteger() );
+				ps.setInt( 4, txtSeqOP.getVlrInteger() );
+				
+				rs = ps.executeQuery();
+				
+				if ( rs.next() ) {
+					seq = rs.getInt( 1 );
+				}
+				
+				lotesutilizados.add( lote );
+				rateiaItemSemSaldo( seq, codprod, quantidade.subtract( saldo ), lotesutilizados );
+			}
+		}
+	}
+		
 	public static boolean existeLote( Connection cn, int iCodProd, String sCodLote ) {
 
 		boolean bRet = false;
@@ -2203,6 +2371,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			if ( tpnAbas.getSelectedIndex() == 0 ) {
 				tpnAbas.setSelectedIndex( 1 );
 			}
+			ratearOp();
+			geraRMA();
 		}
 		else if ( pevt.getListaCampos() == lcDet ) {
 			btRMA.setEnabled( liberaRMA() );
