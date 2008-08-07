@@ -260,7 +260,7 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
 	    hParam.put( "CODLOTE", txtCodLote.getVlrString() );
 		hParam.put( "DESCPROD", descProd );
 		hParam.put( "FABRICACAO", txtDtIniLote.getVlrDate() );
-		hParam.put( "VALIDADE", txtDtIniLote.getVlrDate() );
+		hParam.put( "VALIDADE", txtDtVencLote.getVlrDate() );
 		hParam.put( "NF", txtCodPed.getVlrInteger() == 0 ? null : txtCodPed.getVlrInteger() );
 		hParam.put( "EMITNF", txtDtEmitPed.getVlrDate() );
 		hParam.put( "CODCLI", txtCodCli.getVlrInteger() == 0 ? null : txtCodCli.getVlrInteger() );
