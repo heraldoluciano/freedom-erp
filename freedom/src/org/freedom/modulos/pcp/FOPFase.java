@@ -86,7 +86,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	private JTextFieldPad txtHFimProdFs = new JTextFieldPad(JTextFieldPad.TP_TIME,8,0);
 	private JTextFieldPad txtSitFS = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldFK txtTpFase = new JTextFieldFK(JTextFieldPad.TP_STRING,2,0);
-	private JButton btContraProva = new JButton( Icone.novo( "btFinalizaOP.gif" ) );
+	private JButton btContraProva = new JButton("Retenção de contra prova", Icone.novo( "btFinalizaOP.gif" ) );
 	private ListaCampos lcProd = new ListaCampos(this,"PD");
 	private ListaCampos lcFase = new ListaCampos(this,"FS");
 	private ListaCampos lcRec = new ListaCampos(this,"RP");
@@ -99,7 +99,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		setTitulo("Fases da OP");
 		setName( "Fases da OP" );
 		
-	    setAtribos( 70, 40, 660, 470);
+	    setAtribos( 70, 40, 675, 470);
 	    setAltCab(130);
 	    setAltDet(180);
 		
@@ -140,15 +140,14 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		adicCampo(txtCodOP, 7, 20, 80, 20,"CodOP","Nº.OP", ListaCampos.DB_PK, true);
 		adicCampo(txtSeqOP, 90, 20, 60, 20,"SeqOP","Seq.OP", ListaCampos.DB_PK, true);
 		adicCampo(txtCodProd, 153, 20, 77, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescProd, true);
-		adicDescFK(txtDescProd, 233, 20, 330, 20, "DescProd", "Descrição do produto");
+		adicDescFK(txtDescProd, 233, 20, 410, 20, "DescProd", "Descrição do produto");
 		adicCampo(txtDtEmit, 7, 60, 110, 20,"DtEmitOP","Emissão", ListaCampos.DB_SI, true);
 		adicCampo(txtDtValid, 120, 60, 110, 20,"DtValidPDOP","Valid.prod.", ListaCampos.DB_SI, true);
 		adicCampo(txtQtdPrevOP, 233, 60, 87, 20,"QtdPrevProdOP","Qtd.prevista", ListaCampos.DB_SI, true);
 		adicCampo(txtQtdFinalOP, 323, 60, 100, 20,"QtdFinalProdOP","Qtd.produzida", ListaCampos.DB_SI, true);
 		adicCampoInvisivel(txtJustificqtdprod,"JUSTFICQTDPROD","Justificativa",ListaCampos.DB_SI,false);
 		adicCampoInvisivel(txtDtFabProd,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true);
-		adic(new JLabelPad("Retenção de Contra-Prova"), 479,65,200,20);
-		adic(btContraProva, 446,60,30,30);
+		adic(btContraProva, 435,55,210,30);
 		
 		setListaCampos( false, "OP", "PP");
 		lcCampos.setQueryInsert(false);
