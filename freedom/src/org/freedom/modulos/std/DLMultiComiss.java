@@ -80,6 +80,8 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 	
 	private JTextFieldFK txtDescVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
+	private JTextFieldFK txtTipoVend = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldPad txtCodClComis = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldPad txtPercComisVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 7, Aplicativo.casasDecFin );
@@ -102,9 +104,11 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 	
 	private ImageIcon imgStatus = null;
 	
+	String tipoComis = null;
+	
 	private enum eComiss {
 	
-		OBRIGATORIO, SEQ, DESCTPCOMIS, CODVEND, DESCVEND, PERCCOMISS, CODVENDA, TIPOVENDA ;
+		OBRIGATORIO, SEQ, CODTPVEND, DESCTPCOMIS, CODVEND,  DESCVEND, PERCCOMISS, CODVENDA, TIPOVENDA ;
 	};
 
 	public DLMultiComiss( Connection con, int codvenda ){
@@ -115,9 +119,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		this.codvenda = codvenda;
 		
 		montaListaCampos();
-
-		setConexao( con );
-		
+		setConexao( con );		
 		montaTela();
 		montaTab();		
 		
@@ -125,6 +127,8 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		btSair.addActionListener( this );
 		
 		txtCodVend.requestFocus();
+		tabComiss.setLinhaSel( 0 );
+		setLinhaTab();
 	}
 	
 	private void montaTela(){
@@ -147,6 +151,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		
 		tabComiss.adicColuna( "" );
 		tabComiss.adicColuna( "seq." );
+		tabComiss.adicColuna( "Cod.tp.vend" );
 		tabComiss.adicColuna( "Tipo de comissionado" );
 		tabComiss.adicColuna( "Cod.Vend" );
 		tabComiss.adicColuna( "Vendedor" );
@@ -155,11 +160,11 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		tabComiss.adicColuna( "Tipo Venda" );
 		
 		tabComiss.setTamColuna( 20, eComiss.OBRIGATORIO.ordinal() );
-		tabComiss.setTamColuna( 250, eComiss.DESCTPCOMIS.ordinal() );
-		tabComiss.setTamColuna( 200, eComiss.DESCVEND.ordinal() );
+		tabComiss.setTamColuna( 220, eComiss.DESCTPCOMIS.ordinal() );
+		tabComiss.setTamColuna( 150, eComiss.DESCVEND.ordinal() );
 		tabComiss.setTamColuna( 70, eComiss.PERCCOMISS.ordinal() );
 		tabComiss.setTamColuna( 60, eComiss.CODVEND.ordinal() );
-	
+		tabComiss.setTamColuna( 70, eComiss.CODTPVEND.ordinal() );	
 		tabComiss.setColunaInvisivel( eComiss.SEQ.ordinal() );
 		tabComiss.setColunaInvisivel( eComiss.CODVENDA.ordinal() );
 		tabComiss.setColunaInvisivel( eComiss.TIPOVENDA.ordinal() );
@@ -186,9 +191,11 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 	
 	private void montaListaCampos(){
 		
-		lcVendedor.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.Vend.", ListaCampos.DB_PK, true ) );
+		
+		lcVendedor.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.Vend.", ListaCampos.DB_PK, false ) );
 		lcVendedor.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
-		lcVendedor.setWhereAdic( "ATIVOCOMIS='S'" );
+		lcVendedor.setWhereAdic( "ATIVOCOMIS='S' ");
+		lcVendedor.setDinWhereAdic( "CODTIPOVEND=#N", txtTipoVend );
 		lcVendedor.montaSql( false, "VENDEDOR", "VD" );
 		lcVendedor.setReadOnly( true );
 		txtCodVend.setTabelaExterna( lcVendedor );
@@ -200,7 +207,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		lcVendaComis.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.Venda", ListaCampos.DB_PK, false ) );
 		lcVendaComis.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo", ListaCampos.DB_PK, false ) );
 		lcVendaComis.add( new GuardaCampo( txtSeqVenda, "SeqVc", "seq.", ListaCampos.DB_PK, false ) );
-		lcVendaComis.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.Vend.", ListaCampos.DB_FK, true ) );
+		lcVendaComis.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.Vend.", ListaCampos.DB_FK, false ) );
 		lcVendaComis.add( new GuardaCampo( txtPercComisVenda, "Percvc", "%.Comiss.", ListaCampos.DB_SI, true ) );
 		lcVendaComis.montaSql( false, "VENDACOMIS", "VD" );
 		lcVendaComis.setQueryCommit( false );
@@ -223,10 +230,31 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 			txtCodVenda.setVlrInteger( new Integer( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.CODVENDA.ordinal()).toString()));
 			txtTipoVenda.setVlrString( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.TIPOVENDA.ordinal() ).toString());
 			txtSeqVenda.setVlrInteger( new Integer( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.SEQ.ordinal() ).toString()) );
+			txtTipoVend.setVlrInteger( new Integer( tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.CODTPVEND.ordinal() ).toString()) );
 			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	private void setLinhaTab(){
+				
+		setVlrCampos();
+		
+		lcVendaComis.carregaDados();
+		nvRodape.setAtivo( 2, true );
+		lcVendaComis.edit();
+		
+		if( imgObrigatorio == tabComiss.getValor( tabComiss.getLinhaSel(), eComiss.OBRIGATORIO.ordinal() )){
+			
+			txtCodVend.setRequerido( true );
+			txtPercComisVenda.setRequerido( true );
+		}
+		else
+		{
+			txtCodVend.setRequerido( false );
+			txtPercComisVenda.setRequerido( false );
 		}
 	}
 	
@@ -239,7 +267,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 		
 		try {
 
-			sql.append( "SELECT VC.SEQVC, VC.CODVEND, TV.DESCTIPOVEND, VC.CODVEND, VE.NOMEVEND, VC.PERCVC, VC.CODVENDA, VC.TIPOVENDA, RC.OBRIGITRC " );
+			sql.append( "SELECT VC.SEQVC, VC.CODVEND, TV.DESCTIPOVEND, VC.CODVEND, VE.NOMEVEND, VC.PERCVC, VC.CODVENDA, VC.TIPOVENDA, RC.OBRIGITRC, TV.CODTIPOVEND " );
 			sql.append( "FROM VDITREGRACOMIS RC, VDTIPOVEND TV, VDVENDACOMIS VC " );
 			sql.append( "LEFT OUTER JOIN VDVENDEDOR VE ON " );
 			sql.append( "VE.CODEMP=VC.CODEMPVD AND VE.CODFILIAL=VC.CODFILIALVD AND VC.CODVEND=VE.CODVEND " );
@@ -276,6 +304,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 				
 				tabComiss.setValor( imgStatus, i, eComiss.OBRIGATORIO.ordinal() ); 
 				tabComiss.setValor( rs.getString( "SEQVC" ) != null ?  rs.getString( "SEQVC" ) : "", i, eComiss.SEQ.ordinal() );
+				tabComiss.setValor( rs.getString( "CODTIPOVEND" ) != null ? rs.getString( "CODTIPOVEND" ) : "" , i, eComiss.CODTPVEND.ordinal() );
 				tabComiss.setValor( rs.getString( "DESCTIPOVEND" ) != null ? rs.getString( "DESCTIPOVEND" ) : "" , i, eComiss.DESCTPCOMIS.ordinal() );
 				tabComiss.setValor( rs.getString( "CODVEND" ) != null ? rs.getString( "CODVEND" ) : ""  , i, eComiss.CODVEND.ordinal() );
 				tabComiss.setValor( rs.getString( "NOMEVEND" ) != null ? rs.getString( "NOMEVEND" ) : "", i, eComiss.DESCVEND.ordinal() );
@@ -285,8 +314,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 						
 				i++;
 			}		
-			
-			
+					
 			rs.close();
 			ps.close();
 
@@ -294,6 +322,8 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 				con.commit();
 			}
 		} 
+		
+		
 		catch ( SQLException e ) {
 			
 			e.printStackTrace();
@@ -313,10 +343,8 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 
 		if ( mevt.getClickCount() == 2 ) {
 			if ( mevt.getSource() == tabComiss && tabComiss.getLinhaSel() >= 0 ) {	
-				setVlrCampos();
-				lcVendaComis.carregaDados();
-				txtCodVend.requestFocus();
-				nvRodape.setAtivo( 2, true );
+
+				setLinhaTab();
 			}
 		}
 	}
@@ -348,21 +376,12 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 	}
 
 	public void afterEdit( EditEvent eevt ) {
-		System.out.println("teste2");
 		nvRodape.setAtivo( 3, true );
 		nvRodape.setAtivo( 4, true );
 			
 	}
 
-	public void beforeEdit( EditEvent eevt ) {
-		System.out.println("teste");
-		// TODO Auto-generated method stub
-		
-	}
+	public void beforeEdit( EditEvent eevt ) {}
 
-	public void edit( EditEvent eevt ) {
-
-		// TODO Auto-generated method stub
-		
-	}
+	public void edit( EditEvent eevt ) {}
 }
