@@ -42,10 +42,6 @@ public class FContraProva extends FDetalhe {
 
 	private JPanelPad pinDet = new JPanelPad();
 	
-	private JTextFieldPad txtCodRetCp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8 , 0 );
-	
-	private JTextFieldPad txtCodRetCpIt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8 , 0 );
-	
 	private JTextFieldPad txtQtdItRet = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15 , 5 );
 	
 	private JTextFieldPad txtCodOp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5 , 0 );
@@ -66,6 +62,8 @@ public class FContraProva extends FDetalhe {
 	
 	private JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
+	private JTextFieldPad txtCodRetCpIt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8 , 0 );
+	
 	private ListaCampos lcProd = new ListaCampos( this, "PD"  );
 	
 	private ListaCampos lcOp = new ListaCampos( this, "" );
@@ -76,15 +74,10 @@ public class FContraProva extends FDetalhe {
 		this();
 		txtCodOp.setVlrInteger( codOp );
 		txtSeqOp.setVlrInteger( seqOp );
-		txtCodRetCp.setEditable( false );
 		txtCodOp.setEditable( false );
 		txtSeqOp.setEditable( false );
-		txtDtDesc.setEditable( false );
-		txtDtRet.setEditable( false );
 		txtCodProd.setEditable( false );
-		txtQtdItRet.setEditable( false );
 		txtCodRetCpIt.setEditable( false );
-		
 		
 	}
 	
@@ -107,11 +100,10 @@ public class FContraProva extends FDetalhe {
 		pinCab = new JPanelPad( 440, 80 );		
 		setPainel( pinCab, pnCliCab );
 		setListaCampos( lcCampos );
-		adicCampo( txtCodRetCp, 7, 25, 70, 20, "CODRETCP", "Cód.Ret.Cp", ListaCampos.DB_PK, true );
-		adicCampo( txtCodOp, 80, 25, 70, 20, "CODOP", "Cód.Op.", ListaCampos.DB_FK, true );
-		adicCampo( txtSeqOp, 153, 25, 55, 20, "SEQOP", "Seq.Op.", ListaCampos.DB_FK, true );
-		adicCampo( txtDtRet, 211, 25, 100, 20, "DTRETENCAO", "Data retenção", ListaCampos.DB_SI, true );
-		adicCampo( txtDtDesc, 314, 25, 100, 20, "DTDESCARTE", "Data descarte", ListaCampos.DB_SI, true );
+		adicCampo( txtCodOp, 7, 25, 70, 20, "CODOP", "Cód.Op.", ListaCampos.DB_PK, true );
+		adicCampo( txtSeqOp, 80, 25, 55, 20, "SEQOP", "Seq.Op.", ListaCampos.DB_PK, true );
+		adicCampo( txtDtRet, 138, 25, 100, 20, "DTRETENCAO", "Data retenção", ListaCampos.DB_SI, true );
+		adicCampo( txtDtDesc, 241, 25, 100, 20, "DTDESCARTE", "Data descarte", ListaCampos.DB_SI, true );
 		setListaCampos( true, "RETCP", "PP" );
 		lcCampos.setQueryInsert( true );
 		lcCampos.adicDetalhe( lcDet );		
@@ -134,9 +126,9 @@ public class FContraProva extends FDetalhe {
 		lcDet.setQueryInsert( true ); 
 		
 		montaTab();
-		tab.setTamColuna( 25, 0 );
-		tab.setTamColuna( 260, 2 );
-		tab.setTamColuna( 70, 3 );
+		tab.setTamColuna( 45, 0 );
+		tab.setTamColuna( 250, 2 );
+		tab.setTamColuna( 60, 3 );
 
 	}
 	
@@ -174,6 +166,7 @@ public class FContraProva extends FDetalhe {
 		super.setConexao( con );
 		lcProd.setConexao( con );
 		lcOp.setConexao( con );
+		lcCampos.carregaDados();
 		
 	}
 }
