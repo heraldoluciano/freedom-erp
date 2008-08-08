@@ -216,6 +216,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private JButton btObs2 = new JButton( Icone.novo( "btObs.gif" ) );
 
+	private JButton btReprocessaItens = new JButton( Icone.novo( "btReset.gif" ) );
+
 	private FPrinterJob dl = null;
 
 	private ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
@@ -280,8 +282,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private HashMap<String, Object> prefere = null;
 	
-	private boolean AUTO_OP = true;
-	
 
 	public FOP( int codOp, int seqOp ) {
 
@@ -309,8 +309,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		setTitulo( "Ordens de produção" );
 		setAtribos( 15, 10, 620, 600 );
 		setAltCab( 238 );
+		
 		btObs.setVisible( false );
 		btObs2.setVisible( true );
+		btReprocessaItens.setVisible( false );
 
 		pnMaster.remove( spTab );
 
@@ -329,6 +331,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btCancela.setToolTipText( "Cancela O.P." );
 		btObs.setToolTipText( "Motivo do cancelamento" );
 		btObs2.setToolTipText( "Observação" );
+		btReprocessaItens.setToolTipText( "Reprocessar itens" );
 
 		pinCab.adic( pinQuantidades, 5, 130, 550, 65 );
 		pinCab.adic( pinBotCab, 560, 5, 35, 190 );
@@ -343,6 +346,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		pinStatus.tiraBorda();
 		pinStatus.adic( pinLb, 38, 0, 110, 25 );
 		pinStatus.adic( btObs, 0, 0, 35, 25 );
+		pinStatus.adic( btReprocessaItens, 0, 0, 35, 25 );
 
 		lcModLote.add( new GuardaCampo( txtCodModLote, "CodModLote", "Cod.Mod.Lote", ListaCampos.DB_PK, txtDescModLote, false ) );
 		lcModLote.add( new GuardaCampo( txtDescModLote, "DescModLote", "Descrição do modelo de lote", ListaCampos.DB_SI, false ) );
@@ -493,6 +497,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btFinaliza.addActionListener( this );
 		btObs.addActionListener( this );
 		btObs2.addActionListener( this );
+		btReprocessaItens.addActionListener( this );
 
 		btContrQuali.addActionListener( this );
 		btRMA.addActionListener( this );
@@ -580,7 +585,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		lSitOp = new JLabelPad();
 		lSitOp.setForeground( Color.WHITE );
-		pinLb.adic( lSitOp, 30, 0, 110, 20 );
+		lSitOp.setHorizontalAlignment( SwingConstants.CENTER );
+		pinLb.adic( lSitOp, 0, 0, 110, 20 );
 
 		tpnAbas.addChangeListener( this );
 		txtCodOP.addFocusListener( this );
@@ -1184,7 +1190,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 			if ( iSldNeg > 0 ) {
 				
-				if ( AUTO_OP ) {
+				if ( (Boolean)prefere.get( "RATAUTO" ) ) {
 					return false;
 				}
 				
@@ -1362,8 +1368,11 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			if ( rs.next() ) {
 				try {
 					if ( temSldLote() ) {
-						boolean confirmar = AUTO_OP ? AUTO_OP : Funcoes.mensagemConfirma( this, 
-								"Confirma a geração de RMA para a OP:" + txtCodOP.getVlrString() + " SEQ:" + txtSeqOP.getVlrString() + "?" ) == JOptionPane.YES_OPTION;
+						boolean confirmar = (Boolean)prefere.get( "RATAUTO" );
+						if ( ! confirmar ) {
+							confirmar = Funcoes.mensagemConfirma( this, 
+									"Confirma a geração de RMA para a OP:" + txtCodOP.getVlrString() + " SEQ:" + txtSeqOP.getVlrString() + "?" ) == JOptionPane.YES_OPTION;
+						}
 						if ( confirmar ) {
 							ps2 = con.prepareStatement( "EXECUTE PROCEDURE EQGERARMASP(?,?,?,?)" );
 							ps2.setInt( 1, Aplicativo.iCodEmp );
@@ -1402,9 +1411,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 							}
 						}
 					}
-					else if ( AUTO_OP ) {
-						// MARCAR OP COMO COM PROBLEMAS
-						Funcoes.mensagemErro( this, "Sem saldo de lote para OP!" );
+					else if ( (Boolean)prefere.get( "RATAUTO" ) ) {
+						bloquearOPSemSaldo();
+						Funcoes.mensagemInforma( this, "Esta OP será bloqueada devido a falta de saldo para alguns itens." );
 					}
 				} catch ( Exception err ) {
 					Funcoes.mensagemErro( this, "Erro ao criar RMA", true, con, err );
@@ -1654,6 +1663,32 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				lotesutilizados.add( lote );
 				rateiaItemSemSaldo( seq, codprod, quantidade.subtract( saldo ), lotesutilizados );
 			}
+		}
+	}
+	
+	private void bloquearOPSemSaldo() {
+		
+		try {
+			StringBuilder sql = new StringBuilder();
+
+			sql.append( "UPDATE PPOP SET SITOP='BL' " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
+
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setInt( 3, txtCodOP.getVlrInteger() );
+			ps.setInt( 4, txtSeqOP.getVlrInteger() );
+			ps.executeUpdate();
+			ps.close();
+			
+			lcCampos.carregaDados();
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+		} catch ( SQLException e ) {
+			e.printStackTrace();
 		}
 	}
 		
@@ -2172,6 +2207,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 				txtCodLoteProdDet.setAtivo( true );
 				btObs.setVisible( false );
+				btReprocessaItens.setVisible( false );
 				navRod.setAtivo( Navegador.BT_NOVO, true );
 				navRod.setAtivo( Navegador.BT_EDITAR, true );
 				navRod.setAtivo( Navegador.BT_EXCLUIR, true );
@@ -2211,6 +2247,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				txtCodLoteProdDet.setAtivo( false );
 
 				btObs.setVisible( false );
+				btReprocessaItens.setVisible( false );
 				navRod.setAtivo( Navegador.BT_NOVO, false );
 				navRod.setAtivo( Navegador.BT_EDITAR, false );
 				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
@@ -2245,10 +2282,42 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				navRod.setAtivo( Navegador.BT_SALVAR, false );
 
 				btObs.setVisible( true );
+				btReprocessaItens.setVisible( false );
 				SitOp = "Cancelada";
 				lSitOp.setText( SitOp );
 
 				pinLb.setBackground( cor( 210, 50, 30 ) );
+
+			}
+			else if ( sitop.equals( "BL" ) ) {
+
+				btLote.setEnabled( false );
+				btRMA.setEnabled( false );
+				btFinaliza.setEnabled( false );
+				btDistrb.setEnabled( false );
+				btCancela.setEnabled( false );
+
+				txtCodProdEst.setAtivo( false );
+				txtSeqEst.setAtivo( false );
+				txtQtdSugProdOP.setAtivo( false );
+				txtCodLoteProdEst.setAtivo( false );
+				txtDtValidOP.setAtivo( false );
+				txtDtFabProd.setAtivo( false );
+				txtCodAlmoxEst.setAtivo( false );
+
+				txtCodLoteProdDet.setAtivo( false );
+
+				navRod.setAtivo( Navegador.BT_NOVO, false );
+				navRod.setAtivo( Navegador.BT_EDITAR, false );
+				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
+				navRod.setAtivo( Navegador.BT_SALVAR, false );
+
+				btObs.setVisible( false );
+				btReprocessaItens.setVisible( true );
+				SitOp = "Bloqueada";
+				lSitOp.setText( SitOp );
+
+				pinLb.setBackground( Color.BLUE );
 
 			}
 			else if ( sitop.equals( "" ) ) {
@@ -2410,7 +2479,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		ResultSet rs = null;
 		try {
 
-			sql.append( "SELECT P1.USAREFPROD FROM SGPREFERE1 P1,SGPREFERE5 P5 " );
+			sql.append( "SELECT P1.USAREFPROD, P5.RATAUTO FROM SGPREFERE1 P1,SGPREFERE5 P5 " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
 			sql.append( "AND P5.CODEMP=? AND P5.CODFILIAL=?" );
 
@@ -2425,6 +2494,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 			if ( rs.next() ) {
 				retorno.put( "USAREFPROD", new Boolean( rs.getString( "USAREFPROD" ).trim().equals( "S" ) ) );
+				retorno.put( "RATAUTO", new Boolean( rs.getString( "RATAUTO" ).trim().equals( "S" ) ) );
 			}
 
 			rs.close();
