@@ -325,7 +325,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 						<font size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[($F{DDDFOR} != null ? "(" + $F{DDDFOR}.trim() + ")" : "")
-+ ($F{FONEFOR} != null ? $F{FONEFOR}.trim().substring(0,4) + "-" + $F{FONEFOR}.trim().substring(4) : "")]]></textFieldExpression>
++ (($F{FONEFOR}!=null && $F{FONEFOR}.trim().length()>=4) ? $F{FONEFOR}.trim().substring(0,4) + "-" + $F{FONEFOR}.trim().substring(4) : "")]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

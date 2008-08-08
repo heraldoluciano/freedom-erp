@@ -175,13 +175,13 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="70"  isSplitAllowed="true" >
+			<band height="75"  isSplitAllowed="true" >
 				<rectangle>
 					<reportElement
 						x="0"
 						y="0"
 						width="535"
-						height="70"
+						height="75"
 						forecolor="#F4F4FF"
 						backcolor="#F4F4FF"
 						key="rectangle-1">
@@ -194,7 +194,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 						x="534"
 						y="0"
 						width="0"
-						height="70"
+						height="75"
 						forecolor="#CCCCFF"
 						key="line-2"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -204,7 +204,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 						x="0"
 						y="0"
 						width="0"
-						height="70"
+						height="75"
 						forecolor="#CCCCFF"
 						key="line-1"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -212,7 +212,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="485"
-						y="2"
+						y="4"
 						width="40"
 						height="12"
 						key="textField-1"/>
@@ -225,7 +225,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="85"
-						y="2"
+						y="4"
 						width="300"
 						height="12"
 						key="textField-2"/>
@@ -238,7 +238,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="85"
-						y="44"
+						y="46"
 						width="115"
 						height="12"
 						key="textField-6"/>
@@ -253,7 +253,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="395"
-						y="30"
+						y="32"
 						width="130"
 						height="12"
 						key="textField-7"/>
@@ -266,7 +266,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="85"
-						y="16"
+						y="18"
 						width="300"
 						height="12"
 						key="textField-8"/>
@@ -279,7 +279,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="510"
-						y="44"
+						y="46"
 						width="15"
 						height="12"
 						key="textField-10"/>
@@ -292,7 +292,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<staticText>
 					<reportElement
 						x="10"
-						y="2"
+						y="4"
 						width="70"
 						height="12"
 						key="staticText-1"/>
@@ -305,7 +305,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<staticText>
 					<reportElement
 						x="10"
-						y="16"
+						y="18"
 						width="70"
 						height="12"
 						key="staticText-2"/>
@@ -318,7 +318,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<staticText>
 					<reportElement
 						x="440"
-						y="2"
+						y="4"
 						width="40"
 						height="12"
 						key="staticText-3"/>
@@ -331,7 +331,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<staticText>
 					<reportElement
 						x="10"
-						y="30"
+						y="32"
 						width="70"
 						height="12"
 						key="staticText-4"/>
@@ -344,7 +344,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="85"
-						y="30"
+						y="32"
 						width="265"
 						height="12"
 						key="textField-14"/>
@@ -357,7 +357,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<staticText>
 					<reportElement
 						x="355"
-						y="30"
+						y="32"
 						width="35"
 						height="12"
 						key="staticText-5"/>
@@ -370,7 +370,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<staticText>
 					<reportElement
 						x="495"
-						y="44"
+						y="46"
 						width="15"
 						height="12"
 						key="staticText-6"/>
@@ -383,7 +383,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<staticText>
 					<reportElement
 						x="355"
-						y="44"
+						y="46"
 						width="35"
 						height="12"
 						key="staticText-7"/>
@@ -396,7 +396,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="395"
-						y="44"
+						y="46"
 						width="95"
 						height="12"
 						key="textField-15"/>
@@ -409,7 +409,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<staticText>
 					<reportElement
 						x="10"
-						y="44"
+						y="46"
 						width="70"
 						height="12"
 						key="staticText-8"/>
@@ -422,7 +422,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<staticText>
 					<reportElement
 						x="235"
-						y="44"
+						y="46"
 						width="20"
 						height="12"
 						key="staticText-9"/>
@@ -435,7 +435,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="260"
-						y="44"
+						y="46"
 						width="50"
 						height="12"
 						key="textField-16"/>
@@ -448,7 +448,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<staticText>
 					<reportElement
 						x="10"
-						y="58"
+						y="60"
 						width="70"
 						height="12"
 						key="staticText-10"/>
@@ -461,7 +461,7 @@ WHERE CODEMP=$P{CODEMP}]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="85"
-						y="58"
+						y="60"
 						width="115"
 						height="12"
 						key="textField-17"/>
@@ -476,7 +476,7 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 				<staticText>
 					<reportElement
 						x="205"
-						y="58"
+						y="60"
 						width="50"
 						height="12"
 						key="staticText-11"/>
@@ -489,7 +489,7 @@ $F{CNPJCLI}.substring(8,12)+"-"+$F{CNPJCLI}.substring(12) : "")]]></textFieldExp
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="260"
-						y="58"
+						y="60"
 						width="90"
 						height="12"
 						key="textField-18"/>
