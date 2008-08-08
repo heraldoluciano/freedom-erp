@@ -63,7 +63,7 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 
 	};
 	
-	private JPanelPad pinCab = new JPanelPad( 0, 95 );
+	private JPanelPad pinCab = new JPanelPad( 0, 85 );
 	
 	private JPanelPad pnCab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
@@ -97,6 +97,8 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 	
 	private JCheckBoxPad cbRelacionada = new JCheckBoxPad( "Relacionadas", "S", "N" );
 	
+	private JCheckBoxPad cbBloqueada = new JCheckBoxPad( "Bloqueada", "S", "N" );
+	
 	private Vector<String> vValsStatus = new Vector<String>();
 
 	private Vector<String> vLabsStatus = new Vector<String>();
@@ -109,9 +111,11 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 	
 	private JLabelPad lbTxtFinalizada = new JLabelPad("Finalizada");
 	
-	private JLabelPad lbTxtAtrasado = new JLabelPad("Atrasado");
+	private JLabelPad lbTxtAtrasado = new JLabelPad("Atrasada");
 	
-	private JLabelPad lbTxtCancelado = new JLabelPad("Cancelado");
+	private JLabelPad lbTxtCancelado = new JLabelPad("Cancelada");
+	
+	private JLabelPad lbTxtBloqueado = new JLabelPad("Bloqueada");
 
 	private ImageIcon imgPendente = Icone.novo( "clIndisponivelParc.gif" );
 	
@@ -121,6 +125,8 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 	
 	private ImageIcon imgCancelado = Icone.novo( "clCancelado.gif" );
 	
+	private ImageIcon imgBloqueado = Icone.novo( "clOpBloqueada.gif" );
+	
 	private JLabelPad lbImgPendente = new JLabelPad( imgPendente );
 	
 	private JLabelPad lbImgFinalizada = new JLabelPad( imgFinalizada );
@@ -128,6 +134,8 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 	private JLabelPad lbImgAtrasado = new JLabelPad( imgAtrasado );
 	
 	private JLabelPad lbImgCancelado = new JLabelPad( imgCancelado );
+	
+	private JLabelPad lbImgBloqueada = new JLabelPad( imgBloqueado );
 	
 	private ImageIcon imgStatus = null;
 
@@ -141,7 +149,7 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 	public FAgendProd( ) {
 
 		super( true );
-		setAtribos( 50, 50, 830, 470 );
+		setAtribos( 50, 50, 900, 470 );
 		
 		montaTela();
 		
@@ -164,7 +172,7 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		
 		JLabelPad lbLinhaStatus = new JLabelPad();
 		lbLinhaStatus.setBorder( BorderFactory.createEtchedBorder() );
-		JLabelPad lbStatus1 = new JLabelPad("Status:" , SwingConstants.CENTER );
+		JLabelPad lbStatus1 = new JLabelPad("Status:");
 		lbStatus1.setOpaque(true);
 	
 		vValsData.addElement( "F" );
@@ -175,24 +183,25 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		rgFiltro = new JRadioGroup<String, String>( 2, 1, vLabsData, vValsData );
 		rgFiltro.setVlrString( "F" );				
 
-		pinCab.adic( lbPeriodo, 7, 05, 80, 20 );
+		pinCab.adic( lbPeriodo, 0, 0, 80, 20 );
 		pinCab.adic( lbLinha, 5, 20, 280, 50 );
-		pinCab.adic( lbStatus1, 473, 7, 80, 20 );
-		pinCab.adic( lbLinhaStatus, 470, 20, 305, 50 );
+		pinCab.adic( lbStatus1, 445, 0, 80, 20 );
+		pinCab.adic( lbLinhaStatus, 445, 20, 380, 50 );
 		pinCab.adic( new JLabelPad("De:"), 10, 35, 30, 20 );
 		pinCab.adic( txtDataini, 35, 35, 97, 20 );
 		pinCab.adic( new JLabelPad("Até:"), 140, 35, 37, 20 );
 		pinCab.adic( txtDatafim, 165, 35, 100, 20 );
-		pinCab.adic( cbCancelada, 485, 25, 90, 20 );
-		pinCab.adic( cbFinalizada, 485, 45, 90, 20 );
-		pinCab.adic( cbPendente, 573, 25, 90, 20 );
-		pinCab.adic( cbAtrasada, 573, 45, 90, 20 );
-		pinCab.adic( cbPrincipal, 666, 25, 90, 20 );
-		pinCab.adic( cbRelacionada, 666, 45, 105, 20 );
+		pinCab.adic( cbCancelada, 460, 25, 90, 20 );
+		pinCab.adic( cbFinalizada, 460, 45, 90, 20 );
+		pinCab.adic( cbPendente, 548, 25, 90, 20 );
+		pinCab.adic( cbAtrasada, 548, 45, 90, 20 );
+		pinCab.adic( cbPrincipal, 641, 25, 90, 20 );
+		pinCab.adic( cbRelacionada, 641, 45, 105, 20 );
+		pinCab.adic( cbBloqueada, 735, 25, 85, 20 );
 		
-		pinCab.adic( new JLabelPad("Filtrar por: "), 300, 1, 80, 20 );
-		pinCab.adic( rgFiltro, 300, 20, 150, 50 );
-		pinCab.adic( btFiltrar, 780, 20, 30, 50 );
+		pinCab.adic( new JLabelPad("Filtrar por: "), 290, 1, 80, 20 );
+		pinCab.adic( rgFiltro, 290, 20, 150, 50 );
+		pinCab.adic( btFiltrar, 835, 20, 40, 50 );
 
 		lbTxtPendente.setFont( fontLegenda );
 		lbTxtFinalizada.setFont( fontLegenda );
@@ -202,6 +211,8 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		lbTxtFinalizada.setForeground( corLegenda );
 		lbTxtAtrasado.setForeground( corLegenda );
 		lbTxtCancelado.setForeground( corLegenda );
+		lbTxtBloqueado.setFont( fontLegenda );
+		lbTxtBloqueado.setForeground( corLegenda );
 		
 		pnBotoes.adic( btNovaOp, 10, 0, 130, 25 );
 		
@@ -211,9 +222,10 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		pnBotoes.adic( lbTxtAtrasado, 260, 4, 90, 20 );
 		pnBotoes.adic( lbImgCancelado, 320, 4, 20, 20 ); 
 		pnBotoes.adic( lbTxtCancelado, 340, 4, 90, 20 );
-		
 		pnBotoes.adic( lbTxtFinalizada, 420, 4, 80, 20 );
 		pnBotoes.adic( lbImgFinalizada, 400, 4, 20, 20 );
+		pnBotoes.adic( lbTxtBloqueado, 500, 4, 80, 20 );
+		pnBotoes.adic( lbImgBloqueada, 480, 4, 20, 20 );
 
 		tab.adicColuna( "" );
 		tab.adicColuna( "Emissão" );
@@ -232,7 +244,7 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		tab.setTamColuna( 68, ecolAgendamentos.DTFABROP.ordinal() );
 		tab.setTamColuna( 45, ecolAgendamentos.CODOP.ordinal() );
 		tab.setTamColuna( 28, ecolAgendamentos.SEQOP.ordinal() );
-		tab.setTamColuna( 270, ecolAgendamentos.DESCEST.ordinal() );
+		tab.setTamColuna( 370, ecolAgendamentos.DESCEST.ordinal() );
 		tab.setTamColuna( 62, ecolAgendamentos.QTDSUG.ordinal() );
 		tab.setTamColuna( 62, ecolAgendamentos.QTDPREV.ordinal() );
 		tab.setTamColuna( 62, ecolAgendamentos.QTDTOTAL.ordinal() );		
@@ -315,6 +327,12 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 			sOrderBy.append( order ? "" : "AND SEQOP<>0 ORDER BY CODOP, SEQOP" );
 		}
 		
+		if( "S".equals( cbBloqueada.getVlrString())){
+			
+			sWhere.append( (or ? "OR" : "" )+ " SITOP='BL' " );
+			or = true;
+		}
+		
 		sSQL.append( "SELECT SITOP,DTEMITOP,DTFABROP,CODOP,SEQOP,DESCEST, " );
 		sSQL.append( "CAST( QTDSUG AS DECIMAL(15,2)) QTDSUG," );
 		sSQL.append( "CAST( QTDPREV AS DECIMAL(15,2)) QTDPREV," );
@@ -361,6 +379,9 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 				}
 				else if( rs.getString( "SITOP" ).equals( "FN" )){
 					imgStatus = imgFinalizada;
+				}
+				else if( rs.getString( "SITOP" ).equals( "BL" )){
+					imgStatus = imgBloqueado;
 				}
 								
 				tab.adicLinha();
