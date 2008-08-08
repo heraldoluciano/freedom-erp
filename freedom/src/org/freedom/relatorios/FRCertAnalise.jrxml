@@ -350,7 +350,7 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 					<reportElement
 						x="114"
 						y="2"
-						width="105"
+						width="70"
 						height="32"
 						key="staticText-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -361,7 +361,7 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 				</staticText>
 				<staticText>
 					<reportElement
-						x="225"
+						x="189"
 						y="3"
 						width="107"
 						height="12"
@@ -374,9 +374,9 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 				</staticText>
 				<staticText>
 					<reportElement
-						x="337"
+						x="301"
 						y="2"
-						width="87"
+						width="123"
 						height="33"
 						key="staticText-12"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -387,7 +387,7 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 				</staticText>
 				<staticText>
 					<reportElement
-						x="225"
+						x="189"
 						y="20"
 						width="50"
 						height="12"
@@ -400,7 +400,7 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 				</staticText>
 				<staticText>
 					<reportElement
-						x="282"
+						x="246"
 						y="20"
 						width="50"
 						height="12"
@@ -431,7 +431,7 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="335"
+						x="299"
 						y="0"
 						width="0"
 						height="37"
@@ -440,7 +440,7 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="222"
+						x="186"
 						y="0"
 						width="0"
 						height="37"
@@ -476,7 +476,7 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="223"
+						x="187"
 						y="18"
 						width="113"
 						height="0"
@@ -485,7 +485,7 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="279"
+						x="243"
 						y="18"
 						width="0"
 						height="18"
@@ -614,7 +614,7 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 					<reportElement
 						x="114"
 						y="2"
-						width="104"
+						width="71"
 						height="12"
 						key="textField-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -625,7 +625,7 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="226"
+						x="190"
 						y="3"
 						width="50"
 						height="12"
@@ -638,7 +638,7 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="283"
+						x="247"
 						y="2"
 						width="50"
 						height="12"
@@ -651,9 +651,9 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="337"
+						x="302"
 						y="2"
-						width="87"
+						width="119"
 						height="12"
 						key="textField-13"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -668,7 +668,8 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 						y="17"
 						width="425"
 						height="0"
-						key="line-9"/>
+						key="line-9"
+						positionType="FixRelativeToBottom"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
@@ -677,8 +678,9 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 						y="0"
 						width="0"
 						height="18"
-						key="line-10"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-10"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -686,37 +688,41 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 						y="0"
 						width="0"
 						height="18"
-						key="line-11"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-11"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="335"
+						x="299"
 						y="0"
 						width="0"
 						height="18"
-						key="line-12"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-12"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="279"
+						x="243"
 						y="0"
 						width="0"
 						height="18"
-						key="line-13">
+						key="line-13"
+						stretchType="RelativeToBandHeight">
 							<printWhenExpression><![CDATA[new Boolean($F{VLRMIN}!=null)]]></printWhenExpression>
 						</reportElement>
-					<graphicElement stretchType="NoStretch"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="222"
+						x="186"
 						y="0"
 						width="0"
 						height="18"
-						key="line-14"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-14"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -724,12 +730,13 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 						y="0"
 						width="0"
 						height="18"
-						key="line-15"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-15"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="226"
+						x="190"
 						y="3"
 						width="106"
 						height="12"
@@ -740,11 +747,11 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ESPECIFICACAO}.trim()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="338"
+						x="301"
 						y="2"
-						width="82"
+						width="123"
 						height="12"
 						key="textField-22"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
