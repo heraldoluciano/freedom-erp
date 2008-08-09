@@ -1503,9 +1503,12 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
-	private void ratearOp() {
+	private boolean ratearOp() {
 
+		boolean result = false;
+		
 		try {
+			
 			HashMap<Integer, List<String>> lotes = new HashMap<Integer, List<String>>();
 			Integer seq;
 			Integer codprod;
@@ -1544,7 +1547,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				
 				if ( novaquantidade.floatValue() > 0 ) {
 					lotes.get( codprod ).add( lote );
-					rateiaItemSemSaldo( seq, codprod, novaquantidade, lotes.get( codprod ) );	
+					result = rateiaItemSemSaldo( seq, codprod, novaquantidade, lotes.get( codprod ) );	
+				} else {
+					result = true;
 				}
 			}
 			
@@ -1557,6 +1562,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
+		
+		return result;
 	}
 	
 	private BigDecimal verificaSaldoLote( Integer codprod, String lote, BigDecimal quantidade ) throws Exception {
@@ -1591,8 +1598,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		return novaquantidade;
 	}
 
-	private void rateiaItemSemSaldo( Integer seq, Integer codprod, BigDecimal quantidade, List<String> lotesutilizados ) throws Exception {
+	private boolean rateiaItemSemSaldo( Integer seq, Integer codprod, BigDecimal quantidade, List<String> lotesutilizados ) throws Exception {
 		
+		boolean rateio = false;
 		boolean novorateio = false;
 		
 		String lotes = "";
@@ -1651,6 +1659,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			ps.executeUpdate();
 			ps.close();
 			
+			rateio = true;
+			
 			if ( novorateio ) {
 				sql = new StringBuilder();		
 				sql.append( "SELECT MAX(SEQITOP) FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
@@ -1668,9 +1678,11 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				}
 				
 				lotesutilizados.add( lote );
-				rateiaItemSemSaldo( seq, codprod, quantidade.subtract( saldo ), lotesutilizados );
+				rateio = rateiaItemSemSaldo( seq, codprod, quantidade.subtract( saldo ), lotesutilizados );
 			}
 		}
+		
+		return rateio;
 	}
 	
 	private void reprocessaItens() {
@@ -1796,11 +1808,12 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 			lcCampos.carregaDados();
 			
-			ratearOp();
-			geraRMA();
-			bloquearOPSemSaldo( false );
+			if ( ratearOp() ) {
+				Funcoes.mensagemInforma( this, "Itens foram reprocessados com sucesso." );
+				bloquearOPSemSaldo( false );
+			}
 			
-			Funcoes.mensagemInforma( this, "Itens foram reprocessados com sucesso." );
+			geraRMA();
 			
 			lcCampos.carregaDados();
 			
@@ -2581,8 +2594,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			if ( tpnAbas.getSelectedIndex() == 0 ) {
 				tpnAbas.setSelectedIndex( 1 );
 			}
-			ratearOp();
-			geraRMA();
+			if ( (Boolean)prefere.get( "RATAUTO" ) ) {
+				ratearOp();
+				geraRMA();
+			}
 		}
 		else if ( pevt.getListaCampos() == lcDet ) {
 			btRMA.setEnabled( liberaRMA() );
