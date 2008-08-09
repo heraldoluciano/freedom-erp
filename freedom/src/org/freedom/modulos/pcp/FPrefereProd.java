@@ -61,7 +61,7 @@ public class FPrefereProd extends FTabDados {
 
 	private JComboBoxPad cbSitRMAOP = null;
 	
-	private final JCheckBoxPad cbBaixaRmaAprov = new JCheckBoxPad( "Expedir RMA aprovada ?", "S", "N" );
+	private final JCheckBoxPad cbBaixaRmaAprov = new JCheckBoxPad( "Gerar RMA com quantidade aprovada ?", "S", "N" );
 	
 	private final JCheckBoxPad cbAuto = new JCheckBoxPad( "Automatizar rateio de itens de OP e RMA ?", "S", "N" );
 	
