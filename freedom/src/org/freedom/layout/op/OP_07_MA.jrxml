@@ -122,7 +122,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 		<group  name="FASE2" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="14"  isSplitAllowed="true" >
+			<band height="33"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="6"
@@ -137,19 +137,31 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 						x="0"
 						y="0"
 						width="0"
-						height="14"
-						key="line-23"/>
-					<graphicElement stretchType="NoStretch"/>
+						height="33"
+						key="line-23"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="539"
 						y="0"
 						width="0"
-						height="14"
-						key="line-24"/>
-					<graphicElement stretchType="NoStretch"/>
+						height="33"
+						key="line-24"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="1"
+						y="2"
+						width="537"
+						height="30"
+						key="subreport-4"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "OP_07_FS_02.jasper"]]></subreportExpression>
+				</subreport>
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -160,25 +172,38 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 		<group  name="FASE3" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="20"  isSplitAllowed="true" >
+			<band height="47"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="539"
 						y="0"
 						width="0"
-						height="20"
-						key="line-21"/>
-					<graphicElement stretchType="NoStretch"/>
+						height="47"
+						key="line-21"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
 						y="0"
 						width="0"
-						height="20"
-						key="line-22"/>
-					<graphicElement stretchType="NoStretch"/>
+						height="47"
+						key="line-22"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="2"
+						y="1"
+						width="537"
+						height="45"
+						key="subreport-5"
+						stretchType="RelativeToBandHeight"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "OP_07_FS_02_2.jasper"]]></subreportExpression>
+				</subreport>
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -189,34 +214,38 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 		<group  name="FASE4" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="50"  isSplitAllowed="true" >
+			<band height="48"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="0"
 						y="0"
 						width="0"
-						height="50"
-						key="line-12"/>
-					<graphicElement stretchType="NoStretch"/>
+						height="48"
+						key="line-12"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="539"
 						y="0"
 						width="0"
-						height="50"
-						key="line-16"/>
-					<graphicElement stretchType="NoStretch"/>
+						height="48"
+						key="line-16"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
-				<line direction="TopDown">
+				<subreport  isUsingCache="true">
 					<reportElement
-						x="0"
-						y="49"
-						width="539"
-						height="0"
-						key="line-18"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
+						x="2"
+						y="1"
+						width="537"
+						height="45"
+						key="subreport-6"
+						stretchType="RelativeToBandHeight"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "OP_07_FS_03.jasper"]]></subreportExpression>
+				</subreport>
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -539,6 +568,15 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 		</columnFooter>
 		<pageFooter>
 			<band height="19"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="539"
+						height="0"
+						key="line-18"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</pageFooter>
 		<summary>

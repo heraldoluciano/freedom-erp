@@ -203,7 +203,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 						x="533"
 						y="0"
 						width="0"
-						height="193"
+						height="178"
 						key="line-8"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -212,7 +212,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 						x="5"
 						y="0"
 						width="0"
-						height="195"
+						height="178"
 						key="line-9"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -227,31 +227,426 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="270"
-						y="78"
+						x="269"
+						y="77"
 						width="0"
-						height="117"
+						height="100"
 						key="line-11"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<rectangle>
 					<reportElement
-						x="7"
+						x="8"
 						y="89"
-						width="128"
-						height="66"
+						width="127"
+						height="85"
 						key="rectangle-1"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
 				<rectangle>
 					<reportElement
-						x="138"
+						x="139"
 						y="89"
-						width="128"
-						height="66"
+						width="127"
+						height="85"
 						key="rectangle-2"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
+				<line direction="TopDown">
+					<reportElement
+						x="6"
+						y="177"
+						width="527"
+						height="1"
+						key="line-12"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<rectangle>
+					<reportElement
+						x="404"
+						y="89"
+						width="127"
+						height="85"
+						key="rectangle-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						x="273"
+						y="89"
+						width="127"
+						height="85"
+						key="rectangle-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						x="8"
+						y="78"
+						width="126"
+						height="9"
+						key="staticText-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Produção/Semi Elaborado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="138"
+						y="78"
+						width="126"
+						height="9"
+						key="staticText-7"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Produção/Produto Acabado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="273"
+						y="78"
+						width="126"
+						height="9"
+						key="staticText-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Laboratório/Semi Elaborado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="404"
+						y="78"
+						width="126"
+						height="9"
+						key="staticText-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Laboratório/Produto Acabado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="8"
+						y="90"
+						width="126"
+						height="9"
+						key="staticText-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Amostra retirada para análise]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="140"
+						y="90"
+						width="126"
+						height="9"
+						key="staticText-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Amostra retirada para análise]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="274"
+						y="90"
+						width="126"
+						height="9"
+						key="staticText-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Amostra retirada para análise]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="404"
+						y="90"
+						width="126"
+						height="9"
+						key="staticText-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Amostra retirada para análise]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="11"
+						y="112"
+						width="44"
+						height="10"
+						key="staticText-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[ Quantidade:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="11"
+						y="130"
+						width="40"
+						height="9"
+						key="staticText-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[ Nome:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="11"
+						y="148"
+						width="40"
+						height="9"
+						key="staticText-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[ Data:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="58"
+						y="122"
+						width="64"
+						height="0"
+						key="line-13"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="58"
+						y="138"
+						width="64"
+						height="0"
+						key="line-14"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="57"
+						y="157"
+						width="64"
+						height="0"
+						key="line-15"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="191"
+						y="122"
+						width="64"
+						height="0"
+						key="line-16"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="191"
+						y="138"
+						width="64"
+						height="0"
+						key="line-17"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="190"
+						y="157"
+						width="64"
+						height="0"
+						key="line-18"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="144"
+						y="148"
+						width="40"
+						height="9"
+						key="staticText-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[ Data:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="144"
+						y="130"
+						width="40"
+						height="9"
+						key="staticText-18"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[ Nome:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="144"
+						y="112"
+						width="44"
+						height="10"
+						key="staticText-19"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[ Quantidade:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="324"
+						y="123"
+						width="64"
+						height="0"
+						key="line-19"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="324"
+						y="139"
+						width="64"
+						height="0"
+						key="line-20"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="323"
+						y="158"
+						width="64"
+						height="0"
+						key="line-21"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="277"
+						y="149"
+						width="40"
+						height="9"
+						key="staticText-20"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[ Data:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="277"
+						y="131"
+						width="40"
+						height="9"
+						key="staticText-21"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[ Nome:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="277"
+						y="113"
+						width="44"
+						height="10"
+						key="staticText-22"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[ Resultado:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="455"
+						y="123"
+						width="64"
+						height="0"
+						key="line-22"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="455"
+						y="139"
+						width="64"
+						height="0"
+						key="line-23"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="454"
+						y="158"
+						width="64"
+						height="0"
+						key="line-24"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="408"
+						y="149"
+						width="40"
+						height="9"
+						key="staticText-23"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[ Data:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="408"
+						y="131"
+						width="40"
+						height="9"
+						key="staticText-24"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[ Nome:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="408"
+						y="113"
+						width="44"
+						height="10"
+						key="staticText-25"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[ Resultado:]]></text>
+				</staticText>
 			</band>
 		</pageHeader>
 		<columnHeader>
