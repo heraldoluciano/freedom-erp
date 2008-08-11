@@ -53,6 +53,8 @@ public class FTipoAnalise extends FDados {
 	private JTextFieldPad txtCodMetodo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
 	private JTextFieldFK txtDescMetodo = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
+	
+	private JTextFieldPad txtTituloMet = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 		
 	private Vector<String> vLabs1 = new Vector<String>();
 	
@@ -115,6 +117,7 @@ public class FTipoAnalise extends FDados {
 		
 		lcMetodo.add( new GuardaCampo( txtCodMetodo, "CodMtAnalise", "Cód.Método", ListaCampos.DB_PK, null, false ) );
 		lcMetodo.add( new GuardaCampo( txtDescMetodo, "DescMtAnalise", "Descrição do método analítico", ListaCampos.DB_SI, false ) );
+		lcMetodo.add( new GuardaCampo( txtTituloMet, "TituloAnalise", "Titulo", ListaCampos.DB_SI, false ) );
 		lcMetodo.montaSql( false, "METODOANALISE", "PP" );
 		lcMetodo.setReadOnly( true );
 		lcMetodo.setQueryCommit( false );
