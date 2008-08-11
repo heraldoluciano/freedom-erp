@@ -125,7 +125,7 @@ public class OPSwara2 extends LeiauteGR {
 			sSQL.append( "ITOP.CODOP=OP.CODOP AND ITOP.SEQOP=OP.SEQOP AND " );
 			sSQL.append( "UNID.CODUNID=PROD.CODUNID AND PROD.CODPROD = ITOP.CODPROD AND OP.CODOP=? AND " );
 			sSQL.append( "OP.SEQOP=? AND OP.CODEMP=? AND OP.CODFILIAL=? " );
-			sSQL.append( "ITOP.SEQAC IS NULL  " );
+			sSQL.append( "AND ITOP.SEQAC IS NULL  " );
 			sSQL.append( "ORDER BY ITOP.CODPROD " );
 
 			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
