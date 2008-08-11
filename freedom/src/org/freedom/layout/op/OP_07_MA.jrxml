@@ -79,8 +79,9 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 						y="0"
 						width="0"
 						height="50"
-						key="line-9"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-9"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -88,7 +89,27 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 						y="0"
 						width="0"
 						height="50"
-						key="line-13"/>
+						key="line-13"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
+				</line>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="1"
+						y="2"
+						width="536"
+						height="48"
+						key="subreport-3"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "OP_07_FS_01.jasper"]]></subreportExpression>
+				</subreport>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="539"
+						height="1"
+						key="line-19"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -101,14 +122,23 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 		<group  name="FASE2" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="50"  isSplitAllowed="true" >
+			<band height="14"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="6"
+						y="0"
+						width="528"
+						height="1"
+						key="line-7"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
 						y="0"
 						width="0"
-						height="50"
-						key="line-10"/>
+						height="14"
+						key="line-23"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
@@ -116,8 +146,8 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 						x="539"
 						y="0"
 						width="0"
-						height="50"
-						key="line-14"/>
+						height="14"
+						key="line-24"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -130,23 +160,23 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 		<group  name="FASE3" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="50"  isSplitAllowed="true" >
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="0"
-						width="0"
-						height="50"
-						key="line-11"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
+			<band height="20"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="539"
 						y="0"
 						width="0"
-						height="50"
-						key="line-15"/>
+						height="20"
+						key="line-21"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="0"
+						height="20"
+						key="line-22"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -203,7 +233,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 			</band>
 		</title>
 		<pageHeader>
-			<band height="137"  isSplitAllowed="true" >
+			<band height="129"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -216,7 +246,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="4"
-						y="75"
+						y="72"
 						width="531"
 						height="1"
 						key="line-2"/>
@@ -225,7 +255,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="7"
-						y="101"
+						y="88"
 						width="58"
 						height="12"
 						key="staticText-1"/>
@@ -238,7 +268,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="7"
-						y="114"
+						y="101"
 						width="36"
 						height="12"
 						key="staticText-2"/>
@@ -251,7 +281,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="115"
-						y="101"
+						y="88"
 						width="58"
 						height="12"
 						key="staticText-3"/>
@@ -264,7 +294,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="115"
-						y="114"
+						y="101"
 						width="89"
 						height="12"
 						key="staticText-4"/>
@@ -277,7 +307,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="275"
-						y="114"
+						y="101"
 						width="77"
 						height="12"
 						key="staticText-5"/>
@@ -290,7 +320,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="424"
-						y="100"
+						y="87"
 						width="49"
 						height="12"
 						key="staticText-6"/>
@@ -303,7 +333,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="424"
-						y="113"
+						y="100"
 						width="49"
 						height="12"
 						key="staticText-7"/>
@@ -316,7 +346,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="136"
+						y="128"
 						width="539"
 						height="1"
 						key="line-3"/>
@@ -325,7 +355,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<staticText>
 					<reportElement
 						x="6"
-						y="77"
+						y="73"
 						width="528"
 						height="13"
 						key="staticText-8"/>
@@ -340,7 +370,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 						x="0"
 						y="0"
 						width="0"
-						height="137"
+						height="129"
 						key="line-4"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -349,34 +379,25 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 						x="539"
 						y="0"
 						width="0"
-						height="137"
+						height="129"
 						key="line-5"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="BottomUp">
 					<reportElement
 						x="4"
-						y="75"
+						y="72"
 						width="1"
-						height="57"
+						height="54"
 						key="line-6"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="4"
-						y="132"
-						width="530"
-						height="1"
-						key="line-7"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="BottomUp">
 					<reportElement
 						x="534"
-						y="75"
+						y="73"
 						width="1"
-						height="57"
+						height="53"
 						key="line-8"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -392,7 +413,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="66"
-						y="101"
+						y="88"
 						width="47"
 						height="12"
 						key="textField-1"/>
@@ -405,7 +426,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="45"
-						y="114"
+						y="101"
 						width="67"
 						height="12"
 						key="textField-2"/>
@@ -418,7 +439,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="174"
-						y="101"
+						y="88"
 						width="247"
 						height="12"
 						key="textField-3"/>
@@ -431,7 +452,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="205"
-						y="114"
+						y="101"
 						width="67"
 						height="12"
 						key="textField-4"/>
@@ -444,7 +465,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="354"
-						y="114"
+						y="101"
 						width="67"
 						height="12"
 						key="textField-5"/>
@@ -457,7 +478,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="474"
-						y="113"
+						y="100"
 						width="58"
 						height="12"
 						key="textField-6"/>
@@ -470,7 +491,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="474"
-						y="100"
+						y="87"
 						width="58"
 						height="12"
 						key="textField-7"/>
@@ -493,6 +514,15 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "OP_07_CA.jasper"]]></subreportExpression>
 				</subreport>
+				<line direction="TopDown">
+					<reportElement
+						x="4"
+						y="126"
+						width="530"
+						height="1"
+						key="line-20"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</pageHeader>
 		<columnHeader>
