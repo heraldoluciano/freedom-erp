@@ -245,6 +245,7 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 		
 		tabControl.setColunaInvisivel( 8 );
 		tabControl.setColunaInvisivel( 9 );
+		tabControl.setColunaInvisivel( EcolPPOPCQ.CODUNID.ordinal() );
 		
 	}
 
