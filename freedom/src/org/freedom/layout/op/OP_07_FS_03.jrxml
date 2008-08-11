@@ -43,12 +43,10 @@
 	<parameter name="SEQOP" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(0)]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT opf.seqof,o.SEQOP, O.CODPROD, P.DESCPROD , O.CODLOTE, O.QTDPREVPRODOP, P.CODUNID
+	<queryString><![CDATA[SELECT opf.seqof,o.SEQOP, O.CODPROD, P.DESCPROD , O.CODLOTE, O.QTDPREVPRODOP, P.CODUNID,
+ef.instrucoes
 FROM PPOP O, EQPRODUTO P, PPOPFASE F,ppop OP,
-
 ppfase fa, ppestrufase ef, ppopfase opf, pprecurso re
-
-
 WHERE O.CODEMPPD=P.CODEMP AND O.CODFILIALPD=P.CODFILIAL AND O.CODPROD=P.CODPROD
 AND O.CODEMP=F.CODEMP AND O.CODFILIAL=F.CODFILIAL AND O.CODOP=F.CODOP AND O.SEQOP=F.SEQOP
 AND O.CODEMP=7 AND O.CODFILIAL=1 AND O.CODOPM=2800 AND O.SEQOPM=0
@@ -68,12 +66,13 @@ and f.codfase=fa.codfase]]></queryString>
 	<field name="CODLOTE" class="java.lang.String"/>
 	<field name="QTDPREVPRODOP" class="java.math.BigDecimal"/>
 	<field name="CODUNID" class="java.lang.String"/>
+	<field name="INSTRUCOES" class="java.lang.String"/>
 
 
 		<group  name="GERAL" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="99"  isSplitAllowed="true" >
+			<band height="117"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="9"
@@ -83,7 +82,7 @@ and f.codfase=fa.codfase]]></queryString>
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<text><![CDATA[ FASE:]]></text>
 				</staticText>
@@ -109,7 +108,7 @@ and f.codfase=fa.codfase]]></queryString>
 						key="staticText-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font pdfFontName="Helvetica" isBold="false"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica" isBold="false"/>
 					</textElement>
 				<text><![CDATA[ Recurso:]]></text>
 				</staticText>
@@ -128,14 +127,14 @@ and f.codfase=fa.codfase]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="7"
+						x="310"
 						y="1"
-						width="525"
+						width="220"
 						height="11"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica" size="8" isBold="false"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Instrução de preparo]]></text>
 				</staticText>
@@ -163,8 +162,8 @@ and f.codfase=fa.codfase]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="7"
-						y="98"
+						x="3"
+						y="115"
 						width="527"
 						height="1"
 						key="line-7"/>
@@ -172,25 +171,25 @@ and f.codfase=fa.codfase]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="533"
+						x="530"
 						y="0"
 						width="0"
-						height="99"
+						height="117"
 						key="line-8"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="6"
+						x="3"
 						y="0"
 						width="0"
-						height="99"
+						height="117"
 						key="line-9"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="6"
+						x="3"
 						y="0"
 						width="527"
 						height="1"
@@ -288,19 +287,19 @@ and f.codfase=fa.codfase]]></queryString>
 				<staticText>
 					<reportElement
 						x="8"
-						y="83"
+						y="100"
 						width="30"
 						height="13"
 						key="staticText-16"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font pdfFontName="Helvetica" isBold="false"/>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<text><![CDATA[ Cód.]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="6"
+						x="4"
 						y="83"
 						width="527"
 						height="1"
@@ -310,67 +309,102 @@ and f.codfase=fa.codfase]]></queryString>
 				<staticText>
 					<reportElement
 						x="42"
-						y="85"
+						y="100"
 						width="149"
 						height="13"
 						key="staticText-17"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font pdfFontName="Helvetica" isBold="false"/>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<text><![CDATA[ Tipo de Embalagem]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						x="192"
-						y="85"
+						y="100"
 						width="161"
 						height="13"
 						key="staticText-18"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font pdfFontName="Helvetica" isBold="false"/>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<text><![CDATA[ Código de barras]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						x="355"
-						y="85"
+						y="100"
 						width="72"
 						height="13"
 						key="staticText-19"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica" isBold="false"/>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<text><![CDATA[ Lote]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						x="429"
-						y="85"
+						y="100"
 						width="48"
 						height="13"
 						key="staticText-20"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica" isBold="false"/>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<text><![CDATA[ Qtd.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						x="479"
-						y="85"
+						y="100"
 						width="52"
 						height="13"
 						key="staticText-21"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left">
-						<font pdfFontName="Helvetica" isBold="false"/>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<text><![CDATA[ Emb.]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="310"
+						y="12"
+						width="220"
+						height="30"
+						key="textField-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="5"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{INSTRUCOES}.trim()]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="3"
+						y="97"
+						width="527"
+						height="1"
+						key="line-21"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="5"
+						y="84"
+						width="524"
+						height="13"
+						key="staticText-22"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[ Emabalagens a serem Descarregadas]]></text>
 				</staticText>
 			</band>
 			</groupHeader>
@@ -378,7 +412,7 @@ and f.codfase=fa.codfase]]></queryString>
 			<band height="50"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
-						x="7"
+						x="3"
 						y="0"
 						width="527"
 						height="1"
@@ -405,22 +439,22 @@ and f.codfase=fa.codfase]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="19"  isSplitAllowed="true" >
+			<band height="18"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
-						x="533"
+						x="530"
 						y="0"
 						width="0"
-						height="19"
+						height="18"
 						key="line-12"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="6"
+						x="3"
 						y="0"
 						width="0"
-						height="19"
+						height="18"
 						key="line-13"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -478,7 +512,7 @@ and f.codfase=fa.codfase]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="481"
+						x="479"
 						y="15"
 						width="49"
 						height="0"

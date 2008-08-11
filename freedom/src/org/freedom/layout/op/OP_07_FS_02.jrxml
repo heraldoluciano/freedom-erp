@@ -53,8 +53,7 @@ and fa.codemp=opf.codempfs and fa.codfilial=opf.codfilialfs and fa.codfase=opf.c
 and ef.codemp=op.codemppd and ef.codfilial=op.codfilialpd and ef.codprod=op.codprod and ef.seqest=op.seqest
 and ef.codempfs=opf.codempfs and ef.codfilialfs=opf.codfilialfs and ef.codfase=opf.codfase
 and re.codemp=opf.codemprp and re.codfilial=opf.codfilialrp and re.codrecp=opf.codrecp
-and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop and op.seqop=opf.seqop
-]]></queryString>
+and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop and op.seqop=opf.seqop]]></queryString>
 
 	<field name="DESCFASE" class="java.lang.String"/>
 	<field name="TEMPOOF" class="java.math.BigDecimal"/>
@@ -81,7 +80,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<text><![CDATA[ FASE:]]></text>
 				</staticText>
@@ -102,12 +101,12 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 					<reportElement
 						x="68"
 						y="12"
-						width="157"
+						width="213"
 						height="13"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCFASE}.trim()]]></textFieldExpression>
 				</textField>
@@ -120,7 +119,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 						key="staticText-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font pdfFontName="Helvetica" isBold="false"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica" isBold="false"/>
 					</textElement>
 				<text><![CDATA[ Recurso:]]></text>
 				</staticText>
@@ -139,14 +138,14 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				</staticText>
 				<staticText>
 					<reportElement
-						x="6"
+						x="285"
 						y="1"
-						width="525"
+						width="246"
 						height="11"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica" size="8" isBold="false"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Instrução de preparo]]></text>
 				</staticText>
@@ -167,12 +166,12 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 					<reportElement
 						x="68"
 						y="27"
-						width="463"
+						width="212"
 						height="13"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font pdfFontName="Helvetica" isBold="false"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica" isBold="false"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRECP}.trim()]]></textFieldExpression>
 				</textField>
@@ -180,7 +179,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 					<reportElement
 						x="122"
 						y="42"
-						width="350"
+						width="138"
 						height="13"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -647,6 +646,19 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 					</textElement>
 				<text><![CDATA[ Resultado:]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="284"
+						y="12"
+						width="246"
+						height="62"
+						key="textField-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="5"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{INSTRUCOES}.trim()]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>

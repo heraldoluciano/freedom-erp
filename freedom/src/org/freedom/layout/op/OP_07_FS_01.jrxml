@@ -128,12 +128,12 @@ order by it.codprod]]></queryString>
 					<reportElement
 						x="68"
 						y="12"
-						width="157"
+						width="198"
 						height="13"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCFASE}.trim()]]></textFieldExpression>
 				</textField>
@@ -165,9 +165,9 @@ order by it.codprod]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="6"
+						x="270"
 						y="1"
-						width="525"
+						width="261"
 						height="11"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -193,7 +193,7 @@ order by it.codprod]]></queryString>
 					<reportElement
 						x="126"
 						y="65"
-						width="156"
+						width="124"
 						height="1"
 						key="line-5"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -202,12 +202,12 @@ order by it.codprod]]></queryString>
 					<reportElement
 						x="68"
 						y="27"
-						width="463"
+						width="198"
 						height="13"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font pdfFontName="Helvetica" isBold="false"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica" isBold="false"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRECP}.trim()]]></textFieldExpression>
 				</textField>
@@ -215,7 +215,7 @@ order by it.codprod]]></queryString>
 					<reportElement
 						x="122"
 						y="42"
-						width="350"
+						width="138"
 						height="13"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -347,6 +347,19 @@ order by it.codprod]]></queryString>
 						key="line-10"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="269"
+						y="12"
+						width="261"
+						height="62"
+						key="textField-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="5"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{INSTRUCOES}.trim()]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -434,15 +447,18 @@ order by it.codprod]]></queryString>
 						key="line-13"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<image  scaleImage="FillFrame" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
+						mode="Opaque"
 						x="63"
 						y="2"
 						width="245"
 						height="17"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
 						key="barcode-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<graphicElement stretchType="NoStretch" pen="None"/>
+					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
 					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(5,$V{CODBAR},false,false,null,0,20)]]></imageExpression>
 				</image>
 			</band>
