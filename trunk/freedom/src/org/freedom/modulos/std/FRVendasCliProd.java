@@ -189,6 +189,10 @@ public class FRVendasCliProd extends FRelatorio {
 			sSQL.append( sWhereComiss );
 			sSQL.append( " GROUP BY C.RAZCLI, V.CODCLI, P.DESCPROD, IV.CODPROD " );
 
+			
+			System.out.println("SQL_REL:" + sSQL.toString());
+			
+			
 			ps = con.prepareStatement( sSQL.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );

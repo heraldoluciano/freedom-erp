@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="Op07i"
+		 name="OP_07_MA"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
@@ -43,12 +43,12 @@
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["//src//org//freedom//relatorios//"]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA["\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\layout\\op\\"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODOP" isForPrompting="false" class="java.lang.Integer">
+	<parameter name="CODOP" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(2800)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="SEQOP" isForPrompting="false" class="java.lang.Integer">
+	<parameter name="SEQOP" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(0)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer"/>
@@ -491,7 +491,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "cabecalho07.jasper"]]></subreportExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "OP_07_CA.jasper"]]></subreportExpression>
 				</subreport>
 			</band>
 		</pageHeader>
