@@ -125,6 +125,7 @@ public class OPSwara2 extends LeiauteGR {
 			sSQL.append( "ITOP.CODOP=OP.CODOP AND ITOP.SEQOP=OP.SEQOP AND " );
 			sSQL.append( "UNID.CODUNID=PROD.CODUNID AND PROD.CODPROD = ITOP.CODPROD AND OP.CODOP=? AND " );
 			sSQL.append( "OP.SEQOP=? AND OP.CODEMP=? AND OP.CODFILIAL=? " );
+			sSQL.append( "ITOP.SEQAC IS NULL  " );
 			sSQL.append( "ORDER BY ITOP.CODPROD " );
 
 			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
@@ -517,7 +518,8 @@ public class OPSwara2 extends LeiauteGR {
 			
 			drawRetangulo( 5, iYIni - 15, 5, iY - iYIni, AL_CDIR );
 	
-		} catch ( Exception e ) {
+		} 
+		catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
@@ -866,7 +868,7 @@ public class OPSwara2 extends LeiauteGR {
 				con.commit();
 			}
 			
-			drawTexto( "Etiqueta Conta Prova", 287, 9 );
+			drawTexto( "Etiqueta Contra Prova", 287, 9 );
 			drawRetangulo( 240, 12, 167, 48 );
 
 			String sNome = "";
