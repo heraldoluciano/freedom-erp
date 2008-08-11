@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="OP_07_FS_01"
+		 name="OP_07_FS_02"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Landscape"
@@ -45,35 +45,22 @@
 	</parameter>
 	<queryString><![CDATA[select
 fa.descfase,opf.tempoof,ef.instrucoes,re.descrecp,
-opf.seqof,it.codop,it.seqop,it.codprod,it.codlote,it.qtditop,
-it.codfase,pd.codunid,ud.casasdec
-from ppitop it, equnidade ud, eqproduto pd, ppopfase opf, ppfase fa, ppestrufase ef, ppop op, pprecurso re
+opf.seqof
+from ppopfase opf, ppfase fa, ppestrufase ef, ppop op, pprecurso re
 where
-it.codemp=$P{CODEMP} and it.codfilial=$P{CODFILIAL} and it.codop=$P{CODOP} AND it.seqop=$P{SEQOP} and it.seqac is null
-and ud.codemp=pd.codempud and ud.codfilial=pd.codfilialud and ud.codunid=pd.codunid
-and pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd and pd.codprod=it.codprod
-and opf.codemp=it.codempfs and opf.codfilialfs=it.codfilialfs and opf.codfase=it.codfase
-and opf.codop=it.codop and opf.seqop=it.seqop and opf.seqof=1
+opf.codemp=7 and opf.codfilial=1 and opf.codop=2800 and opf.seqop=0 and opf.seqof=2
 and fa.codemp=opf.codempfs and fa.codfilial=opf.codfilialfs and fa.codfase=opf.codfase
-and op.codemp=it.codemp and op.codfilial=it.codfilial and op.codop=it.codop and op.seqop=it.seqop
 and ef.codemp=op.codemppd and ef.codfilial=op.codfilialpd and ef.codprod=op.codprod and ef.seqest=op.seqest
-and ef.codempfs=it.codempfs and ef.codfilialfs=it.codfilialfs and ef.codfase=it.codfase
+and ef.codempfs=opf.codempfs and ef.codfilialfs=opf.codfilialfs and ef.codfase=opf.codfase
 and re.codemp=opf.codemprp and re.codfilial=opf.codfilialrp and re.codrecp=opf.codrecp
-order by it.codprod]]></queryString>
+and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop and op.seqop=opf.seqop
+]]></queryString>
 
-	<field name="CODFASE" class="java.lang.Long"/>
 	<field name="DESCFASE" class="java.lang.String"/>
 	<field name="TEMPOOF" class="java.math.BigDecimal"/>
 	<field name="INSTRUCOES" class="java.lang.String"/>
 	<field name="DESCRECP" class="java.lang.String"/>
 	<field name="SEQOF" class="java.lang.Short"/>
-	<field name="CODOP" class="java.lang.Long"/>
-	<field name="SEQOP" class="java.lang.Short"/>
-	<field name="CODPROD" class="java.lang.Long"/>
-	<field name="CODLOTE" class="java.lang.String"/>
-	<field name="QTDITOP" class="java.math.BigDecimal"/>
-	<field name="CODUNID" class="java.lang.String"/>
-	<field name="CASASDEC" class="java.lang.Short"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -84,7 +71,7 @@ order by it.codprod]]></queryString>
 			</band>
 		</title>
 		<pageHeader>
-			<band height="95"  isSplitAllowed="true" >
+			<band height="200"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="8"
@@ -176,15 +163,6 @@ order by it.codprod]]></queryString>
 					</textElement>
 				<text><![CDATA[ Responsavel Pesagem:]]></text>
 				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="126"
-						y="65"
-						width="156"
-						height="1"
-						key="line-5"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="68"
@@ -220,99 +198,12 @@ order by it.codprod]]></queryString>
 						key="line-6"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<staticText>
-					<reportElement
-						x="7"
-						y="81"
-						width="56"
-						height="12"
-						key="staticText-6"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9"/>
-					</textElement>
-				<text><![CDATA[Cód.]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="66"
-						y="81"
-						width="242"
-						height="12"
-						key="staticText-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="9"/>
-					</textElement>
-				<text><![CDATA[ Cód.Barras]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="309"
-						y="81"
-						width="46"
-						height="12"
-						key="staticText-8"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9"/>
-					</textElement>
-				<text><![CDATA[Qtd.]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="356"
-						y="81"
-						width="46"
-						height="12"
-						key="staticText-9"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9"/>
-					</textElement>
-				<text><![CDATA[Unid]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="403"
-						y="81"
-						width="61"
-						height="12"
-						key="staticText-10"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9"/>
-					</textElement>
-				<text><![CDATA[Lote]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="465"
-						y="81"
-						width="67"
-						height="12"
-						key="staticText-11"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9"/>
-					</textElement>
-				<text><![CDATA[Qtd. Pesada]]></text>
-				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="6"
-						y="94"
-						width="527"
-						height="1"
-						key="line-7"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="532"
+						x="533"
 						y="0"
 						width="0"
-						height="95"
+						height="193"
 						key="line-8"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -321,7 +212,7 @@ order by it.codprod]]></queryString>
 						x="5"
 						y="0"
 						width="0"
-						height="95"
+						height="195"
 						key="line-9"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -334,6 +225,33 @@ order by it.codprod]]></queryString>
 						key="line-10"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="270"
+						y="78"
+						width="0"
+						height="117"
+						key="line-11"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<rectangle>
+					<reportElement
+						x="7"
+						y="89"
+						width="128"
+						height="66"
+						key="rectangle-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						x="138"
+						y="89"
+						width="128"
+						height="66"
+						key="rectangle-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -341,86 +259,7 @@ order by it.codprod]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="20"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="6"
-						y="2"
-						width="56"
-						height="15"
-						key="textField-5"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODPROD}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="309"
-						y="3"
-						width="46"
-						height="15"
-						key="textField-6"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDITOP}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="356"
-						y="3"
-						width="46"
-						height="15"
-						key="textField-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODUNID}.trim()]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="403"
-						y="3"
-						width="61"
-						height="15"
-						key="textField-8"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODLOTE}.trim()]]></textFieldExpression>
-				</textField>
-				<line direction="TopDown">
-					<reportElement
-						x="467"
-						y="13"
-						width="62"
-						height="0"
-						key="line-11"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="532"
-						y="0"
-						width="0"
-						height="20"
-						key="line-12"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="5"
-						y="0"
-						width="0"
-						height="20"
-						key="line-13"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</detail>
 		<columnFooter>
