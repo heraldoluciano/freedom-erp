@@ -409,7 +409,7 @@ and f.codfase=fa.codfase]]></queryString>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="50"  isSplitAllowed="true" >
+			<band height="3"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="3"

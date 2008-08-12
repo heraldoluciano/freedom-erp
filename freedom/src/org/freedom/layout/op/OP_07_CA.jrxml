@@ -57,7 +57,7 @@ WHERE E.CODEMP=$P{CODEMP}]]></queryString>
 			</band>
 		</title>
 		<pageHeader>
-			<band height="90"  isSplitAllowed="true" >
+			<band height="71"  isSplitAllowed="true" >
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
@@ -72,16 +72,6 @@ WHERE E.CODEMP=$P{CODEMP}]]></queryString>
 					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
 					<imageExpression class="java.io.InputStream"><![CDATA[$F{FOTOEMP}]]></imageExpression>
 				</image>
-				<line direction="TopDown">
-					<reportElement
-						x="782"
-						y="15"
-						width="0"
-						height="75"
-						forecolor="#CCCCFF"
-						key="line-7"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
