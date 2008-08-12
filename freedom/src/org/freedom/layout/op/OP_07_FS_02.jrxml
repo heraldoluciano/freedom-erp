@@ -48,7 +48,7 @@ fa.descfase,opf.tempoof,ef.instrucoes,re.descrecp,
 opf.seqof
 from ppopfase opf, ppfase fa, ppestrufase ef, ppop op, pprecurso re
 where
-opf.codemp=7 and opf.codfilial=1 and opf.codop=2800 and opf.seqop=0 and opf.seqof=2
+opf.codemp=$P{CODEMP} and opf.codfilial=$P{CODFILIAL} and opf.codop=$P{CODOP} and opf.seqop=$P{SEQOP} and opf.seqof=2
 and fa.codemp=opf.codempfs and fa.codfilial=opf.codfilialfs and fa.codfase=opf.codfase
 and ef.codemp=op.codemppd and ef.codfilial=op.codfilialpd and ef.codprod=op.codprod and ef.seqest=op.seqest
 and ef.codempfs=opf.codempfs and ef.codfilialfs=opf.codfilialfs and ef.codfase=opf.codfase
