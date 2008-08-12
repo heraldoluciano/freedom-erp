@@ -46,7 +46,7 @@
 	<queryString><![CDATA[SELECT ac.seqac,IT.codprod,PD.descprod,IT.codlote,IT.qtditop,PD.codunid,it.dtins,ac.status
 FROM PPITOP IT, EQPRODUTO PD, ppopacaocorret ac
 WHERE PD.codemp=IT.codemppd AND PD.codfilial=IT.codfilialpd AND PD.CODPROD=IT.codprod
-AND IT.codemp=7 AND IT.CODFILIAL=1 AND IT.CODOP=2800 AND IT.seqop=0
+AND IT.codemp=$P{CODEMP} AND IT.CODFILIAL=$P{CODFILIAL} AND IT.CODOP=$P{CODOP} AND IT.seqop=$P{SEQOP}
 and ac.codemp=it.codemp and ac.codfilial=it.codfilial and ac.codop=it.codop and ac.seqop=it.seqop
 and it.seqac=ac.seqac and ac.seqac is not null
 order by 1]]></queryString>
