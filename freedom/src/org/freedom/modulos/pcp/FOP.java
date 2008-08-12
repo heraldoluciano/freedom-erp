@@ -53,6 +53,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
 import org.freedom.acao.CarregaEvent;
@@ -1954,7 +1956,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		String sSql = "SELECT CLASSOP FROM SGPREFERE5 WHERE CODEMP=? AND CODFILIAL=?";
 		String sClassOP = "";
 		Vector<Object> vParamOP = new Vector<Object>();
-		LeiauteGR leiOP = null;
+		//LeiauteGR leiOP = null;
 		try {
 			try {
 				ps = con.prepareStatement( sSql );
@@ -1975,8 +1977,30 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			if ( sClassOP.trim().equals( "" ) )
 				Funcoes.mensagemErro( this, "Não existe org.freedom.layout para ordem de produção. \n Cadastre o org.freedom.layout no documento de preferências do módulo de produção \n e tente novamente." );
 			else {
+				
 				try {
-					leiOP = (LeiauteGR) Class.forName( "org.freedom.layout.op." + sClassOP ).newInstance();
+					
+					FPrinterJob dlGr = null;
+					HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+					hParam.put( "CODEMP", Aplicativo.iCodEmp );
+					hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+					hParam.put( "CODOP", txtCodOP.getVlrInteger() );
+					hParam.put( "SEQOP", txtSeqOP.getVlrInteger() );
+					
+					dlGr = new FPrinterJob("layout/op/" + sClassOP, "Ordem de produção", "", this, hParam, con ); 
+
+					if ( bVisualizar ) {
+						dlGr.setVisible( true );
+					}
+					else {
+						try {
+							JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+						} catch ( Exception err ) {
+							Funcoes.mensagemErro( this, "Erro na impressão de Ordem de produção!" + err.getMessage(), true, con, err );
+						}
+					}
+				/*	leiOP = (LeiauteGR) Class.forName( "org.freedom.layout.op." + sClassOP ).newInstance();
 					leiOP.setConexao( con );
 					vParamOP.clear();
 					vParamOP.addElement( txtCodOP.getText() );
@@ -1987,7 +2011,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 						dl.setVisible( true );
 					}
 					else
-						leiOP.imprimir( true );
+						leiOP.imprimir( true );*/
 				} catch ( Exception err ) {
 					Funcoes.mensagemInforma( this, "Não foi possível carregar o leiaute de Ordem de produção!\n" + err.getMessage() );
 					err.printStackTrace();
@@ -1999,7 +2023,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			sSql = null;
 			sClassOP = null;
 			vParamOP = null;
-			leiOP = null;
+	//		leiOP = null;
 			System.gc();
 		}
 	}
