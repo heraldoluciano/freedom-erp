@@ -46,7 +46,7 @@
 	<queryString><![CDATA[SELECT ac.seqac,IT.codprod,PD.descprod,IT.codlote,IT.qtditop,PD.codunid,it.dtins,ac.status
 FROM PPITOP IT, EQPRODUTO PD, ppopacaocorret ac
 WHERE PD.codemp=IT.codemppd AND PD.codfilial=IT.codfilialpd AND PD.CODPROD=IT.codprod
-AND IT.codemp=7 AND IT.CODFILIAL=1 AND IT.CODOP=2800 AND IT.seqop=0
+AND IT.codemp=$P{CODEMP} AND IT.CODFILIAL=$P{CODFILIAL} AND IT.CODOP=$P{CODOP} AND IT.seqop=$P{SEQOP}
 and ac.codemp=it.codemp and ac.codfilial=it.codfilial and ac.codop=it.codop and ac.seqop=it.seqop
 and it.seqac=ac.seqac and ac.seqac is not null
 order by 1]]></queryString>
@@ -64,37 +64,37 @@ order by 1]]></queryString>
 		<group  name="GERAL" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="31"  isSplitAllowed="true" >
+			<band height="29"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
-						x="3"
+						x="0"
 						y="0"
-						width="527"
+						width="549"
 						height="1"
 						key="line-6"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="530"
+						x="548"
 						y="0"
 						width="0"
-						height="31"
+						height="29"
 						key="line-8"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="3"
+						x="0"
 						y="0"
 						width="0"
-						height="31"
+						height="29"
 						key="line-9"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<staticText>
 					<reportElement
-						x="4"
+						x="5"
 						y="0"
 						width="524"
 						height="13"
@@ -107,25 +107,25 @@ order by 1]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="3"
+						x="0"
 						y="14"
-						width="527"
+						width="549"
 						height="0"
 						key="line-10"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="3"
+						x="0"
 						y="28"
-						width="527"
+						width="549"
 						height="0"
 						key="line-11"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<staticText>
 					<reportElement
-						x="4"
+						x="5"
 						y="15"
 						width="34"
 						height="12"
@@ -138,9 +138,9 @@ order by 1]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="39"
+						x="43"
 						y="15"
-						width="234"
+						width="230"
 						height="12"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -153,7 +153,7 @@ order by 1]]></queryString>
 					<reportElement
 						x="277"
 						y="15"
-						width="86"
+						width="90"
 						height="12"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -164,9 +164,9 @@ order by 1]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="365"
+						x="370"
 						y="15"
-						width="46"
+						width="44"
 						height="12"
 						key="staticText-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -177,7 +177,7 @@ order by 1]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="413"
+						x="416"
 						y="15"
 						width="49"
 						height="12"
@@ -190,7 +190,7 @@ order by 1]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="463"
+						x="468"
 						y="15"
 						width="65"
 						height="12"
@@ -203,7 +203,7 @@ order by 1]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="37"
+						x="40"
 						y="14"
 						width="1"
 						height="15"
@@ -221,7 +221,7 @@ order by 1]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="364"
+						x="368"
 						y="14"
 						width="1"
 						height="15"
@@ -230,7 +230,7 @@ order by 1]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="412"
+						x="415"
 						y="14"
 						width="1"
 						height="15"
@@ -239,7 +239,7 @@ order by 1]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="461"
+						x="465"
 						y="14"
 						width="1"
 						height="15"
@@ -307,15 +307,6 @@ order by 1]]></queryString>
 			</groupHeader>
 			<groupFooter>
 			<band height="19"  isSplitAllowed="true" >
-				<line direction="TopDown">
-					<reportElement
-						x="3"
-						y="0"
-						width="528"
-						height="0"
-						key="line-19"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 				<staticText>
 					<reportElement
 						x="4"
@@ -375,7 +366,7 @@ order by 1]]></queryString>
 				</rectangle>
 				<line direction="TopDown">
 					<reportElement
-						x="3"
+						x="0"
 						y="0"
 						width="0"
 						height="19"
@@ -384,7 +375,7 @@ order by 1]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="530"
+						x="548"
 						y="0"
 						width="0"
 						height="19"
@@ -393,9 +384,9 @@ order by 1]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="3"
+						x="0"
 						y="18"
-						width="528"
+						width="549"
 						height="0"
 						key="line-22"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -469,6 +460,15 @@ order by 1]]></queryString>
 		</columnHeader>
 		<detail>
 			<band height="16"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="15"
+						width="549"
+						height="0"
+						key="line-19"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
@@ -484,9 +484,9 @@ order by 1]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="41"
+						x="43"
 						y="1"
-						width="233"
+						width="231"
 						height="13"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -536,7 +536,7 @@ order by 1]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="3"
+						x="0"
 						y="0"
 						width="0"
 						height="16"
@@ -545,11 +545,56 @@ order by 1]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="530"
+						x="548"
 						y="0"
 						width="0"
 						height="16"
 						key="line-18"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="40"
+						y="0"
+						width="0"
+						height="16"
+						key="line-24"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="275"
+						y="0"
+						width="0"
+						height="16"
+						key="line-25"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="368"
+						y="0"
+						width="0"
+						height="16"
+						key="line-26"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="415"
+						y="0"
+						width="0"
+						height="16"
+						key="line-27"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="465"
+						y="0"
+						width="0"
+						height="16"
+						key="line-28"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
