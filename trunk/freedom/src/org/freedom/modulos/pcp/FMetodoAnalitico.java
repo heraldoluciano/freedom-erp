@@ -147,7 +147,7 @@ public class FMetodoAnalitico extends FTabDados {
 		 ********************/
 		
 		setPainel( pinRodFoto, pnFoto );
-		adicTab( "Cracteristica", pnFoto );
+		adicTab( "Caracteristica", pnFoto );
 		setListaCampos( lcFoto );
 		setNavegador( navFoto );
 		pnFoto.add( pinRodFoto, BorderLayout.SOUTH );
