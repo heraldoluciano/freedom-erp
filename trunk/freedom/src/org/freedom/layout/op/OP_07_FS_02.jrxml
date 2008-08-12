@@ -70,7 +70,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 			</band>
 		</title>
 		<pageHeader>
-			<band height="200"  isSplitAllowed="true" >
+			<band height="181"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="8"
