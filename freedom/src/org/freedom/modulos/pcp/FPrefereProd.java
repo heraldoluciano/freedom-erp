@@ -78,6 +78,7 @@ public class FPrefereProd extends FTabDados {
 		
 		montaListaCampos();
 		montaTela();
+		
 	}
 	
 	private void montaTela(){
