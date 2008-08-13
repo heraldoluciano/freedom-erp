@@ -366,7 +366,7 @@ order by it.codprod]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDITOP}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY)]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDITOP}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_CEILING)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
