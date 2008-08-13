@@ -24,10 +24,23 @@
  */
 package org.freedom.modulos.grh;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.swing.BorderFactory;
+import javax.swing.SwingConstants;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
+import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JTextFieldFK;
+import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
@@ -35,11 +48,82 @@ public class FRVagas extends FRelatorio{
 
 	private static final long serialVersionUID = 1L;
 	
+	private JTextFieldPad txtCodEmpr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0  );
+	
+	private JTextFieldFK txtNomeEmpr = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0  );
+	
+	private JTextFieldPad txtCodFuncao = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0  );
+	
+	private JTextFieldFK txtDescFuncao = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0  );
+	
+	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private final ListaCampos lcFuncao = new ListaCampos( this );
+	
+	private final ListaCampos lcEmpr = new ListaCampos( this );
+	
 	public FRVagas(){
 		
 		super( false );
 		setTitulo( "Lista de Vagas" );
-		setAtribos( 50, 50, 350, 200 );
+		setAtribos( 50, 50, 350, 220 );
+	
+		montaListaCampos();
+		montaTela();
+			
+	}
+	
+	private void montaTela(){
+
+		
+		JLabelPad lbLinha = new JLabelPad();
+		lbLinha.setBorder(BorderFactory.createEtchedBorder());
+		JLabelPad lbPeriodo = new JLabelPad( "Período:" , SwingConstants.CENTER );
+		lbPeriodo.setOpaque( true );
+		
+		adic( lbPeriodo,7, 1, 80, 20 );
+		adic( lbLinha,5, 10, 300, 45 );
+		
+		adic( new JLabelPad("De:"), 10, 25, 30, 20 );
+		adic( txtDataini, 40, 25, 97, 20 );
+		adic( new JLabelPad("Até:"),152, 25, 37, 20 );
+		adic( txtDatafim, 190, 25, 100, 20 );		
+		adic( new JLabelPad("Cód.Empr."), 7, 55, 70, 20 );
+		adic( txtCodEmpr, 7, 75, 70, 20 );
+		adic( new JLabelPad("Descrição do Empregador"), 80, 55, 250, 20 );
+		adic( txtNomeEmpr, 80, 75, 250, 20 );
+		adic( new JLabelPad("Cód.Func"), 7, 95, 70, 20 );
+		adic( txtCodFuncao, 7, 115, 70, 20 );
+		adic( new JLabelPad("Descrição da Função"), 80, 95, 250, 20 );
+		adic( txtDescFuncao, 80, 115, 250, 20 );
+	}
+	
+	private void montaListaCampos(){
+		
+		/******************
+		 *    Função      *
+		 ******************/
+		lcFuncao.add( new GuardaCampo( txtCodFuncao, "CodFunc", "Cód.Func.", ListaCampos.DB_PK, false ) );
+		lcFuncao.add( new GuardaCampo( txtDescFuncao, "DescFunc", "Descrição da função", ListaCampos.DB_SI, false ) );
+		lcFuncao.montaSql( false, "FUNCAO", "RH" );
+		lcFuncao.setQueryCommit( false );
+		lcFuncao.setReadOnly( true );
+		txtCodFuncao.setTabelaExterna( lcFuncao );
+		
+	
+		/******************
+		 *   Empregador   *
+		 ******************/
+		lcEmpr.add( new GuardaCampo( txtCodEmpr, "CodEmpr", "Cód.Empr..", ListaCampos.DB_PK, false ) );
+		lcEmpr.add( new GuardaCampo( txtNomeEmpr, "NomeEmpr", "Descrição do Empregador", ListaCampos.DB_SI, false ) );
+		lcEmpr.montaSql( false, "EMPREGADOR", "RH" );
+		lcEmpr.setQueryCommit( false );
+		lcEmpr.setReadOnly( true );
+		txtCodEmpr.setTabelaExterna( lcEmpr );
+		
+		
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -52,19 +136,45 @@ public class FRVagas extends FRelatorio{
 		
 		try {
 			
+			if( txtCodFuncao.getVlrInteger() > 0 ){
+				
+				sWhere.append( "AND V.CODFUNC = " + txtCodFuncao.getVlrInteger() );
+			}
+			if( txtCodEmpr.getVlrInteger() > 0  ){
+				
+				sWhere.append( "AND V.CODEMPR = " + txtCodEmpr.getVlrInteger() );
+			}
+			if( txtDataini.getVlrDate() != null && txtDatafim.getVlrDate() != null  ){
+				
+				sWhere.append( "AND V.DTINS BETWEEN ? AND ?" ); 
+				
+			}
+			
 			sql.append( "SELECT E.NOMEEMPR, F.DESCFUNC, T.DESCTURNO, V.FAIXASALINI, V.FAIXASALFIM " );
 			sql.append( "FROM RHVAGA V, RHEMPREGADOR E, RHFUNCAO F, RHTURNO T " );
 			sql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND " );
 			sql.append( "V.CODEMPEM=E.CODEMP AND V.CODFILIALEM=E.CODFILIAL AND V.CODEMPR=E.CODEMPR AND " );
 			sql.append( "V.CODEMPFC=F.CODEMP AND V.CODFILIALFC=F.CODFILIAL AND V.CODFUNC=F.CODFUNC AND  " );
 			sql.append( "V.CODEMPTN=T.CODEMP AND V.CODFILIALTN=T.CODFILIAL AND V.CODTURNO=T.CODTURNO " );
+			sql.append( sWhere.toString() );
 			sql.append( "ORDER BY E.NOMEEMPR, F.DESCFUNC, T.DESCTURNO, V.FAIXASALINI, V.FAIXASALFIM " );
 			
-			//	sql.append( "AND V.CODFUNC=? AND V.CODEMPR=? " );
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "RHVAGA" ) );
+			
+			if( txtDataini.getVlrDate() != null && txtDatafim.getVlrDate() != null  ){
+				
+				ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ));
+				ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ));
+			}
+			rs = ps.executeQuery();
 			
 			
-		} catch ( Exception e ) {
+		} catch ( SQLException e ) {
 			
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar dados! " + e.getMessage() );
 		} 
 
 		dlGr = new FPrinterJob( "relatorios/grhVagas.jasper", "Lista de Vagas", "", rs, null, this );
@@ -80,5 +190,12 @@ public class FRVagas extends FRelatorio{
 				Funcoes.mensagemErro( this, "Erro na geração do relátorio!" + e.getMessage(), true, con, e );
 			}
 		}
+	}
+	
+	public void setConexao( Connection con ){
+		
+		super.setConexao( con );
+		lcEmpr.setConexao( con );
+		lcFuncao.setConexao( con );
 	}
 }

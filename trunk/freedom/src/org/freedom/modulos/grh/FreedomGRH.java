@@ -61,6 +61,7 @@ public class FreedomGRH extends AplicativoPD {
 			addSeparador( 200000000 );
 			addOpcao( 200000000, TP_OPCAO_MENU, "Relatórios", "Relatórios", 'T', 200300000,1,false,null);
 			addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório de atividades", "Relatório de atividades", 'a', 200301000, 1, true, FRRelAtiv.class );
+			addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório de Vagas", "Relatório de Vagas", 'a', 200302000, 1, true, FRVagas.class );
 			
 		addBotao( "btForneced.gif", "Empregadores", "Empregadores", 100100600, FEmpregadores.class );
 		addBotao( "btMedida.gif", "Características", "Características", 100101000, FCaracteristica.class );		
