@@ -107,10 +107,12 @@ public class FRVagas extends FRelatorio{
 		 ******************/
 		lcFuncao.add( new GuardaCampo( txtCodFuncao, "CodFunc", "Cód.Func.", ListaCampos.DB_PK, false ) );
 		lcFuncao.add( new GuardaCampo( txtDescFuncao, "DescFunc", "Descrição da função", ListaCampos.DB_SI, false ) );
-		lcFuncao.montaSql( false, "FUNCAO", "RH" );
-		lcFuncao.setQueryCommit( false );
-		lcFuncao.setReadOnly( true );
 		txtCodFuncao.setTabelaExterna( lcFuncao );
+		txtCodFuncao.setNomeCampo( "CodFunc" );
+		txtCodFuncao.setFK( true );
+		lcFuncao.setReadOnly( true );
+		lcFuncao.montaSql( false, "FUNCAO", "RH" );
+		
 		
 	
 		/******************
@@ -118,10 +120,11 @@ public class FRVagas extends FRelatorio{
 		 ******************/
 		lcEmpr.add( new GuardaCampo( txtCodEmpr, "CodEmpr", "Cód.Empr..", ListaCampos.DB_PK, false ) );
 		lcEmpr.add( new GuardaCampo( txtNomeEmpr, "NomeEmpr", "Descrição do Empregador", ListaCampos.DB_SI, false ) );
-		lcEmpr.montaSql( false, "EMPREGADOR", "RH" );
-		lcEmpr.setQueryCommit( false );
-		lcEmpr.setReadOnly( true );
 		txtCodEmpr.setTabelaExterna( lcEmpr );
+		txtCodEmpr.setNomeCampo( "CodEmpr" );
+		txtCodEmpr.setFK( true );
+		lcEmpr.setReadOnly( true );		
+		lcEmpr.montaSql( false, "EMPREGADOR", "RH" );
 		
 		
 	}
