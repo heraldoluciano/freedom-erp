@@ -82,7 +82,7 @@ order by it.codprod]]></queryString>
 + "#" + $P{SEQOP}.toString() 
 + "#" + $F{CODPROD}.toString() 
 + "#" + $F{CODLOTE}.trim().replace( '/', '_' ) 
-+ "#" + ($F{QTDITOP}.setScale(3,BigDecimal.ROUND_UNNECESSARY)).toString().replace('.', ',')
++ "#" + ($F{QTDITOP}.setScale(3,BigDecimal.ROUND_CEILING)).toString().replace('.', ',')
 ).replace( '/', '_' )
 
 
