@@ -28,6 +28,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Vector;
@@ -162,17 +163,17 @@ public class FRVendasCliProd extends FRelatorio {
 
 		sCab.append( "de : " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + "Até : " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
 
-		if ( txtRazCli.getVlrString().trim().length() > 0 ) {
+/*		if ( txtRazCli.getVlrString().trim().length() > 0 ) {
 			sWhereCli.append( "AND C.CODCLI=" + txtCodCli.getVlrInteger() );
 		}
 		if ( txtNomeComiss.getVlrString().trim().length() > 0 ) {
 			sWhereComiss.append( " AND V.CODEMPVD=" + Aplicativo.iCodEmp );
 			sWhereComiss.append( " AND V.CODFILIALVD=" + ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
 			sWhereComiss.append( " AND V.CODVEND=" + txtCodComiss.getVlrInteger() );
-		}
+		}*/
 
 		try {
-
+/*
 			sSQL.append( "SELECT C.RAZCLI, V.CODCLI, P.DESCPROD, IV.CODPROD, " );
 			sSQL.append( "MAX(V.DTEMITVENDA) DTEMITVENDA, MAX(V.DOCVENDA) DOCVENDA, " );
 			sSQL.append( "MAX(V.SERIE) SERIE, " );
@@ -188,17 +189,38 @@ public class FRVendasCliProd extends FRelatorio {
 			sSQL.append( sWhereCli );
 			sSQL.append( sWhereComiss );
 			sSQL.append( " GROUP BY C.RAZCLI, V.CODCLI, P.DESCPROD, IV.CODPROD " );
+*/
 
-			
-			System.out.println("SQL_REL:" + sSQL.toString());
-			
-			
+			sSQL.append("select razcli_ret razcli, codcli_ret codcli, descprod_ret descprod, codprod_ret codprod, ");
+			sSQL.append("dtemitvenda_ret dtemitvenda, docvenda_ret docvenda, serie_ret serie, precovenda_ret precovenda ");
+			sSQL.append("from vdretultvdcliprod (?,?,?,?,?,?) ");
+//			sSQL.append("order by 1");
+						
+//			System.out.println("SQL_REL:" + sSQL.toString());
+						
 			ps = con.prepareStatement( sSQL.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setDate( 3, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
-			ps.setDate( 4, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			
+			if(txtRazCli.getVlrString().trim().length() > 0 ) {				
+				ps.setInt( 2, txtCodCli.getVlrInteger()  );
+			}
+			else {
+				ps.setNull( 2, Types.INTEGER );
+			}
+			
+			ps.setInt( 3, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
+			
+			if ( txtNomeComiss.getVlrString().trim().length() > 0 ) {
+				ps.setInt( 4, txtCodComiss.getVlrInteger() );				
+			}
+			else {
+				ps.setNull( 4, Types.INTEGER );
+			}		
+				
+			ps.setDate( 5, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( 6, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			
 			rs = ps.executeQuery();
 
 			if ( "G".equals( rgTipo.getVlrString() ) ) {
