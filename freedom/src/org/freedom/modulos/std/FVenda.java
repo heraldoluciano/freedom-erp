@@ -2512,12 +2512,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				// post no venda e pula para o campo
 				// adequado no item.
 				if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
-/*					if ( (numComissionados>0) && (ctrlmc!=null) && (ctrlmc.isEnabled()) ) {
+//					if ( (numComissionados>0) && (ctrlmc!=null) && (ctrlmc.isEnabled()) ) {
 						focusIni(); 
 						focusCodprod();
 						lcCampos.post();
 						lcDet.edit();
-					}*/
+//					}
 				}
 				else if ( lcCampos.getStatus() == ListaCampos.LCS_EDIT ) {
 					lcCampos.post();
