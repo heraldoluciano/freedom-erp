@@ -63,16 +63,15 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
+import org.brazilutils.br.uf.UF;
+import org.brazilutils.br.uf.ie.InscricaoEstadual;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ListaCampos;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
-
 import org.freedom.componentes.StringDireita;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
@@ -1998,10 +1997,16 @@ public class Funcoes {
 			for (int i = 0; i < sVal.length(); i++) {
 				if (ma[i2] == '#') {
 					texto += va[i];
-				} else {
+				} 
+				else {
 					texto += ma[i2];
-					texto += va[i];
-					i2++;
+
+					if( ! Character.isDigit( ma[i2] ) ) {
+						texto += va[i];
+						i2++;
+					}
+					
+					
 				}
 				i2++;
 			}
@@ -2210,6 +2215,34 @@ public class Funcoes {
 	public static boolean vIE(String sIE, String sEstado) {
 		boolean bRetorno = false;
 		sEstado.toUpperCase();
+		UF uf = UF.valueOf( sEstado );
+//		montaTabCalcIE();
+//		montaTabPesoIE();
+				
+		try {			
+			InscricaoEstadual ie = uf.getInscricaoEstadual();    
+			ie.setNumber(sIE);
+			bRetorno = ie.isValid();
+			testaCasoIE( sIE, ie );
+/*			for (int i = 1; i <= 3; i++) {
+				if (testaDigIE(sEstado, sIE, i)) {
+					bRetorno = true;
+					break;
+				}
+			}*/
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return bRetorno;
+	}
+
+
+/*	public static boolean vIE(String sIE, String sEstado) {
+		boolean bRetorno = false;
+		sEstado.toUpperCase();
 		montaTabCalcIE();
 		montaTabPesoIE();
 		for (int i = 1; i <= 3; i++) {
@@ -2220,7 +2253,8 @@ public class Funcoes {
 		}
 		return bRetorno;
 	}
-
+*/
+/*
 	private static boolean testaDigIE(String sEstado, String sIE, int iCaso) {
 		boolean bRetorno = false;
 		String sIE2 = "";
@@ -2240,10 +2274,10 @@ public class Funcoes {
 		}
 		return bRetorno;
 	}
-
+*/
 	@SuppressWarnings("unchecked")
-	private static boolean testaCasoIE(String sIE, Vector vXIE) {
-		String sIENova = "";
+	private static boolean testaCasoIE(String sIE, InscricaoEstadual IE) {
+/*		String sIENova = "";
 		int iSX, iSY, iSQiX, iSQiY, iPosDVX, iPosDVY;
 		int iDVX = -1;
 		int iDVY = -1;
@@ -2264,9 +2298,8 @@ public class Funcoes {
 		if (sIENova.length() != ((Integer) vXIE.elementAt(2)).intValue())
 			return false;
 		for (int i = (24 - sIENova.length()); i < 24; i++) {
-			if (retValUF((String) vXIE.elementAt(i)).indexOf(
-					(sIENova.toCharArray())[i - (24 - sIENova.length())]) < 0)
-				return false;
+//			if (retValUF((String) vXIE.elementAt(i)).indexOf((sIENova.toCharArray())[i - (24 - sIENova.length())]) < 0)
+//				return false;
 		}
 		//****** Irá calcular digitos verificadores !!!
 		aMiX = new int[14];
@@ -2361,7 +2394,12 @@ public class Funcoes {
 		} else {
 			return false;
 		}
-		sIEValida = setMascara(sIENova, (String) vXIE.elementAt(24));
+//		sIEValida = setMascara(sIENova, (String) vXIE.elementAt(24));
+		
+		*/	
+		
+		sIEValida = setMascara(limpaString( sIE ), IE.getMask());
+		
 		//    System.out.println("TRUE");
 		return true;
 	}
@@ -2416,7 +2454,8 @@ public class Funcoes {
 			sRetorno = "0123456789";
 		else if (cVal[0] == '=') {
 			sRetorno = sVal;
-		} else if (cVal[1] == '/') {
+		} 
+		else if (cVal[1] == '/') {
 			for (int i = cVal[0]; i <= cVal[2]; i++) {
 				sRetorno += i;
 			}
