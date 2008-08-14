@@ -74,10 +74,16 @@ public class FMetodoAnalitico extends FTabDados {
 	private JPanelPad pinRodFoto = new JPanelPad( 650, 170 );
 	
 	private JTextAreaPad txaMaterial = new JTextAreaPad();
+	
+	private JScrollPane spnMaterial = new JScrollPane( txaMaterial );
 
 	private JTextAreaPad txaReagente = new JTextAreaPad();
 	
+	private JScrollPane spnReagente = new JScrollPane( txaReagente );
+	
 	private JTextAreaPad txaProced = new JTextAreaPad();
+	
+	private JScrollPane spnProced = new JScrollPane( txaProced );
 	
 	private Navegador navFoto = new Navegador( true );
 	
@@ -122,7 +128,7 @@ public class FMetodoAnalitico extends FTabDados {
 
 		adicTab( "Material", pinMaterial );
 		adicDBLiv( txaMaterial, "MatAnalise", "Material", false );
-		pinMaterial.add( txaMaterial );
+		pinMaterial.add( spnMaterial );
 		
 		/****************
 		 *   Reagentes  *
@@ -130,7 +136,7 @@ public class FMetodoAnalitico extends FTabDados {
 		
 	    adicTab( "Reagentes", pinReagentes );
 	    adicDBLiv( txaReagente, "ReagAnalise", "Reagentes", false );
-	    pinReagentes.add( txaReagente );
+	    pinReagentes.add( spnReagente );
 		
 		/*******************
 		 *  Procedimentos  *
@@ -138,7 +144,7 @@ public class FMetodoAnalitico extends FTabDados {
 		
 		adicTab( "Procedimentos", pinProced );
 		adicDBLiv( txaProced, "ProcAnalise", "Procedimento", false );
-		pinProced.add( txaProced );
+		pinProced.add( spnProced );
 				
 		setListaCampos( true, "METODOANALISE", "PP" );
 		
