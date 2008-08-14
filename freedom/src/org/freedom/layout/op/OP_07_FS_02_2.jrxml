@@ -43,13 +43,6 @@
 	<parameter name="SEQOP" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(0)]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT ac.seqac,IT.codprod,PD.descprod,IT.codlote,IT.qtditop,PD.codunid,it.dtins,ac.status
-FROM PPITOP IT, EQPRODUTO PD, ppopacaocorret ac
-WHERE PD.codemp=IT.codemppd AND PD.codfilial=IT.codfilialpd AND PD.CODPROD=IT.codprod
-AND IT.codemp=$P{CODEMP} AND IT.CODFILIAL=$P{CODFILIAL} AND IT.CODOP=$P{CODOP} AND IT.seqop=$P{SEQOP}
-and ac.codemp=it.codemp and ac.codfilial=it.codfilial and ac.codop=it.codop and ac.seqop=it.seqop
-and it.seqac=ac.seqac and ac.seqac is not null
-order by 1]]></queryString>
 
 	<field name="SEQAC" class="java.lang.Short"/>
 	<field name="CODPROD" class="java.lang.Long"/>
@@ -404,19 +397,6 @@ order by 1]]></queryString>
 					</textElement>
 				<text><![CDATA[Data:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="250"
-						y="3"
-						width="65"
-						height="12"
-						key="textField-6"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
-					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTINS}]]></textFieldExpression>
-				</textField>
 				<staticText>
 					<reportElement
 						x="359"
@@ -432,7 +412,7 @@ order by 1]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="424"
+						x="429"
 						y="13"
 						width="98"
 						height="0"
@@ -459,7 +439,7 @@ order by 1]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="16"  isSplitAllowed="true" >
+			<band height="80"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -469,71 +449,6 @@ order by 1]]></queryString>
 						key="line-19"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="5"
-						y="1"
-						width="34"
-						height="13"
-						key="textField-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica" size="9" isBold="false"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODPROD}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="43"
-						y="1"
-						width="231"
-						height="13"
-						key="textField-2"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCPROD}.trim()]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="276"
-						y="1"
-						width="91"
-						height="13"
-						key="textField-3"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODLOTE}.trim()]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="369"
-						y="1"
-						width="45"
-						height="13"
-						key="textField-4"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDITOP}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="416"
-						y="1"
-						width="48"
-						height="13"
-						key="textField-5"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODUNID}.trim()]]></textFieldExpression>
-				</textField>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -595,6 +510,258 @@ order by 1]]></queryString>
 						width="0"
 						height="16"
 						key="line-28"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="31"
+						width="549"
+						height="0"
+						key="line-29"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="548"
+						y="16"
+						width="0"
+						height="16"
+						key="line-30"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="40"
+						y="16"
+						width="0"
+						height="16"
+						key="line-31"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="275"
+						y="16"
+						width="0"
+						height="16"
+						key="line-32"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="368"
+						y="16"
+						width="0"
+						height="16"
+						key="line-33"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="415"
+						y="16"
+						width="0"
+						height="16"
+						key="line-34"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="465"
+						y="16"
+						width="0"
+						height="16"
+						key="line-35"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="47"
+						width="549"
+						height="0"
+						key="line-36"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="548"
+						y="32"
+						width="0"
+						height="16"
+						key="line-37"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="40"
+						y="32"
+						width="0"
+						height="16"
+						key="line-38"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="275"
+						y="32"
+						width="0"
+						height="16"
+						key="line-39"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="368"
+						y="32"
+						width="0"
+						height="16"
+						key="line-40"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="415"
+						y="32"
+						width="0"
+						height="16"
+						key="line-41"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="465"
+						y="32"
+						width="0"
+						height="16"
+						key="line-42"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="63"
+						width="549"
+						height="0"
+						key="line-43"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="548"
+						y="48"
+						width="0"
+						height="16"
+						key="line-44"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="40"
+						y="48"
+						width="0"
+						height="16"
+						key="line-45"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="275"
+						y="48"
+						width="0"
+						height="16"
+						key="line-46"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="368"
+						y="48"
+						width="0"
+						height="16"
+						key="line-47"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="415"
+						y="48"
+						width="0"
+						height="16"
+						key="line-48"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="465"
+						y="48"
+						width="0"
+						height="16"
+						key="line-49"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="79"
+						width="549"
+						height="0"
+						key="line-50"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="548"
+						y="64"
+						width="0"
+						height="16"
+						key="line-51"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="40"
+						y="64"
+						width="0"
+						height="16"
+						key="line-52"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="275"
+						y="64"
+						width="0"
+						height="16"
+						key="line-53"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="368"
+						y="64"
+						width="0"
+						height="16"
+						key="line-54"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="415"
+						y="64"
+						width="0"
+						height="16"
+						key="line-55"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="465"
+						y="64"
+						width="0"
+						height="16"
+						key="line-56"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
