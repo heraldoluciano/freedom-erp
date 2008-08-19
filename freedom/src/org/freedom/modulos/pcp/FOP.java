@@ -75,7 +75,6 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.layout.componentes.LeiauteGR;
 import org.freedom.modulos.gms.FRma;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.telas.Aplicativo;
@@ -1035,8 +1034,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private void simularOP() {
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		String sSQL = null;
 		Object[] linha = new Object[ 8 ];
 
@@ -1055,7 +1052,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			}
 
 			sSQL = "SELECT IT.CODFASE, IT.SEQITEST, IT.CODPRODPD, P.DESCPROD, " + 
-				   "P.CODUNID, IT.QTDITEST, P.SLDLIQPROD, IT.RMAAUTOITEST " + 
+				   "P.CODUNID, IT.QTDITEST, P.SLDLIQPROD, IT.RMAAUTOITEST, IT.QTDFIXA " + 
 				   "FROM PPESTRUTURA E, PPITESTRUTURA IT, EQPRODUTO P " + 
 				   "WHERE E.CODEMP=? AND E.CODFILIAL=? AND E.CODPROD=? AND E.SEQEST=? " + 
 				   "AND E.CODEMP=IT.CODEMP AND E.CODFILIAL=IT.CODFILIAL " + 
@@ -1063,12 +1060,13 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				   "AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPRODPD " + 
 				   "ORDER BY IT.CODFASE, IT.SEQITEST";
 
-			ps = con.prepareStatement( sSQL );
+			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "PPITESTRUTURA" ) );
 			ps.setInt( 3, txtCodProdEst.getVlrInteger().intValue() );
 			ps.setInt( 4, txtSeqEst.getVlrInteger().intValue() );
-			rs = ps.executeQuery();
+			
+			ResultSet rs = ps.executeQuery();
 
 			while ( rs.next() ) {
 
@@ -1076,15 +1074,16 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				linha[ 1 ] = new Integer( rs.getInt( "CODPRODPD" ) );
 				linha[ 2 ] = rs.getString( "DESCPROD" ) != null ? rs.getString( "DESCPROD" ).trim() : "";
 				linha[ 3 ] = rs.getString( "CODUNID" ) != null ? rs.getString( "CODUNID" ) : "";
-				linha[ 4 ] = ( rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 ) );
-				linha[ 4 ] = ( (BigDecimal) linha[ 4 ] ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
-				linha[ 5 ] = ( rs.getBigDecimal( "SLDLIQPROD" ) != null ? rs.getBigDecimal( "SLDLIQPROD" ) : new BigDecimal( 0 ) );
-				linha[ 5 ] = ( (BigDecimal) linha[ 5 ] ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
-				linha[ 6 ] = getQtdTotal( ( rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 ) ) );
+				linha[ 4 ] = rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 );
+				linha[ 4 ] = ((BigDecimal) linha[ 4 ]).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
+				linha[ 5 ] = rs.getBigDecimal( "SLDLIQPROD" ) != null ? rs.getBigDecimal( "SLDLIQPROD" ) : new BigDecimal( 0 );
+				linha[ 5 ] = ((BigDecimal) linha[ 5 ]).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
+				linha[ 6 ] = "S".equals( rs.getString( "RMAAUTOITEST" ) ) ? 
+								(rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 )) :
+								getQtdTotal((rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 )));
 				linha[ 7 ] = rs.getString( "RMAAUTOITEST" ) != null ? rs.getString( "RMAAUTOITEST" ) : "";
 
 				tabSimu.adicLinha( linha );
-
 			}
 
 			rs.close();
@@ -1100,13 +1099,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		} catch ( Exception e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao simular OP.\n" + e.getMessage() );
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-			linha = null;
 		}
-
 	}
 
 	private void abreRma() {

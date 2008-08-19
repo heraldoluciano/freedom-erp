@@ -100,12 +100,6 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private JTextFieldPad txtSeqItem = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
-	private JCheckBoxPad cbQtdVariavelItem = new JCheckBoxPad( "Sim", "S", "N" );
-	
-	private JCheckBoxPad cbEmitCert = new JCheckBoxPad( "Certificado?", "S", "N" );
-	
-//	private JCheckBoxPad cbQtdVariavelDistrib = new JCheckBoxPad( "Sim", "S", "N" );	
-
 	private JTextFieldPad txtSeqDistrib = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodProdItem = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -157,16 +151,22 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTextFieldFK txtCasasDec = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
 	private JCheckBoxPad cbFinaliza = new JCheckBoxPad( "Finaliza", "S", "N" );
-	
-	private JCheckBoxPad cbCProva = new JCheckBoxPad( "Sim", "S", "N" );
-
-	private JCheckBoxPad cbRmaAutoItEst = new JCheckBoxPad( "Sim", "S", "N" );
 
 	private JCheckBoxPad cbAtiva = new JCheckBoxPad( "Ativa", "S", "N" );
 
 	private JCheckBoxPad cbGLoteOPP = new JCheckBoxPad( "Mod.lote da OP principal", "S", "N" );
 
 	private JCheckBoxPad cbOpDensidade = new JCheckBoxPad( "Usa densidade na OP?", "S", "N" );
+
+	private JCheckBoxPad cbRmaAutoItEst = new JCheckBoxPad( "Rma", "S", "N" );
+	
+	private JCheckBoxPad cbCProva = new JCheckBoxPad( "Contra prova?", "S", "N" );
+	
+	private JCheckBoxPad cbQtdVariavelItem = new JCheckBoxPad( "Qtd. variavél?", "S", "N" );
+	
+	private JCheckBoxPad cbQtdFixaItem = new JCheckBoxPad( "Qtd. fixa?", "S", "N" );
+	
+	private JCheckBoxPad cbEmitCert = new JCheckBoxPad( "Certificado?", "S", "N" );
 
 	private JTextAreaPad txaModoPreparo = new JTextAreaPad();
 
@@ -358,9 +358,10 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		adicDescFK( txtDescProdItem, 130, 20, 327, 20, "DescProd", "Descrição do produto" );
 		adicCampo( txtQtdMat, 460, 20, 100, 20, "QtdItEst", "Qtd.", ListaCampos.DB_SI, true );
 	
-		adicDB( cbRmaAutoItEst, 7, 60, 60, 20, "RmaAutoItEst", "RMA", true );		
-		adicDB( cbQtdVariavelItem, 80, 60, 70, 20, "QtdVariavel", "Qtd.variável", true );
-		adicDB( cbCProva, 160, 60, 140, 20, "CPROVA", "Contra prova?", true );
+		adicDB( cbRmaAutoItEst, 10, 60, 80, 20, "RmaAutoItEst", "", true );		
+		adicDB( cbCProva, 90, 60, 120, 20, "CPROVA", "", true );
+		adicDB( cbQtdVariavelItem, 210, 60, 100, 20, "QtdVariavel", "", true );
+		adicDB( cbQtdFixaItem, 330, 60, 100, 20, "QtdFixa", "", true );
 			
 		setListaCampos( true, "ITESTRUTURA", "PP" );
 		lcDetItens.setQueryInsert( false );
