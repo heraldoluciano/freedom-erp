@@ -1078,7 +1078,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				linha[ 4 ] = ((BigDecimal) linha[ 4 ]).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
 				linha[ 5 ] = rs.getBigDecimal( "SLDLIQPROD" ) != null ? rs.getBigDecimal( "SLDLIQPROD" ) : new BigDecimal( 0 );
 				linha[ 5 ] = ((BigDecimal) linha[ 5 ]).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
-				linha[ 6 ] = "S".equals( rs.getString( "RMAAUTOITEST" ) ) ? 
+				linha[ 6 ] = "S".equals( rs.getString( "QTDFIXA" ) ) ? 
 								(rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 )) :
 								getQtdTotal((rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 )));
 				linha[ 7 ] = rs.getString( "RMAAUTOITEST" ) != null ? rs.getString( "RMAAUTOITEST" ) : "";
