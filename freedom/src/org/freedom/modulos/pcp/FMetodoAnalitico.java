@@ -51,11 +51,13 @@ public class FMetodoAnalitico extends FTabDados {
 	
 	private JTextFieldPad txtTituloMet = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 	
+	private JTextFieldPad txtFonteMet = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
+	
 	private JTextFieldPad txtCodFoto = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtDescFoto = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 		
-	private JPanelPad pinGeral = new JPanelPad( 330, 200 );
+	private JPanelPad pinGeral = new JPanelPad( 330, 260 );
 	
 	private JPanelPad pinMaterial = new JPanelPad( new BorderLayout() );
 	
@@ -67,7 +69,7 @@ public class FMetodoAnalitico extends FTabDados {
 	
 	private JPanelPad pinAbas = new JPanelPad( new BorderLayout() );
 	
-	private JPanelPad pinCampos = new JPanelPad( 200, 100 );
+	private JPanelPad pinCampos = new JPanelPad( 200, 140 );
 	
 	private JPanelPad pnFoto = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
@@ -99,7 +101,7 @@ public class FMetodoAnalitico extends FTabDados {
 	public FMetodoAnalitico(){
 		
 		setTitulo( "Métodos Analíticos" );
-		setAtribos( 50, 50, 550, 500 );
+		setAtribos( 50, 50, 700, 600 );
 		
 		lcFoto.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcFoto );
@@ -115,11 +117,11 @@ public class FMetodoAnalitico extends FTabDados {
 		setPainel( pinCampos );
 		
 		adicCampo( txtCodMtAnalise, 7, 20, 70, 20, "CodMtAnalise", "Cód.Método", ListaCampos.DB_PK, true );
-		adicCampo( txtDescMtAnalise, 80, 20, 260, 20, "DescMtAnalise", "Descrição do método analítico", ListaCampos.DB_SI, true );		
-		adicCampo( txtTituloMet, 7, 60, 335, 20, "TituloAnalise", "Titulo", ListaCampos.DB_SI, true );		
-	
+		adicCampo( txtDescMtAnalise, 80, 20, 590, 20, "DescMtAnalise", "Descrição do método analítico", ListaCampos.DB_SI, true );		
+		adicCampo( txtTituloMet, 7, 60, 665, 20, "TituloAnalise", "Titulo", ListaCampos.DB_SI, true );		
+		adicCampo( txtFonteMet, 7, 100, 665, 20, "FonteMtAnalise", "Fonte", ListaCampos.DB_SI, true );	
 		
-		pinAbas.setPreferredSize( new Dimension( 200, 300 ) );
+		pinAbas.setPreferredSize( new Dimension( 300, 300 ) );
 		pnCliente.add( pinCampos, BorderLayout.NORTH );
 		
 		/****************
