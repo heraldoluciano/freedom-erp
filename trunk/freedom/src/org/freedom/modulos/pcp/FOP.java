@@ -2367,12 +2367,12 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			btObs.setVisible( false );
 			btReprocessaItens.setVisible( false );
 
+			btFinaliza.setEnabled( true );
 			if ( sitop.equals( "PE" ) ) {
 
 				btLote.setEnabled( !lote );
 				btRMA.setEnabled( rma );
-				btFinaliza.setEnabled( true );
-				//				btDistrb.setEnabled( true );
+				
 				btCancela.setEnabled( true );
 
 				txtCodProdEst.setAtivo( false );
@@ -2409,7 +2409,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 				btLote.setEnabled( false );
 				btRMA.setEnabled( rma );
-				btFinaliza.setEnabled( false );
+//				btFinaliza.setEnabled( false );
 				//				btDistrb.setEnabled( true );
 				btCancela.setEnabled( true );
 
@@ -2437,7 +2437,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 				btLote.setEnabled( false );
 				btRMA.setEnabled( false );
-				btFinaliza.setEnabled( false );
+//				btFinaliza.setEnabled( false );
 				btDistrb.setEnabled( false );
 				btCancela.setEnabled( false );
 
@@ -2467,7 +2467,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 				btLote.setEnabled( false );
 				btRMA.setEnabled( false );
-				btFinaliza.setEnabled( false );
+//				btFinaliza.setEnabled( false );
 				btDistrb.setEnabled( false );
 				btCancela.setEnabled( false );
 
@@ -2496,7 +2496,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			else if ( sitop.equals( "" ) ) {
 				btLote.setEnabled( false );
 				btRMA.setEnabled( false );
-				btFinaliza.setEnabled( false );
+//				btFinaliza.setEnabled( false );
 				//				btDistrb.setEnabled( false );
 				btCancela.setEnabled( false );
 
