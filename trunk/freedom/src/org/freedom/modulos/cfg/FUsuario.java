@@ -630,71 +630,74 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 			ResultSet rs = null;
 			
 			try {
-				
+
 				boolean bCheck = false;
 
-				if ( (lcCampos.getStatus() == ListaCampos.LCS_INSERT) && (txtIDUsu.getText()!=null) ) {
+				if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) && ( txtIDUsu.getText() != null ) ) {
 					txtIDUsu.setText( txtIDUsu.getText().toLowerCase() );
 				}
-				
+
 				if ( ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) || ( lcCampos.getStatus() == ListaCampos.LCS_EDIT ) ) {
 
+					try {
 
-					ps = conIB.prepareStatement( "SELECT SRET FROM CHECKUSER(?)" );
-					ps.setString( 1, txtIDUsu.getVlrString() );
-					
-					rs = ps.executeQuery();
-					
-					if ( rs.next() ) {
-						
-						if ( "S".equals( rs.getString( 1 ).trim() ) ) {
-							
-							if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
-							
-								Funcoes.mensagemInforma( this, "Atenção!!\n" + "O usuário não será inserido no banco de dados ISC4, \n" + "pois este já esta cadastrado." );
+						ps = conIB.prepareStatement( "SELECT SRET FROM CHECKUSER(?)" );
+						ps.setString( 1, txtIDUsu.getVlrString() );
+
+						rs = ps.executeQuery();
+
+						if ( rs.next() ) {
+
+							if ( "S".equals( rs.getString( 1 ).trim() ) ) {
+
+								if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
+
+									Funcoes.mensagemInforma( this, "Atenção!!\n" + "O usuário não será inserido no banco de dados ISC4, \n" + "pois este já esta cadastrado." );
+								}
+
+								bCheck = true;
 							}
-							
-							bCheck = true;
 						}
-					}
-					
-					rs.close();
-					ps.close();
-					
-					if ( bCheck ) {
-						
-						if ( ! "88888888".equals( txpSenha.getVlrString() ) && 
-								! "SYSDBA".equals( txtIDUsu.getVlrString().toUpperCase() ) ) {
-						
-							ps = conIB.prepareStatement( "EXECUTE PROCEDURE CHANGEPASSWORD(?,?)" );
+
+						rs.close();
+						ps.close();
+
+						if ( bCheck ) {
+
+							if ( !"88888888".equals( txpSenha.getVlrString() ) && !"SYSDBA".equals( txtIDUsu.getVlrString().toUpperCase() ) ) {
+
+								ps = conIB.prepareStatement( "EXECUTE PROCEDURE CHANGEPASSWORD(?,?)" );
+							}
+							else {
+
+								return;
+							}
 						}
 						else {
-						
-							return;
+
+							ps = conIB.prepareStatement( "EXECUTE PROCEDURE ADDUSER(?,?)" );
 						}
+
+						ps.setString( 1, txtIDUsu.getVlrString() );
+						ps.setString( 2, txpSenha.getVlrString() );
+
+						ps.execute();
+
+						ps.close();
+
+						if ( !con.getAutoCommit() ) {
+
+							con.commit();
+						}
+
+					} catch ( Exception e ) {
+
+						e.printStackTrace();
+						Funcoes.mensagemInforma( this, "A senha não foi alterada!" );
 					}
-					else {
-					
-						ps = conIB.prepareStatement( "EXECUTE PROCEDURE ADDUSER(?,?)" );
-					}
+
 				}
-				else {
-				
-					return;
-				}
-				
-				ps.setString( 1, txtIDUsu.getVlrString() );
-				ps.setString( 2, txpSenha.getVlrString() );
-				
-				ps.execute();
-	
-				ps.close();
-				
-				if ( !con.getAutoCommit() ) {
-				
-					con.commit();
-				}
-			} catch ( SQLException err ) {
+			} catch ( Exception err ) {
 				err.printStackTrace();
 				Funcoes.mensagemInforma( this, "Não foi possível criar usuário no banco de dados.\n" + err );
 				pevt.cancela();
