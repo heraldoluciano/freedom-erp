@@ -1686,7 +1686,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			
 			StringBuilder sql = new StringBuilder();
 			sql.append( "UPDATE EQITRMA SET SITITRMA='PE' " );
-			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODRMA=" );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODRMA IN " );
 			sql.append( "(SELECT CODRMA FROM EQRMA " );
 			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODEMPOF=? AND CODFILIALOF=? AND CODOP=? AND SEQOP=?)" );
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -1707,7 +1707,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			
 			sql = new StringBuilder();
 			sql.append( "DELETE FROM EQITRMA " );
-			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODRMA=" );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODRMA IN " );
 			sql.append( "(SELECT CODRMA FROM EQRMA " );
 			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODEMPOF=? AND CODFILIALOF=? AND CODOP=? AND SEQOP=?)" );
 			ps = con.prepareStatement( sql.toString() );
