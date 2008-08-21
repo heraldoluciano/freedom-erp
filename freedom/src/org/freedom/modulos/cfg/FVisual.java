@@ -38,7 +38,8 @@ public class FVisual extends FFilho {
 	private JLabelPad lbLookAndFeel = new JLabelPad("Selecione o visual desejado");
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	
-	public FVisual(boolean comScroll) {
+//	public FVisual(boolean comScroll) {
+	public FVisual() {
 		super(true);
 		setTitulo("Configuração de Visual");
 		setAtribos(10,10,300,200);
@@ -48,11 +49,11 @@ public class FVisual extends FFilho {
 		c.setLayout(new BorderLayout());
 		
 		c.add(pnCli, BorderLayout.CENTER);
-  	    //setPainel( pinCab, pnCliCab);
-
+  	    
 		cbLookAndFeel = new JComboBoxPad(vDescLookAndFeel, vValLookAndFeel, JComboBoxPad.TP_STRING, 100, 0);
 		pnCli.adic(lbLookAndFeel,30,30,100,20);
 		pnCli.adic(cbLookAndFeel,60,60,100,20);
+		
 		
 	}
 

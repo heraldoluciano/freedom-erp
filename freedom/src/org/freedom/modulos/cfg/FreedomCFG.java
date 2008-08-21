@@ -70,9 +70,6 @@ public class FreedomCFG extends AplicativoPD {
 		addBotao( "barraUsuario.gif", "Cadastro de Usuarios", "Usuarios", 100101020, FUsuario.class );
 		addBotao( "barraAcesso.gif", "Controle de Acessos", "Acesso Menu", 100101030, FAcesso.class );
 
-		FVisual teste = new FVisual( true );
-		teste.setConexao( con );
-		teste.show();
 
 		ajustaMenu();
 
