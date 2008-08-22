@@ -402,7 +402,7 @@ and f.codfase=fa.codfase]]></queryString>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["FASE:" + $F{SEQOF} + $F{DESCFASE}.trim()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["FASE:" + $F{SEQOF} + " - " + $F{DESCFASE}.trim()]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>
@@ -521,9 +521,9 @@ and f.codfase=fa.codfase]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="164"
-						y="1"
+						y="2"
 						width="202"
-						height="16"
+						height="14"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="barcode-1"/>
