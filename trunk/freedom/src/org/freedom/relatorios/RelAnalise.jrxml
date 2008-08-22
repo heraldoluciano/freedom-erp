@@ -60,8 +60,8 @@
 	<parameter name="DESCPROD" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="CODPROD" isForPrompting="false" class="java.lang.Integer"/>
 	<queryString><![CDATA[select op.codprod,pd.descprod,op.codlote,op.dtfabrop,op.dtvalidpdop,
-ta.desctpanalise,ea.vlrmin,ea.vlrmax,ea.especificacao,cq.vlrafer,cq.descafer,pr.imgassresp,cq.dtins,
-op.codop, eq.casasdec, eq.codunid, eq.descunid
+ta.desctpanalise,ea.vlrmin,ea.vlrmax,ea.especificacao,cq.vlrafer,cq.descafer,pr.imgassresp,
+cq.dtins,op.codop, eq.casasdec, eq.codunid, eq.descunid, cq.idusualt
 from ppopcq cq, ppop op,ppestruanalise ea,pptipoanalise ta, sgprefere5 pr,eqproduto pd, equnidade eq
 where
 op.codemp = 7 and op.codfilial=1 and op.codprod=505 and op.seqop=cq.seqop
@@ -86,12 +86,13 @@ and eq.codemp=ta.codempud and eq.codfilial=ta.codfilialud and eq.codunid=ta.codu
 	<field name="ESPECIFICACAO" class="java.lang.String"/>
 	<field name="VLRAFER" class="java.math.BigDecimal"/>
 	<field name="DESCAFER" class="java.lang.String"/>
-	<field name="IMGASSRESP" class="java.io.InputStream"/>
+	<field name="IMGASSRESP" class="java.sql.Blob"/>
 	<field name="DTINS" class="java.sql.Date"/>
 	<field name="CODOP" class="java.lang.Long"/>
 	<field name="CASASDEC" class="java.lang.Short"/>
 	<field name="CODUNID" class="java.lang.String"/>
 	<field name="DESCUNID" class="java.lang.String"/>
+	<field name="IDUSUALT" class="java.lang.String"/>
 
 
 		<group  name="GERAL" >
@@ -716,7 +717,7 @@ $F{VLRMAX}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toStri
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCAFER}.trim() ]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCAFER}.trim()]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -801,20 +802,19 @@ $F{VLRMAX}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toStri
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
-				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						mode="Transparent"
-						x="378"
-						y="2"
-						width="78"
-						height="10"
-						forecolor="#FFFFFF"
-						backcolor="#FFFFFF"
-						key="image-2"/>
+						x="382"
+						y="1"
+						width="74"
+						height="12"
+						key="textField-17"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
-					<imageExpression class="java.io.InputStream"><![CDATA[$F{IMGASSRESP}]]></imageExpression>
-				</image>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{IDUSUALT}.trim()]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
