@@ -151,7 +151,7 @@ public class NF018 extends Layout {
 				imp.pulaLinha(1, imp.comprimido());
 				imp.say(  4, itens.getString(NF.C_DESCPROD));
 				imp.say( 59, Funcoes.copy(itens.getString(NF.C_ORIGFISC),0,1)+Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),0,2));
-				imp.say( 65, itens.getString(NF.C_CODUNID).substring(0,4));
+				imp.say( 65, Funcoes.copy(itens.getString(NF.C_CODUNID),4));
 				imp.say( 71, Funcoes.strDecimalToStrCurrency(10,3,String.valueOf(itens.getFloat(NF.C_QTDITPED))));
 				imp.say( 90, Funcoes.strDecimalToStrCurrency(8,2,String.valueOf(((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP)))));
 				imp.say(101, Funcoes.strDecimalToStrCurrency(13,2,String.valueOf(itens.getFloat(NF.C_VLRLIQITPED))));

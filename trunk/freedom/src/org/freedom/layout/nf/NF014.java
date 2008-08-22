@@ -228,7 +228,7 @@ public class NF014 extends Layout {
 				            
 				imp.say( 64, sSigla);
 				imp.say( 68, Funcoes.copy(itens.getString(NF.C_ORIGFISC),0,1)+Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),0,2));
-				imp.say( 74, itens.getString(NF.C_CODUNID).substring(0,4));
+				imp.say( 74, Funcoes.copy(itens.getString(NF.C_CODUNID),4));
 				imp.say( 80, String.valueOf(itens.getFloat(NF.C_QTDITPED)));
 				imp.say( 92, Funcoes.strDecimalToStrCurrency(8,2,""+((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP))));
 				imp.say(103, Funcoes.strDecimalToStrCurrency(13,2,""+itens.getFloat(NF.C_VLRLIQITPED)));

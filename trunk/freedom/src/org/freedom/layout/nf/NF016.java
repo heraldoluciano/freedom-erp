@@ -124,7 +124,7 @@ public class NF016 extends Layout {
 				imp.say(  6, String.valueOf(itens.getInt(NF.C_CODPROD)));
 				imp.say( 11, itens.getString(NF.C_DESCPROD).trim());					
 				imp.say( 78, Funcoes.copy(itens.getString(NF.C_ORIGFISC),0,1)+Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),0,2));
-				imp.say( 86, itens.getString(NF.C_CODUNID).substring(0,4));
+				imp.say( 86, Funcoes.copy(itens.getString(NF.C_CODUNID),4));
 				imp.say( 92, String.valueOf(itens.getFloat(NF.C_QTDITPED)));
 				imp.say(105, Funcoes.strDecimalToStrCurrency( 8,2,String.valueOf(((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP)))));
 				imp.say(115, Funcoes.strDecimalToStrCurrency(13,2,String.valueOf(itens.getFloat(NF.C_VLRLIQITPED))));

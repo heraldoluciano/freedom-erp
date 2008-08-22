@@ -141,7 +141,7 @@ public class NF021 extends Layout {
 				
 				imp.say( 63, sSigla);				
 				imp.say( 67, Funcoes.copy(itens.getString(NF.C_ORIGFISC),0,1)+Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),0,2));
-				imp.say( 71, itens.getString(NF.C_CODUNID).substring(0,4));
+				imp.say( 71, Funcoes.copy(itens.getString(NF.C_CODUNID),4));
 				imp.say( 75, Funcoes.alinhaDir(""+itens.getFloat(NF.C_QTDITPED),6));
 				imp.say( 82, Funcoes.strDecimalToStrCurrency(12,2,""+((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP))));
 				imp.say(100, Funcoes.strDecimalToStrCurrency(13,2,itens.getFloat(NF.C_VLRLIQITPED)+""));
