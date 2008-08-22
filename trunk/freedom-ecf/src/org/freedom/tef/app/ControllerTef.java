@@ -645,8 +645,8 @@ public class ControllerTef implements DedicatedTefListener {
 		return actionReturn;
 	}
 
-	public void actionCommand( DedicatedTefEvent e ) {
-		fireControllerTefEvent( e.getAction(), e.getMessage() );
+	public boolean actionCommand( DedicatedTefEvent e ) {
+		return fireControllerTefEvent( e.getAction(), e.getMessage() );
 	}
 
 	// ************************************************************************** \\

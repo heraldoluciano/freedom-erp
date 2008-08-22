@@ -2,11 +2,12 @@ package org.freedom.tef.driver.dedicate;
 
 
 public enum Modality {
-	
-	CHEQUE( 0, "Cheque" ),
-	DEBITO( 1, "Débito" ),
-	CREDITO( 2, "Crédito" ),
-	VOUCHER( 3, "Voucher" ),
+
+	MENU( 0, "Menu" ),
+	CHEQUE( 1, "Cheque" ),
+	DEBITO( 2, "Débito" ),
+	CREDITO( 3, "Crédito" ),
+	VOUCHER( 4, "Voucher" ),
 	DINHEIRO( 98, "Dinheiro" ),
 	OUTRA( 99, "Outra" );
 	
