@@ -198,20 +198,6 @@ $F{CNPJEMP}.substring(12,14): "" )]]></textFieldExpression>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CARGORESP}.trim()]]></textFieldExpression>
 				</textField>
-				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="426"
-						y="6"
-						width="96"
-						height="23"
-						forecolor="#FFFFFF"
-						backcolor="#FFFFFF"
-						key="image-2"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
-					<imageExpression class="java.io.InputStream"><![CDATA[$F{IMGASSRESP}]]></imageExpression>
-				</image>
 				<line direction="TopDown">
 					<reportElement
 						x="406"
