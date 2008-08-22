@@ -1,5 +1,6 @@
 package org.freedom.tef.driver.dedicate;
 
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -10,7 +11,8 @@ import java.util.Properties;
 
 import org.freedom.infra.util.ini.ManagerIni;
 
-import SoftwareExpress.SiTef.jCliSiTefI;
+import softwareexpress.sitef.jCliSiTefI;
+
 	
 
 public class DedicatedTef {
@@ -46,7 +48,7 @@ public class DedicatedTef {
 	
 	public static DedicatedTef getInstance( File file, DedicatedTefListener dedicateTefListener ) throws Exception {
 
-		if ( file.exists() ) {
+		if ( instance == null ) {
 			instance = new DedicatedTef( file, dedicateTefListener );
 		}
 		else {
@@ -68,7 +70,7 @@ public class DedicatedTef {
 	private DedicatedTef( File file, DedicatedTefListener dedicateTefListener ) throws Exception {
 		
 		if ( file == null || !file.exists() ) {
-			throw new IllegalArgumentException( "Arquivo de parametros não existente." );
+			throw new IllegalArgumentException( "Arquivo de parametros inexistente." );
 		}
 		if ( dedicateTefListener == null ) {
 			throw new IllegalArgumentException( "Ouvinte de eventos nulo." );
@@ -79,134 +81,111 @@ public class DedicatedTef {
 		
 		this.dedicateTefListener = dedicateTefListener;
 		
-		clientesitef = new jCliSiTefI();		  
+		clientesitef = new jCliSiTefI();	
 		
 		int r = clientesitef.ConfiguraIntSiTefInterativo( properties.getProperty( ENDERECO_TCP ),
 				                                          properties.getProperty( EMPRESA ),
-				                                          properties.getProperty( TERMINAL ) );
-		
-		if ( ! checkConfiguraIntSiTefInterativo( r ) ) {
-			throw new Exception( "Erro ao configurar tef + [ ConfiguraIntSiTefInterativo() : " + r + " ]" );
-		} 
+				                                          properties.getProperty( TERMINAL ) );		
+		checkConfiguraIntSiTefInterativo( r );
 	}	
 	
 	private boolean checkConfiguraIntSiTefInterativo( int result ) {
 		
-		boolean checked = false;
-
-		check : {
-			if ( result == 1 ) {
-				dedicateTefListener.actionCommand( 
-						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
-								              "Endereço IP inválido ou não resolvido." ) );
-				break check;
-    		} 
-			else if ( result == 2 ) {
-				dedicateTefListener.actionCommand( 
-						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
-								              "Código da loja inválido." ) );
-				break check;
-    		} 
-			else if ( result == 3 ) {
-				dedicateTefListener.actionCommand( 
-						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
-								              "Código do terminal inválido." ) );
-				break check;
-    		} 
-			else if ( result == 6 ) {
-				dedicateTefListener.actionCommand( 
-						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
-								              "Erro na inicialização TCP/IP." ) );
-				break check;
-    		} 
-			else if ( result == 7 ) {
-				dedicateTefListener.actionCommand( 
-						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
-								              "Falta de memória." ) );
-				break check;
-    		} 
-			else if ( result == 8 ) {
-				dedicateTefListener.actionCommand( 
-						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
-								              "Não encontrou a dll CliSiTef ou ela está com problemas." ) );
-				break check;
-    		} 
-			else {
-				checked = true;
-    		} 
+		String message = null;		
+		
+		if ( result == 1 ) {
+			message = "Endereço IP inválido ou não resolvido.";
+		}
+		else if ( result == 2 ) {
+			message = "Código da loja inválido.";
+		}
+		else if ( result == 3 ) {
+			message = "Código do terminal inválido.";
+		}
+		else if ( result == 6 ) {
+			message = "Erro na inicialização TCP/IP.";
+		}
+		else if ( result == 7 ) {
+			message = "Falta de memória.";
+		}
+		else if ( result == 8 ) {
+			message = "Não encontrou a dll CliSiTef ou ela está com problemas.";
+		}
+		else if ( result == 10 ) {
+			message = "O PinPad não está defidamente configurado no arquivo CliSiTef.ini.";
 		}
 		
-		if ( ! checked ) {
-			System.out.println( "buffer= " + clientesitef.GetBuffer() );
+		if ( message != null ) {
+			dedicateTefListener.actionCommand( 
+					new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO, message ) );
+			return false;
 		}
-
-		return checked;
+		
+		return true;
 	}
 
 	private boolean checkStandart( int result ) {
 		
-		boolean checked = false;
+		String message = null;
 	
-		check : {
-			if ( result > 0 && result < 10000 ) {
-				dedicateTefListener.actionCommand( 
-						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
-								              "Negada pelo autorizador." ) );
-				break check;
-			} 
-			else if ( result == -1 ) {
-				dedicateTefListener.actionCommand( 
-						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
-								              "Modulo não inicializado." ) );
-				break check;
-			} 
-			else if ( result == -2 ) {
-				dedicateTefListener.actionCommand( 
-						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
-								              "Operação cancelada pelo operador." ) );
-				break check;
-			} 
-			else if ( result == -3 ) {
-				dedicateTefListener.actionCommand( 
-						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
-								              "Fornecida uma modalidade inválida." ) );
-				break check;
-			} 
-			else if ( result == -4 ) {
-				dedicateTefListener.actionCommand( 
-						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
-								              "Falta de memória para rodar a função." ) );
-				break check;
-			} 
-			else if ( result == -5 ) {
-				dedicateTefListener.actionCommand( 
-						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
-								              "Sem comunicação com o SiTef." ) );
-				break check;
-			} 
-			else if ( result < 0 ) {
-				dedicateTefListener.actionCommand( 
-						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO,
-								              "Erro interno não mapeado." ) );
-				break check;
-			} 
-			else {
-				checked = true;
-			} 
-		}
-		
-		if ( ! checked ) {
-			System.out.println( "buffer= " + clientesitef.GetBuffer() );
+		if ( result > 0 && result < 10000 ) {
+			message = "Negada pelo autorizador.";
+		} 
+		else if ( result == -1 ) {
+			message = "Modulo não inicializado.";
+		} 
+		else if ( result == -2 ) {
+			message = "Operação cancelada pelo operador.";
+		} 
+		else if ( result == -3 ) {
+			message = "Fornecida uma modalidade inválida.";
+		} 
+		else if ( result == -4 ) {
+			message = "Falta de memória para rodar a função.";
+		} 
+		else if ( result == -5 ) {
+			message = "Sem comunicação com o SiTef.";
+		} 
+		else if ( result < 0 ) {
+			message = "Erro interno não mapeado.";
+		} 
+			
+		if ( message != null ) {
+			dedicateTefListener.actionCommand( 
+					new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO, message ) );
+			return false;
 		}
 	
-		return checked;
+		return true;
 	}
 
 	public boolean checkPinPad() {
 		
 		int result = clientesitef.VerificaPresencaPinPad();
 		
+		String message = null;
+		
+		if ( result == 0  ) {
+			message = "Não existe um PinPad conectado ao micro.";
+		} 
+		else if ( result == -1 ) {
+			message = "Biblioteca de acesso ao PinPad não encontrada.";
+		} 
+		
+		if ( message != null ) {
+			dedicateTefListener.actionCommand( 
+					new DedicatedTefEvent( dedicateTefListener, DedicatedAction.WARNING, message ) );
+			return false;
+		}
+		
 		return result == 1;
+	}
+
+	public boolean readYesNoCard( String message ) {
+		
+		message = message.replace( '\n', '|' ); 
+		
+		return 1 == clientesitef.LeSimNaoPinPad( message );
 	}
 	
 	public boolean readCard( String message ) {
@@ -226,59 +205,60 @@ public class DedicatedTef {
 		SimpleDateFormat sdf2 = new SimpleDateFormat( "HHmmss", Locale.getDefault() );
 		String date = sdf1.format( dateHour );
 		String hour = sdf2.format( dateHour );
-		
-		int result = clientesitef.IniciaFuncaoSiTefInterativo( Modality.DEBITO.getCode() ,
-                                                        	   df.format( value.doubleValue() ) ,
-                                                        	   String.valueOf( docNumber ) ,
-                                                        	   date ,
-                                                        	   hour ,
-                                                        	   operator );
-		
-		if ( !checkStandart( result ) ) {
-			//return requestsale;
-		}
-		
-		while ( true ) {
 
-			System.out.println( "Antes ..." );
-			System.out.println( "ProximoComando = " + clientesitef.GetProximoComando() );
-			System.out.println( "TipoCampo = " + clientesitef.GetTipoCampo() );
-			System.out.println( "TamanhoMinimo = " + clientesitef.GetTamanhoMinimo() );
-			System.out.println( "TamanhoMaximo = " + clientesitef.GetTamanhoMaximo() );
-			System.out.println( "Buffer = " + clientesitef.GetBuffer() );
-			
-			result = clientesitef.ContinuaFuncaoSiTefInterativo();
-			
-			System.out.println( "Depois ..." );
-			System.out.println( "ProximoComando = " + clientesitef.GetProximoComando() );
-			System.out.println( "TipoCampo = " + clientesitef.GetTipoCampo() );
-			System.out.println( "TamanhoMinimo = " + clientesitef.GetTamanhoMinimo() );
-			System.out.println( "TamanhoMaximo = " + clientesitef.GetTamanhoMaximo() );
-			System.out.println( "Buffer = " + clientesitef.GetBuffer() );
-						
-			if ( result == 0 ) {
-				requestsale = true;
-				break;
-			}
-			else if ( checkStandart( result ) ) {
-				actionCommand( clientesitef.GetProximoComando() );
-			}
-			else {
-				return false;
-			}
-		}
-
+		int result = clientesitef.IniciaFuncaoSiTefInterativo(
+				     Modality.DEBITO.getCode(),
+			         df.format( value.doubleValue() ),
+				     String.valueOf( docNumber ),
+				     date,
+				     hour,
+				     operator,
+				     "" );
+				
+		if ( checkStandart( result ) ) {
+			actionNextCommand();
+		}		
+		
 		return requestsale;
 	}
 	
-	private void actionCommand( final int nextCommand ) {
+	public synchronized void actionNextCommand() {	
+
+	    clientesitef.SetBuffer( "" );
+		clientesitef.SetContinuaNavegacao( 0 );
+		
+		boolean action = true;
+		
+		while ( action ) {
+			
+			int result = clientesitef.ContinuaFuncaoSiTefInterativo();
+			
+			System.out.println();
+			System.out.println( "Proximo Comando = " + clientesitef.GetProximoComando() );
+			System.out.println( "Tipo do Campo = " + clientesitef.GetTipoCampo() );
+			System.out.println( "Buffer = " + clientesitef.GetBuffer() );
+						
+			if ( result == 0 ) {
+				break;
+			}
+			else if ( checkStandart( result ) ) {				
+				action = actionCommand();	
+			}
+			else {
+				break;
+			}
+		}
+	}
+	
+	private boolean actionCommand() {
 		
 		if ( dedicateTefListener != null ) {
-    		if ( nextCommand == DedicatedAction.REMOVER_CABECALHO_MENU.code() ) {
-    			dedicateTefListener.actionCommand( 
-    					new DedicatedTefEvent( dedicateTefListener, DedicatedAction.REMOVER_CABECALHO_MENU, 
-    							              clientesitef.GetBuffer().trim() ) );
-    		} 				
+    		return dedicateTefListener.actionCommand( 
+    					new DedicatedTefEvent( dedicateTefListener, 
+    							               DedicatedAction.getDedicatedAction( clientesitef.GetProximoComando() ), 
+    							               clientesitef.GetBuffer().trim() ) );
 		}
+		
+		return false;
 	}
 }

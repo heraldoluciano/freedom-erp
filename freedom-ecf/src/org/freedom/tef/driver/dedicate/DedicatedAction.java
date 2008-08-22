@@ -1,11 +1,16 @@
 package org.freedom.tef.driver.dedicate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.freedom.tef.app.TefAction;
 
 
 public class DedicatedAction implements TefAction {
 	
 	public static final DedicatedAction ERRO = new DedicatedAction( -1 );
+	
+	public static final DedicatedAction WARNING = new DedicatedAction( -2 );
 	
 	/**
 	 * Está de volvendo um valor para, se desejado, ser armazenado pela automação.
@@ -21,6 +26,11 @@ public class DedicatedAction implements TefAction {
 	 * Mensagem para visor do cliente.
 	 */
 	public static final DedicatedAction MENSAGEM_CLIENTE = new DedicatedAction( 2 );
+	
+	/**
+	 * Mensagem para os dois visores.
+	 */
+	public static final DedicatedAction MENSAGEM_TODOS = new DedicatedAction( 3 );
 	
 	/**
 	 * Texto que deverá ser utilizado como cabeçalho na apresentação do menu( Comando 21 ).
@@ -40,12 +50,22 @@ public class DedicatedAction implements TefAction {
 	/**
 	 * Deve remover a mensagem apresentada no visor do operador e do cliente.
 	 */
-	public static final DedicatedAction REMOVER_MESAGEM_OPERADOR_E_CLIENTE = new DedicatedAction( 13 );
+	public static final DedicatedAction REMOVER_MESAGEM_TODOS = new DedicatedAction( 13 );
 	
 	/**
 	 * Deve remover o texto utilizado como cabeçalho na apresentação do menu.
 	 */
 	public static final DedicatedAction REMOVER_CABECALHO_MENU = new DedicatedAction( 14 );
+	
+	/**
+	 * Cabeçalho a ser apresentado pela aplicação.
+	 */
+	public static final DedicatedAction CABECALHO = new DedicatedAction( 15 );
+	
+	/**
+	 * Remover cabeçalho.
+	 */
+	public static final DedicatedAction REMOVER_CABECALHO = new DedicatedAction( 16 );
 	
 	/**
 	 * Deve obter uma resposta do tipo SIM/NÂO. 
@@ -110,26 +130,31 @@ public class DedicatedAction implements TefAction {
 
 	private int code;
 	
-	/*private static final List<DedicatedAction> actions = new ArrayList<DedicatedAction>();
+	private static final List<DedicatedAction> actions = new ArrayList<DedicatedAction>();
 	
 	static {
 		actions.add( ERRO );
+		actions.add( WARNING );
 		actions.add( ARMAZENAR );
 		actions.add( MENSAGEM_OPERADOR );
 		actions.add( MENSAGEM_CLIENTE );
+		actions.add( MENSAGEM_TODOS );
 		actions.add( CABECALHO_MENU );
 		actions.add( REMOVER_MESAGEM_OPERADOR );
 		actions.add( REMOVER_MESAGEM_CLIENTE );
-		actions.add( REMOVER_MESAGEM_OPERADOR_E_CLIENTE );
+		actions.add( REMOVER_MESAGEM_TODOS );
 		actions.add( REMOVER_CABECALHO_MENU );
+		actions.add( CABECALHO );
+		actions.add( REMOVER_CABECALHO );
 		actions.add( RETORNAR_CONFIRMACAO );
 		actions.add( MOSTRAR_MENU );
 		actions.add( AGUADAR_TECLA_OPERADOR );
 		actions.add( CONFIRMAR_IMTERRUPSAO );
 		actions.add( LER_CAMPO );
 		actions.add( LER_CHEQUE );
+		actions.add( LER_VALOR );
 		actions.add( LER_CODIGO_DE_BARRAS );
-	}*/
+	}
 	
 	
 	private DedicatedAction( final Integer code ) {
@@ -140,7 +165,7 @@ public class DedicatedAction implements TefAction {
 		return code;
 	}
 	
-	/*public static DedicatedAction getDedicatedAction( final Integer code ) {
+	public static DedicatedAction getDedicatedAction( final Integer code ) {
 		
 		for ( DedicatedAction da : actions ) {
 			if ( da.code == code ) {
@@ -149,7 +174,7 @@ public class DedicatedAction implements TefAction {
 		}
 		
 		return null;
-	}*/
+	}
 
 	@Override
 	public boolean equals( Object obj ) {
