@@ -631,7 +631,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 					<textElement verticalAlignment="Middle">
 						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["FASE:" + $F{SEQOF} + $F{DESCFASE}.trim()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["FASE:" + $F{SEQOF} + " - " + $F{DESCFASE}.trim()]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
