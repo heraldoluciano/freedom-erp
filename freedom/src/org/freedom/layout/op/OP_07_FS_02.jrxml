@@ -851,19 +851,6 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				</staticText>
 				<staticText>
 					<reportElement
-						x="370"
-						y="188"
-						width="10"
-						height="7"
-						key="staticText-35"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="5"/>
-					</textElement>
-				<text><![CDATA[x]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
 						x="4"
 						y="295"
 						width="48"
