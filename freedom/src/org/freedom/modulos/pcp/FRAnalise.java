@@ -132,7 +132,7 @@ public class FRAnalise extends FRelatorio {
 			
 			sql.append( "select op.codprod,pd.descprod,op.codlote,op.dtfabrop,op.dtvalidpdop, " );
 			sql.append( "ta.desctpanalise,ea.vlrmin,ea.vlrmax,ea.especificacao,cq.vlrafer,cq.descafer,pr.imgassresp,cq.dtins, " );
-			sql.append( "op.codop, eq.casasdec " );
+			sql.append( "op.codop, eq.casasdec, eq.codunid, eq.descunid " );
 			sql.append( "from ppopcq cq, ppop op,ppestruanalise ea,pptipoanalise ta, sgprefere5 pr,eqproduto pd, equnidade eq " );
 			sql.append( "where " );
 			sql.append( "op.codemp = ? and op.codfilial=? and op.seqop=cq.seqop " );
