@@ -321,7 +321,7 @@ and f.codfase=fa.codfase]]></queryString>
 					<reportElement
 						x="369"
 						y="93"
-						width="72"
+						width="78"
 						height="13"
 						key="staticText-19"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -332,7 +332,7 @@ and f.codfase=fa.codfase]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="443"
+						x="449"
 						y="93"
 						width="48"
 						height="13"
@@ -345,7 +345,7 @@ and f.codfase=fa.codfase]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="493"
+						x="499"
 						y="93"
 						width="48"
 						height="13"
@@ -482,11 +482,11 @@ and f.codfase=fa.codfase]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCPROD}.trim()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="368"
 						y="2"
-						width="73"
+						width="79"
 						height="14"
 						key="textField-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -497,7 +497,7 @@ and f.codfase=fa.codfase]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="443"
+						x="449"
 						y="2"
 						width="49"
 						height="14"
@@ -510,7 +510,7 @@ and f.codfase=fa.codfase]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="497"
+						x="499"
 						y="15"
 						width="49"
 						height="0"
