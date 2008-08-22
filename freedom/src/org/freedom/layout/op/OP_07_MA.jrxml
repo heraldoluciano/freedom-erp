@@ -190,51 +190,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 		<group  name="FASE3" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="33"  isSplitAllowed="true" >
-				<line direction="TopDown">
-					<reportElement
-						x="557"
-						y="0"
-						width="0"
-						height="33"
-						key="line-21"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="0"
-						width="0"
-						height="33"
-						key="line-22"
-						stretchType="RelativeToBandHeight"/>
-					<graphicElement stretchType="RelativeToBandHeight"/>
-				</line>
-				<subreport  isUsingCache="true">
-					<reportElement
-						x="4"
-						y="0"
-						width="547"
-						height="33"
-						key="subreport-5"
-						stretchType="RelativeToTallestObject"
-						positionType="Float"/>
-					<subreportParameter  name="CODOP">
-						<subreportParameterExpression><![CDATA[$P{CODOP}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="SEQOP">
-						<subreportParameterExpression><![CDATA[$P{SEQOP}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="CODEMP">
-						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="CODFILIAL">
-						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
-					</subreportParameter>
-					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "OP_07_FS_02_2.jasper"]]></subreportExpression>
-				</subreport>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -596,7 +552,7 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="2"  isSplitAllowed="true" >
+			<band height="3"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="0"
