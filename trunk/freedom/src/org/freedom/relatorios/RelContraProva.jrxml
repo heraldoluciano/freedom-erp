@@ -377,7 +377,7 @@ and el.codlote=op.codlote]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Short"><![CDATA[$F{SEQOP}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODOP}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

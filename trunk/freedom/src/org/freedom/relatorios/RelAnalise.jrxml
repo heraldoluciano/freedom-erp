@@ -61,7 +61,7 @@
 	<parameter name="CODPROD" isForPrompting="false" class="java.lang.Integer"/>
 	<queryString><![CDATA[select op.codprod,pd.descprod,op.codlote,op.dtfabrop,op.dtvalidpdop,
 ta.desctpanalise,ea.vlrmin,ea.vlrmax,ea.especificacao,cq.vlrafer,cq.descafer,pr.imgassresp,cq.dtins,
-op.codop, eq.casasdec
+op.codop, eq.casasdec, eq.codunid, eq.descunid
 from ppopcq cq, ppop op,ppestruanalise ea,pptipoanalise ta, sgprefere5 pr,eqproduto pd, equnidade eq
 where
 op.codemp = 7 and op.codfilial=1 and op.codprod=505 and op.seqop=cq.seqop
@@ -90,6 +90,8 @@ and eq.codemp=ta.codempud and eq.codfilial=ta.codfilialud and eq.codunid=ta.codu
 	<field name="DTINS" class="java.sql.Date"/>
 	<field name="CODOP" class="java.lang.Long"/>
 	<field name="CASASDEC" class="java.lang.Short"/>
+	<field name="CODUNID" class="java.lang.String"/>
+	<field name="DESCUNID" class="java.lang.String"/>
 
 
 		<group  name="GERAL" >
@@ -649,7 +651,7 @@ and eq.codemp=ta.codempud and eq.codfilial=ta.codfilialud and eq.codunid=ta.codu
 		</columnHeader>
 		<detail>
 			<band height="14"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="7"
 						y="1"
@@ -660,7 +662,7 @@ and eq.codemp=ta.codempud and eq.codfilial=ta.codfilialud and eq.codunid=ta.codu
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTPANALISE}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTPANALISE} + "  ( " + $F{CODUNID}.trim() + " )"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -673,9 +675,9 @@ and eq.codemp=ta.codempud and eq.codfilial=ta.codfilialud and eq.codunid=ta.codu
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{VLRMAX}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toString()+
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toString()+
 " - " +
-$F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toString()]]></textFieldExpression>
+$F{VLRMAX}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -690,20 +692,20 @@ $F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toStri
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRAFER}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY)]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="212"
-						y="1"
+						y="0"
 						width="84"
 						height="12"
 						key="textField-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9"/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ESPECIFICACAO}.trim()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="302"
 						y="1"
@@ -712,9 +714,9 @@ $F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toStri
 						key="textField-11"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9"/>
+						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCAFER}.trim()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCAFER}.trim() ]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -722,8 +724,9 @@ $F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toStri
 						y="0"
 						width="0"
 						height="14"
-						key="line-10"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-10"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -731,8 +734,9 @@ $F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toStri
 						y="0"
 						width="0"
 						height="14"
-						key="line-11"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-11"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -740,8 +744,9 @@ $F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toStri
 						y="0"
 						width="0"
 						height="14"
-						key="line-12"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-12"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -762,7 +767,8 @@ $F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toStri
 						y="13"
 						width="535"
 						height="0"
-						key="line-13"/>
+						key="line-13"
+						positionType="FixRelativeToBottom"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
@@ -771,8 +777,9 @@ $F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toStri
 						y="0"
 						width="0"
 						height="14"
-						key="line-14"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-14"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -780,8 +787,9 @@ $F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toStri
 						y="0"
 						width="0"
 						height="14"
-						key="line-15"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-15"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -789,8 +797,9 @@ $F{VLRMIN}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toStri
 						y="0"
 						width="0"
 						height="14"
-						key="line-16"/>
-					<graphicElement stretchType="NoStretch"/>
+						key="line-16"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
