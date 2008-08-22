@@ -7,5 +7,6 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/freedom-infra"/>
 	<classpathentry kind="lib" path="/freedom-infra/lib/log4j-1.2.13.jar"/>
 	<classpathentry kind="lib" path="lib/junit.jar"/>
+	<classpathentry kind="lib" path="lib/jclisitef.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
