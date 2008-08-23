@@ -151,6 +151,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private JTextFieldPad txtSeqAc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldPad txtBloqOp = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+
 	private JTextFieldFK txtDescLoteProdEst = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldFK txtSldLiqProd = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, casasDec );
@@ -670,6 +672,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		adicCampoInvisivel( txtCodLoteProdRat, "codloterat", "Lote rat.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtGeraRMAAut, "GERARMA", "Rma?", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtSeqAc, "SeqAc", "Ação", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtSeqAc, "SeqAc", "Ação", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtBloqOp, "BloqOp", "Bloq.", ListaCampos.DB_SI, false );
 		setListaCampos( true, "ITOP", "PP" );
 		lcDet.setQueryInsert( false );
 
@@ -699,8 +703,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		tab.setTamColuna( 35, 8 ); // RMA
 		tab.setTamColuna( 15, 9 ); // Acao corretiva
 		tab.setTamColuna( 15, 10 ); // Acao corretiva imagem
+		tab.setTamColuna( 35, 11 ); // Bloqueio de OP
 		tab.setColunaInvisivel( 4 );
 		tab.setColunaInvisivel( 9 );
+		tab.setColunaInvisivel( 12 );
 
 	}
 
@@ -1639,7 +1645,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			}
 			
 			sql = new StringBuilder();		
-			sql.append( "UPDATE PPITOP SET QTDCOPIAITOP=?, CODLOTERAT=? " );
+			sql.append( "UPDATE PPITOP SET QTDCOPIAITOP=?, CODLOTERAT=?, BLOQOP='N' " );
 			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND SEQITOP=?" );
 			
 			ps = con.prepareStatement( sql.toString() );
@@ -2158,6 +2164,177 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		return ret;
 	}
 
+	private void bloqueiaOp() {
+
+		String sitop = null;
+		boolean lote = false;
+		boolean rma = false;
+
+		try {
+
+			sitop = txtSitOp.getVlrString();
+			lote = existeLote( con, txtCodProdEst.getVlrInteger(), txtCodLoteProdEst.getVlrString() );
+			rma = faltaRma() && liberaRMA();
+
+			btContrQuali.setEnabled( !temCQ() );
+			btDistrb.setEnabled( !temDistrib() );
+			btObs.setVisible( false );
+			btReprocessaItens.setVisible( false );
+
+			btFinaliza.setEnabled( true );
+			if ( sitop.equals( "PE" ) ) {
+
+				btLote.setEnabled( !lote );
+				btRMA.setEnabled( rma );
+
+				btCancela.setEnabled( true );
+
+				txtCodProdEst.setAtivo( false );
+				txtSeqEst.setAtivo( false );
+
+				txtQtdSugProdOP.setAtivo( true );
+				txtCodLoteProdEst.setAtivo( true );
+				txtDtValidOP.setAtivo( true );
+				txtDtFabProd.setAtivo( true );
+				txtCodAlmoxEst.setAtivo( true );
+
+				txtCodLoteProdDet.setAtivo( true );
+				navRod.setAtivo( Navegador.BT_NOVO, true );
+				navRod.setAtivo( Navegador.BT_EDITAR, true );
+				navRod.setAtivo( Navegador.BT_EXCLUIR, true );
+				navRod.setAtivo( Navegador.BT_SALVAR, true );
+
+				Date dtfab = Funcoes.getDataPura( txtDtFabProd.getVlrDate() );
+				Date dtatual = Funcoes.getDataPura( new Date() );
+
+				if ( dtfab.before( dtatual ) ) {
+					SitOp = "Atrasada";
+					pinLb.setBackground( cor( 210, 50, 30 ) );
+				}
+				else {
+					SitOp = "Pendente";
+					pinLb.setBackground( cor( 240, 180, 10 ) );
+				}
+
+				lSitOp.setText( SitOp );
+
+			}
+			else if ( sitop.equals( "FN" ) ) {
+
+				btLote.setEnabled( false );
+				btRMA.setEnabled( rma );
+				// btFinaliza.setEnabled( false );
+				// btDistrb.setEnabled( true );
+				btCancela.setEnabled( true );
+
+				txtCodProdEst.setAtivo( false );
+				txtSeqEst.setAtivo( false );
+				txtQtdSugProdOP.setAtivo( false );
+				txtCodLoteProdEst.setAtivo( false );
+				txtDtValidOP.setAtivo( false );
+				txtDtFabProd.setAtivo( false );
+				txtCodAlmoxEst.setAtivo( false );
+
+				txtCodLoteProdDet.setAtivo( false );
+
+				navRod.setAtivo( Navegador.BT_NOVO, false );
+				navRod.setAtivo( Navegador.BT_EDITAR, false );
+				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
+				navRod.setAtivo( Navegador.BT_SALVAR, false );
+
+				SitOp = "Finalizada";
+				lSitOp.setText( SitOp );
+				pinLb.setBackground( cor( 0, 170, 30 ) );
+
+			}
+			else if ( sitop.equals( "CA" ) ) {
+
+				btLote.setEnabled( false );
+				btRMA.setEnabled( false );
+				// btFinaliza.setEnabled( false );
+				btDistrb.setEnabled( false );
+				btCancela.setEnabled( false );
+
+				txtCodProdEst.setAtivo( false );
+				txtSeqEst.setAtivo( false );
+				txtQtdSugProdOP.setAtivo( false );
+				txtCodLoteProdEst.setAtivo( false );
+				txtDtValidOP.setAtivo( false );
+				txtDtFabProd.setAtivo( false );
+				txtCodAlmoxEst.setAtivo( false );
+
+				txtCodLoteProdDet.setAtivo( false );
+
+				navRod.setAtivo( Navegador.BT_NOVO, false );
+				navRod.setAtivo( Navegador.BT_EDITAR, false );
+				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
+				navRod.setAtivo( Navegador.BT_SALVAR, false );
+
+				btObs.setVisible( true );
+				SitOp = "Cancelada";
+				lSitOp.setText( SitOp );
+
+				pinLb.setBackground( cor( 210, 50, 30 ) );
+
+			}
+			else if ( sitop.equals( "BL" ) ) {
+
+				btLote.setEnabled( false );
+				btRMA.setEnabled( false );
+				// btFinaliza.setEnabled( false );
+				btDistrb.setEnabled( false );
+				btCancela.setEnabled( false );
+
+				txtCodProdEst.setAtivo( false );
+				txtSeqEst.setAtivo( false );
+				txtQtdSugProdOP.setAtivo( false );
+				txtCodLoteProdEst.setAtivo( false );
+				txtDtValidOP.setAtivo( false );
+				txtDtFabProd.setAtivo( false );
+				txtCodAlmoxEst.setAtivo( false );
+
+				txtCodLoteProdDet.setAtivo( false );
+
+				navRod.setAtivo( Navegador.BT_NOVO, false );
+				navRod.setAtivo( Navegador.BT_EDITAR, false );
+				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
+				navRod.setAtivo( Navegador.BT_SALVAR, false );
+
+				btReprocessaItens.setVisible( true );
+				SitOp = "Bloqueada";
+				lSitOp.setText( SitOp );
+
+				pinLb.setBackground( Color.BLUE );
+
+			}
+			else if ( sitop.equals( "" ) ) {
+				btLote.setEnabled( false );
+				btRMA.setEnabled( false );
+				// btFinaliza.setEnabled( false );
+				// btDistrb.setEnabled( false );
+				btCancela.setEnabled( false );
+
+				txtCodProdEst.setAtivo( true );
+				txtSeqEst.setAtivo( true );
+
+				txtQtdSugProdOP.setAtivo( true );
+				txtCodLoteProdEst.setAtivo( true );
+				txtDtValidOP.setAtivo( true );
+				txtDtFabProd.setAtivo( true );
+				txtCodAlmoxEst.setAtivo( true );
+				txtCodLoteProdDet.setAtivo( true );
+
+				SitOp = "";
+				lSitOp.setText( SitOp );
+				pinLb.setBackground( cor( 238, 238, 238 ) );
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+	}
+
 	private void cancelaOP() {
 
 		StringBuffer sql = new StringBuffer();
@@ -2290,6 +2467,51 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
+	@ SuppressWarnings ( "unchecked" )
+	private HashMap<String, Object> getPrefere( Connection con ) {
+	
+		HashMap<String, Object> retorno = new HashMap<String, Object>();
+		boolean[] bRetorno = new boolean[ 1 ];
+		StringBuffer sql = new StringBuffer();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+	
+			sql.append( "SELECT P1.USAREFPROD, P5.RATAUTO FROM SGPREFERE1 P1,SGPREFERE5 P5 " );
+			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
+			sql.append( "AND P5.CODEMP=? AND P5.CODFILIAL=?" );
+	
+			bRetorno[ 0 ] = false;
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "SGPREFERE5" ) );
+	
+			rs = ps.executeQuery();
+	
+			if ( rs.next() ) {
+				retorno.put( "USAREFPROD", new Boolean( rs.getString( "USAREFPROD" ).trim().equals( "S" ) ) );
+				retorno.put( "RATAUTO", new Boolean( rs.getString( "RATAUTO" ).trim().equals( "S" ) ) );
+			}
+	
+			rs.close();
+			ps.close();
+	
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
+		} finally {
+			ps = null;
+			rs = null;
+			sql = null;
+		}
+		return retorno;
+	}
+
 	public void keyPressed( KeyEvent kevt ) {
 
 		if ( kevt.getSource() == txtSeqOP )
@@ -2349,177 +2571,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			bBuscaRMA = false;
 			bBuscaOPS = false;
 		}
-	}
-
-	private void bloqueiaOp() {
-
-		String sitop = null;
-		boolean lote = false;
-		boolean rma = false;
-
-		try {
-
-			sitop = txtSitOp.getVlrString();
-			lote = existeLote( con, txtCodProdEst.getVlrInteger(), txtCodLoteProdEst.getVlrString() );
-			rma = faltaRma() && liberaRMA();
-
-			btContrQuali.setEnabled( !temCQ() );
-			btDistrb.setEnabled( !temDistrib() );
-			btObs.setVisible( false );
-			btReprocessaItens.setVisible( false );
-
-			btFinaliza.setEnabled( true );
-			if ( sitop.equals( "PE" ) ) {
-
-				btLote.setEnabled( !lote );
-				btRMA.setEnabled( rma );
-				
-				btCancela.setEnabled( true );
-
-				txtCodProdEst.setAtivo( false );
-				txtSeqEst.setAtivo( false );
-
-				txtQtdSugProdOP.setAtivo( true );
-				txtCodLoteProdEst.setAtivo( true );
-				txtDtValidOP.setAtivo( true );
-				txtDtFabProd.setAtivo( true );
-				txtCodAlmoxEst.setAtivo( true );
-
-				txtCodLoteProdDet.setAtivo( true );
-				navRod.setAtivo( Navegador.BT_NOVO, true );
-				navRod.setAtivo( Navegador.BT_EDITAR, true );
-				navRod.setAtivo( Navegador.BT_EXCLUIR, true );
-				navRod.setAtivo( Navegador.BT_SALVAR, true );
-
-				Date dtfab = Funcoes.getDataPura( txtDtFabProd.getVlrDate() );
-				Date dtatual = Funcoes.getDataPura( new Date() );
-
-				if ( dtfab.before( dtatual ) ) {
-					SitOp = "Atrasada";
-					pinLb.setBackground( cor( 210, 50, 30 ) );
-				}
-				else {
-					SitOp = "Pendente";
-					pinLb.setBackground( cor( 240, 180, 10 ) );
-				}
-
-				lSitOp.setText( SitOp );
-
-			}
-			else if ( sitop.equals( "FN" ) ) {
-
-				btLote.setEnabled( false );
-				btRMA.setEnabled( rma );
-//				btFinaliza.setEnabled( false );
-				//				btDistrb.setEnabled( true );
-				btCancela.setEnabled( true );
-
-				txtCodProdEst.setAtivo( false );
-				txtSeqEst.setAtivo( false );
-				txtQtdSugProdOP.setAtivo( false );
-				txtCodLoteProdEst.setAtivo( false );
-				txtDtValidOP.setAtivo( false );
-				txtDtFabProd.setAtivo( false );
-				txtCodAlmoxEst.setAtivo( false );
-
-				txtCodLoteProdDet.setAtivo( false );
-
-				navRod.setAtivo( Navegador.BT_NOVO, false );
-				navRod.setAtivo( Navegador.BT_EDITAR, false );
-				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
-				navRod.setAtivo( Navegador.BT_SALVAR, false );
-
-				SitOp = "Finalizada";
-				lSitOp.setText( SitOp );
-				pinLb.setBackground( cor( 0, 170, 30 ) );
-
-			}
-			else if ( sitop.equals( "CA" ) ) {
-
-				btLote.setEnabled( false );
-				btRMA.setEnabled( false );
-//				btFinaliza.setEnabled( false );
-				btDistrb.setEnabled( false );
-				btCancela.setEnabled( false );
-
-				txtCodProdEst.setAtivo( false );
-				txtSeqEst.setAtivo( false );
-				txtQtdSugProdOP.setAtivo( false );
-				txtCodLoteProdEst.setAtivo( false );
-				txtDtValidOP.setAtivo( false );
-				txtDtFabProd.setAtivo( false );
-				txtCodAlmoxEst.setAtivo( false );
-
-				txtCodLoteProdDet.setAtivo( false );
-
-				navRod.setAtivo( Navegador.BT_NOVO, false );
-				navRod.setAtivo( Navegador.BT_EDITAR, false );
-				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
-				navRod.setAtivo( Navegador.BT_SALVAR, false );
-
-				btObs.setVisible( true );
-				SitOp = "Cancelada";
-				lSitOp.setText( SitOp );
-
-				pinLb.setBackground( cor( 210, 50, 30 ) );
-
-			}
-			else if ( sitop.equals( "BL" ) ) {
-
-				btLote.setEnabled( false );
-				btRMA.setEnabled( false );
-//				btFinaliza.setEnabled( false );
-				btDistrb.setEnabled( false );
-				btCancela.setEnabled( false );
-
-				txtCodProdEst.setAtivo( false );
-				txtSeqEst.setAtivo( false );
-				txtQtdSugProdOP.setAtivo( false );
-				txtCodLoteProdEst.setAtivo( false );
-				txtDtValidOP.setAtivo( false );
-				txtDtFabProd.setAtivo( false );
-				txtCodAlmoxEst.setAtivo( false );
-
-				txtCodLoteProdDet.setAtivo( false );
-
-				navRod.setAtivo( Navegador.BT_NOVO, false );
-				navRod.setAtivo( Navegador.BT_EDITAR, false );
-				navRod.setAtivo( Navegador.BT_EXCLUIR, false );
-				navRod.setAtivo( Navegador.BT_SALVAR, false );
-
-				btReprocessaItens.setVisible( true );
-				SitOp = "Bloqueada";
-				lSitOp.setText( SitOp );
-
-				pinLb.setBackground( Color.BLUE );
-
-			}
-			else if ( sitop.equals( "" ) ) {
-				btLote.setEnabled( false );
-				btRMA.setEnabled( false );
-//				btFinaliza.setEnabled( false );
-				//				btDistrb.setEnabled( false );
-				btCancela.setEnabled( false );
-
-				txtCodProdEst.setAtivo( true );
-				txtSeqEst.setAtivo( true );
-
-				txtQtdSugProdOP.setAtivo( true );
-				txtCodLoteProdEst.setAtivo( true );
-				txtDtValidOP.setAtivo( true );
-				txtDtFabProd.setAtivo( true );
-				txtCodAlmoxEst.setAtivo( true );
-				txtCodLoteProdDet.setAtivo( true );
-
-				SitOp = "";
-				lSitOp.setText( SitOp );
-				pinLb.setBackground( cor( 238, 238, 238 ) );
-			}
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
@@ -2642,51 +2693,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	public void afterCancel( CancelEvent cevt ) {
 
-	}
-
-	@ SuppressWarnings ( "unchecked" )
-	private HashMap<String, Object> getPrefere( Connection con ) {
-
-		HashMap<String, Object> retorno = new HashMap<String, Object>();
-		boolean[] bRetorno = new boolean[ 1 ];
-		StringBuffer sql = new StringBuffer();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-
-			sql.append( "SELECT P1.USAREFPROD, P5.RATAUTO FROM SGPREFERE1 P1,SGPREFERE5 P5 " );
-			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
-			sql.append( "AND P5.CODEMP=? AND P5.CODFILIAL=?" );
-
-			bRetorno[ 0 ] = false;
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "SGPREFERE5" ) );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				retorno.put( "USAREFPROD", new Boolean( rs.getString( "USAREFPROD" ).trim().equals( "S" ) ) );
-				retorno.put( "RATAUTO", new Boolean( rs.getString( "RATAUTO" ).trim().equals( "S" ) ) );
-			}
-
-			rs.close();
-			ps.close();
-
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
-		} catch ( SQLException err ) {
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			rs = null;
-			sql = null;
-		}
-		return retorno;
 	}
 
 	public void valorAlterado( TabelaEditEvent e ) {
