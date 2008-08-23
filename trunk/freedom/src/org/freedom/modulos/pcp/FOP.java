@@ -1604,7 +1604,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			if ( i > 0 ) {
 				lotes += ",";
 			}
-			lotes += lotesutilizados.get(i);
+			lotes += "'" + lotesutilizados.get(i) + "'";
 		}
 		
 		String lote = null;
@@ -1813,6 +1813,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			lcCampos.carregaDados();
 			
 		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro ao reprocessar itens!\n" + e.getMessage(), true, con, e );
 			e.printStackTrace();
 		}
 	}
