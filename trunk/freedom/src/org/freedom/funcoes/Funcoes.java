@@ -467,7 +467,7 @@ public class Funcoes {
 		int retorno = 1;
 		GregorianCalendar cal = new GregorianCalendar();		
 		cal.setTime( data );		
-		retorno = cal.get( Calendar.MONTH );
+		retorno = cal.get( Calendar.MONTH + 1 ); // Deve-se somar 1 pois começa em zero
 		return retorno;
 	}
 	
@@ -606,7 +606,7 @@ public class Funcoes {
 		Date ret = null;		
 		try {
 			Calendar cal = new GregorianCalendar();
-			cal.set( getAno( dtantes  ), getMes( dtantes  ), getDiaMes( dtantes  ), 0, 0, 0 );
+			cal.set( getAno( dtantes  ), getMes( dtantes  ) -1 , getDiaMes( dtantes  ), 0, 0, 0 );
 			cal.set(Calendar.MILLISECOND,0);
 			ret = cal.getTime();			
 		}
