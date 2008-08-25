@@ -30,6 +30,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Vector;
+
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
@@ -57,6 +59,7 @@ public class FRRazaoFin extends FRelatorio {
 
 	public FRRazaoFin() {
 
+		super( false );
 		setTitulo( "Relatório razão financeiro" );
 		setAtribos( 80, 80, 330, 180 );
 
@@ -149,6 +152,7 @@ public class FRRazaoFin extends FRelatorio {
 		BigDecimal bTotal = new BigDecimal( "0" );
 		ImprimeOS imp = null;
 		int linPag = 0;
+		Vector<String> hist = null;
 
 		if ( sCodPlan.equals( "" ) ) {
 			Funcoes.mensagemInforma( this, "Informe um código de conta !" );
@@ -168,7 +172,7 @@ public class FRRazaoFin extends FRelatorio {
 			}
 			imp.limpaPags();
 
-			sSaldoAnt = Funcoes.strDecimalToStrCurrency( 13, 2, buscaSaldo() + "" );
+			sSaldoAnt = Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( buscaSaldo() ) );
 
 			sSQL = "SELECT SL.DATASUBLANCA,SL.CODLANCA,SL.HISTSUBLANCA,SL.VLRSUBLANCA " + 
 			       "FROM FNSUBLANCA SL " + 
@@ -190,99 +194,117 @@ public class FRRazaoFin extends FRelatorio {
 			while ( rs.next() ) {
 				if ( imp.pRow() >= linPag ) {
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+					imp.say( 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
 					imp.eject();
 					imp.incPags();
 				}
 				if ( imp.pRow() == 0 ) {
 					imp.impCab( 136, true );
 					imp.pulaLinha( 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" );
-					imp.say( imp.pRow(), 104, "SALDO ANTERIOR:" );
-					imp.say( imp.pRow(), 118, "" + sSaldoAnt );
-					imp.say( imp.pRow(), 135, "|" );
+					imp.say( 0, "|" );
+					imp.say( 105, "SALDO ANTERIOR" );
+					imp.say( 121, sSaldoAnt );
+					imp.say( 135, "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" );
-					imp.say( imp.pRow(), 0, "| Data." );
-					imp.say( imp.pRow(), 23, "| Cód.Lanc." );
-					imp.say( imp.pRow(), 36, "| Histórico" );
-					imp.say( imp.pRow(), 89, "| Receita " );
-					imp.say( imp.pRow(), 104, "| Despesa " );
-					imp.say( imp.pRow(), 119, "| Saldo " );
-					imp.say( imp.pRow(), 135, "|" );
+					imp.say( 0, "|" );
+					imp.say( 6, "Data" );
+					imp.say( 14, "|" );
+					imp.say( 15, "Lançamento" );
+					imp.say( 25, "|" );
+					imp.say( 27, "Histórico" );
+					imp.say( 90, "|" );
+					imp.say( 94, "Receita" );
+					imp.say( 105, "|" );
+					imp.say( 109, "Despesa" );
+					imp.say( 120, "|" );
+					imp.say( 126, "Saldo" );
+					imp.say( 135, "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+					imp.say( 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
 				}
 
-				imp.say( imp.pRow() + 1, 1, "|" );
-				imp.say( imp.pRow() + 0, 3, Funcoes.dateToStrDate( rs.getDate( "DATASUBLANCA" ) ) );
-				imp.say( imp.pRow() + 0, 23, "|" );
-				imp.say( imp.pRow(), 25, rs.getString( "CODLANCA" ) );
-				imp.say( imp.pRow() + 0, 36, "|" );
-				imp.say( imp.pRow(), 38, rs.getString( "HISTSUBLANCA" ) );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "|" );
+				imp.say( 3, Funcoes.dateToStrDate( rs.getDate( "DATASUBLANCA" ) ) );
+				imp.say( 14, "|" );
+				imp.say( 16, rs.getString( "CODLANCA" ) );
+				imp.say( 25, "|" );
+				
+				hist = Funcoes.strToVectorSilabas( rs.getString( "HISTSUBLANCA" ), 62 );				
+				imp.say( 27, hist.get( 0 ) );
 
 				bVlrSubLanca = new BigDecimal( rs.getString( "VLRSUBLANCA" ) );
 				bTotal = bTotal.add( bVlrSubLanca );
 
 				if ( bVlrSubLanca.doubleValue() < 0 ) {
-					imp.say( imp.pRow() + 0, 89, "|" );
-					imp.say( imp.pRow(), 89, Funcoes.strDecimalToStrCurrency( 13, 2, ( bVlrSubLanca.doubleValue() * -1 ) + "" ) );
-					imp.say( imp.pRow() + 0, 104, "|" );
-					imp.say( imp.pRow() + 0, 119, "|" );
+					imp.say( 90, "|" );
+					imp.say( 92, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrSubLanca.doubleValue() * -1 ) ) );
+					imp.say( 105, "|" );
+					imp.say( 120, "|" );
 				}
 				else {
-					imp.say( imp.pRow() + 0, 89, "|" );
-					imp.say( imp.pRow() + 0, 104, "|" );
-					imp.say( imp.pRow(), 104, Funcoes.strDecimalToStrCurrency( 13, 2, bVlrSubLanca.doubleValue() + "" ) );
-					imp.say( imp.pRow() + 0, 119, "|" );
+					imp.say( 90, "|" );
+					imp.say( 105, "|" );
+					imp.say( 107, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrSubLanca.doubleValue() ) ) );
+					imp.say( 120, "|" );
 				}
 
-				imp.say( imp.pRow() + 0, 121, "" + Funcoes.strDecimalToStrCurrency( 12, 2, "" + bTotal ) );
-				imp.say( imp.pRow() + 0, 135, "|" );
-
+				imp.say( 122, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bTotal ) ) );
+				imp.say( 135, "|" );
+				
+				if ( hist.size() > 1 ) {
+					for ( int i=1; i < hist.size(); i++ ) {
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 0, "|" );
+						imp.say( 14, "|" );
+						imp.say( 25, "|" );				
+						imp.say( 27, hist.get( i ) );
+						imp.say( 90, "|" );
+						imp.say( 105, "|" );
+						imp.say( 120, "|" );
+						imp.say( 135, "|" );
+					}
+				}
 			}
 
 			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+			imp.say( 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
 			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( imp.pRow() + 0, 0, "|" );
-			imp.say( imp.pRow() + 0, 104, "|" );
-			imp.say( imp.pRow() + 0, 106, "SALDO" );
-			imp.say( imp.pRow() + 0, 119, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, "" + bTotal ) );
-			imp.say( imp.pRow() + 0, 135, "|" );
+			imp.say( 0, "|" );
+			imp.say( 105, "|" );
+			imp.say( 114, "SALDO" );
+			imp.say( 120, "|" );
+			imp.say( 122, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bTotal ) ) );
+			imp.say( 135, "|" );
 			imp.pulaLinha( 1, imp.comprimido() );
-			imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+			imp.say( 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
 
 			imp.eject();
 
 			imp.fechaGravacao();
 
-			if ( !con.getAutoCommit() )
+			if ( !con.getAutoCommit() ) {
 				con.commit();
+			}
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro na consulta de sublançamentos!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
 		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-			sCodPlan = null;
-			sConta = null;
-			sSaldoAnt = null;
-			bVlrSubLanca = null;
-			bTotal = null;
 			System.gc();
 		}
 
-		if ( bVisualizar )
+		if ( bVisualizar ) {
 			imp.preview( this );
-		else
+		}
+		else {
 			imp.print();
+		}
 	}
 }
