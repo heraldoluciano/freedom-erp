@@ -1099,7 +1099,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<text><![CDATA[Qualidade:]]></text>
+				<text><![CDATA[Quantidade:]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -1165,7 +1165,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<text><![CDATA[Qualidade:]]></text>
+				<text><![CDATA[Quantidade:]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
