@@ -266,6 +266,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private ImageIcon imgItemCorrecao = Icone.novo( "clItemCorrecao.gif" );
 
 	private ImageIcon imgItemComum = Icone.novo( "clItemComum.gif" );
+	
+	private ImageIcon imgItemBloqueado = Icone.novo( "clCadeado.gif" );
+	
+	private ImageIcon imgBranco = Icone.novo( "clBranco.gif" );
 
 	private boolean bBuscaRMA = false;
 
@@ -396,7 +400,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		lcTipoMov.setReadOnly( true );
 		txtCodTpMov.setTabelaExterna( lcTipoMov );
 
-		lcProdEstCod.add( new GuardaCampo( txtCodProdEst, "Codprod", "Cód.prod.", ListaCampos.DB_PK, txtDescEst, true ) );
+		lcProdEstCod.add( new GuardaCampo( txtCodProdEst, "Codprod", "Cód.pd.", ListaCampos.DB_PK, txtDescEst, true ) );
 		lcProdEstCod.add( new GuardaCampo( txtSeqEst, "seqest", "Seq.Est.", ListaCampos.DB_PK, txtDescEst, true ) );
 		lcProdEstCod.add( new GuardaCampo( txtDescEst, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false ) );
 		lcProdEstCod.add( new GuardaCampo( txtRefProdEst, "refprod", "Referência", ListaCampos.DB_SI, false ) );
@@ -415,7 +419,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		lcProdEstRef.add( new GuardaCampo( txtRefProdEst, "refprod", "Referência", ListaCampos.DB_PK, txtDescEst, true ) );
 		lcProdEstRef.add( new GuardaCampo( txtSeqEst, "seqest", "Seq.Est.", ListaCampos.DB_PK, txtDescEst, true ) );
-		lcProdEstRef.add( new GuardaCampo( txtCodProdEst, "Codprod", "Cód.prod.", ListaCampos.DB_SI, true ) );
+		lcProdEstRef.add( new GuardaCampo( txtCodProdEst, "Codprod", "Cód.pd.", ListaCampos.DB_SI, true ) );
 		lcProdEstRef.add( new GuardaCampo( txtDescEst, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false ) );
 		lcProdEstRef.add( new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI, false ) );
 		lcProdEstRef.add( new GuardaCampo( txtCodModLote, "CodModLote", "Modelo de Lote", ListaCampos.DB_FK, false ) );
@@ -653,7 +657,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 
-		adicCampo( txtSeqItOp, 7, 20, 50, 20, "seqitop", "Seq.", ListaCampos.DB_PK, true );
+		adicCampo( txtSeqItOp, 7, 20, 50, 20, "seqitop", "Sq.", ListaCampos.DB_PK, true );
 		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
 			adicCampo( txtCodProdDet, 60, 20, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true );
 			txtCodProdDet.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProdDetCod.getWhereAdic() ) );
@@ -670,10 +674,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		adicCampo( txtQtdItOp, 479, 20, 90, 20, "qtditop", "Qtd.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtQtdCopiaItOp, "qtdcopiaitop", "Qtd.rat.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodLoteProdRat, "codloterat", "Lote rat.", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtGeraRMAAut, "GERARMA", "Rma?", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtSeqAc, "SeqAc", "Ação", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtSeqAc, "SeqAc", "Ação", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtBloqOp, "BloqOp", "Bloq.", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtGeraRMAAut, "GERARMA", "Rma?", ListaCampos.DB_SI, false );		
+		adicCampoInvisivel( txtSeqAc, "SeqAc", "", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtBloqOp, "BloqOp", "", ListaCampos.DB_SI, false );
 		setListaCampos( true, "ITOP", "PP" );
 		lcDet.setQueryInsert( false );
 
@@ -693,21 +696,23 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		montaTab();
 		tab.adicColuna( "" );
-		tab.setTamColuna( 30, 0 ); // Seq.
-		tab.setTamColuna( 60, 1 ); // Cód.prod.
+		tab.adicColuna( "" );
+		tab.setTamColuna( 25, 0 ); // Seq.
+		tab.setTamColuna( 50, 1 ); // Cód.prod.
 		tab.setTamColuna( 190, 2 ); // Descrição do produto
-		tab.setTamColuna( 70, 3 ); // Lote
+		tab.setTamColuna( 65, 3 ); // Lote
 		tab.setTamColuna( 65, 5 ); // Qtd.
 		tab.setTamColuna( 60, 6 ); // Qtd.rat.
 		tab.setTamColuna( 60, 7 ); // Lote.rat.
 		tab.setTamColuna( 35, 8 ); // RMA
 		tab.setTamColuna( 15, 9 ); // Acao corretiva
-		tab.setTamColuna( 15, 10 ); // Acao corretiva imagem
-		tab.setTamColuna( 35, 11 ); // Bloqueio de OP
+		tab.setTamColuna( 13, 11 ); // Acao corretiva imagem
+		tab.setTamColuna( 13, 12 ); // Bloqueio de OP imagem
+
 		tab.setColunaInvisivel( 4 );
 		tab.setColunaInvisivel( 9 );
-		tab.setColunaInvisivel( 12 );
-
+		tab.setColunaInvisivel( 10 );
+		
 	}
 
 	private void processaTab() {
@@ -716,11 +721,19 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			for ( int i = 0; tab.getNumLinhas() > i; i++ ) {
 
 				if ( tab.getValor( i, 9 ) != null && ( !"".equals( tab.getValor( i, 9 ) ) ) && ( (Integer) ( tab.getValor( i, 9 ) ) ) > 0 ) {
-					tab.setValor( imgItemCorrecao, i, 10 );
+					tab.setValor( imgItemCorrecao, i, 11 );
 				}
 				else {
-					tab.setValor( imgItemComum, i, 10 );
+					tab.setValor( imgItemComum, i, 11 );
 				}
+				if ( "S".equals( tab.getValor( i, 10 ) ))    {
+					tab.setValor( imgItemBloqueado, i, 12 );
+				}
+				else {
+					tab.setValor( imgBranco, i, 12 );					
+				}				
+				
+				
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
