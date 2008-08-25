@@ -354,8 +354,8 @@ public class FRBoleto extends FRelatorio {
 			
 				lObs = (List<String>) Funcoes.stringToVector( sValor, "\n" );
 	
-				if ( lObs.size() > iNumLinObs ) {
-					lObs = lObs.subList( 0, iNumLinObs );
+				if ( lObs.size() >= iNumLinObs ) {
+					lObs = lObs.subList( iNumLinObs-1, iNumLinObs );
 				}
 				else {
 					while ( lObs.size() < iNumLinObs ) {
@@ -423,9 +423,10 @@ public class FRBoleto extends FRelatorio {
 				sParam1 = "";
 				sParam2 = "";
 				
-				sTxa = aplicaTxtObs( sTxa, "[OBSORC_", rs.getString( "OBSORC" ) );				
-				sTxa = aplicaTxtObs (sTxa, "[OBSVEN_", rs.getString( "OBSVENDA" ) );
-				
+				sTxa = aplicaTxtObs( sTxa, "[OBSORC_", rs.getString( "OBSORC" ) );	
+				while (sTxa.indexOf( "[OBSVEN_" )>-1) {
+					sTxa = aplicaTxtObs (sTxa, "[OBSVEN_", rs.getString( "OBSVENDA" ) );	
+				}
 				if ( ( dCampo = rs.getDate( "DtVencItRec" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[VENCIMEN]", Funcoes.sqlDateToStrDate( dCampo ) );
 				if ( ( dCampo = rs.getDate( "DtEmitVenda" ) ) != null ) {
