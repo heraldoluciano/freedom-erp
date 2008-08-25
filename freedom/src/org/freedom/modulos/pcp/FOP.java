@@ -1206,7 +1206,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				
 				if ( (Boolean)prefere.get( "RATAUTO" ) ) {
 					bloquearOPSemSaldo( true );
-					Funcoes.mensagemInforma( this, "Esta OP será bloqueada devido a falta de saldo para alguns itens." );
+					Funcoes.mensagemInforma( this, "Esta OP será bloqueada devido a falta de saldo para alguns itens.\n" + sSaida );
 					return true;
 				}
 				
@@ -1695,6 +1695,24 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				rateio = rateiaItemSemSaldo( seq, codprod, quantidade.subtract( saldo ), lotesutilizados );
 			}
 		}
+		else {
+			
+			sql = new StringBuilder();		
+			sql.append( "UPDATE PPITOP SET BLOQOP='S' " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND SEQITOP=?" );
+			
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "PPITOP" ) );
+			ps.setInt( 3, txtCodOP.getVlrInteger() );
+			ps.setInt( 4, txtSeqOP.getVlrInteger() );
+			ps.setInt( 5, seq );
+			
+			ps.executeUpdate();
+			ps.close();
+			
+			rateio = true;
+		}
 		
 		return rateio;
 	}
@@ -1819,8 +1837,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
-
-			lcCampos.carregaDados();
 			
 			if ( ratearOp() ) {
 				Funcoes.mensagemInforma( this, "Itens foram reprocessados com sucesso." );
@@ -1852,8 +1868,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			ps.setInt( 4, txtSeqOP.getVlrInteger() );
 			ps.executeUpdate();
 			ps.close();
-			
-			lcCampos.carregaDados();
 
 			if ( !con.getAutoCommit() ) {
 				con.commit();
