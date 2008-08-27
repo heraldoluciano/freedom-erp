@@ -359,24 +359,31 @@ public class FRBoleto extends FRelatorio {
 		Integer iNumColObs = new Integer(0);
 		List<String> lObs = null;
 		
+		
+		int iposini = sTxa.indexOf( sCampo );
+		
+		if ( iposini > -1 ) {
+			sParam1 = sTxa.substring( iposini + 8, iposini + 11 );
+			sParam2 = sTxa.substring( iposini + 12, iposini + 15 );
+
+			iNumLinObs = new Integer( sParam1 ).intValue();
+			iNumColObs = new Integer( sParam2 ).intValue();
+		}
+		
+		
 		if(sValor!=null) {
 
 			try {
 			
-				int iposini = sTxa.indexOf( sCampo );
-			
-				if ( iposini > -1 ) {
-					sParam1 = sTxa.substring( iposini + 8, iposini + 11 );
-					sParam2 = sTxa.substring( iposini + 12, iposini + 15 );
-	
-					iNumLinObs = new Integer( sParam1 ).intValue();
-					iNumColObs = new Integer( sParam2 ).intValue();
-				}
-			
 				lObs = (List<String>) Funcoes.stringToVector( sValor, "\n" );
 	
 				if ( lObs.size() >= iNumLinObs ) {
-					lObs = lObs.subList( iNumLinObs-1, iNumLinObs );
+					try {
+						lObs = lObs.subList( iNumLinObs-1, iNumLinObs );
+					}
+					catch (Exception e) {
+//						VERIFICAR ERRO COM URGENCIA E TRATÁ-LO;
+					}
 				}
 				else {
 					while ( lObs.size() < iNumLinObs ) {
@@ -405,7 +412,8 @@ public class FRBoleto extends FRelatorio {
 			}
 		}
 		else {
-			retorno = sTxa; 
+			retorno = sTxa.replaceAll( "\\" + sCampo + sParam1 + "_" + sParam2 + "]", "" );
+//			retorno = sTxa; 
 		}
 		return retorno;
 	}
@@ -445,6 +453,7 @@ public class FRBoleto extends FRelatorio {
 				sParam2 = "";
 				
 				sTxa = aplicaTxtObs( sTxa, "[OBSORC_", rs.getString( "OBSORC" ) );	
+								
 				while (sTxa.indexOf( "[OBSVEN_" )>-1) {
 					sTxa = aplicaTxtObs (sTxa, "[OBSVEN_", rs.getString( "OBSVENDA" ) );	
 				}
