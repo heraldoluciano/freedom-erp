@@ -432,9 +432,9 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 				String tmp = null;
 
 				while ( ( tmp = bufferedReader.readLine() ) != null ) {					
-					if ( tmp.length() >= 57 ) {					
+					//if ( tmp.length() >= 57 ) {		correção, alguns produtos com descrição menor não estavam sendo carregados.			
 						saldoImportacao.add( tmp );
-					}
+					//}
 				}
 				
 				bufferedReader.close();
