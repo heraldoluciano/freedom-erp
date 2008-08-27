@@ -45,7 +45,7 @@
 	</parameter>
 	<queryString><![CDATA[select
 fa.descfase,opf.tempoof,ef.instrucoes,re.descrecp,
-opf.seqof,it.codop,it.seqop,it.codprod,it.codlote,it.qtditop,
+opf.seqof,it.codop,it.seqop,it.codprod,it.codlote,(coalesce(it.qtditop,0) - coalesce(it.QTDCOPIAITOP,0)) as qtditop,
 it.codfase,pd.codunid,ud.casasdec
 from ppitop it, equnidade ud, eqproduto pd, ppopfase opf, ppfase fa, ppestrufase ef, ppop op, pprecurso re
 where
