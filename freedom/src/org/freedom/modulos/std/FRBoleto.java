@@ -108,6 +108,10 @@ public class FRBoleto extends FRelatorio {
 	private final JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
 	private final JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	// private JCheckBoxPad cbTipoImp = new JCheckBoxPad("Impressão gráfica","S","N");
 
@@ -126,6 +130,8 @@ public class FRBoleto extends FRelatorio {
 	private ListaCampos lcTipoCob = new ListaCampos( this );
 	
 	private final ListaCampos lcCartCob = new ListaCampos( this, "CB" );
+	
+	private ListaCampos lcTipoMov = new ListaCampos( this );
 
 	private JInternalFrame fExt = null;
 
@@ -150,7 +156,7 @@ public class FRBoleto extends FRelatorio {
 	public FRBoleto( JInternalFrame fExt ) {
 
 		setTitulo( "Impressão de boleto/recibo" );
-		setAtribos( 80, 80, 545, 385 );
+		setAtribos( 80, 80, 545, 430 );
 
 		this.fExt = fExt;
 
@@ -276,6 +282,18 @@ public class FRBoleto extends FRelatorio {
 		txtDescCartCob.setListaCampos( lcCartCob );
 		txtCodCartCob.setFK( true );
 		
+		/************************
+		 *  TIPO DE MOVIMENTO   *
+		 ************************/
+		
+		txtCodTipoMov.setNomeCampo( "CodTipoMov" );
+		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
+		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
+		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
+		lcTipoMov.setQueryCommit( false );
+		lcTipoMov.setReadOnly( true );
+		txtCodTipoMov.setTabelaExterna( lcTipoMov );
+		txtCodTipoMov.setFK( true );
 	}
 
 	private void montaTela() {
@@ -310,7 +328,10 @@ public class FRBoleto extends FRelatorio {
 		adic( txtCodTpCob, 7, 180, 80, 20 );
 		adic( new JLabelPad( "Descrição do tipo de cobrança" ), 90, 160, 430, 20 );
 		adic( txtDescTpCob, 90, 180, 430, 20 );
-
+		adic( new JLabelPad("Cód.Tipo.Mov"), 7, 240, 150, 20 );
+		adic( txtCodTipoMov, 7, 263, 80, 20 );
+		adic( new JLabelPad( "Descrição do tipo de movimento" ), 90, 240, 430, 20 );
+		adic( txtDescTipoMov, 90, 263, 430, 20 );
 		adic( new JLabelPad( "Cód.cart.cob." ), 7, 200, 80, 20 );
 		adic( txtCodCartCob, 7, 220, 80, 20 );
 		adic( new JLabelPad( "Descrição da carteira de cobrança" ), 90, 200, 430, 20 );
@@ -319,13 +340,13 @@ public class FRBoleto extends FRelatorio {
 		JLabel periodo = new JLabel( "Período (Emissão)", SwingConstants.CENTER );
 		periodo.setOpaque( true );
 		
-		adic( periodo, 25, 250, 150, 20 );
+		adic( periodo, 25, 295, 150, 20 );
 		JLabel borda = new JLabel();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
-		adic( borda, 7, 260, 300, 45 );
-		adic( txtDtIni, 25, 275, 110, 20 );
-		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 275, 40, 20 );
-		adic( txtDtFim, 175, 275, 110, 20 );
+		adic( borda, 7, 300, 300, 45 );
+		adic( txtDtIni, 25, 315, 110, 20 );
+		adic( new JLabel( "até", SwingConstants.CENTER ), 135, 315, 40, 20 );
+		adic( txtDtFim, 175, 315, 110, 20 );
 
 		// adic( cbTipoImp, 390, 180, 150, 30);
 	}
@@ -808,6 +829,7 @@ public class FRBoleto extends FRelatorio {
 		final int nparc = txtParc.getVlrInteger().intValue();
 		final String codbanco = txtCodBanco.getVlrString().trim();
 		final int codtipocob = txtCodTpCob.getVlrInteger().intValue();
+		final int codTipoMov = txtCodTipoMov.getVlrInteger().intValue();
 
 		int param = 1;
 
@@ -854,6 +876,10 @@ public class FRBoleto extends FRelatorio {
 			if ( nparc != 0 ) {
 				sWhere.append( "AND ITR.NPARCITREC=? " );
 			}
+			if( codTipoMov != 0 ){
+				sWhere.append( "AND V.CODEMPTM=? AND V.CODFILIALTM=? AND V.CODTIPOMOV=? " );
+			}	
+						
 			if ( ( lsParcelas != null ) && ( lsParcelas.size() > 0 ) ) {
 				sWhere.append( "AND ITR.NPARCITREC IN (" );
 				for ( int i = 0; i < lsParcelas.size(); i++ ) {
@@ -1033,6 +1059,22 @@ public class FRBoleto extends FRelatorio {
 				ps.setInt( param++, nparc );
 				strDebug = strDebug.replaceFirst( "\\?", nparc + "" );
 			}
+			
+			if ( codTipoMov  != 0 ) {
+				
+				ps.setInt( param++, Aplicativo.iCodEmp );
+
+				strDebug = strDebug.replaceFirst( "\\?", Aplicativo.iCodEmp + "" );
+
+				ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+
+				strDebug = strDebug.replaceFirst( "\\?", ListaCampos.getMasterFilial( "VDVENDA" ) + "" );
+
+				ps.setInt( param++, codTipoMov );
+
+				strDebug = strDebug.replaceFirst( "\\?", codTipoMov + "" );
+
+			}
 
 			rs = ps.executeQuery();
 
@@ -1134,6 +1176,7 @@ public class FRBoleto extends FRelatorio {
 		lcBanco.setConexao( cn );
 		lcTipoCob.setConexao( cn );
 		lcVenda2.setConexao( cn );
+		lcTipoMov.setConexao( cn );
 		lcCartCob.setConexao( con );
 		sInfoMoeda = getMoeda();
 		
