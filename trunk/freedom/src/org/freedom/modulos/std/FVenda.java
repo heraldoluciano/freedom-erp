@@ -2274,9 +2274,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				}*/
 				codvenda = null;
 			}
-			else if ( cevt.getListaCampos() == lcVenda2 ) {
-				txtPercComisVenda.setAtivo( txtVlrComisVenda.floatValue() == 0 );
-			}
+			//else if ( cevt.getListaCampos() == lcVenda2 ) {
+			//	txtPercComisVenda.setAtivo( txtVlrComisVenda.floatValue() == 0 ); // 27/08/2008 - REGINALDO
+			//}
 			else if ( cevt.getListaCampos() == lcCli ) {
 				if ( ( bPrefs[ POS_PREFS.OBSCLIVEND.ordinal() ] ) ) {
 					if ( iCodCliAnt != txtCodCli.getVlrInteger().intValue() ) {
