@@ -503,7 +503,7 @@ public class FRBoleto extends FRelatorio {
 				if ( ( sCampo = rs.getString( "EndCob" ) ) != null || ( sCampo = rs.getString( "EndCli" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[____________ENDERECO____DO____CLIENTE___________]", Funcoes.copy( sCampo, 0, 31 ) );
 				if ( ( sCampo = rs.getString( "NumCob" ) ) != null || ( sCampo = rs.getString( "NumCli" ) ) != null )
-					sTxa = sTxa.replaceAll( "\\[NUMERO]", sCampo );
+					sTxa = sTxa.replaceAll( "\\[NUMERO]", Funcoes.copy( sCampo, 0, 10 ) );
 				if ( ( sCampo = rs.getString( "ComplCob" ) ) != null || ( sCampo = rs.getString( "ComplCli" ) ) != null ){
 					sTxa = sTxa.replaceAll( "\\[____COMPLEMENTO___]", Funcoes.copy( sCampo, 0, 12 ) );
 				}
@@ -534,13 +534,13 @@ public class FRBoleto extends FRelatorio {
 				if ( ( sCampo = rs.getString( "VlrApagRec" ) ) != null && rs.getDouble( "VlrApagRec" ) != 0 )
 					sTxa = sTxa.replaceAll( "\\[TOTAL_PARCELAS]", Funcoes.strDecimalToStrCurrency( 15, 2, sCampo ) );
 				if ( ( sCampo = rs.getString( "NomeVend" ) ) != null || ( sCampo = rs.getString( "NomeVend" ) ) != null )
-					sTxa = sTxa.replaceAll( "\\[_______COMISSIONADO1_______]", sCampo.trim() );
+					sTxa = sTxa.replaceAll( "\\[_______COMISSIONADO1_______]", Funcoes.copy( sCampo, 0, 30 ) );
 				if ( ( sCampo = rs.getString( "NomeVend2" ) ) != null || ( sCampo = rs.getString( "NomeVend2" ) ) != null )
-					sTxa = sTxa.replaceAll( "\\[_______COMISSIONADO2_______]", sCampo.trim() );
+					sTxa = sTxa.replaceAll( "\\[_______COMISSIONADO2_______]", Funcoes.copy( sCampo, 0, 30 ) );
 				if ( ( sCampo = rs.getString( "NomeVend3" ) ) != null || ( sCampo = rs.getString( "NomeVend3" ) ) != null )
-					sTxa = sTxa.replaceAll( "\\[_______COMISSIONADO3_______]", sCampo.trim() );
+					sTxa = sTxa.replaceAll( "\\[_______COMISSIONADO3_______]", Funcoes.copy( sCampo, 0, 30 ) );
 				if ( ( sCampo = rs.getString( "NomeVend4" ) ) != null || ( sCampo = rs.getString( "NomeVend4" ) ) != null )
-					sTxa = sTxa.replaceAll( "\\[_______COMISSIONADO4_______]", sCampo.trim() );
+					sTxa = sTxa.replaceAll( "\\[_______COMISSIONADO4_______]", Funcoes.copy( sCampo, 0, 30 ) );
 
 				
 				
@@ -1017,6 +1017,7 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "ITR.STATUSITREC IN ('R1','RL') ");
 			sSQL.append( "AND VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND AND " );
 			sSQL.append( sWhere );
+			sSQL.append( " order by v.codvenda");
 
 			String strDebug = sSQL.toString();
 
