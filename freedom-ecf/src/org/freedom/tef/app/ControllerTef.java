@@ -26,10 +26,13 @@ import static org.freedom.tef.driver.text.TextTefProperties.AMOUNT_LINES;
 import static org.freedom.tef.driver.text.TextTefProperties.MESSAGE_OPERATOR;
 import static org.freedom.tef.driver.text.TextTefProperties.PATH_RESPONSE;
 import static org.freedom.tef.driver.text.TextTefProperties.PATH_SEND;
+
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.freedom.tef.driver.Flag;
 import org.freedom.tef.driver.dedicate.DedicatedTef;
@@ -62,6 +65,8 @@ public class ControllerTef implements DedicatedTefListener {
 	
 	private Logger logger;
 	
+	private DedicatedTef dedicateTef;
+	
 	private ControllerTefListener controllerTefListener;
 	
 	
@@ -76,13 +81,67 @@ public class ControllerTef implements DedicatedTefListener {
 		}
 	}
 	
-	public ControllerTef( final TextTefProperties defaultTextTefProperties, 
-			              final File fileParametrosOfInitiation,
-			              final int typeTef ) throws Exception {
-		this();
-		
-		initializeControllerTef( defaultTextTefProperties, fileParametrosOfInitiation, typeTef );
+	public ControllerTef( final ControllerTefListener controllerTefListener ) {		
+		this();		
+		setControllerMessageListener( controllerTefListener );
+	}
+	
+	public ControllerTef( final int typeTef ) {		
+		this( typeTef, null );
+	}
+	
+	public ControllerTef( final int typeTef,
+	   		  			  final ControllerTefListener controllerTefListener ) {		
+		this();		
+		setTypeTef( typeTef );
+		setControllerMessageListener( controllerTefListener );
+	}
+	
+	public static ControllerTef getControllerTextTef( final TextTefProperties defaultTextTefProperties, 
+			              					   		  final File fileParametrosOfInitiation,
+			              					   		  final int typeTef ) throws Exception {
+		return getControllerTextTef( defaultTextTefProperties, 
+									 fileParametrosOfInitiation, 
+									 typeTef, 
+									 null );
+	}
+	
+	public static ControllerTef getControllerTextTef( final TextTefProperties defaultTextTefProperties, 
+			              					   		  final File fileParametrosOfInitiation,
+			              					   		  final int typeTef,
+			              					   		  final ControllerTefListener controllerTefListener ) throws Exception {		
+		final ControllerTef controllerTef = new ControllerTef( TEF_TEXT );		
+		controllerTef.initializeControllerTextTef( defaultTextTefProperties, 
+												   fileParametrosOfInitiation, 
+												   typeTef );
+		controllerTef.setControllerMessageListener( controllerTefListener );
+		return controllerTef;
 	}	
+	
+	public static ControllerTef getControllerDedicatedTef( final ControllerTefListener controllerTefListener ) throws Exception {
+		final ControllerTef controllerTef = new ControllerTef( TEF_DEDICATED );	
+		controllerTef.setControllerMessageListener( controllerTefListener );
+		controllerTef.dedicateTef = DedicatedTef.getInstance( controllerTef );
+		return controllerTef;
+	}
+	
+	public static ControllerTef getControllerDedicatedTef( final String file,
+														   final ControllerTefListener controllerTefListener ) throws Exception {
+		return getControllerDedicatedTef( new File( file ), controllerTefListener );
+	}
+	
+	public static ControllerTef getControllerDedicatedTef( final File file,
+														   final ControllerTefListener controllerTefListener ) throws Exception {
+		final ControllerTef controllerTef = new ControllerTef( TEF_DEDICATED );	
+		controllerTef.setControllerMessageListener( controllerTefListener );
+		if ( file == null || !file.exists() ) {
+			controllerTef.dedicateTef = DedicatedTef.getInstance( controllerTef );
+		}
+		else {
+			controllerTef.dedicateTef = DedicatedTef.getInstance( file, controllerTef );
+		}		
+		return controllerTef;
+	}
 	
 	/**
 	 * Inicializa as propriedades do objeto.
@@ -93,9 +152,9 @@ public class ControllerTef implements DedicatedTefListener {
 	 * 
 	 * @throws 	Exception
 	 */
-	public void initializeControllerTef( final TextTefProperties textTefProperties, 
-	                                     final File fileParametrosOfInitiation,
-	                                     final int typeTef ) throws Exception {
+	public void initializeControllerTextTef( final TextTefProperties textTefProperties, 
+	                                     	 final File fileParametrosOfInitiation,
+	                                     	 final int typeTef ) throws Exception {
 		
 		setDefaultTextTefProperties( textTefProperties );
 		setFileFlagsMap( fileParametrosOfInitiation );
@@ -166,7 +225,7 @@ public class ControllerTef implements DedicatedTefListener {
 		
 		if ( this.controllerTefListener != null ) {
 			tefMessage = this.controllerTefListener.actionTef( 
-							new ControllerTefEvent( this, option, message ) );
+												new ControllerTefEvent( this, option, message ) );
 		}
 		
 		return tefMessage;
@@ -302,7 +361,7 @@ public class ControllerTef implements DedicatedTefListener {
 		
 		if ( TEF_TEXT == getTypeTef() && textTef != null ) {
 			active = textTef.standardManagerActive();
-			if ( ! active  ) {
+			if ( ! active ) {
 				fireControllerTefEvent( TextTefAction.ERROR, "TEF não está ativo!" );
 			}
 		}
@@ -635,11 +694,55 @@ public class ControllerTef implements DedicatedTefListener {
 		boolean actionReturn = false;
 		
 		try {
-			DedicatedTef dedicateTef = DedicatedTef.getInstance( this );
-			dedicateTef.requestSale( value, numberDoc, null/*dateHour*/, operator );
+			if ( dedicateTef != null ) {
+				actionReturn = dedicateTef.requestSale( value, 
+														numberDoc, 
+														Calendar.getInstance().getTime(), 
+														operator );
+			}
 		}
 		catch ( Exception e ) {
 			e.printStackTrace();
+		}
+		
+		return actionReturn;
+	}
+
+	public void actionNextCommand() {
+		
+		if ( TEF_DEDICATED == getTypeTef() && dedicateTef != null ) {
+			dedicateTef.actionNextCommand();
+		}
+	}
+
+	public boolean checkPinPad() {
+		
+		boolean actionReturn = false;
+		
+		if ( TEF_DEDICATED == getTypeTef() && dedicateTef != null ) {
+			actionReturn = dedicateTef.checkPinPad();
+		}
+		
+		return actionReturn;
+	}
+
+	public boolean readCard( final String message ) {
+		
+		boolean actionReturn = false;
+		
+		if ( TEF_DEDICATED == getTypeTef() && dedicateTef != null ) {
+			actionReturn = dedicateTef.readCard( message );
+		}
+		
+		return actionReturn;
+	}
+
+	public boolean readYesNoCard( final String message ) {
+		
+		boolean actionReturn = false;
+		
+		if ( TEF_DEDICATED == getTypeTef() && dedicateTef != null ) {
+			actionReturn = dedicateTef.readYesNoCard( message );
 		}
 		
 		return actionReturn;

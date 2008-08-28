@@ -89,7 +89,7 @@ public class DedicatedTef {
 		checkConfiguraIntSiTefInterativo( r );
 	}	
 	
-	private boolean checkConfiguraIntSiTefInterativo( int result ) {
+	private synchronized boolean checkConfiguraIntSiTefInterativo( int result ) {
 		
 		String message = null;		
 		
@@ -117,14 +117,14 @@ public class DedicatedTef {
 		
 		if ( message != null ) {
 			dedicateTefListener.actionCommand( 
-					new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO, message ) );
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO, message ) );
 			return false;
 		}
 		
 		return true;
 	}
 
-	private boolean checkStandart( int result ) {
+	private synchronized boolean checkStandart( int result ) {
 		
 		String message = null;
 	
@@ -152,14 +152,14 @@ public class DedicatedTef {
 			
 		if ( message != null ) {
 			dedicateTefListener.actionCommand( 
-					new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO, message ) );
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO, message ) );
 			return false;
 		}
 	
 		return true;
 	}
 
-	public boolean checkPinPad() {
+	public synchronized boolean checkPinPad() {
 		
 		int result = clientesitef.VerificaPresencaPinPad();
 		
@@ -174,29 +174,34 @@ public class DedicatedTef {
 		
 		if ( message != null ) {
 			dedicateTefListener.actionCommand( 
-					new DedicatedTefEvent( dedicateTefListener, DedicatedAction.WARNING, message ) );
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.WARNING, message ) );
 			return false;
 		}
 		
 		return result == 1;
 	}
 
-	public boolean readYesNoCard( String message ) {
+	public synchronized boolean readYesNoCard( String message ) {
 		
 		message = message.replace( '\n', '|' ); 
 		
 		return 1 == clientesitef.LeSimNaoPinPad( message );
 	}
 	
-	public boolean readCard( String message ) {
+	public synchronized boolean readCard( String message ) {
 		
-		clientesitef.SetMsgDisplay( message );
-		int result = clientesitef.LeCartaoInterativo();
+		message = message.replace( '\n', '|' ); 
+		
+		int result = clientesitef.LeCartaoDireto( message );
+
+		System.out.println( message );
+		System.out.println( result );
+		System.out.println( clientesitef.GetBuffer() );
 		
 		return checkStandart( result );
 	}
 	
-	public boolean requestSale( BigDecimal value, Integer docNumber, Date dateHour, String operator ) {
+	public synchronized boolean requestSale( BigDecimal value, Integer docNumber, Date dateHour, String operator ) {
 		
 		boolean requestsale = false;
 		
@@ -228,17 +233,17 @@ public class DedicatedTef {
 		clientesitef.SetContinuaNavegacao( 0 );
 		
 		boolean action = true;
+		int result = 0;
 		
 		while ( action ) {
 			
-			int result = clientesitef.ContinuaFuncaoSiTefInterativo();
+			result = clientesitef.ContinuaFuncaoSiTefInterativo();
 			
-			System.out.println();
 			System.out.println( "Proximo Comando = " + clientesitef.GetProximoComando() );
-			System.out.println( "Tipo do Campo = " + clientesitef.GetTipoCampo() );
 			System.out.println( "Buffer = " + clientesitef.GetBuffer() );
 						
 			if ( result == 0 ) {
+				finallySale();
 				break;
 			}
 			else if ( checkStandart( result ) ) {				
@@ -250,13 +255,27 @@ public class DedicatedTef {
 		}
 	}
 	
-	private boolean actionCommand() {
+	private synchronized void finallySale() {
+		
+		boolean checkTicket = dedicateTefListener.actionCommand( 
+										  new DedicatedTefEvent( dedicateTefListener, 
+												  				 DedicatedAction.CHECK_TICKET ) );
+		if ( checkTicket ) {
+			boolean printTicket = dedicateTefListener.actionCommand( 
+					       					  new DedicatedTefEvent( dedicateTefListener, 
+					       							  				 DedicatedAction.PRINT_TICKET ) );
+			clientesitef.SetConfirma( printTicket ? 1 : 0 );
+			clientesitef.FinalizaTransacaoSiTefInterativo();
+		}
+	}
+	
+	private synchronized boolean actionCommand() {
 		
 		if ( dedicateTefListener != null ) {
-    		return dedicateTefListener.actionCommand( 
-    					new DedicatedTefEvent( dedicateTefListener, 
-    							               DedicatedAction.getDedicatedAction( clientesitef.GetProximoComando() ), 
-    							               clientesitef.GetBuffer().trim() ) );
+    		return  dedicateTefListener.actionCommand( 
+    							new DedicatedTefEvent( dedicateTefListener,
+    												   DedicatedAction.getDedicatedAction( clientesitef.GetProximoComando() ), 
+    												   clientesitef.GetBuffer().trim() ) );
 		}
 		
 		return false;
