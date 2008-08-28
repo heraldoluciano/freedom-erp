@@ -501,7 +501,7 @@ public class FRBoleto extends FRelatorio {
 				else if ( ( sCampo = rs.getString( "InscCli" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[____IE/RG____CLIENTE]", Funcoes.copy( sCampo, 0, 22 ) );
 				if ( ( sCampo = rs.getString( "EndCob" ) ) != null || ( sCampo = rs.getString( "EndCli" ) ) != null )
-					sTxa = sTxa.replaceAll( "\\[____________ENDERECO____DO____CLIENTE___________]", sCampo.trim() );
+					sTxa = sTxa.replaceAll( "\\[____________ENDERECO____DO____CLIENTE___________]", Funcoes.copy( sCampo, 0, 31 ) );
 				if ( ( sCampo = rs.getString( "NumCob" ) ) != null || ( sCampo = rs.getString( "NumCli" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[NUMERO]", sCampo );
 				if ( ( sCampo = rs.getString( "ComplCob" ) ) != null || ( sCampo = rs.getString( "ComplCli" ) ) != null )
