@@ -288,7 +288,7 @@ public class AplicativoPDV extends AplicativoPD {
 			textTefProperties.set( TextTefProperties.PATH_SEND, AplicativoPDV.tefSend );
 			textTefProperties.set( TextTefProperties.PATH_RESPONSE, AplicativoPDV.tefRequest );
 			
-			controllerTef.initializeControllerTef( textTefProperties, new File( AplicativoPDV.tefFlags ), ControllerTef.TEF_TEXT );
+			controllerTef.initializeControllerTextTef( textTefProperties, new File( AplicativoPDV.tefFlags ), ControllerTef.TEF_TEXT );
 		}
 
 		return controllerTef;
