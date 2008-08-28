@@ -25,6 +25,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -106,6 +107,7 @@ public class FRTermReceb extends FRelatorio {
 		PreparedStatement ps = null;
 		StringBuffer sql = new StringBuffer();
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
+		Date dtRec = new Date();
 		if (txtCodOrc.getVlrInteger()==0) {
 			Funcoes.mensagemInforma( this, "Selecione um orçamento!" );
 			return;
@@ -129,9 +131,12 @@ public class FRTermReceb extends FRelatorio {
 		
 		hParam.put("CODEMP",Aplicativo.iCodEmp);
 		hParam.put( "CODORC", txtCodOrc.getVlrInteger() );
-		hParam.put( "DATAIMP", Funcoes.getDiaMes( txtDtOrc.getVlrDate() )+" DE "+
-				Funcoes.getMesExtenso(txtDtOrc.getVlrDate())+" DE "+
-				Funcoes.getAno( txtDtOrc.getVlrDate()) +".");
+		
+		
+		
+		hParam.put( "DATAIMP", Funcoes.getDiaMes( dtRec ) + " DE " 
+				+ Funcoes.getMesExtenso( dtRec )+ " DE " 
+				+ Funcoes.getAno( dtRec ) +".");
 		
 		
 		/*sql.append( "SELECT O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV ");
