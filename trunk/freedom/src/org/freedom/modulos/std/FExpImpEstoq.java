@@ -473,7 +473,7 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 					elementos[ 2 ] = custo;
 					elementos[ 3 ] = new BigDecimal( campos[ 3 ] ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );					
 					
-					if ( custo.floatValue() > 0 ) {
+					if ( custo != null ) {
 						tabProdutos.adicLinha( elementos );
 					}
 					else {
