@@ -504,12 +504,19 @@ public class FRBoleto extends FRelatorio {
 					sTxa = sTxa.replaceAll( "\\[____________ENDERECO____DO____CLIENTE___________]", Funcoes.copy( sCampo, 0, 31 ) );
 				if ( ( sCampo = rs.getString( "NumCob" ) ) != null || ( sCampo = rs.getString( "NumCli" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[NUMERO]", sCampo );
-				if ( ( sCampo = rs.getString( "ComplCob" ) ) != null || ( sCampo = rs.getString( "ComplCli" ) ) != null )
-					sTxa = sTxa.replaceAll( "\\[____COMPLEMENTO___]", sCampo.trim() );
+				if ( ( sCampo = rs.getString( "ComplCob" ) ) != null || ( sCampo = rs.getString( "ComplCli" ) ) != null ){
+					sTxa = sTxa.replaceAll( "\\[____COMPLEMENTO___]", Funcoes.copy( sCampo, 0, 12 ) );
+				}
+				else {
+					sTxa = sTxa.replaceAll( "\\[____COMPLEMENTO___]", Funcoes.copy( "", 0, 12 ) );
+				}
+
+				if ( ( sCampo = rs.getString( "BairCob" ) ) != null || ( sCampo = rs.getString( "BairCli" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[___________BAIRRO___________]", Funcoes.copy( sCampo, 0, 12 ) );
+
+				
 				if ( ( sCampo = rs.getString( "CepCob" ) ) != null || ( sCampo = rs.getString( "CepCli" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[__CEP__]", Funcoes.setMascara( sCampo, "#####-###" ) );
-				if ( ( sCampo = rs.getString( "BairCob" ) ) != null || ( sCampo = rs.getString( "BairCli" ) ) != null )
-					sTxa = sTxa.replaceAll( "\\[___________BAIRRO___________]", sCampo.trim() );
 				if ( ( sCampo = rs.getString( "CidCob" ) ) != null || ( sCampo = rs.getString( "CidCli" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[___________CIDADE___________]", sCampo.trim() );
 				if ( ( sCampo = rs.getString( "UfCob" ) ) != null || ( sCampo = rs.getString( "UfCli" ) ) != null )
@@ -530,6 +537,12 @@ public class FRBoleto extends FRelatorio {
 					sTxa = sTxa.replaceAll( "\\[_______COMISSIONADO1_______]", sCampo.trim() );
 				if ( ( sCampo = rs.getString( "NomeVend2" ) ) != null || ( sCampo = rs.getString( "NomeVend2" ) ) != null )
 					sTxa = sTxa.replaceAll( "\\[_______COMISSIONADO2_______]", sCampo.trim() );
+				if ( ( sCampo = rs.getString( "NomeVend3" ) ) != null || ( sCampo = rs.getString( "NomeVend3" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[_______COMISSIONADO3_______]", sCampo.trim() );
+				if ( ( sCampo = rs.getString( "NomeVend4" ) ) != null || ( sCampo = rs.getString( "NomeVend4" ) ) != null )
+					sTxa = sTxa.replaceAll( "\\[_______COMISSIONADO4_______]", sCampo.trim() );
+
+				
 				
 				// Aplicar campos especiais de dados:
 
@@ -936,7 +949,29 @@ public class FRBoleto extends FRelatorio {
 			sSQL.append( "WHERE VA.CODEMP=V.CODEMP AND VA.CODFILIAL=V.CODFILIAL AND " );
 			sSQL.append( "VA.CODORC =(SELECT FIRST 1 VO.CODORC FROM VDVENDAORC VO " );
 			sSQL.append( "WHERE VO.CODEMP=V.CODEMP AND VO.CODFILIAL=VO.CODFILIAL AND " );
-			sSQL.append( "VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA)) AS OBSORC, VD2.nomevend NOMEVEND2 " );
+			sSQL.append( "VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA)) AS OBSORC, ");
+			
+			sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE ");
+			sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND ");
+			sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA ");
+			sSQL.append( "AND VC.seqvc=1 ) AS NOMEVEND1," );
+
+			sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE ");
+			sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND ");
+			sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA ");
+			sSQL.append( "AND VC.seqvc=2 ) AS NOMEVEND2," );
+			
+			sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE ");
+			sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND ");
+			sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA ");
+			sSQL.append( "AND VC.seqvc=3 ) AS NOMEVEND3," );
+
+			sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE ");
+			sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND ");
+			sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA ");
+			sSQL.append( "AND VC.seqvc=4 ) AS NOMEVEND4 " );
+
+			
 /*			sql.append( "SELECT F.RAZFILIAL, C.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, " );
 			sql.append( "MB.INSTPAGMODBOL, B.IMGBOLBANCO, IM.CONVCOB " );
 			sql.append( "FROM SGFILIAL F, FNCONTA C, FNMODBOLETO MB, FNBANCO B, FNITMODBOLETO IM " );
@@ -950,12 +985,19 @@ public class FRBoleto extends FRelatorio {
 */
 			sSQL.append( "FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, " );
 			sSQL.append( "FNMODBOLETO MB, FNITMODBOLETO IM, VDITVENDA IV, LFNATOPER N,  FNITRECEBER ITR, ");
-			sSQL.append( "SGFILIAL F, FNCONTA CT, VDVENDEDOR VD, VDVENDA V left outer join vdvendacomis vc " );
-			sSQL.append( "on vc.codemp = v.codemp and vc.codfilial=v.codfilial and vc.codvenda=v.codvenda and vc.tipovenda=v.tipovenda " );
-			sSQL.append( "and vc.seqvc=(select min(vc2.seqvc) from vdvendacomis vc2 where vc2.codemp = v.codemp and vc2.codfilial=v.codfilial " );
-			sSQL.append( "and vc2.codvenda=v.codvenda and vc2.tipovenda=v.tipovenda) " );
-			sSQL.append( "left outer join vdvendedor vd2 on "); 
-			sSQL.append( "vd2.codemp = vc.codempvd and vd2.codfilial=vc.codfilialvd and vd2.codvend=vc.codvend " );
+			sSQL.append( "SGFILIAL F, FNCONTA CT, VDVENDEDOR VD, VDVENDA V ");
+					
+/*					left outer join vdvendacomis vc " );
+			sSQL.append( "on vc.codemp = v.codemp and vc.codfilial=v.codfilial and vc.codvenda=v.codvenda and ");
+			sSQL.append( "vc.tipovenda=v.tipovenda and vc.seqvc=2 " );*/
+			
+			/*sSQL.append( "and vc.seqvc=(select min(vc2.seqvc) from vdvendacomis vc2 where vc2.codemp = v.codemp and vc2.codfilial=v.codfilial " );
+			sSQL.append( "and vc2.codvenda=v.codvenda and vc2.tipovenda=v.tipovenda) " );*/
+			
+			
+			/*sSQL.append( "left outer join vdvendedor vd2 on "); 
+			sSQL.append( "vd2.codemp = vc.codempvd and vd2.codfilial=vc.codfilialvd and vd2.codvend=vc.codvend " );*/
+			
 			sSQL.append( "WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND " );
 			sSQL.append( "V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND " );
 			sSQL.append( "F.CODEMP=R.CODEMP AND F.CODFILIAL=R.CODFILIAL AND ");
