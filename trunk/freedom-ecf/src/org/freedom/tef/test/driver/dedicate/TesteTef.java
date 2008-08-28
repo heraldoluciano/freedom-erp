@@ -7,7 +7,8 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,12 +17,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import org.freedom.tef.app.ControllerTef;
+import org.freedom.tef.app.ControllerTefEvent;
+import org.freedom.tef.app.ControllerTefListener;
 import org.freedom.tef.driver.dedicate.DedicatedAction;
-import org.freedom.tef.driver.dedicate.DedicatedTef;
-import org.freedom.tef.driver.dedicate.DedicatedTefEvent;
-import org.freedom.tef.driver.dedicate.DedicatedTefListener;
 
-public class TesteTef extends JFrame implements DedicatedTefListener, ActionListener {
+public class TesteTef extends JFrame implements ControllerTefListener, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,18 +40,24 @@ public class TesteTef extends JFrame implements DedicatedTefListener, ActionList
 
 	private JButton verifica_pinpad = null;
 
-	private JButton escreve_pinpad = null;
+	private JButton confirma_pinpad = null;
 
 	private JButton continuar = null;
 
-	private DedicatedTef tef;
+	//private DedicatedTef tef;
+	
+	private ControllerTef tef;
+	
+	private List<String> bufferTef = new ArrayList<String>();
 
 
 	public TesteTef() throws Exception  {
 
 		super();
 		
-		tef = DedicatedTef.getInstance( "totem.ini", this );
+		//System.setProperty( ManagerIni.FILE_INIT_DEFAULT, "totem.ini" );
+		//tef = DedicatedTef.getInstance( this );
+		tef = ControllerTef.getControllerDedicatedTef( "totem.ini", this );
 		
 		initialize();
 		setDefaultCloseOperation( DISPOSE_ON_CLOSE );
@@ -97,7 +104,7 @@ public class TesteTef extends JFrame implements DedicatedTefListener, ActionList
 			jContentPane.add( getAction(), null );
 			jContentPane.add( getLer_cartao(), null );
 			jContentPane.add( getVerifica_pinpad(), null );
-			jContentPane.add( getEscreve_pinpad(), null );
+			jContentPane.add( getConfirma_pinpad(), null );
 			jContentPane.add( getContinuar(), null );
 		}
 		return jContentPane;
@@ -133,14 +140,14 @@ public class TesteTef extends JFrame implements DedicatedTefListener, ActionList
 		return ler_cartao;
 	}
 
-	private JButton getEscreve_pinpad() {
+	private JButton getConfirma_pinpad() {
 	
-		if ( escreve_pinpad == null ) {
-			escreve_pinpad = new JButton( "messagem permanente" );
-			escreve_pinpad.setBounds( new Rectangle( 10, 270, 170, 30 ) );
-			escreve_pinpad.addActionListener( this );
+		if ( confirma_pinpad == null ) {
+			confirma_pinpad = new JButton( "confirmar" );
+			confirma_pinpad.setBounds( new Rectangle( 10, 270, 170, 30 ) );
+			confirma_pinpad.addActionListener( this );
 		}
-		return escreve_pinpad;
+		return confirma_pinpad;
 	}
 
 	private JButton getContinuar() {
@@ -153,27 +160,41 @@ public class TesteTef extends JFrame implements DedicatedTefListener, ActionList
 		return continuar;
 	}
 	
-	public synchronized boolean actionCommand( DedicatedTefEvent e ) {
+	public synchronized boolean actionTef( ControllerTefEvent e ) {
 		
 		boolean action = false;
 	
-		if ( e.getSource() == this ) {
-
-			operador.setBackground( Color.BLACK );
-			cliente.setBackground( Color.BLACK );
+		if ( e.getSource() == tef ) {
+			
+			action = true;
 			
 			if ( e.getAction() == DedicatedAction.ERRO ) {
 				operador.setBackground( Color.RED );
 				cliente.setBackground( Color.RED );
 				operador.setText( e.getMessage() );
 				cliente.setText( e.getMessage() );
-				return action;
+				return false;
 			}
 			else if ( e.getAction() == DedicatedAction.WARNING ) {
 				operador.setText( e.getMessage() );
 				cliente.setText( e.getMessage() );
 			}
-			else if ( e.getAction() == DedicatedAction.MENSAGEM_OPERADOR ) {
+			else if ( e.getAction() == DedicatedAction.ARMAZENAR ) {
+				operador.setText( "" );
+				cliente.setText( "" );
+				bufferTef.add( e.getMessage() );
+				return action;
+			}
+			else if ( e.getAction() == DedicatedAction.CHECK_TICKET ) {
+				bufferTef.add( e.getMessage() );
+				return action;
+			}
+			else if ( e.getAction() == DedicatedAction.PRINT_TICKET ) {
+				return action;
+			}
+			
+			
+			if ( e.getAction() == DedicatedAction.MENSAGEM_OPERADOR ) {
 				operador.setText( e.getMessage() );
 			}
 			else if ( e.getAction() == DedicatedAction.MENSAGEM_CLIENTE ) {
@@ -215,16 +236,11 @@ public class TesteTef extends JFrame implements DedicatedTefListener, ActionList
 				operador.setText( "" );
 				cliente.setText( "" );
 				esperar( true );
-				return action;
-			}			
-			
-			action = true;
-			
-			try {
-				Thread.sleep( 2000 );
+				return false;
 			}
-			catch ( InterruptedException err ) {
-				err.printStackTrace();
+			else {
+				System.out.println( "\nComando " + e.getAction().code() + " " + e.getMessage() );
+				action = e.getAction().code()==23;
 			}
 		}	
 		
@@ -237,44 +253,53 @@ public class TesteTef extends JFrame implements DedicatedTefListener, ActionList
 		action.setVisible( !arg );
 		ler_cartao.setVisible( !arg );
 		verifica_pinpad.setVisible( !arg );
-		escreve_pinpad.setVisible( !arg );
+		confirma_pinpad.setVisible( !arg );
 	}
 
-	public void actionPerformed( ActionEvent e ) {		
+	public void actionPerformed( final ActionEvent e ) {		
 
 		cabecalho.setText( "" );
 		operador.setText( "" );
-		cliente.setText( "" );				
+		cliente.setText( "" );	
+
+		operador.setBackground( Color.BLACK );
+		cliente.setBackground( Color.BLACK );
 		
-		if ( e.getSource() == action ) {
-			Thread th = new Thread( new Runnable() {
-				public void run() {
-					tef.requestSale( new BigDecimal( "15.748" ), 
-							         123456, 
-							         Calendar.getInstance().getTime(), 
-							         "teste" );
-				}			
-			} );
-			th.start();			
-		}
-		else if ( e.getSource() == verifica_pinpad ) {
-			tef.checkPinPad();			
-		}
-		else if ( e.getSource() == ler_cartao ) {
-			tef.readCard( "Sesc Parana - passe o cartao." );
-		}
-		else if ( e.getSource() == escreve_pinpad ) {
-			tef.readYesNoCard( "Sesc Parana\nAuto Atendimento" );
-		}
-		else if ( e.getSource() == continuar ) {
-			Thread th = new Thread( new Runnable() {
-				public void run() {
+		Thread th = new Thread( new Runnable() {
+			public void run() {
+				if ( e.getSource() == action ) {
+					bufferTef.clear();
+					tef.requestSale( 123456, 
+									 new BigDecimal( "15.748" ),
+							         "Teste" );
+				}
+				else if ( e.getSource() == verifica_pinpad ) {
+					if ( tef.checkPinPad() ) {
+						operador.setText( "PinPad OK!" );
+					}
+				}
+				else if ( e.getSource() == ler_cartao ) {
+					tef.readCard( "  Sesc  Parana  " +
+								  " passe o cartão " );
+				}
+				else if ( e.getSource() == confirma_pinpad ) {
+					if ( tef.readYesNoCard( "  Sesc  Parana  " +
+							                "   Confirma ?   " ) ) {
+						operador.setText( "Confirmado !" );
+						cliente.setText( "Confirmado !" );	
+					}
+					else {
+						operador.setText( "NÃO Confirmado !" );
+						cliente.setText( "NÃO Confirmado !" );	
+					}
+				}
+				else if ( e.getSource() == continuar ) {
 					esperar( false );
 					tef.actionNextCommand();
-				}			
-			} );
-			th.start();			
-		}
+				}
+			}
+		} );
+		th.start();	
 	}
 
 	public static void main( String[] args ) {

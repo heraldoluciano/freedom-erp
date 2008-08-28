@@ -5,8 +5,6 @@
 
 package org.freedom.ecf.driver;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -17,7 +15,6 @@ import java.util.Locale;
 import javax.comm.SerialPort;
 import javax.comm.SerialPortEvent;
 import javax.comm.SerialPortEventListener;
-import javax.swing.Timer;
 
 import org.freedom.ecf.com.Serial;
 
@@ -41,7 +38,7 @@ import org.freedom.ecf.com.Serial;
  *         <BR>
  */
 
-public abstract class AbstractECFDriver implements SerialPortEventListener, ActionListener {
+public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public static final byte STX = 2;
 
@@ -181,11 +178,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Acti
 
 	private static boolean leuEvento = false;
 	
-	private Timer timer = new Timer( TIMEOUT_ACK, this );
-	
-	private long timerStart = 0;
-	
-	private boolean esperandoEscreverSaida;
+	private boolean saidaEscrita;
 
 	protected String porta;
 
@@ -284,16 +277,6 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Acti
 		}
 	}
 
-	public void actionPerformed( ActionEvent e ) {
-
-		if ( e.getSource() == timer ) {
-			timerStart += TIMEOUT_ACK;
-			if ( timerStart >= TIMEOUT_READ ) {	
-				fechaSaida();
-			}
-		}
-	}
-
 	public byte[] enviaCmd( final byte[] CMD, final int tamEsperado ) {
 
 		return enviaCmd( CMD, portaSel, tamEsperado );
@@ -311,7 +294,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Acti
 			try {
 
 				tempo = System.currentTimeMillis();
-				esperandoEscreverSaida = true;
+				saidaEscrita = false;
 				
 				Thread tee = new Thread( new Runnable() {
 					public void run() {
@@ -320,11 +303,11 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Acti
 				});
 				
 				tee.start();
+				tee.join( TIMEOUT_READ );
 				
-				while ( esperandoEscreverSaida ) {
-					if ( timerStart >= TIMEOUT_READ ) {	
-						return null;
-					}
+				if ( !saidaEscrita ) {
+					tee.interrupt();
+					return null;
 				}
 
 				do {
@@ -344,10 +327,8 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Acti
 	private void escreverSaida( final byte[] CMD ) {
 		
 		try {
-			final OutputStream saida = Serial.getInstance().getSaida();			
+			final OutputStream saida = Serial.getInstance().getSaida();
 			saida.flush();
-			timerStart = 0;
-			timer.start();			
 			saida.write( CMD );		
 			fechaSaida();
 		}
@@ -360,9 +341,8 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Acti
 		
 		try {
 			final OutputStream saida = Serial.getInstance().getSaida();			
-			saida.close();			
-			timer.stop();
-			esperandoEscreverSaida = false;
+			saida.close();	
+			saidaEscrita = true;
 		}
 		catch ( IOException e ) {
 			e.printStackTrace();

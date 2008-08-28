@@ -12,6 +12,10 @@ public class DedicatedAction implements TefAction {
 	
 	public static final DedicatedAction WARNING = new DedicatedAction( -2 );
 	
+	public static final DedicatedAction CHECK_TICKET = new DedicatedAction( -3 );
+	
+	public static final DedicatedAction PRINT_TICKET = new DedicatedAction( -4 );
+	
 	/**
 	 * Está de volvendo um valor para, se desejado, ser armazenado pela automação.
 	 */
@@ -91,7 +95,7 @@ public class DedicatedAction implements TefAction {
 	 * Este comando indica que a rotina está perguntando para a aplicação se ele deseja interromper 
 	 * o processo de coleta de dados ou não. Esse código ocorre quando a DLL está acessando algum periférico 
 	 * e permite que a automação interrompa esse acesso 
-	 * (por exemplo: aquardando a passagem de um cartção pela lietora ou a difitração de senha pelo cliente)
+	 * (por exemplo: aquardando a passagem de um cartão pela lietora ou a difitração de senha pelo cliente)
 	 */ 
 	public static final DedicatedAction CONFIRMAR_IMTERRUPSAO = new DedicatedAction( 23 );
 	

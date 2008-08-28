@@ -10,7 +10,6 @@ import junit.framework.TestCase;
 import org.freedom.tef.app.ControllerTef;
 import org.freedom.tef.app.ControllerTefEvent;
 import org.freedom.tef.app.ControllerTefListener;
-import org.freedom.tef.driver.dedicate.DedicatedTef;
 import org.freedom.tef.driver.dedicate.DedicatedAction;
 import org.freedom.tef.driver.text.TextTefAction;
 import org.freedom.tef.driver.text.TextTefProperties;
@@ -27,9 +26,10 @@ public class TestControllerTef extends TestCase implements ControllerTefListener
 	
 	public void testActive() {
 		try {
-			ControllerTef controllerTef = new ControllerTef( getTextTefProperties(),
-			                                                 new File( "C:\\bandeiras.ini" ),
-			                                                 ControllerTef.TEF_TEXT );			
+			ControllerTef controllerTef = ControllerTef.getControllerTextTef( 
+														getTextTefProperties(),
+														new File( "C:\\bandeiras.ini" ),
+														ControllerTef.TEF_TEXT );			
 			assertTrue( controllerTef.standardManagerActive() );
 		} catch ( Exception e ) {}
 	}
@@ -40,9 +40,10 @@ public class TestControllerTef extends TestCase implements ControllerTefListener
 
 		try {		
 			
-			ControllerTef controllerTef = new ControllerTef( getTextTefProperties(),
-					                                         new File( "C:\\bandeiras.ini" ),
-					                                         ControllerTef.TEF_TEXT );			
+			ControllerTef controllerTef = ControllerTef.getControllerTextTef( 
+                                    					getTextTefProperties(),
+                                    					new File( "C:\\bandeiras.ini" ),
+                                    					ControllerTef.TEF_TEXT );			
 			controllerTef.setControllerMessageListener( this );
 			
 			ok = controllerTef.requestSale( 2, new BigDecimal( "9.99" ), "VISA" );
@@ -60,9 +61,10 @@ public class TestControllerTef extends TestCase implements ControllerTefListener
 
 		try {		
 			
-			ControllerTef controllerTef = new ControllerTef( getTextTefProperties(),
-					                                         new File( "C:\\bandeiras.ini" ),
-					                                         ControllerTef.TEF_TEXT );			
+			ControllerTef controllerTef = ControllerTef.getControllerTextTef( 
+                                    					getTextTefProperties(),
+                                    					new File( "C:\\bandeiras.ini" ),
+                                    					ControllerTef.TEF_TEXT );			
 			controllerTef.setControllerMessageListener( this );
 			
 			ok = controllerTef.requestAdministrator( "VISA" );
