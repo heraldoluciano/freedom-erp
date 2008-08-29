@@ -145,7 +145,7 @@ public class NFApr extends Leiaute {
 					imp.say( 11, Funcoes.copy(rs.getString("DescProd"),0,45));
 					imp.say( 57, Funcoes.copy(rs.getString("CodBarProd"),0,9)); 
 					imp.say( 73, Funcoes.copy(rs.getString("OrigFisc"),0,1) + Funcoes.copy(rs.getString("CodTratTrib"),0,2));
-					imp.say( 79, rs.getString("CodUnid").substring(0,4));
+					imp.say( 79, Funcoes.copy(rs.getString( "CodUnid" ),4));
 					imp.say( 85, String.valueOf(rs.getDouble("QtdItVenda")));
 					imp.say( 89, Funcoes.strDecimalToStrCurrency(13,2,String.valueOf(((new BigDecimal(rs.getDouble("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP)))));
 					imp.say(104, Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrLiqItVenda")));
