@@ -40,6 +40,9 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.acao.CarregaEvent;
@@ -53,6 +56,7 @@ import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -83,6 +87,8 @@ private static final long serialVersionUID = 1L;
 	private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_DATE,10, 0);
 	private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextAreaPad txtObsInv = new JTextAreaPad( 500 );
+	private JScrollPane spnObs = new JScrollPane( txtObsInv );	
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
 	private ListaCampos lcLote = new ListaCampos(this, "LE");
@@ -96,7 +102,7 @@ private static final long serialVersionUID = 1L;
 	public FInventario() {
 		super();
 		setTitulo("Inventário");
-		setAtribos(50, 50, 330, 370);
+		setAtribos(50, 50, 330, 470);
 
 		cbLote.addCheckBoxListener(this);
 
@@ -205,6 +211,8 @@ private static final long serialVersionUID = 1L;
 		adicCampo(txtSldNovoInvP, 150, 220, 137, 20, "SldDigInvP","Estoque novo", ListaCampos.DB_SI, false);
 		adicCampo(txtPrecoInvP, 90, 260, 97, 20, "PrecoInvP", "Custo unitário",ListaCampos.DB_SI, true);
 		adicCampo(txtQtdInvP, 7, 260, 80, 20, "QtdInvP", "Quantidade",ListaCampos.DB_SI, true);
+		
+		adicDB( txtObsInv, 7, 300, 300, 80, "ObsInvP", "Observação", false );
 		lcCampos.setQueryInsert(false);
 		setListaCampos(true, "INVPROD", "EQ");
 		
