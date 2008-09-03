@@ -337,7 +337,7 @@ private static final long serialVersionUID = 1L;
 
 	public void keyPressed(KeyEvent kevt) {
 		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (kevt.getSource() == txtPrecoInvP) {
+			if (kevt.getSource() == txtObsInv) {
 				if (lcCampos.getStatus() == ListaCampos.LCS_INSERT) {
 					lcCampos.post();
 					lcCampos.limpaCampos(true);
