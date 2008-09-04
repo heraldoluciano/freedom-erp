@@ -267,9 +267,22 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 	private void carregaGridConsulta() {
 
 		tab.limpa();
-		String sSQL = "SELECT IT.DTVENCITREC,IT.VLRPARCITREC,V.SERIE,R.DOCREC,V.CODVENDA," + "R.DATAREC,IT.DTPAGOITREC,IT.VLRPAGOITREC," + "(CAST('today' AS DATE)-IT.DTVENCITREC) AS ATRASO," + "R.OBSREC,(SELECT B.NOMEBANCO FROM FNBANCO B " + "WHERE B.CODBANCO = R.CODBANCO) AS NOMEBANCO,"
-				+ "R.CODREC,IT.NPARCITREC,R.TIPOVENDA" + " FROM FNRECEBER R, VDVENDA V, " + "FNITRECEBER IT, VDCLIENTE CL WHERE " + "((CL.CODCLI=? AND CL.CODEMP=? AND CL.CODFILIAL=?) OR " + " (CL.CODPESQ=? AND CL.CODEMPPQ=? AND CL.CODFILIALPQ=?)) AND "
-				+ "R.CODCLI=CL.CODCLI AND R.CODEMPCL=CL.CODEMP AND R.CODFILIALCL=CL.CODFILIAL AND " + "V.CODVENDA=R.CODVENDA AND " + "IT.STATUSITREC NOT IN ('RP') AND IT.CODREC = R.CODREC " + "ORDER BY IT.DTVENCITREC,R.CODREC,IT.NPARCITREC";
+		String sSQL = "SELECT IT.DTVENCITREC,IT.VLRPARCITREC,V.SERIE,R.DOCREC,V.CODVENDA," 
+				+ "R.DATAREC,IT.DTPAGOITREC,IT.VLRPAGOITREC," 
+				+ "(CAST('today' AS DATE)-IT.DTVENCITREC) AS ATRASO," 
+				+ "R.OBSREC,(SELECT B.NOMEBANCO FROM FNBANCO B " 
+				+ "WHERE B.CODBANCO = R.CODBANCO) AS NOMEBANCO,"
+				+ "R.CODREC,IT.NPARCITREC,R.TIPOVENDA" 
+				+ " FROM FNRECEBER R, VDVENDA V, " 
+				+ "FNITRECEBER IT, VDCLIENTE CL WHERE " 
+				+ "((CL.CODCLI=? AND CL.CODEMP=? AND CL.CODFILIAL=?) OR " 
+				+ " (CL.CODPESQ=? AND CL.CODEMPPQ=? AND CL.CODFILIALPQ=?)) AND "
+				+ "R.CODCLI=CL.CODCLI AND R.CODEMPCL=CL.CODEMP AND R.CODFILIALCL=CL.CODFILIAL AND " 
+				+ "V.CODVENDA=R.CODVENDA AND " 
+				+ "IT.STATUSITREC NOT IN ('RP') AND IT.CODREC = R.CODREC "
+				+ "AND V.CODEMP!=? AND V.CODFILIAL!=? AND V.TIPOVENDA!=? AND V.CODVENDA!=? "
+				+ "ORDER BY IT.DTVENCITREC,R.CODREC,IT.NPARCITREC";				
+		
 		try {
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, txtCodCli.getVlrInteger().intValue() );
@@ -278,6 +291,12 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 			ps.setInt( 4, txtCodCli.getVlrInteger().intValue() );
 			ps.setInt( 5, Aplicativo.iCodEmp );
 			ps.setInt( 6, lcCli.getCodFilial() );
+			ps.setInt( 7, Aplicativo.iCodEmp );
+			ps.setInt( 8, lcVenda.getCodFilial() );
+			ps.setString( 9, txtTipoVenda.getVlrString() );
+			ps.setInt( 10, txtCodVenda.getVlrInteger());
+			
+			
 			ResultSet rs = ps.executeQuery();
 			double dVal = 0;
 			for ( int i = 0; rs.next(); i++ ) {
