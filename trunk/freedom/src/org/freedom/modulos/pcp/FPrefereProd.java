@@ -65,6 +65,8 @@ public class FPrefereProd extends FTabDados {
 	
 	private final JCheckBoxPad cbAuto = new JCheckBoxPad( "Automatizar rateio de itens de OP e RMA ?", "S", "N" );
 	
+	private final JCheckBoxPad cbExcluiRma = new JCheckBoxPad( "Permite exclusão de RMA por outro usuário ?", "S", "N" );
+	
 	private final PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
 	private final ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
@@ -74,7 +76,7 @@ public class FPrefereProd extends FTabDados {
 
 		super();
 		setTitulo( "Preferências de Produção" );
-		setAtribos( 50, 50, 550, 370 );
+		setAtribos( 50, 50, 550, 390 );
 		
 		montaListaCampos();
 		montaTela();
@@ -129,6 +131,7 @@ public class FPrefereProd extends FTabDados {
 		adicCampo( txtNDiaMes, 10, 195, 180, 20, "MESESDESCCP", "", ListaCampos.DB_SI, false );
 		adicDB( cbBaixaRmaAprov, 10, 220, 300, 20, "BAIXARMAAPROV", "", false );
 		adicDB( cbAuto, 10, 240, 300, 20, "RATAUTO", "", false );
+		adicDB( cbExcluiRma, 10, 260, 300, 20, "APAGARMAOP", "", false );
 
 		setPainel( pinAss );
 		adicTab( "Assinatura", pinAss );
