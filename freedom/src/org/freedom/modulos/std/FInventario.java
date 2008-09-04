@@ -39,12 +39,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
-
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-
 import org.freedom.componentes.JLabelPad;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
