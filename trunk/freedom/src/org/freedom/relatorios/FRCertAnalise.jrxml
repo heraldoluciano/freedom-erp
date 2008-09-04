@@ -660,7 +660,7 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Oblique" size="9" isItalic="true"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRAFER}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRAFER}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY)]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -750,7 +750,7 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="318"
-						y="2"
+						y="3"
 						width="106"
 						height="12"
 						key="textField-22"/>
