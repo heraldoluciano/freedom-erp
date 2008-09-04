@@ -23,17 +23,28 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer"/>
-	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer"/>
-	<parameter name="CODPROD" isForPrompting="true" class="java.lang.Integer"/>
-	<parameter name="DATAINI" isForPrompting="true" class="java.util.Date"/>
-	<parameter name="DATAFIM" isForPrompting="true" class="java.util.Date"/>
-	<queryString><![CDATA[SELECT eq.codemp,pd.descprod,pd.vlrdensidade,pd.vlrconcent,
- EQ.qtdmovprod,op.qtdfinalprodop, 
- (case when qtdfinalprodop=0 then 0 else qtdmovprod/qtdfinalprodop * 100 end) as formula
+	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(7)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODPROD" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(2)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATAINI" isForPrompting="true" class="java.util.Date">
+		<defaultValueExpression ><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATAFIM" isForPrompting="true" class="java.util.Date">
+		<defaultValueExpression ><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[SELECT eq.codemp,pd.descprod,pd.vlrdensidade,pd.vlrconcent,EQ.qtdmovprod,op.qtdfinalprodop,
+ (case when qtdfinalprodop=0 then 0 else qtdmovprod/qtdfinalprodop * 100 end) as formula,
+op.codop, op.seqop
 FROM eqmovprod EQ,
  eqtipomov tm, eqitrma itr, eqrma rma,  ppop op, eqproduto pd
-WHERE eq.codemp=$P{CODEMP} and eq.codfilial=$P{CODFILIAL} and eq.codprod=$P{CODPROD} AND EQ.dtmovprod BETWEEN $P{DATAINI} AND $P{DATAFIM}
+WHERE eq.codemp=$P{CODEMP} and eq.codfilial=$P{CODFILIAL} and eq.codprod=$P{CODPROD} AND EQ.dtmovprod 
+BETWEEN $P{DATAINI} AND $P{DATAFIM}
 and tm.codemp=eq.codemptm and tm.codfilial=eq.codfilialtm and tm.codtipomov=eq.codtipomov
 and tm.tipomov='RM'
 and itr.codemp=eq.codemprm and itr.codfilial=eq.codfilialrm and itr.coditrma=eq.coditrma
@@ -43,13 +54,15 @@ and op.codemp=rma.codempof and op.codfilial=rma.codfilialof and op.codop=rma.cod
 and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod
 and eq.qtdmovprod>0]]></queryString>
 
-	<field name="CODEMP" class="java.lang.Long"/>
+	<field name="CODEMP" class="java.lang.Integer"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="VLRDENSIDADE" class="java.math.BigDecimal"/>
 	<field name="VLRCONCENT" class="java.math.BigDecimal"/>
 	<field name="QTDMOVPROD" class="java.math.BigDecimal"/>
 	<field name="QTDFINALPRODOP" class="java.math.BigDecimal"/>
 	<field name="FORMULA" class="java.math.BigDecimal"/>
+	<field name="CODOP" class="java.lang.Integer"/>
+	<field name="SEQOP" class="java.lang.Integer"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -63,14 +76,14 @@ and eq.qtdmovprod>0]]></queryString>
 			<band height="16"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="13"
+						x="72"
 						y="2"
-						width="520"
+						width="385"
 						height="13"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
 					</textElement>
 				<text><![CDATA[PRODUTO FINAL OBTIDO:]]></text>
 				</staticText>
@@ -119,6 +132,19 @@ and eq.qtdmovprod>0]]></queryString>
 						key="line-19"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="459"
+						y="3"
+						width="74"
+						height="10"
+						key="textField-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["O.P.:" + $F{CODOP}.toString() + "-" + $F{SEQOP}.toString()]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
