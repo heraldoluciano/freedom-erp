@@ -117,7 +117,8 @@ public class FRMovProdCont extends FRelatorio {
 
 		String sCab = "";
 
-		sCab = "Relatório de Movimentação de Produto" + "\n" + "Policia federal CPQ-DPF";
+		sCab = "Relatório de Movimentação de Produto" + "\n" + "Policia federal CPQ-DPF" + "\n";
+		sCab += "De: " + txtDataini.getVlrString() + " até: " + txtDatafim.getVlrString();
 
 		imprimiGrafico( b, sCab );
 	}
