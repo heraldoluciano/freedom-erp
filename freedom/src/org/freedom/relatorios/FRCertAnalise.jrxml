@@ -63,7 +63,7 @@
 	<parameter name="DOCVENDA" isForPrompting="false" class="java.lang.Integer"/>
 	<parameter name="NUMCERT" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[select ta.desctpanalise,ea.vlrmin,ea.vlrmax,cq.vlrafer,cq.descafer,pf.nomeresp,
-pf.identprofresp,pf.imgassresp, op0.codprod, pd.descprod, pm.descmtanalise, eq.casasdec,
+pf.identprofresp,pf.imgassresp, op0.codprod, pd.descprod, pm.descmtanalise, eq.casasdec, eq.codunid,
 ea.especificacao from ppopcq cq, ppestruanalise ea, pptipoanalise ta,
 sgprefere5 pf, ppop op0, ppop opx, eqproduto pd, ppmetodoanalise pm ,
 equnidade eq
@@ -88,11 +88,12 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 	<field name="DESCAFER" class="java.lang.String"/>
 	<field name="NOMERESP" class="java.lang.String"/>
 	<field name="IDENTPROFRESP" class="java.lang.String"/>
-	<field name="IMGASSRESP" class="java.io.InputStream"/>
+	<field name="IMGASSRESP" class="java.sql.Blob"/>
 	<field name="CODPROD" class="java.lang.Long"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="DESCMTANALISE" class="java.lang.String"/>
-	<field name="CASASDEC" class="java.lang.Integer"/>
+	<field name="CASASDEC" class="java.lang.Short"/>
+	<field name="CODUNID" class="java.lang.String"/>
 	<field name="ESPECIFICACAO" class="java.lang.String"/>
 
 
@@ -608,7 +609,7 @@ and opx.codemp=7 and opx.codfilial=1 and opx.codlote=$P{CODLOTE}]]></queryString
 					<textElement textAlignment="Center">
 						<font pdfFontName="Helvetica-BoldOblique" size="9" isBold="true" isItalic="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTPANALISE}.trim()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCTPANALISE}.trim() + " - " + $F{CODUNID}.trim()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
