@@ -22,6 +22,7 @@ package org.freedom.modulos.pcp;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -120,6 +121,10 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
 		/**************
 		 *  Produto   * 
 		 **************/
+	
+		BigDecimal bd = new BigDecimal(0);
+		
+		bd.setScale( BigDecimal.ROUND_CEILING );
 		
 	     lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ));
          lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ));
@@ -208,7 +213,7 @@ public class FRCertAnalise extends FRelatorio implements KeyListener{
 			sql.delete( 0, sql.length() );
 			
 			sql.append( "select ta.desctpanalise,ea.vlrmin,ea.vlrmax,cq.vlrafer,cq.descafer,pf.nomeresp,pf.identprofresp,pf.imgassresp, " );
-			sql.append( "op0.codprod, pd.descprod, pm.descmtanalise, ea.especificacao, eq.casasdec " );
+			sql.append( "op0.codprod, pd.descprod, pm.descmtanalise, ea.especificacao, eq.casasdec, eq.codunid " );
 			sql.append( "from ppopcq cq, ppestruanalise ea, pptipoanalise ta, sgprefere5 pf, ppop op0, ppop opx, eqproduto pd, ppmetodoanalise pm, equnidade eq " );
 			sql.append( "where " );
 			sql.append( "ta.codemp=ea.codempta and ta.codfilial=ea.codfilialta and ta.codtpanalise=ea.codtpanalise " );
