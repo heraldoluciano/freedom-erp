@@ -21,6 +21,7 @@ import org.freedom.tef.app.ControllerTef;
 import org.freedom.tef.app.ControllerTefEvent;
 import org.freedom.tef.app.ControllerTefListener;
 import org.freedom.tef.driver.dedicate.DedicatedAction;
+import org.freedom.tef.driver.dedicate.TypeFields;
 
 public class TesteTef extends JFrame implements ControllerTefListener, ActionListener {
 
@@ -164,83 +165,86 @@ public class TesteTef extends JFrame implements ControllerTefListener, ActionLis
 		
 		boolean action = false;
 	
-		if ( e.getSource() == tef ) {
+		checking : {
+			if ( e.getSource() == tef ) {
 			
-			action = true;
-			
-			if ( e.getAction() == DedicatedAction.ERRO ) {
-				operador.setBackground( Color.RED );
-				cliente.setBackground( Color.RED );
-				operador.setText( e.getMessage() );
-				cliente.setText( e.getMessage() );
-				return false;
-			}
-			else if ( e.getAction() == DedicatedAction.WARNING ) {
-				operador.setText( e.getMessage() );
-				cliente.setText( e.getMessage() );
-			}
-			else if ( e.getAction() == DedicatedAction.ARMAZENAR ) {
-				operador.setText( "" );
-				cliente.setText( "" );
-				bufferTef.add( e.getMessage() );
-				return action;
-			}
-			else if ( e.getAction() == DedicatedAction.CHECK_TICKET ) {
-				bufferTef.add( e.getMessage() );
-				return action;
-			}
-			else if ( e.getAction() == DedicatedAction.PRINT_TICKET ) {
-				return action;
-			}
-			
-			
-			if ( e.getAction() == DedicatedAction.MENSAGEM_OPERADOR ) {
-				operador.setText( e.getMessage() );
-			}
-			else if ( e.getAction() == DedicatedAction.MENSAGEM_CLIENTE ) {
-				cliente.setText( e.getMessage() );		
-			}
-			else if ( e.getAction() == DedicatedAction.MENSAGEM_TODOS ) {
-				operador.setText( e.getMessage() );
-				cliente.setText( e.getMessage() );	
-			}
-			else if ( e.getAction() == DedicatedAction.CABECALHO_MENU ) {
-				cabecalho.setText( e.getMessage() );
-			}
-			else if ( e.getAction() == DedicatedAction.REMOVER_MESAGEM_OPERADOR ) {
-				operador.setText( "" );				
-			}
-			else if ( e.getAction() == DedicatedAction.REMOVER_MESAGEM_CLIENTE ) {
-				operador.setText( "" );				
-			}
-			else if ( e.getAction() == DedicatedAction.REMOVER_MESAGEM_TODOS ) {
-				operador.setText( "" );
-				cliente.setText( "" );				
-			}
-			else if ( e.getAction() == DedicatedAction.REMOVER_CABECALHO_MENU ) {
-				cabecalho.setText( "" );				
-			}
-			else if ( e.getAction() == DedicatedAction.CABECALHO ) {
-				setTitle( e.getMessage() );								
-			}
-			else if ( e.getAction() == DedicatedAction.REMOVER_CABECALHO ) {
-				setTitle( "" );
-			}
-			else if ( e.getAction() == DedicatedAction.RETORNAR_CONFIRMACAO ) {
-				System.out.println( "RETORNAR CONFIRMAÇÃO !" );
-			}
-			else if ( e.getAction() == DedicatedAction.MOSTRAR_MENU ) {
-				System.out.println( "MOSTRAR MENU !" );
-			}
-			else if ( e.getAction() == DedicatedAction.AGUADAR_TECLA_OPERADOR ) {
-				operador.setText( "" );
-				cliente.setText( "" );
-				esperar( true );
-				return false;
-			}
-			else {
-				System.out.println( "\nComando " + e.getAction().code() + " " + e.getMessage() );
-				action = e.getAction().code()==23;
+    			action = true;
+    			
+    			if ( e.getAction() == DedicatedAction.ERRO ) {
+    				operador.setBackground( Color.RED );
+    				cliente.setBackground( Color.RED );
+    				operador.setText( e.getMessage() );
+    				cliente.setText( e.getMessage() );
+    				return false;
+    			}
+    			else if ( e.getAction() == DedicatedAction.WARNING ) {
+    				operador.setText( e.getMessage() );
+    				cliente.setText( e.getMessage() );
+    			}
+    			else if ( e.getAction() == DedicatedAction.ARMAZENAR ) {
+    				System.out.println( "Armazenando... " + tef.getTypeField() + " | " + e.getMessage() );
+    				if ( tef.getTypeField() == TypeFields.VOUCHER_TEF.code() ) {
+    					bufferTef.add( e.getMessage() );
+    					break checking;
+    				}
+    			}
+    			else if ( e.getAction() == DedicatedAction.CHECK_TICKET ) {
+    				action = bufferTef.size() > 0;
+    				break checking;
+    			}
+    			else if ( e.getAction() == DedicatedAction.PRINT_TICKET ) {
+    				break checking;
+    			}
+    			
+    			
+    			if ( e.getAction() == DedicatedAction.MENSAGEM_OPERADOR ) {
+    				operador.setText( e.getMessage() );
+    			}
+    			else if ( e.getAction() == DedicatedAction.MENSAGEM_CLIENTE ) {
+    				cliente.setText( e.getMessage() );		
+    			}
+    			else if ( e.getAction() == DedicatedAction.MENSAGEM_TODOS ) {
+    				operador.setText( e.getMessage() );
+    				cliente.setText( e.getMessage() );	
+    			}
+    			else if ( e.getAction() == DedicatedAction.CABECALHO_MENU ) {
+    				cabecalho.setText( e.getMessage() );
+    			}
+    			else if ( e.getAction() == DedicatedAction.REMOVER_MESAGEM_OPERADOR ) {
+    				operador.setText( "" );				
+    			}
+    			else if ( e.getAction() == DedicatedAction.REMOVER_MESAGEM_CLIENTE ) {
+    				operador.setText( "" );				
+    			}
+    			else if ( e.getAction() == DedicatedAction.REMOVER_MESAGEM_TODOS ) {
+    				operador.setText( "" );
+    				cliente.setText( "" );				
+    			}
+    			else if ( e.getAction() == DedicatedAction.REMOVER_CABECALHO_MENU ) {
+    				cabecalho.setText( "" );				
+    			}
+    			else if ( e.getAction() == DedicatedAction.CABECALHO ) {
+    				setTitle( e.getMessage() );								
+    			}
+    			else if ( e.getAction() == DedicatedAction.REMOVER_CABECALHO ) {
+    				setTitle( "" );
+    			}
+    			else if ( e.getAction() == DedicatedAction.RETORNAR_CONFIRMACAO ) {
+    				System.out.println( "RETORNAR CONFIRMAÇÃO !" );
+    			}
+    			else if ( e.getAction() == DedicatedAction.MOSTRAR_MENU ) {
+    				System.out.println( "MOSTRAR MENU !" );
+    			}
+    			else if ( e.getAction() == DedicatedAction.AGUADAR_TECLA_OPERADOR ) {
+    				operador.setText( "" );
+    				cliente.setText( "" );
+    				esperar( true );
+    				return false;
+    			}
+    			else {
+    				System.out.println( "\nComando " + e.getAction().code() + " " + e.getMessage() );
+    				//action = e.getAction().code()==23;
+    			}
 			}
 		}	
 		

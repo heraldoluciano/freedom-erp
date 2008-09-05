@@ -20,7 +20,7 @@ public enum Modality {
 		this.name = name;
 	}
 	
-	Integer getCode() {
+	Integer code() {
 		return this.code;
 	}
 	

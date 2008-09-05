@@ -23,6 +23,8 @@ public class DedicatedTef {
 	
 	public static final String TERMINAL = "TERMINAL";
 	
+	public static final int VOUCHER_TEF = 121;
+	
 	private Properties properties;
 	
 	private jCliSiTefI clientesitef;
@@ -34,7 +36,7 @@ public class DedicatedTef {
 	
 	public static DedicatedTef getInstance( DedicatedTefListener dedicateTefListener ) throws Exception {
 
-		if ( instance == null ) {
+		if ( instance == null || instance.getDedicateTefListener() != dedicateTefListener ) {
 			instance = new DedicatedTef( dedicateTefListener );
 		}
 		
@@ -174,7 +176,7 @@ public class DedicatedTef {
 		
 		if ( message != null ) {
 			dedicateTefListener.actionCommand( 
-						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.WARNING, message ) );
+						new DedicatedTefEvent( dedicateTefListener, DedicatedAction.ERRO, message ) );
 			return false;
 		}
 		
@@ -212,7 +214,7 @@ public class DedicatedTef {
 		String hour = sdf2.format( dateHour );
 
 		int result = clientesitef.IniciaFuncaoSiTefInterativo(
-				     Modality.DEBITO.getCode(),
+				     Modality.DEBITO.code(),
 			         df.format( value.doubleValue() ),
 				     String.valueOf( docNumber ),
 				     date,
@@ -238,9 +240,6 @@ public class DedicatedTef {
 		while ( action ) {
 			
 			result = clientesitef.ContinuaFuncaoSiTefInterativo();
-			
-			System.out.println( "Proximo Comando = " + clientesitef.GetProximoComando() );
-			System.out.println( "Buffer = " + clientesitef.GetBuffer() );
 						
 			if ( result == 0 ) {
 				finallySale();
@@ -279,5 +278,13 @@ public class DedicatedTef {
 		}
 		
 		return false;
+	}
+	
+	public synchronized String getBuffer() {
+		return clientesitef.GetBuffer();
+	}
+	
+	public synchronized int getTypeField() {
+		return clientesitef.GetTipoCampo();
 	}
 }
