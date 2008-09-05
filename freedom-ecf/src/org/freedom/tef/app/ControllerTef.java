@@ -688,6 +688,14 @@ public class ControllerTef implements DedicatedTefListener {
 	// ***                        INICIO  TEF  DEDICADO                       *** \\	
 	// ************************************************************************** \\
 	
+	public synchronized String getBuffer() {
+		return dedicateTef == null ? null : dedicateTef.getBuffer();
+	}
+	
+	public synchronized int getTypeField() {
+		return dedicateTef == null ? null : dedicateTef.getTypeField();
+	}
+	
 	private boolean requestSaleDedicatedTef( final Integer numberDoc,
                                              final BigDecimal value,
                                              final String operator ) {
