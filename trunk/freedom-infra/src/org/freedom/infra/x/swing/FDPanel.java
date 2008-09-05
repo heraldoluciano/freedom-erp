@@ -7,7 +7,6 @@ import java.awt.Point;
 
 import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
-import java.awt.Color;
 
 public class FDPanel extends JLayeredPane {
 

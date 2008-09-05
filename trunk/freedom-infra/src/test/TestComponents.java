@@ -2,7 +2,13 @@
 package test;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -16,6 +22,7 @@ import org.freedom.infra.x.UIMaker.Panel;
 import org.freedom.infra.x.UIMaker.TextField;
 import org.freedom.infra.x.UIMaker.effect.Effect;
 import org.freedom.infra.x.UIMaker.effect.Fade;
+import org.freedom.infra.x.UIMaker.effect.FadeTransition;
 import org.freedom.infra.x.UIMaker.effect.SetEffect;
 import org.freedom.infra.x.UIMaker.effect.ShineInBorder;
 
@@ -45,6 +52,35 @@ public class TestComponents extends JFrame {
 		setLocationRelativeTo( null );
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
+		
+		FadeTransition transition = new FadeTransition( panel01, getImagesDescanso(), 5, 1000, 0.1f );
+		transition.doStart();
+	}
+
+	private List<Image> getImagesDescanso() {
+		
+		List<Image> imagens = new ArrayList<Image>();
+		
+		try {
+			File subdir = new File( "C:\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\images" );
+			if ( subdir.exists() ) {
+				File[] imgs = subdir.listFiles( new FilenameFilter() {
+					public boolean accept( File dir, String name ) {
+						return name.endsWith( ".jpg" ) || name.endsWith( ".gif" );
+					}
+				} );
+				int  i = 0;
+				for ( File f : imgs ) {
+					imagens.add( Toolkit.getDefaultToolkit().getImage( f.toString() ) );
+					i++;
+				}
+			}
+		}
+		catch ( RuntimeException e ) {
+			e.printStackTrace();
+		}
+		
+		return imagens;
 	}
 
 	/**
