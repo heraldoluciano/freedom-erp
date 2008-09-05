@@ -29,6 +29,10 @@ public abstract class EffectStandard implements Effect {
 		components.remove( component );
 	}
 
+	public void clear() {
+		components.clear();
+	}
+
 	public void actionPerformed( ActionEvent e ) {	
 	}
 
