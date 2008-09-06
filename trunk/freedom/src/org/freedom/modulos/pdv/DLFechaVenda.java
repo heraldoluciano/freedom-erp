@@ -856,7 +856,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		if ( AplicativoPDV.bTEFTerm ) {
 			if ( txtVlrTef.floatValue() > 0 && tef != null ) {
 				try {
-					btef = tef.requestSale( 1, txtVlrTef.getVlrBigDecimal(), "" );
+					btef = tef.requestSale( iNumCupom, txtVlrTef.getVlrBigDecimal(), "RedeCard" );
 				} catch ( RuntimeException e ) {
 					e.printStackTrace();
 					Funcoes.mensagemErro( this, e.getMessage(), true, con, e );
