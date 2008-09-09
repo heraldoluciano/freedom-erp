@@ -1126,7 +1126,8 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			actionTef = ecf.abreComprovanteNaoFiscalVinculado( "Cartão", txtVlrTef.getVlrBigDecimal(), iNumCupom );
 		}
 		else if ( e.getAction() == TextTefAction.PRINT ) {
-			actionTef = ecf.usaComprovanteNaoFiscalVinculado( e.getMessage() );
+			System.out.println( Funcoes.tiraAcentos( e.getMessage() ) );
+			actionTef = ecf.usaComprovanteNaoFiscalVinculado( Funcoes.tiraAcentos( e.getMessage() ) );
 		}
 		else if ( e.getAction() == TextTefAction.END_PRINT ) {
 			actionTef = ecf.fecharRelatorioGerencial();
