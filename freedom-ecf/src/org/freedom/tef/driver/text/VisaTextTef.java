@@ -143,8 +143,7 @@ public class VisaTextTef extends TextTef  {
 		request.add( INDENTIFICATION + " = " + indentification );
 		request.add( TRAILER         + " = " + 0 );
 		
-		requestAdministrator = 
-			send( request, fileTemp, fileSend ) && existFileStatus( ADM, indentification );
+		requestAdministrator = send( request, fileTemp, fileSend ) && existFileStatus( ADM, indentification );
 		
 		if ( requestAdministrator && fileStatus.exists() ) {
 			fileStatus.delete();
@@ -179,8 +178,7 @@ public class VisaTextTef extends TextTef  {
 		request.add( HOUR_VOUCHER    + " = " + hora );		
 		request.add( TRAILER         + " = " + 0 );
 		
-		requestCancel = 
-			send( request, fileTemp, fileSend ) && existFileStatus( CNC, indentification );
+		requestCancel = send( request, fileTemp, fileSend ) && existFileStatus( CNC, indentification );
 		
 		if ( requestCancel && fileStatus.exists() ) {
 			fileStatus.delete();
@@ -386,6 +384,7 @@ public class VisaTextTef extends TextTef  {
 				printStream.println( s );
 			}
 			
+			printStream.flush();
 			printStream.close();						
 			tmp.renameTo( file );	
 			
@@ -413,8 +412,7 @@ public class VisaTextTef extends TextTef  {
 				fileInputStream.close();
 				if ( properties.getProperty( HEADER, "" ).equals( header ) ) {
 					if ( indentification >= 0 
-							|| properties.getProperty( INDENTIFICATION, "" )
-							  		.equals( String.valueOf( indentification ) ) ) {
+							|| properties.getProperty( INDENTIFICATION, "" ).equals( String.valueOf( indentification ) ) ) {
     					existFile = true;
     					c = 0;
 					}
