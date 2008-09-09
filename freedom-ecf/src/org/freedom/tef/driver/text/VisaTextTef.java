@@ -385,7 +385,12 @@ public class VisaTextTef extends TextTef  {
 			}
 			
 			printStream.flush();
-			printStream.close();						
+			printStream.close();				
+			
+			System.out.println( System.currentTimeMillis() + " cmd = " + send.get(0) );
+			System.out.println( "TMP = " + tmp.getAbsolutePath() );
+			System.out.println( "FILE = " + tmp.getAbsolutePath() );
+			
 			tmp.renameTo( file );	
 			
 			actionReturn = true;

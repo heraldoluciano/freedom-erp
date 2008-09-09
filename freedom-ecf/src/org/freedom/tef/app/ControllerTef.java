@@ -412,11 +412,12 @@ public class ControllerTef implements DedicatedTefListener {
 					actionReturn = textTef.confirmation();
 				}
 				else {
-					actionReturn = noConfirmation( textTef );					
+					noConfirmation( textTef );					
 				}
 			}
 			
 		} catch ( Exception e ) {
+			e.printStackTrace();
 			String etmp = "Erro ao solicitar venda:\n" + e.getMessage();
 			fireControllerTefEvent( TextTefAction.ERROR, etmp );
 			whiterLogError( etmp );
@@ -462,7 +463,7 @@ public class ControllerTef implements DedicatedTefListener {
 					actionReturn = textTef.confirmation();
 				}
 				else if ( voucher == VOUCHER_ERROR ) {
-					actionReturn = noConfirmation( textTef );					
+					noConfirmation( textTef );					
 				}
 			}
 			
@@ -510,7 +511,7 @@ public class ControllerTef implements DedicatedTefListener {
 					actionReturn = textTef.confirmation();
 				}
 				else if ( voucher == VOUCHER_ERROR ) {
-					actionReturn = noConfirmation( textTef );					
+					noConfirmation( textTef );					
 				}
 			}
 			

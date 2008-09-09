@@ -237,6 +237,10 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 
 	private ControllerTef tef;
 	
+	private StringBuilder comprovanteTef = new StringBuilder();
+	
+	private boolean vendaFechada = false;
+	
 
 	public DLFechaVenda( Object[] args ) {
 
@@ -624,7 +628,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		pnReceber.add( new JScrollPane( tabRec ), BorderLayout.CENTER );
 	}
 	
-	private boolean fechaVenda() {
+	private synchronized boolean fechaVenda() {
 		
 		boolean fechavenda = false;
 		
@@ -1124,13 +1128,16 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		}
 		else if ( e.getAction() == TextTefAction.BEGIN_PRINT ) {
 			actionTef = ecf.abreComprovanteNaoFiscalVinculado( "Cartão", txtVlrTef.getVlrBigDecimal(), iNumCupom );
+			comprovanteTef.delete( 0, comprovanteTef.length() );
 		}
 		else if ( e.getAction() == TextTefAction.PRINT ) {
-			System.out.println( Funcoes.tiraAcentos( e.getMessage() ) );
-			actionTef = ecf.usaComprovanteNaoFiscalVinculado( Funcoes.tiraAcentos( e.getMessage() ) );
+			System.out.println( Funcoes.tiraAcentos( e.getMessage().replace( "\n", "" ) ) + "]" );
+			comprovanteTef.append( Funcoes.tiraAcentos( e.getMessage() ) );
+			actionTef = true;
 		}
 		else if ( e.getAction() == TextTefAction.END_PRINT ) {
-			actionTef = ecf.fecharRelatorioGerencial();
+			actionTef = ecf.usaComprovanteNaoFiscalVinculado( comprovanteTef.toString() );
+			ecf.fecharRelatorioGerencial();
 		}
 		else if ( e.getAction() == TextTefAction.RE_PRINT ) {
 			actionTef = ecf.fecharRelatorioGerencial();
@@ -1149,8 +1156,10 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 
 		boolean bRet = false;
 		
-		if ( evt.getSource() == btOK ) {
-			if ( fechaVenda() ) {
+		if ( evt.getSource() == btOK && !vendaFechada ) {
+			if ( !vendaFechada ) {
+				vendaFechada = fechaVenda();
+				System.out.println( "\nFECHOU!\n" );
 				if ( bReceber ) {
 					tpn.setEnabledAt( 3, true );
 					tpn.setSelectedIndex( 3 );
