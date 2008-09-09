@@ -1123,16 +1123,19 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			actionTef = true;
 		}
 		else if ( e.getAction() == TextTefAction.BEGIN_PRINT ) {
-			actionTef = true;
+			actionTef = ecf.abreComprovanteNaoFiscalVinculado( "Cartão", txtVlrTef.getVlrBigDecimal(), iNumCupom );
 		}
 		else if ( e.getAction() == TextTefAction.PRINT ) {
-			actionTef = true;
+			actionTef = ecf.usaComprovanteNaoFiscalVinculado( e.getMessage() );
 		}
 		else if ( e.getAction() == TextTefAction.END_PRINT ) {
-			actionTef = true;
+			actionTef = ecf.fecharRelatorioGerencial();
 		}
 		else if ( e.getAction() == TextTefAction.RE_PRINT ) {
-			actionTef = true;
+			actionTef = ecf.fecharRelatorioGerencial();
+			if ( actionTef ) {
+				actionTef = ecf.abreComprovanteNaoFiscalVinculado( "Cartão", txtVlrTef.getVlrBigDecimal(), iNumCupom );				
+			}
 		}
 		else if ( e.getAction() == TextTefAction.CONFIRM ) {
 			actionTef = Funcoes.mensagemConfirma( this, e.getMessage() ) == JOptionPane.YES_OPTION;
