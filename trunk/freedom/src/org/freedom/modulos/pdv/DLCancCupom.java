@@ -369,6 +369,7 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 			if ( Funcoes.mensagemConfirma( null, "Deseja realmente cancelar o cupom?" ) == JOptionPane.YES_OPTION ) {				
 				if ( ecf.cancelaCupom() ) {
 					if ( cancVenda() ) {
+						bCancCupom = true;
 						btOK.doClick();
 					}
 				}
