@@ -375,7 +375,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
              "IV.CODEMPNT,IV.CODFILIALNT," +
              "TM.CODEMPMN,TM.CODFILIALMN " +
 			 
-			 "UNION " +
+			 "UNION ALL " +
              
 			 // Parei aqui
              

@@ -344,7 +344,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
                  
                  try {
              	    state(sProd+"Iniciando reconstrução...");
-             	    sSQL = sSQLInventario+" UNION "+sSQLCompra + " UNION "+sSQLOP+" UNION "+sSQLRMA+" UNION "+sSQLVenda+" ORDER BY 19,1,20";// 1 POR QUE C-Compra,I-Inventario,V-Venda,R-RMA
+             	    sSQL = sSQLInventario+" UNION ALL "+sSQLCompra + " UNION ALL "+sSQLOP+" UNION ALL "+sSQLRMA+" UNION ALL "+sSQLVenda+" ORDER BY 19,1,20";// 1 POR QUE C-Compra,I-Inventario,V-Venda,R-RMA
 //             	    System.out.println(sSQL);
              	    ps = con.prepareStatement(sSQL);
              	    ps.setInt(paramCons.CODEMPIV.ordinal(),Aplicativo.iCodEmp);

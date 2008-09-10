@@ -197,7 +197,7 @@ public class FRRazFor extends FRelatorio {
 			/**
 			 * Query das compras 
 			 */
-			sSQL.append( "UNION " );
+			sSQL.append( "UNION ALL " );
 			sSQL.append( "SELECT P.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
 			sSQL.append( "P.DATAPAG DATA, 'C' TIPO, P.DOCPAG DOC, ");
 			sSQL.append( "(P.VLRDESCPAG-P.VLRMULTAPAG-P.VLRJUROSPAG) VLRDEB, P.VLRPARCPAG VLRCRED " );
@@ -213,7 +213,7 @@ public class FRRazFor extends FRelatorio {
 			/**
 			 * Query dos pagamentos 
 			 */
-			sSQL.append( "UNION " );
+			sSQL.append( "UNION ALL " );
 			sSQL.append( "SELECT L.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
 			sSQL.append( "L.DATALANCA DATA, 'P' TIPO, P.DOCPAG DOC, L.VLRLANCA*-1 VLRDEB, 0.00 VLRCRED " ); 
 			sSQL.append( "FROM FNLANCA L, CPFORNECED F, FNPAGAR P " );
@@ -228,7 +228,7 @@ public class FRRazFor extends FRelatorio {
 			/**
 			 * Query das devoluções 
 			 */
-			sSQL.append( "UNION SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, VD.DTEMITVENDA DATA, " );
+			sSQL.append( "UNION ALL SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, VD.DTEMITVENDA DATA, " );
 			sSQL.append( " 'Z' TIPO, VD.DOCVENDA DOC, 0.00 VLRCRED, VD.VLRLIQVENDA VLRDEB ");
 			sSQL.append( "FROM VDVENDA VD, EQTIPOMOV TM, EQCLIFOR CF, CPFORNECED F " );
 			sSQL.append( "WHERE TM.CODEMP=VD.CODEMPTM AND TM.CODFILIAL=VD.CODFILIALTM AND ");

@@ -275,7 +275,7 @@ public class FSVV extends FFilho implements ActionListener {
                             "C.COMPLENT,C.BAIRENT,C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.BAIRCOB," +
                             "C.CIDCOB,C.UFCOB,C.CEPCOB,C.EMAILCLI,C.CONTCLI,C.FONECLI," +
                             "T.ESTIPOMOV,V.CODVENDA,IT.CODITVENDA,IT.CODPROD "+
-                            "UNION "+
+                            "UNION ALL "+
                             "SELECT T.TIPOMOV, C.SERIE, C.DOCCOMPRA, C.DTEMITCOMPRA," +
 							"CAST(NULL AS CHAR(13)),P.CODFABPROD,IT.CODLOTE,SUM(IT.QTDITCOMPRA)," +
 							"SUM(IT.VLRLIQITCOMPRA),SUM(" +
