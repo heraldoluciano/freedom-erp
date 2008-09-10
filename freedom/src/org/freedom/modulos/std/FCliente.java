@@ -3446,7 +3446,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			sSQL.append( " WHERE C1.CODCLI=C1.CODPESQ " );
 			sSQL.append( " AND C1.CODEMP=? AND C1.CODFILIAL=? " );
 			sSQL.append( sWhere );
-			sSQL.append( " UNION SELECT C2.CODPESQ,");
+			sSQL.append( " UNION ALL SELECT C2.CODPESQ,");
 			sSQL.append( "(SELECT C3.RAZCLI FROM VDCLIENTE C3 WHERE C3.CODCLI=C2.CODPESQ) AS RAZMATRIZ," );
 			sSQL.append( "'B' TIPO,C2.CODCLI,C2.RAZCLI,C2.DDDCLI,C2.FONECLI," );
 			if( "A".equals( sValores[ 17 ] ) ) {

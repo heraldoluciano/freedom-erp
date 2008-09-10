@@ -1054,7 +1054,7 @@ public class FSintegra extends FFilho implements ActionListener {
 						"( (C.PESSOACLI='J' AND V.TIPOVENDA='V') OR (V.TIPOVENDA='E') ) AND " +
 						"P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " + 
 						"CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC "; /* +
-						"UNION " +
+						"UNION ALL " +
 						"SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC,0)," + 
 						"COALESCE(CF.ALIQLFISC,0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB " + 
 						"FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFCLFISCAL CF " +
@@ -1086,10 +1086,10 @@ public class FSintegra extends FFilho implements ActionListener {
 					sSql.append( sSqlEntrada );
 
 				if ( !sSqlSaida.equals( "" ) )
-					sSql.append( ( sSql.length() > 0 ? " UNION " : "" ) + sSqlSaida );
+					sSql.append( ( sSql.length() > 0 ? " UNION ALL " : "" ) + sSqlSaida );
 
 				if ( !sSqlConsumidor.equals( "" ) )
-					sSql.append( ( sSql.length() > 0 ? " UNION " : "" ) + sSqlConsumidor );
+					sSql.append( ( sSql.length() > 0 ? " UNION ALL " : "" ) + sSqlConsumidor );
 
 				sSql.append( " GROUP BY 1,2,3,4,5,6,7,8 " );
 

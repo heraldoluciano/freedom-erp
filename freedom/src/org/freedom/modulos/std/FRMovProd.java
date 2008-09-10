@@ -341,7 +341,7 @@ public class FRMovProd extends FRelatorio {
 			sql.append( "AND MV.CODFILIALPD=PD.CODFILIAL AND MV.CODPROD=PD.CODPROD) " );
 			sql.append( !valores[ 4 ].equals( "" ) ? "AND EXISTS(SELECT * FROM CPPRODFOR PF WHERE PF.CODPROD = PD.CODPROD AND PF.CODEMP = PD.CODEMP AND PF.CODFOR=" + valores[ 4 ] + " )" : "" ); 
 			sql.append( where ); 
-			sql.append( " UNION " );
+			sql.append( " UNION ALL " );
 			sql.append( "SELECT PD.CODPROD,PD.DESCPROD,PD.CODBARPROD,PD.CODFABPROD,PD.CODUNID,PD.TIPOPROD,PD.CODGRUP,'S',PF.CODFOR, " ); 
 			sql.append( "(SELECT F.RAZFOR FROM CPFORNECED F WHERE F.CODFOR=PF.CODFOR AND F.CODEMP=PF.CODEMP AND F.CODFILIAL=PF.CODFILIAL),PF.REFPRODFOR " );
 			sql.append( "FROM EQPRODUTO PD LEFT OUTER JOIN CPPRODFOR PF ON (PD.CODPROD = PF.CODPROD AND PD.CODEMP = PF.CODEMP) " + "WHERE PD.CODEMP=? AND PD.CODFILIAL=? " ); 
@@ -360,7 +360,7 @@ public class FRMovProd extends FRelatorio {
 			sql.append( "AND MV.CODFILIALPD=PD.CODFILIAL AND MV.CODPROD=PD.CODPROD) " );
 			sql.append( !valores[ 4 ].equals( "" ) ? "AND EXISTS(SELECT * FROM CPPRODFOR PF WHERE PF.CODPROD = PD.CODPROD AND PF.CODEMP = PD.CODEMP AND PF.CODFOR=" + valores[ 4 ] + " )" : "" ); 
 			sql.append( where );
-			sql.append( " UNION " );
+			sql.append( " UNION ALL " );
 			sql.append( "SELECT PD.CODPROD,PD.DESCPROD,PD.CODBARPROD,PD.CODFABPROD,PD.CODUNID,PD.TIPOPROD,PD.CODGRUP,'S','' " ); 
 			sql.append( "FROM EQPRODUTO PD " ); 
 			sql.append( "WHERE PD.CODEMP=? AND PD.CODFILIAL=? " ); 
