@@ -23,6 +23,7 @@
 package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
+import java.awt.Checkbox;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
@@ -163,6 +164,8 @@ public class FRBoleto extends FRelatorio {
 	private JPanelPad pnTabela = new JPanelPad( new BorderLayout() );
 	
 	private JButton btGerar = new JButton("Montar boletos", Icone.novo( "btGerar.gif" ) );
+	
+	private Checkbox cbTab = new Checkbox();
 	
 
 	public FRBoleto() {
@@ -1164,9 +1167,14 @@ public class FRBoleto extends FRelatorio {
 		
 		return rsRetorno;
 	}
-	
 	private void montaGrid(){
 		
+		if("".equals( txtCodModBol.getVlrString() )){
+			
+			Funcoes.mensagemInforma( this, "Modelo de boleto não selecionado!" );
+			txtCodModBol.requestFocus();
+			return;
+		}
 		ResultSet rs = execQuery();
 		
 		try {
@@ -1174,14 +1182,19 @@ public class FRBoleto extends FRelatorio {
 			for( int i=0; rs.next(); i++ ){
 				
 				tbBoletos.adicLinha();
+				tbBoletos.setValor( cbTab, i, 0 );
 				tbBoletos.setValor( rs.getInt( "CodVenda" ), i, 1 );
+				tbBoletos.setValor( Funcoes.dateToSQLDate( rs.getDate( "DtEmitVenda" ) ), i, 2 );
+				tbBoletos.setValor( Funcoes.dateToSQLDate( rs.getDate( "DtVencItRec" ) ), i, 3 );
+				tbBoletos.setValor( rs.getString( "RazCli" ), i, 4 );
+				tbBoletos.setValor( rs.getBigDecimal( "VlrParcItRec" ), i, 5 );
 				
 			}
 		} catch ( SQLException e ) {
 			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao montar tabela!\n" + e.getMessage() );
 		}
 	}
-	
 	
 	public void imprimir( boolean bVisualizar ) {
 
@@ -1260,7 +1273,6 @@ public class FRBoleto extends FRelatorio {
 					}
 				}
 			}
-
 		}
 
 		imp.fechaGravacao();
