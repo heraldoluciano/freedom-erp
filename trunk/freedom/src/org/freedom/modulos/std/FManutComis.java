@@ -153,7 +153,6 @@ public class FManutComis extends FFilho implements ActionListener {
 
 		Funcoes.setBordReq( txtDataini );
 		Funcoes.setBordReq( txtDatafim );
-		Funcoes.setBordReq( txtCodVend );
 
 		txtTotComi.setAtivo( false );
 		txtTotLib.setAtivo( false );
