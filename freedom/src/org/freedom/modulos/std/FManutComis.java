@@ -212,7 +212,7 @@ public class FManutComis extends FFilho implements ActionListener {
 		c.add( spnTab, BorderLayout.CENTER );
 
 		tab.adicColuna( "" ); // 0
-		tab.adicColuna( "Cód.Vend" ); // 1
+		tab.adicColuna( "Cód.Comis" ); // 1
 		tab.adicColuna( "Nome do comissionado" ); // 2
 		tab.adicColuna( "Cliente" ); // 3
 		tab.adicColuna( "Doc." ); // 4
@@ -286,16 +286,18 @@ public class FManutComis extends FFilho implements ActionListener {
 		sStatus = " AND C.STATUSCOMI IN (" + sStatus + ")";
 		sEmitRel = rgEmitRel.getVlrString();
 
-		String sSQL = "SELECT C.CODCOMI,C.STATUSCOMI,CL.RAZCLI,R.DOCREC,ITR.NPARCITREC," + "C.VLRCOMI,C.DATACOMI,C.DTVENCCOMI,C.DTPAGTOCOMI,C.TIPOCOMI " + 
-				"FROM VDCOMISSAO C, VDCLIENTE CL,FNRECEBER R, FNITRECEBER ITR " + "WHERE " + sWhere 
+		String sSQL = "SELECT C.CODCOMI,C.STATUSCOMI,CL.RAZCLI,R.DOCREC,ITR.NPARCITREC," + "C.VLRCOMI,C.DATACOMI,C.DTVENCCOMI,C.DTPAGTOCOMI,C.TIPOCOMI,V.CODVEND, V.NOMEVEND" + 
+				" FROM VDCOMISSAO C, VDCLIENTE CL,FNRECEBER R, FNITRECEBER ITR, VDVENDEDOR V " + "WHERE " + sWhere 
 				+ "ITR.CODREC = R.CODREC AND C.CODREC = ITR.CODREC AND " + ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" ) + 
 				" BETWEEN ? AND ? " + "AND CL.CODCLI=R.CODCLI" + sStatus + " AND ITR.CODEMP=C.CODEMPRC AND ITR.CODFILIAL=C.CODFILIALRC "
 				+ "AND R.CODEMP=C.CODEMPRC AND R.CODFILIAL=C.CODFILIALRC AND CL.CODEMP=R.CODEMPCL " + 
-				"AND CL.CODFILIAL=R.CODFILIALCL AND C.CODEMP=? AND C.CODFILIAL=? AND C.NPARCITREC = ITR.NPARCITREC " + "ORDER BY " + 
+				" AND CL.CODFILIAL=R.CODFILIALCL AND C.CODEMP=? AND C.CODFILIAL=? AND C.NPARCITREC = ITR.NPARCITREC " +
+				" AND V.CODEMP=CL.CODEMPVD AND V.CODFILIAL=CL.CODFILIALVD AND V.CODVEND=CL.CODVEND "
+				+ "ORDER BY " + 
 				( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" );
 		try {
 			PreparedStatement ps = con.prepareStatement( sSQL );
-		
+			System.out.println( "SQL COMIS: " + sSQL ); 
 			if ( !txtCodVend.getText().trim().equals( "" ) ) {				
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
 				ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
@@ -328,9 +330,8 @@ public class FManutComis extends FFilho implements ActionListener {
 				}
 				/* # IMPLEMENTAR # */
 				
-				tab.setValor( rs.getString( "" ), i, 1 );  // codigo do comissionado
-				tab.setValor( rs.getString( "" ), i, 2 );  // nome do comissionado
-				
+				tab.setValor( rs.getInt( "CodVend" ), i, 1 );  
+			tab.setValor( rs.getString( "NomeVend" ), i, 2 );  
 				tab.setValor( rs.getString( "RazCli" ), i, 3 );
 				tab.setValor( rs.getString( "DocRec" ), i, 4 );
 				tab.setValor( rs.getString( "NParcItRec" ), i, 5 );
