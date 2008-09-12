@@ -36,6 +36,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -889,7 +890,7 @@ public class FRBoleto extends FRelatorio {
 		lsParcelas = lsParcParam;
 	}
 	
-	private ResultSet execQuery(){
+	private ResultSet execQuery( String sWhereGrid ){
 		
 		ResultSet rsRetorno = null;
 		StringBuilder sSQL = new StringBuilder();
@@ -903,6 +904,11 @@ public class FRBoleto extends FRelatorio {
 		ImprimeOS imp = null;
 		PreparedStatement ps = null;
 		int param = 1;
+		
+		if( !sWhereGrid.equals( "" )){
+			
+			String sWhereBol = getBoletos();
+		}
 		
 		sWhere.append( "MB.CODEMP=? AND MB.CODFILIAL=? AND MB.CODMODBOL=? AND " );
 		
@@ -928,6 +934,8 @@ public class FRBoleto extends FRelatorio {
 		if( codTipoMov != 0 ){
 			sWhere.append( "AND V.CODEMPTM=? AND V.CODFILIALTM=? AND V.CODTIPOMOV=? " );
 		}	
+		
+		//sWhere.append( "AND R.CODVENDA IN " + "( " + sWhereBol.toString() + " )" );
 					
 		if ( ( lsParcelas != null ) && ( lsParcelas.size() > 0 ) ) {
 			sWhere.append( "AND ITR.NPARCITREC IN (" );
@@ -1044,6 +1052,7 @@ public class FRBoleto extends FRelatorio {
 		sSQL.append( "ITR.STATUSITREC IN ('R1','RL') ");
 		sSQL.append( "AND VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND AND " );
 		sSQL.append( sWhere );
+		sSQL.append( sWhereGrid );
 		sSQL.append( " order by v.codvenda");		
 		
 		try {
@@ -1169,20 +1178,22 @@ public class FRBoleto extends FRelatorio {
 	}
 	private void montaGrid(){
 		
-		if("".equals( txtCodModBol.getVlrString() )){
+		if( "".equals( txtCodModBol.getVlrString() )){
 			
 			Funcoes.mensagemInforma( this, "Modelo de boleto não selecionado!" );
 			txtCodModBol.requestFocus();
 			return;
 		}
-		ResultSet rs = execQuery();
+		
+		ResultSet rs = execQuery( "" );
+		tbBoletos.setColunaEditavel( 0, true );
 		
 		try {
 			
 			for( int i=0; rs.next(); i++ ){
 				
 				tbBoletos.adicLinha();
-				tbBoletos.setValor( cbTab, i, 0 );
+				tbBoletos.setValor( true, i, 0 );
 				tbBoletos.setValor( rs.getInt( "CodVenda" ), i, 1 );
 				tbBoletos.setValor( Funcoes.dateToSQLDate( rs.getDate( "DtEmitVenda" ) ), i, 2 );
 				tbBoletos.setValor( Funcoes.dateToSQLDate( rs.getDate( "DtVencItRec" ) ), i, 3 );
@@ -1190,10 +1201,29 @@ public class FRBoleto extends FRelatorio {
 				tbBoletos.setValor( rs.getBigDecimal( "VlrParcItRec" ), i, 5 );
 				
 			}
+					
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao montar tabela!\n" + e.getMessage() );
 		}
+	}
+	
+	private String getBoletos(){
+		
+		int numLinhas = tbBoletos.getNumLinhas();
+		String[] sValores = new String[numLinhas];
+		Vector<String> sValor = new Vector<String>(); 
+		
+		for( int i=0; i<numLinhas; i++ ){
+			
+			if( tbBoletos.getValor( i, 0 ).equals( true )){
+				
+				sValor.add( (String)tbBoletos.getValor( i, 1 ).toString() );
+			}
+		}	
+		sValores = (String[]) sValor.toArray();
+		
+		return sValores.toString();
 	}
 	
 	public void imprimir( boolean bVisualizar ) {
@@ -1204,7 +1234,9 @@ public class FRBoleto extends FRelatorio {
 		final String codbanco = txtCodBanco.getVlrString().trim();
 		final int codtipocob = txtCodTpCob.getVlrInteger().intValue();
 		final int codTipoMov = txtCodTipoMov.getVlrInteger().intValue();
-
+		String sBoletos = getBoletos();
+		String sWhere = " AND V.CODVENDA IN ( " + sBoletos + " )";
+		
 		if ( txtCodModBol.getVlrString().equals( "" ) ) {
 			Funcoes.mensagemInforma( this, "Modelo de boleto não selecionado!" );
 			txtCodModBol.requestFocus();
@@ -1215,13 +1247,12 @@ public class FRBoleto extends FRelatorio {
 			txtDtIni.requestFocus();
 			return;
 		}
-		
 
 		try {
 			
 			atualizaParcela( getCodrec( txtCodVenda.getVlrInteger(), txtTipoVenda.getVlrString() ), txtParc.getVlrInteger(), txtCodBanco.getVlrString(), txtCodCartCob.getVlrString() );
 
-			ResultSet rs = execQuery();
+			ResultSet rs = execQuery( sWhere );
 			
 			String classe = getClassModelo( txtPreImpModBol.getVlrString(), txtClassModBol.getVlrString() );
 			
