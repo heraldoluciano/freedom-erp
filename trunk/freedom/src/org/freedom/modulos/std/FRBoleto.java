@@ -22,6 +22,7 @@
 
 package org.freedom.modulos.std;
 
+
 import java.awt.BorderLayout;
 import java.awt.Checkbox;
 import java.awt.Dimension;
@@ -1211,19 +1212,28 @@ public class FRBoleto extends FRelatorio {
 	private String getBoletos(){
 		
 		int numLinhas = tbBoletos.getNumLinhas();
-		String[] sValores = new String[numLinhas];
-		Vector<String> sValor = new Vector<String>(); 
+		int numLinhasSel = 0; 
+		String[] sValores = null ;
+		Vector<String> vValores = new Vector<String>();
+		String sRet = "";
 		
-		for( int i=0; i<numLinhas; i++ ){
-			
-			if( tbBoletos.getValor( i, 0 ).equals( true )){
+		try {
+		
+			for( int i=0; i<numLinhas; i++ ){
 				
-				sValor.add( (String)tbBoletos.getValor( i, 1 ).toString() );
-			}
-		}	
-		sValores = (String[]) sValor.toArray();
-		
-		return sValores.toString();
+				if( tbBoletos.getValor( i, 0 ).equals( true )){
+					
+					vValores.add( i, tbBoletos.getValor( i, 1 ).toString() );
+					
+				}
+			}	
+			sRet = Funcoes.vectorToString( vValores,",");
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sRet;
 	}
 	
 	public void imprimir( boolean bVisualizar ) {
