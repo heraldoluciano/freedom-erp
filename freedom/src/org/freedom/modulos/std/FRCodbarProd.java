@@ -33,6 +33,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -46,6 +47,7 @@ import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -97,6 +99,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 	private final ListaCampos lcProduto = new ListaCampos( this );
 	
+	private final JCheckBoxPad cbPreco = new JCheckBoxPad( "Mostra preço?", "S", "N" );
 
 	public FRCodbarProd() {
 
@@ -149,6 +152,8 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		
 		
 		pnCampos.adic( cbEtiquetas, 7, 60, 200, 20 );
+		cbPreco.setVlrString( "S" );
+		pnCampos.adic( cbPreco, 210, 60, 150, 20 );
 		
 		pnCampos.adic( new JLabelPad( "Cód. Produto" ), 07, 10, 100, 20 );
 		pnCampos.adic( txtCodProd, 07, 30, 80, 20 );
@@ -478,6 +483,8 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 	public void imprimir( boolean bVisualizar ) {
 		
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+		
 		if ( removeEtiquetas() ) {
 
 			if ( persistEtiquetas() ) {
@@ -488,7 +495,9 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 					if ( etiqueta.tipo == EEtiqueta.JASPER ) {
 						FPrinterJob dlGr = null;
 						if (!"".equals( getTpEtiquetas())) {
-							dlGr = new FPrinterJob( etiqueta.local , "Etiquetas", null, getEtiquetas(), null, this );
+							
+							hParam.put( "MOSTRAPRECO", cbPreco.getVlrString() );
+							dlGr = new FPrinterJob( etiqueta.local , "Etiquetas", null, getEtiquetas(), hParam, this );
 							dlGr.setVisible( true );
 						}
 					}
@@ -498,7 +507,8 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 					if ( etiqueta.tipo == EEtiqueta.JASPER ) {
 						try {
 							FPrinterJob dlGr = null;
-							dlGr = new FPrinterJob( etiqueta.local, "Etiquetas", null, getEtiquetas(), null, this );
+							hParam.put( "MOSTRAPRECO", cbPreco.getVlrString() );
+							dlGr = new FPrinterJob( etiqueta.local, "Etiquetas", null, getEtiquetas(), hParam, this );
 							JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 						} catch ( Exception err ) {
 							Funcoes.mensagemErro( this, "Erro na impressão de Etiquetas!" + err.getMessage(), true, con, err );
