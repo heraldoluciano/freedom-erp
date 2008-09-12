@@ -97,7 +97,7 @@ public class FEmpresa extends FTabDados implements PostListener, CarregaListener
 
 	private JTextFieldPad txtPercIssEmp = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
 
-	private JTextFieldPad txtCodEANEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 6, 0 );
+	private JTextFieldPad txtCodEANEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
 	private JTextFieldPad txtCodPaisEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
@@ -247,9 +247,9 @@ public class FEmpresa extends FTabDados implements PostListener, CarregaListener
 		adicCampo( txtFaxEmp, 160, 140, 137, 20, "FaxEmp", "Fax", ListaCampos.DB_SI, false );
 		adicCampo( txtEmailEmp, 300, 140, 170, 20, "EmailEmp", "E-Mail", ListaCampos.DB_SI, false );
 		adicCampo( txtWWWEmp, 7, 180, 180, 20, "WWWEmp", "Página da WEB", ListaCampos.DB_SI, false );
-		adicCampo( txtCodEANEmp, 190, 180, 57, 20, "CodEANEmp", "Cod. EAN", ListaCampos.DB_SI, false );
-		adicCampo( txtCodPaisEmp, 250, 180, 47, 20, "CodPaisEmp", "C.pais", ListaCampos.DB_SI, false );
-		adicCampo( txtPercIssEmp, 300, 180, 47, 20, "PercIssEmp", "%Iss", ListaCampos.DB_SI, false );
+		adicCampo( txtCodEANEmp, 190, 180, 75, 20, "CodEANEmp", "Cod. EAN", ListaCampos.DB_SI, false );
+		adicCampo( txtCodPaisEmp, 265, 180, 37, 20, "CodPaisEmp", "C.pais", ListaCampos.DB_SI, false );
+		adicCampo( txtPercIssEmp, 305, 180, 45, 20, "PercIssEmp", "%Iss", ListaCampos.DB_SI, false );
 		adicCampo( txtNomeContEmp, 350, 180, 120, 20, "NomeContEmp", "Contato", ListaCampos.DB_SI, false );
 		adicDB( imFotoEmp, 7, 230, 150, 140, "FotoEmp", "Foto: (máx. 64K)", true );
 		adicDB( cbMultiAlmox, 160, 230, 300, 20, "MultiAlmoxEmp", "Intercambio de almox. entre filiais?", true );
