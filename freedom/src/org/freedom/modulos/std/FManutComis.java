@@ -212,24 +212,28 @@ public class FManutComis extends FFilho implements ActionListener {
 		c.add( spnTab, BorderLayout.CENTER );
 
 		tab.adicColuna( "" ); // 0
-		tab.adicColuna( "Cliente" ); // 1
-		tab.adicColuna( "Doc." ); // 2
-		tab.adicColuna( "Parcelamento" ); // 3
-		tab.adicColuna( "TP." ); // 4
-		tab.adicColuna( "Valor" ); // 5
-		tab.adicColuna( "Emissão" ); // 6
-		tab.adicColuna( "Vencimento" ); // 7
-		tab.adicColuna( "Data pagamento" ); // 8
+		tab.adicColuna( "Cód.Vend" ); // 1
+		tab.adicColuna( "Nome do comissionado" ); // 2
+		tab.adicColuna( "Cliente" ); // 3
+		tab.adicColuna( "Doc." ); // 4
+		tab.adicColuna( "Parcelamento" ); // 5
+		tab.adicColuna( "TP." ); // 6
+		tab.adicColuna( "Valor" ); // 7
+		tab.adicColuna( "Emissão" ); // 8
+		tab.adicColuna( "Vencimento" ); // 9
+		tab.adicColuna( "Data pagamento" ); // 10
 
 		tab.setTamColuna( 30, 0 );
-		tab.setTamColuna( 180, 1 );
-		tab.setTamColuna( 50, 2 );
-		tab.setTamColuna( 92, 3 );
-		tab.setTamColuna( 30, 4 );
-		tab.setTamColuna( 70, 5 );
-		tab.setTamColuna( 80, 6 );
-		tab.setTamColuna( 85, 7 );
-		tab.setTamColuna( 160, 8 );
+		tab.setTamColuna( 80, 1 );
+		tab.setTamColuna( 180, 2 );
+		tab.setTamColuna( 180, 3 );
+		tab.setTamColuna( 50, 4 );
+		tab.setTamColuna( 92, 5 );
+		tab.setTamColuna( 30, 6 );
+		tab.setTamColuna( 70, 7 );
+		tab.setTamColuna( 80, 8 );
+		tab.setTamColuna( 85, 9 );
+		tab.setTamColuna( 80, 10 );
 		tab.setColunaEditavel( 0, true );
 
 		btBusca.addActionListener( this );
@@ -249,6 +253,9 @@ public class FManutComis extends FFilho implements ActionListener {
 
 	private void pesq() {
 
+		int iparam = 1;
+		String sWhere = " ";
+		
 		if ( txtDataini.getText().trim().equals( "" ) ) {
 			Funcoes.mensagemInforma( this, "Data inicial é requerido!" );
 			return;
@@ -257,16 +264,16 @@ public class FManutComis extends FFilho implements ActionListener {
 			Funcoes.mensagemInforma( this, "Data final é requerido!" );
 			return;
 		}
-		else if ( txtCodVend.getText().trim().equals( "" ) ) {
-			Funcoes.mensagemInforma( this, "Código do comissionado é requerido!" );
-			return;
-		}
+		
 		else if ( txtDataini.getVlrDate().after( txtDatafim.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data inicial não pode ser maior que a data final!" );
 			return;
 		}
 		String sStatus = "'CE'";
 
+		if ( !txtCodVend.getText().trim().equals( "" ) ) {
+			sWhere = " R.CODEMPVD=? AND R.CODFILIALVD=? AND R.CODVEND = ? AND ";
+		}
 		if ( cbComPag.getVlrString().equals( "S" ) ) {
 			sStatus += ",'CP'";
 		}
@@ -279,18 +286,26 @@ public class FManutComis extends FFilho implements ActionListener {
 		sStatus = " AND C.STATUSCOMI IN (" + sStatus + ")";
 		sEmitRel = rgEmitRel.getVlrString();
 
-		String sSQL = "SELECT C.CODCOMI,C.STATUSCOMI,CL.RAZCLI,R.DOCREC,ITR.NPARCITREC," + "C.VLRCOMI,C.DATACOMI,C.DTVENCCOMI,C.DTPAGTOCOMI,C.TIPOCOMI " + "FROM VDCOMISSAO C, VDCLIENTE CL,FNRECEBER R, FNITRECEBER ITR " + "WHERE R.CODEMPVD=? AND R.CODFILIALVD=? AND R.CODVEND = ? "
-				+ "AND ITR.CODREC = R.CODREC AND C.CODREC = ITR.CODREC AND " + ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" ) + " BETWEEN ? AND ? " + "AND CL.CODCLI=R.CODCLI" + sStatus + " AND ITR.CODEMP=C.CODEMPRC AND ITR.CODFILIAL=C.CODFILIALRC "
-				+ "AND R.CODEMP=C.CODEMPRC AND R.CODFILIAL=C.CODFILIALRC AND CL.CODEMP=R.CODEMPCL " + "AND CL.CODFILIAL=R.CODFILIALCL AND C.CODEMP=? AND C.CODFILIAL=? AND C.NPARCITREC = ITR.NPARCITREC " + "ORDER BY " + ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" );
+		String sSQL = "SELECT C.CODCOMI,C.STATUSCOMI,CL.RAZCLI,R.DOCREC,ITR.NPARCITREC," + "C.VLRCOMI,C.DATACOMI,C.DTVENCCOMI,C.DTPAGTOCOMI,C.TIPOCOMI " + 
+				"FROM VDCOMISSAO C, VDCLIENTE CL,FNRECEBER R, FNITRECEBER ITR " + "WHERE " + sWhere 
+				+ "ITR.CODREC = R.CODREC AND C.CODREC = ITR.CODREC AND " + ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" ) + 
+				" BETWEEN ? AND ? " + "AND CL.CODCLI=R.CODCLI" + sStatus + " AND ITR.CODEMP=C.CODEMPRC AND ITR.CODFILIAL=C.CODFILIALRC "
+				+ "AND R.CODEMP=C.CODEMPRC AND R.CODFILIAL=C.CODFILIALRC AND CL.CODEMP=R.CODEMPCL " + 
+				"AND CL.CODFILIAL=R.CODFILIALCL AND C.CODEMP=? AND C.CODFILIAL=? AND C.NPARCITREC = ITR.NPARCITREC " + "ORDER BY " + 
+				( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" );
 		try {
 			PreparedStatement ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
-			ps.setInt( 3, txtCodVend.getVlrInteger().intValue() );
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 5, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			ps.setInt( 6, Aplicativo.iCodEmp );
-			ps.setInt( 7, ListaCampos.getMasterFilial( "VDCOMISSAO" ) );
+		
+			if ( !txtCodVend.getText().trim().equals( "" ) ) {				
+				ps.setInt( iparam++, Aplicativo.iCodEmp );
+				ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
+				ps.setInt( iparam++, txtCodVend.getVlrInteger().intValue() );	
+			}
+			
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDCOMISSAO" ) );
 			ResultSet rs = ps.executeQuery();
 			tab.limpa();
 			bVlrTot = new BigDecimal( "0.0" );
@@ -308,16 +323,21 @@ public class FManutComis extends FFilho implements ActionListener {
 				}
 				else if ( rs.getString( "StatusComi" ).equals( "CP" ) ) {
 					tab.setValor( new Boolean( true ), i, 0 );
-					tab.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DtPagtoComi" ) ), i, 8 );
+					tab.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DtPagtoComi" ) ), i, 10 );
 					bVlrTotPago = bVlrTotPago.add( new BigDecimal( rs.getString( "VlrComi" ) ) );
 				}
-				tab.setValor( rs.getString( "RazCli" ), i, 1 );
-				tab.setValor( rs.getString( "DocRec" ), i, 2 );
-				tab.setValor( rs.getString( "NParcItRec" ), i, 3 );
-				tab.setValor( rs.getString( "TipoComi" ) != null ? rs.getString( "TipoComi" ) : "", i, 4 );
-				tab.setValor( Funcoes.strDecimalToStrCurrency( 10, 2, "" + ( rs.getBigDecimal( "VlrComi" ).setScale( 2, BigDecimal.ROUND_HALF_UP ) ) ), i, 5 );
-				tab.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "Datacomi" ) ), i, 6 );
-				tab.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DtVencComi" ) ), i, 7 );
+				/* # IMPLEMENTAR # */
+				
+				tab.setValor( rs.getString( "" ), i, 1 );  // codigo do comissionado
+				tab.setValor( rs.getString( "" ), i, 2 );  // nome do comissionado
+				
+				tab.setValor( rs.getString( "RazCli" ), i, 3 );
+				tab.setValor( rs.getString( "DocRec" ), i, 4 );
+				tab.setValor( rs.getString( "NParcItRec" ), i, 5 );
+				tab.setValor( rs.getString( "TipoComi" ) != null ? rs.getString( "TipoComi" ) : "", i, 6 );
+				tab.setValor( Funcoes.strDecimalToStrCurrency( 10, 2, "" + ( rs.getBigDecimal( "VlrComi" ).setScale( 2, BigDecimal.ROUND_HALF_UP ) ) ), i, 7 );
+				tab.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "Datacomi" ) ), i, 8 );
+				tab.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "DtVencComi" ) ), i, 9 );
 				bVlrTot = bVlrTot.add( ( new BigDecimal( rs.getString( "VlrComi" ) ).setScale( 2, BigDecimal.ROUND_HALF_UP ) ) );
 			}
 			txtTotComi.setVlrBigDecimal( bVlrTot );
