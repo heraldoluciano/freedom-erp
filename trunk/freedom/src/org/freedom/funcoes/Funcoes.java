@@ -1015,7 +1015,30 @@ public class Funcoes {
 		sRet = new String(cVals);
 		return sRet;
 	}
+	
+	public static String arrayToString(String[] lista, String sep) {
+	    String result = "";
+	    if (lista.length > 0) {
+	        result = lista[0];    // start with the first element
+	        for (int i=1; i<lista.length; i++) {
+	            result = result + sep + lista[i];
+	        }
+	    }
+	    return result;
+	}
 
+	public static String vectorToString(Vector lista, String sep) {
+	    String result = "";
+	    if (lista.size() > 0) {
+	        result = lista.get(0).toString();    // start with the first element
+	        for (int i=1; i<lista.size(); i++) {
+	            result = result + sep + lista.get( i );
+	        }
+	    }
+	    return result;
+	}
+
+	
 	public static char tiraAcento(char cKey) {
 
 		char cTmp = cKey;
