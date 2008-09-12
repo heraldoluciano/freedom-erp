@@ -23,6 +23,7 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
+	<parameter name="MOSTRAPRECO" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[select p.descprod, p.codbarprod, p.precobaseprod from eqproduto p, eqetiqprod e 
 where e.codemp=p.codemp and e.codfilial=p.codfilial and e.codprod=p.codprod and 
 e.nrconexao=1]]></queryString>
@@ -52,7 +53,7 @@ e.nrconexao=1]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="10"
-						y="38"
+						y="47"
 						width="153"
 						height="11"
 						key="textField-2"/>
@@ -65,10 +66,12 @@ e.nrconexao=1]]></queryString>
 				<staticText>
 					<reportElement
 						x="10"
-						y="51"
+						y="60"
 						width="26"
 						height="11"
-						key="staticText-3"/>
+						key="staticText-3">
+							<printWhenExpression><![CDATA[new Boolean( $P{MOSTRAPRECO}.equals("S"))]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="8"/>
@@ -78,10 +81,12 @@ e.nrconexao=1]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="39"
-						y="51"
+						y="60"
 						width="96"
 						height="11"
-						key="textField-3"/>
+						key="textField-3">
+							<printWhenExpression><![CDATA[new Boolean( $P{MOSTRAPRECO}.equals("S") )]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="8"/>
@@ -102,6 +107,19 @@ e.nrconexao=1]]></queryString>
 					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
 					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(9,$F{CODBARPROD},false,false,null,0,0)]]></imageExpression>
 				</image>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="8"
+						y="28"
+						width="153"
+						height="9"
+						key="textField-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODBARPROD}.trim()]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
