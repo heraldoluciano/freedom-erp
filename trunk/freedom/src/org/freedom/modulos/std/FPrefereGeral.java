@@ -723,8 +723,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbPepsProd.setVlrString( "N" );
 		cbBuscaProdSimilar = new JCheckBoxPad( "Busca automática de produtos similares?", "S", "N" );
 		cbBuscaProdSimilar.setVlrString( "N" );
-		cbLibGeral = new JCheckBoxPad( "Liberação de credito globalizada?", "S", "N" );
-		cbLibGeral.setVlrString( "S" );
+//		cbLibGeral = new JCheckBoxPad( "Liberação de credito globalizada?", "S", "N" );
+//		cbLibGeral.setVlrString( "S" );
 		cbJurosPosCalc = new JCheckBoxPad( "Juros pós-calculado?", "S", "N" );
 		cbJurosPosCalc.setVlrString( "N" );
 		cbAltItRecImpBol = new JCheckBoxPad( "Atualiza parcela na impressão do boleto?", "S", "N" );
@@ -809,12 +809,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 
 		Vector<String> vLabs3 = new Vector<String>();
 		Vector<String> vVals3 = new Vector<String>();
+		
 		vLabs3.addElement( "Não vericar" );
-		vLabs3.addElement( "Aguardar liberação" );
-		vLabs3.addElement( "Liberar crédito pré-aprovado" );
+		vLabs3.addElement( "Consulta crédito pré-aprovado" );
+
 		vVals3.addElement( "N" );
-		vVals3.addElement( "A" );
 		vVals3.addElement( "L" );
+		
 		rgLibCred = new JRadioGroup<String, String>( 3, 1, vLabs3, vVals3 );
 		rgLibCred.setVlrString( "N" );
 
@@ -989,7 +990,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adic( lbFinOpcoes, 17, 150, 70, 20 );
 		adic( lbFinCont, 7, 160, 425, 250 );
 		adicDB( cbAltItRecImpBol, 17, 175, 310, 20, "AtBancoImpBol", "", true );
-		adicDB( cbLibGeral, 17, 200, 310, 20, "LCredGlobal", "", true );
+//		adicDB( cbLibGeral, 17, 200, 310, 20, "LCredGlobal", "", true );
 		adicDB( cbJurosPosCalc, 17, 225, 310, 20, "JurosPosCalc", "", true );
 		adicDB( cbEstItRecAltDtVenc, 17, 250, 400, 20, "EstItRecAltDtVenc", "", true );
 		
