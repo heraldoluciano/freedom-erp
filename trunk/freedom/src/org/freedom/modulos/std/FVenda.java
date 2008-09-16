@@ -2036,7 +2036,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	
 	private boolean[] prefs() {
 
-		boolean[] bRetorno = new boolean[ 20 ];
+		boolean[] bRetorno = new boolean[ 22 ];
 		StringBuffer sSQL = new StringBuffer();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -2577,7 +2577,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		} 
 		catch ( SQLException err ) {
 			err.printStackTrace();
-			Funcoes.mensagemInforma( this, "Venda ultrapassa o limite de crédito pré-estabelecido!/n" );
+			Funcoes.mensagemInforma( this, "Venda ultrapassa o limite de crédito pré-estabelecido!\n"+err.getMessage()  );
 			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Problema com limite de crédito." );
 			return false;
 		}
