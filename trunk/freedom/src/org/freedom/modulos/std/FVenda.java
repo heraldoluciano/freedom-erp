@@ -2367,7 +2367,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				//Verificação de crédito 
 				
 				if( bPrefs[POS_PREFS.CONS_CRED_ITEM.ordinal() ] ) { //Verifica se deve consultar crédito na inserção do ítem;
-					if(!consultaCredito()) {
+					if(!consultaCredito(txtVlrLiqItVenda.getVlrBigDecimal())) {
 						pevt.cancela();
 					}
 				}
@@ -2553,11 +2553,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		super.keyReleased( kevt );
 	}
 	
-	private boolean consultaCredito() {
+	private boolean consultaCredito(BigDecimal vlradic) {
 
 		try {
 			// Liberação de crédito:
-			String sSQL = "EXECUTE PROCEDURE FNLIBCREDSP(?,?,?,?,?,?,?,?);";
+			String sSQL = "EXECUTE PROCEDURE FNLIBCREDSP(?,?,?,?,?,?,?,?,?);";
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
@@ -2567,6 +2567,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			ps.setInt( 6, Aplicativo.iCodEmp );
 			ps.setInt( 7, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			ps.setObject( 8, txtVlrLiqVenda.getVlrBigDecimal() );
+			ps.setBigDecimal( 9, vlradic );
+				
+			
+				
 			ps.execute();
 			ps.close();
 			
@@ -2640,7 +2644,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		try {
 					
 			if( bPrefs[POS_PREFS.CONS_CRED_FECHA.ordinal() ] ) { //Verifica se deve consultar crédito ;
-				if(!consultaCredito()) {
+				if(!consultaCredito(null)) {
 					return;
 				}
 			}
