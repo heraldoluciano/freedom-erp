@@ -339,8 +339,8 @@ public class NF049 extends Layout {
 						imp.pulaLinha( 1, imp.comprimido() );
 					}
 
-					Float vlrdiferido = vlricmsorig.subtract(
-							new BigDecimal (cab.getFloat( NF.C_VLRICMSPED )).setScale( 2,BigDecimal.ROUND_CEILING )
+					Float vlrdiferido = vlricmsorig.setScale( 2,BigDecimal.ROUND_HALF_UP).subtract( 
+							new BigDecimal (cab.getFloat( NF.C_VLRICMSPED )).setScale( 2,BigDecimal.ROUND_HALF_UP )
 							
 					).floatValue();
 					
