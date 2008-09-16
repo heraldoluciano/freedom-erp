@@ -612,6 +612,14 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 		
 		if( cbComissionados.getVlrString().equals( "S" )){
 		
+			txtCodCli.setVlrString( "" );
+			txtCodSetor.setVlrString( "" );
+			txtCodTipo.setVlrString( "" );
+			
+			txtDescTipo.setVlrString( "" );
+			txtDescSetor.setVlrString( "" );
+			txtRazCli.setVlrString( "" );
+			
 			txtCodCli.setSoLeitura( true );
 			txtCodSetor.setSoLeitura( true );
 			txtCodTipo.setSoLeitura( true );
