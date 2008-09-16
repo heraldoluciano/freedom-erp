@@ -271,7 +271,7 @@ public class FManutComis extends FFilho implements ActionListener {
 		String sStatus = "'CE'";
 
 		if ( !txtCodVend.getText().trim().equals( "" ) ) {
-			sWhere = " R.CODEMPVD=? AND R.CODFILIALVD=? AND R.CODVEND = ? AND ";
+			sWhere = " R.CODEMPVD=? AND R.CODFILIALVD=? AND V.CODVEND=? AND ";
 		}
 		if ( cbComPag.getVlrString().equals( "S" ) ) {
 			sStatus += ",'CP'";
