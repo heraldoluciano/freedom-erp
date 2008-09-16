@@ -35,9 +35,12 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.CheckBoxEvent;
+import org.freedom.acao.CheckBoxListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -50,7 +53,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
-public class FREtiqueta extends FRelatorio implements CarregaListener {
+public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -127,6 +130,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 	private JButton btExcluir = new JButton( Icone.novo( "btExcluir.gif" ) );
 
 	private JComboBoxPad cbAtivoCli = null;
+	
+	private JCheckBoxPad cbComissionados = new JCheckBoxPad("Comissionados? ", "S", "N");
 
 	public FREtiqueta() {
 
@@ -219,6 +224,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 		
 		pinCab.adic( new JLabelPad("UF do cliente"), 370, 125, 100, 20 );
 		pinCab.adic( txtUfCli, 370, 145, 100, 20 );
+		
+		pinCab.adic( cbComissionados, 370, 180, 150, 20 );
 
 		pinCab.adic( new JLabelPad( "Cód.tp.cli." ), 7, 45, 280, 20 );
 		pinCab.adic( txtCodTipo, 7, 65, 80, 20 );
@@ -255,6 +262,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 		btAdiciona.addActionListener( this );
 		btLimpa.addActionListener( this );
 		btExcluir.addActionListener( this );
+		cbComissionados.addCheckBoxListener( this );
 
 		setPrimeiroFoco( txtCodModEtiq );
 
@@ -268,11 +276,12 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 	}
 
 	public void montaTabela( Tabela tb ) {
-
-		tb.limpa();
+		
 		objEtiqCli.setTexto( txaEtiqueta.getVlrString() );
 		Vector<?> vLabelsColunas = objEtiqCli.getLabelsColunasAdic();
 		Vector<?> vTamanhos = objEtiqCli.getTamsAdic();
+		tb.limpa();
+		
 		for ( int i = 0; vLabelsColunas.size() > i; i++ ) {
 			tb.adicColuna( vLabelsColunas.elementAt( i ).toString() );
 			String sTmp = vTamanhos.elementAt( i ).toString();
@@ -597,5 +606,21 @@ public class FREtiqueta extends FRelatorio implements CarregaListener {
 			}
 		}
 		return vRet;
+	}
+
+	public void valorAlterado( CheckBoxEvent evt ) {
+		
+		if( cbComissionados.getVlrString().equals( "S" )){
+		
+			txtCodCli.setSoLeitura( true );
+			txtCodSetor.setSoLeitura( true );
+			txtCodTipo.setSoLeitura( true );
+		}
+		if( cbComissionados.getVlrString().equals( "N" )){
+			
+			txtCodCli.setSoLeitura( false );
+			txtCodSetor.setSoLeitura( false );
+			txtCodTipo.setSoLeitura( false );
+		}
 	}
 }
