@@ -51,6 +51,7 @@ public class FRPisCofins extends FRelatorio {
 	private Vector<String> vCofinsLab = new Vector<String>();
 	private Vector<String> vCofinsVal = new Vector<String>();
 	private JRadioGroup<?, ?> rgCofins = null;
+	private JRadioGroup<?, ?> rgFinanceiro = null;
 	
 	public FRPisCofins() {
 		setTitulo("Pis e cofins");
@@ -86,6 +87,19 @@ public class FRPisCofins extends FRelatorio {
 		
 		rgCofins = new JRadioGroup<String, String>(1,4,vCofinsLab,vCofinsVal);
 		
+		Vector<String> vFinLab = new Vector<String>();
+		Vector<String> vFinVal = new Vector<String>();
+
+		vFinLab.addElement( "Financeiro" );
+		vFinLab.addElement( "Não Finaceiro" );
+		vFinLab.addElement( "Ambos" );
+		vFinVal.addElement( "S" );
+		vFinVal.addElement( "N" );
+		vFinVal.addElement( "A" );
+		
+		rgFinanceiro = new JRadioGroup<String, String>( 1, 3, vFinLab, vFinVal );
+		rgFinanceiro.setVlrString( "S" );
+		
 		adic(new JLabelPad("Período:"),7,0,250,20);
 		adic(txtDataini,7,20,100,20);
 		adic(txtDatafim,110,20,100,20);
@@ -94,7 +108,12 @@ public class FRPisCofins extends FRelatorio {
 		adic(rgPis,7,60,420,30);
 		adic(new JLabelPad("Cofins:"),7,90,250,20);
 		adic(rgCofins,7,110,420,30);
-		adic(cbSemMov,7,150,420,30);
+		adic(new JLabelPad("Financeiro:"),7,150,250,20);
+		adic(rgFinanceiro,7,170,420,30);
+		adic(cbSemMov,7,210,420,30);
+		
+		
+		
 		cbSemMov.setVlrString("S");
 	    
 	}
@@ -125,6 +144,7 @@ public class FRPisCofins extends FRelatorio {
 		ResultSet rs = null;
 		String sSql = null;
 		String sWhere = "";
+		String sWhereFin = "";		
 		String sFiltros1 = "";
 		String sSemMov = "";
 		ImprimeOS imp = null;
@@ -166,6 +186,16 @@ public class FRPisCofins extends FRelatorio {
 			if (!sWhere.equals(""))
 				sWhere += " ) ";
 			
+			if ( "S".equals( rgFinanceiro.getVlrString() ) ) {
+				sWhereFin = " AND TM.SOMAVDTIPOMOV='S' ";
+			}
+			else if ( "N".equals( rgFinanceiro.getVlrString() ) ) {
+				sWhereFin = " AND TM.SOMAVDTIPOMOV='N' ";
+			}
+			else if ( "A".equals( rgFinanceiro.getVlrString() ) ) {
+				sWhereFin = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
+			}
+			
 			sSemMov = cbSemMov.getVlrString();
 			
 			sSql = "SELECT P.DESCPROD, P.CODFISC,(SELECT SUM( VLRLIQITCOMPRA ) " +
@@ -175,16 +205,16 @@ public class FRPisCofins extends FRelatorio {
 					"C.DTENTCOMPRA BETWEEN ? AND ? AND IC.CODEMPPD = P.CODEMP AND " +
 					"IC.CODFILIALPD = P.CODFILIAL AND IC.CODPROD = P.CODPROD AND " +
 					"C.CODEMPTM = TM.CODEMP AND C.CODFILIALTM = TM.CODFILIAL AND " +
-					"C.CODTIPOMOV = TM.CODTIPOMOV AND TM.TIPOMOV = 'CP' ) COMPRAS, " +
+					"C.CODTIPOMOV = TM.CODTIPOMOV AND TM.TIPOMOV = 'CP' " + sWhereFin + ") COMPRAS, " +
 					"( SELECT SUM( VLRLIQITVENDA ) FROM VDITVENDA IV, VDVENDA V, EQTIPOMOV TM " +
 					"WHERE V.CODVENDA = IV.CODVENDA AND V.CODEMP = IV.CODEMP AND " +
 					"V.CODFILIAL = IV.CODFILIAL AND V.TIPOVENDA = IV.TIPOVENDA AND " +
 					"V.CODVENDA = IV.CODVENDA AND V.DTEMITVENDA BETWEEN ? AND " +
 					"? AND IV.CODEMPPD = P.CODEMP AND IV.CODFILIALPD = P.CODFILIAL AND " +
 					"IV.CODPROD = P.CODPROD AND V.CODEMPTM = TM.CODEMP AND " +
-					"V.CODFILIALTM = TM.CODFILIAL AND V.CODTIPOMOV = TM.CODTIPOMOV AND " +
-					"TM.TIPOMOV = 'VD' AND ( SUBSTRING( V.STATUSVENDA FROM 1 FOR 1 ) != 'C' OR " +
-					"V.STATUSVENDA IS NULL ) ) VENDAS " +
+					"V.CODFILIALTM = TM.CODFILIAL AND V.CODTIPOMOV = TM.CODTIPOMOV " + sWhereFin +
+					" AND TM.TIPOMOV = 'VD' AND ( SUBSTRING( V.STATUSVENDA FROM 1 FOR 1 ) != 'C' OR " +
+					"V.STATUSVENDA IS NULL )  ) VENDAS " +
 					"FROM EQPRODUTO P, LFCLFISCAL CF " +
 					"WHERE P.CODEMPFC=CF.CODEMP AND P.CODFILIALFC=CF.CODFILIAL AND " +
 					"P.CODFISC=CF.CODFISC AND P.CODEMP=? AND P.CODFILIAL=? " + sWhere +
