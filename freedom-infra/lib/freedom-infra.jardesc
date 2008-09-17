@@ -13,8 +13,8 @@
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.beans"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.x.UIMaker"/>
-        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.util.text"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.controller"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.util.text"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.x.swing"/>
         <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.x.UIMaker.effect"/>
     </selectedElements>
