@@ -38,8 +38,7 @@
 	<parameter name="DATAFIM" isForPrompting="true" class="java.util.Date">
 		<defaultValueExpression ><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT eq.codemp,pd.descprod,pd.vlrdensidade,pd.vlrconcent,sum(EQ.qtdmovprod) as qtdmovprod,sum(op.qtdfinalprodop) as qtdfinalprodop,
- sum((case when qtdfinalprodop=0 then 0 else qtdmovprod/qtdfinalprodop * 100 end)) as formula
+	<queryString><![CDATA[SELECT eq.codemp,pd.descprod,pd.vlrdensidade,pd.vlrconcent,(case when qtdfinalprodop=0 then 0 else qtdmovprod/qtdfinalprodop * 100 end) as formula,sum(EQ.qtdmovprod) as qtdmovprod,sum(op.qtdfinalprodop) as qtdfinalprodop
 FROM eqmovprod EQ,
  eqtipomov tm, eqitrma itr, eqrma rma,  ppop op, eqproduto pd
 WHERE eq.codemp=$P{CODEMP} and eq.codfilial=$P{CODFILIAL} and eq.codprod=$P{CODPROD} AND EQ.dtmovprod 
@@ -52,8 +51,7 @@ and rma.codrma=itr.codrma
 and op.codemp=rma.codempof and op.codfilial=rma.codfilialof and op.codop=rma.codop and op.seqop=rma.seqop
 and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod
 and eq.qtdmovprod>0
-group by 1,2,3,4
-]]></queryString>
+group by 1,2,3,4,5]]></queryString>
 
 	<field name="CODEMP" class="java.lang.Long"/>
 	<field name="DESCPROD" class="java.lang.String"/>
