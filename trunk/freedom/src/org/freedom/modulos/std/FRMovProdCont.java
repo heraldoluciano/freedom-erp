@@ -10,6 +10,7 @@ import javax.swing.SwingConstants;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -32,13 +33,15 @@ public class FRMovProdCont extends FRelatorio {
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private ListaCampos lcProduto = new ListaCampos( this );
+	
+	private JCheckBoxPad cbAgrupado = new JCheckBoxPad( "Agrupado? ", "S", "N" );
 
 
 	public FRMovProdCont() {
 
 		super( false );
 		setTitulo( " Relatório de Movimentação Produto Controlado " );
-		setAtribos( 50, 50, 335, 210 );
+		setAtribos( 50, 50, 335, 220 );
 
 		montaTela();
 		montaListaCampos();
@@ -67,12 +70,21 @@ public class FRMovProdCont extends FRelatorio {
 		adic( txtCodProd, 7, 100, 80, 20 );
 		adic( new JLabelPad( "Descrição do produto" ), 90, 80, 200, 20 );
 		adic( txtDescProd, 90, 100, 223, 20 );
+		adic( cbAgrupado, 7, 125, 120, 20 );
 	}
 
 	public void imprimiGrafico( final boolean bVisualizar, String sCab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
+		String sRelatorio = "";
+		
+		if( cbAgrupado.getVlrString().equals( "S" )){
+			sRelatorio = "S"; 
+		}
+		else{
+			sRelatorio = "N";
+		}
 
 		Calendar anterior = Calendar.getInstance();
 		anterior.setTime( txtDataini.getVlrDate() );
@@ -86,6 +98,7 @@ public class FRMovProdCont extends FRelatorio {
 		hParam.put( "DATAINI", txtDataini.getVlrDate() );
 		hParam.put( "DATAFIM", txtDatafim.getVlrDate() );
 		hParam.put( "CODPROD", txtCodProd.getVlrInteger() );
+		hParam.put( "AGRUPAR", sRelatorio );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
 
 		dlGr = new FPrinterJob( "relatorios/MovProdContr.jasper", "Relatório de Movimentação Produto Controlado", sCab, this, hParam, con );
