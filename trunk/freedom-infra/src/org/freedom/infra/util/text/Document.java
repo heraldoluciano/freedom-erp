@@ -1,24 +1,45 @@
 
 package org.freedom.infra.util.text;
 
-import javax.swing.text.GapContent;
 import javax.swing.text.PlainDocument;
 
+/**
+ * Projeto: <a href="http://sourceforge.net/projects/freedom-erp/">Freedom-infra</a> <br>
+ * Este programa é licenciado de acordo com a LPG-PC <br>
+ * (Licença Pública Geral para Programas de Computador) versão 2.1.0 ou qualquer versão posterior. <br>
+ * <br>
+ * 
+ * Document extende de <code>javax.swing.text.PlainDocument</code>
+ * para prover o vínculo básico para a utilização da máscara com
+ * a classe <code>Mask</code> 
+ * 
+ * @see			javax.swing.text.PlainDocument
+ * @see			org.freedom.infra.util.text.Mask
+ * 
+ * @author 		Alex Rodrigues
+ * @version 	0.0.1 – 16/05/2008
+ * 
+ * @since 		16/05/2008
+ */
 public abstract class Document extends PlainDocument {
 
 	private static final long serialVersionUID = 1l;
 
-	private Mask mask;
+	/**
+	 * Máscara a ser utilizada.
+	 */
+	protected Mask mask;
 
+	/**
+	 * Índice para encontrar o caracter correspondente na máscara.
+	 */
 	protected int index = 0;
 
 	public Document() {
-
-		this( new GapContent() );
+		super();
 	}
 
 	public Document( final Content c ) {
-
 		super( c );
 	}
 
@@ -29,5 +50,4 @@ public abstract class Document extends PlainDocument {
 	public void setMask( final Mask mask ) {
 		this.mask = mask;
 	}
-
 }

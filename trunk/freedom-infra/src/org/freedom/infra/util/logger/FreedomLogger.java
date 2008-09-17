@@ -12,13 +12,23 @@ import org.apache.log4j.PatternLayout;
 import org.freedom.infra.util.ini.ManagerIni;
 
 /**
+ * Projeto: <a href="http://sourceforge.net/projects/freedom-erp/">Freedom-infra</a> <br>
+ * Este programa é licenciado de acordo com a LPG-PC <br>
+ * (Licença Pública Geral para Programas de Computador) versão 2.1.0 ou qualquer versão posterior. <br>
+ * <br>
+ * 
  * Sub-classe para personalização de logs utilizando a API Log4J.
  * 
- * @author Anderson Sanchez - 30/06/2008;
+ * @see			FreedomLogger
+ * 
+ * @author 		Anderson Sanchez
+ * @version 	0.0.1 – 30/06/2008
+ * 
+ * @since 		30/06/2008
  */
 public class FreedomLogger extends Logger {
 
-	static String FQCN = FreedomLogger.class.getName() + ".";
+	private static String FQCN = FreedomLogger.class.getName() + ".";
 
 	private static FreedomLoggerFactory myFactory = new FreedomLoggerFactory();
 
@@ -94,12 +104,10 @@ public class FreedomLogger extends Logger {
 	}
 
 	public void trace( Object message ) {
-
 		super.log( FQCN, XLevel.TRACE, message, null );
 	}
 
 	public static void setLayoutDefault( final String ld ) {
-
 		LAYOUT_DEFAULT = ld;
 	}
 }

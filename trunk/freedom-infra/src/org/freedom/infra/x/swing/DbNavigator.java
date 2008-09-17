@@ -15,7 +15,7 @@ import javax.swing.JPanel;
  * Pacote: org.freedom.infra.x.swing <BR>
  * Classe:
  * 
- * @(#)DbNavigator.java <BR>
+ * (#)DbNavigator.java <BR>
  *                      <BR>
  *                      Este programa é licenciado de acordo com a LGPL (Lesser General Public License), <BR>
  *                      versão 2.1, Fevereiro de 1999 <BR>

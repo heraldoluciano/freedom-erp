@@ -5,58 +5,73 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.GapContent;
 
+/**
+ * Projeto: <a href="http://sourceforge.net/projects/freedom-erp/">Freedom-infra</a> <br>
+ * Este programa é licenciado de acordo com a LPG-PC <br>
+ * (Licença Pública Geral para Programas de Computador) versão 2.1.0 ou qualquer versão posterior. <br>
+ * <br>
+ * 
+ * O objetivo de DecimalDocument é possibilitar a aplicação de uma mascara para 
+ * números de ponto flutuante. Assim como em <code>IntegerDocument</code> esta,
+ * somente tratará algarismos númericos, e além da desta validação e a de negativo, 
+ * valida-se também o número de casas decimais.
+ * 
+ * @see			Document
+ * @see			org.freedom.infra.util.text.Mask
+ * 
+ * @author 		Alex Rodrigues
+ * @version 	0.0.2 – 16/05/2008
+ * 
+ * @since 		13/05/2008
+ */
 public class DecimalDocument extends Document {
 
 	private static final long serialVersionUID = 1l;
-
-	private Mask mask;
-
-	private int index = 0;
 
 	private int precision = 0;
 	
 	private int indexDecimal = -1;
 
 	public DecimalDocument() {
-
 		this( new GapContent(), 15, 5 );
 	}
 
 	public DecimalDocument( final Content c ) {
-
 		this( c, 15, 5 );
 	}
 
 	public DecimalDocument( final int size, final int precision ) {
-
 		this( new GapContent(), size, precision );
 	}
 
 	public DecimalDocument( final Content c, final int size, final int precision ) {
-
 		super( c );
 		setMask( Mask.createDecimal( size, precision ) );
 		this.precision = precision;
 	}
-
-	public Mask getMask() {
-
-		return mask;
-	}
-
-	public void setMask( final Mask mask ) {
-
-		this.mask = mask;
-	}
-
+	
+	/**
+     * Este metodo foi sobrescrito para que seja possivél, validar-se
+     * o texto a ser inserido no documento, e formata-lo conforme a mascara,
+     * antes do texto ser inserido no documento.
+     * 
+     * @see		#validateMask(String, int)
+     * 
+     * @since 	13/05/2008
+     */
 	@Override
 	public void insertString( final int offs, final String str, final AttributeSet a ) throws BadLocationException {
 
-		StringBuilder newstr = new StringBuilder( mask != null ? formaterMask( str, offs ) : str );
+		StringBuilder newstr = new StringBuilder( mask != null ? validateMask( str, offs ) : str );
 		super.insertString( offs, newstr.toString(), a );
 	}
 
-	
+	/**
+	 * Este metodo foi sobrescrito para que seja possivél
+	 * atualizar o indice da posição na mascara.
+	 * 
+	 * @since	13/05/2008
+	 */
 	@Override
 	public void remove( final int offs, final int len ) throws BadLocationException {
 
@@ -77,7 +92,16 @@ public class DecimalDocument extends Document {
 			super.remove( offs, len );
 		}
 	}
-	private String formaterMask( String str, int offs ) throws BadLocationException {
+	
+	/**
+	 * Inicia a validação, definindo variáveis e passando o fluxo
+	 * para validação auxiliar.
+	 * 
+	 * @see		#validateMaskAux(char, int, StringBuilder, int)
+	 * 
+	 * @since	13/05/2008
+	 */
+	private String validateMask( String str, int offs ) throws BadLocationException {
 
 		StringBuilder newstr = new StringBuilder();
 
@@ -98,8 +122,7 @@ public class DecimalDocument extends Document {
 			}
 
 			for ( int i = 0; i < value.length; i++ ) {
-
-				formaterMaskAux( value[i], offs, newstr, decimalCount );
+				validateMaskAux( value[i], offs, newstr, decimalCount );
 			}
 		}
 		catch ( Exception e ) {
@@ -109,29 +132,41 @@ public class DecimalDocument extends Document {
 		return newstr.toString();
 	}
 	
-	private void formaterMaskAux( char value, 
+	/**
+	 * Distribuio o fluxo para as verificações de negativo, inteiro e decimal.
+	 * 
+	 * @see		#validateMaskAuxNegative(char, int, StringBuilder)
+	 * @see		#validateMaskAuxDecimal(char, int, StringBuilder, int)
+	 * @see		#validateMaskAuxDigit(char, int, StringBuilder, int)
+	 * 
+	 * @since	13/05/2008
+	 */
+	private void validateMaskAux( char value, 
 			                      int offs, 
 			                      StringBuilder str, 
 			                      int decimalCount ) throws BadLocationException {
 				
 		if ( index >= mask.length() ) {
-			if ( ! formaterMaskAuxNegative( value, offs, str ) ) {
+			if ( ! validateMaskAuxNegative( value, offs, str ) ) {
 				return;
 			}
 		}
-		else if ( formaterMaskAuxNegative( value, offs, str ) ) {
-			// refectore para diminuir a complexdade.
+		else if ( validateMaskAuxNegative( value, offs, str ) ) {
 		}
 		else if ( index < mask.getChars().length 
-					&& formaterMaskAuxDecimal( value, offs, str, decimalCount ) ) {
-			// refectore para diminuir a complexdade.
+					&& validateMaskAuxDecimal( value, offs, str, decimalCount ) ) {
 		}
-		else if ( formaterMaskAuxDigit( value, offs, str, decimalCount ) ) {
-			// refectore para diminuir a complexdade.
+		else if ( validateMaskAuxDigit( value, offs, str, decimalCount ) ) {
 		}
 	}
 	
-	private boolean formaterMaskAuxNegative( char value, int offs, StringBuilder str ) throws BadLocationException {
+	/**
+	 * Se o valor a ser inserido for negativo ( '-' ), este somente poderá 
+	 * ser feito se for o primeiro indice no buffer.
+	 * 
+	 * @since	13/05/2008
+	 */
+	private boolean validateMaskAuxNegative( char value, int offs, StringBuilder str ) throws BadLocationException {
 				
 		if ( value == Mask.NEGATIVE && offs == 0 
 				&& getText( 0, getLength() ).indexOf( Mask.NEGATIVE ) == -1 ) {
@@ -143,14 +178,30 @@ public class DecimalDocument extends Document {
 		return false;
 	}
 	
-	private boolean formaterMaskAuxDecimal( char value, int offs, StringBuilder str, int decimalCount ) throws BadLocationException {
+	/**
+	 * Validação para decimal.<br>
+	 * Esta se sub-divide para duas outras validações diferenciadas,
+	 * uma pelo valor e outra pela mascara.
+	 * 
+	 * @see		#validateMaskAuxDecimalMask(char, int, StringBuilder, int)
+	 * @see		#validateMaskAuxDecimalValue(char, int, StringBuilder, int)
+	 * 
+	 * @since	13/05/2008
+	 */
+	private boolean validateMaskAuxDecimal( char value, int offs, StringBuilder str, int decimalCount ) throws BadLocationException {
 		
-		boolean decimal = formaterMaskAuxDecimalMask( value, offs, str, decimalCount ) 
-							|| formaterMaskAuxDecimalValue( value, offs, str, decimalCount );		
+		boolean decimal = validateMaskAuxDecimalMask( value, offs, str, decimalCount ) 
+							|| validateMaskAuxDecimalValue( value, offs, str, decimalCount );		
 		return decimal;
 	}
-	
-	private boolean formaterMaskAuxDecimalMask( char value, int offs, StringBuilder str, int decimalCount ) throws BadLocationException {
+		
+	/**
+	 * Faz a validação de todo o contexto de mascara e valor,
+	 * pois o indice da mascara aponta para a separação decimal.
+	 * 
+	 * @since	13/05/2008
+	 */
+	private boolean validateMaskAuxDecimalMask( char value, int offs, StringBuilder str, int decimalCount ) throws BadLocationException {
 		
 		final char[] chars = mask.getChars();
 		
@@ -171,7 +222,14 @@ public class DecimalDocument extends Document {
 		return decimal;
 	}
 	
-	private boolean formaterMaskAuxDecimalValue( char value, int offs, StringBuilder str, int decimalCount ) throws BadLocationException {
+	/**
+	 * Faz a validação de todo o contexto da mascara e valor,
+	 * pois o valor a ser inserido no buffer é ',' ou '.', 
+	 * que caracterizam a separação decimal. 
+	 * 
+	 * @since	13/05/2008
+	 */
+	private boolean validateMaskAuxDecimalValue( char value, int offs, StringBuilder str, int decimalCount ) throws BadLocationException {
 				
 		boolean decimal = false;
 		
@@ -191,7 +249,12 @@ public class DecimalDocument extends Document {
 		return decimal;
 	}
 	
-	private boolean formaterMaskAuxDigit( char value, int offs, StringBuilder str, int decimalCount ) throws BadLocationException {
+	/**
+	 * Verifica se o valor a ser inserido ao buffer é um inteiro. 
+	 * 
+	 * @since	13/05/2008
+	 */
+	private boolean validateMaskAuxDigit( char value, int offs, StringBuilder str, int decimalCount ) throws BadLocationException {
 		
 		if ( Character.isDigit( value ) ) {
 			int size =
