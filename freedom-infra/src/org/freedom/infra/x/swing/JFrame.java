@@ -9,7 +9,7 @@ import java.awt.Dimension;
  * Pacote: org.freedom.infra.x.swing <BR>
  * Classe:
  * 
- * @(#)JFrame.java <BR>
+ * (#)JFrame.java <BR>
  *                 <BR>
  *                 Este programa é licenciado de acordo com a LGPL (Lesser General Public License), <BR>
  *                 versão 2.1, Fevereiro de 1999 <BR>

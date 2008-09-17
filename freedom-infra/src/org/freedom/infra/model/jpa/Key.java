@@ -3,6 +3,7 @@ package org.freedom.infra.model.jpa;
 
 import java.io.Serializable;
 
+
 public class Key implements Serializable {
 
 	protected static final long serialVersionUID = 1L;
@@ -50,26 +51,22 @@ public class Key implements Serializable {
 	public int hashCode() {
 
 		int hashCode = 0;
-		if ( ( keys != null ) && ( internalKey != null ) ) {
+		if ((keys != null) && (internalKey != null)) {
 			hashCode = internalKey.hashCode();
-			// hashCode = keys.hashCode();
 		}
 		return hashCode;
 	}
 
 	public String getInternalKey() {
-
 		return internalKey;
 	}
 
 	public void setInternalKey( String internalKey ) {
-
 		this.internalKey = internalKey;
 	}
 
 	public boolean equals( Object o ) {
-
-		return ( ( o instanceof Key ) && ( internalKey.equals( ( (Key) o ).getInternalKey() ) ) );
+		return ((o instanceof Key) && (internalKey.equals(((Key)o).getInternalKey())));
 	}
 
 }

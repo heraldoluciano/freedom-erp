@@ -167,4 +167,8 @@ public class Panel extends FDPanel {
 		setOpaque( false );
 	}
 
+	public void setBackground( Color color, boolean opaque ) {
+		super.setBackground( color );
+		super.setOpaque( opaque );
+	}
 }

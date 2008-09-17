@@ -4,16 +4,35 @@ import java.math.BigDecimal;
 
 import org.freedom.infra.util.text.Mask;
 
-
+/**
+ * Projeto: <a href="http://sourceforge.net/projects/freedom-erp/">Freedom-infra</a> <br>
+ * Este programa é licenciado de acordo com a LPG-PC <br>
+ * (Licença Pública Geral para Programas de Computador) versão 2.1.0 ou qualquer versão posterior. <br>
+ * <br>
+ *
+ * Está classe representa um campo e deve trabalhar como um objeto de transição para o valor 
+ * assossiado a um <code>Component</code>.
+ * 
+ * @see			Component
+ * 
+ * @author 		Alex Rodrigues
+ * @version 	0.0.2 – 13/06/2008
+ * 
+ * @since 		16/05/2008
+ */
 public class Field {
 	
+	/**
+	 * Referência ao valor do campo.
+	 */
 	private Object value;
 	
+	/**
+	 * Mascara aplicada ao valor do campo na apresentação do mesmo.
+	 */
 	private Mask mask;
 	
-	
-	public Field() { }
-	
+		
 	public void setValue( final Object value ) {	
 		this.value = value;
 	}
