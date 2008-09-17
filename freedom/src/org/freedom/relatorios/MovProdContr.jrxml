@@ -33,6 +33,9 @@
 	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer"/>
 	<parameter name="CODPROD" isForPrompting="true" class="java.lang.Integer"/>
 	<parameter name="DATAANT" isForPrompting="true" class="java.util.Date"/>
+	<parameter name="AGRUPAR" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["N"]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[select PD.descprod, PD.vlrdensidade, PD.vlrconcent, UN.descunid,
 (select sldprod from eqcustoprodsp(PD.CODEMP,PD.CODFILIAL,PD.codprod,
    $P{DATAANT},'P',PD.codempax,PD.codfilialax,PD.codalmox,'S') ) as saldoant,
@@ -523,7 +526,7 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 						<subreportParameterExpression><![CDATA[$P{DATAFIM}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "MovProdContrDetFinal.jasper"]]></subreportExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + ($P{AGRUPAR}.equals("S")?"MovProdContrDetFinalAgrup.jasper":"MovProdContrDetFinal.jasper")]]></subreportExpression>
 				</subreport>
 			</band>
 			</groupHeader>
