@@ -98,6 +98,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 	private JTextFieldPad txtNColModEtiq = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private ObjetoEtiquetaCli objEtiqCli = new ObjetoEtiquetaCli();
+	
+	private ObjetoEtiquetaComis objEtiqComis = new ObjetoEtiquetaComis();
 
 	private JTextFieldPad txtCodPapel = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
@@ -434,7 +436,15 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 		String sSQL = "";
 		try {
 			String sCampos = "";
-			Vector<?> vCamposAdic = objEtiqCli.getCamposAdic();
+			Vector<?> vCamposAdic = null;
+			
+			if( cbComissionados.getVlrString().equals( "N" ) ){
+				vCamposAdic = objEtiqCli.getCamposAdic();
+			}
+			else if( cbComissionados.getVlrString().equals( "S" )){
+				vCamposAdic = objEtiqComis.getCamposAdic();
+			}			
+			
 			String sWhere = "WHERE CODEMP=" + Aplicativo.iCodEmp + " AND CODFILIAL=" + ListaCampos.getMasterFilial( sTabela );
 
 			try {
