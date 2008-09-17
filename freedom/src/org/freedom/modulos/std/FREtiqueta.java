@@ -48,6 +48,7 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.ObjetoEtiqueta;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -97,7 +98,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 
 	private JTextFieldPad txtNColModEtiq = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
-	private ObjetoEtiquetaCli objEtiqCli = new ObjetoEtiquetaCli();
+	private ObjetoEtiqueta objEtiq = null;
 	
 	private ObjetoEtiquetaComis objEtiqComis = new ObjetoEtiquetaComis();
 
@@ -134,6 +135,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 	private JComboBoxPad cbAtivoCli = null;
 	
 	private JCheckBoxPad cbComissionados = new JCheckBoxPad("Comissionados? ", "S", "N");
+	
+	private String tabelabd = null;
 
 	public FREtiqueta() {
 
@@ -278,10 +281,17 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 	}
 
 	public void montaTabela( Tabela tb ) {
+
+		if( cbComissionados.getVlrString().equals( "N" ) ){
+			objEtiq = new ObjetoEtiquetaCli();
+		}
+		else if( cbComissionados.getVlrString().equals( "S" )){
+			objEtiq = new ObjetoEtiquetaComis();
+		}			
 		
-		objEtiqCli.setTexto( txaEtiqueta.getVlrString() );
-		Vector<?> vLabelsColunas = objEtiqCli.getLabelsColunasAdic();
-		Vector<?> vTamanhos = objEtiqCli.getTamsAdic();
+		objEtiq.setTexto( txaEtiqueta.getVlrString() );
+		Vector<?> vLabelsColunas = objEtiq.getLabelsColunasAdic();
+		Vector<?> vTamanhos = objEtiq.getTamsAdic();
 		tb.limpa();
 		
 		for ( int i = 0; vLabelsColunas.size() > i; i++ ) {
@@ -305,15 +315,16 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 
 		ResultSet rs = null;
 		PreparedStatement ps = null;
+		
 		try {
-			ps = con.prepareStatement( montaQuery( "VDCLIENTE" ) );
+			ps = con.prepareStatement( montaQuery() );
 			rs = ps.executeQuery();
 
 			Vector<Object> vLinha = new Vector<Object>();
 
 			while ( rs.next() ) {
 				vLinha = new Vector<Object>();
-				for ( int i = 1; objEtiqCli.getCamposAdic().size() >= i; i++ ) {
+				for ( int i = 1; objEtiq.getCamposAdic().size() >= i; i++ ) {
 					String sTmp = rs.getString( i ) != null ? rs.getString( i ) : "";
 					vLinha.addElement( sTmp );
 				}
@@ -378,7 +389,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 
 			if ( sTxa != null ) {
 				try {
-					ps = con.prepareStatement( montaQuery( "VDCLIENTE" ) );
+					ps = con.prepareStatement( montaQuery( ) );
 					rs = ps.executeQuery();
 					Vector<Vector<?>> vCol = new Vector<Vector<?>>();
 					Vector<Vector<Vector<?>>> vCols = new Vector<Vector<Vector<?>>>();
@@ -431,21 +442,16 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 
 	}
 
-	private String montaQuery( String sTabela ) {
+	private String montaQuery() {
 		
 		String sSQL = "";
 		try {
 			String sCampos = "";
 			Vector<?> vCamposAdic = null;
+									
+			vCamposAdic = objEtiq.getCamposAdic();
 			
-			if( cbComissionados.getVlrString().equals( "N" ) ){
-				vCamposAdic = objEtiqCli.getCamposAdic();
-			}
-			else if( cbComissionados.getVlrString().equals( "S" )){
-				vCamposAdic = objEtiqComis.getCamposAdic();
-			}			
-			
-			String sWhere = "WHERE CODEMP=" + Aplicativo.iCodEmp + " AND CODFILIAL=" + ListaCampos.getMasterFilial( sTabela );
+			String sWhere = "WHERE CODEMP=" + Aplicativo.iCodEmp + " AND CODFILIAL=" + ListaCampos.getMasterFilial( objEtiq.getNometabela() );
 
 			try {
 				if ( !txtCodSetor.getVlrString().equals( "" ) ) {
@@ -483,7 +489,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 					sCampos = sCampos + vCamposAdic.elementAt( i ).toString() + ",";
 				}
 
-				sSQL = "SELECT " + sCampos.substring( 0, sCampos.length() - 1 ) + " FROM " + sTabela + " " + sWhere + " ORDER BY 1";
+				sSQL = "SELECT " + sCampos.substring( 0, sCampos.length() - 1 ) + " FROM " + objEtiq.getNometabela() + " " + sWhere + " ORDER BY 1";
 			} catch ( Exception e ) {
 				e.printStackTrace();
 			}
@@ -502,7 +508,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 			int iEECEtiq = txtEECModEtiq.getVlrInteger().intValue();
 			int iCol = 0;
 			int iSalto = 1;
-			int iNumLinEtiq = objEtiqCli.getNumLinEtiq();
+			int iNumLinEtiq = objEtiq.getNumLinEtiq();
 			try {
 				if ( txtComprimido.getVlrString() != null )
 					if ( txtComprimido.getVlrString().equals( "S" ) )
@@ -557,7 +563,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
-		objEtiqCli.setTexto( txaEtiqueta.getVlrString() );
+//		objEtiq.setTexto( txaEtiqueta.getVlrString() ); XXXX
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
@@ -580,9 +586,9 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 		Vector<?> vRet = null;
 		if ( iLinha > -1 ) {
 			try {
-				Vector<?> vMascAdic = objEtiqCli.getMascarasAdic();
-				Vector<?> vValAdic = objEtiqCli.getValoresAdic();
-				Vector<?> vCamposAdic = objEtiqCli.getCamposAdic();
+				Vector<?> vMascAdic = objEtiq.getMascarasAdic();
+				Vector<?> vValAdic = objEtiq.getValoresAdic();
+				Vector<?> vCamposAdic = objEtiq.getCamposAdic();
 				if ( sRetorno != null ) {
 					try {
 						for ( int i = 0; vCamposAdic.size() > i; i++ ) {

@@ -28,9 +28,9 @@ public class ObjetoEtiquetaComis extends ObjetoEtiqueta {
   public ObjetoEtiquetaComis() { 	
 	  
       adicOpcao("Código do vendedor","#CODIGO_VEND#","CODVEND",new Integer(8),null,"Cód.Vend.");
-      adicOpcao("Nome do vendedor","#NOME_VEND#","NOMEVEND",new Integer(40),null,"Nome Vend.");      
+      adicOpcao("Nome do vendedor","#NOME#","NOMEVEND",new Integer(40),null,"Nome Vend.");      
       adicOpcao("Endereço do Vendedor","#ENDEREÇO#","ENDVEND",new Integer(50),null,"Endereço");
-      adicOpcao("Número","#NUM_VEND#","NUMVEND",new Integer(20),null,"Nro.");
+      adicOpcao("Número","#NUMERO#","NUMVEND",new Integer(20),null,"Nro.");
       adicOpcao("Complemento","#COMPL_VEND#","COMPLCLI",new Integer(50),null,"Complemento");
       adicOpcao("Bairro do vendedor","#BAIR_VEND#","BAIVEND",new Integer(30),null,"Bairro");
       adicOpcao("Cidade do vendedor","#CIDADE_VEND#","CIDVEND",new Integer(30),null,"Cidade");
@@ -38,5 +38,8 @@ public class ObjetoEtiquetaComis extends ObjetoEtiqueta {
       adicOpcao("UF do Vendedor","#UF#","UFVEND",new Integer(2),null,"UF");
       adicOpcao("Telefone","#FONE_VEND#","FONDEVEND",new Integer(12),"####-####","Fone");    
       adicOpcao("Email","#EMAIL_VEND","EMAILVEND",new Integer(50),null,"Email"); 
+      
+      setNometabela( "VDVENDEDOR" );
+      
   }
 }
