@@ -2457,7 +2457,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 			dl.dispose();
 
-		} catch ( Exception e ) {
+		} 
+		catch ( Exception e ) {
 
 			e.printStackTrace();
 		}
