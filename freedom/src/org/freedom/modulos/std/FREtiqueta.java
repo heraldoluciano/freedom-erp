@@ -37,13 +37,15 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -54,7 +56,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
-public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxListener {
+public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGroupListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -134,7 +136,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 
 	private JComboBoxPad cbAtivoCli = null;
 	
-	private JCheckBoxPad cbComissionados = new JCheckBoxPad("Comissionados? ", "S", "N");
+	private JRadioGroup<String, Object> cbComissionados = null;
 	
 	private String tabelabd = null;
 
@@ -144,7 +146,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 
 		setTitulo( "Impressão de etiquetas" );
 
-		setAtribos( 20, 20, 600, 350 );
+		setAtribos( 20, 20, 630, 350 );
 
 		pnDet.add( spnDet, BorderLayout.CENTER );
 		pnTotal.add( pinCab, BorderLayout.NORTH );
@@ -161,6 +163,18 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 
 		cbAtivoCli = new JComboBoxPad( lAtivo, vAtivo, JComboBoxPad.TP_INTEGER, 5, 0 );
 
+		 Vector<String> vLabs1 = new Vector<String>();
+		 Vector<String> vVals1 = new Vector<String>();
+		
+		vLabs1.addElement("Comissionado");
+ 		vLabs1.addElement("Cliente"); 
+ 		vVals1.addElement("CM");
+ 		vVals1.addElement("CL");
+		    
+ 		cbComissionados = new JRadioGroup<String, Object>( 1, 2, vLabs1.toArray(), vVals1.toArray() );
+ 		cbComissionados.setVlrString("CL");
+ 		cbComissionados.addRadioGroupListener( this );
+ 		
 		lcPapel.add( new GuardaCampo( txtCodPapel, "Codpapel", "Cod.papel", ListaCampos.DB_PK, false ) );
 		lcPapel.add( new GuardaCampo( txtDescPapel, "Descpapel", "Descrição do papel", ListaCampos.DB_SI, false ) );
 		lcPapel.add( new GuardaCampo( txtColPapel, "Colpapel", "Num. colunas", ListaCampos.DB_SI, false ) );
@@ -224,13 +238,13 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 		pinCab.adic( new JLabelPad( "Status" ), 370, 5, 100, 20 );
 		pinCab.adic( cbAtivoCli, 370, 25, 135, 25 );
 		
-		pinCab.adic( new JLabelPad("Cidade do Cliente"), 370, 85, 100, 20 );
+		pinCab.adic( new JLabelPad("Cidade"), 370, 85, 100, 20 );
 		pinCab.adic( txtCidadeCli, 370, 105, 100, 20 );
 		
-		pinCab.adic( new JLabelPad("UF do cliente"), 370, 125, 100, 20 );
+		pinCab.adic( new JLabelPad("UF"), 370, 125, 100, 20 );
 		pinCab.adic( txtUfCli, 370, 145, 100, 20 );
 		
-		pinCab.adic( cbComissionados, 370, 180, 150, 20 );
+		pinCab.adic( cbComissionados, 370, 180, 235, 30 );
 
 		pinCab.adic( new JLabelPad( "Cód.tp.cli." ), 7, 45, 280, 20 );
 		pinCab.adic( txtCodTipo, 7, 65, 80, 20 );
@@ -258,17 +272,15 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 		btLimpa.setToolTipText( "Limpa o grid" );
 		btExcluir.setToolTipText( "Exclui o ítem selecionado" );
 
-		pinCab.adic( btAdiciona, 555, 15, 30, 30 );
-		pinCab.adic( btLimpa, 555, 48, 30, 30 );
-		pinCab.adic( btExcluir, 555, 81, 30, 30 );
+		pinCab.adic( btAdiciona, 575, 15, 30, 30 );
+		pinCab.adic( btLimpa, 575, 48, 30, 30 );
+		pinCab.adic( btExcluir, 575, 81, 30, 30 );
 
 		lcModEtiq.addCarregaListener( this );
 
 		btAdiciona.addActionListener( this );
 		btLimpa.addActionListener( this );
 		btExcluir.addActionListener( this );
-		cbComissionados.addCheckBoxListener( this );
-
 		setPrimeiroFoco( txtCodModEtiq );
 
 	}
@@ -282,10 +294,10 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 
 	public void montaTabela( Tabela tb ) {
 
-		if( cbComissionados.getVlrString().equals( "N" ) ){
+		if( cbComissionados.getVlrString().equals( "CL" ) ){
 			objEtiq = new ObjetoEtiquetaCli();
 		}
-		else if( cbComissionados.getVlrString().equals( "S" )){
+		else if( cbComissionados.getVlrString().equals( "CM" )){
 			objEtiq = new ObjetoEtiquetaComis();
 		}			
 		
@@ -469,19 +481,19 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 				}
 				if( !txtCidadeCli.getVlrString().equals( "" ) ){
 					
-					if( cbComissionados.getVlrString().equals( "N" )){
+					if( cbComissionados.getVlrString().equals( "CL" )){
 						sWhere += " AND CIDCLI=" + "'" + txtCidadeCli.getVlrString().trim() + "'";
 					}
-					else if( cbComissionados.getVlrString().equals( "S" )){
+					else if( cbComissionados.getVlrString().equals( "CM" )){
 						sWhere += " AND CIDVEND=" + "'" + txtCidadeCli.getVlrString().trim() + "'";
 					}
 				}
 				if (!txtUfCli.getVlrString().equals( "" )){
 					
-					if( cbComissionados.getVlrString().equals( "N" )){
+					if( cbComissionados.getVlrString().equals( "CL" )){
 						sWhere += " AND UFCLI=" + "'" + txtUfCli.getVlrString().trim() + "'";
 					}
-					else if( cbComissionados.getVlrString().equals( "S" )){
+					else if( cbComissionados.getVlrString().equals( "CM" )){
 						sWhere += " AND UFVEND=" + "'" + txtUfCli.getVlrString().trim() + "'";
 					}
 				}
@@ -489,32 +501,32 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 				if ( cbAtivoCli.getVlrString() != null ) {
 					if ( cbAtivoCli.getVlrString().equals( "Ativos" ) )
 					{
-						if( cbComissionados.getVlrString().equals( "N" )){
+						if( cbComissionados.getVlrString().equals( "CL" )){
 							sWhere += " AND ATIVOCLI='S'";
 						}
-						else if( cbComissionados.getVlrString().equals( "S" )){
+						else if( cbComissionados.getVlrString().equals( "CM" )){
 							sWhere += " AND ATIVOCOMIS='S'";
 						}
 						
 					}
 					else if ( cbAtivoCli.getVlrString().equals( "Inativos" ) ){
 						
-						if( cbComissionados.getVlrString().equals( "N" )){
+						if( cbComissionados.getVlrString().equals( "CL" )){
 							sWhere += " AND ATIVOCLI='N'";
 						}
-						else if( cbComissionados.getVlrString().equals( "S" )){
+						else if( cbComissionados.getVlrString().equals( "CM" )){
 							sWhere += " AND ATIVOCOMIS='N'";
 						}
 					}
 				}
 				if ( !txtCodVend.getVlrString().equals( "" ) ) {
 					
-					if( cbComissionados.getVlrString().equals( "N" )){
+					if( cbComissionados.getVlrString().equals( "CL" )){
 						sWhere += " AND CODVEND=" + txtCodVend.getVlrInteger().intValue();
 						sWhere += " AND CODEMPVD=" + Aplicativo.iCodEmp;
 						sWhere += " AND CODFILIALVD=" + lcVendedor.getCodFilial();
 					}
-					else if( cbComissionados.getVlrString().equals( "S" )){
+					else if( cbComissionados.getVlrString().equals( "CM" )){
 						sWhere += " AND CODVEND=" + txtCodVend.getVlrInteger().intValue();
 					}
 				}
@@ -658,10 +670,10 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 		return vRet;
 	}
 
-	public void valorAlterado( CheckBoxEvent evt ) {
-		
-		if( cbComissionados.getVlrString().equals( "S" )){
-		
+	public void valorAlterado( RadioGroupEvent evt ) {
+
+		if( cbComissionados.getVlrString().equals( "CM" )){
+			
 			txtCodCli.setVlrString( "" );
 			txtCodSetor.setVlrString( "" );
 			txtCodTipo.setVlrString( "" );
@@ -674,11 +686,12 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 			txtCodSetor.setSoLeitura( true );
 			txtCodTipo.setSoLeitura( true );
 		}
-		if( cbComissionados.getVlrString().equals( "N" )){
+		if( cbComissionados.getVlrString().equals( "CL" )){
 			
 			txtCodCli.setSoLeitura( false );
 			txtCodSetor.setSoLeitura( false );
 			txtCodTipo.setSoLeitura( false );
 		}
+		
 	}
 }
