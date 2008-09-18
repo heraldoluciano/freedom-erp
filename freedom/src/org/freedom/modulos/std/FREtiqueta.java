@@ -35,8 +35,6 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
-import org.freedom.acao.CheckBoxEvent;
-import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
