@@ -508,9 +508,15 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 					}
 				}
 				if ( !txtCodVend.getVlrString().equals( "" ) ) {
-					sWhere += " AND CODVEND=" + txtCodVend.getVlrInteger().intValue();
-					sWhere += " AND CODEMPVD=" + Aplicativo.iCodEmp;
-					sWhere += " AND CODFILIALVD=" + lcVendedor.getCodFilial();
+					
+					if( cbComissionados.getVlrString().equals( "N" )){
+						sWhere += " AND CODVEND=" + txtCodVend.getVlrInteger().intValue();
+						sWhere += " AND CODEMPVD=" + Aplicativo.iCodEmp;
+						sWhere += " AND CODFILIALVD=" + lcVendedor.getCodFilial();
+					}
+					else if( cbComissionados.getVlrString().equals( "S" )){
+						sWhere += " AND CODVEND=" + txtCodVend.getVlrInteger().intValue();
+					}
 				}
 
 				for ( int i = 0; vCamposAdic.size() > i; i++ ) {
