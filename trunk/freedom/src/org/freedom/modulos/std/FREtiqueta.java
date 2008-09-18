@@ -468,16 +468,44 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, CheckBoxL
 					sWhere += " AND CODCLI=" + txtCodCli.getVlrInteger().intValue();
 				}
 				if( !txtCidadeCli.getVlrString().equals( "" ) ){
-					sWhere += " AND CIDCLI=" + "'" + txtCidadeCli.getVlrString().trim() + "'";
+					
+					if( cbComissionados.getVlrString().equals( "N" )){
+						sWhere += " AND CIDCLI=" + "'" + txtCidadeCli.getVlrString().trim() + "'";
+					}
+					else if( cbComissionados.getVlrString().equals( "S" )){
+						sWhere += " AND CIDVEND=" + "'" + txtCidadeCli.getVlrString().trim() + "'";
+					}
 				}
 				if (!txtUfCli.getVlrString().equals( "" )){
-					sWhere += " AND UFCLI=" + "'" + txtUfCli.getVlrString().trim() + "'";
+					
+					if( cbComissionados.getVlrString().equals( "N" )){
+						sWhere += " AND UFCLI=" + "'" + txtUfCli.getVlrString().trim() + "'";
+					}
+					else if( cbComissionados.getVlrString().equals( "S" )){
+						sWhere += " AND UFVEND=" + "'" + txtUfCli.getVlrString().trim() + "'";
+					}
 				}
+				
 				if ( cbAtivoCli.getVlrString() != null ) {
 					if ( cbAtivoCli.getVlrString().equals( "Ativos" ) )
-						sWhere += " AND ATIVOCLI='S'";
-					else if ( cbAtivoCli.getVlrString().equals( "Inativos" ) )
-						sWhere += " AND ATIVOCLI='N'";
+					{
+						if( cbComissionados.getVlrString().equals( "N" )){
+							sWhere += " AND ATIVOCLI='S'";
+						}
+						else if( cbComissionados.getVlrString().equals( "S" )){
+							sWhere += " AND ATIVOCOMIS='S'";
+						}
+						
+					}
+					else if ( cbAtivoCli.getVlrString().equals( "Inativos" ) ){
+						
+						if( cbComissionados.getVlrString().equals( "N" )){
+							sWhere += " AND ATIVOCLI='N'";
+						}
+						else if( cbComissionados.getVlrString().equals( "S" )){
+							sWhere += " AND ATIVOCOMIS='N'";
+						}
+					}
 				}
 				if ( !txtCodVend.getVlrString().equals( "" ) ) {
 					sWhere += " AND CODVEND=" + txtCodVend.getVlrInteger().intValue();
