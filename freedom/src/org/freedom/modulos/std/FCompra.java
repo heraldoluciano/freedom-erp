@@ -936,16 +936,20 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			
 			ResultSet rs = ps.executeQuery();
 			
-			if ( rs.next() ) {				
-				txtCustoPEPSProd.setVlrBigDecimal( rs.getBigDecimal( "NCUSTOPEPS" ) );
-				txtCustoMPMProd.setVlrBigDecimal( rs.getBigDecimal( "NCUSTOMPM" ) );
+			if ( rs.next() ) {	
 				
-				if ( true ) {
+				txtCustoPEPSProd.setVlrBigDecimal( rs.getBigDecimal( "NCUSTOPEPS" ) == null ? new BigDecimal(0) : rs.getBigDecimal( "NCUSTOPEPS" ) );
+				txtCustoMPMProd.setVlrBigDecimal( rs.getBigDecimal( "NCUSTOMPM" ) == null ? new BigDecimal(0) : rs.getBigDecimal( "NCUSTOMPM" ));
+				
+				txtCustoItCompra.setVlrBigDecimal( txtCustoMPMProd.getVlrBigDecimal() );
+				
+/*				if ( ? ) { // Implementar futuramente caso deva utilizar mpm ou peps.
 					txtCustoItCompra.setVlrBigDecimal( txtCustoMPMProd.getVlrBigDecimal() );		
 				}
 				else {
 					txtCustoItCompra.setVlrBigDecimal( txtCustoPEPSProd.getVlrBigDecimal() );		
 				}
+*/				
 			}
 			
 			rs.close();
