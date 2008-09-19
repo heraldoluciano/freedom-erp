@@ -13,7 +13,7 @@ public class EANFactory {
 			codbar.append( codpais.trim() );
 			codbar.append( codemp.trim() );
 			
-			tamcod = codbar.length()-12;
+			tamcod = 12-codbar.length();
 			codbar.append( Funcoes.strZero( codigo, tamcod ) );
 			codbar.append( calcDigEAN13( codbar.toString() ));
 		 
