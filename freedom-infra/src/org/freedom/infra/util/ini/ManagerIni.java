@@ -71,6 +71,8 @@ public class ManagerIni {
 	 * Arquivo de parametros.
 	 */
 	private File file;
+	
+	private Properties properties;
 
 	/**
 	 * @return	Um novo gerenciador a partir do nome do parametro padrão.
@@ -166,7 +168,7 @@ public class ManagerIni {
 		BufferedReader buffered = new BufferedReader( reader );
 		
 		sessions = new HashMap<String, Properties>();
-		Properties properties = null;
+		properties = null;
 		
 		if ( buffered != null ) {
 			
@@ -176,11 +178,6 @@ public class ManagerIni {
 			int ivl = -1;
 
 			while ( ( line = buffered.readLine() ) != null ) {
-				
-				if ( properties == null ) {
-					properties = new Properties();
-					sessions.put( PROPERTIES_DEFAULT, properties );
-				}
 				
 				line = line.trim();
 				
@@ -195,6 +192,11 @@ public class ManagerIni {
 				}
 				else if ( ckeckNewSession( line ) ) {
 					continue;
+				}
+				
+				if ( properties == null ) {
+					properties = new Properties();
+					sessions.put( PROPERTIES_DEFAULT, properties );
 				}
 				
 				ivl = line.indexOf( '=' );
@@ -275,7 +277,7 @@ public class ManagerIni {
 		
 		if ( ik1 > -1 && ik2 > -1 && ik2 > ik1+1 ) {
 			
-			Properties properties = new Properties();
+			properties = new Properties();
 			sessions.put( line.substring( ik1+1, ik2 ), properties );
 			
 			return true;

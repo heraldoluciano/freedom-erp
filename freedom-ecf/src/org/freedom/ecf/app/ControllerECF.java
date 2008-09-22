@@ -11,13 +11,15 @@ import static org.freedom.ecf.app.EParametro.PARAM_FORMA_PAGAMENTO;
 import static org.freedom.ecf.app.EParametro.PARAM_QUANTIDADE;
 import static org.freedom.ecf.app.EParametro.PARAM_UNIDADE_MEDIDA;
 import static org.freedom.ecf.app.EParametro.PARAM_VALOR_UNITARIO;
+
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import org.apache.log4j.Logger;
 import org.freedom.ecf.com.Serial;
 import org.freedom.ecf.driver.AbstractECFDriver;
@@ -1447,13 +1449,11 @@ public class ControllerECF {
 		if ( notIsModoDemostracao() ) {	
 			try {
 				returnOfAction = false;
-				String strDataUltimaReducao = ecf.retornoVariaveis( AbstractECFDriver.V_DT_ULT_REDUCAO );
 				
-				final SimpleDateFormat sdf = new SimpleDateFormat( "ddMMyy", Locale.getDefault() );
 				Calendar dataUltimaReducao = Calendar.getInstance();
 				Calendar dataAtual = Calendar.getInstance();
 				
-				dataUltimaReducao.setTime( sdf.parse( strDataUltimaReducao ) );
+				dataUltimaReducao.setTime( ultimaReducaoZ() );
 	
 				dataAtual.set( Calendar.AM_PM, 0 );
 				dataAtual.set( Calendar.HOUR_OF_DAY, 0 );
@@ -1464,13 +1464,32 @@ public class ControllerECF {
 				
 				returnOfAction = dataUltimaReducao.compareTo( dataAtual ) == 0;
 				
-			} catch ( ParseException e ) {
+			} catch ( Exception e ) {
 				setMessageLog( e.getMessage() );
 				whiterLogError( "[REDUÇÂO Z] " );
 			}
 		}
 		
 		return returnOfAction;		
+	}
+	
+	public Date ultimaReducaoZ() {
+		
+		Calendar dataUltimaReducao = null;
+		
+		if ( notIsModoDemostracao() ) {	
+			try {
+				String strDataUltimaReducao = ecf.retornoVariaveis( AbstractECFDriver.V_DT_ULT_REDUCAO );				
+				final SimpleDateFormat sdf = new SimpleDateFormat( "ddMMyy", Locale.getDefault() );
+				dataUltimaReducao = Calendar.getInstance();				
+				dataUltimaReducao.setTime( sdf.parse( strDataUltimaReducao ) );				
+			} catch ( Exception e ) {
+				setMessageLog( e.getMessage() );
+				whiterLogError( "[REDUÇÂO Z] " );
+			}
+		}
+		
+		return dataUltimaReducao.getTime();
 	}
 
 	/**
