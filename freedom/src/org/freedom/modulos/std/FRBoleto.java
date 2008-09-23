@@ -1223,7 +1223,7 @@ public class FRBoleto extends FRelatorio {
 				
 				if( tbBoletos.getValor( i, 0 ).equals( true )){
 					
-					vValores.add( i, tbBoletos.getValor( i, 1 ).toString() );
+					vValores.add( tbBoletos.getValor( i, 1 ).toString() );
 					
 				}
 			}	
