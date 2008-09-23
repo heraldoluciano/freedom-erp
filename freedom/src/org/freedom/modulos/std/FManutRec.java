@@ -1185,7 +1185,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			sSQL.append( "(SELECT CB.DESCCARTCOB FROM FNCARTCOB CB WHERE CB.CODBANCO=IR.CODBANCO " );
 			sSQL.append( "AND CB.CODEMP=IR.CODEMPBO AND CB.CODFILIAL=IR.CODFILIALBO AND CB.CODCARTCOB=IR.CODCARTCOB) DESCCARTCOB, R.DOCREC, IR.VLRDEVITREC " );
 			sSQL.append( "FROM FNITRECEBER IR, FNRECEBER R, VDCLIENTE C " );
-			sSQL.append( "WHERE R.CODREC=IR.CODREC AND C.CODCLI=R.CODCLI " );
+			sSQL.append( "WHERE R.CODREC=IR.CODREC AND C.CODCLI=R.CODCLI AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL " );
 			sSQL.append( sWhereManut );
 			sSQL.append( " ORDER BY IR.DTVENCITREC,IR.STATUSITREC,IR.CODREC,IR.NPARCITREC" );
 
@@ -1832,7 +1832,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					}
 				}
 
-				carregaGridBaixa();
 				dl.dispose();
 			}
 		} catch ( Exception e ) {
