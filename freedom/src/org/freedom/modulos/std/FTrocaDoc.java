@@ -18,149 +18,255 @@
  *
  * Comentários sobre a classe...
  */
-
 package org.freedom.modulos.std;
+
 import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.Vector;
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
-
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFilho;
+import org.freedom.telas.FTabDados;
 
-public class FTrocaDoc extends FFilho implements ActionListener {
-	private static final long serialVersionUID = 1L;
+public class FTrocaDoc extends FTabDados implements ActionListener {
 
-  private JPanelPad pinCli = new JPanelPad(350,100);
-  private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-  private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldFK txtSerie = new JTextFieldFK(JTextFieldPad.TP_STRING,4,0);
-  private JTextFieldFK txtVlrLiqVenda = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,2);
-  private JTextFieldFK txtStatusVenda = new JTextFieldFK(JTextFieldPad.TP_STRING,2,0);
-  private JTextFieldPad txtNovoDoc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JButton btTrocaDoc = new JButton(Icone.novo("btTrocaNumero.gif"));
-  private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
-  private ListaCampos lcVenda = new ListaCampos(this);
-  public FTrocaDoc() {
-  	super(false);
-    setTitulo("Troca de documento");
-    setAtribos(50,50,350,170);
+    private static final long serialVersionUID = 1L;
     
-    txtCodVenda.setRequerido(true);
+    private JPanelPad pnVenda = new JPanelPad( 330, 220 );
     
-    lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, false));
-    lcVenda.add(new GuardaCampo( txtNovoDoc, "DocVenda", "Documento", ListaCampos.DB_SI, false));
-    lcVenda.add(new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, false));
-    lcVenda.add(new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "V. liq.", ListaCampos.DB_SI, false));
-    lcVenda.add(new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, false));
-    lcVenda.montaSql(false, "VENDA", "VD");
-    lcVenda.setReadOnly(true);
-    txtCodVenda.setTabelaExterna(lcVenda);
-    txtCodVenda.setFK(true);
-    txtCodVenda.setNomeCampo("CodVenda");
-    
-    Container c = getContentPane();
-    c.setLayout(new BorderLayout());
-    
-    btSair.setPreferredSize(new Dimension(100,30));
+    private JPanelPad pnCompra = new JPanelPad( 330, 220 );
 
-    pnRod.setPreferredSize(new Dimension(350,30));
-    pnRod.add(btSair,BorderLayout.EAST);
-    
-    c.add(pnRod,BorderLayout.SOUTH);
-    c.add(pinCli,BorderLayout.CENTER);
-    
-    btTrocaDoc.setToolTipText("Alterar");
+    private JPanelPad pnRod = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-    pinCli.adic(new JLabelPad("Nº pedido"),7,0,80,20);
-    pinCli.adic(txtCodVenda,7,20,80,20);
-    pinCli.adic(new JLabelPad("Série"),90,0,67,20);
-    pinCli.adic(txtSerie,90,20,67,20);
-    pinCli.adic(new JLabelPad("Valor"),160,0,100,20);
-    pinCli.adic(txtVlrLiqVenda,160,20,100,20);
-    pinCli.adic(new JLabelPad("Doc."),7,40,73,20);
-    pinCli.adic(txtNovoDoc,7,60,73,20);
-    pinCli.adic(btTrocaDoc,90,50,30,30);
+    private JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+    private JTextFieldFK txtSerie = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
+
+    private JTextFieldFK txtVlrLiqVenda = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
+
+    private JTextFieldFK txtStatusVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
+
+    private JTextFieldPad txtNovoDoc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
     
-    btSair.addActionListener(this);
-    btTrocaDoc.addActionListener(this);
-  }
-  private void trocar() {
-    if (txtStatusVenda.getVlrString().equals("")) {
-		Funcoes.mensagemInforma(this,"Nenhuma venda foi selecionada!");
-        txtCodVenda.requestFocus();
-        return;
-    }
-    String sImpNota = "";
-    String sSQL1 = "SELECT IMPNOTAVENDA FROM VDVENDA WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=?";
-    String sSQL2 = "UPDATE VDVENDA SET IMPNOTAVENDA = 'N',DOCVENDA=? WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=?";
-    String sSQL3 = "UPDATE VDVENDA SET IMPNOTAVENDA = ? WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=?";
-    try {
-//1a. query:
-   	  PreparedStatement ps = con.prepareStatement(sSQL1);
-      ps.setInt(1,txtCodVenda.getVlrInteger().intValue());
-      ps.setInt(2,Aplicativo.iCodEmp);
-      ps.setInt(3,ListaCampos.getMasterFilial("VDVENDA"));
-      ResultSet rs = ps.executeQuery();
-      if (rs.next()) {
-        sImpNota = rs.getString("ImpNotaVenda");
-      }
-      rs.close();
-      ps.close();
-//2a. query:
-      ps = con.prepareStatement(sSQL2);
-      ps.setInt(1,txtNovoDoc.getVlrInteger().intValue());
-      ps.setInt(2,txtCodVenda.getVlrInteger().intValue());
-      ps.setInt(3,Aplicativo.iCodEmp);
-      ps.setInt(4,ListaCampos.getMasterFilial("VDVENDA"));
-      ps.executeUpdate();
-      ps.close();
-//3a. query:
-      ps = con.prepareStatement(sSQL3);
-      ps.setString(1,sImpNota);
-      ps.setInt(2,txtCodVenda.getVlrInteger().intValue());
-      ps.setInt(3,Aplicativo.iCodEmp);
-      ps.setInt(4,ListaCampos.getMasterFilial("VDVENDA"));
-      ps.executeUpdate();
-      ps.close();
-      if (!con.getAutoCommit())
-      	con.commit();
-      Funcoes.mensagemInforma( this, "Numero da nota Alterado com Sucesso!" );
-    }
-    catch(SQLException err) {
-	  Funcoes.mensagemErro(this,"Erro ao alterar a venda!\n"+err.getMessage(),true,con,err);
-	  err.printStackTrace();
-	  
+    private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+    
+    private JTextFieldPad txtDocCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+    
+    private JTextFieldFK txtVlrCompra = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
+
+    private JButton btTrocaDoc = new JButton( Icone.novo( "btTrocaNumero.gif" ) );
+    
+    private JButton btTrocaDocCompra = new JButton( Icone.novo( "btTrocaNumero.gif" ) );
+
+    private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+
+    private ListaCampos lcVenda = new ListaCampos( this );
+    
+    private ListaCampos lcCompra = new ListaCampos( this );
+    
+    private JRadioGroup<?, ?> rgTipo = null;
+    
+    private Vector<String> vLabs1 = new Vector<String>();
+    
+    private Vector<String> vVals1 = new Vector<String>();
+
+    public FTrocaDoc() {
+
+        super( false );
+        
+        setTitulo( "Alteração do número do doc." );
+        setAtribos( 50, 50, 350, 220 );
+        txtCodVenda.setRequerido( true );
+        
+        vLabs1.addElement("Compra");
+        vLabs1.addElement("Venda"); 
+        vVals1.addElement("C");
+        vVals1.addElement("V");
+            
+        rgTipo = new JRadioGroup<String, String>(1,2,vLabs1,vVals1);
+        rgTipo.setVlrString("C");        
+        
+        montaTela();            
+        montaListaCampos();
+       
     }
     
-  }
-  public void actionPerformed(ActionEvent evt) { 
-    if (evt.getSource() == btSair)
-      dispose();
+    private void montaListaCampos(){
+        
+        lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, false ) );
+        lcVenda.add( new GuardaCampo( txtNovoDoc, "DocVenda", "Documento", ListaCampos.DB_SI, false ) );
+        lcVenda.add( new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, false ) );
+        lcVenda.add( new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "V. liq.", ListaCampos.DB_SI, false ) );
+        lcVenda.add( new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, false ) );
+        lcVenda.montaSql( false, "VENDA", "VD" );
+        lcVenda.setReadOnly( true );
+        txtCodVenda.setTabelaExterna( lcVenda );
+        txtCodVenda.setFK( true );
+        txtCodVenda.setNomeCampo( "CodVenda" );
+        
+        lcCompra.add( new GuardaCampo( txtCodCompra, "CodCompra", "Cód.compra", ListaCampos.DB_PK, true ) );
+        lcCompra.add( new GuardaCampo( txtDocCompra, "DocCompra", "Documento", ListaCampos.DB_SI, false ) );
+        lcCompra.add( new GuardaCampo( txtVlrCompra, "VlrLiqCompra", "Valor da compra", ListaCampos.DB_SI, false ) );
+        lcCompra.montaSql( false, "COMPRA", "CP" );
+        lcCompra.setReadOnly( true );
+        txtCodCompra.setTabelaExterna( lcCompra );
+        txtCodCompra.setFK( true );
+        txtCodCompra.setNomeCampo( "CodCompra" );
+        
+    }
+
+    private void montaTela(){
+                
+        setPainel( pnVenda );
+        adicTab( "Venda", pnVenda );
+        pnRodape.removeAll();
+        pnRodape.add( btSair, BorderLayout.EAST );
+        setListaCampos( lcVenda );
+        
+        btTrocaDoc.setToolTipText( "Alterar" );
+        adic( new JLabelPad( "Nº pedido" ), 7, 0, 80, 20 );
+        adic( txtCodVenda, 7, 20, 80, 20 );
+        adic( new JLabelPad( "Série" ), 90, 0, 67, 20 );
+        adic( txtSerie, 90, 20, 67, 20 );
+        adic( new JLabelPad( "Valor" ), 160, 0, 100, 20 );
+        adic( txtVlrLiqVenda, 160, 20, 100, 20 );
+        adic( new JLabelPad( "Doc." ), 7, 40, 73, 20 );
+        adic( txtNovoDoc, 7, 60, 73, 20 );
+        adic( btTrocaDoc, 90, 50, 30, 30 );
+        btSair.addActionListener( this );
+        btTrocaDoc.addActionListener( this );
+        
+        setPainel( pnCompra );
+        adicTab( "Compra", pnCompra );
+        setListaCampos( lcCompra );
+        
+        adic( new JLabelPad("Cód.Compra"), 7, 0, 80, 20 );
+        adic( txtCodCompra, 7, 20, 80, 20 );
+        adic( new JLabelPad("Valor"), 90, 0, 100, 20 );
+        adic( txtVlrCompra, 90, 20, 100, 20 );
+        adic( new JLabelPad("Dóc.Compra"), 7, 40, 80, 20 );
+        adic( txtDocCompra, 7, 60, 80, 20 );
+        adic( btTrocaDocCompra, 90, 50, 30, 30 );
+        btTrocaDocCompra.addActionListener( this );
+        
+        
+    }
+    private void trocarDocVenda() {
+
+        if ( txtStatusVenda.getVlrString().equals( "" ) ) {
+            
+            Funcoes.mensagemInforma( this, "Nenhuma venda foi selecionada!" );
+            txtCodVenda.requestFocus();
+            return;
+        }
+        
+        String sImpNota = "";
+        String sSQL1 = "SELECT IMPNOTAVENDA FROM VDVENDA WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=?";
+        String sSQL2 = "UPDATE VDVENDA SET IMPNOTAVENDA = 'N',DOCVENDA=? WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=?";
+        String sSQL3 = "UPDATE VDVENDA SET IMPNOTAVENDA = ? WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=?";
+       
+        try {
+            
+            // 1a. query:
+            PreparedStatement ps = con.prepareStatement( sSQL1 );
+            ps.setInt( 1, txtCodVenda.getVlrInteger().intValue() );
+            ps.setInt( 2, Aplicativo.iCodEmp );
+            ps.setInt( 3, ListaCampos.getMasterFilial( "VDVENDA" ) );
+            ResultSet rs = ps.executeQuery();
+           
+            if ( rs.next() ) {
+                sImpNota = rs.getString( "ImpNotaVenda" );
+            }
+            rs.close();
+            ps.close();
+          
+            // 2a. query:
+            ps = con.prepareStatement( sSQL2 );
+            ps.setInt( 1, txtNovoDoc.getVlrInteger().intValue() );
+            ps.setInt( 2, txtCodVenda.getVlrInteger().intValue() );
+            ps.setInt( 3, Aplicativo.iCodEmp );
+            ps.setInt( 4, ListaCampos.getMasterFilial( "VDVENDA" ) );
+            ps.executeUpdate();
+            ps.close();
+          
+            // 3a. query:
+            ps = con.prepareStatement( sSQL3 );
+            ps.setString( 1, sImpNota );
+            ps.setInt( 2, txtCodVenda.getVlrInteger().intValue() );
+            ps.setInt( 3, Aplicativo.iCodEmp );
+            ps.setInt( 4, ListaCampos.getMasterFilial( "VDVENDA" ) );
+            ps.executeUpdate();
+            ps.close();
+           
+            if ( !con.getAutoCommit() ){
+                con.commit();
+            }            
+            Funcoes.mensagemInforma( this, "Numero da nota Alterado com Sucesso!" );
+            
+        } catch ( SQLException err ) {
+            Funcoes.mensagemErro( this, "Erro ao alterar a venda!\n" + err.getMessage(), true, con, err );
+            err.printStackTrace();
+        }
+    }
     
-    else if (evt.getSource() == btTrocaDoc)
-      trocar();
-      
-     
-  }
-  public void setConexao(Connection cn) {
-    super.setConexao(cn);
-    lcVenda.setConexao(cn);
-  }
+    private void trocarDocCompra() {
+        
+        StringBuilder sUpdate = new StringBuilder();
+        PreparedStatement ps = null;
+          
+        sUpdate.append( "update cpcompra cp set cp.doccompra=? where codemp=? and codfilial=? and codcompra=?" );
+        
+        try {
+            
+            ps = con.prepareStatement( sUpdate.toString() );
+            ps.setInt( 1, txtDocCompra.getVlrInteger() );
+            ps.setInt( 2, Aplicativo.iCodEmp );
+            ps.setInt( 3, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+            ps.setInt( 4, txtCodCompra.getVlrInteger() );
+            ps.executeUpdate();
+            
+            if ( !con.getAutoCommit() ){
+                con.commit();
+            }            
+            Funcoes.mensagemInforma( this, "N° do documento alterado com sucesso!" );
+            
+            
+        } catch ( SQLException  e ) {
+            
+            e.printStackTrace();
+            Funcoes.mensagemErro( this, "Erro ao Alterar n° do documento\n" + e.getMessage() );
+        }
+    }
+
+    public void actionPerformed( ActionEvent evt ) {
+
+        if ( evt.getSource() == btSair ){
+            dispose();
+        }
+        else if ( evt.getSource() == btTrocaDoc ){
+            trocarDocVenda();
+        }
+        else if( evt.getSource() == btTrocaDocCompra ){
+            trocarDocCompra();
+        }
+    }
+
+    public void setConexao( Connection cn ) {
+
+        super.setConexao( cn );
+        lcVenda.setConexao( cn );
+    }
 }
-
