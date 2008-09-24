@@ -33,6 +33,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -90,6 +91,8 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	private JCheckBoxPad cbReceita = new JCheckBoxPad( "Permite vendas de produto com receita", "S", "N" );
 	
 	private JCheckBoxPad cbAtivCli = new JCheckBoxPad( "Permite ativação de clientes", "S", "N" );
+	
+	private JCheckBoxPad cbLiveraCred = new JCheckBoxPad( "Permite liberação de crédito", "S", "N");
 	
 	private JList lsDisp = new JList();
 
@@ -246,13 +249,14 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		adicDB( cbAlmoxarife, 7, 90, 350, 20, "AlmoxarifeUsu", "", false );
 		adicDB( cbCompra, 7, 110, 350, 20, "ComprasUsu", "", false );
 		adicDB( cbAtivCli, 7, 130, 350, 20, "AtivCli", "", true );
+		adicDB( cbLiveraCred, 7, 150, 350, 20, "LiberaCredUsu", "", true );
 
 		txtCodAlmox.setRequerido( cbAlmoxarife.isSelected() );
 
-		adicCampo( txtCodAlmox, 7, 170, 100, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescAlmox, 110, 170, 330, 20, "DescAlmox", "Descrição do almoxarifado" );
-		adicDB( rgAprovaSolicitacao, 7, 230, 210, 80, "AprovCPSolicitacaoUsu", "Aprova solicitação", false );
-		adicDB( rgAprovaRMA, 230, 230, 210, 80, "AprovRMAUsu", "Aprova RMA", false );
+		adicCampo( txtCodAlmox, 7, 200, 100, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescAlmox, 110, 200, 330, 20, "DescAlmox", "Descrição do almoxarifado" );
+		adicDB( rgAprovaSolicitacao, 7, 250, 210, 80, "AprovCPSolicitacaoUsu", "Aprova solicitação", false );
+		adicDB( rgAprovaRMA, 230, 250, 210, 80, "AprovRMAUsu", "Aprova RMA", false );
 
 		setListaCampos( false, "USUARIO", "SG" );
 		lcCampos.setQueryInsert( false );
