@@ -2552,6 +2552,24 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		super.keyReleased( kevt );
 	}
+    
+    private void mostraTelaPass() {
+
+        FPassword fpw = new FPassword( this, FPassword.LIBERA_CRED, null, con );
+        fpw.execShow();                 
+      
+        if ( fpw.OK ) {
+        
+            fpw.dispose(); 
+            
+            if ( !Aplicativo.telaPrincipal.temTela( "Liberação de crédito" ) ) {
+                FLiberaCredito tela = new FLiberaCredito();    
+                Aplicativo.telaPrincipal.criatela( "Liberação de crédito", tela, con );
+                tela.setVisible( true );
+                
+            }
+        }  
+    }
 	
 	private boolean consultaCredito(BigDecimal vlradic) {
 
@@ -2569,8 +2587,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			ps.setObject( 8, txtVlrLiqVenda.getVlrBigDecimal() );
 			ps.setBigDecimal( 9, vlradic );
 				
-			
-				
 			ps.execute();
 			ps.close();
 			
@@ -2580,13 +2596,21 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			
 		} 
 		catch ( SQLException err ) {
-			err.printStackTrace();
+			
+            err.printStackTrace();
 			String mens = err.getMessage();
 			mens = mens.substring( mens.indexOf( "VENDA" ) );
 			
-			Funcoes.mensagemInforma( this, " O valor da venda ultrapassa o limite de crédito pré-estabelecido!\n\n " + mens + "\n" );
-			
+			if ( Funcoes.mensagemConfirma( this, " O valor da venda ultrapassa o limite de crédito pré-estabelecido!\n\n " + mens + "\n\n" + 
+                     " Deseja efetuar liberação agora?") == JOptionPane.YES_OPTION ){
+                mostraTelaPass();
+                
+            }
+            	
 			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Problema com limite de crédito." + mens );
+           
+           
+            
 			return false;
 		}
 		
