@@ -126,15 +126,16 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		setTitulo( "Liberação de crédito" );
 		setAtribos( 10, 10, 680, 440 );
 
-		vLabs1.addElement( "ECF" );
-		vLabs1.addElement( "Venda" );
 
-		vVals1.addElement( "E" );
+		vLabs1.addElement( "Venda" );
+		vLabs1.addElement( "ECF" );
+		
 		vVals1.addElement( "V" );
+		vVals1.addElement( "E" );		
 
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
-		/*		rgTipo.setVlrString( "V" );
-		 txtTipoVenda.setVlrString( "V" );*/
+		rgTipo.setVlrString( "V" );
+		txtTipoVenda.setVlrString( "V" );
 
 		rgTipo.addRadioGroupListener( this );
 
@@ -161,7 +162,7 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "Doc.", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtDataVenda, "DtEmitVenda", "Data", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_FK, true ) );
-		lcVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo Venda", ListaCampos.DB_SI, false ) );
+//		lcVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo Venda", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtVlrLiqPed, "VlrLiqVenda", "Valor do pedido", ListaCampos.DB_SI, false ) );
 
 		lcVenda.setDinWhereAdic( "TIPOVENDA = #S", txtTipoVenda );
