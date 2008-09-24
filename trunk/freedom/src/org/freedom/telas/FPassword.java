@@ -57,10 +57,15 @@ public class FPassword extends FFDialogo {
 	 * Permissão para venda de produto com receita.
 	 */
 	public static final int APROV_RECEITA_PROD = 3;
+    
+    /**
+     * Permissão para visualização de tela de libera crédito.
+     */
+    public static final int LIBERA_CRED = 4;
 
 	private JTextFieldPad txtUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
-	private JPasswordFieldPad txtPass = new JPasswordFieldPad( 8 );
+	private JPasswordFieldPad txtPass = new JPasswordFieldPad( 10 );
 
 	private String[] param = null;
 
@@ -135,6 +140,9 @@ public class FPassword extends FFDialogo {
 			case APROV_RECEITA_PROD :
 				ret = getAprovReceitaProd();
 				break;
+            case LIBERA_CRED :
+                ret = getLiberaCredito();
+                break;    
 			default :
 				break;
 		}
@@ -177,6 +185,11 @@ public class FPassword extends FFDialogo {
 		return getPermissao( APROV_RECEITA_PROD );
 	}
 
+    private boolean getLiberaCredito(){
+        
+        return getPermissao( LIBERA_CRED );
+    }
+    
 	private boolean getPermissao( int tipo ) {
 
 		PreparedStatement ps = null;
@@ -184,7 +197,7 @@ public class FPassword extends FFDialogo {
 		Properties props = null;
 		String sIDUsu = null;
 		StringBuffer sSQL = new StringBuffer();
-		boolean[] permissoes = new boolean[ 4 ];
+		boolean[] permissoes = new boolean[ 5 ];
 		
 		try {
 
@@ -220,7 +233,7 @@ public class FPassword extends FFDialogo {
 //			}
 				 
 
-			sSQL.append( "SELECT BAIXOCUSTOUSU, ABREGAVETAUSU, ALTPARCVENDA, APROVRECEITA " );
+			sSQL.append( "SELECT BAIXOCUSTOUSU, ABREGAVETAUSU, ALTPARCVENDA, APROVRECEITA, LIBERACREDUSU " );
 			sSQL.append( "FROM SGUSUARIO " );
 			sSQL.append( "WHERE IDUSU=? AND CODEMP=? AND CODFILIAL=?" );
 			
@@ -237,6 +250,8 @@ public class FPassword extends FFDialogo {
 				permissoes[ 1 ] = "S".equals( rs.getString( 2 ) );
 				permissoes[ 2 ] = "S".equals( rs.getString( 3 ) );
 				permissoes[ 3 ] = "S".equals( rs.getString( 4 ) );
+                permissoes[ 4 ] = "S".equals( rs.getString( 5 ) );
+                
 			}
 			
 			if ( ! permissoes[ tipo ] ) {
