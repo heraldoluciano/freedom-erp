@@ -57,7 +57,7 @@ public class BalanceteBarras extends LeiauteGR {
 		montaCabEmp(con);	
 		montaRel();
 	}
-	
+	 
 	private JFreeChart createChart(CategoryDataset dataset) {    
 	  JFreeChart chart = ChartFactory.createBarChart3D(	  
 			"",          //Título
