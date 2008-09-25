@@ -38,6 +38,7 @@
 	<parameter name="DATAFIM" isForPrompting="true" class="java.util.Date">
 		<defaultValueExpression ><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
+	<parameter name="CONCENTRACAO" isForPrompting="false" class="java.math.BigDecimal"/>
 	<queryString><![CDATA[SELECT eq.codemp,pd.descprod,pd.vlrdensidade,pd.vlrconcent,(case when qtdfinalprodop=0 then 0 else qtdmovprod/qtdfinalprodop * 100 end) as formula,sum(EQ.qtdmovprod) as qtdmovprod,sum(op.qtdfinalprodop) as qtdfinalprodop
 FROM eqmovprod EQ,
  eqtipomov tm, eqitrma itr, eqrma rma,  ppop op, eqproduto pd
@@ -348,7 +349,7 @@ group by 1,2,3,4,5]]></queryString>
 					<textElement>
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRCONCENT}.divide( new BigDecimal("100"), BigDecimal.ROUND_HALF_UP ).multiply($F{FORMULA})]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$P{CONCENTRACAO}.divide( new BigDecimal("100"), BigDecimal.ROUND_HALF_UP ).multiply($F{FORMULA})]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement

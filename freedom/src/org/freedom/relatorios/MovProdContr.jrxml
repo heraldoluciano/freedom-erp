@@ -525,6 +525,9 @@ AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPRO
 					<subreportParameter  name="DATAFIM">
 						<subreportParameterExpression><![CDATA[$P{DATAFIM}]]></subreportParameterExpression>
 					</subreportParameter>
+					<subreportParameter  name="CONCENTRACAO">
+						<subreportParameterExpression><![CDATA[$F{VLRCONCENT}]]></subreportParameterExpression>
+					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + ($P{AGRUPAR}.equals("S")?"MovProdContrDetFinalAgrup.jasper":"MovProdContrDetFinal.jasper")]]></subreportExpression>
 				</subreport>
