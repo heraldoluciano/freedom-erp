@@ -86,7 +86,7 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 
 	private JTextFieldFK txtVlrCredito = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JTextFieldFK txtVlrALiberar = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private JTextFieldPad txtVlrALiberar = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldPad txtVlrALiberar2 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
@@ -125,8 +125,7 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		super();
 		setTitulo( "Liberação de crédito" );
 		setAtribos( 10, 10, 680, 440 );
-
-
+		
 		vLabs1.addElement( "Venda" );
 		vLabs1.addElement( "ECF" );
 		
