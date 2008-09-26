@@ -339,7 +339,7 @@ and eq.qtdmovprod>0]]></queryString>
 					</textElement>
 				<text><![CDATA[Qdade:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="92"
 						y="45"
