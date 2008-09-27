@@ -1001,15 +1001,22 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			sSQL = "SELECT IT.PRECOITCOMPRA " + 
+			sSQL = "SELECT FIRST 1 IT.PRECOITCOMPRA " + 
 			"FROM CPCOMPRA C, CPITCOMPRA IT " + 
-			"WHERE C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL " + 
+			"WHERE C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND C.CODCOMPRA=IT.CODCOMPRA " + 
 			"AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODPROD=? " + 
-			"ORDER BY C.DTENTCOMPRA DESC";
+			"ORDER BY C.DTENTCOMPRA DESC, C.CODCOMPRA DESC";
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
-			ps.setInt( 3, txtCodProd.getVlrInteger().intValue() );
+			
+			if( comref ){
+				ps.setInt( 3, txtRefProd.getVlrInteger().intValue() );
+			}
+			else{
+				ps.setInt( 3, txtCodProd.getVlrInteger().intValue() );
+			}
+			
 			rs = ps.executeQuery();
 			if ( rs.next() )
 				txtPrecoItCompra.setVlrBigDecimal( new BigDecimal( rs.getString( 1 ) ) );
