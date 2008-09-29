@@ -114,13 +114,13 @@ public class NF {
 	public static final int C_IMPCSOCIALVENDA = 65;
 	public static final int C_CALCICMSVENDA = 66;
 	public static final int C_IMPICMSVENDA = 67;
-	public static final int C_CALIPIVENDA = 68;
+	public static final int C_CALCIPIVENDA = 68;
 	public static final int C_IMPIPIVENDA = 69;
-	public static final int C_CALIRVENDA = 70;
+	public static final int C_CALCIRVENDA = 70;
 	public static final int C_IMPIRVENDA = 71;
-	public static final int C_CALISSVENDA = 72;
+	public static final int C_CALCISSVENDA = 72;
 	public static final int C_IMPIISSVENDA = 73;
-	public static final int C_CALPISVENDA = 74;
+	public static final int C_CALCPISVENDA = 74;
 	public static final int C_IMPPISVENDA = 75;
 	
 	
