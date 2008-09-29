@@ -209,6 +209,20 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private ListaCampos lcAlmox = new ListaCampos( this, "AX" );
 	private CtrlMultiComis ctrlmc = null;
 	private JTabbedPanePad tpnCab = new JTabbedPanePad();
+	private JCheckBoxPad cbIPIimp = new JCheckBoxPad( "", "S", "N");
+	private JCheckBoxPad cbIPIcalc = new JCheckBoxPad( "", "S", "N");
+	private JCheckBoxPad cbPISimp = new JCheckBoxPad( "", "S", "N");
+	private JCheckBoxPad cbPIScalc = new JCheckBoxPad( "", "S", "N");
+	private JCheckBoxPad cbConfisimp = new JCheckBoxPad( "", "S", "N");
+	private JCheckBoxPad cbConfiscalc = new JCheckBoxPad( "", "S", "N");
+	private JCheckBoxPad cbContribimp = new JCheckBoxPad( "", "S", "N");
+	private JCheckBoxPad cbContribcalc = new JCheckBoxPad( "", "S", "N");
+	private JCheckBoxPad cbIRimp = new JCheckBoxPad( "", "S", "N");
+	private JCheckBoxPad cbIRcalc = new JCheckBoxPad( "", "S", "N");
+	private JCheckBoxPad cbISSimp = new JCheckBoxPad( "", "S", "N");
+	private JCheckBoxPad cbISScalc = new JCheckBoxPad( "", "S", "N");
+	private JCheckBoxPad cbICMSimp = new JCheckBoxPad( "", "S", "N");
+	private JCheckBoxPad cbICMScalc = new JCheckBoxPad( "", "S", "N");
 	private int numComissionados = 0; 
 	private boolean[] bPrefs = null;
 	private boolean bCtrl = false;
@@ -406,8 +420,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcVenda2.add( new GuardaCampo( txtVlrFreteVenda, "VlrFreteVenda", "Vlr. frete", ListaCampos.DB_SI, false ) );
 		lcVenda2.add( new GuardaCampo( txtVlrComisVenda, "VlrComisVenda", "Vlr. comis.", ListaCampos.DB_SI, false ) );
 		lcVenda2.add( new GuardaCampo( txtMedComisVenda, "PercMComisVenda", "Med. comis.", ListaCampos.DB_SI, false ) );
+		
 		lcVenda2.add( new GuardaCampo( txtVlrBaseICMSVenda, "VlrBaseICMSVenda", "Vlr. base ICMS", ListaCampos.DB_SI, false ) );
-		lcVenda2.add( new GuardaCampo( txtVlrICMSVenda, "VlrICMSVenda", "Vlr. ICMS", ListaCampos.DB_SI, false ) );
+		lcVenda2.add( new GuardaCampo( txtVlrICMSVenda, "VlrICMSVenda", "Vlr. ICMS", ListaCampos.DB_SI, false ) );	
 		lcVenda2.add( new GuardaCampo( txtVlrIPIVenda, "VlrIPIVenda", "Vlr. IPI", ListaCampos.DB_SI, false ) );
 		lcVenda2.add( new GuardaCampo( txtVlrPisVenda, "VlrPisVenda", "Vlr. PIS", ListaCampos.DB_SI, false ) );
 		lcVenda2.add( new GuardaCampo( txtVlrCofinsVenda, "VlrCofinsVenda", "Vlr. COFINS", ListaCampos.DB_SI, false ) );
@@ -653,15 +668,35 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		setPainel( pinCabFiscal );
 
+		adicDB( cbIPIimp, 90, 20, 30, 20, "", "Imp.", false );
+		adicDB( cbIPIcalc, 117, 20, 30, 20, "", "calc.", false );
 		adicCampo( txtVlrIPIVenda, 7, 20, 80, 20, "VlrIPIVenda", "Vlr. IPI", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrPisVenda, 90, 20, 80, 20, "VlrPisVenda", "Vlr. PIS", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrBaseICMSVenda, 173, 20, 80, 20, "VlrBaseIcmsVenda", "Base ICMS", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrICMSVenda, 256, 20, 80, 20, "VlrICMSVenda", "Vlr. ICMS", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrCofinsVenda, 7, 60, 80, 20, "VlrCofinsVenda", "Vlr. PIS", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrCSocialVenda, 90, 60, 80, 20, "VlrCSocialVenda", "Vlr. c. social", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrIRVenda, 173, 60, 80, 20, "VlrIRVenda", "Vlr. I.R.", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrBaseISSVenda, 256, 60, 80, 20, "VlrBaseISSVenda", "Base ISS", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrISSVenda, 339, 60, 80, 20, "VlrISSVenda", "Vlr. ISS", ListaCampos.DB_SI, false );
+		
+		adicDB( cbPISimp, 233, 20, 30, 20, "", "imp.", false );
+		adicDB( cbPIScalc, 260, 20, 30, 20, "", "calc.", false );		
+		adicCampo( txtVlrPisVenda, 150, 20, 80, 20, "VlrPisVenda", "Vlr. PIS", ListaCampos.DB_SI, false );
+		
+		adicDB( cbICMSimp, 470, 20, 30, 20, "", "imp.", false );
+		adicDB( cbICMScalc, 500, 20, 30, 20, "", "calc.", false );
+		adicCampo( txtVlrBaseICMSVenda, 300, 20, 80, 20, "VlrBaseIcmsVenda", "Base ICMS", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrICMSVenda, 385, 20, 80, 20, "VlrICMSVenda", "Vlr. ICMS", ListaCampos.DB_SI, false );
+		
+		adicDB( cbConfisimp, 90, 60, 30, 20, "", "imp.", false );
+		adicDB( cbConfiscalc, 117, 60, 30, 20, "", "calc.", false );	
+		adicCampo( txtVlrCofinsVenda, 7, 60, 80, 20, "VlrCofinsVenda", "Vlr. Cofins", ListaCampos.DB_SI, false );
+		
+		adicDB( cbContribimp, 233, 60, 30, 20, "", "imp.", false );
+		adicDB( cbContribcalc, 260, 60, 30, 20, "", "calc.", false );
+		adicCampo( txtVlrCSocialVenda, 150, 60, 80, 20, "VlrCSocialVenda", "Vlr. c. social", ListaCampos.DB_SI, false );		
+		
+		adicDB( cbIRimp, 383, 60, 30, 20, "", "imp.", false );
+		adicDB( cbIRcalc, 410, 60, 30, 20, "", "calc.", false );
+		adicCampo( txtVlrIRVenda, 300, 60, 80, 20, "VlrIRVenda", "Vlr. I.R.", ListaCampos.DB_SI, false );
+		
+		adicDB( cbISSimp, 608, 60, 30, 20, "", "imp.", false );
+		adicDB( cbISScalc, 635, 60, 30, 20, "", "calc.", false );
+		adicCampo( txtVlrBaseISSVenda, 440, 60, 80, 20, "VlrBaseISSVenda", "Base ISS", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrISSVenda, 525, 60, 80, 20, "VlrISSVenda", "Vlr. ISS", ListaCampos.DB_SI, false );
 
 		lcCampos.setWhereAdic( "TIPOVENDA='V'" );
 		lcCampos.setWhereAdicMax( "TIPOVENDA='V'" );
