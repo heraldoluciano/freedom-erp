@@ -108,6 +108,22 @@ public class NF {
 	public static final int C_VLRISS = 59;
 	public static final int C_PERCISS = 60;
 	public static final int C_HALT = 61;
+	public static final int C_CALCCOFINSVENDA = 62;
+	public static final int C_IMPCOFINSVENDA = 63;
+	public static final int C_CALCCSOCIALVENDA = 64;
+	public static final int C_IMPCSOCIALVENDA = 65;
+	public static final int C_CALCICMSVENDA = 66;
+	public static final int C_IMPICMSVENDA = 67;
+	public static final int C_CALIPIVENDA = 68;
+	public static final int C_IMPIPIVENDA = 69;
+	public static final int C_CALIRVENDA = 70;
+	public static final int C_IMPIRVENDA = 71;
+	public static final int C_CALISSVENDA = 72;
+	public static final int C_IMPIISSVENDA = 73;
+	public static final int C_CALPISVENDA = 74;
+	public static final int C_IMPPISVENDA = 75;
+	
+	
 	
 	//itens
 	public static final int C_CODITPED = 0;
