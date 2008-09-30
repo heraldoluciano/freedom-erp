@@ -58,7 +58,7 @@ public class DLFechaDistrib extends FFDialogo {
 
     private Vector<Object> vBuscaLote = new Vector<Object>();
 
-    private int iProdPrinc = 0;
+    private String lotePrincipal;
 
     public DLFechaDistrib( Component cOrig, int iSeqDist, int iCodProd, String sDescProd, float ftQtdade ) {
 
@@ -91,8 +91,8 @@ public class DLFechaDistrib extends FFDialogo {
         btOK.addActionListener( this );
     }
 
-    public void setProdPrinc( int prodPrinc, int seqPrinc ) {
-        iProdPrinc = prodPrinc;
+    public void setLotePrincipal( String lotePrincipal ) {
+        this.lotePrincipal = lotePrincipal;
     }
 
     public void setConexao( Connection cn ) {
@@ -322,10 +322,10 @@ public class DLFechaDistrib extends FFDialogo {
             ObjMl = new ObjetoModLote();
             ObjMl.setTexto( sModLote );
             if ( getModLotePrinc() ) {
-                sCodLote = ObjMl.getLote( new Integer( this.iProdPrinc ), new Integer( iCodProd ), dtFabProd, con );
+                sCodLote = ObjMl.getLote( iCodProd, dtFabProd, con, lotePrincipal );
             }
             else {
-                sCodLote = ObjMl.getLote( new Integer( iCodProd ), null, dtFabProd, con );
+                sCodLote = ObjMl.getLote( iCodProd, dtFabProd, con );
             }
             
             Calendar cal = Calendar.getInstance();

@@ -1917,7 +1917,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				if ( sCodLote == null ) {
 					objMl = new ObjetoModLote();
 					objMl.setTexto( sModLote );
-					sCodLote = objMl.getLote( new Integer( iCodProd ), null, dtFabProd, cn );
+					sCodLote = objMl.getLote( new Integer( iCodProd ), dtFabProd, cn );
 				}
 				GregorianCalendar cal = new GregorianCalendar();
 				cal.setTime( dtFabProd );
@@ -2436,7 +2436,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private void distribuicao() {
 
-		Object[] sValores = new Object[ 8 ];
+		Object[] sValores = new Object[ 9 ];
 
 		try {
 			lcCampos.carregaDados();
@@ -2449,6 +2449,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			sValores[ 5 ] = txtDescEst.getVlrString();
 			sValores[ 6 ] = txtQtdFinalProdOP.getVlrBigDecimal();
 			sValores[ 7 ] = txtQtdPrevProdOP.getVlrBigDecimal();
+			sValores[ 8 ] = txtCodLoteProdEst.getVlrString();
 
 			DLDistrib dl = new DLDistrib( con, this, (Boolean) prefere.get( "USAREFPROD" ) );
 			dl.carregaCampos( sValores );
