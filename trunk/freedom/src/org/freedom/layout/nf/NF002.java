@@ -230,14 +230,10 @@ public class NF002 extends Layout {
 						imp.pulaLinha( 1, imp.comprimido() );
 					}				
 					
-//					 Fim da observação
+					//Fim da observação
 					
 					imp.pulaLinha( 5, imp.comprimido() );
-					// Imprime canhoto
-
-					imp.pulaLinha( 4, imp.comprimido() );
 					
-					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido() );
 					imp.setPrc( 0, 0 );
 					imp.incPags();
 					
