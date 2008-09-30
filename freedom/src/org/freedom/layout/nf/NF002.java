@@ -180,9 +180,7 @@ public class NF002 extends Layout {
 						imp.say( 63,Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( cab.getFloat( NF.C_VLRCOFINSVENDA ) ) ) );
 						vlrTotImp +=  cab.getFloat( NF.C_VLRCOFINSVENDA );
 				    }
-				    
-				    imp.say( 78, cab.getString( NF.C_DESCPLANOPAG  ));
-				   
+				    			   
 				    imp.pulaLinha( 1, imp.comprimido() );
 				    if( cab.getString(  NF.C_IMPIRVENDA ).equals( "S" ) ){
 				    	
@@ -191,6 +189,7 @@ public class NF002 extends Layout {
 						vlrTotImp +=  cab.getFloat( NF.C_VLRIRVENDA );
 				    	
 				    }
+				    imp.say( 78, cab.getString( NF.C_DESCPLANOPAG  ));
 				    if( cab.getString(  NF.C_IMPCSOCIALVENDA ).equals( "S" ) ){
 				    	
 				    	imp.say( 53,"C.Social:" );
