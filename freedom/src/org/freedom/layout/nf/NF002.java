@@ -136,9 +136,9 @@ public class NF002 extends Layout {
 				
 				 imp.say( 79, Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) );
 				 imp.say( 84, Funcoes.strDecimalToStrCurrency( 10, 2, itens.getString( NF.C_QTDITPED ) ) );
-				 imp.say( 89, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) / itens.getFloat( NF.C_QTDITPED ) ) ) );
-				 imp.say( 100, Funcoes.strDecimalToStrCurrency( 13, 2, cab.getString( NF.C_VLRDESCITPED )) );
-				 imp.say( 115, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( itens.getString( NF.C_VLRLIQITPED ) ) ) );
+				 imp.say( 89, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) / itens.getFloat( NF.C_QTDITPED ) ) ) );
+				 imp.say( 100, Funcoes.strDecimalToStrCurrency( 15, 2, cab.getString( NF.C_VLRDESCITPED )) );
+				 imp.say( 115, Funcoes.strDecimalToStrCurrency( 18, 2, String.valueOf( itens.getString( NF.C_VLRLIQITPED ) ) ) );
 				 
 				 iProdImp++;					
 			
@@ -208,8 +208,9 @@ public class NF002 extends Layout {
 				    }
 				    if( vlrTotImp > 0  ){
 				    	
-				    	imp.say( 53, "T.Imp.:" );
-				    	imp.say( 63, Funcoes.strDecimalToStrCurrency( 10,2, String.valueOf( vlrTotImp )));
+				    	imp.pulaLinha( 1, imp.comprimido() );
+				    	imp.say( 33, "T.Imp.:" );
+				    	imp.say( 41, Funcoes.strDecimalToStrCurrency( 10,2, String.valueOf( vlrTotImp )));
 				    }
 				    				   
 				    // Fim da impressão dos totais
