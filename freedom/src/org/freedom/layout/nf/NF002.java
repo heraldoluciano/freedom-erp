@@ -222,7 +222,7 @@ public class NF002 extends Layout {
 					sizeObs = vObsVenda.size() > sizeObs ? vObsVenda.size() : sizeObs;
 
 					int aux = 0;
-					imp.pulaLinha( 2, imp.comprimido() );
+					imp.pulaLinha( 3, imp.comprimido() );
 					for ( int i = 0; i < 4; i++ ) {
 						if ( i<vObsVenda.size() ) {
 							imp.say( 8, Funcoes.copy( (String) vObsVenda.elementAt( i ), 40 ) );
