@@ -65,6 +65,7 @@ public class NF002 extends Layout {
 		Vector<?> vDescServ = new Vector<Object>();
 		Vector<Object[]> vServico = new Vector<Object[]>();
 		BigDecimal vlricmsorig = new BigDecimal(0);
+		BigDecimal vlrTotImp =  new BigDecimal(0);
 		String sDesc = "";
 
 		try {
@@ -162,32 +163,53 @@ public class NF002 extends Layout {
 				    imp.say( 44, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( cab.getFloat( NF.C_VLRISS ) ) ) );
 				   
 				    imp.say( 69, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( cab.getFloat( NF.C_VLRLIQPED ) ) ) );
-				    //imp.say( 85, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( cab.getFloat( NF.C_VLR ) ) ) );VERIFICAR CAMPO DE DESCONTO DA NF.
+				    imp.say( 85, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( cab.getFloat( NF.C_VLRDESCVENDA  ) ) ) );
 				    
-				  /*  imp.say( 41, Funcoes.strDecimalToStrCurrency(10, 2, String.valueOF( rs.getString( "VLRPISVENDA" ) ) ) );  
-					imp.say(imp.pRow(),53,"Cofins:");
-					imp.say(imp.pRow(),63,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRCOFINSVENDA")));
-					imp.say(imp.pRow(),78,Funcoes.copy(rs.getString("DescPlanoPag"),0,30));
-					imp.say(imp.pRow()+1,0,imp.comprimido());
-					//imp.say(imp.pRow(),30,"1 - I.S.S.");
-					imp.say(imp.pRow(),33,"IR:");
-					imp.say(imp.pRow(),41,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRIRVENDA")));
-					imp.say(imp.pRow(),53,"C.Social:");
-					imp.say(imp.pRow(),63,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRCSOCIALVENDA")));
-					imp.say(imp.pRow()+1,0,imp.comprimido());
-					imp.say(imp.pRow(),33,"B.Imp.:");
-					imp.say(imp.pRow(),41,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRBASEISSVENDA")));
-					imp.say(imp.pRow(),53,"T.Imp.:");
-					
-					imp.say(imp.pRow(),63,Funcoes.strDecimalToStrCurrency(10,2,""+(
-							rs.getDouble("VLRPISVENDA")+
-							rs.getDouble("VLRCOFINSVENDA")+
-							rs.getDouble("VLRIRVENDA")+
-							rs.getDouble("VLRCSOCIALVENDA")
-					
-					)));  */
-				
+				    imp.pulaLinha( 2, imp.comprimido() );
+				  
+				    if( cab.getString( NF.C_IMPPISVENDA ).equals( "S" )) {
+				    	
+				    	imp.say( 33,"Pis:" );
+						imp.say( 41, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( cab.getFloat( NF.C_VLRPISVENDA ) ) ) );
+						vlrTotImp.add( Funcoes.strToBd( String.valueOf( cab.getFloat( NF.C_VLRPISVENDA ) ) ) );
+				    	
+				    }				    
+				    if( cab.getString( NF.C_IMPCOFINSVENDA ).equals( "S" ) ){
+
+				    	imp.say( 53,"Cofins:" );
+						imp.say( 63,Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( cab.getFloat( NF.C_VLRCOFINSVENDA ) ) ) );
+						vlrTotImp = vlrTotImp.add( Funcoes.strToBd( String.valueOf( cab.getFloat( NF.C_VLRCOFINSVENDA ))));
+				    }
+				   // imp.say(imp.pRow(),78,Funcoes.copy(rs.getString("DescPlanoPag"),0,30));
+				    imp.pulaLinha( 1, imp.comprimido() );
+				    if( cab.getString(  NF.C_IMPIRVENDA ).equals( "S" ) ){
+				    	
+				    	imp.say( 33,"IR:" );
+						imp.say( 41,Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( cab.getFloat( NF.C_VLRIRVENDA ))));
+						vlrTotImp = vlrTotImp.add( Funcoes.strToBd( String.valueOf( cab.getFloat( NF.C_VLRIRVENDA ))));
+				    	
+				    }
+				    if( cab.getString(  NF.C_IMPCSOCIALVENDA ).equals( "S" ) ){
+				    	
+				    	imp.say( 53,"C.Social:" );
+						imp.say( 63,Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( cab.getFloat( NF.C_VLRCSOCIALVENDA ))));
+						vlrTotImp = vlrTotImp.add( Funcoes.strToBd( String.valueOf( cab.getFloat( NF.C_VLRCSOCIALVENDA ))));
+				    	
+				    }
+				    imp.pulaLinha( 1, imp.comprimido() );
+				    if( cab.getString(  NF.C_IMPIISSVENDA ).equals( "S" ) ){
+				    	
+				    	imp.say( 33,"B.Imp.:" );
+						imp.say( 41,Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( cab.getFloat( NF.C_BASEISS ))));
+						vlrTotImp = vlrTotImp.add( Funcoes.strToBd( String.valueOf( cab.getFloat( NF.C_BASEISS ))));
 				   
+				    }
+				    if( vlrTotImp.floatValue() > 0  ){
+				    	
+				    	imp.say( 53, "T.Imp.:" );
+				    	imp.say( 63, Funcoes.strDecimalToStrCurrency( 10,2, String.valueOf( vlrTotImp )));
+				    }
+				    				   
 				    // Fim da impressão dos totais
 
 					// Imprime observação e classificações fiscais
