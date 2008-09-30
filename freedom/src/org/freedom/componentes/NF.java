@@ -35,7 +35,7 @@ import org.freedom.telas.Aplicativo;
 public class NF {
 	
 	public static final int TAM_ITENS = 28;
-	public static final int TAM_CAB = 76;
+	public static final int TAM_CAB = 82;
 	public static final int TPNF_NONE = -1;
 	public static final int TPNF_ENTRADA = 0;
 	public static final int TPNF_SAIDA = 1;
@@ -122,8 +122,12 @@ public class NF {
 	public static final int C_IMPIISSVENDA = 73;
 	public static final int C_CALCPISVENDA = 74;
 	public static final int C_IMPPISVENDA = 75;
-	
-	
+	public static final int C_VLRDESCVENDA = 76;
+	public static final int C_VLRPISVENDA = 77;
+	public static final int C_VLRCONFINSVENDA = 78;
+	public static final int C_VLRIRVENDA = 79;
+	public static final int C_VLRCSOCIALVENDA = 80;
+	public static final int C_VLRBASEISSVENDA = 81; 
 	
 	//itens
 	public static final int C_CODITPED = 0;
