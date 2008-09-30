@@ -65,7 +65,7 @@ public class NF002 extends Layout {
 		Vector<?> vDescServ = new Vector<Object>();
 		Vector<Object[]> vServico = new Vector<Object[]>();
 		BigDecimal vlricmsorig = new BigDecimal(0);
-		BigDecimal vlrTotImp =  new BigDecimal(0);
+		Float vlrTotImp =  new Float(0);
 		String sDesc = "";
 
 		try {
@@ -117,9 +117,9 @@ public class NF002 extends Layout {
 			
 				// Imprime os dados do item no corpo da nota
 				
-				Vector<?> vDesc = Funcoes.strToVectorSilabas( cab.getString( NF.C_OBSITPED ) == null || 
-						cab.getString( NF.C_OBSITPED ).equals("") ? 
-						( cab.getString( NF.C_DESCPROD ).trim() ) : cab.getString( NF.C_OBSITPED ), 46 );
+				Vector<?> vDesc = Funcoes.strToVectorSilabas( itens.getString( NF.C_OBSITPED ) == null || 
+						itens.getString( NF.C_OBSITPED ).equals("") ? 
+						( itens.getString( NF.C_DESCPROD ).trim() ) : itens.getString( NF.C_OBSITPED ), 46 );
 				
 				 for ( int iConta=0;( (iConta < 20) && (vDesc.size()>iConta) ); iConta++ ){
 						
@@ -131,7 +131,7 @@ public class NF002 extends Layout {
 						}
 			        	
 			        	imp.pulaLinha( 1, imp.comprimido() );
-			        	imp.say(6, sDesc);
+			        	imp.say( 8, sDesc );
 				 }
 				
 				 imp.say( 79, Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) );
@@ -171,29 +171,31 @@ public class NF002 extends Layout {
 				    	
 				    	imp.say( 33,"Pis:" );
 						imp.say( 41, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( cab.getFloat( NF.C_VLRPISVENDA ) ) ) );
-						vlrTotImp.add( Funcoes.strToBd( String.valueOf( cab.getFloat( NF.C_VLRPISVENDA ) ) ) );
+						vlrTotImp += cab.getFloat( NF.C_VLRPISVENDA );
 				    	
 				    }				    
 				    if( cab.getString( NF.C_IMPCOFINSVENDA ).equals( "S" ) ){
 
 				    	imp.say( 53,"Cofins:" );
 						imp.say( 63,Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( cab.getFloat( NF.C_VLRCOFINSVENDA ) ) ) );
-						vlrTotImp = vlrTotImp.add( Funcoes.strToBd( String.valueOf( cab.getFloat( NF.C_VLRCOFINSVENDA ))));
+						vlrTotImp +=  cab.getFloat( NF.C_VLRCOFINSVENDA );
 				    }
-				   // imp.say(imp.pRow(),78,Funcoes.copy(rs.getString("DescPlanoPag"),0,30));
+				    
+				    imp.say( 78, cab.getString( NF.C_DESCPLANOPAG  ));
+				   
 				    imp.pulaLinha( 1, imp.comprimido() );
 				    if( cab.getString(  NF.C_IMPIRVENDA ).equals( "S" ) ){
 				    	
 				    	imp.say( 33,"IR:" );
 						imp.say( 41,Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( cab.getFloat( NF.C_VLRIRVENDA ))));
-						vlrTotImp = vlrTotImp.add( Funcoes.strToBd( String.valueOf( cab.getFloat( NF.C_VLRIRVENDA ))));
+						vlrTotImp +=  cab.getFloat( NF.C_VLRIRVENDA );
 				    	
 				    }
 				    if( cab.getString(  NF.C_IMPCSOCIALVENDA ).equals( "S" ) ){
 				    	
 				    	imp.say( 53,"C.Social:" );
 						imp.say( 63,Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( cab.getFloat( NF.C_VLRCSOCIALVENDA ))));
-						vlrTotImp = vlrTotImp.add( Funcoes.strToBd( String.valueOf( cab.getFloat( NF.C_VLRCSOCIALVENDA ))));
+						vlrTotImp += cab.getFloat( NF.C_VLRCSOCIALVENDA );
 				    	
 				    }
 				    imp.pulaLinha( 1, imp.comprimido() );
@@ -201,10 +203,10 @@ public class NF002 extends Layout {
 				    	
 				    	imp.say( 33,"B.Imp.:" );
 						imp.say( 41,Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( cab.getFloat( NF.C_BASEISS ))));
-						vlrTotImp = vlrTotImp.add( Funcoes.strToBd( String.valueOf( cab.getFloat( NF.C_BASEISS ))));
+						vlrTotImp += cab.getFloat( NF.C_BASEISS );
 				   
 				    }
-				    if( vlrTotImp.floatValue() > 0  ){
+				    if( vlrTotImp > 0  ){
 				    	
 				    	imp.say( 53, "T.Imp.:" );
 				    	imp.say( 63, Funcoes.strDecimalToStrCurrency( 10,2, String.valueOf( vlrTotImp )));
@@ -231,8 +233,6 @@ public class NF002 extends Layout {
 //					 Fim da observação
 					
 					imp.pulaLinha( 5, imp.comprimido() );
-					imp.say( 120, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
-
 					// Imprime canhoto
 
 					imp.pulaLinha( 4, imp.comprimido() );
