@@ -669,11 +669,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		setPainel( pinCabFiscal );
 
 		adicDB( cbIPIimp, 90, 20, 30, 20, "ImpIpiVenda", "Imp.", false );
-		adicDB( cbIPIcalc, 117, 20, 30, 20, "CalIpiVenda", "calc.", false );
+		adicDB( cbIPIcalc, 117, 20, 30, 20, "CalcIpiVenda", "calc.", false );
 		adicCampo( txtVlrIPIVenda, 7, 20, 80, 20, "VlrIPIVenda", "Vlr. IPI", ListaCampos.DB_SI, false );
 		
 		adicDB( cbPISimp, 233, 20, 30, 20, "ImpPisVenda", "imp.", false );
-		adicDB( cbPIScalc, 260, 20, 30, 20, "CalPisVenda", "calc.", false );		
+		adicDB( cbPIScalc, 260, 20, 30, 20, "CalcPisVenda", "calc.", false );		
 		adicCampo( txtVlrPisVenda, 150, 20, 80, 20, "VlrPisVenda", "Vlr. PIS", ListaCampos.DB_SI, false );
 		
 		adicDB( cbICMSimp, 470, 20, 30, 20, "ImpIcmsVenda", "imp.", false );
@@ -690,11 +690,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampo( txtVlrCSocialVenda, 150, 60, 80, 20, "VlrCSocialVenda", "Vlr. c. social", ListaCampos.DB_SI, false );		
 		
 		adicDB( cbIRimp, 383, 60, 30, 20, "ImpIrVenda", "imp.", false );
-		adicDB( cbIRcalc, 410, 60, 30, 20, "CalIrVenda", "calc.", false );
+		adicDB( cbIRcalc, 410, 60, 30, 20, "CalcIrVenda", "calc.", false );
 		adicCampo( txtVlrIRVenda, 300, 60, 80, 20, "VlrIRVenda", "Vlr. I.R.", ListaCampos.DB_SI, false );
 		
 		adicDB( cbISSimp, 608, 60, 30, 20, "ImpiIssVenda", "imp.", false );
-		adicDB( cbISScalc, 635, 60, 30, 20, "CalIssVenda", "calc.", false );
+		adicDB( cbISScalc, 635, 60, 30, 20, "CalcIssVenda", "calc.", false );
 		adicCampo( txtVlrBaseISSVenda, 440, 60, 80, 20, "VlrBaseISSVenda", "Base ISS", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrISSVenda, 525, 60, 80, 20, "VlrISSVenda", "Vlr. ISS", ListaCampos.DB_SI, false );
 
