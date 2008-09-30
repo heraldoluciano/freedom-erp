@@ -38,7 +38,7 @@ public class NF002 extends Layout {
 		boolean bFat = true;
 		boolean bjatem = false;
 		boolean bvlriss = true;
-		final int MAXLINE = 36;
+		final int MAXLINE = 26;
 		final int MAXPROD = 20;
 		int iNumNota = 0;
 		int iItImp = 0;
@@ -100,10 +100,10 @@ public class NF002 extends Layout {
 					imp.say( 118, ( cab.getDate( NF.C_DTEMITPED ) != null ? Funcoes.dateToStrDate( cab.getDate( NF.C_DTEMITPED ) ) : "" ) );
 					imp.pulaLinha( 3, imp.comprimido() );
 					imp.say( 6, sValsCli[ 1 ] );
-					imp.say( 84, !sValsCli[ 0 ].equals( "" ) ? Funcoes.setMascara( sValsCli[ 0 ], "###.###.###-##" ) : Funcoes.setMascara( cab.getString( NF.C_CNPJEMIT ), "##.###.###/####-##" ) );
+					imp.say( 109, !sValsCli[ 0 ].equals( "" ) ? Funcoes.setMascara( sValsCli[ 0 ], "###.###.###-##" ) : Funcoes.setMascara( cab.getString( NF.C_CNPJEMIT ), "##.###.###/####-##" ) );
 					imp.pulaLinha( 3, imp.comprimido() );
 					imp.say( 6, Funcoes.copy( cab.getString( NF.C_ENDEMIT ), 0, 50 ).trim() + ", " + Funcoes.copy( cab.getString( NF.C_NUMEMIT ), 0, 6 ).trim() + " - " + Funcoes.copy( cab.getString( NF.C_COMPLEMIT ), 0, 9 ).trim() );
-					imp.say( 106, Funcoes.copy( cab.getString( NF.C_INSCEMIT ), 0, 23 ) );
+					imp.say( 109, Funcoes.copy( cab.getString( NF.C_INSCEMIT ), 0, 23 ) );
 					imp.pulaLinha( 2, imp.comprimido() );
 					imp.say( 58, Funcoes.setMascara( cab.getString( NF.C_CEPEMIT ), "#####-###" ) );
 					imp.say( 88, sValsCli[ 2 ] );
@@ -133,10 +133,12 @@ public class NF002 extends Layout {
 			        	imp.say(6, sDesc);
 				 }
 				
-				 imp.say( 75, Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) );
-				 imp.say( 84, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( itens.getFloat( NF.C_QTDITPED ) ) ) );
+				 imp.say( 79, Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) );
+				 imp.say( 84, Funcoes.strDecimalToStrCurrency( 10, 2, itens.getString( NF.C_QTDITPED ) ) );
 				 imp.say( 89, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) / itens.getFloat( NF.C_QTDITPED ) ) ) );
-				 imp.say( 110, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getFloat( NF.C_VLRLIQITPED ) ) ) );
+				 imp.say( 100, Funcoes.strDecimalToStrCurrency( 13, 2, cab.getString( NF.C_VLRDESCITPED )) );
+				 imp.say( 115, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( itens.getString( NF.C_VLRLIQITPED ) ) ) );
+				 
 				 iProdImp++;					
 			
 				// Fim da impressão do item
@@ -154,88 +156,39 @@ public class NF002 extends Layout {
 					
 					// Imprime totais
 
-					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
-						imp.pulaLinha( 3, imp.comprimido() );
-						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
-						imp.say( 15, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRICMSPED ) ) ) );					
-						imp.say( 115, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) ) ) );
-						imp.pulaLinha( 2, imp.comprimido() );
-						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( ( nf.getTipoNF() == NF.TPNF_ENTRADA ? 
-								                        		 								cab.getFloat( NF.C_VLRFRETEPED ) : 
-								                        		 								frete.getFloat( NF.C_VLRFRETEPED ) ) ) ) );
-
-						imp.say( 61, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRADICPED ) ) ) );
-						imp.say( 90, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRIPIPED ) ) ) );
-						
-						if (nf.getTipoNF() == NF.TPNF_ENTRADA) {
-							imp.say( 115, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) 
-									 + cab.getFloat(NF.C_VLRIPIPED ) 
-									 + cab.getFloat(NF.C_VLRADICPED ) 
-		 							 + cab.getFloat( NF.C_VLRFRETEPED ) ) ) ); 
-						}
-						else {					
-							imp.say( 115, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRLIQPED ) ) ) ) ;																							  						
-						}
-						iItImp = 0;
-						
-					}
-					else {
-						imp.pulaLinha( 0, imp.comprimido() );
-						imp.say( 4, "********************" );
-						imp.say( 32, "********************" );
-						imp.say( 114, "********************" );
-						imp.pulaLinha( 2, imp.comprimido() );
-						imp.say( 4, "********************" );
-						imp.say( 58, "********************" );
-						imp.say( 87, "********************" );
-						imp.say( 114, "********************" );
-					}
-
-					// Fim da impressão dos totais
-
-					// Imprime informações do frete
-
-					imp.pulaLinha( 3, imp.comprimido() );
-					imp.say( 1, frete.getString( NF.C_RAZTRANSP ) );
-					imp.say( 84, "C".equals(frete.getString( NF.C_TIPOFRETE ) ) ? "1" : "2" );
-					imp.say( 106, frete.getString( NF.C_UFFRETE ) );
-
-					if ( "C".equals(frete.getString( NF.C_TIPOTRANSP ) ) ) {
-						imp.say( 112, Funcoes.setMascara( cab.getString( NF.C_CNPJEMIT ), "##.###.###/####-##" ) );
-					} 
-					else {
-						if ("".equals( frete.getString( NF.C_CNPJTRANSP ) )) {
-							imp.say( 112, Funcoes.setMascara( frete.getString( NF.C_CPFTRANSP ), "###.###.###-##" ) );
-						} else {
-							imp.say( 112, Funcoes.setMascara( frete.getString( NF.C_CNPJTRANSP ), "##.###.###/####-##" ) );
-						}
-					}
-
-					imp.pulaLinha( 2, imp.comprimido() );
-					if(frete.getString( NF.C_ENDTRANSP ) != null ) {
-						imp.say( 1, frete.getString( NF.C_ENDTRANSP ).trim() + ( !(frete.getString( NF.C_ENDTRANSP ) == null) ? (", " + frete.getInt( NF.C_NUMTRANSP )) : "" ));
-						imp.say( 72, frete.getString( NF.C_CIDTRANSP ) );
-						imp.say( 106, frete.getString( NF.C_UFTRANSP ) );						
-					}
-
-
-					if ( frete.getString(NF.C_TIPOTRANSP)!= null && frete.getString( NF.C_TIPOTRANSP ).equals( "C" ) ) {
-						imp.say( 112, cab.getString( NF.C_INSCEMIT ) );
-					}
-					else {
-						imp.say( 112, frete.getString( NF.C_INSCTRANSP ) );
-					}
-
-					imp.pulaLinha( 2, imp.comprimido() );
-					if(frete.getString( NF.C_QTDFRETE )!=null) 
-						imp.say( 1, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( frete.getString( NF.C_QTDFRETE ) ) ) );
-					imp.say( 21, Funcoes.copy( frete.getString( NF.C_ESPFRETE ), 27 ) );
-					imp.say( 82, Funcoes.copy( frete.getString( NF.C_CONHECFRETEPED ), 20 ) );
-					imp.say( 95, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getFloat( NF.C_PESOBRUTO ) ) ) );
-					imp.say( 117, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getFloat( NF.C_PESOLIQ ) ) ) );
-					imp.pulaLinha( 2, imp.comprimido() );
-
-					// Fim da impressão do frete
+				    imp.pulaLinha( 3, imp.comprimido() );
+				    imp.say( 7, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( cab.getFloat( NF.C_BASEISS ) ) ) );
+				    imp.say( 28, Funcoes.strDecimalToStrCurrency( 5, 2, String.valueOf( cab.getFloat( NF.C_PERCISS ) ) +" %" ) );
+				    imp.say( 44, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( cab.getFloat( NF.C_VLRISS ) ) ) );
+				   
+				    imp.say( 69, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( cab.getFloat( NF.C_VLRLIQPED ) ) ) );
+				    //imp.say( 85, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( cab.getFloat( NF.C_VLR ) ) ) );VERIFICAR CAMPO DE DESCONTO DA NF.
+				    
+				  /*  imp.say( 41, Funcoes.strDecimalToStrCurrency(10, 2, String.valueOF( rs.getString( "VLRPISVENDA" ) ) ) );  
+					imp.say(imp.pRow(),53,"Cofins:");
+					imp.say(imp.pRow(),63,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRCOFINSVENDA")));
+					imp.say(imp.pRow(),78,Funcoes.copy(rs.getString("DescPlanoPag"),0,30));
+					imp.say(imp.pRow()+1,0,imp.comprimido());
+					//imp.say(imp.pRow(),30,"1 - I.S.S.");
+					imp.say(imp.pRow(),33,"IR:");
+					imp.say(imp.pRow(),41,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRIRVENDA")));
+					imp.say(imp.pRow(),53,"C.Social:");
+					imp.say(imp.pRow(),63,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRCSOCIALVENDA")));
+					imp.say(imp.pRow()+1,0,imp.comprimido());
+					imp.say(imp.pRow(),33,"B.Imp.:");
+					imp.say(imp.pRow(),41,Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VLRBASEISSVENDA")));
+					imp.say(imp.pRow(),53,"T.Imp.:");
+					
+					imp.say(imp.pRow(),63,Funcoes.strDecimalToStrCurrency(10,2,""+(
+							rs.getDouble("VLRPISVENDA")+
+							rs.getDouble("VLRCOFINSVENDA")+
+							rs.getDouble("VLRIRVENDA")+
+							rs.getDouble("VLRCSOCIALVENDA")
+					
+					)));  */
+				
+				   
+				    // Fim da impressão dos totais
 
 					// Imprime observação e classificações fiscais
 
@@ -245,7 +198,7 @@ public class NF002 extends Layout {
 					sizeObs = vObsVenda.size() > sizeObs ? vObsVenda.size() : sizeObs;
 
 					int aux = 0;
-					imp.pulaLinha( 3, imp.comprimido() );
+					imp.pulaLinha( 8, imp.comprimido() );
 					for ( int i = 0; i < 4; i++ ) {
 						if ( i<vObsVenda.size() ) {
 							imp.say( 2, Funcoes.copy( (String) vObsVenda.elementAt( i ), 40 ) );
