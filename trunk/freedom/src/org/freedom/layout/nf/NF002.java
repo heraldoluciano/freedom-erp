@@ -189,7 +189,7 @@ public class NF002 extends Layout {
 						vlrTotImp +=  cab.getFloat( NF.C_VLRIRVENDA );
 				    	
 				    }
-				    imp.say( 78, cab.getString( NF.C_DESCPLANOPAG  ));
+				    imp.say( 82, cab.getString( NF.C_DESCPLANOPAG  ));
 				    if( cab.getString(  NF.C_IMPCSOCIALVENDA ).equals( "S" ) ){
 				    	
 				    	imp.say( 53,"C.Social:" );
@@ -222,10 +222,10 @@ public class NF002 extends Layout {
 					sizeObs = vObsVenda.size() > sizeObs ? vObsVenda.size() : sizeObs;
 
 					int aux = 0;
-					imp.pulaLinha( 8, imp.comprimido() );
+					imp.pulaLinha( 2, imp.comprimido() );
 					for ( int i = 0; i < 4; i++ ) {
 						if ( i<vObsVenda.size() ) {
-							imp.say( 2, Funcoes.copy( (String) vObsVenda.elementAt( i ), 40 ) );
+							imp.say( 8, Funcoes.copy( (String) vObsVenda.elementAt( i ), 40 ) );
 						}
 						imp.pulaLinha( 1, imp.comprimido() );
 					}				
