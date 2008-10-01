@@ -48,136 +48,151 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
-public class FModLote extends FDados implements ActionListener, JComboBoxListener,PostListener {
-	
+public class FModLote extends FDados implements ActionListener, JComboBoxListener, PostListener {
+
 	private static final long serialVersionUID = 1L;
-	
-    private JPanelPad pinCab = new JPanelPad(0,100);
-	private JTextFieldPad txtCodModLote = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	private JTextFieldPad txtDescModLote = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
-	private JTextAreaPad txaModLote = new JTextAreaPad(350); 
-	private JScrollPane spnCli = new JScrollPane(txaModLote); 
-	private JButton btAdic = new JButton(Icone.novo("btOk.gif"));
-    private JComboBoxPad cbCampos = null;
-    private Vector<?> vTamanhos = new Vector<Object>();
-	private Vector<String> vLabs = new Vector<String>();    	
+
+	private JPanelPad pinCab = new JPanelPad( 0, 100 );
+
+	private JTextFieldPad txtCodModLote = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldPad txtDescModLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+
+	private JTextAreaPad txaModLote = new JTextAreaPad( 350 );
+
+	private JScrollPane spnCli = new JScrollPane( txaModLote );
+
+	private JButton btAdic = new JButton( Icone.novo( "btOk.gif" ) );
+
+	private JComboBoxPad cbCampos = null;
+
+	private Vector<?> vTamanhos = new Vector<Object>();
+
+	private Vector<String> vLabs = new Vector<String>();
+
 	private Vector<?> vVals = new Vector<Object>();
+
 	private ObjetoModLote objModLote = new ObjetoModLote();
+	
 
 	public FModLote() {
+		
 		super();
-    	setTitulo("Modelos de lote");
-    	setAtribos(20,100,430,200);
-    	setImprimir(true);
-    	pnCliente.add(pinCab,BorderLayout.NORTH);
-    	pnCliente.add(spnCli);
-    	
-    	setPainel(pinCab);
+		setTitulo( "Modelos de lote" );
+		setAtribos( 20, 100, 430, 200 );
+		setImprimir( true );
+		pnCliente.add( pinCab, BorderLayout.NORTH );
+		pnCliente.add( spnCli );
 
-    	txaModLote.setFont(new Font("Courier",Font.PLAIN,11));
+		setPainel( pinCab );
 
-    	adicCampo(txtCodModLote, 7, 20, 90, 20,"CodModLote","Cód.mod.lote", ListaCampos.DB_PK, true);
-    	adicCampo(txtDescModLote, 100, 20, 280, 20,"DescModLote","Descrição do modelo de lote", ListaCampos.DB_SI, true);    	
-    	adicDBLiv(txaModLote,"TxaModLote", "Corpo", true);
-    	
-    	setListaCampos( true, "MODLOTE", "EQ");   	    
-    	
-    	vLabs = new Vector<String>();    	
-    	vVals = new Vector<Object>();
-    	vTamanhos = new Vector<Object>();
-    	
-    	vLabs = objModLote.getLabels();
-    	vVals = objModLote.getValores();
-    	vTamanhos = objModLote.getTams();
-    	
-    	cbCampos = new JComboBoxPad(vLabs,vVals, JComboBoxPad.TP_STRING, 50, 0);    	    	    	
-      	    	
-    	adic(new JLabelPad("Campos dinâmicos"), 7, 40, 220, 20); 
-       	adic(cbCampos, 7, 60, 220, 20); 
-       	adic(btAdic, 230, 60, 30, 30); 
-    	txaModLote.setTabSize(0);
- 
-    	btImp.addActionListener(this);
-    	btPrevimp.addActionListener(this);
-    	
-    	cbCampos.addComboBoxListener(this); 
-     	btAdic.addActionListener(this);
-    	    	
-    }
-	
-    public void setConexao(Connection cn) {
-    	super.setConexao(cn);
-    }
-    
-	public void beforePost(PostEvent pevt) {	     
-		int iMax = 13;	
-		objModLote.setTexto(txaModLote.getVlrString());//carrega o texto criado para o objeto
-		Vector<?> vTemp = new Vector<Object>();
-		String sTexto = txaModLote.getVlrString();
-		String sTmp = sTexto;
+		txaModLote.setFont( new Font( "Courier", Font.PLAIN, 11 ) );
 
-		vTemp = objModLote.getValoresAdic();	
+		adicCampo( txtCodModLote, 7, 20, 90, 20, "CodModLote", "Cód.mod.lote", ListaCampos.DB_PK, true );
+		adicCampo( txtDescModLote, 100, 20, 280, 20, "DescModLote", "Descrição do modelo de lote", ListaCampos.DB_SI, true );
+		adicDBLiv( txaModLote, "TxaModLote", "Corpo", true );
 
-		for(int i = 0;vTemp.size()>i;i++){
-			sTmp = sTmp.replaceAll("\\"+vTemp.elementAt(i).toString(),"");
-        	sTmp = sTmp.replaceAll("\\[","");
-        	sTmp = sTmp.replaceAll("\\]","");	 
-		}
+		setListaCampos( true, "MODLOTE", "EQ" );
+
+		vLabs = new Vector<String>();
+		vVals = new Vector<Object>();
+		vTamanhos = new Vector<Object>();
+
+		vLabs = objModLote.getLabels();
+		vVals = objModLote.getValores();
+		vTamanhos = objModLote.getTams();
+
+		cbCampos = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_STRING, 50, 0 );
+
+		adic( new JLabelPad( "Campos dinâmicos" ), 7, 40, 220, 20 );
+		adic( cbCampos, 7, 60, 220, 20 );
+		adic( btAdic, 230, 60, 30, 30 );
+		txaModLote.setTabSize( 0 );
+
+		btImp.addActionListener( this );
+		btPrevimp.addActionListener( this );
+
+		cbCampos.addComboBoxListener( this );
+		btAdic.addActionListener( this );
+	}
+
+	private void adicionaCampo() {
 		
-		int iTam = sTmp.length();
-		
-		System.out.println(sTmp);
-		if (iTam>iMax) {	        
-	        pevt.cancela();
-	        Funcoes.mensagemErro(this,"Texto muito grande para o lote ("+iTam+" caracteres).\n " +
-	        						  "O código do lote deve conter no máximo 13 caracteres.");	        		
-	    }
-			
+		int iTam = Integer.parseInt( vTamanhos.elementAt( cbCampos.getSelectedIndex() ).toString() );
+		txaModLote.insert( "[" + cbCampos.getVlrString() + Funcoes.replicate( "-", iTam ) + "]", txaModLote.getCaretPosition() );
 	}
-	
-	public void valorAlterado(JComboBoxEvent evt) { 
-		if (evt.getComboBoxPad() == cbCampos) { 
-			adicionaCampo(); 
-		} 
-	} 
 
-	private void adicionaCampo(){
-	    int iTam = Integer.parseInt(vTamanhos.elementAt(cbCampos.getSelectedIndex()).toString());	
-	    txaModLote.insert("["+cbCampos.getVlrString()+Funcoes.replicate("-",iTam)+"]",txaModLote.getCaretPosition());
-	}
-	
-	public void actionPerformed(ActionEvent evt) {
-		 if (evt.getSource() == btAdic) {
-		     adicionaCampo();
-	    }
-		 else if (evt.getSource() == btImp)
-		 	 imprimir(false);
-		 else if (evt.getSource() == btPrevimp)
-		 	 imprimir(true);
-		 super.actionPerformed(evt);
-	}
-	private void imprimir(boolean bVisualizar) {
-		ImprimeOS imp = new ImprimeOS("",con);
-		objModLote.setTexto(txaModLote.getVlrString());
+	private void imprimir( boolean bVisualizar ) {
+		
+		ImprimeOS imp = new ImprimeOS( "", con );
+		objModLote.setTexto( txaModLote.getVlrString() );
 		imp.verifLinPag();
-		imp.setTitulo("Teste de Modelo de Lote"); 
-	    imp.limpaPags();
-	    String sTexto = "É necessário selecionar um modelo de lote válido!";
-	    if(objModLote.getLote(new Integer(30),new Date(),con)!=null){
-	    	sTexto = objModLote.getLote(new Integer(30),new Date(),con);
-	    } 
-
-		imp.say(imp.pRow()+1,0,sTexto);
-
-	    imp.eject();
-	    imp.fechaGravacao();
-		if (bVisualizar) {
-			imp.preview(this);
+		imp.setTitulo( "Teste de Modelo de Lote" );
+		imp.limpaPags();
+		String sTexto = "É necessário selecionar um modelo de lote válido!";
+		
+		if ( objModLote.getLote( new Integer( 30 ), new Date(), con ) != null ) {
+			sTexto = objModLote.getLote( new Integer( 30 ), new Date(), con );
+		}
+	
+		imp.say( imp.pRow() + 1, 0, sTexto );
+	
+		imp.eject();
+		imp.fechaGravacao();
+		if ( bVisualizar ) {
+			imp.preview( this );
 		}
 		else {
 			imp.print();
 		}
 	}
 
-}
+	public void valorAlterado( JComboBoxEvent evt ) {
+		if ( evt.getComboBoxPad() == cbCampos ) {
+			adicionaCampo();
+		}
+	}
 
+	public void beforePost( PostEvent pevt ) {
+		
+		int iMax = 13;
+		objModLote.setTexto( txaModLote.getVlrString() );// carrega o texto criado para o objeto
+		Vector<?> vTemp = new Vector<Object>();
+		String sTexto = txaModLote.getVlrString();
+		String sTmp = sTexto;
+	
+		vTemp = objModLote.getValoresAdic();
+	
+		for ( int i = 0; vTemp.size() > i; i++ ) {
+			sTmp = sTmp.replaceAll( "\\" + vTemp.elementAt( i ).toString(), "" );
+			sTmp = sTmp.replaceAll( "\\[", "" );
+			sTmp = sTmp.replaceAll( "\\]", "" );
+		}
+	
+		int iTam = sTmp.length();
+	
+		if ( iTam > iMax ) {
+			pevt.cancela();
+			Funcoes.mensagemErro( this, "Texto muito grande para o lote (" + iTam + " caracteres).\n "
+					+ "O código do lote deve conter no máximo 13 caracteres." );
+		}
+	
+	}
+
+	public void actionPerformed( ActionEvent evt ) {
+		if ( evt.getSource() == btAdic ) {
+			adicionaCampo();
+		}
+		else if ( evt.getSource() == btImp ) {
+			imprimir( false );
+		}
+		else if ( evt.getSource() == btPrevimp ) {
+			imprimir( true );
+		}
+		super.actionPerformed( evt );
+	}
+
+	public void setConexao( Connection cn ) {
+		super.setConexao( cn );
+	}
+}
