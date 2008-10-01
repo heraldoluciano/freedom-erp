@@ -72,7 +72,8 @@ public class NF002 extends Layout {
 
 			if ( cab.next() ) {
 				iNumNota = cab.getInt( NF.C_DOC );
-				sObsVenda = cab.getString( NF.C_OBSPED ).replace( "\n", "" );
+//				sObsVenda = cab.getString( NF.C_OBSPED ).replace( "\n", "" );
+				sObsVenda = cab.getString( NF.C_OBSPED );
 			}
 			imp.limpaPags();
 
@@ -217,8 +218,8 @@ public class NF002 extends Layout {
 
 					// Imprime observação e classificações fiscais
 
-					vObsVenda = Funcoes.strToVectorSilabas( ( sDescFisc.length() > 0 ? sDescFisc + "\n" : "" ) + sObsVenda, 40 );
-
+					vObsVenda = Funcoes.strToVectorSilabas( ( sDescFisc.length() > 0 ? sDescFisc + "\n" : "" ) + sObsVenda, 60 );
+				    
 					sizeObs = vSigla.size();
 					sizeObs = vObsVenda.size() > sizeObs ? vObsVenda.size() : sizeObs;
 
