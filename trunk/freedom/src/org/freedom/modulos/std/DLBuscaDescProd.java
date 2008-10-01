@@ -24,8 +24,6 @@ public class DLBuscaDescProd extends FDialogo {
 		txa.setVlrString( sDesc );
 		pn.adic( new JScrollPane( txa ), 0, 0, 385, 133 );
 		c.add( pn );
-
-		
 	}
 	
 	public String getTexto() {
