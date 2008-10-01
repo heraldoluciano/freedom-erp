@@ -138,7 +138,7 @@ public class NF002 extends Layout {
 				 imp.say( 84, Funcoes.strDecimalToStrCurrency( 10, 2, itens.getString( NF.C_QTDITPED ) ) );
 				 imp.say( 89, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) / itens.getFloat( NF.C_QTDITPED ) ) ) );
 				 imp.say( 100, Funcoes.strDecimalToStrCurrency( 15, 2, cab.getString( NF.C_VLRDESCITPED )) );
-				 imp.say( 115, Funcoes.strDecimalToStrCurrency( 18, 2, String.valueOf( itens.getString( NF.C_VLRPRODPED ) ) ) );
+				 imp.say( 115, Funcoes.strDecimalToStrCurrency( 18, 2, String.valueOf( itens.getString( NF.C_VLRPRODITPED ) ) ) );
 				 
 				 iProdImp++;					
 			
@@ -160,9 +160,8 @@ public class NF002 extends Layout {
 				    imp.pulaLinha( 3, imp.comprimido() );
 				    imp.say( 7, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( cab.getFloat( NF.C_BASEISS ) ) ) );
 				    imp.say( 28, Funcoes.strDecimalToStrCurrency( 5, 2, String.valueOf( cab.getFloat( NF.C_PERCISS ) ) +" %" ) );
-				    imp.say( 44, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( cab.getFloat( NF.C_VLRISS ) ) ) );
-				   
-				    imp.say( 69, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( cab.getFloat( NF.C_VLRLIQPED ) ) ) );
+				    imp.say( 44, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( cab.getFloat( NF.C_VLRISS ) ) ) );				   
+				    imp.say( 69, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) ) ) );
 				    imp.say( 85, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( cab.getFloat( NF.C_VLRDESCVENDA  ) ) ) );
 				    
 				    imp.pulaLinha( 2, imp.comprimido() );
@@ -211,7 +210,7 @@ public class NF002 extends Layout {
 				    	imp.say( 33, "T.Imp.:" );
 				    	imp.say( 41, Funcoes.strDecimalToStrCurrency( 10,2, String.valueOf( vlrTotImp )));
 				    }
-				    imp.say( 115, Funcoes.strDecimalToStrCurrency( 18, 2, String.valueOf( itens.getString( NF.C_VLRLIQPED ) ) ) );
+				    imp.say( 115, Funcoes.strDecimalToStrCurrency( 18, 2, String.valueOf( cab.getString( NF.C_VLRLIQPED ) ) ) );
 				    
 				    				   
 				    // Fim da impressão dos totais
