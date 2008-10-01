@@ -224,9 +224,9 @@ public class NF002 extends Layout {
 
 					int aux = 0;
 					imp.pulaLinha( 3, imp.comprimido() );
-					for ( int i = 0; i < 4; i++ ) {
+					for ( int i = 0; i < 8; i++ ) {
 						if ( i<vObsVenda.size() ) {
-							imp.say( 8, Funcoes.copy( (String) vObsVenda.elementAt( i ), 40 ) );
+							imp.say( 8, Funcoes.copy( (String) vObsVenda.elementAt( i ), 100 ) );
 						}
 						imp.pulaLinha( 1, imp.comprimido() );
 					}				
