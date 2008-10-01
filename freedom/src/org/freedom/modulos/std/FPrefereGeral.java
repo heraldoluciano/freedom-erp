@@ -398,6 +398,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	
 	private JCheckBoxPad cbMultiComis = null;
 	
+	private JCheckBoxPad cbLiberacaoCreGlobal = null;
+	
 	private PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
 	private ListaCampos lcMoeda = new ListaCampos( this, "MO" );
@@ -733,6 +735,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbAltItRecImpBol.setVlrString( "N" );
 		cbEstItRecAltDtVenc = new JCheckBoxPad( "Estorna parcela na alteração da data de vencimento?", "S", "N" );
 		cbEstItRecAltDtVenc.setVlrString( "N" );
+		cbLiberacaoCreGlobal = new JCheckBoxPad( "Liberação de crédito globalizado?", "S", "N" );
+		cbLiberacaoCreGlobal.setVlrString( "N" );
 		cbVerifAltParVenda = new JCheckBoxPad( "Verificar usuario para alterar parcelas?", "S", "N" );
 		cbVerifAltParVenda.setVlrString( "N" );
 		cbUsaBuscGenProd = new JCheckBoxPad( "Busca generica do código do produto?", "S", "N" );
@@ -1009,15 +1013,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 //		adicDB( cbLibGeral, 17, 200, 310, 20, "LCredGlobal", "", true );
 		adicDB( cbJurosPosCalc, 17, 200, 310, 20, "JurosPosCalc", "", true );
 		adicDB( cbEstItRecAltDtVenc, 17, 225, 400, 20, "EstItRecAltDtVenc", "", true );
+		adicDB( cbLiberacaoCreGlobal, 17, 250, 400, 20, "LcRedGlobal", "", false );
 		
-		adicCampo( txtCodTabJuros, 20, 270, 80, 20, "CodTbj", "Cód.tab.jr.", ListaCampos.DB_FK, txtDescTabJuros, false );
-		adicDescFK( txtDescTabJuros, 100, 270, 320, 20, "DescTbj", "Descrição da tabela de juros." );
+		adicCampo( txtCodTabJuros, 20, 300, 80, 20, "CodTbj", "Cód.tab.jr.", ListaCampos.DB_FK, txtDescTabJuros, false );
+		adicDescFK( txtDescTabJuros, 100, 300, 320, 20, "DescTbj", "Descrição da tabela de juros." );
 		
-		adicCampo( txtCodHistRec, 20, 310, 80, 20, "CodHistRec", "Cód.Hist.Rec.", ListaCampos.DB_FK, txtDescHistRec, false );
-		adicDescFK( txtDescHistRec, 100, 310, 320, 20, "DescHist", "Descrição do histórico padrão para contas a receber" );
+		adicCampo( txtCodHistRec, 20, 340, 80, 20, "CodHistRec", "Cód.Hist.Rec.", ListaCampos.DB_FK, txtDescHistRec, false );
+		adicDescFK( txtDescHistRec, 100, 340, 320, 20, "DescHist", "Descrição do histórico padrão para contas a receber" );
 
-		adicCampo( txtCodHistPag, 20, 350, 80, 20, "CodHistPag", "Cód.Hist.Pag.", ListaCampos.DB_FK, txtDescHistPag, false );
-		adicDescFK( txtDescHistPag, 100, 350, 320, 20, "DescHist", "Descrição do histórico padrão para contas a pagar" );
+		adicCampo( txtCodHistPag, 20, 380, 80, 20, "CodHistPag", "Cód.Hist.Pag.", ListaCampos.DB_FK, txtDescHistPag, false );
+		adicDescFK( txtDescHistPag, 100, 380, 320, 20, "DescHist", "Descrição do histórico padrão para contas a pagar" );
 
 		// Contabil
 
