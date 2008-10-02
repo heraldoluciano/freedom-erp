@@ -28,6 +28,7 @@ import java.sql.Connection;
 import java.util.Vector;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JComboBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -58,6 +59,10 @@ public class FEmpregado extends FDados {
 	
 	private final JTextFieldPad txtEndEmpr = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 	
+	private final JTextFieldPad txtDataNasc = new JTextFieldPad( JTextFieldPad.TP_DATE, 50, 0 );
+	
+	private final JTextFieldFK txtIdade = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
 	private final JTextFieldPad txtNumEmpr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 6, 0 );
 	
 	private final JTextFieldPad txtCidEmpr = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
@@ -70,7 +75,57 @@ public class FEmpregado extends FDados {
 	
 	private final JTextFieldPad txtDtAdmissao = new JTextFieldPad( JTextFieldPad.TP_DATE, 12, 0 );
 	
+	private final JTextFieldPad txtCtps = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private final JTextFieldPad txtSerie = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private final JTextFieldPad txtUfCtps = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private final JTextFieldPad txtCertifExercito = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private final JTextFieldPad txtPisPasep = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private final JTextFieldPad txtRg = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
+	private final JTextFieldPad txtOrgEmiss = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
+	private final JTextFieldPad txtUfExpedRg = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private final JTextFieldPad txtDataExpRg = new JTextFieldPad( JTextFieldPad.TP_DATE, 40, 0 );
+	
+	private final JTextFieldPad txtCpfEmpr = new JTextFieldPad( JTextFieldPad.TP_STRING, 11, 0 );
+	
+	private final JTextFieldPad txtTituloEleit = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
+	
+	private final JTextFieldPad txtZonaEleit = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 15, 0 );
+	
+	private final JTextFieldPad txtSecaoEleit = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 15, 0 );
+	
+	private final JTextFieldPad txtCnh = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
+	
+	private final JTextFieldPad txtNomeMae = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
+	
+	private final JTextFieldPad txtNomePai = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
+	
+	private final JTextFieldPad txtComplemento = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private final JTextFieldPad txtUfEmpregado = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private final JTextFieldPad txtDtDemissao = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private final JTextFieldPad txtEmail = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private final JTextFieldPad txtDddEmpr = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+	
+	private final JTextFieldPad txtFoneEmpr2 = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
+	
+	private final JTextFieldPad txtCelEmpr = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
+	
+	private final JTextFieldPad txtSalarioIni = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
+	
 	private JComboBoxPad cbStatus = null;
+	
+	private JComboBoxPad cbSexo = null;
 	
 	private PainelImagem fotoEmpr = new PainelImagem( 65000 );
 	
@@ -85,7 +140,7 @@ public class FEmpregado extends FDados {
 
 		super();
 		setTitulo( "Cadastro de Empregados" );
-		setAtribos( 50, 50, 500, 360 );
+		setAtribos( 50, 50, 590, 800 );
 
 		montaListaCampos();
 		
@@ -134,27 +189,63 @@ public class FEmpregado extends FDados {
 		vLabs.addElement( "Licença maternidade" );
 		vLabs.addElement( "Afastamento INSS" );
 		vLabs.addElement( "Aposentado" );
+		Vector<String> vLabs2 = new Vector<String>();
+		vLabs2.addElement( "Masculino" );
+		vLabs2.addElement( "Feminino" );
+		Vector<String> vVals2 = new Vector<String>();
+		vVals2.addElement( "M" );
+		vVals2.addElement( "F" );
+		
 		
 		cbStatus = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_STRING, 2, 0 );
+		cbSexo = new JComboBoxPad( vLabs2, vVals2, JComboBoxPad.TP_STRING, 2, 0 );
 		
 		adicCampo( txtCod, 7, 20, 80, 20, "MatEmpr", "Matricula", ListaCampos.DB_PK, true );
-		adicCampo( txtDesc, 90, 20, 260, 20, "NomeEmpr", "Nome do empregado", ListaCampos.DB_SI, true );
-		adicDB( fotoEmpr, 365, 20, 100, 133, "FotoEmpr", "Foto ( 3 x 4 )", false );
-		adicDB( cbStatus, 365, 180, 100, 20, "StatusEmpr", "Status", false );
+		adicCampo( txtDesc, 90, 20, 280, 20, "NomeEmpr", "Nome do empregado", ListaCampos.DB_SI, true );
+		adicDB( fotoEmpr, 380, 20, 100, 133, "FotoEmpr", "Foto ( 3 x 4 )", false );
 		adicCampo( txtApelido, 7, 60, 100, 20, "ApelidoEmpr", "Apelido", ListaCampos.DB_SI, true );
-		adicCampo( txtCodTurno, 110, 60, 70, 20, "CodTurno", "Cód. Turno", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescTurno, 183, 60, 165, 20, "DescTurno", "Descrição do turno" );
-		adicCampo( txtEndEmpr, 7, 100, 260, 20, "EndEmpr", "Endereço", ListaCampos.DB_SI, false );
-		adicCampo( txtNumEmpr, 270, 100, 80, 20, "NumEmpr", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtBairEmpr, 7, 140, 180, 20, "BairEmpr", "Bairro", ListaCampos.DB_SI, false );
-		adicCampo( txtCidEmpr, 190, 140, 160, 20, "CidEmpr", "Cidade", ListaCampos.DB_SI, false );
-		adicCampo( txtCepEmpr, 7, 180, 120, 20, "CepEmpr", "Cep", ListaCampos.DB_SI, false );		
-		adicCampo( txtFoneEmpr, 133, 180, 120, 20, "FoneEmpr", "Telefone", ListaCampos.DB_SI, false );
-		adicCampo( txtDtAdmissao , 260, 180, 90, 20, "DtAdmissao", "Data Admissão", ListaCampos.DB_SI, true );
-		adicCampo( txtCodFuncao, 7, 220, 80, 20, "CodFunc", "Cód.Func.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescFuncao, 90, 220, 260, 20, "DescFunc", "Descrição da função" );
-		adicCampo( txtCodDepto, 7, 260, 80, 20, "CodDep", "Cód.Depto.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescDepto, 90, 260, 260, 20, "DescDepto", "Descrição do departamento" );
+		adicDB( cbSexo, 110, 60, 120, 20, "SexoEmpr", "Sexo", false );
+		adicCampo( txtDataNasc, 235, 60, 85, 20, "DtNascEmpr", "Data de nasc.", ListaCampos.DB_SI, false );
+		adic( new JLabelPad( "Idade"), 325, 40, 45, 20 );
+		adic( txtIdade, 325, 60, 45, 20 );
+		adicCampo( txtCtps, 7, 100, 120, 20, "CtpsEmpr", "Ctps", ListaCampos.DB_SI, false );
+		adicCampo( txtSerie, 130, 100, 80, 20, "SerieCtpsEmpr", "Série", ListaCampos.DB_SI, false );
+		adicCampo( txtUfCtps, 213, 100, 30, 20, "UfCtpsEmpr", "Uf", ListaCampos.DB_SI, false);
+		adicCampo( txtCertifExercito, 245, 100, 125, 20, "CertReservEmpr", "Cert. exército", ListaCampos.DB_SI, false );
+		adicCampo( txtPisPasep, 7, 140, 110, 20, "PisPasepEmpr", "PIS/PASEP", ListaCampos.DB_SI, false );
+		adicCampo( txtRg, 120, 140, 85, 20, "RgEmpr", "Rg", ListaCampos.DB_SI, false );
+		adicCampo( txtOrgEmiss, 208, 140, 62, 20, "OrgExpRhEmpr", "Org.Emis.", ListaCampos.DB_SI, false );
+		adicCampo( txtUfExpedRg, 272, 140, 30, 20, "UfRgEmpr", "Uf", ListaCampos.DB_SI, false );
+		adicCampo( txtDataExpRg, 305, 140, 65, 20, "DtExpRgEmpr", "Data", ListaCampos.DB_SI, false );
+		adicCampo( txtCpfEmpr, 7, 180, 85, 20, "CpfEmpr", "Cpf", ListaCampos.DB_SI, false );
+		adicCampo( txtTituloEleit, 95, 180, 110, 20, "TitEleitEmpr", "Titulo Eleitoral", ListaCampos.DB_SI, false );
+		adicCampo( txtZonaEleit, 208, 180, 60, 20, "ZonaEleitEmpr", "Zona", ListaCampos.DB_SI, false );
+		adicCampo( txtSecaoEleit, 270, 180, 60, 20, "SecaoEleitEmpr", "Seção", ListaCampos.DB_SI, false );
+		adicCampo( txtCnh, 335, 180, 150, 20, "CnhEmpr", "CNH", ListaCampos.DB_SI, false );
+		adicCampo( txtNomeMae, 7, 220, 230, 20, "MaeEmpr", "Nome da mãe", ListaCampos.DB_SI, false );
+		adicCampo( txtNomePai, 245, 220, 240, 20, "PaiEmpr", "Nome do pai", ListaCampos.DB_SI, false );
+        adicCampo( txtEndEmpr, 7, 260, 280, 20, "EndEmpr", "Endereço", ListaCampos.DB_SI, false );
+		adicCampo( txtNumEmpr, 290, 260, 80, 20, "NumEmpr", "Número", ListaCampos.DB_SI, false );
+		adicCampo( txtComplemento, 375, 260, 110, 20, "ComplEndEmpr", "Complemento", ListaCampos.DB_SI, false );
+		adicCampo( txtBairEmpr, 7, 300, 180, 20, "BairEmpr", "Bairro", ListaCampos.DB_SI, false );
+        adicCampo( txtCidEmpr, 190, 300, 160, 20, "CidEmpr", "Cidade", ListaCampos.DB_SI, false );
+        adicCampo( txtUfEmpregado, 353, 300, 30, 20, "UfEmpr", "Uf", ListaCampos.DB_SI, false);
+        adicCampo( txtCepEmpr, 386, 300, 100, 20, "CepEmpr", "Cep", ListaCampos.DB_SI, false );	
+        adicCampo( txtDtDemissao , 7, 340, 90, 20, "DtDemissaoEmpr", "Data Demissão", ListaCampos.DB_SI, false );
+        adicDB( cbStatus, 100, 340, 100, 18, "StatusEmpr", "Status", false );
+        adicCampo( txtEmail, 205, 340, 283, 20, "EmailEmpr", "E-mail", ListaCampos.DB_SI, false );
+        adicCampo( txtDddEmpr, 7, 380, 50, 20, "DddEmpr", "DDD", ListaCampos.DB_SI, false );
+        adicCampo( txtFoneEmpr, 60, 380, 130, 20, "FoneEmpr", "Telefone 1", ListaCampos.DB_SI, false );
+        adicCampo( txtFoneEmpr2, 195, 380, 130, 20, "Fone2Empr", "Telefone 2", ListaCampos.DB_SI, false );
+        adicCampo( txtCelEmpr, 330, 380, 160, 20, "CelEmpr", "Celular", ListaCampos.DB_SI, false );
+        adicCampo( txtDtAdmissao , 7, 420, 90, 20, "DtAdmissao", "Data Admissão", ListaCampos.DB_SI, false );
+        adicCampo( txtSalarioIni, 100, 420, 90, 20, "", "Salário inicial", ListaCampos.DB_SI, false );
+        adicCampo( txtCodTurno, 193, 420, 70, 20, "CodTurno", "Cód. Turno", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescTurno, 270, 420, 220, 20, "DescTurno", "Descrição do turno" );		
+		adicCampo( txtCodFuncao, 7, 460, 60, 20, "CodFunc", "Cód.Func.", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescFuncao, 71, 460, 420, 20, "DescFunc", "Descrição da função" );
+		adicCampo( txtCodDepto, 7, 500, 60, 20, "CodDep", "Cód.Depto.", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescDepto, 71, 500, 420, 20, "DescDepto", "Descrição do departamento" );
 		
 		txtCepEmpr.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneEmpr.setMascara( JTextFieldPad.MC_FONE );
