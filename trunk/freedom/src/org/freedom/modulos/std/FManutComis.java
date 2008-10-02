@@ -34,6 +34,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -129,23 +131,17 @@ public class FManutComis extends FFilho implements ActionListener {
 	BigDecimal bVlrTot = new BigDecimal( "0" );
 
 	BigDecimal bVlrTotPago = new BigDecimal( "0" );
+	
+	private Map<String, Object> bPref = null;
 
 	public FManutComis() {
 
 		super( false );
 		setTitulo( "Controle de Comissões" );
 		setAtribos( 50, 25, 690, 430 );
+
 		cbLiberadas.setVlrString( "S" );
-
-		vVals.addElement( "E" );
-		vVals.addElement( "V" );
-		vLabs.addElement( "Emissão" );
-		vLabs.addElement( "Vencimento" );
-		rgEmitRel = new JRadioGroup<String, String>( 2, 2, vLabs, vVals );
-		rgEmitRel.setVlrString( "E" );
-		rgEmitRel.setAtivo( 0, true );
-		rgEmitRel.setAtivo( 1, true );
-
+		
 		btCalc.setToolTipText( "Recalcular" );
 		btLib.setToolTipText( "Liberar" );
 		btBaixa.setToolTipText( "Baixar" );
@@ -166,7 +162,21 @@ public class FManutComis extends FFilho implements ActionListener {
 		txtCodVend.setTabelaExterna( lcVend );
 		txtCodVend.setListaCampos( lcVend );
 		txtCodVend.setNomeCampo( "CodVend" );
-
+		
+		
+	}
+	
+	private void montaTela(){
+		
+		vVals.addElement( "E" );
+		vVals.addElement( "V" );
+		vLabs.addElement( "Emissão" );
+		vLabs.addElement( "Vencimento" );
+		rgEmitRel = new JRadioGroup<String, String>( 2, 2, vLabs, vVals );
+		rgEmitRel.setVlrString( "E" );
+		rgEmitRel.setAtivo( 0, true );
+		rgEmitRel.setAtivo( 1, true );
+		
 		Container c = getContentPane();
 
 		c.setLayout( new BorderLayout() );
@@ -247,9 +257,52 @@ public class FManutComis extends FFilho implements ActionListener {
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 		cbComPag.setVlrString( "N" );
-
+		
+		txtCodVend.setRequerido( ( Boolean )bPref.get( "VDMANUTCOMOBRIG" ) );
 	}
+	private Map<String, Object> getPrefere() {
+		
+		Map<String, Object> retorno = new HashMap<String, Object>();
+		StringBuilder sSQL = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			sSQL.append( "SELECT VDMANUTCOMOBRIG FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );			
 
+			try {
+			
+				ps = con.prepareStatement( sSQL.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+				rs = ps.executeQuery();
+				
+				if ( rs.next() ) {
+					
+					retorno.put( "VDMANUTCOMOBRIG", new Boolean( "S".equals( rs.getString( "VDMANUTCOMOBRIG" ) ) ) );
+							
+				}
+				
+				rs.close();
+				ps.close();
+				
+				if ( !con.getAutoCommit() ) {
+					con.commit();
+				}
+			} catch ( SQLException err ) {
+				
+				Funcoes.mensagemErro( this, "Erro ao verificar preferências!\n" + err.getMessage(), true, con, err );
+				err.printStackTrace();
+			}
+		} finally {
+			
+			sSQL = null;
+			ps = null;
+			rs = null;
+		}
+		return retorno;
+	}
 	private void pesq() {
 
 		int iparam = 1;
@@ -392,6 +445,13 @@ public class FManutComis extends FFilho implements ActionListener {
 	}
 
 	private void baixar() {
+			
+		if ( txtCodVend.getVlrInteger().intValue() == 0 ) {
+
+			Funcoes.mensagemInforma( this, "Código do vendedor é requerido!" );
+			return;
+
+		}				
 
 		DLBaixaComis dl = new DLBaixaComis( this, con, sEmitRel, txtDataini.getVlrDate(), txtDatafim.getVlrDate(), txtCodVend.getVlrInteger() );
 		dl.setConexao( con );
@@ -436,6 +496,7 @@ public class FManutComis extends FFilho implements ActionListener {
 	private void estornar() {
 
 		String sSQL = null;
+
 		try {
 			if ( txtCodVend.getVlrInteger().intValue() == 0 ) {
 				Funcoes.mensagemInforma( this, "Selecione o comissionado!" );
@@ -507,6 +568,10 @@ public class FManutComis extends FFilho implements ActionListener {
 	public void setConexao( Connection cn ) {
 
 		super.setConexao( cn );
+	
+		bPref = getPrefere();
+		montaTela();
+		
 		lcVend.setConexao( cn );
 	}
 }
