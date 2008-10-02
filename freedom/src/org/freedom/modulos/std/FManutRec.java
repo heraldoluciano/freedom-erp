@@ -751,7 +751,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		btExcluirManut.addActionListener( this );
 		btCarregaGridManut.addActionListener( this );
 		btEstorno.addActionListener( this );
-		btBaixa.addActionListener( this );
 		btCarregaBaixas.addActionListener( this );
 		btCarregaBaixasMan.addActionListener( this );
 		tpn.addChangeListener( this );
@@ -1833,6 +1832,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				}
 
 				dl.dispose();
+				carregaGridBaixa();
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
