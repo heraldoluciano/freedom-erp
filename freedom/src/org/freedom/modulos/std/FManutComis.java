@@ -125,23 +125,37 @@ public class FManutComis extends FFilho implements ActionListener {
 	private JButton btLib = new JButton( Icone.novo( "btOk.gif" ) );
 
 	private Vector<String> vCodComi = new Vector<String>();
+	
+	private Map<String, Object> bPref = null;
 
 	String sEmitRel = "";
 
 	BigDecimal bVlrTot = new BigDecimal( "0" );
 
 	BigDecimal bVlrTotPago = new BigDecimal( "0" );
-	
-	private Map<String, Object> bPref = null;
 
 	public FManutComis() {
 
 		super( false );
+
+		montaTela();
+	}
+
+	private void montaTela() {
 		setTitulo( "Controle de Comissões" );
 		setAtribos( 50, 25, 690, 430 );
 
 		cbLiberadas.setVlrString( "S" );
-		
+
+		vVals.addElement( "E" );
+		vVals.addElement( "V" );
+		vLabs.addElement( "Emissão" );
+		vLabs.addElement( "Vencimento" );
+		rgEmitRel = new JRadioGroup<String, String>( 2, 2, vLabs, vVals );
+		rgEmitRel.setVlrString( "E" );
+		rgEmitRel.setAtivo( 0, true );
+		rgEmitRel.setAtivo( 1, true );
+
 		btCalc.setToolTipText( "Recalcular" );
 		btLib.setToolTipText( "Liberar" );
 		btBaixa.setToolTipText( "Baixar" );
@@ -162,21 +176,7 @@ public class FManutComis extends FFilho implements ActionListener {
 		txtCodVend.setTabelaExterna( lcVend );
 		txtCodVend.setListaCampos( lcVend );
 		txtCodVend.setNomeCampo( "CodVend" );
-		
-		
-	}
-	
-	private void montaTela(){
-		
-		vVals.addElement( "E" );
-		vVals.addElement( "V" );
-		vLabs.addElement( "Emissão" );
-		vLabs.addElement( "Vencimento" );
-		rgEmitRel = new JRadioGroup<String, String>( 2, 2, vLabs, vVals );
-		rgEmitRel.setVlrString( "E" );
-		rgEmitRel.setAtivo( 0, true );
-		rgEmitRel.setAtivo( 1, true );
-		
+
 		Container c = getContentPane();
 
 		c.setLayout( new BorderLayout() );
@@ -258,8 +258,12 @@ public class FManutComis extends FFilho implements ActionListener {
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 		cbComPag.setVlrString( "N" );
 		
+	}
+	
+	private void montaTela2() {
 		txtCodVend.setRequerido( ( Boolean )bPref.get( "VDMANUTCOMOBRIG" ) );
 	}
+	
 	private Map<String, Object> getPrefere() {
 		
 		Map<String, Object> retorno = new HashMap<String, Object>();
@@ -303,6 +307,7 @@ public class FManutComis extends FFilho implements ActionListener {
 		}
 		return retorno;
 	}
+	
 	private void pesq() {
 
 		int iparam = 1;
@@ -445,13 +450,6 @@ public class FManutComis extends FFilho implements ActionListener {
 	}
 
 	private void baixar() {
-			
-		if ( txtCodVend.getVlrInteger().intValue() == 0 ) {
-
-			Funcoes.mensagemInforma( this, "Código do vendedor é requerido!" );
-			return;
-
-		}				
 
 		DLBaixaComis dl = new DLBaixaComis( this, con, sEmitRel, txtDataini.getVlrDate(), txtDatafim.getVlrDate(), txtCodVend.getVlrInteger() );
 		dl.setConexao( con );
@@ -496,7 +494,6 @@ public class FManutComis extends FFilho implements ActionListener {
 	private void estornar() {
 
 		String sSQL = null;
-
 		try {
 			if ( txtCodVend.getVlrInteger().intValue() == 0 ) {
 				Funcoes.mensagemInforma( this, "Selecione o comissionado!" );
@@ -568,10 +565,10 @@ public class FManutComis extends FFilho implements ActionListener {
 	public void setConexao( Connection cn ) {
 
 		super.setConexao( cn );
-	
-		bPref = getPrefere();
-		montaTela();
-		
 		lcVend.setConexao( cn );
+		bPref = getPrefere();
+	    montaTela2();
+		
+		
 	}
 }
