@@ -600,7 +600,7 @@ P.CODPROD='1'ORDER BY C2.DTEMITCOMPRA DESC )  ORDER BY P.CODPROD]]></queryString
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{PRECOITCOMPRA}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="242"
 						y="3"
@@ -613,7 +613,7 @@ P.CODPROD='1'ORDER BY C2.DTEMITCOMPRA DESC )  ORDER BY P.CODPROD]]></queryString
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{IPIITCOMPRA}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="286"
 						y="3"
@@ -626,7 +626,7 @@ P.CODPROD='1'ORDER BY C2.DTEMITCOMPRA DESC )  ORDER BY P.CODPROD]]></queryString
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SUB_TOTAL}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="335"
 						y="3"
@@ -665,7 +665,7 @@ P.CODPROD='1'ORDER BY C2.DTEMITCOMPRA DESC )  ORDER BY P.CODPROD]]></queryString
 					</textElement>
 				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{DOCCOMPRA}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="388"
 						y="3"

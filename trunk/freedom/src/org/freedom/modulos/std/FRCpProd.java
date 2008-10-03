@@ -197,8 +197,9 @@ public class FRCpProd extends FRelatorio {
 		sSQL.append( "IT.VLRLIQITCOMPRA, C.DTEMITCOMPRA, C.DOCCOMPRA,");
 		sSQL.append( "(IT.VLRIPIITCOMPRA/ (CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 " ); // IPI 
 		sSQL.append( "ELSE IT.QTDITCOMPRA END )) IPIITCOMPRA, " );
-		sSQL.append( "(IT.VLRFRETEITCOMPRA/ (CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.CODITCOMPRA=0 THEN 1 " );// FRETE
-		sSQL.append( "ELSE IT.QTDITCOMPRA END )) FRETEITCOMPRA, " );
+		// Não é mais necessário realizar a divisão, pois o valor no campo vlrfreteitcompra já está correto
+//		sSQL.append( "(IT.VLRFRETEITCOMPRA/ (CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.CODITCOMPRA=0 THEN 1 " );// FRETE 
+		sSQL.append( "(IT.VLRFRETEITCOMPRA) FRETEITCOMPRA, " );
 		sSQL.append( "(IT.VLRPRODITCOMPRA/(CASE WHEN IT.QTDITCOMPRA IS NULL OR IT.QTDITCOMPRA=0 THEN 1 " );// PREÇO " R$ UNIT "
 		sSQL.append( "ELSE IT.QTDITCOMPRA END)) PRECOITCOMPRA " ); 
 		sSQL.append( "FROM EQPRODUTO P, CPITCOMPRA IT, CPCOMPRA C ");
@@ -217,6 +218,10 @@ public class FRCpProd extends FRelatorio {
 		sSQL.append( "ORDER BY C2.DTEMITCOMPRA DESC ) ");
 		sSQL.append( " ORDER BY " );
 		sSQL.append( rgOrdem.getVlrString() );
+		
+		
+		System.out.println("SQL:" + sSQL.toString());
+		
 		
 		try {
 		
