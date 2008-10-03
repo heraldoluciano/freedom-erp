@@ -313,6 +313,15 @@ public class FManutComis extends FFilho implements ActionListener {
 		int iparam = 1;
 		String sWhere = " ";
 		
+		if( ( Boolean )bPref.get( "VDMANUTCOMOBRIG" ) ){
+			
+			if ( txtCodVend.getVlrInteger().intValue() == 0 ) {
+
+				Funcoes.mensagemInforma( this, "Código do vendedor é requerido!" );
+				return;
+
+			}	
+		}
 		if ( txtDataini.getText().trim().equals( "" ) ) {
 			Funcoes.mensagemInforma( this, "Data inicial é requerido!" );
 			return;
@@ -451,6 +460,13 @@ public class FManutComis extends FFilho implements ActionListener {
 
 	private void baixar() {
 
+		if ( txtCodVend.getVlrInteger().intValue() == 0 ) {
+
+			Funcoes.mensagemInforma( this, "Código do vendedor é requerido!" );
+			return;
+
+		}	
+		
 		DLBaixaComis dl = new DLBaixaComis( this, con, sEmitRel, txtDataini.getVlrDate(), txtDatafim.getVlrDate(), txtCodVend.getVlrInteger() );
 		dl.setConexao( con );
 		dl.setVisible( true );
