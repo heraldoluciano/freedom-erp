@@ -1237,8 +1237,28 @@ public class FRBoleto extends FRelatorio {
 		}
 		return sRet;
 	}
+
+	private int verificaSel(){
+		
+		int count = 0;
+		
+		for( int i=0; i<tbBoletos.getNumLinhas(); i++ ){
+			
+			if( tbBoletos.getValor( i, 0 ).equals( true ) ){
+				
+				count++;
+			}
+		}
+		
+		return count;
+	}
 	
 	public void imprimir( boolean bVisualizar ) {
+		
+		if( verificaSel() == 0 ){
+			Funcoes.mensagemInforma( this, "Não existem boletos selecionados para impressão!" );
+			return;
+		}
 
  		final int codvenda = txtCodVenda.getVlrInteger().intValue();
  		final int codvenda2 = txtCodVenda2.getVlrInteger().intValue();
