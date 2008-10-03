@@ -155,7 +155,7 @@ public class FRBoleto extends FRelatorio {
 
 	private boolean bObsOrc = false;
 	
-	private boolean bAtlParcela = false;
+	private boolean bAltParcela = false;
 	
 	private Tabela tbBoletos = new Tabela();
 	
@@ -768,7 +768,7 @@ public class FRBoleto extends FRelatorio {
 			
 			if ( rs.next() ) {
 				
-				bAtlParcela = "S".equalsIgnoreCase( rs.getString( "ATBANCOIMPBOL" ) );
+				bAltParcela = "S".equalsIgnoreCase( rs.getString( "ATBANCOIMPBOL" ) );
 			}
 			
 			rs.close();
@@ -789,7 +789,7 @@ public class FRBoleto extends FRelatorio {
 		boolean bcart = false;
 		int iparam = 1;
 		
-		if ( bAtlParcela && ( codbanco != null && codbanco.trim().length() > 0 ) && codrec > 0 ) {
+		if ( bAltParcela && ( codbanco != null && codbanco.trim().length() > 0 ) && codrec > 0 ) {
 			
 			try {
 				
@@ -1185,6 +1185,8 @@ public class FRBoleto extends FRelatorio {
 			txtCodModBol.requestFocus();
 			return;
 		}
+
+		atualizaParcela( getCodrec( txtCodVenda.getVlrInteger(), txtTipoVenda.getVlrString() ), txtParc.getVlrInteger(), txtCodBanco.getVlrString(), txtCodCartCob.getVlrString() );
 		
 		ResultSet rs = execQuery( "" );
 		tbBoletos.setColunaEditavel( 0, true );
@@ -1260,8 +1262,6 @@ public class FRBoleto extends FRelatorio {
 
 		try {
 			
-			atualizaParcela( getCodrec( txtCodVenda.getVlrInteger(), txtTipoVenda.getVlrString() ), txtParc.getVlrInteger(), txtCodBanco.getVlrString(), txtCodCartCob.getVlrString() );
-
 			ResultSet rs = execQuery( sWhere );
 			
 			String classe = getClassModelo( txtPreImpModBol.getVlrString(), txtClassModBol.getVlrString() );
