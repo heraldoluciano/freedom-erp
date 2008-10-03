@@ -1179,6 +1179,8 @@ public class FRBoleto extends FRelatorio {
 	}
 	private void montaGrid(){
 		
+		
+		
 		if( "".equals( txtCodModBol.getVlrString() )){
 			
 			Funcoes.mensagemInforma( this, "Modelo de boleto não selecionado!" );
@@ -1190,9 +1192,9 @@ public class FRBoleto extends FRelatorio {
 		
 		ResultSet rs = execQuery( "" );
 		tbBoletos.setColunaEditavel( 0, true );
-		
+				
 		try {
-			
+									
 			for( int i=0; rs.next(); i++ ){
 				
 				tbBoletos.adicLinha();
@@ -1392,6 +1394,7 @@ public class FRBoleto extends FRelatorio {
 		
 		if( evt.getSource() == btGerar ){
 			
+			tbBoletos.limpa();
 			montaGrid();
 		}
 	}
