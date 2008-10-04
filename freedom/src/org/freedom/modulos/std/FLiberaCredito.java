@@ -1,11 +1,12 @@
 /**
  * @version 11/02/2002 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
- *
+ * 
  * Projeto: Freedom <BR>
- *  
+ * 
  * Pacote: org.freedom.modulos.std <BR>
- * Classe: @(#)FLiberaCredito.java <BR>
+ * Classe:
+ * @(#)FLiberaCredito.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -14,8 +15,9 @@
  * o LICENCIADOR ou então pegar uma cópia em: <BR>
  * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
- *
+ * de acordo com os termos da LPG-PC <BR>
+ * <BR>
+ * 
  * Formulário de liberação de crédito por pedido de venda.
  */
 
@@ -65,7 +67,7 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 	private JTextFieldPad txtCodLib = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtCodPesq = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -75,17 +77,17 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 	private JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtCodTpCred = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 5, 0 );
-	
+
 	private JTextFieldFK txtCodTpCredP = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldFK txtDescTpCred = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
+
 	private JTextFieldFK txtDescTpCredP = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtVlrLiqPed = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldFK txtVlrTpCred = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
-	
+
 	private JTextFieldFK txtVlrTpCredP = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldFK txtVlrAberto = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
@@ -96,16 +98,16 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 
 	private JTextFieldPad txtVlrALiberar = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-//	private JTextFieldPad txtVlrALiberar2 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	// private JTextFieldPad txtVlrALiberar2 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldFK txtVlrSaldo = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
-	
+
 	private ListaCampos lcCliP = new ListaCampos( this, "CL" );
 
 	private ListaCampos lcTipoCred = new ListaCampos( this, "TR" );
-	
+
 	private ListaCampos lcTipoCredP = new ListaCampos( this, "TR" );
 
 	private JPanelPad pinCab = new JPanelPad( 0, 200 );
@@ -131,7 +133,7 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 	private Vector<String> vLabs1 = new Vector<String>();
 
 	private Vector<String> vVals1 = new Vector<String>();
-	
+
 	private JLabelPad lbCredP = new JLabelPad( "Crédito pré-aprovado cliente principal" );
 
 	public FLiberaCredito() {
@@ -139,12 +141,12 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		super();
 		setTitulo( "Liberação de crédito" );
 		setAtribos( 10, 10, 680, 480 );
-		
+
 		vLabs1.addElement( "Venda" );
 		vLabs1.addElement( "ECF" );
-		
+
 		vVals1.addElement( "V" );
-		vVals1.addElement( "E" );		
+		vVals1.addElement( "E" );
 
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
 		rgTipo.setVlrString( "V" );
@@ -169,8 +171,8 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		lcCliP.setQueryCommit( false );
 		lcCliP.setReadOnly( true );
 		txtCodPesq.setTabelaExterna( lcCliP );
-					
-		// Mecanismo de busca de informações de tipo de crédito 
+
+		// Mecanismo de busca de informações de tipo de crédito
 		lcTipoCred.add( new GuardaCampo( txtCodTpCred, "CodTpCred", "Cód.tp.créd", ListaCampos.DB_PK, false ) );
 		lcTipoCred.add( new GuardaCampo( txtDescTpCred, "DescTpCred", "Descrição do tipo de credito", ListaCampos.DB_SI, false ) );
 		lcTipoCred.add( new GuardaCampo( txtVlrTpCred, "VlrTpCred", "Valor", ListaCampos.DB_SI, false ) );
@@ -180,7 +182,7 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		txtCodTpCred.setTabelaExterna( lcTipoCred );
 		txtCodTpCred.setNomeCampo( "CodTpCred" );
 
-		// Mecanismo de busca de informações de tipo de crédito do cliente principal 
+		// Mecanismo de busca de informações de tipo de crédito do cliente principal
 		lcTipoCredP.add( new GuardaCampo( txtCodTpCredP, "CodTpCred", "Cód.tp.créd", ListaCampos.DB_PK, false ) );
 		lcTipoCredP.add( new GuardaCampo( txtDescTpCredP, "DescTpCred", "Descrição do tipo de credito", ListaCampos.DB_SI, false ) );
 		lcTipoCredP.add( new GuardaCampo( txtVlrTpCredP, "VlrTpCred", "Valor", ListaCampos.DB_SI, false ) );
@@ -189,12 +191,12 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		lcTipoCredP.setReadOnly( true );
 		txtCodTpCredP.setTabelaExterna( lcTipoCredP );
 		txtCodTpCredP.setNomeCampo( "CodTpCred" );
-		
+
 		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, true ) );
 		lcVenda.add( new GuardaCampo( txtDocVenda, "DocVenda", "Doc.", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtDataVenda, "DtEmitVenda", "Data", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_FK, true ) );
-//		lcVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo Venda", ListaCampos.DB_SI, false ) );
+		// lcVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo Venda", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtVlrLiqPed, "VlrLiqVenda", "Valor do pedido", ListaCampos.DB_SI, false ) );
 
 		lcVenda.setDinWhereAdic( "TIPOVENDA = #S", txtTipoVenda );
@@ -215,27 +217,25 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		adicCampo( txtCodCli, 123, 60, 60, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, true );
 		adicDescFK( txtRazCli, 186, 60, 290, 20, "RazCli", "Razão social do cliente" );
 
-
-		
 		adic( new JLabelPad( "Crédito pré-aprovado sub-cliente" ), 7, 80, 300, 20 );
 		adic( txtCodTpCred, 113, 100, 60, 20 );
 		adicDescFK( txtDescTpCred, 176, 100, 300, 20, "DescTpCred", "" );
 		adicDescFK( txtVlrTpCred, 7, 100, 103, 20, "VlrTpCred", "" );
-		adic(new JLabelPad("Duplicatas em aberto"),7, 173, 200, 20);
-		
+		adic( new JLabelPad( "Duplicatas em aberto" ), 7, 173, 200, 20 );
+
 		adic( lbCredP, 7, 120, 300, 20 );
 		adic( txtCodTpCredP, 113, 140, 60, 20 );
 		adicDescFK( txtDescTpCredP, 176, 140, 300, 20, "DescTpCred", "" );
 		adicDescFK( txtVlrTpCredP, 7, 140, 103, 20, "VlrTpCred", "" );
 
 		setPainel( pnTotais );
-		adicCampo(txtVlrALiberar, 7, 170, 100, 20, "VlrAutorizLCred","Valor a liberar",ListaCampos.DB_SI,true );
-		
-//		adicCampoInvisivel( txtVlrALiberar2, "VlrAutorizLCred", "Valor a liberar", ListaCampos.DB_SI, true );
-//		adicCampoInvisivel( txtDtVencLCred, "DtaVctoLCred", "Vencimento", ListaCampos.DB_SI, true );
+		adicCampo( txtVlrALiberar, 7, 170, 100, 20, "VlrAutorizLCred", "Valor a liberar", ListaCampos.DB_SI, true );
 
-		setListaCampos( true, "LIBCRED", "FN" );		
-		
+		// adicCampoInvisivel( txtVlrALiberar2, "VlrAutorizLCred", "Valor a liberar", ListaCampos.DB_SI, true );
+		// adicCampoInvisivel( txtDtVencLCred, "DtaVctoLCred", "Vencimento", ListaCampos.DB_SI, true );
+
+		setListaCampos( true, "LIBCRED", "FN" );
+
 		pnTotais.adic( new JLabelPad( "Informações para análise" ), 7, 0, 200, 20 );
 		pnTotais.adic( new JLabelPad( "Valor do crédito:" ), 7, 30, 120, 20 );
 		pnTotais.adic( txtVlrCredito, 7, 50, 100, 20 );
@@ -243,11 +243,11 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		pnTotais.adic( txtVlrAberto, 7, 90, 100, 20 );
 		pnTotais.adic( new JLabelPad( "Valor do pedido:" ), 7, 110, 120, 20 );
 		pnTotais.adic( txtVlrLiqPed, 7, 130, 100, 20 );
-//		pnTotais.adic( new JLabelPad( "Valor a liberar:" ), 7, 150, 120, 20 );
-//		pnTotais.adic( txtVlrALiberar, 7, 170, 100, 20 );
-		
+		// pnTotais.adic( new JLabelPad( "Valor a liberar:" ), 7, 150, 120, 20 );
+		// pnTotais.adic( txtVlrALiberar, 7, 170, 100, 20 );
+
 		pinCli.add( spnTab, BorderLayout.CENTER );
-		//spnTab.add( pinCli, BorderLayout.CENTER );
+		// spnTab.add( pinCli, BorderLayout.CENTER );
 
 		// Adicionando elementos no painel inferior da tela (Rodapé)
 
@@ -312,24 +312,25 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 	}
 
 	private void carregaGridConsulta() {
+
 		StringBuffer sql = new StringBuffer();
 		tab.limpa();
-			sql.append( "SELECT IT.DTVENCITREC,IT.VLRPARCITREC,V.SERIE,R.DOCREC,V.CODVENDA," ); 
-			sql.append( "R.DATAREC,IT.DTPAGOITREC,IT.VLRPAGOITREC," );
-			sql.append( "(CAST('today' AS DATE)-IT.DTVENCITREC) AS ATRASO," ); 
-			sql.append( "R.OBSREC,");
-			sql.append( "(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODBANCO = R.CODBANCO) AS NOMEBANCO," );
-			sql.append( "R.CODREC,IT.NPARCITREC,R.TIPOVENDA,CL.CODCLI "  );
-			sql.append( "FROM FNRECEBER R, VDVENDA V, "  );
-			sql.append( "FNITRECEBER IT, VDCLIENTE CL WHERE " ); 
-			sql.append( "((CL.CODCLI=? AND CL.CODEMP=? AND CL.CODFILIAL=?) OR " ); 
-			sql.append( "(CL.CODPESQ=? AND CL.CODEMPPQ=? AND CL.CODFILIALPQ=?)) AND " );
-			sql.append( "R.CODCLI=CL.CODCLI AND R.CODEMPCL=CL.CODEMP AND R.CODFILIALCL=CL.CODFILIAL AND " ); 
-			sql.append( "V.CODVENDA=R.CODVENDA AND " ); 
-			sql.append( "IT.STATUSITREC NOT IN ('RP') AND IT.CODREC = R.CODREC " );
-			sql.append( "AND (V.CODEMP!=? OR V.CODFILIAL!=? OR V.TIPOVENDA!=? OR V.CODVENDA!=?) " );
-			sql.append( "ORDER BY IT.DTVENCITREC,R.CODREC,IT.NPARCITREC" );				
-		
+		sql.append( "SELECT IT.DTVENCITREC,IT.VLRPARCITREC,V.SERIE,R.DOCREC,V.CODVENDA," );
+		sql.append( "R.DATAREC,IT.DTPAGOITREC,IT.VLRPAGOITREC," );
+		sql.append( "(CAST('today' AS DATE)-IT.DTVENCITREC) AS ATRASO," );
+		sql.append( "R.OBSREC," );
+		sql.append( "(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODBANCO = R.CODBANCO) AS NOMEBANCO," );
+		sql.append( "R.CODREC,IT.NPARCITREC,R.TIPOVENDA,CL.CODCLI " );
+		sql.append( "FROM FNRECEBER R, VDVENDA V, " );
+		sql.append( "FNITRECEBER IT, VDCLIENTE CL WHERE " );
+		sql.append( "((CL.CODCLI=? AND CL.CODEMP=? AND CL.CODFILIAL=?) OR " );
+		sql.append( "(CL.CODPESQ=? AND CL.CODEMPPQ=? AND CL.CODFILIALPQ=?)) AND " );
+		sql.append( "R.CODCLI=CL.CODCLI AND R.CODEMPCL=CL.CODEMP AND R.CODFILIALCL=CL.CODFILIAL AND " );
+		sql.append( "V.CODVENDA=R.CODVENDA AND " );
+		sql.append( "IT.STATUSITREC NOT IN ('RP') AND IT.CODREC = R.CODREC " );
+		sql.append( "AND (V.CODEMP!=? OR V.CODFILIAL!=? OR V.TIPOVENDA!=? OR V.CODVENDA!=?) " );
+		sql.append( "ORDER BY IT.DTVENCITREC,R.CODREC,IT.NPARCITREC" );
+
 		try {
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, txtCodCli.getVlrInteger().intValue() );
@@ -341,11 +342,10 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 			ps.setInt( 7, Aplicativo.iCodEmp );
 			ps.setInt( 8, lcVenda.getCodFilial() );
 			ps.setString( 9, txtTipoVenda.getVlrString() );
-			ps.setInt( 10, txtCodVenda.getVlrInteger());
-			
-			System.out.println("SQL:" + sql.toString());
-			
-			
+			ps.setInt( 10, txtCodVenda.getVlrInteger() );
+
+			System.out.println( "SQL:" + sql.toString() );
+
 			ResultSet rs = ps.executeQuery();
 			double dVal = 0;
 			for ( int i = 0; rs.next(); i++ ) {
@@ -355,7 +355,7 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 				tab.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrParcItRec" ) ), i, 2 );
 				tab.setValor( ( rs.getString( "Serie" ) != null ? rs.getString( "Serie" ) : "" ), i, 3 );
 				tab.setValor( ( rs.getString( "DocRec" ) != null ? rs.getString( "DocRec" ) : "" ), i, 4 );
-				tab.setValor( "" + rs.getInt( "CodVenda" ), i, 5 );
+				tab.setValor( String.valueOf( rs.getInt( "CodVenda" ) ), i, 5 );
 				tab.setValor( ( rs.getDate( "DataRec" ) != null ? Funcoes.sqlDateToStrDate( rs.getDate( "DataRec" ) ) : "" ), i, 6 );
 				tab.setValor( ( rs.getDate( "DtPagoItRec" ) != null ? Funcoes.sqlDateToStrDate( rs.getDate( "DtPagoItRec" ) ) : "" ), i, 7 );
 				tab.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( "VlrPagoItRec" ) ), i, 8 );
@@ -393,89 +393,66 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		}
 	}
 
-	public void setConexao( Connection cn ) {
-
-		super.setConexao( cn );
-		lcCli.setConexao( cn );
-		lcCliP.setConexao( cn );
-		lcTipoCred.setConexao( cn );
-		lcTipoCredP.setConexao( cn );
-		lcVenda.setConexao( cn );
-	}
-
 	private void calculaLiberacao() {
-		BigDecimal vlrtpcred = new BigDecimal(0);
-		BigDecimal vlrdeb = new BigDecimal(0);
+
+		BigDecimal vlrtpcred = new BigDecimal( 0 );
+		BigDecimal vlrdeb = new BigDecimal( 0 );
+
 		try {
-			
-				limpa();
-				carregaGridConsulta();
-	
-				vlrtpcred = vlrtpcred.add( txtVlrTpCred.getVlrBigDecimal() );
-				vlrdeb = txtVlrAberto.getVlrBigDecimal().add( txtVlrLiqPed.getVlrBigDecimal() );
-				
-				if(!txtCodCli.getVlrInteger().equals( txtCodPesq.getVlrInteger() )) {
-					vlrtpcred = vlrtpcred.add( txtVlrTpCredP.getVlrBigDecimal() );
-					
-					lbCredP.setVisible( true );
-					txtCodTpCredP.setVisible( true );
-					txtDescTpCredP.setVisible( true );
-					txtVlrTpCredP.setVisible( true );
 
+			limpa();
+			carregaGridConsulta();
 
-				}
-				else {
-					lbCredP.setVisible( false );
-					txtCodTpCredP.setVisible( false );
-					txtDescTpCredP.setVisible( false );
-					txtVlrTpCredP.setVisible( false );
-				}
-				
-				txtVlrCredito.setVlrString( Funcoes.strDecimalToStrCurrency( 2, "" + vlrtpcred.toString() ) );
-				
-				if(txtVlrALiberar.getVlrBigDecimal().compareTo( new BigDecimal(0) )==0) {	
-					txtVlrALiberar.setVlrBigDecimal( vlrtpcred.subtract( vlrdeb ).multiply( new BigDecimal( -1 ) ) );	
-				}
+			vlrtpcred = vlrtpcred.add( txtVlrTpCred.getVlrBigDecimal() );
+			vlrdeb = txtVlrAberto.getVlrBigDecimal().add( txtVlrLiqPed.getVlrBigDecimal() );
+
+			if ( !txtCodCli.getVlrInteger().equals( txtCodPesq.getVlrInteger() ) ) {
+				vlrtpcred = vlrtpcred.add( txtVlrTpCredP.getVlrBigDecimal() );
+				lbCredP.setVisible( true );
+				txtCodTpCredP.setVisible( true );
+				txtDescTpCredP.setVisible( true );
+				txtVlrTpCredP.setVisible( true );
+
+			}
+			else {
+				lbCredP.setVisible( false );
+				txtCodTpCredP.setVisible( false );
+				txtDescTpCredP.setVisible( false );
+				txtVlrTpCredP.setVisible( false );
+			}
+
+			txtVlrCredito.setVlrString( Funcoes.strDecimalToStrCurrency( 2, String.valueOf( vlrtpcred ) ) );
+
+			if ( txtVlrALiberar.getVlrBigDecimal().compareTo( new BigDecimal( 0 ) ) == 0 ) {
+				txtVlrALiberar.setVlrBigDecimal( vlrtpcred.subtract( vlrdeb ).multiply( new BigDecimal( -1 ) ) );
+			}
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
 
-	public void limpa() {
+	private void limpa() {
 
-		//		txtVlrAberto.setVlrString(Funcoes.strDecimalToStrCurrency(2,"0.00"));
-		//		txtVlrLiberacao.setVlrString(Funcoes.strDecimalToStrCurrency(2,"0.00"));
-		//		txtVlrCredito.setVlrString(Funcoes.strDecimalToStrCurrency(2,"0.00"));
-		//		txtVlrALiberar.setVlrString(Funcoes.strDecimalToStrCurrency(2,"0.00"));
-		//		txtVlrSaldo.setVlrString(Funcoes.strDecimalToStrCurrency(2,"0.00"));
+		// txtVlrAberto.setVlrString(Funcoes.strDecimalToStrCurrency(2,"0.00"));
+		// txtVlrLiberacao.setVlrString(Funcoes.strDecimalToStrCurrency(2,"0.00"));
+		// txtVlrCredito.setVlrString(Funcoes.strDecimalToStrCurrency(2,"0.00"));
+		// txtVlrALiberar.setVlrString(Funcoes.strDecimalToStrCurrency(2,"0.00"));
+		// txtVlrSaldo.setVlrString(Funcoes.strDecimalToStrCurrency(2,"0.00"));
 		tab.limpa();
-	}
-
-	public void afterInsert( InsertEvent ievt ) {
-
-		if ( ievt.getListaCampos() == lcCampos ) {
-			GregorianCalendar cal = new GregorianCalendar();
-			cal.set( Calendar.DATE, cal.get( Calendar.DATE ) + 7 ); //Coloca o vencimento padrao de 7 dias. 
-			txtDtVencLCred.setVlrDate( cal.getTime() );
-			limpa();
-		}
-	}
-
-	public void afterDelete( DeleteEvent devt ) {
-
-		if ( devt.ok ) {
-			limpa();
-		}
 	}
 
 	private boolean buscaObs() {
 
 		boolean continua = true;
-		String sSQL = "SELECT CODCLI,RAZCLI,OBSCLI FROM VDCLIENTE WHERE" + " OBSCLI IS NOT NULL AND " + "((CODCLI=? AND CODEMP=? AND CODFILIAL=?) OR " + " (CODPESQ=? AND CODEMPPQ=? AND CODFILIALPQ=?))";
 
 		try {
-			PreparedStatement ps = con.prepareStatement( sSQL );
+			
+			PreparedStatement ps = con.prepareStatement( 
+					"SELECT CODCLI,RAZCLI,OBSCLI FROM VDCLIENTE " +
+					"WHERE OBSCLI IS NOT NULL AND " +
+					"((CODCLI=? AND CODEMP=? AND CODFILIAL=?) OR " +
+					"(CODPESQ=? AND CODEMPPQ=? AND CODFILIALPQ=?))" );
 			ps.setInt( 1, txtCodCli.getVlrInteger().intValue() );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, lcCli.getCodFilial() );
@@ -487,8 +464,9 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 			if ( rs.next() ) {
 				DLConsultaObs dl = new DLConsultaObs( this, rs, con );
 				dl.setVisible( true );
-				if ( !dl.OK )
+				if ( !dl.OK ) {
 					continua = false;
+				}
 				dl.dispose();
 			}
 		} catch ( SQLException err ) {
@@ -497,63 +475,147 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		}
 		return continua;
 	}
+	
+	public void open( String tipovenda, int pedido, int cliente, int item, BigDecimal valorItem ) {
+		
+		try {
+			
+			PreparedStatement ps = con.prepareStatement( 
+					"SELECT I.VLRLIQITVENDA FROM VDITVENDA I " +
+					"WHERE I.CODEMP=? AND I.CODFILIAL=? AND " +
+					"I.TIPOVENDA=? AND I.CODVENDA=? AND I.CODITVENDA=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNLIBCRED" ) );
+			ps.setString( 3, tipovenda );
+			ps.setInt( 4, pedido );
+			ps.setInt( 5, item );
+			ResultSet rs = ps.executeQuery();
+			
+			BigDecimal vlrItem = valorItem;
+			
+			if ( rs.next() ) {
+				vlrItem = valorItem.subtract( rs.getBigDecimal( "VLRLIQITVENDA" ) );
+			}
+
+			rs.close();
+			ps.close();
+			
+			ps = con.prepareStatement( 
+					"SELECT L.CODLCRED FROM FNLIBCRED L " +
+					"WHERE L.CODEMP=? AND L.CODFILIAL=? AND " +
+					"L.TIPOVENDA=? AND L.CODVENDA=? AND L.CODCLI=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNLIBCRED" ) );
+			ps.setString( 3, tipovenda );
+			ps.setInt( 4, pedido );
+			ps.setInt( 5, cliente );
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				rgTipo.setVlrString( tipovenda );
+				txtCodLib.setVlrInteger( rs.getInt( "CODLCRED" ) );
+				txtCodVenda.setVlrInteger( pedido );
+				txtCodCli.setVlrInteger( cliente );
+				lcCampos.carregaDados();				
+				txtVlrLiqPed.setVlrBigDecimal( txtVlrLiqPed.getVlrBigDecimal().add( vlrItem ) );
+				txtVlrALiberar.setVlrBigDecimal( new BigDecimal( "0.00" ) );
+				calculaLiberacao();
+				lcCampos.edit();
+			}
+			else {
+				lcCampos.insert( true );
+				rgTipo.setVlrString( tipovenda );
+				txtCodVenda.setVlrInteger( pedido );
+				lcVenda.carregaDados();				
+				txtVlrLiqPed.setVlrBigDecimal( txtVlrLiqPed.getVlrBigDecimal().add( vlrItem ) );
+				txtVlrALiberar.setVlrBigDecimal( new BigDecimal( "0.00" ) );
+				calculaLiberacao();
+			}
+
+			rs.close();
+			ps.close();
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+		}
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) { }
+
+	public void afterCarrega( CarregaEvent cevt ) {
+	
+		if ( cevt.getListaCampos() == lcCli ) {
+			lcCliP.carregaDados();
+	
+		}
+		else if ( cevt.getListaCampos() == lcVenda ) {
+			calculaLiberacao();
+		}
+	}
+
+	public void beforeInsert( InsertEvent ievt ) { }
+
+	public void afterInsert( InsertEvent ievt ) {
+	
+		if ( ievt.getListaCampos() == lcCampos ) {
+			GregorianCalendar cal = new GregorianCalendar();
+			cal.set( Calendar.DATE, cal.get( Calendar.DATE ) + 7 ); // Coloca o vencimento padrao de 7 dias.
+			txtDtVencLCred.setVlrDate( cal.getTime() );
+			limpa();
+		}
+	}
+
+	public void beforeDelete( DeleteEvent devt ) { }
+
+	public void afterDelete( DeleteEvent devt ) {	
+		if ( devt.ok ) {
+			limpa();
+		}
+	}
 
 	public void beforePost( PostEvent pevt ) {
-
+	
 		boolean continua = true;
-
+	
 		try {
-
+	
 			continua = txtVlrALiberar.getVlrBigDecimal().compareTo( new BigDecimal( 0 ) ) > 0;
-
+	
 			if ( !continua ) {
 				Funcoes.mensagemInforma( this, "O Pedido não necessita de liberação!\n Valor dentro do limite pré-estabelecido! " );
 				pevt.cancela();
 				return;
 			}
-
+	
 			continua = buscaObs();
-
+	
 			if ( !continua ) {
 				pevt.cancela();
 			}
-
+	
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
 
-	public void beforeInsert( InsertEvent ievt ) {
-
-	}
-
-	public void beforeDelete( DeleteEvent devt ) {
-
-	}
-
-	public void afterPost( PostEvent pevt ) {
-
-	}
-
-	public void afterCarrega( CarregaEvent cevt ) {
-
-		if ( cevt.getListaCampos() == lcCli ) {
-			lcCliP.carregaDados();
-			
-		}
-		else if(cevt.getListaCampos() == lcVenda) {
-			calculaLiberacao();
-		}
-	}
-
-	public void beforeCarrega( CarregaEvent cevt ) {
-
-	}
+	public void afterPost( PostEvent pevt ) { }
 
 	public void valorAlterado( RadioGroupEvent evt ) {
-
 		if ( evt.getSource() == rgTipo ) {
 			txtTipoVenda.setVlrString( rgTipo.getVlrString() );
 		}
+	}
+
+	public void setConexao( Connection cn ) {
+	
+		super.setConexao( cn );
+		lcCli.setConexao( cn );
+		lcCliP.setConexao( cn );
+		lcTipoCred.setConexao( cn );
+		lcTipoCredP.setConexao( cn );
+		lcVenda.setConexao( cn );
 	}
 }
