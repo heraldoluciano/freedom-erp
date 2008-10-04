@@ -366,7 +366,7 @@ public abstract class FVD extends FDetalhe {
 			}
 
 			if ( !bRet && sVerifProd.equals( "S" ) ) {
-				bRet = mostraTelaPass( getParansPass() );
+				bRet = senhaBaixoCusto( getParansPass() );
 			}
 
 		} catch ( SQLException err ) {
@@ -712,7 +712,7 @@ public abstract class FVD extends FDetalhe {
 	 *            parametros para a cosulta.
 	 * @return verdadeiro se a confirmado.
 	 */
-	private boolean mostraTelaPass( String[] args ) {
+	private boolean senhaBaixoCusto( String[] args ) {
 
 		boolean retorno = false;
 

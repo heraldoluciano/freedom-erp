@@ -2111,10 +2111,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				bRetorno[ POS_PREFS.USALAYOUTPED.ordinal() ] = "S".equals( rs.getString( "USALAYOUTPED" ) );
 				bRetorno[ POS_PREFS.ICMSVENDA.ordinal() ] = "S".equals( rs.getString( "ICMSVENDA" ) );
 				bRetorno[ POS_PREFS.USAPRECOZERO.ordinal() ] = "S".equals( rs.getString( "USAPRECOZERO" ) );
-				bRetorno[ POS_PREFS.MULTICOMIS.ordinal() ] = "S".equals(  rs.getString( "MULTICOMIS" ) );
+				bRetorno[ POS_PREFS.MULTICOMIS.ordinal() ] = "S".equals( rs.getString( "MULTICOMIS" ) );
 				
-				bRetorno[ POS_PREFS.CONS_CRED_FECHA.ordinal() ] = "FV".equals(  rs.getString( "TIPOPREFCRED" )) || "AB".equals(  rs.getString( "TIPOPREFCRED" ) );
-				bRetorno[ POS_PREFS.CONS_CRED_ITEM.ordinal() ] = "II".equals(  rs.getString( "TIPOPREFCRED" )) || "AB".equals(  rs.getString( "TIPOPREFCRED" ) );
+				bRetorno[ POS_PREFS.CONS_CRED_FECHA.ordinal() ] = ("FV".equals( rs.getString( "TIPOPREFCRED" )) || "AB".equals( rs.getString( "TIPOPREFCRED" ) ));
+				bRetorno[ POS_PREFS.CONS_CRED_ITEM.ordinal() ] = ("II".equals( rs.getString( "TIPOPREFCRED" )) || "AB".equals( rs.getString( "TIPOPREFCRED" ) ));
 				
 			}
 			rs.close();
@@ -2226,7 +2226,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}*/
 			
 			else if ( ( cevt.getListaCampos() == lcTipoMov ) ) { 
-				abilitaMultiComis();
+				habilitaMultiComis();
 			}
 						
 			else if ( ( cevt.getListaCampos() == lcFisc ) && ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
@@ -2300,7 +2300,254 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 	}
 
-	private void abilitaMultiComis() {
+	private void senhaCredito( boolean fechamento ) {
+	
+	    FPassword fpw = new FPassword( this, FPassword.LIBERA_CRED, null, con );
+	    fpw.execShow();                 
+	
+	    if ( fpw.OK ) {
+	    
+	        fpw.dispose(); 
+	        
+	        if ( !Aplicativo.telaPrincipal.temTela( "Liberação de crédito" ) ) {
+	            FLiberaCredito tela = new FLiberaCredito();    
+	            Aplicativo.telaPrincipal.criatela( "Liberação de crédito", tela, con );
+	            tela.open( "V", 
+	            		   txtCodVenda.getVlrInteger(), 
+	            		   txtCodCli.getVlrInteger(), 
+	            		   txtCodItVenda.getVlrInteger(), 
+	            		   fechamento ? new BigDecimal( "0.00" ) : txtVlrLiqItVenda.getVlrBigDecimal() );
+	            tela.setVisible( true );	            
+	        }
+	    }  
+	}
+
+	private boolean consultaCredito( BigDecimal vlradic, boolean fechamento ) {
+	
+		try {
+			// Liberação de crédito:
+			String sSQL = "EXECUTE PROCEDURE FNLIBCREDSP(?,?,?,?,?,?,?,?,?);";
+			PreparedStatement ps = con.prepareStatement( sSQL );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			ps.setString( 3, "V" );
+			ps.setInt( 4, txtCodVenda.getVlrInteger() );
+			ps.setInt( 5, txtCodCli.getVlrInteger() );
+			ps.setInt( 6, Aplicativo.iCodEmp );
+			ps.setInt( 7, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setObject( 8, txtVlrLiqVenda.getVlrBigDecimal() );
+			ps.setBigDecimal( 9, vlradic );
+				
+			ps.execute();
+			ps.close();
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}			
+		} 
+		catch ( SQLException err ) {
+			
+	        err.printStackTrace();
+			String mens = err.getMessage();
+			int index = mens.indexOf( "VENDA" );
+			
+			if ( mens.indexOf( "VENDA" ) > -1 ) {
+
+				mens = mens.substring( mens.indexOf( "VENDA" ) );
+				
+				if ( Funcoes.mensagemConfirma( this, 
+						" O valor da venda ultrapassa o limite de crédito pré-estabelecido!\n\n " + 
+						mens + "\n\n" +
+						"Deseja efetuar liberação agora?") == JOptionPane.YES_OPTION ){
+		            senhaCredito( fechamento );	            
+		        }
+		        	
+				Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Problema com limite de crédito." + mens );
+			}
+	        
+			return false;
+		}
+		
+		return true;		
+	}
+
+	private boolean consisteComisObrig() {
+		
+	   PreparedStatement ps = null;
+	   ResultSet rs = null;
+	   boolean retorno = false;
+	   StringBuffer sql = new StringBuffer();
+	   
+	   try {
+		   
+		   sql.append( "SELECT COUNT(*) " );
+		   sql.append( "FROM VDVENDACOMIS VC, VDITREGRACOMIS RC " );
+		   sql.append( "WHERE VC.CODEMP=? AND VC.CODFILIAL=? AND VC.CODVENDA=? AND VC.TIPOVENDA='V' " );
+		   sql.append( "AND RC.CODEMP=VC.CODEMPRC AND RC.CODFILIAL=VC.CODFILIALRC " );
+		   sql.append( "AND RC.CODREGRCOMIS=VC.CODREGRCOMIS AND RC.SEQITRC=VC.SEQITRC " );
+		   sql.append( "AND RC.OBRIGITRC='S' AND VC.CODVEND IS NULL" );
+		   		  
+		   ps = con.prepareStatement( sql.toString() );
+		  
+		   ps.setInt( 1, Aplicativo.iCodEmp );
+		   ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDACOMIS" ) );
+		   ps.setInt( 3, txtCodVenda.getVlrInteger() );
+		   
+		   rs = ps.executeQuery();
+		   
+		   if (rs.next()) {
+			   if ( rs.getInt( 1 ) > 0 ) {
+				   retorno = false;
+			   }
+			   else {
+				   retorno = true;
+			   }
+		   }
+		   
+		   rs.close();
+		   ps.close();
+		   
+		   if (!con.getAutoCommit()) {
+			   con.commit();
+		   }			   
+	   }		   
+	   catch (SQLException e) {
+		   e.printStackTrace();
+	   }
+	   
+	   return retorno;		   
+	}
+
+	private void fechaVenda() {
+		try {
+					
+			if ( bPrefs[ POS_PREFS.CONS_CRED_FECHA.ordinal() ] ) { // Verifica se deve consultar crédito ;
+				if ( !consultaCredito( null, true ) ) {
+					return;
+				}
+			}
+
+			if ( numComissionados > 0 ) {
+				if ( !consisteComisObrig() ) {
+
+					StringBuffer mens = new StringBuffer();
+
+					mens.append( "Não é possível finalizar a venda!\n" );
+					mens.append( "Existem comissionados obrigatórios não informados.\n" );
+					mens.append( "Deseja informar os comissionados agora?\n" );
+
+					if ( Funcoes.mensagemConfirma( this, mens.toString() ) == JOptionPane.YES_OPTION ) {
+						abreComissVend();
+					}
+					else {
+						return;
+					}
+
+				}
+			}
+			
+			List<Integer> lsParcRecibo = null;
+			String[] sValores = null;
+			
+			DLFechaVenda dl = new DLFechaVenda( con, 
+					txtCodVenda.getVlrInteger(), 
+					this, 
+					chbImpPedTipoMov.getVlrString(), 
+					chbImpNfTipoMov.getVlrString(), 
+					chbImpBolTipoMov.getVlrString(), 
+					chbImpRecTipoMov.getVlrString(), 
+					chbReImpNfTipoMov.getVlrString() );
+			// dl.getDadosCli();
+			dl.setVisible( true );
+	
+			if ( dl.OK ) {
+				sValores = dl.getValores();
+				if ( "S".equals( sValores[ 6 ] ) ) {
+					lsParcRecibo = dl.getParcRecibo();
+				}
+				dl.dispose();
+			}
+			else {
+				dl.dispose();
+			}
+			
+			lcCampos.carregaDados();
+			
+			if ( sValores != null ) {
+	
+				// Ordem dos parâmetros decrescente por que uma tela abre na
+				// frente da outra.
+	
+				if ( sValores[ 5 ].equals( "S" ) && !sValores[ 7 ].equals( "" ) ) {
+					FRBoleto fBol = new FRBoleto( this );
+					fBol.setConexao( con );
+					fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 7 ] ) );
+					fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
+					fBol.imprimir( true );
+				}
+				else if ( ( "S".equals( sValores[ 6 ] ) ) && ( lsParcRecibo != null ) && ( lsParcRecibo.size() > 0 ) ) { // Logica para impressão do recibo.
+					FRBoleto fBol = new FRBoleto( this );
+					fBol.setConexao( con );
+					if ( "".equals( sValores[ 7 ] ) ) {
+						Funcoes.mensagemInforma( this, "Modelo de boleto/recibo não foi selecionado!" );
+					}
+					else {
+						fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 7 ] ) );
+						fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
+						fBol.setParcelas( lsParcRecibo );
+						fBol.imprimir( true );
+					}
+				}
+	
+				if ( ( sValores[ 4 ].equals( "S" ) ) || ( sValores[ 8 ].equals( "S" ) ) ) {
+					if ( txtTipoMov.getVlrString().equals( "VD" ) || txtTipoMov.getVlrString().equals( "VT" ) || 
+							txtTipoMov.getVlrString().equals( "TR" ) || 
+							txtTipoMov.getVlrString().equals( "CS" ) || 
+							txtTipoMov.getVlrString().equals( "CE" ) || 
+							txtTipoMov.getVlrString().equals( "PE" ) || 
+							txtTipoMov.getVlrString().equals( "DV" ) ||
+							txtTipoMov.getVlrString().equals( "BN" ) ) {
+						emitNota( "NF" );
+					}
+					else if ( txtTipoMov.getVlrString().equals( "SE" ) ) {
+						emitNota( "NS" );
+					}
+					else {
+						Funcoes.mensagemErro( this, "Não existe nota para o tipo de movimento: '" + txtTipoMov.getVlrString() + "'" );
+						return;
+					}
+					if ( sValores[ 8 ].equals( "N" ) ) {
+						txtStatusVenda.setVlrString( "V4" );
+					}
+				}
+				else if ( sValores[ 3 ].equals( "S" ) ) {
+					imprimir( true, txtCodVenda.getVlrInteger().intValue() );
+				}
+				if ( sValores[ 8 ].equals( "N" ) ) {
+					lcCampos.edit();
+					lcCampos.post();
+				}
+				if ( ( sValores[ 4 ].equals( "S" ) ) && ( bPrefs[ POS_PREFS.BLOQVENDA.ordinal() ] ) ) {
+					bloqvenda();
+				}
+			}
+	
+			tpnCab.setSelectedIndex( 0 );
+			txtCodVenda.requestFocus();
+	
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void abreComissVend(){
+		
+		DLMultiComiss dl = new DLMultiComiss( con, txtCodVenda.getVlrInteger() );
+		dl.setVisible( true );
+	}
+
+	private void habilitaMultiComis() {
 		try {
 			numComissionados = getNumComissionados();
 			
@@ -2401,8 +2648,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				
 				//Verificação de crédito 
 				
-				if( bPrefs[POS_PREFS.CONS_CRED_ITEM.ordinal() ] ) { //Verifica se deve consultar crédito na inserção do ítem;
-					if(!consultaCredito(txtVlrLiqItVenda.getVlrBigDecimal())) {
+				if ( bPrefs[ POS_PREFS.CONS_CRED_ITEM.ordinal() ] ) { // Verifica se deve consultar crédito na inserção do ítem;
+					if ( !consultaCredito( txtVlrLiqItVenda.getVlrBigDecimal(), false ) ) {
 						pevt.cancela();
 					}
 				}
@@ -2447,7 +2694,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		if ( ievt.getListaCampos() == lcCampos ) {
 			
-			abilitaMultiComis();
+			habilitaMultiComis();
 			
 			if ( bPrefs[ POS_PREFS.USAPEDSEQ.ordinal() ] ) {
 				txtCodVenda.setVlrInteger( testaCodPK( "VDVENDA" ) );
@@ -2588,251 +2835,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		super.keyReleased( kevt );
 	}
     
-    private void mostraTelaPass() {
-
-        FPassword fpw = new FPassword( this, FPassword.LIBERA_CRED, null, con );
-        fpw.execShow();                 
-      
-        if ( fpw.OK ) {
-        
-            fpw.dispose(); 
-            
-            if ( !Aplicativo.telaPrincipal.temTela( "Liberação de crédito" ) ) {
-                FLiberaCredito tela = new FLiberaCredito();    
-                Aplicativo.telaPrincipal.criatela( "Liberação de crédito", tela, con );
-                tela.setVisible( true );
-                
-            }
-        }  
-    }
-	
-	private boolean consultaCredito(BigDecimal vlradic) {
-
-		try {
-			// Liberação de crédito:
-			String sSQL = "EXECUTE PROCEDURE FNLIBCREDSP(?,?,?,?,?,?,?,?,?);";
-			PreparedStatement ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
-			ps.setString( 3, "V" );
-			ps.setInt( 4, txtCodVenda.getVlrInteger() );
-			ps.setInt( 5, txtCodCli.getVlrInteger() );
-			ps.setInt( 6, Aplicativo.iCodEmp );
-			ps.setInt( 7, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setObject( 8, txtVlrLiqVenda.getVlrBigDecimal() );
-			ps.setBigDecimal( 9, vlradic );
-				
-			ps.execute();
-			ps.close();
-			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
-			
-		} 
-		catch ( SQLException err ) {
-			
-            err.printStackTrace();
-			String mens = err.getMessage();
-			mens = mens.substring( mens.indexOf( "VENDA" ) );
-			
-			if ( Funcoes.mensagemConfirma( this, " O valor da venda ultrapassa o limite de crédito pré-estabelecido!\n\n " + mens + "\n\n" + 
-                     " Deseja efetuar liberação agora?") == JOptionPane.YES_OPTION ){
-                mostraTelaPass();
-                
-            }
-            	
-			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Problema com limite de crédito." + mens );
-           
-           
-            
-			return false;
-		}
-		
-		return true;
-		
-		
-	}
-	
-	private boolean consisteComisObrig() {
-		
-		   PreparedStatement ps = null;
-		   ResultSet rs = null;
-		   boolean retorno = false;
-		   StringBuffer sql = new StringBuffer();
-		   
-		   try {
-			   
-			   sql.append( "SELECT COUNT(*) " );
-			   sql.append( "FROM VDVENDACOMIS VC, VDITREGRACOMIS RC " );
-			   sql.append( "WHERE VC.CODEMP=? AND VC.CODFILIAL=? AND VC.CODVENDA=? AND VC.TIPOVENDA='V' " );
-			   sql.append( "AND RC.CODEMP=VC.CODEMPRC AND RC.CODFILIAL=VC.CODFILIALRC " );
-			   sql.append( "AND RC.CODREGRCOMIS=VC.CODREGRCOMIS AND RC.SEQITRC=VC.SEQITRC " );
-			   sql.append( "AND RC.OBRIGITRC='S' AND VC.CODVEND IS NULL" );
-			   		  
-			   ps = con.prepareStatement( sql.toString() );
-			  
-			   ps.setInt( 1, Aplicativo.iCodEmp );
-			   ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDACOMIS" ) );
-			   ps.setInt( 3, txtCodVenda.getVlrInteger() );
-			   
-			   rs = ps.executeQuery();
-			   
-			   if (rs.next()) {
-				   if ( rs.getInt( 1 ) > 0 ) {
-					   retorno = false;
-				   }
-				   else {
-					   retorno = true;
-				   }
-			   }
-			   
-			   rs.close();
-			   ps.close();
-			   
-			   if (!con.getAutoCommit()) {
-				   con.commit();
-			   }
-			   
-		   }		   
-		   catch (SQLException e) {
-			   e.printStackTrace();
-		   }
-		   
-		   return retorno;
-		   
-	}
-	
-	private void fechaVenda() {
-		try {
-					
-			if( bPrefs[POS_PREFS.CONS_CRED_FECHA.ordinal() ] ) { //Verifica se deve consultar crédito ;
-				if(!consultaCredito(null)) {
-					return;
-				}
-			}
-
-			if(numComissionados>0) {
-				if(!consisteComisObrig()) {
-					
-					StringBuffer mens = new StringBuffer();
-					
-					mens.append("Não é possível finalizar a venda!\n");
-					mens.append("Existem comissionados obrigatórios não informados.\n");
-					mens.append("Deseja informar os comissionados agora?\n");
-					
-					if( Funcoes.mensagemConfirma( this, mens.toString() )==JOptionPane.YES_OPTION ) {
-						abreComissVend();
-					}
-					else {
-						return;
-					}	
-					
-				}					
-			}
-			
-			List<Integer> lsParcRecibo = null;
-			String[] sValores = null;
-			
-			DLFechaVenda dl = new DLFechaVenda( con, 
-					txtCodVenda.getVlrInteger(), 
-					this, 
-					chbImpPedTipoMov.getVlrString(), 
-					chbImpNfTipoMov.getVlrString(), 
-					chbImpBolTipoMov.getVlrString(), 
-					chbImpRecTipoMov.getVlrString(), 
-					chbReImpNfTipoMov.getVlrString() );
-			// dl.getDadosCli();
-			dl.setVisible( true );
-
-			if ( dl.OK ) {
-				sValores = dl.getValores();
-				if ( "S".equals( sValores[ 6 ] ) ) {
-					lsParcRecibo = dl.getParcRecibo();
-				}
-				dl.dispose();
-			}
-			else {
-				dl.dispose();
-			}
-			
-			lcCampos.carregaDados();
-			
-			if ( sValores != null ) {
-
-				// Ordem dos parâmetros decrescente por que uma tela abre na
-				// frente da outra.
-
-				if ( sValores[ 5 ].equals( "S" ) && !sValores[ 7 ].equals( "" ) ) {
-					FRBoleto fBol = new FRBoleto( this );
-					fBol.setConexao( con );
-					fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 7 ] ) );
-					fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
-					fBol.imprimir( true );
-				}
-				else if ( ( "S".equals( sValores[ 6 ] ) ) && ( lsParcRecibo != null ) && ( lsParcRecibo.size() > 0 ) ) { // Logica para impressão do recibo.
-					FRBoleto fBol = new FRBoleto( this );
-					fBol.setConexao( con );
-					if ( "".equals( sValores[ 7 ] ) ) {
-						Funcoes.mensagemInforma( this, "Modelo de boleto/recibo não foi selecionado!" );
-					}
-					else {
-						fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 7 ] ) );
-						fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
-						fBol.setParcelas( lsParcRecibo );
-						fBol.imprimir( true );
-					}
-				}
-
-				if ( ( sValores[ 4 ].equals( "S" ) ) || ( sValores[ 8 ].equals( "S" ) ) ) {
-					if ( txtTipoMov.getVlrString().equals( "VD" ) || txtTipoMov.getVlrString().equals( "VT" ) || 
-							txtTipoMov.getVlrString().equals( "TR" ) || 
-							txtTipoMov.getVlrString().equals( "CS" ) || 
-							txtTipoMov.getVlrString().equals( "CE" ) || 
-							txtTipoMov.getVlrString().equals( "PE" ) || 
-							txtTipoMov.getVlrString().equals( "DV" ) ||
-							txtTipoMov.getVlrString().equals( "BN" ) ) {
-						emitNota( "NF" );
-					}
-					else if ( txtTipoMov.getVlrString().equals( "SE" ) ) {
-						emitNota( "NS" );
-					}
-					else {
-						Funcoes.mensagemErro( this, "Não existe nota para o tipo de movimento: '" + txtTipoMov.getVlrString() + "'" );
-						return;
-					}
-					if ( sValores[ 8 ].equals( "N" ) ) {
-						txtStatusVenda.setVlrString( "V4" );
-					}
-				}
-				else if ( sValores[ 3 ].equals( "S" ) ) {
-					imprimir( true, txtCodVenda.getVlrInteger().intValue() );
-				}
-				if ( sValores[ 8 ].equals( "N" ) ) {
-					lcCampos.edit();
-					lcCampos.post();
-				}
-				if ( ( sValores[ 4 ].equals( "S" ) ) && ( bPrefs[ POS_PREFS.BLOQVENDA.ordinal() ] ) ) {
-					bloqvenda();
-				}
-			}
-
-			tpnCab.setSelectedIndex( 0 );
-			txtCodVenda.requestFocus();
-
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void abreComissVend(){
-		
-		DLMultiComiss dl = new DLMultiComiss( con, txtCodVenda.getVlrInteger() );
-		dl.setVisible( true );
-	}
-
-	public void actionPerformed( ActionEvent evt ) {
+    public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btFechaVenda ) { //xxx 			
 			if(lcCampos.carregaDados()) {
