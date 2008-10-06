@@ -98,6 +98,9 @@ public class TextField extends FDTextField {
 	public void setAlfa( final float alfa ) {
 
 		this.alfa = alfa >= 0 ? alfa : ALFA_NONE;
+		if ( this.alfa != ALFA_NONE ) {
+			setOpaque( false );
+		}
 	}
 
 	public void setAlfaColor( final float alfa, final Color color ) {
