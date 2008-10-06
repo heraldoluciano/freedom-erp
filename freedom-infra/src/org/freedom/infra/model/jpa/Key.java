@@ -68,5 +68,4 @@ public class Key implements Serializable {
 	public boolean equals( Object o ) {
 		return ((o instanceof Key) && (internalKey.equals(((Key)o).getInternalKey())));
 	}
-
 }

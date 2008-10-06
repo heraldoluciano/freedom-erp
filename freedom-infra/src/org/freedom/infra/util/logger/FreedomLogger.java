@@ -53,12 +53,15 @@ public class FreedomLogger extends Logger {
 		return c;
 	}
 
-	public static Logger getLogger( Class<?> cl, String property ) {
+	public static Logger getLogger( final Class<?> cl, 
+			  						final String initFile, 
+			  						final String property ) {
 
 		Properties properties;
 		Logger c = null;
 		try {
-			ManagerIni mi = ManagerIni.createManagerIniParameter();
+			ManagerIni mi = initFile != null ? ManagerIni.createManagerIniFile( initFile )
+					                         : ManagerIni.createManagerIniParameter();
 			properties = mi.getSession( "FreedomLogger" );
 			c = Logger.getLogger( cl.getCanonicalName(), myFactory );
 			Layout layout = new PatternLayout( LAYOUT_DEFAULT );
