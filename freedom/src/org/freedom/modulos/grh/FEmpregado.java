@@ -24,18 +24,27 @@
 
 package org.freedom.modulos.grh;
 
+
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.sql.Connection;
 import java.util.Vector;
+
+import javax.swing.JScrollPane;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.Navegador;
 import org.freedom.componentes.PainelImagem;
-import org.freedom.telas.FDados;
+import org.freedom.componentes.Tabela;
+import org.freedom.telas.FTabDados;
 
-public class FEmpregado extends FDados {
+public class FEmpregado extends FTabDados{
 
 	private static final long serialVersionUID = 1L;
 
@@ -91,7 +100,7 @@ public class FEmpregado extends FDados {
 	
 	private final JTextFieldPad txtUfExpedRg = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
-	private final JTextFieldPad txtDataExpRg = new JTextFieldPad( JTextFieldPad.TP_DATE, 40, 0 );
+	private final JTextFieldPad txtDtExpRg = new JTextFieldPad( JTextFieldPad.TP_DATE, 40, 0 );
 	
 	private final JTextFieldPad txtCpfEmpr = new JTextFieldPad( JTextFieldPad.TP_STRING, 11, 0 );
 	
@@ -121,11 +130,27 @@ public class FEmpregado extends FDados {
 	
 	private final JTextFieldPad txtCelEmpr = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
 	
-	private final JTextFieldPad txtSalarioIni = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
+	private final JTextFieldPad txtSalarioIni = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );// FALTA CAMPO NA TABELA
 	
-	private JComboBoxPad cbStatus = null;
+	private final JTextFieldPad txtSalarioAtual = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );// FALTA CAMPO NA TABELA
 	
-	private JComboBoxPad cbSexo = null;
+	private final JTextFieldPad txtDtAlteracao = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );// FALTA CAMPO NA TABELA
+	
+	private final JTextFieldPad txtVlrSalario = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 0 );
+	
+	private final JTextFieldPad txtDtVigor = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private final JTextFieldFK txtCbo = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private final JTextFieldPad txtCodBenef = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private final JTextFieldPad txtSeqSal = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private final JPanelPad panelEmpregados = new JPanelPad();
+	
+	private final JPanelPad panelSalario = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private final JPanelPad panelBeneficios = new JPanelPad();
 	
 	private PainelImagem fotoEmpr = new PainelImagem( 65000 );
 	
@@ -135,13 +160,33 @@ public class FEmpregado extends FDados {
 
 	private final ListaCampos lcDepto = new ListaCampos( this, "DP" );
 	
+	private ListaCampos lcEmpSal = new ListaCampos( this );
+	
+	private Tabela tabSal = new Tabela();
+	
+	private JScrollPane spnTabSal = new JScrollPane( tabSal );
+	
+	private Navegador navSal = new Navegador( true );
+	
+	private JPanelPad pinSal = new JPanelPad( 0, 80 );
+	
+	private JPanelPad pinBen = new JPanelPad( 0, 80 );
+	
+	private JComboBoxPad cbStatus = null;
+	
+	private JComboBoxPad cbSexo = null;
+	
 
 	public FEmpregado() {
 
 		super();
 		setTitulo( "Cadastro de Empregados" );
-		setAtribos( 50, 50, 590, 800 );
+		setAtribos( 50, 50, 520, 640 );
 
+		lcEmpSal.setMaster( lcCampos );
+		lcCampos.adicDetalhe( lcEmpSal );
+		lcEmpSal.setTabela( tabSal );
+		
 		montaListaCampos();
 		
 		montaTela();
@@ -200,13 +245,20 @@ public class FEmpregado extends FDados {
 		cbStatus = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_STRING, 2, 0 );
 		cbSexo = new JComboBoxPad( vLabs2, vVals2, JComboBoxPad.TP_STRING, 2, 0 );
 		
+		/***********
+		 * Geral   *
+		 ***********/
+		
+		adicTab( "Geral", panelEmpregados ); 
+		setPainel( panelEmpregados );
+		
 		adicCampo( txtCod, 7, 20, 80, 20, "MatEmpr", "Matricula", ListaCampos.DB_PK, true );
 		adicCampo( txtDesc, 90, 20, 280, 20, "NomeEmpr", "Nome do empregado", ListaCampos.DB_SI, true );
 		adicDB( fotoEmpr, 380, 20, 100, 133, "FotoEmpr", "Foto ( 3 x 4 )", false );
 		adicCampo( txtApelido, 7, 60, 100, 20, "ApelidoEmpr", "Apelido", ListaCampos.DB_SI, true );
 		adicDB( cbSexo, 110, 60, 120, 20, "SexoEmpr", "Sexo", false );
 		adicCampo( txtDataNasc, 235, 60, 85, 20, "DtNascEmpr", "Data de nasc.", ListaCampos.DB_SI, false );
-		adic( new JLabelPad( "Idade"), 325, 40, 45, 20 );
+		adic( new JLabelPad( "Idade" ), 325, 40, 45, 20 );
 		adic( txtIdade, 325, 60, 45, 20 );
 		adicCampo( txtCtps, 7, 100, 120, 20, "CtpsEmpr", "Ctps", ListaCampos.DB_SI, false );
 		adicCampo( txtSerie, 130, 100, 80, 20, "SerieCtpsEmpr", "Série", ListaCampos.DB_SI, false );
@@ -216,7 +268,7 @@ public class FEmpregado extends FDados {
 		adicCampo( txtRg, 120, 140, 85, 20, "RgEmpr", "Rg", ListaCampos.DB_SI, false );
 		adicCampo( txtOrgEmiss, 208, 140, 62, 20, "OrgExpRhEmpr", "Org.Emis.", ListaCampos.DB_SI, false );
 		adicCampo( txtUfExpedRg, 272, 140, 30, 20, "UfRgEmpr", "Uf", ListaCampos.DB_SI, false );
-		adicCampo( txtDataExpRg, 305, 140, 65, 20, "DtExpRgEmpr", "Data", ListaCampos.DB_SI, false );
+		adicCampo( txtDtExpRg, 305, 140, 65, 20, "DtExpRgEmpr", "Data", ListaCampos.DB_SI, false );
 		adicCampo( txtCpfEmpr, 7, 180, 85, 20, "CpfEmpr", "Cpf", ListaCampos.DB_SI, false );
 		adicCampo( txtTituloEleit, 95, 180, 110, 20, "TitEleitEmpr", "Titulo Eleitoral", ListaCampos.DB_SI, false );
 		adicCampo( txtZonaEleit, 208, 180, 60, 20, "ZonaEleitEmpr", "Zona", ListaCampos.DB_SI, false );
@@ -238,22 +290,62 @@ public class FEmpregado extends FDados {
         adicCampo( txtFoneEmpr, 60, 380, 130, 20, "FoneEmpr", "Telefone 1", ListaCampos.DB_SI, false );
         adicCampo( txtFoneEmpr2, 195, 380, 130, 20, "Fone2Empr", "Telefone 2", ListaCampos.DB_SI, false );
         adicCampo( txtCelEmpr, 330, 380, 160, 20, "CelEmpr", "Celular", ListaCampos.DB_SI, false );
-        adicCampo( txtDtAdmissao , 7, 420, 90, 20, "DtAdmissao", "Data Admissão", ListaCampos.DB_SI, false );
-        adicCampo( txtSalarioIni, 100, 420, 90, 20, "", "Salário inicial", ListaCampos.DB_SI, false );
-        adicCampo( txtCodTurno, 193, 420, 70, 20, "CodTurno", "Cód. Turno", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescTurno, 270, 420, 220, 20, "DescTurno", "Descrição do turno" );		
+        adicCampo( txtCodTurno, 7, 420, 60, 20, "CodTurno", "Cód.Turn.", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescTurno, 71, 420, 420, 20, "DescTurno", "Descrição do turno" );		
 		adicCampo( txtCodFuncao, 7, 460, 60, 20, "CodFunc", "Cód.Func.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescFuncao, 71, 460, 420, 20, "DescFunc", "Descrição da função" );
-		adicCampo( txtCodDepto, 7, 500, 60, 20, "CodDep", "Cód.Depto.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescDepto, 71, 500, 420, 20, "DescDepto", "Descrição do departamento" );
+		adicDescFK( txtDescFuncao, 71, 460, 340, 20, "DescFunc", "Descrição da função" );
+		adicDescFK( txtCbo, 415, 460, 75, 20, "", "CBO" );  // FALTA CAMPO DA TABELA
+		adicCampo( txtCodDepto, 7, 500, 60, 20, "CodDep", "Cód.Dept.", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescDepto, 71, 500, 340, 20, "DescDepto", "Descrição do departamento" );
+		adicCampo( txtDtAdmissao, 415, 500, 75, 20, "DtAdmissao", "Data admis.", ListaCampos.DB_SI, true );
 		
 		txtCepEmpr.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneEmpr.setMascara( JTextFieldPad.MC_FONE );
+		txtFoneEmpr2.setMascara( JTextFieldPad.MC_FONE );
+		txtCelEmpr.setMascara( JTextFieldPad.MC_FONE );
 	
 		setListaCampos( true, "EMPREGADO", "RH" );
-		lcCampos.setQueryInsert( false );
-	}
+		lcCampos.setQueryInsert( false );		
+		
+		/***********
+		 * Salário *
+		 ***********/  
+		
+		setPainel( pinSal, panelSalario );
+		adicTab( "Salário", panelSalario ); 
+		setListaCampos( lcEmpSal );
+		
+		navSal.setAtivo( 6, false );
 
+		setNavegador( navSal );
+		panelSalario.add( pinSal, BorderLayout.SOUTH );
+		panelSalario.add( spnTabSal, BorderLayout.CENTER );
+		
+		pinSal.adic( navSal, 0, 50, 270, 25 );
+			
+		adicCampo( txtVlrSalario, 100, 20, 90, 20, "ValorSal", "Salário", ListaCampos.DB_SI, false );
+		adicCampo( txtDtVigor, 193, 20, 90, 20, "DtVigor", "Data.vigor", ListaCampos.DB_SI, true );
+        //adicCampo( txtSalarioIni, 100, 20, 120, 20, "", "Salário inicial", ListaCampos.DB_SI, false );//FALTA CAMPO DA TABELA
+        //adicCampo( txtSalarioAtual, 7, 60, 90, 20, "", "Salário atual", ListaCampos.DB_SI, false );//FALTA CAMPO DA TABELA
+        //adicCampo( txtDataAlteracao, 100, 60, 120, 20, "", "Data da alteração", ListaCampos.DB_SI, false );//FALTA CAMPO DA TABELA
+                
+		lcEmpSal.montaTab();
+		lcEmpSal.setQueryInsert( false );
+		lcEmpSal.setQueryCommit( false );
+        setListaCampos( true, "EMPREGADOSAL", "RH" );
+		  
+        /**************
+		 * Benefícios *
+		 **************/
+        
+		adicTab( "Benefícios", panelBeneficios ); 
+		setPainel( panelBeneficios );
+		
+		
+		
+	
+	}
+	
 	public void setConexao( Connection cn ) {
 
 		super.setConexao( cn );
