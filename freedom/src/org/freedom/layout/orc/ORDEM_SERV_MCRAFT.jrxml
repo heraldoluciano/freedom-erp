@@ -826,9 +826,9 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="4"
-						y="3"
-						width="109"
-						height="67"
+						y="5"
+						width="137"
+						height="69"
 						forecolor="#FFFFFF"
 						backcolor="#FFFFFF"
 						key="image-1"/>
