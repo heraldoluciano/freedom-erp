@@ -45,7 +45,7 @@ public class FBeneficio extends FDados implements ActionListener {
 
 	private final JTextFieldPad txtDescBenef = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
 	
-	private final JTextFieldPad txtNumBenef = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 0 );
+	private final JTextFieldPad txtVlrBenef = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 	
 
 	public FBeneficio() {
@@ -66,7 +66,7 @@ public class FBeneficio extends FDados implements ActionListener {
 
 		adicCampo( txtCodBenef, 7, 20, 70, 20, "CodBenef", "Cód.benef.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescBenef, 80, 20, 260, 20, "DescBenef", "Descrição do benefício", ListaCampos.DB_SI, true );
-		adicCampo( txtNumBenef, 345, 20, 100, 20, "ValorBenef", "Valor( R$ )", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrBenef, 345, 20, 100, 20, "ValorBenef", "Valor( R$ )", ListaCampos.DB_SI, false );
 		setListaCampos( true, "BENEFICIO", "RH" );		
 		lcCampos.setQueryInsert( false );
 	}
