@@ -164,7 +164,7 @@ public class FEmpregado extends FTabDados{
 
 	private final ListaCampos lcDepto = new ListaCampos( this, "DP" );
 	
-	private ListaCampos lcBenef = new ListaCampos( this, "RH" );
+	private ListaCampos lcBenef = new ListaCampos( this, "BN" );
 	
 	private ListaCampos lcEmpSal = new ListaCampos( this );
 	
@@ -344,8 +344,6 @@ public class FEmpregado extends FTabDados{
 		adicCampoInvisivel( txtSeqSal,  "SeqSal", "Seq.", ListaCampos.DB_PK, false );
 		adicCampo( txtVlrSalario, 7, 20, 90, 20, "ValorSal", "Salário", ListaCampos.DB_SI, false );
 		adicCampo( txtDtVigor, 100, 20, 90, 20, "DtVigor", "Data.vigor", ListaCampos.DB_SI, true );
-         
-		
 		lcEmpSal.montaTab();
 		lcEmpSal.setQueryInsert( false );
 		lcEmpSal.setQueryCommit( false );
@@ -366,30 +364,24 @@ public class FEmpregado extends FTabDados{
 		panelBeneficios.add( spnTabBenef, BorderLayout.CENTER );
 		
 		pinBen.adic( navBenef, 0, 50, 270, 25 );
+			
+		/*****************
+		 * LC Beneficios *
+		 *****************/
 		
-		adicCampo( txtCodBenef, 7, 20, 60, 20, "CodBenef", "Cód.Benef", ListaCampos.DB_PF, true );
-		adicCampo( txtDescBenef, 70, 20, 190, 20, "DescBenef", "Desc.Benef.", ListaCampos.DB_PF, false );
-		
-		
-		
-		
-		/*lcBenef.add( new GuardaCampo( txtCodBenef, "CodBenef", "Cód.benef", ListaCampos.DB_PK, false ) );
+		lcBenef.add( new GuardaCampo( txtCodBenef, "CodBenef", "Cód.benef", ListaCampos.DB_PK, false ) );
 		lcBenef.add( new GuardaCampo( txtDescBenef, "DescBenef", "Descrição do benefício", ListaCampos.DB_SI, false ) );
 		lcBenef.montaSql( false, "BENEFICIO", "RH" );
 		lcBenef.setQueryCommit( false );
 		lcBenef.setReadOnly( true );
-		txtCodBenef.setTabelaExterna( lcBenef );*/
+		txtCodBenef.setTabelaExterna( lcBenef );
 		
-		
-		
+		adicCampo( txtCodBenef, 7, 20, 60, 20, "CodBenef", "Cód.Benef", ListaCampos.DB_PF, true );	
+		adicDescFK( txtDescBenef, 70, 20, 250, 20, "DescBenef", "Descrição do beneficio" );
 		lcEmpBenef.montaTab();
 		lcEmpBenef.setQueryInsert( false );
 		lcEmpBenef.setQueryCommit( false );
         setListaCampos( true, "EMPREGADOBENEF", "RH" );
-		
-		
-		
-
 	
 	}
 	
@@ -399,5 +391,8 @@ public class FEmpregado extends FTabDados{
 		lcFuncao.setConexao( cn );
 		lcTurno.setConexao( cn );
 		lcDepto.setConexao( cn );
+		lcEmpSal.setConexao( cn );
+		lcBenef.setConexao( cn );
+		lcEmpBenef.setConexao( cn );
 	}
 }
