@@ -62,13 +62,13 @@ public class FEmpregado extends FTabDados{
 
 	private final JTextFieldFK txtDescDepto = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtDesc = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldPad txtDesc = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private final JTextFieldPad txtApelido = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 	
 	private final JTextFieldPad txtEndEmpr = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private final JTextFieldPad txtDataNasc = new JTextFieldPad( JTextFieldPad.TP_DATE, 50, 0 );
+	private final JTextFieldPad txtDataNasc = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
 	private final JTextFieldFK txtIdade = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
@@ -84,13 +84,13 @@ public class FEmpregado extends FTabDados{
 	
 	private final JTextFieldPad txtDtAdmissao = new JTextFieldPad( JTextFieldPad.TP_DATE, 12, 0 );
 	
-	private final JTextFieldPad txtCtps = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldPad txtCtps = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
-	private final JTextFieldPad txtSerie = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldPad txtSerie = new JTextFieldPad( JTextFieldPad.TP_STRING, 6, 0 );
 	
 	private final JTextFieldPad txtUfCtps = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
-	private final JTextFieldPad txtCertifExercito = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldPad txtCertifExercito = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
 	private final JTextFieldPad txtPisPasep = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
@@ -100,17 +100,17 @@ public class FEmpregado extends FTabDados{
 	
 	private final JTextFieldPad txtUfExpedRg = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
-	private final JTextFieldPad txtDtExpRg = new JTextFieldPad( JTextFieldPad.TP_DATE, 40, 0 );
+	private final JTextFieldPad txtDtExpRg = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
 	private final JTextFieldPad txtCpfEmpr = new JTextFieldPad( JTextFieldPad.TP_STRING, 11, 0 );
 	
 	private final JTextFieldPad txtTituloEleit = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 	
-	private final JTextFieldPad txtZonaEleit = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 15, 0 );
+	private final JTextFieldPad txtZonaEleit = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
-	private final JTextFieldPad txtSecaoEleit = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 15, 0 );
+	private final JTextFieldPad txtSecaoEleit = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
-	private final JTextFieldPad txtCnh = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
+	private final JTextFieldPad txtCnh = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
 	private final JTextFieldPad txtNomeMae = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 	
@@ -122,7 +122,7 @@ public class FEmpregado extends FTabDados{
 	
 	private final JTextFieldPad txtDtDemissao = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
-	private final JTextFieldPad txtEmail = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	private final JTextFieldPad txtEmail = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 	
 	private final JTextFieldPad txtDddEmpr = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 	
@@ -140,21 +140,21 @@ public class FEmpregado extends FTabDados{
 	
 	private final JTextFieldPad txtDtVigor = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
-	private final JTextFieldFK txtCbo = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
 	private final JTextFieldPad txtCodBenef = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 	
 	private final JTextFieldPad txtSeqSal = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
 	private final JTextFieldFK txtDescBenef = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
+	private final JTextFieldFK txtCbo = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private final JTextFieldFK txtVlrBenef = new JTextFieldFK( JTextFieldPad.TP_STRING, 15, 2 );
+	
 	private final JPanelPad panelEmpregados = new JPanelPad();
 	
 	private final JPanelPad panelSalario = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private final JPanelPad panelBeneficios = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	
-	//private final JPanelPad panelBeneficios = new JPanelPad();
 	
 	private PainelImagem fotoEmpr = new PainelImagem( 65000 );
 	
@@ -216,11 +216,12 @@ public class FEmpregado extends FTabDados{
 
 		lcFuncao.add( new GuardaCampo( txtCodFuncao, "CodFunc", "Cód.Func.", ListaCampos.DB_PK, true ) );
 		lcFuncao.add( new GuardaCampo( txtDescFuncao, "DescFunc", "Descrição da função", ListaCampos.DB_SI, false ) );
+		lcFuncao.add( new GuardaCampo( txtCbo, "CboFunc", "CBO", ListaCampos.DB_SI, false ) );
 		lcFuncao.montaSql( false, "FUNCAO", "RH" );
 		lcFuncao.setQueryCommit( false );
 		lcFuncao.setReadOnly( true );
 		txtCodFuncao.setTabelaExterna( lcFuncao );
-
+		
 		lcTurno.add( new GuardaCampo( txtCodTurno, "CodTurno", "Cód. turno", ListaCampos.DB_PK, true ) );
 		lcTurno.add( new GuardaCampo( txtDescTurno, "DescTurno", "Descrição do turno", ListaCampos.DB_SI, false ) );
 		lcTurno.montaSql( false, "TURNO", "RH" );
@@ -274,7 +275,7 @@ public class FEmpregado extends FTabDados{
 		adicCampo( txtDesc, 90, 20, 280, 20, "NomeEmpr", "Nome do empregado", ListaCampos.DB_SI, true );
 		adicDB( fotoEmpr, 380, 20, 100, 133, "FotoEmpr", "Foto ( 3 x 4 )", false );
 		adicCampo( txtApelido, 7, 60, 100, 20, "ApelidoEmpr", "Apelido", ListaCampos.DB_SI, true );
-		adicDB( cbSexo, 110, 60, 120, 20, "SexoEmpr", "Sexo", false );
+		adicDB( cbSexo, 110, 60, 120, 20, "SexoEmpr", "Sexo", true );
 		adicCampo( txtDataNasc, 235, 60, 85, 20, "DtNascEmpr", "Data de nasc.", ListaCampos.DB_SI, false );
 		adic( new JLabelPad( "Idade" ), 325, 40, 45, 20 );
 		adic( txtIdade, 325, 60, 45, 20 );
@@ -302,7 +303,7 @@ public class FEmpregado extends FTabDados{
         adicCampo( txtUfEmpregado, 353, 300, 30, 20, "UfEmpr", "UF", ListaCampos.DB_SI, false);
         adicCampo( txtCepEmpr, 386, 300, 100, 20, "CepEmpr", "Cep", ListaCampos.DB_SI, false );	
         adicCampo( txtDtDemissao , 7, 340, 90, 20, "DtDemissaoEmpr", "Data Demissão", ListaCampos.DB_SI, false );
-        adicDB( cbStatus, 100, 340, 100, 18, "StatusEmpr", "Status", false );
+        adicDB( cbStatus, 100, 340, 100, 20, "StatusEmpr", "Status", true );
         adicCampo( txtEmail, 205, 340, 283, 20, "EmailEmpr", "E-mail", ListaCampos.DB_SI, false );
         adicCampo( txtDddEmpr, 7, 380, 50, 20, "DddEmpr", "DDD", ListaCampos.DB_SI, false );
         adicCampo( txtFoneEmpr, 60, 380, 130, 20, "FoneEmpr", "Telefone 1", ListaCampos.DB_SI, false );
@@ -312,7 +313,7 @@ public class FEmpregado extends FTabDados{
 		adicDescFK( txtDescTurno, 71, 420, 420, 20, "DescTurno", "Descrição do turno" );		
 		adicCampo( txtCodFuncao, 7, 460, 60, 20, "CodFunc", "Cód.Func.", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescFuncao, 71, 460, 340, 20, "DescFunc", "Descrição da função" );
-		adicDescFK( txtCbo, 415, 460, 75, 20, "", "CBO" );  // FALTA CAMPO DA TABELA
+		adicDescFK( txtCbo, 415, 460, 75, 20, "CboFunc", "CBO" ); 
 		adicCampo( txtCodDepto, 7, 500, 60, 20, "CodDep", "Cód.Dept.", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescDepto, 71, 500, 340, 20, "DescDepto", "Descrição do departamento" );
 		adicCampo( txtDtAdmissao, 415, 500, 75, 20, "DtAdmissao", "Data admis.", ListaCampos.DB_SI, true );
@@ -321,6 +322,8 @@ public class FEmpregado extends FTabDados{
 		txtFoneEmpr.setMascara( JTextFieldPad.MC_FONE );
 		txtFoneEmpr2.setMascara( JTextFieldPad.MC_FONE );
 		txtCelEmpr.setMascara( JTextFieldPad.MC_FONE );
+		txtCpfEmpr.setMascara( JTextFieldPad.MC_CPF );
+		txtRg.setMascara( JTextFieldPad.MC_RG );
 	
 		setListaCampos( true, "EMPREGADO", "RH" );
 		lcCampos.setQueryInsert( false );		
@@ -371,13 +374,15 @@ public class FEmpregado extends FTabDados{
 		
 		lcBenef.add( new GuardaCampo( txtCodBenef, "CodBenef", "Cód.benef", ListaCampos.DB_PK, false ) );
 		lcBenef.add( new GuardaCampo( txtDescBenef, "DescBenef", "Descrição do benefício", ListaCampos.DB_SI, false ) );
+		lcBenef.add( new GuardaCampo( txtVlrBenef, "ValorBenef", "Valor( R$ )", ListaCampos.DB_SI, false ) );
 		lcBenef.montaSql( false, "BENEFICIO", "RH" );
 		lcBenef.setQueryCommit( false );
 		lcBenef.setReadOnly( true );
 		txtCodBenef.setTabelaExterna( lcBenef );
 		
 		adicCampo( txtCodBenef, 7, 20, 60, 20, "CodBenef", "Cód.Benef", ListaCampos.DB_PF, true );	
-		adicDescFK( txtDescBenef, 70, 20, 250, 20, "DescBenef", "Descrição do beneficio" );
+		adicDescFK( txtDescBenef, 70, 20, 250, 20, "DescBenef", "Descrição do benefício" );
+		adicDescFK( txtVlrBenef, 325, 20, 80, 20, "ValorBenef", "Valor( R$ )" );
 		lcEmpBenef.montaTab();
 		lcEmpBenef.setQueryInsert( false );
 		lcEmpBenef.setQueryCommit( false );
