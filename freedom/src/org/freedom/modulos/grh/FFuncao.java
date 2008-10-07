@@ -45,12 +45,14 @@ public class FFuncao extends FDados implements ActionListener {
 
 	private final JTextFieldPad txtDescFunc = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 	
+	private final JTextFieldPad txtCbo = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
 
 	public FFuncao() {
 
 		super();
 		setTitulo( "Cadastro de funções" );
-		setAtribos( 50, 50, 360, 125 );
+		setAtribos( 50, 50, 430, 125 );
 		
 		montaTela();
 		
@@ -64,6 +66,7 @@ public class FFuncao extends FDados implements ActionListener {
 
 		adicCampo( txtCodFunc, 7, 20, 70, 20, "CodFunc", "Cód.func.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescFunc, 80, 20, 250, 20, "DescFunc", "Descrição da função", ListaCampos.DB_SI, true );
+		adicCampo( txtCbo, 335, 20, 70, 20, "CboFunc", "Cbo", ListaCampos.DB_SI, false );
 		setListaCampos( true, "FUNCAO", "RH" );		
 		lcCampos.setQueryInsert( false );
 	}
