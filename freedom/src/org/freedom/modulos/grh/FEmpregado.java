@@ -367,8 +367,8 @@ public class FEmpregado extends FTabDados{
 		
 		pinBen.adic( navBenef, 0, 50, 270, 25 );
 		
-		adicCampo( txtCodBenef, 7, 20, 55, 20, "CodBenef", "Cód.Benef", ListaCampos.DB_PF, true );
-		adicCampo( txtDescBenef, 100, 20, 170, 20, "DescBenef", "Desc.Benef.", ListaCampos.DB_PF, false );
+		adicCampo( txtCodBenef, 7, 20, 60, 20, "CodBenef", "Cód.Benef", ListaCampos.DB_PF, true );
+		adicCampo( txtDescBenef, 70, 20, 190, 20, "DescBenef", "Desc.Benef.", ListaCampos.DB_PF, false );
 		
 		
 		
