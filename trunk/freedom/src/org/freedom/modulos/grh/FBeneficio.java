@@ -43,7 +43,7 @@ public class FBeneficio extends FDados implements ActionListener {
 
 		super();
 		setTitulo( "Cadastro de Benefícios" );
-		setAtribos( 50, 50, 470, 125 );
+		setAtribos( 50, 50, 450, 125 );
 
 		montaTela();
 	}
@@ -52,7 +52,7 @@ public class FBeneficio extends FDados implements ActionListener {
 
 		adicCampo( txtCodBenef, 7, 20, 70, 20, "CodBenef", "Cód.benef.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescBenef, 80, 20, 260, 20, "DescBenef", "Descrição do benefício", ListaCampos.DB_SI, true );
-		adicCampo( txtVlrBenef, 345, 20, 100, 20, "ValorBenef", "Valor( R$ )", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrBenef, 345, 20, 80, 20, "ValorBenef", "Valor( R$ )", ListaCampos.DB_SI, false );
 		setListaCampos( true, "BENEFICIO", "RH" );
 		lcCampos.setQueryInsert( false );
 	}
