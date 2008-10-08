@@ -43,19 +43,28 @@
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
 	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[null]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(7)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[null]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[select rp.matempr, rp.nomeempr, rp.foneempr, rp.dtadmissao, rp.emailempr
-from rhempregado rp where rp.codemp=$P{CODEMP} and rp.codfilial=$P{CODFILIAL}]]></queryString>
+	<queryString><![CDATA[select rp.matempr, rp.nomeempr, rp.foneempr, rp.dtadmissao, rp.emailempr, rp.codfunc, dp.coddep,
+fu.descfunc, dp.descdep
+from rhempregado rp, rhfuncao fu, rhdepto dp
+where  
+fu.codemp=rp.codempfo and fu.codfilial=rp.codfilialfo and fu.codfunc=rp.codfunc
+and dp.codemp=rp.codempdp and dp.codfilial=rp.codfilialdp and dp.coddep=rp.coddep and
+rp.codemp=$P{CODEMP} and rp.codfilial=$P{CODFILIAL}]]></queryString>
 
 	<field name="MATEMPR" class="java.lang.Long"/>
 	<field name="NOMEEMPR" class="java.lang.String"/>
 	<field name="FONEEMPR" class="java.lang.String"/>
 	<field name="DTADMISSAO" class="java.sql.Date"/>
 	<field name="EMAILEMPR" class="java.lang.String"/>
+	<field name="CODFUNC" class="java.lang.Long"/>
+	<field name="CODDEP" class="java.lang.Long"/>
+	<field name="DESCFUNC" class="java.lang.String"/>
+	<field name="DESCDEP" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
