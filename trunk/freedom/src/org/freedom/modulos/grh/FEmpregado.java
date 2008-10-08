@@ -426,7 +426,7 @@ public class FEmpregado extends FTabDados {
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
 
-		dlGr = new FPrinterJob( "relatorios/grhFuncao.jasper", "Relatório Resumido", "", this, hParam, con, null, false );
+		dlGr = new FPrinterJob( "relatorios/EmprResumido.jasper", "Relatório Resumido", "", this, hParam, con, null, false );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
