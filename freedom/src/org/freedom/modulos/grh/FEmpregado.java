@@ -25,9 +25,11 @@
 package org.freedom.modulos.grh;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.Connection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.JScrollPane;
@@ -47,7 +49,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FTabDados;
 
-public class FEmpregado extends FTabDados {
+public class FEmpregado extends FTabDados implements KeyListener {
+
 
 	private static final long serialVersionUID = 1L;
 
@@ -213,11 +216,23 @@ public class FEmpregado extends FTabDados {
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
+		txtDataNasc.addKeyListener( this );
 
 		setImprimir( true );
 
 	}
 
+	private int calcIdade(){
+		
+		int ano = 0;
+		int idade = 0;
+		
+		ano = Funcoes.getAno( txtDataNasc.getVlrDate() );
+		idade = ( Funcoes.getAno( new Date() ) - ano );
+		
+		return idade;
+		
+	}
 	private void montaListaCampos() {
 
 		lcFuncao.add( new GuardaCampo( txtCodFuncao, "CodFunc", "Cód.Func.", ListaCampos.DB_PK, true ) );
@@ -404,6 +419,17 @@ public class FEmpregado extends FTabDados {
 		lcEmpSal.setConexao( cn );
 		lcBenef.setConexao( cn );
 		lcEmpBenef.setConexao( cn );
+	}
+	
+	public void keyPressed( KeyEvent kevt ) {
+
+		super.keyPressed( kevt );
+		
+		if( kevt.getSource() == txtDataNasc ){
+			if( kevt.getKeyCode() == kevt.VK_ENTER ){
+				txtIdade.setVlrInteger( calcIdade() ); 
+			}
+		}
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
