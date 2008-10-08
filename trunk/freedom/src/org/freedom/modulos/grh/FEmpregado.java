@@ -34,6 +34,9 @@ import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.JScrollPane;
 import net.sf.jasperreports.engine.JasperPrintManager;
+
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
@@ -49,7 +52,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FTabDados;
 
-public class FEmpregado extends FTabDados implements KeyListener {
+public class FEmpregado extends FTabDados implements KeyListener, CarregaListener {
 
 
 	private static final long serialVersionUID = 1L;
@@ -217,6 +220,7 @@ public class FEmpregado extends FTabDados implements KeyListener {
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		txtDataNasc.addKeyListener( this );
+		lcCampos.addCarregaListener( this );
 
 		setImprimir( true );
 
@@ -466,4 +470,14 @@ public class FEmpregado extends FTabDados implements KeyListener {
 			}
 		}
 	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+		
+		if( cevt.getListaCampos() == lcCampos ){
+		
+			txtIdade.setVlrInteger( calcIdade() );
+		}
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {}
 }
