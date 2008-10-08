@@ -70,7 +70,7 @@ public class FreedomGRH extends AplicativoPD {
 		addBotao( "barraGrupo.gif", "Candidatos", "Candidatos", 100100100, FCandidato.class );
 		addBotao( "btTarefas.gif", "Cursos", "Cursos", 100100900, FCurso.class );
 		addBotao( "btNovo.gif", "Cadastro de vagas", "Cadastro de vagas", 100101100, FVaga.class );
-		addBotao( "btpESQUISA.gif", "Gerenciamento de vagas", "Gerenciamento de vagas", 200100000, FGerencVagas.class );
+		addBotao( "btPesquisa.gif", "Gerenciamento de vagas", "Gerenciamento de vagas", 200100000, FGerencVagas.class );
 		
 
 		ajustaMenu();
