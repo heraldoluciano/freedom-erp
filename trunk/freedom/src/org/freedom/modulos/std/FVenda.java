@@ -2483,6 +2483,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					fBol.setConexao( con );
 					fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 7 ] ) );
 					fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
+					fBol.gerar();
 					fBol.imprimir( true );
 				}
 				else if ( ( "S".equals( sValores[ 6 ] ) ) && ( lsParcRecibo != null ) && ( lsParcRecibo.size() > 0 ) ) { // Logica para impressão do recibo.
@@ -2495,6 +2496,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ 7 ] ) );
 						fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
 						fBol.setParcelas( lsParcRecibo );
+						fBol.gerar();
 						fBol.imprimir( true );
 					}
 				}

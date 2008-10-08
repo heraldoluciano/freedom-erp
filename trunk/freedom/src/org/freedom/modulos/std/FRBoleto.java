@@ -25,6 +25,7 @@ package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
 import java.awt.Checkbox;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
@@ -1240,7 +1241,7 @@ public class FRBoleto extends FRelatorio {
 		return sRet;
 	}
 
-	private int verificaSel(){
+	private int verificaSel( Component comp ){
 		
 		int count = 0;
 		
@@ -1257,7 +1258,7 @@ public class FRBoleto extends FRelatorio {
 	
 	public void imprimir( boolean bVisualizar ) {
 		
-		if( verificaSel() == 0 ){
+		if( verificaSel( this ) == 0 ){
 			Funcoes.mensagemInforma( this, "Não existem boletos selecionados para impressão!" );
 			return;
 		}
@@ -1393,9 +1394,12 @@ public class FRBoleto extends FRelatorio {
 		super.actionPerformed( evt );
 		
 		if( evt.getSource() == btGerar ){
-			
-			tbBoletos.limpa();
-			montaGrid();
+			gerar();
 		}
+	}
+	
+	public void gerar() {
+		tbBoletos.limpa();
+		montaGrid();
 	}
 }
