@@ -32,7 +32,9 @@ import java.sql.Connection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
+
 import javax.swing.JScrollPane;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.acao.CarregaEvent;
@@ -149,9 +151,9 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 
 	private final JTextFieldPad txtDtVigor = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private final JTextFieldPad txtCodBenef = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-
 	private final JTextFieldPad txtSeqSal = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private final JTextFieldPad txtCodBenef = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldFK txtDescBenef = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -260,6 +262,20 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		lcDepto.setQueryCommit( false );
 		lcDepto.setReadOnly( true );
 		txtCodDepto.setTabelaExterna( lcDepto );
+		
+		lcBenef.add( new GuardaCampo( txtCodBenef, "CodBenef", "Cód.benef", ListaCampos.DB_PK, txtDescBenef, false ) );
+		lcBenef.add( new GuardaCampo( txtDescBenef, "DescBenef", "Descrição do benefício", ListaCampos.DB_SI, false ) );
+		lcBenef.add( new GuardaCampo( txtVlrBenef, "ValorBenef", "Valor do benefício", ListaCampos.DB_SI, false ) );
+		lcBenef.montaSql( false, "BENEFICIO", "RH" );
+		lcBenef.setReadOnly( true );
+		lcBenef.setQueryCommit( false );
+		txtCodBenef.setTabelaExterna( lcBenef );
+		txtCodBenef.setFK( true );
+		txtCodBenef.setListaCampos( lcBenef );
+		txtDescBenef.setListaCampos( lcBenef );
+		txtVlrBenef.setListaCampos( lcBenef );
+		
+		
 	}
 
 	private void montaTela() {
@@ -359,23 +375,22 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		setPainel( pinSal, panelSalario );
 		adicTab( "Salário", panelSalario );
 		setListaCampos( lcEmpSal );
-
 		navSal.setAtivo( 4, true );
-
 		setNavegador( navSal );
+		
 		panelSalario.add( pinSal, BorderLayout.SOUTH );
 		panelSalario.add( spnTabSal, BorderLayout.CENTER );
 
-		pinSal.adic( navSal, 0, 50, 270, 25 );
-
 		adicCampoInvisivel( txtSeqSal, "SeqSal", "Seq.", ListaCampos.DB_PK, false );
 		adicCampo( txtVlrSalario, 7, 20, 90, 20, "ValorSal", "Salário", ListaCampos.DB_SI, false );
-		adicCampo( txtDtVigor, 100, 20, 90, 20, "DtVigor", "Data.vigor", ListaCampos.DB_SI, true );
-		lcEmpSal.montaTab();
+		adicCampo( txtDtVigor, 100, 20, 90, 20, "DtVigor", "Data.vigor", ListaCampos.DB_SI, true );		
+		pinSal.adic( navSal, 0, 50, 270, 25 );
+		setListaCampos( true, "EMPREGADOSAL", "RH" );
 		lcEmpSal.setQueryInsert( false );
 		lcEmpSal.setQueryCommit( false );
-		setListaCampos( true, "EMPREGADOSAL", "RH" );
-
+		lcEmpSal.montaTab();
+		
+	
 		/**************
 		 * Benefícios *
 		 **************/
@@ -383,35 +398,24 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		setPainel( pinBen, panelBeneficios );
 		adicTab( "Benefícios", panelBeneficios );
 		setListaCampos( lcEmpBenef );
-
 		navSal.setAtivo( 4, true );
-
 		setNavegador( navBenef );
-		panelBeneficios.add( pinBen, BorderLayout.SOUTH );
+		
 		panelBeneficios.add( spnTabBenef, BorderLayout.CENTER );
-
-		pinBen.adic( navBenef, 0, 50, 270, 25 );
-
-		/*****************
-		 * LC Beneficios *
-		 *****************/
-
-		lcBenef.add( new GuardaCampo( txtCodBenef, "CodBenef", "Cód.benef", ListaCampos.DB_PK, false ) );
-		lcBenef.add( new GuardaCampo( txtDescBenef, "DescBenef", "Descrição do benefício", ListaCampos.DB_SI, false ) );
-		lcBenef.add( new GuardaCampo( txtVlrBenef, "ValorBenef", "Valor( R$ )", ListaCampos.DB_SI, false ) );
-		lcBenef.montaSql( false, "BENEFICIO", "RH" );
-		lcBenef.setQueryCommit( false );
-		lcBenef.setReadOnly( true );
-		txtCodBenef.setTabelaExterna( lcBenef );
-
-		adicCampo( txtCodBenef, 7, 20, 60, 20, "CodBenef", "Cód.Benef", ListaCampos.DB_PF, true );
+		panelBeneficios.add( pinBen, BorderLayout.SOUTH );
+		
+		adicCampo( txtCodBenef, 7, 20, 60, 20, "CodBenef", "Cód.Benef", ListaCampos.DB_PF, txtDescBenef, true );
 		adicDescFK( txtDescBenef, 70, 20, 250, 20, "DescBenef", "Descrição do benefício" );
 		adicDescFK( txtVlrBenef, 325, 20, 80, 20, "ValorBenef", "Valor( R$ )" );
-		lcEmpBenef.montaTab();
+		pinBen.adic( navBenef, 0, 50, 270, 25 );
+		setListaCampos( false, "EMPREGADOBENEF", "RH" );
 		lcEmpBenef.setQueryInsert( false );
 		lcEmpBenef.setQueryCommit( false );
-		setListaCampos( true, "EMPREGADOBENEF", "RH" );
-
+		lcEmpBenef.montaTab();
+		
+		tabBenef.setTamColuna( 335, 1 );
+		tabBenef.setTamColuna( 100, 2 );		
+		
 	}
 
 	public void setConexao( Connection cn ) {
