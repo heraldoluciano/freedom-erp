@@ -150,6 +150,8 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 	private final JTextFieldPad txtVlrSalario = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
 	private final JTextFieldPad txtDtVigor = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private final JTextFieldPad txtObsSal = new JTextFieldPad( JTextFieldPad.TP_STRING, 1000, 0 );
 
 	private final JTextFieldPad txtSeqSal = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
@@ -384,7 +386,8 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 
 		adicCampoInvisivel( txtSeqSal, "SeqSal", "Seq.", ListaCampos.DB_PK, false );
 		adicCampo( txtVlrSalario, 7, 20, 90, 20, "ValorSal", "Salário", ListaCampos.DB_SI, false );
-		adicCampo( txtDtVigor, 100, 20, 90, 20, "DtVigor", "Data.vigor", ListaCampos.DB_SI, true );		
+		adicCampo( txtDtVigor, 100, 20, 90, 20, "DtVigor", "Data.vigor", ListaCampos.DB_SI, true );
+		adicCampo( txtObsSal, 193, 20, 280, 20, "ObsSal", "Observação", ListaCampos.DB_SI, false );
 		pinSal.adic( navSal, 0, 50, 270, 25 );
 		setListaCampos( true, "EMPREGADOSAL", "RH" );
 		lcEmpSal.setQueryInsert( false );
