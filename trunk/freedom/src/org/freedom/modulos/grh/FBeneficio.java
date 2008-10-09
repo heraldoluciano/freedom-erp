@@ -1,33 +1,32 @@
-/**
- * @version 03/10/2008 <BR>
- * @author Setpoint Informática Ltda./Felipe Daniel Elias <BR>
- * 
- * Projeto: Freedom <BR>
- * 
- * Pacote: org.freedom.modulos.grh <BR>
- * Classe:
- * @(#)FFuncao.java <BR>
- * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR>
- * <BR>
- * 
- * Tela de cadastro de funções
- * 
- */
-
 package org.freedom.modulos.grh;
 
 import java.awt.event.ActionListener;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDados;
+
+import javax.comm.UnsupportedCommOperationException;
+
+/**
+ * Classe para cadastro de Benefícios <BR>
+ * Projeto: Freedom <BR>
+ * Pacote: org.freedom.modulos.grh <BR>
+ * Classe:
+ * 
+ * @FBeneficio.java <BR>
+ *                  <BR>
+ *                  Este programa é licenciado de acordo com a LGPL (Lesser General Public License), <BR>
+ *                  versão 2.1, Fevereiro de 1999 <BR>
+ *                  A LGPL deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
+ *                  Caso uma cópia da LGPL não esteja disponível junto com este Programa, você pode contatar <BR>
+ *                  o LICENCIADOR ou então pegar uma cópia em: <a href=http://creativecommons.org/licenses/LGPL/2.1/legalcode.pt> Creative Commons</a> <BR>
+ *                  Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar de acordo com os termos da LGPL. <BR>
+ *                  <BR>
+ * @author Felipe Daniel Elias/Setpoint Informática Ltda. <BR>
+ * @version 1.0.0 - 03/10/2008 <BR>
+ * @since 03/10/2008. <BR>
+ * 
+ */
 
 public class FBeneficio extends FDados implements ActionListener {
 
@@ -38,6 +37,7 @@ public class FBeneficio extends FDados implements ActionListener {
 	private final JTextFieldPad txtDescBenef = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private final JTextFieldPad txtVlrBenef = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+
 
 	public FBeneficio() {
 
