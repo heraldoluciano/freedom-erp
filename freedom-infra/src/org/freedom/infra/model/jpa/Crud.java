@@ -1,7 +1,6 @@
 
 package org.freedom.infra.model.jpa;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -147,7 +146,7 @@ public class Crud {
 													  final String initFile, 
 													  final String sessionName, 
 													  final String userParam, 
-													  final String passwordParam ) {
+													  final String passwordParam ) throws Exception {
 
 		Map<String, String> properties = new HashMap<String, String>();		
 		properties.put( "initFile", initFile );		
@@ -155,15 +154,9 @@ public class Crud {
 		String username = null;
 		String password = null;
 		
-		try {
-			
-			ManagerIni ini = ManagerIni.createManagerIniFile( initFile );
-			username = ini.getProperty( sessionName, userParam );
-			password = SimpleCrypt.decrypt( ini.getProperty( sessionName, passwordParam ) );
-		}
-		catch ( IOException e ) {
-			e.printStackTrace();
-		}
+		ManagerIni ini = ManagerIni.createManagerIniFile( initFile );
+		username = ini.getProperty( sessionName, userParam );
+		password = SimpleCrypt.decrypt( ini.getProperty( sessionName, passwordParam ) );
 		
 		if ( persistFramework == PERSIST_FRAMEWORK_TOPLINK ) {
 			properties.put( "toplink.jdbc.user", username );
@@ -248,7 +241,7 @@ public class Crud {
 		}
 	}
 
-	public void remove( PersistObject object, final boolean repeat ) throws NotConnectionCrudException {
+	public void remove( PersistObject entity, final boolean repeat ) throws NotConnectionCrudException {
 
 		int changes = this.changes;
 		boolean repeatConnect = true;
@@ -259,7 +252,7 @@ public class Crud {
 				
 				repeatConnect = repeat;
 				
-    			Object tmp = manager.find( object.getClass(), ((PersistObject) object).getKey() );
+    			Object tmp = manager.find( entity.getClass(), ((PersistObject) entity).getKey() );
     			
     			//transaction = manager.getTransaction();
     			transaction.begin();
