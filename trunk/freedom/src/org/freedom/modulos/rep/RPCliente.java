@@ -28,11 +28,14 @@ package org.freedom.modulos.rep;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
@@ -41,6 +44,9 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FTabDados;
 
 public class RPCliente extends FTabDados implements ActionListener {
@@ -159,6 +165,10 @@ public class RPCliente extends FTabDados implements ActionListener {
 		
 		btCopiarEnt.addActionListener( this );
 		btCopiarCob.addActionListener( this );
+		
+		btImp.addActionListener( this );
+	  	btPrevimp.addActionListener( this );
+		setImprimir( true );
 	}
 	
 	private void montaListaCampos() {
@@ -325,6 +335,29 @@ public class RPCliente extends FTabDados implements ActionListener {
 			txtUFCob.setVlrString( estado );
 		}		
 	}
+	
+	private void imprimir( boolean view ) {
+		
+		try {
+			HashMap<String, Object> hParam = new HashMap<String, Object>();
+			hParam.put( "CODEMP", Aplicativo.iCodEmp );
+			hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RPPEDIDO" ) );
+			hParam.put( "CODPED", txtCodCli.getVlrInteger() );		
+			hParam.put( "REPORT_CONNECTION", con );
+
+			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpcliente.jasper", "CLIENTE " + txtNomeCli.getVlrString(), "", this, hParam, con );
+			
+			if ( view ) {
+				dlGr.setVisible( true );
+			}
+			else {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			}
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+	}
 
 	public void actionPerformed( ActionEvent e ) {
 
@@ -333,6 +366,12 @@ public class RPCliente extends FTabDados implements ActionListener {
 		}
 		else if ( e.getSource() == btCopiarCob ) {
 			copiarEndereco( "cobrança" );
+		}
+		else if ( e.getSource() == btImp ) {
+			imprimir( false );
+		}
+		else if ( e.getSource() == btPrevimp ) {
+			imprimir( true );
 		}
 		
 		super.actionPerformed( e );

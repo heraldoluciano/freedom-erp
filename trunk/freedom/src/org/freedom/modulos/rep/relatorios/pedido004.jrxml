@@ -171,8 +171,8 @@ ORDER BY DESCPROD]]></queryString>
 						y="144"
 						width="535"
 						height="14"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="rectangle-12"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
@@ -182,8 +182,8 @@ ORDER BY DESCPROD]]></queryString>
 						y="144"
 						width="0"
 						height="14"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="line-9"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -193,8 +193,8 @@ ORDER BY DESCPROD]]></queryString>
 						y="144"
 						width="535"
 						height="0"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="line-10"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -205,7 +205,7 @@ ORDER BY DESCPROD]]></queryString>
 						y="131"
 						width="100"
 						height="12"
-						forecolor="#006666"
+						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-15"
 						positionType="Float"/>
@@ -221,8 +221,8 @@ ORDER BY DESCPROD]]></queryString>
 						y="144"
 						width="0"
 						height="14"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="line-12"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -334,8 +334,8 @@ ORDER BY DESCPROD]]></queryString>
 						y="14"
 						width="535"
 						height="0"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="line-22"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -358,8 +358,8 @@ ORDER BY DESCPROD]]></queryString>
 						y="14"
 						width="0"
 						height="111"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="line-23"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -386,8 +386,8 @@ ORDER BY DESCPROD]]></queryString>
 						y="14"
 						width="0"
 						height="111"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="line-24"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -459,8 +459,8 @@ ORDER BY DESCPROD]]></queryString>
 						y="125"
 						width="535"
 						height="0"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="line-25"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -916,8 +916,8 @@ $F{FONETRAN}.substring(4)
 						y="46"
 						width="535"
 						height="0"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="line-26"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -928,7 +928,7 @@ $F{FONETRAN}.substring(4)
 						y="1"
 						width="100"
 						height="12"
-						forecolor="#006666"
+						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-60"
 						positionType="Float"/>
@@ -948,8 +948,8 @@ $F{FONETRAN}.substring(4)
 						y="69"
 						width="535"
 						height="0"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="line-19"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -959,8 +959,8 @@ $F{FONETRAN}.substring(4)
 						y="24"
 						width="0"
 						height="22"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="line-13"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -970,8 +970,8 @@ $F{FONETRAN}.substring(4)
 						y="24"
 						width="535"
 						height="0"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="line-14"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -982,7 +982,7 @@ $F{FONETRAN}.substring(4)
 						y="11"
 						width="100"
 						height="12"
-						forecolor="#006666"
+						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-25"
 						positionType="Float"/>
@@ -1058,8 +1058,8 @@ $F{FONETRAN}.substring(4)
 						y="46"
 						width="535"
 						height="0"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="line-16"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -1069,8 +1069,8 @@ $F{FONETRAN}.substring(4)
 						y="24"
 						width="0"
 						height="22"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="line-17"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -1080,8 +1080,8 @@ $F{FONETRAN}.substring(4)
 						y="69"
 						width="0"
 						height="41"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="line-18"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -1092,7 +1092,7 @@ $F{FONETRAN}.substring(4)
 						y="57"
 						width="100"
 						height="12"
-						forecolor="#006666"
+						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-31"
 						positionType="Float"/>
@@ -1108,8 +1108,8 @@ $F{FONETRAN}.substring(4)
 						y="109"
 						width="535"
 						height="0"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="line-20"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -1119,8 +1119,8 @@ $F{FONETRAN}.substring(4)
 						y="69"
 						width="0"
 						height="41"
-						forecolor="#64C878"
-						backcolor="#64C878"
+						forecolor="#CCCCFF"
+						backcolor="#CCCCFF"
 						key="line-21"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -1216,8 +1216,8 @@ $F{FONETRAN}.substring(4)
 						y="0"
 						width="535"
 						height="17"
-						forecolor="#E1FFE1"
-						backcolor="#E1FFE1"
+						forecolor="#EBE7E7"
+						backcolor="#EBE7E7"
 						key="rectangle-1">
 							<printWhenExpression><![CDATA[new Boolean( $V{COLUMN_COUNT}.intValue()%2 == 0 )]]></printWhenExpression>
 						</reportElement>
@@ -1348,7 +1348,7 @@ $F{FONETRAN}.substring(4)
 						y="3"
 						width="207"
 						height="12"
-						forecolor="#006666"
+						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-36"
 						positionType="Float"/>
