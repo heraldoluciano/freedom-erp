@@ -142,7 +142,7 @@ public class RelCliente extends FRelatorio {
 		try {
 			
 			String relatorio = "C".equals( rgModo.getVlrString() ) ? "rpclientecomp.jasper" : "rpclienteresum.jasper";
-			String modo = "C".equals( rgModo.getVlrString() ) ? "( completo )" : " ( resumido )";
+			String modo = "C".equals( rgModo.getVlrString() ) ? "( completo )" : "( resumido )";
 			String filtro = "";
 			
 			StringBuilder sql = new StringBuilder();
@@ -172,7 +172,7 @@ public class RelCliente extends FRelatorio {
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
 			hParam.put( "REPORT_CONNECTION", con );
 			
-			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/"+relatorio, "CLIENTES" + modo, filtro, rs, hParam, this );
+			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/"+relatorio, "CLIENTES " + modo, filtro, rs, hParam, this );
 
 			if ( visualizar ) {
 				dlGr.setVisible( true );
