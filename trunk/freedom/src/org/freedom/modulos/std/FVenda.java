@@ -506,6 +506,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		txtPrecoItVenda.addFocusListener( this );
 		txtPercICMSItVenda.addFocusListener( this );
 		txtAliqIPIItVenda.addFocusListener( this );
+		txtCodCli.addFocusListener( this );
 
 		lcCampos.addCarregaListener( this );
 		lcVendedor.addCarregaListener( this );
@@ -2132,174 +2133,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		return bRetorno;
 	}
 
-	public void beforeCarrega( CarregaEvent cevt ) {
-
-		if ( cevt.getListaCampos() == lcProd2 ) {
-			lcProd.edit();
-		}
-
-		/*
-		 * if (lcCampos.getStatus() != ListaCampos.LCS_INSERT) { 
-		 * //Cancela os 
-		 * // auto-incrementos 
-		 * // que sobrepõem o 
-		 * // que está 
-		 * // guardado na 
-		 * // tabela venda 
-		 * if (cevt.getListaCampos() == lcVendedor) { 
-		 * lcVendedor.cancLerCampo(2, true); 
-		 * //Comissão do vendedor; 
-		 * } else if (cevt.getListaCampos() == lcCli) { 
-		 * lcCli.cancLerCampo(2, true); 
-		 * //Código de Pagamento 
-		 * lcCli.cancLerCampo(3, true); 
-		 * //Código do Vendador 
-		 * } 
-		 * } else { if (cevt.getListaCampos() == lcVendedor) {
-		 * //Ativa auto-incrementos 
-		 * lcVendedor.cancLerCampo(2, false); 
-		 * //Comissão do vendedor; 
-		 * } else if (cevt.getListaCampos() == lcCli) {
-		 * lcCli.cancLerCampo(2, false); 
-		 * //Código do Pagamento 
-		 * lcCli.cancLerCampo(3, false); 
-		 * //Código do Vendedor } 
-		 * }
-		 * Por que faz a mesma coisa no if e no else? */
-		if ( cevt.getListaCampos() == lcVendedor ) {// Ativa auto-incrementos
-			lcVendedor.cancLerCampo( 2, false ); // Comissão do vendedor;
-			if ( !isComissAtivo() ) { // Verifica se o comissionado é ativo.
-				Funcoes.mensagemInforma( this, "Comissionado Inativo!" );
-			}
-		}
-		else if ( cevt.getListaCampos() == lcCli ) {
-			lcCli.cancLerCampo( 2, false ); // Código do Pagamento
-			lcCli.cancLerCampo( 3, false ); // Código do Vendedor
-		}
-
-		if ( lcDet.getStatus() != ListaCampos.LCS_INSERT ) {
-			if ( cevt.getListaCampos() == lcProd ) {
-				lcProd.cancLerCampo( 5, true ); // Código da Classificação Fiscal
-			}
-		}
-		else {
-			if ( cevt.getListaCampos() == lcProd ) {
-				lcProd.cancLerCampo( 5, false ); // Código da Classificação Fiscal
-			}
-		}
-
-		if ( cevt.getListaCampos() == lcCampos ) {
-			if ( bPrefs[ POS_PREFS.TRAVATMNFVD.ordinal() ] ) {
-				txtFiscalTipoMov1.setText( "S" );
-				txtFiscalTipoMov2.setText( "N" );
-			}
-			if ( bPrefs[ POS_PREFS.OBSCLIVEND.ordinal() ] ) {
-				iCodCliAnt = txtCodCli.getVlrInteger().intValue();
-			}
-		}
-
-	}
-
-	public void afterCarrega( CarregaEvent cevt ) {
-
-		try {
-			if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) {
-				if ( txtCLoteProd.getText().trim().equals( "N" ) ) {
-					txtCodLote.setAtivo( false );// Desativa o Cógigo do lote por o
-					// produto não possuir lote
-				}
-				else if ( txtCLoteProd.getText().trim().equals( "S" ) ) {
-					txtCodLote.setAtivo( true );// Ativa o Cógigo do Lote pois o
-					// produto tem lote
-					if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
-						getLote();
-					}
-				}
-				if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
-					calcVlrItem( null, false );
-				}
-			}
-/*			else if ( ( cevt.getListaCampos() == lcTipoMov ) && (numComissionados>0) && 
-				(codregrcomis!=txtCodRegrComis.getVlrInteger().intValue()) ) {
-				codregrcomis = txtCodRegrComis.getVlrInteger().intValue();
-				ctrlmc.loadRegraComis( codregrcomis );
-			}*/
-			
-			else if ( ( cevt.getListaCampos() == lcTipoMov ) ) { 
-				habilitaMultiComis();
-			}
-						
-			else if ( ( cevt.getListaCampos() == lcFisc ) && ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
-				getCFOP();
-				getTratTrib();
-			}
-			else if ( cevt.getListaCampos() == lcNat ) {
-				if ( ( cevt.ok  ) & ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
-					getICMS();
-				}
-			}
-			else if ( cevt.getListaCampos() == lcDet ) {
-				lcVenda2.carregaDados();// Carrega os Totais
-			}
-			else if ( cevt.getListaCampos() == lcCampos ) {
-				String codvenda = txtCodVenda.getVlrString();
-				lcVenda2.carregaDados();// Carrega os Totais
-				txtCodVenda.setVlrString( codvenda );
-/*				if ( (numComissionados>0) && (ctrlmc!=null) ) {
-					ctrlmc.loadVendaComis( "V", 
-							txtCodVenda.getVlrInteger().intValue(), 
-							txtCodRegrComis.getVlrInteger().intValue() );
-				}*/
-				codvenda = null;
-			}
-			//else if ( cevt.getListaCampos() == lcVenda2 ) {
-			//	txtPercComisVenda.setAtivo( txtVlrComisVenda.floatValue() == 0 ); // 27/08/2008 - REGINALDO
-			//}
-			else if ( cevt.getListaCampos() == lcCli ) {
-				if ( ( bPrefs[ POS_PREFS.OBSCLIVEND.ordinal() ] ) ) {
-					if ( iCodCliAnt != txtCodCli.getVlrInteger().intValue() ) {
-						iCodCliAnt = txtCodCli.getVlrInteger().intValue();
-						mostraObsCli( iCodCliAnt, 
-								new Point( this.getX(), this.getY() + tpnCab.getHeight() + pnCab.getHeight() ), 
-								new Dimension( spTab.getWidth(), spTab.getHeight() ) );
-					}
-				}
-				if ( bPrefs[ POS_PREFS.RECALCCPVENDA.ordinal() ] ) {
-					setReCalcPreco( true );
-				}
-			}
-			else if ( cevt.getListaCampos() == lcPlanoPag ) {
-				if ( bPrefs[ POS_PREFS.RECALCCPVENDA.ordinal() ] ) {
-					setReCalcPreco( true );
-				}
-			}
-
-			if ( txtStatusVenda.getVlrString().trim().length() > 0 && txtStatusVenda.getVlrString().substring( 0, 1 ).equals( "C" ) ) {
-				lbStatus.setText( "  CANCELADA" );
-				lbStatus.setBackground( Color.RED );
-				lbStatus.setVisible( true );
-			}
-			else if ( getVendaBloqueada() ) {
-				lbStatus.setText( "  BLOQUEADA" );
-				lbStatus.setBackground( Color.BLUE );
-				lbStatus.setVisible( true );
-			}
-			else if ( txtStatusVenda.getVlrString().trim().length() > 0 
-					&& ( txtStatusVenda.getVlrString().trim().equals( "V2" ) 
-							|| txtStatusVenda.getVlrString().trim().equals( "V3" ) ) ) {
-				lbStatus.setText( "  NF EMITIDA" );
-				lbStatus.setBackground( new Color( 45, 190, 60 ) );
-				lbStatus.setVisible( true );
-			}
-			else {
-				lbStatus.setVisible( false );
-			}
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-	}
-
 	private void senhaCredito( boolean fechamento ) {
 	
 	    FPassword fpw = new FPassword( this, FPassword.LIBERA_CRED, null, con );
@@ -2565,6 +2398,223 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 	}
 	
+	private void carregaPrefTipoFiscCli() {
+		
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append( "SELECT T.CALCCOFINSTF,T.CALCCSOCIALTF,T.CALCICMSTF,T.CALCIPITF,T.CALCIRTF,T.CALCISSTF,T.CALCPISTF," );
+			sql.append( "T.IMPCOFINSTF,T.IMPCSOCIALTF,T.IMPICMSTF,T.IMPISSTF,T.IMPIPITF,T.IMPIRTF,T.IMPPISTF " );
+			sql.append( "FROM LFTIPOFISCCLI T, VDCLIENTE C " );
+			sql.append( "WHERE T.CODEMP=C.CODEMPFC AND T.CODFILIAL=C.CODFILIALFC AND T.CODFISCCLI=C.CODFISCCLI AND " );
+			sql.append( "C.CODEMP=? AND C.CODFILIAL=? AND C.CODCLI=?" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setInt( 3, txtCodCli.getVlrInteger() );
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+						
+				cbIPIimp.setVlrString( rs.getString( "IMPIPITF" ) );
+				cbIPIcalc.setVlrString( rs.getString( "CALCIPITF" ) );
+				cbPISimp.setVlrString( rs.getString( "IMPPISTF" ) );
+				cbPIScalc.setVlrString( rs.getString( "CALCPISTF" ) );
+				cbConfisimp.setVlrString( rs.getString( "IMPCOFINSTF" ) );
+				cbConfiscalc.setVlrString( rs.getString( "CALCCOFINSTF" ) );
+				cbContribimp.setVlrString( rs.getString( "IMPCSOCIALTF" ) );
+				cbContribcalc.setVlrString( rs.getString( "CALCCSOCIALTF" ) );
+				cbIRimp.setVlrString( rs.getString( "IMPIRTF" ) );
+				cbIRcalc.setVlrString( rs.getString( "CALCIRTF" ) );
+				cbISSimp.setVlrString( rs.getString( "IMPISSTF" ) );
+				cbISScalc.setVlrString( rs.getString( "CALCISSTF" ) );
+				cbICMSimp.setVlrString( rs.getString( "IMPICMSTF" ) );
+				cbICMScalc.setVlrString( rs.getString( "CALCICMSTF" ) );				
+			}
+			rs.close();
+			ps.close();
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela tipo fiscal do cliente!\n" + e.getMessage(), true, con, e );
+		} 
+		
+	}
+	
+	public void beforeCarrega( CarregaEvent cevt ) {
+	
+		if ( cevt.getListaCampos() == lcProd2 ) {
+			lcProd.edit();
+		}
+	
+		/*
+		 * if (lcCampos.getStatus() != ListaCampos.LCS_INSERT) { 
+		 * //Cancela os 
+		 * // auto-incrementos 
+		 * // que sobrepõem o 
+		 * // que está 
+		 * // guardado na 
+		 * // tabela venda 
+		 * if (cevt.getListaCampos() == lcVendedor) { 
+		 * lcVendedor.cancLerCampo(2, true); 
+		 * //Comissão do vendedor; 
+		 * } else if (cevt.getListaCampos() == lcCli) { 
+		 * lcCli.cancLerCampo(2, true); 
+		 * //Código de Pagamento 
+		 * lcCli.cancLerCampo(3, true); 
+		 * //Código do Vendador 
+		 * } 
+		 * } else { if (cevt.getListaCampos() == lcVendedor) {
+		 * //Ativa auto-incrementos 
+		 * lcVendedor.cancLerCampo(2, false); 
+		 * //Comissão do vendedor; 
+		 * } else if (cevt.getListaCampos() == lcCli) {
+		 * lcCli.cancLerCampo(2, false); 
+		 * //Código do Pagamento 
+		 * lcCli.cancLerCampo(3, false); 
+		 * //Código do Vendedor } 
+		 * }
+		 * Por que faz a mesma coisa no if e no else? */
+		if ( cevt.getListaCampos() == lcVendedor ) {// Ativa auto-incrementos
+			lcVendedor.cancLerCampo( 2, false ); // Comissão do vendedor;
+			if ( !isComissAtivo() ) { // Verifica se o comissionado é ativo.
+				Funcoes.mensagemInforma( this, "Comissionado Inativo!" );
+			}
+		}
+		else if ( cevt.getListaCampos() == lcCli ) {
+			lcCli.cancLerCampo( 2, false ); // Código do Pagamento
+			lcCli.cancLerCampo( 3, false ); // Código do Vendedor
+		}
+	
+		if ( lcDet.getStatus() != ListaCampos.LCS_INSERT ) {
+			if ( cevt.getListaCampos() == lcProd ) {
+				lcProd.cancLerCampo( 5, true ); // Código da Classificação Fiscal
+			}
+		}
+		else {
+			if ( cevt.getListaCampos() == lcProd ) {
+				lcProd.cancLerCampo( 5, false ); // Código da Classificação Fiscal
+			}
+		}
+	
+		if ( cevt.getListaCampos() == lcCampos ) {
+			if ( bPrefs[ POS_PREFS.TRAVATMNFVD.ordinal() ] ) {
+				txtFiscalTipoMov1.setText( "S" );
+				txtFiscalTipoMov2.setText( "N" );
+			}
+			if ( bPrefs[ POS_PREFS.OBSCLIVEND.ordinal() ] ) {
+				iCodCliAnt = txtCodCli.getVlrInteger().intValue();
+			}
+		}
+	
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+	
+			try {
+				if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) {
+					if ( txtCLoteProd.getText().trim().equals( "N" ) ) {
+						txtCodLote.setAtivo( false );// Desativa o Cógigo do lote por o
+						// produto não possuir lote
+					}
+					else if ( txtCLoteProd.getText().trim().equals( "S" ) ) {
+						txtCodLote.setAtivo( true );// Ativa o Cógigo do Lote pois o
+						// produto tem lote
+						if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
+							getLote();
+						}
+					}
+					if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
+						calcVlrItem( null, false );
+					}
+				}
+	/*			else if ( ( cevt.getListaCampos() == lcTipoMov ) && (numComissionados>0) && 
+					(codregrcomis!=txtCodRegrComis.getVlrInteger().intValue()) ) {
+					codregrcomis = txtCodRegrComis.getVlrInteger().intValue();
+					ctrlmc.loadRegraComis( codregrcomis );
+				}*/
+				
+				else if ( ( cevt.getListaCampos() == lcTipoMov ) ) { 
+					habilitaMultiComis();
+				}
+							
+				else if ( ( cevt.getListaCampos() == lcFisc ) && ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
+					getCFOP();
+					getTratTrib();
+				}
+				else if ( cevt.getListaCampos() == lcNat ) {
+					if ( ( cevt.ok  ) & ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
+						getICMS();
+					}
+				}
+				else if ( cevt.getListaCampos() == lcDet ) {
+					lcVenda2.carregaDados();// Carrega os Totais
+				}
+				else if ( cevt.getListaCampos() == lcCampos ) {
+					String codvenda = txtCodVenda.getVlrString();
+					lcVenda2.carregaDados();// Carrega os Totais
+					txtCodVenda.setVlrString( codvenda );
+	/*				if ( (numComissionados>0) && (ctrlmc!=null) ) {
+						ctrlmc.loadVendaComis( "V", 
+								txtCodVenda.getVlrInteger().intValue(), 
+								txtCodRegrComis.getVlrInteger().intValue() );
+					}*/
+					codvenda = null;
+				}
+				//else if ( cevt.getListaCampos() == lcVenda2 ) {
+				//	txtPercComisVenda.setAtivo( txtVlrComisVenda.floatValue() == 0 ); // 27/08/2008 - REGINALDO
+				//}
+				else if ( cevt.getListaCampos() == lcCli ) {
+					if ( ( bPrefs[ POS_PREFS.OBSCLIVEND.ordinal() ] ) ) {
+						if ( iCodCliAnt != txtCodCli.getVlrInteger().intValue() ) {
+							iCodCliAnt = txtCodCli.getVlrInteger().intValue();
+							mostraObsCli( iCodCliAnt, 
+									new Point( this.getX(), this.getY() + tpnCab.getHeight() + pnCab.getHeight() ), 
+									new Dimension( spTab.getWidth(), spTab.getHeight() ) );
+						}
+					}
+					if ( bPrefs[ POS_PREFS.RECALCCPVENDA.ordinal() ] ) {
+						setReCalcPreco( true );
+					}
+					if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT || 
+							(lcCampos.getStatus() == ListaCampos.LCS_EDIT && txtCodCli.getVlrInteger()!=iCodCliAnt) ) {
+						carregaPrefTipoFiscCli();
+					}
+				}
+				else if ( cevt.getListaCampos() == lcPlanoPag ) {
+					if ( bPrefs[ POS_PREFS.RECALCCPVENDA.ordinal() ] ) {
+						setReCalcPreco( true );
+					}
+				}
+	
+				if ( txtStatusVenda.getVlrString().trim().length() > 0 && txtStatusVenda.getVlrString().substring( 0, 1 ).equals( "C" ) ) {
+					lbStatus.setText( "  CANCELADA" );
+					lbStatus.setBackground( Color.RED );
+					lbStatus.setVisible( true );
+				}
+				else if ( getVendaBloqueada() ) {
+					lbStatus.setText( "  BLOQUEADA" );
+					lbStatus.setBackground( Color.BLUE );
+					lbStatus.setVisible( true );
+				}
+				else if ( txtStatusVenda.getVlrString().trim().length() > 0 
+						&& ( txtStatusVenda.getVlrString().trim().equals( "V2" ) 
+								|| txtStatusVenda.getVlrString().trim().equals( "V3" ) ) ) {
+					lbStatus.setText( "  NF EMITIDA" );
+					lbStatus.setBackground( new Color( 45, 190, 60 ) );
+					lbStatus.setVisible( true );
+				}
+				else {
+					lbStatus.setVisible( false );
+				}
+	
+			} catch ( Exception e ) {
+				e.printStackTrace();
+			}
+		}
+
 	public void beforePost( PostEvent pevt ) {
 
 		PreparedStatement psTipoMov = null;
@@ -2872,6 +2922,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	public void focusGained( FocusEvent fevt ) {
 
+		if ( fevt.getSource() == txtCodCli ) {
+			iCodCliAnt = txtCodCli.getVlrInteger();
+		}
 	}
 
 	public void focusLost( FocusEvent fevt ) {
