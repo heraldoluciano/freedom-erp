@@ -32,6 +32,7 @@ import java.sql.SQLException;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
@@ -47,15 +48,58 @@ public class FTipoFiscCli extends FDados implements ActionListener {
 	private JTextFieldPad txtCod = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtDesc = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JCheckBoxPad cbIPIimp = new JCheckBoxPad( "Imp.IPI", "S", "N" );
+
+	private JCheckBoxPad cbIPIcalc = new JCheckBoxPad( "Calc.IPI", "S", "N" );
+
+	private JCheckBoxPad cbPISimp = new JCheckBoxPad( "Imp.PIS", "S", "N" );
+
+	private JCheckBoxPad cbPIScalc = new JCheckBoxPad( "Calc.PIS", "S", "N" );
+
+	private JCheckBoxPad cbConfisimp = new JCheckBoxPad( "Imp.Cofins", "S", "N" );
+
+	private JCheckBoxPad cbConfiscalc = new JCheckBoxPad( "Calc.Cofins", "S", "N" );
+
+	private JCheckBoxPad cbContribimp = new JCheckBoxPad( "Imp.Contr.", "S", "N" );
+
+	private JCheckBoxPad cbContribcalc = new JCheckBoxPad( "Calc.Contr", "S", "N" );
+
+	private JCheckBoxPad cbIRimp = new JCheckBoxPad( "Imp.IR", "S", "N" );
+
+	private JCheckBoxPad cbIRcalc = new JCheckBoxPad( "Calc.IR", "S", "N" );
+
+	private JCheckBoxPad cbISSimp = new JCheckBoxPad( "Imp.ISS", "S", "N" );
+
+	private JCheckBoxPad cbISScalc = new JCheckBoxPad( "Calc.ISS", "S", "N" );
+
+	private JCheckBoxPad cbICMSimp = new JCheckBoxPad( "Imp.ICMS", "S", "N" );
+	
+	private JCheckBoxPad cbICMScalc = new JCheckBoxPad( "Calc.ICMS", "S", "N");
 
 	public FTipoFiscCli() {
 
 		super();
 		setTitulo( "Cadastro de tipos fiscal de clientes" );
-		setAtribos( 50, 50, 360, 125 );
+		setAtribos( 50, 50, 350, 330 );
 		
 		adicCampo( txtCod, 7, 20, 80, 20, "CodFiscCli", "Cód.fisc.cli.", ListaCampos.DB_PK, true );
-		adicCampo( txtDesc, 90, 20, 250, 20, "DescFiscCli", "Descrição fiscal do cliente", ListaCampos.DB_SI, true );
+		adicCampo( txtDesc, 90, 20, 230, 20, "DescFiscCli", "Descrição fiscal do cliente", ListaCampos.DB_SI, true );
+		adicDB( cbIPIimp, 7, 60, 70, 20, "IMPIPITF", "", false );
+		adicDB( cbIPIcalc, 7, 80, 80, 20, "CALCIPITF", "", false );
+		adicDB( cbPISimp, 105, 60, 75, 20, "IMPPISTF", "", false );
+		adicDB( cbPIScalc, 105, 80, 80, 20, "CALCPISTF", "", false );
+		adicDB( cbConfisimp, 205, 60, 100, 20, "IMPCOFINSTF", "", false );
+		adicDB( cbConfiscalc, 205, 80, 100, 20, "CALCCOFINSTF", "", false );
+		adicDB( cbContribimp, 7, 120, 95, 20, "IMPCSOCIALTF", "", false );
+		adicDB( cbContribcalc, 7, 140, 95, 20, "CALCCSOCIALTF", "", false );
+		adicDB( cbIRimp, 105, 120, 100, 20, "IMPIRTF", "", false );
+		adicDB( cbIRcalc, 105, 140, 100, 20, "CALCIRTF", "", false );
+		adicDB( cbISSimp, 205, 120, 100, 20, "IMPISSTF", "", false );
+		adicDB( cbISScalc, 205, 140, 100, 20, "CALCISSTF", "", false );
+		adicDB( cbICMSimp, 7, 175, 100, 20, "IMPICMSTF", "", false );
+		adicDB( cbICMScalc, 7, 195, 100, 20, "CALCICMSTF", "", false );
+		
 		setListaCampos( true, "TIPOFISCCLI", "LF" );
 		
 		btImp.addActionListener( this );
