@@ -56,7 +56,6 @@ import org.freedom.telas.FTabDados;
 
 public class FEmpregado extends FTabDados implements KeyListener, CarregaListener {
 
-
 	private static final long serialVersionUID = 1L;
 
 	private final JTextFieldPad txtCod = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
@@ -141,20 +140,14 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 
 	private final JTextFieldPad txtCelEmpr = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
 
-	//private final JTextFieldPad txtSalarioIni = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );// FALTA CAMPO NA TABELA
-
-	//private final JTextFieldPad txtSalarioAtual = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );// FALTA CAMPO NA TABELA
-
-	//private final JTextFieldPad txtDtAlteracao = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );// FALTA CAMPO NA TABELA
-
 	private final JTextFieldPad txtVlrSalario = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
 	private final JTextFieldPad txtDtVigor = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-	
+
 	private final JTextFieldPad txtObsSal = new JTextFieldPad( JTextFieldPad.TP_STRING, 1000, 0 );
 
 	private final JTextFieldPad txtSeqSal = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
-	
+
 	private final JTextFieldPad txtCodBenef = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldFK txtDescBenef = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -230,17 +223,18 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 
 	}
 
-	private int calcIdade(){
-		
+	private int calcIdade() {
+
 		int ano = 0;
 		int idade = 0;
-		
+
 		ano = Funcoes.getAno( txtDataNasc.getVlrDate() );
 		idade = ( Funcoes.getAno( new Date() ) - ano );
-		
+
 		return idade;
-		
+
 	}
+
 	private void montaListaCampos() {
 
 		lcFuncao.add( new GuardaCampo( txtCodFuncao, "CodFunc", "Cód.Func.", ListaCampos.DB_PK, true ) );
@@ -264,7 +258,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		lcDepto.setQueryCommit( false );
 		lcDepto.setReadOnly( true );
 		txtCodDepto.setTabelaExterna( lcDepto );
-		
+
 		lcBenef.add( new GuardaCampo( txtCodBenef, "CodBenef", "Cód.benef", ListaCampos.DB_PK, txtDescBenef, false ) );
 		lcBenef.add( new GuardaCampo( txtDescBenef, "DescBenef", "Descrição do benefício", ListaCampos.DB_SI, false ) );
 		lcBenef.add( new GuardaCampo( txtVlrBenef, "ValorBenef", "Valor do benefício", ListaCampos.DB_SI, false ) );
@@ -276,8 +270,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		txtCodBenef.setListaCampos( lcBenef );
 		txtDescBenef.setListaCampos( lcBenef );
 		txtVlrBenef.setListaCampos( lcBenef );
-		
-		
+
 	}
 
 	private void montaTela() {
@@ -359,7 +352,6 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		adicDescFK( txtDescDepto, 71, 460, 412, 20, "DescDepto", "Descrição do departamento" );
 		adicDB( cbStatus, 7, 500, 100, 20, "StatusEmpr", "Status", true );
 		adicCampo( txtDtDemissao, 110, 500, 90, 20, "DtDemissaoEmpr", "Data Demissão", ListaCampos.DB_SI, false );
-		
 
 		txtCepEmpr.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneEmpr.setMascara( JTextFieldPad.MC_FONE );
@@ -380,7 +372,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		setListaCampos( lcEmpSal );
 		navSal.setAtivo( 4, true );
 		setNavegador( navSal );
-		
+
 		panelSalario.add( pinSal, BorderLayout.SOUTH );
 		panelSalario.add( spnTabSal, BorderLayout.CENTER );
 
@@ -393,8 +385,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		lcEmpSal.setQueryInsert( false );
 		lcEmpSal.setQueryCommit( false );
 		lcEmpSal.montaTab();
-		
-	
+
 		/**************
 		 * Benefícios *
 		 **************/
@@ -404,10 +395,10 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		setListaCampos( lcEmpBenef );
 		navSal.setAtivo( 4, true );
 		setNavegador( navBenef );
-		
+
 		panelBeneficios.add( spnTabBenef, BorderLayout.CENTER );
 		panelBeneficios.add( pinBen, BorderLayout.SOUTH );
-		
+
 		adicCampo( txtCodBenef, 7, 20, 60, 20, "CodBenef", "Cód.Benef", ListaCampos.DB_PF, txtDescBenef, true );
 		adicDescFK( txtDescBenef, 70, 20, 250, 20, "DescBenef", "Descrição do benefício" );
 		adicDescFK( txtVlrBenef, 325, 20, 80, 20, "ValorBenef", "Valor( R$ )" );
@@ -416,10 +407,10 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		lcEmpBenef.setQueryInsert( false );
 		lcEmpBenef.setQueryCommit( false );
 		lcEmpBenef.montaTab();
-		
+
 		tabBenef.setTamColuna( 335, 1 );
-		tabBenef.setTamColuna( 100, 2 );		
-		
+		tabBenef.setTamColuna( 100, 2 );
+
 	}
 
 	public void setConexao( Connection cn ) {
@@ -432,14 +423,14 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		lcBenef.setConexao( cn );
 		lcEmpBenef.setConexao( cn );
 	}
-	
+
 	public void keyPressed( KeyEvent kevt ) {
 
 		super.keyPressed( kevt );
-		
-		if( kevt.getSource() == txtDataNasc ){
-			if( kevt.getKeyCode() == kevt.VK_ENTER ){
-				txtIdade.setVlrInteger( calcIdade() ); 
+
+		if ( kevt.getSource() == txtDataNasc ) {
+			if ( kevt.getKeyCode() == kevt.VK_ENTER ) {
+				txtIdade.setVlrInteger( calcIdade() );
 			}
 		}
 	}
@@ -480,12 +471,14 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
-		
-		if( cevt.getListaCampos() == lcCampos ){
-		
+
+		if ( cevt.getListaCampos() == lcCampos ) {
+
 			txtIdade.setVlrInteger( calcIdade() );
 		}
 	}
 
-	public void beforeCarrega( CarregaEvent cevt ) {}
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+	}
 }
