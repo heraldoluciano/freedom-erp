@@ -122,6 +122,8 @@ public class FRBoleto extends FRelatorio {
 	
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
+	private JTextFieldPad txtImpInst = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	// private JCheckBoxPad cbTipoImp = new JCheckBoxPad("Impressão gráfica","S","N");
@@ -202,6 +204,7 @@ public class FRBoleto extends FRelatorio {
 		 ********************/
 
 		lcModBol.add( new GuardaCampo( txtCodModBol, "CodModBol", "Cód.mod.", ListaCampos.DB_PK, true ) );
+		lcModBol.add( new GuardaCampo( txtImpInst, "ImpInfoParc", "Imp.Info.", ListaCampos.DB_SI, false ) );
 		lcModBol.add( new GuardaCampo( txtDescModBol, "DescModBol", "Descrição do modelo de boleto", ListaCampos.DB_SI, false ) );
 		lcModBol.add( new GuardaCampo( txtPreImpModBol, "PreImpModBol", "Pré-impr.", ListaCampos.DB_SI, false ) );
 		lcModBol.add( new GuardaCampo( txtClassModBol, "ClassModBol", "Classe do modelo", ListaCampos.DB_SI, false ) );
@@ -879,6 +882,7 @@ public class FRBoleto extends FRelatorio {
 		ObjetoEmpresa empresa = new ObjetoEmpresa(con);
 		parametros.put( "CODEMP", Aplicativo.iCodEmp );
 		parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+		parametros.put( "IMPDOC", txtImpInst.getVlrString() );		
 		if (Aplicativo.empresa!=null) {
 			parametros.put(  "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
 		}
@@ -1357,6 +1361,7 @@ public class FRBoleto extends FRelatorio {
 
 	private void imprimeGrafico( final boolean bVisualizar, final ResultSet rs, final String classe ) {
 
+	
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/" + classe, "Boleto", null, rs, getParametros(), this );
 
 		if ( bVisualizar ) {
