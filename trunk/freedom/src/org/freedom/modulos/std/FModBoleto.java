@@ -128,6 +128,8 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 
 	private JComboBoxPad cbAcao = null;
 	
+	private JCheckBoxPad cbImpDoc = new JCheckBoxPad( "Imprimi doc. nas instruções?", "S", "N" );
+	
 	private final Tabela tabBancos = new Tabela();
 	
 	private final Navegador navBancos = new Navegador( true );
@@ -368,6 +370,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		
 		adicCampo( txtMdeCob, 353, 30, 97, 20, "mdeCob" , "Modalidade", ListaCampos.DB_SI, true );
 		adicDB( ckPreImp, 460, 30, 200, 20, "PreImpModBol", "", false );
+		adicDB( cbImpDoc, 460, 60, 200, 20, "ImpInfoParc", "", false );
 		adicCampo( txtCodConta, 7, 70, 90, 20, "NumConta", "Nº da conta", ListaCampos.DB_FK, txtDescConta, false );
 		adicDescFK( txtDescConta, 100, 70, 350, 20, "DescConta", "Descrição da conta" );
 		adicDBLiv( txaBoleto, "TxaModBol", "Corpo", false );
