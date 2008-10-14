@@ -35,6 +35,7 @@
 	<parameter name="CODVENDA" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(36)]]></defaultValueExpression>
 	</parameter>
+	<parameter name="IMPDOC" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT (SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND
  ITR2.CODFILIAL=R.CODFILIAL) PARCS,ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,
 ITR.VLRDESCITREC,(ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA,R.DOCREC,ITR.CODBANCO, 
@@ -956,7 +957,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 						x="5"
 						y="214"
 						width="340"
-						height="70"
+						height="34"
 						key="textField-24"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Top">
@@ -1860,6 +1861,21 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 						<font fontName="Arial" size="6"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZCLI}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="5"
+						y="251"
+						width="340"
+						height="34"
+						key="textField-56">
+							<printWhenExpression><![CDATA[new Boolean( $P{IMPDOC}.equals("S"))]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Ref. duplic. " + $F{DOCREC}.toString().trim() + "/" + $F{NPARCITREC}.toString().trim()]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
