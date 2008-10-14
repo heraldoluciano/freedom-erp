@@ -291,7 +291,10 @@ public class NF044 extends Layout {
 						}		
 					}
 					
-					imp.say( 17, "Valor do desconto : " + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( cab.getFloat( NF.C_VLRDESCVENDA ) ) ) );
+					if( cab.getFloat( NF.C_VLRDESCVENDA ) > 0 ){
+						
+						imp.say( 17, "Valor do desconto : " + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( cab.getFloat( NF.C_VLRDESCVENDA ) ) ) );
+					}
 					
 					imp.pulaLinha( MAXLINE - imp.pRow(), imp.comprimido());
 					
@@ -302,7 +305,7 @@ public class NF044 extends Layout {
 					
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
 						imp.pulaLinha( 3, imp.comprimido() );
-						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
+						//imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
 						//imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRICMSPED ) ) ) );
 						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) - cab.getFloat( NF.C_BASEISS ) ) ) );
 						imp.pulaLinha( 1, imp.comprimido() );
