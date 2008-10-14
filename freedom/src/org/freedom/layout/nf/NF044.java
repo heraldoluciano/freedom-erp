@@ -40,7 +40,7 @@ public class NF044 extends Layout {
 		boolean bNat = true;
 		boolean bjatem = false;
 		boolean bvlriss = true;
-		final int MAXLINE = 35;
+		final int MAXLINE = 40;
 		final int MAXPROD = 14;
 		int iNumNota = 0;
 		int iItImp = 0;
@@ -249,15 +249,17 @@ public class NF044 extends Layout {
 					imp.say( 88, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( itens.getFloat( NF.C_QTDITPED ) ) ) );
 					imp.say( 99, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) / itens.getFloat( NF.C_QTDITPED ) ) ) );
 					imp.say( 120, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) ) ) );
-					imp.say( 132, Funcoes.strDecimalToStrCurrency( 6, 2, String.valueOf( itens.getFloat( NF.C_VLRIPIITPED ) ) ) );
+				//	imp.say( 132, Funcoes.strDecimalToStrCurrency( 6, 2, String.valueOf( itens.getFloat( NF.C_VLRIPIITPED ) ) ) );
 					iProdImp++;
 				}
 				else {
 					
-					itemServ = new Object[3];
+					itemServ = new Object[5];
 					itemServ[0] = new BigDecimal(itens.getFloat( NF.C_QTDITPED ) );
-					itemServ[1] = Funcoes.copy( itens.getString( NF.C_DESCPROD ).trim(), 22 );
+					itemServ[1] = Funcoes.copy( itens.getString( NF.C_DESCPROD ).trim(), 48 );
 					itemServ[2] = new BigDecimal(itens.getFloat( NF.C_VLRPRODITPED ) );
+					itemServ[3] = itens.getString( NF.C_REFPROD );
+					itemServ[4] = String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) / itens.getFloat( NF.C_QTDITPED ) );
 					vServico.addElement( itemServ );
 				
 				}
@@ -271,41 +273,37 @@ public class NF044 extends Layout {
 						iContaFrete++;
 					}
 					
-					imp.pulaLinha( MAXLINE - imp.pRow(), imp.comprimido());
+					//imp.pulaLinha( MAXLINE - imp.pRow(), imp.comprimido());
 					
 					// Imprime totais
 					for (int iserv=0; iserv<10; iserv++) {
 						if (iserv<vServico.size()) {
 							itemServ = vServico.elementAt( iserv );
-							if ( (iserv % 2) == 0 ) {
 								imp.pulaLinha( 1, imp.comprimido() );
-								imp.say( 2, "Qtd: " + String.valueOf( itemServ[0] ) + " - " + String.valueOf( itemServ[1] ) );
-								imp.say(36, Funcoes.strDecimalToStrCurrency( 16, Aplicativo.casasDecFin, itemServ[2].toString() ) );
+								imp.say( 2, String.valueOf( itemServ[3] ));
+								imp.say( 17, Funcoes.copy( String.valueOf( itemServ[1] ), 48 ));
+								imp.say( 88, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( itemServ[0] )));
+								imp.say( 99, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itemServ[4] )));
+								imp.say( 120, Funcoes.strDecimalToStrCurrency( 10, 2,itemServ[2].toString() ) );
 							}
-							else {
-								imp.say( 55, "Qtd: " + String.valueOf( itemServ[0] ) + " - " + String.valueOf( itemServ[1] ) );
-								imp.say( 101, Funcoes.strDecimalToStrCurrency( 16, Aplicativo.casasDecFin, itemServ[2].toString() ) );
-							}
-						}
 						else if ( (iserv % 2) == 0 ) {
 							imp.pulaLinha( 1, imp.comprimido() );
-						}
-						if (iserv==3) {
-							imp.say(114, Funcoes.strDecimalToStrCurrency( 20, Aplicativo.casasDecFin, String.valueOf( cab.getFloat( NF.C_PERCISS ))));
-						}
-						if(iserv==7){
-							imp.say(114, Funcoes.strDecimalToStrCurrency( 20, Aplicativo.casasDecFin ,  String.valueOf( cab.getFloat( NF.C_VLRISS )) ));
-						}
-						if(iserv==9){
-							imp.say( 118, Funcoes.strDecimalToStrCurrency( 20, Aplicativo.casasDecFin, String.valueOf( cab.getFloat( NF.C_BASEISS ))));
-						}
-						
+						}		
 					}
-
+					
+					imp.say( 17, "Valor do desconto : " + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( cab.getFloat( NF.C_VLRDESCVENDA ) ) ) );
+					
+					imp.pulaLinha( MAXLINE - imp.pRow(), imp.comprimido());
+					
+					imp.say( 35, Funcoes.strDecimalToStrCurrency( 20, Aplicativo.casasDecFin, String.valueOf( cab.getFloat( NF.C_BASEISS ))));
+					imp.say( 58, Funcoes.strDecimalToStrCurrency( 20, Aplicativo.casasDecFin, String.valueOf( cab.getFloat( NF.C_PERCISS ))));
+					imp.say( 87, Funcoes.strDecimalToStrCurrency( 20, Aplicativo.casasDecFin ,  String.valueOf( cab.getFloat( NF.C_VLRISS )) ));
+					imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) ) ) );
+					
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
 						imp.pulaLinha( 3, imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
-						imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRICMSPED ) ) ) );
+						//imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRICMSPED ) ) ) );
 						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) - cab.getFloat( NF.C_BASEISS ) ) ) );
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( frete.getFloat( NF.C_VLRFRETEPED ) ) ) );
