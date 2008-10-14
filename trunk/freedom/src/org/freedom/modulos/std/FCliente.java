@@ -1586,12 +1586,15 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		boolean bRetorno = false;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = "SELECT CNPJCLI FROM VDCLIENTE WHERE CNPJCLI=?";
+		String sSQL = "SELECT CNPJCLI FROM VDCLIENTE WHERE CODEMP=? AND CODFILIAL=? AND CNPJCLI=?";
 		
 		try {
 		
 			ps = con.prepareStatement( sSQL );
-			ps.setString( 1, txtCnpjCli.getVlrString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "CPCLIENTE" ));
+			ps.setString( 3, txtCnpjCli.getVlrString() );
+			
 			rs = ps.executeQuery();
 			
 			if ( rs.next() ) {
