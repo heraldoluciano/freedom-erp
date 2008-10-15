@@ -615,10 +615,17 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		BigDecimal percLucro = new BigDecimal("0.00");
 		BigDecimal precoCusto = txtPrecoCustoProd.getVlrBigDecimal();
 		BigDecimal precoVenda = txtPrecoItem.getVlrBigDecimal();
-		
-		try {
 						
-			percLucro = ((precoVenda.subtract( precoCusto )).divide( precoVenda, new MathContext( 10 ) ).multiply( bdCem ));
+		try {
+
+			if(prefere.get( EPrefere.TPCALCLUCRO.ordinal() ).toString().equals( "V" )) {
+				// Calculo correto de lucratividade baseado no preço final.
+				percLucro = ((precoVenda.subtract( precoCusto )).divide( precoVenda, new MathContext( 10 ) ).multiply( bdCem ));
+			}
+			else {
+				// Calculo de lucratividade baseado no custo ... errado
+				percLucro = (precoVenda.multiply( bdCem )).divide( precoCusto, new MathContext( 10 ) ).subtract( bdCem );
+			}
 			percLucro.setScale( 2, BigDecimal.ROUND_HALF_UP );
 			
 			txtPercItLucro.setVlrBigDecimal( percLucro );
