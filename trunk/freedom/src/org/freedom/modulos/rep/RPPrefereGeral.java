@@ -31,6 +31,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -40,6 +41,7 @@ import org.freedom.acao.PostEvent;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPasswordFieldPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -87,14 +89,20 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	
 	private final JTextFieldPad txtLayoutPed = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 	
+	private JRadioGroup<?, ?> rgTipo = null;
+	
 	private final ListaCampos lcMoeda = new ListaCampos( this, "MO" );
+	
+	private Vector<String> vLabs1 = new Vector<String>();
+	
+	private Vector<String> vVals1 = new Vector<String>();
 	
 
 	public RPPrefereGeral() {
 
 		super( false );
 		setTitulo( "Preferências gerais" );		
-		setAtribos( 50, 50, 425, 470 );
+		setAtribos( 50, 50, 425, 520 );
 		
 		montaListaCampos();		
 		montaTela();
@@ -128,7 +136,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		linha1.setBorder( BorderFactory.createEtchedBorder() );
 		
 		adic( geral, 27, 0, 80, 20 );
-		adic( linha1, 7, 10, 397, 120 );
+		adic( linha1, 7, 10, 397, 80 );
 		
 		adicDB( cbUsaRefProd, 17, 20, 300, 20, "UsaRefProd", null, true );
 		adicDB( cbOrdemPed, 17, 40, 300, 20, "OrdemPed", null, true );
@@ -139,34 +147,54 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		//adicDB( cbCodBarProd, 17, 80, 300, 20, "EndCliPed", null, true );
 		//adicDB( cbEndCliPed, 17, 100, 300, 20, "OrdemPed", null, true );
 		
+
+		JLabel preco = new JLabel( "Tipo de calculo do lucro", SwingConstants.CENTER );
+		preco.setOpaque( true );
+		JLabel linha4 = new JLabel();
+		linha4.setBorder( BorderFactory.createEtchedBorder() );
+		
+		adic( preco, 27, 90, 150, 20 );
+		adic( linha4, 7, 100, 397, 75 );
+		
+		
+		vLabs1.addElement("Venda");
+ 		vLabs1.addElement("Custo"); 
+ 		vVals1.addElement("V");
+ 		vVals1.addElement("C");
+		    
+ 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
+ 		rgTipo.setVlrString("V");
+ 		
+ 		adicDB( rgTipo, 70, 120, 250, 35, "TpCalcLucro", "", false );
+		
 		JLabel email = new JLabel( "E - Mail", SwingConstants.CENTER );
 		email.setOpaque( true );
 		JLabel linha2 = new JLabel();
 		linha2.setBorder( BorderFactory.createEtchedBorder() );
 		
-		adic( email, 27, 130, 80, 20 );
-		adic( linha2, 7, 140, 397, 100 );
+		adic( email, 27, 175, 80, 20 );
+		adic( linha2, 7, 185, 397, 100 );
 		
-		adicCampo( txtServidorSMTP, 17, 170, 230, 20, "ServidorSMTP", "Servidor de SMTP", ListaCampos.DB_SI, false );
-		adicCampo( txtPortaSMTP, 250, 170, 41, 20, "PortaSMTP", "Porta", ListaCampos.DB_SI, false );
-		adicDB( cbAutenticaSMTP, 294, 170, 100, 20, "AutenticaSMTP", "", false );
-		adicCampo( txtUsuarioSMTP, 17, 210, 137, 20, "UsuarioSMTP", "Id do usuario", ListaCampos.DB_SI, false );
-		adicCampo( txtSenhaSMTP, 157, 210, 134, 20, "SenhaSMTP", "Senha do usuario", ListaCampos.DB_SI, false );
-		adicDB( cbSSLSMTP, 294, 210, 100, 20, "SSLSMTP", "", false );
+		adicCampo( txtServidorSMTP, 17, 210, 230, 20, "ServidorSMTP", "Servidor de SMTP", ListaCampos.DB_SI, false );
+		adicCampo( txtPortaSMTP, 250, 210, 41, 20, "PortaSMTP", "Porta", ListaCampos.DB_SI, false );
+		adicDB( cbAutenticaSMTP, 294, 210, 100, 20, "AutenticaSMTP", "", false );
+		adicCampo( txtUsuarioSMTP, 17, 250, 137, 20, "UsuarioSMTP", "Id do usuario", ListaCampos.DB_SI, false );
+		adicCampo( txtSenhaSMTP, 157, 250, 134, 20, "SenhaSMTP", "Senha do usuario", ListaCampos.DB_SI, false );
+		adicDB( cbSSLSMTP, 294, 250, 100, 20, "SSLSMTP", "", false );
 		
 		JLabel campos = new JLabel( "Campos", SwingConstants.CENTER );
 		campos.setOpaque( true );
 		JLabel linha3 = new JLabel();
 		linha3.setBorder( BorderFactory.createEtchedBorder() );
 		
-		adic( campos, 27, 240, 80, 20 );
-		adic( linha3, 7, 250, 397, 140 );
+		adic( campos, 27, 285, 80, 20 );
+		adic( linha3, 7, 295, 397, 140 );
 		
-		adicCampo( txtCasasDesc, 17, 280, 150, 20, "CasasDec", "Decimais", ListaCampos.DB_SI, false );
-		adicCampo( txtLayoutPed, 240, 280, 154, 20, "LayoutPed", "Classe para pedido", ListaCampos.DB_SI, false );
-		adicCampo( txtCasasDescFin, 17, 320, 150, 20, "CasasDecFin", "Decimais ( financeiro )", ListaCampos.DB_SI, false );
-		adicCampo( txtCodMoeda, 17, 360, 100, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, txtNomeMoeda, false );
-		adicDescFK( txtNomeMoeda, 120, 360, 274, 20, "SingMoeda", "Descrição da moeda" );
+		adicCampo( txtCasasDesc, 17, 320, 150, 20, "CasasDec", "Decimais", ListaCampos.DB_SI, false );
+		adicCampo( txtLayoutPed, 240, 340, 154, 20, "LayoutPed", "Classe para pedido", ListaCampos.DB_SI, false );
+		adicCampo( txtCasasDescFin, 17, 360, 150, 20, "CasasDecFin", "Decimais ( financeiro )", ListaCampos.DB_SI, false );
+		adicCampo( txtCodMoeda, 17, 400, 100, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, txtNomeMoeda, false );
+		adicDescFK( txtNomeMoeda, 120, 400, 274, 20, "SingMoeda", "Descrição da moeda" );
 		
 	}
 
