@@ -23,6 +23,7 @@
 package org.freedom.layout.nf;
 
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
@@ -293,11 +294,14 @@ public class NF044 extends Layout {
 					
 					imp.pulaLinha( MAXLINE - imp.pRow(), imp.comprimido());
 					
-					imp.say( 35, Funcoes.strDecimalToStrCurrency( 20, Aplicativo.casasDecFin, String.valueOf( cab.getFloat( NF.C_BASEISS ))));
-					imp.say( 58, Funcoes.strDecimalToStrCurrency( 20, Aplicativo.casasDecFin, String.valueOf( cab.getFloat( NF.C_PERCISS ))));
-					imp.say( 87, Funcoes.strDecimalToStrCurrency( 20, Aplicativo.casasDecFin ,  String.valueOf( cab.getFloat( NF.C_VLRISS )) ));
 					
-					imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) ) ) );
+					if( vServico.size() > 0  ){
+						
+						imp.say( 35, Funcoes.strDecimalToStrCurrency( 20, Aplicativo.casasDecFin, String.valueOf( cab.getFloat( NF.C_BASEISS ))));
+						imp.say( 58, Funcoes.strDecimalToStrCurrency( 20, Aplicativo.casasDecFin, String.valueOf( cab.getFloat( NF.C_PERCISS ))));
+						imp.say( 87, Funcoes.strDecimalToStrCurrency( 20, Aplicativo.casasDecFin ,  String.valueOf( cab.getFloat( NF.C_VLRISS )) ));
+						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) ) ) );
+					}
 					
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
 						imp.pulaLinha( 3, imp.comprimido() );
