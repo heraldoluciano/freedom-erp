@@ -292,6 +292,11 @@ public class NF044 extends Layout {
 						imp.say( 17, "Valor do desconto : " + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( cab.getFloat( NF.C_VLRDESCVENDA ) ) ) );
 					}
 					
+					if( cab.getFloat( NF.C_VLRDESCITPED ) > 0 ){
+						
+						imp.say( 17, "Valor do desconto : " + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( cab.getFloat( NF.C_VLRDESCITPED ) ) ) );
+					}
+					
 					imp.pulaLinha( MAXLINE - imp.pRow(), imp.comprimido());
 					
 					
