@@ -164,8 +164,7 @@ public class NFSaida extends NF {
 				cab.setFloat( C_VLRCOFINSVENDA, rs.getFloat( "VLRCOFINSVENDA" ) );
 				cab.setFloat( C_VLRIRVENDA, rs.getFloat( "VLRIRVENDA" ) );
 				cab.setFloat( C_VLRCSOCIALVENDA, rs.getFloat( "VLRCSOCIALVENDA" ) );
-				cab.setFloat( C_VLRBASEISSVENDA, rs.getFloat( "VLRBASEISSVENDA" ) );				
-				
+				cab.setFloat( C_VLRBASEISSVENDA, rs.getFloat( "VLRBASEISSVENDA" ) );			
 				
 			}
 			rs.close();
