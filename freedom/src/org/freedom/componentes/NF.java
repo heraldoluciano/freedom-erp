@@ -127,7 +127,7 @@ public class NF {
 	public static final int C_VLRCOFINSVENDA = 78;
 	public static final int C_VLRIRVENDA = 79;
 	public static final int C_VLRCSOCIALVENDA = 80;
-	public static final int C_VLRBASEISSVENDA = 81; 
+	public static final int C_VLRBASEISSVENDA = 81;
 	
 	//itens
 	public static final int C_CODITPED = 0;
