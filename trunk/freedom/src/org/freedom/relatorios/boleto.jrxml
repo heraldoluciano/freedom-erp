@@ -26,13 +26,13 @@
 	<parameter name="RAZEMP" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["SETPOINT INFORMÀTICA"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODEMP" isForPrompting="false" class="java.lang.Integer">
+	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(44)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
+	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODVENDA" isForPrompting="false" class="java.lang.Integer">
+	<parameter name="CODVENDA" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(36)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="IMPDOC" isForPrompting="false" class="java.lang.String"/>
@@ -56,7 +56,7 @@ AC.CODEMP=VA.CODEMPCV AND AC.CODFILIAL=VA.CODFILIALCV AND AC.CODCONV=VA.CODCONV)
 (SELECT VA.OBSORC FROM VDORCAMENTO VA WHERE VA.CODEMP=V.CODEMP AND VA.CODFILIAL=V.CODFILIAL AND 
 VA.CODORC =(SELECT FIRST 1 VO.CODORC FROM VDVENDAORC VO WHERE VO.CODEMP=V.CODEMP AND 
 VO.CODFILIAL=VO.CODFILIAL AND VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA)) AS OBSORC 
-FROM VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB, 
+,ITR.DESCPONT FROM VDVENDA V,VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB, 
 FNITMODBOLETO IM, VDITVENDA IV, LFNATOPER N,  FNITRECEBER ITR, SGFILIAL F, FNCONTA CT 
 WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND 
 V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND F.CODEMP=R.CODEMP AND 
@@ -139,6 +139,7 @@ MB.CODMODBOL=1 AND V.DTEMITVENDA BETWEEN '01.01.2007' AND '30.08.2007' AND V.COD
 	<field name="CODORC" class="java.lang.Long"/>
 	<field name="NOMECONV" class="java.lang.String"/>
 	<field name="OBSORC" class="java.lang.String"/>
+	<field name="DESCPONT" class="java.lang.String"/>
 
 	<variable name="CNPJCLIF" class="java.lang.String" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[( $F{CNPJCLI} != null ?
@@ -932,7 +933,9 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 						y="211"
 						width="80"
 						height="9"
-						key="textField-19"/>
+						key="textField-19">
+							<printWhenExpression><![CDATA[new Boolean( $F{DESCPONT}.equals("N") )]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font fontName="Arial" size="7"/>
@@ -1866,7 +1869,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 					<reportElement
 						x="5"
 						y="251"
-						width="340"
+						width="133"
 						height="34"
 						key="textField-56">
 							<printWhenExpression><![CDATA[new Boolean( $P{IMPDOC}.equals("S"))]]></printWhenExpression>
@@ -1876,6 +1879,66 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 						<font fontName="Arial" size="7"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Ref. duplic. " + $F{DOCREC}.toString().trim() + "/" + $F{NPARCITREC}.toString().trim()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="140"
+						y="251"
+						width="58"
+						height="10"
+						key="textField-57">
+							<printWhenExpression><![CDATA[new Boolean( $F{DESCPONT}.equals("S"))]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Desconto de R$ "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="199"
+						y="251"
+						width="23"
+						height="10"
+						key="textField-58">
+							<printWhenExpression><![CDATA[new Boolean( $F{DESCPONT}.equals("S"))]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRDESCITREC}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="223"
+						y="251"
+						width="67"
+						height="10"
+						key="textField-59">
+							<printWhenExpression><![CDATA[new Boolean( $F{DESCPONT}.equals("S"))]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["para pagamento até "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="291"
+						y="251"
+						width="46"
+						height="10"
+						key="textField-60">
+							<printWhenExpression><![CDATA[new Boolean( $F{DESCPONT}.equals("S"))]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTVENCITREC}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
