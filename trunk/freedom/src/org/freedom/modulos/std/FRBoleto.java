@@ -882,7 +882,7 @@ public class FRBoleto extends FRelatorio {
 		ObjetoEmpresa empresa = new ObjetoEmpresa(con);
 		parametros.put( "CODEMP", Aplicativo.iCodEmp );
 		parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-		parametros.put( "IMPDOC", txtImpInst.getVlrString() );		
+		parametros.put( "IMPDOC", txtImpInst.getVlrString() );
 		if (Aplicativo.empresa!=null) {
 			parametros.put(  "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
 		}
@@ -961,7 +961,7 @@ public class FRBoleto extends FRelatorio {
 		sSQL.append( "SELECT V.CODVENDA,V.OBSVENDA,(SELECT COUNT(*) FROM FNITRECEBER ITR2 ");
 		sSQL.append( "WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND ITR2.CODFILIAL=R.CODFILIAL) PARCS, " );
 		sSQL.append( "ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,ITR.VLRDESCITREC, " );
-		sSQL.append( "(ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, " );
+		sSQL.append( "(ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA,  " );
 		sSQL.append( "R.DOCREC,ITR.CODBANCO, B.DVBANCO, " );
 		sSQL.append( "B.IMGBOLBANCO LOGOBANCO01, B.IMGBOLBANCO LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, " );
 		sSQL.append( "IM.CODCARTCOB, MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, " );
@@ -990,7 +990,7 @@ public class FRBoleto extends FRelatorio {
 		sSQL.append( "WHERE VA.CODEMP=V.CODEMP AND VA.CODFILIAL=V.CODFILIAL AND " );
 		sSQL.append( "VA.CODORC =(SELECT FIRST 1 VO.CODORC FROM VDVENDAORC VO " );
 		sSQL.append( "WHERE VO.CODEMP=V.CODEMP AND VO.CODFILIAL=VO.CODFILIAL AND " );
-		sSQL.append( "VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA)) AS OBSORC, ");
+		sSQL.append( "VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA)) AS OBSORC, ITR.DESCPONT, ");
 		
 		sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE ");
 		sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND ");
