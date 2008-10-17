@@ -37,6 +37,7 @@ import org.freedom.componentes.JLabelPad;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -108,17 +109,19 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 	
 	private final ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
 	
+	private JCheckBoxPad cbDescPont = new JCheckBoxPad( "Desconto pontualidade?", "S", "N" );
+	
 	public enum EColEdit{CODCLI, RAZCLI, NUMCONTA, CODPLAN, CODCC, DOC, DTEMIS, DTVENC,
-		VLRJUROS, VLRDESC, VLRDEVOLUCAO, VLRPARC, OBS, CODBANCO, CODTPCOB, DESCTPCOB,CODCARTCOB, DESCCARTCOB };
+		VLRJUROS, VLRDESC, VLRDEVOLUCAO, VLRPARC, OBS, CODBANCO, CODTPCOB, DESCTPCOB,CODCARTCOB, DESCCARTCOB, DESCPONT };
 
 	public enum EColRet{ NUMCONTA, CODPLAN, CODCC, DOC, VLRJUROS, VLRDESC, VLRDEVOLUCAO,
-		DTVENC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB };		
+		DTVENC, OBS, CODBANCO, CODTPCOB, DESCTPCOB, CODCARTCOB, DESCCARTCOB, DESCPONT };		
 
 	public DLEditaRec( Component cOrig, final boolean bEdita ) {
 
 		super( cOrig );
 		setTitulo( bEdita?"Editar":"Visualizar" );
-		setAtribos( 365, 500 );
+		setAtribos( 365, 550 );
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false ) );
 		lcBanco.add( new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false ) );
@@ -239,13 +242,15 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		adic( txtVlrJuros, 7, 340, 81, 20 );
 		adic( new JLabelPad( "Vlr.desc." ), 91, 320, 81, 20 );
 		adic( txtVlrDesc, 91, 340, 81, 20 );
-		adic( new JLabelPad( "Vlr.devolução" ), 175, 320, 81, 20 );
-		adic( txtVlrDev, 175, 340, 81, 20 );
-		adic( new JLabelPad( "Vlr.parcela" ), 259, 320, 81, 20 );
-		adic( txtVlrParc, 259, 340, 81, 20 );
+		adic( cbDescPont, 185, 340, 200, 20 );
+		cbDescPont.setVlrString( "N" );
+		adic( new JLabelPad( "Vlr.devolução" ), 7, 360, 81, 20 );
+		adic( txtVlrDev, 7, 380, 81, 20 );
+		adic( new JLabelPad( "Vlr.parcela" ), 91, 360, 81, 20 );
+		adic( txtVlrParc, 91, 380, 81, 20 );
 		
-		adic( new JLabelPad( "Observações" ), 7, 360, 240, 20 );
-		adic( txtObs, 7, 380, 333, 20 );
+		adic( new JLabelPad( "Observações" ), 7, 400, 240, 20 );
+		adic( txtObs, 7, 420, 333, 20 );
 
 		lcCC.addCarregaListener( this );
 		
@@ -290,6 +295,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		txtDescTipoCob.setVlrString( (String) sVals[ EColEdit.DESCTPCOB.ordinal()] );
 		txtCodCartCob.setVlrString( ( String) sVals[ EColEdit.CODCARTCOB.ordinal() ] );
 		txtDescCartCob.setVlrString( (String) sVals[ EColEdit.DESCCARTCOB.ordinal()] );		
+		cbDescPont.setVlrString( (String) sVals[ EColEdit.DESCPONT.ordinal()] );
 	}
 
 	public Object[] getValores() {
@@ -309,6 +315,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		oRetorno[ EColRet.DESCTPCOB.ordinal() ] = txtDescTipoCob.getVlrString();
 		oRetorno[ EColRet.CODCARTCOB.ordinal() ] = txtCodCartCob.getVlrString();
 		oRetorno[ EColRet.DESCCARTCOB.ordinal() ] = txtDescCartCob.getVlrString();
+		oRetorno[ EColRet.DESCPONT.ordinal() ] = cbDescPont.getVlrString();
 		return oRetorno;
 	}
 
