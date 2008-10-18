@@ -1207,7 +1207,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		ResultSet rs = null;
 		String sSQL = "SELECT ORIGFISC,CODTRATTRIB, REDFISC,TIPOFISC, " +
 				"CODMENS,ALIQFISC,ALIQIPIFISC, TPREDICMSFISC " + 
-				"FROM LFBUSCAFISCALSP(?,?,?,?,?,?,?)";
+				"FROM LFBUSCAFISCALSP(?,?,?,?,?,?,?,?,?,?)";
 
 		try {
 
@@ -1219,6 +1219,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			ps.setInt( 5, Aplicativo.iCodEmp );
 			ps.setInt( 6, lcCli.getCodFilial() );
 			ps.setInt( 7, txtCodCli.getVlrInteger().intValue() );
+			ps.setInt( 8, Aplicativo.iCodEmp );
+			ps.setInt( 9, Aplicativo.iCodFilial );
+			ps.setInt( 10, txtCodTipoMov.getVlrInteger() );
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
