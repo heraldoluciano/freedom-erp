@@ -149,34 +149,6 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="5"
-						y="56"
-						width="107"
-						height="19"
-						key="staticText-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="7"/>
-					</textElement>
-				<text><![CDATA[CX. MACHO 	                                                          
-               Mad. / Res./ Al. / Fe ]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="5"
-						y="56"
-						width="107"
-						height="19"
-						key="staticText-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font pdfFontName="Helvetica" size="8" isBold="false"/>
-					</textElement>
-				<text><![CDATA[	                                                          
-               Mad. / Res./ Al. / Fe ]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
 						x="122"
 						y="35"
 						width="42"
