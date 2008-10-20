@@ -85,7 +85,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 					<reportElement
 						x="5"
 						y="18"
-						width="399"
+						width="361"
 						height="15"
 						key="staticText-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -96,9 +96,9 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="408"
-						y="1"
-						width="128"
+						x="373"
+						y="2"
+						width="154"
 						height="15"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -109,9 +109,9 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="408"
+						x="373"
 						y="18"
-						width="128"
+						width="154"
 						height="15"
 						key="staticText-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -125,11 +125,11 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 						x="5"
 						y="35"
 						width="114"
-						height="10"
+						height="18"
 						key="staticText-6"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font size="7"/>
+						<font size="9"/>
 					</textElement>
 				<text><![CDATA[MOD - Mad./ Res./ Is./ Al. / Fe]]></text>
 				</staticText>
@@ -170,9 +170,9 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 						key="staticText-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font size="7"/>
+						<font pdfFontName="Helvetica" size="8" isBold="false"/>
 					</textElement>
-				<text><![CDATA[CX. MACHO 	                                                          
+				<text><![CDATA[	                                                          
                Mad. / Res./ Al. / Fe ]]></text>
 				</staticText>
 				<staticText>
@@ -180,11 +180,11 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 						x="122"
 						y="35"
 						width="42"
-						height="10"
+						height="18"
 						key="staticText-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font size="7"/>
+						<font size="9"/>
 					</textElement>
 				<text><![CDATA[Quant.]]></text>
 				</staticText>
@@ -205,12 +205,12 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 					<reportElement
 						x="167"
 						y="35"
-						width="237"
-						height="10"
+						width="199"
+						height="18"
 						key="staticText-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font size="7"/>
+						<font size="9"/>
 					</textElement>
 				<text><![CDATA[ Placa - Mad./ Al. / Fe.]]></text>
 				</staticText>
@@ -226,13 +226,13 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 						<font size="7"/>
 					</textElement>
 				<text><![CDATA[ Contração
-                           %]]></text>
+                                     %]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="253"
-						y="56"
-						width="81"
+						x="254"
+						y="57"
+						width="111"
 						height="18"
 						key="staticText-12"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -240,13 +240,13 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 						<font size="7"/>
 					</textElement>
 				<text><![CDATA[ Sobrimetal
-                         m/m]]></text>
+                                              m/m ]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="338"
-						y="57"
-						width="81"
+						x="370"
+						y="58"
+						width="49"
 						height="17"
 						key="staticText-13"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -360,7 +360,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="336"
+						x="368"
 						y="56"
 						width="1"
 						height="21"
@@ -378,7 +378,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="406"
+						x="368"
 						y="0"
 						width="1"
 						height="56"
@@ -387,16 +387,16 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				</line>
 				<staticText>
 					<reportElement
-						x="408"
-						y="36"
-						width="128"
-						height="9"
+						x="373"
+						y="37"
+						width="153"
+						height="18"
 						key="staticText-15"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="7"/>
 					</textElement>
-				<text><![CDATA[Dimensão       X                  X]]></text>
+				<text><![CDATA[Dimensão                  X                  X]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -424,7 +424,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 					<reportElement
 						x="242"
 						y="2"
-						width="162"
+						width="124"
 						height="14"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -436,7 +436,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="439"  isSplitAllowed="true" >
+			<band height="426"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="2"
@@ -538,7 +538,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 						x="0"
 						y="0"
 						width="1"
-						height="439"
+						height="426"
 						key="line-123"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -547,7 +547,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 						x="538"
 						y="0"
 						width="1"
-						height="439"
+						height="426"
 						key="line-124"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -556,7 +556,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 						x="358"
 						y="0"
 						width="1"
-						height="439"
+						height="426"
 						key="line-125"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -565,7 +565,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 						x="308"
 						y="0"
 						width="0"
-						height="439"
+						height="426"
 						key="line-126"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -574,7 +574,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 						x="239"
 						y="0"
 						width="1"
-						height="439"
+						height="426"
 						key="line-127"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -583,7 +583,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 						x="153"
 						y="0"
 						width="1"
-						height="439"
+						height="426"
 						key="line-128"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -592,7 +592,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 						x="60"
 						y="0"
 						width="0"
-						height="439"
+						height="426"
 						key="line-129"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -828,15 +828,6 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 						width="539"
 						height="1"
 						key="line-177"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="438"
-						width="539"
-						height="1"
-						key="line-178"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -1331,9 +1322,9 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				<staticText>
 					<reportElement
 						x="423"
-						y="81"
+						y="82"
 						width="113"
-						height="11"
+						height="15"
 						key="staticText-26"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
@@ -1344,7 +1335,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				<staticText>
 					<reportElement
 						x="423"
-						y="94"
+						y="99"
 						width="113"
 						height="11"
 						key="staticText-27"/>
@@ -1357,7 +1348,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				<staticText>
 					<reportElement
 						x="423"
-						y="108"
+						y="114"
 						width="113"
 						height="11"
 						key="staticText-28"/>
@@ -1370,7 +1361,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				<staticText>
 					<reportElement
 						x="423"
-						y="120"
+						y="127"
 						width="113"
 						height="11"
 						key="staticText-29"/>
@@ -1383,7 +1374,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				<staticText>
 					<reportElement
 						x="423"
-						y="132"
+						y="140"
 						width="113"
 						height="11"
 						key="staticText-31"/>
@@ -1396,7 +1387,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				<staticText>
 					<reportElement
 						x="423"
-						y="144"
+						y="152"
 						width="113"
 						height="11"
 						key="staticText-32"/>
@@ -1409,16 +1400,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="421"
-						y="156"
-						width="118"
-						height="1"
-						key="line-91"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="421"
-						y="163"
+						y="167"
 						width="118"
 						height="1"
 						key="line-92"/>
@@ -1427,7 +1409,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				<staticText>
 					<reportElement
 						x="423"
-						y="166"
+						y="170"
 						width="113"
 						height="11"
 						key="staticText-33"/>
@@ -1440,7 +1422,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				<staticText>
 					<reportElement
 						x="423"
-						y="180"
+						y="184"
 						width="113"
 						height="11"
 						key="staticText-34"/>
@@ -1453,16 +1435,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="421"
-						y="193"
-						width="118"
-						height="1"
-						key="line-93"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="421"
-						y="107"
+						y="112"
 						width="118"
 						height="1"
 						key="line-94"/>
@@ -1471,7 +1444,7 @@ VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="421"
-						y="92"
+						y="97"
 						width="118"
 						height="1"
 						key="line-95"/>
