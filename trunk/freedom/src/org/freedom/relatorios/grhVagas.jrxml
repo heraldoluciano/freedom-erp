@@ -8,10 +8,10 @@
 		 orientation="Portrait"
 		 pageWidth="595"
 		 pageHeight="842"
-		 columnWidth="539"
+		 columnWidth="567"
 		 columnSpacing="0"
-		 leftMargin="28"
-		 rightMargin="28"
+		 leftMargin="14"
+		 rightMargin="14"
 		 topMargin="14"
 		 bottomMargin="14"
 		 whenNoDataType="NoPages"
@@ -48,7 +48,7 @@
 	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer("1")]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT E.NOMEEMPR, F.DESCFUNC, T.DESCTURNO, V.FAIXASALINI, V.FAIXASALFIM
+	<queryString><![CDATA[SELECT E.NOMEEMPR, F.DESCFUNC, T.DESCTURNO, V.FAIXASALINI, V.FAIXASALFIM, V.CODVAGA, E.CODEMPR,F.CODFUNC
 FROM RHVAGA V, RHEMPREGADOR E, RHFUNCAO F, RHTURNO T
 WHERE V.CODEMP=$P{CODEMP} AND V.CODFILIAL=$P{CODFILIAL} AND
 V.CODEMPEM=E.CODEMP AND V.CODFILIALEM=E.CODFILIAL AND V.CODEMPR=E.CODEMPR AND
@@ -61,6 +61,9 @@ ORDER BY E.NOMEEMPR, F.DESCFUNC, T.DESCTURNO, V.FAIXASALINI, V.FAIXASALFIM]]></q
 	<field name="DESCTURNO" class="java.lang.String"/>
 	<field name="FAIXASALINI" class="java.math.BigDecimal"/>
 	<field name="FAIXASALFIM" class="java.math.BigDecimal"/>
+	<field name="CODVAGA" class="java.lang.Integer"/>
+	<field name="CODEMPR" class="java.lang.Integer"/>
+	<field name="CODFUNC" class="java.lang.Integer"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -75,9 +78,9 @@ ORDER BY E.NOMEEMPR, F.DESCFUNC, T.DESCTURNO, V.FAIXASALINI, V.FAIXASALFIM]]></q
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="0"
+						x="15"
 						y="73"
-						width="120"
+						width="108"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -282,16 +285,16 @@ ORDER BY E.NOMEEMPR, F.DESCFUNC, T.DESCTURNO, V.FAIXASALINI, V.FAIXASALFIM]]></q
 				</rectangle>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="0"
+						x="15"
 						y="2"
-						width="120"
+						width="108"
 						height="12"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMEEMPR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODEMPR}.toString().trim() + " - " + $F{NOMEEMPR}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -304,7 +307,7 @@ ORDER BY E.NOMEEMPR, F.DESCFUNC, T.DESCTURNO, V.FAIXASALINI, V.FAIXASALFIM]]></q
 					<textElement verticalAlignment="Middle">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCFUNC}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODFUNC}.toString().trim() + " - " + $F{DESCFUNC}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
