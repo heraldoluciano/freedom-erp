@@ -2162,7 +2162,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	
 		try {
 			// Liberação de crédito:
-			String sSQL = "EXECUTE PROCEDURE FNLIBCREDSP(?,?,?,?,?,?,?,?,?);";
+			String sSQL = "EXECUTE PROCEDURE FNLIBCREDSP(?,?,?,?,?,?,?,?,?,?);";
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
@@ -2173,6 +2173,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			ps.setInt( 7, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			ps.setObject( 8, txtVlrLiqVenda.getVlrBigDecimal() );
 			ps.setBigDecimal( 9, vlradic );
+			ps.setInt( 10, txtCodItVenda.getVlrInteger() );
 				
 			ps.execute();
 			ps.close();
