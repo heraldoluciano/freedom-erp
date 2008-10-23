@@ -33,6 +33,7 @@ import java.util.Date;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -70,12 +71,14 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 
 	private ListaCampos lcCartCob = new ListaCampos( this, "BO" );
 	
+	private JCheckBoxPad cbDescPont = new JCheckBoxPad( "Desconto pontualidade?", "S", "N" );
+	
 
 	public DLFechaParcela( Component cOrig, Connection cn ) {
 
 		super( cOrig );
 		setTitulo( "Parcela" );
-		setAtribos( 100, 100, 345, 260 );
+		setAtribos( 100, 100, 345, 275 );
 		setConexao( cn );
 
 		montaListaCampos();
@@ -146,6 +149,8 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 		adic( txtCodCartCob, 7, 140, 80, 20 );
 		adic( new JLabelPad( "Descrição da carteira de cobrança" ), 90, 120, 230, 20 );
 		adic( txtDescCartCob, 90, 140, 230, 20 );
+		adic( cbDescPont, 7, 165, 200, 20 );
+		cbDescPont.setVlrString( "S" );
 	}
 	
 	public void setValores( Object[] args ) {

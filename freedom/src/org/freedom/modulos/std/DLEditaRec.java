@@ -243,7 +243,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		adic( new JLabelPad( "Vlr.desc." ), 91, 320, 81, 20 );
 		adic( txtVlrDesc, 91, 340, 81, 20 );
 		adic( cbDescPont, 185, 340, 200, 20 );
-		cbDescPont.setVlrString( "N" );
+		cbDescPont.setVlrString( "S" );
 		adic( new JLabelPad( "Vlr.devolução" ), 7, 360, 81, 20 );
 		adic( txtVlrDev, 7, 380, 81, 20 );
 		adic( new JLabelPad( "Vlr.parcela" ), 91, 360, 81, 20 );
