@@ -305,6 +305,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JCheckBoxPad cbLote = null;
 
 	private JCheckBoxPad cbReceita = null;
+	
+	private JCheckBoxPad cbGuiaTraf = null;
 
 	private JCheckBoxPad cbAtivo = null;
 
@@ -612,8 +614,11 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		cbAdicPDV = new JCheckBoxPad( "tela adicional", "S", "N" );
 		cbAdicPDV.setVlrString( "N" );
 		
-		cbReceita = new JCheckBoxPad( "Necessita receita", "S", "N" );
+		cbReceita = new JCheckBoxPad( "Necessita rec.", "S", "N" );
 		cbReceita.setVlrString( "N" );
+		
+		cbGuiaTraf = new JCheckBoxPad( "Guia de tráf.", "S", "N" );
+		cbGuiaTraf.setVlrString( "N" );
 
 		txtCustoMPMProd.setSoLeitura( true );
 		txtCustoPEPSProd.setSoLeitura( true );
@@ -707,12 +712,13 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		
 		adic( lbBordaControles, 7, 245, 639, 55 );
 		
-		adicDB( cbLote, 15, 270, 80, 20, "CLoteProd", "Estoque", true );
-		adicDB( cbAtivo, 100, 270, 80, 20, "AtivoProd", "Atividade", true );
-		adicDB( cbVerif, 183, 270, 80, 20, "VerifProd", "Abaixo custo", true );
-		adicDB( cbRMA, 296, 270, 60, 20, "RMAProd", "RMA", true );
-		adicDB( cbReceita, 379, 270, 150, 20, "UsaReceitaProd", "Receita", true );
-		adicDB( cbAdicPDV, 530, 270, 100, 20, "UsaTelaAdicPDV", "PDV", true );
+		adicDB( cbLote, 15, 270, 50, 20, "CLoteProd", "Estoque", true );
+		adicDB( cbAtivo, 75, 270, 60, 20, "AtivoProd", "Atividade", true );
+		adicDB( cbVerif, 145, 270, 80, 20, "VerifProd", "Abaixo custo", true );
+		adicDB( cbRMA, 235, 270, 60, 20, "RMAProd", "RMA", true );
+		adicDB( cbReceita, 305, 270, 120, 20, "UsaReceitaProd", "Receita", true );
+		adicDB( cbAdicPDV, 430, 270, 100, 20, "UsaTelaAdicPDV", "PDV", true );
+		adicDB( cbGuiaTraf, 540, 270, 100, 20, "GuiaTrafProd", "Guia de tráfego", true );
 
 		adicCampo( txtCodUnid, 7, 320, 110, 20, "CodUnid", "Cód.und.", ListaCampos.DB_FK, txtDescUnid, true );
 		adicDescFK( txtDescUnid, 120, 320, 327, 20, "DescUnid", "Descrição da unidade" );
