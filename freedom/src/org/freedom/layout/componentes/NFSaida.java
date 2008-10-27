@@ -115,14 +115,16 @@ public class NFSaida extends NF {
 				cab.setString( C_EMAILVEND, ( rs.getString( "EMAILVEND" ) != null ? rs.getString( "EMAILVEND" ) : "" ) );
 				cab.setString( C_DESCFUNC, ( rs.getString( 30 ) != null ? rs.getString( 30 ) : "" ) );
 				cab.setString( C_CODCLCOMIS, ( rs.getString( "CODCLCOMIS" ) != null ? rs.getString( "CODCLCOMIS" ) : "" ) );
-				cab.setFloat( C_PERCCOMISVENDA, rs.getFloat( "PERCCOMISVENDA" ) );
+//				cab.setFloat( C_PERCCOMISVENDA, rs.getFloat( "PERCCOMISVENDA" ) );
+				cab.setBigDecimal( C_PERCCOMISVENDA, rs.getBigDecimal( "PERCCOMISVENDA" ) );
 				cab.setInt( C_CODVEND, rs.getInt( "CODVEND" ) );
 				cab.setString( C_ENDCOBEMIT, ( rs.getString( "ENDCOB" ) != null ? rs.getString( "ENDCOB" ).trim() : "" ) );
 				cab.setString( C_CIDCOBEMIT, ( rs.getString( "CIDCOB" ) != null ? rs.getString( "CIDCOB" ).trim() : "" ) );
 				cab.setString( C_UFCOBEMIT, ( rs.getString( "UFCOB" ) != null ? rs.getString( "UFCOB" ).trim() : "" ) );
 				cab.setString( C_BAIRCOBEMIT, ( rs.getString( "BAIRCOB" ) != null ? rs.getString( "BAIRCOB" ).trim() : "" ) );
 				cab.setInt( C_NUMCOBEMIT, rs.getInt( "NUMCOB" ) );
-				cab.setFloat( C_PERCMCOMISPED, rs.getFloat( "PERCMCOMISVENDA" ) );
+//				cab.setFloat( C_PERCMCOMISPED, rs.getFloat( "PERCMCOMISVENDA" ) );
+				cab.setBigDecimal( C_PERCMCOMISPED, rs.getBigDecimal( "PERCMCOMISVENDA" ) );
 				cab.setString( C_NOMEEMIT, ( rs.getString( "NOMECLI" ) != null ? rs.getString( "NOMECLI" ).trim() : "" ) );
 				cab.setString( C_ENDENTEMIT, ( rs.getString( "ENDENT" ) != null ? rs.getString( "ENDENT" ).trim() : "" ) );
 				cab.setInt( C_NUMENTEMIT, rs.getInt( "NUMENT" ) );
@@ -133,10 +135,11 @@ public class NFSaida extends NF {
 				cab.setString( C_CODBANCO, ( rs.getString( "CODBANCO" ) != null ? rs.getString( "CODBANCO" ).trim() : "" ) );
 				cab.setString( C_NOMEBANCO, ( rs.getString( 49 ) != null ? rs.getString( 49 ).trim() : "" ) );
 				cab.setString( C_DESCSETOR, ( rs.getString( 50 ) != null ? rs.getString( 50 ).trim() : "" ) );
-				cab.setFloat( C_VLRDESCITPED, rs.getFloat( "VLRDESCITVENDA" ) );
+//				cab.setFloat( C_VLRDESCITPED, rs.getFloat( "VLRDESCITVENDA" ) );
+				cab.setBigDecimal( C_VLRDESCITPED, rs.getBigDecimal( "VLRDESCITVENDA" ) );
 				cab.setInt( C_DIASPAG, 0 );
 				cab.setString( C_PEDEMIT, ( rs.getString( "PEDCLIVENDA" ) != null ? rs.getString( "PEDCLIVENDA" ).trim() : "" ) );
-				cab.setFloat( C_VLRLIQPED, rs.getFloat( "VLRLIQVENDA" ) );
+/*				cab.setFloat( C_VLRLIQPED, rs.getFloat( "VLRLIQVENDA" ) );
 				cab.setFloat( C_VLRPRODPED, rs.getFloat( "VLRPRODVENDA" ) );
 				cab.setFloat( C_VLRADICPED, rs.getFloat( "VLRADICVENDA" ) );
 				cab.setFloat( C_VLRICMSPED, rs.getFloat( "VLRICMSVENDA" ) );
@@ -144,7 +147,21 @@ public class NFSaida extends NF {
 				cab.setFloat( C_VLRIPIPED, rs.getFloat( "VLRIPIVENDA" ) );
 				cab.setFloat( C_BASEISS, rs.getFloat( "VLRBASEISSVENDA" ) );
 				cab.setFloat( C_VLRISS, rs.getFloat( "VLRISSVENDA" ) );
-				cab.setFloat( C_PERCISS, rs.getFloat( "PERCISS" ) );
+				cab.setFloat( C_PERCISS, rs.getFloat( "PERCISS" ) );*/
+
+				
+				cab.setBigDecimal( C_VLRLIQPED, rs.getBigDecimal( "VLRLIQVENDA" ) );
+				cab.setBigDecimal( C_VLRPRODPED, rs.getBigDecimal( "VLRPRODVENDA" ) );
+				cab.setBigDecimal( C_VLRADICPED, rs.getBigDecimal( "VLRADICVENDA" ) );
+				cab.setBigDecimal( C_VLRICMSPED, rs.getBigDecimal( "VLRICMSVENDA" ) );
+				cab.setBigDecimal( C_VLRBASEICMSPED, rs.getBigDecimal( "VLRBASEICMSVENDA" ) );
+				cab.setBigDecimal( C_VLRIPIPED, rs.getBigDecimal( "VLRIPIVENDA" ) );				
+				cab.setBigDecimal( C_BASEISS, rs.getBigDecimal( "VLRBASEISSVENDA" ) );
+				
+				cab.setBigDecimal( C_VLRISS, rs.getBigDecimal( "VLRISSVENDA" ) );
+				cab.setBigDecimal( C_PERCISS, rs.getBigDecimal( "PERCISS" ) );
+				
+				
 				cab.setString( C_CALCCOFINSVENDA, rs.getString( "CALCCOFINSVENDA" ) );
 				cab.setString( C_IMPCOFINSVENDA, rs.getString( "IMPCOFINSVENDA" ) );
 				cab.setString( C_CALCCSOCIALVENDA, rs.getString( "CALCCSOCIALVENDA" ) );
@@ -159,12 +176,23 @@ public class NFSaida extends NF {
 				cab.setString( C_IMPIISSVENDA, rs.getString( "IMPIISSVENDA" ) );
 				cab.setString( C_CALCPISVENDA, rs.getString( "CALCPISVENDA" ) );
 				cab.setString( C_IMPPISVENDA, rs.getString( "IMPPISVENDA" ) );
+				
+				/*
 				cab.setFloat( C_VLRDESCVENDA, rs.getFloat( "VLRDESCVENDA" ) );
 				cab.setFloat( C_VLRPISVENDA, rs.getFloat( "VLRPISVENDA" ) );
 				cab.setFloat( C_VLRCOFINSVENDA, rs.getFloat( "VLRCOFINSVENDA" ) );
 				cab.setFloat( C_VLRIRVENDA, rs.getFloat( "VLRIRVENDA" ) );
 				cab.setFloat( C_VLRCSOCIALVENDA, rs.getFloat( "VLRCSOCIALVENDA" ) );
-				cab.setFloat( C_VLRBASEISSVENDA, rs.getFloat( "VLRBASEISSVENDA" ) );			
+				cab.setFloat( C_VLRBASEISSVENDA, rs.getFloat( "VLRBASEISSVENDA" ) );*/			
+
+				
+				cab.setBigDecimal( C_VLRDESCVENDA, rs.getBigDecimal( "VLRDESCVENDA" ) );
+				cab.setBigDecimal( C_VLRPISVENDA, rs.getBigDecimal( "VLRPISVENDA" ) );
+				cab.setBigDecimal( C_VLRCOFINSVENDA, rs.getBigDecimal( "VLRCOFINSVENDA" ) );
+				cab.setBigDecimal( C_VLRIRVENDA, rs.getBigDecimal( "VLRIRVENDA" ) );
+				cab.setBigDecimal( C_VLRCSOCIALVENDA, rs.getBigDecimal( "VLRCSOCIALVENDA" ) );
+				cab.setBigDecimal( C_VLRBASEISSVENDA, rs.getBigDecimal( "VLRBASEISSVENDA" ) );
+				
 				
 			}
 			rs.close();
@@ -205,27 +233,46 @@ public class NFSaida extends NF {
 				itens.setString( C_DESCPROD, ( rs.getString( "DESCPROD" ) != null ? rs.getString( "DESCPROD" ) : "" ) );
 				itens.setString( C_OBSITPED, ( rs.getString( "OBSITVENDA" ) != null ? rs.getString( "OBSITVENDA" ) : "" ) );
 				itens.setString( C_CODUNID, ( rs.getString( "CODUNID" ) != null ? rs.getString( "CODUNID" ) : "" ) );
-				itens.setFloat( C_QTDITPED, rs.getFloat( "QTDITVENDA" ) );
+
+/*				itens.setFloat( C_QTDITPED, rs.getFloat( "QTDITVENDA" ) );
 				itens.setFloat( C_VLRLIQITPED, rs.getFloat( "VLRLIQITVENDA" ) );
 				itens.setFloat( C_PERCIPIITPED, rs.getFloat( "PERCIPIITVENDA" ) );
 				itens.setFloat( C_PERCICMSITPED, rs.getFloat( "PERCICMSITVENDA" ) );
-				itens.setFloat( C_VLRIPIITPED, rs.getFloat( "VLRIPIITVENDA" ) );
+				itens.setFloat( C_VLRIPIITPED, rs.getFloat( "VLRIPIITVENDA" ) );*/
+				
+				itens.setBigDecimal( C_QTDITPED, rs.getBigDecimal( "QTDITVENDA" ) );
+				itens.setBigDecimal( C_VLRLIQITPED, rs.getBigDecimal( "VLRLIQITVENDA" ) );
+				itens.setBigDecimal( C_PERCIPIITPED, rs.getBigDecimal( "PERCIPIITVENDA" ) );
+				itens.setBigDecimal( C_PERCICMSITPED, rs.getBigDecimal( "PERCICMSITVENDA" ) );
+				itens.setBigDecimal( C_VLRIPIITPED, rs.getBigDecimal( "VLRIPIITVENDA" ) );
+
 				itens.setString( C_IMPDTSAIDA, ( rs.getString( "IMPDTSAIDANAT" ) != null ? rs.getString( "IMPDTSAIDANAT" ) : "" ) );
-				itens.setFloat( C_VLRPRODITPED, rs.getFloat( "VLRPRODITVENDA" ) );
+				
+//				itens.setFloat( C_VLRPRODITPED, rs.getFloat( "VLRPRODITVENDA" ) );
+				itens.setBigDecimal( C_VLRPRODITPED, rs.getBigDecimal( "VLRPRODITVENDA" ) );
+				
 				itens.setString( C_DESCNAT, ( rs.getString( "DESCNAT" ) != null ? rs.getString( "DESCNAT" ) : "" ) );
 				itens.setInt( C_CODNAT, rs.getInt( "CODNAT" ) );
 				itens.setString( C_CODLOTE, ( rs.getString( "CODLOTE" ) != null ? rs.getString( "CODLOTE" ) : "" ) );
 				itens.setDate( C_VENCLOTE, rs.getDate( 25 ) );
 				itens.setString( C_ORIGFISC, ( rs.getString( "ORIGFISC" ) != null ? rs.getString( "ORIGFISC" ) : "" ) );
 				itens.setString( C_CODTRATTRIB, ( rs.getString( "CODTRATTRIB" ) != null ? rs.getString( "CODTRATTRIB" ) : "" ) );
-				itens.setFloat( C_VLRADICITPED, rs.getFloat( "VLRADICVENDA" ) );
+				
+//				itens.setFloat( C_VLRADICITPED, rs.getFloat( "VLRADICVENDA" ) );
+				itens.setBigDecimal( C_VLRADICITPED, rs.getBigDecimal( "VLRADICVENDA" ) );
+				
 				itens.setInt( C_CONTAITENS, rs.getInt( 26 ) );
 				itens.setString( C_DESCFISC, ( rs.getString( 27 ) != null ? rs.getString( 27 ) : "" ) );
 				itens.setString( C_DESCFISC2, ( rs.getString( 28 ) != null ? rs.getString( 28 ) : "" ) );
 				itens.setString( C_CODFISC, rs.getString( "CODFISC" ) != null ? rs.getString( "CODFISC" ) : "" );
 				itens.setString( C_TIPOPROD, rs.getString( "TIPOPROD" ) != null ? rs.getString( "TIPOPROD" ) : "" );
-				itens.setFloat( C_VLRISSITPED, rs.getFloat( "VLRISSITVENDA" ) );
-				itens.setFloat( C_VLRDESCITPROD, rs.getFloat( "VLRDESCITVENDA" ) );
+
+/*				itens.setFloat( C_VLRISSITPED, rs.getFloat( "VLRISSITVENDA" ) );
+				itens.setFloat( C_VLRDESCITPROD, rs.getFloat( "VLRDESCITVENDA" ) );*/
+				
+				itens.setBigDecimal( C_VLRISSITPED, rs.getBigDecimal( "VLRISSITVENDA" ) );
+				itens.setBigDecimal( C_VLRDESCITPROD, rs.getBigDecimal( "VLRDESCITVENDA" ) );
+
 				itens.setString( C_CODBAR, rs.getString( "CODBARPROD" ) );
 			}
 			rs.close();
@@ -276,7 +323,8 @@ public class NFSaida extends NF {
 			while ( rs.next() ) {
 				parc.addRow();
 				parc.setDate( C_DTVENCTO, rs.getDate( "DTVENCITREC" ) );
-				parc.setFloat( C_VLRPARC, rs.getFloat( "VLRPARCITREC" ) );
+//				parc.setFloat( C_VLRPARC, rs.getFloat( "VLRPARCITREC" ) );
+				parc.setBigDecimal( C_VLRPARC, rs.getBigDecimal( "VLRPARCITREC" ) );
 				parc.setInt( C_NPARCITREC, rs.getInt( "NPARCITREC" ) );
 			}
 			rs.close();
@@ -317,17 +365,29 @@ public class NFSaida extends NF {
 				frete.setString( C_TIPOFRETE, ( rs.getString( "TIPOFRETEVD" ) != null ? rs.getString( "TIPOFRETEVD" ) : "" ) );
 				frete.setString( C_PLACAFRETE, ( rs.getString( "PLACAFRETEVD" ) != null ? rs.getString( "PLACAFRETEVD" ) : "" ) );
 				frete.setString( C_UFFRETE, ( rs.getString( "UFFRETEVD" ) != null ? rs.getString( "UFFRETEVD" ) : "" ) );
-				frete.setFloat( C_QTDFRETE, rs.getFloat( "QTDFRETEVD" ) );
+//				frete.setFloat( C_QTDFRETE, rs.getFloat( "QTDFRETEVD" ) );
+				frete.setBigDecimal( C_QTDFRETE, rs.getBigDecimal( "QTDFRETEVD" ) );
 				frete.setString( C_ESPFRETE, ( rs.getString( "ESPFRETEVD" ) != null ? rs.getString( "ESPFRETEVD" ) : "" ) );
 				frete.setString( C_MARCAFRETE, ( rs.getString( "MARCAFRETEVD" ) != null ? rs.getString( "MARCAFRETEVD" ) : "" ) );
-				frete.setFloat( C_PESOBRUTO, rs.getFloat( "PESOBRUTVD" ) );
+
+/*				frete.setFloat( C_PESOBRUTO, rs.getFloat( "PESOBRUTVD" ) );
 				frete.setFloat( C_PESOLIQ, rs.getFloat( "PESOLIQVD" ) );
-				frete.setFloat( C_VLRFRETEPED, rs.getFloat( "VLRFRETEVENDA" ) );
+				frete.setFloat( C_VLRFRETEPED, rs.getFloat( "VLRFRETEVENDA" ) );*/
+	
+				frete.setBigDecimal( C_PESOBRUTO, rs.getBigDecimal( "PESOBRUTVD" ) );
+				frete.setBigDecimal( C_PESOLIQ, rs.getBigDecimal( "PESOLIQVD" ) );
+				frete.setBigDecimal( C_VLRFRETEPED, rs.getBigDecimal( "VLRFRETEVENDA" ) );				
+				
 				frete.setString( C_CONHECFRETEPED, ( rs.getString( "CONHECFRETEVD" ) != null ? rs.getString( "CONHECFRETEVD" ) : "" ) );
 				frete.setString( C_CPFTRANSP, ( rs.getString( "CPFTRAN" ) != null ? rs.getString( "CPFTRAN" ) : "" ) );
 				frete.setString( C_ADICFRETEBASEICM, ( rs.getString( "ADICFRETEBASEICM" ) != null ? rs.getString( "ADICFRETEBASEICM" ) : "" ) );
-				frete.setFloat( C_ALIQICMSFRETEVD, rs.getFloat( "ALIQICMSFRETEVD" ) );
-				frete.setFloat( C_VLRICMSFRETEVD, rs.getFloat( "VLRICMSFRETEVD" ) );
+
+/*				frete.setFloat( C_ALIQICMSFRETEVD, rs.getFloat( "ALIQICMSFRETEVD" ) );
+				frete.setFloat( C_VLRICMSFRETEVD, rs.getFloat( "VLRICMSFRETEVD" ) );*/
+				
+				frete.setBigDecimal( C_ALIQICMSFRETEVD, rs.getBigDecimal( "ALIQICMSFRETEVD" ) );
+				frete.setBigDecimal( C_VLRICMSFRETEVD, rs.getBigDecimal( "VLRICMSFRETEVD" ) );
+				
 			}
 			rs.close();
 			ps.close();
