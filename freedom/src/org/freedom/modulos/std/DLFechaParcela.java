@@ -163,6 +163,7 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 			txtCodTipoCob.setVlrInteger( (Integer) args[ EFields.TIPOCOB.ordinal() ] );
 			txtCodBanco.setVlrString( (String) args[ EFields.BANCO.ordinal() ] );
 			txtCodCartCob.setVlrString( (String) args[ EFields.CARTCOB.ordinal() ] );
+			cbDescPont.setVlrString( (String) args[ EFields.DESCPONT.ordinal() ] );
 
 			if ( txtVlrDescItRec.getVlrBigDecimal() == null ) {
 				txtVlrDescItRec.setAtivo( false );
@@ -185,6 +186,7 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 		oRetorno[ DLFechaParcela.EFields.TIPOCOB.ordinal() ] = txtCodTipoCob.getVlrInteger()!=0 ? String.valueOf( txtCodTipoCob.getVlrInteger() ) : "";
 		oRetorno[ DLFechaParcela.EFields.BANCO.ordinal() ] = txtCodBanco.getVlrString();
 		oRetorno[ DLFechaParcela.EFields.CARTCOB.ordinal() ] = txtCodCartCob.getVlrString();
+		oRetorno[ DLFechaParcela.EFields.DESCPONT.ordinal() ] = cbDescPont.getVlrString();
 
 		return oRetorno;
 	}
@@ -257,6 +259,7 @@ public class DLFechaParcela extends FFDialogo implements CarregaListener, FocusL
 		DESCONTO,
 		TIPOCOB,
 		BANCO,
-		CARTCOB
+		CARTCOB,
+		DESCPONT
 	}
 }

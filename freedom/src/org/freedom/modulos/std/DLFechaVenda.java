@@ -259,6 +259,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private boolean bCarFrete = false;
 
 	private boolean bPrefs[] = null;
+	
+	private JCheckBoxPad cbDescPont = new JCheckBoxPad( "Desconto pontualidade?", "S", "N" );
 
 	public DLFechaVenda( Connection cn, Integer iCodVenda, Component cOrig, String impPed, String impNf, String impBol, String impRec, String reImpNf ) {
 
@@ -266,7 +268,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		setConexao( cn );
 		iCodVendaFecha = iCodVenda.intValue();
 		setTitulo( "Fechar Venda" );
-		setAtribos( 395, 450 );		
+		setAtribos( 405, 450 );		
 
 		bPrefs = prefs();
 
@@ -509,6 +511,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcItReceber.add( new GuardaCampo( txtCodTipoCobItRec, "CodTipoCob", "Cod.tp.cob.", ListaCampos.DB_FK, txtDescTipoCobItRec, false ) );
 		lcItReceber.add( new GuardaCampo( txtCodBancoItRec, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtDescBancoItRec, false ) );
 		lcItReceber.add( new GuardaCampo( txtCodCartCobItRec, "CodCartCob", "Cód.Cart.Cob.", ListaCampos.DB_FK, txtDescCartCobItRec, false ) );
+		lcItReceber.add( new GuardaCampo( cbDescPont, "DescPont", "Desc.Pont", ListaCampos.DB_SI, false ) );
 		lcItReceber.montaSql( false, "ITRECEBER", "FN" );
 		lcItReceber.setQueryCommit( false );
 		txtNParcItRec.setListaCampos( lcItReceber );
@@ -607,6 +610,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		adic( cbImpBol, 230, 210, 150, 20 );
 		adic( cbImpRec, 230, 230, 150, 20 );
 		adic( cbReImpNot, 230, 250, 150, 20 );		
+	//	adic( cbDescPont, 7, 250, 180, 20 );		
 		
 
 		setPainel( pinFrete );
@@ -832,7 +836,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				txtVlrDescItRec.getVlrBigDecimal(), 
 				txtCodTipoCobItRec.getVlrInteger(), 
 				txtCodBancoItRec.getVlrString(),
-				txtCodCartCobItRec.getVlrString()
+				txtCodCartCobItRec.getVlrString(),
+				cbDescPont.getVlrString()
 		};
 
 		dl.setValores( valores );
@@ -848,6 +853,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			txtCodTipoCobItRec.setVlrString( (String) valores[ DLFechaParcela.EFields.TIPOCOB.ordinal() ] );
 			txtCodBancoItRec.setVlrString( (String) valores[ DLFechaParcela.EFields.BANCO.ordinal() ] );
 			txtCodCartCobItRec.setVlrString( (String) valores[ DLFechaParcela.EFields.CARTCOB.ordinal() ] );
+			cbDescPont.setVlrString( (String) valores[ DLFechaParcela.EFields.DESCPONT.ordinal() ] );
 			
 			txtAltUsuRec.setVlrString( "S" );
 			
