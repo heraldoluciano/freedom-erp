@@ -96,11 +96,15 @@ public class TabVector {
 			value = (Date) o;
 		return value;
 	}
-	
+
+	//Método em desuso pois pode ocasionar problemas de arredondamento.	
+	@Deprecated
 	public void setFloat(int pos, float value) {
 		setObject(pos, new BigDecimal(value));
 	}
-	
+
+	//Método em desuso pois pode ocasionar problemas de arredondamento.
+	@Deprecated
 	public float getFloat(int pos) {
 		float value = 0;
 		Object o = getObject(pos);
@@ -108,6 +112,19 @@ public class TabVector {
 			value = ((BigDecimal) o).floatValue();
 		return value;
 	}
+	
+	public void setBigDecimal(int pos, BigDecimal value) {
+		setObject(pos, value);
+	}
+	
+	public BigDecimal getBigDecimal(int pos) {
+		BigDecimal value = new BigDecimal(0);
+		Object o = getObject(pos);
+		if (o!=null) 
+			value = (BigDecimal) o;
+		return value;
+	}
+	
 	public void setObject(int pos, Object obj) {
 		Vector<Object> v = getCol(this.row);
 		if (v!=null) { 

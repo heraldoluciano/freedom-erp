@@ -339,7 +339,14 @@ public class NF035 extends Layout {
 						imp.pulaLinha( 47 - imp.pRow(), imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
 						imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRICMSPED ) ) ) );
-						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) - cab.getFloat( NF.C_BASEISS ) ) ) );
+//						
+						BigDecimal baseiss = cab.getBigDecimal( NF.C_BASEISS );
+						BigDecimal vlrprodped = cab.getBigDecimal( NF.C_VLRPRODPED );
+						BigDecimal vlrprod = vlrprodped.subtract( baseiss );						
+						
+//						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRPRODPED ) - cab.getFloat( NF.C_BASEISS ) ) ) );
+						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf(vlrprod) ));
+						
 						imp.pulaLinha( 2, imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( frete.getFloat( NF.C_VLRFRETEPED ) ) ) );
 						imp.say( 58, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getFloat( NF.C_VLRADICPED ) ) ) );
