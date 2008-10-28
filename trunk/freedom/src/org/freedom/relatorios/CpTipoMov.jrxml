@@ -45,7 +45,7 @@
 	<parameter name="COMREF" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["N"]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA,
+	<queryString><![CDATA[SELECT it.precoitcompra, C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA,
 F.NOMEFOR, PG.DESCPLANOPAG,  IT.CODITCOMPRA, IT.CODPROD, PD.DESCPROD, PD.PRECOBASEPROD,
 IT.CODLOTE, IT.QTDITCOMPRA, (IT.QTDITCOMPRA*PD.PRECOBASEPROD) 
 VLRLIQITCOMPRA, (SELECT SUM(PD2.PRECOBASEPROD*IT2.QTDITCOMPRA)
@@ -61,6 +61,7 @@ C.CODCOMPRA=IT.CODCOMPRA AND IT.CODEMPPD=PD.CODEMP AND IT.CODFILIALPD=PD.CODFILI
 IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN '01.01.2006' AND '01.01.2007'  
 ORDER BY C.CODCOMPRA, IT.CODITCOMPRA]]></queryString>
 
+	<field name="PRECOITCOMPRA" class="java.math.BigDecimal"/>
 	<field name="CODCOMPRA" class="java.lang.Long"/>
 	<field name="DOCCOMPRA" class="java.lang.Long"/>
 	<field name="DTEMITCOMPRA" class="java.sql.Date"/>
@@ -1011,7 +1012,7 @@ ORDER BY C.CODCOMPRA, IT.CODITCOMPRA]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{PRECOBASEPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{PRECOITCOMPRA}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
