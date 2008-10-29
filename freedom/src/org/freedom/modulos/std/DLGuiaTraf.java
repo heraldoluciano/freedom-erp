@@ -56,7 +56,7 @@ public class DLGuiaTraf extends FFDialogo implements ActionListener, KeyListener
 
 	private JTextFieldPad txtDtEmissGuiaTraf = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
-	private JTextFieldPad txtNumeroGuiaTraf = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	private JTextFieldPad txtNumGuiaTraf = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 	
 	private JTextFieldPad txtSeloGuiaTraf = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 
@@ -67,6 +67,8 @@ public class DLGuiaTraf extends FFDialogo implements ActionListener, KeyListener
 	private JLabelPad lbCodFilial = new JLabelPad( "Cód.filial" );
 
 	private JLabelPad lbCodItCompra = new JLabelPad( "Cód.item" );
+	
+	private JLabelPad lbNumGuiaTraf = new JLabelPad( "Número da guia" );
 
 	private JLabelPad lbDataEmissGuia = new JLabelPad( "Data de emissão" );
 	
@@ -76,15 +78,20 @@ public class DLGuiaTraf extends FFDialogo implements ActionListener, KeyListener
 
 		super();
 		setTitulo( "Guia de tráfego" );
-		setAtribos( 400, 200 );
+		setAtribos( 350, 150 );
 
 
 		txtDtEmissGuiaTraf.setRequerido( true );
-		txtNumeroGuiaTraf.setRequerido( true );
+		txtNumGuiaTraf.setRequerido( true );
 		txtSeloGuiaTraf.setRequerido( true );
 		
 		adic( lbDataEmissGuia, 7, 0, 100, 20 );
 		adic( txtDtEmissGuiaTraf, 7, 20, 100, 20 );
+		adic( lbNumGuiaTraf, 110, 0, 100, 20 );
+		adic( txtNumGuiaTraf, 110, 20, 100, 20 );
+		adic( lbSeloGuiaTraf, 213, 0, 100, 20 );
+		adic( txtSeloGuiaTraf, 213, 20, 100, 20 );
+		
 
 		
 	}
