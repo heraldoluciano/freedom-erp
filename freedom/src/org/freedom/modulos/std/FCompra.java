@@ -1640,7 +1640,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				if ( !testaCodLote() ) {
 					pevt.cancela();
 				}
+			}			
+			if ( getGuiaTraf() ) {
+
+				DLGuiaTraf dl = new DLGuiaTraf();
+				dl.setVisible( true );
 			}
+					
 		}
 		if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
 			testaCodCompra();
@@ -1653,6 +1659,42 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		String s = txtCodCompra.getText();
 		lcCompra2.carregaDados(); // Carrega os Totais
 		txtCodCompra.setVlrString( s );
+	}
+	
+	
+	private boolean getGuiaTraf(){
+
+		boolean retorno = false;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sSQL = new StringBuffer();
+		
+		try {
+			
+			sSQL.append( "SELECT GUIATRAFPROD FROM EQPRODUTO WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?  " );
+			
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps.setInt( 3, txtCodProd.getVlrInteger().intValue() );
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+
+				if( rs.getString( 1 ).equals( "S" )){
+				
+					retorno = true;
+				}
+			}
+			
+		} catch ( SQLException e ) {
+			
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar dados do produto " + e.getMessage() );
+		}
+
+		return retorno; 
+		
 	}
 
 	public void setConexao( Connection cn ) {
