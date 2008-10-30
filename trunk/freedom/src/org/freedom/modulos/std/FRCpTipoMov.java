@@ -171,7 +171,7 @@ public class FRCpTipoMov extends FRelatorio {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = null;
+		StringBuilder sSQL = new StringBuilder();
 		String sWhere = "";
 		BigDecimal bTotal = null;
 		StringBuilder sCab = new StringBuilder();	
@@ -199,6 +199,35 @@ public class FRCpTipoMov extends FRelatorio {
 				
 			}
 			
+			sSQL.append( "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, " ); 
+			sSQL.append( "F.NOMEFOR, PG.DESCPLANOPAG, IT.CODITCOMPRA, IT.CODPROD, PD.DESCPROD, ");
+			sSQL.append( "IT.CODLOTE, IT.QTDITCOMPRA," );
+
+				 if(getPrefere()) {
+					 sSQL.append( "IT.PRECOITCOMPRA AS PRECO, IT.VLRLIQITCOMPRA, C.VLRLIQCOMPRA " );
+				 }
+				 else {
+					 sSQL.append( "PD.PRECOBASEPROD AS PRECO,  ");
+					 sSQL.append( "(IT.QTDITCOMPRA*PD.PRECOBASEPROD) AS VLRLIQITCOMPRA, ");
+					 sSQL.append( "(SELECT SUM(PD2.PRECOBASEPROD*IT2.QTDITCOMPRA) "); 
+					 sSQL.append( "FROM EQPRODUTO PD2, CPITCOMPRA IT2 " ); 
+					 sSQL.append( "WHERE PD2.CODEMP=IT2.CODEMPPD AND PD2.CODFILIAL=IT2.CODFILIALPD AND " ); 
+					 sSQL.append( "PD2.CODPROD=IT2.CODPROD AND IT2.CODEMP=C.CODEMP AND IT2.CODFILIAL=C.CODFILIAL AND " ); 
+					 sSQL.append( "IT2.CODCOMPRA=C.CODCOMPRA) VLRLIQCOMPRA " );
+				 }
+					 
+				 sSQL.append( "FROM CPCOMPRA C, CPITCOMPRA IT, CPFORNECED F, FNPLANOPAG PG, EQPRODUTO PD ");
+				 sSQL.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? ");
+				 sSQL.append( "AND C.CODEMPFR=F.CODEMP AND C.CODFILIALFR=F.CODFILIAL AND C.CODFOR=F.CODFOR ");
+				 sSQL.append( "AND C.CODEMPPG=PG.CODEMP AND C.CODFILIALPG=PG.CODFILIAL AND C.CODPLANOPAG=PG.CODPLANOPAG ");
+				 sSQL.append( "AND C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND C.CODCOMPRA=IT.CODCOMPRA ");
+				 sSQL.append( "AND IT.CODEMPPD=PD.CODEMP AND IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD ");
+				 sSQL.append( "AND C.DTEMITCOMPRA BETWEEN ? AND ? ");
+				 sSQL.append( sWhere );
+				 sSQL.append( " ORDER BY C.CODCOMPRA, IT.CODITCOMPRA" );
+
+			
+			/*
 			sSQL = "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, " +
 			   "F.NOMEFOR, PG.DESCPLANOPAG,  "+
 			   "IT.CODITCOMPRA, IT.CODPROD, PD.DESCPROD, PD.PRECOBASEPROD, IT.CODLOTE, IT.QTDITCOMPRA, IT.PRECOITCOMPRA, "+
@@ -211,10 +240,10 @@ public class FRCpTipoMov extends FRelatorio {
 			   "AND IT.CODEMPPD=PD.CODEMP AND IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD "+
 			   "AND C.DTEMITCOMPRA BETWEEN ? AND ? "+
 			   sWhere+
-			   " ORDER BY C.CODCOMPRA, IT.CODITCOMPRA";
-
+			   " ORDER BY C.CODCOMPRA, IT.CODITCOMPRA";			
+			*/
 			
-			ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sSQL.toString());
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("CPCOMPRA"));
 			ps.setDate(3, Funcoes.strDateToSqlDate(txtDataini.getVlrString()));
@@ -363,12 +392,12 @@ public class FRCpTipoMov extends FRelatorio {
 				imp.say(imp.pRow(), 22, "| " + (rs.getString("DESCPROD") != null ? rs.getString("DESCPROD") : ""));
 				imp.say(imp.pRow(), 75, "| " + (rs.getString("CODLOTE") != null ? rs.getString("CODLOTE") : ""));
 				imp.say(imp.pRow(), 91, "| " + Funcoes.strDecimalToStrCurrency(8,Aplicativo.casasDec,(rs.getString("QTDITCOMPRA") != null ? rs.getString("QTDITCOMPRA") : "")));
-				if( getPrefere() ){
+/*				if( getPrefere() ){
 					imp.say(imp.pRow(), 102, "| " + (rs.getString("PRECOITCOMPRA") != null ? rs.getString("PRECOITCOMPRA") : ""));
-				}else{
-					imp.say(imp.pRow(), 102, "| " + (rs.getString("PRECOBASEPROD") != null ? rs.getString("PRECOBASEPROD") : ""));
-				
-				}
+				}else{*/
+					imp.say(imp.pRow(), 102, "| " + (rs.getString("PRECO") != null ? rs.getString("PRECO") : ""));
+/*				
+				}*/
 				imp.say(imp.pRow(),117, "| " + Funcoes.strDecimalToStrCurrency(10,2,(rs.getString("VLRLIQITCOMPRA") != null ? rs.getString("VLRLIQITCOMPRA") : "")));
 				imp.say(imp.pRow(),135, "|");	
 				
