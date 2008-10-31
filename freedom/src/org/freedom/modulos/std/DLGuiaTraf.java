@@ -55,9 +55,9 @@ public class DLGuiaTraf extends FFDialogo implements ActionListener, KeyListener
 	private JTextFieldPad txtCodItCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
 
 	private JTextFieldPad txtDtEmissGuiaTraf = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-	
+
 	private JTextFieldPad txtNumGuiaTraf = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
-	
+
 	private JTextFieldPad txtSeloGuiaTraf = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 
 	private JLabelPad lbCodCompra = new JLabelPad( "Cód.compra" );
@@ -67,12 +67,18 @@ public class DLGuiaTraf extends FFDialogo implements ActionListener, KeyListener
 	private JLabelPad lbCodFilial = new JLabelPad( "Cód.filial" );
 
 	private JLabelPad lbCodItCompra = new JLabelPad( "Cód.item" );
-	
+
 	private JLabelPad lbNumGuiaTraf = new JLabelPad( "Número da guia" );
 
 	private JLabelPad lbDataEmissGuia = new JLabelPad( "Data de emissão" );
-	
+
 	private JLabelPad lbSeloGuiaTraf = new JLabelPad( "Selo da Guia" );
+	
+	//int codcompra;
+	
+	//int coditcompra;
+	
+	
 
 	public DLGuiaTraf() {
 
@@ -80,11 +86,10 @@ public class DLGuiaTraf extends FFDialogo implements ActionListener, KeyListener
 		setTitulo( "Guia de tráfego" );
 		setAtribos( 350, 150 );
 
-
 		txtDtEmissGuiaTraf.setRequerido( true );
 		txtNumGuiaTraf.setRequerido( true );
 		txtSeloGuiaTraf.setRequerido( true );
-		
+
 		adic( lbDataEmissGuia, 7, 0, 100, 20 );
 		adic( txtDtEmissGuiaTraf, 7, 20, 100, 20 );
 		adic( lbNumGuiaTraf, 110, 0, 100, 20 );
@@ -92,9 +97,48 @@ public class DLGuiaTraf extends FFDialogo implements ActionListener, KeyListener
 		adic( lbSeloGuiaTraf, 213, 0, 100, 20 );
 		adic( txtSeloGuiaTraf, 213, 20, 100, 20 );
 		
+		//this.codcompra = codcompra;
+		//this.coditcompra = coditcompra;
 
-		
 	}
+
+	private void gravaGuiaTraf() {
+
+		if ( txtDtEmissGuiaTraf.getVlrString().equals( "" ) ) {
+
+			Funcoes.mensagemInforma( this, "A data de emissão é requerida!" );
+		}
+		else if ( txtNumGuiaTraf.getVlrString().equals( "" ) ) {
+
+			Funcoes.mensagemInforma( this, "O número da guia é requerido!" );
+		}
+		else if ( txtSeloGuiaTraf.getVlrString().equals( "" ) ) {
+
+			Funcoes.mensagemInforma( this, "O selo da guia é requerido" );
+
+		}
+
+		StringBuffer sSQL = new StringBuffer();
+		PreparedStatement ps = null;
+
+		sSQL.append( "INSERT INTO EQGUIATRAF( CODEMP, CODFILIAL, CODCOMPRA, CODITCOMPRA, DTEMISGUIATRAF, " );
+		sSQL.append( "NROGUIATRAF, NROGUIASELOTRAF ) VALUES (?,?,?,?,?,?,?)" );
+
+		try {
+
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQGUIATRAF" ) );
+			//ps.setInt( 3, codcompra );
+			//ps.setInt( 4, coditcompra );
+			
+
+		} catch ( Exception e ) {
+
+		}
+
+	}
+
 }
 
 
