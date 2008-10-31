@@ -74,13 +74,13 @@ public class DLGuiaTraf extends FFDialogo implements ActionListener, KeyListener
 
 	private JLabelPad lbSeloGuiaTraf = new JLabelPad( "Selo da Guia" );
 	
-	//int codcompra;
+	int codcompra;
 	
-	//int coditcompra;
+	int coditcompra;	
 	
-	
+	Connection con = null;
 
-	public DLGuiaTraf() {
+	public DLGuiaTraf( int codcompra, int coditcompra, Connection con ) {
 
 		super();
 		setTitulo( "Guia de tráfego" );
@@ -97,48 +97,60 @@ public class DLGuiaTraf extends FFDialogo implements ActionListener, KeyListener
 		adic( lbSeloGuiaTraf, 213, 0, 100, 20 );
 		adic( txtSeloGuiaTraf, 213, 20, 100, 20 );
 		
-		//this.codcompra = codcompra;
-		//this.coditcompra = coditcompra;
+		this.codcompra = codcompra;
+		this.coditcompra = coditcompra;
+		this.con = con;
 
 	}
 
-	private void gravaGuiaTraf() {
+	public void gravaGuiaTraf() {
 
 		if ( txtDtEmissGuiaTraf.getVlrString().equals( "" ) ) {
 
 			Funcoes.mensagemInforma( this, "A data de emissão é requerida!" );
+			return;
 		}
 		else if ( txtNumGuiaTraf.getVlrString().equals( "" ) ) {
 
 			Funcoes.mensagemInforma( this, "O número da guia é requerido!" );
+			return;
 		}
 		else if ( txtSeloGuiaTraf.getVlrString().equals( "" ) ) {
 
 			Funcoes.mensagemInforma( this, "O selo da guia é requerido" );
-
+			return;
 		}
 
 		StringBuffer sSQL = new StringBuffer();
 		PreparedStatement ps = null;
 
 		sSQL.append( "INSERT INTO EQGUIATRAF( CODEMP, CODFILIAL, CODCOMPRA, CODITCOMPRA, DTEMISGUIATRAF, " );
-		sSQL.append( "NROGUIATRAF, NROGUIASELOTRAF ) VALUES (?,?,?,?,?,?,?)" );
+		sSQL.append( "NROGUIATRAF, NROSELOGUIATRAF ) VALUES (?,?,?,?,?,?,?)" );
 
 		try {
 
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQGUIATRAF" ) );
-			//ps.setInt( 3, codcompra );
-			//ps.setInt( 4, coditcompra );
+			ps.setInt( 3, codcompra );
+			ps.setInt( 4, coditcompra );
+			ps.setDate( 5, Funcoes.dateToSQLDate( txtDtEmissGuiaTraf.getVlrDate() ) );
+			ps.setInt( 6, txtNumGuiaTraf.getVlrInteger() );
+			ps.setInt( 7, txtSeloGuiaTraf.getVlrInteger() );
 			
+			ps.executeUpdate();
+			ps.close();
+			
+			if ( !con.getAutoCommit() ){
+				con.commit();
+			}
 
-		} catch ( Exception e ) {
-
+		} catch ( SQLException err ) {
+			
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao salvar dados na tabela EQGUIATRAF \n" + err.getMessage() );
 		}
-
 	}
-
 }
 
 

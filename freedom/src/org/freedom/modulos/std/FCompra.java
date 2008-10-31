@@ -1643,8 +1643,16 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}			
 			if ( getGuiaTraf() ) {
 
-				DLGuiaTraf dl = new DLGuiaTraf();
+				DLGuiaTraf dl = new DLGuiaTraf( txtCodCompra.getVlrInteger(), txtCodItCompra.getVlrInteger(), con );
 				dl.setVisible( true );
+				
+				if( dl.OK ){
+					
+					dl.gravaGuiaTraf();
+				}
+				else{
+					pevt.cancela();
+				}
 			}
 					
 		}
