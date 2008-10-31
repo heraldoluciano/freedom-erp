@@ -1634,6 +1634,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	public void beforePost( PostEvent pevt ) {
 
+		boolean tem = false;
 		if ( pevt.getListaCampos() == lcDet ) {
 			txtRefProd.setVlrString( txtRefProd.getText() ); // ?
 			if ( txtCLoteProd.getVlrString().equals( "S" ) ) {
@@ -1643,18 +1644,26 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}			
 			if ( getGuiaTraf() ) {
 
-				DLGuiaTraf dl = new DLGuiaTraf( txtCodCompra.getVlrInteger(), txtCodItCompra.getVlrInteger(), con );
+				DLGuiaTraf dl = new DLGuiaTraf( txtCodCompra.getVlrInteger(), txtCodItCompra.getVlrInteger(), con );				
+				tem = dl.getGuiaTraf();				
 				dl.setVisible( true );
 				
 				if( dl.OK ){
 					
-					dl.gravaGuiaTraf();
+					if( tem ){
+						
+						dl.updatGuiaTraf();
+					}
+					else{
+						
+						dl.insertGuiaTraf();
+					}
+					
 				}
 				else{
 					pevt.cancela();
 				}
-			}
-					
+			}	
 		}
 		if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
 			testaCodCompra();
