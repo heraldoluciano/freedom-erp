@@ -137,20 +137,6 @@ public class FRTermReceb extends FRelatorio {
 				+ Funcoes.getMesExtenso( dtRec )+ " DE " 
 				+ Funcoes.getAno( dtRec ) +".");
 		
-		
-
-		
-		
-		/*sql.append( "SELECT O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV ");
-		sql.append( "FROM VDORCAMENTO O, VDITORCAMENTO IO, ATCONVENIADO CV ");
-		sql.append( "WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODORC=? AND "); 
-		sql.append( "IO.CODEMP=O.CODEMP AND IO.CODFILIAL=O.CODFILIAL AND "); 
-		sql.append( "IO.CODORC=O.CODORC AND IO.SITENTITORC='N' AND ");
-		sql.append( "IO.SITTERMRITORC='E' AND CV.CODEMP=O.CODEMPCV AND "); 
-		sql.append( "CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV" ); */
-		
-		System.out.println("SQL:" + sql.toString());
-		
 		try {
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, ListaCampos.getMasterFilial( "SGPREFERE2" ));
@@ -162,8 +148,6 @@ public class FRTermReceb extends FRelatorio {
 			Funcoes.mensagemErro( this, "Ocorreu um erro executando a consulta.\n"+e.getMessage() );
 			return;
 		}
-		
-		System.out.println("teste");
 		
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/TermReceb.jasper", "TERMO DE RECEBIMENTO", null, rs, hParam, this );
 		
