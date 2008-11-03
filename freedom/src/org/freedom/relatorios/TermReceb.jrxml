@@ -63,10 +63,10 @@
 	<parameter name="DATAIMP" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA[$F{DTORC}.toString()]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV, 
+	<queryString><![CDATA[SELECT VD.NOMEVEND, O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV, 
 P2.CABTERMR01 , P2.CABTERMR02, P2.RODTERMR, IO.NUMAUTORIZORC, P.DESCPROD, 
 E.FOTOEMP, O.DTORC, E.CIDEMP
-FROM VDITORCAMENTO IO, ATCONVENIADO CV, SGEMPRESA E, EQPRODUTO P, VDORCAMENTO O
+FROM VDVENDEDOR VD, VDITORCAMENTO IO, ATCONVENIADO CV, SGEMPRESA E, EQPRODUTO P, VDORCAMENTO O
 LEFT OUTER JOIN SGPREFERE2 P2 ON
 P2.CODEMP=O.CODEMP AND P2.CODFILIAL=$P{CODFILIAL}
 WHERE O.CODEMP=$P{CODEMP} AND O.CODFILIAL=$P{CODFILIAL} AND O.CODORC=$P{CODORC} AND 
@@ -90,6 +90,9 @@ E.CODEMP=P2.CODEMP]]></queryString>
 	<field name="FOTOEMP" class="java.io.InputStream"/>
 	<field name="DTORC" class="java.sql.Date"/>
 	<field name="CIDEMP" class="java.lang.String"/>
+	<field name="NOMEVEND" class="java.lang.String">
+		<fieldDescription><![CDATA[nome do médico]]></fieldDescription>
+	</field>
 
 	<variable name="DATAIMP" class="java.lang.String" resetType="Report" calculation="Nothing">
 		<initialValueExpression><![CDATA[$F{DTORC}.toString()]]></initialValueExpression>
@@ -142,11 +145,11 @@ E.CODEMP=P2.CODEMP]]></queryString>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="167"  isSplitAllowed="true" >
+			<band height="216"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="130"
-						y="125"
+						x="185"
+						y="105"
 						width="288"
 						height="15"
 						key="staticText-4"/>
@@ -158,8 +161,8 @@ E.CODEMP=P2.CODEMP]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="129"
-						y="121"
+						x="184"
+						y="101"
 						width="289"
 						height="0"
 						key="line-1"/>
@@ -180,8 +183,8 @@ E.CODEMP=P2.CODEMP]]></queryString>
 				</textField>
 				<staticText>
 					<reportElement
-						x="130"
-						y="143"
+						x="185"
+						y="123"
 						width="50"
 						height="15"
 						key="staticText-5"/>
@@ -193,13 +196,48 @@ E.CODEMP=P2.CODEMP]]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="180"
-						y="156"
+						x="235"
+						y="136"
 						width="233"
 						height="1"
 						key="line-2"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<staticText>
+					<reportElement
+						x="0"
+						y="151"
+						width="186"
+						height="15"
+						key="staticText-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified">
+						<font size="9"/>
+					</textElement>
+				<text><![CDATA[CONFORME SOLICITAÇÃO DO MÉDICO:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="189"
+						y="163"
+						width="233"
+						height="1"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="190"
+						y="167"
+						width="327"
+						height="14"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMEVEND}]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>
