@@ -206,7 +206,7 @@ E.CODEMP=P2.CODEMP]]></queryString>
 				<staticText>
 					<reportElement
 						x="0"
-						y="151"
+						y="181"
 						width="186"
 						height="15"
 						key="staticText-6"/>
@@ -219,7 +219,7 @@ E.CODEMP=P2.CODEMP]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="189"
-						y="163"
+						y="193"
 						width="233"
 						height="1"
 						key="line-3"/>
@@ -228,7 +228,7 @@ E.CODEMP=P2.CODEMP]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="190"
-						y="167"
+						y="197"
 						width="327"
 						height="14"
 						key="textField-10"/>
