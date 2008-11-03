@@ -117,8 +117,8 @@ public class FRTermReceb extends FRelatorio {
 		
 		sql.append("SELECT O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV, "); 
 		sql.append("P2.CABTERMR01 , P2.CABTERMR02, P2.RODTERMR, IO.NUMAUTORIZORC, P.DESCPROD, "); 
-		sql.append("E.FOTOEMP, O.DTORC, E.CIDEMP ");
-		sql.append("FROM VDITORCAMENTO IO, ATCONVENIADO CV, SGEMPRESA E, EQPRODUTO P, VDORCAMENTO O ");
+		sql.append("E.FOTOEMP, O.DTORC, E.CIDEMP, VD.NOMEVEND ");
+		sql.append("FROM VDVENDEDOR VD,VDITORCAMENTO IO, ATCONVENIADO CV, SGEMPRESA E, EQPRODUTO P, VDORCAMENTO O ");
 		sql.append("LEFT OUTER JOIN SGPREFERE2 P2 ON ");
 		sql.append("P2.CODEMP=O.CODEMP AND P2.CODFILIAL=? ");
 		sql.append("WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODORC=? AND "); 
@@ -127,16 +127,18 @@ public class FRTermReceb extends FRelatorio {
 		sql.append("IO.SITTERMRITORC='E' AND CV.CODEMP=O.CODEMPCV AND "); 
 		sql.append("CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV AND "); 
 		sql.append("P.CODEMP=IO.CODEMPPD AND P.CODFILIAL=IO.CODFILIALPD AND P.CODPROD=IO.CODPROD AND "); 
-		sql.append("E.CODEMP=P2.CODEMP");		
+		sql.append("E.CODEMP=P2.CODEMP ");
+		sql.append("AND VD.CODEMP=O.CODEMPVD AND VD.CODFILIAL=O.CODFILIALVD AND VD.CODVEND=O.CODVEND");
 		
 		hParam.put("CODEMP",Aplicativo.iCodEmp);
 		hParam.put( "CODORC", txtCodOrc.getVlrInteger() );
 		
-		
-		
 		hParam.put( "DATAIMP", Funcoes.getDiaMes( dtRec ) + " DE " 
 				+ Funcoes.getMesExtenso( dtRec )+ " DE " 
 				+ Funcoes.getAno( dtRec ) +".");
+		
+		
+
 		
 		
 		/*sql.append( "SELECT O.CODEMP, O.CODFILIAL, O.CODORC, CV.NOMECONV, CV.RGCONV ");
@@ -146,6 +148,8 @@ public class FRTermReceb extends FRelatorio {
 		sql.append( "IO.CODORC=O.CODORC AND IO.SITENTITORC='N' AND ");
 		sql.append( "IO.SITTERMRITORC='E' AND CV.CODEMP=O.CODEMPCV AND "); 
 		sql.append( "CV.CODFILIAL=O.CODFILIALCV AND CV.CODCONV=O.CODCONV" ); */
+		
+		System.out.println("SQL:" + sql.toString());
 		
 		try {
 			ps = con.prepareStatement( sql.toString() );
@@ -159,10 +163,10 @@ public class FRTermReceb extends FRelatorio {
 			return;
 		}
 		
+		System.out.println("teste");
 		
-		//FPrinterJob dlGr = new FPrinterJob( , , null, rs, param, this, false )
-		//FPrinterJob dlGr = new FPrinterJob( "relatorios/FRComprasFor.jasper", "Relatório de Compras por fornecedor", "", rs, param, null );
-		FPrinterJob dlGr = new FPrinterJob("relatorios/TermReceb.jasper","TERMO DE RECEBIMENTO","",this,hParam,con);
+		FPrinterJob dlGr = new FPrinterJob( "relatorios/TermReceb.jasper", "TERMO DE RECEBIMENTO", null, rs, hParam, this );
+		
 		if ( b ) {
 			dlGr.setVisible( true );
 		}
