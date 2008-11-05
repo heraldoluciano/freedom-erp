@@ -2426,7 +2426,7 @@ public class Funcoes {
 		//    System.out.println("TRUE");
 		return true;
 	}
-
+/*
 	@SuppressWarnings("unchecked")
 	private static int[] retPeso(Vector vXIE, char XY) {
 		String sPeso = "";
@@ -2485,6 +2485,8 @@ public class Funcoes {
 		}
 		return sRetorno;
 	}
+
+*/
 
 	private static int[] carregaPosDV(Vector<String> vXIE) {
 		int[] aRetorno = new int[2];
