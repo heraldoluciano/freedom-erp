@@ -3917,8 +3917,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		else if ( rgPessoa.getVlrString().compareTo( "F" ) == 0 ) {
 			txtCnpjCli.setEnabled( false );
 			setBordaPad( txtCnpjCli );
-			txtInscCli.setEnabled( false );
-			setBordaPad( txtInscCli );
 			txtCpfCli.setEnabled( true );
 			setBordaReq( txtCpfCli );
 			txtRgCli.setEnabled( true );
