@@ -85,6 +85,8 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 	private JTextFieldFK txtDescTpCredP = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtVlrLiqPed = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	
+	private JTextFieldFK txtVlrVendaCred = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldFK txtVlrTpCred = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
@@ -217,6 +219,10 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		adicCampo( txtCodCli, 123, 60, 60, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, true );
 		adicDescFK( txtRazCli, 186, 60, 290, 20, "RazCli", "Razão social do cliente" );
 
+		setPainel(pnTotais);
+		adicCampo( txtVlrVendaCred, 7, 130, 80, 20 , "VlrVendaCred", "Vlr.Anterior", ListaCampos.DB_SI, false );
+		setPainel( pinCab, pnCliente );
+		
 		adic( new JLabelPad( "Crédito pré-aprovado sub-cliente" ), 7, 80, 300, 20 );
 		adic( txtCodTpCred, 113, 100, 60, 20 );
 		adicDescFK( txtDescTpCred, 176, 100, 300, 20, "DescTpCred", "" );
@@ -241,8 +247,10 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		pnTotais.adic( txtVlrCredito, 7, 50, 100, 20 );
 		pnTotais.adic( new JLabelPad( "Valor em aberto:" ), 7, 70, 120, 20 );
 		pnTotais.adic( txtVlrAberto, 7, 90, 100, 20 );
-		pnTotais.adic( new JLabelPad( "Valor do pedido:" ), 7, 110, 120, 20 );
-		pnTotais.adic( txtVlrLiqPed, 7, 130, 100, 20 );
+		pnTotais.adic( new JLabelPad( "Vlr.ped.atual:" ), 90, 110, 80, 20 );
+		
+		pnTotais.adic( txtVlrLiqPed, 90, 130, 80, 20 );
+		
 		// pnTotais.adic( new JLabelPad( "Valor a liberar:" ), 7, 150, 120, 20 );
 		// pnTotais.adic( txtVlrALiberar, 7, 170, 100, 20 );
 
@@ -556,7 +564,9 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		}
 	}
 
-	public void beforeInsert( InsertEvent ievt ) { }
+	public void beforeInsert( InsertEvent ievt ) {
+		txtVlrVendaCred.setVlrBigDecimal( txtVlrLiqPed.getVlrBigDecimal() );		
+	}
 
 	public void afterInsert( InsertEvent ievt ) {
 	
@@ -581,7 +591,7 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 		boolean continua = true;
 	
 		try {
-	
+			
 			continua = txtVlrALiberar.getVlrBigDecimal().compareTo( new BigDecimal( 0 ) ) > 0;
 	
 			if ( !continua ) {
@@ -589,7 +599,8 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 				pevt.cancela();
 				return;
 			}
-	
+			
+			txtVlrVendaCred.setVlrBigDecimal( txtVlrLiqPed.getVlrBigDecimal() );
 			continua = buscaObs();
 	
 			if ( !continua ) {
