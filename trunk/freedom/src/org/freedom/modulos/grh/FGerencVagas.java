@@ -97,9 +97,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 
 	private final JTextFieldFK txtFaixaSalFimVaga = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private final JTextFieldFK txtFaixaSalIniCand = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
-
-	private final JTextFieldFK txtFaixaSalFimCand = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldFK txtPretensaoSalCand = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private Tabela tabCand = new Tabela();
 
@@ -145,7 +143,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 
 	private JCheckBoxPad cbFaixaSalarialVaga = new JCheckBoxPad( "Faixa salarial de:", new Boolean( true ), new Boolean( false ) );
 
-	private JCheckBoxPad cbFaixaSalarialCand = new JCheckBoxPad( "Faixa salarial de:", new Boolean( true ), new Boolean( false ) );
+	private JCheckBoxPad cbFaixaSalarialCand = new JCheckBoxPad( "Pretenção salarial de:", new Boolean( true ), new Boolean( false ) );
 
 	private JCheckBoxPad cbDisponibilidade = new JCheckBoxPad( "Disponíveis", new Boolean( true ), new Boolean( false ) );
 
@@ -267,6 +265,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 		// Candidatos
 		lcCandidato.add( new GuardaCampo( txtCodCand, "CodCand", "Cód.Cand.", ListaCampos.DB_PK, null, false ) );
 		lcCandidato.add( new GuardaCampo( txtNomeCand, "NomeCand", "Nome", ListaCampos.DB_SI, null, false ) );
+		lcCandidato.add( new GuardaCampo( txtPretensaoSalCand, "pretensaosal", "Pret. Sal.", ListaCampos.DB_SI, null, false ) );
 
 		lcCandidato.montaSql( false, "CANDIDATO", "RH" );
 		lcCandidato.setQueryCommit( false );
@@ -294,13 +293,13 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 		txtFaixaSalFimVaga.setBackground( new Color( 240, 240, 240 ) );
 		txtFaixaSalFimVaga.setBorder( null );
 
-		txtFaixaSalIniCand.setForeground( new Color( 10, 95, 0 ) );
-		txtFaixaSalIniCand.setBackground( new Color( 240, 240, 240 ) );
-		txtFaixaSalIniCand.setBorder( null );
+		txtPretensaoSalCand.setForeground( new Color( 10, 95, 0 ) );
+		txtPretensaoSalCand.setBackground( new Color( 240, 240, 240 ) );
+		txtPretensaoSalCand.setBorder( null );
 
-		txtFaixaSalFimCand.setForeground( new Color( 255, 0, 0 ) );
+/*		txtFaixaSalFimCand.setForeground( new Color( 255, 0, 0 ) );
 		txtFaixaSalFimCand.setBackground( new Color( 240, 240, 240 ) );
-		txtFaixaSalFimCand.setBorder( null );
+		txtFaixaSalFimCand.setBorder( null );*/
 
 		status.put( "DI", "Disponivel" );
 		status.put( "EN", "Encaminhado" );
@@ -426,13 +425,11 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 
 		pinFiltrosCand.adic( cbQualificacoesCand, 3, 7, 130, 18 );
 		pinFiltrosCand.adic( cbRestricoesCand, 3, 25, 130, 18 );
-		pinFiltrosCand.adic( cbFaixaSalarialCand, 3, 43, 120, 18 );
+		pinFiltrosCand.adic( cbFaixaSalarialCand, 3, 43, 150, 18 );
 
 		pinFiltrosCand.adic( cbCursosCand, 136, 7, 80, 18 );
 		pinFiltrosCand.adic( cbExperienciaCand, 136, 25, 100, 18 );
-		pinFiltrosCand.adic( txtFaixaSalIniCand, 125, 43, 60, 18 );
-		pinFiltrosCand.adic( new JLabelPad( "à" ), 191, 43, 8, 18 );
-		pinFiltrosCand.adic( txtFaixaSalFimCand, 203, 43, 50, 18 );
+		pinFiltrosCand.adic( txtPretensaoSalCand, 155, 43, 60, 18 );
 
 		montaTab();
 
@@ -686,7 +683,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 		}
 
 		if ( cbFaixaSalarialCand.getVlrBoolean() ) {
-			where.append( ( and ? " AND " : "" ) + ( "((FAIXASALINI BETWEEN  ? AND ? ) OR (FAIXASALINI IS NULL))" ) );
+			where.append( ( and ? " AND " : "" ) + ( "((FAIXASALINI >= ? ) OR (FAIXASALINI IS NULL))" ) );
 			and = true;
 		}
 
@@ -717,8 +714,8 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 			// ps.setInt(4,txtCodFunc.getVlrInteger().intValue());
 
 			if ( cbFaixaSalarialCand.getVlrBoolean() ) {
-				ps.setDouble( 5, txtFaixaSalIniCand.getVlrDouble() );
-				ps.setDouble( 6, txtFaixaSalFimCand.getVlrDouble() );
+//				ps.setDouble( 5, txtFaixaSalIniCand.getVlrDouble() );
+				ps.setDouble( 4, txtPretensaoSalCand.getVlrDouble() );
 			}
 
 			ResultSet rs = ps.executeQuery();
