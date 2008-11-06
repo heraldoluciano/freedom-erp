@@ -195,7 +195,7 @@ public class FCredCli extends FTabDados implements ActionListener, CarregaListen
 
 	private JPanelPad pinJuridica = new JPanelPad( 680, 200 );
 
-	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDataCli = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
