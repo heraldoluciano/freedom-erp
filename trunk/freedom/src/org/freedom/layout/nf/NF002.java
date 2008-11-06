@@ -181,7 +181,7 @@ public class NF002 extends Layout {
 						vlrTotImp +=  cab.getFloat( NF.C_VLRCOFINSVENDA );
 				    }
 				    			   
-				    imp.pulaLinha( 1, imp.comprimido() );
+				    imp.pulaLinha( 2, imp.comprimido() );
 				    if( cab.getString(  NF.C_IMPIRVENDA ).equals( "S" ) ){
 				    	
 				    	imp.say( 33,"IR:" );
@@ -224,7 +224,7 @@ public class NF002 extends Layout {
 					sizeObs = vObsVenda.size() > sizeObs ? vObsVenda.size() : sizeObs;
 
 					int aux = 0;
-					imp.pulaLinha( 3, imp.comprimido() );
+					imp.pulaLinha( 4, imp.comprimido() );
 					for ( int i = 0; i < 8; i++ ) {
 						if ( i<vObsVenda.size() ) {
 							imp.say( 8, Funcoes.copy( (String) vObsVenda.elementAt( i ), 100 ) );
