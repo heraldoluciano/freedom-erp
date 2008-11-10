@@ -89,9 +89,21 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	
 	private final JTextFieldPad txtLayoutPed = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 	
+	private final JTextFieldPad txtCodUnid = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	
+	private final JTextFieldFK txtDescUnid = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private final JTextFieldPad txtCodGrupo = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+	
+	private final JTextFieldFK txtDescGrupo = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
 	private JRadioGroup<?, ?> rgTipo = null;
 	
 	private final ListaCampos lcMoeda = new ListaCampos( this, "MO" );
+	
+	private final ListaCampos lcUnid = new ListaCampos( this, "UD" );
+	
+	private final ListaCampos lcGrupo = new ListaCampos( this, "GP" );
 	
 	private Vector<String> vLabs1 = new Vector<String>();
 	
@@ -102,7 +114,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 
 		super( false );
 		setTitulo( "Preferências gerais" );		
-		setAtribos( 50, 50, 425, 520 );
+		setAtribos( 50, 50, 425, 600 );
 		
 		montaListaCampos();		
 		montaTela();
@@ -126,6 +138,28 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		lcMoeda.setQueryCommit( false );
 		lcMoeda.setReadOnly( true );
 		txtCodMoeda.setTabelaExterna( lcMoeda );
+		
+		/***********
+		 * UNIDADE *
+		 ***********/
+
+		lcUnid.add( new GuardaCampo( txtCodUnid, "CodUnid", "Cód.unidade", ListaCampos.DB_PK, false ) );
+		lcUnid.add( new GuardaCampo( txtDescUnid, "DescUnid", "Descrição da unidade", ListaCampos.DB_SI, false ) );
+		lcUnid.montaSql( false, "UNIDADE", "RP" );
+		lcUnid.setQueryCommit( false );
+		lcUnid.setReadOnly( true );
+		txtCodUnid.setTabelaExterna( lcUnid );
+		
+		/***********
+		 *  GRUPO  *
+		 ***********/
+
+		lcGrupo.add( new GuardaCampo( txtCodGrupo, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
+		lcGrupo.add( new GuardaCampo( txtDescGrupo, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
+		lcGrupo.montaSql( false, "GRUPO", "RP" );
+		lcGrupo.setQueryCommit( false );
+		lcGrupo.setReadOnly( true );
+		txtCodGrupo.setTabelaExterna( lcGrupo );
 	}
 	
 	private void montaTela() {
@@ -188,13 +222,17 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		linha3.setBorder( BorderFactory.createEtchedBorder() );
 		
 		adic( campos, 27, 285, 80, 20 );
-		adic( linha3, 7, 295, 397, 140 );
+		adic( linha3, 7, 295, 397, 220 );
 		
 		adicCampo( txtCasasDesc, 17, 320, 150, 20, "CasasDec", "Decimais", ListaCampos.DB_SI, false );
 		adicCampo( txtLayoutPed, 240, 340, 154, 20, "LayoutPed", "Classe para pedido", ListaCampos.DB_SI, false );
 		adicCampo( txtCasasDescFin, 17, 360, 150, 20, "CasasDecFin", "Decimais ( financeiro )", ListaCampos.DB_SI, false );
 		adicCampo( txtCodMoeda, 17, 400, 100, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, txtNomeMoeda, false );
 		adicDescFK( txtNomeMoeda, 120, 400, 274, 20, "SingMoeda", "Descrição da moeda" );
+		adicCampo( txtCodUnid, 17, 440, 100, 20, "CodUnid", "Cód.Unid.", ListaCampos.DB_FK, txtDescUnid, false );
+		adicDescFK( txtDescUnid, 120, 440, 274, 20, "DescUnid", "Descrição da unidade" );
+		adicCampo( txtCodGrupo, 17, 480, 100, 20, "CodGrup", "Cód.grupo", ListaCampos.DB_FK, txtDescGrupo, false );
+		adicDescFK( txtDescGrupo, 120, 480, 274, 20, "DescGrup", "Descrição do grupo" );
 		
 	}
 
@@ -211,6 +249,8 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 
 		super.setConexao( cn );
 		lcMoeda.setConexao( cn );
+		lcUnid.setConexao( cn );
+		lcGrupo.setConexao( cn );
 		lcCampos.carregaDados();
 	}
 	
@@ -225,7 +265,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 			
 			sSQL.append( "SELECT IPICOMIS,IPIPED,CODBARPROD,ENDCLIPED,ORDEMPED," );
 			sSQL.append( "SERVIDORSMTP,PORTASMTP,USUARIOSMTP,SENHASMTP,AUTENTICASMTP,SSLSMTP," );
-			sSQL.append( "CASASDEC,CASASDECFIN,CODMOEDA,LAYOUTPED,USAREFPROD, ENVIACOPIA, TPCALCLUCRO " );
+			sSQL.append( "CASASDEC,CASASDECFIN,CODMOEDA,LAYOUTPED,USAREFPROD, ENVIACOPIA, TPCALCLUCRO, CODGRUP, CODUNID " );
 			sSQL.append( "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -251,7 +291,9 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 				prefere.add( EPrefere.LAYOUTPED.ordinal(), rs.getString( "LAYOUTPED" ) );
 				prefere.add( EPrefere.USAREFPROD.ordinal(), rs.getString( "USAREFPROD" ) );
 				prefere.add( EPrefere.ENVIACOPIA.ordinal(), rs.getString( "ENVIACOPIA" ) );
-				prefere.add( EPrefere.TPCALCLUCRO.ordinal(), rs.getString( "TPCALCLUCRO" ) );				
+				prefere.add( EPrefere.TPCALCLUCRO.ordinal(), rs.getString( "TPCALCLUCRO" ) );	
+				prefere.add( EPrefere.CODGRUPO.ordinal(), rs.getString( "CODGRUP" ) );	
+				prefere.add( EPrefere.CODUNID.ordinal(), rs.getString( "CODUNID" ) );	
 			}
 			
 			rs.close();
@@ -287,6 +329,8 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	    LAYOUTPED,
 	    USAREFPROD,
 	    ENVIACOPIA,
-	    TPCALCLUCRO;
+	    TPCALCLUCRO,
+	    CODGRUPO,
+	    CODUNID;
 	}
 }

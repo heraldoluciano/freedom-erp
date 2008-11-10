@@ -27,15 +27,22 @@ package org.freedom.modulos.rep;
 
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
-public class RPProduto extends FDados implements ActionListener {
+public class RPProduto extends FDados implements ActionListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -89,6 +96,8 @@ public class RPProduto extends FDados implements ActionListener {
 	
 	private final ListaCampos lcFornecedor = new ListaCampos( this, "FO" );
 	
+	private List<Object> prefere = new ArrayList<Object>();
+	
 
 	public RPProduto() {
 
@@ -101,6 +110,10 @@ public class RPProduto extends FDados implements ActionListener {
 		montaTela();
 		
 		setListaCampos( true, "PRODUTO", "RP" );
+		
+		lcGrupo.addInsertListener( this );
+		lcUnidade.addInsertListener( this );
+		lcCampos.addInsertListener( this );
 	}
 	
 	private void montaListaCampos() {
@@ -180,5 +193,28 @@ public class RPProduto extends FDados implements ActionListener {
 		lcGrupo.setConexao( cn );
 		lcUnidade.setConexao( cn );
 		lcFornecedor.setConexao( cn );
+		
+		prefere = RPPrefereGeral.getPrefere( cn );
+		
+		txtCodGrupo.setVlrString( (String) prefere.get( EPrefere.CODGRUPO.ordinal() ) );
+		lcGrupo.carregaDados();
+		
+		txtCodUnid.setVlrString( (String) prefere.get( EPrefere.CODUNID.ordinal() ) );
+		lcUnidade.carregaDados();
 	}
+
+	public void afterInsert( InsertEvent ievt ) {
+
+		if( ievt.getListaCampos() == lcCampos ){
+
+			txtCodGrupo.setVlrString( (String) prefere.get( EPrefere.CODGRUPO.ordinal() ) );
+			lcGrupo.carregaDados();
+			
+			txtCodUnid.setVlrString( (String) prefere.get( EPrefere.CODUNID.ordinal() ) );
+			lcUnidade.carregaDados();
+		}		
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {}
+
 }
