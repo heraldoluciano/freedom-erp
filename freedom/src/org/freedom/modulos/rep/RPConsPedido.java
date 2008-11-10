@@ -96,7 +96,7 @@ public class RPConsPedido extends FFilho implements ActionListener {
 		
 		Calendar cal = Calendar.getInstance();			
 		txtDtFim.setVlrDate( cal.getTime() );		
-		cal.set( cal.get( Calendar.YEAR ), cal.get( Calendar.MONTH ) - 1, cal.get( Calendar.DATE ) );
+		cal.set( cal.get( Calendar.YEAR ) - 2, cal.get( Calendar.MONTH ) , cal.get( Calendar.DATE ));
 		txtDtIni.setVlrDate( cal.getTime() );	
 		
 		btPesquisar.addActionListener( this );
