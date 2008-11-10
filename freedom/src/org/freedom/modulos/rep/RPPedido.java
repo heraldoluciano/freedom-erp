@@ -303,6 +303,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCliente.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.vend.", ListaCampos.DB_SI, false ) );
 		lcCliente.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_SI, false ) );
+		lcCliente.setWhereAdic( "ATIVCLI='S'" );
 		lcCliente.montaSql( false, "CLIENTE", "RP" );
 		lcCliente.setQueryCommit( false );
 		lcCliente.setReadOnly( true );
@@ -347,6 +348,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 		lcFornecedor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFornecedor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
+		lcFornecedor.setWhereAdic( "ATIVCLI='S'" );
 		lcFornecedor.montaSql( false, "FORNECEDOR", "RP" );
 		lcFornecedor.setQueryCommit( false );
 		lcFornecedor.setReadOnly( true );
