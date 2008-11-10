@@ -1237,12 +1237,20 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela de Compra!" + err.getMessage(), true, con, err );
 		}
 
-		if ( bVisualizar ) {
-			imp.preview( this );
+		if( dl.getTipo() == "G" ){
+			
+			//CHAMAR JASPER
+			
+		}else{
+			
+			if ( bVisualizar ) {
+				imp.preview( this );
+			}
+			else {
+				imp.print();
+			}
 		}
-		else {
-			imp.print();
-		}
+		
 	}
 
 	private boolean verificaBloq() {
