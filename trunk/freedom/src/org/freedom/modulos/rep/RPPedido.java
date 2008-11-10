@@ -180,7 +180,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	
 	private final JTextFieldPad txtPercTotLucro = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 	
-	private final JTextFieldPad txtPercItLucro = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private final JTextFieldPad txtPercItLucro = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
 	private final JTextFieldPad txtObsPed = new JTextFieldPad( JTextFieldPad.TP_STRING, 500, 0 );
 
