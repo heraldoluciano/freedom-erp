@@ -431,9 +431,9 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 
 			txtVlrCredito.setVlrString( Funcoes.strDecimalToStrCurrency( 2, String.valueOf( vlrtpcred ) ) );
 
-			if ( txtVlrALiberar.getVlrBigDecimal().compareTo( new BigDecimal( 0 ) ) == 0 ) {
+//			if ( txtVlrALiberar.getVlrBigDecimal().compareTo( new BigDecimal( 0 ) ) == 0 ) {
 				txtVlrALiberar.setVlrBigDecimal( vlrtpcred.subtract( vlrdeb ).multiply( new BigDecimal( -1 ) ) );
-			}
+//			}
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -485,29 +485,35 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 	}
 	
 	public void open( String tipovenda, int pedido, int cliente, int item, BigDecimal valorItem ) {
-		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
-			
-			PreparedStatement ps = con.prepareStatement( 
-					"SELECT I.VLRLIQITVENDA FROM VDITVENDA I " +
-					"WHERE I.CODEMP=? AND I.CODFILIAL=? AND " +
-					"I.TIPOVENDA=? AND I.CODVENDA=? AND I.CODITVENDA=?" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNLIBCRED" ) );
-			ps.setString( 3, tipovenda );
-			ps.setInt( 4, pedido );
-			ps.setInt( 5, item );
-			ResultSet rs = ps.executeQuery();
 			
 			BigDecimal vlrItem = valorItem;
 			
-			if ( rs.next() ) {
-				vlrItem = valorItem.subtract( rs.getBigDecimal( "VLRLIQITVENDA" ) );
-			}
-
-			rs.close();
-			ps.close();
+			if(valorItem.compareTo( new BigDecimal(0))> 0 ){
 			
+				ps = con.prepareStatement( 
+						"SELECT I.VLRLIQITVENDA FROM VDITVENDA I " +
+						"WHERE I.CODEMP=? AND I.CODFILIAL=? AND " +
+						"I.TIPOVENDA=? AND I.CODVENDA=? AND I.CODITVENDA=?" );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "FNLIBCRED" ) );
+				ps.setString( 3, tipovenda );
+				ps.setInt( 4, pedido );
+				ps.setInt( 5, item );
+				rs = ps.executeQuery();
+				
+				if ( rs.next() ) {
+					vlrItem = valorItem.subtract( rs.getBigDecimal( "VLRLIQITVENDA" ) );
+				}
+				
+				rs.close();
+				ps.close();
+				
+			}	
+
+
 			ps = con.prepareStatement( 
 					"SELECT L.CODLCRED FROM FNLIBCRED L " +
 					"WHERE L.CODEMP=? AND L.CODFILIAL=? AND " +
@@ -519,6 +525,8 @@ public class FLiberaCredito extends FDados implements RadioGroupListener, Action
 			ps.setInt( 5, cliente );
 			rs = ps.executeQuery();
 
+			lcVenda.carregaDados();
+			
 			if ( rs.next() ) {
 				rgTipo.setVlrString( tipovenda );
 				txtCodLib.setVlrInteger( rs.getInt( "CODLCRED" ) );
