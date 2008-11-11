@@ -40,9 +40,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JButton;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -67,6 +70,7 @@ import org.freedom.layout.componentes.NFEntrada;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FObservacao;
+import org.freedom.telas.FPrinterJob;
 
 public class FCompra extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener {
 
@@ -1029,39 +1033,70 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private void imprimir( boolean bVisualizar, int iCodCompra ) {
 
-		ImprimeOS imp = new ImprimeOS( "", con );
+		
 		DLRPedido dl = new DLRPedido( sOrdNota, false );
 		dl.setVisible( true );
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sSQL = new StringBuilder();
+		
+		
 		if ( dl.OK == false ) {
+			
 			dl.dispose();
 			return;
 		}
-		imp.verifLinPag();
 
-		String sSQL = "SELECT (SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC WHERE IC.CODCOMPRA=C.CODCOMPRA" + 
-			" AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL)," + 
-			"C.CODCOMPRA,C.CODFOR,F.RAZFOR,F.CNPJFOR,F.CPFFOR,C.DTEMITCOMPRA,F.ENDFOR,"	+ 
-			"F.BAIRFOR,F.CEPFOR,C.DTENTCOMPRA,F.CIDFOR,F.UFFOR,F.FONEFOR,F.DDDFONEFOR," + 
-			"F.FAXFOR,F.INSCFOR,F.RGFOR,I.CODPROD,P.REFPROD,P.DESCPROD,P.CODUNID," + 
-			"I.QTDITCOMPRA,I.PRECOITCOMPRA,I.VLRPRODITCOMPRA,I.CODNAT,I.PERCICMSITCOMPRA," + 
-			"PERCIPIITCOMPRA,VLRIPIITCOMPRA,C.VLRBASEICMSCOMPRA,C.VLRICMSCOMPRA,C.VLRPRODCOMPRA," + 
-			"C.VLRDESCCOMPRA,C.VLRDESCITCOMPRA,C.VLRADICCOMPRA,C.VLRIPICOMPRA," + 
-			"C.VLRLIQCOMPRA,C.CODPLANOPAG,PG.DESCPLANOPAG" + 
-			" FROM CPCOMPRA C, CPFORNECED F,CPITCOMPRA I, EQPRODUTO P, FNPLANOPAG PG" + 
-			" WHERE C.CODCOMPRA=" + iCodCompra + " AND F.CODFOR=C.CODFOR" + 
-			" AND I.CODCOMPRA=C.CODCOMPRA AND P.CODPROD=I.CODPROD" + 
-			" AND PG.CODPLANOPAG=C.CODPLANOPAG" + 
-			" ORDER BY C.CODCOMPRA,P." + dl.getValor() + ";";
+		sSQL.append( "SELECT (SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC WHERE IC.CODCOMPRA=C.CODCOMPRA " );
+		sSQL.append( "AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL), " );
+		sSQL.append( "C.CODCOMPRA,C.CODFOR,F.RAZFOR,F.CNPJFOR,F.CPFFOR,C.DTEMITCOMPRA,F.ENDFOR, " );
+		sSQL.append( "F.BAIRFOR,F.CEPFOR,C.DTENTCOMPRA,F.CIDFOR,F.UFFOR,F.FONEFOR,F.DDDFONEFOR, " );
+		sSQL.append( "F.FAXFOR,F.INSCFOR,F.RGFOR,I.CODPROD,P.REFPROD,P.DESCPROD,P.CODUNID, " );
+		sSQL.append( "I.QTDITCOMPRA,I.PRECOITCOMPRA,I.VLRPRODITCOMPRA,I.CODNAT,I.PERCICMSITCOMPRA, " );
+		sSQL.append( "PERCIPIITCOMPRA,VLRIPIITCOMPRA,C.VLRBASEICMSCOMPRA,C.VLRICMSCOMPRA,C.VLRPRODCOMPRA, " );
+		sSQL.append( "C.VLRDESCCOMPRA,C.VLRDESCITCOMPRA,C.VLRADICCOMPRA,C.VLRIPICOMPRA, " );
+		sSQL.append( "C.VLRLIQCOMPRA,C.CODPLANOPAG,PG.DESCPLANOPAG " );
+		sSQL.append( "FROM CPCOMPRA C, CPFORNECED F,CPITCOMPRA I, EQPRODUTO P, FNPLANOPAG PG " );
+		sSQL.append( "WHERE C.CODCOMPRA=? AND C.CODEMP=? AND C.CODFILIAL=? AND F.CODFOR=C.CODFOR " );
+		sSQL.append( "AND I.CODCOMPRA=C.CODCOMPRA AND P.CODPROD=I.CODPROD " );
+		sSQL.append( "AND PG.CODPLANOPAG=C.CODPLANOPAG " );
+		sSQL.append( "ORDER BY C.CODCOMPRA,P." + dl.getValor());
+		
+		try {
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, iCodCompra );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+			
+			rs = ps.executeQuery();
+			
+		} catch ( SQLException err ) {
+			
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar dados da compra" );
+		}
+		if( dl.getTipo() == "G" ){
+			
+			imprimiGrafico( rs, bVisualizar );
+			
+		}else{
+			
+			imprimeTexto( rs, bVisualizar );
+		}
+		
+	}
+	public void imprimeTexto( final ResultSet rs, final boolean bVisualizar ){
+	
+		ImprimeOS imp = new ImprimeOS( "", con );
 		int iItImp = 0;
 		int iMaxItem = 0;
+		
 		try {
-			ps = con.prepareStatement( sSQL );
-			rs = ps.executeQuery();
+		
 			imp.limpaPags();
 			iMaxItem = imp.verifLinPag() - 23;
+			
 			while ( rs.next() ) {
 				if ( imp.pRow() == 0 ) {
 					imp.montaCab();
@@ -1141,7 +1176,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				imp.say( imp.pRow() + 0, 108, "" + rs.getDouble( "PercIPIItCompra" ) );
 				imp.say( imp.pRow() + 0, 114, Funcoes.strDecimalToStrCurrency( 14, 2, rs.getString( "VlrIPIItCompra" ) ) );
 				imp.say( imp.pRow() + 0, 129, Funcoes.setMascara( rs.getString( "CodNat" ), "#.###" ) );
+				
 				iItImp++;
+			
 				if ( ( imp.pRow() >= iMaxItem ) | ( iItImp == rs.getInt( 1 ) ) ) {
 					if ( ( iItImp == rs.getInt( 1 ) ) ) {
 						int iRow = imp.pRow();
@@ -1150,6 +1187,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 							imp.say( imp.pRow() + 0, 0, "" );
 						}
 					}
+					
 					if ( rs.getInt( 1 ) == iItImp ) {
 						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 						imp.say( imp.pRow() + 0, 0, "" );
@@ -1227,31 +1265,45 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				}
 			}
 			imp.fechaGravacao();
-
-			// rs.close();
-			// ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
-			dl.dispose();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao consultar a tabela de Compra!" + err.getMessage(), true, con, err );
+			
+			if (!con.getAutoCommit()){
+                con.commit();
+			}
+		}catch ( Exception err ) {			
+			err.printStackTrace();
 		}
-
-		if( dl.getTipo() == "G" ){
-			
-			//CHAMAR JASPER
-			
-		}else{
-			
-			if ( bVisualizar ) {
-				imp.preview( this );
-			}
-			else {
-				imp.print();
-			}
+		if ( bVisualizar ) {
+			imp.preview( this );
+		}
+		else {
+			imp.print();
 		}
 		
 	}
+	
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar ) {
+
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
+		hParam.put( "CODCOMPRA", txtCodCompra.getVlrInteger() );
+
+		dlGr = new FPrinterJob( "relatorios/ordemCompra.jasper", "Ordem de Compra", "", rs, hParam, this );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório Compras Geral!" + err.getMessage(), true, con, err );
+			}
+		}
+	}	
 
 	private boolean verificaBloq() {
 
