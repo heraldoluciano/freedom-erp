@@ -111,8 +111,8 @@ public class DLRPedido extends FFDialogo {
 		  
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = null;		
-		String retorno = null;
+		String sSQL = "";		
+		String retorno = "";
 				
 		try {
 					
