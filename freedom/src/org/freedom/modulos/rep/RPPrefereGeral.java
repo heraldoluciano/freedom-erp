@@ -53,6 +53,8 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	
+	private final JCheckBoxPad cbFatLucr = new JCheckBoxPad( "Mostrar fator de lucratividade?", "S", "N" );
+	
 	private final JCheckBoxPad cbUsaRefProd = new JCheckBoxPad( "Usar referência para produto?", "S", "N" );
 	
 	private final JCheckBoxPad cbOrdemPed = new JCheckBoxPad( "Ordena pedido por ordem alfabetíca?", "S", "N" );
@@ -114,7 +116,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 
 		super( false );
 		setTitulo( "Preferências gerais" );		
-		setAtribos( 50, 50, 425, 600 );
+		setAtribos( 50, 50, 425, 650 );
 		
 		montaListaCampos();		
 		montaTela();
@@ -170,11 +172,12 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		linha1.setBorder( BorderFactory.createEtchedBorder() );
 		
 		adic( geral, 27, 0, 80, 20 );
-		adic( linha1, 7, 10, 397, 80 );
+		adic( linha1, 7, 10, 397, 110 );
 		
 		adicDB( cbUsaRefProd, 17, 20, 300, 20, "UsaRefProd", null, true );
 		adicDB( cbOrdemPed, 17, 40, 300, 20, "OrdemPed", null, true );
 		adicDB( cbEnviaCopia, 17, 60, 300, 20, "EnviaCopia", null, true );
+		adicDB( cbFatLucr, 17, 80, 300, 20, "MostraFatLucr", null, true );
 		
 		//adicDB( cbIpiComis, 17, 40, 300, 20, "IPIPed", null, true );
 		//adicDB( cbIPIPed, 17, 60, 300, 20, "CodBarProd", null, true );
@@ -187,8 +190,8 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 		JLabel linha4 = new JLabel();
 		linha4.setBorder( BorderFactory.createEtchedBorder() );
 		
-		adic( preco, 27, 90, 150, 20 );
-		adic( linha4, 7, 100, 397, 75 );
+		adic( preco, 27, 130, 150, 20 );
+		adic( linha4, 7, 140, 397, 75 );
 		
 		
 		vLabs1.addElement("Venda");
@@ -199,40 +202,40 @@ public class RPPrefereGeral extends FDados implements ActionListener {
  		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
  		rgTipo.setVlrString("V");
  		
- 		adicDB( rgTipo, 70, 120, 250, 35, "TpCalcLucro", "", false );
+ 		adicDB( rgTipo, 70, 160, 250, 35, "TpCalcLucro", "", false );
 		
 		JLabel email = new JLabel( "E - Mail", SwingConstants.CENTER );
 		email.setOpaque( true );
 		JLabel linha2 = new JLabel();
 		linha2.setBorder( BorderFactory.createEtchedBorder() );
 		
-		adic( email, 27, 175, 80, 20 );
-		adic( linha2, 7, 185, 397, 100 );
+		adic( email, 27, 225, 80, 20 );
+		adic( linha2, 7, 235, 397, 100 );
 		
-		adicCampo( txtServidorSMTP, 17, 210, 230, 20, "ServidorSMTP", "Servidor de SMTP", ListaCampos.DB_SI, false );
-		adicCampo( txtPortaSMTP, 250, 210, 41, 20, "PortaSMTP", "Porta", ListaCampos.DB_SI, false );
-		adicDB( cbAutenticaSMTP, 294, 210, 100, 20, "AutenticaSMTP", "", false );
-		adicCampo( txtUsuarioSMTP, 17, 250, 137, 20, "UsuarioSMTP", "Id do usuario", ListaCampos.DB_SI, false );
-		adicCampo( txtSenhaSMTP, 157, 250, 134, 20, "SenhaSMTP", "Senha do usuario", ListaCampos.DB_SI, false );
-		adicDB( cbSSLSMTP, 294, 250, 100, 20, "SSLSMTP", "", false );
+		adicCampo( txtServidorSMTP, 17, 260, 230, 20, "ServidorSMTP", "Servidor de SMTP", ListaCampos.DB_SI, false );
+		adicCampo( txtPortaSMTP, 250, 260, 41, 20, "PortaSMTP", "Porta", ListaCampos.DB_SI, false );
+		adicDB( cbAutenticaSMTP, 294, 260, 100, 20, "AutenticaSMTP", "", false );
+		adicCampo( txtUsuarioSMTP, 17, 300, 137, 20, "UsuarioSMTP", "Id do usuario", ListaCampos.DB_SI, false );
+		adicCampo( txtSenhaSMTP, 157, 300, 134, 20, "SenhaSMTP", "Senha do usuario", ListaCampos.DB_SI, false );
+		adicDB( cbSSLSMTP, 294, 300, 100, 20, "SSLSMTP", "", false );
 		
 		JLabel campos = new JLabel( "Campos", SwingConstants.CENTER );
 		campos.setOpaque( true );
 		JLabel linha3 = new JLabel();
 		linha3.setBorder( BorderFactory.createEtchedBorder() );
 		
-		adic( campos, 27, 285, 80, 20 );
-		adic( linha3, 7, 295, 397, 220 );
+		adic( campos, 27, 340, 80, 20 );
+		adic( linha3, 7, 350, 397, 220 );
 		
-		adicCampo( txtCasasDesc, 17, 320, 150, 20, "CasasDec", "Decimais", ListaCampos.DB_SI, false );
-		adicCampo( txtLayoutPed, 240, 340, 154, 20, "LayoutPed", "Classe para pedido", ListaCampos.DB_SI, false );
-		adicCampo( txtCasasDescFin, 17, 360, 150, 20, "CasasDecFin", "Decimais ( financeiro )", ListaCampos.DB_SI, false );
-		adicCampo( txtCodMoeda, 17, 400, 100, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, txtNomeMoeda, false );
-		adicDescFK( txtNomeMoeda, 120, 400, 274, 20, "SingMoeda", "Descrição da moeda" );
-		adicCampo( txtCodUnid, 17, 440, 100, 20, "CodUnid", "Cód.Unid.", ListaCampos.DB_FK, txtDescUnid, false );
-		adicDescFK( txtDescUnid, 120, 440, 274, 20, "DescUnid", "Descrição da unidade" );
-		adicCampo( txtCodGrupo, 17, 480, 100, 20, "CodGrup", "Cód.grupo", ListaCampos.DB_FK, txtDescGrupo, false );
-		adicDescFK( txtDescGrupo, 120, 480, 274, 20, "DescGrup", "Descrição do grupo" );
+		adicCampo( txtCasasDesc, 17, 380, 150, 20, "CasasDec", "Decimais", ListaCampos.DB_SI, false );
+		adicCampo( txtLayoutPed, 240, 400, 154, 20, "LayoutPed", "Classe para pedido", ListaCampos.DB_SI, false );
+		adicCampo( txtCasasDescFin, 17, 420, 150, 20, "CasasDecFin", "Decimais ( financeiro )", ListaCampos.DB_SI, false );
+		adicCampo( txtCodMoeda, 17, 460, 100, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, txtNomeMoeda, false );
+		adicDescFK( txtNomeMoeda, 120, 460, 274, 20, "SingMoeda", "Descrição da moeda" );
+		adicCampo( txtCodUnid, 17, 500, 100, 20, "CodUnid", "Cód.Unid.", ListaCampos.DB_FK, txtDescUnid, false );
+		adicDescFK( txtDescUnid, 120, 500, 274, 20, "DescUnid", "Descrição da unidade" );
+		adicCampo( txtCodGrupo, 17, 540, 100, 20, "CodGrup", "Cód.grupo", ListaCampos.DB_FK, txtDescGrupo, false );
+		adicDescFK( txtDescGrupo, 120, 540, 274, 20, "DescGrup", "Descrição do grupo" );
 		
 	}
 
