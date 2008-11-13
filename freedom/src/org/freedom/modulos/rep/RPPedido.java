@@ -155,7 +155,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private final JTextFieldPad txtPercPagItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 8, Aplicativo.casasDec );
 	
-	private final JTextFieldPad txtMostraLucr = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 2, Aplicativo.casasDec );
+	private final JTextFieldPad txtFatorLucratividade = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 2, Aplicativo.casasDec );
 
 	private final JTextFieldPad txtVlrPagItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
@@ -183,7 +183,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	
 	private final JTextFieldPad txtPercTotLucro = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 	
-	private final JTextFieldPad txtPercItLucro = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtPercItLucro = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
+	private final JTextFieldPad txtFatLucCli = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 2, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtObsPed = new JTextFieldPad( JTextFieldPad.TP_STRING, 500, 0 );
 
@@ -217,7 +219,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private List<Object> prefere = null;
 	
-
+	boolean fator = false;
 
 	
 	public RPPedido() {
@@ -308,6 +310,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCliente.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.vend.", ListaCampos.DB_SI, false ) );
 		lcCliente.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_SI, false ) );
+		lcCliente.add( new GuardaCampo( txtFatLucCli, "FatLucr", "Fat.Lucr.", ListaCampos.DB_SI, false ) );
 		lcCliente.setWhereAdic( "ATIVCLI='S'" );
 		lcCliente.montaSql( false, "CLIENTE", "RP" );
 		lcCliente.setQueryCommit( false );
@@ -499,15 +502,6 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 		adicCampo( txtCodItem, 7, 15, 50, 20, "CodItPed", "Item", ListaCampos.DB_PK, true );
 		
-     /*   if ( "S".equals( (String) prefere.get( EPrefere.MOSTRAFATLUCRO.ordinal() ) )){
-					
-			txtMostraLucr.setVisible( true );
-		}
-        else
-        {
-        	txtMostraLucr.setVisible( false );
-        }*/
-     
 		if ( "S".equals( (String) prefere.get( EPrefere.USAREFPROD.ordinal() ) ) ) {
 			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
 			adicCampoInvisivel( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_FK, false );
@@ -544,7 +538,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		adic( txtRazForItem, 402, 55, 210, 20 );
 		if ( "S".equals( (String) prefere.get( EPrefere.MOSTRAFATLUCRO.ordinal() ) )){
 			
-			 adicCampo( txtMostraLucr, 615, 55, 58, 20, "FatLucr", "Fat.lucro", ListaCampos.DB_SI, false );
+			 adicCampo( txtFatorLucratividade, 615, 55, 58, 20, "FatLucr", "Fat.lucro", ListaCampos.DB_SI, false );
+			 txtFatorLucratividade.setSoLeitura( true );
+			 fator = true;
 		}
 		txtCodForItem.setAtivo( false );
 		txtPercItLucro.setAtivo( false );
@@ -634,16 +630,17 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		BigDecimal percLucro = new BigDecimal("0.00");
 		BigDecimal precoCusto = txtPrecoCustoProd.getVlrBigDecimal();
 		BigDecimal precoVenda = txtPrecoItem.getVlrBigDecimal();
+		BigDecimal precoVendaFator = precoVenda.multiply( fator ? txtFatLucCli.getVlrBigDecimal() : new BigDecimal (1) );
 						
 		try {
 
 			if(prefere.get( EPrefere.TPCALCLUCRO.ordinal() ).toString().equals( "V" )) {
 				// Calculo correto de lucratividade baseado no preço final.
-				percLucro = ((precoVenda.subtract( precoCusto )).divide( precoVenda, new MathContext( 10 ) ).multiply( bdCem ));
+				percLucro = ((precoVendaFator.subtract( precoCusto )).divide( precoVendaFator, new MathContext( 10 ) ).multiply( bdCem ));
 			}
 			else {
 				// Calculo de lucratividade baseado no custo ... errado
-				percLucro = (precoVenda.multiply( bdCem )).divide( precoCusto, new MathContext( 10 ) ).subtract( bdCem );
+				percLucro = (precoVendaFator.multiply( bdCem )).divide( precoCusto, new MathContext( 10 ) ).subtract( bdCem );
 			}
 			percLucro.setScale( 2, BigDecimal.ROUND_HALF_UP );
 			
@@ -902,7 +899,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		}
 		else if ( e.getListaCampos() == lcCliente ) {
 			lcVendedor.carregaDados();
-			lcPlanoPag.carregaDados();
+			lcPlanoPag.carregaDados();			
 		}
 		else if ( e.getListaCampos() == lcReferencia ) {
 			lcProduto.carregaDados();
@@ -911,6 +908,10 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			lcFornecedorItem.carregaDados();
 			if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 				loadProduto();
+			}
+			if( txtFatorLucratividade.getVlrBigDecimal().compareTo( new BigDecimal(0) ) == 0  ){
+				txtFatorLucratividade.setVlrBigDecimal( txtFatLucCli.getVlrBigDecimal().compareTo( new BigDecimal(0) ) == 0 ?
+						new BigDecimal ( 1 ) :  txtFatLucCli.getVlrBigDecimal() );
 			}
 		}
 	}
@@ -929,8 +930,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			txtDataPed.setVlrDate( Calendar.getInstance().getTime() );
 			txtDataPed.requestFocus();
 			
-			//txtMostraLucr.setVlrString( (String) prefere.get( EPrefere.MOSTRAFATLUCRO.ordinal() ) );
-			//txtMostraLucr.setVisible( true );
+			//txtFatorLucratividade.setVlrString( (String) prefere.get( EPrefere.MOSTRAFATLUCRO.ordinal() ) );
+			//txtFatorLucratividade.setVisible( true );
 			
 		}
 		else if ( e.getListaCampos() == lcDet ) {
