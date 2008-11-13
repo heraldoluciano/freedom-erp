@@ -131,6 +131,8 @@ public class RPCliente extends FTabDados implements ActionListener {
 
 	private final JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 45, 0 );
 	
+	private final JTextFieldPad txtFatLucr = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 2, Aplicativo.casasDec );
+	
 	private final JCheckBoxPad cbAtivo = new JCheckBoxPad( "Cliente Ativo", "S", "N" );
 	
 	private final JButton btCopiarEnt = new JButton( "copiar endereço", Icone.novo( "btReset.gif" ) );
@@ -304,6 +306,8 @@ public class RPCliente extends FTabDados implements ActionListener {
 		adic( linha2, 7, 200, 403, 50 );
 		
 		adicDB( cbAtivo, 15, 215, 300, 20, "AtivCli", "", true );
+		
+		adicCampo( txtFatLucr, 7, 275, 50, 20, "FatLucr", "Fat.Luc.", ListaCampos.DB_SI, false );
 	}
 	
 	private void copiarEndereco( final String arg ) {
