@@ -268,7 +268,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 			
 			sSQL.append( "SELECT IPICOMIS,IPIPED,CODBARPROD,ENDCLIPED,ORDEMPED," );
 			sSQL.append( "SERVIDORSMTP,PORTASMTP,USUARIOSMTP,SENHASMTP,AUTENTICASMTP,SSLSMTP," );
-			sSQL.append( "CASASDEC,CASASDECFIN,CODMOEDA,LAYOUTPED,USAREFPROD, ENVIACOPIA, TPCALCLUCRO, CODGRUP, CODUNID " );
+			sSQL.append( "CASASDEC,CASASDECFIN,CODMOEDA,LAYOUTPED,USAREFPROD, ENVIACOPIA, TPCALCLUCRO, CODGRUP, CODUNID, MOSTRAFATLUCR " );
 			sSQL.append( "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -296,7 +296,8 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 				prefere.add( EPrefere.ENVIACOPIA.ordinal(), rs.getString( "ENVIACOPIA" ) );
 				prefere.add( EPrefere.TPCALCLUCRO.ordinal(), rs.getString( "TPCALCLUCRO" ) );	
 				prefere.add( EPrefere.CODGRUPO.ordinal(), rs.getString( "CODGRUP" ) );	
-				prefere.add( EPrefere.CODUNID.ordinal(), rs.getString( "CODUNID" ) );	
+				prefere.add( EPrefere.CODUNID.ordinal(), rs.getString( "CODUNID" ) );
+				prefere.add( EPrefere.MOSTRAFATLUCRO.ordinal(), rs.getString( "MOSTRAFATLUCR" ) );
 			}
 			
 			rs.close();
@@ -334,6 +335,7 @@ public class RPPrefereGeral extends FDados implements ActionListener {
 	    ENVIACOPIA,
 	    TPCALCLUCRO,
 	    CODGRUPO,
-	    CODUNID;
+	    CODUNID,
+	    MOSTRAFATLUCRO;
 	}
 }
