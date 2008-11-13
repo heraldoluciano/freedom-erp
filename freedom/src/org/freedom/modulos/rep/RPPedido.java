@@ -38,6 +38,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -153,6 +154,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	private final JTextFieldPad txtVlrRecItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private final JTextFieldPad txtPercPagItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 8, Aplicativo.casasDec );
+	
+	private final JTextFieldPad txtMostraLucr = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 2, Aplicativo.casasDec );
 
 	private final JTextFieldPad txtVlrPagItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
@@ -213,6 +216,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 	private final ListaCampos lcPedido = new ListaCampos( this, "" );
 
 	private List<Object> prefere = null;
+	
+
 
 	
 	public RPPedido() {
@@ -348,7 +353,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 		lcFornecedor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFornecedor.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
-		lcFornecedor.setWhereAdic( "ATIVCLI='S'" );
+		lcFornecedor.setWhereAdic( "ATIVFOR='S'" );
 		lcFornecedor.montaSql( false, "FORNECEDOR", "RP" );
 		lcFornecedor.setQueryCommit( false );
 		lcFornecedor.setReadOnly( true );
@@ -494,6 +499,15 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 		adicCampo( txtCodItem, 7, 15, 50, 20, "CodItPed", "Item", ListaCampos.DB_PK, true );
 		
+     /*   if ( "S".equals( (String) prefere.get( EPrefere.MOSTRAFATLUCRO.ordinal() ) )){
+					
+			txtMostraLucr.setVisible( true );
+		}
+        else
+        {
+        	txtMostraLucr.setVisible( false );
+        }*/
+     
 		if ( "S".equals( (String) prefere.get( EPrefere.USAREFPROD.ordinal() ) ) ) {
 			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
 			adicCampoInvisivel( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_FK, false );
@@ -527,8 +541,11 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		adic( new JLabel( "Cód.for." ), 319, 35, 80, 20 );
 		adic( txtCodForItem, 319, 55, 80, 20 );
 		adic( new JLabel( "Razão social do fornecedor" ), 402, 35, 189, 20 );
-		adic( txtRazForItem, 402, 55, 264, 20 );
-
+		adic( txtRazForItem, 402, 55, 210, 20 );
+		if ( "S".equals( (String) prefere.get( EPrefere.MOSTRAFATLUCRO.ordinal() ) )){
+			
+			 adicCampo( txtMostraLucr, 615, 55, 58, 20, "FatLucr", "Fat.lucro", ListaCampos.DB_SI, false );
+		}
 		txtCodForItem.setAtivo( false );
 		txtPercItLucro.setAtivo( false );
 
@@ -911,6 +928,10 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 			txtDataPed.setVlrDate( Calendar.getInstance().getTime() );
 			txtDataPed.requestFocus();
+			
+			//txtMostraLucr.setVlrString( (String) prefere.get( EPrefere.MOSTRAFATLUCRO.ordinal() ) );
+			//txtMostraLucr.setVisible( true );
+			
 		}
 		else if ( e.getListaCampos() == lcDet ) {
 
