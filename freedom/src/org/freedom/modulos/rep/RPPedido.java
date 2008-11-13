@@ -47,6 +47,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
@@ -68,6 +69,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
+import org.freedom.modulos.std.DLCopiaOrc;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLEnviarEmail;
 import org.freedom.telas.FDetalhe;
@@ -219,6 +221,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private List<Object> prefere = null;
 	
+	private JButton btExp = new JButton( Icone.novo( "btExportar.gif" ) );
+	
 	boolean fator = false;
 
 	
@@ -236,6 +240,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		setImprimir( true );
 		btPrevimp.addActionListener( this );
 		btImp.addActionListener( this );
+		btExp.addActionListener( this );
 
 		lcCampos.addCarregaListener( this );
 		lcDet.addCarregaListener( this );
@@ -542,6 +547,11 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			 txtFatorLucratividade.setSoLeitura( true );
 			 fator = true;
 		}
+		
+		btExp.setPreferredSize( new Dimension( 30, 30 ) );
+		btExp.setToolTipText( "Copia orçamento." );
+		pnNavCab.add( btExp, BorderLayout.EAST );
+		
 		txtCodForItem.setAtivo( false );
 		txtPercItLucro.setAtivo( false );
 
@@ -562,6 +572,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		tab.setTamColuna( 100, 3 );
 		tab.setTamColuna( 100, 4 );
 		tab.setTamColuna( 100, 5 );
+		
+		
 
 	}
 
@@ -862,6 +874,69 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			}
 		}
 	}
+	
+	private void exportar() {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		RPCopiaPed dl = null;
+
+		try {
+			if ( txtCodPed.getVlrInteger().intValue() == 0 || lcCampos.getStatus() != ListaCampos.LCS_SELECT ) {
+				Funcoes.mensagemInforma( this, "Selecione um pedido cadastrado antes!" );
+				return;
+			}
+			dl = new RPCopiaPed( this );
+			dl.setConexao( con );
+			dl.setVisible( true );
+			
+			if ( !dl.OK ) {
+				dl.dispose();
+				return;
+			}
+			int[] iVals = dl.getValores();
+			dl.dispose();
+
+			sSQL = "SELECT IRET FROM VDCOPIAPEDSP(?,?,?,?,?,?)";
+
+			ps = con.prepareStatement( sSQL );
+			
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, lcCampos.getCodFilial() );
+			ps.setInt( 3, iVals[ 0 ] );
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, iVals[ 1 ]  );
+			ps.setInt( 6, txtCodPed.getVlrInteger() );
+			
+			rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				if ( Funcoes.mensagemConfirma( this, "Pedido '" + rs.getInt( 1 ) + "' criado com sucesso!\n" + 
+						"Gostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
+					txtCodPed.setVlrInteger( new Integer( rs.getInt( 1 ) ) );
+					lcCampos.carregaDados();
+				}
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( !con.getAutoCommit() ){
+				con.commit();
+			}
+			
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao copiar o pedido!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+			
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		dl.dispose();
+	}
 
 	private void imprimir( final boolean visualizar ) {
 
@@ -1011,6 +1086,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		}
 		else if ( e.getSource() == btImp ) {
 			imprimir( false );
+		}
+		else if( e.getSource() == btExp ){
+			exportar();
 		}
 		super.actionPerformed( e );
 	}

@@ -26,11 +26,11 @@ public class RPCopiaPed extends FFDialogo {
 
 		super( cOrig );
 		setTitulo( "Cópia de orçamento" );
-		setAtribos( 320, 200 );
+		setAtribos( 320, 150 );
 
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-		lcCli.montaSql( false, "CLIENTE", "VD" );
+		lcCli.montaSql( false, "CLIENTE", "RP" );
 		lcCli.setReadOnly( true );
 		txtCodCli.setTabelaExterna( lcCli );
 		txtCodCli.setFK( true );
