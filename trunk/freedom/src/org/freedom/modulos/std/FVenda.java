@@ -1210,7 +1210,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				"FROM LFBUSCAFISCALSP(?,?,?,?,?,?,?,?,?,?)";
 
 		try {
-
+			
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodFilial );
 			ps.setInt( 2, Aplicativo.iCodEmp );
@@ -2546,10 +2546,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							
 				else if ( ( cevt.getListaCampos() == lcFisc ) && ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
 					getCFOP();
-					getTratTrib();
+//					if(txtAliqFisc.floatValue()==0)
+//						getTratTrib();
 				}
 				else if ( cevt.getListaCampos() == lcNat ) {
 					if ( ( cevt.ok  ) & ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) {
+						if(txtAliqFisc.floatValue()==0)
+							getTratTrib();
 						getICMS();
 					}
 				}
