@@ -643,6 +643,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		BigDecimal precoCusto = txtPrecoCustoProd.getVlrBigDecimal();
 		BigDecimal precoVenda = txtPrecoItem.getVlrBigDecimal();
 		BigDecimal precoVendaFator = precoVenda.multiply( fator ? txtFatLucCli.getVlrBigDecimal() : new BigDecimal (1) );
+		precoVendaFator = precoVendaFator.subtract( txtVlrIPIItem.getVlrBigDecimal() );
 						
 		try {
 
