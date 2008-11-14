@@ -157,7 +157,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private final JTextFieldPad txtPercPagItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 8, Aplicativo.casasDec );
 	
-	private final JTextFieldPad txtFatorLucratividade = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 2, Aplicativo.casasDec );
+	private final JTextFieldPad txtFatorLucratividade = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 4, Aplicativo.casasDec );
 
 	private final JTextFieldPad txtVlrPagItem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
@@ -248,6 +248,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		lcProduto.addCarregaListener( this );
 		lcReferencia.addCarregaListener( this );
 		txtPrecoItem.addKeyListener( this );
+		txtFatorLucratividade.addKeyListener( this );
 
 		lcCampos.addInsertListener( this );
 		lcDet.addInsertListener( this );
@@ -544,7 +545,6 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		if ( "S".equals( (String) prefere.get( EPrefere.MOSTRAFATLUCRO.ordinal() ) )){
 			
 			 adicCampo( txtFatorLucratividade, 615, 55, 58, 20, "FatLucr", "Fat.lucro", ListaCampos.DB_SI, false );
-			 txtFatorLucratividade.setSoLeitura( true );
 			 fator = true;
 		}
 		
@@ -642,8 +642,8 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		BigDecimal percLucro = new BigDecimal("0.00");
 		BigDecimal precoCusto = txtPrecoCustoProd.getVlrBigDecimal();
 		BigDecimal precoVenda = txtPrecoItem.getVlrBigDecimal();
-		BigDecimal precoVendaFator = precoVenda.multiply( fator ? txtFatLucCli.getVlrBigDecimal() : new BigDecimal (1) );
-		precoVendaFator = precoVendaFator.subtract( txtVlrIPIItem.getVlrBigDecimal() );
+		BigDecimal precoVendaFator = precoVenda.multiply( fator ? txtFatorLucratividade.getVlrBigDecimal() : new BigDecimal (1) );
+		precoVendaFator = precoVendaFator.subtract( txtVlrIPIItem.getVlrBigDecimal() == null ? new BigDecimal(0) : txtVlrIPIItem.getVlrBigDecimal() );
 						
 		try {
 
@@ -1101,6 +1101,11 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			if ( kevt.getSource() == txtPrecoItem ) {
 				
 				calcPercItLucro();
+			}
+			else if( kevt.getSource() == txtFatorLucratividade ){
+				
+				calcPercItLucro();
+				
 			}
 		}
 	}
