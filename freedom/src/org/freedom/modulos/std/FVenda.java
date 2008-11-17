@@ -173,6 +173,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtCodEmpLG = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	private JTextFieldPad txtCodFilialLG = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	private JTextFieldPad txtCodLog = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtTipoFrete = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	private JTextFieldFK txtDescTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	private JTextFieldFK txtDescCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	private JTextFieldFK txtDescVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -604,6 +607,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcTipoMov.add( new GuardaCampo( chbImpRecTipoMov, "ImpRecTipoMov", "Imp.rec.", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( chbReImpNfTipoMov, "ReImpNfTipoMov", "Reimp.NF", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( txtCodRegrComis, "CodRegrComis", "Cód.regr.comis.", ListaCampos.DB_SI, false ) );
+		lcTipoMov.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.transp.", ListaCampos.DB_SI, false ) );
+		lcTipoMov.add( new GuardaCampo( txtTipoFrete, "CTipoFrete", "Tp.Frete", ListaCampos.DB_SI, false ) );
+		
 		/*
 		 * SELECT CODTIPOMOV, DESCTIPOMOV FROM EQTIPOMOV WHERE ( TUSUTIPOMOV='S' OR EXISTS (SELECT * FROM EQTIPOMOVUSU TU WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=4 AND TU.CODFILIALUS=1 AND TU.IDUSU='sysdba') ) ORDER
 		 * BY 1
@@ -2293,7 +2299,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					chbImpNfTipoMov.getVlrString(), 
 					chbImpBolTipoMov.getVlrString(), 
 					chbImpRecTipoMov.getVlrString(), 
-					chbReImpNfTipoMov.getVlrString() );
+					chbReImpNfTipoMov.getVlrString(),
+					txtCodTran.getVlrInteger(),
+					txtTipoFrete.getVlrString() );
 			// dl.getDadosCli();
 			dl.setVisible( true );
 	
