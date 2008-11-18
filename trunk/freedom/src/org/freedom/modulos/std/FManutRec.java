@@ -235,7 +235,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JButton btBaixa = new JButton( Icone.novo( "btOk.gif" ) );
 	
-	private JButton btImpBol = new JButton( Icone.novo( "btImprime.gif" ) );
+	private JButton btImpBol = new JButton( Icone.novo( "btBB.gif" ) );
 
 	private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
 
@@ -684,7 +684,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pinBotoesManut.adic( btEstorno, 3, 120, 30, 30 );
 		pinBotoesManut.adic( btExcluirManut, 3, 150, 30, 30 );
 		pinBotoesManut.adic( btImpBol, 3, 180, 30, 30 );
-
+		
 		tabManut.adicColuna( "" ); // 0
 		tabManut.adicColuna( "Dt.vencto." ); // 1
 		tabManut.adicColuna( "Dt.emissão" ); // 2
@@ -1283,6 +1283,39 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			sWhereManut = null;
 			sWhereStatus = null;
 		}
+	}
+	
+	private boolean getUsaBolBB(){
+		
+		boolean retorno = false;
+		StringBuilder sSQL = new StringBuilder();
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		
+		sSQL.append( "SELECT COUNT(*) FROM fnitmodboleto IM WHERE " );
+		sSQL.append( "IM.CODEMP=? AND IM.CODFILIAL=? AND IM.CODBANCO = '001'" );
+		
+		try {
+			
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNITMODBOLETO" ) );
+			rs = ps.executeQuery();
+			
+			if( rs.next() ){
+				if( rs.getInt( 1 ) == 0 ){
+					retorno = false;
+				}else{
+					retorno = true;
+				}
+			}
+			
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao verificar utilização de boleto!" );
+		} 
+		
+		return retorno;
 	}
 
 	private Object[] getTabManutValores() {
@@ -2214,5 +2247,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		prefere = getPrefere();
 		
 		iAnoCC = (Integer) prefere.get( "anocc" );
+		
+		btImpBol.setEnabled( getUsaBolBB() );
 	}
 }
