@@ -234,6 +234,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private JButton btCarregaBaixasMan = new JButton( Icone.novo( "btConsBaixa.gif" ) );
 
 	private JButton btBaixa = new JButton( Icone.novo( "btOk.gif" ) );
+	
+	private JButton btImpBol = new JButton( Icone.novo( "btImprime.gif" ) );
 
 	private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
 
@@ -313,6 +315,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		btCarregaBaixas.setToolTipText( "Carrega baixas" );
 		btCarregaBaixasMan.setToolTipText( "Carrega baixas" );
 		btBaixa.setToolTipText( "Baixar" );
+		btImpBol.setToolTipText( "Imprimir boleto" );
 		btSair.setToolTipText( "Sair" );
 		btCarregaVenda.setToolTipText( "Consulta venda" );
 
@@ -680,6 +683,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pinBotoesManut.adic( btNovoManut, 3, 90, 30, 30 );
 		pinBotoesManut.adic( btEstorno, 3, 120, 30, 30 );
 		pinBotoesManut.adic( btExcluirManut, 3, 150, 30, 30 );
+		pinBotoesManut.adic( btImpBol, 3, 180, 30, 30 );
 
 		tabManut.adicColuna( "" ); // 0
 		tabManut.adicColuna( "Dt.vencto." ); // 1
@@ -751,6 +755,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		btEditManut.addActionListener( this );
 		btNovoManut.addActionListener( this );
 		btExcluirManut.addActionListener( this );
+		btImpBol.addActionListener( this );
 		btCarregaGridManut.addActionListener( this );
 		btEstorno.addActionListener( this );
 		btCarregaBaixas.addActionListener( this );
@@ -2085,6 +2090,26 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		return retorno;
 	}
 
+	private void impBoleto(){
+		
+		DLImpBoletoRec dl = null;
+		
+		if( tabManut.getLinhaSel() < 0 ){
+			Funcoes.mensagemInforma( this, "Selecione uma parcela no grid!" ); 
+			return;
+		}
+		
+		dl = new DLImpBoletoRec( this, con, (Integer)tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() ),  
+				(Integer)tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.NPARCITREC.ordinal() ));
+		
+		dl.setVisible( true );
+		
+		if( dl.OK ){
+			
+			dl.imprimir();
+		}
+	}
+	
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btSair ) {
@@ -2134,6 +2159,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 		else if ( evt.getSource() == btCarregaVenda ) {
 			carregaVenda();
+		}
+		else if( evt.getSource() == btImpBol ){
+			impBoleto();
 		}
 	}
 
