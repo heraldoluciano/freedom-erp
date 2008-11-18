@@ -1,2 +1,2 @@
-copy \\servidor\dados\freedom\lib\*.jar \opt\freedom\lib
-copy \\servidor\dados\freedom\bin\*.bat \opt\freedom\bin
+copy \opt\eclipse\workspace\freedom\lib\*.jar \opt\freedom\lib
+copy \opt\eclipse\workspace\freedom\lib\exec\*.bat \opt\freedom\bin
