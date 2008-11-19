@@ -30,8 +30,6 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.freedom.acao.CarregaEvent;
-import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.componentes.GuardaCampo;
@@ -63,6 +61,8 @@ public class RPProduto extends FDados implements ActionListener, InsertListener 
 	private final JTextFieldPad txtRefProdFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private final JTextFieldPad txtPesoLiq = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 10, Aplicativo.casasDec );
+	
+	private final JTextFieldPad txtSaldoProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 10, Aplicativo.casasDec );
 
 	private final JTextFieldPad txtPesoBruto = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 10, Aplicativo.casasDec );
 
@@ -173,6 +173,7 @@ public class RPProduto extends FDados implements ActionListener, InsertListener 
 		adicCampo( txtPercIPI, 7, 150, 100, 20, "PercIPIProd", "% IPI", ListaCampos.DB_SI, false );
 		adicCampo( txtComiss, 110, 150, 100, 20, "ComisProd", "% Comissão", ListaCampos.DB_SI, false );
 		adicCampo( txtCubagem, 213, 150, 100, 20, "CubagemProd", "Cubagem", ListaCampos.DB_SI, false );
+		adicCampo( txtSaldoProd, 316, 150, 100, 20, "SaldoProd", "Saldo", ListaCampos.DB_SI, false );
 		
 		adicCampo( txtCodGrupo, 7, 190, 100, 20, "CodGrup", "Cód.grupo", ListaCampos.DB_FK, txtDescGrupo, true );
 		adicDescFK( txtDescGrupo, 110, 190, 363, 20, "DescGrupo", "Descrição do grupo" );
