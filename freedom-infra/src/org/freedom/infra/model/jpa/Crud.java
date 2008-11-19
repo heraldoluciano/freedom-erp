@@ -139,7 +139,7 @@ public class Crud {
 				             sessionName, 
 				             userParam, 
 				             passwordParam ),
-		      writerLogger );
+				             writerLogger );
 	}
 
 	private static Map<String, String> getProperties( final int persistFramework, 

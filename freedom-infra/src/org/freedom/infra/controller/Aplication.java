@@ -103,15 +103,15 @@ public abstract class Aplication {
 	/**
 	 * @see		java.util.Properties#get(Object)
 	 */
-	public Object getPropertie( Object propertie ) {
-		return properties.get( propertie );
+	public Object getProperty( Object property ) {
+		return properties.get( property );
 	}
 	
 	/**
 	 * @see		java.util.Properties#put(Object, Object)
 	 */
-	public Object putPropertie( String name, Object propertie ) {
-		return properties.put( name, propertie );
+	public Object putProperty( String name, Object property ) {
+		return properties.put( name, property );
 	}
 
 }
