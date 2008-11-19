@@ -66,7 +66,7 @@ public class RelSaldosProd extends FRelatorio {
 
 		super( false );
 		setTitulo( "Relatorio de saldos" );		
-		setAtribos( 50, 50, 325, 250 );
+		setAtribos( 50, 50, 325, 200 );
 
 		montaListaCampos();
 		montaTela();
