@@ -25,14 +25,23 @@
 
 package org.freedom.modulos.rep;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Vector;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
+import org.freedom.telas.FPrinterJob;
 
 public class RPFornecedor extends FDados implements ActionListener {
 
@@ -90,6 +99,9 @@ public class RPFornecedor extends FDados implements ActionListener {
 		txtFoneFor.setMascara( JTextFieldPad.MC_FONE );
 		txtFaxFor.setMascara( JTextFieldPad.MC_FONE );
 
+		btImp.addActionListener( this );
+	  	btPrevimp.addActionListener( this );
+		setImprimir( true );
 	}
 
 	private void montaRadioGrupos() {
@@ -128,8 +140,61 @@ public class RPFornecedor extends FDados implements ActionListener {
 		adicCampo( txtFoneFor, 62, 280, 172, 20, "FoneFor", "Fone", ListaCampos.DB_SI, false );
 		adicCampo( txtFaxFor, 237, 280, 172, 20, "FaxFor", "Fax", ListaCampos.DB_SI, false );
 
-		adicCampo( txtEmailFor, 7, 320, 403, 20, "EmailFor", "E-mail", ListaCampos.DB_SI, false );
+		adicCampo( txtEmailFor, 7, 320, 403, 20, "EmailFor", "E-mail", ListaCampos.DB_SI, false );		
+	}
 
+	private void imprimir( boolean view ) {
 		
+		if ( txtCodFor.getVlrInteger() == 0 ) {
+			Funcoes.mensagemInforma( this, "Selecione o fornecedor." );
+			return;
+		}
+		
+		try {
+			
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append( "SELECT F.CODFOR,F.RAZFOR,F.NOMEFOR,F.CNPJFOR,F.INSCFOR," );
+			sql.append( "F.ENDFOR,F.CIDFOR,F.ESTFOR,F.CEPFOR,F.BAIRFOR," );
+			sql.append( "F.DDDFOR,F.FONEFOR,F.FAXFOR,F.EMAILFOR,F.CODREPFOR,F.TIPOFOR " );
+			sql.append( "FROM RPFORNECEDOR F " );
+			sql.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND F.CODFOR=?" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "RPFORNECEDOR" ) );
+			ps.setInt( 3, txtCodFor.getVlrInteger() );
+
+			ResultSet rs = ps.executeQuery();
+			
+			HashMap<String,Object> hParam = new HashMap<String, Object>();
+			
+			hParam.put( "CODEMP", Aplicativo.iCodEmp );
+			hParam.put( "REPORT_CONNECTION", con );
+
+			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpfornecedor.jasper", "FORNECEDOR - " + txtCodFor.getVlrInteger() + " - " + txtNomeFor.getVlrString(), null, rs, hParam, this);
+			
+			if ( view ) {
+				dlGr.setVisible( true );
+			}
+			else {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			}
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
+			e.printStackTrace();
+		}
+	}
+
+	public void actionPerformed( ActionEvent e ) {
+
+		if ( e.getSource() == btImp ) {
+			imprimir( false );
+		}
+		else if ( e.getSource() == btPrevimp ) {
+			imprimir( true );
+		}
+		
+		super.actionPerformed( e );
 	}
 }

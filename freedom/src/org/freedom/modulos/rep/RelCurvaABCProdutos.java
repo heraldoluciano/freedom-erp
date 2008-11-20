@@ -85,7 +85,7 @@ public class RelCurvaABCProdutos extends FRelatorio {
 
 		super( false );
 		setTitulo( "Relatorio de Curva ABC de produtos" );		
-		setAtribos( 100, 50, 325, 270 );
+		setAtribos( 100, 50, 325, 310 );
 		
 		montaListaCampos();
 		montaTela();
@@ -173,6 +173,13 @@ public class RelCurvaABCProdutos extends FRelatorio {
 		adic( txtCodCli, 10, 170, 77, 20 );
 		adic( new JLabel( "Razão social do cliente" ), 90, 150, 210, 20 );
 		adic( txtRazCli, 90, 170, 210, 20 );
+		
+		adic( new JLabel( "% A", SwingConstants.CENTER ), 20, 210, 30, 20 );
+		adic( txtCurvaA, 50, 210, 50, 20 );
+		adic( new JLabel( "% B", SwingConstants.CENTER ), 120, 210, 30, 20 );
+		adic( txtCurvaB, 150, 210, 50, 20 );
+		adic( new JLabel( "% C", SwingConstants.CENTER ), 220, 210, 30, 20 );
+		adic( txtCurvaC, 250, 210, 50, 20 );
 	}
 
 	@ Override
@@ -220,7 +227,7 @@ public class RelCurvaABCProdutos extends FRelatorio {
 			
 			StringBuilder sql = new StringBuilder();
 
-			sql.append( "SELECT COUNT(I.CODPROD) ITENS_TOTAL, SUM(COALESCE(I.VLRLIQITPED,0)) VALOR_TOTAL " );
+			sql.append( "SELECT COUNT(DISTINCT I.CODPROD) ITENS_TOTAL, SUM(COALESCE(I.VLRLIQITPED,0)) VALOR_TOTAL " );
 			sql.append( "FROM RPITPEDIDO I, RPPEDIDO P " );
 			sql.append( "WHERE" );
 			sql.append( "  I.CODEMP=? AND I.CODFILIAL=? AND " );
@@ -248,25 +255,24 @@ public class RelCurvaABCProdutos extends FRelatorio {
 
 			sql.append( "SELECT" );
 			sql.append( "  I.CODPROD PRODUTO," );
-			sql.append( "  PD.REFPROD REFERENCIA," );
-			sql.append( "  PD.DESCPROD DESCRICAO," );
+			sql.append( "  (SELECT PD.REFPROD FROM RPPRODUTO PD WHERE PD.CODEMP=I.CODEMP AND PD.CODFILIAL=I.CODFILIAL AND PD.CODPROD=I.CODPROD) REFERENCIA," );
+			sql.append( "  (SELECT PD.DESCPROD FROM RPPRODUTO PD WHERE PD.CODEMP=I.CODEMP AND PD.CODFILIAL=I.CODFILIAL AND PD.CODPROD=I.CODPROD) DESCRICAO," );
 			sql.append( "  SUM(I.QTDITPED) QUANTIDADE," ); 
 			sql.append( "  MIN(I.PRECOITPED) MENOR_PRECO," ); 
 			sql.append( "  MAX(I.PRECOITPED) MAIOR_PRECO," );
 			sql.append( "  SUM(I.VLRLIQITPED)/(" + String.valueOf( valorTotal ) + "/100) PORCENTAGEM," );
 			sql.append( "  SUM(I.VLRLIQITPED) VALOR " );
 			sql.append( "FROM" ); 
-			sql.append( "  RPITPEDIDO I, RPPEDIDO P, RPPRODUTO PD " );
+			sql.append( "  RPITPEDIDO I, RPPEDIDO P " );
 			sql.append( "WHERE" );
 			sql.append( "  I.CODEMP=? AND I.CODFILIAL=? AND " );
-			sql.append( "  I.CODEMP=P.CODEMP AND I.CODFILIAL=P.CODFILIAL AND I.CODPED=P.CODPED AND" );
-			sql.append( "  PD.CODEMP=I.CODEMP AND PD.CODFILIAL=I.CODFILIAL AND PD.CODPROD=I.CODPROD AND" );
+			sql.append( "  I.CODEMP=P.CODEMP AND I.CODFILIAL=P.CODFILIAL AND I.CODPED=P.CODPED AND " );
 			sql.append( where );
 			sql.append( "  P.DATAPED BETWEEN ? AND ? " );
 			sql.append( "GROUP BY" );
-			sql.append( "  I.CODPROD, PD.REFPROD, PD.DESCPROD " );
+			sql.append( "  I.CODEMP, I.CODFILIAL, I.CODPROD " );
 			sql.append( "ORDER BY" ); 
-			sql.append( "  6 DESC, 2 DESC" );
+			sql.append( "  8 DESC, 2 DESC" );
 						
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -284,9 +290,14 @@ public class RelCurvaABCProdutos extends FRelatorio {
 			hParam.put( "NOMEVEND", nomevend );
 			hParam.put( "RAZFOR", razfor );
 			hParam.put( "RAZCLI", razcli );					
-			hParam.put( "CURVA_A", (int)((itensTotal/100)*txtCurvaA.getVlrInteger()) );
-			hParam.put( "CURVA_B", (int)((itensTotal/100)*txtCurvaB.getVlrInteger()) );
-			hParam.put( "CURVA_C", (int)((itensTotal/100)*txtCurvaC.getVlrInteger()) );
+			
+			int curvaA = (int)((itensTotal/100)*txtCurvaA.getVlrInteger());
+			int curvaB = (int)((itensTotal/100)*txtCurvaB.getVlrInteger());
+			int curvaC = (int)((itensTotal/100)*txtCurvaC.getVlrInteger());
+			
+			hParam.put( "CURVA_A", curvaA );
+			hParam.put( "CURVA_B", curvaA + curvaB );
+			hParam.put( "CURVA_C", curvaA + curvaB + curvaC );
 			
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpcurvaABC.jasper", "PRODUTO POR CLIENTE", null, rs, hParam, this );
 
