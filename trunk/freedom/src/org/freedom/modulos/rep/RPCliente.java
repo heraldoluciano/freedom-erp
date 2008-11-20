@@ -28,6 +28,8 @@ package org.freedom.modulos.rep;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
@@ -342,14 +344,42 @@ public class RPCliente extends FTabDados implements ActionListener {
 	
 	private void imprimir( boolean view ) {
 		
+		if ( txtCodCli.getVlrInteger() == 0 ) {
+			Funcoes.mensagemInforma( this, "Selecione o cliente." );
+			return;
+		}
+		
 		try {
-			HashMap<String, Object> hParam = new HashMap<String, Object>();
+			
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append( "SELECT C.CODEMP,C.CODFILIAL,C.CODCLI," );
+			sql.append( "C.RAZCLI,C.NOMECLI,C.CNPJCLI,C.INSCCLI," );
+			sql.append( "C.ENDCLI,C.CIDCLI,C.ESTCLI,C.CEPCLI,C.BAIRCLI," );
+			sql.append( "C.DDDCLI,C.FONECLI,C.FAXCLI,C.EMAILCLI," );
+			sql.append( "C.ENDCOBCLI,C.BAIRCOBCLI,C.CIDCOBCLI,C.ESTCOBCLI,C.CEPCOBCLI," );
+			sql.append( "C.ENDENTCLI,C.BAIRENTCLI,C.CIDENTCLI,C.CEPENTCLI,C.ESTENTCLI," );
+			sql.append( "C.INSCENTCLI,C.CNPJENTCLI,C.ATIVCLI," );
+			sql.append( "T.DESCTIPOCLI, V.NOMEVEND, P.DESCPLANOPAG " );
+			sql.append( "FROM RPCLIENTE C " );
+			sql.append( "LEFT OUTER JOIN RPTIPOCLI T ON T.CODEMP=C.CODEMPTC AND T.CODFILIAL=C.CODFILIALTC AND T.CODTIPOCLI=C.CODTIPOCLI " );
+			sql.append( "LEFT OUTER JOIN RPVENDEDOR V ON V.CODEMP=C.CODEMPVO AND V.CODFILIAL=C.CODFILIALVO AND V.CODVEND=C.CODVEND " );
+			sql.append( "LEFT OUTER JOIN RPPLANOPAG P ON P.CODEMP=C.CODEMPPG AND P.CODFILIAL=C.CODFILIALPG AND P.CODPLANOPAG=C.CODPLANOPAG " );
+			sql.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? AND C.CODCLI=?" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "RPCLIENTE" ) );
+			ps.setInt( 3, txtCodCli.getVlrInteger() );
+
+			ResultSet rs = ps.executeQuery();
+			
+			HashMap<String,Object> hParam = new HashMap<String, Object>();
+			
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
-			hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "RPPEDIDO" ) );
-			hParam.put( "CODPED", txtCodCli.getVlrInteger() );		
 			hParam.put( "REPORT_CONNECTION", con );
 
-			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpcliente.jasper", "CLIENTE " + txtNomeCli.getVlrString(), "", this, hParam, con );
+			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpcliente.jasper", "CLIENTE - " + txtCodCli.getVlrInteger() + " - " + txtNomeCli.getVlrString(), null, rs, hParam, this);
 			
 			if ( view ) {
 				dlGr.setVisible( true );

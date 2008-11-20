@@ -118,10 +118,12 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 		Vector<String> labs = new Vector<String>();
 		labs.add( "completo" );
 		labs.add( "resumido" );
+		labs.add( "comissões" );
 		Vector<String> vals = new Vector<String>();
 		vals.add( "C" );
 		vals.add( "R" );
-		rgModo = new JRadioGroup<String, String>( 1, 2, labs, vals );
+		vals.add( "S" );
+		rgModo = new JRadioGroup<String, String>( 1, 3, labs, vals );
 		
 		Vector<String> labs1 = new Vector<String>();
 		labs1.add( "Item" );
@@ -304,7 +306,9 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 		
 		sql.append( "SELECT P.CODPED,P.DATAPED,P.CODCLI,C.RAZCLI,P.CODVEND,V.NOMEVEND," );
 		sql.append( "P.CODFOR,F.RAZFOR,P.NUMPEDCLI,P.NUMPEDFOR,P.QTDTOTPED,P.VLRLIQPED," );
-		sql.append( "P.VLRDESCPED,P.VLRADICPED,P.VLRIPIPED " );
+		sql.append( "P.VLRDESCPED,P.VLRADICPED,P.VLRIPIPED," );
+		sql.append( "(SELECT SUM(IT.VLRRECITPED) FROM RPITPEDIDO IT WHERE IT.CODEMP=P.CODEMP AND IT.CODFILIAL=P.CODFILIAL AND IT.CODPED=P.CODPED) VLRRECITPED," );
+		sql.append( "(SELECT SUM(IT.VLRPAGITPED) FROM RPITPEDIDO IT WHERE IT.CODEMP=P.CODEMP AND IT.CODFILIAL=P.CODFILIAL AND IT.CODPED=P.CODPED) VLRPAGITPED  " );
 		sql.append( "FROM RPPEDIDO P, RPCLIENTE C, RPVENDEDOR V, RPFORNECEDOR F, RPMOEDA M " );
 		sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? " );
 		sql.append( "AND P.DATAPED BETWEEN ? AND ? " );
@@ -355,8 +359,10 @@ public class RelPedido extends FRelatorio implements RadioGroupListener {
 		try {
 			
 			ResultSet rs = "C".equals( rgModo.getVlrString() ) ? getQueryCompleto() : getQueryResumido();
-			String relatorio = "C".equals( rgModo.getVlrString() ) ? "rppedidocomp.jasper" : "rppedidoresum.jasper";
-			String modo = "C".equals( rgModo.getVlrString() ) ? "( completo )" : " ( resumido )";
+			String relatorio = "C".equals( rgModo.getVlrString() ) ? "rppedidocomp.jasper" : 
+				( "R".equals( rgModo.getVlrString() ) ? "rppedidoresum.jasper" : "rppedidocomiss.jasper" );
+			String modo = "C".equals( rgModo.getVlrString() ) ? "( completo )" : 
+				( "R".equals( rgModo.getVlrString() ) ? " ( resumido )" : " ( comissôes )" );
 			String nomevend = null;
 			String moeda = null;
 			String razcli = null;

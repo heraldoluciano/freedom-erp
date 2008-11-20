@@ -387,7 +387,7 @@ ORDER BY
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="5"
+						x="35"
 						y="145"
 						width="50"
 						height="12"
@@ -404,9 +404,9 @@ ORDER BY
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="58"
+						x="88"
 						y="145"
-						width="200"
+						width="170"
 						height="12"
 						forecolor="#6464C8"
 						backcolor="#FFFFFF"
@@ -566,6 +566,19 @@ ORDER BY
 		</columnHeader>
 		<detail>
 			<band height="16"  isSplitAllowed="true" >
+				<rectangle>
+					<reportElement
+						x="0"
+						y="0"
+						width="535"
+						height="16"
+						forecolor="#F4F4FF"
+						backcolor="#F4F4FF"
+						key="rectangle-23">
+							<printWhenExpression><![CDATA[new Boolean( $V{COLUMN_COUNT}.intValue()%2 == 0 )]]></printWhenExpression>
+						</reportElement>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
 				<line direction="TopDown">
 					<reportElement
 						x="535"
@@ -588,9 +601,9 @@ ORDER BY
 				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="58"
+						x="88"
 						y="2"
-						width="200"
+						width="170"
 						height="12"
 						key="textField-67"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -640,7 +653,7 @@ ORDER BY
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="5"
+						x="35"
 						y="2"
 						width="50"
 						height="12"
@@ -675,8 +688,21 @@ ORDER BY
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$V{REPORT_COUNT}.intValue()<$P{CURVA_A}.intValue() ? $V{REPORT_COUNT}.intValue() + "A" :
-($V{REPORT_COUNT}.intValue()<$P{CURVA_B}.intValue() ? $V{REPORT_COUNT}.intValue() + "B" : $V{REPORT_COUNT}.intValue() + "C")]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{REPORT_COUNT}.intValue()<=$P{CURVA_A}.intValue() ? "A" :
+($V{REPORT_COUNT}.intValue()<=$P{CURVA_B}.intValue() ? "B" : "C")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="5"
+						y="2"
+						width="25"
+						height="12"
+						key="textField-78"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
