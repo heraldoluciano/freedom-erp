@@ -80,6 +80,7 @@ import org.freedom.layout.componentes.NFSaida;
 import org.freedom.modulos.util.CtrlMultiComis;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPassword;
+import org.freedom.telas.FPrinterJob;
 
 public class FVenda extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener {
 
@@ -1653,7 +1654,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			if ( bPrefs[ POS_PREFS.USALAYOUTPED.ordinal() ] ) {
 
 				try {
-					layNF = Class.forName( "org.freedom.layout.pd." + getLayoutPedido() ).newInstance();
+					//layNF = Class.forName( "org.freedom.layout.pd." + getLayoutPedido() ).newInstance();
+					FPrinterJob dlGr = new FPrinterJob( "relatorios/" + getLayoutPedido(), "PEDIDO", null, rs, null, this );
 				} catch ( Exception err ) {
 					err.printStackTrace();
 					Funcoes.mensagemInforma( this, "Não foi possível carregar o layout do Pedido!\n" + err.getMessage() );
