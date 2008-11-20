@@ -42,6 +42,9 @@
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
+	<parameter name="RODAPE" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["SETPOINT INFORMÁTICA LTDA"]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT (SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC WHERE IC.CODVENDA=V.CODVENDA
 AND IC.CODEMP=V.CODEMP AND IC.CODFILIAL=V.CODFILIAL AND IC.TIPOVENDA=V.TIPOVENDA),
 (SELECT L.CODLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE),
@@ -71,9 +74,7 @@ P.CODPROD=I.CODPROD AND VEND.CODEMP=V.CODEMPVD AND VEND.CODFILIAL=V.CODFILIALVD 
 P.CODEMPFC=FC.CODEMP AND P.CODFILIALFC=FC.CODFILIAL AND VEND.CODVEND=V.CODVEND AND PG.CODEMP=V.CODEMPPG AND
 PG.CODFILIAL=V.CODFILIALPG AND PG.CODPLANOPAG=V.CODPLANOPAG AND V.CODVENDA=VF.CODVENDA AND
 VF.CODEMP=V.CODEMP AND VF.CODFILIAL=V.CODFILIAL AND VF.TIPOVENDA=V.TIPOVENDA
-ORDER BY P.CODMARCA,P.DESCPROD
-
-]]></queryString>
+ORDER BY P.CODMARCA,P.DESCPROD]]></queryString>
 
 	<field name="CODVENDA" class="java.lang.Long"/>
 	<field name="CODCLI" class="java.lang.Long"/>
@@ -1890,20 +1891,20 @@ Responsável:______________________________________ Assinatura:_________________
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="53"  isSplitAllowed="true" >
-				<staticText>
+			<band height="50"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="59"
-						y="11"
-						width="436"
-						height="14"
-						key="staticText-46"/>
+						x="1"
+						y="2"
+						width="535"
+						height="42"
+						key="textField-38"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Av. Leôncio Lopes de Miranda, 419  - Capela do Piçarrão - Várzea Grande - MT - CEP 78132-000]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{RODAPE}.trim()]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageFooter>
 		<summary>
