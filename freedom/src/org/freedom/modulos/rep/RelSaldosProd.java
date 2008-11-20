@@ -134,7 +134,8 @@ public class RelSaldosProd extends FRelatorio {
 			if( !txtCodFor.getVlrString().equals( "" ) ){
 				sql.append( "and pd.codfor=? " );
 			}			
-			sql.append( "group by 1,2,3" );
+			sql.append( "group by 1,2,3 " );
+			sql.append( "order by pr.descprod" ); 
 									
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
