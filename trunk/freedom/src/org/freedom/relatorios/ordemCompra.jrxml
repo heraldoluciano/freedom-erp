@@ -48,7 +48,9 @@
 	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODCOMPRA" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="CODCOMPRA" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(16)]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT (SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC
  WHERE IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND 
 IC.CODFILIAL=C.CODFILIAL),C.CODCOMPRA,C.CODFOR,F.RAZFOR,F.CNPJFOR,
@@ -57,12 +59,13 @@ F.CIDFOR,F.UFFOR,F.FONEFOR,F.DDDFONEFOR,F.FAXFOR,F.INSCFOR,F.RGFOR,
 I.CODPROD,P.REFPROD,P.DESCPROD,P.CODUNID,I.QTDITCOMPRA,I.PRECOITCOMPRA,
 I.VLRPRODITCOMPRA,I.CODNAT,I.PERCICMSITCOMPRA,PERCIPIITCOMPRA,VLRIPIITCOMPRA,
 C.VLRBASEICMSCOMPRA,C.VLRICMSCOMPRA,C.VLRPRODCOMPRA,C.VLRDESCCOMPRA,
-C.VLRDESCITCOMPRA,C.VLRADICCOMPRA,C.VLRIPICOMPRA,C.VLRLIQCOMPRA,
+C.VLRDESCITCOMPRA,C.VLRADICCOMPRA,C.VLRIPICOMPRA,C.VLRLIQCOMPRA,F.CONTFOR,
+C.TIPOFRETECOMPRA, C.VLRFRETECOMPRA, C.OBSERVACAO,
 C.CODPLANOPAG,PG.DESCPLANOPAG FROM CPCOMPRA C, CPFORNECED F,
-CPITCOMPRA I, EQPRODUTO P, FNPLANOPAG PG WHERE C.CODCOMPRA=$P{CODCOMPRA} AND C.CODEMP=$P{CODEMP} AND C.CODFILIAL=$P{CODFILIAL}
+CPITCOMPRA I, EQPRODUTO P, FNPLANOPAG PG 
+WHERE C.CODCOMPRA=$P{CODCOMPRA} AND C.CODEMP=$P{CODEMP} AND C.CODFILIAL=$P{CODFILIAL}
 AND F.CODFOR=C.CODFOR AND I.CODCOMPRA=C.CODCOMPRA AND P.CODPROD=I.CODPROD
-AND PG.CODPLANOPAG=C.CODPLANOPAG ORDER BY C.CODCOMPRA,P.CODPROD
-]]></queryString>
+AND PG.CODPLANOPAG=C.CODPLANOPAG ORDER BY C.CODCOMPRA,P.CODPROD]]></queryString>
 
 	<field name="CODCOMPRA" class="java.lang.Long"/>
 	<field name="CODFOR" class="java.lang.Long"/>
@@ -100,6 +103,10 @@ AND PG.CODPLANOPAG=C.CODPLANOPAG ORDER BY C.CODCOMPRA,P.CODPROD
 	<field name="VLRADICCOMPRA" class="java.math.BigDecimal"/>
 	<field name="VLRIPICOMPRA" class="java.math.BigDecimal"/>
 	<field name="VLRLIQCOMPRA" class="java.math.BigDecimal"/>
+	<field name="CONTFOR" class="java.lang.String"/>
+	<field name="TIPOFRETECOMPRA" class="java.lang.String"/>
+	<field name="VLRFRETECOMPRA" class="java.math.BigDecimal"/>
+	<field name="OBSERVACAO" class="java.lang.String"/>
 	<field name="CODPLANOPAG" class="java.lang.Long"/>
 	<field name="DESCPLANOPAG" class="java.lang.String"/>
 
@@ -107,7 +114,7 @@ AND PG.CODPLANOPAG=C.CODPLANOPAG ORDER BY C.CODCOMPRA,P.CODPROD
 		<group  name="GERAL" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="79"  isSplitAllowed="true" >
+			<band height="132"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="75"
@@ -265,7 +272,7 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["( " + $F{DDDFONEFOR}.trim() + " ) " + $F{FONEFOR}.trim().substring(0,4) + "-" + $F{FONEFOR}.trim().substring(4,8) ]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["( " + $F{DDDFONEFOR}.trim() + " ) " + $F{FONEFOR}.trim().substring(0,4) + "-" + $F{FONEFOR}.trim().substring(4,8)]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -288,7 +295,7 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="60"
+						y="112"
 						width="539"
 						height="0"
 						key="line-4"/>
@@ -297,7 +304,7 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="43"
+						y="79"
 						width="539"
 						height="0"
 						key="line-5"/>
@@ -306,7 +313,7 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 				<staticText>
 					<reportElement
 						x="0"
-						y="43"
+						y="95"
 						width="537"
 						height="15"
 						key="staticText-8"/>
@@ -319,7 +326,7 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="78"
+						y="130"
 						width="539"
 						height="0"
 						key="line-9"/>
@@ -327,8 +334,8 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 				</line>
 				<staticText>
 					<reportElement
-						x="3"
-						y="62"
+						x="2"
+						y="113"
 						width="51"
 						height="13"
 						key="staticText-9"/>
@@ -341,7 +348,7 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 				<staticText>
 					<reportElement
 						x="57"
-						y="62"
+						y="114"
 						width="290"
 						height="13"
 						key="staticText-10"/>
@@ -353,8 +360,8 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="350"
-						y="62"
+						x="349"
+						y="113"
 						width="46"
 						height="13"
 						key="staticText-11"/>
@@ -366,8 +373,8 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="399"
-						y="62"
+						x="398"
+						y="113"
 						width="66"
 						height="13"
 						key="staticText-12"/>
@@ -379,8 +386,8 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="469"
-						y="62"
+						x="468"
+						y="113"
 						width="66"
 						height="13"
 						key="staticText-13"/>
@@ -393,7 +400,7 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 				<line direction="TopDown">
 					<reportElement
 						x="55"
-						y="60"
+						y="112"
 						width="0"
 						height="18"
 						key="line-10"/>
@@ -401,8 +408,8 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="348"
-						y="61"
+						x="347"
+						y="112"
 						width="0"
 						height="18"
 						key="line-11"/>
@@ -410,8 +417,8 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="397"
-						y="61"
+						x="396"
+						y="112"
 						width="0"
 						height="18"
 						key="line-12"/>
@@ -419,8 +426,8 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="467"
-						y="61"
+						x="466"
+						y="112"
 						width="0"
 						height="18"
 						key="line-13"/>
@@ -439,10 +446,54 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Compra: " + $F{CODCOMPRA}.toString().trim()]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement
+						x="3"
+						y="44"
+						width="55"
+						height="13"
+						key="staticText-19"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[Vendedor:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="113"
+						width="0"
+						height="19"
+						key="line-21"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="539"
+						y="113"
+						width="0"
+						height="19"
+						key="line-22"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="60"
+						y="44"
+						width="475"
+						height="13"
+						key="textField-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CONTFOR}.trim()]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="39"  isSplitAllowed="true" >
+			<band height="63"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -457,7 +508,7 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 						x="388"
 						y="0"
 						width="0"
-						height="39"
+						height="63"
 						key="line-17"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -466,7 +517,7 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 						x="539"
 						y="0"
 						width="0"
-						height="39"
+						height="63"
 						key="line-18"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -525,7 +576,7 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="38"
+						y="62"
 						width="539"
 						height="0"
 						key="line-19"/>
@@ -536,7 +587,7 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 						x="0"
 						y="0"
 						width="0"
-						height="39"
+						height="63"
 						key="line-20"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -566,6 +617,71 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 					</textElement>
 				<text><![CDATA[Valor desconto:]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="18"
+						width="383"
+						height="22"
+						key="textField-18"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{OBSERVACAO}.trim()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="2"
+						y="43"
+						width="50"
+						height="15"
+						key="staticText-20"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[ Frete:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="55"
+						y="43"
+						width="115"
+						height="15"
+						key="textField-19"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRFRETECOMPRA}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="173"
+						y="43"
+						width="50"
+						height="15"
+						key="staticText-21"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[Tipo frete:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="225"
+						y="43"
+						width="115"
+						height="15"
+						key="textField-20"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TIPOFRETECOMPRA}.trim().equals("F") ? "FOB" : "CIF"]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>
