@@ -898,7 +898,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDescFK( txtDescTipoMov4, 85, 230, 250, 20, "DescTipoMov", "Tipo de movimento para pedido (serviço)." );
 		adicCampo( txtCodTransp, 7, 280, 75, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, txtDescTransp, false );
 		adicDescFK( txtDescTransp, 85, 280, 250, 20, "RazTran", "Razão social da transp. padrão para venda" );
-		adicCampo( txtDescClassPed, 7, 320, 250, 20, "ClassPed", "Layout padrão para pedido.", ListaCampos.DB_SI, false );
+		adicCampo( txtDescClassPed, 7, 330, 250, 20, "ClassPed", "Layout padrão para pedido.", ListaCampos.DB_SI, false );
 		
 		lbVendOpcoes.setOpaque( true );
 		adic( lbVendOpcoes, 357, 5, 70, 20 );
