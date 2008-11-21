@@ -47,7 +47,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
-public class RelSaldosProd extends FRelatorio {
+public class RelsemSaldosProd extends FRelatorio {
 	
 	private static final long serialVersionUID = 1;
 	
@@ -62,10 +62,10 @@ public class RelSaldosProd extends FRelatorio {
 	private final ListaCampos lcFornecedor = new ListaCampos( this );
 
 
-	public RelSaldosProd() {
+	public RelsemSaldosProd() {
 
 		super( false );
-		setTitulo( "Tabela com saldo" );		
+		setTitulo( "Tabela sem saldo" );		
 		setAtribos( 50, 50, 325, 200 );
 
 		montaListaCampos();
@@ -158,7 +158,7 @@ public class RelSaldosProd extends FRelatorio {
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
 			hParam.put( "REPORT_CONNECTION", con );
 			
-			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpsaldoprod.jasper", "TABELA", null, rs, hParam, this );
+			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rptabela.jasper", "TABELA", null, rs, hParam, this );
 
 			if ( visualizar ) {
 				dlGr.setVisible( true );
