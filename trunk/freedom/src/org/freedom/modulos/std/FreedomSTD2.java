@@ -237,7 +237,7 @@ public class FreedomSTD2 extends AplicativoPD {
 		// addBotao("btEmprestimo.gif","Cadastro de similaridades",100120080);
 
 		ajustaMenu();
-
+ 
 		sNomeModulo = "Standard";
 		sMailSuporte = "suporte@stpinf.com";
 		sNomeSis = "Freedom";
