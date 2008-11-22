@@ -26,6 +26,7 @@ package org.freedom.modulos.std;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -39,8 +40,10 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
+import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
@@ -131,6 +134,8 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 	private Vector<String> vVals = new Vector<String>();
 
 	private Vector<String> vLabs = new Vector<String>();
+
+    public JButton btFechar = new JButton("Fechar Compra", Icone.novo("btOk.gif"));
 
 	private int iCodCompraFecha = 0;
 
@@ -281,8 +286,14 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 			txtPercDescCompra.setAtivo( false );
 			txtVlrDescCompra.setAtivo( false );
 		}
+		
+		/*JPanelPad pnBotaoFechar = new JPanelPad(JPanelPad.TP_JPANEL, new FlowLayout(FlowLayout.CENTER, 7, 7));
+		pnBotaoFechar.add( btFechar );
+		pnRodape.add( pnBotaoFechar, BorderLayout.WEST );*/
 
 		tpn.setEnabledAt( 1, false );
+		
+		btFechar.addActionListener( this );
 
 		txtPercDescCompra.addFocusListener( this );
 		txtVlrDescCompra.addFocusListener( this );
@@ -389,14 +400,32 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		sRetorno[ 5 ] = txtVlrLiqCompra.getVlrString();
 		return sRetorno;
 	}
+	
+	private void fecharCompra() {
+
+		lcCompra.edit();
+		if ( txtStatusCompra.getVlrString().trim().equals( "P1" ) ) {
+			txtStatusCompra.setVlrString( "P2" );
+		}
+		if ( txtStatusCompra.getVlrString().trim().equals( "C1" ) ) {
+			txtStatusCompra.setVlrString( "C2" );
+		}
+		lcCompra.post();
+		int iCodPag = getCodPag();
+		if ( iCodPag > 0 ) {
+			txtCodPag.setVlrInteger( new Integer( iCodPag ) );
+			lcPagar.carregaDados();
+		}
+		bPodeSair = true;
+	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btCancel ) {
 			super.actionPerformed( evt );
 		}
-		else if ( bPodeSair ) {
-			if ( evt.getSource() == btOK ) {
+		else if ( evt.getSource() == btOK ) {
+			if ( bPodeSair ) {
 				if ( lcPagar.getStatus() == ListaCampos.LCS_EDIT ) {
 					lcPagar.post();
 				}
@@ -414,28 +443,19 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 						cbImpNot.setVlrString( "N" );
 					}
 				}
+				super.actionPerformed( evt );
 			}
-			super.actionPerformed( evt );
+			else {
+				if ( tpn.getSelectedIndex() == 0 ) {
+					fecharCompra();
+					tpn.setEnabledAt( 1, true );
+					tpn.setSelectedIndex( 1 );
+				}
+			}
 		}
-		if ( evt.getSource() == btOK ) {
-			if ( tpn.getSelectedIndex() == 0 ) {
-				lcCompra.edit();
-				if ( txtStatusCompra.getVlrString().trim().equals( "P1" ) ) {
-					txtStatusCompra.setVlrString( "P2" );
-				}
-				if ( txtStatusCompra.getVlrString().trim().equals( "C1" ) ) {
-					txtStatusCompra.setVlrString( "C2" );
-				}
-				lcCompra.post();
-				tpn.setEnabledAt( 1, true );
-				tpn.setSelectedIndex( 1 );
-				int iCodPag = getCodPag();
-				if ( iCodPag > 0 ) {
-					txtCodPag.setVlrInteger( new Integer( iCodPag ) );
-					lcPagar.carregaDados();
-				}
-				bPodeSair = true;
-			}
+		else if ( evt.getSource() == btFechar ) {
+			fecharCompra();
+			btOK.doClick();
 		}
 	}
 
