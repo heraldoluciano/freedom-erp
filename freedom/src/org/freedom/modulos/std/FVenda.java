@@ -48,7 +48,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
 
-import javax.print.attribute.standard.Finishings;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
