@@ -450,6 +450,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcFreteVD.add( new GuardaCampo( cbAdicICMSFrete, "AdicFreteBaseICM", "frete no icms", ListaCampos.DB_SI, true ) );
 		lcFreteVD.add( new GuardaCampo( txtPercIcmsFreteVD, "AliqICMSFreteVD", "aliquota", ListaCampos.DB_SI, false ) );
 		lcFreteVD.add( new GuardaCampo( txtVlrIcmsFreteVD, "VlrIcmsFreteVD", "valor icms", ListaCampos.DB_SI, false ) );
+		lcFreteVD.add( new GuardaCampo( txtCodTran, "codtran", "Cód.Transp.", ListaCampos.DB_FK, false ) );
+		
 		lcFreteVD.montaSql( false, "FRETEVD", "VD" );
 		lcFreteVD.setConexao( cn );	
 		rgFreteVD.setListaCampos( lcFreteVD );
