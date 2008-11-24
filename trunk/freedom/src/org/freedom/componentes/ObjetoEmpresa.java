@@ -43,7 +43,7 @@ public class ObjetoEmpresa {
     ResultSet rs = null;
     String sSQL = null;
     
-    sSQL = "SELECT RAZEMP,FONEEMP,FAXEMP,EMAILEMP,FOTOEMP FROM SGEMPRESA WHERE CODEMP=?";
+    sSQL = "SELECT RAZEMP,FONEEMP,FAXEMP,EMAILEMP,FOTOEMP,ENDEMP,NUMEMP,BAIREMP,CIDEMP,CEPEMP,UFEMP FROM SGEMPRESA WHERE CODEMP=?";
     try {
         ps = con.prepareStatement(sSQL);
         ps.setInt(1, Aplicativo.iCodEmp);
@@ -53,6 +53,8 @@ public class ObjetoEmpresa {
         	hValores.put("RAZEMP",rs.getString("RAZEMP"));
         	hValores.put("FONEEMP",rs.getString("FONEEMP"));
         	hValores.put("FAXEMP",rs.getString("FAXEMP"));
+        	hValores.put("RODAPE",rs.getString("ENDEMP").trim() + ", " + rs.getString("NUMEMP").trim() + "-" + rs.getString("BAIREMP").trim() + " - " +
+        			rs.getString("CIDEMP").trim() + "-" + rs.getString("UFEMP").trim() + " - " + "CEP " + rs.getString("CEPEMP").trim());
         	
   		  	byte[] bVals = new byte[650000]; 
   		  	Blob bVal = rs.getBlob("FotoEmp");
