@@ -76,6 +76,10 @@ public class DLRPedido extends FFDialogo {
 		adic(cbxResumido, 7, 110, 180, 15);
 	}
 	
+	public void setTipo( String sTipo ){
+		
+		rgTipo.setVlrString( sTipo );
+	}
 	public String getTipo(){
 		
 		String tipo = "";

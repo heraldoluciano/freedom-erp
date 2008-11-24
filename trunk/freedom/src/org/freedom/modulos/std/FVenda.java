@@ -48,6 +48,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
 
+import javax.print.attribute.standard.Finishings;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -1455,9 +1456,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+//			if ( !con.getAutoCommit() ) {
+//				con.commit();
+//			}
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -1727,6 +1728,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 			dl = new DLRPedido( sOrdNota, false );
 			dl.setConexao( con );
+			dl.setTipo( "G" );
 			dl.setVisible( true );
 			tipoimp = dl.getTipo();
 
@@ -1755,8 +1757,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( "C.SITECLI,I.OBSITVENDA,VEND.EMAILVEND," );
 			sSQL.append( "(SELECT FN.DESCFUNC FROM RHFUNCAO FN WHERE FN.CODEMP=VEND.CODEMPFU AND " );
 			sSQL.append( "FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC), " );
-			sSQL.append( "V.PEDCLIVENDA,C.CONTCLI,P.CODFISC,FC.DESCFISC,V.DOCVENDA,C.OBSCLI " );
-			sSQL.append( "FROM VDVENDA V,VDCLIENTE C,VDITVENDA I,EQPRODUTO P,VDVENDEDOR VEND,FNPLANOPAG PG,LFCLFISCAL FC " );
+			sSQL.append( "V.PEDCLIVENDA,C.CONTCLI,P.CODFISC,FC.DESCFISC,V.DOCVENDA,C.OBSCLI," );
+			sSQL.append( "C.BAIRENT, C.ENDENT, C.CIDENT, C.UFENT, C.CEPENT, C.FONEENT, VF.PLACAFRETEVD, VF.PESOBRUTVD, P.DESCCOMPPROD, V.OBSVENDA " );
+			sSQL.append( "FROM VDVENDA V,VDCLIENTE C,VDITVENDA I,EQPRODUTO P,VDVENDEDOR VEND,FNPLANOPAG PG,LFCLFISCAL FC, VDFRETEVD VF " );
 			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.CODVENDA=? AND " );
 			sSQL.append( "C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI AND " );
 			sSQL.append( "I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.TIPOVENDA=V.TIPOVENDA AND " );
@@ -1764,8 +1767,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( "P.CODPROD=I.CODPROD AND VEND.CODEMP=V.CODEMPVD AND VEND.CODFILIAL=V.CODFILIALVD AND " );
 			sSQL.append( "P.CODFISC=FC.CODFISC AND P.CODEMPFC=FC.CODEMP AND P.CODFILIALFC=FC.CODFILIAL AND " );
 			sSQL.append( "VEND.CODVEND=V.CODVEND AND PG.CODEMP=V.CODEMPPG AND PG.CODFILIAL=V.CODFILIALPG AND " );
-			sSQL.append( "PG.CODPLANOPAG=V.CODPLANOPAG " );
+			sSQL.append( "PG.CODPLANOPAG=V.CODPLANOPAG AND " );
+			sSQL.append( "VF.CODEMP=V.CODEMP AND VF.CODFILIAL=V.CODFILIAL AND VF.CODVENDA=V.CODVENDA AND VF.TIPOVENDA=V.TIPOVENDA " );
 			sSQL.append( "ORDER BY P." + dl.getValor() + ",P.DESCPROD" );
+			
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			ps.setInt( 3, iCodVenda );
+			rs = ps.executeQuery();
 
 			sSQLRec.append( "SELECT I.DTVENCITREC,I.VLRPARCITREC,I.NPARCITREC FROM FNRECEBER R, FNITRECEBER I WHERE R.CODVENDA=" );
 			sSQLRec.append( iCodVenda );
@@ -1775,7 +1785,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQLInfoAdic.append( "FROM VDAUXVENDA WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=?" );
 
 			dl.dispose();
-
+			
 			if ( bPrefs[ POS_PREFS.USALAYOUTPED.ordinal() ] ) {
 
 				try {
@@ -1783,7 +1793,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						layNF = Class.forName( "org.freedom.layout.pd." + getLayoutPedido( tipoimp ) ).newInstance();
 					}
 					else {
-						FPrinterJob dlGr = new FPrinterJob( "relatorios/" + getLayoutPedido( tipoimp ), "PEDIDO", null, rs, null, this );
+//						FPrinterJob dlGr = new FPrinterJob( "relatorios" + getLayoutPedido( tipoimp ), "PEDIDO", null, rs, null, this );
+						FPrinterJob dlGr = new FPrinterJob("relatorios/" + getLayoutPedido( tipoimp ),"PEDIDO","",rs,null,this,null);
 						if ( bVisualizar ) {
 							dlGr.setVisible( true );
 						}
@@ -1791,7 +1802,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							try {
 								JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 							} catch ( Exception err ) {
-								Funcoes.mensagemErro( this, "Erro na impressão de relatório Orçãmentos por periodo!" + err.getMessage(), true, con, err );
+								Funcoes.mensagemErro( this, "Erro na impressão do pedido!" + err.getMessage(), true, con, err );
+								err.printStackTrace();
 							}
 						}
 					}
@@ -1804,11 +1816,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 					if ( layNF instanceof Leiaute ) {
 
-						ps = con.prepareStatement( sSQL.toString() );
+						/*ps = con.prepareStatement( sSQL.toString() );
 						ps.setInt( 1, Aplicativo.iCodEmp );
 						ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
 						ps.setInt( 3, iCodVenda );
-						rs = ps.executeQuery();
+						rs = ps.executeQuery();*/
 
 						psRec = con.prepareStatement( sSQLRec.toString() );
 						rsRec = psRec.executeQuery();
@@ -1840,12 +1852,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			else {
 				if ( "T".equals( tipoimp ) ) {
 
-					ps = con.prepareStatement( sSQL.toString() );
+					/*ps = con.prepareStatement( sSQL.toString() );
 					ps.setInt( 1, Aplicativo.iCodEmp );
 					ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
 					ps.setInt( 3, iCodVenda );
 					rs = ps.executeQuery();
-
+*/
 					psRec = con.prepareStatement( sSQLRec.toString() );
 					rsRec = psRec.executeQuery();
 
