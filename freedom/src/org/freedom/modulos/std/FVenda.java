@@ -1758,7 +1758,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( "FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC), " );
 			sSQL.append( "V.PEDCLIVENDA,C.CONTCLI,P.CODFISC,FC.DESCFISC,V.DOCVENDA,C.OBSCLI," );
 			sSQL.append( "C.BAIRENT, C.ENDENT, C.CIDENT, C.UFENT, C.CEPENT, C.FONEENT, VF.PLACAFRETEVD, VF.PESOBRUTVD, P.DESCCOMPPROD, V.OBSVENDA " );
-			sSQL.append( "FROM VDVENDA V,VDCLIENTE C,VDITVENDA I,EQPRODUTO P,VDVENDEDOR VEND,FNPLANOPAG PG,LFCLFISCAL FC, VDFRETEVD VF " );
+			sSQL.append( "FROM VDCLIENTE C,VDITVENDA I,EQPRODUTO P,VDVENDEDOR VEND,FNPLANOPAG PG,LFCLFISCAL FC, " );
+			sSQL.append( "VDVENDA V left outer join VDFRETEVD VF on " );
+			sSQL.append( "VF.CODEMP=V.CODEMP AND VF.CODFILIAL=V.CODFILIAL AND VF.CODVENDA=V.CODVENDA AND VF.TIPOVENDA=V.TIPOVENDA " );
 			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.CODVENDA=? AND " );
 			sSQL.append( "C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI AND " );
 			sSQL.append( "I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.TIPOVENDA=V.TIPOVENDA AND " );
@@ -1766,8 +1768,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( "P.CODPROD=I.CODPROD AND VEND.CODEMP=V.CODEMPVD AND VEND.CODFILIAL=V.CODFILIALVD AND " );
 			sSQL.append( "P.CODFISC=FC.CODFISC AND P.CODEMPFC=FC.CODEMP AND P.CODFILIALFC=FC.CODFILIAL AND " );
 			sSQL.append( "VEND.CODVEND=V.CODVEND AND PG.CODEMP=V.CODEMPPG AND PG.CODFILIAL=V.CODFILIALPG AND " );
-			sSQL.append( "PG.CODPLANOPAG=V.CODPLANOPAG AND " );
-			sSQL.append( "VF.CODEMP=V.CODEMP AND VF.CODFILIAL=V.CODFILIAL AND VF.CODVENDA=V.CODVENDA AND VF.TIPOVENDA=V.TIPOVENDA " );
+			sSQL.append( "PG.CODPLANOPAG=V.CODPLANOPAG " );
 			sSQL.append( "ORDER BY P." + dl.getValor() + ",P.DESCPROD" );
 			
 			ps = con.prepareStatement( sSQL.toString() );
@@ -2036,7 +2037,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						try {
 							JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 						} catch ( Exception err ) {
-							Funcoes.mensagemErro( this, "Erro na impressão de relatório Orçãmentos por periodo!" + err.getMessage(), true, con, err );
+							Funcoes.mensagemErro( this, "Erro na impressão de pedido!" + err.getMessage(), true, con, err );
 						}
 					}
 
