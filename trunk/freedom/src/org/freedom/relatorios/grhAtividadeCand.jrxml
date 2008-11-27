@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="grhGerencVaga"
+		 name="grhAtividadeCand"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
@@ -58,7 +58,8 @@ em.codemp=vg.codempem and em.codfilial=vg.codfilialem and em.codempr=vg.codempr
 left outer join rhfuncao fc on
 fc.codemp = vg.codempfc and fc.codfilial = vg.codfilialfc and fc.codfunc = vg.codfunc
 where ca.codemp = cs.codemp and ca.codfilial=cs.codfilial and ca.codcand=cs.codcand
-and cs.dtstatus between '2008-06-18' and '2009-01-01'
+and cs.dtstatus between $P{DATAINI} and $P{DATAFIM} and ca.codemp=$P{CODEMP} 
+and ca.codfilial=$P{CODFILIAL}
 order by cs.dtstatus]]></queryString>
 
 	<field name="DTSTATUS" class="java.sql.Date"/>
