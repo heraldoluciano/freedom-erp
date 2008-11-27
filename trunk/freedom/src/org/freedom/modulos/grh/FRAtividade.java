@@ -40,13 +40,13 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
-public class FRRelatorioAtiv extends FRelatorio {
+public class FRAtividade extends FRelatorio {
   private static final long serialVersionUID = 1L;
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JCheckBoxPad cbEncaminhados = new JCheckBoxPad("Encaminhados",new Boolean(true),new Boolean(false));
   
-  public FRRelatorioAtiv() {
+  public FRAtividade() {
     setTitulo("Relatório de atividades");
     setAtribos(160,80,285,180);
 
