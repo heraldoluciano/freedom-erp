@@ -48,7 +48,7 @@ public class FRAtividade extends FRelatorio {
   
   public FRAtividade() {
     setTitulo("Relatório de atividades");
-    setAtribos(160,80,285,180);
+    setAtribos(160,80,290,150);
 
     txtDataini.setVlrDate(Funcoes.getDataIniMes( Funcoes.getMes( new Date() ), Funcoes.getAno( new Date() ) ));
     txtDatafim.setVlrDate(Funcoes.getDataFimMes( Funcoes.getMes( new Date() ), Funcoes.getAno( new Date() ) ));
@@ -57,7 +57,7 @@ public class FRAtividade extends FRelatorio {
     lbLinha.setBorder(BorderFactory.createEtchedBorder());
 
     adic(new JLabelPad("Periodo:"),7,5,100,20);
-    adic(lbLinha,60,15,210,2);
+    adic(lbLinha,60,15,203,2);
     adic(new JLabelPad("De:"),7,30,30,20);
     adic(txtDataini,32,30,97,20);
     adic(new JLabelPad("Até:"),135,30,30,20);
