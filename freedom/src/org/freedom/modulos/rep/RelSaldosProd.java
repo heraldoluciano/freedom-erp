@@ -135,7 +135,7 @@ public class RelSaldosProd extends FRelatorio {
 			sql.append( "and pd.dataped between ? and ? " );
 			
 			if( !txtCodFor.getVlrString().equals( "" ) ){
-				sql.append( "and pd.codfor=? " );
+				sql.append( "where pd.codfor=? " );
 			}			
 			
 			sql.append( "group by 1,2,3,4,5 " );
