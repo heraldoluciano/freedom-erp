@@ -310,7 +310,6 @@ group by 1,2,3,6]]></queryString>
 		</columnHeader>
 		<detail>
 			<band height="16"  isSplitAllowed="true" >
-				<printWhenExpression><![CDATA[new Boolean($F{SALDO}.floatValue()>0)]]></printWhenExpression>
 				<rectangle>
 					<reportElement
 						x="0"
