@@ -291,7 +291,7 @@ order by cs.dtstatus]]></queryString>
 				</rectangle>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="102"
+						x="184"
 						y="1"
 						width="168"
 						height="13"
@@ -318,6 +318,19 @@ $F{STCAND}.equals("EV") ? "Empregado" :  $F{STCAND}.equals("DL") ? "Desligado" :
 					</textElement>
 				<text><![CDATA[Situação]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="103"
+						y="1"
+						width="78"
+						height="13"
+						key="textField-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTSTATUS}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
