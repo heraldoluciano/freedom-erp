@@ -485,7 +485,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicDescFK( txtDescFor, 90, 60, 210, 20, "RazFor", "Razão social do fornecedor" );
 		adicCampo( txtCodPlanoPag, 303, 60, 80, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
 		adicDescFK( txtDescPlanoPag, 386, 60, 245, 20, "DescPlanoPag", "Descrição do plano de pagto." );
-		adicCampoInvisivel( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, false );
 		adic( lbStatus, 638, 60, 95, 20 );
 		
 		if( abaTransp.equals( "S" ) ){
@@ -497,6 +496,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			adicDescFK( txtRazTran, 80, 25, 250, 20, "Raztran", "Razão social da transportadora" );
 			//pinCabTransp.adic( txtRazTran, 80, 25, 205, 20 );
 		}
+		
+		adicCampoInvisivel( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, false );
 
 		setListaCampos( true, "COMPRA", "CP" );
 		lcCampos.setQueryInsert( false );
@@ -1410,6 +1411,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		String[] sValores = null;
 
 		if ( evt.getSource() == btFechaCompra ) {
+			lcCampos.carregaDados();
 			DLFechaCompra dl = new DLFechaCompra( con, txtCodCompra.getVlrInteger(), this );
 			dl.setVisible( true );
 			if ( dl.OK ) {
@@ -1517,8 +1519,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			if ( kevt.getSource() == txtCodPlanoPag ) {// Talvez este possa ser o
 				// ultimo
 				// campo do itvenda.
-				if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
+				if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT
+						|| lcCampos.getStatus() == ListaCampos.LCS_EDIT ) {
 					lcCampos.post();
+					lcCampos.carregaDados();
+					
+					lcDet.cancel(true);
 					lcDet.insert( true );
 					txtRefProd.requestFocus();
 				}
@@ -1703,22 +1709,16 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				}
 			}			
 			if ( getGuiaTraf() ) {
-
 				DLGuiaTraf dl = new DLGuiaTraf( txtCodCompra.getVlrInteger(), txtCodItCompra.getVlrInteger(), con );				
 				tem = dl.getGuiaTraf();				
-				dl.setVisible( true );
-				
-				if( dl.OK ){
-					
-					if( tem ){
-						
+				dl.setVisible( true );				
+				if( dl.OK ){					
+					if( tem ){						
 						dl.updatGuiaTraf();
 					}
-					else{
-						
+					else{						
 						dl.insertGuiaTraf();
-					}
-					
+					}					
 				}
 				else{
 					pevt.cancela();
@@ -1727,7 +1727,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 		if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
 			testaCodCompra();
-			txtStatusCompra.setVlrString( "*" );
+			//txtStatusCompra.setVlrString( "*" );
 		}
 	}
 
