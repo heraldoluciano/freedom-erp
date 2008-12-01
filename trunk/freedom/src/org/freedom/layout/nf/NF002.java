@@ -202,7 +202,7 @@ public class NF002 extends Layout {
 				    	
 				    	imp.say( 33,"B.Imp.:" );
 						imp.say( 41,Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( cab.getFloat( NF.C_BASEISS ))));
-						vlrTotImp += cab.getFloat( NF.C_BASEISS );
+						vlrTotImp += cab.getFloat( NF.C_VLRISS );
 				   
 				    }
 				    if( vlrTotImp > 0  ){
