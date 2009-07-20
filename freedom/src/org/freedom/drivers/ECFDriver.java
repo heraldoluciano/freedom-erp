@@ -38,107 +38,107 @@ public class ECFDriver {
 	
 	public int numeroReducoes() {
 		
-		int retorno = -1;
+		int result = -1;
 		
 		if ( dll ) {
-			retorno = bema.numeroReducoes( sUserID, bModoDemo );
+			result = bema.numeroReducoes( sUserID, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 			
-			retorno = Integer.parseInt( ecf.retornoVariaveis( AbstractECFDriver.V_REDUCOES ) );
+			result = Integer.parseInt( ecf.resultVariaveis( AbstractECFDriver.V_REDUCOES ) );
 						
 		}
 		
-		return retorno;
+		return result;
 		
 	}
 	
 	public int numeroCancelados() {
 		
-		int retorno = -1;
+		int result = -1;
 		
 		if ( dll ) {
-			retorno = bema.numeroCancelados( sUserID, bModoDemo );
+			result = bema.numeroCancelados( sUserID, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 			
-			retorno = Integer.parseInt( ecf.retornoVariaveis( AbstractECFDriver.V_CUPONS_CANC ) );
+			result = Integer.parseInt( ecf.resultVariaveis( AbstractECFDriver.V_CUPONS_CANC ) );
 			
 		}
 		
-		return retorno;
+		return result;
 		
 	}
 	
 	public double cancelamentos() {
 		
-		double retorno = -1;
+		double result = -1;
 		
 		if ( dll ) {
-			retorno = bema.cancelamentos( sUserID, bModoDemo );
+			result = bema.cancelamentos( sUserID, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 			
-			retorno = Double.parseDouble( ecf.retornoVariaveis( AbstractECFDriver.V_CANCELAMENTOS ) );
+			result = Double.parseDouble( ecf.resultVariaveis( AbstractECFDriver.V_CANCELAMENTOS ) );
 			
 		}
 		
-		return retorno;
+		return result;
 		
 	}
 	
 	public double descontos() {
 		
-		double retorno = -1;
+		double result = -1;
 		
 		if ( dll ) {
-			retorno = bema.descontos( sUserID, bModoDemo );
+			result = bema.descontos( sUserID, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 			
-			retorno = Double.parseDouble( ecf.retornoVariaveis( AbstractECFDriver.V_CANCELAMENTOS ) );
+			result = Double.parseDouble( ecf.resultVariaveis( AbstractECFDriver.V_CANCELAMENTOS ) );
 			
 		}
 		
-		return retorno;
+		return result;
 		
 	}
 	
-	public String retornoTotalizadores() {
+	public String resultTotalizadores() {
 		
-		String retorno = "";
+		String result = "";
 		
 		if ( dll ) {
-			retorno = bema.retornaTotalizadores( sUserID, bModoDemo );
+			result = bema.retornaTotalizadores( sUserID, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 			
-			retorno = ecf.retornoTotalizadoresParciais();
+			result = ecf.resultTotalizadoresParciais();
 			
 		}
 		
-		return retorno;
+		return result;
 		
 	}
 	
 	public boolean abreComprovanteNaoFiscalVinculado( final String sFormaPagto, final BigDecimal bdValor, final int iNumCupom ) {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.abreComprovanteNaoFiscalVinculado( sUserID, sFormaPagto, bdValor, iNumCupom, bModoDemo );
+			bresult = bema.abreComprovanteNaoFiscalVinculado( sUserID, sFormaPagto, bdValor, iNumCupom, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 
-			bRetorno = trataRetornoFuncao( ecf.abreComprovanteNFiscalVinculado( sFormaPagto, bdValor.floatValue(), iNumCupom ) );
+			bresult = trataresultFuncao( ecf.abreComprovanteNFiscalVinculado( sFormaPagto, bdValor.floatValue(), iNumCupom ) );
 
-			if ( !bRetorno ) {
+			if ( !bresult ) {
 				Logger.gravaLogTxt( "", sUserID, Logger.LGEP_ABRE_N_FISCAL_VIN, "ERRO NO COMPROVANTE NÃO FISCAL VINCULADO: " + sFormaPagto + "|" + bdValor + "|" + iNumCupom + "|" + sMensErroLog );
 			}
 
 		}
 
-		return bRetorno;
+		return bresult;
 
 	}
 	
@@ -150,20 +150,20 @@ public class ECFDriver {
 
 	public boolean abreCupom( final String sCnpj ) {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.abreCupom( sCnpj, sUserID, bModoDemo );
+			bresult = bema.abreCupom( sCnpj, sUserID, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 
 			if ( "".equals( sCnpj ) || sCnpj == null ) {
 				int i = 1;
-				while ( !trataRetornoFuncao( ecf.aberturaDeCupom() ) ) {
+				while ( !trataresultFuncao( ecf.aberturaDeCupom() ) ) {
 					Logger.gravaLogTxt( "", sUserID, Logger.LGEP_ABERT_CUPOM, sMensErroLog );
 					Funcoes.espera( 2 );
 					if ( i >= 5 ) {
-						bRetorno = false;
+						bresult = false;
 						break;
 					}
 					i++;
@@ -171,11 +171,11 @@ public class ECFDriver {
 			}
 			else {
 				int i = 1;
-				while ( !trataRetornoFuncao( ecf.aberturaDeCupom( sCnpj ) ) ) {
+				while ( !trataresultFuncao( ecf.aberturaDeCupom( sCnpj ) ) ) {
 					Logger.gravaLogTxt( "", sUserID, Logger.LGEP_ABERT_CUPOM, sMensErroLog );
 					Funcoes.espera( 2 );
 					if ( i >= 5 ) {
-						bRetorno = false;
+						bresult = false;
 						break;
 					}
 					i++;
@@ -184,153 +184,153 @@ public class ECFDriver {
 
 		}
 
-		return bRetorno;
+		return bresult;
 
 	}
 
 	public boolean abreGaveta() {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.abreGaveta( sUserID, bModoDemo );
+			bresult = bema.abreGaveta( sUserID, bModoDemo );
 		}
 		else { 
 			if ( ! bModoDemo ) {
 		 
-				bRetorno = trataRetornoFuncao( ecf.acionaGavetaDinheiro( 205 ) );
+				bresult = trataresultFuncao( ecf.acionaGavetaDinheiro( 205 ) );
 				 
-				if ( ! bRetorno ) { 
+				if ( ! bresult ) { 
 					
 					Logger.gravaLogTxt( "", sUserID, Logger.LGEP_ABERT_GAVETA, sMensErroLog ); 
 				}
 			} 
 		}
 		
-		return bRetorno;
+		return bresult;
 
 	}
 
 	public boolean cancelaCupom() {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.cancelaCupom( sUserID, bModoDemo );
+			bresult = bema.cancelaCupom( sUserID, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 
-			bRetorno = trataRetornoFuncao( ecf.cancelaCupom() );
+			bresult = trataresultFuncao( ecf.cancelaCupom() );
 
-			if ( !bRetorno ) {
+			if ( !bresult ) {
 				Logger.gravaLogTxt( "", sUserID, Logger.LGEP_CANC_CUPOM, sMensErroLog );
 			}
 
 		}
 
-		return bRetorno;
+		return bresult;
 
 	}
 	
 	public boolean cancelaItemAnterior() {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.cancelaItemAnterior( sUserID, bModoDemo );
+			bresult = bema.cancelaItemAnterior( sUserID, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 
 			Logger.gravaLogTxt( "", sUserID, Logger.LGIF_CANC_ITEM, "TENTATIVA DE CANCELAMENTO DE ITEM ANTERIOR PELO OPERADOR " + sUserID );
 
-			bRetorno = trataRetornoFuncao( ecf.cancelaItemAnterior() );
+			bresult = trataresultFuncao( ecf.cancelaItemAnterior() );
 
 			if ( !sMensErroLog.trim().equals( "" ) ) {
 				Logger.gravaLogTxt( "", sUserID, Logger.LGEP_CANC_ITEM, sMensErroLog );
 			}
 		}
 
-		return bRetorno;
+		return bresult;
 
 	}
 
 	public boolean cancelaItemGenerico( final int item ) {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.cancelaItemGenerico( sUserID, item, bModoDemo );
+			bresult = bema.cancelaItemGenerico( sUserID, item, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 
 			Logger.gravaLogTxt( "", sUserID, Logger.LGIF_CANC_ITEM, "CANCELAMENTO DE ITEM [" + item + "] PELO " + sUserID );
 
-			bRetorno = trataRetornoFuncao( ecf.cancelaItemGenerico( item ) );
+			bresult = trataresultFuncao( ecf.cancelaItemGenerico( item ) );
 
 			if ( !sMensErroLog.trim().equals( "" ) ) {
 				Logger.gravaLogTxt( "", sUserID, Logger.LGEP_CANC_ITEM, sMensErroLog );
 			}
 		}
 
-		return bRetorno;
+		return bresult;
 
 	}
 	
 	public boolean fechaComprovanteNaoFiscalVinculado() {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.fechaComprovanteNaoFiscalVinculado( sUserID, bModoDemo );
+			bresult = bema.fechaComprovanteNaoFiscalVinculado( sUserID, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 
-			bRetorno = trataRetornoFuncao( ecf.fechamentoRelatorioGerencial() );
+			bresult = trataresultFuncao( ecf.fechamentoRelatorioGerencial() );
 
-			if ( !bRetorno ) {
+			if ( !bresult ) {
 				Logger.gravaLogTxt( "", sUserID, Logger.LGEP_FECHA_N_FISCAL_VIN, "ERRO NO COMPROVANTE NÃO FISCAL VINCULADO: " + sMensErroLog );
 			}
 
 		}
 
-		return bRetorno;
+		return bresult;
 
 	}
 
 	public boolean fechaCupomFiscal( final String sFormaPagto, final String sAcreDesc, final String sTipoAcreDesc, final float fVlrAcreDesc, final float fVlrPago, final String sMensagem ) {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.fechaCupomFiscal( sUserID, sFormaPagto, sAcreDesc, sTipoAcreDesc, fVlrAcreDesc, fVlrPago, sMensagem, bModoDemo );
+			bresult = bema.fechaCupomFiscal( sUserID, sFormaPagto, sAcreDesc, sTipoAcreDesc, fVlrAcreDesc, fVlrPago, sMensagem, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 
 			if ( "".equals( sAcreDesc ) || "D".equals( sAcreDesc ) ) {
 				if ( sTipoAcreDesc.trim().equals( "$" ) ) {
-					bRetorno = trataRetornoFuncao( ecf.iniciaFechamentoCupom( AbstractECFDriver.DESCONTO_VALOR, fVlrAcreDesc ) );
+					bresult = trataresultFuncao( ecf.iniciaFechamentoCupom( AbstractECFDriver.DESCONTO_VALOR, fVlrAcreDesc ) );
 				}
 				else {
-					bRetorno = trataRetornoFuncao( ecf.iniciaFechamentoCupom( AbstractECFDriver.DESCONTO_PERC, fVlrAcreDesc ) );
+					bresult = trataresultFuncao( ecf.iniciaFechamentoCupom( AbstractECFDriver.DESCONTO_PERC, fVlrAcreDesc ) );
 				}
 			}
 			else {
 				if ( sTipoAcreDesc.trim().equals( "$" ) ) {
-					bRetorno = trataRetornoFuncao( ecf.iniciaFechamentoCupom( AbstractECFDriver.ACRECIMO_VALOR, fVlrAcreDesc ) );
+					bresult = trataresultFuncao( ecf.iniciaFechamentoCupom( AbstractECFDriver.ACRECIMO_VALOR, fVlrAcreDesc ) );
 				}
 				else {
-					bRetorno = trataRetornoFuncao( ecf.iniciaFechamentoCupom( AbstractECFDriver.ACRECIMO_PERC, fVlrAcreDesc ) );
+					bresult = trataresultFuncao( ecf.iniciaFechamentoCupom( AbstractECFDriver.ACRECIMO_PERC, fVlrAcreDesc ) );
 				}
 			}
 
-			if ( bRetorno ) {
+			if ( bresult ) {
 				String formaPag = Funcoes.adicEspacosDireita( Funcoes.tiraAcentos( sFormaPagto ), 16 );
 				String sCodFormaPag = Funcoes.strZero( ecf.programaFormaPagamento( formaPag ), 2 );
 
-				bRetorno = trataRetornoFuncao( ecf.efetuaFormaPagamento( sCodFormaPag, fVlrPago, "" ) );
+				bresult = trataresultFuncao( ecf.efetuaFormaPagamento( sCodFormaPag, fVlrPago, "" ) );
 			}
 
-			if ( bRetorno ) {
+			if ( bresult ) {
 				ecf.finalizaFechamentoCupom( sMensagem );
 			}
 
@@ -340,66 +340,66 @@ public class ECFDriver {
 
 		}
 
-		return bRetorno;
+		return bresult;
 
 	}
 
 	public boolean fechaRelatorioGerencial() {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.fechaRelatorioGerencial( sUserID, bModoDemo );
+			bresult = bema.fechaRelatorioGerencial( sUserID, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 
-			bRetorno = trataRetornoFuncao( ecf.fechamentoRelatorioGerencial() );
+			bresult = trataresultFuncao( ecf.fechamentoRelatorioGerencial() );
 
-			if ( !bRetorno ) {
+			if ( !bresult ) {
 				Logger.gravaLogTxt( "", sUserID, Logger.LGEP_FECHA_REL_REGENCIAL, "ERRO NO COMPROVANTE: " + sMensErroLog );
 			}
 
 		}
 
-		return bRetorno;
+		return bresult;
 
 	}
 
 	public boolean finalizaModoTEF( String sUserID, boolean bModoDemo ) {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.finalizaModoTEF( sUserID, bModoDemo );
+			bresult = bema.finalizaModoTEF( sUserID, bModoDemo );
 		}/*
 			 * else { if ( ! bModoDemo ) {
 			 * 
-			 * bRetorno = trataRetornoFuncao( ecf.acionaGavetaDinheiro( 1 ) );
+			 * bresult = trataresultFuncao( ecf.acionaGavetaDinheiro( 1 ) );
 			 * 
-			 * if ( ! bRetorno ) { Logger.gravaLogTxt( "", sUserID, Logger.LGEP_ABERT_GAVETA, sMensErroLog ); }
+			 * if ( ! bresult ) { Logger.gravaLogTxt( "", sUserID, Logger.LGEP_ABERT_GAVETA, sMensErroLog ); }
 			 *  } }
 			 */
 
-		return bRetorno;
+		return bresult;
 
 	}
 
 	public boolean iniciaModoTEF( String sUserID, boolean bModoDemo ) {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.iniciaModoTEF( sUserID, bModoDemo );
+			bresult = bema.iniciaModoTEF( sUserID, bModoDemo );
 		}/*
 			 * else { if ( ! bModoDemo ) {
 			 * 
-			 * bRetorno = trataRetornoFuncao( ecf.acionaGavetaDinheiro( 1 ) );
+			 * bresult = trataresultFuncao( ecf.acionaGavetaDinheiro( 1 ) );
 			 * 
-			 * if ( ! bRetorno ) { Logger.gravaLogTxt( "", sUserID, Logger.LGEP_ABERT_GAVETA, sMensErroLog ); }
+			 * if ( ! bresult ) { Logger.gravaLogTxt( "", sUserID, Logger.LGEP_ABERT_GAVETA, sMensErroLog ); }
 			 *  } }
 			 */
 
-		return bRetorno;
+		return bresult;
 
 	}
 
@@ -411,27 +411,27 @@ public class ECFDriver {
 
 	public boolean leituraX( final boolean saidaSerial ) {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.leituraX( sUserID, bModoDemo );
+			bresult = bema.leituraX( sUserID, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 
 			if ( saidaSerial ) {
-				bRetorno = trataRetornoFuncao( ecf.leituraXSerial() );
+				bresult = trataresultFuncao( ecf.leituraXSerial() );
 			}
 			else {
-				bRetorno = trataRetornoFuncao( ecf.leituraX() );
+				bresult = trataresultFuncao( ecf.leituraX() );
 			}
 
-			if ( !bRetorno ) {
+			if ( !bresult ) {
 				Logger.gravaLogTxt( "", sUserID, Logger.LGEP_LEITRA_X, sMensErroLog );
 			}
 
 		}
 
-		return bRetorno;
+		return bresult;
 
 	}
 
@@ -533,76 +533,76 @@ public class ECFDriver {
 
 	public int numeroCupom() {
 
-		int iRetorno = 0;
+		int iresult = 0;
 
 		if ( dll ) {
-			iRetorno = bema.numeroCupom( sUserID, bModoDemo );
+			iresult = bema.numeroCupom( sUserID, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 
-			String sNumero = ecf.retornoNumeroCupom();
+			String sNumero = ecf.resultNumeroCupom();
 
 			if ( sNumero == null ) {
 				sNumero = "";
 			}
 			else {
-				iRetorno = Integer.parseInt( sNumero );
+				iresult = Integer.parseInt( sNumero );
 			}
-			/*if ( ! trataRetornoFuncao( iRetorno ) ) {
+			/*if ( ! trataresultFuncao( iresult ) ) {
 				if ( sNumero.equals( "" ) ) {
 					Funcoes.mensagemErro( null, "Número do cupom nulo!\n" + "Entre em contato com departamento técnico!!!" );
-					iRetorno = 999999;
+					iresult = 999999;
 				}
 				else {
 					sNumero = sNumero.trim();
 					if ( sNumero.equals( "" ) )
-						iRetorno = 0;
+						iresult = 0;
 				}
 			}
 			else {
 				if ( Funcoes.ehInteiro( sNumero ) ) {
-					iRetorno = Integer.parseInt( sNumero );
+					iresult = Integer.parseInt( sNumero );
 				}
 				else {
 					Funcoes.mensagemErro( null, "Número do cupom não é inteiro!\n" + "Entre em contato com departamento técnico!!!" );
-					iRetorno = 888888;
+					iresult = 888888;
 				}
 			}*/
 
 		}
 
-		return iRetorno;
+		return iresult;
 
 	}
 
 	public boolean programaAliquotas( final String sVal, final int iModoICMISS ) {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.programaAliquotas( sUserID, sVal, iModoICMISS, bModoDemo );
+			bresult = bema.programaAliquotas( sUserID, sVal, iModoICMISS, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 
 			char opt = iModoICMISS == 0 ? AbstractECFDriver.ICMS : AbstractECFDriver.ISS;
-			bRetorno = trataRetornoFuncao( ecf.adicaoDeAliquotaTriburaria( sVal, opt ) );
+			bresult = trataresultFuncao( ecf.adicaoDeAliquotaTriburaria( sVal, opt ) );
 
-			if ( !bRetorno ) {
+			if ( !bresult ) {
 				Logger.gravaLogTxt( "", sUserID, Logger.LGEP_INCL_ALIQ, sMensErroLog );
 			}
 
 		}
 
-		return bRetorno;
+		return bresult;
 
 	}
 
 	public boolean programaMoeda( final String sSimb, final String sSing, final String sPlur ) {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.programaMoeda( sUserID, sSing, sPlur, bModoDemo );
+			bresult = bema.programaMoeda( sUserID, sSing, sPlur, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 			
@@ -616,23 +616,23 @@ public class ECFDriver {
 			
 			System.out.println( "\nAltera simbolo moeda:\n" );
 			
-			bRetorno = trataRetornoFuncao( ecf.alteraSimboloMoeda( simbolo ) );			
+			bresult = trataresultFuncao( ecf.alteraSimboloMoeda( simbolo ) );			
 
 			System.out.println( "\nDepois simbolo moeda:\n" );
 			
-			if ( bRetorno ) {
+			if ( bresult ) {
 				
 				System.out.println( "Programa moeda no singular:" );
 				
-				bRetorno = trataRetornoFuncao( ecf.programaMoedaSingular( singular ) );
+				bresult = trataresultFuncao( ecf.programaMoedaSingular( singular ) );
 				
-				if ( bRetorno ) {
+				if ( bresult ) {
 					
 					System.out.println( "Programa moeda no plural:" );
 					
-					bRetorno = trataRetornoFuncao( ecf.programaMoedaPlural( plural ) );
+					bresult = trataresultFuncao( ecf.programaMoedaPlural( plural ) );
 					
-					if ( ! bRetorno ) {
+					if ( ! bresult ) {
 						Logger.gravaLogTxt( "", sUserID, Logger.LGEP_PROG_MOEDA, "Moeda Plural - " + sMensErroLog );
 					}
 					
@@ -648,60 +648,60 @@ public class ECFDriver {
 			
 		}
 
-		return bRetorno;
+		return bresult;
 
 	}
 
 	public boolean reducaoZ() {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.reducaoZ( sUserID, bModoDemo );
+			bresult = bema.reducaoZ( sUserID, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 
-			bRetorno = trataRetornoFuncao( ecf.reducaoZ() );
+			bresult = trataresultFuncao( ecf.reducaoZ() );
 
-			if ( !bRetorno ) {
+			if ( !bresult ) {
 				Logger.gravaLogTxt( "", sUserID, Logger.LGEP_REDUCAO_Z, sMensErroLog );
 			}
 
 		}
 
-		return bRetorno;
+		return bresult;
 
 	}
 
 	public boolean relatorioGerencialTef( final String comprovante ) {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.relatorioGerencialTef( sUserID, comprovante, bModoDemo );
+			bresult = bema.relatorioGerencialTef( sUserID, comprovante, bModoDemo );
 		}
 
-		return bRetorno;
+		return bresult;
 
 	}
 
-	public String retornoAliquotas() {
+	public String resultAliquotas() {
 
-		String sRetorno = "";
+		String sresult = "";
 		final int iNumCharAliq = 64 ;
 				
 		if ( dll ) {
-			sRetorno = bema.retornaAliquotas( sUserID, bModoDemo );
+			sresult = bema.retornaAliquotas( sUserID, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 
 			try {
 				
-				String aliquotas = ecf.retornoAliquotas();
+				String aliquotas = ecf.resultAliquotas();
 				
 				final int tamanho = Integer.parseInt( aliquotas.substring( 0, aliquotas.length()-iNumCharAliq));
 				
-				sRetorno = aliquotas.substring( aliquotas.length()-iNumCharAliq, ( tamanho * 4 ) + 2 );
+				sresult = aliquotas.substring( aliquotas.length()-iNumCharAliq, ( tamanho * 4 ) + 2 );
 				
 			} 
 			catch ( Exception e ) {
@@ -710,63 +710,63 @@ public class ECFDriver {
 
 		}
 
-		return sRetorno;
+		return sresult;
 
 	}
 
 	public boolean sangria( final BigDecimal valor ) {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.sangria( sUserID, valor, bModoDemo );
+			bresult = bema.sangria( sUserID, valor, bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null && valor.floatValue() > 0 ) {
 
-			bRetorno = trataRetornoFuncao( ecf.comprovanteNFiscalNVinculado( "SA", valor.floatValue(), "" ) );
+			bresult = trataresultFuncao( ecf.comprovanteNFiscalNVinculado( "SA", valor.floatValue(), "" ) );
 
-			if ( !bRetorno ) {
+			if ( !bresult ) {
 				Logger.gravaLogTxt( "", sUserID, Logger.LGEP_FAZ_SANGRIA, "ERRO NA SANGRIA-VALOR: " + valor.floatValue() + "|" + sMensErroLog );
 			}
 
 		}
 
-		return bRetorno;
+		return bresult;
 
 	}
 
 	public boolean suprimento( final BigDecimal valor ) {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.suprimento( sUserID, valor, "Dinheiro", bModoDemo );
+			bresult = bema.suprimento( sUserID, valor, "Dinheiro", bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null && valor.floatValue() > 0 ) {
 
-			bRetorno = trataRetornoFuncao( ecf.comprovanteNFiscalNVinculado( "SU", valor.floatValue(), "" ) );
+			bresult = trataresultFuncao( ecf.comprovanteNFiscalNVinculado( "SU", valor.floatValue(), "" ) );
 
-			if ( !bRetorno ) {
+			if ( !bresult ) {
 				Logger.gravaLogTxt( "", sUserID, Logger.LGEP_FAZ_SUPRIMENTO, "ERRO NO SUPRIMENTO-VALOR: " + valor.floatValue() + "-" + sMensErroLog );
 			}
 
 		}
 
-		return bRetorno;
+		return bresult;
 
 	}
 
-	public boolean trataRetornoFuncao( final STResult result ) {
+	public boolean trataresultFuncao( final STResult result ) {
 
-		boolean bRetorno = true;
+		boolean bresult = true;
 
 		String sMensagem = "";
 
 		sMensErroLog = "";
 
-		int iRetorno = result.getFirstCode();
+		int iresult = result.getFirstCode();
 		
-		switch ( iRetorno ) {
+		switch ( iresult ) {
 
 			case 0 :
 				sMensagem = "Erro de comunicação física";
@@ -787,7 +787,7 @@ public class ECFDriver {
 				sMensagem = "Erro ao abrir a porta de comunicação";
 				break;
 			case -8 :
-				sMensagem = "Erro ao criar ou gravar no arquivo STATUS.TXT ou RETORNO.TXT";
+				sMensagem = "Erro ao criar ou gravar no arquivo STATUS.TXT ou result.TXT";
 				break;
 			case -27 :
 				sMensagem = "Status da impressora diferente de 6,0,0 (ACK, ST1 e ST2)";
@@ -799,49 +799,49 @@ public class ECFDriver {
 				sMensagem = "Forma de pagamento não finalizada";
 				break;
 			default :
-				sMensagem = "Retorno indefinido: " + iRetorno;
+				sMensagem = "result indefinido: " + iresult;
 				break;
 
 		}
 
 		if ( !"".equals( sMensagem.trim() ) ) {
 
-			bRetorno = false;
+			bresult = false;
 
-			sMensErroLog = sMensagem + " - STATUS: " + iRetorno;
+			sMensErroLog = sMensagem + " - STATUS: " + iresult;
 
 			Funcoes.mensagemErro( null, sMensagem );
 
 		}
 
-		return bRetorno;
+		return bresult;
 	}
 	
 	public boolean usaComprovanteNaoFiscalVinculadoTef( final String sTexto ) {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.usaComprovanteNaoFiscalVinculadoTef( sUserID, sTexto, bModoDemo );
+			bresult = bema.usaComprovanteNaoFiscalVinculadoTef( sUserID, sTexto, bModoDemo );
 		}/*
 			 * else { if ( ! bModoDemo ) {
 			 * 
-			 * bRetorno = trataRetornoFuncao( ecf.acionaGavetaDinheiro( 1 ) );
+			 * bresult = trataresultFuncao( ecf.acionaGavetaDinheiro( 1 ) );
 			 * 
-			 * if ( ! bRetorno ) { Logger.gravaLogTxt( "", sUserID, Logger.LGEP_ABERT_GAVETA, sMensErroLog ); }
+			 * if ( ! bresult ) { Logger.gravaLogTxt( "", sUserID, Logger.LGEP_ABERT_GAVETA, sMensErroLog ); }
 			 *  } }
 			 */
 
-		return bRetorno;
+		return bresult;
 
 	}
 
 	public boolean vendaItem( final int iCodprod, final String sDescprod, final String sTributo, final BigDecimal bdQuant, final BigDecimal bdValor, final BigDecimal bdValDesc ) {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		if ( dll ) {
-			bRetorno = bema.vendaItem( sUserID, iCodprod, sDescprod, sTributo, bdQuant.doubleValue(), bdValor.doubleValue(), bdValDesc.doubleValue(), bModoDemo );
+			bresult = bema.vendaItem( sUserID, iCodprod, sDescprod, sTributo, bdQuant.doubleValue(), bdValor.doubleValue(), bdValDesc.doubleValue(), bModoDemo );
 		}
 		else if ( !bModoDemo && ecf != null ) {
 			
@@ -849,7 +849,7 @@ public class ECFDriver {
 			String sDescricao = Funcoes.tiraAcentos( Funcoes.adicionaEspacos( sDescprod, 29 ) );
 			int index = 1;
 
-			while ( ! trataRetornoFuncao( 
+			while ( ! trataresultFuncao( 
 					ecf.vendaItem( 
 							sCodprod, 
 							sDescricao, 
@@ -865,7 +865,7 @@ public class ECFDriver {
 				Funcoes.espera( 2 );
 				
 				if ( index++ >= 5 ) {
-					bRetorno = false;
+					bresult = false;
 					break;
 				}
 				
@@ -876,16 +876,16 @@ public class ECFDriver {
 			}
 		}
 
-		return bRetorno;
+		return bresult;
 
 	}
 
 	public boolean verificaCupomAberto() {
 		
-		boolean bRetorno = false;
+		boolean bresult = false;
 		
 		if ( dll ) {
-			bRetorno = bema.verificaCupomAberto( sUserID, bModoDemo );
+			bresult = bema.verificaCupomAberto( sUserID, bModoDemo );
 		}
 		else if ( ! bModoDemo ) {
 			
@@ -893,24 +893,24 @@ public class ECFDriver {
 			
 			if ( tmp.indexOf( "aberto" ) > -1 ) {
 				
-				bRetorno = true;
+				bresult = true;
 			}			
 		}
 		
-		return bRetorno;
+		return bresult;
 		
 	}
 	
 	public boolean executadaReducaoZ() {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 		
 		if ( dll ) {
-			//bRetorno = bema.verificaCupomAberto( sUserID, bModoDemo );
+			//bresult = bema.verificaCupomAberto( sUserID, bModoDemo );
 		}
 		else if ( ! bModoDemo ) {
 			
-			int iret = Integer.parseInt( ecf.retornoVariaveis( AbstractECFDriver.V_FLAG_FISCAL ) );
+			int iret = Integer.parseInt( ecf.resultVariaveis( AbstractECFDriver.V_FLAG_FISCAL ) );
 			if ( iret >= 128 ) {
 				iret -= 128;
 			}
@@ -925,11 +925,11 @@ public class ECFDriver {
 			}
 			if ( iret >= 8 ) {
 				iret -= 8;
-				bRetorno = true;
+				bresult = true;
 			}
 		}
 		
-		return bRetorno;		
+		return bresult;		
 	}
 	
 	public String transStatus( char cStatus ) {
