@@ -4,7 +4,7 @@ package org.freedom.infra.util.text;
 /**
  * Projeto: <a href="http://sourceforge.net/projects/freedom-erp/">Freedom-infra</a> <br>
  * Este programa é licenciado de acordo com a LPG-PC <br>
- * (Licença Pública Geral para Programas de Computador) versão 2.1.0 ou qualquer versão posterior. <br>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
  * <br>
  *
  * Está classe é uma representação de mascara para formatação da apresentação.<br>
