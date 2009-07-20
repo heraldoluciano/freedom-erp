@@ -34,9 +34,9 @@ import java.awt.event.ActionEvent;
 
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FAtendente;
+import org.freedom.modulos.atd.FTipoAgenda;
 import org.freedom.modulos.atd.FTipoAtend;
 import org.freedom.modulos.crm.agenda.FAgenda;
-import org.freedom.modulos.crm.agenda.FTipoAgenda;
 import org.freedom.modulos.std.FAprovaOrc;
 import org.freedom.modulos.std.FClasCli;
 import org.freedom.modulos.std.FCliente;

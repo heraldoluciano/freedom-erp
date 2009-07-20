@@ -298,16 +298,6 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 		lcTipoMov.setReadOnly( true );
 		txtCodTipoMov.setTabelaExterna( lcTipoMov );
 		
-		lcSitTribCOF.add( new GuardaCampo( txtCodSitTribCOF, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
-		lcSitTribCOF.add( new GuardaCampo( txtImpSitTribCOF, "ImpSitTrib", "Cofins", ListaCampos.DB_PK, false ) );
-		lcSitTribCOF.add( new GuardaCampo( txtDescSitTribCOF, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
-		lcSitTribCOF.montaSql( false, "SITTRIB", "LF" );
-		lcSitTribCOF.setQueryCommit( false );
-		lcSitTribCOF.setReadOnly( true );
-		txtCodSitTribCOF.setTabelaExterna( lcSitTribCOF );
-		txtImpSitTribCOF.setTabelaExterna( lcSitTribCOF );
-		lcSitTribCOF.setWhereAdic( "IMPSITTRIB='CO'" );
-		
 		lcTipoFiscCli.add( new GuardaCampo( txtCodTipoFisc, "CodFiscCli", "Cód.c.fisc.", ListaCampos.DB_PK, false ) );
 		lcTipoFiscCli.add( new GuardaCampo( txtDescFiscCli, "DescFiscCli", "Descrição da classificação fiscal", ListaCampos.DB_SI, false ) );
 		lcTipoFiscCli.montaSql( false, "TIPOFISCCLI", "LF" );
@@ -316,9 +306,9 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 		txtCodTipoFisc.setTabelaExterna( lcTipoFiscCli );
 		
 		lcSitTribPIS.add( new GuardaCampo( txtCodSitTribPIS, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
-		lcSitTribPIS.add( new GuardaCampo( txtImpSitTribPIS, "ImpSitTrib", "Pis", ListaCampos.DB_PK, false ) );
+		lcSitTribPIS.add( new GuardaCampo( txtImpSitTribPIS, "ImpSitTrib", "Imposto", ListaCampos.DB_PK, false ) );
 		lcSitTribPIS.add( new GuardaCampo( txtDescSitTribPIS, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
-		lcSitTribPIS.montaSql( false, "SITTRIB ", "LF" ); // Nome da tabela com espaço em branco no final, para 
+		lcSitTribPIS.montaSql( false, "SITTRIB", "LF" );
 		lcSitTribPIS.setQueryCommit( false );
 		lcSitTribPIS.setReadOnly( true );
 		txtCodSitTribPIS.setTabelaExterna( lcSitTribPIS );
@@ -326,7 +316,15 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 		lcSitTribPIS.setWhereAdic( "IMPSITTRIB='PI'" );
 				
 		
-
+		lcSitTribCOF.add( new GuardaCampo( txtCodSitTribCOF, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
+		lcSitTribCOF.add( new GuardaCampo( txtImpSitTribCOF, "ImpSitTrib", "Imposto", ListaCampos.DB_PK, false ) );
+		lcSitTribCOF.add( new GuardaCampo( txtDescSitTribCOF, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
+		lcSitTribCOF.montaSql( false, "SITTRIB", "LF" );
+		lcSitTribCOF.setQueryCommit( false );
+		lcSitTribCOF.setReadOnly( true );
+		txtCodSitTribCOF.setTabelaExterna( lcSitTribCOF );
+		txtImpSitTribCOF.setTabelaExterna( lcSitTribCOF );
+		lcSitTribCOF.setWhereAdic( "IMPSITTRIB='CO'" );
 
 	}
 
@@ -499,6 +497,21 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 		adicCampo( txtAliqLFisc, 394, 105, 110, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
 
 		/*****************
+		 * ABA COFINS
+		 ****************/
+				
+		tpnGeral.addTab( "COFINS", panelCOFINS );
+		setPainel( panelCOFINSCampos );
+		
+		adicCampo( txtCodSitTribCOF, 7, 20, 80, 20, "CodSitTribCOF", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribCOF, false );
+//		adicCampo( txtImpSitTribCOF, 400,20,80,20,"ImpSitTribCOF", "Impostox", ListaCampos.DB_FK, false );		
+		adicCampoInvisivel( txtImpSitTribCOF, "ImpSitTribCOF", "Imposto", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescSitTribCOF, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );		
+	
+		adicCampo( txtAliqCofinsFisc, 7, 60, 70, 20, "AliqCofinsFisc", "Aliq.Cofins", ListaCampos.DB_SI, null, false );	
+			
+
+		/*****************
 		 * ABA IPI
 		 ****************/
 		
@@ -516,26 +529,11 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 		setPainel( panelPISCampos );
 		
 		adicCampo( txtCodSitTribPIS, 7, 20, 80, 20, "CodSitTribPIS", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribPIS, false );
+//		adicCampo( txtImpSitTribPIS,400,20,80,20, "ImpSitTribPIS", "Imposto", ListaCampos.DB_FK, false );
 		adicCampoInvisivel( txtImpSitTribPIS, "ImpSitTribPIS", "Imposto", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescSitTribPIS, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
 		
 		adicCampo( txtAliqPisFisc, 7, 60, 70, 20, "AliqPisFisc", "Aliq.PIS", ListaCampos.DB_SI, null, false );	
-		
-		
-		/*****************
-		 * ABA COFINS
-		 ****************/
-				
-		tpnGeral.addTab( "COFINS", panelCOFINS );
-		setPainel( panelCOFINSCampos );
-		
-		adicCampo( txtCodSitTribCOF, 7, 20, 80, 20, "CodSitTribCOF", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribCOF, false );	
-		adicCampoInvisivel( txtImpSitTribCOF, "ImpSitTribCOF", "Imposto", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescSitTribCOF, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );		
-	
-		adicCampo( txtAliqCofinsFisc, 7, 60, 70, 20, "AliqCofinsFisc", "Aliq.Cofins", ListaCampos.DB_SI, null, false );	
-			
-		
 		
 		setListaCampos( true, "ITCLFISCAL", "LF" );
 		lcDet.setQueryInsert( false );
@@ -543,45 +541,13 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 		
 		montaTab();
 
-		tab.setTamColuna( 30, 0 ); // Ítem
-		tab.setColunaInvisivel( 1 ); //Cod. fisc. cli
-		tab.setTamColuna( 150, 2 ); // Desc fisc. cli
-		tab.setTamColuna( 30, 3 ); // cod. tipomov
-		tab.setTamColuna( 150, 4 ); // desc. tipomo
-		tab.setColunaInvisivel( 5 ); // cod. mensagem
-		tab.setTamColuna( 150, 6 ); // desc. mensagem
-		tab.setTamColuna( 30, 7 ); // Destino
-		tab.setTamColuna( 30, 8 ); // Padrão
-		tab.setColunaInvisivel( 9 ); // cod.trat.trib.
-		tab.setColunaInvisivel( 10 ); // desc.trat.trib.
-		tab.setColunaInvisivel( 11 ); // origem
-		tab.setColunaInvisivel( 12 ); // situação tributaria
-		tab.setColunaInvisivel( 13 ); // tipo de substituição
-		tab.setColunaInvisivel( 14 ); // tipo de redução
-		tab.setTamColuna( 50, 15 ); // IVA
-		tab.setTamColuna( 50, 16 ); // % redução
-		tab.setTamColuna( 50, 17 ); // % ICMS
-		tab.setTamColuna( 50, 18 ); // % Liv. ICMS
-		tab.setTamColuna( 50, 19 ); // % IPI
-		tab.setColunaInvisivel( 20 ); // % Cód.sittrib.pis
-		tab.setColunaInvisivel( 21 ); // % Imposto PIS
-		tab.setColunaInvisivel( 22 ); // % Desc. Sit. Trib. PIS
-		tab.setTamColuna( 50, 23 ); // % Aliq. PIS
-		tab.setColunaInvisivel( 24 ); // % Cód.sittrib.COFINS
-		tab.setColunaInvisivel( 25 ); // % Imposto COFINS
-		tab.setColunaInvisivel( 26 ); // % Desc. Sit. Trib. COFINS
-		tab.setTamColuna( 50, 27 ); // % Aliq. COFINS
-		
-	
-		
-		
 		panelVariantes.add( panelVariantesCampos );
 		panelICMS.add( panelICMSCampos );
 		panelIPI.add( panelIPICampos );
 		panelPIS.add( panelPISCampos );
 		panelCOFINS.add( panelCOFINSCampos );
 		
-//		navRod.setListaCampos( lcDet );
+		navRod.setListaCampos( lcDet );
 		
 	}
 

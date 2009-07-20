@@ -26,10 +26,10 @@ package org.freedom.modulos.std;
 
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FAtendente;
+import org.freedom.modulos.atd.FTipoAgenda;
 import org.freedom.modulos.atd.FTipoAtend;
 import org.freedom.modulos.cfg.FFeriados;
 import org.freedom.modulos.cfg.FPais;
-import org.freedom.modulos.crm.agenda.FTipoAgenda;
 import org.freedom.modulos.fnc.FCartCob;
 import org.freedom.modulos.fnc.FHistPad;
 import org.freedom.modulos.grh.FFuncao;
