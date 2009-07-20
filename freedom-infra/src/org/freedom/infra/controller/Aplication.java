@@ -11,7 +11,7 @@ import org.freedom.infra.util.ini.ManagerIni;
  * Este programa é licenciado de acordo com a LPG-PC <br>
  * (Licença Pública Geral para Programas de Computador) versão 2.1.0 ou qualquer versão posterior. <br>
  * <br>
- *
+ * 
  * Está classe visa padronizar caracteristicas comuns para as classes principais de aplicações.
  * 
  * <br>
