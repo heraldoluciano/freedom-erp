@@ -63,8 +63,8 @@ public class ECFDaruma extends AbstractECFDriver {
 	public ECFDaruma( final int com ) {
 
 		this();
-		ativaPorta( com );		
-		setFormasDePagamento( retornoFormasDePagamento() );
+		activePort( com );		
+		setFormasDePagamento( resultFormasDePagamento() );
 	}
 
 	/**
@@ -127,16 +127,16 @@ public class ECFDaruma extends AbstractECFDriver {
 
 		final int tamCMD = CMD.length;
 		final int tam = tamCMD + 1;
-		byte[] retorno = new byte[ tam ];
+		byte[] result = new byte[ tam ];
 		for ( int i = 0; i < tam; i++ ) {
 			if ( i == ( tam - 1 ) ) {
-				retorno[ i ] = 13;
+				result[ i ] = 13;
 			} else {
-				retorno[ i ] = CMD[ i ];
+				result[ i ] = CMD[ i ];
 			}
 		}
 
-		return retorno;
+		return result;
 	}
 
 	/**
@@ -150,39 +150,39 @@ public class ECFDaruma extends AbstractECFDriver {
 	 *            comando a ser executado e seus parâmetros. <BR>
 	 * @see org.freedom.ecf.driver.AbstractECFDriver#executaCmd(byte[], int)
 	 */
-	public STResult executaCmd( final byte[] CMD, final int tamRetorno ) {
-		return executaCmd( CMD, tamRetorno, true );
+	public STResult executaCmd( final byte[] CMD, final int tamresult ) {
+		return executaCmd( CMD, tamresult, true );
 	}
 	
-	public STResult executaCmd( final byte[] CMD, final int tamRetorno, final boolean checkcmd ) {
+	public STResult executaCmd( final byte[] CMD, final int tamresult, final boolean checkcmd ) {
 
-		byte[] retorno = null;
+		byte[] result = null;
 		byte[] cmd = null;
 
 		cmd = preparaCmd( CMD );
-		retorno = enviaCmd( cmd, tamRetorno );
+		result = enviaCmd( cmd, tamresult );
 
-		STResult cmdRetorno = checkcmd ? checkRetorno( retorno ) : checkRetorno2( retorno ); 
+		STResult cmdresult = checkcmd ? checkResult( result ) : checkResult2( result ); 
 		
-		return cmdRetorno;
+		return cmdresult;
 	}
 
 	/**
 	 * Formata os retorna enviado pela impressora <BR>
-	 * separando o STATUS do estado da impressora dos dados do retorno, onde <BR>
+	 * separando o STATUS do estado da impressora dos dados do result, onde <BR>
 	 * ACK (06) - byte indicativo de recebimento correto. <BR>
 	 * ST1 2 ST2 - bytes de estado da impressora. <BR>
 	 * NAK (15h ou 21d) - byte indicativo de recebimento incorreto. <BR>
 	 * <BR>
-	 * O retorno tem a seguinte sintaxe : <BR>
-	 * [ACK][retorno solicitado][ST1][ST2] <BR>
+	 * O result tem a seguinte sintaxe : <BR>
+	 * [ACK][result solicitado][ST1][ST2] <BR>
 	 * 
 	 * @param bytes
 	 *            bytes retornados pela porta serial.<BR>
-	 * @return retorno indece para a mensagem.
-	 * @see org.freedom.ecf.driver.AbstractECFDriver#checkRetorno(byte[])
+	 * @return result indece para a mensagem.
+	 * @see org.freedom.ecf.driver.AbstractECFDriver#checkResult(byte[])
 	 */
-	public STResult checkRetorno( final byte[] bytes ) {
+	public STResult checkResult( final byte[] bytes ) {
 
 		STResult result = new STResult();
 		int erro = 0;
@@ -227,7 +227,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return result;
 	}
 	
-	public STResult checkRetorno2( final byte[] bytes ) {
+	public STResult checkResult2( final byte[] bytes ) {
 
 		STResult result = STResult.getInstanceOk();
 		byte[] bytesLidos;
@@ -244,30 +244,30 @@ public class ECFDaruma extends AbstractECFDriver {
 	}
 
 	/**
-	 * Auxilia o metodo checkRetorno.<BR>
+	 * Auxilia o metodo checkResult.<BR>
 	 * 
 	 * @param ST1
-	 * @return retorno checado
+	 * @return result checado
 	 */
 	private int checkError( byte e1, byte e2 ) {
 
-		int retorno = Integer.parseInt( "" + (char) e1 + (char) e2 );
+		int result = Integer.parseInt( "" + (char) e1 + (char) e2 );
 
-		return retorno;
+		return result;
 	}
 
 	/**
-	 * Auxilia o metodo checkRetorno.<BR>
+	 * Auxilia o metodo checkResult.<BR>
 	 * 
 	 * @param ST2
-	 * @return retorno checado
+	 * @return result checado
 	 */
 	private int checkWarning( byte w1, byte w2 ) {
 
 		// O Código na EStatus tem o 10 na frente para diferenciar dos de erros.
-		int retorno = Integer.parseInt( ("10" + (char) w1 + (char) w2).trim() );
+		int result = Integer.parseInt( ("10" + (char) w1 + (char) w2).trim() );
 
-		return retorno;
+		return result;
 	}
 
 	public STResult alteraSimboloMoeda( final String simbolo ) {
@@ -311,9 +311,9 @@ public class ECFDaruma extends AbstractECFDriver {
 		final byte[] CMD = { ESC, (byte) CCMD };
 		
 		executaCmd( CMD, 33 );
-		final String retorno = new String( getBytesLidos() );
+		final String result = new String( getBytesLidos() );
 		
-		boolean ativo = ( retorno.length() > 2 && retorno.charAt( 2 ) == '1' );
+		boolean ativo = ( result.length() > 2 && result.charAt( 2 ) == '1' );
 		
 		return ativo;
 	}
@@ -800,7 +800,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		final StringBuffer buf = new StringBuffer();
 		buf.append( indexFormaDePagamentoOrigem );
 		buf.append( indexFormaDePagamentoDestino );
-		buf.append( parseParam( Integer.parseInt( retornoNumeroCupom() ), 6 ) );
+		buf.append( parseParam( Integer.parseInt( resultNumeroCupom() ), 6 ) );
 		buf.append( parseParam( valor , 12, 2 ) );
 		
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
@@ -1035,7 +1035,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return executaCmd( CMD, 7 );
 	}
 
-	public String retornoEstadoGavetaDinheiro() {
+	public String resultEstadoGavetaDinheiro() {
 
 		return "-1";
 	}
@@ -1098,7 +1098,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		return status.toString();
 	}
 
-	public String retornoAliquotas() {
+	public String resultAliquotas() {
 
 		final char CCMD = (char) 231;
 		final byte[] CMD = { ESC, (byte) CCMD };
@@ -1106,19 +1106,19 @@ public class ECFDaruma extends AbstractECFDriver {
 		executaCmd( CMD, 94 );
 		
 		final String aliquotas = new String( getBytesLidos() );
-		final StringBuffer retorno = new StringBuffer();
+		final StringBuffer result = new StringBuffer();
 		char[] chs = aliquotas.toCharArray();
 		
 		for ( char c : chs ) {
 			if ( Character.isDigit( c ) ) {
-				retorno.append( c );
+				result.append( c );
 			}
 		}		
 			
-		return retorno.toString();
+		return result.toString();
 	}
 	
-	public Map<String, String> retornoFormasDePagamento() {
+	public Map<String, String> resultFormasDePagamento() {
 
 		final char CCMD = (char) 234;
 		final byte[] CMD = { ESC, (byte) CCMD };
@@ -1160,9 +1160,9 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return totalizadores parciais<br>
 	 */
-	public String retornoTotalizadoresParciais() {
+	public String resultTotalizadoresParciais() {
 		
-		String retorno = "";
+		String result = "";
 		
 		char CCMD = (char) 236;
 		byte[] CMD = { ESC, (byte) CCMD };
@@ -1179,7 +1179,7 @@ public class ECFDaruma extends AbstractECFDriver {
 		String suprimento = "NNN";
 		String grandeTotal = tmp.substring( 18, 36 );
 		
-		retorno =   parciaisTributados
+		result =   parciaisTributados
 			+ "," + isencao
 			+ "," + naoInsidencia
 			+ "," + substituicao
@@ -1188,10 +1188,10 @@ public class ECFDaruma extends AbstractECFDriver {
 			+ "," + suprimento
 			+ "," + grandeTotal;
 
-		return retorno; 
+		return result; 
 	}
 
-	public String retornoSubTotal() {
+	public String resultSubTotal() {
 
 		final char CCMD = (char) 205;
 		final byte[] CMD = { ESC, (byte) CCMD };
@@ -1207,7 +1207,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return número do cupom<br>
 	 */
-	public String retornoNumeroCupom() {
+	public String resultNumeroCupom() {
 
 		final char CCMD = (char) 239;
 		final byte[] CMD = { ESC, (byte) CCMD };
@@ -1215,16 +1215,16 @@ public class ECFDaruma extends AbstractECFDriver {
 		executaCmd( CMD, 227 );
 
 		final String str = new String( getBytesLidos() );
-		String retorno = "99999998";
+		String result = "99999998";
 				
 		if ( str != null && str.length() >=16 ) {
-			retorno =  str.substring( 2, 8 );
+			result =  str.substring( 2, 8 );
 		}
 		
-		return retorno;
+		return result;
 	}
 	
-	public boolean retornoDocumentoAberto() {		
+	public boolean resultDocumentoAberto() {		
 		
 		final char CCMD = (char) 235;
 		final byte[] CMD = { ESC, (byte) CCMD };
@@ -1250,9 +1250,9 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return informação da impressora.<br>
 	 */
-	public String retornoVariaveis( final char var ) {
+	public String resultVariaveis( final char var ) {
 
-		String retorno = "-1";
+		String result = "-1";
 		
 		if ( var == V_NUM_CAIXA ) {
 			final char CCMD = (char) 233;
@@ -1260,7 +1260,7 @@ public class ECFDaruma extends AbstractECFDriver {
 			executaCmd( CMD, 57 );
 			String tmp = new String( getBytesLidos() );
 			if ( tmp != null && tmp.trim().length() > 22 ) {
-				retorno = tmp.substring( 22, 26 );	
+				result = tmp.substring( 22, 26 );	
 			}
 		}
 		else if ( var == V_REDUCOES || var == V_CUPONS_CANC || var == V_DESCONTOS || var == V_CANCELAMENTOS ) {
@@ -1269,22 +1269,22 @@ public class ECFDaruma extends AbstractECFDriver {
 			executaCmd( CMD, 1008 );
 			String tmp = new String( getBytesLidos() );
 			if ( var == V_CUPONS_CANC && tmp != null && tmp.trim().length() > 24 ) {
-				retorno = tmp.substring( 18, 24 );	
+				result = tmp.substring( 18, 24 );	
 			}
 			else if ( var == V_REDUCOES && tmp != null && tmp.trim().length() > 54 ) {
-				retorno = tmp.substring( 48, 54 );
+				result = tmp.substring( 48, 54 );
 			}
 			else if ( var == V_DESCONTOS && tmp != null && tmp.trim().length() > 952 ) {
-				retorno = tmp.substring( 938, 952 );
+				result = tmp.substring( 938, 952 );
 			}
 			else if ( var == V_CANCELAMENTOS && tmp != null && tmp.trim().length() > 966 ) {
-				retorno = tmp.substring( 952, 966 );
+				result = tmp.substring( 952, 966 );
 			}
 		}
 		else if ( var == V_DT_ULT_REDUCAO ) {
 		}
 
-		return retorno;
+		return result;
 	}
 
 	/**
@@ -1293,7 +1293,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return estado do papel<br>
 	 */
-	public String retornoEstadoPapel() {
+	public String resultEstadoPapel() {
 
 		return "-1"; // ainda não utilizada pela controller.
 	}
@@ -1303,7 +1303,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return última redução<br>
 	 */
-	public String retornoUltimaReducao() {
+	public String resultUltimaReducao() {
 
 		return "-1"; // ainda não utilizada pela controller.
 	}
@@ -1340,7 +1340,7 @@ public class ECFDaruma extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public String retornoStatusCheque() {
+	public String resultStatusCheque() {
 		return "-1";
 	}
 
