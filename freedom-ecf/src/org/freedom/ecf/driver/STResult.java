@@ -9,31 +9,33 @@ public class STResult {
 	private boolean inError = false;
 
 	private List<Status> listResult = new ArrayList<Status>();
+	
+	private static final STResult RETORNO_OK = new STResult();
+	
+	private static final STResult IMPRESSORA_SEM_COMUNICACAO = new STResult();
+	
+	private static final STResult FUNCAO_NAO_IMPLEMENTADA = new STResult();
+	
+	static {		
+		RETORNO_OK.add( StatusStandart.RETORNO_OK );
+		IMPRESSORA_SEM_COMUNICACAO.add( StatusStandart.IMPRESSORA_SEM_COMUNICACAO );
+		FUNCAO_NAO_IMPLEMENTADA.add( StatusStandart.FUNCAO_NAO_IMPLEMENTADA );
+	}
 
 	public STResult() {
-
 		super();
 	}
 
 	public static STResult getInstanceNotImplemented() {
-
-		STResult result = new STResult();
-		result.add( StatusStandart.FUNCAO_NAO_IMPLEMENTADA );
-		return result;
+		return FUNCAO_NAO_IMPLEMENTADA;
 	}
 
 	public static STResult getInstanceNotComunication() {
-
-		STResult result = new STResult();
-		result.add( StatusStandart.IMPRESSORA_SEM_COMUNICACAO );
-		return result;
+		return IMPRESSORA_SEM_COMUNICACAO;
 	}
 
-	public static STResult getInstanceOk() {
-
-		STResult result = new STResult();
-		result.add( StatusStandart.RETORNO_OK );
-		return result;
+	public static STResult getInstanceOk() {		
+		return RETORNO_OK;
 	}
 
 	public boolean isInError() {

@@ -2,7 +2,6 @@
 package org.freedom.ecf.driver;
 
 import java.util.Date;
-import org.freedom.ecf.com.Serial;
 
 /**
  * Classe implementa metodos de acesso a comandos de impressão <BR>
@@ -31,7 +30,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 */
 	public ECFBematech() {
 
-		super();
+		super(); 
 	}
 
 	/**
@@ -45,7 +44,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public ECFBematech( final int com ) {
 
 		super();
-		ativaPorta( com );
+		activePort( com );
 	}
 
 	/**
@@ -59,7 +58,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public ECFBematech( final String port ) {
 
 		super();
-		ativaPorta( Serial.convPorta( port ) );
+		activePort( port );
 	}
 
 	/**
@@ -86,24 +85,24 @@ public class ECFBematech extends AbstractECFDriver {
 		byte CSH = 0;
 		final byte NBL = (byte) ( tam % 256 );
 		final byte NBH = (byte) ( tam / 256 );
-		byte[] retorno = new byte[ 5 + tamCMD ];
+		byte[] result = new byte[ 5 + tamCMD ];
 
-		retorno[ 0 ] = STX;
-		retorno[ 1 ] = NBL;
-		retorno[ 2 ] = NBH;
+		result[ 0 ] = STX;
+		result[ 1 ] = NBL;
+		result[ 2 ] = NBH;
 
 		for ( int i = 0; i < tamCMD; i++ ) {
 			soma += CMD[ i ];
-			retorno[ i + 3 ] = CMD[ i ];
+			result[ i + 3 ] = CMD[ i ];
 		}
 
 		CSL = (byte) ( soma % 256 );
 		CSH = (byte) ( soma / 256 );
 
-		retorno[ retorno.length - 2 ] = CSL;
-		retorno[ retorno.length - 1 ] = CSH;
+		result[ result.length - 2 ] = CSL;
+		result[ result.length - 1 ] = CSH;
 
-		return retorno;
+		return result;
 	}
 
 	/**
@@ -117,27 +116,27 @@ public class ECFBematech extends AbstractECFDriver {
 	 *            comando a ser executado e seus parâmetros. <BR>
 	 * @see org.freedom.ecf.driver.AbstractECFDriver#executaCmd(byte[], int)
 	 */
-	public STResult executaCmd( final byte[] CMD, final int tamRetorno ) {
+	public STResult executaCmd( final byte[] CMD, final int tamresult ) {
 
-		byte[] retorno = null;
+		byte[] result = null;
 		byte[] cmd = null;
 
 		cmd = preparaCmd( CMD );
-		retorno = enviaCmd( cmd, tamRetorno );
+		result = enviaCmd( cmd, tamresult );
 
-		return checkRetorno( retorno );
+		return checkResult( result );
 	}
 
 	/**
-	 * Converte o retorno dos comandos do formato BCD para ASCII. <BR>
+	 * Converte o result dos comandos do formato BCD para ASCII. <BR>
 	 * 
 	 * @param bcdParam
-	 *            Retorno a ser convertido. <BR>
+	 *            result a ser convertido. <BR>
 	 * @return String com o resultado da converção. <BR>
 	 */
 	private String bcdToAsc( final byte[] bcdParam ) {
 
-		final StringBuffer retorno = new StringBuffer();
+		final StringBuffer result = new StringBuffer();
 
 		int bcd = 0;
 		byte byteBH = 0;
@@ -155,29 +154,29 @@ public class ECFBematech extends AbstractECFDriver {
 			byteBH = (byte) ( bcd / 16 );
 			byteBL = (byte) ( bcd % 16 );
 
-			retorno.append( byteBH );
-			retorno.append( byteBL );
+			result.append( byteBH );
+			result.append( byteBL );
 		}
 
-		return retorno.toString();
+		return result.toString();
 	}
 
 	/**
 	 * Formata os retorna enviado pela impressora <BR>
-	 * separando o STATUS do estado da impressora dos dados do retorno, onde <BR>
+	 * separando o STATUS do estado da impressora dos dados do result, onde <BR>
 	 * ACK (06) - byte indicativo de recebimento correto. <BR>
 	 * ST1 2 ST2 - bytes de estado da impressora. <BR>
 	 * NAK (15h ou 21d) - byte indicativo de recebimento incorreto. <BR>
 	 * <BR>
-	 * O retorno tem a seguinte sintaxe : <BR>
-	 * [ACK][retorno solicitado][ST1][ST2] <BR>
+	 * O result tem a seguinte sintaxe : <BR>
+	 * [ACK][result solicitado][ST1][ST2] <BR>
 	 * 
 	 * @param bytes
 	 *            bytes retornados pela porta serial.<BR>
-	 * @return retorno indece para a mensagem.
-	 * @see org.freedom.ecf.driver.AbstractECFDriver#checkRetorno(byte[])
+	 * @return result indece para a mensagem.
+	 * @see org.freedom.ecf.driver.AbstractECFDriver#checkResult(byte[])
 	 */
-	public STResult checkRetorno( final byte[] bytes ) {
+	public STResult checkResult( final byte[] bytes ) {
 
 		STResult result = new STResult();
 		byte ack = 0;
@@ -213,17 +212,17 @@ public class ECFBematech extends AbstractECFDriver {
 	}
 
 	/**
-	 * Auxilia o metodo checkRetorno.<BR>
+	 * Auxilia o metodo checkResult.<BR>
 	 * 
 	 * @param ST1
-	 * @return retorno checado
+	 * @return result checado
 	 */
 	private STResult checkST1( final byte ST1 ) {
 
 		int st1 = ST1;
 		STResult result = new STResult();
 
-		// compatibilização do valor de byte de retorno.
+		// compatibilização do valor de byte de result.
 		if ( st1 < 0 ) {
 			st1 += 128;
 		}
@@ -265,17 +264,17 @@ public class ECFBematech extends AbstractECFDriver {
 	}
 
 	/**
-	 * Auxilia o metodo checkRetorno.<BR>
+	 * Auxilia o metodo checkResult.<BR>
 	 * 
 	 * @param ST2
-	 * @return retorno checado
+	 * @return result checado
 	 */
 	private STResult checkST2( final byte ST2 ) {
 
 		int st2 = ST2;
 		STResult result = new STResult();
 
-		// compatibilização do valor de byte de retorno.
+		// compatibilização do valor de byte de result.
 		if ( st2 < 0 ) {
 			st2 += 128;
 		}
@@ -391,7 +390,7 @@ public class ECFBematech extends AbstractECFDriver {
 	public boolean isHorarioVerao() {
 		
 		boolean returnOfAction = false;
-		String flags = retornoVariaveis( AbstractECFDriver.V_FLAG_FISCAL );
+		String flags = resultVariaveis( AbstractECFDriver.V_FLAG_FISCAL );
 		int iflag = Integer.parseInt( flags );
 		if ( iflag > 127 ) {
 			iflag -= 128;
@@ -1217,7 +1216,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 *         00 - Sensor em Nível Zero.<br>
 	 *         FF - Sensor em Nível Um.<br>
 	 */
-	public String retornoEstadoGavetaDinheiro() {
+	public String resultEstadoGavetaDinheiro() {
 
 		final byte[] CMD = { ESC, 23 };
 
@@ -1246,7 +1245,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return string concatenda com as aliquotas programadas(cada aliquota tem quatro digitos)<br>
 	 */
-	public String retornoAliquotas() {
+	public String resultAliquotas() {
 
 		final byte[] CMD = { ESC, 26 };
 
@@ -1272,7 +1271,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return totalizadores parciais<br>
 	 */
-	public String retornoTotalizadoresParciais() {
+	public String resultTotalizadoresParciais() {
 
 		final byte[] CMD = { ESC, 27 };
 
@@ -1280,20 +1279,20 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final int[] tam = { 224, 14, 14, 14, 126, 14, 14, 18 };
 		final String totalizadores = bcdToAsc( getBytesLidos() );
-		final StringBuffer retorno = new StringBuffer();
+		final StringBuffer result = new StringBuffer();
 		int index = 0;
 
 		for ( int i = 0; i < tam.length; i++ ) {
 
 			if ( i > 0 ) {
-				retorno.append( ',' );
+				result.append( ',' );
 			}
 
-			retorno.append( totalizadores.substring( index, ( index + tam[ i ] ) ) );
+			result.append( totalizadores.substring( index, ( index + tam[ i ] ) ) );
 			index += tam[ i ];
 		}
 
-		return retorno.toString();
+		return result.toString();
 	}
 
 	/**
@@ -1301,7 +1300,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return subtotal<br>
 	 */
-	public String retornoSubTotal() {
+	public String resultSubTotal() {
 
 		final byte[] CMD = { ESC, 29 };
 
@@ -1315,7 +1314,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return número do cupom<br>
 	 */
-	public String retornoNumeroCupom() {
+	public String resultNumeroCupom() {
 
 		final byte[] CMD = { ESC, 30 };
 
@@ -1324,7 +1323,7 @@ public class ECFBematech extends AbstractECFDriver {
 		return bcdToAsc( getBytesLidos() );
 	}
 	
-	public boolean retornoDocumentoAberto() {
+	public boolean resultDocumentoAberto() {
 		
 		String status = getStatus();
 			
@@ -1514,29 +1513,29 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return informação da impressora.<br>
 	 */
-	public String retornoVariaveis( final char var ) {
+	public String resultVariaveis( final char var ) {
 
 		final byte[] CMD = { ESC, 35, (byte) var };
 		/*
-		 * o tamanho dos bytes de retorno varia conforme o parametro.
+		 * o tamanho dos bytes de result varia conforme o parametro.
 		 */
 		executaCmd( CMD, 0 );
 
-		String retorno = "";
+		String result = "";
 
 		if ( var == V_NUM_SERIE 
 				|| var == V_CNPJ_IE 
 					|| var == V_CLICHE 
 						|| var == V_MOEDA
 							|| var == V_DEPARTAMENTOS ) {
-			retorno = new String( getBytesLidos() );
+			result = new String( getBytesLidos() );
 		} else if ( var == V_DT_ULT_REDUCAO ) {
-			retorno = bcdToAsc( getBytesLidos() ).substring( 0, 6 );
+			result = bcdToAsc( getBytesLidos() ).substring( 0, 6 );
 		} else {
-			retorno = bcdToAsc( getBytesLidos() );
+			result = bcdToAsc( getBytesLidos() );
 		}
 
-		return retorno;
+		return result;
 	}
 
 	/**
@@ -1545,7 +1544,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado do papel<br>
 	 */
-	public String retornoEstadoPapel() {
+	public String resultEstadoPapel() {
 
 		final byte[] CMD = { ESC, 62, 54 };
 
@@ -1559,7 +1558,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return última redução<br>
 	 */
-	public String retornoUltimaReducao() {
+	public String resultUltimaReducao() {
 
 		final byte[] CMD = { ESC, 62, 55 };
 
@@ -1618,7 +1617,7 @@ public class ECFBematech extends AbstractECFDriver {
 	 * 
 	 * @return estado da impressora.<br>
 	 */
-	public String retornoStatusCheque() {
+	public String resultStatusCheque() {
 
 		byte[] CMD = { ESC, 62, 48 };
 		
@@ -1683,16 +1682,16 @@ public class ECFBematech extends AbstractECFDriver {
 	public void aguardaImpressao() {
 
 		byte[] CMD = { ESC, 19 };
-		byte[] retorno = new byte[ 1 ];
+		byte[] result = new byte[ 1 ];
 		CMD = preparaCmd( CMD );
 
-		while ( retorno.length < 2 ) {
+		while ( result.length < 2 ) {
 
 			// depois que entra do laço e ocorre algum erro no envio do comando
-			// a condição de retorno == null valida o laço
+			// a condição de result == null valida o laço
 			// tornando ele um laço infinito...
 
-			retorno = enviaCmd( CMD, 3 );
+			result = enviaCmd( CMD, 3 );
 
 			try {
 				Thread.sleep( 100 );
