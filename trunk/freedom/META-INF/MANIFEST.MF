@@ -1,3 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: org.freedom.modulos.std.FreedomSTD
-Class-path: jcommon.jar jfreechart.jar itext.jar jaybird-full.jar nachocalendar.jar commons-logging.jar jasperreports.jar liquidlnf.jar metouia.jar commons-beanutils.jar commons-collections.jar mail.jar barbecue.jar ireport.jar activation.jar
