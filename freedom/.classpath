@@ -43,6 +43,5 @@
 	<classpathentry kind="lib" path="lib/commons-lang.jar"/>
 	<classpathentry kind="lib" path="lib/brazilutils.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/freedom-nfe"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/freedom-fw1"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

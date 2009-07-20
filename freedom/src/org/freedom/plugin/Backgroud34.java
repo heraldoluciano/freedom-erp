@@ -9,7 +9,7 @@ import java.awt.event.MouseListener;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.sql.Blob;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
-import org.freedom.modulos.atd.FAgenda;
+import org.freedom.modulos.crm.agenda.FAgenda;
 import org.freedom.modulos.std.FCliente;
 import org.freedom.modulos.std.FManutPag;
 import org.freedom.modulos.std.FManutRec;
@@ -51,7 +51,7 @@ public class Backgroud34 extends JPanelPad implements MouseListener {
 
 	private JLabelPad lbCliente = new JLabelPad();
 
-	private Connection con = null;
+	private DbConnection con = null;
 
 	public Backgroud34() {
 
@@ -79,7 +79,7 @@ public class Backgroud34 extends JPanelPad implements MouseListener {
 		lbCliente.addMouseListener( this );
 	}
 
-	public void setConexao( Connection con ) {
+	public void setConexao( DbConnection con ) {
 
 		this.con = con;
 		carregaImagemEmpresa();
@@ -110,9 +110,7 @@ public class Backgroud34 extends JPanelPad implements MouseListener {
 				pnEmpresa.setImage( image );
 			}
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}

@@ -323,6 +323,9 @@ public class FCLFiscal extends FTabDados implements RadioGroupListener, CarregaL
 		
 		adicDB( cbOrig, 7, 190, 473, 30, "OrigFisc", "Origem", true );		
 
+
+		
+		
 		adicDB( rgTipoFisc, 7, 245, 120, 100, "TipoFisc", "Situação do ICMS:", true );
 		adicDB( rgSitPis, 132, 245, 103, 100, "SitPisFisc", "Situação do PIS:", true );
 		adicDB( rgSitCofins, 240, 245, 117, 100, "SitCofinsFisc", "Situação do COFINS:", true );

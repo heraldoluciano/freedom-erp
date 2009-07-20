@@ -1,6 +1,6 @@
 package org.freedom.modulos.rep;
 
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,9 +41,7 @@ public class AplicativoRep extends AplicativoPD {
 			rs.close();
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Não foi possível obter o número de casas decimais!\n" + err.getMessage(), true, con, err );
 		} 
@@ -98,9 +96,7 @@ public class AplicativoRep extends AplicativoPD {
 			ps.executeUpdate();
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 			setEmailBean( email );
 			
@@ -109,7 +105,7 @@ public class AplicativoRep extends AplicativoPD {
 		}
 	}
 
-	public static void atualizaEmailBean( Connection con ) {
+	public static void atualizaEmailBean( DbConnection con ) {
 		
 		List<Object> prefere = RPPrefereGeral.getPrefere( con );
 
@@ -125,7 +121,7 @@ public class AplicativoRep extends AplicativoPD {
 		setEmailBean( mail );
 	}
 
-	public static String getEmailCliente( final int codcli, final Connection con ) {
+	public static String getEmailCliente( final int codcli, final DbConnection con ) {
 
 		String email = null;
 		PreparedStatement ps = null;
@@ -149,9 +145,7 @@ public class AplicativoRep extends AplicativoPD {
 			rs.close();
 			ps.close();
 
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar email do cliente!\n" + e.getMessage() );
@@ -161,7 +155,7 @@ public class AplicativoRep extends AplicativoPD {
 		return email;
 	}
 
-	public static String getEmailFornecedor( final int codfor, final Connection con ) {
+	public static String getEmailFornecedor( final int codfor, final DbConnection con ) {
 
 		String email = null;
 		PreparedStatement ps = null;
@@ -185,9 +179,7 @@ public class AplicativoRep extends AplicativoPD {
 			rs.close();
 			ps.close();
 
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar email do fornecedor!\n" + e.getMessage() );
