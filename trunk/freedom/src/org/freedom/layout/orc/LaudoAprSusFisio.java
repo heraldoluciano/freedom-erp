@@ -6,14 +6,14 @@
  * Pacote: leiautes <BR>
  * Classe: @(#)LaudoAprSusFisio.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  *
  * Comentários para a classe...
  */
@@ -22,7 +22,7 @@ package org.freedom.layout.orc;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,7 +38,7 @@ import org.freedom.telas.Aplicativo;
 
 public class LaudoAprSusFisio extends LeiauteGR {
 	private static final long serialVersionUID = 1L;
-	private Connection con = null;
+	private DbConnection con = null;
 	private Font fnSubTitulo = new Font("Times New Roman",Font.PLAIN,7);
 	private Font fnTituloBanner = new Font("Times New Roman",Font.BOLD,8);
 	private Font fnTitulo = new Font("Times New Roman",Font.BOLD,11);
@@ -358,6 +358,12 @@ public class LaudoAprSusFisio extends LeiauteGR {
 		
 		drawLinha(35,445,35,660);      // Linhas Verticais
 		drawLinha(100,445,100,660);    // Linhas Verticais
+
+		drawLinha(295,445,295,660);
+		drawLinha(330,445,330,660);
+		drawLinha(365,445,365,660);
+		drawLinha(400,445,400,660);
+		
 		drawLinha(435,445,435,660);		
 		drawLinha(470,445,470,660);
 		drawLinha(500,445,500,660);
@@ -366,7 +372,13 @@ public class LaudoAprSusFisio extends LeiauteGR {
 		setFonte(fnCabCli);
 		
 		drawTexto("DATA",30,456,70,AL_BCEN);
-		drawTexto("ASSINATURA",80,456,400,AL_BCEN);
+		drawTexto("ASSINATURA",0,456,400,AL_BCEN);
+		
+		drawTexto("NUT", 112, 456, 400, AL_BCEN );
+		drawTexto("ENF", 147, 456, 400, AL_BCEN );
+		drawTexto("MED", 182, 456, 400, AL_BCEN );
+		drawTexto("ASS", 217, 456, 400, AL_BCEN );
+		
 		drawTexto("FISIO", 252, 456, 400, AL_BCEN );
 		drawTexto("PSICO", 286, 456, 400, AL_BCEN );
 		drawTexto("TO", 315, 456, 400, AL_BCEN );
@@ -409,7 +421,7 @@ public class LaudoAprSusFisio extends LeiauteGR {
 		vParamOrc = vParam;
 	}
 
-	public void setConexao(Connection cn) {
+	public void setConexao(DbConnection cn) {
 		con = cn;
 	}
 }

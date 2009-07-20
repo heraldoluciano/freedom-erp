@@ -1,7 +1,6 @@
 /**
  * @version 11/2008 <BR>
  * @author Setpoint Informática Ltda.<BR>
- * @author Reginaldo Garcia Heua<BR>
  * 
  * Projeto: Freedom <BR>
  * 
@@ -9,13 +8,13 @@
  * Classe:
  * @(#)RelSaldosProd.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -25,7 +24,7 @@
 
 package org.freedom.modulos.rep;
 
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
@@ -76,8 +75,7 @@ public class RelSaldosProd extends FRelatorio {
 		cal.set( cal.get( Calendar.YEAR ), 0, 1 );
 		txtDtIni.setVlrDate( cal.getTime() );	
 	}
-	
-	
+		
 	private void montaListaCampos() {
 		
 		/**************
@@ -93,7 +91,6 @@ public class RelSaldosProd extends FRelatorio {
 		txtCodFor.setTabelaExterna( lcFornecedor );
 		txtCodFor.setPK( true );
 		txtCodFor.setNomeCampo( "CodFor" );
-
 	}
 	
 	private void montaTela() {
@@ -113,8 +110,7 @@ public class RelSaldosProd extends FRelatorio {
 		adic( new JLabel( "Cód.for." ), 10, 70, 77, 20 );
 		adic( txtCodFor, 10, 90, 77, 20 );
 		adic( new JLabel( "Razão social do fornecedor" ), 90, 70, 210, 20 );
-		adic( txtRazFor, 90, 90, 210, 20 );
-	
+		adic( txtRazFor, 90, 90, 210, 20 );	
 	}
 
 	public void imprimir( boolean visualizar ) {
@@ -124,20 +120,18 @@ public class RelSaldosProd extends FRelatorio {
 			StringBuilder sql = new StringBuilder();
 			Date dtini = txtDtIni.getVlrDate();
 			Date dtfim = txtDtFim.getVlrDate();
-					
+			
 			sql.append( "select pr.codfor, pr.refprod,pr.descprod,pr.saldoprod as compra, pr.precoprod1, " );
-			sql.append( "coalesce(sum(it.qtditped),0) as venda ,coalesce(pr.saldoprod-sum(coalesce(it.qtditped,0)),0) as saldo " );
-			sql.append( "from rpproduto pr left outer join rpitpedido it on " );
-			sql.append( "pr.codemp=it.codemppd and pr.codfilial=it.codfilialpd and pr.codprod = it.codprod " );
-			sql.append( "left outer join rppedido pd on " );
-			sql.append( "pd.codemp = it.codemp and pd.codfilial = it.codfilial and pd.codped = it.codped " );
-			sql.append( "and pd.codemp=? and pd.codfilial=? " );
-			sql.append( "and pd.dataped between ? and ? " );
+			sql.append( "sum((select coalesce(sum(it.qtditped),0) from rpitpedido it ,rppedido pd where " );
+			sql.append( "pd.codemp=it.codemp and pd.codfilial=it.codfilial and pd.codped=it.codped and " ); 
+			sql.append( "pd.codemp=? and pd.codfilial=? and pd.dataped between ? and ? and " );
+			sql.append( "it.codemppd=pr.codemp and it.codfilialpd=pr.codfilial and it.codprod=pr.codprod " );
+			sql.append( ")) as venda " );
+			sql.append( "from rpproduto pr " );
 			
 			if( !txtCodFor.getVlrString().equals( "" ) ){
-				sql.append( "where pd.codfor=? " );
-			}			
-			
+				sql.append( "where pr.codfor=? " );
+			}
 			sql.append( "group by 1,2,3,4,5 " );
 			sql.append( "order by pr.descprod " );
 									
@@ -156,7 +150,7 @@ public class RelSaldosProd extends FRelatorio {
 			HashMap<String,Object> hParam = new HashMap<String, Object>();
 			
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
-			hParam.put( "REPORT_CONNECTION", con );
+			hParam.put( "REPORT_CONNECTION", con.getConnection() );
 			
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpsaldoprod.jasper", "TABELA", null, rs, hParam, this );
 
@@ -173,7 +167,7 @@ public class RelSaldosProd extends FRelatorio {
 		}
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcFornecedor.setConexao( cn );

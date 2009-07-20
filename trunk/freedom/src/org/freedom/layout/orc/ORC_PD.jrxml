@@ -186,17 +186,17 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="113"  isSplitAllowed="true" >
+			<band height="138"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="9"
+						x="10"
 						y="1"
 						width="47"
 						height="15"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Arial" size="8"/>
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Orçamento:]]></text>
 				</staticText>
@@ -243,9 +243,9 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="3"
-						y="17"
+						y="16"
 						width="0"
-						height="96"
+						height="122"
 						key="line-8"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
@@ -255,21 +255,21 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 						x="533"
 						y="16"
 						width="0"
-						height="96"
+						height="122"
 						key="line-9"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight"/>
 				</line>
 				<staticText>
 					<reportElement
-						x="9"
+						x="10"
 						y="18"
-						width="68"
+						width="41"
 						height="12"
 						key="staticText-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8"/>
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Cliente:]]></text>
 				</staticText>
@@ -277,19 +277,19 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 					<reportElement
 						x="10"
 						y="51"
-						width="68"
+						width="41"
 						height="12"
 						key="staticText-9"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8"/>
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Telefone:]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
 						x="4"
-						y="111"
+						y="137"
 						width="530"
 						height="0"
 						key="line-10"
@@ -305,15 +305,15 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 						key="staticText-11"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8"/>
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[A/C Sr(a) :]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="80"
+						x="53"
 						y="18"
-						width="272"
+						width="298"
 						height="12"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -324,20 +324,20 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="82"
+						x="53"
 						y="51"
-						width="76"
+						width="297"
 						height="12"
 						key="textField-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["( "+$F{DDDCLI}+") " + $F{FONECLI}.substring(0,4)+"-"+$F{FONECLI}.substring(4,12)]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["( " + ($F{DDDCLI}==null?"":$F{DDDCLI}) + ") " + $F{FONECLI}.substring(0,4)+"-"+$F{FONECLI}.substring(4,12)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="54"
+						x="53"
 						y="34"
 						width="127"
 						height="12"
@@ -350,29 +350,29 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 				</textField>
 				<staticText>
 					<reportElement
-						x="11"
+						x="10"
 						y="84"
 						width="73"
 						height="12"
 						key="staticText-12"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8"/>
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Prazo de Entrega:]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="11"
+						x="10"
 						y="68"
-						width="61"
+						width="47"
 						height="12"
 						key="staticText-13"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8"/>
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Cond.Pagto.:]]></text>
+				<text><![CDATA[Pagamento:]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -389,9 +389,9 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="75"
+						x="59"
 						y="68"
-						width="106"
+						width="292"
 						height="12"
 						key="textField-15"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -400,24 +400,39 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCPLANOPAG}]]></textFieldExpression>
 				</textField>
-			</band>
-		</columnHeader>
-		<detail>
-			<band height="50"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="21"
-						y="7"
-						width="448"
-						height="12"
+						x="10"
+						y="112"
+						width="518"
+						height="22"
 						key="textField-9"
-						stretchType="RelativeToTallestObject"/>
+						stretchType="RelativeToBandHeight"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{OBSORC}!= null? $F{OBSORC}: ""]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{OBSORC}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement
+						x="10"
+						y="98"
+						width="68"
+						height="12"
+						key="staticText-14">
+							<printWhenExpression><![CDATA[new Boolean($F{OBSORC}!= null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Observações:]]></text>
+				</staticText>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="50"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
 						x="3"

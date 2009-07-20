@@ -10,13 +10,13 @@
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para
  * Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
  * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
  * Programa. <BR>
  * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você
  * pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é
  * preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR>
@@ -29,7 +29,7 @@
 package org.freedom.modulos.std;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -131,8 +131,10 @@ public class FRComissoes extends FRelatorio {
 		
 		
 		vVals1.addElement("G");
+		vVals1.addElement("G2");
 		vVals1.addElement("T");
 		vLabs1.addElement("Gráfico");
+		vLabs1.addElement("Gráfico 2");
 		vLabs1.addElement("Texto");
 		rgTipoRel = new JRadioGroup<String, String>(2, 2, vLabs1, vVals1 );
 		rgTipoRel.setVlrString("G");
@@ -155,7 +157,7 @@ public class FRComissoes extends FRelatorio {
 		lbPeriodo.setOpaque(true);
 		
 		adic( lbPeriodo, 7, 1, 80, 20 );
-		adic( lbLinha, 5, 10, 320, 45 );
+		adic( lbLinha, 5, 10, 330, 45 );
 		
 		adic( new JLabelPad("De:"), 10, 25, 30, 20 );
 		adic( txtDataini, 40, 25, 97, 20 );
@@ -164,16 +166,16 @@ public class FRComissoes extends FRelatorio {
 		
 		adic( new JLabelPad("Cód.comiss."), 7, 57, 250, 20);
 		adic( txtCodVend, 7, 77, 80, 20);
-		adic( new JLabelPad("Nome do comissionado"), 90, 57, 320, 20);
-		adic( txtDescVend, 90, 77, 235, 20);
+		adic( new JLabelPad("Nome do comissionado"), 90, 57, 330, 20);
+		adic( txtDescVend, 90, 77, 245, 20);
 		
 		JLabelPad lbOrdem = new JLabelPad("Ordem:" , SwingConstants.CENTER );
 		lbOrdem.setOpaque(true);
 		
 		adic( lbOrdem, 7, 100, 80, 20 );
-		adic( rgOrdemRel, 7, 115, 320, 65 );
+		adic( rgOrdemRel, 7, 115, 330, 65 );
 		adic( rgEmitRel, 7, 185, 155, 65 );
-		adic( rgTipoRel, 165, 185, 163, 65 );
+		adic( rgTipoRel, 165, 185, 173, 65 );
 		adic( cbNLiberada, 5, 260, 100, 20 );
 		adic( cbLiberada, 135, 260, 97, 20 );
 		adic( cbPaga, 265, 260, 100, 20 );
@@ -187,7 +189,7 @@ public class FRComissoes extends FRelatorio {
 		txtDataini.setVlrDate(cPeriodo.getTime());
 	}
 
-	public void setConexao(Connection cn) {
+	public void setConexao(DbConnection cn) {
 		
 		super.setConexao(cn);
 		lcVend.setConexao(cn);
@@ -264,10 +266,10 @@ public class FRComissoes extends FRelatorio {
 					+ "CL.CODCLI,CL.RAZCLI,C.VLRVENDACOMI,P.DESCPLANOPAG,"
 					+ "C.VLRCOMI,C.DTVENCCOMI,R.DOCREC,IR.NPARCITREC,"
 					+ "C.TIPOCOMI,C.VLRAPAGCOMI, C.VLRPAGOCOMI,C.DTPAGTOCOMI,"
-					+ "IR.VLRPARCITREC "
+					+ "IR.VLRPARCITREC, VD.NOMEVEND, V.PEDCLIVENDA "
 					+ "FROM FNRECEBER R, FNITRECEBER IR, VDVENDA V, VDCOMISSAO C,"
-					+ "VDCLIENTE CL, FNPLANOPAG P WHERE V.FLAG IN "
-					+ AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
+					+ "VDCLIENTE CL, FNPLANOPAG P, VDVENDEDOR VD "
+					+ "WHERE V.FLAG IN " + AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
 					+ " AND R.CODEMPVD = ? AND R.CODFILIALVD = ? AND R.CODVEND = ?"
 					+ " AND C.CODEMP = ? AND C.CODFILIAL = ? "
 					+ " AND R.CODEMP = C.CODEMPRC AND R.CODFILIAL = C.CODFILIALRC "
@@ -282,10 +284,12 @@ public class FRComissoes extends FRelatorio {
 					+ " AND "
 					+ sDataFiltro
 					+ " BETWEEN ? AND ? AND C.STATUSCOMI IN (?,?,?)"
+					+ " AND VD.CODEMP=C.CODEMPVD AND VD.CODFILIAL=C.CODFILIALVD AND VD.CODVEND=C.CODVEND "
 					+ " ORDER BY " + sOrdem;
 			
 		try {
 			
+	
 			ps = con.prepareStatement( sSQL );
 			ps.setInt(1, Aplicativo.iCodEmp );
 			ps.setInt(2, ListaCampos.getMasterFilial( "VDVENDEDOR" ));
@@ -364,7 +368,7 @@ public class FRComissoes extends FRelatorio {
 			imp = new ImprimeOS("",con);
 			linPag = imp.verifLinPag()-1;
 			imp.montaCab();
-			imp.setTitulo("Relatório de Compras");
+			imp.setTitulo("Relatório de Comissões");
 			imp.addSubTitulo("RELATORIO DE COMISSOES - PERIODO DE " + txtDataini.getVlrDate() + " ATE " + txtDatafim.getVlrDate());
 			imp.addSubTitulo( sCab.toString() );
 			imp.limpaPags();				
@@ -526,9 +530,7 @@ public class FRComissoes extends FRelatorio {
 
 			imp.fechaGravacao();
 	
-			if (!con.getAutoCommit()){
-				con.commit();
-			}
+			con.commit();
 		} catch ( Exception e ) {
 		
 			e.printStackTrace();
@@ -547,11 +549,16 @@ public class FRComissoes extends FRelatorio {
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
-		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDCOMISSAO" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
 		hParam.put( "FILTROS", sCab );
 
-		dlGr = new FPrinterJob( "relatorios/FRComissoes.jasper", "Relatório de Comissões", sCab, rs, hParam, this );
+		if("G".equals( rgTipoRel.getVlrString())){
+			dlGr = new FPrinterJob( "relatorios/FRComissoes.jasper", "Relatório de Comissões", sCab, rs, hParam, this );
+		}
+		else {
+			dlGr = new FPrinterJob( "relatorios/FRComissoes02.jasper", "Relatório de Comissões", sCab, rs, hParam, this );
+		}
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );

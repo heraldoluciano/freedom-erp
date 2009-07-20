@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FCompra.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -34,7 +34,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,6 +44,8 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
@@ -60,9 +62,11 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTabbedPanePad;
+import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.componentes.Layout;
 import org.freedom.layout.componentes.Leiaute;
@@ -87,6 +91,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JPanelPad pinCabCompra = new JPanelPad();
 	
 	private JPanelPad pinCabTransp = new JPanelPad();
+	
+	private JPanelPad pinCabObs01 = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	
+	private JPanelPad pinCabObs02 = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	
+	private JPanelPad pinCabObs03 = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	
+	private JPanelPad pinCabObs04 = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 	
 	private JPanelPad pinCabSolCompra = new JPanelPad();
 
@@ -195,6 +207,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldFK txtDescFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtEstFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldFK txtEmailFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -275,14 +289,36 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private String abaTransp = "N";
 	
 	private String abaSolCompra = "N";
+	
+	private String classcp = "";
+	
+	private String labelobs01cp = "";
+	
+	private String labelobs02cp = "";
+	
+	private String labelobs03cp = "";
+	
+	private String labelobs04cp = "";
+	
+	private JTextAreaPad txaObs01 = new JTextAreaPad();
+	
+	private JTextAreaPad txaObs02 = new JTextAreaPad();
+	
+	private JTextAreaPad txaObs03 = new JTextAreaPad();
+	
+	private JTextAreaPad txaObs04 = new JTextAreaPad();
+	
+	private JScrollPane spnObs01 = new JScrollPane( txaObs01 );
+	
+	private JScrollPane spnObs02 = new JScrollPane( txaObs02 );
+
+	private JScrollPane spnObs03 = new JScrollPane( txaObs03 );
+
+	private JScrollPane spnObs04 = new JScrollPane( txaObs04 );
 
 	public FCompra() {
-
-		
 		setTitulo( "Compra" );
-		setAtribos( 15, 10, 760, 430 );
-		
-
+		setAtribos( 15, 10, 760, 460 );
 	}
 
 	public void montaTela() {
@@ -294,6 +330,23 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		if( "S".equals(abaSolCompra)) {
 			tpnCab.addTab( "Solicitação de Compra", pinCabSolCompra );
 		}
+		if( (labelobs01cp!=null) && (!"".equals( labelobs01cp.trim() )) ) {
+			pinCabObs01.add( spnObs01 );
+			tpnCab.addTab( labelobs01cp.trim(), pinCabObs01 );
+		}
+		if( (labelobs02cp!=null) && (!"".equals( labelobs02cp.trim() )) ) {
+			pinCabObs02.add( spnObs02 );
+			tpnCab.addTab( labelobs02cp.trim(), pinCabObs02 );
+		}
+		if( (labelobs03cp!=null) && (!"".equals( labelobs03cp.trim() )) ) {
+			pinCabObs03.add( spnObs03 );
+			tpnCab.addTab( labelobs03cp.trim(), pinCabObs03 );
+		}
+		if( (labelobs04cp!=null) && (!"".equals( labelobs04cp.trim() )) ) {
+			pinCabObs04.add( spnObs04 );
+			tpnCab.addTab( labelobs04cp.trim(), pinCabObs04 );
+		}
+		
 		pnMaster.remove( 2 );
 		pnGImp.removeAll();
 		pnGImp.setLayout( new GridLayout( 1, 4 ) );
@@ -339,6 +392,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
 		lcFor.add( new GuardaCampo( txtEstFor, "UFFor", "UF", ListaCampos.DB_SI, false ) );
+		lcFor.add( new GuardaCampo( txtEmailFor, "EmailFor", "Email", ListaCampos.DB_SI, false ) );
+		
 		lcFor.montaSql( false, "FORNECED", "CP" );
 		lcFor.setQueryCommit( false );
 		lcFor.setReadOnly( true );
@@ -487,6 +542,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicDescFK( txtDescPlanoPag, 386, 60, 245, 20, "DescPlanoPag", "Descrição do plano de pagto." );
 		adic( lbStatus, 638, 60, 95, 20 );
 		
+		adicDBLiv( txaObs01, "Obs01", labelobs01cp==null?"Observações":labelobs01cp, false );
+		adicDBLiv( txaObs02, "Obs02", labelobs01cp==null?"Observações":labelobs01cp, false );
+		adicDBLiv( txaObs03, "Obs03", labelobs01cp==null?"Observações":labelobs01cp, false );
+		adicDBLiv( txaObs04, "Obs04", labelobs01cp==null?"Observações":labelobs01cp, false );
+		
 		if( abaTransp.equals( "S" ) ){
 			setListaCampos( lcCampos );
 			setPainel( pinCabTransp );
@@ -558,6 +618,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		lbStatus.setForeground( Color.WHITE );
 		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
+		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
 		lbStatus.setOpaque( true );
 		lbStatus.setVisible( false );
 
@@ -696,9 +757,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				rs.close();
 				ps.close();
 
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao carregar a observação!\n" + err.getMessage(), true, con, err );
@@ -719,9 +778,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 						ps.close();
 
-						if ( !con.getAutoCommit() ) {
-							con.commit();
-						}
+						con.commit();
 
 					} catch ( SQLException err ) {
 						Funcoes.mensagemErro( this, "Erro ao inserir observação no orçamento!\n" + err.getMessage(), true, con, err );
@@ -757,8 +814,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				ps.setString( 4, "S" );
 				ps.executeUpdate();
 				ps.close();
-				if ( !con.getAutoCommit() )
-					con.commit();
+				con.commit();
 			}
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro bloqueando a compra!\n" + err.getMessage(), true, con, err );
@@ -960,9 +1016,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			rs.close();
 			ps.close();
 			
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( Exception e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar custo do produto.", true, con, e );
@@ -970,13 +1024,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	}
 
 	private void getPrefere() {
-		
+		StringBuffer sql = new StringBuffer();
 		try {
 
-			PreparedStatement ps = con.prepareStatement( 
-					"SELECT USAREFPROD,ORDNOTA,BLOQCOMPRA,BUSCAVLRULTCOMPRA,CUSTOCOMPRA, " +
-					"TABTRANSPCP, TABSOLCP " + 
-					"FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			sql.append( "SELECT USAREFPROD,ORDNOTA,BLOQCOMPRA,BUSCAVLRULTCOMPRA,CUSTOCOMPRA, "); 
+			sql.append( "TABTRANSPCP, TABSOLCP, CLASSCP, LABELOBS01CP, LABELOBS02CP, LABELOBS03CP, LABELOBS04CP " ); 
+			sql.append(	"FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			
@@ -990,10 +1045,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				habilitaCusto = rs.getString( "CUSTOCOMPRA" ).trim().equals( "S" );
 				abaTransp = rs.getString( "TABTRANSPCP");
 				abaSolCompra = rs.getString( "TABSOLCP" );
+				classcp = rs.getString( "CLASSCP" );
+				labelobs01cp = rs.getString( "LABELOBS01CP" );
+				labelobs02cp = rs.getString( "LABELOBS02CP" );
+				labelobs03cp = rs.getString( "LABELOBS03CP" );
+				labelobs04cp = rs.getString( "LABELOBS04CP" );
+								
 			}
-			if ( !con.getAutoCommit() ){
-				con.commit();
-			}
+			con.commit();
 		} catch ( Exception e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + e.getMessage(), true, con, e );
@@ -1036,6 +1095,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		
 		DLRPedido dl = new DLRPedido( sOrdNota, false );
+		dl.setConexao( con );
 		dl.setVisible( true );
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1056,11 +1116,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		sSQL.append( "I.QTDITCOMPRA,I.PRECOITCOMPRA,I.VLRPRODITCOMPRA,I.CODNAT,I.PERCICMSITCOMPRA, " );
 		sSQL.append( "PERCIPIITCOMPRA,VLRIPIITCOMPRA,C.VLRBASEICMSCOMPRA,C.VLRICMSCOMPRA,C.VLRPRODCOMPRA, " );
 		sSQL.append( "C.VLRDESCCOMPRA,C.VLRDESCITCOMPRA,C.VLRADICCOMPRA,C.VLRIPICOMPRA,F.CONTFOR, C.TIPOFRETECOMPRA, C.VLRFRETECOMPRA, C.OBSERVACAO, " );
-		sSQL.append( "C.VLRLIQCOMPRA,C.CODPLANOPAG,PG.DESCPLANOPAG " );
-		sSQL.append( "FROM CPCOMPRA C, CPFORNECED F,CPITCOMPRA I, EQPRODUTO P, FNPLANOPAG PG " );
-		sSQL.append( "WHERE C.CODCOMPRA=? AND C.CODEMP=? AND C.CODFILIAL=? AND F.CODFOR=C.CODFOR " );
-		sSQL.append( "AND I.CODCOMPRA=C.CODCOMPRA AND P.CODPROD=I.CODPROD " );
-		sSQL.append( "AND PG.CODPLANOPAG=C.CODPLANOPAG " );
+		sSQL.append( "C.VLRLIQCOMPRA,C.CODPLANOPAG,PG.DESCPLANOPAG, C.OBS01, C.OBS02, C.OBS03, C.OBS04, " );
+		sSQL.append( "SG.LABELOBS01CP, SG.LABELOBS02CP, SG.LABELOBS03CP, SG.LABELOBS04CP ");
+		sSQL.append( "FROM CPCOMPRA C, CPFORNECED F,CPITCOMPRA I, EQPRODUTO P, FNPLANOPAG PG, SGPREFERE1 SG " );
+		sSQL.append( "WHERE C.CODCOMPRA=? AND C.CODEMP=? AND C.CODFILIAL=? AND " );
+		sSQL.append( "F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR AND " );
+		sSQL.append( "I.CODEMP=C.CODEMP AND I.CODFILIAL=C.CODFILIAL AND I.CODCOMPRA=C.CODCOMPRA AND ");
+		sSQL.append( "P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD AND " );
+		sSQL.append( "PG.CODEMP=C.CODEMPPG AND PG.CODFILIAL=C.CODFILIALPG AND PG.CODPLANOPAG=C.CODPLANOPAG AND " );
+		sSQL.append( "SG.CODEMP=? AND SG.CODFILIAL=? ");
 		sSQL.append( "ORDER BY C.CODCOMPRA,P." + dl.getValor());
 		
 		try {
@@ -1069,6 +1133,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			ps.setInt( 1, iCodCompra );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			
+			System.out.println(sSQL.toString());
 			
 			rs = ps.executeQuery();
 			
@@ -1267,9 +1335,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			imp.fechaGravacao();
 			
-			if (!con.getAutoCommit()){
-                con.commit();
-			}
+            con.commit();
 		}catch ( Exception err ) {			
 			err.printStackTrace();
 		}
@@ -1292,7 +1358,17 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
 		hParam.put( "CODCOMPRA", txtCodCompra.getVlrInteger() );
 
-		dlGr = new FPrinterJob( "relatorios/ordemCompra.jasper", "Ordem de Compra", "", rs, hParam, this );
+		EmailBean email  =  Aplicativo.getEmailBean();
+		email.setPara( txtEmailFor.getVlrString() );
+		
+		if(classcp==null || "".equals(classcp.trim())) {		
+//			dlGr = new FPrinterJob( "relatorios/ordemCompra.jasper", "Ordem de Compra", "", rs, hParam, this );
+			dlGr = new FPrinterJob( "relatorios/ordemCompra.jasper", "Ordem de Compra", "", rs, hParam, this, email );
+			
+		}
+		else {
+			dlGr = new FPrinterJob( "layout/oc/" + classcp, "Ordem de Compra", "", rs, hParam, this, email );
+		}
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -1329,8 +1405,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				}
 
 				ps.close();
-				if ( !con.getAutoCommit() )
-					con.commit();
+				con.commit();
 			}
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro verificando bloqueido da compra!\n" + err.getMessage(), true, con, err );
@@ -1357,8 +1432,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			txtCodCompra.setVlrString( rs.getString( 1 ) );
 			// rs.close();
 			// ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao confirmar código da Compra!\n" + err.getMessage(), true, con, err );
 		}
@@ -1385,8 +1459,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			}
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela EQLOTE!\n" + err.getMessage(), true, con, err );
 		}
@@ -1407,12 +1480,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
-
+ 
 		String[] sValores = null;
 
 		if ( evt.getSource() == btFechaCompra ) {
 			lcCampos.carregaDados();
-			DLFechaCompra dl = new DLFechaCompra( con, txtCodCompra.getVlrInteger(), this );
+			DLFechaCompra dl = new DLFechaCompra( con, txtCodCompra.getVlrInteger(), this, getVolumes() );
 			dl.setVisible( true );
 			if ( dl.OK ) {
 				sValores = dl.getValores();
@@ -1671,13 +1744,18 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 		
 		if ( txtStatusCompra.getVlrString().trim().length() > 0 && ( txtStatusCompra.getVlrString().trim().equals( "C2" ) || txtStatusCompra.getVlrString().trim().equals( "C3" ) ) ) {
-			lbStatus.setText( "NOTA RECEBIDA" );
+			lbStatus.setText( "RECEBIDA" );
 			lbStatus.setBackground( new Color( 45, 190, 60 ) );
 			lbStatus.setVisible( true );
 		}
 		else if ( verificaBloq() ) {
-			lbStatus.setText( "  BLOQUEADA" );
+			lbStatus.setText( "BLOQUEADA" );
 			lbStatus.setBackground( Color.BLUE );
+			lbStatus.setVisible( true );
+		}
+		else if( txtStatusCompra.getVlrString().trim().length() > 0 && txtStatusCompra.getVlrString().substring( 0, 1 ).equals( "X" ) ){
+			lbStatus.setText( "CANCELADA" );
+			lbStatus.setBackground( Color.RED );
 			lbStatus.setVisible( true );
 		}
 		else {
@@ -1774,7 +1852,20 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		
 	}
 
-	public void setConexao( Connection cn ) {
+	public BigDecimal getVolumes(){
+		
+		BigDecimal retorno = new BigDecimal(0);
+	
+		for( int i=0; i<tab.getNumLinhas(); i++ ){
+			
+			retorno = retorno.add( Funcoes.strCurrencyToBigDecimal( tab.getValor( i, 5 ).toString() ));
+		}
+		
+		return retorno;
+		
+	}
+	
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcTipoMov.setConexao( cn );

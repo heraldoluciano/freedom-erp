@@ -1,20 +1,20 @@
 /**
  * @version 08/12/2000 <BR>
- * @author Setpoint Informática Ltda./Reginaldo Garcia <BR>
+ * @author Setpoint Informática Ltda.<BR>
  *
  * Projeto: Freedom <BR>
  *  
  * Pacote: org.freedom.modulos.std <BR>
  * Classe: @(#)FRCpTipoMov.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  *
  * Comentários sobre a classe...
  * 
@@ -22,7 +22,7 @@
 
 package org.freedom.modulos.std;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -154,7 +154,7 @@ public class FRCpTipoMov extends FRelatorio {
 		txtDataini.setVlrDate(cPeriodo.getTime());
 	}
 	
-	public void setConexao(Connection cn) {
+	public void setConexao(DbConnection cn) {
 		
 		super.setConexao(cn);
 		lcFor.setConexao(cn);
@@ -222,27 +222,10 @@ public class FRCpTipoMov extends FRelatorio {
 				 sSQL.append( "AND C.CODEMPPG=PG.CODEMP AND C.CODFILIALPG=PG.CODFILIAL AND C.CODPLANOPAG=PG.CODPLANOPAG ");
 				 sSQL.append( "AND C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND C.CODCOMPRA=IT.CODCOMPRA ");
 				 sSQL.append( "AND IT.CODEMPPD=PD.CODEMP AND IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD ");
-				 sSQL.append( "AND C.DTEMITCOMPRA BETWEEN ? AND ? ");
+				 sSQL.append( "AND C.DTENTCOMPRA BETWEEN ? AND ? ");
 				 sSQL.append( sWhere );
 				 sSQL.append( " ORDER BY C.CODCOMPRA, IT.CODITCOMPRA" );
-
-			
-			/*
-			sSQL = "SELECT C.CODCOMPRA, C.DOCCOMPRA, C.DTEMITCOMPRA, C.DTENTCOMPRA, " +
-			   "F.NOMEFOR, PG.DESCPLANOPAG,  "+
-			   "IT.CODITCOMPRA, IT.CODPROD, PD.DESCPROD, PD.PRECOBASEPROD, IT.CODLOTE, IT.QTDITCOMPRA, IT.PRECOITCOMPRA, "+
-			   "IT.VLRLIQITCOMPRA, C.VLRLIQCOMPRA, IT.PRECOITCOMPRA " +
-			   "FROM CPCOMPRA C, CPITCOMPRA IT, CPFORNECED F, FNPLANOPAG PG, EQPRODUTO PD "+
-			   "WHERE C.CODEMP=? AND C.CODFILIAL=? "+
-			   "AND C.CODEMPFR=F.CODEMP AND C.CODFILIALFR=F.CODFILIAL AND C.CODFOR=F.CODFOR "+
-			   "AND C.CODEMPPG=PG.CODEMP AND C.CODFILIALPG=PG.CODFILIAL AND C.CODPLANOPAG=PG.CODPLANOPAG "+
-			   "AND C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND C.CODCOMPRA=IT.CODCOMPRA "+
-			   "AND IT.CODEMPPD=PD.CODEMP AND IT.CODFILIALPD=PD.CODFILIAL AND IT.CODPROD=PD.CODPROD "+
-			   "AND C.DTEMITCOMPRA BETWEEN ? AND ? "+
-			   sWhere+
-			   " ORDER BY C.CODCOMPRA, IT.CODITCOMPRA";			
-			*/
-			
+				
 			ps = con.prepareStatement(sSQL.toString());
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("CPCOMPRA"));
@@ -260,9 +243,7 @@ public class FRCpTipoMov extends FRelatorio {
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 		} catch( SQLException err ){	
 			err.printStackTrace();
@@ -317,6 +298,7 @@ public class FRCpTipoMov extends FRelatorio {
 		String sSQL = null;
 		String sWhere = "";
 		BigDecimal bTotal = new BigDecimal(0);
+		BigDecimal bQtdtot = new BigDecimal(0);
 		ImprimeOS imp = null;
 		int linPag = 0;
 		int iparam = 1;
@@ -398,17 +380,20 @@ public class FRCpTipoMov extends FRelatorio {
 					imp.say(imp.pRow(), 102, "| " + (rs.getString("PRECO") != null ? rs.getString("PRECO") : ""));
 /*				
 				}*/
-				imp.say(imp.pRow(),117, "| " + Funcoes.strDecimalToStrCurrency(10,2,(rs.getString("VLRLIQITCOMPRA") != null ? rs.getString("VLRLIQITCOMPRA") : "")));
+				imp.say(imp.pRow(),117, "| " + Funcoes.strDecimalToStrCurrency(10,Aplicativo.casasDecFin,(rs.getString("VLRLIQITCOMPRA") != null ? rs.getString("VLRLIQITCOMPRA") : "")));
 				imp.say(imp.pRow(),135, "|");	
 				
 				bTotal = bTotal.add(rs.getBigDecimal("VLRLIQITCOMPRA"));
+				bQtdtot = bQtdtot.add( rs.getBigDecimal("QTDITCOMPRA") );
 			}
 
 			imp.say(imp.pRow()+1, 0, imp.comprimido());
 			imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("=",133) + "+");
 			imp.say(imp.pRow()+1, 0, imp.comprimido());
 			imp.say(imp.pRow(), 0, "| ");
-			imp.say(imp.pRow(), 94, "VALOR TOTAL DE COMPRAS = " + Funcoes.strDecimalToStrCurrency(15,2,bTotal.toString()));
+			imp.say(imp.pRow(), 44, "TOTAL");
+			imp.say(imp.pRow(), 91, "| " + Funcoes.strDecimalToStrCurrency(12,Aplicativo.casasDec,bQtdtot.toString()));
+			imp.say(imp.pRow(), 117, "| " + Funcoes.strDecimalToStrCurrency(12,Aplicativo.casasDecFin,bTotal.toString()));
 			imp.say(imp.pRow(),135, "|");
 			imp.say(imp.pRow()+1, 0, imp.comprimido());
 			imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("=",133) + "+");

@@ -5,21 +5,21 @@
  * Pacote: leiautes <BR>
  * Classe: @(#)OPSwara.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>m
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>m
  *
  * Layout de Ordem de produção personalizada para empresa Swara...
  */
 
 package org.freedom.layout.op;
 import java.awt.Font;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,7 +33,7 @@ import org.freedom.telas.Aplicativo;
 
 public class OPApr extends LeiauteGR {
 	private static final long serialVersionUID = 1L;
-	private Connection con = null;
+	private DbConnection con = null;
 	private Font fnTitulo = new Font("Times New Roman",Font.BOLD,14);
 	private Font fnArial9 = new Font("Arial",Font.PLAIN,9);
 	private Font fnArial9N = new Font("Arial",Font.BOLD,9);
@@ -481,7 +481,7 @@ public class OPApr extends LeiauteGR {
 		vParamOP = vParam;
 	}
 
-	public void setConexao(Connection cn) {
+	public void setConexao(DbConnection cn) {
 		con = cn;
 	}
 }

@@ -7,14 +7,14 @@
  * Pacote: org.freedom.modulos.std <BR>
  * Classe: @(#)FProcessaSL.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  *
  * Efetua somatórias nos lançamentos e insere saldos.
  * 
@@ -28,7 +28,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -157,8 +157,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
          }
          rs.close();
          ps.close();
-         if (!con.getAutoCommit())
-            con.commit();
+         con.commit();
          
          for (int i=0; i<vProds.size(); i++) {
              iUltProd =  vProds.elementAt(i).intValue();
@@ -209,36 +208,43 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
                }
 
                sSQL = "DELETE FROM EQMOVPROD WHERE " +
-                    "TIPOMOVPROD='S' AND CODEMP=? AND CODFILIAL=? " +
+                    "CODEMP=? AND CODFILIAL=? " +
                     "AND CODPROD=?"+sWhere;
-             	 state(sProd+"Limpando saídas desatualizadas...");
+             	 state(sProd+"Limpando movimentações desatualizadas...");
              	 ps = con.prepareStatement(sSQL);
              	 ps.setInt(1,Aplicativo.iCodEmp);
              	 ps.setInt(2,iFilialMov);
              	 ps.setInt(3,iCodProd);
              	 ps.executeUpdate();
              	 ps.close();
-             	 state(sProd+"Limpando inventários desatualizados...");
-             	 sSQL = "DELETE FROM EQMOVPROD WHERE " +
-             	 	"CODEMP=? AND CODFILIAL=? " +
-             	 	"AND CODPROD=? AND QTDMOVPROD<0"+sWhere;
-             	 ps = con.prepareStatement(sSQL);
-             	 ps.setInt(1,Aplicativo.iCodEmp);
-             	 ps.setInt(2,iFilialMov);
-             	 ps.setInt(3,iCodProd);
-             	 ps.executeUpdate();
-             	 ps.close();
-             	 state(sProd+"Limpando entradas desatualizadas...");
-             	 	sSQL = "DELETE FROM EQMOVPROD WHERE " +
-             	 	"CODEMP=? AND CODFILIAL=? " +
-             	 	"AND CODPROD=?"+sWhere;
-             	 ps = con.prepareStatement(sSQL);
-             	 ps.setInt(1,Aplicativo.iCodEmp);
-             	 ps.setInt(2,iFilialMov);
-             	 ps.setInt(3,iCodProd);
-             	 ps.executeUpdate();
-             	 ps.close();
-             	 state(sProd+"Estoques desatualizados excluidos.");
+//             	 
+             	 //Funcoes.mensagemInforma( this, "Teste" );
+             	 /*state(sProd+"Limpando inventários desatualizados..."); */
+	             if ((txtDataini.getVlrString().equals(""))) {
+	             	 sSQL = "UPDATE EQPRODUTO SET SLDPROD=0 WHERE " +
+	             	 	"CODEMP=? AND CODFILIAL=? " +
+	             	 	"AND CODPROD=?";
+	             	 ps = con.prepareStatement(sSQL);
+	             	 ps.setInt(1,Aplicativo.iCodEmp);
+	             	 ps.setInt(2,iFilialMov);
+	             	 ps.setInt(3,iCodProd);
+	             	 ps.executeUpdate();
+	             	 ps.close();
+	             	 state(sProd+"Limpando saldos...");
+	             	 sSQL = "UPDATE EQSALDOPROD SET SLDPROD=0 WHERE " +
+	             	 	"CODEMP=? AND CODFILIAL=? " +
+	             	 	"AND CODPROD=?";
+	             	 ps = con.prepareStatement(sSQL);
+	             	 ps.setInt(1,Aplicativo.iCodEmp);
+	             	 ps.setInt(2,iFilialMov);
+	             	 ps.setInt(3,iCodProd);
+	             	 ps.executeUpdate();
+	             	 ps.close();
+	             	 state(sProd+"Limpando saldos...");
+	             }
+             	 
+             	//con.commit();
+             	 //Funcoes.mensagemInforma( this, "Teste" );
              	 bOK = true;
              }
              catch (SQLException err) {
@@ -378,9 +384,8 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
              }
              try {
                  if (bOK) {
-                 	if (!con.getAutoCommit())
-                 		con.commit();
-                	    state(sProd+"Registros processados com sucesso!");
+               		con.commit();
+               	    state(sProd+"Registros processados com sucesso!");
                  }
                  else { 
              	    state(sProd+"Registros antigos restaurados!");
@@ -606,7 +611,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 		lbStatus.setText(sStatus);
 //        System.out.println(sStatus);
 	}
-    public void setConexao(Connection cn) {
+    public void setConexao(DbConnection cn) {
     	super.setConexao(cn);
     	lcProd.setConexao(cn);
     	iFilialMov = ListaCampos.getMasterFilial("EQMOVPROD");

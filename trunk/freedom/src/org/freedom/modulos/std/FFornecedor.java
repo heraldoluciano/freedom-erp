@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FFornecedor.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -28,7 +28,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,12 +43,15 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
+import org.freedom.componentes.Endereco;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JButtonPad;
@@ -65,8 +68,9 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
+import org.freedom.webservices.WSCep;
 
-public class FFornecedor extends FTabDados implements RadioGroupListener, PostListener, InsertListener, ActionListener {
+public class FFornecedor extends FTabDados implements RadioGroupListener, PostListener, InsertListener, ActionListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -88,7 +92,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	private JTextFieldPad txtCnpjFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
-	private JTextFieldPad txtInscFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
+	private JTextFieldPad txtInscFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtCpfFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 11, 0 );
 
@@ -114,6 +118,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	private JTextFieldPad txtDDDFoneFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
+	private JTextFieldFK txtDDDMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
+	
 	private JTextFieldPad txtDDDFaxFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldPad txtDDDCelFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
@@ -148,7 +154,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	
 	private JTextFieldFK txtNumForCli = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
-	private JTextFieldFK txtinscForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 15, 0 );
+	private JTextFieldFK txtinscForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
 	
 	private JTextFieldFK txtCnpjForCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 15, 0 );
 	
@@ -198,22 +204,49 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	
 	private ListaCampos lcForxCli = new ListaCampos( this, "FR" );
 	
+	private ListaCampos lcUF = new ListaCampos( this );
+	
+	private ListaCampos lcMunic = new ListaCampos( this );
+	
+	private ListaCampos lcPais = new ListaCampos( this );
+	
+	private JTextFieldPad txtCodPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescPais = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtSiglaUF = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 ); 
+	
+	private JTextFieldPad txtCodMun = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+
+	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JButton btBuscaEnd = new JButton( Icone.novo( "btBuscacep.gif" ) );
+
+	private Map<String, Object> bPref = null;
+	
+	
+	
 
 	public FFornecedor() {
 
 		super();
 		setTitulo( "Cadastro de Fornecedores" );
-		setAtribos( 50, 20, 530, 550 );
+		setAtribos( 50, 20, 530, 670 );
 		setImprimir( true );
 		lcForCli.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcForCli );
 		lcForCli.setTabela( tabCliFor );
+		
+		
 	}
 
 	private void montaTela() {
 
 		lcCampos.addPostListener( this );
 		lcCampos.addInsertListener( this );
+		lcMunic.addCarregaListener( this );
 
 		lcTipoFor.add( new GuardaCampo( txtCodTipoFor, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_PK, true ) );
 		lcTipoFor.add( new GuardaCampo( txtDescTipoFor, "DescTipoFor", "Descrição do tipo de fornecedor", ListaCampos.DB_SI, false ) );
@@ -228,6 +261,46 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		lcHistorico.setQueryCommit( false );
 		lcHistorico.setReadOnly( true );
 		txtCodHistPad.setTabelaExterna( lcHistorico );
+		
+		
+		/***************
+		 *    PAÍS     *
+		 **************/
+		
+		lcPais.setUsaME( false );
+		lcPais.add( new GuardaCampo( txtCodPais, "CodPais", "Cod.país.", ListaCampos.DB_PK, true ) );
+		lcPais.add( new GuardaCampo( txtDescPais, "NomePais", "Nome", ListaCampos.DB_SI, false ) );
+		lcPais.montaSql( false, "PAIS", "SG" );
+		lcPais.setQueryCommit( false );
+		lcPais.setReadOnly( true );
+		txtCodPais.setTabelaExterna( lcPais );
+		
+		/***************
+		 *      UF     *
+		 **************/		
+		
+		lcUF.setUsaME( false );		
+		lcUF.add( new GuardaCampo( txtSiglaUF, "SiglaUf", "Sigla", ListaCampos.DB_PK, true ) );
+		lcUF.add( new GuardaCampo( txtNomeUF, "NomeUf", "Nome", ListaCampos.DB_SI, false ) );		
+		lcMunic.setDinWhereAdic( "CODPAIS = #S", txtCodPais );
+		lcUF.montaSql( false, "UF", "SG" );
+		lcUF.setQueryCommit( false );
+		lcUF.setReadOnly( true );
+		txtSiglaUF.setTabelaExterna( lcUF );
+		
+		/***************
+		 *  MUNICIPIO  *
+		 **************/
+		
+		lcMunic.setUsaME( false );		
+		lcMunic.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, true ) );
+		lcMunic.add( new GuardaCampo( txtDescMun, "NomeMunic", "Nome Muni.", ListaCampos.DB_SI, false ) );
+		lcMunic.add( new GuardaCampo( txtDDDMun, "DDDMunic", "DDD Munic.", ListaCampos.DB_SI, false ) );
+		lcMunic.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
+		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
+		lcMunic.setQueryCommit( false );
+		lcMunic.setReadOnly( true );
+		txtCodMun.setTabelaExterna( lcMunic );		
 
 		vPessoaLab.addElement( "Física" );
 		vPessoaLab.addElement( "Jurídica" );
@@ -250,13 +323,12 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		adicCampo( txtRgFor, 7, 140, 150, 20, "RgFor", "RG", ListaCampos.DB_SI, false );
 		adicCampo( txtCnpjFor, 160, 140, 147, 20, "CnpjFor", "Cnpj", ListaCampos.DB_SI, false );
 		adicCampo( txtInscFor, 310, 140, 140, 20, "InscFor", "Inscrição Estadual", ListaCampos.DB_SI, false );
-		adicCampo( txtEndFor, 7, 180, 300, 20, "EndFor", "Endereço", ListaCampos.DB_SI, false );
-		adicCampo( txtNumFor, 310, 180, 67, 20, "NumFor", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtComplFor, 380, 180, 70, 20, "ComplFor", "Compl.", ListaCampos.DB_SI, false );
-		adicCampo( txtBairFor, 7, 220, 160, 20, "BairFor", "Bairro", ListaCampos.DB_SI, false );
-		adicCampo( txtCidFor, 170, 220, 157, 20, "CidFor", "Cidade", ListaCampos.DB_SI, false );
-		adicCampo( txtCepFor, 330, 220, 87, 20, "CepFor", "Cep", ListaCampos.DB_SI, false );
-		adicCampo( txtUFFor, 420, 220, 30, 20, "UFFor", "UF", ListaCampos.DB_SI, false );
+		adicCampo( txtCepFor, 7, 180, 70, 20, "CepFor", "Cep", ListaCampos.DB_SI, false );
+		adic( btBuscaEnd, 80, 180, 20, 20 );
+		adicCampo( txtEndFor, 103, 180, 220, 20, "EndFor", "Endereço", ListaCampos.DB_SI, false );
+		adicCampo( txtNumFor, 326, 180, 65, 20, "NumFor", "Num.", ListaCampos.DB_SI, false );
+		adicCampo( txtComplFor, 394, 180, 58, 20, "ComplFor", "Compl.", ListaCampos.DB_SI, false );
+		adicCampo( txtBairFor, 7, 220, 190, 20, "BairFor", "Bairro", ListaCampos.DB_SI, false );		
 		adicCampo( txtDDDFoneFor, 7, 260, 47, 20, "DDDFoneFor", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtFoneFor, 57, 260, 90, 20, "FoneFor", "Telefone", ListaCampos.DB_SI, false );
 		adicCampo( txtDDDFaxFor, 150, 260, 47, 20, "DDDFaxFor", "DDD", ListaCampos.DB_SI, false );
@@ -273,6 +345,23 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		adicDescFK( txtDescHistPad, 90, 420, 356, 20, "DescHist", "Descrição do histórico padrão" );
 		adic(btFirefox, 430, 300, 20, 20 );
 		btFirefox.setToolTipText( "Acessar Site" );
+		
+		 if ( (Boolean) prefs.get( "USAIBGEFOR" ) ) {
+
+			adicCampo( txtCodPais, 7, 460, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, true );
+			adicDescFK( txtDescPais, 80, 460, 217, 20, "DescPais", "Nome do país" );
+			adicCampo( txtSiglaUF, 7, 500, 70, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, true );
+			adicDescFK( txtNomeUF, 80, 500, 217, 20, "NomeUF", "Nome UF" );
+			adicCampo( txtCodMun, 7, 540, 70, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, false );
+			adicDescFK( txtDescMun, 80, 540, 217, 20, "NomeMunic", "Nome do municipio" );			
+								
+		 }
+		 else{
+			 
+			 adicCampo( txtCidFor, 200, 220, 190, 20, "CidFor", "Cidade", ListaCampos.DB_SI, false );
+			 adicCampo( txtUFFor, 393, 220, 60, 20, "UFFor", "UF", ListaCampos.DB_SI, false );
+		 }
+			 
 			
 		adicTab( "Observações", panelObservacao );
 		adicDBLiv( txaObs, "ObsFor", "Observações", false );
@@ -280,6 +369,16 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		
 		setListaCampos( true, "FORNECED", "CP" );
 		lcCampos.setQueryInsert( false );
+		
+		if ( (Boolean) prefs.get( "BUSCACEP" ) ) {
+			btBuscaEnd.setEnabled( true );
+		}
+		else {
+			btBuscaEnd.setEnabled( false );
+		}
+
+		btBuscaEnd.addActionListener( this );
+		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
 		
 		 /************************
 		 * Fornecedor x Cliente  *
@@ -468,10 +567,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			
 			ps.executeUpdate();
 			
-			if (!con.getAutoCommit()){
-				con.commit();
-			
-			}
+			con.commit();
 		} catch ( SQLException  e ) {
 			
 			e.printStackTrace();
@@ -512,9 +608,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 				codfor = rs.getInt( "CODCLI" ); 
 			}
 
-			if (!con.getAutoCommit()){
-				con.commit();
-		     }
+			con.commit();
 		
 		} catch (SQLException e) {
 			
@@ -590,8 +684,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 				rs = ps.executeQuery();
 				rs.next();
 				And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
-				if ( !con.getAutoCommit() )
-					con.commit();
+				con.commit();
 				ps = con.prepareStatement( sSQL );
 				rs = ps.executeQuery();
 
@@ -659,7 +752,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 						imp.say( imp.pRow() + 0, 1, "CNPJ:" );
 						imp.say( imp.pRow() + 0, 7, Funcoes.setMascara( rs.getString( "CnpjFor" ), "##.###.###/####-##" ) );
 						imp.say( imp.pRow() + 0, 49, "IE:" );
-						if ( !rs.getString( "InscFor" ).trim().toUpperCase().equals( "ISENTO" ) && rs.getString( "UFFor" ) != null ) {
+						if ( !rs.getString( "InscFor" ).trim().toUpperCase().equals( "ISENTA" ) && rs.getString( "UFFor" ) != null ) {
 							Funcoes.vIE( rs.getString( "InscFor" ), rs.getString( "UFFor" ) );
 							imp.say( imp.pRow() + 0, 54, Funcoes.sIEValida );
 						}
@@ -705,8 +798,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 				imp.fechaGravacao();
 
-				if ( !con.getAutoCommit() )
-					con.commit();
+				con.commit();
 				dl.dispose();
 				And.dispose();
 			} catch ( SQLException err ) {
@@ -723,8 +815,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 				rs = ps.executeQuery();
 				rs.next();
 				And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
-				if ( !con.getAutoCommit() )
-					con.commit();
+				con.commit();
 				ps = con.prepareStatement( sSQL );
 				rs = ps.executeQuery();
 				imp.limpaPags();
@@ -783,8 +874,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 				imp.fechaGravacao();
 
-				if ( !con.getAutoCommit() )
-					con.commit();
+				con.commit();
 				dl.dispose();
 				And.dispose();
 			} catch ( SQLException err ) {
@@ -843,6 +933,10 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			imprimir( false );
 			
 		}
+		else if ( evt.getSource() == btBuscaEnd ) {
+			buscaEndereco();
+		}
+		
 		super.actionPerformed( evt );
 		
 		 if(evt.getSource() == btFirefox ){
@@ -872,20 +966,25 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			return;
 		}
 		else if ( ( txtInscFor.getVlrString().trim().equals( "" ) ) && ( (Boolean)prefs.get( "INSCESTFOROBRIG" )) ) {
-			if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION )
+			if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTA?" ) == JOptionPane.OK_OPTION )
 				pevt.cancela();
-			txtInscFor.setVlrString( "ISENTO" );
+			txtInscFor.setVlrString( "ISENTA" );
 			txtInscFor.requestFocus();
 			return;
 		}
-		else if ( txtInscFor.getVlrString().trim().equalsIgnoreCase( "ISENTO" ) ) {
+		else if ( txtInscFor.getVlrString().trim().equalsIgnoreCase( "ISENTA" ) ) {
 			return;
 		}
 		else if ( txtUFFor.getText().trim().length() < 2 ) {
-			pevt.cancela();
-			Funcoes.mensagemInforma( this, "Campo UF é requerido! ! !" );
-			txtUFFor.requestFocus();
-			return;
+			if ( (Boolean) prefs.get( "USAIBGEFOR" ) ) {
+				txtUFFor.setVlrString( txtSiglaUF.getVlrString() );
+			}
+			else {			
+				pevt.cancela();			
+				Funcoes.mensagemInforma( this, "Campo UF é requerido! ! !" );
+				txtUFFor.requestFocus();
+				return;
+			}
 		}
 		else if ( (Boolean)prefs.get( "CONSISTEIEFOR" ) ) { 
 			if ( ! Funcoes.vIE( txtInscFor.getText(), txtUFFor.getText() ) ) {
@@ -901,14 +1000,18 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		}
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcTipoFor.setConexao( cn );
 		lcHistorico.setConexao( cn );
 		lcForCli.setConexao( cn );
 		lcForxCli.setConexao( cn );
+		lcMunic.setConexao( cn );
+		lcUF.setConexao( cn );
+		lcPais.setConexao( cn );
 		prefs = getPrefs();
+		//prefs = getPrefere();
 		montaTela();
 	}
 	
@@ -926,6 +1029,125 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	}
 	
+	/*private Map<String, Object> getPrefere() {
+
+		Map<String, Object> retorno = new HashMap<String, Object>();
+		StringBuilder sSQL = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+
+			sSQL.append( "SELECT BUSCACEP " );
+			sSQL.append( "FROM SGPREFERE1 P  " );
+			sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?" );
+
+			try {
+
+				ps = con.prepareStatement( sSQL.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+
+				rs = ps.executeQuery();
+
+				if ( rs.next() ) {
+
+					retorno.put( "BUSCACEP", new Boolean( "S".equals( rs.getString( "BUSCACEP" ) ) ) );
+				}
+
+				rs.close();
+				ps.close();
+
+				if ( !con.getAutoCommit() ) {
+					con.commit();
+				}
+			} catch ( SQLException err ) {
+
+				Funcoes.mensagemErro( this, "Erro ao verificar preferências!\n" + err.getMessage(), true, con, err );
+				err.printStackTrace();
+			}
+		} finally {
+			sSQL = null;
+			ps = null;
+			rs = null;
+		}
+		return retorno;
+	}*/
+	
+	private void buscaEndereco() {
+
+		if ( !"".equals( txtCepFor.getVlrString() ) ) {
+
+			txtEndFor.setEnabled( false );
+			txtComplFor.setEnabled( false );
+			txtBairFor.setEnabled( false );
+			txtCidFor.setEnabled( false );
+			txtUFFor.setEnabled( false );
+			txtCodPais.setEnabled( false );
+			txtSiglaUF.setEnabled( false );
+			txtCodMun.setEnabled( false );
+			txtDDDFoneFor.setEnabled( false );
+			txtDDDFaxFor.setEnabled( false );
+			txtDDDCelFor.setEnabled( false );
+
+			Thread th = new Thread( new Runnable() {
+
+				public void run() { 
+
+					try {
+						WSCep cep = new WSCep();
+						cep.setCon( con );
+						cep.setCep( txtCepFor.getVlrString() );
+						cep.busca();
+						Endereco endereco = cep.getEndereco();
+
+						txtEndFor.setVlrString( endereco.getTipo() + " " + endereco.getLogradouro() );
+						txtComplFor.setVlrString( endereco.getComplemento() );
+						txtBairFor.setVlrString( endereco.getBairro() );
+						txtCidFor.setVlrString( endereco.getCidade() );
+						txtUFFor.setVlrString( endereco.getSiglauf() );
+						txtCodPais.setVlrInteger( endereco.getCodpais() );
+						txtSiglaUF.setVlrString( endereco.getSiglauf() );
+						txtCodMun.setVlrString( endereco.getCodmunic() );
+
+						lcPais.carregaDados();
+						lcUF.carregaDados();
+						lcMunic.carregaDados();
+
+						txtNumFor.requestFocus();
+					} 
+					catch ( Exception e ) {
+						Funcoes.mensagemInforma( null, "Não foi encontrado o endereço para o CEP informado!" );
+					} 
+					finally {
+						txtEndFor.setEnabled( true );
+						txtComplFor.setEnabled( true );
+						txtBairFor.setEnabled( true );
+						txtCidFor.setEnabled( true );
+						txtUFFor.setEnabled( true );
+						txtCodPais.setEnabled( true );
+						txtSiglaUF.setEnabled( true );
+						txtCodMun.setEnabled( true );
+						txtDDDFoneFor.setEnabled( true );
+						txtDDDFaxFor.setEnabled( true );
+						txtDDDCelFor.setEnabled( true );
+					}
+				}
+			} );
+			try {
+				th.start();
+			} catch ( Exception err ) {
+				Funcoes.mensagemInforma( null, "Não foi encontrado o endereço para o CEP informado!" );
+				txtCepFor.requestFocus();
+			}
+		}
+		else {
+			Funcoes.mensagemInforma( null, "Digite um CEP para busca!" );
+			txtCepFor.requestFocus();
+		}
+
+	}
+	
 	private Map<String, Object> getPrefs() {
 
 		Map<String, Object> retorno = new HashMap<String, Object>();
@@ -938,7 +1160,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			retorno.put( "CNPJFOROBRIG", new Boolean(true));
 			retorno.put( "INSCESTFOROBRIG", new Boolean(true));
 		
-			sSQL.append( "SELECT CNPJFOROBRIG, INSCESTFOROBRIG, CONSISTEIEFOR, CODTIPOCLI FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			sSQL.append( "SELECT CNPJFOROBRIG, INSCESTFOROBRIG, CONSISTEIEFOR, CODTIPOCLI, USAIBGEFOR, BUSCACEP FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			
 			try {
 				
@@ -953,15 +1175,15 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 					retorno.put( "INSCESTFOROBRIG", new Boolean( "S".equals( rs.getString( "INSCESTFOROBRIG" ))));
 					retorno.put( "CONSISTEIEFOR", new Boolean( "S".equals( rs.getString( "CONSISTEIEFOR" ))));
 					retorno.put( "CODTIPOCLI", rs.getInt( "CODTIPOCLI" ) );
+					retorno.put( "USAIBGEFOR", new Boolean( "S".equals( rs.getString( "USAIBGEFOR" ))));
+					retorno.put( "BUSCACEP", new Boolean( "S".equals( rs.getString( "BUSCACEP" ) ) ) );
 					
 				}
 			
 				rs.close();
 				ps.close();
 				
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 				
 			} catch ( SQLException err ) {
 				
@@ -975,6 +1197,29 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			rs = null;
 		}
 		return retorno;
+	}
+
+	public void afterCarrega( CarregaEvent cevt ) {
+
+		if ( cevt.getListaCampos() == lcMunic ) {
+			if("".equals( txtDDDFoneFor.getVlrString())) {
+				txtDDDFoneFor.setVlrString( txtDDDMun.getVlrString() );
+			}
+			if("".equals( txtDDDFaxFor.getVlrString())) {
+				txtDDDFaxFor.setVlrString( txtDDDMun.getVlrString() );
+			}
+			if("".equals( txtDDDCelFor.getVlrString())) {
+				txtDDDCelFor.setVlrString( txtDDDMun.getVlrString() );
+			}
+		}
+
+		
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
 	}
 
 }

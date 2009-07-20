@@ -1,7 +1,6 @@
 /**
  * @version 05/08/2008 <BR>
  * @author Setpoint Informática Ltda.
- * @author Reginaldo Garcia Heua <BR>
  * 
  * Projeto: Freedom <BR>
  * 
@@ -9,13 +8,13 @@
  * Classe:
  * @(#)FRAnalise.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -25,7 +24,7 @@
 
 package org.freedom.modulos.pcp;
 
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -55,6 +54,10 @@ public class FRAnalise extends FRelatorio {
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
+	private JTextFieldPad txtCodOP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	 
+	private JTextFieldFK txtDataOP = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 	
 	private JTextFieldFK txtRefProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 13, 0 );
 	
@@ -62,12 +65,14 @@ public class FRAnalise extends FRelatorio {
 	
 	private ListaCampos lcProd = new ListaCampos( this, ""  );
 	
+	private ListaCampos lcOP = new ListaCampos( this, ""  );
+	
 
 	public FRAnalise(){
 				
 		super( false );
 		setTitulo( "Análises" );
-		setAtribos( 50, 50, 350, 200 );
+		setAtribos( 50, 50, 350, 220 );
 		
 		montaTela();
 		montaListaCampos();
@@ -91,7 +96,12 @@ public class FRAnalise extends FRelatorio {
 		adic( txtCodProd, 7, 75, 70, 20 );
 		adic( new JLabelPad("Descrição do produto"), 83, 55, 200, 20 );
 		adic( txtDescProd, 83, 75, 220, 20 );
-		
+
+		adic( new JLabelPad("Cód.OP"), 7, 95, 80, 20 );
+		adic( txtCodOP, 7, 115, 70, 20 );
+		adic( new JLabelPad("Data Fabr."), 83, 95, 200, 20 );
+		adic( txtDataOP, 83, 115, 75, 20 );
+
 		Calendar cPeriodo = Calendar.getInstance();
 	    txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) -30 );
@@ -104,7 +114,7 @@ public class FRAnalise extends FRelatorio {
 		 *  Produto   * 
 		 **************/
 		
-		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
+		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		txtCodProd.setTabelaExterna( lcProd );
@@ -112,7 +122,19 @@ public class FRAnalise extends FRelatorio {
 		txtCodProd.setFK( true );
 		lcProd.setReadOnly( true );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
-
+		
+		/**************
+		 *  OP   * 
+		 **************/
+		
+		lcOP.add( new GuardaCampo( txtCodOP, "CodOP", "Cód.prod.", ListaCampos.DB_PK, false ) );
+		lcOP.add( new GuardaCampo( txtDataOP, "DtFabrOP", "Data de Fabricação", ListaCampos.DB_SI, false ) );
+		lcOP.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, false ) );
+		txtCodOP.setTabelaExterna( lcOP );
+		txtCodOP.setNomeCampo( "CodOp" );
+		txtCodOP.setFK( true );
+		lcOP.setReadOnly( true );
+		lcOP.montaSql( false, "OP", "PP" );
 	}
 	
 	public void imprimir( boolean b ) {
@@ -129,10 +151,14 @@ public class FRAnalise extends FRelatorio {
 				
 				sWhere.append( "and op.codprod= " + txtCodProd.getVlrInteger() );
 			}
+			if( txtCodOP.getVlrInteger() > 0 ){				
+				sWhere.append( "and op.codop= " + txtCodOP.getVlrInteger() );
+			}
+
 			
 			sql.append( "select op.codprod,pd.descprod,op.codlote,op.dtfabrop,op.dtvalidpdop, " );
 			sql.append( "ta.desctpanalise,ea.vlrmin,ea.vlrmax,ea.especificacao,cq.vlrafer,cq.descafer,pr.imgassresp,cq.dtins, " );
-			sql.append( "op.codop, eq.casasdec, eq.codunid, eq.descunid, cq.idusualt " );
+			sql.append( "op.codop, eq.casasdec, eq.codunid, eq.descunid,cq.idusualt,pr.nomeresp, pr.nomerelanal, pr.cargoresp, pr.identprofresp ");
 			sql.append( "from ppopcq cq, ppop op,ppestruanalise ea,pptipoanalise ta, sgprefere5 pr,eqproduto pd, equnidade eq " );
 			sql.append( "where " );
 			sql.append( "op.codemp = ? and op.codfilial=? and op.seqop=cq.seqop " );
@@ -192,9 +218,10 @@ public class FRAnalise extends FRelatorio {
 		}
 	}
 	
-	public void setConexao( Connection con ){
+	public void setConexao( DbConnection con ){
 		
 		super.setConexao( con );
 		lcProd.setConexao( con );
+		lcOP.setConexao( con );
 	}
 }

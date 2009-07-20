@@ -62,10 +62,10 @@ $F{CNPJEMP}.substring(8,12) + "-" + $F{CNPJEMP}.substring(12) : "" )]]></variabl
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="0"
+						x="2"
 						y="3"
-						width="142"
-						height="41"
+						width="70"
+						height="47"
 						forecolor="#FFFFFF"
 						backcolor="#FFFFFF"
 						key="image-1"/>

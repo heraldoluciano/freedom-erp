@@ -6,11 +6,9 @@
  */
 package org.freedom.importacao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
 
 /**
  * @author alexandre
@@ -19,7 +17,7 @@ import java.util.Properties;
  * Preferences - Java - Code Style - Code Templates
  */
 public class Banco {
-    private Connection conn = null;
+    private DbConnection conn = null;
 
     private Statement stmt = null;
 
@@ -34,19 +32,10 @@ public class Banco {
         super();
 
         try {
-            Class.forName(driver);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Properties props = new Properties();
-
-        try {
-            props.put("user", user);
-            props.put("password", pass);
+        	conn = new DbConnection(driver, url, user, pass);
             //    		props.put("roleName", "testrole");
-            conn = DriverManager.getConnection(url, props);
-            conn.setAutoCommit(autoCommit);
+//            conn = DriverManager.getDbConnection(url, props);
+  //          conn.setAutoCommit(autoCommit);
         } catch (SQLException e) {
             if (e.getErrorCode() == 335544472) {
                 System.err.println("usuário ou senha errados");
@@ -60,7 +49,7 @@ public class Banco {
     public Statement getStatement() {
         if (!hasStatement) {
             try {
-                stmt = (conn == null ? null : conn.createStatement());
+                stmt = (conn == null ? null : conn.createStatement()); 
                 hasStatement = (stmt != null);
             } catch (SQLException e) {
                 stmt = null;
@@ -102,25 +91,26 @@ public class Banco {
         }
     }
 
-    public Connection getConnection() {
+    public DbConnection getDbConnection() {
         return conn;
     }
 
     public void connect(String url, String driver, String user, String pass) {
 
-        try {
+/*        try {
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 
         Properties props = new Properties();
-
+*/
         try {
-            props.put("user", user);
-            props.put("password", pass);
+            //props.put("user", user);
+            //props.put("password", pass);
             //    		props.put("roleName", "testrole");
-            conn = DriverManager.getConnection(url, props);
+        	conn = new DbConnection(driver, url, user, pass);
+            //conn = DriverManager.getDbConnection(url, props);
             conn.setAutoCommit(autoCommit);
         } catch (SQLException e) {
             if (e.getErrorCode() == 335544472) {

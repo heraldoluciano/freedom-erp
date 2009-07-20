@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FPlanejamento.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -35,7 +35,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -140,7 +140,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 		tab.addKeyListener( this );
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		montaTab();
@@ -167,8 +167,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			}
 			// rs.close();
 			// ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela PLANEJAMENTO!\n" + err.getMessage(), true, con, err );
 			return;
@@ -195,8 +194,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			sCodPrim = rs.getString( 1 ) != null ? "" + ( Integer.parseInt( rs.getString( 1 ).trim() ) + 1 ) : "1";
 			// rs.close();
 			// psQuery.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela PLANEJAMENTO!\n" + err.getMessage(), true, con, err );
 			return;
@@ -221,8 +219,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 				Funcoes.mensagemInforma( this, "Não foi possível inserir registro na tabela PLANEJAMENTO! ! !" );
 			}
 			// ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao inserir registro na tabela PLANEJAMENTO!\n" + err.getMessage(), true, con, err );
 			return;
@@ -275,8 +272,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			iNivelFilho = iNivelPai + 1;
 			// rs.close();
 			// psQuery.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao consulta a tabela PLANEJAMENTO!\n" + err.getMessage(), true, con, err );
 			return;
@@ -304,8 +300,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 				return;
 			}
 			// ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao inserir registro na tabela PLANEJAMENTO!\n" + err.getMessage(), true, con, err );
 			return;
@@ -369,9 +364,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 				iCodFilho = iCodFilho + 1;
 				sCodFilho = sCodPai + Funcoes.strZero( String.valueOf( iCodFilho ), ( 13 - ( sCodPai.length() ) ) );
 			}
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela PLANEJAMENTO!\n" + e.getMessage(), true, con, e );
@@ -408,9 +401,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 					Funcoes.mensagemInforma( this, "Não foi possível inserir registro na tabela PLANEJAMENTO! ! !" );
 					return;
 				}
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 			} catch ( SQLException e ) {
 				e.printStackTrace();
 				Funcoes.mensagemErro( this, "Erro ao inserir registro na tabela PLANEJAMENTO!\n" + e.getMessage(), true, con, e );
@@ -453,9 +444,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 					Funcoes.mensagemInforma( this, "Não foi possível inserir registro na tabela PALNEJAMENTO! ! !" );
 					return;
 				}
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 			} catch ( SQLException e ) {
 				e.printStackTrace();
 				Funcoes.mensagemErro( this, "Erro ao inserir registro na tabela CONTA!\n" + e.getMessage(), true, con, e );
@@ -522,9 +511,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 					Funcoes.mensagemInforma( this, "Não foi possível inserir registro na tabela PALNEJAMENTO! ! !" );
 					return;
 				}
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 			} catch ( SQLException e ) {
 				e.printStackTrace();
 				Funcoes.mensagemErro( this, "Erro ao inserir registro na tabela PLANEJAMENTO!\n" + e.getMessage(), true, con, e );
@@ -558,9 +545,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 				Funcoes.mensagemInforma( this, "Não foi possível editar um registro na tabela PLANEJAMENTO! ! !" );
 				return;
 			}
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao editar um registro na tabela PLANEJAMENTO\n" + e.getMessage(), true, con, e );
@@ -609,9 +594,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 				Funcoes.mensagemInforma( this, "Não foi possível editar um registro na tabela PLANEJAMENTO! ! !" );
 				return;
 			}
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao editar um registro na tabela PLANEJAMENTO!\n" + e.getMessage(), true, con, e );
@@ -712,9 +695,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 				Funcoes.mensagemInforma( this, "Não foi possível editar um registro na tabela PLANEJAMENTO! ! !" );
 				return;
 			}
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao editar um registro na tabela PLANEJAMENTO!\n" + e.getMessage(), true, con, e );
@@ -788,9 +769,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 				Funcoes.mensagemInforma( this, "Não foi possível editar um registro na tabela PLANEJAMENTO! ! !" );
 				return;
 			}
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao editar um registro na tabela PLANEJAMENTO!\n" + e.getMessage(), true, con, e );
@@ -812,9 +791,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 				Funcoes.mensagemInforma( this, "Não foi possível editar um registro na tabela PLANEJAMENTO! ! !" );
 				return;
 			}
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao editar um registro na tabela PLANEJAMENTO!\n" + e.getMessage(), true, con, e );
@@ -838,9 +815,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 				Funcoes.mensagemInforma( this, "Não foi possível deletar um registro na tabela PLANEJAMENTO! ! !" );
 				return;
 			}
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			if ( e.getErrorCode() == 335544466 ) {
@@ -905,9 +880,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 	
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			dl.dispose();
 		} catch ( SQLException e ) {
 			e.printStackTrace();

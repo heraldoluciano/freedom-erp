@@ -58,7 +58,7 @@ C.CODFILIAL=1 AND C.CODEMPFR=F.CODEMP AND C.CODFILIALFR=F.CODFILIAL AND
 C.CODFOR=F.CODFOR AND C.CODEMPPG=PG.CODEMP AND C.CODFILIALPG=PG.CODFILIAL AND
 C.CODPLANOPAG=PG.CODPLANOPAG AND C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL AND
 C.CODCOMPRA=IT.CODCOMPRA AND IT.CODEMPPD=PD.CODEMP AND IT.CODFILIALPD=PD.CODFILIAL AND
-IT.CODPROD=PD.CODPROD AND C.DTEMITCOMPRA BETWEEN '01.01.2006' AND '01.01.2007'  
+IT.CODPROD=PD.CODPROD AND C.DTENTCOMPRA BETWEEN '01.01.2006' AND '01.01.2007'  
 ORDER BY C.CODCOMPRA, IT.CODITCOMPRA]]></queryString>
 
 	<field name="PRECO" class="java.math.BigDecimal"/>
@@ -88,7 +88,7 @@ ORDER BY C.CODCOMPRA, IT.CODITCOMPRA]]></queryString>
 		<variableExpression><![CDATA[$F{QTDITCOMPRA}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="QTD_GERALCP" class="java.math.BigDecimal" resetType="None" calculation="Sum">
+	<variable name="QTD_GERALCP" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTDITCOMPRA}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
@@ -165,9 +165,9 @@ ORDER BY C.CODCOMPRA, IT.CODITCOMPRA]]></queryString>
 				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="409"
+						x="379"
 						y="5"
-						width="29"
+						width="59"
 						height="11"
 						key="textField-17"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -724,9 +724,9 @@ ORDER BY C.CODCOMPRA, IT.CODITCOMPRA]]></queryString>
 				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="409"
+						x="379"
 						y="4"
-						width="29"
+						width="59"
 						height="11"
 						key="textField-16"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>

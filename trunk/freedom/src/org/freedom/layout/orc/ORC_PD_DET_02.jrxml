@@ -33,12 +33,13 @@
 		<defaultValueExpression ><![CDATA[new Integer(110)]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT P.CODPROD, O.QTDITORC, O.VLRPRODITORC, O.VLRLIQITORC, O.VLRDESCITORC, O.QTDITORC,
-O.PRECOITORC, P.CODBARPROD, O.CODORC, P.CODUNID,
+O.PRECOITORC, P.CODBARPROD, O.CODORC, P.CODUNID,O.CODITORC,
 COALESCE(O.OBSITORC , P.DESCPROD) DESCPROD,ORC.VLRDESCORC,ORC.VLRADICORC,ORC.VLRLIQORC,ORC.VLRPRODORC
 FROM VDITORCAMENTO O, EQPRODUTO P, VDORCAMENTO ORC 
 WHERE ORC.CODEMP=$P{CODEMP} AND ORC.CODFILIAL=$P{CODFILIAL} AND ORC.CODORC=$P{CODORC} 
 AND O.CODEMP=ORC.CODEMP AND O.CODFILIAL=ORC.CODFILIAL AND O.CODORC=ORC.CODORC 
-AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]></queryString>
+AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD
+ORDER BY CODITORC]]></queryString>
 
 	<field name="CODPROD" class="java.lang.Long"/>
 	<field name="QTDITORC" class="java.math.BigDecimal"/>
@@ -49,6 +50,7 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 	<field name="CODBARPROD" class="java.lang.String"/>
 	<field name="CODORC" class="java.lang.Long"/>
 	<field name="CODUNID" class="java.lang.String"/>
+	<field name="CODITORC" class="java.lang.Integer"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="VLRDESCORC" class="java.math.BigDecimal"/>
 	<field name="VLRADICORC" class="java.math.BigDecimal"/>
@@ -129,7 +131,7 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="296"
+						x="313"
 						y="3"
 						width="0"
 						height="20"
@@ -138,7 +140,7 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 				</line>
 				<staticText>
 					<reportElement
-						x="298"
+						x="314"
 						y="4"
 						width="53"
 						height="18"
@@ -151,8 +153,8 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="353"
-						y="3"
+						x="368"
+						y="4"
 						width="0"
 						height="20"
 						key="line-8"/>
@@ -160,9 +162,9 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 				</line>
 				<staticText>
 					<reportElement
-						x="355"
+						x="369"
 						y="4"
-						width="53"
+						width="39"
 						height="18"
 						key="staticText-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -237,7 +239,7 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						key="staticText-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="8"/>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[= Total liq.:]]></text>
 				</staticText>
@@ -284,6 +286,26 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight" pen="1Point"/>
 				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="18"
+						width="531"
+						height="0"
+						key="line-37"
+						positionType="FixRelativeToBottom"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="0"
+						height="19"
+						key="line-42"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight" pen="1Point"/>
+				</line>
 			</band>
 			</groupFooter>
 		</group>
@@ -318,7 +340,7 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						key="textField-12"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font pdfFontName="Helvetica" size="9" isBold="false"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRADICORC}]]></textFieldExpression>
 				</textField>
@@ -339,6 +361,16 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						width="0"
 						height="17"
 						key="line-33"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight" pen="1Point"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="0"
+						height="17"
+						key="line-41"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight" pen="1Point"/>
 				</line>
@@ -376,7 +408,7 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						key="textField-11"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font pdfFontName="Helvetica" size="9" isBold="false"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRDESCORC}]]></textFieldExpression>
 				</textField>
@@ -400,6 +432,16 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight" pen="1Point"/>
 				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="0"
+						height="17"
+						key="line-40"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight" pen="1Point"/>
+				</line>
 			</band>
 			</groupFooter>
 		</group>
@@ -414,26 +456,26 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 				<staticText>
 					<reportElement
 						x="412"
-						y="2"
+						y="3"
 						width="53"
 						height="15"
 						key="staticText-11"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="8"/>
+						<font pdfFontName="Helvetica" size="8" isBold="false"/>
 					</textElement>
 				<text><![CDATA[  Total:]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="469"
-						y="2"
+						y="3"
 						width="59"
 						height="15"
 						key="textField-13"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font pdfFontName="Helvetica" size="9" isBold="false"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRPRODORC}]]></textFieldExpression>
 				</textField>
@@ -454,6 +496,25 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 						width="0"
 						height="19"
 						key="line-36"
+						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight" pen="1Point"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="1"
+						width="531"
+						height="0"
+						key="line-38"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="0"
+						height="19"
+						key="line-39"
 						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight" pen="1Point"/>
 				</line>
@@ -509,13 +570,13 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{CODITORC}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="35"
 						y="1"
-						width="260"
+						width="277"
 						height="17"
 						key="textField-3"
 						stretchType="RelativeToTallestObject"/>
@@ -527,7 +588,7 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="298"
+						x="315"
 						y="1"
 						width="35"
 						height="17"
@@ -540,9 +601,9 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="355"
+						x="368"
 						y="1"
-						width="53"
+						width="40"
 						height="17"
 						key="textField-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -579,7 +640,7 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="296"
+						x="313"
 						y="0"
 						width="0"
 						height="19"
@@ -589,7 +650,7 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="353"
+						x="368"
 						y="0"
 						width="0"
 						height="19"
@@ -619,7 +680,7 @@ AND P.CODEMP=O.CODEMPPD AND P.CODFILIAL=O.CODFILIALPD AND P.CODPROD=O.CODPROD]]>
 				</line>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="336"
+						x="352"
 						y="1"
 						width="15"
 						height="17"

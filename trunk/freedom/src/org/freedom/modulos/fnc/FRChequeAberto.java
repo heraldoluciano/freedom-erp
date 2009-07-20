@@ -13,7 +13,7 @@ package org.freedom.modulos.fnc;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -57,7 +57,7 @@ public class FRChequeAberto extends FRelatorio {
     
     
   }
-  public void setConexao(Connection cn) {
+  public void setConexao(DbConnection cn) {
     super.setConexao(cn);
   }
   
@@ -177,10 +177,9 @@ public class FRChequeAberto extends FRelatorio {
      imp.eject(); 
      
       
-      imp.fechaGravacao();
+     imp.fechaGravacao();
 
-      if (!con.getAutoCommit())
-      	con.commit();
+     con.commit();
       
     }  
     catch ( SQLException err ) {

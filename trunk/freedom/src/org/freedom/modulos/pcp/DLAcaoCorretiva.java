@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -89,12 +89,12 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 	private HashMap<Integer, JCheckBoxPad> analises = new HashMap<Integer, JCheckBoxPad>();
 	
 
-	public DLAcaoCorretiva( Connection con, Object[] keys ) {
+	public DLAcaoCorretiva( DbConnection con, Object[] keys ) {
 		
 		this( con, null ,keys );		
 	}
 	
-	public DLAcaoCorretiva( Connection con, EMs m, Object[] keys ) {	
+	public DLAcaoCorretiva( DbConnection con, EMs m, Object[] keys ) {	
 		
 		setTitulo( "Acão corretiva - " + (m != null ? m.getDescription() : String.valueOf( keys[ EAc.SEQOPAC.ordinal() ] ) ) );
 		setAtribos( 635, 555 );
@@ -285,9 +285,7 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar analises!\n" + err.getMessage(), true, con, err );
@@ -312,9 +310,7 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
@@ -455,9 +451,7 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 				Funcoes.mensagemInforma( this, "Ação corretiva aplicada com sucesso!" );
 			}
 
-			if ( !con.getAutoCommit() ) { 
-				con.commit();
-			}			
+			con.commit();
 		} 
 		catch ( Exception err ) {
 			try {

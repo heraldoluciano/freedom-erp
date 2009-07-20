@@ -37,25 +37,33 @@
 	</parameter>
 	<parameter name="TITULO" isForPrompting="false" class="java.lang.String">
 		<parameterDescription><![CDATA[Titulo do relatório]]></parameterDescription>
-		<defaultValueExpression ><![CDATA["RELATÓRIO"]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA["RELATÓRIO DE COMISSÕES"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="FILTROS" isForPrompting="false" class="java.lang.String">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
-	<queryString><![CDATA[SELECT C.DATACOMI,V.CODVENDA,V.DOCVENDA,C.STATUSCOMI,CL.CODCLI,CL.RAZCLI,C.VLRVENDACOMI,
-P.DESCPLANOPAG,C.VLRCOMI,C.DTVENCCOMI,R.DOCREC,IR.NPARCITREC,C.TIPOCOMI,C.VLRAPAGCOMI, 
-C.VLRPAGOCOMI,C.DTPAGTOCOMI,IR.VLRPARCITREC  FROM FNRECEBER R, FNITRECEBER IR, 
-VDVENDA V, VDCOMISSAO C,VDCLIENTE CL, FNPLANOPAG P WHERE V.FLAG IN ('S','N') AND 
-R.CODEMPVD = 4 AND R.CODFILIALVD = 1 AND R.CODVEND = 99 AND C.CODEMP = 4 AND 
-C.CODFILIAL = 1  AND R.CODEMP = C.CODEMPRC AND R.CODFILIAL = C.CODFILIALRC  AND 
-R.CODREC = C.CODREC AND V.CODEMP = R.CODEMPVA  AND IR.CODEMP = C.CODEMPRC AND 
-IR.CODFILIAL = C.CODFILIALRC  AND IR.CODREC = C.CODREC AND IR.NPARCITREC = C.NPARCITREC  AND 
-V.CODFILIAL = R.CODFILIALVA AND V.TIPOVENDA = R.TIPOVENDA  AND V.CODVENDA = R.CODVENDA AND 
-CL.CODEMP = R.CODEMPCL  AND CL.CODFILIAL = R.CODFILIALCL AND CL.CODCLI = R.CODCLI  AND 
-P.CODEMP = V.CODEMPPG AND P.CODFILIAL = V.CODFILIALPG  AND P.CODPLANOPAG = V.CODPLANOPAG  AND 
-C.DTPAGTOCOMI BETWEEN '01.01.2000' AND '01.01.2008' AND 
-C.STATUSCOMI IN ('C1','C2','CP') ORDER BY C.DATACOMI, R.DOCREC, IR.NPARCITREC
-]]></queryString>
+	<queryString><![CDATA[SELECT C.DATACOMI,V.CODVENDA,V.DOCVENDA,C.STATUSCOMI,
+CL.CODCLI,CL.RAZCLI,C.VLRVENDACOMI,P.DESCPLANOPAG,
+C.VLRCOMI,C.DTVENCCOMI,R.DOCREC,IR.NPARCITREC,
+C.TIPOCOMI,C.VLRAPAGCOMI, C.VLRPAGOCOMI,C.DTPAGTOCOMI,
+IR.VLRPARCITREC, VD.NOMEVEND, V.PEDCLIVENDA
+FROM FNRECEBER R, FNITRECEBER IR, VDVENDA V, VDCOMISSAO C,
+VDCLIENTE CL, FNPLANOPAG P, VDVENDEDOR VD
+WHERE
+R.CODEMPVD = 60 AND R.CODFILIALVD = 1 AND R.CODVEND = 20
+AND C.CODEMP = 60 AND C.CODFILIAL = 1
+AND R.CODEMP = C.CODEMPRC AND R.CODFILIAL = C.CODFILIALRC
+AND R.CODREC = C.CODREC AND V.CODEMP = R.CODEMPVA
+AND IR.CODEMP = C.CODEMPRC AND IR.CODFILIAL = C.CODFILIALRC
+AND IR.CODREC = C.CODREC AND IR.NPARCITREC = C.NPARCITREC
+AND V.CODFILIAL = R.CODFILIALVA AND V.TIPOVENDA = R.TIPOVENDA
+AND V.CODVENDA = R.CODVENDA AND CL.CODEMP = R.CODEMPCL
+AND CL.CODFILIAL = R.CODFILIALCL AND CL.CODCLI = R.CODCLI
+AND P.CODEMP = V.CODEMPPG AND P.CODFILIAL = V.CODFILIALPG
+AND P.CODPLANOPAG = V.CODPLANOPAG
+AND C.DATACOMI BETWEEN '01-01-2008' AND '01-01-2010' AND C.STATUSCOMI IN ('C1','C2','CP')
+AND VD.CODEMP=C.CODEMPVD AND VD.CODFILIAL=C.CODFILIALVD AND VD.CODVEND=C.CODVEND
+ORDER BY C.DATACOMI, R.DOCREC, IR.NPARCITREC]]></queryString>
 
 	<field name="DATACOMI" class="java.sql.Date"/>
 	<field name="CODVENDA" class="java.lang.Long"/>
@@ -74,6 +82,8 @@ C.STATUSCOMI IN ('C1','C2','CP') ORDER BY C.DATACOMI, R.DOCREC, IR.NPARCITREC
 	<field name="VLRPAGOCOMI" class="java.math.BigDecimal"/>
 	<field name="DTPAGTOCOMI" class="java.sql.Date"/>
 	<field name="VLRPARCITREC" class="java.math.BigDecimal"/>
+	<field name="NOMEVEND" class="java.lang.String"/>
+	<field name="PEDCLIVENDA" class="java.lang.String"/>
 
 	<variable name="VLRTOTPARA" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRPARCITREC}]]></variableExpression>
@@ -99,11 +109,11 @@ C.STATUSCOMI IN ('C1','C2','CP') ORDER BY C.DATACOMI, R.DOCREC, IR.NPARCITREC
 		<group  name="COMPRAS" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="24"  isSplitAllowed="true" >
+			<band height="16"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="182"
-						y="6"
+						x="181"
+						y="0"
 						width="61"
 						height="15"
 						key="staticText-1"/>
@@ -113,31 +123,18 @@ C.STATUSCOMI IN ('C1','C2','CP') ORDER BY C.DATACOMI, R.DOCREC, IR.NPARCITREC
 					</textElement>
 				<text><![CDATA[Comissionado:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="282"
-						y="6"
-						width="142"
+						x="243"
+						y="0"
+						width="180"
 						height="15"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="245"
-						y="6"
-						width="34"
-						height="15"
-						key="textField-2"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMEVEND}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>
@@ -515,13 +512,13 @@ C.STATUSCOMI IN ('C1','C2','CP') ORDER BY C.DATACOMI, R.DOCREC, IR.NPARCITREC
 			</band>
 		</title>
 		<pageHeader>
-			<band height="102"  isSplitAllowed="true" >
+			<band height="70"  isSplitAllowed="true" >
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="4"
 						y="3"
-						width="70"
+						width="90"
 						height="63"
 						forecolor="#FFFFFF"
 						backcolor="#FFFFFF"
@@ -533,9 +530,9 @@ C.STATUSCOMI IN ('C1','C2','CP') ORDER BY C.DATACOMI, R.DOCREC, IR.NPARCITREC
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="79"
+						x="102"
 						y="20"
-						width="397"
+						width="436"
 						height="17"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -548,26 +545,10 @@ C.STATUSCOMI IN ('C1','C2','CP') ORDER BY C.DATACOMI, R.DOCREC, IR.NPARCITREC
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						mode="Opaque"
-						x="79"
-						y="41"
-						width="240"
-						height="15"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="Emissor"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Relatório emitido por: "+$P{USUARIO}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
 						mode="Transparent"
-						x="440"
+						x="469"
 						y="3"
-						width="92"
+						width="70"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -581,7 +562,7 @@ C.STATUSCOMI IN ('C1','C2','CP') ORDER BY C.DATACOMI, R.DOCREC, IR.NPARCITREC
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="79"
+						x="102"
 						y="3"
 						width="357"
 						height="13"
@@ -593,22 +574,6 @@ C.STATUSCOMI IN ('C1','C2','CP') ORDER BY C.DATACOMI, R.DOCREC, IR.NPARCITREC
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{TITULO}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Opaque"
-						x="79"
-						y="58"
-						width="397"
-						height="24"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="Emissor-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
@@ -642,7 +607,7 @@ C.STATUSCOMI IN ('C1','C2','CP') ORDER BY C.DATACOMI, R.DOCREC, IR.NPARCITREC
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{DOCREC} ]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{DOCREC}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -812,6 +777,19 @@ C.STATUSCOMI IN ('C1','C2','CP') ORDER BY C.DATACOMI, R.DOCREC, IR.NPARCITREC
 						key="line-23"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="460"
+						y="2"
+						width="24"
+						height="13"
+						key="textField-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[(($F{VLRCOMI}.multiply(new BigDecimal(100))).divide($F{VLRPARCITREC}, 2, RoundingMode.HALF_UP))]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
@@ -819,39 +797,66 @@ C.STATUSCOMI IN ('C1','C2','CP') ORDER BY C.DATACOMI, R.DOCREC, IR.NPARCITREC
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="23"  isSplitAllowed="true" >
+			<band height="14"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						mode="Transparent"
-						x="317"
-						y="6"
-						width="174"
-						height="11"
+						mode="Opaque"
+						x="297"
+						y="3"
+						width="90"
+						height="10"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField"/>
+						key="Emissor-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="7" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Emitido por: "+$P{USUARIO}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="494"
-						y="6"
+						x="503"
+						y="3"
 						width="36"
-						height="11"
+						height="10"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField"/>
+						key="textField-15"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+						<font fontName="Helvetica" pdfFontName="Helvetica" size="7" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="389"
+						y="3"
+						width="113"
+						height="10"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Helvetica" pdfFontName="Helvetica" size="7" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="1"
+						width="538"
+						height="0"
+						forecolor="#999999"
+						key="line-31"
+						positionType="FixRelativeToBottom"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</pageFooter>
 		<summary>

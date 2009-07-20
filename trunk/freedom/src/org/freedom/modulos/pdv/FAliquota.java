@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FAliquota.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -71,12 +71,13 @@ public class FAliquota extends FFDialogo {
 	public FAliquota() {
 
 		setTitulo( "Ajusta aliquotas" );
-		setAtribos( 100, 150, 402, 270 );
+		setAtribos( 100, 150, 395, 195 );
 		
 		ecf = new ControllerECF( 
 				AplicativoPDV.getEcfdriver(), 
 				AplicativoPDV.getPortaECF(), 
-				AplicativoPDV.bModoDemo );
+				AplicativoPDV.bModoDemo, 
+				AplicativoPDV.getEcflayout() );
 		
 		montaTela();
 		
@@ -98,15 +99,17 @@ public class FAliquota extends FFDialogo {
 
 		pinCab.adic( new JLabelPad( "Inserir aliquota" ), 7, 5, 87, 20 );
 		pinCab.adic( txtAliquota, 7, 25, 87, 20 );
-		pinCab.adic( btInsere, 150, 15, 30, 30 );
+		pinCab.adic( btInsere, 120, 15, 30, 30 );
 
 		tab.adicColuna( "" );
 		tab.adicColuna( "" );
 		tab.adicColuna( "" );
+		tab.adicColuna( "" );
 
-		tab.setTamColuna( 130, 0 );
-		tab.setTamColuna( 130, 1 );
-		tab.setTamColuna( 130, 2 );
+		tab.setTamColuna( 95, 0 );
+		tab.setTamColuna( 95, 1 );
+		tab.setTamColuna( 95, 2 );
+		tab.setTamColuna( 95, 3 );
 		
 		tab.setFont( new Font( "Arial", Font.PLAIN, 12 ) );		
 	}
@@ -142,9 +145,10 @@ public class FAliquota extends FFDialogo {
 		String aliq = null;
 		DecimalFormat df = new DecimalFormat( "00.00" );
 		
-		int iRow = 0;
-		int iCol = 0;
+		int row = 0;
+		int col = 0;
 		int size = aliquotas.size();
+		int oldRow = -1;
 		
 		float aliquota = 0.0f;
 		
@@ -154,8 +158,9 @@ public class FAliquota extends FFDialogo {
 			
 			if ( aliquota > 0.0f ) {
 				
-				if ( iRow == 0 ) {
+				if ( row != oldRow ) {
 					tab.adicLinha();
+					oldRow = row;
 				}
 				
 				aliq = 
@@ -164,16 +169,11 @@ public class FAliquota extends FFDialogo {
 					" = " + 
 					df.format( aliquota / 100 ) + " %";
 				
-				tab.setValor( aliq, iRow, iCol++ );
+				tab.setValor( aliq, row, col++ );
 				
-				if ( iCol == 3 ) {
-					
-					iCol = 0;
-					iRow++;
-					
-					if ( i < size - 1 ) {
-						tab.adicLinha();
-					}				
+				if ( col == 4 ) {					
+					col = 0;
+					row++;	
 				}		
 				
 				sizeAliquotas++;

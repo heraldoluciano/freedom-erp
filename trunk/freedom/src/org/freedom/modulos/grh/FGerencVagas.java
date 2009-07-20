@@ -7,13 +7,13 @@
  * Classe:
  * @(#)FGerencVagas.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -35,7 +35,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -644,9 +644,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 				tabCand.adicLinha( vVals );
 
 			}
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar candidatos!\n" + err.getMessage(), true, con, err );
 		}
@@ -761,15 +759,14 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 				tabVagas.adicLinha( vVals );
 
 			}
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar vagas!\n" + err.getMessage(), true, con, err );
 		}
 		tabVagas.addTabelaEditListener( this );
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcVaga.setConexao( con );
@@ -853,9 +850,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 						encaminhados += ps.executeUpdate();
 
 						ps.close();
-						if ( !con.getAutoCommit() ) {
-							con.commit();
-						}
+						con.commit();
 					}
 				}
 				
@@ -924,9 +919,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 					efetivados += ps.executeUpdate();
 
 					ps.close();
-					if ( !con.getAutoCommit() ) {
-						con.commit();
-					}
+					con.commit();
 				}
 
 				if ( efetivados > 0 ) {
@@ -945,9 +938,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 							ps2.setInt( 3, txtCodVaga.getVlrInteger().intValue() );
 							ps2.executeUpdate();
 							ps2.close();
-							if ( !con.getAutoCommit() ) {
-								con.commit();
-							}							
+							con.commit();
 						}
 						else {
 							for ( int i = 0; i < tabVagas.getNumLinhas(); i++ ) {
@@ -960,9 +951,7 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 								ps2.setInt( 3, new Integer( tabVagas.getValor( i, 1 ).toString() ) );
 								ps2.executeUpdate();
 								ps2.close();
-								if ( !con.getAutoCommit() ) {
-									con.commit();
-								}							
+								con.commit();
 							}							
 						}
 					}

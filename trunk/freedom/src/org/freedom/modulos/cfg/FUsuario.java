@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FUsuario.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -24,18 +24,24 @@
 
 package org.freedom.modulos.cfg;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -62,8 +68,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
-public class FUsuario extends FTabDados implements PostListener, DeleteListener, InsertListener, CarregaListener, ActionListener, CheckBoxListener {
-
+public class FUsuario extends FTabDados implements PostListener, DeleteListener, CarregaListener, ChangeListener, InsertListener, ActionListener, CheckBoxListener {
+ 
 	private static final long serialVersionUID = 1L;
 
 	private static Vector<String> vCodDisp = new Vector<String>();
@@ -78,30 +84,42 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 	private JButton btDelEmp = new JButton( Icone.novo( "btFlechaEsq.gif" ) );
 
-	private JCheckBoxPad cbAbreGaveta = new JCheckBoxPad( "Permite abrir gaveta no PDV", "S", "N" );
+	private JCheckBoxPad cbAbreGaveta = new JCheckBoxPad( "Abrir gaveta no PDV", "S", "N" );
 
-	private JCheckBoxPad cbAlmoxarife = new JCheckBoxPad( "Permite atuar como Almoxarife", "S", "N" );
+	private JCheckBoxPad cbAlmoxarife = new JCheckBoxPad( "Atuar como Almoxarife", "S", "N" );
 
-	private JCheckBoxPad cbAltParc = new JCheckBoxPad( "Permite alterar parcelas da venda", "S", "N" );
+	private JCheckBoxPad cbAltParc = new JCheckBoxPad( "Alterar parcelas da venda", "S", "N" );
 
-	private JCheckBoxPad cbBaixoCusto = new JCheckBoxPad( "Permite vendas abaixo do custo", "S", "N" );
+	private JCheckBoxPad cbBaixoCusto = new JCheckBoxPad( "Vender abaixo do custo", "S", "N" );
 
-	private JCheckBoxPad cbCompra = new JCheckBoxPad( "Permite fazer compras", "S", "N" );
+	private JCheckBoxPad cbCompra = new JCheckBoxPad( "Realizar compras", "S", "N" );
 
-	private JCheckBoxPad cbReceita = new JCheckBoxPad( "Permite vendas de produto com receita", "S", "N" );
+	private JCheckBoxPad cbReceita = new JCheckBoxPad( "Vender produto com receita", "S", "N" );
 	
-	private JCheckBoxPad cbAtivCli = new JCheckBoxPad( "Permite ativação de clientes", "S", "N" );
+	private JCheckBoxPad cbAtivCli = new JCheckBoxPad( "Ativar clientes", "S", "N" );
 	
-	private JCheckBoxPad cbLiveraCred = new JCheckBoxPad( "Permite liberação de crédito", "S", "N");
+	private JCheckBoxPad cbLiberaCred = new JCheckBoxPad( "Liberar crédito", "S", "N");
+	
+	private JCheckBoxPad cbCancelaOP = new JCheckBoxPad( "Cancelar OP de outro usuário", "S", "N" );
+	
+	private JCheckBoxPad cbVendaImobilizado = new JCheckBoxPad( "Vender imobilizado", "S", "N" );
+	
+	private JCheckBoxPad cbRMAOutCC = new JCheckBoxPad( "Lançar RMA em outros C.C.", "S", "N" );
+	
+	private JCheckBoxPad cbVisualizaLucr = new JCheckBoxPad( "Visualizar Lucratividade", "S", "N" );
 	
 	private JList lsDisp = new JList();
 
 	private JList lsEmp = new JList();
 
 	private JPanelPad pinAcesso = new JPanelPad();
+	
+	private JPanelPad pinCor = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	private JPanelPad pinGeral = new JPanelPad();
 
+	private JPanelPad pinEmail = new JPanelPad();
+		
 	private JRadioGroup<?, ?> rgAprovaRMA = null;
 
 	private JRadioGroup<?, ?> rgAprovaSolicitacao = null;
@@ -121,10 +139,14 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	private JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
 	private JTextFieldPad txtCodAlmox = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodConfEmail = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
 
 	private JTextFieldFK txtDescAlmox = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK txtNomeRemet = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -139,10 +161,14 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	private JTextFieldPad txtPNomeUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtUNomeUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtCorAgenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private Connection conIB = null;
+	private DbConnection conIB = null;
 
 	private ListaCampos lcAlmox = new ListaCampos( this, "AM" );
+	
+	private ListaCampos lcConfEmail = new ListaCampos( this, "CE" );
 
 	private ListaCampos lcCC = new ListaCampos( this, "CC" );
 
@@ -156,11 +182,17 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 	private Vector<String> vAprovaSolicitacaoVal = new Vector<String>();
 
+    private JColorChooser tcc = new JColorChooser();
+    
+	private JPanelPad pnPermissoes = new JPanelPad();
+	
+	private JPanelPad pnAprovacoes = new JPanelPad();
+	
 	public FUsuario() {
 
 		super();
 		setTitulo( "Cadastro de Usuários" );
-		setAtribos( 50, 50, 470, 480 );
+		setAtribos( 50, 50, 470, 490 );
 
 		vAprovaSolicitacaoLab.add( "Nenhuma" );
 		vAprovaSolicitacaoLab.add( "Mesmo Centro de Custo" );
@@ -212,6 +244,14 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		lcAlmox.setReadOnly( true );
 		txtCodAlmox.setTabelaExterna( lcAlmox );
 
+		lcConfEmail.add( new GuardaCampo( txtCodConfEmail, "CodConfEmail", "Cd.Conf.Email", ListaCampos.DB_PK, false ) );
+		lcConfEmail.add( new GuardaCampo( txtNomeRemet, "NomeRemet", "Nome do remetente", ListaCampos.DB_SI, false ) );
+		lcConfEmail.montaSql( false, "CONFEMAIL", "TK" );
+		lcConfEmail.setQueryCommit( false );
+		lcConfEmail.setReadOnly( true );
+		txtCodConfEmail.setTabelaExterna( lcConfEmail );		
+		
+		
 		adicTab( "Usuario", pinGeral );
 		setPainel( pinGeral );
 
@@ -221,6 +261,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		adicCampo( txtUNomeUsu, 190, 60, 250, 20, "UNomeUsu", "Último nome", ListaCampos.DB_SI, true );
 		adicCampo( txtIDGrpUsu, 7, 100, 70, 20, "IDGRPUSU", "ID.grupo", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescGrup, 80, 100, 216, 20, "NOMEGRPUSU", "Descrição do grupo do usuário" );
+		adicCampoInvisivel( txtCorAgenda, "CORAGENDA", "", ListaCampos.DB_SI, false );
 		adic( new JLabelPad( "Senha" ), 300, 80, 70, 20 );
 		adic( txpSenha, 300, 100, 70, 20 );
 		adic( new JLabelPad( "Confirma" ), 373, 80, 70, 20 );
@@ -240,24 +281,45 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		adic( spnEmp, 247, 260, 195, 100 );
 
 		adicTab( "Acesso", pinAcesso );
-		setPainel( pinAcesso );
+		pinAcesso.adic( pnPermissoes, 3, 0 , 440, 150 );
+		pnPermissoes.setBorder( BorderFactory.createTitledBorder( "Permissões" ) );
+		
+		setPainel( pnPermissoes );
 
-		adicDB( cbBaixoCusto, 7, 10, 350, 20, "BaixoCustoUsu", "", false );
-		adicDB( cbReceita, 7, 30, 350, 20, "AprovReceita", "", false );
-		adicDB( cbAltParc, 7, 50, 350, 20, "AltParcVenda", "", false );
-		adicDB( cbAbreGaveta, 7, 70, 350, 20, "AbreGavetaUsu", "", false );
-		adicDB( cbAlmoxarife, 7, 90, 350, 20, "AlmoxarifeUsu", "", false );
-		adicDB( cbCompra, 7, 110, 350, 20, "ComprasUsu", "", false );
-		adicDB( cbAtivCli, 7, 130, 350, 20, "AtivCli", "", true );
-		adicDB( cbLiveraCred, 7, 150, 350, 20, "LiberaCredUsu", "", true );
-
+		adicDB( cbBaixoCusto, 4, 0, 180, 20, "BaixoCustoUsu", "", false );
+		adicDB( cbReceita, 4, 20, 190, 20, "AprovReceita", "", false );
+		adicDB( cbAltParc, 4, 40, 180, 20, "AltParcVenda", "", false );
+		adicDB( cbAbreGaveta, 4, 60, 180, 20, "AbreGavetaUsu", "", false );
+		adicDB( cbAlmoxarife, 4, 80, 180, 20, "AlmoxarifeUsu", "", false );
+		adicDB( cbCompra, 4, 100, 200, 20, "ComprasUsu", "", false );
+		adicDB( cbAtivCli, 200, 00, 200, 20, "AtivCli", "", true );
+		adicDB( cbLiberaCred, 200, 20, 200, 20, "LiberaCredUsu", "", true );
+		adicDB( cbCancelaOP, 200, 40, 250, 20, "CancelaOP", "", false );
+		adicDB( cbVendaImobilizado, 200, 60, 200, 20, "VENDAPATRIMUSU", "", false );
+		adicDB( cbRMAOutCC, 200, 80, 200, 20, "RMAOUTCC", "", false );
+		adicDB( cbVisualizaLucr, 200, 100, 200, 20, "VISUALIZALUCR", "", false );
+				
 		txtCodAlmox.setRequerido( cbAlmoxarife.isSelected() );
 
-		adicCampo( txtCodAlmox, 7, 200, 100, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescAlmox, 110, 200, 330, 20, "DescAlmox", "Descrição do almoxarifado" );
-		adicDB( rgAprovaSolicitacao, 7, 250, 210, 80, "AprovCPSolicitacaoUsu", "Aprova solicitação", false );
-		adicDB( rgAprovaRMA, 230, 250, 210, 80, "AprovRMAUsu", "Aprova RMA", false );
+		pinAcesso.adic( pnAprovacoes, 3, 155 , 440, 180 );
+		pnAprovacoes.setBorder( BorderFactory.createTitledBorder( "Aprovações" ) );
 
+		setPainel(pnAprovacoes);
+		
+		adicCampo( txtCodAlmox, 4, 20, 100, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescAlmox, 107, 20, 318, 20, "DescAlmox", "Descrição do almoxarifado" );
+		adicDB( rgAprovaSolicitacao, 4, 65, 200, 80, "AprovCPSolicitacaoUsu", "Solicitação de compra", false );
+		adicDB( rgAprovaRMA, 225, 65, 200, 80, "AprovRMAUsu", "Requisição de material", false );
+
+		adicTab( "Cor", pinCor );
+		setPainel( pinCor );
+		
+		adicTab( "Email", pinEmail );
+		setPainel( pinEmail );
+		
+		adicCampo( txtCodConfEmail, 7, 20, 100, 20, "CodConfEmail", "Cd.C.Email", ListaCampos.DB_FK, false );
+		adicDescFK( txtNomeRemet, 110, 20, 330, 20, "NomeRemet", "Nome do remetente" );
+		
 		setListaCampos( false, "USUARIO", "SG" );
 		lcCampos.setQueryInsert( false );
 
@@ -274,7 +336,13 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		
 		super.setBordaReq( txpSenha );
 		super.setBordaReq( txpConfirma );
+			
+        pinCor.add(tcc, BorderLayout.CENTER);
+        tcc.getSelectionModel().addChangeListener(this);
+        
+		
 
+		
 	}
 
 	private void adicionaEmp() {
@@ -319,9 +387,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 			rs.close();
 			ps.close();
 			
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
@@ -359,17 +425,17 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 				vEmp.addElement( rs.getString( "NomeFilial" ) != null ? rs.getString( "NomeFilial" ).trim() : "" );
 	
 				iPos = vCodDisp.indexOf( rs.getString( "CodFilial" ) );
-	
-				vCodDisp.remove( iPos );
-				vDisp.remove( iPos );
+				
+				if(vCodDisp==null) {
+					vCodDisp.remove( iPos );
+					vDisp.remove( iPos );
+				}
 			}
 			
 			rs.close();
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 			lsEmp.setListData( vEmp );
 			lsDisp.setListData( vDisp );
@@ -407,9 +473,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 			rs.close();
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 			lsDisp.setListData( vDisp );
 		} catch ( SQLException err ) {
@@ -451,9 +515,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 			
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 			if ( vCodEmp.size() > 0 ) {
 			
@@ -463,8 +525,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.executeUpdate();
 				ps.close();
-				if ( !con.getAutoCommit() )
-					con.commit();
+				con.commit();
 			}
 			
 			sSqlG = "GRANT " + txtIDGrpUsu.getVlrString().trim() + " TO USER \"" + txtIDUsu.getVlrString().trim() + "\"";
@@ -475,9 +536,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 			
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemInforma( this, "Erro ao cadastrar o acesso!\n" + err.getMessage() );
@@ -540,12 +599,17 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	}
 
 	public void afterCarrega( CarregaEvent pevt ) {
-
 		carregaDisp();
 		carregaAcesso();
 		txpSenha.setVlrString( "88888888" );
 		txpConfirma.setVlrString( "88888888" );
-		txtCodAlmox.setRequerido( cbAlmoxarife.isSelected() );
+		txtCodAlmox.setRequerido( cbAlmoxarife.isSelected() );		
+
+		Color cor = new Color(txtCorAgenda.getVlrInteger());
+		
+		tcc.setColor( cor );
+		tcc.repaint();
+		tcc.revalidate();
 	}
 
 	public void beforeDelete( DeleteEvent devt ) {
@@ -566,9 +630,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 			
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemInforma( this, "Não foi possível excluir usuário no banco de dados.\n" + err );
@@ -689,10 +751,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 						ps.close();
 
-						if ( !con.getAutoCommit() ) {
-
-							con.commit();
-						}
+						con.commit();
 
 					} catch ( Exception e ) {
 
@@ -726,7 +785,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		txtCodAlmox.setRequerido( checked );
 	}
 
-	public void setConexao( Connection cn, Connection cnIB ) {
+	public void setConexao( DbConnection cn, DbConnection cnIB ) {
 
 		super.setConexao( cn );
 		
@@ -735,6 +794,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		lcCC.setConexao( cn );
 		lcCC.setWhereAdic( "NIVELCC=10 AND ANOCC=" + buscaAnoBaseCC() );
 		lcAlmox.setConexao( cn );
+		lcConfEmail.setConexao( cn );
 		
 		if ( conIB == null ) {
 			Funcoes.mensagemInforma( this, 
@@ -745,4 +805,10 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 			dispose();
 		}
 	}
+	
+	public void stateChanged(ChangeEvent e) {
+			Color cor = tcc.getColor();					
+			txtCorAgenda.setVlrInteger( cor.getRGB() );			
+	}
+	
 }

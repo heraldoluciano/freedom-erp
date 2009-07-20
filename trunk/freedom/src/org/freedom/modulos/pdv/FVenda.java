@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FVenda.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -37,7 +37,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -83,6 +83,10 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private static final long serialVersionUID = 1L;
 
+	private static final int CASAS_DEC = Aplicativo.casasDec;
+	
+	private static final int CASAS_DEC_FIN = Aplicativo.casasDecFin;
+	
 	private final StatusBar sbVenda = new StatusBar( new BorderLayout() );
 
 	private final JPanelPad pnStatusBar = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -163,33 +167,33 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private final JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
-	private final JTextFieldPad txtQtdade = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
+	private final JTextFieldPad txtQtdade = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC );
 
-	private final JTextFieldPad txtPreco = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	private final JTextFieldPad txtPreco = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, CASAS_DEC_FIN );
 
-	private final JTextFieldPad txtBaseCalc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	private final JTextFieldPad txtBaseCalc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
 
 	private final JTextFieldPad txtAliqIcms = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 7, 2 );
 
-	private final JTextFieldPad txtTotalItem = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	private final JTextFieldPad txtTotalItem = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
 
-	private final JTextFieldPad txtValorIcms = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	private final JTextFieldPad txtValorIcms = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
 
-	private final JTextFieldPad txtBaseCalc1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	private final JTextFieldPad txtBaseCalc1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
 
-	private final JTextFieldPad txtValorIcms1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	private final JTextFieldPad txtValorIcms1 = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
 
-	private final JTextFieldPad txtTotalCupom = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	private final JTextFieldPad txtTotalCupom = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
 
 	private final JTextFieldPad txtNumeroCupom = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtSerieCupom = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
-	private final JTextFieldPad txtQtdadeItem = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	private final JTextFieldPad txtQtdadeItem = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC );
 
-	private final JTextFieldPad txtValorTotalItem = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	private final JTextFieldPad txtValorTotalItem = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
 
-	private final JTextFieldPad txtValorTotalCupom = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	private final JTextFieldPad txtValorTotalCupom = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
 
 	private final JTextFieldPad txtTelaAdicPDV = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
@@ -197,9 +201,9 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private final JTextFieldPad txtTipoFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private final JTextFieldPad txtPercDescItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
+	private final JTextFieldPad txtPercDescItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, CASAS_DEC_FIN );
 
-	private final JTextFieldPad txtVlrDescItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrDescItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC_FIN );
 
 	private final JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
@@ -215,7 +219,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private final JTextFieldFK txtDescLote = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private final JTextFieldFK txtSldLiqProd = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, AplicativoPDV.casasDec );
+	private final JTextFieldFK txtSldLiqProd = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC );
 
 	private final JLabelPad lValorTotalItem = new JLabelPad( "Valor total do item" );
 
@@ -300,7 +304,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		size.width -= 9;
 		setSize( size );
 		
-		montaListaCampos();
+		montaListaCampos(); 
 		montaTela();
 
 		txtPreco.setAtivo( false );
@@ -310,7 +314,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 		txtCodProd1.setSoLeitura( true );
 		txtDescProd.setSoLeitura( true );
-		txtPreco.setTipo( JTextFieldPad.TP_DECIMAL, 12, 2 );
 		txtBaseCalc.setSoLeitura( true );
 		txtAliqIcms.setSoLeitura( true );
 		txtTotalItem.setSoLeitura( true );
@@ -364,7 +367,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		ecf = new ControllerECF( 
 				AplicativoPDV.getEcfdriver(), 
 				AplicativoPDV.getPortaECF(), 
-				AplicativoPDV.bModoDemo );
+				AplicativoPDV.bModoDemo, 
+				AplicativoPDV.getEcflayout() );
 
 		setPrimeiroFoco( txtCodProd );
 	}
@@ -691,9 +695,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro ao gerar venda do orçamento.\n" + e.getMessage() );
@@ -749,9 +751,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro ao somar peso do produto!\n" + e.getMessage(), true, con, e );
 			e.printStackTrace();
@@ -784,9 +784,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao atualizar o saldo!\n" + "Talvez esta venda ainda não esteja salva!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
@@ -837,9 +835,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			ps.executeUpdate();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 			iLinha = getLinha( iItem );
 
@@ -1125,9 +1121,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 			if ( inseriu ) {	
 				if ( ecf.vendaItem( 
@@ -1161,9 +1155,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 					ps.executeUpdate();
 					
 					ps.close();
-					if ( !con.getAutoCommit() ) {
-						con.commit();
-					}
+					con.commit();
 					
 					tbItem.delLinha( tbItem.getNumLinhas()-1 );
 				}
@@ -1291,9 +1283,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 				Funcoes.mensagemInforma( null, "Cupom fiscal em aberto!" );
 
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 			} catch ( Exception e ) {
 				e.printStackTrace();
 			}
@@ -1325,7 +1315,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		}
 		
 		lcVenda.insert( false );
-		txtCodCaixa.setVlrInteger( Aplicativo.iCodFilial );
+		txtCodCaixa.setVlrInteger( AplicativoPDV.iCodCaixa );
 		txtCodVenda.setVlrInteger( iseq );
 		txtTipoVenda.setVlrString( "E" );
 		txtCodCli.setVlrInteger( new Integer( codCli ) );
@@ -1406,9 +1396,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro ao somar peso do produto!\n" + e.getMessage(), true, con, e );
@@ -1444,9 +1432,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 			if ( vArgs.size() == 3 ) {
 				
@@ -1474,7 +1460,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	private void mostraInfoImp() {
 
 		String status = ecf.getStatusImpressora();
-		status = status.replace( StatusStandart.RETORNO_OK.getMessage()+"\n", "" );
+		status = status != null ? status.replace( StatusStandart.RETORNO_OK.getMessage()+"\n", "" ) : "";
 		
 		String str = "<HTML><CENTER>" + status + "</CENTER></HTML>";
 		
@@ -1565,9 +1551,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			rs.close();
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela EQLOTE!\n" + err.getMessage(), true, con, err );
@@ -1598,9 +1582,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				ps.executeUpdate();
 				ps.close();
 				
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}	
+				con.commit();
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -1640,9 +1622,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			rs.close();
 			ps.close();
 	
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 	
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar o preço!\n" + err.getMessage(), true, con, err );
@@ -1697,9 +1677,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( Exception err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar lote!\n" + err );
@@ -1730,9 +1708,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			rs.close();
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro ao pegar dados do cliente!\n" + e.getMessage(), true, con, e );
 			e.printStackTrace();
@@ -1762,9 +1738,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, err.getMessage() );
@@ -1793,9 +1767,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, 
 					"Erro ao buscar o tipo de movimento.\n" +
@@ -1833,9 +1805,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 			if ( codatend != 0 && codvend == 0 ) {
 				Funcoes.mensagemInforma( this, 
@@ -1892,9 +1862,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				rs.close();
 				ps.close();
 
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao buscar comissão.\n" + err.getMessage() );
 				err.printStackTrace();
@@ -1926,9 +1894,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				rs.close();
 				ps.close();
 
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao buscar comissão.\n" + err.getMessage() );
 				err.printStackTrace();
@@ -1958,9 +1924,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, 
@@ -1993,9 +1957,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, 
@@ -2028,9 +1990,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar sequencia." + err.getMessage() );
@@ -2061,9 +2021,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + e.getMessage(), true, con, e );
@@ -2102,9 +2060,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				rs.close();
 				ps.close();
 
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
 			}
@@ -2369,8 +2325,9 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				
 				int result = FreedomPDV.abreCaixa( con, ecf );
 	
-				if ( result == -1 ) {
-					FreedomPDV.killProg( 5, "Caixa não foi aberto. A aplicação será fechada!" );
+				if ( result == -1 ) {				
+					Funcoes.mensagemInforma( null, "Caixa não foi aberto!" );
+					super.setVisible( false );
 				}
 				else if ( result == 3 ) {
 					dispose();
@@ -2403,7 +2360,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		}
 	}
 
-	public void setConexao( Connection con ) {
+	public void setConexao( DbConnection con ) {
 
 		super.setConexao( con );
 		
@@ -2436,12 +2393,9 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		carregaPlugin();
 	}
 
-	public void windowGainedFocus( WindowEvent e ) {
-	
+	public void windowGainedFocus( WindowEvent e ) {	
 		setFocusProd();
 	}
 
-	public void windowLostFocus( WindowEvent e ) {
-	}
-
+	public void windowLostFocus( WindowEvent e ) { }
 }

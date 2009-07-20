@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FRetCnab.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -235,8 +235,9 @@ public class FRetCnab extends FRetFBN {
 					}
 					else if ( reg instanceof Reg3T  ) {		
 						
-						reg3T = (Reg3T) reg;						
-						rec = findReceber( reg3T.getDocCob() );	
+						reg3T = (Reg3T) reg;	
+						int[] chaveRec = getChaveReceber( reg3T );
+						rec = findReceber( chaveRec[0], chaveRec[1] );	
 					}
 					else if ( reg instanceof Reg3U  ) {
 
@@ -246,9 +247,10 @@ public class FRetCnab extends FRetFBN {
 							
 							tab.adicLinha();
 							
-							if ( "00".equals( reg3T.getCodRejeicoes().trim() ) ) {								
+							if ( reg3U.getDataEfetvCred() != null ) {								
 								tab.setValor( imgok, row, EColTab.STATUS.ordinal() );
-								tab.setValor( new Boolean( Boolean.TRUE ), row, EColTab.SEL.ordinal() );
+								tab.setValor( new Boolean( reg3U.getVlrLiqCred().floatValue() > 0.00 ), row, EColTab.SEL.ordinal() );
+								//tab.setValor( getMenssagemRet( txtCodBanco.getVlrString(), reg3T.getCodRejeicoes(), FPrefereFBB.TP_CNAB ), row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
 							}
 							else {								
 								tab.setValor( imgcancel, row, EColTab.STATUS.ordinal() );
@@ -262,17 +264,16 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( Funcoes.bdToStr( rec.getValorApagar() ), row, EColTab.VLRAPAG.ordinal() ); // Valor
 							tab.setValor( rec.getEmissao(), row, EColTab.DTREC.ordinal() ); // Emissão
 							tab.setValor( rec.getVencimento(), row, EColTab.DTVENC.ordinal() ); // Vencimento
-							tab.setValor( reg3T.getDataVencTit(), row, EColTab.DTPAG.ordinal() ); // Data pgto.							
+							tab.setValor( Funcoes.bdToStr( reg3U.getVlrPago() ), row, EColTab.VLRPAG.ordinal() ); // Valor pago
+							tab.setValor( reg3U.getDataEfetvCred() != null ? Funcoes.dateToStrDate( reg3U.getDataEfetvCred() ) : "", row, EColTab.DTPAG.ordinal() ); // Data pgto.							
 							tab.setValor( rec.getConta(), row, EColTab.NUMCONTA.ordinal() ); // Conta
-							tab.setValor( rec.getPlanejamento(), row, EColTab.CODPLAN.ordinal() ); // Planejamento						
+							tab.setValor( rec.getPlanejamento(), row, EColTab.CODPLAN.ordinal() ); // Planejamento		
+							tab.setValor( reg3U.getVlrDesc(), row, EColTab.VLRDESC.ordinal() ); // VLRDESC				
+							tab.setValor( Funcoes.bdToStr( reg3U.getVlrJurosMulta()), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
 							tab.setValor( "BAIXA AUTOMÁTICA CNAB", row, EColTab.OBS.ordinal() ); // HISTÓRICO							
 							tab.setValor( FPrefereFBB.TP_CNAB, row, EColTab.TIPOFEBRABAN.ordinal() );
 							tab.setValor( reg3T.getCodRejeicoes(), row, EColTab.CODRET.ordinal() ); // código retorno
-							tab.setValor( getMenssagemRet( txtCodBanco.getVlrString(), reg3T.getCodRejeicoes().trim(), FPrefereFBB.TP_CNAB ), row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
-							
-							tab.setValor( reg3U.getVlrPago(), row, EColTab.VLRPAG.ordinal() ); // Valor pago
-							tab.setValor( reg3U.getVlrDesc(), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
-							tab.setValor( reg3U.getVlrJurosMulta(), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
+							//tab.setValor( getMenssagemRet( txtCodBanco.getVlrString(), reg3T.getCodRejeicoes().trim(), FPrefereFBB.TP_CNAB ), row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
 							
 							row++;
 							rec = null;
@@ -308,70 +309,81 @@ public class FRetCnab extends FRetFBN {
 		return retorno;
 	}
 	
-	private Receber findReceber( final String docrec ) {
+	private Receber findReceber( int idocrec, int iparc ) {
 		
 		Receber receber = null;
 		
-		if ( docrec != null && docrec.trim().length() > 0 ) {
+		if ( idocrec == 0 && iparc == 0 ) {
+			return receber;
+		}
+				
+		try {
+			
+			StringBuilder sql = new StringBuilder();				
+			sql.append( "SELECT " );
+			sql.append( "  IR.CODREC, IR.NPARCITREC, R.DOCREC, IR.VLRAPAGITREC, IR.DTITREC, IR.DTVENCITREC," );
+			sql.append( "  IR.NUMCONTA, IR.CODPLAN, IR.CODCC, R.CODCLI, CL.RAZCLI " );
+			sql.append( "FROM " );
+			sql.append( "  FNITRECEBER IR, FNRECEBER R, VDCLIENTE CL " );
+			sql.append( "WHERE " );
+			sql.append( "  IR.CODEMP=? AND IR.CODFILIAL=? AND IR.NPARCITREC=? AND " );
+			sql.append( "  IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND R.DOCREC=? AND " );
+			sql.append( "  R.CODEMPCL=CL.CODEMP AND R.CODFILIALCL=CL.CODFILIAL AND R.CODCLI=CL.CODCLI " );
 			
 			try {
-				String tmp = docrec.trim();
-				final int idocrec = Integer.parseInt( tmp.substring( 0, tmp.length() - 2 ) );
-				final int iparc = Integer.parseInt( tmp.substring( tmp.length() - 2 ) );
+				PreparedStatement ps = con.prepareStatement( sql.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+				ps.setInt( 3, iparc );
+				ps.setInt( 4, idocrec );
 				
-				StringBuilder sql = new StringBuilder();				
-				sql.append( "SELECT " );
-				sql.append( "  IR.CODREC, IR.NPARCITREC, R.DOCREC, IR.VLRAPAGITREC, IR.DTITREC, IR.DTVENCITREC," );
-				sql.append( "  IR.NUMCONTA, IR.CODPLAN, IR.CODCC, R.CODCLI, CL.RAZCLI " );
-				sql.append( "FROM " );
-				sql.append( "  FNITRECEBER IR, FNRECEBER R, VDCLIENTE CL " );
-				sql.append( "WHERE " );
-				sql.append( "  IR.CODEMP=? AND IR.CODFILIAL=? AND IR.NPARCITREC=? AND " );
-				sql.append( "  IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND R.DOCREC=? AND " );
-				sql.append( "  R.CODEMPCL=CL.CODEMP AND R.CODFILIALCL=CL.CODFILIAL AND R.CODCLI=CL.CODCLI " );
+				ResultSet rs = ps.executeQuery();
 				
-				try {
-					PreparedStatement ps = con.prepareStatement( sql.toString() );
-					ps.setInt( 1, Aplicativo.iCodEmp );
-					ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-					ps.setInt( 3, iparc );
-					ps.setInt( 4, idocrec );
+				if ( rs.next() ) {
 					
-					ResultSet rs = ps.executeQuery();
+					receber = cnabutil.new Receber();
 					
-					if ( rs.next() ) {
-						
-						receber = cnabutil.new Receber();
-						
-						receber.setCodrec( rs.getInt( "CODREC" ) );
-						receber.setNrparcrec( rs.getInt( "NPARCITREC" ) );
-						receber.setDocrec( rs.getString( "DOCREC" ) + "/" + rs.getInt( "NPARCITREC" ) );
-						receber.setValorApagar( rs.getBigDecimal( "VLRAPAGITREC" ) );
-						receber.setEmissao( Funcoes.sqlDateToDate( rs.getDate( "DTITREC" ) ) );
-						receber.setVencimento( Funcoes.sqlDateToDate( rs.getDate( "DTVENCITREC" ) ) );
-						receber.setConta( rs.getString( "NUMCONTA" ) );
-						receber.setPlanejamento( rs.getString( "CODPLAN" ) );
-						receber.setCentrocusto( rs.getString( "CODCC" ));
-						receber.setCodcliente( rs.getInt( "CODCLI" ) );
-						receber.setRazcliente( rs.getString( "RAZCLI" ) );
-					}
-
-					rs.close();
-					ps.close();
-					
-					if ( ! con.getAutoCommit() ) {
-						con.commit();
-					}
-				} catch ( SQLException e ) {
-					Funcoes.mensagemErro( this, "Erro ao buscar dados do recebimento!\n" + e.getMessage(), true, con, e );
-					e.printStackTrace();
+					receber.setCodrec( rs.getInt( "CODREC" ) );
+					receber.setNrparcrec( rs.getInt( "NPARCITREC" ) );
+					receber.setDocrec( rs.getString( "DOCREC" ) + "/" + rs.getInt( "NPARCITREC" ) );
+					receber.setValorApagar( rs.getBigDecimal( "VLRAPAGITREC" ) );
+					receber.setEmissao( Funcoes.sqlDateToDate( rs.getDate( "DTITREC" ) ) );
+					receber.setVencimento( Funcoes.sqlDateToDate( rs.getDate( "DTVENCITREC" ) ) );
+					receber.setConta( rs.getString( "NUMCONTA" ) );
+					receber.setPlanejamento( rs.getString( "CODPLAN" ) );
+					receber.setCentrocusto( rs.getString( "CODCC" ));
+					receber.setCodcliente( rs.getInt( "CODCLI" ) );
+					receber.setRazcliente( rs.getString( "RAZCLI" ) );
 				}
-			} catch ( NumberFormatException e ) {
-				Funcoes.mensagemErro( this, "Erro ao buscar dados do recebimento!\nNúmero do documento inválido!\n" + e.getMessage(), true, con, e );
+
+				rs.close();
+				ps.close();
+				
+				con.commit();
+			} catch ( SQLException e ) {
+				Funcoes.mensagemErro( this, "Erro ao buscar dados do recebimento!\n" + e.getMessage(), true, con, e );
 				e.printStackTrace();
 			}
+		} catch ( NumberFormatException e ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar dados do recebimento!\nNúmero do documento inválido!\n" + e.getMessage(), true, con, e );
+			e.printStackTrace();
 		}
 		
 		return receber;
+	}
+	
+	private int[] getChaveReceber( final Reg3T reg3T ) {		
+
+		int[] chave = new int[2]; 
+			
+		if ( reg3T != null ) {		
+			
+			String docrec = reg3T.getIdentTitEmp().trim();
+			String tmp = docrec.length() >= 15 ? docrec.substring( 1, 15 ) : docrec.trim();			
+			chave[0] = Integer.parseInt( tmp.substring( 0, tmp.length()-2 ) );
+			chave[1] = Integer.parseInt( tmp.substring( tmp.length()-2 ) );
+		}
+		
+		return chave;
 	}
 }

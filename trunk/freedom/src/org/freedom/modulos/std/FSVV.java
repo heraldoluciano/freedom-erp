@@ -7,14 +7,14 @@
  * Pacote: org.freedom.modulos.std <BR>
  * Classe: @(#)FSVV.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  *
  * Comentários sobre a classe...
  * 
@@ -467,7 +467,7 @@ public class FSVV extends FFilho implements ActionListener {
     	}
         if (cbEstoque.getVlrString().equals("S")) {
             lbAnd.setText("Buscando estoque...");
-            String sSQL = "SELECT P.CODFABPROD,P.CODPROD,MAX(MP.CODMOVPROD),"+
+/*            String sSQL = "SELECT P.CODFABPROD,P.CODPROD,MAX(MP.CODMOVPROD),"+
                           "(SELECT MP1.SLDMOVPROD FROM EQMOVPROD MP1 "+
                           "WHERE MP1.CODEMP=? AND MP1.CODFILIAL=? AND "+
                           "MP1.CODMOVPROD=MAX(MP.CODMOVPROD)) "+
@@ -481,14 +481,29 @@ public class FSVV extends FFilho implements ActionListener {
                           "((P.CODGRUP=PF.CODGRUP AND P.CODEMPGP=PF.CODEMPGP AND "+
                           "P.CODFILIALGP=PF.CODFILIALGP) OR PF.CODGRUP IS NULL) AND "+
                           "PF.CODEMP=? AND PF.CODFILIAL=? "+
-                          "GROUP BY P.CODFABPROD,P.CODPROD";
+                          "GROUP BY P.CODFABPROD,P.CODPROD";*/
+            
+            String sSQL = "SELECT P.CODFABPROD,P.CODPROD, E.SALDO "
+            			+ "FROM EQRELINVPRODSP(?,?,'M',null,null,null,?,null,null,null) E, EQPRODUTO P, SGPREFERE1 PF "
+            			+ "WHERE "
+            			+ "P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=E.CODPROD AND "
+            			+ "P.CVPROD IN ('V','A') AND P.TIPOPROD='P' AND "
+            			+ "((P.CODMARCA=PF.CODMARCA AND P.CODEMPMC=PF.CODEMPMC AND "
+            			+ "P.CODFILIALMC=PF.CODFILIALMC) OR PF.CODMARCA IS NULL) AND "
+            			+ "((P.CODGRUP=PF.CODGRUP AND P.CODEMPGP=PF.CODEMPGP AND "
+            			+ "P.CODFILIALGP=PF.CODFILIALGP) OR PF.CODGRUP IS NULL) "
+            			+ "and PF.CODEMP=? AND PF.CODFILIAL=? "
+            			+ "and e.saldo>0 "
+            			+ "ORDER BY 1";
+            
+            
             try {
                 PreparedStatement ps = con.prepareStatement(sSQL);
                 ps.setInt(1,Aplicativo.iCodEmp);
                 ps.setInt(2,ListaCampos.getMasterFilial("EQMOVPROD"));
-                ps.setInt(3,Aplicativo.iCodEmp);
-                ps.setInt(4,ListaCampos.getMasterFilial("EQMOVPROD"));
-                ps.setDate(5,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
+                ps.setDate(3,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));                
+                ps.setInt(4,Aplicativo.iCodEmp);
+                ps.setInt(5,ListaCampos.getMasterFilial("EQPRODUTO"));                
                 ps.setInt(6,Aplicativo.iCodEmp);
                 ps.setInt(7,Aplicativo.iCodFilial);
                 ResultSet rs = ps.executeQuery();
@@ -503,15 +518,14 @@ public class FSVV extends FFilho implements ActionListener {
                     sIdent = "[Estoque][C.Produto: "+rs.getInt("CodProd")+"]";
                     pst.print(";"+verifErro('B',rs.getString("CodFabProd"),sIdent+"[C. Fabricante]",""));
                     pst.print(";"+verifErro('B',Funcoes.copy(sCodUnid,2).trim(),sIdent+"[Unidade Conv]",""));
-                    pst.print(";"+Funcoes.strDecimalToStrCurrency(14,2, ""+(rs.getFloat(4)*ftFatConv) ).trim());
+                    pst.print(";"+Funcoes.strDecimalToStrCurrency(14,2, ""+(rs.getFloat(3)*ftFatConv) ).trim());
                 	pst.print(CRLF);
                 }
                 if (!sRelErros.equals(""))
                     Funcoes.criaTelaErro(sRelErros,this);
                 rs.close();
                 ps.close();
-                if (!con.getAutoCommit())
-                    con.commit();
+                con.commit();
             }
             catch(SQLException err) {
             	Funcoes.mensagemErro(this,"Erro ao buscar o estoque!\n"+err.getMessage(),true,con,err);
@@ -605,31 +619,31 @@ public class FSVV extends FFilho implements ActionListener {
     }
   	return sVal;
   }
+  
   private String[] buscaInfoEmp() {
      String[] sRet = new String[4];
-     String sSQL = "SELECT CIDFILIAL,UFFILIAL,CEPFILIAL,CODDISTFILIAL" +
-     		               " FROM SGFILIAL WHERE CODEMP=? AND CODFILIAL=?";
+     String sSQL = "SELECT M.NOMEMUNIC,M.SIGLAUF,F.CEPFILIAL,F.CODDISTFILIAL "
+    	 		 + "FROM SGFILIAL F, SGMUNICIPIO M "
+    	 		 + "WHERE F.CODMUNIC=M.CODMUNIC AND F.CODPAIS=M.CODPAIS AND F.SIGLAUF=M.SIGLAUF ";
      try {
-       PreparedStatement ps = con.prepareStatement(sSQL);
-       ps.setInt(1,Aplicativo.iCodEmp);
-       ps.setInt(2,Aplicativo.iCodFilial);
-       ResultSet rs = ps.executeQuery();
-       if (rs.next()) {
-         sRet[0] = rs.getString("CidFilial");
-         sRet[1] = rs.getString("UfFilial");
-         sRet[2] = rs.getString("CepFilial");
-         sRet[3] = rs.getString("CodDistFilial");
-       }
-       rs.close();
-       ps.close();
+    	 PreparedStatement ps = con.prepareStatement(sSQL);
+    	 ResultSet rs = ps.executeQuery();
+    	 if (rs.next()) {
+    		 sRet[0] = rs.getString("NOMEMUNIC");
+    		 sRet[1] = rs.getString("SIGLAUF");
+    		 sRet[2] = rs.getString("CepFilial");
+    		 sRet[3] = rs.getString("CodDistFilial");
+    	 }
+    	 rs.close();
+    	 ps.close();
      }
-    catch (SQLException err) {
-       Funcoes.mensagemErro(this,"Erro ao buscar dados da filial!\n"+err.getMessage(),true,con,err);
-       err.printStackTrace();
-    }
-
+     catch (SQLException err) {
+    	 Funcoes.mensagemErro(this,"Erro ao buscar dados da filial!\n"+err.getMessage(),true,con,err);
+    	 err.printStackTrace();
+     }
      return sRet; 
   }
+  
   public String[] buscaCliFor(int iCodCli) {
     String sRet[] = {"",""};
     String sSQL = "SELECT CF.CODCLIFOR, CF.CODCPCLIFOR FROM VDCLIENTEFOR CF, SGPREFERE1 P WHERE " +

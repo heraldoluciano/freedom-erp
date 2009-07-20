@@ -6,7 +6,7 @@
 package org.freedom.modulos.fnc;
 
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -101,8 +101,7 @@ public class Entrada extends FDados implements PostListener {
 
 				ps.close();
 
-				if ( !con.getAutoCommit() )
-					con.commit();
+				con.commit();
 
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao carregar a tabela de clientes!\n" + err.getMessage() );
@@ -189,8 +188,7 @@ public class Entrada extends FDados implements PostListener {
 
 				imp.fechaGravacao();
 
-				if ( !con.getAutoCommit() )
-					con.commit();
+				con.commit();
 				dl.dispose();
 
 				rs.close();
@@ -233,7 +231,7 @@ public class Entrada extends FDados implements PostListener {
 
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcTpRecp.setConexao( cn );

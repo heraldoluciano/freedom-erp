@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FRetFBN.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -34,7 +34,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
@@ -252,9 +252,8 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		Object[] sRets = null;
 		int iLin = tab.getLinhaSel();
 
-		if ( iLin > -1 ) {
-
-			iLin = tab.getLinhaSel();
+		if ( iLin > -1 && iLin < tab.getRowCount() ) {
+			
 			if ( FPrefereFBB.TP_SIACC.equals( TIPO_FEBRABAN ) ) {
 				if ( ! "00".equals( tab.getValor( iLin, EColTab.CODRET.ordinal() ) ) ) {
 					Funcoes.mensagemInforma( this, "Registro rejeitado!\n" + tab.getValor( iLin, EColTab.MENSSAGEM.ordinal() ) );
@@ -274,7 +273,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			sVals[ DLBaixaRec.EColBaixa.VLRPARC.ordinal() ] = Funcoes.strToBd( tab.getValor( iLin, EColTab.VLRPAG.ordinal() ) );
 			sVals[ DLBaixaRec.EColBaixa.VLRAPAG.ordinal() ] = Funcoes.strToBd( tab.getValor( iLin, EColTab.VLRAPAG.ordinal() ) );
 			sVals[ DLBaixaRec.EColBaixa.VLRDESC.ordinal() ] = Funcoes.strToBd( tab.getValor( iLin, EColTab.VLRDESC.ordinal() ) );
-			sVals[ DLBaixaRec.EColBaixa.VLRJUROS.ordinal() ] = Funcoes.strToBd( tab.getValor( iLin, EColTab.VLRJUROS.ordinal() ) );
+			sVals[ DLBaixaRec.EColBaixa.VLRJUROS.ordinal() ] = tab.getValor( iLin, EColTab.VLRJUROS.ordinal()) ;			
 			sVals[ DLBaixaRec.EColBaixa.VLRAPAG.ordinal() ] = Funcoes.strToBd( tab.getValor( iLin, EColTab.VLRAPAG.ordinal() ) );
 			sVals[ DLBaixaRec.EColBaixa.DTPGTO.ordinal() ] = tab.getValor( iLin, EColTab.DTPAG.ordinal() );
 			sVals[ DLBaixaRec.EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd( tab.getValor( iLin, EColTab.VLRPAG.ordinal() ) );
@@ -289,13 +288,13 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 				sRets = dl.getValores();
 
-				atualizaTabCli( (Integer) sVals[ DLBaixaRec.EColBaixa.CODCLI.ordinal() ], sRets );
+				//atualizaTabCli( (Integer) sVals[ DLBaixaRec.EColBaixa.CODCLI.ordinal() ], sRets );
 
 				tab.setValor( new Boolean( Boolean.TRUE ), iLin, EColTab.SEL.ordinal() );
 				tab.setValor( sRets[ EColRetBaixa.NUMCONTA.ordinal() ], iLin, EColTab.NUMCONTA.ordinal() );
 				tab.setValor( sRets[ EColRetBaixa.CODPLAN.ordinal() ], iLin, EColTab.CODPLAN.ordinal() );
 				tab.setValor( sRets[ EColRetBaixa.DOC.ordinal() ], iLin, EColTab.DOCREC.ordinal() );
-				tab.setValor( sRets[ EColRetBaixa.DTPAGTO.ordinal() ], iLin, EColTab.DTPAG.ordinal() );
+				tab.setValor( Funcoes.dateToStrDate( (Date) sRets[ EColRetBaixa.DTPAGTO.ordinal() ]), iLin, EColTab.DTPAG.ordinal())  ;
 				tab.setValor( Funcoes.bdToStr( (BigDecimal) sRets[ EColRetBaixa.VLRPAGO.ordinal() ] ), iLin, EColTab.VLRPAG.ordinal() );
 				tab.setValor( Funcoes.bdToStr( (BigDecimal) sRets[ EColRetBaixa.VLRDESC.ordinal() ] ), iLin, EColTab.VLRDESC.ordinal() );
 				tab.setValor( Funcoes.bdToStr( (BigDecimal) sRets[ EColRetBaixa.VLRJUROS.ordinal() ] ), iLin, EColTab.VLRJUROS.ordinal() );
@@ -328,10 +327,10 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 					tab.setValor( vals[ EColRetBaixa.CODCC.ordinal() ], row, EColTab.CODCC.ordinal() );
 
 					if ( vlrdescjuros.floatValue() > 0 ) {
-						tab.setValor( Funcoes.bdToStr( vlrdescjuros ), row, EColTab.VLRJUROS.ordinal() );
+						tab.setValor( vlrdescjuros , row, EColTab.VLRJUROS.ordinal() );
 					}
 					else {
-						tab.setValor( Funcoes.bdToStr( vlrdescjuros ), row, EColTab.VLRDESC.ordinal() );
+						tab.setValor( vlrdescjuros , row, EColTab.VLRDESC.ordinal() );
 					}
 				}
 			}
@@ -367,9 +366,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 				msg = rs.getString( 1 );
 			}
 			
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( Exception e ) {
 			Funcoes.mensagemInforma( this, "Erro ao montar grid. \n" + e.getMessage());
 			e.printStackTrace();
@@ -434,7 +431,12 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			
 			for ( int row=0; row < tab.getNumLinhas(); row++ ) {
 				
-				if ( (Boolean) tab.getValor( row, EColTab.SEL.ordinal() ) ) {
+				if ( "".equals( ((String) tab.getValor( row, EColTab.DOCREC.ordinal() )).trim() ) ) {					
+					lbStatus.setText( "" );
+					Funcoes.mensagemErro( this, "Número do documento não informado para o recebimento " + tab.getValor( row, EColTab.CODREC.ordinal() ) );
+					return null;
+				}
+				else if ( (Boolean) tab.getValor( row, EColTab.SEL.ordinal() ) ) {
 					
 					args = new Object[ EParcela.values().length ];
 					codrec = (Integer) tab.getValor( row, EColTab.CODREC.ordinal() );
@@ -444,7 +446,8 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 					args[ EParcela.CODPLAN.ordinal() ] = (String) tab.getValor( row, EColTab.CODPLAN.ordinal() );
 					args[ EParcela.CODCC.ordinal() ] = (String) tab.getValor( row, EColTab.CODCC.ordinal() );
 					args[ EParcela.DOCLANCAITREC.ordinal() ] = (String) tab.getValor( row, EColTab.DOCREC.ordinal() );
-					args[ EParcela.DTPAGOITREC.ordinal() ] = Funcoes.strDateToDate( (String) tab.getValor( row, EColTab.DTPAG.ordinal() ) );
+					//args[ EParcela.DTPAGOITREC.ordinal() ] = Funcoes.strDateToDate( (String) tab.getValor( row, EColTab.DTPAG.ordinal() ) );
+					args[ EParcela.DTPAGOITREC.ordinal() ] = tab.getValor( row, EColTab.DTPAG.ordinal() );
 					args[ EParcela.VLRPAGOITREC.ordinal() ] = Funcoes.strToBd( tab.getValor( row, EColTab.VLRPAG.ordinal() ) );
 					args[ EParcela.VLRDESCITREC.ordinal() ] = Funcoes.strToBd(  tab.getValor( row, EColTab.VLRDESC.ordinal() ) );
 					args[ EParcela.VLRJUROSITREC.ordinal() ] = Funcoes.strToBd( tab.getValor( row, EColTab.VLRJUROS.ordinal() ) );
@@ -556,9 +559,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 						}
 					}
 					
-					if ( ! con.getAutoCommit() ) {
-						con.commit();
-					}
+					con.commit();
 					
 					retorno = true;
 					
@@ -576,7 +577,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 	
 	protected boolean baixaReceber() {
 		
-		boolean retorno = true;
+		boolean retorno = false;
 		
 		try {
 			
@@ -623,7 +624,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 						ps.setNull( 10, Types.INTEGER );
 					}
 					ps.setString( 11, (String) parcela.getArgs()[ EParcela.DOCLANCAITREC.ordinal() ] );
-					ps.setDate( 12, Funcoes.dateToSQLDate( (Date) parcela.getArgs()[ EParcela.DTPAGOITREC.ordinal() ] ) );
+					ps.setDate( 12, Funcoes.strDateToSqlDate( (String) parcela.getArgs()[ EParcela.DTPAGOITREC.ordinal() ] ) );
 					ps.setBigDecimal( 13, (BigDecimal) parcela.getArgs()[ EParcela.VLRPAGOITREC.ordinal() ] );
 					ps.setBigDecimal( 14, (BigDecimal) parcela.getArgs()[ EParcela.VLRDESCITREC.ordinal() ] );
 					ps.setBigDecimal( 15, (BigDecimal) parcela.getArgs()[ EParcela.VLRJUROSITREC.ordinal() ] );
@@ -640,18 +641,17 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 					ps.executeUpdate();
 					ps.close();
 					
-					if ( ! con.getAutoCommit() ) {
-						con.commit();
-					}
+					con.commit();
 					
 					count++;
 				}
 				
 				lbStatus.setText( "     Aplicada a baixa em [ " + count + " ] parcela(s)." );
+				
+				retorno = true;
 			}
 		}
 		catch ( Exception e ) {
-			retorno = false;
 			Funcoes.mensagemErro( this, "Erro ao fazer a baixa da parcela!", true, con, e );
 			e.printStackTrace();
 			lbStatus.setText( "" );
@@ -720,9 +720,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 					info.add( EColInfoCli.TIPOFEBRABAN.ordinal(), rs.getString( EColInfoCli.TIPOFEBRABAN.toString() ) );
 				}
 				
-				if ( ! con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 			} catch ( Exception e ) {
 				Funcoes.mensagemErro( this, "Erro ao buscar informações do cliente!\n" + e.getMessage(), true, con, e );
 				e.printStackTrace();
@@ -778,7 +776,7 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 	public void mouseReleased( MouseEvent e ) {}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcBanco.setConexao( cn );

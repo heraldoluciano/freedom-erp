@@ -2,7 +2,7 @@ package org.freedom.modulos.rep;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
@@ -55,7 +55,7 @@ public class RPCopiaPed extends FFDialogo {
 		super.actionPerformed( evt );
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		lcCli.setConexao( cn );
 	}

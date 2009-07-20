@@ -9,13 +9,13 @@
  * Classe:
  * @(#)RelCliente.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -25,7 +25,7 @@
 
 package org.freedom.modulos.rep;
 
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -56,6 +56,8 @@ public class RelCliente extends FRelatorio {
 	private final JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private final JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private final JTextFieldPad txtCidade = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 	
 	private JRadioGroup<String, String> rgModo;
 	
@@ -69,7 +71,7 @@ public class RelCliente extends FRelatorio {
 
 		super( false );
 		setTitulo( "Relatorio de clientes" );		
-		setAtribos( 50, 50, 325, 290 );
+		setAtribos( 50, 50, 325, 330 );
 
 		montaRadioGrupos();
 		montaListaCampos();
@@ -134,6 +136,9 @@ public class RelCliente extends FRelatorio {
 		adic( txtCodVend, 10, 190, 77, 20 );
 		adic( new JLabel( "Nome do vendedor" ), 90, 170, 210, 20 );
 		adic( txtNomeVend, 90, 190, 210, 20 );
+		
+		adic( new JLabel( "Cidade" ), 10, 210, 290, 20 );
+		adic( txtCidade, 10, 230, 290, 20 );
 	}
 
 	@ Override
@@ -160,6 +165,9 @@ public class RelCliente extends FRelatorio {
 				sql.append( "AND CODVEND=" + txtCodVend.getVlrInteger().intValue() );
 				filtro += "  Vendedor : " + txtNomeVend.getVlrString().trim();
 			}
+			if ( txtCidade.getVlrString().trim().length() > 0 ) {
+				sql.append( "AND CIDCLI LIKE '%" + txtCidade.getVlrString() + "%' " );
+			}
 			sql.append( "ORDER BY " + rgOrdem.getVlrString() );
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -170,7 +178,7 @@ public class RelCliente extends FRelatorio {
 			HashMap<String,Object> hParam = new HashMap<String, Object>();
 			
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
-			hParam.put( "REPORT_CONNECTION", con );
+			hParam.put( "REPORT_CONNECTION", con.getConnection() );
 			
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/"+relatorio, "CLIENTES " + modo, filtro, rs, hParam, this );
 
@@ -187,7 +195,7 @@ public class RelCliente extends FRelatorio {
 		}
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 

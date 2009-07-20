@@ -7,14 +7,14 @@
  * Pacote: org.freedom.modulos.std <BR>
  * Classe: @(#)FRExtrato.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  *
  * Comentários sobre a classe...
  * 
@@ -23,7 +23,7 @@
 package org.freedom.modulos.std;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
@@ -112,68 +112,109 @@ public class FRExtrato extends FRelatorio {
 		txtDataini.setVlrDate( cPeriodo.getTime() );
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcConta.setConexao( cn );
 	}
 
-	public void imprimir( boolean bVisualizar ) {
-
-		String sCodConta = txtCodConta.getVlrString();
+	public boolean temAcessoConta() {
+		StringBuilder sql = new StringBuilder();
 		ResultSet rs = null;
-			
-		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
-			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
-			return;
-		}
-		else if ( txtCodConta.getVlrString().equals( "" ) ) {
-			Funcoes.mensagemInforma( this, "Número da conta é requerido!" );
-			return;
-		}
-	
-			
-		StringBuilder sSQL = new StringBuilder();
-
-		sSQL.append( "SELECT S.DATASL,L.HISTBLANCA,L.DOCLANCA,SL.VLRSUBLANCA,S.SALDOSL FROM FNSALDOLANCA S," );
-		sSQL.append( "FNLANCA L,FNCONTA C, FNSUBLANCA SL WHERE L.FLAG IN " );
-		sSQL.append( AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
-		sSQL.append( " AND C.CODEMP=? AND C.CODFILIAL=? AND C.NUMCONTA=? " );
-		sSQL.append( "AND L.CODEMP=? AND L.CODFILIAL=? AND L.CODLANCA=SL.CODLANCA " );
-		sSQL.append( "AND S.CODPLAN=SL.CODPLAN AND S.CODEMP=SL.CODEMPPN AND S.CODFILIAL=SL.CODFILIALPN " );
-		sSQL.append( "AND SL.DATASUBLANCA BETWEEN ? AND ? AND S.DATASL=SL.DATASUBLANCA " );
-		sSQL.append( "AND SL.CODPLAN=C.CODPLAN AND SL.CODEMPPN=C.CODEMPPN AND SL.CODFILIALPN=C.CODFILIALPN " );
-		sSQL.append( "AND SL.CODEMP=? AND SL.CODFILIAL=? ORDER BY S.DATASL,L.CODLANCA" );
-
-		
+		boolean ret = false;
 		try {
+			sql.append("SELECT CO.NUMCONTA FROM FNCONTA CO ");
+			sql.append("WHERE CO.CODEMP=? AND CO.CODFILIAL=? AND CO.NUMCONTA=? AND ");
+			sql.append("( TUSUCONTA='S' OR EXISTS (SELECT * FROM FNCONTAUSU CU "); 
+			sql.append("WHERE CU.CODEMP=CO.CODEMP AND CU.CODFILIAL=CO.CODFILIAL AND "); 
+			sql.append("CU.NUMCONTA=CO.NUMCONTA AND CU.CODEMPUS=" + Aplicativo.iCodEmp ); 
+			sql.append(" AND CU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" )); 
+			sql.append(" AND CU.IDUSU='" + Aplicativo.strUsuario + "'))"); 
 			
-			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
+			System.out.println(sql.toString());
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNCONTA" ) );
-			ps.setString( 3, sCodConta );
-			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, ListaCampos.getMasterFilial( "FNLANCA" ) );
-			ps.setDate( 6, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 7, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			ps.setInt( 8, Aplicativo.iCodEmp );
-			ps.setInt( 9, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
-
-			 rs = ps.executeQuery();
+			ps.setString( 3, txtCodConta.getVlrString() );
 			
-		} catch ( Exception e ) {
-			
+			rs = ps.executeQuery();
+			 
+			if(rs.next()) {
+				return true;
+			}
+			 
+		}
+		catch (Exception e) {
 			e.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao buscar dados " + e.getMessage());
 		}
+		return ret;
 		
-		if("T".equals( rgTipoRel.getVlrString())){
+	}
+	
+	public void imprimir( boolean bVisualizar ) {
+
+		if(temAcessoConta()) {
 			
-			imprimiTexto( rs, bVisualizar, "" );
+			String sCodConta = txtCodConta.getVlrString();
+			ResultSet rs = null;
+				
+			if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
+				Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
+				return;
+			}
+			else if ( txtCodConta.getVlrString().equals( "" ) ) {
+				Funcoes.mensagemInforma( this, "Número da conta é requerido!" );
+				return;
+			}
+		
+				
+			StringBuilder sSQL = new StringBuilder();
+	
+			sSQL.append( "SELECT S.DATASL,L.HISTBLANCA,L.DOCLANCA,SL.VLRSUBLANCA,S.SALDOSL FROM FNSALDOLANCA S," );
+			sSQL.append( "FNLANCA L,FNCONTA C, FNSUBLANCA SL WHERE L.FLAG IN " );
+			sSQL.append( AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
+			sSQL.append( " AND C.CODEMP=? AND C.CODFILIAL=? AND C.NUMCONTA=? " );
+			sSQL.append( "AND L.CODEMP=? AND L.CODFILIAL=? AND L.CODLANCA=SL.CODLANCA " );
+			sSQL.append( "AND S.CODPLAN=SL.CODPLAN AND S.CODEMP=SL.CODEMPPN AND S.CODFILIAL=SL.CODFILIALPN " );
+			sSQL.append( "AND SL.DATASUBLANCA BETWEEN ? AND ? AND S.DATASL=SL.DATASUBLANCA " );
+			sSQL.append( "AND SL.CODPLAN=C.CODPLAN AND SL.CODEMPPN=C.CODEMPPN AND SL.CODFILIALPN=C.CODFILIALPN " );
+			sSQL.append( "AND SL.CODEMP=? AND SL.CODFILIAL=? ORDER BY S.DATASL,L.CODLANCA" );
+	
+			
+			try {
+				
+				PreparedStatement ps = con.prepareStatement( sSQL.toString() );
+				
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "FNCONTA" ) );
+				ps.setString( 3, sCodConta );
+				ps.setInt( 4, Aplicativo.iCodEmp );
+				ps.setInt( 5, ListaCampos.getMasterFilial( "FNLANCA" ) );
+				ps.setDate( 6, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+				ps.setDate( 7, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+				ps.setInt( 8, Aplicativo.iCodEmp );
+				ps.setInt( 9, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+	
+				 rs = ps.executeQuery();
+				
+			} catch ( Exception e ) {
+				
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro ao buscar dados " + e.getMessage());
+			}
+			
+			if("T".equals( rgTipoRel.getVlrString())){
+				
+				imprimiTexto( rs, bVisualizar, "" );
+			}
+			else{
+				imprimiGrafico( rs, bVisualizar, "Conta: "+txtCodConta.getVlrString()+" - "+txtDescConta.getVlrString() ); 
+			}
 		}
-		else{
-			imprimiGrafico( rs, bVisualizar, "" ); 
+		else {
+			Funcoes.mensagemInforma( this, "Você não possui acesso a essa conta!" );
 		}
 		
 	} 
@@ -336,9 +377,7 @@ public class FRExtrato extends FRelatorio {
 			
 			
 			rs.close();
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 		} catch ( Exception e ) {
 			

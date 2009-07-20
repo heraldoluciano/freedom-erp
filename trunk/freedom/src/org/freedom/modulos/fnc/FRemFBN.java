@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FRemFBN.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -33,7 +33,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,8 +60,9 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
-import org.freedom.funcoes.Boleto;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.funcoes.boleto.BancodoBrasil;
+import org.freedom.funcoes.boleto.Banco;
 import org.freedom.modulos.fnc.FbnUtil.EPrefs;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -101,6 +102,10 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 	protected final JTextFieldPad txtDtIni = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	protected final JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private final JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private final JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	protected JRadioGroup<String, String> rgData;
 	
@@ -123,6 +128,8 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 	protected final JLabel lbStatus = new JLabel();
 
 	protected final ListaCampos lcBanco = new ListaCampos( this );
+	
+	protected final ListaCampos lcCarteira = new ListaCampos( this );
 
 	protected Map<Enum<EPrefs>, Object> prefs = new HashMap<Enum<EPrefs>, Object>();
 	
@@ -257,6 +264,22 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		txtCodBanco.setFK( true );
 		txtCodBanco.setRequerido( true );
 		txtNomeBanco.setListaCampos( lcBanco );
+		
+		/***************
+		 *   CARTEIRA  *
+		 ***************/
+		
+		txtCodCartCob.setNomeCampo( "CodCartCob" );
+		lcCarteira.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_PK, false ) );
+		lcCarteira.add( new GuardaCampo( txtDescCartCob, "DescCartCob", "Desc.Cart.Cob", ListaCampos.DB_SI, false ) );
+		lcCarteira.setDinWhereAdic( "CODBANCO = #S", txtCodBanco );
+		lcCarteira.montaSql( false, "CARTCOB", "FN" );
+		lcCarteira.setQueryCommit( false );
+		lcCarteira.setReadOnly( true );		
+		txtCodCartCob.setTabelaExterna( lcCarteira );
+		txtCodCartCob.setListaCampos( lcCarteira );
+		txtDescCartCob.setListaCampos( lcCarteira );
+		txtCodCartCob.setFK( true );	
 	}
 
 	private void montaTela() {
@@ -272,11 +295,15 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		JLabel periodo = new JLabel( "Periodo", SwingConstants.CENTER );
 		periodo.setOpaque( true );
 		
-		panelFiltros.setPreferredSize( new Dimension( 300, 165 ) );
+		panelFiltros.setPreferredSize( new Dimension( 300, 185 ) );
 		panelFiltros.adic( new JLabel( "Cód.banco" ), 7, 10, 90, 20 );
 		panelFiltros.adic( txtCodBanco, 7, 30, 90, 20 );
 		panelFiltros.adic( new JLabel( "Nome do banco" ), 100, 10, 300, 20 );
 		panelFiltros.adic( txtNomeBanco, 100, 30, 318, 20 );	
+		panelFiltros.adic( new JLabel( "Cód.Carteira" ), 7, 50, 90, 20 );
+		panelFiltros.adic( txtCodCartCob, 7, 70, 90, 20 );
+		panelFiltros.adic( new JLabel( "Descrição da carteira" ), 100, 50, 300, 20 );
+		panelFiltros.adic( txtDescCartCob, 100, 70, 318, 20 );	
 		
 		panelFiltros.adic( periodo, 443, 10, 80, 20 );
 		panelFiltros.adic( txtDtIni, 445, 30, 120, 20 );
@@ -284,10 +311,10 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		panelFiltros.adic( txtDtFim, 615, 30, 120, 20 );
 		panelFiltros.adic( bordaData, 433, 20, 317, 40 );	
 
-		panelFiltros.adic( new JLabel( "Tipo de remessa:" ), 7, 60, 150, 20 );
-		panelFiltros.adic( rgTipoRemessa, 7, 80, 150, 70 );
-		panelFiltros.adic( new JLabel( "filtro:" ), 170, 60, 250, 20 );
-		panelFiltros.adic( rgSitRemessa, 170, 80, 250, 70 );
+		panelFiltros.adic( new JLabel( "Tipo de remessa:" ), 7, 90, 150, 20 );
+		panelFiltros.adic( rgTipoRemessa, 7, 110, 150, 70 );
+		panelFiltros.adic( new JLabel( "filtro:" ), 170, 90, 250, 20 );
+		panelFiltros.adic( rgSitRemessa, 170, 110, 250, 70 );
 		panelFiltros.adic( new JLabel( "filtro:" ), 433, 60, 150, 20 );
 		panelFiltros.adic( rgData, 433, 80, 150, 70 );
 	
@@ -357,9 +384,13 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 	protected boolean setPrefs() {
 
 		boolean retorno = false;
-
+		Banco banco = null;
 		try {
 			
+			//if(Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() )) {
+				banco = new BancodoBrasil();
+			//}
+
 			StringBuilder sql = new StringBuilder();
 			
 			sql.append( "SELECT I.CODCONV, P.NOMEEMP, P.NOMEEMPCNAB, I.VERLAYOUT, I.IDENTSERV, I.CONTACOMPR, " );
@@ -401,7 +432,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				prefs.put( EPrefs.NROSEQ, new Integer( rs.getInt( EPrefs.NROSEQ.toString() ) ) );
 
 				if ( rs.getString( "AGENCIACONTA" ) != null ) {
-					String[] agencia = Boleto.getCodSig( rs.getString( "AGENCIACONTA" ) );
+					String[] agencia = banco.getCodSig( rs.getString( "AGENCIACONTA" ) );
 					prefs.put( EPrefs.AGENCIA, agencia[ 0 ] );
 					prefs.put( EPrefs.DIGAGENCIA, agencia[ 1 ] );
 				}
@@ -411,7 +442,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				}
 				
 				if ( rs.getString( EPrefs.NUMCONTA.toString() ) != null ) {
-					String[] conta = Boleto.getCodSig( rs.getString( EPrefs.NUMCONTA.toString() ) );
+					String[] conta = banco.getCodSig( rs.getString( EPrefs.NUMCONTA.toString() ) );
 					prefs.put( EPrefs.NUMCONTA, conta[ 0 ] );
 					prefs.put( EPrefs.DIGCONTA, conta[ 1 ] );
 				}
@@ -450,9 +481,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			rs.close();
 			ps.close();
 			
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( Exception e ) {
 			retorno = false;
 			Funcoes.mensagemErro( this, "Carregando parâmetros!\n" + e.getMessage() );
@@ -469,6 +498,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		ResultSet rs = null;
 		StringBuilder sSQL = new StringBuilder();
 		String sDtFiltro = "E".equals( rgData.getVlrString() ) ? "IR.DTITREC" : "IR.DTVENCITREC";
+		StringBuilder sWhere = new StringBuilder();
 
 		if ( "00".equals( rgSitRemessa.getVlrString() ) ) {
 			where = "AND ( FR.SITREMESSA IS NULL OR FR.SITREMESSA='00' ) AND ( FR.SITRETORNO IS NULL OR FR.SITRETORNO='00' ) ";
@@ -478,6 +508,9 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		}
 		else if ( "02".equals( rgSitRemessa.getVlrString() ) ) {
 			where = "AND ( FR.SITRETORNO IS NOT NULL AND FR.SITRETORNO<>'00' ) ";
+		}
+		else if( !"".equals( txtCodCartCob.getVlrString() )){
+			sWhere.append( " AND IR.CODCARTCOB=? " + txtCodCartCob.getVlrString() + " AND ");
 		}
 
 		sSQL.append( "SELECT IR.CODREC, IR.NPARCITREC, R.DOCREC, R.CODCLI, C.RAZCLI, IR.DTITREC, IR.DTVENCITREC," );
@@ -493,6 +526,10 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		sSQL.append( "FR.CODEMPBO=IR.CODEMPBO AND FR.CODFILIALBO=IR.CODFILIALBO AND FR.CODBANCO=IR.CODBANCO " );
 		sSQL.append( "WHERE R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC AND " );
 		sSQL.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND " );
+		if( !"".equals( txtCodCartCob.getVlrString() )){
+			sSQL.append( " IR.CODCARTCOB = " + txtCodCartCob.getVlrString()  + " AND " );
+		}
+		sSQL.append( sWhere.toString() );
 		sSQL.append( sDtFiltro );
 		sSQL.append( " BETWEEN ? AND ? AND IR.STATUSITREC IN ('R1','RL') AND " );
 		sSQL.append( "IR.CODEMPBO=? AND IR.CODFILIALBO=? AND IR.CODBANCO=? " );
@@ -551,9 +588,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
  			rs.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 			if ( i > 0 ) {
 				lbStatus.setText( "     tabela carregada com " + i + " itens..." );
@@ -791,9 +826,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 				ps.executeUpdate();
 			}
-			if ( ! con.getAutoCommit() ) {
-				con.commit();				
-			}
+			con.commit();				
 			
 			retorno = true;
 			
@@ -869,9 +902,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				ps.executeUpdate();
 			}
 			
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 			retorno = true;
 
@@ -902,9 +933,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			ps.setString( 7, TIPO_FEBRABAN );
 			ps.executeUpdate();
 			ps.close();
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		}
 		catch ( SQLException e ) {
 			retorno = false;
@@ -957,10 +986,11 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 	public void mouseReleased( MouseEvent e ) { }
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcBanco.setConexao( cn );
+		lcCarteira.setConexao( cn );
 	}
 	
 	enum EColTab {

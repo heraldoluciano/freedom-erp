@@ -7,14 +7,14 @@
  * Pacote: org.freedom.modulos.std <BR>
  * Classe: @(#)FModBoleto.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  *
  * Monta o org.freedom.layout para o boleto bancário.
  * 
@@ -29,7 +29,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -54,6 +53,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FTabDados;
 
 public class FModBoleto extends FTabDados implements ActionListener, JComboBoxListener, CheckBoxListener {
@@ -90,6 +90,8 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 	
 	private final JTextFieldPad txtConvCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 	
+	private final JTextFieldPad txtDvConvCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
 	private final JCheckBoxPad ckPreImp = new JCheckBoxPad( "Usa boleto pré-impresso ?", "S", "N" );
 
 	private final JTextAreaPad txaBoleto = new JTextAreaPad( 10000 );
@@ -108,7 +110,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 	
 	private final JTextFieldPad txtEspecie = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
-	private final JTextFieldPad txtMdeCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	private final JTextFieldPad txtMdeCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 	
 	private final JCheckBoxPad ckAceite = new JCheckBoxPad( "Aceite ?", "S", "N" );
 	
@@ -134,7 +136,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 	
 	private final Navegador navBancos = new Navegador( true );
 	
-	private final ListaCampos lcConta = new ListaCampos( this, "CC" );
+	private final ListaCampos lcConta = new ListaCampos( this, "CT" );
 	
 	private final ListaCampos lcBanco = new ListaCampos( this, "BO" );
 	
@@ -147,7 +149,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 
 		super();
 		setTitulo( "Modelo de boleto/Recibo" );
-		setAtribos( 30, 30, 700, 450 );
+		setAtribos( 30, 30, 730, 500 );
 
 		
 		lcItModBol.setMaster( lcCampos );
@@ -371,8 +373,8 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		adicCampo( txtMdeCob, 353, 30, 97, 20, "mdeCob" , "Modalidade", ListaCampos.DB_SI, true );
 		adicDB( ckPreImp, 460, 30, 200, 20, "PreImpModBol", "", false );
 		adicDB( cbImpDoc, 460, 60, 200, 20, "ImpInfoParc", "", false );
-		adicCampo( txtCodConta, 7, 70, 90, 20, "NumConta", "Nº da conta", ListaCampos.DB_FK, txtDescConta, false );
-		adicDescFK( txtDescConta, 100, 70, 350, 20, "DescConta", "Descrição da conta" );
+//		adicCampo( txtCodConta, 7, 70, 90, 20, "NumConta", "Nº da conta", ListaCampos.DB_FK, txtDescConta, false );
+//		adicDescFK( txtDescConta, 100, 70, 350, 20, "DescConta", "Descrição da conta" );
 		adicDBLiv( txaBoleto, "TxaModBol", "Corpo", false );
 		adicDBLiv( txtClassModBol, "ClassModBol", "Classe modelo", false );
 		adicDBLiv( txtEspecie, "EspDocModBol", "Espécie Doc.", false );
@@ -426,7 +428,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		
 		panelBancos.add( new JScrollPane( tabBancos ), BorderLayout.CENTER );
 		
-		panelCamposBancos.setPreferredSize( new Dimension( 600, 100 ) );	
+		panelCamposBancos.setPreferredSize( new Dimension( 600, 140 ) );	
 		
 		setPainel( panelCamposBancos );
 		
@@ -437,8 +439,14 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		adicDescFK( txtNomeBanco, 90, 30, 200, 20, "NomeBanco", "Nome do banco");
 		adicCampo( txtCodCartCob, 293, 30, 80, 20, "CodCartCob", "Cart.cob.", ListaCampos.DB_PF, txtDescCartCob, true );
 		adicDescFK( txtDescCartCob, 376, 30, 200, 20, "DescCartCob", "Descrição da carteira de cobrança" );
-		adicCampo( txtConvCob, 579, 30, 80 ,20, "ConvCob", "Convênio cob.", ListaCampos.DB_SI, true);
-		adic( navBancos, 0, 65, 270, 30 );
+		adicCampo( txtConvCob, 579, 30, 70 ,20, "ConvCob", "Convênio cob.", ListaCampos.DB_SI, true);
+		adicCampo( txtDvConvCob, 652, 30, 50 ,20, "DvConvCob", "Dig.", ListaCampos.DB_SI, false);
+		
+		adicCampo( txtCodConta, 7, 70, 80, 20, "NumConta", "Nº da conta", ListaCampos.DB_FK, txtDescConta, false );
+		adicDescFK( txtDescConta, 90, 70, 283, 20, "DescConta", "Descrição da conta" );
+
+		
+		adic( navBancos, 0, 105, 270, 30 );
 		
 		setListaCampos( false, "ITMODBOLETO", "FN" );
 		
@@ -568,7 +576,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		}*/
 	}
 	
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 		
 		super.setConexao( cn );
 		

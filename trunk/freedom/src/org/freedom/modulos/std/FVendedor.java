@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FVendedor.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -27,17 +27,22 @@ package org.freedom.modulos.std;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
+import org.freedom.componentes.Endereco;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -50,6 +55,7 @@ import org.freedom.componentes.PainelImagem;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
+import org.freedom.webservices.WSCep;
 
 
 public class FVendedor extends FTabDados implements PostListener {
@@ -132,6 +138,12 @@ public class FVendedor extends FTabDados implements PostListener {
 
 	private JTextFieldFK txtDescSetor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldPad txtCodConta = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtNumConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+
+	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
 	private PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
@@ -145,12 +157,18 @@ public class FVendedor extends FTabDados implements PostListener {
 	private ListaCampos lcFuncao = new ListaCampos( this, "FU" );
 	
 	private ListaCampos lcTipoComis = new ListaCampos( this, "TV" );
+	
+	private ListaCampos lcConta = new ListaCampos( this, "CA" );	
+	
+	private JButton btBuscaEnd = new JButton( Icone.novo( "btBuscacep.gif" ) );
+	
+	private Map<String, Object> bPref = null;
 
 	public FVendedor() {
 
 		super();
 		setTitulo( "Cadastro de comissionados" );
-		setAtribos( 50, 10, 440, 560 );
+		setAtribos( 50, 10, 440, 590 );
 
 		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, txtDescPlan, false ) );
 		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descriçao do planejamento", ListaCampos.DB_SI, false ) );
@@ -187,10 +205,22 @@ public class FVendedor extends FTabDados implements PostListener {
 		lcTipoComis.setQueryCommit( false );
 		lcTipoComis.setReadOnly( true );
 		lcTipoComis.montaSql( false, "TIPOVEND", "VD" );
+		
+		lcConta.add( new GuardaCampo( txtNumConta, "NumConta", "num.Conta", ListaCampos.DB_PK, false ) );
+		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descriçao da conta", ListaCampos.DB_SI, false ) );
+		lcConta.montaSql( false, "CONTA", "FN" );
+		lcConta.setQueryCommit( false );
+		lcConta.setReadOnly( true );
+		txtNumConta.setTabelaExterna( lcConta );
+		
+		
 
+	}
+	
+	private void montaTela(){
+		
 		setPainel( pinComiss );
 		adicTab( "Comissionado", pinComiss );
-
 		adicCampo( txtCodVend, 7, 20, 100, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, true );
 		adicCampo( txtNomeVend, 110, 20, 192, 20, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, true );
 		adicDB( cbAtivo, 305, 20, 70, 20, "AtivoComis", "Ativo", true );
@@ -199,12 +229,13 @@ public class FVendedor extends FTabDados implements PostListener {
 		adicCampo( txtSSPVend, 292, 60, 80, 20, "SSPVend", "Orgão exp.", ListaCampos.DB_SI, false );
 		adicCampo( txtCnpjVend, 7, 100, 180, 20, "CnpjVend", "CNPJ", ListaCampos.DB_SI, false );
 		adicCampo( txtInscVend, 190, 100, 182, 20, "InscVend", "IE", ListaCampos.DB_SI, false );
-		adicCampo( txtEndVend, 7, 140, 260, 20, "EndVend", "Endereço", ListaCampos.DB_SI, false );
-		adicCampo( txtNumVend, 270, 140, 50, 20, "NumVend", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtComplVend, 323, 140, 49, 20, "ComplVend", "Compl.", ListaCampos.DB_SI, false );
-		adicCampo( txtBairVend, 7, 180, 120, 20, "BairVend", "Bairro", ListaCampos.DB_SI, false );
-		adicCampo( txtCidVend, 130, 180, 120, 20, "CidVend", "Cidade", ListaCampos.DB_SI, false );
-		adicCampo( txtCepVend, 253, 180, 80, 20, "CepVend", "Cep", ListaCampos.DB_SI, false );
+		adicCampo( txtCepVend, 7, 140, 70, 20, "CepVend", "Cep", ListaCampos.DB_SI, false );
+		adic( btBuscaEnd, 80, 140, 20, 20 );
+		adicCampo( txtEndVend, 103, 140, 220, 20, "EndVend", "Endereço", ListaCampos.DB_SI, false );
+		adicCampo( txtNumVend, 326, 140, 47, 20, "NumVend", "Num.", ListaCampos.DB_SI, false );
+		adicCampo( txtComplVend, 7, 180, 50, 20, "ComplVend", "Compl.", ListaCampos.DB_SI, false );
+		adicCampo( txtBairVend, 60, 180, 120, 20, "BairVend", "Bairro", ListaCampos.DB_SI, false );
+		adicCampo( txtCidVend, 183, 180, 150, 20, "CidVend", "Cidade", ListaCampos.DB_SI, false );
 		adicCampo( txtUFVend, 336, 180, 36, 20, "UFVend", "UF", ListaCampos.DB_SI, false );
 		adicCampo( txtDDDFoneVend, 7, 220, 40, 20, "DDDFoneVend", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtFoneVend, 50, 220, 77, 20, "FoneVend", "Telefone", ListaCampos.DB_SI, false );
@@ -223,6 +254,18 @@ public class FVendedor extends FTabDados implements PostListener {
 		adicDescFK( txtDescFunc, 110, 380, 262, 20, "DescFunc", "Descrição da função" );
 		adicCampo( txtCodTipoVend, 7, 420, 100, 20, "CodTipoVend", "Cód.tp.vend", ListaCampos.DB_FK, txtDescTipoVend, false );
 		adicDescFK( txtDescTipoVend, 110, 420, 262, 20, "DescTipoVend", "Descrição do tipo de comissionado" );
+		adicCampo( txtNumConta, 7, 500, 100, 20, "NumConta", "Cód.conta", ListaCampos.DB_FK, txtDescConta, false );
+		adicDescFK( txtDescConta, 110, 500, 262, 20, "DescConta", "Descrição da conta" );
+		
+		if ( (Boolean)bPref.get( "BUSCACEP" )) {
+			btBuscaEnd.setEnabled( true );
+		}
+		else {
+			btBuscaEnd.setEnabled( false );
+		}
+		
+		btBuscaEnd.addActionListener( this );
+		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
 		
 		txtCpfVend.setMascara( JTextFieldPad.MC_CPF );
 		txtCnpjVend.setMascara( JTextFieldPad.MC_CNPJ );
@@ -247,6 +290,8 @@ public class FVendedor extends FTabDados implements PostListener {
 		lcCampos.setQueryInsert( false );
 		
 		setImprimir( true );
+		
+		
 	}
 
 	private void montaSetor() {
@@ -298,13 +343,131 @@ public class FVendedor extends FTabDados implements PostListener {
 		return bRet;
 
 	}
+	
+	private Map<String, Object> getPrefere() {
+
+		Map<String, Object> retorno = new HashMap<String, Object>();
+		StringBuilder sSQL = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			sSQL.append( "SELECT BUSCACEP " );
+			sSQL.append( "FROM SGPREFERE1 P  " );
+			sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?" );
+
+			try {
+			
+				ps = con.prepareStatement( sSQL.toString() );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+				
+				rs = ps.executeQuery();
+				
+				if ( rs.next() ) {
+					
+					retorno.put( "BUSCACEP", new Boolean( "S".equals( rs.getString( "BUSCACEP" ) ) )  );					
+				}
+				
+				rs.close();
+				ps.close();
+				
+				con.commit();
+			} catch ( SQLException err ) {
+				
+				Funcoes.mensagemErro( this, "Erro ao verificar preferências!\n" + err.getMessage(), true, con, err );
+				err.printStackTrace();
+			}
+		} finally {
+			sSQL = null;
+			ps = null;
+			rs = null;
+		}
+		return retorno;
+	}
+	
+	private void buscaEndereco() {
+
+		if( ! "".equals( txtCepVend.getVlrString() ) ) {
+		
+			txtEndVend.setEnabled( false );
+			txtComplVend.setEnabled( false );
+			txtBairVend.setEnabled( false );
+			txtCidVend.setEnabled( false );
+			txtUFVend.setEnabled( false );
+			//txtCodPais.setEnabled( false );
+			//txtSiglaUF.setEnabled( false );
+			//txtCodMun.setEnabled( false );		
+			txtDDDFoneVend.setEnabled( false );
+			txtDDDFaxVend.setEnabled( false );
+			txtDDDCelVend.setEnabled( false );
+			
+			Thread th = new Thread(
+					new Runnable() {
+				        public void run() {
+				        	try {
+					    		WSCep cep = new WSCep();
+								cep.setCon( con );
+								cep.setCep( txtCepVend.getVlrString() );
+								cep.busca();
+								Endereco endereco = cep.getEndereco();
+							
+								txtEndVend.setVlrString( endereco.getTipo() + " " + endereco.getLogradouro() );
+								txtComplVend.setVlrString( endereco.getComplemento() );
+								txtBairVend.setVlrString( endereco.getBairro() ) ;
+								txtCidVend.setVlrString( endereco.getCidade() ) ;
+								txtUFVend.setVlrString( endereco.getSiglauf() ) ;
+								//txtCodPais.setVlrInteger( endereco.getCodpais() );
+								//txtSiglaUF.setVlrString( endereco.getSiglauf() );
+								//txtCodMun.setVlrString( endereco.getCodmunic() );
+								
+								//lcPais.carregaDados();
+								//lcUF.carregaDados();
+								//lcMunic.carregaDados();
+								
+								txtNumVend.requestFocus();
+				        	}
+				        	catch (Exception e) {
+				        		Funcoes.mensagemInforma( null, "Não foi encontrado o endereço para o CEP informado!" );
+							}
+				        	finally {
+								txtEndVend.setEnabled( true );
+								txtComplVend.setEnabled( true );
+								txtBairVend.setEnabled( true );
+								txtCidVend.setEnabled( true );
+								txtUFVend.setEnabled( true );
+								//txtCodPais.setEnabled( true );
+								//txtSiglaUF.setEnabled( true );
+								//txtCodMun.setEnabled( true );		
+								txtDDDFoneVend.setEnabled( true );
+								txtDDDFaxVend.setEnabled( true );
+								txtDDDCelVend.setEnabled( true );
+				        	}
+				        }
+					}
+			);
+			try {
+				th.start();
+			}
+			catch(Exception err) {
+				Funcoes.mensagemInforma( null, "Não foi encontrado o endereço para o CEP informado!" );
+				txtCepVend.requestFocus();
+			}
+		}
+		else {
+			Funcoes.mensagemInforma( null, "Digite um CEP para busca!" );
+			txtCepVend.requestFocus();
+		}
+		
+	}
 
 	private void imprimir( boolean bVisualizar ) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sSQL = "";
-		String sWhere = "";
+		String sWhere = "";  
 		String sValores[] = null;
 		int linPag = 0;
 		int iContaReg = 0;
@@ -422,8 +585,7 @@ public class FVendedor extends FTabDados implements PostListener {
 			imp.eject();
 
 			imp.fechaGravacao();
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 			dl.dispose();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de clientes!\n" + err.getMessage(), true, con, err );
@@ -444,15 +606,20 @@ public class FVendedor extends FTabDados implements PostListener {
 			imp.print();
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		bPref = getPrefere();
+		
+		montaTela();
+		
 		if ( ehSetorVend() )
 			montaSetor();
 		lcClComis.setConexao( cn );
 		lcPlan.setConexao( cn );
 		lcFuncao.setConexao( cn );
 		lcTipoComis.setConexao( cn );
+		lcConta.setConexao( cn );
 		setListaCampos( true, "VENDEDOR", "VD" );
 	}
 
@@ -463,18 +630,23 @@ public class FVendedor extends FTabDados implements PostListener {
 		}
 		else if ( evt.getSource() == btImp )
 			imprimir( false );
+		else if (evt.getSource() == btBuscaEnd ){
+			buscaEndereco();
+		}
 		super.actionPerformed( evt );
 	}
+	
+	
 
 	public void beforePost( PostEvent pevt ) {
 
 		if ( txtInscVend.getText().trim().length() < 1 ) {
-			if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION )
-				txtInscVend.setVlrString( "ISENTO" );
+			if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTA?" ) == JOptionPane.OK_OPTION )
+				txtInscVend.setVlrString( "ISENTA" );
 			pevt.cancela();
 			txtInscVend.requestFocus();
 		}
-		else if ( txtInscVend.getText().trim().toUpperCase().compareTo( "ISENTO" ) == 0 )
+		else if ( txtInscVend.getText().trim().toUpperCase().compareTo( "ISENTA" ) == 0 )
 			return;
 		else if ( txtUFVend.getText().trim().length() < 2 ) {
 			pevt.cancela();

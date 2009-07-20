@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FRComprasFor.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -24,7 +24,7 @@
 
 package org.freedom.modulos.std;
 
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -69,14 +69,20 @@ public class FRComprasFor extends FRelatorio {
 	
 	private Vector<String> vVals1 = new Vector<String>();
 	
+	private Vector<String> vLabs2 = new Vector<String>();
+	
+	private Vector<String> vVals2 = new Vector<String>();
+	
 	private JRadioGroup<?, ?> rgTipo = null;
+	
+	private JRadioGroup<?, ?> rgResumido = null;
 
 	private String sCodProd = "CODPROD";
 
 	public FRComprasFor() {
 
 		setTitulo( "Compras por Fornecedor" );
-		setAtribos( 50, 50, 340, 225 );
+		setAtribos( 50, 50, 340, 265 );
 
 		lcFor.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcFor.add( new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
@@ -93,6 +99,14 @@ public class FRComprasFor extends FRelatorio {
 		    
  		rgTipo = new JRadioGroup<String, String>(1,2,vLabs1,vVals1);
  		rgTipo.setVlrString("T");
+ 		
+ 		vLabs2.addElement("Resumido");
+ 		vLabs2.addElement("Detalhado"); 
+ 		vVals2.addElement("R");
+ 		vVals2.addElement("D");
+		    
+ 		rgResumido = new JRadioGroup<String, String>(1,2,vLabs2,vVals2);
+ 		rgResumido.setVlrString("D");
 		
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
@@ -111,6 +125,7 @@ public class FRComprasFor extends FRelatorio {
 		adic( new JLabelPad( "Descrição do fornecedor" ), 80, 60, 280, 20 );
 		adic( txtDescFor, 80, 80, 225, 20 );
 		adic( rgTipo, 7, 105, 300, 30 );
+		adic( rgResumido, 7, 145, 300, 30 );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -130,32 +145,45 @@ public class FRComprasFor extends FRelatorio {
 		StringBuffer sSQL = new StringBuffer();
 		StringBuffer sWhere = new StringBuffer();
 		StringBuilder sCab = new StringBuilder();
+		int iparam = 1;
 		
 
 		ehRef();
 
-		if ( txtCodFor.getText().trim().length() > 0 ) {
-			
-			sWhere.append( " AND C.CODFOR = " );
-			sWhere.append( txtCodFor.getText().trim() );
-			sCab.append( "Fornecedro: " + txtDescFor.getVlrString() );
+		if ( txtCodFor.getText().trim().length() > 0 ) {			
+			sWhere.append( " AND C.CODEMPFR=? AND C.CODFILIALFR=? AND C.CODFOR = ? " );
+			sCab.append( "Fornecedor: " + txtDescFor.getVlrString() );
 		}
 		
-		sSQL.append( "SELECT C.CODFOR,F.RAZFOR,C.DTEMITCOMPRA,C.CODCOMPRA,C.DOCCOMPRA," ); 
-		sSQL.append( "IT." + sCodProd );
-		sSQL.append( ",P.DESCPROD,IT.QTDITCOMPRA,IT.PRECOITCOMPRA,IT.VLRLIQITCOMPRA " );
+		sSQL.append( "SELECT C.CODFOR,F.RAZFOR,C.DTEMITCOMPRA,C.CODCOMPRA,C.DOCCOMPRA,C.DTEMITCOMPRA, C.DTENTCOMPRA, C.VLRICMSCOMPRA, C.VLRCOMPRA," ); 
+		sSQL.append( "IT.CODPROD,P.REFPROD" );
+		sSQL.append( ",P.DESCPROD,IT.QTDITCOMPRA,IT.PRECOITCOMPRA,IT.VLRLIQITCOMPRA,C.VLRLIQCOMPRA " );
 		sSQL.append( "FROM CPCOMPRA C,CPITCOMPRA IT,EQPRODUTO P,CPFORNECED F " ); 
-		sSQL.append( "WHERE P.CODPROD = IT.CODPROD AND IT.CODCOMPRA = C.CODCOMPRA AND F.CODFOR = C.CODFOR " );
-		sSQL.append( "AND C.DTEMITCOMPRA BETWEEN ? AND ? " ); 
+		sSQL.append( "WHERE P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPROD AND ");
+		sSQL.append( "IT.CODEMP=C.CODEMP AND IT.CODFILIAL=C.CODFILIAL AND IT.CODCOMPRA=C.CODCOMPRA AND ");
+		sSQL.append( "F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR = C.CODFOR " );
+		sSQL.append( "AND C.DTENTCOMPRA BETWEEN ? AND ? " ); 
 		sSQL.append( sWhere ); 
-		sSQL.append( " AND C.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) ); 
-		sSQL.append( " ORDER BY C.CODFOR,C.DTEMITCOMPRA" );
+		sSQL.append( " AND C.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
+		sSQL.append( " AND C.CODEMP=? AND C.CODFILIAL=? " );
+		sSQL.append( " ORDER BY C.CODFOR, C.CODCOMPRA, IT.CODPROD, C.DTENTCOMPRA" );
 		
 		try {
 			
 			ps = con.prepareStatement( sSQL.toString() );
-			ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			
+			if ( txtCodFor.getText().trim().length() > 0 ) {			
+				
+				ps.setInt( iparam++, lcFor.getCodEmp());
+				ps.setInt( iparam++, lcFor.getCodFilial() );
+				ps.setInt( iparam++, txtCodFor.getVlrInteger() );
+			}
+			
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+				
 				
 			rs = ps.executeQuery();
 				
@@ -308,9 +336,7 @@ public class FRComprasFor extends FRelatorio {
 			imp.eject();
 			imp.fechaGravacao();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 		}catch( SQLException err ){
 			
@@ -326,13 +352,21 @@ public class FRComprasFor extends FRelatorio {
 		
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
+		String relatorio = "";
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
 		hParam.put( "FILTROS", sCab );
 
-		dlGr = new FPrinterJob( "relatorios/FRComprasFor.jasper", "Relatório de Compras por fornecedor", sCab, rs, hParam, this );
+		if( rgResumido.getVlrString().equals( "R" )){
+			relatorio = "FRComprasForRes.jasper"; 
+		}
+		else if( rgResumido.getVlrString().equals( "D" )){
+			relatorio = "FRComprasFor.jasper"; 
+		}
+		
+		dlGr = new FPrinterJob( "relatorios/" + relatorio, "Relatório de Compras por fornecedor", sCab, rs, hParam, this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -367,16 +401,14 @@ public class FRComprasFor extends FRelatorio {
 			rs.close();
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage() );
 		}		
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcFor.setConexao( cn );

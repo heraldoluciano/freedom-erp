@@ -8,13 +8,13 @@
  * Classe:
  * @(#)ImprimeOrc.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -27,7 +27,7 @@ package org.freedom.modulos.std;
 import java.awt.BasicStroke;
 import java.awt.Font;
 import java.sql.Blob;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,7 +45,7 @@ public class ImprimeOrc extends ImprimeLayout {
 
 	private static final long serialVersionUID = 1L;
 
-	private Connection con = null;
+	private DbConnection con = null;
 
 	private int iCodOrc = 0;
 
@@ -104,10 +104,10 @@ public class ImprimeOrc extends ImprimeLayout {
 			sSQL.append( ( pref[ 0 ] ? "IT.REFPROD," : "IT.CODPROD," ) );
 			sSQL.append( " O.VLRDESCITORC, O.CODORC,O.DTORC,O.DTVENCORC," );
 			sSQL.append( " O.OBSORC,O.VLRLIQORC,P.CODBARPROD, P.DESCPROD,IT.QTDITORC,IT.VLRDESCITORC,IT.VLRLIQITORC," );
-			sSQL.append( " O.VLRDESCORC,  O.VLRADICORC, O.VLRPRODORC, F.CIDFILIAL, CL.CODCLI," );
+			sSQL.append( " O.VLRDESCORC,  O.VLRADICORC, O.VLRPRODORC, M.NOMEMUNIC, CL.CODCLI," );
 			sSQL.append( " CL.RAZCLI,CL.ENDCLI,CL.NUMCLI,CL.BAIRCLI,CL.CIDCLI,CL.UFCLI,CL.DDDCLI," );
 			sSQL.append( "CL.FONECLI,IT.OBSITORC,PL.DESCPLANOPAG,VD.NOMEVEND,CL.CONTCLI,O.PRAZOENTORC,O.CODVEND " );
-			sSQL.append( " FROM VDORCAMENTO O, VDITORCAMENTO IT, EQPRODUTO P, SGFILIAL F, VDCLIENTE CL,FNPLANOPAG PL,VDVENDEDOR VD" );
+			sSQL.append( " FROM VDORCAMENTO O, VDITORCAMENTO IT, EQPRODUTO P, SGFILIAL F, VDCLIENTE CL,FNPLANOPAG PL,VDVENDEDOR VD, SGMUNICIPIO M" );
 			sSQL.append( " WHERE IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND IT.TIPOORC=O.TIPOORC" );
 			sSQL.append( " AND P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD" );
 			sSQL.append( " AND F.CODEMP=O.CODEMP AND F.CODFILIAL=O.CODFILIAL" );
@@ -115,6 +115,7 @@ public class ImprimeOrc extends ImprimeLayout {
 			sSQL.append( " AND O.CODVEND=VD.CODVEND AND O.CODFILIALVD=VD.CODFILIAL AND O.CODEMPVD=VD.CODEMP" );
 			sSQL.append( " AND O.TIPOORC = 'O' AND O.CODORC=? AND O.CODEMP=? AND O.CODFILIAL=?" );
 			sSQL.append( " AND CL.CODEMP=O.CODEMP AND CL.CODFILIAL=O.CODFILIAL AND CL.CODCLI=O.CODCLI " );
+			sSQL.append( " AND F.CODMUNIC=M.CODMUNIC AND F.CODPAIS=M.CODPAIS AND F.SIGLAUF=M.SIGLAUF " );
 			sSQL.append( " ORDER BY IT.CODORC,IT.CODITORC" );
 
 			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
@@ -459,7 +460,7 @@ public class ImprimeOrc extends ImprimeLayout {
 		return bRetorno;
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		con = cn;
 	}

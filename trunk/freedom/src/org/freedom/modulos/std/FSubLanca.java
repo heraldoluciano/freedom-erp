@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FSubLanca.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -30,22 +30,27 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameEvent;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
 import org.freedom.acao.DeleteListener;
 import org.freedom.acao.EditEvent;
 import org.freedom.acao.EditListener;
+import org.freedom.acao.JComboBoxEvent;
+import org.freedom.acao.JComboBoxListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
@@ -53,16 +58,20 @@ import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JComboBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.funcoes.FuncoesCRM;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
-public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusListener, EditListener, PostListener, DeleteListener, ActionListener {
+public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusListener, EditListener, PostListener, DeleteListener, ActionListener, CarregaListener, JComboBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -105,7 +114,11 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	private JTextFieldPad txtVlrAtualLanca = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
-
+	
+	private JTextFieldPad txtCodContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodItContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
@@ -129,6 +142,10 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
 
 	private ListaCampos lcFor = new ListaCampos( this, "FR" );
+	
+	private ListaCampos lcContrato = new ListaCampos( this, "" );
+	
+	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
 
 	private String sCodLanca = "";
 
@@ -145,11 +162,33 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	private JLabelPad lbRazFor = null;
 
 	private JLabelPad lbCodCli = null;
-
+	
 	private JLabelPad lbCodFor = null;
+	
+	private HashMap<String, Object> prefere = null;
+	
+	private JPanelPad pnTipoLanca = new JPanelPad();
+	
+	private Vector<String> vValsTipo = null;
+	
+	private Vector<String> vLabsTipo = null;
+	
+	private Vector<Integer> vValsContr = new Vector<Integer>();
 
+	private Vector<String> vLabsContr = new Vector<String>();
+
+	private JComboBoxPad cbContr = new JComboBoxPad( vLabsContr, vValsContr, JComboBoxPad.TP_INTEGER, 8, 0 );
+	
+	private Vector<Integer> vValsitContr = new Vector<Integer>();
+
+	private Vector<String> vLabsitContr = new Vector<String>();
+
+	private JComboBoxPad cbitContr = new JComboBoxPad( vLabsitContr, vValsitContr, JComboBoxPad.TP_INTEGER, 8, 0 );
+
+	
 	public FSubLanca( String sCodL, String sCodP, Date dini, Date dfim ) {
 
+		lcItContrato.setMaster( lcContrato );
 		dIni = dini;
 		dFim = dfim;
 
@@ -159,23 +198,14 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		pnCab.remove( 1 ); // Remove o navegador do cabeçalho
 
 		setTitulo( "Sub-Lançamentos" );
-		setAtribos( 20, 1, 655, 480 );
-
-		Vector<String> vVals = new Vector<String>();
-		vVals.addElement( "A" );
-		vVals.addElement( "F" );
-		vVals.addElement( "C" );
-		Vector<String> vLabs = new Vector<String>();
-		vLabs.addElement( "Avulso" );
-		vLabs.addElement( "Fornecedor" );
-		vLabs.addElement( "Cliente" );
-		rgTipoLanca = new JRadioGroup<String, String>( 1, 3, vLabs, vVals );
-		rgTipoLanca.addRadioGroupListener( this );
-
-		txtVlrAtualLanca.setAtivo( false );
+		setAtribos( 20, 1, 655, 450 );
+		
+		prefere = getPrefere(Aplicativo.getInstace().getConexao());
+						
+		txtVlrAtualLanca.setAtivo( false );				
 
 		txtCodPlan.setTipo( JTextFieldPad.TP_STRING, 13, 0 );
-		lcPlan.add( new GuardaCampo( txtCodPlanSub, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, txtDescPlan, false ) );
+		lcPlan.add( new GuardaCampo( txtCodPlanSub, "CodPlan", "Cód.planejamento", ListaCampos.DB_PK, txtDescPlan, false ) );
 		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do planejamento", ListaCampos.DB_SI, false ) );
 		lcPlan.setReadOnly( true );
 		lcPlan.setQueryCommit( false );
@@ -183,7 +213,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		txtCodPlanSub.setTabelaExterna( lcPlan );
 		txtDescPlan.setListaCampos( lcPlan );
 
-		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli", ListaCampos.DB_PK, txtDescPlan, false ) );
+		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli", ListaCampos.DB_PK, txtRazCli, false ) );
 		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.setReadOnly( true );
 		lcCli.setQueryCommit( false );
@@ -212,6 +242,19 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		txtDescCC.setListaCampos( lcCC );
 		txtSiglaCC.setListaCampos( lcCC );
 
+		lcContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contr.", ListaCampos.DB_PK, false ) );
+		lcContrato.setReadOnly( true );
+		lcContrato.setQueryCommit( false );
+		lcContrato.montaSql( false, "CONTRATO", "VD" );
+		txtCodContr.setTabelaExterna( lcContrato );
+
+		lcItContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.It.Contr.", ListaCampos.DB_PF, false ) );
+		lcItContrato.add( new GuardaCampo( txtCodItContr, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_PK, false ) );		
+		lcItContrato.setReadOnly( true );
+		lcItContrato.setQueryCommit( false );
+		lcItContrato.montaSql( false, "ITCONTRATO", "VD" );
+		txtCodItContr.setTabelaExterna( lcItContrato );
+		
 		setAltCab( 190 );
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
@@ -224,29 +267,34 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		adicCampo( txtHistLanca, 270, 20, 355, 20, "HistBLanca", "Histório Bancário", ListaCampos.DB_SI, true );
 		adicDB( cbTransf, 7, 60, 80, 20, "TransfLanca", "Transferência", true );
 		adic( new JLabelPad( "Vlr. Lançamento" ), 95, 40, 100, 20 );
-		adic( txtVlrAtualLanca, 95, 60, 97, 20 );
-		adicDB( rgTipoLanca, 210, 60, 414, 28, "tipolanca", "Tipo de lançamento", true );
+		adic( txtVlrAtualLanca, 95, 60, 97, 20 );		
 
 		JPanelPad pnTxa = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 		pnTxa.add( spnTxa );
 		adic( pnTxa, 7, 95, 618, 50 );
 		adicDBLiv( txaHistLanca, "HistLanca", "Histórico descriminado", false );
+		adicDB( rgTipoLanca, 210, 60, 414, 28, "tipolanca", "Tipo de lançamento", true );
+		
 		adic( btNovo, 7, 150, 30, 30 );
 		adic( btSalvar, 37, 150, 30, 30 );
+		
 		setListaCampos( true, "LANCA", "FN" );
-		setAltDet( 150 );
+		setAltDet( 100 );
 		setPainel( pinDet, pnDet );
+		
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 		adicCampoInvisivel( txtCodSubLanca, "CodSubLanca", "Item", ListaCampos.DB_PK, false );
-		adicCampo( txtCodPlanSub, 7, 20, 100, 20, "CodPlan", "Cód.plan.", ListaCampos.DB_FK, txtDescPlan, true );
+		adicCampo( txtCodPlanSub, 7, 20, 100, 20, "CodPlan", "Cód.Planej.", ListaCampos.DB_FK, txtDescPlan, true );
 		adicDescFK( txtDescPlan, 110, 20, 207, 20, "DescPlan", "Descrição do plano de contas" );
 
 		adicCampo( txtCodCC, 320, 20, 100, 20, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, txtDescCC, false );
 		adicCampoInvisivel( txtAnoCC, "AnoCC", "Ano-base", ListaCampos.DB_FK, txtDescCC, false );
-		adicDescFK( txtDescCC, 423, 20, 207, 20, "DescCC", "Descrição do centro de custo" );
+		adicDescFK( txtDescCC, 423, 20, 202, 20, "DescCC", "Descrição do centro de custo" );
 		adicCampo( txtVlrLanca, 7, 60, 100, 20, "VlrSubLanca", " Valor", ListaCampos.DB_SI, true );
-		adicCampo( txtHistSubLanca, 110, 60, 521, 20, "HistSubLanca", "Histórico do Lancamento", ListaCampos.DB_SI, false );
+		adicCampo( txtHistSubLanca, 110, 60, 516, 20, "HistSubLanca", "Histórico do Lancamento", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtCodContr, "CodContr", "Cod.Contr.", ListaCampos.DB_FK, false );
+		adicCampoInvisivel( txtCodItContr, "CodItContr", "Cod.It.Contr.", ListaCampos.DB_FK, false );
 
 		txtCodCli.setRequerido( true );
 		txtCodFor.setRequerido( true );
@@ -255,16 +303,26 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		txtCodFor.setVisible( false );
 		txtRazFor.setVisible( false );
 
-		lbCodCli = adicCampo( txtCodCli, 7, 105, 50, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, false );
-		lbRazCli = adicDescFK( txtRazCli, 60, 105, 357, 20, "RazCli", "Razão social do cliente" );
+		adic( pnTipoLanca, 7, 85, 618, 55 );
+		pnTipoLanca.setVisible( false );
+				
+		setPainel( pnTipoLanca );
+		
+		lbCodCli = adicCampo( txtCodCli, 2, 18, 95, 20, "CodCli", "Cód. Cliente", ListaCampos.DB_FK, false );
+		lbRazCli = adicDescFK( txtRazCli, 100, 18, 503, 20, "RazCli", "Razão social do cliente" );
 
-		lbCodFor = adicCampo( txtCodFor, 7, 105, 50, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, false );
-		lbRazFor = adicDescFK( txtRazFor, 60, 105, 357, 20, "RazFor", "Razão social do fornecedor" );
-
+		lbCodFor = adicCampo( txtCodFor, 2, 18, 95, 20, "CodFor", "Cód. Fornecedor", ListaCampos.DB_FK, false );
+		lbRazFor = adicDescFK( txtRazFor, 100, 18, 503, 20, "RazFor", "Razão social do fornecedor" );
+				
 		lbCodCli.setVisible( false );
 		lbRazCli.setVisible( false );
 		lbCodFor.setVisible( false );
 		lbRazFor.setVisible( false );
+		
+		adic( new JLabelPad( "Contrato/Projeto" ), 3, 40, 284, 20 );
+		adic( cbContr, 3, 60, 284, 20 );
+		adic( new JLabelPad( "Item" ), 294, 40, 320, 20 );
+		adic( cbitContr, 294, 60, 310, 20 );
 
 		lcDet.setWhereAdic( "CODSUBLANCA > 0" );
 		setListaCampos( true, "SUBLANCA", "FN" );
@@ -285,13 +343,21 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		lcDet.addDeleteListener( this );
 		btSalvar.addActionListener( this );
 		btNovo.addActionListener( this );
+		lcCli.addCarregaListener( this );
+		lcDet.addCarregaListener( this );				
+		cbContr.addComboBoxListener( this );
+		cbitContr.addComboBoxListener( this );
+		rgTipoLanca.addRadioGroupListener( this );
+		
 	}
 
 	private void atualizaSaldo() {
 
 		try {
-			PreparedStatement ps = con.prepareStatement( "SELECT VLRLANCA FROM FNLANCA WHERE CODLANCA=?" );
-			ps.setInt( 1, txtCodLanca.getVlrInteger().intValue() );
+			PreparedStatement ps = con.prepareStatement( "SELECT VLRLANCA FROM FNLANCA WHERE CODEMP=? AND CODFILIAL=? AND CODLANCA=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp);
+			ps.setInt( 2, ListaCampos.getMasterFilial("FNLANCA"));			
+			ps.setInt( 3, txtCodLanca.getVlrInteger().intValue() );
 			ResultSet rs = ps.executeQuery();
 			if ( rs.next() )
 				txtVlrAtualLanca.setVlrBigDecimal( new BigDecimal( rs.getString( "VlrLanca" ) ) );
@@ -302,7 +368,10 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	public void valorAlterado( RadioGroupEvent rgevt ) {
 
-		if ( rgTipoLanca.getVlrString().compareTo( "A" ) == 0 ) {
+		if ( rgTipoLanca.getVlrString().compareTo( "A" ) == 0 ) {			
+			setAtribos( this.getX(), this.getY(), 655, 450 );
+			setAltDet( 100 );
+			
 			txtCodCli.setVisible( false );
 			txtRazCli.setVisible( false );
 			txtCodFor.setVisible( false );
@@ -313,8 +382,16 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 			lbCodFor.setVisible( false );
 			lbRazFor.setVisible( false );
 
+			pnTipoLanca.setVisible( false );
+
 		}
 		else if ( rgTipoLanca.getVlrString().compareTo( "F" ) == 0 ) {
+			setAtribos( this.getX(), this.getY(), 655, 520 );
+			setAltDet( 160 );
+			pnTipoLanca.setBorder( BorderFactory.createTitledBorder( "" ) );
+			pnTipoLanca.setSize( pnTipoLanca.getWidth(), 55 );
+			
+			pnTipoLanca.setVisible( true );			
 			txtCodCli.setVisible( false );
 			txtRazCli.setVisible( false );
 			txtCodFor.setVisible( true );
@@ -324,20 +401,43 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 			lbRazCli.setVisible( false );
 			lbCodFor.setVisible( true );
 			lbRazFor.setVisible( true );
-
 		}
 		else if ( rgTipoLanca.getVlrString().compareTo( "C" ) == 0 ) {
+			setAtribos( this.getX(), this.getY(), 655, 520 );
+			setAltDet( 160 );
+			pnTipoLanca.setBorder( BorderFactory.createTitledBorder( "" ) );
+			pnTipoLanca.setSize( pnTipoLanca.getWidth(), 55 );
+			
+			pnTipoLanca.setVisible( true );
 			txtCodCli.setVisible( true );
 			txtRazCli.setVisible( true );
 			txtCodFor.setVisible( false );
 			txtRazFor.setVisible( false );
-
+			
 			lbCodCli.setVisible( true );
 			lbRazCli.setVisible( true );
 			lbCodFor.setVisible( false );
-			lbRazFor.setVisible( false );
-
+			lbRazFor.setVisible( false );			
 		}
+		else if ( rgTipoLanca.getVlrString().compareTo( "O" ) == 0 ) {
+			setAtribos( this.getX(), this.getY(), 655, 540 );
+			setAltDet( 200 );
+			pnTipoLanca.setBorder( BorderFactory.createTitledBorder( "" ) );			
+			pnTipoLanca.setSize( pnTipoLanca.getWidth(), 55 + 40 );		
+			pnTipoLanca.setVisible( true );
+			
+			txtCodCli.setVisible( true );
+			txtRazCli.setVisible( true );
+			
+			txtCodFor.setVisible( false );
+			txtRazFor.setVisible( false );
+			
+			lbCodCli.setVisible( true );
+			lbRazCli.setVisible( true );
+			
+			lbCodFor.setVisible( false );
+			lbRazFor.setVisible( false );
+		}		
 
 	}
 
@@ -415,7 +515,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 			}
 			else {
 				lcPlan.setWhereAdic( "NIVELPLAN=6 AND TIPOPLAN IN ('D','R')" );
-				txtAnoCC.setVlrInteger( new Integer( buscaAnoBaseCC() ) );
+				txtAnoCC.setVlrInteger( (Integer) prefere.get( "ANOCC" ) );
 				txtCodCC.setAtivo( true );
 			}
 			lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
@@ -436,8 +536,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 			txtCodLanca.setText( rs.getString( 1 ) );
 			// rs.close();
 			// ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao confirmar código do lanca!\n" + err.getMessage(), true, con, err );
 		}
@@ -458,7 +557,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 			}
 			else {
 				lcPlan.setWhereAdic( "NIVELPLAN=6 AND TIPOPLAN IN ('D','R')" );
-				txtAnoCC.setVlrInteger( new Integer( buscaAnoBaseCC() ) );
+				txtAnoCC.setVlrInteger( (Integer) prefere.get( "ANOCC" ));
 				txtCodCC.setAtivo( true );
 			}
 			lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
@@ -496,12 +595,16 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		}
 		if ( pevt.getListaCampos() == lcDet ) {
 			if ( ( rgTipoLanca.getVlrString().equals( "C" ) ) && ( txtCodCli.getVlrString().trim().equals( "" ) ) ) {
-				Funcoes.mensagemErro( this, "Código do cliente não pode ser nulo!" );
+				Funcoes.mensagemErro( this, "Código do cliente não pode ser nulo!" );				
 				pevt.cancela();
 			}
 			else if ( ( rgTipoLanca.getVlrString().equals( "F" ) ) && ( txtCodFor.getVlrString().trim().equals( "" ) ) ) {
 				Funcoes.mensagemErro( this, "Código do fornecedor não pode ser nulo!" );
 				pevt.cancela();
+			}
+			else {
+				System.out.println("codcontr:" + txtCodContr.getVlrInteger());
+				System.out.println("coditcontr:" + txtCodItContr.getVlrInteger());
 			}
 		}
 	}
@@ -522,35 +625,97 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	public void focusLost( FocusEvent fevt ) { }
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcPlan.setConexao( cn );
 		lcCC.setConexao( cn );
 		lcFor.setConexao( cn );
 		lcCli.setConexao( cn );
+		lcContrato.setConexao( cn );
+		lcItContrato.setConexao( cn );
 
 		carregar();
 	}
 
-	private int buscaAnoBaseCC() {
-
-		int iRet = 0;
-		String sSQL = "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+	private HashMap<String,Object> getPrefere(DbConnection con) {
+		HashMap<String,Object> prefere = new HashMap<String, Object>();		
+		String sSQL = "SELECT ANOCENTROCUSTO, LANCAFINCONTR FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		try {
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			ResultSet rs = ps.executeQuery();
-			if ( rs.next() )
-				iRet = rs.getInt( "ANOCENTROCUSTO" );
+			
+			if ( rs.next() ) {
+				prefere.put( "ANOCC", rs.getInt( "ANOCENTROCUSTO" ));
+				prefere.put( "LANCAFINCONTR", rs.getString( "LANCAFINCONTR" ) );
+				
+			}
+			
+			vValsTipo = new Vector<String>();
+			vValsTipo.addElement( "A" );
+			vValsTipo.addElement( "F" );
+			vValsTipo.addElement( "C" );
+			
+			vLabsTipo = new Vector<String>();
+			vLabsTipo.addElement( "Avulso" );
+			vLabsTipo.addElement( "Fornecedor" );
+			vLabsTipo.addElement( "Cliente" );
+
+			if("S".equals( (String) prefere.get( "LANCAFINCONTR" ))) {
+				vValsTipo.addElement( "O" );
+				vLabsTipo.addElement( "Contrato" );
+				rgTipoLanca = new JRadioGroup<String, String>( 1, 4, vLabsTipo, vValsTipo );
+			}
+			else {
+				rgTipoLanca = new JRadioGroup<String, String>( 1, 3, vLabsTipo, vValsTipo );
+			}
+						
 			rs.close();
 			ps.close();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o .\n" + err.getMessage(), true, con, err );
+		} 
+		catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar preferências do sistema \n" + err.getMessage(), true, con, err );
 		}
-		return iRet;
+		return prefere;
 	}
 
 	public void edit( EditEvent eevt ) { }
+
+	public void afterCarrega( CarregaEvent cevt ) {
+		
+		if (cevt.getListaCampos() == lcCli ) {	  		
+	  		HashMap<String,Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Não selecionado>" );
+	  		cbContr.setItens( (Vector<?>)vals.get( "LAB" ), (Vector<?>)vals.get( "VAL" ) ); 	  		
+	  	}
+		if (cevt.getListaCampos() == lcDet ) {
+			cbContr.setVlrInteger( txtCodContr.getVlrInteger() );
+			cbitContr.setVlrInteger( txtCodItContr.getVlrInteger() );
+		}
+		
+		
+	}
+
+	public void beforeCarrega( CarregaEvent cevt ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void valorAlterado( JComboBoxEvent evt ) {
+		if( evt.getComboBoxPad() == cbContr ){
+	  		HashMap<String,Vector<Object>> vals = FuncoesCRM.montaComboItContr( con, cbContr.getVlrInteger(), "<Não selecionado>" );
+	  		cbitContr.setItens( (Vector<?>)vals.get( "LAB" ), (Vector<?>)vals.get( "VAL" ) );
+		}
+		else if (evt.getComboBoxPad() == cbitContr ) {
+			if(cbContr.getVlrInteger()>0)
+				txtCodContr.setVlrInteger( cbContr.getVlrInteger() );
+			if(cbitContr.getVlrInteger()>0)			
+			txtCodItContr.setVlrInteger( cbitContr.getVlrInteger() );
+		}
+		
+	}
+		
+
 }

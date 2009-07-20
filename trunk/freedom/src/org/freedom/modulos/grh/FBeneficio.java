@@ -1,11 +1,10 @@
 package org.freedom.modulos.grh;
 
 import java.awt.event.ActionListener;
+
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDados;
-
-import javax.comm.UnsupportedCommOperationException;
 
 /**
  * Classe para cadastro de Benefícios <BR>
@@ -22,7 +21,7 @@ import javax.comm.UnsupportedCommOperationException;
  *                  o LICENCIADOR ou então pegar uma cópia em: <a href=http://creativecommons.org/licenses/LGPL/2.1/legalcode.pt> Creative Commons</a> <BR>
  *                  Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar de acordo com os termos da LGPL. <BR>
  *                  <BR>
- * @author Felipe Daniel Elias/Setpoint Informática Ltda. <BR>
+ * @author Setpoint Informática Ltda. <BR>
  * @version 1.0.0 - 03/10/2008 <BR>
  * @since 03/10/2008. <BR>
  * 

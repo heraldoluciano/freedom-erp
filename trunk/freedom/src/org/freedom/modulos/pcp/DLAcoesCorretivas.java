@@ -2,7 +2,7 @@ package org.freedom.modulos.pcp;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JLabelPad;
@@ -31,7 +31,7 @@ public class DLAcoesCorretivas extends FFDialogo implements MouseListener {
 	private Object[] keys;
 	
 
-	public DLAcoesCorretivas( Connection con, Object[] keys ) {
+	public DLAcoesCorretivas( DbConnection con, Object[] keys ) {
 		
 		setTitulo( "Acões corretivas" );
 		setAtribos( 670, 480 );

@@ -61,7 +61,7 @@
 	<parameter name="CODPROD" isForPrompting="false" class="java.lang.Integer"/>
 	<queryString><![CDATA[select op.codprod,pd.descprod,op.codlote,op.dtfabrop,op.dtvalidpdop,
 ta.desctpanalise,ea.vlrmin,ea.vlrmax,ea.especificacao,cq.vlrafer,cq.descafer,pr.imgassresp,
-cq.dtins,op.codop, eq.casasdec, eq.codunid, eq.descunid, cq.idusualt
+cq.dtins,op.codop, eq.casasdec, eq.codunid, eq.descunid, cq.idusualt, pr.nomeresp, pr.nomerelanal, pr.cargoresp, pr.identprofresp 
 from ppopcq cq, ppop op,ppestruanalise ea,pptipoanalise ta, sgprefere5 pr,eqproduto pd, equnidade eq
 where
 op.codemp = 7 and op.codfilial=1 and op.codprod=505 and op.seqop=cq.seqop
@@ -86,13 +86,17 @@ and eq.codemp=ta.codempud and eq.codfilial=ta.codfilialud and eq.codunid=ta.codu
 	<field name="ESPECIFICACAO" class="java.lang.String"/>
 	<field name="VLRAFER" class="java.math.BigDecimal"/>
 	<field name="DESCAFER" class="java.lang.String"/>
-	<field name="IMGASSRESP" class="java.sql.Blob"/>
+	<field name="IMGASSRESP" class="java.io.InputStream"/>
 	<field name="DTINS" class="java.sql.Date"/>
 	<field name="CODOP" class="java.lang.Long"/>
 	<field name="CASASDEC" class="java.lang.Short"/>
 	<field name="CODUNID" class="java.lang.String"/>
 	<field name="DESCUNID" class="java.lang.String"/>
 	<field name="IDUSUALT" class="java.lang.String"/>
+	<field name="NOMERESP" class="java.lang.String"/>
+	<field name="NOMERELANAL" class="java.lang.String"/>
+	<field name="CARGORESP" class="java.lang.String"/>
+	<field name="IDENTPROFRESP" class="java.lang.String"/>
 
 
 		<group  name="GERAL" >
@@ -102,7 +106,67 @@ and eq.codemp=ta.codempud and eq.codfilial=ta.codfilialud and eq.codunid=ta.codu
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="21"  isSplitAllowed="true" >
+			<band height="83"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="152"
+						y="40"
+						width="232"
+						height="11"
+						key="textField-18"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMERESP}.trim()]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="151"
+						y="38"
+						width="234"
+						height="0"
+						key="line-31"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<image  vAlign="Middle" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="173"
+						y="4"
+						width="200"
+						height="30"
+						key="image-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.io.InputStream"><![CDATA[$F{IMGASSRESP}]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="152"
+						y="51"
+						width="232"
+						height="11"
+						key="textField-19"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CARGORESP}.trim()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="152"
+						y="62"
+						width="232"
+						height="11"
+						key="textField-20"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{IDENTPROFRESP}.trim()]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>
@@ -813,7 +877,7 @@ $F{VLRMAX}.setScale($F{CASASDEC}.intValue(),BigDecimal.ROUND_UNNECESSARY).toStri
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{IDUSUALT}.trim()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["U".equals($F{NOMERELANAL})?$F{IDUSUALT}.trim():$F{NOMERESP}.trim()]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

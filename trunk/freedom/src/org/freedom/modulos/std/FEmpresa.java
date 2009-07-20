@@ -1,6 +1,6 @@
 /**
- * @version 11/02/2002 <BR>
- * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
+ * @version 23/12/2008 <BR>
+ * @author Setpoint Informática Ltda.
  * 
  * Projeto: Freedom <BR>
  * 
@@ -8,67 +8,47 @@
  * Classe:
  * @(#)FEmpresa.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
- * Comentários sobre a classe...
+ * Tela de cadastro de empresas e filiais.
  * 
  */
 
 package org.freedom.modulos.std;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.freedom.componentes.JPanelPad;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
-import org.freedom.acao.CarregaEvent;
-import org.freedom.acao.CarregaListener;
-import org.freedom.acao.PostEvent;
-import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
-import org.freedom.componentes.JTabbedPanePad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Navegador;
 import org.freedom.componentes.PainelImagem;
-import org.freedom.componentes.Tabela;
-import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FTabDados;
+import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.telas.FDetalhe;
 
-public class FEmpresa extends FTabDados implements PostListener, CarregaListener {
+
+public class FEmpresa extends FDetalhe{
 
 	private static final long serialVersionUID = 1L;
-
-	private JPanelPad pinGeral = new JPanelPad( 470, 470 );
-
-	private JPanelPad pinFilial = new JPanelPad( 470, 270 );
-
-	private JPanelPad pnFilial = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-
-	private JPanelPad pnFilialGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-
+	
+	private JPanelPad pinCab = new JPanelPad();
+	
+	private JPanelPad pinDet = new JPanelPad();
+	
 	private JTextFieldPad txtCodEmp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtRazEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtNomeEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
-
+	
 	private JTextFieldPad txtEndEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtNumEmp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -87,6 +67,8 @@ public class FEmpresa extends FTabDados implements PostListener, CarregaListener
 
 	private JTextFieldPad txtFoneEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
 
+	private JTextFieldPad txtDDDFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+	
 	private JTextFieldPad txtFaxEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldPad txtUFEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
@@ -102,41 +84,15 @@ public class FEmpresa extends FTabDados implements PostListener, CarregaListener
 	private JTextFieldPad txtCodPaisEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private JTextFieldPad txtNomeContEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
-
+	
 	private JTextFieldPad txtCodFilial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
-
+	
 	private JTextFieldPad txtRazFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtNomeFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
-
-	private JTextFieldPad txtCnpjFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
-
-	private JTextFieldPad txtInscFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
-
-	private JTextFieldPad txtEndFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
-
-	private JTextFieldPad txtNumFilial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-	private JTextFieldPad txtComplFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
-
-	private JTextFieldPad txtBairFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
-
-	private JTextFieldPad txtCepFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
-
-	private JTextFieldPad txtCidFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
-
-	private JTextFieldPad txtUFFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
-
-	private JTextFieldPad txtFoneFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
-
-	private JTextFieldPad txtFaxFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
-
-	private JTextFieldPad txtEmailFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
-
-	private JTextFieldPad txtWWWFilial = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
-
+	
 	private JTextFieldPad txtCodDistFilial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
+	
 	private JTextFieldPad txtPercPIS = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
 	private JTextFieldPad txtPercCofins = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
@@ -144,353 +100,199 @@ public class FEmpresa extends FTabDados implements PostListener, CarregaListener
 	private JTextFieldPad txtPercIR = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
 	private JTextFieldPad txtPercCSocial = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
-
-	private JTextFieldPad txtCodAlmox = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
-
-	private JTextFieldFK txtDescAlmox = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-
+	
+	private JTextFieldPad txtPercSimples = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 5, 2 );
+	
+	private JCheckBoxPad cbMultiAlmox = new JCheckBoxPad( "Sim", "S", "N" );
+	
 	private JCheckBoxPad cbMatriz = new JCheckBoxPad( "Matriz", "S", "N" );
 
 	private JCheckBoxPad cbSimples = new JCheckBoxPad( "Simples", "S", "N" );
-
-	private ListaCampos lcFilial = new ListaCampos( this );
-
-	private ListaCampos lcAlmox = new ListaCampos( this, "AF" );
-
-	private ListaCampos lcAlmoxFilial = new ListaCampos( this, "" );
-
-	private Tabela tabFilial = new Tabela();
-
-	private JScrollPane spnFilial = new JScrollPane( tabFilial );
-
-	private Navegador navFilial = new Navegador( true );
-
+	
 	private PainelImagem imFotoEmp = new PainelImagem( 65000 );
+	
+	private ListaCampos lcUF = new ListaCampos( this );
 
-	private JTabbedPanePad tpn2 = new JTabbedPanePad();
+	private ListaCampos lcMunic = new ListaCampos( this );
+	
+	private ListaCampos lcPais = new ListaCampos( this );
+	
+	private JTextFieldPad txtCodPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JCheckBoxPad cbMultiAlmox = new JCheckBoxPad( "Sim", "S", "N" );
+	private JTextFieldFK txtDescPais = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtSiglaUF = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 ); 
+	
+	private JTextFieldPad txtCodMun = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
-	private JPanelPad pinDetAlmoxFilial = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtInscMun = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
+	
+	private JTextFieldPad txtCNAE = new JTextFieldPad( JTextFieldPad.TP_STRING, 7, 0 );
 
-	private Tabela tbAlmoxFilial = new Tabela();
-
-	private JScrollPane spnAlmoxFilial = new JScrollPane( tbAlmoxFilial ); // Scrool
-
-	// pane
-	// para
-	// grid
-	// de
-	// Bancos.
-
-	private JPanelPad pinCamposAlmoxFilial = new JPanelPad( 680, 200 );
-
-	private JPanelPad pinNavAlmoxFilial = new JPanelPad( 680, 30 );
-
-	private JPanelPad pnAlmoxFilial = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-
-	private Navegador navAlmoxFilial = new Navegador( false );
-
-	private JCheckBoxPad cbPermiteBaixa = new JCheckBoxPad( "Sim", "S", "N" );
-
-	private int codEmp;
-
-	private int codFilial;
-
-	public FEmpresa() {
-
-		super();
-		setTitulo( "Cadastro da Empresa" );
-		setAtribos( 50, 20, 530, 500 );
-
-		lcCampos.addPostListener( this );
-		lcFilial.addPostListener( this );
-
+	public FEmpresa(){
+		
+		setTitulo( "Cadastro de Empresa" );
+		setAtribos( 50, 50, 530, 750 );		
+	
 		lcCampos.setUsaME( false );
-		lcFilial.setUsaME( false );
+		
+		montaTela();
+		montaListaCampos();		
+		
+	}
+	
+	private void montaTela(){
+		
+		setAltCab( 210 );
+		setAltDet( 375 );
+		
+		pinCab = new JPanelPad( 440, 60 );
+		setPainel( pinCab, pnCliCab );
+		
+		lcDet.setUsaME( false );
+		
+		adicCampo( txtCodEmp, 7, 20, 60, 20, "CodEmp", "Cód.Emp", ListaCampos.DB_PK, true );
+		adicCampo( txtRazEmp, 70, 20, 260, 20, "RazEmp", "Razão social da empresa", ListaCampos.DB_SI, true );
+		adicDB( imFotoEmp, 340, 20, 150, 100, "FotoEmp", "Foto:(64Kb 18x12)", true );
+		adicCampo( txtNomeEmp, 7, 60, 323, 20, "NomeEmp", "Nome fantasia", ListaCampos.DB_SI, false );	
+		adicCampo( txtNomeContEmp, 7, 100, 323, 20, "NomeContEmp", "Contato", ListaCampos.DB_SI, false );
+		adicCampo( txtCodEANEmp, 7, 140, 95, 20, "CodEANEmp", "Cod. EAN", ListaCampos.DB_SI, false );
+		adicCampo( txtPercIssEmp, 105, 140, 45, 20, "PercIssEmp", "%Iss", ListaCampos.DB_SI, false );
+		adicCampo( txtCodPaisEmp, 153, 140, 37, 20, "CodPaisEmp", "C.pais", ListaCampos.DB_SI, false );
 
-		lcFilial.setMaster( lcCampos );
-		lcCampos.adicDetalhe( lcFilial );
-		lcFilial.setTabela( tabFilial );
-
-		lcAlmoxFilial.setMaster( lcFilial );
-		lcFilial.adicDetalhe( lcAlmoxFilial );
-
-		lcAlmoxFilial.setTabela( tbAlmoxFilial );
-
-		lcAlmox.add( new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.Almox.", ListaCampos.DB_PK, true ) );
-		lcAlmox.add( new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almoxarifado", ListaCampos.DB_SI, false ) );
-
-		lcAlmox.montaSql( false, "ALMOX", "EQ" );
-		lcAlmox.setQueryCommit( false );
-		lcAlmox.setReadOnly( true );
-		txtCodAlmox.setTabelaExterna( lcAlmox );
-
-		txtCodEmp.cancelaDLF2();
-
-		setPainel( pinGeral );
-		adicTab( "Geral", pinGeral );
-
-		adicCampo( txtCodEmp, 7, 20, 60, 20, "CodEmp", "Cód.emp.", ListaCampos.DB_PK, true );
-		adicCampo( txtRazEmp, 70, 20, 207, 20, "RazEmp", "Razão social da empresa", ListaCampos.DB_SI, true );
-		adicCampo( txtNomeEmp, 280, 20, 190, 20, "NomeEmp", "Nome fantasia", ListaCampos.DB_SI, false );
-		adicCampo( txtCnpjEmp, 7, 60, 125, 20, "CnpjEmp", "Cnpj", ListaCampos.DB_SI, true );
-		adicCampo( txtInscEmp, 135, 60, 112, 20, "InscEmp", "Inscrição Estadual", ListaCampos.DB_SI, true );
-		adicCampo( txtEndEmp, 250, 60, 127, 20, "EndEmp", "Endereço", ListaCampos.DB_SI, false );
-		adicCampo( txtNumEmp, 380, 60, 37, 20, "NumEmp", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtComplEmp, 420, 60, 50, 20, "ComplEmp", "Compl.", ListaCampos.DB_SI, false );
-		adicCampo( txtBairEmp, 7, 100, 150, 20, "BairEmp", "Bairro", ListaCampos.DB_SI, false );
-		adicCampo( txtCidEmp, 160, 100, 157, 20, "CidEmp", "Cidade", ListaCampos.DB_SI, false );
-		adicCampo( txtCepEmp, 320, 100, 92, 20, "CepEmp", "Cep", ListaCampos.DB_SI, false );
-		adicCampo( txtUFEmp, 415, 100, 55, 20, "UFEmp", "UF", ListaCampos.DB_SI, false );
-		adicCampo( txtFoneEmp, 7, 140, 150, 20, "FoneEmp", "Telefone", ListaCampos.DB_SI, false );
-		adicCampo( txtFaxEmp, 160, 140, 137, 20, "FaxEmp", "Fax", ListaCampos.DB_SI, false );
-		adicCampo( txtEmailEmp, 300, 140, 170, 20, "EmailEmp", "E-Mail", ListaCampos.DB_SI, false );
-		adicCampo( txtWWWEmp, 7, 180, 180, 20, "WWWEmp", "Página da WEB", ListaCampos.DB_SI, false );
-		adicCampo( txtCodEANEmp, 190, 180, 75, 20, "CodEANEmp", "Cod. EAN", ListaCampos.DB_SI, false );
-		adicCampo( txtCodPaisEmp, 265, 180, 37, 20, "CodPaisEmp", "C.pais", ListaCampos.DB_SI, false );
-		adicCampo( txtPercIssEmp, 305, 180, 45, 20, "PercIssEmp", "%Iss", ListaCampos.DB_SI, false );
-		adicCampo( txtNomeContEmp, 350, 180, 120, 20, "NomeContEmp", "Contato", ListaCampos.DB_SI, false );
-		adicDB( imFotoEmp, 7, 230, 150, 140, "FotoEmp", "Foto: (máx. 64K)", true );
-		adicDB( cbMultiAlmox, 160, 230, 300, 20, "MultiAlmoxEmp", "Intercambio de almox. entre filiais?", true );
-
+		adicDB( cbMultiAlmox, 196, 140, 300, 20, "MultiAlmoxEmp", "Intercambio de almox. entre filiais?", true );
+		
 		txtCnpjEmp.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepEmp.setMascara( JTextFieldPad.MC_CEP );
-		txtFoneEmp.setMascara( JTextFieldPad.MC_FONEDDD );
+		txtFoneEmp.setMascara( JTextFieldPad.MC_FONE );
 		txtFaxEmp.setMascara( JTextFieldPad.MC_FONE );
 		setListaCampos( true, "EMPRESA", "SG" );
-
-		setPainel( pinFilial, pnFilial );
-		adicTab( "Filiais", pnFilialGeral );
-
-		tpn2.setTabPlacement( SwingConstants.BOTTOM );
-		pnFilialGeral.add( tpn2, BorderLayout.CENTER );
-
-		setListaCampos( lcFilial );
-		setNavegador( navFilial );
-		pnFilial.add( pinFilial, BorderLayout.SOUTH );
-		pnFilial.add( spnFilial, BorderLayout.CENTER );
-
-		adicCampo( txtCodFilial, 7, 20, 60, 20, "CodFilial", "Cód.fil.", ListaCampos.DB_PK, true );
-		adicCampo( txtRazFilial, 70, 20, 207, 20, "RazFilial", "Razão social da filial", ListaCampos.DB_SI, true );
-		adicCampo( txtNomeFilial, 280, 20, 190, 20, "NomeFilial", "Nome fanatasia da filial", ListaCampos.DB_SI, false );
-		adicCampo( txtCnpjFilial, 7, 60, 125, 20, "CnpjFilial", "Cnpj", ListaCampos.DB_SI, true );
-		adicCampo( txtInscFilial, 135, 60, 112, 20, "InscFilial", "Inscrição Estadual", ListaCampos.DB_SI, true );
-		adicCampo( txtEndFilial, 250, 60, 127, 20, "EndFilial", "Endereço", ListaCampos.DB_SI, false );
-		adicCampo( txtNumFilial, 380, 60, 37, 20, "NumFilial", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtComplFilial, 420, 60, 50, 20, "ComplFilial", "Compl.", ListaCampos.DB_SI, false );
-		adicCampo( txtBairFilial, 7, 100, 150, 20, "BairFilial", "Bairro", ListaCampos.DB_SI, false );
-		adicCampo( txtCidFilial, 160, 100, 157, 20, "CidFilial", "Cidade", ListaCampos.DB_SI, false );
-		adicCampo( txtCepFilial, 320, 100, 92, 20, "CepFilial", "Cep", ListaCampos.DB_SI, false );
-		adicCampo( txtUFFilial, 415, 100, 55, 20, "UFFilial", "UF", ListaCampos.DB_SI, false );
-		adicCampo( txtFoneFilial, 7, 140, 230, 20, "FoneFilial", "Telefone", ListaCampos.DB_SI, false );
-		adicCampo( txtFaxFilial, 240, 140, 230, 20, "FaxFilial", "Fax", ListaCampos.DB_SI, false );
-		adicCampo( txtEmailFilial, 7, 180, 140, 20, "EmailFilial", "E-Mail", ListaCampos.DB_SI, false );
-		adicCampo( txtWWWFilial, 150, 180, 137, 20, "WWWFilial", "Página da WEB", ListaCampos.DB_SI, false );
-		adicCampo( txtCodDistFilial, 290, 180, 77, 20, "CodDistFilial", "C.dist.fil", ListaCampos.DB_SI, false );
-		adicDB( cbMatriz, 370, 180, 80, 20, "MzFilial", "Sede", false );
-		adicCampo( txtPercPIS, 7, 220, 90, 20, "PercPISFilial", "PIS", ListaCampos.DB_SI, false );
-		adicCampo( txtPercCofins, 100, 220, 87, 20, "PercCofinsFilial", "COFINS", ListaCampos.DB_SI, false );
-		adicCampo( txtPercIR, 190, 220, 87, 20, "PercIRFilial", "IR", ListaCampos.DB_SI, false );
-		adicCampo( txtPercCSocial, 280, 220, 87, 20, "PercCSocialFilial", "Cont.social", ListaCampos.DB_SI, false );
-		adicDB( cbSimples, 370, 220, 80, 20, "SimplesFilial", "Fiscal", false );
-		pinFilial.adic( navFilial, 0, 245, 270, 25 );
-		setListaCampos( false, "FILIAL", "SG" );
-		lcFilial.setOrdem( "RazFilial" );
-		lcFilial.montaTab();
-		lcFilial.setQueryInsert( false );
-		lcFilial.setQueryCommit( false );
 		
-		txtCnpjFilial.setMascara( JTextFieldPad.MC_CNPJ );
-		txtCepFilial.setMascara( JTextFieldPad.MC_CEP );
-		txtFoneFilial.setMascara( JTextFieldPad.MC_FONEDDD );
-		txtFaxFilial.setMascara( JTextFieldPad.MC_FONE );
+			
+		pinDet = new JPanelPad( 600, 80 );
+		setPainel( pinDet, pnDet );
+		setListaCampos( lcDet );
+		setNavegador( navRod );	
+		adicCampo( txtCodFilial, 7, 20, 60, 20, "CodFilial", "Cód.Filial", ListaCampos.DB_PK, true );
+		adicCampo( txtRazFilial, 70, 20, 180, 20, "RazFilial", "Razão social da filial", ListaCampos.DB_SI, true );
+		adicCampo( txtNomeFilial, 253, 20, 229, 20, "NomeFilial", "Nome fantasia", ListaCampos.DB_SI, false );		
+		adicCampo( txtCnpjEmp, 7, 60, 120, 20, "CnpjFilial", "CNPJ", ListaCampos.DB_SI, true );
+		adicCampo( txtInscEmp, 130, 60, 120, 20, "InscFilial", "Inscrição Estadual", ListaCampos.DB_SI, true );
+		adicCampo( txtInscMun, 253, 60, 120, 20, "InscMunFilial", "Inscrição Municipal", ListaCampos.DB_SI, false );
+		adicCampo( txtCNAE, 376, 60, 105, 20, "CNAEFILIAL", "CNAE", ListaCampos.DB_SI, false );
+				
+		adicCampo( txtEndEmp, 7, 100, 403, 20, "EndFilial", "Endereço", ListaCampos.DB_SI, false );
+		adicCampo( txtNumEmp, 413, 100, 68, 20, "NumFilial", "Num.", ListaCampos.DB_SI, false );
 		
-		tabFilial.setTamColuna( 120, 1 );
-		tabFilial.setTamColuna( 80, 0 );
-		tabFilial.setTamColuna( 220, 1 );
-		tabFilial.setTamColuna( 220, 2 );
-		tabFilial.setTamColuna( 80, 3 );
-		tabFilial.setTamColuna( 140, 4 );
-		tabFilial.setTamColuna( 90, 5 );
-		tabFilial.setTamColuna( 50, 6 );
-		tabFilial.setTamColuna( 70, 7 );
-		tabFilial.setTamColuna( 70, 8 );
-		tabFilial.setTamColuna( 80, 9 );
-		tabFilial.setTamColuna( 50, 10 );
-		tabFilial.setTamColuna( 40, 11 );
-		tabFilial.setTamColuna( 80, 12 );
-		tabFilial.setTamColuna( 50, 13 );
-		tabFilial.setTamColuna( 70, 14 );
-		tabFilial.setTamColuna( 100, 15 );
-		tabFilial.setTamColuna( 80, 16 );
-		tabFilial.setTamColuna( 60, 17 );
-		tabFilial.setTamColuna( 40, 18 );
-		tabFilial.setTamColuna( 80, 19 );
+		adicCampo( txtComplEmp, 7, 140, 160, 20, "ComplFilial", "Complemento", ListaCampos.DB_SI, false );
+		adicCampo( txtBairEmp, 170, 140, 180, 20, "BairFilial", "Bairro", ListaCampos.DB_SI, false );
+		adicCampo( txtCepEmp, 353, 140, 128, 20, "CepFilial", "Cep", ListaCampos.DB_SI, false );	
+		adicCampo( txtDDDFilial, 7, 180, 40, 20, "DDDFilial", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtFoneEmp, 50, 180, 77, 20, "FoneFilial", "Telefone", ListaCampos.DB_SI, false );
+		adicCampo( txtFaxEmp, 130, 180, 120, 20, "FaxFilial", "Fax", ListaCampos.DB_SI, false );
+		adicCampo( txtEmailEmp, 253, 180, 227, 20, "EmailFilial", "Email", ListaCampos.DB_SI, false );
+		adicCampo( txtWWWEmp, 7, 220, 243, 20, "WWWFilial", "Página da WEB", ListaCampos.DB_SI, false );
+		adicCampo( txtCodDistFilial, 253, 220, 77, 20, "CodDistFilial", "C.dist.fil", ListaCampos.DB_SI, false );
+		adicDB( cbMatriz, 335, 220, 80, 20, "MzFilial", "Sede", false );
+		adicDB( cbSimples, 416, 220, 80, 20, "SimplesFilial", "Fiscal", false );
+		adicCampo( txtPercPIS, 7, 260, 90, 20, "PercPISFilial", "PIS", ListaCampos.DB_SI, false );
+		adicCampo( txtPercCofins, 100, 260, 87, 20, "PercCofinsFilial", "COFINS", ListaCampos.DB_SI, false );
+		adicCampo( txtPercIR, 190, 260, 87, 20, "PercIRFilial", "IR", ListaCampos.DB_SI, false );
+		adicCampo( txtPercCSocial, 280, 260, 87, 20, "PercCSocialFilial", "Cont.social", ListaCampos.DB_SI, false );
+		adicCampo( txtPercSimples, 370, 260, 87, 20, "PercSimplesFilial", "Perc. Simples", ListaCampos.DB_SI, false );
+		
+		
+		
+		adicCampo( txtCodPais, 7, 300, 50, 20, "CodPais", "Cd.país", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescPais, 60, 300, 177, 20, "DescPais", "Nome do país" );
+		
+		adicCampo( txtSiglaUF, 240, 300, 50, 20, "SiglaUf", "UF", ListaCampos.DB_FK, true );		
+		adicDescFK( txtNomeUF, 293, 300, 177, 20, "NomeUF", "Nome UF" );
 
-		// *************************AlmoxFilial
-
-		setPainel( pinDetAlmoxFilial, pnAlmoxFilial );
-
-		pinDetAlmoxFilial.setPreferredSize( new Dimension( 600, 80 ) );
-		pinDetAlmoxFilial.add( pinNavAlmoxFilial, BorderLayout.SOUTH );
-		pinDetAlmoxFilial.add( pinCamposAlmoxFilial, BorderLayout.CENTER );
-		setListaCampos( lcAlmoxFilial );
-		setNavegador( navAlmoxFilial );
-
-		pnAlmoxFilial.add( pinDetAlmoxFilial, BorderLayout.SOUTH );
-		pnAlmoxFilial.add( spnAlmoxFilial, BorderLayout.CENTER );
-
-		pinNavAlmoxFilial.adic( navAlmoxFilial, 0, 0, 270, 25 );
-
-		setPainel( pinCamposAlmoxFilial );
-
-		adicCampo( txtCodAlmox, 7, 20, 60, 20, "codalmox", "Cod.Almox.", ListaCampos.DB_PF, txtDescAlmox, false );
-		adicDescFK( txtDescAlmox, 70, 20, 150, 20, "DescAlmox", "Descrição do almoxarifado" );
-		adicDB( cbPermiteBaixa, 223, 20, 200, 20, "BaixaEstoqAf", "Permite baixa de estoque?", false );
-
-		setListaCampos( false, "ALMOXFILIAL", "EQ" );
-		lcAlmoxFilial.setQueryInsert( false );
-		lcAlmoxFilial.setQueryCommit( false );
-		lcAlmoxFilial.montaTab();
-		tbAlmoxFilial.setTamColuna( 90, 0 );
-		tbAlmoxFilial.setTamColuna( 200, 1 );
-
-		// **************************
-
-		lcCampos.addCarregaListener( this );
-		lcFilial.addCarregaListener( this );
-
-		habAbas();
+		
+		adicCampo( txtCodMun, 7, 340, 50, 20, "CodMunic", "Cd.mun.", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescMun, 60, 340, 177, 20, "NomeMunic", "Nome do municipio" );			
+		
+		setListaCampos( true, "FILIAL", "SG" );
+		lcDet.setOrdem( "RazFilial" );
+		montaTab();
+		lcDet.setQueryInsert( false );
+		lcDet.setQueryCommit( false );
+		
+		tab.setTamColuna( 120, 1 );
+		tab.setTamColuna( 80, 0 );
+		tab.setTamColuna( 220, 1 );
+		tab.setTamColuna( 220, 2 );
+		tab.setTamColuna( 80, 3 );
+		tab.setTamColuna( 140, 4 );
+		tab.setTamColuna( 90, 5 );
+		tab.setTamColuna( 50, 6 );
+		tab.setTamColuna( 70, 7 );
+		tab.setTamColuna( 70, 8 );
+		tab.setTamColuna( 80, 9 );
+		tab.setTamColuna( 50, 10 );
+		tab.setTamColuna( 40, 11 );
+		tab.setTamColuna( 80, 12 );
+		tab.setTamColuna( 50, 13 );
+		tab.setTamColuna( 70, 14 );
+		tab.setTamColuna( 100, 15 );
+		tab.setTamColuna( 80, 16 );
+		tab.setTamColuna( 60, 17 );
+		tab.setTamColuna( 40, 18 );
+		tab.setTamColuna( 80, 19 );
+		
 	}
-
-	public void afterCarrega( CarregaEvent cevt ) {
-
-		if ( cevt.getListaCampos() == lcCampos )
-			habAbas();
-		if ( cevt.getListaCampos() == lcFilial )
-			cbMatriz.setEnabled( ( temFilial() && ( txtCodEmp.getVlrInteger().intValue() == codEmp && txtCodFilial.getVlrInteger().intValue() == codFilial ) ) || !temFilial() );
+	
+	private void montaListaCampos(){
+		
+		/***************
+		 *      UF     *
+		 **************/		
+		
+		lcUF.setUsaME( false );		
+		lcUF.add( new GuardaCampo( txtSiglaUF, "SiglaUf", "Sigla", ListaCampos.DB_PK, true ) );
+		lcUF.add( new GuardaCampo( txtNomeUF, "NomeUf", "Nome", ListaCampos.DB_SI, false ) );
+		lcMunic.setDinWhereAdic( "CODPAIS = #S", txtCodPais );
+		lcUF.montaSql( false, "UF", "SG" );
+		lcUF.setQueryCommit( false );
+		lcUF.setReadOnly( true );
+		txtSiglaUF.setTabelaExterna( lcUF );
+		
+		/***************
+		 *  MUNICIPIO  *
+		 **************/
+		
+		lcMunic.setUsaME( false );		
+		lcMunic.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Muni", ListaCampos.DB_PK, true ) );
+		lcMunic.add( new GuardaCampo( txtDescMun, "NomeMunic", "Nome Muni.", ListaCampos.DB_SI, false ) );
+		lcMunic.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
+		lcMunic.montaSql( false, "MUNICIPIO", "SG" );
+		lcMunic.setQueryCommit( false );
+		lcMunic.setReadOnly( true );
+		txtCodMun.setTabelaExterna( lcMunic );	
+		
+		/***************
+		 *    PAÍS     *
+		 **************/
+		
+		lcPais.setUsaME( false );
+		lcPais.add( new GuardaCampo( txtCodPais, "CodPais", "Cod.país.", ListaCampos.DB_PK, false ) );
+		lcPais.add( new GuardaCampo( txtDescPais, "NomePais", "Nome", ListaCampos.DB_SI, false ) );
+		lcPais.montaSql( false, "PAIS", "SG" );
+		lcPais.setQueryCommit( false );
+		lcPais.setReadOnly( true );
+		txtCodPais.setTabelaExterna( lcPais );
+		
 	}
-
-	private void habAbas() {
-
-		tpn2.removeAll();
-		tpn2.addTab( "Filial", pnFilial );
-
-		if ( cbMultiAlmox.getVlrString().equals( "S" ) )
-			tpn2.addTab( "Almox.", pnAlmoxFilial );
-	}
-
-	public void beforePost( PostEvent pevt ) {
-
-		if ( pevt.getListaCampos() == lcCampos ) {
-			if ( txtCnpjEmp.getText().trim().length() < 1 ) {
-				pevt.cancela();
-				Funcoes.mensagemInforma( this, "Campo CNPJ é requerido! ! !" );
-				txtCnpjEmp.requestFocus();
-			}
-			else if ( txtInscEmp.getText().trim().length() < 1 ) {
-				if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == 0 )
-					txtInscEmp.setVlrString( "ISENTO" );
-				else {
-					pevt.cancela();
-					txtInscEmp.requestFocus();
-				}
-			}
-			else if ( txtInscEmp.getText().trim().toUpperCase().compareTo( "ISENTO" ) == 0 )
-				return;
-			else if ( txtUFEmp.getText().trim().length() < 2 ) {
-				pevt.cancela();
-				Funcoes.mensagemInforma( this, "Campo UF é requerido! ! !" );
-				txtUFEmp.requestFocus();
-			}
-			else if ( !Funcoes.vIE( txtInscEmp.getText(), txtUFEmp.getText() ) ) {
-				pevt.cancela();
-				Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
-				txtInscEmp.requestFocus();
-			}
-			txtInscEmp.setVlrString( Funcoes.sIEValida );
-		}
-		else if ( pevt.getListaCampos() == lcFilial ) {
-			if ( txtCnpjFilial.getText().trim().length() < 1 ) {
-				pevt.cancela();
-				Funcoes.mensagemInforma( this, "Campo CNPJ é requerido! ! !" );
-				txtCnpjFilial.requestFocus();
-			}
-			else if ( txtInscFilial.getText().trim().length() < 1 ) {
-				if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == 0 )
-					txtInscFilial.setVlrString( "ISENTO" );
-				else {
-					pevt.cancela();
-					txtInscFilial.requestFocus();
-				}
-			}
-			else if ( txtInscFilial.getText().trim().toUpperCase().compareTo( "ISENTO" ) == 0 )
-				return;
-			else if ( txtUFFilial.getText().trim().length() < 2 ) {
-				pevt.cancela();
-				Funcoes.mensagemInforma( this, "Campo UF é requerido! ! !" );
-				txtUFFilial.requestFocus();
-			}
-			else if ( !Funcoes.vIE( txtInscFilial.getText(), txtUFFilial.getText() ) ) {
-				pevt.cancela();
-				Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
-				txtInscFilial.requestFocus();
-			}
-		}
-	}
-
-	private void carregaEmpresa() {
-
-		txtCodEmp.setVlrInteger( new Integer( Aplicativo.iCodEmp ) );
-		lcCampos.carregaDados();
-	}
-
-	public void afterPost( PostEvent pevt ) {
-
-	}
-
-	public void beforeCarrega( CarregaEvent cevt ) {
-
-	}
-
-	public void setConexao( Connection cn ) {
-
+	
+	public void setConexao( DbConnection cn ) {
 		super.setConexao( cn );
-		lcFilial.setConexao( cn );
-		lcAlmox.setConexao( cn );
-		lcAlmoxFilial.setConexao( cn );
-		carregaEmpresa();
-	}
-
-	protected boolean temFilial() {
-
-		boolean result = false;
-
-		String sSQL = "SELECT CODEMP, CODFILIAL FROM SGFILIAL WHERE MZFILIAL='S' AND CODEMP=?";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				codEmp = rs.getInt( "CODEMP" );
-				codFilial = rs.getInt( "CODFILIAL" );
-				result = true;
-			}
-			if ( !con.getAutoCommit() )
-				con.commit();
-
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela SGFILIAL!\n" + err.getMessage(), true, con, err );
-		} finally {
-			rs = null;
-			ps = null;
-			sSQL = null;
-		}
-
-		return result;
+		lcPais.setConexao( cn );
+		lcMunic.setConexao( cn );
+		lcUF.setConexao( cn );
 	}
 }

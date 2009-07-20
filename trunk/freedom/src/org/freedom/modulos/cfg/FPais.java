@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FPais.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -44,22 +44,30 @@ public class FPais extends FDados implements ActionListener {
 
 	private JTextFieldPad txtNomePais = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtSiglaPais = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	private JTextFieldPad txtSiglaPais2 = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldPad txtSiglaPais3 = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private JTextFieldPad txtDDIPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodBacenPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
 	public FPais() {
 
 		super();
 		setTitulo( "Cadastro de Paises" );
-		setAtribos( 50, 50, 410, 125 );
+		setAtribos( 50, 50, 410, 165 );
 
 		lcCampos.setUsaME( false );
 
 		adicCampo( txtCodPais, 7, 20, 70, 20, "CodPais", "Cód.pais", ListaCampos.DB_PK, true );
 		adicCampo( txtNomePais, 80, 20, 177, 20, "NomePais", "Nome do pais", ListaCampos.DB_SI, true );
-		adicCampo( txtSiglaPais, 260, 20, 77, 20, "SiglaPais", "Sigla", ListaCampos.DB_SI, true );
-		adicCampo( txtDDIPais, 340, 20, 40, 20, "DDIPais", "DDI", ListaCampos.DB_SI, false );
+		adicCampo( txtSiglaPais2, 260, 20, 40, 20, "Sigla2cPais", "Sigla", ListaCampos.DB_SI, true );
+		adicCampo( txtSiglaPais3, 303, 20, 40, 20, "Sigla3cPais", "Sigla", ListaCampos.DB_SI, true );
+		adicCampo( txtDDIPais, 345, 20, 40, 20, "DDIPais", "DDI", ListaCampos.DB_SI, false );
+		adicCampo( txtCodBacenPais, 7, 60, 70, 20, "CodBacenPais", "Cd.Bacen", ListaCampos.DB_SI, false );
+		
+		
 		setListaCampos( true, "PAIS", "SG" );
 		
 		btImp.addActionListener( this );
@@ -141,9 +149,7 @@ public class FPais extends FDados implements ActionListener {
 			rs.close();
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 		} catch ( SQLException err ) {
 			err.printStackTrace();

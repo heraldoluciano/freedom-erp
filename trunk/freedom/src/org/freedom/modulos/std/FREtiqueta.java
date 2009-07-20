@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FREtiqueta.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -26,13 +26,17 @@ package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.RadioGroupEvent;
@@ -52,6 +56,7 @@ import org.freedom.componentes.ObjetoEtiqueta;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGroupListener {
@@ -81,6 +86,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 	private JTextFieldPad txtUfCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0);
 	
 	private JTextFieldPad txtCidadeCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0);
+	
+	private JTextFieldPad txtModEtiq = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0);
 
 	private ListaCampos lcModEtiq = new ListaCampos( this );
 
@@ -97,7 +104,9 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 	private JTextAreaPad txaEtiqueta = new JTextAreaPad( 500 );
 
 	private JTextFieldPad txtNColModEtiq = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
-
+	
+	private JTextFieldPad txtPostScript= new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
 	private ObjetoEtiqueta objEtiq = null;
 	
 	private ObjetoEtiquetaComis objEtiqComis = new ObjetoEtiquetaComis();
@@ -189,7 +198,9 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		lcModEtiq.add( new GuardaCampo( txtCodPapel, "Codpapel", "Cód.papel", ListaCampos.DB_FK, false ) );
 		lcModEtiq.add( new GuardaCampo( txtEECModEtiq, "EECModEtiq", "entre col.", ListaCampos.DB_SI, false ) );
 		lcModEtiq.add( new GuardaCampo( txtComprimido, "Comprimido", "Imp. Comp.", ListaCampos.DB_SI, false ) );
-
+		lcModEtiq.add( new GuardaCampo( txtPostScript, "PosScript", "Pos.Script", ListaCampos.DB_SI, false ) );
+		lcModEtiq.add( new GuardaCampo( txtModEtiq, "ModEtiq", "modelo", ListaCampos.DB_SI, false ) );
+		
 		lcModEtiq.setReadOnly( true );
 		lcModEtiq.montaSql( false, "MODETIQUETA", "SG" );
 		txtCodModEtiq.setTabelaExterna( lcModEtiq );
@@ -310,12 +321,13 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 			int iiTam = Integer.parseInt( sTmp ) * 5;
 			tb.setTamColuna( iiTam, i );
 		}
-
 		for ( int i = 0; vLabelsColunas.size() > i; i++ ) {
 			String sTmp = vTamanhos.elementAt( i ).toString();
 			int iiTam = Integer.parseInt( sTmp ) * 7;
 			tb.setTamColuna( iiTam, i );
 		}
+		tb.adicColuna( "Cód.cli." );
+		tb.setTamColuna( 80, tb.getNumColunas()-1 );
 
 		bMontaTab = false;
 	}
@@ -338,6 +350,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 					String sTmp = rs.getString( i ) != null ? rs.getString( i ) : "";
 					vLinha.addElement( sTmp );
 				}
+				vLinha.addElement( new Integer(rs.getInt( "codcli" ) ) );
 				tab.adicLinha( (Vector<Object>) vLinha.clone() );
 			}
 		} catch ( SQLException e ) {
@@ -366,7 +379,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		super.actionPerformed( evt );
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcModEtiq.setConexao( cn );
@@ -376,80 +389,245 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 		lcCliente.setConexao( cn );
 		lcVendedor.setConexao( cn );
 	}
+	
+	private boolean removeEtiquetas() {
+
+		boolean retorno = false;
+
+		try {
+
+			PreparedStatement ps = con.prepareStatement( "DELETE FROM VDETIQCLI E WHERE E.NRCONEXAO=?" );
+			ps.setInt( 1, getNrConexao() );
+
+			int exec = ps.executeUpdate();
+
+			ps.close();
+
+			con.commit();
+
+			if ( exec > -1 ) {
+				retorno = true;
+			}
+
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao limpar tabela temporaria de etiquetas!\n" + e.getMessage(), true, con, e );
+		}
+
+		return retorno;
+	}
+
+	private int getNrConexao() {
+
+		int conexao = -1;
+
+		try {
+
+			PreparedStatement ps = con.prepareStatement( "SELECT CURRENT_CONNECTION FROM SGEMPRESA E WHERE E.CODEMP=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				conexao = rs.getInt( "CURRENT_CONNECTION" );
+			}
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar número da conexão!\n" + e.getMessage(), true, con, e );
+		}
+
+		return conexao;
+	}
+	
+	private boolean persistEtiquetas() {
+
+		boolean retorno = false;
+
+		int conexao = getNrConexao();
+
+		StringBuilder sSql = new StringBuilder();
+
+		sSql.append( "INSERT INTO VDETIQCLI " );
+		sSql.append( "( NRCONEXAO, CODEMP, CODFILIAL, CODCLI ) " );
+		sSql.append( "VALUES " );
+		sSql.append( "( ?, ?, ?, ? )" );
+
+		String sql = sSql.toString();
+
+		int codcli = 0;
+	
+		etiquetas : {
+
+			for ( int i = 0; i < tab.getNumLinhas(); i++ ) {
+
+				codcli = (Integer) tab.getValor( i, tab.getNumColunas()-1 );
+				
+				if ( !insertEtiqueta( conexao, codcli, sql ) ) {
+					break etiquetas;
+				}
+				
+			}
+			
+			retorno = true;
+		}
+
+		return retorno;
+	}
+
+	private boolean insertEtiqueta( int conexao, int codcli, String sql ) {
+
+		boolean retorno = true;
+
+		try {
+
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, conexao );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "VDETIQCLI" ) );
+			ps.setInt( 4, codcli );
+
+			ps.execute();
+
+			con.commit();
+		} catch ( SQLException e ) {
+			retorno = false;
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao relacionar etiquetas!\n" + e.getMessage(), true, con, e );
+		}
+
+		return retorno;
+	}
+	
 
 	@SuppressWarnings("unchecked")
 	public void imprimir( boolean bVisualizar ) {
 
 		String sTxa = txaEtiqueta.getVlrString();
-
+		FModEtiqueta etiquetas = new FModEtiqueta();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int iNColModEtiq = txtNColModEtiq.getVlrInteger().intValue();
-
 		ImprimeOS imp = null;
-		try {
-			if ( txtCodModEtiq.getVlrString().equals( "" ) ) {
-				Funcoes.mensagemInforma( this, "Código do modelo em branco!" );
-				return;
-			}
-			imp = new ImprimeOS( "", con );
-			imp.setImpEject( true );
-			imp.verifLinPag();
-			imp.setTitulo( "Etiquetas" );
+		ResultSet rs1 = null;
+		StringBuffer sSQL = new StringBuffer();
+		
+		if ( txtPostScript.getVlrString().equals( "S" ) ) {
+			
+			if ( removeEtiquetas() ) {
 
-			if ( sTxa != null ) {
-				try {
-					ps = con.prepareStatement( montaQuery( ) );
-					rs = ps.executeQuery();
-					Vector<Vector<?>> vCol = new Vector<Vector<?>>();
-					Vector<Vector<Vector<?>>> vCols = new Vector<Vector<Vector<?>>>();
-					Vector<?> vVal = new Vector<Object>();
-
-					int iAdic = 0;
-					for ( int i = 0; tab.getNumLinhas() > i; i++ ) {
-						vVal = aplicCampos( i );
-						vCol.addElement( vVal );
-						iAdic++;
-
-						if ( iNColModEtiq == iAdic ) {
-							vCols.addElement( (Vector<Vector<?>>) vCol.clone() );
-							vCol = new Vector<Vector<?>>();
-							iAdic = 0;
-						}
+				if ( persistEtiquetas() ) {
+					
+					sSQL.append( "SELECT C.CODCLI, C.RAZCLI, C.ENDCLI, C.NUMCLI, C.BAIRCLI, C.UFCLI, C.CIDCLI, C.CEPCLI  " );
+					sSQL.append( "FROM VDCLIENTE C, VDETIQCLI E " );
+					sSQL.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? AND E.CODEMP=C.CODEMP AND E.CODFILIAL=C.CODFILIAL AND " );
+					sSQL.append( "E.CODCLI=C.CODCLI AND E.NRCONEXAO=? ORDER BY C.RAZCLI" );
+					
+					try {
+						
+						PreparedStatement ps1 = con.prepareStatement( sSQL.toString() );
+						ps1.setInt( 1, Aplicativo.iCodEmp );
+						ps1.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+						ps1.setInt( 3, getNrConexao() );
+						rs1 = ps1.executeQuery();
+						
+					} catch ( Exception e ) {
+						e.printStackTrace();
+					}
+							
+					FPrinterJob dlGr = null;
+					dlGr = new FPrinterJob( "relatorios/etiquetas/clientes/" + txtModEtiq.getVlrString(), "Etiquetas", null, rs1, null, this );
+					
+					if( bVisualizar ){
+						dlGr.setVisible( true );
+					}else{
+						try {
+							JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+						} catch ( JRException e ) {
+							Funcoes.mensagemErro( this, "Erro ao montar etiquetas\n"+e.getMessage() );
+							e.printStackTrace();
+						}  
+					  
+					}
+					try {
+						con.commit();
+					} catch ( Exception e ) {
+						e.printStackTrace();
 					}
 
-					if ( vCol.size() > 0 ) // Recolhe os restos e joga em um nov elemento...
-						vCols.addElement( vCol );
+				}
+			}
+		}
+		else {
 
-					impCol( imp, vCols );
+			try {
 
-					rs.close();
-					ps.close();
-					if ( !con.getAutoCommit() )
+				if ( txtCodModEtiq.getVlrString().equals( "" ) ) {
+					Funcoes.mensagemInforma( this, "Código do modelo em branco!" );
+					return;
+				}
+				imp = new ImprimeOS( "", con );
+				imp.setImpEject( true );
+				imp.verifLinPag();
+				imp.setTitulo( "Etiquetas" );
+
+				if ( sTxa != null ) {
+					try {
+						ps = con.prepareStatement( montaQuery() );
+						rs = ps.executeQuery();
+						Vector<Vector<?>> vCol = new Vector<Vector<?>>();
+						Vector<Vector<Vector<?>>> vCols = new Vector<Vector<Vector<?>>>();
+						Vector<?> vVal = new Vector<Object>();
+
+						int iAdic = 0;
+						for ( int i = 0; tab.getNumLinhas() > i; i++ ) {
+							vVal = aplicCampos( i );
+							vCol.addElement( vVal );
+							iAdic++;
+
+							if ( iNColModEtiq == iAdic ) {
+								vCols.addElement( (Vector<Vector<?>>) vCol.clone() );
+								vCol = new Vector<Vector<?>>();
+								iAdic = 0;
+							}
+						}
+
+						if ( vCol.size() > 0 ) // Recolhe os restos e joga em um nov elemento...
+							vCols.addElement( vCol );
+
+						impCol( imp, vCols );
+
+						rs.close();
+						ps.close();
 						con.commit();
 
-				} catch ( SQLException err ) {
-					Funcoes.mensagemErro( this, "Erro ao consultar informações!\n" + err.getMessage(), true, con, err );
-					err.printStackTrace();
-				}
+					} catch ( SQLException err ) {
+						Funcoes.mensagemErro( this, "Erro ao consultar informações!\n" + err.getMessage(), true, con, err );
+						err.printStackTrace();
+					}
 
-				imp.eject();
-				imp.fechaGravacao();
+					imp.eject();
+					imp.fechaGravacao();
 
-				if ( bVisualizar ) {
-					imp.preview( this );
-				}
-				else {
-					imp.print();
-				}
+					if ( bVisualizar ) {
+						imp.preview( this );
+					}
+					else {
+						imp.print();
+					}
 
+				}
+			} finally {
+				ps = null;
+				rs = null;
+				imp = null;
 			}
-		} finally {
-			ps = null;
-			rs = null;
-			imp = null;
 		}
-
 	}
 
 	private String montaQuery() {
@@ -533,7 +711,9 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 					sCampos = sCampos + vCamposAdic.elementAt( i ).toString() + ",";
 				}
 
-				sSQL = "SELECT " + sCampos.substring( 0, sCampos.length() - 1 ) + " FROM " + objEtiq.getNometabela() + " " + sWhere + " ORDER BY 1";
+				sSQL = "SELECT " + sCampos.substring( 0, sCampos.length() - 1 ) + "," + objEtiq.getPK() + " FROM " + 
+				     objEtiq.getNometabela() + " " + sWhere + " ORDER BY 1";
+				System.out.println("***" + sSQL);
 			} catch ( Exception e ) {
 				e.printStackTrace();
 			}

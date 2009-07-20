@@ -7,14 +7,14 @@
  * Pacote: org.freedom.modulos.std <BR>
  * Classe: @(#)FAprovaOrc.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  *
  * Aprovação de orçamento.
  * 
@@ -29,7 +29,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -162,8 +162,8 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		tab.adicColuna("Aceite");
 		tab.adicColuna("Aprov.");
 		tab.adicColuna("Ítem");
-		tab.adicColuna("Cód.orc.");
-        tab.adicColuna("e descrição do produto");
+		tab.adicColuna("Cód.prod.");
+        tab.adicColuna("Descrição do produto");
 		tab.adicColuna("Qtd.");
 		tab.adicColuna("V.Unit.");
 		tab.adicColuna("V.Tot.");
@@ -266,8 +266,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 			    
 			    	ps.execute(); 
 				}
-				if (!con.getAutoCommit())
-					con.commit();
+				con.commit();
 			
 			}
 			catch (SQLException err) {
@@ -286,8 +285,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 				ps2.setInt(4,txtCodOrc.getVlrInteger().intValue()); 
 				if (bAtStOrc) { 
 				  ps2.execute();
-				  if (!con.getAutoCommit())
-				  	con.commit();
+ 			  	  con.commit();
 				  Funcoes.mensagemInforma( this, "Orçamento Aprovado com Sucesso");
 				}
 			}
@@ -387,8 +385,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 				tab.adicLinha(vVals);
 				
 			}
-			if (!con.getAutoCommit())
-				con.commit();
+			con.commit();
 		}
 		catch (SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao carregar a tabela ITORCAMENTO!\n"+err.getMessage(),true,con,err);
@@ -432,7 +429,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		txtTotal.setVlrBigDecimal(bVlrTotal);
 	}
 
-	public void setConexao(Connection cn) {
+	public void setConexao(DbConnection cn) {
 		super.setConexao(cn);
 		lcCli.setConexao(con);
 		lcOrc.setConexao(con);
