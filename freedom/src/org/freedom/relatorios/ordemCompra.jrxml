@@ -617,7 +617,7 @@ $F{CEPFOR}.trim().substring(5,8)]]></textFieldExpression>
 					</textElement>
 				<text><![CDATA[Valor desconto:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="2"
 						y="18"

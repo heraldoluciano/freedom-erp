@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FreedomCFG.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -25,6 +25,7 @@
 package org.freedom.modulos.cfg;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.crm.FConfEmail;
 import org.freedom.modulos.pdv.FLeFiscal;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
@@ -35,7 +36,7 @@ public class FreedomCFG extends AplicativoPD {
 
 	public FreedomCFG() {
 
-		super( "iconConfiguracao32.gif", "splashConf.jpg", 1, "Freedom", 2, "Configurador do Sistema", null, new FPrincipalPD( null, "bgFreedom2.jpg" ),LoginPD.class);
+		super( "iconcfg.png", "splashCFG.jpg", 1, "Freedom", 2, "Configurador do Sistema", null, new FPrincipalPD( null, "bgFreedom2.jpg" ),LoginPD.class);
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
@@ -58,6 +59,7 @@ public class FreedomCFG extends AplicativoPD {
 				addOpcao( 100100000, TP_OPCAO_MENU, "Outras tabelas genéricas", "", 's', 100105000, 2, false, null );
 					addOpcao( 100105000, TP_OPCAO_ITEM, "Estados civis", "Estados civis", 'i', 100105100, 3, true, FEstadoCivil.class );
 					addOpcao( 100105000, TP_OPCAO_ITEM, "Cadastro de Feriado", "Cadastro de Feriado", 'i', 100105200, 3, true, FFeriados.class );
+					addOpcao( 100105000, TP_OPCAO_ITEM, "Configuração de email", "Configuração de email", 'e', 100105300, 3, true, FConfEmail.class );
 					
 		addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'e', 100200000, 1, false, null );
 			addOpcao( 100200000, TP_OPCAO_ITEM, "Ajuste de Sequencia", "Ajusta sequencia", 'A', 100201000, 2, true, FAjustaSeq.class );
@@ -86,7 +88,7 @@ public class FreedomCFG extends AplicativoPD {
 		vEquipeSis.add( "Alexandre Marcondes - Programação" );
 		vEquipeSis.add( "Fernando Oliveira - Programação" );
 		vEquipeSis.add( "Moyzes Braz - Arte gráfica" );
-		vEquipeSis.add( "Reginaldo Garcia - Testes / Suporte" );
+
 	}
 
 	public static void main( String sParams[] ) {

@@ -2,7 +2,7 @@ package org.freedom.modulos.util;
 
 import java.awt.Component;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +25,7 @@ import org.freedom.telas.Aplicativo;
 public class CtrlMultiComis implements CarregaListener {
     
 	private int numComissionados = 1;
-	private Connection con = null; 
+	private DbConnection con = null; 
 	private ItemComis[] listComis = null;
 	private String cpTipovenda = null;
 	private String cpCodvenda = null;
@@ -38,7 +38,7 @@ public class CtrlMultiComis implements CarregaListener {
 	private Component owner = null; 
 	private String vendacomis = null;
 	
-	public CtrlMultiComis(final java.awt.Component owner, final Connection con, 
+	public CtrlMultiComis(final java.awt.Component owner, final DbConnection con, 
 			final ListaCampos lcMaster, final int numComissionados, 
 			final String cpTipovenda, final String cpCodvenda, 
 			final JTextFieldPad txtTipovenda, final JTextFieldPad txtCodvenda, 
@@ -114,9 +114,7 @@ public class CtrlMultiComis implements CarregaListener {
 			}
 			rs.close();
 			ps.close();
-			if (!con.getAutoCommit()) {
-			    con.commit();
-			}
+		    con.commit();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -492,43 +490,41 @@ public class CtrlMultiComis implements CarregaListener {
 			   }
 			} else {
 			    if (itemcomis.getTxtCodvend().getVlrInteger().intValue()!=0) {
-				psi = con.prepareStatement( "INSERT INTO VD"+vendacomis+
-					" (CODEMP, CODFILIAL, TIPOVENDA, CODVENDA, SEQVC, " +
-					"CODEMPRC, CODFILIALRC, CODREGRCOMIS, SEQITRC, CODEMPVD, " +
-					"CODFILIALVD, CODVEND, PERCVC) " +
-					"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			    	psi = con.prepareStatement( "INSERT INTO VD"+vendacomis+
+			    			" (CODEMP, CODFILIAL, TIPOVENDA, CODVENDA, SEQVC, " +
+			    			"CODEMPRC, CODFILIALRC, CODREGRCOMIS, SEQITRC, CODEMPVD, " +
+			    			"CODFILIALVD, CODVEND, PERCVC) " +
+						"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			    	psi.setInt( 1, Aplicativo.iCodEmp );
-        			psi.setInt( 2, ListaCampos.getMasterFilial( "VD"+vendacomis ) );
-        			psi.setString( 3, tipovenda );
+			    	psi.setInt( 2, ListaCampos.getMasterFilial( "VD"+vendacomis ) );
+			    	psi.setString( 3, tipovenda );
 			    	psi.setInt( 4, codvenda );
 			    	psi.setInt( 5, itemcomis.getTxtSeqvc().getVlrInteger().intValue() );
 			    	psi.setInt( 6, Aplicativo.iCodEmp );
-        			psi.setInt( 7, ListaCampos.getMasterFilial( "VDITREGRACOMIS" ) );
-        			psi.setInt( 8, codregrcomis );
+			    	psi.setInt( 7, ListaCampos.getMasterFilial( "VDITREGRACOMIS" ) );
+			    	psi.setInt( 8, codregrcomis );
         			psi.setInt( 9, itemcomis.getSeqitrc() );
-        		        psi.setInt( 10, Aplicativo.iCodEmp );
+        		    psi.setInt( 10, Aplicativo.iCodEmp );
         			psi.setInt( 11, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
-        		        psi.setInt( 12, itemcomis.getTxtCodvend().getVlrInteger().intValue() );
-        		        psi.setBigDecimal( 13, itemcomis.getTxtPerccomis().getVlrBigDecimal() );
-				psi.executeUpdate();
+        		    psi.setInt( 12, itemcomis.getTxtCodvend().getVlrInteger().intValue() );
+        		    psi.setBigDecimal( 13, itemcomis.getTxtPerccomis().getVlrBigDecimal() );
+        		    psi.executeUpdate();
 			    }
 			}
 		    }
 		    if (rs!=null) {
-			rs.close();
+		    	rs.close();
 		    }
 		    if (ps!=null) {
-			ps.close();
+		    	ps.close();
 		    }
 		    if (psu!=null) {
-			psu.close();
+		    	psu.close();
 		    }
 		    if (psi!=null) {
-			psi.close();
+		    	psi.close();
 		    }
-		    if (!con.getAutoCommit()) {
 			con.commit();
-		    }
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

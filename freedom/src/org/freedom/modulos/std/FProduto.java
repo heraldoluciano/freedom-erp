@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FProduto.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -28,7 +28,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
+import java.math.BigDecimal;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,10 +52,10 @@ import org.freedom.acao.EditListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.ObjetoCustosProd;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -66,6 +67,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
+import org.freedom.componentes.ObjetoCustosProd;
 import org.freedom.componentes.PainelImagem;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.EANFactory;
@@ -74,7 +76,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
 
-public class FProduto extends FTabDados implements CheckBoxListener, EditListener, InsertListener, ChangeListener, ActionListener, CarregaListener, RadioGroupListener {
+public class FProduto extends FTabDados implements CheckBoxListener, EditListener, InsertListener, ChangeListener, ActionListener, CarregaListener, RadioGroupListener, PostListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -151,6 +153,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JTextFieldPad txtVlrLarg = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 	
 	private JTextFieldPad txtVlrEspess = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	
+private JTextFieldPad txtQtdEmbalagem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 	
 	private JTextFieldPad txtComisProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, casasDecFin );
 
@@ -619,7 +623,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		
 		cbGuiaTraf = new JCheckBoxPad( "Guia de tráf.", "S", "N" );
 		cbGuiaTraf.setVlrString( "N" );
-
+		
 		txtCustoMPMProd.setSoLeitura( true );
 		txtCustoPEPSProd.setSoLeitura( true );
 		txtSldProd.setSoLeitura( true );
@@ -640,6 +644,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		btPrevimp.addActionListener( this );
 		btCodBar.addActionListener( this );
 		tpn.addChangeListener( this );
+		
+		lcCampos.addPostListener( this );
 		
 		setImprimir( true );
 		
@@ -755,9 +761,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicCampo( txtVlrCompri, 7, 100, 106, 20, "Comprimento", "Comprimento(cm)", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrLarg, 120, 100, 107, 20, "Largura", "Largura(cm)", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrEspess, 235, 100, 118, 20, "Espessura", "Espessura(cm)", ListaCampos.DB_SI, false );
+		adicCampo( txtQtdEmbalagem, 7, 140, 118, 20, "QtdEmbalagem", "Qtd. Embalagem", ListaCampos.DB_SI, false );		
 		setListaCampos( true, "PRODUTO", "EQ" );
-		
-		
 		
 		// Preço
 
@@ -1116,7 +1121,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 			       "SP.SLDCONSIGPROD SLDCONSIGPRODAX,SP.SLDLIQPROD SLDLIQPRODAX " + 
 			       "FROM EQPRODUTO P, EQSALDOPROD SP "	+ 
 			       "WHERE SP.CODEMP=P.CODEMP AND SP.CODFILIAL=P.CODFILIAL AND SP.CODPROD = P.CODPROD AND " + 
-			       "P.ATIVOPROD='S' AND P.CODEMPGP=? AND P.CODFILIALGP=? AND " + 
+			       "P.CODEMPGP=? AND P.CODFILIALGP=? AND " + 
 			       sFiltro + " AND " + sWhere + " ORDER BY P.DESCPROD ";
 	
 			PreparedStatement ps = con.prepareStatement( sSQL );
@@ -1145,9 +1150,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 			rs.close();
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar saldos por almoxarifado!\n" + err.getMessage() );
@@ -1185,9 +1188,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 			rs.close();
 			ps.close();
 			
-			if(!con.getAutoCommit()) {
-				con.commit();
-			}
+			con.commit();
 			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao copiar o produto!\n" + err.getMessage() );
@@ -1225,9 +1226,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 			rs.close();
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage() );
@@ -1334,9 +1333,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 				
 				And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
 
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 				
 				ps = con.prepareStatement( sSQL.toString() );
 				rs = ps.executeQuery();
@@ -1406,9 +1403,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 				rs.close();
 				ps.close();
 				
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 				
 				dl.dispose();
 				And.dispose();
@@ -1437,9 +1432,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 				rs.close();
 				ps.close();
 				
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 				
 				ps = con.prepareStatement( sSQL.toString() );
 				rs = ps.executeQuery();
@@ -1507,9 +1500,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 				rs.close();
 				ps.close();
 				
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 				
 				dl.dispose();
 				And.dispose();
@@ -1663,7 +1654,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		}
 	}
 
-	public void beforeInsert( InsertEvent eevt ) { }
+	public void beforeInsert( InsertEvent eevt ) {	}
 
 	public void afterInsert( InsertEvent ievt ) {
 	
@@ -1685,9 +1676,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		}
 	}
 
-	public void afterPost( PostEvent pevt ) { }
-
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 	
 		super.setConexao( cn );
 		sPrefs = getPrefs();
@@ -1718,5 +1707,14 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		lcPlanoPagPreco.setConexao( cn );
 		lcCodAltProd.setConexao( cn );
 		lcProdAcesso.setConexao( cn );
+	}
+	
+	public void beforePost( PostEvent pevt ) {
+		if(pevt.getListaCampos()==lcCampos) {
+			BigDecimal qtdemb = txtQtdEmbalagem.getVlrBigDecimal();
+			if( (qtdemb==null) || (qtdemb.compareTo( new BigDecimal(0) ) < 1) ) {
+				txtQtdEmbalagem.setVlrInteger( 1 );
+			}
+		}
 	}
 }

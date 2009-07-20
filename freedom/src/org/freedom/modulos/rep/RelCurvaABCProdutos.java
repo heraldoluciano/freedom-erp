@@ -1,5 +1,5 @@
 /**
- * @version 11/2007 <BR>
+ * @version 07/2009 <BR>
  * @author Setpoint Informática Ltda.<BR>
  * @author Alex Rodrigues<BR>
  * 
@@ -7,26 +7,23 @@
  * 
  * Pacote: org.freedom.modulos.rep <BR>
  * Classe:
- * @(#)RelResumoDiario.java <BR>
+ * @(#)RelCurvaABCProdutos.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
- * <BR>
- * 
- * Relatorio produtos por clientes.
- * 
+ * <BR> 
  */
 
 package org.freedom.modulos.rep;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
@@ -213,15 +210,15 @@ public class RelCurvaABCProdutos extends FRelatorio {
 			StringBuilder where = new StringBuilder();
 			
 			if ( txtCodCli.getVlrString().trim().length() > 0 ) {
-				where.append( " P.CODEMPCL=P.CODEMP AND P.CODFILIALCL=P.CODEMP AND P.CODCLI=" + txtCodCli.getVlrInteger() );
+				where.append( " AND P.CODCLI=" + txtCodCli.getVlrInteger() );
 				razcli = txtRazCli.getVlrString();
 			}
 			if ( txtCodFor.getVlrString().trim().length() > 0 ) {
-				where.append( " P.CODEMPFO=P.CODEMP AND P.CODFILIALFO=P.CODEMP AND P.CODFOR=" + txtCodFor.getVlrInteger() );
+				where.append( " AND P.CODFOR=" + txtCodFor.getVlrInteger() );
 				razfor = txtRazFor.getVlrString();
 			}
 			if ( txtCodVend.getVlrString().trim().length() > 0 ) {
-				where.append( " P.CODEMPVD=P.CODEMP AND P.CODFILIALVD=P.CODEMP AND P.CODVEND=" + txtCodVend.getVlrInteger().intValue() );
+				where.append( " AND P.CODVEND=" + txtCodVend.getVlrInteger().intValue() );
 				nomevend = txtNomeVend.getVlrString();
 			}
 			
@@ -230,11 +227,11 @@ public class RelCurvaABCProdutos extends FRelatorio {
 			sql.append( "SELECT COUNT(DISTINCT I.CODPROD) ITENS_TOTAL, SUM(COALESCE(I.VLRLIQITPED,0)) VALOR_TOTAL " );
 			sql.append( "FROM RPITPEDIDO I, RPPEDIDO P " );
 			sql.append( "WHERE" );
-			sql.append( "  I.CODEMP=? AND I.CODFILIAL=? AND " );
+			sql.append( "  P.CODEMP=? AND P.CODFILIAL=? AND " );
 			sql.append( "  I.CODEMP=P.CODEMP AND I.CODFILIAL=P.CODFILIAL AND I.CODPED=P.CODPED AND " );
 			sql.append( where );
 			sql.append( "  P.DATAPED BETWEEN ? AND ? " );			
-			sql.append( "GROUP BY I.CODEMP, I.CODFILIAL " );
+			sql.append( "GROUP BY P.CODEMP, P.CODFILIAL " );
 						
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -251,6 +248,11 @@ public class RelCurvaABCProdutos extends FRelatorio {
 			rs.close();
 			ps.close();
 			
+			if ( valorTotal == null ) {
+				Funcoes.mensagemInforma( this, "Não foram encontrados pedidos no periodo." );
+				return;
+			}
+			
 			sql = new StringBuilder();
 
 			sql.append( "SELECT" );
@@ -265,14 +267,11 @@ public class RelCurvaABCProdutos extends FRelatorio {
 			sql.append( "FROM" ); 
 			sql.append( "  RPITPEDIDO I, RPPEDIDO P " );
 			sql.append( "WHERE" );
-			sql.append( "  I.CODEMP=? AND I.CODFILIAL=? AND " );
-			sql.append( "  I.CODEMP=P.CODEMP AND I.CODFILIAL=P.CODFILIAL AND I.CODPED=P.CODPED AND " );
+			sql.append( "  P.CODEMP=? AND P.CODFILIAL=? AND P.DATAPED BETWEEN ? AND ? AND " );
+			sql.append( "  I.CODEMP=P.CODEMP AND I.CODFILIAL=P.CODFILIAL AND I.CODPED=P.CODPED " );
 			sql.append( where );
-			sql.append( "  P.DATAPED BETWEEN ? AND ? " );
-			sql.append( "GROUP BY" );
-			sql.append( "  I.CODEMP, I.CODFILIAL, I.CODPROD " );
-			sql.append( "ORDER BY" ); 
-			sql.append( "  8 DESC, 2 DESC" );
+			sql.append( " GROUP BY I.CODEMP, I.CODFILIAL, I.CODPROD" );
+			sql.append( " ORDER BY 8 DESC, 2 DESC" );
 						
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -284,7 +283,7 @@ public class RelCurvaABCProdutos extends FRelatorio {
 			HashMap<String,Object> hParam = new HashMap<String, Object>();
 
 			hParam.put( "CODEMP", Aplicativo.iCodEmp );
-			hParam.put( "REPORT_CONNECTION", con );
+			hParam.put( "REPORT_CONNECTION", con.getConnection() );
 			hParam.put( "DTINI", dtini );
 			hParam.put( "DTFIM", dtfim );
 			hParam.put( "NOMEVEND", nomevend );
@@ -299,7 +298,7 @@ public class RelCurvaABCProdutos extends FRelatorio {
 			hParam.put( "CURVA_B", curvaA + curvaB );
 			hParam.put( "CURVA_C", curvaA + curvaB + curvaC );
 			
-			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpcurvaABC.jasper", "PRODUTO POR CLIENTE", null, rs, hParam, this );
+			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpcurvaABC.jasper", "CURVA ABC DE PRODUTOS", null, rs, hParam, this );
 
 			if ( visualizar ) {
 				dlGr.setVisible( true );
@@ -314,7 +313,7 @@ public class RelCurvaABCProdutos extends FRelatorio {
 		}
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 

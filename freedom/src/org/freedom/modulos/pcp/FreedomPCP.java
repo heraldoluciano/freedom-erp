@@ -10,13 +10,13 @@
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para
  * Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
  * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
  * Programa. <BR>
  * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você
  * pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é
  * preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR>
@@ -62,7 +62,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 	public FreedomPCP() {
 
 		super(
-				"iconAtendimento32.gif", "splashPCP.jpg", 1, "Freedom", 5, "Planejamento e Controle da Produção", null,new FPrincipalPD(null, "bgFreedom2.jpg"),LoginPD.class);
+				"iconpcp.png", "splashPCP.jpg", 1, "Freedom", 5, "Planejamento e Controle da Produção", null,new FPrincipalPD(null, "bgFreedom2.jpg"),LoginPD.class);
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,null);
 			addOpcao(100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1,false, null);			
 				addOpcao(100100000, TP_OPCAO_MENU, "Produtos", "", 'P', 100101000, 2,false, null);
@@ -143,7 +143,6 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		vEquipeSis.add("Alexandre Marcondes - Programação");
 		vEquipeSis.add("Fernando Oliveira - Programação");
 		vEquipeSis.add("Moyzes Braz - Arte gráfica");
-		vEquipeSis.add("Reginaldo Garcia - Testes / Suporte");
 		
 	}
 

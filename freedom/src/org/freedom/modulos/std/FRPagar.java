@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FRPagar.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -31,7 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -72,7 +72,7 @@ public class FRPagar extends FRelatorio {
 
 	private JRadioGroup<?, ?> cbFiltro = null;
 
-	private JRadioGroup<?, ?> cbOrderm = null;
+	private JRadioGroup<?, ?> cbOrdem = null;
 	
 	private JRadioGroup<?, ?> rgTipoRel = null;
 
@@ -126,7 +126,7 @@ public class FRPagar extends FRelatorio {
 		adic( new JLabelPad( "Filtro:" ), 7, 45, 360, 20 );
 		adic( cbFiltro, 7, 65, 360, 30 );
 		adic( new JLabelPad( "Ordem:" ), 7, 95, 360, 20 );
-		adic( cbOrderm, 7, 115, 360, 30 );	
+		adic( cbOrdem, 7, 115, 360, 30 );	
 		adic( rgTipoRel , 7, 150, 360, 30 );
 		adic( new JLabelPad( "Cód.for." ), 7, 180, 80, 20 );
 		adic( txtCodFor, 7, 200, 80, 20 );
@@ -183,9 +183,11 @@ public class FRPagar extends FRelatorio {
 		Vector<String> vLabs1 = new Vector<String>();
 		vLabs1.addElement( "Vencimento" );
 		vLabs1.addElement( "Pagamento" );
+		vLabs1.addElement( "Emissão" );
 		vVals1.addElement( "V" );
 		vVals1.addElement( "P" );
-		cbOrderm = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
+		vVals1.addElement( "E" );
+		cbOrdem = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
 		
 		Vector<String> vVals2 = new Vector<String>();
 		Vector<String> vLabs2 = new Vector<String>();
@@ -281,15 +283,28 @@ public class FRPagar extends FRelatorio {
 		sql.append( "FROM FNITPAGAR IT,FNPAGAR P,CPFORNECED F " );
 		sql.append( "WHERE P.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
 		sql.append( " AND IT.CODEMP = P.CODEMP AND IT.CODFILIAL=P.CODFILIAL AND "  );
-		sql.append( "P".equals( cbFiltro.getVlrString() ) ? "IT.DTPAGOITPAG" : "IT.DTVENCITPAG" );
+		if ("P".equals( cbOrdem.getVlrString() )) {
+			sql.append( "IT.DTPAGOITPAG" );
+		} else if ("V".equals( cbOrdem.getVlrString() )) {
+			sql.append( "IT.DTVENCITPAG" );
+		} else {
+			sql.append( "IT.DTITPAG" );
+		}
 		sql.append( " BETWEEN ? AND ? AND IT.STATUSITPAG IN (?,?) AND P.CODPAG=IT.CODPAG AND " );
 		sql.append( "F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND F.CODFOR=P.CODFOR "  );
 		sql.append( "".equals( txtCodFor.getVlrString() ) ? "" : " AND P.CODFOR=" + txtCodFor.getVlrString() );
 		sql.append( "".equals( txtCodPlanoPag.getVlrString() ) ? "" : " AND P.CODPLANOPAG=" + txtCodPlanoPag.getVlrString() );
 		sql.append( " AND P.CODEMP=? AND P.CODFILIAL=? " );
-		sql.append( "ORDER BY " + 
-				( "V".equals( cbOrderm.getVlrString() ) ? "IT.DTVENCITPAG" : "IT.DTPAGOITPAG" ) + ",F.RAZFOR" );
-
+		sql.append( "ORDER BY " );
+		if ("P".equals( cbOrdem.getVlrString() )) {
+			sql.append( "IT.DTPAGOITPAG" );
+		} else if ("V".equals( cbOrdem.getVlrString() )) {
+			sql.append( "IT.DTVENCITPAG" );
+		} else {
+			sql.append( "IT.DTITPAG" );
+		}
+		sql.append( ", F.RAZFOR" );
+		
 		try {
 
 			ps = con.prepareStatement( sql.toString() );
@@ -323,11 +338,8 @@ public class FRPagar extends FRelatorio {
 	public void imprimir( boolean bVisualizar ) {
 
 		PreparedStatement ps = null;
-		ResultSet rs = null;
 		String sFiltroPag = cbFiltro.getVlrString();
 		String sCab = "";
-		
-		StringBuilder sql = new StringBuilder();
 		
 		if ( sFiltroPag.equals( "N" ) ) {
 			sCab = " RELATÓRIO DE CONTAS A PAGAR ";
@@ -338,66 +350,17 @@ public class FRPagar extends FRelatorio {
 		else if ( sFiltroPag.equals( "A" ) ) {
 			sCab = " RELATÓRIO DE CONTAS A PAGAR / PAGAS ";
 		}
-
 		
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return ;
 		}
 		
+		ResultSet rs = getResultSet();
 
-		sql.append( "SELECT IT.DTVENCITPAG,IT.NPARCPAG,P.CODCOMPRA,P.CODFOR,F.RAZFOR," ); 
-		sql.append( "IT.VLRPARCITPAG,IT.VLRPAGOITPAG,IT.VLRAPAGITPAG,IT.DTPAGOITPAG,"  );
-		sql.append( "(SELECT C.STATUSCOMPRA FROM CPCOMPRA C WHERE C.FLAG IN " );
-		sql.append( AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
-		sql.append( " AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA),"  );
-		sql.append( "P.DOCPAG,IT.OBSITPAG, " );
-		sql.append( "(SELECT C.DTEMITCOMPRA FROM CPCOMPRA C WHERE C.FLAG IN " );
-		sql.append( AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
-		sql.append( " AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA) AS DTEMITCOMPRA "  );
-		sql.append( "FROM FNITPAGAR IT,FNPAGAR P,CPFORNECED F " );
-		sql.append( "WHERE P.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
-		sql.append( " AND IT.CODEMP = P.CODEMP AND IT.CODFILIAL=P.CODFILIAL AND "  );
-		sql.append( "P".equals( cbFiltro.getVlrString() ) ? "IT.DTPAGOITPAG" : "IT.DTVENCITPAG" );
-		sql.append( " BETWEEN ? AND ? AND IT.STATUSITPAG IN (?,?) AND P.CODPAG=IT.CODPAG AND " );
-		sql.append( "F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND F.CODFOR=P.CODFOR "  );
-		sql.append( "".equals( txtCodFor.getVlrString() ) ? "" : " AND P.CODFOR=" + txtCodFor.getVlrString() );
-		sql.append( "".equals( txtCodPlanoPag.getVlrString() ) ? "" : " AND P.CODPLANOPAG=" + txtCodPlanoPag.getVlrString() );
-		sql.append( " AND P.CODEMP=? AND P.CODFILIAL=? " );
-		sql.append( "ORDER BY " + 
-				( "V".equals( cbOrderm.getVlrString() ) ? "IT.DTVENCITPAG" : "IT.DTPAGOITPAG" ) + ",F.RAZFOR" );
-
-		try {
-
-			ps = con.prepareStatement( sql.toString() );
-			ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			
-			if ( sFiltroPag.equals( "N" ) ) {
-				ps.setString( 3, "P1" );
-				ps.setString( 4, "P1" );
-			}
-			else if ( sFiltroPag.equals( "P" ) ) {
-				ps.setString( 3, "PP" );
-				ps.setString( 4, "PP" );
-			}
-			else if ( sFiltroPag.equals( "A" ) ) {
-				ps.setString( 3, "P1" );
-				ps.setString( 4, "PP" );
-			}
-			ps.setInt( 5, Aplicativo.iCodEmp );
-			ps.setInt( 6, ListaCampos.getMasterFilial( "FNPAGAR" ) );
-
-			rs = ps.executeQuery();
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-		
 		sCab += "   Periodo de: " + txtDataini.getVlrString() + "  Até:  " + txtDatafim.getVlrString();
 		
 		if("T".equals( rgTipoRel.getVlrString())){
-			
 			imprimiTexto( rs, bVisualizar, sCab );
 		}
 		else{
@@ -563,9 +526,7 @@ public class FRPagar extends FRelatorio {
 			imp.fechaGravacao();
 
 			rs.close();
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( SQLException err ) {
 			err.printStackTrace();
@@ -589,7 +550,7 @@ public class FRPagar extends FRelatorio {
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
 		hParam.put( "FILTROS", sCab );
-		hParam.put( "DATAORDEM", cbOrderm.getVlrString() );
+		hParam.put( "DATAORDEM", cbOrdem.getVlrString() );
 
 		dlGr = new FPrinterJob( "relatorios/FRPagar.jasper", "Relatório de Pagar/Pagas", sCab, rs, hParam, this );
 
@@ -615,7 +576,7 @@ public class FRPagar extends FRelatorio {
 		}
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcFor.setConexao( cn );

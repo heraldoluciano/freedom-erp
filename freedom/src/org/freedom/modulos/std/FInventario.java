@@ -11,13 +11,13 @@
  * 
  * Este programa é licenciado de acordo c>om a LPG-PC (Licença Pública Geral para
  * Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
  * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
  * Programa. <BR>
  * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você
  * pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é
  * preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR>
@@ -33,7 +33,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -177,6 +177,8 @@ private static final long serialVersionUID = 1L;
 				lcCampos.edit();
 			}
 		});
+		txtCodAlmox.addKeyListener( this );
+		
 		setImprimir(true);
 	}
 
@@ -237,8 +239,7 @@ private static final long serialVersionUID = 1L;
 				}
 				rs.close();
 				ps.close();
-				if (!con.getAutoCommit())
-					con.commit();
+				con.commit();
 			} catch (SQLException err) {
 				Funcoes.mensagemErro(this,"Erro ao consultar a tabela EQLOTE!\n" + err.getMessage(),true,con,err);
 			}
@@ -271,8 +272,7 @@ private static final long serialVersionUID = 1L;
 			txtCodInv.setVlrString(rs.getString(1));
 			//      rs.close();
 			//      ps.close();
-			if (!con.getAutoCommit())
-				con.commit();
+			con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao confirmar código do inventário!\n" + err.getMessage(),true,con,err);
 		}
@@ -303,8 +303,7 @@ private static final long serialVersionUID = 1L;
 			}
 			rs.close();
 			ps.close();
-			if (!con.getAutoCommit())
-				con.commit();
+			con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro carregando preferências!\n" + err.getMessage(),true,con,err);
 		} finally {
@@ -319,7 +318,7 @@ private static final long serialVersionUID = 1L;
 		return (iPrefs[0] == 1);
 	}
 
-	public void setConexao(Connection cn) {
+	public void setConexao(DbConnection cn) {
 		super.setConexao(cn);
 		lcProd.setConexao(cn);
 		lcProd2.setConexao(cn);
@@ -341,6 +340,8 @@ private static final long serialVersionUID = 1L;
 					lcCampos.insert(true);
 					txtRefProd.requestFocus();
 				}
+			} else if (kevt.getSource() == txtCodAlmox) {
+			    txtSldAtualInvP.setVlrBigDecimal( new BigDecimal(buscaSaldo( txtCodProd.getVlrInteger().intValue(),  txtDataInvP.getVlrDate() )[0]));
 			} else if (kevt.getSource() == txtSldNovoInvP) {
 				BigDecimal bSAtual = txtSldAtualInvP.getVlrBigDecimal();
 				BigDecimal bSNovo = txtSldNovoInvP.getVlrBigDecimal();
@@ -457,8 +458,7 @@ private static final long serialVersionUID = 1L;
 			}
 			rs.close();
 			ps.close();
-			if (!con.getAutoCommit())
-				con.commit();
+			con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar o saldo!\n"
 					+ err.getMessage(),true,con,err);
@@ -657,8 +657,7 @@ private static final long serialVersionUID = 1L;
 			
 			rs.close();
 			ps.close();
-			if (!con.getAutoCommit())
-				con.commit();
+			con.commit();
 
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say(  0, "+" + sLinhaLarga + "+" ) ;

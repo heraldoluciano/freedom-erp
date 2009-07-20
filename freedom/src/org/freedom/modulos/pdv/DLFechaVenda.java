@@ -10,13 +10,13 @@ package org.freedom.modulos.pdv;
  * Classe:
  * @(#)FFechaVenda.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -33,7 +33,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -73,7 +73,9 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 
 	private static final long serialVersionUID = 1L;
 
-	private final int casasDec = Aplicativo.casasDec;
+	private static final int CASAS_DEC = Aplicativo.casasDec;
+	
+	private static final int CASAS_DEC_FIN = Aplicativo.casasDecFin;
 
 	private final JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -91,17 +93,17 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 
 	private final JTextFieldFK txtDescClComis = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldFK txtVlrCupom = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	private final JTextFieldFK txtVlrCupom = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
 
-	private final JTextFieldPad txtVlrDinheiro = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	private final JTextFieldPad txtVlrDinheiro = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
 
-	private final JTextFieldPad txtVlrCheque = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	private final JTextFieldPad txtVlrCheque = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
 
-	private final JTextFieldPad txtVlrTef = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	private final JTextFieldPad txtVlrTef = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
 
-	private final JTextFieldFK txtVlrPago = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	private final JTextFieldFK txtVlrPago = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
 
-	private final JTextFieldFK txtVlrTroco = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	private final JTextFieldFK txtVlrTroco = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, CASAS_DEC_FIN );
 
 	private final JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -115,11 +117,11 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 
 	private final JTextFieldPad txtConhecFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
-	private final JTextFieldPad txtQtdFreteVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private final JTextFieldPad txtQtdFreteVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC );
 
-	private final JTextFieldPad txtPesoBrutVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private final JTextFieldPad txtPesoBrutVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC );
 
-	private final JTextFieldPad txtPesoLiqVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private final JTextFieldPad txtPesoLiqVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC );
 
 	private final JTextFieldPad txtEspFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
@@ -141,15 +143,15 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 	
 	private final JTextFieldPad txtCodRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private final JTextFieldPad txtVlrParcRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrParcRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC_FIN );
 
 	private final JTextFieldPad txtAltUsuRec = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );	
 
 	private final JTextFieldPad txtNParcItRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private final JTextFieldPad txtVlrParcItRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrParcItRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC_FIN );
 
-	private final JTextFieldPad txtVlrDescItRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrDescItRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, CASAS_DEC_FIN );
 
 	private final JTextFieldPad txtDtVencItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
@@ -267,7 +269,8 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 		ecf = new ControllerECF( 
 				AplicativoPDV.getEcfdriver(), 
 				AplicativoPDV.getPortaECF(), 
-				AplicativoPDV.bModoDemo );
+				AplicativoPDV.bModoDemo, 
+				AplicativoPDV.getEcflayout() );
 		
 		if ( AplicativoPDV.bTEFTerm ) {
 			try {
@@ -282,7 +285,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 
 		montaListaCampos();
 		montaTela();
-		setConexao( (Connection) param[ 5 ] );
+		setConexao( (DbConnection) param[ 5 ] );
 
 		if ( bFrete ) {
 			if ( param[ 8 ] instanceof BigDecimal ) {
@@ -744,9 +747,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			ps.setString( 6, Aplicativo.strUsuario );
 			ps.execute();
 			ps.close();
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao executar fechamento!\n" + err.getMessage(), true, con, err );
@@ -790,9 +791,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			ps.setInt( 12, iCodVenda );
 			ps.executeUpdate();
 			ps.close();	
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}	
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao gravar a venda: " + err.getMessage() );
@@ -812,9 +811,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			ps.setInt( 3, iCodVenda );
 			ps.executeUpdate();	
 			ps.close();	
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}	
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Não foi possível finalizar a venda!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
@@ -840,9 +837,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			ps.setString( 6, Aplicativo.strUsuario );
 			ps.execute();
 			ps.close();
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao executar o troco!\n" + err.getMessage(), true, con, err );
@@ -887,9 +882,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			ps.setBigDecimal( 8, Tef.retValor( prop ) );**/
 			ps.executeUpdate();
 			ps.close();
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Logger.gravaLogTxt( "", Aplicativo.strUsuario, Logger.LGEB_BD, "Erro ao gravar tef vinculado no banco: " + err.getMessage() );
@@ -926,7 +919,8 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 				txtVlrDescItRec.getVlrBigDecimal(), 
 				txtCodTipoCobItRec.getVlrInteger(), 
 				txtCodBancoItRec.getVlrString(),
-				txtCodCartCobItRec.getVlrString()
+				txtCodCartCobItRec.getVlrString(),
+				"N"
 		};
 
 		dl.setValores( valores );
@@ -984,9 +978,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar codaux.\n" + err.getMessage(), true, con, err );
@@ -1021,9 +1013,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar o código da conta a receber!\n" + err.getMessage(), true, con, err );
@@ -1089,9 +1079,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 			ps = con.prepareStatement( "SELECT VERIFALTPARCVENDA FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -1105,9 +1093,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 			
 			rs.close();
 			ps.close();			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE4!\n" + err.getMessage(), true, con, err );
@@ -1225,7 +1211,7 @@ public class DLFechaVenda extends FFDialogo implements ControllerTefListener, Ca
 	}
 
 	@Override
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		

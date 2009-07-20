@@ -12,8 +12,8 @@ import org.freedom.componentes.ObjetoEtiqueta;
  */
 public class ObjetoEtiquetaCli extends ObjetoEtiqueta {
 
-	public ObjetoEtiquetaCli() {
-
+	public ObjetoEtiquetaCli() { 
+		 		 
 		adicOpcao( "Código do cliente", "#CODIGO#", "CODCLI", new Integer( 8 ), null, "Cód.Cli." );
 		adicOpcao( "Razão social do cliente", "#RAZAO_SOCIAL#", "RAZCLI", new Integer( 50 ), null, "Razão" );
 		adicOpcao( "Nome do cliente", "#NOME#", "NOMECLI", new Integer( 50 ), null, "Nome" );
@@ -42,6 +42,14 @@ public class ObjetoEtiquetaCli extends ObjetoEtiqueta {
 		adicOpcao( "Contato do cliente", "#CONTATO#", "CONTCLI", new Integer( 40 ), null, "Contato" );
 
 		setNometabela( "VDCLIENTE" );
+		setPK();
 		
 	}
+	
+	public void setPK() {
+		this.PK = "CODCLI";
+		
+	}
+
+	
 }

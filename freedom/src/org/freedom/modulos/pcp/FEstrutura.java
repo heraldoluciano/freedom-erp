@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FEstrutura.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -29,7 +29,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -260,7 +260,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		txtCodProdEst.setTabelaExterna( lcProdEst );
 		txtSeqEst.setTabelaExterna( lcProdEst );
 		txtDescProdEst.setListaCampos( lcProdEst );
-
+		
 		lcProdItem.add( new GuardaCampo( txtCodProdItem, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true ) );
 		lcProdItem.add( new GuardaCampo( txtDescProdItem, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProdItem.add( new GuardaCampo( txtRMA, "RMAProd", "RMA", ListaCampos.DB_SI, false ) );
@@ -553,7 +553,10 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 				try {
 
-					sSQL = "SELECT E.CODPROD, PD.DESCPROD, E.SEQEST, E.QTDEST, E.DESCEST, " + "E.ATIVOEST, E.CODMODLOTE, E.NRODIASVALID " + "FROM PPESTRUTURA E, EQPRODUTO PD " + "WHERE PD.CODEMP=E.CODEMP AND PD.CODFILIAL=E.CODFILIAL AND E.CODPROD=PD.CODPROD " + sWhere + " ORDER BY " + sValores[ 0 ];
+					sSQL = "SELECT E.CODPROD, PD.DESCPROD, E.SEQEST, E.QTDEST, E.DESCEST, E.ATIVOEST, E.CODMODLOTE, E.NRODIASVALID " 
+						+ "FROM PPESTRUTURA E, EQPRODUTO PD " 
+						+ "WHERE PD.CODEMP=E.CODEMP AND PD.CODFILIAL=E.CODFILIAL AND E.CODPROD=PD.CODPROD " 
+						+ sWhere + " ORDER BY " + sValores[ 0 ] + ",E.SEQEST";
 
 					ps = con.prepareStatement( sSQL );
 					rs = ps.executeQuery();
@@ -599,8 +602,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 					imp.eject();
 					imp.fechaGravacao();
 
-					if ( !con.getAutoCommit() )
-						con.commit();
+					con.commit();
 					dl.dispose();
 				} catch ( SQLException err ) {
 					Funcoes.mensagemErro( this, "Erro consulta tabela de estrutura do produto!\n" + err.getMessage(), true, con, err );
@@ -608,18 +610,27 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 			}
 			else if ( sValores[ 1 ].equals( "C" ) ) {
 
-				sSQL = "SELECT E.CODPROD, PD.DESCPROD, E.SEQEST, E.QTDEST, E.DESCEST, E.ATIVOEST, " + "E.CODMODLOTE, E.NRODIASVALID, IT.SEQITEST, IT.CODPRODPD, PI.DESCPROD, IT.QTDITEST, " + "IT.CODFASE, F.DESCFASE, IT.RMAAUTOITEST "
-						+ "FROM PPESTRUTURA E, PPITESTRUTURA IT, EQPRODUTO PD, EQPRODUTO PI, PPFASE F " + "WHERE E.CODPROD=PD.CODPROD AND E.CODEMP=PD.CODEMP AND E.CODFILIAL=PD.CODFILIAL " + "AND IT.CODPROD=E.CODPROD AND IT.SEQEST=E.SEQEST AND IT.CODEMP=E.CODEMP AND IT.CODFILIAL=E.CODFILIAL "
-						+ "AND IT.CODPRODPD=PI.CODPROD AND IT.CODEMPPD=PI.CODEMP AND IT.CODFILIALPD=PI.CODFILIAL " + "AND IT.CODFASE=F.CODFASE AND IT.CODEMPFS=F.CODEMP AND IT.CODFILIALFS=F.CODFILIAL " + sWhere + " ORDER BY " + sValores[ 0 ] + ", IT.CODPROD, IT.CODFASE";
+				sSQL = "SELECT E.CODPROD, PD.DESCPROD, E.SEQEST, E.QTDEST, E.DESCEST, E.ATIVOEST, " 
+					 + "E.CODMODLOTE, E.NRODIASVALID, IT.SEQITEST, IT.CODPRODPD, PI.DESCPROD, IT.QTDITEST, " 
+					 + "IT.CODFASE, F.DESCFASE, IT.RMAAUTOITEST "
+						+ "FROM PPESTRUTURA E, PPITESTRUTURA IT, EQPRODUTO PD, EQPRODUTO PI, PPFASE F " 
+						+ "WHERE E.CODPROD=PD.CODPROD AND E.CODEMP=PD.CODEMP AND E.CODFILIAL=PD.CODFILIAL " 
+						+ "AND IT.CODPROD=E.CODPROD AND IT.SEQEST=E.SEQEST AND IT.CODEMP=E.CODEMP AND IT.CODFILIAL=E.CODFILIAL "
+						+ "AND IT.CODPRODPD=PI.CODPROD AND IT.CODEMPPD=PI.CODEMP AND IT.CODFILIALPD=PI.CODFILIAL " 
+						+ "AND IT.CODFASE=F.CODFASE AND IT.CODEMPFS=F.CODEMP AND IT.CODFILIALFS=F.CODFILIAL " 
+						+ sWhere + " ORDER BY " + sValores[ 0 ] + ", IT.CODPROD, E.SEQEST, IT.CODFASE";
 
 				try {
 
 					String sCodProd = txtCodProdEst.getVlrString();
+					
 					int cont = 0;
 
 					ps = con.prepareStatement( sSQL );
 					rs = ps.executeQuery();
+					int seqest = 0;
 					while ( rs.next() ) {
+
 						if ( imp.pRow() >= linPag ) {
 							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
 							imp.say( imp.pRow() + 0, 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
@@ -631,9 +642,10 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 							imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
 							imp.say( imp.pRow() + 0, 0, "|" + Funcoes.replicate( " ", 133 ) + "|" );
 						}
-						if ( !sCodProd.equals( rs.getString( 1 ) ) ) {
+						if ( (!sCodProd.equals( rs.getString( 1 ) )) || (seqest!=rs.getInt( "SEQEST" )) ) {
 							cont = 0;
 							sCodProd = rs.getString( 1 );
+							seqest = rs.getInt( "SEQEST" );
 						}
 						if ( sCodProd.equals( rs.getString( 1 ) ) && cont == 0 ) {
 							imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
@@ -690,8 +702,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 					imp.eject();
 					imp.fechaGravacao();
 
-					if ( !con.getAutoCommit() )
-						con.commit();
+					con.commit();
 					dl.dispose();
 
 				} catch ( SQLException err ) {
@@ -868,7 +879,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		}
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcProdEst.setConexao( cn );

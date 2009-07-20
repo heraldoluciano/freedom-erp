@@ -8,13 +8,13 @@
  * Classe:
  * @(#)DLFechaCompra.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -26,14 +26,15 @@ package org.freedom.modulos.std;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,6 +42,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
@@ -59,7 +61,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FPassword;
 
-public class DLFechaCompra extends FFDialogo implements FocusListener, MouseListener {
+public class DLFechaCompra extends FFDialogo implements FocusListener, MouseListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -73,25 +75,29 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtVlrDescItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldPad txtVlrDescItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtPercDescCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
 
-	private JTextFieldPad txtVlrDescCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldPad txtVlrDescCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtPercAdicCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
 
-	private JTextFieldPad txtVlrLiqCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldPad txtVlrLiqCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtQtdFreteCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
 
-	private JTextFieldPad txtVlrAdicCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldPad txtVlrAdicCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtVlrProdCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldPad txtVlrProdCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtVlrFreteCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldPad txtVlrFreteCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtVlrICMSCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldPad txtVlrICMSCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtVlrIPICompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldPad txtVlrIPICompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtVlrBaseICMS = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -101,9 +107,9 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 	private JTextFieldPad txtNParcPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtVlrParcItPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldPad txtVlrParcItPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtVlrParcPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 3 );
+	private JTextFieldPad txtVlrParcPag = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtDtVencItPag = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
@@ -117,8 +123,16 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 	private JCheckBoxPad cbImpNot = new JCheckBoxPad( "Imprime Nota?", "S", "N" );
 
-	private JCheckBoxPad cbAdicFrete = new JCheckBoxPad( "adiciona valor do frete ao custo?", "S", "N" );
-
+	private JCheckBoxPad cbAdicFreteCusto = new JCheckBoxPad( "Soma Valor do frete ao custo dos produtos.", "S", "N" );
+	
+	private JCheckBoxPad cbAdicAdicCusto = new JCheckBoxPad( "Soma Valor adicional ao custo dos produtos.", "S", "N" );
+	
+	private JCheckBoxPad cbAdicIPIBase = new JCheckBoxPad( "Soma IPI à base de cálculo do ICMS.", "S", "N" );
+	
+	private JCheckBoxPad cbAdicFreteBase = new JCheckBoxPad( "Soma Frete à base de cálculo do ICMS.", "S", "N" );
+	
+	private JCheckBoxPad cbAdicAdicBase = new JCheckBoxPad( "Soma Vlr. Adicionais à base de cálculo do ICMS.", "S", "N" );
+	
 	private JRadioGroup<?, ?> rgFreteVD = null;
 
 	private ListaCampos lcCompra = new ListaCampos( this );
@@ -140,15 +154,38 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 	private int iCodCompraFecha = 0;
 
 	private boolean bPodeSair = false;
+	
+	BigDecimal volumes = null;
+	
+	private JPanelPad pinLbCusto = new JPanelPad();
+	private JPanelPad pinCusto = new JPanelPad();
 
-	public DLFechaCompra( Connection cn, Integer iCodCompra, Component cOrig ) {
+	private JPanelPad pinLbValores = new JPanelPad();
+	private JPanelPad pinValores = new JPanelPad();
+	
+	private JPanelPad pinLbFrete = new JPanelPad();
+	private JPanelPad pinFrete = new JPanelPad();
+	
+	private JPanelPad pinLbImp = new JPanelPad();
+	private JPanelPad pinImp = new JPanelPad();
+
+	private JPanelPad pinLbTrib = new JPanelPad();
+	private JPanelPad pinTrib = new JPanelPad();
+	
+	private JPanelPad pinLbICMS = new JPanelPad();
+	private JPanelPad pinICMS = new JPanelPad();
+
+
+	public DLFechaCompra( DbConnection cn, Integer iCodCompra, Component cOrig, BigDecimal volumes) {
 
 		super( cOrig );
 		setConexao( cn );
 		iCodCompraFecha = iCodCompra.intValue();
 		setTitulo( "Fechar Compra" );
-		setAtribos( 440, 370 );
+		setAtribos( 560, 470 );
 
+		this.volumes = volumes;
+		
 		lcItPagar.setMaster( lcPagar );
 		lcPagar.adicDetalhe( lcItPagar );
 		lcItPagar.setTabela( tabPag );
@@ -201,7 +238,11 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		lcCompra.add( new GuardaCampo( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, false ) );
 		lcCompra.add( new GuardaCampo( txtCodBanco, "CodBanco", "CodBanco", ListaCampos.DB_FK, txtDescBanco, false ) );
 		lcCompra.add( new GuardaCampo( rgFreteVD, "TipoFreteCompra", "Tipo do frete", ListaCampos.DB_SI, false ) );
-		lcCompra.add( new GuardaCampo( cbAdicFrete, "AdicFreteCompra", "frete na campra", ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( cbAdicFreteCusto, "AdicFreteCompra", "frete na campra", ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( cbAdicAdicCusto, "AdicAdicCompra", "Vlr Adicional na campra", ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtQtdFreteCompra, "QtdFreteCompra", "Qtd. de volumes na compra", ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrBaseICMS, "VlrBaseICMSCompra", "Vlr. Base do ICMS", ListaCampos.DB_SI, false ) );
+		
 		lcCompra.montaSql( false, "COMPRA", "CP" );
 		lcCompra.setConexao( cn );
 		txtVlrLiqCompra.setListaCampos( lcCompra );
@@ -211,6 +252,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		txtPercAdicCompra.setListaCampos( lcCompra );
 		txtVlrDescCompra.setListaCampos( lcCompra );
 		txtVlrFreteCompra.setListaCampos( lcCompra );
+		txtQtdFreteCompra.setListaCampos( lcCompra );
 		txtPercDescCompra.setListaCampos( lcCompra );
 		txtStatusCompra.setListaCampos( lcCompra );
 		txtCodPlanoPag.setListaCampos( lcCompra );
@@ -252,57 +294,159 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		lcCompra.carregaDados();
 
 		setPainel( pinFecha );
-		adic( new JLabelPad( "Cód.p.pag." ), 7, 0, 270, 20 );
-		adic( txtCodPlanoPag, 7, 20, 80, 20 );
-		adic( new JLabelPad( "Descrição do plano de pagto." ), 90, 0, 270, 20 );
-		adic( txtDescPlanoPag, 90, 20, 270, 20 );
-		adic( new JLabelPad( "% Desc." ), 7, 40, 100, 20 );
-		adic( txtPercDescCompra, 7, 60, 100, 20 );
-		adic( new JLabelPad( "V Desc." ), 110, 40, 97, 20 );
-		adic( txtVlrDescCompra, 110, 60, 97, 20 );
-		adic( new JLabelPad( "% Adic." ), 210, 40, 97, 20 );
-		adic( txtPercAdicCompra, 210, 60, 97, 20 );
-		adic( new JLabelPad( "V Adic." ), 310, 40, 100, 20 );
-		adic( txtVlrAdicCompra, 310, 60, 100, 20 );
-		adic( new JLabelPad( "V Frete." ), 7, 80, 100, 20 );
-		adic( txtVlrFreteCompra, 7, 100, 100, 20 );
-		adic( new JLabelPad( "V. Compra" ), 110, 80, 100, 20 );
-		adic( txtVlrLiqCompra, 110, 100, 97, 20 );
-		adic( new JLabelPad( "V. ICMS" ), 210, 80, 100, 20 );
-		adic( txtVlrICMSCompra, 210, 100, 97, 20 );
-		adic( new JLabelPad( "V. IPI" ), 310, 80, 100, 20 );
-		adic( txtVlrIPICompra, 310, 100, 100, 20 );
-		adic( new JLabelPad( "Tipo frete" ), 7, 120, 100, 20 );
-		adic( rgFreteVD, 7, 140, 160, 30 );
-		adic( cbAdicFrete, 200, 145, 300, 20 );
-		adic( new JLabelPad( "Cód.banco" ), 7, 175, 100, 20 );
-		adic( txtCodBanco, 7, 195, 100, 20 );
-		adic( new JLabelPad( "Descrição do Banco" ), 110, 175, 200, 20 );
-		adic( txtDescBanco, 110, 195, 300, 20 );
-		adic( cbImpPed, 7, 225, 180, 20 );
-		adic( cbImpNot, 200, 225, 180, 20 );
+		adic( new JLabelPad( "Cód.pag." ), 7, 0, 60, 20 );
+		adic( txtCodPlanoPag, 7, 20, 60, 20 );
+		adic( new JLabelPad( "Descrição do plano de pagto." ), 70, 0, 200, 20 );
+		adic( txtDescPlanoPag, 70, 20, 200, 20 );
 
-		if ( txtVlrDescItCompra.getVlrString().length() > 0 ) {
+		adic( new JLabelPad( "Cód.bco." ), 273, 0, 60, 20 );
+		adic( txtCodBanco, 273, 20, 60, 20 );
+
+		adic( new JLabelPad( "Descrição do Banco" ), 336, 0, 200, 20 );
+		adic( txtDescBanco, 336, 20, 200, 20 );
+
+   	   /**********************
+		*  Quadro de valores
+		**********************/
+		
+		pinLbValores.adic( new JLabelPad( "   Valores " ), 0, 0, 70, 15 );
+		pinLbValores.tiraBorda();
+
+		adic( pinLbValores, 20, 52, 60, 15 ); 
+		adic( pinValores, 7, 60, 326, 110 );
+				
+		pinValores.adic( new JLabelPad( "% Desc." ), 7, 10, 60, 20 );
+		pinValores.adic( txtPercDescCompra, 7, 30, 60, 20 );
+		
+		pinValores.adic( new JLabelPad( "Vlr.Desc." ), 70, 10, 80, 20 );
+		pinValores.adic( txtVlrDescCompra, 70, 30, 80, 20 );
+
+		pinValores.adic( new JLabelPad( "Vlr.Frete" ), 153, 10, 80, 20 );
+		pinValores.adic( txtVlrFreteCompra, 153, 30, 80, 20 );
+
+		pinValores.adic( new JLabelPad( "Vlr.Compra" ), 236, 10, 80, 20 );
+		pinValores.adic( txtVlrLiqCompra, 236, 30, 77, 20 );
+
+  		pinValores.adic( new JLabelPad( "% Adic." ), 7, 50, 60, 20 );
+		pinValores.adic( txtPercAdicCompra, 7, 70, 60, 20 );
+		
+		pinValores.adic( new JLabelPad( "Vlr.Adic." ), 70, 50, 80, 20 );
+		pinValores.adic( txtVlrAdicCompra, 70, 70, 80, 20 );
+			
+		pinValores.adic( new JLabelPad( "Vlr.ICMS" ), 153, 50, 80, 20 );
+		pinValores.adic( txtVlrICMSCompra, 153, 70, 80, 20 );
+		
+		pinValores.adic( new JLabelPad( "Vlr.IPI" ), 236, 50, 77, 20 );
+		pinValores.adic( txtVlrIPICompra, 236, 70, 77, 20 );
+
+   	   /**********************
+		*  Quadro Frete
+		**********************/
+		
+		pinLbFrete.adic( new JLabelPad( "   Frete " ), 0, 0, 70, 15 );
+		pinLbFrete.tiraBorda();
+		
+		adic( pinLbFrete, 349, 52, 60, 15 ); 
+		adic( pinFrete, 336, 60, 200, 110 );
+		
+		pinFrete.adic( rgFreteVD, 7, 20, 182, 30 );
+			
+		pinFrete.adic( new JLabelPad( "Volumes" ), 7, 50, 80, 20 );
+		pinFrete.adic( txtQtdFreteCompra, 7, 70, 80, 20 );
+
+		
+  	   /**********************
+		*  Quadro Tributação
+		**********************/
+		
+		pinLbTrib.adic( new JLabelPad( "   Tributação " ), 0, 0, 90, 15 );
+		pinLbTrib.tiraBorda();
+
+		adic( pinLbTrib, 20, 178, 90, 15 ); 
+		adic( pinTrib, 7, 185,  326, 80 );
+		
+/*		
+  		pinTrib.adic( cbAdicFreteBase, 7, 10, 320, 20 );
+		pinTrib.adic( cbAdicAdicBase, 7, 30, 320, 20 );
+		pinTrib.adic( cbAdicIPIBase, 7, 50, 320, 20 );
+		
+		*/
+
+	   /**********************
+		*  ICMS
+		**********************/
+		
+		pinLbICMS.adic( new JLabelPad( "   ICMS " ), 0, 0, 90, 15 );
+		pinLbICMS.tiraBorda();
+
+		adic( pinLbICMS, 349, 178, 90, 15 ); 
+		adic( pinICMS, 336, 185,  200, 80 );
+		
+		pinICMS.adic( new JLabelPad( "Base de Cálculo." ), 7, 10, 100, 20 );
+		pinICMS.adic( txtVlrBaseICMS, 7, 30, 100, 20 );
+		
+        /******************************
+		*  Quadro Composição do custo
+		******************************/
+				
+		pinLbCusto.adic( new JLabelPad( "   Composição do custo " ), 0, 0, 150, 15 );
+		pinLbCusto.tiraBorda();
+
+		adic( pinLbCusto, 20, 270, 150, 15 ); 
+		adic( pinCusto, 7, 280,  326, 60 );
+		
+		pinCusto.adic( cbAdicFreteCusto, 7, 10, 280, 20 );
+		pinCusto.adic( cbAdicAdicCusto, 7, 30, 280, 20 );
+
+	   /**********************
+		*  Quadro Impressão
+		**********************/
+		
+		pinLbImp.adic( new JLabelPad( "   Impressão " ), 0, 0, 90, 15 );
+		pinLbImp.tiraBorda();
+		
+		adic( pinLbImp, 349, 270, 90, 15 ); 
+		adic( pinImp, 336, 280, 200, 60 );
+
+		pinImp.adic( cbImpPed, 7, 10, 180, 20 );
+		pinImp.adic( cbImpNot, 7, 30, 180, 20 );
+		
+		
+		/********** FIM DOS QUADROS  ***********/
+		
+		if (txtVlrDescItCompra.getVlrBigDecimal().compareTo( new BigDecimal(0) )!=0) {
 			txtPercDescCompra.setAtivo( false );
 			txtVlrDescCompra.setAtivo( false );
 		}
 		
-		/*JPanelPad pnBotaoFechar = new JPanelPad(JPanelPad.TP_JPANEL, new FlowLayout(FlowLayout.CENTER, 7, 7));
-		pnBotaoFechar.add( btFechar );
-		pnRodape.add( pnBotaoFechar, BorderLayout.WEST );*/
-
 		tpn.setEnabledAt( 1, false );
-		
+		Funcoes.transValor( new BigDecimal(0), 10, 2, false );
 		btFechar.addActionListener( this );
-
+		
 		txtPercDescCompra.addFocusListener( this );
 		txtVlrDescCompra.addFocusListener( this );
 		txtPercAdicCompra.addFocusListener( this );
 		txtVlrAdicCompra.addFocusListener( this );
 
+		txtQtdFreteCompra.setVlrBigDecimal( volumes );
+		
 		lcCompra.edit();
 	}
 
+	private void adicVlrFrete(){
+		
+		if( txtVlrFreteCompra.getVlrBigDecimal().intValue() > 0 ){
+			
+			BigDecimal bdVlrFrete = txtVlrFreteCompra.getVlrBigDecimal();
+			BigDecimal bdVlrCompra = txtVlrLiqCompra.getVlrBigDecimal();
+				
+			if ( Funcoes.mensagemConfirma( null, "Deseja adicionar o valor do frete no valor total?" ) == JOptionPane.YES_OPTION ) {
+				
+				txtVlrLiqCompra.setVlrBigDecimal( bdVlrCompra.add( bdVlrFrete ) );
+			}
+		}		
+	}
+	
 	private void alteraParc() {
 
 		lcItPagar.edit();
@@ -345,9 +489,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar o código da conta a Pagar!\n" + err.getMessage(), true, con, err );
 		}
@@ -376,9 +518,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 			
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
 		} finally {
@@ -391,13 +531,14 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 6 ];
+		String[] sRetorno = new String[ 7 ];
 		sRetorno[ 0 ] = txtCodPlanoPag.getVlrString();
 		sRetorno[ 1 ] = txtVlrDescCompra.getVlrString();
 		sRetorno[ 2 ] = txtVlrAdicCompra.getVlrString();
 		sRetorno[ 3 ] = cbImpPed.getVlrString();
 		sRetorno[ 4 ] = cbImpNot.getVlrString();
 		sRetorno[ 5 ] = txtVlrLiqCompra.getVlrString();
+		sRetorno[ 6 ] = txtQtdFreteCompra.getVlrString();
 		return sRetorno;
 	}
 	
@@ -481,7 +622,25 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		}
 	}
 
-	public void focusGained( FocusEvent fevt ) { }
+	public void focusGained( FocusEvent fevt ) { 
+		if ( fevt.getSource() == txtVlrDescCompra ) {
+			BigDecimal liq = txtVlrLiqCompra.getVlrBigDecimal();
+			BigDecimal des = txtVlrDescCompra.getVlrBigDecimal();
+			BigDecimal tot = liq.subtract( des ) ;
+			txtVlrLiqCompra.setVlrBigDecimal(tot);
+		}
+	}
+	
+	public void keyPressed( KeyEvent kevt ) {
+		
+		if( kevt.getSource() == txtVlrFreteCompra ){
+			if( kevt.getKeyCode() == KeyEvent.VK_ENTER ){
+				adicVlrFrete();
+			}
+		}
+		
+		super.keyPressed( kevt );
+	}
 
 	public void mouseClicked( MouseEvent mevt ) {
 

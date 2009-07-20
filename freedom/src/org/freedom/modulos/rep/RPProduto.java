@@ -9,13 +9,13 @@
  * Classe:
  * @(#)RPProduto.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -26,7 +26,7 @@
 package org.freedom.modulos.rep;
 
 import java.awt.event.ActionListener;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +72,7 @@ public class RPProduto extends FDados implements ActionListener, InsertListener 
 
 	private final JTextFieldPad txtComiss = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, Aplicativo.casasDec );
 	
-	private final JTextFieldPad txtCubagem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, Aplicativo.casasDec );
+	private final JTextFieldPad txtCubagem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, 5 );
 	
 	private final JTextFieldFK txtDescGrupo = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
@@ -88,7 +88,7 @@ public class RPProduto extends FDados implements ActionListener, InsertListener 
 
 	private final JTextFieldPad txtPreco3 = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 	
-	private final JTextFieldPad txtPrecoCusto = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	private final JTextFieldPad txtPreco4 = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 	
 	private final ListaCampos lcGrupo = new ListaCampos( this, "GP" );
 	
@@ -138,7 +138,7 @@ public class RPProduto extends FDados implements ActionListener, InsertListener 
 		lcUnidade.add( new GuardaCampo( txtDescUnid, "DescUnid", "Descrição da unidade", ListaCampos.DB_SI, false ) );
 		lcUnidade.montaSql( false, "UNIDADE", "RP" );
 		lcUnidade.setQueryCommit( false );
-		lcUnidade.setReadOnly( true );
+		lcUnidade.setReadOnly( true ); 
 		txtCodUnid.setTabelaExterna( lcUnidade );
 		
 		/*******************
@@ -168,7 +168,7 @@ public class RPProduto extends FDados implements ActionListener, InsertListener 
 		adicCampo( txtPreco1, 7, 110, 100, 20, "PrecoProd1", "Preço 1", ListaCampos.DB_SI, false );
 		adicCampo( txtPreco2, 110, 110, 100, 20, "PrecoProd2", "Preço 2", ListaCampos.DB_SI, false );
 		adicCampo( txtPreco3, 213, 110, 100, 20, "PrecoProd3", "Preço 3", ListaCampos.DB_SI, false );
-		adicCampo( txtPrecoCusto, 316, 110, 157, 20, "PrecoCusto", "Preço de Custo", ListaCampos.DB_SI, false );
+		adicCampo( txtPreco4, 316, 110, 157, 20, "PrecoCusto", "Preço 4", ListaCampos.DB_SI, false );
 		
 		adicCampo( txtPercIPI, 7, 150, 100, 20, "PercIPIProd", "% IPI", ListaCampos.DB_SI, false );
 		adicCampo( txtComiss, 110, 150, 100, 20, "ComisProd", "% Comissão", ListaCampos.DB_SI, false );
@@ -187,7 +187,7 @@ public class RPProduto extends FDados implements ActionListener, InsertListener 
 		adicCampo( txtRefProdFor, 7, 310, 203, 20, "RefProdFor", "Refêrencia no fornecedor", ListaCampos.DB_SI, false );
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 

@@ -7,14 +7,14 @@
  * Pacote: org.freedom.modulos.std <BR>
  * Classe: @(#)FRBoleto.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  *
  * Comentários sobre a classe...
  * 
@@ -29,7 +29,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -66,6 +66,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
+
+import sun.awt.image.ToolkitImage;
 public class FRBoleto extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
@@ -691,9 +693,7 @@ public class FRBoleto extends FRelatorio {
 			rs.close();
 			ps.close();
 
-			if ( ! con.getAutoCommit() ) { 
-				con.commit(); 
-			}
+			con.commit(); 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar a moeda padrão!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
@@ -711,7 +711,11 @@ public class FRBoleto extends FRelatorio {
 		String retorno = null;
 
 		if ( "N".equals( preImpModbol ) ) {
-			retorno = classModBol;
+			if (classModBol.indexOf( '/',0 )==-1) {
+				retorno = "layout/bol/" + classModBol;
+			} else {
+				retorno = classModBol;
+			}
 		}
 		return retorno;
 
@@ -747,9 +751,7 @@ public class FRBoleto extends FRelatorio {
 			rs.close();
 			ps.close();
 			
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		}
 		catch ( SQLException e ) {
 			e.printStackTrace();
@@ -778,9 +780,7 @@ public class FRBoleto extends FRelatorio {
 			rs.close();
 			ps.close();
 			
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		}
 		catch ( SQLException e ) {
 			e.printStackTrace();
@@ -824,9 +824,7 @@ public class FRBoleto extends FRelatorio {
 				ps.executeUpdate();
 				ps.close();
 
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 
 				sql = new StringBuilder();
 
@@ -862,9 +860,7 @@ public class FRBoleto extends FRelatorio {
 				ps.executeUpdate();
 				ps.close();
 				
-				if ( ! con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 			}
 			catch ( Exception e ) {
 				e.printStackTrace();
@@ -883,8 +879,13 @@ public class FRBoleto extends FRelatorio {
 		parametros.put( "CODEMP", Aplicativo.iCodEmp );
 		parametros.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 		parametros.put( "IMPDOC", txtImpInst.getVlrString() );
+		
 		if (Aplicativo.empresa!=null) {
-			parametros.put(  "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
+			parametros.put( "RAZEMP" , empresa.getAll().get( "RAZEMP" ) );
+			ToolkitImage logoemp = (ToolkitImage) empresa.getAll().get( "LOGOEMP" );
+			if (logoemp!=null) {
+				parametros.put( "LOGOEMP" , logoemp );
+			}
 		}
 		//parametros.put( "CODVENDA", txtCodVenda.getVlrInteger() );
 
@@ -971,8 +972,11 @@ public class FRBoleto extends FRelatorio {
 		sSQL.append( "C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, " );
 		sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI, ITR.RECIBOITREC, " );
 		sSQL.append( "(ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA, " );
+		sSQL.append( " F.RAZFILIAL,  F.ENDFILIAL, F.NUMFILIAL, F.BAIRFILIAL, F.CIDFILIAL, F.CEPFILIAL, F.FONEFILIAL, F.FAXFILIAL, " );
+		sSQL.append( "F.CNPJFILIAL, F.INSCFILIAL, F.WWWFILIAL, F.EMAILFILIAL," );		
+		 
 		sSQL.append( "IV.CODNAT, N.DESCNAT, F.RAZFILIAL, CT.AGENCIACONTA, MB.NUMCONTA, " );
-		sSQL.append( "MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, R.VLRAPAGREC, VD.NOMEVEND, " );
+		sSQL.append( "MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, IM.DVCONVCOB , R.VLRAPAGREC, VD.NOMEVEND, " );
 
 		sSQL.append( "(SELECT FIRST 1 VO.CODORC FROM VDVENDAORC VO " );
 		sSQL.append( "WHERE VO.CODEMP=V.CODEMP AND VO.CODFILIAL=VO.CODFILIAL AND " );
@@ -1302,9 +1306,7 @@ public class FRBoleto extends FRelatorio {
 			
 			rs.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( null, "Erro ao tentar imprimir!\n" + err.getMessage(), true, con, err );
@@ -1362,7 +1364,8 @@ public class FRBoleto extends FRelatorio {
 	private void imprimeGrafico( final boolean bVisualizar, final ResultSet rs, final String classe ) {
 
 	
-		FPrinterJob dlGr = new FPrinterJob( "relatorios/" + classe, "Boleto", null, rs, getParametros(), this );
+//		FPrinterJob dlGr = new FPrinterJob( "relatorios/" + classe, "Boleto", null, rs, getParametros(), this );
+		FPrinterJob dlGr = new FPrinterJob( classe, "Boleto", null, rs, getParametros(), this );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -1376,7 +1379,7 @@ public class FRBoleto extends FRelatorio {
 		}
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcModBol.setConexao( cn );

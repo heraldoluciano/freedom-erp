@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.Blob;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
@@ -54,7 +54,7 @@ public class ProcessaPonto extends JFrame implements ActionListener, KeyListener
 		
 	private JTextFieldPad txtApelido = new JTextFieldPad( JTextFieldPad.TP_STRING , 30, 0);
 	
-	private static Connection con = null;
+	private static DbConnection con = null;
 	
 	private Font fntPad01 = new Font( "Arial", Font.BOLD, 16 );
 	
@@ -218,9 +218,9 @@ public class ProcessaPonto extends JFrame implements ActionListener, KeyListener
 		
 	}
 	
-	private static Connection getConexao( String sUsu, String sSenha ) {
+	private static DbConnection getConexao( String sUsu, String sSenha ) {
 
-		Connection con = null;
+		DbConnection con = null;
 		try {
 			Aplicativo.setLookAndFeel( null );
 			String strBanco = Aplicativo.getParameter( "banco" );

@@ -6,14 +6,14 @@
  * Pacote: leiautes <BR>
  * Classe: @(#)NFMaviGesso.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  *
  * Layout da nota fiscal para a empresa Mavigesso Arte Gesso Ltda.
  */
@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.componentes.Leiaute;
 
@@ -171,7 +172,8 @@ public class NFMaviGesso extends Leiaute {
             iProd = iProd+vDesc.size();
             
 //            imp.say(imp.pRow()+0,69,Funcoes.copy(rs.getString("OrigFisc"),0,1)+Funcoes.copy(rs.getString("CodTratTrib"),0,2));
-            imp.say(imp.pRow()+0,86,rs.getString("CodUnid").substring(0,4));
+         //   Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) 
+            imp.say(imp.pRow()+0,86,Funcoes.copy( rs.getString("CodUnid"), 4 ));
             imp.say(imp.pRow()+0,94,""+rs.getDouble("QtdItVenda"));
             imp.say(imp.pRow()+0,106,Funcoes.strDecimalToStrCurrency(8,2,""+((new BigDecimal(rs.getDouble("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP))));
             imp.say(imp.pRow()+0,115,Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrLiqItVenda")));

@@ -1,6 +1,6 @@
 /**
  * @version 18/11/2008 <BR>
- * @author Setpoint Informática Ltda./Reginaldo Garcia Heua <BR>
+ * @author Setpoint Informática Ltda.<BR>
  * 
  * Projeto: Freedom <BR>
  * 
@@ -8,13 +8,13 @@
  * Classe:
  * @(#)DLImpBoletoRec.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -23,7 +23,6 @@
 
 package org.freedom.modulos.std;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,6 +39,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ObjetoEmpresa;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
 import org.freedom.telas.FPrinterJob;
@@ -64,11 +64,11 @@ public class DLImpBoletoRec extends FDialogo {
 	
     private	int parcRec;
 	
-	Connection con = null;
+	DbConnection con = null;
 	
 	private JInternalFrame owner = null;
 	
-	public DLImpBoletoRec( JInternalFrame owner, Connection con, int codRec, int parcRec ){
+	public DLImpBoletoRec( JInternalFrame owner, DbConnection con, int codRec, int parcRec ){
 		
 		super();
 		setAtribos( 370, 150 );
@@ -122,17 +122,17 @@ public class DLImpBoletoRec extends FDialogo {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
-		sSQL.append( "SELECT ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC, MB.PREIMPMODBOL, " );
+		sSQL.append( "SELECT IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC, MB.PREIMPMODBOL, " );
 		sSQL.append( "ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, R.DOCREC,ITR.CODBANCO, B.DVBANCO, " );
 		sSQL.append( "B.IMGBOLBANCO LOGOBANCO01, B.IMGBOLBANCO LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, IM.CODCARTCOB, " );
 		sSQL.append( "MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, ITR.dtitrec AS DTEMITVENDA, " );
 		sSQL.append( "C.RAZCLI,C.CPFCLI,C.CNPJCLI, C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI, " );
 		sSQL.append( "C.CIDCLI,C.UFCLI, C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, P.CODMOEDA, " );
 		sSQL.append( "C.PESSOACLI, (ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA, " );
-		sSQL.append( "CT.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT " );
+		sSQL.append( "CT.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, C.INSCCLI " );
 		sSQL.append( "FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB, " );
 		sSQL.append( "FNITMODBOLETO IM, FNITRECEBER ITR, SGFILIAL F, FNCONTA CT " );
-		sSQL.append( "WHERE " );
+		sSQL.append( "WHERE " );	
 		sSQL.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI " );
 		sSQL.append( "AND P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL " );
 		sSQL.append( "AND F.CODEMP=R.CODEMP AND F.CODFILIAL=R.CODFILIAL " );
@@ -141,13 +141,15 @@ public class DLImpBoletoRec extends FDialogo {
 		sSQL.append( "AND IM.CODEMP=MB.CODEMP AND IM.CODFILIAL=MB.CODFILIAL AND IM.CODMODBOL=MB.CODMODBOL " );
 		sSQL.append( "AND IM.CODEMPBO=B.CODEMP AND IM.CODFILIALBO=B.CODFILIAL AND IM.CODBANCO=B.CODBANCO " );
 		sSQL.append( "AND IM.CODEMPCB=ITR.CODEMPCB AND IM.CODFILIALCB=ITR.CODFILIALCB AND IM.CODCARTCOB=ITR.CODCARTCOB " );
-		sSQL.append( "AND CT.CODEMP=MB.CODEMPCC AND CT.CODFILIAL=MB.CODFILIALCC AND CT.NUMCONTA=MB.NUMCONTA " );
+		sSQL.append( "AND CT.CODEMP=IM.CODEMPCT AND CT.CODFILIAL=IM.CODFILIALCT AND CT.NUMCONTA=IM.NUMCONTA " );
 		sSQL.append( "AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND ITR.CODREC=R.CODREC " );
 		sSQL.append( "AND ITR.STATUSITREC IN ('R1','RL') " );
 		sSQL.append( "AND MB.CODEMP=? AND MB.CODFILIAL=? AND MB.CODMODBOL=?" );
 		sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND R.CODREC=? AND ITR.nparcitrec=? " );
 		
 		try {
+			
+			System.out.println("QUERY DUPLICATA:" + sSQL.toString());
 			
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -179,6 +181,7 @@ public class DLImpBoletoRec extends FDialogo {
 		
 		if ( Aplicativo.empresa != null ) {
 			parametros.put(  "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
+			parametros.put(  "RAZEMP", empresa.getAll().get( "RAZEMP" ) );
 		}
 
 		return parametros;
@@ -186,7 +189,16 @@ public class DLImpBoletoRec extends FDialogo {
 	
 	private void imprimeGrafico( final boolean bVisualizar, final ResultSet rs ){
 		
-		FPrinterJob dlGr = new FPrinterJob( "relatorios/boleto.jasper", "Boleto", null, rs, getParametros(), owner );
+		String classBol = "";
+		if ( txtClassModBol.getVlrString().indexOf( '/', 0 )==-1 ) {
+			classBol = "layout/bol/" + txtClassModBol.getVlrString();
+		} else {
+			classBol = txtClassModBol.getVlrString();
+		}
+			
+//		FPrinterJob dlGr = new FPrinterJob( "relatorios/boleto.jasper", "Boleto", null, rs, getParametros(), owner );
+		
+		FPrinterJob dlGr = new FPrinterJob( classBol, "Boleto", null, rs, getParametros(), owner );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );

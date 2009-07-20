@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FVD.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -41,6 +41,11 @@ import org.freedom.telas.FObservacao;
 import org.freedom.telas.FPassword;
 
 public abstract class FVD extends FDetalhe {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2889668879816597737L;
 
 	protected int casasDec = Aplicativo.casasDec;
 
@@ -120,14 +125,13 @@ public abstract class FVD extends FDetalhe {
 			ps.setInt( 12, iParans[ 11 ] );// código da filial
 			rs = ps.executeQuery();
 			rs.next();
-			retorno = rs.getString( 1 ) != null ? ( new BigDecimal( rs.getString( 1 ) ) ) : ( new BigDecimal( "0" ) );
+
+			retorno = rs.getBigDecimal( 1 ) != null ? ( rs.getBigDecimal( 1 ) ) : ( new BigDecimal( 0 ) );
 
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar o preço!\n" + err.getMessage(), true, con, err );
@@ -169,9 +173,7 @@ public abstract class FVD extends FDetalhe {
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar descrição completa!\n" + err.getMessage(), true, con, err );
@@ -217,9 +219,7 @@ public abstract class FVD extends FDetalhe {
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao confirmar número do pedido!\n" + err.getMessage(), true, con, err );
@@ -266,9 +266,7 @@ public abstract class FVD extends FDetalhe {
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 		} catch ( SQLException err ) {
 			err.printStackTrace();
@@ -331,11 +329,11 @@ public abstract class FVD extends FDetalhe {
 				}
 			}
 
-			sSQL = "SELECT COUNT(*) " + "FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?) C " +
-				   "WHERE PF.CODEMP=? AND PF.CODFILIAL=? AND " + 
-				   "P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? AND " + 
-				   "(((C." + sCampoCusto + "/100)*(100+PF.PERCPRECOCUSTO)) <= ? " +
-				   "OR PERCPRECOCUSTO IS NULL OR TIPOPROD='S')";
+			sSQL = "SELECT COUNT(*) FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?) C " 
+				+  "WHERE PF.CODEMP=? AND PF.CODFILIAL=? AND " 
+				+  "P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? AND " 
+				+  "(((C." + sCampoCusto + "/100)*(100+PF.PERCPRECOCUSTO)) <= ? " 
+				+  "OR PERCPRECOCUSTO IS NULL OR TIPOPROD='S')";
 
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -361,9 +359,7 @@ public abstract class FVD extends FDetalhe {
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 			if ( !bRet && sVerifProd.equals( "S" ) ) {
 				bRet = senhaBaixoCusto( getParansPass() );
@@ -446,9 +442,7 @@ public abstract class FVD extends FDetalhe {
 				rs.close();
 				ps.close();
 
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 
 				// percorre todos os itens
 				for ( int i = 0; i < vCodItem.size(); i++ ) {
@@ -491,9 +485,7 @@ public abstract class FVD extends FDetalhe {
 
 				
 
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao carregar o preço!\n" + err.getMessage(), true, con, err );
@@ -660,9 +652,7 @@ public abstract class FVD extends FDetalhe {
 				rs.close();
 				ps.close();
 
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao carregar a observação!\n" + err.getMessage(), true, con, err );
@@ -683,9 +673,7 @@ public abstract class FVD extends FDetalhe {
 
 						ps.close();
 
-						if ( !con.getAutoCommit() ) {
-							con.commit();
-						}
+						con.commit();
 						
 					} catch ( SQLException err ) {
 						Funcoes.mensagemErro( this, "Erro ao inserir observação no orçamento!\n" + err.getMessage(), true, con, err );
@@ -861,9 +849,7 @@ public abstract class FVD extends FDetalhe {
 			rs.close();
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 		} catch ( SQLException err ) {
 			err.printStackTrace();
@@ -908,9 +894,7 @@ public abstract class FVD extends FDetalhe {
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( null, "Erro carregando observações do cliente.\n" + e.getMessage() );

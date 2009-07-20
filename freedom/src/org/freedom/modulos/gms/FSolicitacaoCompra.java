@@ -7,13 +7,13 @@
  * @(#)FCompra.java <BR>
  *                  Este programa é licenciado de acordo com a LPG-PC (Licença
  *                  Pública Geral para Programas de Computador), <BR>
- *                  versão 2.1.0 ou qualquer versão posterior. <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
  *                  A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e
  *                  REPRODUÇÕES deste Programa. <BR>
  *                  Caso uma cópia da LPG-PC não esteja disponível junto com
  *                  este Programa, você pode contatar <BR>
- *                  o LICENCIADOR ou então pegar uma cópia em: <BR>
- *                  Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
  *                  Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR
  *                  este Programa é preciso estar <BR>
  *                  de acordo com os termos da LPG-PC <BR>
@@ -33,7 +33,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -453,8 +453,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 					}
 				}
 			}
-			if (!con.getAutoCommit())
-				con.commit();
+			con.commit();
 
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
@@ -619,8 +618,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 				if (rs.getString("UsaRefProd").trim().equals("S"))
 					bRet[0] = true;
 			}
-			if (!con.getAutoCommit())
-				con.commit();
+			con.commit();
 
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
@@ -924,8 +922,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 			imp.fechaGravacao();
 
-			if (!con.getAutoCommit())
-				con.commit();
+			con.commit();
 			dl.dispose();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao consultar a tabela de Solicitações!"
@@ -1035,7 +1032,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		return iRet;
 	}
 
-	public void setConexao(Connection cn) {
+	public void setConexao(DbConnection cn) {
 		super.setConexao(cn);
 		bPrefs = prefs();
 		montaDetalhe();
@@ -1063,8 +1060,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 				codCC = rs.getString("codCC");
 			}
 
-			if (!con.getAutoCommit())
-				con.commit();
+			con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
 					+ err.getMessage());

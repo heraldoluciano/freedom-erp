@@ -1,6 +1,6 @@
 package org.freedom.modulos.std;
 
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -280,9 +280,7 @@ public class FRFechaDiario extends FRelatorio {
 					bRetorno = true;
 				}
 			}
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
 		}
@@ -290,7 +288,7 @@ public class FRFechaDiario extends FRelatorio {
 		return bRetorno;
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcCaixa.setConexao( cn );

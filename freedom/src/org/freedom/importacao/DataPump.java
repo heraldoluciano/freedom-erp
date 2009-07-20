@@ -285,7 +285,7 @@ public class DataPump {
 
 		banco = new Banco(url, driver, user, pass);
 
-		if (banco.getConnection() == null) {
+		if (banco.getDbConnection() == null) {
 			System.err.println("Não conectou no banco de dados");
 			System.exit(2);
 		}

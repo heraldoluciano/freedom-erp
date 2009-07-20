@@ -8,13 +8,13 @@
  * Classe:
  * @(#)DLChecaExporta.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -26,7 +26,7 @@ package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.Date;
 import java.util.List;
 
@@ -37,21 +37,19 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.funcoes.exporta.Contabil;
+import org.freedom.funcoes.exporta.SafeContabil;
 import org.freedom.telas.DLRelatorio;
 
 public class DLChecaExporta extends DLRelatorio {
 
 	private static final long serialVersionUID = 1L;
-	
-	private final String FREEDOM_CONTABIL = "01";
-	
-	private final String SAFE_CONTABIL = "02";
 
 	private JPanelPad panelGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private JInternalFrame orig;
 	
-	private Connection con = null;
+	private DbConnection con = null;
 
 	public Tabela tab = new Tabela();
 	
@@ -77,8 +75,7 @@ public class DLChecaExporta extends DLRelatorio {
 	
 	private void montaTela() {
 		
-		if ( SAFE_CONTABIL.equals( sistema ) ) {
-			
+		if ( Contabil.SAFE_CONTABIL.equals( sistema ) ) {			
 			montaTelaSafeContabil();
 		}
 	}
@@ -106,12 +103,12 @@ public class DLChecaExporta extends DLRelatorio {
 		tab.setTamColuna( 50, 7 );
 	}
 
-	public void carregaDados( List<FExporta.SafeBean> dados ) {
+	@SuppressWarnings("unchecked")
+	public void carregaDados( List<?> dados ) {
 		
-		if ( SAFE_CONTABIL.equals( sistema ) ) {
-			
+		if ( Contabil.SAFE_CONTABIL.equals( sistema ) ) {			
 			try {
-				carregaDadosSafeContabil( dados );
+				carregaDadosSafeContabil( (List<SafeContabil>) dados );
 			} catch ( ClassCastException e ) {
 				e.printStackTrace();
 			}
@@ -119,12 +116,12 @@ public class DLChecaExporta extends DLRelatorio {
 		
 	}
 	
-	private void carregaDadosSafeContabil( List<FExporta.SafeBean> args ) {
+	private void carregaDadosSafeContabil( List<SafeContabil> args ) {
 		
 		tab.limpa();
 		int row = 0;
 		
-		for ( FExporta.SafeBean sb : args ) {
+		for ( SafeContabil sb : args ) {
 			
 			tab.adicLinha();
 			
@@ -238,7 +235,7 @@ public class DLChecaExporta extends DLRelatorio {
 		}
 	}
 	
-	public void setConexao( final Connection con ) {
+	public void setConexao( final DbConnection con ) {
 		
 		this.con = con;
 	}

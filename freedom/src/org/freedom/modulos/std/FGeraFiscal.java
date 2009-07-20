@@ -7,14 +7,14 @@
  * Pacote: org.freedom.modulos.std <BR>
  * Classe: @(#)FGeraFiscal.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  *
  * Comentários sobre a classe...
  * 
@@ -76,12 +76,12 @@ public class FGeraFiscal extends FFilho implements ActionListener {
   private enum EColSaida {
 	   DTEMIT, DTSAIDA, NATOPER, CODEMIT, UF, ESPECIE, MODNOTA, SERIE,
 	   DOC, DOCFIM, PERCICMS, PERCIPI, VLRCONTABIL, VLRBASEICMS, VLRICMS,
-	   VLRISENTAS, VLROUTRAS, VLRBASEIPI, VLRIPI, E1, F1, E2, F2, E3, F3
+	   VLRISENTAS, VLROUTRAS, VLRBASEIPI, VLRIPI, E1, F1, E2, F2, E3, F3, SIT
   }
   
   public FGeraFiscal() {
   	super(false);
-    setTitulo("Gerar Livros Fiscais");      
+    setTitulo("Gerar Informações Fiscais");      
     setAtribos(50,50,610,400);
     
     btVisual.setToolTipText("Visualizar");
@@ -141,6 +141,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
     tab1.adicColuna("F2");
     tab1.adicColuna("E3");
     tab1.adicColuna("F3");
+    tab1.adicColuna("SIT");
     
     tab1.setTamColuna(100,0);
     tab1.setTamColuna(100,1);
@@ -166,6 +167,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 	tab1.setTamColuna(20,21);
 	tab1.setTamColuna(20,22);
 	tab1.setTamColuna(20,23);
+	tab1.setTamColuna(20,24);
     
     tab2.adicColuna("Dt.emissão");
     tab2.adicColuna("Dt.saída");
@@ -192,6 +194,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 	tab2.adicColuna("F2");
 	tab2.adicColuna("E3");
 	tab2.adicColuna("F3");
+	tab2.adicColuna("SIT");
 
     tab2.setTamColuna(100,EColSaida.DTEMIT.ordinal());
     tab2.setTamColuna(100,EColSaida.DTSAIDA.ordinal());
@@ -217,7 +220,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 	tab2.setTamColuna(20,EColSaida.E2.ordinal());
 	tab2.setTamColuna(20,EColSaida.F2.ordinal());
 	tab2.setTamColuna(20,EColSaida.E3.ordinal());
-	tab2.setTamColuna(20,EColSaida.F3.ordinal());
+	tab2.setTamColuna(20,EColSaida.SIT.ordinal());
 
     colocaMes();   
     btVisual.addActionListener(this);
@@ -273,7 +276,8 @@ public class FGeraFiscal extends FFilho implements ActionListener {
                     "SUM(IT.VLRISENTASITCOMPRA),"+
                     "SUM(IT.VLROUTRASITCOMPRA),"+
                     "SUM(IT.VLRBASEIPIITCOMPRA),"+
-                    "SUM(IT.VLRIPIITCOMPRA) "+
+                    "SUM(IT.VLRIPIITCOMPRA), "+
+                    "C.STATUSCOMPRA "+
                     "FROM CPCOMPRA C, CPITCOMPRA IT, CPFORNECED F, EQTIPOMOV TM "+
                     "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND "+
                     "C.CODEMP=? AND C.CODFILIAL=? AND "+
@@ -289,7 +293,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
                     "IT.PERCIPIITCOMPRA,"+
 					"C.CODEMPFR,C.CODFILIALFR," +
 					"IT.CODEMPNT,IT.CODFILIALNT," +
-					"TM.CODEMPMN,TM.CODFILIALMN";
+					"TM.CODEMPMN,TM.CODFILIALMN,C.STATUSCOMPRA";
 
       if (cbEntrada.getVlrString().equals("S")) {
         PreparedStatement ps = con.prepareStatement(sSQL);
@@ -327,102 +331,106 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 		  tab1.setValor(""+rs.getInt(15),iTotCompras,21);
 		  tab1.setValor(""+rs.getInt(16),iTotCompras,22);
 		  tab1.setValor(""+rs.getInt(17),iTotCompras,23);
+		  tab1.setValor(""+rs.getString(25), iTotCompras, 24 );
           iTotCompras++;
         }
         
-//        rs.close();
-//        ps.close();
-        if (!con.getAutoCommit())
-        	con.commit();
+//      rs.close();
+//      ps.close();
+        
+       	con.commit();
       
       }
 
       if (cbSaida.getVlrString().equals("S")) {
       
-        sSQL = "SELECT V.TIPOVENDA, V.DTEMITVENDA,V.DTSAIDAVENDA,IV.CODNAT,"+
-             "V.CODCLI,C.UFCLI,TM.ESPECIETIPOMOV,TM.CODMODNOTA,"+
-             "V.SERIE,V.DOCVENDA, V.DOCVENDA DOCFIM, IV.PERCICMSITVENDA, " +
-             "IV.PERCICMSITVENDA ALIQLFISC, IV.PERCIPIITVENDA," +
-             "V.CODEMPCL,V.CODFILIALCL," +
-             "IV.CODEMPNT,IV.CODFILIALNT," +
-             "TM.CODEMPMN,TM.CODFILIALMN,"+
-             "SUM(IV.VLRPRODITVENDA) VLRCONTABILITVENDA," +
-             "SUM(IV.VLRBASEICMSITVENDA) VLRBASEICMSITVENDA,"+
-             "SUM(IV.VLRICMSITVENDA) VLRICMSITVENDA, " +
-             "SUM(IV.VLRISENTASITVENDA) VLRISENTASITVENDA, "+
-             "SUM(IV.VLROUTRASITVENDA) VLROUTRASITVENDA, " +
-             "SUM(IV.VLRBASEIPIITVENDA) VLRBASEIPIITVENDA, "+
-             "SUM(IV.VLRIPIITVENDA) VLRIPIITVENDA "+
-             "FROM VDVENDA V,VDITVENDA IV, EQTIPOMOV TM, VDCLIENTE C, EQPRODUTO P, LFCLFISCAL CF "+
-             "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND " +
-             "V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND " +
-             "IV.TIPOVENDA=V.TIPOVENDA AND "+
-             "IV.CODVENDA=V.CODVENDA AND IV.CODEMP=V.CODEMP AND " +
-             "IV.CODFILIAL=V.CODFILIAL AND "+
-             "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " +
-             "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND " +
-             "P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " +
-             "P.CODPROD=IV.CODPROD AND " +
-             "CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND " +
-             "CF.CODFISC=P.CODFISC AND  "+
-             "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL "+
-
-             "GROUP BY V.TIPOVENDA, V.DTEMITVENDA,V.DTSAIDAVENDA,IV.CODNAT,"+
-             "V.CODCLI,C.UFCLI,TM.ESPECIETIPOMOV,TM.CODMODNOTA,"+
-             "V.SERIE,V.DOCVENDA, V.DOCVENDA, IV.PERCICMSITVENDA, " +
-             "IV.PERCICMSITVENDA, IV.PERCIPIITVENDA," +
-             "V.CODEMPCL,V.CODFILIALCL," +
-             "IV.CODEMPNT,IV.CODFILIALNT," +
-             "TM.CODEMPMN,TM.CODFILIALMN " +
-			 
-			 "UNION ALL " +
-             
-			 // Parei aqui
-             
-             "SELECT V.TIPOVENDA,V.DTEMITVENDA, V.DTSAIDAVENDA, IV.CODNAT, " +
-             "V.CODCLI, C.UFCLI, TM.ESPECIETIPOMOV, TM.CODMODNOTA, " +
-             "V.SERIE, L.PRIMCUPOMLX DOCVENDA, L.ULTCUPOMLX DOCFIM, " + 
-             "IV.PERCICMSITVENDA, CF.ALIQLFISC, IV.PERCIPIITVENDA, " + 
-             "V.CODEMPCL,V.CODFILIALCL," +
-             "IV.CODEMPNT,IV.CODFILIALNT," +
-             "TM.CODEMPMN,TM.CODFILIALMN,"+             
-             "SUM(IV.VLRLIQITVENDA) VLRCONTABILITVENDA, "+ 
-             "SUM(CASE WHEN (CF.TIPOFISC='TT' AND (CF.REDFISC<=0 OR CF.REDFISC IS NULL)) " + 
-             "THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0 " + 
-             "THEN (IV.VLRLIQITVENDA)-((IV.VLRLIQITVENDA)*CF.REDFISC/100) ELSE NULL END ) VLRBASEICMSITVENDA, " +
-             "SUM(CASE WHEN CF.TIPOFISC='TT' AND (CF.REDFISC=0 OR CF.REDFISC IS NULL) " + 
-             "THEN IV.VLRLIQITVENDA*IV.PERCICMSITVENDA/100  WHEN CF.REDFISC>0 " + 
-             "THEN ((IV.VLRLIQITVENDA)-(IV.VLRLIQITVENDA*CF.REDFISC/100))* " + 
-             "CF.ALIQLFISC/100 ELSE NULL END) VLRICMSITVENDA, " +             
-             "SUM(CASE WHEN (CF.TIPOFISC='II' AND ( CF.REDFISC<=0 OR CF.REDFISC IS NULL)) " + 
-             "THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0 " + 
-             "THEN (IV.VLRLIQITVENDA)-(CASE WHEN (CF.TIPOFISC='TT' AND (CF.REDFISC<=0 OR CF.REDFISC IS NULL)) " + 
-             "THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0 THEN (IV.VLRLIQITVENDA)-((IV.VLRLIQITVENDA)*CF.REDFISC/100) " + 
-             "ELSE NULL END ) ELSE NULL  END) AS VLRISENTASITVENDA, " + 
-             "SUM(CASE WHEN (CF.TIPOFISC IN ('NN','FF')) THEN IV.VLRLIQITVENDA " + 
-             "WHEN (CF.TIPOFISC IN ('II','TT')) OR (CF.REDFISC>0) OR (CF.REDFISC IS NOT NULL) " + 
-             "THEN NULL ELSE IV.VLRLIQITVENDA END) VLROUTRASITVENDA, " + 
-             "SUM(IV.VLRBASEIPIITVENDA) VLRBASEIPIITVENDA, "+
-             "SUM(IV.VLRIPIITVENDA) VLRIPIITVENDA "+
-             "FROM  VDITVENDA  IV, EQPRODUTO P, VDCLIENTE C, EQTIPOMOV TM, LFCLFISCAL CF, VDVENDA V " + 
-             "LEFT OUTER JOIN PVLEITURAX L ON " + 
-             "  L.CODEMP=V.CODEMPCX AND L.CODFILIAL=V.CODFILIALCX AND " + 
-             "  L.CODCAIXA=V.CODCAIXA AND L.DTLX=V.DTEMITVENDA " + 
-             "WHERE TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND " + 
-             "TM.FISCALTIPOMOV='S' AND V.CODEMP=? AND V.CODFILIAL=? AND " + 
-             "SUBSTRING(V.STATUSVENDA FROM 1 FOR 1)<>'C' AND V.TIPOVENDA='E' AND " + 
-             "V.DTEMITVENDA BETWEEN ? AND ? AND IV.CODEMP=V.CODEMP AND " + 
-             "IV.CODVENDA=V.CODVENDA AND ( IV.CANCITVENDA IS NULL OR IV.CANCITVENDA<>'S' ) AND " + 
-             "P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD AND " + 
-             "CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.CODFISC=P.CODFISC AND " +
-             "C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " + 
-             "GROUP BY V.TIPOVENDA,V.DTEMITVENDA, V.DTSAIDAVENDA, IV.CODNAT, " +
-             "V.CODCLI, C.UFCLI, TM.ESPECIETIPOMOV, TM.CODMODNOTA, " +
-             "V.SERIE, L.PRIMCUPOMLX, L.ULTCUPOMLX, " + 
-             "IV.PERCICMSITVENDA, CF.ALIQLFISC, IV.PERCIPIITVENDA, " + 
-             "V.CODEMPCL,V.CODFILIALCL," +
-             "IV.CODEMPNT,IV.CODFILIALNT," +
-             "TM.CODEMPMN,TM.CODFILIALMN" ;
+        sSQL = "SELECT V.TIPOVENDA, V.DTEMITVENDA,V.DTSAIDAVENDA,IV.CODNAT,"
+        	+  "V.CODCLI,C.UFCLI,TM.ESPECIETIPOMOV,TM.CODMODNOTA,"
+        	+  "V.SERIE,V.DOCVENDA, V.DOCVENDA DOCFIM, IV.PERCICMSITVENDA, " 
+        	+  "IV.PERCICMSITVENDA ALIQLFISC, IV.PERCIPIITVENDA," 
+        	+  "V.CODEMPCL,V.CODFILIALCL," 
+        	+  "IV.CODEMPNT,IV.CODFILIALNT," 
+        	+  "TM.CODEMPMN,TM.CODFILIALMN,"
+        	+  "SUM(IV.VLRLIQITVENDA) VLRCONTABILITVENDA," 
+        	+  "SUM(IV.VLRBASEICMSITVENDA) VLRBASEICMSITVENDA,"
+        	+  "SUM(IV.VLRICMSITVENDA) VLRICMSITVENDA, " 
+        	+  "SUM(IV.VLRISENTASITVENDA) VLRISENTASITVENDA, "
+        	+  "SUM(IV.VLROUTRASITVENDA) VLROUTRASITVENDA, " 
+        	+  "SUM(IV.VLRBASEIPIITVENDA) VLRBASEIPIITVENDA, "
+        	+  "SUM(IV.VLRIPIITVENDA) VLRIPIITVENDA, "
+        	+  "V.STATUSVENDA "
+        	+  "FROM VDVENDA V,VDITVENDA IV, EQTIPOMOV TM, VDCLIENTE C, EQPRODUTO P, LFITCLFISCAL CF "
+        	+  "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND " 
+        	+  "V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND " 
+        	+  "IV.TIPOVENDA=V.TIPOVENDA AND "
+        	+  "IV.CODVENDA=V.CODVENDA AND IV.CODEMP=V.CODEMP AND " 
+        	+  "IV.CODFILIAL=V.CODFILIAL AND "
+        	+  "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " 
+        	+  "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND " 
+        	+  "P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " 
+        	+  "P.CODPROD=IV.CODPROD AND " 
+        	+  "CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND " 
+        	+  "CF.CODFISC=P.CODFISC AND CF.GERALFISC='S' AND "
+        	+  "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL "
+        	+  "GROUP BY V.TIPOVENDA, V.DTEMITVENDA,V.DTSAIDAVENDA,IV.CODNAT,"
+        	+  "V.CODCLI,C.UFCLI,TM.ESPECIETIPOMOV,TM.CODMODNOTA,"
+        	+  "V.SERIE,V.DOCVENDA, V.DOCVENDA, IV.PERCICMSITVENDA, " 
+        	+  "IV.PERCICMSITVENDA, IV.PERCIPIITVENDA," 
+        	+  "V.CODEMPCL,V.CODFILIALCL," 
+        	+  "IV.CODEMPNT,IV.CODFILIALNT," 
+        	+  "TM.CODEMPMN,TM.CODFILIALMN, "
+        	+  "V.STATUSVENDA "
+        	
+        	+  "UNION ALL " //  ECF
+        	
+        	+ "SELECT V.TIPOVENDA,V.DTEMITVENDA, V.DTSAIDAVENDA, IV.CODNAT," 
+        	+ "V.CODCLI, C.UFCLI, TM.ESPECIETIPOMOV, TM.CODMODNOTA," 
+        	+ "V.SERIE, L.PRIMCUPOMLX DOCVENDA, L.ULTCUPOMLX DOCFIM," 
+        	+ "IV.PERCICMSITVENDA, CF.ALIQLFISC, IV.PERCIPIITVENDA," 
+        	+ "V.CODEMPCL,V.CODFILIALCL," 
+        	+ "IV.CODEMPNT,IV.CODFILIALNT," 
+        	+ "TM.CODEMPMN,TM.CODFILIALMN,"
+        	+ "SUM(IV.VLRLIQITVENDA) VLRCONTABILITVENDA, "
+        	+ "SUM(CASE WHEN (CF.TIPOFISC='TT' AND (CF.REDFISC<=0 OR CF.REDFISC IS NULL)) " 
+        	+ "THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0 " 
+        	+ "THEN (IV.VLRLIQITVENDA)-((IV.VLRLIQITVENDA)*CF.REDFISC/100) ELSE NULL END ) VLRBASEICMSITVENDA, " 
+        	+ "SUM(CASE WHEN CF.TIPOFISC='TT' AND (CF.REDFISC=0 OR CF.REDFISC IS NULL) " 
+        	+ "THEN IV.VLRLIQITVENDA*IV.PERCICMSITVENDA/100  WHEN CF.REDFISC>0 " 
+        	+ "THEN ((IV.VLRLIQITVENDA)-(IV.VLRLIQITVENDA*CF.REDFISC/100))* " 
+        	+ "CF.ALIQLFISC/100 ELSE NULL END) VLRICMSITVENDA, " 
+        	+ "SUM(CASE WHEN (CF.TIPOFISC='II' AND ( CF.REDFISC<=0 OR CF.REDFISC IS NULL)) " 
+        	+ "THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0 " 
+        	+ "THEN (IV.VLRLIQITVENDA)-(CASE WHEN (CF.TIPOFISC='TT' AND (CF.REDFISC<=0 OR CF.REDFISC IS NULL)) " 
+        	+ "THEN IV.VLRLIQITVENDA WHEN CF.REDFISC>0 THEN (IV.VLRLIQITVENDA)-((IV.VLRLIQITVENDA)*CF.REDFISC/100) " 
+        	+ "ELSE NULL END ) ELSE NULL  END) AS VLRISENTASITVENDA, " 
+        	+ "SUM(CASE WHEN (CF.TIPOFISC IN ('NN','FF')) THEN IV.VLRLIQITVENDA " 
+        	+ "WHEN (CF.TIPOFISC IN ('II','TT')) OR (CF.REDFISC>0) OR (CF.REDFISC IS NOT NULL) " 
+        	+ "THEN NULL ELSE IV.VLRLIQITVENDA END) VLROUTRASITVENDA, " 
+        	+ "SUM(IV.VLRBASEIPIITVENDA) VLRBASEIPIITVENDA, "
+        	+ "SUM(IV.VLRIPIITVENDA) VLRIPIITVENDA, "
+        	+ "V.STATUSVENDA "
+        	+ "FROM  VDITVENDA  IV, EQPRODUTO P, VDCLIENTE C, EQTIPOMOV TM, LFITCLFISCAL CF, VDVENDA V " 
+        	+ "LEFT OUTER JOIN PVLEITURAX L ON " 
+        	+ "L.CODEMP=V.CODEMPCX AND L.CODFILIAL=V.CODFILIALCX AND " 
+        	+ "L.CODCAIXA=V.CODCAIXA AND L.DTLX=V.DTEMITVENDA " 
+        	+ "WHERE TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND " 
+        	+ "TM.FISCALTIPOMOV='S' AND V.CODEMP=? AND V.CODFILIAL=? AND " 
+        	+ "SUBSTRING(V.STATUSVENDA FROM 1 FOR 1)<>'C' AND V.TIPOVENDA='E' AND " 
+        	+ "V.DTEMITVENDA BETWEEN ? AND ? AND IV.CODEMP=V.CODEMP AND " 
+        	+ "IV.CODVENDA=V.CODVENDA AND ( IV.CANCITVENDA IS NULL OR IV.CANCITVENDA<>'S' ) AND " 
+        	+ "P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD AND " 
+        	+ "CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.CODFISC=P.CODFISC AND CF.GERALFISC='S' AND " 
+        	+ "C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " 
+        	+ "GROUP BY V.TIPOVENDA,V.DTEMITVENDA, V.DTSAIDAVENDA, IV.CODNAT, " 
+        	+ "V.CODCLI, C.UFCLI, TM.ESPECIETIPOMOV, TM.CODMODNOTA, " 
+        	+ "V.SERIE, L.PRIMCUPOMLX, L.ULTCUPOMLX, " 
+        	+ "IV.PERCICMSITVENDA, CF.ALIQLFISC, IV.PERCIPIITVENDA, " 
+        	+ "V.CODEMPCL,V.CODFILIALCL," 
+        	+ "IV.CODEMPNT,IV.CODFILIALNT," 
+        	+ "TM.CODEMPMN,TM.CODFILIALMN, " 
+        	+ "V.STATUSVENDA "
+        	+ "ORDER BY 2,10";
+           
 
         PreparedStatement ps2 = con.prepareStatement(sSQL);
         ps2.setDate(1,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
@@ -437,6 +445,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
         ResultSet rs2 = ps2.executeQuery();
         iTotVendas = 0;
         tab2.limpa();
+        
         while (rs2.next()) {
           tab2.adicLinha();
           tab2.setValor(Funcoes.sqlDateToStrDate(rs2.getDate("DTEMITVENDA")),iTotVendas,EColSaida.DTEMIT.ordinal());
@@ -464,12 +473,12 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 		  tab2.setValor(""+rs2.getInt("CODFILIALNT"),iTotVendas,EColSaida.F2.ordinal());
 		  tab2.setValor(""+rs2.getInt("CODEMPMN"),iTotVendas,EColSaida.E3.ordinal());
 		  tab2.setValor(""+rs2.getInt("CODFILIALMN"),iTotVendas,EColSaida.F3.ordinal());
+		  tab2.setValor(""+rs2.getString( "STATUSVENDA" ), iTotVendas, EColSaida.SIT.ordinal() );
           iTotVendas++;
         }
 //        rs2.close();
 //        ps2.close();
-        if (!con.getAutoCommit())
-        	con.commit();
+       	con.commit();
       }
     }
     catch (SQLException err) {
@@ -505,8 +514,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
          };
 //         rsA.close();
 //         psA.close();
-         if (!con.getAutoCommit())
-         	con.commit();
+       	 con.commit();
          if (iQuant>0) {
            sSql = "DELETE FROM LFLIVROFISCAL WHERE TIPOLF='E' AND DTESLF BETWEEN ? AND ? AND CODEMP=? AND CODFILIAL=?";
            PreparedStatement psB = con.prepareStatement(sSql);
@@ -516,8 +524,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
            psB.setInt(4,ListaCampos.getMasterFilial("LFLIVROFISCAL"));
            psB.executeUpdate();
 //           psB.close();
-           if (!con.getAutoCommit())
-           	  con.commit();
+           con.commit();
          }
          
        }
@@ -536,8 +543,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
          };
 //         rsC.close();
 //         psC.close();
-         if (!con.getAutoCommit())
-         	con.commit();
+         con.commit();
          if (iQuant>0) {
            sSql = "DELETE FROM LFLIVROFISCAL WHERE TIPOLF='S' AND DTEMITLF BETWEEN ? AND ?";
            PreparedStatement psD = con.prepareStatement(sSql);
@@ -545,8 +551,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
            psD.setDate(2,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
            psD.executeUpdate();
 //           psD.close();
-           if (!con.getAutoCommit())
-           	con.commit();
+           con.commit();
          }
        }
        
@@ -568,8 +573,8 @@ public class FGeraFiscal extends FFilho implements ActionListener {
         "DOCINILF,DTEMITLF,DTESLF,CODNAT,DOCFIMLF,ESPECIELF,UFLF,VLRCONTABILLF,"+
         "VLRBASEICMSLF,ALIQICMSLF,VLRICMSLF,VLRISENTASICMSLF,VLROUTRASICMSLF,"+
         "VLRBASEIPILF,ALIQIPILF,VLRIPILF,VLRISENTASIPILF,VLROUTRASIPILF,CODMODNOTA," +
-        "CODEMPET,CODFILIALET,CODEMPNT,CODFILIALNT,CODEMPMN,CODFILIALMN) "+
-        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        "CODEMPET,CODFILIALET,CODEMPNT,CODFILIALNT,CODEMPMN,CODFILIALMN,SITUACAOLF ) "+
+        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     PreparedStatement psI;
         
@@ -631,11 +636,19 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 			 (!(tab1.getValor(i,23)+"").equals("0")) )
 			psI.setInt(32,Integer.parseInt(tab1.getValor(i,23)+"")); // CODFILIALMN 
          else 
-         	psI.setNull(32,Types.INTEGER); 
+         	psI.setNull(32,Types.INTEGER);
+         
+         if("X".equals(tab1.getValor( i, 24 ).toString().substring( 0,1 ))) { // SITUACAOLF
+        	 psI.setString( 33, "S" ); // Status para documento cancelado no sintegra. 
+         }
+         else {
+        	 psI.setString( 33, "N" ); // Status para documento normal no sintegra.
+         }
+         
+         
          psI.executeUpdate();     
-//         psI.close();
-         if (!con.getAutoCommit())
-         	con.commit();
+
+         con.commit();
        }
        catch (SQLException err) {
 		Funcoes.mensagemErro(this,"Erro gerando livros fiscais de compras!\n"+err.getMessage(),true,con,err);
@@ -711,10 +724,20 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 		   psI.setInt(32,Integer.parseInt(tab2.getValor(i,EColSaida.F3.ordinal())+"")); // CODFILIALMN 
 		else 
 		   psI.setNull(32,Types.INTEGER); 
+		
+        if("C".equals(tab2.getValor( i, EColSaida.SIT.ordinal()).toString().substring( 0,1 ))) { // SITUACAOLF
+        	psI.setString( 33, "S" ); // Status para documento cancelado no sintegra. 
+        }
+        else {
+        	psI.setString( 33, "N" ); // Status para documento normal no sintegra.
+        }
+		
+		
+		
+		
 		psI.executeUpdate();     
-//         psI.close();
-		if (!con.getAutoCommit())
-			con.commit();
+
+		con.commit();
        }
        catch (SQLException err) {
 		Funcoes.mensagemErro(this,"Erro gerando livros fiscais de compras!\n"+err.getMessage(),true,con,err);
@@ -781,8 +804,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 
 //      rsChec.close();
 //      psChec.close();
-      if (!con.getAutoCommit())
-      	con.commit();
+      con.commit();
       
     }
     catch (SQLException err) {

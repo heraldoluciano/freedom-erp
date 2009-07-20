@@ -131,7 +131,7 @@ P1.CODEMP=O.CODEMP AND P1.CODFILIAL=$P{CODFILIALPF}]]></queryString>
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="90"  isSplitAllowed="true" >
+			<band height="64"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="9"
@@ -307,10 +307,10 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="146"  isSplitAllowed="true" >
+			<band height="166"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="3"
+						x="2"
 						y="3"
 						width="215"
 						height="15"
@@ -325,7 +325,7 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 					<reportElement
 						x="2"
 						y="19"
-						width="216"
+						width="215"
 						height="16"
 						key="textField-15"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -336,8 +336,8 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
-						x="3"
-						y="38"
+						x="2"
+						y="36"
 						width="215"
 						height="15"
 						key="staticText-14"/>
@@ -350,8 +350,8 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="2"
-						y="54"
-						width="216"
+						y="52"
+						width="215"
 						height="16"
 						key="textField-16"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -363,7 +363,7 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 				<line direction="TopDown">
 					<reportElement
 						x="151"
-						y="127"
+						y="145"
 						width="239"
 						height="0"
 						key="line-1"/>
@@ -372,7 +372,7 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="130"
+						y="148"
 						width="535"
 						height="16"
 						key="textField-21"/>
@@ -386,7 +386,7 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 					<reportElement
 						mode="Transparent"
 						x="151"
-						y="78"
+						y="106"
 						width="239"
 						height="30"
 						key="image-1"/>
@@ -394,6 +394,34 @@ $F{CEPEMP}.substring(5,8)]]></textFieldExpression>
 					<graphicElement stretchType="NoStretch"/>
 					<imageExpression class="java.io.InputStream"><![CDATA[$F{IMGASS}]]></imageExpression>
 				</image>
+				<staticText>
+					<reportElement
+						x="2"
+						y="69"
+						width="94"
+						height="15"
+						key="staticText-15">
+							<printWhenExpression><![CDATA[new Boolean($F{DTVENCORC}!=null)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Proposta válida até:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="EEEEE dd MMMMM yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="85"
+						width="245"
+						height="15"
+						key="textField-22"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTVENCORC}]]></textFieldExpression>
+				</textField>
 			</band>
 		</summary>
 </jasperReport>

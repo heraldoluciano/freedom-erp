@@ -159,7 +159,7 @@ ORDER BY
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="483"
+						x="479"
 						y="0"
 						width="0"
 						height="16"
@@ -168,7 +168,7 @@ ORDER BY
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="417"
+						x="415"
 						y="0"
 						width="0"
 						height="16"
@@ -177,7 +177,7 @@ ORDER BY
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="351"
+						x="350"
 						y="0"
 						width="0"
 						height="16"
@@ -186,7 +186,7 @@ ORDER BY
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="285"
+						x="304"
 						y="0"
 						width="0"
 						height="16"
@@ -204,7 +204,7 @@ ORDER BY
 				</line>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="288"
+						x="352"
 						y="1"
 						width="60"
 						height="12"
@@ -217,7 +217,7 @@ ORDER BY
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="355"
+						x="417"
 						y="1"
 						width="60"
 						height="12"
@@ -230,9 +230,9 @@ ORDER BY
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="419"
+						x="481"
 						y="1"
-						width="60"
+						width="57"
 						height="12"
 						key="textField-13"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -247,7 +247,7 @@ ORDER BY
 		<group  name="DIA" >
 			<groupExpression><![CDATA[$F{DTVENCITREC}]]></groupExpression>
 			<groupHeader>
-			<band height="1"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -303,7 +303,7 @@ ORDER BY
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="285"
+						x="304"
 						y="0"
 						width="0"
 						height="15"
@@ -312,7 +312,7 @@ ORDER BY
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="351"
+						x="350"
 						y="0"
 						width="0"
 						height="15"
@@ -321,7 +321,7 @@ ORDER BY
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="417"
+						x="415"
 						y="0"
 						width="0"
 						height="15"
@@ -339,7 +339,7 @@ ORDER BY
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="483"
+						x="479"
 						y="0"
 						width="0"
 						height="15"
@@ -348,7 +348,7 @@ ORDER BY
 				</line>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="287"
+						x="352"
 						y="1"
 						width="60"
 						height="12"
@@ -361,7 +361,7 @@ ORDER BY
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="355"
+						x="417"
 						y="1"
 						width="60"
 						height="12"
@@ -374,9 +374,9 @@ ORDER BY
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="420"
+						x="481"
 						y="1"
-						width="60"
+						width="57"
 						height="12"
 						key="textField-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -397,7 +397,7 @@ ORDER BY
 			</band>
 		</title>
 		<pageHeader>
-			<band height="100"  isSplitAllowed="true" >
+			<band height="99"  isSplitAllowed="true" >
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
@@ -478,9 +478,9 @@ ORDER BY
 				</textField>
 				<staticText>
 					<reportElement
-						x="3"
+						x="52"
 						y="85"
-						width="50"
+						width="49"
 						height="11"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -491,9 +491,9 @@ ORDER BY
 				</staticText>
 				<staticText>
 					<reportElement
-						x="59"
+						x="161"
 						y="85"
-						width="167"
+						width="141"
 						height="11"
 						key="staticText-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -504,20 +504,20 @@ ORDER BY
 				</staticText>
 				<staticText>
 					<reportElement
-						x="232"
+						x="306"
 						y="85"
-						width="50"
+						width="40"
 						height="11"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<text><![CDATA[Documento]]></text>
+				<text><![CDATA[Doc.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="288"
+						x="352"
 						y="85"
 						width="60"
 						height="11"
@@ -530,7 +530,7 @@ ORDER BY
 				</staticText>
 				<staticText>
 					<reportElement
-						x="354"
+						x="417"
 						y="85"
 						width="60"
 						height="11"
@@ -543,9 +543,9 @@ ORDER BY
 				</staticText>
 				<staticText>
 					<reportElement
-						x="420"
+						x="481"
 						y="85"
-						width="60"
+						width="57"
 						height="11"
 						key="staticText-9"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -555,23 +555,10 @@ ORDER BY
 				<text><![CDATA[Em Aberto
 ]]></text>
 				</staticText>
-				<staticText>
-					<reportElement
-						x="486"
-						y="85"
-						width="50"
-						height="11"
-						key="staticText-10"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<text><![CDATA[Recebimento]]></text>
-				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="56"
-						y="83"
+						x="104"
+						y="82"
 						width="0"
 						height="17"
 						key="line-3"/>
@@ -580,7 +567,7 @@ ORDER BY
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="83"
+						y="82"
 						width="0"
 						height="17"
 						key="line-4"/>
@@ -597,17 +584,8 @@ ORDER BY
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="229"
-						y="83"
-						width="0"
-						height="17"
-						key="line-7"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
 						x="0"
-						y="99"
+						y="98"
 						width="539"
 						height="0"
 						key="line-8"/>
@@ -615,8 +593,8 @@ ORDER BY
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="285"
-						y="83"
+						x="304"
+						y="82"
 						width="0"
 						height="17"
 						key="line-11"/>
@@ -624,8 +602,8 @@ ORDER BY
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="417"
-						y="83"
+						x="415"
+						y="82"
 						width="0"
 						height="17"
 						key="line-23"/>
@@ -633,8 +611,8 @@ ORDER BY
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="483"
-						y="83"
+						x="479"
+						y="82"
 						width="0"
 						height="17"
 						key="line-24"/>
@@ -643,7 +621,7 @@ ORDER BY
 				<line direction="TopDown">
 					<reportElement
 						x="539"
-						y="82"
+						y="81"
 						width="0"
 						height="18"
 						key="line-25"/>
@@ -665,13 +643,57 @@ ORDER BY
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement
+						x="106"
+						y="85"
+						width="50"
+						height="11"
+						key="staticText-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Recebimento]]></text>
+				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="351"
-						y="83"
+						x="350"
+						y="82"
 						width="0"
 						height="17"
-						key="line-26"/>
+						key="line-45"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="158"
+						y="82"
+						width="0"
+						height="17"
+						key="line-46"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="2"
+						y="85"
+						width="48"
+						height="11"
+						key="staticText-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Emissão]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="51"
+						y="82"
+						width="0"
+						height="17"
+						key="line-48"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -684,7 +706,7 @@ ORDER BY
 			<band height="17"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
-						x="56"
+						x="104"
 						y="0"
 						width="0"
 						height="17"
@@ -711,16 +733,7 @@ ORDER BY
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="229"
-						y="0"
-						width="0"
-						height="17"
-						key="line-9"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="285"
+						x="304"
 						y="0"
 						width="0"
 						height="17"
@@ -729,7 +742,7 @@ ORDER BY
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="417"
+						x="415"
 						y="0"
 						width="0"
 						height="17"
@@ -738,7 +751,7 @@ ORDER BY
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="483"
+						x="479"
 						y="0"
 						width="0"
 						height="17"
@@ -756,7 +769,7 @@ ORDER BY
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="351"
+						x="350"
 						y="0"
 						width="0"
 						height="17"
@@ -765,9 +778,9 @@ ORDER BY
 				</line>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="3"
+						x="52"
 						y="2"
-						width="50"
+						width="49"
 						height="12"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -778,9 +791,9 @@ ORDER BY
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="232"
+						x="306"
 						y="2"
-						width="50"
+						width="42"
 						height="12"
 						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -791,9 +804,9 @@ ORDER BY
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="59"
+						x="161"
 						y="2"
-						width="167"
+						width="141"
 						height="12"
 						key="textField-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -804,7 +817,7 @@ ORDER BY
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="288"
+						x="352"
 						y="2"
 						width="60"
 						height="12"
@@ -817,8 +830,8 @@ ORDER BY
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="354"
-						y="2"
+						x="417"
+						y="1"
 						width="60"
 						height="12"
 						key="textField-5"/>
@@ -830,9 +843,9 @@ ORDER BY
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="420"
+						x="481"
 						y="2"
-						width="60"
+						width="57"
 						height="12"
 						key="textField-6"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -843,16 +856,47 @@ ORDER BY
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="486"
+						x="106"
 						y="2"
 						width="50"
 						height="12"
-						key="textField-7"/>
+						key="textField-14"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTPAGOITREC}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="158"
+						y="0"
+						width="0"
+						height="17"
+						key="line-47"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="51"
+						y="0"
+						width="0"
+						height="17"
+						key="line-49"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1"
+						y="1"
+						width="49"
+						height="12"
+						key="textField-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTITREC}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

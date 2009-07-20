@@ -8,13 +8,13 @@
  * Classe:
  * @(#)DLRCliente.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -24,7 +24,7 @@
 package org.freedom.modulos.std;
 
 import java.awt.Component;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -74,6 +74,10 @@ public class DLRCliente extends FFDialogo {
 	private JCheckBoxPad cbFis = new JCheckBoxPad( "Física", "S", "N" );
 
 	private JCheckBoxPad cbJur = new JCheckBoxPad( "Jurídica", "S", "N" );
+	
+	private JCheckBoxPad cbAtiv = new JCheckBoxPad( "Somente Ativos", "S", "N" );
+	
+	private JCheckBoxPad cbInativ = new JCheckBoxPad( "Somente Inativos", "S", "N" );
 
 	private JRadioGroup<?, ?> rgOrdem = null;
 
@@ -101,7 +105,7 @@ public class DLRCliente extends FFDialogo {
 
 	private Vector<String> vValsEnd = new Vector<String>();
 
-	public DLRCliente( Component cOrig, Connection cn ) {
+	public DLRCliente( Component cOrig, DbConnection cn ) {
 
 		super( cOrig );
 		setTitulo( "Relatório de Clientes" );
@@ -141,6 +145,9 @@ public class DLRCliente extends FFDialogo {
 		rgEnd.setVlrString( "A" );
 
 		cbObs.setVlrString( "N" );
+		cbAtiv.setVlrString( "S" );
+		cbInativ.setVlrString( "N" );		
+		
 		cbFis.setVlrString( "S" );
 		cbJur.setVlrString( "S" );
 
@@ -183,7 +190,11 @@ public class DLRCliente extends FFDialogo {
 		adic( lbOrdem, 15, 5, 100, 20 );
 		adic( lbBordaOrdem, 7, 15, 433, 60 );
 		adic( rgOrdem, 15, 30, 240, 30 );
-		adic( cbObs, 270, 35, 190, 20 );
+
+		adic( cbObs, 270, 16, 165, 20 );
+		adic( cbAtiv, 270, 34, 160, 20 );
+		adic( cbInativ, 270, 52, 160, 20 );
+		
 
 		JLabelPad lbSelecao = new JLabelPad( "   Seleção :" );
 		lbSelecao.setOpaque( true );
@@ -245,7 +256,7 @@ public class DLRCliente extends FFDialogo {
 
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 20 ];
+		String[] sRetorno = new String[ 22 ];
 
 		if ( rgOrdem.getVlrString().equals( "C" ) ) {
 			sRetorno[ 0 ] = "C1.CODCLI";
@@ -283,6 +294,8 @@ public class DLRCliente extends FFDialogo {
 		sRetorno[ 17 ] = rgEnd.getVlrString();
 		sRetorno[ 18 ] = txtBairro.getVlrString().trim();
 		sRetorno[ 19 ] = txtEstCli.getVlrString().trim();
+		sRetorno[ 20 ] = cbAtiv.getVlrString().trim();
+		sRetorno[ 21 ] = cbInativ.getVlrString().trim();
 
 		return sRetorno;
 

@@ -7,13 +7,13 @@
  * Classe:
  * @(#)FOP.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -33,7 +33,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -783,9 +783,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar lote!\n" + err );
@@ -870,9 +868,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 			}
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela EQRMA!\n" + err.getMessage(), true, con, err );
@@ -943,9 +939,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 			}
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela EQRMA!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
@@ -1040,8 +1034,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar obrigatoriedade de lote no produto!\n", true, con, err );
 		} finally {
@@ -1108,9 +1101,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( SQLException e ) {
 			e.printStackTrace();
@@ -1198,9 +1189,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				ps.close();
 			}
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 			if ( iSldNeg > 0 ) {
 				
@@ -1267,9 +1256,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				ps.close();
 			}
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( SQLException ex ) {
 			Funcoes.mensagemErro( this, "Erro ao verificar condições para RMA\n" + ex.getMessage() );
@@ -1398,9 +1385,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 							ps2.execute();
 							ps2.close();
 
-							if ( !con.getAutoCommit() ) {
-								con.commit();
-							}
+							con.commit();
 
 							try {
 								ps3 = con.prepareStatement( 
@@ -1420,14 +1405,21 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 									Funcoes.mensagemInforma( this, "Foram geradas as seguintes RMA:\n" + sRma );
 								}
 
-								rs2.close();
-							} catch ( Exception err ) {
+								rs2.close();							
+							} 
+							catch ( Exception err ) {
 								Funcoes.mensagemErro( this, "Erro ao buscar RMA criada", true, con, err );
 								err.printStackTrace();
 							}
 						}
 					}
-				} catch ( Exception err ) {
+				}
+				catch ( SQLException err ) {
+					System.out.println(err.getMessage());
+					Funcoes.mensagemErro( this, "Erro ao criar RMA\n"+err.getMessage(), true, con, err );
+					err.printStackTrace();
+				}				
+				catch ( Exception err ) {
 					Funcoes.mensagemErro( this, "Erro ao criar RMA", true, con, err );
 					err.printStackTrace();
 				}
@@ -1438,9 +1430,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 			rs.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar RMA", true, con, err );
 			err.printStackTrace();
@@ -1567,9 +1557,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				}
 			}
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 			lcCampos.carregaDados();
 			
@@ -1738,9 +1726,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			ps.executeUpdate();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 			sql = new StringBuilder();
 			sql.append( "DELETE FROM EQITRMA " );
@@ -1759,9 +1745,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			ps.executeUpdate();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 			sql = new StringBuilder();
 			sql.append( "DELETE FROM EQRMA R " );
@@ -1776,9 +1760,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			ps.executeUpdate();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 			sql = new StringBuilder();
 			sql.append( "DELETE FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? " );			
@@ -1820,9 +1802,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			ps.executeUpdate();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 			sql = new StringBuilder();
 			sql.append( "EXECUTE PROCEDURE PPITOPSP01(?, ?, ?, ?)" );
@@ -1834,9 +1814,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			ps.executeUpdate();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 			if ( ratearOp() ) {
 				Funcoes.mensagemInforma( this, "Itens foram reprocessados com sucesso." );
@@ -1869,15 +1847,13 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			ps.executeUpdate();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 		}
 	}
 		
-	public static boolean existeLote( Connection cn, int iCodProd, String sCodLote ) {
+	public static boolean existeLote( DbConnection cn, int iCodProd, String sCodLote ) {
 
 		boolean bRet = false;
 		PreparedStatement ps = null;
@@ -1895,8 +1871,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 			rs.close();
 			ps.close();
-			if ( !cn.getAutoCommit() )
-				cn.commit();
+			cn.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( null, "Erro ao buscar existencia do lote!\n", true, cn, err );
@@ -1908,7 +1883,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		return bRet;
 	}
 
-	public static Object[] gravaLote( Connection cn, boolean bInsere, String sCodModLote, String sUsaLoteEst, String sModLote, int iCodProd, Date dtFabProd, int iNroDiasValid, String sCodLote ) {
+	public static Object[] gravaLote( DbConnection cn, boolean bInsere, String sCodModLote, String sUsaLoteEst, String sModLote, int iCodProd, Date dtFabProd, int iNroDiasValid, String sCodLote ) {
 
 		Object[] retorno = null;
 		ObjetoModLote objMl = null;
@@ -1942,8 +1917,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 							if ( ps.executeUpdate() == 0 )
 								Funcoes.mensagemInforma( null, "Não foi possível inserir registro na tabela de Lotes!" );
 
-							if ( !cn.getAutoCommit() )
-								cn.commit();
+							cn.commit();
 							retorno[ 2 ] = new Boolean( true );
 						} catch ( SQLException err ) {
 							Funcoes.mensagemErro( null, "Erro ao inserir registro na tabela de Lotes!\n" + err.getMessage(), true, cn, err );
@@ -2144,9 +2118,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 				ps.close();
 
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 				
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao inserir observação na OP!\n" + err.getMessage(), true, con, err );
@@ -2181,9 +2153,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				ret = rs.getInt( 1 );
 			}
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar O.P's. relacionadas!", true, con, e );
@@ -2418,9 +2388,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					ps2.executeUpdate();
 					ps2.close();
 
-					if ( !con.getAutoCommit() ) {
-						con.commit();
-					}
+					con.commit();
 
 					lcCampos.carregaDados();
 
@@ -2497,7 +2465,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	}
 
 	@ SuppressWarnings ( "unchecked" )
-	private HashMap<String, Object> getPrefere( Connection con ) {
+	private HashMap<String, Object> getPrefere( DbConnection con ) {
 	
 		HashMap<String, Object> retorno = new HashMap<String, Object>();
 		boolean[] bRetorno = new boolean[ 1 ];
@@ -2527,9 +2495,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			rs.close();
 			ps.close();
 	
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
@@ -2733,7 +2699,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		prefere = getPrefere( cn );

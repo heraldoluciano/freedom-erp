@@ -8,13 +8,13 @@
  * cbConveniado Classe:
  * @(#)FConsAutoriz.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -30,7 +30,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -65,7 +65,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private JPanelPad pinCab = new JPanelPad( 0, 290 );
+	private JPanelPad pinCab = new JPanelPad( 0, 310 );
 
 	private JPanelPad pnCli = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -100,6 +100,8 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 	private JCheckBoxPad cbCompleto = new JCheckBoxPad( "Completo", "S", "N" );
 
 	private JCheckBoxPad cbLiberado = new JCheckBoxPad( "Liberado", "S", "N" );
+
+	private JCheckBoxPad cbFaturadoParcial = new JCheckBoxPad( "Faturado Parcial", "S", "N" );
 
 	private JCheckBoxPad cbFaturado = new JCheckBoxPad( "Faturado", "S", "N" );
 
@@ -252,15 +254,16 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		lbBorda.setBorder( BorderFactory.createEtchedBorder() );
 
 		pinCab.adic( new JLabelPad( "Status:" ), 7, 200, 90, 20 );
-		pinCab.adic( lbBorda, 7, 220, 200, 60 );
+		pinCab.adic( lbBorda, 7, 220, 252, 80 );
 		pinCab.adic( cbVencidas, 10, 230, 80, 20 );
 		pinCab.adic( cbCompleto, 10, 250, 80, 20 );
 		pinCab.adic( cbLiberado, 123, 230, 80, 20 );
-		pinCab.adic( cbFaturado, 123, 250, 80, 20 );
+		pinCab.adic( cbFaturadoParcial, 123, 250, 120, 20 );
+		pinCab.adic( cbFaturado, 123, 270, 80, 20 );
 
-		pinCab.adic( new JLabelPad( "Filtrar por:" ), 225, 200, 110, 20 );
-		pinCab.adic( rgVenc, 225, 220, 220, 60 );
-		pinCab.adic( rgTipo, 460, 220, 120, 60 );
+		pinCab.adic( new JLabelPad( "Filtrar por:" ), 265, 200, 110, 20 );
+		pinCab.adic( rgVenc, 265, 220, 220, 60 );
+		pinCab.adic( rgTipo, 490, 220, 90, 60 );
 
 		tab.adicColuna( "Cód.orc" );
 		tab.adicColuna( "Emissão." );
@@ -322,7 +325,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		ResultSet rs = null;
 		String sSQL = null;
 		String sWhere = "";
-		String sStatusOrc = "";
+		StringBuilder status = new StringBuilder();
 		int iLin = 0;
 		int iParam = 5;
 		boolean bConv = ( txtCodConv.getVlrInteger().intValue() > 0 );
@@ -334,14 +337,34 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		if ( cbVencidas.getVlrString().equals( "S" ) )
 			sWhere = " AND IT.VENCAUTORIZORC < CAST ('today' AS DATE) ";
 
-		if ( cbCompleto.getVlrString().equals( "S" ) )
-			sStatusOrc = "'OC'";
-		if ( cbLiberado.getVlrString().equals( "S" ) )
-			sStatusOrc += ( !sStatusOrc.equals( "" ) ? "," : "" ) + "'OL'";
-		if ( cbFaturado.getVlrString().equals( "S" ) )
-			sStatusOrc += ( !sStatusOrc.equals( "" ) ? "," : "" ) + "'OV'";
-		if ( !sStatusOrc.equals( "" ) )
-			sWhere += " AND O.STATUSORC IN (" + sStatusOrc + ") ";
+		if ( "S".equals( cbCompleto.getVlrString() ) ) {
+			if ( status.length() > 0 ) {
+				status.append( "," );
+			}
+			status.append( "'OC'" );
+		}
+		if ( "S".equals( cbLiberado.getVlrString() ) ) {
+			if ( status.length() > 0 ) {
+				status.append( "," );
+			}
+			status.append( "'OL'" );
+		}
+		if ( "S".equals( cbFaturadoParcial.getVlrString() ) ) {
+			if ( status.length() > 0 ) {
+				status.append( "," );
+			}
+			status.append( "'FP'" );
+		}
+		if ( "S".equals( cbFaturado.getVlrString() ) ) {
+			if ( status.length() > 0 ) {
+				status.append( "," );
+			}
+			status.append( "'OV'" );
+		}
+		
+		if ( status.length() > 0 ) {
+			sWhere += " AND O.STATUSORC IN (" + status.toString() + ") ";
+		}
 
 		if ( rgVenc.getVlrString().equals( "V" ) )
 			sWhere += " AND IT.VENCAUTORIZORC BETWEEN ? AND ?";
@@ -426,9 +449,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 				iLin++;
 
 			}
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela VDORÇAMENTO!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
@@ -593,9 +614,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 			imp.eject();
 			imp.fechaGravacao();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( Exception e ) {
 			e.printStackTrace();
 			Funcoes.mensagemInforma( this, "Erro ao imprimir relatório" );
@@ -657,7 +676,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 			imprimir( true );
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcConv.setConexao( cn );

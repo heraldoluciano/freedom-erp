@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FRemCnab.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -42,8 +42,9 @@ import java.util.HashSet;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.ListaCampos;
-import org.freedom.funcoes.Boleto;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.funcoes.boleto.Banco;
+import org.freedom.funcoes.boleto.BancodoBrasil;
 import org.freedom.modulos.fnc.CnabUtil.Reg;
 import org.freedom.modulos.fnc.CnabUtil.Reg1;
 import org.freedom.modulos.fnc.CnabUtil.Reg3P;
@@ -109,9 +110,7 @@ public class FRemCnab extends FRemFBN {
 			rs.close();
 			ps.close();
 			
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		}
 		catch ( SQLException e ) {
 			e.printStackTrace();
@@ -144,13 +143,12 @@ public class FRemCnab extends FRemFBN {
 			if ( rs.next() ) {
 				
 				carteira = rs.getInt( "CARTCOBCNAB" );
+				
 			}
 			
 			rs.close();
 			ps.close();
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		}
 		catch ( SQLException e ) {
 			e.printStackTrace();
@@ -220,6 +218,8 @@ public class FRemCnab extends FRemFBN {
 	
 	private Reg3P getReg3P( final StuffRec rec ) throws ExceptionCnab {
 		
+		Banco banco = null;
+		
 		Reg3P reg = cnabutil.new Reg3P();
 
 		reg.setCodBanco( txtCodBanco.getVlrString() );
@@ -231,7 +231,12 @@ public class FRemCnab extends FRemFBN {
 		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
 		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
 		reg.setDigAgConta( null );
-		reg.setIdentTitulo( Boleto.geraNossoNumero( 
+		
+		if( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
+			banco = new BancodoBrasil();
+		}
+		
+		reg.setIdentTitulo( banco.geraNossoNumero( 
 				(String)prefs.get( EPrefs.MDECOB ), 
 				(String)prefs.get( EPrefs.CONVCOB ), 
 				Long.parseLong( rec.getDocrec().toString() ), 
@@ -243,11 +248,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setTipoDoc( (Integer) prefs.get( EPrefs.TIPODOC ) );
 		reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );
 		reg.setIdentDist( (Integer) prefs.get( EPrefs.IDENTDISTBOL ) );
-		reg.setDocCobranca( Boleto.getNumCli( 
-				(String)prefs.get( EPrefs.MDECOB ), 
-				(String)prefs.get( EPrefs.CONVCOB ), 
-				Long.parseLong( rec.getDocrec().toString() ), 
-				Long.parseLong( rec.getNParcitrec().toString() ) ) );
+		reg.setDocCobranca( banco.getNumCli( (String)prefs.get( EPrefs.MDECOB ), (String)prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) ) );
 		reg.setDtVencTitulo( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
 		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );		
 		reg.setAgenciaCob( null );
@@ -268,11 +269,8 @@ public class FRemCnab extends FRemFBN {
 		reg.setDtDesc( null );
 		reg.setVlrpercConced( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) );
 		reg.setVlrIOF( new BigDecimal( 0 ) );
-		reg.setVlrAbatimento( new BigDecimal( 0 ) );
-		
-		reg.setIdentTitEmp( cnabutil.new Receber( rec.getCodrec(), rec.getNParcitrec() ) );
-		//System.out.println("Receber: "+ rec.getCodrec()+ ", "+ rec.getNParcitrec());
-		
+		reg.setVlrAbatimento( new BigDecimal( 0 ) );		
+		reg.setIdentTitEmp( "0" + Banco.getNumCli( (long)rec.getCodrec(), (long)rec.getNParcitrec(), 14 ) + "0" );		
 		reg.setCodProtesto( (Integer) prefs.get( EPrefs.CODPROT ) );
 		reg.setDiasProtesto( (Integer) prefs.get( EPrefs.DIASPROT ) );
 		reg.setCodBaixaDev( (Integer) prefs.get( EPrefs.CODBAIXADEV ) );
@@ -603,10 +601,6 @@ public class FRemCnab extends FRemFBN {
 
 	public void imprimir( boolean visualizar ) {
 
-		ResultSet rs = null;
-		String sDtFiltro = "E".equals( rgData.getVlrString() ) ? "IR.DTITREC" : "IR.DTVENCITREC";
-		PreparedStatement ps = null;
-
 		if ( txtCodBanco.getVlrString().equals( "" ) ) {
 			Funcoes.mensagemInforma( this, "Código do banco é requerido!" );
 			return;
@@ -614,35 +608,7 @@ public class FRemCnab extends FRemFBN {
 
 		try {
 
-			StringBuilder sSQL = new StringBuilder();
-
-			sSQL.append( "SELECT IR.CODREC, IR.NPARCITREC, R.DOCREC, R.CODCLI, C.RAZCLI, IR.DTITREC, IR.DTVENCITREC," );
-			sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, COALESCE(FR.SITREMESSA,'00') SITREMESSA, " );
-			sSQL.append( "FR.SITRETORNO, COALESCE(COALESCE(FR.STIPOFEBRABAN,FC.STIPOFEBRABAN),'02') STIPOFEBRABAN, " );
-			sSQL.append( "COALESCE(FC.TIPOREMCLI,'B') TIPOREMCLI, C.PESSOACLI, C.CPFCLI, C.CNPJCLI " );
-			sSQL.append( "FROM VDCLIENTE C," );
-			sSQL.append( "FNRECEBER R LEFT OUTER JOIN FNFBNCLI FC ON " );
-			sSQL.append( "FC.CODEMP=R.CODEMPCL AND FC.CODFILIAL=R.CODFILIALCL AND FC.CODCLI=R.CODCLI ," );
-			sSQL.append( "FNITRECEBER IR LEFT OUTER JOIN FNFBNREC FR ON " );
-			sSQL.append( "FR.CODEMP=IR.CODEMP AND FR.CODFILIAL=IR.CODFILIAL AND " );
-			sSQL.append( "FR.CODREC=IR.CODREC AND FR.NPARCITREC=IR.NPARCITREC AND " );
-			sSQL.append( "FR.CODEMPBO=IR.CODEMPBO AND FR.CODFILIALBO=IR.CODFILIALBO AND FR.CODBANCO=IR.CODBANCO " );
-			sSQL.append( "WHERE R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC AND " );
-			sSQL.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND " );
-			sSQL.append( sDtFiltro );
-			sSQL.append( " BETWEEN ? AND ? AND IR.STATUSITREC IN ('R1','RL') AND " );
-			sSQL.append( "IR.CODEMPBO=? AND IR.CODFILIALBO=? AND IR.CODBANCO=? " );
-			sSQL.append( where );
-			sSQL.append( "ORDER BY C.RAZCLI, R.CODREC, IR.NPARCITREC " );
-			ps = con.prepareStatement( sSQL.toString() );
-
-			ps.setDate( 1, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
-			ps.setDate( 2, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, Aplicativo.iCodFilial );
-			ps.setInt( 5, txtCodBanco.getVlrInteger() );
-
-			rs = ps.executeQuery();
+			ResultSet rs = executeQuery();
 
 			HashMap< String, Object > hParam = new HashMap< String, Object >();
 
@@ -659,11 +625,8 @@ public class FRemCnab extends FRemFBN {
 			}
 
 			rs.close();
-			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
 			e.printStackTrace();

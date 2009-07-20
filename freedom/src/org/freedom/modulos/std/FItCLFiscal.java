@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FItCLFiscal.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -26,11 +26,13 @@ package org.freedom.modulos.std;
 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.sql.Connection;
+import java.math.BigDecimal;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.Vector;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
@@ -41,7 +43,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDetalhe;
 
-public class FItCLFiscal extends FDetalhe implements CarregaListener, FocusListener {
+public class FItCLFiscal extends FDetalhe implements CarregaListener, FocusListener, RadioGroupListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -92,6 +94,14 @@ public class FItCLFiscal extends FDetalhe implements CarregaListener, FocusListe
 	private Vector<String> vLabsOrig = new Vector<String>();
 
 	private JRadioGroup<?, ?> rgTipoFisc = null;
+	
+	private JRadioGroup<?, ?> rgTipoST = null;
+	
+	private JTextFieldPad txtMargemVlAgr = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
+	
+	private Vector<String> vSTLabs = new Vector<String>();
+	
+	private Vector<String> vSTVals = new Vector<String>();
 
 	private Vector<String> vTipoVals = new Vector<String>();
 
@@ -108,7 +118,7 @@ public class FItCLFiscal extends FDetalhe implements CarregaListener, FocusListe
 	public FItCLFiscal() {
 
 		setTitulo( "Cadastro de variações de ICMS" );
-		setAtribos( 50, 50, 510, 600 );
+		setAtribos( 50, 50, 510, 640 );
 
 		txtCodFisc.setAtivo( false );
 		txtDescFisc.setAtivo( false );
@@ -160,6 +170,16 @@ public class FItCLFiscal extends FDetalhe implements CarregaListener, FocusListe
 		vTipoVals.addElement( "TT" );
 		rgTipoFisc = new JRadioGroup<String, String>( 2, 2, vTipoLabs, vTipoVals );
 
+		// Tipo de substituição tributária
+		
+		vSTLabs.addElement( "Substituto" );
+		vSTLabs.addElement( "Substituído" );
+		vSTVals.addElement( "SU" );
+		vSTVals.addElement( "SI" );
+		rgTipoST = new JRadioGroup<String, String>( 1, 2, vSTLabs, vSTVals );
+
+		// Origem da mercadoria
+		
 		vLabsOrig.addElement( "<--Selecione-->" );
 		vLabsOrig.addElement( "Nacional" );
 		vLabsOrig.addElement( "Estrangeira - Importação direta" );
@@ -177,7 +197,7 @@ public class FItCLFiscal extends FDetalhe implements CarregaListener, FocusListe
 		rgTpRedIcmsFisc = new JRadioGroup<String, String>( 2, 1, vTpRedIcmsFiscLabs, vTpRedIcmsFiscVals );
 		rgTpRedIcmsFisc.setVlrString( "B" );
 
-		setAltDet( 360 );
+		setAltDet( 400 );
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
 		setNavegador( navRod );
@@ -195,18 +215,30 @@ public class FItCLFiscal extends FDetalhe implements CarregaListener, FocusListe
 		adicCampo( txtCodTipoMov, 7, 185, 80, 20, "CodTipoMov", "Cód.tp.Mov", ListaCampos.DB_FK, txtDescTipoMov, false );
 		adicDescFK( txtDescTipoMov, 90, 185, 223, 20, "DescTipoMov", "Descrição do tipo de movimento" );
 		adicDB( rgTipoFisc, 7, 225, 450, 53, "TipoFisc", "Situação do ICMS:", true );
-		adicCampo( txtCodMens, 7, 300, 80, 20, "CodMens", "Cód.mens.", ListaCampos.DB_FK, txtMens, false );
-		adicDescFK( txtMens, 90, 300, 360, 20, "Mens", "Mensagem" );
+		
+		adicDB( rgTipoST, 7, 298, 240, 30, "TipoST", "Tipo de Sub.Trib.", true );
+		adicDB( txtMargemVlAgr, 253, 298, 120, 20, "MargemVlAgr", "% Vlr.Agregado" , false );
+		
+		adicCampo( txtCodMens, 7, 350, 80, 20, "CodMens", "Cód.mens.", ListaCampos.DB_FK, txtMens, false );
+		adicDescFK( txtMens, 90, 350, 360, 20, "Mens", "Mensagem" );
 		setListaCampos( true, "ITCLFISCAL", "LF" );
 		lcDet.setQueryInsert( false );
 
 		montaTab();
 
 		tab.setTamColuna( 190, 2 );
-		
+				
 		txtCodTipoFisc.addFocusListener( this );
 		txtCodTipoMov.addFocusListener( this );
 		lcCampos.addCarregaListener( this );
+		rgTipoFisc.addRadioGroupListener( this );
+		rgTipoST.addRadioGroupListener( this );
+		
+		rgTipoFisc.setVlrString( "TT" );
+		rgTipoST.setVlrString( "SI" );
+		txtMargemVlAgr.setAtivo( false );
+
+		
 	}
 	
 	private void travaTipoMov() {
@@ -249,11 +281,34 @@ public class FItCLFiscal extends FDetalhe implements CarregaListener, FocusListe
 		lcCampos.carregaDados();
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 		super.setConexao( cn );
 		lcMens.setConexao( cn );
 		lcTratTrib.setConexao( cn );
 		lcTipoFiscCli.setConexao( cn );
 		lcTipoMov.setConexao( cn );
+	}
+
+	public void valorAlterado( RadioGroupEvent evt ) {
+
+		if(evt.getSource()==rgTipoFisc) {
+			if("FF".equals( rgTipoFisc.getVlrString() )) { // Caso seja substituição tributária
+				rgTipoST.setAtivo( true );
+			}
+			else {
+				rgTipoST.setVlrString( "SI" );
+				rgTipoST.setAtivo( false );				
+			}
+		}
+		else if (evt.getSource()==rgTipoST) {
+			if("SU".equals( rgTipoST.getVlrString() )) { // Substituído
+				txtMargemVlAgr.setAtivo( true );
+			}
+			else {
+				txtMargemVlAgr.setVlrBigDecimal( new BigDecimal(0) );
+				txtMargemVlAgr.setAtivo( false );				
+			}
+		}
+		
 	}
 }

@@ -3,7 +3,7 @@ package org.freedom.modulos.fnc;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,7 +51,7 @@ public class DLRestrCli extends FFDialogo {
 		tab.setTamColuna( 300, 2 );
 	}
 	
-	public static boolean execRestrCli(final Component cOrig, final Connection cn, final int codcli) {
+	public static boolean execRestrCli(final Component cOrig, final DbConnection cn, final int codcli) {
 
 		listrestr = carregaRestricao( cn, codcli ) ;
 		if ( listrestr.size() > 0 ) { 
@@ -63,7 +63,7 @@ public class DLRestrCli extends FFDialogo {
 		return OK;
 	}
 	
-	private static List carregaRestricao( final Connection cn, final int codcli ) {
+	private static List carregaRestricao( final DbConnection cn, final int codcli ) {
 		List<String[]> list = new ArrayList<String[]>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -89,9 +89,7 @@ public class DLRestrCli extends FFDialogo {
 				row[2] = limpaString(rs.getString( "OBSRESTR" ));
 				list.add( row );
 			}
-			if (!cn.getAutoCommit()) {
-				cn.commit();
-			}
+			cn.commit();
 			rs.close();
 			ps.close();
 		} catch ( SQLException e ) {
@@ -106,7 +104,7 @@ public class DLRestrCli extends FFDialogo {
 			return text.trim();
 		}
 	}
-	public void setConexao(Connection cn) {
+	public void setConexao(DbConnection cn) {
 		con = cn;
 	}
 	

@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FEmpregado.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -25,10 +25,11 @@
 package org.freedom.modulos.grh;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
@@ -43,6 +44,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -140,12 +142,18 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 
 	private final JTextFieldPad txtCelEmpr = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
 
-	private final JTextFieldPad txtVlrSalario = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrSalario = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
+	
+	private final JTextFieldPad txtCustoHoraTrab = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
 
 	private final JTextFieldPad txtDtVigor = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private final JTextFieldPad txtObsSal = new JTextFieldPad( JTextFieldPad.TP_STRING, 1000, 0 );
-
+//	private final JTextFieldPad txtObsSal = new JTextFieldPad( JTextFieldPad.TP_STRING, 1000, 0 );
+	
+	private JTextAreaPad txaObsSal = new JTextAreaPad();
+	
+	private JScrollPane spnTxa = new JScrollPane( txaObsSal );
+	
 	private final JTextFieldPad txtSeqSal = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private final JTextFieldPad txtCodBenef = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
@@ -184,7 +192,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 
 	private Navegador navSal = new Navegador( true );
 
-	private JPanelPad pinSal = new JPanelPad( 0, 80 );
+	private JPanelPad pinSal = new JPanelPad( 0, 100 );
 
 	private JScrollPane spnTabBenef = new JScrollPane( tabBenef );
 
@@ -205,7 +213,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		lcEmpSal.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcEmpSal );
 		lcEmpSal.setTabela( tabSal );
-
+		
 		lcEmpBenef.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcEmpBenef );
 		lcEmpBenef.setTabela( tabBenef );
@@ -377,15 +385,26 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 		panelSalario.add( spnTabSal, BorderLayout.CENTER );
 
 		adicCampoInvisivel( txtSeqSal, "SeqSal", "Seq.", ListaCampos.DB_PK, false );
-		adicCampo( txtVlrSalario, 7, 20, 90, 20, "ValorSal", "Salário", ListaCampos.DB_SI, false );
-		adicCampo( txtDtVigor, 100, 20, 90, 20, "DtVigor", "Data.vigor", ListaCampos.DB_SI, true );
-		adicCampo( txtObsSal, 193, 20, 280, 20, "ObsSal", "Observação", ListaCampos.DB_SI, false );
-		pinSal.adic( navSal, 0, 50, 270, 25 );
+		adicCampo( txtVlrSalario, 7, 20, 90, 20, "ValorSal", "Salário", ListaCampos.DB_SI, false );	
+		adicCampo( txtCustoHoraTrab, 100, 20, 90, 20, "CustoHoraTrab", "Custo h.trab.", ListaCampos.DB_SI, false );
+		adicCampo( txtDtVigor, 193, 20, 77, 20, "DtVigor", "Data.vigor", ListaCampos.DB_SI, true );
+		
+//		adicCampo( txtObsSal, 193, 20, 280, 20, "ObsSal", "Observação", ListaCampos.DB_SI, false );
+		adicDB( txaObsSal, 276, 20, 210, 73, "ObsSal", "Observação", false );
+		pinSal.adic( navSal, 0, 70, 270, 25 );
 		setListaCampos( true, "EMPREGADOSAL", "RH" );
 		lcEmpSal.setQueryInsert( false );
 		lcEmpSal.setQueryCommit( false );
 		lcEmpSal.montaTab();
 
+		tabSal.setTamColuna( 30,0 );
+		tabSal.setTamColuna( 70,1 );
+		tabSal.setTamColuna( 70,2 );
+		tabSal.setTamColuna( 70,3 );
+		tabSal.setTamColuna( 245,4 );
+		
+		
+		
 		/**************
 		 * Benefícios *
 		 **************/
@@ -410,10 +429,12 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 
 		tabBenef.setTamColuna( 335, 1 );
 		tabBenef.setTamColuna( 100, 2 );
+		
 
+		
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcFuncao.setConexao( cn );

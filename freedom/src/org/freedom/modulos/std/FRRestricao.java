@@ -1,6 +1,6 @@
 package org.freedom.modulos.std;
 
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
@@ -150,7 +150,7 @@ public class FRRestricao extends FRelatorio{
 		}
 	}
 	
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 		
 		super.setConexao( cn );
 		lcCli.setConexao( cn );

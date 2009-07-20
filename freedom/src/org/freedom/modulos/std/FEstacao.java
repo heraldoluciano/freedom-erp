@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FEstacao.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -24,7 +24,7 @@
 package org.freedom.modulos.std;
 
 import java.awt.event.ActionListener;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -57,9 +57,15 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener {
 	private JTextFieldPad txtCodEst = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtDescEst = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtFonteTxt = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+	
+	private JTextFieldPad txtTamFonteTxt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
 
-	private JCheckBoxPad cbModoDemoEst = new JCheckBoxPad( "Modo demonstrativo?", "S", "N" );
+	private JCheckBoxPad cbModoDemoEst = new JCheckBoxPad( "Demonstrativo?", "S", "N" );
 
+	private JCheckBoxPad cbNfeEst = new JCheckBoxPad( "Emite NFE?", "S", "N" );
+	
 	private JTextFieldPad txtNroImp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtCodImp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -111,16 +117,20 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener {
 		txtCodPapel.setTabelaExterna( lcPapel );
 
 		lcCampos.addPostListener( this );
-		pinCab = new JPanelPad( 740, 100 );
+		pinCab = new JPanelPad( 740, 130 );
 		setListaCampos( lcCampos );
-		setAltCab( 100 );
+		setAltCab( 130 );
 		setPainel( pinCab, pnCliCab );
 		cbModoDemoEst.setVlrString( "N" );
+		cbNfeEst.setVlrString( "N" );
 
 		adicCampo( txtCodEst, 7, 20, 80, 20, "Codest", "Nº estação", ListaCampos.DB_PK, true );
 		adicCampo( txtDescEst, 90, 20, 257, 20, "Descest", "Descrição da estação de trabalho", ListaCampos.DB_SI, true );
 		adicDB( cbModoDemoEst, 350, 20, 170, 20, "ModoDemoEst", "Modo", true );
-		setListaCampos( true, "ESTACAO", "SG" );
+		adicCampo( txtFonteTxt , 7, 60, 270, 20, "FonteTxt", "Fonte para visualização de relatórios texto", ListaCampos.DB_SI, false );
+		adicCampo( txtTamFonteTxt , 280, 60, 65, 20, "TamFonteTxt", "Tamanho", ListaCampos.DB_SI, false );
+		adicDB( cbNfeEst, 350, 60, 150, 20, "NfeEst", "NFE", true );
+		setListaCampos( true, "ESTACAO", "SG" ); 
 		lcCampos.setQueryInsert( false );
 
 		setAltDet( 230 );
@@ -186,8 +196,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener {
 				ps.setString( 5, cbImpPad.getVlrString() );
 				ps.execute();
 				ps.close();
-				if ( !con.getAutoCommit() )
-					con.commit();
+				con.commit();
 				lcDet.carregaItens();
 				txtNroImp.setVlrInteger( new Integer( iNroImp ) );
 				lcDet.carregaDados();
@@ -201,7 +210,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener {
 		}
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcImp.setConexao( cn );

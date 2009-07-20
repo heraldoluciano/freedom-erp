@@ -1,6 +1,6 @@
 package org.freedom.modulos.std;
 
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -136,7 +136,7 @@ public class FRMovProdCont extends FRelatorio {
 		imprimiGrafico( b, sCab );
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcProduto.setConexao( cn );

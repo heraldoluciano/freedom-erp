@@ -8,13 +8,13 @@
  * Classe:
  * @(#)Freedomstd.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -28,6 +28,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FAtendente;
 import org.freedom.modulos.atd.FTipoAtend;
 import org.freedom.modulos.grh.FFuncao;
+import org.freedom.modulos.lvf.FTratTrib;
+import org.freedom.plugin.Background34;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrincipal2;
@@ -37,7 +39,7 @@ public class FreedomSTD2 extends AplicativoPD {
 
 	public FreedomSTD2() {
 
-		super( "iconStandart32.gif", "splashSTD.jpg", 1, "Freedom", 1, "Standard", null, new FPrincipal2( "bgFreedomSTD2.jpg" ),LoginPD.class );
+		super( "iconstd.png", "splashSTD.jpg", 1, "Freedom", 1, "Standard", null, new FPrincipal2( new Background34(), "bgFreedomSTD2.jpg" ),LoginPD.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
@@ -129,7 +131,7 @@ public class FreedomSTD2 extends AplicativoPD {
 			addSeparador( 300000000 );
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Aprova orçamento", "Aprova Orcamento", 'A', 300500000, 1, true, FAprovaOrc.class );
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Orçamento", "Orçamento", 'O', 300600000, 1, true, FOrcamento.class );
-			addOpcao( 300000000, TP_OPCAO_ITEM, "Pesquisa Orçamento", "Pesquisa Orçamento", 'P', 300700000, 1, true, FConsOrc.class );
+			addOpcao( 300000000, TP_OPCAO_ITEM, "Pesquisa Orçamento", "Pesquisa Orçamento", 'P', 300700000, 1, true, FPesquisaOrc.class );
 			addSeparador( 300000000 );
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Romaneio", "Romaneio", 'R', 300800000, 1, true, FRomaneio.class );
 			// addOpcao(300000000,TP_OPCAO_ITEM,"Lançamento de expositores","LancaExp",'x',300900000,1, true, FLancaExp.class);
@@ -227,7 +229,7 @@ public class FreedomSTD2 extends AplicativoPD {
 		addBotao( "btCliente.gif", "Cliente", "Clientes", 100101030, FCliente.class );
 		addBotao( "btSaida.gif", "Venda", "Venda", 300100000, FVenda.class );
 		addBotao( "btForneced.gif", "Fornecedor", "Fornecedor", 100119000, FFornecedor.class );
-		addBotao( "btEntrada.gif", "Compra", "Compras", 200100000, FCompra.class );
+		addBotao( "btEntrada.png", "Compra", "Compras", 200100000, FCompra.class );
 		addBotao( "btContaPagar.gif", "Contas a pagar", "Manutenção de contas a pagar", 400200000, FManutPag.class );
 		addBotao( "btContaReceber.gif", "Contas a receber", "Manutenção de contas a receber", 500100000, FManutRec.class );
 		addBotao( "btLancamentoFin.gif", "Lançamentos financeiros", "Lançamentos", 600600000, FLanca.class );
@@ -259,8 +261,9 @@ public class FreedomSTD2 extends AplicativoPD {
 			FreedomSTD2 freedom = new FreedomSTD2();
 			FPrincipal2.carregaAgenda();
 			freedom.show();
-		} catch ( Throwable e ) {
-			Funcoes.criaTelaErro( "Erro de execução" );
+		} 
+		catch ( Throwable e ) {
+			Funcoes.criaTelaErro( "Erro de execução\n" + e.getMessage() + "\n" + e.getCause() + "\n" + e.getLocalizedMessage());
 			e.printStackTrace();
 		}
 	}

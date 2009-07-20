@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FContComis.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -29,7 +29,7 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -291,9 +291,7 @@ public class FManutComis extends FFilho implements ActionListener {
 				rs.close();
 				ps.close();
 				
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 			} catch ( SQLException err ) {
 				
 				Funcoes.mensagemErro( this, "Erro ao verificar preferências!\n" + err.getMessage(), true, con, err );
@@ -338,7 +336,7 @@ public class FManutComis extends FFilho implements ActionListener {
 		String sStatus = "'CE'";
 
 		if ( !txtCodVend.getText().trim().equals( "" ) ) {
-			sWhere = " R.CODEMPVD=? AND R.CODFILIALVD=? AND V.CODVEND=? AND ";
+			sWhere = " C.CODEMPVD=? AND C.CODFILIALVD=? AND C.CODVEND=? AND ";
 		}
 		if ( cbComPag.getVlrString().equals( "S" ) ) {
 			sStatus += ",'CP'";
@@ -352,15 +350,17 @@ public class FManutComis extends FFilho implements ActionListener {
 		sStatus = " AND C.STATUSCOMI IN (" + sStatus + ")";
 		sEmitRel = rgEmitRel.getVlrString();
 
-		String sSQL = "SELECT C.CODCOMI,C.STATUSCOMI,CL.RAZCLI,R.DOCREC,ITR.NPARCITREC," + "C.VLRCOMI,C.DATACOMI,C.DTVENCCOMI,C.DTPAGTOCOMI,C.TIPOCOMI,V.CODVEND, V.NOMEVEND" + 
-				" FROM VDCOMISSAO C, VDCLIENTE CL,FNRECEBER R, FNITRECEBER ITR, VDVENDEDOR V " + "WHERE " + sWhere 
-				+ "ITR.CODREC = R.CODREC AND C.CODREC = ITR.CODREC AND " + ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" ) + 
-				" BETWEEN ? AND ? " + "AND CL.CODCLI=R.CODCLI" + sStatus + " AND ITR.CODEMP=C.CODEMPRC AND ITR.CODFILIAL=C.CODFILIALRC "
-				+ "AND R.CODEMP=C.CODEMPRC AND R.CODFILIAL=C.CODFILIALRC AND CL.CODEMP=R.CODEMPCL " + 
-				" AND CL.CODFILIAL=R.CODFILIALCL AND C.CODEMP=? AND C.CODFILIAL=? AND C.NPARCITREC = ITR.NPARCITREC " +
-				" AND V.CODEMP=CL.CODEMPVD AND V.CODFILIAL=CL.CODFILIALVD AND V.CODVEND=CL.CODVEND "
-				+ "ORDER BY " + 
-				( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" );
+		String sSQL = "SELECT C.CODCOMI,C.STATUSCOMI,CL.RAZCLI,R.DOCREC,ITR.NPARCITREC, " 
+			+ "C.VLRCOMI,C.DATACOMI,C.DTVENCCOMI,C.DTPAGTOCOMI,C.TIPOCOMI,V.CODVEND, V.NOMEVEND " 
+			+ "FROM VDCOMISSAO C, VDCLIENTE CL, FNRECEBER R, FNITRECEBER ITR, VDVENDEDOR V " + "WHERE " + sWhere 
+			+ "ITR.CODREC = R.CODREC AND C.CODREC = ITR.CODREC AND " + ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" ) 
+			+ " BETWEEN ? AND ? AND CL.CODCLI=R.CODCLI" + sStatus + " AND ITR.CODEMP=C.CODEMPRC AND ITR.CODFILIAL=C.CODFILIALRC "
+			+ "AND R.CODEMP=C.CODEMPRC AND R.CODFILIAL=C.CODFILIALRC AND CL.CODEMP=R.CODEMPCL " 
+			+ " AND CL.CODFILIAL=R.CODFILIALCL AND C.CODEMP=? AND C.CODFILIAL=? AND C.NPARCITREC = ITR.NPARCITREC " 
+			+ " AND V.CODEMP=C.CODEMPVD AND V.CODFILIAL=C.CODFILIALVD AND V.CODVEND=C.CODVEND "
+			+ "ORDER BY " 
+			+ ( sEmitRel == "E" ? "C.DATACOMI" : "C.DTVENCCOMI" );
+		
 		try {
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			System.out.println( "SQL COMIS: " + sSQL ); 
@@ -412,9 +412,7 @@ public class FManutComis extends FFilho implements ActionListener {
 			calcTotal();
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro na consulta!" + err.getMessage(), true, con, err );
 		}
@@ -437,9 +435,7 @@ public class FManutComis extends FFilho implements ActionListener {
 				ps.setInt( 2, Aplicativo.iCodEmp );
 				ps.setInt( 3, ListaCampos.getMasterFilial( "VDCOMISSAO" ) );
 				ps.executeUpdate();
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao atualizar os status na tabela COMISSÃO!\n" + err.getMessage(), true, con, err );
 			}
@@ -497,9 +493,7 @@ public class FManutComis extends FFilho implements ActionListener {
 				ps.setInt( 17, Aplicativo.iCodEmp );
 				ps.setInt( 18, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 				ps.execute();
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao baixar a comissão!\n" + err.getMessage(), true, con, err );
 			}
@@ -548,9 +542,7 @@ public class FManutComis extends FFilho implements ActionListener {
 
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao estornar baixas!\n" + err.getMessage(), true, con, err );
@@ -581,7 +573,7 @@ public class FManutComis extends FFilho implements ActionListener {
 		}
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcVend.setConexao( cn );

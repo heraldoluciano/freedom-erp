@@ -53,7 +53,7 @@ it.codemp=$P{CODEMP} and it.codfilial=$P{CODFILIAL} and it.codop=$P{CODOP} AND i
 and ud.codemp=pd.codempud and ud.codfilial=pd.codfilialud and ud.codunid=pd.codunid
 and pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd and pd.codprod=it.codprod
 and opf.codemp=it.codempfs and opf.codfilialfs=it.codfilialfs and opf.codfase=it.codfase
-and opf.codop=it.codop and opf.seqop=it.seqop and opf.seqof=1
+and opf.codop=it.codop and opf.seqop=it.seqop 
 and fa.codemp=opf.codempfs and fa.codfilial=opf.codfilialfs and fa.codfase=opf.codfase
 and op.codemp=it.codemp and op.codfilial=it.codfilial and op.codop=it.codop and op.seqop=it.seqop
 and ef.codemp=op.codemppd and ef.codfilial=op.codfilialpd and ef.codprod=op.codprod and ef.seqest=op.seqest

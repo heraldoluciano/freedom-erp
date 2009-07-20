@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FreedomPDV.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -28,7 +28,6 @@ import org.freedom.componentes.JButtonPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.FAlmox;
 import org.freedom.modulos.std.FBanco;
-import org.freedom.modulos.std.FCLFiscal;
 import org.freedom.modulos.std.FClasCli;
 import org.freedom.modulos.std.FCliente;
 import org.freedom.modulos.std.FCpProd;
@@ -46,7 +45,6 @@ import org.freedom.modulos.std.FSimilar;
 import org.freedom.modulos.std.FTabPreco;
 import org.freedom.modulos.std.FTipoCli;
 import org.freedom.modulos.std.FTipoFiscCli;
-import org.freedom.modulos.std.FTratTrib;
 import org.freedom.modulos.std.FUnidade;
 import org.freedom.modulos.std.FVariantes;
 import org.freedom.telas.AplicativoPDV;
@@ -57,7 +55,7 @@ public class FreedomPDV extends AplicativoPDV {
 
 	public FreedomPDV() {
 
-		super( "iconConfiguracao32.gif", "splashPDV.jpg", 1, "Freedom", 3, "Ponto de Venda", null );
+		super( "iconpdv.png", "splashPDV.jpg", 1, "Freedom", 3, "Ponto de Venda", null );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
@@ -73,8 +71,6 @@ public class FreedomPDV extends AplicativoPDV {
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Plano de pagamento", "PlanoPag", 's', 100115000, 2, true, FPlanoPag.class );		
 				addSeparador( 100100000 );
 				addOpcao( 100100000, TP_OPCAO_MENU, "Produto", "", 'u', 100104000, 2, false, null );
-					addOpcao( 100104000, TP_OPCAO_ITEM, "Tratamento tributário", "Tratamento Tributário", 't', 100104010, 3, true, FTratTrib.class );
-					addOpcao( 100104000, TP_OPCAO_ITEM, "Classificação fiscal", "Classificações", 'l', 100104020, 3, true, FCLFiscal.class );
 					addOpcao( 100104000, TP_OPCAO_ITEM, "Almoxarifado", "Almoxarifado", 'x', 100104030, 3, true, FAlmox.class );
 					addOpcao( 100104000, TP_OPCAO_ITEM, "Grupo", "Grupos", 'r', 100104040, 3, true, FGrupo.class );
 					addOpcao( 100104000, TP_OPCAO_ITEM, "Marca", "Marcas", 'c', 100104050, 3, true, FMarca.class );
@@ -134,7 +130,6 @@ public class FreedomPDV extends AplicativoPDV {
 		vEquipeSis.add( "Alexandre Marcondes - Programação" );
 		vEquipeSis.add( "Fernando Oliveira - Programação" );
 		vEquipeSis.add( "Moyzes Braz - Arte gráfica" );
-		vEquipeSis.add( "Reginaldo Garcia - Testes / Suporte" );
 
 	}
 
@@ -144,6 +139,7 @@ public class FreedomPDV extends AplicativoPDV {
 			AplicativoPDV.setLookAndFeel( "freedom.ini" );
 			FreedomPDV freedom = new FreedomPDV();
 			freedom.setECF();
+			freedom.loadEcflayout();
 			freedom.show();
 			freedom.btVenda.doClick();
 		} catch ( Throwable e ) {

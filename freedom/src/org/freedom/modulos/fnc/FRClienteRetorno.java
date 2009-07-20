@@ -13,7 +13,7 @@ package org.freedom.modulos.fnc;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -70,7 +70,7 @@ public class FRClienteRetorno extends FRelatorio {
       
   }
   
-  public void setConexao(Connection cn) {
+  public void setConexao(DbConnection cn) {
     super.setConexao(cn);
     lcTCliente.setConexao(cn);
   }
@@ -256,12 +256,11 @@ public class FRClienteRetorno extends FRelatorio {
      imp.say(imp.pRow()+1,0,""+imp.normal());
      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",90));
       
-      imp.eject();
+     imp.eject();
       
-      imp.fechaGravacao();
+     imp.fechaGravacao();
 
-      if (!con.getAutoCommit())
-      	con.commit();
+     con.commit();
       
     }  
     catch ( SQLException err ) {

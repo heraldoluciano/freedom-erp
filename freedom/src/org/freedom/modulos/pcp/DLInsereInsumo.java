@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -69,7 +69,7 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 	};
 	
 	
-	public DLInsereInsumo( Connection con, Object[] keys ){
+	public DLInsereInsumo( DbConnection con, Object[] keys ){
 		
 		setTitulo( "Inserção de itens" );
 		setAtribos( 625, 300 );
@@ -242,9 +242,7 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao inserir itens!\n" + err.getMessage(), true, con, err );
@@ -281,9 +279,7 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar fase!\n" + err.getMessage(), true, con, err );
@@ -346,9 +342,7 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar código do item da op!\n" + err.getMessage(), true, con, err );
@@ -365,7 +359,7 @@ public class DLInsereInsumo extends FFDialogo implements ActionListener{
 		super.ok();
 	}
 
-	public void setConexao( Connection con ){
+	public void setConexao( DbConnection con ){
 		
 		super.setConexao( con );
 		lcProd.setConexao( con );

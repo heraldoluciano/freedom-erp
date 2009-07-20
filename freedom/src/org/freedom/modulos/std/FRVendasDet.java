@@ -8,13 +8,13 @@
  * Classe:
  * @(#)FRVendasDet.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -25,7 +25,7 @@
 package org.freedom.modulos.std;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -340,9 +340,7 @@ public class FRVendasDet extends FRelatorio {
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!" + err.getMessage(), true, con, err );
 			err.printStackTrace();
@@ -353,10 +351,12 @@ public class FRVendasDet extends FRelatorio {
 
 		String sLinFina = Funcoes.replicate( "-", 133 );
 		String sLinDupla = Funcoes.replicate( "=", 133 );
-		BigDecimal bVlrDesc = new BigDecimal( "0" );
-		BigDecimal bVlrLiq = new BigDecimal( "0" );
-		BigDecimal bVlrDescTot = new BigDecimal( "0" );
-		BigDecimal bVlrLiqTot = new BigDecimal( "0" );
+		BigDecimal bVlrDesc = new BigDecimal( 0 );
+		BigDecimal bVlrLiq = new BigDecimal( 0 );
+		BigDecimal bVlrDescTot = new BigDecimal( 0 );
+		BigDecimal bVlrLiqTot = new BigDecimal( 0 );
+		BigDecimal bQtd = new BigDecimal( 0 );
+		BigDecimal bQtdTot = new BigDecimal( 0 );
 		ImprimeOS imp = null;
 		int linPag = 0;
 		int iCodVendaAnt = 0;
@@ -397,9 +397,10 @@ public class FRVendasDet extends FRelatorio {
 						imp.say( 0, "|" + sLinDupla + "|" );
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 0, "|" );
-						imp.say( 64, " Totais da venda: " );
-						imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrDesc.setScale( 2, BigDecimal.ROUND_HALF_UP ) ) ) );
-						imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrLiq.setScale( 2, BigDecimal.ROUND_HALF_UP ) ) ) );
+						imp.say( 44, " Totais da venda: " );
+						imp.say( 69, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDec, String.valueOf( bQtd.setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ) ) ) );
+						imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( bVlrDesc.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) ) ) );
+						imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin,String.valueOf( bVlrLiq.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) ) ) );
 						imp.say( 124, "|" );
 						imp.say( 135, "|" );
 						imp.pulaLinha( 1, imp.comprimido() );
@@ -436,25 +437,34 @@ public class FRVendasDet extends FRelatorio {
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( imp.pRow(), 0, "|" + sLinFina + "|" );
 
-					bVlrLiq = rs.getBigDecimal( "VlrLiqVenda" ).setScale( 2, BigDecimal.ROUND_HALF_UP );
-					bVlrDescTot = bVlrDescTot.add( bVlrDesc ).setScale( 2, BigDecimal.ROUND_HALF_UP );
-					bVlrLiqTot = bVlrLiqTot.add( bVlrLiq ).setScale( 2, BigDecimal.ROUND_HALF_UP );
-					bVlrDesc = new BigDecimal( "0" );
+					bVlrDesc = new BigDecimal( 0 );
+					bVlrLiq = new BigDecimal( 0 );
+					bQtd = new BigDecimal( 0 );
 				}
 
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "| " + ( bComRef ? rs.getString( "RefProd" ) : rs.getString( "CodProd" ) ) );
 				imp.say( 16, "| " + Funcoes.copy( rs.getString( "DescProd" ), 34 ) );
 				imp.say( 54, "| " + Funcoes.copy( rs.getString( "CodLote" ), 13 ) );
-				imp.say( 69, "| " + rs.getBigDecimal( "QtdItVenda" ).setScale( 1, BigDecimal.ROUND_HALF_UP ) );
-				imp.say( 79, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( rs.getFloat( "PrecoItVenda" ) ) ) );
-				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( rs.getFloat( "VlrDescItVenda" ) ) ) );
-				imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( rs.getFloat( "VlrLiqItVenda" ) ) ) );
+				imp.say( 69, "| " + rs.getBigDecimal( "QtdItVenda" ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ) );
+				imp.say( 79, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( rs.getBigDecimal( "PrecoItVenda" ) ) ) );
+				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( rs.getBigDecimal( "VlrDescItVenda" ) ) ) );
+				imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( rs.getBigDecimal( "VlrLiqItVenda" ) ) ) );
 				imp.say( 124, "| " + ( rs.getString( 1 ) != null ? rs.getString( 1 ) : "" ) );
 				imp.say( 135, "|" );
 
-				bVlrDesc = bVlrDesc.add( new BigDecimal( rs.getFloat( "VlrDescItVenda" ) ) );
-
+				if (rs.getBigDecimal( "QtdItVenda" )!=null) {  
+					bQtd = bQtd.add( rs.getBigDecimal( "QtdItVenda" ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ) );
+					bQtdTot = bQtdTot.add(rs.getBigDecimal( "QtdItVenda" ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ));
+				}
+				if (rs.getBigDecimal( "VlrLiqItVenda" )!=null) {
+					bVlrLiq = bVlrLiq.add( rs.getBigDecimal( "VlrLiqItVenda" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) );
+					bVlrLiqTot = bVlrLiqTot.add( rs.getBigDecimal( "VlrLiqItVenda" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) );
+				}
+				if (rs.getBigDecimal( "VlrDescItVenda" )!=null) {  
+					bVlrDesc = bVlrDesc.add( rs.getBigDecimal( "VlrDescItVenda" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) );
+					bVlrDescTot = bVlrDescTot.add(  rs.getBigDecimal( "VlrDescItVenda" ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) );
+				}
 				iCodVendaAnt = rs.getInt( "CodVenda" );
 			}
 
@@ -463,9 +473,10 @@ public class FRVendasDet extends FRelatorio {
 				imp.say( 0, "|" + sLinDupla + "|" );
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" );
-				imp.say( 64, " Totais da venda: " );
-				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrDesc.setScale( 2, BigDecimal.ROUND_HALF_UP ) ) ) );
-				imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrLiq.setScale( 2, BigDecimal.ROUND_HALF_UP ) ) ) );
+				imp.say( 44, " Totais da venda: " );
+				imp.say( 69, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDec, String.valueOf( bQtd.setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ) ) ) );
+				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( bVlrDesc.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) ) ) );
+				imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( bVlrLiq.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) ) ) );
 				imp.say( 124, "|" );
 				imp.say( 135, "|" );
 				imp.pulaLinha( 1, imp.comprimido() );
@@ -474,9 +485,10 @@ public class FRVendasDet extends FRelatorio {
 				imp.say( 0, "|" + sLinDupla + "|" );
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" );
-				imp.say( 64, " TOTAL GERAL : " );
-				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrDescTot.setScale( 2, BigDecimal.ROUND_HALF_UP ) ) ) );
-				imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrLiqTot.setScale( 2, BigDecimal.ROUND_HALF_UP ) ) ) );
+				imp.say( 44, " TOTAL GERAL : " );
+				imp.say( 69, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDec, String.valueOf( bQtdTot.setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP ) ) ) );
+				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( bVlrDescTot.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) ) ) );
+				imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, Aplicativo.casasDecFin, String.valueOf( bVlrLiqTot.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP ) ) ) );
 				imp.say( 124, "|" );
 				imp.say( 135, "|" );
 				imp.pulaLinha( 1, imp.comprimido() );
@@ -533,8 +545,7 @@ public class FRVendasDet extends FRelatorio {
 				if ( rs.getString( "UsaRefProd" ).trim().equals( "S" ) )
 					bRetorno = true;
 			}
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
 		} finally {
@@ -545,7 +556,7 @@ public class FRVendasDet extends FRelatorio {
 		return bRetorno;
 	}
 
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcProd.setConexao( cn );

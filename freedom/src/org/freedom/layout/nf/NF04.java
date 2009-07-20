@@ -6,14 +6,14 @@
  * Pacote: layout <BR>
  * Classe: @(#)NFPomiagro3.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  *
  * Layout da nota fiscal para a empresa Pomiagro Ltda.
  */
@@ -215,7 +215,8 @@ public class NF04 extends Layout {
 				imp.pulaLinha( 1, imp.comprimido());
 				imp.say(  2, Funcoes.alinhaDir(itens.getInt(NF.C_CODPROD),8));
 				imp.say( 15, Funcoes.copy(itens.getString(NF.C_DESCPROD).trim(),0,63-sDescAdic.length()) + sDescAdic);
-				imp.say( 95, sClasFisc);
+				imp.say( 83, Funcoes.copy(itens.getString(NF.C_CODCLASSFISC),8));
+				imp.say( 95, sClasFisc );
 				imp.say( 100, Funcoes.copy(itens.getString(NF.C_CODUNID),4));
 				imp.say( 105, String.valueOf(itens.getFloat(NF.C_QTDITPED)));          
 				imp.say( 106, Funcoes.strDecimalToStrCurrency(13,2,String.valueOf((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP))));
@@ -278,15 +279,25 @@ public class NF04 extends Layout {
 					   
 					sTipoTran = frete.getString(NF.C_TIPOTRANSP);
 						
-					if ( sTipoTran.equals("C") )
+					if ( sTipoTran.equals("C") ) {
 						imp.say(116, Funcoes.setMascara(cab.getString(NF.C_CNPJEMIT) ,"##.###.###/####-##"));
-					else 
+					}
+					else { 
 						imp.say(116, Funcoes.setMascara(frete.getString(NF.C_CNPJTRANSP) ,"##.###.###/####-##"));
+					}
 					
 					imp.pulaLinha( 2, imp.comprimido());
-					imp.say(  6, Funcoes.copy(frete.getString(NF.C_ENDTRANSP),0,42) + ", " + Funcoes.copy(frete.getString(NF.C_NUMTRANSP),0,6));
-					imp.say( 75, frete.getString(NF.C_CIDTRANSP));
-					imp.say(111, frete.getString(NF.C_UFTRANSP));
+					
+					if ( sTipoTran.equals("C") ) {
+						imp.say(  6, Funcoes.copy(frete.getString(NF.C_ENDEMIT),0,42) + ", " + Funcoes.copy(frete.getString(NF.C_NUMEMIT),0,6));
+						imp.say( 75, frete.getString(NF.C_CIDEMIT));
+						imp.say(111, frete.getString(NF.C_UFEMIT));
+					}					
+					else {
+						imp.say(  6, Funcoes.copy(frete.getString(NF.C_ENDTRANSP),0,42) + ", " + Funcoes.copy(frete.getString(NF.C_NUMTRANSP),0,6));
+						imp.say( 75, frete.getString(NF.C_CIDTRANSP));
+						imp.say(111, frete.getString(NF.C_UFTRANSP));
+					}
 					
 					
 					if (frete.getString(NF.C_TIPOTRANSP).equals("C"))

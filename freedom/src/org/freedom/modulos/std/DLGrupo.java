@@ -8,13 +8,13 @@
  * Classe:
  * @(#)DLGrupo.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -27,16 +27,18 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.ListaCampos;
 
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLGrupo extends FFDialogo {
@@ -61,7 +63,7 @@ public class DLGrupo extends FFDialogo {
 
 	private boolean bEdit = false;
 
-	public DLGrupo( Component cOrig, Connection cn, String sCod, String sDesc, String sSigla, boolean bEstNeg, String sEstNeg, String sEstNegLot ) {
+	public DLGrupo( Component cOrig, DbConnection cn, String sCod, String sDesc, String sSigla, boolean bEstNeg, String sEstNeg, String sEstNegLot ) {
 
 		super( cOrig );
 		setConexao( cn );
@@ -135,20 +137,24 @@ public class DLGrupo extends FFDialogo {
 
 	private boolean verifCod() {
 
-		String sSQL = "SELECT CODGRUP FROM EQGRUPO";
+		String sSQL = "SELECT CODGRUP FROM EQGRUPO WHERE CODEMP=? AND CODFILIAL=? AND CODGRUP=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
 			ps = con.prepareStatement( sSQL );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQGRUPO" ) );
+			ps.setString( 3, txtCodGrupo.getVlrString());
 			rs = ps.executeQuery();
-			while ( rs.next() )
-				if ( rs.getString( "CodGrup" ).trim().compareTo( txtCodGrupo.getText().trim() ) == 0 )
-					return false;
-			// rs.close();
-			// ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
-		} catch ( SQLException err ) {
+
+			if( rs.next() ) {
+				return false;
+			}
+					
+			con.commit();
+			
+		} 
+		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela GRUPO!" + "\n" + err.getMessage(), true, con, err );
 		}
 		return true;

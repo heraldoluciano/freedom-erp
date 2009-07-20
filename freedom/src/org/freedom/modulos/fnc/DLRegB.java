@@ -2,7 +2,7 @@ package org.freedom.modulos.fnc;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
@@ -65,7 +65,7 @@ public class DLRegB extends FFDialogo{
 		adicBotaoSair();
 	}
 	
-	public boolean montaGrid( final List<RegB> regs, final Connection con ) {
+	public boolean montaGrid( final List<RegB> regs, final DbConnection con ) {
 		
 		boolean retorno = false;
 		Object[] cliente = new Object[2];
@@ -150,9 +150,7 @@ public class DLRegB extends FFDialogo{
 			}
 			rs.close();
 			ps.close();
-			if (!con.getAutoCommit()) {
-				con.commit();
-			}
+			con.commit();
 		}
 		
 		return retorno;

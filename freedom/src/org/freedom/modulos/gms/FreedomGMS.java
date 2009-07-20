@@ -10,13 +10,13 @@
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para
  * Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
  * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
  * Programa. <BR>
  * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você
  * pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é
  * preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR>
@@ -31,11 +31,9 @@ package org.freedom.modulos.gms;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.FAlmox;
 import org.freedom.modulos.std.FAprovaOrc;
-import org.freedom.modulos.std.FCLFiscal;
 import org.freedom.modulos.std.FCancVenda;
 import org.freedom.modulos.std.FCliente;
 import org.freedom.modulos.std.FCompra;
-import org.freedom.modulos.std.FConsOrc;
 import org.freedom.modulos.std.FConsPreco;
 import org.freedom.modulos.std.FConsulta;
 import org.freedom.modulos.std.FDevolucao;
@@ -55,12 +53,16 @@ import org.freedom.modulos.std.FModNota;
 import org.freedom.modulos.std.FNatoPer;
 import org.freedom.modulos.std.FOrcamento;
 import org.freedom.modulos.std.FPapel;
+import org.freedom.modulos.std.FPesquisaOrc;
 import org.freedom.modulos.std.FPlanoPag;
 import org.freedom.modulos.std.FPrefereGeral;
 import org.freedom.modulos.std.FProcessaEQ;
 import org.freedom.modulos.std.FProduto;
+import org.freedom.modulos.std.FRCompras;
 import org.freedom.modulos.std.FRComprasFor;
 import org.freedom.modulos.std.FRConfEstoq;
+import org.freedom.modulos.std.FRCpItem;
+import org.freedom.modulos.std.FRCpTipoMov;
 import org.freedom.modulos.std.FRDemanda;
 import org.freedom.modulos.std.FREstoqueMin;
 import org.freedom.modulos.std.FREtiqueta;
@@ -85,7 +87,6 @@ import org.freedom.modulos.std.FTipoCob;
 import org.freedom.modulos.std.FTipoFor;
 import org.freedom.modulos.std.FTipoMov;
 import org.freedom.modulos.std.FTransp;
-import org.freedom.modulos.std.FTratTrib;
 import org.freedom.modulos.std.FUnidade;
 import org.freedom.modulos.std.FVariantes;
 import org.freedom.modulos.std.FVenda;
@@ -97,7 +98,7 @@ import org.freedom.telas.LoginPD;
 public class FreedomGMS extends AplicativoPD {
 
 	public FreedomGMS() {
-		super("iconAtendimento32.gif", "splashGMS.jpg",	1, "Freedom", 8, "Gestão de Materiais e Serviços", null, new FPrincipalPD(null, "bgFreedom2.jpg"),LoginPD.class);
+		super("icongms.png", "splashGMS.jpg",	1, "Freedom", 8, "Gestão de Materiais e Serviços", null, new FPrincipalPD(null, "bgFreedom2.jpg"),LoginPD.class);
 
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,null);
 			addOpcao(100000000, TP_OPCAO_MENU, "Cadastros", "", 'T', 100100000, 1,false, null);
@@ -109,8 +110,6 @@ public class FreedomGMS extends AplicativoPD {
 					addOpcao(100102000, TP_OPCAO_ITEM, "Fornecedores", "Fornecedor", 'r',100102020, 3, true, FFornecedor.class);
 				addSeparador(100102000);
 				addOpcao(100100000, TP_OPCAO_MENU, "Produtos", "", 'u', 100103000, 2,false, null);
-					addOpcao(100103000, TP_OPCAO_ITEM, "Tratamentos tributários","Tratamento Tributário", 't', 100103010, 3, true,FTratTrib.class);
-					addOpcao(100103000, TP_OPCAO_ITEM, "Classificações fiscais","Classificações", 'l', 100103020, 3, true, FCLFiscal.class);
 					addOpcao(100103000, TP_OPCAO_ITEM, "Almoxarifados", "Almoxarifado",'x', 100103030, 3, true, FAlmox.class);
 					addOpcao(100103000, TP_OPCAO_ITEM, "Grupos", "Grupos", 'r', 100103040,3, true, FGrupo.class);
 					addOpcao(100103000, TP_OPCAO_ITEM, "Marcas", "Marcas", 'c', 100103050,3, true, FMarca.class);
@@ -158,15 +157,19 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao(-1, TP_OPCAO_MENU, "Entrada", "", 'E', 200000000, 0, false,null);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Solicitação de Compra",	"Solicitação de Compra", 'S', 200100000, 1, true,FSolicitacaoCompra.class);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Pesquisa Solicitações de Compra","Pesquisa Solicitações de Compra", 'P', 200300000, 1, true,FConsSol.class);
+			addOpcao(200000000, TP_OPCAO_ITEM, "Pesquisa Compra","Pesquisa Compra", 'P', 200400000, 1, true,FConsCompra.class);
 			addSeparador(200000000);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Sumário de Solicitações de Compra","Sumário de Solicitações de Compra", 'M', 200300010, 1, true,FConsSolItem.class);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Cotação Sumarizada de Preços","Cotação Sumarizada de Preços", 'Z', 200300020, 1, true,FCotacaoItens.class);
 			addSeparador(200000000);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Cotação de Preços",	"Cotação de Preços", 'T', 200400000, 1, true,FCotacaoPrecos.class);
 			addSeparador(200000000);
-			addOpcao(200000000, TP_OPCAO_ITEM, "Compra", "", 'C', 200600000, 1,true, FCompra.class);
+			addOpcao(200000000, TP_OPCAO_ITEM, "Compra", "Compra", 'C', 200600000, 1,true, FCompra.class);
 			addOpcao(200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200700000, 1,false, null);
 				addOpcao(200700000, TP_OPCAO_ITEM, "Compras por fornecedor","Compras por Fornecedor", 'F', 200701000, 2, true,FRComprasFor.class);
+				addOpcao( 200700000, TP_OPCAO_ITEM, "Compras geral", "Compras geral", 'p', 200702000, 2, true, FRCompras.class );
+				addOpcao( 200700000, TP_OPCAO_ITEM, "Compras por tipo de movimento ", "Compras por tipo de movimento", 'p', 200703000, 2, true, FRCpTipoMov.class );
+				addOpcao( 200700000, TP_OPCAO_ITEM, "Compras por ítem ", "Compras por ítem", 'p', 200704000, 2, true, FRCpItem.class );								
 
 		addOpcao(-1, TP_OPCAO_MENU, "Saída", "", 'S', 300000000, 0, false, null);
 			addOpcao(300000000, TP_OPCAO_ITEM, "Venda", "Venda", 'V', 300100000, 1,true, FVenda.class);
@@ -176,7 +179,7 @@ public class FreedomGMS extends AplicativoPD {
 			addSeparador(300000000);
 			addOpcao(300000000, TP_OPCAO_ITEM, "Aprova orçamento","Aprova Orcamento", 'A', 300500000, 1, true, FAprovaOrc.class);
 			addOpcao(300000000, TP_OPCAO_ITEM, "Orçamento", "Orçamento", 'O',300600000, 1, true, FOrcamento.class);
-			addOpcao(300000000, TP_OPCAO_ITEM, "Pesquisa Orçamento","Pesquisa Orçamento", 'P', 300700000, 1, true, FConsOrc.class);	
+			addOpcao(300000000, TP_OPCAO_ITEM, "Pesquisa Orçamento","Pesquisa Orçamento", 'P', 300700000, 1, true, FPesquisaOrc.class);	
 			addSeparador(300000000);
 			addOpcao(300000000, TP_OPCAO_ITEM, "Romaneio", "Romaneio", 'R',300800000, 1, true, FRomaneio.class);
 			addSeparador(300000000);			
@@ -222,13 +225,13 @@ public class FreedomGMS extends AplicativoPD {
 				addBotao("btRma.gif","Requisição de material", "Requisição de material", 300900000,FRma.class);
 				addBotao("btsoliccp.gif","Solicitação de Compra","Solicitação de Compra",200100000, FSolicitacaoCompra.class);	
 				
-				addBotao("btEntrada.gif","Compra","Compras", 200600000, FCompra.class);
+				addBotao("btEntrada.png","Compra","Compras", 200600000, FCompra.class);
 				addBotao("btEstoque.gif","Consulta estoque","Consulta", 400300000, FConsulta.class);   
 				addBotao("btProduto.gif","Cadastro de produtos","Produtos", 100103090, FProduto.class);
 				addBotao("btSimilar.gif","Cadastro de similaridades","Similaridade", 100103080, FSimilar.class);
 				addBotao("btOrcamento.gif", "Orçamento", "Orcamento", 300600000, FOrcamento.class);
-				addBotao("btConsOrcamento.gif", "Pesquisa Orçamento", "Pesquisa Orcamentos", 300700000, FConsOrc.class);
-				addBotao("btAprovaOrc.gif", "Aprovações de Orçamantos", "Aprova Orcamento", 300500000, FAprovaOrc.class);				
+				addBotao("btConsOrcamento.gif", "Pesquisa Orçamentos", "Pesquisa Orcamentos", 300700000, FPesquisaOrc.class);
+				addBotao("btAprovaOrc.gif", "Aprovações de Orçamentos", "Aprova Orcamento", 300500000, FAprovaOrc.class);				
 		
 		ajustaMenu();
 		
@@ -242,7 +245,6 @@ public class FreedomGMS extends AplicativoPD {
 		vEquipeSis.add("Alexandre Marcondes - Programação");
 		vEquipeSis.add("Fernando Oliveira - Programação");
 		vEquipeSis.add("Moyzes Braz - Arte gráfica");
-		vEquipeSis.add("Reginaldo Garcia - Testes / Suporte");
 		  
 	}
 

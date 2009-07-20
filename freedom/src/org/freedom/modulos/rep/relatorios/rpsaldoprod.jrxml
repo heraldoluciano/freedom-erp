@@ -54,21 +54,23 @@
 		<defaultValueExpression ><![CDATA[Calendar.getInstance().getTime()]]></defaultValueExpression>
 	</parameter>
 	<parameter name="NOMEVEND" isForPrompting="false" class="java.lang.String"/>
-	<queryString><![CDATA[select pr.refprod,pr.descprod,pr.saldoprod as compra,sum(it.qtditped) venda,
-pr.saldoprod-sum(it.qtditped) as saldo, pr.precoprod1
-from rpproduto pr, rpitpedido it, rppedido pd
-where pr.codemp=it.codemppd and pr.codfilial=it.codfilialpd and pr.codprod = it.codprod
-and pd.codemp = it.codemp and pd.codfilial = it.codfilial and pd.codped = it.codped
-and pd.dataped between '2008-01-01' and '2008-05-01'
-and pd.codfor = 1
-group by 1,2,3,6]]></queryString>
+	<queryString><![CDATA[select pr.codfor, pr.refprod,pr.descprod,pr.saldoprod as compra, pr.precoprod1,
+sum((select coalesce(sum(it.qtditped),0) from rpitpedido it ,rppedido pd where
+pd.codemp=it.codemp and pd.codfilial=it.codfilial and pd.codped=it.codped and 
+pd.dataped between '2008.10.10' and '2008.12.12' and
+it.codemppd=pr.codemp and it.codfilialpd=pr.codfilial and it.codprod=pr.codprod
+)) as venda
+from rpproduto pr
+where pr.codfor=20
+group by 1,2,3,4,5
+order by pr.descprod]]></queryString>
 
+	<field name="CODFOR" class="java.lang.Long"/>
 	<field name="REFPROD" class="java.lang.String"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="COMPRA" class="java.math.BigDecimal"/>
-	<field name="VENDA" class="java.math.BigDecimal"/>
-	<field name="SALDO" class="java.math.BigDecimal"/>
 	<field name="PRECOPROD1" class="java.math.BigDecimal"/>
+	<field name="VENDA" class="java.math.BigDecimal"/>
 
 
 		<group  name="GERAL" >
@@ -398,7 +400,7 @@ group by 1,2,3,6]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{SALDO}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{COMPRA}.subtract( $F{VENDA} )]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement

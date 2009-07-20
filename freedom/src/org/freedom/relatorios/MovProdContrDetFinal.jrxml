@@ -40,7 +40,7 @@
 	</parameter>
 	<parameter name="CONCENTRACAO" isForPrompting="false" class="java.math.BigDecimal"/>
 	<queryString><![CDATA[SELECT eq.codemp,pd.descprod,pd.vlrdensidade,pd.vlrconcent,EQ.qtdmovprod,op.qtdfinalprodop,
- (case when qtdfinalprodop=0 then 0 else qtdmovprod/qtdfinalprodop * 100 end) as formula,
+ sum((case when qtdfinalprodop=0 then 0 else qtdmovprod/qtdfinalprodop * 100 end)) as formula,
 op.codop, op.seqop
 FROM eqmovprod EQ,
  eqtipomov tm, eqitrma itr, eqrma rma,  ppop op, eqproduto pd
@@ -53,7 +53,8 @@ and rma.codemp=itr.codemp and rma.codfilial=itr.codfilial and rma.codrma=eq.codr
 and rma.codrma=itr.codrma
 and op.codemp=rma.codempof and op.codfilial=rma.codfilialof and op.codop=rma.codop and op.seqop=rma.seqop
 and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod
-and eq.qtdmovprod>0]]></queryString>
+and eq.qtdmovprod>0
+group by 1,2,3,4,5,6,8,9]]></queryString>
 
 	<field name="CODEMP" class="java.lang.Integer"/>
 	<field name="DESCPROD" class="java.lang.String"/>

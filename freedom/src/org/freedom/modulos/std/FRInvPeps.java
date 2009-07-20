@@ -7,21 +7,21 @@
  * Pacote: org.freedom.modulos.std <BR>
  * Classe: @(#)FRInvPeps.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  *
  * Comentários sobre a classe...
  * 
  */
 
 package org.freedom.modulos.std;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,6 +58,7 @@ public class FRInvPeps extends FRelatorio {
   private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,TAM_GRUPO,0);
   private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JCheckBoxPad cbSemEstoq = new JCheckBoxPad("Imprimir produtos sem estoque?","S","N");
+  private JCheckBoxPad cbAtivos = new JCheckBoxPad("Somente ativos?","S","N");
 
   private ListaCampos lcAlmox = new ListaCampos(this);
   private ListaCampos lcGrup = new ListaCampos(this);
@@ -81,7 +82,7 @@ public class FRInvPeps extends FRelatorio {
   
   public FRInvPeps() {
     setTitulo("Inventário");
-    setAtribos(80,30,400,350);
+    setAtribos(80,30,400,380);
     
     GregorianCalendar cal = new GregorianCalendar();
     cal.add(Calendar.DATE,0);
@@ -105,6 +106,7 @@ public class FRInvPeps extends FRelatorio {
     
 
     cbSemEstoq.setVlrString("N");
+    cbAtivos.setVlrString("S");
     
     lcAlmox.add(new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, false));
     lcAlmox.add(new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almox.", ListaCampos.DB_SI, false));
@@ -150,7 +152,8 @@ public class FRInvPeps extends FRelatorio {
     adic(lbDescGrup,90,160,250,20);
     adic(txtDescGrup,90,180,250,20);
     adic(cbSemEstoq,7,200,250,20);
-    adic(rgCusto,7,220,250,30);
+    adic(cbAtivos,7,230,250,30);
+    adic(rgCusto,7,260,250,30);
     
     
   }
@@ -182,12 +185,32 @@ public class FRInvPeps extends FRelatorio {
   		sSemEstoq = cbSemEstoq.getVlrString();
   		sCodMarca = txtCodMarca.getVlrString().trim();
   		sCodGrup = txtCodGrup.getVlrString().trim();
+  		
+  		String swhere = "";
+			if( cbAtivos.getVlrString().equals( "S" ) ){
+				swhere = "('S')";
+				
+			}else{
+				swhere = "('S','N')";
+			}
+			
+        String swhere2 = (sSemEstoq.equals("N")?" WHERE SLDPROD!=0 ":""); 	
+		String swhere3 = "";
+        if(swhere2.equals( "" )) {
+			swhere3 = " WHERE ATIVOPROD IN ";
+		}
+        else {
+        	swhere3 = " AND ATIVOPROD IN ";
+        }
+        
   		//iCodAlmox = txt
   		sSql = "SELECT "+sCpCodigo+",DESCPROD,SLDPROD,CUSTOUNIT,CUSTOTOT "
-  		 			+ ",CODFABPROD,CODBARPROD " 
+  		 			+ ",CODFABPROD,CODBARPROD,ATIVOPROD " 
   		 			+ "FROM EQRELPEPSSP(?,?,?,?,?,?,?,?,?,?,?,?,?) " 
-  		 			+ (sSemEstoq.equals("N")?" WHERE SLDPROD!=0 ":"")
-  		 			+ "ORDER BY "+(rgOrdem.getVlrString().equals("D")?"DESCPROD":sCpCodigo);
+  		 			+ swhere2
+  		 			+ swhere3 + swhere + " ORDER BY "+(rgOrdem.getVlrString().equals("D")?"DESCPROD":sCpCodigo);
+  		
+  		
   		System.out.println(sSql);
   		try {
   			if (sSemEstoq.equals("S")) 
@@ -234,6 +257,7 @@ public class FRInvPeps extends FRelatorio {
   				ps.setInt(12,ListaCampos.getMasterFilial("EQALMOX"));
   				ps.setInt(13,iCodAlmox);
   			}
+  			
   			rs = ps.executeQuery();
   			
   			imp.limpaPags();
@@ -242,6 +266,8 @@ public class FRInvPeps extends FRelatorio {
 			imp.setTitulo("Relatorio de inventário de estoque");
   			imp.addSubTitulo(sFiltros1);
   			imp.addSubTitulo(sFiltros2);
+  			
+  			
   			
   			while ( rs.next() ) {
   				if (imp.pRow()>=(linPag-1)) {
@@ -308,8 +334,7 @@ public class FRInvPeps extends FRelatorio {
   			
   			rs.close();
   			ps.close();
-  			if (!con.getAutoCommit())
-  				con.commit();
+			con.commit();
 /*  			imp.say(imp.pRow()+1,0,""+imp.comprimido());
   			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -366,7 +391,7 @@ public class FRInvPeps extends FRelatorio {
 
   }
   
-  public void setConexao(Connection cn) {
+  public void setConexao(DbConnection cn) {
     super.setConexao(cn);
     lcAlmox.setConexao(cn);
     lcGrup.setConexao(cn);
@@ -393,8 +418,7 @@ public class FRInvPeps extends FRelatorio {
       }
       rs.close();
       ps.close();
-      if (!con.getAutoCommit())
-        con.commit();
+      con.commit();
     }
     catch (SQLException err) {
 		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);

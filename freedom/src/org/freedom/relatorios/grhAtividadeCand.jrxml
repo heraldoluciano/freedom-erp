@@ -96,6 +96,9 @@ order by cs.dtstatus]]></queryString>
 		<variableExpression><![CDATA[(($F{STCAND}.equals("EF"))?(new Integer(1)): (new Integer(0)))]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(1)]]></initialValueExpression>
 	</variable>
+	<variable name="TOTALCAND" class="java.math.BigDecimal" resetType="Report" incrementType="Group" incrementGroup="CAND" calculation="Sum">
+		<variableExpression><![CDATA[new BigDecimal(1)]]></variableExpression>
+	</variable>
 
 		<group  name="CAND" >
 			<groupExpression><![CDATA[$F{CODCAND}]]></groupExpression>
@@ -121,7 +124,7 @@ order by cs.dtstatus]]></queryString>
 						key="textField-6"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica" size="9" isBold="false"/>
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODCAND}]]></textFieldExpression>
 				</textField>
@@ -134,14 +137,14 @@ order by cs.dtstatus]]></queryString>
 						key="textField-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
-						<font pdfFontName="Helvetica" size="9" isBold="false"/>
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMECAND}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="13"  isSplitAllowed="true" >
+			<band height="2"  isSplitAllowed="true" >
 			</band>
 			</groupFooter>
 		</group>
@@ -314,7 +317,7 @@ $F{STCAND}.equals("EV") ? "Empregado" :  $F{STCAND}.equals("DL") ? "Desligado" :
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font pdfFontName="Helvetica" size="9" isBold="false"/>
 					</textElement>
 				<text><![CDATA[Situação]]></text>
 				</staticText>
@@ -334,7 +337,7 @@ $F{STCAND}.equals("EV") ? "Empregado" :  $F{STCAND}.equals("DL") ? "Desligado" :
 			</band>
 		</detail>
 		<columnFooter>
-			<band height="11"  isSplitAllowed="true" >
+			<band height="8"  isSplitAllowed="true" >
 			</band>
 		</columnFooter>
 		<pageFooter>
@@ -386,7 +389,44 @@ $F{STCAND}.equals("EV") ? "Empregado" :  $F{STCAND}.equals("DL") ? "Desligado" :
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="16"  isSplitAllowed="true" >
+				<rectangle>
+					<reportElement
+						x="1"
+						y="0"
+						width="506"
+						height="16"
+						forecolor="#999999"
+						backcolor="#999999"
+						key="rectangle-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="461"
+						y="2"
+						width="40"
+						height="13"
+						key="textField-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTALCAND}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="354"
+						y="2"
+						width="100"
+						height="13"
+						key="staticText-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Total de candidatos:]]></text>
+				</staticText>
 			</band>
 		</summary>
 </jasperReport>

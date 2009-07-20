@@ -9,13 +9,13 @@
  * Classe:
  * @(#)RPPedido.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -23,7 +23,7 @@
  * 
  */
 
-package org.freedom.modulos.rep;
+package org.freedom.modulos.rep; 
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -34,11 +34,10 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -69,7 +68,6 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
-import org.freedom.modulos.std.DLCopiaOrc;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLEnviarEmail;
 import org.freedom.telas.FDetalhe;
@@ -637,13 +635,14 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		}
 	}
 	
-	private void calcPercItLucro(){
+private void calcPercItLucro(){
 		
 		BigDecimal percLucro = new BigDecimal("0.00");
 		BigDecimal precoCusto = txtPrecoCustoProd.getVlrBigDecimal();
 		BigDecimal precoVenda = txtPrecoItem.getVlrBigDecimal();
 		BigDecimal precoVendaFator = precoVenda.multiply( fator ? txtFatorLucratividade.getVlrBigDecimal() : new BigDecimal (1) );
-		precoVendaFator = precoVendaFator.subtract( txtVlrIPIItem.getVlrBigDecimal() == null ? new BigDecimal(0) : txtVlrIPIItem.getVlrBigDecimal() );
+		BigDecimal ipiitem = txtPercIPIItem.getVlrBigDecimal().multiply( precoVenda ).divide( bdCem );
+		precoVendaFator = precoVendaFator.subtract( ipiitem == null ? new BigDecimal(0) : ipiitem );
 						
 		try {
 
@@ -719,9 +718,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 				txtPercRecItem.setVlrBigDecimal( rs.getBigDecimal( "COMISPROD" ) == null ? new BigDecimal( "0" ) : rs.getBigDecimal( "COMISPROD" ) );
 			}			
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 			rs.close();
 			ps.close();
@@ -738,9 +735,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 				txtPercPagItem.setVlrBigDecimal( txtPercRecItem.getVlrBigDecimal().divide( new BigDecimal( "100" ) ).multiply( perccomis ) );
 			}			
 		
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar produto!\n" + e.getMessage() );
@@ -779,9 +774,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 				rs.close();
 				ps.close();
 
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 				if ( obs != null ) {
 					obs.setVisible( true );
 					if ( obs.OK ) {
@@ -793,9 +786,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 							ps.setInt( 4, txtCodPed.getVlrInteger() );
 							ps.executeUpdate();
 							ps.close();
-							if ( !con.getAutoCommit() ) {
-								con.commit();
-							}
+							con.commit();
 						} catch ( SQLException e ) {
 							Funcoes.mensagemErro( this, "Erro ao alterar observação!\n" + e.getMessage() );
 							e.printStackTrace();
@@ -829,7 +820,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		else {
 			hParam.put( "ORDERBY", "CODITPED" );
 		}
-		hParam.put( "REPORT_CONNECTION", con );
+		hParam.put( "REPORT_CONNECTION", con.getConnection() );
 
 		return new FPrinterJob( classLayout, "PEDIDO Nº " + txtCodPed.getVlrInteger(), "", this, hParam, con, true );
 	}
@@ -858,7 +849,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 					return;
 				}
 
-				DLEnviarEmail enviar = new DLEnviarEmail( this, mail );
+				DLEnviarEmail enviar = new DLEnviarEmail( this, mail, null );
 				enviar.setConexao( con );
 				enviar.preparar();
 
@@ -923,9 +914,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 			rs.close();
 			ps.close();
 			
-			if ( !con.getAutoCommit() ){
-				con.commit();
-			}
+			con.commit();
 			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao copiar o pedido!\n" + err.getMessage(), true, con, err );
@@ -1120,7 +1109,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		}
 		
 	}
-	public void setConexao( Connection cn ) {
+	public void setConexao( DbConnection cn ) {
 		super.setConexao( cn );
 		
 		prefere = RPPrefereGeral.getPrefere( cn );

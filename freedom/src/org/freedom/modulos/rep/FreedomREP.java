@@ -9,13 +9,13 @@
  * Classe:
  * @(#)FreedomREP.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -36,7 +36,7 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 
 	public FreedomREP() {
 
-		super( "iconRep32.gif", "splashREP.jpg", 1, "Freedom", 11, "Representações Comerciais", null, new FPrincipalPD( null, "bgFreedom2.jpg" ), LoginPD.class );
+		super( "iconrep.png", "splashREP.jpg", 1, "Freedom", 11, "Representações Comerciais", null, new FPrincipalPD( null, "bgFreedom2.jpg" ), LoginPD.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
@@ -83,26 +83,33 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 				addOpcao( 500100000, TP_OPCAO_ITEM, "Resumo Diario", "Resumo Diario", 'R', 500102000, 2, true, RelResumoDiario.class );
 				addOpcao( 500100000, TP_OPCAO_ITEM, "Histórico de clientes", "Histórico de clientes", 'H', 500103000, 2, true, RelHistoricoCliente.class );
 				addOpcao( 500100000, TP_OPCAO_ITEM, "Produtos por clientes", "Produtos por clientes", 'P', 500104000, 2, true, RelProdutoCliente.class );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Curva ABC", "Curva ABC", 'C', 500105000, 2, true, RelCurvaABCProdutos.class );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Tabela com saldo", "Tabela com saldo", 'S', 500106000, 2, true, RelSaldosProd.class );
-				addOpcao( 500100000, TP_OPCAO_ITEM, "Tabela sem saldo", "Tabela sem saldo", 'S', 500107000, 2, true, RelsemSaldosProd.class );
+				addOpcao( 500100000, TP_OPCAO_ITEM, "Pedidos por vendedor", "Pedidos por vendedor", 'v', 500105000, 2, true, RelPedidoVend.class );
 				addSeparador( 500100000 );
 				addOpcao( 500100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 500106000, 2, true, RelEvolucaoVendas.class );
-			addOpcao( 500000000, TP_OPCAO_MENU, "Clientes", "", 'C', 500200000, 1, false, null );
-				addOpcao( 500200000, TP_OPCAO_ITEM, "Clientes", "Clientes", 'C', 500201000, 2, true, RelCliente.class );
-				addOpcao( 500200000, TP_OPCAO_ITEM, "Tipos de cliente", "Tipos de cliente", 'T', 500202000, 2, true, RelTipoCli.class );
-				addOpcao( 500200000, TP_OPCAO_ITEM, "Contatos", "Contatos", 'o', 500203000, 2, true, RelContato.class );
+			addOpcao( 500000000, TP_OPCAO_MENU, "Curvas ABC", "", 'A', 500200000, 1, false, null );
+				addOpcao( 500200000, TP_OPCAO_ITEM, "Curva de Produtos", "Curva de Produtos", 'P', 500201000, 2, true, RelCurvaABCProdutos.class );
+				addOpcao( 500200000, TP_OPCAO_ITEM, "Curva de Clientes", "Curva de Clientes", 'P', 500202000, 2, true, RelCurvaABCClientes.class );
+				addOpcao( 500200000, TP_OPCAO_ITEM, "Curva de Data", "Curva de Data", 'P', 500203000, 2, true, RelCurvaABCData.class );
+			addOpcao( 500000000, TP_OPCAO_MENU, "Produtos", "", 'P', 500300000, 1, false, null );
+				addOpcao( 500300000, TP_OPCAO_ITEM, "Produtos", "Produtos", 'P', 500301000, 1, true, RelProduto.class );
+				addOpcao( 500300000, TP_OPCAO_ITEM, "Tabela com saldo", "Tabela com saldo", 'c', 500302000, 2, true, RelSaldosProd.class );
+				addOpcao( 500300000, TP_OPCAO_ITEM, "Tabela sem saldo", "Tabela sem saldo", 's', 500303000, 2, true, RelsemSaldosProd.class );
+				addOpcao( 500300000, TP_OPCAO_ITEM, "Tabela vendas", "Tabela vendas", 'v', 500304000, 2, true, RelVendedorProd.class );
+			addOpcao( 500000000, TP_OPCAO_MENU, "Clientes", "", 'C', 500400000, 1, false, null );
+				addOpcao( 500400000, TP_OPCAO_ITEM, "Clientes", "Clientes", 'C', 500401000, 2, true, RelCliente.class );
+				addOpcao( 500400000, TP_OPCAO_ITEM, "Tipos de cliente", "Tipos de cliente", 'T', 500402000, 2, true, RelTipoCli.class );
+				addOpcao( 500400000, TP_OPCAO_ITEM, "Contatos", "Contatos", 'o', 500403000, 2, true, RelContato.class );
 			addSeparador( 500000000 );
-			addOpcao( 500000000, TP_OPCAO_ITEM, "Vendedores", "Vendedores", 'V', 500500000, 1, true, RelVendedor.class );
+			addOpcao( 500000000, TP_OPCAO_ITEM, "Vendedores", "Vendedores", 'e', 500500000, 1, true, RelVendedor.class );
 			addOpcao( 500000000, TP_OPCAO_ITEM, "Fornecedores", "Fornecedores", 'F', 500600000, 1, true, RelFornecedor.class );
 			addOpcao( 500000000, TP_OPCAO_ITEM, "Grupos", "Grupos", 'G', 500700000, 1, true, RelGrupo.class );
-			addOpcao( 500000000, TP_OPCAO_ITEM, "Produtos", "Produtos", 'P', 500800000, 1, true, RelProduto.class );
+			addOpcao( 500000000, TP_OPCAO_ITEM, "Transportadoras", "Transportadoras", 'T', 500800000, 1, true, RelTransportadora.class );
 			
 			addBotao( "btCliente.gif", "Cliente", "Cliente", 100101000, RPCliente.class );
 			addBotao( "btAtendimento.gif", "Vendedor", "Vendedor", 100104000, RPVendedor.class );
 			addBotao( "btForneced.gif", "Fornecedor", "Fornecedor", 100105000, RPFornecedor.class );
 			addBotao( "btProduto.gif", "Produtos", "Produtos", 100108000, RPProduto.class );
-			addBotao( "btOP.gif", "Pedidos", "Pedidos", 200100000, RPPedido.class );
+			addBotao( "btSaida.png", "Pedidos", "Pedidos", 200100000, RPPedido.class );
 		
 		ajustaMenu();
 
@@ -110,11 +117,10 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 		sMailSuporte = "suporte@stpinf.com";
 		sNomeSis = "Freedom";
 		sEmpSis = "Setpoint Informática Ltda.";
-		vEquipeSis.add( "Robson Sanchez - Supervisão / Analise" );
-		vEquipeSis.add( "Anderson Sanchez - Supervisão / Programação" );
-		vEquipeSis.add( "Alex Rodrigues - Programação" );
+		vEquipeSis.add( "Robson Sanchez - Supervisão/Analise" );
+		vEquipeSis.add( "Anderson Sanchez - Supervisão/Desenvolvimento" );
+		vEquipeSis.add( "Alex Rodrigues - Desenvolvimento" );
 		vEquipeSis.add( "Moyzes Braz - Arte gráfica" );
-		vEquipeSis.add( "Reginaldo Garcia - Testes / Suporte" );
 
 	}
 

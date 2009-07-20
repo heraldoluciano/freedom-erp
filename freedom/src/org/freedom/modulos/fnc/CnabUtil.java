@@ -1078,7 +1078,7 @@ public class CnabUtil extends FbnUtil {
 
 		private BigDecimal vlrAbatimento;
 
-		private Receber identTitEmp;
+		private String identTitEmp;
 
 		private int codProtesto;
 
@@ -1479,12 +1479,12 @@ public class CnabUtil extends FbnUtil {
 			this.identEmitBol = identEmitBol;
 		}
 
-		public Receber getIdentTitEmp() {
+		public String getIdentTitEmp() {
 
 			return identTitEmp;
 		}
 
-		public void setIdentTitEmp( final Receber identTitEmp ) {
+		public void setIdentTitEmp( final String identTitEmp ) {
 
 			this.identTitEmp = identTitEmp;
 		}
@@ -1667,7 +1667,7 @@ public class CnabUtil extends FbnUtil {
 					setVlrpercConced( strToBigDecimal( line.substring( 150, 165 ) ) );
 					setVlrIOF( strToBigDecimal( line.substring( 165, 180 ) ) );
 					setVlrAbatimento( strToBigDecimal( line.substring( 180, 195 ) ) );
-					setIdentTitEmp( new Receber( line.substring( 195, 220 ) ) );
+					setIdentTitEmp( line.substring( 195, 220 ) );
 					setCodProtesto( line.substring( 220, 221 ).trim().length() > 0 ? Integer.parseInt( line.substring( 220, 221 ).trim() ) : 0 );
 					setDiasProtesto( line.substring( 221, 223 ).trim().length() > 0 ? Integer.parseInt( line.substring( 221, 223 ).trim() ) : 0 );
 					setCodBaixaDev( line.substring( 223, 224 ).trim().length() > 0 ? Integer.parseInt( line.substring( 223, 224 ).trim() ) : 0 );
@@ -2546,7 +2546,7 @@ public class CnabUtil extends FbnUtil {
 
 		private BigDecimal vlrTitulo;
 
-		private String codBanco;
+		private String codBancoCob;
 
 		private String agenciaCob;
 
@@ -2617,17 +2617,17 @@ public class CnabUtil extends FbnUtil {
 			this.carteira = carteira;
 		}
 
-		public String getCodBanco() {
+		public String getCodBancoCob() {
 
-			return codBanco;
+			return codBancoCob;
 		}
 
 		/**
 		 * Agencia cobradora/recebedora.<br>
 		 */
-		public void setCodBanco( final String codBanco ) {
+		public void setCodBancoCob( final String codBanco ) {
 
-			this.codBanco = codBanco;
+			this.codBancoCob = codBanco;
 		}
 
 		public int getCodMoeda() {
@@ -2835,7 +2835,7 @@ public class CnabUtil extends FbnUtil {
 				line.append( format( getDocCob(), ETipo.X, 15, 0 ) );
 				line.append( dateToString( getDataVencTit() ) );
 				line.append( format( getVlrTitulo(), ETipo.$9, 15, 2 ) );
-				line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
+				line.append( format( getCodBancoCob(), ETipo.$9, 3, 0 ) );
 				line.append( format( getAgenciaCob(), ETipo.$9, 5, 0 ) );
 				line.append( format( getDigAgenciaCob(), ETipo.$9, 1, 0 ) );
 				line.append( format( getIdentTitEmp(), ETipo.X, 25, 0 ) );
@@ -2882,7 +2882,7 @@ public class CnabUtil extends FbnUtil {
 					setDocCob( line.substring( 58, 73 ) );
 					setDataVencTit( stringDDMMAAAAToDate( line.substring( 73, 81 ).trim() ) );
 					setVlrTitulo( strToBigDecimal( line.substring( 81, 96 ) ) );
-					setCodBanco( line.substring( 96, 99 ) );
+					setCodBancoCob( line.substring( 96, 99 ) );
 					setAgenciaCob( line.substring( 99, 104 ) );
 					setDigAgenciaCob( line.substring( 104, 105 ) );
 					setIdentTitEmp( line.substring( 105, 130 ) );
@@ -3604,6 +3604,8 @@ public class CnabUtil extends FbnUtil {
 		
 		private String docrec;
 		
+		private BigDecimal valor;
+		
 		private BigDecimal valorApagar;
 		
 		private Date emissao;
@@ -3623,9 +3625,7 @@ public class CnabUtil extends FbnUtil {
 		private String razcliente;
 		
 		
-		public Receber() {
-			
-		}
+		public Receber() {}
 		
 		public Receber( int arg0, int arg1 ) { 
 			
@@ -3693,6 +3693,14 @@ public class CnabUtil extends FbnUtil {
 		
 		public void setCentrocusto( String centrocusto ) {		
 			this.centrocusto = centrocusto;
+		}
+
+		public BigDecimal getValor() {		
+			return valor;
+		}
+		
+		public void setValor( BigDecimal valor ) {		
+			this.valor = valor;
 		}
 
 		public BigDecimal getValorApagar() {		
@@ -3854,20 +3862,18 @@ public class CnabUtil extends FbnUtil {
 
 		try {
 			if ( arg != null ) {
-				String value = null;
-
-				char chars[] = arg.toCharArray();
-
-				for ( int i = 0; i < chars.length; i++ ) {
-					if ( '0' != chars[ i ] ) {
-						value = arg.substring( i );
-						break;
-					}
+				StringBuilder value = new StringBuilder();
+				char chars[] = arg.trim().toCharArray();
+				if ( chars.length >= 3 ){
+					int indexDecimal = (chars.length-1) - 2;				
+					for ( int i = 0; i < chars.length; i++ ) {
+						value.append( chars[i] );
+						if ( i == indexDecimal ) {
+							value.append( '.' );
+						}
+					}				
+					bdReturn = new BigDecimal( value.toString() );
 				}
-				if ( value != null ) {
-					value = value.substring( 0, value.length() - 2 ) + "." + value.substring( value.length() - 2 );
-				}
-				bdReturn = new BigDecimal( value != null ? value : "0" );
 			}
 		} catch ( RuntimeException e ) {
 			throw new ExceptionCnab( "Erro na função strToBigDecimal.\n" + e.getMessage() );
