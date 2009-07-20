@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -45,20 +47,34 @@ public class DbConnection {
 	private String driver;
 	private String urldb;
 	private String schema;
+	private Properties properties = new Properties();
 	
-	public DbConnection(String drv, String url, String usrid, String pwd) {
-		executeConnection(drv, url, usrid, pwd);
-	}
-	
-   /**
+    /**
     * Cria uma instância do log4j da classe.
     * @return Retorna a instância do log da classe.
     */
-   private static Logger createLogger() {
+    private static Logger createLogger() {
       return Logger.getLogger("org.freedom.infra.db.DbConnection");
-   }
+    }
+
+	public DbConnection(String drv, String url, String usrid, String pwd) throws SQLException {
+		executeConnection(drv, url, usrid, pwd);
+	}
 	
-	public PreparedStatement prepareStatement(String sql) {
+	public DbConnection(String url, Properties props ) throws SQLException {
+		conn = DriverManager.getConnection(url, props);
+		setProperties(props);
+	}
+
+	public Properties getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Properties properties) {
+		this.properties = properties;
+	}
+    
+	public PreparedStatement prepareStatement(String sql) throws SQLException {
 		PreparedStatement stmt = null;
 		if (conn!=null) {
 			try {
@@ -66,9 +82,24 @@ public class DbConnection {
 			}
 			catch (SQLException e) {
 				LOGGER.error(e);
+				throw e;
 			}
 		}
 		return stmt;
+	}
+	
+	public Statement createStatement() throws SQLException {
+		return conn.createStatement();
+	}
+	
+	public void setAutoCommit(boolean autoCommit) throws SQLException {
+		conn.setAutoCommit(autoCommit);
+	}
+	
+	public void rollback() throws SQLException {
+		if ( !conn.getAutoCommit() ) {
+			conn.rollback();
+		}
 	}
 	
 	public ResultSet executeQuery(PreparedStatement stmt) {
@@ -151,4 +182,19 @@ public class DbConnection {
 	public void setSchema(String schema) {
 		this.schema = schema;
 	}
+	
+	public void commit() throws SQLException {
+		if (!conn.getAutoCommit()) {
+			conn.commit();
+		}
+	}
+	
+	public boolean isClosed() throws SQLException {
+		return conn.isClosed();
+	}
+	
+	public void close() throws SQLException {
+		conn.close();
+	}
+	
 }
