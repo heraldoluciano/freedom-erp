@@ -2,6 +2,8 @@ package org.freedom.funcoes;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.freedom.funcoes.boleto.BancodoBrasil;
+
 
 
 
@@ -35,7 +37,8 @@ public class Teste {
         //System.out.println("Digito campo2: "+Boleto.digVerif( "9483981606", 10 ));
         //System.out.println("Digito campo3: "+Boleto.digVerif( "0680935011", 10 ));
         //System.out.println("Digito campo1: "+Boleto.digVerif( "", 10 ));
-        System.out.println("Digito nosso número: "+Boleto.digVerif( "19153303302", 11, true ));
+        BancodoBrasil boleto = new BancodoBrasil();
+        System.out.println("Digito nosso número: "+boleto.digVerif( "19153303302", 11, true ));
 
 	}
 

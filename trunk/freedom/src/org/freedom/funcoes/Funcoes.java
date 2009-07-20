@@ -10,13 +10,13 @@
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para
  * Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
  * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
  * Programa. <BR>
  * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você
  * pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é
  * preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR>
@@ -41,14 +41,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.Vector;
 
@@ -63,15 +65,16 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.Timer;
+import javax.swing.filechooser.FileFilter;
+
 import org.brazilutils.br.uf.UF;
 import org.brazilutils.br.uf.ie.InscricaoEstadual;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ListaCampos;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.Timer;
-import javax.swing.filechooser.FileFilter;
 import org.freedom.componentes.StringDireita;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
@@ -81,10 +84,8 @@ import org.freedom.telas.FSuporte;
 
 public class Funcoes {
 
-	@SuppressWarnings("unchecked")
 	private static Vector<Vector<Object>> vIE = new Vector<Vector<Object>>(34);
 
-	@SuppressWarnings("unchecked")
 	private static Vector<Vector<Object>> vPesoIE = new Vector<Vector<Object>>(13);
 
 	//private static ImageIcon imgIcone = null;
@@ -94,8 +95,7 @@ public class Funcoes {
 	
 	private static Timer tim = null;
 
-	public Funcoes() {
-	} 
+	public Funcoes() {	} 
 	
     public static boolean executeURL(String os, String comando, String url) {
     	boolean retorno = false;
@@ -171,6 +171,71 @@ public class Funcoes {
         
         return iRet;
     }
+    
+    public static HashMap<String, Object> getCodMunic( String nomeCidade,String UF, DbConnection con ) {
+    	
+    	HashMap<String, Object> retorno = new HashMap<String, Object>();
+    	StringBuilder sql = new StringBuilder();
+    	ResultSet rs = null;
+    	PreparedStatement ps = null;
+    	
+    	sql.append( "SELECT CODMUNIC, CODPAIS, SIGLAUF FROM SGMUNICIPIO WHERE rtrim(lower(NOMEMUNIC))=?" );
+    	
+    	if( UF!=null ) {
+    		sql.append(" AND SIGLAUF=? ");	
+    	}
+    	
+    	
+    	try {
+			ps = con.prepareStatement( sql.toString() );
+			ps.setString( 1, nomeCidade.toLowerCase() );
+			
+			if( UF!=null ) {
+				ps.setString( 2, UF.toUpperCase() );
+			}
+			
+    		rs = ps.executeQuery();
+    		
+    		if( rs.next() ){    			
+    			retorno.put( "CODMUNIC", rs.getString( 1 ));
+    			retorno.put( "CODPAIS", rs.getInt( 2 ));
+    			retorno.put( "SIGLAUF", rs.getString( 3 ));
+    		}
+    		
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+
+		}
+    	
+    	return retorno;
+    }
+    
+    public static String getURLWsCep( DbConnection con ) {    	
+    	StringBuilder sql = new StringBuilder();
+    	ResultSet rs = null;
+    	PreparedStatement ps = null;
+    	String retorno = null;
+    	
+    	sql.append( "SELECT URLWSCEP FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+    	
+    	try {
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+    		rs = ps.executeQuery();
+    		
+    		if( rs.next() ){    			
+    			retorno = rs.getString( "URLWSCEP" );
+    		}
+    		
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+
+		}
+    	
+    	return retorno;
+    }
+
     
 	public static String replicate(String texto, int Quant) {
 		/*String sRetorno = "";
@@ -266,13 +331,34 @@ public class Funcoes {
 
 	public static java.util.Date strTimeToDate(String sTime) {
 		java.util.Date retorno = null;
+		int hora = 0;
+		int minuto = 0;
+		int segundo = 0;
 		try {
-			int hora = Integer.parseInt(sTime.substring(0,2)) * 60 * 60 * 1000;
-			int minuto = Integer.parseInt(sTime.substring(3,5)) * 60 * 1000;
-			int segundo = Integer.parseInt(sTime.substring(6,8)) * 1000;
-			retorno =  new Date(hora + minuto + segundo);
+			try {
+				hora = Integer.parseInt(sTime.substring(0,2)) * 60 * 60 * 1000;
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				minuto = Integer.parseInt(sTime.substring(3,5)) * 60 * 1000;	
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				segundo = Integer.parseInt(sTime.substring(6,8)) * 1000;	
+			} 
+			catch ( Exception e ) {
+				e.printStackTrace();
+			}
+			finally {
+				retorno =  new Date(hora + minuto + segundo);	
+			}			
 		}
 	    catch (Exception e) {
+	    	e.printStackTrace();	    	
 			retorno = null;
 	    }
 		return retorno;
@@ -443,7 +529,7 @@ public class Funcoes {
 		cal.set(Calendar.MONTH,iMes);
 		cal.set(Calendar.YEAR,iAno);
 		int iUltimoDia = cal.getActualMaximum(Calendar.DAY_OF_MONTH);	
-		cal.set(Calendar.DAY_OF_MONTH,iUltimoDia);
+		cal.set(Calendar.DAY_OF_MONTH,iUltimoDia+1);
 		return cal.getTime();
 	}
 	
@@ -471,7 +557,7 @@ public class Funcoes {
 		return retorno;
 	}
 	
-	public static String getCidadeFilial( final Connection con ) {
+	public static String getCidadeFilial( final DbConnection con ) {
 
 		String cidade = null;
 		PreparedStatement ps = null;
@@ -480,7 +566,8 @@ public class Funcoes {
 
 		try {
 
-			sSQL.append( "SELECT CIDFILIAL FROM SGFILIAL WHERE CODEMP=? AND CODFILIAL=?" );
+			sSQL.append( "SELECT M.NOMEMUNIC FROM SGFILIAL F, SGMUNICIPIO M WHERE F.CODEMP=? AND F.CODFILIAL=? " );
+			sSQL.append( "AND F.CODMUNIC=M.CODMUNIC AND F.CODPAIS=M.CODPAIS AND F.SIGLAUF=M.SIGLAUF " );
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGFILIAL" ) );
@@ -488,15 +575,13 @@ public class Funcoes {
 
 			if ( rs.next() ) {
 
-				cidade = rs.getString( "CIDFILIAL" ) != null ? rs.getString( "CIDFILIAL" ).trim() : null;
+				cidade = rs.getString( "NOMEMUNIC" ) != null ? rs.getString( "NOMEMUNIC" ).trim() : null;
 			}
 
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar cidade da filial!\n" + e.getMessage() );
@@ -506,7 +591,7 @@ public class Funcoes {
 		return cidade;
 	}
 	
-	public static String getCasasDecUnid( String codUnid, Connection con ){
+	public static String getCasasDecUnid( String codUnid, DbConnection con ){
 		
 		String casasDec = "";
 		PreparedStatement ps = null;
@@ -666,7 +751,7 @@ public class Funcoes {
 		mensagem(sMensagem, "Informação", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
-	public static void mensagemErro(Component frame, String sMensagem,boolean bEnviar,Connection con,Exception err) {		
+	public static void mensagemErro(Component frame, String sMensagem,boolean bEnviar,DbConnection con,Exception err) {		
 		mensagem(sMensagem, "Erro", JOptionPane.ERROR_MESSAGE);
 		if(bEnviar);
 			if(mensagemConfirma(null,"Deseja enviar erro para o suporte?")==0){
@@ -1027,7 +1112,7 @@ public class Funcoes {
 	    return result;
 	}
 
-	public static String vectorToString(Vector lista, String sep) {
+	public static String vectorToString(Vector<?> lista, String sep) {
 	    String result = "";
 	    if (lista.size() > 0) {
 	        result = lista.get(0).toString();    // start with the first element
@@ -1355,10 +1440,11 @@ public class Funcoes {
 	}
 
 	public static String verTime(String sTime) {
-		if (sTime.length() < 8) {
+		if (sTime.length() != 8 && sTime.length() != 5) {
 			return "";
 		}
 		char cTime[] = sTime.toCharArray();
+		
 		if (!Character.isDigit(cTime[0]))
 			return "";
 		else if (!Character.isDigit(cTime[1]))
@@ -1367,16 +1453,20 @@ public class Funcoes {
 			return "";
 		else if (!Character.isDigit(cTime[3]))
 			return "";
-		else if (!Character.isDigit(cTime[4]))
+		else if (!Character.isDigit(cTime[4])) 
 			return "";
-		else if (cTime[5] != ':')
-			return "";
-		else if (!Character.isDigit(cTime[6]))
-			return "";
-		else if (!Character.isDigit(cTime[7]))
-			return "";
-		else if (!validaTime(sTime))
-			return "";
+			
+		if (sTime.length() == 8) {
+			if (cTime[5] != ':')
+				return "";
+			else if (!Character.isDigit(cTime[6]))
+				return "";
+			else if (!Character.isDigit(cTime[7]))
+				return "";
+			else if (!validaTime(sTime))
+				return "";
+		}
+		
 		return sTime;
 	}
 	
@@ -1591,18 +1681,18 @@ public class Funcoes {
 
 	public static boolean validaTime(String time) {
 		boolean retorno = true;
-		if (time.length() < 8)
+		if (time.length()!=8 && time.length()!=5)
 			return false;
+		
 		int hora = Integer.parseInt(time.substring(0,2));
 		int minuto = Integer.parseInt(time.substring(3, 5));
-		int segundo = Integer.parseInt(time.substring(6, 8));
-
+		int segundo = time.length() == 5 ? 0 : Integer.parseInt(time.substring(6, 8));
 
 		if ((hora > 23) || (hora < 0))
 			retorno = false;
 		else if ( (minuto>59) || (minuto<0) )
 			retorno = false;
-		else if ( (segundo>59) || (segundo<0) ) 
+		else if ( (segundo>59) || (segundo<0) && time.length()==8) 
 			retorno = false;
 		return retorno;
 	}
@@ -1852,6 +1942,59 @@ public class Funcoes {
 
 		return strZero("" + iHora, 2) + ":" + strZero("" + iMinuto, 2) + ":" + strZero("" + iSegundo, 2);
 	}
+	
+	public static java.sql.Time	strTimeTosqlTime(String stime) {
+		java.sql.Time ttime = null;
+		
+		try {
+		
+			if (stime == null)
+				return ttime;
+			
+			System.out.println("Time: " + stime);
+			GregorianCalendar cal = new GregorianCalendar();		
+			cal.setTime(new Date());
+			
+			String[] sstime = stime.split( ":" );
+			
+			try {
+				cal.set( Calendar.HOUR_OF_DAY, new Integer(sstime[0]).intValue() );
+			}
+			catch (Exception e) {
+				cal.set( Calendar.HOUR_OF_DAY, 0 );
+				e.printStackTrace();
+			}
+			try {
+				cal.set( Calendar.MINUTE, new Integer(sstime[1]).intValue() );	
+			}
+			catch (Exception e) {
+				cal.set( Calendar.MINUTE, 0 );
+				e.printStackTrace();
+			}
+			try {
+				cal.set( Calendar.SECOND, new Integer(sstime[2]).intValue() );	
+			} 
+			catch ( Exception e ) {				
+				System.out.println("Tempo sem contagem de segundos.");
+				cal.set( Calendar.SECOND, 0 );
+			}
+			
+			int iHora = cal.get(Calendar.HOUR_OF_DAY);
+			int iMinuto = cal.get(Calendar.MINUTE);
+			int iSegundo = cal.get(Calendar.SECOND);
+			
+			ttime = Funcoes.dateToSQLTime( cal.getTime() );
+			
+			System.out.println(strZero("" + iHora, 2) + ":" + strZero("" + iMinuto, 2) + ":" + strZero("" + iSegundo, 2));
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ttime;
+	}
+
+	
 	
 	public static java.sql.Date strDateToSqlDate(String sVal) {
 		GregorianCalendar cal = new GregorianCalendar();
@@ -2239,254 +2382,24 @@ public class Funcoes {
 		boolean bRetorno = false;
 		sEstado.toUpperCase();
 		UF uf = UF.valueOf( sEstado );
-//		montaTabCalcIE();
-//		montaTabPesoIE();
-				
 		try {			
 			InscricaoEstadual ie = uf.getInscricaoEstadual();    
 			ie.setNumber(sIE);
 			bRetorno = ie.isValid();
 			testaCasoIE( sIE, ie );
-/*			for (int i = 1; i <= 3; i++) {
-				if (testaDigIE(sEstado, sIE, i)) {
-					bRetorno = true;
-					break;
-				}
-			}*/
-			
 		}
 		catch (Exception e) {
+			Funcoes.mensagemErro( null, "Erro ao validar a inscrição estadual!\n" + e.getMessage() );
 			e.printStackTrace();
-		}
-		
+		}		
 		return bRetorno;
 	}
 
-
-/*	public static boolean vIE(String sIE, String sEstado) {
-		boolean bRetorno = false;
-		sEstado.toUpperCase();
-		montaTabCalcIE();
-		montaTabPesoIE();
-		for (int i = 1; i <= 3; i++) {
-			if (testaDigIE(sEstado, sIE, i)) {
-				bRetorno = true;
-				break;
-			}
-		}
-		return bRetorno;
-	}
-*/
-/*
-	private static boolean testaDigIE(String sEstado, String sIE, int iCaso) {
-		boolean bRetorno = false;
-		String sIE2 = "";
-
-		for (int i = 0; i < 34; i++) {
-			if (((String) vIE.elementAt(i).elementAt(0))
-					.equals(sEstado)
-					&& ((Integer) vIE.elementAt(i).elementAt(1))
-							.intValue() == iCaso) {
-				sIE2 = sIE;
-				if (testaCasoIE(sIE2, vIE.elementAt(i))) {
-					sIE = sIE2;
-					bRetorno = true;
-					break;
-				}
-			}
-		}
-		return bRetorno;
-	}
-*/
-	@SuppressWarnings("unchecked")
 	private static boolean testaCasoIE(String sIE, InscricaoEstadual IE) {
-/*		String sIENova = "";
-		int iSX, iSY, iSQiX, iSQiY, iPosDVX, iPosDVY;
-		int iDVX = -1;
-		int iDVY = -1;
-		int[] aMiX, aMiY, aQiX, aQiY;
-		int[] vPesoX, vPesoY;
-		boolean bDVY = false;
-		iPosDVX = carregaPosDV(vXIE)[0];
-		iPosDVY = carregaPosDV(vXIE)[1];
-		vPesoX = retPeso(vXIE, 'X');
-		if (iPosDVY > 0)
-			bDVY = true;
-		else
-			bDVY = false;
-		for (int i = 0; i < sIE.length(); i++) {
-			if (Character.isDigit(sIE.toCharArray()[i]))
-				sIENova += sIE.toCharArray()[i];
-		}
-		if (sIENova.length() != ((Integer) vXIE.elementAt(2)).intValue())
-			return false;
-		for (int i = (24 - sIENova.length()); i < 24; i++) {
-//			if (retValUF((String) vXIE.elementAt(i)).indexOf((sIENova.toCharArray())[i - (24 - sIENova.length())]) < 0)
-//				return false;
-		}
-		//****** Irá calcular digitos verificadores !!!
-		aMiX = new int[14];
-		aQiX = new int[14];
-		iSX = 0;
-		iSQiX = 0;
-		for (int i = 0; i < sIENova.length(); i++) {
-			if ((i != iPosDVX) & (i != iPosDVY)) {
-				aMiX[i] = (Integer.parseInt("" + (sIENova.toCharArray())[i]))
-						* vPesoX[i];
-				iSX += aMiX[i];
-			}
-		}
-		//    System.out.println("iSX: "+iSX);
-		if (((String) vXIE.elementAt(4)).indexOf('A') == 0) {
-			for (int i = (sIENova.length() - 1); i > 0; i--) {
-				if ((i != iPosDVX) & (i != iPosDVY)) {
-					aQiX[i] = aMiX[i] / 10;
-					iSQiX += aQiX[i];
-				}
-			}
-			iSX += iSQiX;
-		} else if (((String) vXIE.elementAt(4)).indexOf('B') >= 0)
-			iSX *= 10;
-		else if (((String) vXIE.elementAt(4)).indexOf('C') >= 0)
-			iSX += (5 + (4 * ((Integer) vXIE.elementAt(3)).intValue()));
-		if (((String) vXIE.elementAt(4)).indexOf('D') >= 0)
-			iDVX = iSX % ((Integer) vXIE.elementAt(5)).intValue();
-		else if (((String) vXIE.elementAt(4)).indexOf('E') >= 0) {
-			iDVX = iSX % ((Integer) vXIE.elementAt(5)).intValue();
-			iDVX = ((Integer) vXIE.elementAt(5)).intValue() - iDVX;
-		}
-		if (iDVX == 10)
-			iDVX = 0;
-		else if (iDVX == 11)
-			iDVX = ((Integer) vXIE.elementAt(3)).intValue();
-		if (bDVY) {
-			vPesoY = retPeso(vXIE, 'Y');
-			aMiY = new int[14];
-			aQiY = new int[14];
-			iSY = 0;
-			iSQiY = 0;
-			for (int i = 0; i < sIENova.length(); i++) {
-				if (i != iPosDVY) {
-					aMiY[i] = (Integer
-							.parseInt("" + (sIENova.toCharArray())[i]))
-							* vPesoY[i];
-					iSY += aMiY[i];
-					//          System.out.println("MI:
-					// "+Integer.parseInt(""+(sIENova.toCharArray())[i])+" X
-					// "+vPesoY[i]);
-				}
-			}
-			//     System.out.println("iSY: "+iSY);
-			if (((String) vXIE.elementAt(7)).indexOf('A') >= 0) {
-				for (int i = (sIENova.length() - 1); i > 0; i--) {
-					if (i != iPosDVY) {
-						aQiY[i] = aMiY[i] / 10;
-						iSQiY += aQiY[i];
-					}
-				}
-				iSY += iSQiY;
-			} else if (((String) vXIE.elementAt(7)).indexOf('B') >= 0)
-				iSY *= 10;
-			else if (((String) vXIE.elementAt(7)).indexOf('C') >= 0)
-				iSY += (5 + (4 * ((Integer) vXIE.elementAt(3)).intValue()));
-			if (((String) vXIE.elementAt(7)).indexOf('D') >= 0)
-				iDVY = iSY % ((Integer) vXIE.elementAt(8)).intValue();
-			else if (((String) vXIE.elementAt(7)).indexOf('E') >= 0) {
-				iDVY = iSY % ((Integer) vXIE.elementAt(8)).intValue();
-				iDVY = ((Integer) vXIE.elementAt(8)).intValue() - iDVY;
-			}
-			if (iDVY == 10)
-				iDVY = 0;
-			else if (iDVY == 11)
-				iDVY = ((Integer) vXIE.elementAt(3)).intValue();
-		}
-		//      System.out.println(Integer.parseInt(""+(sIENova.toCharArray())[sIENova.length()-(14-iPosDVX)])+"
-		// = "+iDVX);
-		//    if (bDVY)
-		//      System.out.println(""+(sIENova.toCharArray())[sIENova.length()-(14-iPosDVY)]+"
-		// = "+iDVY);
-		if (Integer.parseInt(""
-				+ (sIENova.toCharArray())[sIENova.length() - (14 - iPosDVX)]) == iDVX) {
-			if (bDVY) {
-				if (Integer.parseInt(""
-						+ (sIENova.toCharArray())[sIENova.length()
-								- (14 - iPosDVY)]) != iDVY) {
-					return false;
-				}
-			}
-		} else {
-			return false;
-		}
-//		sIEValida = setMascara(sIENova, (String) vXIE.elementAt(24));
-		
-		*/	
-		
-		sIEValida = setMascara(limpaString( sIE ), IE.getMask());
-		
-		//    System.out.println("TRUE");
+		String mascara = IE.getMask();
+		sIEValida = setMascara(limpaString( sIE ), IE.getMask());		
 		return true;
 	}
-/*
-	@SuppressWarnings("unchecked")
-	private static int[] retPeso(Vector vXIE, char XY) {
-		String sPeso = "";
-		int[] aRetorno = new int[14];
-		int tam = ((Integer) vXIE.elementAt(2)).intValue();
-		String peso = "";
-		if (XY == 'X') {
-			sPeso = (String) vXIE.elementAt(6);
-			for (int i = 0; i < vPesoIE.size(); i++) {
-				if (((String) vPesoIE.elementAt(i).elementAt(0))
-						.compareTo(sPeso) == 0) {
-					for (int i2 = (15 - tam); i2 <= 14; i2++) {
-						aRetorno[i2 - (15 - tam)] = ((Integer) vPesoIE
-								.elementAt(i).elementAt(i2)).intValue();
-					}
-					break;
-				}
-			}
-		} else if (XY == 'Y') {
-			sPeso = (String) vXIE.elementAt(9);
-			for (int i = 1; i < vPesoIE.size(); i++) {
-				if (((String) vPesoIE.elementAt(i).elementAt(0))
-						.compareTo(sPeso) == 0) {
-					for (int i2 = (15 - tam); i2 <= 14; i2++) {
-						aRetorno[i2 - (15 - tam)] = ((Integer) vPesoIE
-								.elementAt(i).elementAt(i2)).intValue();
-						peso += vPesoIE.elementAt(i).elementAt(i2)
-								+ " ,";
-					}
-					break;
-				}
-			}
-		}
-		//    System.out.println(peso);
-		return aRetorno;
-	}
-
-	private static String retValUF(String sVal) {
-		String sRetorno = "";
-		if (sVal == null)
-			return "";
-		char[] cVal = sVal.toCharArray();
-		if (sVal.compareTo("0/9") == 0)
-			sRetorno = "0123456789";
-		else if (sVal.compareTo("DVX") == 0)
-			sRetorno = "0123456789";
-		else if (sVal.compareTo("DVY") == 0)
-			sRetorno = "0123456789";
-		else if (cVal[0] == '=') {
-			sRetorno = sVal;
-		} 
-		else if (cVal[1] == '/') {
-			for (int i = cVal[0]; i <= cVal[2]; i++) {
-				sRetorno += i;
-			}
-		}
-		return sRetorno;
-	}
-
-*/
 
 	private static int[] carregaPosDV(Vector<String> vXIE) {
 		int[] aRetorno = new int[2];
@@ -2503,7 +2416,6 @@ public class Funcoes {
 		return aRetorno;
 	}
 
-	@SuppressWarnings("unchecked")
 	private static void montaTabPesoIE() {
 
 		Vector<Object> linha01 = new Vector<Object>();
@@ -2742,7 +2654,6 @@ public class Funcoes {
 		vPesoIE.addElement(linha13);
 	}
 
-	@SuppressWarnings("unchecked")
 	private static void montaTabCalcIE() {
 		Vector<Object> linha01 = new Vector<Object>();
 		Vector<Object> linha02 = new Vector<Object>();
@@ -3747,6 +3658,95 @@ public class Funcoes {
 				actionReturn = "Não identificado";
 		}
 		return actionReturn;
+	}
+	
+  
+	public static long somaTime(Time inicio, Time fim) { 
+		Long lIni = null;
+		Long lFim = null;
+		try {
+			Calendar clLimpaDiasIni =  new GregorianCalendar();			
+			clLimpaDiasIni.setTimeInMillis( inicio.getTime() );
+			clLimpaDiasIni.set( Calendar.HOUR_OF_DAY, 0 );
+			clLimpaDiasIni.set( Calendar.MINUTE, 0 );
+			clLimpaDiasIni.set( Calendar.SECOND, 0 );
+			clLimpaDiasIni.set( Calendar.MILLISECOND, 0 );
+		
+			Calendar clLimpaDiasFim =  new GregorianCalendar();			
+			clLimpaDiasFim.setTimeInMillis( fim.getTime() );
+			clLimpaDiasFim.set( Calendar.HOUR_OF_DAY, 0 );
+			clLimpaDiasFim.set( Calendar.MINUTE, 0 );
+			clLimpaDiasFim.set( Calendar.SECOND, 0 );
+			clLimpaDiasFim.set( Calendar.MILLISECOND, 0 );
+								
+			lIni = inicio.getTime() - clLimpaDiasIni.getTimeInMillis();
+			lFim = fim.getTime() - clLimpaDiasFim.getTimeInMillis();		
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return lIni + lFim;  
+	}
+
+	public static long subtraiTime(Time inicio, Time fim) {  
+		return fim.getTime() - inicio.getTime();  
+	}
+	
+	public static String longTostrTime(long time) {  
+		StringBuffer resultado = new StringBuffer();  
+		   
+		// verifica quantidade de dias.  
+		long dias = time/(1000*60*60*24);  
+		time = time % (1000*60*60*24);  
+   
+		if  ( dias > 0 ) {  
+			resultado.append(dias);  
+			resultado.append(" DD ");  
+		}  
+		    
+		long horas =  time / (1000*60*60);  
+		time = time % (1000*60*60);  
+               
+		if  ( horas < 10 ) {  
+			resultado.append("0");  
+		}  
+		resultado.append(horas);  
+		resultado.append(":");  
+		    
+		long minutos = time/(1000*60);  
+		time = time % (1000*60);  
+		         
+		if  ( minutos < 10 ) {           
+			resultado.append("0");  
+		}  
+		resultado.append(minutos);  
+		resultado.append(":");  
+		   
+		// verifica quantidade de segundos.  
+		long segundos = time/1000;  
+		time = time % 1000;  
+		         
+		if  ( segundos < 10 ) {  
+			resultado.append("0");           
+		}  
+		resultado.append(segundos);  
+		             
+		return resultado.toString();  
+		
+	}  
+	
+	public static Date somaMes(Date dt, int imeses) {
+		Date dt2 = dt;
+		Calendar cl = new GregorianCalendar();
+		try {
+			cl.setTime( dt );
+			cl.add( Calendar.MONTH, imeses );
+			dt2 = cl.getTime();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return dt2;
 	}
 
 }

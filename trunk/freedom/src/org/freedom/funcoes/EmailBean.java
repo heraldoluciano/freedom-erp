@@ -1,6 +1,6 @@
 package org.freedom.funcoes;
 
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -18,10 +18,61 @@ public class EmailBean {
 	private String para;
 	private String autentica;
 	private String ssl;
+	private String emailresp;
+	private String corpo;
+	private String formato;
+	private String charset;
+	private String assinatura;
 	
 	
+	public String getAssinatura() {
+	
+		return assinatura;
+	}
+
+	
+	public void setAssinatura( String assinatura ) {
+	
+		this.assinatura = assinatura;
+	}
+
+	public String getFormato() {	
+		return formato;
+	}
+	
+	public void setFormato( String formato ) {	
+		this.formato = formato;
+	}
+	
+	
+	public String getCharset() {
+	
+		return charset;
+	}
+
+	
+	public void setCharset( String charset ) {
+	
+		this.charset = charset;
+	}
+
 	public EmailBean() { }
 	
+	public String getCorpo() {
+		return corpo;
+	}
+	
+	public void setCorpo(String corpo) {
+		this.corpo = corpo;
+	}
+	
+	public String getEmailResp() {
+		return emailresp;
+	}
+	
+	public void setEmailResp(String emailresp) {
+		this.emailresp = emailresp;
+	}		
 	
 	public String getAutentica() {	
 		return autentica;
@@ -105,14 +156,18 @@ public class EmailBean {
 		clone.setUsuario( getUsuario() );
 		clone.setSenha( getSenha() );
 		clone.setDe( getDe() );
+		clone.setEmailResp( getEmailResp() );
 		clone.setPara( getPara() );
+		clone.setFormato( getFormato() );
 		clone.setAutentica( getAutentica() );
 		clone.setSsl( getSsl() );
+		clone.setCorpo( getCorpo() );
+		clone.setAssinatura( getAssinatura() );
 		
 		return clone;
 	}
 
-	public String getEmailEmp( final Connection con ) {
+	public String getEmailEmp( final DbConnection con ) {
 
 		String email = null;
 		PreparedStatement ps = null;
@@ -135,9 +190,7 @@ public class EmailBean {
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar email da filial!\n" + e.getMessage() );
@@ -147,7 +200,7 @@ public class EmailBean {
 		return email;
 	}
 
-	public static String getEmailCli( final int codcli, final Connection con ) {
+	public static String getEmailCli( final int codcli, final DbConnection con ) {
 
 		String email = null;
 		PreparedStatement ps = null;
@@ -171,9 +224,7 @@ public class EmailBean {
 			rs.close();
 			ps.close();
 
-			if ( ! con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar email do cliente!\n" + e.getMessage() );
