@@ -20,8 +20,10 @@ public class ECFElginX5Test extends TestCase {
 
 	public void testGenerico() {
 		ECFElginX5 ecf = new ECFElginX5( PORTA );
-		//assertTrue( trataresultFuncao( ecf.leituraX() ) );
-		trataresultFuncao( ecf.adicaoDeAliquotaTriburaria( "3333", ECFElginX5.ISS ) );
+		trataresultFuncao(ecf.executa( "DefineMeioPagamento", "NomeMeioPagamento=\"DINHEIRO\"", "PermiteVinculado=true" ));
+		trataresultFuncao(ecf.executa( "DefineMeioPagamento", "NomeMeioPagamento=\"CHEQUE\"", "PermiteVinculado=true" ));
+		trataresultFuncao(ecf.executa( "DefineMeioPagamento", "NomeMeioPagamento=\"CARTAO\"", "PermiteVinculado=true" ));
+		ecf.leituraX();
 	}
 
 	public void testCancelaCupom() {
