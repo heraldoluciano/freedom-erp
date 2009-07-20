@@ -45,6 +45,8 @@ import org.freedom.ecf.layout.AbstractLayout;
 
 public abstract class AbstractECFDriver implements SerialPortEventListener, ParallelPortEventListener {
 
+	protected static int TIMEOUT_READ = 30000;
+
 	public static final byte STX = 2;
 
 	public static final byte ENQ = 5;
@@ -58,8 +60,6 @@ public abstract class AbstractECFDriver implements SerialPortEventListener, Para
 	public static final byte GS = 29;
 
 	public static final int TIMEOUT_ACK = 500;
-
-	public static final int TIMEOUT_READ = 3000;
 
 	public static final char ACRECIMO_PERC = 'A';
 
