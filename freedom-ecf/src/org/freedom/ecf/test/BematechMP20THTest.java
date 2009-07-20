@@ -17,7 +17,7 @@ public class BematechMP20THTest extends TestCase {
 		super( name );
 		PrinterMemory memory = new PrinterMemory();
 		memory.setEmpresa( "Setpoint Informatica ltda" );
-		memory.setEndereco( "Joao Leopoldo Jacomel, 9999" );
+		memory.setEndereco( "Joao Leopoldo Jacomel, 12475" );
 		memory.setCidade( "Pinhas - PR" );
 		memory.setTelefone( "(041) 3668-6500" );
 		
