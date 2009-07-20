@@ -11,30 +11,24 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.plugin"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.comutacao"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes.listas"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.bmps"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.pdv"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.plugin"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.drivers"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
         <javaElement handleIdentifier="=freedom-ecf/src"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes.boleto"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoAgenda.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConveniado.java"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.std"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.telas"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.agenda.visoes"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.agenda.visoes.listas"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.agenda"/>
-        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
-        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pdv"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.model.jdbc"/>
     </selectedElements>
     <fatjar builder="org.eclipse.jdt.ui.plain_jar_builder" launchConfig=""/>
 </jardesc>
