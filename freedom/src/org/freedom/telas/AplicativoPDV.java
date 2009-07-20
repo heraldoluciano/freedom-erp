@@ -7,13 +7,13 @@
  * Classe:
  * @(#)AplicativoPDV.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -22,7 +22,7 @@
 package org.freedom.telas;
 
 import java.io.File;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,6 +31,8 @@ import java.util.Date;
 
 import org.freedom.componentes.ListaCampos;
 import org.freedom.ecf.app.ControllerECF;
+import org.freedom.ecf.app.PrinterMemory;
+import org.freedom.ecf.layout.AbstractLayout;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.pdv.FAbreCaixa;
 import org.freedom.tef.app.ControllerTef;
@@ -46,6 +48,10 @@ public class AplicativoPDV extends AplicativoPD {
 	
 	private static String ecfdriver = null;
 	
+	private static AbstractLayout ecflayout = null;
+	
+	private static String ecflayoutClassName = null;
+	
 	private static String portaECF = "COM1" ;
 	
 	private static String pluginVenda;
@@ -60,6 +66,7 @@ public class AplicativoPDV extends AplicativoPD {
 	    
 	    setPortaECF( getParameter( "portaecf" ) );	    
 	    setEcfdriver( getParameter( "ecfdriver" ) );	
+	    ecflayoutClassName = getParameter( "ecflayout" );	
 	}	
 
 	public static void setPortaECF( String porta ) {
@@ -78,12 +85,71 @@ public class AplicativoPDV extends AplicativoPD {
 		AplicativoPDV.ecfdriver = ecfdriver;
 	}
 
-    //isso aqui é temporario...
-	public static boolean usaEcfDriver() {			
-		return ecfdriver!=null;		
+	public static AbstractLayout getEcflayout() {
+		return ecflayout;
 	}
 
-	public synchronized static boolean pegaValorINI( final Connection con ) {
+	public synchronized static void loadEcflayout() {
+		
+		if ( ecflayout == null ) {		
+			if ( ecflayoutClassName == null ) {
+				return;
+			}			
+			try {
+				Object obj = Class.forName( ecflayoutClassName.trim() ).newInstance();
+				if ( obj instanceof AbstractLayout ) {
+					ecflayout = (AbstractLayout) obj;
+				}
+			} catch ( ClassNotFoundException e ) {
+				e.printStackTrace();
+			} catch ( InstantiationException e ) {
+				e.printStackTrace();
+			} catch ( IllegalAccessException e ) {
+				e.printStackTrace();
+			}			
+		}
+
+		PrinterMemory memory = new PrinterMemory();
+		memory.setEmpresa( "Setpoint Informatica ltda" );
+		memory.setEndereco( "Joao Leopoldo Jacomel, 9999" );
+		memory.setCidade( "Pinhas - PR" );
+		memory.setTelefone( "(041) 3668-6500" );		
+		
+		memory.programaAliquota( 0.01f );
+		
+		if ( ecflayout != null ) {
+			ecflayout.setMemory( memory );
+		}
+		/*try {
+			
+			PreparedStatement ps = con.prepareStatement( "" );
+			
+			ps.setInt( 1, iCodEmp );
+			ps.setInt( 2, iCodFilial );
+			ps.setInt( 3, iCodCaixa );
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( null, "Não foi possível buscar o saldo atual.\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		}*/
+	}
+
+	public static void setEcflayout( AbstractLayout ecflayout ) {
+		AplicativoPDV.ecflayout = ecflayout;
+	}
+
+	public synchronized static boolean pegaValorINI( final DbConnection con ) {
 
 		FAbreCaixa tela = new FAbreCaixa();
 		tela.setConexao( con );
@@ -92,7 +158,7 @@ public class AplicativoPDV extends AplicativoPD {
 		return tela.OK;
 	}
 
-	public static synchronized int abreCaixa( final Connection con, final ControllerECF ecf ) {
+	public static synchronized int abreCaixa( final DbConnection con, final ControllerECF ecf ) {
 
 		int result = -1;
 		PreparedStatement ps = null;
@@ -166,9 +232,7 @@ public class AplicativoPDV extends AplicativoPD {
 				rs.close();
 				ps.close();
 				
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
+				con.commit();
 
 			}
 			else {
@@ -182,7 +246,7 @@ public class AplicativoPDV extends AplicativoPD {
 		return result;
 	}
 
-	public synchronized static boolean caixaAberto( final Connection con ) {
+	public synchronized static boolean caixaAberto( final DbConnection con ) {
 		
 		boolean result = false;
 		
@@ -212,9 +276,7 @@ public class AplicativoPDV extends AplicativoPD {
 			rs.close();
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Não foi possível buscar o saldo atual.\n" + err.getMessage(), true, con, err );
@@ -242,9 +304,7 @@ public class AplicativoPDV extends AplicativoPD {
 			rs.close();
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 			ps = con.prepareStatement( 
 					"SELECT CX.ECFCAIXA,CX.TEFCAIXA FROM PVCAIXA CX " +
@@ -264,9 +324,7 @@ public class AplicativoPDV extends AplicativoPD {
 			rs.close();
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 		} catch ( Exception err ) {
 			err.printStackTrace();

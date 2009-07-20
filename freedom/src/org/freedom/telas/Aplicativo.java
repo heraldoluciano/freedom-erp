@@ -9,13 +9,13 @@
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para
  * Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
  * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
  * Programa. <BR>
  * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você
  * pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é
  * preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR>
@@ -28,6 +28,7 @@ package org.freedom.telas;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -39,8 +40,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Locale;
@@ -73,7 +73,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public static int casasDecFin = 2;
 
-	public Connection con = null; // Variavel de conexao com o banco de dados
+	public DbConnection con = null; // Variavel de conexao com o banco de dados
 
 	public static FPrincipal telaPrincipal = null;
 
@@ -163,7 +163,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	protected String sDescModu = "";
 
-	protected Connection conIB;
+	protected DbConnection conIB;
 
 	public static Vector<String> vEquipeSis = new Vector<String>();
 
@@ -191,6 +191,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	
 	private static Aplicativo instance = null;
 	
+	public PopupMenu pm = new PopupMenu();
+	
 
 	public Aplicativo() {
 
@@ -202,9 +204,13 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		return instance;
 	}
 	
-	public Connection getConIB() {
+	public DbConnection getConIB() {
 
 		return conIB;
+	}
+	
+	public DbConnection getConexao() {
+		return con;
 	}
 
 	public static void setLookAndFeel( String sNomeArqIni ) {
@@ -427,8 +433,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 								FFDialogo tela = (FFDialogo) obj;
 							
 								Class partypes[] = new Class[ 2 ];
-								partypes[ 0 ] = Connection.class;
-								partypes[ 1 ] = Connection.class;
+								partypes[ 0 ] = DbConnection.class;
+								partypes[ 1 ] = DbConnection.class;
 								Method meth = null;
 								try {
 									meth = telaClass.getMethod( "setConexao", partypes );
@@ -451,8 +457,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 								FFilho tela = (FFilho) obj;
 
 								Class partypes[] = new Class[ 2 ];
-								partypes[ 0 ] = Connection.class;
-								partypes[ 1 ] = Connection.class;
+								partypes[ 0 ] = DbConnection.class;
+								partypes[ 1 ] = DbConnection.class;
 								Method meth = null;
 								try {
 									meth = telaClass.getMethod( "setConexao", partypes );
@@ -473,8 +479,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 								FDialogo tela = (FDialogo) obj;
 
 								Class partypes[] = new Class[ 2 ];
-								partypes[ 0 ] = Connection.class;
-								partypes[ 1 ] = Connection.class;
+								partypes[ 0 ] = DbConnection.class;
+								partypes[ 1 ] = DbConnection.class;
 								Method meth = null;
 								try {
 									meth = telaClass.getMethod( "setConexao", partypes );
@@ -579,8 +585,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				}
 				ps.execute();
 				ps.close();
-				if ( !con.getAutoCommit() )
-					con.commit();
+				con.commit();
 			}
 			bRet = true;
 		} catch ( SQLException err ) {
@@ -658,10 +663,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		return retorno;
 	}
 
-	public Connection conexao() {
+	public DbConnection conexao() {
 
 		String sVals[];
-		Connection conRetorno = null;
+		DbConnection conRetorno = null;
 		strBanco = getParameter( "banco" );
 		strDriver = getParameter( "driver" );
 
@@ -677,7 +682,13 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			sNomeFilial = lgBanco.getNomeFilial();
 			iCodFilialMz = lgBanco.getFilialMz();
 			iCodFilialPad = lgBanco.getFilialPad();
-			conRetorno = lgBanco.getConection();
+			try {
+				conRetorno = lgBanco.getConection();
+			}
+			catch (Exception e) {
+				Funcoes.mensagemErro( null, "Erro de conexão!\n" + e.getMessage() );
+				e.printStackTrace();
+			}
 			lgBanco.dispose();
 		}
 
@@ -695,20 +706,24 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public abstract boolean getModoDemo();
 
 	public abstract String getDescEst();
+	
+	public abstract void validaPrefere();
 
 	public abstract void getMultiAlmox();
 
-	public Connection conexaoIB( String strDriverP, String strBancoP ) {
+	public DbConnection conexaoIB( String strDriverP, String strBancoP ) {
 
-		try {
+		/*try {
 			Class.forName( strDriverP );
 		} catch ( java.lang.ClassNotFoundException e ) {
 			Funcoes.mensagemErro( null, "[internal]:Driver nao foi encontrado: " + e.getMessage() );
 			return null;
-		}
+		}*/
 
 		try {
-			conIB = DriverManager.getConnection( strBancoP, strUsuario, strSenha );
+			
+			//conIB = DriverManager.getDbConnection( strBancoP, strUsuario, strSenha );
+			conIB = new DbConnection(strDriverP, strBancoP, strUsuario, strSenha);
 		} catch ( java.sql.SQLException e ) {
 			if ( e.getErrorCode() == 335544472 )
 				return null;
@@ -918,7 +933,9 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	}
 	
 	public static EmailBean getEmailBean() {
-		EmailBean clone = emailbean.getClone();
+		EmailBean clone = null;
+		if(emailbean!=null)
+			 clone = emailbean.getClone();
 		return clone;
 	}
 	

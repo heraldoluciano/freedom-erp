@@ -7,13 +7,13 @@
  * Classe:
  * @(#)FPrinterJob.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -37,7 +37,7 @@ import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.io.File;
 import java.io.FileInputStream;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.ResultSet;
 import java.util.HashMap;
 
@@ -113,7 +113,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	private int iZoomAtual = 100;
 
 	boolean bVisualiza = false;
-
+	
 	public FPrinterJob( ImprimeLayout impL, JInternalFrame ifOrig ) {
 
 		super( false );
@@ -281,11 +281,11 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 		}
 	}
 	
-	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, Connection con ) {
+	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, DbConnection con ) {
 		this( sLayout, sTituloRel, sFiltros, ifOrig, hParamRel, con, null );
 	}
 		
-	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, Connection con, boolean externo ) {
+	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, DbConnection con, boolean externo ) {
 		this( sLayout, sTituloRel, sFiltros, ifOrig, hParamRel, con, null, externo );
 	}
 
@@ -298,11 +298,11 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	 * @param rs
 	 * @param ifOrig
 	 */
-	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, Connection con, EmailBean mail ) {
+	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, DbConnection con, EmailBean mail ) {
 		this( sLayout, sTituloRel, sFiltros, ifOrig, hParamRel, con, mail, false );
 	}
 	
-	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, Connection con, EmailBean mail, boolean externo ) {
+	public FPrinterJob( String sLayout, String sTituloRel, String sFiltros, JInternalFrame ifOrig, HashMap<String, Object> hParamRel, DbConnection con, EmailBean mail, boolean externo ) {
 
 		super( false );
 		setTitulo( sTituloRel, this.getClass().getName() );
@@ -321,7 +321,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 				hParam.putAll( hParamRel );
 			}
 			
-			relJasper = JasperFillManager.fillReport( externo ? new FileInputStream( sLayout ) : FPrinterJob.class.getResourceAsStream( "/org/freedom/" + sLayout ), hParam, con );
+			relJasper = JasperFillManager.fillReport( externo ? new FileInputStream( sLayout ) : FPrinterJob.class.getResourceAsStream( "/org/freedom/" + sLayout ), hParam, con.getConnection() );
 
 			JRViewerPad viewer = new JRViewerPad( relJasper, mail );
 			this.setContentPane( viewer );
@@ -461,4 +461,5 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	public void keyReleased( KeyEvent kevt ) {
 
 	}
+	
 }

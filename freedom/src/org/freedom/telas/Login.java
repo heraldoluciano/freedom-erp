@@ -6,14 +6,14 @@
  * Pacote: org.freedom.telas <BR>
  * Classe: @(#)FLogin.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  *
  * Comentários para a classe...
  */
@@ -24,8 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -45,11 +44,13 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 	protected Vector<Integer> vVals = new Vector<Integer>();
 	protected Vector<String> vLabs = new Vector<String>();
 	protected JComboBoxPad cbEmp = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_INTEGER, 8 , 0);
+	protected String nfe = "";
 	protected String strBanco = "";
+	protected String strBanconfe = "";
 	protected String strDriver = "";
 	protected String sUsuAnt = "";
 	protected int iFilialMz = 0;
-	protected Connection conLogin = null;
+	protected DbConnection conLogin = null;
 	protected JLabelPad lbInstrucoes = new JLabelPad("");
 	protected Properties props = new Properties();
 	public boolean bAdmin = false;
@@ -134,13 +135,13 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 		return iFilialPadrao;
 	}
 	
-	public abstract Connection getConection(); 
+	public abstract DbConnection getConection() throws Exception; 
 	
 	protected abstract boolean execConexao(String sUsu, String sConexao);
 	
 	protected abstract boolean montaCombo(String sUsu);
 	  
-	protected abstract boolean adicConFilial(final Connection conX);
+	protected abstract boolean adicConFilial(final DbConnection conX);
 	  
 	public void focusLost(FocusEvent fevt) { }
 	  
@@ -207,19 +208,20 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 		
 	}
 	
-	public static Connection getConexao(final String strBanco, final String strDriver, final String sUsu, final String sSenha) {	
-	    Connection cRetorno = null;
+	public static DbConnection getConexao(final String strBanco, final String strDriver, final String sUsu, final String sSenha) {	
+	    DbConnection cRetorno = null;
 		Properties params = new Properties();
-		try {
+		/*try {
 			Class.forName(strDriver);
 		} catch (java.lang.ClassNotFoundException e) {
 			System.out.println("Driver nao foi encontrado:\n"+strDriver+"\n"+e.getMessage ());
-		}
+		}*/
 		
 		try {
-			params.put("user", sUsu);
-			params.put("password", sSenha);
-			cRetorno = DriverManager.getConnection(strBanco, params);
+			//params.put("user", sUsu);
+			//params.put("password", sSenha);
+			//cRetorno = DriverManager.getDbConnection(strBanco, params);
+			cRetorno = new DbConnection(strDriver, strBanco, sUsu, sSenha);
 			cRetorno.setAutoCommit(false);
 		} 
 		catch (java.sql.SQLException e) {
