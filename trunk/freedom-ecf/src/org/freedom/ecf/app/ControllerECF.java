@@ -21,9 +21,10 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.log4j.Logger;
-import org.freedom.ecf.com.Serial;
+import org.freedom.ecf.com.AbstractPort;
 import org.freedom.ecf.driver.AbstractECFDriver;
 import org.freedom.ecf.driver.STResult;
+import org.freedom.ecf.layout.AbstractLayout;
 
 public class ControllerECF {
 		
@@ -54,7 +55,7 @@ public class ControllerECF {
 	public ControllerECF( final String ecfdriver ) 
 		throws IllegalArgumentException, NullPointerException {
 
-		this( ecfdriver, Serial.COM1, false );
+		this( ecfdriver, AbstractPort.COM1, false );
 	}
 
 	/**
@@ -75,7 +76,7 @@ public class ControllerECF {
 	public ControllerECF( final String ecfdriver, final boolean mododemostracao ) 
 		throws IllegalArgumentException, NullPointerException {
 
-		this( ecfdriver, Serial.COM1, mododemostracao );
+		this( ecfdriver, AbstractPort.COM1, mododemostracao );
 	}
 
 	/**
@@ -116,7 +117,7 @@ public class ControllerECF {
 	public ControllerECF( final String ecfdriver, final String porta ) 
 		throws IllegalArgumentException, NullPointerException {
 
-		this( ecfdriver, Serial.convPorta( porta ), false );
+		this( ecfdriver, AbstractPort.convPorta( porta ), false );
 	}
 
 	/**
@@ -131,15 +132,17 @@ public class ControllerECF {
 	 *            nome da porta serial.
 	 * @param mododemostracao
 	 *            estado de modo demostração.
+	 * @param layout 
 	 * @throws IllegalArgumentException
 	 *             caso o nome do driver seja invalido.
 	 * @throws NullPointerException
 	 *             caso o driver não consiga ser instânciado.
 	 */
-	public ControllerECF( final String ecfdriver, final String porta, final boolean mododemostracao ) 
+	public ControllerECF( final String ecfdriver, final String porta, final boolean mododemostracao, final AbstractLayout layout ) 
 		throws IllegalArgumentException, NullPointerException {
 
-		this( ecfdriver, Serial.convPorta( porta ), mododemostracao );
+		this( ecfdriver, AbstractPort.convPorta( porta ), mododemostracao );
+		setLayoutNFiscal( layout );
 	}
 
 	/**
@@ -160,6 +163,30 @@ public class ControllerECF {
 	 */
 	public ControllerECF( final String ecfdriver, final int porta, final boolean mododemostracao ) 
 		throws IllegalArgumentException, NullPointerException {
+		
+		this( ecfdriver, porta, mododemostracao, null );
+	}
+
+	/**
+	 * Contrutor de classe.<br>
+	 * Valida o nome do driver de comunicação serial e instancia a classe com este nome<br>
+	 * abrindo a porta serial e definindo o estado de modo demonstração.<br>
+	 * 
+	 * @param ecfdriver
+	 *            nome do driver de comunicação serial.
+	 * @param porta
+	 *            porta serial
+	 * @param mododemostracao
+	 *            estado de modo demostração.
+	 * @param layout  
+	 * 			  
+	 * @throws IllegalArgumentException
+	 *             caso o nome do driver seja invalido.
+	 * @throws NullPointerException
+	 *             caso o driver não consiga ser instânciado.
+	 */
+	public ControllerECF( final String ecfdriver, final int porta, final boolean mododemostracao, final AbstractLayout layout ) 
+		throws IllegalArgumentException, NullPointerException {
 
 		try {
 //			logger = LoggerManager.getLogger( "log/freedomECF.log" ); ANDERSON IMPLEMENTAR NOVO LOGGER
@@ -179,7 +206,7 @@ public class ControllerECF {
 				Object obj = Class.forName( ecfdriver.trim() ).newInstance();
 				if ( obj instanceof AbstractECFDriver ) {
 					this.ecf = (AbstractECFDriver) obj;
-					this.ecf.ativaPorta( porta > 0 ? porta : Serial.COM1 );
+					this.ecf.activePort( porta > 0 ? porta : AbstractPort.COM1 );
 				}
 			} catch ( ClassNotFoundException e ) {
 				e.printStackTrace();
@@ -195,6 +222,8 @@ public class ControllerECF {
 						+ ecfdriver );
 			}			
 		}
+		
+		setLayoutNFiscal( layout );
 	}
 	
 	public void setModoDemostracao( final boolean modoDemostracao ) {
@@ -207,6 +236,18 @@ public class ControllerECF {
 	
 	public boolean notIsModoDemostracao() {
 		return ! isModoDemostracao();
+	}
+	
+	public void setLayoutNFiscal( final String layout ) {		
+		if ( this.ecf != null && layout != null ) {
+			this.ecf.setLayoutNFiscal( layout );
+		}
+	}
+	
+	public void setLayoutNFiscal( final AbstractLayout layout ) {		
+		if ( this.ecf != null && layout != null ) {
+			this.ecf.setLayoutNFiscal( layout );
+		}
 	}
 	
 	public void setMessageLog( final String message ) {
@@ -238,7 +279,7 @@ public class ControllerECF {
 		boolean returnOfAction = true;
 		
 		if ( notIsModoDemostracao() ) {	
-			if ( aliquota == null || aliquota.floatValue() < 0.015f ) {
+			if ( aliquota == null || aliquota.floatValue() < 0.01f ) {
 				returnOfAction = false;
 				setMessageLog( "Aliquota inválida.[" + aliquota + "]" );
 			}
@@ -407,10 +448,10 @@ public class ControllerECF {
 		
 		if ( notIsModoDemostracao() ) {
 			try {
-				returnOfAction = Integer.parseInt( ecf.retornoNumeroCupom() );
+				returnOfAction = Integer.parseInt( ecf.resultNumeroCupom() );
 			} catch ( RuntimeException e ) {
 				setMessageLog( e.getMessage() );
-				whiterLogError( "[RETORNO DO COO] " );
+				whiterLogError( "[result DO COO] " );
 			}
 		}
 		
@@ -854,7 +895,7 @@ public class ControllerECF {
 		
 		if ( notIsModoDemostracao() ) {	
 			try {
-				String subtotal = ecf.retornoSubTotal();
+				String subtotal = ecf.resultSubTotal();
 				if ( subtotal!= null && subtotal.trim().length() == 14 ) {
 					subtotal = subtotal.substring( 0, 12 ) + "." + subtotal.substring( 12 );
 				}
@@ -969,11 +1010,11 @@ public class ControllerECF {
     			actionOK = false;
 			}
 			if ( actionOK ) {
-				String sIndice = "Dinheiro".equals( formaPagamento.trim() ) 
-									? "01" : programaFormaPagamento( formaPagamento );
+//				String sIndice = "Dinheiro".equals( formaPagamento.trim() ) 
+//									? "01" : programaFormaPagamento( formaPagamento );
+				String sIndice = programaFormaPagamento( formaPagamento );
 				valor = valor.setScale( 2, BigDecimal.ROUND_HALF_UP );
-				returnOfAction = decodeReturn( 
-						ecf.efetuaFormaPagamento( sIndice, valor.floatValue(), descricaoAuxiliar ) );				
+				returnOfAction = decodeReturn( ecf.efetuaFormaPagamento( sIndice, valor.floatValue(), descricaoAuxiliar ) );				
 			}
 			else {
 				returnOfAction = false;
@@ -1037,7 +1078,6 @@ public class ControllerECF {
 	}
 	
 	public boolean relatorioGerencial( final String texto ) {
-
 
 		boolean returnOfAction = true;
 		
@@ -1108,8 +1148,7 @@ public class ControllerECF {
 		return returnOfAction;
 	}
 	
-	public boolean usaComprovanteNaoFiscalVinculado(
-			final String texto ) {
+	public boolean usaComprovanteNaoFiscalVinculado( final String texto ) {
 
 		boolean returnOfAction = true;
 		
@@ -1189,7 +1228,7 @@ public class ControllerECF {
 		
 		if ( notIsModoDemostracao() ) {	
 			try {
-				String caixa = ( ecf.retornoVariaveis( AbstractECFDriver.V_NUM_CAIXA ) );
+				String caixa = ( ecf.resultVariaveis( AbstractECFDriver.V_NUM_CAIXA ) );
 				returnOfAction = Integer.parseInt( caixa );
 			} catch ( NumberFormatException e ) {
 				setMessageLog( e.getMessage() );
@@ -1205,7 +1244,7 @@ public class ControllerECF {
 		List<String> returnOfAction = new ArrayList<String>();
 		
 		if ( notIsModoDemostracao() ) {	
-			String sAliquotas = ( ecf.retornoAliquotas() ).trim();
+			String sAliquotas = ( ecf.resultAliquotas() ).trim();
 			int tamanho = 0;
 			if ( sAliquotas != null  ) {
 				tamanho = sAliquotas.length() / 4;				
@@ -1250,7 +1289,7 @@ public class ControllerECF {
 		Integer returnOfAction = new Integer( "0" );
 		
 		if ( notIsModoDemostracao() ) {	
-			returnOfAction = new Integer( ecf.retornoVariaveis( AbstractECFDriver.V_REDUCOES ) );
+			returnOfAction = new Integer( ecf.resultVariaveis( AbstractECFDriver.V_REDUCOES ) );
 		}
 		
 		return returnOfAction;
@@ -1261,7 +1300,7 @@ public class ControllerECF {
 		Integer returnOfAction = new Integer( "0" );
 		
 		if ( notIsModoDemostracao() ) {	
-			returnOfAction = new Integer( ecf.retornoVariaveis( AbstractECFDriver.V_CUPONS_CANC ) );
+			returnOfAction = new Integer( ecf.resultVariaveis( AbstractECFDriver.V_CUPONS_CANC ) );
 		}
 		
 		return returnOfAction;
@@ -1272,7 +1311,7 @@ public class ControllerECF {
 		BigDecimal returnOfAction = new BigDecimal( "0.00" );
 		
 		if ( notIsModoDemostracao() ) {	
-			String str = ecf.retornoVariaveis( AbstractECFDriver.V_CANCELAMENTOS );
+			String str = ecf.resultVariaveis( AbstractECFDriver.V_CANCELAMENTOS );
 			final BigDecimal cem = new BigDecimal( "100.00" );
 			returnOfAction = new BigDecimal( str ).divide( cem );
 		}
@@ -1285,7 +1324,7 @@ public class ControllerECF {
 		BigDecimal returnOfAction = new BigDecimal( "0.00" );
 		
 		if ( notIsModoDemostracao() ) {	
-			String str = ecf.retornoVariaveis( AbstractECFDriver.V_DESCONTOS );
+			String str = ecf.resultVariaveis( AbstractECFDriver.V_DESCONTOS );
 			final BigDecimal cem = new BigDecimal( "100.00" );
 			returnOfAction = new BigDecimal( str ).divide( cem );
 		}
@@ -1371,7 +1410,7 @@ public class ControllerECF {
 		
 		if ( notIsModoDemostracao() ) {	
 			final BigDecimal cem = new BigDecimal( "100.00" );
-			final String[] totalizadores = ecf.retornoTotalizadoresParciais().split( "," );
+			final String[] totalizadores = ecf.resultTotalizadoresParciais().split( "," );
 			final String parciais = totalizadores[ 0 ];
 			String t = "";
 			for ( int i=0; i < 16; i++ ) {
@@ -1389,7 +1428,7 @@ public class ControllerECF {
 		
 		if ( notIsModoDemostracao() ) {	
 			final BigDecimal cem = new BigDecimal( "100.00" );
-			final String[] totalizadores = ecf.retornoTotalizadoresParciais().split( "," );
+			final String[] totalizadores = ecf.resultTotalizadoresParciais().split( "," );
 			final String parciais = totalizadores[ 4 ];
 			String t = "";
 			for ( int i=0; i < 9; i++ ) {
@@ -1407,7 +1446,7 @@ public class ControllerECF {
 		
 		if ( notIsModoDemostracao() ) {	
 			final BigDecimal cem = new BigDecimal( "100.00" );
-			final String[] totalizadores = ecf.retornoTotalizadoresParciais().split( "," );
+			final String[] totalizadores = ecf.resultTotalizadoresParciais().split( "," );
 			int index = 0;
 			for ( String t : totalizadores ) {
 				if ( index != 0 && index != 4 ) {
@@ -1436,7 +1475,7 @@ public class ControllerECF {
 		boolean returnOfAction = false;
 		
 		if ( notIsModoDemostracao() ) {	
-			returnOfAction = ecf.retornoDocumentoAberto();
+			returnOfAction = ecf.resultDocumentoAberto();
 		}
 		
 		return returnOfAction;
@@ -1479,13 +1518,13 @@ public class ControllerECF {
 		
 		if ( notIsModoDemostracao() ) {	
 			try {
-				String strDataUltimaReducao = ecf.retornoVariaveis( AbstractECFDriver.V_DT_ULT_REDUCAO );				
+				String strDataUltimaReducao = ecf.resultVariaveis( AbstractECFDriver.V_DT_ULT_REDUCAO );				
 				final SimpleDateFormat sdf = new SimpleDateFormat( "ddMMyy", Locale.getDefault() );
 				dataUltimaReducao = Calendar.getInstance();				
 				dataUltimaReducao.setTime( sdf.parse( strDataUltimaReducao ) );				
 			} catch ( Exception e ) {
 				setMessageLog( e.getMessage() );
-				whiterLogError( "[REDUÇÂO Z] " );
+				whiterLogError( "[REDUÇÃO Z] " );
 			}
 		}
 		
@@ -1584,15 +1623,15 @@ public class ControllerECF {
 
 	public boolean contido( char cTexto, String sTexto ) {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 		
 		for ( int i = 0; i < sTexto.length(); i++ ) {
 			if ( cTexto == sTexto.charAt( i ) ) {
-				bRetorno = true;
+				bresult = true;
 				break;
 			}
 		}
 		
-		return bRetorno;
+		return bresult;
 	}
 }
