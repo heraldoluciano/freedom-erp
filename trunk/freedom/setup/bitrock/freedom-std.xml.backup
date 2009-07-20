@@ -1,5 +1,5 @@
 <project>
-    <shortName>freedom</shortName>
+    <shortName>freedomstd</shortName>
     <fullName>Freedom-ERP</fullName>
     <version>1.1.9.0</version>
     <installerFilename></installerFilename>
@@ -172,28 +172,10 @@
                             <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/commons-logging.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedomatd.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
                             <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedomcfg.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedomfnc.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedomgms.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedompcp.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedompdv.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
                             <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedomstd.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedomtmk.jar</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/itext.jar</origin>
@@ -281,60 +263,6 @@
                     <windowsExec>${installdir}/bin/freedomcfg.bat</windowsExec>
                     <windowsExecArgs></windowsExecArgs>
                     <windowsIcon>${installdir}/icones/freedomcfg.ico</windowsIcon>
-                    <windowsPath>${installdir}</windowsPath>
-                </startMenuShortcut>
-                <startMenuShortcut>
-                    <comment>Freedom Planejamento e Controle da Produção</comment>
-                    <name>FreedomPCP</name>
-                    <runInTerminal>0</runInTerminal>
-                    <windowsExec>${installdir}/bin/freedompcp.bat</windowsExec>
-                    <windowsExecArgs></windowsExecArgs>
-                    <windowsIcon>${installdir}/icones/freedomstd.ico</windowsIcon>
-                    <windowsPath>${installdir}</windowsPath>
-                </startMenuShortcut>
-                <startMenuShortcut>
-                    <comment>Freedom Atendimento</comment>
-                    <name>FreedomATD</name>
-                    <runInTerminal>0</runInTerminal>
-                    <windowsExec>${installdir}/bin/freedomatd.bat</windowsExec>
-                    <windowsExecArgs></windowsExecArgs>
-                    <windowsIcon>${installdir}/icones/freedomatd.ico</windowsIcon>
-                    <windowsPath>${installdir}</windowsPath>
-                </startMenuShortcut>
-                <startMenuShortcut>
-                    <comment>Freedom Ponto de Venda</comment>
-                    <name>FreedomPDV</name>
-                    <runInTerminal>0</runInTerminal>
-                    <windowsExec>${installdir}/bin/freedompdv.bat</windowsExec>
-                    <windowsExecArgs></windowsExecArgs>
-                    <windowsIcon>${installdir}/icones/freedompdv.ico</windowsIcon>
-                    <windowsPath>${installdir}</windowsPath>
-                </startMenuShortcut>
-                <startMenuShortcut>
-                    <comment>Freedom Telemarketing</comment>
-                    <name>FreedomTMK</name>
-                    <runInTerminal>0</runInTerminal>
-                    <windowsExec>${installdir}/bin/freedomtmk.bat</windowsExec>
-                    <windowsExecArgs></windowsExecArgs>
-                    <windowsIcon>${installdir}/icones/freedomstd.ico</windowsIcon>
-                    <windowsPath>${installdir}</windowsPath>
-                </startMenuShortcut>
-                <startMenuShortcut>
-                    <comment>Freedom Financeiro</comment>
-                    <name>FreedomFNC</name>
-                    <runInTerminal>0</runInTerminal>
-                    <windowsExec>${installdir}/bin/freedomfnc.bat</windowsExec>
-                    <windowsExecArgs></windowsExecArgs>
-                    <windowsIcon>${installdir}/icones/freedomstd.ico</windowsIcon>
-                    <windowsPath>${installdir}</windowsPath>
-                </startMenuShortcut>
-                <startMenuShortcut>
-                    <comment>Freedom Gest�o de Materiais e Servi�os</comment>
-                    <name>FreedomGMS</name>
-                    <runInTerminal>0</runInTerminal>
-                    <windowsExec>${installdir}/bin/freedomgms</windowsExec>
-                    <windowsExecArgs></windowsExecArgs>
-                    <windowsIcon>${installdir}/icones/freedomstd.ico</windowsIcon>
                     <windowsPath>${installdir}</windowsPath>
                 </startMenuShortcut>
             </startMenuShortcutList>

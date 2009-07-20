@@ -1,11 +1,10 @@
 <project>
     <shortName>freedom</shortName>
     <fullName>Freedom-ERP</fullName>
-    <version>1.1.4.0</version>
+    <version>1.1.8.0</version>
     <readmeFile>C:/opt/eclipse/workspace/freedom/doc/leiame.txt</readmeFile>
     <licenseFile>C:/opt/eclipse/workspace/freedom/doc/licenca/GPL-pt_BR.txt</licenseFile>
     <defaultLanguage>pt_BR</defaultLanguage>
-    <enableRollback>1</enableRollback>
     <componentList>
         <component>
             <name>default</name>
@@ -172,9 +171,6 @@
                             <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/commons-logging.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/firebirdsql-full.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
                             <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedomatd.jar</origin>
                         </distributionFile>
                         <distributionFile>
@@ -232,7 +228,13 @@
                             <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/barbecue.jar</origin>
                         </distributionFile>
                         <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/brazilutils.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
                             <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/dsn.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedomgrh.jar</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/freedomlvf.jar</origin>
@@ -242,6 +244,12 @@
                         </distributionFile>
                         <distributionFile>
                             <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/ireport.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/jaybird-full.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/log4j.jar</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>C:/opt/eclipse/workspace/freedom/setup/disco/opt/freedom/lib/mailapi.jar</origin>
