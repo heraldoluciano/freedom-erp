@@ -20,21 +20,21 @@ public class ECFBematechTest extends TestCase {
 
 		ECFBematech ecf = new ECFBematech( "COM1" );
 
-		assertTrue( trataRetornoFuncao( ecf.alteraSimboloMoeda( "R" ) ) );
+		assertTrue( trataresultFuncao( ecf.alteraSimboloMoeda( "R" ) ) );
 
-		assertTrue( trataRetornoFuncao( ecf.adicaoDeAliquotaTriburaria( "0001", ECFBematech.ICMS ) ) );
+		assertTrue( trataresultFuncao( ecf.adicaoDeAliquotaTriburaria( "0001", ECFBematech.ICMS ) ) );
 
-		assertTrue( trataRetornoFuncao( ecf.programaHorarioVerao() ) );
+		assertTrue( trataresultFuncao( ecf.programaHorarioVerao() ) );
 
-		assertTrue( trataRetornoFuncao( ecf.nomeiaTotalizadorNaoSujeitoICMS( 4, "Totalizador teste" ) ) );
+		assertTrue( trataresultFuncao( ecf.nomeiaTotalizadorNaoSujeitoICMS( 4, "Totalizador teste" ) ) );
 
-		assertTrue( trataRetornoFuncao( ecf.programaTruncamentoArredondamento( '1' ) ) );
+		assertTrue( trataresultFuncao( ecf.programaTruncamentoArredondamento( '1' ) ) );
 
-		assertTrue( trataRetornoFuncao( ecf.programarEspacoEntreLinhas( 8 ) ) );
+		assertTrue( trataresultFuncao( ecf.programarEspacoEntreLinhas( 8 ) ) );
 
-		assertTrue( trataRetornoFuncao( ecf.programarLinhasEntreCupons( 5 ) ) );
+		assertTrue( trataresultFuncao( ecf.programarLinhasEntreCupons( 5 ) ) );
 
-		assertTrue( trataRetornoFuncao( ecf.nomeiaDepartamento( 2, "Teste" ) ) );
+		assertTrue( trataresultFuncao( ecf.nomeiaDepartamento( 2, "Teste" ) ) );
 	}
 
 	public void testComandosDeCupomFiscal() {
@@ -42,41 +42,41 @@ public class ECFBematechTest extends TestCase {
 		ECFBematech ecf = new ECFBematech( "COM1" );
 
 		System.out.print( "aberturaDeCupom > " );
-		assertTrue( trataRetornoFuncao( ecf.aberturaDeCupom() ) );
+		assertTrue( trataresultFuncao( ecf.aberturaDeCupom() ) );
 
 		System.out.print( "aberturaDeCupom String > " );
-		assertTrue( trataRetornoFuncao( ecf.aberturaDeCupom( "00.000.000/0000-00 CNPJ e nome do Cliente" ) ) );
+		assertTrue( trataresultFuncao( ecf.aberturaDeCupom( "00.000.000/0000-00 CNPJ e nome do Cliente" ) ) );
 
 		System.out.print( "programaUnidadeMedida > " );
-		assertTrue( trataRetornoFuncao( ecf.programaUnidadeMedida( "Kg" ) ) );
+		assertTrue( trataresultFuncao( ecf.programaUnidadeMedida( "Kg" ) ) );
 
 		System.out.print( "vendaItem > " );
-		assertTrue( trataRetornoFuncao( ecf.vendaItem( 
+		assertTrue( trataresultFuncao( ecf.vendaItem( 
 				"0000000000001", "Produto Teste                ", "FF", 'I', 1f, 10f, 'D', 0f ) ) );
 
 		System.out.print( "cancelaItemAnterior > " );
-		assertTrue( trataRetornoFuncao( ecf.cancelaItemAnterior() ) );
+		assertTrue( trataresultFuncao( ecf.cancelaItemAnterior() ) );
 
 		System.out.print( "aumentaDescItem > " ); 
-		assertTrue( trataRetornoFuncao( ecf.aumentaDescItem( 
+		assertTrue( trataresultFuncao( ecf.aumentaDescItem( 
 				"Descricao do item aumentada para 60 caracteres" ) ) );
 		 
 		System.out.print( "vendaItemTresCasas > " ); 
-		assertTrue( trataRetornoFuncao( ecf.vendaItemTresCasas( 
+		assertTrue( trataresultFuncao( ecf.vendaItemTresCasas( 
 				"1234567890002", "Produto Teste                ", "FF", 'I', 2f, 2.050f, 'D', 0.10f ) ) );
 		
 		System.out.print( "vendaItemDepartamento > " ); 
-		assertTrue( trataRetornoFuncao( ecf.vendaItemDepartamento( 
+		assertTrue( trataresultFuncao( ecf.vendaItemDepartamento( 
 				"FF", 1f, 10f, 0.50f, 0.50f, 2, "Kg", "1234567890003", "Descricao do produto" ) ) ); 
 		 
 		System.out.print( "cancelaItemGenerico 2 > " ); 
-		assertTrue( trataRetornoFuncao( ecf.cancelaItemGenerico( 2 ) ) );		
+		assertTrue( trataresultFuncao( ecf.cancelaItemGenerico( 2 ) ) );		
 
 		System.out.print( "iniciaFechamentoCupom > " );
-		assertTrue( trataRetornoFuncao( ecf.iniciaFechamentoCupom( ECFBematech.ACRECIMO_VALOR, 0.0f ) ) );
+		assertTrue( trataresultFuncao( ecf.iniciaFechamentoCupom( ECFBematech.ACRECIMO_VALOR, 0.0f ) ) );
 
 		System.out.print( "efetuaFormaPagamento Dinheiro > " );
-		assertTrue( trataRetornoFuncao( ecf.efetuaFormaPagamento( "01", 5.00f, null ) ) );
+		assertTrue( trataresultFuncao( ecf.efetuaFormaPagamento( "01", 5.00f, null ) ) );
 
 		System.out.print( "programaFormaPagamento > " ); 
 		String f2 = ecf.programaFormaPagamento( "Cheque          " ); 
@@ -84,16 +84,16 @@ public class ECFBematechTest extends TestCase {
 		assertTrue( ! "".equals( f2 ) );
 
 		System.out.print( "efetuaFormaPagamento Cheque > " ); 
-		assertTrue( trataRetornoFuncao( ecf.efetuaFormaPagamento( f2, 5.50f, "Cheque          " ) ) );
+		assertTrue( trataresultFuncao( ecf.efetuaFormaPagamento( f2, 5.50f, "Cheque          " ) ) );
 
 		System.out.print( "estornoFormaPagamento > " ); 
-		assertTrue( trataRetornoFuncao( ecf.estornoFormaPagamento( "Cheque          ", "Dinheiro", 5.50f ) ) );
+		assertTrue( trataresultFuncao( ecf.estornoFormaPagamento( "Cheque          ", "Dinheiro", 5.50f ) ) );
 		
 		System.out.print( "finalizaFechamentoCupom > " );
-		assertTrue( trataRetornoFuncao( ecf.finalizaFechamentoCupom( "Obrigado e volte sempre pra testar!" ) ) );
+		assertTrue( trataresultFuncao( ecf.finalizaFechamentoCupom( "Obrigado e volte sempre pra testar!" ) ) );
 
 		//System.out.print( "cancelaCupom > " ); 
-		//assertTrue( trataRetornoFuncao( ecf.cancelaCupom() ) );
+		//assertTrue( trataresultFuncao( ecf.cancelaCupom() ) );
 	}
 	
 	public void testComandosDeOperacoesNaoFiscais() {
@@ -101,35 +101,35 @@ public class ECFBematechTest extends TestCase {
 		ECFBematech ecf = new ECFBematech( "COM1" );
 		
 		System.out.print( "relatorioGerencial > " ); 
-		assertTrue( trataRetornoFuncao( ecf.relatorioGerencial( 
+		assertTrue( trataresultFuncao( ecf.relatorioGerencial( 
 				"Abrindo Relatorio Gerencial" ) ) );	
 		
 		System.out.print( "relatorioGerencial usando > " ); 
-		assertTrue( trataRetornoFuncao( ecf.relatorioGerencial( 
+		assertTrue( trataresultFuncao( ecf.relatorioGerencial( 
 				"Utilizando Relatorio Gerencial" ) ) );	
 		
 		System.out.print( "fechamentoRelatorioGerencial > " ); 
-		assertTrue( trataRetornoFuncao( ecf.fechamentoRelatorioGerencial() ) );
+		assertTrue( trataresultFuncao( ecf.fechamentoRelatorioGerencial() ) );
 		
 		System.out.print( "comprovanteNFiscalNVinculado suprimento > " ); 
-		assertTrue( trataRetornoFuncao( ecf.comprovanteNFiscalNVinculado( ECFBematech.SUPRIMENTO, 50f, "Dinheiro        " ) ) );
+		assertTrue( trataresultFuncao( ecf.comprovanteNFiscalNVinculado( ECFBematech.SUPRIMENTO, 50f, "Dinheiro        " ) ) );
 		
 		System.out.print( "comprovanteNFiscalNVinculado sangria > " ); 
-		assertTrue( trataRetornoFuncao( ecf.comprovanteNFiscalNVinculado( ECFBematech.SANGRIA, 45f, "Dinheiro        " ) ) );
+		assertTrue( trataresultFuncao( ecf.comprovanteNFiscalNVinculado( ECFBematech.SANGRIA, 45f, "Dinheiro        " ) ) );
 		
 		System.out.print( "comprovanteNFiscalNVinculado não ICMS > " ); 
-		assertTrue( trataRetornoFuncao( ecf.comprovanteNFiscalNVinculado( "02", 35f, "Dinheiro        " ) ) );
+		assertTrue( trataresultFuncao( ecf.comprovanteNFiscalNVinculado( "02", 35f, "Dinheiro        " ) ) );
 		
 		testComandosDeCupomFiscal();
 		System.out.print( "abreComprovanteNFiscalVinculado > " ); 
-		assertTrue( trataRetornoFuncao( ecf.abreComprovanteNFiscalVinculado( "Cheque          ", 5.5f, Integer.parseInt( ecf.retornoNumeroCupom() ) ) ) );
+		assertTrue( trataresultFuncao( ecf.abreComprovanteNFiscalVinculado( "Cheque          ", 5.5f, Integer.parseInt( ecf.resultNumeroCupom() ) ) ) );
 		
 		System.out.print( "usaComprovanteNFiscalVinculado > " ); 
-		assertTrue( trataRetornoFuncao( ecf.usaComprovanteNFiscalVinculado( 
+		assertTrue( trataresultFuncao( ecf.usaComprovanteNFiscalVinculado( 
 				"Usando o Comprovante Nao fiscal Vinculado" ) ) );		
 
 		System.out.print( "fechamentoRelatorioGerencial > " ); 
-		assertTrue( trataRetornoFuncao( ecf.fechamentoRelatorioGerencial() ) );
+		assertTrue( trataresultFuncao( ecf.fechamentoRelatorioGerencial() ) );
 	}
 	
 	public void testComandosDeAutenticacao() {
@@ -139,11 +139,11 @@ public class ECFBematechTest extends TestCase {
 		System.out.print( "programaCaracterParaAutenticacao > " ); 
 		//int [] sesc = {143,137,137,249,0,255,137,137,137,0,143,137,137,249,0,255,129,129 };
 		int [] sesc = {1,2,4,8,16,32,64,128,64,32,16,8,4,2,1,129,129,129 };
-		assertTrue( trataRetornoFuncao( ecf.programaCaracterParaAutenticacao( sesc ) ) );	
+		assertTrue( trataresultFuncao( ecf.programaCaracterParaAutenticacao( sesc ) ) );	
 		
 		testComandosDeCupomFiscal();
 		System.out.print( "autenticacaoDeDocumento > " ); 
-		assertTrue( trataRetornoFuncao( ecf.autenticacaoDeDocumento() ) );
+		assertTrue( trataresultFuncao( ecf.autenticacaoDeDocumento() ) );
 	}
 	
 	public void testComandosDeRelatoriosFiscais() {
@@ -151,10 +151,10 @@ public class ECFBematechTest extends TestCase {
 		ECFBematech ecf = new ECFBematech( "COM1" );
 		
 		System.out.print( "leituraX > " ); 
-		assertTrue( trataRetornoFuncao( ecf.leituraX() ) );		
+		assertTrue( trataresultFuncao( ecf.leituraX() ) );		
 		
 		System.out.print( "leituraXSerial > " ); 
-		assertTrue( trataRetornoFuncao( ecf.leituraXSerial() ) );
+		assertTrue( trataresultFuncao( ecf.leituraXSerial() ) );
 		System.out.println( new String( ecf.getBytesLidos() ) );
 		
 		Calendar cal = Calendar.getInstance();
@@ -163,23 +163,23 @@ public class ECFBematechTest extends TestCase {
 		Date antes = cal.getTime();
 		
 		System.out.print( "leituraMemoriaFiscal data > " );
-		assertTrue( trataRetornoFuncao( ecf.leituraMemoriaFiscal( antes, hoje, ECFBematech.IMPRESSAO ) ) );
+		assertTrue( trataresultFuncao( ecf.leituraMemoriaFiscal( antes, hoje, ECFBematech.IMPRESSAO ) ) );
 		System.out.println( new String( ecf.getBytesLidos() ) );
 		
-		System.out.print( "leituraMemoriaFiscal data retorno > " );
-		assertTrue( trataRetornoFuncao( ecf.leituraMemoriaFiscal( antes, hoje, ECFBematech.RETORNO ) ) );
+		System.out.print( "leituraMemoriaFiscal data result > " );
+		assertTrue( trataresultFuncao( ecf.leituraMemoriaFiscal( antes, hoje, ECFBematech.result ) ) );
 		System.out.println( new String( ecf.getBytesLidos() ) );
 		
 		System.out.print( "leituraMemoriaFiscal redução > " ); 
-		assertTrue( trataRetornoFuncao( ecf.leituraMemoriaFiscal( 605, 610, ECFBematech.IMPRESSAO ) ) );
+		assertTrue( trataresultFuncao( ecf.leituraMemoriaFiscal( 605, 610, ECFBematech.IMPRESSAO ) ) );
 		System.out.println( new String( ecf.getBytesLidos() ) );
 		
-		System.out.print( "leituraMemoriaFiscal redução retorno > " ); 
-		assertTrue( trataRetornoFuncao( ecf.leituraMemoriaFiscal( 605, 610, ECFBematech.RETORNO ) ) );
+		System.out.print( "leituraMemoriaFiscal redução result > " ); 
+		assertTrue( trataresultFuncao( ecf.leituraMemoriaFiscal( 605, 610, ECFBematech.result ) ) );
 		System.out.println( new String( ecf.getBytesLidos() ) );
 
 		System.out.print( "reducaoZ > " ); 
-		assertTrue( trataRetornoFuncao( ecf.reducaoZ() ) );
+		assertTrue( trataresultFuncao( ecf.reducaoZ() ) );
 	}
 
 	public void testComandosDeInformacoesDaImpressora() {
@@ -189,27 +189,27 @@ public class ECFBematechTest extends TestCase {
 		System.out.print( "leitura do estado > " ); 
 		System.out.println( ecf.getStatus() );	
 		
-		System.out.print( "retorno de aliquotas > " ); 
-		System.out.println( ecf.retornoAliquotas() );	
+		System.out.print( "result de aliquotas > " ); 
+		System.out.println( ecf.resultAliquotas() );	
 		
-		System.out.print( "retorno de totalizadores parcias > " ); 
-		System.out.println( ecf.retornoTotalizadoresParciais() );	
+		System.out.print( "result de totalizadores parcias > " ); 
+		System.out.println( ecf.resultTotalizadoresParciais() );	
 		
-		System.out.print( "retorno de número do cupom > " ); 
-		System.out.println( ecf.retornoNumeroCupom() );	
+		System.out.print( "result de número do cupom > " ); 
+		System.out.println( ecf.resultNumeroCupom() );	
 		
-		System.out.println( "retorno de variáveis > " ); 
-		System.out.println( "\tGrande total > " + ecf.retornoVariaveis( ECFBematech.V_GRANDE_TOTAL ) );
-		System.out.println( "\tFlags Fiscais > " + ecf.retornoVariaveis( ECFBematech.V_FLAG_FISCAL ) );
+		System.out.println( "result de variáveis > " ); 
+		System.out.println( "\tGrande total > " + ecf.resultVariaveis( ECFBematech.V_GRANDE_TOTAL ) );
+		System.out.println( "\tFlags Fiscais > " + ecf.resultVariaveis( ECFBematech.V_FLAG_FISCAL ) );
 		
-		System.out.print( "retorno do estado do papel > " ); 
-		System.out.println( ecf.retornoEstadoPapel() );	
+		System.out.print( "result do estado do papel > " ); 
+		System.out.println( ecf.resultEstadoPapel() );	
 		
-		System.out.print( "retorno da ultima redução Z > " ); 
-		System.out.println( ecf.retornoUltimaReducao() );	
+		System.out.print( "result da ultima redução Z > " ); 
+		System.out.println( ecf.resultUltimaReducao() );	
 		
 		System.out.print( "sub total > > " ); 
-		System.out.println( ecf.retornoSubTotal() );	
+		System.out.println( ecf.resultSubTotal() );	
 	}
 
 	public void testComandosDeImpressaoDeCheques() {
@@ -217,31 +217,31 @@ public class ECFBematechTest extends TestCase {
 		ECFBematech ecf = new ECFBematech( "COM1" );
 		/*
 		System.out.print( "programaMoedaSingular > " ); 
-		assertTrue( trataRetornoFuncao( ecf.programaMoedaSingular( "Real" ) ) );
+		assertTrue( trataresultFuncao( ecf.programaMoedaSingular( "Real" ) ) );
 		
 		System.out.print( "programaMoedaPlural > " ); 
-		assertTrue( trataRetornoFuncao( ecf.programaMoedaPlural( "Reais" ) ) );
+		assertTrue( trataresultFuncao( ecf.programaMoedaPlural( "Reais" ) ) );
 		*/
 		System.out.print( "imprimeCheque > " ); 
 		System.out.println( ecf.imprimeCheque( 
 				1.30f, "Favorecido                                   ", 
 				"Localidade                 ", 19, 11, 2007 ) );
 		
-		System.out.print( "retornoStatusCheque > " ); 
-		System.out.println( ecf.retornoStatusCheque() );
+		System.out.print( "resultStatusCheque > " ); 
+		System.out.println( ecf.resultStatusCheque() );
 		
 	}
 	
-	public boolean trataRetornoFuncao( final STResult result ) {
+	public boolean trataresultFuncao( final STResult result ) {
 
-		boolean bRetorno = false;
+		boolean bresult = false;
 
 		String sMensagem = "";
 		
-		int iRetorno = result.getFirstCode();
+		int iresult = result.getFirstCode();
 		
 
-		switch ( iRetorno ) {
+		switch ( iresult ) {
 
 		case -1:
 			sMensagem = "Erro na envocação do metodo!";
@@ -265,7 +265,7 @@ public class ECFBematechTest extends TestCase {
 			sMensagem = "Erro ao abrir a porta de comunicação";
 			break;
 		case -8:
-			sMensagem = "Erro ao criar ou gravar no arquivo STATUS.TXT ou RETORNO.TXT";
+			sMensagem = "Erro ao criar ou gravar no arquivo STATUS.TXT ou result.TXT";
 			break;
 		case -27:
 			sMensagem = "Status da impressora diferente de 6,0,0 (ACK, ST1 e ST2)";
@@ -277,20 +277,20 @@ public class ECFBematechTest extends TestCase {
 			sMensagem = "Forma de pagamento não finalizada";
 			break;
 		default:
-			sMensagem = "Retorno indefinido: " + iRetorno;
+			sMensagem = "result indefinido: " + iresult;
 			break;
 
 		}
 
 		if ( "".equals( sMensagem.trim() ) ) {
-			bRetorno = true;
+			bresult = true;
 			sMensagem = "COMANDO EXECUTADO";
 		} else {
-			sMensagem = "[" + iRetorno + "] " + sMensagem;
+			sMensagem = "[" + iresult + "] " + sMensagem;
 		}
 
 		System.out.println( sMensagem );
 
-		return bRetorno;
+		return bresult;
 	}
 }
