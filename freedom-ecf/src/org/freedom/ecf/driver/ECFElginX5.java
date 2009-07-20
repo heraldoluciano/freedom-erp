@@ -37,6 +37,7 @@ public class ECFElginX5 extends AbstractECFDriver {
 	public ECFElginX5() {
 
 		super();
+		TIMEOUT_READ = 1000;
 		configSerialParams();
 	}
 
@@ -584,7 +585,97 @@ public class ECFElginX5 extends AbstractECFDriver {
 	}
 
 	public String resultTotalizadoresParciais() {
-		return null;
+
+		StringBuilder totalizadores = new StringBuilder();		
+		String parciaisTributados = parciaisTributados();
+		String isencao = "0,00";
+		String naoInsidencia = "0,00";
+		String substituicao = "0,00";
+		String naoSujeitosAIcms = naoSujeitosAIcms();
+		String sangria = "0,00";
+		String suprimento = "0,00";
+		String grandeTotal = "0,00";
+		
+
+		STResult result = executa( "LeMoeda", "NomeDadoMonetario=\"TotalDiaIsencaoICMS\"" );
+		if ( STResult.getInstanceOk() == result ) {
+			isencao = getRetornos().get( "ValorMoeda" );
+		}
+		
+		result = executa( "LeMoeda", "NomeDadoMonetario=\"TotalDiaNaoTributadoICMS\"" );
+		if ( STResult.getInstanceOk() == result ) {
+			naoInsidencia = getRetornos().get( "ValorMoeda" );
+		}
+		
+		result = executa( "LeMoeda", "NomeDadoMonetario=\"TotalDiaSubstituicaoTributariaICMS\"" );
+		if ( STResult.getInstanceOk() == result ) {
+			substituicao = getRetornos().get( "ValorMoeda" );
+		}
+		
+		sangria = naoSujeitosAIcms.substring( 0, 14 );
+		suprimento = naoSujeitosAIcms.substring( 14, 28 );
+		
+		result = executa( "LeMoeda", "NomeDadoMonetario=\"GT\"" );
+		if ( STResult.getInstanceOk() == result ) {
+			grandeTotal = getRetornos().get( "ValorMoeda" );
+		}
+		
+		totalizadores.append( parciaisTributados ).append( "," );
+		
+		totalizadores.append( isencao ).append( "," );
+		totalizadores.append( naoInsidencia ).append( "," );
+		totalizadores.append( substituicao ).append( "," );
+		
+		totalizadores.append( naoSujeitosAIcms ).append( "," );
+		
+		totalizadores.append( sangria ).append( "," );
+		totalizadores.append( suprimento ).append( "," );
+		totalizadores.append( grandeTotal );
+
+		return totalizadores.toString(); 
+	}
+
+	private String parciaisTributados() {
+		
+		StringBuilder aliquotas = new StringBuilder();
+		STResult result = null;
+		String[] aq = { "00","01","02","03","04","05","06","07",
+				        "08","09","10","11","12","13","14","15" };
+		for ( String a : aq ) {
+			result = executa( "LeMoeda", "NomeDadoMonetario=\"TotalDiaValorAliquota[" + a + "]\"" );
+			if ( STResult.getInstanceOk() == result ) {
+				String aliquota = getRetornos().get( "ValorMoeda" );
+				if ( aliquota != null ) {
+					aliquotas.append( strZero( aliquota.substring( 0, aliquota.length()-2 ).replace( ",", "" ), 14 ) );
+				}
+			}
+			else {
+				aliquotas.append( strZero( "0", 14 ) );
+			}
+		}
+		
+		return aliquotas.toString();
+	}
+
+	private String naoSujeitosAIcms() {
+		
+		StringBuilder naofiscais = new StringBuilder();
+		STResult result = null;
+		String[] aq = { "00","01","02","03","04","05","06","07","08" };
+		for ( String a : aq ) {
+			result = executa( "LeMoeda", "NomeDadoMonetario=\"TotalDiaNaoFiscal[" + a + "]\"" );
+			if ( STResult.getInstanceOk() == result ) {
+				String naofiscal = getRetornos().get( "ValorMoeda" );
+				if ( naofiscal != null ) {
+					naofiscais.append( strZero( naofiscal.substring( 0, naofiscal.length()-2 ).replace( ",", "" ), 14 ) );
+				}
+			}
+			else {
+				naofiscais.append( strZero( "0", 14 ) );
+			}
+		}
+		
+		return naofiscais.toString();
 	}
 
 	public String resultSubTotal() {
@@ -601,7 +692,12 @@ public class ECFElginX5 extends AbstractECFDriver {
 	}
 	
 	public boolean resultDocumentoAberto() {
-		return false;
+		boolean aberto = false;
+		STResult result = executa( "LeIndicador", "NomeIndicador=\"DocumentoAberto\"" );
+		if ( STResult.getInstanceOk() == result ) {
+			aberto = (1 == Integer.parseInt( getRetornos().get( "ValorNumericoIndicador" ) ));
+		}
+		return aberto;
 	}
 
 	public String resultVariaveis( final char var ) {
@@ -616,6 +712,27 @@ public class ECFElginX5 extends AbstractECFDriver {
 		if ( V_DT_ULT_REDUCAO == var ) {
 			variavel = resultUltimaReducao();
 		}
+		else if ( V_REDUCOES == var ) {
+			result = executa( "LeInteiro", "NomeInteiro=\"CRZ\"" );
+			inteiro = true;
+		}
+		else if ( V_NUM_CAIXA == var ) {
+			result = executa( "LeInteiro", "NomeInteiro=\"ECF\"" );
+			inteiro = true;
+		}
+		else if ( V_CUPONS_CANC == var ) {
+			result = executa( "LeInteiro", "NomeInteiro=\"CFC\"" );
+			inteiro = true;
+		}
+		else if ( V_CANCELAMENTOS == var ) {
+			result = executa( "LeMoeda", "NomeDadoMonetario=\"TotalDiaCancelamentoItens\"" );
+			moeda = true;
+		}
+		else if ( V_DESCONTOS == var ) {
+			result = executa( "LeMoeda", "NomeDadoMonetario=\"TotalDiaDescontosItens\"" );
+			moeda = true;
+		}
+				
 		if ( STResult.getInstanceOk() == result ) {
 			if ( texto ) {
 				variavel = getRetornos().get( "ValorTexto" );
@@ -625,9 +742,7 @@ public class ECFElginX5 extends AbstractECFDriver {
 			}
 			else if ( moeda ) {
 				variavel = getRetornos().get( "ValorMoeda" );
-			}
-			else if ( moeda ) {
-				variavel = getRetornos().get( "ValorMoeda" );
+				variavel = variavel.replace( ",", "." );
 			}
 			else if ( data ) {
 				variavel = getRetornos().get( "ValorData" );
