@@ -6,14 +6,14 @@
  * Pacote: org.freedom.componentes <BR>
  * Classe: @(#)ImprimeLayout.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  *
  * Classe mãe para relatórios gráficos.
  * 
@@ -46,7 +46,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.sql.Blob;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -84,9 +84,9 @@ public class ImprimeLayout extends JPanelPad implements Printable, VetoableChang
   public static final byte AL_LL = 3;  //Lado a Lado
   public static final byte AL_BDIR = 4; //Borda Direita
   public static final byte AL_CDIR = 5; //Borda Direita menos o recuo (definido na variável de largura/tamanho)
-  public static String sNomeEmp = "";
-  public static String sCGCEmp = "";
-  public static String sEndEmp = "";
+  public static String sNomeFilial = "";
+  public static String sCNPJFilial = "";
+  public static String sEndFilial = "";
   private static final Font mRodFont = new Font("Serif", Font.ITALIC, 7);
   private int iMX = 0;
   private int iMY = 0;
@@ -853,58 +853,64 @@ public class ImprimeLayout extends JPanelPad implements Printable, VetoableChang
    *  @param con
    */
 
-  public void montaCabEmp(Connection con) {
-
+  public void montaCabEmp(DbConnection con) {
 	  double dAltLogo = 30;
+	  StringBuffer sql = new StringBuffer();
 	  try {
-	    String sSQL = "SELECT NOMEEMP,CNPJEMP,FONEEMP,FAXEMP,FOTOEMP,ENDEMP,NUMEMP FROM SGEMPRESA WHERE CODEMP=?";
-	  	PreparedStatement ps = con.prepareStatement(sSQL);
-		ps.setInt(1,Aplicativo.iCodEmp);
-		ResultSet rs = ps.executeQuery();
-		int iX = 0;
-		if (rs.next()) {
-		  	
-		  setFonte(fnTopEmp);
-		  int iLargLogo = 0; 
-		  byte[] bVals = new byte[650000]; 
-		  Blob bVal = rs.getBlob("FotoEmp");
-		  if (bVal != null) {
-		  	try {
-		  	  bVal.getBinaryStream().read(bVals,0,bVals.length);
-		  	}
-		  	catch(IOException err) {
-		  		Funcoes.mensagemErro(null,"Erro ao recuperar dados!\n"+err.getMessage());
-		  		err.printStackTrace();
-		  	}
-		    ImageIcon img = new ImageIcon(bVals);
-//		    double dFatProp = dAltLogo/(double)img.getIconHeight(); 
-		    double dFatProp = dAltLogo/img.getIconHeight(); 
-		    drawImagem(img,5,3,(int)(img.getIconWidth()*dFatProp),(int)dAltLogo);
-		    iLargLogo = (int)(img.getIconWidth()*dFatProp);
-		  }
-		  sNomeEmp = rs.getString("NomeEmp").trim();
-  
-		  sCGCEmp = Funcoes.setMascara(rs.getString("CnpjEmp"),"##.###.###/####-##");
-		  
-		  sEndEmp = rs.getString("EndEmp").trim()+", "+rs.getInt("NumEmp");
 
-		  iX += 15+iLargLogo;
+		  sql.append( "SELECT F.NOMEFILIAL,F.CNPJFILIAL,F.FONEFILIAL,F.FAXFILIAL,");
+		  sql.append( "E.FOTOEMP,F.ENDFILIAL,F.NUMFILIAL AS NUMEMP ");
+		  sql.append( "FROM SGEMPRESA E, SGFILIAL F WHERE E.CODEMP=? AND F.CODEMP=E.CODEMP AND F.CODFILIAL=?");
 		  
-          if (bimpRaz) 
-		    drawTexto(sNomeEmp,iX,14);		  
+		  PreparedStatement ps = con.prepareStatement(sql.toString());
+		  ps.setInt(1,Aplicativo.iCodEmp);
+		  ps.setInt(2,Aplicativo.iCodFilial);
+		  ResultSet rs = ps.executeQuery();
+		  int iX = 0;
 		  
-		  setFonte(new Font("Arial",Font.PLAIN,8));
+		  if (rs.next()) {
+		  	
+			  setFonte(fnTopEmp);
+			  int iLargLogo = 0; 
+			  byte[] bVals = new byte[650000]; 
+			  Blob bVal = rs.getBlob("FotoEmp");
+			  if (bVal != null) {
+				  try {
+					  bVal.getBinaryStream().read(bVals,0,bVals.length);
+				  }
+				  catch(IOException err) {
+					  Funcoes.mensagemErro(null,"Erro ao recuperar dados!\n"+err.getMessage());
+					  err.printStackTrace();
+				  }
+
+				  ImageIcon img = new ImageIcon(bVals);
+ 
+				  double dFatProp = dAltLogo/img.getIconHeight(); 
+				  drawImagem(img,5,3,(int)(img.getIconWidth()*dFatProp),(int)dAltLogo);
+				  iLargLogo = (int)(img.getIconWidth()*dFatProp);
+			  }
 		  
-		  drawTexto("C.N.P.J.:   "+sCGCEmp,iX,25);
-		  drawTexto("Telefone.:   "+Funcoes.setMascara(rs.getString("FoneEmp"),"####-####"),185+iLargLogo,25);
-		  drawTexto("Fax.:   "+Funcoes.setMascara(rs.getString("FaxEmp"),"####-####"),330+iLargLogo,25);
-        }
-      rs.close();
-      ps.close();
-    }
-    catch(SQLException err) {
-	  Funcoes.mensagemErro(this,"Erro ao montar o cabeçalho da empresa!!!\n"+err.getMessage());
-    }
+			  sNomeFilial = rs.getString("NomeFilial").trim();  
+			  sCNPJFilial = Funcoes.setMascara(rs.getString("CnpjFilial"),"##.###.###/####-##");		  
+			  sEndFilial = rs.getString("EndFilial").trim()+", "+rs.getInt("NumFilial");
+
+			  iX += 15+iLargLogo;
+		  
+			  if (bimpRaz) 
+				  drawTexto(sNomeFilial,iX,14);		  
+		  
+			  setFonte(new Font("Arial",Font.PLAIN,8));
+		  
+			  drawTexto("C.N.P.J.:   "+sCNPJFilial,iX,25);
+			  drawTexto("Telefone.:   "+Funcoes.setMascara(rs.getString("FoneFilial"),"####-####"),185+iLargLogo,25);
+			  drawTexto("Fax.:   "+Funcoes.setMascara(rs.getString("FaxFilial"),"####-####"),330+iLargLogo,25);
+		  }
+		  rs.close();
+		  ps.close();
+	  }
+	  catch(SQLException err) {
+		  Funcoes.mensagemErro(this,"Erro ao montar o cabeçalho da empresa!!!\n"+err.getMessage());
+	  }
   }
   /**
    *  Esta função retorna o PageFormat padrão para este org.freedom.layout.

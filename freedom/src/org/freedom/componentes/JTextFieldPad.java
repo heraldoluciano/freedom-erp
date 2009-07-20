@@ -6,14 +6,14 @@
  * Pacote: org.freedom.componentes <BR>
  * Classe: @(#)JTextFieldPad.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  *
  * Classe padrão para entrada de dados.
  */
@@ -66,6 +66,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	public static final int MC_CEP = 113;
 	public static final int MC_CPF = 114;
 	public static final int MC_RG = 115;
+	public static final int MC_TIME_MINUTO = 116;
+	public static final int MC_TIME_SEGUNDO = 117;
+	
 	public static final String PR_TEXTO = "texto"; 
 	private EditListener editLis = this;
 	private GregorianCalendar data = new GregorianCalendar();
@@ -254,8 +257,16 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			iTamanho = 14;
 		} else if (iMascara == MC_RG) {
 			sMasc = "#.###.###-#";
-			iTamanho = 11;
+			iTamanho = 11;		
+		} else if (iMascara == MC_TIME_MINUTO) {
+			sMasc = "##:##";
+			iTamanho = 5;
+		} else if (iMascara == MC_TIME_SEGUNDO) {
+			sMasc = "##:##:##";
+			iTamanho = 8;
 		}
+
+
 	}
 
 	public void setStrMascara(String sMatriz) {
@@ -345,7 +356,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		super.setText(Funcoes.dateToStrDate(dVal));
 	}
 
-	public void setVlrTime(Date dVal) {
+	public void setVlrTime(Date dVal) {	
 		super.setText(Funcoes.dateToStrTime(dVal));
 	}
 
@@ -556,14 +567,36 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	public Date getVlrTime() {
 		String sRetorno = "";
 		GregorianCalendar cRetorno = new GregorianCalendar(0,0,0);
-		    
+		int hora = 0;
+		int minuto = 0;
+		int segundo =0;
 		if (getText().length() > 0) {
-			sRetorno = transTime(getText());
+			sRetorno = transTime(getText().substring( iTamanho ));
 			try {
-				int iHora = Integer.parseInt(sRetorno.substring(0,2));
-				int iMinuto = Integer.parseInt(sRetorno.substring(3,5));
-				int iSegundo = Integer.parseInt(sRetorno.substring(6,8));
-				cRetorno.set(0,0,0,iHora,iMinuto,iSegundo);
+				try {
+					hora = Integer.parseInt(sRetorno.substring(0,2));					
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					minuto = Integer.parseInt(sRetorno.substring(3,5));	
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					segundo = Integer.parseInt(sRetorno.substring(6,8));	
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				finally {
+					cRetorno.set(0,0,0,hora,minuto,segundo);	
+				}			
+				
+				
 			} catch (Exception err) {
 				cRetorno = null;
 			}
@@ -692,15 +725,20 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	}
 	
 	public void buscaAdic(String sTipo) {
-		if (dlBuscaAdic != null) 
-			if (dlBuscaAdic.setValor(getVlrString(),sTipo))      
+		if (dlBuscaAdic != null) {
+			if (dlBuscaAdic.setValor(getVlrString(),sTipo)){      
 				if (dlBuscaAdic.OK) {
 					Object oVal = null;
 					oVal = dlBuscaAdic.getValor();
 					dlBuscaAdic.oRetVal = null;
-					if (oVal != null)
+					if (oVal != null) {
 						setVlrString(String.valueOf(oVal));
+					}
 				}
+//				dlBuscaAdic.dispose();
+//				dlBuscaAdic = null;
+			}
+		}
 	}
 	
 	private String transValorNum(String sNum) {
@@ -764,25 +802,25 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		time = new GregorianCalendar();
 		switch(retorno.trim().length()) {
 			case 1: 
-				retorno = "0"+retorno+":"+Funcoes.strZero((time.get(Calendar.MINUTE))+"",2)+":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2);
+				retorno = "0"+retorno+":"+Funcoes.strZero((time.get(Calendar.MINUTE))+"",2) + (iTamanho>5?":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2): "") ;
 				break;
 			case 2: 
-				retorno += ":"+Funcoes.strZero((time.get(Calendar.MINUTE))+"",2)+":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2);
+				retorno += ":"+Funcoes.strZero((time.get(Calendar.MINUTE))+"",2) + (iTamanho>5?":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2): "") ;
 				break;
 			case 3: 
-				retorno += Funcoes.strZero((time.get(Calendar.MINUTE))+"",2)+":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2);
+				retorno += Funcoes.strZero((time.get(Calendar.MINUTE))+"",2) + (iTamanho>5?":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2): "");
 				break;
 			case 4: 
-				retorno = retorno.substring(0,3)+"0"+retorno.substring(3)+":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2);
+				retorno = retorno.substring(0,3)+"0"+retorno.substring(3) + (iTamanho>5?":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2): "");
 				break;
 			case 5: 
-				retorno += ":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2);
+				retorno += (iTamanho>5?":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2): "");
 				break;
 			case 6: 
-				retorno += Funcoes.strZero(time.get(Calendar.SECOND)+"",2);
+				retorno += (iTamanho>5?":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2): "");
 				break;
 			case 7: 
-				retorno = retorno.substring(0,6)+Funcoes.strZero(time.get(Calendar.SECOND)+"",2);
+				retorno = (iTamanho>5?":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2): "");
 				break;
 		}
 		if (!Funcoes.validaTime(retorno.trim()))
@@ -924,11 +962,11 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		if (kevt.getKeyCode() == KeyEvent.VK_DELETE) {
 			editDB();
 			return;
-		} else if((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (dlBuscaAdic!=null) && 
-				(dlBuscaAdic instanceof DLBuscaEstoq))
+		} 
+		else if((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (dlBuscaAdic!=null) && (dlBuscaAdic instanceof DLBuscaEstoq)) {
 			buscaAdic("estoque");
-		else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && 
-				(getText().trim().length() > 0) && (bPK || bFK)) {
+		}
+		else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (getText().trim().length() > 0) && (bPK || bFK)) {
 			if(dlCodProd!=null) {
 				if(Aplicativo.bBuscaCodProdGen) {
 					dlCodProd.buscaCodProd(getVlrString());
@@ -944,9 +982,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			//   	transferFocus();		
 		}
 		
-		if (((kevt.getKeyCode() == KeyEvent.VK_F2) || 
-				((kevt.getKeyCode() == KeyEvent.VK_ENTER) && 
-					(getText().trim().length() == 0))) && ((bPK) || (bFK))) {    	
+		if (((kevt.getKeyCode() == KeyEvent.VK_F2) || ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (getText().trim().length() == 0))) && ((bPK) || (bFK))) {    	
 			if ((bFK) && (lcTabExt != null)) {
 				if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
 					if (bRequerido)
@@ -968,23 +1004,24 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 				else 
 					dl.dispose();
 			}
-		} else if (kevt.getKeyCode() == KeyEvent.VK_F1) {
+		} 
+		else if (kevt.getKeyCode() == KeyEvent.VK_F1) {
 			FAtalhos tela = new FAtalhos();
 			tela.setVisible(true);
 			tela.dispose();
-		} else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && 
-			(getText().trim().length() > 0) && (bPK) & (lcTxt != null)) {
+		} 
+		else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (getText().trim().length() > 0) && (bPK) & (lcTxt != null)) {
 			if (Aplicativo.bBuscaProdSimilar)  	  	
 				buscaAdic("similar");		  
 			lcTxt.carregaDados();
 			transferFocus();		
-		} else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) &&
-			(getText().trim().length() > 0) && (bFK) && (lcTabExt != null)) {			
+		} 
+		else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (getText().trim().length() > 0) && (bFK) && (lcTabExt != null)) {			
 			if (lcTabExt.carregaDados())
 				transferFocus();
-		} else if (kevt.getKeyCode() == KeyEvent.VK_F3 && (bPK || bFK))
-			buscaAdic("alternativo");
-		
+		} 
+		else if (kevt.getKeyCode() == KeyEvent.VK_F3 && (bPK || bFK))
+			buscaAdic("alternativo");		
 		if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (bEnterSai)) 
 			transferFocus(); 
 	}

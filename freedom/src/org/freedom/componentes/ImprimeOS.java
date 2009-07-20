@@ -5,13 +5,13 @@
  *         Pacote: org.freedom.componentes <BR>
  *         Classe:
  * @(#)ImprimeOS.java <BR>
- *                    Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- *                    versão 2.1.0 ou qualquer versão posterior. <BR>
- *                    A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- *                    Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- *                    o LICENCIADOR ou então pegar uma cópia em: <BR>
- *                    Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- *                    Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  *                    de acordo com os termos da LPG-PC <BR>
  *                    <BR>
  *                    Comentários da classe.....
@@ -19,12 +19,10 @@
 
 package org.freedom.componentes;
 
+import java.awt.Color;
 import java.awt.Component;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.print.Paper;
-import java.awt.print.PrinterJob;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,7 +30,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.RandomAccessFile;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,20 +47,29 @@ import org.freedom.telas.DLPrinterJob;
 import org.freedom.telas.DLVisualiza;
 import org.freedom.telas.FAndamento;
 
+import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
 
 public class ImprimeOS implements ActionListener {
 
 	public static final int IMP_NONE = -1;
-
+	
 	public static final int IMP_MATRICIAL = 1;
 
 	public static final int IMP_DESKJET = 2;
 
 	public static final int IMP_LASERJET = 3;
+
+	public static final String EPSON_8PP = ((char) 27) + "0";  
+	
+	public static final String EPSON_6PP = ((char) 27) + "2";
 
 	public static final int IMP_OKI = 8;
 
@@ -136,7 +143,7 @@ public class ImprimeOS implements ActionListener {
 
 	String sPath = "";
 
-	Connection con = null;
+	DbConnection con = null;
 
 	String sPorta = "";
 
@@ -186,17 +193,17 @@ public class ImprimeOS implements ActionListener {
 		return subTitulos.size();
 	}
 
-	public ImprimeOS( String sF, Connection cn ) {
+	public ImprimeOS( String sF, DbConnection cn ) {
 
 		iniImprimeOS( sF, cn, null, false );
 	}
 
-	public ImprimeOS( String sF, Connection cn, String sTipoUsoImp, boolean bImpComprimido ) {
+	public ImprimeOS( String sF, DbConnection cn, String sTipoUsoImp, boolean bImpComprimido ) {
 
 		iniImprimeOS( sF, cn, sTipoUsoImp, bImpComprimido );
 	}
 
-	private void iniImprimeOS( String sF, Connection cn, String sTipoUsoImp, boolean bImpComprimido ) {
+	private void iniImprimeOS( String sF, DbConnection cn, String sTipoUsoImp, boolean bImpComprimido ) {
 
 		if ( sTipoUsoImp == null ) {
 			sTipoUsoImp = "TO";
@@ -651,8 +658,9 @@ public class ImprimeOS implements ActionListener {
 		if ( iTipoImp == IMP_NONE )
 			return sRetorno;
 
-		if ( iTipoImp == IMP_MATRICIAL )
+		if ( iTipoImp == IMP_MATRICIAL ) {
 			sRetorno = "" + ( (char) 18 );
+		}
 		else if ( iTipoImp == IMP_DESKJET )
 			sRetorno = ( (char) 27 ) + "(s0p10h1s3b2T";
 		else if ( iTipoImp == IMP_LASERJET )
@@ -1066,14 +1074,18 @@ public class ImprimeOS implements ActionListener {
 		if ( fArq == null )
 			return;
 		try {
-			PrintStream ps = new PrintStream( new FileOutputStream( fArq ) );
+/*			PrintStream ps = new PrintStream( new FileOutputStream( fArq ) );
 			for ( int i = 1; i <= getNumPags(); ++i ) {
 				ps.print( lePagina( i ) );
-				ps.print( getEject() );
+				if ( bImpEject )
+					ps.print( getEject() );
 			}
 			ps.flush();
 			ps.close();
-		} catch ( IOException err ) {
+*/			
+			gravaPdf( fArq );
+			
+		} catch ( Exception err ) {
 			Funcoes.mensagemErro( pai, "Erro ao gravar o arquivo!\n" + err.getMessage() );
 			err.printStackTrace();
 		}
@@ -1091,8 +1103,10 @@ public class ImprimeOS implements ActionListener {
 				if ( bImpEject )
 					ps.print( getEject() );
 			}
+			
 			ps.flush();
 			ps.close();
+			
 		} catch ( IOException err ) {
 			Funcoes.mensagemErro( pai, "Erro ao gravar o arquivo!\n" + err.getMessage() );
 			err.printStackTrace();
@@ -1155,62 +1169,49 @@ public class ImprimeOS implements ActionListener {
 		return iRetorno;
 	}
 
-	public boolean gravaPdf( File fArq ) {
-
-		boolean bRetorno = false;
-		com.lowagie.text.Document document = new com.lowagie.text.Document();
-
+	public boolean gravaPdf( File fArq) {
+		Rectangle pageSize = new Rectangle(PageSize.A4);
+		Document document = new Document(pageSize);
 		try {
-			int iMXPdf = -1;
-			int iMYPdf = -1;
-			int wt = 0;
-			int ht = 0;
-			PdfTemplate tp = null;
-			Graphics2D g2 = null;
-			PdfWriter writer = PdfWriter.getInstance( document, new FileOutputStream( fArq ) );
-			document.open();
-			PdfContentByte cb = writer.getDirectContent();
-			PrinterJob printJob = PrinterJob.getPrinterJob();
-			Paper paper = printJob.defaultPage().getPaper();
-			// PaginaPad pf = new PaginaPad(paper);
-			// wt = (int)(pf.getWidth());
-			// ht = (int)(pf.getHeight());
-			if ( ( iMXPdf != -1 ) && ( iMYPdf != -1 ) ) {
-				paper.setImageableArea( iMXPdf, iMYPdf, wt, ht );
-				// pf = new PaginaPad(paper);
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(fArq));
+		document.addTitle( sTitulo );
+		document.open();
+		PdfContentByte cb = writer.getDirectContent();  
+		
+		Font font = FontFactory.getFont(FontFactory.COURIER, 6, Font.NORMAL, Color.black);		
+		
+		for ( int i = 1; i <= getNumPags(); ++i ) {
+			
+			Paragraph paragrafo = new Paragraph(lePagina( i ), font );
+			document.add(paragrafo);
+			
+			if ( bImpEject ) {
+				document.newPage();
 			}
-			for ( int i = 0; i < getNumPags(); i++ ) {
-				if ( i > 0 ) {
-					document.newPage();
-				}
-				tp = cb.createTemplate( wt, ht );
-				g2 = tp.createGraphics( wt, ht );
-				/*
-				 * try { prepPagina(g2, pf, i); } catch (PrinterException pe) { Funcoes.mensagemErro(null,"Erro criando graphics: "+pe.getMessage()); }
-				 */
-				tp.setWidth( wt );
-				tp.setHeight( ht );
-				g2.dispose();
-				cb.addTemplate( tp, 0, 0 );
-
-			}
-
-		} catch ( DocumentException de ) {
-			System.err.println( de.getMessage() );
-		} catch ( IOException ioe ) {
-			System.err.println( ioe.getMessage() );
 		}
-
-		// step 5: we close the document
+		
+		}
+		catch(DocumentException de) {
+		System.err.println(de.getMessage());
+		}
+		catch(IOException ioe) {
+		System.err.println(ioe.getMessage());
+		}
 		document.close();
-
-		return bRetorno;
+		
+		
+		return true;		
 	}
-
+	
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == tim ) {
 			and.atualiza( iAndamento );
 		}
 	}
+	//Altera o espaçamento vertical para (8 ou 6 linhas por polegada impressoras epson)
+	public void setaEspVert(String pp) {
+		say(0,0,pp);
+	}
+		
 }

@@ -10,13 +10,13 @@
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para
  * Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
  * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
  * Programa. <BR> 
  * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você
  * pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é
  * preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR>
@@ -28,17 +28,16 @@
 
 package org.freedom.componentes;
 
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 
 import org.freedom.telas.Aplicativo;
 
 public class NF {
 	
-	public static final int TAM_ITENS = 28;
-	public static final int TAM_CAB = 82;
 	public static final int TPNF_NONE = -1;
 	public static final int TPNF_ENTRADA = 0;
 	public static final int TPNF_SAIDA = 1;
+	
 	public static final int T_CAB = 0;
 	public static final int T_ITENS = 1;
 	public static final int T_PARC = 2;
@@ -128,6 +127,20 @@ public class NF {
 	public static final int C_VLRIRVENDA = 79;
 	public static final int C_VLRCSOCIALVENDA = 80;
 	public static final int C_VLRBASEISSVENDA = 81;
+	public static final int C_TIPOMOV = 82;
+	public static final int C_MENSAGENS = 83;
+	public static final int C_VLRBASEICMSST = 84;
+	public static final int C_VLRICMSST = 85;
+	public static final int C_ENDFILIAL= 86;
+	public static final int C_NUMFILIAL= 87;
+	public static final int C_BAIRFILIAL= 88;
+	public static final int C_CIDFILIAL= 89;
+	public static final int C_UFFILIAL= 90;
+	public static final int C_CEPFILIAL= 91;
+	public static final int C_FONEFILIAL= 92;
+	public static final int C_WWWFILIAL= 93;
+	public static final int C_EMAILFILIAL= 94;
+	public static final int TAM_CAB = 95;
 	
 	//itens
 	public static final int C_CODITPED = 0;
@@ -158,6 +171,13 @@ public class NF {
 	public static final int C_VLRISSITPED = 25;
 	public static final int C_VLRDESCITPROD = 26;
 	public static final int C_CODBAR = 27;
+	public static final int C_CODCLASSFISC = 28;
+	public static final int C_PERCDESCITVENDA = 29;
+	public static final int C_CODFABPROD = 30;
+	public static final int TAM_ITENS = 31;
+	
+	
+	
 	
 	//adic
 	public static final int C_CODAUXV = 0;
@@ -196,6 +216,9 @@ public class NF {
 	public static final int C_ADICFRETEBASEICM = 21;	
 	public static final int C_ALIQICMSFRETEVD = 22;
 	public static final int C_VLRICMSFRETEVD = 23;
+	public static final int C_DDDTRANSP = 24;
+	public static final int C_FONETRANSP = 25;
+	
 
 	protected TabVector cab = null;
 	protected TabVector itens = null;
@@ -203,21 +226,22 @@ public class NF {
 	protected TabVector adic = null;
 	protected TabVector frete = null;
 	protected int tipoNF = TPNF_NONE; 
-	protected int casasDec = 2;
+	
+	protected int casasDec = Aplicativo.casasDec;
 	protected int casasDecFin = Aplicativo.casasDecFin;
 	
-	private Connection con = null;
+	private DbConnection con = null;
     
 	public NF(int casasDec) {
 		super();
 		this.casasDec = casasDec;
 	}
 	
-	protected void setConexao(Connection arg0) {
+	protected void setConexao(DbConnection arg0) {
 		con = arg0;
 	}
 	
-	public Connection getConexao() {
+	public DbConnection getConexao() {
 		return con;
 	}
 	
@@ -254,52 +278,5 @@ public class NF {
 		}
 		return t;
 	}
-	/*	
-	public boolean carregaTabelas(Connection con, Vector parans ) {
-		return false;
-	}
- 		String sSQL = "SELECT (SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC WHERE IC.CODVENDA=V.CODVENDA),"
-				+ "(SELECT L.CODLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE),"
-				+ "(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE),"
-				+ "(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=I.CODMENS"
-				+ " AND M.CODFILIAL=I.CODFILIALME AND M.CODEMP=I.CODEMPME),"
-				+ "(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=CL.CODMENS"
-				+ " AND M.CODFILIAL=CL.CODFILIALME AND M.CODEMP=CL.CODEMPME),"
-				+ "(SELECT S.DESCSETOR FROM VDSETOR S WHERE S.CODSETOR=C.CODSETOR"
-				+ " AND S.CODFILIAL=C.CODFILIALSR AND S.CODEMP=C.CODEMPSR),"
-				+ "(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODEMP=V.CODEMPBO"
-				+ " AND B.CODFILIAL=V.CODFILIALBO AND B.CODBANCO=V.CODBANCO),"
-				+ "(SELECT P.SIGLAPAIS FROM SGPAIS P WHERE P.CODPAIS=C.CODPAIS),"
-				+ "V.DOCVENDA,V.CODVENDA,V.CODCLI,C.RAZCLI,C.CNPJCLI,C.CPFCLI,V.DTEMITVENDA,C.ENDCLI,"
-				+ "C.BAIRCLI,C.CEPCLI,V.OBSVENDA,V.DTSAIDAVENDA,C.CIDCLI,C.UFCLI,C.FONECLI,C.FONECLI,C.NUMCLI,C.COMPLCLI,"
-				+ "C.FAXCLI,C.INSCCLI,C.RGCLI,I.CODPROD,P.REFPROD,P.CODBARPROD,P.DESCPROD, P.CODUNID,N.CODNAT,"
-				+ "I.VLRLIQITVENDA,N.DESCNAT,I.QTDITVENDA,I.PRECOITVENDA,I.VLRPRODITVENDA,I.CODNAT,I.PERCICMSITVENDA,"
-				+ "I.PERCISSITVENDA,PERCIPIITVENDA,VLRIPIITVENDA,V.VLRBASEICMSVENDA,V.VLRICMSVENDA,V.VLRPRODVENDA,"
-				+ "V.VLRISSVENDA,V.VLRFRETEVENDA,V.VLRDESCVENDA,V.VLRDESCITVENDA,V.VLRADICVENDA,V.VLRIPIVENDA,"
-				+ "V.VLRBASEISSVENDA,V.VLRLIQVENDA,V.CODVEND,VEND.NOMEVEND,V.CODPLANOPAG,PG.DESCPLANOPAG,F.CODTRAN,"
-				+ "T.RAZTRAN,F.TIPOFRETEVD,F.PLACAFRETEVD,F.UFFRETEVD,T.TIPOTRAN,T.CNPJTRAN,T.ENDTRAN,T.NUMTRAN,T.CIDTRAN,"
-				+ "T.UFTRAN,T.INSCTRAN,F.QTDFRETEVD,F.ESPFRETEVD,F.MARCAFRETEVD,F.PESOBRUTVD,"
-				+ "F.PESOLIQVD, I.ORIGFISC, I.CODTRATTRIB, FL.CNPJFILIAl,FL.INSCFILIAL,FL.ENDFILIAL,"
-				+ "FL.NUMFILIAL,FL.COMPLFILIAL,FL.BAIRFILIAL,FL.CEPFILIAL,FL.CIDFILIAL,FL.UFFILIAL,FL.FONEFILIAL,"
-				+ "FL.FAXFILIAL,C.ENDCOB, C.NUMCOB, C.COMPLCOB,C.CEPCOB, C.CIDCOB, P.TIPOPROD, C.INCRACLI, V.CODBANCO,"
-				+ "P.CODFISC, C.ENDENT, C.NUMENT, C.COMPLENT,C.CIDENT,C.UFENT,C.BAIRENT,C.NOMECLI,I.OBSITVENDA,"
-				+ "V.VLRPISVENDA,V.VLRCOFINSVENDA,V.VLRIRVENDA,V.VLRCSOCIALVENDA,V.CODCLCOMIS,V.PERCCOMISVENDA,"
-				+ "V.PERCMCOMISVENDA, N.IMPDTSAIDANAT,P.DESCAUXPROD, C.DDDCLI "
-				+ " FROM VDVENDA V, VDCLIENTE C, VDITVENDA I, EQPRODUTO P, VDVENDEDOR VEND, FNPLANOPAG PG,"
-				+ " VDFRETEVD F, VDTRANSP T, LFNATOPER N, SGFILIAL FL, LFCLFISCAL CL WHERE V.TIPOVENDA='V' AND V.CODVENDA="
-				+ iCodVenda
-				+ " AND V.CODEMP=?"
-				+ " AND V.CODFILIAL=? AND FL.CODEMP=V.CODEMP AND FL.CODFILIAL=V.CODFILIAL AND C.CODCLI=V.CODCLI AND I.CODVENDA=V.CODVENDA"
-				+ " AND P.CODPROD=I.CODPROD AND VEND.CODVEND=V.CODVEND AND PG.CODPLANOPAG=V.CODPLANOPAG AND F.CODVENDA=V.CODVENDA"
-				+ " AND T.CODTRAN=F.CODTRAN AND N.CODNAT=I.CODNAT AND CL.CODFISC = P.CODFISC AND CL.CODFILIAL=P.CODFILIAL"
-				+ " AND CL.CODEMP = P.CODEMP ORDER BY P."
-				+ dl.getValor()
-				+ ",P.DESCPROD";
-		String sSQLRec = "SELECT I.DTVENCITREC,I.VLRPARCITREC,I.NPARCITREC FROM FNRECEBER R, FNITRECEBER I WHERE R.CODVENDA="
-				+ iCodVenda + " AND I.CODREC=R.CODREC ORDER BY I.DTVENCITREC";
-		String sSQLInfoAdic = "SELECT CODAUXV,CPFCLIAUXV,NOMECLIAUXV,CIDCLIAUXV,UFCLIAUXV "
-				+ "FROM VDAUXVENDA WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=?";
-
- */
 	
 }
