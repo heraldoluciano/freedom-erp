@@ -1412,10 +1412,10 @@ public class ControllerECF {
 			final BigDecimal cem = new BigDecimal( "100.00" );
 			final String[] totalizadores = ecf.resultTotalizadoresParciais().split( "," );
 			final String parciais = totalizadores[ 0 ];
-			String t = "";
-			for ( int i=0; i < 16; i++ ) {
-				t = parciais.substring( i*14, i*14+14 );
-				returnOfAction.add( new BigDecimal( t ).divide( cem ) );
+			if ( parciais != null && parciais.length() >= 224 ) {
+    			for ( int i=0; i < 16; i++ ) {
+    				returnOfAction.add( new BigDecimal( parciais.substring( i*14, i*14+14 ) ).divide( cem ) );
+    			}
 			}
 		}
 		
@@ -1430,10 +1430,10 @@ public class ControllerECF {
 			final BigDecimal cem = new BigDecimal( "100.00" );
 			final String[] totalizadores = ecf.resultTotalizadoresParciais().split( "," );
 			final String parciais = totalizadores[ 4 ];
-			String t = "";
-			for ( int i=0; i < 9; i++ ) {
-				t = parciais.substring( i*14, i*14+14 );
-				returnOfAction.add( new BigDecimal( t ).divide( cem ) );
+			if ( parciais != null && parciais.length() >= 126 ) {
+				for ( int i = 0; i < 9; i++ ) {
+					returnOfAction.add( new BigDecimal( parciais.substring( i * 14, i * 14 + 14 ) ).divide( cem ) );
+				}
 			}
 		}
 		
