@@ -9,13 +9,13 @@
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para
  * Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
  * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
  * Programa. <BR>
  * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você
  * pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é
  * preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR>
@@ -30,15 +30,14 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Vector;
-
 import javax.swing.JMenuItem;
-
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.componentes.JButtonPad;
@@ -47,6 +46,7 @@ import org.freedom.componentes.ObjetoEmpresa;
 import org.freedom.componentes.TabObjeto;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.std.FPrefereGeral;
 
 public class AplicativoPD extends Aplicativo implements ActionListener, KeyListener {
 
@@ -82,11 +82,11 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		iniConexao();
 		carregaCasasDec();
 		carregaBuscaProd();
-		// ainda não implementado...
 		createEmailBean();
 		getMultiAlmox();
 		buscaInfoUsuAtual();
 		setaInfoTela();
+
 	}
 
 	public void setaSysdba() {
@@ -115,6 +115,8 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		telaPrincipal.adicCompInBar( pinBotoes, BorderLayout.WEST );
 		btAtualMenu.addActionListener( this );
 		bModoDemo = getModoDemo();
+
+		validaPrefere();
 
 	}
 
@@ -156,7 +158,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( null, "Não foi possível carregar o parâmetro 'numterm'\n" + err.getMessage(), true, con, err );
 		}
-		
+
 		if ( strBanco == null ) {
 			Funcoes.mensagemInforma( null, "Parametro banco nao foi preenchido" );
 			return;
@@ -165,33 +167,33 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			Funcoes.mensagemInforma( null, "Parametro driver nao foi preenchido" );
 			return;
 		}
-		
+
 		con = conexao();
 		if ( con == null ) {
 			System.exit( 1 );
 		}
 		try {
 			con.setAutoCommit( bAutoCommit );
-			// con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-			con.setTransactionIsolation( Connection.TRANSACTION_READ_COMMITTED );
+			// con.setTransactionIsolation(DbConnection.TRANSACTION_SERIALIZABLE);
+			con.getConnection().setTransactionIsolation( Connection.TRANSACTION_READ_COMMITTED );
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, err.getMessage() );
 		}
-		
+
 		tbObjetos = new TabObjeto();
 		tbObjetos.montaLista( con, iCodEmp, "SGOBJETO", "TB" );
 
 		empresa = new ObjetoEmpresa( con );
 	}
 
-	public static int[] gravaLog( String sClas, String sTipo, String sDesc, String sObs, Connection con ) {
+	public static int[] gravaLog( String sClas, String sTipo, String sDesc, String sObs, DbConnection con ) {
 
 		return gravaLog( strUsuario, sClas, sTipo, sDesc, sObs, con );
 	}
 
-	public static int[] gravaLog( String sIDUSU, String sClas, String sTipo, String sDesc, String sObs, Connection con ) {
+	public static int[] gravaLog( String sIDUSU, String sClas, String sTipo, String sDesc, String sObs, DbConnection con ) {
 
-		int iRet[] = new int[ 2 ];
+		int iRet[] = new int[2];
 		String sSQL = "SELECT CODFILIAL,CODLOG FROM SGLOGSP01(?,?,?,?)";
 		try {
 			PreparedStatement ps = con.prepareStatement( sSQL );
@@ -203,13 +205,12 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			ps.setString( 4, sObs );
 			ResultSet rs = ps.executeQuery();
 			if ( rs.next() ) {
-				iRet[ 0 ] = rs.getInt( "CodFilial" );
-				iRet[ 1 ] = rs.getInt( "CodLog" );
+				iRet[0] = rs.getInt( "CodFilial" );
+				iRet[1] = rs.getInt( "CodLog" );
 			}
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao gravar LOG!!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
@@ -234,8 +235,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 				else
 					bModo = false;
 			}
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, err.getMessage(), true, con, err );
 			return true;
@@ -259,8 +259,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 				strCodCCUsu = rs.getString( "CODCC" );
 				strAnoCCUsu = rs.getString( "ANOCC" );
 			}
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 
 		} catch ( SQLException err ) {
 			killProg( 1, "Erro ao carregar informações da tabela de usuários!\n" + err.getMessage() );
@@ -287,7 +286,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 				sTmp = rs.getString( "TPACESSOMU" );
 				if ( sTmp == null )
 					return bRet;
-				if ( sTmp.toCharArray()[ 0 ] > 'A' )
+				if ( sTmp.toCharArray()[0] > 'A' )
 					bRet = true;
 			}
 			rs.close();
@@ -311,13 +310,42 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 				sDesc = "ESTAÇÃO DE TRABALHO NÃO CADASTRADA";
 			else
 				sDesc = rs.getString( "DescEst" );
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, err.getMessage(), true, con, err );
 			return "NÃO FOI POSSÍVEL REGISTRAR A ESTAÇÃO DE TRABALHO! ! !";
 		}
 		return sDesc;
+	}
+
+	public void validaPrefere() {
+
+		if ( iCodModu == 11 /* Modulo de representações volta */ ) {
+			return;
+		}
+
+		String sSQL = "SELECT CODEMP FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sDesc = "";
+
+		try {
+			ps = con.prepareStatement( sSQL );
+			ps.setInt( 1, iCodEmp );
+			ps.setInt( 2, iCodFilial );
+
+			rs = ps.executeQuery();
+
+			if ( !rs.next() ) {
+				FPrefereGeral tela = new FPrefereGeral();
+				telaPrincipal.criatela( "Preferências gerais", tela, con );
+				tela.setTelaPrim( telaPrincipal );
+			}
+			con.commit();
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( null, err.getMessage(), true, con, err );
+		}
+
 	}
 
 	public void getMultiAlmox() {
@@ -331,12 +359,11 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			ps.setInt( 1, iCodEmp );
 			rs = ps.executeQuery();
 
-			if ( !rs.next() )
-				sMultiAlmoxEmp = rs.getString( 1 ) == null ? "N" : rs.getString( 1 );
+			if ( rs.next() )
+				sMultiAlmoxEmp = ( rs.getString( "MULTIALMOXEMP" ) == null ? "N" : rs.getString( "MULTIALMOXEMP" ) );
 			else
-
-			if ( !con.getAutoCommit() )
-				con.commit();
+				sMultiAlmoxEmp = "N";
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, err.getMessage() );
 		}
@@ -357,10 +384,10 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 				casasDec = rs.getInt( "CASASDEC" );
 				casasDecFin = rs.getInt( "CASASDECFIN" );
 			}
+
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Não foi possível obter o número de casas decimais!\n" + err.getMessage(), true, con, err );
 		} finally {
@@ -387,8 +414,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			}
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 		} finally {
@@ -398,7 +424,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		}
 	}
 
-	public static String carregaFiltro( Connection conF, int iCodEmpF ) {
+	public static String carregaFiltro( DbConnection conF, int iCodEmpF ) {
 
 		String sSQL = "SELECT FILTRO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		// String sSQL = "INSERT INTO TESTE (TESTE1) VALUES ('2001-3-23')";
@@ -418,8 +444,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 				sFiltro = rs.getString( "FILTRO" );
 			// rs.close();
 			// ps.close();
-			if ( !conF.getAutoCommit() )
-				conF.commit();
+			conF.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "NÃO FOI POSSÍVEL CARREGAR OS FILTROS! " + err.getMessage(), true, conF, err );
 			// return "NÃO FOI POSSÍVEL CARREGAR OS FILTROSL! ! !";
@@ -457,8 +482,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			ps.setString( 1, sFiltro );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.execute();
-			if ( !con.getAutoCommit() )
-				con.commit();
+			con.commit();
 			Funcoes.mensagemInforma( null, "Filtros atualizados para: " + sFiltro );
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao atualizar filtro.\n" + err.getMessage(), true, con, err );
@@ -485,6 +509,57 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder();
+
+		sql = new StringBuilder();
+
+		try {
+			sql.append( "select u.idusu," );
+			sql.append( "e.hostsmtp, e.portasmtp, e.usuarioremet, e.senharemet, e.usaautsmtp, e.usassl," );
+			sql.append( "e.emailremet de, e.assinatremet assinatura " );
+			sql.append( "from tkconfemail e, sgusuario u " );
+			sql.append( "where u.codemp=? and u.codfilial=? and u.idusu=? and " );
+			sql.append( "e.codemp=u.codempce and e.codfilial=u.codfilialce and e.codconfemail=u.codconfemail" );
+
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGUSUARIO" ) );
+			ps.setString( 3, strUsuario);
+
+			rs = ps.executeQuery();
+			EmailBean email = new EmailBean();
+
+			if ( rs.next() ) {
+				email.setHost( rs.getString( "hostsmtp" ) );
+				email.setPorta( rs.getInt( "portasmtp" ) );
+				email.setUsuario( rs.getString( "usuarioremet" ) );
+				email.setSenha( rs.getString( "senharemet" ) );
+				email.setAutentica( rs.getString( "usaautsmtp" ) );
+				email.setSsl( rs.getString( "usassl" ) );
+				email.setDe( rs.getString( "de" ) );
+				email.setAssinatura( rs.getString( "assinatura" ) );
+				setEmailBean( email );
+			}	 
+			else {
+				createEmailBeanPrefere();
+			}
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+		} 
+		catch ( SQLException e ) {
+			//			Funcoes.mensagemErro( null, "Não foi possível carregar as informações para envio de email!\n" + e.getMessage() );
+			System.out.println("Não foi possível carregar as informações para envio de email, através dos dados do usuário!\n" + e.getMessage());
+		}
+
+	}
+
+	public void createEmailBeanPrefere() {
+
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
 		EmailBean email = new EmailBean();
 		sql.append( "SELECT P3.SMTPMAIL, P3.SMTPAUTMAIL, P3.USERMAIL, P3.PASSMAIL, " );
 		sql.append( "P3.SMTPSSLMAIL, P3.PORTAMAIL, P3.ENDMAIL " );
@@ -507,9 +582,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			}
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( null, "Não foi possível carregar as informações para envio de emial!\n" + e.getMessage() );
 		}
@@ -518,16 +591,16 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 
 	@Override
 	public void updateEmailBean( EmailBean email ) {
-		
+
 		try {
 
 			StringBuilder sql = new StringBuilder();
 			sql.append( "UPDATE SGPREFERE3 P3 " );
-			sql.append( "SET P3.SMTPMAIL=?, P3.SMTPAUTMAIL=?, ");
+			sql.append( "SET P3.SMTPMAIL=?, P3.SMTPAUTMAIL=?, " );
 			sql.append( "P3.USERMAIL=?, P3.PASSMAIL=?, " );
 			sql.append( "P3.SMTPSSLMAIL=?, P3.PORTAMAIL=?, P3.ENDMAIL=? " );
 			sql.append( "WHERE P3.CODEMP=? AND P3.CODFILIAL=?" );
-			
+
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setString( 1, email.getHost() );
 			ps.setString( 2, email.getAutentica() );
@@ -540,17 +613,14 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			ps.setInt( 9, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
 			ps.executeUpdate();
 			ps.close();
-			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
-			
+
+			con.commit();
+
 			setEmailBean( email );
-			
+
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( null, "Não foi gravar as alterações de configuração de email!\n" + e.getMessage() );
 		}
 
 	}
-
 }

@@ -8,7 +8,7 @@ package org.freedom.telas;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 
 import org.freedom.componentes.JPanelPad;
 
@@ -33,7 +33,7 @@ public interface IFilho {
 
     public abstract void firstFocus();
 
-    public abstract void setConexao(Connection cn);
+    public abstract void setConexao(DbConnection cn);
 
     public abstract void execShow();
 

@@ -7,13 +7,13 @@
  * Classe:
  * @(#)FPassword.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -22,7 +22,7 @@
 package org.freedom.telas;
 
 import java.awt.Component;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -62,6 +62,11 @@ public class FPassword extends FFDialogo {
      * Permissão para visualização de tela de libera crédito.
      */
     public static final int LIBERA_CRED = 4;
+    
+    /**
+     * Permissão para visualização de tela de libera crédito.
+     */
+    public static final int VENDA_IMOBLIZIADO = 5;
 
 	private JTextFieldPad txtUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
@@ -87,7 +92,7 @@ public class FPassword extends FFDialogo {
 	 * @param arg4
 	 *            Conexão.
 	 */
-	public FPassword( Component arg0, int arg1, String[] arg2, String arg3, Connection arg4 ) {
+	public FPassword( Component arg0, int arg1, String[] arg2, String arg3, DbConnection arg4 ) {
 
 		super( arg0 );
 		tipo = arg1;
@@ -97,7 +102,7 @@ public class FPassword extends FFDialogo {
 		montaTela();
 	}
 
-	public FPassword( Component arg0, int arg1, String arg2, Connection arg3 ) {
+	public FPassword( Component arg0, int arg1, String arg2, DbConnection arg3 ) {
 
 		this( arg0, arg1, null, arg2, arg3 );
 	}
@@ -142,6 +147,9 @@ public class FPassword extends FFDialogo {
 				break;
             case LIBERA_CRED :
                 ret = getLiberaCredito();
+                break;    
+            case VENDA_IMOBLIZIADO :
+                ret = getVendaImobilizado();
                 break;    
 			default :
 				break;
@@ -190,6 +198,11 @@ public class FPassword extends FFDialogo {
         return getPermissao( LIBERA_CRED );
     }
     
+    private boolean getVendaImobilizado(){
+        
+        return getPermissao( VENDA_IMOBLIZIADO );
+    }
+    
 	private boolean getPermissao( int tipo ) {
 
 		PreparedStatement ps = null;
@@ -197,43 +210,24 @@ public class FPassword extends FFDialogo {
 		Properties props = null;
 		String sIDUsu = null;
 		StringBuffer sSQL = new StringBuffer();
-		boolean[] permissoes = new boolean[ 5 ];
+		boolean[] permissoes = new boolean[ 6 ];
 		
 		try {
-
-//			ps = con.prepareStatement( "SELECT CURRENT_CONNECTION FROM SGEMPRESA" );
-//			rs = ps.executeQuery();
-//			if ( rs.next() ) {
-//				System.out.println("1-Conexão: "+rs.getInt( "CURRENT_CONNECTION" ));
-//			}
 			
 			props = new Properties();			
 			sIDUsu = txtUsu.getVlrString().toLowerCase().trim();
-			props.put( "user", sIDUsu );
-			props.put( "password", txtPass.getVlrString() );
+			//props.put( "user", sIDUsu );
+			//props.put( "password", txtPass.getVlrString() );
 			
 			if ( "".equals( sIDUsu ) || "".equals( txtPass.getVlrString().trim() ) ) {
 				
 				Funcoes.mensagemErro( this, "Campo em branco!" );
 				return false;
 			}
-
-//			ps = con.prepareStatement( "SELECT CURRENT_CONNECTION FROM SGEMPRESA" );
-//			rs = ps.executeQuery();
-//			if ( rs.next() ) {
-//				System.out.println("2-Conexão: "+rs.getInt( "CURRENT_CONNECTION" ));
-//			}
 			
 			DriverManager.getConnection( Aplicativo.strBanco, props ).close();
-			
-//			ps = con.prepareStatement( "SELECT CURRENT_CONNECTION FROM SGEMPRESA" );
-//			rs = ps.executeQuery();
-//			if ( rs.next() ) {
-//				System.out.println("2-Conexão: "+rs.getInt( "CURRENT_CONNECTION" ));
-//			}
-				 
 
-			sSQL.append( "SELECT BAIXOCUSTOUSU, ABREGAVETAUSU, ALTPARCVENDA, APROVRECEITA, LIBERACREDUSU " );
+			sSQL.append( "SELECT BAIXOCUSTOUSU, ABREGAVETAUSU, ALTPARCVENDA, APROVRECEITA, LIBERACREDUSU, VENDAPATRIMUSU " );
 			sSQL.append( "FROM SGUSUARIO " );
 			sSQL.append( "WHERE IDUSU=? AND CODEMP=? AND CODFILIAL=?" );
 			
@@ -251,6 +245,7 @@ public class FPassword extends FFDialogo {
 				permissoes[ 2 ] = "S".equals( rs.getString( 3 ) );
 				permissoes[ 3 ] = "S".equals( rs.getString( 4 ) );
                 permissoes[ 4 ] = "S".equals( rs.getString( 5 ) );
+                permissoes[ 5 ] = "S".equals( rs.getString( 6 ) );
                 
 			}
 			

@@ -7,13 +7,13 @@
  * Classe:
  * @(#)FPrincipal.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -27,6 +27,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,10 +38,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -63,13 +65,20 @@ import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.StatusBar;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.modulos.atd.FAgenda;
+import org.freedom.infra.model.jdbc.DbConnection;
 
 public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener {
 
+	
+	private Image icone;
+//	private SystemTray tray;
+	private Toolkit toolkit;
+//	private TrayIcon trayIcon;
+	private PopupMenu popupMenu;
+	
 	private static final long serialVersionUID = 1L;
 
-	protected static Connection con = null;
+	protected static DbConnection con = null;
 
 	public JMenuBar bar = new JMenuBar();
 
@@ -79,9 +88,9 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	private Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
 
-	private JButton btCalc = new JButton( Icone.novo( "btCalc.gif" ) );
+	private JButton btCalc = new JButton( Icone.novo( "btCalc.png" ) );
 
-	private JButton btAgenda = new JButton( Icone.novo( "btAgenda.gif" ) );
+	private JButton btAgenda = new JButton( Icone.novo( "btAgenda.png" ) );
 
 	public JPanelPad pinBotoesDir = new JPanelPad();
 
@@ -103,9 +112,9 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	private int iHeightImgFundo = 0;
 
-	private String sURLStpinf = "http://www.stpinf.com";
+	private String sURLEmpresa = "http://www.stpinf.com";
 
-	private String sURLFreedom = "http://www.freedom.org.br";
+	private String sURLSistema = "http://www.freedom.org.br";
 
 	private Border borderStpinf = null;
 
@@ -127,17 +136,33 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	private JSplitPane splitPane = null;
 
-	private String imgLogoSis = "lgFreedom3.jpg";
+	String imgLogoSis = "lgFreedom3.jpg";
 
-	private String imgLogoEmp = "lgSTP3.jpg";
+	String imgLogoEmp = "lgSTP3.jpg";
 
 	public FPrincipal( String sDirImagem, String sImgFundo ) {
 
-		this( sDirImagem, sImgFundo, null, null );
+		this( sDirImagem, sImgFundo, null, null, null, null, null );
 	}
 
-	public FPrincipal( String sDirImagem, String sImgFundo, String sImgLogoSis, String sImgLogoEmp ) {
+	protected void adicionarItemMenu(MenuItem mi) {
+		this.popupMenu.add(mi);
+	}
+	
+	public FPrincipal( String sDirImagem, String sImgFundo, String sImgLogoSis, String sImgLogoEmp, Color bgcolor, String urlempresa, String urlsistema ) {
 
+		if(urlempresa!=null) {
+			sURLEmpresa=urlempresa;
+		}
+		
+		if(urlsistema!=null) {
+			sURLSistema=urlsistema;
+		}
+		
+		if(bgcolor != null) {
+			padrao = bgcolor;
+		}
+		
 		if ( sDirImagem != null ) {
 			Imagem.dirImages = sDirImagem;
 			Icone.dirImages = sDirImagem;
@@ -255,15 +280,27 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 
-		FAgenda.carregaTabAgd( iCodAge, sTipoAge, new Object[] { new Date() }, tabAgd, true, con, null, null );
+		
+		Vector<Integer> codage = new Vector<Integer>();
+		Vector<String> tipoage = new Vector<String>();
+		codage.addElement( new Integer(iCodAge) );
+		tipoage.addElement( sTipoAge );
+		Vector<Vector<?>> agentes = new Vector<Vector<?>>();		
+		agentes.addElement( codage );
+		agentes.addElement( tipoage );
+
+		try {
+//			org.freedom.modulos.crm.agenda.FAgenda.carregaTabAgd( agentes, new Object[] { new Date() }, tabAgd, false, con, null, "S", true, false, false, true, true, true) ;
+		}
+		catch (Exception e) {
+			Funcoes.mensagemInforma( null, "Este recurso requer Java 1.6 ou superior!" );
+		}
 
 	}
 
@@ -275,10 +312,10 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	public void mouseClicked( MouseEvent arg0 ) {
 
 		if ( ( arg0.getSource() == lbStpinf ) && ( arg0.getClickCount() >= 2 ) ) {
-			Funcoes.executeURL( Aplicativo.strOS, Aplicativo.strBrowser, sURLStpinf );
+			Funcoes.executeURL( Aplicativo.strOS, Aplicativo.strBrowser, sURLEmpresa );
 		}
 		else if ( ( arg0.getSource() == lbFreedom ) && ( arg0.getClickCount() >= 2 ) ) {
-			Funcoes.executeURL( Aplicativo.strOS, Aplicativo.strBrowser, sURLFreedom );
+			Funcoes.executeURL( Aplicativo.strOS, Aplicativo.strBrowser, sURLSistema );
 		}
 	}
 
@@ -325,7 +362,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		c.add( statusBar, BorderLayout.SOUTH );
 	}
 
-	public void setConexao( Connection conGeral ) {
+	public void setConexao( DbConnection conGeral ) {
 
 		con = conGeral;
 	}
@@ -345,6 +382,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	 * 
 	 * public void setMenu() { arquivoMenu.addSeparator(); arquivoMenu.add(sairMI); } public void tiraEmp() { arquivoMenu.remove(0); }
 	 */
+	@SuppressWarnings("unchecked")
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btCalc ) {
@@ -360,18 +398,25 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 				calc.show();
 			}
 		}
-		else if ( evt.getSource() == btAgenda ) {
-			FAgenda agenda = null;
-			if ( this.temTela( "org.freedom.modulos.atd.FAgenda" ) ) {
-				agenda = (FAgenda) this.getTela( "org.freedom.modulos.atd.FAgenda" );
-				if (agenda!=null) {
-					agenda.show();
-					carregaAgenda();
+		else if ( evt.getSource() == btAgenda ) {					
+			try {				
+				Class<FFilho> telaClass = (Class<FFilho>) Class.forName( "org.freedom.modulos.crm.agenda.FAgenda" );
+				Object obj = telaClass.newInstance();				
+				FFilho tela = (FFilho) obj;
+				try {
+					this.criatela( "Agenda", tela, con );
+					tela.setTelaPrim( this );
+				} 
+				catch ( Exception e ) {
+					e.printStackTrace();
 				}
-			} else {
-				agenda = new FAgenda();
-				this.criatela( "Agenda", agenda, con );
-				carregaAgenda();
+			}
+			catch (UnsupportedClassVersionError e) {
+				Funcoes.mensagemInforma( null, "Este recurso requer Java 1.6 ou superior!" );
+				e.printStackTrace();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -449,7 +494,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	}
 
-	public void criatela( String titulo, FFDialogo comp, Connection cn ) {
+	public void criatela( String titulo, FFDialogo comp, DbConnection cn ) {
 
 		//comp.setName( nome );
 		String name = comp.getClass().getName();
@@ -458,7 +503,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		comp.execShow();
 	}
 
-	public void criatela( String titulo, FFilho comp, Connection cn ) {
+	public void criatela( String titulo, FFilho comp, DbConnection cn ) {
 
 	//	comp.setName( nome );
 		String name = comp.getClass().getName();
@@ -472,7 +517,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		}
 	}
 
-	public void criatela( String titulo, FDialogo comp, Connection cn ) {
+	public void criatela( String titulo, FDialogo comp, DbConnection cn ) {
 
 		String name = comp.getClass().getName();
 		//comp.setName( name  );
@@ -507,35 +552,35 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		tBar.add( comp, sAling );
 	}
 
-	public void setBgColor( final Color cor ) {
-
+	public void setBgColor( Color cor ) {
+		if(cor==null) 
+			cor = padrao;
 		dpArea.setBackground( cor );
 	}
 
 	public void addLinks( final ImageIcon icStpinf, final ImageIcon icFreedom ) {
 
-		lbStpinf = new JLabelPad( icStpinf );
-		lbFreedom = new JLabelPad( icFreedom );
+		if(icStpinf!=null) {
+			lbStpinf = new JLabelPad( icStpinf );
+			final int iWidthImgStpinf = icStpinf.getIconWidth();
+			final int iHeightImgStpinf = icStpinf.getIconHeight();
+			lbStpinf.setBounds( 20, (int) tela.getHeight() - 265, iWidthImgStpinf, iHeightImgStpinf );
+			lbStpinf.setToolTipText( sURLEmpresa );
+			borderStpinf = lbStpinf.getBorder();
+			dpArea.add( lbStpinf );
+			lbStpinf.addMouseListener( this );
+		}
 		
-
-		final int iWidthImgStpinf = icStpinf.getIconWidth();
-		final int iHeightImgStpinf = icStpinf.getIconHeight();
-		final int iWidthImgFreedom = icFreedom.getIconWidth();
-		final int iHeightImgFreedom = icFreedom.getIconHeight();
-
-		lbStpinf.setBounds( 20, (int) tela.getHeight() - 265, iWidthImgStpinf, iHeightImgStpinf );
-		lbFreedom.setBounds( (int) tela.getWidth() - 155, (int) tela.getHeight() - 265, iWidthImgFreedom, iHeightImgFreedom );
-		lbStpinf.setToolTipText( sURLStpinf );
-		lbFreedom.setToolTipText( sURLFreedom );
-
-		borderStpinf = lbStpinf.getBorder();
-		borderFreedom = lbFreedom.getBorder();
-
-		dpArea.add( lbStpinf );
-		dpArea.add( lbFreedom );
-
-		lbStpinf.addMouseListener( this );
-		lbFreedom.addMouseListener( this );
+		if(icFreedom!=null) {			
+			lbFreedom = new JLabelPad( icFreedom );		
+			final int iWidthImgFreedom = icFreedom.getIconWidth();
+			final int iHeightImgFreedom = icFreedom.getIconHeight();		
+			lbFreedom.setBounds( (int) tela.getWidth() - 200, (int) tela.getHeight() - 265, iWidthImgFreedom, iHeightImgFreedom );		
+			lbFreedom.setToolTipText( sURLSistema );
+			borderFreedom = lbFreedom.getBorder();
+			dpArea.add( lbFreedom );
+			lbFreedom.addMouseListener( this );
+		}
 		
 	}
 	
@@ -599,4 +644,37 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		pinBotoesDir.add( btCalc );
 	}
 
+	private class TratadorDuploClique implements ActionListener {
+
+		private FPrincipal frame;
+
+		public TratadorDuploClique(FPrincipal frame) {
+		this.frame = frame;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			this.frame.setVisible(!this.frame.isVisible());
+			
+		}
+	}
+	
+	public void setTrayIcon(PopupMenu pm) {
+		try {
+			// Comentado para compatibilizar com java 1.5
+	/*		this.tray = SystemTray.getSystemTray();
+			this.toolkit = Toolkit.getDefaultToolkit();
+			 
+			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			
+			this.trayIcon = new TrayIcon(this.getIconImage(), this.getTitle(), pm);
+			this.trayIcon.setImageAutoSize(true);
+			this.trayIcon.addActionListener(new TratadorDuploClique(this));
+			this.tray.add(this.trayIcon);*/
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}			
+	}
+	
 }

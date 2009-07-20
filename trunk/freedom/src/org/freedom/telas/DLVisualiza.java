@@ -6,14 +6,14 @@
  * Pacote: org.freedom.telas <BR>
  * Classe: @(#)DLVisualiza.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  *
  * Comentários da classe.....
  */
@@ -27,11 +27,15 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.ListaCampos;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
@@ -73,8 +77,11 @@ public class DLVisualiza extends FFDialogo implements ActionListener, CaretListe
 		imp = impOS;
 		//monta a area de visualização:
 		setTitulo("Visualizar Impressão");
-		txa.setFont(new Font("Courier",Font.BOLD,12));
+		
+		txa.setFont(getFonte());			
+
 		txa.setEditable(false);      
+		
 		pnCli.add(spn);      
 		
 		Container c = getContentPane();
@@ -201,4 +208,45 @@ public class DLVisualiza extends FFDialogo implements ActionListener, CaretListe
 			bProcessaPos = true;
 		}
 	}
+	
+	private Font getFonte() {
+		Font ret = null;;
+		StringBuilder sql = new StringBuilder();
+		try {
+			
+			if(con == null) {
+				con = Aplicativo.getInstace().getConexao();
+			}
+						
+			sql.append( "select coalesce(fontetxt,'Courier New'),coalesce(tamfontetxt,12) ");  
+			sql.append( "from sgestacao ");
+			sql.append( "where ");
+			sql.append( "codemp=? and codfilial=? and codest=? ;");
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGESTACAO" ) );
+			ps.setInt( 3, Aplicativo.iNumEst );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				ret = new Font(rs.getString( 1 ).trim(),Font.BOLD, rs.getInt( 2 ));	
+			}
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				con.commit();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return ret;
+	}
+	
 }

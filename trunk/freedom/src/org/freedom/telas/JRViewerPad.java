@@ -27,7 +27,7 @@ public class JRViewerPad extends JRViewer {
 
 	private JasperPrint report = null;
 	
-	private EmailBean mail = Aplicativo.getEmailBean();
+	private EmailBean mail = Aplicativo.getEmailBean();	
 
 	public JRViewerPad( JasperPrint arg0, EmailBean mail ) {
 
@@ -79,7 +79,7 @@ public class JRViewerPad extends JRViewer {
 	
 	private void showDLEnviarEmail() {
 		
-		DLEnviarEmail enviaemail = new DLEnviarEmail( this, getMail() );
+		DLEnviarEmail enviaemail = new DLEnviarEmail( this, getMail(), null );
 		enviaemail.setReport( report );
 		enviaemail.preparar();
 		if ( enviaemail.preparado() ) {
@@ -95,5 +95,6 @@ public class JRViewerPad extends JRViewer {
 	
 	public void setMail( EmailBean mail ) {	
 		this.mail = mail;
-	}
+	} 
+	
 }
