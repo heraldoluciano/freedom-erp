@@ -7,13 +7,13 @@
  * Classe:
  * @(#)Tabela.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
- * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
- * o LICENCIADOR ou então pegar uma cópia em: <BR>
- * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -23,6 +23,7 @@
 package org.freedom.componentes;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -48,6 +49,13 @@ import org.freedom.acao.TabelaSelListener;
 
 public class Tabela extends JTable implements TabelaEditListener, TabelaSelListener {
 
+	//Vetor de cores de background
+	private Vector<Color> vcoresb = new Vector<Color>();
+
+	//Vetor de cores de foreground
+	private Vector<Color> vcoresf = new Vector<Color>();
+
+	
 	private static final long serialVersionUID = 1L;
 
 	private Modelo modelo = new Modelo();
@@ -267,11 +275,17 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 	}
 
 	public void setLinhaSel( int lin ) {
-
-		if ( lin < 1 )
-			setRowSelectionInterval( 0, 0 );
-		else
-			setRowSelectionInterval( lin - 1, lin );
+		try {
+			if ( lin < 1 ) {
+				setRowSelectionInterval( 0, 0 );
+			}
+			else {
+				setRowSelectionInterval( lin - 1, lin );
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setEditavel( boolean bEdit ) {
@@ -320,6 +334,43 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 		}
 	}
 
+	public void setColColor( int iLinha, int iCol, Color fundo, Color frente ) {		
+		try {
+			TableColumn tm = this.getColumnModel().getColumn(iCol);		
+			tm.setCellRenderer(new ColorColumnRenderer(fundo, frente, iLinha));
+		}
+		catch (Exception e) {
+			System.out.println("Coluna inexistente.");
+		}
+	}
+	
+	class ColorColumnRenderer extends DefaultTableCellRenderer	{
+		private static final long serialVersionUID = 1L;
+		private Color corfundo;
+		private Color corfrente;
+		int crow;
+		 	
+		public ColorColumnRenderer(Color fundo, Color frente, int prow) {
+			super(); 		      
+			corfundo = fundo;
+			corfrente = frente; 
+			crow = prow;
+			vcoresb.addElement( fundo );
+			vcoresf.addElement( frente );
+		}
+		  	
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column  ) {
+			Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);	 	
+			int icor1 = ((Color) vcoresb.elementAt( row )).getRGB();
+			int icor2 = ((Color) vcoresf.elementAt( row )).getRGB();
+			
+			cell.setBackground( (Color) vcoresb.elementAt( row ) );
+			cell.setForeground( (Color) vcoresf.elementAt( row ) );	
+			
+			return cell;
+		}
+	}
+	
 	public void valueChanged( ListSelectionEvent levt ) {
 
 		if ( seLis != null && getLinhaSel() >= 0 ) {
@@ -574,8 +625,9 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 		}
 
 		public void limpa() {
-
 			dataVector.removeAllElements();
+			vcoresb = new Vector<Color>();
+			vcoresf = new Vector<Color>();
 			fireTableRowsDeleted( 0, dataVector.size() );
 		}
 

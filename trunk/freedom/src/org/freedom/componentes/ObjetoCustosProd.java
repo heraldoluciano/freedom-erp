@@ -1,7 +1,7 @@
 package org.freedom.componentes;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -65,7 +65,7 @@ public class ObjetoCustosProd {
 		this.custoPEPSProd = custoPEPSProd;
 	}
 
-	public ObjetoCustosProd (Integer codalmox, Integer codprod, Connection con) {
+	public ObjetoCustosProd (Integer codalmox, Integer codprod, DbConnection con) {
 		try {
 							
 			sSQL = "SELECT NCUSTOPEPS, NCUSTOMPM, NCUSTOMPMAX, NCUSTOPEPSAX FROM EQPRODUTOSP01(?,?,?,?,?,?)";
@@ -89,9 +89,7 @@ public class ObjetoCustosProd {
 			rs.close();
 			ps.close();
 			
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 			
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( null, "Não foi possível carregar o valor de custo PEPS!\n" + e.getMessage() );
@@ -104,7 +102,5 @@ public class ObjetoCustosProd {
 	
 	}
 
-	
-	
 	
 }

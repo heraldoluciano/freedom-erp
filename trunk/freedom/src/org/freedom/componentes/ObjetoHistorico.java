@@ -1,7 +1,7 @@
 package org.freedom.componentes;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
+import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
@@ -24,7 +24,7 @@ public class ObjetoHistorico {
 		super();
 	}
 
-	public ObjetoHistorico(final Integer codhist, Connection con) {
+	public ObjetoHistorico(final Integer codhist, DbConnection con) {
 		super();
 		
 		PreparedStatement ps = null;
@@ -44,9 +44,7 @@ public class ObjetoHistorico {
 			rs.close();
 			ps.close();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
+			con.commit();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
