@@ -28,6 +28,7 @@ import java.util.Properties;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.modules.nfe.bean.FreedomNFEKey;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
 import org.freedom.modules.nfe.event.NFEEvent;
 import org.freedom.modules.nfe.event.NFEListener;
@@ -67,6 +68,12 @@ public class NFEConnectionFactory implements NFEListener {
 		}
 	}
 
+	public void setKey(Integer codemp, Integer codfilial, 
+			String tipovenda, Integer codvenda ) {
+		FreedomNFEKey key = new FreedomNFEKey(codemp, codfilial, tipovenda, codvenda);
+		getObjNFEFactory().setKey( key );
+	}
+	
 	public void post() {
 		getObjNFEFactory().post();
 	}
