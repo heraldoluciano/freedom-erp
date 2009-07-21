@@ -49,6 +49,7 @@ import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTabbedPanePad;
@@ -165,6 +166,10 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 	private JTextFieldPad txtAliqCofinsFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
 	
 	private JComboBoxPad cbOrig = null;
+	
+	private JComboBoxPad cbModBCICMS = null;
+	
+	private JComboBoxPad cbModBCICMSST = null;
 	
 	private JRadioGroup<?, ?> rgTipoFisc = null;
 	
@@ -325,9 +330,6 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 		txtImpSitTribPIS.setTabelaExterna( lcSitTribPIS );
 		lcSitTribPIS.setWhereAdic( "IMPSITTRIB='PI'" );
 				
-		
-
-
 	}
 
 	private void montaTela() {
@@ -399,7 +401,7 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 		tpnGeral.addTab( "Variantes", panelVariantes );
 
 		setPainel( panelVariantesCampos );
-		setAltDet( 180 );
+		setAltDet( 230 );
 
 		setListaCampos( lcDet );
 		setNavegador( navRod );
@@ -419,7 +421,7 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 		adicCampoInvisivel( txtCodItClFiscal, "CodItFisc", "Item", ListaCampos.DB_PK, true );
 
 		adicCampo( txtCodTipoFisc, 7, 20, 80, 20, "CodFiscCli", "Cód.fisc.cli.", ListaCampos.DB_FK, txtDescFiscCli, false );
-		adicDescFK( txtDescFiscCli, 90, 20, 378, 20, "DescTratTrib", "Descrição do tipo fiscal de cliente" );
+		adicDescFK( txtDescFiscCli, 90, 20, 378, 20, "DescFiscCli", "Descrição do tipo fiscal de cliente" );
 
 		adicCampo( txtCodTipoMov, 7, 60, 80, 20, "CodTipoMov", "Cód.tp.Mov", ListaCampos.DB_FK, txtDescTipoMov, false );
 		adicDescFK( txtDescTipoMov, 90, 60, 378, 20, "DescTipoMov", "Descrição do tipo de movimento" );
@@ -431,8 +433,6 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 		
 		adicDB( cbGeralFisc, 471,100,150,20, "GeralFisc", "Padrão", true );
 		
-		
-		
 		/*****************
 		 * ABA ICMS
 		 ****************/
@@ -441,7 +441,11 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 		
 		setPainel( panelICMSCampos );
 		
-		// Origem da mercadoria
+		/*********************************************
+		 * 
+		 * Origem da mercadoria  
+		 * 
+		 *********************************************/
 		
 		Vector<String> vLabsOrig = new Vector<String>();		
 		Vector<String> vValsOrig = new Vector<String>();
@@ -454,8 +458,14 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 		vValsOrig.addElement( "0" );
 		vValsOrig.addElement( "1" );
 		vValsOrig.addElement( "2" );
-		
+
 		cbOrig = new JComboBoxPad( vLabsOrig, vValsOrig, JComboBoxPad.TP_STRING, 1, 0 );
+		
+		/*********************************************
+		 * 
+		 * Tipo do ICMS  
+		 * 
+		 *********************************************/
 		
 		vTipoLabs.addElement( "Isento" );
 		vTipoLabs.addElement( "Subst. Trib." );
@@ -466,6 +476,12 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 		vTipoVals.addElement( "NN" );
 		vTipoVals.addElement( "TT" );
 		rgTipoFisc = new JRadioGroup<String, String>( 2, 2, vTipoLabs, vTipoVals );
+		
+		/*********************************************
+		 * 
+		 * Tipo de substituição tributária 
+		 * 
+		 *********************************************/
 		
 		Vector<String> vSTLabs = new Vector<String>();
 		vSTLabs.addElement( "Substituto" );
@@ -483,20 +499,79 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 		vTpRedIcmsFiscVals.addElement( "V" );
 		rgTpRedIcmsFisc = new JRadioGroup<String, String>( 2, 1, vTpRedIcmsFiscLabs, vTpRedIcmsFiscVals );
 
+		/*********************************************
+		 * 
+		 * Modalidade de determinação da BC do ICMS
+		 * 
+		 *********************************************/
+		
+		Vector<String> vLabsModBCICMS = new Vector<String>();		
+		Vector<Integer> vValsModBCICMS = new Vector<Integer>();
+		
+		vLabsModBCICMS.addElement( "0-Margem Valor Agregado (%)" );
+		vLabsModBCICMS.addElement( "1-Pauta (valor)" );
+		vLabsModBCICMS.addElement( "2-Preço Tabelado Máx.(valor)" );
+		vLabsModBCICMS.addElement( "3-Valor da Operação" );
+		vValsModBCICMS.addElement( new Integer(0) );
+		vValsModBCICMS.addElement( new Integer(1) );
+		vValsModBCICMS.addElement( new Integer(2) );
+		vValsModBCICMS.addElement( new Integer(3) );
+		
+		cbModBCICMS = new JComboBoxPad( vLabsModBCICMS, vValsModBCICMS, JComboBoxPad.TP_INTEGER, 1, 0 );
+		cbModBCICMS.setVlrInteger( new Integer(3) );
+
+		/*********************************************
+		 * 
+		 * Modalidade de determinação da BC do ICMS de Substituição tributária
+		 * 
+		 *********************************************/
+		
+		Vector<String> vLabsModBCICMSST = new Vector<String>();		
+		Vector<Integer> vValsModBCICMSST = new Vector<Integer>();
+		
+		vLabsModBCICMSST.addElement( "0-Preço tabelado ou máx. sugerido" );
+		vLabsModBCICMSST.addElement( "1-Lista Negativa (valor)" );
+		vLabsModBCICMSST.addElement( "2-Lista Positiva (valor)" );
+		vLabsModBCICMSST.addElement( "3-Lista Neutra (valor)" );
+		vLabsModBCICMSST.addElement( "4-Margem valor agregado (%)" );
+		vLabsModBCICMSST.addElement( "5-Pauta (valor)" );
+
+		vValsModBCICMSST.addElement( new Integer(0) );
+		vValsModBCICMSST.addElement( new Integer(1) );
+		vValsModBCICMSST.addElement( new Integer(2) );
+		vValsModBCICMSST.addElement( new Integer(3) );
+		vValsModBCICMSST.addElement( new Integer(4) );
+		vValsModBCICMSST.addElement( new Integer(5) );
+		
+		cbModBCICMSST = new JComboBoxPad( vLabsModBCICMS, vValsModBCICMS, JComboBoxPad.TP_INTEGER, 1, 0 );		
+		cbModBCICMSST.setVlrInteger( new Integer(4) );
+		
+		/*********************************************
+		 * 
+		 * Inclusão dos campos
+		 * 
+		 *********************************************/		
+
 		adicCampo( txtCodTratTrib, 7, 20, 50, 20, "CodTratTrib", "Cód.trat.", ListaCampos.DB_FK, txtDescTratTrib, true );
-		adicDescFK( txtDescTratTrib, 60, 20, 220, 20, "DescTratTrib", "Descrição da tratamento tributário" );
-		adicDB( cbOrig, 7, 60, 273, 25, "OrigFisc", "Origem", true );
-		adicDB( rgTipoFisc, 283, 20, 220, 65, "TipoFisc", "Situação do ICMS:", true );
+		adicDescFK( txtDescTratTrib, 60, 20, 200, 20, "DescTratTrib", "Descrição da tratamento tributário" );
+
+		adicDB( cbOrig, 7, 60, 253, 25, "OrigFisc", "Origem", true );
+		adicDB( cbModBCICMS, 7, 110, 253, 25, "ModBcIcms", "Modalidade da base de cálculo ", true );
+		adicDB( cbModBCICMSST, 7, 160, 253, 25, "ModBcIcmsST", "Modalidade da base de cálculo ST", true );
 		
-		adicDB( rgTipoST, 506, 20, 110, 65, "TipoST", "Tipo de Sub.Trib.", true );
-		adicDB( rgTpRedIcmsFisc, 619, 20, 110, 65, "tpredicmsfisc", "Tipo de Redução", false );
+		JLabelPad separacao = new JLabelPad();
+		separacao.setBorder( BorderFactory.createEtchedBorder() );
+		adic( separacao, 272, 7, 2, 180 );
 		
-		adicCampo( txtMargemVlAgr, 506, 105, 110, 20, "MargemVlAgr", "% Vlr.Agregado" , ListaCampos.DB_SI,  false );
-		adicCampo( txtRedFisc, 619, 105, 110, 20, "RedFisc", "% Redução ICMS", ListaCampos.DB_SI, false );
+		adicDB( rgTipoFisc, 283, 20, 220, 70, "TipoFisc", "Situação do ICMS:", true );		
+		adicDB( rgTipoST, 506, 20, 110, 70, "TipoST", "Tipo de Sub.Trib.", true );
+		adicDB( rgTpRedIcmsFisc, 619, 20, 110, 70, "tpredicmsfisc", "Tipo de Redução", false );
 		
-		adicCampo( txtAliqFisc, 283, 105, 108, 20, "AliqFisc", "% Alíq.ICMS", ListaCampos.DB_SI, false );
+		adicCampo( txtMargemVlAgr, 506, 110, 110, 20, "MargemVlAgr", "% Vlr.Agregado" , ListaCampos.DB_SI,  false );
+		adicCampo( txtRedFisc, 619, 110, 110, 20, "RedFisc", "% Redução ICMS", ListaCampos.DB_SI, false );
 		
-		adicCampo( txtAliqLFisc, 394, 105, 110, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
+		adicCampo( txtAliqFisc, 283, 110, 108, 20, "AliqFisc", "% Alíq.ICMS", ListaCampos.DB_SI, false );		
+		adicCampo( txtAliqLFisc, 394, 110, 110, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
 
 		/*****************
 		 * ABA IPI
