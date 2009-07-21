@@ -1206,13 +1206,18 @@ private JTextFieldPad txtQtdEmbalagem = new JTextFieldPad( JTextFieldPad.TP_NUME
 		
 		try {
 			
-			sSQL = "SELECT P.CODMOEDA, P.PEPSPROD, P.TIPOCODBAR, E.CODEANEMP, E.CODPAISEMP  " +
-					"FROM SGPREFERE1 P, SGEMPRESA E " +
-					"WHERE P.CODEMP=? AND P.CODFILIAL=? AND E.CODEMP=P.CODEMP";
+			sSQL = "SELECT P.CODMOEDA, P.PEPSPROD, P.TIPOCODBAR, E.CODEANEMP, PA.CODEANPAIS  " +
+					"FROM SGPREFERE1 P, SGEMPRESA E, SGFILIAL F, SGPAIS PA " +
+					"WHERE P.CODEMP=? AND P.CODFILIAL=? AND E.CODEMP=P.CODEMP AND " +
+					"F.CODEMP=E.CODEMP AND F.CODFILIAL=? AND " +
+					"PA.CODPAIS=F.CODPAIS" ;
+					
 			
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			ps.setInt( 3, Aplicativo.iCodFilial );
+			
 			rs = ps.executeQuery();
 			
 			if ( rs.next() ) {
@@ -1220,7 +1225,7 @@ private JTextFieldPad txtQtdEmbalagem = new JTextFieldPad( JTextFieldPad.TP_NUME
 				sRetorno[ eprefs.PEPSPROD.ordinal() ] = rs.getString( "PEPSPROD" );
 				sRetorno[ eprefs.TIPOCODBAR.ordinal() ] = rs.getString( "TIPOCODBAR" );
 				sRetorno[ eprefs.CODEANEMP.ordinal() ] = rs.getString( "CODEANEMP" );
-				sRetorno[ eprefs.CODPAISEMP.ordinal() ] = rs.getString( "CODPAISEMP" );
+				sRetorno[ eprefs.CODPAISEMP.ordinal() ] = rs.getString( "CODEANPAIS" );
 			}
 			
 			rs.close();
