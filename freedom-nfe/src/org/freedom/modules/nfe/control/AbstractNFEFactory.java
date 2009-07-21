@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.modules.nfe.bean.AbstractNFEKey;
 import org.freedom.modules.nfe.bean.NFEInconsistency;
 import org.freedom.modules.nfe.event.NFEEvent;
 import org.freedom.modules.nfe.event.NFEListener;
@@ -40,6 +41,12 @@ public abstract class AbstractNFEFactory implements NFEListener{
 	private List<NFEListener> listEvent = new ArrayList<NFEListener>();
 	
 	private List<NFEInconsistency> listInconsistency = new ArrayList<NFEInconsistency>();
+	
+	private AbstractNFEKey key = null;
+	
+	private SYSTEM sourceSystem = SYSTEM.FREEDOM;
+	
+	public enum SYSTEM{FREEDOM};
 	
 	public AbstractNFEFactory() {
 		addNFEListener( this );
@@ -125,5 +132,21 @@ public abstract class AbstractNFEFactory implements NFEListener{
 
 	public void setListInconsistency(List<NFEInconsistency> listInconsistency) {
 		this.listInconsistency = listInconsistency;
+	}
+
+	public void setSourceSystem(SYSTEM sourceSystem) {
+		this.sourceSystem = sourceSystem;
+	}
+
+	public SYSTEM getSourceSystem() {
+		return sourceSystem;
+	}
+
+	public void setKey(AbstractNFEKey key) {
+		this.key = key;
+	}
+
+	public AbstractNFEKey getKey() {
+		return key;
 	}
 }
