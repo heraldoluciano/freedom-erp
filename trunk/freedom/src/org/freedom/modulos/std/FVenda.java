@@ -2288,6 +2288,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 	
 	private void emiteNFE() {
+		nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), 
+				txtTipoVenda.getVlrString(), txtCodVenda.getVlrInteger() );
 		nfecf.post();
 	}
 	
