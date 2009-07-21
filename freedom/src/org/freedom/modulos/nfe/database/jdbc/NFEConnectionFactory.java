@@ -53,7 +53,7 @@ public class NFEConnectionFactory {
 					props = conFreedom.getProperties();
 					setUrl(getUrlDb());
 					setConNFE ( new DbConnection( getUrl(), props ) );
-					getObjNFEFactory().setConSis( getCon() );
+					getObjNFEFactory().setConSys( getCon() );
 					getObjNFEFactory().setConNFE( getConNFE() );
 				} else {
 					displayMessages();
