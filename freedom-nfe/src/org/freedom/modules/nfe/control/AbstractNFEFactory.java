@@ -21,6 +21,9 @@
 
 package org.freedom.modules.nfe.control;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modules.nfe.event.NFEEvent;
 import org.freedom.modules.nfe.event.NFEListener;
@@ -29,28 +32,42 @@ public abstract class AbstractNFEFactory implements NFEListener{
 
 	private boolean valid = true;
 
-	private NFEListener nfelistener = this;
-	
 	private DbConnection conSis = null;
 	
 	private DbConnection conNFE = null;
 	
+	private List<NFEListener> listEvent = new ArrayList<NFEListener>();
+	
 	public AbstractNFEFactory() {
-		
+		addNFEListener( this );
+	}
+
+	private void fireValidSend() {
+		NFEEvent event = new NFEEvent(this);
+		for (NFEListener obj: listEvent) {
+			obj.validSend(event);
+		}
 	}
 	
 	private void fireRunSend() {
-		runSend( new NFEEvent(this) );
+		NFEEvent event = new NFEEvent(this);
+		for (NFEListener obj: listEvent) {
+			obj.runSend(event);
+		}
 	}
 	
-	private void fireValidSend() {
-		validSend( new NFEEvent(this) );
-	}
-
 	public void post() {
-		
+		fireValidSend();
+		fireRunSend();
 	}
 
+	public void addNFEListener(NFEListener event) {
+		this.listEvent.add(event);
+	}
+
+	public void removeNFEListener(NFEListener event) {
+		this.listEvent.remove(event);
+	}
 	
 	public boolean isValid() {
 	
