@@ -293,9 +293,8 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		adicDescFK( txtDescCC, 423, 20, 202, 20, "DescCC", "Descrição do centro de custo" );
 		adicCampo( txtVlrLanca, 7, 60, 100, 20, "VlrSubLanca", " Valor", ListaCampos.DB_SI, true );
 		adicCampo( txtHistSubLanca, 110, 60, 516, 20, "HistSubLanca", "Histórico do Lancamento", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtCodContr, "CodContr", "Cod.Contr.", ListaCampos.DB_FK, false );
-		adicCampoInvisivel( txtCodItContr, "CodItContr", "Cod.It.Contr.", ListaCampos.DB_FK, false );
 
+		
 		txtCodCli.setRequerido( true );
 		txtCodFor.setRequerido( true );
 		txtCodCli.setVisible( false );
@@ -313,7 +312,15 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 		lbCodFor = adicCampo( txtCodFor, 2, 18, 95, 20, "CodFor", "Cód. Fornecedor", ListaCampos.DB_FK, false );
 		lbRazFor = adicDescFK( txtRazFor, 100, 18, 503, 20, "RazFor", "Razão social do fornecedor" );
-				
+
+		if("S".equals( (String) prefere.get( "LANCAFINCONTR" ))) {		
+			adicCampoInvisivel( txtCodContr, "CodContr", "Cod.Contr.", ListaCampos.DB_FK, false );
+			adicCampoInvisivel( txtCodItContr, "CodItContr", "Cod.It.Contr.", ListaCampos.DB_FK, false );
+		}
+		
+		
+		
+		
 		lbCodCli.setVisible( false );
 		lbRazCli.setVisible( false );
 		lbCodFor.setVisible( false );
@@ -690,8 +697,10 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	  		cbContr.setItens( (Vector<?>)vals.get( "LAB" ), (Vector<?>)vals.get( "VAL" ) ); 	  		
 	  	}
 		if (cevt.getListaCampos() == lcDet ) {
-			cbContr.setVlrInteger( txtCodContr.getVlrInteger() );
-			cbitContr.setVlrInteger( txtCodItContr.getVlrInteger() );
+			if("O".equals(rgTipoLanca.getVlrString())) {
+				cbContr.setVlrInteger( txtCodContr.getVlrInteger() );
+				cbitContr.setVlrInteger( txtCodItContr.getVlrInteger() );
+			}
 		}
 		
 		
