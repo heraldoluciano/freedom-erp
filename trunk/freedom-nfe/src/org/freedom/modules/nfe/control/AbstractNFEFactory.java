@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.modules.nfe.bean.NFEInconsistency;
 import org.freedom.modules.nfe.event.NFEEvent;
 import org.freedom.modules.nfe.event.NFEListener;
 
@@ -32,16 +33,26 @@ public abstract class AbstractNFEFactory implements NFEListener{
 
 	private boolean valid = true;
 
-	private DbConnection conSis = null;
+	private DbConnection conSys = null;
 	
 	private DbConnection conNFE = null;
 	
 	private List<NFEListener> listEvent = new ArrayList<NFEListener>();
 	
+	private List<NFEInconsistency> listInconsistency = new ArrayList<NFEInconsistency>();
+	
 	public AbstractNFEFactory() {
 		addNFEListener( this );
 	}
 
+	public void addInconsistency( String description, String correctiveAction ) {
+		this.addInconsistency(new NFEInconsistency(description, correctiveAction) );
+	}
+	
+	public void addInconsistency( NFEInconsistency inconsistency ) {
+		listInconsistency.add( inconsistency );
+	}
+	
 	private void fireValidSend() {
 		NFEEvent event = new NFEEvent(this);
 		for (NFEListener obj: listEvent) {
@@ -92,12 +103,12 @@ public abstract class AbstractNFEFactory implements NFEListener{
 		this.valid = valid;
 	}
 
-	public DbConnection getConSis() {
-		return conSis;
+	public DbConnection getConSys() {
+		return conSys;
 	}
 
-	public void setConSis(DbConnection conSis) {
-		this.conSis = conSis;
+	public void setConSys(DbConnection conSys) {
+		this.conSys = conSys;
 	}
 
 	public DbConnection getConNFE() {
@@ -106,5 +117,13 @@ public abstract class AbstractNFEFactory implements NFEListener{
 
 	public void setConNFE(DbConnection conNFE) {
 		this.conNFE = conNFE;
+	}
+
+	public List<NFEInconsistency> getListInconsistency() {
+		return listInconsistency;
+	}
+
+	public void setListInconsistency(List<NFEInconsistency> listInconsistency) {
+		this.listInconsistency = listInconsistency;
 	}
 }
