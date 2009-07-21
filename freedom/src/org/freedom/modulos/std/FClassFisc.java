@@ -234,6 +234,7 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 		
 		rgTipoST.setAtivo( false );
 		txtMargemVlAgr.setAtivo( false );
+		cbModBCICMSST.setAtivo( false );
 				
 		//Adicionando Listeners
 				
@@ -543,7 +544,7 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 		vValsModBCICMSST.addElement( new Integer(4) );
 		vValsModBCICMSST.addElement( new Integer(5) );
 		
-		cbModBCICMSST = new JComboBoxPad( vLabsModBCICMS, vValsModBCICMS, JComboBoxPad.TP_INTEGER, 1, 0 );		
+		cbModBCICMSST = new JComboBoxPad( vLabsModBCICMSST, vValsModBCICMSST, JComboBoxPad.TP_INTEGER, 1, 0 );		
 		cbModBCICMSST.setVlrInteger( new Integer(4) );
 		
 		/*********************************************
@@ -718,13 +719,15 @@ public class FClassFisc extends FDetalhe implements MouseListener, ChangeListene
 				rgTipoST.setAtivo( false );
 			}
 		}
-		else if ( e.getSource() == rgTipoST ) {
-			if ( "SU".equals( rgTipoST.getVlrString() ) ) { // Substituído
+		else if ( e.getSource() == rgTipoST  || e.getSource() == rgTipoFisc ) {
+			if ( "SU".equals( rgTipoST.getVlrString() ) && "FF".equals( rgTipoFisc.getVlrString() ) ) { // Substituído
 				txtMargemVlAgr.setAtivo( true );
+				cbModBCICMSST.setAtivo( true );
 			}
 			else {
 				txtMargemVlAgr.setVlrBigDecimal( new BigDecimal( 0 ) );
 				txtMargemVlAgr.setAtivo( false );
+				cbModBCICMSST.setAtivo( false );
 			}
 		}
 	}
