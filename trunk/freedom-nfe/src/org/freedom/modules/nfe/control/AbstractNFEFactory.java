@@ -45,14 +45,26 @@ public abstract class AbstractNFEFactory implements NFEListener{
 	private void fireValidSend() {
 		NFEEvent event = new NFEEvent(this);
 		for (NFEListener obj: listEvent) {
+			obj.beforeValidSend(event);
+		}
+		for (NFEListener obj: listEvent) {
 			obj.validSend(event);
+		}
+		for (NFEListener obj: listEvent) {
+			obj.afterValidSend(event);
 		}
 	}
 	
 	private void fireRunSend() {
 		NFEEvent event = new NFEEvent(this);
 		for (NFEListener obj: listEvent) {
+			obj.beforeRunSend(event);
+		}
+		for (NFEListener obj: listEvent) {
 			obj.runSend(event);
+		}
+		for (NFEListener obj: listEvent) {
+			obj.afterRunSend(event);
 		}
 	}
 	

@@ -22,7 +22,11 @@
 package org.freedom.modules.nfe.event;
 
 public interface NFEListener {
+	public void beforeValidSend(NFEEvent evt);
 	public void validSend(NFEEvent evt);
+	public void afterValidSend(NFEEvent evt);
+	public void beforeRunSend(NFEEvent evt);
 	public void runSend(NFEEvent evt);
+	public void afterRunSend(NFEEvent evt);
 	public boolean isValid();
 }
