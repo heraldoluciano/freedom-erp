@@ -143,7 +143,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	private ListaCampos lcFor = new ListaCampos( this, "FR" );
 	
-	private ListaCampos lcContrato = new ListaCampos( this, "" );
+	private ListaCampos lcContrato = new ListaCampos( this, "CT" );
 	
 	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
 
@@ -317,9 +317,6 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 			adicCampoInvisivel( txtCodContr, "CodContr", "Cod.Contr.", ListaCampos.DB_FK, false );
 			adicCampoInvisivel( txtCodItContr, "CodItContr", "Cod.It.Contr.", ListaCampos.DB_FK, false );
 		}
-		
-		
-		
 		
 		lbCodCli.setVisible( false );
 		lbRazCli.setVisible( false );
