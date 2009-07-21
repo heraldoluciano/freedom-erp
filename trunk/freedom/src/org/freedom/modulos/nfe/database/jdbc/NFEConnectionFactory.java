@@ -29,10 +29,12 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
+import org.freedom.modules.nfe.event.NFEEvent;
+import org.freedom.modules.nfe.event.NFEListener;
 import org.freedom.telas.Aplicativo;
 
 
-public class NFEConnectionFactory {
+public class NFEConnectionFactory implements NFEListener {
 	private DbConnection con;
 	private DbConnection conNFE;
 	private Properties props;
@@ -243,6 +245,43 @@ public class NFEConnectionFactory {
 	public void setConNFE( DbConnection conNFE ) {
 	
 		this.conNFE = conNFE;
+	}
+
+	public void afterRunSend( NFEEvent evt ) {
+
+	
+	}
+
+	public void afterValidSend( NFEEvent evt ) {
+
+		if ( !evt.getNfefactory().isValid() ) {
+			// TODO Mostrar aqui tela de inconsistências			
+		}
+		
+	}
+
+	public void beforeRunSend( NFEEvent evt ) {
+
+	}
+
+	public void beforeValidSend( NFEEvent evt ) {
+
+	
+	}
+
+	public boolean isValid() {
+
+		return false;
+		
+	}
+
+	public void runSend( NFEEvent evt ) {
+
+	}
+
+	public void validSend( NFEEvent evt ) {
+
+		
 	}
 
 	
