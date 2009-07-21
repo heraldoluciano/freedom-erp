@@ -84,7 +84,7 @@ public abstract class AbstractNFEFactory implements NFEListener{
 		fireRunSend();
 	}
 
-	public void addNFEListener(NFEListener event) {
+	public synchronized void addNFEListener(NFEListener event) {
 		this.listEvent.add(event);
 	}
 
