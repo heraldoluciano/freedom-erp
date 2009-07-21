@@ -12,9 +12,9 @@ aliqfisc,aliqlfisc,aliqipifisc,
 codempme,codfilialme,codmens,tipost,margemvlagr,geralfisc)
 select
 cl.codemp, cl.codfilial, cl.codfisc,
-(select max(coalesce(coditfisc,0)) + 1 from lfitclfiscal it2
+coalesce((select max(coalesce(coditfisc,0)) + 1 from lfitclfiscal it2
  where it2.codemp=cl.codemp and it2.codfilial=cl.codfilial and it2.codfisc=cl.codfisc
-),
+),1),
 cl.origfisc,cl.codemptt, cl.codfilialtt, cl.codtrattrib,
 cl.tipofisc,cl.tpredicmsfisc,cl.redfisc,'S',
 cl.aliqfisc,cl.aliqlfisc,cl.aliqipifisc,
