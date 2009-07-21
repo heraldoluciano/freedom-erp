@@ -77,7 +77,7 @@ public class FEmpresa extends FDetalhe{
 
 	private JTextFieldPad txtWWWEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtPercIssEmp = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
+	private JTextFieldPad txtPercIssFilial = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 5, 2 );
 
 	private JTextFieldPad txtCodEANEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
@@ -161,8 +161,6 @@ public class FEmpresa extends FDetalhe{
 		adicCampo( txtNomeEmp, 7, 60, 323, 20, "NomeEmp", "Nome fantasia", ListaCampos.DB_SI, false );	
 		adicCampo( txtNomeContEmp, 7, 100, 323, 20, "NomeContEmp", "Contato", ListaCampos.DB_SI, false );
 		adicCampo( txtCodEANEmp, 7, 140, 95, 20, "CodEANEmp", "Cod. EAN", ListaCampos.DB_SI, false );
-		adicCampo( txtPercIssEmp, 105, 140, 45, 20, "PercIssEmp", "%Iss", ListaCampos.DB_SI, false );
-		adicCampo( txtCodPaisEmp, 153, 140, 37, 20, "CodPaisEmp", "C.pais", ListaCampos.DB_SI, false );
 
 		adicDB( cbMultiAlmox, 196, 140, 300, 20, "MultiAlmoxEmp", "Intercambio de almox. entre filiais?", true );
 		
@@ -171,8 +169,7 @@ public class FEmpresa extends FDetalhe{
 		txtFoneEmp.setMascara( JTextFieldPad.MC_FONE );
 		txtFaxEmp.setMascara( JTextFieldPad.MC_FONE );
 		setListaCampos( true, "EMPRESA", "SG" );
-		
-			
+					
 		pinDet = new JPanelPad( 600, 80 );
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
