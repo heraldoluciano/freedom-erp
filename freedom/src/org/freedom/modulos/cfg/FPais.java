@@ -47,10 +47,12 @@ public class FPais extends FDados implements ActionListener {
 	private JTextFieldPad txtSiglaPais2 = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
 	private JTextFieldPad txtSiglaPais3 = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
-
+	
 	private JTextFieldPad txtDDIPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldPad txtCodBacenPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
+	
+	private JTextFieldPad txtCodEANPais = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	public FPais() {
 
@@ -66,8 +68,8 @@ public class FPais extends FDados implements ActionListener {
 		adicCampo( txtSiglaPais3, 303, 20, 40, 20, "Sigla3cPais", "Sigla", ListaCampos.DB_SI, true );
 		adicCampo( txtDDIPais, 345, 20, 40, 20, "DDIPais", "DDI", ListaCampos.DB_SI, false );
 		adicCampo( txtCodBacenPais, 7, 60, 70, 20, "CodBacenPais", "Cd.Bacen", ListaCampos.DB_SI, false );
-		
-		
+		adicCampo( txtCodEANPais, 80, 60, 70, 20, "CodEANPais", "Cd.EAN", ListaCampos.DB_SI, false );
+				
 		setListaCampos( true, "PAIS", "SG" );
 		
 		btImp.addActionListener( this );
