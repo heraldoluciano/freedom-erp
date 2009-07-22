@@ -27,12 +27,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.freedom.componentes.JTextAreaPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
 public class FServico extends FDados implements ActionListener{
