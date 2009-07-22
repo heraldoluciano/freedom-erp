@@ -33,6 +33,9 @@ import org.freedom.modulos.crm.agenda.FTipoAgenda;
 import org.freedom.modulos.fnc.FCartCob;
 import org.freedom.modulos.fnc.FHistPad;
 import org.freedom.modulos.grh.FFuncao;
+import org.freedom.modulos.lvf.FNBM;
+import org.freedom.modulos.lvf.FNCM;
+import org.freedom.modulos.lvf.FServico;
 import org.freedom.modulos.lvf.FSitTrib;
 import org.freedom.modulos.lvf.FTratTrib;
 import org.freedom.telas.Aplicativo;
@@ -274,10 +277,11 @@ public class FreedomSTD extends AplicativoPD {
 
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Tratamento tributário", "Tratamento Tributário", 't', 800100000, 1, true, FTratTrib.class );
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Situação tributária", "Situação Tributária", 'S', 800140000, 1, true, FSitTrib.class );
+			addOpcao( 800000000, TP_OPCAO_ITEM, "Serviço", "Serviço", 'ç', 800150000, 1, true, FServico.class );			
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela NCM", "Tabela NCM", 'N', 800700000, 2, true, FNCM.class );
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela NBM", "Tabela NBM", 'B', 800800000, 2, true, FNBM.class );
-			addOpcao( 800000000, TP_OPCAO_ITEM, "Classificação fiscal", "Classificações", 'l', 800110000, 1, true, FCLFiscal.class );
-			addOpcao( 800000000, TP_OPCAO_ITEM, "Classificação fiscal2", "Classificações 2", 'l', 800130000, 1, true, FClassFisc.class );
+//			addOpcao( 800000000, TP_OPCAO_ITEM, "Classificação fiscal", "Classificações", 'l', 800110000, 1, true, FCLFiscal.class );
+			addOpcao( 800000000, TP_OPCAO_ITEM, "Classificação fiscal", "Classificações", 'l', 800110000, 1, true, FClassFisc.class );
 						
 			addSeparador( 800000000 );
 
