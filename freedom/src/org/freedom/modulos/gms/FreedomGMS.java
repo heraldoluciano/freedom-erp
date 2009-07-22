@@ -98,7 +98,7 @@ import org.freedom.telas.LoginPD;
 public class FreedomGMS extends AplicativoPD {
 
 	public FreedomGMS() {
-		super("icongms.png", "splashGMS.jpg",	1, "Freedom", 8, "Gestão de Materiais e Serviços", null, new FPrincipalPD(null, "bgFreedom2.jpg"),LoginPD.class);
+		super("icongms.png", "splashGMS.png",	1, "Freedom", 8, "Gestão de Materiais e Serviços", null, new FPrincipalPD(null, "bgFreedom2.jpg"),LoginPD.class);
 
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,null);
 			addOpcao(100000000, TP_OPCAO_MENU, "Cadastros", "", 'T', 100100000, 1,false, null);

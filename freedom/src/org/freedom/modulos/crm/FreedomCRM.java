@@ -74,7 +74,7 @@ import org.freedom.telas.LoginPD;
 public class FreedomCRM extends AplicativoPD {
 	private MenuItem miAtendimento = new MenuItem();
 	public FreedomCRM() {
-		super("iconcrm.png", "splashCRM.jpg", 1, "Freedom", 7, "CRM", null, new FPrincipalPD(null, "bgFreedom2.jpg"),LoginPD.class);
+		super("iconcrm.png", "splashCRM.png", 1, "Freedom", 7, "CRM", null, new FPrincipalPD(null, "bgFreedom2.jpg"),LoginPD.class);
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,
 				null);
 

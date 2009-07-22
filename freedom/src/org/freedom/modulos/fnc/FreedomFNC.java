@@ -79,7 +79,7 @@ public class FreedomFNC extends AplicativoPD {
 
 	public FreedomFNC() {
 
-		super( "iconfnc.png", "splashFNC.jpg", 1, "Freedom", 6, "Financeiro", null, new FPrincipalPD( null, "bgFreedom2.jpg" ), LoginPD.class );
+		super( "iconfnc.png", "splashFNC.png", 1, "Freedom", 6, "Financeiro", null, new FPrincipalPD( null, "bgFreedom2.jpg" ), LoginPD.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );

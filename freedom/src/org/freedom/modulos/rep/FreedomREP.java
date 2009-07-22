@@ -36,7 +36,7 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 
 	public FreedomREP() {
 
-		super( "iconrep.png", "splashREP.jpg", 1, "Freedom", 11, "Representações Comerciais", null, new FPrincipalPD( null, "bgFreedom2.jpg" ), LoginPD.class );
+		super( "iconrep.png", "splashREP.png", 1, "Freedom", 11, "Representações Comerciais", null, new FPrincipalPD( null, "bgFreedom2.jpg" ), LoginPD.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
