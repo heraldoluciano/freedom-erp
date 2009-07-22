@@ -1,3 +1,4 @@
+INSERT INTO LFSERVICO (CODSERV, DESCSERV) VALUES ('1.01', 'Análise e desenvolvimento de sistemas.');
 INSERT INTO LFSERVICO (CODSERV, DESCSERV) VALUES ('1.02', 'Programação.');
 INSERT INTO LFSERVICO (CODSERV, DESCSERV) VALUES ('1.03', 'Processamento de dados e congêneres.');
 INSERT INTO LFSERVICO (CODSERV, DESCSERV) VALUES ('1.04', 'Elaboração de programas de computadores, inclusive de jogos eletrônicos.');
