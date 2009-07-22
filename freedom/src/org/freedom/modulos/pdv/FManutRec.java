@@ -794,7 +794,7 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 		else {
 			FreedomPDV.killProg( 1, 
 					"Esta estação de trabalho não é um PDV!\n" +
-					"Verifique o cadastro desta estação de trabalho atravéz do modulo Standart." );
+					"Verifique o cadastro desta estação de trabalho através do modulo Standard." );
 		}
 	}
 

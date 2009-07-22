@@ -67,7 +67,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.StatusBar;
 import org.freedom.componentes.Tabela;
 import org.freedom.ecf.app.ControllerECF;
-import org.freedom.ecf.driver.StatusStandart;
+import org.freedom.ecf.driver.StatusStandard;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.modulos.std.DLAdicOrc;
@@ -1460,7 +1460,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	private void mostraInfoImp() {
 
 		String status = ecf.getStatusImpressora();
-		status = status != null ? status.replace( StatusStandart.RETORNO_OK.getMessage()+"\n", "" ) : "";
+		status = status != null ? status.replace( StatusStandard.RETORNO_OK.getMessage()+"\n", "" ) : "";
 		
 		String str = "<HTML><CENTER>" + status + "</CENTER></HTML>";
 		
@@ -2356,7 +2356,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		else {
 			FreedomPDV.killProg( 1, 
 					"Esta estação de trabalho não é um PDV!\n" +
-					"Verifique o cadastro desta estação de trabalho atravéz do modulo Standart." );
+					"Verifique o cadastro desta estação de trabalho através do modulo Standard." );
 		}
 	}
 
