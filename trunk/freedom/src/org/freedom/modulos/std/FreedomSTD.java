@@ -33,6 +33,7 @@ import org.freedom.modulos.crm.agenda.FTipoAgenda;
 import org.freedom.modulos.fnc.FCartCob;
 import org.freedom.modulos.fnc.FHistPad;
 import org.freedom.modulos.grh.FFuncao;
+import org.freedom.modulos.lvf.FCLFiscal;
 import org.freedom.modulos.lvf.FNBM;
 import org.freedom.modulos.lvf.FNCM;
 import org.freedom.modulos.lvf.FServico;
@@ -47,7 +48,7 @@ public class FreedomSTD extends AplicativoPD {
 
 	public FreedomSTD() {
 
-		super( "iconstd.png", "splashSTD.jpg", 1, "Freedom", 1, "Standard", null, new FPrincipalPD( null, "bgFreedom2.jpg" ),LoginPD.class);
+		super( "iconstd.png", "splashSTD.png", 1, "Freedom", 1, "Standard", null, new FPrincipalPD( null, "bgFreedom2.jpg" ),LoginPD.class);
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
@@ -280,8 +281,7 @@ public class FreedomSTD extends AplicativoPD {
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Serviço", "Serviço", 'ç', 800150000, 1, true, FServico.class );			
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela NCM", "Tabela NCM", 'N', 800700000, 2, true, FNCM.class );
 			addOpcao( 800000000, TP_OPCAO_ITEM, "Tabela NBM", "Tabela NBM", 'B', 800800000, 2, true, FNBM.class );
-//			addOpcao( 800000000, TP_OPCAO_ITEM, "Classificação fiscal", "Classificações", 'l', 800110000, 1, true, FCLFiscal.class );
-			addOpcao( 800000000, TP_OPCAO_ITEM, "Classificação fiscal", "Classificações", 'l', 800110000, 1, true, FClassFisc.class );
+			addOpcao( 800000000, TP_OPCAO_ITEM, "Classificação fiscal", "Classificações", 'l', 800110000, 1, true, FCLFiscal.class );			
 						
 			addSeparador( 800000000 );
 

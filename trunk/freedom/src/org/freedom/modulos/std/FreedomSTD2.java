@@ -28,6 +28,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FAtendente;
 import org.freedom.modulos.atd.FTipoAtend;
 import org.freedom.modulos.grh.FFuncao;
+import org.freedom.modulos.lvf.FCLFiscal;
 import org.freedom.modulos.lvf.FTratTrib;
 import org.freedom.plugin.Background34;
 import org.freedom.telas.Aplicativo;
@@ -39,7 +40,7 @@ public class FreedomSTD2 extends AplicativoPD {
 
 	public FreedomSTD2() {
 
-		super( "iconstd.png", "splashSTD.jpg", 1, "Freedom", 1, "Standard", null, new FPrincipal2( new Background34(), "bgFreedomSTD2.jpg" ),LoginPD.class );
+		super( "iconstd.png", "splashSTD.png", 1, "Freedom", 1, "Standard", null, new FPrincipal2( new Background34(), "bgFreedomSTD2.jpg" ),LoginPD.class );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
