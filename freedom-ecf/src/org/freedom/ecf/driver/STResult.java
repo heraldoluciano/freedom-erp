@@ -17,9 +17,9 @@ public class STResult {
 	private static final STResult FUNCAO_NAO_IMPLEMENTADA = new STResult();
 	
 	static {		
-		RETORNO_OK.add( StatusStandart.RETORNO_OK );
-		IMPRESSORA_SEM_COMUNICACAO.add( StatusStandart.IMPRESSORA_SEM_COMUNICACAO );
-		FUNCAO_NAO_IMPLEMENTADA.add( StatusStandart.FUNCAO_NAO_IMPLEMENTADA );
+		RETORNO_OK.add( StatusStandard.RETORNO_OK );
+		IMPRESSORA_SEM_COMUNICACAO.add( StatusStandard.IMPRESSORA_SEM_COMUNICACAO );
+		FUNCAO_NAO_IMPLEMENTADA.add( StatusStandard.FUNCAO_NAO_IMPLEMENTADA );
 	}
 
 	public STResult() {
