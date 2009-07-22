@@ -55,7 +55,7 @@ public class FreedomPDV extends AplicativoPDV {
 
 	public FreedomPDV() {
 
-		super( "iconpdv.png", "splashPDV.jpg", 1, "Freedom", 3, "Ponto de Venda", null );
+		super( "iconpdv.png", "splashPDV.png", 1, "Freedom", 3, "Ponto de Venda", null );
 		
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );

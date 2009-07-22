@@ -35,7 +35,7 @@ public class FreedomGRH extends AplicativoPD {
 
 	public FreedomGRH() {
 
-		super( "icongrh.png", "splashGRH.jpg", 1, "Freedom", 9, "Gestão de Recursos Humanos", null, new FPrincipalPD( null, "bgFreedom2.jpg" ), LoginPD.class );
+		super( "icongrh.png", "splashGRH.png", 1, "Freedom", 9, "Gestão de Recursos Humanos", null, new FPrincipalPD( null, "bgFreedom2.jpg" ), LoginPD.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 		addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
