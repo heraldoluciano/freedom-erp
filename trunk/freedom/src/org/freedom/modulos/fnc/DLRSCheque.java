@@ -1,25 +1,35 @@
-/*
- * Created on 26/05/2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
+/**
+ * @version 26/05/2005 <BR>
+ * @author Setpoint Informática Ltda / Robson Sanchez.
+ * 
+ * Projeto: Freedom <BR>
+ * 
+ * Pacote: org.freedom.modulos.std <BR>
+ * Classe:
+ * @(#)DLRSCheque.java <BR>
+ * 
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * de acordo com os termos da LPG-PC <BR>
+ * <BR>
+ * 
+ * ? <BR>
+ * 
  */
+
 package org.freedom.modulos.fnc;
 
-/**
- * @author Robson
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 
 import java.awt.Component;
 import java.util.Vector;
-
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
-
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;

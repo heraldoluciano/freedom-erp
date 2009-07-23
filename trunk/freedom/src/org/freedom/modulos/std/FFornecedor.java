@@ -1216,10 +1216,6 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		
 	}
 
-	public void beforeCarrega( CarregaEvent cevt ) {
-
-		// TODO Auto-generated method stub
-		
-	}
+	public void beforeCarrega( CarregaEvent cevt ) {}
 
 }

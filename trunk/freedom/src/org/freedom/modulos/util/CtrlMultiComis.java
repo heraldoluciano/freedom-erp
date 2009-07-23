@@ -326,16 +326,10 @@ public class CtrlMultiComis implements CarregaListener {
 		}
 
 
-		public void beforeEdit( EditEvent eevt ) {
-		    // TODO Auto-generated method stub
-		    
-		}
+		public void beforeEdit( EditEvent eevt ) {}
 
 
-		public void edit( EditEvent eevt ) {
-		    // TODO Auto-generated method stub
-		    
-		}
+		public void edit( EditEvent eevt ) {}
 
 
 		public JTextFieldPad getTxtCodregrcomis() {
@@ -536,10 +530,6 @@ public class CtrlMultiComis implements CarregaListener {
 		
 	}
 
-	public void beforeCarrega( CarregaEvent cevt ) {
-
-		// TODO Auto-generated method stub
-		
-	}
+	public void beforeCarrega( CarregaEvent cevt ) {}
 
 }
