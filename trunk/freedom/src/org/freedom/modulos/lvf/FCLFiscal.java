@@ -185,11 +185,19 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		
 	private ListaCampos lcSitTribPIS = new ListaCampos( this, "SP" );
 	
+	private ListaCampos lcSitTribIPI = new ListaCampos( this, "SI" );
+	
 	private JTextFieldPad txtCodSitTribPIS = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
 	private JTextFieldPad txtImpSitTribPIS = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldFK txtDescSitTribPIS = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
+	
+	private JTextFieldPad txtCodSitTribIPI = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldPad txtImpSitTribIPI = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+
+	private JTextFieldFK txtDescSitTribIPI = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
 
 	private ListaCampos lcSitTribCOF = new ListaCampos( this, "SC" );
 	
@@ -324,12 +332,22 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcSitTribPIS.add( new GuardaCampo( txtCodSitTribPIS, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
 		lcSitTribPIS.add( new GuardaCampo( txtImpSitTribPIS, "ImpSitTrib", "Pis", ListaCampos.DB_PK, false ) );
 		lcSitTribPIS.add( new GuardaCampo( txtDescSitTribPIS, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
-		lcSitTribPIS.montaSql( false, "SITTRIB ", "LF" ); // Nome da tabela com espaço em branco no final, para 
+		lcSitTribPIS.montaSql( false, "SITTRIB ", "LF" ); // Nome da tabela com espaço em branco no final, para contornar bug do lista campos 
 		lcSitTribPIS.setQueryCommit( false );
 		lcSitTribPIS.setReadOnly( true );
 		txtCodSitTribPIS.setTabelaExterna( lcSitTribPIS );
 		txtImpSitTribPIS.setTabelaExterna( lcSitTribPIS );
 		lcSitTribPIS.setWhereAdic( "IMPSITTRIB='PI'" );
+		
+		lcSitTribIPI.add( new GuardaCampo( txtCodSitTribIPI, "CodSitTrib", "Cód.sit.trib.", ListaCampos.DB_PK, false ) );
+		lcSitTribIPI.add( new GuardaCampo( txtImpSitTribIPI, "ImpSitTrib", "IPI", ListaCampos.DB_PK, false ) );
+		lcSitTribIPI.add( new GuardaCampo( txtDescSitTribIPI, "DescSitTrib", "Descrição da Situação Tributária", ListaCampos.DB_SI, false ) );
+		lcSitTribIPI.montaSql( false, "SITTRIB  ", "LF" ); // Nome da tabela com 2 espaços em branco no final, para contornar bug do lista campos
+		lcSitTribIPI.setQueryCommit( false );
+		lcSitTribIPI.setReadOnly( true );
+		txtCodSitTribIPI.setTabelaExterna( lcSitTribIPI );
+		txtImpSitTribIPI.setTabelaExterna( lcSitTribIPI );
+		lcSitTribIPI.setWhereAdic( "IMPSITTRIB='IP'" );
 				
 	}
 
@@ -581,9 +599,11 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		tpnGeral.addTab( "IPI", panelIPI );
 		setPainel( panelIPICampos );
 		
-		adicCampo( txtAliqIPIFisc, 7, 20, 95, 20, "AliqIPIFisc", "% Alíq.IPI", ListaCampos.DB_SI, false );
+		adicCampo( txtCodSitTribIPI, 7, 20, 80, 20, "CodSitTribIPI", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribPIS, false );
+		adicCampoInvisivel( txtImpSitTribIPI, "ImpSitTribIPI", "Imposto", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescSitTribIPI, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
+		adicCampo( txtAliqIPIFisc, 7, 60, 80, 20, "AliqIPIFisc", "% Alíq.IPI", ListaCampos.DB_SI, false );
 		
-
 		/*****************
 		 * ABA PIS
 		 ****************/
@@ -593,9 +613,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		
 		adicCampo( txtCodSitTribPIS, 7, 20, 80, 20, "CodSitTribPIS", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribPIS, false );
 		adicCampoInvisivel( txtImpSitTribPIS, "ImpSitTribPIS", "Imposto", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescSitTribPIS, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
-		
-		adicCampo( txtAliqPisFisc, 7, 60, 70, 20, "AliqPisFisc", "Aliq.PIS", ListaCampos.DB_SI, null, false );	
+		adicDescFK( txtDescSitTribPIS, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );		
+		adicCampo( txtAliqPisFisc, 7, 60, 80, 20, "AliqPisFisc", "Aliq.PIS", ListaCampos.DB_SI, null, false );	
 		
 		
 		/*****************
@@ -609,7 +628,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicCampoInvisivel( txtImpSitTribCOF, "ImpSitTribCOF", "Imposto", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescSitTribCOF, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );		
 	
-		adicCampo( txtAliqCofinsFisc, 7, 60, 70, 20, "AliqCofinsFisc", "Aliq.Cofins", ListaCampos.DB_SI, null, false );	
+		adicCampo( txtAliqCofinsFisc, 7, 60, 80, 20, "AliqCofinsFisc", "Aliq.Cofins", ListaCampos.DB_SI, null, false );	
 			
 		
 		
@@ -702,8 +721,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcMens.setConexao( con );
 		lcTipoMov.setConexao( con );
 		lcTipoFiscCli.setConexao( con );
-		lcSitTribPIS.setConexao( con );
 		lcSitTribCOF.setConexao( con );
+		lcSitTribPIS.setConexao( con );
+		lcSitTribIPI.setConexao( con );
 
 	}
 
