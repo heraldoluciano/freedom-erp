@@ -1,32 +1,40 @@
-/*
- * Created on 06/06/2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
+/**
+ * @version 06/06/2005 <BR>
+ * @author Setpoint Informática Ltda / Robson Sanchez.
+ * 
+ * Projeto: Freedom <BR>
+ * 
+ * Pacote: org.freedom.modulos.fnc <BR>
+ * Classe:
+ * @(#)FRSaidaRetorno.java <BR>
+ * 
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * de acordo com os termos da LPG-PC <BR>
+ * <BR>
+ * 
+ * ? <BR>
+ * 
  */
 package org.freedom.modulos.fnc;
 
-/**
- * @author Robson
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 import java.awt.event.ActionEvent;
 import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-
 import javax.swing.BorderFactory;
 import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FRelatorio;
-
 
 public class FRSaidaRetorno extends FRelatorio {
   private static final long serialVersionUID = 1L;	

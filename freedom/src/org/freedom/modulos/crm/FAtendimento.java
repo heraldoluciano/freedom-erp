@@ -841,11 +841,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		montaComboTipo();
 	}
 
-	public void focusGained( FocusEvent arg0 ) {
-
-		// TODO Auto-generated method stub
-		
-	}
+	public void focusGained( FocusEvent arg0 ) {}
 
 	public void focusLost( FocusEvent fevt ) {
 
@@ -887,16 +883,8 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		}		
 	}
 
-	public void keyReleased( KeyEvent arg0 ) {
+	public void keyReleased( KeyEvent arg0 ) {}
 
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void keyTyped( KeyEvent arg0 ) {
-
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyTyped( KeyEvent arg0 ) {}
 
 }

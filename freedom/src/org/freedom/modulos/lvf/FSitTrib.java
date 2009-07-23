@@ -196,10 +196,6 @@ public class FSitTrib extends FDados implements ActionListener, RadioGroupListen
 
 	}
 
-	public void beforeCarrega( CarregaEvent cevt ) {
-
-		// TODO Auto-generated method stub
-
-	}
+	public void beforeCarrega( CarregaEvent cevt ) {}
 
 }

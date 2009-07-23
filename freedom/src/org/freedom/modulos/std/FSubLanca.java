@@ -703,11 +703,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		
 	}
 
-	public void beforeCarrega( CarregaEvent cevt ) {
-
-		// TODO Auto-generated method stub
-		
-	}
+	public void beforeCarrega( CarregaEvent cevt ) {}
 
 	public void valorAlterado( JComboBoxEvent evt ) {
 		if( evt.getComboBoxPad() == cbContr ){

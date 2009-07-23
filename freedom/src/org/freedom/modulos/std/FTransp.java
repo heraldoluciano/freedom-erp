@@ -599,9 +599,5 @@ public class FTransp extends FDados implements PostListener, RadioGroupListener,
 		
 	}
 
-	public void beforeCarrega( CarregaEvent cevt ) {
-
-		// TODO Auto-generated method stub
-		
-	}
+	public void beforeCarrega( CarregaEvent cevt ) {}
 }
