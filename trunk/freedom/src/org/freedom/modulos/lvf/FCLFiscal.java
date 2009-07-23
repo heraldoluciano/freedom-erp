@@ -158,6 +158,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JTextFieldPad txtAliqFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
 	private JTextFieldPad txtAliqIPIFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
+	
+	private JTextFieldPad txtVlrIpiUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
 	private JTextFieldPad txtAliqLFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
 	
@@ -166,6 +168,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JTextFieldPad txtAliqCofinsFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
 	
 	private JComboBoxPad cbOrig = null;
+	
+	private JComboBoxPad cbTpCalcIPI = null;
 	
 	private JComboBoxPad cbModBCICMS = null;
 	
@@ -243,12 +247,17 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		rgTipoST.setAtivo( false );
 		txtMargemVlAgr.setAtivo( false );
 		cbModBCICMSST.setAtivo( false );
+		rgTpRedIcmsFisc.setAtivo( false );
+		txtRedFisc.setAtivo( false );
+		rgTipoFisc.setAtivo( false );
 				
 		//Adicionando Listeners
 				
 		lcCampos.addCarregaListener( this );		
 		lcCampos.addInsertListener( this );		
 		lcCampos.addPostListener( this );
+		lcTratTrib.addCarregaListener( this );
+		
 		lcDet.addInsertListener( this );
 		
 		btImp.addActionListener( this );
@@ -567,6 +576,26 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		
 		/*********************************************
 		 * 
+		 * Tipo de cálculo do IPI  
+		 * 
+		 *********************************************/
+		
+		Vector<String> vLabsTpCalcIPI = new Vector<String>();		
+		Vector<String> vValsTpCalcIPI = new Vector<String>();
+		
+		vLabsTpCalcIPI.addElement( "<--Selecione-->" );
+		vLabsTpCalcIPI.addElement( "Percentual" );
+		vLabsTpCalcIPI.addElement( "Em valor" );
+		vValsTpCalcIPI.addElement( "" );
+		vValsTpCalcIPI.addElement( "P" );
+		vValsTpCalcIPI.addElement( "V" );
+		
+
+		cbTpCalcIPI = new JComboBoxPad( vLabsTpCalcIPI, vValsTpCalcIPI, JComboBoxPad.TP_STRING, 1, 0 );
+		
+		
+		/*********************************************
+		 * 
 		 * Inclusão dos campos
 		 * 
 		 *********************************************/		
@@ -602,7 +631,11 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicCampo( txtCodSitTribIPI, 7, 20, 80, 20, "CodSitTribIPI", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribPIS, false );
 		adicCampoInvisivel( txtImpSitTribIPI, "ImpSitTribIPI", "Imposto", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescSitTribIPI, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
-		adicCampo( txtAliqIPIFisc, 7, 60, 80, 20, "AliqIPIFisc", "% Alíq.IPI", ListaCampos.DB_SI, false );
+		
+		adicDB( cbTpCalcIPI, 7, 60, 200, 20, "TpCalcIPI", "Tipo de cálculo", false );
+				
+		adicCampo( txtAliqIPIFisc, 7, 100, 98, 20, "AliqIPIFisc", "% Alíq.IPI", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrIpiUnidTrib, 108, 100, 99, 20, "VlrIPIUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
 		
 		/*****************
 		 * ABA PIS
@@ -704,7 +737,48 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	public void beforeCarrega( CarregaEvent e ) { }
 
-	public void afterCarrega( CarregaEvent e ) { }
+	public void afterCarrega( CarregaEvent e ) { 
+		if(e.getListaCampos()==lcTratTrib) {
+			// Redução na base de calculo.
+			if( "20".equals( txtCodTratTrib.getVlrString()) || ("51".equals( txtCodTratTrib.getVlrString() ) ) )  {
+				rgTpRedIcmsFisc.setAtivo( true );
+				txtRedFisc.setAtivo( true );
+				rgTipoFisc.setVlrString( "TT" );
+			}
+			else {
+				
+				rgTpRedIcmsFisc.setAtivo( false );
+				txtRedFisc.setVlrBigDecimal( new BigDecimal(0) );
+				txtRedFisc.setAtivo( false );
+				
+				// Substituição tributária
+				if("10".equals( txtCodTratTrib.getVlrString() )) {
+					rgTipoST.setAtivo( true );
+					rgTipoFisc.setVlrString( "FF" );
+				}
+				else {
+					rgTipoST.setAtivo( false );
+
+					//Tributado integralmente
+					if("00".equals( txtCodTratTrib.getVlrString() )) {
+						rgTipoFisc.setVlrString( "TT" );						
+					}
+					//Isento ou não tribut.
+					else if( "30".equals( txtCodTratTrib.getVlrString()) || ("40".equals( txtCodTratTrib.getVlrString() ) ) )  {
+						rgTipoFisc.setVlrString( "II" );
+						txtAliqFisc.setVlrBigDecimal( new BigDecimal(0) );
+					}
+					// Não insidência
+					else if( "41".equals( txtCodTratTrib.getVlrString()) || ("50".equals( txtCodTratTrib.getVlrString() ) ) )  {
+						rgTipoFisc.setVlrString( "NN" );
+						txtAliqFisc.setVlrBigDecimal( new BigDecimal(0) );
+					}
+				}
+				
+			}
+				
+		}
+	}
 
 	public void beforeInsert( InsertEvent e ) { }
 
