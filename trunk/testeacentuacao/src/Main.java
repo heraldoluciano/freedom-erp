@@ -7,8 +7,8 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		//String referencia = "AEIOUCaeiouçAEIOU";
-		String texto = "ÀÈÌÒÙÇàèìòùçÁÉÍÓÚ";
+		//String referencia = "AEIOUCaeiouï¿½AEIOU";
+		String texto = "Ã€ÃˆÃŒÃ’Ã™";
 		JOptionPane.showMessageDialog(null, texto);
 	}
 
