@@ -221,6 +221,19 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	
 	private JCheckBoxPad cbGeralFisc = new JCheckBoxPad( "Regra geral?", "S", "N" );
 	
+	private JTextFieldPad txtCodPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescPais = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtSiglaUF = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 ); 
+	
+	private ListaCampos lcPais = new ListaCampos( this, "" );
+	
+	private ListaCampos lcUF = new ListaCampos( this );
+
+	
 	public FCLFiscal() {
 
 		super( false );
@@ -357,6 +370,24 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		txtCodSitTribIPI.setTabelaExterna( lcSitTribIPI );
 		txtImpSitTribIPI.setTabelaExterna( lcSitTribIPI );
 		lcSitTribIPI.setWhereAdic( "IMPSITTRIB='IP'" );
+		
+		lcPais.setUsaME( false );
+		lcPais.add( new GuardaCampo( txtCodPais, "CodPais", "Cod.país.", ListaCampos.DB_PK, false ) );
+		lcPais.add( new GuardaCampo( txtDescPais, "NomePais", "Nome", ListaCampos.DB_SI, false ) );
+		lcPais.montaSql( false, "PAIS", "SG" );
+		lcPais.setQueryCommit( false );
+		lcPais.setReadOnly( true );
+		txtCodPais.setTabelaExterna( lcPais );
+
+		lcUF.setUsaME( false );		
+		lcUF.add( new GuardaCampo( txtSiglaUF, "SiglaUf", "Sigla", ListaCampos.DB_PK, false ) );
+		lcUF.add( new GuardaCampo( txtNomeUF, "NomeUf", "Nome", ListaCampos.DB_SI, false ) );
+		lcUF.setDinWhereAdic( "CODPAIS = #S", txtCodPais );
+		lcUF.montaSql( false, "UF", "SG" );
+		lcUF.setQueryCommit( false );
+		lcUF.setReadOnly( true );
+		txtSiglaUF.setTabelaExterna( lcUF );
+		
 				
 	}
 
@@ -448,18 +479,27 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 				
 		adicCampoInvisivel( txtCodItClFiscal, "CodItFisc", "Item", ListaCampos.DB_PK, true );
 
-		adicCampo( txtCodTipoFisc, 7, 20, 80, 20, "CodFiscCli", "Cód.fisc.cli.", ListaCampos.DB_FK, txtDescFiscCli, false );
-		adicDescFK( txtDescFiscCli, 90, 20, 378, 20, "DescFiscCli", "Descrição do tipo fiscal de cliente" );
+		adicCampo( txtCodTipoFisc, 7, 20, 70, 20, "CodFiscCli", "Cód.fisc.cli.", ListaCampos.DB_FK, txtDescFiscCli, false );
+		adicDescFK( txtDescFiscCli, 80, 20, 388, 20, "DescFiscCli", "Descrição do tipo fiscal de cliente" );
 
-		adicCampo( txtCodTipoMov, 7, 60, 80, 20, "CodTipoMov", "Cód.tp.Mov", ListaCampos.DB_FK, txtDescTipoMov, false );
-		adicDescFK( txtDescTipoMov, 90, 60, 378, 20, "DescTipoMov", "Descrição do tipo de movimento" );
+		adicCampo( txtCodTipoMov, 7, 60, 70, 20, "CodTipoMov", "Cód.tp.Mov", ListaCampos.DB_FK, txtDescTipoMov, false );
+		adicDescFK( txtDescTipoMov, 80, 60, 388, 20, "DescTipoMov", "Descrição do tipo de movimento" );
 		
-		adicCampo( txtCodMens, 7, 100, 80, 20, "CodMens", "Cód.mens.", ListaCampos.DB_FK, txtDescMens, false );
-		adicDescFK( txtDescMens, 90, 100, 378, 20, "Mens", "Mensagem" );
+		adicCampo( txtCodMens, 7, 100, 70, 20, "CodMens", "Cód.mens.", ListaCampos.DB_FK, txtDescMens, false );
+		adicDescFK( txtDescMens, 80, 100, 388, 20, "Mens", "Mensagem" );
 
 		adicDB( rgNoUF, 471, 20, 150, 60, "NoUFItFisc", "Destino da mercadoria", true );
 		
 		adicDB( cbGeralFisc, 471,100,150,20, "GeralFisc", "Padrão", true );
+		
+		adicCampo( txtCodPais, 7, 140, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, false );
+		adicDescFK( txtDescPais, 80, 140, 227, 20, "NomePais", "Nome do país" );
+		adicCampo( txtSiglaUF, 310, 140, 70, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, false );
+		adicDescFK( txtNomeUF, 383, 140, 238, 20, "NomeUF", "Nome UF" );
+
+		
+		
+		
 		
 		/*****************
 		 * ABA ICMS
@@ -798,6 +838,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcSitTribCOF.setConexao( con );
 		lcSitTribPIS.setConexao( con );
 		lcSitTribIPI.setConexao( con );
+		lcPais.setConexao( con );
+		lcUF.setConexao( con );
 
 	}
 
