@@ -192,7 +192,7 @@ public class SafeContabil extends Contabil {
 	protected static String getSqlVendas() {
 
 		StringBuilder sql = new StringBuilder();
-
+		
 		sql.append( "SELECT C.CODCLI CODIGO, C.CODCONTDEB CONTADEB, C.CODCONTCRED CONTACRED, V.VLRLIQVENDA VALOR," );
 		sql.append( "V.SERIE, V.DOCVENDA DOC, H.TXAHISTPAD, V.DTEMITVENDA DATA, C.CODFILIAL, C.RAZCLI PORTADOR, " );
 		sql.append( "C.RAZCLI HISTORICO " );
@@ -200,7 +200,7 @@ public class SafeContabil extends Contabil {
 		sql.append( "LEFT OUTER JOIN FNHISTPAD H " );
 		sql.append( "ON H.CODEMP=C.CODEMPHP AND H.CODFILIAL=C.CODFILIALHP AND H.CODHIST=C.CODHIST " );
 		sql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.DTEMITVENDA BETWEEN ? AND ? AND " );
-		sql.append( "NOT SUBSTR(V.STATUSVENDA,1,1)='C' AND " );
+		sql.append( "NOT SUBSTR(V.STATUSVENDA,1,1)='C' AND V.VLRLIQVENDA>0 AND " );
 		sql.append( "T.CODEMP=V.CODEMPTM AND T.CODFILIAL=V.CODFILIALTM AND " );
 		sql.append( "T.CODTIPOMOV=V.CODTIPOMOV AND T.FISCALTIPOMOV='S' AND " );
 		sql.append( "C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
