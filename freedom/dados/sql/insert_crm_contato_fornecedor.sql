@@ -7,12 +7,12 @@ codemptc, codfilialtc, codtipocli,
 codpais,siglauf,cidcto,codmunic,
 codempoc,codfilialoc,codorigcont)
 select
-f.codemp,f.codfilial,coalesce((select max(ccodcto) from tkcontato c),0)+1 
-f.codfor,f.razfor,f.nomefor,f.pessoafor,f.ativofor,
-f.codempsr,f.codfilialsr,?,
+f.codemp,f.codfilial,coalesce((select max(codcto) from tkcontato c),0)+1,
+f.razfor,f.nomefor,f.pessoafor,f.ativofor,
+?,?,?,
 f.cnpjfor,f.inscfor,f.contfor,f.cepfor,f.endfor,f.numfor,f.complfor,
-f.bairfor,f.fonefor,f.faxfor,f.dddfor,f.emailfor,
-f.codemp,f.codfilial,?,
+f.bairfor,f.fonefor,f.faxfor,f.dddfonefor,f.emailfor,
+?,?,?,
 f.codpais,f.siglauf,f.cidfor,f.codmunic,
 ?,?,?
 from cpforneced f;
