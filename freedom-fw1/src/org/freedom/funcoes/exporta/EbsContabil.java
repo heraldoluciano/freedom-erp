@@ -96,6 +96,7 @@ public class EbsContabil extends Contabil {
 			entradas.setModeloNota( rs.getInt( "codmodnota" ) );
 			entradas.setSerie( rs.getString( "serie" ) );
 			entradas.setSubSerie( null );
+			entradas.setVariacaoCfop( 1 );
 
 			StringBuilder sqlCFOP = new StringBuilder();		
 			sql.append( "select ic.codnat from cpitcompra ic " );
@@ -129,12 +130,12 @@ public class EbsContabil extends Contabil {
 			sql.append( "where ic.codemp=? and ic.codfilial=? and ic.codcompra=? " );
 			sql.append( "group by ic.percicmsitcompra" );
 
-			PreparedStatement psICMS = con.prepareStatement( sql.toString() );
+			PreparedStatement psICMS = con.prepareStatement( sqlICMS.toString() );
 			ps.setInt( 1, rs.getInt( "codcompra" ) );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
 
-			ResultSet rsICMS = ps.executeQuery();
+			ResultSet rsICMS = psICMS.executeQuery();
 			
 			for ( int i=0; i<4 && rsICMS.next(); i++) {
 			
@@ -194,6 +195,58 @@ public class EbsContabil extends Contabil {
 			entradas.setSequencial( sequencial++ );
 
 			readrows.add( entradas.toString() );
+			
+			emitente();
+		}
+
+		rs.close();
+		ps.close();
+
+		con.commit();
+	}
+
+	private void emitente() throws Exception {
+
+		StringBuilder sql = new StringBuilder();		
+		sql.append( "" );
+
+		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
+		ps.setDate( 3, Funcoes.dateToSQLDate( dtini ) );
+		ps.setDate( 4, Funcoes.dateToSQLDate( dtfim ) );
+
+		ResultSet rs = ps.executeQuery();
+		EmitenteDestinatario emitenteDestinatario = null;
+
+		while ( rs.next() ) {
+			
+			emitenteDestinatario = new EmitenteDestinatario();			
+			emitenteDestinatario.setCnpj( null );			
+			emitenteDestinatario.setRazaoSocial( null );			
+			emitenteDestinatario.setNomeFantazia( null );			
+			emitenteDestinatario.setEstado( null );			
+			emitenteDestinatario.setInscricao( null );		
+			emitenteDestinatario.setEndereco( null );			
+			emitenteDestinatario.setBairro( null );			
+			emitenteDestinatario.setCidade( null );			
+			emitenteDestinatario.setCep( null );			
+			emitenteDestinatario.setMunicipio( 0 );			
+			emitenteDestinatario.setDdd( 0 );			
+			emitenteDestinatario.setTelefone( 0 );			
+			emitenteDestinatario.setContaCliente( 0 );			
+			emitenteDestinatario.setHistoricoCliente( 0 );			
+			emitenteDestinatario.setContaFornecedor( 0 );			
+			emitenteDestinatario.setProdutor( false );			
+			emitenteDestinatario.setHistoricoFornecedor( 0 );			
+			emitenteDestinatario.setIndentificacaoExterior( null );			
+			emitenteDestinatario.setNumero( 0 );			
+			emitenteDestinatario.setComplemento( null );			
+			emitenteDestinatario.setSuframa( null );			
+			emitenteDestinatario.setPais( 0 );
+			emitenteDestinatario.setSequencial( sequencial++ );
+
+			readrows.add( emitenteDestinatario.toString() );
 		}
 
 		rs.close();
@@ -214,14 +267,41 @@ public class EbsContabil extends Contabil {
 		ps.setDate( 4, Funcoes.dateToSQLDate( dtfim ) );
 
 		ResultSet rs = ps.executeQuery();
-		Entrada entradas = null;
+		ItemEntrada itemEntrada = null;
 
 		while ( rs.next() ) {
 			
-			entradas = new Entrada();
-			entradas.setSequencial( sequencial++ );
+			itemEntrada = new ItemEntrada();			
+			itemEntrada.setCodigo( 0 );			
+			itemEntrada.setQuantidade( null );			
+			itemEntrada.setValor( null );			
+			itemEntrada.setQuantidade2( null );			
+			itemEntrada.setDesconto( null );			
+			itemEntrada.setBaseICMS( null );			
+			itemEntrada.setAliquotaICMS( null );			
+			itemEntrada.setValorIPI( null );			
+			itemEntrada.setBaseICMSSusTributaria( null );			
+			itemEntrada.setAliquotaIPI( null );			
+			itemEntrada.setPercentualReducaoBaseICMS( null );			
+			itemEntrada.setSituacaoTributaria( null );			
+			itemEntrada.setIndentificacao( null );		
+			itemEntrada.setSituacaoTributariaIPI( 0 );			
+			itemEntrada.setBaseIPI( null );			
+			itemEntrada.setSituacaoTributariaPIS( 0 );			
+			itemEntrada.setBasePIS( null );			
+			itemEntrada.setAliquotaPIS( null );			
+			itemEntrada.setQuantidadeBasePIS( null );			
+			itemEntrada.setValorAliquotaPIS( null );			
+			itemEntrada.setValorPIS( null );			
+			itemEntrada.setSituacaoTributariaCOFINS( 0 );			
+			itemEntrada.setBaseCOFINS( null );			
+			itemEntrada.setAliquotaCOFINS( null );			
+			itemEntrada.setQuantidadeBaseCOFINS( null );			
+			itemEntrada.setValorAliquotaCOFINS( null );			
+			itemEntrada.setValorICMSSubTributaria( null );
+			itemEntrada.setSequencial( sequencial++ );
 
-			readrows.add( entradas.toString() );
+			readrows.add( itemEntrada.toString() );
 		}
 
 		rs.close();
@@ -235,7 +315,6 @@ public class EbsContabil extends Contabil {
 		EbsContabil ebs = new EbsContabil( con, readrows, dtini, dtfim );
 		
 		ebs.headerEntradas();
-		//ebs.emitente();		
 		ebs.entradas();	
 		ebs.itensEntradas();
 		
@@ -275,6 +354,8 @@ public class EbsContabil extends Contabil {
 		
 		private int contaFornecedor;
 		
+		private boolean produtor;
+		
 		private int historicoFornecedor;
 		
 		private String indentificacaoExterior;
@@ -288,6 +369,229 @@ public class EbsContabil extends Contabil {
 		private int pais;
 		
 		private int sequencial;
+
+		private int getTipoRegistro() {
+			return tipoRegistro;
+		}
+
+		private String getCnpj() {
+			return cnpj;
+		}
+
+		private void setCnpj( String cnpj ) {
+			this.cnpj = cnpj;
+		}
+
+		private String getRazaoSocial() {
+			return razaoSocial;
+		}
+
+		private void setRazaoSocial( String razaoSocial ) {
+			this.razaoSocial = razaoSocial;
+		}
+
+		private String getNomeFantazia() {
+			return nomeFantazia;
+		}
+
+		private void setNomeFantazia( String nomeFantazia ) {
+			this.nomeFantazia = nomeFantazia;
+		}
+
+		private String getEstado() {
+			return estado;
+		}
+
+		private void setEstado( String estado ) {
+			this.estado = estado;
+		}
+
+		private String getInscricao() {
+			return inscricao;
+		}
+
+		private void setInscricao( String inscricao ) {
+			this.inscricao = inscricao;
+		}
+
+		private String getEndereco() {
+			return endereco;
+		}
+
+		private void setEndereco( String endereco ) {
+			this.endereco = endereco;
+		}
+
+		private String getBairro() {
+			return bairro;
+		}
+
+		private void setBairro( String bairro ) {
+			this.bairro = bairro;
+		}
+
+		private String getCidade() {
+			return cidade;
+		}
+
+		private void setCidade( String cidade ) {
+			this.cidade = cidade;
+		}
+
+		private String getCep() {
+			return cep;
+		}
+
+		private void setCep( String cep ) {
+			this.cep = cep;
+		}
+
+		private int getMunicipio() {
+			return municipio;
+		}
+
+		private void setMunicipio( int municipio ) {
+			this.municipio = municipio;
+		}
+
+		private int getDdd() {
+			return ddd;
+		}
+
+		private void setDdd( int ddd ) {
+			this.ddd = ddd;
+		}
+
+		private int getTelefone() {
+			return telefone;
+		}
+
+		private void setTelefone( int telefone ) {
+			this.telefone = telefone;
+		}
+
+		private int getContaCliente() {
+			return contaCliente;
+		}
+
+		private void setContaCliente( int contaCliente ) {
+			this.contaCliente = contaCliente;
+		}
+
+		private int getHistoricoCliente() {
+			return historicoCliente;
+		}
+
+		private void setHistoricoCliente( int historicoCliente ) {
+			this.historicoCliente = historicoCliente;
+		}
+
+		private int getContaFornecedor() {
+			return contaFornecedor;
+		}
+
+		private void setContaFornecedor( int contaFornecedor ) {
+			this.contaFornecedor = contaFornecedor;
+		}
+
+		private boolean isProdutor() {
+			return produtor;
+		}
+
+		private void setProdutor( boolean produtor ) {
+			this.produtor = produtor;
+		}
+
+		private int getHistoricoFornecedor() {
+			return historicoFornecedor;
+		}
+
+		private void setHistoricoFornecedor( int historicoFornecedor ) {
+			this.historicoFornecedor = historicoFornecedor;
+		}
+
+		private String getIndentificacaoExterior() {
+			return indentificacaoExterior;
+		}
+
+		private void setIndentificacaoExterior( String indentificacaoExterior ) {
+			this.indentificacaoExterior = indentificacaoExterior;
+		}
+
+		private int getNumero() {
+			return numero;
+		}
+
+		private void setNumero( int numero ) {
+			this.numero = numero;
+		}
+
+		private String getComplemento() {
+			return complemento;
+		}
+
+		private void setComplemento( String complemento ) {
+			this.complemento = complemento;
+		}
+
+		private String getSuframa() {
+			return suframa;
+		}
+
+		private void setSuframa( String suframa ) {
+			this.suframa = suframa;
+		}
+
+		private int getPais() {
+			return pais;
+		}
+
+		private void setPais( int pais ) {
+			this.pais = pais;
+		}
+
+		private int getSequencial() {
+			return sequencial;
+		}
+
+		private void setSequencial( int sequencial ) {
+			this.sequencial = sequencial;
+		}
+
+		@Override
+		public String toString() {
+
+			StringBuilder emitenteDestinatario = new StringBuilder();
+			
+			emitenteDestinatario.append( getTipoRegistro() );
+			emitenteDestinatario.append( format( getCnpj(), CHAR, 18, 0 ) );			
+			emitenteDestinatario.append( format( getRazaoSocial(), CHAR, 40, 0 ) );			
+			emitenteDestinatario.append( format( getNomeFantazia(), CHAR, 20, 0 ) );			
+			emitenteDestinatario.append( format( getEstado(), CHAR, 2, 0 ) );			
+			emitenteDestinatario.append( format( getInscricao(), CHAR, 20, 0 ) );		
+			emitenteDestinatario.append( format( getEndereco(), CHAR, 40, 0 ) );			
+			emitenteDestinatario.append( format( getBairro(), CHAR, 20, 0 ) );			
+			emitenteDestinatario.append( format( getCidade(), CHAR, 20, 0 ) );			
+			emitenteDestinatario.append( format( getCep(), NUMERIC, 8, 0 ) );			
+			emitenteDestinatario.append( format( getMunicipio(), NUMERIC, 4, 0 ) );			
+			emitenteDestinatario.append( format( getDdd(), NUMERIC, 3, 0 ) );			
+			emitenteDestinatario.append( format( getTelefone(), NUMERIC, 10, 0 ) );			
+			emitenteDestinatario.append( format( getContaCliente(), NUMERIC, 6, 0 ) );			
+			emitenteDestinatario.append( format( getHistoricoCliente(), NUMERIC, 3, 0 ) );			
+			emitenteDestinatario.append( format( getContaFornecedor(), NUMERIC, 6, 0 ) );			
+			emitenteDestinatario.append( format( getHistoricoFornecedor(), NUMERIC, 3, 0 ) );			
+			emitenteDestinatario.append( isProdutor() ? "S" : "N" );			
+			emitenteDestinatario.append( format( getIndentificacaoExterior(), CHAR, 18, 0 ) );			
+			emitenteDestinatario.append( format( getNumero(), NUMERIC, 5, 0 ) );			
+			emitenteDestinatario.append( format( getComplemento(), CHAR, 20, 0 ) );			
+			emitenteDestinatario.append( format( getSuframa(), CHAR, 9, 0 ) );			
+			emitenteDestinatario.append( format( getPais(), NUMERIC, 5, 0 ) );				
+			emitenteDestinatario.append( format( "", CHAR, 207, 0 ) );				
+			emitenteDestinatario.append( format( "", CHAR, 5, 0 ) );			
+			emitenteDestinatario.append( format( getSequencial(), NUMERIC, 6, 0 ) );
+			
+			return emitenteDestinatario.toString();
+		}
 	}
 		
 	private class HeaderEntrada {
@@ -302,6 +606,10 @@ public class EbsContabil extends Contabil {
 		
 		private int sequencial;
 		
+		
+		private HeaderEntrada() {
+			setCalculaBases( 1 );
+		}
 		
 		private int getTipoRegistro() {
 			return tipoRegistro;
@@ -960,6 +1268,7 @@ public class EbsContabil extends Contabil {
 			entrada.append( format( getModeloNota(), NUMERIC, 2, 0 ) );
 			entrada.append( format( getSerie(), CHAR, 3, 0 ) );
 			entrada.append( format( getSubSerie(), CHAR, 3, 0 ) );
+			entrada.append( format( getVariacaoCfop(), NUMERIC, 2, 0 ) );
 			entrada.append( format( getCfop(), NUMERIC, 4, 0 ) );
 			entrada.append( format( getClassificacaoIntegracao(), NUMERIC, 2, 0 ) );
 			entrada.append( format( getClassificacaoIntegracao2(), NUMERIC, 2, 0 ) );
