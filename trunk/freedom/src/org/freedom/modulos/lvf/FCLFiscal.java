@@ -70,6 +70,10 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JTabbedPanePad tpnGeral = new JTabbedPanePad();
 
 	private JPanelPad panelGeral = new JPanelPad( 500, 80 );
+		
+	private JPanelPad panelServico = new JPanelPad( 500, 60 );
+	
+	public JPanelPad pnServico = new JPanelPad( new BorderLayout() );
 
 	private JPanelPad panelVariantesCampos = new JPanelPad( 500, 80 );
 
@@ -130,6 +134,10 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JTextFieldFK txtDescNCM = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldPad txtExTIPI = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldPad txtCodServ = new JTextFieldPad(JTextFieldPad.TP_STRING,5,0);
+	
+	private JTextAreaPad txaDescServ =  new JTextAreaPad( 500 );
 	
 	private JTextAreaPad txaDescExTIPI = new JTextAreaPad( 1000 );
 	
@@ -232,6 +240,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private ListaCampos lcPais = new ListaCampos( this, "" );
 	
 	private ListaCampos lcUF = new ListaCampos( this );
+	
+	private ListaCampos lcServico = new ListaCampos( this );
 
 	
 	public FCLFiscal() {
@@ -263,6 +273,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		rgTpRedIcmsFisc.setAtivo( false );
 		txtRedFisc.setAtivo( false );
 		rgTipoFisc.setAtivo( false );
+		txaDescServ.setAtivo( false );
 				
 		//Adicionando Listeners
 				
@@ -309,8 +320,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		lcNCM.setUsaME( false );
 		lcNCM.add( new GuardaCampo( txtCodNCM, "CodNCM", "Cód.NCM", ListaCampos.DB_PK, txtDescNCM, false ) );
-		lcNCM.add( new GuardaCampo( txtDescNCM, "DescNCM", "Descrição da nomeclatura comum do Mercosul", ListaCampos.DB_SI, null, false ) );
-		lcNCM.add( new GuardaCampo( txaDescNCM, "TextoNCM", "Descrição completa da nomeclatura comum do Mercosul", ListaCampos.DB_SI, null, false ) );
+		lcNCM.add( new GuardaCampo( txtDescNCM, "DescNCM", "Descrição da nomenclatura comum do Mercosul", ListaCampos.DB_SI, null, false ) );
+		lcNCM.add( new GuardaCampo( txaDescNCM, "TextoNCM", "Descrição completa da nomenclatura comum do Mercosul", ListaCampos.DB_SI, null, false ) );
 		lcNCM.add( new GuardaCampo( txaDescExTIPI, "ExcecaoNCM", "Descrição das exceções", ListaCampos.DB_SI, null, false ) );
 		lcNCM.setDinWhereAdic( "EXISTS(SELECT NN.CODNCM FROM LFNCMNBM NN WHERE NN.CODNCM=LFNCM.CODNCM)", txtCodNCM );
 		lcNCM.montaSql( false, "NCM", "LF" );
@@ -320,7 +331,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		lcNBM.setUsaME( false );
 		lcNBM.add( new GuardaCampo( txtCodNBM, "CodNBM", "Cód.NBM", ListaCampos.DB_PK, txtDescNBM, false ) );
-		lcNBM.add( new GuardaCampo( txtDescNBM, "DescNBM", "Descrição da nomeclatura brasileira de mercadorias", ListaCampos.DB_SI, null, false ) );
+		lcNBM.add( new GuardaCampo( txtDescNBM, "DescNBM", "Descrição da nomenclatura brasileira de mercadorias", ListaCampos.DB_SI, null, false ) );
 		lcNBM.setDinWhereAdic( "EXISTS(SELECT NN.CODNBM FROM LFNCMNBM NN WHERE NN.CODNCM = #S AND NN.CODNBM=LFNBM.CODNBM)", txtCodNCM );
 		lcNBM.montaSql( false, "NBM", "LF" );
 		lcNBM.setQueryCommit( false );
@@ -388,6 +399,14 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcUF.setReadOnly( true );
 		txtSiglaUF.setTabelaExterna( lcUF );
 		
+		lcServico.setUsaME( false );		
+		lcServico.add( new GuardaCampo( txtCodServ, "CodServ", "Cod.Serviço", ListaCampos.DB_PK, false ) );
+		lcServico.add( new GuardaCampo( txaDescServ, "DescServ", "Descrição do Serviço", ListaCampos.DB_SI, false ) );
+		lcServico.montaSql( false, "SERVICO", "LF" );
+		lcServico.setQueryCommit( false );
+		lcServico.setReadOnly( true );
+		txtCodServ.setTabelaExterna( lcServico );
+		
 				
 	}
 
@@ -413,9 +432,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicCampo( txtCodRegra, 7, 60, 100, 20, "CodRegra", "Cód.reg.CFOP", ListaCampos.DB_FK, txtDescRegra, true );
 		adicDescFK( txtDescRegra, 110, 60, 595, 20, "DescRegra", "Descrição da regra fiscal" );		
 		
-	// ********** Aba Nomeclatura Comum **********
+	// ********** Aba Nomenclatura Comum **********
 
-		tpnPrincipal.addTab( "Nomeclatura Comum", panelNomeComum );
+		tpnPrincipal.addTab( "Nomenclatura Comum", panelNomeComum );
 		
 		panelNomeComum.add( panelNomeComumNCM, BorderLayout.CENTER );
 		
@@ -430,7 +449,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		
 		panelNomeComum.add( panelNomeComumNBM, BorderLayout.SOUTH );
 		
-		spDescNCM.setBorder( BorderFactory.createTitledBorder( "Descrição completa da nomeclatura comum do Mercosul" ) );		
+		spDescNCM.setBorder( BorderFactory.createTitledBorder( "Descrição completa da nomenclatura comum do Mercosul" ) );		
 		spDescExTIPI.setBorder( BorderFactory.createTitledBorder( "Texto auxíliar para exceções" ) );		
 		txaDescNCM.setBorder( BorderFactory.createEtchedBorder() );
 		txaDescExTIPI.setBorder( BorderFactory.createEtchedBorder() );
@@ -438,15 +457,27 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		setPainel( panelNomeComumNCMCampos );
 		
 		adicCampo( txtCodNCM, 7, 20, 100, 20, "CodNCM", "Cód.NCM", ListaCampos.DB_FK, txtDescNCM, false );
-		adicDescFK( txtDescNCM, 110, 20, 320, 20, "DescNCM", "Descrição da nomeclatura comum do Mercosul" );	
+		adicDescFK( txtDescNCM, 110, 20, 320, 20, "DescNCM", "Descrição da nomenclatura comum do Mercosul" );	
 		adicCampo( txtExTIPI, 433, 20, 47, 20, "ExTIPI", "Cód.ex.", ListaCampos.DB_SI, null, false );	
 		
 		setPainel( panelNomeComumNBM );
 		
 		adicCampo( txtCodNBM, 7, 25, 100, 20, "CodNBM", "Cód.NBM", ListaCampos.DB_FK, txtDescNBM, false );
-		adicDescFK( txtDescNBM, 110, 25, 370, 20, "DescNBM", "Descrição da nomeclatura brasileira de mercadorias" );		
+		adicDescFK( txtDescNBM, 110, 25, 370, 20, "DescNBM", "Descrição da nomenclatura brasileira de mercadorias" );		
 
 		// *******************************
+		
+		// ********** Aba Serviço **********
+
+		tpnPrincipal.addTab( "Definição do serviço", pnServico );
+		pnServico.add( panelServico,  BorderLayout.CENTER ); 
+		
+		setPainel( panelServico );
+		
+		adicCampo(txtCodServ, 7, 20, 70, 20,"CodServ","Cód.Serv.",ListaCampos.DB_FK, true);
+		adic( txaDescServ, 80, 20, 650, 100,"Descrição do serviço");	
+		
+		// *******************************		
 		
 		txtCodFisc.setTabelaExterna( lcCampos );
 		setListaCampos( true, "CLFISCAL", "LF" );
@@ -497,10 +528,6 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicCampo( txtSiglaUF, 310, 140, 70, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, false );
 		adicDescFK( txtNomeUF, 383, 140, 238, 20, "NomeUF", "Nome UF" );
 
-		
-		
-		
-		
 		/*****************
 		 * ABA ICMS
 		 ****************/
@@ -840,6 +867,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcSitTribIPI.setConexao( con );
 		lcPais.setConexao( con );
 		lcUF.setConexao( con );
+		lcServico.setConexao( con );
 
 	}
 
@@ -873,7 +901,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		if ( e.getListaCampos() == lcCampos ) {
 			if ( txtCodNCM.getVlrString().trim().length() > 0 && txtCodNBM.getVlrString().trim().length() == 0 ) {
 				lcCampos.cancelPost();
-				Funcoes.mensagemInforma( this, "A nomeclatura brasileira de mercadorias deve estar amarrada a nomeclatura comum do mercosul!" );
+				Funcoes.mensagemInforma( this, "A nomenclatura brasileira de mercadorias deve estar amarrada a nomenclatura comum do mercosul!" );
 				txtCodNBM.requestFocus();
 			}
 		}
