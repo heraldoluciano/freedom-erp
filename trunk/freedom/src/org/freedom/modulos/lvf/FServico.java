@@ -35,8 +35,11 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FServico extends FDados implements ActionListener{
+	
 	private static final long serialVersionUID = 1L;
+	
 	private JTextFieldPad txtCodServ = new JTextFieldPad(JTextFieldPad.TP_STRING,5,0);
+	
 	private JTextAreaPad txaDescServ =  new JTextAreaPad( 500 );
 	
 	public FServico () {
