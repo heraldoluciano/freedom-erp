@@ -29,12 +29,10 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
-
-import javax.swing.BorderFactory;
+import javax.swing.BorderFactory; 
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
@@ -65,6 +63,14 @@ import org.freedom.telas.FTabDados;
 public class FPrefereGeral extends FTabDados implements CheckBoxListener, ActionListener, PostListener, EditListener, InsertListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final int RETRATO_DANFE = 1;
+	
+	private static final int PAISAGEM_DANFE = 2;
+	
+	private static final int PRODUCAO_NFE = 1;
+	
+	private static final int HOMOLOGACAO_NFE = 2;
 
 	private JPanelPad pinVenda = new JPanelPad( 690, 220 );
 
@@ -94,7 +100,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JPanelPad pinEmail = new JPanelPad();
 
-	private JPanelPad pinSmtp = new JPanelPad();
+//	private JPanelPad pinSmtp = new JPanelPad();
 
 	private JPanelPad pinProd = new JPanelPad();
 
@@ -278,25 +284,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final String opcoes = "Opções";
 
-//	private JLabelPad lbVendOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
-	
 	private JLabelPad lbCompOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
 
 	private JLabelPad lbGeralOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
 
 	private JLabelPad lbOrcOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
 
-	private JLabelPad lbEstOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
-
 	private JLabelPad lbProdOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
-	
-	private JLabelPad lbNFeOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
 	
 	private JLabelPad lbRecursos = new JLabelPad( opcoes, SwingConstants.CENTER );
 	
 	private JLabelPad lbFrete = new JLabelPad( opcoes, SwingConstants.CENTER );
-
-//	private JLabelPad lbFinOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
 
 	private JLabelPad lbCtbOpcoes = new JLabelPad( opcoes, SwingConstants.CENTER );
 
@@ -307,8 +305,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JPanelPad pnEstOpcoes = new JPanelPad();
 
 	private JLabelPad lbProdCont = new JLabelPad();
-	
-	private JLabelPad lbNFeCont = new JLabelPad();
 	
 	private JLabelPad lbRecursosCont = new JLabelPad();
 	
@@ -374,7 +370,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JCheckBoxPad cbTravaTMNFVD = null;
 
-	private JCheckBoxPad cbLibGeral = null;
+//	private JCheckBoxPad cbLibGeral = null;
 
 	private JCheckBoxPad cbJurosPosCalc = null;
 
@@ -575,6 +571,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private ListaCampos lcMensGeral = new ListaCampos( this, "MS" );
 	
 	private final JButtonPad btDirNfe = new JButtonPad( Icone.novo( "btAbrirPeq.gif" ) );
+	
+	private JRadioGroup<String, Integer> rgFormatoDANFE = null;
+	
+	private JRadioGroup<String, Integer> rgAmbienteNFE = null;
 
 	public FPrefereGeral() {
 
@@ -973,7 +973,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		cbGeraCodUnif.setVlrString( "N" );
 		cbVisualizaLucr = new JCheckBoxPad( "Mostrar lucratividade no pedido.", "S", "N" );
 		cbVisualizaLucr.setVlrString( "N" );
-
+		
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
 		vLabs.addElement( "Custo MPM" );
@@ -1035,7 +1035,25 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		rgTipoValidOrc = new JRadioGroup<String, String>( 1, 2, vLabsTpValidOrc1, vValsTpValidOrc1 );
 		rgTipoValidOrc.setVlrString( "D" );
 
-		Vector<Integer> vValsTipo = new Vector<Integer>();
+		Vector<String> vLabsFormatoDANFE = new Vector<String>();
+		Vector<Integer> vValsFormatoDANFE = new Vector<Integer>();
+		vLabsFormatoDANFE.addElement( "Retrato" );
+		vLabsFormatoDANFE.addElement( "Paisagem" );
+		vValsFormatoDANFE.addElement( RETRATO_DANFE );
+		vValsFormatoDANFE.addElement( PAISAGEM_DANFE );
+		rgFormatoDANFE = new JRadioGroup<String, Integer>( 1, 2, vLabsFormatoDANFE, vValsFormatoDANFE );
+		rgFormatoDANFE.setVlrInteger( new Integer(1) );
+		
+		Vector<String> vLabsAmbienteNFE = new Vector<String>();
+		Vector<Integer> vValsAmbienteNFE = new Vector<Integer>();
+		vLabsAmbienteNFE.addElement( "Produção" );
+		vLabsAmbienteNFE.addElement( "Homologação" );
+		vValsAmbienteNFE.addElement( PRODUCAO_NFE );
+		vValsAmbienteNFE.addElement( HOMOLOGACAO_NFE );
+		rgAmbienteNFE = new JRadioGroup<String, Integer>( 1, 2, vLabsAmbienteNFE, vValsAmbienteNFE );
+		rgAmbienteNFE.setVlrInteger( new Integer(1) );
+		
+		Vector<Integer> vValsTipo = new Vector<Integer>(); 
 		Vector<String> vLabsTipo = new Vector<String>();
 		vLabsTipo.addElement( "<--Selecione-->" );
 		vLabsTipo.addElement( "50 caracteres" );
@@ -1341,6 +1359,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adic( new JLabelPad("Tipo de código de barras"), 17, 280, 200, 20 );
 		adicDB( rgCodBar, 17, 300, 180, 25, "TipoCodBar", "", false );
 		
+		
 
 		// Estoque
 		setPainel( pinEstoq );
@@ -1368,24 +1387,45 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcCampos.addPostListener( this );
 		
 		/*****************
-		 * NF ELetronica *
+		 * NF Eletrônica *
 		 *****************/
 		
 		setPainel( pinNFe );
 		adicTab( "NF e", pinNFe );
 
-		lbNFeOpcoes.setOpaque( true );
-		lbNFeCont.setBorder( BorderFactory.createEtchedBorder( 1 ) );
+		JPanelPad pnNFeCod = new JPanelPad();
+		pnNFeCod.setBorder( BorderFactory.createTitledBorder("Codificação Padrão") );
+
+		adic( pnNFeCod, 7, 5, 370, 100 );
+		
+		setPainel(pnNFeCod);
+		
+		adicDB( cbUsaIbgeCli, 4, 7, 330, 20, "USAIBGECLI", "", true );
+		adicDB( cbUsaIbgeFor, 4, 27, 350, 20, "USAIBGEFOR", "", true );
+		adicDB( cbUsaIbgeTransp, 4, 47, 365, 20, "USAIBGETRANSP", "", true );
+
+		JPanelPad pnNFePlugin = new JPanelPad();
+		pnNFePlugin.setBorder( BorderFactory.createTitledBorder("Configuração do Plugin NFe") );
+		setPainel( pinNFe );
+		adic( pnNFePlugin, 7, 105, 370, 120 );
+		
+		setPainel(pnNFePlugin);
+		
+		adicCampo( txtDescClassNfe, 4, 22, 350, 20, "CLASSNFE", "Classe do plugin de integração NFe", ListaCampos.DB_SI, false );
+		adicCampo( txtDirNfe, 4, 62, 327, 20, "DIRNFE", "Diretório padrão para arquvos NFe", ListaCampos.DB_SI, false );
+		adic( btDirNfe,333,62,20,20 );
+		
+		JPanelPad pnNFeParam = new JPanelPad();
+		pnNFeParam.setBorder( BorderFactory.createTitledBorder("Parâmetros") );
+		setPainel( pinNFe );
+		adic( pnNFeParam, 7, 225, 370, 120 );
+		
+		setPainel(pnNFeParam);
+		
+		adicDB(rgAmbienteNFE, 7, 5, 350, 30, "AmbienteNFE", "Ambiente", false );
+		adicDB(rgFormatoDANFE, 7, 55, 350, 30, "FormatoDanfe", "Formato da DANFE", false );
 		
 		
-		adic( lbNFeOpcoes, 17, 10, 70, 20 );
-		adic( lbNFeCont, 7, 20, 380, 175 );
-		adicDB( cbUsaIbgeCli, 10, 35, 330, 20, "USAIBGECLI", "", true );
-		adicDB( cbUsaIbgeFor, 10, 55, 350, 20, "USAIBGEFOR", "", true );
-		adicDB( cbUsaIbgeTransp, 10, 75, 365, 20, "USAIBGETRANSP", "", true );
-		adicCampo( txtDescClassNfe, 13, 120, 366, 20, "CLASSNFE", "Classe do plugin de integração NFE", ListaCampos.DB_SI, false );
-		adicCampo( txtDirNfe, 13, 160, 343, 20, "DIRNFE", "Diretório padrão para arquvos NFE", ListaCampos.DB_SI, false );
-		adic( btDirNfe,359,160,20,20 );
 						
 		/*****************
 		 * Recursos *
