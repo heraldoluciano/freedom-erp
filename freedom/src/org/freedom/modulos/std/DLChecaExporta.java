@@ -26,7 +26,6 @@ package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +37,8 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.exporta.Contabil;
-import org.freedom.funcoes.exporta.SafeContabil;
+import org.freedom.funcoes.exporta.SafeContabil.SafeContabilVO;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.DLRelatorio;
 
 public class DLChecaExporta extends DLRelatorio {
@@ -108,7 +108,7 @@ public class DLChecaExporta extends DLRelatorio {
 		
 		if ( Contabil.SAFE_CONTABIL.equals( sistema ) ) {			
 			try {
-				carregaDadosSafeContabil( (List<SafeContabil>) dados );
+				carregaDadosSafeContabil( (List<SafeContabilVO>) dados );
 			} catch ( ClassCastException e ) {
 				e.printStackTrace();
 			}
@@ -116,12 +116,12 @@ public class DLChecaExporta extends DLRelatorio {
 		
 	}
 	
-	private void carregaDadosSafeContabil( List<SafeContabil> args ) {
+	private void carregaDadosSafeContabil( List<SafeContabilVO> args ) {
 		
 		tab.limpa();
 		int row = 0;
 		
-		for ( SafeContabil sb : args ) {
+		for ( SafeContabilVO sb : args ) {
 			
 			tab.adicLinha();
 			

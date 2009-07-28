@@ -28,11 +28,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
-import java.io.FileWriter;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
@@ -51,17 +48,17 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.exporta.Contabil;
+import org.freedom.funcoes.exporta.EbsContabil;
 import org.freedom.funcoes.exporta.FreedomContabil;
 import org.freedom.funcoes.exporta.SafeContabil;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
-
-	private static final String RETURN = String.valueOf( (char) 13 ) + String.valueOf( (char) 10 );
-
+	
 	private final JPanelPad panelExporta = new JPanelPad();
 
 	private final JTextFieldPad txtDtIni = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
@@ -82,9 +79,10 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 	private String sistema;
 
-	private List<String> readrows;
-
+	private Contabil layoutContabil;
+	
 	private List<?> erros;
+		
 
 	public FExporta() {
 
@@ -168,7 +166,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 		if ( fileChooser.showOpenDialog( this ) == JFileChooser.APPROVE_OPTION ) {
 
-			txtFile.setVlrString( fileChooser.getSelectedFile().getPath() );
+			txtFile.setVlrString( fileChooser.getCurrentDirectory().getPath() );
 		}
 	}
 
@@ -198,14 +196,6 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		return sistema;
 	}
 
-	private void showErros() {
-
-		DLChecaExporta dl = new DLChecaExporta( this, rgModo.getVlrString(), sistema );
-		dl.setConexao( con );
-		dl.carregaDados( erros );
-		dl.setVisible( true );
-	}
-
 	private void checar() {
 
 		if ( txtFile.getVlrString() == null || txtFile.getVlrString().trim().length() < 1 ) {
@@ -220,7 +210,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 		try {
 
-			readrows = getReadRows();
+			executarLayout();
 
 			if ( erros == null ) {
 				btChecar.setEnabled( false );
@@ -238,44 +228,38 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		}
 	}
 
+	private void showErros() {
+	
+		DLChecaExporta dl = new DLChecaExporta( this, rgModo.getVlrString(), sistema );
+		dl.setConexao( con );
+		dl.carregaDados( erros );
+		dl.setVisible( true );
+	}
+
 	private void gerar() {
 
 		try {
 
-			if ( readrows != null && readrows.size() > 0 ) {
-
-				String filename = txtFile.getVlrString().trim();
-				File filecontabil = new File( filename );
-
-				if ( filecontabil.exists() ) {
-					int opt = Funcoes.mensagemConfirma( null, "Arquivo: '" + filename + "' já existe! Deseja sobrescrever?" );
-					if ( opt != 0 ) {
-						return;
+			String filename = txtFile.getVlrString().trim();
+			File filecontabil = new File( filename );
+			
+			layoutContabil.addActionListener( new ActionListener() {
+				public void actionPerformed( ActionEvent e ) {
+					if ( e.getSource().equals( layoutContabil ) ) {
+						if ( Contabil.SET_SIZE_ROWS.equals( e.getActionCommand() ) ) {
+							progress.setMaximum( layoutContabil.getSizeMax() );
+						}
+						else if ( Contabil.PROGRESS_IN_ROWS.equals( e.getActionCommand() ) ) {
+							progress.setValue( layoutContabil.getProgress() );
+							progress.setVisible( true );
+						}
 					}
-				}
+				}				
+			});
+			
+			layoutContabil.createFile( filecontabil );
 
-				filecontabil.createNewFile();
-
-				FileWriter filewritercontabil = new FileWriter( filecontabil );
-
-				int countprogress = 1;
-				progress.setMaximum( readrows.size() );
-
-				for ( String row : readrows ) {
-
-					filewritercontabil.write( row );
-					filewritercontabil.write( RETURN );
-					filewritercontabil.flush();
-					progress.setValue( countprogress++ );
-				}
-
-				filewritercontabil.close();
-
-				Funcoes.mensagemInforma( this, "Arquivo exportado para '" + filename + "' com sucesso!" );
-			}
-			else {
-				Funcoes.mensagemInforma( this, "Nenhum registro encontrado para exportação!" );
-			}
+			Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso!" );
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao montar arquivo!\n" + e.getMessage(), true, con, e );
 			e.printStackTrace();
@@ -284,9 +268,8 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		progress.setValue( 0 );
 	}
 
-	private List<String> getReadRows() throws Exception {
+	private void executarLayout() throws Exception {
 
-		readrows = new ArrayList<String>();
 		sistema = getSistemaContabil();
 
 		if ( "C".equals( rgModo.getVlrString() ) ) {
@@ -303,20 +286,19 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 					erros = null;
 				}
 			}
-		}
-		// if ( "L".equals( rgModo.getVlrString() ) ) {
-		// if ( opção de formato ) {
-		// }
-		// }
+			else if ( Contabil.EBS_CONTABIL.equals( sistema ) ) {
 
-		return readrows;
+				getLayoutEbs();
+			}
+		}
 	}
 
 	private void getLayoutFreedom() {
 
 		try {
 
-			FreedomContabil.execute( con, readrows, txtDtIni.getVlrDate(), txtDtFim.getVlrDate() );
+			layoutContabil = new FreedomContabil();
+			((FreedomContabil)layoutContabil).execute( con, txtDtIni.getVlrDate(), txtDtFim.getVlrDate() );
 			
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar dados para sistema Freedom Contábil!" );
@@ -329,11 +311,29 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 		List<Contabil> erros = null;
 
 		try {
-			
-			SafeContabil.execute( con, readrows, txtDtIni.getVlrDate(), txtDtFim.getVlrDate() );
+
+			layoutContabil = new SafeContabil();
+			((SafeContabil)layoutContabil).execute( con, txtDtIni.getVlrDate(), txtDtFim.getVlrDate() );
 			
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar dados para sistema Safe Contábil!" );
+			e.printStackTrace();
+		}
+		
+		return erros;
+	}
+
+	private List<Contabil> getLayoutEbs() {
+		
+		List<Contabil> erros = null;
+
+		try {
+
+			layoutContabil = new EbsContabil();
+			((EbsContabil)layoutContabil).execute( con, txtDtIni.getVlrDate(), txtDtFim.getVlrDate() );
+			
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar dados para sistema Cordilheira Contábil!" );
 			e.printStackTrace();
 		}
 		
