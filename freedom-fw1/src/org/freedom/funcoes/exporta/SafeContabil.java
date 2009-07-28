@@ -1,5 +1,7 @@
 package org.freedom.funcoes.exporta;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
@@ -13,97 +15,39 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 
 public class SafeContabil extends Contabil {
-
-	private String contadeb;
-
-	private String contacred;
-
-	private BigDecimal valor;
-
-	private String centrocusto;
-
-	private String documento;
-
-	private String historico;
-
-	private Date data;
-
-	private Integer filial;
-
-	private ETipo tipo;
-
-	public String getCentrocusto() {
-		return centrocusto;
-	}
-
-	public void setCentrocusto( final String centrocusto ) {
-		this.centrocusto = centrocusto;
-	}
-
-	public String getContacred() {
-		return contacred;
-	}
-
-	public void setContacred( final String contacred ) {
-		this.contacred = contacred;
-	}
-
-	public String getContadeb() {
-		return contadeb;
-	}
-
-	public void setContadeb( final String contadeb ) {
-		this.contadeb = contadeb;
-	}
-
-	public Date getData() {
-		return data;
-	}
-
-	public void setData( final Date data ) {
-		this.data = data;
-	}
-
-	public String getDocumento() {
-		return documento;
-	}
-
-	public void setDocumento( final String documento ) {
-		this.documento = documento;
-	}
-
-	public Integer getFilial() {
-		return filial;
-	}
-
-	public void setFilial( final Integer filial ) {
-		this.filial = filial;
-	}
-
-	public String getHistorico() {
-		return historico;
-	}
-
-	public void setHistorico( final String historico ) {
-		this.historico = historico;
-	}
-
-	public ETipo getTipo() {
-		return tipo;
-	}
-
-	public void setTipo( final ETipo tipo ) {
-		this.tipo = tipo;
-	}
-
-	public BigDecimal getValor() {
-		return valor;
-	}
-
-	public void setValor( final BigDecimal valor ) {
-		this.valor = valor;
-	}
 		
+	@Override
+	public void createFile( File filecontabil ) throws Exception {
+
+		sizeMax = readrows.size();
+		
+		if ( sizeMax == 0 ) {
+			throw new Exception( "Nenhum registro encontrado para exportação!" );
+		}
+		
+		fireActionListenerForMaxSize();
+
+		File entradas = new File( filecontabil.getPath() + "\\SAFECONTABIL.TXT" );
+		entradas.createNewFile();
+
+		FileWriter filewritercontabil = new FileWriter( filecontabil );
+
+		progressInRows = 1;
+		
+		for ( String row : readrows ) {
+
+			filewritercontabil.write( row );
+			filewritercontabil.write( RETURN );
+			filewritercontabil.flush();
+			
+			progressInRows++;
+			
+			fireActionListenerProgressInRows();
+		}
+
+		filewritercontabil.close();
+	}
+
 	protected static String getSqlCompras() {
 
 		StringBuilder sql = new StringBuilder();
@@ -340,33 +284,51 @@ public class SafeContabil extends Contabil {
 		}
 	}
 
-	public boolean valido() {
+	private void formatSafe( final StringBuilder row, SafeContabilVO scvo ) {
 
-		boolean valido = false;
+		row.append( format( scvo.getContadeb(), CHAR, 11, 0 ) );
+		row.append( format( scvo.getContacred(), CHAR, 11, 0 ) );
+		row.append( format( scvo.getValor(), NUMERIC, 14, 2 ) );
+		row.append( Funcoes.replicate( " ", 14 ) ); // Centro de custo
+		row.append( format( scvo.getDocumento(), CHAR, 12, 0 ) );
+		row.append( format( scvo.getHistorico(), CHAR, 250, 0 ) );
+		row.append( format( scvo.getData(), DATE, 0, 0 ) );
+		row.append( format( scvo.getFilial(), NUMERIC, 5, 0 ) );
+		row.append( Funcoes.replicate( " ", 25 ) );
+	}
+	
+	private String format( Object obj, int tipo, int tam, int dec ) {
 
-		if ( ( getContacred() != null && getContacred().trim().length() > 0 ) && 
-			 ( getContadeb() != null && getContadeb().trim().length() > 0 ) && 
-			 ( getValor() != null && getValor().floatValue() > 0 ) && 
-			 ( getDocumento() != null && getDocumento().trim().length() > 0 ) && 
-			 ( getHistorico() != null && getHistorico().trim().length() > 0 ) && 
-			 ( getData() != null ) && ( getFilial() > 0 ) ) {
-			valido = true;
+		String retorno = null;
+		String str = null;
+
+		if ( obj == null ) {
+			str = "";
+		}
+		else {
+			str = obj.toString();
 		}
 
-		return valido;
-	}
+		if ( tipo == NUMERIC ) {
+			if ( dec > 0 ) {
+				retorno = Funcoes.transValor( str, tam - 1, dec, true );
+				retorno = retorno.substring( 0, tam - dec - 1 ) + "," + retorno.substring( tam - dec - 1 );
+			}
+			else {
+				retorno = Funcoes.strZero( str, tam );
+			}
+		}
+		else if ( tipo == CHAR ) {
+			retorno = Funcoes.adicionaEspacos( str, tam );
+		}
+		else if ( tipo == DATE ) {
+			int[] args = Funcoes.decodeDate( (Date) obj );
+			retorno = Funcoes.strZero( String.valueOf( args[2] ), 2 ) + 
+					  Funcoes.strZero( String.valueOf( args[1] ), 2 ) + 
+					  Funcoes.strZero( String.valueOf( args[0] ), 4 );
+		}
 
-	private void formatSafe( final StringBuilder row ) {
-
-		row.append( format( getContadeb(), CHAR, 11, 0 ) );
-		row.append( format( getContacred(), CHAR, 11, 0 ) );
-		row.append( format( getValor(), NUMERIC, 14, 2 ) );
-		row.append( Funcoes.replicate( " ", 14 ) ); // Centro de custo
-		row.append( format( getDocumento(), CHAR, 12, 0 ) );
-		row.append( format( getHistorico(), CHAR, 250, 0 ) );
-		row.append( format( getData(), DATE, 0, 0 ) );
-		row.append( format( getFilial(), NUMERIC, 5, 0 ) );
-		row.append( Funcoes.replicate( " ", 25 ) );
+		return retorno;
 	}
 
 	/**
@@ -387,8 +349,7 @@ public class SafeContabil extends Contabil {
 				String tmp = historico;
 
 				tmp = tmp.replaceAll( "<DOCUMENTO>", rs.getString( "DOC" ) != null ? rs.getString( "DOC" ).trim() : "" );
-				tmp = tmp.replaceAll( "<VALOR>", String.valueOf( ( rs.getBigDecimal( "VALOR" ) != null ? rs.getBigDecimal( "VALOR" ) : new BigDecimal( "0.00" ) )
-						.setScale( 2, BigDecimal.ROUND_HALF_UP ) ) );
+				tmp = tmp.replaceAll( "<VALOR>", String.valueOf( (rs.getBigDecimal( "VALOR" )!=null ? rs.getBigDecimal( "VALOR" ) : new BigDecimal( "0.00" )).setScale( 2, BigDecimal.ROUND_HALF_UP ) ) );
 				tmp = tmp.replaceAll( "<SERIE>", rs.getString( "SERIE" ) != null ? rs.getString( "SERIE" ).trim() : "" );
 				tmp = tmp.replaceAll( "<DATA>", Funcoes.dateToStrDate( rs.getDate( "DATA" ) ) );
 				tmp = tmp.replaceAll( "<PORTADOR>", rs.getString( "PORTADOR" ) != null ? rs.getString( "PORTADOR" ).trim() : "" );
@@ -403,15 +364,9 @@ public class SafeContabil extends Contabil {
 		return decode;
 	}
 
-	@Override
-	public String toString() {
+	public List<SafeContabilVO> execute( final DbConnection con, final Date dtini, final Date dtfim ) throws Exception {
 
-		return "[" + getDocumento() + "," + getContacred() + "," + getContadeb() + "," + getValor() + "," + getData() + "]";
-	}
-
-	public static List<SafeContabil> execute( final DbConnection con, final List<String> readrows, final Date dtini, final Date dtfim ) throws Exception {
-
-		List<SafeContabil> erros = new ArrayList<SafeContabil>();
+		List<SafeContabilVO> erros = new ArrayList<SafeContabilVO>();
 
 		for ( ETipo tipo : ETipo.values() ) {
 			executeSqlSafe( con, tipo, readrows, erros, dtini, dtfim );
@@ -420,12 +375,12 @@ public class SafeContabil extends Contabil {
 		return erros;
 	}
 
-	private static void executeSqlSafe( final DbConnection con, 
-			                            final ETipo tipo, 
-			                            final List<String> readrows,
-			                            final List<SafeContabil> erros,
-			                            final Date dtini, 
-			                            final Date dtfim ) throws Exception {
+	private void executeSqlSafe( final DbConnection con,
+								 final ETipo tipo, 
+								 final List<String> readrows, 
+								 final List<SafeContabilVO> erros, 
+								 final Date dtini, 
+								 final Date dtfim ) throws Exception {
 
 		StringBuilder row = new StringBuilder();
 
@@ -437,30 +392,29 @@ public class SafeContabil extends Contabil {
 
 		ResultSet rs = ps.executeQuery();
 
-		SafeContabil sb = null;
+		SafeContabilVO sbvo = null;
 
 		while ( rs.next() ) {
 
 			row.delete( 0, row.length() );
 
-			sb = new SafeContabil();
+			sbvo = new SafeContabilVO();
 
-			sb.setContadeb( rs.getString( "CONTADEB" ) );
-			sb.setContacred( rs.getString( "CONTACRED" ) );
-			sb.setValor( rs.getBigDecimal( "VALOR" ) );
-			sb.setDocumento( rs.getString( "DOC" ) );
-			sb.setHistorico( sb.decodeHistorico( rs, rs.getString( "TXAHISTPAD" ) ) );
-			sb.setData( rs.getDate( "DATA" ) );
-			sb.setFilial( rs.getInt( "CODFILIAL" ) );
-			sb.setTipo( tipo );
+			sbvo.setContadeb( rs.getString( "CONTADEB" ) );
+			sbvo.setContacred( rs.getString( "CONTACRED" ) );
+			sbvo.setValor( rs.getBigDecimal( "VALOR" ) );
+			sbvo.setDocumento( rs.getString( "DOC" ) );
+			sbvo.setHistorico( decodeHistorico( rs, rs.getString( "TXAHISTPAD" ) ) );
+			sbvo.setData( rs.getDate( "DATA" ) );
+			sbvo.setFilial( rs.getInt( "CODFILIAL" ) );
+			sbvo.setTipo( tipo );
 
-			sb.formatSafe( row );
-
-			if ( sb.valido() ) {
+			if ( sbvo.valido() ) {
+				formatSafe( row, sbvo );
 				readrows.add( row.toString() );
 			}
 			else {
-				erros.add( sb );
+				erros.add( sbvo );
 			}
 		}
 
@@ -468,5 +422,120 @@ public class SafeContabil extends Contabil {
 		ps.close();
 
 		con.commit();
+	}
+	
+	public class SafeContabilVO {
+
+		private String contadeb;
+
+		private String contacred;
+
+		private BigDecimal valor;
+
+		private String centrocusto;
+
+		private String documento;
+
+		private String historico;
+
+		private Date data;
+
+		private Integer filial;
+
+		private ETipo tipo;
+
+		public String getCentrocusto() {
+			return centrocusto;
+		}
+
+		public void setCentrocusto( final String centrocusto ) {
+			this.centrocusto = centrocusto;
+		}
+
+		public String getContacred() {
+			return contacred;
+		}
+
+		public void setContacred( final String contacred ) {
+			this.contacred = contacred;
+		}
+
+		public String getContadeb() {
+			return contadeb;
+		}
+
+		public void setContadeb( final String contadeb ) {
+			this.contadeb = contadeb;
+		}
+
+		public Date getData() {
+			return data;
+		}
+
+		public void setData( final Date data ) {
+			this.data = data;
+		}
+
+		public String getDocumento() {
+			return documento;
+		}
+
+		public void setDocumento( final String documento ) {
+			this.documento = documento;
+		}
+
+		public Integer getFilial() {
+			return filial;
+		}
+
+		public void setFilial( final Integer filial ) {
+			this.filial = filial;
+		}
+
+		public String getHistorico() {
+			return historico;
+		}
+
+		public void setHistorico( final String historico ) {
+			this.historico = historico;
+		}
+
+		public ETipo getTipo() {
+			return tipo;
+		}
+
+		public void setTipo( final ETipo tipo ) {
+			this.tipo = tipo;
+		}
+
+		public BigDecimal getValor() {
+			return valor;
+		}
+
+		public void setValor( final BigDecimal valor ) {
+			this.valor = valor;
+		}
+
+		public boolean valido() {
+
+			boolean valido = false;
+
+			if ( ( getContacred() != null && getContacred().trim().length() > 0 ) && 
+				 ( getContadeb() != null && getContadeb().trim().length() > 0 ) && 
+				 ( getValor() != null && getValor().floatValue() > 0 ) && 
+				 ( getDocumento() != null && getDocumento().trim().length() > 0 ) && 
+				 ( getHistorico() != null && getHistorico().trim().length() > 0 ) && 
+				 ( getData() != null ) && ( getFilial() > 0 ) ) {
+				valido = true;
+			}
+
+			return valido;
+		}
+
+		@Override
+		public String toString() {
+
+			return "[" + getDocumento() + "," + getContacred() + "," + getContadeb() + "," + getValor() + "," + getData() + "]";
+		}
 	}
 }

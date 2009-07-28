@@ -1,37 +1,195 @@
 package org.freedom.funcoes.exporta;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 
 public class EbsContabil extends Contabil {
 	
-	private final DbConnection con;
+	private DbConnection con;
 	
-	private final List<String> readrows;
+	private Date dtini;
 	
-	private final Date dtini;
-	
-	private final Date dtfim;
+	private Date dtfim;
 	
 	private int sequencial;
 	
-	private EbsContabil( final DbConnection con, final List<String> readrows, final Date dtini, final Date dtfim ) {
+	private List<String> readrowsSaida = new ArrayList<String>();
+	
+	
+	public EbsContabil() {
 		
 		super();
+		this.sequencial = 1;
+	}
+
+	@Override
+	public void createFile( File filecontabil ) throws Exception {	
+		
+		sizeMax = readrows.size() + readrowsSaida.size();
+		
+		if ( sizeMax == 0 ) {
+			throw new Exception( "Nenhum registro encontrado para exportação!" );
+		}
+		
+		fireActionListenerForMaxSize();
+
+		progressInRows = 1;
+		
+		File entradas = new File( filecontabil.getPath() + "\\NOTAENT.TXT" );
+		entradas.createNewFile();
+
+		FileWriter fwEntradas = new FileWriter( entradas );
+
+		for ( String row : readrows ) {
+
+			fwEntradas.write( row );
+			fwEntradas.write( RETURN );
+			fwEntradas.flush();
+			
+			progressInRows++;
+			
+			fireActionListenerProgressInRows();
+		}
+
+		fwEntradas.close();
+		
+		File saidas = new File( filecontabil.getPath() + "\\NOTASAI.TXT" );
+		saidas.createNewFile();
+
+		FileWriter fwSaidas = new FileWriter( saidas );
+
+		for ( String row : readrowsSaida ) {
+
+			fwSaidas.write( row );
+			fwSaidas.write( RETURN );
+			fwSaidas.flush();
+			
+			progressInRows++;
+			
+			fireActionListenerProgressInRows();
+		}
+
+		fwSaidas.close();
+	}
+
+	public void execute( final DbConnection con, final Date dtini, final Date dtfim ) throws Exception {
+		
 		this.con = con;
-		this.readrows = readrows;
 		this.dtini = dtini;
 		this.dtfim = dtfim;
-		this.sequencial = 1;
+		
+		entradas();
+		saidas();
+	}
+
+	private void emitente( char tipo, int codigo ) throws Exception {
+
+		StringBuilder sql = new StringBuilder();	
+		
+		if ( tipo == 'C' ) {
+    		sql.append( "SELECT " );
+    		sql.append( "C.RAZCLI RAZAO," );
+    		sql.append( "C.NOMECLI NOME," );
+    		sql.append( "COALESCE(C.CNPJCLI,C.CPFCLI) CNPJ," );
+    		sql.append( "COALESCE(C.INSCCLI,'ISENTO') INSC," );
+    		sql.append( "M.CODMUNIC CODMUNIC," );
+    		sql.append( "M.NOMEMUNIC MUNICIPIO," );
+    		sql.append( "M.SIGLAUF UF," );
+    		sql.append( "M.CODPAIS PAIS, " );
+    		sql.append( "C.ENDCLI ENDERECO," );
+    		sql.append( "C.NUMCLI NUMERO," );
+    		sql.append( "C.BAIRCLI BAIRRO," );
+    		sql.append( "C.CEPCLI CEP," );
+    		sql.append( "C.DDDCLI DDD," );
+    		sql.append( "C.FONECLI FONE," );
+    		sql.append( "C.COMPLCLI COMPLEMENTO " );
+    		sql.append( "FROM VDCLIENTE C " );
+    		sql.append( "LEFT OUTER JOIN SGMUNICIPIO M " );
+    		sql.append( "ON M.CODPAIS=C.CODPAIS AND M.SIGLAUF=C.SIGLAUF AND M.CODMUNIC=C.CODMUNIC " );
+    		sql.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? AND C.CODCLI=?" );
+		}
+		else if ( tipo == 'F' ) {
+    		sql.append( "SELECT " ); 
+    		sql.append( "F.RAZFOR RAZAO," );
+    		sql.append( "F.NOMEFOR NOME," );
+    		sql.append( "COALESCE(F.CNPJFOR,F.CPFFOR) CNPJ," );
+    		sql.append( "COALESCE(F.INSCFOR,'ISENTO') INSC," );
+    		sql.append( "M.CODMUNIC CODMUNIC," );
+    		sql.append( "M.NOMEMUNIC MUNICIPIO," );
+    		sql.append( "M.SIGLAUF UF," );
+    		sql.append( "M.CODPAIS PAIS," );
+    		sql.append( "F.ENDFOR ENDERECO," );
+    		sql.append( "F.NUMFOR NUMERO," );
+    		sql.append( "F.BAIRFOR BAIRRO," );
+    		sql.append( "F.CEPFOR CEP," );
+    		sql.append( "F.DDDFONEFOR DDD," );
+    		sql.append( "F.FONEFOR FONE," );
+    		sql.append( "F.COMPLFOR COMPLEMENTO " );
+    		sql.append( "FROM CPFORNECED F " );
+    		sql.append( "LEFT OUTER JOIN SGMUNICIPIO M " );
+    		sql.append( "ON M.CODPAIS=F.CODPAIS AND M.SIGLAUF=F.SIGLAUF AND M.CODMUNIC=F.CODMUNIC " ); 
+    		sql.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND F.CODFOR=?" );
+		}
+
+		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( tipo == 'C' ? "VDVENDA" : "CPCOMPRA" ) );
+		ps.setInt( 3, codigo );
+
+		ResultSet rs = ps.executeQuery();
+		EmitenteDestinatario emitenteDestinatario = null;
+
+		while ( rs.next() ) {
+			
+			emitenteDestinatario = new EmitenteDestinatario();		
+			emitenteDestinatario.setRazaoSocial( rs.getString( "RAZAO" ) );			
+			emitenteDestinatario.setNomeFantazia( rs.getString( "NOME" ) );		
+			emitenteDestinatario.setCnpj( rs.getString( "CNPJ" ) );			
+			emitenteDestinatario.setInscricao( rs.getString( "INSC" ) );		
+			emitenteDestinatario.setCidade( rs.getString( "MUNICIPIO" ) );	
+			emitenteDestinatario.setMunicipio( rs.getInt( "CODMUNIC" ) );			
+			emitenteDestinatario.setEstado( rs.getString( "UF" ) );		
+			emitenteDestinatario.setPais( rs.getInt( "CODPAIS" ) );		
+			emitenteDestinatario.setEndereco( rs.getString( "ENDERECO" ) );	
+			emitenteDestinatario.setNumero( rs.getInt( "NUMERO" ) );				
+			emitenteDestinatario.setBairro( rs.getString( "BAIRRO" ) );				
+			emitenteDestinatario.setCep( rs.getInt( "CEP" ) );	
+			try {
+				emitenteDestinatario.setDdd( rs.getInt( "DDD" ) );			
+				emitenteDestinatario.setTelefone( rs.getInt( "FONE" ) );
+			} catch ( Exception e ) {
+				System.out.println( "Erro ao formatar telefone do cliente/fornecedor["+rs.getString( "RAZAO" ).trim()+"]:\n" + e.getMessage() );
+			}
+			emitenteDestinatario.setComplemento( rs.getString( "COMPLEMENTO" ) );
+			
+			emitenteDestinatario.setContaCliente( 0 );			
+			emitenteDestinatario.setHistoricoCliente( 0 );			
+			emitenteDestinatario.setContaFornecedor( 0 );			
+			emitenteDestinatario.setProdutor( false );			
+			emitenteDestinatario.setHistoricoFornecedor( 0 );			
+			emitenteDestinatario.setIndentificacaoExterior( null );				
+			emitenteDestinatario.setSuframa( null );			
+			
+			emitenteDestinatario.setSequencial( sequencial++ );
+
+			readrows.add( emitenteDestinatario.toString() );
+		}
+
+		rs.close();
+		ps.close();
 	}
 	
 	private void headerEntradas() throws Exception {
@@ -53,8 +211,6 @@ public class EbsContabil extends Contabil {
 
 		rs.close();
 		ps.close();
-
-		con.commit();
 		
 		HeaderEntrada headerEntradas = new HeaderEntrada();
 		headerEntradas.setDataArquivo( Calendar.getInstance().getTime() );
@@ -67,7 +223,7 @@ public class EbsContabil extends Contabil {
 	private void entradas() throws Exception {
 
 		StringBuilder sql = new StringBuilder();		
-		sql.append( "select c.codcompra, " );
+		sql.append( "select c.codcompra, c.codfor," );
 		sql.append( "c.dtentcompra, c.doccompra, c.dtemitcompra, c.serie, c.vlrliqcompra, c.vlrbaseipicompra, c.vlripicompra," );
 		sql.append( "tm.codmodnota, tm.especietipomov, coalesce(f.cnpjfor, f.cpffor) cnpjfor, p.datapag " );
 		sql.append( "from cpcompra c, eqtipomov tm, lfmodnota mn, lfserie s, cpforneced f, fnpagar p " );
@@ -76,7 +232,8 @@ public class EbsContabil extends Contabil {
 		sql.append( "mn.codemp=tm.codempmn and mn.codfilial=tm.codfilialmn and mn.codmodnota=tm.codmodnota and " );
 		sql.append( "s.codemp=c.codempse and s.codfilial=c.codfilialse and s.serie=c.serie and " );
 		sql.append( "f.codemp=c.codempfr and f.codfilial=c.codfilialfr and f.codfor=c.codfor and " );
-		sql.append( "p.codempcp=c.codemp and p.codfilialcp=c.codfilial and p.codcompra=p.codcompra" );
+		sql.append( "p.codempcp=c.codemp and p.codfilialcp=c.codfilial and p.codcompra=c.codcompra " );
+		sql.append( "order by c.codcompra " );
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 		ps.setInt( 1, Aplicativo.iCodEmp );
@@ -86,8 +243,16 @@ public class EbsContabil extends Contabil {
 
 		ResultSet rs = ps.executeQuery();
 		Entrada entradas = null;
+		boolean readHeader = true;
+		boolean readTrailler = false;
 
 		while ( rs.next() ) {
+			
+			if ( readHeader ) {
+				headerEntradas();
+				readHeader = false;
+				readTrailler = true;
+			}
 			
 			entradas = new Entrada();
 			entradas.setDataLancamento( rs.getDate( "dtentcompra" ) );
@@ -99,18 +264,18 @@ public class EbsContabil extends Contabil {
 			entradas.setVariacaoCfop( 1 );
 
 			StringBuilder sqlCFOP = new StringBuilder();		
-			sql.append( "select ic.codnat from cpitcompra ic " );
-			sql.append( "where ic.codemp=? and ic.codfilial=? and ic.codcompra=? order by ic.coditcompra" );
+			sqlCFOP.append( "select ic.codnat from cpitcompra ic " );
+			sqlCFOP.append( "where ic.codemp=? and ic.codfilial=? and ic.codcompra=? order by ic.coditcompra" );
 
 			PreparedStatement psCFOP = con.prepareStatement( sqlCFOP.toString() );
-			ps.setInt( 1, rs.getInt( "codcompra" ) );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
+			psCFOP.setInt( 1, Aplicativo.iCodEmp );
+			psCFOP.setInt( 2, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
+			psCFOP.setInt( 3, rs.getInt( "codcompra" ) );
 
-			ResultSet rsCFOP = ps.executeQuery();
+			ResultSet rsCFOP = psCFOP.executeQuery();
 			
 			if ( rsCFOP.next() ) {
-				entradas.setCfop( Integer.parseInt( rs.getString( "codnat" ) ) );
+				entradas.setCfop( Integer.parseInt( rsCFOP.getString( "codnat" ) ) );
 			}
 			rsCFOP.close();
 			psCFOP.close();
@@ -125,39 +290,39 @@ public class EbsContabil extends Contabil {
 			entradas.setBaseIR( null );
 			
 			StringBuilder sqlICMS = new StringBuilder();		
-			sql.append( "select ic.percicmsitcompra aliquota, sum(ic.vlrbaseicmsitcompra) base, sum(ic.vlricmsitcompra) valor " );
-			sql.append( "from cpitcompra ic " );
-			sql.append( "where ic.codemp=? and ic.codfilial=? and ic.codcompra=? " );
-			sql.append( "group by ic.percicmsitcompra" );
+			sqlICMS.append( "select ic.percicmsitcompra aliquota, sum(ic.vlrbaseicmsitcompra) base, sum(ic.vlricmsitcompra) valor " );
+			sqlICMS.append( "from cpitcompra ic " );
+			sqlICMS.append( "where ic.codemp=? and ic.codfilial=? and ic.codcompra=? " );
+			sqlICMS.append( "group by ic.percicmsitcompra" );
 
 			PreparedStatement psICMS = con.prepareStatement( sqlICMS.toString() );
-			ps.setInt( 1, rs.getInt( "codcompra" ) );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
+			psICMS.setInt( 1, rs.getInt( "codcompra" ) );
+			psICMS.setInt( 2, Aplicativo.iCodEmp );
+			psICMS.setInt( 3, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
 
 			ResultSet rsICMS = psICMS.executeQuery();
 			
 			for ( int i=0; i<4 && rsICMS.next(); i++) {
 			
 				if ( i == 0 ) {
-					entradas.setBaseICMSa( rs.getBigDecimal( "base" ) );
-					entradas.setAliquotaICMSa( rs.getBigDecimal( "aliquota" ) );
-					entradas.setValorICMSa( rs.getBigDecimal( "valor" ) );
+					entradas.setBaseICMSa( rsICMS.getBigDecimal( "base" ) );
+					entradas.setAliquotaICMSa( rsICMS.getBigDecimal( "aliquota" ) );
+					entradas.setValorICMSa( rsICMS.getBigDecimal( "valor" ) );
 				}
 				else if ( i == 1 ) {
-					entradas.setBaseICMSb( rs.getBigDecimal( "base" ) );
-					entradas.setAliquotaICMSb( rs.getBigDecimal( "aliquota" ) );
-					entradas.setValorICMSb( rs.getBigDecimal( "valor" ) );
+					entradas.setBaseICMSb( rsICMS.getBigDecimal( "base" ) );
+					entradas.setAliquotaICMSb( rsICMS.getBigDecimal( "aliquota" ) );
+					entradas.setValorICMSb( rsICMS.getBigDecimal( "valor" ) );
 				}
 				else if ( i == 2 ) {
-					entradas.setBaseICMSc( rs.getBigDecimal( "base" ) );
-					entradas.setAliquotaICMSc( rs.getBigDecimal( "aliquota" ) );
-					entradas.setValorICMSc( rs.getBigDecimal( "valor" ) );
+					entradas.setBaseICMSc( rsICMS.getBigDecimal( "base" ) );
+					entradas.setAliquotaICMSc( rsICMS.getBigDecimal( "aliquota" ) );
+					entradas.setValorICMSc( rsICMS.getBigDecimal( "valor" ) );
 				}
 				else if ( i == 3 ) {
-					entradas.setBaseICMSd( rs.getBigDecimal( "base" ) );
-					entradas.setAliquotaICMSd( rs.getBigDecimal( "aliquota" ) );
-					entradas.setValorICMSd( rs.getBigDecimal( "valor" ) );
+					entradas.setBaseICMSd( rsICMS.getBigDecimal( "base" ) );
+					entradas.setAliquotaICMSd( rsICMS.getBigDecimal( "aliquota" ) );
+					entradas.setValorICMSd( rsICMS.getBigDecimal( "valor" ) );
 				}
 			}
 			rsICMS.close();
@@ -192,11 +357,17 @@ public class EbsContabil extends Contabil {
 			entradas.setValorINSS( null );			
 			entradas.setValorFUNRURAL( null );		
 			entradas.setCodigoItemServico( 0 );
-			entradas.setSequencial( sequencial++ );
 
+			emitente( 'F', rs.getInt( "codfor" ) );
+
+			entradas.setSequencial( sequencial++ );
 			readrows.add( entradas.toString() );
 			
-			emitente();
+			itensEntrada( rs.getInt( "codcompra" ) );
+		}
+		
+		if ( readTrailler ) {
+			traillerEntrada();
 		}
 
 		rs.close();
@@ -205,66 +376,28 @@ public class EbsContabil extends Contabil {
 		con.commit();
 	}
 
-	private void emitente() throws Exception {
+	private void itensEntrada( int compra ) throws Exception {
 
 		StringBuilder sql = new StringBuilder();		
-		sql.append( "" );
+		sql.append( "SELECT " );
+		sql.append( "I.CODITCOMPRA," );
+		sql.append( "I.CODPROD, P.REFPROD," );
+		sql.append( "I.QTDITCOMPRA," );
+		sql.append( "(I.QTDITCOMPRA * I.PRECOITCOMPRA) VALOR," );
+		sql.append( "I.VLRDESCITCOMPRA," );
+		sql.append( "I.VLRBASEICMSITCOMPRA," );
+		sql.append( "I.PERCICMSITCOMPRA," );
+		sql.append( "I.VLRIPIITCOMPRA," );
+		sql.append( "I.PERCIPIITCOMPRA " );
+		sql.append( "FROM CPITCOMPRA I, EQPRODUTO P " );
+		sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? AND I.CODCOMPRA=? AND " );
+		sql.append( "P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD " );
+		sql.append( "ORDER BY I.CODITCOMPRA" );
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 		ps.setInt( 1, Aplicativo.iCodEmp );
 		ps.setInt( 2, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
-		ps.setDate( 3, Funcoes.dateToSQLDate( dtini ) );
-		ps.setDate( 4, Funcoes.dateToSQLDate( dtfim ) );
-
-		ResultSet rs = ps.executeQuery();
-		EmitenteDestinatario emitenteDestinatario = null;
-
-		while ( rs.next() ) {
-			
-			emitenteDestinatario = new EmitenteDestinatario();			
-			emitenteDestinatario.setCnpj( null );			
-			emitenteDestinatario.setRazaoSocial( null );			
-			emitenteDestinatario.setNomeFantazia( null );			
-			emitenteDestinatario.setEstado( null );			
-			emitenteDestinatario.setInscricao( null );		
-			emitenteDestinatario.setEndereco( null );			
-			emitenteDestinatario.setBairro( null );			
-			emitenteDestinatario.setCidade( null );			
-			emitenteDestinatario.setCep( null );			
-			emitenteDestinatario.setMunicipio( 0 );			
-			emitenteDestinatario.setDdd( 0 );			
-			emitenteDestinatario.setTelefone( 0 );			
-			emitenteDestinatario.setContaCliente( 0 );			
-			emitenteDestinatario.setHistoricoCliente( 0 );			
-			emitenteDestinatario.setContaFornecedor( 0 );			
-			emitenteDestinatario.setProdutor( false );			
-			emitenteDestinatario.setHistoricoFornecedor( 0 );			
-			emitenteDestinatario.setIndentificacaoExterior( null );			
-			emitenteDestinatario.setNumero( 0 );			
-			emitenteDestinatario.setComplemento( null );			
-			emitenteDestinatario.setSuframa( null );			
-			emitenteDestinatario.setPais( 0 );
-			emitenteDestinatario.setSequencial( sequencial++ );
-
-			readrows.add( emitenteDestinatario.toString() );
-		}
-
-		rs.close();
-		ps.close();
-
-		con.commit();
-	}
-
-	private void itensEntradas() throws Exception {
-
-		StringBuilder sql = new StringBuilder();		
-		sql.append( "" );
-
-		PreparedStatement ps = con.prepareStatement( sql.toString() );
-		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
-		ps.setDate( 3, Funcoes.dateToSQLDate( dtini ) );
-		ps.setDate( 4, Funcoes.dateToSQLDate( dtfim ) );
+		ps.setInt( 3, compra );
 
 		ResultSet rs = ps.executeQuery();
 		ItemEntrada itemEntrada = null;
@@ -272,21 +405,21 @@ public class EbsContabil extends Contabil {
 		while ( rs.next() ) {
 			
 			itemEntrada = new ItemEntrada();			
-			itemEntrada.setCodigo( 0 );			
-			itemEntrada.setQuantidade( null );			
-			itemEntrada.setValor( null );			
+			itemEntrada.setCodigo( rs.getInt( "CODPROD" ) );			
+			itemEntrada.setQuantidade( rs.getBigDecimal( "QTDITCOMPRA" ) );			
+			itemEntrada.setValor( rs.getBigDecimal( "VALOR" ) );			
 			itemEntrada.setQuantidade2( null );			
-			itemEntrada.setDesconto( null );			
-			itemEntrada.setBaseICMS( null );			
-			itemEntrada.setAliquotaICMS( null );			
-			itemEntrada.setValorIPI( null );			
+			itemEntrada.setDesconto( rs.getBigDecimal( "VLRDESCITCOMPRA" ) );			
+			itemEntrada.setBaseICMS( rs.getBigDecimal( "VLRBASEICMSITCOMPRA" ) );			
+			itemEntrada.setAliquotaICMS( rs.getBigDecimal( "PERCICMSITCOMPRA" ) );			
+			itemEntrada.setValorIPI( rs.getBigDecimal( "VLRIPIITCOMPRA" ) );	
+			itemEntrada.setAliquotaIPI( rs.getBigDecimal( "PERCIPIITCOMPRA" ) );		
+			itemEntrada.setBaseIPI( rs.getBigDecimal( "VALOR" ) );			
+			itemEntrada.setIndentificacao( rs.getString( "REFPROD" ) );							
 			itemEntrada.setBaseICMSSusTributaria( null );			
-			itemEntrada.setAliquotaIPI( null );			
 			itemEntrada.setPercentualReducaoBaseICMS( null );			
-			itemEntrada.setSituacaoTributaria( null );			
-			itemEntrada.setIndentificacao( null );		
-			itemEntrada.setSituacaoTributariaIPI( 0 );			
-			itemEntrada.setBaseIPI( null );			
+			itemEntrada.setSituacaoTributaria( 0 );		
+			itemEntrada.setSituacaoTributariaIPI( 0 );		
 			itemEntrada.setSituacaoTributariaPIS( 0 );			
 			itemEntrada.setBasePIS( null );			
 			itemEntrada.setAliquotaPIS( null );			
@@ -306,18 +439,357 @@ public class EbsContabil extends Contabil {
 
 		rs.close();
 		ps.close();
+	}
+
+	private void traillerEntrada() throws Exception {
+
+		/*StringBuilder sql = new StringBuilder();		
+		sql.append( "" );
+
+		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
+		ps.setDate( 3, Funcoes.dateToSQLDate( dtini ) );
+		ps.setDate( 4, Funcoes.dateToSQLDate( dtfim ) );
+
+		ResultSet rs = ps.executeQuery();
+		TraillerEntrada traillerEntradas = null;
+
+		while ( rs.next() ) {
+			
+			traillerEntradas = new TraillerEntrada();			
+			traillerEntradas.setValorNota( null );			
+			traillerEntradas.setBasePIS( null );			
+			traillerEntradas.setBaseCOFINS( null );
+			traillerEntradas.setBaseContribuicaoSocial( null );			
+			traillerEntradas.setBaseImpostoRenda( null );			
+			traillerEntradas.setBaseICMSa( null );			
+			traillerEntradas.setValorICMSa( null );			
+			traillerEntradas.setBaseICMSb( null );			
+			traillerEntradas.setValorICMSb( null );			
+			traillerEntradas.setBaseICMSc( null );			
+			traillerEntradas.setValorICMSc( null );			
+			traillerEntradas.setBaseICMSd( null );			
+			traillerEntradas.setValorICMSd( null );			
+			traillerEntradas.setValorICMSIsentas( null );			
+			traillerEntradas.setValorICMSOutras( null );			
+			traillerEntradas.setBaseIPI( null );			
+			traillerEntradas.setValorIPI( null );			
+			traillerEntradas.setValorIPIIsentas( null );			
+			traillerEntradas.setValorIPIOutras( null );			
+			traillerEntradas.setValorSubTributaria( null );			
+			traillerEntradas.setBaseSubTriburaria( null );			
+			traillerEntradas.setValorICMSSubTributaria( null );			
+			traillerEntradas.setValorDiferidas( null );
+			traillerEntradas.setSequencial( sequencial++ );
+
+			readrows.add( traillerEntradas.toString() );
+		}
+
+		rs.close();
+		ps.close();
+
+		con.commit();*/
+	}
+	
+	private void headerSaida() throws Exception {
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select f.razfilial, f.cnpjfilial from sgfilial f where f.codemp=? and f.codfilial=?" );
+
+		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "sgfilial" ) );
+
+		ResultSet rs = ps.executeQuery();
+		String cnpj = null;
+
+		if ( rs.next() ) {
+			cnpj = rs.getString( "cnpjfilial" );
+		}
+
+		rs.close();
+		ps.close();
+
+		con.commit();
+		
+		HeaderSaida headerSaida = new HeaderSaida();
+		headerSaida.setDataArquivo( Calendar.getInstance().getTime() );
+		headerSaida.setCnpj( cnpj );
+		headerSaida.setSequencial( sequencial++ );
+		
+		readrowsSaida.add( headerSaida.toString() );
+	}
+	
+	private void saidas() throws Exception {
+
+		StringBuilder sql = new StringBuilder();		
+		sql.append( "SELECT " );
+		sql.append( "V.CODVENDA," );
+		sql.append( "V.DOCVENDA," );
+		sql.append( "V.DTEMITVENDA," );
+		sql.append( "TM.CODMODNOTA," );
+		sql.append( "V.SERIE," );
+		sql.append( "V.VLRLIQVENDA," );
+		sql.append( "V.VLRPRODVENDA," );
+		sql.append( "V.VLRIPIVENDA," );
+		sql.append( "TM.ESPECIETIPOMOV " );
+		sql.append( "FROM VDVENDA V, EQTIPOMOV TM " );
+		sql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.DTEMITVENDA BETWEEN ? AND ? AND " );
+		sql.append( "TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV" );
+
+		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
+		ps.setDate( 3, Funcoes.dateToSQLDate( dtini ) );
+		ps.setDate( 4, Funcoes.dateToSQLDate( dtfim ) );
+
+		ResultSet rs = ps.executeQuery();
+		Saida saida = null;
+		boolean readHeader = true;
+		boolean readTrailler = false;
+
+		while ( rs.next() ) {
+			
+			if ( readHeader ) {
+				headerSaida();
+				readHeader = false;
+				readTrailler = true;
+			}
+			
+			saida = new Saida();			
+			saida.setDataLancamento( Calendar.getInstance().getTime() );			
+			saida.setNumeroInicial( rs.getInt( "DOCVENDA" ) );			
+			saida.setNumeroFinal( 0 );			
+			saida.setDataEmissao( rs.getDate( "DTEMITVENDA" ) );			
+			saida.setModelo( rs.getInt( "CODMODNOTA" ) );			
+			saida.setSerie( rs.getString( "SERIE" ) );			
+			saida.setSubSerie( null );			
+			saida.setCfop( 0 );			
+			saida.setVariacaoCfop( 0 );			
+			saida.setClassificacao1( 01 ); // Padrão do Cordilheira			
+			saida.setClassificacao2( 0 );			
+			saida.setCnpjDestinatario( null );			
+			saida.setValorNota( rs.getBigDecimal( "VLRLIQVENDA" ) );			
+			saida.setBasePIS( null );			
+			saida.setBaseCOFINS( null );			
+			saida.setBaseCSLL( null );			
+			saida.setBaseIRPJ( null );	
+			
+			saida.setBaseICMSa( null );			
+			saida.setAliquotaICMSa( null );			
+			saida.setValorICMSa( null );			
+			saida.setBaseICMSb( null );			
+			saida.setAliquotaICMSb( null );			
+			saida.setValorICMSb( null );			
+			saida.setBaseICMSc( null );			
+			saida.setAliquotaICMSc( null );			
+			saida.setValorICMSc( null );			
+			saida.setBaseICMSd( null );			
+			saida.setAliquotaICMSd( null );		
+			
+			saida.setValorICMSd( null );			
+			saida.setValorICMSIsentas( null );			
+			saida.setValorICMSOutras( null );	
+			
+			saida.setBaseIPI( rs.getBigDecimal( "VLRLIQVENDA" ) );			
+			saida.setValorIPI( rs.getBigDecimal( "VLRPRODVENDA" ) );			
+			saida.setValorIPIIsentas( null );			
+			saida.setValorIPIOutras( null );			
+			saida.setValorSubTributaria( null );			
+			saida.setBaseSubTributaria( null );			
+			saida.setValorICMSSubTributaria( null );			
+			saida.setValorDiferidas( null );			
+			saida.setBaseISS( null );			
+			saida.setAliquotaISS( null );			
+			saida.setValorISS( null );			
+			saida.setValorISSIsentos( null );			
+			saida.setValorIRRF( null );			
+			saida.setObservacoesLivrosFiscais( null );			
+			saida.setEspecie( rs.getString( "ESPECIETIPOMOV" ) );				
+			saida.setVendaAVista( null );						
+			saida.setCfopSubTributaria( 0 );			
+			saida.setValorPISCOFINS( null );			
+			saida.setModalidadeFrete( 0 );			
+			saida.setValorPIS( null );			
+			saida.setValorCOFINS( null );			
+			saida.setValorCSLL( null );			
+			saida.setDataRecebimento( null );			
+			saida.setOperacaoContabil( 0 );			
+			saida.setValorMateriais( null );			
+			saida.setValorSubEmpreitada( null );			
+			saida.setCodigoServico( 0 );			
+			saida.setClifor( 0 );			
+			saida.setIndentificadorExterior( null );
+			saida.setSequencial( sequencial++ );
+			
+			emitente( 'C', rs.getInt( "codcli" ) );
+
+			readrowsSaida.add( saida.toString() );
+			
+			itensSaida();
+		}
+		
+		if ( readTrailler ) {
+			traillerSaida();
+		}
+
+		rs.close();
+		ps.close();
 
 		con.commit();
 	}
-	
-	public static void execute( final DbConnection con, final List<String> readrows, final Date dtini, final Date dtfim ) throws Exception {
 
-		EbsContabil ebs = new EbsContabil( con, readrows, dtini, dtfim );
+	private void itensSaida() throws Exception {
+
+		StringBuilder sql = new StringBuilder();		
+		sql.append( "" );
+
+		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "VDITVENDA" ) );
+		ps.setDate( 3, Funcoes.dateToSQLDate( dtini ) );
+		ps.setDate( 4, Funcoes.dateToSQLDate( dtfim ) );
+
+		ResultSet rs = ps.executeQuery();
+		ItemSaida itemSaida = null;
+
+		while ( rs.next() ) {
+			
+			itemSaida = new ItemSaida();				
+			itemSaida.setCodigoItem( 0 );			
+			itemSaida.setQuantidade( null );			
+			itemSaida.setValor( null );			
+			itemSaida.setQuantidade2( null );			
+			itemSaida.setDesconto( null );			
+			itemSaida.setBaseICMS( null );			
+			itemSaida.setAliquotaICMS( null );			
+			itemSaida.setValorIPI( null );			
+			itemSaida.setBaseICMSSubTributaria( null );			
+			itemSaida.setAliquotaIPI( null );			
+			itemSaida.setPercentualReducaoBaseICMS( null );			
+			itemSaida.setSituacaoTributaria( 0 );			
+			itemSaida.setIndentificacao( null );			
+			itemSaida.setSituacaoTributariaIPI( 0 );			
+			itemSaida.setBaseIPI( null );			
+			itemSaida.setSituacaoTributariaPIS( 0 );			
+			itemSaida.setBasePIS( null );			
+			itemSaida.setAliquotaPIS( null );			
+			itemSaida.setQuantidadeBasePIS( null );			
+			itemSaida.setValorAliquotaPIS( null );			
+			itemSaida.setValorPIS( null );			
+			itemSaida.setSituacaoTributariaCOFINS( 0 );			
+			itemSaida.setBaseCOFINS( null );			
+			itemSaida.setAliquotaCOFINS( null );			
+			itemSaida.setValorCOFINS( null );		
+			itemSaida.setValorICMSSubTributaria( null );
+			itemSaida.setSequencial( sequencial++ );
+
+			readrowsSaida.add( itemSaida.toString() );
+		}
+
+		rs.close();
+		ps.close();
+
+		con.commit();
+	}
+
+	private void traillerSaida() throws Exception {
+
+		StringBuilder sql = new StringBuilder();		
+		sql.append( "" );
+
+		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "CPITCOMPRA" ) );
+		ps.setDate( 3, Funcoes.dateToSQLDate( dtini ) );
+		ps.setDate( 4, Funcoes.dateToSQLDate( dtfim ) );
+
+		ResultSet rs = ps.executeQuery();
+		TraillerSaida traillerSaida = null;
+
+		while ( rs.next() ) {
+			
+			traillerSaida = new TraillerSaida();			
+			traillerSaida.setValorNota( null );			
+			traillerSaida.setBasePIS( null );			
+			traillerSaida.setBaseCOFINS( null );			
+			traillerSaida.setBaseCSLL( null );			
+			traillerSaida.setBaseIRPJ( null );			
+			traillerSaida.setBaseICMSa( null );			
+			traillerSaida.setValorICMSa( null );			
+			traillerSaida.setBaseICMSb( null );			
+			traillerSaida.setValorICMSb( null );
+			traillerSaida.setBaseICMSc( null );			
+			traillerSaida.setValorICMSc( null );			
+			traillerSaida.setBaseICMSd( null );			
+			traillerSaida.setValorICMSd( null );			
+			traillerSaida.setValorICMSIsentas( null );			
+			traillerSaida.setValorICMSOutras( null );			
+			traillerSaida.setBaseIPI( null );			
+			traillerSaida.setValorIPI( null );			
+			traillerSaida.setValorIPIIsentas( null );			
+			traillerSaida.setValorIPIOutras( null );			
+			traillerSaida.setValorMercadoriasSubTributaria( null );			
+			traillerSaida.setBaseSubTributaria( null );			
+			traillerSaida.setValorICMSSubTributarias( null );			
+			traillerSaida.setValorDireridas( null );			
+			traillerSaida.setBaseISS( null );			
+			traillerSaida.setValorISS( null );			
+			traillerSaida.setValorIsentas( null );			
+			traillerSaida.setValorIRRFISS( null ); 
+			traillerSaida.setSequencial( sequencial++ );
+
+			readrowsSaida.add( traillerSaida.toString() );
+		}
+
+		rs.close();
+		ps.close();
+
+		con.commit();
+	}
 		
-		ebs.headerEntradas();
-		ebs.entradas();	
-		ebs.itensEntradas();
+	private String format( String text, int tam ) {
 		
+		String strTmp = "";
+
+		if ( text != null ) {
+			strTmp = text;
+		}
+
+		return Funcoes.adicionaEspacos( strTmp, tam );
+	}
+
+	private String format( BigDecimal value, int size, int decimal ) {
+		
+		BigDecimal valueTmp = null;
+		
+		if ( value != null ) {
+			valueTmp = value.setScale( decimal, BigDecimal.ROUND_HALF_UP )
+						.divide( new BigDecimal( "1" + Funcoes.strZero( "0", decimal ) ) ); 
+		}
+		else {
+			valueTmp = new BigDecimal( "0.00" ); 
+		}
+		
+		return Funcoes.strZero( String.valueOf( valueTmp ).replace( ".", "" ), size );
+	}
+
+	private String format( int value, int size ) {
+		
+		return Funcoes.strZero( String.valueOf( value ), size );
+	}
+
+	private String format( Date date ) {
+		
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime( date );
+		StringBuffer result = new StringBuffer();
+		result.append( Funcoes.strZero( String.valueOf( cal.get( Calendar.DAY_OF_MONTH ) ), 2 ) );
+		result.append( Funcoes.strZero( String.valueOf( cal.get( Calendar.MONTH ) + 1 ), 2 ) );
+		result.append( Funcoes.strZero( String.valueOf( cal.get( Calendar.YEAR ) ), 4 ) );
+		
+		return result.toString();
 	}
 	
 	private class EmitenteDestinatario {
@@ -340,7 +812,7 @@ public class EbsContabil extends Contabil {
 		
 		private String cidade;
 		
-		private String cep;
+		private int cep;
 		
 		private int municipio;
 		
@@ -438,11 +910,11 @@ public class EbsContabil extends Contabil {
 			this.cidade = cidade;
 		}
 
-		private String getCep() {
+		private int getCep() {
 			return cep;
 		}
 
-		private void setCep( String cep ) {
+		private void setCep( int cep ) {
 			this.cep = cep;
 		}
 
@@ -561,34 +1033,34 @@ public class EbsContabil extends Contabil {
 		@Override
 		public String toString() {
 
-			StringBuilder emitenteDestinatario = new StringBuilder();
+			StringBuilder emitenteDestinatario = new StringBuilder( 500 );
 			
 			emitenteDestinatario.append( getTipoRegistro() );
-			emitenteDestinatario.append( format( getCnpj(), CHAR, 18, 0 ) );			
-			emitenteDestinatario.append( format( getRazaoSocial(), CHAR, 40, 0 ) );			
-			emitenteDestinatario.append( format( getNomeFantazia(), CHAR, 20, 0 ) );			
-			emitenteDestinatario.append( format( getEstado(), CHAR, 2, 0 ) );			
-			emitenteDestinatario.append( format( getInscricao(), CHAR, 20, 0 ) );		
-			emitenteDestinatario.append( format( getEndereco(), CHAR, 40, 0 ) );			
-			emitenteDestinatario.append( format( getBairro(), CHAR, 20, 0 ) );			
-			emitenteDestinatario.append( format( getCidade(), CHAR, 20, 0 ) );			
-			emitenteDestinatario.append( format( getCep(), NUMERIC, 8, 0 ) );			
-			emitenteDestinatario.append( format( getMunicipio(), NUMERIC, 4, 0 ) );			
-			emitenteDestinatario.append( format( getDdd(), NUMERIC, 3, 0 ) );			
-			emitenteDestinatario.append( format( getTelefone(), NUMERIC, 10, 0 ) );			
-			emitenteDestinatario.append( format( getContaCliente(), NUMERIC, 6, 0 ) );			
-			emitenteDestinatario.append( format( getHistoricoCliente(), NUMERIC, 3, 0 ) );			
-			emitenteDestinatario.append( format( getContaFornecedor(), NUMERIC, 6, 0 ) );			
-			emitenteDestinatario.append( format( getHistoricoFornecedor(), NUMERIC, 3, 0 ) );			
+			emitenteDestinatario.append( format( Funcoes.setMascara( getCnpj(), "##.###.###/####-##" ), 18 ) );			
+			emitenteDestinatario.append( format( getRazaoSocial(), 40 ) );			
+			emitenteDestinatario.append( format( getNomeFantazia(), 20 ) );			
+			emitenteDestinatario.append( format( getEstado(), 2 ) );			
+			emitenteDestinatario.append( format( getInscricao(), 20 ) );		
+			emitenteDestinatario.append( format( getEndereco(), 40 ) );			
+			emitenteDestinatario.append( format( getBairro(), 20 ) );			
+			emitenteDestinatario.append( format( getCidade(), 20 ) );			
+			emitenteDestinatario.append( format( getCep(), 8 ) );			
+			emitenteDestinatario.append( format( getMunicipio(), 4 ) );			
+			emitenteDestinatario.append( format( getDdd(), 3 ) );			
+			emitenteDestinatario.append( format( getTelefone(), 10 ) );			
+			emitenteDestinatario.append( format( getContaCliente(), 6 ) );			
+			emitenteDestinatario.append( format( getHistoricoCliente(), 3 ) );			
+			emitenteDestinatario.append( format( getContaFornecedor(), 6 ) );			
+			emitenteDestinatario.append( format( getHistoricoFornecedor(), 3 ) );			
 			emitenteDestinatario.append( isProdutor() ? "S" : "N" );			
-			emitenteDestinatario.append( format( getIndentificacaoExterior(), CHAR, 18, 0 ) );			
-			emitenteDestinatario.append( format( getNumero(), NUMERIC, 5, 0 ) );			
-			emitenteDestinatario.append( format( getComplemento(), CHAR, 20, 0 ) );			
-			emitenteDestinatario.append( format( getSuframa(), CHAR, 9, 0 ) );			
-			emitenteDestinatario.append( format( getPais(), NUMERIC, 5, 0 ) );				
-			emitenteDestinatario.append( format( "", CHAR, 207, 0 ) );				
-			emitenteDestinatario.append( format( "", CHAR, 5, 0 ) );			
-			emitenteDestinatario.append( format( getSequencial(), NUMERIC, 6, 0 ) );
+			emitenteDestinatario.append( format( getIndentificacaoExterior(), 18 ) );			
+			emitenteDestinatario.append( format( getNumero(), 5 ) );			
+			emitenteDestinatario.append( format( getComplemento(), 20 ) );			
+			emitenteDestinatario.append( format( getSuframa(), 9 ) );			
+			emitenteDestinatario.append( format( getPais(), 5 ) );				
+			emitenteDestinatario.append( format( " ", 207 ) );				
+			emitenteDestinatario.append( format( " ", 5 ) );			
+			emitenteDestinatario.append( format( getSequencial(), 6 ) );
 			
 			return emitenteDestinatario.toString();
 		}
@@ -650,16 +1122,16 @@ public class EbsContabil extends Contabil {
 		@Override
 		public String toString() {
 
-			StringBuilder headerEntrada = new StringBuilder();
+			StringBuilder headerEntrada = new StringBuilder( 500 );
 			
 			headerEntrada.append( getTipoRegistro() );
-			headerEntrada.append( format( getDataArquivo(), DATE, 8, 0 ) );
-			headerEntrada.append( format( Funcoes.setMascara( getCnpj(), "##.###.###/####-##" ), CHAR, 18, 0 ) );
+			headerEntrada.append( format( getDataArquivo() ) );
+			headerEntrada.append( format( Funcoes.setMascara( getCnpj(), "##.###.###/####-##" ), 18 ) );
 			headerEntrada.append( getCalculaBases() );
-			headerEntrada.append( format( "", CHAR, 3, 0 ) );
-			headerEntrada.append( format( "", CHAR, 444, 0 ) );
-			headerEntrada.append( format( "", CHAR, 20, 0 ) );
-			headerEntrada.append( format( getSequencial(), NUMERIC, 6, 0 ) );
+			headerEntrada.append( format( " ", 3 ) );
+			headerEntrada.append( format( " ", 443 ) );
+			headerEntrada.append( format( " ", 20 ) );
+			headerEntrada.append( format( getSequencial(), 6 ) );
 			
 			return headerEntrada.toString();
 		}
@@ -1262,67 +1734,67 @@ public class EbsContabil extends Contabil {
 			StringBuilder entrada = new StringBuilder();
 			
 			entrada.append( getTipoRegistro() );
-			entrada.append( format( getDataLancamento(), DATE, 8, 0 ) );
-			entrada.append( format( getNota(), NUMERIC, 6, 0 ) );
-			entrada.append( format( getDataEmissao(), DATE, 8, 0 ) );
-			entrada.append( format( getModeloNota(), NUMERIC, 2, 0 ) );
-			entrada.append( format( getSerie(), CHAR, 3, 0 ) );
-			entrada.append( format( getSubSerie(), CHAR, 3, 0 ) );
-			entrada.append( format( getVariacaoCfop(), NUMERIC, 2, 0 ) );
-			entrada.append( format( getCfop(), NUMERIC, 4, 0 ) );
-			entrada.append( format( getClassificacaoIntegracao(), NUMERIC, 2, 0 ) );
-			entrada.append( format( getClassificacaoIntegracao2(), NUMERIC, 2, 0 ) );
-			entrada.append( format( Funcoes.setMascara( getCnfjFornecedor(), "##.###.###/####-##" ), CHAR, 18, 0 ) );
-			entrada.append( format( getValorNota(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getBasePIS(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getBaseCOFINS(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getBaseCSLL(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getBaseIR(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getBaseICMSa(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getAliquotaICMSa(), NUMERIC, 4, 2 ) );
-			entrada.append( format( getValorICMSa(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getBaseICMSb(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getAliquotaICMSb(), NUMERIC, 4, 2 ) );
-			entrada.append( format( getValorICMSb(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getBaseICMSc(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getAliquotaICMSc(), NUMERIC, 4, 2 ) );
-			entrada.append( format( getValorICMSc(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getBaseICMSd(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getAliquotaICMSd(), NUMERIC, 4, 2 ) );
-			entrada.append( format( getValorICMSd(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getValorICMSIsentas(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getValorICMSOutras(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getBaseIPI(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getValorIPI(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getValorIPIIsentas(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getValorIPIOutras(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getValorSubTributaria(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getBaseSubTributaria(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getValorICMSSubTributaria(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getValorDiferidas(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getObservacaoLivroFiscal(), CHAR, 50, 0 ) );
-			entrada.append( format( getEspecieNota(), CHAR, 5, 0 ) );
-			entrada.append( format( getVendaAVista(), CHAR, 1, 0 ) );
-			entrada.append( format( getCfopSubTributaria(), NUMERIC, 4, 0 ) );
-			entrada.append( format( getBasePISCOFINSSubTributaria(), NUMERIC, 8, 2 ) );
-			entrada.append( format( getBaseISS(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getAliquotaISS(), NUMERIC, 4, 2 ) );
-			entrada.append( format( getValorISS(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getValorISSIsentas(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getValorIRRF(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getValorPIS(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getValorCOFINS(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getValorCSLL(), NUMERIC, 12, 2 ) );
-			entrada.append( format( getDataPagamento(), DATE, 8, 0 ) );
-			entrada.append( format( getCodigoOperacaoContabil(), NUMERIC, 4, 0 ) );
-			entrada.append( format( "", CHAR, 6, 0 ) );			
-			entrada.append( format( getIndentificacaoExterior(), CHAR, 18, 0 ) );			
-			entrada.append( format( getValorINSS(), NUMERIC, 12, 2 ) );			
-			entrada.append( format( getValorFUNRURAL(), NUMERIC, 12, 2 ) );			
-			entrada.append( format( getCodigoItemServico(), NUMERIC, 4, 0 ) );			
-			entrada.append( format( "", CHAR, 18, 0 ) );					
-			entrada.append( format( "", CHAR, 5, 0 ) );			
-			entrada.append( format( getSequencial(), NUMERIC, 6, 0 ) );
+			entrada.append( format( getDataLancamento() ) );
+			entrada.append( format( getNota(), 6 ) );
+			entrada.append( format( getDataEmissao() ) );
+			entrada.append( format( getModeloNota(), 2 ) );
+			entrada.append( format( getSerie(), 3 ) );
+			entrada.append( format( getSubSerie(), 3 ) );
+			entrada.append( format( getCfop(), 4 ) );
+			entrada.append( format( getVariacaoCfop(), 2 ) );
+			entrada.append( format( getClassificacaoIntegracao(), 2 ) );
+			entrada.append( format( getClassificacaoIntegracao2(), 2 ) );
+			entrada.append( format( Funcoes.setMascara( getCnfjFornecedor(), "##.###.###/####-##" ), 18 ) );
+			entrada.append( format( getValorNota(), 12, 2 ) );
+			entrada.append( format( getBasePIS(), 12, 2 ) );
+			entrada.append( format( getBaseCOFINS(), 12, 2 ) );
+			entrada.append( format( getBaseCSLL(), 12, 2 ) );
+			entrada.append( format( getBaseIR(), 12, 2 ) );
+			entrada.append( format( getBaseICMSa(), 12, 2 ) );
+			entrada.append( format( getAliquotaICMSa(), 4, 2 ) );
+			entrada.append( format( getValorICMSa(), 12, 2 ) );
+			entrada.append( format( getBaseICMSb(), 12, 2 ) );
+			entrada.append( format( getAliquotaICMSb(), 4, 2 ) );
+			entrada.append( format( getValorICMSb(), 12, 2 ) );
+			entrada.append( format( getBaseICMSc(), 12, 2 ) );
+			entrada.append( format( getAliquotaICMSc(), 4, 2 ) );
+			entrada.append( format( getValorICMSc(), 12, 2 ) );
+			entrada.append( format( getBaseICMSd(), 12, 2 ) );
+			entrada.append( format( getAliquotaICMSd(), 4, 2 ) );
+			entrada.append( format( getValorICMSd(), 12, 2 ) );
+			entrada.append( format( getValorICMSIsentas(), 12, 2 ) );
+			entrada.append( format( getValorICMSOutras(), 12, 2 ) );
+			entrada.append( format( getBaseIPI(), 12, 2 ) );
+			entrada.append( format( getValorIPI(), 12, 2 ) );
+			entrada.append( format( getValorIPIIsentas(), 12, 2 ) );
+			entrada.append( format( getValorIPIOutras(), 12, 2 ) );
+			entrada.append( format( getValorSubTributaria(), 12, 2 ) );
+			entrada.append( format( getBaseSubTributaria(), 12, 2 ) );
+			entrada.append( format( getValorICMSSubTributaria(), 12, 2 ) );
+			entrada.append( format( getValorDiferidas(), 12, 2 ) );
+			entrada.append( format( getObservacaoLivroFiscal(), 50 ) );
+			entrada.append( format( getEspecieNota(), 5 ) );
+			entrada.append( format( getVendaAVista(), 1 ) );
+			entrada.append( format( getCfopSubTributaria(), 4 ) );
+			entrada.append( format( getBasePISCOFINSSubTributaria(), 8, 2 ) );
+			entrada.append( format( getBaseISS(), 12, 2 ) );
+			entrada.append( format( getAliquotaISS(), 4, 2 ) );
+			entrada.append( format( getValorISS(), 12, 2 ) );
+			entrada.append( format( getValorISSIsentas(), 12, 2 ) );
+			entrada.append( format( getValorIRRF(), 12, 2 ) );
+			entrada.append( format( getValorPIS(), 12, 2 ) );
+			entrada.append( format( getValorCOFINS(), 12, 2 ) );
+			entrada.append( format( getValorCSLL(), 12, 2 ) );
+			entrada.append( format( getDataPagamento() ) );
+			entrada.append( format( getCodigoOperacaoContabil(), 4 ) );
+			entrada.append( format( " ", 6 ) );			
+			entrada.append( format( getIndentificacaoExterior(), 18 ) );			
+			entrada.append( format( getValorINSS(), 12, 2 ) );			
+			entrada.append( format( getValorFUNRURAL(), 12, 2 ) );			
+			entrada.append( format( getCodigoItemServico(), 4 ) );			
+			entrada.append( format( " ", 18 ) );					
+			entrada.append( format( " ", 5 ) );			
+			entrada.append( format( getSequencial(), 6 ) );
 			
 			return entrada.toString();
 		}
@@ -1354,7 +1826,7 @@ public class EbsContabil extends Contabil {
 		
 		private BigDecimal percentualReducaoBaseICMS;
 		
-		private BigDecimal situacaoTributaria;
+		private int situacaoTributaria;
 		
 		private String indentificacao;
 		
@@ -1480,11 +1952,11 @@ public class EbsContabil extends Contabil {
 			this.percentualReducaoBaseICMS = percentualReducaoBaseICMS;
 		}
 
-		private BigDecimal getSituacaoTributaria() {
+		private int getSituacaoTributaria() {
 			return situacaoTributaria;
 		}
 
-		private void setSituacaoTributaria( BigDecimal situacaoTributaria ) {
+		private void setSituacaoTributaria( int situacaoTributaria ) {
 			this.situacaoTributaria = situacaoTributaria;
 		}
 
@@ -1622,36 +2094,36 @@ public class EbsContabil extends Contabil {
 			StringBuilder itemEntrada = new StringBuilder();
 
 			itemEntrada.append( getTipoRegistro() );
-			itemEntrada.append( format( getCodigo(), NUMERIC, 10, 0 ) );			
-			itemEntrada.append( format( getQuantidade(), NUMERIC, 9, 3 ) );		
-			itemEntrada.append( format( getValor(), NUMERIC, 9, 2 ) );			
-			itemEntrada.append( format( getQuantidade2(), NUMERIC, 13, 3 ) );			
-			itemEntrada.append( format( getDesconto(), NUMERIC, 12, 2 ) );			
-			itemEntrada.append( format( getBaseICMS(), NUMERIC, 12, 2 ) );			
-			itemEntrada.append( format( getAliquotaICMS(), NUMERIC, 5, 2 ) );			
-			itemEntrada.append( format( getValorIPI(), NUMERIC, 12, 2 ) );			
-			itemEntrada.append( format( getBaseICMSSusTributaria(), NUMERIC, 12, 2 ) );			
-			itemEntrada.append( format( getAliquotaIPI(), NUMERIC, 5, 2 ) );		
-			itemEntrada.append( format( getPercentualReducaoBaseICMS(), NUMERIC, 5, 2 ) );			
-			itemEntrada.append( format( getSituacaoTributaria(), NUMERIC, 3, 0 ) );			
-			itemEntrada.append( format( getIndentificacao(), CHAR, 15, 0 ) );			
-			itemEntrada.append( format( getSituacaoTributariaIPI(), NUMERIC, 3, 0 ) );			
-			itemEntrada.append( format( getBaseIPI(), NUMERIC, 12, 2 ) );			
-			itemEntrada.append( format( getSituacaoTributariaPIS(), NUMERIC, 3, 0 ) );			
-			itemEntrada.append( format( getBasePIS(), NUMERIC, 12, 2 ) );			
-			itemEntrada.append( format( getAliquotaPIS(), NUMERIC, 5, 2 ) );			
-			itemEntrada.append( format( getQuantidadeBasePIS(), NUMERIC, 12, 2 ) );			
-			itemEntrada.append( format( getValorAliquotaPIS(), NUMERIC, 12, 2 ) );			
-			itemEntrada.append( format( getValorPIS(), NUMERIC, 12, 2 ) );			
-			itemEntrada.append( format( getSituacaoTributariaCOFINS(), NUMERIC, 3, 0 ) );			
-			itemEntrada.append( format( getBaseCOFINS(), NUMERIC, 12, 2 ) );			
-			itemEntrada.append( format( getAliquotaCOFINS(), NUMERIC, 5, 2 ) );			
-			itemEntrada.append( format( getQuantidadeBaseCOFINS(), NUMERIC, 12, 2 ) );			
-			itemEntrada.append( format( getValorAliquotaCOFINS(), NUMERIC, 12, 2 ) );			
-			itemEntrada.append( format( getValorICMSSubTributaria(), NUMERIC, 12, 2 ) );			
-			itemEntrada.append( format( "", CHAR, 224, 0 ) );				
-			itemEntrada.append( format( "", CHAR, 5, 0 ) );			
-			itemEntrada.append( format( getSequencial(), NUMERIC, 6, 0 ) );
+			itemEntrada.append( format( getCodigo(), 10 ) );			
+			itemEntrada.append( format( getQuantidade(), 9, 3 ) );		
+			itemEntrada.append( format( getValor(), 9, 2 ) );			
+			itemEntrada.append( format( getQuantidade2(), 13, 3 ) );			
+			itemEntrada.append( format( getDesconto(), 12, 2 ) );			
+			itemEntrada.append( format( getBaseICMS(), 12, 2 ) );			
+			itemEntrada.append( format( getAliquotaICMS(), 5, 2 ) );			
+			itemEntrada.append( format( getValorIPI(), 12, 2 ) );			
+			itemEntrada.append( format( getBaseICMSSusTributaria(), 12, 2 ) );			
+			itemEntrada.append( format( getAliquotaIPI(), 5, 2 ) );		
+			itemEntrada.append( format( getPercentualReducaoBaseICMS(), 5, 2 ) );			
+			itemEntrada.append( format( getSituacaoTributaria(), 3 ) );			
+			itemEntrada.append( format( getIndentificacao(), 15 ) );			
+			itemEntrada.append( format( getSituacaoTributariaIPI(), 3 ) );			
+			itemEntrada.append( format( getBaseIPI(), 12, 2 ) );			
+			itemEntrada.append( format( getSituacaoTributariaPIS(), 3 ) );			
+			itemEntrada.append( format( getBasePIS(), 12, 2 ) );			
+			itemEntrada.append( format( getAliquotaPIS(), 5, 2 ) );			
+			itemEntrada.append( format( getQuantidadeBasePIS(), 12, 2 ) );			
+			itemEntrada.append( format( getValorAliquotaPIS(), 12, 2 ) );			
+			itemEntrada.append( format( getValorPIS(), 12, 2 ) );			
+			itemEntrada.append( format( getSituacaoTributariaCOFINS(), 3 ) );			
+			itemEntrada.append( format( getBaseCOFINS(), 12, 2 ) );			
+			itemEntrada.append( format( getAliquotaCOFINS(), 5, 2 ) );			
+			itemEntrada.append( format( getQuantidadeBaseCOFINS(), 12, 2 ) );			
+			itemEntrada.append( format( getValorAliquotaCOFINS(), 12, 2 ) );			
+			itemEntrada.append( format( getValorICMSSubTributaria(), 12, 2 ) );			
+			itemEntrada.append( format( " ", 224 ) );				
+			itemEntrada.append( format( " ", 5 ) );			
+			itemEntrada.append( format( getSequencial(), 6 ) );
 			
 			return itemEntrada.toString();
 		}
@@ -1911,31 +2383,31 @@ public class EbsContabil extends Contabil {
 			StringBuilder trallerEntrada = new StringBuilder();
 			
 			trallerEntrada.append( getTipoRegistro() );			
-			trallerEntrada.append( format( getValorNota(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getBasePIS(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getBaseCOFINS(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getBaseContribuicaoSocial(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getBaseImpostoRenda(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getBaseICMSa(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getValorICMSa(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getBaseICMSb(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getValorICMSb(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getBaseICMSc(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getValorICMSc(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getBaseICMSd(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getValorICMSd(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getValorICMSIsentas(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getValorICMSOutras(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getBaseIPI(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getValorIPI(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getValorIPIIsentas(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getValorIPIOutras(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getValorSubTributaria(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getBaseSubTriburaria(), NUMERIC, 12, 2 ) );			
-			trallerEntrada.append( format( getValorICMSSubTributaria(), NUMERIC, 12, 2 ) );		
-			trallerEntrada.append( format( getValorDiferidas(), NUMERIC, 12, 2 ) );
-			trallerEntrada.append( format( "", CHAR, 217, 0 ) );
-			trallerEntrada.append( format( getSequencial(), NUMERIC, 6, 0 ) );
+			trallerEntrada.append( format( getValorNota(), 12, 2 ) );			
+			trallerEntrada.append( format( getBasePIS(), 12, 2 ) );			
+			trallerEntrada.append( format( getBaseCOFINS(), 12, 2 ) );			
+			trallerEntrada.append( format( getBaseContribuicaoSocial(), 12, 2 ) );			
+			trallerEntrada.append( format( getBaseImpostoRenda(), 12, 2 ) );			
+			trallerEntrada.append( format( getBaseICMSa(), 12, 2 ) );			
+			trallerEntrada.append( format( getValorICMSa(), 12, 2 ) );			
+			trallerEntrada.append( format( getBaseICMSb(), 12, 2 ) );			
+			trallerEntrada.append( format( getValorICMSb(), 12, 2 ) );			
+			trallerEntrada.append( format( getBaseICMSc(), 12, 2 ) );			
+			trallerEntrada.append( format( getValorICMSc(), 12, 2 ) );			
+			trallerEntrada.append( format( getBaseICMSd(), 12, 2 ) );			
+			trallerEntrada.append( format( getValorICMSd(), 12, 2 ) );			
+			trallerEntrada.append( format( getValorICMSIsentas(), 12, 2 ) );			
+			trallerEntrada.append( format( getValorICMSOutras(), 12, 2 ) );			
+			trallerEntrada.append( format( getBaseIPI(), 12, 2 ) );			
+			trallerEntrada.append( format( getValorIPI(), 12, 2 ) );			
+			trallerEntrada.append( format( getValorIPIIsentas(), 12, 2 ) );			
+			trallerEntrada.append( format( getValorIPIOutras(), 12, 2 ) );			
+			trallerEntrada.append( format( getValorSubTributaria(), 12, 2 ) );			
+			trallerEntrada.append( format( getBaseSubTriburaria(), 12, 2 ) );			
+			trallerEntrada.append( format( getValorICMSSubTributaria(), 12, 2 ) );		
+			trallerEntrada.append( format( getValorDiferidas(), 12, 2 ) );
+			trallerEntrada.append( format( " ", 217 ) );
+			trallerEntrada.append( format( getSequencial(), 6 ) );
 			
 			return trallerEntrada.toString();
 		}
@@ -1996,13 +2468,13 @@ public class EbsContabil extends Contabil {
 			StringBuilder headerSaida = new StringBuilder();
 			
 			headerSaida.append( getTipoRegistro() );			
-			headerSaida.append( format( getDataArquivo(), DATE, 8, 0 ) );	
-			headerSaida.append( format( getCnpj(), CHAR, 18, 0 ) );
-			headerSaida.append( format( getCalculaBases(), CHAR, 1, 0 ) );
-			headerSaida.append( format( "", CHAR, 3, 0 ) );
-			headerSaida.append( format( "", CHAR, 443, 0 ) );
-			headerSaida.append( format( "", CHAR, 20, 0 ) );
-			headerSaida.append( format( getSequencial(), NUMERIC, 6, 0 ) );
+			headerSaida.append( format( getDataArquivo() ) );	
+			headerSaida.append( format( getCnpj(), 18 ) );
+			headerSaida.append( format( getCalculaBases(), 1 ) );
+			headerSaida.append( format( " ", 3 ) );
+			headerSaida.append( format( " ", 443 ) );
+			headerSaida.append( format( " ", 20 ) );
+			headerSaida.append( format( getSequencial(), 6 ) );
 			
 			return headerSaida.toString();
 		}
@@ -2633,70 +3105,70 @@ public class EbsContabil extends Contabil {
 			StringBuilder saida = new StringBuilder();
 			
 			saida.append( getTipoRegistro() );	
-			saida.append( format( getDataLancamento(), DATE, 8, 0 ) );			
-			saida.append( format( getNumeroInicial(), NUMERIC, 6, 0 ) );			
-			saida.append( format( getNumeroFinal(), NUMERIC, 6, 0 ) );			
-			saida.append( format( getDataEmissao(), DATE, 8, 0 ) );
-			saida.append( format( "", CHAR, 3, 0 ) );
-			saida.append( format( getModelo(), NUMERIC, 2, 0 ) );			
-			saida.append( format( getSerie(), CHAR, 3, 0 ) );			
-			saida.append( format( getSubSerie(), CHAR, 3, 0 ) );			
-			saida.append( format( getCfop(), NUMERIC, 4, 0 ) );			
-			saida.append( format( getVariacaoCfop(), NUMERIC, 2, 0 ) );		
-			saida.append( format( getClassificacao1(), NUMERIC, 2, 0 ) );			
-			saida.append( format( getClassificacao2(), NUMERIC, 2, 0 ) );			
-			saida.append( format( getCnpjDestinatario(), CHAR, 18, 0 ) );			
-			saida.append( format( getValorNota(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getBasePIS(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getBaseCOFINS(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getBaseCSLL(), NUMERIC, 12, 2 ) );
-			saida.append( format( getBaseIRPJ(), NUMERIC, 12, 2 ) );
-			saida.append( format( "", CHAR, 8, 0 ) );
-			saida.append( format( getBaseICMSa(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getAliquotaICMSa(), NUMERIC, 4, 2 ) );			
-			saida.append( format( getValorICMSa(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getBaseICMSb(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getAliquotaICMSb(), NUMERIC, 4, 2 ) );			
-			saida.append( format( getValorICMSb(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getBaseICMSc(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getAliquotaICMSc(), NUMERIC, 4, 2 ) );			
-			saida.append( format( getValorICMSc(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getBaseICMSd(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getAliquotaICMSd(), NUMERIC, 4, 2 ) );			
-			saida.append( format( getValorICMSd(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getValorICMSIsentas(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getValorICMSOutras(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getBaseIPI(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getValorIPI(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getValorIPIIsentas(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getValorIPIOutras(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getValorSubTributaria(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getBaseSubTributaria(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getValorICMSSubTributaria(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getValorDiferidas(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getBaseISS(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getAliquotaISS(), NUMERIC, 4, 2 ) );			
-			saida.append( format( getValorISS(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getValorISSIsentos(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getValorIRRF(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getObservacoesLivrosFiscais(), CHAR, 50, 0 ) );			
-			saida.append( format( getEspecie(), CHAR, 5, 0 ) );			
-			saida.append( format( getVendaAVista(), CHAR, 1, 0 ) );			
-			saida.append( format( getCfopSubTributaria(), NUMERIC, 4, 2 ) );			
-			saida.append( format( getValorPISCOFINS(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getModalidadeFrete(), NUMERIC, 1, 0 ) );			
-			saida.append( format( getValorPIS(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getValorCOFINS(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getValorCSLL(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getDataRecebimento(), DATE, 8, 0 ) );			
-			saida.append( format( getOperacaoContabil(), NUMERIC, 4, 0 ) );			
-			saida.append( format( getValorMateriais(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getValorSubEmpreitada(), NUMERIC, 12, 2 ) );			
-			saida.append( format( getCodigoServico(), NUMERIC, 4, 0 ) );			
-			saida.append( format( getClifor(), NUMERIC, 6, 0 ) );			
-			saida.append( format( getIndentificadorExterior(), CHAR, 18, 0 ) );		
-			saida.append( format( "", CHAR, 5, 0 ) );
-			saida.append( format( getSequencial(), NUMERIC, 6, 0 ) );
+			saida.append( format( getDataLancamento() ) );			
+			saida.append( format( getNumeroInicial(), 6 ) );			
+			saida.append( format( getNumeroFinal(), 6 ) );			
+			saida.append( format( getDataEmissao() ) );
+			saida.append( format( " ", 3 ) );
+			saida.append( format( getModelo(), 2 ) );			
+			saida.append( format( getSerie(), 3 ) );			
+			saida.append( format( getSubSerie(), 3 ) );			
+			saida.append( format( getCfop(), 4 ) );			
+			saida.append( format( getVariacaoCfop(), 2 ) );		
+			saida.append( format( getClassificacao1(), 2 ) );			
+			saida.append( format( getClassificacao2(), 2 ) );			
+			saida.append( format( getCnpjDestinatario(), 18 ) );			
+			saida.append( format( getValorNota(), 12, 2 ) );			
+			saida.append( format( getBasePIS(), 12, 2 ) );			
+			saida.append( format( getBaseCOFINS(), 12, 2 ) );			
+			saida.append( format( getBaseCSLL(), 12, 2 ) );
+			saida.append( format( getBaseIRPJ(), 12, 2 ) );
+			saida.append( format( " ", 8 ) );
+			saida.append( format( getBaseICMSa(), 12, 2 ) );			
+			saida.append( format( getAliquotaICMSa(), 4, 2 ) );			
+			saida.append( format( getValorICMSa(), 12, 2 ) );			
+			saida.append( format( getBaseICMSb(), 12, 2 ) );			
+			saida.append( format( getAliquotaICMSb(), 4, 2 ) );			
+			saida.append( format( getValorICMSb(), 12, 2 ) );			
+			saida.append( format( getBaseICMSc(), 12, 2 ) );			
+			saida.append( format( getAliquotaICMSc(), 4, 2 ) );			
+			saida.append( format( getValorICMSc(), 12, 2 ) );			
+			saida.append( format( getBaseICMSd(), 12, 2 ) );			
+			saida.append( format( getAliquotaICMSd(), 4, 2 ) );			
+			saida.append( format( getValorICMSd(), 12, 2 ) );			
+			saida.append( format( getValorICMSIsentas(), 12, 2 ) );			
+			saida.append( format( getValorICMSOutras(), 12, 2 ) );			
+			saida.append( format( getBaseIPI(), 12, 2 ) );			
+			saida.append( format( getValorIPI(), 12, 2 ) );			
+			saida.append( format( getValorIPIIsentas(), 12, 2 ) );			
+			saida.append( format( getValorIPIOutras(), 12, 2 ) );			
+			saida.append( format( getValorSubTributaria(), 12, 2 ) );			
+			saida.append( format( getBaseSubTributaria(), 12, 2 ) );			
+			saida.append( format( getValorICMSSubTributaria(), 12, 2 ) );			
+			saida.append( format( getValorDiferidas(), 12, 2 ) );			
+			saida.append( format( getBaseISS(), 12, 2 ) );			
+			saida.append( format( getAliquotaISS(), 4, 2 ) );			
+			saida.append( format( getValorISS(), 12, 2 ) );			
+			saida.append( format( getValorISSIsentos(), 12, 2 ) );			
+			saida.append( format( getValorIRRF(), 12, 2 ) );			
+			saida.append( format( getObservacoesLivrosFiscais(), 50 ) );			
+			saida.append( format( getEspecie(), 5 ) );			
+			saida.append( format( getVendaAVista(), 1 ) );			
+			saida.append( format( getCfopSubTributaria(), 4 ) );			
+			saida.append( format( getValorPISCOFINS(), 12, 2 ) );			
+			saida.append( format( getModalidadeFrete(), 1 ) );			
+			saida.append( format( getValorPIS(), 12, 2 ) );			
+			saida.append( format( getValorCOFINS(), 12, 2 ) );			
+			saida.append( format( getValorCSLL(), 12, 2 ) );			
+			saida.append( format( getDataRecebimento() ) );			
+			saida.append( format( getOperacaoContabil(), 4 ) );			
+			saida.append( format( getValorMateriais(), 12, 2 ) );			
+			saida.append( format( getValorSubEmpreitada(), 12, 2 ) );			
+			saida.append( format( getCodigoServico(), 4 ) );			
+			saida.append( format( getClifor(), 6 ) );			
+			saida.append( format( getIndentificadorExterior(), 18 ) );		
+			saida.append( format( " ", 5 ) );
+			saida.append( format( getSequencial(), 6 ) );
 			
 			return saida.toString();
 		}
@@ -2986,35 +3458,35 @@ public class EbsContabil extends Contabil {
 			StringBuilder itemSaida = new StringBuilder();
 			
 			itemSaida.append( getTipoRegistro() );	
-			itemSaida.append( format( getCodigoItem(), NUMERIC, 10, 0 ) );			
-			itemSaida.append( format( getQuantidade(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getValor(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getQuantidade2(), NUMERIC, 13, 3 ) );			
-			itemSaida.append( format( getDesconto(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getBaseICMS(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getAliquotaICMS(), NUMERIC, 5, 2 ) );			
-			itemSaida.append( format( getValorIPI(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getBaseICMSSubTributaria(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getAliquotaIPI(), NUMERIC, 5, 2 ) );			
-			itemSaida.append( format( getPercentualReducaoBaseICMS(), NUMERIC, 5, 2 ) );			
-			itemSaida.append( format( getSituacaoTributaria(), NUMERIC, 3, 0 ) );			
-			itemSaida.append( format( getIndentificacao(), CHAR, 15, 0 ) );			
-			itemSaida.append( format( getSituacaoTributariaIPI(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getBaseIPI(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getSituacaoTributariaPIS(), NUMERIC, 3, 0 ) );			
-			itemSaida.append( format( getBasePIS(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getAliquotaPIS(), NUMERIC, 5, 2 ) );			
-			itemSaida.append( format( getQuantidadeBasePIS(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getValorAliquotaPIS(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getValorPIS(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getSituacaoTributariaCOFINS(), NUMERIC, 3, 0 ) );			
-			itemSaida.append( format( getBaseCOFINS(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getAliquotaCOFINS(), NUMERIC, 5, 2 ) );			
-			itemSaida.append( format( getValorCOFINS(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getValorICMSSubTributaria(), NUMERIC, 12, 2 ) );		
-			itemSaida.append( format( "", CHAR, 224, 0 ) );					
-			itemSaida.append( format( "", CHAR, 5, 0 ) );			
-			itemSaida.append( format( getSequencial(), NUMERIC, 6, 0 ) );
+			itemSaida.append( format( getCodigoItem(), 10 ) );			
+			itemSaida.append( format( getQuantidade(), 12, 2 ) );			
+			itemSaida.append( format( getValor(), 12, 2 ) );			
+			itemSaida.append( format( getQuantidade2(), 13, 3 ) );			
+			itemSaida.append( format( getDesconto(), 12, 2 ) );			
+			itemSaida.append( format( getBaseICMS(), 12, 2 ) );			
+			itemSaida.append( format( getAliquotaICMS(), 5, 2 ) );			
+			itemSaida.append( format( getValorIPI(), 12, 2 ) );			
+			itemSaida.append( format( getBaseICMSSubTributaria(), 12, 2 ) );			
+			itemSaida.append( format( getAliquotaIPI(), 5, 2 ) );			
+			itemSaida.append( format( getPercentualReducaoBaseICMS(), 5, 2 ) );			
+			itemSaida.append( format( getSituacaoTributaria(), 3 ) );			
+			itemSaida.append( format( getIndentificacao(), 15 ) );			
+			itemSaida.append( format( getSituacaoTributariaIPI(), 3 ) );			
+			itemSaida.append( format( getBaseIPI(), 12, 2 ) );			
+			itemSaida.append( format( getSituacaoTributariaPIS(), 3 ) );			
+			itemSaida.append( format( getBasePIS(), 12, 2 ) );			
+			itemSaida.append( format( getAliquotaPIS(), 5, 2 ) );			
+			itemSaida.append( format( getQuantidadeBasePIS(), 12, 2 ) );			
+			itemSaida.append( format( getValorAliquotaPIS(), 12, 2 ) );			
+			itemSaida.append( format( getValorPIS(), 12, 2 ) );			
+			itemSaida.append( format( getSituacaoTributariaCOFINS(), 3 ) );			
+			itemSaida.append( format( getBaseCOFINS(), 12, 2 ) );			
+			itemSaida.append( format( getAliquotaCOFINS(), 5, 2 ) );			
+			itemSaida.append( format( getValorCOFINS(), 12, 2 ) );			
+			itemSaida.append( format( getValorICMSSubTributaria(), 12, 2 ) );		
+			itemSaida.append( format( " ", 224 ) );					
+			itemSaida.append( format( " ", 5 ) );			
+			itemSaida.append( format( getSequencial(), 6 ) );
 			
 			return itemSaida.toString();
 		}
@@ -3314,35 +3786,35 @@ public class EbsContabil extends Contabil {
 			StringBuilder itemSaida = new StringBuilder();
 			
 			itemSaida.append( getTipoRegistro() );	
-			itemSaida.append( format( getValorNota(), NUMERIC, 12, 2 ) );		
-			itemSaida.append( format( getBasePIS(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getBaseCOFINS(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getBaseCSLL(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getBaseIRPJ(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getBaseICMSa(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getValorICMSa(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getBaseICMSb(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getValorICMSb(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getBaseICMSc(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getValorICMSc(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getBaseICMSd(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getValorICMSd(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getValorICMSIsentas(), NUMERIC, 12, 2 ) );		
-			itemSaida.append( format( getValorICMSOutras(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getBaseIPI(), NUMERIC, 12, 2 ) ); 			
-			itemSaida.append( format( getValorIPI(), NUMERIC, 12, 2 ) ); 			
-			itemSaida.append( format( getValorIPIIsentas(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getValorIPIOutras(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getValorMercadoriasSubTributaria(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getBaseSubTributaria(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getValorICMSSubTributarias(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getValorDireridas(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getBaseISS(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getValorISS(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( getValorIsentas(), NUMERIC, 12, 2 ) );
-			itemSaida.append( format( getValorIRRFISS(), NUMERIC, 12, 2 ) );			
-			itemSaida.append( format( "", CHAR, 169, 0 ) );			
-			itemSaida.append( format( getSequencial(), NUMERIC, 6, 0 ) );
+			itemSaida.append( format( getValorNota(), 12, 2 ) );		
+			itemSaida.append( format( getBasePIS(), 12, 2 ) );			
+			itemSaida.append( format( getBaseCOFINS(), 12, 2 ) );			
+			itemSaida.append( format( getBaseCSLL(), 12, 2 ) );			
+			itemSaida.append( format( getBaseIRPJ(), 12, 2 ) );			
+			itemSaida.append( format( getBaseICMSa(), 12, 2 ) );			
+			itemSaida.append( format( getValorICMSa(), 12, 2 ) );			
+			itemSaida.append( format( getBaseICMSb(), 12, 2 ) );			
+			itemSaida.append( format( getValorICMSb(), 12, 2 ) );			
+			itemSaida.append( format( getBaseICMSc(), 12, 2 ) );			
+			itemSaida.append( format( getValorICMSc(), 12, 2 ) );			
+			itemSaida.append( format( getBaseICMSd(), 12, 2 ) );			
+			itemSaida.append( format( getValorICMSd(), 12, 2 ) );			
+			itemSaida.append( format( getValorICMSIsentas(), 12, 2 ) );		
+			itemSaida.append( format( getValorICMSOutras(), 12, 2 ) );			
+			itemSaida.append( format( getBaseIPI(), 12, 2 ) ); 			
+			itemSaida.append( format( getValorIPI(), 12, 2 ) ); 			
+			itemSaida.append( format( getValorIPIIsentas(), 12, 2 ) );			
+			itemSaida.append( format( getValorIPIOutras(), 12, 2 ) );			
+			itemSaida.append( format( getValorMercadoriasSubTributaria(), 12, 2 ) );			
+			itemSaida.append( format( getBaseSubTributaria(), 12, 2 ) );			
+			itemSaida.append( format( getValorICMSSubTributarias(), 12, 2 ) );			
+			itemSaida.append( format( getValorDireridas(), 12, 2 ) );			
+			itemSaida.append( format( getBaseISS(), 12, 2 ) );			
+			itemSaida.append( format( getValorISS(), 12, 2 ) );			
+			itemSaida.append( format( getValorIsentas(), 12, 2 ) );
+			itemSaida.append( format( getValorIRRFISS(), 12, 2 ) );			
+			itemSaida.append( format( " ", 169 ) );			
+			itemSaida.append( format( getSequencial(), 6 ) );
 			
 			return itemSaida.toString();
 		}
