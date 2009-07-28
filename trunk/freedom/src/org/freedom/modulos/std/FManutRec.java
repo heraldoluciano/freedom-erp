@@ -849,7 +849,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					visualizaRec();
 				}
 				else if (mevt.getSource() == tabManut && mevt.getClickCount() == 1){
-					String banco = tabManut.getValor( tabManut.getSelectedRow(), 24 ).toString();
+					String banco = tabManut.getValor( tabManut.getSelectedRow(), 26 ).toString();
 					if(banco.equals( Banco.BANCO_DO_BRASIL )) {
 						btImpBol.setIcon( Icone.novo( "btBB.gif" ) );
 					}
