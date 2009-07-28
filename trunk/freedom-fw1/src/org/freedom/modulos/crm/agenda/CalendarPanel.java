@@ -618,7 +618,7 @@ public class CalendarPanel extends JPanel implements MouseListener {
 							ListViewPanel listView = (ListViewPanel) calendarViews.get(ListViewPanel.VIEW_NAME);
 							step = listView.listView.getShowDays();
 						} catch (Exception e) {
-							// TODO: handle exception
+							e.printStackTrace();
 						}
 					}
 			if (!forward)
@@ -1085,14 +1085,12 @@ public class CalendarPanel extends JPanel implements MouseListener {
 
 		public JPopupMenu getCalendarPopupMenu(Object calId) throws Exception {
 			/* ====================================================== */
-			// TODO Auto-generated method stub
 			return null;
 			/* ====================================================== */
 		}
 
 		public JPopupMenu getEmptyPopupMenu(Object calId, Date date) throws Exception {
 			/* ====================================================== */
-			// TODO Auto-generated method stub
 			return null;
 			/* ====================================================== */
 		}
@@ -1105,7 +1103,6 @@ public class CalendarPanel extends JPanel implements MouseListener {
 
 		public JPopupMenu getProjectPopupMenu(Object calId) throws Exception {
 			/* ====================================================== */
-			// TODO Auto-generated method stub
 			return null;
 			/* ====================================================== */
 		}
