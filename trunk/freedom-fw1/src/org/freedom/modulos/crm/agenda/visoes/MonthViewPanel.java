@@ -93,17 +93,9 @@ public class MonthViewPanel extends AbstractCalendarView{
 		}
 	}
 
-	public void activeCalendarsChanged(Collection<NamedCalendar> calendars) {
-		/* ====================================================== */
-		// TODO Auto-generated method stub
-		/* ====================================================== */
-	}
+	public void activeCalendarsChanged(Collection<NamedCalendar> calendars) {}
 
-	public void selectedCalendarChanged(NamedCalendar selectedCalendar) {
-		/* ====================================================== */
-		// TODO Auto-generated method stub
-		/* ====================================================== */
-	}
+	public void selectedCalendarChanged(NamedCalendar selectedCalendar) {}
 
 	@Override
 	public List getEvents() {

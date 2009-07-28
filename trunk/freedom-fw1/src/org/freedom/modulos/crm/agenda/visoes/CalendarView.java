@@ -788,24 +788,15 @@ public abstract class CalendarView {
 			}
 			/* ------------------------------------------------------- */
 			try {
-				if (e.getClickCount() == 1) {
-					// TODO check
-					// if (_event.isSelectable()) {
-					// FrameArea area = getFrameArea(_calId, _event);
-					// boolean isSelected = area.isSelected();
-					// if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) ==
-					// 0)
-					// deselect();
-					// select(_calId, _event, !isSelected);
-					// }
-				} else if (e.getClickCount() == 2) {
+				if (e.getClickCount() == 2) {
 					if (listener != null)
 						listener.showEvent(_calId, _event);
 				}
-			} catch (Exception exc) {
+			} 
+			catch (Exception exc) {
 				ErrorHandler.handleError(exc);
 			}
-			/* ================================================== */
+
 		}
 
 		private void maybeShowPopup(MouseEvent e) {
@@ -2624,7 +2615,6 @@ public abstract class CalendarView {
 
 	/**
 	 * Deselect frame areas. 
-	 * FIXME not working
 	 * 
 	 * @throws Exception
 	 */

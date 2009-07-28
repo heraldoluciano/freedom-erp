@@ -187,7 +187,6 @@ public class DayViewPanel extends AbstractCalendarView {
 			this.dayView.resetHorizontalLines();
 			this.dayView.refresh();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		/* ================================================== */
@@ -315,20 +314,12 @@ public class DayViewPanel extends AbstractCalendarView {
 		/* ====================================================== */
 	}
 
-	public void activeCalendarsChanged(Collection<NamedCalendar> calendars) {
-		/* ====================================================== */
-		// TODO Auto-generated method stub
-		/* ====================================================== */
-	}
+	public void activeCalendarsChanged(Collection<NamedCalendar> calendars) {}
 
-	public void selectedCalendarChanged(NamedCalendar selectedCalendar) {
-		/* ====================================================== */
-		// TODO Auto-generated method stub
-		/* ====================================================== */
-	}
+	public void selectedCalendarChanged(NamedCalendar selectedCalendar) {}
 
 	@Override
-	public List getEvents() {
+	public List<?> getEvents() {
 		/* ================================================== */
 		try {
 			Interval interval = this.dayModel.getInterval();
