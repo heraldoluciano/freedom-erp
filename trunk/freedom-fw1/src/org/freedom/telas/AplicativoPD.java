@@ -30,14 +30,15 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Vector;
+
 import javax.swing.JMenuItem;
+
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.componentes.JButtonPad;
@@ -46,6 +47,7 @@ import org.freedom.componentes.ObjetoEmpresa;
 import org.freedom.componentes.TabObjeto;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.FPrefereGeral;
 
 public class AplicativoPD extends Aplicativo implements ActionListener, KeyListener {
@@ -327,7 +329,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		String sSQL = "SELECT CODEMP FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sDesc = "";
+//		String sDesc = "";
 
 		try {
 			ps = con.prepareStatement( sSQL );
