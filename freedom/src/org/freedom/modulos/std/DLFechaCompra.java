@@ -80,6 +80,10 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 	private JTextFieldPad txtPercDescCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
 
 	private JTextFieldPad txtVlrDescCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtVlrBaseICMSST = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtVlrICMSST = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtPercAdicCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
 
@@ -182,7 +186,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		setConexao( cn );
 		iCodCompraFecha = iCodCompra.intValue();
 		setTitulo( "Fechar Compra" );
-		setAtribos( 560, 470 );
+		setAtribos( 560, 530 );
 
 		this.volumes = volumes;
 		
@@ -229,6 +233,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		lcCompra.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cod.p.pg.", ListaCampos.DB_FK, txtDescPlanoPag, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrLiqCompra, "VlrLiqCompra", "V.compra", ListaCampos.DB_SI, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrICMSCompra, "VlrICMSCompra", "V.ICMS", ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrICMSST, "VlrICMSSTCompra", "V.ICMS ST", ListaCampos.DB_SI, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrIPICompra, "VlrIPICompra", "V.IPI", ListaCampos.DB_SI, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrDescItCompra, "VlrDescItCompra", "% Desc.it.", ListaCampos.DB_SI, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrDescCompra, "VlrDescCompra", "% Desc.it.", ListaCampos.DB_SI, false ) );
@@ -242,6 +247,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		lcCompra.add( new GuardaCampo( cbAdicAdicCusto, "AdicAdicCompra", "Vlr Adicional na campra", ListaCampos.DB_SI, false ) );
 		lcCompra.add( new GuardaCampo( txtQtdFreteCompra, "QtdFreteCompra", "Qtd. de volumes na compra", ListaCampos.DB_SI, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrBaseICMS, "VlrBaseICMSCompra", "Vlr. Base do ICMS", ListaCampos.DB_SI, false ) );
+		lcCompra.add( new GuardaCampo( txtVlrBaseICMSST, "VlrBaseICMSSTCompra", "Vlr. Base do ICMS ST", ListaCampos.DB_SI, false ) );
 		
 		lcCompra.montaSql( false, "COMPRA", "CP" );
 		lcCompra.setConexao( cn );
@@ -333,11 +339,11 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		pinValores.adic( new JLabelPad( "Vlr.Adic." ), 70, 50, 80, 20 );
 		pinValores.adic( txtVlrAdicCompra, 70, 70, 80, 20 );
 			
-		pinValores.adic( new JLabelPad( "Vlr.ICMS" ), 153, 50, 80, 20 );
-		pinValores.adic( txtVlrICMSCompra, 153, 70, 80, 20 );
+//		pinValores.adic( new JLabelPad( "Vlr.ICMS" ), 153, 50, 80, 20 );
+//		pinValores.adic( txtVlrICMSCompra, 153, 70, 80, 20 );
 		
-		pinValores.adic( new JLabelPad( "Vlr.IPI" ), 236, 50, 77, 20 );
-		pinValores.adic( txtVlrIPICompra, 236, 70, 77, 20 );
+		pinValores.adic( new JLabelPad( "Vlr.IPI" ), 153, 50, 80, 20 );
+		pinValores.adic( txtVlrIPICompra, 153, 70, 80, 20 );
 
    	   /**********************
 		*  Quadro Frete
@@ -363,7 +369,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		pinLbTrib.tiraBorda();
 
 		adic( pinLbTrib, 20, 178, 90, 15 ); 
-		adic( pinTrib, 7, 185,  326, 80 );
+		adic( pinTrib, 7, 185,  326, 110 );
 		
 /*		
   		pinTrib.adic( cbAdicFreteBase, 7, 10, 320, 20 );
@@ -380,10 +386,19 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		pinLbICMS.tiraBorda();
 
 		adic( pinLbICMS, 349, 178, 90, 15 ); 
-		adic( pinICMS, 336, 185,  200, 80 );
+		adic( pinICMS, 336, 185,  200, 110 );
 		
-		pinICMS.adic( new JLabelPad( "Base de Cálculo." ), 7, 10, 100, 20 );
-		pinICMS.adic( txtVlrBaseICMS, 7, 30, 100, 20 );
+		pinICMS.adic( new JLabelPad( "Base calc." ), 7, 10, 90, 20 );
+		pinICMS.adic( txtVlrBaseICMS, 7, 30, 90, 20 );
+		pinICMS.adic( new JLabelPad( "Vlr.ICMS" ), 7, 50, 90, 20 );
+		pinICMS.adic( txtVlrICMSCompra, 7, 70, 90, 20 );
+		
+		
+		pinICMS.adic( new JLabelPad( "Base calc. ST" ), 100, 10, 90, 20 );
+		pinICMS.adic( txtVlrBaseICMSST, 100, 30, 90, 20 );		
+		pinICMS.adic( new JLabelPad( "Vlr.ICMS ST" ), 100, 50, 90, 20 );
+		pinICMS.adic( txtVlrICMSST, 100, 70, 90, 20 );
+
 		
         /******************************
 		*  Quadro Composição do custo
@@ -392,8 +407,8 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		pinLbCusto.adic( new JLabelPad( "   Composição do custo " ), 0, 0, 150, 15 );
 		pinLbCusto.tiraBorda();
 
-		adic( pinLbCusto, 20, 270, 150, 15 ); 
-		adic( pinCusto, 7, 280,  326, 60 );
+		adic( pinLbCusto, 20, 300, 150, 15 ); 
+		adic( pinCusto, 7, 310,  326, 60 );
 		
 		pinCusto.adic( cbAdicFreteCusto, 7, 10, 280, 20 );
 		pinCusto.adic( cbAdicAdicCusto, 7, 30, 280, 20 );
@@ -405,8 +420,8 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		pinLbImp.adic( new JLabelPad( "   Impressão " ), 0, 0, 90, 15 );
 		pinLbImp.tiraBorda();
 		
-		adic( pinLbImp, 349, 270, 90, 15 ); 
-		adic( pinImp, 336, 280, 200, 60 );
+		adic( pinLbImp, 349, 300, 90, 15 ); 
+		adic( pinImp, 336, 310, 200, 60 );
 
 		pinImp.adic( cbImpPed, 7, 10, 180, 20 );
 		pinImp.adic( cbImpNot, 7, 30, 180, 20 );
