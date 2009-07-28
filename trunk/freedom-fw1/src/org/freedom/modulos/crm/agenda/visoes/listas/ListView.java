@@ -192,29 +192,13 @@ public class ListView extends CalendarView implements MouseListener {
 		/* ====================================================== */
 	}
 
-	public void mouseEntered(MouseEvent e) {
-		/* ====================================================== */
-		// TODO Auto-generated method stub
-		/* ====================================================== */
-	}
+	public void mouseEntered(MouseEvent e) {}
 
-	public void mouseExited(MouseEvent e) {
-		/* ====================================================== */
-		// TODO Auto-generated method stub
-		/* ====================================================== */
-	}
+	public void mouseExited(MouseEvent e) {}
 
-	public void mousePressed(MouseEvent e) {
-		/* ====================================================== */
-		// TODO Auto-generated method stub
-		/* ====================================================== */
-	}
+	public void mousePressed(MouseEvent e) {}
 
-	public void mouseReleased(MouseEvent e) {
-		/* ====================================================== */
-		// TODO Auto-generated method stub
-		/* ====================================================== */
-	}
+	public void mouseReleased(MouseEvent e) {}
 
 	public List getEvents() {
 		return showEvents;
