@@ -63,8 +63,8 @@ public class JMenuItemPad extends JMenuItem {
 	/**
 	*  Construtor da classe JMenu(). <BR>
 	*  Construtor que ja ajusta os paramatros basicos do JMenuPad.
-	 * @param tela TODO
-	 * @param titulo TODO
+	 * @param tela 
+	 * @param titulo 
 	*
 	*/
   
