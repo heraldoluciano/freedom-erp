@@ -1,9 +1,14 @@
 package org.freedom.funcoes.exporta;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import org.freedom.funcoes.Funcoes;
 
@@ -20,103 +25,57 @@ public abstract class Contabil {
 	protected static final int CHAR = 1;
 
 	protected static final int DATE = 2;
-
-	protected static int ESQUERDA = 0;
-
-	protected static int DIREITA = 1;
 	
-	protected String format( Object obj, int tipo, int tam, int dec ) {
+	protected static final String RETURN = String.valueOf((char)13) + String.valueOf((char)10);
 
-		String retorno = null;
-		String str = null;
+	public static final String SET_SIZE_ROWS = "SET_SIZE_ROWS";
 
-		if ( obj == null ) {
-			str = "";
-		}
-		else {
-			str = obj.toString();
-		}
+	public static final String PROGRESS_IN_ROWS = "PROGRESS_IN_ROWS";
+	
+	protected final List<String> readrows;
+	
+	protected final List<ActionListener> actionListeners = new ArrayList<ActionListener>();
+	
+	protected int sizeMax = 0;
+	
+	protected int progressInRows = 0;
+	
+	
+	public Contabil() {		
+		this.readrows = new ArrayList<String>();
+	}
+	
+	public abstract void createFile( File pathFile ) throws Exception ;
 
-		if ( tipo == NUMERIC ) {
-			if ( dec > 0 ) {
-				retorno = Funcoes.transValor( str, tam - 1, dec, true );
-				retorno = retorno.substring( 0, tam - dec - 1 ) + "," + retorno.substring( tam - dec - 1 );
-			}
-			else {
-				retorno = Funcoes.strZero( str, tam );
-			}
-		}
-		else if ( tipo == CHAR ) {
-			retorno = Funcoes.adicionaEspacos( str, tam );
-		}
-		else if ( tipo == DATE ) {
-			int[] args = Funcoes.decodeDate( (Date) obj );
-			retorno = Funcoes.strZero( String.valueOf( args[2] ), 2 ) + Funcoes.strZero( String.valueOf( args[1] ), 2 ) + Funcoes.strZero( String.valueOf( args[0] ), 4 );
-		}
-
-		return retorno;
+	public int getSizeMax() {
+		return sizeMax;
 	}
 
-	private String transData( Date data ) {
-		
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTime( data );
-		StringBuffer result = new StringBuffer();
-		result.append( strZero( cal.get( Calendar.DAY_OF_MONTH ), 2 ) );
-		result.append( strZero( cal.get( Calendar.MONTH ) + 1, 2 ) );
-		result.append( strZero( cal.get( Calendar.YEAR ), 4 ) );
-		return result.toString();
+	public int getProgress() {
+		return progressInRows;
 	}
-
-	private String strZero( int valor, int tam ) {
+	
+	public void addActionListener( ActionListener actionListener ) {
 		
-		StringBuffer result = new StringBuffer();
-		if ( String.valueOf( valor ).length() < tam ) {
-			result.append( replicate( "0", tam - String.valueOf( valor ).length() ) );
-		}
-		result.append( String.valueOf( valor ) );
-
-		return result.toString();
+		actionListeners.add( actionListener );
 	}
-
-	private String transValor( BigDecimal valor, int tam ) {
+	
+	public void removeActionListener( ActionListener actionListener ) {
 		
-		StringBuffer result = new StringBuffer();
-		if ( valor != null ) {
-			result.append( adicEspacos( String.valueOf( valor ).replace( ".", "," ), tam, ESQUERDA ) );
-		}
-		return result.toString();
+		actionListeners.remove( actionListener );
 	}
-
-	private String adicEspacos( String valor, int tam, int posicao ) {
+	
+	protected void fireActionListenerForMaxSize() {
 		
-		StringBuffer result = new StringBuffer();
-		if ( valor == null ) {
-			result.append( replicate( " ", tam ) );
+		for ( ActionListener action : actionListeners ) {
+			action.actionPerformed( new ActionEvent( this, 0, SET_SIZE_ROWS ) );
 		}
-		else if ( valor.length() > tam ) {
-			if ( posicao == DIREITA ) {
-				result.append( valor.substring( 0, tam ) );
-			}
-			else {
-				result.append( valor.substring( valor.length() - tam + 1 ) );
-			}
-		}
-		else {
-			result.append( valor );
-			result.append( replicate( " ", tam - valor.length() ) );
-		}
-		return result.toString();
 	}
-
-	private String replicate( String valor, int qtd ) {
+	
+	protected void fireActionListenerProgressInRows() {
 		
-		StringBuffer result = new StringBuffer();
-		if ( valor != null ) {
-			for ( int i = 0; i < qtd; i++ ) {
-				result.append( valor );
-			}
+		for ( ActionListener action : actionListeners ) {
+			action.actionPerformed( new ActionEvent( this, 0, PROGRESS_IN_ROWS ) );
 		}
-		return result.toString();
 	}
 }

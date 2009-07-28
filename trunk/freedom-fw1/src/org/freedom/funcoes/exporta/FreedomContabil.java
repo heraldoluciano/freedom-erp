@@ -1,18 +1,53 @@
 package org.freedom.funcoes.exporta;
 
-import org.freedom.infra.model.jdbc.DbConnection;
+import java.io.File;
+import java.io.FileWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
-import java.util.List;
 
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 
 public class FreedomContabil extends Contabil {
+		
+	@Override
+	public void createFile( File filecontabil ) throws Exception {
 
-	public static void execute( final DbConnection con, final List<String> readrows, final Date dtini, final Date dtfim ) throws Exception {
+		sizeMax = readrows.size();
+		
+		if ( sizeMax == 0 ) {
+			throw new Exception( "Nenhum registro encontrado para exportação!" );
+		}
+		
+		fireActionListenerForMaxSize();
+
+		filecontabil.createNewFile();
+
+		FileWriter filewritercontabil = new FileWriter( filecontabil );
+
+		sizeMax = readrows.size();
+		fireActionListenerForMaxSize();
+
+		progressInRows = 1;
+		
+		for ( String row : readrows ) {
+
+			filewritercontabil.write( row );
+			filewritercontabil.write( RETURN );
+			filewritercontabil.flush();
+			
+			progressInRows++;
+			
+			fireActionListenerProgressInRows();
+		}
+
+		filewritercontabil.close();
+	}
+
+	public void execute( final DbConnection con, final Date dtini, final Date dtfim ) throws Exception {
 
 		StringBuilder sql = new StringBuilder();
 		StringBuilder row = new StringBuilder();
