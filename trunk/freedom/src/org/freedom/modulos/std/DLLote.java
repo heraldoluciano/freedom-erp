@@ -62,13 +62,18 @@ public class DLLote extends FFDialogo {
 	private JLabelPad lbDataINILote = new JLabelPad( "Data ini." );
 
 	private JLabelPad lbVenctoLote = new JLabelPad( "Vencimento" );
+	
+	private JLabelPad lbQtdProdLote = new JLabelPad( "Quantidade no lote" );
+	
+	private JTextFieldPad txtQtdProdLote = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 11, 3 ); 
+	
 
 	public DLLote( Component cOrig, String sCodLote, String sCodProd, String sDescProd, DbConnection cn ) {
 
 		super( cOrig );
 		setConexao( cn );
 		setTitulo( "Lote" );
-		setAtribos( 400, 200 );
+		setAtribos( 400, 220 );
 
 		txtCodProd.setEditable( false );
 
@@ -85,6 +90,8 @@ public class DLLote extends FFDialogo {
 		adic( txtCodProd, 7, 60, 80, 20 );
 		adic( lbDescProd, 90, 40, 300, 20 );
 		adic( txtDescProd, 90, 60, 200, 20 );
+		adic( lbQtdProdLote, 7, 80, 300, 20 );
+		adic( txtQtdProdLote, 7, 100, 80, 20 );
 
 		txtCodLote.setVlrString( sCodLote );
 		txtCodProd.setVlrString( sCodProd );
@@ -96,7 +103,7 @@ public class DLLote extends FFDialogo {
 	private boolean gravaLote() {
 
 		boolean bRet = false;
-		String sSQL = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODLOTE,CODPROD,DINILOTE,VENCTOLOTE) VALUES(?,?,?,?,?,?)";
+		String sSQL = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODLOTE,CODPROD,DINILOTE,VENCTOLOTE, QTDPRODLOTE) VALUES(?,?,?,?,?,?,?)";
 		PreparedStatement ps = null;
 		try {
 			ps = con.prepareStatement( sSQL );
@@ -109,6 +116,14 @@ public class DLLote extends FFDialogo {
 			else
 				ps.setDate( 5, Funcoes.dateToSQLDate( txtDataINILote.getVlrDate() ) );
 			ps.setDate( 6, Funcoes.dateToSQLDate( txtVenctoLote.getVlrDate() ) );
+			
+			if (txtQtdProdLote.getVlrBigDecimal()==null) {
+				ps.setNull( 7, Types.DECIMAL );
+			}
+			else {
+				ps.setBigDecimal( 7, txtQtdProdLote.getVlrBigDecimal() );
+			}
+				
 			ps.executeUpdate();
 			ps.close();
 			con.commit();

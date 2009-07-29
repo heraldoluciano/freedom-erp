@@ -169,6 +169,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldPad txtComplCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldPad txtBairCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+	
+	private JTextFieldPad txtSuframaCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 9, 0 );
 
 	private JTextFieldPad txtCidCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
@@ -857,9 +859,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adic( btBuscaEnd, 100, 220, 20, 20 );
 		adicCampo( txtEndCli, 125, 220, 315, 20, "EndCli", "Endereço", ListaCampos.DB_SI, false );
 		adicCampo( txtNumCli, 443, 220, 73, 20, "NumCli", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtBairCli, 7, 260, 340, 20, "BairCli", "Bairro", ListaCampos.DB_SI, false );
-		adicCampo( txtComplCli, 350, 260, 166, 20, "ComplCli", "Compl.", ListaCampos.DB_SI, false );
-
+		adicCampo( txtBairCli, 7, 260, 200, 20, "BairCli", "Bairro", ListaCampos.DB_SI, false );		
+		adicCampo( txtComplCli, 210, 260, 166, 20, "ComplCli", "Compl.", ListaCampos.DB_SI, false );
+		adicCampo( txtSuframaCli, 379, 260, 137, 20, "SuframaCli", "SUFRAMA", ListaCampos.DB_SI, false );		
+ 
 		adicCampo( txtDDDCli, 7, 300, 40, 20, "DDDCli", "DDD", ListaCampos.DB_SI, false );
 		adicCampo( txtFoneCli, 50, 300, 97, 20, "FoneCli", "Telefone", ListaCampos.DB_SI, false );
 		adicCampo( txtRamalCli, 150, 300, 72, 20, "RamalCli", "Ramal", ListaCampos.DB_SI, false );

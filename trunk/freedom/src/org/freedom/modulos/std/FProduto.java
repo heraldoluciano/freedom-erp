@@ -141,6 +141,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JTextFieldPad txtDescAuxProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtCodBarProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	
+	private JTextFieldPad txtCodEANProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
 	private JTextFieldPad txtCodFabProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 	
@@ -154,7 +156,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	
 	private JTextFieldPad txtVlrEspess = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 	
-private JTextFieldPad txtQtdEmbalagem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private JTextFieldPad txtQtdEmbalagem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 	
 	private JTextFieldPad txtComisProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, casasDecFin );
 
@@ -213,6 +215,8 @@ private JTextFieldPad txtQtdEmbalagem = new JTextFieldPad( JTextFieldPad.TP_NUME
 	private JTextFieldPad txtSldConsigLote = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 3 );
 
 	private JTextFieldPad txtSldLiqLote = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	
+	private JTextFieldPad txtQtdProdLote = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15,  casasDec );
 
 	private JTextFieldPad txtCodFotoProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -457,7 +461,7 @@ private JTextFieldPad txtQtdEmbalagem = new JTextFieldPad( JTextFieldPad.TP_NUME
 
 		super();
 		setTitulo( "Cadastro de Produtos" );
-		setAtribos( 30, 10, 710, 655 );
+		setAtribos( 30, 10, 710, 665 );
 
 		lcFatConv.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcFatConv );
@@ -675,10 +679,11 @@ private JTextFieldPad txtQtdEmbalagem = new JTextFieldPad( JTextFieldPad.TP_NUME
 		adicCampo( txtDescAuxProd, 7, 60, 220, 20, "DescAuxProd", "Descrição auxiliar", ListaCampos.DB_SI, false );
 		adicCampo( txtCodMoeda, 229, 60, 80, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, true );
 		adicDescFK( txtDescMoeda, 312, 60, 201, 20, "SingMoeda", "Descrição da moeda" );
-		adicCampo( txtCodBarProd, 7, 100, 170, 20, "CodBarProd", "Código de barras", ListaCampos.DB_SI, true );
-		adic( btCodBar, 190, 100, 20, 20 );
-		adicCampo( txtCodAlmox, 229, 100, 80, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescAlmox, 312, 100, 201, 20, "DescAlmox", "Descrição do almoxarifado" );
+		adicCampo( txtCodBarProd, 7, 100, 220, 20, "CodBarProd", "Código de barras", ListaCampos.DB_SI, true );
+		adic( btCodBar, 230, 100, 20, 20 );
+
+		adicCampo( txtCodEANProd, 253, 100, 261, 20, "CodEANProd", "Código EAN", ListaCampos.DB_SI, false );
+		
 		adicCampo( txtCodFabProd, 7, 140, 120, 20, "CodFabProd", "Cód. fabricante", ListaCampos.DB_SI, true );
 		adicCampo( txtPrecoBaseProd, 130, 140, 97, 20, "PrecoBaseProd", "Preço base", ListaCampos.DB_SI, true );
 		adicCampo( txtComisProd, 230, 140, 77, 20, "ComisProd", "% Comissão", ListaCampos.DB_SI, true );
@@ -726,17 +731,19 @@ private JTextFieldPad txtQtdEmbalagem = new JTextFieldPad( JTextFieldPad.TP_NUME
 		adicDB( cbAdicPDV, 430, 270, 100, 20, "UsaTelaAdicPDV", "PDV", true );
 		adicDB( cbGuiaTraf, 540, 270, 100, 20, "GuiaTrafProd", "Guia de tráfego", true );
 
-		adicCampo( txtCodUnid, 7, 320, 110, 20, "CodUnid", "Cód.und.", ListaCampos.DB_FK, txtDescUnid, true );
-		adicDescFK( txtDescUnid, 120, 320, 327, 20, "DescUnid", "Descrição da unidade" );
-		adicCampo( txtCodMarca, 7, 360, 110, 20, "CodMarca", "Cód.marca", ListaCampos.DB_FK, txtDescMarca, true );
-		adicDescFK( txtDescMarca, 120, 360, 327, 20, "DescMarca", "Descrição da marca" );
-		adicCampo( txtCodFisc, 7, 400, 110, 20, "CodFisc", "Cód.fisc.", ListaCampos.DB_FK, txtDescFisc, true );
-		adicDescFK( txtDescFisc, 120, 400, 327, 20, "DescFisc", "Descrição da classificação fiscal" );
-		adicCampo( txtCodGrup, 7, 440, 110, 20, "CodGrup", "Cód.grupo", ListaCampos.DB_FK, txtDescGrup, true );
-		adicDescFK( txtDescGrup, 120, 440, 327, 20, "DescGrup", "Descrição do grupo" );
-		adicCampo( txtPrazoEnt, 7, 480, 110, 20, "CodPE", "Cód.prazo.ent.", ListaCampos.DB_FK, txtDescGrup, false );
-		adicDescFK( txtDescPrazoEnt, 120, 480, 240, 20, "DescPE", "Descrição do prazo de entrega" );
-		adicDescFK( txtDias, 363, 480, 85, 20, "DiasPE", "Dias p/ ent." );
+		adicCampo( txtCodAlmox, 7, 320, 110, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescAlmox, 120, 320, 327, 20, "DescAlmox", "Descrição do almoxarifado" );
+		adicCampo( txtCodUnid, 7, 360, 110, 20, "CodUnid", "Cód.und.", ListaCampos.DB_FK, txtDescUnid, true );
+		adicDescFK( txtDescUnid, 120, 360, 327, 20, "DescUnid", "Descrição da unidade" );
+		adicCampo( txtCodMarca, 7, 400, 110, 20, "CodMarca", "Cód.marca", ListaCampos.DB_FK, txtDescMarca, true );
+		adicDescFK( txtDescMarca, 120, 400, 327, 20, "DescMarca", "Descrição da marca" );
+		adicCampo( txtCodFisc, 7, 440, 110, 20, "CodFisc", "Cód.fisc.", ListaCampos.DB_FK, txtDescFisc, true );
+		adicDescFK( txtDescFisc, 120, 440, 327, 20, "DescFisc", "Descrição da classificação fiscal" );
+		adicCampo( txtCodGrup, 7, 480, 110, 20, "CodGrup", "Cód.grupo", ListaCampos.DB_FK, txtDescGrup, true );
+		adicDescFK( txtDescGrup, 120, 480, 327, 20, "DescGrup", "Descrição do grupo" );
+		adicCampo( txtPrazoEnt, 7, 520, 110, 20, "CodPE", "Cód.prazo.ent.", ListaCampos.DB_FK, txtDescGrup, false );
+		adicDescFK( txtDescPrazoEnt, 120, 520, 240, 20, "DescPE", "Descrição do prazo de entrega" );
+		adicDescFK( txtDias, 363, 520, 85, 20, "DiasPE", "Dias p/ ent." );
 		
 		adicDB( rgCV, 454, 320, 190, 140, "CVProd", "Cadastro para:", true );
 
@@ -979,10 +986,12 @@ private JTextFieldPad txtQtdEmbalagem = new JTextFieldPad( JTextFieldPad.TP_NUME
 		adicCampo( txtCodLote, 7, 20, 110, 20, "CodLote", "Cód.lote", ListaCampos.DB_PK, true );
 		adicCampo( txtDiniLote, 120, 20, 100, 20, "DIniLote", "Data inicial", ListaCampos.DB_SI, false );
 		adicCampo( txtVenctoLote, 223, 20, 100, 20, "VenctoLote", "Vencimento", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdProdLote, 326, 20, 100, 20, "QtdProdLote", "Qtd.Prod.Lote", ListaCampos.DB_SI, true );
 		adicCampo( txtSldLote, 7, 60, 80, 20, "SldLote", "Saldo", ListaCampos.DB_SI, false );
 		adicCampo( txtSldResLote, 90, 60, 80, 20, "SldResLote", "Saldo res.", ListaCampos.DB_SI, false );
 		adicCampo( txtSldConsigLote, 173, 60, 80, 20, "SldConsigLote", "Saldo consig.", ListaCampos.DB_SI, false );
 		adicCampo( txtSldLiqLote, 256, 60, 80, 20, "SldLiqLote", "Saldo liq.", ListaCampos.DB_SI, false );
+		
 		setListaCampos( false, "LOTE", "EQ" );
 		lcLote.setOrdem( "VenctoLote desc" );
 		lcLote.setQueryInsert( false );
