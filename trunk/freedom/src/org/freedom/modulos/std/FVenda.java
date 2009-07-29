@@ -541,7 +541,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcFisc.add( new GuardaCampo( txtCodFisc, "CodFisc", "Cód.fisc.", ListaCampos.DB_PK, txtDescFisc, false ) );
 		lcFisc.add( new GuardaCampo( txtDescFisc, "DescFisc", "Descrição fiscal", ListaCampos.DB_SI, false ) );
 		lcFisc.add( new GuardaCampo( txtAliqIPIFisc, "AliqIPIFisc", "% IPI", ListaCampos.DB_SI, false ) );
-//xxxxx		lcFisc.add( new GuardaCampo( txtAliqFisc, "AliqFisc", "% ICMS", ListaCampos.DB_SI, false ) );
+		lcFisc.add( new GuardaCampo( txtAliqFisc, "AliqFisc", "% ICMS", ListaCampos.DB_SI, false ) );
 		lcFisc.montaSql( false, "CLFISCAL", "LF" );
 		lcFisc.setQueryCommit( false );
 		lcFisc.setReadOnly( true );
@@ -1544,7 +1544,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				txtAliqFisc.setVlrString( rs.getString( "ALIQFISC" ) );
 				txtAliqIPIFisc.setVlrBigDecimal( new BigDecimal( rs.getString( "ALIQIPIFISC" ) != null ? rs.getString( "ALIQIPIFISC" ) : "0" ) );
 				txtTpRedIcmsFisc.setVlrString( rs.getString( "TPREDICMSFISC" ) );
-				txtMargemVlAgr.setVlrBigDecimal( rs.getBigDecimal( "MARGEMVLAGR" ) );
+				txtMargemVlAgr.setVlrBigDecimal( rs.getBigDecimal( "MARGEMVLAGR" )!= null ? rs.getBigDecimal( "MARGEMVLAGR" ) : new BigDecimal(0) );				
 			}
 
 			rs.close();
@@ -2878,6 +2878,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				}
 				if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 					calcVlrItem( null, false );
+					getICMS();
 				}
 			}
 
