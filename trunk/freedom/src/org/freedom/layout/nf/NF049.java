@@ -405,7 +405,9 @@ public class NF049 extends Layout {
 							if(vlrdiferido.compareTo( new BigDecimal(0) )<0) {
 								vlrdiferido = new BigDecimal(0); 
 							}
-							imp.say( 2, "VALOR DO ICMS DIFERIDO:" + Funcoes.strDecimalToStrCurrency(10,2,String.valueOf( vlrdiferido )));
+							if(vlrdiferido.compareTo( new BigDecimal(0) )>0) {
+								imp.say( 2, "VALOR DO ICMS DIFERIDO:" + Funcoes.strDecimalToStrCurrency(10,2,String.valueOf( vlrdiferido )));
+							}
 						}
 					}
 					else {
