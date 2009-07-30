@@ -83,7 +83,7 @@ and f.codfase=fa.codfase]]></queryString>
 		<group  name="GERAL" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="109"  isSplitAllowed="true" >
+			<band height="117"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="6"
@@ -148,7 +148,7 @@ and f.codfase=fa.codfase]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="108"
+						y="116"
 						width="549"
 						height="1"
 						key="line-7"/>
@@ -159,7 +159,7 @@ and f.codfase=fa.codfase]]></queryString>
 						x="549"
 						y="0"
 						width="0"
-						height="109"
+						height="117"
 						key="line-8"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -168,7 +168,7 @@ and f.codfase=fa.codfase]]></queryString>
 						x="0"
 						y="0"
 						width="0"
-						height="109"
+						height="117"
 						key="line-9"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -272,7 +272,7 @@ and f.codfase=fa.codfase]]></queryString>
 				<staticText>
 					<reportElement
 						x="8"
-						y="93"
+						y="102"
 						width="30"
 						height="13"
 						key="staticText-16"/>
@@ -285,7 +285,7 @@ and f.codfase=fa.codfase]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="77"
+						y="86"
 						width="549"
 						height="1"
 						key="line-18"/>
@@ -294,7 +294,7 @@ and f.codfase=fa.codfase]]></queryString>
 				<staticText>
 					<reportElement
 						x="40"
-						y="93"
+						y="102"
 						width="123"
 						height="13"
 						key="staticText-17"/>
@@ -307,7 +307,7 @@ and f.codfase=fa.codfase]]></queryString>
 				<staticText>
 					<reportElement
 						x="164"
-						y="93"
+						y="102"
 						width="202"
 						height="13"
 						key="staticText-18"/>
@@ -320,7 +320,7 @@ and f.codfase=fa.codfase]]></queryString>
 				<staticText>
 					<reportElement
 						x="369"
-						y="93"
+						y="102"
 						width="78"
 						height="13"
 						key="staticText-19"/>
@@ -332,9 +332,9 @@ and f.codfase=fa.codfase]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="449"
-						y="93"
-						width="48"
+						x="448"
+						y="102"
+						width="27"
 						height="13"
 						key="staticText-20"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -345,9 +345,9 @@ and f.codfase=fa.codfase]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="499"
-						y="93"
-						width="48"
+						x="507"
+						y="102"
+						width="40"
 						height="13"
 						key="staticText-21"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -372,7 +372,7 @@ and f.codfase=fa.codfase]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="91"
+						y="101"
 						width="549"
 						height="1"
 						key="line-21"/>
@@ -381,7 +381,7 @@ and f.codfase=fa.codfase]]></queryString>
 				<staticText>
 					<reportElement
 						x="7"
-						y="78"
+						y="88"
 						width="517"
 						height="12"
 						key="staticText-22"/>
@@ -404,6 +404,32 @@ and f.codfase=fa.codfase]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["FASE:" + $F{SEQOF} + " - " + $F{DESCFASE}.trim()]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement
+						x="6"
+						y="72"
+						width="257"
+						height="12"
+						key="staticText-23"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[ Início: ___/___/____  ___:___   Fim: ___/___/____  ___:___]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="477"
+						y="102"
+						width="28"
+						height="13"
+						key="staticText-24"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Peso]]></text>
+				</staticText>
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -497,9 +523,9 @@ and f.codfase=fa.codfase]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0;-###0" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="449"
+						x="448"
 						y="2"
-						width="49"
+						width="27"
 						height="14"
 						key="textField-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -510,9 +536,9 @@ and f.codfase=fa.codfase]]></queryString>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="499"
+						x="508"
 						y="15"
-						width="49"
+						width="40"
 						height="0"
 						key="line-19"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -531,6 +557,19 @@ and f.codfase=fa.codfase]]></queryString>
 					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
 					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(5,$V{CODBAR},false,false,null,0,20)]]></imageExpression>
 				</image>
+				<staticText>
+					<reportElement
+						x="476"
+						y="5"
+						width="32"
+						height="12"
+						key="staticText-25"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica" size="9" isBold="false"/>
+					</textElement>
+				<text><![CDATA[____Kg]]></text>
+				</staticText>
 			</band>
 		</detail>
 		<columnFooter>
