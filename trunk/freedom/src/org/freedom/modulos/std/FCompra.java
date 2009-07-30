@@ -860,10 +860,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	}
 
 	private void calcVlrProd() {
-
-		float fPreco = txtPrecoItCompra.floatValue();
-		float fQtd = txtQtdItCompra.floatValue();
-		txtVlrProdItCompra.setVlrBigDecimal( new BigDecimal( Funcoes.arredFloat( fPreco * fQtd, casasDecFin ) ) );
+		BigDecimal preco = txtPrecoItCompra.getVlrBigDecimal();
+		BigDecimal qtd = txtQtdItCompra.getVlrBigDecimal();
+		BigDecimal vlrtot = qtd.multiply( preco );
+		txtVlrProdItCompra.setVlrBigDecimal( vlrtot );		
 	}
 
 	private void emitNota( String tipo ) {
