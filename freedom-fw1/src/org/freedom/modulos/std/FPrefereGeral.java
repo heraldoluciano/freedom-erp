@@ -71,6 +71,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private static final int PRODUCAO_NFE = 1;
 	
 	private static final int HOMOLOGACAO_NFE = 2;
+	
+	private static final int APLIC_CONTRIB_NFE = 0;
+	
+	private static final int APLIC_FISCO_NFE = 3;	
 
 	private JPanelPad pinVenda = new JPanelPad( 690, 220 );
 
@@ -575,6 +579,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JRadioGroup<String, Integer> rgFormatoDANFE = null;
 	
 	private JRadioGroup<String, Integer> rgAmbienteNFE = null;
+	
+	private JRadioGroup<String, Integer> rgProcEmiNFE = null;
+	
+	private JTextFieldPad txtVerProcNfe = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	public FPrefereGeral() {
 
@@ -1053,6 +1061,15 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		rgAmbienteNFE = new JRadioGroup<String, Integer>( 1, 2, vLabsAmbienteNFE, vValsAmbienteNFE );
 		rgAmbienteNFE.setVlrInteger( new Integer(1) );
 		
+		Vector<String> vLabsProcEmiNFE = new Vector<String>();
+		Vector<Integer> vValsProcEmiNFE = new Vector<Integer>();
+		vLabsProcEmiNFE.addElement( "Emissão com aplicativo do contribuinte (ex.:Setpoint-NFE)" );
+		vLabsProcEmiNFE.addElement( "Emissao com aplicativo fornecido pelo Fisco" );
+		vValsProcEmiNFE.addElement( APLIC_CONTRIB_NFE );
+		vValsProcEmiNFE.addElement( APLIC_FISCO_NFE );
+		rgProcEmiNFE = new JRadioGroup<String, Integer>( 2, 1, vLabsProcEmiNFE, vValsProcEmiNFE );
+		rgProcEmiNFE.setVlrInteger( new Integer(3) );		
+		
 		Vector<Integer> vValsTipo = new Vector<Integer>(); 
 		Vector<String> vLabsTipo = new Vector<String>();
 		vLabsTipo.addElement( "<--Selecione-->" );
@@ -1407,25 +1424,26 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		JPanelPad pnNFePlugin = new JPanelPad();
 		pnNFePlugin.setBorder( BorderFactory.createTitledBorder("Configuração do Plugin NFe") );
 		setPainel( pinNFe );
-		adic( pnNFePlugin, 7, 105, 370, 120 );
+		adic( pnNFePlugin, 7, 105, 370, 155 );
 		
 		setPainel(pnNFePlugin);
 		
 		adicCampo( txtDescClassNfe, 4, 22, 350, 20, "CLASSNFE", "Classe do plugin de integração NFe", ListaCampos.DB_SI, false );
 		adicCampo( txtDirNfe, 4, 62, 327, 20, "DIRNFE", "Diretório padrão para arquvos NFe", ListaCampos.DB_SI, false );
 		adic( btDirNfe,333,62,20,20 );
-		
+		adicCampo(txtVerProcNfe, 4, 102, 350, 20, "VerProcNfe", "Versão do Aplicativo", ListaCampos.DB_SI, false );
+				
 		JPanelPad pnNFeParam = new JPanelPad();
 		pnNFeParam.setBorder( BorderFactory.createTitledBorder("Parâmetros") );
 		setPainel( pinNFe );
-		adic( pnNFeParam, 7, 225, 370, 120 );
+		adic( pnNFeParam, 380, 5, 395, 225 );
 		
 		setPainel(pnNFeParam);
 		
-		adicDB(rgAmbienteNFE, 7, 5, 350, 30, "AmbienteNFE", "Ambiente", false );
-		adicDB(rgFormatoDANFE, 7, 55, 350, 30, "FormatoDanfe", "Formato da DANFE", false );
-		
-		
+		adicDB(rgAmbienteNFE, 7, 20, 370, 30, "AmbienteNFE", "Ambiente", false );
+		adicDB(rgFormatoDANFE, 7, 75, 370, 30, "FormatoDanfe", "Formato da DANFE", false );
+		adicDB(rgProcEmiNFE, 7, 130, 370, 60, "ProcEmiNfe", "Processo de emissão", false );
+			
 						
 		/*****************
 		 * Recursos *
