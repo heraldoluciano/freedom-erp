@@ -321,7 +321,7 @@ and f.codfase=fa.codfase]]></queryString>
 					<reportElement
 						x="369"
 						y="102"
-						width="78"
+						width="70"
 						height="13"
 						key="staticText-19"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -332,7 +332,7 @@ and f.codfase=fa.codfase]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="448"
+						x="442"
 						y="102"
 						width="27"
 						height="13"
@@ -419,7 +419,7 @@ and f.codfase=fa.codfase]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="477"
+						x="472"
 						y="102"
 						width="28"
 						height="13"
@@ -512,7 +512,7 @@ and f.codfase=fa.codfase]]></queryString>
 					<reportElement
 						x="368"
 						y="2"
-						width="79"
+						width="72"
 						height="14"
 						key="textField-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -523,7 +523,7 @@ and f.codfase=fa.codfase]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0;-###0" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="448"
+						x="442"
 						y="2"
 						width="27"
 						height="14"
@@ -559,7 +559,7 @@ and f.codfase=fa.codfase]]></queryString>
 				</image>
 				<staticText>
 					<reportElement
-						x="476"
+						x="472"
 						y="5"
 						width="32"
 						height="12"

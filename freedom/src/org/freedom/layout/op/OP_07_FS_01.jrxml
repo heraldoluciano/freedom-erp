@@ -345,7 +345,7 @@ order by it.codprod]]></queryString>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Início: ___/___/____  ___:___   Fim: ___/___/____  ___:___]]></text>
+				<text><![CDATA[ Início: ___/___/____  ___:___   Fim: ___/___/____  ___:___]]></text>
 				</staticText>
 			</band>
 		</pageHeader>
