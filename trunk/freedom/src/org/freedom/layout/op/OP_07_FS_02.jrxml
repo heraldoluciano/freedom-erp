@@ -188,9 +188,9 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<line direction="TopDown">
 					<reportElement
 						x="274"
-						y="78"
+						y="81"
 						width="0"
-						height="100"
+						height="97"
 						key="line-11"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -1231,7 +1231,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Início: ___/___/____  ___:___   Fim: ___/___/____  ___:___]]></text>
+				<text><![CDATA[ Início: ___/___/____  ___:___   Fim: ___/___/____  ___:___]]></text>
 				</staticText>
 			</band>
 		</pageHeader>
