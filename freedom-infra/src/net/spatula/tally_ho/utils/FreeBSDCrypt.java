@@ -107,7 +107,7 @@ public class FreeBSDCrypt {
 		md5_2.update( salt.getBytes() );
 		md5_2.update( password.getBytes() );
 		byte[] md5_2_digest = md5_2.digest();
-		int md5Size = md5_2_digest.length; // XXX
+		int md5Size = md5_2_digest.length; 
 		int pwLength = password.length();
 		/*
 		 * Update the first MD5 a few times starting at the 
