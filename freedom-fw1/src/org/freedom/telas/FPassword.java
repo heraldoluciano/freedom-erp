@@ -216,8 +216,8 @@ public class FPassword extends FFDialogo {
 			
 			props = new Properties();			
 			sIDUsu = txtUsu.getVlrString().toLowerCase().trim();
-			//props.put( "user", sIDUsu );
-			//props.put( "password", txtPass.getVlrString() );
+			props.put( "user", sIDUsu );
+			props.put( "password", txtPass.getVlrString() );
 			
 			if ( "".equals( sIDUsu ) || "".equals( txtPass.getVlrString().trim() ) ) {
 				
