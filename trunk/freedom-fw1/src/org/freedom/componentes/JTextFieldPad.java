@@ -571,7 +571,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		int minuto = 0;
 		int segundo =0;
 		if (getText().length() > 0) {
-			sRetorno = transTime(getText().substring( iTamanho ));
+			sRetorno = transTime(getText().substring(0, iTamanho ));
 			try {
 				try {
 					hora = Integer.parseInt(sRetorno.substring(0,2));					
