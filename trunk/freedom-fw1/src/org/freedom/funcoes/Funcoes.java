@@ -84,11 +84,12 @@ import org.freedom.telas.FSuporte;
 
 public class Funcoes {
 
-	private static Vector<Vector<Object>> vIE = new Vector<Vector<Object>>(34);
+//	private static Vector<Vector<Object>> vIE = new Vector<Vector<Object>>(34);
 
-	private static Vector<Vector<Object>> vPesoIE = new Vector<Vector<Object>>(13);
+//	private static Vector<Vector<Object>> vPesoIE = new Vector<Vector<Object>>(13);
 
-	//private static ImageIcon imgIcone = null;
+//	private static ImageIcon imgIcone = null;
+	
 	public static String sIEValida = "";
 
 	private static JDialog dlErro = null;
@@ -2394,13 +2395,14 @@ public class Funcoes {
 		}		
 		return bRetorno;
 	}
-
+	
 	private static boolean testaCasoIE(String sIE, InscricaoEstadual IE) {
-		String mascara = IE.getMask();
+	//	String mascara = IE.getMask();
 		sIEValida = setMascara(limpaString( sIE ), IE.getMask());		
 		return true;
 	}
-
+	
+	/*
 	private static int[] carregaPosDV(Vector<String> vXIE) {
 		int[] aRetorno = new int[2];
 		aRetorno[0] = -1;
@@ -3608,7 +3610,7 @@ public class Funcoes {
 		linha34.addElement("##.##.######.#");
 		vIE.addElement(linha34);
 	}
-
+*/
 	public static String transValor(BigDecimal bdValor, int iTam, int iDec,
 			boolean bZeroEsq) {
 		String sValor;
