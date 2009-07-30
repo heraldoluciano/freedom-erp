@@ -126,7 +126,7 @@ public class DedicatedTef {
 		return true;
 	}
 
-	private synchronized boolean checkStandart( int result ) {
+	private synchronized boolean checkStandard( int result ) {
 		
 		String message = null;
 	
@@ -200,7 +200,7 @@ public class DedicatedTef {
 		System.out.println( result );
 		System.out.println( clientesitef.GetBuffer() );
 		
-		return checkStandart( result );
+		return checkStandard( result );
 	}
 	
 	public synchronized boolean requestSale( BigDecimal value, Integer docNumber, Date dateHour, String operator ) {
@@ -222,7 +222,7 @@ public class DedicatedTef {
 				     operator,
 				     "" );
 				
-		if ( checkStandart( result ) ) {
+		if ( checkStandard( result ) ) {
 			actionNextCommand();
 		}		
 		
@@ -245,7 +245,7 @@ public class DedicatedTef {
 				finallySale();
 				break;
 			}
-			else if ( checkStandart( result ) ) {				
+			else if ( checkStandard( result ) ) {				
 				action = actionCommand();	
 			}
 			else {
