@@ -97,7 +97,7 @@ order by it.codprod]]></queryString>
 			</band>
 		</title>
 		<pageHeader>
-			<band height="85"  isSplitAllowed="true" >
+			<band height="90"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="7"
@@ -161,7 +161,7 @@ order by it.codprod]]></queryString>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[ Responsavel Pesagem:]]></text>
+				<text><![CDATA[ Responsável Pesagem:]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -201,7 +201,7 @@ order by it.codprod]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="1"
-						y="70"
+						y="75"
 						width="548"
 						height="1"
 						key="line-6"/>
@@ -210,7 +210,7 @@ order by it.codprod]]></queryString>
 				<staticText>
 					<reportElement
 						x="5"
-						y="71"
+						y="76"
 						width="56"
 						height="12"
 						key="staticText-6"/>
@@ -223,7 +223,7 @@ order by it.codprod]]></queryString>
 				<staticText>
 					<reportElement
 						x="63"
-						y="71"
+						y="76"
 						width="242"
 						height="12"
 						key="staticText-7"/>
@@ -236,7 +236,7 @@ order by it.codprod]]></queryString>
 				<staticText>
 					<reportElement
 						x="309"
-						y="71"
+						y="76"
 						width="46"
 						height="12"
 						key="staticText-8"/>
@@ -249,7 +249,7 @@ order by it.codprod]]></queryString>
 				<staticText>
 					<reportElement
 						x="356"
-						y="71"
+						y="76"
 						width="46"
 						height="12"
 						key="staticText-9"/>
@@ -262,7 +262,7 @@ order by it.codprod]]></queryString>
 				<staticText>
 					<reportElement
 						x="403"
-						y="71"
+						y="76"
 						width="80"
 						height="12"
 						key="staticText-10"/>
@@ -275,7 +275,7 @@ order by it.codprod]]></queryString>
 				<staticText>
 					<reportElement
 						x="486"
-						y="71"
+						y="76"
 						width="58"
 						height="12"
 						key="staticText-11"/>
@@ -288,7 +288,7 @@ order by it.codprod]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="1"
-						y="84"
+						y="89"
 						width="548"
 						height="1"
 						key="line-7"/>
@@ -299,7 +299,7 @@ order by it.codprod]]></queryString>
 						x="549"
 						y="0"
 						width="0"
-						height="85"
+						height="90"
 						key="line-8"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -308,7 +308,7 @@ order by it.codprod]]></queryString>
 						x="0"
 						y="0"
 						width="0"
-						height="85"
+						height="90"
 						key="line-9"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -326,7 +326,7 @@ order by it.codprod]]></queryString>
 						x="269"
 						y="12"
 						width="278"
-						height="55"
+						height="62"
 						key="textField-9"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
@@ -334,6 +334,19 @@ order by it.codprod]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{INSTRUCOES}.trim()]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement
+						x="7"
+						y="62"
+						width="257"
+						height="12"
+						key="staticText-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Início: ___/___/____  ___:___   Fim: ___/___/____  ___:___]]></text>
+				</staticText>
 			</band>
 		</pageHeader>
 		<columnHeader>

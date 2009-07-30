@@ -152,7 +152,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="71"
+						y="80"
 						width="549"
 						height="1"
 						key="line-6"/>
@@ -188,27 +188,27 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<line direction="TopDown">
 					<reportElement
 						x="274"
-						y="72"
+						y="78"
 						width="0"
-						height="105"
+						height="100"
 						key="line-11"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<rectangle>
 					<reportElement
 						x="8"
-						y="89"
+						y="97"
 						width="127"
-						height="82"
+						height="78"
 						key="rectangle-1"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
 				<rectangle>
 					<reportElement
 						x="141"
-						y="89"
+						y="97"
 						width="127"
-						height="82"
+						height="78"
 						key="rectangle-2"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
@@ -224,25 +224,25 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<rectangle>
 					<reportElement
 						x="413"
-						y="89"
+						y="97"
 						width="127"
-						height="82"
+						height="78"
 						key="rectangle-3"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
 				<rectangle>
 					<reportElement
 						x="280"
-						y="89"
+						y="97"
 						width="127"
-						height="82"
+						height="78"
 						key="rectangle-4"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
 				<staticText>
 					<reportElement
 						x="8"
-						y="78"
+						y="86"
 						width="126"
 						height="11"
 						key="staticText-6"/>
@@ -255,7 +255,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="140"
-						y="78"
+						y="86"
 						width="126"
 						height="11"
 						key="staticText-7"/>
@@ -268,7 +268,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="280"
-						y="78"
+						y="86"
 						width="126"
 						height="11"
 						key="staticText-8"/>
@@ -281,7 +281,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="413"
-						y="78"
+						y="86"
 						width="126"
 						height="11"
 						key="staticText-9"/>
@@ -294,7 +294,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="8"
-						y="90"
+						y="98"
 						width="126"
 						height="11"
 						key="staticText-10"/>
@@ -307,7 +307,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="142"
-						y="90"
+						y="98"
 						width="126"
 						height="11"
 						key="staticText-11"/>
@@ -320,7 +320,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="281"
-						y="90"
+						y="98"
 						width="126"
 						height="11"
 						key="staticText-12"/>
@@ -333,7 +333,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="413"
-						y="90"
+						y="98"
 						width="126"
 						height="11"
 						key="staticText-13"/>
@@ -346,7 +346,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<line direction="TopDown">
 					<reportElement
 						x="471"
-						y="123"
+						y="127"
 						width="64"
 						height="0"
 						key="line-22"/>
@@ -355,7 +355,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<line direction="TopDown">
 					<reportElement
 						x="471"
-						y="140"
+						y="144"
 						width="64"
 						height="0"
 						key="line-23"/>
@@ -364,7 +364,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<line direction="TopDown">
 					<reportElement
 						x="471"
-						y="158"
+						y="162"
 						width="64"
 						height="0"
 						key="line-24"/>
@@ -373,7 +373,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="417"
-						y="149"
+						y="153"
 						width="53"
 						height="11"
 						key="staticText-23"/>
@@ -386,7 +386,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="417"
-						y="132"
+						y="136"
 						width="53"
 						height="11"
 						key="staticText-24"/>
@@ -399,7 +399,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="417"
-						y="113"
+						y="117"
 						width="53"
 						height="11"
 						key="staticText-25"/>
@@ -414,7 +414,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 						x="312"
 						y="12"
 						width="234"
-						height="55"
+						height="64"
 						key="textField-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
@@ -1025,7 +1025,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="285"
-						y="113"
+						y="117"
 						width="53"
 						height="11"
 						key="staticText-41"/>
@@ -1038,7 +1038,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<line direction="TopDown">
 					<reportElement
 						x="339"
-						y="123"
+						y="127"
 						width="64"
 						height="0"
 						key="line-76"/>
@@ -1047,7 +1047,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="285"
-						y="132"
+						y="136"
 						width="53"
 						height="11"
 						key="staticText-42"/>
@@ -1060,7 +1060,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<line direction="TopDown">
 					<reportElement
 						x="339"
-						y="140"
+						y="144"
 						width="64"
 						height="0"
 						key="line-77"/>
@@ -1069,7 +1069,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="285"
-						y="149"
+						y="153"
 						width="53"
 						height="11"
 						key="staticText-43"/>
@@ -1082,7 +1082,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<line direction="TopDown">
 					<reportElement
 						x="339"
-						y="158"
+						y="162"
 						width="64"
 						height="0"
 						key="line-78"/>
@@ -1091,7 +1091,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="145"
-						y="113"
+						y="117"
 						width="53"
 						height="11"
 						key="staticText-44"/>
@@ -1104,7 +1104,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<line direction="TopDown">
 					<reportElement
 						x="199"
-						y="123"
+						y="127"
 						width="64"
 						height="0"
 						key="line-79"/>
@@ -1113,7 +1113,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="145"
-						y="132"
+						y="136"
 						width="53"
 						height="11"
 						key="staticText-45"/>
@@ -1126,7 +1126,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<line direction="TopDown">
 					<reportElement
 						x="199"
-						y="140"
+						y="144"
 						width="64"
 						height="0"
 						key="line-80"/>
@@ -1135,7 +1135,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="145"
-						y="149"
+						y="153"
 						width="53"
 						height="11"
 						key="staticText-46"/>
@@ -1148,7 +1148,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<line direction="TopDown">
 					<reportElement
 						x="199"
-						y="158"
+						y="162"
 						width="64"
 						height="0"
 						key="line-81"/>
@@ -1157,7 +1157,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="13"
-						y="113"
+						y="117"
 						width="53"
 						height="11"
 						key="staticText-47"/>
@@ -1170,7 +1170,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<line direction="TopDown">
 					<reportElement
 						x="67"
-						y="123"
+						y="127"
 						width="64"
 						height="0"
 						key="line-82"/>
@@ -1179,7 +1179,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="13"
-						y="132"
+						y="136"
 						width="53"
 						height="11"
 						key="staticText-48"/>
@@ -1192,7 +1192,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<line direction="TopDown">
 					<reportElement
 						x="67"
-						y="140"
+						y="144"
 						width="64"
 						height="0"
 						key="line-83"/>
@@ -1201,7 +1201,7 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<staticText>
 					<reportElement
 						x="13"
-						y="149"
+						y="153"
 						width="53"
 						height="11"
 						key="staticText-49"/>
@@ -1214,12 +1214,25 @@ and op.codemp=opf.codemp and op.codfilial=opf.codfilial and op.codop=opf.codop a
 				<line direction="TopDown">
 					<reportElement
 						x="67"
-						y="158"
+						y="162"
 						width="64"
 						height="0"
 						key="line-84"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<staticText>
+					<reportElement
+						x="8"
+						y="65"
+						width="257"
+						height="12"
+						key="staticText-50"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Início: ___/___/____  ___:___   Fim: ___/___/____  ___:___]]></text>
+				</staticText>
 			</band>
 		</pageHeader>
 		<columnHeader>
