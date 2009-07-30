@@ -1086,7 +1086,7 @@ public class ListaCampos extends Container implements PostListener,
 	public boolean carregaItem(int ind) {
 		boolean bRetorno = false;
 		GuardaCampo gcCampo = null;
-		int iSalto = 0;
+//		int iSalto = 0;
 		if ((tab != null) && (bDetalhe)) {
 			/*if (tab.getNumLinhas() > 0) {
 				for (int i = 0; i < getComponentCount(); i++) {
