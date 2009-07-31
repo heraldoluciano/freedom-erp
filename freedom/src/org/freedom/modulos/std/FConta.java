@@ -25,11 +25,14 @@ package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.Vector;
+
 import javax.swing.JScrollPane;
+
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPanelPad;
@@ -39,9 +42,10 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FTabDados;
 
-public class FConta extends FTabDados implements CheckBoxListener {
+public class FConta extends FTabDados implements CheckBoxListener, RadioGroupListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -67,13 +71,19 @@ public class FConta extends FTabDados implements CheckBoxListener {
 
 	private JCheckBoxPad cbAtivaConta = new JCheckBoxPad( "Sim", "S", "N" );
 
-	private JCheckBoxPad chbRestritoTipoMov = new JCheckBoxPad( "Permitir todos os usuários?", "S", "N" );
+	private JCheckBoxPad chbRestritoTipoMov = new JCheckBoxPad( "Todos os usuários?", "S", "N" );
 
 	private Vector<String> vValsTipo = new Vector<String>();
 
 	private Vector<String> vLabsTipo = new Vector<String>();
 
 	private JRadioGroup<?, ?> rgTipo = null;
+
+	private Vector<String> vValsTipoCaixa = new Vector<String>();
+
+	private Vector<String> vLabsTipoCaixa = new Vector<String>();
+	
+	private JRadioGroup<?, ?> rgTipoCaixa = null;
 
 	private ListaCampos lcBanco = new ListaCampos( this, "BO" );
 
@@ -123,7 +133,7 @@ public class FConta extends FTabDados implements CheckBoxListener {
 
 		super( false );
 		setTitulo( "Cadastro de Contas" );
-		setAtribos( 50, 50, 463, 380 );
+		setAtribos( 50, 50, 420, 380 );
 
 		lcRestricoes.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcRestricoes );
@@ -172,6 +182,15 @@ public class FConta extends FTabDados implements CheckBoxListener {
 		vLabsTipo.addElement( "Caixa" );
 		rgTipo = new JRadioGroup<String, String>( 1, 2, vLabsTipo, vValsTipo );
 
+		vValsTipoCaixa.addElement( "P" );
+		vValsTipoCaixa.addElement( "F" );
+		vLabsTipoCaixa.addElement( "Previsão" );
+		vLabsTipoCaixa.addElement( "Físico" );
+		rgTipoCaixa = new JRadioGroup<String, String>( 1, 2, vLabsTipoCaixa, vValsTipoCaixa );
+
+		rgTipoCaixa.setAtivo( false );
+		
+		rgTipo.addRadioGroupListener( this );
 		
 		/***************
 		 *  ABA GERAL  *
@@ -180,20 +199,22 @@ public class FConta extends FTabDados implements CheckBoxListener {
 
 		adicTab( "Geral", pinCamposGeral );
 
-		adicCampo( txtNumConta, 7, 20, 110, 20, "NumConta", "Nº da conta", ListaCampos.DB_PK, true );
-		adicCampo( txtDescConta, 120, 20, 270, 20, "DescConta", "Descrição da conta", ListaCampos.DB_SI, true );
-		adicCampo( txtAgConta, 7, 60, 60, 20, "AgenciaConta", "Agência", ListaCampos.DB_SI, false );
-		adicCampo( txtCodBanco, 70, 60, 80, 20, "CodBanco", "Cód.banco", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescBanco, 153, 60, 237, 20, "NomeBanco", "Descrição do banco" );
-		adicCampo( txtDataConta, 7, 100, 80, 20, "DataConta", "Data", ListaCampos.DB_SI, true );
-		adicCampo( txtCodMoeda, 90, 100, 60, 20, "CodMoeda", "Cód.mda.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescMoeda, 153, 100, 237, 20, "SingMoeda", "Descrição da moeda" );
-		adicCampo( txtCodPlan, 7, 140, 140, 20, "CodPlan", "Cód.tp.lanç.", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescPlan, 150, 140, 240, 20, "DescPlan", "Descrição do tipo de lançamento" );
+		adicCampo( txtNumConta, 7, 20, 140, 20, "NumConta", "Nº da conta", ListaCampos.DB_PK, true );
+		adicCampo( txtDescConta, 150, 20, 240, 20, "DescConta", "Descrição da conta", ListaCampos.DB_SI, true );
+		adicCampo( txtAgConta, 7, 60, 75, 20, "AgenciaConta", "Agência", ListaCampos.DB_SI, false );
+		adicCampo( txtCodBanco, 85, 60, 62, 20, "CodBanco", "Cód.banco", ListaCampos.DB_FK, false );
+		adicDescFK( txtDescBanco, 150, 60, 240, 20, "NomeBanco", "Nome do banco" );
+		adicCampo( txtDataConta, 7, 100, 75, 20, "DataConta", "Data", ListaCampos.DB_SI, true );
+		adicCampo( txtCodMoeda, 85, 100, 62, 20, "CodMoeda", "Cód.mda.", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescMoeda, 150, 100, 240, 20, "SingMoeda", "Descrição da moeda" );
+		adicCampo( txtCodPlan, 7, 140, 140, 20, "CodPlan", "Cód.planejamento", ListaCampos.DB_FK, true );
+		adicDescFK( txtDescPlan, 150, 140, 240, 20, "DescPlan", "Descrição do planejamento" );
 
-		adicDB( rgTipo, 7, 180, 200, 30, "TipoConta", "Tipo", true );
-		adicDB( cbAtivaConta, 220, 180, 120, 20, "ativaconta", "Ativa", true );
-		adicDB( chbRestritoTipoMov, 7, 220, 240, 20, "TUSUCONTA", "", true );
+		adicDB( rgTipo, 7, 180, 170, 30, "TipoConta", "Tipo", true );
+		adicDB( rgTipoCaixa, 7, 235, 170, 30, "TipoCaixa", "Tipo de Caixa", true );
+		
+		adicDB( cbAtivaConta, 190, 185, 50, 20, "ativaconta", "Ativa", true );
+		adicDB( chbRestritoTipoMov, 250, 185, 240, 20, "TUSUCONTA", "Permissão", true );
 		
 		/******************
 		 *  ABA CONTABIL  *
@@ -268,5 +289,21 @@ public class FConta extends FTabDados implements CheckBoxListener {
 		lcRestricoes.setConexao( cn );
 		lcUsu.setConexao( cn );
 		lcHist.setConexao( cn );
+	}
+
+
+	public void valorAlterado( RadioGroupEvent evt ) {
+
+		if(evt.getSource() == rgTipo) {
+			if("C".equals( rgTipo.getVlrString() )) {
+				rgTipoCaixa.setAtivo( true );
+			}
+			else {
+				rgTipoCaixa.setVlrString( "F" );
+				rgTipoCaixa.setAtivo( false );
+			}
+			
+		}
+		
 	}
 }
