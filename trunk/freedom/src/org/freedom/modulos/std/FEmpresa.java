@@ -136,7 +136,7 @@ public class FEmpresa extends FDetalhe{
 	public FEmpresa(){
 		
 		setTitulo( "Cadastro de Empresa" );
-		setAtribos( 50, 50, 530, 750 );		
+		setAtribos( 50, 50, 530, 730 );		
 	
 		lcCampos.setUsaME( false );
 		
@@ -162,7 +162,7 @@ public class FEmpresa extends FDetalhe{
 		adicCampo( txtNomeContEmp, 7, 100, 323, 20, "NomeContEmp", "Contato", ListaCampos.DB_SI, false );
 		adicCampo( txtCodEANEmp, 7, 140, 95, 20, "CodEANEmp", "Cod. EAN", ListaCampos.DB_SI, false );
 
-		adicDB( cbMultiAlmox, 196, 140, 300, 20, "MultiAlmoxEmp", "Intercambio de almox. entre filiais?", true );
+		adicDB( cbMultiAlmox, 105, 140, 300, 20, "MultiAlmoxEmp", "Intercambio de almox. entre filiais?", true );
 		
 		txtCnpjEmp.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepEmp.setMascara( JTextFieldPad.MC_CEP );
@@ -196,11 +196,12 @@ public class FEmpresa extends FDetalhe{
 		adicCampo( txtCodDistFilial, 253, 220, 77, 20, "CodDistFilial", "C.dist.fil", ListaCampos.DB_SI, false );
 		adicDB( cbMatriz, 335, 220, 80, 20, "MzFilial", "Sede", false );
 		adicDB( cbSimples, 416, 220, 80, 20, "SimplesFilial", "Fiscal", false );
-		adicCampo( txtPercPIS, 7, 260, 90, 20, "PercPISFilial", "PIS", ListaCampos.DB_SI, false );
-		adicCampo( txtPercCofins, 100, 260, 87, 20, "PercCofinsFilial", "COFINS", ListaCampos.DB_SI, false );
-		adicCampo( txtPercIR, 190, 260, 87, 20, "PercIRFilial", "IR", ListaCampos.DB_SI, false );
-		adicCampo( txtPercCSocial, 280, 260, 87, 20, "PercCSocialFilial", "Cont.social", ListaCampos.DB_SI, false );
-		adicCampo( txtPercSimples, 370, 260, 87, 20, "PercSimplesFilial", "Perc. Simples", ListaCampos.DB_SI, false );
+		adicCampo( txtPercPIS, 7, 260, 75, 20, "PercPISFilial", "% PIS", ListaCampos.DB_SI, false );
+		adicCampo( txtPercCofins, 85, 260, 75, 20, "PercCofinsFilial", "% COFINS", ListaCampos.DB_SI, false );
+		adicCampo( txtPercIR, 163, 260, 75, 20, "PercIRFilial", "% IR", ListaCampos.DB_SI, false );
+		adicCampo( txtPercCSocial, 241, 260, 75, 20, "PercCSocialFilial", "% Cont.social", ListaCampos.DB_SI, false );
+		adicCampo( txtPercIssFilial, 319, 260, 75, 20, "PercISSFilial", "% ISS", ListaCampos.DB_SI, false );
+		adicCampo( txtPercSimples, 397, 260, 83, 20, "PercSimplesFilial", "% Simples", ListaCampos.DB_SI, false );
 		
 		
 		
@@ -208,7 +209,7 @@ public class FEmpresa extends FDetalhe{
 		adicDescFK( txtDescPais, 60, 300, 177, 20, "DescPais", "Nome do país" );
 		
 		adicCampo( txtSiglaUF, 240, 300, 50, 20, "SiglaUf", "UF", ListaCampos.DB_FK, true );		
-		adicDescFK( txtNomeUF, 293, 300, 177, 20, "NomeUF", "Nome UF" );
+		adicDescFK( txtNomeUF, 293, 300, 186, 20, "NomeUF", "Nome UF" );
 
 		
 		adicCampo( txtCodMun, 7, 340, 50, 20, "CodMunic", "Cd.mun.", ListaCampos.DB_FK, false );
