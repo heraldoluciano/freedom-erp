@@ -42,6 +42,8 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
+import org.freedom.acao.JComboBoxEvent;
+import org.freedom.acao.JComboBoxListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
@@ -61,7 +63,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FDetalhe;
 
-public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener, CarregaListener, InsertListener, RadioGroupListener, PostListener {
+public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener, CarregaListener, InsertListener, RadioGroupListener, PostListener, JComboBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -278,6 +280,12 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		txtRedFisc.setAtivo( false );
 		rgTipoFisc.setAtivo( false );
 		txaDescServ.setAtivo( false );
+		txtVlrCofUnidTrib.setAtivo( false );
+		txtVlrIpiUnidTrib.setAtivo( false );
+		txtVlrPisUnidTrib.setAtivo( false );
+		txtAliqIPIFisc.setAtivo( false );
+		txtAliqPisFisc.setAtivo( false );
+		txtAliqCofinsFisc.setAtivo( false );
 				
 		//Adicionando Listeners
 				
@@ -285,6 +293,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		lcCampos.addInsertListener( this );		
 		lcCampos.addPostListener( this );
 		lcTratTrib.addCarregaListener( this );
+		lcSitTribPIS.addCarregaListener( this );
+		lcSitTribCOF.addCarregaListener( this );
 		
 		lcDet.addInsertListener( this );
 		
@@ -660,9 +670,10 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		vValsTpCalcIPI.addElement( "" );
 		vValsTpCalcIPI.addElement( "P" );
 		vValsTpCalcIPI.addElement( "V" );
-	
 
 		cbTpCalcIPI = new JComboBoxPad( vLabsTpCalcIPI, vValsTpCalcIPI, JComboBoxPad.TP_STRING, 1, 0 );
+		
+		cbTpCalcIPI.addComboBoxListener( this );
 		
 		
 		/*********************************************
@@ -720,8 +731,6 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicCampo( txtAliqPisFisc, 7, 60, 80, 20, "AliqPisFisc", "Aliq.PIS", ListaCampos.DB_SI, null, false );	
 		adicCampo( txtVlrPisUnidTrib, 90, 60, 99, 20, "VlrPisUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
 		
-		
-		
 		/*****************
 		 * ABA COFINS
 		 ****************/
@@ -736,11 +745,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicCampo( txtAliqCofinsFisc, 7, 60, 80, 20, "AliqCofinsFisc", "Aliq.Cofins", ListaCampos.DB_SI, null, false );	
 		adicCampo( txtVlrCofUnidTrib, 90, 60, 99, 20, "VlrCofUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
 			
-		
-		
 		setListaCampos( true, "ITCLFISCAL", "LF" );
 		lcDet.setQueryInsert( false );
-
 		
 		montaTab();
 
@@ -773,16 +779,11 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		tab.setColunaInvisivel( 26 ); // % Desc. Sit. Trib. COFINS
 		tab.setTamColuna( 50, 27 ); // % Aliq. COFINS
 		
-	
-		
-		
 		panelVariantes.add( panelVariantesCampos );
 		panelICMS.add( panelICMSCampos );
 		panelIPI.add( panelIPICampos );
 		panelPIS.add( panelPISCampos );
 		panelCOFINS.add( panelCOFINSCampos );
-		
-//		navRod.setListaCampos( lcDet );
 		
 	}
 
@@ -851,6 +852,31 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 			}
 				
 		}
+		else if(e.getListaCampos()==lcSitTribPIS) {
+			if("03".equals( txtCodSitTribPIS.getVlrString() )) {
+				txtVlrPisUnidTrib.setAtivo( true );				
+				txtAliqPisFisc.setVlrBigDecimal( new BigDecimal(0) );
+				txtAliqPisFisc.setAtivo( false );				
+			}
+			else {
+				txtAliqPisFisc.setAtivo( true );				
+				txtVlrPisUnidTrib.setVlrBigDecimal( new BigDecimal(0) );
+				txtVlrPisUnidTrib.setAtivo( false );				
+			}
+		}
+		else if(e.getListaCampos()==lcSitTribCOF) {
+			if("03".equals( txtCodSitTribCOF.getVlrString() )) {
+				txtVlrCofUnidTrib.setAtivo( true );				
+				txtAliqCofinsFisc.setVlrBigDecimal( new BigDecimal(0) );
+				txtAliqCofinsFisc.setAtivo( false );				
+			}
+			else {
+				txtAliqCofinsFisc.setAtivo( true );				
+				txtVlrCofUnidTrib.setVlrBigDecimal( new BigDecimal(0) );
+				txtVlrCofUnidTrib.setAtivo( false );				
+			}
+		}
+
 	}
 
 	public void beforeInsert( InsertEvent e ) { }
@@ -913,6 +939,23 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		}
 		
 		super.beforePost( e );
+	}
+
+	public void valorAlterado( JComboBoxEvent evt ) {
+
+		if(evt.getComboBoxPad()==cbTpCalcIPI) {
+			if("V".equals( cbTpCalcIPI.getVlrString() )) {
+				txtAliqIPIFisc.setVlrBigDecimal( new BigDecimal(0) );
+				txtAliqIPIFisc.setAtivo( false );
+				txtVlrIpiUnidTrib.setAtivo( true );				
+			}
+			else if("P".equals( cbTpCalcIPI.getVlrString() )){
+				txtVlrIpiUnidTrib.setVlrBigDecimal( new BigDecimal(0) );				
+				txtVlrIpiUnidTrib.setAtivo( false );					
+				txtAliqIPIFisc.setAtivo( true );
+			}
+		}
+		
 	}
 
 	
