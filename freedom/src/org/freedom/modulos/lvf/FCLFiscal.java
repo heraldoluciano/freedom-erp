@@ -168,6 +168,10 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	private JTextFieldPad txtAliqIPIFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 	
 	private JTextFieldPad txtVlrIpiUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
+	
+	private JTextFieldPad txtVlrPisUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
+	
+	private JTextFieldPad txtVlrCofUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
 	private JTextFieldPad txtAliqLFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
 	
@@ -656,7 +660,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		vValsTpCalcIPI.addElement( "" );
 		vValsTpCalcIPI.addElement( "P" );
 		vValsTpCalcIPI.addElement( "V" );
-		
+	
 
 		cbTpCalcIPI = new JComboBoxPad( vLabsTpCalcIPI, vValsTpCalcIPI, JComboBoxPad.TP_STRING, 1, 0 );
 		
@@ -697,8 +701,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		
 		adicCampo( txtCodSitTribIPI, 7, 20, 80, 20, "CodSitTribIPI", "Cód.sit.trib.", ListaCampos.DB_FK, txtDescSitTribPIS, false );
 		adicCampoInvisivel( txtImpSitTribIPI, "ImpSitTribIPI", "Imposto", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescSitTribIPI, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );
-		
+		adicDescFK( txtDescSitTribIPI, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );		
 		adicDB( cbTpCalcIPI, 7, 60, 200, 20, "TpCalcIPI", "Tipo de cálculo", false );
 				
 		adicCampo( txtAliqIPIFisc, 7, 100, 98, 20, "AliqIPIFisc", "% Alíq.IPI", ListaCampos.DB_SI, false );
@@ -715,6 +718,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicCampoInvisivel( txtImpSitTribPIS, "ImpSitTribPIS", "Imposto", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescSitTribPIS, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );		
 		adicCampo( txtAliqPisFisc, 7, 60, 80, 20, "AliqPisFisc", "Aliq.PIS", ListaCampos.DB_SI, null, false );	
+		adicCampo( txtVlrPisUnidTrib, 90, 60, 99, 20, "VlrPisUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
+		
 		
 		
 		/*****************
@@ -729,6 +734,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicDescFK( txtDescSitTribCOF, 90, 20, 300, 20, "DescSitTrib", "Descrição da Situação Tributária" );		
 	
 		adicCampo( txtAliqCofinsFisc, 7, 60, 80, 20, "AliqCofinsFisc", "Aliq.Cofins", ListaCampos.DB_SI, null, false );	
+		adicCampo( txtVlrCofUnidTrib, 90, 60, 99, 20, "VlrCofUnidTrib", "Vlr.por unidade", ListaCampos.DB_SI, false );
 			
 		
 		
