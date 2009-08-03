@@ -174,9 +174,10 @@ public class FTrocaDoc extends FTabDados implements ActionListener {
         }
         
         String sImpNota = "";
-        String sSQL1 = "SELECT IMPNOTAVENDA FROM VDVENDA WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=?";
-        String sSQL2 = "UPDATE VDVENDA SET IMPNOTAVENDA = 'N',DOCVENDA=? WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=?";
-        String sSQL3 = "UPDATE VDVENDA SET IMPNOTAVENDA = ? WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=?";
+        String sSQL1 = "SELECT IMPNOTAVENDA FROM VDVENDA WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=? AND TIPOVENDA='V'";
+        String sSQL2 = "UPDATE VDVENDA SET IMPNOTAVENDA = 'N',DOCVENDA=? WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=? AND TIPOVENDA='V'";        
+        String sSQL3 = "UPDATE VDVENDA SET IMPNOTAVENDA = ? WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=? AND TIPOVENDA='V'";
+        String sSQL4 = "UPDATE FNRECEBER SET DOCREC=? WHERE CODVENDA=? AND CODEMP=? AND CODFILIAL=? AND TIPOVENDA='V'";
        
         try {
             
@@ -210,6 +211,17 @@ public class FTrocaDoc extends FTabDados implements ActionListener {
             ps.setInt( 4, ListaCampos.getMasterFilial( "VDVENDA" ) );
             ps.executeUpdate();
             ps.close();
+            
+            // 4a. query:
+            ps = con.prepareStatement( sSQL4 );
+            ps.setInt( 1, txtNovoDoc.getVlrInteger().intValue() );
+            ps.setInt( 2, txtCodVenda.getVlrInteger().intValue() );
+            ps.setInt( 3, Aplicativo.iCodEmp );
+            ps.setInt( 4, ListaCampos.getMasterFilial( "VDVENDA" ) );
+            ps.executeUpdate();
+            ps.close();
+
+            
            
             con.commit();
             Funcoes.mensagemInforma( this, "Numero da nota Alterado com Sucesso!" );
