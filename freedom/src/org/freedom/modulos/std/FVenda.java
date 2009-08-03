@@ -205,7 +205,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JTextFieldPad txtCodLote = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
-	private JTextFieldPad txtCodFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPad txtCodFiscIf = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	
+	private JTextFieldPad txtCodItFisc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtTipoFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
@@ -310,6 +312,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtCodAlmoxItVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtUltCamp = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
+	
+	private JTextFieldPad txtCodEmpIf = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodFilialIf = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private JTextFieldFK txtCodFisc = new JTextFieldFK( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JLabelPad lbStatus = new JLabelPad();
 
@@ -929,6 +937,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampoInvisivel( txtCodEmpLG, "CodEmpLG", "Emp.log.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodFilialLG, "CodFilialLG", "Filial log.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodLog, "CodLog", "Cód.log.", ListaCampos.DB_SI, false );
+		
+		adicCampoInvisivel( txtCodEmpIf, "codempif", "Cod.emp.it.fiscal.", ListaCampos.DB_SI, false);  
+		adicCampoInvisivel( txtCodFilialIf, "codfilialif", "Cod.filial it.fiscal", ListaCampos.DB_SI, false); 
+		adicCampoInvisivel( txtCodFiscIf, "codfisc", "codfisc" , ListaCampos.DB_SI, false);
+		adicCampoInvisivel( txtCodItFisc, "coditfisc", "coditfisc" , ListaCampos.DB_SI, false);
+		
 		pinTot.adic( new JLabelPad( "Vlr.prod." ), 7, 0, 90, 20 );
 		pinTot.adic( txtVlrProdVenda, 7, 20, 90, 20 );
 		pinTot.adic( new JLabelPad( "Vlr.desc." ), 7, 40, 90, 20 );
@@ -1515,36 +1529,50 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = "SELECT ORIGFISC,CODTRATTRIB, REDFISC,TIPOFISC, " 
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append( "select origfisc,codtrattrib,redfisc,tipofisc,codmens,aliqfisc,aliqipifisc,tpredicmsfisc,tipost,margemvlagr," );
+		sql.append( "codempif,codfilialif,codfisc,coditfisc " );
+		sql.append( "from lfbuscafiscalsp(?,?,?,?,?,?,?,?,?)" );				
+		
+/*		String sSQL = "SELECT ORIGFISC,CODTRATTRIB, REDFISC,TIPOFISC, " 
 					+ "CODMENS,ALIQFISC,ALIQIPIFISC, TPREDICMSFISC, TIPOST, MARGEMVLAGR " 
-					+ "FROM LFBUSCAFISCALSP(?,?,?,?,?,?,?,?,?,?)";
+					+ "FROM LFBUSCAFISCALSP(?,?,?,?,?,?,?,?,?,?)";*/
 
 		try {
 
-			ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodFilial );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, lcProd.getCodFilial() );
-			ps.setInt( 4, txtCodProd.getVlrInteger().intValue() );
-			ps.setInt( 5, Aplicativo.iCodEmp );
-			ps.setInt( 6, lcCli.getCodFilial() );
-			ps.setInt( 7, txtCodCli.getVlrInteger().intValue() );
-			ps.setInt( 8, Aplicativo.iCodEmp );
-			ps.setInt( 9, Aplicativo.iCodFilial );
-			ps.setInt( 10, txtCodTipoMov.getVlrInteger() );
+			ps = con.prepareStatement( sql.toString() );
+//			ps.setInt( 1, Aplicativo.iCodFilial );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, lcProd.getCodFilial() );
+			ps.setInt( 3, txtCodProd.getVlrInteger().intValue() );
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, lcCli.getCodFilial() );
+			ps.setInt( 6, txtCodCli.getVlrInteger().intValue() );
+			ps.setInt( 7, Aplicativo.iCodEmp );
+			ps.setInt( 8, Aplicativo.iCodFilial );
+			ps.setInt( 9, txtCodTipoMov.getVlrInteger() );
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				txtOrigFisc.setVlrString( rs.getString( "ORIGFISC" ) );
-				txtCodTratTrib.setVlrString( rs.getString( "CODTRATTRIB" ) );
-				txtRedFisc.setVlrBigDecimal( new BigDecimal( rs.getString( "REDFISC" ) != null ? rs.getString( "REDFISC" ) : "0" ) );
-				txtTipoFisc.setVlrString( rs.getString( "TIPOFISC" ) );
-				txtTipoST.setVlrString( rs.getString( "TIPOST" ) );
-				txtCodMens.setVlrString( rs.getString( "CODMENS" ) );
-				txtAliqFisc.setVlrString( rs.getString( "ALIQFISC" ) );
-				txtAliqIPIFisc.setVlrBigDecimal( new BigDecimal( rs.getString( "ALIQIPIFISC" ) != null ? rs.getString( "ALIQIPIFISC" ) : "0" ) );
-				txtTpRedIcmsFisc.setVlrString( rs.getString( "TPREDICMSFISC" ) );
-				txtMargemVlAgr.setVlrBigDecimal( rs.getBigDecimal( "MARGEMVLAGR" )!= null ? rs.getBigDecimal( "MARGEMVLAGR" ) : new BigDecimal(0) );				
+				txtOrigFisc.setVlrString( rs.getString( "origfisc" ) );
+				txtCodTratTrib.setVlrString( rs.getString( "codtrattrib" ) );
+				txtRedFisc.setVlrBigDecimal( new BigDecimal( rs.getString( "redfisc" ) != null ? rs.getString( "redfisc" ) : "0" ) );
+				txtTipoFisc.setVlrString( rs.getString( "tipofisc" ) );
+				txtTipoST.setVlrString( rs.getString( "tipost" ) );
+				txtCodMens.setVlrString( rs.getString( "codmens" ) );
+				txtAliqFisc.setVlrString( rs.getString( "aliqfisc" ) );
+				txtAliqIPIFisc.setVlrBigDecimal( new BigDecimal( rs.getString( "aliqipifisc" ) != null ? rs.getString( "aliqipifisc" ) : "0" ) );
+				txtTpRedIcmsFisc.setVlrString( rs.getString( "tpredicmsfisc" ) );
+				txtMargemVlAgr.setVlrBigDecimal( rs.getBigDecimal( "margemvlagr" )!= null ? rs.getBigDecimal( "margemvlagr" ) : new BigDecimal(0) );
+				
+				// Carregando campos para gravação do item de classificação selecionado
+				
+				txtCodEmpIf.setVlrInteger( rs.getInt( "codempif" ) );
+				txtCodFilialIf.setVlrInteger( rs.getInt( "codfilialif" ) );
+				txtCodFiscIf.setVlrString( rs.getString( "codfisc" ) );
+				txtCodItFisc.setVlrInteger( rs.getInt( "coditfisc" ) );
+				
 			}
 
 			rs.close();
@@ -1558,7 +1586,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		} finally {
 			ps = null;
 			rs = null;
-			sSQL = null;
+			sql = null;
 		}
 
 	}
