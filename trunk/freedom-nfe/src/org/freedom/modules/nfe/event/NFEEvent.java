@@ -1,11 +1,7 @@
-/**
- * @version 15/07/2009 <BR>
- * @author Setpoint Informática Ltda./Robson Sanchez <BR>
- *
- * Projeto: Freedom <BR>
- *  
- * Pacote: org.freedom.modulos.nfe.event <BR>
- * Classe: @(#)NFEEvent.java <BR>
+/*
+ * Projeto: Freedom-nfe
+ * Pacote: org.freedom.modulos.nfe.event 
+ * Classe: @(#)NFEEvent.java 
  * 
  * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -15,8 +11,6 @@
  * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
  * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
  * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
- *
- * Classe evento para NFE.
  */
 
 package org.freedom.modules.nfe.event;
@@ -24,6 +18,12 @@ package org.freedom.modules.nfe.event;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
 
 
+/**
+ * Classe evento para NFE.
+ * 
+ * @author Setpoint Informática Ltda./Robson Sanchez
+ * @version 15/07/2009
+ */
 public class NFEEvent {
 	
 	private AbstractNFEFactory nfefactory;
