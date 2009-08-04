@@ -16,7 +16,7 @@ coalesce((select max(coalesce(coditfisc,0)) + 1 from lfitclfiscal it2
  where it2.codemp=cl.codemp and it2.codfilial=cl.codfilial and it2.codfisc=cl.codfisc
 ),1),
 cl.origfisc,cl.codemptt, cl.codfilialtt, cl.codtrattrib,
-cl.tipofisc,cl.tpredicmsfisc,cl.redfisc,'S',
+cl.tipofisc,coalesce(cl.tpredicmsfisc,0),cl.redfisc,'S',
 cl.aliqfisc,cl.aliqlfisc,cl.aliqipifisc,
 cl.codempme,cl.codfilialme,cl.codmens,cl.tipost,cl.margemvlagr,'S'
 from
