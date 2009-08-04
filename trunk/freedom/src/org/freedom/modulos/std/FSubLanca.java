@@ -143,7 +143,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	private ListaCampos lcFor = new ListaCampos( this, "FR" );
 	
-	private ListaCampos lcContrato = new ListaCampos( this, "CT" );
+	private ListaCampos lcContrato = new ListaCampos( this, "" );
 	
 	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
 
