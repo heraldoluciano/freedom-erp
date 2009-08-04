@@ -1445,8 +1445,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	}
 	
 	private boolean getUsaBol(){
-		
-		boolean retorno = false;
+		return true;		
+/*		boolean retorno = false;
 		StringBuilder sSQL = new StringBuilder();
 		ResultSet rs = null;
 		PreparedStatement ps = null;
@@ -1474,7 +1474,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			Funcoes.mensagemErro( this, "Erro ao verificar utilização de boleto!\n" + err.getMessage()  );
 		} 
 		
-		return retorno;
+		return retorno;*/
 	}
 
 	private Object[] getTabManutValores() {
