@@ -17,31 +17,26 @@ package org.freedom.modules.nfe.event;
 
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
 
-
 /**
  * Classe evento para NFE.
  * 
  * @author Setpoint Informática Ltda./Robson Sanchez
- * @version 15/07/2009
+ * @version 05/08/2009
  */
 public class NFEEvent {
-	
+
 	private AbstractNFEFactory nfefactory;
-	
-	public NFEEvent(AbstractNFEFactory nfefact) {
-		
+
+	public NFEEvent( AbstractNFEFactory nfefactory ) {
+		this.nfefactory = nfefactory;
 	}
 
-	
 	public AbstractNFEFactory getNfefactory() {
-	
 		return nfefactory;
 	}
 
-	
 	public void setNfefactory( AbstractNFEFactory nfefactory ) {
-	
 		this.nfefactory = nfefactory;
-		
+
 	}
 }
