@@ -236,9 +236,10 @@ public class FRRazaoFin extends FRelatorio {
 				imp.say( 16, rs.getString( "CODLANCA" ) );
 				imp.say( 25, "|" );
 				
-				hist = Funcoes.strToVectorSilabas( rs.getString( "HISTSUBLANCA" ), 62 );				
-				imp.say( 27, hist.get( 0 ) );
-
+				hist = Funcoes.strToVectorSilabas( rs.getString( "HISTSUBLANCA" ), 62 );
+				if (rs.getString( "HISTSUBLANCA" )!=null) {
+					  imp.say( 27, hist.get( 0 ) );
+				}
 				bVlrSubLanca = rs.getBigDecimal( "VLRSUBLANCA" );
 				bTotal = bTotal.add( bVlrSubLanca );
 
