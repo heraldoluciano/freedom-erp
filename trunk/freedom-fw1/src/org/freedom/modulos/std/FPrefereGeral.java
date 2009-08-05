@@ -64,17 +64,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final int RETRATO_DANFE = 1;
+	private static final String RETRATO_DANFE = "1";
 	
-	private static final int PAISAGEM_DANFE = 2;
+	private static final String PAISAGEM_DANFE = "2";
 	
-	private static final int PRODUCAO_NFE = 1;
+	private static final String PRODUCAO_NFE = "1";
 	
-	private static final int HOMOLOGACAO_NFE = 2;
+	private static final String HOMOLOGACAO_NFE = "2";
 	
-	private static final int APLIC_CONTRIB_NFE = 0;
+	private static final String APLIC_CONTRIB_NFE = "0";
 	
-	private static final int APLIC_FISCO_NFE = 3;	
+	private static final String APLIC_FISCO_NFE = "3";	
 
 	private JPanelPad pinVenda = new JPanelPad( 690, 220 );
 
@@ -374,8 +374,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JCheckBoxPad cbTravaTMNFVD = null;
 
-//	private JCheckBoxPad cbLibGeral = null;
-
 	private JCheckBoxPad cbJurosPosCalc = null;
 
 	private JCheckBoxPad cbRgCliObrig = null;
@@ -576,18 +574,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private final JButtonPad btDirNfe = new JButtonPad( Icone.novo( "btAbrirPeq.gif" ) );
 	
-	private JRadioGroup<String, Integer> rgFormatoDANFE = null;
+	private JRadioGroup<String, String> rgFormatoDANFE = null;
 	
-	private JRadioGroup<String, Integer> rgAmbienteNFE = null;
+	private JRadioGroup<String, String> rgAmbienteNFE = null;
 	
-	private JRadioGroup<String, Integer> rgProcEmiNFE = null;
+	private JRadioGroup<String, String> rgProcEmiNFE = null;
 	
 	private JTextFieldPad txtVerProcNfe = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	public FPrefereGeral() {
 
 		super();
-		
 		
 		setTitulo( "Preferências Gerais" );
 		setAtribos( 30, 40, 900, 580 );
@@ -596,6 +593,33 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcPrefere3.setMensInserir( false );
 		lcPDV.setMensInserir( false );
 
+		Vector<String> vLabsFormatoDANFE = new Vector<String>();
+		Vector<String> vValsFormatoDANFE = new Vector<String>();
+		vLabsFormatoDANFE.addElement( "Retrato" );
+		vLabsFormatoDANFE.addElement( "Paisagem" );
+		vValsFormatoDANFE.addElement( RETRATO_DANFE );
+		vValsFormatoDANFE.addElement( PAISAGEM_DANFE );
+		rgFormatoDANFE = new JRadioGroup<String, String>( 1, 2, vLabsFormatoDANFE, vValsFormatoDANFE );
+//		rgFormatoDANFE.setVlrInteger( new Integer(1) );
+		
+		Vector<String> vLabsAmbienteNFE = new Vector<String>();
+		Vector<String> vValsAmbienteNFE = new Vector<String>();
+		vLabsAmbienteNFE.addElement( "Produção" );
+		vLabsAmbienteNFE.addElement( "Homologação" );
+		vValsAmbienteNFE.addElement( PRODUCAO_NFE );
+		vValsAmbienteNFE.addElement( HOMOLOGACAO_NFE );
+		rgAmbienteNFE = new JRadioGroup<String, String>( 1, 2, vLabsAmbienteNFE, vValsAmbienteNFE );
+//		rgAmbienteNFE.setVlrInteger( new Integer(1) );
+		
+		Vector<String> vLabsProcEmiNFE = new Vector<String>();
+		Vector<String> vValsProcEmiNFE = new Vector<String>();
+		vLabsProcEmiNFE.addElement( "Emissão com aplicativo do contribuinte (ex.:Setpoint-NFE)" );
+		vLabsProcEmiNFE.addElement( "Emissao com aplicativo fornecido pelo Fisco" );
+		vValsProcEmiNFE.addElement( APLIC_CONTRIB_NFE );
+		vValsProcEmiNFE.addElement( APLIC_FISCO_NFE );
+		rgProcEmiNFE = new JRadioGroup<String, String>( 2, 1, vLabsProcEmiNFE, vValsProcEmiNFE );
+//		rgProcEmiNFE.setVlrInteger( new Integer(3) );	
+				
 		lcMoeda.add( new GuardaCampo( txtCodMoeda, "CodMoeda", "Cód.moeda", ListaCampos.DB_PK, true ) );
 		lcMoeda.add( new GuardaCampo( txtDescMoeda, "SingMoeda", "Descrição da moeda", ListaCampos.DB_SI, false ) );
 		lcMoeda.montaSql( false, "MOEDA", "FN" );
@@ -1043,33 +1067,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		rgTipoValidOrc = new JRadioGroup<String, String>( 1, 2, vLabsTpValidOrc1, vValsTpValidOrc1 );
 		rgTipoValidOrc.setVlrString( "D" );
 
-		Vector<String> vLabsFormatoDANFE = new Vector<String>();
-		Vector<Integer> vValsFormatoDANFE = new Vector<Integer>();
-		vLabsFormatoDANFE.addElement( "Retrato" );
-		vLabsFormatoDANFE.addElement( "Paisagem" );
-		vValsFormatoDANFE.addElement( RETRATO_DANFE );
-		vValsFormatoDANFE.addElement( PAISAGEM_DANFE );
-		rgFormatoDANFE = new JRadioGroup<String, Integer>( 1, 2, vLabsFormatoDANFE, vValsFormatoDANFE );
-		rgFormatoDANFE.setVlrInteger( new Integer(1) );
-		
-		Vector<String> vLabsAmbienteNFE = new Vector<String>();
-		Vector<Integer> vValsAmbienteNFE = new Vector<Integer>();
-		vLabsAmbienteNFE.addElement( "Produção" );
-		vLabsAmbienteNFE.addElement( "Homologação" );
-		vValsAmbienteNFE.addElement( PRODUCAO_NFE );
-		vValsAmbienteNFE.addElement( HOMOLOGACAO_NFE );
-		rgAmbienteNFE = new JRadioGroup<String, Integer>( 1, 2, vLabsAmbienteNFE, vValsAmbienteNFE );
-		rgAmbienteNFE.setVlrInteger( new Integer(1) );
-		
-		Vector<String> vLabsProcEmiNFE = new Vector<String>();
-		Vector<Integer> vValsProcEmiNFE = new Vector<Integer>();
-		vLabsProcEmiNFE.addElement( "Emissão com aplicativo do contribuinte (ex.:Setpoint-NFE)" );
-		vLabsProcEmiNFE.addElement( "Emissao com aplicativo fornecido pelo Fisco" );
-		vValsProcEmiNFE.addElement( APLIC_CONTRIB_NFE );
-		vValsProcEmiNFE.addElement( APLIC_FISCO_NFE );
-		rgProcEmiNFE = new JRadioGroup<String, Integer>( 2, 1, vLabsProcEmiNFE, vValsProcEmiNFE );
-		rgProcEmiNFE.setVlrInteger( new Integer(3) );		
-		
 		Vector<Integer> vValsTipo = new Vector<Integer>(); 
 		Vector<String> vLabsTipo = new Vector<String>();
 		vLabsTipo.addElement( "<--Selecione-->" );
