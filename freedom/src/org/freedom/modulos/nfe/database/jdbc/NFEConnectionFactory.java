@@ -23,6 +23,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modules.nfe.bean.FreedomNFEKey;
+import org.freedom.modules.nfe.bean.NFEInconsistency;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
 import org.freedom.modules.nfe.event.NFEEvent;
 import org.freedom.modules.nfe.event.NFEListener;
@@ -146,6 +147,9 @@ public class NFEConnectionFactory implements NFEListener {
 
 	public void setObjNFEFactory( AbstractNFEFactory objNFEFactory ) {
 		this.objNFEFactory = objNFEFactory;
+		if ( this.objNFEFactory != null ) {
+			this.objNFEFactory.addNFEListener( this );
+		}
 	}
 
 	public void setKey( Integer codemp, Integer codfilial, String tipovenda, Integer codvenda ) {
@@ -253,17 +257,25 @@ public class NFEConnectionFactory implements NFEListener {
 		}
 	}
 
-	public void afterRunSend( NFEEvent evt ) { }
+	public void beforeValidSend( NFEEvent e ) { }
 
-	public void afterValidSend( NFEEvent evt ) {
+	public void afterValidSend( NFEEvent e ) {
 
-		if ( !evt.getNfefactory().isValid() ) {
+		AbstractNFEFactory nfe = e.getNfefactory();
+		for ( NFEInconsistency i : nfe.getListInconsistency() ) {
+			Funcoes.mensagemErro( null, i.getDescription() + "\n" + i.getCorrectiveAction() );
 		}
 	}
 
-	public void beforeRunSend( NFEEvent evt ) { }
+	public void beforeRunSend( NFEEvent e ) { }
 
-	public void beforeValidSend( NFEEvent evt ) { }
+	public void afterRunSend( NFEEvent e ) {
+	
+		AbstractNFEFactory nfe = e.getNfefactory();
+		for ( NFEInconsistency i : nfe.getListInconsistency() ) {
+			Funcoes.mensagemErro( null, i.getDescription() + "\n" + i.getCorrectiveAction() );
+		}
+	}
 
 	public boolean isValid() {
 		return false;
