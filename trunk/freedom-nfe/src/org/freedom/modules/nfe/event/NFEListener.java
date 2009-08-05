@@ -28,15 +28,9 @@ public interface NFEListener {
 	
 	public void beforeValidSend( NFEEvent e );
 
-	public void validSend( NFEEvent e );
-
 	public void afterValidSend( NFEEvent e );
 
 	public void beforeRunSend( NFEEvent e );
 
-	public void runSend( NFEEvent e );
-
 	public void afterRunSend( NFEEvent e );
-
-	//public boolean isValid();
 }
