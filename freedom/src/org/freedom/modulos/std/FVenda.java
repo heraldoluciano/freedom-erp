@@ -801,7 +801,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		setAltCab( 160 );
 		setPainel( pinCabVenda );
 		adicCampo( txtCodVenda, 7, 20, 90, 20, "CodVenda", "N. pedido", ListaCampos.DB_PK, true );
-		// adicCampoInvisivel(txtTipoVenda,"tipovenda","Tp.Venda",ListaCampos.DB_PK,true);
 		adicCampo( txtCodTipoMov, 100, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
 		adicDescFK( txtDescTipoMov, 180, 20, 197, 20, "DescTipoMov", "Descrição do tipo de movimento" );
 		adicCampo( txtCodSerie, 380, 20, 77, 20, "Serie", "Série", ListaCampos.DB_FK, false );
@@ -813,6 +812,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampo( txtCodPlanoPag, 290, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
 		adicDescFK( txtDescPlanoPag, 370, 60, 197, 20, "DescPlanoPag", "Descrição do plano de pag." );
 		adicCampo( txtPedCliVenda, 570, 60, 75, 20, "PedCliVenda", "N.ped.cli.", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtTipoVenda, "tipovenda", "Tp.Venda", ListaCampos.DB_SI, true );
 		adic( lbStatus, 649, 60, 95, 20 );
 
 		setPainel( pinCabComis );
@@ -2317,8 +2317,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 	
 	private void emiteNFE() {
-		nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), 
-				txtTipoVenda.getVlrString(), txtCodVenda.getVlrInteger() );
+		nfecf.setKey( Aplicativo.iCodEmp, 
+					  ListaCampos.getMasterFilial( "VDVENDA" ), 
+					  txtTipoVenda.getVlrString(), 
+					  txtCodVenda.getVlrInteger() );
 		nfecf.post();
 	}
 	
@@ -2745,7 +2747,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							txtTipoMov.getVlrString().equals( "CE" ) || txtTipoMov.getVlrString().equals( "PE" ) || 
 							txtTipoMov.getVlrString().equals( "DV" ) || txtTipoMov.getVlrString().equals( "BN" ) || 
 							txtTipoMov.getVlrString().equals( "CO" ) ) {
-						emiteNotaFiscal(  "NF" );
+						emiteNotaFiscal( "NF" );
 					}
 					else if ( txtTipoMov.getVlrString().equals( "SE" ) ) {
 						emiteNotaFiscal( "NS" );
@@ -2761,6 +2763,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				else if ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPPED.ordinal() ] ) ) {
 					imprimir( true, txtCodVenda.getVlrInteger().intValue() );
 				}
+				
 				if ( "N".equals( sValores[ DLFechaVenda.COL_RETDFV.REIMPNOTA.ordinal() ] ) ) {
 					lcCampos.edit();
 					lcCampos.post();
@@ -3396,16 +3399,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 		return ret;
 	}
-
 	
-	public NFEConnectionFactory getNfecf() {
-	
+	public NFEConnectionFactory getNfecf() {	
 		return nfecf;
 	}
-
 	
-	public void setNfecf( NFEConnectionFactory nfecf ) {
-	
+	public void setNfecf( NFEConnectionFactory nfecf ) {	
 		this.nfecf = nfecf;
 	}
 
