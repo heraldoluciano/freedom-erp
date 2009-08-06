@@ -117,7 +117,8 @@ public class EbsContabil extends Contabil {
     		sql.append( "C.CEPCLI CEP," );
     		sql.append( "C.DDDCLI DDD," );
     		sql.append( "C.FONECLI FONE," );
-    		sql.append( "C.COMPLCLI COMPLEMENTO " );
+    		sql.append( "C.COMPLCLI COMPLEMENTO, " );
+    		sql.append( "C.CODCLICONTAB CODCONTAB " );
     		sql.append( "FROM VDCLIENTE C " );
     		sql.append( "LEFT OUTER JOIN SGMUNICIPIO M " );
     		sql.append( "ON M.CODPAIS=C.CODPAIS AND M.SIGLAUF=C.SIGLAUF AND M.CODMUNIC=C.CODMUNIC " );
@@ -139,7 +140,8 @@ public class EbsContabil extends Contabil {
     		sql.append( "F.CEPFOR CEP," );
     		sql.append( "F.DDDFONEFOR DDD," );
     		sql.append( "F.FONEFOR FONE," );
-    		sql.append( "F.COMPLFOR COMPLEMENTO " );
+    		sql.append( "F.COMPLFOR COMPLEMENTO, " );
+    		sql.append( "F.CODFORCONTAB CODCONTAB " );
     		sql.append( "FROM CPFORNECED F " );
     		sql.append( "LEFT OUTER JOIN SGMUNICIPIO M " );
     		sql.append( "ON M.CODPAIS=F.CODPAIS AND M.SIGLAUF=F.SIGLAUF AND M.CODMUNIC=F.CODMUNIC " ); 
@@ -232,7 +234,7 @@ public class EbsContabil extends Contabil {
 		StringBuilder sql = new StringBuilder();		
 		sql.append( "select c.codcompra, c.codfor," );
 		sql.append( "c.dtentcompra, c.doccompra, c.dtemitcompra, c.serie, c.vlrliqcompra, c.vlrbaseipicompra, c.vlripicompra," );
-		sql.append( "tm.codmodnota, tm.especietipomov, coalesce(f.cnpjfor, f.cpffor) cnpjfor, p.datapag " );
+		sql.append( "tm.codmodnota, tm.especietipomov, coalesce(f.cnpjfor, f.cpffor) cnpjfor, p.datapag, c.codforcontab " );
 		sql.append( "from cpcompra c, eqtipomov tm, lfmodnota mn, lfserie s, cpforneced f, fnpagar p " );
 		sql.append( "where c.codemp=? and c.codfilial=? and c.dtentcompra between ? and ? and " );
 		sql.append( "tm.codemp=c.codemptm and tm.codfilial=c.codfilialtm and tm.codtipomov=c.codtipomov and " );
@@ -553,7 +555,7 @@ public class EbsContabil extends Contabil {
 		StringBuilder sql = new StringBuilder();		
 		sql.append( "select v.codvenda, v.tipovenda, v.codcli," );
 		sql.append( "v.dtemitvenda, v.docvenda, v.dtsaidavenda, v.serie, v.vlrliqvenda, v.vlrbaseipivenda, v.vlripivenda," );
-		sql.append( "tm.codmodnota, tm.especietipomov, coalesce(c.cnpjcli, c.cpfcli) cnpjcli, r.datarec " );
+		sql.append( "tm.codmodnota, tm.especietipomov, coalesce(c.cnpjcli, c.cpfcli) cnpjcli, r.datarec, c.codclicontab " );
 		sql.append( "from vdvenda v, eqtipomov tm, lfserie s, vdcliente c, fnreceber r, lfmodnota mn " );
 		sql.append( "where v.codemp=? and v.codfilial=? and v.tipovenda='V' and v.dtemitvenda between ? and ? and " );
 		sql.append( "tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov and " );
