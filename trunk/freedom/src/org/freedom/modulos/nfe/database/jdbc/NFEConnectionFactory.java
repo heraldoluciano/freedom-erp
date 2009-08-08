@@ -256,7 +256,7 @@ public class NFEConnectionFactory implements NFEListener {
 			messagesError.delete( 0, messagesError.length() );
 		}
 	}
-
+	
 	public void beforeValidSend( NFEEvent e ) { }
 
 	public void afterValidSend( NFEEvent e ) {
@@ -272,17 +272,15 @@ public class NFEConnectionFactory implements NFEListener {
 	public void afterRunSend( NFEEvent e ) {
 	
 		AbstractNFEFactory nfe = e.getNfefactory();
-		for ( NFEInconsistency i : nfe.getListInconsistency() ) {
-			Funcoes.mensagemErro( null, i.getDescription() + "\n" + i.getCorrectiveAction() );
+		
+		if ( nfe.getListInconsistency().size() > 0 ) {
+			for ( NFEInconsistency i : nfe.getListInconsistency() ) {
+				Funcoes.mensagemErro( null, i.getDescription() + "\n" + i.getCorrectiveAction() );
+			}
+		}
+		else {
+			Funcoes.mensagemInforma( null, "Arquivo de NF-e criado com sucesso." );
 		}
 	}
-
-	public boolean isValid() {
-		return false;
-	}
-
-	public void runSend( NFEEvent evt ) { }
-
-	public void validSend( NFEEvent evt ) { }
 
 }
