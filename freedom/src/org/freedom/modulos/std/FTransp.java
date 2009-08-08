@@ -294,14 +294,14 @@ public class FTransp extends FDados implements PostListener, RadioGroupListener,
 		}
 
 		if ( ( "".equals( txtInscTran.getVlrString().trim() ) ) && ( !"".equals( txtCnpjTran.getVlrString().trim() ) ) ) {
-			if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTA?" ) == JOptionPane.OK_OPTION ) {
-				txtInscTran.setVlrString( "ISENTA" );
+			if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION ) {
+				txtInscTran.setVlrString( "ISENTO" );
 			}
 			pevt.cancela();
 			txtInscTran.requestFocus();
 			return;
 		}
-		else if ( txtInscTran.getText().trim().toUpperCase().compareTo( "ISENTA" ) == 0 )
+		else if ( txtInscTran.getText().trim().toUpperCase().compareTo( "ISENTO" ) == 0 )
 			return;
 		else if ( txtUFTran.getText().trim().length() < 2 ) {
 			if ( (Boolean) prefs.get( "USAIBGETRANSP" ) ) {
