@@ -290,6 +290,11 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 
 				getLayoutEbs();
 			}
+			else {
+				Funcoes.mensagemErro( this, "Sistema de exportação não definido!\n" +
+											"Verifique o cadastro de preferências do sistema." );
+				dispose();
+			}
 		}
 	}
 
