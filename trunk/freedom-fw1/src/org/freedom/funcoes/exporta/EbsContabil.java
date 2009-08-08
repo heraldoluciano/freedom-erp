@@ -28,6 +28,8 @@ public class EbsContabil extends Contabil {
 	
 	private List<String> readrowsSaida = new ArrayList<String>();
 	
+	private List<String> readrowsItem = new ArrayList<String>();
+	
 	
 	public EbsContabil() {
 		
@@ -38,7 +40,7 @@ public class EbsContabil extends Contabil {
 	@Override
 	public void createFile( File filecontabil ) throws Exception {	
 		
-		sizeMax = readrows.size() + readrowsSaida.size();
+		sizeMax = readrows.size() + readrowsSaida.size() + readrowsItem.size();
 		
 		if ( sizeMax == 0 ) {
 			throw new Exception( "Nenhum registro encontrado para exportação!" );
@@ -83,6 +85,24 @@ public class EbsContabil extends Contabil {
 		}
 
 		fwSaidas.close();
+		
+		File itens = new File( filecontabil.getPath() + "\\ITEM.TXT" );
+		itens.createNewFile();
+
+		FileWriter fwItens = new FileWriter( itens );
+
+		for ( String row : readrowsItem ) {
+
+			fwItens.write( row );
+			fwItens.write( RETURN );
+			fwItens.flush();
+			
+			progressInRows++;
+			
+			fireActionListenerProgressInRows();
+		}
+
+		fwItens.close();
 	}
 
 	public void execute( final DbConnection con, final Date dtini, final Date dtfim ) throws Exception {
@@ -91,10 +111,16 @@ public class EbsContabil extends Contabil {
 		this.dtini = dtini;
 		this.dtfim = dtfim;
 		
+		readrows.clear();
+		readrowsSaida.clear();
+		readrowsItem.clear();
+		
 		sequencial = 1;
 		entradas();
 		sequencial = 1;
 		saidas();
+		sequencial = 1;
+		produtos();
 	}
 
 	private void emitente( char tipo, int codigo ) throws Exception {
@@ -234,7 +260,7 @@ public class EbsContabil extends Contabil {
 		StringBuilder sql = new StringBuilder();		
 		sql.append( "select c.codcompra, c.codfor," );
 		sql.append( "c.dtentcompra, c.doccompra, c.dtemitcompra, c.serie, c.vlrliqcompra, c.vlrbaseipicompra, c.vlripicompra," );
-		sql.append( "tm.codmodnota, tm.especietipomov, coalesce(f.cnpjfor, f.cpffor) cnpjfor, p.datapag, c.codforcontab " );
+		sql.append( "tm.codmodnota, tm.especietipomov, coalesce(f.cnpjfor, f.cpffor) cnpjfor, p.datapag, f.codforcontab " );
 		sql.append( "from cpcompra c, eqtipomov tm, lfmodnota mn, lfserie s, cpforneced f, fnpagar p " );
 		sql.append( "where c.codemp=? and c.codfilial=? and c.dtentcompra between ? and ? and " );
 		sql.append( "tm.codemp=c.codemptm and tm.codfilial=c.codfilialtm and tm.codtipomov=c.codtipomov and " );
@@ -293,7 +319,7 @@ public class EbsContabil extends Contabil {
 			entrada.setClassificacaoIntegracao( 0 );
 			entrada.setClassificacaoIntegracao2( 0 );
 			entrada.setCnfjFornecedor( rs.getString( "cnpjfor" ) );
-			entrada.setValorNota( rs.getBigDecimal( "vlrliqcompra" ) );
+			entrada.setValorNota( rs.getBigDecimal( "vlrliqcompra" ) != null ? rs.getBigDecimal( "vlrliqcompra" ) : new BigDecimal( "0.00" ) );
 			entrada.setBasePIS( new BigDecimal( "0.00" ) );
 			entrada.setBaseCOFINS( new BigDecimal( "0.00" ) );
 			entrada.setBaseCSLL( new BigDecimal( "0.00" ) );
@@ -328,24 +354,24 @@ public class EbsContabil extends Contabil {
 			for ( int i=0; i<4 && rsICMS.next(); i++) {
 			
 				if ( i == 0 ) {
-					entrada.setBaseICMSa( rsICMS.getBigDecimal( "base" ) );
-					entrada.setAliquotaICMSa( rsICMS.getBigDecimal( "aliquota" ) );
-					entrada.setValorICMSa( rsICMS.getBigDecimal( "valor" ) );
+					entrada.setBaseICMSa( rsICMS.getBigDecimal( "base" ) != null ? rsICMS.getBigDecimal( "base" ) : new BigDecimal( "0.00" ) );
+					entrada.setAliquotaICMSa( rsICMS.getBigDecimal( "aliquota" ) != null ? rsICMS.getBigDecimal( "aliquota" ) : new BigDecimal( "0.00" ) );
+					entrada.setValorICMSa( rsICMS.getBigDecimal( "valor" ) != null ? rsICMS.getBigDecimal( "valor" ) : new BigDecimal( "0.00" ) );
 				}
 				else if ( i == 1 ) {
-					entrada.setBaseICMSb( rsICMS.getBigDecimal( "base" ) );
-					entrada.setAliquotaICMSb( rsICMS.getBigDecimal( "aliquota" ) );
-					entrada.setValorICMSb( rsICMS.getBigDecimal( "valor" ) );
+					entrada.setBaseICMSb( rsICMS.getBigDecimal( "base" ) != null ? rsICMS.getBigDecimal( "base" ) : new BigDecimal( "0.00" ) );
+					entrada.setAliquotaICMSb( rsICMS.getBigDecimal( "aliquota" ) != null ? rsICMS.getBigDecimal( "aliquota" ) : new BigDecimal( "0.00" ) );
+					entrada.setValorICMSb( rsICMS.getBigDecimal( "valor" ) != null ? rsICMS.getBigDecimal( "valor" ) : new BigDecimal( "0.00" ) );
 				}
 				else if ( i == 2 ) {
-					entrada.setBaseICMSc( rsICMS.getBigDecimal( "base" ) );
-					entrada.setAliquotaICMSc( rsICMS.getBigDecimal( "aliquota" ) );
-					entrada.setValorICMSc( rsICMS.getBigDecimal( "valor" ) );
+					entrada.setBaseICMSc( rsICMS.getBigDecimal( "base" ) != null ? rsICMS.getBigDecimal( "base" ) : new BigDecimal( "0.00" ) );
+					entrada.setAliquotaICMSc( rsICMS.getBigDecimal( "aliquota" ) != null ? rsICMS.getBigDecimal( "aliquota" ) : new BigDecimal( "0.00" ) );
+					entrada.setValorICMSc( rsICMS.getBigDecimal( "valor" ) != null ? rsICMS.getBigDecimal( "valor" ) : new BigDecimal( "0.00" ) );
 				}
 				else if ( i == 3 ) {
-					entrada.setBaseICMSd( rsICMS.getBigDecimal( "base" ) );
-					entrada.setAliquotaICMSd( rsICMS.getBigDecimal( "aliquota" ) );
-					entrada.setValorICMSd( rsICMS.getBigDecimal( "valor" ) );
+					entrada.setBaseICMSd( rsICMS.getBigDecimal( "base" ) != null ? rsICMS.getBigDecimal( "base" ) : new BigDecimal( "0.00" ) );
+					entrada.setAliquotaICMSd( rsICMS.getBigDecimal( "aliquota" ) != null ? rsICMS.getBigDecimal( "aliquota" ) : new BigDecimal( "0.00" ) );
+					entrada.setValorICMSd( rsICMS.getBigDecimal( "valor" ) != null ? rsICMS.getBigDecimal( "valor" ) : new BigDecimal( "0.00" ) );
 				}
 			}
 			rsICMS.close();
@@ -353,8 +379,8 @@ public class EbsContabil extends Contabil {
 			
 			entrada.setValorICMSIsentas( new BigDecimal( "0.00" ) );
 			entrada.setValorICMSOutras( new BigDecimal( "0.00" ) );
-			entrada.setBaseIPI( rs.getBigDecimal( "vlrbaseipicompra" ) );
-			entrada.setValorIPI( rs.getBigDecimal( "vlripicompra" ) );
+			entrada.setBaseIPI( rs.getBigDecimal( "vlrbaseipicompra" ) != null ? rs.getBigDecimal( "vlrbaseipicompra" ) : new BigDecimal( "0.00" ) );
+			entrada.setValorIPI( rs.getBigDecimal( "vlripicompra" ) != null ? rs.getBigDecimal( "vlripicompra" ) : new BigDecimal( "0.00" )  );
 			entrada.setValorIPIIsentas( new BigDecimal( "0.00" ) );
 			entrada.setValorIPIOutras( new BigDecimal( "0.00" ) );
 			entrada.setValorSubTributaria( new BigDecimal( "0.00" ) );
@@ -455,15 +481,15 @@ public class EbsContabil extends Contabil {
 			
 			itemEntrada = new ItemEntrada();			
 			itemEntrada.setCodigo( rs.getInt( "CODPROD" ) );			
-			itemEntrada.setQuantidade( rs.getBigDecimal( "QTDITCOMPRA" ) );			
-			itemEntrada.setValor( rs.getBigDecimal( "VALOR" ) );			
+			itemEntrada.setQuantidade( rs.getBigDecimal( "QTDITCOMPRA" ) != null ? rs.getBigDecimal( "QTDITCOMPRA" ) : new BigDecimal( "0.00" ) );			
+			itemEntrada.setValor( rs.getBigDecimal( "VALOR" ) != null ? rs.getBigDecimal( "VALOR" ) : new BigDecimal( "0.00" ) );			
 			itemEntrada.setQuantidade2( null );			
-			itemEntrada.setDesconto( rs.getBigDecimal( "VLRDESCITCOMPRA" ) );			
-			itemEntrada.setBaseICMS( rs.getBigDecimal( "VLRBASEICMSITCOMPRA" ) );			
-			itemEntrada.setAliquotaICMS( rs.getBigDecimal( "PERCICMSITCOMPRA" ) );			
-			itemEntrada.setValorIPI( rs.getBigDecimal( "VLRIPIITCOMPRA" ) );	
-			itemEntrada.setAliquotaIPI( rs.getBigDecimal( "PERCIPIITCOMPRA" ) );		
-			itemEntrada.setBaseIPI( rs.getBigDecimal( "VALOR" ) );			
+			itemEntrada.setDesconto( rs.getBigDecimal( "VLRDESCITCOMPRA" ) != null ? rs.getBigDecimal( "VLRDESCITCOMPRA" ) : new BigDecimal( "0.00" ) );			
+			itemEntrada.setBaseICMS( rs.getBigDecimal( "VLRBASEICMSITCOMPRA" ) != null ? rs.getBigDecimal( "VLRBASEICMSITCOMPRA" ) : new BigDecimal( "0.00" ) );			
+			itemEntrada.setAliquotaICMS( rs.getBigDecimal( "PERCICMSITCOMPRA" ) != null ? rs.getBigDecimal( "PERCICMSITCOMPRA" ) : new BigDecimal( "0.00" ) );			
+			itemEntrada.setValorIPI( rs.getBigDecimal( "VLRIPIITCOMPRA" ) != null ? rs.getBigDecimal( "VLRIPIITCOMPRA" ) : new BigDecimal( "0.00" ) );	
+			itemEntrada.setAliquotaIPI( rs.getBigDecimal( "PERCIPIITCOMPRA" ) != null ? rs.getBigDecimal( "PERCIPIITCOMPRA" ) : new BigDecimal( "0.00" ) );		
+			itemEntrada.setBaseIPI( rs.getBigDecimal( "VALOR" ) != null ? rs.getBigDecimal( "VALOR" ) : new BigDecimal( "0.00" ) );			
 			itemEntrada.setIndentificacao( rs.getString( "REFPROD" ) );							
 			itemEntrada.setBaseICMSSubTributaria( null );			
 			itemEntrada.setPercentualReducaoBaseICMS( null );			
@@ -616,7 +642,7 @@ public class EbsContabil extends Contabil {
 			saida.setClassificacao1( 01 ); // Padrão do Cordilheira			
 			saida.setClassificacao2( 0 );			
 			saida.setCnpjDestinatario( rs.getString( "cnpjcli" ) );			
-			saida.setValorNota( rs.getBigDecimal( "VLRLIQVENDA" ) );			
+			saida.setValorNota( rs.getBigDecimal( "VLRLIQVENDA" ) != null ? rs.getBigDecimal( "VLRLIQVENDA" ) : new BigDecimal( "0.00" ) );			
 			saida.setBasePIS( new BigDecimal( "0.00" ) );			
 			saida.setBaseCOFINS( new BigDecimal( "0.00" ) );			
 			saida.setBaseCSLL( new BigDecimal( "0.00" ) );			
@@ -652,24 +678,24 @@ public class EbsContabil extends Contabil {
 			for ( int i=0; i<4 && rsICMS.next(); i++) {
 			
 				if ( i == 0 ) {
-					saida.setBaseICMSa( rsICMS.getBigDecimal( "base" ) );
-					saida.setAliquotaICMSa( rsICMS.getBigDecimal( "aliquota" ) );
-					saida.setValorICMSa( rsICMS.getBigDecimal( "valor" ) );
+					saida.setBaseICMSa( rsICMS.getBigDecimal( "base" ) != null ? rsICMS.getBigDecimal( "base" ) : new BigDecimal( "0.00" ) );
+					saida.setAliquotaICMSa( rsICMS.getBigDecimal( "aliquota" ) != null ? rsICMS.getBigDecimal( "aliquota" ) : new BigDecimal( "0.00" ) );
+					saida.setValorICMSa( rsICMS.getBigDecimal( "valor" ) != null ? rsICMS.getBigDecimal( "valor" ) : new BigDecimal( "0.00" ) );
 				}
 				else if ( i == 1 ) {
-					saida.setBaseICMSb( rsICMS.getBigDecimal( "base" ) );
-					saida.setAliquotaICMSb( rsICMS.getBigDecimal( "aliquota" ) );
-					saida.setValorICMSb( rsICMS.getBigDecimal( "valor" ) );
+					saida.setBaseICMSb( rsICMS.getBigDecimal( "base" ) != null ? rsICMS.getBigDecimal( "base" ) : new BigDecimal( "0.00" ) );
+					saida.setAliquotaICMSb( rsICMS.getBigDecimal( "aliquota" ) != null ? rsICMS.getBigDecimal( "aliquota" ) : new BigDecimal( "0.00" ) );
+					saida.setValorICMSb( rsICMS.getBigDecimal( "valor" ) != null ? rsICMS.getBigDecimal( "valor" ) : new BigDecimal( "0.00" ) );
 				}
 				else if ( i == 2 ) {
-					saida.setBaseICMSc( rsICMS.getBigDecimal( "base" ) );
-					saida.setAliquotaICMSc( rsICMS.getBigDecimal( "aliquota" ) );
-					saida.setValorICMSc( rsICMS.getBigDecimal( "valor" ) );
+					saida.setBaseICMSc( rsICMS.getBigDecimal( "base" ) != null ? rsICMS.getBigDecimal( "base" ) : new BigDecimal( "0.00" ) );
+					saida.setAliquotaICMSc( rsICMS.getBigDecimal( "aliquota" ) != null ? rsICMS.getBigDecimal( "aliquota" ) : new BigDecimal( "0.00" ) );
+					saida.setValorICMSc( rsICMS.getBigDecimal( "valor" ) != null ? rsICMS.getBigDecimal( "valor" ) : new BigDecimal( "0.00" ) );
 				}
 				else if ( i == 3 ) {
-					saida.setBaseICMSd( rsICMS.getBigDecimal( "base" ) );
-					saida.setAliquotaICMSd( rsICMS.getBigDecimal( "aliquota" ) );
-					saida.setValorICMSd( rsICMS.getBigDecimal( "valor" ) );
+					saida.setBaseICMSd( rsICMS.getBigDecimal( "base" ) != null ? rsICMS.getBigDecimal( "base" ) : new BigDecimal( "0.00" ) );
+					saida.setAliquotaICMSd( rsICMS.getBigDecimal( "aliquota" ) != null ? rsICMS.getBigDecimal( "aliquota" ) : new BigDecimal( "0.00" ) );
+					saida.setValorICMSd( rsICMS.getBigDecimal( "valor" ) != null ? rsICMS.getBigDecimal( "valor" ) : new BigDecimal( "0.00" ) );
 				}
 			}
 			rsICMS.close();
@@ -677,8 +703,8 @@ public class EbsContabil extends Contabil {
 					
 			saida.setValorICMSIsentas( new BigDecimal( "0.00" ) );			
 			saida.setValorICMSOutras( new BigDecimal( "0.00" ) );				
-			saida.setBaseIPI( rs.getBigDecimal( "VLRBASEIPIVENDA" ) );			
-			saida.setValorIPI( rs.getBigDecimal( "VLRIPIVENDA" ) );			
+			saida.setBaseIPI( rs.getBigDecimal( "VLRBASEIPIVENDA" ) != null ? rs.getBigDecimal( "VLRBASEIPIVENDA" ) : new BigDecimal( "0.00" ) );			
+			saida.setValorIPI( rs.getBigDecimal( "VLRIPIVENDA" ) != null ? rs.getBigDecimal( "VLRIPIVENDA" ) : new BigDecimal( "0.00" ) );			
 			saida.setValorIPIIsentas( new BigDecimal( "0.00" ) );			
 			saida.setValorIPIOutras( new BigDecimal( "0.00" ) );			
 			saida.setValorSubTributaria( new BigDecimal( "0.00" ) );			
@@ -785,15 +811,15 @@ public class EbsContabil extends Contabil {
 			
 			itemSaida = new ItemSaida();				
 			itemSaida.setCodigoItem( rs.getInt( "CODPROD" ) );			
-			itemSaida.setQuantidade( rs.getBigDecimal( "QTDITVENDA" ) );			
+			itemSaida.setQuantidade( rs.getBigDecimal( "QTDITVENDA" ) != null ? rs.getBigDecimal( "QTDITVENDA" ) : new BigDecimal( "0.00" ) );			
 			itemSaida.setValor( rs.getBigDecimal( "VALOR" ) );			
 			itemSaida.setQuantidade2( null );			
-			itemSaida.setDesconto( rs.getBigDecimal( "VLRDESCITVENDA" ) );			
-			itemSaida.setBaseICMS( rs.getBigDecimal( "VLRBASEICMSITVENDA" ) );			
-			itemSaida.setAliquotaICMS( rs.getBigDecimal( "PERCICMSITVENDA" ) );			
-			itemSaida.setValorIPI( rs.getBigDecimal( "VLRIPIITVENDA" ) );	
-			itemSaida.setAliquotaIPI( rs.getBigDecimal( "PERCIPIITVENDA" ) );		
-			itemSaida.setBaseIPI( rs.getBigDecimal( "VALOR" ) );			
+			itemSaida.setDesconto( rs.getBigDecimal( "VLRDESCITVENDA" ) != null ? rs.getBigDecimal( "VLRDESCITVENDA" ) : new BigDecimal( "0.00" ) );			
+			itemSaida.setBaseICMS( rs.getBigDecimal( "VLRBASEICMSITVENDA" ) != null ? rs.getBigDecimal( "VLRBASEICMSITVENDA" ) : new BigDecimal( "0.00" ) );			
+			itemSaida.setAliquotaICMS( rs.getBigDecimal( "PERCICMSITVENDA" ) != null ? rs.getBigDecimal( "PERCICMSITVENDA" ) : new BigDecimal( "0.00" ) );			
+			itemSaida.setValorIPI( rs.getBigDecimal( "VLRIPIITVENDA" ) != null ? rs.getBigDecimal( "VLRIPIITVENDA" ) : new BigDecimal( "0.00" ) );	
+			itemSaida.setAliquotaIPI( rs.getBigDecimal( "PERCIPIITVENDA" ) != null ? rs.getBigDecimal( "PERCIPIITVENDA" ) : new BigDecimal( "0.00" ) );		
+			itemSaida.setBaseIPI( rs.getBigDecimal( "VALOR" ) != null ? rs.getBigDecimal( "VALOR" ) : new BigDecimal( "0.00" ) );			
 			itemSaida.setIndentificacao( rs.getString( "REFPROD" ) );							
 			itemSaida.setBaseICMSSubTributaria( null );			
 			itemSaida.setPercentualReducaoBaseICMS( null );			
@@ -854,6 +880,44 @@ public class EbsContabil extends Contabil {
 		traillerSaida.setValorIRRFISS( new BigDecimal( "0.00" ) ); 
 		
 		return traillerSaida;
+	}
+	
+	private void produtos() throws Exception {
+		
+		StringBuilder sql = new StringBuilder();		
+		sql.append( "SELECT P.CODPROD, P.DESCPROD, CL.CODNBM, P.CODUNID, P.PESOBRUTPROD, P.REFPROD, " );
+		sql.append( "(CASE WHEN TIPOPROD='P' THEN 1 " );
+		sql.append( "WHEN TIPOPROD='M' THEN 2 " );
+		sql.append( "WHEN TIPOPROD='F' THEN 5 " );
+		sql.append( "ELSE 99 END) TIPPROD " );
+		sql.append( "FROM EQPRODUTO P, LFCLFISCAL CL " );
+		sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND " );
+		sql.append( "CL.CODEMP=P.CODEMPFC AND CL.CODFILIAL=P.CODFILIALFC AND CL.CODFISC=P.CODFISC" );
+
+		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+
+		ResultSet rs = ps.executeQuery();
+		Item item = null;
+
+		while ( rs.next() ) {
+			
+			item = new Item();			
+			item.setCodigo( rs.getInt( "CODPROD" ) );	
+			item.setDescricao( rs.getString( "DESCPROD" ) );		
+			item.setNcm( rs.getString( "CODNBM" ) != null ? rs.getString( "CODNBM" ).trim().replaceAll( "\\.", "" ) : null );			
+			item.setUnidade( rs.getString( "CODUNID" ) );			
+			item.setPeso( rs.getBigDecimal( "PESOBRUTPROD" ) );			
+			item.setReferencia( rs.getString( "REFPROD" ) );			
+			item.setTipoProduto( rs.getInt( "TIPPROD" ) );	
+			item.setSequencial( sequencial++ );
+
+			readrowsItem.add( item.toString() );
+		}
+
+		rs.close();
+		ps.close();
 	}
 		
 	private String format( String text, int tam ) {
@@ -1838,7 +1902,7 @@ public class EbsContabil extends Contabil {
 		@Override
 		public String toString() {
 
-			StringBuilder entrada = new StringBuilder();
+			StringBuilder entrada = new StringBuilder( 500 );
 			
 			entrada.append( getTipoRegistro() );
 			entrada.append( format( getDataLancamento() ) );
@@ -2208,7 +2272,7 @@ public class EbsContabil extends Contabil {
 		@Override
 		public String toString() {
 
-			StringBuilder itemEntrada = new StringBuilder();
+			StringBuilder itemEntrada = new StringBuilder( 500 );
 
 			itemEntrada.append( getTipoRegistro() );
 			itemEntrada.append( format( getCodigo(), 10 ) );			
@@ -2498,7 +2562,7 @@ public class EbsContabil extends Contabil {
 		@Override
 		public String toString() {
 
-			StringBuilder trallerEntrada = new StringBuilder();
+			StringBuilder trallerEntrada = new StringBuilder( 500 );
 			
 			trallerEntrada.append( getTipoRegistro() );			
 			trallerEntrada.append( format( getValorNota(), 12, 2 ) );			
@@ -2583,7 +2647,7 @@ public class EbsContabil extends Contabil {
 		@Override
 		public String toString() {
 
-			StringBuilder headerSaida = new StringBuilder();
+			StringBuilder headerSaida = new StringBuilder( 500 );
 			
 			headerSaida.append( getTipoRegistro() );			
 			headerSaida.append( format( getDataArquivo() ) );	
@@ -3220,7 +3284,7 @@ public class EbsContabil extends Contabil {
 		@Override
 		public String toString() {
 
-			StringBuilder saida = new StringBuilder();
+			StringBuilder saida = new StringBuilder( 500 );
 			
 			saida.append( getTipoRegistro() );	
 			saida.append( format( getDataLancamento() ) );			
@@ -3593,7 +3657,7 @@ public class EbsContabil extends Contabil {
 		@Override
 		public String toString() {
 
-			StringBuilder itemSaida = new StringBuilder();
+			StringBuilder itemSaida = new StringBuilder( 600 );
 			
 			itemSaida.append( getTipoRegistro() );	
 			itemSaida.append( format( getCodigoItem(), 10 ) );			
@@ -3923,40 +3987,144 @@ public class EbsContabil extends Contabil {
 		@Override
 		public String toString() {
 
-			StringBuilder itemSaida = new StringBuilder();
+			StringBuilder traleirSaida = new StringBuilder( 500 );
 			
-			itemSaida.append( getTipoRegistro() );	
-			itemSaida.append( format( getValorNota(), 12, 2 ) );		
-			itemSaida.append( format( getBasePIS(), 12, 2 ) );			
-			itemSaida.append( format( getBaseCOFINS(), 12, 2 ) );			
-			itemSaida.append( format( getBaseCSLL(), 12, 2 ) );			
-			itemSaida.append( format( getBaseIRPJ(), 12, 2 ) );			
-			itemSaida.append( format( getBaseICMSa(), 12, 2 ) );			
-			itemSaida.append( format( getValorICMSa(), 12, 2 ) );			
-			itemSaida.append( format( getBaseICMSb(), 12, 2 ) );			
-			itemSaida.append( format( getValorICMSb(), 12, 2 ) );			
-			itemSaida.append( format( getBaseICMSc(), 12, 2 ) );			
-			itemSaida.append( format( getValorICMSc(), 12, 2 ) );			
-			itemSaida.append( format( getBaseICMSd(), 12, 2 ) );			
-			itemSaida.append( format( getValorICMSd(), 12, 2 ) );			
-			itemSaida.append( format( getValorICMSIsentas(), 12, 2 ) );		
-			itemSaida.append( format( getValorICMSOutras(), 12, 2 ) );			
-			itemSaida.append( format( getBaseIPI(), 12, 2 ) ); 			
-			itemSaida.append( format( getValorIPI(), 12, 2 ) ); 			
-			itemSaida.append( format( getValorIPIIsentas(), 12, 2 ) );			
-			itemSaida.append( format( getValorIPIOutras(), 12, 2 ) );			
-			itemSaida.append( format( getValorMercadoriasSubTributaria(), 12, 2 ) );			
-			itemSaida.append( format( getBaseSubTributaria(), 12, 2 ) );			
-			itemSaida.append( format( getValorICMSSubTributarias(), 12, 2 ) );			
-			itemSaida.append( format( getValorDireridas(), 12, 2 ) );			
-			itemSaida.append( format( getBaseISS(), 12, 2 ) );			
-			itemSaida.append( format( getValorISS(), 12, 2 ) );			
-			itemSaida.append( format( getValorISSIsentas(), 12, 2 ) );
-			itemSaida.append( format( getValorIRRFISS(), 12, 2 ) );			
-			itemSaida.append( format( " ", 169 ) );			
-			itemSaida.append( format( getSequencial(), 6 ) );
+			traleirSaida.append( getTipoRegistro() );	
+			traleirSaida.append( format( getValorNota(), 12, 2 ) );		
+			traleirSaida.append( format( getBasePIS(), 12, 2 ) );			
+			traleirSaida.append( format( getBaseCOFINS(), 12, 2 ) );			
+			traleirSaida.append( format( getBaseCSLL(), 12, 2 ) );			
+			traleirSaida.append( format( getBaseIRPJ(), 12, 2 ) );			
+			traleirSaida.append( format( getBaseICMSa(), 12, 2 ) );			
+			traleirSaida.append( format( getValorICMSa(), 12, 2 ) );			
+			traleirSaida.append( format( getBaseICMSb(), 12, 2 ) );			
+			traleirSaida.append( format( getValorICMSb(), 12, 2 ) );			
+			traleirSaida.append( format( getBaseICMSc(), 12, 2 ) );			
+			traleirSaida.append( format( getValorICMSc(), 12, 2 ) );			
+			traleirSaida.append( format( getBaseICMSd(), 12, 2 ) );			
+			traleirSaida.append( format( getValorICMSd(), 12, 2 ) );			
+			traleirSaida.append( format( getValorICMSIsentas(), 12, 2 ) );		
+			traleirSaida.append( format( getValorICMSOutras(), 12, 2 ) );			
+			traleirSaida.append( format( getBaseIPI(), 12, 2 ) ); 			
+			traleirSaida.append( format( getValorIPI(), 12, 2 ) ); 			
+			traleirSaida.append( format( getValorIPIIsentas(), 12, 2 ) );			
+			traleirSaida.append( format( getValorIPIOutras(), 12, 2 ) );			
+			traleirSaida.append( format( getValorMercadoriasSubTributaria(), 12, 2 ) );			
+			traleirSaida.append( format( getBaseSubTributaria(), 12, 2 ) );			
+			traleirSaida.append( format( getValorICMSSubTributarias(), 12, 2 ) );			
+			traleirSaida.append( format( getValorDireridas(), 12, 2 ) );			
+			traleirSaida.append( format( getBaseISS(), 12, 2 ) );			
+			traleirSaida.append( format( getValorISS(), 12, 2 ) );			
+			traleirSaida.append( format( getValorISSIsentas(), 12, 2 ) );
+			traleirSaida.append( format( getValorIRRFISS(), 12, 2 ) );			
+			traleirSaida.append( format( " ", 169 ) );			
+			traleirSaida.append( format( getSequencial(), 6 ) );
 			
-			return itemSaida.toString();
+			return traleirSaida.toString();
+		}
+	}
+	
+	private class Item {
+		
+		private int codigo;
+		
+		private String descricao;
+		
+		private String ncm;
+		
+		private String unidade;
+		
+		private BigDecimal peso;
+		
+		private String referencia;
+		
+		private int tipoProduto;
+		
+		private int sequencial;
+				
+		
+		public Item() {}
+
+		private int getCodigo() {
+			return codigo;
+		}
+
+		private void setCodigo( int codigo ) {
+			this.codigo = codigo;
+		}
+
+		private String getDescricao() {
+			return descricao;
+		}
+
+		private void setDescricao( String descricao ) {
+			this.descricao = descricao;
+		}
+
+		private String getNcm() {
+			return ncm;
+		}
+
+		private void setNcm( String ncm ) {
+			this.ncm = ncm;
+		}
+
+		private String getUnidade() {
+			return unidade;
+		}
+
+		private void setUnidade( String unidade ) {
+			this.unidade = unidade;
+		}
+
+		private BigDecimal getPeso() {
+			return peso;
+		}
+
+		private void setPeso( BigDecimal peso ) {
+			this.peso = peso;
+		}
+
+		private String getReferencia() {
+			return referencia;
+		}
+
+		private void setReferencia( String referencia ) {
+			this.referencia = referencia;
+		}
+
+		private int getTipoProduto() {
+			return tipoProduto;
+		}
+
+		private void setTipoProduto( int tipoProduto ) {
+			this.tipoProduto = tipoProduto;
+		}
+
+		private int getSequencial() {
+			return sequencial;
+		}
+
+		private void setSequencial( int sequencial ) {
+			this.sequencial = sequencial;
+		}		
+
+		@Override
+		public String toString() {
+
+			StringBuilder item = new StringBuilder( 100 );
+			
+			item.append( format( getCodigo(), 10 ) );			
+			item.append( format( getDescricao(), 40 ) );			
+			item.append( format( getNcm(), 8 ) );				
+			item.append( format( getUnidade(), 4 ) );				
+			item.append( format( getPeso(), 9, 3 ) );				
+			item.append( format( getReferencia(), 15 ) );				
+			item.append( format( getTipoProduto(), 2 ) );		
+			item.append( format( " ", 6 ) );			
+			item.append( format( getSequencial(), 6 ) );
+			
+			return item.toString();
 		}
 	}
 }
