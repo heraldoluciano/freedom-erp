@@ -32,25 +32,30 @@
 	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["C:\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\layout\\rel\\"]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[select codfilial from sgfilial where codfilial=1
-
-]]></queryString>
+	<queryString><![CDATA[select codfilial from sgfilial where codfilial=1]]></queryString>
 
 	<field name="CODFILIAL" class="java.lang.Short"/>
 
+	<variable name="TOTPAGAR" class="java.math.BigDecimal" resetType="Group" incrementType="Group" incrementGroup="pagar" resetGroup="pagar" calculation="Nothing">
+	</variable>
+	<variable name="TOTRECEBER" class="java.math.BigDecimal" resetType="Group" incrementType="Group" incrementGroup="receber" resetGroup="receber" calculation="Nothing">
+	</variable>
 
 		<group  name="pagar" minHeightToStartNewPage="50" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="55"  isSplitAllowed="true" >
+			<band height="65"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
 						x="0"
-						y="0"
+						y="4"
 						width="563"
 						height="55"
-						key="subreport-1"/>
+						key="subreport-1"
+						stretchType="RelativeToTallestObject"
+						isPrintRepeatedValues="false"/>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<returnValue subreportVariable="SUBTOTAL" toVariable="TOTPAGAR"/>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "/REL_FLUXO_CAIXA_PAG.jasper"]]></subreportExpression>
 				</subreport>
 			</band>
@@ -63,15 +68,18 @@
 		<group  name="receber" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="55"  isSplitAllowed="true" >
+			<band height="69"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
 						x="0"
-						y="0"
+						y="8"
 						width="563"
 						height="55"
-						key="subreport-2"/>
+						key="subreport-2"
+						stretchType="RelativeToTallestObject"
+						isPrintRepeatedValues="false"/>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<returnValue subreportVariable="SUBTOTAL" toVariable="TOTRECEBER"/>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "/REL_FLUXO_CAIXA_REC.jasper"]]></subreportExpression>
 				</subreport>
 			</band>
@@ -84,14 +92,16 @@
 		<group  name="saldofisico" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="55"  isSplitAllowed="true" >
+			<band height="63"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
 						x="0"
 						y="0"
 						width="563"
 						height="55"
-						key="subreport-3"/>
+						key="subreport-3"
+						stretchType="RelativeToTallestObject"
+						isPrintRepeatedValues="false"/>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "/REL_FLUXO_CAIXA_SLD_FIS.jasper"]]></subreportExpression>
 				</subreport>
@@ -105,14 +115,16 @@
 		<group  name="saldoprevisionado" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="55"  isSplitAllowed="true" >
+			<band height="65"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
 						x="0"
-						y="0"
+						y="9"
 						width="563"
 						height="55"
-						key="subreport-4"/>
+						key="subreport-4"
+						stretchType="RelativeToTallestObject"
+						isPrintRepeatedValues="false"/>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "/REL_FLUXO_CAIXA_SLD_PRE.jasper"]]></subreportExpression>
 				</subreport>
@@ -222,7 +234,7 @@
 			</band>
 		</detail>
 		<columnFooter>
-			<band height="50"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</columnFooter>
 		<pageFooter>
