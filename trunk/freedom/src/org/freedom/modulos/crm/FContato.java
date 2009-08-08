@@ -702,7 +702,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 						imp.say( imp.pRow(), 0, "|CNPJ:" );
 						imp.say( imp.pRow(), 7, Funcoes.setMascara( rs.getString( "CnpjCto" ), "##.###.###/####-##" ) );
 						imp.say( imp.pRow(), 50, "IE:" );
-						if ( !rs.getString( "InscCto" ).trim().toUpperCase().equals( "ISENTA" ) && rs.getString( "UFCto" ) != null ) {
+						if ( !rs.getString( "InscCto" ).trim().toUpperCase().equals( "ISENTO" ) && rs.getString( "UFCto" ) != null ) {
 							Funcoes.vIE( rs.getString( "InscCto" ), rs.getString( "UFCto" ) );
 							imp.say( imp.pRow(), 55, Funcoes.sIEValida );
 						}
@@ -856,7 +856,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 			}
 			txtDataCont.setVlrDate( new Date() );
 		}
-		if ( ! ( txtInscCont.getText().trim().length() < 1 ) && ! ( txtInscCont.getText().trim().toUpperCase().compareTo( "ISENTA" ) == 0 ) && !Funcoes.vIE( txtInscCont.getText(), txtUFCont.getText() ) ) {
+		if ( ! ( txtInscCont.getText().trim().length() < 1 ) && ! ( txtInscCont.getText().trim().toUpperCase().compareTo( "ISENTO" ) == 0 ) && !Funcoes.vIE( txtInscCont.getText(), txtUFCont.getText() ) ) {
 			pevt.cancela();
 			Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
 			txtInscCont.requestFocus();
