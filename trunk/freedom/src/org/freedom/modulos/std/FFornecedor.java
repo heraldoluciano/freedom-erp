@@ -752,7 +752,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 						imp.say( imp.pRow() + 0, 1, "CNPJ:" );
 						imp.say( imp.pRow() + 0, 7, Funcoes.setMascara( rs.getString( "CnpjFor" ), "##.###.###/####-##" ) );
 						imp.say( imp.pRow() + 0, 49, "IE:" );
-						if ( !rs.getString( "InscFor" ).trim().toUpperCase().equals( "ISENTA" ) && rs.getString( "UFFor" ) != null ) {
+						if ( !rs.getString( "InscFor" ).trim().toUpperCase().equals( "ISENTO" ) && rs.getString( "UFFor" ) != null ) {
 							Funcoes.vIE( rs.getString( "InscFor" ), rs.getString( "UFFor" ) );
 							imp.say( imp.pRow() + 0, 54, Funcoes.sIEValida );
 						}
@@ -966,13 +966,13 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			return;
 		}
 		else if ( ( txtInscFor.getVlrString().trim().equals( "" ) ) && ( (Boolean)prefs.get( "INSCESTFOROBRIG" )) ) {
-			if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTA?" ) == JOptionPane.OK_OPTION )
+			if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION )
 				pevt.cancela();
-			txtInscFor.setVlrString( "ISENTA" );
+			txtInscFor.setVlrString( "ISENTO" );
 			txtInscFor.requestFocus();
 			return;
 		}
-		else if ( txtInscFor.getVlrString().trim().equalsIgnoreCase( "ISENTA" ) ) {
+		else if ( txtInscFor.getVlrString().trim().equalsIgnoreCase( "ISENTO" ) ) {
 			return;
 		}
 		else if ( txtUFFor.getText().trim().length() < 2 ) {

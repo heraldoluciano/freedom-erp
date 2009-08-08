@@ -3477,7 +3477,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 					imp.say( 0, "| CNPJ:" );
 					imp.say( 7, Funcoes.setMascara( rs.getString( "CnpjCli" ), "##.###.###/####-##" ) );
 					imp.say( 50, "IE:" );
-					if ( !rs.getString( "InscCli" ).trim().toUpperCase().equals( "ISENTA" ) && rs.getString( "UFCli" ) != null ) {
+					if ( !rs.getString( "InscCli" ).trim().toUpperCase().equals( "ISENTO" ) && rs.getString( "UFCli" ) != null ) {
 						Funcoes.vIE( rs.getString( "InscCli" ), rs.getString( "UFCli" ) );
 						imp.say( 55, Funcoes.sIEValida );
 					}
@@ -4289,8 +4289,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		if ( ( txtInscCli.getText().trim().length() < 1 ) && ( (Boolean)bPref.get( "CLIMESMOCNPJ" ) ) ) {
-			if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTA?" ) == JOptionPane.OK_OPTION ) {
-				txtInscCli.setVlrString( "ISENTA" );
+			if ( Funcoes.mensagemConfirma( this, "Inscrição Estadual em branco! Inserir ISENTO?" ) == JOptionPane.OK_OPTION ) {
+				txtInscCli.setVlrString( "ISENTO" );
 			}
 			pevt.cancela();
 			txtInscCli.requestFocus();
@@ -4313,7 +4313,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			}
 		}
 
-		if ( txtInscCli.getText().trim().toUpperCase().compareTo( "ISENTA" ) == 0 ) {
+		if ( txtInscCli.getText().trim().toUpperCase().compareTo( "ISENTO" ) == 0 ) {
 			return;
 		}
 
