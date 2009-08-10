@@ -94,7 +94,7 @@ public abstract class AbstractNFEFactory {
 
 	public List<NFEInconsistency> getListInconsistency() {
 		
-		if ( getListInconsistency() == null ) {
+		if ( this.listInconsistency == null ) {
 			this.listInconsistency = new ArrayList<NFEInconsistency>();
 		}
 		
