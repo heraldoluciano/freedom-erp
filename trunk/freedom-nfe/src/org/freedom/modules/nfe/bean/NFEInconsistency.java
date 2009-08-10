@@ -20,20 +20,54 @@ package org.freedom.modules.nfe.bean;
  * @see	org.freedom.modules.nfe.control.AbstractNFEFactory
  * 
  * @author Setpoint Informática Ltda./Robson Sanchez
- * @version 15/07/2009
+ * @version 10/08/2009
  */
 public class NFEInconsistency {
+	
+	private TypeInconsistency typeInconsistency;
 	
 	private String description;
 	
 	private String correctiveAction;
-
-	public NFEInconsistency( String description, String correctiveAction ) {
-		this.description = description;
-		this.correctiveAction = correctiveAction;
+	
+	private String field;
+	
+	private String valueField;
+	
+	
+	public enum TypeInconsistency {
+		
+		WARNNIG, ERROR, MESSAGE;
 	}
 
-	public void setDescription( String description ) {
+	public NFEInconsistency( TypeInconsistency typeInconsistency, String description ) {
+		setTypeInconsistency( typeInconsistency );
+		setDescription( description );
+	}
+
+	public NFEInconsistency( TypeInconsistency typeInconsistency, String description, String correctiveAction ) {
+		setTypeInconsistency( typeInconsistency );
+		setDescription( description );
+		setCorrectiveAction( correctiveAction );
+	}
+
+	public NFEInconsistency( TypeInconsistency typeInconsistency, String description, String correctiveAction, String field, Object valueField ) {
+		setTypeInconsistency( typeInconsistency );
+		setDescription( description );
+		setCorrectiveAction( correctiveAction );
+		setField( field );
+		setValueField( String.valueOf( valueField ) );
+	}
+
+	private void setTypeInconsistency( TypeInconsistency typeInconsistency ) {
+		this.typeInconsistency = typeInconsistency;
+	}
+
+	public TypeInconsistency getTypeInconsistency() {
+		return typeInconsistency;
+	}
+
+	private void setDescription( String description ) {
 		this.description = description;
 	}
 
@@ -41,11 +75,29 @@ public class NFEInconsistency {
 		return description;
 	}
 
-	public void setCorrectiveAction( String correctiveAction ) {
+	private void setCorrectiveAction( String correctiveAction ) {
 		this.correctiveAction = correctiveAction;
 	}
 
 	public String getCorrectiveAction() {
 		return correctiveAction;
+	}
+
+	public String getField() {
+		return field;
+	}
+
+	public NFEInconsistency setField( String field ) {
+		this.field = field;
+		return this;
+	}
+
+	public String getValueField() {
+		return valueField;
+	}
+
+	public NFEInconsistency setValueField( String valueField ) {
+		this.valueField = valueField;
+		return this;
 	}
 }
