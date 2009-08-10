@@ -488,7 +488,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		
 		setPainel( panelServico );
 		
-		adicCampo(txtCodServ, 7, 20, 70, 20,"CodServ","Cód.Serv.",ListaCampos.DB_FK, true);
+		adicCampo(txtCodServ, 7, 20, 70, 20,"CodServ","Cód.Serv.",ListaCampos.DB_FK, false);
 		adic( txaDescServ, 80, 20, 650, 100,"Descrição do serviço");	
 		
 		// *******************************		
