@@ -23,19 +23,19 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<queryString><![CDATA[select sum((select first 1 sl.saldosl from fnsaldolanca sl
-where sl.codemppn=pl.codemp and sl.codfilialpn=pl.codfilial and sl.codplan=pl.codplan
-and sl.datasl<='07-31-2009'
-order by sl.datasl desc
-)) total
-from fnplanejamento pl, fnconta ct
-where pl.nivelplan=6
-and pl.tipoplan in ('C','B')
-and pl.codemp=2 and pl.codfilial=1
-and ct.codemppn=pl.codemp and ct.codfilialpn=pl.codfilial and ct.codplan=pl.codplan
-and ct.ativaconta='S' and ct.tipocaixa='P']]></queryString>
+	<queryString><![CDATA[select sum(ip.vlrapagitpag) valorpagar, cast(0 as decimal(15,5)) valorreceber
+from fnitpagar ip
+where ip.codemp=2 and ip.codfilial=1 and ip.dtvencitpag<='07-31-2009'
+and ip.statusitpag in ('PL','P1')
+union
+select cast(0 as decimal(15,5)) valorpagar, sum(ir.vlrapagitrec) valorreceber
+from fnitreceber ir
+where ir.codemp=3 and ir.codfilial=1 and ir.dtvencitrec<='07-31-2009'
+and ir.statusitrec in ('RL','R1')
+]]></queryString>
 
-	<field name="TOTAL" class="java.math.BigDecimal"/>
+	<field name="VALORPAGAR" class="java.math.BigDecimal"/>
+	<field name="VALORRECEBER" class="java.math.BigDecimal"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -65,7 +65,7 @@ and ct.ativaconta='S' and ct.tipocaixa='P']]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[PREVISIONAMENTOS]]></text>
+				<text><![CDATA[SUMÁRIO]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -140,7 +140,7 @@ and ct.ativaconta='S' and ct.tipocaixa='P']]></queryString>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false"/>
 					</textElement>
-				<text><![CDATA[Total dos previsionamentos]]></text>
+				<text><![CDATA[Disponibilidade]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
