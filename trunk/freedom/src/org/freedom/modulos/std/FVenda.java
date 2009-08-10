@@ -53,7 +53,6 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
@@ -93,11 +92,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private static final long serialVersionUID = 1L;
 
+	private JTabbedPanePad tpnCab = new JTabbedPanePad();
+
+	private JScrollPane spnCabComis = null;
+
 	private JPanelPad pinCabVenda = new JPanelPad();
 
 	private JPanelPad pinCabComis = null;
-
-	private JScrollPane spnCabComis = null;
 
 	private JPanelPad pinCabFiscal = new JPanelPad();
 	
@@ -305,9 +306,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JTextFieldFK txtDescFisc = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextField txtFiscalTipoMov1 = new JTextField();
+	private JTextFieldPad txtFiscalTipoMov1 = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextField txtFiscalTipoMov2 = new JTextField();
+	private JTextFieldPad txtFiscalTipoMov2 = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtCodAlmoxItVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -318,6 +319,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtCodFilialIf = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
 	private JTextFieldFK txtCodFisc = new JTextFieldFK( JTextFieldPad.TP_STRING, 13, 0 );
+
+	private JTextFieldPad txtCodModNota = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescModNota = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
+
+	private JTextFieldPad txtTipoModNota = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JLabelPad lbStatus = new JLabelPad();
 
@@ -332,38 +339,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JCheckBoxPad chbReImpNfTipoMov = new JCheckBoxPad( "Reimp.NF?", "S", "N" );
 
 	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
-
-	private ListaCampos lcTratTrib = new ListaCampos( this, "TT" );
-
-	private ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
-
-	private ListaCampos lcCli = new ListaCampos( this, "CL" );
-
-	private ListaCampos lcVendedor = new ListaCampos( this, "VD" );
-
-	private ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
-
-	private ListaCampos lcSerie = new ListaCampos( this, "SE" );
-
-	private ListaCampos lcProd = new ListaCampos( this, "PD" );
-
-	private ListaCampos lcProd2 = new ListaCampos( this, "PD" );
-
-	private ListaCampos lcNat = new ListaCampos( this, "NT" );
-
-	private ListaCampos lcLote = new ListaCampos( this, "LE" );
-
-	private ListaCampos lcClComis = new ListaCampos( this, "CM" );
-
-	private ListaCampos lcFisc = new ListaCampos( this );
-
-	private ListaCampos lcVenda2 = new ListaCampos( this );
-
-	private ListaCampos lcAlmox = new ListaCampos( this, "AX" );
-
-	private CtrlMultiComis ctrlmc = null;
-
-	private JTabbedPanePad tpnCab = new JTabbedPanePad();
 
 	private JCheckBoxPad cbIPIimp = new JCheckBoxPad( "", "S", "N" );
 
@@ -392,6 +367,38 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JCheckBoxPad cbICMSimp = new JCheckBoxPad( "", "S", "N" );
 
 	private JCheckBoxPad cbICMScalc = new JCheckBoxPad( "", "S", "N" );
+
+	private ListaCampos lcTratTrib = new ListaCampos( this, "TT" );
+
+	private ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
+
+	private ListaCampos lcModNota = new ListaCampos( this, "MN" );
+
+	private ListaCampos lcCli = new ListaCampos( this, "CL" );
+
+	private ListaCampos lcVendedor = new ListaCampos( this, "VD" );
+
+	private ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
+
+	private ListaCampos lcSerie = new ListaCampos( this, "SE" );
+
+	private ListaCampos lcProd = new ListaCampos( this, "PD" );
+
+	private ListaCampos lcProd2 = new ListaCampos( this, "PD" );
+
+	private ListaCampos lcNat = new ListaCampos( this, "NT" );
+
+	private ListaCampos lcLote = new ListaCampos( this, "LE" );
+
+	private ListaCampos lcClComis = new ListaCampos( this, "CM" );
+
+	private ListaCampos lcFisc = new ListaCampos( this );
+
+	private ListaCampos lcVenda2 = new ListaCampos( this );
+
+	private ListaCampos lcAlmox = new ListaCampos( this, "AX" );
+
+	private CtrlMultiComis ctrlmc = null;
 
 	private int numComissionados = 0;
 
@@ -766,6 +773,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( txtCodSerie, "Serie", "Série", ListaCampos.DB_FK, false ) );
+		lcTipoMov.add( new GuardaCampo( txtCodModNota, "CodModNota", "Mod.nota", ListaCampos.DB_FK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtTipoMov, "TipoMov", "Tipo mov.", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( txtESTipoMov, "ESTipoMov", "E/S", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( chbImpPedTipoMov, "ImpPedTipoMov", "Imp.ped.", ListaCampos.DB_SI, false ) );
@@ -781,8 +789,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		 * SELECT CODTIPOMOV, DESCTIPOMOV FROM EQTIPOMOV WHERE ( TUSUTIPOMOV='S' OR EXISTS (SELECT * FROM EQTIPOMOVUSU TU WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=4 AND TU.CODFILIALUS=1 AND TU.IDUSU='sysdba') ) ORDER
 		 * BY 1
 		 */
-		lcTipoMov.setWhereAdic( "( (ESTIPOMOV = 'S' OR TIPOMOV IN ('PV','DV')) AND " + " ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU " + "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND " + "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS="
-				+ Aplicativo.iCodEmp + " AND " + "TU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + " AND TU.IDUSU='" + Aplicativo.strUsuario + "') ) )" );
+		lcTipoMov.setWhereAdic( 
+				"( (ESTIPOMOV = 'S' OR TIPOMOV IN ('PV','DV')) AND " + 
+				" ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU " + 
+				"WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND " + 
+				"TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS="
+				+ Aplicativo.iCodEmp + " AND " + "TU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + 
+				" AND TU.IDUSU='" + Aplicativo.strUsuario + "') ) )" );
 
 		if ( bPrefs[ POS_PREFS.TRAVATMNFVD.ordinal() ] ) {
 			txtFiscalTipoMov1.setText( "S" );
@@ -795,6 +808,18 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
 		txtCodTipoMov.setTabelaExterna( lcTipoMov );
+		
+		// FK Modelo de nota
+		lcModNota.add( new GuardaCampo( txtCodModNota, "CodModNota", "Cód.mod.nota", ListaCampos.DB_PK, false ) );
+		lcModNota.add( new GuardaCampo( txtDescModNota, "DescModNota", "Descrição do modelo de nota", ListaCampos.DB_SI, false ) );
+		lcModNota.add( new GuardaCampo( txtTipoModNota, "TipoModNota", "Tipo", ListaCampos.DB_SI, false ) );
+		lcModNota.montaSql( false, "MODNOTA", "LF" );
+		lcModNota.setQueryCommit( false );
+		lcModNota.setReadOnly( true );
+		txtCodModNota.setTabelaExterna( lcModNota );
+		
+		lcTipoMov.adicDetalhe( lcModNota );
+		
 
 		// Adiciona os componentes na tela e no ListaCompos da venda
 		setListaCampos( lcCampos );
@@ -2067,7 +2092,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			DLFechaVenda dl = new DLFechaVenda( con, txtCodVenda.getVlrInteger(), this, chbImpPedTipoMov.getVlrString(), 
 					chbImpNfTipoMov.getVlrString(), chbImpBolTipoMov.getVlrString(), chbImpRecTipoMov.getVlrString(), 
 					chbReImpNfTipoMov.getVlrString(), txtCodTran.getVlrInteger(), txtTipoFrete.getVlrString(), 
-					getVolumes(), nfecf );
+					getVolumes(), (nfecf.getHasNFE() && "E".equals(txtTipoModNota.getVlrString())) );
 			// dl.getDadosCli();
 			dl.setVisible( true );
 	
@@ -2223,7 +2248,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	private void emiteNotaFiscal( final String sTipo ) {
-		if ( nfecf.getHasNFE() ) {
+		if ( (nfecf.getHasNFE() && "E".equals(txtTipoModNota.getVlrString())) ) {
 			emiteNFE();
 		} else {
 			emiteNF( sTipo );
@@ -3398,6 +3423,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		montaTela();
 		lcTratTrib.setConexao( cn );
 		lcTipoMov.setConexao( cn );
+		lcModNota.setConexao( cn );
 		lcCli.setConexao( cn );
 		lcVendedor.setConexao( cn );
 		lcPlanoPag.setConexao( cn );

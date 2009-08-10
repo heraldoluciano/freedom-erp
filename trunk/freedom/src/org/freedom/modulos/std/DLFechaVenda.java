@@ -293,13 +293,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		
 	public DLFechaVenda( DbConnection cn, Integer iCodVenda, Component cOrig, String impPed, 
 			String impNf, String impBol, String impRec, String reImpNf, Integer codtran, 
-			String tpFrete, BigDecimal volumes, NFEConnectionFactory nfecf ) {
+			String tpFrete, BigDecimal volumes, boolean NFe ) {
 
 		super( cOrig );
 				
 		setConexao( cn );
          
-		if (nfecf.getHasNFE()) {
+		if ( NFe ) {
 		    cbImpNot.setText( "Emite NFE?" );
 		    cbReImpNot.setText( "Consulta NFE?" );
 		} else {
