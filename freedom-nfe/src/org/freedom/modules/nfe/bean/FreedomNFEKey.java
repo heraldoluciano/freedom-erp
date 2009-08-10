@@ -29,15 +29,23 @@ public class FreedomNFEKey extends AbstractNFEKey {
 	
 	public static final String TIPOVENDA = "TIPOVENDA";
 	
+	public static final String DOCVENDA = "DOCVENDA";
+	
 	public static final String DIRNFE = "DIRNFE";
 
 	
-	public FreedomNFEKey( Integer codemp, Integer codfilial, String tipovenda, Integer codvenda, String dirNFE ) {
+	public FreedomNFEKey( Integer codemp, 
+						  Integer codfilial, 
+						  String tipovenda, 
+						  Integer codvenda,  
+						  Integer docvenda, 
+						  String dirNFE ) {
 	
 		put( CODEMP, codemp );
 		put( CODFILIAL, codfilial );
 		put( TIPOVENDA, tipovenda );
 		put( CODVENDA, codvenda );
+		put( DOCVENDA, docvenda );
 		put( DIRNFE, dirNFE );
 	}
 }

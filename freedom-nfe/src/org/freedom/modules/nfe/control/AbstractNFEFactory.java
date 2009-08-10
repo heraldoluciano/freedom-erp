@@ -33,17 +33,15 @@ public abstract class AbstractNFEFactory {
 
 	private boolean valid = true;
 
-	private SYSTEM sourceSystem = SYSTEM.FREEDOM;
-
 	private DbConnection conSys = null;
 
 	private DbConnection conNFE = null;
 
 	private AbstractNFEKey key = null;
 
-	private final List<NFEListener> listEvent = new ArrayList<NFEListener>();
+	private List<NFEInconsistency> listInconsistency;
 
-	private List<NFEInconsistency> listInconsistency = new ArrayList<NFEInconsistency>();
+	private final List<NFEListener> listEvent = new ArrayList<NFEListener>();
 
 	public enum SYSTEM {
 		FREEDOM
@@ -58,14 +56,6 @@ public abstract class AbstractNFEFactory {
 
 	public void setValid( boolean valid ) {
 		this.valid = valid;
-	}
-
-	public void setSourceSystem( SYSTEM sourceSystem ) {
-		this.sourceSystem = sourceSystem;
-	}
-
-	public SYSTEM getSourceSystem() {
-		return sourceSystem;
 	}
 
 	public DbConnection getConSys() {
@@ -93,14 +83,21 @@ public abstract class AbstractNFEFactory {
 	}
 
 	public void addInconsistency( String description, String correctiveAction ) {
-		this.addInconsistency( new NFEInconsistency( description, correctiveAction ) );
+		this.addInconsistency( new NFEInconsistency( NFEInconsistency.TypeInconsistency.ERROR, description, correctiveAction ) );
 	}
 
 	public void addInconsistency( NFEInconsistency inconsistency ) {
-		listInconsistency.add( inconsistency );
+		if ( inconsistency != null ) {
+			listInconsistency.add( inconsistency );
+		}
 	}
 
 	public List<NFEInconsistency> getListInconsistency() {
+		
+		if ( getListInconsistency() == null ) {
+			this.listInconsistency = new ArrayList<NFEInconsistency>();
+		}
+		
 		return listInconsistency;
 	}
 
