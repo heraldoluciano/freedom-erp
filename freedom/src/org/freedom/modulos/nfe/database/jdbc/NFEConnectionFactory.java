@@ -152,9 +152,9 @@ public class NFEConnectionFactory implements NFEListener {
 		}
 	}
 
-	public void setKey( Integer codemp, Integer codfilial, String tipovenda, Integer codvenda ) {
+	public void setKey( Integer codemp, Integer codfilial, String tipovenda, Integer codvenda, Integer docvenda ) {
 
-		FreedomNFEKey key = new FreedomNFEKey( codemp, codfilial, tipovenda, codvenda, getDirNFE() );
+		FreedomNFEKey key = new FreedomNFEKey( codemp, codfilial, tipovenda, codvenda, docvenda, getDirNFE() );
 		getObjNFEFactory().setKey( key );
 	}
 
