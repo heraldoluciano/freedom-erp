@@ -19,7 +19,7 @@ package org.freedom.modules.nfe.bean;
  * 
  * @see	org.freedom.modules.nfe.control.AbstractNFEFactory
  * 
- * @author Setpoint Informática Ltda./Robson Sanchez
+ * @author Setpoint Informática Ltda./Robson Sanchez/Alex Rodrigues
  * @version 10/08/2009
  */
 public class NFEInconsistency {
@@ -44,14 +44,6 @@ public class NFEInconsistency {
 		setTypeInconsistency( typeInconsistency );
 		setDescription( description );
 		setCorrectiveAction( correctiveAction );
-	}
-
-	public NFEInconsistency( TypeInconsistency typeInconsistency, String description, String correctiveAction, String field, Object valueField ) {
-		setTypeInconsistency( typeInconsistency );
-		setDescription( description );
-		setCorrectiveAction( correctiveAction );
-		setField( field );
-		setValueField( String.valueOf( valueField ) );
 	}
 
 	private void setTypeInconsistency( TypeInconsistency typeInconsistency ) {
