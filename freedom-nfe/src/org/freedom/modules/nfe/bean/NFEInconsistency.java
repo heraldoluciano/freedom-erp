@@ -40,11 +40,6 @@ public class NFEInconsistency {
 		WARNNIG, ERROR, MESSAGE;
 	}
 
-	public NFEInconsistency( TypeInconsistency typeInconsistency, String description ) {
-		setTypeInconsistency( typeInconsistency );
-		setDescription( description );
-	}
-
 	public NFEInconsistency( TypeInconsistency typeInconsistency, String description, String correctiveAction ) {
 		setTypeInconsistency( typeInconsistency );
 		setDescription( description );
