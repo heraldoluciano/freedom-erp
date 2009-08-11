@@ -288,7 +288,9 @@ public class FRetCnab extends FRetFBN {
 					lbStatus.setText( "     Arquivo lido ..." );
 					String codigo = ( "53" + header.getOcorrencias().trim() + "00" ).substring( 0, 4 );
 					String mensagem = getMenssagemRet( txtCodBanco.getVlrString(), codigo, FPrefereFBB.TP_CNAB );
-					Funcoes.mensagemInforma( this, mensagem != null ? mensagem : "Mensagem do arquivo não identificada." );
+					if ( mensagem != null ) {
+						Funcoes.mensagemInforma( this, mensagem );
+					}
 					return false;
 				}
 				else {
@@ -309,11 +311,11 @@ public class FRetCnab extends FRetFBN {
 		return retorno;
 	}
 	
-	private Receber findReceber( int idocrec, int iparc ) {
+	private Receber findReceber( int codrec, int iparc ) {
 		
 		Receber receber = null;
 		
-		if ( idocrec == 0 && iparc == 0 ) {
+		if ( codrec == 0 && iparc == 0 ) {
 			return receber;
 		}
 				
@@ -327,7 +329,7 @@ public class FRetCnab extends FRetFBN {
 			sql.append( "  FNITRECEBER IR, FNRECEBER R, VDCLIENTE CL " );
 			sql.append( "WHERE " );
 			sql.append( "  IR.CODEMP=? AND IR.CODFILIAL=? AND IR.NPARCITREC=? AND " );
-			sql.append( "  IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND R.DOCREC=? AND " );
+			sql.append( "  IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND R.CODREC=? AND " );
 			sql.append( "  R.CODEMPCL=CL.CODEMP AND R.CODFILIALCL=CL.CODFILIAL AND R.CODCLI=CL.CODCLI " );
 			
 			try {
@@ -335,7 +337,7 @@ public class FRetCnab extends FRetFBN {
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 				ps.setInt( 3, iparc );
-				ps.setInt( 4, idocrec );
+				ps.setInt( 4, codrec );
 				
 				ResultSet rs = ps.executeQuery();
 				
