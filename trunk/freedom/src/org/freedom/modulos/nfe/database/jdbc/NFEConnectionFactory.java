@@ -23,17 +23,17 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modules.nfe.bean.FreedomNFEKey;
-import org.freedom.modules.nfe.bean.NFEInconsistency;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
 import org.freedom.modules.nfe.event.NFEEvent;
 import org.freedom.modules.nfe.event.NFEListener;
+import org.freedom.modulos.nfe.DLInconsistency;
 import org.freedom.telas.Aplicativo;
 
 /**
  * Classe para manipulação de conexão com banco de dados NFE.
  * 
- * @author Setpoint Informática Ltda./Robson Sanchez
- * @version 13/07/2009
+ * @author Setpoint Informática Ltda./Robson Sanchez/Alex Rodrigues
+ * @version 10/11/2009
  */
 public class NFEConnectionFactory implements NFEListener {
 
@@ -262,8 +262,10 @@ public class NFEConnectionFactory implements NFEListener {
 	public void afterValidSend( NFEEvent e ) {
 
 		AbstractNFEFactory nfe = e.getNfefactory();
-		for ( NFEInconsistency i : nfe.getListInconsistency() ) {
-			Funcoes.mensagemErro( null, i.getDescription() + "\n" + i.getCorrectiveAction() );
+
+		if ( nfe.getListInconsistency().size() > 0 ) {
+			DLInconsistency inconsistency = new DLInconsistency( nfe.getListInconsistency() );
+			inconsistency.setVisible( true );
 		}
 	}
 
@@ -274,9 +276,8 @@ public class NFEConnectionFactory implements NFEListener {
 		AbstractNFEFactory nfe = e.getNfefactory();
 		
 		if ( nfe.getListInconsistency().size() > 0 ) {
-			for ( NFEInconsistency i : nfe.getListInconsistency() ) {
-				Funcoes.mensagemErro( null, i.getDescription() + "\n" + i.getCorrectiveAction() );
-			}
+			DLInconsistency inconsistency = new DLInconsistency( nfe.getListInconsistency() );
+			inconsistency.setVisible( true );
 		}
 		else {
 			Funcoes.mensagemInforma( null, "Arquivo de NF-e criado com sucesso." );
