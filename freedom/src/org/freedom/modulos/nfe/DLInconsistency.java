@@ -93,11 +93,11 @@ public class DLInconsistency extends FDialogo implements MouseListener {
 		panelList.add( new JScrollPane( tab ), BorderLayout.CENTER );
 		
 		descricao.setAtivo( false );
-		descricao.setBorder( BorderFactory.createTitledBorder( "Descrição :" ) );
+		descricao.setBorder( BorderFactory.createTitledBorder( "Descrição : " ) );
 		panelTextos.add( descricao );
 		
 		acaoCorretiva.setAtivo( false );
-		acaoCorretiva.setBorder( BorderFactory.createTitledBorder( "Ação corretiva / Observações :" ) );
+		acaoCorretiva.setBorder( BorderFactory.createTitledBorder( "Ação corretiva / Observações : " ) );
 		panelTextos.add( acaoCorretiva );
 		
 		panelTextos.setPreferredSize( new Dimension( 700, 200 ) );
