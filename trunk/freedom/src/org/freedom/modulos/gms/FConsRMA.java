@@ -106,7 +106,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 	public FConsRMA() {
 		super(false);
 		setTitulo("Pesquisa Requisições de material");
-		setAtribos(10, 10, 663, 480);
+		setAtribos(10, 10, 735, 480);
 
 		txtDtIni.setRequerido(true);
 		txtDtFim.setRequerido(true);
@@ -241,13 +241,15 @@ public class FConsRMA extends FFilho implements ActionListener {
 		tab.adicColuna("Usuário");
 		tab.adicColuna("CC");
 		tab.adicColuna("Motivo");
+		tab.adicColuna("Projeto/Contrato");
 
 		tab.setTamColuna(12, 0);
 		tab.setTamColuna(40, 1);
-		tab.setTamColuna(90, 2);
-		tab.setTamColuna(60, 3);
-		tab.setTamColuna(240, 4);
-		tab.setTamColuna(325, 5);
+		tab.setTamColuna(70, 2);
+		tab.setTamColuna(50, 3);
+		tab.setTamColuna(180, 4);
+		tab.setTamColuna(200, 5);
+		tab.setTamColuna(150, 6);
 
 		btBusca.addActionListener(this);
 		btPrevimp.addActionListener(this);
@@ -360,19 +362,25 @@ public class FConsRMA extends FFilho implements ActionListener {
 
 		if (usuario)
 			where += " AND (R.IDUSU=?) ";
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append( "select r.sitrma, r.codrma, r.dtareqrma, r.idusu, fn.desccc, r.motivorma, " );
+		sql.append( "ct.codcontr, ct.desccontr ");
+		sql.append( "from  eqrma r " );
+		sql.append( "left outer join vdcontrato ct on ");
+		sql.append( "ct.codemp=r.codempct and ct.codfilial=r.codfilialct and ct.codcontr=r.codcontr, ");
+		sql.append( " eqitrma it, fncc fn ");
+		sql.append( "where r.codemp=? and r.codfilial=? and it.codrma=r.codrma and it.codemp=r.codemp and it.codfilial=r.codfilial ");
+		sql.append( "and r.anocc=fn.anocc and r.codcc=fn.codcc ");				
+		sql.append( "and ((it.dtaprovitrma between ? and ? ) or  (r.dtareqrma between ? and ?)) ");
+		sql.append( where );
+		sql.append( " group by r.codrma, r.sitrma, r.dtareqrma, r.idusu, fn.desccc, r.motivorma, ct.codcontr, ct.desccontr  ");
 
-		String sSQL = "SELECT R.SITRMA, R.CODRMA,R.DTAREQRMA, R.IDUSU, FN.DESCCC, R.MOTIVORMA "
-				+ "FROM  EQRMA R, EQITRMA IT, FNCC FN "
-				+ "WHERE R.CODEMP=? "
-				+ "AND R.CODFILIAL=? "
-				+ "AND IT.CODRMA=R.CODRMA AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL "
-				+ "AND R.ANOCC=FN.ANOCC AND R.CODCC=FN.CODCC "				
-				+ "AND ((IT.DTAPROVITRMA BETWEEN ? AND ?) OR  (R.DTAREQRMA BETWEEN ? AND ?)) "
-				+ where + " GROUP BY R.CODRMA, R.SitRMA, R.DTAREQRMA, R.IDUSU, FN.DESCCC, R.MOTIVORMA ";
-
-		System.out.println(sSQL);
+		System.out.println(sql.toString());
+		
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			
+			PreparedStatement ps = con.prepareStatement(sql.toString());
 			int param = 1;
 			ps.setInt(param++, Aplicativo.iCodEmp);
 			ps.setInt(param++, ListaCampos.getMasterFilial("EQRMA"));
@@ -427,21 +435,19 @@ public class FConsRMA extends FFilho implements ActionListener {
 
 				tab.setValor(imgColuna, iLin, 0);
 				tab.setValor(new Integer(rs.getInt(2)), iLin, 1);
-				tab.setValor(rs.getString(3) == null ? "-" : Funcoes
-						.sqlDateToStrDate(rs.getDate(3))
-						+ "", iLin, 2);
-				tab.setValor(rs.getString(4) == null ? "-" : rs.getString(4) + "",
-						iLin, 3);				
-				tab.setValor(rs.getString(5) == null ? "-" : rs.getString(5) + "",
-						iLin, 4);
-				tab.setValor(rs.getString(6) == null ? "-" : rs.getString(6) + "",
-						iLin, 5);
+				tab.setValor(rs.getString(3) == null ? "-" : Funcoes.sqlDateToStrDate(rs.getDate(3)) + "", iLin, 2);
+				tab.setValor(rs.getString(4) == null ? "-" : rs.getString(4) + "", iLin, 3);				
+				tab.setValor(rs.getString(5) == null ? "-" : rs.getString(5) + "", iLin, 4);
+				tab.setValor(rs.getString(6) == null ? "-" : rs.getString(6) + "", iLin, 5);
+				tab.setValor(rs.getString("desccontr") == null ? "" : rs.getString("desccontr") , iLin, 6);
 
 				iLin++;
 			}
 
 			con.commit();
-		} catch (SQLException err) {
+			
+		} 
+		catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela EQRMA!\n"
 					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
