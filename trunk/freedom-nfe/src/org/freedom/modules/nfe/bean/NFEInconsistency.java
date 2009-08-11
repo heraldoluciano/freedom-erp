@@ -37,7 +37,7 @@ public class NFEInconsistency {
 	
 	public enum TypeInconsistency {
 		
-		WARNNIG, ERROR, MESSAGE;
+		WARNING, ERROR, MESSAGE;
 	}
 
 	public NFEInconsistency( TypeInconsistency typeInconsistency, String description, String correctiveAction ) {
