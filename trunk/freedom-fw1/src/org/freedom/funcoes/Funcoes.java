@@ -1129,25 +1129,25 @@ public class Funcoes {
 
 		char cTmp = cKey;
 
-		if (contido(cTmp, "ãâáà"))
+		if (contido(cTmp, "ãâáàä"))
 			cTmp = 'a';
-		else if (contido(cTmp, "ÃÂÁÀ"))
+		else if (contido(cTmp, "ÃÂÁÀÄ"))
 			cTmp = 'A';
-		else if (contido(cTmp, "êéè"))
+		else if (contido(cTmp, "êéèë"))
 			cTmp = 'e';
-		else if (contido(cTmp, "ÊÉÈ"))
+		else if (contido(cTmp, "ÊÉÈË"))
 			cTmp = 'E';
-		else if (contido(cTmp, "îíì"))
+		else if (contido(cTmp, "îíìï"))
 			cTmp = 'i';
-		else if (contido(cTmp, "ÎÍÌ"))
+		else if (contido(cTmp, "ÎÍÌÏ"))
 			cTmp = 'I';
-		else if (contido(cTmp, "õôóò"))
+		else if (contido(cTmp, "õôóòö"))
 			cTmp = 'o';
-		else if (contido(cTmp, "ÕÔÓÒ"))
+		else if (contido(cTmp, "ÕÔÓÒÖ"))
 			cTmp = 'O';
-		else if (contido(cTmp, "ûúù"))
+		else if (contido(cTmp, "ûúùü"))
 			cTmp = 'u';
-		else if (contido(cTmp, "ÛÚÙ"))
+		else if (contido(cTmp, "ÛÚÙÜ"))
 			cTmp = 'U';
 		else if (contido(cTmp, "ç"))
 			cTmp = 'c';
