@@ -481,7 +481,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		// *******************************
 		
-		// ********** Aba Serviço **********
+		// ********** Aba Serviço ********** 
 
 		tpnPrincipal.addTab( "Definição do serviço", pnServico );
 		pnServico.add( panelServico,  BorderLayout.CENTER ); 
