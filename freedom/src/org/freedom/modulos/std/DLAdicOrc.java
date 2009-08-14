@@ -449,7 +449,8 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 					sql.append( "WHERE P.CODPROD=IT.CODPROD AND P.CODFILIAL=IT.CODFILIALPD " );
 					sql.append( "AND P.CODEMP=IT.CODEMPPD AND IT.ACEITEITORC='S' AND IT.EMITITORC='N' " ); 
 					sql.append( "AND IT.APROVITORC='S' AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC IN " );
-					sql.append( "(" + scodorcs + ")" );
+					sql.append( "(" + scodorcs + ") " );
+					sql.append( " ORDER BY IT.CODORC,IT.CODITORC " );
 					
 //					Vector<Object> vVals = null;
 					
