@@ -117,6 +117,8 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	
 	private JTextFieldPad txtCodContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
+//	private JTextFieldPad txtCodContr2 = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
 	private JTextFieldPad txtCodItContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -143,7 +145,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	private ListaCampos lcFor = new ListaCampos( this, "FR" );
 	
-	private ListaCampos lcContrato = new ListaCampos( this, "" );
+	private ListaCampos lcContrato = new ListaCampos( this, "CT" );
 	
 	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
 
@@ -188,7 +190,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	
 	public FSubLanca( String sCodL, String sCodP, Date dini, Date dfim ) {
 
-		lcItContrato.setMaster( lcContrato );
+		lcItContrato.setMaster( lcCampos );
 		dIni = dini;
 		dFim = dfim;
 
@@ -248,7 +250,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		lcContrato.montaSql( false, "CONTRATO", "VD" );
 		txtCodContr.setTabelaExterna( lcContrato );
 
-		lcItContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.It.Contr.", ListaCampos.DB_PF, false ) );
+		lcItContrato.add( new GuardaCampo( txtCodContr, "CodContr", "Cód.Contr.", ListaCampos.DB_PK, false ) );
 		lcItContrato.add( new GuardaCampo( txtCodItContr, "CodItContr", "Cód.It.Contr.", ListaCampos.DB_PK, false ) );		
 		lcItContrato.setReadOnly( true );
 		lcItContrato.setQueryCommit( false );
@@ -315,7 +317,8 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 		if("S".equals( (String) prefere.get( "LANCAFINCONTR" ))) {		
 			adicCampoInvisivel( txtCodContr, "CodContr", "Cod.Contr.", ListaCampos.DB_FK, false );
-			adicCampoInvisivel( txtCodItContr, "CodItContr", "Cod.It.Contr.", ListaCampos.DB_FK, false );
+//			adicCampoInvisivel( txtCodContr2, "CodContr", "Cod.Contr.", ListaCampos.DB_FK, false );
+			adicCampoInvisivel( txtCodItContr, "CodItContr", "Cod.It.Contr.", ListaCampos.DB_SI, false );
 		}
 		
 		lbCodCli.setVisible( false );
@@ -699,8 +702,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 				cbitContr.setVlrInteger( txtCodItContr.getVlrInteger() );
 			}
 		}
-		
-		
+				
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {}
