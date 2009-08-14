@@ -25,7 +25,6 @@
 package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -35,6 +34,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -42,6 +42,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -62,7 +63,6 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
-import org.freedom.telas.FPrincipal;
 
 public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListener, CarregaListener, InsertListener {
 
@@ -241,10 +241,10 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 	private JTextFieldPad txtTotalFechamento = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtSaldoFechamento = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
-
-	private JButton btNovoLancamento = new JButton( "Lançamento", Icone.novo( "btNovo.gif" ) );
 	
 	private JButton btConsolidacao = new JButton( "Consolidar", Icone.novo( "btReset.gif" ) );
+
+	private JButton btNovoLancamento = new JButton( "Lançamento", Icone.novo( "btNovo.gif" ) );
 	
 	private ListaCampos lcVendedor = new ListaCampos( this, "VD" );
 
@@ -291,6 +291,14 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 	private JTextFieldPad txtSQLRemessa = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 	
 	private JTextFieldPad txtSQLDevolucao = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private int codempco, codfilialco;
+	
+	private String codplanconsig;
+	
+	private int codempvd, codfilialvd;
+	
+	private String codplanvdconsig;
 	
 
 	public FVendaConsig() {
@@ -521,114 +529,114 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		// ********** Início aba Contas a Receber **********
 
 //		tpnPrincipal.addTab( "Contas a receber", panelReceber );
-
+//
 //		panelReceber.add( panelReceberFiltros, BorderLayout.NORTH );
 //		panelReceber.add( spReceber, BorderLayout.CENTER );
 //		panelReceber.add( panelReceberFuncoes, BorderLayout.EAST );
 //		panelReceber.add( panelReceberStatus, BorderLayout.SOUTH );
-
+//
 //		JLabelPad lbLinha = new JLabelPad();
 //		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 //		JLabelPad lbPeriodo = new JLabelPad( "Período:", SwingConstants.CENTER );
 //		lbPeriodo.setOpaque( true );
-
+//
 //		Vector<String> vValsData = new Vector<String>();
 //		Vector<String> vLabsData = new Vector<String>();
 //		vValsData.addElement( "V" );
 //		vValsData.addElement( "E" );
 //		vLabsData.addElement( "Vencimento" );
 //		vLabsData.addElement( "Emissão" );
-
+//
 //		rgDataReceber = new JRadioGroup<String, String>( 1, 2, vLabsData, vValsData );
 //		rgDataReceber.setVlrString( "V" );
-		
+//		
 //		JLabelPad lbLinha2 = new JLabelPad();
 //		lbLinha2.setBorder( BorderFactory.createEtchedBorder() );
+//
+//		panelReceberFiltros.setPreferredSize( new Dimension( 500, 130 ) );
+//		panelReceberFiltros.adic( lbPeriodo, 17, 10, 80, 20 );
+//		panelReceberFiltros.adic( lbLinha, 7, 20, 250, 40 );
+//		panelReceberFiltros.adic( txtDataIniRedeber, 17, 30, 100, 20 );
+//		panelReceberFiltros.adic( new JLabelPad( "até", SwingConstants.CENTER ), 117, 30, 30, 20 );
+//		panelReceberFiltros.adic( txtDataFimReceber, 147, 30, 100, 20 );
+//		panelReceberFiltros.adic( new JLabelPad( "Cód.cli." ), 270, 10, 80, 20 );
+//		panelReceberFiltros.adic( txtCodCliRec, 270, 30, 90, 20 );
+//		panelReceberFiltros.adic( new JLabelPad( "Razão social do cliente" ), 363, 10, 300, 20 );
+//		panelReceberFiltros.adic( txtRazCliRec, 363, 30, 337, 20 );
+//		panelReceberFiltros.adic( new JLabelPad( "Filtrar por:" ), 7, 60, 100, 20 );
+//		panelReceberFiltros.adic( rgDataReceber, 7, 80, 250, 30 );
+//		panelReceberFiltros.adic( new JLabelPad( "Filtrar por:" ), 270, 60, 100, 20 );
+//		panelReceberFiltros.adic( lbLinha2, 270, 80, 295, 30 );
+//		panelReceberFiltros.adic( cbAReceber, 285, 85, 90, 20 );
+//		panelReceberFiltros.adic( cbRecParcial, 380, 85, 80, 20 );
+//		panelReceberFiltros.adic( cbRecebidas, 460, 85, 85, 20 );		
+//		panelReceberFiltros.adic( btPesquisaReceber, 580, 80, 120, 30 );
+//
+//		panelReceberFuncoes.adic( btSelecionTodosReceber, 5, 5, 30, 30  );
+//		panelReceberFuncoes.adic( btSelecionaNenhumReceber, 5, 40, 30, 30  );
+//		panelReceberFuncoes.adic( btColocarEmCobrancaReceber, 5, 75, 30, 30  );
+//		
+//		btSelecionTodosReceber.setToolTipText( "Selecionar todos da lista" );
+//		btSelecionaNenhumReceber.setToolTipText( "Desfaser seleção de todos da lista" );
+//		btColocarEmCobrancaReceber.setToolTipText( "Marcar recebimento para cobrança" );
+//
+//		tabReceber.adicColuna( "" );
+//		tabReceber.adicColuna( "" );
+//		tabReceber.adicColuna( "Cod.rec." );
+//		tabReceber.adicColuna( "Parcela" );
+//		tabReceber.adicColuna( "Cód.Cli" );
+//		tabReceber.adicColuna( "Razão social do cliente" );
+//		tabReceber.adicColuna( "Cód.p.pag." );
+//		tabReceber.adicColuna( "Descrição do plano de pagamento" );
+//		tabReceber.adicColuna( "Vencimento" );
+//		tabReceber.adicColuna( "Pagamento" );
+//		tabReceber.adicColuna( "Vlr. Parcela" );
+//		tabReceber.adicColuna( "Vlr. Pago" );
+//		tabReceber.adicColuna( "Vlr. Desconto" );
+//		tabReceber.adicColuna( "Vlr. Juros" );
+//		tabReceber.adicColuna( "Vlr. Multa" );
+//		tabReceber.adicColuna( "Vlr. A Pagar" );
+//
+//		tabReceber.setColunaEditavel( ETabReceber.SEL.ordinal(), true );		
+//		tabReceber.setTamColuna( 20, ETabReceber.SEL.ordinal() );
+//		tabReceber.setTamColuna( 20, ETabReceber.STATUS.ordinal() );
+//		tabReceber.setTamColuna( 60, ETabReceber.CODREC.ordinal() );
+//		tabReceber.setTamColuna( 50, ETabReceber.NPARCITREC.ordinal() );
+//		tabReceber.setTamColuna( 70, ETabReceber.CODCLI.ordinal() );
+//		tabReceber.setTamColuna( 150, ETabReceber.RAZCLI.ordinal() );
+//		tabReceber.setTamColuna( 70, ETabReceber.CODPLANOPAG.ordinal() );
+//		tabReceber.setTamColuna( 150, ETabReceber.DESCPLANOPAG.ordinal() );
+//		tabReceber.setTamColuna( 70, ETabReceber.VENCIMENTO.ordinal() );
+//		tabReceber.setTamColuna( 70, ETabReceber.PAGAMENTO.ordinal() );
+//		tabReceber.setTamColuna( 80, ETabReceber.VLRPARCELA.ordinal() );
+//		tabReceber.setTamColuna( 80, ETabReceber.VLRPAGO.ordinal() );
+//		tabReceber.setTamColuna( 80, ETabReceber.VLRDESCONTO.ordinal() );
+//		tabReceber.setTamColuna( 80, ETabReceber.VLRJUROS.ordinal() );
+//		tabReceber.setTamColuna( 80, ETabReceber.VLRMULTA.ordinal() );
+//		tabReceber.setTamColuna( 80, ETabReceber.VLRAPAGAR.ordinal() );
+//
+//		panelReceberStatus.adic( new JLabelPad( imgVencido ), 10, 0, 20, 20 );
+//		panelReceberStatus.adic( new JLabelPad( "Vencido" ), 30, 0, 90, 20 );
+//		panelReceberStatus.adic( txtVlrRecVencido, 10, 20, 120, 20 );
+//		panelReceberStatus.adic( new JLabelPad( imgPagoParcial ), 135, 0, 20, 20 );
+//		panelReceberStatus.adic( new JLabelPad( "Pago parcial" ), 155, 0, 90, 20 );
+//		panelReceberStatus.adic( txtVlrRecPagoParcial, 135, 20, 120, 20 );
+//		panelReceberStatus.adic( new JLabelPad( imgPago ), 260, 0, 20, 20 );
+//		panelReceberStatus.adic( new JLabelPad( "Pago" ), 280, 0, 90, 20 );
+//		panelReceberStatus.adic( txtVlrRecPago, 260, 20, 120, 20 );
+//		panelReceberStatus.adic( new JLabelPad( imgNaoVencido ), 385, 0, 20, 20 );
+//		panelReceberStatus.adic( new JLabelPad( "À vencer" ), 405, 0, 90, 20 );
+//		panelReceberStatus.adic( txtVlrRecAVencer, 385, 20, 120, 20 );
+//		panelReceberStatus.adic( new JLabelPad( imgEmCobranca ), 510, 0, 20, 20 );
+//		panelReceberStatus.adic( new JLabelPad( "Em Cobrança" ), 535, 0, 90, 20 );
+//		panelReceberStatus.adic( txtVlrEmCobranca, 510, 20, 120, 20 );
+//		
+//		txtVlrRecVencido.setAtivo( false );
+//		txtVlrRecPagoParcial.setAtivo( false );
+//		txtVlrRecPago.setAtivo( false );
+//		txtVlrRecAVencer.setAtivo( false );
+//		txtVlrEmCobranca.setAtivo( false );
 
-/*		panelReceberFiltros.setPreferredSize( new Dimension( 500, 130 ) );
-		panelReceberFiltros.adic( lbPeriodo, 17, 10, 80, 20 );
-		panelReceberFiltros.adic( lbLinha, 7, 20, 250, 40 );
-		panelReceberFiltros.adic( txtDataIniRedeber, 17, 30, 100, 20 );
-		panelReceberFiltros.adic( new JLabelPad( "até", SwingConstants.CENTER ), 117, 30, 30, 20 );
-		panelReceberFiltros.adic( txtDataFimReceber, 147, 30, 100, 20 );
-		panelReceberFiltros.adic( new JLabelPad( "Cód.cli." ), 270, 10, 80, 20 );
-		panelReceberFiltros.adic( txtCodCliRec, 270, 30, 90, 20 );
-		panelReceberFiltros.adic( new JLabelPad( "Razão social do cliente" ), 363, 10, 300, 20 );
-		panelReceberFiltros.adic( txtRazCliRec, 363, 30, 337, 20 );
-		panelReceberFiltros.adic( new JLabelPad( "Filtrar por:" ), 7, 60, 100, 20 );
-		panelReceberFiltros.adic( rgDataReceber, 7, 80, 250, 30 );
-		panelReceberFiltros.adic( new JLabelPad( "Filtrar por:" ), 270, 60, 100, 20 );
-		panelReceberFiltros.adic( lbLinha2, 270, 80, 295, 30 );
-		panelReceberFiltros.adic( cbAReceber, 285, 85, 90, 20 );
-		panelReceberFiltros.adic( cbRecParcial, 380, 85, 80, 20 );
-		panelReceberFiltros.adic( cbRecebidas, 460, 85, 85, 20 );		
-		panelReceberFiltros.adic( btPesquisaReceber, 580, 80, 120, 30 );
-
-		panelReceberFuncoes.adic( btSelecionTodosReceber, 5, 5, 30, 30  );
-		panelReceberFuncoes.adic( btSelecionaNenhumReceber, 5, 40, 30, 30  );
-		panelReceberFuncoes.adic( btColocarEmCobrancaReceber, 5, 75, 30, 30  );
-		
-		btSelecionTodosReceber.setToolTipText( "Selecionar todos da lista" );
-		btSelecionaNenhumReceber.setToolTipText( "Desfaser seleção de todos da lista" );
-		btColocarEmCobrancaReceber.setToolTipText( "Marcar recebimento para cobrança" );
-
-		tabReceber.adicColuna( "" );
-		tabReceber.adicColuna( "" );
-		tabReceber.adicColuna( "Cod.rec." );
-		tabReceber.adicColuna( "Parcela" );
-		tabReceber.adicColuna( "Cód.Cli" );
-		tabReceber.adicColuna( "Razão social do cliente" );
-		tabReceber.adicColuna( "Cód.p.pag." );
-		tabReceber.adicColuna( "Descrição do plano de pagamento" );
-		tabReceber.adicColuna( "Vencimento" );
-		tabReceber.adicColuna( "Pagamento" );
-		tabReceber.adicColuna( "Vlr. Parcela" );
-		tabReceber.adicColuna( "Vlr. Pago" );
-		tabReceber.adicColuna( "Vlr. Desconto" );
-		tabReceber.adicColuna( "Vlr. Juros" );
-		tabReceber.adicColuna( "Vlr. Multa" );
-		tabReceber.adicColuna( "Vlr. A Pagar" );
-
-		tabReceber.setColunaEditavel( ETabReceber.SEL.ordinal(), true );		
-		tabReceber.setTamColuna( 20, ETabReceber.SEL.ordinal() );
-		tabReceber.setTamColuna( 20, ETabReceber.STATUS.ordinal() );
-		tabReceber.setTamColuna( 60, ETabReceber.CODREC.ordinal() );
-		tabReceber.setTamColuna( 50, ETabReceber.NPARCITREC.ordinal() );
-		tabReceber.setTamColuna( 70, ETabReceber.CODCLI.ordinal() );
-		tabReceber.setTamColuna( 150, ETabReceber.RAZCLI.ordinal() );
-		tabReceber.setTamColuna( 70, ETabReceber.CODPLANOPAG.ordinal() );
-		tabReceber.setTamColuna( 150, ETabReceber.DESCPLANOPAG.ordinal() );
-		tabReceber.setTamColuna( 70, ETabReceber.VENCIMENTO.ordinal() );
-		tabReceber.setTamColuna( 70, ETabReceber.PAGAMENTO.ordinal() );
-		tabReceber.setTamColuna( 80, ETabReceber.VLRPARCELA.ordinal() );
-		tabReceber.setTamColuna( 80, ETabReceber.VLRPAGO.ordinal() );
-		tabReceber.setTamColuna( 80, ETabReceber.VLRDESCONTO.ordinal() );
-		tabReceber.setTamColuna( 80, ETabReceber.VLRJUROS.ordinal() );
-		tabReceber.setTamColuna( 80, ETabReceber.VLRMULTA.ordinal() );
-		tabReceber.setTamColuna( 80, ETabReceber.VLRAPAGAR.ordinal() );
-
-		panelReceberStatus.adic( new JLabelPad( imgVencido ), 10, 0, 20, 20 );
-		panelReceberStatus.adic( new JLabelPad( "Vencido" ), 30, 0, 90, 20 );
-		panelReceberStatus.adic( txtVlrRecVencido, 10, 20, 120, 20 );
-		panelReceberStatus.adic( new JLabelPad( imgPagoParcial ), 135, 0, 20, 20 );
-		panelReceberStatus.adic( new JLabelPad( "Pago parcial" ), 155, 0, 90, 20 );
-		panelReceberStatus.adic( txtVlrRecPagoParcial, 135, 20, 120, 20 );
-		panelReceberStatus.adic( new JLabelPad( imgPago ), 260, 0, 20, 20 );
-		panelReceberStatus.adic( new JLabelPad( "Pago" ), 280, 0, 90, 20 );
-		panelReceberStatus.adic( txtVlrRecPago, 260, 20, 120, 20 );
-		panelReceberStatus.adic( new JLabelPad( imgNaoVencido ), 385, 0, 20, 20 );
-		panelReceberStatus.adic( new JLabelPad( "À vencer" ), 405, 0, 90, 20 );
-		panelReceberStatus.adic( txtVlrRecAVencer, 385, 20, 120, 20 );
-		panelReceberStatus.adic( new JLabelPad( imgEmCobranca ), 510, 0, 20, 20 );
-		panelReceberStatus.adic( new JLabelPad( "Em Cobrança" ), 535, 0, 90, 20 );
-		panelReceberStatus.adic( txtVlrEmCobranca, 510, 20, 120, 20 );
-		
-		txtVlrRecVencido.setAtivo( false );
-		txtVlrRecPagoParcial.setAtivo( false );
-		txtVlrRecPago.setAtivo( false );
-		txtVlrRecAVencer.setAtivo( false );
-		txtVlrEmCobranca.setAtivo( false );
-*/
 		// ********** Fim aba Contas a Receber **********
 		
 		// ********** Início aba Fechamento **********
@@ -644,17 +652,15 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
         panelFechamentoCampos.adic( new JLabelPad( "Vendas" ), 110, 10, 100, 20 );
         panelFechamentoCampos.adic( txtVendas, 110, 30, 100, 20 );
         
-        
-        /*
-        panelFechamentoCampos.adic( new JLabelPad( "Descontos" ), 110, 10, 100, 20 );
-        panelFechamentoCampos.adic( txtDescontos, 110, 30, 100, 20 );
-        panelFechamentoCampos.adic( new JLabelPad( "Trocas" ), 213, 10, 100, 20 );
-        panelFechamentoCampos.adic( txtTrocas, 213, 30, 100, 20 );
-        panelFechamentoCampos.adic( new JLabelPad( "Bonificações" ), 316, 10, 100, 20 );
-        panelFechamentoCampos.adic( txtBonificacoes, 316, 30, 100, 20 );
-        panelFechamentoCampos.adic( new JLabelPad( "Devoluções" ), 522, 10, 100, 20 );
-        panelFechamentoCampos.adic( txtDevolucoes, 522, 30, 100, 20 );
-        */
+//        panelFechamentoCampos.adic( new JLabelPad( "Descontos" ), 110, 10, 100, 20 );
+//        panelFechamentoCampos.adic( txtDescontos, 110, 30, 100, 20 );
+//        panelFechamentoCampos.adic( new JLabelPad( "Trocas" ), 213, 10, 100, 20 );
+//        panelFechamentoCampos.adic( txtTrocas, 213, 30, 100, 20 );
+//        panelFechamentoCampos.adic( new JLabelPad( "Bonificações" ), 316, 10, 100, 20 );
+//        panelFechamentoCampos.adic( txtBonificacoes, 316, 30, 100, 20 );
+//        panelFechamentoCampos.adic( new JLabelPad( "Devoluções" ), 522, 10, 100, 20 );
+//        panelFechamentoCampos.adic( txtDevolucoes, 522, 30, 100, 20 );
+//
 //        panelFechamentoCampos.adic( new JLabelPad( "A Vista" ), 7, 50, 100, 20 );
 //        panelFechamentoCampos.adic( txtAVista, 7, 70, 100, 20 );
 //        panelFechamentoCampos.adic( new JLabelPad( "A Crédito" ), 110, 50, 100, 20 );
@@ -665,7 +671,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 //        panelFechamentoCampos.adic( txtRecebido, 316, 70, 100, 20 );
 //        panelFechamentoCampos.adic( new JLabelPad( "Não Recebido" ), 419, 50, 100, 20 );
 //        panelFechamentoCampos.adic( txtNaoRecebido, 419, 70, 100, 20 );
-        
+//        
 //        panelFechamentoCampos.adic( new JLabelPad( "Total Entradas" ), 7, 90, 120, 20 );
 //        panelFechamentoCampos.adic( txtTotalEntradas, 7, 110, 120, 20 );
 //        panelFechamentoCampos.adic( new JLabelPad( "Total Fechamento" ), 130, 90, 120, 20 );
@@ -673,8 +679,8 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 //        panelFechamentoCampos.adic( new JLabelPad( "Saldo Fechamento" ), 253, 90, 120, 20 );
 //        panelFechamentoCampos.adic( txtSaldoFechamento, 253, 110, 120, 20 );
 
-        panelFechamentoCampos.adic( btConsolidacao, 585, 2, 140, 30 );
-        panelFechamentoCampos.adic( btNovoLancamento, 585, 34, 140, 30 );
+        panelFechamentoCampos.adic( btConsolidacao, 580, 5, 140, 30 );
+        panelFechamentoCampos.adic( btNovoLancamento, 580, 40, 140, 30 );
         
         tabFechamento.adicColuna( "Nº Lanç." );
         tabFechamento.adicColuna( "cod.sub.Lanç." );
@@ -704,210 +710,250 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
         
         // ********** Fim aba Fechamento **********
 	}
-/*
-	private void montaGridReceber() {
+
+//	private void montaGridReceber() {
+//
+//		try {
+//
+//			tabReceber.limpa();
+//			valorReceberVencido = new BigDecimal( "0.00" );
+//			valorReceberPagoParcial = new BigDecimal( "0.00" );
+//			valorReceberPago = new BigDecimal( "0.00" );
+//			valorReceberAVencer = new BigDecimal( "0.00" );
+//			valorEmCobranca = new BigDecimal( "0.00" );
+//			
+//			if ( txtCodVend.getVlrInteger() <= 0 ) {
+//				Funcoes.mensagemInforma( this, "Selecione o comissionado." );
+//				tpnPrincipal.setSelectedIndex( 0 );
+//				txtCodConsig.requestFocus();
+//				return;
+//			}
+//			if ( txtDataIniRedeber.getVlrString() != null && txtDataIniRedeber.getVlrString().trim().length() != 10 ) {
+//				Funcoes.mensagemInforma( this, "Selecione a data de início." );
+//				txtDataIniRedeber.requestFocus();
+//				return;
+//			}
+//			if ( txtDataFimReceber.getVlrString() != null && txtDataFimReceber.getVlrString().trim().length() != 10 ) {
+//				Funcoes.mensagemInforma( this, "Selecione a data de término." );
+//				txtDataFimReceber.requestFocus();
+//				return;
+//			}
+//
+//			StringBuilder statusRecebimento = new StringBuilder();			
+//			if ( "S".equals(cbAReceber.getVlrString()) ) {
+//				statusRecebimento.append( "'R1'" );
+//			}
+//			if ( "S".equals(cbRecParcial.getVlrString()) ) {
+//				if ( statusRecebimento.length() > 0 ) {
+//					statusRecebimento.append( "," );
+//				}
+//				statusRecebimento.append( "'RL'" );
+//			}
+//			if ( "S".equals(cbRecebidas.getVlrString()) ) {
+//				if ( statusRecebimento.length() > 0 ) {
+//					statusRecebimento.append( "," );
+//				}
+//				statusRecebimento.append( "'RP'" );
+//			}
+//
+//			StringBuilder sql = new StringBuilder();
+//			sql.append( "select i.codrec, i.nparcitrec, i.statusitrec, i.recemcob," );
+//			sql.append( "c.codcli, c.razcli, p.codplanopag, p.descplanopag," );
+//			sql.append( "i.dtvencitrec, i.dtpagoitrec, i.vlrparcitrec, i.vlrpagoitrec, i.vlrdescitrec, i.vlrjurositrec, i.vlrmultaitrec, i.vlrapagitrec " );
+//			sql.append( "from fnitreceber i, fnreceber r, vdcliente c, vdvendedor v, fnplanopag p " );
+//			sql.append( "where i.codemp=r.codemp and i.codfilial=r.codfilial and i.codrec=r.codrec and " );
+//			sql.append( "r.codempcl=c.codemp and r.codfilialcl=c.codfilial and r.codcli=c.codcli and " );
+//			sql.append( "r.codempvd=v.codemp and r.codfilialvd=v.codfilial and r.codvend=v.codvend and " );
+//			sql.append( "r.codemppg=p.codemp and r.codfilialpg=r.codfilial and r.codplanopag=p.codplanopag and " );
+//			sql.append( "c.codempvd=v.codemp and c.codfilialvd=v.codfilial and c.codvend=v.codvend and " );
+//			if ( txtCodCliRec.getVlrInteger() > 0 ) {
+//				sql.append( "c.codemp=" + Aplicativo.iCodEmp + " and " );
+//				sql.append( "c.codfilial=" + ListaCampos.getMasterFilial( "VDCLIENTE" ) + " and " );
+//				sql.append( "c.codcli=" + txtCodCliRec.getVlrInteger() + " and " );
+//			}
+//			if ( statusRecebimento.length() > 0 ) {
+//				sql.append( "i.statusitrec in (" + statusRecebimento.toString() + ") and " );
+//			}
+//			sql.append( "v.codemp=? and v.codfilial=? and v.codvend=? and " );
+//			sql.append( "V".equals( rgDataReceber.getVlrString() ) ? "i.dtvencitrec " : "i.dtitrec " );
+//			sql.append( "between ? and ? " );
+//			sql.append( "order by c.codcli, i.dtvencitrec, i.codrec, i.nparcitrec" );
+//
+//			PreparedStatement ps = con.prepareStatement( sql.toString() );
+//			ps.setInt( 1, Aplicativo.iCodEmp );
+//			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
+//			ps.setInt( 3, txtCodVend.getVlrInteger() );
+//			ps.setDate( 4, Funcoes.dateToSQLDate( txtDataIniRedeber.getVlrDate() ) );
+//			ps.setDate( 5, Funcoes.dateToSQLDate( txtDataFimReceber.getVlrDate() ) );
+//
+//			ResultSet rs = ps.executeQuery();
+//			int row = 0;
+//			float aPagar = 0f;
+//			float pago = 0f;
+//
+//			for ( ; rs.next(); row++ ) {
+//
+//				tabReceber.adicLinha();
+//				
+//				aPagar = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "vlrapagitrec" ) ).floatValue();
+//				pago = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "vlrpagoitrec" ) ).floatValue();
+//				
+//				if ( "S".equals( rs.getString( "recemcob" ) ) ) {
+//					imgColuna = imgEmCobranca;
+//					valorEmCobranca = valorEmCobranca.add( rs.getBigDecimal( "vlrapagitrec" ) );
+//				}
+//				else if ( "RP".equals( rs.getString( "statusitrec" ) ) && aPagar == 0.0f ) {
+//					imgColuna = imgPago;
+//					valorReceberPago = valorReceberPago.add( rs.getBigDecimal( "vlrpagoitrec" ) );
+//				}
+//				else if ( pago > 0 ) {
+//					imgColuna = imgPagoParcial;
+//					valorReceberPagoParcial = valorReceberPagoParcial.add( rs.getBigDecimal( "vlrpagoitrec" ) );
+//				}
+//				else if ( rs.getDate( "DtVencItRec" ).before( Calendar.getInstance().getTime() ) ) {
+//					imgColuna = imgVencido;
+//					valorReceberVencido = valorReceberVencido.add( rs.getBigDecimal( "vlrparcitrec" ) );
+//				}
+//				else if ( rs.getDate( "DtVencItRec" ).after( Calendar.getInstance().getTime() ) ) {
+//					imgColuna = imgNaoVencido;
+//					valorReceberAVencer = valorReceberAVencer.add( rs.getBigDecimal( "vlrapagitrec" ) );
+//				}
+//
+//				tabReceber.setValor( new Boolean( false ), row, ETabReceber.SEL.ordinal() );
+//				tabReceber.setValor( imgColuna, row, ETabReceber.STATUS.ordinal() );
+//				tabReceber.setValor( rs.getInt( "codrec" ), row, ETabReceber.CODREC.ordinal() );
+//				tabReceber.setValor( rs.getInt( "nparcitrec" ), row, ETabReceber.NPARCITREC.ordinal() );
+//				tabReceber.setValor( rs.getInt( "codcli" ), row, ETabReceber.CODCLI.ordinal() );
+//				tabReceber.setValor( rs.getString( "razcli" ), row, ETabReceber.RAZCLI.ordinal() );
+//				tabReceber.setValor( rs.getInt( "codplanopag" ), row, ETabReceber.CODPLANOPAG.ordinal() );
+//				tabReceber.setValor( rs.getString( "descplanopag" ), row, ETabReceber.DESCPLANOPAG.ordinal() );
+//				tabReceber.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "dtvencitrec" ) ), row, ETabReceber.VENCIMENTO.ordinal() );
+//				tabReceber.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "dtpagoitrec" ) ), row, ETabReceber.PAGAMENTO.ordinal() );
+//				tabReceber.setValor( rs.getBigDecimal( "vlrparcitrec" ), row, ETabReceber.VLRPARCELA.ordinal() );
+//				tabReceber.setValor( rs.getBigDecimal( "vlrpagoitrec" ), row, ETabReceber.VLRPAGO.ordinal() );
+//				tabReceber.setValor( rs.getBigDecimal( "vlrdescitrec" ), row, ETabReceber.VLRDESCONTO.ordinal() );
+//				tabReceber.setValor( rs.getBigDecimal( "vlrjurositrec" ), row, ETabReceber.VLRJUROS.ordinal() );
+//				tabReceber.setValor( rs.getBigDecimal( "vlrmultaitrec" ), row, ETabReceber.VLRMULTA.ordinal() );
+//				tabReceber.setValor( rs.getBigDecimal( "vlrapagitrec" ), row, ETabReceber.VLRAPAGAR.ordinal() );
+//			}
+//			
+//			txtVlrRecVencido.setVlrBigDecimal( valorReceberVencido );
+//			txtVlrRecPagoParcial.setVlrBigDecimal( valorReceberPagoParcial );
+//			txtVlrRecPago.setVlrBigDecimal( valorReceberPago );
+//			txtVlrRecAVencer.setVlrBigDecimal( valorReceberAVencer );
+//			txtVlrEmCobranca.setVlrBigDecimal( valorEmCobranca );
+//
+//			rs.close();
+//			ps.close();
+//
+//			con.commit();
+//
+//		} catch ( Exception e ) {
+//			e.printStackTrace();
+//			Funcoes.mensagemErro( this, "Erro ao listar recebimentos!\n" + e.getMessage(), true, con, e );
+//		}
+//	}
+
+//	private void abreTelaRec() {
+//
+//		Integer codrec = (Integer) tabReceber.getValor( tabReceber.getLinhaSel(), ETabReceber.CODREC.ordinal() );
+//		FManutRec tela = null;
+//
+//		if ( Aplicativo.telaPrincipal.temTela( FManutRec.class.getName() ) ) {
+//			tela = (FManutRec)Aplicativo.telaPrincipal.getTela( FManutRec.class.getName() );
+//		}
+//		else {
+//			tela = new FManutRec();
+//			Aplicativo.telaPrincipal.criatela( "Manutenção de contas a receber", tela, con );
+//		}
+//		
+//		tela.setRec( codrec );
+//	}
+
+//	private void selecionaTodosReceber() {	
+//		for ( int row = 0; row < tabReceber.getNumLinhas(); row++ ) {
+//			tabReceber.setValor( new Boolean( true ), row, ETabReceber.SEL.ordinal() );
+//		}
+//	}
+
+//	private void selecionaNenhumReceber() {	
+//		for ( int row = 0; row < tabReceber.getNumLinhas(); row++ ) {
+//			tabReceber.setValor( new Boolean( false ), row, ETabReceber.SEL.ordinal() );
+//		}
+//	}
+	
+//	private void colocarEmCobranca() {
+//		
+//		try {
+//			
+//			StringBuilder sql = new StringBuilder();
+//			sql.append( "update FNITRECEBER set recemcob='S' where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
+//			
+//			PreparedStatement ps = null;
+//			
+//			for ( int row = 0; row < tabReceber.getNumLinhas(); row++ ) {	
+//				
+//				if ( (Boolean)tabReceber.getValor( row, ETabReceber.SEL.ordinal() ) ) {
+//
+//					ps = con.prepareStatement( sql.toString() );
+//					ps.setInt( 1, Aplicativo.iCodEmp );
+//					ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+//					ps.setInt( 3, (Integer)tabReceber.getValor( row, ETabReceber.CODREC.ordinal() ) );
+//					ps.setInt( 4, (Integer)tabReceber.getValor( row, ETabReceber.NPARCITREC.ordinal() ) );
+//					ps.executeUpdate();
+//					ps.close();
+//				}
+//			}
+//
+//			con.commit();
+//			
+//			montaGridReceber();
+//			
+//		} catch ( SQLException e ) {
+//			e.printStackTrace();
+//		}
+//	}
+
+	private String getPlanejamentos() {
+
+		String planejamento = null;
 
 		try {
 
-			tabReceber.limpa();
-			valorReceberVencido = new BigDecimal( "0.00" );
-			valorReceberPagoParcial = new BigDecimal( "0.00" );
-			valorReceberPago = new BigDecimal( "0.00" );
-			valorReceberAVencer = new BigDecimal( "0.00" );
-			valorEmCobranca = new BigDecimal( "0.00" );
-			
-			if ( txtCodVend.getVlrInteger() <= 0 ) {
-				Funcoes.mensagemInforma( this, "Selecione o comissionado." );
-				tpnPrincipal.setSelectedIndex( 0 );
-				txtCodConsig.requestFocus();
-				return;
-			}
-			if ( txtDataIniRedeber.getVlrString() != null && txtDataIniRedeber.getVlrString().trim().length() != 10 ) {
-				Funcoes.mensagemInforma( this, "Selecione a data de início." );
-				txtDataIniRedeber.requestFocus();
-				return;
-			}
-			if ( txtDataFimReceber.getVlrString() != null && txtDataFimReceber.getVlrString().trim().length() != 10 ) {
-				Funcoes.mensagemInforma( this, "Selecione a data de término." );
-				txtDataFimReceber.requestFocus();
-				return;
-			}
-
-			StringBuilder statusRecebimento = new StringBuilder();			
-			if ( "S".equals(cbAReceber.getVlrString()) ) {
-				statusRecebimento.append( "'R1'" );
-			}
-			if ( "S".equals(cbRecParcial.getVlrString()) ) {
-				if ( statusRecebimento.length() > 0 ) {
-					statusRecebimento.append( "," );
-				}
-				statusRecebimento.append( "'RL'" );
-			}
-			if ( "S".equals(cbRecebidas.getVlrString()) ) {
-				if ( statusRecebimento.length() > 0 ) {
-					statusRecebimento.append( "," );
-				}
-				statusRecebimento.append( "'RP'" );
-			}
-
 			StringBuilder sql = new StringBuilder();
-			sql.append( "select i.codrec, i.nparcitrec, i.statusitrec, i.recemcob," );
-			sql.append( "c.codcli, c.razcli, p.codplanopag, p.descplanopag," );
-			sql.append( "i.dtvencitrec, i.dtpagoitrec, i.vlrparcitrec, i.vlrpagoitrec, i.vlrdescitrec, i.vlrjurositrec, i.vlrmultaitrec, i.vlrapagitrec " );
-			sql.append( "from fnitreceber i, fnreceber r, vdcliente c, vdvendedor v, fnplanopag p " );
-			sql.append( "where i.codemp=r.codemp and i.codfilial=r.codfilial and i.codrec=r.codrec and " );
-			sql.append( "r.codempcl=c.codemp and r.codfilialcl=c.codfilial and r.codcli=c.codcli and " );
-			sql.append( "r.codempvd=v.codemp and r.codfilialvd=v.codfilial and r.codvend=v.codvend and " );
-			sql.append( "r.codemppg=p.codemp and r.codfilialpg=r.codfilial and r.codplanopag=p.codplanopag and " );
-			sql.append( "c.codempvd=v.codemp and c.codfilialvd=v.codfilial and c.codvend=v.codvend and " );
-			if ( txtCodCliRec.getVlrInteger() > 0 ) {
-				sql.append( "c.codemp=" + Aplicativo.iCodEmp + " and " );
-				sql.append( "c.codfilial=" + ListaCampos.getMasterFilial( "VDCLIENTE" ) + " and " );
-				sql.append( "c.codcli=" + txtCodCliRec.getVlrInteger() + " and " );
-			}
-			if ( statusRecebimento.length() > 0 ) {
-				sql.append( "i.statusitrec in (" + statusRecebimento.toString() + ") and " );
-			}
-			sql.append( "v.codemp=? and v.codfilial=? and v.codvend=? and " );
-			sql.append( "V".equals( rgDataReceber.getVlrString() ) ? "i.dtvencitrec " : "i.dtitrec " );
-			sql.append( "between ? and ? " );
-			sql.append( "order by c.codcli, i.dtvencitrec, i.codrec, i.nparcitrec" );
+			sql.append( "select codemppc, codfilialpc, codplanconsig," );
+			sql.append( "codemppv, codfilialpv, codplanvdconsig " );
+			sql.append( "from sgprefere7 " );
+			sql.append( "where codemp=? and codfilial=?" );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
-			ps.setInt( 3, txtCodVend.getVlrInteger() );
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDataIniRedeber.getVlrDate() ) );
-			ps.setDate( 5, Funcoes.dateToSQLDate( txtDataFimReceber.getVlrDate() ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "sgprefere7" ) );
 
 			ResultSet rs = ps.executeQuery();
-			int row = 0;
-			float aPagar = 0f;
-			float pago = 0f;
 
-			for ( ; rs.next(); row++ ) {
-
-				tabReceber.adicLinha();
-				
-				aPagar = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "vlrapagitrec" ) ).floatValue();
-				pago = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "vlrpagoitrec" ) ).floatValue();
-				
-				if ( "S".equals( rs.getString( "recemcob" ) ) ) {
-					imgColuna = imgEmCobranca;
-					valorEmCobranca = valorEmCobranca.add( rs.getBigDecimal( "vlrapagitrec" ) );
-				}
-				else if ( "RP".equals( rs.getString( "statusitrec" ) ) && aPagar == 0.0f ) {
-					imgColuna = imgPago;
-					valorReceberPago = valorReceberPago.add( rs.getBigDecimal( "vlrpagoitrec" ) );
-				}
-				else if ( pago > 0 ) {
-					imgColuna = imgPagoParcial;
-					valorReceberPagoParcial = valorReceberPagoParcial.add( rs.getBigDecimal( "vlrpagoitrec" ) );
-				}
-				else if ( rs.getDate( "DtVencItRec" ).before( Calendar.getInstance().getTime() ) ) {
-					imgColuna = imgVencido;
-					valorReceberVencido = valorReceberVencido.add( rs.getBigDecimal( "vlrparcitrec" ) );
-				}
-				else if ( rs.getDate( "DtVencItRec" ).after( Calendar.getInstance().getTime() ) ) {
-					imgColuna = imgNaoVencido;
-					valorReceberAVencer = valorReceberAVencer.add( rs.getBigDecimal( "vlrapagitrec" ) );
-				}
-
-				tabReceber.setValor( new Boolean( false ), row, ETabReceber.SEL.ordinal() );
-				tabReceber.setValor( imgColuna, row, ETabReceber.STATUS.ordinal() );
-				tabReceber.setValor( rs.getInt( "codrec" ), row, ETabReceber.CODREC.ordinal() );
-				tabReceber.setValor( rs.getInt( "nparcitrec" ), row, ETabReceber.NPARCITREC.ordinal() );
-				tabReceber.setValor( rs.getInt( "codcli" ), row, ETabReceber.CODCLI.ordinal() );
-				tabReceber.setValor( rs.getString( "razcli" ), row, ETabReceber.RAZCLI.ordinal() );
-				tabReceber.setValor( rs.getInt( "codplanopag" ), row, ETabReceber.CODPLANOPAG.ordinal() );
-				tabReceber.setValor( rs.getString( "descplanopag" ), row, ETabReceber.DESCPLANOPAG.ordinal() );
-				tabReceber.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "dtvencitrec" ) ), row, ETabReceber.VENCIMENTO.ordinal() );
-				tabReceber.setValor( Funcoes.sqlDateToStrDate( rs.getDate( "dtpagoitrec" ) ), row, ETabReceber.PAGAMENTO.ordinal() );
-				tabReceber.setValor( rs.getBigDecimal( "vlrparcitrec" ), row, ETabReceber.VLRPARCELA.ordinal() );
-				tabReceber.setValor( rs.getBigDecimal( "vlrpagoitrec" ), row, ETabReceber.VLRPAGO.ordinal() );
-				tabReceber.setValor( rs.getBigDecimal( "vlrdescitrec" ), row, ETabReceber.VLRDESCONTO.ordinal() );
-				tabReceber.setValor( rs.getBigDecimal( "vlrjurositrec" ), row, ETabReceber.VLRJUROS.ordinal() );
-				tabReceber.setValor( rs.getBigDecimal( "vlrmultaitrec" ), row, ETabReceber.VLRMULTA.ordinal() );
-				tabReceber.setValor( rs.getBigDecimal( "vlrapagitrec" ), row, ETabReceber.VLRAPAGAR.ordinal() );
+			if ( rs.next() ) {
+				codempco = rs.getInt( "codemppc" );
+				codfilialco = rs.getInt( "codfilialpc" );
+				codplanconsig = rs.getString( "codplanconsig" );
+				codempvd = rs.getInt( "codemppv" );
+				codfilialvd = rs.getInt( "codfilialpv" );
+				codplanvdconsig = rs.getString( "codplanvdconsig" );
 			}
-			
-			txtVlrRecVencido.setVlrBigDecimal( valorReceberVencido );
-			txtVlrRecPagoParcial.setVlrBigDecimal( valorReceberPagoParcial );
-			txtVlrRecPago.setVlrBigDecimal( valorReceberPago );
-			txtVlrRecAVencer.setVlrBigDecimal( valorReceberAVencer );
-			txtVlrEmCobranca.setVlrBigDecimal( valorEmCobranca );
 
 			rs.close();
 			ps.close();
 
 			con.commit();
 
-		} catch ( Exception e ) {
-			e.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao listar recebimentos!\n" + e.getMessage(), true, con, e );
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao verificar preferencias!" );
 		}
-	}
-*/
-/*	private void abreTelaRec() {
 
-		Integer codrec = (Integer) tabReceber.getValor( tabReceber.getLinhaSel(), ETabReceber.CODREC.ordinal() );
-		FManutRec tela = null;
-
-		if ( Aplicativo.telaPrincipal.temTela( FManutRec.class.getName() ) ) {
-			tela = (FManutRec)Aplicativo.telaPrincipal.getTela( FManutRec.class.getName() );
-		}
-		else {
-			tela = new FManutRec();
-			Aplicativo.telaPrincipal.criatela( "Manutenção de contas a receber", tela, con );
-		}
-		
-		tela.setRec( codrec );
+		return planejamento;
 	}
 
-	private void selecionaTodosReceber() {	
-		for ( int row = 0; row < tabReceber.getNumLinhas(); row++ ) {
-			tabReceber.setValor( new Boolean( true ), row, ETabReceber.SEL.ordinal() );
-		}
-	}
-
-	private void selecionaNenhumReceber() {	
-		for ( int row = 0; row < tabReceber.getNumLinhas(); row++ ) {
-			tabReceber.setValor( new Boolean( false ), row, ETabReceber.SEL.ordinal() );
-		}
-	}
-*/	
-/*	private void colocarEmCobranca() {
-		
-		try {
-			
-			StringBuilder sql = new StringBuilder();
-			sql.append( "update FNITRECEBER set recemcob='S' where codemp=? and codfilial=? and codrec=? and nparcitrec=?" );
-			
-			PreparedStatement ps = null;
-			
-			for ( int row = 0; row < tabReceber.getNumLinhas(); row++ ) {	
-				
-				if ( (Boolean)tabReceber.getValor( row, ETabReceber.SEL.ordinal() ) ) {
-
-					ps = con.prepareStatement( sql.toString() );
-					ps.setInt( 1, Aplicativo.iCodEmp );
-					ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-					ps.setInt( 3, (Integer)tabReceber.getValor( row, ETabReceber.CODREC.ordinal() ) );
-					ps.setInt( 4, (Integer)tabReceber.getValor( row, ETabReceber.NPARCITREC.ordinal() ) );
-					ps.executeUpdate();
-					ps.close();
-				}
-			}
-
-			con.commit();
-			
-			montaGridReceber();
-			
-		} catch ( SQLException e ) {
-			e.printStackTrace();
-		}
-	}
-*/
 	private void carregaFechamento() {
 		
 		montaGridFechamento();
@@ -924,7 +970,8 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			StringBuilder sql = new StringBuilder();	
 			sql.append( "select fs.codsublanca, fs.codlanca, fs.datasublanca, fl.doclanca, fs.vlrsublanca, fs.histsublanca " );
 			sql.append( "from fnsublanca fs, fnlanca fl, vdvendedor vd, fnconta ca " );
-			sql.append( "where fs.codemp=? and fs.codfilial=? and fs.datasublanca between ? and ? and " );
+			//sql.append( "where fs.codemp=? and fs.codfilial=? and fs.datasublanca between ? and ? and " );
+			sql.append( "where fs.codemp=? and fs.codfilial=? and fs.datasublanca = ? and " );
 			sql.append( "fl.codemp=fs.codemp and fl.codfilial=fs.codfilial and fl.codlanca=fs.codlanca and " );
 			sql.append( "vd.codemp=? and vd.codfilial=? and vd.codvend=? and " );
 			sql.append( "fs.codemppn=ca.codemppn and fs.codfilialpn=ca.codfilialpn and fs.codplan=ca.codplan and " );
@@ -934,11 +981,11 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "fnlanca" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataIniRedeber.getVlrDate() ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDataFimReceber.getVlrDate() ) );
-			ps.setInt( 5, Aplicativo.iCodEmp );
-			ps.setInt( 6, ListaCampos.getMasterFilial( "fnlanca" ) );
-			ps.setInt( 7, txtCodVend.getVlrInteger() );
+			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
+//			ps.setDate( 4, Funcoes.dateToSQLDate( txtDataFimReceber.getVlrDate() ) );
+			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( 5, ListaCampos.getMasterFilial( "fnlanca" ) );
+			ps.setInt( 6, txtCodVend.getVlrInteger() );
 	
 			ResultSet rs = ps.executeQuery();
 	
@@ -1080,109 +1127,432 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		}
 	}
 	
-	private void carregaInfoRecebimento() {
+//	private void carregaInfoRecebimento() {
+//
+//		try {
+//
+//			StringBuilder sql = new StringBuilder();
+//			sql.append( "select r.preco, r.qtdsaida, r.qtddevol " );
+//			sql.append( "from VDREMCONSIG r, VDCONSIGNACAO c " );
+//			sql.append( "where c.codemp=? and c.codfilial=? and c.codconsig=? and " );
+//			sql.append( "r.codemp=c.codemp and r.codfilial=c.codfilial and r.codconsig=c.codconsig" );
+//
+//			PreparedStatement ps = con.prepareStatement( sql.toString() );
+//			ps.setInt( 1, Aplicativo.iCodEmp );
+//			ps.setInt( 2, ListaCampos.getMasterFilial( "VDREMCONSIG" ) );
+//			ps.setInt( 3, txtCodConsig.getVlrInteger() );
+//
+//			ResultSet rs = ps.executeQuery();
+//			
+//			BigDecimal preco = null;
+//			BigDecimal remessas = new BigDecimal( "0.00" );
+//			BigDecimal devolucoes = new BigDecimal( "0.00" );
+//			
+//			txtRemessas.setVlrBigDecimal( remessas );
+//			txtDevolucoes.setVlrBigDecimal( devolucoes );
+//
+//			while( rs.next() ) {
+//
+//				preco = rs.getBigDecimal( "preco" );
+//				remessas = remessas.add( preco.multiply( rs.getBigDecimal( "qtdsaida" ) ) );
+//				devolucoes = devolucoes.add( preco.multiply( rs.getBigDecimal( "qtddevol" ) ) );
+//			}
+//
+//			rs.close();
+//			ps.close();
+//
+//			con.commit();
+//			
+//			txtRemessas.setVlrBigDecimal( remessas );
+//			txtDevolucoes.setVlrBigDecimal( devolucoes );
+//
+//		} catch ( SQLException e ) {
+//			e.printStackTrace();
+//			Funcoes.mensagemErro( this, "Erro ao buscar informações de vendas!\n" + e.getMessage(), true, con, e );
+//		}
+//	}	
+	
+	private void consolidacao() {
+		
+		try {
+			
+			lancaRemessa();
+			lancaVendas();
+			
+			con.commit();
+			
+			Funcoes.mensagemInforma( this, "Consolidação efetuada." );
+			
+			carregaFechamento();
+			
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao consiliar consignação!\n" + e.getMessage(), true, con, e );
+		}
+		
+	}
+	
+	private void lancaRemessa() throws SQLException {
+		
+		PreparedStatement psR = null;
+		
+		String codplanvend = getPlanejamentoVendedor();
+		
+		int codlanca = getLancamentoConsignacao();
+		
+		if ( codlanca <= 0 ) {
+			
+			codlanca = getSequenciaLancamento();
+			
+			StringBuilder insertLanca = new StringBuilder();
+			insertLanca.append( "INSERT INTO FNLANCA " ); 
+			insertLanca.append( "(TIPOLANCA,CODEMP,CODFILIAL,CODLANCA," );
+			insertLanca.append( "CODEMPPN,CODFILIALPN,CODPLAN," );
+			insertLanca.append( "DATALANCA,HISTBLANCA,VLRLANCA,FLAG) " );
+			insertLanca.append( "VALUES (" );
+			insertLanca.append( "?,?,?,?," );
+			insertLanca.append( "?,?,?," );
+			insertLanca.append( "?,?,?,'S')" );
+			
+			psR = con.prepareStatement( insertLanca.toString() );
+			psR.setString( 1, "A" );
+			psR.setInt( 2, Aplicativo.iCodEmp );
+			psR.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
+			psR.setInt( 4, codlanca );
+			psR.setInt( 5, Aplicativo.iCodEmp );
+			psR.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+			psR.setString( 7, codplanvend );
+			psR.setDate( 8, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
+			psR.setString( 9, "REMESSA CONSIGNADA" );
+			psR.setBigDecimal( 10, txtRemessas.getVlrBigDecimal() );
+			psR.executeUpdate();
+
+			StringBuilder insertSubLanca = new StringBuilder();
+			insertSubLanca.append( "INSERT INTO FNSUBLANCA " );
+			insertSubLanca.append( "(CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA," );
+			insertSubLanca.append( "CODEMPPN,CODFILIALPN,CODPLAN," );
+			insertSubLanca.append( "ORIGSUBLANCA,DATASUBLANCA,VLRSUBLANCA,HISTSUBLANCA,FLAG) " );
+			insertSubLanca.append( "VALUES (" );
+			insertSubLanca.append( "?,?,?,?," );
+			insertSubLanca.append( "?,?,?," );
+			insertSubLanca.append( "?,?,?,?,'S');" );
+							
+			psR = con.prepareStatement( insertSubLanca.toString() );
+			psR.setInt( 1, Aplicativo.iCodEmp );
+			psR.setInt( 2, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+			psR.setInt( 3, codlanca );
+			psR.setInt( 4, 1 );
+			psR.setInt( 5, codempco );
+			psR.setInt( 6, codfilialco );
+			psR.setString( 7, codplanconsig );
+			psR.setString( 8, "S" );
+			psR.setDate( 9, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
+			psR.setBigDecimal( 10, txtRemessas.getVlrBigDecimal().multiply( new BigDecimal( "-1" ) ) );
+			psR.setString( 11, "REMESSA CONSIGNADA" );
+			psR.executeUpdate();
+
+			StringBuilder updateConsignacao = new StringBuilder();
+			updateConsignacao.append( "UPDATE VDCONSIGNACAO SET " );
+			updateConsignacao.append( "CODEMPSL=?,CODFILIALSL=?,CODLANCA=?,CODSUBLANCA=? " );
+			updateConsignacao.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCONSIG=?" );
+			
+			psR = con.prepareStatement( updateConsignacao.toString() );
+			psR.setInt( 1, Aplicativo.iCodEmp );
+			psR.setInt( 2, ListaCampos.getMasterFilial( "FNLANCA" ) );
+			psR.setInt( 3, codlanca );
+			psR.setInt( 4, 1 );
+			psR.setInt( 5, Aplicativo.iCodEmp );
+			psR.setInt( 6, ListaCampos.getMasterFilial( "VDCONSIGNACAO" ) );
+			psR.setInt( 7, txtCodConsig.getVlrInteger() );
+			psR.executeUpdate();
+		}		
+		else {
+			
+			StringBuilder updateSubLanca = new StringBuilder();
+			updateSubLanca.append( "UPDATE FNSUBLANCA SET VLRSUBLANCA=? " );
+			updateSubLanca.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODLANCA=? AND CODSUBLANCA=?" );
+							
+			psR = con.prepareStatement( updateSubLanca.toString() );
+			psR.setBigDecimal( 1, txtRemessas.getVlrBigDecimal() );
+			psR.setInt( 2, Aplicativo.iCodEmp );
+			psR.setInt( 3, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+			psR.setInt( 4, codlanca );
+			psR.setInt( 5, 1 );
+			psR.executeUpdate();
+			
+			StringBuilder updateLanca = new StringBuilder();
+			updateLanca.append( "UPDATE FNLANCA SET VLRLANCA=? " );
+			updateLanca.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODLANCA=?" );
+							
+			psR = con.prepareStatement( updateLanca.toString() );
+			psR.setBigDecimal( 1, txtRemessas.getVlrBigDecimal() );
+			psR.setInt( 2, Aplicativo.iCodEmp );
+			psR.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
+			psR.setInt( 4, codlanca );
+			psR.executeUpdate();
+		}
+	}
+	
+	private void lancaVendas() throws SQLException {
+		
+		String codplanvend = getPlanejamentoVendedor();
+		
+		StringBuilder selectVendas = new StringBuilder();
+		selectVendas.append( "SELECT CODVENDACO, SUM(QTDVENDACO*PRECO) VALOR, CODCLI, CODPLANOPAG, CODLANCA, CODSUBLANCA " );
+		selectVendas.append( "FROM VDVENDACONSIG " );
+		selectVendas.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCONSIG=? " );
+		selectVendas.append( "GROUP BY CODVENDACO, CODCLI, CODPLANOPAG, CODLANCA, CODSUBLANCA" );
+		
+		PreparedStatement ps = con.prepareStatement( selectVendas.toString() );
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDACONSIG" ) );
+		ps.setInt( 3, txtCodConsig.getVlrInteger() );
+		ResultSet rs = ps.executeQuery();
+		
+		PreparedStatement psV = null;		
+		
+		int codlanca = 0;
+		
+		while ( rs.next() ) {
+			
+			if ( rs.getInt( "CODSUBLANCA" ) <= 0 ) {
+				codlanca = getSequenciaLancamento();
+				
+				StringBuilder insertLanca = new StringBuilder();
+				insertLanca.append( "INSERT INTO FNLANCA " ); 
+				insertLanca.append( "(TIPOLANCA,CODEMP,CODFILIAL,CODLANCA," );
+				insertLanca.append( "CODEMPPN,CODFILIALPN,CODPLAN," );
+				insertLanca.append( "DATALANCA,HISTBLANCA,VLRLANCA,FLAG) " );
+				insertLanca.append( "VALUES (" );
+				insertLanca.append( "?,?,?,?," );
+				insertLanca.append( "?,?,?," );
+				insertLanca.append( "?,?,?,'S')" );
+				
+				psV = con.prepareStatement( insertLanca.toString() );
+				psV.setString( 1, "A" );
+				psV.setInt( 2, Aplicativo.iCodEmp );
+				psV.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
+				psV.setInt( 4, codlanca );
+				psV.setInt( 5, Aplicativo.iCodEmp );
+				psV.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+				psV.setString( 7, codplanvend );
+				psV.setDate( 8, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
+				psV.setString( 9, "VENDA CONSIGNADA - CLIENTE: " + rs.getInt( "CODCLI" ) );
+				psV.setBigDecimal( 10, rs.getBigDecimal( "VALOR" ).multiply( new BigDecimal( "-1" ) ) );
+				psV.executeUpdate();
+
+				StringBuilder insertSubLanca = new StringBuilder();
+				insertSubLanca.append( "INSERT INTO FNSUBLANCA " );
+				insertSubLanca.append( "(CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA," );
+				insertSubLanca.append( "CODEMPPN,CODFILIALPN,CODPLAN," );
+				insertSubLanca.append( "ORIGSUBLANCA,DATASUBLANCA,VLRSUBLANCA,HISTSUBLANCA,FLAG) " );
+				insertSubLanca.append( "VALUES (" );
+				insertSubLanca.append( "?,?,?,?," );
+				insertSubLanca.append( "?,?,?," );
+				insertSubLanca.append( "?,?,?,?,'S');" );
+								
+				psV = con.prepareStatement( insertSubLanca.toString() );
+				psV.setInt( 1, Aplicativo.iCodEmp );
+				psV.setInt( 2, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+				psV.setInt( 3, codlanca );
+				psV.setInt( 4, 1 );
+				psV.setInt( 5, codempvd );
+				psV.setInt( 6, codfilialvd );
+				psV.setString( 7, codplanvdconsig );
+				psV.setString( 8, "S" );
+				psV.setDate( 9, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
+				psV.setBigDecimal( 10, rs.getBigDecimal( "VALOR" ) );
+				psV.setString( 11, "VENDA CONSIGNADA - CLIENTE: " + rs.getInt( "CODCLI" ) );
+				psV.executeUpdate();
+
+				StringBuilder updateVendaConsignada = new StringBuilder();
+				updateVendaConsignada.append( "UPDATE VDVENDACONSIG SET " );
+				updateVendaConsignada.append( "CODEMPSL=?,CODFILIALSL=?,CODLANCA=?,CODSUBLANCA=? " );
+				updateVendaConsignada.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCONSIG=? AND CODVENDACO=?" );
+				
+				psV = con.prepareStatement( updateVendaConsignada.toString() );
+				psV.setInt( 1, Aplicativo.iCodEmp );
+				psV.setInt( 2, ListaCampos.getMasterFilial( "FNLANCA" ) );
+				psV.setInt( 3, codlanca );
+				psV.setInt( 4, 1 );
+				psV.setInt( 5, Aplicativo.iCodEmp );
+				psV.setInt( 6, ListaCampos.getMasterFilial( "VDCONSIGNACAO" ) );
+				psV.setInt( 7, txtCodConsig.getVlrInteger() );
+				psV.setInt( 8, rs.getInt( "CODVENDACO" ) );
+				psV.executeUpdate();
+				
+				// CONTRAPARTIDA		
+				codlanca = getSequenciaLancamento();
+				
+				psV = con.prepareStatement( insertLanca.toString() );
+				psV.setString( 1, "A" );
+				psV.setInt( 2, Aplicativo.iCodEmp );
+				psV.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
+				psV.setInt( 4, codlanca );
+				psV.setInt( 5, Aplicativo.iCodEmp );
+				psV.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+				psV.setString( 7, codplanvend );
+				psV.setDate( 8, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
+				psV.setString( 9, "RECEBIMENTO EM CARTEIRA - CLIENTE: " + rs.getInt( "CODCLI" ) );
+				psV.setBigDecimal( 10, rs.getBigDecimal( "VALOR" ) );
+				psV.executeUpdate();
+
+				StringBuilder insertSubLancaContrapartida = new StringBuilder();
+				insertSubLancaContrapartida.append( "INSERT INTO FNSUBLANCA " );
+				insertSubLancaContrapartida.append( "(CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA," );
+				insertSubLancaContrapartida.append( "CODEMPPN,CODFILIALPN,CODPLAN," );
+				insertSubLancaContrapartida.append( "ORIGSUBLANCA,DATASUBLANCA,VLRSUBLANCA,HISTSUBLANCA,FLAG) " );
+				insertSubLancaContrapartida.append( "VALUES (" );
+				insertSubLancaContrapartida.append( "?,?,?,?," );
+				insertSubLancaContrapartida.append( "?,?,?," );
+				insertSubLancaContrapartida.append( "?,?,?,?,'S');" );
+								
+				psV = con.prepareStatement( insertSubLancaContrapartida.toString() );
+				psV.setInt( 1, Aplicativo.iCodEmp );
+				psV.setInt( 2, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+				psV.setInt( 3, codlanca );
+				psV.setInt( 4, 1 );
+				psV.setInt( 5, codempvd );
+				psV.setInt( 6, codfilialvd );
+				psV.setString( 7, codplanvdconsig );
+				psV.setString( 8, "S" );
+				psV.setDate( 9, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
+				psV.setBigDecimal( 10, rs.getBigDecimal( "VALOR" ).multiply( new BigDecimal( "-1" ) ) );
+				psV.setString( 11, "RECEBIMENTO EM CARTEIRA" );
+				psV.executeUpdate();
+			}
+			else {
+				
+				StringBuilder updateSubLanca = new StringBuilder();
+				updateSubLanca.append( "UPDATE FNSUBLANCA SET VLRSUBLANCA=? " );
+				updateSubLanca.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODLANCA=? AND CODSUBLANCA=?" );
+								
+				psV = con.prepareStatement( updateSubLanca.toString() );
+				psV.setBigDecimal( 1, rs.getBigDecimal( "VALOR" ) );
+				psV.setInt( 2, Aplicativo.iCodEmp );
+				psV.setInt( 3, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+				psV.setInt( 4, rs.getInt( "CODLANCA" ) );
+				psV.setInt( 5, rs.getInt( "CODSUBLANCA" ) );
+				psV.executeUpdate();
+				
+				StringBuilder updateLanca = new StringBuilder();
+				updateLanca.append( "UPDATE FNLANCA SET VLRLANCA=? " );
+				updateLanca.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODLANCA=?" );
+								
+				psV = con.prepareStatement( updateLanca.toString() );
+				psV.setBigDecimal( 1, rs.getBigDecimal( "VALOR" ).multiply( new BigDecimal( "-1" ) ) );
+				psV.setInt( 2, Aplicativo.iCodEmp );
+				psV.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
+				psV.setInt( 4, rs.getInt( "CODLANCA" ) );
+				psV.executeUpdate();
+			}
+		}	
+	}
+
+	private String getPlanejamentoVendedor() {
+
+		String planejamento = null;
 
 		try {
 
 			StringBuilder sql = new StringBuilder();
-			sql.append( "select r.preco, r.qtdsaida, r.qtddevol " );
-			sql.append( "from VDREMCONSIG r, VDCONSIGNACAO c " );
-			sql.append( "where c.codemp=? and c.codfilial=? and c.codconsig=? and " );
-			sql.append( "r.codemp=c.codemp and r.codfilial=c.codfilial and r.codconsig=c.codconsig" );
+			sql.append( "select c.codplan from vdvendedor v, fnconta c " );
+			sql.append( "where v.codemp=? and v.codfilial=? and v.codvend=? " );
+			sql.append( "and v.codempca=c.codemp and v.codfilialca=c.codfilial " );
+			sql.append( "and v.numconta=c.numconta " );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDREMCONSIG" ) );
-			ps.setInt( 3, txtCodConsig.getVlrInteger() );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "vdvendedor" ) );
+			ps.setInt( 3, txtCodVend.getVlrInteger() );
 
 			ResultSet rs = ps.executeQuery();
-			
-			BigDecimal preco = null;
-			BigDecimal remessas = new BigDecimal( "0.00" );
-			BigDecimal devolucoes = new BigDecimal( "0.00" );
-			
-			txtRemessas.setVlrBigDecimal( remessas );
-			txtDevolucoes.setVlrBigDecimal( devolucoes );
 
-			while( rs.next() ) {
-
-				preco = rs.getBigDecimal( "preco" );
-				remessas = remessas.add( preco.multiply( rs.getBigDecimal( "qtdsaida" ) ) );
-				devolucoes = devolucoes.add( preco.multiply( rs.getBigDecimal( "qtddevol" ) ) );
+			if ( rs.next() ) {
+				planejamento = rs.getString( "codplan" );
 			}
 
 			rs.close();
 			ps.close();
 
 			con.commit();
-			
-			txtRemessas.setVlrBigDecimal( remessas );
-			txtDevolucoes.setVlrBigDecimal( devolucoes );
 
-		} catch ( SQLException e ) {
-			e.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao buscar informações de vendas!\n" + e.getMessage(), true, con, e );
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao verificar conta do vendedor!" );
 		}
+
+		return planejamento;
 	}
-	
 
-	private boolean testaCodLanca( int iCodLanca ) {
+	private int getLancamentoConsignacao() {
 
-		boolean bRetorno = false;
-		StringBuilder sql = new StringBuilder();
-		PreparedStatement ps = null;
+		int lancamento = -1;
 
 		try {
 
-			sql.append( "select codlanca from fnlanca where codlanca=? and codemp=? and codfilial=? " );
+			StringBuilder sql = new StringBuilder();
+			sql.append( "select codlanca from vdconsignacao " );
+			sql.append( "where codemp=? and codfilial=? and codconsig=? " );
 
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, iCodLanca );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "vdconsignacao" ) );
+			ps.setInt( 3, txtCodConsig.getVlrInteger() );
 
-			if ( ( ps.executeQuery() ).next() ) {
+			ResultSet rs = ps.executeQuery();
 
-				bRetorno = true;
+			if ( rs.next() ) {
+				lancamento = rs.getInt( "codlanca" );
 			}
 
+			rs.close();
+			ps.close();
+
+			con.commit();
+
 		} catch ( SQLException err ) {
-
-			Funcoes.mensagemErro( this, "Erro ao testar o código do lnaçamento!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao verificar conta do vendedor!" );
 		}
-		return bRetorno;
+
+		return lancamento;
 	}
 
-	
-	private void consolidacao() {
+	private int getSequenciaLancamento() {
 
-		/* Implementar mecanismo para listar as consignações e as vendas,
-		 * e caso não tenham sido gerados lançamentos financeiros, fazêlos  
-		*/  
+		int codlanca = -1;
 
-		
+		try {
+
+			PreparedStatement ps = con.prepareStatement( "SELECT ISEQ FROM SPGERANUM(?,?,'LA')" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNLANCA" ) );
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				codlanca = rs.getInt( "ISEQ" ); 
+			} 
+
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao verificar conta do vendedor!" );
+		}
+
+		return codlanca;
 	}
-
 
 	private void novoLanca() {
 
-		Date dtini = txtDataIniRedeber.getVlrDate();
-		Date dtfim = txtDataFimReceber.getVlrDate();
-
-		Container cont = getContentPane();
-
-		while ( true ) {
-
-			if ( cont instanceof FPrincipal )
-
-				break;
-			cont = cont.getParent();
+		String planejamento = getPlanejamentoVendedor();
+		if ( planejamento == null ) {
+			Funcoes.mensagemInforma( this, "Não foi encontrado planejamento do vendedor." );
+			return;
 		}
 
-		if ( !( (FPrincipal) cont ).temTela( "FSubLanca" ) ) {
-			
-			FSubLanca form = new FSubLanca( null, getPlanejamento(), dtini, dtfim );
-			( (FPrincipal) cont ).criatela( "FSubLanca", form, con );
+		if ( !Aplicativo.telaPrincipal.temTela( FSubLanca.class.getName() ) ) {		
+			FSubLanca form = new FSubLanca( null, planejamento, txtDataIniRedeber.getVlrDate(), txtDataFimReceber.getVlrDate() );
+			Aplicativo.telaPrincipal.criatela( "FSubLanca", form, con );
 			
 			form.addInternalFrameListener(
 					new InternalFrameAdapter() {
@@ -1194,52 +1564,13 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		}
 	}
 
-	private String getPlanejamento() {
-
-		StringBuilder sql = new StringBuilder();
-		ResultSet rs = null;
-		PreparedStatement ps = null;
-		String retorno = "";
-
-		sql.append( "select c.codplan from vdvendedor v, fnconta c " );
-		sql.append( "where v.codemp=? and v.codfilial=? and v.codvend=? " );
-		sql.append( "and v.codempca=c.codemp and v.codfilialca=c.codfilial " );
-		sql.append( "and v.numconta=c.numconta " );
-
-		try {
-
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "vdvendedor" ) );
-			ps.setInt( 3, txtCodVend.getVlrInteger() );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				retorno = rs.getString( "codplan" );
-			}
-
-			rs.close();
-			ps.close();
-
-			con.commit();
-
-		} catch ( SQLException err ) {
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao buscar planejamento!" );
-		}
-
-		return retorno;
-
-	}
-
 	private void abreSubLanca() {
 
 		String codLanca = (String) tabFechamento.getValor( tabFechamento.getLinhaSel(), ETabFechamento.NLANCA.ordinal() );
 		Date dtini = txtDataIniRedeber.getVlrDate();
 		Date dtfim = txtDataFimReceber.getVlrDate();
 
-		if ( !Aplicativo.telaPrincipal.temTela( "Lançamentos" ) ) {
+		if ( !Aplicativo.telaPrincipal.temTela( FSubLanca.class.getName() ) ) {
 			FSubLanca tela = new FSubLanca( codLanca, null, dtini, dtfim );
 			Aplicativo.telaPrincipal.criatela( "Lançamentos", tela, con );
 		}
@@ -1249,10 +1580,13 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 		super.actionPerformed( e );
 
-		if( e.getSource() == btNovoLancamento ) {
+		if( e.getSource() == btConsolidacao ) {
+			consolidacao();
+		}
+		else if( e.getSource() == btNovoLancamento ) {
 			novoLanca();
 		}
-		if ( e.getSource() == btPesquisaReceber ) {
+		else if ( e.getSource() == btPesquisaReceber ) {
 //			montaGridReceber();
 		}
 		else if ( e.getSource() == btSelecionTodosReceber) {
@@ -1406,5 +1740,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		lcClienteVenda.setConexao( con );
 		lcPlanoPagamento.setConexao( con );
 		lcClienteRec.setConexao( con );
+		
+		getPlanejamentos();
 	}
 }

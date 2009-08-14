@@ -212,9 +212,6 @@ public class FVendedor extends FTabDados implements PostListener {
 		lcConta.setQueryCommit( false );
 		lcConta.setReadOnly( true );
 		txtNumConta.setTabelaExterna( lcConta );
-		
-		
-
 	}
 	
 	private void montaTela(){
@@ -254,8 +251,8 @@ public class FVendedor extends FTabDados implements PostListener {
 		adicDescFK( txtDescFunc, 110, 380, 262, 20, "DescFunc", "Descrição da função" );
 		adicCampo( txtCodTipoVend, 7, 420, 100, 20, "CodTipoVend", "Cód.tp.vend", ListaCampos.DB_FK, txtDescTipoVend, false );
 		adicDescFK( txtDescTipoVend, 110, 420, 262, 20, "DescTipoVend", "Descrição do tipo de comissionado" );
-		adicCampo( txtNumConta, 7, 500, 100, 20, "NumConta", "Cód.conta", ListaCampos.DB_FK, txtDescConta, false );
-		adicDescFK( txtDescConta, 110, 500, 262, 20, "DescConta", "Descrição da conta" );
+		adicCampo( txtNumConta, 7, 460, 100, 20, "NumConta", "Cód.conta", ListaCampos.DB_FK, txtDescConta, false );
+		adicDescFK( txtDescConta, 110, 460, 262, 20, "DescConta", "Descrição da conta" );
 		
 		if ( (Boolean)bPref.get( "BUSCACEP" )) {
 			btBuscaEnd.setEnabled( true );
