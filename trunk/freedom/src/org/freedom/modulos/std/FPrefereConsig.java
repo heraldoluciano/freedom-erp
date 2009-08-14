@@ -47,6 +47,10 @@ public class FPrefereConsig extends FTabDados {
 	
 	private ListaCampos lcTipoMovTP = new ListaCampos( this, "TP" );
 	
+	private ListaCampos lcPlanConsig = new ListaCampos( this, "PC" );
+	
+	private ListaCampos lcPlanVDConsig = new ListaCampos( this, "PV" );	
+	
 	/****************
 	 *    Fields    *
 	 ****************/
@@ -63,6 +67,17 @@ public class FPrefereConsig extends FTabDados {
 	
 	private JTextFieldFK txtDescTipoMovTp = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
+	private JTextFieldPad txtCodPlanConsig = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+
+	private JTextFieldFK txtDescPlanConsig = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtCodPlanVDConsig = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+
+	private JTextFieldFK txtDescPlanVDConsig = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	
+	
+	
 	/****************
 	 *   Paineis    *
 	 ****************/
@@ -73,7 +88,7 @@ public class FPrefereConsig extends FTabDados {
 
 		super();
 			
-		setTitulo( "Preferências Gerais" );
+		setTitulo( "Preferências Vendas Consignadas" );
 		setAtribos( 30, 40, 400, 250 );
 		lcCampos.setMensInserir( false );
 		
@@ -117,6 +132,31 @@ public class FPrefereConsig extends FTabDados {
 		lcTipoMovTP.setQueryCommit( false );
 		lcTipoMovTP.setReadOnly( true );
 		txtCodTipoMovTp.setTabelaExterna( lcTipoMovTP );
+		
+		/******************************
+		 *   Planejamento Consignacao *
+		 *****************************/
+		
+		lcPlanConsig.add( new GuardaCampo( txtCodPlanConsig, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, txtDescPlanConsig, false ) );
+		lcPlanConsig.add( new GuardaCampo( txtDescPlanConsig, "DescPlan", "Descriçao do planejamento", ListaCampos.DB_SI, false ) );
+//		lcPlanConsig.setWhereAdic( "TIPOPLAN = 'D'" );
+		lcPlanConsig.montaSql( false, "PLANEJAMENTO", "FN" );
+		lcPlanConsig.setQueryCommit( false );
+		lcPlanConsig.setReadOnly( true );
+		txtCodPlanConsig.setTabelaExterna( lcPlanConsig );
+
+		/***********************************
+		 *   Planejamento Venda Consignada *
+		 ***********************************/
+		
+		lcPlanVDConsig.add( new GuardaCampo( txtCodPlanVDConsig, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, txtDescPlanVDConsig, false ) );
+		lcPlanVDConsig.add( new GuardaCampo( txtDescPlanVDConsig, "DescPlan", "Descriçao do planejamento", ListaCampos.DB_SI, false ) );
+//		lcPlanConsig.setWhereAdic( "TIPOPLAN = 'D'" );
+		lcPlanVDConsig.montaSql( false, "PLANEJAMENTO", "FN" );
+		lcPlanVDConsig.setQueryCommit( false );
+		lcPlanVDConsig.setReadOnly( true );
+		txtCodPlanVDConsig.setTabelaExterna( lcPlanVDConsig );
+		
 	}
 	
 	private void montaTela(){
@@ -140,6 +180,8 @@ public class FPrefereConsig extends FTabDados {
 		lcTipoMov.setConexao( cn );
 		lcTipoMovTv.setConexao( cn );
 		lcTipoMovTP.setConexao( cn );
+		lcPlanConsig.setConexao( cn );
+		lcPlanVDConsig.setConexao( cn );
 		lcCampos.carregaDados();
 	}
 }

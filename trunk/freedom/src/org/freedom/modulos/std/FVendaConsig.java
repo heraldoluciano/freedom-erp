@@ -26,30 +26,22 @@ package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Vector;
-
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -67,6 +59,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FPrincipal;
@@ -123,7 +116,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 	private JPanelPad panelFechamento = new JPanelPad( new BorderLayout() );
 
-	private JPanelPad panelFechamentoCampos = new JPanelPad( 500, 150 );
+	private JPanelPad panelFechamentoCampos = new JPanelPad( 500, 80 );
 
 	private Tabela tabFechamento = new Tabela();
 
@@ -224,7 +217,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 	private JTextFieldPad txtVendas = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtDescontos = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
-	
+	 
 	private JTextFieldPad txtTrocas = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );	
 	
 	private JTextFieldPad txtBonificacoes = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );	
@@ -233,25 +226,26 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 	private JTextFieldPad txtDevolucoes = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtAVista = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
+//	private JTextFieldPad txtAVista = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtACredito = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );	
+	//private JTextFieldPad txtACredito = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );	
 
-	private JTextFieldPad txtAReceber = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
+//	private JTextFieldPad txtAReceber = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtNaoRecebido = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
+//	private JTextFieldPad txtNaoRecebido = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtRecebido = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
+//	private JTextFieldPad txtRecebido = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 
-	private JTextFieldPad txtTotalEntradas = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
+//	private JTextFieldPad txtTotalEntradas = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtTotalFechamento = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtSaldoFechamento = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 
-	private JButton btNovoLancamento = new JButton( "Novo lançamento", Icone.novo( "btExecuta.gif" ) );
+	private JButton btNovoLancamento = new JButton( "Lançamento", Icone.novo( "btNovo.gif" ) );
 	
-
+	private JButton btConsolidacao = new JButton( "Consolidar", Icone.novo( "btReset.gif" ) );
+	
 	private ListaCampos lcVendedor = new ListaCampos( this, "VD" );
 
 	private ListaCampos lcProdutoRemessa = new ListaCampos( this, "PD" );
@@ -303,7 +297,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 		super( false );
 		setTitulo( "Vendas Consignadas" );
-		setAtribos( 50, 50, 740, 600 );
+		setAtribos( 50, 50, 750, 605 );
 
 		montaListaCampos();
 
@@ -328,6 +322,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		btSelecionaNenhumReceber.addActionListener( this );
 		btColocarEmCobrancaReceber.addActionListener( this );
 		btNovoLancamento.addActionListener( this );
+		btConsolidacao.addActionListener( this );
 		
 		txtSQLRemessa.setVlrString( "S" );
 		txtSQLDevolucao.setVlrString( "N" );
@@ -525,32 +520,32 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 		// ********** Início aba Contas a Receber **********
 
-		tpnPrincipal.addTab( "Contas a receber", panelReceber );
+//		tpnPrincipal.addTab( "Contas a receber", panelReceber );
 
-		panelReceber.add( panelReceberFiltros, BorderLayout.NORTH );
-		panelReceber.add( spReceber, BorderLayout.CENTER );
-		panelReceber.add( panelReceberFuncoes, BorderLayout.EAST );
-		panelReceber.add( panelReceberStatus, BorderLayout.SOUTH );
+//		panelReceber.add( panelReceberFiltros, BorderLayout.NORTH );
+//		panelReceber.add( spReceber, BorderLayout.CENTER );
+//		panelReceber.add( panelReceberFuncoes, BorderLayout.EAST );
+//		panelReceber.add( panelReceberStatus, BorderLayout.SOUTH );
 
-		JLabelPad lbLinha = new JLabelPad();
-		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
-		JLabelPad lbPeriodo = new JLabelPad( "Período:", SwingConstants.CENTER );
-		lbPeriodo.setOpaque( true );
+//		JLabelPad lbLinha = new JLabelPad();
+//		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
+//		JLabelPad lbPeriodo = new JLabelPad( "Período:", SwingConstants.CENTER );
+//		lbPeriodo.setOpaque( true );
 
-		Vector<String> vValsData = new Vector<String>();
-		Vector<String> vLabsData = new Vector<String>();
-		vValsData.addElement( "V" );
-		vValsData.addElement( "E" );
-		vLabsData.addElement( "Vencimento" );
-		vLabsData.addElement( "Emissão" );
+//		Vector<String> vValsData = new Vector<String>();
+//		Vector<String> vLabsData = new Vector<String>();
+//		vValsData.addElement( "V" );
+//		vValsData.addElement( "E" );
+//		vLabsData.addElement( "Vencimento" );
+//		vLabsData.addElement( "Emissão" );
 
-		rgDataReceber = new JRadioGroup<String, String>( 1, 2, vLabsData, vValsData );
-		rgDataReceber.setVlrString( "V" );
+//		rgDataReceber = new JRadioGroup<String, String>( 1, 2, vLabsData, vValsData );
+//		rgDataReceber.setVlrString( "V" );
 		
-		JLabelPad lbLinha2 = new JLabelPad();
-		lbLinha2.setBorder( BorderFactory.createEtchedBorder() );
+//		JLabelPad lbLinha2 = new JLabelPad();
+//		lbLinha2.setBorder( BorderFactory.createEtchedBorder() );
 
-		panelReceberFiltros.setPreferredSize( new Dimension( 500, 130 ) );
+/*		panelReceberFiltros.setPreferredSize( new Dimension( 500, 130 ) );
 		panelReceberFiltros.adic( lbPeriodo, 17, 10, 80, 20 );
 		panelReceberFiltros.adic( lbLinha, 7, 20, 250, 40 );
 		panelReceberFiltros.adic( txtDataIniRedeber, 17, 30, 100, 20 );
@@ -633,7 +628,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		txtVlrRecPago.setAtivo( false );
 		txtVlrRecAVencer.setAtivo( false );
 		txtVlrEmCobranca.setAtivo( false );
-
+*/
 		// ********** Fim aba Contas a Receber **********
 		
 		// ********** Início aba Fechamento **********
@@ -642,39 +637,44 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
         setPainel( panelFechamento );    
         panelFechamento.add( panelFechamentoCampos, BorderLayout.NORTH );
         panelFechamento.add( spFechamento, BorderLayout.CENTER );
-    
-        panelFechamentoCampos.adic( new JLabelPad( "Vendas" ), 7, 10, 100, 20 );
-        panelFechamentoCampos.adic( txtVendas, 7, 30, 100, 20 );
+
+        panelFechamentoCampos.adic( new JLabelPad( "Remessa" ), 7, 10, 100, 20 );
+        panelFechamentoCampos.adic( txtRemessas, 7, 30, 100, 20 );
+
+        panelFechamentoCampos.adic( new JLabelPad( "Vendas" ), 110, 10, 100, 20 );
+        panelFechamentoCampos.adic( txtVendas, 110, 30, 100, 20 );
+        
+        
+        /*
         panelFechamentoCampos.adic( new JLabelPad( "Descontos" ), 110, 10, 100, 20 );
         panelFechamentoCampos.adic( txtDescontos, 110, 30, 100, 20 );
         panelFechamentoCampos.adic( new JLabelPad( "Trocas" ), 213, 10, 100, 20 );
         panelFechamentoCampos.adic( txtTrocas, 213, 30, 100, 20 );
         panelFechamentoCampos.adic( new JLabelPad( "Bonificações" ), 316, 10, 100, 20 );
         panelFechamentoCampos.adic( txtBonificacoes, 316, 30, 100, 20 );
-        panelFechamentoCampos.adic( new JLabelPad( "Remessas" ), 419, 10, 100, 20 );
-        panelFechamentoCampos.adic( txtRemessas, 419, 30, 100, 20 );
         panelFechamentoCampos.adic( new JLabelPad( "Devoluções" ), 522, 10, 100, 20 );
         panelFechamentoCampos.adic( txtDevolucoes, 522, 30, 100, 20 );
+        */
+//        panelFechamentoCampos.adic( new JLabelPad( "A Vista" ), 7, 50, 100, 20 );
+//        panelFechamentoCampos.adic( txtAVista, 7, 70, 100, 20 );
+//        panelFechamentoCampos.adic( new JLabelPad( "A Crédito" ), 110, 50, 100, 20 );
+//        panelFechamentoCampos.adic( txtACredito, 110, 70, 100, 20 );
+//        panelFechamentoCampos.adic( new JLabelPad( "A Receber" ), 213, 50, 100, 20 );
+//        panelFechamentoCampos.adic( txtAReceber, 213, 70, 100, 20 );
+//        panelFechamentoCampos.adic( new JLabelPad( "Recebido" ), 316, 50, 100, 20 );
+//        panelFechamentoCampos.adic( txtRecebido, 316, 70, 100, 20 );
+//        panelFechamentoCampos.adic( new JLabelPad( "Não Recebido" ), 419, 50, 100, 20 );
+//        panelFechamentoCampos.adic( txtNaoRecebido, 419, 70, 100, 20 );
         
-        panelFechamentoCampos.adic( new JLabelPad( "A Vista" ), 7, 50, 100, 20 );
-        panelFechamentoCampos.adic( txtAVista, 7, 70, 100, 20 );
-        panelFechamentoCampos.adic( new JLabelPad( "A Crédito" ), 110, 50, 100, 20 );
-        panelFechamentoCampos.adic( txtACredito, 110, 70, 100, 20 );
-        panelFechamentoCampos.adic( new JLabelPad( "A Receber" ), 213, 50, 100, 20 );
-        panelFechamentoCampos.adic( txtAReceber, 213, 70, 100, 20 );
-        panelFechamentoCampos.adic( new JLabelPad( "Recebido" ), 316, 50, 100, 20 );
-        panelFechamentoCampos.adic( txtRecebido, 316, 70, 100, 20 );
-        panelFechamentoCampos.adic( new JLabelPad( "Não Recebido" ), 419, 50, 100, 20 );
-        panelFechamentoCampos.adic( txtNaoRecebido, 419, 70, 100, 20 );
-        
-        panelFechamentoCampos.adic( new JLabelPad( "Total Entradas" ), 7, 90, 120, 20 );
-        panelFechamentoCampos.adic( txtTotalEntradas, 7, 110, 120, 20 );
-        panelFechamentoCampos.adic( new JLabelPad( "Total Fechamento" ), 130, 90, 120, 20 );
-        panelFechamentoCampos.adic( txtTotalFechamento, 130, 110, 120, 20 );
-        panelFechamentoCampos.adic( new JLabelPad( "Saldo Fechamento" ), 253, 90, 120, 20 );
-        panelFechamentoCampos.adic( txtSaldoFechamento, 253, 110, 120, 20 );
+//        panelFechamentoCampos.adic( new JLabelPad( "Total Entradas" ), 7, 90, 120, 20 );
+//        panelFechamentoCampos.adic( txtTotalEntradas, 7, 110, 120, 20 );
+//        panelFechamentoCampos.adic( new JLabelPad( "Total Fechamento" ), 130, 90, 120, 20 );
+//        panelFechamentoCampos.adic( txtTotalFechamento, 130, 110, 120, 20 );
+//        panelFechamentoCampos.adic( new JLabelPad( "Saldo Fechamento" ), 253, 90, 120, 20 );
+//        panelFechamentoCampos.adic( txtSaldoFechamento, 253, 110, 120, 20 );
 
-        panelFechamentoCampos.adic( btNovoLancamento, 545, 105, 160, 30 );
+        panelFechamentoCampos.adic( btConsolidacao, 585, 2, 140, 30 );
+        panelFechamentoCampos.adic( btNovoLancamento, 585, 34, 140, 30 );
         
         tabFechamento.adicColuna( "Nº Lanç." );
         tabFechamento.adicColuna( "cod.sub.Lanç." );
@@ -683,7 +683,11 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
         tabFechamento.adicColuna( "Valor" );
         tabFechamento.adicColuna( "Histórico" );
     
-        tabFechamento.setTamColuna( 350, 5 );
+        tabFechamento.setColunaInvisivel( 0 );
+        tabFechamento.setColunaInvisivel( 1 );
+        tabFechamento.setTamColuna( 75, 2 );
+        tabFechamento.setColunaInvisivel( 3 );
+        tabFechamento.setTamColuna( 550, 5 );
     
         txtVendas.setSoLeitura( true );
         txtDescontos.setSoLeitura( true );
@@ -691,16 +695,16 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
     	txtBonificacoes.setSoLeitura( true );
     	txtRemessas.setSoLeitura( true );
     	txtDevolucoes.setSoLeitura( true );
-        txtAVista.setSoLeitura( true );
-        txtACredito.setSoLeitura( true );
-        txtAReceber.setSoLeitura( true );
-        txtNaoRecebido.setSoLeitura( true );
+//      txtAVista.setSoLeitura( true );
+//      txtACredito.setSoLeitura( true );
+//      txtAReceber.setSoLeitura( true );
+//      txtNaoRecebido.setSoLeitura( true );
         txtTotalFechamento.setSoLeitura( true );
         txtSaldoFechamento.setSoLeitura( true );
         
         // ********** Fim aba Fechamento **********
 	}
-
+/*
 	private void montaGridReceber() {
 
 		try {
@@ -843,8 +847,8 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			Funcoes.mensagemErro( this, "Erro ao listar recebimentos!\n" + e.getMessage(), true, con, e );
 		}
 	}
-
-	private void abreTelaRec() {
+*/
+/*	private void abreTelaRec() {
 
 		Integer codrec = (Integer) tabReceber.getValor( tabReceber.getLinhaSel(), ETabReceber.CODREC.ordinal() );
 		FManutRec tela = null;
@@ -871,8 +875,8 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			tabReceber.setValor( new Boolean( false ), row, ETabReceber.SEL.ordinal() );
 		}
 	}
-	
-	private void colocarEmCobranca() {
+*/	
+/*	private void colocarEmCobranca() {
 		
 		try {
 			
@@ -903,7 +907,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			e.printStackTrace();
 		}
 	}
-
+*/
 	private void carregaFechamento() {
 		
 		montaGridFechamento();
@@ -1121,38 +1125,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		}
 	}
 	
-	private void adicLanca( String[] sVals ) {
 
-		Date dtini = txtDataIniRedeber.getVlrDate();
-		Date dtfim = txtDataFimReceber.getVlrDate();
-
-		int iLin = -1;
-		/*
-		 * if ( ( sVals[ EColTabFechamento.NLANCA.ordinal() ].length() > 0 ) && ( testaCodLanca( Integer.parseInt( sVals[ EColTabFechamento.NLANCA.ordinal() ] ))) && // ( getPlanejamento().equals(
-		 * sVals[6] )) && ( !dtini.after( Funcoes.strDateToDate( sVals[ EColTabFechamento.DATA.ordinal() ]))) && ( !dtfim.before( Funcoes.strDateToDate( sVals[ EColTabFechamento.DATA.ordinal() ])))) {
-		 */
-
-		for ( int i = 0; i < tabFechamento.getNumLinhas(); i++ ) {
-			if ( ( (String) tabFechamento.getValor( i, 0 ) ).trim().equals( sVals[ETabFechamento.NLANCA.ordinal()] ) ) {
-				tabFechamento.tiraLinha( i );
-				break;
-			}
-		}
-
-		tabFechamento.adicLinha();
-		iLin = tabFechamento.getNumLinhas() - 1;
-
-		tabFechamento.setValor( sVals[ETabFechamento.NLANCA.ordinal()], iLin, 0 );
-		tabFechamento.setValor( sVals[ETabFechamento.CODSUBLANCA.ordinal()], iLin, 1 );
-		tabFechamento.setValor( sVals[ETabFechamento.DATA.ordinal()], iLin, 2 );
-		tabFechamento.setValor( sVals[ETabFechamento.DOC.ordinal()], iLin, 3 );
-		tabFechamento.setValor( sVals[ETabFechamento.VALOR.ordinal()], iLin, 4 );
-		tabFechamento.setValor( sVals[ETabFechamento.HISTORICO.ordinal()], iLin, 5 );
-
-		// }
-	}
-
-	
 	private boolean testaCodLanca( int iCodLanca ) {
 
 		boolean bRetorno = false;
@@ -1179,7 +1152,17 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		}
 		return bRetorno;
 	}
+
 	
+	private void consolidacao() {
+
+		/* Implementar mecanismo para listar as consignações e as vendas,
+		 * e caso não tenham sido gerados lançamentos financeiros, fazêlos  
+		*/  
+
+		
+	}
+
 
 	private void novoLanca() {
 
@@ -1197,49 +1180,18 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		}
 
 		if ( !( (FPrincipal) cont ).temTela( "FSubLanca" ) ) {
+			
 			FSubLanca form = new FSubLanca( null, getPlanejamento(), dtini, dtfim );
 			( (FPrincipal) cont ).criatela( "FSubLanca", form, con );
-			form.addInternalFrameListener( new InternalFrameAdapter() {
-				public void internalFrameClosed( InternalFrameEvent ievt ) {
-					adicLanca( ( (FSubLanca) ievt.getSource() ).getValores() );
-				}
-			} );
+			
+			form.addInternalFrameListener(
+					new InternalFrameAdapter() {
+						public void internalFrameClosed(InternalFrameEvent ievt) {
+							carregaFechamento();
+						}
+					}
+			);
 		}
-	}
-
-	private String getConta() {
-
-		String retorno = "";
-		StringBuilder sql = new StringBuilder();
-		ResultSet rs = null;
-		PreparedStatement ps = null;
-
-		sql.append( "select v.numconta from  vdvendedor v " );
-		sql.append( "where v.codemp=60 and v.codfilial=1 and v.codvend=20 " );
-
-		try {
-
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "vdvendedor" ) );
-			ps.setInt( 3, txtCodVend.getVlrInteger() );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				retorno = rs.getString( "numconta" );
-			}
-
-			rs.close();
-			ps.close();
-
-			con.commit();
-
-		} catch ( SQLException err ) {
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao buscar conta do vendedor!" );
-		}
-		return retorno;
 	}
 
 	private String getPlanejamento() {
@@ -1297,17 +1249,20 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 		super.actionPerformed( e );
 
+		if( e.getSource() == btNovoLancamento ) {
+			novoLanca();
+		}
 		if ( e.getSource() == btPesquisaReceber ) {
-			montaGridReceber();
+//			montaGridReceber();
 		}
 		else if ( e.getSource() == btSelecionTodosReceber) {
-			selecionaTodosReceber();
+//			selecionaTodosReceber();
 		}
 		else if ( e.getSource() == btSelecionaNenhumReceber ) {
-			selecionaNenhumReceber();
+//			selecionaNenhumReceber();
 		}
 		else if ( e.getSource() == btColocarEmCobrancaReceber ) {
-			colocarEmCobranca();
+//			colocarEmCobranca();
 		}
 	}
 
@@ -1315,7 +1270,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 		if ( e.getClickCount() == 2 ) {
 			if ( e.getSource() == tabReceber ) {
-				abreTelaRec();
+//				abreTelaRec();
 			}
 			else if ( e.getSource() == tabFechamento ) {
 				abreSubLanca();
@@ -1388,10 +1343,10 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			else if ( tpnPrincipal.getSelectedIndex() == 1 ) {
 				navRod.setVisible( false );
 			}
+//			else if ( tpnPrincipal.getSelectedIndex() == 2 ) {
+//				navRod.setVisible( false );
+//			}
 			else if ( tpnPrincipal.getSelectedIndex() == 2 ) {
-				navRod.setVisible( false );
-			}
-			else if ( tpnPrincipal.getSelectedIndex() == 3 ) {
 				navRod.setVisible( false );
 				carregaFechamento();
 			}
@@ -1403,7 +1358,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 	public void afterCarrega( CarregaEvent e ) {
 
 		if ( e.getListaCampos() == lcClienteRec ) {
-			montaGridReceber();
+//			montaGridReceber();
 		}
 	}
 
