@@ -166,6 +166,8 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 	private JTextFieldFK txtDescProdVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldPad txtPreco = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+
 	private JTextFieldPad txtPrecoVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtQtdVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
@@ -175,6 +177,8 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 	private JTextFieldPad txtQtdBonif = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtVlrDescVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
+	
+	private JCheckBoxPad cbRecebido = new JCheckBoxPad( "Recebido", "S", "N" );
 
 	// campos da aba contas a receber
 
@@ -228,7 +232,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 //	private JTextFieldPad txtAVista = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 
-	//private JTextFieldPad txtACredito = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );	
+//	private JTextFieldPad txtACredito = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );	
 
 //	private JTextFieldPad txtAReceber = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 
@@ -379,7 +383,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		txtCodProdVenda.setNomeCampo( "CodProd" );
 		lcProdutoVenda.add( new GuardaCampo( txtCodProdVenda, "CodProd", "Cód.prod", ListaCampos.DB_PK, false ) );
 		lcProdutoVenda.add( new GuardaCampo( txtDescProdVenda, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		lcProdutoVenda.add( new GuardaCampo( txtPrecoVenda, "PrecoBaseProd", "preco", ListaCampos.DB_SI, false ) );
+		lcProdutoVenda.add( new GuardaCampo( txtPreco, "PrecoBaseProd", "preco", ListaCampos.DB_SI, false ) );
 		lcProdutoVenda.montaSql( false, "PRODUTO", "EQ" );
 		lcProdutoVenda.setReadOnly( true );
 
@@ -503,18 +507,23 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 		adicCampo( txtCodVendaCo, 7, 30, 50, 20, "CodVendaCo", "Item", ListaCampos.DB_PK, true );
 		adicCampo( txtCodProdVenda, 60, 30, 80, 20, "CodProd", "Cód.Prod", ListaCampos.DB_FK, txtDescProdVenda, true );
-		adicDescFK( txtDescProdVenda, 143, 30, 270, 20, "DescProd", "Descrição do produto" );
-		adicCampo( txtPrecoVenda, 416, 30, 120, 20, "Preco", "Preço", ListaCampos.DB_SI, true );
+		adicDescFK( txtDescProdVenda, 143, 30, 270, 20, "DescProd", "Descrição do produto" );		
+		adicCampo( txtPreco, 416, 30, 120, 20, "Preco", "Preço Consiginado", ListaCampos.DB_SI, true );	
+		
 		adicCampo( txtQtdVenda, 7, 70, 130, 20, "QtdVendaCo", "Qtd. Venda", ListaCampos.DB_SI, false );
 		adicCampo( txtQtdTroca, 140, 70, 130, 20, "QtdTroca", "Qtd. Troca", ListaCampos.DB_SI, false );
 		adicCampo( txtQtdBonif, 273, 70, 130, 20, "QtdBonif", "Qtd. Bonificação", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrDescVenda, 406, 70, 130, 20, "Desconto", "Desconto", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrDescVenda, 406, 70, 130, 20, "Desconto", "Desconto", ListaCampos.DB_SI, false );	
+		adicCampo( txtPrecoVenda, 539, 70, 120, 20, "PrecoVenda", "Preço Venda", ListaCampos.DB_SI, true );
+		
+		adicDB( cbRecebido, 550, 30, 150, 20, "Recebido", "", false );
 
 		setPainel( panelVendasCab );
 		adicCampo( txtCodCliVenda, 7, 30, 80, 20, "CodCli", "Cód.cli", ListaCampos.DB_FK, txtRazCliVenda, true );
 		adicDescFK( txtRazCliVenda, 90, 30, 260, 20, "RazCli", "Razão social do cliente" );
 		adicCampo( txtCodPlanoPag, 353, 30, 80, 20, "CodPlanoPag", "Cód.pl.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
 		adicDescFK( txtDescPlanoPag, 436, 30, 260, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
+		
 		setListaCampos( true, "VENDACONSIG", "VD" );
 		lcDetVendas.setQueryInsert( true );
 		lcDetVendas.setTabela( tabVendas );
@@ -523,6 +532,12 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		tabVendas.setTamColuna( 250, 2 );
 		tabVendas.setTamColuna( 250, 7 );
 		tabVendas.setTamColuna( 250, 9 );
+
+		cbRecebido.addChangeListener( new ChangeListener() {
+			public void stateChanged( ChangeEvent e ) {
+				txtPrecoVenda.setAtivo( ! cbRecebido.isSelected() );
+			}			
+		});
 
 		// ********** Fim aba Vendas **********
 
@@ -649,8 +664,11 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
         panelFechamentoCampos.adic( new JLabelPad( "Remessa" ), 7, 10, 100, 20 );
         panelFechamentoCampos.adic( txtRemessas, 7, 30, 100, 20 );
 
-        panelFechamentoCampos.adic( new JLabelPad( "Vendas" ), 110, 10, 100, 20 );
-        panelFechamentoCampos.adic( txtVendas, 110, 30, 100, 20 );
+        panelFechamentoCampos.adic( new JLabelPad( "Devoluções" ), 110, 10, 100, 20 );
+        panelFechamentoCampos.adic( txtDevolucoes, 110, 30, 100, 20 );
+
+        panelFechamentoCampos.adic( new JLabelPad( "Vendas" ), 213, 10, 100, 20 );
+        panelFechamentoCampos.adic( txtVendas, 213, 30, 100, 20 );
         
 //        panelFechamentoCampos.adic( new JLabelPad( "Descontos" ), 110, 10, 100, 20 );
 //        panelFechamentoCampos.adic( txtDescontos, 110, 30, 100, 20 );
@@ -1177,6 +1195,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		try {
 			
 			lancaRemessa();
+			lancaDevolucao();
 			lancaVendas();
 			
 			con.commit();
@@ -1199,6 +1218,8 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		String codplanvend = getPlanejamentoVendedor();
 		
 		int codlanca = getLancamentoConsignacao();
+		
+		BigDecimal remessas = txtRemessas.getVlrBigDecimal();
 		
 		if ( codlanca <= 0 ) {
 			
@@ -1223,8 +1244,8 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			psR.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 			psR.setString( 7, codplanvend );
 			psR.setDate( 8, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
-			psR.setString( 9, "REMESSA CONSIGNADA" );
-			psR.setBigDecimal( 10, txtRemessas.getVlrBigDecimal() );
+			psR.setString( 9, "REMESSA CONSIGNADA - Código: " + txtCodConsig.getVlrInteger() );
+			psR.setBigDecimal( 10, remessas );
 			psR.executeUpdate();
 
 			StringBuilder insertSubLanca = new StringBuilder();
@@ -1247,8 +1268,8 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			psR.setString( 7, codplanconsig );
 			psR.setString( 8, "S" );
 			psR.setDate( 9, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
-			psR.setBigDecimal( 10, txtRemessas.getVlrBigDecimal().multiply( new BigDecimal( "-1" ) ) );
-			psR.setString( 11, "REMESSA CONSIGNADA" );
+			psR.setBigDecimal( 10, remessas.multiply( new BigDecimal( "-1" ) ) );
+			psR.setString( 11, "REMESSA CONSIGNADA - Código: " + txtCodConsig.getVlrInteger() );
 			psR.executeUpdate();
 
 			StringBuilder updateConsignacao = new StringBuilder();
@@ -1273,7 +1294,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			updateSubLanca.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODLANCA=? AND CODSUBLANCA=?" );
 							
 			psR = con.prepareStatement( updateSubLanca.toString() );
-			psR.setBigDecimal( 1, txtRemessas.getVlrBigDecimal() );
+			psR.setBigDecimal( 1, remessas );
 			psR.setInt( 2, Aplicativo.iCodEmp );
 			psR.setInt( 3, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
 			psR.setInt( 4, codlanca );
@@ -1285,7 +1306,110 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			updateLanca.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODLANCA=?" );
 							
 			psR = con.prepareStatement( updateLanca.toString() );
-			psR.setBigDecimal( 1, txtRemessas.getVlrBigDecimal() );
+			psR.setBigDecimal( 1, remessas );
+			psR.setInt( 2, Aplicativo.iCodEmp );
+			psR.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
+			psR.setInt( 4, codlanca );
+			psR.executeUpdate();
+		}
+	}
+	
+	private void lancaDevolucao() throws SQLException {
+		
+		PreparedStatement psR = null;
+		
+		String codplanvend = getPlanejamentoVendedor();
+		
+		int codlanca = getLancamentoConsignacaoDevolucao();
+		
+		BigDecimal devolucoes = txtDevolucoes.getVlrBigDecimal();
+		
+		if ( codlanca <= 0 && devolucoes.doubleValue() > 0 ) {
+			
+			codlanca = getSequenciaLancamento();
+			
+			StringBuilder insertLanca = new StringBuilder();
+			insertLanca.append( "INSERT INTO FNLANCA " ); 
+			insertLanca.append( "(TIPOLANCA,CODEMP,CODFILIAL,CODLANCA," );
+			insertLanca.append( "CODEMPPN,CODFILIALPN,CODPLAN," );
+			insertLanca.append( "DATALANCA,HISTBLANCA,VLRLANCA,FLAG) " );
+			insertLanca.append( "VALUES (" );
+			insertLanca.append( "?,?,?,?," );
+			insertLanca.append( "?,?,?," );
+			insertLanca.append( "?,?,?,'S')" );
+			
+			psR = con.prepareStatement( insertLanca.toString() );
+			psR.setString( 1, "A" );
+			psR.setInt( 2, Aplicativo.iCodEmp );
+			psR.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
+			psR.setInt( 4, codlanca );
+			psR.setInt( 5, Aplicativo.iCodEmp );
+			psR.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+			psR.setString( 7, codplanvend );
+			psR.setDate( 8, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
+			psR.setString( 9, "DEVOLUÇÃO CONSIGNADA - Código: " + txtCodConsig.getVlrInteger() );
+			psR.setBigDecimal( 10, devolucoes.multiply( new BigDecimal( "-1" ) ) );
+			psR.executeUpdate();
+
+			StringBuilder insertSubLanca = new StringBuilder();
+			insertSubLanca.append( "INSERT INTO FNSUBLANCA " );
+			insertSubLanca.append( "(CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA," );
+			insertSubLanca.append( "CODEMPPN,CODFILIALPN,CODPLAN," );
+			insertSubLanca.append( "ORIGSUBLANCA,DATASUBLANCA,VLRSUBLANCA,HISTSUBLANCA,FLAG) " );
+			insertSubLanca.append( "VALUES (" );
+			insertSubLanca.append( "?,?,?,?," );
+			insertSubLanca.append( "?,?,?," );
+			insertSubLanca.append( "?,?,?,?,'S');" );
+							
+			psR = con.prepareStatement( insertSubLanca.toString() );
+			psR.setInt( 1, Aplicativo.iCodEmp );
+			psR.setInt( 2, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+			psR.setInt( 3, codlanca );
+			psR.setInt( 4, 1 );
+			psR.setInt( 5, codempvd );
+			psR.setInt( 6, codfilialvd );
+			psR.setString( 7, codplanvdconsig );
+			psR.setString( 8, "S" );
+			psR.setDate( 9, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
+			psR.setBigDecimal( 10, devolucoes );
+			psR.setString( 11, "DEVOLUÇÃO CONSIGNADA - Código: " + txtCodConsig.getVlrInteger() );
+			psR.executeUpdate();
+
+			StringBuilder updateConsignacao = new StringBuilder();
+			updateConsignacao.append( "UPDATE VDCONSIGNACAO SET " );
+			updateConsignacao.append( "CODEMPSD=?,CODFILIALSD=?,CODLANCASD=?,CODSUBLANCASD=? " );
+			updateConsignacao.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCONSIG=?" );
+			
+			psR = con.prepareStatement( updateConsignacao.toString() );
+			psR.setInt( 1, Aplicativo.iCodEmp );
+			psR.setInt( 2, ListaCampos.getMasterFilial( "FNLANCA" ) );
+			psR.setInt( 3, codlanca );
+			psR.setInt( 4, 1 );
+			psR.setInt( 5, Aplicativo.iCodEmp );
+			psR.setInt( 6, ListaCampos.getMasterFilial( "VDCONSIGNACAO" ) );
+			psR.setInt( 7, txtCodConsig.getVlrInteger() );
+			psR.executeUpdate();
+		}		
+		else {
+			
+			StringBuilder updateSubLanca = new StringBuilder();
+			updateSubLanca.append( "UPDATE FNSUBLANCA SET VLRSUBLANCA=? " );
+			updateSubLanca.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODLANCA=? AND CODSUBLANCA=?" );
+							
+			psR = con.prepareStatement( updateSubLanca.toString() );
+			psR.setBigDecimal( 1, devolucoes );
+			psR.setInt( 2, Aplicativo.iCodEmp );
+			psR.setInt( 3, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+			psR.setInt( 4, codlanca );
+			psR.setInt( 5, 1 );
+			psR.executeUpdate();
+			
+			StringBuilder updateLanca = new StringBuilder();
+			updateLanca.append( "UPDATE FNLANCA SET VLRLANCA=? " );
+			updateLanca.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODLANCA=?" );
+							
+			psR = con.prepareStatement( updateLanca.toString() );
+			psR.setBigDecimal( 1, devolucoes.multiply( new BigDecimal( "-1" ) ) );
 			psR.setInt( 2, Aplicativo.iCodEmp );
 			psR.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
 			psR.setInt( 4, codlanca );
@@ -1295,13 +1419,17 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 	
 	private void lancaVendas() throws SQLException {
 		
+		String venda = "VENDA CONSIGINADA - (Item: %d, Cliente: %d, Pagamento: %d)";		
+		String recebimento = "RECEBIMENTO EM CARTEIRA - (Item: %d, Cliente: %d, Pagamento: %d)";
+		String naoRecebimento = "RECEBIMENTO PENDENTE - (Item: %d, Cliente: %d, Pagamento: %d)";
+		
 		String codplanvend = getPlanejamentoVendedor();
 		
 		StringBuilder selectVendas = new StringBuilder();
-		selectVendas.append( "SELECT CODVENDACO, SUM(QTDVENDACO*PRECO) VALOR, CODCLI, CODPLANOPAG, CODLANCA, CODSUBLANCA " );
+		selectVendas.append( "SELECT CODVENDACO, (QTDVENDACO*PRECO) VALOR, (QTDVENDACO*PRECOVENDA) VALOR_VENDA, " );
+		selectVendas.append( "CODCLI, CODPLANOPAG, CODLANCA, CODSUBLANCA, CODLANCASC, CODSUBLANCASC, RECEBIDO " );
 		selectVendas.append( "FROM VDVENDACONSIG " );
 		selectVendas.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCONSIG=? " );
-		selectVendas.append( "GROUP BY CODVENDACO, CODCLI, CODPLANOPAG, CODLANCA, CODSUBLANCA" );
 		
 		PreparedStatement ps = con.prepareStatement( selectVendas.toString() );
 		ps.setInt( 1, Aplicativo.iCodEmp );
@@ -1312,10 +1440,18 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		PreparedStatement psV = null;		
 		
 		int codlanca = 0;
+		BigDecimal valor = null;
+		BigDecimal valorVenda = null;
+		boolean bRec = false;
 		
 		while ( rs.next() ) {
 			
+			bRec = "S".equals( rs.getString( "RECEBIDO" ) );
+			valor = rs.getBigDecimal( "VALOR" );
+			valorVenda = rs.getBigDecimal( "VALOR_VENDA" );
+			
 			if ( rs.getInt( "CODSUBLANCA" ) <= 0 ) {
+				
 				codlanca = getSequenciaLancamento();
 				
 				StringBuilder insertLanca = new StringBuilder();
@@ -1337,8 +1473,8 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 				psV.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 				psV.setString( 7, codplanvend );
 				psV.setDate( 8, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
-				psV.setString( 9, "VENDA CONSIGNADA - CLIENTE: " + rs.getInt( "CODCLI" ) );
-				psV.setBigDecimal( 10, rs.getBigDecimal( "VALOR" ).multiply( new BigDecimal( "-1" ) ) );
+				psV.setString( 9, String.format( venda, rs.getInt( "CODVENDACO" ), rs.getInt( "CODCLI" ), rs.getInt( "CODPLANOPAG" ) ) );
+				psV.setBigDecimal( 10, (bRec ? valor : valorVenda).multiply( new BigDecimal( "-1" ) ) );
 				psV.executeUpdate();
 
 				StringBuilder insertSubLanca = new StringBuilder();
@@ -1361,8 +1497,8 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 				psV.setString( 7, codplanvdconsig );
 				psV.setString( 8, "S" );
 				psV.setDate( 9, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
-				psV.setBigDecimal( 10, rs.getBigDecimal( "VALOR" ) );
-				psV.setString( 11, "VENDA CONSIGNADA - CLIENTE: " + rs.getInt( "CODCLI" ) );
+				psV.setBigDecimal( 10, bRec ? valor : valorVenda );
+				psV.setString( 11, String.format( venda, rs.getInt( "CODVENDACO" ), rs.getInt( "CODCLI" ), rs.getInt( "CODPLANOPAG" ) ) );
 				psV.executeUpdate();
 
 				StringBuilder updateVendaConsignada = new StringBuilder();
@@ -1393,32 +1529,38 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 				psV.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 				psV.setString( 7, codplanvend );
 				psV.setDate( 8, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
-				psV.setString( 9, "RECEBIMENTO EM CARTEIRA - CLIENTE: " + rs.getInt( "CODCLI" ) );
-				psV.setBigDecimal( 10, rs.getBigDecimal( "VALOR" ) );
+				psV.setString( 9, String.format( bRec ? recebimento : naoRecebimento, rs.getInt( "CODVENDACO" ), rs.getInt( "CODCLI" ), rs.getInt( "CODPLANOPAG" ) ) );
+				psV.setBigDecimal( 10, bRec ? valor : valorVenda.subtract( valor ) );
 				psV.executeUpdate();
-
-				StringBuilder insertSubLancaContrapartida = new StringBuilder();
-				insertSubLancaContrapartida.append( "INSERT INTO FNSUBLANCA " );
-				insertSubLancaContrapartida.append( "(CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA," );
-				insertSubLancaContrapartida.append( "CODEMPPN,CODFILIALPN,CODPLAN," );
-				insertSubLancaContrapartida.append( "ORIGSUBLANCA,DATASUBLANCA,VLRSUBLANCA,HISTSUBLANCA,FLAG) " );
-				insertSubLancaContrapartida.append( "VALUES (" );
-				insertSubLancaContrapartida.append( "?,?,?,?," );
-				insertSubLancaContrapartida.append( "?,?,?," );
-				insertSubLancaContrapartida.append( "?,?,?,?,'S');" );
 								
-				psV = con.prepareStatement( insertSubLancaContrapartida.toString() );
+				psV = con.prepareStatement( insertSubLanca.toString() );
 				psV.setInt( 1, Aplicativo.iCodEmp );
 				psV.setInt( 2, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
 				psV.setInt( 3, codlanca );
 				psV.setInt( 4, 1 );
-				psV.setInt( 5, codempvd );
-				psV.setInt( 6, codfilialvd );
-				psV.setString( 7, codplanvdconsig );
+				psV.setInt( 5, bRec ? codempvd : codempco );
+				psV.setInt( 6, bRec ? codfilialvd : codfilialco );
+				psV.setString( 7, bRec ? codplanvdconsig : codplanconsig );
 				psV.setString( 8, "S" );
 				psV.setDate( 9, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
-				psV.setBigDecimal( 10, rs.getBigDecimal( "VALOR" ).multiply( new BigDecimal( "-1" ) ) );
-				psV.setString( 11, "RECEBIMENTO EM CARTEIRA" );
+				psV.setBigDecimal( 10, (bRec ? valor : valorVenda.subtract( valor )).multiply( new BigDecimal( "-1" ) ) );
+				psV.setString( 11, String.format( bRec ? recebimento : naoRecebimento, rs.getInt( "CODVENDACO" ), rs.getInt( "CODCLI" ), rs.getInt( "CODPLANOPAG" ) ) );
+				psV.executeUpdate();
+
+				StringBuilder updateVendaConsignadaContrapartida = new StringBuilder();
+				updateVendaConsignadaContrapartida.append( "UPDATE VDVENDACONSIG SET " );
+				updateVendaConsignadaContrapartida.append( "CODEMPSC=?,CODFILIALSC=?,CODLANCASC=?,CODSUBLANCASC=? " );
+				updateVendaConsignadaContrapartida.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCONSIG=? AND CODVENDACO=?" );
+				
+				psV = con.prepareStatement( updateVendaConsignadaContrapartida.toString() );
+				psV.setInt( 1, Aplicativo.iCodEmp );
+				psV.setInt( 2, ListaCampos.getMasterFilial( "FNLANCA" ) );
+				psV.setInt( 3, codlanca );
+				psV.setInt( 4, 1 );
+				psV.setInt( 5, Aplicativo.iCodEmp );
+				psV.setInt( 6, ListaCampos.getMasterFilial( "VDCONSIGNACAO" ) );
+				psV.setInt( 7, txtCodConsig.getVlrInteger() );
+				psV.setInt( 8, rs.getInt( "CODVENDACO" ) );
 				psV.executeUpdate();
 			}
 			else {
@@ -1428,7 +1570,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 				updateSubLanca.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODLANCA=? AND CODSUBLANCA=?" );
 								
 				psV = con.prepareStatement( updateSubLanca.toString() );
-				psV.setBigDecimal( 1, rs.getBigDecimal( "VALOR" ) );
+				psV.setBigDecimal( 1, valor );
 				psV.setInt( 2, Aplicativo.iCodEmp );
 				psV.setInt( 3, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
 				psV.setInt( 4, rs.getInt( "CODLANCA" ) );
@@ -1440,10 +1582,26 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 				updateLanca.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODLANCA=?" );
 								
 				psV = con.prepareStatement( updateLanca.toString() );
-				psV.setBigDecimal( 1, rs.getBigDecimal( "VALOR" ).multiply( new BigDecimal( "-1" ) ) );
+				psV.setBigDecimal( 1, valor.multiply( new BigDecimal( "-1" ) ) );
 				psV.setInt( 2, Aplicativo.iCodEmp );
 				psV.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
 				psV.setInt( 4, rs.getInt( "CODLANCA" ) );
+				psV.executeUpdate();
+				
+				// Contrapartida
+				psV = con.prepareStatement( updateSubLanca.toString() );
+				psV.setBigDecimal( 1, valor );
+				psV.setInt( 2, Aplicativo.iCodEmp );
+				psV.setInt( 3, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+				psV.setInt( 4, rs.getInt( "CODLANCASC" ) );
+				psV.setInt( 5, rs.getInt( "CODSUBLANCASC" ) );
+				psV.executeUpdate();
+												
+				psV = con.prepareStatement( updateLanca.toString() );
+				psV.setBigDecimal( 1, valor.multiply( new BigDecimal( "-1" ) ) );
+				psV.setInt( 2, Aplicativo.iCodEmp );
+				psV.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
+				psV.setInt( 4, rs.getInt( "CODLANCASC" ) );
 				psV.executeUpdate();
 			}
 		}	
@@ -1504,6 +1662,40 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 			if ( rs.next() ) {
 				lancamento = rs.getInt( "codlanca" );
+			}
+
+			rs.close();
+			ps.close();
+
+			con.commit();
+
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao verificar conta do vendedor!" );
+		}
+
+		return lancamento;
+	}
+
+	private int getLancamentoConsignacaoDevolucao() {
+
+		int lancamento = -1;
+
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			sql.append( "select codlancasd from vdconsignacao " );
+			sql.append( "where codemp=? and codfilial=? and codconsig=? " );
+
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "vdconsignacao" ) );
+			ps.setInt( 3, txtCodConsig.getVlrInteger() );
+
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				lancamento = rs.getInt( "codlancasd" );
 			}
 
 			rs.close();
