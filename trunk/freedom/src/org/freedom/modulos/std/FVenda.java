@@ -47,15 +47,12 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
-
 import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
@@ -121,6 +118,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JButton btFechaVenda = new JButton( Icone.novo( "btOk.gif" ) );
 
 	private JButton btComiss = new JButton( "Multi Comiss.", Icone.novo( "btMultiComis.gif" ) );
+	
+	private JButton btxxx = new JButton( "teste.", Icone.novo( "btConsPgto.gif" ) );
 
 	private JButton btConsPgto = new JButton( Icone.novo( "btConsPgto.gif" ) );
 
@@ -438,7 +437,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, 
 		NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, OBSCLIVEND,
 		IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA,
-		USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA, TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR
+		USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA, TIPOCLASPED, VENDAIMOBILIZADO, 
+		VISUALIZALUCR, INFCPDEVOLUCAO
 	}
 
 	public FVenda() {
@@ -466,6 +466,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		pinCabComis = new JPanelPad( 750, 70 );
 
 		pinCabComis.adic( btComiss, 560, 50, 140, 30 );
+		pinCabComis.adic( btxxx, 560, 20, 140, 30 );
 		tpnCab.addTab( "Comissão", pinCabComis );
 		// }
 
@@ -671,6 +672,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		btPrevimp.addActionListener( this );
 		btAltComis.addActionListener( this );
 		btComiss.addActionListener( this );
+		btxxx.addActionListener( this );
 
 		txtPercDescItVenda.addFocusListener( this );
 		txtVlrDescItVenda.addFocusListener( this );
@@ -1527,6 +1529,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		return ret;
 	}
 
+	private void abreBuscaCompra() {
+		DLBuscaCompra dl = new DLBuscaCompra(lcDet, lcProd, txtCodVenda.getVlrInteger(), con ); 	
+		dl.setConexao( con );
+		dl.setVisible( true );
+		if ( dl.OK ) {
+		}
+		else {					
+		}
+	}
 	private void abreComissVend() {
 	
 		DLMultiComiss dl = new DLMultiComiss( con, txtCodVenda.getVlrInteger() );
@@ -2803,7 +2814,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private boolean[] prefs() {
 	
-		boolean[] bRetorno = new boolean[ 25 ];
+		boolean[] bRetorno = new boolean[ 26 ];
 		StringBuffer sSQL = new StringBuffer();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -2811,7 +2822,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( "SELECT USAREFPROD,USAPEDSEQ,USALIQREL,TIPOPRECOCUSTO,ORDNOTA,USAPRECOZERO," );
 			sSQL.append( "USACLASCOMIS,TRAVATMNFVD,NATVENDA,IPIVENDA,BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, " );
 			sSQL.append( "TAMDESCPROD, OBSCLIVEND, CONTESTOQ, DIASPEDT, RECALCPCVENDA, USALAYOUTPED, " );
-			sSQL.append( "ICMSVENDA, MULTICOMIS, TIPOPREFCRED, TIPOCLASSPED, VENDAPATRIM, VISUALIZALUCR " );
+			sSQL.append( "ICMSVENDA, MULTICOMIS, TIPOPREFCRED, TIPOCLASSPED, VENDAPATRIM, VISUALIZALUCR, " );
+			sSQL.append( "INFCPDEVOLUCAO " );
+			
 			sSQL.append( "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -2852,6 +2865,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				classped = rs.getString( "TIPOCLASSPED" );
 				bRetorno[ POS_PREFS.VENDAIMOBILIZADO.ordinal() ] = "S".equals( rs.getString( "VENDAPATRIM" ) );
 				bRetorno[ POS_PREFS.VISUALIZALUCR.ordinal() ] = "S".equals( rs.getString( "VISUALIZALUCR" ) );
+				bRetorno[ POS_PREFS.INFCPDEVOLUCAO.ordinal() ] = "S".equals( rs.getString( "INFCPDEVOLUCAO" ) );
 	
 			}
 			rs.close();
@@ -3024,6 +3038,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					if ( !consultaCredito( txtVlrLiqItVenda.getVlrBigDecimal(), false ) ) {
 						pevt.cancela();
 					}
+				}
+				
+				if ( bPrefs[ POS_PREFS.INFCPDEVOLUCAO.ordinal() ] && "DV".equals( txtTipoMov.getVlrString()) ) {
+					abreBuscaCompra();				
 				}
 	
 				calcDescIt();
