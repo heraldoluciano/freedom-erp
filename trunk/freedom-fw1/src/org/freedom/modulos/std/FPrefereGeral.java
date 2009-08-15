@@ -282,6 +282,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private final JCheckBoxPad cbAutenticaSMTP = new JCheckBoxPad( "Autenticar ?", "S", "N" );
 	
+	private final JCheckBoxPad cbInfCPDevolucao = new JCheckBoxPad( "Informar compra na devolução ?", "S", "N" );
+	
 	private final JCheckBoxPad cbSSLSMTP = new JCheckBoxPad( "Usa SSL ?", "S", "N" );
 
 	private JTextFieldPad txtDiasVencOrc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -1189,11 +1191,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB( cbTabSolCp, 7, 55, 250, 20, "TabSolCp", "",false );
 		adicDB( cbPrecoRel, 7, 75, 270, 20, "PrecoCpRel", "",false );
 		adicDB( cbHabiitaCustoCompra, 7, 95, 300, 20, "CustoCompra", "", true );
-		adicCampo( txtDescClassCp, 11, 140, 250, 20, "ClassCp", "Layout padrão para pedido de compra.", ListaCampos.DB_SI, false );
-		adicCampo( txtObs01, 11, 180, 250, 20, "LabelObs01Cp", "Descrição para campo Obs01.", ListaCampos.DB_SI, false );
-		adicCampo( txtObs02, 11, 220, 250, 20, "LabelObs02Cp", "Descrição para campo Obs02.", ListaCampos.DB_SI, false );
-		adicCampo( txtObs03, 11, 260, 250, 20, "LabelObs03Cp", "Descrição para campo Obs03.", ListaCampos.DB_SI, false );
-		adicCampo( txtObs04, 11, 300, 250, 20, "LabelObs04Cp", "Descrição para campo Obs04.", ListaCampos.DB_SI, false );
+		adicDB( cbInfCPDevolucao, 7, 115, 300, 20, "INFCPDEVOLUCAO", "", true );
+		adicCampo( txtDescClassCp, 11, 160, 250, 20, "ClassCp", "Layout padrão para pedido de compra.", ListaCampos.DB_SI, false );
+		adicCampo( txtObs01, 11, 200, 250, 20, "LabelObs01Cp", "Descrição para campo Obs01.", ListaCampos.DB_SI, false );
+		adicCampo( txtObs02, 11, 240, 250, 20, "LabelObs02Cp", "Descrição para campo Obs02.", ListaCampos.DB_SI, false );
+		adicCampo( txtObs03, 11, 280, 250, 20, "LabelObs03Cp", "Descrição para campo Obs03.", ListaCampos.DB_SI, false );
+		adicCampo( txtObs04, 11, 320, 250, 20, "LabelObs04Cp", "Descrição para campo Obs04.", ListaCampos.DB_SI, false );
 		
 		
 		// Preço
