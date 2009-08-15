@@ -1,6 +1,6 @@
 /**
  * @version 23/02/2004 <BR>
- * @author Setpoint Informática Ltda./Anerson Sanchez <BR>
+ * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
  *
  * Projeto: Freedom <BR>
  *  
