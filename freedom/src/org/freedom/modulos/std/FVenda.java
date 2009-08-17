@@ -119,8 +119,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JButton btComiss = new JButton( "Multi Comiss.", Icone.novo( "btMultiComis.gif" ) );
 	
-	private JButton btxxx = new JButton( "teste.", Icone.novo( "btConsPgto.gif" ) );
-
 	private JButton btConsPgto = new JButton( Icone.novo( "btConsPgto.gif" ) );
 
 	private JButton btBuscaOrc = new JButton( "Busca Orçamento", Icone.novo( "btVenda2.gif" ) );
@@ -128,6 +126,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JButton btAltComis = new JButton( Icone.novo( "btEditar.gif" ) );
 
 	private JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -166,6 +166,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtPercComisVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 7, casasDecFin );
 
 	private JTextFieldPad txtCodItVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodItCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtQtdItVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
@@ -396,6 +398,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private ListaCampos lcVenda2 = new ListaCampos( this );
 
 	private ListaCampos lcAlmox = new ListaCampos( this, "AX" );
+	
+	private ListaCampos lcItCompra = new ListaCampos( this, "CP" );
 
 	private CtrlMultiComis ctrlmc = null;
 
@@ -466,7 +470,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		pinCabComis = new JPanelPad( 750, 70 );
 
 		pinCabComis.adic( btComiss, 560, 50, 140, 30 );
-		pinCabComis.adic( btxxx, 560, 20, 140, 30 );
+
 		tpnCab.addTab( "Comissão", pinCabComis );
 		// }
 
@@ -625,6 +629,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcClComis.setReadOnly( true );
 		txtCodClComis.setTabelaExterna( lcClComis );
 
+
+		// lc para vinculo de ítem de venda com ítem de compra
+
+		lcItCompra.add( new GuardaCampo( txtCodCompra, "CodCompra", "Cód.Compra", ListaCampos.DB_PK, false ) );
+		lcItCompra.add( new GuardaCampo( txtCodItCompra, "CodItCompra", "Cód.It.Compra", ListaCampos.DB_PK, false ) );
+		lcItCompra.montaSql( false, "ITCOMPRA", "CP" );
+		lcItCompra.setQueryCommit( false );
+		lcItCompra.setReadOnly( true );
+		txtCodCompra.setTabelaExterna( lcItCompra );
+		txtCodItCompra.setTabelaExterna( lcItCompra );
+		
 		// Coloca os comentrio nos botões
 
 		btFechaVenda.setToolTipText( "Fechar a venda (F4)" );
@@ -671,8 +686,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btAltComis.addActionListener( this );
-		btComiss.addActionListener( this );
-		btxxx.addActionListener( this );
+		btComiss.addActionListener( this );		
 
 		txtPercDescItVenda.addFocusListener( this );
 		txtVlrDescItVenda.addFocusListener( this );
@@ -969,6 +983,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampoInvisivel( txtCodFilialIf, "codfilialif", "Cod.filial it.fiscal", ListaCampos.DB_SI, false); 
 		adicCampoInvisivel( txtCodFiscIf, "codfisc", "codfisc" , ListaCampos.DB_SI, false);
 		adicCampoInvisivel( txtCodItFisc, "coditfisc", "coditfisc" , ListaCampos.DB_SI, false);
+		
+		adicCampoInvisivel( txtCodCompra, "codcompra", "Cód.Compra", ListaCampos.DB_FK, false );
+		adicCampoInvisivel( txtCodItCompra, "coditcompra", "Cód.It.Compra", ListaCampos.DB_FK, false );
 		
 		pinTot.adic( new JLabelPad( "Vlr.prod." ), 7, 0, 90, 20 );
 		pinTot.adic( txtVlrProdVenda, 7, 20, 90, 20 );
@@ -1533,10 +1550,20 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		DLBuscaCompra dl = new DLBuscaCompra(lcDet, lcProd, txtCodVenda.getVlrInteger(), con ); 	
 		dl.setConexao( con );
 		dl.setVisible( true );
+		HashMap<String,Integer> retorno = null;
+		
 		if ( dl.OK ) {
+			retorno = dl.getValor();
+			txtCodCompra.setVlrInteger( (Integer) retorno.get( "codcompra" ) );
+			txtCodItCompra.setVlrInteger( (Integer) retorno.get( "coditcompra" ) );			
 		}
-		else {					
+		else {	
+			txtCodCompra.setVlrInteger( null );
+			txtCodItCompra.setVlrInteger( null );
 		}
+		
+		lcItCompra.carregaDados();
+		
 	}
 	private void abreComissVend() {
 	
@@ -3455,5 +3482,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcFisc.setConexao( cn );
 		lcVenda2.setConexao( cn );
 		lcClComis.setConexao( cn );
+		lcItCompra.setConexao( cn );
 	}
 }
