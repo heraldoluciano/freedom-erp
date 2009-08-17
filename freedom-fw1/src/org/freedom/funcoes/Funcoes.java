@@ -3750,6 +3750,20 @@ public class Funcoes {
 		}		
 		return dt2;
 	}
+	
+	public static Date subtraiMes(Date dt, int imeses) {
+		Date dt2 = dt;
+		Calendar cl = new GregorianCalendar(); 
+		try {
+			cl.setTime( dt );			
+			cl.add( Calendar.MONTH, imeses * -1 );
+			dt2 = cl.getTime();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return dt2;
+	}
 
 }
 
