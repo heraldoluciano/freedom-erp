@@ -287,7 +287,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private String modeloBoleto1 = "";
 	
 	public static enum COL_RETDFV { CODPLANOPAG, VLRDESCVENDA, VLRADICVENDA, IMPPED, IMPNOTA, 
-		MODBOL1, IMPREC, MODBOL2, REIMPNOTA};
+		MODBOL1, IMPREC, MODBOL2, REIMPNOTA, IMPBOL};
 		
 	BigDecimal volumes = null;
 		
@@ -1389,7 +1389,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 9 ];
+		String[] sRetorno = new String[ 10 ];
 		sRetorno[ COL_RETDFV.CODPLANOPAG.ordinal() ] = txtCodPlanoPag.getVlrString();
 		sRetorno[ COL_RETDFV.VLRDESCVENDA.ordinal() ] = txtVlrDescVenda.getVlrString();
 		sRetorno[ COL_RETDFV.VLRADICVENDA.ordinal() ] = txtVlrAdicVenda.getVlrString();
@@ -1399,6 +1399,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		sRetorno[ COL_RETDFV.IMPREC.ordinal() ] = cbImpRec.getVlrString();
 		sRetorno[ COL_RETDFV.MODBOL2.ordinal() ] = modeloBoleto;
 		sRetorno[ COL_RETDFV.REIMPNOTA.ordinal() ] = cbReImpNot.getVlrString();		
+		sRetorno[ COL_RETDFV.IMPBOL.ordinal() ] = cbImpBol.getVlrString();
 		return sRetorno;
 	}
 	
