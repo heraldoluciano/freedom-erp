@@ -2533,7 +2533,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 								hParam.put( "TIPOVENDA", "V" );
 								hParam.put( "REPORT_CONNECTION", con ); 
 								hParam.put( "SUBREPORT_DIR", "org/freedom/layout/pd/");
-	//							hParam.put( "SUBREPORT_DIR", "\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\layout\\pd");
 															
 								System.out.println("SQL:" + sSQL.toString());
 								
