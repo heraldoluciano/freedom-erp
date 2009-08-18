@@ -217,6 +217,12 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 	private JTextFieldPad txtVlrEmCobranca = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 	
 	// campos da aba fechamento
+
+	private JTextFieldPad txtRemessas = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
+
+	private JTextFieldPad txtDevolucoes = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtVendasConsig = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 	
 	private JTextFieldPad txtVendas = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 
@@ -225,10 +231,6 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 	private JTextFieldPad txtTrocas = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );	
 	
 	private JTextFieldPad txtBonificacoes = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );	
-
-	private JTextFieldPad txtRemessas = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
-
-	private JTextFieldPad txtDevolucoes = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 
 //	private JTextFieldPad txtAVista = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 
@@ -428,7 +430,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		lcDet.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcDetVendas );
 		lcDetVendas.setMaster( lcCampos );
-		lcDet.adicDetalhe( lcDetVendas );
+		lcCampos.adicDetalhe( lcDetVendas );
 
 		// ********** Início aba Geral **********
 
@@ -514,7 +516,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		adicCampo( txtQtdTroca, 140, 70, 130, 20, "QtdTroca", "Qtd. Troca", ListaCampos.DB_SI, false );
 		adicCampo( txtQtdBonif, 273, 70, 130, 20, "QtdBonif", "Qtd. Bonificação", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrDescVenda, 406, 70, 130, 20, "Desconto", "Desconto", ListaCampos.DB_SI, false );	
-		adicCampo( txtPrecoVenda, 539, 70, 120, 20, "PrecoVenda", "Preço Venda", ListaCampos.DB_SI, true );
+		adicCampo( txtPrecoVenda, 539, 70, 120, 20, "PrecoVenda", "Preço Venda", ListaCampos.DB_SI, false );
 		
 		adicDB( cbRecebido, 550, 30, 150, 20, "Recebido", "", false );
 
@@ -532,12 +534,6 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		tabVendas.setTamColuna( 250, 2 );
 		tabVendas.setTamColuna( 250, 7 );
 		tabVendas.setTamColuna( 250, 9 );
-
-		cbRecebido.addChangeListener( new ChangeListener() {
-			public void stateChanged( ChangeEvent e ) {
-				txtPrecoVenda.setAtivo( ! cbRecebido.isSelected() );
-			}			
-		});
 
 		// ********** Fim aba Vendas **********
 
@@ -661,14 +657,17 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
         panelFechamento.add( panelFechamentoCampos, BorderLayout.NORTH );
         panelFechamento.add( spFechamento, BorderLayout.CENTER );
 
-        panelFechamentoCampos.adic( new JLabelPad( "Remessa" ), 7, 10, 100, 20 );
-        panelFechamentoCampos.adic( txtRemessas, 7, 30, 100, 20 );
+        panelFechamentoCampos.adic( new JLabelPad( "Remessa" ), 7, 10, 120, 20 );
+        panelFechamentoCampos.adic( txtRemessas, 7, 30, 120, 20 );
 
-        panelFechamentoCampos.adic( new JLabelPad( "Devoluções" ), 110, 10, 100, 20 );
-        panelFechamentoCampos.adic( txtDevolucoes, 110, 30, 100, 20 );
+        panelFechamentoCampos.adic( new JLabelPad( "Devoluções" ), 130, 10, 120, 20 );
+        panelFechamentoCampos.adic( txtDevolucoes, 130, 30, 120, 20 );
 
-        panelFechamentoCampos.adic( new JLabelPad( "Vendas" ), 213, 10, 100, 20 );
-        panelFechamentoCampos.adic( txtVendas, 213, 30, 100, 20 );
+        panelFechamentoCampos.adic( new JLabelPad( "Consignado" ), 253, 10, 120, 20 );
+        panelFechamentoCampos.adic( txtVendasConsig, 253, 30, 120, 20 );
+
+        panelFechamentoCampos.adic( new JLabelPad( "Vendas" ), 376, 10, 120, 20 );
+        panelFechamentoCampos.adic( txtVendas, 376, 30, 120, 20 );
         
 //        panelFechamentoCampos.adic( new JLabelPad( "Descontos" ), 110, 10, 100, 20 );
 //        panelFechamentoCampos.adic( txtDescontos, 110, 30, 100, 20 );
@@ -712,19 +711,20 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
         tabFechamento.setTamColuna( 75, 2 );
         tabFechamento.setColunaInvisivel( 3 );
         tabFechamento.setTamColuna( 550, 5 );
-    
+
+    	txtRemessas.setSoLeitura( true );
+    	txtDevolucoes.setSoLeitura( true );
+        txtVendasConsig.setSoLeitura( true );
         txtVendas.setSoLeitura( true );
         txtDescontos.setSoLeitura( true );
     	txtTrocas.setSoLeitura( true );
     	txtBonificacoes.setSoLeitura( true );
-    	txtRemessas.setSoLeitura( true );
-    	txtDevolucoes.setSoLeitura( true );
 //      txtAVista.setSoLeitura( true );
 //      txtACredito.setSoLeitura( true );
 //      txtAReceber.setSoLeitura( true );
 //      txtNaoRecebido.setSoLeitura( true );
-        txtTotalFechamento.setSoLeitura( true );
-        txtSaldoFechamento.setSoLeitura( true );
+//      txtTotalFechamento.setSoLeitura( true );
+//      txtSaldoFechamento.setSoLeitura( true );
         
         // ********** Fim aba Fechamento **********
 	}
@@ -1034,7 +1034,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		try {
 
 			StringBuilder sql = new StringBuilder();
-			sql.append( "select v.preco, v.qtdvendaco, v.desconto, v.qtdtroca, v.qtdbonif " );
+			sql.append( "select v.preco, v.precovenda, v.qtdvendaco, v.desconto, v.qtdtroca, v.qtdbonif " );
 			sql.append( "from VDVENDACONSIG v, VDCONSIGNACAO c " );
 			sql.append( "where c.codemp=? and c.codfilial=? and c.codconsig=? and " );
 			sql.append( "v.codemp=c.codemp and v.codfilial=c.codfilial and v.codconsig=c.codconsig" );
@@ -1046,16 +1046,20 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 			ResultSet rs = ps.executeQuery();
 			
-			BigDecimal preco = null;
-			BigDecimal vendas = new BigDecimal( "0.00" );
+			BigDecimal precoConsig = null;
+			BigDecimal precoVenda = null;
+			BigDecimal vendasConsig = new BigDecimal( "0.00" );
 			BigDecimal descontos = new BigDecimal( "0.00" );
 			BigDecimal trocas = new BigDecimal( "0.00" );
 			BigDecimal bonificacoes = new BigDecimal( "0.00" );
-			BigDecimal totalVendas = new BigDecimal( "0.00" );
+			BigDecimal vendas = new BigDecimal( "0.00" );
+			BigDecimal totalVendasConsig = new BigDecimal( "0.00" );
 			BigDecimal totalDescontos = new BigDecimal( "0.00" );
 			BigDecimal totalTrocas = new BigDecimal( "0.00" );
 			BigDecimal totalBonificacoes = new BigDecimal( "0.00" );
+			BigDecimal totalVendas = new BigDecimal( "0.00" );
 			
+			txtVendasConsig.setVlrBigDecimal( totalVendasConsig );
 			txtVendas.setVlrBigDecimal( totalVendas );
 			txtDescontos.setVlrBigDecimal( totalDescontos );
 			txtTrocas.setVlrBigDecimal( totalTrocas );
@@ -1063,13 +1067,15 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 			while( rs.next() ) {
 
-				preco = rs.getBigDecimal( "preco" );
-				vendas = preco.multiply( rs.getBigDecimal( "qtdvendaco" ) );
-				trocas = preco.multiply( rs.getBigDecimal( "qtdtroca" ) );
-				bonificacoes = preco.multiply( rs.getBigDecimal( "qtdbonif" ) );
+				precoConsig = rs.getBigDecimal( "preco" );
+				precoVenda = rs.getBigDecimal( "precoVenda" );
 				
-				if ( vendas.floatValue() > 0f ) {
-					descontos = vendas.multiply( rs.getBigDecimal( "desconto" ) );
+				vendasConsig = precoConsig.multiply( rs.getBigDecimal( "qtdvendaco" ) );				
+				trocas = precoConsig.multiply( rs.getBigDecimal( "qtdtroca" ) );
+				bonificacoes = precoConsig.multiply( rs.getBigDecimal( "qtdbonif" ) );
+								
+				if ( vendasConsig.floatValue() > 0f ) {
+					descontos = vendasConsig.multiply( rs.getBigDecimal( "desconto" ) );
 				}
 				else if ( trocas.floatValue() > 0f ) {
 					descontos = trocas.multiply( rs.getBigDecimal( "desconto" ) );
@@ -1078,10 +1084,15 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 					descontos = bonificacoes.multiply( rs.getBigDecimal( "desconto" ) );
 				}
 
-				totalVendas = totalVendas.add( vendas );
+				totalVendasConsig = totalVendasConsig.add( vendasConsig );
 				totalDescontos = totalDescontos.add( descontos );
 				totalTrocas = totalTrocas.add( trocas );
 				totalBonificacoes = totalBonificacoes.add( bonificacoes );
+				
+				if ( precoVenda != null ) {
+					vendas = precoVenda.multiply( rs.getBigDecimal( "qtdvendaco" ) );
+					totalVendas = totalVendas.add( vendas );
+				}
 			}
 
 			rs.close();
@@ -1089,10 +1100,11 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 			con.commit();
 			
-			txtVendas.setVlrBigDecimal( totalVendas );
+			txtVendasConsig.setVlrBigDecimal( totalVendasConsig );
 			txtDescontos.setVlrBigDecimal( totalDescontos );
 			txtTrocas.setVlrBigDecimal( totalTrocas );
 			txtBonificacoes.setVlrBigDecimal( totalBonificacoes );
+			txtVendas.setVlrBigDecimal( totalVendas );
 
 		} catch ( SQLException e ) {
 			e.printStackTrace();
@@ -1229,11 +1241,11 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			insertLanca.append( "INSERT INTO FNLANCA " ); 
 			insertLanca.append( "(TIPOLANCA,CODEMP,CODFILIAL,CODLANCA," );
 			insertLanca.append( "CODEMPPN,CODFILIALPN,CODPLAN," );
-			insertLanca.append( "DATALANCA,HISTBLANCA,VLRLANCA,FLAG) " );
+			insertLanca.append( "DATALANCA,HISTBLANCA,VLRLANCA,FLAG,DOCLANCA) " );
 			insertLanca.append( "VALUES (" );
 			insertLanca.append( "?,?,?,?," );
 			insertLanca.append( "?,?,?," );
-			insertLanca.append( "?,?,?,'S')" );
+			insertLanca.append( "?,?,?,'S',?)" );
 			
 			psR = con.prepareStatement( insertLanca.toString() );
 			psR.setString( 1, "A" );
@@ -1244,8 +1256,9 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			psR.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 			psR.setString( 7, codplanvend );
 			psR.setDate( 8, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
-			psR.setString( 9, "REMESSA CONSIGNADA - Código: " + txtCodConsig.getVlrInteger() );
+			psR.setString( 9, "REMESSA CONSIGNADA" );
 			psR.setBigDecimal( 10, remessas );
+			psR.setString( 11, txtCodConsig.getVlrString() );
 			psR.executeUpdate();
 
 			StringBuilder insertSubLanca = new StringBuilder();
@@ -1269,7 +1282,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			psR.setString( 8, "S" );
 			psR.setDate( 9, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
 			psR.setBigDecimal( 10, remessas.multiply( new BigDecimal( "-1" ) ) );
-			psR.setString( 11, "REMESSA CONSIGNADA - Código: " + txtCodConsig.getVlrInteger() );
+			psR.setString( 11, "REMESSA CONSIGNADA" );
 			psR.executeUpdate();
 
 			StringBuilder updateConsignacao = new StringBuilder();
@@ -1332,11 +1345,11 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			insertLanca.append( "INSERT INTO FNLANCA " ); 
 			insertLanca.append( "(TIPOLANCA,CODEMP,CODFILIAL,CODLANCA," );
 			insertLanca.append( "CODEMPPN,CODFILIALPN,CODPLAN," );
-			insertLanca.append( "DATALANCA,HISTBLANCA,VLRLANCA,FLAG) " );
+			insertLanca.append( "DATALANCA,HISTBLANCA,VLRLANCA,FLAG,DOCLANCA) " );
 			insertLanca.append( "VALUES (" );
 			insertLanca.append( "?,?,?,?," );
 			insertLanca.append( "?,?,?," );
-			insertLanca.append( "?,?,?,'S')" );
+			insertLanca.append( "?,?,?,'S',?)" );
 			
 			psR = con.prepareStatement( insertLanca.toString() );
 			psR.setString( 1, "A" );
@@ -1347,8 +1360,9 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			psR.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 			psR.setString( 7, codplanvend );
 			psR.setDate( 8, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
-			psR.setString( 9, "DEVOLUÇÃO CONSIGNADA - Código: " + txtCodConsig.getVlrInteger() );
+			psR.setString( 9, "DEVOLUÇÃO CONSIGNADA" );
 			psR.setBigDecimal( 10, devolucoes.multiply( new BigDecimal( "-1" ) ) );
+			psR.setString( 11, txtCodConsig.getVlrString() );
 			psR.executeUpdate();
 
 			StringBuilder insertSubLanca = new StringBuilder();
@@ -1359,7 +1373,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			insertSubLanca.append( "VALUES (" );
 			insertSubLanca.append( "?,?,?,?," );
 			insertSubLanca.append( "?,?,?," );
-			insertSubLanca.append( "?,?,?,?,'S');" );
+			insertSubLanca.append( "?,?,?,?,'S')" );
 							
 			psR = con.prepareStatement( insertSubLanca.toString() );
 			psR.setInt( 1, Aplicativo.iCodEmp );
@@ -1372,7 +1386,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			psR.setString( 8, "S" );
 			psR.setDate( 9, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
 			psR.setBigDecimal( 10, devolucoes );
-			psR.setString( 11, "DEVOLUÇÃO CONSIGNADA - Código: " + txtCodConsig.getVlrInteger() );
+			psR.setString( 11, "DEVOLUÇÃO CONSIGNADA" );
 			psR.executeUpdate();
 
 			StringBuilder updateConsignacao = new StringBuilder();
@@ -1419,9 +1433,9 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 	
 	private void lancaVendas() throws SQLException {
 		
-		String venda = "VENDA CONSIGINADA - (Item: %d, Cliente: %d, Pagamento: %d)";		
-		String recebimento = "RECEBIMENTO EM CARTEIRA - (Item: %d, Cliente: %d, Pagamento: %d)";
-		String naoRecebimento = "RECEBIMENTO PENDENTE - (Item: %d, Cliente: %d, Pagamento: %d)";
+		String venda = "VENDA CONSIGNADA - (Cliente: %d, Pagamento: %d, Item: %d)";		
+		String recebimento = "RECEBIMENTO EM CARTEIRA - (Cliente: %d, Pagamento: %d, Item: %d)";
+		String naoRecebimento = "RECEBIMENTO PENDENTE - (Cliente: %d, Pagamento: %d, Item: %d)";
 		
 		String codplanvend = getPlanejamentoVendedor();
 		
@@ -1430,6 +1444,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		selectVendas.append( "CODCLI, CODPLANOPAG, CODLANCA, CODSUBLANCA, CODLANCASC, CODSUBLANCASC, RECEBIDO " );
 		selectVendas.append( "FROM VDVENDACONSIG " );
 		selectVendas.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCONSIG=? " );
+		selectVendas.append( "ORDER BY CODVENDACO" );
 		
 		PreparedStatement ps = con.prepareStatement( selectVendas.toString() );
 		ps.setInt( 1, Aplicativo.iCodEmp );
@@ -1458,11 +1473,11 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 				insertLanca.append( "INSERT INTO FNLANCA " ); 
 				insertLanca.append( "(TIPOLANCA,CODEMP,CODFILIAL,CODLANCA," );
 				insertLanca.append( "CODEMPPN,CODFILIALPN,CODPLAN," );
-				insertLanca.append( "DATALANCA,HISTBLANCA,VLRLANCA,FLAG) " );
+				insertLanca.append( "DATALANCA,HISTBLANCA,VLRLANCA,FLAG,DOCLANCA) " );
 				insertLanca.append( "VALUES (" );
 				insertLanca.append( "?,?,?,?," );
 				insertLanca.append( "?,?,?," );
-				insertLanca.append( "?,?,?,'S')" );
+				insertLanca.append( "?,?,?,'S',?)" );
 				
 				psV = con.prepareStatement( insertLanca.toString() );
 				psV.setString( 1, "A" );
@@ -1473,8 +1488,15 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 				psV.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 				psV.setString( 7, codplanvend );
 				psV.setDate( 8, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
-				psV.setString( 9, String.format( venda, rs.getInt( "CODVENDACO" ), rs.getInt( "CODCLI" ), rs.getInt( "CODPLANOPAG" ) ) );
-				psV.setBigDecimal( 10, (bRec ? valor : valorVenda).multiply( new BigDecimal( "-1" ) ) );
+				if ( bRec ) {
+					psV.setString( 9, String.format( venda, rs.getInt( "CODCLI" ), rs.getInt( "CODPLANOPAG" ), rs.getInt( "CODVENDACO" ) ) );
+					psV.setBigDecimal( 10, valor.multiply( new BigDecimal( "-1" ) ) );
+				}
+				else {
+					psV.setString( 9, String.format( venda, rs.getInt( "CODCLI" ), rs.getInt( "CODPLANOPAG" ), rs.getInt( "CODVENDACO" ) ) );
+					psV.setBigDecimal( 10, valorVenda.multiply( new BigDecimal( "-1" ) ) );
+				}
+				psV.setString( 11, txtCodConsig.getVlrString() );
 				psV.executeUpdate();
 
 				StringBuilder insertSubLanca = new StringBuilder();
@@ -1497,8 +1519,14 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 				psV.setString( 7, codplanvdconsig );
 				psV.setString( 8, "S" );
 				psV.setDate( 9, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
-				psV.setBigDecimal( 10, bRec ? valor : valorVenda );
-				psV.setString( 11, String.format( venda, rs.getInt( "CODVENDACO" ), rs.getInt( "CODCLI" ), rs.getInt( "CODPLANOPAG" ) ) );
+				if ( bRec ) {	
+					psV.setBigDecimal( 10, valor );
+					psV.setString( 11, String.format( venda, rs.getInt( "CODCLI" ), rs.getInt( "CODPLANOPAG" ), rs.getInt( "CODVENDACO" ) ) );
+				}
+				else {	
+					psV.setBigDecimal( 10, valor );
+					psV.setString( 11, String.format( venda, rs.getInt( "CODCLI" ), rs.getInt( "CODPLANOPAG" ), rs.getInt( "CODVENDACO" ) ) );
+				}
 				psV.executeUpdate();
 
 				StringBuilder updateVendaConsignada = new StringBuilder();
@@ -1519,7 +1547,6 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 				
 				// CONTRAPARTIDA		
 				codlanca = getSequenciaLancamento();
-				
 				psV = con.prepareStatement( insertLanca.toString() );
 				psV.setString( 1, "A" );
 				psV.setInt( 2, Aplicativo.iCodEmp );
@@ -1528,9 +1555,16 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 				psV.setInt( 5, Aplicativo.iCodEmp );
 				psV.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 				psV.setString( 7, codplanvend );
-				psV.setDate( 8, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
-				psV.setString( 9, String.format( bRec ? recebimento : naoRecebimento, rs.getInt( "CODVENDACO" ), rs.getInt( "CODCLI" ), rs.getInt( "CODPLANOPAG" ) ) );
-				psV.setBigDecimal( 10, bRec ? valor : valorVenda.subtract( valor ) );
+				psV.setDate( 8, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );				
+				if ( bRec ) {	
+					psV.setString( 9, String.format( recebimento, rs.getInt( "CODCLI" ), rs.getInt( "CODPLANOPAG" ), rs.getInt( "CODVENDACO" ) ) );
+					psV.setBigDecimal( 10, valor );
+				}
+				else {
+					psV.setString( 9, String.format( naoRecebimento, rs.getInt( "CODCLI" ), rs.getInt( "CODPLANOPAG" ), rs.getInt( "CODVENDACO" ) ) );
+					psV.setBigDecimal( 10, valorVenda.subtract( valor ).multiply( new BigDecimal( "-1" ) ) );
+				}
+				psV.setString( 11, txtCodConsig.getVlrString() );
 				psV.executeUpdate();
 								
 				psV = con.prepareStatement( insertSubLanca.toString() );
@@ -1538,13 +1572,19 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 				psV.setInt( 2, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
 				psV.setInt( 3, codlanca );
 				psV.setInt( 4, 1 );
-				psV.setInt( 5, bRec ? codempvd : codempco );
-				psV.setInt( 6, bRec ? codfilialvd : codfilialco );
-				psV.setString( 7, bRec ? codplanvdconsig : codplanconsig );
+				psV.setInt( 5, codempvd );
+				psV.setInt( 6, codfilialvd );
+				psV.setString( 7, codplanvdconsig );
 				psV.setString( 8, "S" );
-				psV.setDate( 9, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );
-				psV.setBigDecimal( 10, (bRec ? valor : valorVenda.subtract( valor )).multiply( new BigDecimal( "-1" ) ) );
-				psV.setString( 11, String.format( bRec ? recebimento : naoRecebimento, rs.getInt( "CODVENDACO" ), rs.getInt( "CODCLI" ), rs.getInt( "CODPLANOPAG" ) ) );
+				psV.setDate( 9, Funcoes.dateToSQLDate( txtDataConsig.getVlrDate() ) );				
+				if ( bRec ) {					
+					psV.setBigDecimal( 10, valor.multiply( new BigDecimal( "-1" ) ) );
+					psV.setString( 11, String.format( recebimento, rs.getInt( "CODVENDACO" ), rs.getInt( "CODCLI" ), rs.getInt( "CODPLANOPAG" ) ) );
+				}
+				else {
+					psV.setBigDecimal( 10, valorVenda.subtract( valor ) );
+					psV.setString( 11, String.format( naoRecebimento, rs.getInt( "CODVENDACO" ), rs.getInt( "CODCLI" ), rs.getInt( "CODPLANOPAG" ) ) );
+				}
 				psV.executeUpdate();
 
 				StringBuilder updateVendaConsignadaContrapartida = new StringBuilder();
@@ -1590,6 +1630,12 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 				
 				// Contrapartida
 				psV = con.prepareStatement( updateSubLanca.toString() );
+				if ( bRec ) {	
+					psV.setBigDecimal( 1, valor );
+				}
+				else {
+					psV.setBigDecimal( 1, valorVenda.subtract( valor ).multiply( new BigDecimal( "-1" ) ) );
+				}
 				psV.setBigDecimal( 1, valor );
 				psV.setInt( 2, Aplicativo.iCodEmp );
 				psV.setInt( 3, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
@@ -1598,7 +1644,12 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 				psV.executeUpdate();
 												
 				psV = con.prepareStatement( updateLanca.toString() );
-				psV.setBigDecimal( 1, valor.multiply( new BigDecimal( "-1" ) ) );
+				if ( bRec ) {	
+					psV.setBigDecimal( 1, valor.multiply( new BigDecimal( "-1" ) ) );
+				}
+				else {
+					psV.setBigDecimal( 1, valorVenda.subtract( valor ) );
+				}
 				psV.setInt( 2, Aplicativo.iCodEmp );
 				psV.setInt( 3, ListaCampos.getMasterFilial( "FNLANCA" ) );
 				psV.setInt( 4, rs.getInt( "CODLANCASC" ) );
