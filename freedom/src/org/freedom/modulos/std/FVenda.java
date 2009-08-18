@@ -2794,7 +2794,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						}
 					}
 					else {
-						FPrinterJob dlGr = new FPrinterJob( "layout/pd//PED_PD.jasper", "PEDIDO", null, rs, null, this );
+						FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", null, rs, null, this );
 	
 						if ( bVisualizar ) {
 							dlGr.setVisible( true );
