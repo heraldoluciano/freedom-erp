@@ -2154,14 +2154,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				/*{ 0 - CODPLANOPAG, 1 - VLRDESCVENDA, 2 - VLRADICVENDA, 3 - IMPPED, 4 - IMPNOTA, 
 					5 - MODBOL1, 6 - IMPREC, 7 - MODBOL2, 8 - REIMPNOTA};*/
 					
-				if ( ("".equals( sValores[ DLFechaVenda.COL_RETDFV.MODBOL1.ordinal() ] ) ) && 
-					 ( ! "".equals(sValores[ DLFechaVenda.COL_RETDFV.MODBOL2.ordinal() ] ) ) ) {
+				if ( ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPBOL.ordinal() ] )  ) && 
+					 ( ! "".equals(sValores[ DLFechaVenda.COL_RETDFV.MODBOL1.ordinal() ] ) ) ) {
 					FRBoleto fBol = new FRBoleto( this );
 					fBol.setConexao( con );
-					fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ DLFechaVenda.COL_RETDFV.MODBOL2.ordinal() ] ) );
+					fBol.txtCodModBol.setVlrInteger( new Integer( sValores[ DLFechaVenda.COL_RETDFV.MODBOL1.ordinal() ] ) );
 					fBol.txtCodVenda.setVlrInteger( txtCodVenda.getVlrInteger() );
 					fBol.gerar();
-					fBol.imprimir( true );
+					fBol.imprimir( true, this ); 
 				}
 				else if ( ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPREC.ordinal() ] ) ) && 
 						( lsParcRecibo != null ) && ( lsParcRecibo.size() > 0 ) ) { // Logica para impressão do recibo.
