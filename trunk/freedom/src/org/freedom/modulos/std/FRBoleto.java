@@ -1046,7 +1046,7 @@ public class FRBoleto extends FRelatorio {
 		sSQL.append( "WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND " );
 		sSQL.append( "V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND " );
 		sSQL.append( "F.CODEMP=R.CODEMP AND F.CODFILIAL=R.CODFILIAL AND ");
-		sSQL.append( "CT.CODEMP=MB.CODEMPCC AND CT.CODFILIAL=MB.CODFILIALCC AND CT.NUMCONTA=MB.NUMCONTA AND " );
+//		sSQL.append( "CT.CODEMP=MB.CODEMPCC AND CT.CODFILIAL=MB.CODFILIALCC AND CT.NUMCONTA=MB.NUMCONTA AND " );
 		sSQL.append( "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " );
 		sSQL.append( "P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL AND " );
 		sSQL.append( "M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA AND " );
@@ -1061,16 +1061,20 @@ public class FRBoleto extends FRelatorio {
 		sSQL.append( "N.CODEMP=IV.CODEMPNT AND N.CODFILIAL=IV.CODFILIALNT AND N.CODNAT=IV.CODNAT AND  " );
 		sSQL.append( "ITR.STATUSITREC IN ('R1','RL') ");
 		sSQL.append( "AND VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND AND " );
+		sSQL.append( "CT.CODEMP=IM.CODEMPCT AND CT.CODFILIAL=IM.CODFILIALCT AND CT.NUMCONTA=IM.NUMCONTA AND " );
+		
 		sSQL.append( sWhere );
 		sSQL.append( sWhereGrid );
 		sSQL.append( " order by v.codvenda");		
 		
 		try {
+			
 			String strDebug = sSQL.toString();
 
-			System.out.println(sSQL.toString());
+			System.out.println("QUERY PARA DEBUG:" + strDebug);
 			
 			ps = con.prepareStatement( sSQL.toString() );
+			
 			ps.setInt( param++, Aplicativo.iCodEmp );
 
 			strDebug = strDebug.replaceFirst( "\\?", Aplicativo.iCodEmp + "" );
@@ -1264,7 +1268,11 @@ public class FRBoleto extends FRelatorio {
 		return count;
 	}
 	
-	public void imprimir( boolean bVisualizar ) {
+	public void imprimir ( boolean bVisualizar ) {
+		imprimir(bVisualizar, null);
+	}
+	
+	public void imprimir( boolean bVisualizar, JInternalFrame orig ) {
 		
 		if( verificaSel( this ) == 0 ){
 			Funcoes.mensagemInforma( this, "Não existem boletos selecionados para impressão!" );
@@ -1292,7 +1300,7 @@ public class FRBoleto extends FRelatorio {
 		}
 
 		try {
-			
+			lcModBol.carregaDados();
 			ResultSet rs = execQuery( sWhere );
 			
 			String classe = getClassModelo( txtPreImpModBol.getVlrString(), txtClassModBol.getVlrString() );
@@ -1301,7 +1309,7 @@ public class FRBoleto extends FRelatorio {
 				imprimeTexto( bVisualizar, rs );
 			}
 			else {
-				imprimeGrafico( bVisualizar, rs, classe );
+				imprimeGrafico( bVisualizar, rs, classe, orig );
 			}
 			
 			rs.close();
@@ -1361,11 +1369,11 @@ public class FRBoleto extends FRelatorio {
 		}
 	}
 
-	private void imprimeGrafico( final boolean bVisualizar, final ResultSet rs, final String classe ) {
+	private void imprimeGrafico( final boolean bVisualizar, final ResultSet rs, final String classe, JInternalFrame orig  ) {
 
 	
 //		FPrinterJob dlGr = new FPrinterJob( "relatorios/" + classe, "Boleto", null, rs, getParametros(), this );
-		FPrinterJob dlGr = new FPrinterJob( classe, "Boleto", null, rs, getParametros(), this );
+		FPrinterJob dlGr = new FPrinterJob( classe, "Boleto", null, rs, getParametros(), orig==null?this:orig );
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -1373,7 +1381,8 @@ public class FRBoleto extends FRelatorio {
 		else {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
-			} catch ( Exception err ) {
+			} 
+			catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro ao tentar imprimir boleto!" + err.getMessage(), true, con, err );
 			}
 		}
