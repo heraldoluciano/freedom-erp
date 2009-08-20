@@ -167,13 +167,13 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="250"  isSplitAllowed="true" >
+			<band height="252"  isSplitAllowed="true" >
 				<rectangle radius="4" >
 					<reportElement
 						x="0"
 						y="0"
 						width="567"
-						height="250"
+						height="242"
 						forecolor="#006699"
 						key="rectangle-1"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -314,7 +314,7 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 				<line direction="TopDown">
 					<reportElement
 						x="290"
-						y="117"
+						y="120"
 						width="269"
 						height="1"
 						forecolor="#333333"
@@ -563,19 +563,6 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="301"
-						y="127"
-						width="54"
-						height="11"
-						key="textField-17"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{DOCREC}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
 						x="389"
 						y="127"
 						width="59"
@@ -613,7 +600,7 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 				<staticText>
 					<reportElement
 						x="101"
-						y="99"
+						y="95"
 						width="64"
 						height="11"
 						key="staticText-14"/>
@@ -626,7 +613,7 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="106"
-						y="132"
+						y="127"
 						width="59"
 						height="11"
 						key="textField-18"/>
@@ -639,7 +626,7 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 				<staticText>
 					<reportElement
 						x="101"
-						y="110"
+						y="106"
 						width="64"
 						height="11"
 						key="staticText-15"/>
@@ -652,7 +639,7 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 				<staticText>
 					<reportElement
 						x="15"
-						y="99"
+						y="96"
 						width="64"
 						height="20"
 						key="staticText-10"/>
@@ -665,28 +652,17 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 				<line direction="TopDown">
 					<reportElement
 						x="181"
-						y="97"
+						y="91"
 						width="1"
 						height="56"
 						forecolor="#666666"
 						key="line-19"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="7"
-						y="96"
-						width="269"
-						height="1"
-						forecolor="#333333"
-						backcolor="#999999"
-						key="line-13"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="199"
-						y="132"
+						y="127"
 						width="54"
 						height="11"
 						key="textField-19"/>
@@ -699,7 +675,7 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 				<line direction="TopDown">
 					<reportElement
 						x="7"
-						y="152"
+						y="147"
 						width="269"
 						height="1"
 						forecolor="#333333"
@@ -723,7 +699,7 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 				<line direction="TopDown">
 					<reportElement
 						x="90"
-						y="96"
+						y="91"
 						width="1"
 						height="56"
 						forecolor="#666666"
@@ -780,19 +756,76 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 					</textElement>
 				<text><![CDATA[Assinatura]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<staticText>
 					<reportElement
-						x="22"
-						y="132"
-						width="54"
-						height="11"
-						key="textField-17"/>
+						x="353"
+						y="183"
+						width="162"
+						height="20"
+						key="staticText"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Pagavel somente em nossa Loja.]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="298"
+						y="127"
+						width="67"
+						height="11"
+						key="textField-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{DOCREC}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRPARCITREC}]]></textFieldExpression>
 				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="15"
+						y="127"
+						width="67"
+						height="11"
+						key="textField-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRPARCITREC}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="7"
+						y="120"
+						width="269"
+						height="1"
+						forecolor="#333333"
+						backcolor="#999999"
+						key="line-13"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="284"
+						y="84"
+						width="1"
+						height="158"
+						forecolor="#006699"
+						backcolor="#0033CC"
+						key="line-6"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="BottomUp">
+					<reportElement
+						x="0"
+						y="247"
+						width="567"
+						height="1"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</detail>
 		<columnFooter>
