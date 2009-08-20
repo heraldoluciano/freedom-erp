@@ -326,7 +326,7 @@ public class NF066 extends Layout {
 						}
 						else{
 							if(!complementar) {
-								imp.say( 144, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRLIQPED ) )));
+								imp.say( 131, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRLIQPED ) )));
 							}
 						iItImp = 0;
 						}
@@ -388,7 +388,7 @@ public class NF066 extends Layout {
 						imp.say( 86, Funcoes.copy( frete.getString( NF.C_CONHECFRETEPED ), 20 ) );
 						imp.say( 124, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getBigDecimal( NF.C_PESOBRUTO ) ) ) );
 						imp.say( 137, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getBigDecimal( NF.C_PESOLIQ ) ) ) );
-						imp.pulaLinha( 2, imp.comprimido() );
+						imp.pulaLinha( 3, imp.comprimido() );
 					
 					}
 
