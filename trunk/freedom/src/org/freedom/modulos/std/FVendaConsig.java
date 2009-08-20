@@ -1440,7 +1440,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		String codplanvend = getPlanejamentoVendedor();
 		
 		StringBuilder selectVendas = new StringBuilder();
-		selectVendas.append( "SELECT CODVENDACO, (QTDVENDACO*PRECO) VALOR, (QTDVENDACO*PRECOVENDA) VALOR_VENDA, " );
+		selectVendas.append( "SELECT CODVENDACO, (QTDVENDACO*PRECO) VALOR, COALESCE((QTDVENDACO*PRECOVENDA), 0) VALOR_VENDA, " );
 		selectVendas.append( "CODCLI, CODPLANOPAG, CODLANCA, CODSUBLANCA, CODLANCASC, CODSUBLANCASC, RECEBIDO " );
 		selectVendas.append( "FROM VDVENDACONSIG " );
 		selectVendas.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCONSIG=? " );
