@@ -244,6 +244,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	
 	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10, 0);
 	
+	private JTextFieldPad txtChaveNfe = new JTextFieldPad( JTextFieldPad.TP_STRING, 44, 0 );
+	
+	private JTextFieldPad txtCodModNota = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtTipoModNota = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
 	private JLabelPad lbStatus = new JLabelPad();
 
 	private JCheckBoxPad cbSeqNfTipoMov = new JCheckBoxPad( "Aloc.NF", "S", "N" );
@@ -273,6 +279,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private ListaCampos lcAlmoxProd = new ListaCampos( this, "AX" );
 	
 	private ListaCampos lcSolCompra = new ListaCampos( this, "SOL" );
+	
+	private ListaCampos lcModNota = new ListaCampos (this, "MN");
 	
 	private final ListaCampos lcTran = new ListaCampos( this, "TN" );
 
@@ -315,10 +323,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JScrollPane spnObs03 = new JScrollPane( txaObs03 );
 
 	private JScrollPane spnObs04 = new JScrollPane( txaObs04 );
+	
+	private JLabelPad lbChaveNfe = null;
 
 	public FCompra() {
 		setTitulo( "Compra" );
-		setAtribos( 15, 10, 760, 460 );
+		setAtribos( 15, 10, 770, 500 );
 	}
 
 	public void montaTela() {
@@ -368,6 +378,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
+		lcTipoMov.add( new GuardaCampo( txtCodModNota, "CodModNota", "Código do modelo de nota", ListaCampos.DB_FK, false ));
 		lcTipoMov.add( new GuardaCampo( txtTipoMov, "TipoMov", "Tipo mov.", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( cbSeqNfTipoMov, "SeqNfTipomov", "Aloc.NF", ListaCampos.DB_SI, true ) );
 		lcTipoMov.setWhereAdic( 
@@ -518,6 +529,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcCompra2.setQueryCommit( false );
 		lcCompra2.setReadOnly( true );
 
+		lcModNota.add( new GuardaCampo( txtCodModNota, "CodModNota", "Cód.Mod.Nota", ListaCampos.DB_PK, false ) );
+		lcModNota.add( new GuardaCampo( txtTipoModNota, "TipoModNota", "Tipo. Mod. nota", ListaCampos.DB_SI, false ) );
+		lcModNota.montaSql( false, "MODNOTA", "LF" );
+		lcModNota.setQueryCommit( false );
+		lcModNota.setReadOnly( true );
+		txtCodModNota.setTabelaExterna( lcModNota );
+		txtTipoModNota.setListaCampos( lcModNota );
+		
 		btFechaCompra.setToolTipText( "Fechar a Compra (F4)" );
 
 		txtVlrIPICompra.setAtivo( false );
@@ -526,20 +545,23 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 		pinCab = new JPanelPad( 740, 130 );
 		setListaCampos( lcCampos );
+//		setAltCab( 195 );
 		setAltCab( 160 );
 		setPainel( pinCabCompra );
 		
-		adicCampo( txtCodCompra, 7, 20, 100, 20, "CodCompra", "Nº Compra", ListaCampos.DB_PK, true );
-		adicCampo( txtCodTipoMov, 110, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
-		adicDescFK( txtDescTipoMov, 190, 20, 207, 20, "DescTipoMov", "Descrição do tipo de movimento" );
-		adicCampo( txtSerieCompra, 400, 20, 77, 20, "Serie", "Série", ListaCampos.DB_FK, true );
-		adicCampo( txtDocCompra, 480, 20, 77, 20, "DocCompra", "Doc", ListaCampos.DB_SI, true );
-		adicCampo( txtDtEmitCompra, 560, 20, 85, 20, "DtEmitCompra", "Dt.emissão", ListaCampos.DB_SI, true );
-		adicCampo( txtDtEntCompra, 648, 20, 85, 20, "DtEntCompra", "Dt.entrada", ListaCampos.DB_SI, true );
+		adicCampo( txtCodCompra, 7, 20, 80, 20, "CodCompra", "Nº Compra", ListaCampos.DB_PK, true );
+		adicCampo( txtCodTipoMov, 90, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
+		adicDescFK( txtDescTipoMov, 170, 20, 247, 20, "DescTipoMov", "Descrição do tipo de movimento" );
+		adicCampo( txtSerieCompra, 420, 20, 77, 20, "Serie", "Série", ListaCampos.DB_FK, true );
+		adicCampo( txtDocCompra, 500, 20, 77, 20, "DocCompra", "Doc", ListaCampos.DB_SI, true );
+		adicCampo( txtDtEmitCompra, 580, 20, 75, 20, "DtEmitCompra", "Dt.emissão", ListaCampos.DB_SI, true );
+		adicCampo( txtDtEntCompra, 658, 20, 75, 20, "DtEntCompra", "Dt.entrada", ListaCampos.DB_SI, true );
 		adicCampo( txtCodFor, 7, 60, 80, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtDescFor, true );
-		adicDescFK( txtDescFor, 90, 60, 210, 20, "RazFor", "Razão social do fornecedor" );
-		adicCampo( txtCodPlanoPag, 303, 60, 80, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
-		adicDescFK( txtDescPlanoPag, 386, 60, 245, 20, "DescPlanoPag", "Descrição do plano de pagto." );
+		adicDescFK( txtDescFor, 90, 60, 327, 20, "RazFor", "Razão social do fornecedor" );
+		adicCampo( txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
+		adicDescFK( txtDescPlanoPag, 500, 60, 233, 20, "DescPlanoPag", "Descrição do p.pagto." );
+		lbChaveNfe = adicCampo( txtChaveNfe, 7, 100, 410, 20, "ChaveNfeCompra", "", ListaCampos.DB_SI, false );		
+				
 		adic( lbStatus, 638, 60, 95, 20 );
 		
 		adicDBLiv( txaObs01, "Obs01", labelobs01cp==null?"Observações":labelobs01cp, false );
@@ -610,6 +632,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcDet.addCarregaListener( this );
 		lcTipoMov.addCarregaListener( this );
 		lcAlmoxProd.addCarregaListener( this );
+		lcModNota.addCarregaListener( this );
 		lcCampos.addInsertListener( this );
 		lcCampos.addPostListener( this );
 		lcDet.addPostListener( this );
@@ -1742,6 +1765,19 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				getCustoProd();
 			}
 		}
+		else if (cevt.getListaCampos() == lcModNota ) {
+			// Caso seja nota fiscal eletrônica deve aparecer o campo de para chave da nota fiscal 
+			if( "E".equals( txtTipoModNota.getVlrString() )) {				
+				lbChaveNfe.setText( "Chave de acesso NFe" );
+				setAltCab( 195 );
+				setAtribos( 15, 10, 770, 535 );
+			}
+			else {
+				lbChaveNfe.setText( "" );
+				setAltCab( 160 );
+				setAtribos( 15, 10, 770, 500 );
+			}
+		}
 		
 		if ( txtStatusCompra.getVlrString().trim().length() > 0 && ( txtStatusCompra.getVlrString().trim().equals( "C2" ) || txtStatusCompra.getVlrString().trim().equals( "C3" ) ) ) {
 			lbStatus.setText( "RECEBIDA" );
@@ -1882,6 +1918,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcAlmoxProd.setConexao( cn );
 		lcTran.setConexao( cn );
 		lcSolCompra.setConexao( cn );
+		lcModNota.setConexao( cn );
 		getPrefere();
 		montaTela();
 		montaDetalhe();
