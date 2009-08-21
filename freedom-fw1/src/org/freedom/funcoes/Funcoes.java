@@ -2384,6 +2384,10 @@ public class Funcoes {
 		sEstado.toUpperCase();
 		UF uf = UF.valueOf( sEstado );
 		try {			
+			if("ISENTO".equals(sIE.trim())){
+				return true;
+			}
+			
 			InscricaoEstadual ie = uf.getInscricaoEstadual();    
 			ie.setNumber(sIE);
 			bRetorno = ie.isValid();
