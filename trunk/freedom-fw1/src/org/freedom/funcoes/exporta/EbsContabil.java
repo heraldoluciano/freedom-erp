@@ -135,7 +135,7 @@ public class EbsContabil extends Contabil {
     		sql.append( "COALESCE(C.INSCCLI,'ISENTO') INSC," );
     		sql.append( "M.CODMUNIC CODMUNIC," );
     		sql.append( "M.NOMEMUNIC MUNICIPIO," );
-    		sql.append( "M.SIGLAUF UF," );
+    		sql.append( "COALESCE(M.SIGLAUF,C.UFCLI) UF," );
     		sql.append( "M.CODPAIS PAIS, " );
     		sql.append( "C.ENDCLI ENDERECO," );
     		sql.append( "C.NUMCLI NUMERO," );
@@ -158,7 +158,7 @@ public class EbsContabil extends Contabil {
     		sql.append( "COALESCE(F.INSCFOR,'ISENTO') INSC," );
     		sql.append( "M.CODMUNIC CODMUNIC," );
     		sql.append( "M.NOMEMUNIC MUNICIPIO," );
-    		sql.append( "M.SIGLAUF UF," );
+    		sql.append( "COALESCE(M.SIGLAUF,F.UFFOR) UF," );
     		sql.append( "M.CODPAIS PAIS," );
     		sql.append( "F.ENDFOR ENDERECO," );
     		sql.append( "F.NUMFOR NUMERO," );
@@ -390,7 +390,7 @@ public class EbsContabil extends Contabil {
 			entrada.setObservacaoLivroFiscal( null );
 			entrada.setEspecieNota( rs.getString( "especietipomov" ) );
 			entrada.setVendaAVista( rs.getDate( "dtemitcompra" ).compareTo( rs.getDate( "datapag" ) ) == 0 ? "S" : "N" );
-			entrada.setCfopSubTributaria( null );
+			entrada.setCfopSubTributaria( 0 );
 			entrada.setBasePISCOFINSSubTributaria( new BigDecimal( "0.00" ) );
 			entrada.setBaseISS( new BigDecimal( "0.00" ) );
 			entrada.setAliquotaISS( new BigDecimal( "0.00" ) );
@@ -585,11 +585,12 @@ public class EbsContabil extends Contabil {
 		sql.append( "from vdvenda v, eqtipomov tm, lfserie s, vdcliente c, fnreceber r, lfmodnota mn " );
 		sql.append( "where v.codemp=? and v.codfilial=? and v.tipovenda='V' and v.dtemitvenda between ? and ? and " );
 		sql.append( "tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov and " );
+		sql.append( "tm.fiscaltipomov='S' and " );
 		sql.append( "mn.codemp=tm.codempmn and mn.codfilial=tm.codfilialmn and mn.codmodnota=tm.codmodnota and " );
 		sql.append( "s.codemp=v.codempse and s.codfilial=v.codfilialse and s.serie=v.serie and " );
 		sql.append( "c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli and " );
 		sql.append( "r.codempvd=v.codemp and r.codfilialvd=v.codfilial and r.codvenda=v.codvenda and r.tipovenda=v.tipovenda " );
-		sql.append( "order by v.codvenda" );
+		sql.append( "order by v.docvenda" );
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 		ps.setInt( 1, Aplicativo.iCodEmp );
@@ -1395,7 +1396,7 @@ public class EbsContabil extends Contabil {
 		
 		private String vendaAVista;
 		
-		private String cfopSubTributaria;
+		private int cfopSubTributaria;
 		
 		private BigDecimal basePISCOFINSSubTributaria;
 		
@@ -1764,11 +1765,11 @@ public class EbsContabil extends Contabil {
 			this.vendaAVista = vendaAVista;
 		}
 
-		private String getCfopSubTributaria() {
+		private int getCfopSubTributaria() {
 			return cfopSubTributaria;
 		}
 
-		private void setCfopSubTributaria( String cfopSubTributaria ) {
+		private void setCfopSubTributaria( int cfopSubTributaria ) {
 			this.cfopSubTributaria = cfopSubTributaria;
 		}
 
@@ -2652,7 +2653,7 @@ public class EbsContabil extends Contabil {
 			
 			headerSaida.append( getTipoRegistro() );			
 			headerSaida.append( format( getDataArquivo() ) );	
-			headerSaida.append( format( getCnpj(), 18 ) );
+			headerSaida.append( format( Funcoes.setMascara( getCnpj(), "##.###.###/####-##" ), 18 ) );
 			headerSaida.append( format( getCalculaBases(), 1 ) );
 			headerSaida.append( format( " ", 3 ) );
 			headerSaida.append( format( " ", 443 ) );
