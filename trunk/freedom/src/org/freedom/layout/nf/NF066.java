@@ -136,7 +136,7 @@ public class NF066 extends Layout {
 						imp.say( 120, "X" );
 					}
 					else {
-						imp.say( 105, "X" );
+						imp.say( 104, "X" );
 					}
 
 					imp.pulaLinha( 7, imp.comprimido() );
