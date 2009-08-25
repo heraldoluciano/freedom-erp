@@ -19,13 +19,14 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh{FFuncao.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.std"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConveniado.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.graficos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.pd"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.graficos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm{DLNovoHist.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.nfe.control"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.nfe"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.plugin"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm{FConsultaCli.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.bmps"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FFeriados.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.nfe.database.jdbc"/>
@@ -41,18 +42,18 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.bol"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FPais.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FTipoAtend.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.nf"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.dup"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.nf"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm{FAtendimento.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.telas"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.nfe.event"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.nfe.event"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes.exporta"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc{FCartCob.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.componentes"/>
