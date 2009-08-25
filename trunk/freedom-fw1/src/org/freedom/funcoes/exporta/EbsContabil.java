@@ -131,7 +131,7 @@ public class EbsContabil extends Contabil {
     		sql.append( "SELECT " );
     		sql.append( "C.RAZCLI RAZAO," );
     		sql.append( "C.NOMECLI NOME," );
-    		sql.append( "COALESCE(C.CNPJCLI,C.CPFCLI) CNPJ," );
+    		sql.append( "C.CNPJCLI CNPJ, C.CPFCLI CPF, C.PESSOACLI PESSOA," );
     		sql.append( "COALESCE(C.INSCCLI,'ISENTO') INSC," );
     		sql.append( "M.CODMUNIC CODMUNIC," );
     		sql.append( "M.NOMEMUNIC MUNICIPIO," );
@@ -154,7 +154,7 @@ public class EbsContabil extends Contabil {
     		sql.append( "SELECT " ); 
     		sql.append( "F.RAZFOR RAZAO," );
     		sql.append( "F.NOMEFOR NOME," );
-    		sql.append( "COALESCE(F.CNPJFOR,F.CPFFOR) CNPJ," );
+    		sql.append( "F.CNPJFOR CNPJ, F.CPFFOR CPF, F.PESSOAFOR PESSOA," );
     		sql.append( "COALESCE(F.INSCFOR,'ISENTO') INSC," );
     		sql.append( "M.CODMUNIC CODMUNIC," );
     		sql.append( "M.NOMEMUNIC MUNICIPIO," );
@@ -187,7 +187,12 @@ public class EbsContabil extends Contabil {
 			emitenteDestinatario = new EmitenteDestinatario();		
 			emitenteDestinatario.setRazaoSocial( rs.getString( "RAZAO" ) );			
 			emitenteDestinatario.setNomeFantazia( rs.getString( "NOME" ) );		
-			emitenteDestinatario.setCnpj( rs.getString( "CNPJ" ) );			
+			if ( "J".equals( rs.getString( "PESSOA" ) ) ) {
+				emitenteDestinatario.setCnpj( rs.getString( "CNPJ" ) );		
+			}
+			else {
+				emitenteDestinatario.setCpf( rs.getString( "CPF" ) );	
+			}
 			emitenteDestinatario.setInscricao( rs.getString( "INSC" ) );		
 			emitenteDestinatario.setCidade( rs.getString( "MUNICIPIO" ) );	
 			emitenteDestinatario.setMunicipio( rs.getInt( "CODMUNIC" ) );			
@@ -614,7 +619,7 @@ public class EbsContabil extends Contabil {
 			saida = new Saida();			
 			saida.setDataLancamento( Calendar.getInstance().getTime() );			
 			saida.setNumeroInicial( rs.getInt( "DOCVENDA" ) );			
-			saida.setNumeroFinal( 0 );			
+			saida.setNumeroFinal( rs.getInt( "DOCVENDA" ) );			
 			saida.setDataEmissao( rs.getDate( "DTEMITVENDA" ) );			
 			saida.setModelo( rs.getInt( "CODMODNOTA" ) );			
 			saida.setSerie( rs.getString( "SERIE" ) );			
@@ -971,6 +976,8 @@ public class EbsContabil extends Contabil {
 		
 		private String cnpj;
 		
+		private String cpf;
+		
 		private String razaoSocial;
 		
 		private String nomeFantazia;
@@ -1025,6 +1032,14 @@ public class EbsContabil extends Contabil {
 
 		private void setCnpj( String cnpj ) {
 			this.cnpj = cnpj;
+		}
+
+		public String getCpf() {
+			return cpf;
+		}
+
+		public void setCpf( String cpf ) {
+			this.cpf = cpf;
 		}
 
 		private String getRazaoSocial() {
@@ -1209,7 +1224,12 @@ public class EbsContabil extends Contabil {
 			StringBuilder emitenteDestinatario = new StringBuilder( 500 );
 			
 			emitenteDestinatario.append( getTipoRegistro() );
-			emitenteDestinatario.append( format( Funcoes.setMascara( getCnpj(), "##.###.###/####-##" ), 18 ) );			
+			if ( getCnpj() != null ) {
+				emitenteDestinatario.append( format( Funcoes.setMascara( getCnpj(), "##.###.###/####-##" ), 18 ) );		
+			}
+			else {
+				emitenteDestinatario.append( format( Funcoes.setMascara( getCpf(), "###.###.###-##" ), 18 ) );		
+			}
 			emitenteDestinatario.append( format( getRazaoSocial(), 40 ) );			
 			emitenteDestinatario.append( format( getNomeFantazia(), 20 ) );			
 			emitenteDestinatario.append( format( getEstado(), 2 ) );			
