@@ -29,6 +29,7 @@ import org.freedom.modulos.atd.FAtendente;
 import org.freedom.modulos.atd.FTipoAtend;
 import org.freedom.modulos.cfg.FFeriados;
 import org.freedom.modulos.cfg.FPais;
+import org.freedom.modulos.crm.FConsultaCli;
 import org.freedom.modulos.crm.agenda.FTipoAgenda;
 import org.freedom.modulos.fnc.FCartCob;
 import org.freedom.modulos.fnc.FHistPad;
@@ -177,10 +178,11 @@ public class FreedomSTD extends AplicativoPD {
 				addSeparador( 301000000 );
 				addOpcao( 301000000, TP_OPCAO_ITEM, "Orçamentos", "Orçamentos", 'O', 301001700, 2, true, FROrcamento.class );	
 			addOpcao( 300000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 301100000, 1, false, null );
-				addOpcao( 301100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 301110000, 2, true, FREvoluVendas.class );
+				addOpcao( 301100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 301100100, 2, true, FREvoluVendas.class );
 			addSeparador( 300000000 );
 			addOpcao( 300000000, TP_OPCAO_MENU, "Consultas", "", 'n', 301200000, 1, false, null );
-				addOpcao( 301200000, TP_OPCAO_ITEM, "Preços", "Consulta de preços", 'P', 301210000, 2, true, FConsPreco.class );
+				addOpcao( 301200000, TP_OPCAO_ITEM, "Preços", "Consulta de preços", 'P', 301200100, 2, true, FConsPreco.class );
+				addOpcao( 301200000, TP_OPCAO_ITEM, "Clientes", "Consulta de clientes", 'C', 301200200, 2, true, FConsultaCli.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Pagar", "", 'P', 400000000, 0, false, null );
 			addOpcao( 400000000, TP_OPCAO_ITEM, "Comissão", "Comissão", 'C', 400100000, 1, true, FManutComis.class );

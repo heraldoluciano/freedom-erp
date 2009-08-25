@@ -159,10 +159,11 @@ public class FreedomCRM extends AplicativoPD {
 			addSeparador( 401000000 );
 			addOpcao( 401000000, TP_OPCAO_ITEM, "Orçamentos", "Orçamentos", 'O', 401001700, 2, true, FROrcamento.class );	
 		addOpcao( 400000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 401100000, 1, false, null );
-			addOpcao( 401100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 401110000, 2, true, FREvoluVendas.class );
+			addOpcao( 401100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 401100100, 2, true, FREvoluVendas.class );
 		addSeparador( 400000000 );
 		addOpcao( 400000000, TP_OPCAO_MENU, "Consultas", "", 'n', 401200000, 1, false, null );
-			addOpcao( 401200000, TP_OPCAO_ITEM, "Preços", "Consulta de preços", 'P', 401210000, 2, true, FConsPreco.class );
+			addOpcao( 401200000, TP_OPCAO_ITEM, "Preços", "Consulta de preços", 'P', 401200100, 2, true, FConsPreco.class );
+			addOpcao( 401200000, TP_OPCAO_ITEM, "Clientes", "Consulta de clientes", 'C', 301200200, 2, true, FConsultaCli.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Projetos", "", 'S', 500000000, 0, false, null );
 		addOpcao( 500000000, TP_OPCAO_ITEM, "Projetos", "Projetos/Contratos", 'P', 500100000, 1, true, FContrato.class );
