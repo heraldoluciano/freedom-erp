@@ -1,7 +1,7 @@
 /*
- * Projeto: Freedom-nfe
- * Pacote: org.freedom.modules.nfe.bean
- * Classe: @(#)AbstractNFEKey.java
+ * Projeto: Freedom
+ * Pacote: org.freedom.modules.crm
+ * Classe: @(#)FConsultaCli.java
  * 
  * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
