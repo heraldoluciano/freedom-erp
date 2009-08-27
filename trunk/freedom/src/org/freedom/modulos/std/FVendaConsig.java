@@ -34,7 +34,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -43,8 +45,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import org.freedom.acao.CarregaEvent;
-import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.bmps.Icone;
@@ -64,7 +64,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
-public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListener, CarregaListener, InsertListener {
+public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -96,7 +96,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 	private JPanelPad panelVendasCampos = new JPanelPad( 500, 110 );
 
-	private JPanelPad panelVendasNavegador = new JPanelPad( 500, 30 );
+	private JPanelPad panelVendasNavegador = new JPanelPad( new BorderLayout() );
 	
 	private Tabela tabVendas = new Tabela();
 
@@ -130,7 +130,11 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
+	private JTextFieldPad txtDocConsig = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+
 	private JTextFieldPad txtDataConsig = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JButton btImportarVendaRemessa = new JButton( "Importar nota de remessa", Icone.novo( "btFinalizaOP.gif" ) );
 
 	// campos da aba detale geral
 
@@ -179,6 +183,8 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 	private JTextFieldPad txtVlrDescVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 	
 	private JCheckBoxPad cbRecebido = new JCheckBoxPad( "Recebido", "S", "N" );
+
+	private JButton btImportarItensVenda = new JButton( "Importar itens de venda", Icone.novo( "btVenda2.gif" ) );
 
 	// campos da aba contas a receber
 
@@ -319,8 +325,6 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 		navRod.setListaCampos( lcDet );
 
-		lcClienteRec.addCarregaListener( this );
-
 		lcCampos.addInsertListener( this );
 		lcDet.addInsertListener( this );
 		lcDetVendas.addInsertListener( this );
@@ -331,6 +335,8 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		tabReceber.addMouseListener( this );
 		tabFechamento.addMouseListener( this );
 
+		btImportarVendaRemessa.addActionListener( this );
+		btImportarItensVenda.addActionListener( this );
 		btPesquisaReceber.addActionListener( this );
 		btSelecionTodosReceber.addActionListener( this );
 		btSelecionaNenhumReceber.addActionListener( this );
@@ -444,9 +450,12 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		adicCampo( txtCodConsig, 7, 30, 80, 20, "CodConsig", "Cód.Consig.", ListaCampos.DB_PK, true );
 		adicCampo( txtCodVend, 90, 30, 80, 20, "CodVend", "Cód.Comiss", ListaCampos.DB_FK, txtNomeVend, true );
 		adicDescFK( txtNomeVend, 173, 30, 300, 20, "NomeVend", "Nome do comissionado" );
-		adicCampo( txtDataConsig, 476, 30, 100, 20, "DtConsig", "Data consig.", ListaCampos.DB_SI, true );
+		adicCampo( txtDocConsig, 476, 30, 100, 20, "DocConsig", "Documento", ListaCampos.DB_SI, true );
+		adicCampo( txtDataConsig, 579, 30, 100, 20, "DtConsig", "Data consig.", ListaCampos.DB_SI, true );
 		setListaCampos( true, "CONSIGNACAO", "VD" );
 		lcCampos.setQueryInsert( false );
+		
+		pnNavCab.add( btImportarVendaRemessa, BorderLayout.EAST );
 
 		// ********** Início aba Remessa **********
 
@@ -499,8 +508,9 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 		panelVendasDetale.add( panelVendasCampos, BorderLayout.CENTER );
 		panelVendasDetale.add( panelVendasNavegador, BorderLayout.SOUTH );
-
-		panelVendasNavegador.adic( navegadorVendas, 0, 0, 270, 25 );
+		panelVendasNavegador.setBorder( BorderFactory.createEtchedBorder() );
+		
+		panelVendasNavegador.add( navegadorVendas, BorderLayout.WEST );
 
 		setPainel( panelVendasCampos );
 
@@ -522,9 +532,11 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 		setPainel( panelVendasCab );
 		adicCampo( txtCodCliVenda, 7, 30, 80, 20, "CodCli", "Cód.cli", ListaCampos.DB_FK, txtRazCliVenda, true );
-		adicDescFK( txtRazCliVenda, 90, 30, 260, 20, "RazCli", "Razão social do cliente" );
-		adicCampo( txtCodPlanoPag, 353, 30, 80, 20, "CodPlanoPag", "Cód.pl.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
-		adicDescFK( txtDescPlanoPag, 436, 30, 260, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
+		adicDescFK( txtRazCliVenda, 90, 30, 270, 20, "RazCli", "Razão social do cliente" );
+		adicCampo( txtCodPlanoPag, 363, 30, 80, 20, "CodPlanoPag", "Cód.pl.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true );
+		adicDescFK( txtDescPlanoPag, 446, 30, 270, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
+		
+		panelVendasNavegador.add( btImportarItensVenda, BorderLayout.EAST );
 		
 		setListaCampos( true, "VENDACONSIG", "VD" );
 		lcDetVendas.setQueryInsert( true );
@@ -871,7 +883,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 //			Funcoes.mensagemErro( this, "Erro ao listar recebimentos!\n" + e.getMessage(), true, con, e );
 //		}
 //	}
-
+//
 //	private void abreTelaRec() {
 //
 //		Integer codrec = (Integer) tabReceber.getValor( tabReceber.getLinhaSel(), ETabReceber.CODREC.ordinal() );
@@ -887,19 +899,19 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 //		
 //		tela.setRec( codrec );
 //	}
-
+//
 //	private void selecionaTodosReceber() {	
 //		for ( int row = 0; row < tabReceber.getNumLinhas(); row++ ) {
 //			tabReceber.setValor( new Boolean( true ), row, ETabReceber.SEL.ordinal() );
 //		}
 //	}
-
+//
 //	private void selecionaNenhumReceber() {	
 //		for ( int row = 0; row < tabReceber.getNumLinhas(); row++ ) {
 //			tabReceber.setValor( new Boolean( false ), row, ETabReceber.SEL.ordinal() );
 //		}
 //	}
-	
+//	
 //	private void colocarEmCobranca() {
 //		
 //		try {
@@ -957,6 +969,10 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 				codempvd = rs.getInt( "codemppv" );
 				codfilialvd = rs.getInt( "codfilialpv" );
 				codplanvdconsig = rs.getString( "codplanvdconsig" );
+			} 
+			if ( codplanconsig == null || codplanvdconsig == null ) {
+				btConsolidacao.setEnabled( false );
+				Funcoes.mensagemInforma( this, "Preferencias de vendas consignadas não encontradas." );
 			}
 
 			rs.close();
@@ -1784,6 +1800,74 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 		return codlanca;
 	}
+	
+	private void importarVendaRemessa() {
+		
+		if ( txtCodConsig.getVlrInteger() == 0 ) {
+			return;
+		}
+		
+		DLBuscaVenda buscaRemessa = new DLBuscaVenda();
+		buscaRemessa.setConexao( con );
+		buscaRemessa.setVisible( true );
+		
+		if ( buscaRemessa.OK ) {
+			
+			List<DLBuscaVenda.GridBuscaRemessa> gridBuscaRemessa = buscaRemessa.getGridBuscaRemessa();
+			
+			for ( DLBuscaVenda.GridBuscaRemessa g : gridBuscaRemessa ) {
+				
+				lcDet.cancel( true );
+				lcDet.insert( true );
+				
+				txtCodProdRem.setVlrInteger( g.getCodigoProduto() );
+				txtPrecoRem.setVlrBigDecimal( g.getPreco() );
+				txtQtdSaidaRem.setVlrBigDecimal( g.getQuantidade() );
+				
+				lcDet.post();
+			}
+			
+			lcCampos.carregaDados();
+		}
+		
+		buscaRemessa.dispose();
+	}
+	
+	private void importarItensVenda() {
+		
+		if ( txtCodConsig.getVlrInteger() == 0 ) {
+			return;
+		}
+		
+		DLBuscaVenda buscaRemessa = new DLBuscaVenda();
+		buscaRemessa.setConexao( con );
+		buscaRemessa.setVisible( true );
+		
+		if ( buscaRemessa.OK ) {
+			
+			List<DLBuscaVenda.GridBuscaRemessa> gridBuscaRemessa = buscaRemessa.getGridBuscaRemessa();
+			
+			for ( DLBuscaVenda.GridBuscaRemessa g : gridBuscaRemessa ) {
+				
+				lcDetVendas.cancel( true );
+				lcDetVendas.insert( true );
+				
+				txtCodProdVenda.setVlrInteger( g.getCodigoProduto() );
+				txtPreco.setVlrBigDecimal( g.getPreco() );
+				txtQtdVenda.setVlrBigDecimal( g.getQuantidade() );
+				txtCodCliVenda.setVlrInteger( g.getCliente() );
+				txtCodPlanoPag.setVlrInteger( g.getPlanoPagamento() );
+				
+				cbRecebido.setVlrString( "N" );
+				
+				lcDetVendas.post();
+			}
+			
+			lcCampos.carregaDados();
+		}
+		
+		buscaRemessa.dispose();
+	}
 
 	private void novoLanca() {
 
@@ -1823,7 +1907,13 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 		super.actionPerformed( e );
 
-		if( e.getSource() == btConsolidacao ) {
+		if( e.getSource() == btImportarVendaRemessa ) {
+			importarVendaRemessa();
+		}
+		else if( e.getSource() == btImportarItensVenda ) {
+			importarItensVenda();
+		}
+		else if( e.getSource() == btConsolidacao ) {
 			consolidacao();
 		}
 		else if( e.getSource() == btNovoLancamento ) {
@@ -1920,22 +2010,10 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			else if ( tpnPrincipal.getSelectedIndex() == 1 ) {
 				navRod.setVisible( false );
 			}
-//			else if ( tpnPrincipal.getSelectedIndex() == 2 ) {
-//				navRod.setVisible( false );
-//			}
 			else if ( tpnPrincipal.getSelectedIndex() == 2 ) {
 				navRod.setVisible( false );
 				carregaFechamento();
 			}
-		}
-	}
-
-	public void beforeCarrega( CarregaEvent e ) { }
-
-	public void afterCarrega( CarregaEvent e ) {
-
-		if ( e.getListaCampos() == lcClienteRec ) {
-//			montaGridReceber();
 		}
 	}
 

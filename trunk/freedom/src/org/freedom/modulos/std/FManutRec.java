@@ -36,9 +36,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -69,6 +71,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.boleto.Banco;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.crm.FAtendimento;
+import org.freedom.modulos.fnc.DLBordero;
 import org.freedom.modulos.std.DLBaixaRec.EColBaixa;
 import org.freedom.modulos.std.DLBaixaRec.EColRetBaixa;
 import org.freedom.modulos.std.DLEditaRec.EColEdit;
@@ -252,6 +255,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
 
 	private JButton btCarregaVenda = new JButton( "Consulta venda", Icone.novo( "btSaida.gif" ) );
+	
+	private JButton btHistorico = new JButton( Icone.novo( "btTelefone.png" ) );	
+	
+	private JButton btBordero = new JButton( Icone.novo( "btExecuta.gif" ) );	
 
 	private JCheckBoxPad cbRecebidas = new JCheckBoxPad( "Recebidas", "S", "N" );
 
@@ -333,13 +340,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	
 	private Map<String, Integer> prefere = null;
 	
-	private JButton btHistorico = new JButton( Icone.novo( "btTelefone.png" ) );	
-	
 	public FManutRec() {
 
 		super( false );
 		setTitulo( "Manutenção de contas a receber" );
-		setAtribos( 20, 20, 800, 540 );
+		setAtribos( 20, 20, 800, 570 );
 
 		cbAReceber.setVlrString( "S" );
 
@@ -358,6 +363,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		btSair.setToolTipText( "Sair" );
 		btCarregaVenda.setToolTipText( "Consulta venda" );
 		btHistorico.setToolTipText( "Histório de contatos" );
+		btBordero.setToolTipText( "Bordero de recebivéis" );
 
 		Container c = getContentPane();
 		c.setLayout( new BorderLayout() );
@@ -757,7 +763,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pinBotoesManut.adic( btExcluirManut, 3, 150, 30, 30 );
 		pinBotoesManut.adic( btCancItem, 3, 180, 30, 30 );
 		pinBotoesManut.adic( btImpBol, 3, 210, 30, 30 );
-		pinBotoesManut.adic( btHistorico, 3, 240, 30, 30 );		
+		pinBotoesManut.adic( btHistorico, 3, 240, 30, 30 );	
+		pinBotoesManut.adic( btBordero, 3, 270, 30, 30 );		
 		
 		tabManut.adicColuna( "" ); // 0
 		tabManut.adicColuna( "St." ); // 1
@@ -835,12 +842,13 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		btNovoManut.addActionListener( this );
 		btExcluirManut.addActionListener( this );
 		btImpBol.addActionListener( this );
-		btHistorico.addActionListener( this );
 		btCarregaGridManut.addActionListener( this );
 		btEstorno.addActionListener( this );
 		btCancItem.addActionListener( this );
 		btCarregaBaixas.addActionListener( this );
 		btCarregaBaixasMan.addActionListener( this );
+		btHistorico.addActionListener( this );
+		btBordero.addActionListener( this );
 		tpn.addChangeListener( this );
 		
 		tabManut.addMouseListener(new MouseAdapter() {
@@ -1217,25 +1225,18 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 	}
 
-	private void carregaGridManut( boolean bAplicFiltros ) {
+	private ResultSet getResultSetManut( boolean bAplicFiltros ) throws SQLException {
 
-		PreparedStatement ps = null;
 		ResultSet rs = null;
+		
 		StringBuffer sSQL = new StringBuffer();
 		StringBuffer sWhereManut = new StringBuffer();
 		StringBuffer sWhereStatus = new StringBuffer();
-		Float bdVlrAReceber = 0.0f;
-		Float bdVlrRecebido = 0.0f;
-		Float bdTotVencido = 0.0f;
-		Float bdTotParcial = 0.0f;
-		Float bdTotRecebido =  0.0f;
-		Float bdTotVencer = 0.0f;
-		Float bdTotCancelado = 0.0f;
-		
+
 		if ( bAplicFiltros ) {
 
 			if ( !validaPeriodo() ) {
-				return;
+				return null;
 			}
 
 			sWhereManut.append( " AND " );
@@ -1243,10 +1244,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			sWhereManut.append( " BETWEEN ? AND ? AND R.CODEMP=? AND R.CODFILIAL=?" );
 
 			if ( "S".equals( cbRecebidas.getVlrString() ) || 
-					"S".equals( cbAReceber.getVlrString() ) || 
-					   "S".equals( cbRecParcial.getVlrString() ) || 
-						  "S".equals( cbCanceladas.getVlrString())
-					   ) {
+				 "S".equals( cbAReceber.getVlrString() ) || 
+				 "S".equals( cbRecParcial.getVlrString() ) || 
+				 "S".equals( cbCanceladas.getVlrString() ) ) {
 
 				boolean bStatus = false;
 
@@ -1271,7 +1271,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			}
 			else {
 				Funcoes.mensagemInforma( null, "Você deve selecionar ao menos um filtro de status!" );
-				return;
+				return null;
 			}
 
 			if ( !"TT".equals( rgVenc.getVlrString() ) ) {
@@ -1298,61 +1298,80 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			sWhereManut.append( " AND R.CODREC=? AND R.CODEMP=? AND R.CODFILIAL=? " );
 		}
 
+		sSQL.append( "SELECT IR.DTVENCITREC,IR.STATUSITREC,R.CODCLI,C.RAZCLI,R.CODREC,IR.DOCLANCAITREC," );
+		sSQL.append( "R.CODVENDA,IR.VLRPARCITREC,IR.DTPAGOITREC,IR.VLRPAGOITREC,IR.VLRAPAGITREC,IR.NUMCONTA," );
+		sSQL.append( "IR.VLRDESCITREC,IR.CODPLAN,IR.CODCC,IR.OBSITREC,IR.NPARCITREC,IR.VLRJUROSITREC," );
+		sSQL.append( "IR.DTITREC,IR.CODBANCO,IR.CODCARTCOB, " );
+		sSQL.append( "(SELECT C.DESCCONTA FROM FNCONTA C " );
+		sSQL.append( "WHERE C.NUMCONTA=IR.NUMCONTA " );
+		sSQL.append( "AND C.CODEMP=IR.CODEMPCA AND C.CODEMP=IR.CODEMPCA) DESCCONTA," );
+		sSQL.append( "(SELECT P.DESCPLAN FROM FNPLANEJAMENTO P " );
+		sSQL.append( "WHERE P.CODPLAN=IR.CODPLAN " );
+		sSQL.append( "AND P.CODEMP=IR.CODEMPPN AND P.CODFILIAL=IR.CODFILIALPN) DESCPLAN," );
+		sSQL.append( "(SELECT CC.DESCCC FROM FNCC CC " );
+		sSQL.append( "WHERE CC.CODCC=IR.CODCC " );
+		sSQL.append( "AND CC.CODEMP=IR.CODEMPCC AND CC.CODFILIAL=IR.CODFILIALCC AND CC.ANOCC=IR.ANOCC) DESCCC," );
+		sSQL.append( "(SELECT VD.DOCVENDA FROM VDVENDA VD " );
+		sSQL.append( "WHERE VD.TIPOVENDA=R.TIPOVENDA AND VD.CODVENDA=R.CODVENDA AND " );
+		sSQL.append( " VD.CODEMP=R.CODEMPVA AND VD.CODFILIAL=R.CODFILIALVA) DOCVENDA," );
+		sSQL.append( "IR.CODTIPOCOB, " );
+		sSQL.append( "(SELECT TP.DESCTIPOCOB FROM FNTIPOCOB TP " );
+		sSQL.append( "WHERE TP.CODEMP=IR.CODEMPTC " );
+		sSQL.append( "AND TP.CODFILIAL=IR.CODFILIALTC AND TP.CODTIPOCOB=IR.CODTIPOCOB) DESCTIPOCOB, " );
+		sSQL.append( "(SELECT BO.NOMEBANCO FROM FNBANCO BO WHERE BO.CODBANCO=IR.CODBANCO " );
+		sSQL.append( "AND BO.CODEMP=IR.CODEMPBO AND BO.CODFILIAL=IR.CODFILIALBO) NOMEBANCO," );
+		sSQL.append( "(SELECT CB.DESCCARTCOB FROM FNCARTCOB CB WHERE CB.CODBANCO=IR.CODBANCO " );
+		sSQL.append( "AND CB.CODEMP=IR.CODEMPBO AND CB.CODFILIAL=IR.CODFILIALBO AND CB.CODCARTCOB=IR.CODCARTCOB) DESCCARTCOB, " );
+		sSQL.append( "R.DOCREC, IR.VLRDEVITREC, IR.DESCPONT, IR.VLRCANCITREC, " );
+
+		sSQL.append( "(SELECT FIRST 1 ITR.CODATENDO FROM ATATENDIMENTOITREC ITR " );
+		sSQL.append( "WHERE ITR.CODEMPIR=IR.CODEMP AND ITR.CODFILIALIR=IR.CODFILIAL " );
+		sSQL.append( "AND ITR.CODREC=IR.CODREC AND ITR.NPARCITREC=IR.NPARCITREC ) AS ATEND " );
+
+		sSQL.append( "FROM FNITRECEBER IR, FNRECEBER R, VDCLIENTE C " );
+		sSQL.append( "WHERE IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND R.CODREC=IR.CODREC AND " );
+		sSQL.append( "C.CODCLI=R.CODCLI AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL " );
+		sSQL.append( sWhereManut );
+		sSQL.append( " ORDER BY IR.DTVENCITREC,IR.STATUSITREC,IR.CODREC,IR.NPARCITREC" );
+
+		PreparedStatement ps = con.prepareStatement( sSQL.toString() );
+
+		if ( bAplicFiltros ) {
+			ps.setDate( 1, Funcoes.dateToSQLDate( dIniManut ) );
+			ps.setDate( 2, Funcoes.dateToSQLDate( dFimManut ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+		}
+		else {
+			ps.setInt( 1, txtCodRecManut.getVlrInteger().intValue() );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+		}
+
+		rs = ps.executeQuery();
+	
+		return rs;
+	}
+
+	private void carregaGridManut( boolean bAplicFiltros ) {
+		
 		try {
+			
+			ResultSet rs = getResultSetManut( bAplicFiltros );
+			
+			if ( rs == null ) {
+				return;
+			}
+			
+			Float bdVlrAReceber = 0.0f;
+			Float bdVlrRecebido = 0.0f;
+			Float bdTotVencido = 0.0f;
+			Float bdTotParcial = 0.0f;
+			Float bdTotRecebido =  0.0f;
+			Float bdTotVencer = 0.0f;
+			Float bdTotCancelado = 0.0f;
 
 			tabManut.limpa();
-
-			sSQL.append( "SELECT IR.DTVENCITREC,IR.STATUSITREC,R.CODCLI,C.RAZCLI,R.CODREC,IR.DOCLANCAITREC," );
-			sSQL.append( "R.CODVENDA,IR.VLRPARCITREC,IR.DTPAGOITREC,IR.VLRPAGOITREC,IR.VLRAPAGITREC,IR.NUMCONTA," );
-			sSQL.append( "IR.VLRDESCITREC,IR.CODPLAN,IR.CODCC,IR.OBSITREC,IR.NPARCITREC,IR.VLRJUROSITREC," );
-			sSQL.append( "IR.DTITREC,IR.CODBANCO,IR.CODCARTCOB, " );
-			sSQL.append( "(SELECT C.DESCCONTA FROM FNCONTA C " );
-			sSQL.append( "WHERE C.NUMCONTA=IR.NUMCONTA " );
-			sSQL.append( "AND C.CODEMP=IR.CODEMPCA AND C.CODEMP=IR.CODEMPCA) DESCCONTA," );
-			sSQL.append( "(SELECT P.DESCPLAN FROM FNPLANEJAMENTO P " );
-			sSQL.append( "WHERE P.CODPLAN=IR.CODPLAN " );
-			sSQL.append( "AND P.CODEMP=IR.CODEMPPN AND P.CODFILIAL=IR.CODFILIALPN) DESCPLAN," );
-			sSQL.append( "(SELECT CC.DESCCC FROM FNCC CC " );
-			sSQL.append( "WHERE CC.CODCC=IR.CODCC " );
-			sSQL.append( "AND CC.CODEMP=IR.CODEMPCC AND CC.CODFILIAL=IR.CODFILIALCC AND CC.ANOCC=IR.ANOCC) DESCCC," );
-			sSQL.append( "(SELECT VD.DOCVENDA FROM VDVENDA VD " );
-			sSQL.append( "WHERE VD.TIPOVENDA=R.TIPOVENDA AND VD.CODVENDA=R.CODVENDA AND " );
-			sSQL.append( " VD.CODEMP=R.CODEMPVA AND VD.CODFILIAL=R.CODFILIALVA) DOCVENDA," );
-			sSQL.append( "IR.CODTIPOCOB, " );
-			sSQL.append( "(SELECT TP.DESCTIPOCOB FROM FNTIPOCOB TP " );
-			sSQL.append( "WHERE TP.CODEMP=IR.CODEMPTC " );
-			sSQL.append( "AND TP.CODFILIAL=IR.CODFILIALTC AND TP.CODTIPOCOB=IR.CODTIPOCOB) DESCTIPOCOB, " );
-			sSQL.append( "(SELECT BO.NOMEBANCO FROM FNBANCO BO WHERE BO.CODBANCO=IR.CODBANCO " );
-			sSQL.append( "AND BO.CODEMP=IR.CODEMPBO AND BO.CODFILIAL=IR.CODFILIALBO) NOMEBANCO," );
-			sSQL.append( "(SELECT CB.DESCCARTCOB FROM FNCARTCOB CB WHERE CB.CODBANCO=IR.CODBANCO " );
-			sSQL.append( "AND CB.CODEMP=IR.CODEMPBO AND CB.CODFILIAL=IR.CODFILIALBO AND CB.CODCARTCOB=IR.CODCARTCOB) DESCCARTCOB, ");
-			sSQL.append( "R.DOCREC, IR.VLRDEVITREC, IR.DESCPONT, IR.VLRCANCITREC, " );
-			
-			sSQL.append( "(SELECT FIRST 1 ITR.CODATENDO FROM ATATENDIMENTOITREC ITR "); 
-			sSQL.append( "WHERE ITR.CODEMPIR=IR.CODEMP AND ITR.CODFILIALIR=IR.CODFILIAL ");
-			sSQL.append( "AND ITR.CODREC=IR.CODREC AND ITR.NPARCITREC=IR.NPARCITREC ) AS ATEND " );
-						
-			sSQL.append( "FROM FNITRECEBER IR, FNRECEBER R, VDCLIENTE C " );
-			sSQL.append( "WHERE IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND R.CODREC=IR.CODREC AND "); 
-			sSQL.append( "C.CODCLI=R.CODCLI AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL " );
-			sSQL.append( sWhereManut );
-			sSQL.append( " ORDER BY IR.DTVENCITREC,IR.STATUSITREC,IR.CODREC,IR.NPARCITREC" );
-
-			ps = con.prepareStatement( sSQL.toString() );
-
-			if ( bAplicFiltros ) {
-				ps.setDate( 1, Funcoes.dateToSQLDate( dIniManut ) );
-				ps.setDate( 2, Funcoes.dateToSQLDate( dFimManut ) );
-				ps.setInt( 3, Aplicativo.iCodEmp );
-				ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-			}
-			else {
-				ps.setInt( 1, txtCodRecManut.getVlrInteger().intValue() );
-				ps.setInt( 2, Aplicativo.iCodEmp );
-				ps.setInt( 3, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-			}
-
-			rs = ps.executeQuery();
 
 			for ( int i = 0; rs.next(); i++ ) {
 
@@ -1420,30 +1439,43 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 								
 			}
 						
-			txtTotalVencido.setVlrDouble( Funcoes.arredDouble( bdTotVencido.doubleValue(), Aplicativo.casasDecFin ));
-			txtTotalParcial.setVlrDouble( Funcoes.arredDouble( bdTotParcial.doubleValue(), Aplicativo.casasDecFin ));
-			txtTotalRecebido.setVlrDouble( Funcoes.arredDouble( bdTotRecebido.doubleValue(), Aplicativo.casasDecFin ));
-			txtTotalVencer.setVlrDouble(  Funcoes.arredDouble( bdTotVencer.doubleValue(), Aplicativo.casasDecFin ));
-			txtTotalCancelado.setVlrDouble(  Funcoes.arredDouble( bdTotCancelado.doubleValue(), Aplicativo.casasDecFin ));
-	
-
-			rs.close();
-			ps.close();
+			txtTotalVencido.setVlrDouble( Funcoes.arredDouble( bdTotVencido.doubleValue(), Aplicativo.casasDecFin ) );
+			txtTotalParcial.setVlrDouble( Funcoes.arredDouble( bdTotParcial.doubleValue(), Aplicativo.casasDecFin ) );
+			txtTotalRecebido.setVlrDouble( Funcoes.arredDouble( bdTotRecebido.doubleValue(), Aplicativo.casasDecFin ) );
+			txtTotalVencer.setVlrDouble( Funcoes.arredDouble( bdTotVencer.doubleValue(), Aplicativo.casasDecFin ) );
+			txtTotalCancelado.setVlrDouble( Funcoes.arredDouble( bdTotCancelado.doubleValue(), Aplicativo.casasDecFin ) );
 
 			con.commit();
 
-		} catch ( SQLException err ) {
+		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao montar a tabela de baixa!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-			sWhereManut = null;
-			sWhereStatus = null;
-		}
+		} 
 	}
 	
+	private void carregaVenda() {
+	
+		int iLin = tabConsulta.getLinhaSel();
+		if ( iLin < 0 ) {
+			Funcoes.mensagemInforma( this, "Selecione uma parcela." );
+			return;
+		}
+	
+		int iCodVenda = (Integer) tabConsulta.getValor( iLin, EColTabConsulta.CODVENDA.ordinal() );
+	
+		String sTipoVenda = (String) tabConsulta.getValor( iLin, EColTabConsulta.TV.ordinal() );
+	
+		if ( iCodVenda > 0 ) {
+	
+			DLConsultaVenda dl = new DLConsultaVenda( this, con, iCodVenda, sTipoVenda );
+			dl.setVisible( true );
+			dl.dispose();
+		}
+		else {
+			Funcoes.mensagemInforma( null, "Este lançamento não possui vínculo com uma venda!" );
+		}
+	}
+
 	private boolean getUsaBol(){
 		return true;		
 /*		boolean retorno = false;
@@ -1542,6 +1574,140 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		return sRet;
 	}
 	
+	private String[] getPlanejamentoConta( int iCodRec ) {
+	
+		String[] retorno = new String[ 4 ];
+	
+		try {
+	
+			StringBuffer sSQL = new StringBuffer();
+			sSQL.append( " SELECT V.CODPLANOPAG, P.CODPLAN, P.NUMCONTA, P.CODCC" );
+			sSQL.append( " FROM VDVENDA V, FNPLANOPAG P, FNRECEBER R" );
+			sSQL.append( " WHERE V.CODEMPPG=P.CODEMP AND V.CODFILIALPG=P.CODFILIAL AND V.CODPLANOPAG=P.CODPLANOPAG" ); 
+			sSQL.append( " AND V.CODEMP=R.CODEMPVD AND V.CODFILIAL=R.CODFILIALVD AND V.CODVENDA=R.CODVENDA AND V.TIPOVENDA=R.TIPOVENDA" ); 
+			sSQL.append( " AND R.CODEMP=? AND R.CODFILIAL=? AND R.CODREC=?" );
+	
+			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+			ps.setInt( 3, iCodRec );
+			
+			ResultSet rs = ps.executeQuery();
+	
+			if ( rs.next() ) {
+				
+				for ( int i = 0; i < retorno.length; i++ ) {
+					
+					retorno[ i ] = rs.getString( i + 1 ) == null ? "" : rs.getString( i + 1 );
+				}
+			}
+			
+			ps.close();
+			
+			con.commit();
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar Conta!\n" + err.getMessage(), true, con, err );
+		}
+	
+		return retorno;
+	}
+
+	private Map<String, Integer> getPrefere() {
+	
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer anocc = null;
+		Integer codhistrec = null;
+		
+		Map<String, Integer> retorno = new HashMap<String, Integer>();
+	
+		try {
+	
+			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO,CODHISTREC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+	
+			rs = ps.executeQuery();
+	
+			if ( rs.next() ) {
+				anocc = rs.getInt( "ANOCENTROCUSTO" );
+				codhistrec = rs.getInt( "CODHISTREC" );				
+			}
+			
+			retorno.put("codhistrec", codhistrec);
+			retorno.put("anocc", anocc);
+	
+			rs.close();
+			ps.close();
+	
+			con.commit();
+		} 
+		catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
+		} 
+		finally {
+			ps = null;
+			rs = null;
+		}
+		return retorno;
+	}
+
+	private void cancelaItem() {
+		String sit = "";
+		int sel = tabManut.getSelectedRow(); 
+		int codrec = 0;
+		int nparcitrec = 0;
+		if (sel<0) {
+			Funcoes.mensagemInforma( this, "Selecione um título!" );
+		} else {
+			sit = tabManut.getValor( sel, EColTabManut.STATUS.ordinal() ).toString();
+			if ( "R1".equals( sit ) ) {
+				if (Funcoes.mensagemConfirma( this, "Confirma cancelamento do título?" )==JOptionPane.YES_OPTION ) {
+					DLCancItem dlCanc = new DLCancItem(this);
+					dlCanc.setVisible( true );
+					if (dlCanc.OK)  {
+						codrec = ( ( Integer) tabManut.getValor( sel, EColTabManut.CODREC.ordinal() ) ).intValue();
+						nparcitrec =   ( (Integer) tabManut.getValor( sel, EColTabManut.NPARCITREC.ordinal() ) ).intValue();
+						execCancItem(codrec, nparcitrec, dlCanc.getValor());
+						carregaGridManut( bBuscaAtual );
+					}
+				}
+			} else if ("CR".equals( sit )) {
+				Funcoes.mensagemInforma( this, "Título já está cancelado!" );
+			} else {
+				Funcoes.mensagemInforma( this, "Situação do título não permite cancelamento!" );
+			}
+		}
+	}
+
+	private void execCancItem(int codrec, int nparcitrec, String obs) {
+		StringBuilder sql = new StringBuilder( "UPDATE FNITRECEBER SET STATUSITREC='CR', OBSITREC=? " );
+		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=? " );
+		try {
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setString( 1, obs );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+			ps.setInt( 4, codrec );
+			ps.setInt( 5, nparcitrec );
+			ps.executeUpdate();
+			ps.close();
+			con.commit();
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Não foi possível efetuar o cancelamento!\n" + e.getMessage() );
+		}
+			
+	}
+
+	private void novo() {
+	
+		DLNovoRec dl = new DLNovoRec( this );
+		dl.setConexao( con );
+		dl.setVisible( true );
+		dl.dispose();
+		carregaGridManut( bBuscaAtual );
+	}
+
 	private void editar() {
 
 		PreparedStatement ps = null;
@@ -1739,29 +1905,114 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 	}
 
-	private void carregaVenda() {
-
-		int iLin = tabConsulta.getLinhaSel();
-		if ( iLin < 0 ) {
-			Funcoes.mensagemInforma( this, "Selecione uma parcela." );
-			return;
-		}
-
-		int iCodVenda = (Integer) tabConsulta.getValor( iLin, EColTabConsulta.CODVENDA.ordinal() );
-
-		String sTipoVenda = (String) tabConsulta.getValor( iLin, EColTabConsulta.TV.ordinal() );
-
-		if ( iCodVenda > 0 ) {
-
-			DLConsultaVenda dl = new DLConsultaVenda( this, con, iCodVenda, sTipoVenda );
-			dl.setVisible( true );
-			dl.dispose();
-		}
-		else {
-			Funcoes.mensagemInforma( null, "Este lançamento não possui vínculo com uma venda!" );
+	private void excluir() {
+	
+		PreparedStatement ps = null;
+		ImageIcon imgStatusAt = null;
+	
+		try {
+	
+			if ( tabManut.getLinhaSel() > -1 ) {
+	
+				imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), 0 );
+	
+				if ( ! ( imgStatusAt == imgPagoParcial || imgStatusAt == imgPago ) ) {
+	
+					if ( Funcoes.mensagemConfirma( this, "Deseja realmente excluir esta conta e todas as suas parcelas?" ) == 0 ) {
+	
+						try {
+	
+							ps = con.prepareStatement( "DELETE FROM FNRECEBER WHERE CODREC=? AND CODEMP=? AND CODFILIAL=?" );
+							ps.setInt( 1, (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() ) );
+							ps.setInt( 2, Aplicativo.iCodEmp );
+							ps.setInt( 3, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+	
+							ps.executeUpdate();
+	
+							con.commit();
+	
+							carregaGridManut( bBuscaAtual );
+						} catch ( SQLException err ) {
+							if ( err.getErrorCode() == 335544517 ) {
+								Funcoes.mensagemErro( this, "NÃO FOI POSSIVEL EXCLUIR.\n" + "A PARCELA JÁ FOI PAGA." );
+							}
+							else {
+								Funcoes.mensagemErro( this, "Erro ao excluir parcela!\n" + err.getMessage(), true, con, err );
+							}
+							err.printStackTrace();
+						}
+					}
+				}
+				else {
+					Funcoes.mensagemErro( this, "NÃO FOI POSSIVEL EXCLUIR.\n" + "A PARCELA JÁ FOI PAGA." );
+				}
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Nenhum item foi selecionado." );
+			}
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( null, "Erro ao excluir recebimento.", true, con, e );
+			e.printStackTrace();
+		} finally {
+			ps = null;
+			imgStatusAt = null;
 		}
 	}
+
+	private void estorno() {
 	
+		PreparedStatement ps = null;
+		ImageIcon imgStatusAt = null;
+		int iCodRec = 0;
+		int iNParcItRec = 0;
+	
+		try {
+	
+			if ( tabManut.getLinhaSel() > -1 ) {
+	
+				imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), 0 );
+	
+				if ( ( imgStatusAt == imgPago ) || ( imgStatusAt == imgPagoParcial ) ) {
+	
+					if ( Funcoes.mensagemConfirma( this, "Confirma o estorno do lançamento?" ) == 0 ) {
+	
+						int iLin = tabManut.getLinhaSel();
+	
+						iCodRec = (Integer) tabManut.getValor( iLin, EColTabManut.CODREC.ordinal() );
+						iNParcItRec = (Integer) tabManut.getValor( iLin, EColTabManut.NPARCITREC.ordinal() );
+	
+						try {
+	
+							ps = con.prepareStatement( "UPDATE FNITRECEBER SET STATUSITREC='R1', DTPAGOITREC=null WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
+							ps.setInt( 1, iCodRec );
+							ps.setInt( 2, iNParcItRec );
+							ps.setInt( 3, Aplicativo.iCodEmp );
+							ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+	
+							ps.executeUpdate();
+	
+							con.commit();
+						} catch ( SQLException err ) {
+							Funcoes.mensagemErro( this, "Erro ao estornar registro!\n" + err.getMessage(), true, con, err );
+						}
+						carregaGridManut( bBuscaAtual );
+					}
+				}
+				else {
+					Funcoes.mensagemInforma( this, "PARCELA AINDA NÃO FOI PAGA!" );
+				}
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Não ha nenhum item selecionado." );
+			}
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		} finally {
+			ps = null;
+			imgStatusAt = null;
+		}
+	}
+
 	private void consBaixa( int codRec, int nparcItRec, BigDecimal vlrParc, BigDecimal vlrPago, BigDecimal vlrDesc, BigDecimal vlrJuros, BigDecimal vlrApag ) {
 
 		DLConsultaBaixa dl = new DLConsultaBaixa( this, con, codRec, nparcItRec );
@@ -2052,141 +2303,20 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 	}
 
-	private void novo() {
-
-		DLNovoRec dl = new DLNovoRec( this );
-		dl.setConexao( con );
-		dl.setVisible( true );
-		dl.dispose();
-		carregaGridManut( bBuscaAtual );
-	}
-
-	private void excluir() {
-
-		PreparedStatement ps = null;
-		ImageIcon imgStatusAt = null;
-
-		try {
-
-			if ( tabManut.getLinhaSel() > -1 ) {
-
-				imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), 0 );
-
-				if ( ! ( imgStatusAt == imgPagoParcial || imgStatusAt == imgPago ) ) {
-
-					if ( Funcoes.mensagemConfirma( this, "Deseja realmente excluir esta conta e todas as suas parcelas?" ) == 0 ) {
-
-						try {
-
-							ps = con.prepareStatement( "DELETE FROM FNRECEBER WHERE CODREC=? AND CODEMP=? AND CODFILIAL=?" );
-							ps.setInt( 1, (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() ) );
-							ps.setInt( 2, Aplicativo.iCodEmp );
-							ps.setInt( 3, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-
-							ps.executeUpdate();
-
-							con.commit();
-
-							carregaGridManut( bBuscaAtual );
-						} catch ( SQLException err ) {
-							if ( err.getErrorCode() == 335544517 ) {
-								Funcoes.mensagemErro( this, "NÃO FOI POSSIVEL EXCLUIR.\n" + "A PARCELA JÁ FOI PAGA." );
-							}
-							else {
-								Funcoes.mensagemErro( this, "Erro ao excluir parcela!\n" + err.getMessage(), true, con, err );
-							}
-							err.printStackTrace();
-						}
-					}
-				}
-				else {
-					Funcoes.mensagemErro( this, "NÃO FOI POSSIVEL EXCLUIR.\n" + "A PARCELA JÁ FOI PAGA." );
-				}
-			}
-			else {
-				Funcoes.mensagemInforma( this, "Nenhum item foi selecionado." );
-			}
-		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro ao excluir recebimento.", true, con, e );
-			e.printStackTrace();
-		} finally {
-			ps = null;
-			imgStatusAt = null;
-		}
-	}
-
-	private void estorno() {
-
-		PreparedStatement ps = null;
-		ImageIcon imgStatusAt = null;
-		int iCodRec = 0;
-		int iNParcItRec = 0;
-
-		try {
-
-			if ( tabManut.getLinhaSel() > -1 ) {
-
-				imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), 0 );
-
-				if ( ( imgStatusAt == imgPago ) || ( imgStatusAt == imgPagoParcial ) ) {
-
-					if ( Funcoes.mensagemConfirma( this, "Confirma o estorno do lançamento?" ) == 0 ) {
-
-						int iLin = tabManut.getLinhaSel();
-
-						iCodRec = (Integer) tabManut.getValor( iLin, EColTabManut.CODREC.ordinal() );
-						iNParcItRec = (Integer) tabManut.getValor( iLin, EColTabManut.NPARCITREC.ordinal() );
-
-						try {
-
-							ps = con.prepareStatement( "UPDATE FNITRECEBER SET STATUSITREC='R1', DTPAGOITREC=null WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?" );
-							ps.setInt( 1, iCodRec );
-							ps.setInt( 2, iNParcItRec );
-							ps.setInt( 3, Aplicativo.iCodEmp );
-							ps.setInt( 4, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-
-							ps.executeUpdate();
-
-							con.commit();
-						} catch ( SQLException err ) {
-							Funcoes.mensagemErro( this, "Erro ao estornar registro!\n" + err.getMessage(), true, con, err );
-						}
-						carregaGridManut( bBuscaAtual );
-					}
-				}
-				else {
-					Funcoes.mensagemInforma( this, "PARCELA AINDA NÃO FOI PAGA!" );
-				}
-			}
-			else {
-				Funcoes.mensagemInforma( this, "Não ha nenhum item selecionado." );
-			}
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		} finally {
-			ps = null;
-			imgStatusAt = null;
-		}
-	}
-
 	private boolean validaPeriodo() {
 
 		boolean bRetorno = false;
 
 		if ( txtDatainiManut.getText().trim().length() < 10 ) {
-
 			Funcoes.mensagemInforma( this, "Data inicial inválida!" );
 		}
 		else if ( txtDatafimManut.getText().trim().length() < 10 ) {
-
 			Funcoes.mensagemInforma( this, "Data final inválida!" );
 		}
 		else if ( txtDatafimManut.getVlrDate().before( txtDatainiManut.getVlrDate() ) ) {
-
 			Funcoes.mensagemInforma( this, "Data inicial maior que a data final!" );
 		}
 		else {
-
 			dIniManut = txtDatainiManut.getVlrDate();
 			dFimManut = txtDatafimManut.getVlrDate();
 			bRetorno = true;
@@ -2195,84 +2325,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		return bRetorno;
 	}
 	
-	private String[] getPlanejamentoConta( int iCodRec ) {
-
-		String[] retorno = new String[ 4 ];
-
-		try {
-
-			StringBuffer sSQL = new StringBuffer();
-			sSQL.append( " SELECT V.CODPLANOPAG, P.CODPLAN, P.NUMCONTA, P.CODCC" );
-			sSQL.append( " FROM VDVENDA V, FNPLANOPAG P, FNRECEBER R" );
-			sSQL.append( " WHERE V.CODEMPPG=P.CODEMP AND V.CODFILIALPG=P.CODFILIAL AND V.CODPLANOPAG=P.CODPLANOPAG" ); 
-			sSQL.append( " AND V.CODEMP=R.CODEMPVD AND V.CODFILIAL=R.CODFILIALVD AND V.CODVENDA=R.CODVENDA AND V.TIPOVENDA=R.TIPOVENDA" ); 
-			sSQL.append( " AND R.CODEMP=? AND R.CODFILIAL=? AND R.CODREC=?" );
-
-			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-			ps.setInt( 3, iCodRec );
-			
-			ResultSet rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				
-				for ( int i = 0; i < retorno.length; i++ ) {
-					
-					retorno[ i ] = rs.getString( i + 1 ) == null ? "" : rs.getString( i + 1 );
-				}
-			}
-			
-			ps.close();
-			
-			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar Conta!\n" + err.getMessage(), true, con, err );
-		}
-
-		return retorno;
-	}
-	
-	private Map<String, Integer> getPrefere() {
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Integer anocc = null;
-		Integer codhistrec = null;
-		
-		Map<String, Integer> retorno = new HashMap<String, Integer>();
-
-		try {
-
-			ps = con.prepareStatement( "SELECT ANOCENTROCUSTO,CODHISTREC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				anocc = rs.getInt( "ANOCENTROCUSTO" );
-				codhistrec = rs.getInt( "CODHISTREC" );				
-			}
-			
-			retorno.put("codhistrec", codhistrec);
-			retorno.put("anocc", anocc);
-
-			rs.close();
-			ps.close();
-
-			con.commit();
-		} 
-		catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
-		} 
-		finally {
-			ps = null;
-			rs = null;
-		}
-		return retorno;
-	}
-
 	private void impBoleto(){
 		
 		DLImpBoletoRec dl = null;
@@ -2293,6 +2345,88 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 	}
 	
+	private void abreHistorico() {	
+		
+		try {
+			
+			if ( tabManut.getLinhaSel() < 0 ) {
+				Funcoes.mensagemInforma( this, "Selecione uma parcela!" );
+				return;
+			}
+
+			FAtendimento tela = null;
+
+			if ( fPrim.temTela( "Atendimento" ) ) {
+				tela = (FAtendimento) fPrim.getTela( "org.freedom.modulos.crm.FAtendimento" );
+				if ( tela != null ) {
+					tela.show();
+				}
+			}
+			else {
+				Integer codcli = ( (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODCLI.ordinal() ) );
+				Integer codrec = ( (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() ) );
+				Integer nparcitrec = ( (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.NPARCITREC.ordinal() ) );
+				tela = new FAtendimento( codcli, codrec, nparcitrec, true );
+				fPrim.criatela( "Atendimento", tela, con );
+			}
+		}
+		catch ( Exception e ) {
+			e.printStackTrace();
+		}
+	}
+
+	private void abreBordero() {	
+		
+		try {
+			
+			DLBordero bordero = new DLBordero();
+			List<DLBordero.GridBordero> gridBordero = new ArrayList<DLBordero.GridBordero>();
+			
+			ResultSet rs = getResultSetManut( true );
+			DLBordero.GridBordero grid = null;
+			
+			while ( rs.next() ) {
+								
+				grid = bordero. new GridBordero();
+				grid.setStatus( rs.getString( "STATUSITREC" ) );
+				grid.setDataVencimento( Funcoes.sqlDateToDate( rs.getDate( "DTVENCITREC" ) ) );
+				grid.setCodigoReceber( rs.getInt( "CODREC" ) );
+				grid.setParcela( rs.getInt( "NPARCITREC" ) );
+				grid.setDocumentoLancamento( rs.getString( "DOCLANCAITREC" ) != null ? 
+							rs.getString( "DOCLANCAITREC" ) : (rs.getString( "DOCREC" ) != null ? rs.getString( "DOCREC" )+"/"+rs.getString( "NPARCITREC" ):"") );
+				grid.setCodigoCliente( rs.getInt( "CODCLI" ) );
+				grid.setRazaoCliente( rs.getString( "RAZCLI" ) );
+				grid.setDocumentoVenda( rs.getString( "DOCVENDA" ) );
+				grid.setValorParcela( rs.getBigDecimal( "VLRPARCITREC" ) );
+				grid.setDataPagamento( Funcoes.sqlDateToDate( rs.getDate( "DTPAGOITREC" ) ) );
+				grid.setValorPago( rs.getBigDecimal( "VLRPAGOITREC" ) );
+				grid.setValorDesconto( rs.getBigDecimal( "VLRDESCITREC" ) );
+				grid.setValorJuros( rs.getBigDecimal( "VLRJUROSITREC" ) );
+				grid.setValorAReceber( rs.getBigDecimal( "VLRAPAGITREC" ) );
+				grid.setConta( rs.getString( "NUMCONTA" ) );
+				grid.setDescricaoConta( rs.getString( "DESCCONTA" ) );
+				grid.setPlanejamento( rs.getString( "CODPLAN" ) );
+				grid.setDescricaoPlanejamento( rs.getString( "DESCPLAN" ) );
+				grid.setBanco( rs.getString( "CODBANCO" ) );
+				grid.setNomeBanco( rs.getString( "NOMEBANCO" ) );
+				grid.setObservacao( rs.getString( "OBSITREC" ) );
+				
+				gridBordero.add( grid );
+			}			
+
+			con.commit();
+			
+			bordero.setConexao( con );
+			bordero.carregaGrid( gridBordero );
+			
+			bordero.setVisible( true );
+			bordero.dispose();
+		}
+		catch ( Exception e ) {
+			e.printStackTrace();
+		}
+	}
+
 	public void setRec( int codigoRecebimento ) {	
 		
 		txtCodRecManut.setVlrInteger( codigoRecebimento );
@@ -2358,8 +2492,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}		
 		else if( evt.getSource() == btHistorico ){
 			abreHistorico();
+		}		
+		else if( evt.getSource() == btBordero ){
+			abreBordero();
 		}
-
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) { }
@@ -2395,53 +2531,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 	}
 
-	private void cancelaItem() {
-		String sit = "";
-		int sel = tabManut.getSelectedRow(); 
-		int codrec = 0;
-		int nparcitrec = 0;
-		if (sel<0) {
-			Funcoes.mensagemInforma( this, "Selecione um título!" );
-		} else {
-			sit = tabManut.getValor( sel, EColTabManut.STATUS.ordinal() ).toString();
-			if ( "R1".equals( sit ) ) {
-				if (Funcoes.mensagemConfirma( this, "Confirma cancelamento do título?" )==JOptionPane.YES_OPTION ) {
-					DLCancItem dlCanc = new DLCancItem(this);
-					dlCanc.setVisible( true );
-					if (dlCanc.OK)  {
-						codrec = ( ( Integer) tabManut.getValor( sel, EColTabManut.CODREC.ordinal() ) ).intValue();
-						nparcitrec =   ( (Integer) tabManut.getValor( sel, EColTabManut.NPARCITREC.ordinal() ) ).intValue();
-						execCancItem(codrec, nparcitrec, dlCanc.getValor());
-						carregaGridManut( bBuscaAtual );
-					}
-				}
-			} else if ("CR".equals( sit )) {
-				Funcoes.mensagemInforma( this, "Título já está cancelado!" );
-			} else {
-				Funcoes.mensagemInforma( this, "Situação do título não permite cancelamento!" );
-			}
-		}
-	}
-	
-	private void execCancItem(int codrec, int nparcitrec, String obs) {
-		StringBuilder sql = new StringBuilder( "UPDATE FNITRECEBER SET STATUSITREC='CR', OBSITREC=? " );
-		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=? " );
-		try {
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setString( 1, obs );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-			ps.setInt( 4, codrec );
-			ps.setInt( 5, nparcitrec );
-			ps.executeUpdate();
-			ps.close();
-			con.commit();
-		} catch (SQLException e) {
-			Funcoes.mensagemErro( this, "Não foi possível efetuar o cancelamento!\n" + e.getMessage() );
-		}
-			
-	}
-	
 	public void setConexao( DbConnection cn ) {
 		super.setConexao( cn );
 		lcCli.setConexao( cn );
@@ -2459,38 +2548,4 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		
 		btImpBol.setEnabled( getUsaBol() );
 	}
-	
-	private void abreHistorico() {		
-		try {
-			if( tabManut.getLinhaSel() < 0 ){
-				Funcoes.mensagemInforma( this, "Selecione uma parcela no grid!" ); 
-				return;
-			}
-			
-			FAtendimento tela = null;
-			
-			if (fPrim.temTela("Atendimento")) {
-				tela = (FAtendimento) fPrim.getTela( "org.freedom.modulos.crm.FAtendimento" );
-				if (tela!=null) {
-					tela.show();
-				}
-			}
-			else {
-				
-				Integer codcli = ( (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODCLI.ordinal() ) );	
-				Integer codrec = ( (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.CODREC.ordinal() ) );
-				Integer nparcitrec = ( (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.NPARCITREC.ordinal() ) );
-							
-				tela = new FAtendimento( codcli, codrec, nparcitrec, true);	
-				
-				
-				fPrim.criatela("Atendimento",tela,con);
-
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 }
