@@ -539,28 +539,30 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	public void mouseClicked( MouseEvent e ) {
 		
-		if ( e.getSource() == tabVendas && tabVendas.getLinhaSel() > -1 ) {
-			FVenda venda = null;    
-    		if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
-    			venda = (FVenda)Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
-    		}
-    		else {
-    			venda = new FVenda();
-    			Aplicativo.telaPrincipal.criatela( "Venda", venda, con );
-    		}    
-			venda.exec( (Integer)tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ) );
-		}
-		else if ( e.getSource() == tabItensVendas && tabItensVendas.getLinhaSel() > -1 ) {
-			FVenda venda = null;    
-    		if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
-    			venda = (FVenda)Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
-    		}
-    		else {
-    			venda = new FVenda();
-    			Aplicativo.telaPrincipal.criatela( "Venda", venda, con );
-    		}    		
-			venda.exec( (Integer)tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ),
-						(Integer)tabItensVendas.getValor( tabItensVendas.getLinhaSel(), ITEMVENDAS.ITEM.ordinal() ) );
+		if ( e.getClickCount() == 2 ) {
+			if ( e.getSource() == tabVendas && tabVendas.getLinhaSel() > -1 ) {
+				FVenda venda = null;    
+	    		if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
+	    			venda = (FVenda)Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
+	    		}
+	    		else {
+	    			venda = new FVenda();
+	    			Aplicativo.telaPrincipal.criatela( "Venda", venda, con );
+	    		}    
+				venda.exec( (Integer)tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ) );
+			}
+			else if ( e.getSource() == tabItensVendas && tabItensVendas.getLinhaSel() > -1 ) {
+				FVenda venda = null;    
+	    		if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
+	    			venda = (FVenda)Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
+	    		}
+	    		else {
+	    			venda = new FVenda();
+	    			Aplicativo.telaPrincipal.criatela( "Venda", venda, con );
+	    		}    		
+				venda.exec( (Integer)tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ),
+							(Integer)tabItensVendas.getValor( tabItensVendas.getLinhaSel(), ITEMVENDAS.ITEM.ordinal() ) );
+			}
 		}
 	}
 
