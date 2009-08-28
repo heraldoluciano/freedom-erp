@@ -170,7 +170,7 @@ public class NFEntrada extends NF {
 			sql.append( "IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL) QTDITENS, " );
 			sql.append(	"(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=CL.CODMENS AND ");
 			sql.append( "M.CODFILIAL=CL.CODFILIALME AND M.CODEMP=CL.CODEMPME) MENS, " );
-			sql.append( "P.CODBARPROD " );
+			sql.append( "P.CODBARPROD, P.CODFABPROD " );
 			sql.append( "FROM CPITCOMPRA I, CPCOMPRA C, EQPRODUTO P, LFNATOPER N, LFITCLFISCAL CL " ); 
 			sql.append( "WHERE I.CODEMP=C.CODEMP AND I.CODFILIAL=C.CODFILIAL AND I.CODCOMPRA=C.CODCOMPRA " );
 			sql.append( "AND I.CODNAT=N.codnat AND I.CODEMPNT=N.CODEMP AND I.CODFILIALNT=N.CODFILIAL " );
@@ -217,6 +217,7 @@ public class NFEntrada extends NF {
 				itens.setBigDecimal( C_VLRISSITPED, new BigDecimal( "0.00" ) );
 				itens.setBigDecimal( C_VLRDESCITPROD, rs.getBigDecimal( "VLRDESCITCOMPRA" ) );
 				itens.setString( C_CODBAR, rs.getString( "CODBARPROD" ) );
+				itens.setString( C_CODFABPROD, rs.getString( "CODFABPROD" ) );
 			}
 			
 			rs.close();
