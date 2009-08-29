@@ -75,6 +75,8 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 	private JButtonPad btSelecionarTodos = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 	
 	private JButtonPad btSelecionarNenhum = new JButtonPad( Icone.novo( "btNada.gif" ) );
+
+	private JTextFieldPad txtTipoMov = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
 	private Tabela tabItens = new Tabela();
 
@@ -84,8 +86,10 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		SEL, CODVENDA, ITEM, CODPROD, DESCPROD, QUANTIDADE, PRECO, CODCLI, RAZCLI, CODPLANOPAG, DESCPLANOPAG;
 	}
 	
+	public final String tipoMovimento;
 	
-	public DLBuscaListaVendas() {
+	
+	public DLBuscaListaVendas( String tipoMovimento ) {
 
 		super();
 		setTitulo( "Pesquisa de vendas" );
@@ -101,6 +105,9 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		
 		btSelecionarTodos.addActionListener( this );
 		btSelecionarNenhum.addActionListener( this );
+		
+		this.tipoMovimento = tipoMovimento;
+		txtTipoMov.setVlrString( this.tipoMovimento );
 	}
 	
 	private void montaListaCampos() {
@@ -114,7 +121,12 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		txtCodVenda.setFK( true );
 		txtCodVenda.setPK( true );		
 		lcVenda.setDinWhereAdic( "TIPOVENDA = #S", txtTipoVenda );
-		lcVenda.montaSql( false, "VENDA", "VD" );
+		if ( tipoMovimento != null ) {
+			lcVenda.setDinWhereAdic( "EXISTS (SELECT TM.CODTIPOMOV FROM EQTIPOMOV TM " +
+									 "WHERE TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND " +
+									 "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.TIPOMOV = #S ) ", txtTipoMov );
+		}
+		lcVenda.montaSql( false, "VENDA V", "VD" );
 		lcVenda.setReadOnly( true );
 	}
 
