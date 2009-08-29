@@ -29,6 +29,7 @@ public class Lucratividade {
 	private BigDecimal vlrfretevenda = null;
 	private BigDecimal vlradicvenda = null;
 	private BigDecimal vlripivenda = null;
+	private BigDecimal vlrpisvenda = null;
 	private BigDecimal vlrcofinsvenda = null;
 	private BigDecimal vlrirvenda = null;
 	private BigDecimal vlrcsocialvenda = null;
@@ -40,11 +41,15 @@ public class Lucratividade {
 	private BigDecimal vlrproditvenda = null;
 	private BigDecimal vlrdescitvenda = null;
 	private BigDecimal vlricmsitvenda = null;
+	private BigDecimal vlrpisitvenda = null;
+	private BigDecimal vlrcofinsitvenda = null;
+	private BigDecimal vlrcsocialitvenda = null;
 	private BigDecimal vlroutrasitvenda = null;
 	private BigDecimal vlrcomisitvenda = null;
 	private BigDecimal vlrfreteitvenda = null;
 	private BigDecimal vlradicitvenda = null;
 	private BigDecimal vlripiitvenda = null;
+	private BigDecimal vlriritvenda = null;
 
 	private BigDecimal perclucrvenda = null;	
 	private BigDecimal perclucritvenda = null;
@@ -89,23 +94,32 @@ public class Lucratividade {
 		StringBuffer sql = new StringBuffer();
 		try {
 			
-			sql.append( "select vd.vlrprodvenda, vd.vlrdescvenda, vd.vlricmsvenda, ");
-			sql.append( "vd.vlroutrasvenda, vd.vlrcomisvenda, vd.vlradicvenda, ");
-			sql.append( "vd.vlripivenda, vd.vlrcofinsvenda, vd.vlrirvenda, vd.vlrcsocialvenda, ");
-			sql.append( "fr.vlrfretevd,fr.tipofretevd,fr.adicfretevd, ");
+			sql.append( "select " );
+			
+			sql.append( "coalesce(vd.vlrprodvenda,0) vlrprodvenda , coalesce(vd.vlrdescvenda,0) vlrdescvenda, coalesce(vd.vlricmsvenda,0) vlricmsvenda, ");
+			sql.append( "coalesce(vd.vlroutrasvenda,0) vlroutrasvenda , coalesce(vd.vlrcomisvenda,0) vlrcomisvenda, coalesce(vd.vlradicvenda,0) vlradicvenda, ");
+			sql.append( "coalesce(vd.vlripivenda,0) vlripivenda, coalesce(vd.vlrpisvenda,0) vlrpisvenda, coalesce(vd.vlrcofinsvenda,0) vlrcofinsvenda, ");
+			sql.append( "coalesce(vd.vlrirvenda,0) vlrirvenda, coalesce(vd.vlrcsocialvenda,0) vlrcsocialvenda, ");
+			sql.append( "coalesce(fr.vlrfretevd,0) vlrfretevd, fr.tipofretevd, fr.adicfretevd, ");
+			
 			sql.append( "sum(icv.vlrcustopeps * iv.qtditvenda) as vlrcustopeps, ");
 			sql.append( "sum(icv.vlrcustompm * iv.qtditvenda) as vlrcustompm, ");
 			sql.append( "sum(icv.vlrprecoultcp * iv.qtditvenda) as vlrcustouc ");
-			sql.append( "from vdvenda vd left outer join vdfretevd fr ");
-			sql.append( "on fr.codemp=vd.codemp and fr.codfilial=vd.codfilial and fr.codvenda=vd.codvenda ");
-			sql.append( "and fr.tipovenda=vd.tipovenda ");
-			sql.append( ", vditvenda iv left outer join vditcustovenda icv on ");
+			
+			sql.append( "from " );
+			sql.append( "vdvenda vd left outer join vdfretevd fr on ");
+			sql.append( "fr.codemp=vd.codemp and fr.codfilial=vd.codfilial and fr.codvenda=vd.codvenda ");
+			sql.append( "and fr.tipovenda=vd.tipovenda, ");
+			
+			sql.append( "vditvenda iv left outer join vditcustovenda icv on ");
 			sql.append( "icv.codemp=iv.codemp and icv.codfilial=iv.codfilial and icv.codvenda = iv.codvenda ");
 			sql.append( "and icv.tipovenda=iv.tipovenda and icv.coditvenda=iv.coditvenda ");
+			
 			sql.append( "where vd.codemp=? and vd.codfilial=? and vd.codvenda=? and vd.tipovenda=? ");
 			sql.append( "and iv.codemp=vd.codemp and iv.codfilial=vd.codfilial and iv.tipovenda=vd.tipovenda and ");
 			sql.append( "iv.codvenda=vd.codvenda ");
-			sql.append( "group by 1,2,3,4,5,6,7,8,9,10,11,12,13 ");			
+			
+			sql.append( "group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14 ");			
 
 			System.out.println(sql.toString());
 			
@@ -127,8 +141,9 @@ public class Lucratividade {
 				setVlrfretevenda( rs.getBigDecimal( "vlrfretevd" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrfretevd" ));
 				setVlradicvenda( rs.getBigDecimal( "vlradicvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlradicvenda" ));
 				setVlripivenda( rs.getBigDecimal( "vlripivenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlripivenda" ));
+				setVlrpisvenda( rs.getBigDecimal( "vlrpisvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrpisvenda" ));
 				setVlrcofinsvenda( rs.getBigDecimal( "vlrcofinsvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcofinsvenda" ));
-				setVlrirvenda( rs.getBigDecimal( "vlrcofinsvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcofinsvenda" ));
+				setVlrirvenda( rs.getBigDecimal( "vlrirvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrirvenda" ));
 				setVlrcsocialvenda( rs.getBigDecimal( "vlrcsocialvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcsocialvenda" ));
 				setVlrcustoucvenda( rs.getBigDecimal( "vlrcustouc" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustouc" ));
 				setVlrcustompmvenda( rs.getBigDecimal( "vlrcustompm" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustompm" ));
@@ -154,16 +169,26 @@ public class Lucratividade {
 		StringBuffer sql = new StringBuffer();
 		try {
 			
-			sql.append( "select iv.vlrproditvenda, iv.vlrdescitvenda, iv.vlricmsitvenda, ");			
-			sql.append( "iv.vlroutrasitvenda, iv.vlrcomisitvenda, iv.vlradicitvenda, ");
-			sql.append( "iv.vlripiitvenda, ");
-			sql.append( "iv.vlrfreteitvenda, ");
+			sql.append( "select " );
+			sql.append( "coalesce(iv.vlrproditvenda,0) vlrproditvenda, coalesce(iv.vlrdescitvenda,0) vlrdescitvenda, coalesce(iv.vlricmsitvenda,0) vlricmsitvenda, ");			
+			sql.append( "coalesce(iv.vlroutrasitvenda,0) vlroutrasitvenda, coalesce(iv.vlrcomisitvenda,0) vlrcomisitvenda, coalesce(iv.vlradicitvenda,0) vlradicitvenda, ");
+			sql.append( "coalesce(iv.vlripiitvenda,0) vlripiitvenda, coalesce(iv.vlrfreteitvenda,0) vlrfreteitvenda, ");
+			sql.append( "coalesce(lfi.vlrir,0) vlrir, coalesce(lfi.vlrcsocial,0) vlrcsocial, coalesce(lfi.vlrpis,0) vlrpis, coalesce(lfi.vlrcofins,0) vlrcofins, " );
+			
 			sql.append( "(icv.vlrcustopeps * iv.qtditvenda) as vlrcustoitpeps, ");
 			sql.append( "(icv.vlrcustompm * iv.qtditvenda) as vlrcustoitmpm, ");
 			sql.append( "(icv.vlrprecoultcp * iv.qtditvenda) as vlrcustoituc ");
-			sql.append( "from vditvenda iv left outer join vditcustovenda icv on ");
+			
+			sql.append( "from ");
+			
+			sql.append( "vditvenda iv left outer join vditcustovenda icv on ");
 			sql.append( "icv.codemp=iv.codemp and icv.codfilial=iv.codfilial and icv.codvenda = iv.codvenda ");
 			sql.append( "and icv.tipovenda=iv.tipovenda and icv.coditvenda=iv.coditvenda ");
+			
+			sql.append( "left outer join lfitvenda lfi on ");
+			sql.append( "lfi.codemp=iv.codemp and lfi.codfilial=iv.codfilial and lfi.codvenda=iv.codvenda " );
+			sql.append( "and lfi.tipovenda=iv.tipovenda and lfi.coditvenda=iv.coditvenda  " );
+			
 			sql.append( "where iv.codemp=? and iv.codfilial=? and iv.codvenda=? and iv.tipovenda=? and iv.coditvenda=? ");	
 
 			System.out.println(sql.toString());
@@ -179,17 +204,22 @@ public class Lucratividade {
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				setVlrproditvenda( rs.getBigDecimal( "vlrproditvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrproditvenda" ));
-				setVlrdescitvenda( rs.getBigDecimal( "vlrdescitvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrdescitvenda" ));
-				setVlricmsitvenda( rs.getBigDecimal( "vlricmsitvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlricmsitvenda" ));
-				setVlroutrasitvenda( rs.getBigDecimal( "vlroutrasitvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlroutrasitvenda" ));
-				setVlrcomisitvenda( rs.getBigDecimal( "vlrcomisitvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcomisitvenda" ));
-				setVlrfreteitvenda( rs.getBigDecimal( "vlrfreteitvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrfreteitvenda" ));
-				setVlradicitvenda( rs.getBigDecimal( "vlradicitvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlradicitvenda" ));
-				setVlripiitvenda( rs.getBigDecimal( "vlripiitvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlripiitvenda" ));
-				setVlrcustoucitvenda( rs.getBigDecimal( "vlrcustoituc" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustoituc" ));
-				setVlrcustompmitvenda( rs.getBigDecimal( "vlrcustoitmpm" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustoitmpm" ));
-				setVlrcustopepsitvenda( rs.getBigDecimal( "vlrcustoitpeps" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustoitpeps" )); 
+				setVlrproditvenda( rs.getBigDecimal( "vlrproditvenda" ));
+				setVlrdescitvenda( rs.getBigDecimal( "vlrdescitvenda" ));
+				setVlricmsitvenda( rs.getBigDecimal( "vlricmsitvenda" ));
+				setVlroutrasitvenda( rs.getBigDecimal( "vlroutrasitvenda" ));
+				setVlrcomisitvenda( rs.getBigDecimal( "vlrcomisitvenda" ));
+				setVlrfreteitvenda( rs.getBigDecimal( "vlrfreteitvenda" ));
+				setVlradicitvenda( rs.getBigDecimal( "vlradicitvenda" ));
+				setVlripiitvenda( rs.getBigDecimal( "vlripiitvenda" ));
+				setVlrcustoucitvenda( rs.getBigDecimal( "vlrcustoituc" ));
+				setVlrcustompmitvenda( rs.getBigDecimal( "vlrcustoitmpm" ));
+				setVlrcustopepsitvenda( rs.getBigDecimal( "vlrcustoitpeps" )); 
+				
+				setVlrpisitvenda(rs.getBigDecimal( "vlrpis" ));
+				setVlrcofinsitvenda(rs.getBigDecimal( "vlrcofins" ));
+				setVlriritvenda(rs.getBigDecimal( "vlrir" ));
+				setVlrcsocialitvenda( rs.getBigDecimal( "vlrcsocial" ));
 			}
 
 			rs.close();
@@ -328,8 +358,17 @@ public class Lucratividade {
 		this.vlrcofinsvenda = vlrcofinsvenda;
 	}
 
-
 	
+	public BigDecimal getVlrpisvenda() {
+		return vlrpisvenda;
+	}
+
+
+	public void setVlrpisvenda(BigDecimal vlrpisvenda) {
+		this.vlrpisvenda = vlrpisvenda;
+	}
+
+
 	public BigDecimal getVlrirvenda() {
 	
 		return vlrirvenda;
@@ -357,6 +396,47 @@ public class Lucratividade {
 	}
 
 
+	public BigDecimal getVlrpisitvenda() {
+		return vlrpisitvenda;
+	}
+
+
+	public void setVlrpisitvenda(BigDecimal vlrpisitvenda) {
+		this.vlrpisitvenda = vlrpisitvenda;
+	}
+
+
+	public BigDecimal getVlrcofinsitvenda() {
+		return vlrcofinsitvenda;
+	}
+
+
+	public void setVlrcofinsitvenda(BigDecimal vlrcofinsitvenda) {
+		this.vlrcofinsitvenda = vlrcofinsitvenda;
+	}
+
+
+	public BigDecimal getVlrcsocialitvenda() {
+		return vlrcsocialitvenda;
+	}
+
+
+	public void setVlrcsocialitvenda(BigDecimal vlrcsocialitvenda) {
+		this.vlrcsocialitvenda = vlrcsocialitvenda;
+	}
+
+	
+
+	public BigDecimal getVlriritvenda() {
+		return vlriritvenda;
+	}
+
+
+	public void setVlriritvenda(BigDecimal vlriritvenda) {
+		this.vlriritvenda = vlriritvenda;
+	}
+
+
 	private void calcTotCusto(String tipocusto) {
 		BigDecimal calc = null;
 		
@@ -371,17 +451,34 @@ public class Lucratividade {
 				calc = getVlrcustoucvenda();
 			}
 
+			System.out.println("VALOR TOT. CUSTO COMPRA: " + calc);
+			
 			// Se frete for FOB e não destacado na nota é custo. 
 			if("F".equals(tipofrete) && "N".equals(adicfretevd)) {
 				calc = calc.add( getVlrfretevenda() );
+				System.out.println("VALOR TOT. FRETE: " + getVlrfretevenda());
 			}
 
-			calc = calc.add( getVlrcomisvenda() );		
-			calc = calc.add( getVlrcofinsvenda()) ;			
+			calc = calc.add( getVlrcomisvenda() );	
+			System.out.println("VALOR TOT. COMISSÃO: " + getVlrcomisvenda());
+			
+			calc = calc.add( getVlrpisvenda());
+			System.out.println("VALOR TOT. PIS: " + getVlrpisvenda());
+			
+			calc = calc.add( getVlrcofinsvenda()) ;
+			System.out.println("VALOR TOT. COFINS: " + getVlrcofinsvenda());
+			
 			calc = calc.add( getVlricmsvenda()) ;
+			System.out.println("VALOR TOT. ICMS: " + getVlricmsvenda());
+			
 			calc = calc.add( getVlrcsocialvenda()) ;
+			System.out.println("VALOR TOT. CSOCIAL: " + getVlrcsocialvenda());
+			
 			calc = calc.add( getVlrirvenda()) ;
+			System.out.println("VALOR TOT. IR: " + getVlrirvenda());
+			
 			calc = calc.add( getVlripivenda()) ;
+			System.out.println("VALOR TOT. IPI: " + getVlripivenda());
 			
 			setTotcusto( calc );
 			setTotlucro( getTotfat().subtract( calc ) );
@@ -406,16 +503,36 @@ public class Lucratividade {
 			else if ("U".equals( tipocusto )) {
 				calc = getVlrcustoucitvenda();
 			}
+			
+			System.out.println("VALOR ITEM CUSTO COMPRA: " + calc);
 
 			// Se frete for FOB e não destacado na nota é custo. 
 			if("F".equals(tipofrete) && "N".equals(adicfretevd)) {
 				calc = calc.add( getVlrfreteitvenda() );
+				System.out.println("VALOR ITEM FRETE: " + getVlrfreteitvenda());
 			}
 
-			calc = calc.add( getVlrcomisitvenda() );			
-			calc = calc.add( getVlricmsitvenda()) ;
-			calc = calc.add( getVlripiitvenda()) ;
+			calc = calc.add( getVlrcomisitvenda() );	
+			System.out.println("VALOR ITEM COMISSÃO: " + getVlrcomisitvenda());
 			
+			calc = calc.add( getVlrpisitvenda());
+			System.out.println("VALOR ITEM PIS: " + getVlrpisitvenda());
+			
+			calc = calc.add( getVlrcofinsitvenda()) ;
+			System.out.println("VALOR ITEM COFINS: " + getVlrcofinsitvenda());
+			
+			calc = calc.add( getVlricmsitvenda()) ;
+			System.out.println("VALOR ITEM ICMS: " + getVlricmsitvenda());
+			
+			calc = calc.add( getVlrcsocialitvenda()) ;
+			System.out.println("VALOR ITEM CSOCIAL: " + getVlrcsocialitvenda());
+			
+			calc = calc.add( getVlriritvenda()) ;
+			System.out.println("VALOR ITEM IR: " + getVlriritvenda());
+			
+			calc = calc.add( getVlripiitvenda()) ;
+			System.out.println("VALOR ITEM IPI: " + getVlripiitvenda());
+						
 			setItemcusto( calc );
 			setItemlucro( getItemfat().subtract( calc ) );
 			
@@ -498,20 +615,6 @@ public class Lucratividade {
 		this.totcusto = totcusto;
 	}
 
-	private BigDecimal calcTotLucr() {
-		BigDecimal ret = null;
-		
-		try {
-			
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return ret;
-		
-	}
-	
 	private void calcTotFat() {
 		BigDecimal calc = null;
 		try {
