@@ -3099,10 +3099,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						pevt.cancela();
 					}
 				}				
-				if ( bPrefs[ POS_PREFS.INFCPDEVOLUCAO.ordinal() ] && "DV".equals( txtTipoMov.getVlrString()) ) {
+				if ( bPrefs[ POS_PREFS.INFCPDEVOLUCAO.ordinal() ] && "DV".equals( txtTipoMov.getVlrString() ) ) {
 					abreBuscaCompra();				
 				}
-				if ( bPrefs[ POS_PREFS.INFVDREMESSA.ordinal() ] ) {
+				if ( bPrefs[ POS_PREFS.INFVDREMESSA.ordinal() ] && ! "VR".equals( txtTipoMov.getVlrString() )  ) {
 					abreBuscaRemessa();				
 				}
 	
@@ -3110,7 +3110,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				calcComisIt();
 			}
 			
-			if ( bPrefs[ POS_PREFS.VENDAIMOBILIZADO.ordinal()] && txtTipoProd.getVlrString().equals( "O" )) {
+			if ( bPrefs[ POS_PREFS.VENDAIMOBILIZADO.ordinal()] && txtTipoProd.getVlrString().equals( "O" ) ) {
 				FPassword pass = new FPassword( this, FPassword.VENDA_IMOBLIZIADO, "Venda imobilizado", con );
 				pass.setVisible( true );
 				if ( !pass.OK ) {

@@ -392,7 +392,6 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 			vVals.addElement( "DV" );		
 			vLabs.addElement( "Conhecimento de frete" );
 			vVals.addElement( "CF" );
-
 		}
 		else if ( ES.equals( "S" ) ) {
 			vLabs.addElement( "Orçamento (venda)" );
@@ -425,6 +424,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 			vVals.addElement( "RM" );
 			vLabs.addElement( "NF Complementar" );
 			vVals.addElement( "CO" );
+			vLabs.addElement( "NF Remessa" );
+			vVals.addElement( "VR" );
 		}
 		else if ( ES.equals( "I" ) ) {
 			vLabs.addElement( "Inventário" );
