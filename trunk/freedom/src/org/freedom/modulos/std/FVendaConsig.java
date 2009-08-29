@@ -1768,7 +1768,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			return;
 		}
 		
-		DLBuscaListaVendas buscaRemessa = new DLBuscaListaVendas();
+		DLBuscaListaVendas buscaRemessa = new DLBuscaListaVendas( "VR" );
 		buscaRemessa.setConexao( con );
 		buscaRemessa.setVisible( true );
 		
@@ -1800,7 +1800,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			return;
 		}
 		
-		DLBuscaListaVendas buscaRemessa = new DLBuscaListaVendas();
+		DLBuscaListaVendas buscaRemessa = new DLBuscaListaVendas( null );
 		buscaRemessa.setConexao( con );
 		buscaRemessa.setVisible( true );
 		
