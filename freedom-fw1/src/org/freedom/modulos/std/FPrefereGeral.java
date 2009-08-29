@@ -279,12 +279,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JTextFieldPad txtCodPlanDR = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 	
 	private JTextFieldFK txtDescPlanDR = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
-	private final JCheckBoxPad cbAutenticaSMTP = new JCheckBoxPad( "Autenticar ?", "S", "N" );
-	
-	private final JCheckBoxPad cbInfCPDevolucao = new JCheckBoxPad( "Informar compra na devolução ?", "S", "N" );
-	
-	private final JCheckBoxPad cbSSLSMTP = new JCheckBoxPad( "Usa SSL ?", "S", "N" );
 
 	private JTextFieldPad txtDiasVencOrc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -350,163 +344,171 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JComboBoxPad cbTamDescProd = null;
 
-	private JCheckBoxPad cbUsaRefProd = null;
+	private final JCheckBoxPad cbUsaRefProd = new JCheckBoxPad( "Usa referência.", "S", "N" );
 
-	private JCheckBoxPad cbUsaPedSeq = null;
+	private final JCheckBoxPad cbUsaPedSeq = new JCheckBoxPad( "Pedido sequencial.", "S", "N", true );
 	
-	private JCheckBoxPad cbSomaVolumes = null;
+	private final JCheckBoxPad cbSomaVolumes = new JCheckBoxPad( "Soma volumes na venda.", "S", "N" );
 
-	private JCheckBoxPad cbUsaOrcSeq = null;
+	private final JCheckBoxPad cbUsaOrcSeq = new JCheckBoxPad( "Orçamento sequencial.", "S", "N", true );
 
-	private JCheckBoxPad cbUsaDescEspelho = null;
+	private final JCheckBoxPad cbUsaDescEspelho = new JCheckBoxPad( "Desconto no espelho.", "S", "N" );
 
-	private JCheckBoxPad cbUsaClasComis = null;
+	private final JCheckBoxPad cbUsaClasComis = new JCheckBoxPad( "Classifica comissão na venda", "S", "N" );
 
-	private JCheckBoxPad cbTabFreteVd = null;
+	private final JCheckBoxPad cbTabFreteVd = new JCheckBoxPad( "Aba frete na venda.", "S", "N", true );
 
-	private JCheckBoxPad cbVendaMatPrim = null;
+	private final JCheckBoxPad cbVendaMatPrim = new JCheckBoxPad( "Permitir venda de matéria prima.", "S", "N" );
 	
-	private JCheckBoxPad cbVendaImobilizado = null;
+	private final JCheckBoxPad cbVendaImobilizado = new JCheckBoxPad( "Permitir venda de Imobilizado.", "S", "N" );
 	
-	private JCheckBoxPad cbGeraCodUnif = null;
+	private final JCheckBoxPad cbGeraCodUnif = new JCheckBoxPad( "Gera códigos unificados para Clientes/Fornecedores/Transportadora/Filial.", "S", "N" );
 	
-	private JCheckBoxPad cbVisualizaLucr = null;
+	private final JCheckBoxPad cbVisualizaLucr = new JCheckBoxPad( "Mostrar lucratividade no pedido.", "S", "N" );
 
-	private JCheckBoxPad cbTabAdicVd = null;
+	private final JCheckBoxPad cbTabAdicVd = new JCheckBoxPad( "Aba adic. na venda.", "S", "N" );
 
-	private JCheckBoxPad cbTravaTMNFVD = null;
+	private final JCheckBoxPad cbTravaTMNFVD = new JCheckBoxPad( "Travar tipo de Mov. NF na inserc. da venda.", "S", "N", true );
 
-	private JCheckBoxPad cbJurosPosCalc = null;
+	private final JCheckBoxPad cbJurosPosCalc = new JCheckBoxPad( "Juros pós-calculado.", "S", "N" );
 
-	private JCheckBoxPad cbRgCliObrig = null;
+	private final JCheckBoxPad cbRgCliObrig = new JCheckBoxPad( "RG. do cliente obrigatório.", "S", "N", true );
 	
-	private JCheckBoxPad cbUsuAtivCli = null;
+	private final JCheckBoxPad cbUsuAtivCli = new JCheckBoxPad( "Acesso para ativação de cliente por usuário.", "S", "N");
 
-	private JCheckBoxPad cbCliMesmoCnpj = null;
+	private final JCheckBoxPad cbCliMesmoCnpj = new JCheckBoxPad( "Permitir clientes com mesmo CNPJ.", "S", "N" );
 
-	private JCheckBoxPad cbCnpjCliObrig = null;
+	private final JCheckBoxPad cbCnpjCliObrig = new JCheckBoxPad( "CNPJ obrigatório para o cadastro de clientes.", "S", "N", true );
 
-	private JCheckBoxPad cbCnpjForObrig = null;
+	private final JCheckBoxPad cbCnpjForObrig = new JCheckBoxPad( "CNPJ obrigatório para o cadastro de fornecedores.", "S", "N", true );
 
-	private JCheckBoxPad cbInscEstForObrig = null;
+	private final JCheckBoxPad cbInscEstForObrig = new JCheckBoxPad( "Inscrição estadual obrigatória para o cadastro de fornecedores.", "S", "N", true );
 
-	private JCheckBoxPad cbEstLotNeg = null;
+	private final JCheckBoxPad cbEstLotNeg = new JCheckBoxPad( "Permite saldo lote negativo.", "S", "N" );
 	
-	private JCheckBoxPad cbUsaRefCompra = null;
+	private final JCheckBoxPad cbUsaRefCompra = new JCheckBoxPad ("Usa referência na compra. ", "S", "N" );
 	
-	private JCheckBoxPad cbTransAbaCp = null;
+	private final JCheckBoxPad cbTransAbaCp = new JCheckBoxPad( "Aba transp. na tela de compras.", "S", "N" );
 
-	private JCheckBoxPad cbTabSolCp = null;
+	private final JCheckBoxPad cbTabSolCp = new JCheckBoxPad( "Aba solicitação na tela de compras.", "S", "N" );
 	
-	private JCheckBoxPad cbPrecoRel = null;
+	private final JCheckBoxPad cbPrecoRel = new JCheckBoxPad( "Mostra preço de compra nos relatórios.", "S", "N", true );
 
-	private JCheckBoxPad cbEstNeg = null;
+	private final JCheckBoxPad cbEstNeg = new JCheckBoxPad( "Permite saldo negativo.", "S", "N" );
 
-	private JCheckBoxPad cbEstNegGrupo = null;
+	private final JCheckBoxPad cbEstNegGrupo = new JCheckBoxPad( "Controle de saldo negativo por grupo.", "S", "N" );
 
-	private JCheckBoxPad cbNatVenda = null;
+	private final JCheckBoxPad cbNatVenda = new JCheckBoxPad( "Habilitar campo CFOP.", "S", "N", true );
 
-	private JCheckBoxPad cbIPIVenda = null;
+	private final JCheckBoxPad cbIPIVenda = new JCheckBoxPad( "Habilitar campo IPI.", "S", "N", true );
 
-	private JCheckBoxPad cbIcmsVenda = null;
+	private final JCheckBoxPad cbIcmsVenda = new JCheckBoxPad( "Habilitar campos de ICMS.", "S", "N" );
 
-	private JCheckBoxPad cbIcmsFrete = null;
+	private final JCheckBoxPad cbIcmsFrete = new JCheckBoxPad( "Habilitar campos de ICMS para Frete.", "S", "N" );
 
-	private JCheckBoxPad cbComisPDupl = null;
+	private final JCheckBoxPad cbComisPDupl = new JCheckBoxPad( "Calcula comissão com base nas duplicatas.", "S", "N", true );
 
-	private JCheckBoxPad cbCustosSICMS = null;
+	private final JCheckBoxPad cbCustosSICMS = new JCheckBoxPad( "Preço de custo sem ICMS.", "S", "N", true );
 
-	private JCheckBoxPad cbBloqVenda = null;
+	private final JCheckBoxPad cbBloqVenda = new JCheckBoxPad( "Bloquear venda após impressão da NF.", "S", "N" );
 
-	private JCheckBoxPad cbBloqCompra = null;
+	private final JCheckBoxPad cbBloqCompra = new JCheckBoxPad( "Bloquear compra após finalizar.", "S", "N" );
 
-	private JCheckBoxPad cbPepsProd = null;
+	private final JCheckBoxPad cbPepsProd = new JCheckBoxPad( "Exibe custo PEPS no cadastro de produtos.", "S", "N" );
 
-	private JCheckBoxPad cbBuscaProdSimilar = null;
+	private final JCheckBoxPad cbBuscaProdSimilar = new JCheckBoxPad( "Busca automática de produtos similares.", "S", "N" );
 
-	private JCheckBoxPad cbMultiAlmox = null;
+	private final JCheckBoxPad cbMultiAlmox = new JCheckBoxPad( "Multi almoxarifados.", "S", "N" );
 	
-	private JCheckBoxPad cbUsaIbgeCli = null;
+	private final JCheckBoxPad cbUsaIbgeCli = new JCheckBoxPad( "Usar a tabela de IBGE para o cadastro de clientes.", "S", "N" );
 	
-	private JCheckBoxPad cbUsaIbgeFor = null;
+	private final JCheckBoxPad cbUsaIbgeFor = new JCheckBoxPad( "Usar a tabela de IBGE para o cadastro de fornecedores.", "S", "N" );
 	
-	private JCheckBoxPad cbUsaIbgeTransp = null;
+	private final JCheckBoxPad cbUsaIbgeTransp = new JCheckBoxPad( "Usar a tabela de IBGE para o cadastro de transportadores.", "S", "N" );
+
+	private final JCheckBoxPad cbPrazoEnt = new JCheckBoxPad( "Prazo de entrega na venda.", "S", "N", true );
+
+	private final JCheckBoxPad cbDiasPEData = new JCheckBoxPad( "Data de entrega no pedido.", "S", "N" );
+
+	private final JCheckBoxPad cbDescCompl = new JCheckBoxPad( "Descrição completa do produto para Orçamento e Pedido.", "S", "N" );
+
+	private final JCheckBoxPad cbObsCliVend = new JCheckBoxPad( "Mostrar Obs. do cliente na venda e orçamento.", "S", "N" );
+
+	private final JCheckBoxPad cbContEstoq = new JCheckBoxPad( "Controla estoque.", "S", "N" );
+
+	private final JCheckBoxPad cbReCalcVenda = new JCheckBoxPad( "Recalcular preço na venda.", "S", "N" );
+
+	private final JCheckBoxPad cbReCalcOrc = new JCheckBoxPad( "Recalcular preço no orçamento.", "S", "N" );
+
+	private final JCheckBoxPad cbAprovOrc = new JCheckBoxPad( "Permitir aprovação do orçamento na tela de cadastro.", "S", "N" );
+
+	private final JCheckBoxPad cbLayoutPed = new JCheckBoxPad( "Usar layout personalizado para pedido.", "S", "N" );
+
+	private final JCheckBoxPad cbVerifAltParVenda = new JCheckBoxPad( "Verificar usuario para alterar parcelas.", "S", "N" );
+
+	private final JCheckBoxPad cbUsaBuscGenProd = new JCheckBoxPad( "Busca generica do código do produto.", "S", "N" );
+
+	private final JCheckBoxPad cbFilBuscGenProd1 = new JCheckBoxPad( "Código do produto.", "S", "N" );
+
+	private final JCheckBoxPad cbFilBuscGenProd2 = new JCheckBoxPad( "Referência do produto.", "S", "N" );
+
+	private final JCheckBoxPad cbFilBuscGenProd3 = new JCheckBoxPad( "Código de barras", "S", "N" );
+
+	private final JCheckBoxPad cbFilBuscGenProd4 = new JCheckBoxPad( "Código do fabricante", "S", "N" );
+
+	private final JCheckBoxPad cbUsaBuscGenProdORC = new JCheckBoxPad( "Permitir busca generica de produto no orçamento.", "S", "N" );
+
+	private final JCheckBoxPad cbUsaLoteOrc = new JCheckBoxPad( "Usa lote no orçamento.", "S", "N" );
+
+	private final JCheckBoxPad cbBuscaVlrUltCompra = new JCheckBoxPad( "Busca valor da ultima compra.", "S", "N" );
+
+	private final JCheckBoxPad cbHabiitaCustoCompra = new JCheckBoxPad( "Habilita campo de custo na compra.", "S", "N" );
+
+	private final JCheckBoxPad cbUsaPrecoZero = new JCheckBoxPad( "Permite preço de produto Zero.", "S", "N" );
+
+	private final JCheckBoxPad cbUsaImgOrc = new JCheckBoxPad( "Usar imagem de assinatura no orçamento.", "S", "N" );
+	
+	private final JCheckBoxPad cbUsaNomeVendOrc = new JCheckBoxPad( "Usar nome do comissionado no orçamento.", "S", "N" );
+
+	private final JCheckBoxPad cbConsCPFCli = new JCheckBoxPad( "Validar CPF no cliente.", "S", "N", true );
+
+	private final JCheckBoxPad cbConsIECli = new JCheckBoxPad( "Validar IE no cliente.", "S", "N", true );
+	
+	private final JCheckBoxPad cbConsIECliFisica = new JCheckBoxPad( "consistir insc. estadual para clientes pessoa física.", "S", "N" );
+	
+	private final JCheckBoxPad cbMostraTransp = new JCheckBoxPad( "Mostra aba transportadora na tela orçamento.", "S", "N" );
+	
+	private final JCheckBoxPad cbGeraComisVendaOrc = new JCheckBoxPad( "Carrega comissão do orçamento.", "S", "N" );
+	
+	private final JCheckBoxPad cbCredIcmsSimples = new JCheckBoxPad( "Destaca crédito de ICMS (Simples).", "S", "N" );
+
+	private final JCheckBoxPad cbConsIEFor = new JCheckBoxPad( "Validar IE do fornecedor.", "S", "N", true );
+
+	private final JCheckBoxPad cbAltItRecImpBol = new JCheckBoxPad( "Atualiza parcela na impressão do boleto.", "S", "N" );
+
+	private final JCheckBoxPad cbEstItRecAltDtVenc = new JCheckBoxPad( "Estorna parcela na alteração da data de vencimento.", "S", "N" );
+	
+	private final JCheckBoxPad cbAdicCodOrcObsPed = new JCheckBoxPad( "Adicionar códigos de orçamentos na observação do pedido.", "S", "N" );
+	
+	private final JCheckBoxPad cbMultiComis = new JCheckBoxPad( "Multi-comissionado.", "S", "N" );
+	
+	private final JCheckBoxPad cbLiberacaoCreGlobal = new JCheckBoxPad( "Liberação de crédito globalizado.", "S", "N" );
+	
+	private final JCheckBoxPad cbComissManut = new JCheckBoxPad( "Comissionado obrigarório na manutenção de comissões.", "S", "N" );
 	
 	private final JCheckBoxPad cbBuscaCep = new JCheckBoxPad( "Habilita a busca de endereço via CEP.", "S", "N" );
 	
 	private final JCheckBoxPad cbLancaFinContr = new JCheckBoxPad( "Permite lançamento financeiro em contrato.", "S", "N" );
 	
 	private final JCheckBoxPad cbLancaRMAContr = new JCheckBoxPad( "Permite lançamento de RMA em contrato.", "S", "N" );
-
-	private JCheckBoxPad cbPrazoEnt = null;
-
-	private JCheckBoxPad cbDiasPEData = null;
-
-	private JCheckBoxPad cbDescCompl = null;
-
-	private JCheckBoxPad cbObsCliVend = null;
-
-	private JCheckBoxPad cbContEstoq = null;
-
-	private JCheckBoxPad cbReCalcVenda = null;
-
-	private JCheckBoxPad cbReCalcOrc = null;
-
-	private JCheckBoxPad cbAprovOrc = null;
-
-	private JCheckBoxPad cbLayoutPed = null;
-
-	private JCheckBoxPad cbVerifAltParVenda = null;
-
-	private JCheckBoxPad cbUsaBuscGenProd = null;
-
-	private JCheckBoxPad cbFilBuscGenProd1 = null;
-
-	private JCheckBoxPad cbFilBuscGenProd2 = null;
-
-	private JCheckBoxPad cbFilBuscGenProd3 = null;
-
-	private JCheckBoxPad cbFilBuscGenProd4 = null;
-
-	private JCheckBoxPad cbUsaBuscGenProdORC = null;
-
-	private JCheckBoxPad cbUsaLoteOrc = null;
-
-	private JCheckBoxPad cbBuscaVlrUltCompra = null;
-
-	private JCheckBoxPad cbHabiitaCustoCompra = null;
-
-	private JCheckBoxPad cbUsaPrecoZero = null;
-
-	private JCheckBoxPad cbUsaImgOrc = null;
 	
-	private JCheckBoxPad cbUsaNomeVendOrc = null;
-
-	private JCheckBoxPad cbConsCPFCli = null;
-
-	private JCheckBoxPad cbConsIECli = null;
+	private final JCheckBoxPad cbInfCPDevolucao = new JCheckBoxPad( "Informar compra na devolução ?", "S", "N" );
 	
-	private JCheckBoxPad cbConsIECliFisica = null;
+	private final JCheckBoxPad cbAutenticaSMTP = new JCheckBoxPad( "Autenticar ?", "S", "N" );
 	
-	private JCheckBoxPad cbMostraTransp = null;
+	private final JCheckBoxPad cbSSLSMTP = new JCheckBoxPad( "Usa SSL ?", "S", "N" );
 	
-	private JCheckBoxPad cbGeraComisVendaOrc = null;
-	
-	private JCheckBoxPad cbCredIcmsSimples = null;
-
-	private JCheckBoxPad cbConsIEFor = null;
-
-	private JCheckBoxPad cbAltItRecImpBol = null;
-
-	private JCheckBoxPad cbEstItRecAltDtVenc = null;
-	
-	private JCheckBoxPad cbAdicCodOrcObsPed = null;
-	
-	private JCheckBoxPad cbMultiComis = null;
-	
-	private JCheckBoxPad cbLiberacaoCreGlobal = null;
-	
-	private JCheckBoxPad cbComissManut = null;
+	private final JCheckBoxPad cbInfVdRemessa = new JCheckBoxPad( "Permite vincular item com remessa ?", "S", "N" );
 	
 	private PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
@@ -854,160 +856,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lcPlanDR.setQueryCommit( false );
 		lcPlanDR.setReadOnly( true );
 		txtCodPlanDR.setTabelaExterna( lcPlanDR );
-		
-		cbUsaRefProd = new JCheckBoxPad( "Usa referência.", "S", "N" );
-		cbUsaRefProd.setVlrString( "N" );
-		cbUsaPedSeq = new JCheckBoxPad( "Pedido sequencial.", "S", "N" );
-		cbUsaPedSeq.setVlrString( "S" );
-		cbUsaOrcSeq = new JCheckBoxPad( "Orçamento sequencial.", "S", "N" );
-		cbUsaOrcSeq.setVlrString( "S" );
-		cbUsaDescEspelho = new JCheckBoxPad( "Desconto no espelho.", "S", "N" );
-		cbUsaDescEspelho.setVlrString( "N" );
-		cbUsaClasComis = new JCheckBoxPad( "Classifica comissão na venda", "S", "N" );
-		cbUsaClasComis.setVlrString( "N" );
-		cbEstLotNeg = new JCheckBoxPad( "Permite saldo lote negativo.", "S", "N" );
-		cbEstLotNeg.setVlrString( "N" );
-		cbEstNeg = new JCheckBoxPad( "Permite saldo negativo.", "S", "N" );
-		cbEstNeg.setVlrString( "N" );
-		cbEstNegGrupo = new JCheckBoxPad( "Controle de saldo negativo por grupo.", "S", "N" );
-		cbEstNegGrupo.setVlrString( "N" );
-		cbBloqVenda = new JCheckBoxPad( "Bloquear venda após impressão da NF.", "S", "N" );
-		cbBloqVenda.setVlrString( "N" );
-		cbBloqCompra = new JCheckBoxPad( "Bloquear compra após finalizar.", "S", "N" );
-		cbBloqCompra.setVlrString( "N" );
-		cbNatVenda = new JCheckBoxPad( "Habilitar campo CFOP.", "S", "N" );
-		cbNatVenda.setVlrString( "S" );
-		cbIPIVenda = new JCheckBoxPad( "Habilitar campo IPI.", "S", "N" );
-		cbIPIVenda.setVlrString( "S" );
-		cbIcmsVenda = new JCheckBoxPad( "Habilitar campos de ICMS.", "S", "N" );
-		cbIcmsVenda.setVlrString( "N" );
-		cbIcmsFrete = new JCheckBoxPad( "Habilitar campos de ICMS para Frete.", "S", "N" );
-		cbIcmsFrete.setVlrString( "N" );
-		cbComisPDupl = new JCheckBoxPad( "Calcula comissão com base nas duplicatas.", "S", "N" );
-		cbComisPDupl.setVlrString( "S" );
-		cbObsCliVend = new JCheckBoxPad( "Mostrar Obs. do cliente na venda e orçamento.", "S", "N" );
-		cbObsCliVend.setVlrString( "N" );
-		cbTabFreteVd = new JCheckBoxPad( "Aba frete na venda.", "S", "N" );
-		cbTabFreteVd.setVlrString( "S" );
-		cbTabAdicVd = new JCheckBoxPad( "Aba adic. na venda.", "S", "N" );
-		cbTabAdicVd.setVlrString( "N" );
-		cbTravaTMNFVD = new JCheckBoxPad( "Travar tipo de Mov. NF na inserc. da venda.", "S", "N" );
-		cbTravaTMNFVD.setVlrString( "S" );
-		cbCustosSICMS = new JCheckBoxPad( "Preço de custo sem ICMS.", "S", "N" );
-		cbCustosSICMS.setVlrString( "S" );
-		cbVendaMatPrim = new JCheckBoxPad( "Permitir venda de matéria prima.", "S", "N" );
-		cbVendaMatPrim.setVlrString( "N" );
-		cbPrazoEnt = new JCheckBoxPad( "Prazo de entrega na venda.", "S", "N" );
-		cbPrazoEnt.setVlrString( "S" );
-		cbDiasPEData = new JCheckBoxPad( "Data de entrega no pedido.", "S", "N" );
-		cbDiasPEData.setVlrString( "N" );
-		cbDescCompl = new JCheckBoxPad( "Descrição completa do produto para Orçamento e Pedido.", "S", "N" );
-		cbDescCompl.setVlrString( "N" );
-		cbReCalcVenda = new JCheckBoxPad( "Recalcular preço na venda.", "S", "N" );
-		cbReCalcVenda.setVlrString( "N" );
-		cbReCalcOrc = new JCheckBoxPad( "Recalcular preço no orçamento.", "S", "N" );
-		cbReCalcOrc.setVlrString( "N" );
-		cbAprovOrc = new JCheckBoxPad( "Permitir aprovação do orçamento na tela de cadastro.", "S", "N" );
-		cbAprovOrc.setVlrString( "N" );
-		cbRgCliObrig = new JCheckBoxPad( "RG. do cliente obrigatório.", "S", "N" );
-		cbRgCliObrig.setVlrString( "S" );
-		cbUsuAtivCli = new JCheckBoxPad( "Acesso para ativação de cliente por usuário.", "S", "N");
-		cbUsuAtivCli.setVlrString( "N" );
-		cbCliMesmoCnpj = new JCheckBoxPad( "Permitir clientes com mesmo CNPJ.", "S", "N" );
-		cbCliMesmoCnpj.setVlrString( "N" );
-		cbCnpjCliObrig = new JCheckBoxPad( "CNPJ obrigatório para o cadastro de clientes.", "S", "N" );
-		cbCnpjCliObrig.setVlrString( "S" );
-		cbCnpjForObrig = new JCheckBoxPad( "CNPJ obrigatório para o cadastro de fornecedores.", "S", "N" );
-		cbCnpjForObrig.setVlrString( "S" );
-		cbInscEstForObrig = new JCheckBoxPad( "Inscrição estadual obrigatória para o cadastro de fornecedores.", "S", "N" );
-		cbInscEstForObrig.setVlrString( "S" );
-		cbLayoutPed = new JCheckBoxPad( "Usar layout personalizado para pedido.", "S", "N" );
-		cbLayoutPed.setVlrString( "N" );
-		cbMultiAlmox = new JCheckBoxPad( "Multi almoxarifados.", "S", "N" );
-		cbMultiAlmox.setVlrString( "N" );
-		cbUsaIbgeCli = new JCheckBoxPad( "Usar a tabela de IBGE para o cadastro de clientes.", "S", "N" );
-		cbUsaIbgeCli.setVlrString( "N" );
-		cbUsaIbgeFor = new JCheckBoxPad( "Usar a tabela de IBGE para o cadastro de fornecedores.", "S", "N" );
-		cbUsaIbgeFor.setVlrString( "N" );
-		cbUsaIbgeTransp = new JCheckBoxPad( "Usar a tabela de IBGE para o cadastro de transportadores.", "S", "N" );
-		cbUsaIbgeTransp.setVlrString( "N" );
-		cbContEstoq = new JCheckBoxPad( "Controla estoque.", "S", "N" );
-		cbContEstoq.setVlrString( "N" );
-		cbPepsProd = new JCheckBoxPad( "Exibe custo PEPS no cadastro de produtos.", "S", "N" );
-		cbPepsProd.setVlrString( "N" );
-		cbBuscaProdSimilar = new JCheckBoxPad( "Busca automática de produtos similares.", "S", "N" );
-		cbBuscaProdSimilar.setVlrString( "N" );
-		cbJurosPosCalc = new JCheckBoxPad( "Juros pós-calculado.", "S", "N" );
-		cbJurosPosCalc.setVlrString( "N" );
-		cbAltItRecImpBol = new JCheckBoxPad( "Atualiza parcela na impressão do boleto.", "S", "N" );
-		cbAltItRecImpBol.setVlrString( "N" );
-		cbEstItRecAltDtVenc = new JCheckBoxPad( "Estorna parcela na alteração da data de vencimento.", "S", "N" );
-		cbEstItRecAltDtVenc.setVlrString( "N" );
-		cbLiberacaoCreGlobal = new JCheckBoxPad( "Liberação de crédito globalizado.", "S", "N" );
-		cbLiberacaoCreGlobal.setVlrString( "N" );
-		cbComissManut = new JCheckBoxPad( "Comissionado obrigarório na manutenção de comissões.", "S", "N" );
-		cbComissManut.setVlrString( "N" );
-		cbVerifAltParVenda = new JCheckBoxPad( "Verificar usuario para alterar parcelas.", "S", "N" );
-		cbVerifAltParVenda.setVlrString( "N" );
-		cbUsaBuscGenProd = new JCheckBoxPad( "Busca generica do código do produto.", "S", "N" );
-		cbUsaBuscGenProd.setVlrString( "N" );
-		cbFilBuscGenProd1 = new JCheckBoxPad( "Código do produto.", "S", "N" );
-		cbFilBuscGenProd1.setVlrString( "N" );
-		cbFilBuscGenProd2 = new JCheckBoxPad( "Referência do produto.", "S", "N" );
-		cbFilBuscGenProd2.setVlrString( "N" );
-		cbFilBuscGenProd3 = new JCheckBoxPad( "Código de barras", "S", "N" );
-		cbFilBuscGenProd3.setVlrString( "N" );
-		cbFilBuscGenProd4 = new JCheckBoxPad( "Código do fabricante", "S", "N" );
-		cbFilBuscGenProd4.setVlrString( "N" );
-		cbUsaBuscGenProdORC = new JCheckBoxPad( "Permitir busca generica de produto no orçamento.", "S", "N" );
-		cbUsaBuscGenProdORC.setVlrString( "N" );
-		cbUsaLoteOrc = new JCheckBoxPad( "Usa lote no orçamento.", "S", "N" );
-		cbUsaLoteOrc.setVlrString( "N" );
-		cbBuscaVlrUltCompra = new JCheckBoxPad( "Busca valor da ultima compra.", "S", "N" );
-		cbBuscaVlrUltCompra.setVlrString( "N" );
-		cbHabiitaCustoCompra = new JCheckBoxPad( "Habilita campo de custo na compra.", "S", "N" );
-		cbHabiitaCustoCompra.setVlrString( "N" );
-		cbUsaPrecoZero = new JCheckBoxPad( "Permite preço de produto Zero.", "S", "N" );
-		cbUsaPrecoZero.setVlrString( "N" );
-		cbUsaImgOrc = new JCheckBoxPad( "Usar imagem de assinatura no orçamento.", "S", "N" );
-		cbUsaImgOrc.setVlrString( "N" );
-		cbUsaNomeVendOrc = new JCheckBoxPad( "Usar nome do comissionado no orçamento.", "S", "N" );
-		cbUsaNomeVendOrc.setVlrString( "N" );
-		cbConsCPFCli = new JCheckBoxPad( "Validar CPF no cliente.", "S", "N" );
-		cbConsCPFCli.setVlrString( "S" );
-		cbConsIECli = new JCheckBoxPad( "Validar IE no cliente.", "S", "N" );
-		cbConsIECli.setVlrString( "S" );
-		cbConsIEFor = new JCheckBoxPad( "Validar IE do fornecedor.", "S", "N" );
-		cbConsIEFor.setVlrString( "S" );
-		cbUsaRefCompra = new JCheckBoxPad ("Usa referência na compra. ", "S", "N" );
-		cbUsaRefCompra.setVlrString( "N" );
-		cbAdicCodOrcObsPed = new JCheckBoxPad( "Adicionar códigos de orçamentos na observação do pedido.", "S", "N" );
-		cbAdicCodOrcObsPed.setVlrString( "N" );
-		cbMultiComis = new JCheckBoxPad( "Multi-comissionado.", "S", "N" );
-		cbMultiComis.setVlrString( "N" );
-		cbTransAbaCp = new JCheckBoxPad( "Aba transp. na tela de compras.", "S", "N" );
-		cbTransAbaCp.setVlrString( "N" );	
-		cbTabSolCp = new JCheckBoxPad( "Aba solicitação na tela de compras.", "S", "N" );
-		cbTabSolCp.setVlrString( "N" );	
-		cbPrecoRel = new JCheckBoxPad( "Mostra preço de compra nos relatórios.", "S", "N" );
-		cbPrecoRel.setVlrString( "S" );
-		cbSomaVolumes = new JCheckBoxPad( "Soma volumes na venda.", "S", "N" );
-		cbSomaVolumes.setVlrString( "N" );
-		cbConsIECliFisica = new JCheckBoxPad( "consistir insc. estadual para clientes pessoa física.", "S", "N" );
-		cbConsIECliFisica.setVlrString( "N" );
-		cbCredIcmsSimples = new JCheckBoxPad( "Destaca crédito de ICMS (Simples).", "S", "N" );
-		cbCredIcmsSimples.setVlrString( "N" );
-		cbMostraTransp = new JCheckBoxPad( "Mostra aba transportadora na tela orçamento.", "S", "N" );
-		cbMostraTransp.setVlrString( "N" );
-		cbGeraComisVendaOrc = new JCheckBoxPad( "Carrega comissão do orçamento.", "S", "N" );
-		cbGeraComisVendaOrc.setVlrString( "N" );
-		cbVendaImobilizado = new JCheckBoxPad( "Permitir venda de Imobilizado.", "S", "N" );
-		cbVendaImobilizado.setVlrString( "N" );		
-		cbGeraCodUnif = new JCheckBoxPad( "Gera códigos unificados para Clientes/Fornecedores/Transportadora/Filial.", "S", "N" );
-		cbGeraCodUnif.setVlrString( "N" );
-		cbVisualizaLucr = new JCheckBoxPad( "Mostrar lucratividade no pedido.", "S", "N" );
-		cbVisualizaLucr.setVlrString( "N" );
-		
+				
 		Vector<String> vLabs = new Vector<String>();
 		Vector<String> vVals = new Vector<String>();
 		vLabs.addElement( "Custo MPM" );
@@ -1143,7 +992,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		
 //		lbVendOpcoes.setOpaque( true );
 //		adic( lbVendOpcoes, 357, 5, 70, 20 );
-		adic( pinOpcoesVenda, 348, 5, 520, 400 );
+		adic( pinOpcoesVenda, 348, 5, 520, 420 );
 		pinOpcoesVenda.setBorder( BorderFactory.createTitledBorder( opcoes ) );
 		setPainel( pinOpcoesVenda );
 		
@@ -1165,6 +1014,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB( cbUsaClasComis, 5, 300, 250, 20, "UsaClasComis", "", true ); 
 		adicDB( cbIcmsFrete, 5, 320, 300, 20, "AdicFreteBaseICM", "", true );
 		adicDB( cbGeraComisVendaOrc, 5, 340, 400, 20, "GeraComisVendaOrc", "", true );
+		adicDB( cbInfVdRemessa, 5, 360, 400, 20, "InfVdRemessa", "", true );
 		
 		adicDB( cbTabFreteVd, 290, 0, 180, 20, "TabFreteVd", "", true );
 		adicDB( cbTabAdicVd, 290, 20, 180, 20, "TabAdicVd", "", true );

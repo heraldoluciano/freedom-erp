@@ -41,7 +41,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
 
 /**
@@ -50,7 +50,7 @@ import org.freedom.telas.FDialogo;
  * @author Setpoint Informática Ltda./Alex Rodrigues
  * @version 27/08/2009
  */
-public class DLBuscaVenda extends FDialogo implements CarregaListener {
+public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -85,11 +85,12 @@ public class DLBuscaVenda extends FDialogo implements CarregaListener {
 	}
 	
 	
-	public DLBuscaVenda() {
+	public DLBuscaListaVendas() {
 
 		super();
-		setTitulo( "Bordero de recebivéis" );
+		setTitulo( "Pesquisa de vendas" );
 		setAtribos( 700, 320 );
+		setResizable( true );
 		
 		txtTipoVenda.setVlrString( "V" );
 		
