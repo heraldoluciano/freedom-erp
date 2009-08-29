@@ -238,18 +238,6 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 	
 	private JTextFieldPad txtBonificacoes = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );	
 
-//	private JTextFieldPad txtAVista = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
-
-//	private JTextFieldPad txtACredito = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );	
-
-//	private JTextFieldPad txtAReceber = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
-
-//	private JTextFieldPad txtNaoRecebido = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
-
-//	private JTextFieldPad txtRecebido = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
-
-//	private JTextFieldPad txtTotalEntradas = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
-
 	private JTextFieldPad txtTotalFechamento = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 
 	private JTextFieldPad txtSaldoFechamento = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
@@ -680,33 +668,6 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
         panelFechamentoCampos.adic( new JLabelPad( "Vendas" ), 376, 10, 120, 20 );
         panelFechamentoCampos.adic( txtVendas, 376, 30, 120, 20 );
-        
-//        panelFechamentoCampos.adic( new JLabelPad( "Descontos" ), 110, 10, 100, 20 );
-//        panelFechamentoCampos.adic( txtDescontos, 110, 30, 100, 20 );
-//        panelFechamentoCampos.adic( new JLabelPad( "Trocas" ), 213, 10, 100, 20 );
-//        panelFechamentoCampos.adic( txtTrocas, 213, 30, 100, 20 );
-//        panelFechamentoCampos.adic( new JLabelPad( "Bonificações" ), 316, 10, 100, 20 );
-//        panelFechamentoCampos.adic( txtBonificacoes, 316, 30, 100, 20 );
-//        panelFechamentoCampos.adic( new JLabelPad( "Devoluções" ), 522, 10, 100, 20 );
-//        panelFechamentoCampos.adic( txtDevolucoes, 522, 30, 100, 20 );
-//
-//        panelFechamentoCampos.adic( new JLabelPad( "A Vista" ), 7, 50, 100, 20 );
-//        panelFechamentoCampos.adic( txtAVista, 7, 70, 100, 20 );
-//        panelFechamentoCampos.adic( new JLabelPad( "A Crédito" ), 110, 50, 100, 20 );
-//        panelFechamentoCampos.adic( txtACredito, 110, 70, 100, 20 );
-//        panelFechamentoCampos.adic( new JLabelPad( "A Receber" ), 213, 50, 100, 20 );
-//        panelFechamentoCampos.adic( txtAReceber, 213, 70, 100, 20 );
-//        panelFechamentoCampos.adic( new JLabelPad( "Recebido" ), 316, 50, 100, 20 );
-//        panelFechamentoCampos.adic( txtRecebido, 316, 70, 100, 20 );
-//        panelFechamentoCampos.adic( new JLabelPad( "Não Recebido" ), 419, 50, 100, 20 );
-//        panelFechamentoCampos.adic( txtNaoRecebido, 419, 70, 100, 20 );
-//        
-//        panelFechamentoCampos.adic( new JLabelPad( "Total Entradas" ), 7, 90, 120, 20 );
-//        panelFechamentoCampos.adic( txtTotalEntradas, 7, 110, 120, 20 );
-//        panelFechamentoCampos.adic( new JLabelPad( "Total Fechamento" ), 130, 90, 120, 20 );
-//        panelFechamentoCampos.adic( txtTotalFechamento, 130, 110, 120, 20 );
-//        panelFechamentoCampos.adic( new JLabelPad( "Saldo Fechamento" ), 253, 90, 120, 20 );
-//        panelFechamentoCampos.adic( txtSaldoFechamento, 253, 110, 120, 20 );
 
         panelFechamentoCampos.adic( btConsolidacao, 580, 5, 140, 30 );
         panelFechamentoCampos.adic( btNovoLancamento, 580, 40, 140, 30 );
@@ -1807,15 +1768,15 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			return;
 		}
 		
-		DLBuscaVenda buscaRemessa = new DLBuscaVenda();
+		DLBuscaListaVendas buscaRemessa = new DLBuscaListaVendas();
 		buscaRemessa.setConexao( con );
 		buscaRemessa.setVisible( true );
 		
 		if ( buscaRemessa.OK ) {
 			
-			List<DLBuscaVenda.GridBuscaRemessa> gridBuscaRemessa = buscaRemessa.getGridBuscaRemessa();
+			List<DLBuscaListaVendas.GridBuscaRemessa> gridBuscaRemessa = buscaRemessa.getGridBuscaRemessa();
 			
-			for ( DLBuscaVenda.GridBuscaRemessa g : gridBuscaRemessa ) {
+			for ( DLBuscaListaVendas.GridBuscaRemessa g : gridBuscaRemessa ) {
 				
 				lcDet.cancel( true );
 				lcDet.insert( true );
@@ -1839,15 +1800,15 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 			return;
 		}
 		
-		DLBuscaVenda buscaRemessa = new DLBuscaVenda();
+		DLBuscaListaVendas buscaRemessa = new DLBuscaListaVendas();
 		buscaRemessa.setConexao( con );
 		buscaRemessa.setVisible( true );
 		
 		if ( buscaRemessa.OK ) {
 			
-			List<DLBuscaVenda.GridBuscaRemessa> gridBuscaRemessa = buscaRemessa.getGridBuscaRemessa();
+			List<DLBuscaListaVendas.GridBuscaRemessa> gridBuscaRemessa = buscaRemessa.getGridBuscaRemessa();
 			
-			for ( DLBuscaVenda.GridBuscaRemessa g : gridBuscaRemessa ) {
+			for ( DLBuscaListaVendas.GridBuscaRemessa g : gridBuscaRemessa ) {
 				
 				lcDetVendas.cancel( true );
 				lcDetVendas.insert( true );
@@ -1861,6 +1822,29 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 				cbRecebido.setVlrString( "N" );
 				
 				lcDetVendas.post();
+				
+				try {
+
+					PreparedStatement ps = con.prepareStatement( 
+							"UPDATE VDVENDACONSIG SET CODEMPVD=?, CODFILIALVD=?, TIPOVENDA=?, CODVENDA=?, CODITVENDA=? " +
+							"WHERE CODEMP=? AND CODFILIAL=? AND CODCONSIG=? AND CODVENDACO=?" );
+					ps.setInt( 1, Aplicativo.iCodEmp );
+					ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
+					ps.setString( 3, "V" );
+					ps.setInt( 4, g.getCodigoVenda() );
+					ps.setInt( 5, g.getItemVenda() );
+					ps.setInt( 6, Aplicativo.iCodEmp );
+					ps.setInt( 7, ListaCampos.getMasterFilial( "VDVENDACONSIG" ) );
+					ps.setInt( 8, txtCodConsig.getVlrInteger() );
+					ps.setInt( 9, txtCodVendaCo.getVlrInteger() );
+
+					ps.executeQuery();
+					
+					con.commit();
+
+				} catch ( SQLException err ) {
+					err.printStackTrace();
+				}
 			}
 			
 			lcCampos.carregaDados();

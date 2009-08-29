@@ -1770,12 +1770,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			if( "E".equals( txtTipoModNota.getVlrString() )) {				
 				lbChaveNfe.setText( "Chave de acesso NFe" );
 				setAltCab( 195 );
-				setAtribos( 15, 10, 770, 535 );
+				setSize( 770, 535 );
 			}
 			else {
 				lbChaveNfe.setText( "" );
 				setAltCab( 160 );
-				setAtribos( 15, 10, 770, 500 );
+				setSize( 770, 500 );
 			}
 		}
 		
