@@ -655,7 +655,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcItRemessa.add( new GuardaCampo( txtTipoVendaRemessa, "TipoVendaVR", "Tipo venda", ListaCampos.DB_PK, false ) );
 		lcItRemessa.montaSql( false, "ITVENDA", "VD" );
 		lcItRemessa.setQueryCommit( false );
-		lcItCompra.setReadOnly( true );
+		lcItRemessa.setReadOnly( true );
 		txtCodVendaRemessa.setTabelaExterna( lcItRemessa );
 		txtCodItVendaRemessa.setTabelaExterna( lcItRemessa );
 		txtTipoVendaRemessa.setTabelaExterna( lcItRemessa );
@@ -1009,7 +1009,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		
 		adicCampoInvisivel( txtCodVendaRemessa, "codVendaVR", "Cód.remessa", ListaCampos.DB_FK, false );
 		adicCampoInvisivel( txtCodItVendaRemessa, "codItVendaVR", "Cód.it.remessa", ListaCampos.DB_FK, false );
-		adicCampoInvisivel( txtTipoVendaRemessa, "tipoVendaVR", "", ListaCampos.DB_FK, false );
+		adicCampoInvisivel( txtTipoVendaRemessa, "tipoVendaVR", "tipo remessa", ListaCampos.DB_FK, false );
 		
 		pinTot.adic( new JLabelPad( "Vlr.prod." ), 7, 0, 90, 20 );
 		pinTot.adic( txtVlrProdVenda, 7, 20, 90, 20 );
@@ -2230,10 +2230,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	
 				if ( ( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.IMPNOTA.ordinal() ] ) ) || 
 						( "S".equals( sValores[ DLFechaVenda.COL_RETDFV.REIMPNOTA.ordinal() ] ) ) ) {
-					if ( txtTipoMov.getVlrString().equals( "VD" ) || txtTipoMov.getVlrString().equals( "VT" ) || 
-							txtTipoMov.getVlrString().equals( "TR" ) || txtTipoMov.getVlrString().equals( "CS" ) || 
-							txtTipoMov.getVlrString().equals( "CE" ) || txtTipoMov.getVlrString().equals( "PE" ) || 
-							txtTipoMov.getVlrString().equals( "DV" ) || txtTipoMov.getVlrString().equals( "BN" ) || 
+					if ( txtTipoMov.getVlrString().equals( "VD" ) || 
+							txtTipoMov.getVlrString().equals( "VT" ) || 
+							txtTipoMov.getVlrString().equals( "TR" ) || 
+							txtTipoMov.getVlrString().equals( "CS" ) || 
+							txtTipoMov.getVlrString().equals( "CE" ) || 
+							txtTipoMov.getVlrString().equals( "PE" ) || 
+							txtTipoMov.getVlrString().equals( "DV" ) || 
+							txtTipoMov.getVlrString().equals( "VR" ) || 
+							txtTipoMov.getVlrString().equals( "BN" ) || 
 							txtTipoMov.getVlrString().equals( "CO" ) ) {
 						emiteNotaFiscal( "NF" );
 					}

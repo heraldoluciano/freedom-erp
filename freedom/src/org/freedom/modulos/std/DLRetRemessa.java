@@ -1,7 +1,7 @@
 /*
  * Projeto: Freedom
  * Pacote: org.freedom.modules.std
- * Classe: @(#)DLBuscaVenda.java
+ * Classe: @(#)DLRetRemessa.java
  * 
  * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -45,12 +45,12 @@ import org.freedom.telas.FFDialogo;
 
 
 /**
- * Busca nota de remessa para importar itens para remessa consignada.
+ * Wizard para criar nota de retorno de nota de remessa.
  * 
  * @author Setpoint Informática Ltda./Alex Rodrigues
- * @version 27/08/2009
+ * @version 31/08/2009
  */
-public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
+public class DLRetRemessa extends FFDialogo implements CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -83,16 +83,16 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 	private ListaCampos lcVenda = new ListaCampos( this );
 		
 	private enum ITENS {
-		SEL, CODVENDA, ITEM, CODPROD, DESCPROD, QUANTIDADE, PRECO, CODCLI, RAZCLI, CODPLANOPAG, DESCPLANOPAG;
+		SEL, ITEM, PRODUTO, DESCRICAO_PRODUTO, QUANTIDADE, QUANTIDADE_VENDA, SALDO, PRECO, PRECO_VENDA, VENDA, ITEM_VENDA;
 	}
 	
 	public final String tipoMovimento;
 	
 	
-	public DLBuscaListaVendas( String tipoMovimento ) {
+	public DLRetRemessa( String tipoMovimento ) {
 
 		super();
-		setTitulo( "Pesquisa de vendas" );
+		setTitulo( "Pesquisa de remessas" );
 		setAtribos( 700, 320 );
 		setResizable( true );
 		
@@ -121,11 +121,9 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		txtCodVenda.setFK( true );
 		txtCodVenda.setPK( true );		
 		lcVenda.setDinWhereAdic( "TIPOVENDA = #S", txtTipoVenda );
-		if ( tipoMovimento != null ) {
-			lcVenda.setDinWhereAdic( "EXISTS (SELECT TM.CODTIPOMOV FROM EQTIPOMOV TM " +
-									 "WHERE TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND " +
-									 "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.TIPOMOV = #S ) ", txtTipoMov );
-		}
+		lcVenda.setDinWhereAdic( "EXISTS (SELECT TM.CODTIPOMOV FROM EQTIPOMOV TM " +
+								 "WHERE TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND " +
+								 "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.TIPOMOV = #S ) ", txtTipoMov );
 		lcVenda.montaSql( false, "VENDA V", "VD" );
 		lcVenda.setReadOnly( true );
 	}
@@ -150,28 +148,28 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		panelGrid.setBorder( BorderFactory.createEtchedBorder() );
 				
 		tabItens.adicColuna( "" );
-		tabItens.adicColuna( "Venda" );
 		tabItens.adicColuna( "Item" );
 		tabItens.adicColuna( "Código" );
 		tabItens.adicColuna( "Descrição do produto" );
-		tabItens.adicColuna( "Quantidade" );
+		tabItens.adicColuna( "Qtd. remessa" );
+		tabItens.adicColuna( "Qtd. vendida" );
+		tabItens.adicColuna( "Saldo" );
 		tabItens.adicColuna( "Preço" );
-		tabItens.adicColuna( "Cód.cli." );
-		tabItens.adicColuna( "Razão social do cliente" );
-		tabItens.adicColuna( "Cód.pl.pag." );
-		tabItens.adicColuna( "Descrição do plano de pagamento" );
+		tabItens.adicColuna( "Preço venda" );
+		tabItens.adicColuna( "Cód.venda" );
+		tabItens.adicColuna( "Item venda" );
 		
 		tabItens.setTamColuna( 20, ITENS.SEL.ordinal() );
-		tabItens.setTamColuna( 80, ITENS.CODVENDA.ordinal() );
 		tabItens.setTamColuna( 60, ITENS.ITEM.ordinal() );
-		tabItens.setTamColuna( 80, ITENS.CODPROD.ordinal() );
-		tabItens.setTamColuna( 230, ITENS.DESCPROD.ordinal() );
+		tabItens.setTamColuna( 80, ITENS.PRODUTO.ordinal() );
+		tabItens.setTamColuna( 230, ITENS.DESCRICAO_PRODUTO.ordinal() );
 		tabItens.setTamColuna( 80, ITENS.QUANTIDADE.ordinal() );
+		tabItens.setTamColuna( 80, ITENS.QUANTIDADE_VENDA.ordinal() );
+		tabItens.setTamColuna( 100, ITENS.SALDO.ordinal() );
 		tabItens.setTamColuna( 80, ITENS.PRECO.ordinal() );
-		tabItens.setTamColuna( 80, ITENS.CODCLI.ordinal() );
-		tabItens.setTamColuna( 230, ITENS.RAZCLI.ordinal() );
-		tabItens.setTamColuna( 80, ITENS.CODPLANOPAG.ordinal() );
-		tabItens.setTamColuna( 230, ITENS.DESCPLANOPAG.ordinal() );
+		tabItens.setTamColuna( 80, ITENS.PRECO_VENDA.ordinal() );
+		tabItens.setTamColuna( 80, ITENS.VENDA.ordinal() );
+		tabItens.setTamColuna( 60, ITENS.ITEM_VENDA.ordinal() );
 		
 		tabItens.setColunaEditavel( ITENS.SEL.ordinal(), true );
 				
@@ -199,14 +197,24 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		try {
 			
 			StringBuilder selectVendas = new StringBuilder();
-			selectVendas.append( "SELECT I.CODVENDA, I.CODITVENDA, I.CODPROD, P.DESCPROD, I.QTDITVENDA, I.PRECOITVENDA, " );
-			selectVendas.append( "V.CODCLI, C.RAZCLI, V.CODPLANOPAG, PG.DESCPLANOPAG " );
-			selectVendas.append( "FROM VDITVENDA I, VDVENDA V, EQPRODUTO P, VDCLIENTE C, FNPLANOPAG PG " );
-			selectVendas.append( "WHERE I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA AND I.TIPOVENDA=V.TIPOVENDA AND " );
-			selectVendas.append( "V.CODEMP=? AND V.CODFILIAL=? AND V.CODVENDA=? AND V.TIPOVENDA=? AND " );
-			selectVendas.append( "P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD AND " );
-			selectVendas.append( "C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI AND " );
-			selectVendas.append( "PG.CODEMP=V.CODEMPPG AND PG.CODFILIAL=V.CODFILIALPG AND PG.CODPLANOPAG=V.CODPLANOPAG " );
+			selectVendas.append( "SELECT I.CODVENDA, I.CODITVENDA, I.CODPROD, P.DESCPROD, I.QTDITVENDA, I.PRECOITVENDA," );
+			selectVendas.append( "(SELECT IR.CODVENDA FROM VDITVENDA IR " );
+			selectVendas.append( "WHERE IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.TIPOVENDA=R.TIPOVENDA AND " );
+			selectVendas.append( "IR.CODVENDA=R.CODVENDA AND IR.CODITVENDA=R.CODITVENDA) CODVENDAVR," );
+			selectVendas.append( "(SELECT IR.CODITVENDA FROM VDITVENDA IR " );
+			selectVendas.append( "WHERE IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.TIPOVENDA=R.TIPOVENDA AND " );
+			selectVendas.append( "IR.CODVENDA=R.CODVENDA AND IR.CODITVENDA=R.CODITVENDA) CODITVENDAVR," );
+			selectVendas.append( "(SELECT IR.QTDITVENDA FROM VDITVENDA IR " );
+			selectVendas.append( "WHERE IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.TIPOVENDA=R.TIPOVENDA AND " );
+			selectVendas.append( "IR.CODVENDA=R.CODVENDA AND IR.CODITVENDA=R.CODITVENDA) QTDITVENDAVR," );
+			selectVendas.append( "(SELECT IR.PRECOITVENDA FROM VDITVENDA IR " );
+			selectVendas.append( "WHERE IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.TIPOVENDA=R.TIPOVENDA AND " );
+			selectVendas.append( "IR.CODVENDA=R.CODVENDA AND IR.CODITVENDA=R.CODITVENDA) PRECOITVENDAVR " );
+			selectVendas.append( "FROM VDITVENDA I, VDITVENDA R, EQPRODUTO P " );
+			selectVendas.append( "WHERE " );
+			selectVendas.append( "I.CODEMPVR=R.CODEMP AND I.CODFILIALVR=R.CODFILIAL AND I.TIPOVENDAVR=R.TIPOVENDA AND I.CODVENDAVR=R.CODVENDA AND " );
+			selectVendas.append( "R.CODEMP=? AND R.CODFILIAL=? AND R.CODVENDA=? AND R.TIPOVENDA=? AND " );
+			selectVendas.append( "P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD " );
 			selectVendas.append( "ORDER BY I.CODVENDA, I.CODITVENDA" );
 			
 			PreparedStatement ps = con.prepareStatement( selectVendas.toString() );
@@ -224,16 +232,16 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 				
 				tabItens.adicLinha();
 				tabItens.setValor( new Boolean( true ), row, ITENS.SEL.ordinal() );
-				tabItens.setValor( rs.getInt( "CODVENDA" ), row, ITENS.CODVENDA.ordinal() );
-				tabItens.setValor( rs.getInt( "CODITVENDA" ), row, ITENS.ITEM.ordinal() );
-				tabItens.setValor( rs.getInt( "CODPROD" ), row, ITENS.CODPROD.ordinal() );
-				tabItens.setValor( rs.getString( "DESCPROD" ), row, ITENS.DESCPROD.ordinal() );
-				tabItens.setValor( Funcoes.bdToStr( rs.getBigDecimal( "QTDITVENDA" ) ), row, ITENS.QUANTIDADE.ordinal() );
-				tabItens.setValor( Funcoes.bdToStr( rs.getBigDecimal( "PRECOITVENDA" ) ), row, ITENS.PRECO.ordinal() );
-				tabItens.setValor( rs.getInt( "CODCLI" ), row, ITENS.CODCLI.ordinal() );
-				tabItens.setValor( rs.getString( "RAZCLI" ), row, ITENS.RAZCLI.ordinal() );
-				tabItens.setValor( rs.getInt( "CODPLANOPAG" ), row, ITENS.CODPLANOPAG.ordinal() );
-				tabItens.setValor( rs.getString( "DESCPLANOPAG" ), row, ITENS.DESCPLANOPAG.ordinal() );
+				tabItens.setValor( rs.getInt( "CODITVENDAVR" ), row, ITENS.ITEM.ordinal() );
+				tabItens.setValor( rs.getInt( "CODPROD" ), row, ITENS.PRODUTO.ordinal() );
+				tabItens.setValor( rs.getString( "DESCPROD" ), row, ITENS.DESCRICAO_PRODUTO.ordinal() );
+				tabItens.setValor( Funcoes.bdToStr( rs.getBigDecimal( "QTDITVENDAVR" ) ), row, ITENS.QUANTIDADE.ordinal() );
+				tabItens.setValor( Funcoes.bdToStr( rs.getBigDecimal( "QTDITVENDA" ) ), row, ITENS.QUANTIDADE_VENDA.ordinal() );
+				tabItens.setValor( Funcoes.bdToStr( rs.getBigDecimal( "QTDITVENDAVR" ).subtract( rs.getBigDecimal( "QTDITVENDA" ) ) ), row, ITENS.SALDO.ordinal() );
+				tabItens.setValor( Funcoes.bdToStr( rs.getBigDecimal( "PRECOITVENDAVR" ) ), row, ITENS.PRECO.ordinal() );
+				tabItens.setValor( Funcoes.bdToStr( rs.getBigDecimal( "PRECOITVENDA" ) ), row, ITENS.PRECO_VENDA.ordinal() );
+				tabItens.setValor( rs.getInt( "CODVENDA" ), row, ITENS.VENDA.ordinal() );
+				tabItens.setValor( rs.getInt( "CODITVENDA" ), row, ITENS.ITEM_VENDA.ordinal() );
 				
 				row++;
 			}
@@ -246,24 +254,27 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		}
 	}
 	
-	public List<GridBuscaRemessa> getGridBuscaRemessa() {
+	public List<GridBuscaRetorno> getGridBuscaRemessa() {
 		
-		List<GridBuscaRemessa> list = new ArrayList<GridBuscaRemessa>();
+		List<GridBuscaRetorno> list = new ArrayList<GridBuscaRetorno>();
 		
 		for ( int row=0; row < tabItens.getNumLinhas(); row++ ) {
 			
 			if ( (Boolean)tabItens.getValor( row, ITENS.SEL.ordinal() ) ) {
 				
-				GridBuscaRemessa gridBuscaRemessa = new GridBuscaRemessa();
+				GridBuscaRetorno gridBuscaRemessa = new GridBuscaRetorno();
 				
-				gridBuscaRemessa.setCodigoVenda( (Integer)tabItens.getValor( row, ITENS.CODVENDA.ordinal() ) );
-				gridBuscaRemessa.setItemVenda( (Integer)tabItens.getValor( row, ITENS.ITEM.ordinal() ) );
-				gridBuscaRemessa.setCodigoProduto( (Integer)tabItens.getValor( row, ITENS.CODPROD.ordinal() ) );
-				gridBuscaRemessa.setDescricaoProduto( (String)tabItens.getValor( row, ITENS.DESCPROD.ordinal() ) );
-				gridBuscaRemessa.setQuantidade( Funcoes.strToBd( tabItens.getValor( row, ITENS.QUANTIDADE.ordinal() ) ) );
-				gridBuscaRemessa.setPreco( Funcoes.strToBd( tabItens.getValor( row, ITENS.PRECO.ordinal() ) ) );
-				gridBuscaRemessa.setCliente( (Integer)tabItens.getValor( row, ITENS.CODCLI.ordinal() ) );
-				gridBuscaRemessa.setPlanoPagamento( (Integer)tabItens.getValor( row, ITENS.CODPLANOPAG.ordinal() ) );
+				gridBuscaRemessa.setCodigoRemessa( txtCodVenda.getVlrInteger() );
+				gridBuscaRemessa.setItemRemessa( (Integer)tabItens.getValor( row, ITENS.ITEM.ordinal() ) );
+				gridBuscaRemessa.setCodigoProduto( (Integer)tabItens.getValor( row, ITENS.PRODUTO.ordinal() ) );
+				gridBuscaRemessa.setDescricaoProduto( (String)tabItens.getValor( row, ITENS.DESCRICAO_PRODUTO.ordinal() ) );
+				gridBuscaRemessa.setQuantidadeRemessa( Funcoes.strToBd( tabItens.getValor( row, ITENS.QUANTIDADE.ordinal() ) ) );
+				gridBuscaRemessa.setPrecoRemessa( Funcoes.strToBd( tabItens.getValor( row, ITENS.PRECO.ordinal() ) ) );
+				gridBuscaRemessa.setCodigoVenda( (Integer)tabItens.getValor( row, ITENS.VENDA.ordinal() ) );
+				gridBuscaRemessa.setItemVenda( (Integer)tabItens.getValor( row, ITENS.ITEM_VENDA.ordinal() ) );
+				gridBuscaRemessa.setQuantidadeVenda( Funcoes.strToBd( tabItens.getValor( row, ITENS.QUANTIDADE_VENDA.ordinal() ) ) );
+				gridBuscaRemessa.setPrecoVenda( Funcoes.strToBd( tabItens.getValor( row, ITENS.PRECO_VENDA.ordinal() ) ) );
+				gridBuscaRemessa.setSaldo( Funcoes.strToBd( tabItens.getValor( row, ITENS.SALDO.ordinal() ) ) );
 				
 				list.add( gridBuscaRemessa );
 			}
@@ -302,45 +313,47 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		lcVenda.setConexao( cn );
 	}
 
-	public class GridBuscaRemessa {
+	public class GridBuscaRetorno {
 		
-		private Integer codigoVenda;
+		private Integer codigoRemessa;
 		
-		private Integer itemVenda;
+		private Integer itemRemessa;
 		
 		private Integer codigoProduto;
 		
 		private String descricaoProduto;
 		
-		private BigDecimal quantidade;
+		private BigDecimal quantidadeRemessa;
 		
-		private BigDecimal preco;
+		private BigDecimal precoRemessa;
 		
-		private Integer cliente;
+		private Integer codigoVenda;
 		
-		private String razaoSocialCliente;
+		private Integer itemVenda;
 		
-		private Integer planoPagamento;
+		private BigDecimal quantidadeVenda;
 		
-		private String descricaoPlanoPagamento;
+		private BigDecimal precoVenda;
+		
+		private BigDecimal saldo;
 
 		
-		public GridBuscaRemessa() {}
+		public GridBuscaRetorno() {}
 		
-		public Integer getCodigoVenda() {		
-			return codigoVenda;
+		public Integer getCodigoRemessa() {		
+			return codigoRemessa;
 		}
 		
-		public void setCodigoVenda( Integer codigoVenda ) {		
-			this.codigoVenda = codigoVenda;
+		public void setCodigoRemessa( Integer codigoVenda ) {		
+			this.codigoRemessa = codigoVenda;
 		}
 		
-		public Integer getItemVenda() {		
-			return itemVenda;
+		public Integer getItemRemessa() {		
+			return itemRemessa;
 		}
 		
-		public void setItemVenda( Integer itemVenda ) {		
-			this.itemVenda = itemVenda;
+		public void setItemRemessa( Integer itemVenda ) {		
+			this.itemRemessa = itemVenda;
 		}
 		
 		public Integer getCodigoProduto() {		
@@ -359,52 +372,60 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 			this.descricaoProduto = descricaoProduto;
 		}
 		
-		public BigDecimal getQuantidade() {		
-			return quantidade;
+		public BigDecimal getQuantidadeRemessa() {		
+			return quantidadeRemessa;
 		}
 		
-		public void setQuantidade( BigDecimal quantidade ) {		
-			this.quantidade = quantidade;
+		public void setQuantidadeRemessa( BigDecimal quantidade ) {		
+			this.quantidadeRemessa = quantidade;
 		}
 		
-		public BigDecimal getPreco() {		
-			return preco;
+		public BigDecimal getPrecoRemessa() {		
+			return precoRemessa;
 		}
 		
-		public void setPreco( BigDecimal preco ) {		
-			this.preco = preco;
+		public void setPrecoRemessa( BigDecimal preco ) {		
+			this.precoRemessa = preco;
 		}
 		
-		public Integer getCliente() {		
-			return cliente;
+		public Integer getCodigoVenda() {		
+			return codigoVenda;
 		}
 		
-		public void setCliente( Integer cliente ) {		
-			this.cliente = cliente;
-		}		
-		
-		public String getRazaoSocialCliente() {		
-			return razaoSocialCliente;
+		public void setCodigoVenda( Integer codigoVenda ) {		
+			this.codigoVenda = codigoVenda;
 		}
 		
-		public void setRazaoSocialCliente( String razaoSocialCliente ) {		
-			this.razaoSocialCliente = razaoSocialCliente;
+		public Integer getItemVenda() {		
+			return itemVenda;
 		}
 		
-		public Integer getPlanoPagamento() {		
-			return planoPagamento;
+		public void setItemVenda( Integer itemVenda ) {		
+			this.itemVenda = itemVenda;
 		}
 		
-		public void setPlanoPagamento( Integer planoPagamento ) {		
-			this.planoPagamento = planoPagamento;
+		public BigDecimal getQuantidadeVenda() {		
+			return quantidadeVenda;
 		}
 		
-		public String getDescricaoPlanoPagamento() {		
-			return descricaoPlanoPagamento;
+		public void setQuantidadeVenda( BigDecimal quantidadeVenda ) {		
+			this.quantidadeVenda = quantidadeVenda;
 		}
 		
-		public void setDescricaoPlanoPagamento( String descricaoPlanoPagamento ) {		
-			this.descricaoPlanoPagamento = descricaoPlanoPagamento;
+		public BigDecimal getPrecoVenda() {		
+			return precoVenda;
+		}
+		
+		public void setPrecoVenda( BigDecimal precoVenda ) {		
+			this.precoVenda = precoVenda;
+		}
+		
+		public BigDecimal getSaldo() {		
+			return saldo;
+		}
+		
+		public void setSaldo( BigDecimal saldo ) {		
+			this.saldo = saldo;
 		}
 	}
 }

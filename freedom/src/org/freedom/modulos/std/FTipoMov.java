@@ -389,7 +389,9 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 			vLabs.addElement( "Ordem de produção" );
 			vVals.addElement( "OP" );
 			vLabs.addElement( "Devolução" );
-			vVals.addElement( "DV" );		
+			vVals.addElement( "DV" );	
+			vLabs.addElement( "Devolução de Remessa" );
+			vVals.addElement( "DR" );			
 			vLabs.addElement( "Conhecimento de frete" );
 			vVals.addElement( "CF" );
 		}
@@ -424,7 +426,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 			vVals.addElement( "RM" );
 			vLabs.addElement( "NF Complementar" );
 			vVals.addElement( "CO" );
-			vLabs.addElement( "NF Remessa" );
+			vLabs.addElement( "Remessa" );
 			vVals.addElement( "VR" );
 		}
 		else if ( ES.equals( "I" ) ) {

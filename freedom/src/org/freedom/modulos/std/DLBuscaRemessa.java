@@ -197,7 +197,9 @@ public class DLBuscaRemessa extends FFDialogo {
 		HashMap<String, Integer> venda = new HashMap<String, Integer>();
 		
 		try {
-			
+
+			venda.put( "codemp", Aplicativo.iCodEmp );
+			venda.put( "codfilial", ListaCampos.getMasterFilial( "VDITVENDA" ) );
 			venda.put( "codvenda", codigoVenda );
 			venda.put( "coditvenda", codigoItem );
 		} catch ( Exception e ) {

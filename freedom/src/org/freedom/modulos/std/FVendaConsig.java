@@ -1,12 +1,7 @@
-/**
- * @version 05/03/2009 <BR>
- * @author Setpoint Informática Ltda / Alex Rodrigues.
- * 
- * Projeto: Freedom <BR>
- * 
- * Pacote: org.freedom.modulos.std <BR>
- * Classe:
- * @(#)FVendaConsig.java <BR>
+/*
+ * Projeto: Freedom
+ * Pacote: org.freedom.modules.std
+ * Classe: @(#)FVendaConsig.java
  * 
  * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -15,12 +10,7 @@
  * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
  * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
  * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
- * <BR>
- * 
- * Tela de orçamento, tela responsável pela inserção e edição de orçamentos por cliente <BR>
- * diferente da tela de orçamento do atendimento que é por conveniado. <BR>
- * 
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  */
 package org.freedom.modulos.std;
 
@@ -64,6 +54,15 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
+/**
+ * Manutenção de vendas consignadas.<br>
+ * <br>
+ * Gerencia processo de vendas consignadas, a partir da remessa, seguido do registro de vendas,
+ * finalizando com os lançamentos financeiros na conta do comissionado.
+ * 
+ * @author Setpoint Informática Ltda./Alex Rodrigues
+ * @version 31/08/2009
+ */
 public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
@@ -1819,7 +1818,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 				txtCodCliVenda.setVlrInteger( g.getCliente() );
 				txtCodPlanoPag.setVlrInteger( g.getPlanoPagamento() );
 				
-				cbRecebido.setVlrString( "N" );
+				cbRecebido.setVlrString( getTipoMovimento( g.getCodigoVenda(), "V" ) ? "N" : "S" );
 				
 				lcDetVendas.post();
 				
@@ -1838,7 +1837,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 					ps.setInt( 8, txtCodConsig.getVlrInteger() );
 					ps.setInt( 9, txtCodVendaCo.getVlrInteger() );
 
-					ps.executeQuery();
+					ps.executeUpdate();
 					
 					con.commit();
 
@@ -1851,6 +1850,38 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 		}
 		
 		buscaRemessa.dispose();
+	}
+	
+	private boolean getTipoMovimento( int codigoVenda, String tipoVenda ) {
+		
+		boolean tipoMovimentoFiscal = false;
+		
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			sql.append( "SELECT TM.FISCALTIPOMOV FROM EQTIPOMOV TM, VDVENDA V " );
+			sql.append( "WHERE TM.CODEMP=V.CODEMPTM TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND " );
+			sql.append( "V.CODEMP=? AND V.CODFILIAL=? AND V.CODVENDA=? AND V.TIPOVENDA=?" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
+			ps.setInt( 3, codigoVenda );
+			ps.setString( 4, tipoVenda );
+
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				tipoMovimentoFiscal = "S".equals( rs.getString( "TIPOMOV" ) );
+			}
+			
+			con.commit();
+
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+		}
+		
+		return tipoMovimentoFiscal;
 	}
 
 	private void novoLanca() {
