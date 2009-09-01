@@ -285,7 +285,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		lcItRec.add( new GuardaCampo( txtVlrApagItRec, "VlrApagItRec", "Vlr.Aberto", ListaCampos.DB_SI, false ) );
 		lcItRec.add( new GuardaCampo( txtVlrPagoItRec, "VlrPagoItRec", "Vlr.Pago", ListaCampos.DB_SI, false ) );		
 		lcItRec.add( new GuardaCampo( txtDtVencItRec, "DtVencItRec", "Vencimento", ListaCampos.DB_SI, false ) );
-		lcItRec.add( new GuardaCampo( txtDtPagoItRec, "DtVencItRec", "Dt.Pagto.", ListaCampos.DB_SI, false ) );
+		lcItRec.add( new GuardaCampo( txtDtPagoItRec, "DtPagoItRec", "Dt.Pagto.", ListaCampos.DB_SI, false ) );
 		lcItRec.add( new GuardaCampo( txtStatusItRec, "StatusItRec", "Status", ListaCampos.DB_SI, false ) );
 		lcItRec.add( new GuardaCampo( txaObsItRec, "ObsItRec", "Observaçoes", ListaCampos.DB_SI, false ) );
 
