@@ -531,18 +531,20 @@ public class FSintegra extends FFilho implements ActionListener {
 				while ( rs.next() ) {
 
 					sBuffer.delete( 0, sBuffer.length() );
+					
 					if ("F".equals(rs.getString( "PESSOACLI" ))) {
 						cnpjcli =  Funcoes.replicate( "0", 14 );// rs.getString( "CPFCLI" );
 						insccli = Funcoes.replicate( "0", 14 );
-					} else {
+					} 
+					else {
 						cnpjcli = rs.getString( "CNPJCLI" );
 						insccli = rs.getString( "INSCCLI" );
 
-						if("ISENTA".equals( insccli.trim())) {
+						if(insccli==null || "ISENTA".equals( insccli.trim())) {
 							insccli = "ISENTO";
-						}
-						
+						}						
 					}
+					
 					/* 01 */sBuffer.append( "50" );
 					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( cnpjcli, 14 ) );
 					/* 03 */sBuffer.append( Funcoes.adicionaEspacos( Funcoes.limpaString( insccli ), 14 ) );
