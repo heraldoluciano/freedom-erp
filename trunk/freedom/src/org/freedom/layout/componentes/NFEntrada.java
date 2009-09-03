@@ -67,7 +67,7 @@ public class NFEntrada extends NF {
 			sql.append( "C.CODPLANOPAG, PG.DESCPLANOPAG, C.CODBANCO, C.OBSERVACAO, " );
 			sql.append( "(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODEMP=C.CODEMPBO AND B.CODFILIAL=C.CODFILIALBO AND B.CODBANCO=C.CODBANCO), " );
 			sql.append( "C.VLRLIQCOMPRA,C.VLRPRODCOMPRA,C.VLRADICCOMPRA,C.VLRICMSCOMPRA,C.VLRBASEICMSCOMPRA,C.VLRIPICOMPRA, " );
-			sql.append( "C.VLRFRETECOMPRA, C.HALT, C.QTDFRETECOMPRA "  );
+			sql.append( "C.VLRFRETECOMPRA, C.HALT, C.QTDFRETECOMPRA, TM.TIPOMOV "  );
 			sql.append( "FROM CPCOMPRA C, CPFORNECED F, FNPLANOPAG PG, EQTIPOMOV TM " );
 			sql.append( "WHERE F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR " );
 			sql.append( "AND PG.CODEMP=C.CODEMPPG AND PG.CODFILIAL=C.CODFILIALPG AND PG.CODPLANOPAG=C.CODPLANOPAG " );
@@ -162,7 +162,7 @@ public class NFEntrada extends NF {
 
 			sql = new StringBuffer();
 			sql.append( "SELECT I.CODITCOMPRA, I.CODPROD, I.QTDITCOMPRA, I.VLRLIQITCOMPRA, I.PERCIPIITCOMPRA, I.VLRIPIITCOMPRA, " );
-			sql.append( "I.PERCICMSITCOMPRA, I.VLRPRODITCOMPRA, C.VLRBASEIPICOMPRA, P.REFPROD, P.DESCPROD, P.CODUNID, " );
+			sql.append( "I.PERCICMSITCOMPRA, I.VLRPRODITCOMPRA, C.VLRBASEIPICOMPRA, P.REFPROD, P.DESCPROD, I.OBSITCOMPRA, P.CODUNID, " );
 			sql.append( "I.CODNAT, N.DESCNAT, N.IMPDTSAIDANAT, I.CODLOTE, P.CODFISC, P.TIPOPROD, I.VLRDESCITCOMPRA, " );
 			sql.append( "I.VLRADICITCOMPRA, ");
 			sql.append( "(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODEMP=I.CODEMPLE AND L.CODFILIAL=I.CODFILIALLE AND ");
@@ -194,7 +194,7 @@ public class NFEntrada extends NF {
 				itens.setInt( C_CODPROD, rs.getInt( "CODPROD" ) );
 				itens.setString( C_REFPROD, rs.getString( "REFPROD" ) != null ? rs.getString( "REFPROD" ) : "" );
 				itens.setString( C_DESCPROD, rs.getString( "DESCPROD" ) != null ? rs.getString( "DESCPROD" ) : "" );
-				itens.setString( C_OBSITPED, "" );
+				itens.setString( C_OBSITPED, ( rs.getString( "OBSITCOMPRA" ) != null ? rs.getString( "OBSITCOMPRA" ) : "" ) );
 				itens.setString( C_CODUNID, rs.getString( "CODUNID" ) != null ? rs.getString( "CODUNID" ) : "" );
 				itens.setBigDecimal( C_QTDITPED, rs.getBigDecimal( "QTDITCOMPRA" ) );
 				itens.setBigDecimal( C_VLRLIQITPED, rs.getBigDecimal( "VLRLIQITCOMPRA" ) );
