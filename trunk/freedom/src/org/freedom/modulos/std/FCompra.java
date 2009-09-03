@@ -149,7 +149,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JTextFieldPad txtCodNat = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
-	private JTextFieldPad txtBaseICMSItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	private JTextFieldPad txtVlrBaseICMSItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
 	private JTextFieldPad txtPercICMSItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
@@ -183,7 +183,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JTextFieldPad txtVlrProdItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
-	private JTextFieldPad txtBaseIPIItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	private JTextFieldPad txtVlrBaseIPIItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
 	private JTextFieldPad txtAliqIPIItCompra = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
 
@@ -711,17 +711,18 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		
 		adicCampo( txtVlrDescItCompra, 670, 20, 67, 20, "VlrDescItCompra", "V. Desc.", ListaCampos.DB_SI, false );
 		
-		adicCampo( txtCustoItCompra, 650, 60, 85, 20, "CustoItCompra", "Custo Estoq.", ListaCampos.DB_SI, false );
-		adicCampo( txtCodNat, 7, 60, 67, 20, "CodNat", "CFOP", ListaCampos.DB_FK, txtDescNat, true );
-		adicDescFK( txtDescNat, 80, 60, 197, 20, "DescNat", "Descrição da CFOP" );
-		adicCampo( txtBaseICMSItCompra, 280, 60, 67, 20, "VlrBaseICMSItCompra", "B. ICMS", ListaCampos.DB_SI, false );
-		adicCampo( txtPercICMSItCompra, 350, 60, 57, 20, "PercICMSItCompra", "% ICMS", ListaCampos.DB_SI, true );
-		adicCampo( txtVlrICMSItCompra, 410, 60, 67, 20, "VlrICMSItCompra", "V. ICMS", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtBaseIPIItCompra, "VlrBaseIPIItCompra", "B. IPI", ListaCampos.DB_SI, false );
-		adicCampoInvisivel( txtAliqIPIItCompra, "PercIPIItCompra", "% IPI", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrIPIItCompra, 480, 60, 67, 20, "VlrIPIItCompra", "V. IPI", ListaCampos.DB_SI, false );
+		adicCampo( txtCodNat, 7, 60, 57, 20, "CodNat", "CFOP", ListaCampos.DB_FK, txtDescNat, true );
+		adicDescFK( txtDescNat, 70, 60, 147, 20, "DescNat", "Descrição da CFOP" );
+		adicCampo( txtVlrBaseICMSItCompra, 220, 60, 67, 20, "VlrBaseICMSItCompra", "B. ICMS", ListaCampos.DB_SI, false );
+		adicCampo( txtPercICMSItCompra, 290, 60, 47, 20, "PercICMSItCompra", "% ICMS", ListaCampos.DB_SI, true );
+		adicCampo( txtVlrICMSItCompra, 340, 60, 67, 20, "VlrICMSItCompra", "V. ICMS", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrBaseIPIItCompra, 410, 60, 67, 20, "VlrBaseIPIItCompra", "B. IPI", ListaCampos.DB_SI, false );
+		adicCampo( txtAliqIPIItCompra, 480, 60, 47, 20, "PercIPIItCompra", "% IPI", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrIPIItCompra, 530, 60, 67, 20, "VlrIPIItCompra", "V. IPI", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrProdItCompra, "VlrProdItCompra", "V. Bruto", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrLiqItCompra, 550, 60, 97, 20, "VlrLiqItCompra", "Valor Item", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrLiqItCompra, 600, 60, 67, 20, "VlrLiqItCompra", "Valor Item", ListaCampos.DB_SI, false );
+		adicCampo( txtCustoItCompra, 670, 60, 67, 20, "CustoItCompra", "Custo Estoq.", ListaCampos.DB_SI, false );
+		                               
 		adicDBLiv( txaObsItCompra, "ObsItCompra", "Observação", false );
 
 		pinTot.adic( new JLabelPad( "Tot. IPI" ), 7, 0, 120, 20 );
@@ -915,8 +916,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		String tpredicmfisc = txtTpRedIcmsFisc.getVlrString();
 		float fRed = txtRedFisc.floatValue();
 		float fVlrProd = Funcoes.arredFloat( txtVlrProdItCompra.floatValue() - txtVlrDescItCompra.floatValue(), casasDecFin );
-		float fBaseICMS = Funcoes.arredFloat( txtBaseICMSItCompra.floatValue(), casasDecFin );
-		float fBaseIPI = txtBaseIPIItCompra.floatValue();
+		float fBaseICMS = Funcoes.arredFloat( txtVlrBaseICMSItCompra.floatValue(), casasDecFin );
+		float fBaseIPI = txtVlrBaseIPIItCompra.floatValue();
 		float fICMS = 0;
 		if ( fVlrProd > 0 ) {
 			if ( bCalcBase ) {
@@ -938,8 +939,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 		txtVlrICMSItCompra.setVlrBigDecimal( new BigDecimal( fICMS ) );
 		if ( bCalcBase ) {
-			txtBaseICMSItCompra.setVlrBigDecimal( new BigDecimal( String.valueOf( fBaseICMS ) ) );
-			txtBaseIPIItCompra.setVlrBigDecimal( new BigDecimal( String.valueOf( fBaseIPI ) ) );
+			txtVlrBaseICMSItCompra.setVlrBigDecimal( new BigDecimal( String.valueOf( fBaseICMS ) ) );
+			txtVlrBaseIPIItCompra.setVlrBigDecimal( new BigDecimal( String.valueOf( fBaseIPI ) ) );
 		}
 		txtVlrLiqItCompra.setVlrBigDecimal( new BigDecimal( String.valueOf( fVlrProd ) ) );
 		txtAliqIPIItCompra.setVlrBigDecimal( txtAliqIPIFisc.getVlrBigDecimal() );
