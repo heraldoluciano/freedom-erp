@@ -25,6 +25,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
@@ -250,6 +252,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JTextFieldPad txtCodModNota = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldPad txtTipoModNota = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+
+	private JTextAreaPad txaObsItCompra = new JTextAreaPad( 500 );
 	
 	private JLabelPad lbStatus = new JLabelPad();
 
@@ -629,6 +633,17 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		txtPercICMSItCompra.addFocusListener( this );
 		txtVlrIPIItCompra.addFocusListener( this );
 		
+		txtDescProd.setToolTipText( "Clique aqui duas vezes para alterar a descrição." );
+		txtDescProd.addMouseListener( new MouseAdapter() {
+
+			public void mouseClicked( MouseEvent mevt ) {
+
+				if ( mevt.getClickCount() == 2 ) {
+					mostraTelaDecricao( txaObsItCompra, txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString() );
+				}
+			}
+		} );
+		
 		lcCampos.addCarregaListener( this );
 		lcFor.addCarregaListener( this );
 		lcSerie.addCarregaListener( this );
@@ -707,6 +722,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		adicCampo( txtVlrIPIItCompra, 480, 60, 67, 20, "VlrIPIItCompra", "V. IPI", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrProdItCompra, "VlrProdItCompra", "V. Bruto", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrLiqItCompra, 550, 60, 97, 20, "VlrLiqItCompra", "Valor Item", ListaCampos.DB_SI, false );
+		adicDBLiv( txaObsItCompra, "ObsItCompra", "Observação", false );
+
 		pinTot.adic( new JLabelPad( "Tot. IPI" ), 7, 0, 120, 20 );
 		pinTot.adic( txtVlrIPICompra, 7, 20, 120, 20 );
 		pinTot.adic( new JLabelPad( "Tot. Desc." ), 7, 40, 120, 20 );
@@ -1965,4 +1982,81 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		montaDetalhe();
 	}
 
+	/**
+	 * mostra uma FObsevacao contendo a descrição completa do produto, quando clicado duas vezes sobre o JTextFieldFK do item.
+	 * 
+	 * @param txaObsIt
+	 *            JTextAreaPad.
+	 * @param iCodProd
+	 *            codigo do produto.
+	 * @param sDescProd
+	 *            descrição do produto.
+	 */
+	protected void mostraTelaDecricao( JTextAreaPad txaObsIt, int iCodProd, String sDescProd ) {
+
+		if ( iCodProd == 0 ) {
+			return;
+		}
+		
+		String sDesc = txaObsIt.getVlrString();
+		
+		if ( sDesc.equals( "" ) ) {
+			sDesc = buscaDescComp( iCodProd );
+		}
+		if ( sDesc.equals( "" ) ) {
+			sDesc = sDescProd;
+		}
+
+		DLBuscaDescProd obs = new DLBuscaDescProd( sDesc );
+		obs.setConexao( con );
+		obs.setVisible( true );
+		
+		if ( obs.OK ) {
+			txaObsIt.setVlrString( obs.getTexto() );
+			lcDet.edit();
+		}
+		
+		obs.dispose();
+		
+	}
+	
+	/**
+	 * Busca descrição completa do produto na tabela de produtos .
+	 * 
+	 * @param iCodProd
+	 *            codigo do produto a pesquizar.
+	 * @return String contendo a descrição completa do produto.
+	 */
+	private String buscaDescComp( int iCodProd ) {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sRet = "";
+		String sSQL = "SELECT DESCCOMPPROD FROM EQPRODUTO WHERE CODPROD=?" + " AND CODEMP=? AND CODFILIAL=?";
+		
+		try {
+			ps = con.prepareStatement( sSQL );
+			ps.setInt( 1, iCodProd );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				sRet = rs.getString( "DescCompProd" );
+			}
+			
+			rs.close();
+			ps.close();
+
+			con.commit();
+
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar descrição completa!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		}
+		
+		return sRet != null ? sRet : "";
+	}
+	
+	
 }
