@@ -83,7 +83,8 @@ public class DLRetRemessa extends FFDialogo implements CarregaListener {
 	private ListaCampos lcVenda = new ListaCampos( this );
 		
 	private enum ITENS {
-		SEL, ITEM, PRODUTO, DESCRICAO_PRODUTO, QUANTIDADE, QUANTIDADE_VENDA, SALDO, PRECO, PRECO_VENDA, VENDA, ITEM_VENDA;
+		SEL, ITEM, PRODUTO, DESCRICAO_PRODUTO, QUANTIDADE, QUANTIDADE_VENDA, SALDO, PRECO
+		//, PRECO_VENDA, VENDA, ITEM_VENDA;
 	}
 	
 	public final String tipoMovimento;
@@ -155,9 +156,9 @@ public class DLRetRemessa extends FFDialogo implements CarregaListener {
 		tabItens.adicColuna( "Qtd. vendida" );
 		tabItens.adicColuna( "Saldo" );
 		tabItens.adicColuna( "Preço" );
-		tabItens.adicColuna( "Preço venda" );
-		tabItens.adicColuna( "Cód.venda" );
-		tabItens.adicColuna( "Item venda" );
+//		tabItens.adicColuna( "Preço venda" );
+//		tabItens.adicColuna( "Cód.venda" );
+//		tabItens.adicColuna( "Item venda" );
 		
 		tabItens.setTamColuna( 20, ITENS.SEL.ordinal() );
 		tabItens.setTamColuna( 60, ITENS.ITEM.ordinal() );
@@ -167,9 +168,9 @@ public class DLRetRemessa extends FFDialogo implements CarregaListener {
 		tabItens.setTamColuna( 80, ITENS.QUANTIDADE_VENDA.ordinal() );
 		tabItens.setTamColuna( 100, ITENS.SALDO.ordinal() );
 		tabItens.setTamColuna( 80, ITENS.PRECO.ordinal() );
-		tabItens.setTamColuna( 80, ITENS.PRECO_VENDA.ordinal() );
-		tabItens.setTamColuna( 80, ITENS.VENDA.ordinal() );
-		tabItens.setTamColuna( 60, ITENS.ITEM_VENDA.ordinal() );
+//		tabItens.setTamColuna( 80, ITENS.PRECO_VENDA.ordinal() );
+//		tabItens.setTamColuna( 80, ITENS.VENDA.ordinal() );
+//		tabItens.setTamColuna( 60, ITENS.ITEM_VENDA.ordinal() );
 		
 		tabItens.setColunaEditavel( ITENS.SEL.ordinal(), true );
 				
@@ -197,25 +198,15 @@ public class DLRetRemessa extends FFDialogo implements CarregaListener {
 		try {
 			
 			StringBuilder selectVendas = new StringBuilder();
-			selectVendas.append( "SELECT I.CODVENDA, I.CODITVENDA, I.CODPROD, P.DESCPROD, I.QTDITVENDA, I.PRECOITVENDA," );
-			selectVendas.append( "(SELECT IR.CODVENDA FROM VDITVENDA IR " );
-			selectVendas.append( "WHERE IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.TIPOVENDA=R.TIPOVENDA AND " );
-			selectVendas.append( "IR.CODVENDA=R.CODVENDA AND IR.CODITVENDA=R.CODITVENDA) CODVENDAVR," );
-			selectVendas.append( "(SELECT IR.CODITVENDA FROM VDITVENDA IR " );
-			selectVendas.append( "WHERE IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.TIPOVENDA=R.TIPOVENDA AND " );
-			selectVendas.append( "IR.CODVENDA=R.CODVENDA AND IR.CODITVENDA=R.CODITVENDA) CODITVENDAVR," );
-			selectVendas.append( "(SELECT IR.QTDITVENDA FROM VDITVENDA IR " );
-			selectVendas.append( "WHERE IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.TIPOVENDA=R.TIPOVENDA AND " );
-			selectVendas.append( "IR.CODVENDA=R.CODVENDA AND IR.CODITVENDA=R.CODITVENDA) QTDITVENDAVR," );
-			selectVendas.append( "(SELECT IR.PRECOITVENDA FROM VDITVENDA IR " );
-			selectVendas.append( "WHERE IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.TIPOVENDA=R.TIPOVENDA AND " );
-			selectVendas.append( "IR.CODVENDA=R.CODVENDA AND IR.CODITVENDA=R.CODITVENDA) PRECOITVENDAVR " );
-			selectVendas.append( "FROM VDITVENDA I, VDITVENDA R, EQPRODUTO P " );
-			selectVendas.append( "WHERE " );
-			selectVendas.append( "I.CODEMPVR=R.CODEMP AND I.CODFILIALVR=R.CODFILIAL AND I.TIPOVENDAVR=R.TIPOVENDA AND I.CODVENDAVR=R.CODVENDA AND " );
-			selectVendas.append( "R.CODEMP=? AND R.CODFILIAL=? AND R.CODVENDA=? AND R.TIPOVENDA=? AND " );
-			selectVendas.append( "P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD " );
-			selectVendas.append( "ORDER BY I.CODVENDA, I.CODITVENDA" );
+			selectVendas.append( "SELECT " );
+			selectVendas.append( "R.CODVENDA, R.CODITVENDA, R.CODPROD, P.DESCPROD, R.QTDITVENDA QTDITVENDAVR, R.PRECOITVENDA PRECOITVENDAVR, " );
+			selectVendas.append( "COALESCE((SELECT SUM(IR.QTDITVENDA) FROM VDITVENDA IR " );
+			selectVendas.append( " WHERE IR.CODEMPVR=R.CODEMP AND IR.CODFILIALVR=R.CODFILIAL AND IR.TIPOVENDAVR=R.TIPOVENDA AND " );
+			selectVendas.append( " IR.CODVENDAVR=R.CODVENDA AND IR.CODITVENDAVR=R.CODITVENDA), 0.0) QTDITVENDA " );
+			selectVendas.append( "FROM VDITVENDA R, EQPRODUTO P " );
+			selectVendas.append( "WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODVENDA=? AND R.TIPOVENDA=? AND " );
+			selectVendas.append( "P.CODEMP=R.CODEMPPD AND P.CODFILIAL=R.CODFILIALPD AND P.CODPROD=R.CODPROD " );
+			selectVendas.append( "ORDER BY R.CODVENDA, R.CODITVENDA" );
 			
 			PreparedStatement ps = con.prepareStatement( selectVendas.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -232,16 +223,16 @@ public class DLRetRemessa extends FFDialogo implements CarregaListener {
 				
 				tabItens.adicLinha();
 				tabItens.setValor( new Boolean( true ), row, ITENS.SEL.ordinal() );
-				tabItens.setValor( rs.getInt( "CODITVENDAVR" ), row, ITENS.ITEM.ordinal() );
+				tabItens.setValor( rs.getInt( "CODITVENDA" ), row, ITENS.ITEM.ordinal() );
 				tabItens.setValor( rs.getInt( "CODPROD" ), row, ITENS.PRODUTO.ordinal() );
 				tabItens.setValor( rs.getString( "DESCPROD" ), row, ITENS.DESCRICAO_PRODUTO.ordinal() );
 				tabItens.setValor( Funcoes.bdToStr( rs.getBigDecimal( "QTDITVENDAVR" ) ), row, ITENS.QUANTIDADE.ordinal() );
 				tabItens.setValor( Funcoes.bdToStr( rs.getBigDecimal( "QTDITVENDA" ) ), row, ITENS.QUANTIDADE_VENDA.ordinal() );
 				tabItens.setValor( Funcoes.bdToStr( rs.getBigDecimal( "QTDITVENDAVR" ).subtract( rs.getBigDecimal( "QTDITVENDA" ) ) ), row, ITENS.SALDO.ordinal() );
 				tabItens.setValor( Funcoes.bdToStr( rs.getBigDecimal( "PRECOITVENDAVR" ) ), row, ITENS.PRECO.ordinal() );
-				tabItens.setValor( Funcoes.bdToStr( rs.getBigDecimal( "PRECOITVENDA" ) ), row, ITENS.PRECO_VENDA.ordinal() );
-				tabItens.setValor( rs.getInt( "CODVENDA" ), row, ITENS.VENDA.ordinal() );
-				tabItens.setValor( rs.getInt( "CODITVENDA" ), row, ITENS.ITEM_VENDA.ordinal() );
+//				tabItens.setValor( Funcoes.bdToStr( rs.getBigDecimal( "PRECOITVENDA" ) ), row, ITENS.PRECO_VENDA.ordinal() );
+//				tabItens.setValor( rs.getInt( "CODVENDA" ), row, ITENS.VENDA.ordinal() );
+//				tabItens.setValor( rs.getInt( "CODITVENDA" ), row, ITENS.ITEM_VENDA.ordinal() );
 				
 				row++;
 			}
@@ -270,10 +261,10 @@ public class DLRetRemessa extends FFDialogo implements CarregaListener {
 				gridBuscaRemessa.setDescricaoProduto( (String)tabItens.getValor( row, ITENS.DESCRICAO_PRODUTO.ordinal() ) );
 				gridBuscaRemessa.setQuantidadeRemessa( Funcoes.strToBd( tabItens.getValor( row, ITENS.QUANTIDADE.ordinal() ) ) );
 				gridBuscaRemessa.setPrecoRemessa( Funcoes.strToBd( tabItens.getValor( row, ITENS.PRECO.ordinal() ) ) );
-				gridBuscaRemessa.setCodigoVenda( (Integer)tabItens.getValor( row, ITENS.VENDA.ordinal() ) );
-				gridBuscaRemessa.setItemVenda( (Integer)tabItens.getValor( row, ITENS.ITEM_VENDA.ordinal() ) );
-				gridBuscaRemessa.setQuantidadeVenda( Funcoes.strToBd( tabItens.getValor( row, ITENS.QUANTIDADE_VENDA.ordinal() ) ) );
-				gridBuscaRemessa.setPrecoVenda( Funcoes.strToBd( tabItens.getValor( row, ITENS.PRECO_VENDA.ordinal() ) ) );
+//				gridBuscaRemessa.setCodigoVenda( (Integer)tabItens.getValor( row, ITENS.VENDA.ordinal() ) );
+//				gridBuscaRemessa.setItemVenda( (Integer)tabItens.getValor( row, ITENS.ITEM_VENDA.ordinal() ) );
+//				gridBuscaRemessa.setQuantidadeVenda( Funcoes.strToBd( tabItens.getValor( row, ITENS.QUANTIDADE_VENDA.ordinal() ) ) );
+//				gridBuscaRemessa.setPrecoVenda( Funcoes.strToBd( tabItens.getValor( row, ITENS.PRECO_VENDA.ordinal() ) ) );
 				gridBuscaRemessa.setSaldo( Funcoes.strToBd( tabItens.getValor( row, ITENS.SALDO.ordinal() ) ) );
 				
 				list.add( gridBuscaRemessa );
