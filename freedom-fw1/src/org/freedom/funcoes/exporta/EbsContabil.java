@@ -468,6 +468,7 @@ public class EbsContabil extends Contabil {
 		sql.append( "(I.QTDITCOMPRA * I.PRECOITCOMPRA) VALOR," );
 		sql.append( "I.VLRDESCITCOMPRA," );
 		sql.append( "I.VLRBASEICMSITCOMPRA," );
+		sql.append( "I.VLRBASEIPIITCOMPRA," );
 		sql.append( "I.PERCICMSITCOMPRA," );
 		sql.append( "I.VLRIPIITCOMPRA," );
 		sql.append( "I.PERCIPIITCOMPRA " );
@@ -496,7 +497,7 @@ public class EbsContabil extends Contabil {
 			itemEntrada.setAliquotaICMS( rs.getBigDecimal( "PERCICMSITCOMPRA" ) != null ? rs.getBigDecimal( "PERCICMSITCOMPRA" ) : new BigDecimal( "0.00" ) );			
 			itemEntrada.setValorIPI( rs.getBigDecimal( "VLRIPIITCOMPRA" ) != null ? rs.getBigDecimal( "VLRIPIITCOMPRA" ) : new BigDecimal( "0.00" ) );	
 			itemEntrada.setAliquotaIPI( rs.getBigDecimal( "PERCIPIITCOMPRA" ) != null ? rs.getBigDecimal( "PERCIPIITCOMPRA" ) : new BigDecimal( "0.00" ) );		
-			itemEntrada.setBaseIPI( rs.getBigDecimal( "VALOR" ) != null ? rs.getBigDecimal( "VALOR" ) : new BigDecimal( "0.00" ) );			
+			itemEntrada.setBaseIPI( rs.getBigDecimal( "VLRBASEIPIITCOMPRA" ) != null ? rs.getBigDecimal( "VLRBASEIPIITCOMPRA" ) : new BigDecimal( "0.00" ) );			
 			itemEntrada.setIndentificacao( rs.getString( "REFPROD" ) );							
 			itemEntrada.setBaseICMSSubTributaria( null );			
 			itemEntrada.setPercentualReducaoBaseICMS( null );			
