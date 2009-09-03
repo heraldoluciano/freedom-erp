@@ -606,6 +606,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	
 	private String sURLBanco = null;
 	
+	private JCheckBoxPad cbProdRural = new JCheckBoxPad( "Prod.rural", "S", "N" );
+	
 	public FCliente() {
 
 		super();
@@ -846,8 +848,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicDB( cbAtivo, 7, 60, 70, 20, "AtivoCli", "Ativo", true );
 		adicCampo( txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_FK, txtDescTipoCli, true );
 		adicDescFK( txtDescTipoCli, 90, 100, 325, 20, "DescTipoCli", "Descrição do tipo de cliente" );
+		
 		JCheckBoxPad cbSimples = new JCheckBoxPad( "Simples", "S", "N" );
-		adicDB( cbSimples, 425, 120, 80, 20, "SimplesCli", "Fiscal", true );
+		
+		adicDB( cbSimples, 425, 100, 80, 20, "SimplesCli", "Fiscal", true );
+		
+		adicDB( cbProdRural, 425, 120, 80, 20, "ProdRuralCli", "", true );
+		
+		
 		adicCampo( txtCodClas, 7, 140, 80, 20, "CodClasCli", "Cód.c.cli", ListaCampos.DB_FK, txtDescClas, true );
 		adicDescFK( txtDescClas, 90, 140, 325, 20, "DescClasCli", "Descrição da classificação do cliente" );
 		adicCampo( txtCnpjCli, 7, 180, 120, 20, "CnpjCli", "CNPJ", ListaCampos.DB_SI, false );
