@@ -84,6 +84,8 @@ public class FTipoCli extends FDados implements ActionListener {
 	private JCheckBoxPad cbTipoCadRefAval = new JCheckBoxPad( "Avalista", "S", "N" );
 
 	private JCheckBoxPad cbTipoCadRefSocio = new JCheckBoxPad( "Quadro de sócios", "S", "N" );
+	
+	private JCheckBoxPad cbTipoProdRual = new JCheckBoxPad( "Produtor rural", "S", "N" );
 
 	private JLabelPad lbInfoFicha = new JLabelPad( " Informações complementares na ficha cadastral" );
 
@@ -111,6 +113,7 @@ public class FTipoCli extends FDados implements ActionListener {
 		adicDB( cbTipoCadRefTerra, 220, 170, 170, 20, "TerraTipoCli", "", true );
 		adicDB( cbTipoCadRefPesAutCp, 10, 190, 200, 20, "PesAutCpTipoCli", "", true );
 		adicDB( cbTipoCadRefAval, 220, 190, 170, 20, "AvalTipoCli", "", true );
+		adicDB( cbTipoProdRual, 220, 210, 170, 20, "ProdRuralTipoCli", "", true );
 		adicDB( cbTipoCadRefSocio, 10, 210, 200, 20, "SocioTipoCli", "", true );
 
 		pinLbInfoCaixa.adic( lbInfoFicha, 0, 0, 350, 15 );
