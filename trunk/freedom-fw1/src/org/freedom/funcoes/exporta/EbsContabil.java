@@ -144,7 +144,8 @@ public class EbsContabil extends Contabil {
     		sql.append( "C.DDDCLI DDD," );
     		sql.append( "C.FONECLI FONE," );
     		sql.append( "C.COMPLCLI COMPLEMENTO, " );
-    		sql.append( "C.CODCLICONTAB CODCONTAB " );
+    		sql.append( "C.CODCLICONTAB CODCONTAB, " );
+    		sql.append( "(SELECT T.PRODRURALTIPOCLI FROM VDTIPOCLI T WHERE T.CODEMP=C.CODEMPTC AND T.CODFILIAL=C.CODFILIAL AND T.CODTIPOCLI=C.CODTIPOCLI) PRODRURALTIPOCLI " );
     		sql.append( "FROM VDCLIENTE C " );
     		sql.append( "LEFT OUTER JOIN SGMUNICIPIO M " );
     		sql.append( "ON M.CODPAIS=C.CODPAIS AND M.SIGLAUF=C.SIGLAUF AND M.CODMUNIC=C.CODMUNIC " );
@@ -1071,7 +1072,7 @@ public class EbsContabil extends Contabil {
 		}
 
 		private void setInscricao( String inscricao ) {
-			this.inscricao = inscricao;
+			this.inscricao = inscricao != null ? inscricao.replaceAll( "\\D", "" ) : null ;
 		}
 
 		private String getEndereco() {
