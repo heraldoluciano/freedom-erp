@@ -1579,7 +1579,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 							txtTipoMov.getVlrString().equals( "BN" ) ) {
 						emitNota( "NF" );
 					}
-					else if ( txtTipoMov.getVlrString().equals( "CP" ) && "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
+					else if ( "CP,CO".indexOf( txtTipoMov.getVlrString() )>-1 && "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
 						emitNota( "NF" );
 					}
 					else if ( txtTipoMov.getVlrString().equals( "SE" ) ) {
