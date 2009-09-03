@@ -168,7 +168,8 @@ public class EbsContabil extends Contabil {
     		sql.append( "F.DDDFONEFOR DDD," );
     		sql.append( "F.FONEFOR FONE," );
     		sql.append( "F.COMPLFOR COMPLEMENTO, " );
-    		sql.append( "F.CODFORCONTAB CODCONTAB " );
+    		sql.append( "F.CODFORCONTAB CODCONTAB, " );
+    		sql.append( "'N' PRODRURALTIPOCLI " );
     		sql.append( "FROM CPFORNECED F " );
     		sql.append( "LEFT OUTER JOIN SGMUNICIPIO M " );
     		sql.append( "ON M.CODPAIS=F.CODPAIS AND M.SIGLAUF=F.SIGLAUF AND M.CODMUNIC=F.CODMUNIC " ); 
@@ -214,7 +215,7 @@ public class EbsContabil extends Contabil {
 			emitenteDestinatario.setContaCliente( 0 );			
 			emitenteDestinatario.setHistoricoCliente( 0 );			
 			emitenteDestinatario.setContaFornecedor( 0 );			
-			emitenteDestinatario.setProdutor( false );			
+			emitenteDestinatario.setProdutor( "S".equals( rs.getString( "PRODRURALTIPOCLI" ) ) );			
 			emitenteDestinatario.setHistoricoFornecedor( 0 );			
 			emitenteDestinatario.setIndentificacaoExterior( null );				
 			emitenteDestinatario.setSuframa( null );			
