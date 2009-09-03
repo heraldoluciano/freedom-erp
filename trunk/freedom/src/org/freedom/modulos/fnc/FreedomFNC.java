@@ -126,19 +126,20 @@ public class FreedomFNC extends AplicativoPD {
 
 		addOpcao( -1, TP_OPCAO_MENU, "Receber", "", 'R', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Manutenção", "Manutenção de contas a receber", 'M', 300100000, 1, true, FManutRec.class );
-		addOpcao( 300000000, TP_OPCAO_MENU, "Febraban", "", 'b', 300200000, 1, false, null );
-  		    addOpcao( 300200000, TP_OPCAO_MENU, "SIACC", "SIACC", 'S', 300201000, 2, false, null );
-			    addOpcao( 300201000, TP_OPCAO_ITEM, "Remessa", "Remessa Siacc", 'm', 300201010, 2, true, FRemSiacc.class );
-			    addOpcao( 300201000, TP_OPCAO_ITEM, "Retorno", "Retorno Siacc", 't', 300201020, 2, true, FRetSiacc.class );
-			addOpcao( 300200000, TP_OPCAO_MENU, "CNAB", "CNAB", 'C', 300202000, 2, false, null );
-			    addOpcao( 300202000, TP_OPCAO_ITEM, "Remessa", "Remessa Cnab", 'm', 300202010, 2, true, FRemCnab.class );
-			    addOpcao( 300202000, TP_OPCAO_ITEM, "Retorno", "Retorno Cnab", 't', 300202020, 2, true, FRetCnab.class );
-		addOpcao( 300000000, TP_OPCAO_MENU, "Listagens", "", 'L', 300300000, 1, false, null );
-			addOpcao( 300300000, TP_OPCAO_ITEM, "Receber/Recebidas", "Receber/Recebidas", 'R', 300301000, 2, true, FRReceber.class );
-			addOpcao( 300300000, TP_OPCAO_ITEM, "Inadimplentes", "Inadimplentes", 'I', 300302000, 2, true, FRInadimplentes.class );
-			addOpcao( 300300000, TP_OPCAO_ITEM, "Bordero de cobrança", "Bordero de cobrança", 'B', 300303000, 2, true, FRBordero.class );
-			addOpcao( 300300000, TP_OPCAO_ITEM, "Descontos por setor", "Descontos por setor", 'D', 300304000, 2, true, FRReceberSetor.class );
-			addOpcao( 300300000, TP_OPCAO_ITEM, "Razão", "Razão", 'R', 300305000, 2, true, FRRazCli.class );
+		addOpcao( 300000000, TP_OPCAO_ITEM, "Bordero", "Bordero", 'B', 300200000, 1, true, FBordero.class );
+		addOpcao( 300000000, TP_OPCAO_MENU, "Febraban", "", 'F', 300300000, 1, false, null );
+  		    addOpcao( 300300000, TP_OPCAO_MENU, "SIACC", "SIACC", 'S', 300301000, 2, false, null );
+			    addOpcao( 300301000, TP_OPCAO_ITEM, "Remessa", "Remessa Siacc", 'm', 300301010, 2, true, FRemSiacc.class );
+			    addOpcao( 300301000, TP_OPCAO_ITEM, "Retorno", "Retorno Siacc", 't', 300301020, 2, true, FRetSiacc.class );
+			addOpcao( 300300000, TP_OPCAO_MENU, "CNAB", "CNAB", 'C', 300302000, 2, false, null );
+			    addOpcao( 300302000, TP_OPCAO_ITEM, "Remessa", "Remessa Cnab", 'm', 300302010, 2, true, FRemCnab.class );
+			    addOpcao( 300302000, TP_OPCAO_ITEM, "Retorno", "Retorno Cnab", 't', 300302020, 2, true, FRetCnab.class );
+		addOpcao( 300000000, TP_OPCAO_MENU, "Listagens", "", 'L', 300400000, 1, false, null );
+			addOpcao( 300400000, TP_OPCAO_ITEM, "Receber/Recebidas", "Receber/Recebidas", 'R', 300401000, 2, true, FRReceber.class );
+			addOpcao( 300400000, TP_OPCAO_ITEM, "Inadimplentes", "Inadimplentes", 'I', 300402000, 2, true, FRInadimplentes.class );
+			addOpcao( 300400000, TP_OPCAO_ITEM, "Bordero de cobrança", "Bordero de cobrança", 'B', 300403000, 2, true, FRBordero.class );
+			addOpcao( 300400000, TP_OPCAO_ITEM, "Descontos por setor", "Descontos por setor", 'D', 300404000, 2, true, FRReceberSetor.class );
+			addOpcao( 300400000, TP_OPCAO_ITEM, "Razão", "Razão", 'R', 300405000, 2, true, FRRazCli.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Financeiro", "", 'F', 400000000, 0, false, null );
 			addOpcao( 400000000, TP_OPCAO_MENU, "Boleto/Recibo", "", 'o', 400100000, 1, false, null );

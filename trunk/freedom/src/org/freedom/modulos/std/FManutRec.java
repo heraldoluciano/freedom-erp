@@ -205,6 +205,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private JTextFieldPad txtTotalVencer = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 	
 	private JTextFieldPad txtTotalCancelado = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
+	
+	private JTextFieldPad txtTotalEmBordero = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecFin );
 
 	private JTextFieldFK txtDocManut = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -258,7 +260,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	
 	private JButton btHistorico = new JButton( Icone.novo( "btTelefone.png" ) );	
 	
-	private JButton btBordero = new JButton( Icone.novo( "btExecuta.gif" ) );	
+	private JButton btBordero = new JButton( Icone.novo( "clPriorAlta.gif" ) );	
 
 	private JCheckBoxPad cbRecebidas = new JCheckBoxPad( "Recebidas", "S", "N" );
 
@@ -267,6 +269,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private JCheckBoxPad cbRecParcial = new JCheckBoxPad( "Rec. Parcial", "S", "N" );
 
 	private JCheckBoxPad cbCanceladas = new JCheckBoxPad( "Canceladas", "S", "N" );
+
+	private JCheckBoxPad cbEmBordero = new JCheckBoxPad( "Em Bordero", "S", "N" );
 	
 	private JRadioGroup<?, ?> rgData = null;
 
@@ -321,6 +325,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private ImageIcon imgCancelado = Icone.novo( "clCancelado.gif" );
 	
 	private ImageIcon imgCancelado2 = Icone.novo( "clCancelado2.gif" );
+	
+	private ImageIcon imgBordero = Icone.novo( "clEstrela.gif" );
 
 	private JLabelPad lbVencido = new JLabelPad( "Vencido", imgVencido, SwingConstants.LEFT );
 	
@@ -331,6 +337,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private JLabelPad lbVencer = new JLabelPad( "À vencer", imgNaoVencido, SwingConstants.LEFT );
 	
 	private JLabelPad lbCancelado = new JLabelPad( "Cancelado", imgCancelado, SwingConstants.LEFT );
+	
+	private JLabelPad lbEmBordero = new JLabelPad( "Bordero", imgBordero, SwingConstants.LEFT );
 		
 	private ImageIcon imgColuna = null;
 
@@ -378,12 +386,14 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		txtTotalVencido.setBounds( 5, 18, 90, 18 );
 		lbParcial.setBounds( 100, 0, 90, 17 );
 		txtTotalParcial.setBounds( 100, 18, 90, 18 );
-		lbPago.setBounds( 200, 0, 90, 17 );
-		txtTotalRecebido.setBounds( 200, 18, 90, 18 );
-		lbVencer.setBounds( 300, 0, 90, 17 );
-		txtTotalVencer.setBounds( 300, 18, 90, 18 );
-		lbCancelado.setBounds( 400, 0, 90, 17 );
-		txtTotalCancelado.setBounds( 400, 18, 90, 18 );
+		lbPago.setBounds( 195, 0, 90, 17 );
+		txtTotalRecebido.setBounds( 195, 18, 90, 18 );
+		lbVencer.setBounds( 290, 0, 90, 17 );
+		txtTotalVencer.setBounds( 290, 18, 90, 18 );
+		lbCancelado.setBounds( 385, 0, 90, 17 );
+		txtTotalCancelado.setBounds( 385, 18, 90, 18 );
+		lbEmBordero.setBounds( 480, 0, 90, 17 );
+		txtTotalEmBordero.setBounds( 480, 18, 90, 18 );
 		
 		pnLegenda.add( lbVencido );
 		pnLegenda.add( txtTotalVencido);
@@ -395,12 +405,15 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pnLegenda.add( txtTotalVencer );
 		pnLegenda.add( lbCancelado );
 		pnLegenda.add( txtTotalCancelado );
+		pnLegenda.add( lbEmBordero );
+		pnLegenda.add( txtTotalEmBordero );
 
 		txtTotalVencido.setSoLeitura( true );
 		txtTotalParcial.setSoLeitura( true );
 		txtTotalRecebido.setSoLeitura( true );
 		txtTotalVencer.setSoLeitura( true );
 		txtTotalCancelado.setSoLeitura( true );
+		txtTotalEmBordero.setSoLeitura( true );
 		
 		pnRod.setBorder( BorderFactory.createEtchedBorder() );
 		pnRod.setPreferredSize( new Dimension( 500, 42 ) );
@@ -710,10 +723,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pinManut.adic( new JLabelPad( "Filtrar por:" ), 415, 0, 100, 20 );
 		pinManut.adic( rgVenc, 415, 20, 100, 65 );
 
-		pinFiltroStatus.adic( cbAReceber, 5, 5, 90, 20 );
-		pinFiltroStatus.adic( cbRecebidas, 5, 30, 90, 20 );
-		pinFiltroStatus.adic( cbRecParcial, 107, 5, 120, 20 );
-		pinFiltroStatus.adic( cbCanceladas, 107, 30, 120, 20 );
+		pinFiltroStatus.adic( cbAReceber, 5, 0, 90, 20 );
+		pinFiltroStatus.adic( cbRecebidas, 5, 20, 90, 20 );
+		pinFiltroStatus.adic( cbEmBordero, 5, 40, 120, 20 );
+		pinFiltroStatus.adic( cbRecParcial, 107, 0, 120, 20 );
+		pinFiltroStatus.adic( cbCanceladas, 107, 20, 120, 20 );
 		
 		pinManut.adic( new JLabelPad( "Filtrar por:" ), 520, 0, 100, 20 );
 		pinManut.adic( pinFiltroStatus, 520, 20, 210, 65 );
@@ -1091,11 +1105,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			rs.close();
 			ps.close();
 			
-			txtTotalVencido.setVlrDouble( Funcoes.arredDouble( bdTotVencido.doubleValue(), Aplicativo.casasDecFin ));
-			txtTotalParcial.setVlrDouble( Funcoes.arredDouble( bdTotParcial.doubleValue(), Aplicativo.casasDecFin ));
-			txtTotalRecebido.setVlrDouble( Funcoes.arredDouble( bdTotRecebido.doubleValue(), Aplicativo.casasDecFin ));
-			txtTotalVencer.setVlrDouble(  Funcoes.arredDouble( bdTotVencer.doubleValue(), Aplicativo.casasDecFin ));
-			txtTotalCancelado.setVlrDouble(  Funcoes.arredDouble( bdTotCancelado.doubleValue(), Aplicativo.casasDecFin ));
+			txtTotalVencido.setVlrDouble( Funcoes.arredDouble( bdTotVencido.doubleValue(), Aplicativo.casasDecFin ) );
+			txtTotalParcial.setVlrDouble( Funcoes.arredDouble( bdTotParcial.doubleValue(), Aplicativo.casasDecFin ) );
+			txtTotalRecebido.setVlrDouble( Funcoes.arredDouble( bdTotRecebido.doubleValue(), Aplicativo.casasDecFin ) );
+			txtTotalVencer.setVlrDouble( Funcoes.arredDouble( bdTotVencer.doubleValue(), Aplicativo.casasDecFin ) );
+			txtTotalCancelado.setVlrDouble( Funcoes.arredDouble( bdTotCancelado.doubleValue(), Aplicativo.casasDecFin ) );
 
 			con.commit();
 		} catch ( SQLException err ) {
@@ -1226,6 +1240,10 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	}
 
 	private ResultSet getResultSetManut( boolean bAplicFiltros ) throws SQLException {
+		return getResultSetManut( bAplicFiltros, false );
+	}
+
+	private ResultSet getResultSetManut( boolean bAplicFiltros, boolean bordero ) throws SQLException {
 
 		ResultSet rs = null;
 		
@@ -1246,7 +1264,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			if ( "S".equals( cbRecebidas.getVlrString() ) || 
 				 "S".equals( cbAReceber.getVlrString() ) || 
 				 "S".equals( cbRecParcial.getVlrString() ) || 
-				 "S".equals( cbCanceladas.getVlrString() ) ) {
+				 "S".equals( cbCanceladas.getVlrString() ) || 
+				 "S".equals( cbEmBordero.getVlrString() ) ) {
 
 				boolean bStatus = false;
 
@@ -1264,7 +1283,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				}
 				if ( "S".equals( cbCanceladas.getVlrString() ) ) {
 					sWhereStatus.append( bStatus ? " OR IR.STATUSITREC='CR'" : " IR.STATUSITREC='CR'" );
+					bStatus = true;
 				}
+				if ( "S".equals( cbEmBordero.getVlrString() ) ) {
+					sWhereStatus.append( bStatus ? " OR IR.STATUSITREC='RB'" : " IR.STATUSITREC='RB'" );
+				}
+				
 				sWhereManut.append( " AND (" );
 				sWhereManut.append( sWhereStatus );
 				sWhereManut.append( ")" );
@@ -1292,6 +1316,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			if ( !"".equals( txtCodCliFiltro.getVlrString().trim() ) ) {
 				sWhereManut.append( " AND R.CODCLI=" );
 				sWhereManut.append( txtCodCliFiltro.getVlrString() );
+			}
+			
+			if ( bordero ) {
+				sWhereManut.append( " AND NOT EXISTS (SELECT B.NPARCITREC FROM FNITBORDERO B " );
+				sWhereManut.append( "WHERE B.CODEMPRC=IR.CODEMP AND B.CODFILIALRC=IR.CODFILIAL AND " );
+				sWhereManut.append( "B.CODREC=IR.CODREC AND B.NPARCITREC=IR.NPARCITREC) " );
 			}
 		}
 		else {
@@ -1363,13 +1393,14 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				return;
 			}
 			
-			Float bdVlrAReceber = 0.0f;
-			Float bdVlrRecebido = 0.0f;
-			Float bdTotVencido = 0.0f;
-			Float bdTotParcial = 0.0f;
-			Float bdTotRecebido =  0.0f;
-			Float bdTotVencer = 0.0f;
-			Float bdTotCancelado = 0.0f;
+			BigDecimal bdVlrAReceber = new BigDecimal( "0.00" );
+			BigDecimal bdVlrRecebido = new BigDecimal( "0.00" );
+			BigDecimal bdTotVencido = new BigDecimal( "0.00" );
+			BigDecimal bdTotParcial = new BigDecimal( "0.00" );
+			BigDecimal bdTotRecebido =  new BigDecimal( "0.00" );
+			BigDecimal bdTotVencer = new BigDecimal( "0.00" );
+			BigDecimal bdTotCancelado = new BigDecimal( "0.00" );
+			BigDecimal bdTotBordero= new BigDecimal( "0.00" );
 
 			tabManut.limpa();
 
@@ -1377,28 +1408,32 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 				tabManut.adicLinha();
 
-				bdVlrAReceber = Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VlrApagItRec" ) ).floatValue();
-				bdVlrRecebido = Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VlrPagoItRec" ) ).floatValue();
+				bdVlrAReceber = rs.getBigDecimal( "VlrApagItRec" );
+				bdVlrRecebido = rs.getBigDecimal( "VlrPagoItRec" );
 
-				if ( "CR".equals(rs.getString( "StatusItRec" )) )  {					
-					imgColuna = rs.getString( "ATEND" )==null ? imgCancelado : imgCancelado2 ;  										
-					bdTotCancelado += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VLRCANCITREC" )).floatValue();
+				if ( "CR".equals( rs.getString( "StatusItRec" ) ) ) {
+					imgColuna = rs.getString( "ATEND" ) == null ? imgCancelado : imgCancelado2;
+					bdTotCancelado = bdTotCancelado.add( rs.getBigDecimal( "VLRCANCITREC" ) );
 				}
-				else if ( rs.getString( "StatusItRec" ).equals( "RP" ) && bdVlrAReceber == 0 ) {
-					imgColuna = rs.getString( "ATEND" )==null ? imgPago : imgPago2 ;
-					bdTotRecebido += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VLRPAGOITREC" )).floatValue();
+				else if ( "RB".equals( rs.getString( "StatusItRec" ) ) ) {
+					imgColuna = imgBordero;
+					bdTotBordero = bdTotBordero.add( rs.getBigDecimal( "VLRPARCITREC" ) );
 				}
-				else if ( bdVlrRecebido > 0 ) { 
-					imgColuna = rs.getString( "ATEND" )==null ? imgPagoParcial : imgPagoParcial2 ;
-					bdTotParcial += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VLRPAGOITREC" )).floatValue();
+				else if ( "RP".equals( rs.getString( "StatusItRec" ) ) && bdVlrAReceber.floatValue() == 0 ) {
+					imgColuna = rs.getString( "ATEND" ) == null ? imgPago : imgPago2;
+					bdTotRecebido = bdTotRecebido.add( rs.getBigDecimal( "VLRPAGOITREC" ) );
+				}
+				else if ( bdVlrRecebido.floatValue() > 0 ) {
+					imgColuna = rs.getString( "ATEND" ) == null ? imgPagoParcial : imgPagoParcial2;
+					bdTotParcial = bdTotParcial.add( rs.getBigDecimal( "VLRPAGOITREC" ) );
 				}
 				else if ( rs.getDate( "DtVencItRec" ).before( Calendar.getInstance().getTime() ) ) {
-					imgColuna = rs.getString( "ATEND" )==null ? imgVencido : imgVencido2 ;					
-					bdTotVencido += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VLRPARCITREC" )).floatValue();
+					imgColuna = rs.getString( "ATEND" ) == null ? imgVencido : imgVencido2;
+					bdTotVencido = bdTotVencido.add( rs.getBigDecimal( "VLRPARCITREC" ) );
 				}
 				else if ( rs.getDate( "DtVencItRec" ).after( Calendar.getInstance().getTime() ) ) {
-					imgColuna = rs.getString( "ATEND" )==null ? imgNaoVencido : imgNaoVencido2 ;
-					bdTotVencer += Funcoes.strDecimalToBigDecimal( Aplicativo.casasDecFin, rs.getString( "VlrApagItRec" ) ).floatValue();
+					imgColuna = rs.getString( "ATEND" ) == null ? imgNaoVencido : imgNaoVencido2;
+					bdTotVencer = bdTotVencer.add( rs.getBigDecimal( "VlrApagItRec" ) );
 				}
 
 				
@@ -1439,11 +1474,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 								
 			}
 						
-			txtTotalVencido.setVlrDouble( Funcoes.arredDouble( bdTotVencido.doubleValue(), Aplicativo.casasDecFin ) );
-			txtTotalParcial.setVlrDouble( Funcoes.arredDouble( bdTotParcial.doubleValue(), Aplicativo.casasDecFin ) );
-			txtTotalRecebido.setVlrDouble( Funcoes.arredDouble( bdTotRecebido.doubleValue(), Aplicativo.casasDecFin ) );
-			txtTotalVencer.setVlrDouble( Funcoes.arredDouble( bdTotVencer.doubleValue(), Aplicativo.casasDecFin ) );
-			txtTotalCancelado.setVlrDouble( Funcoes.arredDouble( bdTotCancelado.doubleValue(), Aplicativo.casasDecFin ) );
+			txtTotalVencido.setVlrBigDecimal( bdTotVencido );
+			txtTotalParcial.setVlrBigDecimal( bdTotParcial );
+			txtTotalRecebido.setVlrBigDecimal( bdTotRecebido );
+			txtTotalVencer.setVlrBigDecimal( bdTotVencer );
+			txtTotalCancelado.setVlrBigDecimal( bdTotCancelado );
+			txtTotalEmBordero.setVlrBigDecimal( bdTotBordero );
 
 			con.commit();
 
@@ -2382,7 +2418,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			DLBordero bordero = new DLBordero();
 			List<DLBordero.GridBordero> gridBordero = new ArrayList<DLBordero.GridBordero>();
 			
-			ResultSet rs = getResultSetManut( true );
+			ResultSet rs = getResultSetManut( true, true );
 			DLBordero.GridBordero grid = null;
 			
 			while ( rs.next() ) {
