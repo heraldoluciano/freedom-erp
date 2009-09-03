@@ -394,6 +394,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 			vVals.addElement( "DR" );			
 			vLabs.addElement( "Conhecimento de frete" );
 			vVals.addElement( "CF" );
+			vLabs.addElement( "NF Complementar" );
+			vVals.addElement( "CO" );
 		}
 		else if ( ES.equals( "S" ) ) {
 			vLabs.addElement( "Orçamento (venda)" );

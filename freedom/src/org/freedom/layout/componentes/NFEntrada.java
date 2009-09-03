@@ -68,9 +68,10 @@ public class NFEntrada extends NF {
 			sql.append( "(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODEMP=C.CODEMPBO AND B.CODFILIAL=C.CODFILIALBO AND B.CODBANCO=C.CODBANCO), " );
 			sql.append( "C.VLRLIQCOMPRA,C.VLRPRODCOMPRA,C.VLRADICCOMPRA,C.VLRICMSCOMPRA,C.VLRBASEICMSCOMPRA,C.VLRIPICOMPRA, " );
 			sql.append( "C.VLRFRETECOMPRA, C.HALT, C.QTDFRETECOMPRA "  );
-			sql.append( "FROM CPCOMPRA C, CPFORNECED F, FNPLANOPAG PG " );
+			sql.append( "FROM CPCOMPRA C, CPFORNECED F, FNPLANOPAG PG, EQTIPOMOV TM " );
 			sql.append( "WHERE F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR " );
 			sql.append( "AND PG.CODEMP=C.CODEMPPG AND PG.CODFILIAL=C.CODFILIALPG AND PG.CODPLANOPAG=C.CODPLANOPAG " );
+			sql.append( "AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND TM.CODTIPOMOV=C.CODTIPOMOV ");
 			sql.append( "AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=?" );
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -145,11 +146,11 @@ public class NFEntrada extends NF {
 				cab.setBigDecimal( C_BASEISS, new BigDecimal( "0.00" ) );
 				cab.setBigDecimal( C_VLRISS, new BigDecimal( "0.00" ) );
 				cab.setBigDecimal( C_VLRFRETEPED, rs.getBigDecimal( "VLRFRETECOMPRA" ) );		
-				
 				qtdfrete = rs.getBigDecimal( "QTDFRETECOMPRA" );
-				
 				cab.setBigDecimal( C_QTDFRETE, qtdfrete );
 				cab.setString( C_HALT, rs.getString( "HALT" ) );
+				cab.setString( C_TIPOMOV, rs.getString( "TIPOMOV" ) );
+				
 			}
 			
 			rs.close();
