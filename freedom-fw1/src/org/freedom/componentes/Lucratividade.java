@@ -1,10 +1,10 @@
 package org.freedom.componentes;
 
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 
 
@@ -57,11 +57,17 @@ public class Lucratividade {
 	private String tipofrete = null;
 	private String adicfretevd = null;
 	
+	private BigDecimal fatLucro = new BigDecimal(1);
+	
 	private DbConnection con = null;
 		
-	public Lucratividade(Integer codvenda, String tipovenda, Integer itvenda, DbConnection con) {
+	public Lucratividade(Integer codvenda, String tipovenda, Integer itvenda, BigDecimal fatLucro, DbConnection con) {
 		
 		this.con = con; 
+		
+		if(fatLucro!=null) {
+			this.fatLucro = fatLucro;
+		}
 		
 		if(codvenda!=null) {
 			carregaVenda( codvenda, tipovenda);
@@ -458,6 +464,11 @@ public class Lucratividade {
 				calc = calc.add( getVlrfretevenda() );
 				System.out.println("VALOR TOT. FRETE: " + getVlrfretevenda());
 			}
+			// Se frete for CIF e destacado na nota é custo, pois é faturado.
+			else if ("C".equals(tipofrete) && "S".equals(adicfretevd)) {
+				calc = calc.add( getVlrfretevenda() );
+				System.out.println("VALOR TOT. FRETE: " + getVlrfretevenda());
+			}
 
 			calc = calc.add( getVlrcomisvenda() );	
 			System.out.println("VALOR TOT. COMISSÃO: " + getVlrcomisvenda());
@@ -510,6 +521,11 @@ public class Lucratividade {
 			if("F".equals(tipofrete) && "N".equals(adicfretevd)) {
 				calc = calc.add( getVlrfreteitvenda() );
 				System.out.println("VALOR ITEM FRETE: " + getVlrfreteitvenda());
+			}
+			// Se frete for CIF e destacado na nota é custo, pois é faturado.
+			else if ("C".equals(tipofrete) && "S".equals(adicfretevd)) {
+				calc = calc.add( getVlrfretevenda() );
+				System.out.println("VALOR ITEM FRETE: " + getVlrfretevenda());
 			}
 
 			calc = calc.add( getVlrcomisitvenda() );	
@@ -619,7 +635,7 @@ public class Lucratividade {
 		BigDecimal calc = null;
 		try {
 			
-			calc = vlrprodvenda;
+			calc = vlrprodvenda.multiply(fatLucro) ;			
 			calc = calc.add( vlradicvenda );
 			calc = calc.subtract( vlrdescvenda );			
 
@@ -646,7 +662,7 @@ public class Lucratividade {
 		BigDecimal calc = null;
 		try {
 			
-			calc = vlrproditvenda;
+			calc = vlrproditvenda.multiply(fatLucro) ;				
 			calc = calc.add( vlradicitvenda );
 			calc = calc.subtract( vlrdescitvenda );			
 
