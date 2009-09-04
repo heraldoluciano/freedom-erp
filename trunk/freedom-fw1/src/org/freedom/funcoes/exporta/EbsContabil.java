@@ -145,7 +145,7 @@ public class EbsContabil extends Contabil {
     		sql.append( "C.FONECLI FONE," );
     		sql.append( "C.COMPLCLI COMPLEMENTO, " );
     		sql.append( "C.CODCLICONTAB CODCONTAB, " );
-    		sql.append( "(SELECT T.PRODRURALTIPOCLI FROM VDTIPOCLI T WHERE T.CODEMP=C.CODEMPTC AND T.CODFILIAL=C.CODFILIAL AND T.CODTIPOCLI=C.CODTIPOCLI) PRODRURALTIPOCLI " );
+    		sql.append( "C.PRODRURALCLI PRODRURAL " );
     		sql.append( "FROM VDCLIENTE C " );
     		sql.append( "LEFT OUTER JOIN SGMUNICIPIO M " );
     		sql.append( "ON M.CODPAIS=C.CODPAIS AND M.SIGLAUF=C.SIGLAUF AND M.CODMUNIC=C.CODMUNIC " );
@@ -169,7 +169,7 @@ public class EbsContabil extends Contabil {
     		sql.append( "F.FONEFOR FONE," );
     		sql.append( "F.COMPLFOR COMPLEMENTO, " );
     		sql.append( "F.CODFORCONTAB CODCONTAB, " );
-    		sql.append( "'N' PRODRURALTIPOCLI " );
+    		sql.append( "'N' PRODRURAL " );
     		sql.append( "FROM CPFORNECED F " );
     		sql.append( "LEFT OUTER JOIN SGMUNICIPIO M " );
     		sql.append( "ON M.CODPAIS=F.CODPAIS AND M.SIGLAUF=F.SIGLAUF AND M.CODMUNIC=F.CODMUNIC " ); 
@@ -215,7 +215,7 @@ public class EbsContabil extends Contabil {
 			emitenteDestinatario.setContaCliente( 0 );			
 			emitenteDestinatario.setHistoricoCliente( 0 );			
 			emitenteDestinatario.setContaFornecedor( 0 );			
-			emitenteDestinatario.setProdutor( "S".equals( rs.getString( "PRODRURALTIPOCLI" ) ) );			
+			emitenteDestinatario.setProdutor( "S".equals( rs.getString( "PRODRURAL" ) ) );			
 			emitenteDestinatario.setHistoricoFornecedor( 0 );			
 			emitenteDestinatario.setIndentificacaoExterior( null );				
 			emitenteDestinatario.setSuframa( null );			
