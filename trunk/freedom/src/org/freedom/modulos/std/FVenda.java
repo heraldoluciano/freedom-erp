@@ -35,6 +35,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
@@ -85,7 +86,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPassword;
 import org.freedom.telas.FPrinterJob;
 
-public class FVenda extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener {
+public class FVenda extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener, KeyListener  {
 
 	private static final long serialVersionUID = 1L;
 
@@ -444,6 +445,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldFK txtItemLucro = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
 
 	private NFEConnectionFactory nfecf = null; 
+	
+	private BigDecimal fatLucro = null;
 
 	private enum POS_PREFS {
 		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, 
@@ -740,6 +743,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		lcDet.addDeleteListener( this );
 
+		this.addKeyListener( this );
+		
+		
 		lbStatus.setForeground( Color.WHITE );
 		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
 		lbStatus.setOpaque( true );
@@ -1667,11 +1673,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private void atualizaLucratividade() {
 		
 		if("S".equals( permusu.get( "VISUALIZALUCR" )) && bPrefs[ POS_PREFS.VISUALIZALUCR.ordinal() ] ) {
-	
-			Lucratividade luc = new Lucratividade( txtCodVenda.getVlrInteger(), "V", txtCodItVenda.getVlrInteger(), con );		   
+				
+			Lucratividade luc = new Lucratividade( txtCodVenda.getVlrInteger(), "V", txtCodItVenda.getVlrInteger(), fatLucro, con );		   
 		
 			/****************************
-			 * Atulizando painel geral 
+			 * Atualizando painel geral 
 			 ****************************/
 			
 			txtTotFat.setVlrBigDecimal( luc.getTotfat() );
@@ -1764,7 +1770,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			setPainel(pinCabLucratividade) ;
 	
 			pnLucrItem.setBorder( BorderFactory.createTitledBorder( "Lucratividade Item" ) );			
-			adic(pnLucrItem, 250, 0, 230, 92 );			
+			adic(pnLucrItem, 240, 0, 230, 92 );			
 			
 			setPainel(pnLucrItem);			
 			pbLucrItem.setStringPainted(true);									
@@ -3418,6 +3424,19 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			btConsPgto.doClick();
 		}
 
+		if(kevt.getKeyCode() == KeyEvent.VK_F12 && ( ("S".equals( permusu.get( "VISUALIZALUCR" )) && bPrefs[ POS_PREFS.VISUALIZALUCR.ordinal() ] ) ) ) {
+			DLAltFatLucro dl = new DLAltFatLucro(this, fatLucro);
+			dl.setVisible( true );
+			if ( dl.OK ) {
+				fatLucro = dl.getValor();
+				dl.dispose();
+			}
+
+			dl.dispose();
+		}
+		
+		
+		
 		super.keyPressed( kevt );
 	}
 
