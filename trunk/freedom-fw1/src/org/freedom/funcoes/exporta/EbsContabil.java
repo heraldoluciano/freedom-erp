@@ -620,7 +620,7 @@ public class EbsContabil extends Contabil {
 			}
 			
 			saida = new Saida();			
-			saida.setDataLancamento( Calendar.getInstance().getTime() );			
+			saida.setDataLancamento( rs.getDate( "DTEMITVENDA" ) );			
 			saida.setNumeroInicial( rs.getInt( "DOCVENDA" ) );			
 			saida.setNumeroFinal( rs.getInt( "DOCVENDA" ) );			
 			saida.setDataEmissao( rs.getDate( "DTEMITVENDA" ) );			
