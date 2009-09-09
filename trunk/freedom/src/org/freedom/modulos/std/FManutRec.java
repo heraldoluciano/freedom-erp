@@ -72,8 +72,6 @@ import org.freedom.funcoes.boleto.Banco;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.crm.FAtendimento;
 import org.freedom.modulos.fnc.DLBordero;
-import org.freedom.modulos.std.DLBaixaRec.EColBaixa;
-import org.freedom.modulos.std.DLBaixaRec.EColRetBaixa;
 import org.freedom.modulos.std.DLEditaRec.EColEdit;
 import org.freedom.modulos.std.DLEditaRec.EColRet;
 import org.freedom.telas.Aplicativo;
@@ -865,25 +863,27 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		btBordero.addActionListener( this );
 		tpn.addChangeListener( this );
 		
-		tabManut.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent mevt) {
-				if (mevt.getSource() == tabManut && mevt.getClickCount() == 2){
+		tabManut.addMouseListener( new MouseAdapter() {
+
+			public void mouseClicked( MouseEvent e ) {
+
+				if ( e.getSource() == tabManut && e.getClickCount() == 2 ) {
 					visualizaRec();
 				}
-				else if (mevt.getSource() == tabManut && mevt.getClickCount() == 1){
-					String banco = tabManut.getValor( tabManut.getSelectedRow(), 26 ).toString();
-					if(banco.equals( Banco.BANCO_DO_BRASIL )) {
+				else if ( e.getSource() == tabManut && e.getClickCount() == 1 ) {
+					Object banco = tabManut.getValor( tabManut.getSelectedRow(), EColTabManut.CODBANCO.ordinal() );
+					if ( Banco.BANCO_DO_BRASIL.equals( banco ) ) {
 						btImpBol.setIcon( Icone.novo( "btBB.gif" ) );
 					}
-					else if(banco.equals( Banco.CAIXA_ECONOMICA )) {
+					else if ( Banco.CAIXA_ECONOMICA.equals( banco ) ) {
 						btImpBol.setIcon( Icone.novo( "btCEF.gif" ) );
 					}
 					else {
 						btImpBol.setIcon( Icone.novo( "btCodBar.gif" ) );
-					}					
+					}
 				}
 			}
-		});
+		} );
 		
 	}
 
@@ -1773,8 +1773,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					
 					sVals = getTabManutValores();
 
-					dl.setValores( sVals );
 					dl.setConexao( con );
+					dl.setValores( sVals );
 					dl.setVisible( true );
 
 					if ( dl.OK ) {
@@ -2076,8 +2076,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 		PreparedStatement ps = null;
 		StringBuffer sSQL = new StringBuffer();
-		Object[] sVals = null;
-		Object[] sRets = null;
 		DLBaixaRec dl = null;
 		ImageIcon imgStatusAt = null;
 		int iCodRec = 0;
@@ -2097,9 +2095,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				historico.setHistoricocodificado( HISTORICO_PADRAO );
 			}
 						
-			if ( ( 'M' == cOrig ) & ( tabManut.getLinhaSel() > -1 ) ) {
+			if ( 'M' == cOrig && tabManut.getLinhaSel() > -1 ) {
 
-				imgStatusAt = ( (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.IMGSTATUS.ordinal() ) );
+				imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.IMGSTATUS.ordinal() );
 
 				if ( imgStatusAt == imgPago ) {
 
@@ -2110,62 +2108,63 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				int iLin = tabManut.getLinhaSel();
 
 				if ( iLin < 0 ) {
-
 					Funcoes.mensagemInforma( this, "Selecionde uma parcela." );
 					return;
 				}
 
 				iCodRec = (Integer) tabManut.getValor( iLin, EColTabManut.CODREC.ordinal() );
 				iNParcItRec = (Integer) tabManut.getValor( iLin, EColTabManut.NPARCITREC.ordinal() );
-
-				sVals = new Object[ 15 ];
 				
 				String[] sPlanoConta = getPlanejamentoConta( iCodRec );
 
 				dl = new DLBaixaRec( this );
+				DLBaixaRec.BaixaRecBean baixaRecBean = dl.new BaixaRecBean();
 
-				sVals[ EColBaixa.CODCLI.ordinal() ] = tabManut.getValor( iLin, EColTabManut.CODCLI.ordinal() );
-				sVals[ EColBaixa.RAZCLI.ordinal() ] = tabManut.getValor( iLin, EColTabManut.RAZCLI.ordinal() );
-				sVals[ EColBaixa.NUMCONTA.ordinal() ] = 
-					"".equals( sPlanoConta[ 2 ] ) ? tabManut.getValor( iLin, EColTabManut.NUMCONTA.ordinal() ) : sPlanoConta[ 2 ] ;
-				sVals[ EColBaixa.CODPLAN.ordinal() ] = 
-					"".equals( sPlanoConta[ 1 ] ) ? tabManut.getValor( iLin, EColTabManut.CODPLAN.ordinal() ) : sPlanoConta[ 1 ];
-				sVals[ EColBaixa.DOC.ordinal() ] = ( "".equals( tabManut.getValor( iLin, EColTabManut.DOCLANCA.ordinal() ) ) ? String.valueOf( tabManut.getValor( iLin, EColTabManut.DOCVENDA.ordinal() ) ) : tabManut.getValor( iLin, EColTabManut.DOCLANCA.ordinal() ) );
-				sVals[ EColBaixa.DTEMIT.ordinal() ] = Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTEMIT.ordinal() ).toString());
-				sVals[ EColBaixa.DTVENC.ordinal() ] = Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTVENC.ordinal() ).toString());
-				sVals[ EColBaixa.VLRPARC.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPARC.ordinal() ) );
-				sVals[ EColBaixa.VLRAPAG.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRAPAG.ordinal() ) );
-				sVals[ EColBaixa.VLRDESC.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRDESC.ordinal() ) );
-				sVals[ EColBaixa.VLRJUROS.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRJUROS.ordinal() ) );
-				sVals[ EColBaixa.CODCC.ordinal() ] =
-					"".equals( sPlanoConta[ 3 ] ) ? tabManut.getValor( iLin, EColTabManut.CODCC.ordinal() ) : sPlanoConta[ 3 ];
-				if ( "".trim().equals( tabManut.getValor( iLin, EColTabManut.DTPAGTO.ordinal() ) ) ) {
-					sVals[ EColBaixa.DTPGTO.ordinal() ] = Funcoes.dateToStrDate( new Date());
-					sVals[ EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() ) );
+				baixaRecBean.setRecebimento( (Integer) tabManut.getValor( iLin, EColTabManut.CODREC.ordinal() ) );
+				baixaRecBean.setParcela( (Integer) tabManut.getValor( iLin, EColTabManut.NPARCITREC.ordinal() ) );
+				baixaRecBean.setCliente( (Integer) tabManut.getValor( iLin, EColTabManut.CODCLI.ordinal() ) );
+				baixaRecBean.setRazaoSocialCliente( (String) tabManut.getValor( iLin, EColTabManut.RAZCLI.ordinal() ) );
+				baixaRecBean.setConta( "".equals( sPlanoConta[ 2 ] ) ? (String)tabManut.getValor( iLin, EColTabManut.NUMCONTA.ordinal() ) : sPlanoConta[ 2 ] );
+				baixaRecBean.setPlanejamento( "".equals( sPlanoConta[ 1 ] ) ? (String)tabManut.getValor( iLin, EColTabManut.CODPLAN.ordinal() ) : sPlanoConta[ 1 ] );
+				baixaRecBean.setDocumento( 
+						"".equals( tabManut.getValor( iLin, EColTabManut.DOCLANCA.ordinal() ) ) ? 
+								String.valueOf( tabManut.getValor( iLin, EColTabManut.DOCVENDA.ordinal() ) ) : 
+								String.valueOf( tabManut.getValor( iLin, EColTabManut.DOCLANCA.ordinal() ) ) );
+				baixaRecBean.setDataEmissao( Funcoes.strDateToDate( (String)tabManut.getValor( iLin, EColTabManut.DTEMIT.ordinal() ) ) );
+				baixaRecBean.setDataVencimento( Funcoes.strDateToDate( (String)tabManut.getValor( iLin, EColTabManut.DTVENC.ordinal() ) ) );
+				baixaRecBean.setValorParcela( Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPARC.ordinal() ) ) );
+				baixaRecBean.setValorAPagar( Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRAPAG.ordinal() ) ) );
+				baixaRecBean.setValorDesconto( Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRDESC.ordinal() ) ) );
+				baixaRecBean.setValorJuros( Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRJUROS.ordinal() ) ) );
+				baixaRecBean.setCentroCusto( "".equals( sPlanoConta[ 3 ] ) ? (String)tabManut.getValor( iLin, EColTabManut.CODCC.ordinal() ) : sPlanoConta[ 3 ] );
+				if ( "".equals( tabManut.getValor( iLin, EColTabManut.DTPAGTO.ordinal() ) ) ) {
+					baixaRecBean.setDataPagamento( new Date() );
+					baixaRecBean.setValorPago( Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() ) ) );
 				}
 				else {
-//					sVals[ EColBaixa.DTPGTO.ordinal() ] =  Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTPAGTO.ordinal() ).toString());
-					sVals[ EColBaixa.DTPGTO.ordinal() ] =  ( tabManut.getValor( iLin, EColTabManut.DTPAGTO.ordinal() ).toString());
-					sVals[ EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() ) );
+					baixaRecBean.setDataPagamento( Funcoes.strDateToDate( (String)tabManut.getValor( iLin, EColTabManut.DTPAGTO.ordinal() ) ) );
+					baixaRecBean.setValorPago( Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPAGO.ordinal() ) ) );
 				}				
-				if ( "".trim().equals( tabManut.getValor( iLin, EColTabManut.OBS.ordinal() ) ) ) {
+				if ( "".equals( tabManut.getValor( iLin, EColTabManut.OBS.ordinal() ) ) ) {
 					historico.setData( Funcoes.strDateToDate( tabManut.getValor( iLin, EColTabManut.DTEMIT.ordinal() ).toString() ) );
 					historico.setDocumento( tabManut.getValor( iLin, EColTabManut.DOCVENDA.ordinal() ).toString().trim() );					
 					historico.setPortador( tabManut.getValor( iLin, EColTabManut.RAZCLI.ordinal() ).toString().trim() );
 					historico.setValor( Funcoes.strToBd( tabManut.getValor( iLin, EColTabManut.VLRPARC.ordinal()).toString() ));					
-					sVals[ EColBaixa.OBS.ordinal() ] = historico.getHistoricodecodificado();										
+					baixaRecBean.setObservacao( historico.getHistoricodecodificado() );										
 				}				
 				else {
-					sVals[ EColBaixa.OBS.ordinal() ] = (String) tabManut.getValor( iLin, EColTabManut.OBS.ordinal() );
+					baixaRecBean.setObservacao( (String) tabManut.getValor( iLin, EColTabManut.OBS.ordinal() ) );
 				}
+				
+				baixaRecBean.setEmBordero( "RB".equals( tabManut.getValor( iLin, EColTabManut.STATUS.ordinal() ) ) );
 
-				dl.setValores( sVals );
 				dl.setConexao( con );
+				dl.setValores( baixaRecBean );
 				dl.setVisible( true );
 
 				if ( dl.OK ) {
 
-					sRets = dl.getValores();
+					baixaRecBean = dl.getValores();
 
 					sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 					sSQL.append( "DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?,VLRDESCITREC=?,VLRJUROSITREC=?,ANOCC=?," );
@@ -2175,18 +2174,18 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					try {
 
 						ps = con.prepareStatement( sSQL.toString() );
-						ps.setString( 1, (String) sRets[ EColRetBaixa.NUMCONTA.ordinal() ] );
+						ps.setString( 1, baixaRecBean.getConta() );
 						ps.setInt( 2, Aplicativo.iCodEmp );
 						ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
-						ps.setString( 4, (String) sRets[ EColRetBaixa.CODPLAN.ordinal() ] );
+						ps.setString( 4, baixaRecBean.getPlanejamento() );
 						ps.setInt( 5, Aplicativo.iCodEmp );
 						ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-						ps.setString( 7, (String) sRets[ EColRetBaixa.DOC.ordinal() ] );
-						ps.setDate( 8, Funcoes.dateToSQLDate( (java.util.Date) sRets[ EColRetBaixa.DTPAGTO.ordinal() ] ) );
-						ps.setBigDecimal( 9, (BigDecimal) sRets[ EColRetBaixa.VLRPAGO.ordinal() ] );
-						ps.setBigDecimal( 10, (BigDecimal) sRets[ EColRetBaixa.VLRDESC.ordinal() ] );
-						ps.setBigDecimal( 11, (BigDecimal) sRets[ EColRetBaixa.VLRJUROS.ordinal() ] );
-						if ( "".equals( ( (String) sRets[ EColRetBaixa.CODCC.ordinal() ] ).trim() ) ) {
+						ps.setString( 7, baixaRecBean.getDocumento() );
+						ps.setDate( 8, Funcoes.dateToSQLDate( baixaRecBean.getDataPagamento() ) );
+						ps.setBigDecimal( 9, baixaRecBean.getValorPago() );
+						ps.setBigDecimal( 10, baixaRecBean.getValorDesconto() );
+						ps.setBigDecimal( 11, baixaRecBean.getValorJuros() );
+						if ( baixaRecBean.getCentroCusto() == null || "".equals( baixaRecBean.getCentroCusto().trim() ) ) {
 							ps.setNull( 12, Types.INTEGER );
 							ps.setNull( 13, Types.CHAR );
 							ps.setNull( 14, Types.INTEGER );
@@ -2194,12 +2193,12 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						}
 						else {
 							ps.setInt( 12, iAnoCC );
-							ps.setString( 13, (String) sRets[ EColRetBaixa.CODCC.ordinal() ] );
+							ps.setString( 13, baixaRecBean.getCentroCusto() );
 							ps.setInt( 14, Aplicativo.iCodEmp );
 							ps.setInt( 15, ListaCampos.getMasterFilial( "FNCC" ) );
 						}
 
-						ps.setString( 16, (String) sRets[ EColRetBaixa.OBS.ordinal() ] );
+						ps.setString( 16, baixaRecBean.getObservacao() );
 						ps.setInt( 17, iCodRec );
 						ps.setInt( 18, iNParcItRec );
 						ps.setInt( 19, Aplicativo.iCodEmp );
@@ -2216,12 +2215,11 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				dl.dispose();
 				carregaGridManut( bBuscaAtual );
 			}
-			else if ( ( cOrig == 'B' ) & ( tabBaixa.getLinhaSel() > -1 ) ) {
+			else if ( cOrig == 'B' && tabBaixa.getLinhaSel() > -1 ) {
 
-				imgStatusAt = ( (ImageIcon) tabBaixa.getValor( tabBaixa.getLinhaSel(), 0 ) );
+				imgStatusAt = (ImageIcon) tabBaixa.getValor( tabBaixa.getLinhaSel(), 0 );
 
 				if ( imgStatusAt == imgPago ) {
-
 					Funcoes.mensagemInforma( this, "Parcela já foi baixada!" );
 					return;
 				}
@@ -2231,51 +2229,51 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				iCodRec = (Integer) tabBaixa.getValor( iLin, EColTabBaixa.CODREC.ordinal() );
 				iNParcItRec = (Integer) tabBaixa.getValor( iLin, EColTabBaixa.NPARCITREC.ordinal() );
 
-				sVals = new Object[ EColBaixa.values().length ];
-				// DLBaixaRec.EColBaixa.values().length
 				dl = new DLBaixaRec( this );
+				
+				DLBaixaRec.BaixaRecBean baixaRecBean = dl.new BaixaRecBean();
 
-				sVals[ EColBaixa.CODCLI.ordinal() ] = txtCodCliBaixa.getVlrInteger(); // Codcli
-				sVals[ EColBaixa.RAZCLI.ordinal() ] = txtRazCliBaixa.getVlrString(); // Razcli
-				sVals[ EColBaixa.NUMCONTA.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.NUMCONTA.ordinal() ); // NumConta
-				sVals[ EColBaixa.CODPLAN.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.CODPLAN.ordinal() ); // Codplan
-				sVals[ EColBaixa.DOC.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.DOC.ordinal() ); // Doc
-				sVals[ EColBaixa.DTEMIT.ordinal() ] = txtDtEmisBaixa.getVlrDate(); // Data emissão
-				sVals[ EColBaixa.DTVENC.ordinal() ] = Funcoes.strDateToDate( (String) tabBaixa.getValor( iLin, EColTabBaixa.DTVENC.ordinal() ) ); // Vencimento
-				sVals[ EColBaixa.VLRPARC.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPARC.ordinal() ) ); // Vlrparc
-				sVals[ EColBaixa.VLRDESC.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRDESC.ordinal() ) ); // Vlrdesc
-				sVals[ EColBaixa.VLRJUROS.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRJUROS.ordinal() ) ); // Vlrjuros
-				sVals[ EColBaixa.VLRAPAG.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRAPAG.ordinal() ) ); // Vlraberto
-				sVals[ EColBaixa.CODCC.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.CODCC.ordinal() ); // Codcc
-
-				if ( "".equals( tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) ) { // Data de pagamento branco
-//					sVals[ EColBaixa.DTPGTO.ordinal() ] = Funcoes.dateToStrDate( new Date() ); // Data pagto
-					sVals[ EColBaixa.DTPGTO.ordinal() ] = new Date() ; // Data pagto					
-					sVals[ EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ); // valor pago
+				baixaRecBean.setRecebimento( (Integer) tabManut.getValor( iLin, EColTabManut.CODREC.ordinal() ) );
+				baixaRecBean.setParcela( (Integer) tabManut.getValor( iLin, EColTabManut.NPARCITREC.ordinal() ) );
+				baixaRecBean.setCliente( txtCodCliBaixa.getVlrInteger() );
+				baixaRecBean.setRazaoSocialCliente( txtRazCliBaixa.getVlrString() );
+				baixaRecBean.setConta( (String)tabBaixa.getValor( iLin, EColTabBaixa.NUMCONTA.ordinal() ) );
+				baixaRecBean.setPlanejamento( (String)tabBaixa.getValor( iLin, EColTabBaixa.CODPLAN.ordinal() ) );
+				baixaRecBean.setDocumento( (String)tabBaixa.getValor( iLin, EColTabBaixa.DOC.ordinal() ) );
+				baixaRecBean.setDataEmissao( txtDtEmisBaixa.getVlrDate() );
+				baixaRecBean.setDataVencimento( Funcoes.strDateToDate( (String) tabBaixa.getValor( iLin, EColTabBaixa.DTVENC.ordinal() ) ) );
+				baixaRecBean.setValorParcela( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPARC.ordinal() ) ) );
+				baixaRecBean.setValorAPagar( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRAPAG.ordinal() ) ) );
+				baixaRecBean.setValorDesconto( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRDESC.ordinal() ) ) );
+				baixaRecBean.setValorJuros( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRJUROS.ordinal() ) ) );
+				baixaRecBean.setCentroCusto( (String)tabBaixa.getValor( iLin, EColTabBaixa.CODCC.ordinal() ) );
+				
+				if ( "".equals( tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) ) { 
+					baixaRecBean.setDataPagamento( new Date() );
+					baixaRecBean.setValorPago( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ) );
 				}
 				else {
-//					sVals[ EColBaixa.DTPGTO.ordinal() ] = (String) tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ; // Data pagto
-					sVals[ EColBaixa.DTPGTO.ordinal() ] = Funcoes.strDateToDate( (String) tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) ; // Data pagto					
-					sVals[ EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ); // valor pago
+					baixaRecBean.setDataPagamento( Funcoes.strDateToDate( (String) tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) );
+					baixaRecBean.setValorPago( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ) );
 				}
 				if ( "".equals( ( (String) tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) ).trim() ) ) {
 					historico.setData( txtDtEmisBaixa.getVlrDate() );
 					historico.setDocumento( txtCodVendaBaixa.getVlrString() );					
 					historico.setPortador( txtRazCliBaixa.getVlrString().trim() );
 					historico.setValor( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPARC.ordinal()).toString() ));					
-					sVals[ EColBaixa.OBS.ordinal() ] = historico.getHistoricodecodificado();										
+					baixaRecBean.setObservacao( historico.getHistoricodecodificado() );										
 				}				
 				else {
-					sVals[ EColBaixa.OBS.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ); // histórico
-				}
+					baixaRecBean.setObservacao( (String) tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) );
+				}					
 
-				dl.setValores( sVals );
 				dl.setConexao( con );
+				dl.setValores( baixaRecBean );
 				dl.setVisible( true );
 
 				if ( dl.OK ) {
 
-					sRets = dl.getValores();
+					baixaRecBean = dl.getValores();
 
 					sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 					sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?," );
@@ -2285,14 +2283,14 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					try {
 
 						ps = con.prepareStatement( sSQL.toString() );
-						ps.setString( 1, (String) sRets[ 0 ] );
+						ps.setString( 1, baixaRecBean.getConta() );
 						ps.setInt( 2, Aplicativo.iCodEmp );
 						ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
-						ps.setString( 4, (String) sRets[ 1 ] );
+						ps.setString( 4, baixaRecBean.getPlanejamento() );
 						ps.setInt( 5, Aplicativo.iCodEmp );
 						ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 
-						if ( "".equals( ( (String) sRets[ 7 ] ).trim() ) ) {
+						if ( baixaRecBean.getCentroCusto() == null || "".equals( baixaRecBean.getCentroCusto().trim() ) ) {
 							ps.setNull( 7, Types.INTEGER );
 							ps.setNull( 8, Types.CHAR );
 							ps.setNull( 9, Types.INTEGER );
@@ -2300,17 +2298,17 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 						}
 						else {
 							ps.setInt( 7, iAnoCC );
-							ps.setString( 8, (String) sRets[ 7 ] );
+							ps.setString( 8, baixaRecBean.getCentroCusto() );
 							ps.setInt( 9, Aplicativo.iCodEmp );
 							ps.setInt( 10, ListaCampos.getMasterFilial( "FNCC" ) );
 						}
 
-						ps.setString( 11, (String) sRets[ 2 ] );
-						ps.setDate( 12, Funcoes.dateToSQLDate( (java.util.Date) sRets[ 3 ] ) );
-						ps.setBigDecimal( 13, (BigDecimal) sRets[ 4 ] );
-						ps.setBigDecimal( 14, (BigDecimal) sRets[ 5 ] );
-						ps.setBigDecimal( 15, (BigDecimal) sRets[ 6 ] );
-						ps.setString( 16, (String) sRets[ 8 ] );
+						ps.setString( 11, baixaRecBean.getDocumento() );
+						ps.setDate( 12, Funcoes.dateToSQLDate( baixaRecBean.getDataPagamento() ) );
+						ps.setBigDecimal( 13, baixaRecBean.getValorPago() );
+						ps.setBigDecimal( 14, baixaRecBean.getValorDesconto() );
+						ps.setBigDecimal( 15, baixaRecBean.getValorJuros() );
+						ps.setString( 16, baixaRecBean.getObservacao() );
 						ps.setInt( 17, iCodRec );
 						ps.setInt( 18, iNParcItRec );
 						ps.setInt( 19, Aplicativo.iCodEmp );
@@ -2329,14 +2327,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
-		} finally {
-			ps = null;
-			sSQL = null;
-			sVals = null;
-			sRets = null;
-			dl = null;
-			imgStatusAt = null;
-		}
+		} 
 	}
 
 	private boolean validaPeriodo() {

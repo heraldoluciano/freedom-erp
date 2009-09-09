@@ -29,8 +29,6 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,8 +56,8 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.DLBaixaRec;
-import org.freedom.modulos.std.DLBaixaRec.EColBaixa;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
@@ -553,8 +551,6 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 
 		PreparedStatement ps = null;
 		StringBuffer sSQL = new StringBuffer();
-		Object[] sVals = null;
-		Object[] sRets = null;
 		DLBaixaRec dl = null;
 		ImageIcon imgStatusAt = null;
 		int iCodRec = 0;
@@ -574,44 +570,44 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 			iCodRec = (Integer) tabBaixa.getValor( iLin, EColTabBaixa.CODREC.ordinal() );
 			iNParcItRec = (Integer) tabBaixa.getValor( iLin, EColTabBaixa.NPARCITREC.ordinal() );
 
-			sVals = new Object[ EColBaixa.values().length ];
 			dl = new DLBaixaRec( AplicativoPDV.telaPrincipal );
+			DLBaixaRec.BaixaRecBean baixaRecBean = dl.new BaixaRecBean();
 
-			sVals[ EColBaixa.CODCLI.ordinal() ] = txtCodCliBaixa.getVlrInteger(); // Codcli
-			sVals[ EColBaixa.RAZCLI.ordinal() ] = txtRazCliBaixa.getVlrString(); // Razcli
-			sVals[ EColBaixa.NUMCONTA.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.NUMCONTA.ordinal() ); // NumConta
-			sVals[ EColBaixa.CODPLAN.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.CODPLAN.ordinal() ); // Codplan
-			sVals[ EColBaixa.DOC.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.DOC.ordinal() ); // Doc
-			sVals[ EColBaixa.DTEMIT.ordinal() ] = txtDtEmisBaixa.getVlrDate(); // Data emissão
-			sVals[ EColBaixa.DTVENC.ordinal() ] = Funcoes.strDateToDate( (String) tabBaixa.getValor( iLin, EColTabBaixa.DTVENC.ordinal() ) ); // Vencimento
-			sVals[ EColBaixa.VLRPARC.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPARC.ordinal() ) ); // Vlrparc
-			sVals[ EColBaixa.VLRDESC.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRDESC.ordinal() ) ); // Vlrdesc
-			sVals[ EColBaixa.VLRJUROS.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRJUROS.ordinal() ) ); // Vlrjuros
-			sVals[ EColBaixa.VLRAPAG.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRAPAG.ordinal() ) ); // Vlraberto
-			sVals[ EColBaixa.CODCC.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.CODCC.ordinal() ); // Codcc
+			baixaRecBean.setCliente( txtCodCliBaixa.getVlrInteger() );
+			baixaRecBean.setRazaoSocialCliente( txtRazCliBaixa.getVlrString() );
+			baixaRecBean.setConta( (String)tabBaixa.getValor( iLin, EColTabBaixa.NUMCONTA.ordinal() ) );
+			baixaRecBean.setPlanejamento( (String)tabBaixa.getValor( iLin, EColTabBaixa.CODPLAN.ordinal() ) );
+			baixaRecBean.setDocumento( (String)tabBaixa.getValor( iLin, EColTabBaixa.DOC.ordinal() ) );
+			baixaRecBean.setDataEmissao( txtDtEmisBaixa.getVlrDate() );
+			baixaRecBean.setDataVencimento( Funcoes.strDateToDate( (String) tabBaixa.getValor( iLin, EColTabBaixa.DTVENC.ordinal() ) ) );
+			baixaRecBean.setValorParcela( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPARC.ordinal() ) ) );
+			baixaRecBean.setValorDesconto( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRDESC.ordinal() ) ) );
+			baixaRecBean.setValorJuros( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRJUROS.ordinal() ) ) );
+			baixaRecBean.setValorAPagar( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRAPAG.ordinal() ) ) );
+			baixaRecBean.setCentroCusto( (String)tabBaixa.getValor( iLin, EColTabBaixa.CODCC.ordinal() ) );
 
 			if ( "".equals( tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) ) { // Data de pagamento branco
-				sVals[ EColBaixa.DTPGTO.ordinal() ] = Funcoes.dateToStrDate( new Date() ); // Data pagto
-				sVals[ EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ); // valor pago
+				baixaRecBean.setDataPagamento( new Date() );
+				baixaRecBean.setValorPago( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ) );
 			}
 			else {
-				sVals[ EColBaixa.DTPGTO.ordinal() ] = (String) tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ); // Data pagto
-				sVals[ EColBaixa.VLRPAGO.ordinal() ] = Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ); // valor pago
+				baixaRecBean.setDataPagamento( Funcoes.strDateToDate( (String)tabBaixa.getValor( iLin, EColTabBaixa.DTPAGTO.ordinal() ) ) );
+				baixaRecBean.setValorPago( Funcoes.strToBd( tabBaixa.getValor( iLin, EColTabBaixa.VLRPAGO.ordinal() ) ) );
 			}
-			if ( "".equals( ( (String) tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) ).trim() ) ) {
-				sVals[ EColBaixa.OBS.ordinal() ] = "RECEBIMENTO REF. AO PED.: " + txtCodVendaBaixa.getVlrString(); // histórico
+			if ( "".equals( ((String) tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) ).trim()) ) {
+				baixaRecBean.setObservacao( "RECEBIMENTO REF. AO PED.: " + txtCodVendaBaixa.getVlrString() );
 			}
 			else {
-				sVals[ EColBaixa.OBS.ordinal() ] = tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ); // histórico
+				baixaRecBean.setObservacao( (String)tabBaixa.getValor( iLin, EColTabBaixa.OBS.ordinal() ) );
 			}
 
-			dl.setValores( sVals );
+			dl.setValores( baixaRecBean );
 			dl.setConexao( con );
 			dl.setVisible( true );
 
 			if ( dl.OK ) {
 
-				sRets = dl.getValores();
+				baixaRecBean = dl.getValores();
 
 				sSQL.append( "UPDATE FNITRECEBER SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," );
 				sSQL.append( "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITREC=?,DTPAGOITREC=?,VLRPAGOITREC=VLRPAGOITREC+?," );
@@ -621,14 +617,14 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 				try {
 
 					ps = con.prepareStatement( sSQL.toString() );
-					ps.setString( 1, (String) sRets[ 0 ] );
+					ps.setString( 1, baixaRecBean.getConta() );
 					ps.setInt( 2, Aplicativo.iCodEmp );
 					ps.setInt( 3, ListaCampos.getMasterFilial( "FNCONTA" ) );
-					ps.setString( 4, (String) sRets[ 1 ] );
+					ps.setString( 4, baixaRecBean.getPlanejamento() );
 					ps.setInt( 5, Aplicativo.iCodEmp );
 					ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 
-					if ( "".equals( ( (String) sRets[ 7 ] ).trim() ) ) {
+					if ( "".equals( baixaRecBean.getCentroCusto() ) ) {
 						ps.setNull( 7, Types.INTEGER );
 						ps.setNull( 8, Types.CHAR );
 						ps.setNull( 9, Types.INTEGER );
@@ -636,17 +632,17 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 					}
 					else {
 						ps.setInt( 7, anoBase );
-						ps.setString( 8, (String) sRets[ 7 ] );
+						ps.setString( 8, baixaRecBean.getCentroCusto() );
 						ps.setInt( 9, Aplicativo.iCodEmp );
 						ps.setInt( 10, ListaCampos.getMasterFilial( "FNCC" ) );
 					}
 
-					ps.setString( 11, (String) sRets[ 2 ] );
-					ps.setDate( 12, Funcoes.dateToSQLDate( (java.util.Date) sRets[ 3 ] ) );
-					ps.setBigDecimal( 13, (BigDecimal) sRets[ 4 ] );
-					ps.setBigDecimal( 14, (BigDecimal) sRets[ 5 ] );
-					ps.setBigDecimal( 15, (BigDecimal) sRets[ 6 ] );
-					ps.setString( 16, (String) sRets[ 8 ] );
+					ps.setString( 11, baixaRecBean.getDocumento() );
+					ps.setDate( 12, Funcoes.dateToSQLDate( baixaRecBean.getDataPagamento() ) );
+					ps.setBigDecimal( 13, baixaRecBean.getValorPago() );
+					ps.setBigDecimal( 14, baixaRecBean.getValorDesconto() );
+					ps.setBigDecimal( 15, baixaRecBean.getValorJuros() );
+					ps.setString( 16, baixaRecBean.getObservacao() );
 					ps.setInt( 17, iCodRec );
 					ps.setInt( 18, iNParcItRec );
 					ps.setInt( 19, Aplicativo.iCodEmp );
@@ -656,7 +652,7 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 
 					con.commit();
 										
-					if ( ecf.suprimento( (BigDecimal) sRets[ 4 ], "Recebimento" ) ) {
+					if ( ecf.suprimento( baixaRecBean.getValorPago(), "Recebimento" ) ) {
 // validar aqui se autentica documento... no lugar do true ai de baixo...
 //						if ( true ) {
 //							if ( ! ecf.autenticarDocumento() ) {

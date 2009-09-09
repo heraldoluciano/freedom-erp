@@ -140,9 +140,9 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		lcItReceber.add( new GuardaCampo( txtVlrParcItRec, "VlrParcItRec", "Vlr.titulo", ListaCampos.DB_SI, false ) );
 		lcItReceber.add( new GuardaCampo( txtVlrApagItRec, "VlrApagItRec", "Vlr.Aberto", ListaCampos.DB_SI, false ) );
 		lcItReceber.add( new GuardaCampo( txtVlrPagoItRec, "VlrPagoItRec", "Vlr.Pago", ListaCampos.DB_SI, false ) );
-		lcItReceber.setWhereAdic( " NOT EXISTS (SELECT B.NPARCITREC FROM FNITBORDERO B " +
-				"WHERE B.CODEMPRC=IR.CODEMP AND B.CODFILIALRC=IR.CODFILIAL AND " +
-				"B.CODREC=IR.CODREC AND B.NPARCITREC=IR.NPARCITREC) " );
+//		lcItReceber.setWhereAdic( " NOT EXISTS (SELECT B.NPARCITREC FROM FNITBORDERO B " +
+//				"WHERE B.CODEMPRC=IR.CODEMP AND B.CODFILIALRC=IR.CODFILIAL AND " +
+//				"B.CODREC=IR.CODREC AND B.NPARCITREC=IR.NPARCITREC) " );
 		lcItReceber.montaSql( false, "ITRECEBER IR", "FN" );
 		lcItReceber.setQueryCommit( false );
 		lcItReceber.setReadOnly( true );
@@ -208,7 +208,10 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		
 		lbStatus.setVisible( true );		
 		
-		if ( "CR".equals( txtStatusItRec.getVlrString() ) )  {					
+		if ( "RB".equals( txtStatusItRec.getVlrString() ) )  {	
+			lbStatus.setVisible( false );					
+		}
+		else if ( "CR".equals( txtStatusItRec.getVlrString() ) )  {					
 			lbStatus.setText( "Cancelada" );
 			lbStatus.setBackground( Color.DARK_GRAY );								
 		}
