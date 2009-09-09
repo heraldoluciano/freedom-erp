@@ -27,6 +27,8 @@ package org.freedom.modulos.std;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FAtendente;
 import org.freedom.modulos.atd.FTipoAtend;
+import org.freedom.modulos.fnc.FRBordero;
+import org.freedom.modulos.fnc.FRFluxoCaixa;
 import org.freedom.modulos.grh.FFuncao;
 import org.freedom.modulos.lvf.FCLFiscal;
 import org.freedom.modulos.lvf.FTratTrib;
