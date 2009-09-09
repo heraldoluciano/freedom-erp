@@ -633,7 +633,7 @@ public class FRListaPreco extends FRelatorio {
     		}
     		
     		sql.append( "SELECT PP.CODPROD, P.DESCPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.CODUNID,P.QTDEMBALAGEM, " );
-    		sql.append( "(select aliqipifisc from LFBUSCAFISCALSP(P.CODFILIAL,P.CODEMP,P.CODFILIAL,P.CODPROD,P.CODEMP,NULL,NULL,P1.codempT3,P1.codfilialt3,P1.CODTIPOMOV3)) AS ALIQIPI ");
+    		sql.append( "(select aliqipifisc from LFBUSCAFISCALSP(P.CODEMP,P.CODFILIAL,P.CODPROD,P.CODEMP,NULL,NULL,P1.codempT3,P1.codfilialt3,P1.CODTIPOMOV3)) AS ALIQIPI ");
     	
     		if("S".equals( cbPrecoFracionado.getVlrString())){
     			sql.append( " ,PP.PRECOPROD/coalesce(P.QTDEMBALAGEM,1) AS PRECOPROD " );
