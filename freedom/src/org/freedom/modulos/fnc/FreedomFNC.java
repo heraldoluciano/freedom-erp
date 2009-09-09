@@ -50,10 +50,8 @@ import org.freedom.modulos.std.FProcessaSL;
 import org.freedom.modulos.std.FRBalancete;
 import org.freedom.modulos.std.FRBalanceteGrafico;
 import org.freedom.modulos.std.FRBoleto;
-import org.freedom.modulos.std.FRBordero;
 import org.freedom.modulos.std.FRCentroCusto;
 import org.freedom.modulos.std.FRExtrato;
-import org.freedom.modulos.std.FRFluxoCaixa;
 import org.freedom.modulos.std.FRGraficoCC;
 import org.freedom.modulos.std.FRInadimplentes;
 import org.freedom.modulos.std.FRPagar;
@@ -168,6 +166,7 @@ public class FreedomFNC extends AplicativoPD {
 				addOpcao( 401200000, TP_OPCAO_ITEM, "Relatório financeiro por C.C.", "Relatorio Financeiro por C.C.", 'R', 401203000, 2, true, FRCentroCusto.class );
 				addOpcao( 401200000, TP_OPCAO_ITEM, "Razão financeiro", "Razão financeiro", 'z', 401204000, 2, true, FRRazaoFin.class );
 				addOpcao( 401200000, TP_OPCAO_ITEM, "Fluxo de caixa", "Fluxo de caixa", 'F', 401205000, 2, true, FRFluxoCaixa.class );	
+				addOpcao( 401200000, TP_OPCAO_ITEM, "Fluxo de caixa resumido", "Fluxo de caixa resumido", 'F', 401207000, 2, true, FRFluxoCaixaRes.class );
 				addOpcao( 401200000, TP_OPCAO_ITEM, "Restrição/clientes", "Restrição/clientes", 'R', 401206000, 2, true, FRRestricao.class );	
 			addOpcao( 400000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 401300000, 1, false, null );
 				addOpcao( 401300000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'B', 401201000, 2, true, FRBalanceteGrafico.class );
