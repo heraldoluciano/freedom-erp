@@ -23,10 +23,17 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
+	<parameter name="DATA" isForPrompting="false" class="java.util.Date"/>
+	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(3)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[select rtrim(coalesce(ip.obsitpag,'PAGAMENTO REF. AO PED.: '||pa.codcompra )) pagar, 
 ip.vlrapagitpag valor, cast('today' as date)-ip.dtvencitpag diasatraso
 from fnitpagar ip, fnpagar pa
-where ip.codemp=2 and ip.codfilial=1 and ip.dtvencitpag<='07-31-2009'
+where ip.codemp=$P{CODEMP} and ip.codfilial=$P{CODFILIAL} and ip.dtvencitpag<=$P{DATA}
 and pa.codemp=ip.codemp and pa.codfilial=ip.codfilial and pa.codpag=ip.codpag
 and ip.statusitpag in ('PL','P1')
 order by ip.dtvencitpag]]></queryString>
