@@ -21,11 +21,14 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -43,9 +46,11 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
+import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
+import org.freedom.telas.FPrinterJob;
 
 
 /**
@@ -121,6 +126,8 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		lcDet.addPostListener( this );
 		
 		btCompletar.addActionListener( this );
+		btImp.addActionListener( this );
+		btPrevimp.addActionListener( this );
 	}
 	
 	private void montaListaCampos() {
@@ -192,8 +199,12 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		
 		pnGImp.removeAll();
 		pnGImp.setLayout( new GridLayout( 1, 1 ) );
-		pnGImp.setPreferredSize( new Dimension( 30, 26 ) );
+		pnGImp.setPreferredSize( new Dimension( 93, 26 ) );
 		pnGImp.add( btCompletar );
+		pnGImp.add( btImp );
+		pnGImp.add( btPrevimp );
+		
+		setImprimir( true );
 
 		txtCodRec.setFK( true );
 		navRod.setAtivo( Navegador.BT_EDITAR, false );
@@ -256,12 +267,69 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 			e.printStackTrace();
 		}
 	}
+	
+	private void imprimir( boolean visualizar ) {
+		
+		if ( txtCodBordero.getVlrInteger() == 0 ) {
+			return;
+		}
+		
+		StringBuilder sql = new StringBuilder();		
+		sql.append( "SELECT B.CODBOR, B.NUMCONTA, C.DESCCONTA, B.NUMCONTABOR, C2.DESCCONTA DESCCONTABOR, B.DTBOR, B.OBSBOR," );
+		sql.append( "IB.CODREC, IB.NPARCITREC, R.CODCLI, CL.RAZCLI, IR.VLRITREC, IR.DTVENCITREC " );
+		sql.append( "FROM FNBORDERO B, FNITBORDERO IB, FNCONTA C, FNCONTA C2, " );
+		sql.append( "FNITRECEBER IR, FNRECEBER R, VDCLIENTE CL " );
+		sql.append( "WHERE B.CODEMP=? AND B.CODFILIAL=? AND B.CODBOR=? AND " );
+		sql.append( "C.CODEMP=B.CODEMPCC AND C.CODFILIAL=B.CODFILIALCC AND C.NUMCONTA=B.NUMCONTA AND " );
+		sql.append( "C2.CODEMP=B.CODEMPCB AND C2.CODFILIAL=B.CODFILIALCB AND C2.NUMCONTA=B.NUMCONTABOR AND " );    
+		sql.append( "IB.CODEMP=B.CODEMP AND IB.CODFILIAL=B.CODFILIAL AND IB.CODBOR=B.CODBOR AND " );
+		sql.append( "IR.CODEMP=IB.CODEMPRC AND IR.CODFILIAL=IB.CODFILIALRC AND IR.CODREC=IB.CODREC AND IR.NPARCITREC=IB.NPARCITREC AND " );
+		sql.append( "R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC AND " );
+		sql.append( "CL.CODEMP=R.CODEMPCL AND CL.CODFILIAL=R.CODFILIALCL AND CL.CODCLI=R.CODCLI " );
+		sql.append( "ORDER BY IB.NPARCITREC" );
+		
+		ResultSet rs = null;
+		
+		try {
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNBORDERO" ) );
+			ps.setInt( 3, txtCodBordero.getVlrInteger() );
+			
+			rs = ps.executeQuery();
+			
+			FPrinterJob dlGr = new FPrinterJob( "relatorios/FBordero.jasper", "Bordero de recebivéis", null, rs, null, this );
+
+			if ( visualizar ) {
+				dlGr.setVisible( true );
+			}
+			else {
+				try {
+					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				} catch ( Exception e ) {
+					e.printStackTrace();
+					Funcoes.mensagemErro( this, "Erro na impressão!" + e.getMessage(), true, con, e );
+				}
+			}
+			
+			con.commit();
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro na pesquisa!" + e.getMessage(), true, con, e );
+		}
+	}
 
 	@ Override
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btCompletar ) {
 			concluiBordero();
+		}
+		else if ( e.getSource() == btImp ) {
+			imprimir( false );
+		}
+		else if ( e.getSource() == btPrevimp ) {
+			imprimir( true );
 		}
 		else {
 			super.actionPerformed( e );
