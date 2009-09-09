@@ -95,17 +95,17 @@ public class DLBordero extends FDialogo {
 
 	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtCodPlanejamento = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private JTextFieldPad txtCodContaBordero = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
-	private JTextFieldFK txtDescPlanejamento = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtDescContaBordero = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtDataBordero = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextAreaPad txaObservacao = new JTextAreaPad( 300 );
 	
-	private ListaCampos lcConta = new ListaCampos( this, "" );
+	private ListaCampos lcConta = new ListaCampos( this );
 
-	private ListaCampos lcPlanejamento = new ListaCampos( this );
+	private ListaCampos lcContaBordero = new ListaCampos( this );
 	
 	
 	private enum RECEBER {
@@ -138,14 +138,13 @@ public class DLBordero extends FDialogo {
 		txtCodConta.setFK( true );
 		txtCodConta.setNomeCampo( "NumConta" );		
 
-		lcPlanejamento.add( new GuardaCampo( txtCodPlanejamento, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, false ) );
-		lcPlanejamento.add( new GuardaCampo( txtDescPlanejamento, "DescPlan", "Descrição", ListaCampos.DB_SI, false ) );
-		lcPlanejamento.setWhereAdic( "TIPOPLAN = 'R' AND NIVELPLAN = 6" );
-		lcPlanejamento.montaSql( false, "PLANEJAMENTO", "FN" );
-		lcPlanejamento.setReadOnly( true );
-		txtCodPlanejamento.setTabelaExterna( lcPlanejamento );
-		txtCodPlanejamento.setFK( true );
-		txtCodPlanejamento.setNomeCampo( "CodPlan" );
+		lcContaBordero.add( new GuardaCampo( txtCodContaBordero, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
+		lcContaBordero.add( new GuardaCampo( txtDescContaBordero, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
+		lcContaBordero.montaSql( false, "CONTA", "FN" );
+		lcContaBordero.setReadOnly( true );
+		txtCodContaBordero.setTabelaExterna( lcContaBordero );
+		txtCodContaBordero.setFK( true );
+		txtCodContaBordero.setNomeCampo( "NumConta" );
 	}
 
 	private void montaTela() {
@@ -215,16 +214,17 @@ public class DLBordero extends FDialogo {
 		panelFields.setBorder( BorderFactory.createEtchedBorder() );
 		panelMaster.add( panelFields, BorderLayout.SOUTH );
 
-		panelFields.adic( new JLabelPad( "Número" ), 7, 0, 90, 20 );
+		panelFields.adic( new JLabelPad( "Conta" ), 7, 0, 90, 20 );
 		panelFields.adic( txtCodConta, 7, 20, 90, 20 );
 		panelFields.adic( new JLabelPad( "Descrição da conta" ), 100, 0, 300, 20 );
 		panelFields.adic( txtDescConta, 100, 20, 300, 20 );
 		panelFields.adic( new JLabelPad( "Data bordero" ), 403, 00, 97, 20 );
 		panelFields.adic( txtDataBordero, 403, 20, 97, 20 );
-		panelFields.adic( new JLabelPad( "Cód.plan." ), 7, 40, 130, 20 );
-		panelFields.adic( txtCodPlanejamento, 7, 60, 130, 20 );
-		panelFields.adic( new JLabelPad( "Descrição do planejamento" ), 140, 40, 360, 20 );
-		panelFields.adic( txtDescPlanejamento, 140, 60, 360, 20 );
+		panelFields.adic( new JLabelPad( "Conta Bordero" ), 7, 40, 130, 20 );
+		panelFields.adic( txtCodContaBordero, 7, 60, 130, 20 );
+		panelFields.adic( new JLabelPad( "Descrição da conta" ), 140, 40, 360, 20 );
+		panelFields.adic( txtDescContaBordero, 140, 60, 360, 20 );
+		panelFields.adic( new JLabelPad( "Observação" ), 7, 80, 100, 20 );
 		panelFields.adic( new JScrollPane( txaObservacao ), 7, 100, 493, 60 );
 		
 		panelFields.adic( btGerarBordero, 540, 15, 160, 30 );
@@ -349,7 +349,7 @@ public class DLBordero extends FDialogo {
 			
 			StringBuilder insertBordero = new StringBuilder();
 			insertBordero.append( "INSERT INTO FNBORDERO (CODEMP, CODFILIAL, CODBOR, DTBOR, OBSBOR, " );
-			insertBordero.append( "CODEMPCC, CODFILIALCC, NUMCONTA, CODEMPPN, CODFILIALPN, CODPLAN) " );
+			insertBordero.append( "CODEMPCC, CODFILIALCC, NUMCONTA, CODEMPCB, CODFILIALCB, NUMCONTABOR) " );
 			insertBordero.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
 			
 			ps  = con.prepareStatement( insertBordero.toString() );
@@ -363,7 +363,7 @@ public class DLBordero extends FDialogo {
 			ps.setString( 8, txtCodConta.getVlrString() );
 			ps.setInt( 9, Aplicativo.iCodEmp );
 			ps.setInt( 10, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-			ps.setString( 11, txtCodPlanejamento.getVlrString() );
+			ps.setString( 11, txtCodContaBordero.getVlrString() );
 			
 			ps.executeUpdate();
 
@@ -424,7 +424,7 @@ public class DLBordero extends FDialogo {
 
 		super.setConexao( cn );
 		lcConta.setConexao( cn );
-		lcPlanejamento.setConexao( cn );
+		lcContaBordero.setConexao( cn );
 	}
 	
 	public class GridBordero {

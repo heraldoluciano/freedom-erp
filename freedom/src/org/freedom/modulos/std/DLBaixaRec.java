@@ -105,14 +105,9 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	private ListaCampos lcCC = new ListaCampos( this );
 
 	boolean bJurosPosCalc = false;
-
-	public enum EColBaixa {
-		CODCLI, RAZCLI, NUMCONTA, CODPLAN, DOC, DTEMIT, DTVENC, VLRPARC, VLRAPAG, VLRDESC, VLRJUROS, DTPGTO, VLRPAGO, CODCC, OBS
-	};
-
-	public enum EColRetBaixa {
-		NUMCONTA, CODPLAN, DOC, DTPAGTO, VLRPAGO, VLRDESC, VLRJUROS, CODCC, OBS
-	};
+	
+	private BaixaRecBean baixaRecBean;
+	
 
 	public DLBaixaRec( Component cOrig ) {
 
@@ -193,7 +188,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		adic( txtPercDesc, 7, 220, 60, 20 );
 		adic( new JLabelPad( "Vlr. Desc." ), 70, 200, 107, 20 );
 		adic( txtVlrDesc, 70, 220, 107, 20 );
-		// A label vai no set conexao...
+		// A label vai no setValores...
 		adic( txtPercJuros, 180, 220, 57, 20 );
 		adic( new JLabelPad( "Vlr. Juros." ), 240, 200, 100, 20 );
 		adic( txtVlrJuros, 240, 220, 100, 20 );
@@ -355,96 +350,99 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 	private int getAnoBaseCC() {
 
-		int iRet = 0;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		int anoBase = 0;
+
 		try {
-			ps = con.prepareStatement( sSQL );
+			
+			PreparedStatement ps = con.prepareStatement( "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			rs = ps.executeQuery();
+			
+			ResultSet rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
-				iRet = rs.getInt( "ANOCENTROCUSTO" );
+				anoBase = rs.getInt( "ANOCENTROCUSTO" );
 			}
+			
 			rs.close();
 			ps.close();
 			con.commit();
+			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-		return iRet;
+		} 
+
+		return anoBase;
+	}
+	
+	private void emBordero( BaixaRecBean baixa ) {
+		
+		try {
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append( "SELECT B.NUMCONTABOR FROM FNBORDERO B, FNITBORDERO I, FNITRECEBER R " );
+			sql.append( "WHERE B.CODEMP=I.CODEMP AND B.CODFILIAL=I.CODFILIAL AND B.CODBOR=I.CODBOR AND " );
+			sql.append( "I.CODEMPRC=R.CODEMP AND I.CODFILIALRC=R.CODFILIAL AND I.CODREC=R.CODREC AND I.NPARCITREC=R.NPARCITREC AND " );
+			sql.append( "R.CODEMP=? AND R.CODFILIAL=? AND R.CODREC=? AND R.NPARCITREC=?" );
+			
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+			ps.setInt( 3, baixa.getRecebimento() );
+			ps.setInt( 4, baixa.getParcela() );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				txtCodConta.setVlrString( rs.getString( "NUMCONTABOR" ) );
+				txtCodConta.setAtivo( false );
+				txtCodConta.setRequerido( false );
+			}
+			
+			rs.close();
+			ps.close();
+			con.commit();
+			
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar conta de adiantamento de recebivéis.\n" + err.getMessage(), true, con, err );
+		} 
 	}
 
-	public Object[] getValores() {
-
-		Object[] sRetorno = new Object[ 9 ];
-		sRetorno[ EColRetBaixa.NUMCONTA.ordinal() ] = txtCodConta.getVlrString();
-		sRetorno[ EColRetBaixa.CODPLAN.ordinal() ] = txtCodPlan.getVlrString();
-		sRetorno[ EColRetBaixa.DOC.ordinal() ] = txtDoc.getVlrString();
-		sRetorno[ EColRetBaixa.DTPAGTO.ordinal() ] = (java.util.Date) txtDtPagto.getVlrDate();
-		sRetorno[ EColRetBaixa.VLRPAGO.ordinal() ] = txtVlr.getVlrBigDecimal();
-		sRetorno[ EColRetBaixa.VLRDESC.ordinal() ] = txtVlrDesc.getVlrBigDecimal();
-		sRetorno[ EColRetBaixa.VLRJUROS.ordinal() ] = txtVlrJuros.getVlrBigDecimal();
-		sRetorno[ EColRetBaixa.CODCC.ordinal() ] = txtCodCC.getVlrString();
-		sRetorno[ EColRetBaixa.OBS.ordinal() ] = txtObs.getVlrString();
-		return sRetorno;
-	}
-
-	public void setValores( Object[] sVals ) {
-
-		txtCodCli.setVlrInteger( (Integer) sVals[ EColBaixa.CODCLI.ordinal() ] );
-		txtRazCli.setVlrString( (String) sVals[ EColBaixa.RAZCLI.ordinal() ] );
-		txtCodConta.setVlrString( (String) sVals[ EColBaixa.NUMCONTA.ordinal() ] );
-		txtCodPlan.setVlrString( (String) sVals[ EColBaixa.CODPLAN.ordinal() ] );
-		txtDoc.setVlrString( (String) sVals[ EColBaixa.DOC.ordinal() ] );
-
-		txtDtEmis.setVlrDate( (Date) sVals[ EColBaixa.DTEMIT.ordinal() ] );
-		txtDtVenc.setVlrDate( (Date) sVals[ EColBaixa.DTVENC.ordinal() ] );
-
-		txtVlrParc.setVlrBigDecimal( (BigDecimal) sVals[ EColBaixa.VLRPARC.ordinal() ] );
-		txtVlr.setVlrBigDecimal( (BigDecimal) sVals[ EColBaixa.VLRAPAG.ordinal() ] );
-		txtVlrDesc.setVlrBigDecimal( (BigDecimal) sVals[ EColBaixa.VLRDESC.ordinal() ] );
+	public void setValores( BaixaRecBean baixa ) {
 		
-		Object juros = sVals[ EColBaixa.VLRJUROS.ordinal() ];
+		if ( baixa == null ) {
+			return;
+		}
 		
-		if ( juros instanceof BigDecimal ) {
-			txtVlrJuros.setVlrBigDecimal( (BigDecimal) sVals[ EColBaixa.VLRJUROS.ordinal() ] );
-		}
-		else /*if (juros instanceof String)*/ {
-			txtVlrJuros.setVlrBigDecimal( Funcoes.strToBd( sVals[ EColBaixa.VLRJUROS.ordinal() ]) );
-		}
+		baixaRecBean = baixa;
+
+		txtCodCli.setVlrInteger( baixa.getCliente() );
+		txtRazCli.setVlrString( baixa.getRazaoSocialCliente() );
+		txtCodConta.setVlrString( baixa.getConta() );
+		txtCodPlan.setVlrString( baixa.getPlanejamento() );
+		txtCodCC.setVlrString( baixa.getCentroCusto() );
+		
+		txtDoc.setVlrString( baixa.getDocumento() );
+		txtDtEmis.setVlrDate( baixa.getDataEmissao() );
+		txtDtVenc.setVlrDate( baixa.getDataVencimento() );
+		txtDtPagto.setVlrDate( baixa.getDataPagamento() );		
+		
+		txtVlrParc.setVlrBigDecimal( baixa.getValorParcela() );
+		txtVlrDesc.setVlrBigDecimal( baixa.getValorDesconto() );		
+		txtVlrJuros.setVlrBigDecimal( baixa.getValorJuros() );				
+		txtVlrAberto.setVlrBigDecimal( baixa.getValorAPagar() );	
+		txtVlrPago.setVlrBigDecimal( baixa.getValorPago() );
 				
-		txtVlrAberto.setVlrBigDecimal( (BigDecimal) sVals[ EColBaixa.VLRAPAG.ordinal() ] );
-
-		Object dtpgto = sVals[ EColBaixa.DTPGTO.ordinal() ];
+		txtVlr.setVlrBigDecimal( baixa.getValorAPagar() );
 		
-		if ( dtpgto instanceof Date ) {
-			txtDtPagto.setVlrDate( (Date) dtpgto );	
-		}
-		else {
-			txtDtPagto.setVlrDate( Funcoes.strDateToDate( (String) dtpgto ) );	
+		txtObs.setVlrString( baixa.getObservacao() );
+		
+		if ( baixa.isEmBordero() ) {
+			emBordero( baixa );
 		}
 		
-		txtVlrPago.setVlrBigDecimal( (BigDecimal) sVals[ EColBaixa.VLRPAGO.ordinal() ] );
-		txtCodCC.setVlrString( (String) sVals[ EColBaixa.CODCC.ordinal() ] );
-		txtObs.setVlrString( (String) sVals[ EColBaixa.OBS.ordinal() ] );
-
-	}
-
-	public void setConexao( DbConnection cn ) {
-
-		super.setConexao( cn );
-		// lcBanco.setConexao(cn);
-		lcConta.setConexao( cn );
 		lcConta.carregaDados();
-		lcPlan.setConexao( cn );
 		lcPlan.carregaDados();
-		lcCC.setConexao( cn );
 		lcCC.carregaDados();
 		if ( ! ( bJurosPosCalc = getJurosPosCalc() ) && txtVlrJuros.getVlrBigDecimal().doubleValue() == 0 ) {
 			adic( new JLabelPad( "% Juros." ), 180, 200, 57, 20 );
@@ -453,6 +451,31 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		else {
 			adic( new JLabelPad( "% Dia." ), 180, 200, 57, 20 );
 		}
+	}
+
+	public BaixaRecBean getValores() {
+		
+		if ( baixaRecBean == null ) {
+			baixaRecBean = new BaixaRecBean();
+		}
+		
+		baixaRecBean.setCliente( txtCodCli.getVlrInteger() );
+		baixaRecBean.setRazaoSocialCliente( txtRazCli.getVlrString() );
+		baixaRecBean.setConta( txtCodConta.getVlrString() );
+		baixaRecBean.setPlanejamento( txtCodPlan.getVlrString() );
+		baixaRecBean.setCentroCusto( txtCodCC.getVlrString() );
+		baixaRecBean.setDocumento( txtDoc.getVlrString() );
+		baixaRecBean.setDataEmissao( txtDtEmis.getVlrDate() );
+		baixaRecBean.setDataVencimento( txtDtVenc.getVlrDate() );
+		baixaRecBean.setDataPagamento( txtDtPagto.getVlrDate() );
+		baixaRecBean.setValorParcela( txtVlrParc.getVlrBigDecimal() );
+		baixaRecBean.setValorAPagar( txtVlrAberto.getVlrBigDecimal() );
+		baixaRecBean.setValorDesconto( txtVlrDesc.getVlrBigDecimal() );
+		baixaRecBean.setValorJuros( txtVlrJuros.getVlrBigDecimal() );
+		baixaRecBean.setValorPago( txtVlr.getVlrBigDecimal() );
+		baixaRecBean.setObservacao( txtObs.getVlrString() );
+		
+		return baixaRecBean;
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
@@ -482,9 +505,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		}
 	}
 
-	public void focusGained( FocusEvent fevt ) {
-
-	}
+	public void focusGained( FocusEvent fevt ) { }
 
 	public void focusLost( FocusEvent fevt ) {
 
@@ -526,12 +547,200 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		}
 	}
 
-	public void beforeEdit( EditEvent eevt ) {
+	public void beforeEdit( EditEvent eevt ) { }
 
+	public void afterEdit( EditEvent eevt ) { }
+
+	public void setConexao( DbConnection cn ) {
+	
+		super.setConexao( cn );
+		lcConta.setConexao( cn );
+		lcPlan.setConexao( cn );
+		lcCC.setConexao( cn );
 	}
 
-	public void afterEdit( EditEvent eevt ) {
+	public class BaixaRecBean {
+		
+		private Integer recebimento;
+		
+		private Integer parcela;
+		
+		private Integer cliente;
+		
+		private String razaoSocialCliente;
+		
+		private String conta;
+		
+		private String planejamento;
+		
+		private String centroCusto;
+		
+		private String documento;
+		
+		private Date dataEmissao;
+		
+		private Date dataVencimento;
+		
+		private Date dataPagamento;
+		
+		private BigDecimal valorParcela;
+		
+		private BigDecimal valorAPagar;
+		
+		private BigDecimal valorDesconto;
+		
+		private BigDecimal valorJuros;
+		
+		private BigDecimal valorPago;
+		
+		private String observacao;
+		
+		private boolean emBordero;
 
-	}
+			
+		public Integer getRecebimento() {		
+			return recebimento;
+		}
+		
+		public void setRecebimento( Integer recebimento ) {		
+			this.recebimento = recebimento;
+		}
+		
+		public Integer getParcela() {		
+			return parcela;
+		}
+		
+		public void setParcela( Integer parcela ) {
+		
+			this.parcela = parcela;
+		}
 
+		public Integer getCliente() {		
+			return cliente;
+		}
+		
+		public void setCliente( Integer cliente ) {		
+			this.cliente = cliente;
+		}
+		
+		public String getRazaoSocialCliente() {		
+			return razaoSocialCliente;
+		}
+		
+		public void setRazaoSocialCliente( String razaoSocialCliente ) {		
+			this.razaoSocialCliente = razaoSocialCliente;
+		}
+		
+		public String getConta() {		
+			return conta;
+		}
+		
+		public void setConta( String conta ) {		
+			this.conta = conta;
+		}
+		
+		public String getPlanejamento() {		
+			return planejamento;
+		}
+		
+		public void setPlanejamento( String planejamento ) {		
+			this.planejamento = planejamento;
+		}
+		
+		public String getCentroCusto() {		
+			return centroCusto;
+		}
+		
+		public void setCentroCusto( String centroCusto ) {		
+			this.centroCusto = centroCusto;
+		}
+		
+		public String getDocumento() {		
+			return documento;
+		}
+		
+		public void setDocumento( String documento ) {		
+			this.documento = documento;
+		}
+		
+		public Date getDataEmissao() {		
+			return dataEmissao;
+		}
+		
+		public void setDataEmissao( Date dataEmissao ) {		
+			this.dataEmissao = dataEmissao;
+		}
+		
+		public Date getDataVencimento() {		
+			return dataVencimento;
+		}
+		
+		public void setDataVencimento( Date dataVencimento ) {		
+			this.dataVencimento = dataVencimento;
+		}
+		
+		public Date getDataPagamento() {		
+			return dataPagamento;
+		}
+		
+		public void setDataPagamento( Date dataPagamento ) {		
+			this.dataPagamento = dataPagamento;
+		}
+		
+		public BigDecimal getValorParcela() {
+			return valorParcela;
+		}
+		
+		public void setValorParcela( BigDecimal valorParcela ) {		
+			this.valorParcela = valorParcela;
+		}
+		
+		public BigDecimal getValorAPagar() {		
+			return valorAPagar;
+		}
+		
+		public void setValorAPagar( BigDecimal valorAPagar ) {		
+			this.valorAPagar = valorAPagar;
+		}
+		
+		public BigDecimal getValorDesconto() {		
+			return valorDesconto;
+		}
+		
+		public void setValorDesconto( BigDecimal valorDesconto ) {		
+			this.valorDesconto = valorDesconto;
+		}
+		
+		public BigDecimal getValorJuros() {		
+			return valorJuros;
+		}
+		
+		public void setValorJuros( BigDecimal valorJuros ) {		
+			this.valorJuros = valorJuros;
+		}
+		
+		public BigDecimal getValorPago() {		
+			return valorPago;
+		}
+		
+		public void setValorPago( BigDecimal valorPago ) {		
+			this.valorPago = valorPago;
+		}
+		
+		public String getObservacao() {		
+			return observacao;
+		}
+		
+		public void setObservacao( String observacao ) {		
+			this.observacao = observacao;
+		}
+		
+		public boolean isEmBordero() {		
+			return emBordero;
+		}
+		
+		public void setEmBordero( boolean travarConta ) {		
+			this.emBordero = travarConta;
+		}
+	};
 }
