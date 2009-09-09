@@ -70,9 +70,9 @@ public class FEmail extends FDados {
 		vLabs.addElement( "Texto" );
 		vLabs.addElement( "Html" );
 		vVals.addElement( "text/plain" );
-		vVals.addElement( "text/html" );
+		vVals.addElement( "text/html " );
 		rgFormato = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
-		rgFormato.setVlrString( "text/plain" );
+		//rgFormato.setVlrString( vVals.elementAt( 0 ) );
 		
 		montaListaCampos();
 		montaTela();
