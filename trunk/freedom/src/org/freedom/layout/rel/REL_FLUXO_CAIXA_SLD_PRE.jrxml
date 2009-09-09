@@ -23,18 +23,26 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<queryString><![CDATA[select sum((select first 1 sl.saldosl from fnsaldolanca sl
+	<parameter name="DATA" isForPrompting="false" class="java.util.Date"/>
+	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(3)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[select pl.descplan,coalesce((select first 1 sl.saldosl from fnsaldolanca sl
 where sl.codemppn=pl.codemp and sl.codfilialpn=pl.codfilial and sl.codplan=pl.codplan
-and sl.datasl<='07-31-2009'
+and sl.datasl<=$P{DATA}
 order by sl.datasl desc
-)) total
+),0) total
 from fnplanejamento pl, fnconta ct
 where pl.nivelplan=6
 and pl.tipoplan in ('C','B')
-and pl.codemp=2 and pl.codfilial=1
+and pl.codemp=$P{CODEMP} and pl.codfilial=$P{CODFILIAL}
 and ct.codemppn=pl.codemp and ct.codfilialpn=pl.codfilial and ct.codplan=pl.codplan
 and ct.ativaconta='S' and ct.tipocaixa='P']]></queryString>
 
+	<field name="DESCPLAN" class="java.lang.String"/>
 	<field name="TOTAL" class="java.math.BigDecimal"/>
 
 		<background>
@@ -116,7 +124,7 @@ and ct.ativaconta='S' and ct.tipocaixa='P']]></queryString>
 		</columnHeader>
 		<detail>
 			<band height="23"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="499"
 						y="6"
@@ -129,19 +137,6 @@ and ct.ativaconta='S' and ct.tipocaixa='P']]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTAL}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement
-						x="4"
-						y="5"
-						width="327"
-						height="13"
-						key="staticText-4"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false"/>
-					</textElement>
-				<text><![CDATA[Total dos previsionamentos]]></text>
-				</staticText>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -211,6 +206,19 @@ and ct.ativaconta='S' and ct.tipocaixa='P']]></queryString>
 					</textElement>
 				<text><![CDATA[Sub-total]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="6"
+						y="4"
+						width="405"
+						height="13"
+						key="textField-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCPLAN}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>

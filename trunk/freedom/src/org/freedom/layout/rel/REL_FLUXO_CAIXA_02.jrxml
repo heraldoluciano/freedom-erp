@@ -32,6 +32,15 @@
 	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["C:\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\layout\\rel\\"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="DATA" isForPrompting="true" class="java.util.Date">
+		<defaultValueExpression ><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(3)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[select codfilial from sgfilial where codfilial=1]]></queryString>
 
 	<field name="CODFILIAL" class="java.lang.Short"/>
@@ -54,6 +63,15 @@
 						key="subreport-1"
 						stretchType="RelativeToTallestObject"
 						isPrintRepeatedValues="false"/>
+					<subreportParameter  name="DATA">
+						<subreportParameterExpression><![CDATA[$P{DATA}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODEMP">
+						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODFILIAL">
+						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<returnValue subreportVariable="SUBTOTAL" toVariable="TOTPAGAR"/>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "/REL_FLUXO_CAIXA_PAG.jasper"]]></subreportExpression>
@@ -78,6 +96,15 @@
 						key="subreport-2"
 						stretchType="RelativeToTallestObject"
 						isPrintRepeatedValues="false"/>
+					<subreportParameter  name="DATA">
+						<subreportParameterExpression><![CDATA[$P{DATA}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODEMP">
+						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODFILIAL">
+						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<returnValue subreportVariable="SUBTOTAL" toVariable="TOTRECEBER"/>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "/REL_FLUXO_CAIXA_REC.jasper"]]></subreportExpression>
@@ -102,6 +129,15 @@
 						key="subreport-3"
 						stretchType="RelativeToTallestObject"
 						isPrintRepeatedValues="false"/>
+					<subreportParameter  name="DATA">
+						<subreportParameterExpression><![CDATA[$P{DATA}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODEMP">
+						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODFILIAL">
+						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "/REL_FLUXO_CAIXA_SLD_FIS.jasper"]]></subreportExpression>
 				</subreport>
@@ -125,6 +161,15 @@
 						key="subreport-4"
 						stretchType="RelativeToTallestObject"
 						isPrintRepeatedValues="false"/>
+					<subreportParameter  name="DATA">
+						<subreportParameterExpression><![CDATA[$P{DATA}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODEMP">
+						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="CODFILIAL">
+						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "/REL_FLUXO_CAIXA_SLD_PRE.jasper"]]></subreportExpression>
 				</subreport>

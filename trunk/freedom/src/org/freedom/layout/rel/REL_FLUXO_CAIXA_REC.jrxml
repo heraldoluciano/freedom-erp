@@ -23,10 +23,17 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
+	<parameter name="DATA" isForPrompting="false" class="java.util.Date"/>
+	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(3)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[select rtrim(coalesce(ir.obsitrec,'RECEBIMENTO REF. AO PED.: '||re.codvenda )) receber, 
 ir.vlrapagitrec valor, cast('today' as date)-ir.dtvencitrec diasatraso
 from fnitreceber ir, fnreceber re
-where ir.codemp=3 and ir.codfilial=1 and ir.dtvencitrec<='07-31-2009'
+where ir.codemp=$P{CODEMP} and ir.codfilial=$P{CODFILIAL} and ir.dtvencitrec<=$P{DATA}
 and re.codemp=ir.codemp and re.codfilial=ir.codfilial and re.codrec=ir.codrec
 and ir.statusitrec in ('RL','R1')
 order by ir.dtvencitrec]]></queryString>
