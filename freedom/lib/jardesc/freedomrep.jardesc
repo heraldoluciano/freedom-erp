@@ -38,6 +38,7 @@
         <file path="/freedom/src/org/freedom/images/lgFreedom2.jpg"/>
         <file path="/freedom/src/org/freedom/images/btCancelar.gif"/>
         <file path="/freedom/src/org/freedom/images/btAtualMenu.gif"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.std{FPrefereGeral.java"/>
         <file path="/freedom/src/org/freedom/images/btFluxo.gif"/>
         <file path="/freedom/src/org/freedom/images/graficoLinha.gif"/>
         <file path="/freedom/src/org/freedom/images/ba1101.gif"/>
@@ -141,14 +142,15 @@
         <file path="/freedom/src/org/freedom/images/btUlt.gif"/>
         <file path="/freedom/src/org/freedom/images/bannerAtendimento.png"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda"/>
+        <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.std{DLCodProd.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.acao"/>
         <file path="/freedom/src/org/freedom/images/btAtendimentos.gif"/>
         <file path="/freedom/src/org/freedom/images/splashCRM.png"/>
         <file path="/freedom/src/org/freedom/images/load_6.gif"/>
         <file path="/freedom/src/org/freedom/images/btForneced.gif"/>
+        <file path="/freedom/src/org/freedom/images/btReset.gif"/>
         <file path="/freedom/src/org/freedom/images/splashPCP.png"/>
         <file path="/freedom/src/org/freedom/images/btObs.gif"/>
-        <file path="/freedom/src/org/freedom/images/btReset.gif"/>
         <file path="/freedom/src/org/freedom/images/btEstoque.gif"/>
         <file path="/freedom/src/org/freedom/images/btExportaCli.gif"/>
         <file path="/freedom/src/org/freedom/images/btTarefas.gif"/>
@@ -286,7 +288,6 @@
         <file path="/freedom/src/org/freedom/images/curZoom.gif"/>
         <file path="/freedom/src/org/freedom/images/barraVenda.gif"/>
         <file path="/freedom/src/org/freedom/images/clDisponivel.gif"/>
-        <file path="/freedom/src/org/freedom/images/bgFreedomSTD.jpg"/>
         <file path="/freedom/src/org/freedom/images/clDesligado.gif"/>
         <file path="/freedom/src/org/freedom/images/btAtendimento.gif"/>
         <file path="/freedom/src/org/freedom/images/btEmprestimo.gif"/>
