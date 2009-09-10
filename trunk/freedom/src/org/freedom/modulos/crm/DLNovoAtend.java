@@ -1,3 +1,18 @@
+/*
+ * Projeto: Freedom
+ * Pacote: org.freedom.modules.crm
+ * Classe: @(#)FAtendimento.java
+ * 
+ * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ * na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ * Este programa é distribuido na esperança que possa ser  util, mas SEM NENHUMA GARANTIA; <BR>
+ * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> 
+ */
+
 package org.freedom.modulos.crm;
 
 import java.awt.BorderLayout;
@@ -42,6 +57,11 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 
+/**
+ * 
+ * @author Setpoint Informática Ltda./Alex Rodrigues
+ * @version 10/10/2009 - Alex Rodrigues
+ */
 public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyListener{
 
 	private static final long serialVersionUID = 1L;
@@ -112,8 +132,6 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 	
 	private ListaCampos lcAtendimento = new ListaCampos( this );
 
-	private JScrollPane spnTxa = new JScrollPane( txaDescAtend );
-
 	private JLabelPad lbImg = new JLabelPad( Icone.novo( "bannerAtendimento.png" ) );
 
 	private JButton btMedida = new JButton( Icone.novo( "btMedida.gif" ) );
@@ -146,162 +164,123 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 	
 	private Integer nparcitrec = null;
 		
-	public DLNovoAtend( int iCodCli, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo ){
-		
-		this( iCodCli, cOrig, conn, isUpdate, tipoatendo);
+	public DLNovoAtend( int iCodCli, Component cOrig, boolean isUpdate, DbConnection conn, int codatendo, int codatend, String tipoatendo ) {
+
+		this( iCodCli, cOrig, conn, isUpdate, tipoatendo );
 
 		update = isUpdate;
-			
+
 		txtCodAtendo.setVlrInteger( codatendo );
-		
+
 		lcAtendimento.carregaDados();
 		cbStatus.setVlrString( txtStatusAtendo.getVlrString() );
-		
+
 		cbTipo.setVlrInteger( txtTipoAtendimento.getVlrInteger() );
 		cbSetor.setVlrInteger( txtSetor.getVlrInteger() );
 		cbContr.setVlrInteger( txtContr.getVlrInteger() );
 		cbitContr.setVlrInteger( txtitContr.getVlrInteger() );
-		
-		if(update) {
+
+		if ( update ) {
 			pnCampos.adic( new JLabelPad( "Status" ), 494, 130, 120, 20 );
-			pnCampos.adic( cbStatus, 494, 150, 120, 20 );					
+			pnCampos.adic( cbStatus, 494, 150, 120, 20 );
 		}
-
 	}
 
-	public DLNovoAtend( int iCodCli, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo, Integer codrec, Integer nparcitrec) {
-		
-		this(iCodCli, cOrig, conn, isUpdate, tipoatendo);
-		
+	public DLNovoAtend( int iCodCli, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo, Integer codrec, Integer nparcitrec ) {
+
+		this( iCodCli, cOrig, conn, isUpdate, tipoatendo );
+
 		this.codrec = codrec;
-		this.nparcitrec = nparcitrec;		
-		
+		this.nparcitrec = nparcitrec;
+
 	}
-	
-	public DLNovoAtend( int iCodCli, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo) {
+
+	public DLNovoAtend( int iCodCli, Component cOrig, DbConnection conn, boolean isUpdate, String tipoatendo ) {
 
 		super( cOrig );
 
 		update = isUpdate;
 		this.tipoatendo = tipoatendo;
-		
+
 		setTitulo( "Novo atendimento" );
 		setAtribos( 640, 640 );
-		
+
 		montaListaCampos();
-		
+
 		btMedida.setPreferredSize( new Dimension( 30, 30 ) );
 
 		pnCab.add( lbImg );
 
-		c.add( pnCab, BorderLayout.NORTH );		
-		
+		c.add( pnCab, BorderLayout.NORTH );
+
 		c.add( pnGeral );
-		
+
 		pnGeral.add( pnTela, BorderLayout.CENTER );
-		
+
 		pnTela.add( pnCampos, BorderLayout.NORTH );
 
 		pnTela.add( pnTxa, BorderLayout.CENTER );
-		
-		pnTxa.add( spnTxa ); 
-		
-		spnTxa.setBorder( BorderFactory.createTitledBorder( "Detalhamento do atendimento" ) );		
-		txaDescAtend.setBorder( BorderFactory.createEtchedBorder(Color.RED, null) );
-		
+
+		pnTxa.setBorder( BorderFactory.createTitledBorder( "Detalhamento do atendimento" ) );
+		pnTxa.add( new JScrollPane( txaDescAtend ) );
+
+		txaDescAtend.setBorder( BorderFactory.createEtchedBorder( Color.RED, null ) );
+
 		setPainel( pnCampos );
-		
+
 		adic( new JLabelPad( "Cód.Cliente" ), 7, 10, 80, 20 );
 		adic( txtCodCli, 7, 30, 80, 20 );
 		adic( new JLabelPad( "Razão Social do Cliente" ), 90, 10, 480, 20 );
 		adic( txtRazCli, 90, 30, 524, 20 );
-		
 		adic( new JLabelPad( "Cód.Atend." ), 7, 50, 80, 20 );
 		adic( txtCodAtend, 7, 70, 80, 20 );
 		adic( new JLabelPad( "Nome do Atendente" ), 90, 50, 200, 20 );
 		adic( txtNomeAtend, 90, 70, 200, 20 );
-		
 		adic( new JLabelPad( "Tipo de Atendimento" ), 293, 50, 198, 20 );
 		adic( cbTipo, 293, 70, 198, 20 );
-		
 		adic( new JLabelPad( "Setor" ), 494, 50, 120, 20 );
 		adic( cbSetor, 494, 70, 120, 20 );
-
 		adic( new JLabelPad( "Início" ), 7, 130, 80, 20 );
-		adic( txtDataAtendimento, 7, 150, 80, 20 );		
+		adic( txtDataAtendimento, 7, 150, 80, 20 );
 		adic( txtHoraini, 90, 150, 53, 20 );
-		
 		adic( new JLabelPad( "Final" ), 146, 130, 70, 20 );
 		adic( txtDataAtendimentoFin, 146, 150, 70, 20 );
 		adic( txtHorafim, 219, 150, 53, 20 );
-				
-		adic( btRun, 272,150,19,19);
-
+		adic( btRun, 272, 150, 19, 19 );
 		adic( new JLabelPad( "Contrato/Projeto" ), 7, 90, 284, 20 );
 		adic( cbContr, 7, 110, 284, 20 );
 		adic( new JLabelPad( "Item" ), 294, 90, 320, 20 );
 		adic( cbitContr, 294, 110, 320, 20 );
-		
+
 		txtDataAtendimento.setRequerido( true );
 		txtDataAtendimentoFin.setRequerido( false );
 		txtDataAtendimentoFin.setSoLeitura( true );
 		txtDataAtendimento.addKeyListener( this );
-		
+
 		btMedida.addActionListener( this );
 		cbTipo.addComboBoxListener( this );
 		cbContr.addComboBoxListener( this );
-		
+
 		txtCodCli.setVlrInteger( new Integer( iCodCli ) );
 
-		if(iCodCli>0) {		
+		if ( iCodCli > 0 ) {
 			txtCodCli.setAtivo( false );
 		}
 
-		GregorianCalendar calini = new GregorianCalendar();
-		GregorianCalendar calfim = new GregorianCalendar();
-		GregorianCalendar cal1 = new GregorianCalendar();
-		GregorianCalendar cal2 = new GregorianCalendar();
-		GregorianCalendar agora = new GregorianCalendar();
-		Date dataini = new Date();
-		Date datafim = new Date();
-		
-		if ( dataini != null ) {
-		    agora.setTime( dataini );
-		    agora.set( Calendar.HOUR_OF_DAY, calini.get( Calendar.HOUR_OF_DAY ) );
-		    agora.set( Calendar.MINUTE, calini.get( Calendar.MINUTE ) );
-
-		    calini.setTime( dataini );
-		    calfim.setTime( datafim );
-
-		    cal1.setTime( agora.getTime() );
-		    cal2.setTime( agora.getTime() );
-		}
-
-		calini.add( Calendar.DATE, 0 );
-		cal1.add( Calendar.YEAR, -100 );
-		cal2.add( Calendar.YEAR, 100 );
-		
-		txtDataAtendimento.setVlrDate( calini.getTime() );		
-		txtDataAtendimentoFin.setVlrDate( calfim.getTime() );
-
-		txtHoraini.setVlrTime( calini.getTime() );
-		
-		if(txtDataAtendimento.getVlrDate()==null && txtDataAtendimentoFin.getVlrDate()==null) {
-			txtDataAtendimento.setVlrDate( new Date() );
-			txtDataAtendimentoFin.setVlrDate( new Date() );
-		}
-		
 		btRun.addActionListener( this );
-		
+
 		setConexao( conn );
-		
-		
-		
-		if(!update) {
+
+		if ( !update ) {
 			buscaAtendente();
-			iniciaContagem();
+			
+			if ( getAutoDataHora() ) {
+				txtHoraini.setVlrTime( new Date() );
+				txtDataAtendimento.setVlrDate( new Date() );
+				txtDataAtendimentoFin.setVlrDate( new Date() );
+				iniciaContagem();
+			}
 		}
-		
 	}
 	
 	private void montaListaCampos(){
@@ -337,20 +316,17 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 		lcAtendimento.add( new GuardaCampo( txtSetor, "codsetat", "setor", ListaCampos.DB_SI, false ));
 		lcAtendimento.add( new GuardaCampo( txtContr, "codcontr", "Codcontrato", ListaCampos.DB_SI, false ));				
 		lcAtendimento.add( new GuardaCampo( txtitContr, "coditcontr", "item do contrato", ListaCampos.DB_SI, false ));
-		lcAtendimento.add( new GuardaCampo( txtStatusAtendo, "statusatendo", "Status do atendimento", ListaCampos.DB_SI, false ));
-				
+		lcAtendimento.add( new GuardaCampo( txtStatusAtendo, "statusatendo", "Status do atendimento", ListaCampos.DB_SI, false ));				
 		lcAtendimento.montaSql( false, "ATENDIMENTO", "AT" );
 		lcAtendimento.setReadOnly( true );
-
 	}
 	
 	private void montaComboStatus() {
+		
 		Vector<String> vValsStatus = new Vector<String>();
 		Vector<String> vLabsStatus = new Vector<String>();
-
 		vValsStatus.addElement( "AA" );
-		vValsStatus.addElement( "NC" );
-		
+		vValsStatus.addElement( "NC" );		
 		vLabsStatus.addElement( "Atendido" );
 		vLabsStatus.addElement( "Não computado" );
 	
@@ -359,33 +335,36 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 	
 	private void montaComboTipo() {
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = "SELECT CODTPATENDO,DESCTPATENDO FROM ATTIPOATENDO WHERE CODEMP=? AND CODFILIAL=? AND TIPOATENDO=? ORDER BY 2";
 		try {
-			ps = con.prepareStatement( sSQL );
+			
+			PreparedStatement ps = con.prepareStatement( "SELECT CODTPATENDO,DESCTPATENDO FROM ATTIPOATENDO WHERE CODEMP=? AND CODFILIAL=? AND TIPOATENDO=? ORDER BY 2" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "ATTIPOATENDO" ) );
 			ps.setString( 3, tipoatendo );
-			rs = ps.executeQuery();
+			
+			ResultSet rs = ps.executeQuery();
+			
 			vValsTipo.clear();
 			vLabsTipo.clear();
 			vValsTipo.addElement( -1 );
 			vLabsTipo.addElement( "<Selecione>" );
+			
 			while ( rs.next() ) {
-				vValsTipo.addElement( new Integer( rs.getInt( "CodTpAtendo" ) ) );
+				vValsTipo.addElement( rs.getInt( "CodTpAtendo" ) );
 				vLabsTipo.addElement( rs.getString( "DescTpAtendo" ) );
 			}
+			
 			cbTipo.setItens( vLabsTipo, vValsTipo );
+			
 			rs.close();
 			ps.close();
+			
 			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao carregar os tipos de atendimento!\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			rs = null;
-		}
+			
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao carregar os tipos de atendimento!\n" + e.getMessage(), true, con, e );
+		} 
 	}
 
 	private void montaComboSetor() {
@@ -448,136 +427,146 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 
 	}
 
+	private boolean getAutoDataHora() {
+
+		boolean autoDataHora = true;
+
+		try {
+			
+			PreparedStatement ps = con.prepareStatement( "SELECT AUTOHORATEND FROM SGPREFERE3 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if ( rs.next() ) {
+				autoDataHora = "S".equals( rs.getString( "AUTOHORATEND" ) );
+			}
+			
+			rs.close();
+			ps.close();
+			con.commit();
+			
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao verificar preferências.\n" + e.getMessage() );
+		} 
+
+		return autoDataHora;
+	}
+
 	private String[] getPref() {
 
 		String sRets[] = { "", "" };
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = "SELECT CODTPATENDO,CLASSMEDIDA FROM SGPREFERE2 WHERE CODEMP=? AND CODFILIAL=?";
+
 		try {
-			ps = con.prepareStatement( sSQL );
+			
+			PreparedStatement ps = con.prepareStatement( "SELECT CODTPATENDO,CLASSMEDIDA FROM SGPREFERE2 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
-			rs = ps.executeQuery();
+			
+			ResultSet rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
 				sRets[ 0 ] = rs.getString( "CodTpAtendo" ) != null ? rs.getString( "CodTpAtendo" ) : "";
 				sRets[ 1 ] = rs.getString( "ClassMedida" );
 			}
+			
 			rs.close();
 			ps.close();
 			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao verificar levantamento. " );
-		} finally {
-			ps = null;
-			rs = null;
-		}
+			
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao verificar levantamento.\n" + e.getMessage() );
+		} 
+
 		return sRets;
 	}
 
 	private int getCodLev() {
 
 		int iRet = 0;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = "SELECT ISEQ FROM SPGERANUM(?,?,?)";
+		
 		try {
-			ps = con.prepareStatement( sSQL );
+			
+			PreparedStatement ps = con.prepareStatement( "SELECT ISEQ FROM SPGERANUM(?,?,?)" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
 			ps.setString( 3, "LV" );
-			rs = ps.executeQuery();
-			if ( rs.next() )
+			
+			ResultSet rs = ps.executeQuery();
+			if ( rs.next() ) {
 				iRet = rs.getInt( 1 );
-
+			}
+			
 			rs.close();
 			ps.close();
+			
 			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar novo código para levantamento.\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			rs = null;
-		}
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao buscar novo código para levantamento.\n" + e.getMessage(), true, con, e );
+		} 
+
 		return iRet;
 	}
 
-	public Object[] getValores() {
-
-		Object[] sVal = new Object[ 12 ];
-		sVal[ 0 ] = String.valueOf( cbTipo.getVlrInteger() );
-		sVal[ 1 ] = txtCodAtend.getVlrString();
-		sVal[ 2 ] = String.valueOf( cbSetor.getVlrInteger() );
-		sVal[ 3 ] = String.valueOf( iDoc );
-		sVal[ 4 ] = txtDataAtendimento.getVlrDate();
-		sVal[ 5 ] = txtDataAtendimentoFin.getVlrDate();
-		
-		sVal[ 6 ] = txtHoraini.getVlrString();
-		sVal[ 7 ] = txtHorafim.getVlrString();
-		
-		sVal[ 8 ] = txaDescAtend.getVlrString();
-		sVal[ 9 ] = cbContr.getVlrInteger();
-		sVal[ 10 ] =  cbitContr.getVlrInteger();
-		
-		return sVal;
-	}
-
 	private void insertAtend() throws Exception {
+
 		Object ORets[] = getValores();
 
-			
 		StringBuilder sql = new StringBuilder();
 
 		sql.append( "EXECUTE PROCEDURE ATADICATENDIMENTOCLISP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
-		
+
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 
 		ps.setString( 1, (String) ORets[ 0 ] ); // Tipo de atendimento
-		ps.setString( 2, (String)ORets[ 1 ] ); // Codigo do atendente
-		ps.setString( 3, (String)ORets[ 2 ] ); // Setor de atendimento
+		ps.setString( 2, (String) ORets[ 1 ] ); // Codigo do atendente
+		ps.setString( 3, (String) ORets[ 2 ] ); // Setor de atendimento
 		ps.setInt( 4, Aplicativo.iCodEmp ); // Código da empresa
 		ps.setInt( 5, Aplicativo.iCodFilialPad ); // Código da filial
 		ps.setInt( 6, Integer.parseInt( (String) ORets[ 3 ] ) ); // Nro. do atendimento
-		ps.setDate( 7, Funcoes.dateToSQLDate( (Date)ORets[4] )   ); // Data de inicio do atendimento
-		ps.setDate( 8, Funcoes.dateToSQLDate( (Date)ORets[5] )  ); // Data final do atendimento				
-		ps.setTime( 9,  Funcoes.strTimeTosqlTime( ORets[6].toString())); // Hora inicial do atendimento
-		ps.setTime( 10,  Funcoes.strTimeTosqlTime( ORets[7].toString())); // Hora final do atendimento				
-		ps.setString( 11, (String)ORets[8] ); // Descrição do atendimento
+		ps.setDate( 7, Funcoes.dateToSQLDate( (Date) ORets[ 4 ] ) ); // Data de inicio do atendimento
+		ps.setDate( 8, Funcoes.dateToSQLDate( (Date) ORets[ 5 ] ) ); // Data final do atendimento
+		ps.setTime( 9, Funcoes.strTimeTosqlTime( ORets[ 6 ].toString() ) ); // Hora inicial do atendimento
+		ps.setTime( 10, Funcoes.strTimeTosqlTime( ORets[ 7 ].toString() ) ); // Hora final do atendimento
+		ps.setString( 11, (String) ORets[ 8 ] ); // Descrição do atendimento
 		ps.setInt( 12, Aplicativo.iCodEmp ); // Código da empresa do cliente
 		ps.setInt( 13, Aplicativo.iCodFilialPad ); // Código da filial do cliente
 		ps.setInt( 14, txtCodCli.getVlrInteger() ); // Código do cliente
-		
-		if( cbContr.getVlrInteger() == -1  ){
+
+		if ( cbContr.getVlrInteger() == -1 ) {
 			ps.setNull( 15, Types.INTEGER ); // Código da empresa do contrato
 			ps.setNull( 16, Types.INTEGER ); // Código da filial do contrato
-			ps.setNull( 17, Types.INTEGER ); // Código do contrato			
+			ps.setNull( 17, Types.INTEGER ); // Código do contrato
 		}
-		else{
+		else {
 			ps.setInt( 15, Aplicativo.iCodEmp ); // Código da empresa do contrato
 			ps.setInt( 16, Aplicativo.iCodFilialPad ); // Código da filial do contrato
-			ps.setInt( 17, cbContr.getVlrInteger()); // Código do contrato
-		}		
-		if( cbitContr.getVlrInteger() == -1  ){
-			ps.setInt( 18, cbContr.getVlrInteger()); // Código do ítem de contrato
+			ps.setInt( 17, cbContr.getVlrInteger() ); // Código do contrato
 		}
-		else{
+		if ( cbitContr.getVlrInteger() == -1 ) {
+			ps.setInt( 18, cbContr.getVlrInteger() ); // Código do ítem de contrato
+		}
+		else {
 			ps.setInt( 18, cbitContr.getVlrInteger() ); // Código do ítem de contrato
 		}
-		
-		if( codrec!=null && nparcitrec !=null ) {
+
+		if ( codrec != null && nparcitrec != null ) {
 			ps.setInt( 19, codrec ); // Código do contas a receber
-			ps.setInt( 20, nparcitrec ); // Código do ítem do contas a receber			
+			ps.setInt( 20, nparcitrec ); // Código do ítem do contas a receber
 		}
 		else {
 			ps.setNull( 19, Types.INTEGER ); // Código do contas a receber
-			ps.setInt( 20, Types.INTEGER ); // Código do ítem do contas a receber						
+			ps.setInt( 20, Types.INTEGER ); // Código do ítem do contas a receber
 		}
-		
+
 		ps.execute();
 		ps.close();
-		
+
 		con.commit();
-	
 	}
 	
 	private void updateAtend() throws Exception {
@@ -637,55 +626,86 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 								 	
 	}
 	
-	public void setConexao( DbConnection cn ) {
-
-		super.setConexao( cn );
-		montaComboTipo();
-		montaComboSetor();
-		montaComboStatus();
-		
-  		HashMap<String,Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Sem contrato>" );
-  		cbContr.setItens( (Vector<?>)vals.get( "LAB" ), (Vector<?>)vals.get( "VAL" ) );  	 
-		
-		lcAtendimento.setConexao( cn );
-		lcAtend.setConexao( cn );
-		lcCli.setConexao( cn );
-		lcCli.carregaDados();
-		sPrefs = getPref();
-
+	private void buscaAtendente() {
+	
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuilder sql = new StringBuilder();
+		try {
+	
+			sql.append( "SELECT CODATEND FROM ATATENDENTE " );
+			sql.append( "WHERE CODEMPUS=? AND CODFILIALUS=? AND IDUSU=? " );
+	
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setString( 3, Aplicativo.strUsuario );
+	
+			rs = ps.executeQuery();
+	
+			if ( rs.next() ) {
+				txtCodAtend.setVlrInteger( rs.getInt( "CODATEND" ) );
+				lcAtend.carregaDados();
+			}
+			
+			con.commit();
+	
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
 	}
 
-	public void valorAlterado( JComboBoxEvent evt ) {
-
-		if ( evt.getComboBoxPad() == cbTipo ) {
-			montaComboSetor();
-		}
-		if( evt.getComboBoxPad() == cbContr ){
-	  		HashMap<String,Vector<Object>> vals = FuncoesCRM.montaComboItContr( con, cbContr.getVlrInteger(), "<Sem contrato>" );
-	  		cbitContr.setItens( (Vector<?>)vals.get( "LAB" ), (Vector<?>)vals.get( "VAL" ) ); 	 
-		}
-	}
-
-	@ Override
-	public void keyPressed( KeyEvent kevt ) {
-
-		super.keyPressed( kevt );
-		if( kevt.getSource() == txtDataAtendimento ){
-			if( kevt.getKeyCode() == KeyEvent.VK_ENTER ){
-				if(!"".equals( txtDataAtendimento.getVlrString())){
-					txtDataAtendimentoFin.setVlrDate( txtDataAtendimento.getVlrDate() );
-				}else{
-					Funcoes.mensagemInforma( this, "Digite a data do atendimento!" );
-					txtDataAtendimento.requestFocus();
+	private void iniciaContagem() {
+	
+		if ( !contando ) {
+			
+			btRun.setIcon( Icone.novo( "btpause.png" ) );
+			
+			contador = new Thread( new Runnable() {
+				public void run() {
+					try {
+						Calendar calini = null;
+						while ( contando ) {
+							try {
+								Thread.sleep( 1000 );
+							} catch ( Exception e ) {
+								System.out.println( "Contagem interrompida" );
+							}
+							calini = new GregorianCalendar();
+							txtHorafim.setVlrTime( calini.getTime() );
+						}
+					} catch ( Exception e ) {
+						e.printStackTrace();
+						Funcoes.mensagemInforma( null, "Erro na contagem!" );
+					} finally {
+						Calendar calini = null;
+						SpinnerDateModel sdm = null;
+						DateEditor de = null;
+					}
 				}
+			} );
+			try {
+				contador.start();
+				contando = true;
+			} catch ( Exception e ) {
+				e.printStackTrace();
+			}
+		}
+		else {
+			try {
+				btRun.setIcon( Icone.novo( "btplay.png" ) );
+				contador.interrupt();
+			} catch ( Exception e ) {
+				System.out.println( "Contagem interrompida" );
+			} finally {
+				contando = false;
 			}
 		}
 	}
-	
-	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btOK ) {
-			
+	public void actionPerformed( ActionEvent evt ) {
+	
+		if ( evt.getSource() == btOK ) {			
 			if ( txtDataAtendimento.getVlrDate().after( txtDataAtendimentoFin.getVlrDate() ) ) {
 				Funcoes.mensagemInforma( this, "Data final menor que a data inicial!" );
 				txtDataAtendimento.requestFocus();
@@ -732,7 +752,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 				return;
 			}
 			
-			if( update ){
+			if( update ) {
 				try {
 					updateAtend();
 				}
@@ -752,103 +772,82 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 					Funcoes.mensagemInforma( this, "Erro ao gravar o atendimento!\n" + e.getMessage() );
 					return;
 				}				
-			}
-			
-			super.actionPerformed( evt );
-			
+			}			
+			super.actionPerformed( evt );			
 		}
 		else if ( evt.getSource() == btRun ) {
 			iniciaContagem();
 		}		
-		if( evt.getSource() == btCancel ){
+		else if( evt.getSource() == btCancel ){
 			dispose();
 		}
-	}
-	
-	private void iniciaContagem() {
-		if(!contando) {
-			btRun.setIcon( Icone.novo( "btpause.png" ) );
-			contador = new Thread(
-					new Runnable() {
-				        public void run() {
-				        	try {
-				        		
-				        		Calendar calini = null;
-				        		
-				        		while(contando) {
-				        			try {
-				        				Thread.sleep(1000);
-				        			}
-				        			catch (Exception e) {
-				        				System.out.println("Contagem interrompida");
-									}
-				        			calini = new GregorianCalendar();
-				        			txtHorafim.setVlrTime( calini.getTime() );
-				        			
-				        		}
-				        	}
-				        	catch (Exception e) {
-				        		e.printStackTrace();
-				        		Funcoes.mensagemInforma( null, "Erro na contagem!" );
-							}
-				        	finally {
-				        		Calendar calini = null;
-				        		SpinnerDateModel sdm = null;
-				        		DateEditor de = null;
-				        	}
-				        }
-					}
-			);
-			try {				
-				contador.start();
-				contando = true;
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-		}	
-		else {			
-			try {
-				btRun.setIcon( Icone.novo( "btplay.png" ) );
-				contador.interrupt();
-			}
-			catch (Exception e) {
-				System.out.println("Contagem interrompida");
-			}
-			finally {
-				contando = false;			
-			}
-	
+		else {
+			super.actionPerformed( evt );	
 		}
 	}
-	
-	private void buscaAtendente() {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuilder sql = new StringBuilder();
-		try{
 
-			sql.append( "SELECT CODATEND FROM ATATENDENTE " );
-			sql.append( "WHERE CODEMPUS=? AND CODFILIALUS=? AND IDUSU=? " );
-	
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setString( 3, Aplicativo.strUsuario );
-			
-			rs = ps.executeQuery();						
-			
-			if (rs.next()) {
-				txtCodAtend.setVlrInteger( rs.getInt( "CODATEND" ) );
-				lcAtend.carregaDados();
+	@ Override
+	public void keyPressed( KeyEvent kevt ) {
+
+		super.keyPressed( kevt );
+		if ( kevt.getSource() == txtDataAtendimento ) {
+			if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
+				if ( !"".equals( txtDataAtendimento.getVlrString() ) ) {
+					txtDataAtendimentoFin.setVlrDate( txtDataAtendimento.getVlrDate() );
+				}
+				else {
+					Funcoes.mensagemInforma( this, "Digite a data do atendimento!" );
+					txtDataAtendimento.requestFocus();
+				}
 			}
-			
-			
 		}
-		catch (Exception e) {
-			e.printStackTrace();
+	}
+	
+	public void valorAlterado( JComboBoxEvent evt ) {
+	
+		if ( evt.getComboBoxPad() == cbTipo ) {
+			montaComboSetor();
 		}
+		if ( evt.getComboBoxPad() == cbContr ) {
+			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboItContr( con, cbContr.getVlrInteger(), "<Sem contrato>" );
+			cbitContr.setItens( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
+		}
+	}
+
+	public void setConexao( DbConnection cn ) {
+	
+		super.setConexao( cn );
+		montaComboTipo();
+		montaComboSetor();
+		montaComboStatus();
 		
+		HashMap<String,Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Sem contrato>" );
+		cbContr.setItens( (Vector<?>)vals.get( "LAB" ), (Vector<?>)vals.get( "VAL" ) );  	 
+		
+		lcAtendimento.setConexao( cn );
+		lcAtend.setConexao( cn );
+		lcCli.setConexao( cn );
+		lcCli.carregaDados();
+		
+		sPrefs = getPref();	
+	}
+
+	public Object[] getValores() {
+	
+		Object[] sVal = new Object[ 12 ];
+		sVal[ 0 ] = String.valueOf( cbTipo.getVlrInteger() );
+		sVal[ 1 ] = txtCodAtend.getVlrString();
+		sVal[ 2 ] = String.valueOf( cbSetor.getVlrInteger() );
+		sVal[ 3 ] = String.valueOf( iDoc );
+		sVal[ 4 ] = txtDataAtendimento.getVlrDate();
+		sVal[ 5 ] = txtDataAtendimentoFin.getVlrDate();		
+		sVal[ 6 ] = txtHoraini.getVlrString();
+		sVal[ 7 ] = txtHorafim.getVlrString();		
+		sVal[ 8 ] = txaDescAtend.getVlrString();
+		sVal[ 9 ] = cbContr.getVlrInteger();
+		sVal[ 10 ] =  cbitContr.getVlrInteger();
+		
+		return sVal;
 	}
 	
 }	

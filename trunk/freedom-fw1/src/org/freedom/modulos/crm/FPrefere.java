@@ -1,11 +1,7 @@
-/**
- * @version 10/10/2003 <BR>
- * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
- * 
- *         Projeto: Freedom <BR>
- * 
- *         Pacote: org.freedom.modulos.tmk <BR>
- *         Classe: @(#)FPrefere.java <BR>
+/*
+ * Projeto: Freedom-fw1
+ * Pacote: org.freedom.modules.crm
+ * Classe: @(#)FPrefere.java
  * 
  * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -14,34 +10,35 @@
  * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
  * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
  * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- *         de acordo com os termos da LPG-PC <BR>
- * <BR>
- * 
- *         Comentários sobre a classe...
- * 
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> 
  */
 
 package org.freedom.modulos.crm;
 
-import org.freedom.infra.model.jdbc.DbConnection;
-
-import org.freedom.componentes.JLabelPad;
+import javax.swing.BorderFactory;
 
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FTabDados;
 
+/**
+ * 
+ * @author Setpoint Informática Ltda./Alex Rodrigues
+ * @version 10/10/2009 - Alex Rodrigues
+ */
 public class FPrefere extends FTabDados {
 
 	private static final long serialVersionUID = 1L;
 
-	private JPanelPad pinMail = new JPanelPad();
+	private JPanelPad panelGeral = new JPanelPad();
 
-	private JPanelPad pinSmtp = new JPanelPad();
+	private JPanelPad panelMail = new JPanelPad();
 
 	private JTextFieldPad txtSmtpMail = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -54,37 +51,42 @@ public class FPrefere extends FTabDados {
 	private JTextFieldPad txtCodAtivCE = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 	
 	private JTextFieldFK txtDescAtivCE = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad( 16 );
+	
+	private JCheckBoxPad cbAutoHorario = new JCheckBoxPad( "Data/Horario automático no atendimento?", "S", "N" ); 
 
 	private ListaCampos lcAtivTE = new  ListaCampos( this, "TE" );
 	
 	private ListaCampos lcAtivCE = new  ListaCampos( this, "CE" );
 	
-	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad( 16 );
 
 	public FPrefere() {
 
 		super();
-		setTitulo( "Preferências do Telemarketing" );
+		setTitulo( "Preferências" );
 		setAtribos( 50, 50, 450, 375 );
 
 		montaListaCampos();
 		
-		setPainel( pinMail );
-		adicTab( "Mail", pinMail );
-		JLabelPad lbServer = new JLabelPad( "  Servidor para envio de email" );
-		lbServer.setOpaque( true );
-		adic( lbServer, 15, 10, 200, 15 );
-		adic( pinSmtp, 10, 15, 380, 150 );
-		setPainel( pinSmtp );
-		adicCampo( txtSmtpMail, 10, 30, 150, 20, "SmtpMail", "SMTP", ListaCampos.DB_SI, false );
-		adicCampo( txtUserMail, 10, 70, 150, 20, "UserMail", "Usuario", ListaCampos.DB_SI, false );
-		adicCampo( txpPassMail, 10, 110, 150, 20, "PassMail", "Senha", ListaCampos.DB_SI, false );
+		adicTab( "Geral", panelGeral );
 		
-		setPainel( pinMail );		
-		adicCampo( txtCodAtivCE, 10, 185, 80, 20, "CodAtivCE", "Cód.Ativ.", ListaCampos.DB_FK, txtDescAtivCE, false );
-		adicDescFK( txtDescAtivCE, 93, 185, 320, 20, "DescAtiv", "Atividade padrão para capanha enviada" );
-		adicCampo( txtCodAtivTE, 10, 225, 80, 20, "CodAtivTE", "Cód.Ativ.", ListaCampos.DB_FK, txtDescAtivTE, false );
-		adicDescFK( txtDescAtivTE, 93, 225, 320, 20, "DescAtiv", "Atividade padrão para tentativa de envio de campanha" );		
+		setPainel( panelGeral );	
+		
+		adicCampo( txtCodAtivCE, 10, 30, 80, 20, "CodAtivCE", "Cód.Ativ.", ListaCampos.DB_FK, txtDescAtivCE, false );
+		adicDescFK( txtDescAtivCE, 93, 30, 320, 20, "DescAtiv", "Atividade padrão para capanha enviada" );
+		adicCampo( txtCodAtivTE, 10, 70, 80, 20, "CodAtivTE", "Cód.Ativ.", ListaCampos.DB_FK, txtDescAtivTE, false );
+		adicDescFK( txtDescAtivTE, 93, 70, 320, 20, "DescAtiv", "Atividade padrão para tentativa de envio de campanha" );	
+
+		adicDB( cbAutoHorario, 10, 100, 405, 20, "AUTOHORATEND", "", false );
+		
+		panelMail.setBorder( BorderFactory.createTitledBorder( "Servidor para envio de email" ) );
+		adic( panelMail, 10, 140, 405, 120 );
+		setPainel( panelMail );
+		adicCampo( txtSmtpMail, 10, 20, 190, 20, "SmtpMail", "SMTP", ListaCampos.DB_SI, false );
+		adicCampo( txtUserMail, 10, 60, 190, 20, "UserMail", "Usuario", ListaCampos.DB_SI, false );
+		adicCampo( txpPassMail, 203, 60, 180, 20, "PassMail", "Senha", ListaCampos.DB_SI, false );		
+		
 		setListaCampos( false, "PREFERE3", "SG" );
 
 		nav.setAtivo( 0, false );
