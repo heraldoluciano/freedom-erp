@@ -1,12 +1,7 @@
-/**
- * @version 26/01/2004 <BR>
- * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
- * 
- * Projeto: Freedom <BR>
- * 
- * Pacote: org.freedom.modulos.tmk <BR>
- * Classe:
- * @(#)DLContToCli.java <BR>
+/*
+ * Projeto: Freedom
+ * Pacote: org.freedom.modules.crm
+ * Classe: @(#)DLContToCli.java
  * 
  * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -15,10 +10,7 @@
  * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
  * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
  * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- * de acordo com os termos da LPG-PC <BR>
- * <BR>
- * 
- * Dialogo de ajuste para campos não compatíveis entre Contato e Cliente.
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  */
 package org.freedom.modulos.crm;
 
@@ -35,6 +27,12 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
+/**
+ * Dialogo de ajuste para campos não compatíveis entre Contato e Cliente.
+ * 
+ * @author Setpoint Informática Ltda./Fernando Oliveira da Silva
+ * @version 09/09/2009 - Alex Rodrigues 
+ */
 public class DLContToCli extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
@@ -56,12 +54,13 @@ public class DLContToCli extends FFDialogo {
 	private ListaCampos lcClasCli = new ListaCampos( this, "" );
 
 	private ListaCampos lcSetor = new ListaCampos( this, "" );
+	
 
 	public DLContToCli( Component cOrig, int iCodSetor ) {
 
 		super( cOrig );
-		setTitulo( "Cópia de orçamento" );
-		setAtribos( 320, 210 );
+		setTitulo( "Migrar contato para cliente" );
+		setAtribos( 435, 230 );
 
 		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.Cli.", ListaCampos.DB_PK, true ) );
 		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Razão Social", ListaCampos.DB_SI, false ) );
@@ -88,21 +87,23 @@ public class DLContToCli extends FFDialogo {
 		txtCodSetor.setNomeCampo( "CodSetor" );
 		txtCodSetor.setText( "" + iCodSetor );
 
-		adic( new JLabelPad( "Código e tipo de cliente" ), 7, 5, 250, 20 );
-		adic( txtCodTipoCli, 7, 25, 80, 20 );
-		adic( txtDescTipoCli, 90, 25, 200, 20 );
-		adic( new JLabelPad( "Código e classificação do cliente" ), 7, 45, 250, 20 );
-		adic( txtCodClasCli, 7, 65, 80, 20 );
-		adic( txtDescClasCli, 90, 65, 200, 20 );
-		adic( new JLabelPad( "Código e setor do cliente" ), 7, 85, 250, 20 );
-		adic( txtCodSetor, 7, 105, 80, 20 );
-		adic( txtDescSetor, 90, 105, 200, 20 );
-
+		adic( new JLabelPad( "Cód.tp.cli." ), 7, 5, 100, 20 );
+		adic( txtCodTipoCli, 7, 25, 100, 20 );
+		adic( new JLabelPad( "Descrição do tipo de cliente" ), 110, 5, 300, 20 );
+		adic( txtDescTipoCli, 110, 25, 300, 20 );
+		adic( new JLabelPad( "Cód.clas.cli" ), 7, 45, 100, 20 );
+		adic( txtCodClasCli, 7, 65, 100, 20 );
+		adic( new JLabelPad( "Descrição da classificação do cliente" ), 110, 45, 300, 20 );
+		adic( txtDescClasCli, 110, 65, 300, 20 );
+		adic( new JLabelPad( "Cód.setor" ), 7, 85, 100, 20 );
+		adic( txtCodSetor, 7, 105, 100, 20 );
+		adic( new JLabelPad( "Descrição do setor" ), 110, 85, 300, 20 );
+		adic( txtDescSetor, 110, 105, 300, 20 );
 	}
 
-	public void actionPerformed( ActionEvent evt ) {
+	public void actionPerformed( ActionEvent e ) {
 
-		if ( evt.getSource() == btOK ) {
+		if ( e.getSource() == btOK ) {
 			if ( txtCodTipoCli.getText().trim().length() == 0 ) {
 				Funcoes.mensagemInforma( this, "O campo tipo de cliente está em branco! ! !" );
 				txtCodTipoCli.requestFocus();
@@ -114,7 +115,18 @@ public class DLContToCli extends FFDialogo {
 				return;
 			}
 		}
-		super.actionPerformed( evt );
+		super.actionPerformed( e );
+	}
+
+	public ContatoClienteBean getValores() {
+		
+		ContatoClienteBean contatoClienteBean = new ContatoClienteBean();
+
+		contatoClienteBean.setTipo( txtCodTipoCli.getVlrInteger() ); 
+		contatoClienteBean.setClassificacao( txtCodClasCli.getVlrInteger() ); 
+		contatoClienteBean.setSetor( txtCodSetor.getVlrInteger() );
+		
+		return contatoClienteBean;
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -124,10 +136,38 @@ public class DLContToCli extends FFDialogo {
 		lcSetor.setConexao( cn );
 		lcSetor.carregaDados();
 	}
+	
+	public class ContatoClienteBean {
+		
+		private Integer tipo;
+		
+		private Integer classificacao;
+		
+		private Integer setor;
 
-	public int[] getValores() {
-
-		int iRet[] = { lcTipoCli.getCodFilial(), txtCodTipoCli.getVlrInteger().intValue(), lcClasCli.getCodFilial(), txtCodClasCli.getVlrInteger().intValue(), lcSetor.getCodFilial(), txtCodSetor.getVlrInteger().intValue() };
-		return iRet;
+		
+		public Integer getTipo() {		
+			return tipo;
+		}
+		
+		public void setTipo( Integer tipo ) {		
+			this.tipo = tipo;
+		}
+		
+		public Integer getClassificacao() {
+			return classificacao;
+		}
+		
+		public void setClassificacao( Integer classificacao ) {		
+			this.classificacao = classificacao;
+		}
+		
+		public Integer getSetor() {		
+			return setor;
+		}
+		
+		public void setSetor( Integer setor ) {		
+			this.setor = setor;
+		}
 	}
 }
