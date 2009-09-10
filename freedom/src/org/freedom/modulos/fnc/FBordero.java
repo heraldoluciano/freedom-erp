@@ -198,7 +198,7 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		montaTab();
 		
 		pnGImp.removeAll();
-		pnGImp.setLayout( new GridLayout( 1, 1 ) );
+		pnGImp.setLayout( new GridLayout( 1, 3 ) );
 		pnGImp.setPreferredSize( new Dimension( 93, 26 ) );
 		pnGImp.add( btCompletar );
 		pnGImp.add( btImp );
