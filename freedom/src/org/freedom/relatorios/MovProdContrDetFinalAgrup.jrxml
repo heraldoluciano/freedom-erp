@@ -40,13 +40,12 @@
 	</parameter>
 	<parameter name="CONCENTRACAO" isForPrompting="false" class="java.math.BigDecimal"/>
 	<queryString><![CDATA[SELECT eq.codemp,pd.descprod,pd.vlrdensidade,pd.vlrconcent,
-sum((case when qtdfinalprodop=0 then 0 else qtdmovprod/qtdfinalprodop * 100 end)) as formula,
+(case when qtdfinalprodop=0 then 0 else qtdmovprod/qtdfinalprodop * 100 end) as formula,
 sum(EQ.qtdmovprod) as qtdmovprod,
 sum(op.qtdfinalprodop) as qtdfinalprodop
 FROM eqmovprod EQ,
  eqtipomov tm, eqitrma itr, eqrma rma,  ppop op, eqproduto pd
-WHERE eq.codemp=$P{CODEMP} and eq.codfilial=$P{CODFILIAL} and eq.codprod=$P{CODPROD} AND EQ.dtmovprod 
-BETWEEN $P{DATAINI} AND $P{DATAFIM}
+WHERE eq.codemp=$P{CODEMP} and eq.codfilial=$P{CODFILIAL} and eq.codprod=$P{CODPROD} AND EQ.dtmovprod BETWEEN '2009-08-01' AND '2009-08-31'
 and tm.codemp=eq.codemptm and tm.codfilial=eq.codfilialtm and tm.codtipomov=eq.codtipomov
 and tm.tipomov='RM'
 and itr.codemp=eq.codemprm and itr.codfilial=eq.codfilialrm and itr.coditrma=eq.coditrma
@@ -55,7 +54,7 @@ and rma.codrma=itr.codrma
 and op.codemp=rma.codempof and op.codfilial=rma.codfilialof and op.codop=rma.codop and op.seqop=rma.seqop
 and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod
 and eq.qtdmovprod>0
-group by 1,2,3,4]]></queryString>
+group by 1,2,3,4,5,qtdfinalprodop]]></queryString>
 
 	<field name="CODEMP" class="java.lang.Long"/>
 	<field name="DESCPROD" class="java.lang.String"/>
