@@ -540,7 +540,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		
 		try {
 			
-			PreparedStatement ps = con.prepareStatement( "SELECT IRET FROM TKCONTTOCLI(?,?,?,?,?,?,?,?,?)" );
+			PreparedStatement ps = con.prepareStatement( "SELECT IRET FROM TKCONTCLISP(?,?,?,?,?,?,?,?,?)" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, lcCampos.getCodFilial() );
 			ps.setInt( 3, txtCodCont.getVlrInteger().intValue() );

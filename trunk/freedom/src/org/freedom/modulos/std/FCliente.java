@@ -476,7 +476,7 @@ public class FCliente extends FTabDados
 	
 	private JCheckBoxPad cbSimples = new JCheckBoxPad( "Simples", "S", "N" );
 	
-	private JCheckBoxPad cbProdRural = new JCheckBoxPad( "Prod.rural", "S", "N" );
+	private JCheckBoxPad cbProdRural = new JCheckBoxPad( "Prod.Rural", "S", "N" );
 	
 	private JCheckBoxPad cbContato = new JCheckBoxPad( "Contato", "O", "C" );
 
