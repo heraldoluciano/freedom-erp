@@ -31,7 +31,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -77,6 +76,7 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.PainelImagem;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.atd.FConveniado;
 import org.freedom.modulos.crm.DLNovoHist;
 import org.freedom.telas.Aplicativo;
@@ -86,9 +86,105 @@ import org.freedom.telas.FMapa;
 import org.freedom.telas.FTabDados;
 import org.freedom.webservices.WSCep;
 
-public class FCliente extends FTabDados implements RadioGroupListener, PostListener, ActionListener, TabelaSelListener, ChangeListener, CarregaListener, InsertListener, FocusListener {
+public class FCliente extends FTabDados 
+		implements RadioGroupListener, PostListener, ActionListener, TabelaSelListener, ChangeListener, 
+		CarregaListener, InsertListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
+
+	private JPanelPad pinEnt = new JPanelPad();
+
+	private JPanelPad pinVend = new JPanelPad();
+
+	private JPanelPad pinCob = new JPanelPad();
+	
+	private JPanelPad pinMapa = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout());
+
+	private JPanelPad pnObs1 = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() ); // JPanelPad de observações com 2 linha e 1 coluna
+
+	private JPanelPad pnObs1_1 = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() ); // JPanelPad de observações gerais
+
+	private JPanelPad pnObs1_2 = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() ); // JPanelPad principal de observações por data
+
+	private JPanelPad pnObs1_2_1 = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
+	private JPanelPad pnObs1_2_2 = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() ); // Pinel para observações e outros
+
+	private JPanelPad pnObs1_2_2_1 = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
+	private JPanelPad pnObs1_2_2_2 = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
+	private JPanelPad pinObs1_2_1_1 = new JPanelPad( 200, 200 );
+
+	private JPanelPad pinObs1_2_2_2_1 = new JPanelPad( 0, 30 );
+
+	private JPanelPad pinCli = new JPanelPad();
+
+	private JPanelPad pnFor = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JPanelPad pnCliFor = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	
+	private JPanelPad pinFor = new JPanelPad( 0, 80 );
+	
+	private JPanelPad pinCliFor = new JPanelPad( 0, 80 );
+	
+	private JPanelPad pinTesteFor = new JPanelPad( 0, 30 );
+
+	private JPanelPad pnCto = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
+	private JPanelPad pnCont = new JPanelPad( new Dimension( 600, 400 ) );
+
+	private JPanelPad pinContatos = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
+	private JPanelPad pinHistorico = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
+	private JPanelPad pinHistbt = new JPanelPad( 0, 32 );
+
+	private JPanelPad pinMetaVend = new JPanelPad( 0, 160 );
+
+	private JPanelPad pnMetaVend = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
+	private JPanelPad pinImages = new JPanelPad();
+
+	private JPanelPad pinMes1 = new JPanelPad();
+
+	private JPanelPad pinMes2 = new JPanelPad();
+
+	private JPanelPad pinMes3 = new JPanelPad();
+
+	private JPanelPad pinMes4 = new JPanelPad();
+
+	private JPanelPad pinMes5 = new JPanelPad();
+
+	private JPanelPad pinMes6 = new JPanelPad();
+
+	private JPanelPad pinMes7 = new JPanelPad();
+
+	private JPanelPad pinMes8 = new JPanelPad();
+
+	private JPanelPad pinMes9 = new JPanelPad();
+
+	private JPanelPad pinMes10 = new JPanelPad();
+
+	private JPanelPad pinMes11 = new JPanelPad();
+
+	private JPanelPad pinMes12 = new JPanelPad();
+
+	private Tabela tbObsData = new Tabela();
+
+	private Tabela tabMetaVend = new Tabela();
+
+	private Tabela tabFor = new Tabela();
+	
+	private Tabela tabCliFor = new Tabela();
+
+	private Tabela tabHist = new Tabela();
+
+	private PainelImagem fotoCli = new PainelImagem( 65000 );
+
+	private PainelImagem imgAssCli = new PainelImagem( 65000 );
+
+	private JTabbedPanePad tpnCont = new JTabbedPanePad();
 
 	private JTextFieldPad txtAno = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
@@ -363,182 +459,26 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldPad txtCodHistPad = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldFK txtDescHistPad = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
-
-	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
-
-	private PainelImagem fotoCli = new PainelImagem( 65000 );
-
-	private PainelImagem imgAssCli = new PainelImagem( 65000 );
-
-	private Vector<String> vPessoaLab = new Vector<String>();
-
-	private Vector<String> vPessoaVal = new Vector<String>();
-
-	private JRadioGroup<?, ?> rgPessoa = null;
-
-	private JPanelPad pinEnt = new JPanelPad();
-
-	private JPanelPad pinVend = new JPanelPad();
-
-	private JPanelPad pinCob = new JPanelPad();
 	
-	private JPanelPad pinMapa = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout());
-
-	private JPanelPad pnObs1 = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() ); // JPanelPad de observações com 2 linha e 1 coluna
-
-	private JPanelPad pnObs1_1 = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() ); // JPanelPad de observações gerais
-
-	private JPanelPad pnObs1_2 = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() ); // JPanelPad principal de observações por data
-
-	private JPanelPad pnObs1_2_1 = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-
-	private JPanelPad pnObs1_2_2 = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() ); // Pinel para observações e outros
-
-	private JPanelPad pnObs1_2_2_1 = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-
-	private JPanelPad pnObs1_2_2_2 = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-
-	private JPanelPad pinObs1_2_1_1 = new JPanelPad( 200, 200 );
-
-	private JPanelPad pinObs1_2_2_2_1 = new JPanelPad( 0, 30 );
-
-	private JPanelPad pinCli = new JPanelPad();
-
-	private JPanelPad pnFor = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
-	private JPanelPad pnCliFor = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-	
-	private JPanelPad pinFor = new JPanelPad( 0, 80 );
-	
-	private JPanelPad pinCliFor = new JPanelPad( 0, 80 );
-	
-	private JPanelPad pinTesteFor = new JPanelPad( 0, 30 );
-
-	private JPanelPad pnCto = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-
-	private JPanelPad pnCont = new JPanelPad( new Dimension( 600, 400 ) );
-
-	private JPanelPad pinContatos = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-
-	private JPanelPad pinHistorico = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-
-	private JPanelPad pinHistbt = new JPanelPad( 0, 32 );
-
-	private JPanelPad pinMetaVend = new JPanelPad( 0, 160 );
-
-	private JPanelPad pnMetaVend = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-
-	private JPanelPad pinImages = new JPanelPad();
-
-	private Tabela tbObsData = new Tabela();
-
-	private Tabela tabMetaVend = new Tabela();
-
-	private Tabela tabFor = new Tabela();
-	
-	private Tabela tabCliFor = new Tabela();
-
-	private Tabela tabHist = new Tabela();
-
-	private JPanelPad pinMes1 = new JPanelPad();
-
-	private JPanelPad pinMes2 = new JPanelPad();
-
-	private JPanelPad pinMes3 = new JPanelPad();
-
-	private JPanelPad pinMes4 = new JPanelPad();
-
-	private JPanelPad pinMes5 = new JPanelPad();
-
-	private JPanelPad pinMes6 = new JPanelPad();
-
-	private JPanelPad pinMes7 = new JPanelPad();
-
-	private JPanelPad pinMes8 = new JPanelPad();
-
-	private JPanelPad pinMes9 = new JPanelPad();
-
-	private JPanelPad pinMes10 = new JPanelPad();
-
-	private JPanelPad pinMes11 = new JPanelPad();
-
-	private JPanelPad pinMes12 = new JPanelPad();
+	private JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextAreaPad txaObs = new JTextAreaPad();
 
 	private JTextAreaPad txaTxtObsCli = new JTextAreaPad(); // Campo memo para observações por data
 
 	private JTextAreaPad txaObsMetaVend = new JTextAreaPad();
+
+	private JRadioGroup<String, String> rgPessoa = null;
+
+	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 	
-	private final JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	private JCheckBoxPad cbSimples = new JCheckBoxPad( "Simples", "S", "N" );
 	
-	private final JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
-	private JScrollPane spnObs = new JScrollPane( txaObs ); // Scroll pane para observações gerais
-
-	private JScrollPane spnObsCli = new JScrollPane( txaTxtObsCli ); // Scrool pane para o campo de observações por data
-
-	private JScrollPane spnObsTb = new JScrollPane( tbObsData ); // Cria tabela de observações dentro do scroll pane
-
-	private ListaCampos lcTipoCli = new ListaCampos( this, "TI" );
-
-	private ListaCampos lcTipoFiscCli = new ListaCampos( this, "FC" );
-
-	private ListaCampos lcVend = new ListaCampos( this, "VD" );
-
-	private ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
-
-	private ListaCampos lcTran = new ListaCampos( this, "TN" );
-
-	private ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
-
-	private ListaCampos lcBanco = new ListaCampos( this, "BO" );
-
-	private ListaCampos lcSetor = null;
-
-	private ListaCampos lcClas = new ListaCampos( this, "CC" );
-
-	private ListaCampos lcPesq = new ListaCampos( this, "PQ" );
-
-	private ListaCampos lcCliFor = new ListaCampos( this );
+	private JCheckBoxPad cbProdRural = new JCheckBoxPad( "Prod.rural", "S", "N" );
 	
-	private ListaCampos lcClixFor = new ListaCampos( this );
-
-	private ListaCampos lcMetaVend = new ListaCampos( this );
-
-	private ListaCampos lcFor = new ListaCampos( this, "FR" );
-	
-	private ListaCampos lcForCli = new ListaCampos( this, "FR" );
-
-	private ListaCampos lcPais = new ListaCampos( this, "" );
-	
-	private ListaCampos lcPaisEnt = new ListaCampos( this, "" );
-	
-	private ListaCampos lcPaisCob = new ListaCampos( this, "" );
-
-	private ListaCampos lcHistorico = new ListaCampos( this, "HP" );
-	
-	private final ListaCampos lcCartCob = new ListaCampos( this, "CB" );
-	
-	private ListaCampos lcUF = new ListaCampos( this );
-	
-	private ListaCampos lcUFEnt = new ListaCampos( this );
-	
-	private ListaCampos lcUFCob = new ListaCampos( this );
-	
-	private ListaCampos lcMunic = new ListaCampos( this );
-	
-	private ListaCampos lcMunicEnt = new ListaCampos( this );
-	
-	private ListaCampos lcMunicCob = new ListaCampos( this );
-
-	private JScrollPane spnTabFor = new JScrollPane( tabFor );
-	
-	private JScrollPane spnTabCliFor = new JScrollPane( tabCliFor );
-
-	private JScrollPane spnTabHist = new JScrollPane( tabHist );
-
-	private JScrollPane spnMetaVend = new JScrollPane( tabMetaVend );
+	private JCheckBoxPad cbContato = new JCheckBoxPad( "Contato", "O", "C" );
 
 	private JButton btAtEntrega = new JButton( Icone.novo( "btReset.gif" ) );
 	
@@ -588,15 +528,65 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	
 	private JButton btBuscaEnd = new JButton( Icone.novo( "btBuscacep.gif" ) );
 	
-	private JButton btBuscaFor = new JButton(Icone.novo("btPesquisa.gif"));
+	private JButton btBuscaFor = new JButton( Icone.novo("btPesquisa.gif") );
+
+	private ListaCampos lcTipoCli = new ListaCampos( this, "TI" );
+
+	private ListaCampos lcTipoFiscCli = new ListaCampos( this, "FC" );
+
+	private ListaCampos lcVend = new ListaCampos( this, "VD" );
+
+	private ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
+
+	private ListaCampos lcTran = new ListaCampos( this, "TN" );
+
+	private ListaCampos lcTipoCob = new ListaCampos( this, "TC" );
+
+	private ListaCampos lcBanco = new ListaCampos( this, "BO" );
+
+	private ListaCampos lcSetor = null;
+
+	private ListaCampos lcClas = new ListaCampos( this, "CC" );
+
+	private ListaCampos lcPesq = new ListaCampos( this, "PQ" );
+
+	private ListaCampos lcCliFor = new ListaCampos( this );
+	
+	private ListaCampos lcClixFor = new ListaCampos( this );
+
+	private ListaCampos lcMetaVend = new ListaCampos( this );
+
+	private ListaCampos lcFor = new ListaCampos( this, "FR" );
+	
+	private ListaCampos lcForCli = new ListaCampos( this, "FR" );
+
+	private ListaCampos lcPais = new ListaCampos( this, "" );
+	
+	private ListaCampos lcPaisEnt = new ListaCampos( this, "" );
+	
+	private ListaCampos lcPaisCob = new ListaCampos( this, "" );
+
+	private ListaCampos lcHistorico = new ListaCampos( this, "HP" );
+	
+	private ListaCampos lcCartCob = new ListaCampos( this, "CB" );
+	
+	private ListaCampos lcUF = new ListaCampos( this );
+	
+	private ListaCampos lcUFEnt = new ListaCampos( this );
+	
+	private ListaCampos lcUFCob = new ListaCampos( this );
+	
+	private ListaCampos lcMunic = new ListaCampos( this );
+	
+	private ListaCampos lcMunicEnt = new ListaCampos( this );
+	
+	private ListaCampos lcMunicCob = new ListaCampos( this );
 
 	private Navegador navFor = new Navegador( true );
 	
 	private Navegador navClixFor = new Navegador( true );
 
 	private Navegador navMetaVend = new Navegador( false );
-
-	private JTabbedPanePad tpnCont = new JTabbedPanePad();
 
 	private FConveniado telaConv;
 
@@ -606,7 +596,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	
 	private String sURLBanco = null;
 	
-	private JCheckBoxPad cbProdRural = new JCheckBoxPad( "Prod.rural", "S", "N" );
 	
 	public FCliente() {
 
@@ -832,6 +821,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true );
 		adicCampo( txtRazCli, 90, 20, 322, 20, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, true );
 		adicCampo( txtNomeCli, 90, 60, 322, 20, "NomeCli", "Nome", ListaCampos.DB_SI, true );
+		
+		Vector<String> vPessoaLab = new Vector<String>();
+		Vector<String> vPessoaVal = new Vector<String>();
 
 		vPessoaLab.addElement( "Jurídica" );
 		vPessoaLab.addElement( "Física" );
@@ -849,12 +841,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicCampo( txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_FK, txtDescTipoCli, true );
 		adicDescFK( txtDescTipoCli, 90, 100, 325, 20, "DescTipoCli", "Descrição do tipo de cliente" );
 		
-		JCheckBoxPad cbSimples = new JCheckBoxPad( "Simples", "S", "N" );
-		
-		adicDB( cbSimples, 425, 100, 80, 20, "SimplesCli", "Fiscal", true );
-		
+		adicDB( cbSimples, 425, 100, 80, 20, "SimplesCli", "", true );		
 		adicDB( cbProdRural, 425, 120, 80, 20, "ProdRuralCli", "", true );
-		
+		adicDB( cbContato, 425, 140, 80, 20, "CtoCli", "", true );		
 		
 		adicCampo( txtCodClas, 7, 140, 80, 20, "CodClasCli", "Cód.c.cli", ListaCampos.DB_FK, txtDescClas, true );
 		adicDescFK( txtDescClas, 90, 140, 325, 20, "DescClasCli", "Descrição da classificação do cliente" );
@@ -1069,13 +1058,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		pinObs1_2_2_2_1.adic( btNovaObs, 0, 0, 30, 26 );
 		pinObs1_2_2_2_1.adic( btExclObs, 31, 0, 30, 26 );
 		pinObs1_2_2_2_1.adic( btEditObs, 62, 0, 30, 26 );
-		pnObs1_2_2_1.add( spnObsCli );
+		pnObs1_2_2_1.add( new JScrollPane( txaTxtObsCli ) );
 		pnObs1_2_2_2.add( pinObs1_2_2_2_1 );
-		pinObs1_2_1_1.adic( spnObsTb, 0, 0, 200, 200 );
+		pinObs1_2_1_1.adic( new JScrollPane( tbObsData ), 0, 0, 200, 200 );
 		pnObs1_2_1.add( pinObs1_2_1_1 ); // adiciona o scrool pane da tabela de datas no painel da esquerda
 		pnObs1_2_2.add( pnObs1_2_2_1, BorderLayout.CENTER ); // adiciona memo de observações no painel da direita
 		pnObs1_2_2.add( pnObs1_2_2_2, BorderLayout.SOUTH );
-		pnObs1_1.add( spnObs, BorderLayout.CENTER ); // adiciona as observações gerais no painel
+		pnObs1_1.add( new JScrollPane( txaObs ), BorderLayout.CENTER ); // adiciona as observações gerais no painel
 		pnObs1_2.add( pnObs1_2_1, BorderLayout.WEST );
 		pnObs1_2.add( pnObs1_2_2, BorderLayout.CENTER );
 		pnObs1.add( pnObs1_1, BorderLayout.CENTER );
@@ -1101,7 +1090,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		setNavegador( navFor );
 		pnFor.add( pinFor, BorderLayout.SOUTH );
-		pnFor.add( spnTabFor, BorderLayout.CENTER );
+		pnFor.add( new JScrollPane( tabFor ), BorderLayout.CENTER );
 
 		pinFor.adic( navFor, 0, 50, 270, 25 );
 
@@ -1169,7 +1158,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		adicTab( "Contatos", pnCto );
 		pnCto.add( tpnCont );
 
-		pinHistorico.add( spnTabHist, BorderLayout.CENTER );
+		pinHistorico.add( new JScrollPane( tabHist ), BorderLayout.CENTER );
 		pinHistorico.add( pinHistbt, BorderLayout.EAST);
 
 		pinHistbt.setPreferredSize( new Dimension( 37, 36 ) );
@@ -1362,7 +1351,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		setNavegador( navMetaVend );
 
 		pnMetaVend.add( pinMetaVend, BorderLayout.SOUTH );
-		pnMetaVend.add( spnMetaVend, BorderLayout.CENTER );
+		pnMetaVend.add( new JScrollPane( tabMetaVend ), BorderLayout.CENTER );
 
 		pinMetaVend.adic( navMetaVend, 0, 130, 150, 25 );
 
@@ -2032,9 +2021,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 	}
 
-	public void exec( int iCodCli ) {
+	public void exec( int codigoCliente ) {
 
-		txtCodCli.setVlrString( iCodCli + "" );
+		txtCodCli.setVlrInteger( codigoCliente );
 		lcCampos.carregaDados();
 	}
 

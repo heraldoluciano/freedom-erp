@@ -1,12 +1,7 @@
-/**
- * @version 10/10/2003 <BR>
- * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
- * 
- *         Projeto: Freedom <BR>
- * 
- *         Pacote: org.freedom.modulos.tmk <BR>
- *         Classe:
- * @(#)FContato.java <BR>
+/*
+ * Projeto: Freedom
+ * Pacote: org.freedom.modules.crm
+ * Classe: @(#)FContato.java
  * 
  * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  * modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -15,19 +10,16 @@
  * sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
  * Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
  * Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
- *                   de acordo com os termos da LPG-PC <BR>
- * <BR>
- * 
- *                   Tela de cadastro de contatos.
- * 
+ * escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA <BR> <BR>
  */
 
 package org.freedom.modulos.crm;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,9 +27,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -51,6 +41,8 @@ import org.freedom.componentes.Endereco;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -59,17 +51,25 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.FCliente;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
 import org.freedom.webservices.WSCep;
 
+
+/**
+ * Cadastro de contatos
+ * 
+ * @author Setpoint Informática Ltda./Fernando Oliveira da Silva
+ * @version 09/09/2009 - Alex Rodrigues 
+ */
 public class FContato extends FTabDados implements RadioGroupListener, PostListener, ActionListener, ChangeListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private JPanelPad pinCont = new JPanelPad();
+	private JPanelPad pinCont = new JPanelPad( 500, 330 );
 
 	private JPanelPad pinVend = new JPanelPad( 0, 80 );
 
@@ -79,17 +79,11 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 
 	private JPanelPad pinGrupos = new JPanelPad( 0, 80 );
 
-	private Tabela tabAtiv = new Tabela();
-
-	private JScrollPane spnAtiv = new JScrollPane( tabAtiv );
-
-	private Tabela tabGrupos = new Tabela();
-
-	private JScrollPane spnGrupos = new JScrollPane( tabGrupos );
-
 	private JPanelPad pnAtiv = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pnGrupos = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
+	private JPanelPad pnCompl = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JTextFieldPad txtCodCont = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
@@ -171,17 +165,19 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 
 	private JTextFieldFK txtDescTipoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private Vector<String> vPessoaLab = new Vector<String>();
+	private JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
 
-	private Vector<String> vPessoaVal = new Vector<String>();
-
-	private JRadioGroup<?, ?> rgPessoa = null;
-
-	private JPanelPad pnCompl = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private JRadioGroup<String, String> rgPessoa = null;
 
 	private JTextAreaPad txaObs = new JTextAreaPad();
 
-	private JScrollPane spnObs = new JScrollPane( txaObs );
+	private JButton btExportCli = new JButton( Icone.novo( "btExportaCli.gif" ) );
+
+	private JButton btBuscaEnd = new JButton( Icone.novo( "btBuscacep.gif" ) );
+
+	private Tabela tabAtiv = new Tabela();
+
+	private Tabela tabGrupos = new Tabela();
 
 	private ListaCampos lcVend = new ListaCampos( this, "VD" );
 
@@ -208,10 +204,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	private Navegador navAtiv = new Navegador( true );
 
 	private Navegador navGrupos = new Navegador( true );
-
-	private JButton btExportCli = new JButton( Icone.novo( "btExportaCli.gif" ) );
-
-	private JButton btBuscaEnd = new JButton( Icone.novo( "btBuscacep.gif" ) );
+	
 
 	public FContato() {
 
@@ -227,11 +220,41 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		lcCampos.adicDetalhe( lcGrupo );
 		lcGrupo.setTabela( tabGrupos );
 
-		pinCont = new JPanelPad( 500, 330 );
-		setPainel( pinCont );
-		adicTab( "Contato", pinCont );
+		Vector<String> vPessoaLab = new Vector<String>();
+		Vector<String> vPessoaVal = new Vector<String>();
+		vPessoaLab.addElement( "Jurídica" );
+		vPessoaLab.addElement( "Física" );
+		vPessoaVal.addElement( "J" );
+		vPessoaVal.addElement( "F" );
+
+		rgPessoa = new JRadioGroup<String, String>( 2, 1, vPessoaLab, vPessoaVal );
+		rgPessoa.addRadioGroupListener( this );
+		rgPessoa.setVlrString( "F" );
+		
+		montaListaCampos();
+		montaTela();
+
+		txtCpfCont.setMascara( JTextFieldPad.MC_CPF );
+		txtCnpjCont.setMascara( JTextFieldPad.MC_CNPJ );
+		txtCepCont.setMascara( JTextFieldPad.MC_CEP );
+		txtFoneCont.setMascara( JTextFieldPad.MC_FONEDDD );
+		txtFaxCont.setMascara( JTextFieldPad.MC_FONE );		
+		
+		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
 
 		lcCampos.addPostListener( this );
+		
+		btImp.addActionListener( this );
+		btPrevimp.addActionListener( this );
+		btExportCli.addActionListener( this );
+		btBuscaEnd.addActionListener( this );
+		
+		tpn.addChangeListener( this );
+		
+		setImprimir( true );
+	}
+	
+	private void montaListaCampos() {
 
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
@@ -261,6 +284,14 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		lcGrupFK.setQueryCommit( false );
 		txtCodGrup.setTabelaExterna( lcGrupFK );
 
+		/** TIPO CLI */
+		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, true ) );
+		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false ) );
+		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
+		lcTipoCli.setQueryCommit( false );
+		lcTipoCli.setReadOnly( true );
+		txtCodTipoCli.setTabelaExterna( lcTipoCli );
+
 		lcOrigCont.add( new GuardaCampo( txtCodOrigCont, "CodOrigCont", "Cód.origem", ListaCampos.DB_PK, true ) );
 		lcOrigCont.add( new GuardaCampo( txtDescOrigCont, "DescOrigCont", "descrição da origem", ListaCampos.DB_SI, false ) );
 		lcOrigCont.montaSql( false, "ORIGCONT", "TK" );
@@ -268,12 +299,9 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		lcOrigCont.setReadOnly( true );
 		txtCodOrigCont.setTabelaExterna( lcOrigCont );
 
-		/***************
-		 * MUNICIPIO *
-		 **************/
-
+		/** MUNICIPIO */
 		lcMunic.setUsaME( false );
-		lcMunic.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Munic.", ListaCampos.DB_PK, true ) );
+		lcMunic.add( new GuardaCampo( txtCodMun, "CodMunic", "Cód.Munic.", ListaCampos.DB_PK, false ) );
 		lcMunic.add( new GuardaCampo( txtDescMun, "NomeMunic", "Nome Munic.", ListaCampos.DB_SI, false ) );
 		lcMunic.add( new GuardaCampo( txtDDDMun, "DDDMunic", "DDD Munic.", ListaCampos.DB_SI, false ) );
 		lcMunic.setDinWhereAdic( "SIGLAUF = #S", txtSiglaUF );
@@ -282,12 +310,9 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		lcMunic.setReadOnly( true );
 		txtCodMun.setTabelaExterna( lcMunic );
 
-		/***************
-		 * UF *
-		 **************/
-
+		/** UF */
 		lcUF.setUsaME( false );
-		lcUF.add( new GuardaCampo( txtSiglaUF, "SiglaUf", "Sigla", ListaCampos.DB_PK, true ) );
+		lcUF.add( new GuardaCampo( txtSiglaUF, "SiglaUf", "Sigla", ListaCampos.DB_PK, false ) );
 		lcUF.add( new GuardaCampo( txtNomeUF, "NomeUf", "Nome", ListaCampos.DB_SI, false ) );
 		lcMunic.setDinWhereAdic( "CODPAIS = #S", txtCodPais );
 		lcUF.montaSql( false, "UF", "SG" );
@@ -295,97 +320,72 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		lcUF.setReadOnly( true );
 		txtSiglaUF.setTabelaExterna( lcUF );
 
-		/***************
-		 * PAIS *
-		 **************/
-
+		/** PAIS */
 		lcPais.setUsaME( false );
-		lcPais.add( new GuardaCampo( txtCodPais, "CodPais", "Cod.país.", ListaCampos.DB_PK, true ) );
+		lcPais.add( new GuardaCampo( txtCodPais, "CodPais", "Cod.país.", ListaCampos.DB_PK, false ) );
 		lcPais.add( new GuardaCampo( txtDescPais, "NomePais", "Nome", ListaCampos.DB_SI, false ) );
 		lcPais.montaSql( false, "PAIS", "SG" );
 		lcPais.setQueryCommit( false );
 		lcPais.setReadOnly( true );
 		txtCodPais.setTabelaExterna( lcPais );
-
-		/***************
-		 * TIPO CLI *
-		 **************/
-
-		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, true ) );
-		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false ) );
-		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
-		lcTipoCli.setQueryCommit( false );
-		lcTipoCli.setReadOnly( true );
-		txtCodTipoCli.setTabelaExterna( lcTipoCli );
+	}
+	
+	private void montaTela() {
+		
+		setPainel( pinCont );
+		adicTab( "Contato", pinCont );
 
 		adicCampo( txtCodCont, 7, 20, 80, 20, "CodCto", "Cód.cto.", ListaCampos.DB_PK, true );
 		adicCampo( txtRazCont, 90, 20, 307, 20, "RazCto", "Razão social do contato", ListaCampos.DB_SI, true );
-		adicCampo( txtEmailCont, 210, 270, 157, 20, "EmailCto", "E-Mail", ListaCampos.DB_SI, false );
-
-		vPessoaLab.addElement( "Jurídica" );
-		vPessoaLab.addElement( "Física" );
-		vPessoaVal.addElement( "J" );
-		vPessoaVal.addElement( "F" );
-
-		rgPessoa = new JRadioGroup<String, String>( 2, 1, vPessoaLab, vPessoaVal );
-		rgPessoa.addRadioGroupListener( this );
-
 		adicDB( rgPessoa, 400, 20, 100, 60, "PessoaCto", "Pessoa", true );
-		rgPessoa.setVlrString( "F" );
-
-		JCheckBoxPad cbAtivo = new JCheckBoxPad( "Ativo", "S", "N" );
-
 		adicDB( cbAtivo, 19, 60, 70, 20, "AtivoCto", "Ativo", true );
 		adicCampo( txtNomeCont, 90, 60, 307, 20, "NomeCto", "Nome do contato", ListaCampos.DB_SI, true );
-		adicCampo( txtCpfCont, 273, 110, 111, 20, "CpfCto", "CPF", ListaCampos.DB_SI, false );
-		adicCampo( txtCodSetor, 7, 110, 60, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, true );
-		adicDescFK( txtDescSetor, 70, 110, 200, 20, "DescSetor", "Descrição do setor do contato" );
-		adicCampo( txtRgCont, 387, 110, 112, 20, "RgCto", "RG", ListaCampos.DB_SI, false );
-		adicCampo( txtCnpjCont, 7, 150, 150, 20, "CnpjCto", "CNPJ", ListaCampos.DB_SI, false );
-		adicCampo( txtInscCont, 160, 150, 147, 20, "InscCto", "Inscrição Estadual", ListaCampos.DB_SI, false );
-		adicCampo( txtContCont, 310, 150, 107, 20, "ContCto", "Falar com:", ListaCampos.DB_SI, false );
-		adicCampo( txtCargoCont, 420, 150, 80, 20, "CargoContCto", "Cargo", ListaCampos.DB_SI, false );
-		adicCampo( txtEndCont, 125, 190, 375, 20, "EndCto", "Endereço", ListaCampos.DB_SI, false );
-		adicCampo( txtNumCont, 7, 230, 77, 20, "NumCto", "Num.", ListaCampos.DB_SI, false );
-		adicCampo( txtComplCont, 88, 230, 130, 20, "ComplCto", "Compl.", ListaCampos.DB_SI, false );
-		adicCampo( txtBairCont, 221, 230, 280, 20, "BairCto", "Bairro", ListaCampos.DB_SI, false );
-		adic( btBuscaEnd, 100, 190, 20, 20 );
-		adicCampo( txtCepCont, 7, 190, 90, 20, "CepCto", "Cep", ListaCampos.DB_SI, false );
-		adicCampo( txtFoneCont, 7, 270, 100, 20, "FoneCto", "Telefone", ListaCampos.DB_SI, false );
-		adicCampo( txtFaxCont, 110, 270, 97, 20, "FaxCto", "Fax", ListaCampos.DB_SI, false );
-		adicCampo( txtNumEmp, 370, 270, 97, 20, "numempcto", "Nº Funcionarios", ListaCampos.DB_SI, false );
+		adicCampo( txtCodSetor, 7, 110, 100, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, true );
+		adicDescFK( txtDescSetor, 110, 110, 390, 20, "DescSetor", "Descrição do setor do contato" );		
+		adicCampo( txtRgCont, 7, 150, 120, 20, "RgCto", "RG", ListaCampos.DB_SI, false );
+		adicCampo( txtCpfCont, 130, 150, 120, 20, "CpfCto", "CPF", ListaCampos.DB_SI, false );
+		adicCampo( txtCnpjCont, 253, 150, 120, 20, "CnpjCto", "CNPJ", ListaCampos.DB_SI, false );
+		adicCampo( txtInscCont, 376, 150, 123, 20, "InscCto", "Inscrição Estadual", ListaCampos.DB_SI, false );
+		adicCampo( txtContCont, 7, 190, 120, 20, "ContCto", "Falar com:", ListaCampos.DB_SI, false );
+		adicCampo( txtCargoCont, 130, 190, 120, 20, "CargoContCto", "Cargo", ListaCampos.DB_SI, false );
+		adicCampo( txtEmailCont, 253, 190, 246, 20, "EmailCto", "E-Mail", ListaCampos.DB_SI, false );
+		adicCampo( txtCepCont, 7, 230, 95, 20, "CepCto", "Cep", ListaCampos.DB_SI, false );
+		adic( btBuscaEnd, 105, 229, 20, 20 );
+		adicCampo( txtEndCont, 130, 230, 300, 20, "EndCto", "Endereço", ListaCampos.DB_SI, false );
+		adicCampo( txtNumCont, 433, 230, 67, 20, "NumCto", "Num.", ListaCampos.DB_SI, false );
+		adicCampo( txtComplCont, 7, 270, 120, 20, "ComplCto", "Compl.", ListaCampos.DB_SI, false );
+		adicCampo( txtBairCont, 130, 270, 120, 20, "BairCto", "Bairro", ListaCampos.DB_SI, false );
+		adicCampo( txtFoneCont, 253, 270, 100, 20, "FoneCto", "Telefone", ListaCampos.DB_SI, false );
+		adicCampo( txtFaxCont, 356, 270, 73, 20, "FaxCto", "Fax", ListaCampos.DB_SI, false );
+		adicCampo( txtNumEmp, 433, 270, 67, 20, "numempcto", "Nº Func.", ListaCampos.DB_SI, false );
 
-		adicCampo( txtCodTipoCli, 7, 310, 70, 20, "CodTipoCli", "Cód.Tipo Cli.", ListaCampos.DB_FK, txtDescTipoCli, true );
-		adicDescFK( txtDescTipoCli, 80, 310, 250, 20, "DescTipoCli", "Descrição do tipo de cliente" );
-		adicCampo( txtCodPais, 7, 350, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, true );
-		adicDescFK( txtDescPais, 80, 350, 250, 20, "NomePais", "Nome do país" );
-		adicCampo( txtSiglaUF, 7, 390, 70, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, true );
-		adicDescFK( txtNomeUF, 80, 390, 250, 20, "NomeUF", "Nome UF" );
-		adicCampo( txtCodMun, 7, 430, 70, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, txtDescMun, false );
-		adicDescFK( txtDescMun, 80, 430, 250, 20, "NomeMunic", "Nome do municipio" );
-		adicCampo( txtCodOrigCont, 7, 470, 70, 20, "CodOrigCont", "Cod.orig.", ListaCampos.DB_FK, txtDescOrigCont, false );
-		adicDescFK( txtDescOrigCont, 80, 470, 250, 20, "DescOrigCont", "Descrição da origem" );
-
-		adic( btExportCli, 470, 260, 30, 30 );
-		txtCpfCont.setMascara( JTextFieldPad.MC_CPF );
-		txtCnpjCont.setMascara( JTextFieldPad.MC_CNPJ );
-		txtCepCont.setMascara( JTextFieldPad.MC_CEP );
-		txtFoneCont.setMascara( JTextFieldPad.MC_FONEDDD );
-		txtFaxCont.setMascara( JTextFieldPad.MC_FONE );
+		adicCampo( txtCodTipoCli, 7, 310, 100, 20, "CodTipoCli", "Cód.Tipo Cli.", ListaCampos.DB_FK, txtDescTipoCli, false );
+		adicDescFK( txtDescTipoCli, 110, 310, 390, 20, "DescTipoCli", "Descrição do tipo de cliente" );
+		adicCampo( txtCodOrigCont, 7, 350, 100, 20, "CodOrigCont", "Cod.orig.", ListaCampos.DB_FK, txtDescOrigCont, true );
+		adicDescFK( txtDescOrigCont, 110, 350, 390, 20, "DescOrigCont", "Descrição da origem" );		
+		adicCampo( txtCodPais, 7, 390, 100, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, false );
+		adicDescFK( txtDescPais, 110, 390, 390, 20, "NomePais", "Nome do país" );
+		adicCampo( txtSiglaUF, 7, 430, 100, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, false );
+		adicDescFK( txtNomeUF, 110, 430, 390, 20, "NomeUF", "Nome UF" );
+		adicCampo( txtCodMun, 7, 470, 100, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, txtDescMun, false );
+		adicDescFK( txtDescMun, 110, 470, 390, 20, "NomeMunic", "Nome do municipio" );
+		
 		adicTab( "Informações complementares", pnCompl );
-		adicDBLiv( txaObs, "ObsCto", "Observações", false );
+		
 		pnCompl.add( pinVend, BorderLayout.NORTH );
-		pnCompl.add( spnObs, BorderLayout.CENTER );
+		pnCompl.add( new JScrollPane( txaObs ), BorderLayout.CENTER );
+		
+		adicDBLiv( txaObs, "ObsCto", "Observações", false );
+		
 		setPainel( pinVend );
 
-		btBuscaEnd.addActionListener( this );
-		btBuscaEnd.setToolTipText( "Busca Endereço a partir do CEP" );
-
-		adicCampo( txtCodVend, 7, 25, 80, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtDescVend, false );
-		adicDescFK( txtDescVend, 90, 25, 237, 20, "NomeVend", "Nome do comissionado" );
-		adicCampo( txtDataCont, 330, 25, 80, 20, "DataCto", "Data", ListaCampos.DB_SI, false );
+		adicCampo( txtCodVend, 7, 25, 100, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtDescVend, false );
+		adicDescFK( txtDescVend, 110, 25, 300, 20, "NomeVend", "Nome do comissionado" );
+		adicCampo( txtDataCont, 413, 25, 87, 20, "DataCto", "Data", ListaCampos.DB_SI, false );
 		adic( new JLabelPad( "Observações:" ), 7, 55, 150, 20 );
+		
 		setListaCampos( true, "CONTATO", "TK" );
+		lcCampos.setQueryInsert( false );
 
 		// Atividade
 
@@ -394,12 +394,12 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		setListaCampos( lcAtiv );
 		setNavegador( navAtiv );
 		pnAtiv.add( pinRodAtiv, BorderLayout.SOUTH );
-		pnAtiv.add( spnAtiv, BorderLayout.CENTER );
+		pnAtiv.add( new JScrollPane( tabAtiv ), BorderLayout.CENTER );
 
 		pinRodAtiv.adic( navAtiv, 0, 50, 270, 25 );
 
-		adicCampo( txtCodAtiv, 7, 20, 80, 20, "CodAtiv", "Cód.ativ.", ListaCampos.DB_PF, txtDescAtiv, true );
-		adicDescFK( txtDescAtiv, 90, 20, 220, 20, "DescAtiv", "Descrição da atividade" );
+		adicCampo( txtCodAtiv, 7, 20, 100, 20, "CodAtiv", "Cód.ativ.", ListaCampos.DB_PF, txtDescAtiv, true );
+		adicDescFK( txtDescAtiv, 110, 20, 390, 20, "DescAtiv", "Descrição da atividade" );
 		setListaCampos( false, "CTOATIV", "TK" );
 		lcAtiv.montaTab();
 		lcAtiv.setQueryInsert( false );
@@ -412,26 +412,26 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		setListaCampos( lcGrupo );
 		setNavegador( navGrupos );
 		pnGrupos.add( pinRodGrupos, BorderLayout.SOUTH );
-		pnGrupos.add( spnGrupos, BorderLayout.CENTER );
+		pnGrupos.add( new JScrollPane( tabGrupos ), BorderLayout.CENTER );
 
 		pinRodGrupos.adic( navGrupos, 0, 50, 270, 25 );
 
-		adicCampo( txtCodGrup, 7, 20, 80, 20, "CodGrup", "Cód.Grupo.", ListaCampos.DB_PF, txtDescGrup, true );
-		adicDescFK( txtDescGrup, 90, 20, 220, 20, "DescGrup", "Descrição do grupo" );
+		adicCampo( txtCodGrup, 7, 20, 100, 20, "CodGrup", "Cód.Grupo.", ListaCampos.DB_PF, txtDescGrup, true );
+		adicDescFK( txtDescGrup, 110, 20, 390, 20, "DescGrup", "Descrição do grupo" );
 		setListaCampos( false, "CTOGRPINT", "TK" );
 		lcGrupo.montaTab();
 		lcGrupo.setQueryInsert( false );
 		lcGrupo.setQueryCommit( false );
 
 		tabGrupos.setTamColuna( 80, 0 );
-		tabGrupos.setTamColuna( 250, 1 );
-
-		btImp.addActionListener( this );
-		btPrevimp.addActionListener( this );
-		btExportCli.addActionListener( this );
-		tpn.addChangeListener( this );
-		lcCampos.setQueryInsert( false );
-		setImprimir( true );
+		tabGrupos.setTamColuna( 250, 1 );		
+		
+		pnGImp.removeAll();
+		pnGImp.setLayout( new GridLayout( 1, 3 ) );
+		pnGImp.setPreferredSize( new Dimension( 93, 26 ) );
+		pnGImp.add( btExportCli );
+		pnGImp.add( btImp );
+		pnGImp.add( btPrevimp );
 	}
 
 	private void buscaEndereco() {
@@ -495,15 +495,14 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 			Funcoes.mensagemInforma( null, "Digite um CEP para busca!" );
 			txtCepCont.requestFocus();
 		}
-
 	}
 
 	private boolean duploCNPJ() {
 
 		boolean bRetorno = false;
-		String sSQL = "SELECT CNPJCTO FROM TKCONTATO WHERE CNPJCTO=?";
+
 		try {
-			PreparedStatement ps = con.prepareStatement( sSQL );
+			PreparedStatement ps = con.prepareStatement( "SELECT CNPJCTO FROM TKCONTATO WHERE CNPJCTO=?" );
 			ps.setString( 1, txtCnpjCont.getVlrString() );
 			ResultSet rs = ps.executeQuery();
 			if ( rs.next() ) {
@@ -511,9 +510,11 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 			}
 			rs.close();
 			ps.close();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao checar CNPJ.\n" + err.getMessage(), true, con, err );
 		}
+		
 		return bRetorno;
 	}
 
@@ -523,50 +524,64 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 			Funcoes.mensagemInforma( this, "Selecione um contato cadastrado antes!" );
 			return;
 		}
+		
 		DLContToCli dl = new DLContToCli( this, txtCodSetor.getVlrInteger().intValue() );
 		dl.setConexao( con );
 		dl.setVisible( true );
+		
 		if ( !dl.OK ) {
 			dl.dispose();
 			return;
 		}
-		int[] iVals = dl.getValores();
+		
+		DLContToCli.ContatoClienteBean contatoClienteBean = dl.getValores();
+		
 		dl.dispose();
-		String sSQL = "SELECT IRET FROM TKCONTTOCLI(?,?,?,?,?,?,?,?,?)";
+		
 		try {
-			PreparedStatement ps = con.prepareStatement( sSQL );
+			
+			PreparedStatement ps = con.prepareStatement( "SELECT IRET FROM TKCONTTOCLI(?,?,?,?,?,?,?,?,?)" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, lcCampos.getCodFilial() );
 			ps.setInt( 3, txtCodCont.getVlrInteger().intValue() );
-			ps.setInt( 4, iVals[ 0 ] );
-			ps.setInt( 5, iVals[ 1 ] );
-			ps.setInt( 6, iVals[ 2 ] );
-			ps.setInt( 7, iVals[ 3 ] );
-			ps.setInt( 8, iVals[ 4 ] );
-			ps.setInt( 9, iVals[ 5 ] );
+			ps.setInt( 4, lcCampos.getCodFilial() );
+			ps.setInt( 5, contatoClienteBean.getTipo() );
+			ps.setInt( 6, lcCampos.getCodFilial() );
+			ps.setInt( 7, contatoClienteBean.getClassificacao() );
+			ps.setInt( 8, lcCampos.getCodFilial() );
+			ps.setInt( 9, contatoClienteBean.getSetor() );
+			
 			ResultSet rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
-				if ( Funcoes.mensagemConfirma( this, "Cliente '" + rs.getInt( 1 ) + "' criado com sucesso!\n" + "Gostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
+				if ( Funcoes.mensagemConfirma( 
+						this, "Cliente '" + rs.getInt( 1 ) + "' criado com sucesso!\nGostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
 					abreCli( rs.getInt( 1 ) );
 				}
 			}
+			
 			rs.close();
 			ps.close();
 			con.commit();
+			
 		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao criar cliente!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao criar cliente!\n" + err.getMessage(), true, con, err );
 		}
-		dl.dispose();
 	}
 
-	private void abreCli( int iCodCli ) {
-
-		if ( !fPrim.temTela( "Cliente" ) ) {
-			FCliente tela = new FCliente();
-			fPrim.criatela( "Cliente", tela, con );
-			tela.exec( iCodCli );
+	private void abreCli( int codigoCliente ) {
+		
+		FCliente cliente = null;    
+		if ( Aplicativo.telaPrincipal.temTela( FCliente.class.getName() ) ) {
+			cliente = (FCliente)Aplicativo.telaPrincipal.getTela( FCliente.class.getName() );
 		}
+		else {
+			cliente = new FCliente();
+			Aplicativo.telaPrincipal.criatela( "Cliente", cliente, con );
+		}    
+
+		cliente.exec( codigoCliente );
 	}
 
 	private void imprimir( boolean bVisualizar ) {
@@ -817,21 +832,19 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 				Funcoes.mensagemErro( this, "Erro consulta tabela de contatos!" + err.getMessage(), true, con, err );
 			}
 		}
-		if ( bVisualizar )
+		
+		if ( bVisualizar ) {
 			imp.preview( this );
-		else
+		}
+		else {
 			imp.print();
+		}
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
 			imprimir( true );
-			Vector<?> vVal = Funcoes.stringToVector( txaObs.getText() );
-			int iTam = vVal.size();
-			for ( int i = 0; i < iTam; i++ ) {
-				System.out.println( i + " : " + vVal.elementAt( i ) );
-			}
 		}
 		else if ( evt.getSource() == btImp ) {
 			imprimir( false );
@@ -846,37 +859,52 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		super.actionPerformed( evt );
 	}
 
-	public void beforePost( PostEvent pevt ) {
+	public void beforePost( PostEvent e ) {
 
-		if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
-			if ( ! ( txtCnpjCont.getText().trim().length() < 1 ) && ! ( duploCNPJ() ) ) {
-				pevt.cancela();
-				Funcoes.mensagemInforma( this, "Este CNPJ ja está cadastrado!" );
-				txtCnpjCont.requestFocus();
+		if ( e.getListaCampos() == lcCampos ) {
+			
+			if ( "J".equals( rgPessoa.getVlrString() ) ) {			
+				if ( duploCNPJ() ) {
+					e.cancela();
+					Funcoes.mensagemInforma( this, "Este CNPJ ja está cadastrado!" );
+					txtCnpjCont.requestFocus();
+				}
+				else if ( !Funcoes.vIE( txtInscCont.getVlrString(), txtUFCont.getVlrString() ) ) {
+					e.cancela();
+					Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
+					txtInscCont.requestFocus();
+				}				
 			}
+			
 			txtDataCont.setVlrDate( new Date() );
 		}
-		if ( ! ( txtInscCont.getText().trim().length() < 1 ) && ! ( txtInscCont.getText().trim().toUpperCase().compareTo( "ISENTO" ) == 0 ) && !Funcoes.vIE( txtInscCont.getText(), txtUFCont.getText() ) ) {
-			pevt.cancela();
-			Funcoes.mensagemInforma( this, "Inscrição Estadual Inválida ! ! !" );
-			txtInscCont.requestFocus();
-		}
-		txtInscCont.setVlrString( Funcoes.sIEValida );
 	}
 
 	public void valorAlterado( RadioGroupEvent rgevt ) {
 
-		if ( rgPessoa.getVlrString().compareTo( "J" ) == 0 ) {
+		if ( "J".equals( rgPessoa.getVlrString() ) ) {
 			txtCnpjCont.setEnabled( true );
 			txtInscCont.setEnabled( true );
 			txtCpfCont.setEnabled( false );
 			txtRgCont.setEnabled( false );
 		}
-		else if ( rgPessoa.getVlrString().compareTo( "F" ) == 0 ) {
+		else if ( "F".equals( rgPessoa.getVlrString() ) ) {
 			txtCnpjCont.setEnabled( false );
 			txtInscCont.setEnabled( false );
 			txtCpfCont.setEnabled( true );
 			txtRgCont.setEnabled( true );
+		}
+	}
+
+	public void stateChanged( ChangeEvent cevt ) {
+
+		if ( cevt.getSource() == tpn ) {
+			if ( tpn.getSelectedIndex() == 0 ) {
+				txtCodCont.requestFocus();
+			}
+			else if ( tpn.getSelectedIndex() == 4 ) {
+				txaObs.requestFocus();
+			}
 		}
 	}
 
@@ -894,15 +922,5 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		lcTipoCli.setConexao( cn );
 		lcOrigCont.setConexao( cn );
 		lcGrupo.setConexao( cn );
-	}
-
-	public void stateChanged( ChangeEvent cevt ) {
-
-		if ( cevt.getSource() == tpn ) {
-			if ( tpn.getSelectedIndex() == 0 )
-				txtCodCont.requestFocus();
-			else if ( tpn.getSelectedIndex() == 4 )
-				txaObs.requestFocus();
-		}
 	}
 }
