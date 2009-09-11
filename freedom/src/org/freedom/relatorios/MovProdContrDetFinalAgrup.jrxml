@@ -39,12 +39,12 @@
 		<defaultValueExpression ><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CONCENTRACAO" isForPrompting="false" class="java.math.BigDecimal"/>
-	<queryString><![CDATA[SELECT eq.codemp,pd.descprod,pd.vlrdensidade,pd.vlrconcent,
+	<queryString><![CDATA[SELECT eq.codemp,pd.codprod,pd.descprod,pd.vlrdensidade,pd.vlrconcent,
 sum(EQ.qtdmovprod) as qtdmovprod,
-sum(op.qtdfinalprodop) as qtdfinalprodop
+qtdfinalprodop
 FROM eqmovprod EQ,
  eqtipomov tm, eqitrma itr, eqrma rma,  ppop op, eqproduto pd
-WHERE eq.codemp=$P{CODEMP} and eq.codfilial=$P{CODFILIAL} and eq.codprod=$P{CODPROD} AND EQ.dtmovprod BETWEEN '2009-08-01' AND '2009-08-31'
+WHERE eq.codemp=$P{CODEMP} and eq.codfilial=$P{CODFILIAL} and eq.codprod=$P{CODPROD} AND EQ.dtmovprod BETWEEN $P{DATAINI} AND $P{DATAFIM}
 and tm.codemp=eq.codemptm and tm.codfilial=eq.codfilialtm and tm.codtipomov=eq.codtipomov
 and tm.tipomov='RM'
 and itr.codemp=eq.codemprm and itr.codfilial=eq.codfilialrm and itr.coditrma=eq.coditrma
@@ -53,9 +53,11 @@ and rma.codrma=itr.codrma
 and op.codemp=rma.codempof and op.codfilial=rma.codfilialof and op.codop=rma.codop and op.seqop=rma.seqop
 and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod
 and eq.qtdmovprod>0
-group by 1,2,3,4]]></queryString>
+group by 1,2,3,4,5,7
+order by 3]]></queryString>
 
 	<field name="CODEMP" class="java.lang.Long"/>
+	<field name="CODPROD" class="java.lang.Long"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="VLRDENSIDADE" class="java.math.BigDecimal"/>
 	<field name="VLRCONCENT" class="java.math.BigDecimal"/>
@@ -66,7 +68,15 @@ group by 1,2,3,4]]></queryString>
 		<variableExpression><![CDATA[$F{QTDMOVPROD}]]></variableExpression>
 	</variable>
 	<variable name="FORMULA" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[$F{QTDMOVPROD}.divide($F{QTDFINALPRODOP}, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))]]></variableExpression>
+		<variableExpression><![CDATA[$V{QTDMOVPROD}==null?($F{QTDMOVPROD}.divide($F{QTDFINALPRODOP}, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))):
+($V{QTDMOVPROD}.divide($V{QTDFINALPRODOP}, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)))]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{QTDMOVPROD}.divide($F{QTDFINALPRODOP}, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))]]></initialValueExpression>
+	</variable>
+	<variable name="QTDMOVPROD" class="java.math.BigDecimal" resetType="Group" resetGroup="CODPROD" calculation="Sum">
+		<variableExpression><![CDATA[$F{QTDMOVPROD}]]></variableExpression>
+	</variable>
+	<variable name="QTDFINALPRODOP" class="java.math.BigDecimal" resetType="Group" resetGroup="CODPROD" calculation="Sum">
+		<variableExpression><![CDATA[$F{QTDFINALPRODOP}]]></variableExpression>
 	</variable>
 
 		<group  name="GERAL" >
@@ -76,7 +86,7 @@ group by 1,2,3,4]]></queryString>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="20"  isSplitAllowed="true" >
+			<band height="21"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="353"
@@ -116,7 +126,7 @@ group by 1,2,3,4]]></queryString>
 				<staticText>
 					<reportElement
 						x="354"
-						y="1"
+						y="3"
 						width="68"
 						height="16"
 						key="staticText-2"/>
@@ -129,7 +139,7 @@ group by 1,2,3,4]]></queryString>
 				<staticText>
 					<reportElement
 						x="354"
-						y="1"
+						y="3"
 						width="68"
 						height="16"
 						key="staticText-2"/>
@@ -142,7 +152,7 @@ group by 1,2,3,4]]></queryString>
 				<staticText>
 					<reportElement
 						x="354"
-						y="1"
+						y="3"
 						width="68"
 						height="16"
 						key="staticText-2"/>
@@ -155,7 +165,7 @@ group by 1,2,3,4]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;#,##0.00-" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="427"
-						y="3"
+						y="5"
 						width="102"
 						height="11"
 						forecolor="#000000"
@@ -170,82 +180,23 @@ group by 1,2,3,4]]></queryString>
 			</band>
 			</groupFooter>
 		</group>
-		<background>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</background>
-		<title>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</title>
-		<pageHeader>
-			<band height="16"  isSplitAllowed="true" >
-				<staticText>
-					<reportElement
-						x="72"
-						y="2"
-						width="385"
-						height="13"
-						key="staticText-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
-					</textElement>
-				<text><![CDATA[PRODUTO FINAL OBTIDO:]]></text>
-				</staticText>
+		<group  name="CODPROD" >
+			<groupExpression><![CDATA[$F{CODPROD}]]></groupExpression>
+			<groupHeader>
+			<band height="2"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="15"
+						y="1"
 						width="535"
 						height="0"
 						key="line-1"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="1"
-						y="1"
-						width="1"
-						height="0"
-						key="line-2"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="535"
-						y="2"
-						width="1"
-						height="14"
-						key="line-15"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="1"
-						width="536"
-						height="0"
-						key="line-18"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="2"
-						width="1"
-						height="14"
-						key="line-19"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 			</band>
-		</pageHeader>
-		<columnHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</columnHeader>
-		<detail>
-			<band height="59"  isSplitAllowed="true" >
+			</groupHeader>
+			<groupFooter>
+			<band height="60"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="92"
@@ -321,7 +272,7 @@ group by 1,2,3,4]]></queryString>
 					<textElement>
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDFINALPRODOP}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{QTDFINALPRODOP}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -373,7 +324,7 @@ group by 1,2,3,4]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="353"
-						y="30"
+						y="31"
 						width="70"
 						height="11"
 						forecolor="#000000"
@@ -383,8 +334,7 @@ group by 1,2,3,4]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{FORMULA}
-]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{FORMULA}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -405,7 +355,7 @@ group by 1,2,3,4]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00;#,##0.00-" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="423"
-						y="30"
+						y="31"
 						width="112"
 						height="11"
 						forecolor="#000000"
@@ -415,7 +365,7 @@ group by 1,2,3,4]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDMOVPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{QTDMOVPROD}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -481,7 +431,7 @@ group by 1,2,3,4]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="42"
+						y="43"
 						width="353"
 						height="0"
 						key="line-11"/>
@@ -508,7 +458,7 @@ group by 1,2,3,4]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="58"
+						y="39"
 						width="1"
 						height="0"
 						key="line-16"/>
@@ -517,12 +467,82 @@ group by 1,2,3,4]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="58"
+						y="59"
 						width="535"
 						height="0"
 						key="line-17"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="16"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="72"
+						y="2"
+						width="385"
+						height="13"
+						key="staticText-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[PRODUTO FINAL OBTIDO:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="1"
+						width="1"
+						height="0"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="535"
+						y="2"
+						width="1"
+						height="14"
+						key="line-15"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="1"
+						width="536"
+						height="0"
+						key="line-18"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="2"
+						width="1"
+						height="14"
+						key="line-19"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</detail>
 		<columnFooter>
