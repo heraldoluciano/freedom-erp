@@ -211,7 +211,7 @@ public class NF062 extends Layout {
 						sDescFisc = "";
 					}
 				}
-
+				bjatem = false;
 				// Fim da classificação fiscal
 
 				// Imprime os dados do item no corpo da nota
