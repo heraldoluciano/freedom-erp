@@ -209,11 +209,13 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 	private void habBtPesq() {
 
 		int iTipo = txtPesq.getTipo();
-		if ( verifTipoPesq( iTipo ) )
-			if ( !btExecuta.isEnabled() )
-				btExecuta.setEnabled( true );
-			else
-				btExecuta.setEnabled( false );
+		
+		if ( verifTipoPesq( iTipo ) ){
+			btExecuta.setEnabled( false );
+		}
+		else {
+			btExecuta.setEnabled( true );	
+		}
 	}
 
 	public void voltaColuna() {
@@ -285,7 +287,7 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 
 	private boolean verifTipoPesq( int iTipo ) {
 
-		return ( ( iTipo == JTextFieldPad.TP_INTEGER ) || ( txtPesq.getTipo() == JTextFieldPad.TP_DATE ) || ( txtPesq.getTipo() == JTextFieldPad.TP_DECIMAL ) );
+		return ( ( iTipo == JTextFieldPad.TP_INTEGER ) || ( iTipo == JTextFieldPad.TP_DATE ) || ( iTipo == JTextFieldPad.TP_DECIMAL ) );
 	}
 
 	public void montaSql() {
