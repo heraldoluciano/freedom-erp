@@ -27,7 +27,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.Toolkit;
@@ -41,7 +40,6 @@ import java.awt.event.WindowEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -55,7 +53,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.border.Border;
-
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.componentes.JLabelPad;
@@ -70,9 +67,9 @@ import org.freedom.infra.model.jdbc.DbConnection;
 public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener {
 
 	
-	private Image icone;
+//	private Image icone;
 //	private SystemTray tray;
-	private Toolkit toolkit;
+//	private Toolkit toolkit;
 //	private TrayIcon trayIcon;
 	private PopupMenu popupMenu;
 	
@@ -564,7 +561,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 			lbStpinf = new JLabelPad( icStpinf );
 			final int iWidthImgStpinf = icStpinf.getIconWidth();
 			final int iHeightImgStpinf = icStpinf.getIconHeight();
-			lbStpinf.setBounds( 20, (int) tela.getHeight() - 265, iWidthImgStpinf, iHeightImgStpinf );
+			lbStpinf.setBounds( 20, (int) tela.getHeight() - 285, iWidthImgStpinf, iHeightImgStpinf );
 			lbStpinf.setToolTipText( sURLEmpresa );
 			borderStpinf = lbStpinf.getBorder();
 			dpArea.add( lbStpinf );
@@ -575,7 +572,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 			lbFreedom = new JLabelPad( icFreedom );		
 			final int iWidthImgFreedom = icFreedom.getIconWidth();
 			final int iHeightImgFreedom = icFreedom.getIconHeight();		
-			lbFreedom.setBounds( (int) tela.getWidth() - 200, (int) tela.getHeight() - 265, iWidthImgFreedom, iHeightImgFreedom );		
+			lbFreedom.setBounds( (int) tela.getWidth() - 200, (int) tela.getHeight() - 285, iWidthImgFreedom, iHeightImgFreedom );		
 			lbFreedom.setToolTipText( sURLSistema );
 			borderFreedom = lbFreedom.getBorder();
 			dpArea.add( lbFreedom );
@@ -643,7 +640,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		btCalc.addActionListener( this );
 		pinBotoesDir.add( btCalc );
 	}
-
+/*
 	private class TratadorDuploClique implements ActionListener {
 
 		private FPrincipal frame;
@@ -657,7 +654,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 			
 		}
 	}
-	
+*/	
 	public void setTrayIcon(PopupMenu pm) {
 		try {
 			// Comentado para compatibilizar com java 1.5
