@@ -533,6 +533,9 @@ AND E.CODPROD=P.CODPROD]]></queryString>
 					<subreportParameter  name="CODEMP">
 						<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
 					</subreportParameter>
+					<subreportParameter  name="CODFILIAL">
+						<subreportParameterExpression><![CDATA[$P{CODFILIAL}]]></subreportParameterExpression>
+					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "OP_07_CA.jasper"]]></subreportExpression>
 				</subreport>
