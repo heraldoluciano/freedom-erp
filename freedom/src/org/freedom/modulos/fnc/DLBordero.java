@@ -322,7 +322,7 @@ public class DLBordero extends FDialogo {
 				countSelect += ((Boolean)tabReceber.getValor( row, RECEBER.SEL.ordinal() )) ? 1 : 0; 
 			}
 			if ( countSelect == 0 ) {
-				Funcoes.mensagemInforma( this, "Nenhuma parcela celecionada." );
+				Funcoes.mensagemInforma( this, "Nenhuma parcela selecionada." );
 				return;
 			}
 		}
