@@ -34,19 +34,25 @@
 		<defaultValueExpression ><![CDATA["Usuario vazio"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="LOGOEMP" isForPrompting="false" class="java.lang.Object"/>
-	<queryString><![CDATA[SELECT E.FONEEMP,E.FAXEMP,E.FOTOEMP,E.CNPJEMP,P.NOMERESP,P.IDENTPROFRESP,P.CARGORESP,
-P.IMGASSRESP
-FROM SGEMPRESA E, SGPREFERE5 P
-WHERE E.CODEMP=$P{CODEMP}]]></queryString>
+	<parameter name="CODFILIAL" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[SELECT F.DDDFILIAL, F.FONEFILIAL,F.FAXFILIAL,E.FOTOEMP,F.CNPJFILIAL,P.NOMERESP,P.IDENTPROFRESP,P.CARGORESP,
+P.IMGASSRESP, F.NOMEFILIAL
+FROM SGEMPRESA E, SGFILIAL F, SGPREFERE5 P
+WHERE E.CODEMP=$P{CODEMP} AND F.CODFILIAL=$P{CODFILIAL}
+AND E.CODEMP = F.CODEMP]]></queryString>
 
-	<field name="FONEEMP" class="java.lang.String"/>
-	<field name="FAXEMP" class="java.lang.String"/>
+	<field name="DDDFILIAL" class="java.lang.String"/>
+	<field name="FONEFILIAL" class="java.lang.String"/>
+	<field name="FAXFILIAL" class="java.lang.String"/>
 	<field name="FOTOEMP" class="java.io.InputStream"/>
-	<field name="CNPJEMP" class="java.lang.String"/>
+	<field name="CNPJFILIAL" class="java.lang.String"/>
 	<field name="NOMERESP" class="java.lang.String"/>
 	<field name="IDENTPROFRESP" class="java.lang.String"/>
 	<field name="CARGORESP" class="java.lang.String"/>
 	<field name="IMGASSRESP" class="java.io.InputStream"/>
+	<field name="NOMEFILIAL" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -86,21 +92,8 @@ WHERE E.CODEMP=$P{CODEMP}]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Fax : " + ($F{FAXEMP}!= null ? $F{FAXEMP}:"")]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Fax : " + ($F{FAXFILIAL}!= null ? $F{FAXFILIAL}:"")]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement
-						x="92"
-						y="6"
-						width="119"
-						height="17"
-						key="staticText-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" size="14" isBold="true"/>
-					</textElement>
-				<text><![CDATA[D&A]]></text>
-				</staticText>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
@@ -115,7 +108,7 @@ WHERE E.CODEMP=$P{CODEMP}]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Telefone : " + ($F{FONEEMP}!= null ? $F{FONEEMP}.substring(0,3) + $F{FONEEMP}.substring(3,12) :"")]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Telefone : " + ($F{DDDFILIAL}!= null ? $F{DDDFILIAL} + "-" + $F{FONEFILIAL}:$F{FONEFILIAL})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -131,11 +124,11 @@ WHERE E.CODEMP=$P{CODEMP}]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["C.N.P.J: " + ($F{CNPJEMP}!= null ? $F{CNPJEMP}.substring(0,2) + "." +
-$F{CNPJEMP}.substring(2,5) + "." + 
-$F{CNPJEMP}.substring(5,8) + "/" +
-$F{CNPJEMP}.substring(8,12) + "-" +
-$F{CNPJEMP}.substring(12,14): "" )]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["C.N.P.J: " + ($F{CNPJFILIAL}!= null ? $F{CNPJFILIAL}.substring(0,2) + "." +
+$F{CNPJFILIAL}.substring(2,5) + "." + 
+$F{CNPJFILIAL}.substring(5,8) + "/" +
+$F{CNPJFILIAL}.substring(8,12) + "-" +
+$F{CNPJFILIAL}.substring(12,14): "" )]]></textFieldExpression>
 				</textField>
 				<rectangle>
 					<reportElement
@@ -207,6 +200,22 @@ $F{CNPJEMP}.substring(12,14): "" )]]></textFieldExpression>
 						key="line-8"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="92"
+						y="7"
+						width="118"
+						height="17"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Empresa-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" size="14" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMEFILIAL}]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
