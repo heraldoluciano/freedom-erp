@@ -31,6 +31,7 @@ import org.freedom.modulos.cfg.FFeriados;
 import org.freedom.modulos.cfg.FPais;
 import org.freedom.modulos.crm.FConsultaCli;
 import org.freedom.modulos.crm.agenda.FTipoAgenda;
+import org.freedom.modulos.fnc.FBordero;
 import org.freedom.modulos.fnc.FCartCob;
 import org.freedom.modulos.fnc.FHistPad;
 import org.freedom.modulos.fnc.FRBordero;
@@ -198,6 +199,7 @@ public class FreedomSTD extends AplicativoPD {
 
 		addOpcao( -1, TP_OPCAO_MENU, "Receber", "", 'R', 500000000, 0, false, null );
 			addOpcao( 500000000, TP_OPCAO_ITEM, "Manutenção", "Manutenção de contas a receber", 'M', 500100000, 1, true, FManutRec.class );
+			addOpcao( 500000000, TP_OPCAO_ITEM, "Bordero", "Bordero", 'B', 500400000, 1, true, FBordero.class );
 			addOpcao( 500000000, TP_OPCAO_ITEM, "CNAB", "CNAB", 'N', 500200000, 1, true, null );
 			addOpcao( 500000000, TP_OPCAO_MENU, "Listagens", "", 's', 500300000, 1, false, null );
 				addOpcao( 500300000, TP_OPCAO_ITEM, "Receber/Recebidas", "Receber/Recebidas", 'R', 500301000, 2, true, FRReceber.class );
