@@ -268,7 +268,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JCheckBoxPad cbCanceladas = new JCheckBoxPad( "Canceladas", "S", "N" );
 
-	private JCheckBoxPad cbEmBordero = new JCheckBoxPad( "Em Bordero", "S", "N" );
+	private JCheckBoxPad cbEmBordero = new JCheckBoxPad( "Descontados", "S", "N" );
 	
 	private JRadioGroup<?, ?> rgData = null;
 
