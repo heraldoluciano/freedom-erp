@@ -130,7 +130,7 @@ public class NF066b extends Layout {
 					imp.pulaLinha( 1, imp.comprimido() );					
 					imp.say( 0, imp.normal() + imp.comprimido() + imp.expandido() );
 					imp.say( 66, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
-					imp.pulaLinha( 4, imp.comprimido() );
+					imp.pulaLinha( 3, imp.comprimido() );
 					
 					if ( nf.getTipoNF() == NF.TPNF_ENTRADA ) {
 						imp.say( 104, "X" );
