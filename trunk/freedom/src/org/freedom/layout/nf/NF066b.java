@@ -279,7 +279,7 @@ public class NF066b extends Layout {
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
 						
 						imp.pulaLinha( MAXLINE - imp.pRow() , imp.comprimido() );
-						imp.pulaLinha( 2, imp.comprimido() );
+						imp.pulaLinha( 3, imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRBASEICMSPED ) ) ) );
 						imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRICMSPED ) ) ) );
 												
