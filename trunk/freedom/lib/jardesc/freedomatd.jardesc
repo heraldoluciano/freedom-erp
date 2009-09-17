@@ -40,9 +40,9 @@
         <file path="/freedom/src/org/freedom/images/lgFreedom2.jpg"/>
         <file path="/freedom/src/org/freedom/images/btCancelar.gif"/>
         <file path="/freedom/src/org/freedom/images/btAtualMenu.gif"/>
-        <file path="/freedom/src/org/freedom/images/btFluxo.gif"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm"/>
         <file path="/freedom/src/org/freedom/images/graficoLinha.gif"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm"/>
+        <file path="/freedom/src/org/freedom/images/btFluxo.gif"/>
         <file path="/freedom/src/org/freedom/images/ba1101.gif"/>
         <file path="/freedom/src/org/freedom/images/clEntrevistado.gif"/>
         <file path="/freedom/src/org/freedom/images/btOk.gif"/>
@@ -66,6 +66,7 @@
         <file path="/freedom/src/org/freedom/images/btSimilar.gif"/>
         <file path="/freedom/src/org/freedom/images/barraCompra.gif"/>
         <file path="/freedom/src/org/freedom/images/btPdvGravaMoeda.gif"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FVenda.java"/>
         <file path="/freedom/src/org/freedom/images/ba1010.gif"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.nf"/>
         <file path="/freedom/src/org/freedom/images/btReceber.gif"/>
@@ -75,8 +76,8 @@
         <file path="/freedom/src/org/freedom/images/btOrcamento2.gif"/>
         <file path="/freedom/src/org/freedom/images/btGerar.gif"/>
         <file path="/freedom/src/org/freedom/images/btEstProduto.gif"/>
-        <file path="/freedom/src/org/freedom/images/btpause.png"/>
         <file path="/freedom/src/org/freedom/images/flag_red_64.gif"/>
+        <file path="/freedom/src/org/freedom/images/btpause.png"/>
         <file path="/freedom/src/org/freedom/images/clVencido.gif"/>
         <file path="/freedom/src/org/freedom/images/clPriorBaixa.gif"/>
         <file path="/freedom/src/org/freedom/images/btPdvCopiaItem.gif"/>
@@ -106,9 +107,9 @@
         <file path="/freedom/src/org/freedom/images/btOP.gif"/>
         <file path="/freedom/src/org/freedom/images/clPriorMedia.gif"/>
         <file path="/freedom/src/org/freedom/images/btContato.gif"/>
-        <file path="/freedom/src/org/freedom/images/iconatd.png"/>
-        <file path="/freedom/src/org/freedom/images/barraUsuario.gif"/>
         <file path="/freedom/src/org/freedom/images/btProx.gif"/>
+        <file path="/freedom/src/org/freedom/images/barraUsuario.gif"/>
+        <file path="/freedom/src/org/freedom/images/iconatd.png"/>
         <file path="/freedom/src/org/freedom/images/clEfetivado.gif"/>
         <file path="/freedom/src/org/freedom/images/Thumbs.db"/>
         <file path="/freedom/src/org/freedom/images/btCalc.png"/>
@@ -132,10 +133,10 @@
         <file path="/freedom/src/org/freedom/images/bgFreedom2.jpg"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.componentes"/>
         <file path="/freedom/src/org/freedom/images/btAdic.gif"/>
-        <file path="/freedom/src/org/freedom/images/btDistOP.gif"/>
         <file path="/freedom/src/org/freedom/images/btPdvCtrlCancelaItem.gif"/>
-        <file path="/freedom/src/org/freedom/images/.cvsignore"/>
+        <file path="/freedom/src/org/freedom/images/btDistOP.gif"/>
         <file path="/freedom/src/org/freedom/images/clPriorAlta.gif"/>
+        <file path="/freedom/src/org/freedom/images/.cvsignore"/>
         <file path="/freedom/src/org/freedom/images/bannerPonto.jpg"/>
         <file path="/freedom/src/org/freedom/images/graficoBarra.png"/>
         <file path="/freedom/src/org/freedom/images/ba0100.gif"/>
@@ -206,8 +207,8 @@
         <file path="/freedom/src/org/freedom/images/CruzVermelha.gif"/>
         <file path="/freedom/src/org/freedom/images/btZoom100.gif"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.componentes"/>
-        <file path="/freedom/src/org/freedom/images/bannerTMKhistorico.jpg"/>
         <file path="/freedom/src/org/freedom/images/btVenda2.gif"/>
+        <file path="/freedom/src/org/freedom/images/bannerTMKhistorico.jpg"/>
         <file path="/freedom/src/org/freedom/images/clEng_azul.gif"/>
         <file path="/freedom/src/org/freedom/images/load_5.gif"/>
         <file path="/freedom/src/org/freedom/images/btPdf.gif"/>
@@ -221,13 +222,13 @@
         <file path="/freedom/src/org/freedom/images/btsoliccp.gif"/>
         <file path="/freedom/src/org/freedom/images/btResetcont.gif"/>
         <file path="/freedom/src/org/freedom/images/clInativo.gif"/>
-        <file path="/freedom/src/org/freedom/images/ba0110.gif"/>
         <file path="/freedom/src/org/freedom/images/cancel.gif"/>
+        <file path="/freedom/src/org/freedom/images/ba0110.gif"/>
         <file path="/freedom/src/org/freedom/images/btAbrirAcaoCorretiva.gif"/>
         <file path="/freedom/src/org/freedom/images/clCadeado.gif"/>
         <file path="/freedom/src/org/freedom/images/load_2.gif"/>
-        <file path="/freedom/src/org/freedom/images/erro_envio.gif"/>
         <file path="/freedom/src/org/freedom/images/btFechaVenda.gif"/>
+        <file path="/freedom/src/org/freedom/images/erro_envio.gif"/>
         <file path="/freedom/src/org/freedom/images/bgFreedomSTD2.jpg"/>
         <file path="/freedom/src/org/freedom/images/btPizza.gif"/>
         <file path="/freedom/src/org/freedom/images/btProdutoSimilar.gif"/>
@@ -237,14 +238,14 @@
         <file path="/freedom/src/org/freedom/images/btEncaminharCand.gif"/>
         <file path="/freedom/src/org/freedom/images/bannerTMKagendamento.jpg"/>
         <file path="/freedom/src/org/freedom/images/iconpcp.png"/>
-        <file path="/freedom/src/org/freedom/images/clAgdCanc.png"/>
         <file path="/freedom/src/org/freedom/images/btFlechaEsq.gif"/>
+        <file path="/freedom/src/org/freedom/images/clAgdCanc.png"/>
         <file path="/freedom/src/org/freedom/images/bannerATD.jpg"/>
         <file path="/freedom/src/org/freedom/images/lgSTP3.jpg"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.std"/>
-        <file path="/freedom/src/org/freedom/images/clPago2.gif"/>
-        <file path="/freedom/src/org/freedom/images/clEstrela.gif"/>
         <file path="/freedom/src/org/freedom/images/btAprovaOrc.gif"/>
+        <file path="/freedom/src/org/freedom/images/clEstrela.gif"/>
+        <file path="/freedom/src/org/freedom/images/clPago2.gif"/>
         <file path="/freedom/src/org/freedom/images/flag_yellow_64.gif"/>
         <file path="/freedom/src/org/freedom/images/lgFreedom3.jpg"/>
         <file path="/freedom/src/org/freedom/images/btProduto2.gif"/>
@@ -252,8 +253,8 @@
         <file path="/freedom/src/org/freedom/images/logosus.gif"/>
         <file path="/freedom/src/org/freedom/images/btCodBar.gif"/>
         <file path="/freedom/src/org/freedom/images/btPrevimp.gif"/>
-        <file path="/freedom/src/org/freedom/images/clNaoVencido.gif"/>
         <file path="/freedom/src/org/freedom/images/graficoPizza.gif"/>
+        <file path="/freedom/src/org/freedom/images/clNaoVencido.gif"/>
         <file path="/freedom/src/org/freedom/images/iconcrm.png"/>
         <file path="/freedom/src/org/freedom/images/btImprime.gif"/>
         <file path="/freedom/src/org/freedom/images/btAdicInsumo.gif"/>
@@ -270,23 +271,23 @@
         <file path="/freedom/src/org/freedom/images/ba0010.gif"/>
         <file path="/freedom/src/org/freedom/images/barraAtendentes.gif"/>
         <file path="/freedom/src/org/freedom/images/clIndisponivel.gif"/>
-        <file path="/freedom/src/org/freedom/images/clObrigatorioCompleto.gif"/>
         <file path="/freedom/src/org/freedom/images/clPago.gif"/>
-        <file path="/freedom/src/org/freedom/images/iconstd.png"/>
+        <file path="/freedom/src/org/freedom/images/clObrigatorioCompleto.gif"/>
         <file path="/freedom/src/org/freedom/images/btEditar.gif"/>
+        <file path="/freedom/src/org/freedom/images/iconstd.png"/>
         <file path="/freedom/src/org/freedom/images/btAbrir.gif"/>
         <file path="/freedom/src/org/freedom/images/barraConveniados.gif"/>
         <file path="/freedom/src/org/freedom/images/btNada.gif"/>
         <file path="/freedom/src/org/freedom/images/barraEstoque.gif"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
-        <file path="/freedom/src/org/freedom/images/iconcfg.png"/>
-        <file path="/freedom/src/org/freedom/images/btNovo.gif"/>
         <file path="/freedom/src/org/freedom/images/btVenda.gif"/>
+        <file path="/freedom/src/org/freedom/images/btNovo.gif"/>
+        <file path="/freedom/src/org/freedom/images/iconcfg.png"/>
         <file path="/freedom/src/org/freedom/images/load_0.gif"/>
         <file path="/freedom/src/org/freedom/images/btExcecoes.gif"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{ImprimeOrc.java"/>
-        <file path="/freedom/src/org/freedom/images/statusbarTime.gif"/>
         <file path="/freedom/src/org/freedom/images/btZoomIn.gif"/>
+        <file path="/freedom/src/org/freedom/images/statusbarTime.gif"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.modulos.crm.agenda.visoes.listas"/>
         <file path="/freedom/src/org/freedom/images/ba0000.gif"/>
         <file path="/freedom/src/org/freedom/images/btProjeto.png"/>
