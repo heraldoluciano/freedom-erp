@@ -600,6 +600,7 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 			rgStatus.setAtivo( false );
 			rgStatus.setAtivo( 0, true );
 			rgStatus.setAtivo( 4, true );
+			rgStatus.setAtivo( 6, true );
 			rgStatus.setAtivo( 7, true );
 		}
 	}
