@@ -31,6 +31,7 @@ import org.freedom.modulos.fnc.FRBordero;
 import org.freedom.modulos.fnc.FRFluxoCaixa;
 import org.freedom.modulos.grh.FFuncao;
 import org.freedom.modulos.lvf.FCLFiscal;
+import org.freedom.modulos.lvf.FTabICMS;
 import org.freedom.modulos.lvf.FTratTrib;
 import org.freedom.plugin.Background34;
 import org.freedom.telas.Aplicativo;
