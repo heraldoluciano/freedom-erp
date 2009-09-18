@@ -42,7 +42,6 @@ import org.freedom.modulos.std.FRVendasIcms;
 import org.freedom.modulos.std.FRegraFiscal;
 import org.freedom.modulos.std.FSetor;
 import org.freedom.modulos.std.FSintegra;
-import org.freedom.modulos.std.FTabICMS;
 import org.freedom.modulos.std.FTipoCli;
 import org.freedom.modulos.std.FTipoFor;
 import org.freedom.modulos.std.FVendedor;
