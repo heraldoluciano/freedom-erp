@@ -202,7 +202,7 @@ public class FRAtendimentos extends FRelatorio {
 		}
 				
 		sql.append( "select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo, " );
-		sql.append( "a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, atd.nomeatend, t.desctpatendo, cl.razcli " );
+		sql.append( "a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, atd.nomeatend, t.desctpatendo, cl.razcli, a.statusatendo " );
 		sql.append( "from  atatendimento a, atatendente atd , attipoatendo t, vdcliente cl where " );
 		sql.append( "atd.codemp=a.codempae and atd.codfilial=a.codfilialae " );
 		sql.append( "and t.codemp=a.codempto and t.codfilial=a.codfilial and t.codtpatendo=a.codtpatendo " );
@@ -223,6 +223,8 @@ public class FRAtendimentos extends FRelatorio {
 			sql.append(" and a.codempae=? and a.codfilialae=? and a.codatend=? ");
 		}
 
+		sql.append(" order by a.dataatendo, a.horaatendo ");
+		
 		try {
 			
 			ps = con.prepareStatement( sql.toString() );
