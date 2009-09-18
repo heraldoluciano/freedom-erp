@@ -839,7 +839,7 @@ public class FCLFiscal extends FDetalhe
 		
 		if ( e.getListaCampos() == lcTratTrib ) {
 			// Redução na base de calculo.
-			if ( "20".equals( txtCodTratTrib.getVlrString() ) || "51".equals( txtCodTratTrib.getVlrString() ) ) {
+			if ( "20".equals( txtCodTratTrib.getVlrString() ) || "51".equals( txtCodTratTrib.getVlrString() ) || "70".equals( txtCodTratTrib.getVlrString() ) ) {
 				rgTpRedIcmsFisc.setAtivo( true );
 				txtRedFisc.setAtivo( true );
 				rgTipoFisc.setVlrString( "TT" );
@@ -851,7 +851,7 @@ public class FCLFiscal extends FDetalhe
 				txtRedFisc.setAtivo( false );
 
 				// Substituição tributária
-				if ( "10".equals( txtCodTratTrib.getVlrString() ) ) {
+				if ( "10".equals( txtCodTratTrib.getVlrString()) || "70".equals( txtCodTratTrib.getVlrString()) ) {
 					rgTipoST.setAtivo( true );
 					rgTipoFisc.setVlrString( "FF" );
 				}
