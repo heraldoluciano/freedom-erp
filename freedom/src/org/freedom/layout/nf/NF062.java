@@ -273,10 +273,10 @@ public class NF062 extends Layout {
 						}
 						
 						BigDecimal vlrliq = cab.getBigDecimal( NF.C_VLRLIQPED );
-						BigDecimal dificmssubst = cab.getBigDecimal( NF.C_VLRICMSST );
+//						BigDecimal dificmssubst = cab.getBigDecimal( NF.C_VLRICMSST );
 						BigDecimal vlradic = cab.getBigDecimal( NF.C_VLRADICPED );
-						BigDecimal vlrsoma = vlradic.add(dificmssubst);
-						BigDecimal vlrtotnota = vlrliq.add(vlrsoma);											
+//						BigDecimal vlrsoma = vlradic.add(dificmssubst);
+						BigDecimal vlrtotnota = vlrliq.add(vlradic);											
 						
 						imp.say( 75, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( vlrtotnota )) );
 
