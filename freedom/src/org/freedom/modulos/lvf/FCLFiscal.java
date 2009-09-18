@@ -842,7 +842,12 @@ public class FCLFiscal extends FDetalhe
 			if ( "20".equals( txtCodTratTrib.getVlrString() ) || "51".equals( txtCodTratTrib.getVlrString() ) || "70".equals( txtCodTratTrib.getVlrString() ) ) {
 				rgTpRedIcmsFisc.setAtivo( true );
 				txtRedFisc.setAtivo( true );
-				rgTipoFisc.setVlrString( "TT" );
+				if("70".equals( txtCodTratTrib.getVlrString() )) {
+					rgTipoFisc.setVlrString( "FF" );
+				}
+				else {
+					rgTipoFisc.setVlrString( "TT" );
+				}
 			}
 			else {
 
@@ -930,7 +935,7 @@ public class FCLFiscal extends FDetalhe
 			}
 		}
 		else if ( e.getSource() == rgTipoST || e.getSource() == rgTipoFisc ) {
-			if ( "SU".equals( rgTipoST.getVlrString() ) && "FF".equals( rgTipoFisc.getVlrString() ) ) { // Substituído
+			if ( /* "SU".equals( rgTipoST.getVlrString() ) && */"FF".equals( rgTipoFisc.getVlrString() ) ) { // Substituído
 				txtMargemVlAgr.setAtivo( true );
 				cbModBCICMSST.setAtivo( true );
 			}
