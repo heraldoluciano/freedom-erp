@@ -19,5 +19,6 @@
 	<classpathentry kind="lib" path="lib/log4j.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/freedom-infra"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/freedom-ecf"/>
+	<classpathentry kind="lib" path="lib/activation.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
