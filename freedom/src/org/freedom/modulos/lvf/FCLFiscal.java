@@ -184,7 +184,8 @@ public class FCLFiscal extends FDetalhe
 
 	private JTextFieldPad txtAliqLFisc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
 	
-	
+	private JTextFieldPad txtAliqFiscIntra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
+		
 	private JTextFieldPad txtCodSitTribIPI = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
 	private JTextFieldPad txtImpSitTribIPI = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
@@ -419,7 +420,7 @@ public class FCLFiscal extends FDetalhe
 		vTipoVals.addElement( "CP" );
 		
 		rgTipo = new JRadioGroup<String, String>( 2, 1, vTipoLabs, vTipoVals );
-		rgTipo.setVlrString( "V" );
+		rgTipo.setVlrString( "VD" );
 		
 		rgTipo.addRadioGroupListener( this );
 		
@@ -753,8 +754,10 @@ public class FCLFiscal extends FDetalhe
 		adicCampo( txtMargemVlAgr, 506, 110, 110, 20, "MargemVlAgr", "% Vlr.Agregado" , ListaCampos.DB_SI,  false );
 		adicCampo( txtRedFisc, 619, 110, 110, 20, "RedFisc", "% Redução ICMS", ListaCampos.DB_SI, false );
 		
-		adicCampo( txtAliqFisc, 283, 110, 108, 20, "AliqFisc", "% Alíq.ICMS", ListaCampos.DB_SI, false );		
+		adicCampo( txtAliqFisc, 283, 110, 108, 20, "AliqFisc", "% ICMS Interest.", ListaCampos.DB_SI, false );		
 		adicCampo( txtAliqLFisc, 394, 110, 110, 20, "AliqlFisc", "% Aliq.liv.ICMS", ListaCampos.DB_SI, null, false );
+		adicCampo( txtAliqFiscIntra, 283, 150, 108, 20, "AliqFiscIntra", "% ICMS Intraest.", ListaCampos.DB_SI, false );
+		
 
 		// **********  ABA IPI  **/
 		
@@ -829,8 +832,8 @@ public class FCLFiscal extends FDetalhe
 //		setPainel( panelIICampos );
 //		tpnGeral.setEnabledAt( 8, false );
 //			
-//		setListaCampos( true, "ITCLFISCAL", "LF" );
-//		lcDet.setQueryInsert( false );
+		setListaCampos( true, "ITCLFISCAL", "LF" );
+		lcDet.setQueryInsert( false );
 		
 		montaTab();
 
