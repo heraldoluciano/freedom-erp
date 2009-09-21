@@ -28,7 +28,6 @@
 	<classpathentry kind="lib" path="lib/commons-lang.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/freedom-nfe"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/freedom-fw1"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/setpoint-nfe"/>
 	<classpathentry kind="lib" path="/freedom-fw1/lib/jasperreports.jar"/>
 	<classpathentry kind="lib" path="/freedom-fw1/lib/jfreechart.jar"/>
 	<classpathentry kind="lib" path="/freedom-fw1/lib/bizcal.jar"/>
