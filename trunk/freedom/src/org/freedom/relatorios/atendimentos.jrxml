@@ -146,7 +146,7 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 					<reportElement
 						x="240"
 						y="0"
-						width="176"
+						width="88"
 						height="16"
 						forecolor="#FFFFFF"
 						key="staticText-6"/>
@@ -158,9 +158,9 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="501"
+						x="418"
 						y="1"
-						width="282"
+						width="365"
 						height="16"
 						forecolor="#FFFFFF"
 						key="staticText-7"/>
@@ -202,7 +202,7 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="418"
+						x="332"
 						y="0"
 						width="0"
 						height="18"
@@ -248,7 +248,7 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 				</line>
 				<staticText>
 					<reportElement
-						x="420"
+						x="334"
 						y="1"
 						width="78"
 						height="16"
@@ -262,7 +262,7 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="499"
+						x="414"
 						y="0"
 						width="0"
 						height="18"
@@ -412,7 +412,7 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 					<reportElement
 						x="239"
 						y="0"
-						width="177"
+						width="90"
 						height="13"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -462,9 +462,9 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="502"
+						x="418"
 						y="1"
-						width="281"
+						width="365"
 						height="13"
 						key="textField-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -502,7 +502,7 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Transparent"
-						x="418"
+						x="332"
 						y="0"
 						width="0"
 						height="17"
@@ -567,7 +567,7 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Transparent"
-						x="499"
+						x="414"
 						y="0"
 						width="0"
 						height="17"
@@ -579,7 +579,7 @@ and a.dataatendo between '01.09.2009' and '30.09.2009']]></queryString>
 				</line>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="421"
+						x="335"
 						y="1"
 						width="75"
 						height="13"
