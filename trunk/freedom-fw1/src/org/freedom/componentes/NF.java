@@ -174,7 +174,9 @@ public class NF {
 	public static final int C_CODCLASSFISC = 28;
 	public static final int C_PERCDESCITVENDA = 29;
 	public static final int C_CODFABPROD = 30;
-	public static final int TAM_ITENS = 31;
+	public static final int C_QTDEMBALAGEM = 31;
+	
+	public static final int TAM_ITENS = 32;
 	
 	
 	
