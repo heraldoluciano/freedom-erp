@@ -64,6 +64,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -122,6 +123,8 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 	private JButton btDelCampNPart = new JButton( Icone.novo( "btFlechaEsq.gif" ) );
 		
 	private JCheckBoxPad cbEmailValido = new JCheckBoxPad( "Email válido", "S", "N" );
+	
+	private JRadioGroup<String, String> rgDestino;
 
 	private JList lsCampDispPart = new JList();
 
@@ -210,6 +213,17 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 	private void montaTela() {
 
+		Vector<String> labelsDest = new Vector<String>();
+		labelsDest.addElement( "Contatos" );
+		labelsDest.addElement( "Clientes" );
+		labelsDest.addElement( "Ambos" );
+		Vector<String> valDest = new Vector<String>();
+		valDest.addElement( "O" );
+		valDest.addElement( "C" );
+		valDest.addElement( "A" );
+		
+		rgDestino = new JRadioGroup<String, String>(1, 3, labelsDest, valDest);
+		
 		// Valores padrão
 
 		cbEmailValido.setVlrString( "S" );
@@ -247,7 +261,8 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		pinFiltros.add( pnCabFiltros );
 
 		pnCabFiltros.add( pinCabFiltros, BorderLayout.CENTER );
-		pinCabFiltros.adic( cbEmailValido, 3, 27, 250, 18 );
+		pinCabFiltros.adic( cbEmailValido, 3, 10, 120, 30 );
+		pinCabFiltros.adic( rgDestino, 143, 10, 300, 30 );
 		
 		pinCabFiltros.adic( new JLabelPad( "Campanha disponíveis:" ), 7, 50, 200, 20 );
 		pinCabFiltros.adic( spnCampDispPart, 7, 70, 195, 100 );
@@ -305,6 +320,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		tabCont.adicColuna( "" );
 		tabCont.adicColuna( "codemp" );
 		tabCont.adicColuna( "codfilial" );
+		tabCont.adicColuna( "Tp." );
 		tabCont.adicColuna( "Cód" );
 		tabCont.adicColuna( "Nome" );
 		tabCont.adicColuna( "Email" );
@@ -314,6 +330,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		tabCont.setTamColuna( 30, Columns.STATUS );
 		tabCont.setTamColuna( 0, Columns.EMPRESA );
 		tabCont.setTamColuna( 0, Columns.FILIAL );
+		tabCont.setTamColuna( 20, Columns.TIPO );
 		tabCont.setTamColuna( 50, Columns.CODIGO );
 		tabCont.setTamColuna( 250, Columns.NOME );
 		tabCont.setTamColuna( 250, Columns.EMAIL );
@@ -333,49 +350,93 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		StringBuffer where = new StringBuffer();
 		boolean and = true;
 
-		sql.append( "SELECT CO.CODEMP,CO.CODFILIAL,CO.CODCTO,CO.NOMECTO,CO.EMAILCTO " );
-		sql.append( "FROM TKCONTATO CO " );
-		where.append( " WHERE CO.CODEMP=? AND CO.CODFILIAL=? " );
+		if ( ("O".equals(rgDestino.getVlrString())) || ("A".equals( rgDestino.getVlrString() )) ) {
+			sql.append( "SELECT 'O' TIPOCTO, CO.CODEMP, CO.CODFILIAL, CO.CODCTO, CO.NOMECTO, CO.EMAILCTO " );
+			sql.append( "FROM TKCONTATO CO " );
+			where.append( " WHERE CO.CODEMP=? AND CO.CODFILIAL=? " );
+	
+			if ( "S".equals( cbEmailValido.getVlrString() ) ) {
+				where.append( " AND EMAILCTO IS NOT NULL AND EMAILCTO <> '' " );
+			}
+			if ( vCampFiltroPart.size() > 0 ) {
+				String sIN = Funcoes.vectorToString( vCampFiltroPart, "','" );
+				sIN = "'" + sIN + "'";
+	
+				where.append( " AND EXISTS (SELECT * FROM TKCAMPANHACTO CC " );
+				where.append( " WHERE CC.CODEMP=" );
+				where.append( Aplicativo.iCodEmp );
+				where.append( " AND CC.CODFILIAL=" );
+				where.append( ListaCampos.getMasterFilial( "TKCAMPANHA" ) );
+				where.append( " AND CC.CODEMPCO=CO.CODEMP AND CC.CODFILIALCO=CO.CODFILIAL AND CC.CODCTO=CO.CODCTO " );
+				where.append( " AND CC.CODCAMP IN (" + sIN + ")) " );
+	
+			}
+			if ( vCampFiltroNPart.size() > 0 ) {
+				String sIN = Funcoes.vectorToString( vCampFiltroNPart, "','" );
+				sIN = "'" + sIN + "'";
+	
+				where.append( " AND NOT EXISTS (SELECT * FROM TKCAMPANHACTO CC " );
+				where.append( " WHERE CC.CODEMP=" );
+				where.append( Aplicativo.iCodEmp );
+				where.append( " AND CC.CODFILIAL=" );
+				where.append( ListaCampos.getMasterFilial( "TKCAMPANHA" ) );
+				where.append( " AND CC.CODEMPCO=CO.CODEMP AND CC.CODFILIALCO=CO.CODFILIAL AND CC.CODCTO=CO.CODCTO " );
+				where.append( " AND CC.CODCAMP IN (" + sIN + ")) " );
+	
+			} else {
+				where.append( " AND NOT EXISTS(SELECT * FROM TKCAMPANHACTO CC WHERE CC.CODEMPCO=CO.CODEMP AND CC.CODFILIALCO=CO.CODFILIAL AND CC.CODCTO=CO.CODCTO) " );
+			}
 
-		if ( "S".equals( cbEmailValido.getVlrString() ) ) {
-			where.append( " AND EMAILCTO IS NOT NULL AND EMAILCTO <> '' " );
+			sql.append( where );
+	
 		}
-		if ( vCampFiltroPart.size() > 0 ) {
-			String sIN = Funcoes.vectorToString( vCampFiltroPart, "','" );
-			sIN = "'" + sIN + "'";
+		if ( ("C".equals(rgDestino.getVlrString())) || ("A".equals( rgDestino.getVlrString() )) ) {
+			if (sql.length()>0) {
+				sql.append( " UNION " );
+				if (where.length()>0) {
+					where.delete( 0, where.length() );
+				}
+			}
+			sql.append( "SELECT 'C' TIPOCTO, C.CODEMP, C.CODFILIAL, C.CODCLI CODCTO, C.CONTCLI NOMECTO, C.EMAILCLI EMAILCTO " );
+			sql.append( "FROM VDCLIENTE C " );
+			where.append( " WHERE C.CODEMP=? AND C.CODFILIAL=? " );
+	
+			if ( "S".equals( cbEmailValido.getVlrString() ) ) {
+				where.append( " AND EMAILCLI IS NOT NULL AND EMAILCLI <> '' " );
+			}
+			if ( vCampFiltroPart.size() > 0 ) {
+				String sIN = Funcoes.vectorToString( vCampFiltroPart, "','" );
+				sIN = "'" + sIN + "'";
+	
+				where.append( " AND EXISTS (SELECT * FROM TKCAMPANHACLI CC " );
+				where.append( " WHERE CC.CODEMP=" );
+				where.append( Aplicativo.iCodEmp );
+				where.append( " AND CC.CODFILIAL=" );
+				where.append( ListaCampos.getMasterFilial( "TKCAMPANHACLI" ) );
+				where.append( " AND CC.CODEMPCL=C.CODEMP AND CC.CODFILIALCL=C.CODFILIAL AND CC.CODCLI=C.CODCLI " );
+				where.append( " AND CC.CODCAMP IN (" + sIN + ")) " );
+	
+			}
+			if ( vCampFiltroNPart.size() > 0 ) {
+				String sIN = Funcoes.vectorToString( vCampFiltroNPart, "','" );
+				sIN = "'" + sIN + "'";
+	
+				where.append( " AND NOT EXISTS (SELECT * FROM TKCAMPANHACLI CC " );
+				where.append( " WHERE CC.CODEMP=" );
+				where.append( Aplicativo.iCodEmp );
+				where.append( " AND CC.CODFILIAL=" );
+				where.append( ListaCampos.getMasterFilial( "TKCAMPANHA" ) );
+				where.append( " AND CC.CODEMPCL=C.CODEMP AND CC.CODFILIALCL=C.CODFILIAL AND CC.CODCLI=CO.CODCLI " );
+				where.append( " AND CC.CODCAMP IN (" + sIN + ")) " );
+	
+			} else {
+				where.append( " AND NOT EXISTS(SELECT * FROM TKCAMPANHACLI CC WHERE CC.CODEMPCL=C.CODEMP AND CC.CODFILIALCL=C.CODFILIAL AND CC.CODCLI=C.CODCLI) " );
+			}
 
-			where.append( " AND EXISTS (SELECT * FROM TKCAMPANHACTO CC " );
-			where.append( " WHERE CC.CODEMP=" );
-			where.append( Aplicativo.iCodEmp );
-			where.append( " AND CC.CODFILIAL=" );
-			where.append( ListaCampos.getMasterFilial( "TKCAMPANHA" ) );
-			where.append( " AND CC.CODEMPCO=CO.CODEMP AND CC.CODFILIALCO=CO.CODFILIAL AND CC.CODCTO=CO.CODCTO " );
-			where.append( " AND CC.CODCAMP IN (" + sIN + ")) " );
-
+			sql.append( where );
 		}
-		if ( vCampFiltroNPart.size() > 0 ) {
-			String sIN = Funcoes.vectorToString( vCampFiltroNPart, "','" );
-			sIN = "'" + sIN + "'";
+		sql.append( " ORDER BY 5" );
 
-			where.append( " AND NOT EXISTS (SELECT * FROM TKCAMPANHACTO CC " );
-			where.append( " WHERE CC.CODEMP=" );
-			where.append( Aplicativo.iCodEmp );
-			where.append( " AND CC.CODFILIAL=" );
-			where.append( ListaCampos.getMasterFilial( "TKCAMPANHA" ) );
-			where.append( " AND CC.CODEMPCO=CO.CODEMP AND CC.CODFILIALCO=CO.CODFILIAL AND CC.CODCTO=CO.CODCTO " );
-			where.append( " AND CC.CODCAMP IN (" + sIN + ")) " );
-
-		}
-
-		
-		else {
-			where.append( " AND (SELECT COUNT(*) FROM TKCAMPANHACTO CC WHERE CC.CODEMPCO=CO.CODEMP AND CC.CODFILIALCO=CO.CODFILIAL AND CC.CODCTO=CO.CODCTO)=0 " );
-		}
-
-		sql.append( where );
-
-		sql.append( " ORDER BY CO.NOMECTO " );
-		
 		tabCont.limpa();
 
 		try {
@@ -395,6 +456,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 				tabCont.setValor( null, row, Columns.STATUS );
 				tabCont.setValor( rs.getInt( "CODEMP" ), row, Columns.EMPRESA );
 				tabCont.setValor( rs.getInt( "CODFILIAL" ), row, Columns.FILIAL );
+				tabCont.setValor( rs.getString( "TIPOCTO" ), row, Columns.TIPO );
 				tabCont.setValor( rs.getInt( "CODCTO" ), row, Columns.CODIGO );
 				tabCont.setValor( rs.getString( "NOMECTO" ), row, Columns.NOME );
 				tabCont.setValor( rs.getString( "EMAILCTO" ), row, Columns.EMAIL );
@@ -433,7 +495,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		lbSelecionados.setText( selecionados + " contatos selecionados" );
 	}
 
-	private void efetivarCampanha( int codempcto, int codfilialcto, int codcto, String tipo, String deschist ) {
+	private void efetivarCampanha( String tipocto, int codempcto, int codfilialcto, int codcto, String tipo, String deschist ) {
 
 		PreparedStatement ps = null;
 		Integer codempat = 0;
@@ -504,6 +566,7 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 					int codempcto = (Integer) tabCont.getValor( row, Columns.EMPRESA );
 					int codfilialcto = (Integer) tabCont.getValor( row, Columns.FILIAL );
+					String tipocto = (String) tabCont.getValor( row, Columns.TIPO );
 					int codcto = (Integer) tabCont.getValor( row, Columns.CODIGO );
 
 					// email.setPara( "anderson@stpinf.com" );
@@ -539,14 +602,14 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 							Transport.send( msg );
 						}
 
-						efetivarCampanha( codempcto, codfilialcto, codcto, "CE", "EMAIL ENVIADO COM SUCESSO" );
+						efetivarCampanha( tipocto, codempcto, codfilialcto, codcto, "CE", "EMAIL ENVIADO COM SUCESSO" );
 						
 						tabCont.setValor( imgEnviado, row, Columns.PROGRESS );
 
 					} catch ( Exception e ) {
 						e.printStackTrace();
 						tabCont.setValor( imgErro, row, Columns.PROGRESS );
-						efetivarCampanha( codempcto, codfilialcto, codcto, "TE", "ERRO AO ENVIAR EMAIL\n" + e.getMessage() );
+						efetivarCampanha( tipocto, codempcto, codfilialcto, codcto, "TE", "ERRO AO ENVIAR EMAIL\n" + e.getMessage() );
 					} finally {					
 						System.gc();
 					}
@@ -932,10 +995,11 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 		private final static int STATUS = 1;
 		private final static int EMPRESA = 2;
 		private final static int FILIAL = 3;
-		private final static int CODIGO = 4;
-		private final static int NOME = 5;
-		private final static int EMAIL = 6;
-		private final static int PROGRESS = 7;
+		private final static int TIPO = 4;
+		private final static int CODIGO = 5;
+		private final static int NOME = 6;
+		private final static int EMAIL = 7;
+		private final static int PROGRESS = 8;
 	}
 
 	class SMTPAuthenticator extends Authenticator {
