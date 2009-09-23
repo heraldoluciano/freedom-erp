@@ -225,10 +225,19 @@ public class NF049 extends Layout {
 					
 //						imp.say( 1, itens.getString( NF.C_CODFABPROD ) );
 						imp.say( 1, itens.getString( NF.C_REFPROD ) );
-						imp.say( 8, Funcoes.copy( itens.getString( NF.C_DESCPROD ).trim() + " - " + itens.getString( NF.C_CODFABPROD ), 48 ) );
+						
+						String descprod = itens.getString( NF.C_DESCPROD ).trim();
+						String sep = " - ";
+						String codfabprod = itens.getString( NF.C_CODFABPROD ).trim();
+						BigDecimal qtdemb = itens.getBigDecimal( NF.C_QTDEMBALAGEM );
+						String unid = Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ).trim() ;
+						
+						String descitem = Funcoes.copy(descprod + sep + codfabprod + sep + "(" +unid + " C/" + qtdemb.intValue() + ")" ,48);
+						 
+						imp.say( 8, descitem );
 						imp.say( 52, sCodfisc );
 						imp.say( 65, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 0, 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 0, 2 ) );
-						imp.say( 70, Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) );
+						imp.say( 70, unid );
 						imp.say( 77, Funcoes.strDecimalToStrCurrency( 10, 4, String.valueOf( itens.getBigDecimal( NF.C_QTDITPED ) ) ) );
 						imp.say( 90, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getBigDecimal( NF.C_VLRPRODITPED ).divide( 
 								itens.getBigDecimal( NF.C_QTDITPED ), 2, BigDecimal.ROUND_HALF_UP ) ) )) ;
