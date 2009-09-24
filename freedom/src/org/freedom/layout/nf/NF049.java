@@ -227,7 +227,7 @@ public class NF049 extends Layout {
 						imp.say( 1, itens.getString( NF.C_REFPROD ) );
 						
 						String descprod = itens.getString( NF.C_DESCPROD ).trim();
-						String sep = "-";
+						String sep = "  - ";
 						String codfabprod = itens.getString( NF.C_CODFABPROD ).trim();
 //						BigDecimal qtdemb = itens.getBigDecimal( NF.C_QTDEMBALAGEM );
 						String unid = Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ).trim() ;
