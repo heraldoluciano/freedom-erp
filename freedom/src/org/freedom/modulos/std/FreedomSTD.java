@@ -77,7 +77,7 @@ public class FreedomSTD extends AplicativoPD {
 			addSeparador( 100100000 );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Moeda", "Moeda", 'M', 100112000, 2, true, FMoeda.class );
 //			addOpcao( 100100000, TP_OPCAO_ITEM, "Banco", "Banco", 'B', 100113000, 2, true, FBanco.class );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de cobrança", "Tipo de cobrança", 'o', 100114000, 2, true, FTipoCob.class );
+//			addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de cobrança", "Tipo de cobrança", 'o', 100114000, 2, true, FTipoCob.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Plano de pagamento", "Plano de pagamento", 's', 100115000, 2, true, FPlanoPag.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Prazo de entrega", "Prazo de entrega", 'e', 100116000, 2, true, FPrazoEnt.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Feriados", "Feriados", 'e', 100117000, 2, true, FFeriados.class );
@@ -216,6 +216,7 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 600100000, TP_OPCAO_ITEM, "Imprimir", "Boleto/Recibo", 'I', 600102000, 2, true, FRBoleto.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Banco", "Banco", 'a', 600200000, 1, true, FBanco.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Carteira de cobrança", "Carteira de cobrança", 'n', 600300000, 1, true, FCartCob.class );
+			addOpcao( 600000000, TP_OPCAO_ITEM, "Tipo de cobrança", "Tipo de cobrança", 'o', 601600000, 2, true, FTipoCob.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Planejamento", "Planejamento", 'P', 600400000, 1, true, FPlanejamento.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Centro de custo", "Centro de Custos", 'C', 600500000, 1, true, FCentroCusto.class );
 			addOpcao( 600000000, TP_OPCAO_ITEM, "Contas", "Contas", 'o', 600600000, 1, true, FConta.class );
