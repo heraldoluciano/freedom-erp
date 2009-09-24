@@ -385,7 +385,20 @@ public class EbsContabil extends Contabil {
 			psICMS.close();
 			
 			entrada.setValorICMSIsentas( new BigDecimal( "0.00" ) );
-			entrada.setValorICMSOutras( new BigDecimal( "0.00" ) );
+			
+			if(entrada.getBaseICMSa().floatValue()>0) {
+				
+				if(entrada.getBaseICMSa().floatValue() == entrada.getValorNota().floatValue()) {
+					entrada.setValorICMSOutras( new BigDecimal( "0.00" ) );
+				}
+				else {
+					entrada.setValorICMSOutras( (entrada.getValorNota().subtract(entrada.getBaseICMSa())).abs() );
+				}
+			}
+			else {
+				entrada.setValorICMSOutras(entrada.getValorNota() );
+			}
+			
 			entrada.setBaseIPI( rs.getBigDecimal( "vlrbaseipicompra" ) != null ? rs.getBigDecimal( "vlrbaseipicompra" ) : new BigDecimal( "0.00" ) );
 			entrada.setValorIPI( rs.getBigDecimal( "vlripicompra" ) != null ? rs.getBigDecimal( "vlripicompra" ) : new BigDecimal( "0.00" )  );
 			entrada.setValorIPIIsentas( new BigDecimal( "0.00" ) );
@@ -712,9 +725,26 @@ public class EbsContabil extends Contabil {
 			psICMS.close();
 					
 			saida.setValorICMSIsentas( new BigDecimal( "0.00" ) );			
-			saida.setValorICMSOutras( new BigDecimal( "0.00" ) );				
-			saida.setBaseIPI( rs.getBigDecimal( "VLRBASEIPIVENDA" ) != null ? rs.getBigDecimal( "VLRBASEIPIVENDA" ) : new BigDecimal( "0.00" ) );			
-			saida.setValorIPI( rs.getBigDecimal( "VLRIPIVENDA" ) != null ? rs.getBigDecimal( "VLRIPIVENDA" ) : new BigDecimal( "0.00" ) );			
+//			saida.setValorICMSOutras( new BigDecimal( "0.00" ) );
+			
+			if(saida.getBaseICMSa().floatValue() == saida.getValorNota().floatValue()) {
+				saida.setValorICMSOutras( new BigDecimal( "0.00" ) );
+			}
+			else {
+				saida.setValorICMSOutras( (saida.getValorNota().subtract(saida.getBaseICMSa())).abs() );
+			}
+			
+			saida.setValorIPI( rs.getBigDecimal( "VLRIPIVENDA" ) != null ? rs.getBigDecimal( "VLRIPIVENDA" ) : new BigDecimal( "0.00" ) );
+			
+			if(saida.getValorIPI().floatValue()>0) {
+				saida.setBaseIPI( rs.getBigDecimal( "VLRBASEIPIVENDA" ) != null ? rs.getBigDecimal( "VLRBASEIPIVENDA" ) : new BigDecimal( "0.00" ) );	
+			}
+			else {
+				saida.setBaseIPI( new BigDecimal( "0.00" ) );
+			}
+			
+//			System.out.println("BASE IPI:" + saida.getBaseIPI() + " VLR IPI:" + saida.getValorIPI() + " DOC:" + saida.getNumeroInicial());
+			
 			saida.setValorIPIIsentas( new BigDecimal( "0.00" ) );			
 			saida.setValorIPIOutras( new BigDecimal( "0.00" ) );			
 			saida.setValorSubTributaria( new BigDecimal( "0.00" ) );			
@@ -829,7 +859,14 @@ public class EbsContabil extends Contabil {
 			itemSaida.setAliquotaICMS( rs.getBigDecimal( "PERCICMSITVENDA" ) != null ? rs.getBigDecimal( "PERCICMSITVENDA" ) : new BigDecimal( "0.00" ) );			
 			itemSaida.setValorIPI( rs.getBigDecimal( "VLRIPIITVENDA" ) != null ? rs.getBigDecimal( "VLRIPIITVENDA" ) : new BigDecimal( "0.00" ) );	
 			itemSaida.setAliquotaIPI( rs.getBigDecimal( "PERCIPIITVENDA" ) != null ? rs.getBigDecimal( "PERCIPIITVENDA" ) : new BigDecimal( "0.00" ) );		
-			itemSaida.setBaseIPI( rs.getBigDecimal( "VALOR" ) != null ? rs.getBigDecimal( "VALOR" ) : new BigDecimal( "0.00" ) );			
+			
+			if(itemSaida.getValorIPI().floatValue()>0) {
+				itemSaida.setBaseIPI( rs.getBigDecimal( "VALOR" ) != null ? rs.getBigDecimal( "VALOR" ) : new BigDecimal( "0.00" ) );
+			}
+			else {
+				itemSaida.setBaseIPI( new BigDecimal( "0.00" ) );					
+			}
+			
 			itemSaida.setIndentificacao( rs.getString( "REFPROD" ) );							
 			itemSaida.setBaseICMSSubTributaria( null );			
 			itemSaida.setPercentualReducaoBaseICMS( null );			
@@ -947,8 +984,9 @@ public class EbsContabil extends Contabil {
 		BigDecimal valueTmp = null;
 		
 		if ( value != null ) {
-			valueTmp = value.setScale( decimal, BigDecimal.ROUND_HALF_UP )
-						.divide( new BigDecimal( "1" + Funcoes.strZero( "0", decimal ) ) ); 
+//			valueTmp = value.setScale( decimal, BigDecimal.ROUND_HALF_UP ).divide( new BigDecimal( "1" + Funcoes.strZero( "0", decimal ) ) );
+			valueTmp = value.setScale( decimal, BigDecimal.ROUND_HALF_UP );
+			
 		}
 		else {
 			valueTmp = new BigDecimal( "0.00" ); 
