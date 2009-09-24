@@ -229,10 +229,10 @@ public class NF049 extends Layout {
 						String descprod = itens.getString( NF.C_DESCPROD ).trim();
 						String sep = " - ";
 						String codfabprod = itens.getString( NF.C_CODFABPROD ).trim();
-						BigDecimal qtdemb = itens.getBigDecimal( NF.C_QTDEMBALAGEM );
+//						BigDecimal qtdemb = itens.getBigDecimal( NF.C_QTDEMBALAGEM );
 						String unid = Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ).trim() ;
 						
-						String descitem = Funcoes.copy(descprod + sep + codfabprod + sep + "(" +unid + " C/" + qtdemb.intValue() + ")" ,48);
+						String descitem = Funcoes.copy(descprod + sep + codfabprod, 48);
 						 
 						imp.say( 8, descitem );
 						imp.say( 52, sCodfisc );
