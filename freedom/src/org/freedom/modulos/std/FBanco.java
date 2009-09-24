@@ -60,6 +60,8 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "firefox.gif" ) );
 
 	private PainelImagem imgBolBanco = new PainelImagem( 65000 );
+	
+	private PainelImagem imgBolBanco2 = new PainelImagem( 65000 );
 
 	private ListaCampos lcModBol = new ListaCampos( this, "MB" );
 
@@ -84,7 +86,8 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 		adicDescFK( txtDescModBol, 80, 60, 230, 20, "DescModBol", "Descrição do modelo de boleto" );
 		adicCampo( txtDigito, 313, 60, 50, 20, "DvBanco", "Dígito", ListaCampos.DB_SI, true );
 		adicCampo( txtSiteBanco, 7, 100, 330, 20, "SiteBanco", "Site ", ListaCampos.DB_SI, false );
-		adicDB( imgBolBanco, 7, 140, 200, 30, "ImgBolBanco", "Logo para boleto (560x90)", false );
+		adicDB( imgBolBanco, 7, 140, 200, 30, "ImgBolBanco", "Primeira logo para boleto ", false );
+		adicDB( imgBolBanco2, 7, 200, 200, 30, "ImgBolBanco2", "Segunda logo boleto ", false );
 
 		adic( btFirefox, 340, 100, 20, 20 );
 		setListaCampos( false, "BANCO", "FN" );
