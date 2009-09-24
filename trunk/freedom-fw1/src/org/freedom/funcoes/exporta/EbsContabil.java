@@ -589,7 +589,7 @@ public class EbsContabil extends Contabil {
 		StringBuilder sql = new StringBuilder();		
 		sql.append( "select v.codvenda, v.tipovenda, v.codcli," );
 		sql.append( "v.dtemitvenda, v.docvenda, v.dtsaidavenda, v.serie, v.vlrliqvenda, v.vlrbaseipivenda, v.vlripivenda," );
-		sql.append( "tm.codmodnota, tm.especietipomov, coalesce(c.cnpjcli, c.cpfcli) cnpjcli, r.datarec, c.codclicontab " );
+		sql.append( "tm.codmodnota, tm.especietipomov, c.cnpjcli, c.cpfcli, r.datarec, c.codclicontab " );
 		sql.append( "from vdvenda v, eqtipomov tm, lfserie s, vdcliente c, fnreceber r, lfmodnota mn " );
 		sql.append( "where v.codemp=? and v.codfilial=? and v.tipovenda='V' and v.dtemitvenda between ? and ? and " );
 		sql.append( "tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov and " );
@@ -651,6 +651,7 @@ public class EbsContabil extends Contabil {
 			saida.setClassificacao1( 01 ); // Padrão do Cordilheira			
 			saida.setClassificacao2( 0 );			
 			saida.setCnpjDestinatario( rs.getString( "cnpjcli" ) );			
+			saida.setCpfDestinatario( rs.getString( "cpfcli" ) );
 			saida.setValorNota( rs.getBigDecimal( "VLRLIQVENDA" ) != null ? rs.getBigDecimal( "VLRLIQVENDA" ) : new BigDecimal( "0.00" ) );			
 			saida.setBasePIS( new BigDecimal( "0.00" ) );			
 			saida.setBaseCOFINS( new BigDecimal( "0.00" ) );			
@@ -2631,7 +2632,6 @@ public class EbsContabil extends Contabil {
 		private int calculaBases;
 		
 		private int sequencial;
-
 		
 		public int getTipoRegistro() {		
 			return tipoRegistro;
@@ -2651,6 +2651,10 @@ public class EbsContabil extends Contabil {
 		
 		public void setCnpj( String cnpj ) {		
 			this.cnpj = cnpj;
+		}
+		
+		public String getCpf() {		
+			return cnpj;
 		}
 		
 		public int getCalculaBases() {		
@@ -2676,7 +2680,16 @@ public class EbsContabil extends Contabil {
 			
 			headerSaida.append( getTipoRegistro() );			
 			headerSaida.append( format( getDataArquivo() ) );	
-			headerSaida.append( format( Funcoes.setMascara( getCnpj(), "##.###.###/####-##" ), 18 ) );
+//			headerSaida.append( format( Funcoes.setMascara( getCnpj(), "##.###.###/####-##" ), 18 ) );c
+			
+			if ( getCnpj() != null ) {
+				headerSaida.append( format( Funcoes.setMascara( getCnpj(), "##.###.###/####-##" ), 18 ) );		
+			}
+			else {
+				headerSaida.append( format( Funcoes.setMascara( getCpf(), "###.###.###-##" ), 18 ) );		
+			}
+			
+			
 			headerSaida.append( format( getCalculaBases(), 1 ) );
 			headerSaida.append( format( " ", 3 ) );
 			headerSaida.append( format( " ", 443 ) );
@@ -2714,6 +2727,8 @@ public class EbsContabil extends Contabil {
 		private int classificacao2;
 		
 		private String cnpjDestinatario;
+		
+		private String cpfDestinatario;
 		
 		private BigDecimal valorNota;
 		
@@ -2812,7 +2827,6 @@ public class EbsContabil extends Contabil {
 		private String indentificadorExterior;
 		
 		private int sequencial;
-
 		
 		private int getTipoRegistro() {		
 			return tipoRegistro;
@@ -2912,6 +2926,14 @@ public class EbsContabil extends Contabil {
 		
 		private void setCnpjDestinatario( String cnpjDestinatario ) {		
 			this.cnpjDestinatario = cnpjDestinatario;
+		}
+
+		private String getCpfDestinatario() {		
+			return cpfDestinatario;
+		}
+		
+		private void setCpfDestinatario( String cpfDestinatario ) {		
+			this.cpfDestinatario = cpfDestinatario;
 		}
 		
 		private BigDecimal getValorNota() {		
@@ -3323,8 +3345,17 @@ public class EbsContabil extends Contabil {
 			saida.append( format( getCfop(), 4 ) );			
 			saida.append( format( getVariacaoCfop(), 2 ) );		
 			saida.append( format( getClassificacao1(), 2 ) );			
-			saida.append( format( getClassificacao2(), 2 ) );			
-			saida.append( format( Funcoes.setMascara( getCnpjDestinatario(), "##.###.###/####-##" ), 18 ) );			
+			saida.append( format( getClassificacao2(), 2 ) );
+
+//			saida.append( format( Funcoes.setMascara( getCnpjDestinatario(), "##.###.###/####-##" ), 18 ) );
+			
+			if ( getCnpjDestinatario() != null ) {
+				saida.append( format( Funcoes.setMascara( getCnpjDestinatario(), "##.###.###/####-##" ), 18 ) );		
+			}
+			else {
+				saida.append( format( Funcoes.setMascara( getCpfDestinatario(), "###.###.###-##" ), 18 ) );		
+			}
+			
 			saida.append( format( getValorNota(), 12, 2 ) );			
 			saida.append( format( getBasePIS(), 12, 2 ) );			
 			saida.append( format( getBaseCOFINS(), 12, 2 ) );			
