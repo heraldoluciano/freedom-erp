@@ -249,9 +249,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 	private JButton btBaixa = new JButton( Icone.novo( "btOk.gif" ) );
 
 	private JButton btImpBol = new JButton( Icone.novo( "btCodBar.gif" ) );
-	
-//	private JButton btBB = new JButton( Icone.novo( "btBB.gif" ) );
-	
+		
 	private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
 
 	private JButton btCarregaVenda = new JButton( "Consulta venda", Icone.novo( "btSaida.gif" ) );
@@ -878,6 +876,9 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 					else if ( Banco.CAIXA_ECONOMICA.equals( banco ) ) {
 						btImpBol.setIcon( Icone.novo( "btCEF.gif" ) );
 					}
+					else if ( Banco.BRADESCO.equals( banco ) ) {
+						btImpBol.setIcon( Icone.novo( "btBD.png" ) );
+					}					
 					else {
 						btImpBol.setIcon( Icone.novo( "btCodBar.gif" ) );
 					}
