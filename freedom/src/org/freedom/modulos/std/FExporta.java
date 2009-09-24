@@ -163,11 +163,12 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 	private void getFile() {
 
 		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
 		if ( fileChooser.showOpenDialog( this ) == JFileChooser.APPROVE_OPTION ) {
-
-			txtFile.setVlrString( fileChooser.getCurrentDirectory().getPath() );
+			txtFile.setVlrString( fileChooser.getSelectedFile().getPath() );
 		}
+
 	}
 
 	private String getSistemaContabil() {
