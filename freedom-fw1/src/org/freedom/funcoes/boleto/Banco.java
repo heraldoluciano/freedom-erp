@@ -7,7 +7,9 @@ public abstract class Banco {
 	public final static String BANCO_DO_BRASIL = "001";
 
 	public final static String CAIXA_ECONOMICA = "104";
-
+	
+	public final static String BRADESCO = "237";
+	
 	private static String codBar = "";
 
 	public abstract String geraCodBar( final String codbanco, 
