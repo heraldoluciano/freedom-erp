@@ -2677,12 +2677,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				else {
 					if ( "T".equals( tipoimp ) ) {
 	
-						/*ps = con.prepareStatement( sSQL.toString() );
+						ps = con.prepareStatement( sSQL.toString() );
 						ps.setInt( 1, Aplicativo.iCodEmp );
 						ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
 						ps.setInt( 3, iCodVenda );
 						rs = ps.executeQuery();
-	*/
+	
 						psRec = con.prepareStatement( sSQLRec.toString() );
 						rsRec = psRec.executeQuery();
 	
