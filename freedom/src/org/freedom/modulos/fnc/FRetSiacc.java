@@ -76,7 +76,7 @@ public class FRetSiacc extends FRetFBN {
 
 			FileDialog fileDialogSiacc = null;
 			fileDialogSiacc = new FileDialog( Aplicativo.telaPrincipal, "Importar arquivo." );
-			fileDialogSiacc.setFile( "*.cmp" );
+			fileDialogSiacc.setFile( "*.ret; *.cmp; *.txt" );
 			fileDialogSiacc.setVisible( true );
 
 			if ( fileDialogSiacc.getFile() == null ) {
