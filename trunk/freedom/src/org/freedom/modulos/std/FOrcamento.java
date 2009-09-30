@@ -39,7 +39,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -69,6 +68,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -77,6 +77,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.layout.componentes.LeiauteGR;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
@@ -216,6 +217,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextFieldPad txtCodTran = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
 	
 	private JTextFieldFK txtRazTran = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	
+	private JRadioGroup<?, ?> rgTipoFrete = null;
 
 	private JTextAreaPad txaObsItOrc = new JTextAreaPad( 500 );
 
@@ -287,6 +290,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	
 	private String abaTransp = "N";
 	
+	
 
 	private enum PrefOrc {
 		USAREFPROD, USALIQREL, TIPOPRECOCUSTO, CODTIPOMOV2, DESCCOMPPED, USAORCSEQ, 
@@ -325,6 +329,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		txtVlrDescOrc.setAtivo( false );
 		txtVlrAdicOrc.setAtivo( false );
 		txtVlrLiqOrc.setAtivo( false );
+		
+		Vector<String> vValsTF = new Vector<String>();
+		Vector<String> vLabsTF = new Vector<String>();
+		vLabsTF.addElement( "CIF" );
+		vLabsTF.addElement( "FOB" );
+		vValsTF.addElement( "C" );
+		vValsTF.addElement( "F" );
+		rgTipoFrete = new JRadioGroup<String, String>( 1, 21, vLabsTF, vValsTF );
 
 		lbStatus.setForeground( Color.WHITE );
 		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
@@ -625,6 +637,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			setPainel( pinCabTransp );
 			adicCampo( txtCodTran, 7, 25, 70, 20, "Codtran", "Cód.transp.", ListaCampos.DB_FK, false );
 			adicDescFK( txtRazTran, 80, 25, 250, 20, "Raztran", "Razão social da transportadora" );	
+			adicDB( rgTipoFrete, 333, 25, 140, 25, "TipoFrete", "Tipo de Frete", false );
 		}
 		
 		setListaCampos( true, "ORCAMENTO", "VD" );
