@@ -148,6 +148,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	
 	private JTextFieldPad txtVlrDens = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15,  casasDec );
 	
+	private JTextFieldPad txtCubagem = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15,  casasDec );
+	
 	private JTextFieldPad txtVlrConcent = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
 	private JTextFieldPad txtVlrCompri = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
@@ -768,7 +770,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		adicCampo( txtVlrCompri, 7, 100, 106, 20, "Comprimento", "Comprimento(cm)", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrLarg, 120, 100, 107, 20, "Largura", "Largura(cm)", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrEspess, 235, 100, 118, 20, "Espessura", "Espessura(cm)", ListaCampos.DB_SI, false );
-		adicCampo( txtQtdEmbalagem, 7, 140, 118, 20, "QtdEmbalagem", "Qtd. Embalagem", ListaCampos.DB_SI, false );		
+		adicCampo( txtQtdEmbalagem, 7, 140, 107, 20, "QtdEmbalagem", "Qtd. Embalagem", ListaCampos.DB_SI, false );		
+		adicCampo( txtCubagem, 120, 140, 118, 20, "Cubagem", "Cubagem (m3)", ListaCampos.DB_SI, false );
 		setListaCampos( true, "PRODUTO", "EQ" );
 		
 		// Preço
