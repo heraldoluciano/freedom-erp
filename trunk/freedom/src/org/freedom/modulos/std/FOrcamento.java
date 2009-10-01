@@ -48,8 +48,10 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
@@ -74,6 +76,7 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.Lucratividade;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
@@ -81,6 +84,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.layout.componentes.LeiauteGR;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
+
 
 public class FOrcamento extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener {
 
@@ -290,11 +294,35 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	
 	private String abaTransp = "N";
 	
+	private JPanelPad pinCabLucratividade = new JPanelPad();
 	
+	private JPanelPad pnLucrGeral = new JPanelPad();
+	
+	private JPanelPad pnLucrItem = new JPanelPad();
+
+	private JTextFieldFK txtTotFat = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+
+	private JTextFieldFK txtTotCusto = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldFK txtTotLucro = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JProgressBar pbLucrTotal = new JProgressBar();
+	
+	private JProgressBar pbLucrItem = new JProgressBar();
+	
+	private JTextFieldFK txtItemFat = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+
+	private JTextFieldFK txtItemCusto = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldFK txtItemLucro = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+
+	private HashMap<String, Object> permusu = null;
+	
+	private BigDecimal fatLucro = null;
 
 	private enum PrefOrc {
 		USAREFPROD, USALIQREL, TIPOPRECOCUSTO, CODTIPOMOV2, DESCCOMPPED, USAORCSEQ, 
-		OBSCLIVEND, RECALCPCORC, USABUSCAGENPROD, USALOTEORC, CONTESTOQ, TITORCTXT01, VENDAMATPRIM;  
+		OBSCLIVEND, RECALCPCORC, USABUSCAGENPROD, USALOTEORC, CONTESTOQ, TITORCTXT01, VENDAMATPRIM,VISUALIZALUCR;  
 	}
 	
 	private enum OrcVenda {
@@ -694,6 +722,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		pnNavCab.add( navEast, BorderLayout.EAST );
 
 		txtVlrLiqItOrc.setAtivo( false );
+		
+		
+		if( ("S".equals( permusu.get( "VISUALIZALUCR" ))) && (Boolean)(oPrefs[ PrefOrc.VISUALIZALUCR.ordinal() ]) ) {		
+			adicPainelLucr();
+		}
+		
 
 	}
 
@@ -1752,29 +1786,39 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,P4.USALOTEORC,P.CONTESTOQ," + 
-			  "P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ,P.OBSCLIVEND,P.RECALCPCORC,P4.USABUSCAGENPROD,P.TITORCTXT01,P.VENDAMATPRIM, P.TABTRANSPORC " +
-			  "FROM SGPREFERE1 P, SGPREFERE4 P4 " + "WHERE P.CODEMP=? AND P.CODFILIAL=? " + 
-			  "AND P4.CODEMP=P.CODEMP AND P4.CODFILIAL=P.CODFILIAL";
+			sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,P4.USALOTEORC,P.CONTESTOQ," 
+				+  "P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ,P.OBSCLIVEND,P.RECALCPCORC,P4.USABUSCAGENPROD,P.TITORCTXT01,"
+				+  "P.VENDAMATPRIM, P.TABTRANSPORC,P.VISUALIZALUCR " 
+				+  "FROM SGPREFERE1 P, SGPREFERE4 P4 " 
+				+  "WHERE P.CODEMP=? AND P.CODFILIAL=? " 
+				+  "AND P4.CODEMP=P.CODEMP AND P4.CODFILIAL=P.CODFILIAL";
+			
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
+				
 				oRetorno[ PrefOrc.USAREFPROD.ordinal() ] = new Boolean( rs.getString( "UsaRefProd" ).trim().equals( "S" ) );
+				
 				if ( rs.getString( "UsaLiqRel" ) == null ) {
 					oRetorno[ PrefOrc.USALIQREL.ordinal() ] = new Boolean( false );
 					Funcoes.mensagemInforma( this, "Preencha opção de desconto em preferências!" );
-				}
-				else
+				}				
+				else {
 					oRetorno[ PrefOrc.USALIQREL.ordinal() ] = new Boolean( rs.getString( "UsaLiqRel" ).trim().equals( "S" ) );
+				}
+				
 				oRetorno[ PrefOrc.TIPOPRECOCUSTO.ordinal() ] = new Boolean( rs.getString( "TipoPrecoCusto" ).equals( "M" ) );
+				
 				if ( rs.getString( "CODTIPOMOV2" ) != null ) {
 					oRetorno[ PrefOrc.CODTIPOMOV2.ordinal() ] = new Integer( rs.getInt( "CODTIPOMOV2" ) );
 				}
 				else {
 					oRetorno[ PrefOrc.CODTIPOMOV2.ordinal() ] = new Integer( 0 );
 				}
+				
 				oRetorno[ PrefOrc.DESCCOMPPED.ordinal() ] = new Boolean( rs.getString( "DescCompPed" ).equals( "S" ) );
 				oRetorno[ PrefOrc.USAORCSEQ.ordinal() ] = new Boolean( rs.getString( "UsaOrcSeq" ).equals( "S" ) );
 				oRetorno[ PrefOrc.OBSCLIVEND.ordinal() ] = new Boolean( rs.getString( "ObsCliVend" ).equals( "S" ) );
@@ -1783,12 +1827,17 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				oRetorno[ PrefOrc.USALOTEORC.ordinal() ] = new Boolean( rs.getString( "USALOTEORC" ).equals( "S" ) );
 				oRetorno[ PrefOrc.CONTESTOQ.ordinal() ] = new Boolean( rs.getString( "CONTESTOQ" ).equals( "S" ) );								
 				oRetorno[ PrefOrc.TITORCTXT01.ordinal() ] = rs.getString( "TitOrcTxt01" );
+				
 				if ( oRetorno[ PrefOrc.TITORCTXT01.ordinal() ] == null ) {
 					oRetorno[ PrefOrc.TITORCTXT01.ordinal() ] = "";
-				}				
+				}
+				
 				oRetorno[ PrefOrc.VENDAMATPRIM.ordinal() ] = "S".equals( rs.getString( "VendaMatPrim" ) );
 				abaTransp = rs.getString( "TABTRANSPORC");				
 				sOrdNota = rs.getString( "OrdNota" );
+				
+				oRetorno[ PrefOrc.VISUALIZALUCR.ordinal() ] = "S".equals( rs.getString( "VISUALIZALUCR" ) );
+				
 			}
 			rs.close();
 			ps.close();
@@ -1887,6 +1936,19 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			lcDet.edit();
 		}
 
+		if(kevt.getKeyCode() == KeyEvent.VK_F12 && ( ("S".equals( permusu.get( "VISUALIZALUCR" )) && ((Boolean)oPrefs[PrefOrc.VISUALIZALUCR.ordinal() ] )) ) ) {
+			DLAltFatLucro dl = new DLAltFatLucro(this, fatLucro);
+			dl.setVisible( true );
+			if ( dl.OK ) {
+				fatLucro = dl.getValor();
+				dl.dispose();
+			}
+
+			dl.dispose();
+		}
+
+		
+		
 		super.keyPressed( kevt );
 	}
 
@@ -2105,6 +2167,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcAtend.setConexao( cn );
 		lcTran.setConexao( cn );
 		
+		permusu = getPermissaoUsu();
 		oPrefs = prefs(); // Carrega as preferências
 		
 		montaListaCampos();
@@ -2120,6 +2183,159 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			}
 		}
 	}
+	
+	private void atualizaLucratividade() {
+		
+		if( ("S".equals( permusu.get( "VISUALIZALUCR" ))) && (Boolean)(oPrefs[ PrefOrc.VISUALIZALUCR.ordinal() ]) ) {
+				
+			Lucratividade luc = new Lucratividade( txtCodOrc.getVlrInteger(), "O", txtCodItOrc.getVlrInteger(), fatLucro, con );		   
+		
+			/****************************
+			 * Atualizando painel geral 
+			 ****************************/
+			
+			txtTotFat.setVlrBigDecimal( luc.getTotfat() );
+			txtTotCusto.setVlrBigDecimal( luc.getTotcusto());
+			txtTotLucro.setVlrBigDecimal( luc.getTotlucro());
+			pbLucrTotal.setValue( luc.getPerclucrvenda().toBigInteger().intValue() );
+			
+			//Lucro menor que 20% (Vermelho)
+			if(luc.getPerclucrvenda().compareTo( new BigDecimal(20.00) )<=0) {
+				pbLucrTotal.setForeground( new Color(255,0,0) );	
+			
+			}
+			//Lucro maior que 20% menor que 30% (Laranja)
+			else if (luc.getPerclucrvenda().compareTo( new BigDecimal(20.00) )>0 && luc.getPerclucrvenda().compareTo( new BigDecimal(30.00) )<=0){
+				pbLucrTotal.setForeground( new Color(226,161,35) ) ;	
+			}
+			//Lucro maior que 30% e menor que 50% (Azul)
+			else if (luc.getPerclucrvenda().compareTo( new BigDecimal(30.00) )>0 && luc.getPerclucrvenda().compareTo( new BigDecimal(50.00) )<=0){
+				pbLucrTotal.setForeground( new Color(0,0,255) ) ;	
+			}
+			//Lucro maior que 50% (Verde)
+			else {
+				pbLucrTotal.setForeground( new Color(0,143,20) );
+			}
+			
+			/****************************
+			 * Atulizando painel item 
+			 ****************************/
+			
+			txtItemFat.setVlrBigDecimal( luc.getItemfat() );
+			txtItemCusto.setVlrBigDecimal( luc.getItemcusto());
+			txtItemLucro.setVlrBigDecimal( luc.getItemlucro());
+			pbLucrItem.setValue( luc.getPerclucritvenda().toBigInteger().intValue() );
+			pnLucrItem.setBorder(BorderFactory.createTitledBorder( txtCodItOrc.getVlrString() + "-" + txtDescProd.getVlrString().trim()) );
+			
+			//Lucro menor que 20% (Vermelho)
+			if(luc.getPerclucritvenda().compareTo( new BigDecimal(20.00) )<=0) {
+				pbLucrItem.setForeground( new Color(255,0,0) );	
+			
+			}
+			//Lucro maior que 20% menor que 30% (Laranja)
+			else if (luc.getPerclucritvenda().compareTo( new BigDecimal(20.00) )>0 && luc.getPerclucritvenda().compareTo( new BigDecimal(30.00) )<=0){
+				pbLucrItem.setForeground( new Color(226,161,35) ) ;	
+			}
+			//Lucro maior que 30% e menor que 50% (Azul)
+			else if (luc.getPerclucritvenda().compareTo( new BigDecimal(30.00) )>0 && luc.getPerclucritvenda().compareTo( new BigDecimal(50.00) )<=0){
+				pbLucrItem.setForeground( new Color(0,0,255) ) ;	
+			}
+			//Lucro maior que 50% (Verde)
+			else {
+				pbLucrItem.setForeground( new Color(0,143,20) );
+			}
+			
+			
+		}
+		
+	}
+
+	
+	private void adicPainelLucr() {
+		
+		try {
+			
+			tpnCab.addTab( "Lucratividade", pinCabLucratividade );			
+			setPainel(pinCabLucratividade) ;
+			
+			/******************
+			* Painel Geral
+			******************/
+			
+			pnLucrGeral.setBorder( BorderFactory.createTitledBorder( "Lucratividade Geral" ) );			
+			adic(pnLucrGeral, 4, 0, 230, 92 );			
+			setPainel(pnLucrGeral);			
+			pbLucrTotal.setStringPainted(true);									
+			
+			adic( pbLucrTotal, 2 , 2, 215 , 20);			
+			
+			adic( new JLabelPad("Faturado"), 2, 25, 75 , 20);
+			adic( txtTotFat, 2, 45, 70 , 20);
+			
+			adic( new JLabelPad("Custo"), 75, 25, 75 , 20);
+			adic( txtTotCusto, 75, 45, 70 , 20);
+			
+			adic( new JLabelPad("Lucro"), 153, 25, 75 , 20);
+			adic( txtTotLucro, 148, 45, 70 , 20);
+	
+			/******************
+			* Painel Item
+			******************/
+			
+			setPainel(pinCabLucratividade) ;
+	
+			pnLucrItem.setBorder( BorderFactory.createTitledBorder( "Lucratividade Item" ) );			
+			adic(pnLucrItem, 240, 0, 230, 92 );			
+			
+			setPainel(pnLucrItem);			
+			pbLucrItem.setStringPainted(true);									
+			
+			adic( pbLucrItem, 2 , 2, 215 , 20);			
+			
+			adic( new JLabelPad("Faturado"), 2, 25, 75 , 20);
+			adic( txtItemFat, 2, 45, 70 , 20);
+			
+			adic( new JLabelPad("Custo"), 75, 25, 75 , 20);
+			adic( txtItemCusto, 75, 45, 70 , 20);
+			
+			adic( new JLabelPad("Lucro"), 153, 25, 75 , 20);
+			adic( txtItemLucro, 148, 45, 70 , 20);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private HashMap<String, Object> getPermissaoUsu() {
+		HashMap<String,Object> ret = new HashMap<String, Object>();
+		
+		try {
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append( "SELECT VISUALIZALUCR FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? AND IDUSU=?" );
+	
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setString( 3, Aplicativo.strUsuario );
+			ResultSet rs = ps.executeQuery();
+	
+			if ( rs.next() ) {
+				ret.put( "VISUALIZALUCR", rs.getString( "VISUALIZALUCR" ) );
+			}
+			
+			rs.close();
+			ps.close();
+			
+			con.commit();
+			
+		}
+		catch (Exception e) {			
+			e.printStackTrace();
+		}
+		return ret;
+	}
+
 	
 	
 	
