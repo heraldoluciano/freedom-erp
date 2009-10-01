@@ -10,7 +10,7 @@ public abstract class Banco {
 	
 	public final static String BRADESCO = "237";
 	
-	private static String codBar = "";
+//	private static String codBar = "";
 
 	public abstract String geraCodBar( final String codbanco, 
 			                           final String codmoeda, 
