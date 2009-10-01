@@ -52,7 +52,7 @@ public class Bradesco extends Banco {
 		setModalidade( modalidade );		
 		setConta(contap);
 		
-		System.out.println("setou conta:" + contap);
+//		System.out.println("setou conta:" + contap);
 		
 	}
 
@@ -79,14 +79,16 @@ public class Bradesco extends Banco {
 		String parte3 = getNossoNumero();
 		String parte4 = contalimpa;
 		
-		System.out.println("PT1:" + parte1);
-		System.out.println("PT2:" + parte2);
-		System.out.println("PT3:" + parte3);
-		System.out.println("PT4:" + parte4);
+/*		System.out.println("CL1:" + parte1);
+		System.out.println("CL2:" + parte2);
+		System.out.println("CL3:" + parte3);
+		System.out.println("CL4:" + parte4);*/
 		
 		
 		String livre = parte1 + parte2 + parte3 + parte4 + CONSTANTE_CAMPO_LIVRE ;
 
+//		System.out.println("campolivre:" + livre);
+		
 		return livre;
 	}
 
@@ -133,13 +135,13 @@ public class Bradesco extends Banco {
 
 		String campo = parte1 + parte2 + parte4 + parte5 + parte6;
 		
-		System.out.println("PARTE1 :" + parte1);
+/*		System.out.println("PARTE1 :" + parte1);
 		System.out.println("PARTE2 :" + parte2);
 		System.out.println("PARTE4 :" + parte4);
 		System.out.println("PARTE5 :" + parte5);	
-		System.out.println("PARTE6 :" + parte6);
+		System.out.println("PARTE6 :" + parte6);*/
 		
-		System.out.println("CAMPO :" + campo);
+//		System.out.println("CAMPO :" + campo);
 		
 		String campo4 = getDigitoCodigoBarras( campo );
 		
@@ -178,24 +180,23 @@ public class Bradesco extends Banco {
 	public String geraLinhaDig() {
 
 		String parte1 = getCampo1();
-		System.out.println( "PT1:" + parte1 );
+//		System.out.println( "PT1:" + parte1 );
 
 		String parte2 = getCampo2();
-		System.out.println( "PT2:" + parte2 );
+//		System.out.println( "PT2:" + parte2 );
 		
 		String parte3 = getCampo3();
-		System.out.println( "PT3:" + parte3 );
+//		System.out.println( "PT3:" + parte3 );
 		
 		String parte4 = getCampo4();
-		System.out.println( "PT4:" + parte4 );
-		
+//		System.out.println( "PT4:" + parte4 );
 		
 		String parte5 = getCampo5();
-		System.out.println( "PT5:" + parte5 );
+//		System.out.println( "PT5:" + parte5 );
 
 		String linhadig = parte1 + parte2 + parte3 + parte4 + parte5;
 
-		System.out.println( "LINHA DIG:" + linhadig );
+//		System.out.println( "LINHA DIG:" + linhadig );
 
 		return linhadig;
 	}
@@ -284,9 +285,9 @@ public class Bradesco extends Banco {
 
 	public String getNossoNumero() {
 
-//		String nn = strZero( geraNossoNumero( getModalidade(), getConvenio(), getRec(), getNparc() ), 11 );
+		String nn = strZero( geraNossoNumero( getModalidade(), getConvenio(), getRec(), getNparc() ), 11 );
 		
-		String nn = "922200667";
+//		String nn = "11922200667";
 		
 		if ( nn.length() > 11 ) {
 			nn = nn.substring( 0, 11 );
@@ -321,7 +322,7 @@ public class Bradesco extends Banco {
 
 	public String getDvNossoNumero() {
 
-		String dv = getModulo11( ( getCarteiraBanco().substring( 0, 1 ) ) + getNossoNumero(), 9 );
+		String dv = getModulo11( getCarteiraBanco() + getNossoNumero(), 7 );
 		// dv = "800000000002783";
 		// dv = getModulo11( dv, 9 );
 		return dv;
@@ -482,4 +483,9 @@ public class Bradesco extends Banco {
 
 		return retorno.toString();
 	}
+	
+	public String getSiglaCarteiraBanco() {
+		return Funcoes.strZero(getCarteira().toString(),2);
+	}
+	
 }
