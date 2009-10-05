@@ -170,9 +170,9 @@ public class NF066 extends Layout {
 					imp.say( 20, sVals[ 0 ] );
 					imp.say( 39, sVencs[ 0 ] );
 										
-					imp.say( 53, sDuplics[ 1 ] );
+					imp.say( 56, sDuplics[ 1 ] );
 					imp.say( 68, sVals[ 1 ] );
-					imp.say( 85, sVencs[ 1 ] );
+					imp.say( 92, sVencs[ 1 ] );
 					
 					imp.say( 110, sDuplics[ 2 ] );
 					imp.say( 126, sVals[ 2 ] );
@@ -363,7 +363,7 @@ public class NF066 extends Layout {
 						imp.say( 51, Funcoes.copy( frete.getString( NF.C_MARCAFRETE ), 22 ) );
 						imp.say( 86, Funcoes.copy( frete.getString( NF.C_CONHECFRETEPED ), 20 ) );
 						imp.say( 124, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getBigDecimal( NF.C_PESOBRUTO ) ) ) );
-						imp.say( 137, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getBigDecimal( NF.C_PESOLIQ ) ) ) );
+						imp.say( 139, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getBigDecimal( NF.C_PESOLIQ ) ) ) );
 						imp.pulaLinha( 3, imp.comprimido() );
 					
 					}
@@ -385,8 +385,9 @@ public class NF066 extends Layout {
 
 					for ( int i = 0; i < 7; i++ ) {
 						if ( i < sizeObs ) {
-							imp.say( 6, vSigla.elementAt( i ) );
-							imp.pulaLinha( 1, imp.comprimido() );
+							sSigla = String.valueOf( (char) ( 65 + i ) );
+							imp.say( 6, sSigla + " " + vSigla.elementAt( i ) );
+//							imp.pulaLinha( 1, imp.comprimido() );
 						}
 						imp.pulaLinha( 1, imp.comprimido() );
 					}
