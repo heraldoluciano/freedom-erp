@@ -143,7 +143,7 @@ public class NF049 extends Layout {
 					}
 
 					imp.say( 120, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
-					imp.pulaLinha( 5, imp.comprimido() );
+					imp.pulaLinha( 6, imp.comprimido() );
 					imp.say( 1, sNat[ 0 ] );
 					imp.say( 43, sNat[ 1 ] );
 					imp.pulaLinha( 3, imp.comprimido() );
@@ -165,7 +165,7 @@ public class NF049 extends Layout {
 					imp.say( 78, sValsCli[ 3 ] );
 					imp.say( 84, !cab.getString( NF.C_RGEMIT ).equals( "" ) ? cab.getString( NF.C_RGEMIT ) : cab.getString( NF.C_INSCEMIT ) );
  
-					imp.pulaLinha( 3, imp.comprimido() );
+					imp.pulaLinha( 2, imp.comprimido() );
 
 					//Fim do cabeçalho
 					// Fim dos dados da fatura
@@ -242,7 +242,7 @@ public class NF049 extends Layout {
 						imp.say( 80, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 0, 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 0, 2 ) );
 						
 //						imp.say( 70, unid );
-						imp.say( 84, unid );
+						imp.say( 85, unid );
 						
 //						imp.say( 77, Funcoes.strDecimalToStrCurrency( 10, 4, String.valueOf( itens.getBigDecimal( NF.C_QTDITPED ) ) ) );
 						imp.say( 87, Funcoes.strDecimalToStrCurrency( 10, 4, String.valueOf( itens.getBigDecimal( NF.C_QTDITPED ) ) ) );
@@ -286,7 +286,7 @@ public class NF049 extends Layout {
 					// Imprime totais
 
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
-						imp.pulaLinha( 1, imp.comprimido() );
+						imp.pulaLinha( 3, imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRBASEICMSPED ) ) ) );
 						imp.say( 25, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( cab.getBigDecimal( NF.C_VLRICMSPED ) ) ) );
 												
