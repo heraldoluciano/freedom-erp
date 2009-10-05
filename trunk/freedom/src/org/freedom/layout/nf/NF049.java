@@ -139,11 +139,11 @@ public class NF049 extends Layout {
 						imp.say( 97, "X" );
 					}
 					else {
-						imp.say( 85, "X" );
+						imp.say( 84, "X" );
 					}
 
 					imp.say( 120, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
-					imp.pulaLinha( 6, imp.comprimido() );
+					imp.pulaLinha( 5, imp.comprimido() );
 					imp.say( 1, sNat[ 0 ] );
 					imp.say( 43, sNat[ 1 ] );
 					imp.pulaLinha( 3, imp.comprimido() );
@@ -232,16 +232,32 @@ public class NF049 extends Layout {
 //						BigDecimal qtdemb = itens.getBigDecimal( NF.C_QTDEMBALAGEM );
 						String unid = Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ).trim() ;
 						
-						String descitem = Funcoes.copy(descprod + sep + codfabprod, 48);
+						String descitem = Funcoes.copy(descprod + sep + codfabprod, 68);
 						 
 						imp.say( 8, descitem );
-						imp.say( 52, sCodfisc );
-						imp.say( 65, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 0, 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 0, 2 ) );
-						imp.say( 70, unid );
-						imp.say( 77, Funcoes.strDecimalToStrCurrency( 10, 4, String.valueOf( itens.getBigDecimal( NF.C_QTDITPED ) ) ) );
-						imp.say( 90, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getBigDecimal( NF.C_VLRPRODITPED ).divide( 
+//						imp.say( 52, sCodfisc );
+						imp.say( 70, sCodfisc );
+						
+						//imp.say( 65, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 0, 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 0, 2 ) );
+						imp.say( 76, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 0, 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 0, 2 ) );
+						
+//						imp.say( 70, unid );
+						imp.say( 81, unid );
+						
+//						imp.say( 77, Funcoes.strDecimalToStrCurrency( 10, 4, String.valueOf( itens.getBigDecimal( NF.C_QTDITPED ) ) ) );
+						imp.say( 87, Funcoes.strDecimalToStrCurrency( 10, 4, String.valueOf( itens.getBigDecimal( NF.C_QTDITPED ) ) ) );
+						
+//						imp.say( 90, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getBigDecimal( NF.C_VLRPRODITPED ).divide( 
+//								itens.getBigDecimal( NF.C_QTDITPED ), 2, BigDecimal.ROUND_HALF_UP ) ) )) ;
+						
+						imp.say( 95, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getBigDecimal( NF.C_VLRPRODITPED ).divide( 
 								itens.getBigDecimal( NF.C_QTDITPED ), 2, BigDecimal.ROUND_HALF_UP ) ) )) ;
-						imp.say( 110, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getBigDecimal( NF.C_VLRPRODITPED ) ) ) );
+
+						
+						
+//						imp.say( 110, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getBigDecimal( NF.C_VLRPRODITPED ) ) ) );
+						imp.say( 109, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( itens.getBigDecimal( NF.C_VLRPRODITPED ) ) ) );
+						
 						imp.say( 121, Funcoes.strDecimalToStrCurrency( 2, 0, String.valueOf( itens.getBigDecimal( NF.C_PERCICMSITPED ) ) ) );
 						imp.say( 124, Funcoes.strDecimalToStrCurrency( 2, 0, String.valueOf( itens.getBigDecimal( NF.C_PERCIPIITPED ) ) ) );					
 						imp.say( 129, Funcoes.strDecimalToStrCurrency( 6, 2, String.valueOf( itens.getBigDecimal( NF.C_VLRIPIITPED ) ) ) );
