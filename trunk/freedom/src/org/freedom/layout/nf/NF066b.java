@@ -369,7 +369,7 @@ public class NF066b extends Layout {
 						if(frete.getBigDecimal( NF.C_QTDFRETE ).floatValue()>0) {
 							imp.say( 6, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( frete.getString( NF.C_QTDFRETE ) ) ) );
 						}
-//						imp.say( 20 , Funcoes.copy( frete.getString( NF.C_ESPFRETE ), 27 ) );
+						imp.say( 20 , Funcoes.copy( frete.getString( NF.C_ESPFRETE ), 27 ) );
 						
 						
 						String marcafrete = Funcoes.copy( frete.getString( NF.C_MARCAFRETE ), 22 );
