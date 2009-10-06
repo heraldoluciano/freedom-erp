@@ -329,8 +329,17 @@ public class NF066 extends Layout {
 					
 						imp.say( 4, frete.getString( NF.C_RAZTRANSP ) );
 						imp.say( 99, "C".equals(frete.getString( NF.C_TIPOFRETE ) ) ? "1" : "2" );
-						imp.say( 104, frete.getString( NF.C_PLACAFRETE ) );
-						imp.say( 122, frete.getString( NF.C_UFFRETE ) );
+						
+						
+						String placa = frete.getString( NF.C_PLACAFRETE );
+						String uffrete = frete.getString( NF.C_UFFRETE );
+						
+						if(placa.indexOf( "*******" )==-1) {
+							imp.say( 104, placa );
+						}
+						if(uffrete.indexOf( "**" )==-1) {
+							imp.say( 122, uffrete );
+						}
 
 						if ( "C".equals(frete.getString( NF.C_TIPOTRANSP ) ) ) {
 							imp.say( 128, Funcoes.setMascara( cab.getString( NF.C_CNPJEMIT ), "##.###.###/####-##" ) );
@@ -358,9 +367,20 @@ public class NF066 extends Layout {
 						
 						imp.pulaLinha( 2, imp.comprimido() );
 					
-						imp.say( 6, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( frete.getString( NF.C_QTDFRETE ) ) ) );
+						if(frete.getBigDecimal( NF.C_QTDFRETE ).floatValue()>0) {
+							imp.say( 6, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( frete.getString( NF.C_QTDFRETE ) ) ) );
+						}						
+						
 						imp.say( 22, Funcoes.copy( frete.getString( NF.C_ESPFRETE ), 27 ) );
-						imp.say( 51, Funcoes.copy( frete.getString( NF.C_MARCAFRETE ), 22 ) );
+						
+						String marcafrete = Funcoes.copy( frete.getString( NF.C_MARCAFRETE ), 22 );
+						
+						if(marcafrete.indexOf( "**********" )>-1) {
+							marcafrete = "NAPOLIPAN";
+						}
+						
+						imp.say( 51, Funcoes.copy( marcafrete, 22 ) );
+						
 						imp.say( 86, Funcoes.copy( frete.getString( NF.C_CONHECFRETEPED ), 20 ) );
 						imp.say( 124, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getBigDecimal( NF.C_PESOBRUTO ) ) ) );
 						imp.say( 139, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getBigDecimal( NF.C_PESOLIQ ) ) ) );
