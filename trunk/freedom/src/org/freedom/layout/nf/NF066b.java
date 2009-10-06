@@ -369,7 +369,7 @@ public class NF066b extends Layout {
 						if(frete.getBigDecimal( NF.C_QTDFRETE ).floatValue()>0) {
 							imp.say( 6, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( frete.getString( NF.C_QTDFRETE ) ) ) );
 						}
-						imp.say( 20 , Funcoes.copy( frete.getString( NF.C_ESPFRETE ), 27 ) );
+//						imp.say( 20 , Funcoes.copy( frete.getString( NF.C_ESPFRETE ), 27 ) );
 						
 						
 						String marcafrete = Funcoes.copy( frete.getString( NF.C_MARCAFRETE ), 22 );
@@ -380,8 +380,8 @@ public class NF066b extends Layout {
 						
 						imp.say( 49, Funcoes.copy( marcafrete, 22 ) );
 						imp.say( 76, Funcoes.copy( frete.getString( NF.C_CONHECFRETEPED ), 20 ) );
-						imp.say( 108, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getBigDecimal( NF.C_PESOBRUTO ) ) ) );
-						imp.say( 124, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getBigDecimal( NF.C_PESOLIQ ) ) ) );
+//						imp.say( 108, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getBigDecimal( NF.C_PESOBRUTO ) ) ) );
+//						imp.say( 124, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getBigDecimal( NF.C_PESOLIQ ) ) ) );
 						imp.pulaLinha( 3, imp.comprimido() );
 					
 					}
