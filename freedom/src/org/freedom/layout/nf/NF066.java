@@ -371,7 +371,7 @@ public class NF066 extends Layout {
 							imp.say( 6, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( frete.getString( NF.C_QTDFRETE ) ) ) );
 						}						
 						
-//						imp.say( 22, Funcoes.copy( frete.getString( NF.C_ESPFRETE ), 27 ) );
+						imp.say( 22, Funcoes.copy( frete.getString( NF.C_ESPFRETE ), 27 ) );
 						
 						String marcafrete = Funcoes.copy( frete.getString( NF.C_MARCAFRETE ), 22 );
 						
