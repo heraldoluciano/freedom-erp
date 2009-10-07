@@ -43,7 +43,7 @@
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
 	<queryString><![CDATA[SELECT B.CODBOR, B.NUMCONTA, C.DESCCONTA, B.NUMCONTABOR, C2.DESCCONTA DESCCONTABOR, B.DTBOR, B.OBSBOR,
-IB.CODREC, IB.NPARCITREC, R.CODCLI, CL.RAZCLI, IR.VLRITREC, IR.DTVENCITREC
+IB.CODREC, IB.NPARCITREC, R.CODCLI, CL.RAZCLI, IR.VLRITREC, IR.DTVENCITREC, DOCREC
 FROM FNBORDERO B, FNITBORDERO IB, FNCONTA C, FNCONTA C2,
 FNITRECEBER IR, FNRECEBER R, VDCLIENTE CL
 WHERE B.CODEMP=4 AND B.CODFILIAL=1 AND 
@@ -53,8 +53,7 @@ IB.CODEMP=B.CODEMP AND IB.CODFILIAL=B.CODFILIAL AND IB.CODBOR=B.CODBOR AND
 IR.CODEMP=IB.CODEMPRC AND IR.CODFILIAL=IB.CODFILIALRC AND IR.CODREC=IB.CODREC AND IR.NPARCITREC=IB.NPARCITREC AND
 R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC AND
 CL.CODEMP=R.CODEMPCL AND CL.CODFILIAL=R.CODFILIALCL AND CL.CODCLI=R.CODCLI
-ORDER BY IB.NPARCITREC
-]]></queryString>
+ORDER BY IB.NPARCITREC]]></queryString>
 
 	<field name="CODBOR" class="java.lang.Long"/>
 	<field name="NUMCONTA" class="java.lang.String"/>
@@ -69,6 +68,7 @@ ORDER BY IB.NPARCITREC
 	<field name="RAZCLI" class="java.lang.String"/>
 	<field name="VLRITREC" class="java.math.BigDecimal"/>
 	<field name="DTVENCITREC" class="java.sql.Date"/>
+	<field name="DOCREC" class="java.lang.Long"/>
 
 	<variable name="TOTALBORDERO" class="java.math.BigDecimal" resetType="Group" resetGroup="BORDERO" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRITREC}]]></variableExpression>
@@ -174,9 +174,9 @@ ORDER BY IB.NPARCITREC
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="95"
+						x="112"
 						y="44"
-						width="60"
+						width="43"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -506,7 +506,7 @@ ORDER BY IB.NPARCITREC
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODREC}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{DOCREC}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
