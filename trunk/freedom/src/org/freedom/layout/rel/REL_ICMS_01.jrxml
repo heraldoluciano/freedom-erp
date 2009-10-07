@@ -49,16 +49,16 @@ group by 1,2,3]]></queryString>
 	<field name="VLRICMS" class="java.math.BigDecimal"/>
 	<field name="VLROUTRAS" class="java.math.BigDecimal"/>
 
-	<variable name="TOTOUTRAS" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+	<variable name="TOTOUTRAS" class="java.math.BigDecimal" resetType="Group" resetGroup="NCM" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLROUTRAS}]]></variableExpression>
 	</variable>
-	<variable name="TOTICMS" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+	<variable name="TOTICMS" class="java.math.BigDecimal" resetType="Group" resetGroup="NCM" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRICMS}]]></variableExpression>
 	</variable>
-	<variable name="TOTBASE" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+	<variable name="TOTBASE" class="java.math.BigDecimal" resetType="Group" resetGroup="NCM" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRBASE}]]></variableExpression>
 	</variable>
-	<variable name="TOTCONTABIL" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+	<variable name="TOTCONTABIL" class="java.math.BigDecimal" resetType="Group" resetGroup="NCM" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRCONTABIL}]]></variableExpression>
 	</variable>
 
