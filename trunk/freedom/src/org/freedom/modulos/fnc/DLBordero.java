@@ -46,7 +46,7 @@ import org.freedom.telas.FDialogo;
 
 
 /**
- * Wizard para criação de bordero de recebivéis.
+ * Wizard para criação de bordero de recebíveis.
  * 
  * @author Setpoint Informática Ltda./Alex Rodrigues
  * @version 26/08/2009
@@ -117,7 +117,7 @@ public class DLBordero extends FDialogo {
 	public DLBordero() {
 
 		super();
-		setTitulo( "Bordero de recebivéis" );
+		setTitulo( "Bordero de recebíveis" );
 		setAtribos( 740, 440 );
 		
 		montaListaCampos();

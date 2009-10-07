@@ -54,7 +54,7 @@ import org.freedom.telas.FPrinterJob;
 
 
 /**
- * Cadastro bordero de recebivéis.
+ * Cadastro bordero de recebíveis.
  * 
  * @author Setpoint Informática Ltda./Alex Rodrigues
  * @version 26/08/2009
@@ -298,7 +298,7 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 			
 			rs = ps.executeQuery();
 			
-			FPrinterJob dlGr = new FPrinterJob( "relatorios/FBordero.jasper", "Bordero de recebivéis", null, rs, null, this );
+			FPrinterJob dlGr = new FPrinterJob( "relatorios/FBordero.jasper", "Bordero de recebíveis", null, rs, null, this );
 
 			if ( visualizar ) {
 				dlGr.setVisible( true );
