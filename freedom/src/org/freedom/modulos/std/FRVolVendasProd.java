@@ -97,7 +97,8 @@ public class FRVolVendasProd extends FRelatorio {
 		txtCodComiss.setNomeCampo( "CodVend" );
 		txtCodComiss.setFK( true );
 		lcComiss.setReadOnly( true );
-		lcComiss.montaSql( false, "VENDEDOR", "VD" );*/
+		lcComiss.montaSql( false, "VENDEDOR", "VD" );
+*/
 		
 		lcGrupo.add( new GuardaCampo( txtCodGrupo, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
 		lcGrupo.add( new GuardaCampo( txtDescGrupo, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );

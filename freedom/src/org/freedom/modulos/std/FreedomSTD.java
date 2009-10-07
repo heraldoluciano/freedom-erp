@@ -41,6 +41,7 @@ import org.freedom.modulos.grh.FFuncao;
 import org.freedom.modulos.lvf.FCLFiscal;
 import org.freedom.modulos.lvf.FNBM;
 import org.freedom.modulos.lvf.FNCM;
+import org.freedom.modulos.lvf.FRIcmsNcm;
 import org.freedom.modulos.lvf.FServico;
 import org.freedom.modulos.lvf.FSitTrib;
 import org.freedom.modulos.lvf.FTabICMS;
@@ -308,7 +309,7 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 800600000, TP_OPCAO_ITEM, "ICMS sobre vendas", "Icms Vendas e Compras", 'I', 800601000, 2, true, FRVendasIcms.class );
 				addOpcao( 800600000, TP_OPCAO_ITEM, "Impostos sobre serviços", "Impostos sobre serviços", 'S', 800602000, 2, true, FRImpServ.class );
 				addOpcao( 800600000, TP_OPCAO_ITEM, "Pis e cofins", "Pis e cofins", 'P', 800603000, 2, true, FRPisCofins.class );
-			
+				addOpcao( 800600000, TP_OPCAO_ITEM, "ICMS por NCM/CFOP", "ICMS por NCM", 'N', 800604000, 2, true, FRIcmsNcm.class );
 			
 		addBotao( "btPrefere.png", "Preferências gerais", "Preferências Gerais", 100310000, FPrefereGeral.class );						
 		addBotao( "btCliente.gif", "Cliente", "Clientes", 100101030, FCliente.class );
