@@ -367,7 +367,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		btSair.setToolTipText( "Sair" );
 		btCarregaVenda.setToolTipText( "Consulta venda" );
 		btHistorico.setToolTipText( "Histório de contatos" );
-		btBordero.setToolTipText( "Bordero de recebivéis" );
+		btBordero.setToolTipText( "Adiantamento de recebivéis" );
 
 		Container c = getContentPane();
 		c.setLayout( new BorderLayout() );
