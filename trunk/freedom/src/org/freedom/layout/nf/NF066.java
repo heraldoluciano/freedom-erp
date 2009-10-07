@@ -395,7 +395,7 @@ public class NF066 extends Layout {
 						}
 						
 						
-						imp.pulaLinha( 3, imp.comprimido() );
+						imp.pulaLinha( 4, imp.comprimido() );
 					
 					}
 
@@ -428,8 +428,10 @@ public class NF066 extends Layout {
 					// Imprime canhoto					
 					imp.pulaLinha( iLinPag - imp.pRow() -6, imp.comprimido() );					
 					imp.say( 0, imp.normal() + imp.comprimido() + imp.expandido() );
-					imp.say( 10, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );										
-					imp.pulaLinha( iLinPag - imp.pRow() + 2, imp.comprimido() );
+					imp.say( 10, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );	
+					
+					imp.pulaLinha( iLinPag - imp.pRow() + 1, imp.comprimido() );
+					
 					imp.setPrc( 0, 0 );
 					imp.incPags();
 				}
