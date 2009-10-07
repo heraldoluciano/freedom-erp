@@ -48,12 +48,15 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
@@ -2331,7 +2334,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			rs.close();
 			ps.close();
 	
-			con.commit();
+//			con.commit();
 	
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -2535,7 +2538,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				sSQL.append( "C.FAXCLI,C.INSCCLI,C.RGCLI,I.CODPROD,P.REFPROD,P.CODBARPROD,P.DESCPROD,P.CODUNID,I.PERCISSITVENDA," );
 				sSQL.append( "I.QTDITVENDA,I.PRECOITVENDA,I.VLRPRODITVENDA,I.CODNAT,I.PERCICMSITVENDA," );
 				sSQL.append( "I.PERCIPIITVENDA,VLRIPIITVENDA,V.VLRBASEICMSVENDA,V.VLRICMSVENDA,V.VLRPRODVENDA," );
-				sSQL.append( "V.VLRFRETEVENDA,V.VLRDESCVENDA,V.VLRDESCITVENDA,V.VLRADICVENDA,V.VLRIPIVENDA," );
+				sSQL.append( "V.VLRFRETEVENDA,V.VLRDESCVENDA,I.VLRDESCITVENDA,V.VLRADICVENDA,V.VLRIPIVENDA," );
 				sSQL.append( "V.VLRLIQVENDA,V.CODVEND,VEND.NOMEVEND,V.CODPLANOPAG,PG.DESCPLANOPAG," );
 				sSQL.append( "(SELECT T.RAZTRAN FROM VDTRANSP T, VDFRETEVD F WHERE T.CODEMP=F.CODEMPTN AND " );
 				sSQL.append( "T.CODFILIAL=F.CODFILIALTN AND T.CODTRAN=F.CODTRAN AND F.CODEMP=V.CODEMP AND " );
@@ -2548,7 +2551,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				sSQL.append( "(SELECT FN.DESCFUNC FROM RHFUNCAO FN WHERE FN.CODEMP=VEND.CODEMPFU AND " );
 				sSQL.append( "FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC) AS DESCFUNC, " );
 				sSQL.append( "V.PEDCLIVENDA,C.CONTCLI,P.CODFISC,FCL.DESCFISC,V.DOCVENDA,C.OBSCLI," );
-				sSQL.append( "C.BAIRENT, C.ENDENT, C.CIDENT, C.UFENT, C.CEPENT, C.FONEENT, VF.PLACAFRETEVD, VF.PESOBRUTVD, P.DESCCOMPPROD, V.OBSVENDA, VF.QTDFRETEVD " );
+				sSQL.append( "C.BAIRENT, C.ENDENT, C.CIDENT, C.UFENT, C.CEPENT, C.FONEENT, VF.PLACAFRETEVD, VF.PESOBRUTVD, VF.PESOLIQVD, VF.QTDFRETEVD, P.DESCCOMPPROD, V.OBSVENDA, VF.QTDFRETEVD " );
 				sSQL.append( "FROM VDCLIENTE C,VDITVENDA I,EQPRODUTO P,VDVENDEDOR VEND,FNPLANOPAG PG,LFITCLFISCAL FC,LFCLFISCAL FCL, " );
 				sSQL.append( "VDVENDA V left outer join VDFRETEVD VF on " );
 				sSQL.append( "VF.CODEMP=V.CODEMP AND VF.CODFILIAL=V.CODFILIAL AND VF.CODVENDA=V.CODVENDA AND VF.TIPOVENDA=V.TIPOVENDA " );
@@ -2591,12 +2594,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 								hParam.put( "CODFILIAL", Aplicativo.iCodFilial );
 								hParam.put( "CODVENDA", txtCodVenda.getVlrInteger() );
 								hParam.put( "TIPOVENDA", "V" );
-								hParam.put( "REPORT_CONNECTION", con ); 
+								hParam.put( "REPORT_CONNECTION", con.getConnection() ); 
 								hParam.put( "SUBREPORT_DIR", "org/freedom/layout/pd/");
 															
 								System.out.println("SQL:" + sSQL.toString());
 								
+//								FPrinterJob dlGr = new FPrinterJob("layout/pd/" + getLayoutPedido( tipoimp ),"PEDIDO","",rs,hParam,this,null);
 								FPrinterJob dlGr = new FPrinterJob("layout/pd/" + getLayoutPedido( tipoimp ),"PEDIDO","",rs,hParam,this,null);
+								
 								if ( bVisualizar ) {
 									dlGr.setVisible( true );
 								}
@@ -2617,7 +2622,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 								hParam.put( "CODVENDA", txtCodVenda.getVlrInteger() );
 								hParam.put( "TIPOVENDA", "V" );
 								hParam.put( "SUBREPORT_DIR", "org/freedom/layout/pd/"); 
-								FPrinterJob dlGr = new FPrinterJob("layout/pd/" + getLayoutPedido( tipoimp ),"PEDIDO","",this,hParam,con);
+								
+								//FPrinterJob dlGr = new FPrinterJob("layout/pd/" + getLayoutPedido( tipoimp ),"PEDIDO","",this,hParam,con);
+								
+								FPrinterJob dlGr = new FPrinterJob("layout/pd/PED_PD.jasper","PEDIDO","",rs,hParam,this,null);
+								
 								
 								if ( bVisualizar ) {
 									dlGr.setVisible( true );
@@ -2837,7 +2846,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						}
 					}
 					else {
-						FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", null, rs, null, this );
+						//FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", null, rs, null, this );
+						FPrinterJob dlGr = new FPrinterJob("layout/pd/PED_PD.jasper","PEDIDO","",rs,hParam,this,null);
 	
 						if ( bVisualizar ) {
 							dlGr.setVisible( true );
