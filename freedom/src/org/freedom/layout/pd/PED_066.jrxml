@@ -72,7 +72,7 @@ FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC), V.PEDCLIVENDA,C.CONT
 V.VLRFRETEVENDA, VF.PLACAFRETEVD, VF.PESOBRUTVD,VF.PESOLIQVD,vf.qtdfretevd, V.OBSVENDA, C.PESSOACLI, C.CONTCLI,
 V.DOCVENDA,C.OBSCLI,P.DESCCOMPPROD FROM VDVENDA V,VDCLIENTE C,VDITVENDA I,EQPRODUTO P,VDVENDEDOR VEND,FNPLANOPAG PG,LFCLFISCAL FC ,
 VDFRETEVD VF
-WHERE V.CODEMP=60 AND V.CODFILIAL=1 AND V.TIPOVENDA='V' AND V.CODVENDA=60 AND C.CODEMP=V.CODEMPCL AND
+WHERE V.CODEMP=66 AND V.CODFILIAL=1 AND V.TIPOVENDA='V' AND V.CODVENDA=465 AND C.CODEMP=V.CODEMPCL AND
 C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND
 I.TIPOVENDA=V.TIPOVENDA AND I.CODVENDA=V.CODVENDA AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND
 P.CODPROD=I.CODPROD AND VEND.CODEMP=V.CODEMPVD AND VEND.CODFILIAL=V.CODFILIALVD AND P.CODFISC=FC.CODFISC AND
@@ -115,8 +115,8 @@ ORDER BY P.CODMARCA,P.DESCPROD]]></queryString>
 	<field name="PRECOITVENDA" class="java.math.BigDecimal"/>
 	<field name="VLRPRODITVENDA" class="java.math.BigDecimal"/>
 	<field name="CODNAT" class="java.lang.String"/>
-	<field name="PERCICMSITVENDA" class="java.lang.Long"/>
-	<field name="PERCIPIITVENDA" class="java.lang.Long"/>
+	<field name="PERCICMSITVENDA" class="java.math.BigDecimal"/>
+	<field name="PERCIPIITVENDA" class="java.math.BigDecimal"/>
 	<field name="VLRIPIITVENDA" class="java.math.BigDecimal"/>
 	<field name="VLRBASEICMSVENDA" class="java.math.BigDecimal"/>
 	<field name="VLRICMSVENDA" class="java.math.BigDecimal"/>
@@ -1137,20 +1137,20 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<reportElement
 						x="2"
 						y="73"
-						width="31"
+						width="73"
 						height="11"
 						key="staticText-56"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Código:]]></text>
+				<text><![CDATA[N° do pedido]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="35"
+						x="78"
 						y="73"
-						width="50"
+						width="83"
 						height="11"
 						key="textField-47"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1361,9 +1361,9 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 			<band height="112"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="114"
+						x="113"
 						y="13"
-						width="50"
+						width="57"
 						height="11"
 						key="staticText-39"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
