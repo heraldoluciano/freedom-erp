@@ -152,7 +152,12 @@ public class NF066 extends Layout {
 					imp.say( 124, Funcoes.setMascara( cab.getString( NF.C_CEPEMIT ), "#####-###" ) );
 
 					if ( !itens.getString( NF.C_IMPDTSAIDA ).equals( "N" ) ) {
-						imp.say( 146, ( cab.getDate( NF.C_DTSAIDA ) != null ? Funcoes.dateToStrDate( cab.getDate( NF.C_DTSAIDA ) ) : "" ) );
+						
+						if(!cab.getDate( NF.C_DTSAIDA ).toString().equals( "1111-11-11" )) { // Coisa absurda solicitada pelo cliente...
+							imp.say( 146, ( cab.getDate( NF.C_DTSAIDA ) != null ? Funcoes.dateToStrDate( cab.getDate( NF.C_DTSAIDA ) ) : "" ) );	
+						}
+						
+						
 					}
 
 					imp.pulaLinha( 2, imp.comprimido() );
