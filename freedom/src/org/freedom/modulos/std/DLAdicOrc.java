@@ -547,6 +547,7 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 
 		PreparedStatement ps = null;
 		PreparedStatement ps2 = null;
+		PreparedStatement ps3 = null;
 		ResultSet rs = null;
 		String sSQL = null;
 		boolean bPrim = true;
@@ -658,6 +659,8 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 							
 							ps2.execute();
 							ps2.close();
+
+							
 						} 
 						catch ( SQLException err ) {
 							Funcoes.mensagemErro( this, "Erro ao gerar itvenda: '" + ( i + 1 ) + "'!\n" + err.getMessage(), true, con, err );
@@ -671,9 +674,22 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 						
 					}
 					try {
+						
+						// Atualiza o desconto na venda de acordo com o desconto dado no orçamento.
+						sSQL = "EXECUTE PROCEDURE VDATUDESCVENDAORCSP(?,?,?,?)";
+						ps3 = con.prepareStatement( sSQL );
+						ps3.setInt( 1, Aplicativo.iCodEmp );
+						ps3.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
+						ps3.setString( 3, "V" );
+						ps3.setInt( 4, iCodVenda );
+						
+						ps3.execute();
+						ps3.close();
+						
 						atualizaObsPed(obs,iCodVenda);
 						con.commit();
 						carregar();
+						
 					} catch ( SQLException err ) {
 						Funcoes.mensagemErro( this, "Erro ao realizar commit!!" + "\n" + err.getMessage(), true, con, err );
 						return false;
