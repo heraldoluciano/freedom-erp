@@ -1022,7 +1022,7 @@ $F{CNPJCLI}.substring(12)]]></textFieldExpression>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DOCREC}.toString()+"/"+$F{NPARCITREC}.toString()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="MM/dd/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="396"
 						y="125"
