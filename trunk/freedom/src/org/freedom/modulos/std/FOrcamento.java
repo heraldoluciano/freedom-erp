@@ -663,7 +663,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			tpnCab.addTab( "Tranportadora", pinCabTransp );
 			setListaCampos( lcCampos );
 			setPainel( pinCabTransp );
-			adicCampo( txtCodTran, 7, 25, 70, 20, "Codtran", "Cód.transp.", ListaCampos.DB_FK, false );
+			adicCampo( txtCodTran, 7, 25, 70, 20, "Codtran", "Cód.transp.", ListaCampos.DB_FK, true );
 			adicDescFK( txtRazTran, 80, 25, 250, 20, "Raztran", "Razão social da transportadora" );	
 			adicDB( rgTipoFrete, 333, 25, 140, 25, "TipoFrete", "Tipo de Frete", false );
 		}
