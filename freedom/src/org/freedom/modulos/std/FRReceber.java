@@ -90,6 +90,10 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 	private JCheckBoxPad cbImpTotDia = new JCheckBoxPad( "Imprimir totalizador diário?", "S", "N" );
 
 	private JCheckBoxPad cbParPar = new JCheckBoxPad( "Imprimir pagamentos parciais?", "S", "N" );
+	
+	private JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescTipoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JRadioGroup<String, String> rgModo = null;
 
@@ -100,6 +104,8 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 	private JRadioGroup<String, String> rgOrdem2 = null;
 
 	private ListaCampos lcCli = new ListaCampos( this );
+	
+	private ListaCampos lcTipoCli = new ListaCampos( this );
 
 	private ListaCampos lcSetor = new ListaCampos( this );
 
@@ -117,7 +123,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 		super( false );
 		setTitulo( "Contas a Receber" );
-		setAtribos( 40, 50, 640, 430 );
+		setAtribos( 40, 50, 640, 470 );
 
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
@@ -183,6 +189,16 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		txtCodTpCob.setListaCampos( lcTipoCob );
 		txtDescTpCob.setListaCampos( lcTipoCob );
 		txtCodTpCob.setFK( true );
+		
+		lcTipoCli.add( new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, false ) );
+		lcTipoCli.add( new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false ) );
+		lcTipoCli.montaSql( false, "TIPOCLI", "VD" );
+		lcTipoCli.setReadOnly( true );
+		txtCodTipoCli.setTabelaExterna( lcTipoCli );
+		txtCodTipoCli.setFK( true );
+		txtCodTipoCli.setNomeCampo( "CodTipoCli" );
+
+				
 	}
 	
 	private void montaRadioGroups() {
@@ -276,6 +292,13 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		adic( txtCodPlanoPag, 303, 320, 80, 20 );
 		adic( new JLabelPad( "Descrição do plano de pagamento" ), 386, 300, 220, 20 );
 		adic( txtDescPlanoPag, 386, 320, 220, 20 );
+		
+		adic( new JLabelPad( "Cód.Tipo.Cli" ), 7, 340, 80, 20 );
+		adic( txtCodTipoCli, 7, 360, 80, 20 );
+		adic( new JLabelPad( "Descrição do tipo de cliente" ), 90, 340, 210, 20 );
+		adic( txtDescTipoCli, 90, 360, 210, 20 );
+
+		
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -390,6 +413,12 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			sWhere.append( "AND IT.CODEMPTC=? AND IT.CODFILIALTC=? AND IT.CODTIPOCOB=? " );
 			sFiltro += ( !sFiltro.equals( "" ) ? " / " : "" ) + "Repr.: " + sCodTpCob + " - " + Funcoes.copy( txtCodTpCob.getVlrString(), 30 ).trim();
 		}
+		
+		if ( txtCodTipoCli.getVlrInteger() > 0 ) {
+			sWhere.append( "AND C.CODEMPTI=? AND C.CODFILIALTI=? AND C.CODTIPOCLI=? " );
+			sFiltro += ( !sFiltro.equals( "" ) ? " / " : "" ) + "Tipo Cli.: " + txtCodTipoCli.getVlrString() + " - " + Funcoes.copy( txtDescTipoCli.getVlrString(), 30 ).trim();
+		}
+
 
 		sSQL.append( "SELECT IT.DTITREC, IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI," );
 		
@@ -507,6 +536,12 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 				ps.setInt( iParans++, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 				ps.setString( iParans++, sCodTpCob );
 			}
+			if ( txtCodTipoCli.getVlrInteger() > 0 ) {
+				ps.setInt( iParans++, lcTipoCli.getCodEmp() );
+				ps.setInt( iParans++, lcTipoCli.getCodFilial() );
+				ps.setInt( iParans++, txtCodTipoCli.getVlrInteger() );
+			}
+			
 
 			rs = ps.executeQuery();
 			
@@ -769,6 +804,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		lcBanco.setConexao( cn );
 		lcPlanoPag.setConexao( cn );
 		lcTipoCob.setConexao( cn );
+		lcTipoCli.setConexao( cn );
 		bPref = getPrefere();
 	}
 
