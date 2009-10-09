@@ -62,7 +62,7 @@ public class FRClientesSemVendas extends FRelatorio {
 	public FRClientesSemVendas() {
 
 		super( false );
-		setTitulo( "Volume de vendas por produto" );
+		setTitulo( "Clientes sem movimento" );
 		setAtribos( 50, 50, 355, 200 );
 
 		montaListaCampos();
