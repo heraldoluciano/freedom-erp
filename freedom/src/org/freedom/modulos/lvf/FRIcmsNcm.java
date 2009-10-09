@@ -51,71 +51,13 @@ public class FRIcmsNcm extends FRelatorio {
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-//	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-//	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
-//	private ListaCampos lcCli = new ListaCampos( this, "CL" );
-
-//	private ListaCampos lcComiss = new ListaCampos( this, "VD" );
-	
-//	private JTextFieldPad txtCodGrupo = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
-
-//	private JTextFieldFK txtDescGrupo = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-	
-//	private final ListaCampos lcProduto = new ListaCampos( this );
-	
-//	private final JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-
-//	private final JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-	
-//	private ListaCampos lcGrupo = new ListaCampos( this );
-
 	public FRIcmsNcm() {
 
 		super( false );
-		setTitulo( "Volume de vendas por produto" );
+		setTitulo( "Relatório de ICMS por CFOP" );
 		setAtribos( 50, 50, 355, 140 );
 
-		montaListaCampos();
 		montaTela();
-	}
-	
-	private void montaListaCampos() {
-	
-//		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false ) );
-//		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
-//		txtCodCli.setTabelaExterna( lcCli );
-//		txtCodCli.setNomeCampo( "CodCli" );
-//		txtCodCli.setFK( true );
-//		lcCli.setReadOnly( true );
-//		lcCli.montaSql( false, "CLIENTE", "VD" );
-	
-/*		lcComiss.add( new GuardaCampo( txtCodComiss, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
-		lcComiss.add( new GuardaCampo( txtNomeComiss, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
-		txtCodComiss.setTabelaExterna( lcComiss );
-		txtCodComiss.setNomeCampo( "CodVend" );
-		txtCodComiss.setFK( true );
-		lcComiss.setReadOnly( true );
-		lcComiss.montaSql( false, "VENDEDOR", "VD" );
-*/
-		
-/*		lcGrupo.add( new GuardaCampo( txtCodGrupo, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
-		lcGrupo.add( new GuardaCampo( txtDescGrupo, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
-		lcGrupo.montaSql( false, "GRUPO", "EQ" );
-		lcGrupo.setReadOnly( true );
-		txtCodGrupo.setTabelaExterna( lcGrupo );
-		txtCodGrupo.setFK( true );
-		txtCodGrupo.setNomeCampo( "CodGrup" );
-		
-		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.produto", ListaCampos.DB_PK, false ) );
-		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
-		txtCodProd.setTabelaExterna( lcProduto );
-		txtCodProd.setNomeCampo( "CodProd" );
-		txtCodProd.setFK( true );
-		lcProduto.setReadOnly( true );
-		lcProduto.montaSql( false, "PRODUTO", "EQ" );*/
-
 	}
 
 	private void montaTela() {
@@ -133,21 +75,6 @@ public class FRIcmsNcm extends FRelatorio {
 		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 157, 30, 45, 20 );
 		adic( txtDatafim, 202, 30, 100, 20 );
 		
-/*		adic( new JLabelPad( "Cód.Cli" ), 7, 70, 90, 20 );
-		adic( txtCodCli, 7, 90, 90, 20 );
-		adic( new JLabelPad( "Razão social do cliente" ), 100, 70, 227, 20 );
-		adic( txtRazCli, 100, 90, 227, 20 );
-		
-		adic( new JLabelPad( "Cód.Grupo" ), 7, 110, 90, 20 );
-		adic( txtCodGrupo, 7, 130, 90, 20 );
-		adic( new JLabelPad( "Descrição do grupo" ), 100, 110, 227, 20 );
-		adic( txtDescGrupo, 100, 130, 227, 20 );
-
-		adic( new JLabelPad( "Cód.Prod." ), 7, 150, 90, 20 );
-		adic( txtCodProd, 7, 170, 90, 20 );
-		adic( new JLabelPad( "Descrição do produto" ), 100, 150, 227, 20 );
-		adic( txtDescProd, 100, 170, 227, 20 );*/
-
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
