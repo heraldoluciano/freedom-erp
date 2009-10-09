@@ -43,6 +43,7 @@ import org.freedom.modulos.std.FCliente;
 import org.freedom.modulos.std.FConsPreco;
 import org.freedom.modulos.std.FOrcamento;
 import org.freedom.modulos.std.FPesquisaOrc;
+import org.freedom.modulos.std.FRClientesSemVendas;
 import org.freedom.modulos.std.FRDesempVend;
 import org.freedom.modulos.std.FRDevolucao;
 import org.freedom.modulos.std.FREvoluVendas;
@@ -157,7 +158,10 @@ public class FreedomCRM extends AplicativoPD {
 			addOpcao( 401000000, TP_OPCAO_ITEM, "Vendas por vendedor", "Vendas por vendedor", 'v', 401001700, 2, true, FRVendasVend.class );
 			addOpcao( 401000000, TP_OPCAO_ITEM, "Vendas canceladas", "Vendas canceladas", 'v', 401001800, 2, true, FRVendasCanc.class );
 			addSeparador( 401000000 );
-			addOpcao( 401000000, TP_OPCAO_ITEM, "Orçamentos", "Orçamentos", 'O', 401001700, 2, true, FROrcamento.class );	
+			addOpcao( 401000000, TP_OPCAO_ITEM, "Orçamentos", "Orçamentos", 'O', 401001700, 2, true, FROrcamento.class );
+			addSeparador( 301000000 );
+			addOpcao( 301000000, TP_OPCAO_ITEM, "Clientes sem movimento", "Clientes sem movimento", 'm', 301002000, 2, true, FRClientesSemVendas.class );
+
 		addOpcao( 400000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 401100000, 1, false, null );
 			addOpcao( 401100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 401100100, 2, true, FREvoluVendas.class );
 		addSeparador( 400000000 );
