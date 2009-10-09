@@ -265,7 +265,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 		pinCabCli.adic( pinTitulo, 8, 175, 744, 116 );
 
 		lcRec.add( new GuardaCampo( txtCodRec, "CodRec", "Cód.rec.", ListaCampos.DB_PK, false ) );
-		lcRec.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_FK, false ) );
+		lcRec.add( new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_SI, false ) );
 		lcRec.add( new GuardaCampo( txtDoc, "DocRec", "Doc", ListaCampos.DB_SI, false ) );
 		lcRec.add( new GuardaCampo( txtDtEmis, "DataRec", "Emissão", ListaCampos.DB_SI, false ) );
 
