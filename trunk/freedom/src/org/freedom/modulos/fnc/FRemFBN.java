@@ -542,8 +542,13 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		ps.setInt( 3, Aplicativo.iCodEmp );
 		ps.setInt( 4, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 		ps.setString( 5, txtCodBanco.getVlrString() );
+		
+		System.out.println("SQL:" + sSQL.toString());
+		
 		rs = ps.executeQuery();
+		
 		return rs;
+		
 	}
 
 	protected void carregaTab() {

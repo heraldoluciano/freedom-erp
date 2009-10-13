@@ -45,6 +45,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.boleto.Banco;
 import org.freedom.funcoes.boleto.BancodoBrasil;
+import org.freedom.funcoes.boleto.Bradesco;
 import org.freedom.modulos.fnc.CnabUtil.Reg;
 import org.freedom.modulos.fnc.CnabUtil.Reg1;
 import org.freedom.modulos.fnc.CnabUtil.Reg3P;
@@ -235,15 +236,12 @@ public class FRemCnab extends FRemFBN {
 		if( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
 			banco = new BancodoBrasil();
 		}
+		else if (Banco.BRADESCO.equals( txtCodBanco.getVlrString() ) ) {
+			banco = new Bradesco();
+		}
 		
-		reg.setIdentTitulo( banco.geraNossoNumero( 
-				(String)prefs.get( EPrefs.MDECOB ), 
-				(String)prefs.get( EPrefs.CONVCOB ), 
-				Long.parseLong( rec.getDocrec().toString() ), 
-				Long.parseLong( rec.getNParcitrec().toString() ) , true ) );
-		reg.setCodCarteira( getCarteiraCobranca( 
-				rec.getCodrec(), 
-				rec.getNParcitrec() ) );
+		reg.setIdentTitulo( banco.geraNossoNumero( (String)prefs.get( EPrefs.MDECOB ), (String)prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) , true ) );
+		reg.setCodCarteira( getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ) );
 		reg.setFormaCadTitulo( (Integer) prefs.get( EPrefs.FORCADTIT ) );
 		reg.setTipoDoc( (Integer) prefs.get( EPrefs.TIPODOC ) );
 		reg.setIdentEmitBol( (Integer) prefs.get( EPrefs.IDENTEMITBOL ) );
