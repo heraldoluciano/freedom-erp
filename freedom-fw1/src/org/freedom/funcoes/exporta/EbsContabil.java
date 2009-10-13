@@ -940,7 +940,7 @@ public class EbsContabil extends Contabil {
 		sql.append( "FROM EQPRODUTO P, LFCLFISCAL CL " );
 		sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND " );
 		sql.append( "CL.CODEMP=P.CODEMPFC AND CL.CODFILIAL=P.CODFILIALFC AND CL.CODFISC=P.CODFISC " );
-		sql.append( "ORDER BY P.REFPROD" );
+		sql.append( "ORDER BY P.CODPROD" );
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 		ps.setInt( 1, Aplicativo.iCodEmp );
