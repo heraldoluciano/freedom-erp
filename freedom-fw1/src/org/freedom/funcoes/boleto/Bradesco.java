@@ -38,6 +38,10 @@ public class Bradesco extends Banco {
 
 	private String convenio = "";
 
+	public Bradesco () {
+		super();
+	}
+	
 	public Bradesco( String codbanco, String codmoeda, String dvbanco, Long fatvenc, BigDecimal vlrtitulo, String convenio, Long rec, Long nparc, String agencia, String contap, String carteira, String modalidade ) {
 	
 		setMoeda( new Integer( codmoeda ).intValue() );
@@ -51,11 +55,8 @@ public class Bradesco extends Banco {
 		setNparc( nparc );
 		setModalidade( modalidade );		
 		setConta(contap);
-		
-//		System.out.println("setou conta:" + contap);
-		
 	}
-
+	
 	private String getCampoLivre() {
 	
 		String agencialimpa = getAgencia();

@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 
 public class BancodoBrasil extends Banco {
 
-	private static String codBar = "";
-
 	public String geraCodBar( final String codbanco, 
 			                  final String codmoeda, 
 			                  final String dvbanco, 
