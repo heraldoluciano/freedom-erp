@@ -205,7 +205,7 @@ public class FRInvPeps extends FRelatorio {
         
   		//iCodAlmox = txt
   		sSql = "SELECT "+sCpCodigo+",DESCPROD,SLDPROD,CUSTOUNIT,CUSTOTOT "
-  		 			+ ",CODFABPROD,CODBARPROD,ATIVOPROD " 
+  		 			+ ",COALESCE(CODFABPROD,0),COALESCE(CODBARPROD,0),ATIVOPROD " 
   		 			+ "FROM EQRELPEPSSP(?,?,?,?,?,?,?,?,?,?,?,?,?) " 
   		 			+ swhere2
   		 			+ swhere3 + swhere + " ORDER BY "+(rgOrdem.getVlrString().equals("D")?"DESCPROD":sCpCodigo);
