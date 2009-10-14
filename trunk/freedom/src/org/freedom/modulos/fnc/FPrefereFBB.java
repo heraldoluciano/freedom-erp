@@ -77,7 +77,7 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	
 	private final JPanelPad panelCamposCnab = new JPanelPad();
 	
-	private final JPanelPad panelCamposPref = new JPanelPad( 300, 420 );
+	private final JPanelPad panelCamposPref = new JPanelPad( 300, 340 );
 	
 	private final JPanelPad panelNavCnab = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -136,12 +136,15 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 	private final JTextFieldPad txtModalidadeCnab = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 	
 	private final JTextFieldPad txtConvBol = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+		
 	
 	private JRadioGroup<?, ?> rgIdentAmbCliCnab;
 	
 	private JRadioGroup<?, ?> rgIdentAmbBcoCnab;
 
 	private JComboBoxPad cbFormaCadastramento;
+	
+	private JComboBoxPad cbPadraoCNAB;
 	
 	private JComboBoxPad cbTipoDocumento;
 	
@@ -307,28 +310,28 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 
 		Vector<String> vLabs5 = new Vector<String>();
 		Vector<Integer> vVals5 = new Vector<Integer>();
-		vLabs5.addElement( "CH - Cheque" ); 
-		vLabs5.addElement( "DM - Duplicata mercantíl" );
-		vLabs5.addElement( "DMI - Duplicata mercantíl p/ indicação" );
-		vLabs5.addElement( "DS - Duplicata de serviço" );
-		vLabs5.addElement( "DSI - DUplicata de serviço p/ indicação" );
-		vLabs5.addElement( "DR - Duplicata rural" );
-		vLabs5.addElement( "LC - Letra de cambio" );
-		vLabs5.addElement( "NCC - Nota de crédito comercial" );
-		vLabs5.addElement( "NCE - Nota de crédito a exportação" );
-		vLabs5.addElement( "NCI - Nota de crédito indústria" );
-		vLabs5.addElement( "NCR - Nota de crédito rural" );
-		vLabs5.addElement( "NP - Nota promissória" );
-		vLabs5.addElement( "NPR - Nota promissória rural" );
-		vLabs5.addElement( "TM - Triplicata mercantíl" );
-		vLabs5.addElement( "TS - Triplicata de serviço" );
-		vLabs5.addElement( "NS - Nota de seguro" );
-		vLabs5.addElement( "RC - Recibo" );
-		vLabs5.addElement( "FAT - Fatura" );
-		vLabs5.addElement( "ND - Nota de débito" );
-		vLabs5.addElement( "AP - Apolice de seguro" );
-		vLabs5.addElement( "ME - Mensalidade escolar" );
-		vLabs5.addElement( "PC - Parcela de consórcio" );
+		vLabs5.addElement( "CH- Cheque" ); 
+		vLabs5.addElement( "DM- Duplicata mercantil" );
+		vLabs5.addElement( "DMI- Duplic. mercantil p/indic." );
+		vLabs5.addElement( "DS- Duplicata de serviço" );
+		vLabs5.addElement( "DSI- Duplic. de serviço p/indic." );
+		vLabs5.addElement( "DR- Duplicata rural" );
+		vLabs5.addElement( "LC- Letra de cambio" );
+		vLabs5.addElement( "NCC- Nota de crédito comercial" );
+		vLabs5.addElement( "NCE- Nota de crédito a exportação" );
+		vLabs5.addElement( "NCI- Nota de crédito indústria" );
+		vLabs5.addElement( "NCR- Nota de crédito rural" );
+		vLabs5.addElement( "NP- Nota promissória" );
+		vLabs5.addElement( "NPR- Nota promissória rural" );
+		vLabs5.addElement( "TM- Triplicata mercantíl" );
+		vLabs5.addElement( "TS- Triplicata de serviço" );
+		vLabs5.addElement( "NS- Nota de seguro" );
+		vLabs5.addElement( "RC- Recibo" );
+		vLabs5.addElement( "FAT- Fatura" );
+		vLabs5.addElement( "ND- Nota de débito" );
+		vLabs5.addElement( "AP- Apolice de seguro" );
+		vLabs5.addElement( "ME- Mensalidade escolar" );
+		vLabs5.addElement( "PC- Parcela de consórcio" );
 		vLabs5.addElement( "Outros" );
 		vVals5.addElement( 1 );
 		vVals5.addElement( 2 );
@@ -408,6 +411,16 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		vVals10.addElement( "S" );
 		vVals10.addElement( "N" );
 		cbAceite = new JComboBoxPad( vLabs10, vVals10, JComboBoxPad.TP_STRING, 1, 0 );
+		
+		Vector<String> vLabs11 = new Vector<String>();
+		Vector<String> vVals11 = new Vector<String>();
+		vLabs11.addElement( "240 bytes" );
+		vLabs11.addElement( "400 bytes" );
+		vVals11.addElement( "240" );
+		vVals11.addElement( "400" );
+		cbPadraoCNAB = new JComboBoxPad( vLabs11, vVals11, JComboBoxPad.TP_STRING, 1, 0 );
+
+		
 	}
 	
 	private void montaListaCampos() {
@@ -580,20 +593,24 @@ public class FPrefereFBB extends FTabDados implements CarregaListener {
 		panelCnabPref.add( new JScrollPane( panelCamposPref ), BorderLayout.CENTER );
 		setPainel( panelCamposPref );
 		
-		adicDB( cbFormaCadastramento, 10, 20, 320, 20, "FORCADTIT", "Forma de cadastramento do titulo no banco", false );
-		adicDB( cbTipoDocumento, 10, 60, 320, 20, "TIPODOC", "Tipo de documento", false );
-		adicDB( cbEmissaoBloqueto, 10, 100, 320, 20, "IDENTEMITBOL", "Indentificação da emissão do bloqueto", false );
-		adicDB( cbDistribuicao, 10, 140, 320, 20, "IDENTDISTBOL", "Indentificação da distribuição", false );
-		adicDB( cbEspecieTitulo, 10, 180, 320, 20, "ESPECTIT", "Espécie do titulo", false );
-		adicDB( cbJurosMora, 10, 220, 250, 20, "CODJUROS", "Indentificação para cobrança de juros", false );
-		adicDB( txtVlrJuros, 270, 220, 60, 20, "VLRPERCJUROS", "Valor/%", false );
-		adicDB( cbDesconto, 10, 260, 250, 20, "CODDESC", "Indentificação para consessão de desconto", false );
-		adicDB( txtVlrDesconto, 270, 260, 60, 20, "VLRPERCDESC", "Valor/%", false );
-		adicDB( cbProtesto, 10, 300, 250, 20, "CODPROT", "Instrução de protesto", false );
-		adicDB( txtNumDiasProtesto, 270, 300, 60, 20, "DIASPROT", "Dias", false );
-		adicDB( cbDevolucao, 10, 340, 250, 20, "CODBAIXADEV", "Código para devolução", false );
-		adicDB( txtNumDiasDevolucao, 270, 340, 60, 20, "DIASBAIXADEV", "Dias", false );
-		adicDB( cbAceite, 10, 380, 320, 20, "ACEITE", "Aceite", false );
+		adicDB( cbFormaCadastramento, 10, 20, 220, 20, "FORCADTIT", "Cadastramento do titulo no banco", false );
+		adicDB( cbPadraoCNAB, 233, 20, 117, 20, "PADRAOCNAB", "Padrão CNAB", false );
+		
+		adicDB( cbTipoDocumento, 10, 60, 137, 20, "TIPODOC", "Tipo de documento", false );		
+		adicDB( cbEmissaoBloqueto, 150, 60, 200, 20, "IDENTEMITBOL", "Emissão do bloqueto", false );
+		
+		adicDB( cbDistribuicao, 10, 100, 137, 20, "IDENTDISTBOL", "Distribuição", false );		
+		adicDB( cbEspecieTitulo, 150, 100, 200, 20, "ESPECTIT", "Espécie do titulo", false );
+		
+		adicDB( cbJurosMora, 10, 140, 250, 20, "CODJUROS", "Indentificação para cobrança de juros", false );
+		adicDB( txtVlrJuros, 270, 140, 80, 20, "VLRPERCJUROS", "Valor/%", false );
+		adicDB( cbDesconto, 10, 180, 250, 20, "CODDESC", "Indentificação para consessão de desconto", false );
+		adicDB( txtVlrDesconto, 270, 180, 80, 20, "VLRPERCDESC", "Valor/%", false );
+		adicDB( cbProtesto, 10, 220, 250, 20, "CODPROT", "Instrução de protesto", false );
+		adicDB( txtNumDiasProtesto, 270, 220, 80, 20, "DIASPROT", "Dias", false );
+		adicDB( cbDevolucao, 10, 260, 250, 20, "CODBAIXADEV", "Código para devolução", false );
+		adicDB( txtNumDiasDevolucao, 270, 260, 80, 20, "DIASBAIXADEV", "Dias", false );
+		adicDB( cbAceite, 10, 300, 340, 20, "ACEITE", "Aceite", false );
 		
 		/****************/
 		
