@@ -119,7 +119,7 @@ public class FRClientesSemVendas extends FRelatorio {
 		StringBuffer sql = new StringBuffer();
 		StringBuffer sCab = new StringBuffer();
 
-		sCab.append( "Perído de : " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + "Até : " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
+		sCab.append( "Período de : " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + "Até : " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
 		
 		try {
 
