@@ -38,7 +38,7 @@ public class NF066b extends Layout {
 		boolean bjatem = false;
 		boolean bvlriss = true;
 		final int MAXLINE = 55; // Ultima linha para impressão de itens
-		final int MAXPROD = 27; // Numero de ítens impressos
+		final int MAXPROD = 28; // Numero de ítens impressos
 		int iNumNota = 0;
 		int iItImp = 0;
 		int iProdImp = 0;
