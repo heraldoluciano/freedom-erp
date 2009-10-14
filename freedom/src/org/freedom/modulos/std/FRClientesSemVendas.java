@@ -123,24 +123,25 @@ public class FRClientesSemVendas extends FRelatorio {
 		
 		try {
 
-			
-			sql.append( "select cl.codvend,ve.nomevend, cl.codcli, cl.razcli, ");
-			sql.append( "(select first 1 vd1.dtemitvenda from vdvenda vd1 ");
-			sql.append( "where vd1.codempcl=cl.codemppq and vd1.codfilialcl=cl.codfilialpq and vd1.codcli=cl.codpesq and ");
-			sql.append( "not substr(vd1.statusvenda,1,1)='C' ");
-			sql.append( "order by vd1.dtemitvenda desc ");
-			sql.append( ") ultimacompra ");
-			sql.append( "from vdcliente cl left outer join vdvendedor ve on ");
-			sql.append( "ve.codemp=cl.codempvd and ve.codfilial=cl.codfilialvd and ve.codvend=cl.codvend ");
-			sql.append( "where ");
-			sql.append( "not exists ( ");
-			sql.append( "select codcli from vdvenda vd ");
-			sql.append( "where vd.codempcl=cl.codemppq and vd.codfilialcl=cl.codfilialpq and vd.codcli=cl.codpesq and ");
-			sql.append( "vd.dtemitvenda between ? and ? and not substr(vd.statusvenda,1,1)='C') ");
-			sql.append( "and cl.ativocli='S' and cl.codemppq=cl.codemp and cl.codfilialpq=cl.codfilialpq and cl.codpesq=cl.codcli ");
+			sql.append( "SELECT CL.CODVEND, VO.NOMEVEND, CL.CODCLI, CL.RAZCLI, ( SELECT MAX(DTEMITVENDA) FROM VDVENDA VD, VDCLIENTE SB " );
+			sql.append( "WHERE SB.CODEMPPQ=CL.CODEMP AND " );
+			sql.append( "SB.CODFILIALPQ=CL.CODFILIAL AND " );
+			sql.append( "SB.CODPESQ=CL.CODCLI AND " );
+			sql.append( "VD.CODEMPCL=SB.CODEMP AND VD.CODFILIALCL=SB.CODFILIAL AND VD.CODCLI=SB.CODCLI) ULTIMACOMPRA " );
+			sql.append( "FROM VDCLIENTE CL LEFT OUTER JOIN VDVENDEDOR VO ON " );
+			sql.append( "VO.CODEMP=CL.CODEMPVD AND VO.CODFILIAL=CL.CODFILIALVD AND VO.CODVEND=CL.CODVEND " );
+			sql.append( "WHERE " );
+			sql.append( "CL.CODEMP=CL.CODEMPPQ AND CL.CODFILIAL=CL.CODFILIALPQ AND CL.CODCLI=CL.CODPESQ AND " );
+			sql.append( "NOT EXISTS( SELECT * FROM VDVENDA VD, VDCLIENTE SB " );
+			sql.append( "WHERE SB.CODEMPPQ=CL.CODEMP AND " );
+			sql.append( "SB.CODFILIALPQ=CL.CODFILIAL AND " );
+			sql.append( "SB.CODPESQ=CL.CODCLI AND " );
+			sql.append( "VD.CODEMPCL=SB.CODEMP AND VD.CODFILIALCL=SB.CODFILIAL AND VD.CODCLI=SB.CODCLI AND " );
+			sql.append( "VD.DTEMITVENDA BETWEEN ? AND ? ) " );
+			sql.append( "AND CL.ATIVOCLI='S' ");
 			
 			if(txtCodComiss.getVlrInteger()>0) {
-				sql.append( "and cl.codempvd=? and cl.codfilialvd=? and cl.codvend=? " );
+				sql.append( " and cl.codempvd=? and cl.codfilialvd=? and cl.codvend=? " );
 			}
 			
 			sql.append( "order by cl.codvend, cl.razcli ");
