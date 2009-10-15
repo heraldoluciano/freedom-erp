@@ -231,7 +231,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 						key="line-6"/>
 					<graphicElement stretchType="NoStretch" pen="1Point"/>
 				</line>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="275"
 						y="10"
@@ -244,7 +244,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="275"
 						y="21"
@@ -257,7 +257,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ENDFILIAL}.trim() + ", " + $P{NUMFILIAL}.trim() + " - " + $P{CIDFILIAL}.trim() + " - " + $P{UFFILIAL}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="275"
 						y="32"
@@ -326,7 +326,7 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["I.E: " + $P{INSCFILIAL}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="347"
@@ -526,7 +526,7 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 						key="line-21"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="138"
 						y="325"
@@ -862,7 +862,7 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 					</textElement>
 				<text><![CDATA[Preço a Vista]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="225"
 						y="193"
@@ -875,7 +875,7 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZCLI}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="225"
 						y="205"
@@ -886,9 +886,10 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 					<textElement verticalAlignment="Top">
 						<font fontName="Arial" size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCLI}.trim() + ", "+$F{NUMCLI}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCLI}.trim() + ", "+$F{NUMCLI} + 
+($F{COMPLCLI}==null?"": " - " + $F{COMPLCLI})]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="452"
 						y="205"
@@ -901,7 +902,7 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CEPCLI}.substring(0,5) + "-" + $F{CEPCLI}.substring(5)]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="225"
 						y="217"
@@ -914,7 +915,7 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CIDCLI}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="408"
 						y="217"
@@ -927,7 +928,7 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{BAIRCLI}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="532"
 						y="217"
@@ -957,7 +958,7 @@ $F{CNPJCLI}.substring(5,8) + "/" +
 $F{CNPJCLI}.substring(8,12) + "-" +
 $F{CNPJCLI}.substring(12)]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="482"
 						y="241"
@@ -970,7 +971,7 @@ $F{CNPJCLI}.substring(12)]]></textFieldExpression>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{INSCCLI}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="228"
 						y="268"
@@ -983,7 +984,7 @@ $F{CNPJCLI}.substring(12)]]></textFieldExpression>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$V{VLREXTENSO}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="213"
 						y="125"
@@ -996,7 +997,7 @@ $F{CNPJCLI}.substring(12)]]></textFieldExpression>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRPARCITREC}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="144"
 						y="125"
@@ -1009,7 +1010,7 @@ $F{CNPJCLI}.substring(12)]]></textFieldExpression>
 					</textElement>
 				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{DOCREC}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="310"
 						y="125"
@@ -1022,7 +1023,7 @@ $F{CNPJCLI}.substring(12)]]></textFieldExpression>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DOCREC}.toString()+"/"+$F{NPARCITREC}.toString()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="396"
 						y="125"
