@@ -36,6 +36,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -54,6 +55,7 @@ import org.freedom.modulos.fnc.CnabUtil.Reg3R;
 import org.freedom.modulos.fnc.CnabUtil.Reg3S;
 import org.freedom.modulos.fnc.CnabUtil.Reg5;
 import org.freedom.modulos.fnc.CnabUtil.RegHeader;
+import org.freedom.modulos.fnc.CnabUtil.RegT400;
 import org.freedom.modulos.fnc.CnabUtil.RegTrailer;
 import org.freedom.modulos.fnc.FbnUtil.EColrec;
 import org.freedom.modulos.fnc.FbnUtil.EPrefs;
@@ -191,9 +193,14 @@ public class FRemCnab extends FRemFBN {
 		return reg;
 	}
 	
-	private Reg1 getReg1() throws ExceptionCnab {
+	private Reg1 getReg1(final StuffRec rec) throws ExceptionCnab {
 		
-		Reg1 reg = cnabutil.new Reg1();
+		Reg1 reg = cnabutil.new Reg1();		
+		Banco banco = null;
+		
+		if( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
+			banco = new BancodoBrasil();
+		}
 		
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setLoteServico( loteServico );
@@ -216,6 +223,58 @@ public class FRemCnab extends FRemFBN {
 		
 		return reg;
 	}
+	
+	private RegT400 getRegT400(final StuffRec rec) throws ExceptionCnab {
+		
+		RegT400 reg = cnabutil.new RegT400();		
+		Banco banco = null;
+		
+		if( Banco.BANCO_DO_BRASIL.equals( txtCodBanco.getVlrString() ) ) {
+			banco = new BancodoBrasil();
+		}
+		else if( Banco.BRADESCO.equals( txtCodBanco.getVlrString() ) ) {
+			banco = new Bradesco();
+		}		
+		
+		reg.setCodBanco( txtCodBanco.getVlrString() );
+		reg.setLoteServico( loteServico );
+		reg.setTipoOperacao( "R" );
+		reg.setFormaLancamento( "00" );
+		reg.setTipoInscEmp( 2 );
+		reg.setCpfCnpjEmp( (String) prefs.get( EPrefs.CNPFEMP ) );
+		reg.setCodConvBanco( (String) prefs.get( EPrefs.CODCONV ) );
+		reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) );
+		reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
+		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
+		reg.setDigConta( (String) prefs.get( EPrefs.DIGCONTA ) );
+		reg.setDigAgConta( null );
+		reg.setRazEmp( (String) prefs.get( FbnUtil.EPrefs.NOMEEMP ) );
+		reg.setMsg1( null );
+		reg.setMsg2( null );
+		reg.setNrRemRet( (Integer) prefs.get(FbnUtil.EPrefs.NROSEQ) );
+		reg.setDataRemRet( Calendar.getInstance().getTime() );
+		reg.setDataCred( null );
+		
+		reg.setCodCarteira( getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ) );
+		reg.setIdentTitulo( banco.geraNossoNumero( (String)prefs.get( EPrefs.MDECOB ), (String)prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) , true ) );
+
+		reg.setVlrPercMulta( new BigDecimal(0) );		
+		reg.setDigNossoNumero( new Integer(banco.getModulo11( reg.getCodConvBanco() + reg.getIdentTitulo(), 7 )).intValue());
+		reg.setCodMovimento( codMovimento );			
+		reg.setDocCobranca( banco.getNumCli( (String)prefs.get( EPrefs.MDECOB ), (String)prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) ) );
+
+		reg.setDtVencTitulo( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
+		
+		reg.setVlrTitulo( new BigDecimal( rec.getArgs()[ EColrec.VLRAPAG.ordinal() ] ) );
+ 		
+		reg.setEspecieTit( (Integer) prefs.get( EPrefs.ESPECTIT ) );
+		
+		reg.setDtEmitTit( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
+		
+		return reg;
+	}
+	
+	
 	
 	private Reg3P getReg3P( final StuffRec rec ) throws ExceptionCnab {
 		
@@ -510,7 +569,19 @@ public class FRemCnab extends FRemFBN {
 		
 				FileDialog fileDialogCnab = null;
 				fileDialogCnab = new FileDialog( Aplicativo.telaPrincipal, "Exportar arquivo.", FileDialog.SAVE );
-				sFileName = "remessa"+prefs.get( EPrefs.NROSEQ )+".txt";
+				
+				if (Banco.BRADESCO.equals( txtCodBanco.getVlrString() ) ) {
+					Calendar clhoje = new GregorianCalendar();
+					clhoje = Calendar.getInstance();
+					String dia = Funcoes.strZero(clhoje.get( Calendar.DAY_OF_MONTH )+"" ,2) ;
+					String mes = Funcoes.strZero((clhoje.get( Calendar.MONTH )+1)+"" ,2 );
+					String seq = Funcoes.strZero(prefs.get( EPrefs.NROSEQ )+"",2);
+					sFileName = "CB" + dia + mes + seq +".REM";
+				}
+				else {
+					sFileName = "remessa"+prefs.get( EPrefs.NROSEQ )+".txt";
+				}
+				
 				fileDialogCnab.setFile( sFileName );
 				fileDialogCnab.setVisible( true );
 		
@@ -530,7 +601,11 @@ public class FRemCnab extends FRemFBN {
 					bw = new BufferedWriter( fw );
 		
 					lbStatus.setText( "     gravando arquivo ..." );
-					retorno = gravaRemessa( bw, hsCli, hsRec );
+					
+					String padraocnab = prefs.get( EPrefs.PADRAOCNAB ).toString().trim();
+										
+					retorno = gravaRemessa( bw, hsCli, hsRec, padraocnab );
+					
 				} catch ( IOException ioError ) {
 					Funcoes.mensagemErro( this, "Erro Criando o arquivo!\n " + sFileName + "\n" + ioError.getMessage() );
 					lbStatus.setText( "" );
@@ -546,7 +621,7 @@ public class FRemCnab extends FRemFBN {
 		return retorno;
 	}
 	
-	private boolean gravaRemessa( final BufferedWriter bw, final HashSet< StuffCli > hsCli, final HashSet< StuffRec > hsRec ) {
+	private boolean gravaRemessa( final BufferedWriter bw, final HashSet< StuffCli > hsCli, final HashSet< StuffRec > hsRec, String padraocnab ) {
 		
 		boolean retorno = false;
 		
@@ -559,15 +634,25 @@ public class FRemCnab extends FRemFBN {
 			ArrayList< Reg > registros = new ArrayList< Reg >();
 			
 			registros.add( getRegHeader() );
-			registros.add( getReg1() );
+			
+			if(padraocnab.equals(Reg.CNAB_240)) {			
+				registros.add( getReg1( null ) );				
+			}
 			
 			for ( StuffRec rec : hsRec ) {
-				registros.add( getReg3P( rec ) );
-				registros.add( getReg3Q( rec ) );
+				if(padraocnab.equals(Reg.CNAB_240)) {
+					registros.add( getReg3P( rec ) );
+					registros.add( getReg3Q( rec ) );					
+				}
+				if(padraocnab.equals(Reg.CNAB_400)) {
+					registros.add( getRegT400( rec ));	
+				}
+				
 				//registros.add( getReg3R() );
 				//registros.add( getReg3S() );
 				//registros.add( getReg3T( rec ) ); utilizados somente no retorno
 				//registros.add( getReg3U( rec ) ); utilizados somente no retorno
+				
 				regs++;
 			}
 			
@@ -575,7 +660,7 @@ public class FRemCnab extends FRemFBN {
 			registros.add(  getRegTrailer() );
 			
 			for ( Reg reg : registros ) {
-				bw.write( reg.getLine() );
+				bw.write( reg.getLine(padraocnab) );
 			}
 			
 			bw.flush();
