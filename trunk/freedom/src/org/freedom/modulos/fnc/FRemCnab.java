@@ -59,6 +59,7 @@ import org.freedom.modulos.fnc.CnabUtil.RegT400;
 import org.freedom.modulos.fnc.CnabUtil.RegTrailer;
 import org.freedom.modulos.fnc.FbnUtil.EColrec;
 import org.freedom.modulos.fnc.FbnUtil.EPrefs;
+import org.freedom.modulos.fnc.FbnUtil.ETipo;
 import org.freedom.modulos.fnc.FbnUtil.StuffCli;
 import org.freedom.modulos.fnc.FbnUtil.StuffRec;
 import org.freedom.telas.Aplicativo;
@@ -74,6 +75,8 @@ public class FRemCnab extends FRemFBN {
 	private int loteServico = 0;
 	
 	private int seqLoteServico = 1;
+	
+	private int seqregistro = 1;
 	
 	private int codMovimento = 1;
 
@@ -187,6 +190,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setUsoBanco( null );
 		reg.setUsoEmp( null );
 		reg.setUsoVans( null );
+		
 		reg.setTipoServico( null );
 		reg.setOcorrencias( null );
 		
@@ -224,7 +228,7 @@ public class FRemCnab extends FRemFBN {
 		return reg;
 	}
 	
-	private RegT400 getRegT400(final StuffRec rec) throws ExceptionCnab {
+	private RegT400 getRegT400(final StuffRec rec, int seqregistro) throws ExceptionCnab {
 		
 		RegT400 reg = cnabutil.new RegT400();		
 		Banco banco = null;
@@ -256,11 +260,14 @@ public class FRemCnab extends FRemFBN {
 		reg.setDataCred( null );
 		
 		reg.setCodCarteira( getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ) );
-		reg.setIdentTitulo( banco.geraNossoNumero( (String)prefs.get( EPrefs.MDECOB ), (String)prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) , true ) );
+		
+		reg.setIdentTitulo( Funcoes.strZero(banco.geraNossoNumero( (String)prefs.get( EPrefs.MDECOB ), (String)prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) , true ),11) );
 
-		reg.setVlrPercMulta( new BigDecimal(0) );		
+		reg.setVlrPercMulta( new BigDecimal(0) );
+		
 		reg.setDigNossoNumero( new Integer(banco.getModulo11( reg.getCodConvBanco() + reg.getIdentTitulo(), 7 )).intValue());
 		reg.setCodMovimento( codMovimento );			
+		
 		reg.setDocCobranca( banco.getNumCli( (String)prefs.get( EPrefs.MDECOB ), (String)prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) ) );
 
 		reg.setDtVencTitulo( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) );
@@ -270,6 +277,53 @@ public class FRemCnab extends FRemFBN {
 		reg.setEspecieTit( (Integer) prefs.get( EPrefs.ESPECTIT ) );
 		
 		reg.setDtEmitTit( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTREC.ordinal() ] ) );
+		
+		reg.setCodJuros( (Integer) prefs.get( EPrefs.CODJUROS ) );
+		
+		reg.setVlrJurosTaxa( (BigDecimal) prefs.get( EPrefs.VLRPERCJUROS ) );
+		
+		reg.setDtDesc( CnabUtil.stringAAAAMMDDToDate( rec.getArgs()[ EColrec.DTVENC.ordinal() ] ) ); // Data limite para desconto (Implementar) Foi informada a data do vencimento.
+		
+		reg.setVlrDesc( (BigDecimal) prefs.get( EPrefs.VLRPERCDESC ) ); // Valor de desconto concedido para antecipação.
+		
+		reg.setVlrIOF( new BigDecimal( 0 ) ); // Só deve ser preenchido por empresas de seguro
+		
+		reg.setVlrAbatimento( new BigDecimal( 0 ) );
+		
+		String[] dadosCliente = getCliente( Integer.parseInt( rec.getArgs()[ EColrec.CODCLI.ordinal() ] ) );
+		
+		reg.setTipoInscCli( Integer.parseInt( dadosCliente[ DadosCliente.CNPJCPF.ordinal()] ) );
+		
+		if ( 2 == reg.getTipoInscCli() ) {
+			reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CNPJ.ordinal() ] );
+		}
+		else if ( 1 == reg.getTipoInscCli() ) {
+			reg.setCpfCnpjCli( dadosCliente[ DadosCliente.CPF.ordinal() ] );
+		}
+		else {
+			reg.setTipoInscCli( 0 );
+			reg.setCpfCnpjCli( "0" );
+		}
+		
+		reg.setRazCli( dadosCliente[ DadosCliente.RAZCLI.ordinal() ] );
+		reg.setEndCli( dadosCliente[ DadosCliente.ENDCLI.ordinal() ].trim()+
+				", " + dadosCliente[ DadosCliente.NUMCLI.ordinal()] +
+				"-"+ dadosCliente[ DadosCliente.BAIRCLI.ordinal()]
+				);
+		
+		//reg.setBairCli( dadosCliente[ DadosCliente.BAIRCLI.ordinal() ] );
+		reg.setCepCli( dadosCliente[ DadosCliente.CEPCLI.ordinal() ] );
+		reg.setCidCli( dadosCliente[ DadosCliente.CIDCLI.ordinal() ] );
+		reg.setUfCli( dadosCliente[ DadosCliente.UFCLI.ordinal() ] );	
+		
+		reg.setTipoInscAva( 0 );
+		reg.setCpfCnpjAva( null );			
+		reg.setRazAva( null );
+		
+		reg.setMsg1( null );
+		reg.setMsg2( null );
+		reg.setSeqregistro( seqregistro );
+
 		
 		return reg;
 	}
@@ -539,7 +593,7 @@ public class FRemCnab extends FRemFBN {
 		return reg;
 	}
 	
-	private RegTrailer getRegTrailer() throws ExceptionCnab {	
+	private RegTrailer getRegTrailer(int seqregistro) throws ExceptionCnab {	
 		
 		RegTrailer reg = cnabutil.new RegTrailer();
 		
@@ -547,6 +601,8 @@ public class FRemCnab extends FRemFBN {
 		reg.setQtdLotes( loteServico );
 		reg.setQtdRegistros( seqLoteServico + 2 );
 		reg.setQtdConsilacoes( 0 );
+		reg.setSeqregistro( seqregistro );
+		
 		
 		return reg;
 	}
@@ -629,11 +685,15 @@ public class FRemCnab extends FRemFBN {
 			
 			loteServico++;
 			seqLoteServico = 1;
+			seqregistro = 1;
+			
 			int regs = 0;
 			
 			ArrayList< Reg > registros = new ArrayList< Reg >();
 			
 			registros.add( getRegHeader() );
+			
+			seqregistro++;
 			
 			if(padraocnab.equals(Reg.CNAB_240)) {			
 				registros.add( getReg1( null ) );				
@@ -644,8 +704,9 @@ public class FRemCnab extends FRemFBN {
 					registros.add( getReg3P( rec ) );
 					registros.add( getReg3Q( rec ) );					
 				}
-				if(padraocnab.equals(Reg.CNAB_400)) {
-					registros.add( getRegT400( rec ));	
+				if(padraocnab.equals(Reg.CNAB_400)) {					
+					registros.add( getRegT400( rec ,seqregistro ));
+					seqregistro++;
 				}
 				
 				//registros.add( getReg3R() );
@@ -656,8 +717,11 @@ public class FRemCnab extends FRemFBN {
 				regs++;
 			}
 			
-			registros.add( getReg5() ); 
-			registros.add(  getRegTrailer() );
+			if(padraocnab.equals(Reg.CNAB_240)) {
+				registros.add( getReg5() );
+			}
+			
+			registros.add(  getRegTrailer(seqregistro) );
 			
 			for ( Reg reg : registros ) {
 				bw.write( reg.getLine(padraocnab) );
