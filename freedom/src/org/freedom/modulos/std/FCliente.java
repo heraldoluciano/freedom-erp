@@ -285,6 +285,8 @@ public class FCliente extends FTabDados
 	private JTextFieldPad txtFaxCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldPad txtEmailCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtEmailNfeCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtSiteCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -875,13 +877,18 @@ public class FCliente extends FTabDados
 		adic( btFirefox, 290, 340, 20, 20 );
 		adicCampo( txtEmailCli, 7, 380, 245, 20, "EmailCli", "E-Mail", ListaCampos.DB_SI, false );
 		adicCampo( txtContCli, 256, 380, 260, 20, "ContCli", "Contato", ListaCampos.DB_SI, false );
+
 				
 		if ( (Boolean)bPref.get( "USAIBGECLI" )) {
+
+			adicCampo( txtEmailNfeCli, 7, 420, 509, 20, "EmailNfeCli", "E-Mail para envio de Nfe", ListaCampos.DB_SI, false );
 			
-			adicCampo( txtCodPais, 7, 420, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, true );
-			adicDescFK( txtDescPais, 80, 420, 217, 20, "NomePais", "Nome do país" );
-			adicCampo( txtSiglaUF, 7, 460, 70, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, true );
-			adicDescFK( txtNomeUF, 80, 460, 217, 20, "NomeUF", "Nome UF" );
+			adicCampo( txtCodPais, 7, 460, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, true );
+			adicDescFK( txtDescPais, 80, 460, 217, 20, "NomePais", "Nome do país" );
+			
+			adicCampo( txtSiglaUF, 300, 460, 50, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, true );
+			adicDescFK( txtNomeUF, 353, 460, 162, 20, "NomeUF", "Nome UF" );
+			
 			adicCampo( txtCodMun, 7, 500, 70, 20, "CodMunic", "Cod.munic.", ListaCampos.DB_FK, txtDescMun, false );
 			adicDescFK( txtDescMun, 80, 500, 217, 20, "NomeMunic", "Nome do municipio" );			
 			
@@ -940,7 +947,7 @@ public class FCliente extends FTabDados
 		
 		if ( (Boolean)bPref.get( "USAIBGECLI" )) {		
 			
-			adicCampo( txtCodPaisEnt, 7, 140, 70, 20, "CodPaisEnt", "Cod.país.Ent", ListaCampos.DB_FK, txtDescPaisEnt, true );
+			adicCampo( txtCodPaisEnt, 7, 140, 70, 20, "CodPaisEnt", "Cod.país.Ent", ListaCampos.DB_FK, txtDescPaisEnt, false);
 			adicDescFK( txtDescPaisEnt, 80, 140, 290, 20, "NomePais", "Nome do país" );
 			adicCampo( txtSiglaUFEnt, 7, 180, 70, 20, "SiglaUfEnt", "Sigla UF", ListaCampos.DB_FK, txtNomeUFEnt, false );
 			adicDescFK( txtNomeUFEnt, 80, 180, 290, 20, "NomeUFEnt", "Nome UF" );
@@ -979,7 +986,7 @@ public class FCliente extends FTabDados
 		
 		if ( (Boolean)bPref.get( "USAIBGECLI" )) {
 			
-			adicCampo( txtCodPaisCob, 7, 140, 70, 20, "CodPaisCob", "Cod.país", ListaCampos.DB_FK, txtDescPaisCob, true );
+			adicCampo( txtCodPaisCob, 7, 140, 70, 20, "CodPaisCob", "Cod.país", ListaCampos.DB_FK, txtDescPaisCob, false );
 			adicDescFK( txtDescPaisCob, 80, 140, 290, 20, "NomePais", "Nome do país" );
 			adicCampo( txtSiglaUFCob, 7, 180, 70, 20, "SiglaUfCob", "Sigla UF", ListaCampos.DB_FK, txtNomeUFCob, false );
 			adicDescFK( txtNomeUFCob, 80, 180, 290, 20, "NomeUFCob", "Nome UF" );
