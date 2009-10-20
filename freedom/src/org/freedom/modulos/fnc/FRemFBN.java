@@ -499,21 +499,19 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		ResultSet rs = null;
 		StringBuilder sSQL = new StringBuilder();
 		String sDtFiltro = "E".equals( rgData.getVlrString() ) ? "IR.DTITREC" : "IR.DTVENCITREC";
+
 		StringBuilder sWhere = new StringBuilder();
 
 		if ( "00".equals( rgSitRemessa.getVlrString() ) ) {
-			where = "AND ( FR.SITREMESSA IS NULL OR FR.SITREMESSA='00' ) AND ( FR.SITRETORNO IS NULL OR FR.SITRETORNO='00' ) ";
+			sWhere.append ("AND ( FR.SITREMESSA IS NULL OR FR.SITREMESSA='00' ) AND ( FR.SITRETORNO IS NULL OR FR.SITRETORNO='00' ) ");
 		}
 		else if ( "01".equals( rgSitRemessa.getVlrString() ) ) {
-			where = "AND ( FR.SITREMESSA IS NULL OR FR.SITREMESSA='01' ) ";
+			sWhere.append ("AND ( FR.SITREMESSA IS NULL OR FR.SITREMESSA='01' ) ");
 		}
 		else if ( "02".equals( rgSitRemessa.getVlrString() ) ) {
-			where = "AND ( FR.SITRETORNO IS NOT NULL AND FR.SITRETORNO<>'00' ) ";
+			sWhere.append ("AND ( FR.SITRETORNO IS NOT NULL AND FR.SITRETORNO<>'00' ) ");
 		}
-		else if( !"".equals( txtCodCartCob.getVlrString() )){
-			sWhere.append( " AND IR.CODCARTCOB=? " + txtCodCartCob.getVlrString() + " AND ");
-		}
-
+		
 		sSQL.append( "SELECT IR.CODREC, IR.NPARCITREC, R.DOCREC, R.CODCLI, C.RAZCLI, IR.DTITREC, IR.DTVENCITREC," );
 		sSQL.append( "IR.VLRAPAGITREC, FC.AGENCIACLI, FC.IDENTCLI, COALESCE(FR.SITREMESSA,'00') SITREMESSA, " );
 		sSQL.append( "FR.SITRETORNO, COALESCE(COALESCE(FR.STIPOFEBRABAN,FC.STIPOFEBRABAN),'02') STIPOFEBRABAN, " );
@@ -527,16 +525,19 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		sSQL.append( "FR.CODEMPBO=IR.CODEMPBO AND FR.CODFILIALBO=IR.CODFILIALBO AND FR.CODBANCO=IR.CODBANCO " );
 		sSQL.append( "WHERE R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC AND " );
 		sSQL.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND " );
+		
 		if( !"".equals( txtCodCartCob.getVlrString() )){
-			sSQL.append( " IR.CODCARTCOB = " + txtCodCartCob.getVlrString()  + " AND " );
+			sSQL.append( " IR.CODCARTCOB = '" + txtCodCartCob.getVlrString()  + "' AND " );
 		}
-		sSQL.append( sWhere.toString() );
+		
 		sSQL.append( sDtFiltro );
 		sSQL.append( " BETWEEN ? AND ? AND IR.STATUSITREC IN ('R1','RL') AND " );
 		sSQL.append( "IR.CODEMPBO=? AND IR.CODFILIALBO=? AND IR.CODBANCO=? " );
-		sSQL.append( where );
+		sSQL.append( sWhere );
 		sSQL.append( "ORDER BY C.RAZCLI, R.CODREC, IR.NPARCITREC " );
 
+		System.out.println("SQL:" + sSQL.toString());
+		
 		ps = con.prepareStatement( sSQL.toString() );
 		ps.setDate( 1, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
 		ps.setDate( 2, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
@@ -544,7 +545,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 		ps.setInt( 4, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 		ps.setString( 5, txtCodBanco.getVlrString() );
 		
-		System.out.println("SQL:" + sSQL.toString());
+		
 		
 		rs = ps.executeQuery();
 		
