@@ -39,9 +39,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
-
 import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.boleto.Banco;
@@ -59,7 +57,6 @@ import org.freedom.modulos.fnc.CnabUtil.RegT400;
 import org.freedom.modulos.fnc.CnabUtil.RegTrailer;
 import org.freedom.modulos.fnc.FbnUtil.EColrec;
 import org.freedom.modulos.fnc.FbnUtil.EPrefs;
-import org.freedom.modulos.fnc.FbnUtil.ETipo;
 import org.freedom.modulos.fnc.FbnUtil.StuffCli;
 import org.freedom.modulos.fnc.FbnUtil.StuffRec;
 import org.freedom.telas.Aplicativo;
@@ -228,6 +225,7 @@ public class FRemCnab extends FRemFBN {
 		return reg;
 	}
 	
+	//Registro de transação CNAB 400
 	private RegT400 getRegT400(final StuffRec rec, int seqregistro) throws ExceptionCnab {
 		
 		RegT400 reg = cnabutil.new RegT400();		
@@ -327,7 +325,6 @@ public class FRemCnab extends FRemFBN {
 		
 		return reg;
 	}
-	
 	
 	
 	private Reg3P getReg3P( final StuffRec rec ) throws ExceptionCnab {
