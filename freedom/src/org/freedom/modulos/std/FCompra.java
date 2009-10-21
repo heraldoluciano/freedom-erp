@@ -918,6 +918,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		float fVlrProd = Funcoes.arredFloat( txtVlrProdItCompra.floatValue() - txtVlrDescItCompra.floatValue(), casasDecFin );
 		float fBaseICMS = Funcoes.arredFloat( txtVlrBaseICMSItCompra.floatValue(), casasDecFin );
 		float fBaseIPI = txtVlrBaseIPIItCompra.floatValue();
+		
+		
 		float fICMS = 0;
 		if ( fVlrProd > 0 ) {
 			if ( bCalcBase ) {
@@ -944,8 +946,39 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		}
 		txtVlrLiqItCompra.setVlrBigDecimal( new BigDecimal( String.valueOf( fVlrProd ) ) );
 		txtAliqIPIItCompra.setVlrBigDecimal( txtAliqIPIFisc.getVlrBigDecimal() );
+		
+
+		
 	}
 
+	private void calcIpi(boolean vlr) {
+		BigDecimal vlripi = null;
+		BigDecimal baseipi = null;
+		BigDecimal percipi = null;		
+		
+		try {
+			
+			baseipi = txtVlrBaseIPIItCompra.getVlrBigDecimal();
+			percipi = txtAliqIPIItCompra.getVlrBigDecimal();
+			vlripi = txtVlrIPIItCompra.getVlrBigDecimal();
+			
+			if(baseipi.floatValue()>0){
+				if(vlr && percipi.floatValue()>0) {
+					vlripi = (baseipi.multiply( percipi)).divide( new BigDecimal(100), 5 , BigDecimal.ROUND_HALF_EVEN );
+					txtVlrIPIItCompra.setVlrBigDecimal( vlripi );
+				}
+				else if(vlripi.floatValue()>0) {
+					percipi = vlripi.divide( baseipi, 5 , BigDecimal.ROUND_HALF_EVEN  ).multiply( new BigDecimal(100) );
+					txtAliqIPIItCompra.setVlrBigDecimal( percipi );
+				}
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+		
 	private void calcVlrProd() {
 		BigDecimal preco = txtPrecoItCompra.getVlrBigDecimal();
 		BigDecimal qtd = txtQtdItCompra.getVlrBigDecimal();
@@ -1737,6 +1770,16 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 						lcDet.post();
 						txtCodItCompra.requestFocus();
 					}
+				}
+			}
+			else if ( kevt.getSource() == txtAliqIPIItCompra ) {
+				if(txtAliqIPIItCompra.floatValue()>0) {
+					calcIpi(true);
+				}
+			}
+			else if ( kevt.getSource() == txtVlrIPIItCompra ) {
+				if(txtVlrIPIItCompra.floatValue()>0) {
+					calcIpi(false);
 				}
 			}
 		}
