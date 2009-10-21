@@ -453,7 +453,9 @@ ORDER BY P.CODMARCA,P.DESCPROD]]></queryString>
 					<textElement>
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCLI}.trim()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCLI}.trim() + ", " + 
+(($F{NUMCLI}==null)?"S/N":$F{NUMCLI}.toString()) +
+($F{COMPLCLI}==null?"": " - " + $F{COMPLCLI})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
