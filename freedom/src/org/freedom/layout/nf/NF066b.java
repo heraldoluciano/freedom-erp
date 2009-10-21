@@ -147,14 +147,21 @@ public class NF066b extends Layout {
 					imp.say( 95, !sValsCli[ 0 ].equals( "" ) ? Funcoes.setMascara( sValsCli[ 0 ], "###.###.###-##" ) : Funcoes.setMascara( cab.getString( NF.C_CNPJEMIT ), "##.###.###/####-##" ) );
 					imp.say( 124, ( cab.getDate( NF.C_DTEMITPED ) != null ? Funcoes.dateToStrDate( cab.getDate( NF.C_DTEMITPED ) ) : "" ) );
 					imp.pulaLinha( 2, imp.comprimido() );
-					imp.say( 4, Funcoes.copy( cab.getString( NF.C_ENDEMIT ), 0, 50 ).trim() + ", " + Funcoes.copy( cab.getString( NF.C_NUMEMIT ), 0, 6 ).trim() + (cab.getString( NF.C_COMPLEMIT )==null?"":" - ") + Funcoes.copy( cab.getString( NF.C_COMPLEMIT ), 0, 9 ).trim() );
-					imp.say( 72, Funcoes.copy( cab.getString( NF.C_BAIREMIT ), 0, 23 ) );
-					imp.say( 106, Funcoes.setMascara( cab.getString( NF.C_CEPEMIT ), "#####-###" ) );
+					
+					int inumemit = cab.getInt( NF.C_NUMENTEMIT );
+					String snumemit = inumemit > 0 ? (", " + inumemit) : ""; 					
+					
+					imp.say( 4, Funcoes.copy( cab.getString( NF.C_ENDENTEMIT ), 0, 50 ).trim() + Funcoes.copy( snumemit, 0, 6 ).trim() + (cab.getString( NF.C_COMPLENTEMIT )==null?"":" - ") + Funcoes.copy( cab.getString( NF.C_COMPLENTEMIT ), 0, 9 ).trim() );
+					imp.say( 72, Funcoes.copy( cab.getString( NF.C_BAIRENTEMIT ), 0, 23 ) );
+					imp.say( 106, Funcoes.setMascara( cab.getString( NF.C_CEPENTEMIT ), "#####-###" ) );
 
-					if ( !itens.getString( NF.C_IMPDTSAIDA ).equals( "N" ) ) {						
+					if ( !itens.getString( NF.C_IMPDTSAIDA ).equals( "N" ) ) {		
+						
 						if(!cab.getDate( NF.C_DTSAIDA ).toString().equals( "1111-11-11" )) { // Coisa absurda solicitada pelo cliente...						
 							imp.say( 124, ( cab.getDate( NF.C_DTSAIDA ) != null ? Funcoes.dateToStrDate( cab.getDate( NF.C_DTSAIDA ) ) : "" ) );
 						}
+						
+						
 					}
 
 					imp.pulaLinha( 2, imp.comprimido() );
