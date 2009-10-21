@@ -887,7 +887,7 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 						<font fontName="Arial" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCOB}.trim() + ", " + 
-($F{NUMCOB}==null)?"S/N":$F{NUMCOB}) +
+(($F{NUMCOB}==null)?"S/N":$F{NUMCOB}.toString()) +
 ($F{COMPLCOB}==null?"": " - " + $F{COMPLCOB})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
