@@ -140,7 +140,8 @@ public class NF {
 	public static final int C_FONEFILIAL= 92;
 	public static final int C_WWWFILIAL= 93;
 	public static final int C_EMAILFILIAL= 94;
-	public static final int TAM_CAB = 95;
+	public static final int C_CEPENTEMIT = 95;
+	public static final int TAM_CAB = 96;
 	
 	//itens
 	public static final int C_CODITPED = 0;
