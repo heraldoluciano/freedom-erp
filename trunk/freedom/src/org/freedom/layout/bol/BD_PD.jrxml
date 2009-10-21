@@ -955,16 +955,16 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="1"
+						x="12"
 						y="678"
 						width="319"
-						height="35"
+						height="40"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="barcode-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" />
-					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(13,$V{CODBAR},false,false,null,0,0)]]></imageExpression>
+					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(13,$V{CODBAR},false,false,null,0,13)]]></imageExpression>
 				</image>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -2743,7 +2743,7 @@ PAGAR PREFERENCIALMENTE EM QUALQUER AGENCIA BRADESCO.]]></text>
 				<line direction="TopDown">
 					<reportElement
 						x="1"
-						y="727"
+						y="735"
 						width="484"
 						height="0"
 						key="line-80"/>
