@@ -63,7 +63,7 @@ public class NFSaida extends NF {
 			sql.append( "V.DTEMITVENDA, V.DOCVENDA, C.INCRACLI, V.DTSAIDAVENDA, V.CODPLANOPAG, PG.DESCPLANOPAG, V.OBSVENDA, VEND.NOMEVEND, VEND.EMAILVEND," );
 			sql.append( "(SELECT F.DESCFUNC FROM RHFUNCAO F WHERE F.CODFUNC=VEND.CODFUNC AND F.CODEMP=VEND.CODEMPFU AND F.CODFILIAL=VEND.CODFILIALFU)," );
 			sql.append( "V.CODCLCOMIS, V.PERCCOMISVENDA, V.CODVEND, C.ENDCOB, C.CIDCOB, C.NUMCOB, C.UFCOB, C.BAIRCOB, V.PERCMCOMISVENDA ,C.NOMECLI ," );
-			sql.append( "C.ENDENT, C.NUMENT, C.COMPLENT, C.BAIRENT, C.CIDENT, C.UFENT, V.CODBANCO, V.VLRDESCITVENDA, " );
+			sql.append( "C.ENDENT, C.NUMENT, C.COMPLENT, C.CEPENT, C.BAIRENT, C.CIDENT, C.UFENT, V.CODBANCO, V.VLRDESCITVENDA, " );
 			sql.append( "(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODEMP=V.CODEMPBO AND B.CODFILIAL=V.CODFILIALBO AND B.CODBANCO=V.CODBANCO), " );
 			sql.append( "(SELECT S.DESCSETOR FROM VDSETOR S WHERE S.CODSETOR=C.CODSETOR AND S.CODFILIAL=C.CODFILIALSR AND S.CODEMP=C.CODEMPSR), " );
 			sql.append( "V.VLRLIQVENDA,V.VLRICMSVENDA,V.VLRBASEICMSVENDA, V.VLRPRODVENDA, V.VLRBASEISSVENDA, V.VLRISSVENDA, V.VLRPRODVENDA, V.VLRADICVENDA, " );
@@ -101,6 +101,7 @@ public class NFSaida extends NF {
 				cab.setString( C_COMPLEMIT, ( rs.getString( "COMPLCLI" ) != null ? rs.getString( "COMPLCLI" ) : "" ) );
 				cab.setString( C_BAIREMIT, ( rs.getString( "BAIRCLI" ) != null ? rs.getString( "BAIRCLI" ) : "" ) );
 				cab.setString( C_CEPEMIT, ( rs.getString( "CEPCLI" ) != null ? rs.getString( "CEPCLI" ) : "" ) );
+				cab.setString( C_CEPENTEMIT, ( rs.getString( "CEPENT" ) != null ? rs.getString( "CEPENT" ) : "" ) );
 				cab.setString( C_CIDEMIT, ( rs.getString( "CIDCLI" ) != null ? rs.getString( "CIDCLI" ) : "" ) );
 				cab.setString( C_UFEMIT, ( rs.getString( "UFCLI" ) != null ? rs.getString( "UFCLI" ) : "" ) );
 				cab.setString( C_FONEEMIT, ( rs.getString( "FONECLI" ) != null ? rs.getString( "FONECLI" ) : "" ) );
