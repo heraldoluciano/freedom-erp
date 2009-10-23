@@ -75,7 +75,7 @@ public class FSintegra extends FFilho implements ActionListener {
 	private JCheckBoxPad cbEntrada = new JCheckBoxPad( "Entrada", "S", "N" );
 
 	private JCheckBoxPad cbSaida = new JCheckBoxPad( "Saida", "S", "N" );
-	
+
 	private JCheckBoxPad cbInventario = new JCheckBoxPad( "Inventário", "S", "N" );
 
 	private JCheckBoxPad cbConsumidor = new JCheckBoxPad( "NF Consumidor", "S", "N" );
@@ -107,9 +107,9 @@ public class FSintegra extends FFilho implements ActionListener {
 	private int iCodEmp = Aplicativo.iCodEmp;
 
 	private String sUsaRefProd = "N";
-	
+
 	private Vector<String> vProd75 = new Vector<String>();
-	
+
 	StringBuffer sBuffer75 = new StringBuffer();
 
 	public FSintegra() {
@@ -229,9 +229,12 @@ public class FSintegra extends FFilho implements ActionListener {
 		String serieecf = "";
 		StringBuffer sBuffer = new StringBuffer();
 		int iTot50 = 0;
+		int iTot51 = 0;
+		int iTot53 = 0;
 		int iTot54 = 0;
 		int iTot60 = 0;
 		int iTot61 = 0;
+		int iTot70 = 0;
 		int iTot74 = 0;
 		int iTot75 = 0;
 		int iTotreg = 0;
@@ -302,18 +305,27 @@ public class FSintegra extends FFilho implements ActionListener {
 		geraRegistro10e11();
 
 
-		iTot50 = geraRegistro50(serieecf);
-		iTot54 = geraRegistro54(serieecf);
-		iTot60 = geraRegistro60();
-		iTot61 = geraRegistro61(serieecf);
-		iTot75 = geraRegistro75(); // Deve ser gerado antes, pois gera informações para uso no registro 74
-		iTot74 = geraRegistro74();
+		iTot50 = geraRegistro50(serieecf); // ICMS
+		iTot51 = geraRegistro51(serieecf); // IPI
+		iTot53 = geraRegistro53(serieecf); // Substituição Tributária
+		iTot54 = geraRegistro54(serieecf); // Produto
+		iTot60 = geraRegistro60(); // PDV
+		iTot61 = geraRegistro61(serieecf); // Saídas
+//		iTot70 = geraRegistro70(); // Conhecimentos de Frete;
+		iTot75 = geraRegistro75(); // Código de produtos -  Deve ser gerado antes, pois gera informações para uso no registro 74
+		iTot74 = geraRegistro74(); // 
 
 
 		iTotreg = iTot50 + iTot54 + iTot60 + iTot61 + iTot74 + iTot75 + 3;
 
 		if ( iTot50 > 0 )
 			sBuffer.append( retorna90( sBuffer.toString(), "50", iTot50 ) );
+
+		if ( iTot51 > 0 )
+			sBuffer.append( retorna90( sBuffer.toString(), "51", iTot51 ) );
+
+		if ( iTot53 > 0 )
+			sBuffer.append( retorna90( sBuffer.toString(), "53", iTot53 ) );
 
 		if ( iTot54 > 0 )
 			sBuffer.append( retorna90( sBuffer.toString(), "54", iTot54 ) );
@@ -323,6 +335,9 @@ public class FSintegra extends FFilho implements ActionListener {
 
 		if ( iTot61 > 0 )
 			sBuffer.append( retorna90( sBuffer.toString(), "61", iTot61 ) );
+
+		if ( iTot70 > 0 )
+			sBuffer.append( retorna90( sBuffer.toString(), "70", iTot70 ) );
 
 		if ( iTot74 > 0 )
 			sBuffer.append( retorna90( sBuffer.toString(), "74", iTot74 ) );
@@ -444,9 +459,9 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSql.append( "LF.CODEMP=? AND LF.CODFILIAL=? AND " );
 				sSql.append( "F.CODFOR=LF.CODEMITLF AND F.CODEMP=LF.CODEMPET AND " );
 				sSql.append( "F.CODFILIAL=LF.CODFILIALET AND LF.TIPOLF='E' AND F.PESSOAFOR='J' " );
-				
+
 				//Incluído de acordo com o íten 11.1.3 do manual do sintegra.
-				
+
 				sSql.append( "GROUP BY 1,2,3,4,5,6,7,8,9,10,13,17,18,19,20,21 ");
 				sSql.append( "ORDER BY LF.DTESLF,LF.DOCINILF");
 				ps = con.prepareStatement( sSql.toString() );
@@ -496,7 +511,7 @@ public class FSintegra extends FFilho implements ActionListener {
 			if ( "S".equals( cbSaida.getVlrString() ) ) {
 
 				// REGISTRO 50 LIVROS FISCAIS DE SAIDA
-				
+
 				sSql.delete( 0, sSql.length() );
 
 				sSql.append( "SELECT LF.TIPOLF,LF.ANOMESLF,LF.ESPECIELF,LF.DOCINILF," );
@@ -517,7 +532,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSql.append( "AND LF.TIPOLF='S' AND LF.SERIELF<>? " );
 				sSql.append( "GROUP BY 1,2,3,4,5,6,7,8,9,10,13,17,18,19,20,21,22,23 ");
 				sSql.append( "ORDER BY LF.DTEMITLF,LF.DOCINILF");
-				
+
 				ps = con.prepareStatement( sSql.toString() );
 				ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 				ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
@@ -541,7 +556,7 @@ public class FSintegra extends FFilho implements ActionListener {
 						if("ISENTA".equals( insccli.trim())) {
 							insccli = "ISENTO";
 						}
-						
+
 					}
 					/* 01 */sBuffer.append( "50" );
 					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( cnpjcli, 14 ) );
@@ -581,6 +596,294 @@ public class FSintegra extends FFilho implements ActionListener {
 
 	}
 
+	/* *********************************************
+	 * REGISTRO 51 LIVROS FISCAIS DE ENTRADA/SAIDA 
+	 * REFERENTES AO IPI 
+	 ***********************************************/	
+	private int geraRegistro51(String serieecf) {
+
+		PreparedStatement ps;
+		String cnpjcli = "";
+		String insccli = "";
+		ResultSet rs;
+		StringBuffer sSql = new StringBuffer();
+		StringBuffer sBuffer = new StringBuffer();
+		String sConvenio = rgConvenio.getVlrString();
+		int cont = 0;
+
+		try {
+
+			if ( "S".equals( cbEntrada.getVlrString() ) ) {
+				
+				// LIVROS FISCAIS DE ENTRADA
+				
+				sSql.append( "SELECT LF.TIPOLF,LF.ANOMESLF,LF.ESPECIELF,LF.DOCINILF," );
+				sSql.append( "LF.DOCFIMLF,LF.SERIELF,LF.CODEMITLF,LF.UFLF,LF.DTEMITLF," );
+				sSql.append( "LF.DTESLF,");
+				sSql.append( "SUM(LF.VLRCONTABILLF) AS VLRCONTABILLF,");
+				sSql.append( "SUM(LF.VLRBASEIPILF) AS VLRBASEIPILF,");
+				sSql.append( "LF.ALIQIPILF," );
+				sSql.append( "SUM(LF.VLRIPILF) AS VLRIPILF,") ;
+				sSql.append( "SUM(LF.VLRISENTASIPILF) AS VLRISENTASIPILF,");
+				sSql.append( "SUM(LF.VLROUTRASIPILF) AS VLROUTRASIPILF," );
+				sSql.append( "LF.CODNAT,LF.CODMODNOTA,F.CNPJFOR,F.INSCFOR,LF.SITUACAOLF " );
+				sSql.append( "FROM LFLIVROFISCAL LF,CPFORNECED F " );
+				sSql.append( "WHERE LF.DTESLF BETWEEN ? AND ? AND " );
+				sSql.append( "LF.CODEMP=? AND LF.CODFILIAL=? AND " );
+				sSql.append( "F.CODFOR=LF.CODEMITLF AND F.CODEMP=LF.CODEMPET AND " );
+				sSql.append( "F.CODFILIAL=LF.CODFILIALET AND LF.TIPOLF='E' AND F.PESSOAFOR='J' " );
+
+				//Incluído de acordo com o íten 11.1.3 do manual do sintegra.
+
+				sSql.append( "GROUP BY 1,2,3,4,5,6,7,8,9,10,13,17,18,19,20,21 ");
+				sSql.append( "ORDER BY LF.DTESLF,LF.DOCINILF");
+				ps = con.prepareStatement( sSql.toString() );
+				ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+				ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+				ps.setInt( 3, iCodEmp );
+				ps.setInt( 4, ListaCampos.getMasterFilial( "LFLIVROFISCAL" ) );
+				rs = ps.executeQuery();
+
+				lbAnd.setText( "Gerando Entrada..." );
+
+				while ( rs.next() ) {
+
+					sBuffer.delete( 0, sBuffer.length() );
+
+					/* 01 */sBuffer.append( "51" );
+					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CNPJFOR" ), 14 ) );
+					/* 03 */sBuffer.append( Funcoes.adicionaEspacos( Funcoes.limpaString( rs.getString( "INSCFOR" ) ), 14 ) );
+					/* 04 */sBuffer.append( Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate( rs.getDate( "DTESLF" ) ) ) );
+					/* 05 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "UFLF" ), 2 ) );
+//					/* 06 */sBuffer.append( Funcoes.strZero( rs.getInt( "CODMODNOTA" ) + "", 2 ) );
+					/* 06 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIELF" ), 2 ) );
+					/* 07 */sBuffer.append( "  " ); // Subsérie
+					/* 08 */sBuffer.append( Funcoes.strZero( rs.getInt( "DOCINILF" ) + "", 6 ) );
+					/* 09 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CODNAT" ), ( sConvenio.equals( "1" ) ? 3 : 4 ) ) );
+//					/* 10 */sBuffer.append( ( sConvenio.equals( "1" ) ? "" : "T" ) ); // Emitente da nota fiscal P-Própio ou T-Terceiros
+					/* 10 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRCONTABILLF" ), 13, 2, true ) );
+					/* 11 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRIPILF" ), 13, 2, true ) );
+					/* 12 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRISENTASIPILF" ), 13, 2, true ) );
+					
+					/* 13 */sBuffer.append( Funcoes.transValor( rs.getString( "VLROUTRASIPILF" ), 13, 2, true ) );
+					/* 14 */sBuffer.append( Funcoes.replicate( " ", 20 ));
+					/* 16 */sBuffer.append( Funcoes.transValor( rs.getString( "ALIQICMSLF" ), 4, 2, true ) );
+					/* 17 */sBuffer.append( rs.getString( "SITUACAOLF" ) + CR );
+
+					gravaBuffer( sBuffer.toString() );
+					cont++;
+
+				}
+
+				rs.close();
+				ps.close();
+
+				con.commit();
+
+			}
+
+			if ( "S".equals( cbSaida.getVlrString() ) ) {
+
+				// LIVROS FISCAIS DE SAIDA
+
+				sSql.delete( 0, sSql.length() );
+
+				sSql.append( "SELECT LF.TIPOLF,LF.ANOMESLF,LF.ESPECIELF,LF.DOCINILF," );
+				sSql.append( "LF.DOCFIMLF,LF.SERIELF,LF.CODEMITLF,LF.UFLF,LF.DTEMITLF," );
+				sSql.append( "LF.DTESLF,");
+				sSql.append( "SUM(LF.VLRCONTABILLF) AS VLRCONTABILLF,");
+				sSql.append( "SUM(LF.VLRBASEIPILF) AS VLRBASEIPILF,");
+				sSql.append( "LF.ALIQIPILF," );
+				sSql.append( "SUM(LF.VLRIPILF) AS VLRIPILF,");
+				sSql.append( "SUM(LF.VLRISENTASIPILF) AS VLRISENTASIPILF,");
+				sSql.append( "SUM(LF.VLROUTRASIPILF) AS VLROUTRASIPILF," );
+				sSql.append( "LF.CODNAT,LF.CODMODNOTA,C.CNPJCLI,C.INSCCLI, C.PESSOACLI, C.CPFCLI, LF.SITUACAOLF " );
+				sSql.append( "FROM LFLIVROFISCAL LF,VDCLIENTE C " );
+				sSql.append( "WHERE LF.DTEMITLF BETWEEN ? AND ? " );
+				sSql.append( "AND LF.CODEMP=? AND LF.CODFILIAL=? " );
+				sSql.append( "AND C.CODCLI=LF.CODEMITLF AND C.CODEMP=LF.CODEMPET " );
+				sSql.append( "AND C.CODFILIAL=LF.CODFILIALET AND C.PESSOACLI='J' " );
+				sSql.append( "AND LF.TIPOLF='S' AND LF.SERIELF<>? " );
+				sSql.append( "GROUP BY 1,2,3,4,5,6,7,8,9,10,13,17,18,19,20,21,22,23 ");
+				sSql.append( "ORDER BY LF.DTEMITLF,LF.DOCINILF");
+
+				ps = con.prepareStatement( sSql.toString() );
+				ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+				ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+				ps.setInt( 3, iCodEmp );
+				ps.setInt( 4, ListaCampos.getMasterFilial( "LFLIVROFISCAL" ) );
+				ps.setString( 5, serieecf );
+				rs = ps.executeQuery();
+
+				lbAnd.setText( "Gerando Saídas..." );
+
+				while ( rs.next() ) {
+
+					sBuffer.delete( 0, sBuffer.length() );
+					if ("F".equals(rs.getString( "PESSOACLI" ))) {
+						cnpjcli =  Funcoes.replicate( "0", 14 );// rs.getString( "CPFCLI" );
+						insccli = Funcoes.replicate( "0", 14 );
+					} else {
+						cnpjcli = rs.getString( "CNPJCLI" );
+						insccli = rs.getString( "INSCCLI" );
+
+						if("ISENTA".equals( insccli.trim())) {
+							insccli = "ISENTO";
+						}
+
+					}
+					
+					/* 01 */sBuffer.append( "51" );
+					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( cnpjcli, 14 ) );
+					/* 03 */sBuffer.append( Funcoes.adicionaEspacos( Funcoes.limpaString( insccli ), 14 ) );
+					/* 04 */sBuffer.append( Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate( rs.getDate( "DTEMITLF" ) ) ) );
+					/* 05 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "UFLF" ), 2 ) );
+					/* 06 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIELF" ), 2 ) );
+					/* 07 */sBuffer.append( "  " ); // Subsérie
+					/* 08 */sBuffer.append( Funcoes.strZero( rs.getInt( "DOCINILF" ) + "", 6 ) );
+					/* 09 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CODNAT" ), ( sConvenio.equals( "1" ) ? 3 : 4 ) ) );
+					/* 10 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRCONTABILLF" ), 13, 2, true ) );
+					/* 11 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRIPILF" ), 13, 2, true ) );
+					/* 12 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRISENTASIPILF" ), 13, 2, true ) );					
+					/* 13 */sBuffer.append( Funcoes.transValor( rs.getString( "VLROUTRASIPILF" ), 13, 2, true ) );
+					/* 14 */sBuffer.append( Funcoes.replicate( " ", 20 ));
+					/* 16 */sBuffer.append( Funcoes.transValor( rs.getString( "ALIQICMSLF" ), 4, 2, true ) );
+					/* 17 */sBuffer.append( rs.getString( "SITUACAOLF" ) + CR );
+					
+					gravaBuffer( sBuffer.toString() );
+					cont++;
+				}
+
+				rs.close();
+				ps.close();
+
+				con.commit();
+
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao gerar registro 50!\n" + e.getMessage(), true, con, e );
+		}
+
+		return cont;
+
+	}
+	
+	/* *********************************************
+	 * REGISTRO 53 LIVROS FISCAIS DE ENTRADA/SAIDA 
+	 * REFERENTES A SUBSTITUIÇÃO TRIBUTÁRIA 
+	 ***********************************************/	
+	private int geraRegistro53(String serieecf) {
+
+		PreparedStatement ps;
+		String cnpjcli = "";
+		String insccli = "";
+		ResultSet rs;
+		StringBuffer sSql = new StringBuffer();
+		StringBuffer sBuffer = new StringBuffer();
+		String sConvenio = rgConvenio.getVlrString();
+		int cont = 0;
+
+		try {
+
+			if ( "S".equals( cbSaida.getVlrString() ) ) {
+
+				// LIVROS FISCAIS DE SAIDA
+
+				sSql.delete( 0, sSql.length() );
+
+				sSql.append( "SELECT LF.TIPOLF,LF.ANOMESLF,LF.ESPECIELF,LF.DOCINILF," );
+				sSql.append( "LF.DOCFIMLF,LF.SERIELF,LF.CODEMITLF,LF.UFLF,LF.DTEMITLF," );
+				sSql.append( "LF.DTESLF,");
+				sSql.append( "SUM(LF.VLRCONTABILLF) AS VLRCONTABILLF,");
+				sSql.append( "SUM(LF.VLRBASEIPILF) AS VLRBASEIPILF,");
+				sSql.append( "LF.ALIQIPILF," );
+				sSql.append( "SUM(LF.VLRIPILF) AS VLRIPILF,");
+				sSql.append( "SUM(LF.VLRISENTASIPILF) AS VLRISENTASIPILF,");
+				sSql.append( "SUM(LF.VLROUTRASIPILF) AS VLROUTRASIPILF," );
+				sSql.append( "LF.CODNAT,LF.CODMODNOTA,C.CNPJCLI,C.INSCCLI, C.PESSOACLI, C.CPFCLI, LF.SITUACAOLF " );
+				sSql.append( "FROM LFLIVROFISCAL LF,VDCLIENTE C " );
+				sSql.append( "WHERE LF.DTEMITLF BETWEEN ? AND ? " );
+				sSql.append( "AND LF.CODEMP=? AND LF.CODFILIAL=? " );
+				sSql.append( "AND C.CODCLI=LF.CODEMITLF AND C.CODEMP=LF.CODEMPET " );
+				sSql.append( "AND C.CODFILIAL=LF.CODFILIALET AND C.PESSOACLI='J' " );
+				sSql.append( "AND LF.TIPOLF='S' AND LF.SERIELF<>? " );
+				sSql.append( "GROUP BY 1,2,3,4,5,6,7,8,9,10,13,17,18,19,20,21,22,23 ");
+				sSql.append( "ORDER BY LF.DTEMITLF,LF.DOCINILF");
+
+				ps = con.prepareStatement( sSql.toString() );
+				ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+				ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+				ps.setInt( 3, iCodEmp );
+				ps.setInt( 4, ListaCampos.getMasterFilial( "LFLIVROFISCAL" ) );
+				ps.setString( 5, serieecf );
+				rs = ps.executeQuery();
+
+				lbAnd.setText( "Gerando Saídas..." );
+
+				while ( rs.next() ) {
+
+					sBuffer.delete( 0, sBuffer.length() );
+					if ("F".equals(rs.getString( "PESSOACLI" ))) {
+						cnpjcli =  Funcoes.replicate( "0", 14 );// rs.getString( "CPFCLI" );
+						insccli = Funcoes.replicate( "0", 14 );
+					} else {
+						cnpjcli = rs.getString( "CNPJCLI" );
+						insccli = rs.getString( "INSCCLI" );
+
+						if("ISENTA".equals( insccli.trim())) {
+							insccli = "ISENTO";
+						}
+
+					}
+					
+					/* 01 */sBuffer.append( "53" );
+					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( cnpjcli, 14 ) );
+					/* 03 */sBuffer.append( Funcoes.adicionaEspacos( Funcoes.limpaString( insccli ), 14 ) );
+					/* 04 */sBuffer.append( Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate( rs.getDate( "DTEMITLF" ) ) ) );
+					/* 05 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "UFLF" ), 2 ) );
+					/* 06 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "CODMODNOTA" ) ), 2 ) );					
+					/* 07 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIELF" ), 3 ) );					
+					/* 08 */sBuffer.append( "  " ); // Subsérie
+					/* 09 */sBuffer.append( Funcoes.strZero( rs.getInt( "DOCINILF" ) + "", 6 ) );
+					/* 10 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CODNAT" ), ( sConvenio.equals( "1" ) ? 3 : 4 ) ) );					
+					/* 11 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRBASEICMSSTLF" ), 13, 2, true ) );
+					/* 12 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRICMSSTLF" ), 13, 2, true ) );
+					/* 13 */sBuffer.append( Funcoes.transValor( rs.getString( "VLRACESSORIASLF" ), 13, 2, true ) );					
+					/* 14 */sBuffer.append( rs.getString( "SITUACAOLF" ) );
+					/* 15 */sBuffer.append( Funcoes.replicate( " ", 30 ) + CR );
+					
+					gravaBuffer( sBuffer.toString() );
+					cont++;
+				}
+
+				rs.close();
+				ps.close();
+
+				con.commit();
+
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao gerar registro 50!\n" + e.getMessage(), true, con, e );
+		}
+
+		return cont;
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
 	private String getSerieECF() throws SQLException {
 		String serie = "";
 		StringBuffer sql = new StringBuffer();
@@ -600,9 +903,9 @@ public class FSintegra extends FFilho implements ActionListener {
 		rs.close();
 		ps.close();
 		con.commit();
-        return serie;
+		return serie;
 	}
-	
+
 	private int geraRegistro54(String serieecf) {
 
 		PreparedStatement ps;
@@ -656,7 +959,7 @@ public class FSintegra extends FFilho implements ActionListener {
 					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CNPJFOR" ), 14 ) );
 					/* 03 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getString( "CODMODNOTA" ) == null ? 0 : rs.getInt( "CODMODNOTA" ) ), 2 ) );
 					/* 04 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIE" ), 3 ) );
-							//sBuffer.append( "  "); //Subsérie
+					//sBuffer.append( "  "); //Subsérie
 					/* 05 */sBuffer.append( Funcoes.strZero( String.valueOf( rs.getInt( "DOCCOMPRA" ) ), 6 ) );
 					/* 06 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CODNAT" ), ( sConvenio.equals( "1" ) ? 3 : 4 ) ) );
 					/* 07 */sBuffer.append( Funcoes.copy( ( sConvenio.equals( "1" ) ? "" : ( rs.getString( "ORIGFISC" ).trim() + rs.getString( "CODTRATTRIB" ).trim() ) ), 3 ) );
@@ -724,7 +1027,7 @@ public class FSintegra extends FFilho implements ActionListener {
 					}
 
 					sBuffer.delete( 0, sBuffer.length() );
-					
+
 					if ("F".equals(rs.getString( "PESSOACLI" ))) {
 						cnpjcli =  Funcoes.replicate( "0", 14 );// rs.getString( "CPFCLI" );
 					} else {
@@ -1026,7 +1329,7 @@ public class FSintegra extends FFilho implements ActionListener {
 		ResultSet rs;
 		StringBuilder sql = new StringBuilder();
 		StringBuffer sBuffer = new StringBuffer();
-		
+
 		String sConvenio = rgConvenio.getVlrString();
 
 		int iParam = 1;
@@ -1037,27 +1340,27 @@ public class FSintegra extends FFilho implements ActionListener {
 			if ( ( "S".equals( cbInventario.getVlrString() ) ) ) {
 
 				// REGISTRO 74 INVENTARIO
-				
+
 				sql.append( "SELECT P.CODPROD,P.REFPROD, P.SALDO, P.VLRESTOQ, '1' CODPOSSE, F.CNPJFILIAL, F.INSCFILIAL, F.SIGLAUF " );
 				sql.append( "FROM EQRELINVPRODSP(?,?,?,null,null,null,?,null,null,null) P, SGFILIAL F ");
 				sql.append( "WHERE P.SALDO > 0 ");
 				sql.append( "AND F.CODEMP=? AND F.CODFILIAL=? ");
-				
+
 				if ( vProd75.size()>0 ) {
 					sql.append( " AND P.CODPROD IN ( " + Funcoes.vectorToString( vProd75, "," ) + ")" );
 				}
-				
+
 				sql.append( "ORDER BY " + (sUsaRefProd.equals( "S" ) ? "P.REFPROD" : "p.CODPROD" ));
-				
+
 				ps = con.prepareStatement( sql.toString() );
-				
+
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial("EQPRODUTO"));
 				ps.setString( 3, "M" ); // Custo MPM
 				ps.setDate( 4, Funcoes.dateToSQLDate(Funcoes.dateToSQLDate(txtDatafim.getVlrDate())));
 				ps.setInt( 5, Aplicativo.iCodEmp );
 				ps.setInt( 6, Aplicativo.iCodFilial);				
-				
+
 				rs = ps.executeQuery();
 				lbAnd.setText( "Gerando registro de inventário..." );
 
@@ -1079,15 +1382,15 @@ public class FSintegra extends FFilho implements ActionListener {
 					sBuffer.append( Funcoes.replicate( " ", 45 ) + CR ); 
 
 					gravaBuffer( sBuffer.toString() );
-					
+
 					cont++;
 
 				}
-				
+
 
 				gravaBuffer( sBuffer75.toString() ); // Gravando Buffer do registro 75 .
 
-				
+
 				rs.close();
 				ps.close();
 				con.commit();
@@ -1102,7 +1405,7 @@ public class FSintegra extends FFilho implements ActionListener {
 		return cont;
 
 	}
-	
+
 	private int geraRegistro75() {
 
 		PreparedStatement ps;
@@ -1137,43 +1440,43 @@ public class FSintegra extends FFilho implements ActionListener {
 
 				if ( cbEntrada.getVlrString().equals( "S" ) )
 					sSqlEntrada = "SELECT IC.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC,0),"
-								+ "COALESCE(CF.ALIQLFISC,0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB,CF.CODFISC "
-								+ "FROM CPCOMPRA C,CPITCOMPRA IC,EQTIPOMOV TM,EQPRODUTO P,LFITCLFISCAL CF, CPFORNECED F "
-								+ "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND C.CODEMP=? AND C.CODFILIAL=? AND "
-								+ "IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND "
-								+ "TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND "
-								+ "P.CODPROD=IC.CODPROD AND P.CODEMP=IC.CODEMPPD AND P.CODFILIAL=IC.CODFILIALPD AND "
-								+ "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.GERALFISC='S' AND "	
-								+ "F.CODFOR=C.CODFOR AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.PESSOAFOR='J' AND " 
-								+ "TM.FISCALTIPOMOV='S' ";
+						+ "COALESCE(CF.ALIQLFISC,0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB,CF.CODFISC "
+						+ "FROM CPCOMPRA C,CPITCOMPRA IC,EQTIPOMOV TM,EQPRODUTO P,LFITCLFISCAL CF, CPFORNECED F "
+						+ "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND C.CODEMP=? AND C.CODFILIAL=? AND "
+						+ "IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND "
+						+ "TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND "
+						+ "P.CODPROD=IC.CODPROD AND P.CODEMP=IC.CODEMPPD AND P.CODFILIAL=IC.CODFILIALPD AND "
+						+ "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.GERALFISC='S' AND "	
+						+ "F.CODFOR=C.CODFOR AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.PESSOAFOR='J' AND " 
+						+ "TM.FISCALTIPOMOV='S' ";
 
 				if ( cbSaida.getVlrString().equals( "S" ) ) 
 					sSqlSaida = "SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC, 0), " 
-						      + "COALESCE(CF.ALIQLFISC, 0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB,CF.CODFISC " 
-						      +	"FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFITCLFISCAL CF " 
-						      + "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND " 
-						      +	"C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND "	
-						      +	"IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND " 
-						      +	"IV.CODFILIAL=V.CODFILIAL AND " 
-						      +	"TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " 
-						      +	"TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND " 
-						      +	"( (C.PESSOACLI='J' AND V.TIPOVENDA='V') OR (V.TIPOVENDA='E') ) AND " 
-						      +	"P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " 
-						      +	"CF.CODFISC=IV.CODFISC AND CF.CODEMP=IV.CODEMPIF AND CF.CODFILIAL=IV.CODFILIALIF AND CF.CODITFISC=IV.CODITFISC "; 
-				
+						+ "COALESCE(CF.ALIQLFISC, 0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB,CF.CODFISC " 
+						+	"FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFITCLFISCAL CF " 
+						+ "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND " 
+						+	"C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND "	
+						+	"IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND " 
+						+	"IV.CODFILIAL=V.CODFILIAL AND " 
+						+	"TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " 
+						+	"TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND " 
+						+	"( (C.PESSOACLI='J' AND V.TIPOVENDA='V') OR (V.TIPOVENDA='E') ) AND " 
+						+	"P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " 
+						+	"CF.CODFISC=IV.CODFISC AND CF.CODEMP=IV.CODEMPIF AND CF.CODFILIAL=IV.CODFILIALIF AND CF.CODITFISC=IV.CODITFISC "; 
+
 				if ( cbConsumidor.getVlrString().equals( "S" ) && ( sConvenio.equals( "1" ) ) ) // IV.PERCICMSITVENDA
 					sSqlConsumidor = "SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC,0)," 
-								   + "COALESCE(CF.ALIQLFISC,0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB,CF.CODFISC " 
-								   + "FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFITCLFISCAL CF " 
-								   + "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND " 
-								   + "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " 
-								   + "C.PESSOACLI='F' AND V.TIPOVENDA='V' AND " 
-								   + "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND " 
-								   + "IV.CODFILIAL=V.CODFILIAL AND " 
-								   + "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " 
-								   + "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND " 
-								   + "P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND "
-								   + "CF.CODFISC=IV.CODFISC AND CF.CODEMP=IV.CODEMPIF AND CF.CODFILIAL=IV.CODFILIALIF AND CF.CODITFISC=IV.CODITFISC ";
+						+ "COALESCE(CF.ALIQLFISC,0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB,CF.CODFISC " 
+						+ "FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFITCLFISCAL CF " 
+						+ "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND " 
+						+ "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " 
+						+ "C.PESSOACLI='F' AND V.TIPOVENDA='V' AND " 
+						+ "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND " 
+						+ "IV.CODFILIAL=V.CODFILIAL AND " 
+						+ "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " 
+						+ "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND " 
+						+ "P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND "
+						+ "CF.CODFISC=IV.CODFISC AND CF.CODEMP=IV.CODEMPIF AND CF.CODFILIAL=IV.CODFILIALIF AND CF.CODITFISC=IV.CODITFISC ";
 
 				if ( !sSqlEntrada.equals( "" ) )
 					sSql.append( sSqlEntrada );
@@ -1211,7 +1514,7 @@ public class FSintegra extends FFilho implements ActionListener {
 
 				vProd75.clear();
 				sBuffer75 = new StringBuffer();
-				
+
 				while ( rs.next() ) {
 
 					sBuffer.delete( 0, sBuffer.length() );
@@ -1223,7 +1526,7 @@ public class FSintegra extends FFilho implements ActionListener {
 					sBuffer.append( Funcoes.dataAAAAMMDD( txtDatafim.getVlrDate() ) );
 					sBuffer.append( Funcoes.adicionaEspacos( rs.getString( ( sUsaRefProd.equals( "S" ) ? COL_75_REFPROD : COL_75_CODPROD ) ), 14 ) );
 					// NCM Não é obrigatório para contribuintes do IPI
-//					sBuffer.append( Funcoes.replicate( " ", 8 ) );
+					//					sBuffer.append( Funcoes.replicate( " ", 8 ) );
 					sBuffer.append( Funcoes.copy( rs.getString( COL_75_CODNCM ), 8 ) );
 					sBuffer.append( Funcoes.adicionaEspacos( rs.getString( COL_75_DESCPROD ), 53 ) );
 					sBuffer.append( Funcoes.adicionaEspacos( rs.getString( COL_75_CODUNID ), 4 ) );// 97
@@ -1235,7 +1538,7 @@ public class FSintegra extends FFilho implements ActionListener {
 
 					// Caso não seja necessário a geração do registro 74 grava o buffer agora. 
 					// Do contrario as informações do registro 75 serão gravadas após o registro 74.
-					
+
 					if("N".equals( cbInventario.getVlrString())) { 
 						gravaBuffer( sBuffer.toString() );
 					}
@@ -1246,11 +1549,11 @@ public class FSintegra extends FFilho implements ActionListener {
 					if(! vProd75.contains( rs.getString( "CODPROD" ) )) {
 						vProd75.addElement( rs.getString( "CODPROD" ));
 					}
-					
+
 					cont++;
 
 				}
-				
+
 				rs.close();
 				ps.close();
 				con.commit();
