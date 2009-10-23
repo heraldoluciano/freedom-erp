@@ -743,7 +743,7 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false"/>
 					</textElement>
-				<text><![CDATA[CNPJ:]]></text>
+				<text><![CDATA[CNPJ/CPF:]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -953,11 +953,18 @@ $P{CNPJFILIAL}.substring(12)]]></textFieldExpression>
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CNPJCLI}.substring(0,2) + "." +
+				<textFieldExpression   class="java.lang.String"><![CDATA["J".equals($F{PESSOACLI})?
+($F{CNPJCLI}.substring(0,2) + "." +
 $F{CNPJCLI}.substring(2,5) + "." +
 $F{CNPJCLI}.substring(5,8) + "/" +
 $F{CNPJCLI}.substring(8,12) + "-" +
-$F{CNPJCLI}.substring(12)]]></textFieldExpression>
+$F{CNPJCLI}.substring(12)):
+(
+$F{CPFCLI}.substring(0,3) + "." +
+$F{CPFCLI}.substring(3,6) + "." +
+$F{CPFCLI}.substring(6,9) + "-" +
+$F{CPFCLI}.substring(9) 
+)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
