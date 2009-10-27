@@ -109,6 +109,8 @@ public class FEmpresa extends FDetalhe{
 
 	private JCheckBoxPad cbSimples = new JCheckBoxPad( "Simples", "S", "N" );
 	
+	private JCheckBoxPad cbContribIPI = new JCheckBoxPad( "Sim", "S", "N" );
+	
 	private PainelImagem imFotoEmp = new PainelImagem( 65000 );
 	
 	private ListaCampos lcUF = new ListaCampos( this );
@@ -192,10 +194,14 @@ public class FEmpresa extends FDetalhe{
 		adicCampo( txtFoneEmp, 50, 180, 77, 20, "FoneFilial", "Telefone", ListaCampos.DB_SI, false );
 		adicCampo( txtFaxEmp, 130, 180, 120, 20, "FaxFilial", "Fax", ListaCampos.DB_SI, false );
 		adicCampo( txtEmailEmp, 253, 180, 227, 20, "EmailFilial", "Email", ListaCampos.DB_SI, false );
-		adicCampo( txtWWWEmp, 7, 220, 243, 20, "WWWFilial", "Página da WEB", ListaCampos.DB_SI, false );
-		adicCampo( txtCodDistFilial, 253, 220, 77, 20, "CodDistFilial", "C.dist.fil", ListaCampos.DB_SI, false );
-		adicDB( cbMatriz, 335, 220, 80, 20, "MzFilial", "Sede", false );
-		adicDB( cbSimples, 416, 220, 80, 20, "SimplesFilial", "Fiscal", false );
+		adicCampo( txtWWWEmp, 7, 220, 183, 20, "WWWFilial", "Página da WEB", ListaCampos.DB_SI, false );
+		
+		adicCampo( txtCodDistFilial, 193, 220, 67, 20, "CodDistFilial", "C.dist.fil", ListaCampos.DB_SI, false );
+		adicDB( cbMatriz, 265, 220, 72, 20, "MzFilial", "Sede", false );
+		adicDB( cbSimples, 336, 220, 75, 20, "SimplesFilial", "Fiscal", false );
+		adicDB( cbContribIPI, 416, 220, 80, 20, "ContribIPIFilial", "Contrib. IPI", false );
+		
+		
 		adicCampo( txtPercPIS, 7, 260, 75, 20, "PercPISFilial", "% PIS", ListaCampos.DB_SI, false );
 		adicCampo( txtPercCofins, 85, 260, 75, 20, "PercCofinsFilial", "% COFINS", ListaCampos.DB_SI, false );
 		adicCampo( txtPercIR, 163, 260, 75, 20, "PercIRFilial", "% IR", ListaCampos.DB_SI, false );
