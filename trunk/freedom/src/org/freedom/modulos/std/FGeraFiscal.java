@@ -34,16 +34,14 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
 import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.Timer;
-
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
@@ -94,7 +92,9 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 	private JLabelPad lbAnd = new JLabelPad( "Aguardando:" );
 
 	private enum EColSaida {
-		DTEMIT, DTSAIDA, NATOPER, CODEMIT, UF, ESPECIE, MODNOTA, SERIE, DOC, DOCFIM, PERCICMS, PERCIPI, VLRCONTABIL, VLRBASEICMS, VLRICMS, VLRISENTAS, VLROUTRAS, VLRBASEIPI, VLRIPI, E1, F1, E2, F2, E3, F3, SIT, VLRBASEICMSST, VLRICMSST, VLRACESSORIAS
+		DTEMIT, DTSAIDA, NATOPER, CODEMIT, UF, ESPECIE, MODNOTA, SERIE, DOC, DOCFIM, PERCICMS, PERCIPI, VLRCONTABIL, 
+		VLRBASEICMS, VLRICMS, VLRISENTAS, VLROUTRAS, VLRBASEIPI, VLRIPI, E1, F1, E2, F2, E3, F3, SIT, VLRBASEICMSST,
+		VLRICMSST, VLRACESSORIAS
 	}
 
 	public FGeraFiscal() {
@@ -214,7 +214,8 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 		tab2.adicColuna( "E3" );
 		tab2.adicColuna( "F3" );
 		tab2.adicColuna( "SIT" );
-		tab2.adicColuna( "Base ST" );
+		tab2.adicColuna( "Base ICMS ST" );
+		tab2.adicColuna( "V.ICMS ST" );		
 		tab2.adicColuna( "V.Acessórias" ); // Frete , seguro, outras
 
 		tab2.setTamColuna( 100, EColSaida.DTEMIT.ordinal() );
@@ -289,11 +290,22 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 			return;
 		}
 		try {
-			String sSQL = "SELECT C.DTEMITCOMPRA,C.DTENTCOMPRA,IT.CODNAT," + "C.CODFOR,F.UFFOR,TM.ESPECIETIPOMOV,TM.CODMODNOTA," + "C.SERIE,C.DOCCOMPRA,IT.PERCICMSITCOMPRA," + "IT.PERCIPIITCOMPRA," + "C.CODEMPFR,C.CODFILIALFR," + "IT.CODEMPNT,IT.CODFILIALNT," + "TM.CODEMPMN,TM.CODFILIALMN,"
-					+ "SUM(VLRPRODITCOMPRA)," + "SUM(IT.VLRBASEICMSITCOMPRA)," + "SUM(IT.VLRICMSITCOMPRA)," + "SUM(IT.VLRISENTASITCOMPRA)," + "SUM(IT.VLROUTRASITCOMPRA)," + "SUM(IT.VLRBASEIPIITCOMPRA)," + "SUM(IT.VLRIPIITCOMPRA), " + "C.STATUSCOMPRA "
-					+ "FROM CPCOMPRA C, CPITCOMPRA IT, CPFORNECED F, EQTIPOMOV TM " + "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND " + "C.CODEMP=? AND C.CODFILIAL=? AND " + "IT.CODCOMPRA=C.CODCOMPRA AND IT.CODEMP=C.CODEMP AND " + "IT.CODFILIAL=C.CODFILIAL AND "
-					+ "F.CODFOR = C.CODFOR AND F.CODEMP=C.CODEMPFR AND " + "F.CODFILIAL=C.CODFILIALFR AND " + "TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND " + "TM.CODFILIAL=C.CODFILIALTM AND TM.FISCALTIPOMOV='S' " + "GROUP BY C.DTEMITCOMPRA,C.DTENTCOMPRA,IT.CODNAT,"
-					+ "C.CODFOR,F.UFFOR,TM.ESPECIETIPOMOV,TM.CODMODNOTA," + "C.SERIE,C.DOCCOMPRA,IT.PERCICMSITCOMPRA," + "IT.PERCIPIITCOMPRA," + "C.CODEMPFR,C.CODFILIALFR," + "IT.CODEMPNT,IT.CODFILIALNT," + "TM.CODEMPMN,TM.CODFILIALMN,C.STATUSCOMPRA";
+			String sSQL = "SELECT C.DTEMITCOMPRA,C.DTENTCOMPRA,IT.CODNAT,C.CODFOR,F.UFFOR,TM.ESPECIETIPOMOV,TM.CODMODNOTA," 
+						+ "C.SERIE,C.DOCCOMPRA,IT.PERCICMSITCOMPRA,IT.PERCIPIITCOMPRA,C.CODEMPFR,C.CODFILIALFR,IT.CODEMPNT,IT.CODFILIALNT," 
+						+ "TM.CODEMPMN,TM.CODFILIALMN,"
+						+ "SUM(VLRPRODITCOMPRA),SUM(IT.VLRBASEICMSITCOMPRA),SUM(IT.VLRICMSITCOMPRA),SUM(IT.VLRISENTASITCOMPRA)," 
+						+ "SUM(IT.VLROUTRASITCOMPRA),SUM(IT.VLRBASEIPIITCOMPRA),SUM(IT.VLRIPIITCOMPRA), C.STATUSCOMPRA "
+						
+						+ "FROM CPCOMPRA C, CPITCOMPRA IT, CPFORNECED F, EQTIPOMOV TM " 
+						
+						+ "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND C.CODEMP=? AND C.CODFILIAL=? AND " 
+						+ "IT.CODCOMPRA=C.CODCOMPRA AND IT.CODEMP=C.CODEMP AND IT.CODFILIAL=C.CODFILIAL AND "
+						+ "F.CODFOR = C.CODFOR AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND " 
+						+ "TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND TM.FISCALTIPOMOV='S' " 
+						
+						+ "GROUP BY C.DTEMITCOMPRA,C.DTENTCOMPRA,IT.CODNAT,C.CODFOR,F.UFFOR,TM.ESPECIETIPOMOV,TM.CODMODNOTA," 
+						+ "C.SERIE,C.DOCCOMPRA,IT.PERCICMSITCOMPRA,IT.PERCIPIITCOMPRA,C.CODEMPFR,C.CODFILIALFR,IT.CODEMPNT,IT.CODFILIALNT," 
+						+ "TM.CODEMPMN,TM.CODFILIALMN,C.STATUSCOMPRA";
 
 			if ( cbEntrada.getVlrString().equals( "S" ) ) {
 				PreparedStatement ps = con.prepareStatement( sSQL );
@@ -357,7 +369,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 						+ "FROM VDITVENDA IV, EQTIPOMOV TM, VDCLIENTE C, EQPRODUTO P, LFITCLFISCAL CF, "
 						
 						+ "VDVENDA V LEFT OUTER JOIN VDFRETEVD FT ON "
-						+ "FT.CODEMP=V.CODEMP AND FT.CODFILIAL=V.CODFILIAL AND FT.TIPOVENDA=V.TIPOVENDA AND FT.CODVENDA=VD.CODVENDA "
+						+ "FT.CODEMP=V.CODEMP AND FT.CODFILIAL=V.CODFILIAL AND FT.TIPOVENDA=V.TIPOVENDA AND FT.CODVENDA=V.CODVENDA "
 						
 						+ "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND " 
 						+ "IV.TIPOVENDA=V.TIPOVENDA AND IV.CODVENDA=V.CODVENDA AND IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND "
@@ -366,6 +378,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 						+ "CF.CODEMP=IV.CODEMPIF AND CF.CODFILIAL=IV.CODFILIALIF AND "
 						+ "CF.CODFISC=IV.CODFISC AND CF.CODITFISC=IV.CODITFISC AND "
 						+ "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL "
+						
 						+ "GROUP BY V.TIPOVENDA, V.DTEMITVENDA,V.DTSAIDAVENDA,IV.CODNAT,"
 						+ "V.CODCLI,C.UFCLI,TM.ESPECIETIPOMOV,TM.CODMODNOTA,V.SERIE,V.DOCVENDA, V.DOCVENDA, IV.PERCICMSITVENDA, "
 						+ "IV.PERCICMSITVENDA, IV.PERCIPIITVENDA,V.CODEMPCL,V.CODFILIALCL,IV.CODEMPNT,IV.CODFILIALNT,"
@@ -394,7 +407,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 						+ "LEFT OUTER JOIN PVLEITURAX L ON L.CODEMP=V.CODEMPCX AND L.CODFILIAL=V.CODFILIALCX AND "
 						+ "L.CODCAIXA=V.CODCAIXA AND L.DTLX=V.DTEMITVENDA "
 						+ "LEFT OUTER JOIN VDFRETEVD FT ON "
-						+ "FT.CODEMP=V.CODEMP AND FT.CODFILIAL=V.CODFILIAL AND FT.TIPOVENDA=V.TIPOVENDA AND FT.CODVENDA=VD.CODVENDA "
+						+ "FT.CODEMP=V.CODEMP AND FT.CODFILIAL=V.CODFILIAL AND FT.TIPOVENDA=V.TIPOVENDA AND FT.CODVENDA=V.CODVENDA "
 						
 						+ "WHERE TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND " 
 						+ "TM.FISCALTIPOMOV='S' AND V.CODEMP=? AND V.CODFILIAL=? AND "
@@ -452,22 +465,34 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 					tab2.setValor( "" + rs2.getInt( "CODFILIALMN" ), iTotVendas, EColSaida.F3.ordinal() );
 					tab2.setValor( "" + rs2.getString( "STATUSVENDA" ), iTotVendas, EColSaida.SIT.ordinal() );
 					
-					tab2.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs2.getString( "VLRBASEICMSSTLF" ) ), iTotVendas, EColSaida.VLRBASEICMSST.ordinal() );
-					tab2.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs2.getString( "VLRICMSSTLF" ) ), iTotVendas, EColSaida.VLRICMSST.ordinal() );
+					tab2.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs2.getString( "VLRBASEICMSSTVENDA" ) ), iTotVendas, EColSaida.VLRBASEICMSST.ordinal() );
+																						   
+					tab2.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs2.getString( "VLRICMSSTVENDA" ) ), iTotVendas, EColSaida.VLRICMSST.ordinal() );	
 					
-					tab2.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, rs2.getString( "VLRACESSORIASLF" ) ), iTotVendas, EColSaida.VLRACESSORIAS.ordinal() );
+					Boolean adicfrete = "S".equals( rs2.getString( "ADICFRETEVD" ) );
+					String vlracessorias = "0";
 					
+					if(adicfrete) {
+						vlracessorias = rs2.getString( "VLRFRETEVD" );	
+						
+					}
+
 					
-					
+					tab2.setValor( Funcoes.strDecimalToStrCurrency( 15, 2, vlracessorias ), iTotVendas, EColSaida.VLRACESSORIAS.ordinal() );
 					
 					iTotVendas++;
+					
+//					return;
+					
 				}
 				// rs2.close();
 				// ps2.close();
 				con.commit();
 			}
-		} catch ( SQLException err ) {
+		} 
+		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao realizar consulta!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
 			return;
 		}
 		btGerar.setEnabled( false );
@@ -555,9 +580,13 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 		tim.start();
 		lbAnd.setText( "Gerando..." );
 
-		sSql = "INSERT INTO LFLIVROFISCAL (" + "CODEMP,CODFILIAL,TIPOLF,ANOMESLF,CODLF,CODEMITLF,SERIELF," + "DOCINILF,DTEMITLF,DTESLF,CODNAT,DOCFIMLF,ESPECIELF,UFLF,VLRCONTABILLF," + "VLRBASEICMSLF,ALIQICMSLF,VLRICMSLF,VLRISENTASICMSLF,VLROUTRASICMSLF,"
-				+ "VLRBASEIPILF,ALIQIPILF,VLRIPILF,VLRISENTASIPILF,VLROUTRASIPILF,CODMODNOTA," + "CODEMPET,CODFILIALET,CODEMPNT,CODFILIALNT,CODEMPMN,CODFILIALMN,SITUACAOLF," + "VLRBASEICMSSTLF,VLRICMSSTLF,VLRACESSORIASLF"
-				+ ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		sSql = "INSERT INTO LFLIVROFISCAL ( CODEMP,CODFILIAL,TIPOLF,ANOMESLF,CODLF,CODEMITLF,SERIELF," 
+		     + "DOCINILF,DTEMITLF,DTESLF,CODNAT,DOCFIMLF,ESPECIELF,UFLF,VLRCONTABILLF," 
+		     + "VLRBASEICMSLF,ALIQICMSLF,VLRICMSLF,VLRISENTASICMSLF,VLROUTRASICMSLF,"
+			 + "VLRBASEIPILF,ALIQIPILF,VLRIPILF,VLRISENTASIPILF,VLROUTRASIPILF,CODMODNOTA," 
+			 + "CODEMPET,CODFILIALET,CODEMPNT,CODFILIALNT,CODEMPMN,CODFILIALMN,SITUACAOLF," 
+			 + "VLRBASEICMSSTLF,VLRICMSSTLF,VLRACESSORIASLF"
+			 + ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		PreparedStatement psI;
 
@@ -621,12 +650,21 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 				else {
 					psI.setString( 33, "N" ); // Status para documento normal no sintegra.
 				}
+				
+				psI.setBigDecimal( 34, Funcoes.strCurrencyToBigDecimal( "0" ));
+				
+				psI.setBigDecimal( 35, Funcoes.strCurrencyToBigDecimal( "0" ));
+				
+				psI.setBigDecimal( 36, Funcoes.strCurrencyToBigDecimal( "0" ));
 
 				psI.executeUpdate();
 
 				con.commit();
-			} catch ( SQLException err ) {
+				
+			} 
+			catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro gerando livros fiscais de compras!\n" + err.getMessage(), true, con, err );
+				err.printStackTrace();
 				break;
 			}
 			iAnd++;
@@ -695,12 +733,17 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 				else {
 					psI.setString( 33, "N" ); // Status para documento normal no sintegra.
 				}
+				
+				psI.setBigDecimal( 34, Funcoes.strCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRBASEICMSST.ordinal() ) + "" ) ); // BASE ICMSST
+				psI.setBigDecimal( 35, Funcoes.strCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRICMSST.ordinal() ) + "" ) ); //  ICMSST
+				psI.setBigDecimal( 36, Funcoes.strCurrencyToBigDecimal( tab2.getValor( i, EColSaida.VLRACESSORIAS.ordinal() ) + "" ) ); // BASE ICMSST
 
 				psI.executeUpdate();
 
 				con.commit();
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro gerando livros fiscais de compras!\n" + err.getMessage(), true, con, err );
+				err.printStackTrace();
 				break;
 			}
 			iAnd++;
