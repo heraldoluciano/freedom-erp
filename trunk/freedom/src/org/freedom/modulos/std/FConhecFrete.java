@@ -86,6 +86,8 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 	
 	private JTextFieldPad txtDocFrete = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 	
+	private JTextFieldPad txtSerieFrete = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+	
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 	
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -366,7 +368,8 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		setAltCab( 250 );
 		
 		adicCampo( txtCodFrete, 7, 20, 90, 20, "CodFrete", "Cód.Frete", ListaCampos.DB_PK, true );	
-		adicCampo( txtDocFrete, 100, 20, 125, 20, "DocFrete", "Doc.", ListaCampos.DB_SI, false );
+		adicCampo( txtSerieFrete, 100, 20, 50, 20, "Serie", "Serie", ListaCampos.DB_SI, false );
+		adicCampo( txtDocFrete, 153, 20, 72, 20, "DocFrete", "Doc.", ListaCampos.DB_SI, false );
 		adicCampo( txtDtEmitFrete, 228, 20, 122, 20, "DTEmitFrete", "Dt.emissão", ListaCampos.DB_SI, true );	
 		adicCampo( txtCodTipoMov, 353, 20, 90, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
 		adicDescFK( txtDescTipoMov, 446, 20, 250, 20, "DescTipoMov", "Descrição do tipo de movimento" );	
