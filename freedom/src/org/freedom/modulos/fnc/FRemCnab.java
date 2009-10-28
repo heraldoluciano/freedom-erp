@@ -255,15 +255,15 @@ public class FRemCnab extends FRemFBN {
 		reg.setMsg2( null );
 		reg.setNrRemRet( (Integer) prefs.get(FbnUtil.EPrefs.NROSEQ) );
 		reg.setDataRemRet( Calendar.getInstance().getTime() );
-		reg.setDataCred( null );
-		
+		reg.setDataCred( null );		
 		reg.setCodCarteira( getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ) );
 		
 		reg.setIdentTitulo( Funcoes.strZero(banco.geraNossoNumero( (String)prefs.get( EPrefs.MDECOB ), (String)prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) , true ),11) );
 
+		reg.setDigNossoNumero( new Integer(banco.getModulo11( reg.getCodCarteira() + reg.getIdentTitulo(), 7 )).intValue());
+		
 		reg.setVlrPercMulta( new BigDecimal(0) );
 		
-		reg.setDigNossoNumero( new Integer(banco.getModulo11( reg.getCodConvBanco() + reg.getIdentTitulo(), 7 )).intValue());
 		reg.setCodMovimento( codMovimento );			
 		
 		reg.setDocCobranca( banco.getNumCli( (String)prefs.get( EPrefs.MDECOB ), (String)prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) ) );
