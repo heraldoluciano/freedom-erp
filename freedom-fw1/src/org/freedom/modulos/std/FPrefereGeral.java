@@ -118,7 +118,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JTextFieldFK txtDescMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private JCheckBoxPad cbGeraPagEmis = new JCheckBoxPad( "Gerar a partir da data de emissão da compra?", "S", "N" ); 
+	private JCheckBoxPad cbGeraPagEmis = new JCheckBoxPad( "Gera contas a pagar a partir da data de emissão.", "S", "N" ); 
+	
+	private JCheckBoxPad cbGeraRecEmis = new JCheckBoxPad( "Gera contas a receber a partir da data de emissão.", "S", "N" );
 	
 	private JTextFieldPad txtUrlWsCep = new JTextFieldPad( JTextFieldPad.TP_STRING, 150, 0 );
 
@@ -1137,26 +1139,31 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		adicCampo( txtCodPlanDR, 510, 170, 100, 20, "CodPlanDR", "Cód.Plan.DR.", ListaCampos.DB_FK, txtDescPlanDR, false );
 		adicDescFK( txtDescPlanDR, 613, 170, 240, 20, "DescPlan", "Planejamento para descontos obtidos" );
-				
+
+		
 		lbFinOpcoes.setBorder( BorderFactory.createTitledBorder( opcoes ) );			
-		adic( lbFinOpcoes, 7, 215, 485, 150 );
+		adic( lbFinOpcoes, 500, 215, 370, 175 );
 		
-		adicDB( cbAltItRecImpBol, 17, 235, 310, 20, "AtBancoImpBol", "", false );
-		adicDB( cbJurosPosCalc, 17, 255, 310, 20, "JurosPosCalc", "", false );
-		adicDB( cbEstItRecAltDtVenc, 17, 275, 400, 20, "EstItRecAltDtVenc", "", false );
-		adicDB( cbLiberacaoCreGlobal, 17, 295, 400, 20, "LcRedGlobal", "", false );
-		adicDB( cbComissManut, 17, 315, 400, 20, "VDManutComObrig", "", false );
-		adicDB( cbLancaFinContr, 510, 235, 350, 20, "LancaFinContr", "", false );
+		adicDB( cbAltItRecImpBol, 510, 235, 310, 20, "AtBancoImpBol", "", false );
+		adicDB( cbJurosPosCalc, 510, 255, 310, 20, "JurosPosCalc", "", false );
+		adicDB( cbEstItRecAltDtVenc, 510, 275, 350, 20, "EstItRecAltDtVenc", "", false );
+		adicDB( cbLiberacaoCreGlobal, 510, 295, 350, 20, "LcRedGlobal", "", false );
+		adicDB( cbComissManut, 510, 315, 350, 20, "VDManutComObrig", "", false );
+		adicDB( cbGeraPagEmis, 510, 335, 350, 20, "GeraPagEmis", "", true );
+		adicDB( cbGeraRecEmis, 510, 355, 350, 20, "GeraRecEmis", "", true );
 		
-		lbFinPagar.setBorder( BorderFactory.createTitledBorder( "Contratos/Projetos" ));
-		adic( lbFinPagar, 500, 215, 370, 100);
-		adicDB( cbGeraPagEmis, 17, 335, 400, 20, "GeraPagEmis", "", true );
+		
+		lbFinPagar.setBorder( BorderFactory.createTitledBorder( "Contratos/Projetos" ));		
+		adic( lbFinPagar, 10, 215, 485, 80);
+		
+		adicDB( cbLancaFinContr, 17, 235, 350, 20, "LancaFinContr", "", false );
+
 		
 		lbFinLibCred.setBorder( BorderFactory.createTitledBorder( "Liberação de crédito" ) );			
-		adic( lbFinLibCred, 7, 370, 485, 90 );
+		adic( lbFinLibCred, 7, 300, 485, 90 );
 
-		adicDB( rgLibCred, 20, 395, 220, 55, "PrefCred", "", true );
-		adicDB( rgTipoCred, 243, 395, 235, 55,"TipoPrefCred", "", true );
+		adicDB( rgLibCred, 20, 325, 220, 55, "PrefCred", "", true );
+		adicDB( rgTipoCred, 243, 325, 235, 55,"TipoPrefCred", "", true );
 	
 		// Contabil
 
