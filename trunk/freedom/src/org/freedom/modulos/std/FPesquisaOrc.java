@@ -283,6 +283,9 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		btConsVenda.addActionListener( this );
 
 		btConsVenda.setToolTipText( "Busca venda." );
+		
+		cbAgrupar.setVlrString( "S" );
+		
 
 	}
 
