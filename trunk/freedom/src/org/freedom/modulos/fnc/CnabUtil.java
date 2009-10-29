@@ -9,7 +9,7 @@ public class CnabUtil extends FbnUtil {
 
 	abstract class Reg {
 
-		public abstract void parseLine( String line ) throws ExceptionCnab;
+		public abstract void parseLine( String line, String padraocnab ) throws ExceptionCnab;
 
 		public abstract String getLine(String padraocnab) throws ExceptionCnab;
 
@@ -118,10 +118,10 @@ public class CnabUtil extends FbnUtil {
 			setVersaoLayout( "030" );
 		}
 		
-		public RegHeader( String line ) throws ExceptionCnab {
+		public RegHeader( String line, String padraocnab ) throws ExceptionCnab {
 			
 			this();
-			parseLine( line );
+			parseLine( line, padraocnab );
 		}
 
 		public String getAgencia() {
@@ -459,7 +459,7 @@ public class CnabUtil extends FbnUtil {
 		}
 
 		@ Override
-		public void parseLine( final String line ) throws ExceptionCnab {
+		public void parseLine( final String line, String padraocnab ) throws ExceptionCnab {
 
 			try {
 
@@ -467,31 +467,36 @@ public class CnabUtil extends FbnUtil {
 					throw new ExceptionCnab( "CNAB registro Header.\nLinha nula." );
 				}
 				else {
-
-					setCodBanco( line.substring( 0, 3 ) );
-					setLoteServico( line.substring( 3, 7 ) );
-					setRegistroHeader( line.substring( 7, 8 ).trim().length() > 0 ? Integer.parseInt( line.substring( 7, 8 ).trim() ) : 0 );
-					setTipoInscEmp( line.substring( 17, 18 ).trim().length() > 0 ? Integer.parseInt( line.substring( 17, 18 ).trim() ) : 0 );
-					setCpfCnpjEmp( line.substring( 18, 32 ) );
-					setCodConvBanco( line.substring( 32, 52 ) );
-					setAgencia( line.substring( 52, 57 ) );
-					setDigAgencia( line.substring( 57, 58 ) );
-					setConta( line.substring( 58, 70 ) );
-					setDigConta( line.substring( 70, 71 ) );
-					setDigAgConta( line.substring( 71, 72 ) );
-					setRazEmp( line.substring( 72, 102 ) );
-					setNomeBanco( line.substring( 102, 132 ) );
-					setTipoOperacao( line.substring( 142, 143 ).trim().length() > 0 ? Integer.parseInt( line.substring( 142, 143 ).trim() ) : 0 );
-					setDataGeracao( stringDDMMAAAAToDate( line.substring( 143, 151 ).trim() ) );
-					setHoraGeracao( line.substring( 151, 157 ).trim().length() > 0 ? Integer.parseInt( line.substring( 151, 157 ).trim() ) : 0 );
-					setSequenciaArq( line.substring( 157, 163 ).trim().length() > 0 ? Integer.parseInt( line.substring( 157, 163 ).trim() ) : 0 );
-					setVersaoLayout( line.substring( 163, 166 ) );
-					setDensidadeArq( line.substring( 166, 171 ) );
-					setUsoBanco( line.substring( 171, 191 ) );
-					setUsoEmp( line.substring( 191, 211 ) );
-					setUsoVans( line.substring( 225, 228 ) );
-					setTipoServico( line.substring( 228, 230 ) );
-					setOcorrencias( line.substring( 230 ) );
+					if(padraocnab.equals( CNAB_240 )) {
+						setCodBanco( line.substring( 0, 3 ) );
+						setLoteServico( line.substring( 3, 7 ) );
+						setRegistroHeader( line.substring( 7, 8 ).trim().length() > 0 ? Integer.parseInt( line.substring( 7, 8 ).trim() ) : 0 );
+						setTipoInscEmp( line.substring( 17, 18 ).trim().length() > 0 ? Integer.parseInt( line.substring( 17, 18 ).trim() ) : 0 );
+						setCpfCnpjEmp( line.substring( 18, 32 ) );
+						setCodConvBanco( line.substring( 32, 52 ) );
+						setAgencia( line.substring( 52, 57 ) );
+						setDigAgencia( line.substring( 57, 58 ) );
+						setConta( line.substring( 58, 70 ) );
+						setDigConta( line.substring( 70, 71 ) );
+						setDigAgConta( line.substring( 71, 72 ) );
+						setRazEmp( line.substring( 72, 102 ) );
+						setNomeBanco( line.substring( 102, 132 ) );
+						setTipoOperacao( line.substring( 142, 143 ).trim().length() > 0 ? Integer.parseInt( line.substring( 142, 143 ).trim() ) : 0 );
+						setDataGeracao( stringDDMMAAAAToDate( line.substring( 143, 151 ).trim() ) );
+						setHoraGeracao( line.substring( 151, 157 ).trim().length() > 0 ? Integer.parseInt( line.substring( 151, 157 ).trim() ) : 0 );
+						setSequenciaArq( line.substring( 157, 163 ).trim().length() > 0 ? Integer.parseInt( line.substring( 157, 163 ).trim() ) : 0 );
+						setVersaoLayout( line.substring( 163, 166 ) );
+						setDensidadeArq( line.substring( 166, 171 ) );
+						setUsoBanco( line.substring( 171, 191 ) );
+						setUsoEmp( line.substring( 191, 211 ) );
+						setUsoVans( line.substring( 225, 228 ) );
+						setTipoServico( line.substring( 228, 230 ) );
+						setOcorrencias( line.substring( 230 ) );
+					}
+					else if(padraocnab.equals( CNAB_400 )) {
+						
+					}
+					
 				}
 			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro Header.\nErro ao ler registro.\n" + e.getMessage() );
@@ -565,7 +570,7 @@ public class CnabUtil extends FbnUtil {
 		public Reg1( final String line ) throws ExceptionCnab {
 
 			this();
-			parseLine( line );
+			parseLine( line, CNAB_240 );
 		}
 
 		public String getAgencia() {
@@ -881,7 +886,7 @@ public class CnabUtil extends FbnUtil {
 		}
 
 		@ Override
-		public void parseLine( final String line ) throws ExceptionCnab {
+		public void parseLine( final String line, String padraocnab ) throws ExceptionCnab {
 
 			try {
 
@@ -1148,7 +1153,7 @@ public class CnabUtil extends FbnUtil {
 		public Reg3P( final String line ) throws ExceptionCnab {
 
 			this();
-			parseLine( line );
+			parseLine( line, CNAB_240 );
 		}
 
 		public char getAceite() {
@@ -1678,7 +1683,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3#parseLine(java.lang.String)
 		 */
 		@ Override
-		public void parseLine( String line ) throws ExceptionCnab {
+		public void parseLine( String line, String padraocnab ) throws ExceptionCnab {
 
 			try {
 
@@ -1766,7 +1771,7 @@ public class CnabUtil extends FbnUtil {
 		public Reg3Q( final String line ) throws ExceptionCnab {
 
 			this();
-			parseLine( line );
+			parseLine( line, CNAB_240 );
 		}
 
 		public String getBairCli() {
@@ -1973,7 +1978,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3#parseLine(java.lang.String)
 		 */
 		@ Override
-		public void parseLine( String line ) throws ExceptionCnab {
+		public void parseLine( String line, String padraocnab ) throws ExceptionCnab {
 
 			try {
 
@@ -2045,7 +2050,7 @@ public class CnabUtil extends FbnUtil {
 		public Reg3R( final String line ) throws ExceptionCnab {
 
 			this();
-			parseLine( line );
+			parseLine( line, CNAB_240 );
 		}
 
 		public String getAgenciaDeb() {
@@ -2294,7 +2299,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3#parseLine(java.lang.String)
 		 */
 		@ Override
-		public void parseLine( String line ) throws ExceptionCnab {
+		public void parseLine( String line, String padraocnab ) throws ExceptionCnab {
 
 			try {
 
@@ -2355,7 +2360,7 @@ public class CnabUtil extends FbnUtil {
 		public Reg3S( final String line ) throws ExceptionCnab {
 
 			this();
-			parseLine( line );
+			parseLine( line, CNAB_240 );
 		}
 
 		public int getLinhaImp() {
@@ -2542,7 +2547,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#parseLine(java.lang.String)
 		 */
 		@ Override
-		public void parseLine( String line ) throws ExceptionCnab {
+		public void parseLine( String line, String padraocnab ) throws ExceptionCnab {
 
 			try {
 
@@ -2627,7 +2632,7 @@ public class CnabUtil extends FbnUtil {
 		public Reg3T( final String line ) throws ExceptionCnab {
 
 			this();
-			parseLine( line );
+			parseLine( line, CNAB_240 );
 		}
 
 		public String getAgencia() {
@@ -2915,7 +2920,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#parseLine(java.lang.String)
 		 */
 		@ Override
-		public void parseLine( String line ) throws ExceptionCnab {
+		public void parseLine( String line, String padraocnab ) throws ExceptionCnab {
 
 			try {
 
@@ -2996,7 +3001,7 @@ public class CnabUtil extends FbnUtil {
 		public Reg3U( final String line ) throws ExceptionCnab {
 
 			this();
-			parseLine( line );
+			parseLine( line, CNAB_240 );
 		}
 
 		public String getCodBancoCompens() {
@@ -3208,7 +3213,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#parseLine(java.lang.String)
 		 */
 		@ Override
-		public void parseLine( String line ) throws ExceptionCnab {
+		public void parseLine( String line, String padraocnab ) throws ExceptionCnab {
 
 			try {
 
@@ -3278,7 +3283,7 @@ public class CnabUtil extends FbnUtil {
 		public Reg5( final String line ) throws ExceptionCnab {
 
 			this();
-			parseLine( line );
+			parseLine( line, CNAB_240 );
 		}
 
 		public String getAvisoLanca() {
@@ -3489,7 +3494,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#parseLine(java.lang.String)
 		 */
 		@ Override
-		public void parseLine( String line ) throws ExceptionCnab {
+		public void parseLine( String line, String padraocnab ) throws ExceptionCnab {
 
 			try {
 
@@ -3651,7 +3656,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#parseLine(java.lang.String)
 		 */
 		@ Override
-		public void parseLine( String line ) throws ExceptionCnab {
+		public void parseLine( String line, String padraocnab ) throws ExceptionCnab {
 
 			try {
 
@@ -4399,7 +4404,7 @@ public class CnabUtil extends FbnUtil {
 		public RegT400( final String line ) throws ExceptionCnab {
 	
 			this();
-			parseLine( line );
+			parseLine( line, CNAB_400 );
 		}
 	
 		public String getAgencia() {
@@ -4840,7 +4845,7 @@ public class CnabUtil extends FbnUtil {
 		}
 	
 		@ Override
-		public void parseLine( final String line ) throws ExceptionCnab {
+		public void parseLine( final String line, String padraocnab ) throws ExceptionCnab {
 	
 			try {
 	
