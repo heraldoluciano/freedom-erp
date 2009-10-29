@@ -136,7 +136,10 @@ public class FRetCnab extends FRetFBN {
 		char seguimento;
 		String line = null;
 		BufferedReader in = new BufferedReader( fileReaderCnab );
-
+		String padraocnab = CnabUtil.Reg.CNAB_240;
+		
+		// Implementar
+		
 		try {
 			 
 			while ( ( line = in.readLine() ) != null ) {
@@ -145,16 +148,17 @@ public class FRetCnab extends FRetFBN {
 				
 				switch ( tipo ) {
 					case '0' :
-						list.add( cnabutil.new RegHeader( line ) );
+						list.add( cnabutil.new RegHeader( line, padraocnab ) );
 						break;
 					case '1' :
 						Reg1 reg1 = cnabutil.new Reg1( line );
 						list.add( reg1 );
-						if ( reg1 == null 
-								|| ! reg1.getCodBanco().trim().equals( txtCodBanco.getVlrString().trim() ) ) {
+						
+						if ( reg1 == null || ! reg1.getCodBanco().trim().equals( txtCodBanco.getVlrString().trim() ) ) {
 							Funcoes.mensagemErro( this, "Arquivo de retorno não refere-se ao banco selecionado!" );
 							return false;
 						}
+						
 						break;
 					case '3' :
 						
