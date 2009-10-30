@@ -45,6 +45,7 @@ import org.freedom.modulos.fnc.CnabUtil.Reg1;
 import org.freedom.modulos.fnc.CnabUtil.Reg3T;
 import org.freedom.modulos.fnc.CnabUtil.Reg3U;
 import org.freedom.modulos.fnc.CnabUtil.RegHeader;
+import org.freedom.modulos.fnc.CnabUtil.RegT400;
 import org.freedom.telas.Aplicativo;
 
 
@@ -136,64 +137,85 @@ public class FRetCnab extends FRetFBN {
 		char seguimento;
 		String line = null;
 		BufferedReader in = new BufferedReader( fileReaderCnab );
-		String padraocnab = CnabUtil.Reg.CNAB_240;
-		
-		// Implementar
 		
 		try {
 			 
 			while ( ( line = in.readLine() ) != null ) {
 
-				tipo = line.charAt( 7 );
+
+					if(line.length()<400){
 				
-				switch ( tipo ) {
-					case '0' :
-						list.add( cnabutil.new RegHeader( line, padraocnab ) );
-						break;
-					case '1' :
-						Reg1 reg1 = cnabutil.new Reg1( line );
-						list.add( reg1 );
-						
-						if ( reg1 == null || ! reg1.getCodBanco().trim().equals( txtCodBanco.getVlrString().trim() ) ) {
-							Funcoes.mensagemErro( this, "Arquivo de retorno não refere-se ao banco selecionado!" );
-							return false;
-						}
-						
-						break;
-					case '3' :
-						
-						seguimento = line.charAt( 13 );
-						
-						switch ( seguimento ) {
-							case 'P' :
-								list.add( cnabutil.new Reg3P( line ) );
+						tipo = line.charAt( 7 );
+					
+						switch ( tipo ) {
+							case '0' :
+								list.add( cnabutil.new RegHeader( line ) );
 								break;
-							case 'Q' :
-								list.add( cnabutil.new Reg3Q( line ) );
+							case '1' :
+								Reg1 reg1 = cnabutil.new Reg1( line );
+								list.add( reg1 );
+								
+								if ( reg1 == null || ! reg1.getCodBanco().trim().equals( txtCodBanco.getVlrString().trim() ) ) {
+									Funcoes.mensagemErro( this, "Arquivo de retorno não refere-se ao banco selecionado!" );
+									return false;
+								}
+								
 								break;
-							case 'R' :
-								list.add( cnabutil.new Reg3R( line ) );
+							case '3' :
+								
+								seguimento = line.charAt( 13 );
+								
+								switch ( seguimento ) {
+									case 'P' :
+										list.add( cnabutil.new Reg3P( line ) );
+										break;
+									case 'Q' :
+										list.add( cnabutil.new Reg3Q( line ) );
+										break;
+									case 'R' :
+										list.add( cnabutil.new Reg3R( line ) );
+										break;
+									case 'S' :
+										list.add( cnabutil.new Reg3S( line ) );
+										break;
+									case 'T' :
+										list.add( cnabutil.new Reg3T( line ) );
+										break;
+									case 'U' :
+										list.add( cnabutil.new Reg3U( line ) );
+										break;
+									default :
+										break; 
+								}
+								
 								break;
-							case 'S' :
-								list.add( cnabutil.new Reg3S( line ) );
-								break;
-							case 'T' :
-								list.add( cnabutil.new Reg3T( line ) );
-								break;
-							case 'U' :
-								list.add( cnabutil.new Reg3U( line ) );
+							case '5' :
+								list.add( cnabutil.new Reg5( line ) );
 								break;
 							default :
-								break; 
+								break;
+						}
+					}
+					else { // Padrão CNAB 400
+												
+						tipo = line.charAt( 0 );
+						
+						switch ( tipo ) {
+							case '0' :
+								list.add( cnabutil.new RegHeader( line ) );
+								break;
+							case '1' :
+								RegT400 reg1 = cnabutil.new RegT400( line );
+								list.add( reg1 );
+								
+								if ( reg1 == null || ! reg1.getCodBanco().trim().equals( txtCodBanco.getVlrString().trim() ) ) {
+									Funcoes.mensagemErro( this, "Arquivo de retorno não refere-se ao banco selecionado!" );
+									return false;
+								}								
+								break;								
 						}
 						
-						break;
-					case '5' :
-						list.add( cnabutil.new Reg5( line ) );
-						break;
-					default :
-						break;
-				}
+					}
 			}
 
 			lbStatus.setText( "     Arquivo lido ..." );
