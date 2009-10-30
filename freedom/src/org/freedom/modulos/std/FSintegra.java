@@ -449,6 +449,9 @@ public class FSintegra extends FFilho implements ActionListener {
 		PreparedStatement ps;
 		String cnpjcli = "";
 		String insccli = "";
+		String cnpjfor = "";
+		String inscfor = "";
+	
 		ResultSet rs;
 		StringBuffer sSql = new StringBuffer();
 		StringBuffer sBuffer = new StringBuffer();
@@ -487,14 +490,21 @@ public class FSintegra extends FFilho implements ActionListener {
 				rs = ps.executeQuery();
 
 				lbAnd.setText( "Gerando Entrada..." );
-
+				
 				while ( rs.next() ) {
-
+					
 					sBuffer.delete( 0, sBuffer.length() );
 
+					cnpjfor = rs.getString( "CNPJFOR" );
+					inscfor = rs.getString( "INSCFOR" );
+
+					if("ISENTA".equals( inscfor.trim())) {
+						inscfor = "ISENTO";
+					}
+
 					/* 01 */sBuffer.append( "50" );
-					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CNPJFOR" ), 14 ) );
-					/* 03 */sBuffer.append( Funcoes.adicionaEspacos( Funcoes.limpaString( rs.getString( "INSCFOR" ) ), 14 ) );
+					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( cnpjfor, 14 ) );
+					/* 03 */sBuffer.append( Funcoes.adicionaEspacos(Funcoes.limpaString( inscfor), 14 ) );
 					/* 04 */sBuffer.append( Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate( rs.getDate( "DTESLF" ) ) ) );
 					/* 05 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "UFLF" ), 2 ) );
 					/* 06 */sBuffer.append( Funcoes.strZero( rs.getInt( "CODMODNOTA" ) + "", 2 ) );
@@ -620,6 +630,8 @@ public class FSintegra extends FFilho implements ActionListener {
 		PreparedStatement ps;
 		String cnpjcli = "";
 		String insccli = "";
+		String cnpjfor = "";
+		String inscfor = "";
 		ResultSet rs;
 		StringBuffer sSql = new StringBuffer();
 		StringBuffer sBuffer = new StringBuffer();
@@ -664,10 +676,17 @@ public class FSintegra extends FFilho implements ActionListener {
 				while ( rs.next() ) {
 
 					sBuffer.delete( 0, sBuffer.length() );
+					
+					cnpjfor = rs.getString( "CNPJFOR" );
+					inscfor = rs.getString( "INSCFOR" );
+
+					if("ISENTA".equals( inscfor.trim())) {
+						inscfor = "ISENTO";
+					}
 
 					/* 01 */sBuffer.append( "51" );
-					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "CNPJFOR" ), 14 ) );
-					/* 03 */sBuffer.append( Funcoes.adicionaEspacos( Funcoes.limpaString( rs.getString( "INSCFOR" ) ), 14 ) );
+					/* 02 */sBuffer.append( Funcoes.adicionaEspacos( cnpjfor, 14 ) );
+					/* 03 */sBuffer.append( Funcoes.adicionaEspacos( Funcoes.limpaString( inscfor ), 14 ) );
 					/* 04 */sBuffer.append( Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate( rs.getDate( "DTESLF" ) ) ) );
 					/* 05 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "UFLF" ), 2 ) );					
 					/* 06 */sBuffer.append( Funcoes.adicionaEspacos( rs.getString( "SERIELF" ), 3 ) );					
