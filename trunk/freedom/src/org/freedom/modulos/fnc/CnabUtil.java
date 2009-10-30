@@ -1,7 +1,9 @@
 package org.freedom.modulos.fnc;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.freedom.funcoes.Funcoes;
 
@@ -9,7 +11,7 @@ public class CnabUtil extends FbnUtil {
 
 	abstract class Reg {
 
-		public abstract void parseLine( String line, String padraocnab ) throws ExceptionCnab;
+		public abstract void parseLine( String line ) throws ExceptionCnab;
 
 		public abstract String getLine(String padraocnab) throws ExceptionCnab;
 
@@ -118,10 +120,10 @@ public class CnabUtil extends FbnUtil {
 			setVersaoLayout( "030" );
 		}
 		
-		public RegHeader( String line, String padraocnab ) throws ExceptionCnab {
+		public RegHeader( String line) throws ExceptionCnab {
 			
 			this();
-			parseLine( line, padraocnab );
+			parseLine( line  );
 		}
 
 		public String getAgencia() {
@@ -459,7 +461,7 @@ public class CnabUtil extends FbnUtil {
 		}
 
 		@ Override
-		public void parseLine( final String line, String padraocnab ) throws ExceptionCnab {
+		public void parseLine( final String line ) throws ExceptionCnab {
 
 			try {
 
@@ -467,7 +469,7 @@ public class CnabUtil extends FbnUtil {
 					throw new ExceptionCnab( "CNAB registro Header.\nLinha nula." );
 				}
 				else {
-					if(padraocnab.equals( CNAB_240 )) {
+					if(line.length()<400) { // Padrão CNAB 240
 						setCodBanco( line.substring( 0, 3 ) );
 						setLoteServico( line.substring( 3, 7 ) );
 						setRegistroHeader( line.substring( 7, 8 ).trim().length() > 0 ? Integer.parseInt( line.substring( 7, 8 ).trim() ) : 0 );
@@ -493,7 +495,72 @@ public class CnabUtil extends FbnUtil {
 						setTipoServico( line.substring( 228, 230 ) );
 						setOcorrencias( line.substring( 230 ) );
 					}
-					else if(padraocnab.equals( CNAB_400 )) {
+					else { //Padrão CNAB 400
+						System.out.println("LENDO CNAB 400...");
+						
+						//Identificador de retorno
+						if("2".equals(line.substring( 1,2 ))) {
+							
+							setRegistroHeader( new Integer(line.substring( 0,1 )).intValue() );
+							setTipoOperacao( 2 );
+							setCodConvBanco( line.substring( 26, 46 ) );
+							setRazEmp( line.substring( 46, 76 ));
+							setCodBanco( line.substring( 76,79 ));
+							setNomeBanco( line.substring( 79, 94 ) );
+							setDataGeracao( stringDDMMAAToDate( line.substring( 94, 100 ).trim() )  );
+							setSequenciaArq( Integer.parseInt( line.substring(394,400)) );
+
+							
+						}
+						else {
+							Funcoes.mensagemInforma( null, "Arquivo informado não representa um arquivo de retorno válido no padrão CNAB 400!" );
+						}
+						
+						
+
+//						line.append( "1" ); // Posição 002 a 002 - Identificação do Arquvo de remessa
+//						line.append( LITERAL_REM ); // Posição 003 a 009 - Literação de remassa 
+//						line.append( "01" ); //Posição 010 a 011 - Código do serviço (01)
+//						line.append( format( LITERAL_SERV, ETipo.X, 15,0 ));// Posição 012 a 026 - Literal Serviço
+//						line.append( Funcoes.strZero( getCodConvBanco(),20 ) );// Posição 027 a 046 - Código da Empresa
+//						line.append( format( getRazEmp(), ETipo.X, 30, 0 ) );// Posição 047 a 076 - Nome da Empresa
+//						line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );// Posição 077 a 079 - Número do banco na câmara de compensação 
+//						line.append( format( getNomeBanco(), ETipo.X, 15, 0 ) );// Posição 080 a 094 - Nome do banco por extenso
+//						line.append( dateToString( getDataGeracao(),DATA_06 ) );// Posição 095 a 100 - Data da gravação do arquivo 
+//						line.append( Funcoes.replicate( " ", 8 ) );// Posição 101 a 108 - Espaço em branco
+//						line.append( LITERAL_SISTEMA );// Posição 109 a 110 - Literal do Sistema (MX - Micro a micro)
+//						line.append( format( getSequenciaArq(), ETipo.$9, 7, 0 ) ); // Posição 111 a 117 - Nro sequencial da remessa
+//						line.append( Funcoes.replicate( " ", 277 ) ); // Posição 118 a 394 - Espaço em branco
+//						line.append( format( 1, ETipo.$9, 6, 0 ) ); // Sequencial do registro de um em um 
+//						line.append( (char) 13 );
+//						line.append( (char) 10 );
+/*						
+						02
+						RETORNO
+						01
+						COBRANCA       
+						00000000000004249460
+						METALURGICA POJDA LTDA        
+						237
+						BRADESCO       
+						281009
+						01600000
+						00001
+						                                                                                                                                                                                                                                                                          281009         000001
+						102794400950001140000009017050003288300000001601              000000000000000160150000000000000000000000000902281009000000160100000000000000016015301009000000006240023702055  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          0000000000                                                                  000002
+						102794400950001140000009017050003288300000001701              000000000000000170110000000000000000000000000902281009000000170100000000000000017011251009000000009990023700546  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          0000000000                                                                  000003
+						102794400950001140000009017050003288300000001901              000000000000000190140000000000000000000000000902281009000000190100000000000000019014281009000000063510023700524  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          0000000000                                                                  000004
+						102794400950001140000009017050003288300000009001              000000000000000900100000000000000000000000000902281009000000900100000000000000090010231009000000002200023700546  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          0000000000                                                                  000005
+						102794400950001140000009017050003288300000009901              000000000000000990180000000000000000000000000902281009000000990100000000000000099018291009000000001000023700383  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          0000000000                                                                  000006
+						102794400950001140000009017050003288300000651101              000000000000065110180000000000000000000000000902281009000065110100000000000006511018241009000000002250023700049  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          0000000000                                                                  000007
+						102794400950001140000009017050003288300000656401              000000000000065640140000000000000000000000000902281009000065640100000000000006564014221009000000004100023700452  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          0000000000                                                                  000008
+						102794400950001140000009017050003288300000657601              000000000000065760120000000000000000000000000902281009000065760100000000000006576012311009000000012585023700268  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          0000000000                                                                  000009
+						102794400950001140000009017050003288300000001101              000000000000000110130000000000000000000000000924281009000000110100000000000000011013271009000000013650023700000  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          4800000000                                                                  000010
+						102794400950001140000009017050003288300000001401              000000000000000140120000000000000000000000000924281009000000140100000000000000014012261009000000012000023700000  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          4800000000                                                                  000011
+						9201237          000000080000000101875000000001          00008000001018750000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                                                                                                                                                                              00000000000000000000000         000012
+						
+						
+	*/					
 						
 					}
 					
@@ -570,7 +637,7 @@ public class CnabUtil extends FbnUtil {
 		public Reg1( final String line ) throws ExceptionCnab {
 
 			this();
-			parseLine( line, CNAB_240 );
+			parseLine( line );
 		}
 
 		public String getAgencia() {
@@ -886,7 +953,7 @@ public class CnabUtil extends FbnUtil {
 		}
 
 		@ Override
-		public void parseLine( final String line, String padraocnab ) throws ExceptionCnab {
+		public void parseLine( final String line ) throws ExceptionCnab {
 
 			try {
 
@@ -1153,7 +1220,7 @@ public class CnabUtil extends FbnUtil {
 		public Reg3P( final String line ) throws ExceptionCnab {
 
 			this();
-			parseLine( line, CNAB_240 );
+			parseLine( line );
 		}
 
 		public char getAceite() {
@@ -1683,7 +1750,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3#parseLine(java.lang.String)
 		 */
 		@ Override
-		public void parseLine( String line, String padraocnab ) throws ExceptionCnab {
+		public void parseLine( String line ) throws ExceptionCnab {
 
 			try {
 
@@ -1771,7 +1838,7 @@ public class CnabUtil extends FbnUtil {
 		public Reg3Q( final String line ) throws ExceptionCnab {
 
 			this();
-			parseLine( line, CNAB_240 );
+			parseLine( line );
 		}
 
 		public String getBairCli() {
@@ -1978,7 +2045,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3#parseLine(java.lang.String)
 		 */
 		@ Override
-		public void parseLine( String line, String padraocnab ) throws ExceptionCnab {
+		public void parseLine( String line ) throws ExceptionCnab {
 
 			try {
 
@@ -2050,7 +2117,7 @@ public class CnabUtil extends FbnUtil {
 		public Reg3R( final String line ) throws ExceptionCnab {
 
 			this();
-			parseLine( line, CNAB_240 );
+			parseLine( line );
 		}
 
 		public String getAgenciaDeb() {
@@ -2299,7 +2366,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg3#parseLine(java.lang.String)
 		 */
 		@ Override
-		public void parseLine( String line, String padraocnab ) throws ExceptionCnab {
+		public void parseLine( String line ) throws ExceptionCnab {
 
 			try {
 
@@ -2360,7 +2427,7 @@ public class CnabUtil extends FbnUtil {
 		public Reg3S( final String line ) throws ExceptionCnab {
 
 			this();
-			parseLine( line, CNAB_240 );
+			parseLine( line );
 		}
 
 		public int getLinhaImp() {
@@ -2547,7 +2614,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#parseLine(java.lang.String)
 		 */
 		@ Override
-		public void parseLine( String line, String padraocnab ) throws ExceptionCnab {
+		public void parseLine( String line ) throws ExceptionCnab {
 
 			try {
 
@@ -2632,7 +2699,7 @@ public class CnabUtil extends FbnUtil {
 		public Reg3T( final String line ) throws ExceptionCnab {
 
 			this();
-			parseLine( line, CNAB_240 );
+			parseLine( line );
 		}
 
 		public String getAgencia() {
@@ -2920,7 +2987,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#parseLine(java.lang.String)
 		 */
 		@ Override
-		public void parseLine( String line, String padraocnab ) throws ExceptionCnab {
+		public void parseLine( String line ) throws ExceptionCnab {
 
 			try {
 
@@ -3001,7 +3068,7 @@ public class CnabUtil extends FbnUtil {
 		public Reg3U( final String line ) throws ExceptionCnab {
 
 			this();
-			parseLine( line, CNAB_240 );
+			parseLine( line );
 		}
 
 		public String getCodBancoCompens() {
@@ -3213,7 +3280,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#parseLine(java.lang.String)
 		 */
 		@ Override
-		public void parseLine( String line, String padraocnab ) throws ExceptionCnab {
+		public void parseLine( String line ) throws ExceptionCnab {
 
 			try {
 
@@ -3283,7 +3350,7 @@ public class CnabUtil extends FbnUtil {
 		public Reg5( final String line ) throws ExceptionCnab {
 
 			this();
-			parseLine( line, CNAB_240 );
+			parseLine( line );
 		}
 
 		public String getAvisoLanca() {
@@ -3494,7 +3561,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#parseLine(java.lang.String)
 		 */
 		@ Override
-		public void parseLine( String line, String padraocnab ) throws ExceptionCnab {
+		public void parseLine( String line ) throws ExceptionCnab {
 
 			try {
 
@@ -3656,7 +3723,7 @@ public class CnabUtil extends FbnUtil {
 		 * @see org.freedom.modulos.fnc.CnabUtil.Reg#parseLine(java.lang.String)
 		 */
 		@ Override
-		public void parseLine( String line, String padraocnab ) throws ExceptionCnab {
+		public void parseLine( String line ) throws ExceptionCnab {
 
 			try {
 
@@ -3935,6 +4002,36 @@ public class CnabUtil extends FbnUtil {
 
 		return retorno;
 	}
+	
+	public static Date stringDDMMAAToDate( final String arg ) throws ExceptionCnab {
+
+		Date retorno = null;
+		Calendar cl = new GregorianCalendar();
+
+		try {
+			
+			cl = Calendar.getInstance();
+			
+			if ( arg != null && arg.trim().length() > 7 ) {
+
+				int dia = Integer.parseInt( arg.substring( 0, 2 ) );
+				int mes = Integer.parseInt( arg.substring( 2, 4 ) );
+				
+				String anoatu = cl.get( Calendar.YEAR ) + "";
+				
+				int ano = Integer.parseInt(anoatu.substring( 0,2 ) +  arg.substring( 4 )) ;
+
+				if ( dia > 0 && mes > 0 && ano > 0 ) {
+					retorno = Funcoes.encodeDate( ano, mes, dia );					
+				}
+			}
+		} catch ( NumberFormatException e ) {
+			throw new ExceptionCnab( "Erro na função stringToDate.\n" + e.getMessage() );
+		}
+
+		return retorno;
+	}
+
 
 	/**
 	 * Converte para java.math.BigDecimal um String de inteiros sem ponto ou virgula.
@@ -4404,7 +4501,7 @@ public class CnabUtil extends FbnUtil {
 		public RegT400( final String line ) throws ExceptionCnab {
 	
 			this();
-			parseLine( line, CNAB_400 );
+			parseLine( line );
 		}
 	
 		public String getAgencia() {
@@ -4845,7 +4942,7 @@ public class CnabUtil extends FbnUtil {
 		}
 	
 		@ Override
-		public void parseLine( final String line, String padraocnab ) throws ExceptionCnab {
+		public void parseLine( final String line ) throws ExceptionCnab {
 	
 			try {
 	
@@ -4853,27 +4950,52 @@ public class CnabUtil extends FbnUtil {
 					throw new ExceptionCnab( "CNAB registro 1.\nLinha nula." );
 				}
 				else {	
-					setCodBanco( line.substring( 0, 3 ) );
-					setLoteServico( line.substring( 3, 7 ).trim().length() > 0 ? Integer.parseInt( line.substring( 3, 7 ).trim() ) : 0 );
-					setRegistroHeader( line.substring( 7, 8 ).trim().length() > 0 ? Integer.parseInt( line.substring( 7, 8 ).trim() ) : 0 );
-					setTipoOperacao( line.substring( 8, 9 ) );
-					setTipoServico( line.substring( 9, 11 ) );
-					setFormaLancamento( line.substring( 11, 13 ) );
-					setVersaoLayout( line.substring( 13, 16 ) );
-					setTipoInscEmp( line.substring( 17, 18 ).trim().length() > 0 ? Integer.parseInt( line.substring( 17, 18 ).trim() ) : 0 );
-					setCpfCnpjEmp( line.substring( 18, 33 ) );
-					setCodConvBanco( line.substring( 33, 53 ) );
-					setAgencia( line.substring( 53, 58 ) );
-					setDigAgencia( line.substring( 58, 59 ) );
-					setConta( line.substring( 59, 71 ) );
-					setDigConta( line.substring( 71, 72 ) );
-					setDigAgConta( line.substring( 72, 73 ) );
-					setRazEmp( line.substring( 73, 103 ) );
-					setMsg1( line.substring( 103, 143 ) );
-					setMsg2( line.substring( 143, 183 ) );
-					setNrRemRet( line.substring( 183, 191 ).trim().length() > 0 ? Integer.parseInt( line.substring( 183, 191 ).trim() ) : 0 );
-					setDataRemRet( stringDDMMAAAAToDate( line.substring( 191, 199 ).trim() ) );
-					setDataCred( stringDDMMAAAAToDate( line.substring( 199, 207 ).trim() ) );
+					
+					if(line.length()<400) { // Padrão CNAB 240
+						setCodBanco( line.substring( 0, 3 ) );
+						setLoteServico( line.substring( 3, 7 ).trim().length() > 0 ? Integer.parseInt( line.substring( 3, 7 ).trim() ) : 0 );
+						setRegistroHeader( line.substring( 7, 8 ).trim().length() > 0 ? Integer.parseInt( line.substring( 7, 8 ).trim() ) : 0 );
+						setTipoOperacao( line.substring( 8, 9 ) );
+						setTipoServico( line.substring( 9, 11 ) );
+						setFormaLancamento( line.substring( 11, 13 ) );
+						setVersaoLayout( line.substring( 13, 16 ) );
+						setTipoInscEmp( line.substring( 17, 18 ).trim().length() > 0 ? Integer.parseInt( line.substring( 17, 18 ).trim() ) : 0 );
+						setCpfCnpjEmp( line.substring( 18, 33 ) );
+						setCodConvBanco( line.substring( 33, 53 ) );
+						setAgencia( line.substring( 53, 58 ) );
+						setDigAgencia( line.substring( 58, 59 ) );
+						setConta( line.substring( 59, 71 ) );
+						setDigConta( line.substring( 71, 72 ) );
+						setDigAgConta( line.substring( 72, 73 ) );
+						setRazEmp( line.substring( 73, 103 ) );
+						setMsg1( line.substring( 103, 143 ) );
+						setMsg2( line.substring( 143, 183 ) );
+						setNrRemRet( line.substring( 183, 191 ).trim().length() > 0 ? Integer.parseInt( line.substring( 183, 191 ).trim() ) : 0 );
+						setDataRemRet( stringDDMMAAAAToDate( line.substring( 191, 199 ).trim() ) );
+						setDataCred( stringDDMMAAAAToDate( line.substring( 199, 207 ).trim() ) );
+					}
+					else { // Padrão CNAB 400
+						
+						
+						
+						
+						
+					//	***
+						
+					// Implementar leitura do retorno	
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					}
+					
 				}
 			} catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro 1.\nErro ao ler registro.\n" + e.getMessage() );
