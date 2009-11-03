@@ -401,7 +401,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		lcCampos.addInsertListener( this );
 		lcDet.addInsertListener( this );
-
+		lcDet.addCarregaListener( this );
 		lcDet.addPostListener( this );
 		lcCampos.addPostListener( this );
 
@@ -2032,6 +2032,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		if ( cevt.getListaCampos() == lcDet ) {
 			lcOrc2.carregaDados();// Carrega os Totais
+			atualizaLucratividade();
 		}
 		else if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) {
 			if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
