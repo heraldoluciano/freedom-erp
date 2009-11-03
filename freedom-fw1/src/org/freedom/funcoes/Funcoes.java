@@ -2287,6 +2287,9 @@ public class Funcoes {
 
 	public static String strZero(String val, int zeros) {
 		String sRetorno = null;
+		if(val.length()>zeros) {
+			return val.substring(0,zeros);
+		}
 		if (val == null) {
 			sRetorno = replicate("0", zeros);
 		} else {	
