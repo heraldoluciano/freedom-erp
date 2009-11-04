@@ -124,7 +124,7 @@ public class FRPontoEqui extends FRelatorio {
 		BigDecimal bRet = new BigDecimal("0");  
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = "SELECT SUM(SL.vlrsublanca * -1)" +
+		String sSQL = "SELECT SUM(SL.vlrsublanca * -1) VLRSUBLANCA" +
 					  "FROM FNPLANEJAMENTO P, fnsublanca SL,FNLANCA L "+
 					  "WHERE P.CODEMP=? AND P.CODFILIAL=? "+
 					  "AND SL.codemp = P.codemp AND SL.codfilial = P.codfilial AND SL.codplan = P.codplan "+
@@ -141,7 +141,7 @@ public class FRPontoEqui extends FRelatorio {
 			ps.setString(5,sGet);
 			rs = ps.executeQuery();
 			if (rs.next())
-				bRet =  ( (rs.getBigDecimal(1)==null) ? (new BigDecimal(0)) : (rs.getBigDecimal(1).abs()) );
+				bRet =  ( (rs.getBigDecimal("VLRSUBLANCA")==null) ? (new BigDecimal(0)) : (rs.getBigDecimal("VLRSUBLANCA").abs()) );
 			
 			rs.close();
 			ps.close();
@@ -161,7 +161,7 @@ public class FRPontoEqui extends FRelatorio {
 		BigDecimal bFin = new BigDecimal("0");
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = "SELECT SUM(SL.vlrsublanca * -1)" +
+		String sSQL = "SELECT SUM(SL.vlrsublanca * -1) VLRSUBLANCA" +
 					  "FROM FNPLANEJAMENTO P, fnsublanca SL,FNLANCA L "+
 					  "WHERE P.TIPOPLAN IN ('R','D') "+
 					  "AND P.CODEMP=? AND P.CODFILIAL=? "+
@@ -179,7 +179,7 @@ public class FRPontoEqui extends FRelatorio {
 			ps.setString(5,sFin);
 			rs = ps.executeQuery();
 			if (rs.next())
-				bFin = ( (rs.getBigDecimal(1)==null) ? (new BigDecimal(0)) : (rs.getBigDecimal(1).abs()) );
+				bFin = ( (rs.getBigDecimal("VLRSUBLANCA")==null) ? (new BigDecimal(0)) : (rs.getBigDecimal("VLRSUBLANCA").abs()) );
 			
 			rs.close();
 			ps.close();
@@ -203,7 +203,7 @@ public class FRPontoEqui extends FRelatorio {
 				    		
 		BigDecimal bdRec = getRecDesp("R");
 		
-		if (bdRec.equals(new BigDecimal("0"))) {
+		if (bdRec.equals(new BigDecimal(0))) {
 			Funcoes.mensagemErro(this,"Não existem valores para o período especificado!");
 			return;
 		}				
