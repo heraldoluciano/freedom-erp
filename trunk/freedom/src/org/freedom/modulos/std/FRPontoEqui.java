@@ -124,7 +124,7 @@ public class FRPontoEqui extends FRelatorio {
 		BigDecimal bRet = new BigDecimal("0");  
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = "SELECT SUM(SL.vlrsublanca * -1) VLRSUBLANCA" +
+		String sSQL = "SELECT SUM(SL.vlrsublanca * -1) VLRSUBLANCA " +
 					  "FROM FNPLANEJAMENTO P, fnsublanca SL,FNLANCA L "+
 					  "WHERE P.CODEMP=? AND P.CODFILIAL=? "+
 					  "AND SL.codemp = P.codemp AND SL.codfilial = P.codfilial AND SL.codplan = P.codplan "+
@@ -161,7 +161,7 @@ public class FRPontoEqui extends FRelatorio {
 		BigDecimal bFin = new BigDecimal("0");
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = "SELECT SUM(SL.vlrsublanca * -1) VLRSUBLANCA" +
+		String sSQL = "SELECT SUM(SL.vlrsublanca * -1) VLRSUBLANCA " +
 					  "FROM FNPLANEJAMENTO P, fnsublanca SL,FNLANCA L "+
 					  "WHERE P.TIPOPLAN IN ('R','D') "+
 					  "AND P.CODEMP=? AND P.CODFILIAL=? "+
@@ -285,7 +285,7 @@ public class FRPontoEqui extends FRelatorio {
 			impAux( imp, "| 08 | Receitas financeiras (RF):", 
 					bdRF.toString(), 
 					bdRF.multiply( new BigDecimal(100) ).divide( bdRec, 6 ).toString() );			
-			impAux( imp, "| 09 | Lucro operacional (DF):", 
+			impAux( imp, "| 09 | Despesas financeiras (DF):", 
 					bdDF.toString(), 
 					bdDF.multiply( new BigDecimal(100) ).divide( bdRec, 6 ).toString() );						
 			impAux( imp, "| 10 | Contribuição social (CS):", 
