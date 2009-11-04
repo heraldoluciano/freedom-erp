@@ -178,6 +178,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FManutRec.java"/>
         <file path="/freedom/src/org/freedom/relatorios/FuncComis.jrxml"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FLiberaCredito.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRPontoEqui.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRPlanoPag.java"/>
         <file path="/freedom/src/org/freedom/relatorios/UltVendasPorCliente.jasper"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLNovoPag.java"/>
@@ -215,7 +216,6 @@
         <file path="/freedom/src/org/freedom/relatorios/CodficProdGrup.jrxml"/>
         <file path="/freedom/src/org/freedom/relatorios/FechaDiarioDet.jasper"/>
         <file path="/freedom/src/org/freedom/relatorios/CodficProd.jasper"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTabICMS.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRTipoFor.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRPlanejamento.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>

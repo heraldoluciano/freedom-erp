@@ -715,7 +715,8 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 		String sTipoFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.RD.ordinal() ) ).trim();
 		String sSQLQuery = 
 			"SELECT P.DESCPLAN,F.CODSUBPLAN,C.AGENCIACONTA,C.NUMCONTA,C.DESCCONTA,C.CODBANCO,C.DATACONTA,C.CODMOEDA " + 
-			"FROM FNPLANEJAMENTO P, FNPLANEJAMENTO F, FNCONTA C " + "WHERE F.CODPLAN='" + sCodFilho + "' AND P.CODPLAN=F.CODSUBPLAN AND " +
+			"FROM FNPLANEJAMENTO P, FNPLANEJAMENTO F, FNCONTA C " + 
+			"WHERE F.CODPLAN='" + sCodFilho + "' AND P.CODPLAN=F.CODSUBPLAN AND " +
 			"P.CODEMP=F.CODEMP AND P.CODFILIAL=F.CODFILIAL AND F.CODEMP=? AND F.CODFILIAL=? AND C.CODPLAN=F.CODPLAN";
 		
 		System.out.println(sSQLQuery);
