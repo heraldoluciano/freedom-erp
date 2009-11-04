@@ -86,6 +86,8 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 	private JButton btImp = new JButton( Icone.novo( "btImprime.gif" ) );
 
 	private JButton btPrevimp = new JButton( Icone.novo( "btPrevimp.gif" ) );
+	
+	private enum COL_PLAN {CODIGO, CODRED, DESC, RD, FIN};
 
 	public FPlanejamento() {
 
@@ -124,11 +126,11 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 		tab.adicColuna( "Descrição" );
 		tab.adicColuna( "R/D" );
 		tab.adicColuna( "Fin." );
-		tab.setTamColuna( 140, 0 );
-		tab.setTamColuna( 70, 1 );
-		tab.setTamColuna( 320, 2 );
-		tab.setTamColuna( 43, 3 );
-		tab.setTamColuna( 43, 4 );
+		tab.setTamColuna( 140, COL_PLAN.CODIGO.ordinal() );
+		tab.setTamColuna( 70, COL_PLAN.CODRED.ordinal() );
+		tab.setTamColuna( 320, COL_PLAN.DESC.ordinal() );
+		tab.setTamColuna( 43, COL_PLAN.RD.ordinal() );
+		tab.setTamColuna( 43, COL_PLAN.FIN.ordinal() );
 
 		btSair.addActionListener( this );
 		btPrim.addActionListener( this );
@@ -159,11 +161,11 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			rs = ps.executeQuery();
 			for ( int i = 0; rs.next(); i++ ) {
 				tab.adicLinha();
-				tab.setValor( rs.getString( "CodPlan" ), i, 0 );
-				tab.setValor( rs.getString( "CodRedPlan" ) != null ? rs.getString( "CodRedPlan" ) : "", i, 1 );
-				tab.setValor( rs.getString( "DescPlan" ), i, 2 );
-				tab.setValor( rs.getString( "TipoPlan" ), i, 3 );
-				tab.setValor( rs.getString( "FinPlan" ) != null ? rs.getString( "FinPlan" ) : "", i, 4 );
+				tab.setValor( rs.getString( "CodPlan" ), i, COL_PLAN.CODIGO.ordinal() );
+				tab.setValor( rs.getString( "CodRedPlan" ) != null ? rs.getString( "CodRedPlan" ) : "", i, COL_PLAN.CODRED.ordinal() );
+				tab.setValor( rs.getString( "DescPlan" ), i, COL_PLAN.DESC.ordinal() );
+				tab.setValor( rs.getString( "TipoPlan" ), i, COL_PLAN.RD.ordinal() );
+				tab.setValor( rs.getString( "FinPlan" ) != null ? rs.getString( "FinPlan" ) : "", i, COL_PLAN.FIN.ordinal() );
 			}
 			// rs.close();
 			// ps.close();
@@ -232,7 +234,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			Funcoes.mensagemInforma( this, "Seleciona a origem na tabela! ! !" );
 			return;
 		}
-		String sCodPai = ( "" + tab.getValor( tab.getLinhaSel(), 0 ) ).trim();
+		String sCodPai = ( "" + tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim();
 		if ( sCodPai.length() == 13 ) {
 			Funcoes.mensagemInforma( this, "Não é possível criar uma Conta Sintética de uma Conta Analítica! ! !" );
 			return;
@@ -241,15 +243,17 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			Funcoes.mensagemInforma( this, "Não é possível criar mais de quatro niveis de contas sintética! ! !" );
 			return;
 		}
-		String sDescPai = ( "" + tab.getValor( tab.getLinhaSel(), 2 ) ).trim();
-		String sTipoFilho = ( "" + tab.getValor( tab.getLinhaSel(), 3 ) ).trim();
+		String sDescPai = ( "" + tab.getValor( tab.getLinhaSel(), COL_PLAN.DESC.ordinal() ) ).trim();
+		String sTipoFilho = ( "" + tab.getValor( tab.getLinhaSel(), COL_PLAN.RD.ordinal() ) ).trim();
 		String sDescFilho = "";
 		String sCodFilho = "";
 		int iCodFilho = 0;
 		int iNivelPai = 0;
 		int iNivelFilho = 0;
 		String sMax = "";
-		String sSQLQuery = "SELECT G.NIVELPLAN,(SELECT MAX(M.CODPLAN) FROM FNPLANEJAMENTO M " + "WHERE M.CODSUBPLAN=G.CODPLAN AND M.CODEMP=G.CODEMP AND M.CODFILIAL=G.CODFILIAL)" + "FROM FNPLANEJAMENTO G WHERE G.CODPLAN='" + sCodPai + "' AND G.CODEMP=? AND G.CODFILIAL=?";
+		String sSQLQuery = "SELECT G.NIVELPLAN,(SELECT MAX(M.CODPLAN) FROM FNPLANEJAMENTO M " + 
+		  "WHERE M.CODSUBPLAN=G.CODPLAN AND M.CODEMP=G.CODEMP AND M.CODFILIAL=G.CODFILIAL)" + 
+		  "FROM FNPLANEJAMENTO G WHERE G.CODPLAN='" + sCodPai + "' AND G.CODEMP=? AND G.CODFILIAL=?";
 		PreparedStatement psQuery = null;
 		ResultSet rs = null;
 		try {
@@ -284,7 +288,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 		sDescFilho = ( dl.getValores() )[ 0 ];
 		sTipoFilho = ( dl.getValores() )[ 1 ];
 		dl.dispose();
-		String sSQL = "INSERT INTO FNPLANEJAMENTO (CODEMP,CODFILIAL,CODPLAN,DESCPLAN,NIVELPLAN,CODSUBPLAN,TIPOPLAN) " + "VALUES (?,?,?,?,?,?,?)";
+		String sSQL = "INSERT INTO FNPLANEJAMENTO (CODEMP, CODFILIAL, CODPLAN, DESCPLAN, NIVELPLAN, CODSUBPLAN, TIPOPLAN) " + "VALUES (?,?,?,?,?,?,?)";
 		PreparedStatement ps = null;
 		try {
 			ps = con.prepareStatement( sSQL );
@@ -315,10 +319,10 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			return;
 		}
 		
-		String sCodPai = String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ).trim();
-		String sDescPai = String.valueOf( tab.getValor( tab.getLinhaSel(), 2 ) ).trim();
-		String sTipoFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), 3 ) ).trim();
-		String sFinPlanP = String.valueOf( tab.getValor( tab.getLinhaSel(), 4 ) ).trim();
+		String sCodPai = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim();
+		String sDescPai = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.DESC.ordinal() ) ).trim();
+		String sTipoFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.RD.ordinal() ) ).trim();
+		String sFinPlanP = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.FIN.ordinal() ) ).trim();
 		
 		if ( sCodPai.length() == 13 ) {
 			Funcoes.mensagemInforma( this, "Não é possível criar uma conta analítica de outra conta analítica! ! !" );
@@ -522,9 +526,9 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 
 	private void editaPrim() {
 
-		String sCodFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ).trim();
-		String sDescFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), 2 ) ).trim();
-		String sTipoFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), 3 ) ).trim();
+		String sCodFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim();
+		String sDescFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.DESC.ordinal() ) ).trim();
+		String sTipoFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.RD.ordinal() ) ).trim();
 		
 		DLPlanPrim dl = new DLPlanPrim( this, sCodFilho, sDescFilho, sTipoFilho );
 		dl.setVisible( true );
@@ -555,11 +559,12 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 
 	private void editaSin() {
 
-		String sCodFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ).trim();
+		String sCodFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim();
 		String sCodPai = sCodFilho.substring( 0, sCodFilho.length() - 2 );
-		String sDescFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), 2 ) ).trim();
-		String sTipoFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), 3 ) ).trim();
-		String sSQLQuery = "SELECT DESCPLAN FROM FNPLANEJAMENTO WHERE CODPLAN='" + sCodPai + "' AND CODEMP=? AND CODFILIAL=?";
+		String sDescFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.DESC.ordinal() ) ).trim();
+		String sTipoFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.RD.ordinal() ) ).trim();
+		String sSQLQuery = "SELECT DESCPLAN FROM FNPLANEJAMENTO WHERE CODPLAN='" + sCodPai + 
+		   "' AND CODEMP=? AND CODFILIAL=?";
 		String sDescPai = "";
 		try {
 			PreparedStatement psQuery = con.prepareStatement( sSQLQuery );
@@ -584,7 +589,8 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 		}
 		sDescFilho = ( dl.getValores() )[ 0 ];
 		dl.dispose();
-		String sSQL = "UPDATE FNPLANEJAMENTO SET DESCPLAN='" + sDescFilho + "' WHERE CODPLAN='" + sCodFilho + "' AND CODEMP=? AND CODFILIAL=?";
+		String sSQL = "UPDATE FNPLANEJAMENTO SET DESCPLAN='" + sDescFilho + 
+		   "' WHERE CODPLAN='" + sCodFilho + "' AND CODEMP=? AND CODFILIAL=?";
 		
 		try {
 			PreparedStatement ps = con.prepareStatement( sSQL );
@@ -603,10 +609,10 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 
 	private void editaAnal() {
 
-		String sCodFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ).trim();
-		String sDescFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), 2 ) ).trim();
-		String sTipoFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), 3 ) ).trim();
-		String sFinPlan = String.valueOf( tab.getValor( tab.getLinhaSel(), 4 ) ).trim();
+		String sCodFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim();
+		String sDescFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.DESC.ordinal() ) ).trim();
+		String sTipoFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.RD.ordinal() ) ).trim();
+		String sFinPlan = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.FIN.ordinal() ) ).trim();
 		String sCodContDeb = null;
 		String sCodContCred = null;
 		Integer iCodHist = 0;	
@@ -704,13 +710,15 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 
 	private void editaAnalBanc() {
 
-		String sCodFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ).trim();
-		String sDescFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), 2 ) ).trim();
-		String sTipoFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), 3 ) ).trim();
+		String sCodFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim();
+		String sDescFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.DESC.ordinal() ) ).trim();
+		String sTipoFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.RD.ordinal() ) ).trim();
 		String sSQLQuery = 
 			"SELECT P.DESCPLAN,F.CODSUBPLAN,C.AGENCIACONTA,C.NUMCONTA,C.DESCCONTA,C.CODBANCO,C.DATACONTA,C.CODMOEDA " + 
-			"FROM FNPLANEJAMENTO P, FNPLANEJAMENTO F, FNCONTA C " + "WHERE F.CODPLAN='" + sCodFilho + "' AND P.CODPLAN=F.CODSUBPLAN " +
+			"FROM FNPLANEJAMENTO P, FNPLANEJAMENTO F, FNCONTA C " + "WHERE F.CODPLAN='" + sCodFilho + "' AND P.CODPLAN=F.CODSUBPLAN AND " +
 			"P.CODEMP=F.CODEMP AND P.CODFILIAL=F.CODFILIAL AND F.CODEMP=? AND F.CODFILIAL=? AND C.CODPLAN=F.CODPLAN";
+		
+		System.out.println(sSQLQuery);
 		PreparedStatement psQuery = null;
 		ResultSet rs = null;
 		String sDescPai = "";
@@ -928,14 +936,14 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			montaTab();
 		}
 		else if ( ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) & ( kevt.getSource() == tab ) & ( tab.getLinhaSel() >= 0 ) ) {
-			if ( String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ).trim().length() == 1 ) {
+			if ( String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim().length() == 1 ) {
 				editaPrim();
 			}
-			else if ( ( String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ).trim().length() > 1 ) 
-					& ( String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ).trim().length() < 13 ) ) {
+			else if ( ( String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim().length() > 1 ) 
+					& ( String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim().length() < 13 ) ) {
 				editaSin();
 			}
-			else if ( String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ).trim().length() == 13 ) {
+			else if ( String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim().length() == 13 ) {
 				editaAnal();
 			}
 			montaTab();
@@ -953,22 +961,22 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 	public void mouseClicked( MouseEvent mevt ) {
 	
 		if ( ( mevt.getSource() == tab ) & ( mevt.getClickCount() == 2 ) & ( tab.getLinhaSel() >= 0 ) ) {
-			if ( String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ).trim().length() == 1 ) {
+			if ( String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim().length() == 1 ) {
 				editaPrim();
 			}
-			else if ( ( String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ).trim().length() > 1 ) 
-					& ( String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ).trim().length() < 13 ) ) {
+			else if ( ( String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim().length() > 1 ) 
+					& ( String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim().length() < 13 ) ) {
 				editaSin();
 			}
-			else if ( ( String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ).trim().length() == 13 ) 
-					& ( String.valueOf( tab.getValor( tab.getLinhaSel(), 2 ) ).trim().compareTo( "B" ) == 0 ) ) {
+			else if ( ( String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim().length() == 13 ) 
+					& ( String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.RD.ordinal() ) ).trim().compareTo( "B" ) == 0 ) ) {
 				editaAnalBanc();
 			}
-			else if ( ( String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ).trim().length() == 13 ) 
-					& ( String.valueOf( tab.getValor( tab.getLinhaSel(), 2 ) ).trim().compareTo( "C" ) == 0 ) ) {
+			else if ( ( String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim().length() == 13 ) 
+					& ( String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.RD.ordinal() ) ).trim().compareTo( "C" ) == 0 ) ) {
 				editaAnalBanc();
 			}
-			else if ( String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ).trim().length() == 13 ) {
+			else if ( String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.CODIGO.ordinal() ) ).trim().length() == 13 ) {
 				editaAnal();
 			}
 			montaTab();
