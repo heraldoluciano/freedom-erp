@@ -71,6 +71,12 @@ public class RelProdutoCliente extends FRelatorio {
 	
 	private final JTextFieldPad txtDtFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 	
+	private final JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+	
+	private final JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+
+	private final JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
 	private JRadioGroup<String, String> rgOrdem;
 	
 	private final ListaCampos lcCliente = new ListaCampos( this );
@@ -79,13 +85,15 @@ public class RelProdutoCliente extends FRelatorio {
 	
 	private final ListaCampos lcVendedor = new ListaCampos( this );
 	
+	private final ListaCampos lcProduto = new ListaCampos( this, "PD" );
+	
 	private List<Object> prefere = new ArrayList<Object>();
 
 	public RelProdutoCliente() {
 
 		super( false );
 		setTitulo( "Relatorio de Produto por Cliente" );		
-		setAtribos( 100, 50, 325, 330 );
+		setAtribos( 100, 50, 325, 380 );
 		
 		montaRadioGrupos();
 		montaListaCampos();
@@ -151,6 +159,22 @@ public class RelProdutoCliente extends FRelatorio {
 		txtCodVend.setTabelaExterna( lcVendedor );
 		txtCodVend.setPK( true );
 		txtCodVend.setNomeCampo( "CodVend" );
+		
+		/***********
+		 * PRODUTO *
+		 ***********/
+
+		lcProduto.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
+		lcProduto.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProduto.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
+		lcProduto.montaSql( false, "PRODUTO", "RP" );
+		lcProduto.setQueryCommit( false );		
+		lcProduto.setReadOnly( true );
+		txtCodProd.setListaCampos( lcProduto );
+		txtCodProd.setTabelaExterna( lcProduto );
+		txtCodProd.setPK( true )
+;		txtCodProd.setNomeCampo( "CodProd" );
+		
 	}
 	
 	private void montaTela() {
@@ -184,6 +208,13 @@ public class RelProdutoCliente extends FRelatorio {
 		adic( txtCodCli, 10, 230, 77, 20 );
 		adic( new JLabel( "Razão social do cliente" ), 90, 210, 210, 20 );
 		adic( txtRazCli, 90, 230, 210, 20 );
+		
+		adic( new JLabel( "Cód.prod." ), 10, 250, 77, 20 );
+		adic( txtCodProd, 10, 270, 77, 20 );
+		adic( new JLabel( "Descrição do produto" ), 90, 250, 210, 20 );
+		adic( txtDescProd, 90, 270, 210, 20 );
+		
+		
 	}
 
 	@ Override
@@ -201,6 +232,7 @@ public class RelProdutoCliente extends FRelatorio {
 			String nomevend = null;
 			String razcli = null;
 			String razfor = null;
+			String descprod = null;
 			Date dtini = txtDtIni.getVlrDate();
 			Date dtfim = txtDtFim.getVlrDate();
 			
@@ -230,6 +262,10 @@ public class RelProdutoCliente extends FRelatorio {
 			if ( txtCodVend.getVlrString().trim().length() > 0 ) {
 				sql.append( " AND P.CODVEND=" + txtCodVend.getVlrInteger().intValue() );
 				nomevend = txtNomeVend.getVlrString();
+			}
+			if ( txtCodProd.getVlrString().trim().length() > 0 ) {
+				sql.append( " AND IP.CODPROD=" + txtCodProd.getVlrInteger().intValue() );
+				descprod = txtDescProd.getVlrString();
 			}
 			
 			sql.append( " GROUP BY P.CODCLI, IP.CODPROD, IP.REFPROD, C.RAZCLI, PD.DESCPROD, IP.PRECOITPED " );
@@ -280,6 +316,7 @@ public class RelProdutoCliente extends FRelatorio {
 		lcCliente.setConexao( cn );
 		lcFornecedor.setConexao( cn );
 		lcVendedor.setConexao( cn );
+		lcProduto.setConexao( cn );
 		
 		prefere = RPPrefereGeral.getPrefere( cn );
 	}
