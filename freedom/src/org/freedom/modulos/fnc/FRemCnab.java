@@ -258,6 +258,8 @@ public class FRemCnab extends FRemFBN {
 		reg.setDataCred( null );		
 		reg.setCodCarteira( getCarteiraCobranca( rec.getCodrec(), rec.getNParcitrec() ) );
 		
+		reg.setIdentTitEmp( Banco.getNumCli( (long)rec.getCodrec(), (long)rec.getNParcitrec(), 25 ) );
+		
 		reg.setIdentTitulo( Funcoes.strZero(banco.geraNossoNumero( (String)prefs.get( EPrefs.MDECOB ), (String)prefs.get( EPrefs.CONVCOB ), Long.parseLong( rec.getDocrec().toString() ), Long.parseLong( rec.getNParcitrec().toString() ) , true ),11) );
 
 		reg.setDigNossoNumero( new Integer(banco.getModulo11( reg.getCodCarteira() + reg.getIdentTitulo(), 7 )).intValue());
@@ -666,12 +668,28 @@ public class FRemCnab extends FRemFBN {
 				}
 				
 				lbStatus.setText( "     pronto ..." );
+				
 				prefs.put( SiaccUtil.EPrefs.NROSEQ, ((Integer) prefs.get( EPrefs.NROSEQ )).intValue() + 1 );
 				updatePrefere();
+				atualizaSitremessaExp( hsCli, hsRec );
 			}
 			
 		}
 		return retorno;
+	}
+	
+	private void atualizaSitremessaExp( HashSet< SiaccUtil.StuffCli > hsCli, HashSet< SiaccUtil.StuffRec > hsRec ) {
+
+		setSitremessa( hsRec, "01" );
+		persisteDados( hsCli, hsRec );
+		updatePrefere();
+	}
+
+	private void setSitremessa( HashSet< SiaccUtil.StuffRec > hsRec, final String sit ) {
+
+		for ( SiaccUtil.StuffRec sr : hsRec ) {
+			sr.setSitremessa( sit );
+		}
 	}
 	
 	private boolean gravaRemessa( final BufferedWriter bw, final HashSet< StuffCli > hsCli, final HashSet< StuffRec > hsRec, String padraocnab ) {

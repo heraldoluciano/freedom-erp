@@ -58,11 +58,13 @@ public class FCodRetorno extends FDados implements RadioGroupListener {
 	private Vector<String> vLabs = new Vector<String>();
 
 	private Vector<String> vVals = new Vector<String>();
+	
+	private JRadioGroup<String, String> rgTipoRetorno = null;
 
 	public FCodRetorno() {
 
 		setTitulo( "Códigos de retorno" );
-		setAtribos( 200, 60, 367, 210 );
+		setAtribos( 200, 60, 387, 310 );
 
 		vLabs.add( "SIACC" );
 		vLabs.add( "CNAB" );
@@ -72,6 +74,7 @@ public class FCodRetorno extends FDados implements RadioGroupListener {
 
 		lcBanco.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true ) );
 		lcBanco.add( new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do Banco", ListaCampos.DB_SI, false ) );
+		
 		lcBanco.montaSql( false, "BANCO", "FN" );
 		lcBanco.setQueryCommit( false );
 		lcBanco.setReadOnly( true );
@@ -86,16 +89,37 @@ public class FCodRetorno extends FDados implements RadioGroupListener {
 
 	private void montaTela() {
 
-		adic( new JLabel( "Tipo:"), 7, 0, 333, 20  );
-		adic( rgTipoFebraban, 7, 20, 333, 30  );	
+		adic( new JLabel( "Tipo:"), 7, 0, 353, 20  );
+		adic( rgTipoFebraban, 7, 20, 353, 30  );	
 		
 		txtTipoFebraban.setVlrString( "01" );		
 		lcCampos.add( new GuardaCampo( txtTipoFebraban, "TipoFebraban", "Tipo", ListaCampos.DB_PK, true ) );
+
+		
+		Vector<String> vTipoRetornoLabs = new Vector<String>();		
+
+		vTipoRetornoLabs.addElement( "Rejeição de entrada" );
+		vTipoRetornoLabs.addElement( "Confirmação de entrada" );
+		vTipoRetornoLabs.addElement( "Advertência" );
+		vTipoRetornoLabs.addElement( "Confirmação de baixa" );		
+		vTipoRetornoLabs.addElement( "Rejeição de baixa" );
+		vTipoRetornoLabs.addElement( "Indefinido" );
+
+		Vector<String> vTipoRetornoVals = new Vector<String>();
+		vTipoRetornoVals.addElement( "RE" );
+		vTipoRetornoVals.addElement( "CE" );
+		vTipoRetornoVals.addElement( "AD" );
+		vTipoRetornoVals.addElement( "CB" );		
+		vTipoRetornoVals.addElement( "RB" );
+		vTipoRetornoVals.addElement( "IN" );
+
+		rgTipoRetorno = new JRadioGroup<String, String>( 3, 2, vTipoRetornoLabs, vTipoRetornoVals );
 		
 		adicCampo( txtCodBanco, 7, 70, 90, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PF, txtNomeBanco, true );
-		adicDescFK( txtNomeBanco, 100, 70, 240, 20, "NomeBanco", "Nome do banco" );
+		adicDescFK( txtNomeBanco, 100, 70, 260, 20, "NomeBanco", "Nome do banco" );
 		adicCampo( txtCodRet, 7, 110, 90, 20, "CodRet", "Cód.retorno", ListaCampos.DB_PK, true );
-		adicCampo( txtDescRet, 100, 110, 240, 20, "DescRet", "Descrição do retorno", ListaCampos.DB_SI, true );
+		adicCampo( txtDescRet, 100, 110, 260, 20, "DescRet", "Descrição do retorno", ListaCampos.DB_SI, true );
+		adicDB( rgTipoRetorno, 7, 150, 353, 80, "tiporet", "Tipo de retorno", true );
 	}
 
 	public void valorAlterado( RadioGroupEvent evt ) {
