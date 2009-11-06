@@ -215,16 +215,18 @@ public class FRetSiacc extends FRetFBN {
 							
 							if ( "00".equals( ( (RegF) reg ).getCodRetorno() ) ) {
 								
-								tab.setValor( imgok, row, EColTab.STATUS.ordinal() );
+								tab.setValor( imgConfBaixa, row, EColTab.STATUS.ordinal() );
 								tab.setValor( new Boolean( Boolean.TRUE ), row, EColTab.SEL.ordinal() );
 							}
 							else {
 								
 								updateStatusRetorno( (RegF) reg );
 								
-								tab.setValor( imgcancel, row, EColTab.STATUS.ordinal() );
+								tab.setValor( imgRejBaixa, row, EColTab.STATUS.ordinal() );
 								tab.setValor( new Boolean( Boolean.FALSE ), row, EColTab.SEL.ordinal() );
 							}
+							
+							String[] mensret = getDetRetorno( txtCodBanco.getVlrString(), ( (RegF) reg ).getCodRetorno(), FPrefereFBB.TP_SIACC );
 							
 							tab.setValor( (String) infocli.get( EColInfoCli.RAZCLI.ordinal() ), row, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
 							tab.setValor( (Integer) infocli.get( EColInfoCli.CODCLI.ordinal() ), row, EColTab.CODCLI.ordinal() ); // Cód.cli.
@@ -243,7 +245,7 @@ public class FRetSiacc extends FRetFBN {
 							tab.setValor( "BAIXA AUTOMÁTICA SIACC", row, EColTab.OBS.ordinal() ); // HISTÓRICO
 							tab.setValor( (String) infocli.get( EColInfoCli.TIPOFEBRABAN.ordinal() ), row, EColTab.TIPOFEBRABAN.ordinal() );
 							tab.setValor( ( (RegF) reg ).getCodRetorno(), row, EColTab.CODRET.ordinal() ); // código retorno
-							tab.setValor( getMenssagemRet( txtCodBanco.getVlrString(), ( (RegF) reg ).getCodRetorno(), FPrefereFBB.TP_SIACC ), row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
+							tab.setValor( mensret[0], row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
 							
 							row++;
 						}

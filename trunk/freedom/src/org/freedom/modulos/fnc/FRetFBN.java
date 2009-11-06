@@ -36,6 +36,7 @@ import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashSet;
 import java.util.List;
@@ -99,9 +100,17 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 	protected final JLabel lbStatus = new JLabel();
 	
-	protected final ImageIcon imgcancel = Icone.novo( "cancel.gif" );
+	protected final ImageIcon imgRejEntrada = Icone.novo( "clRejEntrada.gif" );
 	
-	protected final ImageIcon imgok = Icone.novo( "ok.gif" );
+	protected final ImageIcon imgRejBaixa = Icone.novo( "clRejBaixa.gif" );
+	
+	protected final ImageIcon imgAdvert = Icone.novo( "clAdvertencia.gif" );
+	
+	protected final ImageIcon imgConfEntrada = Icone.novo( "clConfEntrada.gif" );
+	
+	protected final ImageIcon imgConfBaixa = Icone.novo( "clConfBaixa.gif" );
+	
+	protected final ImageIcon imgIndefinido = Icone.novo( "clIndefinido.gif" );
 
 	protected final ListaCampos lcBanco = new ListaCampos( this );
 	
@@ -276,8 +285,9 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			baixaRecBean.setValorPago( Funcoes.strToBd( tab.getValor( row, EColTab.VLRPAG.ordinal() ) ) );
 			baixaRecBean.setObservacao( (String)tab.getValor( row, EColTab.OBS.ordinal() ) );
 
-			dl.setValores( baixaRecBean );
 			dl.setConexao( con );
+			dl.setValores( baixaRecBean );
+			
 			dl.setVisible( true );
 
 			if ( dl.OK ) {
@@ -333,15 +343,17 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		}
 	}
 	
-	protected String getMenssagemRet( final String codbanco, final String codretorno, final String tipofebraban ) {
+	protected String[] getDetRetorno( final String codbanco, final String codretorno, final String tipofebraban ) {
 		
-		String msg = null; 
+		String msg = null;
+		String tipo = null;
+				
 		StringBuilder sSQL = new StringBuilder();
 		PreparedStatement ps = null;
 		
 		try {
 			
-			sSQL.append( "SELECT DESCRET " );
+			sSQL.append( "SELECT DESCRET,TIPORET " );
 			sSQL.append( "FROM FNFBNCODRET " );
 			sSQL.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODEMPBO=? AND CODFILIALBO=? AND " );
 			sSQL.append( "CODBANCO=? AND CODRET=? AND TIPOFEBRABAN=?" );
@@ -360,14 +372,19 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 			
 			if ( rs.next() ) {				
 				msg = rs.getString( 1 );
+				tipo = rs.getString( 2 );
 			}
-			
+		
 			con.commit();
-		} catch ( Exception e ) {
+		} 
+		catch ( Exception e ) {
 			Funcoes.mensagemInforma( this, "Erro ao montar grid. \n" + e.getMessage());
 			e.printStackTrace();
 		}
-		return msg;		
+		
+		String[] ret = {msg,tipo};
+		
+		return ret;		
 	}
 	
 	protected HashSet<StuffCli> getClientes() {
@@ -656,6 +673,40 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 		return retorno;
 	}
 		
+	protected boolean updateStatusRetorno( int codRec, int nParcitrec, String codBanco, String tipoFebraban, String stipoFebraban, String sitRet ) {
+
+		boolean retorno = false;
+		PreparedStatement ps = null;
+		
+		try {
+						
+			StringBuilder sqlup = new StringBuilder();
+			sqlup.append( "UPDATE FNFBNREC SET CODBANCO=?, TIPOFEBRABAN=?, STIPOFEBRABAN=?, SITRETORNO=? " );
+			sqlup.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?" );
+			
+			ps = con.prepareStatement( sqlup.toString() );
+			ps.setString( 1, codBanco );
+			ps.setString( 2, tipoFebraban );
+			ps.setString( 3, stipoFebraban );
+			ps.setString( 4, sitRet );
+			ps.setInt( 5, Aplicativo.iCodEmp );
+			ps.setInt( 6, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+			ps.setInt( 7, codRec );
+			ps.setInt( 8, nParcitrec );
+			ps.executeUpdate();
+			
+			con.commit();
+			
+			retorno = true;
+
+		} 
+		catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro atualizando situação do contas a receber!\n" + e.getMessage() );
+		}
+
+		return retorno;
+	}
+	
 	protected void baixar(){
 
 		if ( updateClientes() ) {

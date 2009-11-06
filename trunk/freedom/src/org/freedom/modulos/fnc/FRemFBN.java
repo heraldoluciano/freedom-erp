@@ -866,11 +866,13 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			ps.setInt( 4, nParcitrec );
 			
 			ResultSet rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
-				if ( ( !codBanco.equals( rs.getString( "CODBANCO" ) ) ) || 
-						( !tipoFebraban.equals( rs.getString( "TIPOFEBRABAN" ) ) ) || 
-						( !stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) ) ) || 
-						( !sitRemessa.equals( rs.getString( "SITREMESSA" ) ) ) ) {
+				
+				if ( ( !codBanco.equals( rs.getString( "CODBANCO" ) ) ) 
+				  || ( !tipoFebraban.equals( rs.getString( "TIPOFEBRABAN" ) ) ) 
+				  || ( !stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) ) ) 
+				  || ( !sitRemessa.equals( rs.getString( "SITREMESSA" ) ) ) ) {
 					
 					StringBuilder sqlup = new StringBuilder();
 					sqlup.append( "UPDATE FNFBNREC SET CODBANCO=?, TIPOFEBRABAN=?, STIPOFEBRABAN=?, SITREMESSA=? " );

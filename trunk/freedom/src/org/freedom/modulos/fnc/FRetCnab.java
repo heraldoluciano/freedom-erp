@@ -36,7 +36,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-
+import javax.swing.ImageIcon;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.fnc.CnabUtil.Receber;
@@ -48,12 +48,12 @@ import org.freedom.modulos.fnc.CnabUtil.RegHeader;
 import org.freedom.modulos.fnc.CnabUtil.RegT400;
 import org.freedom.telas.Aplicativo;
 
-
 public class FRetCnab extends FRetFBN {
 
 	private static final long serialVersionUID = 1l;
 	
 	private final CnabUtil cnabutil = new CnabUtil();
+	
 	
 	public FRetCnab() {
 		
@@ -137,7 +137,7 @@ public class FRetCnab extends FRetFBN {
 		char seguimento;
 		String line = null;
 		BufferedReader in = new BufferedReader( fileReaderCnab );
-		
+		RegHeader regHeader = null;
 		try {
 			 
 			while ( ( line = in.readLine() ) != null ) {
@@ -202,13 +202,14 @@ public class FRetCnab extends FRetFBN {
 						
 						switch ( tipo ) {
 							case '0' :
-								list.add( cnabutil.new RegHeader( line ) );
+								regHeader = cnabutil.new RegHeader( line ); 
+								list.add( regHeader );
 								break;
 							case '1' :
 								RegT400 reg1 = cnabutil.new RegT400( line );
 								list.add( reg1 );
 								
-								if ( reg1 == null || ! reg1.getCodBanco().trim().equals( txtCodBanco.getVlrString().trim() ) ) {
+								if ( reg1 == null || ! regHeader.getCodBanco().trim().equals( txtCodBanco.getVlrString().trim() ) ) {
 									Funcoes.mensagemErro( this, "Arquivo de retorno não refere-se ao banco selecionado!" );
 									return false;
 								}								
@@ -219,7 +220,8 @@ public class FRetCnab extends FRetFBN {
 			}
 
 			lbStatus.setText( "     Arquivo lido ..." );
-		} catch ( ExceptionCnab e ) {
+		} 
+		catch ( ExceptionCnab e ) {
 			Funcoes.mensagemErro( this, "Erro lendo o arquivo!\n" + e.getMessage() );
 			e.printStackTrace();
 			retorno = false;
@@ -245,13 +247,17 @@ public class FRetCnab extends FRetFBN {
 			try {
 
 				RegHeader header = null;
-				Reg3T reg3T = null;
-				Reg3U reg3U = null;
+				RegT400 regT400 = null;
+
+
 				Receber rec = null;
+				
+				Reg3T reg3T = null;
 				BigDecimal valorPago;
 				Date dataPagamento;
 				BigDecimal valorDesconto;
 				BigDecimal valorJuros;
+				
 				
 				for ( Reg reg : registros ) {
 					
@@ -266,22 +272,26 @@ public class FRetCnab extends FRetFBN {
 						rec = findReceber( chaveRec[0], chaveRec[1] );	
 					}
 					else if ( reg instanceof Reg3U  ) {
-
-						reg3U = (Reg3U) reg;
 						
 						if ( rec != null ) {
+
+							Reg3U reg3U = (Reg3U) reg;
+							String[] detRetorno = getDetRetorno( txtCodBanco.getVlrString(), reg3T.getCodRejeicoes(), FPrefereFBB.TP_CNAB );
 							
 							tab.adicLinha();
+
+							// Deve ser corrigido para atualizar a imagem de acordo com o tipo de retorno
 							
 							if ( reg3U.getDataEfetvCred() != null ) {								
-								tab.setValor( imgok, row, EColTab.STATUS.ordinal() );
+								tab.setValor( imgConfBaixa, row, EColTab.STATUS.ordinal() );
 								tab.setValor( new Boolean( reg3U.getVlrLiqCred().floatValue() > 0.00 ), row, EColTab.SEL.ordinal() );
-								//tab.setValor( getMenssagemRet( txtCodBanco.getVlrString(), reg3T.getCodRejeicoes(), FPrefereFBB.TP_CNAB ), row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
+								tab.setValor( detRetorno[0], row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
 							}
 							else {								
-								tab.setValor( imgcancel, row, EColTab.STATUS.ordinal() );
+								tab.setValor( imgRejBaixa, row, EColTab.STATUS.ordinal() );
 								tab.setValor( new Boolean( Boolean.FALSE ), row, EColTab.SEL.ordinal() );
 							}
+							
 							tab.setValor( rec.getRazcliente(), row, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
 							tab.setValor( rec.getCodcliente(), row, EColTab.CODCLI.ordinal() ); // Cód.cli.							
 							tab.setValor( rec.getCodrec(), row, EColTab.CODREC.ordinal() ); // Cód.rec.							
@@ -299,25 +309,90 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( "BAIXA AUTOMÁTICA CNAB", row, EColTab.OBS.ordinal() ); // HISTÓRICO							
 							tab.setValor( FPrefereFBB.TP_CNAB, row, EColTab.TIPOFEBRABAN.ordinal() );
 							tab.setValor( reg3T.getCodRejeicoes(), row, EColTab.CODRET.ordinal() ); // código retorno
-							//tab.setValor( getMenssagemRet( txtCodBanco.getVlrString(), reg3T.getCodRejeicoes().trim(), FPrefereFBB.TP_CNAB ), row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
+							tab.setValor( detRetorno[0], row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
 							
 							row++;
 							rec = null;
 						}
 					}
-				}
-
+					else if ( reg instanceof RegT400  ) {		
+						regT400 = (RegT400) reg;	
+						
+						int[] chaveRec = getChaveReceber( regT400 );
+						rec = findReceber( chaveRec[0], chaveRec[1] );	
+					
+						if ( rec != null ) {
+							
+							tab.adicLinha();
+							
+							String[] detRetorno = getDetRetorno( txtCodBanco.getVlrString(), regT400.getCodRejeicoes(), FPrefereFBB.TP_CNAB );
+							String mensret = detRetorno[0];
+							String tiporet = detRetorno[1];
+							ImageIcon imgret = imgIndefinido;
+							
+							if( "RE".equals(tiporet) ) {
+								imgret = imgRejEntrada;								
+								// Atualiza o status da remessa para rejeitado ("02");
+								updateStatusRetorno( rec.getCodrec(), rec.getNrparcrec(), txtCodBanco.getVlrString(), FPrefereFBB.TP_CNAB, FPrefereFBB.TP_CNAB, regT400.getCodRejeicoes() );
+							}
+							else if( "CE".equals(tiporet) ) {
+								imgret = imgConfEntrada;
+							}
+							else if( "AD".equals(tiporet) ) {
+								imgret = imgAdvert;
+							}
+							else if( "CB".equals(tiporet) ) {
+								imgret = imgConfBaixa;
+							}
+							else if( "RB".equals(tiporet) ) {
+								imgret = imgRejBaixa;
+							}
+								
+							tab.setValor( imgret, row, EColTab.STATUS.ordinal() );
+							tab.setValor( new Boolean( regT400.getVlrPago().floatValue() > 0.00 ), row, EColTab.SEL.ordinal() );
+							
+							tab.setValor( rec.getRazcliente(), row, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
+							tab.setValor( rec.getCodcliente(), row, EColTab.CODCLI.ordinal() ); // Cód.cli.							
+							tab.setValor( rec.getCodrec(), row, EColTab.CODREC.ordinal() ); // Cód.rec.							
+							tab.setValor( rec.getDocrec(), row, EColTab.DOCREC.ordinal() ); // Doc
+							tab.setValor( rec.getNrparcrec(), row, EColTab.NRPARC.ordinal() ); // Nro.Parc.							
+							tab.setValor( Funcoes.bdToStr( rec.getValorApagar() ), row, EColTab.VLRAPAG.ordinal() ); // Valor
+							tab.setValor( Funcoes.dateToStrDate( rec.getEmissao()), row, EColTab.DTREC.ordinal() ); // Emissão
+							tab.setValor( Funcoes.dateToStrDate( rec.getVencimento()), row, EColTab.DTVENC.ordinal() ); // Vencimento
+							tab.setValor( Funcoes.bdToStr( regT400.getVlrPago() ), row, EColTab.VLRPAG.ordinal() ); // Valor pago
+							tab.setValor( regT400.getDataCred() != null ? Funcoes.dateToStrDate( regT400.getDataCred() ) : "", row, EColTab.DTPAG.ordinal() ); // Data pgto.							
+							tab.setValor( rec.getConta(), row, EColTab.NUMCONTA.ordinal() ); // Conta
+							tab.setValor( rec.getPlanejamento(), row, EColTab.CODPLAN.ordinal() ); // Planejamento		
+							tab.setValor( regT400.getVlrDesc(), row, EColTab.VLRDESC.ordinal() ); // VLRDESC				
+							tab.setValor( Funcoes.bdToStr( regT400.getVlrJurosMulta()), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
+							tab.setValor( "BAIXA AUTOMÁTICA CNAB", row, EColTab.OBS.ordinal() ); // HISTÓRICO							
+							tab.setValor( FPrefereFBB.TP_CNAB, row, EColTab.TIPOFEBRABAN.ordinal() );
+							tab.setValor( regT400.getCodRejeicoes(), row, EColTab.CODRET.ordinal() ); // código retorno
+							tab.setValor( mensret, row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
+							
+							row++;
+							rec = null;
+						}
+					
+					}
+				
+				}	
 				if ( row > 0 ) {
 					lbStatus.setText( "     Tabela carregada ..." );
 				}
 				else if ( header != null ) {
 					lbStatus.setText( "     Arquivo lido ..." );
-					String codigo = ( "53" + header.getOcorrencias().trim() + "00" ).substring( 0, 4 );
-					String mensagem = getMenssagemRet( txtCodBanco.getVlrString(), codigo, FPrefereFBB.TP_CNAB );
-					if ( mensagem != null ) {
-						Funcoes.mensagemInforma( this, mensagem );
+
+					//Se não for cnab 400 (implementação não identificada realizada pelo Alex - Para evitar problemas em clientes já implantados... 
+					if(regT400==null) {
+						String codigo = ( "53" + header.getOcorrencias().trim() + "00" ).substring( 0, 4 );
+					
+						String[] mensagem = getDetRetorno( txtCodBanco.getVlrString(), codigo, FPrefereFBB.TP_CNAB );
+						if ( mensagem != null ) {
+							Funcoes.mensagemInforma( this, mensagem[0] );
+						}
+						return false;
 					}
-					return false;
 				}
 				else {
 					lbStatus.setText( "" );
@@ -357,6 +432,7 @@ public class FRetCnab extends FRetFBN {
 			sql.append( "  IR.CODEMP=? AND IR.CODFILIAL=? AND IR.NPARCITREC=? AND " );
 			sql.append( "  IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND R.CODREC=? AND " );
 			sql.append( "  R.CODEMPCL=CL.CODEMP AND R.CODFILIALCL=CL.CODFILIAL AND R.CODCLI=CL.CODCLI " );
+			sql.append( "  AND IR.STATUSITREC!='RP' " );
 			
 			try {
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -414,4 +490,20 @@ public class FRetCnab extends FRetFBN {
 		
 		return chave;
 	}
+	
+	private int[] getChaveReceber( final RegT400 regT400 ) {		
+
+		int[] chave = new int[2]; 
+			
+		if ( regT400 != null ) {		
+			
+			String docrec = regT400.getIdentTitulo().trim();
+			
+			chave[0] = Integer.parseInt( docrec.substring( 0, docrec.length()-2 ) );
+			chave[1] = Integer.parseInt( docrec.substring( docrec.length()-2 ) );
+		}
+		
+		return chave;
+	}
+
 }

@@ -516,52 +516,6 @@ public class CnabUtil extends FbnUtil {
 							Funcoes.mensagemInforma( null, "Arquivo informado não representa um arquivo de retorno válido no padrão CNAB 400!" );
 						}
 						
-						
-
-//						line.append( "1" ); // Posição 002 a 002 - Identificação do Arquvo de remessa
-//						line.append( LITERAL_REM ); // Posição 003 a 009 - Literação de remassa 
-//						line.append( "01" ); //Posição 010 a 011 - Código do serviço (01)
-//						line.append( format( LITERAL_SERV, ETipo.X, 15,0 ));// Posição 012 a 026 - Literal Serviço
-//						line.append( Funcoes.strZero( getCodConvBanco(),20 ) );// Posição 027 a 046 - Código da Empresa
-//						line.append( format( getRazEmp(), ETipo.X, 30, 0 ) );// Posição 047 a 076 - Nome da Empresa
-//						line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );// Posição 077 a 079 - Número do banco na câmara de compensação 
-//						line.append( format( getNomeBanco(), ETipo.X, 15, 0 ) );// Posição 080 a 094 - Nome do banco por extenso
-//						line.append( dateToString( getDataGeracao(),DATA_06 ) );// Posição 095 a 100 - Data da gravação do arquivo 
-//						line.append( Funcoes.replicate( " ", 8 ) );// Posição 101 a 108 - Espaço em branco
-//						line.append( LITERAL_SISTEMA );// Posição 109 a 110 - Literal do Sistema (MX - Micro a micro)
-//						line.append( format( getSequenciaArq(), ETipo.$9, 7, 0 ) ); // Posição 111 a 117 - Nro sequencial da remessa
-//						line.append( Funcoes.replicate( " ", 277 ) ); // Posição 118 a 394 - Espaço em branco
-//						line.append( format( 1, ETipo.$9, 6, 0 ) ); // Sequencial do registro de um em um 
-//						line.append( (char) 13 );
-//						line.append( (char) 10 );
-/*						
-						02
-						RETORNO
-						01
-						COBRANCA       
-						00000000000004249460
-						METALURGICA POJDA LTDA        
-						237
-						BRADESCO       
-						281009
-						01600000
-						00001
-						                                                                                                                                                                                                                                                                          281009         000001
-						102794400950001140000009017050003288300000001601              000000000000000160150000000000000000000000000902281009000000160100000000000000016015301009000000006240023702055  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          0000000000                                                                  000002
-						102794400950001140000009017050003288300000001701              000000000000000170110000000000000000000000000902281009000000170100000000000000017011251009000000009990023700546  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          0000000000                                                                  000003
-						102794400950001140000009017050003288300000001901              000000000000000190140000000000000000000000000902281009000000190100000000000000019014281009000000063510023700524  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          0000000000                                                                  000004
-						102794400950001140000009017050003288300000009001              000000000000000900100000000000000000000000000902281009000000900100000000000000090010231009000000002200023700546  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          0000000000                                                                  000005
-						102794400950001140000009017050003288300000009901              000000000000000990180000000000000000000000000902281009000000990100000000000000099018291009000000001000023700383  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          0000000000                                                                  000006
-						102794400950001140000009017050003288300000651101              000000000000065110180000000000000000000000000902281009000065110100000000000006511018241009000000002250023700049  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          0000000000                                                                  000007
-						102794400950001140000009017050003288300000656401              000000000000065640140000000000000000000000000902281009000065640100000000000006564014221009000000004100023700452  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          0000000000                                                                  000008
-						102794400950001140000009017050003288300000657601              000000000000065760120000000000000000000000000902281009000065760100000000000006576012311009000000012585023700268  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          0000000000                                                                  000009
-						102794400950001140000009017050003288300000001101              000000000000000110130000000000000000000000000924281009000000110100000000000000011013271009000000013650023700000  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          4800000000                                                                  000010
-						102794400950001140000009017050003288300000001401              000000000000000140120000000000000000000000000924281009000000140100000000000000014012261009000000012000023700000  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                          4800000000                                                                  000011
-						9201237          000000080000000101875000000001          00008000001018750000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                                                                                                                                                                              00000000000000000000000         000012
-						
-						
-	*/					
-						
 					}
 					
 				}
@@ -3043,6 +2997,8 @@ public class CnabUtil extends FbnUtil {
 		private BigDecimal vlrOutrasDesp;
 
 		private BigDecimal vlrOutrosCred;
+		
+		private BigDecimal vlrOcorrSac;
 
 		private Date dataOcorr;
 
@@ -3051,8 +3007,6 @@ public class CnabUtil extends FbnUtil {
 		private String codOcorrSac;
 
 		private Date dataOcorrSac;
-
-		private BigDecimal vlrOcorrSac;
 
 		private String compOcorrSac;
 
@@ -4012,7 +3966,7 @@ public class CnabUtil extends FbnUtil {
 			
 			cl = Calendar.getInstance();
 			
-			if ( arg != null && arg.trim().length() > 7 ) {
+			if ( arg != null && arg.trim().length() > 5 ) {
 
 				int dia = Integer.parseInt( arg.substring( 0, 2 ) );
 				int mes = Integer.parseInt( arg.substring( 2, 4 ) );
@@ -4117,6 +4071,8 @@ public class CnabUtil extends FbnUtil {
 		
 		private String identTitulo;
 		
+		private String identTitEmp;
+		
 		private BigDecimal vlrPercMulta;
 		
 		private int digNossoNumero;
@@ -4159,6 +4115,23 @@ public class CnabUtil extends FbnUtil {
 		
 		private int seqregistro;
 		
+		private String codRejeicoes;
+		
+		private BigDecimal vlrJurosMulta;
+
+		private BigDecimal vrlAbatCancel;
+
+		private BigDecimal vlrPago;
+
+		private BigDecimal vlrLiqCred;
+
+		private BigDecimal vlrOutrasDesp;
+
+		private BigDecimal vlrOutrosCred;
+		
+		private BigDecimal vlrOcorrSac;
+
+		
 		public String getCpfCnpjCli() {
 		
 			return cpfCnpjCli;
@@ -4166,6 +4139,168 @@ public class CnabUtil extends FbnUtil {
 
 
 		
+		
+		
+		
+		public String getIdentTitEmp() {
+		
+			return identTitEmp;
+		}
+
+
+
+
+
+		
+		public void setIdentTitEmp( String identTitEmp ) {
+		
+			this.identTitEmp = identTitEmp;
+		}
+
+
+
+
+
+		public BigDecimal getVlrJurosMulta() {
+		
+			return vlrJurosMulta;
+		}
+
+
+
+
+		
+		public void setVlrJurosMulta( BigDecimal vlrJurosMulta ) {
+		
+			this.vlrJurosMulta = vlrJurosMulta;
+		}
+
+
+
+
+		
+		public BigDecimal getVrlAbatCancel() {
+		
+			return vrlAbatCancel;
+		}
+
+
+
+
+		
+		public void setVrlAbatCancel( BigDecimal vrlAbatCancel ) {
+		
+			this.vrlAbatCancel = vrlAbatCancel;
+		}
+
+
+
+
+		
+		public BigDecimal getVlrPago() {
+		
+			return vlrPago;
+		}
+
+
+
+
+		
+		public void setVlrPago( BigDecimal vlrPago ) {
+		
+			this.vlrPago = vlrPago;
+		}
+
+
+
+
+		
+		public BigDecimal getVlrLiqCred() {
+		
+			return vlrLiqCred;
+		}
+
+
+
+
+		
+		public void setVlrLiqCred( BigDecimal vlrLiqCred ) {
+		
+			this.vlrLiqCred = vlrLiqCred;
+		}
+
+
+
+
+		
+		public BigDecimal getVlrOutrasDesp() {
+		
+			return vlrOutrasDesp;
+		}
+
+
+
+
+		
+		public void setVlrOutrasDesp( BigDecimal vlrOutrasDesp ) {
+		
+			this.vlrOutrasDesp = vlrOutrasDesp;
+		}
+
+
+
+
+		
+		public BigDecimal getVlrOutrosCred() {
+		
+			return vlrOutrosCred;
+		}
+
+
+
+
+		
+		public void setVlrOutrosCred( BigDecimal vlrOutrosCred ) {
+		
+			this.vlrOutrosCred = vlrOutrosCred;
+		}
+
+
+
+
+		
+		public BigDecimal getVlrOcorrSac() {
+		
+			return vlrOcorrSac;
+		}
+
+
+
+
+		
+		public void setVlrOcorrSac( BigDecimal vlrOcorrSac ) {
+		
+			this.vlrOcorrSac = vlrOcorrSac;
+		}
+
+
+
+
+		public String getCodRejeicoes() {
+		
+			return codRejeicoes;
+		}
+
+
+
+		
+		public void setCodRejeicoes( String codRejeicoes ) {
+		
+			this.codRejeicoes = codRejeicoes;
+		}
+
+
+
 		public void setCpfCnpjCli( String cpfCnpjCli ) {
 		
 			this.cpfCnpjCli = cpfCnpjCli;
@@ -4837,7 +4972,7 @@ public class CnabUtil extends FbnUtil {
 				line.append( format( getDigConta(), ETipo.X, 1, 0 ) ); // Posição 37 a 37 - Dígito da conta
 				// fim da idendificação
 				
-				line.append( format( getIdentTitulo(), ETipo.X, 25, 0 ) ); // Posição 38 a 62 - Nro de controle do participante (nosso numero)
+				line.append( format( getIdentTitEmp(), ETipo.X, 25, 0 ) ); // Posição 38 a 62 - Nro de controle do participante (nosso numero)
 				line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) ); // Posição 63 a 65 - Nro do banco 
 				
 				if(getVlrPercMulta().floatValue()>0) {
@@ -4976,28 +5111,35 @@ public class CnabUtil extends FbnUtil {
 					}
 					else { // Padrão CNAB 400
 						
-						
-						
-						
-						
-					//	***
-						
-					// Implementar leitura do retorno	
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
+						if( "1".equals( line.substring( 0,1 ))) { // Posição 01 a 01 - Identificação do Registro 
+
+							setCodCarteira( Integer.parseInt( line.substring(107,108) ) ); // Posição 108 a 108 - Código da carteira
+							setCodRejeicoes( line.substring( 108, 110 ) );// Posição 109 a 109 - Código das ocorrências (vide pg.45)
+							
+							setIdentTitulo( line.substring( 37, 62 ) ); // Posição 38 a 62 - Nro Controle do Participante
+																					
+							setVlrOutrasDesp( strToBigDecimal( line.substring( 188, 201 ) ) );
+							
+							setVlrJurosMulta( strToBigDecimal( line.substring( 201, 214 ) ) );
+							setVlrIOF( strToBigDecimal( line.substring( 214, 227 ) ) );
+							setVlrAbatimento( strToBigDecimal( line.substring( 227, 240 ) ) );
+							setVlrDesc( strToBigDecimal( line.substring( 240, 253 ) ) );
+							
+							setVlrPago( strToBigDecimal( line.substring( 253, 266 ) ) );
+							setVlrJurosTaxa( strToBigDecimal( line.substring( 266, 279 ) ) );
+							setVlrOutrosCred( strToBigDecimal( line.substring( 279, 292 ) ) );
+							setDataCred( stringDDMMAAToDate( line.substring( 295, 301 ).trim() ) );
+							
+						}
+						else {
+							Funcoes.mensagemErro( null, "Erro na leitura do arquivo de retorno.\nNão é um registro de transação válido para o padrão CNAB 400!" );
+						}
 						
 					}
 					
 				}
-			} catch ( Exception e ) {
+			} 
+			catch ( Exception e ) {
 				throw new ExceptionCnab( "CNAB registro 1.\nErro ao ler registro.\n" + e.getMessage() );
 			}
 		}
