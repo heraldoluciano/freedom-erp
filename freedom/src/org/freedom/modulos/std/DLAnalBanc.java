@@ -36,7 +36,6 @@ import org.freedom.componentes.JTabbedPanePad;
 import javax.swing.JTextField;
 
 import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -61,7 +60,7 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
   private JTextFieldPad txtDataCont = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldFK txtDescMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING,20,0);
-  private JCheckBoxPad cbCompSldCx = new JCheckBoxPad("Compõe saldo de caixa","S","N");
+//  private JCheckBoxPad cbCompSldCx = new JCheckBoxPad("Compõe saldo de caixa","S","N");
   private JTabbedPanePad tbp = new JTabbedPanePad();
   private JPanelPad pinGeral = new JPanelPad(370,240);
   private JPanelPad pinDet = new JPanelPad(370,240);
@@ -136,7 +135,7 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
     pinGeral.adic(lbDescAnal,120,40,110,20);
     pinGeral.adic(txtDescAnal,120,60,210,20);
     pinGeral.adic(rgTipo,7,90,323,60);
-    pinGeral.adic( cbCompSldCx, 7, 120, 210, 20 );
+//    pinGeral.adic( cbCompSldCx, 7, 120, 210, 20 );
     pinDet.adic(lbAgCont,7,0,80,20);
     pinDet.adic(txtAgCont,7,20,80,20);
     pinDet.adic(lbNumCont,90,0,240,20);
@@ -167,7 +166,7 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
       rgTipoCont.setVlrString(sTipo);
       rgTipoCont.setAtivo(0,false);
       rgTipoCont.setAtivo(1,false);
-      cbCompSldCx.setEnabled( true );
+//      cbCompSldCx.setEnabled( true );
     }
     else if (sTipo.compareTo("C") == 0) {
       cancText(txtAgCont);
@@ -175,11 +174,11 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
       rgTipoCont.setVlrString(sTipo);
       rgTipoCont.setAtivo(0,false);
       rgTipoCont.setAtivo(1,false);
-      cbCompSldCx.setEnabled( true );
+//      cbCompSldCx.setEnabled( true );
     }
-    else {
-        cbCompSldCx.setEnabled( false );
-    }
+    //else {
+//        cbCompSldCx.setEnabled( false );
+    //}
     //Se for Editar:
     if (sDesc != null) {
       setTitulo("Edição de Conta Analítica");
