@@ -254,7 +254,7 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 						mode="Transparent"
 						x="5"
 						y="21"
-						width="40"
+						width="42"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -264,14 +264,14 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Total]]></text>
+				<text><![CDATA[Total c/ipi]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="225"
+						x="265"
 						y="21"
-						width="40"
+						width="23"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -281,13 +281,13 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Desconto]]></text>
+				<text><![CDATA[Desc.]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="270"
+						x="289"
 						y="21"
-						width="60"
+						width="41"
 						height="12"
 						key="textField-38"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -298,9 +298,9 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="50"
+						x="49"
 						y="21"
-						width="60"
+						width="47"
 						height="12"
 						key="textField-39"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -342,9 +342,9 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="115"
+						x="204"
 						y="21"
-						width="40"
+						width="21"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -358,9 +358,9 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="160"
+						x="229"
 						y="21"
-						width="60"
+						width="31"
 						height="12"
 						key="textField-43"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -410,6 +410,37 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 						key="line-41"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="149"
+						y="21"
+						width="47"
+						height="12"
+						key="textField-74"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{TOTIPIPED}==null?$V{TOTLIQPED}:
+($V{TOTLIQPED}.subtract( $V{TOTIPIPED} ))]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="105"
+						y="21"
+						width="42"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-75"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Total s/ipi]]></text>
+				</staticText>
 			</band>
 			</groupFooter>
 		</group>
@@ -522,9 +553,9 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="5"
+						x="2"
 						y="16"
-						width="40"
+						width="37"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -534,12 +565,12 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Courier" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Total]]></text>
+				<text><![CDATA[Total c/ipi]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="225"
+						x="241"
 						y="16"
 						width="40"
 						height="12"
@@ -555,7 +586,7 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="270"
+						x="284"
 						y="16"
 						width="60"
 						height="12"
@@ -568,9 +599,9 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="50"
+						x="40"
 						y="16"
-						width="60"
+						width="47"
 						height="12"
 						key="textField-67"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -582,7 +613,7 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="335"
+						x="351"
 						y="16"
 						width="40"
 						height="12"
@@ -598,7 +629,7 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="380"
+						x="393"
 						y="16"
 						width="60"
 						height="12"
@@ -612,9 +643,9 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="115"
+						x="186"
 						y="16"
-						width="40"
+						width="21"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -628,9 +659,9 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="160"
+						x="208"
 						y="16"
-						width="60"
+						width="30"
 						height="12"
 						key="textField-69"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -642,7 +673,7 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="460"
+						x="464"
 						y="16"
 						width="15"
 						height="12"
@@ -730,6 +761,37 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 					</textElement>
 				<text><![CDATA[sub - totais]]></text>
 				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="93"
+						y="16"
+						width="37"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-74"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="" pdfFontName="Courier" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Total s/ipi]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="133"
+						y="16"
+						width="47"
+						height="12"
+						key="textField-73"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{IPIPED}==null?$V{LIQPED}:
+($V{LIQPED}.subtract( $V{IPIPED} ))]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>
@@ -801,7 +863,7 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="305"
+						x="302"
 						y="144"
 						width="50"
 						height="12"
@@ -818,9 +880,9 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="360"
+						x="355"
 						y="144"
-						width="50"
+						width="41"
 						height="12"
 						forecolor="#6464C8"
 						backcolor="#FFFFFF"
@@ -1196,9 +1258,9 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="470"
+						x="484"
 						y="144"
-						width="60"
+						width="46"
 						height="12"
 						forecolor="#6464C8"
 						backcolor="#FFFFFF"
@@ -1208,14 +1270,14 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Valor liquido]]></text>
+				<text><![CDATA[Valor c / ipi]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="415"
+						x="398"
 						y="144"
-						width="50"
+						width="33"
 						height="12"
 						forecolor="#6464C8"
 						backcolor="#FFFFFF"
@@ -1225,7 +1287,7 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Qtd. Itens]]></text>
+				<text><![CDATA[Qtd.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -1243,6 +1305,23 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Pedido]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="435"
+						y="144"
+						width="46"
+						height="12"
+						forecolor="#6464C8"
+						backcolor="#FFFFFF"
+						key="staticText-73"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="" pdfFontName="Courier-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Valor s / ipi]]></text>
 				</staticText>
 			</band>
 		</pageHeader>
@@ -1267,7 +1346,7 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="305"
+						x="302"
 						y="2"
 						width="50"
 						height="12"
@@ -1280,9 +1359,9 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="360"
+						x="355"
 						y="2"
-						width="50"
+						width="40"
 						height="12"
 						key="textField-18"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1326,9 +1405,9 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="470"
+						x="483"
 						y="2"
-						width="60"
+						width="47"
 						height="12"
 						key="textField-62"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1339,9 +1418,9 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="415"
+						x="398"
 						y="2"
-						width="50"
+						width="33"
 						height="12"
 						key="textField-63"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -1362,6 +1441,20 @@ AND F.CODEMP=P.CODEMPFO AND F.CODFILIAL=P.CODFILIALFO AND F.CODFOR=P.CODFOR]]></
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{CODPED}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="435"
+						y="2"
+						width="45"
+						height="12"
+						key="textField-72"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRIPIPED}==null?$F{VLRLIQPED}:
+($F{VLRLIQPED}.subtract( $F{VLRIPIPED} ))]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
