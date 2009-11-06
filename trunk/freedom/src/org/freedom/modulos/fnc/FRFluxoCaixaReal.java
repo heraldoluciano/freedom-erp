@@ -24,7 +24,8 @@
 package org.freedom.modulos.fnc;
 
 import java.awt.Component;
-import org.freedom.infra.model.jdbc.DbConnection;
+
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -100,7 +101,9 @@ public class FRFluxoCaixaReal extends FRelatorio {
 	
 	public void imprimir( boolean bVisualizar ) {
 
+		StringBuilder sqlsaldo = new StringBuilder();
 		StringBuilder sql = new StringBuilder();
+		BigDecimal saldosl = new BigDecimal(0);
 		PreparedStatement ps = null; 
 		ResultSet rs = null;
 		int iparam = 1;		
@@ -110,42 +113,47 @@ public class FRFluxoCaixaReal extends FRelatorio {
 			return;
 		}
 		
+		sqlsaldo.append( "SELECT SUM((SELECT FIRST 1 SL.SALDOSL FROM FNSALDOLANCA SL " );
+		sqlsaldo.append( "WHERE SL.DATASL < ? AND ");
+		sqlsaldo.append( "SL.CODEMP=CT.CODEMPPN AND SL.CODFILIAL=CT.CODFILIALPN AND SL.CODPLAN=CT.CODPLAN " );
+		sqlsaldo.append( "ORDER BY SL.DATASL DESC )) SALDOSL FROM FNCONTA CT " );
+		sqlsaldo.append( "WHERE CT.CODEMP=? AND CT.CODFILIAL=? AND CT.TIPOCAIXA='F'" );
 		
-		/*
-		 * 
-		 * SELECT 'L' TIPO, F.CLASFIN, F.ESFIN, P.CODPLAN, P.DESCPLAN, P.NIVELPLAN,
- (SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL, FNLANCA L
- WHERE SL.CODPLAN LIKE RTRIM(P.CODPLAN)||'%' AND SL.CODLANCA=L.CODLANCA AND
- SL.DATASUBLANCA BETWEEN '01.01.2008' AND '31.01.2008' AND
- SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL AND L.CODEMP=5 AND L.CODFILIAL=1) VLRSUBLANCA
- FROM FNPLANEJAMENTO P, FNFINALIDADE F WHERE P.TIPOPLAN IN ('R','D') AND
- P.CODEMP=5 AND P.CODFILIAL=1 AND F.CODFIN=P.FINPLAN AND
- EXISTS( SELECT * FROM FNSUBLANCA SL, FNLANCA L
- WHERE SL.CODPLAN LIKE RTRIM(P.CODPLAN)||'%' AND SL.CODLANCA=L.CODLANCA AND
- SL.DATASUBLANCA BETWEEN '01.01.2008' AND '31.01.2008' AND
- SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL AND L.CODEMP=5 AND L.CODFILIAL=1 )
- ORDER BY 1 DESC, 2 DESC, 3, 4, 5, 6
-		 */
-		sql.append( "select a.codtpatendo, a.codatend, a.dataatendo, a.dataatendofin, a.codatendo, " );
-		sql.append( "a.horaatendo, a.horaatendofin, a.obsatendo, a.codatend, atd.nomeatend, t.desctpatendo, cl.razcli, a.statusatendo " );
-		sql.append( "from  atatendimento a, atatendente atd , attipoatendo t, vdcliente cl where " );
-		sql.append( "atd.codemp=a.codempae and atd.codfilial=a.codfilialae " );
-		sql.append( "and t.codemp=a.codempto and t.codfilial=a.codfilial and t.codtpatendo=a.codtpatendo " );
-		sql.append( "and cl.codemp=a.codempcl and cl.codfilial=a.codfilialcl and cl.codcli=a.codcli " );
-		sql.append( "and atd.codatend=a.codatend and a.codemp=? and a.codfilial=? " );
-		sql.append( "and a.dataatendo between ? and ?  " );
-		
-
-		sql.append(" order by a.dataatendo, a.horaatendo ");
+		sql.append( "SELECT F.CLASFIN, F.ESFIN, P.CODPLAN, P.DESCPLAN, P.NIVELPLAN, ");
+        sql.append( "(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL, FNLANCA L ");
+   		sql.append( "WHERE SL.CODPLAN LIKE RTRIM(P.CODPLAN)||'%' AND SL.CODLANCA=L.CODLANCA AND ");
+		sql.append( "SL.DATASUBLANCA BETWEEN ? AND ? AND ");
+		sql.append( "SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL AND L.CODEMP=? AND L.CODFILIAL=?) VLRSUBLANCA ");
+		sql.append( "FROM FNPLANEJAMENTO P, FNFINALIDADE F WHERE P.TIPOPLAN IN ('R','D') AND ");
+		sql.append( "P.CODEMP=5 AND P.CODFILIAL=1 AND F.CODFIN=P.FINPLAN AND ");
+		sql.append( "EXISTS( SELECT * FROM FNSUBLANCA SL, FNLANCA L ");
+		sql.append( "WHERE SL.CODPLAN LIKE RTRIM(P.CODPLAN)||'%' AND SL.CODLANCA=L.CODLANCA AND ");
+		sql.append( "SL.DATASUBLANCA BETWEEN ? AND ? AND ");
+		sql.append( "SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL AND L.CODEMP=? AND L.CODFILIAL=? ) ");
+		sql.append( "ORDER BY  1 DESC, 2, 3, 4, 5" );
 		
 		try {
 			
+			ps = con.prepareStatement( sqlsaldo.toString() );
+			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDataini.getVlrString()));
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNCONTA" ));
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				saldosl = rs.getBigDecimal( "SALDOSL" );
+			}
+			con.commit();
+
+			iparam = 1;
 			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( iparam++, Aplicativo.iCodEmp);
-			ps.setInt( iparam++, ListaCampos.getMasterFilial( "ATATENDIMENTO" ));
 			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDataini.getVlrString()));
 			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString()));
-			
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNLANCA" ));
+			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDataini.getVlrString()));
+			ps.setDate( iparam++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString()));
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNLANCA" ));
 			rs = ps.executeQuery();
 			
 		} 
@@ -155,24 +163,24 @@ public class FRFluxoCaixaReal extends FRelatorio {
 			Funcoes.mensagemErro( this," Erro na consulta da tabela de atendimentos" );
 		}
 		
-		imprimiGrafico( rs, bVisualizar );
+		imprimiGrafico( rs, bVisualizar, saldosl );
 		
 	}
-	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar ) {
+	private void imprimiGrafico( final ResultSet rs, final boolean bVisualizar, final BigDecimal saldosl ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
-		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNLANCA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.sEmpSis );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/fnc/"); 
+		hParam.put( "SALDOSL", saldosl );
 		hParam.put( "DTINI", txtDataini.getVlrDate());
 		hParam.put( "DTFIM", txtDatafim.getVlrDate());
 		hParam.put( "CONEXAO", con.getConnection() );
 				
-		hParam.put( "CLIENTE", "DIVERSOS" );
-		dlGr = new FPrinterJob( "relatorios/atendimentos_cli.jasper", "RELATÓRIO DE ATENDIMENTOS", "", rs, hParam,this );	
+		dlGr = new FPrinterJob( "relatorios/fnc/fluxocaixareal.jasper", "FLUXO DE CAIXA REALIZADO", "", rs, hParam,this );	
 
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
@@ -181,15 +189,9 @@ public class FRFluxoCaixaReal extends FRelatorio {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( tela, "Erro na impressão de relatório Compras Geral!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( tela, "Erro na impressão de relatório de fluxo de caixa realizado!" + err.getMessage(), true, con, err );
 			}
 		}
-	}
-	
-	public void setConexao( DbConnection cn ) {
-
-		super.setConexao( cn );
-		lcAtend.setConexao( cn );
 	}
 	
 }
