@@ -39,6 +39,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm{FContrato.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoFiscCli.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.orc"/>
+        <file path="/freedom/src/org/freedom/relatorios/fnc/fluxocaixareal.jrxml"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLEditaRec.java"/>
         <file path="/freedom/src/org/freedom/relatorios/CpProd.jrxml"/>
@@ -47,9 +48,9 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRPagar.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRBalancete.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLAnalBanc.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRClasCli.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FModEtiqueta.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.nf"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FModEtiqueta.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRClasCli.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FProcessaSL.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FItCLFiscal.java"/>
         <javaElement handleIdentifier="=freedom-fw1/src&lt;org.freedom.funcoes.exporta"/>
@@ -74,10 +75,10 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoCli.java"/>
         <file path="/freedom/src/org/freedom/relatorios/RemSiacci.jrxml"/>
         <file path="/freedom/src/org/freedom/relatorios/orcamento.jrxml"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FEmpresa.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRReceber.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLCCSin.java"/>
         <file path="/freedom/src/org/freedom/relatorios/CodficProd.jrxml"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FEmpresa.java"/>
         <file path="/freedom/src/org/freedom/relatorios/FechaDiarioDet.jrxml"/>
         <file path="/freedom/src/org/freedom/relatorios/ResumoDiarioResumido.jrxml"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRExtrato.java"/>
@@ -151,6 +152,7 @@
         <file path="/freedom/src/org/freedom/relatorios/VendasCFOP.jrxml"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRBalanceteGrafico.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FManutPag.java"/>
+        <file path="/freedom/src/org/freedom/relatorios/fnc/fluxocaixareal.jasper"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FImpressora.java"/>
         <file path="/freedom/src/org/freedom/relatorios/CpTipoMov.jasper"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FCredCli.java"/>
