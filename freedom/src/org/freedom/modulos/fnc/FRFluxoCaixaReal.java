@@ -33,7 +33,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -64,7 +63,7 @@ public class FRFluxoCaixaReal extends FRelatorio {
 	public FRFluxoCaixaReal() {
 
 		setTitulo( "Relatório de atendimentos" );
-		setAtribos( 80, 80, 350, 300 );
+		setAtribos( 80, 80, 370, 200 );
 	
 		montaTela();
 		tela = this; 
@@ -79,18 +78,17 @@ public class FRFluxoCaixaReal extends FRelatorio {
 
 	private void montaTela() {
 		
-		JLabelPad lbLinha = new JLabelPad();
-		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
+		//JLabelPad lbLinha = new JLabelPad();
+		//lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 		JLabelPad lbPeriodo = new JLabelPad( "Período:" , SwingConstants.CENTER );
 		lbPeriodo.setOpaque( true );
 		
 		adic( lbPeriodo, 7, 1, 80, 20 );
-		adic( lbLinha, 5, 10, 310, 45 );	
+		//adic( lbLinha, 5, 10, 180, 45 );	
 		adic( new JLabelPad("De:"), 15, 25, 20, 20 );
 		adic( txtDataini, 38, 25, 95, 20 );
 		adic( new JLabelPad("Até:"), 145, 25, 35, 20 );
 		adic( txtDatafim, 178, 25, 95, 20 );
-		adic( new JLabelPad("Cód.Cli"), 7, 60, 80, 20 );
 
 		Calendar cPeriodo = Calendar.getInstance();
 	    txtDatafim.setVlrDate(cPeriodo.getTime());

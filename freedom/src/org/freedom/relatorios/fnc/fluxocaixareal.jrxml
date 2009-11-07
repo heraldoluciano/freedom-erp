@@ -60,16 +60,15 @@
 	<queryString><![CDATA[SELECT F.CLASFIN, F.ESFIN, P.CODPLAN, P.DESCPLAN, P.NIVELPLAN, 
 (SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL, FNLANCA L 
 WHERE SL.CODPLAN LIKE RTRIM(P.CODPLAN)||'%' AND SL.CODLANCA=L.CODLANCA AND
-SL.DATASUBLANCA BETWEEN '01.08.2009' AND '31.08.2009' AND
+SL.DATASUBLANCA BETWEEN '01.01.2008' AND '03.01.2008' AND
 SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL AND L.CODEMP=$P{CODEMP} AND L.CODFILIAL=$P{CODFILIAL}) VLRSUBLANCA
 FROM FNPLANEJAMENTO P, FNFINALIDADE F WHERE P.TIPOPLAN IN ('R','D') AND 
 P.CODEMP=$P{CODEMP} AND P.CODFILIAL=$P{CODFILIAL} AND F.CODFIN=P.FINPLAN AND 
 EXISTS( SELECT * FROM FNSUBLANCA SL, FNLANCA L 
 WHERE SL.CODPLAN LIKE RTRIM(P.CODPLAN)||'%' AND SL.CODLANCA=L.CODLANCA AND 
-SL.DATASUBLANCA BETWEEN '01.08.2009' AND '31.08.2009' AND 
+SL.DATASUBLANCA BETWEEN '01.01.2008' AND '03.01.2008' AND 
 SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL AND L.CODEMP=$P{CODEMP} AND L.CODFILIAL=$P{CODFILIAL} ) 
-ORDER BY  1 DESC, 2, 3, 4, 5
-]]></queryString>
+ORDER BY  1 DESC, 2, 3, 4, 5]]></queryString>
 
 	<field name="CLASFIN" class="java.lang.String"/>
 	<field name="ESFIN" class="java.lang.String"/>
@@ -78,57 +77,15 @@ ORDER BY  1 DESC, 2, 3, 4, 5
 	<field name="NIVELPLAN" class="java.lang.Integer"/>
 	<field name="VLRSUBLANCA" class="java.math.BigDecimal"/>
 
+	<variable name="SALDOSSL_FINAL" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRSUBLANCA}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
 
 		<group  name="GERAL" minHeightToStartNewPage="10" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="20"  isSplitAllowed="true" >
-				<staticText>
-					<reportElement
-						x="4"
-						y="2"
-						width="116"
-						height="13"
-						key="staticText-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[CONTA]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="408"
-						y="2"
-						width="96"
-						height="13"
-						key="staticText-2"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font/>
-					</textElement>
-				<text><![CDATA[VALOR]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="1"
-						y="19"
-						width="534"
-						height="0"
-						key="line-2"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-			</band>
-			</groupHeader>
-			<groupFooter>
-			<band height="19"  isSplitAllowed="true" >
-			</band>
-			</groupFooter>
-		</group>
-		<group  name="SALDO" >
-			<groupExpression><![CDATA[]]></groupExpression>
-			<groupHeader>
-			<band height="23"  isSplitAllowed="true" >
+			<band height="21"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="3"
@@ -158,7 +115,42 @@ ORDER BY  1 DESC, 2, 3, 4, 5
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="22"  isSplitAllowed="true" >
+			<band height="25"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="410"
+						y="8"
+						width="99"
+						height="13"
+						key="textField-19"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SALDOSSL_FINAL}.add($P{SALDOSL})]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="3"
+						y="8"
+						width="206"
+						height="13"
+						key="staticText-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[SALDO FINAL DO PERÍODO]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="389"
+						y="4"
+						width="148"
+						height="0"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 			</groupFooter>
 		</group>
@@ -219,7 +211,42 @@ ORDER BY  1 DESC, 2, 3, 4, 5
 			</band>
 		</title>
 		<pageHeader>
-			<band height="72"  isSplitAllowed="true" >
+			<band height="90"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="4"
+						y="72"
+						width="116"
+						height="13"
+						key="staticText-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[CONTA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="408"
+						y="72"
+						width="96"
+						height="13"
+						key="staticText-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<text><![CDATA[VALOR]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="87"
+						width="534"
+						height="0"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
@@ -237,9 +264,9 @@ ORDER BY  1 DESC, 2, 3, 4, 5
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="96"
-						y="1"
-						width="438"
+						x="115"
+						y="10"
+						width="386"
 						height="14"
 						forecolor="#000033"
 						backcolor="#FFFFFF"
@@ -250,35 +277,19 @@ ORDER BY  1 DESC, 2, 3, 4, 5
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{TITULO}.trim()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="148"
-						y="29"
-						width="316"
-						height="12"
+						x="262"
+						y="34"
+						width="55"
+						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="Empresa-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Center" verticalAlignment="Bottom" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Período"]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="MMMMM yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Opaque"
-						x="708"
-						y="5"
-						width="78"
-						height="12"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="Empresa-2"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$P{DTINI}]]></textFieldExpression>
 				</textField>
@@ -291,6 +302,48 @@ ORDER BY  1 DESC, 2, 3, 4, 5
 						key="line-1"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<staticText>
+					<reportElement
+						x="195"
+						y="34"
+						width="64"
+						height="13"
+						key="staticText-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Bottom">
+						<font/>
+					</textElement>
+				<text><![CDATA[Período:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="334"
+						y="34"
+						width="55"
+						height="13"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="Empresa-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$P{DTFIM}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="320"
+						y="34"
+						width="10"
+						height="13"
+						key="staticText-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font/>
+					</textElement>
+				<text><![CDATA[-]]></text>
+				</staticText>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -336,8 +389,8 @@ ORDER BY  1 DESC, 2, 3, 4, 5
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="155"
-						y="3"
+						x="118"
+						y="4"
 						width="380"
 						height="11"
 						forecolor="#000000"
@@ -352,8 +405,8 @@ ORDER BY  1 DESC, 2, 3, 4, 5
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="750"
-						y="3"
+						x="501"
+						y="4"
 						width="36"
 						height="11"
 						forecolor="#000000"
