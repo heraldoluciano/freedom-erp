@@ -85,7 +85,6 @@ import org.freedom.layout.componentes.LeiauteGR;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 
-
 public class FOrcamento extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener {
 
 	private static final long serialVersionUID = 1L;
@@ -147,6 +146,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextFieldPad txtPercDescItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
 
 	private JTextFieldPad txtVlrDescItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	
+	private JTextFieldPad txtVlrFreteOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
 	private JTextFieldPad txtVlrLiqItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
@@ -166,9 +167,17 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private JTextFieldPad txtVlrProdItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
+	private JTextFieldPad txtPercComisItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
+	
+	private JTextFieldPad txtVlrComisItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	
+	private JTextFieldPad txtVlrComisOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	
 	private JTextFieldPad txtStrDescItOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 500, 0 );
 
 	private JTextFieldPad txtVlrProdOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	
+
 
 	private JTextFieldPad txtStatusOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
@@ -526,7 +535,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodBarras, "CodBarProd", "Código de barras", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtSldLiqProd, "SldLiqProd", "Saldo", ListaCampos.DB_SI, false ) );
-		lcProd.add( new GuardaCampo( txtCodAlmoxItOrc, "CodAlmox", "Cód.almox.", ListaCampos.DB_SI, txtDescAlmoxItOrc, false ) );
+		lcProd.add( new GuardaCampo( txtCodAlmoxItOrc, "CodAlmox", "Cd.almox.", ListaCampos.DB_SI, txtDescAlmoxItOrc, false ) );
 		lcProd.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
 		
 		String sWhereAdicProd = "ATIVOPROD='S' AND TIPOPROD IN ('P','S','F'" + ( (Boolean)oPrefs[ PrefOrc.VENDAMATPRIM.ordinal() ] ? ",'M'" : "" ) + ")";
@@ -544,7 +553,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtSldLiqProd, "SldLiqProd", "Saldo", ListaCampos.DB_SI, false ) );
-		lcProd2.add( new GuardaCampo( txtCodAlmoxItOrc, "CodAlmox", "Cód.almox.", ListaCampos.DB_SI, txtDescAlmoxItOrc, false ) );
+		lcProd2.add( new GuardaCampo( txtCodAlmoxItOrc, "CodAlmox", "Cd.almox.", ListaCampos.DB_SI, txtDescAlmoxItOrc, false ) );
 		lcProd2.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
 		txtRefProd.setNomeCampo( "RefProd" );
 		txtRefProd.setListaCampos( lcDet );
@@ -660,12 +669,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		adicCampoInvisivel( txtStatusOrc, "StatusOrc", "Status", ListaCampos.DB_SI, false );
 
 		if( "S".equals( abaTransp ) ){
-			tpnCab.addTab( "Tranportadora", pinCabTransp );
+			tpnCab.addTab( "Transportadora", pinCabTransp );
 			setListaCampos( lcCampos );
 			setPainel( pinCabTransp );
 			adicCampo( txtCodTran, 7, 25, 70, 20, "Codtran", "Cód.transp.", ListaCampos.DB_FK, true );
 			adicDescFK( txtRazTran, 80, 25, 250, 20, "Raztran", "Razão social da transportadora" );	
 			adicDB( rgTipoFrete, 333, 25, 140, 25, "TipoFrete", "Tipo de Frete", false );
+			adicCampo( txtVlrFreteOrc, 7, 65, 70, 20, "VlrFreteOrc", "Vlr. frete", ListaCampos.DB_SI, false );
 		}
 		
 		setListaCampos( true, "ORCAMENTO", "VD" );
@@ -769,14 +779,19 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		adicCampoInvisivel( txtVlrProdItOrc, "VlrProdItOrc", "Valor bruto", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtStrDescItOrc, "StrDescItOrc", "Descontos", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrLiqItOrc, 660, 20, 80, 20, "VlrLiqItOrc", "Valor item", ListaCampos.DB_SI, false );
+		
+ 		adicCampo( txtCodAlmoxItOrc, 391, 60, 60, 20, "CodAlmox", "Cd.almox.", ListaCampos.DB_FK, txtDescAlmoxItOrc, false );
+		adicDescFK( txtDescAlmoxItOrc, 454, 60, 202, 20, "DescAlmox", "Descrição do almoxarifado" );
+		adicDescFK( txtSldLiqProd, 660, 60, 80, 20, "SldLiqProd", "Saldo" );
+		
+//		adicCampo( txtPercComisItOrc, 7, 60, 40, 20, "PercComisItOrc", "% com.", ListaCampos.DB_SI, false );
+//		adicCampo( txtVlrComisItOrc, 50, 60, 57, 20, "VlrComisItOrc", "V. com.", ListaCampos.DB_SI, false );
 
-		adicCampo( txtCodAlmoxItOrc, 7, 60, 65, 20, "CodAlmox", "Cód.ax.", ListaCampos.DB_FK, txtDescAlmoxItOrc, false );
-		adicDescFK( txtDescAlmoxItOrc, 75, 60, 222, 20, "DescAlmox", "Descrição do almoxarifado" );
-		adicDescFK( txtSldLiqProd, 300, 60, 88, 20, "SldLiqProd", "Saldo" );
 		adicDBLiv( txaObsItOrc, "ObsItOrc", "Observação", false );
 		adicCampoInvisivel( txtCodEmpLG, "CodEmpLG", "Emp.log.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodFilialLG, "CodFilialLG", "Filial log.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodLog, "CodLog", "Cód.log.", ListaCampos.DB_SI, false );
+
 		pinTot.adic( new JLabelPad( "Total desc." ), 7, 0, 90, 20 );
 		pinTot.adic( txtVlrDescOrc, 7, 20, 100, 20 );
 		pinTot.adic( new JLabelPad( "Total adic." ), 7, 40, 90, 20 );
