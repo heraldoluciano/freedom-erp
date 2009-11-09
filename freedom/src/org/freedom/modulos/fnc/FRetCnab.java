@@ -39,6 +39,7 @@ import java.util.Date;
 import javax.swing.ImageIcon;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.funcoes.boleto.Banco;
 import org.freedom.modulos.fnc.CnabUtil.Receber;
 import org.freedom.modulos.fnc.CnabUtil.Reg;
 import org.freedom.modulos.fnc.CnabUtil.Reg1;
@@ -269,14 +270,23 @@ public class FRetCnab extends FRetFBN {
 						
 						reg3T = (Reg3T) reg;	
 						int[] chaveRec = getChaveReceber( reg3T );
-						rec = findReceber( chaveRec[0], chaveRec[1] );	
+						
+						
+						//Verifica se o banco é caixa e se a carteira é 1 (14 sem registro) deve buscar titulo pelo docrec do contrario pelo codrec
+						if(Banco.CAIXA_ECONOMICA.equals( reg3T.getCodBanco() ) && "1".equals( reg3T.getCarteira()+"" )){
+							rec = findReceber( chaveRec[0], chaveRec[1], true );							
+						}
+						else {
+							rec = findReceber( chaveRec[0], chaveRec[1], false );
+						}						
+							
 					}
 					else if ( reg instanceof Reg3U  ) {
 						
 						if ( rec != null ) {
 
 							Reg3U reg3U = (Reg3U) reg;
-							String[] detRetorno = getDetRetorno( txtCodBanco.getVlrString(), reg3T.getCodRejeicoes(), FPrefereFBB.TP_CNAB );
+//							String[] detRetorno = getDetRetorno( txtCodBanco.getVlrString(), reg3T.getCodRejeicoes(), FPrefereFBB.TP_CNAB );
 							
 							tab.adicLinha();
 
@@ -285,7 +295,7 @@ public class FRetCnab extends FRetFBN {
 							if ( reg3U.getDataEfetvCred() != null ) {								
 								tab.setValor( imgConfBaixa, row, EColTab.STATUS.ordinal() );
 								tab.setValor( new Boolean( reg3U.getVlrLiqCred().floatValue() > 0.00 ), row, EColTab.SEL.ordinal() );
-								tab.setValor( detRetorno[0], row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
+//								tab.setValor( detRetorno[0], row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
 							}
 							else {								
 								tab.setValor( imgRejBaixa, row, EColTab.STATUS.ordinal() );
@@ -309,7 +319,7 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( "BAIXA AUTOMÁTICA CNAB", row, EColTab.OBS.ordinal() ); // HISTÓRICO							
 							tab.setValor( FPrefereFBB.TP_CNAB, row, EColTab.TIPOFEBRABAN.ordinal() );
 							tab.setValor( reg3T.getCodRejeicoes(), row, EColTab.CODRET.ordinal() ); // código retorno
-							tab.setValor( detRetorno[0], row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
+//							tab.setValor( detRetorno[0], row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
 							
 							row++;
 							rec = null;
@@ -319,7 +329,7 @@ public class FRetCnab extends FRetFBN {
 						regT400 = (RegT400) reg;	
 						
 						int[] chaveRec = getChaveReceber( regT400 );
-						rec = findReceber( chaveRec[0], chaveRec[1] );	
+						rec = findReceber( chaveRec[0], chaveRec[1], false );	
 					
 						if ( rec != null ) {
 							
@@ -412,7 +422,7 @@ public class FRetCnab extends FRetFBN {
 		return retorno;
 	}
 	
-	private Receber findReceber( int codrec, int iparc ) {
+	private Receber findReceber( int codrec, int iparc, boolean doc ) {
 		
 		Receber receber = null;
 		
@@ -430,8 +440,17 @@ public class FRetCnab extends FRetFBN {
 			sql.append( "  FNITRECEBER IR, FNRECEBER R, VDCLIENTE CL " );
 			sql.append( "WHERE " );
 			sql.append( "  IR.CODEMP=? AND IR.CODFILIAL=? AND IR.NPARCITREC=? AND " );
-			sql.append( "  IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND R.CODREC=? AND " );
-			sql.append( "  R.CODEMPCL=CL.CODEMP AND R.CODFILIALCL=CL.CODFILIAL AND R.CODCLI=CL.CODCLI " );
+			sql.append( "  IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND " ); 
+
+			// Verifica se deve fazer a busca pelo código do documento (carteiras sem registro)
+			if(doc){
+				sql.append( " R.DOCREC=? " );
+			}
+			else {
+				sql.append( " R.CODREC=? " );
+			}
+		
+			sql.append( "  AND R.CODEMPCL=CL.CODEMP AND R.CODFILIALCL=CL.CODFILIAL AND R.CODCLI=CL.CODCLI " );
 			sql.append( "  AND IR.STATUSITREC!='RP' " );
 			
 			try {
@@ -480,12 +499,13 @@ public class FRetCnab extends FRetFBN {
 
 		int[] chave = new int[2]; 
 			
-		if ( reg3T != null ) {		
-			
+		if ( reg3T != null ) {
+									
 			String docrec = reg3T.getIdentTitEmp().trim();
 			String tmp = docrec.length() >= 15 ? docrec.substring( 1, 15 ) : docrec.trim();			
 			chave[0] = Integer.parseInt( tmp.substring( 0, tmp.length()-2 ) );
 			chave[1] = Integer.parseInt( tmp.substring( tmp.length()-2 ) );
+			
 		}
 		
 		return chave;
@@ -497,10 +517,10 @@ public class FRetCnab extends FRetFBN {
 			
 		if ( regT400 != null ) {		
 			
-			String docrec = regT400.getIdentTitulo().trim();
+			String codrec = regT400.getIdentTitEmp().trim();
 			
-			chave[0] = Integer.parseInt( docrec.substring( 0, docrec.length()-2 ) );
-			chave[1] = Integer.parseInt( docrec.substring( docrec.length()-2 ) );
+			chave[0] = Integer.parseInt( codrec.substring( 0, codrec.length()-2 ) );
+			chave[1] = Integer.parseInt( codrec.substring( codrec.length()-2 ) );
 		}
 		
 		return chave;

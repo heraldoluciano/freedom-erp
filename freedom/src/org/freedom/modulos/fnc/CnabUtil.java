@@ -5116,7 +5116,7 @@ public class CnabUtil extends FbnUtil {
 							setCodCarteira( Integer.parseInt( line.substring(107,108) ) ); // Posição 108 a 108 - Código da carteira
 							setCodRejeicoes( line.substring( 108, 110 ) );// Posição 109 a 109 - Código das ocorrências (vide pg.45)
 							
-							setIdentTitulo( line.substring( 37, 62 ) ); // Posição 38 a 62 - Nro Controle do Participante
+							setIdentTitEmp( line.substring( 37, 62 ) ); // Posição 38 a 62 - Nro Controle do Participante
 																					
 							setVlrOutrasDesp( strToBigDecimal( line.substring( 188, 201 ) ) );
 							
