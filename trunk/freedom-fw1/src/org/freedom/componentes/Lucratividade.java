@@ -16,43 +16,43 @@ public class Lucratividade {
 	private BigDecimal itemfat = null;
 	private BigDecimal itemcusto = null;
 	private BigDecimal itemlucro = null;	
-	private BigDecimal vlrcustopepsvenda = null;
-	private BigDecimal vlrcustoucvenda = null;
-	private BigDecimal vlrlucrovenda = null;
+	private BigDecimal vlrcustopeps = null;
+	private BigDecimal vlrcustouc = null;
+	private BigDecimal vlrlucro = null;
 	private BigDecimal vlrprod = null;
 	private BigDecimal vlrdesc = null;
 	private BigDecimal vlricms = null;
 	private BigDecimal vlroutras = null;
 	private BigDecimal vlrcomis = null;
-	private BigDecimal vlrfretevenda = null;
-	private BigDecimal vlradicvenda = null;
-	private BigDecimal vlripivenda = null;
-	private BigDecimal vlrpisvenda = null;
-	private BigDecimal vlrcofinsvenda = null;
-	private BigDecimal vlrirvenda = null;
-	private BigDecimal vlrcsocialvenda = null;	
-	private BigDecimal vlrcustompmitvenda = null;
-	private BigDecimal vlrcustopepsitvenda = null;
-	private BigDecimal vlrcustoucitvenda = null;
-	private BigDecimal vlrlucroitvenda = null;
-	private BigDecimal vlrproditvenda = null;
-	private BigDecimal vlrdescitvenda = null;
-	private BigDecimal vlricmsitvenda = null;
-	private BigDecimal vlrpisitvenda = null;
-	private BigDecimal vlrcofinsitvenda = null;
-	private BigDecimal vlrcsocialitvenda = null;
-	private BigDecimal vlroutrasitvenda = null;
-	private BigDecimal vlrcomisitvenda = null;
-	private BigDecimal vlrfreteitvenda = null;
-	private BigDecimal vlradicitvenda = null;
-	private BigDecimal vlripiitvenda = null;
-	private BigDecimal vlriritvenda = null;
-	private BigDecimal perclucrvenda = null;	
-	private BigDecimal perclucritvenda = null;
+	private BigDecimal vlrfrete = null;
+	private BigDecimal vlradic = null;
+	private BigDecimal vlripi = null;
+	private BigDecimal vlrpis = null;
+	private BigDecimal vlrcofins = null;
+	private BigDecimal vlrir = null;
+	private BigDecimal vlrcsocial = null;	
+	private BigDecimal vlrcustompmit = null;
+	private BigDecimal vlrcustopepsit = null;
+	private BigDecimal vlrcustoucit = null;
+	private BigDecimal vlrlucroit = null;
+	private BigDecimal vlrprodit = null;
+	private BigDecimal vlrdescit = null;
+	private BigDecimal vlricmsit = null;
+	private BigDecimal vlrpisit = null;
+	private BigDecimal vlrcofinsit = null;
+	private BigDecimal vlrcsocialit = null;
+	private BigDecimal vlroutrasit = null;
+	private BigDecimal vlrcomisit = null;
+	private BigDecimal vlrfreteit = null;
+	private BigDecimal vlradicit = null;
+	private BigDecimal vlripiit = null;
+	private BigDecimal vlririt = null;
+	private BigDecimal perclucr = null;	
+	private BigDecimal perclucrit = null;
 	private String tipofrete = null;
-	private String adicfretevd = null;	
+	private String adicfrete = null;	
 	private BigDecimal fatLucro = new BigDecimal(1);	
-	private BigDecimal vlrcustompmvenda = null;	
+	private BigDecimal vlrcustompm = null;	
 	private DbConnection con = null;
 		
 	public Lucratividade(Integer codcab, String tipo, Integer item, BigDecimal fatLucro, DbConnection con) {
@@ -146,18 +146,18 @@ public class Lucratividade {
 				setVlricms( rs.getBigDecimal( "vlricmsvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlricmsvenda" ));
 				setVlroutras( rs.getBigDecimal( "vlroutrasvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlroutrasvenda" ));
 				setVlrcomis( rs.getBigDecimal( "vlrcomisvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcomisvenda" ));
-				setVlrfretevenda( rs.getBigDecimal( "vlrfretevd" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrfretevd" ));
-				setVlradicvenda( rs.getBigDecimal( "vlradicvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlradicvenda" ));
-				setVlripivenda( rs.getBigDecimal( "vlripivenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlripivenda" ));
-				setVlrpisvenda( rs.getBigDecimal( "vlrpisvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrpisvenda" ));
-				setVlrcofinsvenda( rs.getBigDecimal( "vlrcofinsvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcofinsvenda" ));
-				setVlrirvenda( rs.getBigDecimal( "vlrirvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrirvenda" ));
-				setVlrcsocialvenda( rs.getBigDecimal( "vlrcsocialvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcsocialvenda" ));
-				setVlrcustoucvenda( rs.getBigDecimal( "vlrcustouc" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustouc" ));
-				setVlrcustompmvenda( rs.getBigDecimal( "vlrcustompm" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustompm" ));
-				setVlrcustopepsvenda( rs.getBigDecimal( "vlrcustopeps" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustopeps" )); 
+				setVlrfrete( rs.getBigDecimal( "vlrfretevd" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrfretevd" ));
+				setVlradic( rs.getBigDecimal( "vlradicvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlradicvenda" ));
+				setVlripi( rs.getBigDecimal( "vlripivenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlripivenda" ));
+				setVlrpis( rs.getBigDecimal( "vlrpisvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrpisvenda" ));
+				setVlrcofins( rs.getBigDecimal( "vlrcofinsvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcofinsvenda" ));
+				setVlrir( rs.getBigDecimal( "vlrirvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrirvenda" ));
+				setVlrcsocial( rs.getBigDecimal( "vlrcsocialvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcsocialvenda" ));
+				setVlrcustouc( rs.getBigDecimal( "vlrcustouc" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustouc" ));
+				setVlrcustompm( rs.getBigDecimal( "vlrcustompm" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustompm" ));
+				setVlrcustopeps( rs.getBigDecimal( "vlrcustopeps" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustopeps" )); 
 				setTipofrete( rs.getString( "tipofretevd" )==null ? "F" : rs.getString( "tipofretevd" ));
-				setAdicfretevd( rs.getString( "adicfretevd" )==null ? "N" : rs.getString( "adicfretevd" ));
+				setAdicfrete( rs.getString( "adicfretevd" )==null ? "N" : rs.getString( "adicfretevd" ));
 			}
 
 			rs.close();
@@ -217,17 +217,17 @@ public class Lucratividade {
 				setVlricmsitvenda( rs.getBigDecimal( "vlricmsitvenda" ));
 				setVlroutrasitvenda( rs.getBigDecimal( "vlroutrasitvenda" ));
 				setVlrcomisitvenda( rs.getBigDecimal( "vlrcomisitvenda" ));
-				setVlrfreteitvenda( rs.getBigDecimal( "vlrfreteitvenda" ));
+				setVlrfreteitvenda(rs.getBigDecimal( "vlrfreteitvenda" ));
 				setVlradicitvenda( rs.getBigDecimal( "vlradicitvenda" ));
 				setVlripiitvenda( rs.getBigDecimal( "vlripiitvenda" ));
-				setVlrcustoucitvenda( rs.getBigDecimal( "vlrcustoituc" ));
-				setVlrcustompmitvenda( rs.getBigDecimal( "vlrcustoitmpm" ));
-				setVlrcustopepsitvenda( rs.getBigDecimal( "vlrcustoitpeps" )); 
+				setVlrcustoucit( rs.getBigDecimal( "vlrcustoituc" ));
+				setVlrcustompmit( rs.getBigDecimal( "vlrcustoitmpm" ));
+				setVlrcustopepsit( rs.getBigDecimal( "vlrcustoitpeps" )); 
 				
-				setVlrpisitvenda(rs.getBigDecimal( "vlrpis" ));
-				setVlrcofinsitvenda(rs.getBigDecimal( "vlrcofins" ));
-				setVlriritvenda(rs.getBigDecimal( "vlrir" ));
-				setVlrcsocialitvenda( rs.getBigDecimal( "vlrcsocial" ));
+				setVlrpisit(rs.getBigDecimal( "vlrpis" ));
+				setVlrcofinsit(rs.getBigDecimal( "vlrcofins" ));
+				setVlririt(rs.getBigDecimal( "vlrir" ));
+				setVlrcsocialit( rs.getBigDecimal( "vlrcsocial" ));
 			}
 
 			rs.close();
@@ -285,109 +285,109 @@ public class Lucratividade {
 		return vlrcomis;
 	}
 	
-	public void setVlrcomis( BigDecimal vlrcomisvenda ) {
+	public void setVlrcomis( BigDecimal vlrcomis ) {
 	
-		this.vlrcomis = vlrcomisvenda;
+		this.vlrcomis = vlrcomis;
 	}
 	
-	public BigDecimal getVlrfretevenda() {
+	public BigDecimal getVlrfrete() {
 	
-		return vlrfretevenda;
+		return vlrfrete;
 	}
 	
-	public void setVlrfretevenda( BigDecimal vlrfretevenda ) {
+	public void setVlrfrete( BigDecimal vlrfrete ) {
 	
-		this.vlrfretevenda = vlrfretevenda;
+		this.vlrfrete = vlrfrete;
 	}
 	
-	public BigDecimal getVlradicvenda() {
+	public BigDecimal getVlradic() {
 	
-		return vlradicvenda;
+		return vlradic;
 	}
 	
-	public void setVlradicvenda( BigDecimal vlradicvenda ) {
+	public void setVlradic( BigDecimal vlradic ) {
 	
-		this.vlradicvenda = vlradicvenda;
+		this.vlradic = vlradic;
 	}
 	
-	public BigDecimal getVlripivenda() {
+	public BigDecimal getVlripi() {
 	
-		return vlripivenda;
+		return vlripi;
 	}
 	
-	public void setVlripivenda( BigDecimal vlripivenda ) {
+	public void setVlripi( BigDecimal vlripi ) {
 	
-		this.vlripivenda = vlripivenda;
+		this.vlripi = vlripi;
 	}
 	
-	public BigDecimal getVlrcofinsvenda() {
+	public BigDecimal getVlrcofins() {
 	
-		return vlrcofinsvenda;
+		return vlrcofins;
 	}
 
-	public void setVlrcofinsvenda( BigDecimal vlrcofinsvenda ) {
+	public void setVlrcofins( BigDecimal vlrcofins ) {
 	
-		this.vlrcofinsvenda = vlrcofinsvenda;
+		this.vlrcofins = vlrcofins;
 	}
 
-	public BigDecimal getVlrpisvenda() {
-		return vlrpisvenda;
+	public BigDecimal getVlrpis() {
+		return vlrpis;
 	}
 
-	public void setVlrpisvenda(BigDecimal vlrpisvenda) {
-		this.vlrpisvenda = vlrpisvenda;
+	public void setVlrpis(BigDecimal vlrpis) {
+		this.vlrpis = vlrpis;
 	}
 
-	public BigDecimal getVlrirvenda() {
+	public BigDecimal getVlrir() {
 	
-		return vlrirvenda;
+		return vlrir;
 	}
 
-	public void setVlrirvenda( BigDecimal vlrirvenda ) {
+	public void setVlrir( BigDecimal vlrir ) {
 	
-		this.vlrirvenda = vlrirvenda;
+		this.vlrir = vlrir;
 	}
 
-	public BigDecimal getVlrcsocialvenda() {
+	public BigDecimal getVlrcsocial() {
 	
-		return vlrcsocialvenda;
+		return vlrcsocial;
 	}
 
-	public void setVlrcsocialvenda( BigDecimal vlrcsocialvenda ) {
+	public void setVlrcsocial( BigDecimal vlrcsocial ) {
 	
-		this.vlrcsocialvenda = vlrcsocialvenda;
+		this.vlrcsocial = vlrcsocial;
 	}
 
-	public BigDecimal getVlrpisitvenda() {
-		return vlrpisitvenda;
+	public BigDecimal getVlrpisit() {
+		return vlrpisit;
 	}
 
-	public void setVlrpisitvenda(BigDecimal vlrpisitvenda) {
-		this.vlrpisitvenda = vlrpisitvenda;
+	public void setVlrpisit(BigDecimal vlrpisit) {
+		this.vlrpisit = vlrpisit;
 	}
 
-	public BigDecimal getVlrcofinsitvenda() {
-		return vlrcofinsitvenda;
+	public BigDecimal getVlrcofinsit() {
+		return vlrcofinsit;
 	}
 
-	public void setVlrcofinsitvenda(BigDecimal vlrcofinsitvenda) {
-		this.vlrcofinsitvenda = vlrcofinsitvenda;
+	public void setVlrcofinsit(BigDecimal vlrcofinsit) {
+		this.vlrcofinsit = vlrcofinsit;
 	}
 
-	public BigDecimal getVlrcsocialitvenda() {
-		return vlrcsocialitvenda;
+	public BigDecimal getVlrcsocialit() {
+		return vlrcsocialit;
 	}
 
-	public void setVlrcsocialitvenda(BigDecimal vlrcsocialitvenda) {
-		this.vlrcsocialitvenda = vlrcsocialitvenda;
+	public void setVlrcsocialit(BigDecimal vlrcsocialit) {
+		this.vlrcsocialit = vlrcsocialit;
 	}
 
-	public BigDecimal getVlriritvenda() {
-		return vlriritvenda;
+	public BigDecimal getVlririt() {
+		return vlririt;
 	}
 
-	public void setVlriritvenda(BigDecimal vlriritvenda) {
-		this.vlriritvenda = vlriritvenda;
+	public void setVlririt(BigDecimal vlririt) {
+		this.vlririt = vlririt;
 	}
 
 	private void calcTotCusto(String tipocusto) {
@@ -398,45 +398,45 @@ public class Lucratividade {
 				calc = getVlrcustompmvenda();	
 			}
 			else if ("P".equals( tipocusto )) {
-				calc = getVlrcustopepsvenda();
+				calc = getVlrcustopeps();
 			}
 			else if ("U".equals( tipocusto )) {
-				calc = getVlrcustoucvenda();
+				calc = getVlrcustouc();
 			}
 
 			System.out.println("VALOR TOT. CUSTO COMPRA: " + calc);
 			
 			// Se frete for FOB e não destacado na nota é custo. 
-			if("F".equals(tipofrete) && "N".equals(adicfretevd)) {
-				calc = calc.add( getVlrfretevenda() );
-				System.out.println("VALOR TOT. FRETE: " + getVlrfretevenda());
+			if("F".equals(tipofrete) && "N".equals(adicfrete)) {
+				calc = calc.add( getVlrfrete() );
+				System.out.println("VALOR TOT. FRETE: " + getVlrfrete());
 			}
 			// Se frete for CIF e destacado na nota é custo, pois é faturado.
-			else if ("C".equals(tipofrete) && "S".equals(adicfretevd)) {
-				calc = calc.add( getVlrfretevenda() );
-				System.out.println("VALOR TOT. FRETE: " + getVlrfretevenda());
+			else if ("C".equals(tipofrete) && "S".equals(adicfrete)) {
+				calc = calc.add( getVlrfrete() );
+				System.out.println("VALOR TOT. FRETE: " + getVlrfrete());
 			}
 
 			calc = calc.add( getVlrcomis() );	
 			System.out.println("VALOR TOT. COMISSÃO: " + getVlrcomis());
 			
-			calc = calc.add( getVlrpisvenda());
-			System.out.println("VALOR TOT. PIS: " + getVlrpisvenda());
+			calc = calc.add( getVlrpis());
+			System.out.println("VALOR TOT. PIS: " + getVlrpis());
 			
-			calc = calc.add( getVlrcofinsvenda()) ;
-			System.out.println("VALOR TOT. COFINS: " + getVlrcofinsvenda());
+			calc = calc.add( getVlrcofins()) ;
+			System.out.println("VALOR TOT. COFINS: " + getVlrcofins());
 			
 			calc = calc.add( getVlricms()) ;
 			System.out.println("VALOR TOT. ICMS: " + getVlricms());
 			
-			calc = calc.add( getVlrcsocialvenda()) ;
-			System.out.println("VALOR TOT. CSOCIAL: " + getVlrcsocialvenda());
+			calc = calc.add( getVlrcsocial()) ;
+			System.out.println("VALOR TOT. CSOCIAL: " + getVlrcsocial());
 			
-			calc = calc.add( getVlrirvenda()) ;
-			System.out.println("VALOR TOT. IR: " + getVlrirvenda());
+			calc = calc.add( getVlrir()) ;
+			System.out.println("VALOR TOT. IR: " + getVlrir());
 			
-			calc = calc.add( getVlripivenda()) ;
-			System.out.println("VALOR TOT. IPI: " + getVlripivenda());
+			calc = calc.add( getVlripi()) ;
+			System.out.println("VALOR TOT. IPI: " + getVlripi());
 			
 			setTotcusto( calc );
 			setTotlucro( getTotfat().subtract( calc ) );
@@ -453,45 +453,45 @@ public class Lucratividade {
 		
 		try {
 			if("M".equals( tipocusto )) {
-				calc = getVlrcustompmitvenda();	
+				calc = getVlrcustompmit();	
 			}
 			else if ("P".equals( tipocusto )) {
-				calc = getVlrcustopepsitvenda();
+				calc = getVlrcustopepsit();
 			}
 			else if ("U".equals( tipocusto )) {
-				calc = getVlrcustoucitvenda();
+				calc = getVlrcustoucit();
 			}
 			
 			System.out.println("VALOR ITEM CUSTO COMPRA: " + calc);
 
 			// Se frete for FOB e não destacado na nota é custo. 
-			if("F".equals(tipofrete) && "N".equals(adicfretevd)) {
+			if("F".equals(tipofrete) && "N".equals(adicfrete)) {
 				calc = calc.add( getVlrfreteitvenda() );
 				System.out.println("VALOR ITEM FRETE: " + getVlrfreteitvenda());
 			}
 			// Se frete for CIF e destacado na nota é custo, pois é faturado.
-			else if ("C".equals(tipofrete) && "S".equals(adicfretevd)) {
-				calc = calc.add( getVlrfretevenda() );
-				System.out.println("VALOR ITEM FRETE: " + getVlrfretevenda());
+			else if ("C".equals(tipofrete) && "S".equals(adicfrete)) {
+				calc = calc.add( getVlrfrete() );
+				System.out.println("VALOR ITEM FRETE: " + getVlrfrete());
 			}
 
 			calc = calc.add( getVlrcomisitvenda() );	
 			System.out.println("VALOR ITEM COMISSÃO: " + getVlrcomisitvenda());
 			
-			calc = calc.add( getVlrpisitvenda());
-			System.out.println("VALOR ITEM PIS: " + getVlrpisitvenda());
+			calc = calc.add( getVlrpisit());
+			System.out.println("VALOR ITEM PIS: " + getVlrpisit());
 			
-			calc = calc.add( getVlrcofinsitvenda()) ;
-			System.out.println("VALOR ITEM COFINS: " + getVlrcofinsitvenda());
+			calc = calc.add( getVlrcofinsit()) ;
+			System.out.println("VALOR ITEM COFINS: " + getVlrcofinsit());
 			
 			calc = calc.add( getVlricmsitvenda()) ;
 			System.out.println("VALOR ITEM ICMS: " + getVlricmsitvenda());
 			
-			calc = calc.add( getVlrcsocialitvenda()) ;
-			System.out.println("VALOR ITEM CSOCIAL: " + getVlrcsocialitvenda());
+			calc = calc.add( getVlrcsocialit()) ;
+			System.out.println("VALOR ITEM CSOCIAL: " + getVlrcsocialit());
 			
-			calc = calc.add( getVlriritvenda()) ;
-			System.out.println("VALOR ITEM IR: " + getVlriritvenda());
+			calc = calc.add( getVlririt()) ;
+			System.out.println("VALOR ITEM IR: " + getVlririt());
 			
 			calc = calc.add( getVlripiitvenda()) ;
 			System.out.println("VALOR ITEM IPI: " + getVlripiitvenda());
@@ -508,42 +508,42 @@ public class Lucratividade {
 
 	public BigDecimal getVlrcustompmvenda() {
 	
-		return vlrcustompmvenda;
+		return vlrcustompm;
 	}
 
-	public void setVlrcustompmvenda( BigDecimal vlrcustompmvenda ) {
+	public void setVlrcustompm( BigDecimal vlrcustompm ) {
 	
-		this.vlrcustompmvenda = vlrcustompmvenda;
+		this.vlrcustompm = vlrcustompm;
 	}
 
-	public BigDecimal getVlrcustopepsvenda() {
+	public BigDecimal getVlrcustopeps() {
 	
-		return vlrcustopepsvenda;
+		return vlrcustopeps;
 	}
 
-	public void setVlrcustopepsvenda( BigDecimal vlrcustopepsvenda ) {
+	public void setVlrcustopeps( BigDecimal vlrcustopeps ) {
 	
-		this.vlrcustopepsvenda = vlrcustopepsvenda;
+		this.vlrcustopeps = vlrcustopeps;
 	}
 
-	public BigDecimal getVlrcustoucvenda() {
+	public BigDecimal getVlrcustouc() {
 	
-		return vlrcustoucvenda;
+		return vlrcustouc;
 	}
 
-	public void setVlrcustoucvenda( BigDecimal vlrcustoucvenda ) {
+	public void setVlrcustouc( BigDecimal vlrcustouc ) {
 	
-		this.vlrcustoucvenda = vlrcustoucvenda;
+		this.vlrcustouc = vlrcustouc;
 	}
 
-	public BigDecimal getVlrlucrovenda() {
+	public BigDecimal getVlrlucro() {
 	
-		return vlrlucrovenda;
+		return vlrlucro;
 	}
 
-	public void setVlrlucrovenda( BigDecimal vlrlucrovenda ) {
+	public void setVlrlucro( BigDecimal vlrlucro ) {
 	
-		this.vlrlucrovenda = vlrlucrovenda;
+		this.vlrlucro = vlrlucro;
 	}
 
 	public BigDecimal getTotcusto() {
@@ -563,16 +563,16 @@ public class Lucratividade {
 		try {
 			
 			calc = vlrprod.multiply(fatLucro) ;			
-			calc = calc.add( vlradicvenda );
+			calc = calc.add( vlradic );
 			calc = calc.subtract( vlrdesc );			
 
 			// Se frete for destacado na nota, entra como valor faturado
-			if("S".equals(adicfretevd)) {
-				calc = calc.add( vlrfretevenda );
+			if("S".equals(adicfrete)) {
+				calc = calc.add( vlrfrete );
 			}
 			
 			calc = calc.add(vlroutras);
-			calc = calc.add(vlripivenda);
+			calc = calc.add(vlripi);
 
 			setTotfat( calc );
 			
@@ -589,17 +589,17 @@ public class Lucratividade {
 		BigDecimal calc = null;
 		try {
 			
-			calc = vlrproditvenda.multiply(fatLucro) ;				
-			calc = calc.add( vlradicitvenda );
-			calc = calc.subtract( vlrdescitvenda );			
+			calc = vlrprodit.multiply(fatLucro) ;				
+			calc = calc.add( vlradicit );
+			calc = calc.subtract( vlrdescit );			
 
 			// Se frete for destacado na nota, entra como valor faturado
-			if("S".equals(adicfretevd)) {
-				calc = calc.add( vlrfreteitvenda );
+			if("S".equals(adicfrete)) {
+				calc = calc.add( vlrfreteit );
 			}
 			
-			calc = calc.add(vlroutrasitvenda);
-			calc = calc.add(vlripiitvenda);
+			calc = calc.add(vlroutrasit);
+			calc = calc.add(vlripiit);
 
 			setItemfat( calc );
 			
@@ -622,7 +622,7 @@ public class Lucratividade {
 			
 			perclucro = (vlrlucro.multiply( new BigDecimal(100) )).divide( getTotfat(), 0, BigDecimal.ROUND_DOWN )  ;
 			
-			setVlrlucrovenda( vlrlucro );
+			setVlrlucro( vlrlucro );
 			
 			setPerclucrvenda( perclucro );
 			
@@ -664,22 +664,22 @@ public class Lucratividade {
 
 	public BigDecimal getPerclucrvenda() {
 	
-		return perclucrvenda;
+		return perclucr;
 	}
 	
 	public void setPerclucrvenda( BigDecimal perclucrvenda ) {
 	
-		this.perclucrvenda = perclucrvenda;
+		this.perclucr = perclucrvenda;
 	}
 	
 	public String getAdicfretevd() {
 		
-		return adicfretevd;
+		return adicfrete;
 	}
 
-	public void setAdicfretevd( String adicfretevd ) {
+	public void setAdicfrete( String adicfrete ) {
 	
-		this.adicfretevd = adicfretevd;
+		this.adicfrete = adicfrete;
 	}
 	
 	public BigDecimal getTotlucro() {
@@ -692,124 +692,124 @@ public class Lucratividade {
 		this.totlucro = totlucro;
 	}
 	
-	public BigDecimal getVlrcustompmitvenda() {
+	public BigDecimal getVlrcustompmit() {
 	
-		return vlrcustompmitvenda;
+		return vlrcustompmit;
 	}
 	
-	public void setVlrcustompmitvenda( BigDecimal vlrcustompmitvenda ) {
+	public void setVlrcustompmit( BigDecimal vlrcustompmit ) {
 	
-		this.vlrcustompmitvenda = vlrcustompmitvenda;
+		this.vlrcustompmit = vlrcustompmit;
 	}
 	
-	public BigDecimal getVlrcustopepsitvenda() {
+	public BigDecimal getVlrcustopepsit() {
 	
-		return vlrcustopepsitvenda;
-	}
-
-	public void setVlrcustopepsitvenda( BigDecimal vlrcustopepsitvenda ) {
-	
-		this.vlrcustopepsitvenda = vlrcustopepsitvenda;
+		return vlrcustopepsit;
 	}
 
-	public BigDecimal getVlrcustoucitvenda() {
+	public void setVlrcustopepsit( BigDecimal vlrcustopepsit ) {
 	
-		return vlrcustoucitvenda;
+		this.vlrcustopepsit = vlrcustopepsit;
 	}
 
-	public void setVlrcustoucitvenda( BigDecimal vlrcustoucitvenda ) {
+	public BigDecimal getVlrcustoucit() {
 	
-		this.vlrcustoucitvenda = vlrcustoucitvenda;
+		return vlrcustoucit;
+	}
+
+	public void setVlrcustoucit( BigDecimal vlrcustoucitvenda ) {
+	
+		this.vlrcustoucit = vlrcustoucitvenda;
 	}
 	
 	public BigDecimal getVlrlucroitvenda() {
 	
-		return vlrlucroitvenda;
+		return vlrlucroit;
 	}
 	
 	public void setVlrlucroitvenda( BigDecimal vlrlucroitvenda ) {
 	
-		this.vlrlucroitvenda = vlrlucroitvenda;
+		this.vlrlucroit = vlrlucroitvenda;
 	}
 	
 	public BigDecimal getVlrproditvenda() {
 	
-		return vlrproditvenda;
+		return vlrprodit;
 	}
 	
 	public void setVlrproditvenda( BigDecimal vlrproditvenda ) {
 	
-		this.vlrproditvenda = vlrproditvenda;
+		this.vlrprodit = vlrproditvenda;
 	}
 	
 	public BigDecimal getVlrdescitvenda() {
 	
-		return vlrdescitvenda;
+		return vlrdescit;
 	}
 
 	public void setVlrdescitvenda( BigDecimal vlrdescitvenda ) {
 	
-		this.vlrdescitvenda = vlrdescitvenda;
+		this.vlrdescit = vlrdescitvenda;
 	}
 
 	public BigDecimal getVlricmsitvenda() {
 	
-		return vlricmsitvenda;
+		return vlricmsit;
 	}
 
 	public void setVlricmsitvenda( BigDecimal vlricmsitvenda ) {
 	
-		this.vlricmsitvenda = vlricmsitvenda;
+		this.vlricmsit = vlricmsitvenda;
 	}
 	
 	public BigDecimal getVlroutrasitvenda() {
 	
-		return vlroutrasitvenda;
+		return vlroutrasit;
 	}
 	
 	public void setVlroutrasitvenda( BigDecimal vlroutrasitvenda ) {
 	
-		this.vlroutrasitvenda = vlroutrasitvenda;
+		this.vlroutrasit = vlroutrasitvenda;
 	}
 	
 	public BigDecimal getVlrcomisitvenda() {
 	
-		return vlrcomisitvenda;
+		return vlrcomisit;
 	}
 
 	public void setVlrcomisitvenda( BigDecimal vlrcomisitvenda ) {
 	
-		this.vlrcomisitvenda = vlrcomisitvenda;
+		this.vlrcomisit = vlrcomisitvenda;
 	}
 	
 	public BigDecimal getVlrfreteitvenda() {
 	
-		return vlrfreteitvenda;
+		return vlrfreteit;
 	}
 
 	public void setVlrfreteitvenda( BigDecimal vlrfreteitvenda ) {
 	
-		this.vlrfreteitvenda = vlrfreteitvenda;
+		this.vlrfreteit = vlrfreteitvenda;
 	}
 
 	public BigDecimal getVlradicitvenda() {
 	
-		return vlradicitvenda;
+		return vlradicit;
 	}
 	
 	public void setVlradicitvenda( BigDecimal vlradicitvenda ) {
 	
-		this.vlradicitvenda = vlradicitvenda;
+		this.vlradicit = vlradicitvenda;
 	}
 	
 	public BigDecimal getVlripiitvenda() {
 	
-		return vlripiitvenda;
+		return vlripiit;
 	}
 	
 	public void setVlripiitvenda( BigDecimal vlripiitvenda ) {
 	
-		this.vlripiitvenda = vlripiitvenda;
+		this.vlripiit = vlripiitvenda;
 	}
 		
 	public BigDecimal getItemfat() {
@@ -844,12 +844,12 @@ public class Lucratividade {
 	
 	public BigDecimal getPerclucritvenda() {
 		
-		return perclucritvenda;
+		return perclucrit;
 	}
 	
 	public void setPerclucritvenda( BigDecimal perclucritvenda ) {
 	
-		this.perclucritvenda = perclucritvenda;
+		this.perclucrit = perclucritvenda;
 	}
 
 	private void carregaOrcamento(Integer codorc, String tipoorc) {		
@@ -902,18 +902,18 @@ public class Lucratividade {
 				setVlricms( rs.getBigDecimal( "vlricmsvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlricmsvenda" ));
 				setVlroutras( rs.getBigDecimal( "vlroutrasvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlroutrasvenda" ));
 				setVlrcomis( rs.getBigDecimal( "vlrcomisvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcomisvenda" ));
-				setVlrfretevenda( rs.getBigDecimal( "vlrfretevd" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrfretevd" ));
-				setVlradicvenda( rs.getBigDecimal( "vlradicvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlradicvenda" ));
-				setVlripivenda( rs.getBigDecimal( "vlripivenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlripivenda" ));
-				setVlrpisvenda( rs.getBigDecimal( "vlrpisvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrpisvenda" ));
-				setVlrcofinsvenda( rs.getBigDecimal( "vlrcofinsvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcofinsvenda" ));
-				setVlrirvenda( rs.getBigDecimal( "vlrirvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrirvenda" ));
-				setVlrcsocialvenda( rs.getBigDecimal( "vlrcsocialvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcsocialvenda" ));
-				setVlrcustoucvenda( rs.getBigDecimal( "vlrcustouc" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustouc" ));
-				setVlrcustompmvenda( rs.getBigDecimal( "vlrcustompm" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustompm" ));
-				setVlrcustopepsvenda( rs.getBigDecimal( "vlrcustopeps" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustopeps" )); 
+				setVlrfrete( rs.getBigDecimal( "vlrfretevd" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrfretevd" ));
+				setVlradic( rs.getBigDecimal( "vlradicvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlradicvenda" ));
+				setVlripi( rs.getBigDecimal( "vlripivenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlripivenda" ));
+				setVlrpis( rs.getBigDecimal( "vlrpisvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrpisvenda" ));
+				setVlrcofins( rs.getBigDecimal( "vlrcofinsvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcofinsvenda" ));
+				setVlrir( rs.getBigDecimal( "vlrirvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrirvenda" ));
+				setVlrcsocial( rs.getBigDecimal( "vlrcsocialvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcsocialvenda" ));
+				setVlrcustouc( rs.getBigDecimal( "vlrcustouc" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustouc" ));
+				setVlrcustompm( rs.getBigDecimal( "vlrcustompm" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustompm" ));
+				setVlrcustopeps( rs.getBigDecimal( "vlrcustopeps" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustopeps" )); 
 				setTipofrete( rs.getString( "tipofretevd" )==null ? "F" : rs.getString( "tipofretevd" ));
-				setAdicfretevd( rs.getString( "adicfretevd" )==null ? "N" : rs.getString( "adicfretevd" ));
+				setAdicfrete( rs.getString( "adicfretevd" )==null ? "N" : rs.getString( "adicfretevd" ));
 			}
 
 			rs.close();
