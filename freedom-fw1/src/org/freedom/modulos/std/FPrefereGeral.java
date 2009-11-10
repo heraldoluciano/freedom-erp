@@ -983,10 +983,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		adicCampo( txtCodTipoMov3, 7, 130, 75, 20, "CodTipoMov3", "Cód.tp.mov", ListaCampos.DB_FK, txtDescTipoMov3, false );
 		adicDescFK( txtDescTipoMov3, 85, 130, 250, 20, "DescTipoMov", "Tipo de movimento para pedido." );
+		
 		adicCampo( txtCodTipoMov, 7, 180, 75, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
 		adicDescFK( txtDescTipoMov, 85, 180, 250, 20, "DescTipoMov", "Tipo de movimento para NF." );
+		
 		adicCampo( txtCodTipoMov4, 7, 230, 75, 20, "CodTipoMov4", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov4, false );
 		adicDescFK( txtDescTipoMov4, 85, 230, 250, 20, "DescTipoMov", "Tipo de movimento para pedido (serviço)." );
+		
 		adicCampo( txtCodTransp, 7, 280, 75, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, txtDescTransp, false );
 		adicDescFK( txtDescTransp, 85, 280, 250, 20, "RazTran", "Razão social da transp. padrão para venda" );
 		adicCampo( txtDescClassPed, 7, 330, 250, 20, "ClassPed", "Layout padrão para pedido.", ListaCampos.DB_SI, false );
@@ -1072,26 +1075,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo( txtPercPrecoCusto, 17, 220, 100, 20, "PercPrecoCusto", "% Min. custo", ListaCampos.DB_SI, true );
 		adicDB( cbCustosSICMS, 17, 250, 280, 20, "CustoSICMS", "", true );
 
-		// Orçamento
-
-		setPainel( pinOrc );
-		adicTab( "Orçamento & PDV", pinOrc );
-		adicCampo( txtCodTipoMov2, 7, 25, 90, 20, "CodTipoMov2", "Cod.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
-		adicDescFK( txtDescTipoMov2, 100, 25, 300, 20, "DescTipoMov", "Tipo de movimento para orçamentos." );
-		adicCampo( txtDescClassOrc, 403, 25, 250, 20, "ClassOrc", "Classe padrão para orçamento.", ListaCampos.DB_SI, false );
-		adicCampo( txtDescOrc, 403, 65, 250, 20, "DescOrc", "Descrição do título do orçamento.", ListaCampos.DB_SI, false );
-		adicCampo( txtTitOrcTxt01, 403, 105, 250, 20, "TitOrcTxt01", "Título para campo TXT01", ListaCampos.DB_SI, false );
-//		adicCampo( txtCodMens, 7, 185, 90, 20, "CodMensOrc", "Cód.mens", ListaCampos.DB_FK, txtDescMens, false );
-//		adicDescFK( txtDescMens, 100, 185, 300, 20, "mens", " Descrição da mensagem padrão para orçamento" );
-		
-		adicDB( rgTipoValidOrc, 403, 225, 250, 30, "tipovalidorc", "Validade na impressão", true );
-		adicDB( cbUsaOrcSeq, 460, 275, 160, 20, "UsaOrcSeq", "", true );
-		adicDB( cbReCalcOrc, 10, 295, 250, 20, "ReCalcPCOrc", "", true );
-		adicDB( cbUsaImgOrc, 10, 355, 300, 20, "UsaImgAssOrc", "", true );
-		adicDB( cbUsaNomeVendOrc, 10, 375, 300, 20, "UsaNomeVendOrc", "", true );
-		adicDB( cbAdicCodOrcObsPed, 10, 395, 400, 20, "ADICORCOBSPED", "", false );
-		adicDB( cbMostraTransp, 10, 415, 400, 20, "TabTranspOrc", "", true );
-		adicDB( imgAssOrc, 460, 325, 250, 95, "ImgAssOrc", "Assinatura", false );
 		
 		// Financeiro
 
@@ -1197,7 +1180,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo( txtCodTipoFor, 7, 25, 90, 20, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_FK, txtDescTipoFor, false );
 		adicDescFK( txtDescTipoFor, 100, 25, 300, 20, "DescTipoFor", "Descrição do tipo de fornecedor" );
 		adicCampo( txtCodTipoMov5, 7, 65, 90, 20, "CodTipoMov5", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, false );
-		adicDescFK( txtDescTipoMov5, 100, 65, 300, 20, "DescTipoMov", "Descrição do tipo de movimento" );
+		adicDescFK( txtDescTipoMov5, 100, 65, 300, 20, "DescTipoMov", "Descrição do tipo de movimento para devolução" );
 		adicCampo( txtCodTipoCli, 7, 105, 90, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_FK, txtDescTipoCli, false );
 		adicDescFK( txtDescTipoCli, 100, 105, 300, 20, "DescTipoCli", "Descrição do tipo de Cliente" );
 
@@ -1385,7 +1368,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		lbOrcOpcoes.setOpaque( true );
 
 		adicCampo( txtCodTipoMov7, 7, 65, 90, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov7, false );
-		adicDescFK( txtDescTipoMov7, 100, 65, 300, 20, "DescTipoMov", "Descrição do tipo de movimento" );
+		adicDescFK( txtDescTipoMov7, 100, 65, 300, 20, "DescTipoMov", "Descrição do tipo de movimento para PDV" );
+		
 		adicCampo( txtCodPlanoPag2, 7, 105, 90, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag2, false );
 		adicDescFK( txtDescPlanoPag2, 100, 105, 300, 20, "DescPlanoPag", "Descrição do plano de pagamento" );
 		adicCampo( txtCodCli, 7, 145, 90, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, txtDescCli, false );
