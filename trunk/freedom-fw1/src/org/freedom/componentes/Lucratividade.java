@@ -22,7 +22,6 @@ public class Lucratividade {
 	private BigDecimal vlrprod = null;
 	private BigDecimal vlrdesc = null;
 	private BigDecimal vlricms = null;
-	private BigDecimal vlroutras = null;
 	private BigDecimal vlrcomis = null;
 	private BigDecimal vlrfrete = null;
 	private BigDecimal vlradic = null;
@@ -41,7 +40,6 @@ public class Lucratividade {
 	private BigDecimal vlrpisit = null;
 	private BigDecimal vlrcofinsit = null;
 	private BigDecimal vlrcsocialit = null;
-	private BigDecimal vlroutrasit = null;
 	private BigDecimal vlrcomisit = null;
 	private BigDecimal vlrfreteit = null;
 	private BigDecimal vlradicit = null;
@@ -72,7 +70,6 @@ public class Lucratividade {
 		// Se for a lucratividade de um orçamento
 		else {
 			carregaOrcamento(codcab, tipo);
-			
 			
 		}
 
@@ -105,7 +102,7 @@ public class Lucratividade {
 			sql.append( "select " );
 			
 			sql.append( "coalesce(vd.vlrprodvenda,0) vlrprodvenda , coalesce(vd.vlrdescvenda,0) vlrdescvenda, coalesce(vd.vlricmsvenda,0) vlricmsvenda, ");
-			sql.append( "coalesce(vd.vlroutrasvenda,0) vlroutrasvenda , coalesce(vd.vlrcomisvenda,0) vlrcomisvenda, coalesce(vd.vlradicvenda,0) vlradicvenda, ");
+			sql.append( "coalesce(vd.vlrcomisvenda,0) vlrcomisvenda, coalesce(vd.vlradicvenda,0) vlradicvenda, ");
 			sql.append( "coalesce(vd.vlripivenda,0) vlripivenda, coalesce(vd.vlrpisvenda,0) vlrpisvenda, coalesce(vd.vlrcofinsvenda,0) vlrcofinsvenda, ");
 			sql.append( "coalesce(vd.vlrirvenda,0) vlrirvenda, coalesce(vd.vlrcsocialvenda,0) vlrcsocialvenda, ");
 			sql.append( "coalesce(fr.vlrfretevd,0) vlrfretevd, fr.tipofretevd, fr.adicfretevd, ");
@@ -127,7 +124,7 @@ public class Lucratividade {
 			sql.append( "and iv.codemp=vd.codemp and iv.codfilial=vd.codfilial and iv.tipovenda=vd.tipovenda and ");
 			sql.append( "iv.codvenda=vd.codvenda ");
 			
-			sql.append( "group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14 ");			
+			sql.append( "group by 1,2,3,4,5,6,7,8,9,10,11,12,13 ");			
 
 			System.out.println(sql.toString());
 			
@@ -144,7 +141,6 @@ public class Lucratividade {
 				setVlrprod( rs.getBigDecimal( "vlrprodvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrprodvenda" ));
 				setVlrdesc( rs.getBigDecimal( "vlrdescvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrdescvenda" ));
 				setVlricms( rs.getBigDecimal( "vlricmsvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlricmsvenda" ));
-				setVlroutras( rs.getBigDecimal( "vlroutrasvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlroutrasvenda" ));
 				setVlrcomis( rs.getBigDecimal( "vlrcomisvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcomisvenda" ));
 				setVlrfrete( rs.getBigDecimal( "vlrfretevd" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrfretevd" ));
 				setVlradic( rs.getBigDecimal( "vlradicvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlradicvenda" ));
@@ -179,7 +175,7 @@ public class Lucratividade {
 			
 			sql.append( "select " );
 			sql.append( "coalesce(iv.vlrproditvenda,0) vlrproditvenda, coalesce(iv.vlrdescitvenda,0) vlrdescitvenda, coalesce(iv.vlricmsitvenda,0) vlricmsitvenda, ");			
-			sql.append( "coalesce(iv.vlroutrasitvenda,0) vlroutrasitvenda, coalesce(iv.vlrcomisitvenda,0) vlrcomisitvenda, coalesce(iv.vlradicitvenda,0) vlradicitvenda, ");
+			sql.append( "coalesce(iv.vlrcomisitvenda,0) vlrcomisitvenda, coalesce(iv.vlradicitvenda,0) vlradicitvenda, ");
 			sql.append( "coalesce(iv.vlripiitvenda,0) vlripiitvenda, coalesce(iv.vlrfreteitvenda,0) vlrfreteitvenda, ");
 			sql.append( "coalesce(lfi.vlrir,0) vlrir, coalesce(lfi.vlrcsocial,0) vlrcsocial, coalesce(lfi.vlrpis,0) vlrpis, coalesce(lfi.vlrcofins,0) vlrcofins, " );
 			
@@ -215,7 +211,6 @@ public class Lucratividade {
 				setVlrproditvenda( rs.getBigDecimal( "vlrproditvenda" ));
 				setVlrdescitvenda( rs.getBigDecimal( "vlrdescitvenda" ));
 				setVlricmsitvenda( rs.getBigDecimal( "vlricmsitvenda" ));
-				setVlroutrasitvenda( rs.getBigDecimal( "vlroutrasitvenda" ));
 				setVlrcomisitvenda( rs.getBigDecimal( "vlrcomisitvenda" ));
 				setVlrfreteitvenda(rs.getBigDecimal( "vlrfreteitvenda" ));
 				setVlradicitvenda( rs.getBigDecimal( "vlradicitvenda" ));
@@ -268,16 +263,6 @@ public class Lucratividade {
 	public void setVlricms( BigDecimal vlricmsvenda ) {
 	
 		this.vlricms = vlricmsvenda;
-	}
-	
-	public BigDecimal getVlroutras() {
-	
-		return vlroutras;
-	}
-	
-	public void setVlroutras( BigDecimal vlroutrasvenda ) {
-	
-		this.vlroutras = vlroutrasvenda;
 	}
 	
 	public BigDecimal getVlrcomis() {
@@ -571,7 +556,6 @@ public class Lucratividade {
 				calc = calc.add( vlrfrete );
 			}
 			
-			calc = calc.add(vlroutras);
 			calc = calc.add(vlripi);
 
 			setTotfat( calc );
@@ -598,7 +582,6 @@ public class Lucratividade {
 				calc = calc.add( vlrfreteit );
 			}
 			
-			calc = calc.add(vlroutrasit);
 			calc = calc.add(vlripiit);
 
 			setItemfat( calc );
@@ -761,17 +744,7 @@ public class Lucratividade {
 	
 		this.vlricmsit = vlricmsitvenda;
 	}
-	
-	public BigDecimal getVlroutrasitvenda() {
-	
-		return vlroutrasit;
-	}
-	
-	public void setVlroutrasitvenda( BigDecimal vlroutrasitvenda ) {
-	
-		this.vlroutrasit = vlroutrasitvenda;
-	}
-	
+		
 	public BigDecimal getVlrcomisitvenda() {
 	
 		return vlrcomisit;
@@ -860,30 +833,28 @@ public class Lucratividade {
 			
 			sql.append( "select " );
 			
-			sql.append( "coalesce(vd.vlrprodvenda,0) vlrprodvenda , coalesce(vd.vlrdescvenda,0) vlrdescvenda, coalesce(vd.vlricmsvenda,0) vlricmsvenda, ");
-			sql.append( "coalesce(vd.vlroutrasvenda,0) vlroutrasvenda , coalesce(vd.vlrcomisvenda,0) vlrcomisvenda, coalesce(vd.vlradicvenda,0) vlradicvenda, ");
-			sql.append( "coalesce(vd.vlripivenda,0) vlripivenda, coalesce(vd.vlrpisvenda,0) vlrpisvenda, coalesce(vd.vlrcofinsvenda,0) vlrcofinsvenda, ");
-			sql.append( "coalesce(vd.vlrirvenda,0) vlrirvenda, coalesce(vd.vlrcsocialvenda,0) vlrcsocialvenda, ");
-			sql.append( "coalesce(fr.vlrfretevd,0) vlrfretevd, fr.tipofretevd, fr.adicfretevd, ");
+			sql.append( "coalesce(oc.vlrprodorc,0) vlrprod , coalesce(vd.vlrdescorc,0) vlrdesc, ");
+			sql.append( "coalesce(oc.vlradicorc,0) vlradic, coalesce(oc.vlrfreteorc,0) vlrfrete, ");
 			
-			sql.append( "sum(icv.vlrcustopeps * iv.qtditvenda) as vlrcustopeps, ");
-			sql.append( "sum(icv.vlrcustompm * iv.qtditvenda) as vlrcustompm, ");
-			sql.append( "sum(icv.vlrprecoultcp * iv.qtditvenda) as vlrcustouc ");
+			sql.append( "oc.tipofrete, oc.adicfrete, ");
+			
+			sql.append( "sum(io.vlrcomisitorc) as vlrcomis,");
+			
+			sql.append( "sum(ico.vlrcustopeps * io.qtditorc) as vlrcustopeps, ");
+			sql.append( "sum(ico.vlrcustompm * io.qtditorc) as vlrcustompm, ");
+			sql.append( "sum(ico.vlrprecoultcp * io.qtditorc) as vlrcustouc ");
 			
 			sql.append( "from " );
-			sql.append( "vdvenda vd left outer join vdfretevd fr on ");
-			sql.append( "fr.codemp=vd.codemp and fr.codfilial=vd.codfilial and fr.codvenda=vd.codvenda ");
-			sql.append( "and fr.tipovenda=vd.tipovenda, ");
+			sql.append( "vdorcamento oc, ");			
+			sql.append( "vditorcamento io left outer join vditcustoorc ico on ");
+			sql.append( "ico.codemp=io.codemp and ico.codfilial=io.codfilial and ico.codorc=io.codorc ");
+			sql.append( "and ico.tipoorc=io.tipoorc and ico.coditorc=io.coditorc ");
 			
-			sql.append( "vditvenda iv left outer join vditcustovenda icv on ");
-			sql.append( "icv.codemp=iv.codemp and icv.codfilial=iv.codfilial and icv.codvenda = iv.codvenda ");
-			sql.append( "and icv.tipovenda=iv.tipovenda and icv.coditvenda=iv.coditvenda ");
+			sql.append( "where oc.codemp=? and oc.codfilial=? and oc.codvenda=? and oc.tipovenda=? ");
+			sql.append( "and io.codemp=oc.codemp and io.codfilial=oc.codfilial and io.tipoorc=oc.tipoorc and ");
+			sql.append( "io.codorc=oc.codorc ");
 			
-			sql.append( "where vd.codemp=? and vd.codfilial=? and vd.codvenda=? and vd.tipovenda=? ");
-			sql.append( "and iv.codemp=vd.codemp and iv.codfilial=vd.codfilial and iv.tipovenda=vd.tipovenda and ");
-			sql.append( "iv.codvenda=vd.codvenda ");
-			
-			sql.append( "group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14 ");			
+//			sql.append( "group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14 ");			
 
 			System.out.println(sql.toString());
 			
@@ -897,23 +868,27 @@ public class Lucratividade {
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				setVlrprod( rs.getBigDecimal( "vlrprodvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrprodvenda" ));
-				setVlrdesc( rs.getBigDecimal( "vlrdescvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrdescvenda" ));
-				setVlricms( rs.getBigDecimal( "vlricmsvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlricmsvenda" ));
-				setVlroutras( rs.getBigDecimal( "vlroutrasvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlroutrasvenda" ));
-				setVlrcomis( rs.getBigDecimal( "vlrcomisvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcomisvenda" ));
-				setVlrfrete( rs.getBigDecimal( "vlrfretevd" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrfretevd" ));
-				setVlradic( rs.getBigDecimal( "vlradicvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlradicvenda" ));
-				setVlripi( rs.getBigDecimal( "vlripivenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlripivenda" ));
-				setVlrpis( rs.getBigDecimal( "vlrpisvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrpisvenda" ));
-				setVlrcofins( rs.getBigDecimal( "vlrcofinsvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcofinsvenda" ));
-				setVlrir( rs.getBigDecimal( "vlrirvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrirvenda" ));
-				setVlrcsocial( rs.getBigDecimal( "vlrcsocialvenda" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcsocialvenda" ));
+				setVlrprod( rs.getBigDecimal( "vlrprod" ) == null ? new BigDecimal(0) : rs.getBigDecimal( "vlrprod" ));
+				setVlrdesc( rs.getBigDecimal( "vlrdesc" ) == null ? new BigDecimal(0) : rs.getBigDecimal( "vlrdesc" ));
+				setVlradic( rs.getBigDecimal( "vlradic" ) == null ? new BigDecimal(0) : rs.getBigDecimal( "vlradic" ));
+				setVlrfrete( rs.getBigDecimal( "vlrfrete" ) == null ? new BigDecimal(0) : rs.getBigDecimal( "vlrfrete" ));
+
+				setTipofrete( rs.getString( "tipofrete" )==null ? "F" : rs.getString( "tipofrete" ));
+				setAdicfrete( rs.getString( "adicfrete" )==null ? "N" : rs.getString( "adicfrete" ));
+							
+				setVlrcomis( rs.getBigDecimal( "vlrcomis" ) == null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcomis" ));
+
 				setVlrcustouc( rs.getBigDecimal( "vlrcustouc" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustouc" ));
 				setVlrcustompm( rs.getBigDecimal( "vlrcustompm" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustompm" ));
 				setVlrcustopeps( rs.getBigDecimal( "vlrcustopeps" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustopeps" )); 
-				setTipofrete( rs.getString( "tipofretevd" )==null ? "F" : rs.getString( "tipofretevd" ));
-				setAdicfrete( rs.getString( "adicfretevd" )==null ? "N" : rs.getString( "adicfretevd" ));
+				
+//				setVlricms( rs.getBigDecimal( "vlricms" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlricms" ));
+//				setVlripi( rs.getBigDecimal( "vlripi" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlripi" ));
+//				setVlrpis( rs.getBigDecimal( "vlrpis" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrpis" ));
+//				setVlrcofins( rs.getBigDecimal( "vlrcofins" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcofins" ));
+//				setVlrir( rs.getBigDecimal( "vlrir" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrir" ));
+//				setVlrcsocial( rs.getBigDecimal( "vlrcsocial" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcsocial" ));
+				
 			}
 
 			rs.close();
