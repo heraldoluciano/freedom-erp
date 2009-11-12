@@ -1587,6 +1587,10 @@ public class FSintegra extends FFilho implements ActionListener {
 						+	"( (C.PESSOACLI='J' AND V.TIPOVENDA='V') OR (V.TIPOVENDA='E') ) AND " 
 						+	"P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " 
 						+   "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND CF.GERALFISC='S' "; 
+
+					// Amarrado com o ítem padrão da classificação fiscal pois não deve repetir de acordo com as vendas as alíquotas 
+					// Informadas devem ser as correspondetes a vendas / ou compras dentro do estado.
+					
 				}
 				if ( cbConsumidor.getVlrString().equals( "S" ) && ( sConvenio.equals( "1" ) ) ) // IV.PERCICMSITVENDA
 					sSqlConsumidor = "SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC,0)," 
