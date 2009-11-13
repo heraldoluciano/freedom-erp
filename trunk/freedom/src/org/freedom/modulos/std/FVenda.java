@@ -1677,7 +1677,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		
 		if("S".equals( permusu.get( "VISUALIZALUCR" )) && bPrefs[ POS_PREFS.VISUALIZALUCR.ordinal() ] ) {
 				
-			Lucratividade luc = new Lucratividade( txtCodVenda.getVlrInteger(), "V", txtCodItVenda.getVlrInteger(), fatLucro, con );		   
+			Lucratividade luc = new Lucratividade( txtCodVenda.getVlrInteger(), "V", txtCodItVenda.getVlrInteger(),fatLucro,"U", con );		   
 		
 			/****************************
 			 * Atualizando painel geral 
@@ -1713,20 +1713,20 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			txtItemFat.setVlrBigDecimal( luc.getItemfat() );
 			txtItemCusto.setVlrBigDecimal( luc.getItemcusto());
 			txtItemLucro.setVlrBigDecimal( luc.getItemlucro());
-			pbLucrItem.setValue( luc.getPerclucritvenda().toBigInteger().intValue() );
+			pbLucrItem.setValue( luc.getPerclucrit().toBigInteger().intValue() );
 			pnLucrItem.setBorder(BorderFactory.createTitledBorder( txtCodItVenda.getVlrString() + "-" + txtDescProd.getVlrString().trim()) );
 			
 			//Lucro menor que 20% (Vermelho)
-			if(luc.getPerclucritvenda().compareTo( new BigDecimal(20.00) )<=0) {
+			if(luc.getPerclucrit().compareTo( new BigDecimal(20.00) )<=0) {
 				pbLucrItem.setForeground( new Color(255,0,0) );	
 			
 			}
 			//Lucro maior que 20% menor que 30% (Laranja)
-			else if (luc.getPerclucritvenda().compareTo( new BigDecimal(20.00) )>0 && luc.getPerclucritvenda().compareTo( new BigDecimal(30.00) )<=0){
+			else if (luc.getPerclucrit().compareTo( new BigDecimal(20.00) )>0 && luc.getPerclucrit().compareTo( new BigDecimal(30.00) )<=0){
 				pbLucrItem.setForeground( new Color(226,161,35) ) ;	
 			}
 			//Lucro maior que 30% e menor que 50% (Azul)
-			else if (luc.getPerclucritvenda().compareTo( new BigDecimal(30.00) )>0 && luc.getPerclucritvenda().compareTo( new BigDecimal(50.00) )<=0){
+			else if (luc.getPerclucrit().compareTo( new BigDecimal(30.00) )>0 && luc.getPerclucrit().compareTo( new BigDecimal(50.00) )<=0){
 				pbLucrItem.setForeground( new Color(0,0,255) ) ;	
 			}
 			//Lucro maior que 50% (Verde)

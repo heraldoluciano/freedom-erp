@@ -47,16 +47,13 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-
 import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
@@ -169,6 +166,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private JTextFieldPad txtPercComisItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
 	
+	private JTextFieldPad txtPercComVend = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
+	
+	private JTextFieldPad txtPercComProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
+	
 	private JTextFieldPad txtVlrComisItOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 	
 	private JTextFieldPad txtVlrComisOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
@@ -177,8 +178,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private JTextFieldPad txtVlrProdOrc = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 	
-
-
 	private JTextFieldPad txtStatusOrc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtCodTpCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -327,7 +326,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private HashMap<String, Object> permusu = null;
 	
-	private BigDecimal fatLucro = null;
+	private BigDecimal fatLucro = new BigDecimal (1);
 
 	private enum PrefOrc {
 		USAREFPROD, USALIQREL, TIPOPRECOCUSTO, CODTIPOMOV2, DESCCOMPPED, USAORCSEQ, 
@@ -380,6 +379,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lbStatus.setOpaque( true );
 		lbStatus.setHorizontalAlignment( SwingConstants.CENTER );
 		lbStatus.setVisible( false );
+		
+		txtPercComisItOrc.setEditable( false );
+		txtVlrComisItOrc.setEditable( false );
+		
 		
 		// Adiciona os Listeners
 		btFechaOrc.addActionListener( this );
@@ -443,6 +446,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		// FK Vendedor
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
+		lcVend.add( new GuardaCampo( txtPercComVend, "PercComVend", "Perc. Comis.", ListaCampos.DB_SI, false ) );		
+		
 		txtCodVend.setTabelaExterna( lcVend );
 		txtNomeVend.setListaCampos( lcVend );
 		lcVend.montaSql( false, "VENDEDOR", "VD" );
@@ -537,6 +542,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcProd.add( new GuardaCampo( txtSldLiqProd, "SldLiqProd", "Saldo", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodAlmoxItOrc, "CodAlmox", "Cd.almox.", ListaCampos.DB_SI, txtDescAlmoxItOrc, false ) );
 		lcProd.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtPercComProd, "ComisProd", "% Comissão", ListaCampos.DB_SI, true ) );
 		
 		String sWhereAdicProd = "ATIVOPROD='S' AND TIPOPROD IN ('P','S','F'" + ( (Boolean)oPrefs[ PrefOrc.VENDAMATPRIM.ordinal() ] ? ",'M'" : "" ) + ")";
 				
@@ -555,6 +561,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcProd2.add( new GuardaCampo( txtSldLiqProd, "SldLiqProd", "Saldo", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodAlmoxItOrc, "CodAlmox", "Cd.almox.", ListaCampos.DB_SI, txtDescAlmoxItOrc, false ) );
 		lcProd2.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtPercComProd, "ComisProd", "% Comissão", ListaCampos.DB_SI, true ) );
+		
 		txtRefProd.setNomeCampo( "RefProd" );
 		txtRefProd.setListaCampos( lcDet );
 		lcProd2.setWhereAdic( sWhereAdicProd );
@@ -783,9 +791,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
  		adicCampo( txtCodAlmoxItOrc, 391, 60, 60, 20, "CodAlmox", "Cd.almox.", ListaCampos.DB_FK, txtDescAlmoxItOrc, false );
 		adicDescFK( txtDescAlmoxItOrc, 454, 60, 202, 20, "DescAlmox", "Descrição do almoxarifado" );
 		adicDescFK( txtSldLiqProd, 660, 60, 80, 20, "SldLiqProd", "Saldo" );
-		
-//		adicCampo( txtPercComisItOrc, 7, 60, 40, 20, "PercComisItOrc", "% com.", ListaCampos.DB_SI, false );
-//		adicCampo( txtVlrComisItOrc, 50, 60, 57, 20, "VlrComisItOrc", "V. com.", ListaCampos.DB_SI, false );
+//XXX		
+		adicCampo( txtPercComisItOrc, 7, 60, 40, 20, "PercComisItOrc", "% com.", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrComisItOrc, 50, 60, 57, 20, "VlrComisItOrc", "V. com.", ListaCampos.DB_SI, false );
 
 		adicDBLiv( txaObsItOrc, "ObsItOrc", "Observação", false );
 		adicCampoInvisivel( txtCodEmpLG, "CodEmpLG", "Emp.log.", ListaCampos.DB_SI, false );
@@ -1128,6 +1136,35 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			calcVlrProd();
 			calcTot();
 			txtVlrDescItOrc.requestFocus( true );
+		}
+	}
+	
+	private void calcComis() {
+
+
+		if ( lcDet.getStatus() == ListaCampos.LCS_INSERT || lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
+				BigDecimal perccomisvend = txtPercComVend.getVlrBigDecimal();
+				BigDecimal perccomisprod = txtPercComProd.getVlrBigDecimal();
+				BigDecimal perccomisitem = new BigDecimal(0);
+				BigDecimal vlrcomisitem = new BigDecimal(0);
+				BigDecimal vlrliqitem = txtVlrLiqItOrc.getVlrBigDecimal();
+				BigDecimal cem = new BigDecimal(100);
+				
+				if( (perccomisvend!=null && perccomisvend.floatValue()>0) && (perccomisprod!=null && perccomisprod.floatValue()>0) ) {
+					perccomisvend = perccomisvend.divide( cem, 2, BigDecimal.ROUND_CEILING );
+					perccomisprod = perccomisprod.divide( cem, 2, BigDecimal.ROUND_CEILING );
+					
+					perccomisitem = perccomisvend.multiply( perccomisprod );
+					
+				    vlrcomisitem = vlrliqitem.multiply( perccomisitem );
+				    
+				    txtPercComisItOrc.setVlrBigDecimal( perccomisitem.multiply( cem ) );
+				    txtVlrComisItOrc.setVlrBigDecimal( vlrcomisitem );
+				    
+					
+					
+				}
+		
 		}
 	}
 	
@@ -1921,6 +1958,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		else if ( ( fevt.getSource() == txtQtdItOrc ) || ( fevt.getSource() == txtPrecoItOrc ) ) {
 			calcVlrProd();
 			calcTot();
+			calcComis();
 		}
 	}
 
@@ -1962,8 +2000,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			dl.dispose();
 		}
 
-		
-		
 		super.keyPressed( kevt );
 	}
 
@@ -2204,7 +2240,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		
 		if( ("S".equals( permusu.get( "VISUALIZALUCR" ))) && (Boolean)(oPrefs[ PrefOrc.VISUALIZALUCR.ordinal() ]) ) {
 				
-			Lucratividade luc = new Lucratividade( txtCodOrc.getVlrInteger(), "O", txtCodItOrc.getVlrInteger(), fatLucro, con );		   
+			Lucratividade luc = new Lucratividade( txtCodOrc.getVlrInteger(), "O", txtCodItOrc.getVlrInteger(), fatLucro, "U", con );		   
 		
 			/****************************
 			 * Atualizando painel geral 
@@ -2240,20 +2276,20 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			txtItemFat.setVlrBigDecimal( luc.getItemfat() );
 			txtItemCusto.setVlrBigDecimal( luc.getItemcusto());
 			txtItemLucro.setVlrBigDecimal( luc.getItemlucro());
-			pbLucrItem.setValue( luc.getPerclucritvenda().toBigInteger().intValue() );
+			pbLucrItem.setValue( luc.getPerclucrit().toBigInteger().intValue() );
 			pnLucrItem.setBorder(BorderFactory.createTitledBorder( txtCodItOrc.getVlrString() + "-" + txtDescProd.getVlrString().trim()) );
 			
 			//Lucro menor que 20% (Vermelho)
-			if(luc.getPerclucritvenda().compareTo( new BigDecimal(20.00) )<=0) {
+			if(luc.getPerclucrit().compareTo( new BigDecimal(20.00) )<=0) {
 				pbLucrItem.setForeground( new Color(255,0,0) );	
 			
 			}
 			//Lucro maior que 20% menor que 30% (Laranja)
-			else if (luc.getPerclucritvenda().compareTo( new BigDecimal(20.00) )>0 && luc.getPerclucritvenda().compareTo( new BigDecimal(30.00) )<=0){
+			else if (luc.getPerclucrit().compareTo( new BigDecimal(20.00) )>0 && luc.getPerclucrit().compareTo( new BigDecimal(30.00) )<=0){
 				pbLucrItem.setForeground( new Color(226,161,35) ) ;	
 			}
 			//Lucro maior que 30% e menor que 50% (Azul)
-			else if (luc.getPerclucritvenda().compareTo( new BigDecimal(30.00) )>0 && luc.getPerclucritvenda().compareTo( new BigDecimal(50.00) )<=0){
+			else if (luc.getPerclucrit().compareTo( new BigDecimal(30.00) )>0 && luc.getPerclucrit().compareTo( new BigDecimal(50.00) )<=0){
 				pbLucrItem.setForeground( new Color(0,0,255) ) ;	
 			}
 			//Lucro maior que 50% (Verde)
