@@ -548,9 +548,12 @@ public class Lucratividade {
 		BigDecimal calc = null;
 		try {
 			
-			calc = vlrprod.multiply(fatLucro) ;			
-			calc = calc.add( vlradic );
-			calc = calc.subtract( vlrdesc );			
+//			calc = vlrprod.multiply(fatLucro) ;			
+			calc = vlrprod.add( vlradic );
+			calc = calc.subtract( vlrdesc );
+			
+			calc = calc.multiply( fatLucro );
+			
 
 			// Se frete for destacado na nota, entra como valor faturado
 			if("S".equals(adicfrete)) {
@@ -574,9 +577,11 @@ public class Lucratividade {
 		BigDecimal calc = null;
 		try {
 			
-			calc = vlrprodit.multiply(fatLucro) ;				
-			calc = calc.add( vlradicit );
-			calc = calc.subtract( vlrdescit );			
+//			calc = vlrprodit.multiply(fatLucro) ;				
+			calc = vlrprodit.add( vlradicit );
+			calc = calc.subtract( vlrdescit );
+			
+			calc = calc.multiply( fatLucro ); // Desconto multiplicado pelo fator também
 
 			// Se frete for destacado na nota, entra como valor faturado
 			if("S".equals(adicfrete)) {
@@ -883,9 +888,9 @@ public class Lucratividade {
 							
 				setVlrcomis( rs.getBigDecimal( "vlrcomis" ) == null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcomis" ));
 
-				setVlrcustouc( rs.getBigDecimal( "vlrcustouc" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustouc" ));
-				setVlrcustompm( rs.getBigDecimal( "vlrcustompm" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustompm" ));
-				setVlrcustopeps( rs.getBigDecimal( "vlrcustopeps" )==null ? new BigDecimal(0) : rs.getBigDecimal( "vlrcustopeps" )); 
+				setVlrcustouc( rs.getBigDecimal( "vlrcustouc" ));
+				setVlrcustompm( rs.getBigDecimal( "vlrcustompm" ));
+				setVlrcustopeps( rs.getBigDecimal( "vlrcustopeps" )); 
 				
 				setVlricms( rs.getBigDecimal( "vlricms" ));
 				setVlripi( rs.getBigDecimal( "vlripi" ));
