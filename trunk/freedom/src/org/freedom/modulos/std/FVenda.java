@@ -3443,6 +3443,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}
 
 			dl.dispose();
+			atualizaLucratividade();
 		}
 		
 		
