@@ -635,7 +635,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 		}
 	}
 	
-private void calcPercItLucro(){
+    private void calcPercItLucro(){
 		
 		BigDecimal percLucro = new BigDecimal("0.00");
 		BigDecimal precoCusto = txtPrecoCustoProd.getVlrBigDecimal();
@@ -1109,6 +1109,7 @@ private void calcPercItLucro(){
 		}
 		
 	}
+	
 	public void setConexao( DbConnection cn ) {
 		super.setConexao( cn );
 		

@@ -172,8 +172,8 @@ public class RelProdutoCliente extends FRelatorio {
 		lcProduto.setReadOnly( true );
 		txtCodProd.setListaCampos( lcProduto );
 		txtCodProd.setTabelaExterna( lcProduto );
-		txtCodProd.setPK( true )
-;		txtCodProd.setNomeCampo( "CodProd" );
+		txtCodProd.setPK( true );
+		txtCodProd.setNomeCampo( "CodProd" );
 		
 	}
 	
