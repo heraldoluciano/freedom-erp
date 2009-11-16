@@ -47,13 +47,16 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
@@ -307,14 +310,52 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	
 	private JPanelPad pinCabLucratividade = new JPanelPad();
 	
+	private JPanelPad pinCabDetCustos = new JPanelPad();
+	
 	private JPanelPad pnLucrGeral = new JPanelPad();
 	
 	private JPanelPad pnLucrItem = new JPanelPad();
 
+	private JPanelPad pnDetCustosGeral = new JPanelPad();
+	
+	private JPanelPad pnDetCustosItem = new JPanelPad();
+	
 	private JTextFieldFK txtTotFat = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
 
 	private JTextFieldFK txtTotCusto = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
 	
+	private JTextFieldFK txtTotCustoUC = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldFK txtTotComiss = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldFK txtTotPIS = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldFK txtTotCofins = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldFK txtTotICMS = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldFK txtTotCSOCIAL = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldFK txtTotIR = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldFK txtTotIPI = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+
+	private JTextFieldFK txtTotCustoUCIt = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldFK txtTotComissIt = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldFK txtTotPISIt = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldFK txtTotCofinsIt = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldFK txtTotICMSIt = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldFK txtTotCSOCIALIt = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldFK txtTotIRIt = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldFK txtTotIPIIt = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+
 	private JTextFieldFK txtTotLucro = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
 	
 	private JProgressBar pbLucrTotal = new JProgressBar();
@@ -760,7 +801,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		
 		
 		if( ("S".equals( permusu.get( "VISUALIZALUCR" ))) && (Boolean)(oPrefs[ PrefOrc.VISUALIZALUCR.ordinal() ]) ) {		
-			adicPainelLucr();
+			adicPainelLucr();			
 		}
 		
 
@@ -2242,6 +2283,16 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			txtTotFat.setVlrBigDecimal( luc.getTotfat() );
 			txtTotCusto.setVlrBigDecimal( luc.getTotcusto());
 			txtTotLucro.setVlrBigDecimal( luc.getTotlucro());
+			
+			txtTotCustoUC.setVlrBigDecimal( luc.getVlrcustouc() );
+			txtTotComiss.setVlrBigDecimal( luc.getVlrcomis() );
+			txtTotPIS.setVlrBigDecimal( luc.getVlrpis() );
+			txtTotCofins.setVlrBigDecimal( luc.getVlrcofins() );
+			txtTotCSOCIAL.setVlrBigDecimal( luc.getVlrcsocial() );
+			txtTotIR.setVlrBigDecimal( luc.getVlrir() );
+			txtTotIPI.setVlrBigDecimal( luc.getVlripi() );
+			txtTotICMS.setVlrBigDecimal( luc.getVlricms() );
+			
 			pbLucrTotal.setValue( luc.getPerclucrvenda().toBigInteger().intValue() );
 			
 			//Lucro menor que 20% (Vermelho)
@@ -2269,8 +2320,19 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			txtItemFat.setVlrBigDecimal( luc.getItemfat() );
 			txtItemCusto.setVlrBigDecimal( luc.getItemcusto());
 			txtItemLucro.setVlrBigDecimal( luc.getItemlucro());
+			
+			txtTotCustoUCIt.setVlrBigDecimal( luc.getVlrcustoucit() );
+			txtTotComissIt.setVlrBigDecimal( luc.getVlrcomisit() );
+			txtTotPISIt.setVlrBigDecimal( luc.getVlrpisit() );
+			txtTotCofinsIt.setVlrBigDecimal( luc.getVlrcofinsit() );
+			txtTotCSOCIALIt.setVlrBigDecimal( luc.getVlrcsocialit() );
+			txtTotIRIt.setVlrBigDecimal( luc.getVlririt() );
+			txtTotIPIIt.setVlrBigDecimal( luc.getVlripiit() );
+			txtTotICMSIt.setVlrBigDecimal( luc.getVlricmsit() );			
+			
 			pbLucrItem.setValue( luc.getPerclucrit().toBigInteger().intValue() );
 			pnLucrItem.setBorder(BorderFactory.createTitledBorder( txtCodItOrc.getVlrString() + "-" + txtDescProd.getVlrString().trim()) );
+			pnDetCustosItem.setBorder(BorderFactory.createTitledBorder( txtCodItOrc.getVlrString() + "-" + txtDescProd.getVlrString().trim()) );
 			
 			//Lucro menor que 20% (Vermelho)
 			if(luc.getPerclucrit().compareTo( new BigDecimal(20.00) )<=0) {
@@ -2299,13 +2361,17 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private void adicPainelLucr() {
 		
 		try {
+
+			/**************************
+			 * Aba Lucratividade
+			 **************************/
 			
 			tpnCab.addTab( "Lucratividade", pinCabLucratividade );			
 			setPainel(pinCabLucratividade) ;
 			
-			/******************
-			* Painel Geral
-			******************/
+			/******************************
+			* Painel Geral - lucratividade
+			*******************************/
 			
 			pnLucrGeral.setBorder( BorderFactory.createTitledBorder( "Lucratividade Geral" ) );			
 			adic(pnLucrGeral, 4, 0, 230, 92 );			
@@ -2323,9 +2389,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			adic( new JLabelPad("Lucro"), 153, 25, 75 , 20);
 			adic( txtTotLucro, 148, 45, 70 , 20);
 	
-			/******************
-			* Painel Item
-			******************/
+			/****************************
+			* Painel Item - lucratividade
+			*****************************/
 			
 			setPainel(pinCabLucratividade) ;
 	
@@ -2345,6 +2411,80 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			
 			adic( new JLabelPad("Lucro"), 153, 25, 75 , 20);
 			adic( txtItemLucro, 148, 45, 70 , 20);
+			
+			
+			
+			/**************************
+			 * Aba Det. Custos 
+			 **************************/
+
+			tpnCab.addTab( "Det. custos", pinCabDetCustos );			
+			setPainel(pinCabDetCustos) ;
+			
+			
+			/****************************
+			* Painel Geral - Det. Custos
+			*****************************/
+			pnDetCustosGeral.setBorder( BorderFactory.createTitledBorder( "Detalhamento Geral" ) );			
+			adic(pnDetCustosGeral, 4, 0, 350, 92 );			
+			setPainel(pnDetCustosGeral);			
+
+			adic( new JLabelPad("Ult.Compra"), 4, 0, 80 , 15);
+			adic( txtTotCustoUC, 4, 15, 80 , 15);
+			
+			adic( new JLabelPad("Comissão"), 90, 0, 80 , 15);
+			adic( txtTotComiss, 90, 15, 80 , 15);
+
+			adic( new JLabelPad("PIS"), 173, 0, 80 , 15);
+			adic( txtTotPIS, 173, 15, 80 , 15);
+
+			adic( new JLabelPad("Cofins"), 256, 0, 80 , 15);
+			adic( txtTotCofins, 256, 15, 80 , 15);
+			
+			adic( new JLabelPad("C.Social"), 4, 33, 80 , 15);
+			adic( txtTotCSOCIAL, 4, 48, 80 , 15);
+
+			adic( new JLabelPad("IR"), 90, 33, 80 , 15);
+			adic( txtTotIR, 90, 48, 80 , 15);
+
+			adic( new JLabelPad("IPI"), 173, 33, 80 , 15);
+			adic( txtTotIPI, 173, 48, 80 , 15);
+			
+			adic( new JLabelPad("ICMS"), 256, 33, 80 , 15);
+			adic( txtTotICMS, 256, 48, 80 , 15);
+
+			/****************************
+			* Painel Item - Det. Custos
+			*****************************/			
+			setPainel(pinCabDetCustos) ;
+			pnDetCustosItem.setBorder( BorderFactory.createTitledBorder( "" ) );			
+			adic(pnDetCustosItem, 360, 0, 350, 92 );			
+			setPainel(pnDetCustosItem);			
+
+			adic( new JLabelPad("Ult.Compra"), 4, 0, 80 , 15);
+			adic( txtTotCustoUCIt, 4, 15, 80 , 15);
+			
+			adic( new JLabelPad("Comissão"), 90, 0, 80 , 15);
+			adic( txtTotComissIt, 90, 15, 80 , 15);
+
+			adic( new JLabelPad("PIS"), 173, 0, 80 , 15);
+			adic( txtTotPISIt, 173, 15, 80 , 15);
+
+			adic( new JLabelPad("Cofins"), 256, 0, 80 , 15);
+			adic( txtTotCofinsIt, 256, 15, 80 , 15);
+			
+			adic( new JLabelPad("C.Social"), 4, 33, 80 , 15);
+			adic( txtTotCSOCIALIt, 4, 48, 80 , 15);
+
+			adic( new JLabelPad("IR"), 90, 33, 80 , 15);
+			adic( txtTotIRIt, 90, 48, 80 , 15);
+
+			adic( new JLabelPad("IPI"), 173, 33, 80 , 15);
+			adic( txtTotIPIIt, 173, 48, 80 , 15);
+			
+			adic( new JLabelPad("ICMS"), 256, 33, 80 , 15);
+			adic( txtTotICMSIt, 256, 48, 80 , 15);
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
