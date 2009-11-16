@@ -70,6 +70,8 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 			addSeparador( 200000000 );
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Faturamento", "Faturamento", 'F', 200300000, 1, true, RPFaturamento.class );
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Manutenção de Comissão", "Manutenção de Comissão", 'M', 200400000, 1, true, RPComissao.class );
+			
+			addOpcao( 200000000, TP_OPCAO_ITEM, "Consulta clientes/produtos", "Consulta clientes/produtos", 'e', 200500000, 1, true, FConsultaCliProd.class );
 
 		//addOpcao( -1, TP_OPCAO_MENU, "Pagar", "Pagar", 'P', 300000000, 0, false, null );
 		//	addOpcao( 300000000, TP_OPCAO_ITEM, "Pagar", "Pagar", 'P', 300100000, 1, true, RPPagar.class );
@@ -110,6 +112,7 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 			addBotao( "btForneced.gif", "Fornecedor", "Fornecedor", 100105000, RPFornecedor.class );
 			addBotao( "btProduto.gif", "Produtos", "Produtos", 100108000, RPProduto.class );
 			addBotao( "btSaida.png", "Pedidos", "Pedidos", 200100000, RPPedido.class );
+			addBotao( "btConsultaCli.png", "Consulta de clientes/produtos", "Consulta de clientes/produtos", 200500000, FConsultaCliProd.class );
 		
 		ajustaMenu();
 
