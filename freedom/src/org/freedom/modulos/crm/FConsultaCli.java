@@ -71,7 +71,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private JPanelPad panelGeral = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad panelMaster = new JPanelPad( 700, 100 );
+	private JPanelPad panelMaster = new JPanelPad( 700, 140 );
 
 	private JPanelPad panelDetail = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
@@ -107,10 +107,6 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private JTextFieldFK txtFoneCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 12, 0 );
 
-	private JTextFieldFK txtDDDFaxCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
-
-	private JTextFieldFK txtFaxCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 8, 0 );
-
 	private JTextFieldFK txtEmailCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldFK txtContCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -131,6 +127,10 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	
 	private JTextFieldFK txtTotalAberto = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 	
+	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+
+	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
 	private Tabela tabVendas = new Tabela();
 	
 	private Tabela tabItensVendas = new Tabela();
@@ -146,6 +146,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	// *** Listacampos
 
 	private ListaCampos lcCliente = new ListaCampos( this, "CL" );
+	
+	private ListaCampos lcProd = new ListaCampos( this );
 	
 	private boolean carregandoVendas = false;
 	
@@ -163,7 +165,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 		super( false );
 		setTitulo( "Consulta de clientes", this.getClass().getName() );
-		setAtribos( 50, 50, 730, 540 );
+		setAtribos( 20, 20, 780, 600 );
     	int x = (int) (Aplicativo.telaPrincipal.dpArea.getSize().getWidth()-getWidth())/2;
     	int y = (int) (Aplicativo.telaPrincipal.dpArea.getSize().getHeight()-getHeight())/2;
     	setLocation( x, y );
@@ -172,6 +174,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		montaTela();
 		
 		lcCliente.addCarregaListener( this );
+		lcProd.addCarregaListener( this );
 		btBuscar.addActionListener( this );
 		tabVendas.addTabelaSelListener( this );	
 		tabVendas.addMouseListener( this );	
@@ -190,8 +193,6 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		lcCliente.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
 		lcCliente.add( new GuardaCampo( txtDDDCli, "DDDCli", "DDD", ListaCampos.DB_SI, false ) );
 		lcCliente.add( new GuardaCampo( txtFoneCli, "FoneCli", "Telefone", ListaCampos.DB_SI, false ) );
-		lcCliente.add( new GuardaCampo( txtDDDFaxCli, "DDDFaxCli", "DDD", ListaCampos.DB_SI, false ) );
-		lcCliente.add( new GuardaCampo( txtFaxCli, "FaxCli", "Fax", ListaCampos.DB_SI, false ) );
 		lcCliente.add( new GuardaCampo( txtEmailCli, "EmailCli", "E-Mail", ListaCampos.DB_SI, false ) );
 		lcCliente.add( new GuardaCampo( txtContCli, "ContCli", "Contato", ListaCampos.DB_SI, false ) );
 		lcCliente.add( new GuardaCampo( txtAtivoCli, "AtivoCli", "ativo", ListaCampos.DB_SI, false ) );
@@ -199,7 +200,16 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		txtCodCli.setNomeCampo( "CodCli" );
 		txtCodCli.setFK( true );
 		lcCliente.setReadOnly( true );
-		lcCliente.montaSql( false, "CLIENTE", "VD" );
+		lcCliente.montaSql( false, "CLIENTE", "VD" );		
+		
+		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
+		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		txtCodProd.setTabelaExterna( lcProd );
+		txtCodProd.setNomeCampo( "CodProd" );
+		txtCodProd.setFK( true );
+		lcProd.setReadOnly( true );
+		lcProd.montaSql( false, "PRODUTO", "EQ" );
+
 	}
 
 	private void montaTela() {
@@ -214,28 +224,35 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		JLabel borda = new JLabel();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
 		
-		panelMaster.adic( new JLabelPad( "Cód.Cli" ), 7, 5, 80, 20 );
-		panelMaster.adic( txtCodCli, 7, 25, 80, 20 );
-		panelMaster.adic( new JLabelPad( "Razão social do cliente" ), 90, 5, 250, 20 );
-		panelMaster.adic( txtRazCli, 90, 25, 250, 20 );
-		panelMaster.adic( new JLabelPad( "Contato" ), 343, 5, 100, 20 );
-		panelMaster.adic( txtContCli, 343, 25, 100, 20 );
+		panelMaster.adic( new JLabelPad( "Cód.Cli" ), 7, 5, 60, 20 );
+		panelMaster.adic( txtCodCli, 7, 25, 60, 20 );
+		panelMaster.adic( new JLabelPad( "Razão social do cliente" ), 70, 5, 340, 20 );
+		panelMaster.adic( txtRazCli, 70, 25, 340, 20 );
 		
-		panelMaster.adic( new JLabelPad( "DDD" ), 7, 45, 35, 20 );
-		panelMaster.adic( txtDDDCli, 7, 65, 35, 20 );
-		panelMaster.adic( new JLabelPad( "Fone" ), 45, 45, 75, 20 );
-		panelMaster.adic( txtFoneCli, 45, 65, 75, 20 );
-		panelMaster.adic( new JLabelPad( "e-mail" ), 123, 45, 217, 20 );
-		panelMaster.adic( txtEmailCli, 123, 65, 217, 20 );
-		panelMaster.adic( lbAtivoCli, 343, 65, 100, 20 );
+		panelMaster.adic( new JLabelPad( "Contato" ), 413, 5, 100, 20 );
+		panelMaster.adic( txtContCli, 413, 25, 100, 20 );
 		
-		panelMaster.adic( periodo, 480, 0, 60, 20 );
-		panelMaster.adic( borda, 470, 10, 220, 45 );
-		panelMaster.adic( txtDataini, 480, 25, 80, 20 );
-		panelMaster.adic( new JLabel( "até", SwingConstants.CENTER ), 560, 25, 40, 20 );
-		panelMaster.adic( txtDatafim, 600, 25, 80, 20 );
+		panelMaster.adic( new JLabelPad( "DDD" ), 7, 45, 60, 20 );
+		panelMaster.adic( txtDDDCli, 7, 65, 60, 20 );
+		panelMaster.adic( new JLabelPad( "Fone" ), 70, 45, 75, 20 );
+		panelMaster.adic( txtFoneCli, 70, 65, 75, 20 );
+		panelMaster.adic( new JLabelPad( "e-mail" ), 148, 45, 262, 20 );
+		panelMaster.adic( txtEmailCli, 148, 65, 262, 20 );
 		
-		panelMaster.adic( btBuscar, 470, 60, 220, 30 );
+		panelMaster.adic( lbAtivoCli, 413, 65, 100, 20 );
+		
+		panelMaster.adic( new JLabelPad( "Cód.Prod." ), 7, 85, 60, 20 );
+		panelMaster.adic( txtCodProd, 7, 105, 60, 20 );
+		panelMaster.adic( new JLabelPad( "Descrição do produto" ), 70, 85, 340, 20 );
+		panelMaster.adic( txtDescProd, 70, 105, 340, 20 );
+
+		panelMaster.adic( periodo, 540, 0, 60, 20 );
+		panelMaster.adic( borda, 530, 10, 220, 45 );
+		panelMaster.adic( txtDataini, 540, 25, 80, 20 );
+		panelMaster.adic( new JLabel( "até", SwingConstants.CENTER ), 620, 25, 40, 20 );
+		panelMaster.adic( txtDatafim, 660, 25, 80, 20 );
+
+		panelMaster.adic( btBuscar, 530, 60, 220, 30 );
 		
 		txtFoneCli.setMascara( JTextFieldPad.MC_FONE );
 		
@@ -295,27 +312,27 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				
 		tabVendas.adicColuna( "" );
 		tabVendas.adicColuna( "Código" );
-		tabVendas.adicColuna( "Documento" );
+		tabVendas.adicColuna( "Doc." );
 		tabVendas.adicColuna( "Data" );
-		tabVendas.adicColuna( "Plano de pagamento" );
-		tabVendas.adicColuna( "Nome do vendedor" );
-		tabVendas.adicColuna( "Valor produtos" );
-		tabVendas.adicColuna( "Valor descontos" );
-		tabVendas.adicColuna( "Valor adicionais" );
-		tabVendas.adicColuna( "Valor frete" );
-		tabVendas.adicColuna( "Valor líquido" );
+		tabVendas.adicColuna( "Plano Pgto." );
+		tabVendas.adicColuna( "Vendedor" );
+		tabVendas.adicColuna( "V.Produtos" );
+		tabVendas.adicColuna( "V.Desc." );
+		tabVendas.adicColuna( "V.Adic." );
+		tabVendas.adicColuna( "V.Frete" );
+		tabVendas.adicColuna( "V.Líquido" );
 
 		tabVendas.setTamColuna( 20, VENDAS.STATUS.ordinal() );
-		tabVendas.setTamColuna( 80, VENDAS.CODVENDA.ordinal() );
-		tabVendas.setTamColuna( 80, VENDAS.NOTA.ordinal() );
-		tabVendas.setTamColuna( 80, VENDAS.DATA.ordinal() );
-		tabVendas.setTamColuna( 150, VENDAS.PAGAMENTO.ordinal() );
-		tabVendas.setTamColuna( 150, VENDAS.VENDEDOR.ordinal() );
-		tabVendas.setTamColuna( 100, VENDAS.VALOR_PRODUTOS.ordinal() );
-		tabVendas.setTamColuna( 100, VENDAS.VALOR_DESCONTO.ordinal() );
-		tabVendas.setTamColuna( 100, VENDAS.VALOR_ADICIONAL.ordinal() );
-		tabVendas.setTamColuna( 100, VENDAS.VALOR_FRETE.ordinal() );
-		tabVendas.setTamColuna( 100, VENDAS.VALOR_LIQUIDO.ordinal() );
+		tabVendas.setTamColuna( 60, VENDAS.CODVENDA.ordinal() );
+		tabVendas.setTamColuna( 60, VENDAS.NOTA.ordinal() );
+		tabVendas.setTamColuna( 70, VENDAS.DATA.ordinal() );
+		tabVendas.setTamColuna( 100, VENDAS.PAGAMENTO.ordinal() );
+		tabVendas.setTamColuna( 100, VENDAS.VENDEDOR.ordinal() );
+		tabVendas.setTamColuna( 80, VENDAS.VALOR_PRODUTOS.ordinal() );
+		tabVendas.setTamColuna( 60, VENDAS.VALOR_DESCONTO.ordinal() );
+		tabVendas.setTamColuna( 60, VENDAS.VALOR_ADICIONAL.ordinal() );
+		tabVendas.setTamColuna( 60, VENDAS.VALOR_FRETE.ordinal() );
+		tabVendas.setTamColuna( 80, VENDAS.VALOR_LIQUIDO.ordinal() );
 				
 		panelTabVendasNotas.add( new JScrollPane( tabVendas ) );
 
@@ -323,21 +340,21 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensVendas.adicColuna( "Código" );
 		tabItensVendas.adicColuna( "Descrição do produto" );
 		tabItensVendas.adicColuna( "Lote" );
-		tabItensVendas.adicColuna( "Quantidade" );
+		tabItensVendas.adicColuna( "Qtd." );
 		tabItensVendas.adicColuna( "Preço" );
-		tabItensVendas.adicColuna( "Valor descontos" );
-		tabItensVendas.adicColuna( "Valor frete" );
-		tabItensVendas.adicColuna( "Valor líquido" );
+		tabItensVendas.adicColuna( "V.Desc." );
+		tabItensVendas.adicColuna( "V.Frete" );
+		tabItensVendas.adicColuna( "V.líq." );
 
 		tabItensVendas.setTamColuna( 30, ITEMVENDAS.ITEM.ordinal() );
-		tabItensVendas.setTamColuna( 70, ITEMVENDAS.CODPROD.ordinal() );
-		tabItensVendas.setTamColuna( 250, ITEMVENDAS.DESCPROD.ordinal() );
-		tabItensVendas.setTamColuna( 80, ITEMVENDAS.LOTE.ordinal() );
-		tabItensVendas.setTamColuna( 80, ITEMVENDAS.QUANTIDADE.ordinal() );
-		tabItensVendas.setTamColuna( 80, ITEMVENDAS.PRECO.ordinal() );
-		tabItensVendas.setTamColuna( 100, ITEMVENDAS.DESCONTO.ordinal() );
-		tabItensVendas.setTamColuna( 100, ITEMVENDAS.FRETE.ordinal() );
-		tabItensVendas.setTamColuna( 100, ITEMVENDAS.TOTAL.ordinal() );
+		tabItensVendas.setTamColuna( 50, ITEMVENDAS.CODPROD.ordinal() );
+		tabItensVendas.setTamColuna( 200, ITEMVENDAS.DESCPROD.ordinal() );
+		tabItensVendas.setTamColuna( 70, ITEMVENDAS.LOTE.ordinal() );
+		tabItensVendas.setTamColuna( 50, ITEMVENDAS.QUANTIDADE.ordinal() );
+		tabItensVendas.setTamColuna( 70, ITEMVENDAS.PRECO.ordinal() );
+		tabItensVendas.setTamColuna( 80, ITEMVENDAS.DESCONTO.ordinal() );
+		tabItensVendas.setTamColuna( 80, ITEMVENDAS.FRETE.ordinal() );
+		tabItensVendas.setTamColuna( 90, ITEMVENDAS.TOTAL.ordinal() );
 				
 		panelTabItensVendas.add( new JScrollPane( tabItensVendas ) );
 		
@@ -350,8 +367,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	
 	private void buscaVendas() {
 		
-		if ( txtCodCli.getVlrInteger() == 0 ) {
-			Funcoes.mensagemInforma( this, "Selecione o cliente." );
+		if ( txtCodCli.getVlrInteger() == 0 && txtCodProd.getVlrInteger() == 0 ) {
+			Funcoes.mensagemInforma( this, "Selecione um cliente ou produto!" );
 			txtCodCli.requestFocus();
 			return;
 		}
@@ -362,21 +379,45 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			sql.append( "SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.STATUSVENDA, V.CODPLANOPAG," );
 			sql.append( "P.DESCPLANOPAG, V.CODVEND, VD.NOMEVEND, V.VLRPRODVENDA, V.VLRDESCVENDA," );
 			sql.append( "V.VLRADICVENDA, V.VLRFRETEVENDA, V.VLRLIQVENDA " );
-			sql.append( "FROM VDVENDA V, VDCLIENTE C, FNPLANOPAG P, VDVENDEDOR VD " );
+			sql.append( "FROM VDVENDA V, FNPLANOPAG P, VDVENDEDOR VD " );
 			sql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.DTEMITVENDA BETWEEN ? AND ? AND " );
-			sql.append( "C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI AND " );
-			sql.append( "C.CODEMP=? AND C.CODFILIAL=? AND C.CODCLI=? AND " );
 			sql.append( "P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG AND " );
 			sql.append( "VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND" );
 			
+			if(txtCodCli.getVlrInteger()>0) {
+				sql.append( " AND V.CODEMPCL=? AND V.CODFILIALCL=? AND CODCLI=? ");
+			}
+			
+			if(txtCodProd.getVlrInteger()>0) {
+				sql.append( " AND EXISTS (" );
+				sql.append( " SELECT CODVENDA FROM VDITVENDA IV WHERE ");
+				sql.append( " IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA ");
+				sql.append( " AND IV.CODEMPPD=? AND IV.CODFILIALPD=? AND IV.CODPROD=? ) " );
+				
+			}
+			
+			sql.append( " ORDER BY V.DTEMITVENDA DESC ");
+			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			ps.setInt( 5, Aplicativo.iCodEmp );
-			ps.setInt( 6, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setInt( 7, txtCodCli.getVlrInteger() );
+			
+			int iparam = 1;
+			
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+
+			if(txtCodCli.getVlrInteger()>0) {
+				ps.setInt( iparam++, lcCliente.getCodEmp() );
+				ps.setInt( iparam++, lcCliente.getCodFilial() );
+				ps.setInt( iparam++, txtCodCli.getVlrInteger() );				
+			}			
+			
+			if(txtCodProd.getVlrInteger()>0) {
+				ps.setInt( iparam++, lcProd.getCodEmp() );
+				ps.setInt( iparam++, lcProd.getCodFilial() );
+				ps.setInt( iparam++, txtCodProd.getVlrInteger() );								
+			}			
 			
 			ResultSet rs = ps.executeQuery();		
 			
@@ -460,7 +501,14 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			
 			if ( rs.next() ) {
 				txtTotalCompras.setVlrBigDecimal( rs.getBigDecimal( "TOTAL" ) );
-				txtTotalAberto.setVlrBigDecimal( rs.getBigDecimal( "TOTAL_ABERTO" ) );
+				txtTotalAberto.setVlrBigDecimal( rs.getBigDecimal( "TOTAL_ABERTO" ) );				
+			}
+			
+			if(row>0) {
+				//Selecionando primeiro do grid e carregando itens
+				
+				tabVendas.setLinhaSel( 0 );
+				buscaItensVenda( (Integer)tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ), "V" );
 			}
 			
 			rs.close();
@@ -483,13 +531,25 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			sql.append( "FROM VDITVENDA I, EQPRODUTO P " );
 			sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? AND I.CODVENDA=? AND I.TIPOVENDA=? AND " );
 			sql.append( "P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD " );
+			
+			if(txtCodProd.getVlrInteger()>0) {
+				sql.append( " AND P.CODPROD=? " );
+			}
+			
 			sql.append( "ORDER BY I.CODITVENDA" );
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITVENDA" ) );
-			ps.setInt( 3, codvenda );
-			ps.setString( 4, tipovenda );
+			
+			int iparam = 1;
+			
+			ps.setInt( iparam++, Aplicativo.iCodEmp );
+			ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDITVENDA" ) );
+			ps.setInt( iparam++, codvenda );
+			ps.setString( iparam++, tipovenda );
+			
+			if(txtCodProd.getVlrInteger()>0) {
+				ps.setInt( iparam++, txtCodProd.getVlrInteger() );
+			}
 			
 			ResultSet rs = ps.executeQuery();		
 			
@@ -598,11 +658,16 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			}
 			buscaVendas();
 		}		
+		if ( lcProd == e.getListaCampos() ) {
+			buscaVendas();
+		}
 	}
 
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
 		lcCliente.setConexao( con );
+		lcProd.setConexao( con );
+		
 	}
 }
