@@ -316,7 +316,8 @@ public class FreedomSTD extends AplicativoPD {
 			
 		addBotao( "btPrefere.png", "Preferências gerais", "Preferências Gerais", 100310000, FPrefereGeral.class );						
 		addBotao( "btCliente.gif", "Cliente", "Clientes", 100101030, FCliente.class );
-		addBotao( "btSaida.png", "Venda", "Venda", 300100000, FVenda.class );
+		addBotao( "btOrcamento2.gif", "Orçamento", "Orçamento", 300600000, FOrcamento.class );
+		addBotao( "btSaida.png", "Venda", "Venda", 300100000, FVenda.class );		
 		addBotao( "btForneced.gif", "Fornecedor", "Fornecedor", 100119000, FFornecedor.class );
 		addBotao( "btEntrada.png", "Compra", "Compras", 200100000, FCompra.class );
 		addBotao( "btContaPagar.gif", "Contas a pagar", "Manutenção de contas a pagar", 400200000, FManutPag.class );
@@ -327,8 +328,6 @@ public class FreedomSTD extends AplicativoPD {
 		addBotao( "btEstProduto.gif", "Consulta produto", "Consulta produto", 700400000, FConsProd.class );
 		addBotao( "btAprovaOrc2.gif", "Liberação de crédito", "Liberação de crédito", 601100000, FLiberaCredito.class );
 		addBotao( "btConsultaCli.png", "Consulta de Clientes", "Consulta de Clientes", 301200200, FConsultaCli.class );
-				
-		// addBotao("btEmprestimo.gif","Cadastro de similaridades",100120080);
 
 		ajustaMenu();
 
