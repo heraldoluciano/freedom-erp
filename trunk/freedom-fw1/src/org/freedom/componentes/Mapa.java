@@ -22,7 +22,7 @@ public class Mapa extends JXMapKit{
 		try {
 			if(rua!=null && cidade!=null && uf !=null) {
 				System.out.println("Buscando endereço:"+ rua.trim()+ ", " + (numero!=null?numero.toString():0) + "-" + cidade.trim() + "-" + uf );
-				posicao = GeoUtil.getPositionForAddress( rua.trim()+ ", " + (numero!=null?numero.toString():0), cidade.trim(), uf ); 
+				posicao = GeoUtil.getPositionForAddress( Funcoes.tiraAcentos(rua).trim()+ ", " + (numero!=null?numero.toString():0), Funcoes.tiraAcentos(cidade).trim(), uf ); 
 			}
 			else {
 				Funcoes.mensagemErro( null, "Não foi possível processar o endereço!\nRua, Cidade ou estado, inválidos!" );
