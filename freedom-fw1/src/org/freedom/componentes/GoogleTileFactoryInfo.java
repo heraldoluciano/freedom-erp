@@ -23,18 +23,18 @@ public class GoogleTileFactoryInfo extends TileFactoryInfo {
   protected String getMapUrl (int x, int y, int zoom)  {
 	  
 //  String url = "http://mt.google.com/mt?w=2.43" + "&x=" + x + "&y=" + y + "&zoom=" + zoom; // URL inativa...              
-	String url = "http://mt.google.com/mt?v=w2.95" + "&x=" + x + "&y=" + y + "&zoom=" + zoom;
-	
+//	String url = "http://mt.google.com/staticmap?v=w2.95" + "&x=" + x + "&y=" + y + "&zoom=" + zoom;
+//  String url = "http://us.maps1.yimg.com/us.tile.maps.yimg.com/ximg?v=4.2" + "&x=" + x + "&y=" + y + "&z=" + zoom + "&r=1";	  
+//	String url = "http://mt2.google.com/mt?n=404&v=w2.75" + "&x=" + x + "&y=" + y + "&zoom=" + zoom;
+//	String url = "http://khm3.google.com/kh/v=46&x=4574&y=2697&z=13&s=Galileo" + "&x=" + x + "&y=" + y + "&zoom=" + zoom;
+	  
+	// O uso deste recurso do google não é legal, usado apenas para testes no recurso.
+	  
+	String url = "http://mt1.google.com/vt/lyr...@110&hl=pl" + "&x=" + x + "&y=" + y + "&zoom=" + zoom;
+	  
     return url;
   }
 
-  /**
-   * Foto de satelite. Não funcional.
-   * @param x
-   * @param y
-   * @param z
-   * @return
-   */
   public String getSatURL(int x, int y, int zoom) {
     int ya = 1 << (17 - zoom);
     if ((y < 0) || (ya - 1 < y)) {
@@ -71,4 +71,5 @@ public class GoogleTileFactoryInfo extends TileFactoryInfo {
     }
     return "http://kh.google.com/kh?v=1&t=" + str;
   }
+  
 } 
