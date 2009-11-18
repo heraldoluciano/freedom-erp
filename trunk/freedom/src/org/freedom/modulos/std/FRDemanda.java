@@ -198,7 +198,7 @@ public class FRDemanda extends FRelatorio {
       }
       
       if (sOrdem.equals("M")) {
-    	  sOrdem = sOrdemGrupo+"P.VLROUTSAI"+" DESC" +",P.DESCPROD";
+    	  sOrdem = sOrdemGrupo+"(P.VLRVENDAS + P.VLRDEVENT + P.VLROUTSAI)"+" DESC" +",P.DESCPROD";
     	  sOrdenado = "ORDENADO POR MAIS VENDIDOS";     	   	  
       }
         
