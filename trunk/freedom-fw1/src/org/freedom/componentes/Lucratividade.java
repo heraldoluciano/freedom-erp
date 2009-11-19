@@ -102,7 +102,7 @@ public class Lucratividade {
 			
 			sql.append( "select " );
 			
-			sql.append( "coalesce(vd.vlrprodvenda,0) vlrprodvenda , coalesce(vd.vlrdescvenda,0) vlrdescvenda, coalesce(vd.vlricmsvenda,0) vlricmsvenda, ");
+			sql.append( "coalesce(vd.vlrprodvenda,0) vlrprodvenda , coalesce(vd.vlrdescitvenda,0) vlrdescvenda, coalesce(vd.vlricmsvenda,0) vlricmsvenda, ");
 			sql.append( "coalesce(vd.vlrcomisvenda,0) vlrcomisvenda, coalesce(vd.vlradicvenda,0) vlradicvenda, ");
 			sql.append( "coalesce(vd.vlripivenda,0) vlripivenda, coalesce(vd.vlrpisvenda,0) vlrpisvenda, coalesce(vd.vlrcofinsvenda,0) vlrcofinsvenda, ");
 			sql.append( "coalesce(vd.vlrirvenda,0) vlrirvenda, coalesce(vd.vlrcsocialvenda,0) vlrcsocialvenda, ");
@@ -237,7 +237,9 @@ public class Lucratividade {
 	}	
 
 	public BigDecimal getVlrprod() {
-	
+		if(vlrprod==null) {
+			return new BigDecimal(0);
+		}
 		return vlrprod;
 	}
 	
@@ -247,6 +249,9 @@ public class Lucratividade {
 	}
 	
 	public BigDecimal getVlrdesc() {
+		if(vlrdesc==null) {
+			return new BigDecimal(0);
+		}
 	
 		return vlrdesc;
 	}
@@ -257,6 +262,9 @@ public class Lucratividade {
 	}
 	
 	public BigDecimal getVlricms() {
+		if(vlricms==null) {
+			return new BigDecimal(0);
+		}
 	
 		return vlricms;
 	}
@@ -267,7 +275,10 @@ public class Lucratividade {
 	}
 	
 	public BigDecimal getVlrcomis() {
-	
+		if(vlrcomis==null) {
+			return new BigDecimal(0);
+		}
+
 		return vlrcomis;
 	}
 	
@@ -277,6 +288,9 @@ public class Lucratividade {
 	}
 	
 	public BigDecimal getVlrfrete() {
+		if(vlrfrete==null) {
+			return new BigDecimal(0);
+		}
 	
 		return vlrfrete;
 	}
@@ -287,6 +301,9 @@ public class Lucratividade {
 	}
 	
 	public BigDecimal getVlradic() {
+		if(vlradic==null) {
+			return new BigDecimal(0);
+		}
 	
 		return vlradic;
 	}
@@ -297,6 +314,9 @@ public class Lucratividade {
 	}
 	
 	public BigDecimal getVlripi() {
+		if(vlripi==null) {
+			return new BigDecimal(0);
+		}
 	
 		return vlripi;
 	}
@@ -307,6 +327,9 @@ public class Lucratividade {
 	}
 	
 	public BigDecimal getVlrcofins() {
+		if(vlrcofins==null) {
+			return new BigDecimal(0);
+		}
 	
 		return vlrcofins;
 	}
@@ -317,6 +340,10 @@ public class Lucratividade {
 	}
 
 	public BigDecimal getVlrpis() {
+		if(vlrpis==null) {
+			return new BigDecimal(0);
+		}
+		
 		return vlrpis;
 	}
 
@@ -325,7 +352,10 @@ public class Lucratividade {
 	}
 
 	public BigDecimal getVlrir() {
-	
+		if(vlrir==null) {
+			return new BigDecimal(0);
+		}
+
 		return vlrir;
 	}
 
@@ -335,6 +365,9 @@ public class Lucratividade {
 	}
 
 	public BigDecimal getVlrcsocial() {
+		if(vlrcsocial==null) {
+			return new BigDecimal(0);
+		}
 	
 		return vlrcsocial;
 	}
@@ -345,6 +378,10 @@ public class Lucratividade {
 	}
 
 	public BigDecimal getVlrpisit() {
+		if(vlrpisit==null) {
+			return new BigDecimal(0);
+		}
+
 		return vlrpisit;
 	}
 
@@ -353,6 +390,10 @@ public class Lucratividade {
 	}
 
 	public BigDecimal getVlrcofinsit() {
+		if(vlrcofinsit==null) {
+			return new BigDecimal(0);
+		}
+		
 		return vlrcofinsit;
 	}
 
@@ -361,6 +402,10 @@ public class Lucratividade {
 	}
 
 	public BigDecimal getVlrcsocialit() {
+		if(vlrcsocialit==null) {
+			return new BigDecimal(0);
+		}
+
 		return vlrcsocialit;
 	}
 
@@ -369,6 +414,10 @@ public class Lucratividade {
 	}
 
 	public BigDecimal getVlririt() {
+		if(vlririt==null) {
+			return new BigDecimal(0);
+		}
+		
 		return vlririt;
 	}
 
@@ -382,7 +431,7 @@ public class Lucratividade {
 		try {
 			if(tipocusto==null || "M".equals( tipocusto )) {
 				calc = getVlrcustompmvenda();	
-			}
+			} 
 			else if ("P".equals( tipocusto )) {
 				calc = getVlrcustopeps();
 			}
@@ -403,29 +452,31 @@ public class Lucratividade {
 				System.out.println("VALOR TOT. FRETE: " + getVlrfrete());
 			}
 
-			calc = calc.add( getVlrcomis() );	
-			System.out.println("VALOR TOT. COMISSÃO: " + getVlrcomis());
-			
-			calc = calc.add( getVlrpis());
-			System.out.println("VALOR TOT. PIS: " + getVlrpis());
-			
-			calc = calc.add( getVlrcofins()) ;
-			System.out.println("VALOR TOT. COFINS: " + getVlrcofins());
-			
-			calc = calc.add( getVlricms()) ;
-			System.out.println("VALOR TOT. ICMS: " + getVlricms());
-			
-			calc = calc.add( getVlrcsocial()) ;
-			System.out.println("VALOR TOT. CSOCIAL: " + getVlrcsocial());
-			
-			calc = calc.add( getVlrir()) ;
-			System.out.println("VALOR TOT. IR: " + getVlrir());
-			
-			calc = calc.add( getVlripi()) ;
-			System.out.println("VALOR TOT. IPI: " + getVlripi());
-			
-			setTotcusto( calc );
-			setTotlucro( getTotfat().subtract( calc ) );
+			if(calc!=null) {
+				calc = calc.add( getVlrcomis() );	
+				System.out.println("VALOR TOT. COMISSÃO: " + getVlrcomis());
+				
+				calc = calc.add( getVlrpis());
+				System.out.println("VALOR TOT. PIS: " + getVlrpis());
+				
+				calc = calc.add( getVlrcofins()) ;
+				System.out.println("VALOR TOT. COFINS: " + getVlrcofins());
+				
+				calc = calc.add( getVlricms()) ;
+				System.out.println("VALOR TOT. ICMS: " + getVlricms());
+				
+				calc = calc.add( getVlrcsocial()) ;
+				System.out.println("VALOR TOT. CSOCIAL: " + getVlrcsocial());
+				
+				calc = calc.add( getVlrir()) ;
+				System.out.println("VALOR TOT. IR: " + getVlrir());
+				
+				calc = calc.add( getVlripi()) ;
+				System.out.println("VALOR TOT. IPI: " + getVlripi());
+				
+				setTotcusto( calc );
+				setTotlucro( getTotfat().subtract( calc ) );
+			}
 			
 		}
 		catch (Exception e) {
@@ -461,29 +512,31 @@ public class Lucratividade {
 				System.out.println("VALOR ITEM FRETE: " + getVlrfrete());
 			}
 
-			calc = calc.add( getVlrcomisit() );	
-			System.out.println("VALOR ITEM COMISSÃO: " + getVlrcomisit());
-			
-			calc = calc.add( getVlrpisit());
-			System.out.println("VALOR ITEM PIS: " + getVlrpisit());
-			
-			calc = calc.add( getVlrcofinsit()) ;
-			System.out.println("VALOR ITEM COFINS: " + getVlrcofinsit());
-			
-			calc = calc.add( getVlricmsit()) ;
-			System.out.println("VALOR ITEM ICMS: " + getVlricmsit());
-			
-			calc = calc.add( getVlrcsocialit()) ;
-			System.out.println("VALOR ITEM CSOCIAL: " + getVlrcsocialit());
-			
-			calc = calc.add( getVlririt()) ;
-			System.out.println("VALOR ITEM IR: " + getVlririt());
-			
-			calc = calc.add( getVlripiit()) ;
-			System.out.println("VALOR ITEM IPI: " + getVlripiit());
-						
-			setItemcusto( calc );
-			setItemlucro( getItemfat().subtract( calc ) );
+			if(calc!=null) {
+				calc = calc.add( getVlrcomisit() );	
+				System.out.println("VALOR ITEM COMISSÃO: " + getVlrcomisit());
+				
+				calc = calc.add( getVlrpisit());
+				System.out.println("VALOR ITEM PIS: " + getVlrpisit());
+				
+				calc = calc.add( getVlrcofinsit()) ;
+				System.out.println("VALOR ITEM COFINS: " + getVlrcofinsit());
+				
+				calc = calc.add( getVlricmsit()) ;
+				System.out.println("VALOR ITEM ICMS: " + getVlricmsit());
+				
+				calc = calc.add( getVlrcsocialit()) ;
+				System.out.println("VALOR ITEM CSOCIAL: " + getVlrcsocialit());
+				
+				calc = calc.add( getVlririt()) ;
+				System.out.println("VALOR ITEM IR: " + getVlririt());
+				
+				calc = calc.add( getVlripiit()) ;
+				System.out.println("VALOR ITEM IPI: " + getVlripiit());
+							
+				setItemcusto( calc );
+				setItemlucro( getItemfat().subtract( calc ) );
+			}
 			
 		}
 		catch (Exception e) {
@@ -548,23 +601,26 @@ public class Lucratividade {
 		BigDecimal calc = null;
 		try {
 			
-//			calc = vlrprod.multiply(fatLucro) ;			
-			calc = vlrprod.add( vlradic );
-			calc = calc.subtract( vlrdesc );
+//			calc = vlrprod.multiply(fatLucro) ;		
 			
-			calc = calc.multiply( fatLucro );
-			
-
-			// Se frete for destacado na nota, entra como valor faturado
-			if("S".equals(adicfrete)) {
-				calc = calc.add( vlrfrete );
+			if(vlrprod!=null){
+				calc = vlrprod.add( vlradic );
+				calc = calc.subtract( vlrdesc );
+				
+				calc = calc.multiply( fatLucro );
+				
+	
+				// Se frete for destacado na nota, entra como valor faturado
+				if("S".equals(adicfrete)) {
+					calc = calc.add( vlrfrete );
+				}
+				
+				calc = calc.add(vlripi);
+	
+				setTotfat( calc );
+				
+				System.out.println("VALOR FATURADO:" + calc.toString());
 			}
-			
-			calc = calc.add(vlripi);
-
-			setTotfat( calc );
-			
-			System.out.println("VALOR FATURADO:" + calc.toString());
 			
 		}
 		catch (Exception e) {
@@ -577,22 +633,24 @@ public class Lucratividade {
 		BigDecimal calc = null;
 		try {
 			
-//			calc = vlrprodit.multiply(fatLucro) ;				
-			calc = vlrprodit.add( vlradicit );
-			calc = calc.subtract( vlrdescit );
-			
-			calc = calc.multiply( fatLucro ); // Desconto multiplicado pelo fator também
-
-			// Se frete for destacado na nota, entra como valor faturado
-			if("S".equals(adicfrete)) {
-				calc = calc.add( vlrfreteit );
+//			calc = vlrprodit.multiply(fatLucro) ;		
+			if(vlrprodit!=null) {
+				calc = vlrprodit.add( vlradicit );
+				calc = calc.subtract( vlrdescit );
+				
+				calc = calc.multiply( fatLucro ); // Desconto multiplicado pelo fator também
+	
+				// Se frete for destacado na nota, entra como valor faturado
+				if("S".equals(adicfrete)) {
+					calc = calc.add( vlrfreteit );
+				}
+				
+				calc = calc.add(vlripiit);
+	
+				setItemfat( calc );
+				
+				System.out.println("VALOR FATURADO ITEM:" + calc.toString());
 			}
-			
-			calc = calc.add(vlripiit);
-
-			setItemfat( calc );
-			
-			System.out.println("VALOR FATURADO ITEM:" + calc.toString());
 			
 		}
 		catch (Exception e) {
@@ -607,13 +665,15 @@ public class Lucratividade {
 		
 		try {
 
-			vlrlucro = getTotfat().subtract( getTotcusto() );
+			if(getTotfat()!=null) {
+				vlrlucro = getTotfat().subtract( getTotcusto() );
 			
-			perclucro = (vlrlucro.multiply( new BigDecimal(100) )).divide( getTotfat(), 0, BigDecimal.ROUND_DOWN )  ;
+				perclucro = (vlrlucro.multiply( new BigDecimal(100) )).divide( getTotfat(), 0, BigDecimal.ROUND_DOWN )  ;
 			
-			setVlrlucro( vlrlucro );
+				setVlrlucro( vlrlucro );
 			
-			setPerclucrvenda( perclucro );
+				setPerclucrvenda( perclucro );
+			}
 			
 		}
 		catch (Exception e) {
@@ -626,14 +686,16 @@ public class Lucratividade {
 		BigDecimal vlritemlucro = null;
 		
 		try {
-
-			vlritemlucro = getItemfat().subtract( getItemcusto() );
 			
-			percitemlucro = (vlritemlucro.multiply( new BigDecimal(100) )).divide( getItemfat(), 0, BigDecimal.ROUND_DOWN )  ;
-			
-			setVlrlucroitvenda( vlritemlucro );
-			
-			setPerclucrit( percitemlucro );
+			if(getItemfat()!=null && getItemfat().floatValue()>0) {
+				vlritemlucro = getItemfat().subtract( getItemcusto() );
+				
+				percitemlucro = (vlritemlucro.multiply( new BigDecimal(100) )).divide( getItemfat(), 0, BigDecimal.ROUND_DOWN )  ;
+				
+				setVlrlucroitvenda( vlritemlucro );
+				
+				setPerclucrit( percitemlucro );
+			}
 			
 		}
 		catch (Exception e) {
@@ -652,7 +714,9 @@ public class Lucratividade {
 	}
 
 	public BigDecimal getPerclucrvenda() {
-	
+		if(perclucr==null) {
+			perclucr = new BigDecimal(0);
+		}
 		return perclucr;
 	}
 	
@@ -672,7 +736,9 @@ public class Lucratividade {
 	}
 	
 	public BigDecimal getTotlucro() {
-		
+		if(totlucro==null) {
+			return new BigDecimal(0);
+		}
 		return totlucro;
 	}
 
@@ -682,6 +748,10 @@ public class Lucratividade {
 	}
 	
 	public BigDecimal getVlrcustompmit() {
+		
+		if(vlrcustompmit==null) {
+			return new BigDecimal(0);
+		}
 	
 		return vlrcustompmit;
 	}
@@ -692,7 +762,11 @@ public class Lucratividade {
 	}
 	
 	public BigDecimal getVlrcustopepsit() {
-	
+		
+		if(vlrcustopepsit==null) {
+			return new BigDecimal(0);
+		}
+		
 		return vlrcustopepsit;
 	}
 
@@ -702,7 +776,11 @@ public class Lucratividade {
 	}
 
 	public BigDecimal getVlrcustoucit() {
-	
+
+		if(vlrcustoucit==null) {
+			return new BigDecimal(0);
+		}
+
 		return vlrcustoucit;
 	}
 
@@ -712,7 +790,11 @@ public class Lucratividade {
 	}
 	
 	public BigDecimal getVlrlucroitvenda() {
-	
+
+		if(vlrlucroit==null) {
+			return new BigDecimal(0);
+		}
+
 		return vlrlucroit;
 	}
 	
@@ -723,6 +805,10 @@ public class Lucratividade {
 	
 	public BigDecimal getVlrproditvenda() {
 	
+		if(vlrprodit==null) {
+			return new BigDecimal(0);
+		}
+	
 		return vlrprodit;
 	}
 	
@@ -732,6 +818,10 @@ public class Lucratividade {
 	}
 	
 	public BigDecimal getVlrdescit() {
+
+		if(vlrdescit==null) {
+			return new BigDecimal(0);
+		}
 	
 		return vlrdescit;
 	}
@@ -742,6 +832,10 @@ public class Lucratividade {
 	}
 
 	public BigDecimal getVlricmsit() {
+
+		if(vlricmsit==null) {
+			return new BigDecimal(0);
+		}
 	
 		return vlricmsit;
 	}
@@ -752,6 +846,10 @@ public class Lucratividade {
 	}
 		
 	public BigDecimal getVlrcomisit() {
+
+		if(vlrcomisit==null) {
+			return new BigDecimal(0);
+		}
 	
 		return vlrcomisit;
 	}
@@ -762,6 +860,10 @@ public class Lucratividade {
 	}
 	
 	public BigDecimal getVlrfreteit() {
+
+		if(vlrfreteit==null) {
+			return new BigDecimal(0);
+		}
 	
 		return vlrfreteit;
 	}
@@ -772,7 +874,12 @@ public class Lucratividade {
 	}
 
 	public BigDecimal getVlradicit() {
-	
+
+		if(vlradicit==null) {
+			return new BigDecimal(0);
+		}
+
+		
 		return vlradicit;
 	}
 	
@@ -782,6 +889,10 @@ public class Lucratividade {
 	}
 	
 	public BigDecimal getVlripiit() {
+
+		if(vlripiit==null) {
+			return new BigDecimal(0);
+		}
 	
 		return vlripiit;
 	}
@@ -792,7 +903,9 @@ public class Lucratividade {
 	}
 		
 	public BigDecimal getItemfat() {
-	
+		if(itemfat==null) {
+			return new BigDecimal(0);
+		}
 		return itemfat;
 	}
 	
@@ -802,7 +915,10 @@ public class Lucratividade {
 	}
 
 	public BigDecimal getItemcusto() {
-	
+		if(itemcusto==null) {
+			return new BigDecimal(0);
+		}
+			
 		return itemcusto;
 	}
 
@@ -812,6 +928,9 @@ public class Lucratividade {
 	}
 
 	public BigDecimal getItemlucro() {
+		if(itemlucro==null) {
+			return new BigDecimal(0);
+		}
 	
 		return itemlucro;
 	}
@@ -822,7 +941,9 @@ public class Lucratividade {
 	}
 	
 	public BigDecimal getPerclucrit() {
-		
+		if(perclucrit==null) {
+			return new BigDecimal(0);
+		}		
 		return perclucrit;
 	}
 	
