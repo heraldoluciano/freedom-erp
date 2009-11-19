@@ -77,8 +77,6 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 100103000, TP_OPCAO_ITEM, "Tipo de Atendente", "Tipo de Atendente", 'i', 100103020, 4, true, FTipoAtend.class );	
 			addSeparador( 100100000 );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Moeda", "Moeda", 'M', 100112000, 2, true, FMoeda.class );
-//			addOpcao( 100100000, TP_OPCAO_ITEM, "Banco", "Banco", 'B', 100113000, 2, true, FBanco.class );
-//			addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de cobrança", "Tipo de cobrança", 'o', 100114000, 2, true, FTipoCob.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Plano de pagamento", "Plano de pagamento", 's', 100115000, 2, true, FPlanoPag.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Prazo de entrega", "Prazo de entrega", 'e', 100116000, 2, true, FPrazoEnt.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Feriados", "Feriados", 'e', 100117000, 2, true, FFeriados.class );
@@ -275,6 +273,8 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Movimentação de Produto Controlado", "Movimentação de Produto Controlado", 'M', 700702000, 2, true, FRMovProdCont.class );
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Estoque liquido", "Estoque liquido", 'L', 700703000, 2, true, FREstoqueLiquido.class );
 				addOpcao( 700700000, TP_OPCAO_ITEM, "Produtos por grupo", "Produtos pro grupo",'G', 700704000, 2, true, FRProdGrup.class ) ;
+				addOpcao( 700700000, TP_OPCAO_ITEM, "Giro de estoque", "Giro de estoque",'i', 700705000, 2, true, FRGiroEstoque.class ) ;
+				addOpcao( 700700000, TP_OPCAO_ITEM, "Contagem de estoque", "Contagem de estoque",'s', 700706000, 2, true, FRContaEstoque.class ) ;				
 				addSeparador( 700000000 );
 			addOpcao( 700000000, TP_OPCAO_ITEM, "Transferência de produtos", "Tranferência de produtos/almoxarifados", 'T', 700800000, 1, true, FTransfEstoque.class );
 			addOpcao( 700000000, TP_OPCAO_ITEM, "Exportar/Importar Saldo", "Exportar/Importar Saldo", 'x', 700900000, 1, true, FExpImpEstoq.class );
