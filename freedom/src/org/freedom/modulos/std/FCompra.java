@@ -102,6 +102,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private JPanelPad pinCabObs04 = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 	
 	private JPanelPad pinCabSolCompra = new JPanelPad();
+	
+	private JPanelPad pinCabImportacao = new JPanelPad();
 
 	private JPanelPad pinTot = new JPanelPad( 200, 200 );
 	
@@ -255,6 +257,25 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JTextAreaPad txaObsItCompra = new JTextAreaPad( 500 );
 	
+	private JTextFieldPad txtCodPaisDesembDI = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtDescPaisDesembDI = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtSiglaUFDesembDI = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
+	private JTextFieldFK txtNomeUFDEsembDI = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 ); 
+
+	private JTextFieldPad txtNroDI = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
+	private JTextFieldPad txtDtRegDI = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	
+	private JTextFieldPad txtDtDesembDI = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	
+	private JTextFieldPad txtIdentContainer = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private JTextFieldPad txtLocDesembDI = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
+	
+	
 	private JLabelPad lbStatus = new JLabelPad();
 
 	private JCheckBoxPad cbSeqNfTipoMov = new JCheckBoxPad( "Aloc.NF", "S", "N" );
@@ -288,6 +309,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private ListaCampos lcModNota = new ListaCampos (this, "MN");
 	
 	private final ListaCampos lcTran = new ListaCampos( this, "TN" );
+	
+	private ListaCampos lcPais = new ListaCampos( this, "" );
+	
+	private ListaCampos lcUF = new ListaCampos( this );
 
 	private String sOrdNota = "";
 
@@ -302,6 +327,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 	private String abaTransp = "N";
 	
 	private String abaSolCompra = "N";
+	
+	private String abaImport = "N";
 	
 	private String classcp = "";
 	
@@ -347,6 +374,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		if( "S".equals(abaSolCompra)) {
 			tpnCab.addTab( "Solicitação de Compra", pinCabSolCompra );
 		}
+		if( "S".equals(abaImport)) {
+			tpnCab.addTab( "Importação", pinCabImportacao );
+		}
+		
 		if( labelobs01cp!=null && !"".equals( labelobs01cp.trim() ) ) {
 			pinCabObs01.add( spnObs01 );
 			tpnCab.addTab( labelobs01cp.trim(), pinCabObs01 );
@@ -547,6 +578,24 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		txtCodModNota.setTabelaExterna( lcModNota );
 		txtTipoModNota.setListaCampos( lcModNota );
 		
+		lcPais.setUsaME( false );
+		lcPais.add( new GuardaCampo( txtCodPaisDesembDI, "CodPais", "Cod.país.", ListaCampos.DB_PK, false ) );
+		lcPais.add( new GuardaCampo( txtDescPaisDesembDI, "NomePais", "Nome", ListaCampos.DB_SI, false ) );
+		lcPais.montaSql( false, "PAIS", "SG" );
+		lcPais.setQueryCommit( false );
+		lcPais.setReadOnly( true );
+		txtCodPaisDesembDI.setTabelaExterna( lcPais );
+
+		lcUF.setUsaME( false );		
+		lcUF.add( new GuardaCampo( txtSiglaUFDesembDI, "SiglaUf", "Sigla", ListaCampos.DB_PK, false ) );
+		lcUF.add( new GuardaCampo( txtNomeUFDEsembDI, "NomeUf", "Nome", ListaCampos.DB_SI, false ) );
+		lcUF.setDinWhereAdic( "CODPAIS = #N", txtCodPaisDesembDI );
+		lcUF.montaSql( false, "UF", "SG" );
+		lcUF.setQueryCommit( false );
+		lcUF.setReadOnly( true );
+		txtSiglaUFDesembDI.setTabelaExterna( lcUF );
+
+		
 		btFechaCompra.setToolTipText( "Fechar a Compra (F4)" );
 
 		txtVlrIPICompra.setAtivo( false );
@@ -589,6 +638,26 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			//pinCabTransp.adic( txtRazTran, 80, 25, 205, 20 );
 		}
 		
+		if ( "S".equals( abaImport ) ) {
+
+			setPainel( pinCabImportacao );
+			
+			adicCampo( txtNroDI, 7, 25, 85, 20, "NroDI", "Nro. da DI", ListaCampos.DB_SI, false );
+			adicCampo( txtDtRegDI, 95, 25, 70, 20, "DtRegDI", "Dt.reg. DI", ListaCampos.DB_SI, false );
+			adicCampo( txtDtDesembDI, 168, 25, 70, 20, "DtDesembDI", "Dt.desemb.", ListaCampos.DB_SI, false );
+			adicCampo( txtIdentContainer, 241, 25, 150, 20, "IdentContainer", "Identificação do container", ListaCampos.DB_SI, false );
+
+			adicCampo( txtCodPaisDesembDI, 394, 25, 70, 20, "CodPaisDesembDI", "Cod.país", ListaCampos.DB_FK, txtDescPaisDesembDI, false );
+			adicDescFK( txtDescPaisDesembDI, 467, 25, 227, 20, "NomePais", "Nome do país" );
+			
+			adicCampo( txtLocDesembDI, 7, 65, 384, 20, "LocDesembDI", "Local do desembaraço", ListaCampos.DB_SI, false );			
+			
+			adicCampo( txtSiglaUFDesembDI, 394, 65, 70, 20, "SiglaUfDesembDI", "Sigla UF", ListaCampos.DB_FK, txtNomeUFDEsembDI, false );
+			adicDescFK( txtNomeUFDEsembDI, 467, 65, 227, 20, "NomeUF", "Nome UF" );
+
+		}
+		
+		
 		adicCampoInvisivel( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, false );
 
 		setListaCampos( true, "COMPRA", "CP" );
@@ -612,6 +681,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 			txtCodCC.setNaoEditavel( true );
 			txtAnoCC.setNaoEditavel( true );
 		}
+		
+
+
+		
 
 		// lcCampos.setWhereAdic("FLAG IN "+
 		// projetos.freedom.Freedom.carregaFiltro(con,org.freedom.telas.Aplicativo.strCodEmp)); */
@@ -1149,7 +1222,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		try {
 
 			sql.append( "SELECT USAREFPROD,ORDNOTA,BLOQCOMPRA,BUSCAVLRULTCOMPRA,CUSTOCOMPRA, "); 
-			sql.append( "TABTRANSPCP, TABSOLCP, CLASSCP, LABELOBS01CP, LABELOBS02CP, LABELOBS03CP, LABELOBS04CP " ); 
+			sql.append( "TABTRANSPCP, TABSOLCP,TABIMPORTCP, CLASSCP, LABELOBS01CP, LABELOBS02CP, LABELOBS03CP, LABELOBS04CP " ); 
 			sql.append(	"FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -1166,6 +1239,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 				habilitaCusto = rs.getString( "CUSTOCOMPRA" ).trim().equals( "S" );
 				abaTransp = rs.getString( "TABTRANSPCP");
 				abaSolCompra = rs.getString( "TABSOLCP" );
+				abaImport = rs.getString( "TABIMPORTCP" );
 				classcp = rs.getString( "CLASSCP" );
 				labelobs01cp = rs.getString( "LABELOBS01CP" );
 				labelobs02cp = rs.getString( "LABELOBS02CP" );
@@ -2021,6 +2095,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 		lcTran.setConexao( cn );
 		lcSolCompra.setConexao( cn );
 		lcModNota.setConexao( cn );
+		lcPais.setConexao( cn );
+		lcUF.setConexao( cn );
+		
 		getPrefere();
 		montaTela();
 		montaDetalhe();
