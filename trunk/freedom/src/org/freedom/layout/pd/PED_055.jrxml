@@ -43,7 +43,7 @@
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
 	<parameter name="RODAPE" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="FONEEMP" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="FONEFILIAL" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\layout\\pd\\"]]></defaultValueExpression>
 	</parameter>
@@ -66,7 +66,7 @@ WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE) VENCTOLOTE,V.CODVENDA,V.CODCL
 C.CPFCLI,V.DTEMITVENDA,
 C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.PESSOACLI,C.BAIRCLI,C.CEPCLI,V.OBSVENDA,V.DTSAIDAVENDA,C.CIDCLI,C.UFCLI,C.FONECLI,
 C.FONECLI,C.FAXCLI,C.INSCCLI,C.RGCLI,I.CODPROD,P.REFPROD,P.CODBARPROD,P.DESCPROD,P.CODUNID,I.PERCISSITVENDA,
-I.QTDITVENDA,I.PRECOITVENDA,I.VLRPRODITVENDA,I.CODNAT,I.PERCICMSITVENDA,I.PERCIPIITVENDA,VLRIPIITVENDA,
+I.QTDITVENDA,I.PERCISSITVENDA,I.PRECOITVENDA,I.VLRPRODITVENDA,I.CODNAT,I.PERCICMSITVENDA,I.PERCIPIITVENDA,VLRIPIITVENDA,
 V.VLRBASEICMSVENDA,V.VLRICMSVENDA,V.VLRPRODVENDA,V.VLRFRETEVENDA,V.VLRDESCVENDA,V.VLRDESCITVENDA,
 V.VLRADICVENDA,V.VLRIPIVENDA,V.VLRLIQVENDA,V.CODVEND,VEND.NOMEVEND,V.CODPLANOPAG,PG.DESCPLANOPAG,
 (SELECT T.RAZTRAN FROM VDTRANSP T, VDFRETEVD F WHERE T.CODEMP=F.CODEMPTN AND T.CODFILIAL=F.CODFILIALTN
@@ -81,7 +81,7 @@ P.CODFISC,FC.DESCFISC,V.DOCVENDA,C.OBSCLI,C.BAIRENT, C.ENDENT, C.CIDENT, C.UFENT
  VF.PLACAFRETEVD, VF.PESOBRUTVD, P.DESCCOMPPROD, V.OBSVENDA, VF.QTDFRETEVD
  FROM VDCLIENTE C,VDITVENDA I,EQPRODUTO P,VDVENDEDOR VEND,FNPLANOPAG PG,LFCLFISCAL FC, VDVENDA V
  left outer join VDFRETEVD VF on VF.CODEMP=V.CODEMP AND VF.CODFILIAL=V.CODFILIAL AND VF.CODVENDA=V.CODVENDA
- AND VF.TIPOVENDA=V.TIPOVENDA WHERE V.CODEMP=$P{CODEMP} AND V.CODFILIAL=$P{CODFILIAL} AND V.TIPOVENDA=$P{TIPOVENDA} AND V.CODVENDA=$P{CODVENDA}
+ AND VF.TIPOVENDA=V.TIPOVENDA WHERE V.CODEMP=55 AND V.CODFILIAL=1 AND V.TIPOVENDA='V' AND V.CODVENDA=10
  AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI AND I.CODEMP=V.CODEMP AND
  I.CODFILIAL=V.CODFILIAL AND I.TIPOVENDA=V.TIPOVENDA AND I.CODVENDA=V.CODVENDA AND P.CODEMP=I.CODEMPPD
  AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD AND VEND.CODEMP=V.CODEMPVD AND VEND.CODFILIAL=V.CODFILIALVD
@@ -89,6 +89,9 @@ P.CODFISC,FC.DESCFISC,V.DOCVENDA,C.OBSCLI,C.BAIRENT, C.ENDENT, C.CIDENT, C.UFENT
  AND PG.CODEMP=V.CODEMPPG AND PG.CODFILIAL=V.CODFILIALPG AND PG.CODPLANOPAG=V.CODPLANOPAG
  ORDER BY P.CODPROD,P.DESCPROD]]></queryString>
 
+	<field name="QTDITENS" class="java.lang.Long"/>
+	<field name="CODLOTE" class="java.lang.String"/>
+	<field name="VENCTOLOTE" class="java.sql.Date"/>
 	<field name="CODVENDA" class="java.lang.Long"/>
 	<field name="CODCLI" class="java.lang.Long"/>
 	<field name="RAZCLI" class="java.lang.String"/>
@@ -98,6 +101,7 @@ P.CODFISC,FC.DESCFISC,V.DOCVENDA,C.OBSCLI,C.BAIRENT, C.ENDENT, C.CIDENT, C.UFENT
 	<field name="ENDCLI" class="java.lang.String"/>
 	<field name="NUMCLI" class="java.lang.Long"/>
 	<field name="COMPLCLI" class="java.lang.String"/>
+	<field name="PESSOACLI" class="java.lang.String"/>
 	<field name="BAIRCLI" class="java.lang.String"/>
 	<field name="CEPCLI" class="java.lang.String"/>
 	<field name="OBSVENDA" class="java.lang.String"/>
@@ -105,13 +109,6 @@ P.CODFISC,FC.DESCFISC,V.DOCVENDA,C.OBSCLI,C.BAIRENT, C.ENDENT, C.CIDENT, C.UFENT
 	<field name="CIDCLI" class="java.lang.String"/>
 	<field name="UFCLI" class="java.lang.String"/>
 	<field name="FONECLI" class="java.lang.String"/>
-	<field name="BAIRENT" class="java.lang.String"/>
-	<field name="ENDENT" class="java.lang.String"/>
-	<field name="CIDENT" class="java.lang.String"/>
-	<field name="UFENT" class="java.lang.String"/>
-	<field name="CEPENT" class="java.lang.String"/>
-	<field name="FONEENT" class="java.lang.String"/>
-	<field name="PESSOACLI" class="java.lang.String"/>
 	<field name="FAXCLI" class="java.lang.String"/>
 	<field name="INSCCLI" class="java.lang.String"/>
 	<field name="RGCLI" class="java.lang.String"/>
@@ -120,12 +117,13 @@ P.CODFISC,FC.DESCFISC,V.DOCVENDA,C.OBSCLI,C.BAIRENT, C.ENDENT, C.CIDENT, C.UFENT
 	<field name="CODBARPROD" class="java.lang.String"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="CODUNID" class="java.lang.String"/>
+	<field name="PERCISSITVENDA" class="java.math.BigDecimal"/>
 	<field name="QTDITVENDA" class="java.math.BigDecimal"/>
 	<field name="PRECOITVENDA" class="java.math.BigDecimal"/>
 	<field name="VLRPRODITVENDA" class="java.math.BigDecimal"/>
 	<field name="CODNAT" class="java.lang.String"/>
-	<field name="PERCICMSITVENDA" class="java.lang.Long"/>
-	<field name="PERCIPIITVENDA" class="java.lang.Long"/>
+	<field name="PERCICMSITVENDA" class="java.math.BigDecimal"/>
+	<field name="PERCIPIITVENDA" class="java.math.BigDecimal"/>
 	<field name="VLRIPIITVENDA" class="java.math.BigDecimal"/>
 	<field name="VLRBASEICMSVENDA" class="java.math.BigDecimal"/>
 	<field name="VLRICMSVENDA" class="java.math.BigDecimal"/>
@@ -140,23 +138,34 @@ P.CODFISC,FC.DESCFISC,V.DOCVENDA,C.OBSCLI,C.BAIRENT, C.ENDENT, C.CIDENT, C.UFENT
 	<field name="NOMEVEND" class="java.lang.String"/>
 	<field name="CODPLANOPAG" class="java.lang.Long"/>
 	<field name="DESCPLANOPAG" class="java.lang.String"/>
+	<field name="RAZTRAN" class="java.lang.String"/>
+	<field name="TIPOFRETEVD" class="java.lang.String"/>
 	<field name="VLRLIQITVENDA" class="java.math.BigDecimal"/>
 	<field name="DESCAUXPROD" class="java.lang.String"/>
 	<field name="DDDCLI" class="java.lang.String"/>
 	<field name="EMAILCLI" class="java.lang.String"/>
 	<field name="CODITVENDA" class="java.lang.Long"/>
+	<field name="DIASPE" class="java.lang.Short"/>
 	<field name="SITECLI" class="java.lang.String"/>
 	<field name="OBSITVENDA" class="java.lang.String"/>
 	<field name="EMAILVEND" class="java.lang.String"/>
+	<field name="DESCFUNC" class="java.lang.String"/>
 	<field name="PEDCLIVENDA" class="java.lang.String"/>
 	<field name="CONTCLI" class="java.lang.String"/>
 	<field name="CODFISC" class="java.lang.String"/>
 	<field name="DESCFISC" class="java.lang.String"/>
-	<field name="PLACAFRETEVD" class="java.lang.String"/>
-	<field name="PESOBRUTVD" class="java.math.BigDecimal"/>
 	<field name="DOCVENDA" class="java.lang.Long"/>
 	<field name="OBSCLI" class="java.lang.String"/>
+	<field name="BAIRENT" class="java.lang.String"/>
+	<field name="ENDENT" class="java.lang.String"/>
+	<field name="CIDENT" class="java.lang.String"/>
+	<field name="UFENT" class="java.lang.String"/>
+	<field name="CEPENT" class="java.lang.String"/>
+	<field name="FONEENT" class="java.lang.String"/>
+	<field name="PLACAFRETEVD" class="java.lang.String"/>
+	<field name="PESOBRUTVD" class="java.math.BigDecimal"/>
 	<field name="DESCCOMPPROD" class="java.lang.String"/>
+	<field name="QTDFRETEVD" class="java.math.BigDecimal"/>
 
 
 		<group  name="CABECALHO" >
@@ -887,7 +896,7 @@ $F{CNPJCLI}.substring(12,14)]]></textFieldExpression>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="187"  isSplitAllowed="true" >
+			<band height="217"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="207"
@@ -1799,9 +1808,9 @@ Responsável:______________________________________ Assinatura:_________________
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["( " + $P{FONEEMP}.trim().substring(0,4) + " ) " +
-$P{FONEEMP}.trim().substring(4,8) + " - " +
-$P{FONEEMP}.trim().substring(8,12)]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["( " + $P{FONEFILIAL}.trim().substring(0,4) + " ) " +
+$P{FONEFILIAL}.trim().substring(4,8) + " - " +
+$P{FONEFILIAL}.trim().substring(8,12)]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
