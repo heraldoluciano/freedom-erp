@@ -391,6 +391,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbUsaRefCompra = new JCheckBoxPad ("Usa referência na compra. ", "S", "N" );
 	
 	private final JCheckBoxPad cbTransAbaCp = new JCheckBoxPad( "Aba transp. na tela de compras.", "S", "N" );
+	
+	private final JCheckBoxPad cbImportAbaCp = new JCheckBoxPad( "Aba Importação na tela de compras.", "S", "N" );
 
 	private final JCheckBoxPad cbTabSolCp = new JCheckBoxPad( "Aba solicitação na tela de compras.", "S", "N" );
 	
@@ -1046,19 +1048,21 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		lbCompOpcoes.setOpaque( true );
 		adic( lbCompOpcoes, 17, 5, 70, 20 );
-		adic( pinCompras, 7, 15, 300, 350 );
+		adic( pinCompras, 7, 15, 300, 400 );
 		setPainel( pinCompras );
 		adicDB( cbUsaRefCompra, 7, 15, 200, 20, "UsaRefProd", "",false );
 		adicDB( cbTransAbaCp, 7, 35, 250, 20, "TabTranspCp", "",false );
-		adicDB( cbTabSolCp, 7, 55, 250, 20, "TabSolCp", "",false );
-		adicDB( cbPrecoRel, 7, 75, 270, 20, "PrecoCpRel", "",false );
-		adicDB( cbHabiitaCustoCompra, 7, 95, 300, 20, "CustoCompra", "", true );
-		adicDB( cbInfCPDevolucao, 7, 115, 300, 20, "INFCPDEVOLUCAO", "", true );
-		adicCampo( txtDescClassCp, 11, 160, 250, 20, "ClassCp", "Layout padrão para pedido de compra.", ListaCampos.DB_SI, false );
-		adicCampo( txtObs01, 11, 200, 250, 20, "LabelObs01Cp", "Descrição para campo Obs01.", ListaCampos.DB_SI, false );
-		adicCampo( txtObs02, 11, 240, 250, 20, "LabelObs02Cp", "Descrição para campo Obs02.", ListaCampos.DB_SI, false );
-		adicCampo( txtObs03, 11, 280, 250, 20, "LabelObs03Cp", "Descrição para campo Obs03.", ListaCampos.DB_SI, false );
-		adicCampo( txtObs04, 11, 320, 250, 20, "LabelObs04Cp", "Descrição para campo Obs04.", ListaCampos.DB_SI, false );
+		adicDB( cbTabSolCp, 7, 55, 250, 20, "TabSolCp", "",false );		
+		adicDB( cbImportAbaCp, 7, 75, 250, 20, "TabImportCp", "",false );		
+		adicDB( cbPrecoRel, 7, 95, 270, 20, "PrecoCpRel", "",false );
+		adicDB( cbHabiitaCustoCompra, 7, 115, 300, 20, "CustoCompra", "", true );		
+		adicDB( cbInfCPDevolucao, 7, 135, 300, 20, "INFCPDEVOLUCAO", "", true );
+		
+		adicCampo( txtDescClassCp, 11, 200, 250, 20, "ClassCp", "Layout padrão para pedido de compra.", ListaCampos.DB_SI, false );
+		adicCampo( txtObs01, 11, 240, 250, 20, "LabelObs01Cp", "Descrição para campo Obs01.", ListaCampos.DB_SI, false );
+		adicCampo( txtObs02, 11, 280, 250, 20, "LabelObs02Cp", "Descrição para campo Obs02.", ListaCampos.DB_SI, false );
+		adicCampo( txtObs03, 11, 320, 250, 20, "LabelObs03Cp", "Descrição para campo Obs03.", ListaCampos.DB_SI, false );
+		adicCampo( txtObs04, 11, 360, 250, 20, "LabelObs04Cp", "Descrição para campo Obs04.", ListaCampos.DB_SI, false );
 		
 		
 		// Preço
