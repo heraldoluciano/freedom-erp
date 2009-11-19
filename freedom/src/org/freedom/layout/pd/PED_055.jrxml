@@ -59,6 +59,7 @@
 	<parameter name="TIPOVENDA" isForPrompting="true" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["V"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="DDDFILIAL" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT (SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC WHERE IC.CODVENDA=V.CODVENDA AND IC.CODEMP=V.CODEMP
 AND IC.CODFILIAL=V.CODFILIAL AND IC.TIPOVENDA=V.TIPOVENDA) QTDITENS,(SELECT L.CODLOTE FROM EQLOTE L
 WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE) CODLOTE,(SELECT L.VENCTOLOTE FROM EQLOTE L
@@ -1808,9 +1809,9 @@ Responsável:______________________________________ Assinatura:_________________
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["( " + $P{FONEFILIAL}.trim().substring(0,4) + " ) " +
-$P{FONEFILIAL}.trim().substring(4,8) + " - " +
-$P{FONEFILIAL}.trim().substring(8,12)]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["(" + $P{DDDFILIAL}.trim() + ") " +
+$P{FONEFILIAL}.trim().substring(0,4) + " - " +
+$P{FONEFILIAL}.trim().substring(4)]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
