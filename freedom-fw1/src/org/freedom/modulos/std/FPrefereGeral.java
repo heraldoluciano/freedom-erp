@@ -586,6 +586,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private JRadioGroup<String, String> rgProcEmiNFE = null;
 	
+	private JRadioGroup<String, String> rgTipoCustoLuc = null;
+	
 	private JTextFieldPad txtVerProcNfe = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	public FPrefereGeral() {
@@ -615,7 +617,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		vValsAmbienteNFE.addElement( PRODUCAO_NFE );
 		vValsAmbienteNFE.addElement( HOMOLOGACAO_NFE );
 		rgAmbienteNFE = new JRadioGroup<String, String>( 1, 2, vLabsAmbienteNFE, vValsAmbienteNFE );
-//		rgAmbienteNFE.setVlrInteger( new Integer(1) );
 		
 		Vector<String> vLabsProcEmiNFE = new Vector<String>();
 		Vector<String> vValsProcEmiNFE = new Vector<String>();
@@ -624,8 +625,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		vValsProcEmiNFE.addElement( APLIC_CONTRIB_NFE );
 		vValsProcEmiNFE.addElement( APLIC_FISCO_NFE );
 		rgProcEmiNFE = new JRadioGroup<String, String>( 2, 1, vLabsProcEmiNFE, vValsProcEmiNFE );
-//		rgProcEmiNFE.setVlrInteger( new Integer(3) );	
-				
+
+		Vector<String> vLabsTipoCustoLuc = new Vector<String>();
+		Vector<String> vValsTipoCustoLuc = new Vector<String>();
+		vLabsTipoCustoLuc.addElement( "MPM" );
+		vLabsTipoCustoLuc.addElement( "PEPS" );
+		vLabsTipoCustoLuc.addElement( "Ult.Compra" );
+		vValsTipoCustoLuc.addElement( "M" );
+		vValsTipoCustoLuc.addElement( "P" );
+		vValsTipoCustoLuc.addElement( "U" );
+		rgTipoCustoLuc = new JRadioGroup<String, String>( 1, 3, vLabsTipoCustoLuc, vValsTipoCustoLuc );
+
 		lcMoeda.add( new GuardaCampo( txtCodMoeda, "CodMoeda", "Cód.moeda", ListaCampos.DB_PK, true ) );
 		lcMoeda.add( new GuardaCampo( txtDescMoeda, "SingMoeda", "Descrição da moeda", ListaCampos.DB_SI, false ) );
 		lcMoeda.montaSql( false, "MOEDA", "FN" );
@@ -1083,6 +1093,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicCampo( txtTitOrcTxt01, 403, 105, 250, 20, "TitOrcTxt01", "Título para campo TXT01", ListaCampos.DB_SI, false );
 //		adicCampo( txtCodMens, 7, 185, 90, 20, "CodMensOrc", "Cód.mens", ListaCampos.DB_FK, txtDescMens, false );
 //		adicDescFK( txtDescMens, 100, 185, 300, 20, "mens", " Descrição da mensagem padrão para orçamento" );
+		
+		adicDB( rgTipoCustoLuc, 7, 185, 390, 30, "TipoCustoLuc", "Tipo de custo para calculo da lucratividade", true );
 		
 		adicDB( rgTipoValidOrc, 403, 225, 250, 30, "tipovalidorc", "Validade na impressão", true );
 		adicDB( cbUsaOrcSeq, 460, 275, 160, 20, "UsaOrcSeq", "", true );
