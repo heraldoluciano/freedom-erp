@@ -382,7 +382,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		USAREFPROD, USALIQREL, TIPOPRECOCUSTO, CODTIPOMOV2, DESCCOMPPED, USAORCSEQ, 
 		OBSCLIVEND, RECALCPCORC, USABUSCAGENPROD, USALOTEORC, CONTESTOQ, TITORCTXT01, 
 		VENDAMATPRIM, VISUALIZALUCR, DIASVENCORC, CODCLI, CODPLANOPAG, PRAZO, CLASSORC,
-		DESCORC, CONTRIBIPI, ABATRANSP, ORDNOTA ;  
+		DESCORC, CONTRIBIPI, ABATRANSP, ORDNOTA, TIPOCUSTO ;  
 	}
 	
 	private enum OrcVenda {
@@ -1892,7 +1892,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			sql.append( "P1.VENDAMATPRIM, P1.TABTRANSPORC, P1.VISUALIZALUCR, P1.CLASSORC, COALESCE(P1.DESCORC,'Orçamento') DESCORC, " );
 			sql.append( "P4.USALOTEORC, P4.USABUSCAGENPROD, COALESCE(P4.DIASVENCORC,0) DIASVENCORC, COALESCE(P4.CODCLI,0) CODCLI, " );
 			sql.append( "COALESCE(P4.CODPLANOPAG,0) CODPLANOPAG, COALESCE(P4.PRAZO,0) PRAZO, " );
-			sql.append( "FI.CONTRIBIPIFILIAL " );
+			sql.append( "FI.CONTRIBIPIFILIAL, P1.TIPOCUSTOLUC " );
 			 
 			sql.append( "FROM SGPREFERE1 P1, SGPREFERE4 P4, SGFILIAL FI " ); 
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? AND ");
@@ -1937,6 +1937,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				oRetorno[ PrefOrc.ORDNOTA.ordinal() ] = rs.getString( "ORDNOTA" );
 				oRetorno[ PrefOrc.CONTRIBIPI.ordinal() ] = rs.getString( "CONTRIBIPIFILIAL" );
 				oRetorno[ PrefOrc.ABATRANSP.ordinal() ] = rs.getString( "TABTRANSPORC" );
+				oRetorno[ PrefOrc.TIPOCUSTO.ordinal() ] = rs.getString( "TIPOCUSTOLUC" );
 				
 			}
 			
@@ -2298,7 +2299,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		
 		if( ("S".equals( permusu.get( "VISUALIZALUCR" ))) && (Boolean)(oPrefs[ PrefOrc.VISUALIZALUCR.ordinal() ]) ) {
 				
-			Lucratividade luc = new Lucratividade( txtCodOrc.getVlrInteger(), "O", txtCodItOrc.getVlrInteger(), fatLucro, "U", con );		   
+			Lucratividade luc = new Lucratividade( txtCodOrc.getVlrInteger(), "O", txtCodItOrc.getVlrInteger(), fatLucro, oPrefs[ PrefOrc.TIPOCUSTO.ordinal() ].toString(), con );		   
 		
 			/****************************
 			 * Atualizando painel geral 
