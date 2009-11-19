@@ -367,6 +367,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private JTextFieldFK txtItemCusto = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
 	
 	private JTextFieldFK txtItemLucro = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, 2 );
+	
+	private JTextFieldPad txtCodTipoMov = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
+	private ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
 
 	private HashMap<String, Object> permusu = null;
 	
@@ -645,6 +651,16 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcPrevTrib.setQueryCommit( false );
 		lcPrevTrib.setReadOnly( true );
 		
+		// FK Tipo de movimentos
+		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
+		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
+		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
+		lcTipoMov.setQueryCommit( false );
+		lcTipoMov.setReadOnly( true );
+		txtCodTipoMov.setTabelaExterna( lcTipoMov );
+
+		
+		
 	}
 
 	private void montaOrcamento() {
@@ -731,6 +747,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		 */
 
 		adicCampoInvisivel( txtStatusOrc, "StatusOrc", "Status", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtCodTipoMov, "codtipomov", "Cód.Tipo Mov.", ListaCampos.DB_FK , false );
+		
 
 		if( "S".equals( oPrefs[ PrefOrc.ABATRANSP.ordinal() ].toString() ) ){
 			tpnCab.addTab( "Transportadora", pinCabTransp );
@@ -2112,7 +2130,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		if ( cevt.getListaCampos() == lcDet ) {
 			lcOrc2.carregaDados();// Carrega os Totais
-			lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos
+			lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos			
 			atualizaLucratividade();
 		}
 		else if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) {
@@ -2138,6 +2156,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			
 			carregaStatus();
 			carregaPedidos();
+			atualizaLucratividade();
 		}
 		else if ( cevt.getListaCampos() == lcCli ) {
 			if ( ( (Boolean) oPrefs[ PrefOrc.OBSCLIVEND.ordinal() ] ).booleanValue() ) {
@@ -2174,6 +2193,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				calcVlrItem( "VDORCAMENTO", true );
 			}
 			txtCodClComiss.setVlrInteger( new Integer( getClComiss( txtCodVend.getVlrInteger().intValue() ) ) );
+			txtCodTipoMov.setVlrInteger( (Integer) oPrefs[ PrefOrc.CODTIPOMOV2.ordinal() ] ) ;
+//			lcTipoMov.carregaDados();
+
 		}
 		else if ( evt.getListaCampos() == lcDet ) {
 			if ( ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) || ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) ) {
@@ -2213,6 +2235,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		if ( devt.getListaCampos() == lcDet ) {
 			lcOrc2.carregaDados();
 			lcPrevTrib.carregaDados();
+			atualizaLucratividade();
 		}
 	}
 
@@ -2252,6 +2275,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcEnc.setConexao( cn );
 		lcAtend.setConexao( cn );
 		lcTran.setConexao( cn );
+		lcTipoMov.setConexao( cn );
 		
 		permusu = getPermissaoUsu();
 		oPrefs = prefs(); // Carrega as preferências
@@ -2280,18 +2304,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			 * Atualizando painel geral 
 			 ****************************/
 			
-			txtTotFat.setVlrBigDecimal( luc.getTotfat() );
-			txtTotCusto.setVlrBigDecimal( luc.getTotcusto());
-			txtTotLucro.setVlrBigDecimal( luc.getTotlucro());
+			txtTotFat.setVlrBigDecimal( luc.getTotfat() == null ? new BigDecimal(0): luc.getTotfat() );
+			txtTotCusto.setVlrBigDecimal( luc.getTotcusto() == null ? new BigDecimal(0): luc.getTotcusto() );
+			txtTotLucro.setVlrBigDecimal( luc.getTotlucro()  == null ? new BigDecimal(0): luc.getTotlucro() );
 			
-			txtTotCustoUC.setVlrBigDecimal( luc.getVlrcustouc() );
-			txtTotComiss.setVlrBigDecimal( luc.getVlrcomis() );
-			txtTotPIS.setVlrBigDecimal( luc.getVlrpis() );
-			txtTotCofins.setVlrBigDecimal( luc.getVlrcofins() );
-			txtTotCSOCIAL.setVlrBigDecimal( luc.getVlrcsocial() );
-			txtTotIR.setVlrBigDecimal( luc.getVlrir() );
-			txtTotIPI.setVlrBigDecimal( luc.getVlripi() );
-			txtTotICMS.setVlrBigDecimal( luc.getVlricms() );
+			txtTotCustoUC.setVlrBigDecimal( luc.getVlrcustouc() == null ? new BigDecimal(0): luc.getVlrcustouc()  );
+			txtTotComiss.setVlrBigDecimal( luc.getVlrcomis()  == null ? new BigDecimal(0): luc.getVlrcomis() );
+			txtTotPIS.setVlrBigDecimal( luc.getVlrpis()  == null ? new BigDecimal(0): luc.getVlrpis() );
+			txtTotCofins.setVlrBigDecimal( luc.getVlrcofins()  == null ? new BigDecimal(0): luc.getVlrcofins()  );
+			txtTotCSOCIAL.setVlrBigDecimal( luc.getVlrcsocial()  == null ? new BigDecimal(0): luc.getVlrcsocial() );
+			txtTotIR.setVlrBigDecimal( luc.getVlrir()  == null ? new BigDecimal(0): luc.getVlrir() );
+			txtTotIPI.setVlrBigDecimal( luc.getVlripi()  == null ? new BigDecimal(0): luc.getVlripi() );
+			txtTotICMS.setVlrBigDecimal( luc.getVlricms()  == null ? new BigDecimal(0): luc.getVlricms() );
 			
 			pbLucrTotal.setValue( luc.getPerclucrvenda().toBigInteger().intValue() );
 			
@@ -2317,18 +2341,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			 * Atulizando painel item 
 			 ****************************/
 			
-			txtItemFat.setVlrBigDecimal( luc.getItemfat() );
-			txtItemCusto.setVlrBigDecimal( luc.getItemcusto());
-			txtItemLucro.setVlrBigDecimal( luc.getItemlucro());
+			txtItemFat.setVlrBigDecimal( luc.getItemfat() == null ? new BigDecimal(0): luc.getItemfat() );
+			txtItemCusto.setVlrBigDecimal( luc.getItemcusto() == null ? new BigDecimal(0): luc.getItemcusto() );
+			txtItemLucro.setVlrBigDecimal( luc.getItemlucro() == null ? new BigDecimal(0): luc.getItemlucro() );
 			
-			txtTotCustoUCIt.setVlrBigDecimal( luc.getVlrcustoucit() );
-			txtTotComissIt.setVlrBigDecimal( luc.getVlrcomisit() );
-			txtTotPISIt.setVlrBigDecimal( luc.getVlrpisit() );
-			txtTotCofinsIt.setVlrBigDecimal( luc.getVlrcofinsit() );
-			txtTotCSOCIALIt.setVlrBigDecimal( luc.getVlrcsocialit() );
-			txtTotIRIt.setVlrBigDecimal( luc.getVlririt() );
-			txtTotIPIIt.setVlrBigDecimal( luc.getVlripiit() );
-			txtTotICMSIt.setVlrBigDecimal( luc.getVlricmsit() );			
+			txtTotCustoUCIt.setVlrBigDecimal( luc.getVlrcustoucit() == null ? new BigDecimal(0): luc.getVlrcustoucit()  );
+			txtTotComissIt.setVlrBigDecimal( luc.getVlrcomisit() == null ? new BigDecimal(0): luc.getVlrcomisit() );
+			txtTotPISIt.setVlrBigDecimal( luc.getVlrpisit() == null ? new BigDecimal(0): luc.getVlrpisit()  );
+			txtTotCofinsIt.setVlrBigDecimal( luc.getVlrcofinsit()  == null ? new BigDecimal(0): luc.getVlrcofinsit()  );
+			txtTotCSOCIALIt.setVlrBigDecimal( luc.getVlrcsocialit()  == null ? new BigDecimal(0): luc.getVlrcsocialit()  );
+			txtTotIRIt.setVlrBigDecimal( luc.getVlririt()  == null ? new BigDecimal(0): luc.getVlririt()  );
+			txtTotIPIIt.setVlrBigDecimal( luc.getVlripiit()  == null ? new BigDecimal(0): luc.getVlripiit()  );
+			txtTotICMSIt.setVlrBigDecimal( luc.getVlricmsit()  == null ? new BigDecimal(0): luc.getVlricmsit()  );			
 			
 			pbLucrItem.setValue( luc.getPerclucrit().toBigInteger().intValue() );
 			pnLucrItem.setBorder(BorderFactory.createTitledBorder( txtCodItOrc.getVlrString() + "-" + txtDescProd.getVlrString().trim()) );
