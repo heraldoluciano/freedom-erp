@@ -18,7 +18,7 @@ public class Bradesco extends Banco {
 
 	private String codcli = "";
 
-	private String carteira = "14";
+	private String carteira = "09";
 
 	private int moeda = 9; // Real
 
@@ -488,5 +488,45 @@ public class Bradesco extends Banco {
 	public String getSiglaCarteiraBanco() {
 		return Funcoes.strZero(getCarteira().toString(),2);
 	}
+	
+	public String getModulo11( String campo, int type ) {
+
+		// Modulo 11 - 234567 (type = 7)
+		// Modulo 11 - 23456789 (type = 9)
+
+		int multiplicador = 2;
+		int multiplicacao = 0;
+		int soma_campo = 0;
+
+		for ( int i = campo.length(); i > 0; i-- ) {
+			int vlrposicao = Integer.parseInt( campo.substring( i - 1, i ) );
+			multiplicacao = vlrposicao * multiplicador;
+
+			soma_campo = soma_campo + multiplicacao;
+
+			multiplicador++;
+			if ( multiplicador > 7 && type == 7 )
+				multiplicador = 2;
+			else if ( multiplicador > 9 && type == 9 )
+				multiplicador = 2;
+		}
+
+		String dac = "0"; 
+		
+		if(soma_campo % 11==1) {
+			dac = "P";
+		}
+		else if(soma_campo % 11==0) {
+			dac = "0";
+		}
+		else {
+			dac = new Integer((11 - ( soma_campo % 11 ))).toString();	
+		}
+		
+		return dac;
+	}
+	
+	
+	
 	
 }
