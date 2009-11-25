@@ -4045,7 +4045,7 @@ public class CnabUtil extends FbnUtil {
 	
 		private String codConvBanco;
 	
-		private String agencia;
+		private String agencia; 
 	
 		private String digAgencia;
 	
@@ -4075,7 +4075,7 @@ public class CnabUtil extends FbnUtil {
 		
 		private BigDecimal vlrPercMulta;
 		
-		private int digNossoNumero;
+		private String digNossoNumero;
 		
 		private int codMovimento;
 		
@@ -4615,13 +4615,13 @@ public class CnabUtil extends FbnUtil {
 	
 	
 	
-		public int getDigNossoNumero() {
+		public String getDigNossoNumero() {
 		
 			return digNossoNumero;
 		}
 	
 		
-		public void setDigNossoNumero( int digNossoNumero ) {
+		public void setDigNossoNumero( String digNossoNumero ) {
 		
 			this.digNossoNumero = digNossoNumero;
 		}
