@@ -173,6 +173,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	private JTextFieldPad txtLocalProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 15, 0 );
 
 	private JTextFieldPad txtCustoMPMProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	
+	private JTextFieldPad txtCustoInfoProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
 	private JTextFieldPad txtCustoPEPSProd = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
@@ -686,11 +688,15 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 		adicCampo( txtCodEANProd, 253, 100, 261, 20, "CodEANProd", "Código EAN", ListaCampos.DB_SI, false );
 		
-		adicCampo( txtCodFabProd, 7, 140, 120, 20, "CodFabProd", "Cód. fabricante", ListaCampos.DB_SI, true );
-		adicCampo( txtPrecoBaseProd, 130, 140, 97, 20, "PrecoBaseProd", "Preço base", ListaCampos.DB_SI, true );
-		adicCampo( txtComisProd, 230, 140, 77, 20, "ComisProd", "% Comissão", ListaCampos.DB_SI, true );
-		adicCampo( txtQtdMinProd, 310, 140, 97, 20, "QtdMinProd", "Qtd.min.", ListaCampos.DB_SI, true );
-		adicCampo( txtQtdMaxProd, 410, 140, 103, 20, "QtdMaxProd", "Qtd.máx.", ListaCampos.DB_SI, true );
+		adicCampo( txtCodFabProd, 7, 140, 140, 20, "CodFabProd", "Cód. fabricante", ListaCampos.DB_SI, true );
+		
+		adicCampo( txtPrecoBaseProd, 150, 140, 75, 20, "PrecoBaseProd", "Preço base", ListaCampos.DB_SI, true );
+		adicCampo( txtCustoInfoProd, 228, 140, 75, 20, "CustoInfoProd", "Custo infor.", ListaCampos.DB_SI, true );
+		
+		adicCampo( txtComisProd, 306, 140, 67, 20, "ComisProd", "%Comis.", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdMinProd, 376, 140, 67, 20, "QtdMinProd", "Qtd.min.", ListaCampos.DB_SI, true );
+		adicCampo( txtQtdMaxProd, 446, 140, 67, 20, "QtdMaxProd", "Qtd.máx.", ListaCampos.DB_SI, true );
+		
 		adicCampo( txtLocalProd, 7, 180, 165, 20, "LocalProd", "Local armz.", ListaCampos.DB_SI, false );
 		
 		btCodBar.setToolTipText( "Gera cód. barras" ); 
