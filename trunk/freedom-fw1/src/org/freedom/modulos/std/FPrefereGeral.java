@@ -632,11 +632,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		Vector<String> vValsTipoCustoLuc = new Vector<String>();
 		vLabsTipoCustoLuc.addElement( "MPM" );
 		vLabsTipoCustoLuc.addElement( "PEPS" );
-		vLabsTipoCustoLuc.addElement( "Ult.Compra" );
+		vLabsTipoCustoLuc.addElement( "Ultima Compra" );
+		vLabsTipoCustoLuc.addElement( "Informado" );
 		vValsTipoCustoLuc.addElement( "M" );
 		vValsTipoCustoLuc.addElement( "P" );
 		vValsTipoCustoLuc.addElement( "U" );
-		rgTipoCustoLuc = new JRadioGroup<String, String>( 1, 3, vLabsTipoCustoLuc, vValsTipoCustoLuc );
+		vValsTipoCustoLuc.addElement( "I" );
+		rgTipoCustoLuc = new JRadioGroup<String, String>( 2, 2, vLabsTipoCustoLuc, vValsTipoCustoLuc );
 
 		lcMoeda.add( new GuardaCampo( txtCodMoeda, "CodMoeda", "Cód.moeda", ListaCampos.DB_PK, true ) );
 		lcMoeda.add( new GuardaCampo( txtDescMoeda, "SingMoeda", "Descrição da moeda", ListaCampos.DB_SI, false ) );
@@ -1098,7 +1100,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 //		adicCampo( txtCodMens, 7, 185, 90, 20, "CodMensOrc", "Cód.mens", ListaCampos.DB_FK, txtDescMens, false );
 //		adicDescFK( txtDescMens, 100, 185, 300, 20, "mens", " Descrição da mensagem padrão para orçamento" );
 		
-		adicDB( rgTipoCustoLuc, 7, 185, 390, 30, "TipoCustoLuc", "Tipo de custo para calculo da lucratividade", true );
+		adicDB( rgTipoCustoLuc, 7, 185, 390, 60, "TipoCustoLuc", "Tipo de custo para calculo da lucratividade", true );
 		
 		adicDB( rgTipoValidOrc, 403, 225, 250, 30, "tipovalidorc", "Validade na impressão", true );
 		adicDB( cbUsaOrcSeq, 460, 275, 160, 20, "UsaOrcSeq", "", true );
