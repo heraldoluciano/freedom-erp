@@ -27,9 +27,7 @@ import java.awt.event.FocusListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.Properties;
 import java.util.Vector;
-
 import javax.swing.ImageIcon;
-
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
@@ -82,6 +80,7 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 		adic(new JLabelPad("Filial:"),7,iHeight+40,200,20);
 		adic(cbEmp,7,iHeight+60,283,20);
 		adic(lbInstrucoes,7,iHeight+83,300,20);
+		
 		setVisible(true);
 		
 	}
@@ -210,7 +209,7 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 	
 	public static DbConnection getConexao(final String strBanco, final String strDriver, final String sUsu, final String sSenha) {	
 	    DbConnection cRetorno = null;
-		Properties params = new Properties();
+//		Properties params = new Properties();
 		/*try {
 			Class.forName(strDriver);
 		} catch (java.lang.ClassNotFoundException e) {

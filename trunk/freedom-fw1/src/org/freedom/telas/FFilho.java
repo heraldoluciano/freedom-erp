@@ -30,6 +30,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -103,6 +104,11 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
         c.setLayout(blDados);
         addInternalFrameListener(this);
         setClosable(true);
+        
+		Font fonte = new Font("Arial",Font.PLAIN, 10);
+		
+		this.setFont(fonte);
+
         
         pnBordRod.setLayout(new GridLayout(1,1));
         pnBordRod.setPreferredSize(new Dimension(450, 30));
