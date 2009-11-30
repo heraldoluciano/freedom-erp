@@ -251,10 +251,16 @@ public class FSVV extends FFilho implements ActionListener {
       		                " MIN((SELECT DINILOTE FROM EQLOTE L" +
       		                " WHERE L.CODPROD=IT.CODPROD AND L.CODLOTE=IT.CODLOTE AND" +
       		                " L.CODEMP=IT.CODEMPLE AND L.CODFILIAL=IT.CODFILIALLE))" +
+      		                
       		                " FROM VDVENDA V, VDITVENDA IT, VDCLIENTE C, VDCLIENTE C2,EQPRODUTO P," +
-      		                " EQTIPOMOV T, SGPREFERE1 PF, VDVENDEDOR VE WHERE V.CODEMP=? AND V.CODFILIAL=? AND" +
-      		                " V.DTEMITVENDA BETWEEN ? AND ? AND IT.CODVENDA=V.CODVENDA AND" +
-      		                " IT.CODEMP=V.CODEMP AND IT.CODFILIAL=V.CODFILIAL AND C2.CODCLI=V.CODCLI" +
+      		                
+      		                " EQTIPOMOV T, SGPREFERE1 PF, VDVENDEDOR VE " +
+      		                
+      		                " WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.DTEMITVENDA BETWEEN ? AND ? AND " +
+      		                
+      		                " SUBSTRING(V.STATUSVENDA FROM 1 FOR 1) != 'C' AND " +
+      		              
+      		                " IT.CODVENDA=V.CODVENDA AND IT.CODEMP=V.CODEMP AND IT.CODFILIAL=V.CODFILIAL AND C2.CODCLI=V.CODCLI" +
       		                " AND C2.CODEMP=V.CODEMPCL AND C2.CODFILIAL=V.CODFILIALCL AND" +
       		                " C2.CODPESQ=C.CODCLI AND C2.CODFILIAL=C.CODFILIAL AND" +
                             " C2.CODEMP=C.CODEMP AND VE.CODVEND=V.CODVEND AND" +
@@ -275,7 +281,9 @@ public class FSVV extends FFilho implements ActionListener {
                             "C.COMPLENT,C.BAIRENT,C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.BAIRCOB," +
                             "C.CIDCOB,C.UFCOB,C.CEPCOB,C.EMAILCLI,C.CONTCLI,C.FONECLI," +
                             "T.ESTIPOMOV,V.CODVENDA,IT.CODITVENDA,IT.CODPROD "+
+                            
                             "UNION ALL "+
+                            
                             "SELECT T.TIPOMOV, C.SERIE, C.DOCCOMPRA, C.DTEMITCOMPRA," +
 							"CAST(NULL AS CHAR(13)),P.CODFABPROD,IT.CODLOTE,SUM(IT.QTDITCOMPRA)," +
 							"SUM(IT.VLRLIQITCOMPRA),SUM(" +
@@ -320,6 +328,7 @@ public class FSVV extends FFilho implements ActionListener {
 							"F.COMPLFOR,F.BAIRFOR,F.ENDFOR,F.NUMFOR,F.COMPLFOR,F.BAIRFOR," +
 							"F.CIDFOR,F.UFFOR,F.CEPFOR,F.EMAILFOR,F.CONTFOR,F.FONEFOR," +
                             "T.ESTIPOMOV,C.CODCOMPRA,IT.CODITCOMPRA,IT.CODPROD ORDER BY 4,3";
+      
       //System.out.println(sSQL);
       PreparedStatement ps = con.prepareStatement(sSQL);
 
