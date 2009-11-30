@@ -38,6 +38,7 @@ import javax.swing.BorderFactory;
 import org.freedom.acao.DefaultRadioGroupListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
+import org.freedom.telas.SwingParams;
 
 import java.util.Enumeration;
 import java.util.Vector;
@@ -89,15 +90,21 @@ public class JRadioGroup<S, T> extends JPanel implements ActionListener, KeyList
 			add( pnCenter );
 			bg.add( rg );
 			rg.addKeyListener( this );
+			rg.setFont( SwingParams.getFontbold() );
 		}
-		( (JRadioButton) ( (JPanel) getComponent( 0 ) ).getComponent( 0 ) ).setSelected( true );
-		setTipo();
+		
+		JRadioButton radio = ( (JRadioButton) ( (JPanel) getComponent( 0 ) ).getComponent( 0 ) ); 		
+		radio.setSelected( true );		
+		setTipo();		
+		
 	}
 
 	public void novo() {
-
-		( (JRadioButton) ( (JPanel) getComponent( 0 ) ).getComponent( 0 ) ).setSelected( true );
-		fireValorAlterado( ( (JRadioButton) ( (JPanel) getComponent( 0 ) ).getComponent( 0 ) ), 0 );
+		
+		JRadioButton radio = ( (JRadioButton) ( (JPanel) getComponent( 0 ) ).getComponent( 0 ) );
+		radio.setSelected( true );
+		fireValorAlterado( radio, 0 );
+		
 	}
 
 	private void setTipo() {

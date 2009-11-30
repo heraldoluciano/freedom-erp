@@ -30,6 +30,7 @@ import javax.swing.JComboBox;
 
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
+import org.freedom.telas.SwingParams;
 
 //public class JComboBoxPad<S, T> extends JComboBox implements JComboBoxListener, ItemListener {
 public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemListener {
@@ -78,6 +79,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 		this.tam = tam;
 		this.dec = dec;
 		criando = false;
+		this.setFont( SwingParams.getFontpad() );
 	}
 
 	public void setItens( Vector<?> label, Vector<?> val ) {

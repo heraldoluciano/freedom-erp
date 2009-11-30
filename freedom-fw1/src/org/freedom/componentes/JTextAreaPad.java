@@ -22,6 +22,8 @@ package org.freedom.componentes;
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 
+import org.freedom.telas.SwingParams;
+
 import java.awt.Color;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
@@ -52,6 +54,7 @@ public class JTextAreaPad extends JTextArea implements KeyListener {
 			iTamanho = iTam;
 		addKeyListener(this);
 		this.setLineWrap( true );
+		this.setFont( SwingParams.getFontpad() );
 	} 
 	public String getVlrString() {
 		return getText();

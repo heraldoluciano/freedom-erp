@@ -34,6 +34,8 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.telas.SwingParams;
+
 import javax.swing.SwingConstants;
 
 import org.freedom.bmps.Icone;
@@ -115,6 +117,7 @@ public class StatusBar extends JPanelPad {
 		MontaStatusBar();
 	}
 	private void MontaStatusBar() {
+		this.setFont( SwingParams.getFontpad() );
 		montaStatus();
 		Timer tm = new Timer(1000,
 		  new ActionListener() {
