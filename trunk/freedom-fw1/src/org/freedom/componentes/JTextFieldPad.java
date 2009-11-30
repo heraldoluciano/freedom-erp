@@ -19,6 +19,7 @@
  */
 
 package org.freedom.componentes;
+
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputMethodEvent;
@@ -31,9 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
-
 import javax.swing.JTextField;
-
 import org.freedom.acao.EditEvent;
 import org.freedom.acao.EditListener;
 import org.freedom.funcoes.Funcoes;
@@ -43,6 +42,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLF2;
 import org.freedom.telas.DLF3;
 import org.freedom.telas.FAtalhos;
+import org.freedom.telas.SwingParams;
 
 public class JTextFieldPad extends JTextField implements FocusListener, KeyListener, EditListener {
 
@@ -102,14 +102,19 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	public JTextFieldPad (int tipo, int tam, int dec) {
 		addFocusListener(this);
 		addKeyListener(this);
+		
 		//    setPonto();
 		if (( tipo >= TP_INTEGER) && (tipo <= TP_NUMERIC))
 			setHorizontalAlignment(RIGHT);
 		else 
 			setHorizontalAlignment(LEFT);
+		
 		iTamanho = tam;
 		iDecimal = dec;
-		tipoCampo = tipo;    
+		tipoCampo = tipo;
+		
+		this.setFont( SwingParams.getFontpad() );
+		
 	}
 	
 	public void setDecimal(int dec) {

@@ -26,6 +26,7 @@ import java.awt.event.FocusEvent;
 import javax.swing.JPasswordField;
 
 import org.freedom.componentes.ListaCampos;
+import org.freedom.telas.SwingParams;
 public class JPasswordFieldPad extends JPasswordField {
 
 	private static final long serialVersionUID = 1L;
@@ -78,6 +79,7 @@ public class JPasswordFieldPad extends JPasswordField {
 			}
 
 		);
+		this.setFont( SwingParams.getFontpad() );
 	}
 
 	/**

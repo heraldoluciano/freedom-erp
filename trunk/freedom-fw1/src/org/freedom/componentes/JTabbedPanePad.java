@@ -30,6 +30,8 @@ import java.awt.event.FocusListener;
 
 import javax.swing.JTabbedPane;
 
+import org.freedom.telas.SwingParams;
+
 public class JTabbedPanePad extends JTabbedPane implements FocusListener  {
 
 	private static final long serialVersionUID = 1L;
@@ -42,6 +44,7 @@ public class JTabbedPanePad extends JTabbedPane implements FocusListener  {
 	public JTabbedPanePad() {
 		super();
 		setChangedListener();
+		this.setFont( SwingParams.getFontpad() );
 	}
 
 	/**
@@ -50,6 +53,7 @@ public class JTabbedPanePad extends JTabbedPane implements FocusListener  {
 	public JTabbedPanePad(int arg0) {
 		super(arg0);
 		setChangedListener();
+		this.setFont( SwingParams.getFontpad() );
 	}
 
 	/**
@@ -59,6 +63,7 @@ public class JTabbedPanePad extends JTabbedPane implements FocusListener  {
 	public JTabbedPanePad(int arg0, int arg1) {
 		super(arg0, arg1);
 		setChangedListener();
+		this.setFont( SwingParams.getFontpad() );
 	}
 	
 	private void setChangedListener() {

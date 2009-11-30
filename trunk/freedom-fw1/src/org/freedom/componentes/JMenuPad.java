@@ -19,7 +19,12 @@
  */
 
 package org.freedom.componentes;
+
 import javax.swing.JMenu;
+
+import org.freedom.telas.SwingParams;
+
+
 public class JMenuPad extends JMenu {
 
 	private static final long serialVersionUID = 1L;
@@ -48,6 +53,8 @@ public class JMenuPad extends JMenu {
 		iCodMod = iCodModulo;
 		iCodMen = iCodMenu;
 		iCodNiv = iCodNivel;
+		
+		this.setFont( SwingParams.getFontbold() );	
 	}
 	
 	/**

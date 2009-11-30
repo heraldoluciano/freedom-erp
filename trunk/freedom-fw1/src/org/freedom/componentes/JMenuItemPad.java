@@ -22,6 +22,7 @@ package org.freedom.componentes;
 import javax.swing.JMenuItem;
 
 import org.freedom.telas.IFilho;
+import org.freedom.telas.SwingParams;
 
 public class JMenuItemPad extends JMenuItem {
 
@@ -75,6 +76,7 @@ public class JMenuItemPad extends JMenuItem {
 		iCodNiv = iCodNivel;
 		this.tela = tela;
 		this.titulo = titulo;
+		this.setFont( SwingParams.getFontbold() );	
 	}
 	
 

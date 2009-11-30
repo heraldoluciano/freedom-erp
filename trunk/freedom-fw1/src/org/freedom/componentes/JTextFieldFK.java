@@ -20,17 +20,18 @@
 
 package org.freedom.componentes;
 import java.awt.Color;
-import java.awt.Font;
 
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.telas.SwingParams;
 public class JTextFieldFK extends JTextFieldPad { 
    private static final long serialVersionUID = 1L;
    public JTextFieldFK (int iTipo, int iTam, int iDec) { 
       super( iTipo, iTam, iDec);
 	  setBackground(Color.lightGray);
-      setFont(new Font("Dialog", Font.BOLD, 12));
+//    setFont(new Font("Dialog", Font.BOLD, 12));
       setEditable(false);
       setForeground(new Color(111, 106, 177));  //RGB do Java R:159,G:152,B:207
+      this.setFont( SwingParams.getFontbold() );	
    }
    public boolean isFocusable() {
       return (false);

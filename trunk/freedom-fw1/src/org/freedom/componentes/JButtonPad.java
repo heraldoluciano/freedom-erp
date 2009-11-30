@@ -33,6 +33,7 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 
 import org.freedom.telas.IFilho;
+import org.freedom.telas.SwingParams;
 
 public class JButtonPad extends JButton {
 
@@ -72,6 +73,7 @@ public class JButtonPad extends JButton {
 
 	public JButtonPad(Icon icon) {
         this(null, icon);
+		this.setFont( SwingParams.getFontpad() );
     }
 	
     public JButtonPad(String text, Icon icon) {
@@ -80,6 +82,7 @@ public class JButtonPad extends JButton {
         setModel(new DefaultButtonModel());
         // initialize
         init(text, icon);
+		this.setFont( SwingParams.getFontpad() );
     }
 	
 	/**
@@ -106,6 +109,7 @@ public class JButtonPad extends JButton {
 		this.tela = tela;
 		this.titulo = titulo;
 		//iCodNiv = iCodNivel;
+		this.setFont( SwingParams.getFontpad() );
 
 	}
 

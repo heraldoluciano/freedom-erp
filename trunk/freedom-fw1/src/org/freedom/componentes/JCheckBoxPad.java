@@ -23,6 +23,7 @@ import javax.swing.JCheckBox;
 
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
+import org.freedom.telas.SwingParams;
 
 
 /**
@@ -57,6 +58,7 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 
 	public JCheckBoxPad( String lab, Object vals, Object valn ) {
 		this( lab, vals, valn, false );
+		
 	}
 
 	public JCheckBoxPad( String lab, Object vals, Object valn, boolean selected ) {
@@ -72,6 +74,7 @@ public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListen
 		addKeyListener( this );
 
 		setTipo();
+		this.setFont( SwingParams.getFontbold() );	
 	}
 
 	private void setTipo() {
