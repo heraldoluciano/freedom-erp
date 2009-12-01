@@ -29,14 +29,12 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -55,6 +53,7 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -65,6 +64,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
@@ -80,9 +80,9 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 	private static Vector<String> vEmp = new Vector<String>();
 
-	private JButton btAdicEmp = new JButton( Icone.novo( "btFlechaDir.gif" ) );
+	private JButtonPad btAdicEmp = new JButtonPad( Icone.novo( "btFlechaDir.gif" ) );
 
-	private JButton btDelEmp = new JButton( Icone.novo( "btFlechaEsq.gif" ) );
+	private JButtonPad btDelEmp = new JButtonPad( Icone.novo( "btFlechaEsq.gif" ) );
 
 	private JCheckBoxPad cbAbreGaveta = new JCheckBoxPad( "Abrir gaveta no PDV", "S", "N" );
 
