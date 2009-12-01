@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JToggleButton;
 
 import org.freedom.modulos.crm.agenda.EventModel;
@@ -76,7 +76,7 @@ public class DayViewPanel extends AbstractCalendarView {
 	public static final String VIEW_NAME_DAY = "DAY_VIEW";
 	public static final String VIEW_NAME_WEEK = "WEEK_VIEW";
 	public String VIEW_NAME;
-	private JButton switcherButton;
+	private JButtonPad switcherButton;
 
 
 	private ImageIcon fullDayIcon;
@@ -198,7 +198,7 @@ public class DayViewPanel extends AbstractCalendarView {
 	 */
 	private void initDayViewSwitcherButton() {
 		/* ====================================================== */
-		this.switcherButton  = new JButton(CalendarIcons.getMediumIcon(CalendarIcons.DELETE));
+		this.switcherButton  = new JButtonPad(CalendarIcons.getMediumIcon(CalendarIcons.DELETE));
 		this.switcherButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
