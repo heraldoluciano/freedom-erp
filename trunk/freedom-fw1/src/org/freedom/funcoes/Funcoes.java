@@ -57,7 +57,7 @@ import java.util.Vector;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -2255,7 +2255,7 @@ public class Funcoes {
 		JTextArea txt = new JTextArea(sErro);
 		txt.setEditable(false);
 		JScrollPane spnTxt = new JScrollPane(txt);
-		JButton btOK = new JButton("OK");
+		JButtonPad btOK = new JButtonPad("OK");
 		c.setLayout(new BorderLayout());
 		c.add(pnRod, BorderLayout.SOUTH);
 		pnRod.setPreferredSize(new Dimension(400, 40));
