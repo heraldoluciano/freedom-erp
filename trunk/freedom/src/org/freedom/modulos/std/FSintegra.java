@@ -498,7 +498,7 @@ public class FSintegra extends FFilho implements ActionListener {
 					cnpjfor = rs.getString( "CNPJFOR" );
 					inscfor = rs.getString( "INSCFOR" );
 
-					if("ISENTA".equals( inscfor.trim())) {
+					if ( ( inscfor == null ) || ( "ISENTA".equals( inscfor.trim() ) ) ) {
 						inscfor = "ISENTO";
 					}
 
@@ -576,8 +576,7 @@ public class FSintegra extends FFilho implements ActionListener {
 					} else {
 						cnpjcli = rs.getString( "CNPJCLI" );
 						insccli = rs.getString( "INSCCLI" );
-
-						if("ISENTA".equals( insccli.trim())) {
+						if ( (insccli == null) || ("ISENTA".equals( insccli))) {
 							insccli = "ISENTO";
 						}
 
@@ -680,7 +679,7 @@ public class FSintegra extends FFilho implements ActionListener {
 					cnpjfor = rs.getString( "CNPJFOR" );
 					inscfor = rs.getString( "INSCFOR" );
 
-					if("ISENTA".equals( inscfor.trim())) {
+					if ( (inscfor == null ) || ("ISENTA".equals( inscfor.trim() ) ) ) {
 						inscfor = "ISENTO";
 					}
 
@@ -756,7 +755,7 @@ public class FSintegra extends FFilho implements ActionListener {
 						cnpjcli = rs.getString( "CNPJCLI" );
 						insccli = rs.getString( "INSCCLI" );
 
-						if("ISENTA".equals( insccli.trim())) {
+						if ( ( insccli == null) || ("ISENTA".equals( insccli.trim() ) ) ) {
 							insccli = "ISENTO";
 						}
 
@@ -868,7 +867,7 @@ public class FSintegra extends FFilho implements ActionListener {
 						cnpjcli = rs.getString( "CNPJCLI" );
 						insccli = rs.getString( "INSCCLI" );
 
-						if("ISENTA".equals( insccli.trim())) {
+						if ( (insccli==null) || ("ISENTA".equals( insccli.trim())) ) {
 							insccli = "ISENTO";
 						}
 
@@ -958,7 +957,7 @@ public class FSintegra extends FFilho implements ActionListener {
 					cnpj = rs.getString( "CNPJTRAN" );
 					insc = rs.getString( "INSCTRAN" );
 	
-					if("ISENTA".equals( insc.trim())) {
+					if ( ( insc == null) || ("ISENTA".equals( insc.trim() ) ) ) {
 						insc = "ISENTO";
 					}
 	
