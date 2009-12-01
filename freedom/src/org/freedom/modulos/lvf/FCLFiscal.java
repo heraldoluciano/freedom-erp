@@ -35,7 +35,6 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.event.ChangeEvent;
@@ -53,6 +52,7 @@ import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
@@ -286,7 +286,7 @@ public class FCLFiscal extends FDetalhe
 	
 	private JRadioGroup<String, String> rgTpRedIcmsFisc = null;
 
-	private JButton btCopiarVariante = new JButton( "Copiar", Icone.novo( "btExportar.gif" ) );
+	private JButtonPad btCopiarVariante = new JButtonPad( "Copiar", Icone.novo( "btExportar.gif" ) );
 	
 	private ListaCampos lcRegraFiscal = new ListaCampos( this, "RA" );
 	
