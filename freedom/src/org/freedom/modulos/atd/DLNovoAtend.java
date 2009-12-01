@@ -35,12 +35,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JScrollPane;
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -72,7 +73,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 	private ListaCampos lcAtend = new ListaCampos(this);
 	private JScrollPane spnDesc = new JScrollPane(txaDescAtend);
 	private JLabelPad lbImg = new JLabelPad(Icone.novo("bannerATD.jpg"));
-	private JButton btMedida = new JButton(Icone.novo("btMedida.gif"));
+	private JButtonPad btMedida = new JButtonPad(Icone.novo("btMedida.gif"));
 	private String sPrefs[] = null;
 	private int iDoc = 0;
 	
