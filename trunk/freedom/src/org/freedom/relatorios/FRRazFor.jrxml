@@ -74,7 +74,8 @@ ORDER BY 1, 2, 3, 4, 5]]></queryString>
 	<variable name="DESCTIPO" class="java.lang.String" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[("A".equals($F{TIPO})?"SALDO INICIAL":
 ("C".equals($F{TIPO})?"COMPRA":
-("Z".equals($F{TIPO})?"DEVOLUÇÃO":"PAGAMENTO")))]]></variableExpression>
+("X".equals($F{TIPO})?"DESCONTO":
+("Z".equals($F{TIPO})?"DEVOLUÇÃO":"PAGAMENTO"))))]]></variableExpression>
 	</variable>
 	<variable name="SALDOFOR" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRDEB}.multiply(new BigDecimal("-1")).add($F{VLRCRED})]]></variableExpression>
