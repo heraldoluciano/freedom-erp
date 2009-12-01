@@ -30,8 +30,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
@@ -41,7 +39,9 @@ import org.freedom.acao.DeleteListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
@@ -64,8 +64,8 @@ public class FTipoImp extends FDados implements PostListener, CarregaListener, D
   private JScrollPane spnLayout = new JScrollPane(tab);    
   private Tabela tabDest = new Tabela();  
   private JScrollPane spnLayoutDest = new JScrollPane(tabDest);    
-  private JButton btAdic = new JButton(Icone.novo("btFlechaDir.gif"));
-  private JButton btDel = new JButton(Icone.novo("btFlechaEsq.gif"));
+  private JButtonPad btAdic = new JButtonPad(Icone.novo("btFlechaDir.gif"));
+  private JButtonPad btDel = new JButtonPad(Icone.novo("btFlechaEsq.gif"));
   public FTipoImp() {
   	super();
     setTitulo("Cadastro de org.freedom.layout de importação");

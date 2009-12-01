@@ -23,7 +23,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,7 +34,6 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.SpinnerDateModel;
 import javax.swing.JSpinner.DateEditor;
@@ -44,6 +42,7 @@ import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -53,6 +52,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.FuncoesCRM;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
@@ -134,9 +134,9 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener, KeyList
 
 	private JLabelPad lbImg = new JLabelPad( Icone.novo( "bannerAtendimento.png" ) );
 
-	private JButton btMedida = new JButton( Icone.novo( "btMedida.gif" ) );
+	private JButtonPad btMedida = new JButtonPad( Icone.novo( "btMedida.gif" ) );
 	
-	private JButton btRun = new JButton( Icone.novo( "btplay.png" ) );
+	private JButtonPad btRun = new JButtonPad( Icone.novo( "btplay.png" ) );
 
 	private String sPrefs[] = null;
 
