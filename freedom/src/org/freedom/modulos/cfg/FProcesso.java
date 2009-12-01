@@ -23,20 +23,20 @@
 package org.freedom.modulos.cfg;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.JButton;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FDetalhe;
 
 public class FProcesso extends FDetalhe implements ActionListener {
@@ -47,7 +47,7 @@ public class FProcesso extends FDetalhe implements ActionListener {
   private JTextFieldFK txtDescTar = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodItem = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private ListaCampos lcTarefa = new ListaCampos(this,"TA");
-  private JButton btTrat = new JButton(Icone.novo("btRetorno.gif"));
+  private JButtonPad btTrat = new JButtonPad(Icone.novo("btRetorno.gif"));
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
   public FProcesso() {
