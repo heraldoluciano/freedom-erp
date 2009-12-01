@@ -34,7 +34,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
@@ -44,7 +43,6 @@ import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -53,6 +51,7 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -61,6 +60,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FDialogo;
 import org.freedom.telas.FFilho;
 import org.freedom.telas.FPrinterJob;
@@ -97,11 +97,11 @@ public class RPComissao extends FFilho implements ActionListener, MouseListener 
 	
 	private final JCheckBoxPad cbPagas = new JCheckBoxPad( "Pagas", "S", "N" );
 	
-	private final JButton btPesquisar = new JButton( "Pesquisar", Icone.novo( "btObs.gif" ) );
+	private final JButtonPad btPesquisar = new JButtonPad( "Pesquisar", Icone.novo( "btObs.gif" ) );
 
-	private final JButton btImp = new JButton( Icone.novo( "btImprime.gif" ) );
+	private final JButtonPad btImp = new JButtonPad( Icone.novo( "btImprime.gif" ) );
 
-	private final JButton btPrevimp = new JButton( Icone.novo( "btPrevimp.gif" ) );
+	private final JButtonPad btPrevimp = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
 	
 	private final Tabela tabConsulta = new Tabela();
 

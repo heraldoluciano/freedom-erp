@@ -27,13 +27,11 @@ package org.freedom.modulos.rep;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
@@ -41,12 +39,14 @@ import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FTabDados;
@@ -137,9 +137,9 @@ public class RPCliente extends FTabDados implements ActionListener {
 	
 	private final JCheckBoxPad cbAtivo = new JCheckBoxPad( "Cliente Ativo", "S", "N" );
 	
-	private final JButton btCopiarEnt = new JButton( "copiar endereço", Icone.novo( "btReset.gif" ) );
+	private final JButtonPad btCopiarEnt = new JButtonPad( "copiar endereço", Icone.novo( "btReset.gif" ) );
 	
-	private final JButton btCopiarCob = new JButton( "copiar endereço", Icone.novo( "btReset.gif" ) );
+	private final JButtonPad btCopiarCob = new JButtonPad( "copiar endereço", Icone.novo( "btReset.gif" ) );
 	
 	private final ListaCampos lcTipoCli = new ListaCampos( this, "TC" );
 

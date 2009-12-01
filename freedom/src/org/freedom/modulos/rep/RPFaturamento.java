@@ -30,7 +30,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,19 +38,20 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
 
@@ -85,13 +85,13 @@ public class RPFaturamento extends FDialogo {
 
 	private final JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
-	private final JButton buscarItens = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private final JButtonPad buscarItens = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 	
-	private final JButton gerarFaturamento = new JButton( Icone.novo( "btGerar.gif" ) );
+	private final JButtonPad gerarFaturamento = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 	
-	private final JButton salvarFaturamento = new JButton( Icone.novo( "btSalvar2.gif" ) );
+	private final JButtonPad salvarFaturamento = new JButtonPad( Icone.novo( "btSalvar2.gif" ) );
 	
-	private final JButton gerarComissao = new JButton( Icone.novo( "btProcessos.gif" ) );
+	private final JButtonPad gerarComissao = new JButtonPad( Icone.novo( "btProcessos.gif" ) );
 	
 	private final Tabela tab = new Tabela(); 
 

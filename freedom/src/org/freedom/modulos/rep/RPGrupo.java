@@ -34,20 +34,20 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -63,11 +63,11 @@ public class RPGrupo extends FFilho implements ActionListener, MouseListener, Ke
 
 	private final JPanelPad panelSair = new JPanelPad( JPanelPad.TP_JPANEL, new FlowLayout( FlowLayout.CENTER, 6, 4 ) );
 
-	private final JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+	private final JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
-	private final JButton btGrupo = new JButton( "Grupo", Icone.novo( "btNovo.gif" ) );
+	private final JButtonPad btGrupo = new JButtonPad( "Grupo", Icone.novo( "btNovo.gif" ) );
 
-	private final JButton btSubGrupo = new JButton( "Sub-Grupo", Icone.novo( "btNovo.gif" ) );
+	private final JButtonPad btSubGrupo = new JButtonPad( "Sub-Grupo", Icone.novo( "btNovo.gif" ) );
 
 	private final Tabela tab = new Tabela();
 

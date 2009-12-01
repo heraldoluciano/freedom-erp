@@ -39,13 +39,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -94,15 +95,15 @@ public class RPImportacao extends FFilho implements ActionListener {
 	
 	private final JCheckBoxPad cbRPITPedido = new JCheckBoxPad( "itens de pedidos", "S", "N" );
 
-	private final JButton btConectar = new JButton( "Conectar" );
+	private final JButtonPad btConectar = new JButtonPad( "Conectar" );
 
-	private final JButton btImportar = new JButton( "Importar" );
+	private final JButtonPad btImportar = new JButtonPad( "Importar" );
 
-	private final JButton btDirtorio = new JButton( "..." );
+	private final JButtonPad btDirtorio = new JButtonPad( "..." );
 
-	private final JButton btLogError = new JButton( "log" );
+	private final JButtonPad btLogError = new JButtonPad( "log" );
 
-	private final JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+	private final JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
 	private final JProgressBar status = new JProgressBar();
 	
