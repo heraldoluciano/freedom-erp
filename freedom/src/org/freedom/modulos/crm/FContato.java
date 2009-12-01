@@ -26,7 +26,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
@@ -40,6 +39,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.componentes.Endereco;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -171,9 +171,9 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 
 	private JTextAreaPad txaObs = new JTextAreaPad();
 
-	private JButton btExportCli = new JButton( Icone.novo( "btExportaCli.gif" ) );
+	private JButtonPad btExportCli = new JButtonPad( Icone.novo( "btExportaCli.gif" ) );
 
-	private JButton btBuscaEnd = new JButton( Icone.novo( "btBuscacep.gif" ) );
+	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
 
 	private Tabela tabAtiv = new Tabela();
 

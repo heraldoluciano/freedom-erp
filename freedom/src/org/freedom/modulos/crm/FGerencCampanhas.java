@@ -31,7 +31,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,7 +49,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -61,6 +60,7 @@ import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -71,6 +71,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
@@ -106,21 +107,21 @@ public class FGerencCampanhas extends FTabDados implements ActionListener, Tabel
 
 	private Tabela tabCont = new Tabela();
 
-	private JButton btRefresh = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btRefresh = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
-	private JButton btSelectAll = new JButton( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btSelectAll = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 
-	private JButton btDeselectAll = new JButton( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btDeselectAll = new JButtonPad( Icone.novo( "btNada.gif" ) );
 
-	private JButton btEnviar = new JButton( "Enviar", Icone.novo( "btEncaminharCand.gif" ) );
+	private JButtonPad btEnviar = new JButtonPad( "Enviar", Icone.novo( "btEncaminharCand.gif" ) );
 
-	private JButton btAdicCampPart = new JButton( Icone.novo( "btFlechaDir.gif" ) );
+	private JButtonPad btAdicCampPart = new JButtonPad( Icone.novo( "btFlechaDir.gif" ) );
 
-	private JButton btDelCampPart = new JButton( Icone.novo( "btFlechaEsq.gif" ) );
+	private JButtonPad btDelCampPart = new JButtonPad( Icone.novo( "btFlechaEsq.gif" ) );
 
-	private JButton btAdicCampNPart = new JButton( Icone.novo( "btFlechaDir.gif" ) );
+	private JButtonPad btAdicCampNPart = new JButtonPad( Icone.novo( "btFlechaDir.gif" ) );
 
-	private JButton btDelCampNPart = new JButton( Icone.novo( "btFlechaEsq.gif" ) );
+	private JButtonPad btDelCampNPart = new JButtonPad( Icone.novo( "btFlechaEsq.gif" ) );
 		
 	private JCheckBoxPad cbEmailValido = new JCheckBoxPad( "Email válido", "S", "N" );
 	

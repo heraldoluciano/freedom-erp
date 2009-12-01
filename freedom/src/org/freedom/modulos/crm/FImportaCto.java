@@ -31,26 +31,26 @@ import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -69,9 +69,9 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 	private JTextFieldFK txtDescTipo = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtArqOrig = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtArqDest = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
-	private JButton btBuscaOrig = new JButton(Icone.novo("btAbrirPeq.gif"));
-	private JButton btBuscaDest = new JButton(Icone.novo("btAbrirPeq.gif"));
-	private JButton btGerar = new JButton("Gerar",Icone.novo("btGerar.gif"));
+	private JButtonPad btBuscaOrig = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
+	private JButtonPad btBuscaDest = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
+	private JButtonPad btGerar = new JButtonPad("Gerar",Icone.novo("btGerar.gif"));
 	private JPanelPad pinGeral = new JPanelPad(400,200);
 	private JProgressBar pbAnd = new JProgressBar();
 	private ListaCampos lcTipoImp = new ListaCampos(this,"TK");

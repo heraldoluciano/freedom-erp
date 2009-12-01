@@ -26,23 +26,24 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -54,6 +55,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.FuncoesCRM;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -152,13 +154,13 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 	private JTextFieldFK txtStatusItRec = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private JButton btNovo = new JButton( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );
 
-	private JButton btExcluir = new JButton( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 
-	private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
-	private JButton btImprimir = new JButton( Icone.novo( "btPrevimp.gif" ) );
+	private JButtonPad btImprimir = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
 
 	private Vector<String> vCodAtends = new Vector<String>();
 
