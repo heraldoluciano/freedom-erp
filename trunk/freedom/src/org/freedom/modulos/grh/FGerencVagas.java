@@ -35,7 +35,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,7 +43,6 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
@@ -52,6 +50,7 @@ import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -60,6 +59,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
@@ -103,13 +103,13 @@ public class FGerencVagas extends FTabDados implements ActionListener, TabelaEdi
 
 	private Tabela tabVagas = new Tabela();
 
-	private JButton btRefreshCand = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btRefreshCand = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
-	private JButton btRefreshVagas = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btRefreshVagas = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
-	private JButton btEncaminharCand = new JButton( "Encaminhar", Icone.novo( "btEncaminharCand.gif" ) );
+	private JButtonPad btEncaminharCand = new JButtonPad( "Encaminhar", Icone.novo( "btEncaminharCand.gif" ) );
 
-	private JButton btEfetivarCand = new JButton( "Efetivar", Icone.novo( "btEfetivarCand.gif" ) );
+	private JButtonPad btEfetivarCand = new JButtonPad( "Efetivar", Icone.novo( "btEfetivarCand.gif" ) );
 
 	private ImageIcon imgEditaCampo = Icone.novo( "clEditar.gif" );
 
