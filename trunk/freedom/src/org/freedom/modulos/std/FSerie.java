@@ -29,7 +29,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.bmps.Icone;
@@ -48,7 +48,7 @@ public class FSerie extends FDados implements ActionListener {
 
 	private JTextFieldPad txtDocSerie = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
-	private JButton btReset = new JButton( Icone.novo( "btResetcont.gif" ) );
+	private JButtonPad btReset = new JButtonPad( Icone.novo( "btResetcont.gif" ) );
 
 	private JTextFieldPad txtReset = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 

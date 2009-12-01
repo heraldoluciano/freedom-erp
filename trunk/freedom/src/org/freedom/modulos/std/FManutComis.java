@@ -38,7 +38,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -112,17 +112,17 @@ public class FManutComis extends FFilho implements ActionListener {
 
 	private ListaCampos lcVend = new ListaCampos( this );
 
-	private JButton btBusca = new JButton( Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btBusca = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
 
-	private JButton btBaixa = new JButton( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btBaixa = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
-	private JButton btCalc = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btCalc = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
-	private JButton btEstorno = new JButton( Icone.novo( "btCancelar.gif" ) );
+	private JButtonPad btEstorno = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
 
-	private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
-	private JButton btLib = new JButton( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btLib = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
 	private Vector<String> vCodComi = new Vector<String>();
 	

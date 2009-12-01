@@ -32,7 +32,7 @@ import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -94,7 +94,7 @@ public class FDevolucao extends FWizard implements CarregaListener {
 
 	private ListaCampos lcCli1c = null;
 
-	private JButton btBuscaItVenda1b = new JButton( "Buscar itens ->" );
+	private JButtonPad btBuscaItVenda1b = new JButtonPad( "Buscar itens ->" );
 
 	private JLabelPad lbBuscaItVenda1b = new JLabelPad( "0 iten(s) a ser(em) adicionado(s)" );
 

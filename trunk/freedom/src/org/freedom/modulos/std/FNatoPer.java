@@ -27,7 +27,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
@@ -49,7 +49,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
   private JTextFieldPad txtAliqfNat = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,6,2);
   private JTextAreaPad txaTxtNat = new JTextAreaPad(500);
   private JCheckBoxPad cbImpDtSaidaNat = new JCheckBoxPad("Imprimir data de saída na NF?","S","N");
-  private JButton btItNatoper = new JButton(Icone.novo("btBrasil.gif"));
+  private JButtonPad btItNatoper = new JButtonPad(Icone.novo("btBrasil.gif"));
   public FNatoPer() {
   	super();
   	//cbImpDtSaidaNat.set

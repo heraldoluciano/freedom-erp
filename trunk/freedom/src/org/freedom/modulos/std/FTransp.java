@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JOptionPane;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -132,7 +132,7 @@ public class FTransp extends FDados implements PostListener, RadioGroupListener,
 
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JButton btBuscaEnd = new JButton( Icone.novo( "btBuscacep.gif" ) );
+	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 

@@ -42,7 +42,7 @@ import java.sql.Types;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import org.freedom.componentes.JPanelPad;
@@ -108,9 +108,9 @@ public class FManutPreco extends FFilho implements ActionListener,
 
 	private JComboBoxPad cbOperador = null;
 
-	private JButton btGerar = new JButton("Gerar", Icone.novo("btGerar.gif"));
+	private JButtonPad btGerar = new JButtonPad("Gerar", Icone.novo("btGerar.gif"));
 
-	private JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
+	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
 
 	private ListaCampos lcMarca = new ListaCampos(this);
 

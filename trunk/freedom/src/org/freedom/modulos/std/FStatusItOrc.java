@@ -29,7 +29,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 
@@ -53,8 +53,8 @@ public class FStatusItOrc extends FFilho implements ActionListener {
   private JTextFieldFK txtVlrLiqItOrc = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,2);
   private JTextFieldFK txtStatusOrc = new JTextFieldFK(JTextFieldPad.TP_STRING,2,0);
   private JCheckBoxPad cbEmitItOrc = new JCheckBoxPad("Emitido","S","N");
-  private JButton btAltEmit = new JButton("Alterar",Icone.novo("btOk.gif"));
-  private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
+  private JButtonPad btAltEmit = new JButtonPad("Alterar",Icone.novo("btOk.gif"));
+  private JButtonPad btSair = new JButtonPad("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcItOrc = new ListaCampos(this,"");
   private ListaCampos lcOrc = new ListaCampos(this,"");
   public FStatusItOrc() {

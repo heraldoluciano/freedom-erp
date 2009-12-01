@@ -25,21 +25,20 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
-
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -55,8 +54,8 @@ public class FCancVenda extends FFilho implements ActionListener {
 	private JTextFieldPad txtStatusVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldPad txtBloqVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
 	private JTextFieldPad txtTipoVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
-	private JButton btCancelar = new JButton("Cancelar",Icone.novo("btCancelar.gif"));
-	private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
+	private JButtonPad btCancelar = new JButtonPad("Cancelar",Icone.novo("btCancelar.gif"));
+	private JButtonPad btSair = new JButtonPad("Sair",Icone.novo("btSair.gif"));
 	private ListaCampos lcVenda = new ListaCampos(this);
 	
 	public FCancVenda() {

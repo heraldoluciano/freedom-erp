@@ -36,7 +36,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -450,9 +450,9 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private Navegador navCodAcess = new Navegador( true );
 
-	private JButton btExp = new JButton( "exportar", Icone.novo( "btExportar.gif" ) );
+	private JButtonPad btExp = new JButtonPad( "exportar", Icone.novo( "btExportar.gif" ) );
 	
-	private JButton btCodBar = new JButton( "", Icone.novo( "btCodBar.gif" ) );
+	private JButtonPad btCodBar = new JButtonPad( "", Icone.novo( "btCodBar.gif" ) );
 
 	private PainelImagem imFotoProd = new PainelImagem( 65000 );
 

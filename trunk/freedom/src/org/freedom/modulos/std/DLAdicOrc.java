@@ -32,13 +32,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
@@ -48,6 +46,7 @@ import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
@@ -56,6 +55,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
 
@@ -133,27 +133,27 @@ public class DLAdicOrc extends FDialogo implements ActionListener, RadioGroupLis
 
 	private JRadioGroup<?, ?> rgBusca = null;
 
-	private JButton btBusca = new JButton( "Buscar", Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.gif" ) );
 
-	private JButton btExec = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
-	private JButton btTudoOrc = new JButton( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btTudoOrc = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 
-	private JButton btNadaOrc = new JButton( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btNadaOrc = new JButtonPad( Icone.novo( "btNada.gif" ) );
 
-	private JButton btTudoIt = new JButton( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btTudoIt = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 
-	private JButton btNadaIt = new JButton( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btNadaIt = new JButtonPad( Icone.novo( "btNada.gif" ) );
 
-	private JButton btGerar = new JButton( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 	
-	private JButton btAgruparItens = new JButton( Icone.novo( "btAdic2.gif" ) );
+	private JButtonPad btAgruparItens = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
 
-	private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 	
-	private JButton btResetOrc = new JButton( Icone.novo( "btReset.gif" ) );
+	private JButtonPad btResetOrc = new JButtonPad( Icone.novo( "btReset.gif" ) );
 	
-	private JButton btResetItOrc = new JButton( Icone.novo( "btReset.gif" ) );
+	private JButtonPad btResetItOrc = new JButtonPad( Icone.novo( "btReset.gif" ) );
 
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
 

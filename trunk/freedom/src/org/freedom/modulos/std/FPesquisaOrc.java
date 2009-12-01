@@ -39,7 +39,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -110,11 +110,11 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 
 	private JRadioGroup<String, String> gbVenc;
 
-	private JButton btBusca = new JButton( "Buscar", Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btBusca = new JButtonPad( "Buscar", Icone.novo( "btPesquisa.gif" ) );
 
-	private JButton btPrevimp = new JButton( "Imprimir", Icone.novo( "btPrevimp.gif" ) );
+	private JButtonPad btPrevimp = new JButtonPad( "Imprimir", Icone.novo( "btPrevimp.gif" ) );
 
-	private JButton btConsVenda = new JButton( Icone.novo( "btSaida.gif" ) );
+	private JButtonPad btConsVenda = new JButtonPad( Icone.novo( "btSaida.gif" ) );
 
 	private ListaCampos lcCli = new ListaCampos( this );
 

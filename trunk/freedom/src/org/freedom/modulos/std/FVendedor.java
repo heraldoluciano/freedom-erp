@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
@@ -160,7 +160,7 @@ public class FVendedor extends FTabDados implements PostListener {
 	
 	private ListaCampos lcConta = new ListaCampos( this, "CA" );	
 	
-	private JButton btBuscaEnd = new JButton( Icone.novo( "btBuscacep.gif" ) );
+	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
 	
 	private Map<String, Object> bPref = null;
 

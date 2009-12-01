@@ -43,7 +43,7 @@ import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -93,17 +93,17 @@ public class FManutConFrete extends FFilho implements ActionListener {
 	
 	private JCheckBoxPad cbPagos = new JCheckBoxPad( "Pagas", "S", "N" );
 	
-	private JButton btPesquisar = new JButton( "Pesquisar", Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btPesquisar = new JButtonPad( "Pesquisar", Icone.novo( "btPesquisa.gif" ) );
 
-	private JButton btSelecionarTodos = new JButton( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btSelecionarTodos = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 
-	private JButton btSelecionarNenhum = new JButton( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btSelecionarNenhum = new JButtonPad( Icone.novo( "btNada.gif" ) );
 
-	private JButton btGerarPagamentos = new JButton( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerarPagamentos = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
-	private JButton btExcluirPagamentos = new JButton( Icone.novo( "btCancelar.gif" ) );
+	private JButtonPad btExcluirPagamentos = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
 
-	private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 	
 	private ImageIcon imgPendente = Icone.novo( "clVencido.gif" );
 

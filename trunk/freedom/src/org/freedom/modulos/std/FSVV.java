@@ -35,7 +35,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -62,8 +62,8 @@ public class FSVV extends FFilho implements ActionListener {
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);
   private JProgressBar pbAnd = new JProgressBar();
-  private JButton btVisual = new JButton(Icone.novo("btPesquisa.gif"));
-  private JButton btGerar = new JButton(Icone.novo("btGerar.gif"));
+  private JButtonPad btVisual = new JButtonPad(Icone.novo("btPesquisa.gif"));
+  private JButtonPad btGerar = new JButtonPad(Icone.novo("btGerar.gif"));
   private JCheckBoxPad cbEstoque = new JCheckBoxPad("Estoque","S","N");
   private int iAnd = 0;
   private JLabelPad lbAnd = new JLabelPad("Aguardando.");

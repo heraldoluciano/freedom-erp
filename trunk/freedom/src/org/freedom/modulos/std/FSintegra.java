@@ -41,7 +41,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.bmps.Icone;
@@ -82,7 +82,7 @@ public class FSintegra extends FFilho implements ActionListener {
 	
 	private JCheckBoxPad cbFrete = new JCheckBoxPad( "Frete", "S", "N" );
 
-	private JButton btGerar = new JButton( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
 	private String CR = "" + ( (char) 13 ) + "" + ( (char) 10 );
 

@@ -49,7 +49,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -240,17 +240,17 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private JTextAreaPad txaObsItOrc = new JTextAreaPad( 500 );
 
-	private JButton btObs = new JButton( Icone.novo( "btObs.gif" ) );
+	private JButtonPad btObs = new JButtonPad( Icone.novo( "btObs.gif" ) );
 
-	private JButton btOrc = new JButton( Icone.novo( "btImprimeOrc.gif" ) );
+	private JButtonPad btOrc = new JButtonPad( Icone.novo( "btImprimeOrc.gif" ) );
 
-	private JButton btOrcTst = new JButton( Icone.novo( "btFisio.gif" ) );
+	private JButtonPad btOrcTst = new JButtonPad( Icone.novo( "btFisio.gif" ) );
 
-	private JButton btOrcTst2 = new JButton( Icone.novo( "btEmprestimo.gif" ) );
+	private JButtonPad btOrcTst2 = new JButtonPad( Icone.novo( "btEmprestimo.gif" ) );
 	
-	private JButton btFechaOrc = new JButton( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btFechaOrc = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
-	private JButton btExp = new JButton( Icone.novo( "btExportar.gif" ) );
+	private JButtonPad btExp = new JButtonPad( Icone.novo( "btExportar.gif" ) );
 
 	private JLabelPad lbStatus = new JLabelPad();
 	

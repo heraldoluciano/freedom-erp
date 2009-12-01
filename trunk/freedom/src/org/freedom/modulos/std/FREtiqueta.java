@@ -31,7 +31,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JScrollPane;
 
 import net.sf.jasperreports.engine.JRException;
@@ -133,13 +133,13 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 
 	private JScrollPane spnDet = new JScrollPane( tab );
 
-	private JButton btAdiciona = new JButton( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btAdiciona = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
-	private JButton btLimpa = new JButton( Icone.novo( "btRetorno.gif" ) );
+	private JButtonPad btLimpa = new JButtonPad( Icone.novo( "btRetorno.gif" ) );
 
 	private boolean bMontaTab = true;
 
-	private JButton btExcluir = new JButton( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btExcluir = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 
 	private JComboBoxPad cbAtivoCli = null;
 	

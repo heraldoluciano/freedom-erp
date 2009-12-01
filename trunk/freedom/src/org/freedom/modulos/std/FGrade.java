@@ -32,7 +32,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JProgressBar;
@@ -79,19 +79,19 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
   private JTextFieldFK txtRefINIModG = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtCodFabINIModG = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtCodBarINIModG = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
-  private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
+  private JButtonPad btExec = new JButtonPad(Icone.novo("btExecuta.gif"));
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);
   private Tabela tabMod = new Tabela();
   private JScrollPane spnTabMod = new JScrollPane(tabMod);
-  private JButton btTudo = new JButton(Icone.novo("btTudo.gif"));
-  private JButton btNada = new JButton(Icone.novo("btNada.gif"));
-  private JButton btTudoMod = new JButton(Icone.novo("btTudo.gif"));
-  private JButton btNadaMod = new JButton(Icone.novo("btNada.gif"));
-  private JButton btGerar = new JButton(Icone.novo("btGerar.gif"));
+  private JButtonPad btTudo = new JButtonPad(Icone.novo("btTudo.gif"));
+  private JButtonPad btNada = new JButtonPad(Icone.novo("btNada.gif"));
+  private JButtonPad btTudoMod = new JButtonPad(Icone.novo("btTudo.gif"));
+  private JButtonPad btNadaMod = new JButtonPad(Icone.novo("btNada.gif"));
+  private JButtonPad btGerar = new JButtonPad(Icone.novo("btGerar.gif"));
   private JProgressBar pbGrade = new JProgressBar();
   private JLabelPad lbAnd = new JLabelPad("Andamento:");
-  private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
+  private JButtonPad btSair = new JButtonPad("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcModG = new ListaCampos(this);
   int iCodProd = 0;
   public FGrade() {

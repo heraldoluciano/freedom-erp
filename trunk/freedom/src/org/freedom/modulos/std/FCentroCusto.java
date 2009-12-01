@@ -32,21 +32,21 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -62,12 +62,12 @@ public class FCentroCusto extends FFilho 	implements ActionListener, MouseListen
 	private JPanelPad pnCliRod = new JPanelPad(JPanelPad.TP_JPANEL,flCliRod);
 	private JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1, 4, 2, 0));
 	private JPanelPad pnImp = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1, 2, 0, 0));
-	private JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
-	private JButton btPrim = new JButton("Nível 1", Icone.novo("btNovo.gif"));
-	private JButton btSint = new JButton("Sintética", Icone.novo("btNovo.gif"));
-	private JButton btAnal = new JButton("Analítica", Icone.novo("btNovo.gif"));
-	private JButton btImp = new JButton(Icone.novo("btImprime.gif"));
-	private JButton btPrevimp = new JButton(Icone.novo("btPrevimp.gif"));
+	private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+	private JButtonPad btPrim = new JButtonPad("Nível 1", Icone.novo("btNovo.gif"));
+	private JButtonPad btSint = new JButtonPad("Sintética", Icone.novo("btNovo.gif"));
+	private JButtonPad btAnal = new JButtonPad("Analítica", Icone.novo("btNovo.gif"));
+	private JButtonPad btImp = new JButtonPad(Icone.novo("btImprime.gif"));
+	private JButtonPad btPrevimp = new JButtonPad(Icone.novo("btPrevimp.gif"));
 	int iAnoBase = 0;
 	public FCentroCusto() {
 		super(false);

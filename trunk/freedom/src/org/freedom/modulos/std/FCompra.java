@@ -38,7 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
@@ -113,11 +113,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
 	private JPanelPad pnCenter = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JButton btFechaCompra = new JButton( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btFechaCompra = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
-	private JButton btObs = new JButton( Icone.novo( "btObs.gif" ) );
+	private JButtonPad btObs = new JButtonPad( Icone.novo( "btObs.gif" ) );
 
-	private JButton btBuscarRemessa = new JButton( "Buscar remessa", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btBuscarRemessa = new JButtonPad( "Buscar remessa", Icone.novo( "btExecuta.gif" ) );
 
 	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 

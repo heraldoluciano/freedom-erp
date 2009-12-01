@@ -29,7 +29,7 @@ import java.awt.event.ActionListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.Vector;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
@@ -66,7 +66,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 	private JTextAreaPad txaEtiqueta = new JTextAreaPad(500); 
 	private JTextFieldPad txtLinPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JScrollPane spnCli = new JScrollPane(txaEtiqueta); 
-	private JButton btAdic = new JButton(Icone.novo("btOk.gif"));
+	private JButtonPad btAdic = new JButtonPad(Icone.novo("btOk.gif"));
     private JComboBoxPad cbCampos = null;
     private JComboBoxPad cbEtiquetas = null;
     private ListaCampos lcPapel = new ListaCampos(this,"PL");

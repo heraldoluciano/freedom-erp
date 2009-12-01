@@ -50,7 +50,6 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -68,6 +67,7 @@ import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -117,17 +117,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JPanelPad pnCenter = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JButton btObs = new JButton( Icone.novo( "btObs.gif" ) );
+	private JButtonPad btObs = new JButtonPad( Icone.novo( "btObs.gif" ) );
 
-	private JButton btFechaVenda = new JButton( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btFechaVenda = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
-	private JButton btComiss = new JButton( "Multi Comiss.", Icone.novo( "btMultiComis.gif" ) );
+	private JButtonPad btComiss = new JButtonPad( "Multi Comiss.", Icone.novo( "btMultiComis.gif" ) );
 	
-	private JButton btConsPgto = new JButton( Icone.novo( "btConsPgto.gif" ) );
+	private JButtonPad btConsPgto = new JButtonPad( Icone.novo( "btConsPgto.gif" ) );
 
-	private JButton btBuscaOrc = new JButton( "Busca Orçamento", Icone.novo( "btVenda2.gif" ) );
+	private JButtonPad btBuscaOrc = new JButtonPad( "Busca Orçamento", Icone.novo( "btVenda2.gif" ) );
 
-	private JButton btAltComis = new JButton( Icone.novo( "btEditar.gif" ) );
+	private JButtonPad btAltComis = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
 	private JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
