@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.TabelaSelEvent;
@@ -79,7 +79,7 @@ public class DLBuscaCompra extends FFDialogo implements TabelaSelListener {
 	
 	private JTextFieldPad txtDataFim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );	
 	
-	private JButton btExec = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 	
 	public DLBuscaCompra(ListaCampos lcItens, ListaCampos lcProd, Integer codvenda, DbConnection con ) {
 		
