@@ -73,7 +73,7 @@ public class JButtonPad extends JButton {
 
 	public JButtonPad(Icon icon) {
         this(null, icon);
-		this.setFont( SwingParams.getFontpad() );
+		this.setFont( SwingParams.getFontbold() );
     }
 	
     public JButtonPad(String text, Icon icon) {
@@ -82,7 +82,7 @@ public class JButtonPad extends JButton {
         setModel(new DefaultButtonModel());
         // initialize
         init(text, icon);
-		this.setFont( SwingParams.getFontpad() );
+		this.setFont( SwingParams.getFontbold() );
     }
 	
 	/**
@@ -114,7 +114,7 @@ public class JButtonPad extends JButton {
 		this.tela = tela;
 		this.titulo = titulo;
 		//iCodNiv = iCodNivel;
-		this.setFont( SwingParams.getFontpad() );
+		this.setFont( SwingParams.getFontbold() );
 
 	}
 
@@ -180,7 +180,7 @@ public class JButtonPad extends JButton {
 	 * submenu1: 26 <BR>
 	 * submenu2: 03 <BR>
 	 * submenu3: 17 <BR>
-	 * item: 8 <BR>
+	 * item: 8 <BR> 
 	 * 
 	 * @param iItem -
 	 *            Código do item.
