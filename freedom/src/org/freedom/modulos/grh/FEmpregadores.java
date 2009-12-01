@@ -28,12 +28,12 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
 
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
@@ -96,7 +96,7 @@ public class FEmpregadores extends FTabDados {
 	
 	private final JTextAreaPad txaObsEmpr = new JTextAreaPad( 1000 );
 	
-	private JButton btFirefox = new JButton( Icone.novo( "firefox.gif" ) );
+	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "firefox.gif" ) );
 	
 
 	public FEmpregadores() {
