@@ -34,23 +34,19 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
-//import javax.swing.JScrollPane;
-//import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
-
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.infra.model.jdbc.DbConnection;
 
 public class FFilho extends JInternalFrame implements InternalFrameListener,
         IFilho {
@@ -148,7 +144,7 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
 		//
 	}
    public void setTitulo(String tit) {
-	   setTitulo(tit, this.getClass().getName() );
+	   setTitulo(tit, this.getClass().getName() );	   
     } 
 
     public void setTitulo(String tit, String name) {
