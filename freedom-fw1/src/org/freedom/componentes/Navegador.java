@@ -22,18 +22,18 @@ package org.freedom.componentes;
 import java.awt.event.*;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JPanel;
 
 import org.freedom.bmps.Icone;
 public class Navegador extends JPanel implements ActionListener, KeyListener {
 
   private static final long serialVersionUID = 1L;
-  public  JButton btNovo = new JButton(Icone.novo("btNovo.gif"));
-  public  JButton btExcluir = new JButton(Icone.novo("btExcluir.gif"));
-  public  JButton btEditar = new JButton(Icone.novo("btEditar.gif"));
-  public  JButton btSalvar = new JButton(Icone.novo("btSalvar.gif"));
-  public  JButton btCancelar = new JButton(Icone.novo("btCancelar.gif"));
+  public  JButtonPad btNovo = new JButtonPad(Icone.novo("btNovo.gif"));
+  public  JButtonPad btExcluir = new JButtonPad(Icone.novo("btExcluir.gif"));
+  public  JButtonPad btEditar = new JButtonPad(Icone.novo("btEditar.gif"));
+  public  JButtonPad btSalvar = new JButtonPad(Icone.novo("btSalvar.gif"));
+  public  JButtonPad btCancelar = new JButtonPad(Icone.novo("btCancelar.gif"));
   
   public static int BT_PRIMEIRO = 0;
   public static int BT_ANTERIOR = 1;
@@ -45,10 +45,10 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
   public static int BT_SALVAR = 7;
   public static int BT_CANCELAR = 8;
   
-  public  JButton btPrim = null;
-  public  JButton btAnt = null;
-  public  JButton btProx = null;
-  public  JButton btUlt = null;
+  public  JButtonPad btPrim = null;
+  public  JButtonPad btAnt = null;
+  public  JButtonPad btProx = null;
+  public  JButtonPad btUlt = null;
   private ListaCampos lcNav = null;
   boolean Ctrl = false;
   public boolean bDet = false;
@@ -79,10 +79,10 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
     removeAll();
 
   	if (nav) {
-        btPrim = new JButton(Icone.novo("btPrim.gif"));
-        btAnt = new JButton(Icone.novo("btAnt.gif"));
-        btProx = new JButton(Icone.novo("btProx.gif"));
-        btUlt = new JButton(Icone.novo("btUlt.gif"));
+        btPrim = new JButtonPad(Icone.novo("btPrim.gif"));
+        btAnt = new JButtonPad(Icone.novo("btAnt.gif"));
+        btProx = new JButtonPad(Icone.novo("btProx.gif"));
+        btUlt = new JButtonPad(Icone.novo("btUlt.gif"));
 
         btPrim.setToolTipText("Primeiro (Ctrl + PageUp)");
         btAnt.setToolTipText("Anterior (PageUp)");
@@ -131,10 +131,10 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
     navigationOnly = true;
     removeAll();
 
-    btPrim = new JButton(Icone.novo("btPrim.gif"));
-    btAnt = new JButton(Icone.novo("btAnt.gif"));
-    btProx = new JButton(Icone.novo("btProx.gif"));
-    btUlt = new JButton(Icone.novo("btUlt.gif"));
+    btPrim = new JButtonPad(Icone.novo("btPrim.gif"));
+    btAnt = new JButtonPad(Icone.novo("btAnt.gif"));
+    btProx = new JButtonPad(Icone.novo("btProx.gif"));
+    btUlt = new JButtonPad(Icone.novo("btUlt.gif"));
 
     btPrim.setToolTipText("Primeiro (Ctrl + PageUp)");
     btAnt.setToolTipText("Anterior (PageUp)");

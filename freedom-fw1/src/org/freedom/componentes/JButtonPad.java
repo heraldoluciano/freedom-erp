@@ -93,6 +93,11 @@ public class JButtonPad extends JButton {
 	public JButtonPad() {
 		this(0, 0, 0, null, "");
 	}
+	
+	public JButtonPad(String texto) {
+		this(0, 0, 0, null, texto);
+	}
+	
 
 	/**
 	 * Construtor da classe JButtonPad(). <BR>
