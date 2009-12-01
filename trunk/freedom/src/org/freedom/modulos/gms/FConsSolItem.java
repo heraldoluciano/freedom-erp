@@ -32,7 +32,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,13 +39,13 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -54,6 +53,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -81,10 +81,10 @@ public class FConsSolItem extends FFilho implements ActionListener {
 	private ImageIcon imgAprovada = Icone.novo("clPagoParcial.gif");
 	private ImageIcon imgPendente = Icone.novo("clNaoVencido.gif");
 	private ImageIcon imgColuna = null;
-	private JButton btCalc = new JButton(Icone.novo("btExecuta.gif"));
-	private JButton btBusca = new JButton("Buscar", Icone.novo("btPesquisa.gif"));
-	private JButton btPrevimp = new JButton("Imprimir", Icone.novo("btPrevimp.gif"));
-	private	JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
+	private JButtonPad btCalc = new JButtonPad(Icone.novo("btExecuta.gif"));
+	private JButtonPad btBusca = new JButtonPad("Buscar", Icone.novo("btPesquisa.gif"));
+	private JButtonPad btPrevimp = new JButtonPad("Imprimir", Icone.novo("btPrevimp.gif"));
+	private	JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
