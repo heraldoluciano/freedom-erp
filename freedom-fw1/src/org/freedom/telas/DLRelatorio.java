@@ -30,7 +30,7 @@ import java.awt.Container;
 import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.JDialog;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.BorderFactory;
 
@@ -40,9 +40,9 @@ public abstract class DLRelatorio extends JDialog implements ActionListener,KeyL
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnCentRod = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER,0,0));
   private JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));
-  private JButton btImp = new JButton(Icone.novo("btImprime.gif"));
-  private JButton btPrevimp = new JButton(Icone.novo("btPrevimp.gif"));
-  private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
+  private JButtonPad btImp = new JButtonPad(Icone.novo("btImprime.gif"));
+  private JButtonPad btPrevimp = new JButtonPad(Icone.novo("btPrevimp.gif"));
+  private JButtonPad btSair = new JButtonPad("Sair",Icone.novo("btSair.gif"));
   boolean bSetArea = true;
   boolean bCtrl = false;
   public Container c = null;

@@ -40,20 +40,20 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import org.freedom.infra.model.jdbc.DbConnection;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JPanelPad;
+import org.freedom.infra.model.jdbc.DbConnection;
 
 public class FFDialogo extends JDialog implements ActionListener,
         KeyListener, IFilho {
@@ -70,9 +70,9 @@ public class FFDialogo extends JDialog implements ActionListener,
 
     public DbConnection con = null;
 
-    public JButton btCancel = new JButton("Cancelar", Icone.novo("btCancelar.gif"));
+    public JButtonPad btCancel = new JButtonPad("Cancelar", Icone.novo("btCancelar.gif"));
 
-    public JButton btOK = new JButton("OK", Icone.novo("btOk.gif"));
+    public JButtonPad btOK = new JButtonPad("OK", Icone.novo("btOk.gif"));
 
     private JPanelPad pnBox = new JPanelPad(JPanelPad.TP_JPANEL);
 
@@ -242,7 +242,7 @@ public class FFDialogo extends JDialog implements ActionListener,
         pnRodape.remove(0);
         pnGrid = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
         pnGrid.setPreferredSize(new Dimension(100, 30));
-        JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
+        JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
         btSair.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 setVisible(false);
@@ -296,7 +296,7 @@ public class FFDialogo extends JDialog implements ActionListener,
 
     public JPanelPad adicBotaoSair() {
         Container c = getContentPane();
-        JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
+        JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
         JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
         pnRod.setPreferredSize(new Dimension(200, 30));
         btSair.setPreferredSize(new Dimension(110, 30));

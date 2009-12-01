@@ -33,7 +33,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JPanelPad;
@@ -46,9 +46,9 @@ public final class FMapa extends FFilho implements ActionListener, KeyListener {
 	private static final long serialVersionUID = 1L;
 	private JPanelPad pnMapa = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private Mapa mapa = new Mapa();
-    private JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
-    private JButton btImp = new JButton( Icone.novo("btImprime.gif"));
-    private JButton btPrevimp = new JButton( Icone.novo("btPrevimp.gif"));
+    private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+    private JButtonPad btImp = new JButtonPad( Icone.novo("btImprime.gif"));
+    private JButtonPad btPrevimp = new JButtonPad( Icone.novo("btPrevimp.gif"));
     private JPanelPad pnImp = new JPanelPad(JPanelPad.TP_JPANEL);
     private JPanelPad pnGImp = new JPanelPad(JPanelPad.TP_JPANEL);
     private FlowLayout flImp = new FlowLayout(FlowLayout.CENTER, 0, 0);

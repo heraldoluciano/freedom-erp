@@ -25,14 +25,14 @@ package org.freedom.telas;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import org.freedom.infra.model.jdbc.DbConnection;
 
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
+import org.freedom.infra.model.jdbc.DbConnection;
 
 public class FDetalhe extends FDados {
 

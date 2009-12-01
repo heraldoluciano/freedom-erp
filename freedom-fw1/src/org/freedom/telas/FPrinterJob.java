@@ -41,7 +41,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.ResultSet;
 import java.util.HashMap;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -70,17 +70,17 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
 	private ImprimeLayout impLay = new ImprimeLayout();
 
-	private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
-	private JButton btImp = new JButton( "Imprimir", Icone.novo( "btImprime.gif" ) );
+	private JButtonPad btImp = new JButtonPad( "Imprimir", Icone.novo( "btImprime.gif" ) );
 
-	private JButton btProx = new JButton( Icone.novo( "btProx.gif" ) );
+	private JButtonPad btProx = new JButtonPad( Icone.novo( "btProx.gif" ) );
 
-	private JButton btAnt = new JButton( Icone.novo( "btAnt.gif" ) );
+	private JButtonPad btAnt = new JButtonPad( Icone.novo( "btAnt.gif" ) );
 
-	private JButton btPrim = new JButton( Icone.novo( "btPrim.gif" ) );
+	private JButtonPad btPrim = new JButtonPad( Icone.novo( "btPrim.gif" ) );
 
-	private JButton btUlt = new JButton( Icone.novo( "btUlt.gif" ) );
+	private JButtonPad btUlt = new JButtonPad( Icone.novo( "btUlt.gif" ) );
 
 	private JLabelPad lbPag = new JLabelPad( "1 de 1" );
 
@@ -90,23 +90,23 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
 	private JScrollPane spn = new JScrollPane();
 
-	private JButton btZoom100 = new JButton( Icone.novo( "btZoom100.gif" ) );
+	private JButtonPad btZoom100 = new JButtonPad( Icone.novo( "btZoom100.gif" ) );
 
-	private JButton btZoomIn = new JButton( Icone.novo( "btZoomIn.gif" ) );
+	private JButtonPad btZoomIn = new JButtonPad( Icone.novo( "btZoomIn.gif" ) );
 
-	private JButton btZoomPag = new JButton( Icone.novo( "btZoomPag.gif" ) );
+	private JButtonPad btZoomPag = new JButtonPad( Icone.novo( "btZoomPag.gif" ) );
 
 	private JTextFieldPad txtZoom = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 3, 0 );
 
-	private JButton btMais = new JButton( Icone.novo( "btZoomMais.gif" ) );
+	private JButtonPad btMais = new JButtonPad( Icone.novo( "btZoomMais.gif" ) );
 
-	private JButton btMenos = new JButton( Icone.novo( "btZoomMenos.gif" ) );
+	private JButtonPad btMenos = new JButtonPad( Icone.novo( "btZoomMenos.gif" ) );
 
 	private PageFormat pag = null;
 
 	private JPanelPad pinTools = new JPanelPad( 47, 45 );
 
-	private JButton btPdf = new JButton( Icone.novo( "btPdf.gif" ) );
+	private JButtonPad btPdf = new JButtonPad( Icone.novo( "btPdf.gif" ) );
 
 	public String strTemp = "";
 

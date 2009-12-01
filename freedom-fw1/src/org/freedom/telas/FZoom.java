@@ -31,7 +31,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JDialog;
 
 import org.freedom.bmps.Icone;
@@ -44,13 +44,13 @@ public class FZoom extends JDialog implements KeyListener, ActionListener {
   private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());  
   private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));  
   private JPanelPad pinCab = new JPanelPad(385,40);
-  private JButton btZoom100 = new JButton(Icone.novo("btZoom100.gif"));
-  private JButton btZoomIn = new JButton(Icone.novo("btZoomIn.gif"));
-  private JButton btZoomPag = new JButton(Icone.novo("btZoomPag.gif"));
+  private JButtonPad btZoom100 = new JButtonPad(Icone.novo("btZoom100.gif"));
+  private JButtonPad btZoomIn = new JButtonPad(Icone.novo("btZoomIn.gif"));
+  private JButtonPad btZoomPag = new JButtonPad(Icone.novo("btZoomPag.gif"));
   private JTextFieldPad txtZoom = new JTextFieldPad(JTextFieldPad.TP_INTEGER,3,0);
-  private JButton btMais = new JButton(Icone.novo("btZoomMais.gif"));
-  private JButton btMenos = new JButton(Icone.novo("btZoomMenos.gif"));
-  private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
+  private JButtonPad btMais = new JButtonPad(Icone.novo("btZoomMais.gif"));
+  private JButtonPad btMenos = new JButtonPad(Icone.novo("btZoomMenos.gif"));
+  private JButtonPad btSair = new JButtonPad("Sair",Icone.novo("btSair.gif"));
   private PainelImagem pimImagem = null;
   private JScrollPane spnCli = null;
   public FZoom(Image im, int iTam) {
