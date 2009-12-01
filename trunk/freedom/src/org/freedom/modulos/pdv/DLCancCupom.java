@@ -33,20 +33,19 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -57,6 +56,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.tef.app.ControllerTef;
 import org.freedom.tef.app.ControllerTefEvent;
 import org.freedom.tef.app.ControllerTefListener;
@@ -89,9 +89,9 @@ public class DLCancCupom extends FDialogo implements ControllerTefListener, Acti
 
 	private final JScrollPane spnTab = new JScrollPane( tab );
 
-	private final JButton btCanc = new JButton( "Cancelar", Icone.novo( "btExcluir.gif" ) );
+	private final JButtonPad btCanc = new JButtonPad( "Cancelar", Icone.novo( "btExcluir.gif" ) );
 
-	private final JButton btExec = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private final JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
 	private final JCheckBoxPad cbInteira = new JCheckBoxPad( "Cancelar venda inteira", "S", "N" );
 

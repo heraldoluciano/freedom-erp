@@ -28,7 +28,6 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,12 +35,12 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -50,6 +49,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.ecf.app.ControllerECF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FTabDados;
@@ -190,7 +190,7 @@ public class FLeFiscal extends FTabDados {
 
 	private final JTextFieldPad txtVlrContabil = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 16, 2 );
 
-	private final JButton btExec = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private final JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
 	private final Tabela tab = new Tabela();
 

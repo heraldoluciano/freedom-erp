@@ -36,12 +36,12 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -71,13 +71,13 @@ public class FAdmTef extends FFilho implements ControllerTefListener, ActionList
 
 	private final JPanelPad panelFields = new JPanelPad();
 
-	private final JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+	private final JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
 	private JComboBoxPad cbComando;
 
 	private JComboBoxPad cbBandeiras;
 
-	private final JButton btCommand = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private final JButtonPad btCommand = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
 	private final JLabel lbWarnig = new JLabel( "Selecione o comando e a rede.", SwingConstants.CENTER );
 

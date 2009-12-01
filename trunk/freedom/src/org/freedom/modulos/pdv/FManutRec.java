@@ -37,7 +37,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
@@ -47,6 +46,7 @@ import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTabbedPanePad;
@@ -136,11 +136,11 @@ public class FManutRec extends FFDialogo implements CarregaListener, TabelaSelLi
 
 	private JTextFieldPad txtVlrMaxAcum = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 2 );
 
-	private JButton btCarregaBaixas = new JButton( Icone.novo( "btConsBaixa.gif" ) );
+	private JButtonPad btCarregaBaixas = new JButtonPad( Icone.novo( "btConsBaixa.gif" ) );
 
-	private JButton btBaixa = new JButton( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btBaixa = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
-	private JButton btApaga = new JButton( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btApaga = new JButtonPad( Icone.novo( "btNada.gif" ) );
 
 	private ListaCampos lcRecBaixa = new ListaCampos( this );
 
