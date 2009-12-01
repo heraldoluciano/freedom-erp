@@ -27,7 +27,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,7 +34,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -43,12 +41,14 @@ import javax.swing.SwingConstants;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -60,9 +60,9 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 
 	private final JPanelPad panelCentro = new JPanelPad();
 
-	private final JButton btVerificar = new JButton( "Verificar" );
+	private final JButtonPad btVerificar = new JButtonPad( "Verificar" );
 
-	private final JButton btTransferir = new JButton( "Transferir" );
+	private final JButtonPad btTransferir = new JButtonPad( "Transferir" );
 
 	private final JLabel status = new JLabel( "Aguardando verificação.", SwingConstants.CENTER );
 

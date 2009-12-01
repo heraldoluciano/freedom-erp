@@ -25,7 +25,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -39,6 +38,7 @@ import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
@@ -82,7 +82,7 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 
 	private JTextAreaPad txaObservacao = new JTextAreaPad( 300 );
 
-	private JButton btCompletar = new JButton( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btCompletar = new JButtonPad( Icone.novo( "btOk.gif" ) );
 	
 	private JTextFieldPad txtCodRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
