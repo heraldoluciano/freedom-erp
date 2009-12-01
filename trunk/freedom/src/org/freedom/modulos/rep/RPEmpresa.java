@@ -28,14 +28,13 @@ package org.freedom.modulos.rep;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import org.freedom.infra.model.jdbc.DbConnection;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
@@ -44,6 +43,7 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.PainelImagem;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
@@ -137,7 +137,7 @@ public class RPEmpresa extends FTabDados {
 
 	private Navegador navFilial = new Navegador( true );
 	
-	private JButton btCopiarEmp = new JButton( "copiar dados", Icone.novo( "btReset.gif" ) );
+	private JButtonPad btCopiarEmp = new JButtonPad( "copiar dados", Icone.novo( "btReset.gif" ) );
 
 	public RPEmpresa() {
 

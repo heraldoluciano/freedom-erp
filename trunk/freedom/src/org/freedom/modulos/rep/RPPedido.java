@@ -34,7 +34,6 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.math.MathContext;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,7 +43,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -59,6 +58,7 @@ import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
@@ -67,6 +67,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.rep.RPPrefereGeral.EPrefere;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLEnviarEmail;
@@ -193,9 +194,9 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private JRadioGroup<String, String> rgRemessa;
 
-	private final JButton btObsPed = new JButton( Icone.novo( "btObs.gif" ) );
+	private final JButtonPad btObsPed = new JButtonPad( Icone.novo( "btObs.gif" ) );
 
-	private final JButton btEmailPed = new JButton( Icone.novo( "btEnviarMail.gif" ) );
+	private final JButtonPad btEmailPed = new JButtonPad( Icone.novo( "btEnviarMail.gif" ) );
 
 	private final ListaCampos lcCliente = new ListaCampos( this, "CL" );
 
@@ -219,7 +220,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 
 	private List<Object> prefere = null;
 	
-	private JButton btExp = new JButton( Icone.novo( "btExportar.gif" ) );
+	private JButtonPad btExp = new JButtonPad( Icone.novo( "btExportar.gif" ) );
 	
 	boolean fator = false;
 
