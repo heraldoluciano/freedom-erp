@@ -37,7 +37,7 @@ import java.awt.event.ActionListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
@@ -49,6 +49,7 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JPanelPad;
 
 public class FFilho extends JInternalFrame implements InternalFrameListener,
@@ -197,7 +198,7 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
 
     public JPanelPad adicBotaoSair() {
         Container c = getContentPane();
-        JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
+        JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
         pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
         pnRod.setPreferredSize(new Dimension(200, 30));
         btSair.setPreferredSize(new Dimension(110, 30));

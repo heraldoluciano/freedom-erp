@@ -40,7 +40,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.Method;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Locale;
@@ -62,6 +61,7 @@ import org.freedom.componentes.ObjetoEmpresa;
 import org.freedom.componentes.TabObjeto;
 import org.freedom.funcoes.EmailBean;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 
 public abstract class Aplicativo implements ActionListener, KeyListener {
 
@@ -149,7 +149,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	protected String sSplashImg = "";
 
-	protected JButton btAtualMenu = new JButton( Icone.novo( "btAtualMenu.gif" ) );
+	protected JButtonPad btAtualMenu = new JButtonPad( Icone.novo( "btAtualMenu.gif" ) );
 
 	protected Vector<JMenuItem> vOpcoes = null;
 
@@ -377,7 +377,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			if ( oTemp instanceof JButtonPad ) {
 				iCodMenu = ( (JButtonPad) oTemp ).getCodItem();
 			}
-			else if ( oTemp instanceof JButton ) {
+			else if ( oTemp instanceof JButtonPad ) {
 				if ( ( (JButton) oTemp ) == btAtualMenu ) {
 					atualizaMenus();
 				}

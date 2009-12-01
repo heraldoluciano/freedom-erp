@@ -31,7 +31,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.border.EtchedBorder;
@@ -50,13 +50,13 @@ public class FWizard extends FFDialogo {
 
 	private JPanelPad pnBotoes = new JPanelPad( JPanelPad.TP_JPANEL, new FlowLayout( FlowLayout.RIGHT, 5, 3 ) );
 
-	private JButton btVoltar = new JButton( "< Voltar" );
+	private JButtonPad btVoltar = new JButtonPad( "< Voltar" );
 
-	private JButton btProximo = new JButton( "Próximo >" );
+	private JButtonPad btProximo = new JButtonPad( "Próximo >" );
 
-	private JButton btFinalizar = new JButton( "Finalizar" );
+	private JButtonPad btFinalizar = new JButtonPad( "Finalizar" );
 
-	private JButton btCancelar = new JButton( "Cancelar" );
+	private JButtonPad btCancelar = new JButtonPad( "Cancelar" );
 
 	private JLabelPad lbTit = new JLabelPad( "Título" );
 

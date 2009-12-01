@@ -43,7 +43,7 @@ import java.sql.ResultSet;
 import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -86,9 +86,9 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	private Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
 
-	private JButton btCalc = new JButton( Icone.novo( "btCalc.png" ) );
+	private JButtonPad btCalc = new JButtonPad( Icone.novo( "btCalc.png" ) );
 
-	private JButton btAgenda = new JButton( Icone.novo( "btAgenda.png" ) );
+	private JButtonPad btAgenda = new JButtonPad( Icone.novo( "btAgenda.png" ) );
 
 	public JPanelPad pinBotoesDir = new JPanelPad();
 

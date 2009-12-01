@@ -32,7 +32,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JPanelPad;
@@ -47,11 +47,11 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 
 	public JPanelPad pnBotoes = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2 ) );
 
-	private JButton btImp = new JButton( Icone.novo( "btImprime.gif" ) );
+	private JButtonPad btImp = new JButtonPad( Icone.novo( "btImprime.gif" ) );
 
-	private JButton btPrevimp = new JButton( Icone.novo( "btPrevimp.gif" ) );
+	private JButtonPad btPrevimp = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
 
-	private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 	
 	private final DLLoading wait = new DLLoading();
 

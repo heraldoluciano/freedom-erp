@@ -35,7 +35,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JComponent;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -73,9 +73,9 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
    public JPanelPad pnImp = new JPanelPad(JPanelPad.TP_JPANEL);
    public JPanelPad pnGImp = new JPanelPad(JPanelPad.TP_JPANEL);
    public JPanelPad pinDados = new JPanelPad();
-   public JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
-   public JButton btImp = new JButton( Icone.novo("btImprime.gif"));
-   public JButton btPrevimp = new JButton( Icone.novo("btPrevimp.gif"));
+   public JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+   public JButtonPad btImp = new JButtonPad( Icone.novo("btImprime.gif"));
+   public JButtonPad btPrevimp = new JButtonPad( Icone.novo("btPrevimp.gif"));
    public JComponent primeiroCompo = null;
    boolean Shift = false;
    boolean Ctrl = false;

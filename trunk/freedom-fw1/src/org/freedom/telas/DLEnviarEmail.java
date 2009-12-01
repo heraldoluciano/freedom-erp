@@ -47,7 +47,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
@@ -88,7 +88,7 @@ public class DLEnviarEmail extends FFDialogo {
 
 	private final JTextAreaPad txtMessage = new JTextAreaPad( 1000 );
 
-	private final JButton btEnviar = new JButton( "Enviar", Icone.novo( "btEnviarMail.gif" ) );
+	private final JButtonPad btEnviar = new JButtonPad( "Enviar", Icone.novo( "btEnviarMail.gif" ) );
 
 	private final JLabel status = new JLabel();
 

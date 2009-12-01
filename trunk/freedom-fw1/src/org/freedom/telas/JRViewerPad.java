@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JRViewer;
@@ -23,7 +23,7 @@ public class JRViewerPad extends JRViewer {
 	
 	private final JPanelPad panelButtonsStp = new JPanelPad( JPanelPad.TP_JPANEL, new FlowLayout( FlowLayout.RIGHT, 3, 3 ) );
 	
-	private JButton btnEmail;
+	private JButtonPad btnEmail;
 
 	private JasperPrint report = null;
 	
@@ -64,7 +64,7 @@ public class JRViewerPad extends JRViewer {
 
 	private void createButtonEmail() {
 		
-		btnEmail = new JButton( "e-mail", Icone.novo( "mail.gif" ) );
+		btnEmail = new JButtonPad( "e-mail", Icone.novo( "mail.gif" ) );
 		btnEmail.setToolTipText( "Enviar arquivo por e-mail" );
 		btnEmail.setPreferredSize( new Dimension( 100, 23 ) );
 		

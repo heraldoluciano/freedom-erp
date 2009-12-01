@@ -33,7 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.componentes.JLabelPad;
@@ -46,7 +46,7 @@ public class FSobre extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	private JButton btMemoria = new JButton( "Reciclar", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btMemoria = new JButtonPad( "Reciclar", Icone.novo( "btExecuta.gif" ) );
 
 	private JTabbedPanePad tpnSobre = new JTabbedPanePad();
 

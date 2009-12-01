@@ -39,7 +39,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -84,7 +84,7 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 
 	private String sTextoAnt = "";
 
-	public JButton btExecuta = new JButton( Icone.novo( "btExecuta.gif" ) );
+	public JButtonPad btExecuta = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
 	boolean bPrimeira = false;
 
