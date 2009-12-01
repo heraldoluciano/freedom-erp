@@ -35,11 +35,11 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -75,9 +75,9 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE,10, 0  );
 	
-	private JButton btFiltrar = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btFiltrar = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 	
-	private JButton btNovaOp = new JButton( "Nova O.P.", Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovaOp = new JButtonPad( "Nova O.P.", Icone.novo( "btNovo.gif" ) );
 
 	private JRadioGroup<?, ?> rgFiltro = null; 
 	

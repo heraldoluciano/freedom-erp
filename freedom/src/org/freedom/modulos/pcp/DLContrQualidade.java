@@ -31,7 +31,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,16 +38,17 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
@@ -118,11 +118,11 @@ public class DLContrQualidade extends FFDialogo implements MouseListener, Action
 
 	private String sEstAnalise = "";
 
-	public JButton btOK = new JButton( "OK", Icone.novo( "btOk.gif" ) );
+	public JButtonPad btOK = new JButtonPad( "OK", Icone.novo( "btOk.gif" ) );
 
-	public JButton btACorretiva = new JButton( "Nova ação", Icone.novo( "btNovaAcaoCorretiva.gif" ) );
+	public JButtonPad btACorretiva = new JButtonPad( "Nova ação", Icone.novo( "btNovaAcaoCorretiva.gif" ) );
 
-	public JButton btAbreAcao = new JButton( "Abre ação", Icone.novo( "btAbrirAcaoCorretiva.gif" ) );
+	public JButtonPad btAbreAcao = new JButtonPad( "Abre ação", Icone.novo( "btAbrirAcaoCorretiva.gif" ) );
 
 	private enum EcolPPOPCQ {
 
