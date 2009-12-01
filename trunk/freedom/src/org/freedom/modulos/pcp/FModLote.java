@@ -26,11 +26,9 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.JComboBoxEvent;
@@ -39,6 +37,7 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -46,6 +45,7 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.FDados;
 
 public class FModLote extends FDados implements ActionListener, JComboBoxListener, PostListener {
@@ -62,7 +62,7 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 
 	private JScrollPane spnCli = new JScrollPane( txaModLote );
 
-	private JButton btAdic = new JButton( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btAdic = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
 	private JComboBoxPad cbCampos = null;
 

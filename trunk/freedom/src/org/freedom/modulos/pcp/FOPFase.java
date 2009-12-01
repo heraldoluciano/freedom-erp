@@ -29,9 +29,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
+
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
 import org.freedom.acao.CarregaEvent;
@@ -42,6 +43,7 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -84,7 +86,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	private JTextFieldPad txtHFimProdFs = new JTextFieldPad(JTextFieldPad.TP_TIME,8,0);
 	private JTextFieldPad txtSitFS = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldFK txtTpFase = new JTextFieldFK(JTextFieldPad.TP_STRING,2,0);
-	private JButton btContraProva = new JButton("Retenção de contra prova", Icone.novo( "btFinalizaOP.gif" ) );
+	private JButtonPad btContraProva = new JButtonPad("Retenção de contra prova", Icone.novo( "btFinalizaOP.gif" ) );
 	private ListaCampos lcProd = new ListaCampos(this,"PD");
 	private ListaCampos lcFase = new ListaCampos(this,"FS");
 	private ListaCampos lcRec = new ListaCampos(this,"RP");

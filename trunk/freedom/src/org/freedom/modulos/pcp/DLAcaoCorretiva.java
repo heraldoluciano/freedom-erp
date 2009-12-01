@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,13 +13,13 @@ import java.util.Vector;
 import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -29,6 +28,7 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
@@ -69,9 +69,9 @@ public class DLAcaoCorretiva extends FFDialogo implements RadioGroupListener {
 	
 	private final JTextAreaPad txaAcao = new JTextAreaPad();
 	
-	private final JButton btInclusao = new JButton( "Inclusão", Icone.novo( "btAdicInsumo.gif" ) );
+	private final JButtonPad btInclusao = new JButtonPad( "Inclusão", Icone.novo( "btAdicInsumo.gif" ) );
 	
-	private final JButton btDescarte = new JButton( "Descarte", Icone.novo( "btDescartarProducao.gif" ) );
+	private final JButtonPad btDescarte = new JButtonPad( "Descarte", Icone.novo( "btDescartarProducao.gif" ) );
 
 
 	private final ListaCampos lcAcao = new ListaCampos( this, "PD" );

@@ -33,7 +33,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,7 +45,6 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -66,6 +64,7 @@ import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTabbedPanePad;
@@ -75,6 +74,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.gms.FRma;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.telas.Aplicativo;
@@ -201,25 +201,25 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private ListaCampos lcModLote = new ListaCampos( this, "ML" );
 
-	private JButton btFinaliza = new JButton( Icone.novo( "btFinalizaOP.gif" ) );
+	private JButtonPad btFinaliza = new JButtonPad( Icone.novo( "btFinalizaOP.gif" ) );
 
-	private JButton btCancela = new JButton( Icone.novo( "btCancelar.gif" ) );
+	private JButtonPad btCancela = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
 
-	private JButton btRMA = new JButton( Icone.novo( "btRma.gif" ) );
+	private JButtonPad btRMA = new JButtonPad( Icone.novo( "btRma.gif" ) );
 
-	private JButton btLote = new JButton( Icone.novo( "btSimilar.gif" ) );
+	private JButtonPad btLote = new JButtonPad( Icone.novo( "btSimilar.gif" ) );
 
-	private JButton btRatearItem = new JButton( Icone.novo( "btAdic2.gif" ) );
+	private JButtonPad btRatearItem = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
 
-	private JButton btDistrb = new JButton( Icone.novo( "btDistOP.gif" ) );
+	private JButtonPad btDistrb = new JButtonPad( Icone.novo( "btDistOP.gif" ) );
 
-	private JButton btContrQuali = new JButton( Icone.novo( "btCQ.gif" ) );
+	private JButtonPad btContrQuali = new JButtonPad( Icone.novo( "btCQ.gif" ) );
 
-	private JButton btObs = new JButton( Icone.novo( "btObs.gif" ) );
+	private JButtonPad btObs = new JButtonPad( Icone.novo( "btObs.gif" ) );
 
-	private JButton btObs2 = new JButton( Icone.novo( "btObs.gif" ) );
+	private JButtonPad btObs2 = new JButtonPad( Icone.novo( "btObs.gif" ) );
 
-	private JButton btReprocessaItens = new JButton( Icone.novo( "btReset.gif" ) );
+	private JButtonPad btReprocessaItens = new JButtonPad( Icone.novo( "btReset.gif" ) );
 
 	private FPrinterJob dl = null;
 

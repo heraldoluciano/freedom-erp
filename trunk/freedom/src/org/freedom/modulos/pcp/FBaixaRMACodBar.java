@@ -40,13 +40,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
@@ -65,8 +67,8 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);	
-  private JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
-  private JButton btExpedir = new JButton("Expedir", Icone.novo("btMedida.gif"));
+  private JButtonPad btSair = new JButtonPad("Sair", Icone.novo("btSair.gif"));
+  private JButtonPad btExpedir = new JButtonPad("Expedir", Icone.novo("btMedida.gif"));
   private JTextFieldPad txtEntrada = new JTextFieldPad(JTextFieldPad.TP_STRING,100,0);
   private JTextFieldPad txtSeqOf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtSeqOp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
