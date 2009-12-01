@@ -25,14 +25,11 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -40,11 +37,14 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -62,9 +62,9 @@ public class FAtribUsu extends FFilho implements  CarregaListener, ActionListene
   private JList lsDisp = new JList();
   private JScrollPane spnAtrib = new JScrollPane(lsAtrib);
   private JScrollPane spnDisp = new JScrollPane(lsDisp);
-  private JButton btAdicAtrib = new JButton(Icone.novo("btFlechaDir.gif"));
-  private JButton btDelAtrib = new JButton(Icone.novo("btFlechaEsq.gif"));
-  private JButton btSalvar = new JButton(Icone.novo("btSalvar.gif"));
+  private JButtonPad btAdicAtrib = new JButtonPad(Icone.novo("btFlechaDir.gif"));
+  private JButtonPad btDelAtrib = new JButtonPad(Icone.novo("btFlechaEsq.gif"));
+  private JButtonPad btSalvar = new JButtonPad(Icone.novo("btSalvar.gif"));
   private ListaCampos lcUsu = new ListaCampos(this,"");
   public FAtribUsu () {
   	super(false);

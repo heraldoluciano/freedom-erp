@@ -29,17 +29,18 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
-import javax.swing.JButton;
+
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -51,6 +52,7 @@ import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -63,6 +65,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ObjetoCustosProd;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.FuncoesCRM;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.modulos.std.DLRPedido;
@@ -91,23 +94,23 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 	private JLabelPad lSitItRma = null;
 
-	private JButton btAprovaRMA = new JButton( "Aprovar", Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btAprovaRMA = new JButtonPad( "Aprovar", Icone.novo( "btTudo.gif" ) );
 
-	private JButton btFinAprovRMA = new JButton( "Finaliz. aprov.", Icone.novo( "btFechaVenda.gif" ) );
+	private JButtonPad btFinAprovRMA = new JButtonPad( "Finaliz. aprov.", Icone.novo( "btFechaVenda.gif" ) );
 
-	private JButton btExpedirRMA = new JButton( "Expedir", Icone.novo( "btMedida.gif" ) );
+	private JButtonPad btExpedirRMA = new JButtonPad( "Expedir", Icone.novo( "btMedida.gif" ) );
 
-	private JButton btFinExpRMA = new JButton( "Finaliz. exp.", Icone.novo( "btFechaVenda.gif" ) );
+	private JButtonPad btFinExpRMA = new JButtonPad( "Finaliz. exp.", Icone.novo( "btFechaVenda.gif" ) );
 
-	private JButton btCancelaRMA = new JButton( "Cancelar", Icone.novo( "btRetorno.gif" ) );
+	private JButtonPad btCancelaRMA = new JButtonPad( "Cancelar", Icone.novo( "btRetorno.gif" ) );
 
-	private JButton btCancelaItem = new JButton( "Cancelar", Icone.novo( "btRetorno.gif" ) );
+	private JButtonPad btCancelaItem = new JButtonPad( "Cancelar", Icone.novo( "btRetorno.gif" ) );
 
-	private JButton btMotivoCancelaRMA = new JButton( "Mot.Can", Icone.novo( "btObs.gif" ) );
+	private JButtonPad btMotivoCancelaRMA = new JButtonPad( "Mot.Can", Icone.novo( "btObs.gif" ) );
 
-	private JButton btMotivoCancelaItem = new JButton( "Mot.Can", Icone.novo( "btObs.gif" ) );
+	private JButtonPad btMotivoCancelaItem = new JButtonPad( "Mot.Can", Icone.novo( "btObs.gif" ) );
 
-	private JButton btMotivoPrior = new JButton( "Mot.Prior", Icone.novo( "btObs.gif" ) );
+	private JButtonPad btMotivoPrior = new JButtonPad( "Mot.Prior", Icone.novo( "btObs.gif" ) );
 
 	private JTextFieldPad txtCodRma = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
