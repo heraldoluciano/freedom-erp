@@ -31,10 +31,10 @@ import java.awt.event.ActionEvent;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
@@ -55,7 +55,7 @@ public class FAliquota extends FFDialogo {
 
 	private final JTextFieldPad txtAliquota = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 4, 2 );
 
-	private final JButton btInsere = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private final JButtonPad btInsere = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
 	private final Tabela tab = new Tabela();
 
