@@ -46,7 +46,6 @@ import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -70,6 +69,7 @@ import lu.tudor.santec.bizcal.widgets.ButtonPanel;
 import lu.tudor.santec.bizcal.widgets.CheckBoxPanel;
 import lu.tudor.santec.bizcal.widgets.NaviBar;
 import lu.tudor.santec.i18n.Translatrix;
+import org.freedom.componentes.JButtonPad;
 import bizcal.common.Event;
 import bizcal.swing.DayView;
 import bizcal.swing.PopupMenuCallback;
@@ -252,7 +252,7 @@ public class CalendarPanel extends JPanel implements MouseListener {
 
 		daychooserPanel.add(this.dayChooser, BorderLayout.CENTER);
 
-		JButton todayButton = new JButton(Translatrix
+		JButtonPad todayButton = new JButtonPad(Translatrix
 				.getTranslationString("bizcal.gotoToday"), CalendarIcons
 				.getMediumIcon(CalendarIcons.TODAY));
 		todayButton.setHorizontalAlignment(JLabel.LEFT);
