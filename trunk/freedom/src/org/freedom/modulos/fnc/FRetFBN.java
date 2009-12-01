@@ -43,12 +43,12 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -88,15 +88,15 @@ public abstract class FRetFBN extends FFilho implements ActionListener, MouseLis
 
 	protected final JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	protected final JButton btImporta = new JButton( "Importar", Icone.novo( "btSalvar.gif" ) );
+	protected final JButtonPad btImporta = new JButtonPad( "Importar", Icone.novo( "btSalvar.gif" ) );
 
-	protected final JButton btSelTudo = new JButton( Icone.novo( "btTudo.gif" ) );
+	protected final JButtonPad btSelTudo = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 
-	protected final JButton btSelNada = new JButton( Icone.novo( "btNada.gif" ) );
+	protected final JButtonPad btSelNada = new JButtonPad( Icone.novo( "btNada.gif" ) );
 
-	protected final JButton btEdita = new JButton( Icone.novo( "btEditar.gif" ) );
+	protected final JButtonPad btEdita = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
-	protected final JButton btBaixar = new JButton( "Aplicar baixa", Icone.novo( "btGerar.gif" ) );
+	protected final JButtonPad btBaixar = new JButtonPad( "Aplicar baixa", Icone.novo( "btGerar.gif" ) );
 
 	protected final JLabel lbStatus = new JLabel();
 	

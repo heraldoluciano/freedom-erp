@@ -33,7 +33,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,7 +44,6 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -54,6 +52,7 @@ import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
@@ -61,8 +60,9 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.funcoes.boleto.BancodoBrasil;
 import org.freedom.funcoes.boleto.Banco;
+import org.freedom.funcoes.boleto.BancodoBrasil;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.modulos.fnc.FbnUtil.EPrefs;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -113,17 +113,17 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 	
 	protected JRadioGroup<String, String> rgTipoRemessa;
 
-	private final JButton btCarrega = new JButton( "Buscar", Icone.novo( "btExecuta.gif" ) );
+	private final JButtonPad btCarrega = new JButtonPad( "Buscar", Icone.novo( "btExecuta.gif" ) );
 
-	private final JButton btExporta = new JButton( "Exportar", Icone.novo( "btSalvar.gif" ) );
+	private final JButtonPad btExporta = new JButtonPad( "Exportar", Icone.novo( "btSalvar.gif" ) );
 
-	private final JButton btSelTudo = new JButton( Icone.novo( "btTudo.gif" ) );
+	private final JButtonPad btSelTudo = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 
-	private final JButton btSelNada = new JButton( Icone.novo( "btNada.gif" ) );
+	private final JButtonPad btSelNada = new JButtonPad( Icone.novo( "btNada.gif" ) );
 	
-	private final JButton btImprime = new JButton( Icone.novo( "btImprime.gif" ) );
+	private final JButtonPad btImprime = new JButtonPad( Icone.novo( "btImprime.gif" ) );
 	
-	private final JButton btVisImp = new JButton( Icone.novo( "btPrevimp.gif" ) );
+	private final JButtonPad btVisImp = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
 
 	protected final JLabel lbStatus = new JLabel();
 
