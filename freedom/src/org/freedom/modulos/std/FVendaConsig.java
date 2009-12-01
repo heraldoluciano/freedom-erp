@@ -28,7 +28,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -133,7 +133,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 	private JTextFieldPad txtDataConsig = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JButton btImportarVendaRemessa = new JButton( "Importar nota de remessa", Icone.novo( "btFinalizaOP.gif" ) );
+	private JButtonPad btImportarVendaRemessa = new JButtonPad( "Importar nota de remessa", Icone.novo( "btFinalizaOP.gif" ) );
 
 	// campos da aba detale geral
 
@@ -183,7 +183,7 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 	
 	private JCheckBoxPad cbRecebido = new JCheckBoxPad( "Recebido", "S", "N" );
 
-	private JButton btImportarItensVenda = new JButton( "Importar itens de venda", Icone.novo( "btVenda2.gif" ) );
+	private JButtonPad btImportarItensVenda = new JButtonPad( "Importar itens de venda", Icone.novo( "btVenda2.gif" ) );
 
 	// campos da aba contas a receber
 
@@ -203,13 +203,13 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 	private JCheckBoxPad cbRecebidas = new JCheckBoxPad( "Recebidas", "S", "N" );
 
-	private JButton btPesquisaReceber = new JButton( "Pesquisar", Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btPesquisaReceber = new JButtonPad( "Pesquisar", Icone.novo( "btPesquisa.gif" ) );
 
-	private JButton btSelecionTodosReceber = new JButton( Icone.novo( "btTudo.gif" ) );
+	private JButtonPad btSelecionTodosReceber = new JButtonPad( Icone.novo( "btTudo.gif" ) );
 
-	private JButton btSelecionaNenhumReceber = new JButton( Icone.novo( "btNada.gif" ) );
+	private JButtonPad btSelecionaNenhumReceber = new JButtonPad( Icone.novo( "btNada.gif" ) );
 
-	private JButton btColocarEmCobrancaReceber = new JButton( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btColocarEmCobrancaReceber = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
 	private JTextFieldPad txtVlrRecVencido = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin );
 
@@ -241,9 +241,9 @@ public class FVendaConsig extends FDetalhe implements MouseListener, ChangeListe
 
 	private JTextFieldPad txtSaldoFechamento = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 12, Aplicativo.casasDecFin );
 	
-	private JButton btConsolidacao = new JButton( "Consolidar", Icone.novo( "btReset.gif" ) );
+	private JButtonPad btConsolidacao = new JButtonPad( "Consolidar", Icone.novo( "btReset.gif" ) );
 
-	private JButton btNovoLancamento = new JButton( "Lançamento", Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovoLancamento = new JButtonPad( "Lançamento", Icone.novo( "btNovo.gif" ) );
 	
 	private ListaCampos lcVendedor = new ListaCampos( this, "VD" );
 

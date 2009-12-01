@@ -25,22 +25,24 @@ package org.freedom.modulos.std;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.JButton;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FPrinterJob;
@@ -77,7 +79,7 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 	
 	private JTextFieldFK txtRazTransp = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private JButton btBuscar = new JButton( "Busca venda" , Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btBuscar = new JButtonPad( "Busca venda" , Icone.novo( "btGerar.gif" ) );
 
 	private ListaCampos lcVenda = new ListaCampos( this, "VA" );
 	

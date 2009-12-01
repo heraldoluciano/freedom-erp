@@ -31,7 +31,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
@@ -71,7 +71,7 @@ public class FKardex extends FRelatorio implements ActionListener {
         private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
         private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
         private JTextFieldPad txtCodFabProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
-        private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
+        private JButtonPad btExec = new JButtonPad(Icone.novo("btExecuta.gif"));
         private Tabela tab = new Tabela();
         private JScrollPane spnTab = new JScrollPane(tab);
         private ListaCampos lcProd = new ListaCampos(this);

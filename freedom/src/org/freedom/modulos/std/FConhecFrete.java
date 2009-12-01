@@ -35,7 +35,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -158,7 +158,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 
 	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JButton btAtualizaConhecimentos = new JButton( Icone.novo( "btTrocaNumero.gif" ) );
+	private JButtonPad btAtualizaConhecimentos = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
 	
 	private ListaCampos lcTransportadora = new ListaCampos( this, "TN" );
 	

@@ -38,7 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
@@ -72,16 +72,16 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
 
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
-  private JButton btCalcSaldo = new JButton(Icone.novo("btExecuta.gif"));
-  private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
-  private JButton btPrim = new JButton(Icone.novo("btPrim.gif"));
-  private JButton btAnt = new JButton(Icone.novo("btAnt.gif"));
-  private JButton btProx = new JButton(Icone.novo("btProx.gif"));
-  private JButton btUlt = new JButton(Icone.novo("btUlt.gif"));
-  private JButton btNovo = new JButton(Icone.novo("btNovo.gif"));
-  private JButton btExcluir = new JButton(Icone.novo("btExcluir.gif"));
-  private JButton btEditar = new JButton(Icone.novo("btEditar.gif"));
+  private JButtonPad btExec = new JButtonPad(Icone.novo("btExecuta.gif"));
+  private JButtonPad btCalcSaldo = new JButtonPad(Icone.novo("btExecuta.gif"));
+  private JButtonPad btSair = new JButtonPad("Sair",Icone.novo("btSair.gif"));
+  private JButtonPad btPrim = new JButtonPad(Icone.novo("btPrim.gif"));
+  private JButtonPad btAnt = new JButtonPad(Icone.novo("btAnt.gif"));
+  private JButtonPad btProx = new JButtonPad(Icone.novo("btProx.gif"));
+  private JButtonPad btUlt = new JButtonPad(Icone.novo("btUlt.gif"));
+  private JButtonPad btNovo = new JButtonPad(Icone.novo("btNovo.gif"));
+  private JButtonPad btExcluir = new JButtonPad(Icone.novo("btExcluir.gif"));
+  private JButtonPad btEditar = new JButtonPad(Icone.novo("btEditar.gif"));
   private JLabelPad lbA = new JLabelPad("à");
   private JLabelPad lbPinSaldo = new JLabelPad(" Saldo");
   private JPanelPad pinLbPeriodo = new JPanelPad(53,15);

@@ -26,26 +26,26 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
@@ -75,10 +75,10 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
   private JScrollPane spnTab = new JScrollPane(tab);
   private Tabela tabVenda = new Tabela();
   private JScrollPane spnTabVenda = new JScrollPane(tabVenda);
-  private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
-  private JButton btTudoVenda = new JButton(Icone.novo("btTudo.gif"));
-  private JButton btNadaVenda = new JButton(Icone.novo("btNada.gif"));
-  private JButton btLimpa = new JButton(Icone.novo("btRetorno.gif"));
+  private JButtonPad btExec = new JButtonPad(Icone.novo("btExecuta.gif"));
+  private JButtonPad btTudoVenda = new JButtonPad(Icone.novo("btTudo.gif"));
+  private JButtonPad btNadaVenda = new JButtonPad(Icone.novo("btNada.gif"));
+  private JButtonPad btLimpa = new JButtonPad(Icone.novo("btRetorno.gif"));
   private ListaCampos lcVenda = new ListaCampos(this,"");
   private Vector<String> vTipoVenda = new Vector<String>();
   private Vector<String> vTipo = new Vector<String>();

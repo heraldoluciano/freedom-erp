@@ -44,7 +44,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -197,25 +197,25 @@ public class FManutPag extends FFilho implements ActionListener,  CarregaListene
 
 	private JPanelPad pinFiltroStatus = new JPanelPad( 300, 150 );
 
-	private JButton btBaixaConsulta = new JButton( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btBaixaConsulta = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
-	private JButton btBaixaManut = new JButton( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btBaixaManut = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
-	private JButton btEditManut = new JButton( Icone.novo( "btEditar.gif" ) );
+	private JButtonPad btEditManut = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
-	private JButton btNovoManut = new JButton( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovoManut = new JButtonPad( Icone.novo( "btNovo.gif" ) );
 
-	private JButton btExcluirManut = new JButton( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btExcluirManut = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 
-	private JButton btEstManut = new JButton( Icone.novo( "btCancelar.gif" ) );
+	private JButtonPad btEstManut = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
 
-	private JButton btCancItem = new JButton( Icone.novo( "btCancItem.png" ) );
+	private JButtonPad btCancItem = new JButtonPad( Icone.novo( "btCancItem.png" ) );
 	
-	private JButton btExecManut = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExecManut = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
-	private JButton btBaixa = new JButton( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btBaixa = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
-	private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
 	private JCheckBoxPad cbPagas = new JCheckBoxPad( "Pagas", "S", "N" );
 

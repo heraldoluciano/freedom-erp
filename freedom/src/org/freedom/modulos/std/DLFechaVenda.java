@@ -34,9 +34,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,7 +42,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
@@ -57,6 +53,7 @@ import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -68,6 +65,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FPassword;
@@ -226,7 +224,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private final JCheckBoxPad cbAdicICMSFrete = new JCheckBoxPad( "adiciona valor do frete na base de ICMS?", "S", "N" );
 
-	private JButton btGerarConhecimento = new JButton( "Conhecimento Frete", Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerarConhecimento = new JButtonPad( "Conhecimento Frete", Icone.novo( "btGerar.gif" ) );
 
 	private final JRadioGroup<?, ?> rgFreteVD;
 

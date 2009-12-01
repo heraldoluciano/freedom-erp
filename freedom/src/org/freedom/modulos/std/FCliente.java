@@ -43,7 +43,6 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
@@ -63,6 +62,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.componentes.Endereco;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -482,55 +482,55 @@ public class FCliente extends FTabDados
 	
 	private JCheckBoxPad cbContato = new JCheckBoxPad( "Contato", "O", "C" );
 
-	private JButton btAtEntrega = new JButton( Icone.novo( "btReset.gif" ) );
+	private JButtonPad btAtEntrega = new JButtonPad( Icone.novo( "btReset.gif" ) );
 	
-	private JButton btMapa = new JButton( Icone.novo( "btMapa.png" ) );
+	private JButtonPad btMapa = new JButtonPad( Icone.novo( "btMapa.png" ) );
 
-	private JButton btAtCobranca = new JButton( Icone.novo( "btReset.gif" ) );
+	private JButtonPad btAtCobranca = new JButtonPad( Icone.novo( "btReset.gif" ) );
 
-	private JButton btNovaObs = new JButton( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovaObs = new JButtonPad( Icone.novo( "btNovo.gif" ) );
 
-	private JButton btExclObs = new JButton( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btExclObs = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 
-	private JButton btEditObs = new JButton( Icone.novo( "btEditar.gif" ) );
+	private JButtonPad btEditObs = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
-	private JButton btGrpCli = new JButton( Icone.novo( "btCliente.gif" ) );
+	private JButtonPad btGrpCli = new JButtonPad( Icone.novo( "btCliente.gif" ) );
 
-	private JButton btSetaQtdJan = new JButton( Icone.novo( "btExecuta2.gif" ) );
+	private JButtonPad btSetaQtdJan = new JButtonPad( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdFev = new JButton( Icone.novo( "btExecuta2.gif" ) );
+	private JButtonPad btSetaQtdFev = new JButtonPad( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdMar = new JButton( Icone.novo( "btExecuta2.gif" ) );
+	private JButtonPad btSetaQtdMar = new JButtonPad( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdAbr = new JButton( Icone.novo( "btExecuta2.gif" ) );
+	private JButtonPad btSetaQtdAbr = new JButtonPad( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdMai = new JButton( Icone.novo( "btExecuta2.gif" ) );
+	private JButtonPad btSetaQtdMai = new JButtonPad( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdJun = new JButton( Icone.novo( "btExecuta2.gif" ) );
+	private JButtonPad btSetaQtdJun = new JButtonPad( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdJul = new JButton( Icone.novo( "btExecuta2.gif" ) );
+	private JButtonPad btSetaQtdJul = new JButtonPad( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdAgo = new JButton( Icone.novo( "btExecuta2.gif" ) );
+	private JButtonPad btSetaQtdAgo = new JButtonPad( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdSet = new JButton( Icone.novo( "btExecuta2.gif" ) );
+	private JButtonPad btSetaQtdSet = new JButtonPad( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdOut = new JButton( Icone.novo( "btExecuta2.gif" ) );
+	private JButtonPad btSetaQtdOut = new JButtonPad( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdNov = new JButton( Icone.novo( "btExecuta2.gif" ) );
+	private JButtonPad btSetaQtdNov = new JButtonPad( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btSetaQtdDez = new JButton( Icone.novo( "btExecuta2.gif" ) );
+	private JButtonPad btSetaQtdDez = new JButtonPad( Icone.novo( "btExecuta2.gif" ) );
 
-	private JButton btMudaTudo = new JButton( "Alterar todos", Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btMudaTudo = new JButtonPad( "Alterar todos", Icone.novo( "btExecuta.gif" ) );
 
-	private JButton btNovoHist = new JButton( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovoHist = new JButtonPad( Icone.novo( "btNovo.gif" ) );
 
-	private JButton btExcluiHist = new JButton( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btExcluiHist = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 	
-	private JButton btFirefox = new JButton( Icone.novo( "firefox.gif" ) );
+	private JButtonPad btFirefox = new JButtonPad( Icone.novo( "firefox.gif" ) );
 	
-	private JButton btBuscaEnd = new JButton( Icone.novo( "btBuscacep.gif" ) );
+	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
 	
-	private JButton btBuscaFor = new JButton( Icone.novo("btPesquisa.gif") );
+	private JButtonPad btBuscaFor = new JButtonPad( Icone.novo("btPesquisa.gif") );
 
 	private ListaCampos lcTipoCli = new ListaCampos( this, "TI" );
 

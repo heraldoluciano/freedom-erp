@@ -38,7 +38,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Vector;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 
@@ -127,9 +127,9 @@ public class FCpProd extends FFilho implements ActionListener, CheckBoxListener 
 
 	private ListaCampos lcPlanoPag2 = new ListaCampos( this );
 
-	private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
-	private JButton btGerar = new JButton( "Gerar", Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerar = new JButtonPad( "Gerar", Icone.novo( "btGerar.gif" ) );
 
 	public FCpProd() {
 

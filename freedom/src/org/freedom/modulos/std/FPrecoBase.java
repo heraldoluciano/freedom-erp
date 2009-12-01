@@ -31,7 +31,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 
@@ -53,8 +53,8 @@ public class FPrecoBase extends FFilho implements ActionListener {
   private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-  private JButton btGerar = new JButton("Gerar",Icone.novo("btGerar.gif"));
-  private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
+  private JButtonPad btGerar = new JButtonPad("Gerar",Icone.novo("btGerar.gif"));
+  private JButtonPad btSair = new JButtonPad("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcGrup = new ListaCampos(this,"GP");
   private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
   public FPrecoBase() {

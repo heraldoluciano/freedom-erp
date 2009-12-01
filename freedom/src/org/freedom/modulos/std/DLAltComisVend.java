@@ -24,17 +24,16 @@ package org.freedom.modulos.std;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
@@ -44,7 +43,7 @@ public class DLAltComisVend extends FFDialogo {
 
 	private JTextFieldPad txtPercComis = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JButton btExec = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
 	private int iCodVenda = 0;
 

@@ -39,7 +39,7 @@ import java.util.Vector;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JPanelPad;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
@@ -194,7 +194,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	
 	private JPanelPad pinBtFor = new JPanelPad( 0, 30 );
 	
-	private JButton btBuscaFor = new JButton(Icone.novo("btPesquisa.gif"));
+	private JButtonPad btBuscaFor = new JButtonPad(Icone.novo("btPesquisa.gif"));
 	
 	private ListaCampos lcForCli = new ListaCampos( this );
 	
@@ -222,7 +222,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
 	private JTextFieldFK txtDescMun = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	private JButton btBuscaEnd = new JButton( Icone.novo( "btBuscacep.gif" ) );
+	private JButtonPad btBuscaEnd = new JButtonPad( Icone.novo( "btBuscacep.gif" ) );
 
 	private Map<String, Object> bPref = null;
 	

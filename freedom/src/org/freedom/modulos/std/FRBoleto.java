@@ -43,7 +43,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -170,7 +170,7 @@ public class FRBoleto extends FRelatorio {
 	
 	private JPanelPad pnTabela = new JPanelPad( new BorderLayout() );
 	
-	private JButton btGerar = new JButton("Montar boletos", Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerar = new JButtonPad("Montar boletos", Icone.novo( "btGerar.gif" ) );
 	
 	private Checkbox cbTab = new Checkbox();
 	

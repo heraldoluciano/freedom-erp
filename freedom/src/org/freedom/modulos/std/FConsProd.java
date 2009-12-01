@@ -35,7 +35,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
@@ -69,8 +69,8 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	private JPanelPad pnVendas = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
     private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	//private JPanelPad pnProduto = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());	
-	private JButton btExecCompra = new JButton(Icone.novo("btExecuta.gif"));
-	private JButton btExecVenda = new JButton(Icone.novo("btExecuta.gif"));
+	private JButtonPad btExecCompra = new JButtonPad(Icone.novo("btExecuta.gif"));
+	private JButtonPad btExecVenda = new JButtonPad(Icone.novo("btExecuta.gif"));
 	//private JLabelPad lbA = new JLabelPad("à");
 	private JPanelPad pinLbPeriodoCompra = new JPanelPad(53,15);
 	private JPanelPad pinLbPeriodoVenda = new JPanelPad(53,15);

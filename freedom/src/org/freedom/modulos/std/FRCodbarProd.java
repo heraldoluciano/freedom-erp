@@ -36,7 +36,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 
@@ -85,13 +85,13 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	
 	private JComboBoxPad cbEtiquetas = null;
 
-	private final JButton btExecuta = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private final JButtonPad btExecuta = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
-	private final JButton btSelectCompra = new JButton( Icone.novo( "btPesquisa.gif" ) );
+	private final JButtonPad btSelectCompra = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
 
-	private final JButton btExcluir = new JButton( Icone.novo( "btCancelar.gif" ) );
+	private final JButtonPad btExcluir = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
 
-	private final JButton btExcluirTudo = new JButton( Icone.novo( "btNada.gif" ) );
+	private final JButtonPad btExcluirTudo = new JButtonPad( Icone.novo( "btNada.gif" ) );
 
 	private final Tabela tabGrid = new Tabela();
 

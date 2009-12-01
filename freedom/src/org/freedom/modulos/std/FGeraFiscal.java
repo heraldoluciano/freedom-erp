@@ -34,7 +34,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.Timer;
@@ -75,11 +75,11 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 
 	private JProgressBar pbAnd = new JProgressBar();
 
-	private JButton btVisual = new JButton( Icone.novo( "btPesquisa.gif" ) );
+	private JButtonPad btVisual = new JButtonPad( Icone.novo( "btPesquisa.gif" ) );
 
-	private JButton btChecar = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btChecar = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
-	private JButton btGerar = new JButton( Icone.novo( "btGerar.gif" ) );
+	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.gif" ) );
 
 	private Timer tim = null;
 

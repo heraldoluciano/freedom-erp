@@ -51,7 +51,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
@@ -99,19 +99,19 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 	
 	private final Tabela tabProdutos = new Tabela();
 
-	private final JButton btBuscarProdutos = new JButton( "Buscar Produtos" );
+	private final JButtonPad btBuscarProdutos = new JButtonPad( "Buscar Produtos" );
 
-	private final JButton btExeportar = new JButton( "Exportar" );
+	private final JButtonPad btExeportar = new JButtonPad( "Exportar" );
 
-	private final JButton btImportar = new JButton( "Importar" );
+	private final JButtonPad btImportar = new JButtonPad( "Importar" );
 
-	private final JButton btInventario = new JButton( "Executar Inventário" );
+	private final JButtonPad btInventario = new JButtonPad( "Executar Inventário" );
 
-	private final JButton btProdutosInvalidos = new JButton( "Listar inválidos" );
+	private final JButtonPad btProdutosInvalidos = new JButtonPad( "Listar inválidos" );
 
-	private final JButton btDirtorio = new JButton( "..." );
+	private final JButtonPad btDirtorio = new JButtonPad( "..." );
 
-	private final JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+	private final JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
 	private final JProgressBar status = new JProgressBar();
 	
@@ -845,7 +845,7 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 		
 		private final Tabela tabInvalidos = new Tabela();
 
-		private final JButton btTexto = new JButton( "Exportar para TXT", Icone.novo( "btTXT.gif" ) );
+		private final JButtonPad btTexto = new JButtonPad( "Exportar para TXT", Icone.novo( "btTXT.gif" ) );
 		
 		private final List<Object[]> invalidos;
 		

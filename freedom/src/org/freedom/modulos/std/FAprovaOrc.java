@@ -29,7 +29,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,22 +39,23 @@ import java.util.Vector;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -75,9 +75,9 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 	private JTextFieldPad txtVlrAprovado = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,2);
 	private JTextFieldPad txtTotal = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,2);
 	private Tabela tab = new Tabela();
-	private JButton btCalc = new JButton(Icone.novo("btExecuta.gif"));
-	private JButton btOk = new JButton(Icone.novo("btOk.gif"));
-	private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
+	private JButtonPad btCalc = new JButtonPad(Icone.novo("btExecuta.gif"));
+	private JButtonPad btOk = new JButtonPad(Icone.novo("btOk.gif"));
+	private JButtonPad btSair = new JButtonPad("Sair",Icone.novo("btSair.gif"));
 	private ImageIcon imgEditaCampo = Icone.novo("clEditar.gif");
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private ListaCampos lcOrc = new ListaCampos(this);

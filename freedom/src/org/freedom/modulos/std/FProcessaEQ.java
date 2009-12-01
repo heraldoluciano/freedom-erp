@@ -35,7 +35,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Vector;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 
@@ -58,7 +58,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 	private static final long serialVersionUID = 1L;
 
     private JPanelPad pin = new JPanelPad();
-	private JButton btProcessar = new JButton("Executar agora!",Icone.novo("btExecuta.gif"));
+	private JButtonPad btProcessar = new JButtonPad("Executar agora!",Icone.novo("btExecuta.gif"));
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtRefProd = new JTextFieldFK(JTextFieldPad.TP_STRING,13,0);

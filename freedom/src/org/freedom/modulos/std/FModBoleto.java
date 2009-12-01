@@ -31,7 +31,7 @@ import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.util.Vector;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CheckBoxEvent;
@@ -100,7 +100,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 
 	private final JTextFieldPad txtAdic = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 8, 2 );
 
-	private final JButton btAdic = new JButton( Icone.novo( "btOk.gif" ) );
+	private final JButtonPad btAdic = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
 	private JComboBoxPad cbCamposDin = null;
 
@@ -126,7 +126,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 
 	private final JTextFieldFK txtNomeBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
-	//private final JButton btPath = new JButton( "..." );
+	//private final JButtonPad btPath = new JButtonPad( "..." );
 
 	private JComboBoxPad cbAcao = null;
 	

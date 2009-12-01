@@ -35,7 +35,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JFileChooser;
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JProgressBar;
@@ -62,11 +62,11 @@ public class FImpTabFor extends FFilho implements ActionListener {
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtRazFor = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtNomeArq = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
-  private JButton btBuscaArq = new JButton(Icone.novo("btAbrirPeq.gif"));
+  private JButtonPad btBuscaArq = new JButtonPad(Icone.novo("btAbrirPeq.gif"));
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);
   private JProgressBar pbAnd = new JProgressBar();
-  private JButton btGerar = new JButton(Icone.novo("btGerar.gif"));
+  private JButtonPad btGerar = new JButtonPad(Icone.novo("btGerar.gif"));
   private int iAnd = 0;
   private int iLinha = 0;
   private int iTotInseridos = 0;

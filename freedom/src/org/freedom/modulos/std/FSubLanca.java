@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameEvent;
 
@@ -133,9 +133,9 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	private JScrollPane spnTxa = new JScrollPane( txaHistLanca );
 
-	private JButton btSalvar = new JButton( Icone.novo( "btSalvar.gif" ) );
+	private JButtonPad btSalvar = new JButtonPad( Icone.novo( "btSalvar.gif" ) );
 
-	private JButton btNovo = new JButton( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovo = new JButtonPad( Icone.novo( "btNovo.gif" ) );
 
 	private ListaCampos lcPlan = new ListaCampos( this, "PN" );
 

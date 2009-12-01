@@ -41,7 +41,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -92,7 +92,7 @@ public class FRPagar extends FRelatorio {
 
 	private ListaCampos lcPlanoPag = new ListaCampos( this );
 
-	private JButton btExp = new JButton( Icone.novo( "btTXT.gif" ) );
+	private JButtonPad btExp = new JButtonPad( Icone.novo( "btTXT.gif" ) );
 
 	public FRPagar() {
 

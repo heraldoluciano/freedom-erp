@@ -43,7 +43,7 @@ import java.sql.Types;
 import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
@@ -75,17 +75,17 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 
 	private JPanelPad pnImp = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 2, 0, 0 ) );
 
-	private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
-	private JButton btPrim = new JButton( "Nivel 1", Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btPrim = new JButtonPad( "Nivel 1", Icone.novo( "btNovo.gif" ) );
 
-	private JButton btSint = new JButton( "Sintética", Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btSint = new JButtonPad( "Sintética", Icone.novo( "btNovo.gif" ) );
 
-	private JButton btAnal = new JButton( "Analítica", Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btAnal = new JButtonPad( "Analítica", Icone.novo( "btNovo.gif" ) );
 
-	private JButton btImp = new JButton( Icone.novo( "btImprime.gif" ) );
+	private JButtonPad btImp = new JButtonPad( Icone.novo( "btImprime.gif" ) );
 
-	private JButton btPrevimp = new JButton( Icone.novo( "btPrevimp.gif" ) );
+	private JButtonPad btPrevimp = new JButtonPad( Icone.novo( "btPrevimp.gif" ) );
 	
 	private enum COL_PLAN {CODIGO, CODRED, DESC, RD, FIN};
 

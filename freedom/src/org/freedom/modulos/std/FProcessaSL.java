@@ -33,7 +33,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.acao.Processo;
@@ -56,7 +56,7 @@ public class FProcessaSL extends FFilho implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
     private JPanelPad pin = new JPanelPad();
-	private JButton btProcessar = new JButton("Executar agora!",Icone.novo("btExecuta.gif"));
+	private JButtonPad btProcessar = new JButtonPad("Executar agora!",Icone.novo("btExecuta.gif"));
 	private JLabelPad lbStatus = new JLabelPad();
 	boolean bRunProcesso = false;
     public FProcessaSL() {

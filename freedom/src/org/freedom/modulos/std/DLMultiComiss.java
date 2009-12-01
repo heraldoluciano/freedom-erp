@@ -27,13 +27,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.EditEvent;
@@ -42,6 +40,7 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -50,6 +49,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
@@ -93,7 +93,7 @@ public class DLMultiComiss extends FFDialogo implements MouseListener, PostListe
 	
 	private Integer codvenda = null;
 	 
-	public JButton btSair = new JButton( "Sair", Icone.novo("btSair.gif"));
+	public JButtonPad btSair = new JButtonPad( "Sair", Icone.novo("btSair.gif"));
 	
 	private ImageIcon imgObrigatorio = Icone.novo( "clObrigatorio.gif" );
 	

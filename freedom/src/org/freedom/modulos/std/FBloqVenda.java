@@ -26,25 +26,25 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
-import org.freedom.componentes.JPanelPad;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
@@ -65,8 +65,8 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
   private JTextFieldPad txtDataFim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JCheckBoxPad cbBloquear = new JCheckBoxPad("Bloquear","S","N");
 
-  private JButton btBloquear = new JButton("Executar",Icone.novo("btExecuta.gif"));
-  private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
+  private JButtonPad btBloquear = new JButtonPad("Executar",Icone.novo("btExecuta.gif"));
+  private JButtonPad btSair = new JButtonPad("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcVenda = new ListaCampos(this);
   public FBloqVenda() {
   	super(false);

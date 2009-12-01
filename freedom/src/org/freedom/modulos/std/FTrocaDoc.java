@@ -28,7 +28,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.bmps.Icone;
@@ -67,11 +67,11 @@ public class FTrocaDoc extends FTabDados implements ActionListener {
     
     private JTextFieldFK txtVlrCompra = new JTextFieldFK( JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec );
 
-    private JButton btTrocaDoc = new JButton( Icone.novo( "btTrocaNumero.gif" ) );
+    private JButtonPad btTrocaDoc = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
     
-    private JButton btTrocaDocCompra = new JButton( Icone.novo( "btTrocaNumero.gif" ) );
+    private JButtonPad btTrocaDocCompra = new JButtonPad( Icone.novo( "btTrocaNumero.gif" ) );
 
-    private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+    private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
     private ListaCampos lcVenda = new ListaCampos( this );
     

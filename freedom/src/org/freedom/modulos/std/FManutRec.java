@@ -46,7 +46,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import org.freedom.componentes.JButtonPad;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -226,37 +226,37 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JPanelPad pinFiltroStatus = new JPanelPad( 300, 150 );
 
-	private JButton btBaixaConsulta = new JButton( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btBaixaConsulta = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
-	private JButton btBaixaManut = new JButton( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btBaixaManut = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
-	private JButton btEditManut = new JButton( Icone.novo( "btEditar.gif" ) );
+	private JButtonPad btEditManut = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
-	private JButton btNovoManut = new JButton( Icone.novo( "btNovo.gif" ) );
+	private JButtonPad btNovoManut = new JButtonPad( Icone.novo( "btNovo.gif" ) );
 
-	private JButton btExcluirManut = new JButton( Icone.novo( "btExcluir.gif" ) );
+	private JButtonPad btExcluirManut = new JButtonPad( Icone.novo( "btExcluir.gif" ) );
 
-	private JButton btEstorno = new JButton( Icone.novo( "btCancelar.gif" ) );
+	private JButtonPad btEstorno = new JButtonPad( Icone.novo( "btCancelar.gif" ) );
 
-	private JButton btCancItem = new JButton( Icone.novo( "btCancItem.png" ) );
+	private JButtonPad btCancItem = new JButtonPad( Icone.novo( "btCancItem.png" ) );
 	
-	private JButton btCarregaGridManut = new JButton( Icone.novo( "btExecuta.gif" ) );
+	private JButtonPad btCarregaGridManut = new JButtonPad( Icone.novo( "btExecuta.gif" ) );
 
-	private JButton btCarregaBaixas = new JButton( Icone.novo( "btConsBaixa.gif" ) );
+	private JButtonPad btCarregaBaixas = new JButtonPad( Icone.novo( "btConsBaixa.gif" ) );
 	
-	private JButton btCarregaBaixasMan = new JButton( Icone.novo( "btConsBaixa.gif" ) );
+	private JButtonPad btCarregaBaixasMan = new JButtonPad( Icone.novo( "btConsBaixa.gif" ) );
 
-	private JButton btBaixa = new JButton( Icone.novo( "btOk.gif" ) );
+	private JButtonPad btBaixa = new JButtonPad( Icone.novo( "btOk.gif" ) );
 
-	private JButton btImpBol = new JButton( Icone.novo( "btCodBar.gif" ) );
+	private JButtonPad btImpBol = new JButtonPad( Icone.novo( "btCodBar.gif" ) );
 		
-	private JButton btSair = new JButton( "Sair", Icone.novo( "btSair.gif" ) );
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.gif" ) );
 
-	private JButton btCarregaVenda = new JButton( "Consulta venda", Icone.novo( "btSaida.gif" ) );
+	private JButtonPad btCarregaVenda = new JButtonPad( "Consulta venda", Icone.novo( "btSaida.gif" ) );
 	
-	private JButton btHistorico = new JButton( Icone.novo( "btTelefone.png" ) );	
+	private JButtonPad btHistorico = new JButtonPad( Icone.novo( "btTelefone.png" ) );	
 	
-	private JButton btBordero = new JButton( Icone.novo( "clPriorAlta.gif" ) );	
+	private JButtonPad btBordero = new JButtonPad( Icone.novo( "clPriorAlta.gif" ) );	
 
 	private JCheckBoxPad cbRecebidas = new JCheckBoxPad( "Recebidas", "S", "N" );
 

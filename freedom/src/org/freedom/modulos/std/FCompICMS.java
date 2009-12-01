@@ -26,10 +26,9 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import org.freedom.componentes.JPanelPad;
-
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FFilho;
 
 public class FCompICMS extends FFilho implements ActionListener {
@@ -39,7 +38,7 @@ public class FCompICMS extends FFilho implements ActionListener {
   private JPanelPad pinCab = new JPanelPad(400,100);
   private JPanelPad pinRod = new JPanelPad(400,120);
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-  private JButton btSair = new JButton(Icone.novo("btSair.gif"));
+  private JButtonPad btSair = new JButtonPad(Icone.novo("btSair.gif"));
   public FCompICMS() {
   	super(false);
     setTitulo("Compara ICMS");
