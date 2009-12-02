@@ -76,7 +76,9 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 		setModel( modelo );
 		setCursor( new Cursor( Cursor.HAND_CURSOR ) );
 		setAutoResizeMode( AUTO_RESIZE_OFF );
+		
 		setSelectionMode( javax.swing.ListSelectionModel.SINGLE_SELECTION );
+		
 		DefaultTableCellRenderer bigDecimalRenderer = new DefaultTableCellRenderer() {
 
 			private static final long serialVersionUID = 1L;
@@ -86,6 +88,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 				setText( ( value == null ) ? "" : "" + value );
 			}
 		};
+		
 		bigDecimalRenderer.setHorizontalAlignment( SwingConstants.RIGHT );
 		setDefaultRenderer( BigDecimal.class, bigDecimalRenderer );
 
@@ -98,12 +101,16 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 				setText( ( value == null ) ? "" : "" + value );
 			}
 		};
+		
 		stringDireitaRenderer.setHorizontalAlignment( SwingConstants.RIGHT );
 		setDefaultRenderer( StringDireita.class, stringDireitaRenderer );
 
 		setDefaultEditor( Date.class, new DateEditor() );
 		
-		this.setFont( SwingParams.getFontpad() );	
+		this.setFont( SwingParams.getFontpadmed() );	
+		this.getTableHeader().setFont(SwingParams.getFontboldmed());
+		
+		
 
 	}
 
@@ -349,14 +356,14 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 	
 	class ColorColumnRenderer extends DefaultTableCellRenderer	{
 		private static final long serialVersionUID = 1L;
-		private Color corfundo;
-		private Color corfrente;
+//		private Color corfundo;
+//		private Color corfrente;
 		int crow;
 		 	
 		public ColorColumnRenderer(Color fundo, Color frente, int prow) {
 			super(); 		      
-			corfundo = fundo;
-			corfrente = frente; 
+	//		corfundo = fundo;
+//			corfrente = frente; 
 			crow = prow;
 			vcoresb.addElement( fundo );
 			vcoresf.addElement( frente );
@@ -364,8 +371,8 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
 		  	
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column  ) {
 			Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);	 	
-			int icor1 = ((Color) vcoresb.elementAt( row )).getRGB();
-			int icor2 = ((Color) vcoresf.elementAt( row )).getRGB();
+//			int icor1 = ((Color) vcoresb.elementAt( row )).getRGB();
+//			int icor2 = ((Color) vcoresf.elementAt( row )).getRGB();
 			
 			cell.setBackground( (Color) vcoresb.elementAt( row ) );
 			cell.setForeground( (Color) vcoresf.elementAt( row ) );	

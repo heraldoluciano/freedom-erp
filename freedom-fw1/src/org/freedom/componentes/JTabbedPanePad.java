@@ -44,7 +44,7 @@ public class JTabbedPanePad extends JTabbedPane implements FocusListener  {
 	public JTabbedPanePad() {
 		super();
 		setChangedListener();
-		this.setFont( SwingParams.getFontpad() );
+		this.setFont( SwingParams.getFontbold() );
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class JTabbedPanePad extends JTabbedPane implements FocusListener  {
 	public JTabbedPanePad(int arg0) {
 		super(arg0);
 		setChangedListener();
-		this.setFont( SwingParams.getFontpad() );
+		this.setFont( SwingParams.getFontbold() );
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class JTabbedPanePad extends JTabbedPane implements FocusListener  {
 	public JTabbedPanePad(int arg0, int arg1) {
 		super(arg0, arg1);
 		setChangedListener();
-		this.setFont( SwingParams.getFontpad() );
+		this.setFont( SwingParams.getFontbold() );
 	}
 	
 	private void setChangedListener() {
