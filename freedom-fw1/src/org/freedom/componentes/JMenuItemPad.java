@@ -62,6 +62,16 @@ public class JMenuItemPad extends JMenuItem {
 	}
 
 	/**
+	*  Construtor da classe JMenuItem(). <BR>
+	*
+	*/
+  
+	public JMenuItemPad (String menu) {
+		super(menu);
+		this.setFont( SwingParams.getFontbold() );
+	}
+	
+	/**
 	*  Construtor da classe JMenu(). <BR>
 	*  Construtor que ja ajusta os paramatros basicos do JMenuPad.
 	 * @param tela 
