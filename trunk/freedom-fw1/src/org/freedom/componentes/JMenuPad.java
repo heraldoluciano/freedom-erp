@@ -41,6 +41,17 @@ public class JMenuPad extends JMenu {
 	public JMenuPad () {
 		this(0,0,0,0);
 	}
+	
+	 
+	/**
+	*  Construtor da classe JMenu(String menu). <BR>
+	*
+	*/
+  
+	public JMenuPad (String menu) {
+		super(menu);
+		this.setFont( SwingParams.getFontbold() );		
+	}
 
 	/**
 	*  Construtor da classe JMenu(). <BR>
