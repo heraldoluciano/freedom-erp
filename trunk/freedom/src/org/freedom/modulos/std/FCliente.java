@@ -287,6 +287,10 @@ public class FCliente extends FTabDados
 	private JTextFieldPad txtEmailCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 	
 	private JTextFieldPad txtEmailNfeCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtEmailEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtEmailCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtSiteCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
@@ -937,12 +941,18 @@ public class FCliente extends FTabDados
 		adicCampo( txtBairEnt, 7, 60, 260, 20, "BairEnt", "Bairro", ListaCampos.DB_SI, false );	
 		adicCampo( txtCepEnt, 270, 60, 100, 20, "CepEnt", "Cep", ListaCampos.DB_SI, false );		
 		txtCepEnt.setMascara( JTextFieldPad.MC_CEP );		
-		adicCampo( txtDDDFoneEnt, 7, 100, 40, 20, "DDDFoneEnt", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFoneEnt, 50, 100, 138, 20, "FoneEnt", "Telefone", ListaCampos.DB_SI, false );
+
+		adicCampo( txtDDDFoneEnt, 7, 100, 30, 20, "DDDFoneEnt", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtFoneEnt, 40, 100, 70, 20, "FoneEnt", "Telefone", ListaCampos.DB_SI, false );
 		txtFoneEnt.setMascara( JTextFieldPad.MC_FONE );
-		adicCampo( txtDDDFaxEnt, 192, 100, 40, 20, "DDDFaxEnt", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFaxEnt, 235, 100, 138, 20, "FaxEnt", "Fax", ListaCampos.DB_SI, false );
+		adicCampo( txtDDDFaxEnt, 113, 100, 30, 20, "DDDFaxEnt", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtFaxEnt, 146, 100, 70, 20, "FaxEnt", "Fax", ListaCampos.DB_SI, false );
+		adicCampo( txtEmailEnt, 219, 100, 150, 20, "EmailEnt", "Email", ListaCampos.DB_SI, false );
+		
 		txtFaxEnt.setMascara( JTextFieldPad.MC_FONE );
+		
+		
+		
 		adic( btAtEntrega, 400, 15, 30, 30 );
 		
 		if ( (Boolean)bPref.get( "USAIBGECLI" )) {		
@@ -976,12 +986,14 @@ public class FCliente extends FTabDados
 		adicCampo( txtBairCob, 7, 60, 260, 20, "BairCob", "Bairro", ListaCampos.DB_SI, false );		
 		adicCampo( txtCepCob, 270, 60, 100, 20, "CepCob", "Cep", ListaCampos.DB_SI, false );
 		txtCepCob.setMascara( JTextFieldPad.MC_CEP );
-		adicCampo( txtDDDFoneCob, 7, 100, 40, 20, "DDDFoneCob", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFoneCob, 50, 100, 138, 20, "FoneCob", "Telefone", ListaCampos.DB_SI, false );
+		adicCampo( txtDDDFoneCob, 7, 100, 30, 20, "DDDFoneCob", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtFoneCob, 40, 100, 70, 20, "FoneCob", "Telefone", ListaCampos.DB_SI, false );
 		txtFoneCob.setMascara( JTextFieldPad.MC_FONE );
-		adicCampo( txtDDDFaxCob, 192, 100, 40, 20, "DDDFaxCob", "DDD", ListaCampos.DB_SI, false );
-		adicCampo( txtFaxCob, 235, 100, 138, 20, "FaxCob", "Fax", ListaCampos.DB_SI, false );
+		adicCampo( txtDDDFaxCob, 113, 100, 30, 20, "DDDFaxCob", "DDD", ListaCampos.DB_SI, false );
+		adicCampo( txtFaxCob, 146, 100, 70, 20, "FaxCob", "Fax", ListaCampos.DB_SI, false );
 		txtFaxCob.setMascara( JTextFieldPad.MC_FONE );
+		adicCampo( txtEmailCob, 219, 100, 150, 20, "EmailCob", "Email", ListaCampos.DB_SI, false );
+		
 		adic( btAtCobranca, 400, 15, 30, 30 );
 		
 		if ( (Boolean)bPref.get( "USAIBGECLI" )) {
