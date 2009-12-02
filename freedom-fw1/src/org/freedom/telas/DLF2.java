@@ -99,6 +99,7 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 	public DLF2( ListaCampos lc, Component cOrig ) {
 
 		super( cOrig );
+		
 		btExecuta.setFocusable( false );
 		cnF2 = lc.getConexao();
 		if ( cnF2 == null ) {
@@ -112,6 +113,7 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 		lcF2 = lc;
 
 		pnBordCab.setPreferredSize( new Dimension( 300, 55 ) );
+		
 
 		pinCab = new JPanelPad( 390, 45 );
 		pinCab.adic( lbPesq, 7, 3, 270, 20 );
@@ -170,6 +172,7 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 		int iTam = 1;
 		int iDec = 0;
 		int iMascara = 0;
+		
 		if ( tab.getNumColunas() > 0 ) {
 			if ( ColunaAtiva == ( tab.getNumColunas() - 1 ) ) {
 				tab.getColumnModel().getColumn( ColunaAtiva ).setHeaderRenderer( cabAnt );

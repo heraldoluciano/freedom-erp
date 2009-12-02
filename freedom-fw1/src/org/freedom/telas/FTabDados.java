@@ -62,6 +62,7 @@ public class FTabDados extends FDados implements KeyListener {
 	
 	public JTabbedPanePad adicTab(String tit, JPanelPad pn) {
 		tpn.add(tit, pn);
+		tpn.setFont(SwingParams.getFontbold());
 		pn.addKeyListener(this);
 		pnCliente.add(tpn, BorderLayout.CENTER);
 		return tpn;
