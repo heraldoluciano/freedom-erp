@@ -346,6 +346,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public void show() {
 
 		telaPrincipal.setVisible( true );
+        UIManager.put("InternalFrame.titleFont", SwingParams.getFontbold());
 	}
 
 	public void adicTelaBotao( JButtonPad bt ) {
@@ -621,11 +622,17 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				( (JMenuPad) oMenu ).add( miSair );
 			}
 		}
-		JMenu mAjuda = new JMenu( "Ajuda" );
+		JMenuPad mAjuda = new JMenuPad( "Ajuda" );
 		JMenuItem miSobre = new JMenuItem( "Sobre" );
+		
+		mAjuda.setFont( SwingParams.getFontbold() );	
+		
 		miSobre.addActionListener( this );
+		miSobre.setFont( SwingParams.getFontbold() );
+		
 		mAjuda.add( miSobre );
 		JMenuItem miAtalhos = new JMenuItem( "Atalhos" );
+		miAtalhos.setFont( SwingParams.getFontbold() );
 		miAtalhos.addActionListener( this );
 		mAjuda.add( miAtalhos );
 
@@ -634,6 +641,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			JMenuItem miSuporte = new JMenuItem( "Suporte" );
 			miSuporte.addActionListener( this );
 			mAjuda.add( miSuporte );
+			miSuporte.setFont( SwingParams.getFontbold() );
 		}
 
 		telaPrincipal.bar.add( mAjuda );
