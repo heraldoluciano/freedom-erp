@@ -42,6 +42,7 @@ import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Vector;
 
@@ -332,8 +333,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		try {
 			btOpcao = new JButtonPad( iCodSis, iCodModu, iCodMenu, tela, titulo );
 			btOpcao.setIcon( Icone.novo( sImagem ) );
-			if ( sToolTip != null )
+			if ( sToolTip != null ) {
 				btOpcao.setToolTipText( sToolTip );
+
+			}
 			vBotoes.add( btOpcao );
 			adicTelaBotao( btOpcao );
 			return btOpcao;
@@ -346,7 +349,19 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public void show() {
 
 		telaPrincipal.setVisible( true );
-        UIManager.put("InternalFrame.titleFont", SwingParams.getFontbold());
+
+		UIManager.put("InternalFrame.titleFont", SwingParams.getFontbold());
+        UIManager.put("ToolTip.font", SwingParams.getFontitalicmed());
+        UIManager.put("Label.font", SwingParams.getFontbold());
+        
+//        System.out.println(UIManager.getDefaults().size()+ " propriedades definidas !");  
+//        Enumeration keys = UIManager.getDefaults().keys();  
+//        Enumeration elements = UIManager.getDefaults().elements();
+        
+//        while (keys.hasMoreElements()) {  
+//            System.out.println(keys.nextElement().toString() + " - " + elements.nextElement().toString());  
+//        }  
+        
 	}
 
 	public void adicTelaBotao( JButtonPad bt ) {
