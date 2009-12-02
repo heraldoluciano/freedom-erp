@@ -39,6 +39,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -56,8 +57,8 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
     protected FPrincipal fPrim;
     
     private Component firstFocus = null;
-
-    private boolean initFirstFocus = true;
+    
+	private boolean initFirstFocus = true;
     
     private int largAnt = 0;
     private int altAnt = 0;
@@ -92,20 +93,17 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
     public FFilho(boolean comScroll) {
         /* Construtor da classe. */
         this("Filho01", true, true, true, true, comScroll);
+        
     }
 
     public FFilho(String arg01, boolean arg02, boolean arg03, boolean arg04,
             boolean arg05, boolean comScroll) {
         super(arg01, arg02, arg03, arg04, arg05);
+        
         c = getContentPane();
         c.setLayout(blDados);
         addInternalFrameListener(this);
         setClosable(true);
-        
-		Font fonte = new Font("Arial",Font.PLAIN, 10);
-		
-		this.setFont(fonte);
-
         
         pnBordRod.setLayout(new GridLayout(1,1));
         pnBordRod.setPreferredSize(new Dimension(450, 30));
@@ -117,6 +115,7 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
         pnCliente.setLayout(blCliente);
         pnRodape.setLayout(blRodape);
         pnPrincipal.add(pnCliente, BorderLayout.CENTER);
+        
         if (comScroll) {
             c.add(spPrincipal, BorderLayout.CENTER);
         }
@@ -152,6 +151,7 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
     		setName(name);
     	}
     	setTitle(tit);
+    	
     }
     //protected void ativaScroll() {
     	
