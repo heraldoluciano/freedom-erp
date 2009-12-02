@@ -51,12 +51,12 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
-public class FAgendProd extends FFilho implements ActionListener, MouseListener{
+public class FAcompanhaProd extends FFilho implements ActionListener, MouseListener{
 
 	private static final long serialVersionUID = 1L;
 	
 	
-	private enum ecolAgendamentos{
+	private enum ecolAcompanhamentos{
 	
 		SITOP, DTEMITOP, DTFABROP, CODOP, SEQOP, DESCEST, 
 		QTDSUG, QTDPREV, QTDTOTAL, TEMPOTOTAL, TOTALFASE
@@ -146,7 +146,7 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 
 	FOP f;
 	
-	public FAgendProd( ) {
+	public FAcompanhaProd( ) {
 
 		super( true );
 		setAtribos( 50, 50, 900, 470 );
@@ -239,17 +239,17 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		tab.adicColuna( "Concl." );
 		tab.adicColuna( "Fase" );
 		
-		tab.setTamColuna( 10, ecolAgendamentos.SITOP.ordinal() );
-		tab.setTamColuna( 68, ecolAgendamentos.DTEMITOP.ordinal() );
-		tab.setTamColuna( 68, ecolAgendamentos.DTFABROP.ordinal() );
-		tab.setTamColuna( 45, ecolAgendamentos.CODOP.ordinal() );
-		tab.setTamColuna( 28, ecolAgendamentos.SEQOP.ordinal() );
-		tab.setTamColuna( 370, ecolAgendamentos.DESCEST.ordinal() );
-		tab.setTamColuna( 62, ecolAgendamentos.QTDSUG.ordinal() );
-		tab.setTamColuna( 62, ecolAgendamentos.QTDPREV.ordinal() );
-		tab.setTamColuna( 62, ecolAgendamentos.QTDTOTAL.ordinal() );		
-		tab.setTamColuna( 40, ecolAgendamentos.TOTALFASE.ordinal() );
-		tab.setTamColuna( 55, ecolAgendamentos.TEMPOTOTAL.ordinal() );
+		tab.setTamColuna( 10, ecolAcompanhamentos.SITOP.ordinal() );
+		tab.setTamColuna( 68, ecolAcompanhamentos.DTEMITOP.ordinal() );
+		tab.setTamColuna( 68, ecolAcompanhamentos.DTFABROP.ordinal() );
+		tab.setTamColuna( 45, ecolAcompanhamentos.CODOP.ordinal() );
+		tab.setTamColuna( 28, ecolAcompanhamentos.SEQOP.ordinal() );
+		tab.setTamColuna( 370, ecolAcompanhamentos.DESCEST.ordinal() );
+		tab.setTamColuna( 62, ecolAcompanhamentos.QTDSUG.ordinal() );
+		tab.setTamColuna( 62, ecolAcompanhamentos.QTDPREV.ordinal() );
+		tab.setTamColuna( 62, ecolAcompanhamentos.QTDTOTAL.ordinal() );		
+		tab.setTamColuna( 40, ecolAcompanhamentos.TOTALFASE.ordinal() );
+		tab.setTamColuna( 55, ecolAcompanhamentos.TEMPOTOTAL.ordinal() );
 			
 		Calendar cPeriodo = Calendar.getInstance();
 		
@@ -385,17 +385,17 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 				}
 								
 				tab.adicLinha();
-				tab.setValor( imgStatus, i, ecolAgendamentos.SITOP.ordinal() );
-				tab.setValor( rs.getDate( "DTEMITOP" ), i, ecolAgendamentos.DTEMITOP.ordinal() );
-				tab.setValor( rs.getDate( "DTFABROP" ), i, ecolAgendamentos.DTFABROP.ordinal() );
-				tab.setValor( rs.getInt( "CODOP" ), i, ecolAgendamentos.CODOP.ordinal() );
-				tab.setValor( rs.getInt( "SEQOP" ), i, ecolAgendamentos.SEQOP.ordinal() );
-				tab.setValor( rs.getString( "DESCEST" ), i, ecolAgendamentos.DESCEST.ordinal() );
-				tab.setValor( rs.getBigDecimal( "QTDSUG" ), i, ecolAgendamentos.QTDSUG.ordinal() );
-				tab.setValor( rs.getBigDecimal( "QTDPREV" ), i, ecolAgendamentos.QTDPREV.ordinal() );		
-				tab.setValor( rs.getBigDecimal( "QTDFINAL" ), i, ecolAgendamentos.QTDTOTAL.ordinal() );			
-				tab.setValor( rs.getBigDecimal( "TEMPO" ) + "%", i, ecolAgendamentos.TEMPOTOTAL.ordinal() );							
-				tab.setValor( rs.getBigDecimal( "FASEATUAL" ) + "/" + rs.getBigDecimal( "TOTFASES" ), i, ecolAgendamentos.TOTALFASE.ordinal() );
+				tab.setValor( imgStatus, i, ecolAcompanhamentos.SITOP.ordinal() );
+				tab.setValor( rs.getDate( "DTEMITOP" ), i, ecolAcompanhamentos.DTEMITOP.ordinal() );
+				tab.setValor( rs.getDate( "DTFABROP" ), i, ecolAcompanhamentos.DTFABROP.ordinal() );
+				tab.setValor( rs.getInt( "CODOP" ), i, ecolAcompanhamentos.CODOP.ordinal() );
+				tab.setValor( rs.getInt( "SEQOP" ), i, ecolAcompanhamentos.SEQOP.ordinal() );
+				tab.setValor( rs.getString( "DESCEST" ), i, ecolAcompanhamentos.DESCEST.ordinal() );
+				tab.setValor( rs.getBigDecimal( "QTDSUG" ), i, ecolAcompanhamentos.QTDSUG.ordinal() );
+				tab.setValor( rs.getBigDecimal( "QTDPREV" ), i, ecolAcompanhamentos.QTDPREV.ordinal() );		
+				tab.setValor( rs.getBigDecimal( "QTDFINAL" ), i, ecolAcompanhamentos.QTDTOTAL.ordinal() );			
+				tab.setValor( rs.getBigDecimal( "TEMPO" ) + "%", i, ecolAcompanhamentos.TEMPOTOTAL.ordinal() );							
+				tab.setValor( rs.getBigDecimal( "FASEATUAL" ) + "/" + rs.getBigDecimal( "TOTFASES" ), i, ecolAcompanhamentos.TOTALFASE.ordinal() );
 				
 			}
 			
@@ -435,8 +435,8 @@ public class FAgendProd extends FFilho implements ActionListener, MouseListener{
 		
 		 if ( mevt.getClickCount() == 2 ) {		
 			 
-			 Integer codOp =   (Integer) tab.getValor( tab.getLinhaSel(), ecolAgendamentos.CODOP.ordinal());
-			 Integer seqOp = (Integer) tab.getValor( tab.getLinhaSel(), ecolAgendamentos.SEQOP.ordinal());
+			 Integer codOp =   (Integer) tab.getValor( tab.getLinhaSel(), ecolAcompanhamentos.CODOP.ordinal());
+			 Integer seqOp = (Integer) tab.getValor( tab.getLinhaSel(), ecolAcompanhamentos.SEQOP.ordinal());
 			
 			if ( tabEv == tab && tabEv.getLinhaSel() >= 0 ) {
 				

@@ -89,7 +89,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addOpcao(-1, TP_OPCAO_MENU, "Produção", "", 'P', 200000000, 0, false,null);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Ordens de produção","Ordens de produção", 'O', 200100000, 1, true, FOP.class);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Simulação de OP","Simulação de OP", 'S', 200200000, 1, true, FSimulaOP.class);
-			addOpcao(200000000, TP_OPCAO_ITEM, "Agendamento de produção","Agendamento de produção", 'S', 200300000, 1, true, FAgendProd.class);
+			addOpcao(200000000, TP_OPCAO_ITEM, "Acompanhamento da produção","Acompanhamento da produção", 'o', 200300000, 1, true, FAcompanhaProd.class);
 			addSeparador(200000000);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Contra Prova","Contra prova", 'P', 200400000, 1, true, FContraProva.class);
 			addSeparador(200000000);
@@ -127,7 +127,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addBotao("btOP.gif","Ordens de Produção","Ordens de Produção",200100000,FOP.class);
 		addBotao("btRma.gif","Requisição de material", "Requisição de material", 200200000,FRma.class);
 		addBotao("btEstoque.gif","Consulta estoque","Consulta", 400300000, FConsulta.class);
-		addBotao("btTarefas.gif","Agendamento de produção","Agendamento de produção", 200300000, FAgendProd.class);
+		addBotao("btAcompanhaProd.gif","Acompanhamento da produção","Acompanhamento da produção", 200300000, FAcompanhaProd.class);
 		
 		ajustaMenu(); 
 		

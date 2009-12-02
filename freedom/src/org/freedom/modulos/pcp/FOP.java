@@ -658,6 +658,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		setNavegador( navRod );
 
 		adicCampo( txtSeqItOp, 7, 20, 50, 20, "seqitop", "Sq.", ListaCampos.DB_PK, true );
+		
 		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
 			adicCampo( txtCodProdDet, 60, 20, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true );
 			txtCodProdDet.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProdDetCod.getWhereAdic() ) );
@@ -669,6 +670,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			txtRefProdDet.setFK( true );
 			txtRefProdDet.setBuscaAdic( new DLBuscaProd( con, "REFPROD", lcProdDetRef.getWhereAdic() ) );
 		}
+		
 		adicDescFK( txtDescProdDet, 133, 20, 250, 20, "descprod", "Descrição do produto" );
 		adicCampo( txtCodLoteProdDet, 386, 20, 90, 20, "codlote", "Lote", ListaCampos.DB_FK, false );
 		adicCampo( txtQtdItOp, 479, 20, 90, 20, "qtditop", "Qtd.", ListaCampos.DB_SI, false );
@@ -2464,7 +2466,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
-	@ SuppressWarnings ( "unchecked" )
 	private HashMap<String, Object> getPrefere( DbConnection con ) {
 	
 		HashMap<String, Object> retorno = new HashMap<String, Object>();
@@ -2491,15 +2492,25 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				retorno.put( "USAREFPROD", new Boolean( rs.getString( "USAREFPROD" ).trim().equals( "S" ) ) );
 				retorno.put( "RATAUTO", new Boolean( rs.getString( "RATAUTO" ).trim().equals( "S" ) ) );
 			}
+			else {
+				retorno.put( "USAREFPROD", new Boolean( false ) );
+				retorno.put( "RATAUTO", new Boolean( false ) );
+
+				Funcoes.mensagemInforma( null, "Não foram encontradas preferências para o módulo PCP!" );
+				
+			}
 	
 			rs.close();
 			ps.close();
 	
 			con.commit();
-		} catch ( SQLException err ) {
+			
+		} 
+		catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
-		} finally {
+		} 
+		finally {
 			ps = null;
 			rs = null;
 			sql = null;
