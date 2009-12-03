@@ -41,10 +41,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
-
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
@@ -284,8 +282,20 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	
 	private String modeloBoleto1 = "";
 	
+	private JTextFieldPad txtNumContaitrec = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+
+	private JTextFieldFK txtDescContaitrec = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtNumConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+
+	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private ListaCampos lcContaitrec = new ListaCampos( this );
+	
+	private ListaCampos lcConta = new ListaCampos( this, "CA" );
+	
 	public static enum COL_RETDFV { CODPLANOPAG, VLRDESCVENDA, VLRADICVENDA, IMPPED, IMPNOTA, 
-		MODBOL1, IMPREC, MODBOL2, REIMPNOTA, IMPBOL};
+		MODBOL1, IMPREC, MODBOL2, REIMPNOTA, IMPBOL, NUMCONTA};
 		
 	BigDecimal volumes = null;
 		
@@ -310,7 +320,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		this.volumes = volumes;
 		
 		setTitulo( "Fechar Venda" );
-		setAtribos( 405, 450 );		
+		setAtribos( 405, 490 );		
 
 		bPrefs = prefs();
 
@@ -444,8 +454,27 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtCodCartCobItRec.setListaCampos( lcCartCobItRec );
 		txtDescCartCobItRec.setListaCampos( lcCartCobItRec );
 		txtCodCartCobItRec.setFK( true );
+		
+		lcContaitrec.add( new GuardaCampo( txtNumContaitrec, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
+		lcContaitrec.add( new GuardaCampo( txtDescContaitrec, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
+		lcContaitrec.montaSql( false, "CONTA", "FN" );
+		lcContaitrec.setReadOnly( true );
+		lcContaitrec.setConexao( cn );
+		txtNumContaitrec.setTabelaExterna( lcContaitrec );
+		txtNumContaitrec.setFK( true );
+		txtNumContaitrec.setNomeCampo( "NumConta" );
+		
+		lcConta.add( new GuardaCampo( txtNumConta, "NumConta", "Nº Conta", ListaCampos.DB_PK, false ) );
+		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
+		lcConta.montaSql( false, "CONTA", "FN" );
+		lcConta.setReadOnly( true );
+		lcConta.setConexao( cn );
+		txtNumConta.setTabelaExterna( lcConta );
+		txtNumConta.setFK( true );
+		txtNumConta.setNomeCampo( "NumConta" );
 
 		txtCodPlanoPag.setTabelaExterna( lcPlanoPag );
+		
 		lcVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.venda", ListaCampos.DB_PK, false ) );
 		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK, false ) );
 		lcVenda.add( new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cod.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, false ) );
@@ -457,6 +486,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcVenda.add( new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtDescBanco, false ) );
 		lcVenda.add( new GuardaCampo( txtCodCartCob, "CodCartCob", "Cód.cart.cob", ListaCampos.DB_FK, txtDescCartCob, false ));
 		lcVenda.add( new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, false ) );
+		lcVenda.add( new GuardaCampo( txtNumConta, "NumConta", "Cod.Conta", ListaCampos.DB_FK, txtDescConta, false ) );
+		
 		lcVenda.montaSql( false, "VENDA", "VD" );
 		lcVenda.setConexao( cn );
 		txtCodVenda.setNomeCampo( "CodVenda" );
@@ -466,6 +497,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtPercDescVenda.setListaCampos( lcVenda );
 		txtStatusVenda.setListaCampos( lcVenda );
 		txtCodPlanoPag.setListaCampos( lcVenda );
+		txtNumConta.setListaCampos( lcVenda );
 		
 
 		lcFreteVD.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo", ListaCampos.DB_PK, false ) );
@@ -555,6 +587,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcItReceber.add( new GuardaCampo( txtCodTipoCobItRec, "CodTipoCob", "Cod.tp.cob.", ListaCampos.DB_FK, txtDescTipoCobItRec, false ) );
 		lcItReceber.add( new GuardaCampo( txtCodBancoItRec, "CodBanco", "Cód.banco", ListaCampos.DB_FK, txtDescBancoItRec, false ) );
 		lcItReceber.add( new GuardaCampo( txtCodCartCobItRec, "CodCartCob", "Cód.Cart.Cob.", ListaCampos.DB_FK, txtDescCartCobItRec, false ) );
+		lcItReceber.add( new GuardaCampo( txtNumContaitrec, "NumConta", "Cód.Conta", ListaCampos.DB_FK, txtDescContaitrec, false ) );
 		lcItReceber.add( new GuardaCampo( cbDescPont, "DescPont", "Desc.Pont", ListaCampos.DB_SI, false ) );
 		lcItReceber.montaSql( false, "ITRECEBER", "FN" );
 		lcItReceber.setQueryCommit( false );
@@ -565,6 +598,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtCodTipoCobItRec.setListaCampos( lcItReceber );
 		txtCodBancoItRec.setListaCampos( lcItReceber );
 		txtCodCartCobItRec.setListaCampos( lcItReceber );
+		txtNumContaitrec.setListaCampos( lcItReceber );
 		txtDescTipoCobItRec.setLabel( "Descrição do tipo de cobrança" );
 		txtDescBancoItRec.setLabel( "Nome do banco" );
 		txtDescCartCobItRec.setLabel( "Descrição da carteira de cobrança" );
@@ -656,24 +690,32 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		adic( new JLabelPad("Descriçao da Carteira de cobrança"), 110, 120, 250, 20 );
 		adic( txtDescCartCob, 110, 140, 250, 20 );
 
-		adic( new JLabel("Cód.Modelo"), 7, 160, 100, 20 );
-		adic( txtCodModBol, 7, 180, 100, 20 );
-		adic( new JLabel("Descrição do modelo de recibo"), 110, 160, 250, 20 );
-		adic( txtDescModBol, 110, 180, 250, 20 );
-		adic( new JLabel( "% Desc." ), 7, 200, 100, 20 );
-		adic( txtPercDescVenda, 7, 220, 100, 20 );
-		adic( new JLabelPad( "V Desc." ), 110, 200, 100, 20 );
-		adic( txtVlrDescVenda, 110, 220, 100, 20 );
-		adic( new JLabelPad( "% Adic." ), 7, 240, 100, 20 );
-		adic( txtPercAdicVenda, 7, 260, 100, 20 );
-		adic( new JLabelPad( "V Adic." ), 110, 220, 100, 20 );
-		adic( txtVlrAdicVenda, 110, 260, 100, 20 );
+		adic( new JLabelPad( "Nºconta" ), 7, 160, 250, 20 );
+		adic( txtNumConta, 7, 180, 100, 20 );
+		adic( new JLabelPad( "Descrição da conta" ), 110, 160, 250, 20 );
+		adic( txtDescConta, 110, 180, 250, 20 );
+
+		adic( new JLabel("Cód.Modelo"), 7, 200, 100, 20 );
+		adic( txtCodModBol, 7, 220, 100, 20 );
+		adic( new JLabel("Descrição do modelo de recibo"), 110, 200, 250, 20 );
+		adic( txtDescModBol, 110, 220, 250, 20 );
 		
-		adic( cbImpPed, 230, 210, 150, 20 );
-		adic( cbImpNot, 230, 230, 150, 20 );
-		adic( cbImpBol, 230, 250, 150, 20 );
-		adic( cbImpRec, 230, 270, 150, 20 );
-		adic( cbReImpNot, 230, 290, 150, 20 );		
+		adic( new JLabel( "% Desc." ), 7, 240, 100, 20 );
+		adic( txtPercDescVenda, 7, 260, 100, 20 );
+		adic( new JLabelPad( "V Desc." ), 110, 240, 100, 20 );
+		adic( txtVlrDescVenda, 110, 260, 100, 20 );
+		
+		adic( new JLabelPad( "% Adic." ), 7, 280, 100, 20 );
+		adic( txtPercAdicVenda, 7, 300, 100, 20 );
+		adic( new JLabelPad( "V Adic." ), 110, 280, 100, 20 );
+		adic( txtVlrAdicVenda, 110, 300, 100, 20 );
+		
+		
+		adic( cbImpPed, 230, 250, 150, 20 );
+		adic( cbImpNot, 230, 270, 150, 20 );
+		adic( cbImpBol, 230, 290, 150, 20 );
+		adic( cbImpRec, 230, 310, 150, 20 );
+		adic( cbReImpNot, 230, 330, 150, 20 );		
 	//	adic( cbDescPont, 7, 250, 180, 20 );		
 
 		setPainel( pinFrete );
@@ -1387,7 +1429,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 10 ];
+		String[] sRetorno = new String[ 11 ];
 		sRetorno[ COL_RETDFV.CODPLANOPAG.ordinal() ] = txtCodPlanoPag.getVlrString();
 		sRetorno[ COL_RETDFV.VLRDESCVENDA.ordinal() ] = txtVlrDescVenda.getVlrString();
 		sRetorno[ COL_RETDFV.VLRADICVENDA.ordinal() ] = txtVlrAdicVenda.getVlrString();
@@ -1398,6 +1440,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		sRetorno[ COL_RETDFV.MODBOL2.ordinal() ] = modeloBoleto;
 		sRetorno[ COL_RETDFV.REIMPNOTA.ordinal() ] = cbReImpNot.getVlrString();		
 		sRetorno[ COL_RETDFV.IMPBOL.ordinal() ] = cbImpBol.getVlrString();
+		sRetorno[ COL_RETDFV.NUMCONTA.ordinal() ] = txtNumConta.getVlrString();
 		return sRetorno;
 	}
 	
