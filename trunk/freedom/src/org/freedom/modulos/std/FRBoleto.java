@@ -975,7 +975,7 @@ public class FRBoleto extends FRelatorio {
 		sSQL.append( " F.RAZFILIAL,  F.ENDFILIAL, F.NUMFILIAL, F.BAIRFILIAL, F.CIDFILIAL, F.CEPFILIAL, F.FONEFILIAL, F.FAXFILIAL, " );
 		sSQL.append( "F.CNPJFILIAL, F.INSCFILIAL, F.WWWFILIAL, F.EMAILFILIAL," );		
 		 
-		sSQL.append( "IV.CODNAT, N.DESCNAT, F.RAZFILIAL, CT.AGENCIACONTA, MB.NUMCONTA, " );
+		sSQL.append( "IV.CODNAT, N.DESCNAT, F.RAZFILIAL, CT.AGENCIACONTA, IM.NUMCONTA, " );
 		sSQL.append( "MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, IM.DVCONVCOB , R.VLRAPAGREC, VD.NOMEVEND, " );
 
 		sSQL.append( "(SELECT FIRST 1 VO.CODORC FROM VDVENDAORC VO " );
@@ -1017,36 +1017,14 @@ public class FRBoleto extends FRelatorio {
 		sSQL.append( "AND VC.seqvc=4 ) AS NOMEVEND4 " );
 
 		
-/*			sql.append( "SELECT F.RAZFILIAL, C.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, " );
-		sql.append( "MB.INSTPAGMODBOL, B.IMGBOLBANCO, IM.CONVCOB " );
-		sql.append( "FROM SGFILIAL F, FNCONTA C, FNMODBOLETO MB, FNBANCO B, FNITMODBOLETO IM " );
-		sql.append( "WHERE MB.CODEMP=? AND MB.CODFILIAL=? AND MB.CODMODBOL =? " );
-		sql.append( "F.CODEMP=MB.CODEMP AND F.CODFILIAL=MB.CODFILIAL AND " );
-		sql.append( "IM.CODEMP=M.CODEMP AND IM.CODFILIAL=M.CODFILIAL AND IM.CODEMPBO=B.CODEMP AND ");
-		sql.append( "IM.CODFILIALBO=B.CODFILIAL AND IM.CODBANCO=B.CODBANCO AND ");
-		sql.append( "IM.CODEMPCB=? AND IM.CODFILIALCB=? AND IM.CODCARTCOB=? AND " );
-		sql.append( "C.CODEMP=MB.CODEMPCC AND C.CODFILIAL=MB.CODFILIALCC AND C.NUMCONTA=MB.NUMCONTA AND " );
-		sql.append( "B.CODEMPMB=MB.CODEMP AND B.CODFILIALMB=MB.CODFILIAL AND B.CODMODBOL=MB.CODMODBOL" );
-*/
 		sSQL.append( "FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, " );
 		sSQL.append( "FNMODBOLETO MB, FNITMODBOLETO IM, VDITVENDA IV, LFNATOPER N,  FNITRECEBER ITR, ");
 		sSQL.append( "SGFILIAL F, FNCONTA CT, VDVENDEDOR VD, VDVENDA V ");
 				
-/*					left outer join vdvendacomis vc " );
-		sSQL.append( "on vc.codemp = v.codemp and vc.codfilial=v.codfilial and vc.codvenda=v.codvenda and ");
-		sSQL.append( "vc.tipovenda=v.tipovenda and vc.seqvc=2 " );*/
-		
-		/*sSQL.append( "and vc.seqvc=(select min(vc2.seqvc) from vdvendacomis vc2 where vc2.codemp = v.codemp and vc2.codfilial=v.codfilial " );
-		sSQL.append( "and vc2.codvenda=v.codvenda and vc2.tipovenda=v.tipovenda) " );*/
-		
-		
-		/*sSQL.append( "left outer join vdvendedor vd2 on "); 
-		sSQL.append( "vd2.codemp = vc.codempvd and vd2.codfilial=vc.codfilialvd and vd2.codvend=vc.codvend " );*/
 		
 		sSQL.append( "WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND " );
 		sSQL.append( "V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND " );
 		sSQL.append( "F.CODEMP=R.CODEMP AND F.CODFILIAL=R.CODFILIAL AND ");
-//		sSQL.append( "CT.CODEMP=MB.CODEMPCC AND CT.CODFILIAL=MB.CODFILIALCC AND CT.NUMCONTA=MB.NUMCONTA AND " );
 		sSQL.append( "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " );
 		sSQL.append( "P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL AND " );
 		sSQL.append( "M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA AND " );
@@ -1371,10 +1349,8 @@ public class FRBoleto extends FRelatorio {
 
 	private void imprimeGrafico( final boolean bVisualizar, final ResultSet rs, final String classe, JInternalFrame orig  ) {
 
-	
-//		FPrinterJob dlGr = new FPrinterJob( "relatorios/" + classe, "Boleto", null, rs, getParametros(), this );
 		FPrinterJob dlGr = new FPrinterJob( classe, "Boleto", null, rs, getParametros(), orig==null?this:orig );
-
+		
 		if ( bVisualizar ) {
 			dlGr.setVisible( true );
 		}
