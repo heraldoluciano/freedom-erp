@@ -28,6 +28,10 @@ public class SwingParams {
 		return new Font(FONT_PAD, FONT_STYLE_PAD, FONT_SIZE_MED);
 	}
 	
+	public static Font getFontpadmin() {
+		return new Font(FONT_PAD, FONT_STYLE_PAD, FONT_SIZE_MIN);
+	}
+	
 	public static Font getFontbold() {
 		return new Font(FONT_PAD, FONT_STYLE_BOLD, FONT_SIZE_PAD);
 	}
