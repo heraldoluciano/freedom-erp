@@ -196,8 +196,6 @@ public class DLImpBoletoRec extends FDialogo {
 			classBol = txtClassModBol.getVlrString();
 		}
 			
-//		FPrinterJob dlGr = new FPrinterJob( "relatorios/boleto.jasper", "Boleto", null, rs, getParametros(), owner );
-		
 		FPrinterJob dlGr = new FPrinterJob( classBol, "Boleto", null, rs, getParametros(), owner );
 
 		if ( bVisualizar ) {
