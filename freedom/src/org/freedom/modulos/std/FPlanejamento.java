@@ -794,8 +794,8 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			psCont.setString( 3, sDescConta );
 			psCont.setString( 4, sCodBanco );
 			psCont.setDate( 5, Funcoes.strDateToSqlDate( sDataConta ) );
-			psQuery.setInt( 6, Aplicativo.iCodEmp );
-			psQuery.setInt( 7, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+			psCont.setInt( 6, Aplicativo.iCodEmp );
+			psCont.setInt( 7, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 			if ( psCont.executeUpdate() == 0 ) {
 				Funcoes.mensagemInforma( this, "Não foi possível editar um registro na tabela PLANEJAMENTO! ! !" );
 				return;
