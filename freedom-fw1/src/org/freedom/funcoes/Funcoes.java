@@ -126,15 +126,20 @@ public class Funcoes {
     	}
     	return retorno;
     }
-	public static StringDireita bdToStr(BigDecimal vlr) {
+
+    public static StringDireita bdToStr(BigDecimal vlr) {
+    	return bdToStr(vlr, Aplicativo.casasDecFin);
+    }
+    
+    public static StringDireita bdToStr(BigDecimal vlr, int casasdec) {
 		StringDireita retorno = null;
 		if (vlr==null) {
 			retorno = new StringDireita(Funcoes.strDecimalToStrCurrency( 
-					Aplicativo.casasDecFin, "0" ).trim());
+					casasdec, "0" ).trim());
 		}
 		else {
 			retorno = new StringDireita(Funcoes.strDecimalToStrCurrency( 
-					Aplicativo.casasDecFin, String.valueOf( vlr ) ).trim() );
+					casasdec, String.valueOf( vlr ) ).trim() );
 		}
 		return retorno;
 	}
