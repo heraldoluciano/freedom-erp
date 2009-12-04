@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="Pimaco6280"
+		 name="pimaco6180"
 		 columnCount="3"
 		 printOrder="Vertical"
 		 orientation="Portrait"
@@ -13,7 +13,7 @@
 		 leftMargin="28"
 		 rightMargin="14"
 		 topMargin="34"
-		 bottomMargin="28"
+		 bottomMargin="33"
 		 whenNoDataType="NoPages"
 		 isTitleNewPage="false"
 		 isSummaryNewPage="false">
@@ -64,8 +64,8 @@ FROM VDCLIENTE C]]></queryString>
 			<band height="72"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="3"
-						y="7"
+						x="7"
+						y="22"
 						width="178"
 						height="10"
 						key="textField-1"/>
@@ -77,8 +77,8 @@ FROM VDCLIENTE C]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="3"
-						y="19"
+						x="7"
+						y="32"
 						width="178"
 						height="10"
 						key="textField-2"/>
@@ -90,8 +90,8 @@ FROM VDCLIENTE C]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="3"
-						y="31"
+						x="7"
+						y="42"
 						width="170"
 						height="10"
 						key="textField-3"/>
@@ -103,8 +103,8 @@ FROM VDCLIENTE C]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="3"
-						y="43"
+						x="7"
+						y="52"
 						width="170"
 						height="10"
 						key="textField-4"/>
@@ -116,8 +116,8 @@ FROM VDCLIENTE C]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="3"
-						y="55"
+						x="7"
+						y="62"
 						width="68"
 						height="10"
 						key="textField-6"/>
