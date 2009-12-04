@@ -47,16 +47,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JButtonPad;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-
 import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
@@ -68,6 +64,7 @@ import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -1226,17 +1223,17 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private void carregaStatus() {
 		
 		if ( "*".equals( txtStatusOrc.getVlrString() ) || "OA".equals( txtStatusOrc.getVlrString() ) ) {
-			lbStatus.setText( "ABERTO" );
+			lbStatus.setText( "ABERTO/PENDENTE" );
 			lbStatus.setBackground( Color.ORANGE );
 			lbStatus.setVisible( true );
 		}
 		else if ( "OC".equals( txtStatusOrc.getVlrString() ) ) {
-			lbStatus.setText( "COMPLETO" );
+			lbStatus.setText( "COMPLETO/IMPRESSO" );
 			lbStatus.setBackground( Color.BLUE );
 			lbStatus.setVisible( true );
 		}
 		else if ( "OL".equals( txtStatusOrc.getVlrString() ) ) {
-			lbStatus.setText( "LIBERADO" );
+			lbStatus.setText( "LIBERADO/APROVADO" );
 			lbStatus.setBackground( new Color( 45, 190, 60 ) );
 			lbStatus.setVisible( true );
 		}
@@ -1301,7 +1298,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			rs.close();
 			ps.close();
 			con.commit();
-		} catch ( SQLException err ) {
+		}
+		catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar pedidos!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		} 
@@ -2131,8 +2129,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		if ( cevt.getListaCampos() == lcDet ) {
 			lcOrc2.carregaDados();// Carrega os Totais
-			lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos			
-			atualizaLucratividade();
+			if( ("S".equals( permusu.get( "VISUALIZALUCR" )) && ((Boolean)oPrefs[PrefOrc.VISUALIZALUCR.ordinal() ] )) ){
+				lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos			
+				atualizaLucratividade();
+			}
 		}
 		else if ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) {
 			if ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
@@ -2151,13 +2151,17 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			
 			String s = txtCodOrc.getVlrString();
 			lcOrc2.carregaDados();// Carrega os Totais
-			lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos
 			txtCodOrc.setVlrString( s );
 			s = null;
 			
 			carregaStatus();
 			carregaPedidos();
-			atualizaLucratividade();
+			
+			if( ("S".equals( permusu.get( "VISUALIZALUCR" )) && ((Boolean)oPrefs[PrefOrc.VISUALIZALUCR.ordinal() ] )) ){
+				lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos
+				atualizaLucratividade();
+			}
+
 		}
 		else if ( cevt.getListaCampos() == lcCli ) {
 			if ( ( (Boolean) oPrefs[ PrefOrc.OBSCLIVEND.ordinal() ] ).booleanValue() ) {
@@ -2222,7 +2226,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	public void afterPost( PostEvent pevt ) {
 
 		lcOrc2.carregaDados(); // Carrega os Totais
-		lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos
+		
+		if( ("S".equals( permusu.get( "VISUALIZALUCR" )) && ((Boolean)oPrefs[PrefOrc.VISUALIZALUCR.ordinal() ] )) ){			
+			lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos
+		}
+				
 		if ( pevt.getListaCampos() == lcCampos ) {
 			if ( lcDet.getStatus() == ListaCampos.LCS_NONE ) {
 				iniItem();
@@ -2235,8 +2243,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	public void afterDelete( DeleteEvent devt ) {
 		if ( devt.getListaCampos() == lcDet ) {
 			lcOrc2.carregaDados();
-			lcPrevTrib.carregaDados();
-			atualizaLucratividade();
+			if( ("S".equals( permusu.get( "VISUALIZALUCR" )) && ((Boolean)oPrefs[PrefOrc.VISUALIZALUCR.ordinal() ] )) ){
+				lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos			
+				atualizaLucratividade();
+			}
 		}
 	}
 
