@@ -89,7 +89,10 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 
 	private JPanelPad panelHistorico = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad panelSouth = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1, 10, 10 ) );
+//	private JPanelPad panelSouth = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1, 10, 10 ) );
+	private JPanelPad panelSouth = new JPanelPad(30, 30 );
+	private JPanelPad panelLegenda = new JPanelPad(30, 30 );
+	
 	
 	// *** Geral
 
@@ -140,6 +143,8 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 	private JButtonPad btDeselectAll = new JButtonPad( Icone.novo( "btNada.gif" ) );
 
 	private JButtonPad btSelectNecessarios = new JButtonPad( Icone.novo( "btSelEstrela.png" ) );
+	
+	private JButtonPad btLimparGrid = new JButtonPad( Icone.novo( "btVassoura.png" ) );
 
 	private enum VENDAS {
 		MARCACAO,STATUS, DATAAPROV, DATAENTREGA, CODORC, CODITORC, CODCLI, RAZCLI, CODPROD, DESCPROD, QTDAPROV, QTDESTOQUE, QTDEMPROD, QTDAPROD ;
@@ -177,6 +182,7 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		btSelectAll.addActionListener( this );
 		btDeselectAll.addActionListener( this );
 		btSelectNecessarios.addActionListener( this );
+		btLimparGrid.addActionListener( this );
 		lcProd.addCarregaListener( this );
 		btBuscar.addActionListener( this );
 		tabOrcamentos.addTabelaSelListener( this );	
@@ -223,31 +229,10 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		panelTabVendas.adic( new JLabelPad( "Qtd. Produzir" ), 359, 5, 120, 20 );
 		panelTabVendas.adic( txtQuantidadeProduzir, 359, 25, 120, 20 );
 		
-		Color statusColor = new Color( 111, 106, 177 );
-		Font statusFont = SwingParams.getFontpadmin(); 
-				
-		panelTabVendas.adic( new JLabelPad( imgPendente ), 600, 5, 20, 15 );
-
-		JLabelPad canceladas = new JLabelPad( "Pendentes" );
-		canceladas.setForeground( statusColor );
-		canceladas.setFont( statusFont );
-//		panelTabVendas.adic( canceladas, 620, 5, 100, 15 );
-		
-		panelTabVendas.adic( new JLabelPad( imgProducao ), 600, 20, 20, 15 );
-		JLabelPad pedidos = new JLabelPad( "Em Produção" );
-		pedidos.setForeground( statusColor );
-		pedidos.setFont( statusFont );
-//		panelTabVendas.adic( pedidos, 620, 20, 100, 15 );
-		
-		panelTabVendas.adic( new JLabelPad( imgProduzido ), 600, 35, 20, 15 );
-		JLabelPad faturadas = new JLabelPad( "Produzidos" );
-		faturadas.setForeground( statusColor );
-		faturadas.setFont( statusFont );
-//		panelTabVendas.adic( faturadas, 620, 35, 100, 15 );
-		
-		panelTabVendas.adic( btSelectNecessarios, 738, 15, 30, 30 );
-		panelTabVendas.adic( btSelectAll, 769, 15, 30, 30 );
-		panelTabVendas.adic( btDeselectAll, 800, 15, 30, 30 );
+		panelTabVendas.adic( btSelectAll, 707, 15, 30, 30 );
+		panelTabVendas.adic( btDeselectAll, 738, 15, 30, 30 );
+		panelTabVendas.adic( btSelectNecessarios, 769, 15, 30, 30 );
+		panelTabVendas.adic( btLimparGrid, 800, 15, 30, 30 );
 		
 		tabOrcamentos.adicColuna( "" );
 		tabOrcamentos.adicColuna( "" );
@@ -281,9 +266,36 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		
 		panelTabVendasItens.add( new JScrollPane( tabOrcamentos ) );
 		
+		
+		Color statusColor = new Color( 111, 106, 177 );
+		Font statusFont = SwingParams.getFontpadmin(); 
+		
+
+		JLabelPad canceladas = new JLabelPad( "Pendentes" );
+		canceladas.setForeground( statusColor );
+		canceladas.setFont( statusFont );
+		panelLegenda.adic( new JLabelPad( imgPendente ), 0, 5, 20, 15 );
+		panelLegenda.adic( canceladas, 20, 5, 100, 15 );
+		
+		JLabelPad pedidos = new JLabelPad( "Em Produção" );
+		pedidos.setForeground( statusColor );
+		pedidos.setFont( statusFont );
+		panelLegenda.adic( new JLabelPad( imgProducao ), 60, 5, 20, 15 );
+		panelLegenda.adic( pedidos, 80, 5, 100, 15 );
+		
+		JLabelPad faturadas = new JLabelPad( "Produzidos" );
+		faturadas.setForeground( statusColor );
+		faturadas.setFont( statusFont );
+		panelLegenda.adic( new JLabelPad( imgProduzido ), 130, 5, 20, 15 );		
+		panelLegenda.adic( faturadas, 150, 5, 100, 15 );
+		
+		panelLegenda.setBorder( null );
+		
+		
 		panelGeral.add( panelSouth, BorderLayout.SOUTH );
 		panelSouth.setBorder( BorderFactory.createEtchedBorder() );
-		panelSouth.add( adicBotaoSair() );
+		panelSouth.add( adicBotaoSair());
+		pnRod.add( panelLegenda, BorderLayout.CENTER );
 	}
 	
 	private void buscaVendas() {
@@ -407,6 +419,9 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		else if ( e.getSource() == btSelectNecessarios ) {
 			selectNecessarios();
 		}
+		else if ( e.getSource() == btLimparGrid ) {
+			limpaNaoSelecionados( tabOrcamentos );
+		}
 	}
 
 	public void valorAlterado( TabelaSelEvent e ) {
@@ -490,6 +505,21 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		}
 	}
 	
+	private void limpaNaoSelecionados(Tabela ltab) {
+		int linhas = ltab.getNumLinhas();
+		int pos = 0;
+		try {			
+			for ( int i = 0; i < linhas; i++ ) {
+				if ( ltab.getValor( i, 0 )!=null && ! ( (Boolean) ltab.getValor( i, 0 ) ).booleanValue() ) { //xxx
+					ltab.tiraLinha( i );
+					i--;
+				}					
+			}									
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	private void selectNecessarios() {
 		BigDecimal vlrprod = null;
