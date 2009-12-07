@@ -29,13 +29,13 @@ import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.TabelaEditEvent;
+import org.freedom.acao.TabelaEditListener;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
 import org.freedom.bmps.Icone;
@@ -47,6 +47,7 @@ import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -62,7 +63,7 @@ import org.freedom.telas.SwingParams;
  * @author Setpoint Informática Ltda./Anderson Sanchez
  * @version 03/12/2009
  */
-public class FPCP extends FFilho implements ActionListener, TabelaSelListener, MouseListener, KeyListener, CarregaListener {
+public class FPCP extends FFilho implements ActionListener, TabelaSelListener, MouseListener, KeyListener, CarregaListener, TabelaEditListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -134,9 +135,14 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 	
 	private boolean carregandoOrcamentos = false;
 	
-	
+	private JButtonPad btSelectAll = new JButtonPad( Icone.novo( "btTudo.gif" ) );
+
+	private JButtonPad btDeselectAll = new JButtonPad( Icone.novo( "btNada.gif" ) );
+
+	private JButtonPad btSelectNecessarios = new JButtonPad( Icone.novo( "btSelEstrela.png" ) );
+
 	private enum VENDAS {
-		STATUS, DATAAPROV, DATAENTREGA, CODORC, CODITORC, CODCLI, RAZCLI, CODPROD, DESCPROD, QTDAPROV, QTDESTOQUE, QTDEMPROD, QTDAPROD ;
+		MARCACAO,STATUS, DATAAPROV, DATAENTREGA, CODORC, CODITORC, CODCLI, RAZCLI, CODPROD, DESCPROD, QTDAPROV, QTDESTOQUE, QTDEMPROD, QTDAPROD ;
 	}
 	
 	public FPCP() {
@@ -150,13 +156,8 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		
 		montaListaCampos();
 		montaTela();
-		
-		lcProd.addCarregaListener( this );
-		btBuscar.addActionListener( this );
-		tabOrcamentos.addTabelaSelListener( this );	
-		tabOrcamentos.addMouseListener( this );	
-		btBuscar.addKeyListener( this );
-		
+		montaListeners();
+	
 	}
 
 	private void montaListaCampos() {
@@ -169,6 +170,20 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		lcProd.setReadOnly( true );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
 
+	}
+	
+	private void montaListeners() {
+		
+		btSelectAll.addActionListener( this );
+		btDeselectAll.addActionListener( this );
+		btSelectNecessarios.addActionListener( this );
+		lcProd.addCarregaListener( this );
+		btBuscar.addActionListener( this );
+		tabOrcamentos.addTabelaSelListener( this );	
+		tabOrcamentos.addMouseListener( this );	
+		btBuscar.addKeyListener( this );
+		tabOrcamentos.addTabelaEditListener( this );
+		
 	}
 
 	private void montaTela() {
@@ -216,22 +231,25 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		JLabelPad canceladas = new JLabelPad( "Pendentes" );
 		canceladas.setForeground( statusColor );
 		canceladas.setFont( statusFont );
-		panelTabVendas.adic( canceladas, 620, 5, 100, 15 );
+//		panelTabVendas.adic( canceladas, 620, 5, 100, 15 );
 		
 		panelTabVendas.adic( new JLabelPad( imgProducao ), 600, 20, 20, 15 );
 		JLabelPad pedidos = new JLabelPad( "Em Produção" );
 		pedidos.setForeground( statusColor );
 		pedidos.setFont( statusFont );
-		panelTabVendas.adic( pedidos, 620, 20, 100, 15 );
+//		panelTabVendas.adic( pedidos, 620, 20, 100, 15 );
 		
 		panelTabVendas.adic( new JLabelPad( imgProduzido ), 600, 35, 20, 15 );
 		JLabelPad faturadas = new JLabelPad( "Produzidos" );
 		faturadas.setForeground( statusColor );
 		faturadas.setFont( statusFont );
-		panelTabVendas.adic( faturadas, 620, 35, 100, 15 );
+//		panelTabVendas.adic( faturadas, 620, 35, 100, 15 );
 		
+		panelTabVendas.adic( btSelectNecessarios, 738, 15, 30, 30 );
+		panelTabVendas.adic( btSelectAll, 769, 15, 30, 30 );
+		panelTabVendas.adic( btDeselectAll, 800, 15, 30, 30 );
 		
-		
+		tabOrcamentos.adicColuna( "" );
 		tabOrcamentos.adicColuna( "" );
 		tabOrcamentos.adicColuna( "Dt.Aprov." );
 		tabOrcamentos.adicColuna( "Dt.Entrega" );
@@ -246,20 +264,21 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		tabOrcamentos.adicColuna( "Produção" );
 		tabOrcamentos.adicColuna( "Produzir" );
 		
-		tabOrcamentos.setTamColuna( 15, VENDAS.STATUS.ordinal() );
+		tabOrcamentos.setTamColuna( 15, VENDAS.MARCACAO.ordinal() );
+		tabOrcamentos.setTamColuna( 10, VENDAS.STATUS.ordinal() );
 		tabOrcamentos.setTamColuna( 60, VENDAS.DATAAPROV.ordinal() );
 		tabOrcamentos.setTamColuna( 60, VENDAS.DATAENTREGA.ordinal() );
 		tabOrcamentos.setTamColuna( 30, VENDAS.CODORC.ordinal() );
 		tabOrcamentos.setTamColuna( 30, VENDAS.CODITORC.ordinal() );
 		tabOrcamentos.setTamColuna( 40, VENDAS.CODCLI.ordinal() );
-		tabOrcamentos.setTamColuna( 150, VENDAS.RAZCLI.ordinal() );
+		tabOrcamentos.setTamColuna( 145, VENDAS.RAZCLI.ordinal() );
 		tabOrcamentos.setTamColuna( 40, VENDAS.CODPROD.ordinal() );
-		tabOrcamentos.setTamColuna( 150, VENDAS.DESCPROD.ordinal() );
+		tabOrcamentos.setTamColuna( 145, VENDAS.DESCPROD.ordinal() );
 		tabOrcamentos.setTamColuna( 60, VENDAS.QTDAPROV.ordinal() );
 		tabOrcamentos.setTamColuna( 60, VENDAS.QTDESTOQUE.ordinal() );
 		tabOrcamentos.setTamColuna( 60, VENDAS.QTDEMPROD.ordinal() );
 		tabOrcamentos.setTamColuna( 60, VENDAS.QTDAPROD.ordinal() );
-				
+		
 		panelTabVendasItens.add( new JScrollPane( tabOrcamentos ) );
 		
 		panelGeral.add( panelSouth, BorderLayout.SOUTH );
@@ -330,7 +349,7 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 				
 				tabOrcamentos.adicLinha();
 				
-
+				tabOrcamentos.setValor( new Boolean(true), row, VENDAS.MARCACAO.ordinal() );
 				tabOrcamentos.setValor( Funcoes.dateToStrDate( rs.getDate( VENDAS.DATAAPROV.toString() ) ), row, VENDAS.DATAAPROV.ordinal() );
 				tabOrcamentos.setValor( Funcoes.dateToStrDate( rs.getDate( VENDAS.DATAENTREGA.toString() ) ), row, VENDAS.DATAENTREGA.ordinal() );
 				tabOrcamentos.setValor( rs.getInt( VENDAS.CODORC.toString() ), row, VENDAS.CODORC.ordinal() );
@@ -355,16 +374,14 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 				else if ( "PD".equals( rs.getString( "sitproditorc" ) ) ) {
 					imgColuna = imgProduzido;
 				}
-												
+											
 				tabOrcamentos.setValor( imgColuna, row, VENDAS.STATUS.ordinal() );
-				
-				
 				
 				tabOrcamentos.setValor( Funcoes.bdToStr( qtdaprov, Aplicativo.casasDec ), row, VENDAS.QTDAPROV.ordinal() );
 				tabOrcamentos.setValor( Funcoes.bdToStr( qtdestoque, Aplicativo.casasDec ), row, VENDAS.QTDESTOQUE.ordinal() );
 				tabOrcamentos.setValor( Funcoes.bdToStr( qtdemprod, Aplicativo.casasDec ), row, VENDAS.QTDEMPROD.ordinal() );
 				tabOrcamentos.setValor( Funcoes.bdToStr( qtdaprod.floatValue() < 0 ? new BigDecimal(0) : qtdaprod , Aplicativo.casasDec), row, VENDAS.QTDAPROD.ordinal() );
-								
+						
 				row++;
 				
 			}
@@ -381,6 +398,15 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		if ( e.getSource() == btBuscar ) {
 			buscaVendas();
 		}
+		else if ( e.getSource() == btSelectAll ) {
+			selectAll();
+		}
+		else if ( e.getSource() == btDeselectAll ) {
+			deselectALl();
+		}
+		else if ( e.getSource() == btSelectNecessarios ) {
+			selectNecessarios();
+		}
 	}
 
 	public void valorAlterado( TabelaSelEvent e ) {
@@ -391,10 +417,11 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		*/
 	}
 
-	public void mouseClicked( MouseEvent e ) {
+	public void mouseClicked( MouseEvent mevt ) {
+		Tabela tabEv = (Tabela) mevt.getSource();
 		
-		if ( e.getClickCount() == 2 ) {
-			if ( e.getSource() == tabOrcamentos && tabOrcamentos.getLinhaSel() > -1 ) {
+		if ( mevt.getClickCount() == 2 ) {
+			if ( mevt.getSource() == tabOrcamentos && tabOrcamentos.getLinhaSel() > -1 ) {
 				FVenda venda = null;    
 	    		if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
 	    			venda = (FVenda)Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
@@ -406,6 +433,13 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 //				venda.exec( (Integer)tabOrcamentos.getValor( tabOrcamentos.getLinhaSel(), VENDAS.CODVENDA.ordinal() ) );
 			}
 		}
+		if ( tabEv == tabOrcamentos && tabEv.getLinhaSel() > -1 ) {
+			if ( mevt.getClickCount() == 1 || mevt.getClickCount() == 2 ) {
+				tabEv.setValor( ! ( (Boolean) tabEv.getValor( tabEv.getLinhaSel(), 0 ) ).booleanValue(), tabEv.getLinhaSel(), 0 );
+			}
+		}
+		
+		
 	}
 
 	public void mouseEntered( MouseEvent e ) { }
@@ -443,4 +477,37 @@ public class FPCP extends FFilho implements ActionListener, TabelaSelListener, M
 		lcProd.setConexao( con );
 		
 	}
+
+	public void valorAlterado( TabelaEditEvent evt ) {
+
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private void selectAll() {
+		for ( int i = 0; i < tabOrcamentos.getNumLinhas(); i++ ) {
+			tabOrcamentos.setValor( new Boolean( true ), i, 0 );
+		}
+	}
+	
+	
+	private void selectNecessarios() {
+		BigDecimal vlrprod = null;
+		for ( int i = 0; i < tabOrcamentos.getNumLinhas(); i++ ) {
+			vlrprod = Funcoes.strToBd( (StringDireita) tabOrcamentos.getValor( i, VENDAS.QTDAPROD.ordinal() ) );
+			if(vlrprod.floatValue()>0) {
+				tabOrcamentos.setValor( new Boolean( true ), i, 0 );
+			}
+			else {
+				tabOrcamentos.setValor( new Boolean( false ), i, 0 );
+			}
+		}
+	}
+
+	private void deselectALl() {
+		for ( int i = 0; i < tabOrcamentos.getNumLinhas(); i++ ) {
+			tabOrcamentos.setValor( new Boolean( false ), i, 0 );
+		}
+	}
+	
 }
