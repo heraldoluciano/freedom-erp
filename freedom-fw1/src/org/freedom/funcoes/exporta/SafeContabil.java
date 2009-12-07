@@ -30,7 +30,7 @@ public class SafeContabil extends Contabil {
 		File entradas = new File( filecontabil.getPath() + "\\SAFECONTABIL.TXT" );
 		entradas.createNewFile();
 
-		FileWriter filewritercontabil = new FileWriter( filecontabil );
+		FileWriter filewritercontabil = new FileWriter( entradas );
 
 		progressInRows = 1;
 		
